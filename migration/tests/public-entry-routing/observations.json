@@ -1,0 +1,3629 @@
+{
+  "schema": 1,
+  "scope": "08.018 source/link observations; not acceptance",
+  "map_sha256": "039a4dc64172b697459959b4d32c70f1d7591688c19a500e22cce221e4c47671",
+  "entry_count": 76,
+  "entries": [
+    {
+      "c_entry": "features_entry_point",
+      "legacy_site": "app/gimp-features.cpp:70",
+      "cpp_operation": "ApplicationRef::initialize_features",
+      "rule": "Explicit registration method delegates to this C entry; owner context is passed by adapter and lifecycle state belongs to one Application/ActionGroup store",
+      "implementation": "TODO",
+      "source_tokens": []
+    },
+    {
+      "c_entry": "gimp_bucket_fill_brush_tool_get_type",
+      "legacy_site": "app/tools/gimpbucketfillbrushtool.cpp:485",
+      "cpp_operation": "TypeTraits<GimpBucketFillBrushTool>::type",
+      "rule": "Lazy TypeTraits delegates to C GType registration; no C++ global class singleton or implementation placement",
+      "implementation": "TODO",
+      "source_tokens": []
+    },
+    {
+      "c_entry": "gimp_bucket_fill_brush_tool_register",
+      "legacy_site": "app/tools/gimpbucketfillbrushtool.cpp:490",
+      "cpp_operation": "BucketFillBrushToolRef::register_type",
+      "rule": "Explicit registration method delegates to this C entry; owner context is passed by adapter and lifecycle state belongs to one Application/ActionGroup store",
+      "implementation": "TODO",
+      "source_tokens": []
+    },
+    {
+      "c_entry": "gimp_canvas_perspective_guide_get_type",
+      "legacy_site": "app/display/gimpcanvasperspectiveguide.cpp:295",
+      "cpp_operation": "TypeTraits<GimpCanvasPerspectiveGuide>::type",
+      "rule": "Lazy TypeTraits delegates to C GType registration; no C++ global class singleton or implementation placement",
+      "implementation": "TODO",
+      "source_tokens": [
+        {
+          "path": "app/display/gimpcanvasperspectiveguide.h",
+          "line": 6
+        },
+        {
+          "path": "app/display/gimpcanvasperspectiveguide.h",
+          "line": 9
+        }
+      ]
+    },
+    {
+      "c_entry": "gimp_canvas_perspective_guide_new",
+      "legacy_site": "app/display/gimpcanvasperspectiveguide.cpp:300",
+      "cpp_operation": "CanvasPerspectiveGuideRef::create",
+      "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+      "implementation": "TODO",
+      "source_tokens": [
+        {
+          "path": "app/display/gimpcanvasperspectiveguide.cpp",
+          "line": 168
+        },
+        {
+          "path": "app/display/gimpcanvasperspectiveguide.h",
+          "line": 11
+        },
+        {
+          "path": "app/display/gimpdisplayshell-items.c",
+          "line": 81
+        }
+      ]
+    },
+    {
+      "c_entry": "gimp_cell_renderer_popup_clicked",
+      "legacy_site": "app/widgets/gimpcellrendererpopup.cpp:344",
+      "cpp_operation": "CellRendererPopupRef::clicked",
+      "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+      "implementation": "PARTIAL: CellRendererPopupRef::clicked delegates to the original C signature; existing active typed-slot admission on the owner thread precedes the unchanged RUN_FIRST signal emission, outside the borrow and after renderer/tree leases. Current class closure, observers and nested ordering retained. Direct signal emission bypasses this entry gate. Historical CellRendererPopupInterface virtual dispatch and RUN_LAST/no-class-closure metadata are not restored; no legacy layout/subclass ABI claim. Evidence: migration/tests/adapter-removal/popup-entry-handles-08018/",
+      "source_tokens": [
+        {
+          "path": "app/tests/test-painter-layer-tree.c",
+          "line": 716
+        },
+        {
+          "path": "app/tests/test-painter-layer-tree.c",
+          "line": 740
+        },
+        {
+          "path": "app/tests/test-painter-layer-tree.c",
+          "line": 753
+        },
+        {
+          "path": "app/tests/test-painter-layer-tree.c",
+          "line": 762
+        },
+        {
+          "path": "app/tests/test-painter-layer-tree.c",
+          "line": 776
+        },
+        {
+          "path": "app/tests/test-painter-layer-tree.c",
+          "line": 848
+        },
+        {
+          "path": "app/tests/test-painter-layer-tree.c",
+          "line": 890
+        },
+        {
+          "path": "app/tests/test-painter-layer-tree.c",
+          "line": 910
+        },
+        {
+          "path": "app/tests/test-painter-layer-tree.c",
+          "line": 936
+        },
+        {
+          "path": "app/tests/test-painter-layer-tree.c",
+          "line": 962
+        },
+        {
+          "path": "app/tests/test-painter-layer-tree.c",
+          "line": 965
+        },
+        {
+          "path": "app/tests/test-painter-layer-tree.c",
+          "line": 1004
+        },
+        {
+          "path": "app/tests/test-painter-popup-handles.cpp",
+          "line": 89
+        },
+        {
+          "path": "app/tests/test-painter-popup-handles.cpp",
+          "line": 101
+        },
+        {
+          "path": "app/tests/test-painter-popup-handles.cpp",
+          "line": 116
+        },
+        {
+          "path": "app/tests/test-painter-popup-handles.cpp",
+          "line": 131
+        },
+        {
+          "path": "app/tests/test-painter-popup-handles.cpp",
+          "line": 146
+        },
+        {
+          "path": "app/tests/test-painter-popup-handles.cpp",
+          "line": 147
+        },
+        {
+          "path": "app/tests/test-painter-popup-handles.cpp",
+          "line": 151
+        },
+        {
+          "path": "app/tests/test-painter-popup-handles.cpp",
+          "line": 152
+        },
+        {
+          "path": "app/tests/test-painter-popup-handles.cpp",
+          "line": 157
+        },
+        {
+          "path": "app/tests/test-painter-popup-handles.cpp",
+          "line": 158
+        },
+        {
+          "path": "app/tests/test-painter-popup-handles.cpp",
+          "line": 162
+        },
+        {
+          "path": "app/tests/test-painter-popup-handles.cpp",
+          "line": 163
+        },
+        {
+          "path": "app/tests/test-painter-popup-handles.cpp",
+          "line": 282
+        },
+        {
+          "path": "app/widgets/gimpcellrendererpopup-handle.hpp",
+          "line": 25
+        },
+        {
+          "path": "app/widgets/gimpcellrendererpopup.cpp",
+          "line": 334
+        },
+        {
+          "path": "app/widgets/gimpcellrendererpopup.cpp",
+          "line": 385
+        },
+        {
+          "path": "app/widgets/gimpcellrendererpopup.h",
+          "line": 25
+        },
+        {
+          "path": "app/widgets/gimpcontainertreeview.c",
+          "line": 1779
+        }
+      ]
+    },
+    {
+      "c_entry": "gimp_cell_renderer_popup_get_type",
+      "legacy_site": "app/widgets/gimpcellrendererpopup.cpp:341",
+      "cpp_operation": "TypeTraits<GimpCellRendererPopup>::type",
+      "rule": "Lazy TypeTraits delegates to C GType registration; no C++ global class singleton or implementation placement",
+      "implementation": "IMPLEMENTED native callable registration route: shared lazy TypeTraits<GimpCellRendererPopup>::type delegates to the existing sole C get_type, with no C++ registration singleton or additional GType. Native registration identity only; historical parent/class layout, abstract Interface and subclass ABI remain outside this evidence. Evidence: migration/tests/adapter-removal/popup-entry-handles-08018/",
+      "source_tokens": [
+        {
+          "path": "app/tests/test-painter-layer-tree.c",
+          "line": 673
+        },
+        {
+          "path": "app/tests/test-painter-popup-handles.cpp",
+          "line": 308
+        },
+        {
+          "path": "app/widgets/gimpcellrendererpopup.h",
+          "line": 6
+        },
+        {
+          "path": "app/widgets/gimpcellrendererpopup.h",
+          "line": 16
+        }
+      ]
+    },
+    {
+      "c_entry": "gimp_cell_renderer_popup_new",
+      "legacy_site": "app/widgets/gimpcellrendererpopup.cpp:342",
+      "cpp_operation": "CellRendererPopupRef::create",
+      "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+      "implementation": "IMPLEMENTED native callable construction/ownership route: CellRendererPopupRef::create directly calls the existing C factory and sinks its floating renderer; retain adds ownership to an existing column-owned renderer. Native construction/property/lifetime behavior only; no historical class layout, abstract Interface, subclass ABI or render-parity claim. Evidence: migration/tests/adapter-removal/popup-entry-handles-08018/",
+      "source_tokens": [
+        {
+          "path": "app/tests/test-painter-layer-tree.c",
+          "line": 668
+        },
+        {
+          "path": "app/tests/test-painter-layer-tree.c",
+          "line": 732
+        },
+        {
+          "path": "app/tests/test-painter-layer-tree.c",
+          "line": 996
+        },
+        {
+          "path": "app/tests/test-painter-popup-handles.cpp",
+          "line": 296
+        },
+        {
+          "path": "app/widgets/gimpcellrendererpopup-handle.hpp",
+          "line": 19
+        },
+        {
+          "path": "app/widgets/gimpcellrendererpopup.cpp",
+          "line": 366
+        },
+        {
+          "path": "app/widgets/gimpcellrendererpopup.h",
+          "line": 17
+        },
+        {
+          "path": "app/widgets/gimplayertreeview.c",
+          "line": 330
+        }
+      ]
+    },
+    {
+      "c_entry": "gimp_clone_layer_get_source",
+      "legacy_site": "app/core/gimpclonelayer.cpp:688",
+      "cpp_operation": "CloneLayerRef::source",
+      "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation; returned borrowed GimpLayer is retained by owning LayerRef, lazy name resolution semantics preserved",
+      "implementation": "IMPLEMENTED bounded native source route: CloneLayerRef::source calls the original borrowed C getter and immediately retains the returned GimpLayer. Lazy exact-name pre-order lookup and native pending/live identity behavior are preserved; this is not a nonmutating serialization query. Historical Interface/subclass ABI and stale callback behavior are outside this evidence. See migration/tests/adapter-removal/clone-entry-handles-08018/",
+      "source_tokens": [
+        {
+          "path": "app/core/gimpclonelayer-handle.hpp",
+          "line": 74
+        },
+        {
+          "path": "app/core/gimpclonelayer.cpp",
+          "line": 716
+        },
+        {
+          "path": "app/core/gimpclonelayer.cpp",
+          "line": 821
+        },
+        {
+          "path": "app/core/gimpclonelayer.h",
+          "line": 53
+        },
+        {
+          "path": "app/core/gimpgrouplayer.c",
+          "line": 670
+        },
+        {
+          "path": "app/httpd/httpd-images.cpp",
+          "line": 151
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 697
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 701
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 703
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 708
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 728
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 731
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 784
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 799
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 818
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 827
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 875
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 881
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 927
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 934
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 957
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 961
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 985
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1002
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1012
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1014
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1021
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1033
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1038
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1061
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1079
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1085
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1089
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1110
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1115
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1165
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1175
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1178
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1185
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1187
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1195
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1201
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1224
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1227
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1280
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1297
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1298
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1300
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1318
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1319
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1320
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1327
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1328
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1329
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1347
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1469
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1471
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1512
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1549
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1741
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1782
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1790
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1891
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1927
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1939
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1969
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1978
+        },
+        {
+          "path": "app/tests/test-gimp-filter-layer.c",
+          "line": 73
+        },
+        {
+          "path": "app/tests/test-gimp-filter-layer.c",
+          "line": 640
+        },
+        {
+          "path": "app/tests/test-gimp-filter-layer.c",
+          "line": 1398
+        },
+        {
+          "path": "app/tests/test-gimp-layer-presets.c",
+          "line": 64
+        },
+        {
+          "path": "app/tests/test-gimp-layer-presets.c",
+          "line": 276
+        },
+        {
+          "path": "app/tests/test-gimp-layer-presets.c",
+          "line": 287
+        },
+        {
+          "path": "app/tests/test-gimp-layer-presets.c",
+          "line": 447
+        },
+        {
+          "path": "app/tests/test-gimp-layer-presets.c",
+          "line": 451
+        },
+        {
+          "path": "app/tests/test-layer-presets-ui.c",
+          "line": 765
+        },
+        {
+          "path": "app/tests/test-layer-tile-entry-contracts.cpp",
+          "line": 255
+        },
+        {
+          "path": "app/tests/test-painter-canvas-ui.c",
+          "line": 769
+        },
+        {
+          "path": "app/tests/test-painter-layer-ui.c",
+          "line": 100
+        },
+        {
+          "path": "app/tests/test-painter-layer-ui.c",
+          "line": 150
+        },
+        {
+          "path": "app/tests/test-painter-layer-ui.c",
+          "line": 154
+        },
+        {
+          "path": "app/tests/test-painter-layer-ui.c",
+          "line": 161
+        },
+        {
+          "path": "app/tests/test-painter-layer-ui.c",
+          "line": 163
+        },
+        {
+          "path": "app/tests/test-painter-layer-ui.c",
+          "line": 194
+        },
+        {
+          "path": "app/tests/test-painter-layer-ui.c",
+          "line": 630
+        },
+        {
+          "path": "app/tests/test-painter-xcf-fields.inc",
+          "line": 134
+        },
+        {
+          "path": "app/tests/test-painter-xcf-fields.inc",
+          "line": 672
+        },
+        {
+          "path": "app/tests/test-painter-xcf-multipart-adversarial.inc",
+          "line": 458
+        },
+        {
+          "path": "app/tests/test-painter-xcf-multipart.inc",
+          "line": 111
+        },
+        {
+          "path": "app/tests/test-painter-xcf-multipart.inc",
+          "line": 324
+        },
+        {
+          "path": "app/tests/test-painter-xcf-multipart.inc",
+          "line": 327
+        },
+        {
+          "path": "app/tests/test-painter-xcf-multipart.inc",
+          "line": 346
+        },
+        {
+          "path": "app/tests/test-painter-xcf-multipart.inc",
+          "line": 348
+        },
+        {
+          "path": "app/tests/test-painter-xcf-open.c",
+          "line": 194
+        },
+        {
+          "path": "app/tests/test-painter-xcf-open.c",
+          "line": 207
+        },
+        {
+          "path": "app/tests/test-painter-xcf-open.c",
+          "line": 426
+        },
+        {
+          "path": "app/tests/test-painter-xcf-roundtrip.c",
+          "line": 86
+        },
+        {
+          "path": "app/tests/test-painter-xcf-roundtrip.c",
+          "line": 95
+        },
+        {
+          "path": "app/tests/test-painter-xcf-roundtrip.c",
+          "line": 97
+        },
+        {
+          "path": "app/tests/test-painter-xcf-roundtrip.c",
+          "line": 101
+        },
+        {
+          "path": "app/tests/test-painter-xcf-roundtrip.c",
+          "line": 221
+        },
+        {
+          "path": "app/tests/test-painter-xcf-roundtrip.c",
+          "line": 586
+        },
+        {
+          "path": "app/tests/test-painter-xcf-roundtrip.c",
+          "line": 592
+        },
+        {
+          "path": "app/tests/test-painter-xcf-roundtrip.c",
+          "line": 597
+        },
+        {
+          "path": "app/tests/test-painter-xcf-roundtrip.c",
+          "line": 785
+        },
+        {
+          "path": "app/tests/test-painter-xcf-roundtrip.c",
+          "line": 799
+        },
+        {
+          "path": "app/tests/test-painter-xcf-roundtrip.c",
+          "line": 813
+        },
+        {
+          "path": "app/tests/test-painter-xcf-roundtrip.c",
+          "line": 973
+        },
+        {
+          "path": "app/xcf/painter-xcf-load.cpp",
+          "line": 547
+        }
+      ]
+    },
+    {
+      "c_entry": "gimp_clone_layer_get_type",
+      "legacy_site": "app/core/gimpclonelayer.cpp:664",
+      "cpp_operation": "TypeTraits<GimpCloneLayer>::type",
+      "rule": "Lazy TypeTraits delegates to C GType registration; no C++ global class singleton or implementation placement",
+      "implementation": "IMPLEMENTED native callable registration route: shared lazy TypeTraits<GimpCloneLayer>::type delegates to the existing sole C GType entry with no singleton, duplicate registration or implementation placement. Native type identity only; no historical Interface/class-layout/subclass ABI claim. See migration/tests/adapter-removal/clone-entry-handles-08018/",
+      "source_tokens": [
+        {
+          "path": "app/core/gimpclonelayer.h",
+          "line": 9
+        },
+        {
+          "path": "app/core/gimpclonelayer.h",
+          "line": 49
+        }
+      ]
+    },
+    {
+      "c_entry": "gimp_clone_layer_new",
+      "legacy_site": "app/core/gimpclonelayer.cpp:669",
+      "cpp_operation": "CloneLayerRef::create",
+      "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+      "implementation": "PARTIAL: CloneLayerRef::create calls the original named C factory and sinks its floating native GimpItem before image ownership. GimpLayerMode explicitly replaces legacy GimpLayerModeEffects; current native setters emit construction notifications and validate mode where legacy assigned fields. Geometry/ownership evidence does not claim unchanged enum/source signature, construction signal order or historical layout ABI. See migration/tests/adapter-removal/clone-entry-handles-08018/",
+      "source_tokens": [
+        {
+          "path": "app/actions/layers-commands.c",
+          "line": 233
+        },
+        {
+          "path": "app/core/gimpclonelayer-handle.hpp",
+          "line": 28
+        },
+        {
+          "path": "app/core/gimpclonelayer.cpp",
+          "line": 789
+        },
+        {
+          "path": "app/core/gimpclonelayer.h",
+          "line": 50
+        },
+        {
+          "path": "app/httpd/httpd-images.cpp",
+          "line": 328
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 74
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 165
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 177
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 208
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 429
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 549
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 628
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 812
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 838
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1524
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1578
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1656
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1959
+        },
+        {
+          "path": "app/tests/test-gimp-filter-layer.c",
+          "line": 268
+        },
+        {
+          "path": "app/tests/test-gimp-filter-layer.c",
+          "line": 543
+        },
+        {
+          "path": "app/tests/test-gimp-filter-layer.c",
+          "line": 557
+        },
+        {
+          "path": "app/tests/test-gimp-filter-layer.c",
+          "line": 577
+        },
+        {
+          "path": "app/tests/test-gimp-filter-layer.c",
+          "line": 594
+        },
+        {
+          "path": "app/tests/test-gimp-filter-layer.c",
+          "line": 595
+        },
+        {
+          "path": "app/tests/test-gimp-filter-layer.c",
+          "line": 627
+        },
+        {
+          "path": "app/tests/test-gimp-filter-layer.c",
+          "line": 668
+        },
+        {
+          "path": "app/tests/test-gimp-filter-layer.c",
+          "line": 775
+        },
+        {
+          "path": "app/tests/test-gimp-filter-layer.c",
+          "line": 1386
+        },
+        {
+          "path": "app/tests/test-painter-http.cpp",
+          "line": 98
+        },
+        {
+          "path": "app/tests/test-painter-layer-ui.c",
+          "line": 142
+        },
+        {
+          "path": "app/tests/test-painter-layer-ui.c",
+          "line": 174
+        },
+        {
+          "path": "app/tests/test-painter-layer-ui.c",
+          "line": 390
+        },
+        {
+          "path": "app/tests/test-painter-layer-ui.c",
+          "line": 443
+        },
+        {
+          "path": "app/tests/test-painter-layer-ui.c",
+          "line": 475
+        },
+        {
+          "path": "app/tests/test-painter-layer-ui.c",
+          "line": 546
+        },
+        {
+          "path": "app/tests/test-painter-layer-ui.c",
+          "line": 612
+        },
+        {
+          "path": "app/tests/test-painter-layer-ui.c",
+          "line": 865
+        },
+        {
+          "path": "app/tests/test-painter-xcf-fields.inc",
+          "line": 80
+        },
+        {
+          "path": "app/tests/test-painter-xcf-fields.inc",
+          "line": 659
+        },
+        {
+          "path": "app/tests/test-painter-xcf-multipart.inc",
+          "line": 274
+        },
+        {
+          "path": "app/tests/test-painter-xcf-roundtrip.c",
+          "line": 772
+        },
+        {
+          "path": "app/xcf/painter-xcf-load.cpp",
+          "line": 487
+        },
+        {
+          "path": "app/xcf/painter-xcf-preserve.cpp",
+          "line": 1156
+        }
+      ]
+    },
+    {
+      "c_entry": "gimp_clone_layer_set_source",
+      "legacy_site": "app/core/gimpclonelayer.cpp:681",
+      "cpp_operation": "CloneLayerRef::set_source",
+      "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+      "implementation": "PARTIAL: CloneLayerRef::set_source now delegates exactly once to original void C entry; set_source_checked preserves prior checked _full/GError-to-Error behavior under an explicit name. Original method now uses contained void-boundary failure policy. Current generation-safe rejection of stale outer source callbacks is preserved instead of legacy stale overwrite, so complete historical setter semantics are not claimed. Provider/serializer unchanged. See migration/tests/adapter-removal/clone-entry-handles-08018/",
+      "source_tokens": [
+        {
+          "path": "app/core/gimpclonelayer-handle.hpp",
+          "line": 38
+        },
+        {
+          "path": "app/core/gimpclonelayer.cpp",
+          "line": 717
+        },
+        {
+          "path": "app/core/gimpclonelayer.cpp",
+          "line": 819
+        },
+        {
+          "path": "app/core/gimpclonelayer.h",
+          "line": 52
+        },
+        {
+          "path": "app/core/gimpgrouplayer.c",
+          "line": 673
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 696
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 702
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 705
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 709
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 775
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 779
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 782
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 823
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1016
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1026
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1489
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1492
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1510
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1517
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1526
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1551
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1725
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1758
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1777
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1911
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1926
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1929
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1931
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1937
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layout.cpp",
+          "line": 445
+        },
+        {
+          "path": "app/tests/test-gimp-filter-layer.c",
+          "line": 681
+        },
+        {
+          "path": "app/tests/test-gimp-filter-layer.c",
+          "line": 1392
+        },
+        {
+          "path": "app/tests/test-painter-xcf-roundtrip.c",
+          "line": 398
+        }
+      ]
+    },
+    {
+      "c_entry": "gimp_clone_layer_set_source_by_name",
+      "legacy_site": "app/core/gimpclonelayer.cpp:696",
+      "cpp_operation": "CloneLayerRef::set_source_name",
+      "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+      "implementation": "IMPLEMENTED bounded native named-source route: CloneLayerRef::set_source_name delegates exactly once to original void set_source_by_name entry. set_source_name_checked preserves prior throwing _full behavior under an explicit name; original route uses contained void-boundary failures. Pending/live, NULL versus empty name and lazy lookup behavior retained without changing provider/serialization. No historical Interface/layout/subclass ABI claim. See migration/tests/adapter-removal/clone-entry-handles-08018/",
+      "source_tokens": [
+        {
+          "path": "app/core/gimpclonelayer-handle.hpp",
+          "line": 40
+        },
+        {
+          "path": "app/core/gimpclonelayer.cpp",
+          "line": 836
+        },
+        {
+          "path": "app/core/gimpclonelayer.h",
+          "line": 54
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 695
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 704
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 727
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 730
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 869
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 871
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1006
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1025
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1051
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1136
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1194
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1552
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1910
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1919
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1930
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1932
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layer.c",
+          "line": 1938
+        },
+        {
+          "path": "app/tests/test-gimp-clone-layout.cpp",
+          "line": 446
+        },
+        {
+          "path": "app/tests/test-gimp-filter-layer.c",
+          "line": 632
+        },
+        {
+          "path": "app/tests/test-gimp-filter-layer.c",
+          "line": 780
+        },
+        {
+          "path": "app/tests/test-painter-xcf-roundtrip.c",
+          "line": 597
+        }
+      ]
+    },
+    {
+      "c_entry": "gimp_clone_layer_undo_get_type",
+      "legacy_site": "app/core/gimpclonelayerundo.cpp:61",
+      "cpp_operation": "TypeTraits<GimpCloneLayerUndo>::type",
+      "rule": "Lazy TypeTraits delegates to C GType registration; no C++ global class singleton or implementation placement",
+      "implementation": "IMPLEMENTED native callable registration route only: shared lazy TypeTraits<GimpCloneLayerUndo>::type delegates to existing sole C get_type. Current CLONE_LAYER_SOURCE Undo behavior differs from historical GROUP_LAYER_CONVERT; this evidence does not restore old Undo behavior, Interface, class layout or subclass ABI. See migration/tests/adapter-removal/clone-entry-handles-08018/",
+      "source_tokens": [
+        {
+          "path": "app/core/gimpclonelayerundo.h",
+          "line": 6
+        },
+        {
+          "path": "app/core/gimpclonelayerundo.h",
+          "line": 16
+        }
+      ]
+    },
+    {
+      "c_entry": "gimp_display_shell_attach_on_canvas_view",
+      "legacy_site": "app/display/gimpdisplayshell-overlays.cpp:670",
+      "cpp_operation": "DisplayShellRef::attach_on_canvas_view",
+      "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+      "implementation": "TODO",
+      "source_tokens": []
+    },
+    {
+      "c_entry": "gimp_display_shell_detach_on_canvas_view",
+      "legacy_site": "app/display/gimpdisplayshell-overlays.cpp:713",
+      "cpp_operation": "DisplayShellRef::detach_on_canvas_view",
+      "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+      "implementation": "TODO",
+      "source_tokens": []
+    },
+    {
+      "c_entry": "gimp_display_shell_update_on_canvas_opacity",
+      "legacy_site": "app/display/gimpdisplayshell-overlays.cpp:659",
+      "cpp_operation": "DisplayShellRef::update_on_canvas_opacity",
+      "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+      "implementation": "TODO",
+      "source_tokens": []
+    },
+    {
+      "c_entry": "gimp_display_shell_update_on_canvas_views",
+      "legacy_site": "app/display/gimpdisplayshell-overlays.cpp:601",
+      "cpp_operation": "DisplayShellRef::update_on_canvas_views",
+      "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+      "implementation": "TODO",
+      "source_tokens": []
+    },
+    {
+      "c_entry": "gimp_editor_add_action_dropdown",
+      "legacy_site": "app/widgets/gimpeditor-cxx.cpp:182",
+      "cpp_operation": "EditorRef::add_action_dropdown",
+      "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+      "implementation": "app/widgets/gimpeditor-handle.hpp:EditorRef::add_action_dropdown directly calls the sole original C provider in app/widgets/gimpeditor-cxx.cpp; typed native GimpEditor ownership and retained transfer-none primary button; no new model or ordinary UI caller. Action alternatives use checked C++14 name/modifier pairs and a typed sentinel. Acceptance migration/tests/adapter-removal/editor-dropdown-handles-08018/report.json; callable-provider operation scope, not historical GTK layout or visual ABI parity",
+      "source_tokens": [
+        {
+          "path": "app/tests/test-editor-dropdown-preset-control.c",
+          "line": 113
+        },
+        {
+          "path": "app/tests/test-editor-dropdown-preset-control.c",
+          "line": 115
+        },
+        {
+          "path": "app/tests/test-editor-dropdown-preset-control.c",
+          "line": 410
+        },
+        {
+          "path": "app/tests/test-editor-dropdown-preset-control.c",
+          "line": 414
+        },
+        {
+          "path": "app/tests/test-editor-dropdown-preset-control.c",
+          "line": 419
+        },
+        {
+          "path": "app/tests/test-editor-dropdown-preset-control.c",
+          "line": 494
+        },
+        {
+          "path": "app/tests/test-editor-dropdown-preset-control.c",
+          "line": 499
+        },
+        {
+          "path": "app/tests/test-editor-dropdown-preset-control.c",
+          "line": 508
+        },
+        {
+          "path": "app/tests/test-editor-dropdown-preset-control.c",
+          "line": 523
+        },
+        {
+          "path": "app/tests/test-editor-dropdown.cpp",
+          "line": 471
+        },
+        {
+          "path": "app/tests/test-editor-dropdown.cpp",
+          "line": 539
+        },
+        {
+          "path": "app/tests/test-editor-dropdown.cpp",
+          "line": 593
+        },
+        {
+          "path": "app/tests/test-editor-dropdown.cpp",
+          "line": 623
+        },
+        {
+          "path": "app/tests/test-editor-dropdown.cpp",
+          "line": 652
+        },
+        {
+          "path": "app/tests/test-editor-dropdown.cpp",
+          "line": 667
+        },
+        {
+          "path": "app/tests/test-editor-dropdown.cpp",
+          "line": 758
+        },
+        {
+          "path": "app/tests/test-editor-dropdown.cpp",
+          "line": 1162
+        },
+        {
+          "path": "app/tests/test-editor-dropdown.cpp",
+          "line": 1226
+        },
+        {
+          "path": "app/tests/test-editor-dropdown.cpp",
+          "line": 1305
+        },
+        {
+          "path": "app/widgets/gimpeditor-cxx.cpp",
+          "line": 364
+        },
+        {
+          "path": "app/widgets/gimpeditor-cxx.h",
+          "line": 18
+        },
+        {
+          "path": "app/widgets/gimpeditor-handle.hpp",
+          "line": 56
+        }
+      ]
+    },
+    {
+      "c_entry": "gimp_editor_add_dropdown",
+      "legacy_site": "app/widgets/gimpeditor-cxx.cpp:89",
+      "cpp_operation": "EditorRef::add_dropdown",
+      "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+      "implementation": "app/widgets/gimpeditor-handle.hpp:EditorRef::add_dropdown directly calls the sole original C provider in app/widgets/gimpeditor-cxx.cpp; typed native GimpEditor ownership and retained transfer-none primary button; no new model or ordinary UI caller. Action alternatives use checked C++14 name/modifier pairs and a typed sentinel. Acceptance migration/tests/adapter-removal/editor-dropdown-handles-08018/report.json; callable-provider operation scope, not historical GTK layout or visual ABI parity",
+      "source_tokens": [
+        {
+          "path": "app/tests/test-editor-dropdown-preset-control.c",
+          "line": 110
+        },
+        {
+          "path": "app/tests/test-editor-dropdown-preset-control.c",
+          "line": 112
+        },
+        {
+          "path": "app/tests/test-editor-dropdown-preset-control.c",
+          "line": 239
+        },
+        {
+          "path": "app/tests/test-editor-dropdown-preset-control.c",
+          "line": 290
+        },
+        {
+          "path": "app/tests/test-editor-dropdown-preset-control.c",
+          "line": 316
+        },
+        {
+          "path": "app/tests/test-editor-dropdown.cpp",
+          "line": 68
+        },
+        {
+          "path": "app/tests/test-editor-dropdown.cpp",
+          "line": 537
+        },
+        {
+          "path": "app/widgets/gimpeditor-cxx.cpp",
+          "line": 338
+        },
+        {
+          "path": "app/widgets/gimpeditor-cxx.h",
+          "line": 10
+        },
+        {
+          "path": "app/widgets/gimpeditor-handle.hpp",
+          "line": 44
+        }
+      ]
+    },
+    {
+      "c_entry": "gimp_filter_layer_get_procedure",
+      "legacy_site": "app/core/gimpfilterlayer.cpp:1186",
+      "cpp_operation": "FilterLayerRef::get_procedure",
+      "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+      "implementation": "PARTIAL: restored original const gchar* query over the native saved definition name, borrowed until replacement/destruction; FilterLayerRef::get_procedure immediately copies it into owned String. Preserves native closed metadata reads, not old PDB resolved original_name identity or historical borrow lifetime. No shadow name cache or serialization change. Evidence migration/tests/adapter-removal/filter-entry-handles-08018/",
+      "source_tokens": [
+        {
+          "path": "app/core/gimpfilterlayer-handle.hpp",
+          "line": 87
+        },
+        {
+          "path": "app/core/gimpfilterlayer.cpp",
+          "line": 2314
+        },
+        {
+          "path": "app/core/gimpfilterlayer.h",
+          "line": 92
+        },
+        {
+          "path": "app/tests/test-filter-entry-contracts.c",
+          "line": 247
+        },
+        {
+          "path": "app/tests/test-filter-entry-contracts.c",
+          "line": 251
+        },
+        {
+          "path": "app/tests/test-filter-entry-contracts.c",
+          "line": 258
+        },
+        {
+          "path": "app/tests/test-filter-entry-contracts.c",
+          "line": 270
+        },
+        {
+          "path": "app/tests/test-filter-entry-contracts.c",
+          "line": 284
+        },
+        {
+          "path": "app/tests/test-filter-entry-contracts.c",
+          "line": 406
+        },
+        {
+          "path": "app/tests/test-filter-entry-contracts.c",
+          "line": 442
+        },
+        {
+          "path": "app/tests/test-filter-entry-contracts.c",
+          "line": 655
+        },
+        {
+          "path": "app/tests/test-filter-entry-contracts.c",
+          "line": 673
+        },
+        {
+          "path": "app/tests/test-filter-entry-contracts.c",
+          "line": 677
+        },
+        {
+          "path": "app/tests/test-filter-entry-contracts.c",
+          "line": 683
+        },
+        {
+          "path": "app/tests/test-filter-entry-contracts.c",
+          "line": 690
+        },
+        {
+          "path": "app/tests/test-filter-entry-contracts.c",
+          "line": 695
+        },
+        {
+          "path": "app/tests/test-filter-entry-contracts.c",
+          "line": 722
+        },
+        {
+          "path": "app/tests/test-filter-entry-contracts.c",
+          "line": 850
+        },
+        {
+          "path": "app/tests/test-filter-entry-contracts.cpp",
+          "line": 1078
+        },
+        {
+          "path": "app/tests/test-filter-entry-contracts.cpp",
+          "line": 1088
+        },
+        {
+          "path": "app/tests/test-filter-entry-contracts.cpp",
+          "line": 1148
+        },
+        {
+          "path": "app/tests/test-filter-entry-contracts.cpp",
+          "line": 1158
+        }
+      ]
+    },
+    {
+      "c_entry": "gimp_filter_layer_get_procedure_args",
+      "legacy_site": "app/core/gimpfilterlayer.cpp:1192",
+      "cpp_operation": "FilterLayerRef::get_procedure_args",
+      "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation; deep-copy GValues with independently owned array; do not shallow-copy internal string/object pointers",
+      "implementation": "PARTIAL: restored original owned GArray<GValue> query; existing native reference-aware materialization is copied into initialized independently owned values and cleared on release. Named ArrayRef adopts the sole C result. Scalar object values retain identity; boxed CORE_OBJECT_ARRAY owns only its container and borrows elements under the native contract. Not historical default/context-populated runner arguments or a serialization snapshot. Evidence migration/tests/adapter-removal/filter-entry-handles-08018/",
+      "source_tokens": [
+        {
+          "path": "app/core/gimpfilterlayer-handle.hpp",
+          "line": 89
+        },
+        {
+          "path": "app/core/gimpfilterlayer.cpp",
+          "line": 2337
+        },
+        {
+          "path": "app/core/gimpfilterlayer.h",
+          "line": 101
+        },
+        {
+          "path": "app/tests/test-filter-entry-contracts.c",
+          "line": 248
+        },
+        {
+          "path": "app/tests/test-filter-entry-contracts.c",
+          "line": 262
+        },
+        {
+          "path": "app/tests/test-filter-entry-contracts.c",
+          "line": 272
+        },
+        {
+          "path": "app/tests/test-filter-entry-contracts.c",
+          "line": 273
+        },
+        {
+          "path": "app/tests/test-filter-entry-contracts.c",
+          "line": 285
+        },
+        {
+          "path": "app/tests/test-filter-entry-contracts.c",
+          "line": 408
+        },
+        {
+          "path": "app/tests/test-filter-entry-contracts.c",
+          "line": 409
+        },
+        {
+          "path": "app/tests/test-filter-entry-contracts.c",
+          "line": 432
+        },
+        {
+          "path": "app/tests/test-filter-entry-contracts.c",
+          "line": 494
+        },
+        {
+          "path": "app/tests/test-filter-entry-contracts.c",
+          "line": 524
+        },
+        {
+          "path": "app/tests/test-filter-entry-contracts.c",
+          "line": 525
+        },
+        {
+          "path": "app/tests/test-filter-entry-contracts.c",
+          "line": 539
+        },
+        {
+          "path": "app/tests/test-filter-entry-contracts.c",
+          "line": 566
+        },
+        {
+          "path": "app/tests/test-filter-entry-contracts.c",
+          "line": 567
+        },
+        {
+          "path": "app/tests/test-filter-entry-contracts.c",
+          "line": 576
+        },
+        {
+          "path": "app/tests/test-filter-entry-contracts.c",
+          "line": 585
+        },
+        {
+          "path": "app/tests/test-filter-entry-contracts.c",
+          "line": 634
+        },
+        {
+          "path": "app/tests/test-filter-entry-contracts.c",
+          "line": 656
+        },
+        {
+          "path": "app/tests/test-filter-entry-contracts.c",
+          "line": 674
+        },
+        {
+          "path": "app/tests/test-filter-entry-contracts.c",
+          "line": 678
+        },
+        {
+          "path": "app/tests/test-filter-entry-contracts.c",
+          "line": 685
+        },
+        {
+          "path": "app/tests/test-filter-entry-contracts.c",
+          "line": 697
+        },
+        {
+          "path": "app/tests/test-filter-entry-contracts.c",
+          "line": 723
+        },
+        {
+          "path": "app/tests/test-filter-entry-contracts.c",
+          "line": 851
+        },
+        {
+          "path": "app/tests/test-filter-entry-contracts.c",
+          "line": 856
+        },
+        {
+          "path": "app/tests/test-filter-entry-contracts.c",
+          "line": 893
+        },
+        {
+          "path": "app/tests/test-filter-entry-contracts.c",
+          "line": 894
+        },
+        {
+          "path": "app/tests/test-filter-entry-contracts.c",
+          "line": 918
+        },
+        {
+          "path": "app/tests/test-filter-entry-contracts.c",
+          "line": 928
+        },
+        {
+          "path": "app/tests/test-filter-entry-contracts.c",
+          "line": 937
+        },
+        {
+          "path": "app/tests/test-filter-entry-contracts.c",
+          "line": 1020
+        },
+        {
+          "path": "app/tests/test-filter-entry-contracts.c",
+          "line": 1140
+        },
+        {
+          "path": "app/tests/test-filter-entry-contracts.cpp",
+          "line": 1081
+        },
+        {
+          "path": "app/tests/test-filter-entry-contracts.cpp",
+          "line": 1149
+        },
+        {
+          "path": "app/tests/test-filter-entry-contracts.cpp",
+          "line": 1209
+        }
+      ]
+    },
+    {
+      "c_entry": "gimp_filter_layer_get_type",
+      "legacy_site": "app/core/gimpfilterlayer.cpp:1170",
+      "cpp_operation": "TypeTraits<GimpFilterLayer>::type",
+      "rule": "Lazy TypeTraits delegates to C GType registration; no C++ global class singleton or implementation placement",
+      "implementation": "IMPLEMENTED native callable registration route only: existing shared lazy TypeTraits<GimpFilterLayer>::type delegates to the sole original C get_type with no extra registration/store. Historical Interface, parent/class layout and subclass ABI are outside this evidence. Evidence migration/tests/adapter-removal/filter-entry-handles-08018/",
+      "source_tokens": [
+        {
+          "path": "app/core/gimpfilterlayer.h",
+          "line": 7
+        },
+        {
+          "path": "app/core/gimpfilterlayer.h",
+          "line": 33
+        },
+        {
+          "path": "app/tests/test-filter-entry-contracts.c",
+          "line": 198
+        },
+        {
+          "path": "app/tests/test-filter-entry-contracts.cpp",
+          "line": 308
+        }
+      ]
+    },
+    {
+      "c_entry": "gimp_filter_layer_mark_as_loaded",
+      "legacy_site": "app/core/gimpfilterlayer.cpp:1206",
+      "cpp_operation": "FilterLayerRef::mark_as_loaded",
+      "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+      "implementation": "PARTIAL: FilterLayerRef::mark_as_loaded delegates directly once to original C entry. Existing native scheduler advances generation, cancels stale work and certifies current cache; not the historical bool consumed once on first projection. Scheduler implementation and loader definition/pixel/topology ordering remain unchanged. Evidence migration/tests/adapter-removal/filter-entry-handles-08018/",
+      "source_tokens": [
+        {
+          "path": "app/core/gimpfilterlayer-handle.hpp",
+          "line": 104
+        },
+        {
+          "path": "app/core/gimpfilterlayer.cpp",
+          "line": 2383
+        },
+        {
+          "path": "app/core/gimpfilterlayer.h",
+          "line": 213
+        },
+        {
+          "path": "app/tests/test-filter-allocation-failures.cpp",
+          "line": 332
+        },
+        {
+          "path": "app/tests/test-filter-allocation-failures.cpp",
+          "line": 473
+        },
+        {
+          "path": "app/tests/test-filter-blinds-context-lifecycle.inc",
+          "line": 104
+        },
+        {
+          "path": "app/tests/test-filter-blinds-context-lifecycle.inc",
+          "line": 147
+        },
+        {
+          "path": "app/tests/test-filter-blinds-context-lifecycle.inc",
+          "line": 208
+        },
+        {
+          "path": "app/tests/test-filter-blinds-context-lifecycle.inc",
+          "line": 245
+        },
+        {
+          "path": "app/tests/test-filter-blinds-context-lifecycle.inc",
+          "line": 301
+        },
+        {
+          "path": "app/tests/test-filter-blinds.inc",
+          "line": 94
+        },
+        {
+          "path": "app/tests/test-filter-blinds.inc",
+          "line": 162
+        },
+        {
+          "path": "app/tests/test-filter-cancel.inc",
+          "line": 26
+        },
+        {
+          "path": "app/tests/test-filter-convolution.inc",
+          "line": 126
+        },
+        {
+          "path": "app/tests/test-filter-dialog-reads.inc",
+          "line": 89
+        },
+        {
+          "path": "app/tests/test-filter-entry-contracts.c",
+          "line": 785
+        },
+        {
+          "path": "app/tests/test-filter-max-rgb-capture.inc",
+          "line": 281
+        },
+        {
+          "path": "app/tests/test-filter-max-rgb-context.inc",
+          "line": 287
+        },
+        {
+          "path": "app/tests/test-filter-max-rgb-context.inc",
+          "line": 405
+        },
+        {
+          "path": "app/tests/test-filter-max-rgb-context.inc",
+          "line": 602
+        },
+        {
+          "path": "app/tests/test-filter-max-rgb-context.inc",
+          "line": 707
+        },
+        {
+          "path": "app/tests/test-filter-max-rgb-context.inc",
+          "line": 737
+        },
+        {
+          "path": "app/tests/test-filter-max-rgb-context.inc",
+          "line": 807
+        },
+        {
+          "path": "app/tests/test-filter-max-rgb-context.inc",
+          "line": 962
+        },
+        {
+          "path": "app/tests/test-filter-progress-ui.inc",
+          "line": 9
+        },
+        {
+          "path": "app/tests/test-filter-progress-ui.inc",
+          "line": 84
+        },
+        {
+          "path": "app/tests/test-filter-progress.inc",
+          "line": 165
+        },
+        {
+          "path": "app/tests/test-filter-retinex.inc",
+          "line": 181
+        },
+        {
+          "path": "app/tests/test-filter-retinex.inc",
+          "line": 289
+        },
+        {
+          "path": "app/tests/test-filter-schema-editors.inc",
+          "line": 157
+        },
+        {
+          "path": "app/tests/test-filter-schema-editors.inc",
+          "line": 251
+        },
+        {
+          "path": "app/tests/test-filter-schema-editors.inc",
+          "line": 282
+        },
+        {
+          "path": "app/tests/test-filter-schema-editors.inc",
+          "line": 396
+        },
+        {
+          "path": "app/tests/test-filter-schema-editors.inc",
+          "line": 433
+        },
+        {
+          "path": "app/tests/test-filter-schema-editors.inc",
+          "line": 489
+        },
+        {
+          "path": "app/tests/test-filter-schema-editors.inc",
+          "line": 528
+        },
+        {
+          "path": "app/tests/test-filter-schema-editors.inc",
+          "line": 610
+        },
+        {
+          "path": "app/tests/test-filter-schema-editors.inc",
+          "line": 669
+        },
+        {
+          "path": "app/tests/test-filter-schema-persistence.inc",
+          "line": 278
+        },
+        {
+          "path": "app/tests/test-filter-schema-persistence.inc",
+          "line": 310
+        },
+        {
+          "path": "app/tests/test-filter-schema-persistence.inc",
+          "line": 410
+        },
+        {
+          "path": "app/tests/test-filter-schema-persistence.inc",
+          "line": 493
+        },
+        {
+          "path": "app/tests/test-filter-schema-persistence.inc",
+          "line": 657
+        },
+        {
+          "path": "app/tests/test-filter-schema-persistence.inc",
+          "line": 723
+        },
+        {
+          "path": "app/tests/test-filter-sharpen.inc",
+          "line": 196
+        },
+        {
+          "path": "app/tests/test-filter-sharpen.inc",
+          "line": 259
+        },
+        {
+          "path": "app/tests/test-filter-sharpen.inc",
+          "line": 425
+        },
+        {
+          "path": "app/tests/test-filter-sharpen.inc",
+          "line": 657
+        },
+        {
+          "path": "app/tests/test-filter-sharpen.inc",
+          "line": 688
+        },
+        {
+          "path": "app/tests/test-filter-sharpen.inc",
+          "line": 757
+        },
+        {
+          "path": "app/tests/test-filter-small-tiles.inc",
+          "line": 185
+        },
+        {
+          "path": "app/tests/test-filter-small-tiles.inc",
+          "line": 230
+        },
+        {
+          "path": "app/tests/test-filter-sobel-context.inc",
+          "line": 319
+        },
+        {
+          "path": "app/tests/test-filter-sobel-context.inc",
+          "line": 386
+        },
+        {
+          "path": "app/tests/test-filter-sobel-context.inc",
+          "line": 554
+        },
+        {
+          "path": "app/tests/test-filter-sobel-context.inc",
+          "line": 625
+        },
+        {
+          "path": "app/tests/test-filter-sobel-context.inc",
+          "line": 715
+        },
+        {
+          "path": "app/tests/test-filter-sobel-context.inc",
+          "line": 748
+        },
+        {
+          "path": "app/tests/test-filter-sobel-context.inc",
+          "line": 809
+        },
+        {
+          "path": "app/tests/test-filter-sobel-context.inc",
+          "line": 867
+        },
+        {
+          "path": "app/tests/test-filter-sobel-context.inc",
+          "line": 897
+        },
+        {
+          "path": "app/tests/test-filter-sobel-context.inc",
+          "line": 1156
+        },
+        {
+          "path": "app/tests/test-filter-threshold-context.inc",
+          "line": 277
+        },
+        {
+          "path": "app/tests/test-filter-threshold-context.inc",
+          "line": 446
+        },
+        {
+          "path": "app/tests/test-filter-threshold-context.inc",
+          "line": 768
+        },
+        {
+          "path": "app/tests/test-filter-threshold-context.inc",
+          "line": 888
+        },
+        {
+          "path": "app/tests/test-filter-threshold-context.inc",
+          "line": 919
+        },
+        {
+          "path": "app/tests/test-filter-threshold-context.inc",
+          "line": 988
+        },
+        {
+          "path": "app/tests/test-filter-threshold-context.inc",
+          "line": 1181
+        },
+        {
+          "path": "app/tests/test-filter-value-invert-capture.inc",
+          "line": 271
+        },
+        {
+          "path": "app/tests/test-filter-value-invert-context.inc",
+          "line": 289
+        },
+        {
+          "path": "app/tests/test-filter-value-invert-context.inc",
+          "line": 407
+        },
+        {
+          "path": "app/tests/test-filter-value-invert-context.inc",
+          "line": 604
+        },
+        {
+          "path": "app/tests/test-filter-value-invert-context.inc",
+          "line": 709
+        },
+        {
+          "path": "app/tests/test-filter-value-invert-context.inc",
+          "line": 739
+        },
+        {
+          "path": "app/tests/test-filter-value-invert-context.inc",
+          "line": 809
+        },
+        {
+          "path": "app/tests/test-filter-value-invert-context.inc",
+          "line": 966
+        },
+        {
+          "path": "app/tests/test-gimp-filter-layer.c",
+          "line": 318
+        },
+        {
+          "path": "app/tests/test-gimp-filter-layer.c",
+          "line": 388
+        },
+        {
+          "path": "app/tests/test-gimp-filter-layer.c",
+          "line": 809
+        },
+        {
+          "path": "app/tests/test-gimp-filter-layer.c",
+          "line": 1055
+        },
+        {
+          "path": "app/tests/test-gimp-filter-layer.c",
+          "line": 1108
+        },
+        {
+          "path": "app/tests/test-gimp-filter-layer.c",
+          "line": 1575
+        },
+        {
+          "path": "app/tests/test-gimp-filter-layer.c",
+          "line": 1844
+        },
+        {
+          "path": "app/tests/test-gimp-filter-layer.c",
+          "line": 2107
+        },
+        {
+          "path": "app/tests/test-gimp-filter-layer.c",
+          "line": 2142
+        },
+        {
+          "path": "app/tests/test-gimp-filter-layer.c",
+          "line": 2482
+        },
+        {
+          "path": "app/tests/test-painter-xcf-multipart.inc",
+          "line": 87
+        },
+        {
+          "path": "app/tests/test-painter-xcf-multipart.inc",
+          "line": 298
+        },
+        {
+          "path": "app/tests/test-painter-xcf-multipart.inc",
+          "line": 355
+        },
+        {
+          "path": "app/tests/test-painter-xcf-roundtrip.c",
+          "line": 334
+        },
+        {
+          "path": "app/tests/test-painter-xcf-roundtrip.c",
+          "line": 627
+        },
+        {
+          "path": "app/tests/test-painter-xcf-roundtrip.c",
+          "line": 681
+        },
+        {
+          "path": "app/tests/test-painter-xcf-roundtrip.c",
+          "line": 720
+        },
+        {
+          "path": "app/tests/test-painter-xcf-roundtrip.c",
+          "line": 782
+        },
+        {
+          "path": "app/tests/test-painter-xcf-value-invert.inc",
+          "line": 616
+        },
+        {
+          "path": "app/xcf/painter-xcf-load.cpp",
+          "line": 553
+        }
+      ]
+    },
+    {
+      "c_entry": "gimp_filter_layer_new",
+      "legacy_site": "app/core/gimpfilterlayer.cpp:1175",
+      "cpp_operation": "FilterLayerRef::create",
+      "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+      "implementation": "PARTIAL: existing FilterLayerRef::create delegates to original C factory and sinks floating native ownership. GimpLayerMode replaces legacy GimpLayerModeEffects; nonpositive-dimension fallback, native construction validation/notifications and historical layout are not source/ABI equivalence claims. Native property, independent lifetime and release-order evidence only. Evidence migration/tests/adapter-removal/filter-entry-handles-08018/",
+      "source_tokens": [
+        {
+          "path": "app/core/gimpfilterlayer-handle.hpp",
+          "line": 33
+        },
+        {
+          "path": "app/core/gimpfilterlayer.cpp",
+          "line": 2026
+        },
+        {
+          "path": "app/core/gimpfilterlayer.h",
+          "line": 34
+        },
+        {
+          "path": "app/dialogs/painter-layer-dialog.cpp",
+          "line": 1718
+        },
+        {
+          "path": "app/httpd/httpd-images.cpp",
+          "line": 316
+        },
+        {
+          "path": "app/tests/test-filter-allocation-failures.cpp",
+          "line": 305
+        },
+        {
+          "path": "app/tests/test-filter-argument-patch.cpp",
+          "line": 162
+        },
+        {
+          "path": "app/tests/test-filter-blinds-context-lifecycle.inc",
+          "line": 197
+        },
+        {
+          "path": "app/tests/test-filter-blinds-context.inc",
+          "line": 173
+        },
+        {
+          "path": "app/tests/test-filter-blinds.inc",
+          "line": 47
+        },
+        {
+          "path": "app/tests/test-filter-dialog-reads.inc",
+          "line": 73
+        },
+        {
+          "path": "app/tests/test-filter-entry-contracts.c",
+          "line": 56
+        },
+        {
+          "path": "app/tests/test-filter-entry-contracts.c",
+          "line": 204
+        },
+        {
+          "path": "app/tests/test-filter-entry-contracts.c",
+          "line": 224
+        },
+        {
+          "path": "app/tests/test-filter-entry-contracts.cpp",
+          "line": 311
+        },
+        {
+          "path": "app/tests/test-filter-entry-contracts.cpp",
+          "line": 1046
+        },
+        {
+          "path": "app/tests/test-filter-entry-contracts.cpp",
+          "line": 1108
+        },
+        {
+          "path": "app/tests/test-filter-entry-contracts.cpp",
+          "line": 1172
+        },
+        {
+          "path": "app/tests/test-filter-quit-fixture.cpp",
+          "line": 65
+        },
+        {
+          "path": "app/tests/test-filter-quit-fixture.cpp",
+          "line": 119
+        },
+        {
+          "path": "app/tests/test-filter-quit-fixture.cpp",
+          "line": 175
+        },
+        {
+          "path": "app/tests/test-filter-schema-editors.inc",
+          "line": 370
+        },
+        {
+          "path": "app/tests/test-filter-small-tiles.inc",
+          "line": 45
+        },
+        {
+          "path": "app/tests/test-filter-small-tiles.inc",
+          "line": 136
+        },
+        {
+          "path": "app/tests/test-gimp-filter-layer.c",
+          "line": 103
+        },
+        {
+          "path": "app/tests/test-gimp-filter-layer.c",
+          "line": 193
+        },
+        {
+          "path": "app/tests/test-gimp-filter-layer.c",
+          "line": 270
+        },
+        {
+          "path": "app/tests/test-gimp-layer-presets.c",
+          "line": 48
+        },
+        {
+          "path": "app/tests/test-isolated-filter-editors.inc",
+          "line": 140
+        },
+        {
+          "path": "app/tests/test-painter-http.cpp",
+          "line": 100
+        },
+        {
+          "path": "app/tests/test-painter-layer-tree.c",
+          "line": 288
+        },
+        {
+          "path": "app/tests/test-painter-layer-ui.c",
+          "line": 235
+        },
+        {
+          "path": "app/tests/test-painter-layer-ui.c",
+          "line": 266
+        },
+        {
+          "path": "app/tests/test-painter-layer-ui.c",
+          "line": 288
+        },
+        {
+          "path": "app/tests/test-painter-layer-ui.c",
+          "line": 391
+        },
+        {
+          "path": "app/tests/test-painter-layer-ui.c",
+          "line": 401
+        },
+        {
+          "path": "app/tests/test-painter-layer-ui.c",
+          "line": 492
+        },
+        {
+          "path": "app/tests/test-painter-layer-ui.c",
+          "line": 545
+        },
+        {
+          "path": "app/tests/test-painter-layer-ui.c",
+          "line": 613
+        },
+        {
+          "path": "app/tests/test-painter-layer-ui.c",
+          "line": 789
+        },
+        {
+          "path": "app/tests/test-painter-xcf-active.inc",
+          "line": 26
+        },
+        {
+          "path": "app/tests/test-painter-xcf-fields.inc",
+          "line": 81
+        },
+        {
+          "path": "app/tests/test-painter-xcf-max-rgb.inc",
+          "line": 431
+        },
+        {
+          "path": "app/tests/test-painter-xcf-multipart.inc",
+          "line": 82
+        },
+        {
+          "path": "app/tests/test-painter-xcf-multipart.inc",
+          "line": 171
+        },
+        {
+          "path": "app/tests/test-painter-xcf-multipart.inc",
+          "line": 275
+        },
+        {
+          "path": "app/tests/test-painter-xcf-roundtrip.c",
+          "line": 289
+        },
+        {
+          "path": "app/tests/test-painter-xcf-roundtrip.c",
+          "line": 619
+        },
+        {
+          "path": "app/tests/test-painter-xcf-roundtrip.c",
+          "line": 710
+        },
+        {
+          "path": "app/tests/test-painter-xcf-roundtrip.c",
+          "line": 773
+        },
+        {
+          "path": "app/tests/test-painter-xcf-sobel.inc",
+          "line": 522
+        },
+        {
+          "path": "app/tests/test-painter-xcf-threshold.inc",
+          "line": 290
+        },
+        {
+          "path": "app/tests/test-painter-xcf-value-invert.inc",
+          "line": 589
+        },
+        {
+          "path": "app/xcf/painter-xcf-load.cpp",
+          "line": 485
+        },
+        {
+          "path": "app/xcf/painter-xcf-preserve.cpp",
+          "line": 1157
+        }
+      ]
+    },
+    {
+      "c_entry": "gimp_filter_layer_set_procedure",
+      "legacy_site": "app/core/gimpfilterlayer.cpp:1198",
+      "cpp_operation": "FilterLayerRef::set_procedure",
+      "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+      "implementation": "PARTIAL: checked Blinds-only replacement gimp_filter_layer_set_legacy_procedure and named FilterLayerRef methods reuse the existing FilterSlot/model/publication path. Seven native integer roles initialize to typed zero; caller values are independently staged and provider/reentry checked. Bounded Blinds replacement accepted on 53884c05: ordinary Meson normal 437 TAP plus two metadata controls/full procedure, fresh ASan/UBSan 388 TAP; exact receipt migration/tests/filter-legacy-procedure-entry/receipt.json. Historical void spelling, derived GType identity, unchecked conversions, unknown-name clearing and other procedures remain unimplemented. Contract migration/contracts/filter-legacy-procedure-entry.md; parent 08.018 stays open.",
+      "source_tokens": []
+    },
+    {
+      "c_entry": "gimp_image_generator_options_get_type",
+      "legacy_site": "app/tools/gimpimagegeneratortool.cpp:137",
+      "cpp_operation": "TypeTraits<GimpImageGeneratorOptions>::type",
+      "rule": "Lazy TypeTraits delegates to C GType registration; no C++ global class singleton or implementation placement; removal only after31.011 dependency proof, never assumed here",
+      "implementation": "TODO",
+      "source_tokens": []
+    },
+    {
+      "c_entry": "gimp_image_generator_tool_get_type",
+      "legacy_site": "app/tools/gimpimagegeneratortool.cpp:472",
+      "cpp_operation": "TypeTraits<GimpImageGeneratorTool>::type",
+      "rule": "Lazy TypeTraits delegates to C GType registration; no C++ global class singleton or implementation placement; removal only after31.011 dependency proof, never assumed here",
+      "implementation": "TODO",
+      "source_tokens": []
+    },
+    {
+      "c_entry": "gimp_image_generator_tool_register",
+      "legacy_site": "app/tools/gimpimagegeneratortool.cpp:437",
+      "cpp_operation": "ImageGeneratorToolRef::register_type",
+      "rule": "Explicit registration method delegates to this C entry; owner context is passed by adapter and lifecycle state belongs to one Application/ActionGroup store; removal only after31.011 dependency proof, never assumed here",
+      "implementation": "TODO",
+      "source_tokens": []
+    },
+    {
+      "c_entry": "gimp_json_resource_get_type",
+      "legacy_site": "app/presets/gimpjsonresource.cpp:215",
+      "cpp_operation": "TypeTraits<GimpJsonResource>::type",
+      "rule": "Lazy TypeTraits delegates to C GType registration; no C++ global class singleton or implementation placement",
+      "implementation": "TODO",
+      "source_tokens": []
+    },
+    {
+      "c_entry": "gimp_json_resource_new",
+      "legacy_site": "app/presets/gimpjsonresource.cpp:219",
+      "cpp_operation": "JsonResourceRef::create",
+      "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+      "implementation": "TODO",
+      "source_tokens": []
+    },
+    {
+      "c_entry": "gimp_layer_tile_view_get_type",
+      "legacy_site": "app/widgets/gimplayertileview.cpp:1594",
+      "cpp_operation": "TypeTraits<GimpLayerTileView>::type",
+      "rule": "Lazy TypeTraits delegates to C GType registration; no C++ global class singleton or implementation placement",
+      "implementation": "IMPLEMENTED native registration route: shared lazy TypeTraits<GimpLayerTileView>::type delegates to original C get_type, which returns the existing GimpPainterLayerTiles GType. No second type/store or legacy Interface. Operation-level source alias only; native GimpImageEditor parent/runtime name/class layout replace historical GtkBox ABI. Evidence: migration/tests/adapter-removal/layer-tile-entry-handles-08018/.",
+      "source_tokens": [
+        {
+          "path": "app/tests/test-layer-tile-entry-contracts.c",
+          "line": 309
+        },
+        {
+          "path": "app/tests/test-layer-tile-entry-contracts.cpp",
+          "line": 282
+        },
+        {
+          "path": "app/widgets/gimplayertileview-handle.hpp",
+          "line": 8
+        },
+        {
+          "path": "app/widgets/gimplayertileview.h",
+          "line": 13
+        },
+        {
+          "path": "app/widgets/gimplayertileview.h",
+          "line": 19
+        },
+        {
+          "path": "app/widgets/gimppainterlayertiles.cpp",
+          "line": 1123
+        }
+      ]
+    },
+    {
+      "c_entry": "gimp_layer_tile_view_new",
+      "legacy_site": "app/widgets/gimplayertileview.cpp:1595",
+      "cpp_operation": "LayerTileViewRef::create",
+      "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+      "implementation": "IMPLEMENTED bounded original construction/property route: original zero-argument C factory returns an unbound floating native widget; LayerTileViewRef::create sinks it and active Canvas::create uses that route. Original context/image READWRITE|CONSTRUCT properties retain exact supplied inputs and return owned getter refs, with independent image and private per-canvas action context. One shared helper also serves the existing native factory. Reentry/terminal destroy and image-before-context preview deferral verified; direct external GimpDocked context replacement is outside this source route. Native GTK3 presentation/parent/layout migration remains explicit, not old Interface/binary ABI or complete WBS29 parity. Evidence: migration/tests/adapter-removal/layer-tile-entry-handles-08018/.",
+      "source_tokens": [
+        {
+          "path": "app/tests/test-layer-tile-entry-contracts.c",
+          "line": 95
+        },
+        {
+          "path": "app/tests/test-layer-tile-entry-contracts.c",
+          "line": 310
+        },
+        {
+          "path": "app/tests/test-layer-tile-entry-contracts.cpp",
+          "line": 45
+        },
+        {
+          "path": "app/tests/test-layer-tile-entry-contracts.cpp",
+          "line": 182
+        },
+        {
+          "path": "app/tests/test-layer-tile-entry-contracts.cpp",
+          "line": 315
+        },
+        {
+          "path": "app/widgets/gimplayertileview-handle.hpp",
+          "line": 15
+        },
+        {
+          "path": "app/widgets/gimplayertileview.h",
+          "line": 27
+        },
+        {
+          "path": "app/widgets/gimppainterlayertiles.cpp",
+          "line": 1126
+        }
+      ]
+    },
+    {
+      "c_entry": "gimp_mypaint_brush_begin_use",
+      "legacy_site": "app/core/gimpmypaintbrush.cpp:383",
+      "cpp_operation": "MypaintBrushRef::begin_use",
+      "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+      "implementation": "TODO",
+      "source_tokens": []
+    },
+    {
+      "c_entry": "gimp_mypaint_brush_button_with_popup",
+      "legacy_site": "app/tools/gimpmypaintbrushoptions-gui.cpp:325",
+      "cpp_operation": "ContextRef::create_mypaint_brush_button",
+      "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+      "implementation": "PARTIAL: original C factory signature/name and ContextRef delegation restore the ordinary selected-resource thumbnail Preset/Custom selector over one native controller and canonical options model; owned immutable history-preview query, integrated tool-options/compact route. Native Custom restores source-plus-value/name/dirty snapshots rather than historical selected history-brush object identity; no borrowed row50 draft or historical layout ABI claim. Evidence: migration/tests/adapter-removal/mypaint-selector-entry-08018/",
+      "source_tokens": [
+        {
+          "path": "app/core/gimpcontext-handle.hpp",
+          "line": 28
+        },
+        {
+          "path": "app/tests/test-mypaint-selector-contracts.c",
+          "line": 24
+        },
+        {
+          "path": "app/tests/test-mypaint-selector-contracts.cpp",
+          "line": 62
+        },
+        {
+          "path": "app/tests/test-mypaint-selector-contracts.cpp",
+          "line": 304
+        },
+        {
+          "path": "app/tests/test-mypaint-selector-contracts.cpp",
+          "line": 634
+        },
+        {
+          "path": "app/widgets/gimpmypaintbrushoptions-gui.cpp",
+          "line": 495
+        },
+        {
+          "path": "app/widgets/gimpmypaintbrushoptions-gui.h",
+          "line": 14
+        }
+      ]
+    },
+    {
+      "c_entry": "gimp_mypaint_brush_duplicate",
+      "legacy_site": "app/core/gimpmypaintbrush.cpp:350",
+      "cpp_operation": "MypaintBrushRef::duplicate",
+      "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+      "implementation": "app/core/gimppaintermybrush.cpp:gimp_mypaint_brush_duplicate; app/core/gimpmypaintbrush.h source-only alias; app/core/gimppaintermybrush-handle.hpp:MypaintBrushRef::duplicate; acceptance migration/tests/adapter-removal/mypaint-named-duplicate-08018/report.json; no legacy layout/GType ABI claim",
+      "source_tokens": [
+        {
+          "path": "app/core/gimpmypaintbrush.h",
+          "line": 27
+        },
+        {
+          "path": "app/core/gimppaintermybrush-handle.hpp",
+          "line": 25
+        },
+        {
+          "path": "app/core/gimppaintermybrush.cpp",
+          "line": 184
+        },
+        {
+          "path": "app/tests/test-gimp-painter-mybrush.c",
+          "line": 535
+        },
+        {
+          "path": "app/tests/test-gimp-painter-mybrush.c",
+          "line": 538
+        },
+        {
+          "path": "app/tests/test-painter-mybrush-duplicate-handle.cpp",
+          "line": 23
+        }
+      ]
+    },
+    {
+      "c_entry": "gimp_mypaint_brush_editor_get_type",
+      "legacy_site": "app/widgets/gimpmypaintbrusheditor.cpp:84",
+      "cpp_operation": "TypeTraits<GimpMypaintBrushEditor>::type",
+      "rule": "Lazy TypeTraits delegates to C GType registration; no C++ global class singleton or implementation placement",
+      "implementation": "TODO",
+      "source_tokens": []
+    },
+    {
+      "c_entry": "gimp_mypaint_brush_editor_new",
+      "legacy_site": "app/widgets/gimpmypaintbrusheditor.cpp:284",
+      "cpp_operation": "MypaintBrushEditorRef::create",
+      "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+      "implementation": "TODO",
+      "source_tokens": []
+    },
+    {
+      "c_entry": "gimp_mypaint_brush_end_use",
+      "legacy_site": "app/core/gimpmypaintbrush.cpp:394",
+      "cpp_operation": "MypaintBrushRef::end_use",
+      "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+      "implementation": "TODO",
+      "source_tokens": []
+    },
+    {
+      "c_entry": "gimp_mypaint_brush_get_standard",
+      "legacy_site": "app/core/gimpmypaintbrush.cpp:364",
+      "cpp_operation": "MypaintBrushRef::get_standard",
+      "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation; borrowed standard resource is retained, never adopted as a newly-owned return",
+      "implementation": "TODO",
+      "source_tokens": []
+    },
+    {
+      "c_entry": "gimp_mypaint_brush_get_type",
+      "legacy_site": "app/core/gimpmypaintbrush.cpp:100",
+      "cpp_operation": "TypeTraits<GimpMypaintBrush>::type",
+      "rule": "Lazy TypeTraits delegates to C GType registration; no C++ global class singleton or implementation placement",
+      "implementation": "IMPLEMENTED bounded original C type entry: delegates to sole native gimp_painter_mybrush_get_type with no second type/store. Shared native TypeTraits and original C entry resolve identical native GType. Mixed C11/C++14 factory tests and linked symbols verified, 28/28 native cases. Historical runtime name, class layout and subclass ABI remain outside scope. Evidence: migration/tests/adapter-removal/mypaint-factory-entry-08018/",
+      "source_tokens": [
+        {
+          "path": "app/core/gimpmypaintbrush.h",
+          "line": 12
+        },
+        {
+          "path": "app/core/gimpmypaintbrush.h",
+          "line": 17
+        },
+        {
+          "path": "app/core/gimppaintermybrush.cpp",
+          "line": 171
+        },
+        {
+          "path": "app/tests/test-gimp-painter-mybrush.c",
+          "line": 914
+        },
+        {
+          "path": "app/tests/test-painter-mybrush-duplicate-handle.cpp",
+          "line": 98
+        }
+      ]
+    },
+    {
+      "c_entry": "gimp_mypaint_brush_load",
+      "legacy_site": "app/core/gimpmypaintbrush-load.cpp:111",
+      "cpp_operation": "MypaintBrushRef::load",
+      "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+      "implementation": "TODO",
+      "source_tokens": []
+    },
+    {
+      "c_entry": "gimp_mypaint_brush_new",
+      "legacy_site": "app/core/gimpmypaintbrush.cpp:334",
+      "cpp_operation": "MypaintBrushRef::create",
+      "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+      "implementation": "IMPLEMENTED bounded original C signature and named construction route: delegates to sole native factory/BrushSlot; MypaintBrushRef::create calls the original C entry. Context remains unused; NULL/empty GLib preconditions, copied name/MIME, transfer-full nonfloating ownership, independent resource state/finalization and C linkage verified. 28/28 native cases, including three new factory cases. Native settings/layout/GType migration stays explicit. Evidence: migration/tests/adapter-removal/mypaint-factory-entry-08018/",
+      "source_tokens": [
+        {
+          "path": "app/core/gimpmypaintbrush.h",
+          "line": 22
+        },
+        {
+          "path": "app/core/gimppaintermybrush-handle.hpp",
+          "line": 21
+        },
+        {
+          "path": "app/core/gimppaintermybrush.cpp",
+          "line": 175
+        },
+        {
+          "path": "app/tests/test-gimp-painter-mybrush.c",
+          "line": 913
+        },
+        {
+          "path": "app/tests/test-gimp-painter-mybrush.c",
+          "line": 956
+        },
+        {
+          "path": "app/tests/test-gimp-painter-mybrush.c",
+          "line": 959
+        },
+        {
+          "path": "app/tests/test-painter-mybrush-duplicate-handle.cpp",
+          "line": 91
+        }
+      ]
+    },
+    {
+      "c_entry": "gimp_mypaint_brush_save",
+      "legacy_site": "app/core/gimpmypaintbrush-save.cpp:101",
+      "cpp_operation": "MypaintBrushRef::save",
+      "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+      "implementation": "TODO",
+      "source_tokens": []
+    },
+    {
+      "c_entry": "gimp_mypaint_brush_select_mypaint_brush",
+      "legacy_site": "app/core/gimpmypaintbrush.cpp:406",
+      "cpp_operation": "MypaintBrushRef::select_mypaint_brush",
+      "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+      "implementation": "TODO",
+      "source_tokens": []
+    },
+    {
+      "c_entry": "gimp_mypaint_brush_want_null_motion",
+      "legacy_site": "app/core/gimpmypaintbrush.cpp:420",
+      "cpp_operation": "MypaintBrushRef::want_null_motion",
+      "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+      "implementation": "TODO",
+      "source_tokens": []
+    },
+    {
+      "c_entry": "gimp_mypaint_core_undo_get_type",
+      "legacy_site": "app/paint/gimpmypaintcoreundo.cpp:56",
+      "cpp_operation": "TypeTraits<GimpMypaintCoreUndo>::type",
+      "rule": "Lazy TypeTraits delegates to C GType registration; no C++ global class singleton or implementation placement",
+      "implementation": "TODO",
+      "source_tokens": []
+    },
+    {
+      "c_entry": "gimp_mypaint_options_copy_brush_props",
+      "legacy_site": "app/paint/gimpmypaintoptions.cpp:358",
+      "cpp_operation": "MypaintOptionsRef::copy_brush_props",
+      "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+      "implementation": "TODO",
+      "source_tokens": []
+    },
+    {
+      "c_entry": "gimp_mypaint_options_get_brush_mode",
+      "legacy_site": "app/paint/gimpmypaintoptions.cpp:347",
+      "cpp_operation": "MypaintOptionsRef::get_brush_mode",
+      "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+      "implementation": "TODO",
+      "source_tokens": []
+    },
+    {
+      "c_entry": "gimp_mypaint_options_get_current_brush",
+      "legacy_site": "app/paint/gimpmypaintoptions.cpp:533",
+      "cpp_operation": "MypaintOptionsRef::get_current_brush",
+      "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+      "implementation": "TODO",
+      "source_tokens": []
+    },
+    {
+      "c_entry": "gimp_mypaint_options_get_mapping_point",
+      "legacy_site": "app/paint/gimpmypaintoptions.cpp:571",
+      "cpp_operation": "MypaintOptionsRef::get_mapping_point",
+      "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+      "implementation": "app/paint/painter-mypaint-surface/gimp-painter-options.cpp original owned mapping-point C query; app/paint/gimpmypaintoptions.h operation-level source alias; app/paint/painter-mypaint-surface/gimp-painter-options.hpp MypaintOptionsRef::get_mapping_point delegates to this entry and the existing OptionsSlot draft. Original signature, name normalization, float rounding and g_free ownership; no legacy layout/runtime GType or borrowed-live-brush claim. See migration/tests/adapter-removal/mypaint-mapping-getter-08018/report.json",
+      "source_tokens": [
+        {
+          "path": "app/paint/gimpmypaintoptions.h",
+          "line": 36
+        },
+        {
+          "path": "app/paint/painter-mypaint-surface/gimp-painter-options.cpp",
+          "line": 564
+        },
+        {
+          "path": "app/paint/painter-mypaint-surface/gimp-painter-options.hpp",
+          "line": 28
+        },
+        {
+          "path": "app/tests/test-gimp-painter-options.cpp",
+          "line": 615
+        },
+        {
+          "path": "app/tests/test-gimp-painter-options.cpp",
+          "line": 707
+        },
+        {
+          "path": "app/tests/test-painter-options-session-c.c",
+          "line": 217
+        },
+        {
+          "path": "app/tests/test-painter-options-session-c.c",
+          "line": 293
+        },
+        {
+          "path": "app/tests/test-painter-options-session-c.c",
+          "line": 310
+        },
+        {
+          "path": "app/tests/test-painter-options-session-c.c",
+          "line": 385
+        },
+        {
+          "path": "app/tests/test-painter-options-session-c.c",
+          "line": 387
+        },
+        {
+          "path": "app/tests/test-painter-options-session-c.c",
+          "line": 389
+        },
+        {
+          "path": "app/tests/test-painter-options-session-c.c",
+          "line": 423
+        },
+        {
+          "path": "app/tests/test-painter-options-session-c.c",
+          "line": 665
+        },
+        {
+          "path": "app/tests/test-painter-options-session-c.c",
+          "line": 1166
+        }
+      ]
+    },
+    {
+      "c_entry": "gimp_mypaint_options_get_type",
+      "legacy_site": "app/paint/gimpmypaintoptions.cpp:95",
+      "cpp_operation": "TypeTraits<GimpMypaintOptions>::type",
+      "rule": "Lazy TypeTraits delegates to C GType registration; no C++ global class singleton or implementation placement",
+      "implementation": "TODO",
+      "source_tokens": []
+    },
+    {
+      "c_entry": "gimp_mypaint_options_gui",
+      "legacy_site": "app/tools/gimpmypaintoptions-gui.cpp:543",
+      "cpp_operation": "MypaintOptionsRef::gui",
+      "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+      "implementation": "TODO",
+      "source_tokens": []
+    },
+    {
+      "c_entry": "gimp_mypaint_options_gui_horizontal",
+      "legacy_site": "app/tools/gimpmypaintoptions-gui.cpp:573",
+      "cpp_operation": "MypaintOptionsRef::gui_horizontal",
+      "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+      "implementation": "TODO",
+      "source_tokens": []
+    },
+    {
+      "c_entry": "gimp_mypaint_options_is_ready",
+      "legacy_site": "app/paint/gimpmypaintoptions.cpp:606",
+      "cpp_operation": "MypaintOptionsRef::is_ready",
+      "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+      "implementation": "TODO",
+      "source_tokens": []
+    },
+    {
+      "c_entry": "gimp_mypaint_options_new",
+      "legacy_site": "app/paint/gimpmypaintoptions.cpp:334",
+      "cpp_operation": "MypaintOptionsRef::create",
+      "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+      "implementation": "TODO",
+      "source_tokens": []
+    },
+    {
+      "c_entry": "gimp_mypaint_options_set_mapping_point",
+      "legacy_site": "app/paint/gimpmypaintoptions.cpp:539",
+      "cpp_operation": "MypaintOptionsRef::set_mapping_point",
+      "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+      "implementation": "PARTIAL: app/paint/painter-mypaint-surface/gimp-painter-options.cpp original named mapping replacement; app/paint/gimpmypaintoptions.h source alias; MypaintOptionsRef::set_mapping_point delegates once to the C entry and native active draft set_curve. Original signature, exact name normalization, float-rounded points and explicit empty reset; native broader property notifications/settings-changed retained instead of exact legacy single-property fanout. No legacy layout/runtime GType, binary ABI or borrowed-live-brush claim. See migration/tests/adapter-removal/mypaint-mapping-setter-08018/report.json",
+      "source_tokens": [
+        {
+          "path": "app/paint/gimpmypaintoptions.h",
+          "line": 22
+        },
+        {
+          "path": "app/paint/painter-mypaint-surface/gimp-painter-options.cpp",
+          "line": 541
+        },
+        {
+          "path": "app/paint/painter-mypaint-surface/gimp-painter-options.hpp",
+          "line": 22
+        },
+        {
+          "path": "app/tests/test-gimp-painter-options.cpp",
+          "line": 742
+        },
+        {
+          "path": "app/tests/test-gimp-painter-options.cpp",
+          "line": 774
+        },
+        {
+          "path": "app/tests/test-gimp-painter-options.cpp",
+          "line": 866
+        },
+        {
+          "path": "app/tests/test-gimp-painter-options.cpp",
+          "line": 955
+        },
+        {
+          "path": "app/tests/test-gimp-painter-options.cpp",
+          "line": 956
+        },
+        {
+          "path": "app/tests/test-gimp-painter-options.cpp",
+          "line": 1020
+        },
+        {
+          "path": "app/tests/test-painter-mypaint-editor.cpp",
+          "line": 1212
+        },
+        {
+          "path": "app/tests/test-painter-mypaint-editor.cpp",
+          "line": 1218
+        },
+        {
+          "path": "app/tests/test-painter-mypaint-editor.cpp",
+          "line": 1307
+        },
+        {
+          "path": "app/tests/test-painter-mypaint-editor.cpp",
+          "line": 1313
+        },
+        {
+          "path": "app/tests/test-painter-options-session-c.c",
+          "line": 555
+        },
+        {
+          "path": "app/tests/test-painter-options-session-c.c",
+          "line": 557
+        },
+        {
+          "path": "app/tests/test-painter-options-session-c.c",
+          "line": 649
+        },
+        {
+          "path": "app/tests/test-painter-options-session-c.c",
+          "line": 682
+        },
+        {
+          "path": "app/tests/test-painter-options-session-c.c",
+          "line": 748
+        },
+        {
+          "path": "app/tests/test-painter-options-session-c.c",
+          "line": 755
+        },
+        {
+          "path": "app/tests/test-painter-options-session-c.c",
+          "line": 760
+        },
+        {
+          "path": "app/tests/test-painter-options-session-c.c",
+          "line": 767
+        },
+        {
+          "path": "app/tests/test-painter-options-session-c.c",
+          "line": 779
+        },
+        {
+          "path": "app/tests/test-painter-options-session-c.c",
+          "line": 800
+        },
+        {
+          "path": "app/tests/test-painter-options-session-c.c",
+          "line": 825
+        },
+        {
+          "path": "app/tests/test-painter-options-session-c.c",
+          "line": 840
+        },
+        {
+          "path": "app/tests/test-painter-options-session-c.c",
+          "line": 849
+        },
+        {
+          "path": "app/tests/test-painter-options-session-c.c",
+          "line": 854
+        },
+        {
+          "path": "app/tests/test-painter-options-session-c.c",
+          "line": 855
+        },
+        {
+          "path": "app/tests/test-painter-options-session-c.c",
+          "line": 856
+        },
+        {
+          "path": "app/tests/test-painter-options-session-c.c",
+          "line": 857
+        },
+        {
+          "path": "app/tests/test-painter-options-session-c.c",
+          "line": 870
+        },
+        {
+          "path": "app/tests/test-painter-options-session-c.c",
+          "line": 875
+        },
+        {
+          "path": "app/tests/test-painter-options-session-c.c",
+          "line": 876
+        },
+        {
+          "path": "app/tests/test-painter-options-session-c.c",
+          "line": 893
+        },
+        {
+          "path": "app/tests/test-painter-options-session-c.c",
+          "line": 894
+        },
+        {
+          "path": "app/tests/test-painter-options-session-c.c",
+          "line": 1263
+        },
+        {
+          "path": "app/tests/test-painter-options-session-c.c",
+          "line": 1264
+        },
+        {
+          "path": "app/tests/test-painter-options-session-c.c",
+          "line": 1265
+        },
+        {
+          "path": "app/tests/test-painter-options-session-c.c",
+          "line": 1279
+        },
+        {
+          "path": "app/tests/test-painter-options-session-c.c",
+          "line": 1312
+        }
+      ]
+    },
+    {
+      "c_entry": "gimp_mypaint_tool_enable_color_picker",
+      "legacy_site": "app/tools/gimpmypainttool.cpp:222",
+      "cpp_operation": "MypaintToolRef::enable_color_picker",
+      "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+      "implementation": "PARTIAL: app/tools/gimppaintermybrushtool.cpp original C operation name; app/tools/gimpmypainttool.h requires explicit GimpColorPickTarget/TARGET_* source migration; app/tools/gimppaintermybrushtool.hpp MypaintToolRef::enable_color_picker delegates to that entry and same ToolSlot. Native destination behavior restored; original GimpColorPickMode signature, legacy layout/runtime GType and ABI are not restored. See migration/tests/adapter-removal/mypaint-colorpicker-08018/report.json",
+      "source_tokens": [
+        {
+          "path": "app/tests/test-mypaint-colorpicker-c.c",
+          "line": 49
+        },
+        {
+          "path": "app/tests/test-mypaint-colorpicker-c.c",
+          "line": 60
+        },
+        {
+          "path": "app/tests/test-mypaint-colorpicker-c.c",
+          "line": 85
+        },
+        {
+          "path": "app/tests/test-mypaint-colorpicker-c.c",
+          "line": 96
+        },
+        {
+          "path": "app/tests/test-mypaint-colorpicker-c.c",
+          "line": 97
+        },
+        {
+          "path": "app/tests/test-mypaint-colorpicker-c.c",
+          "line": 98
+        },
+        {
+          "path": "app/tests/test-mypaint-colorpicker-c.c",
+          "line": 100
+        },
+        {
+          "path": "app/tests/test-mypaint-colorpicker-c.c",
+          "line": 103
+        },
+        {
+          "path": "app/tests/test-mypaint-colorpicker-c.c",
+          "line": 113
+        },
+        {
+          "path": "app/tests/test-mypaint-colorpicker-c.c",
+          "line": 129
+        },
+        {
+          "path": "app/tests/test-mypaint-colorpicker-c.c",
+          "line": 133
+        },
+        {
+          "path": "app/tests/test-mypaint-colorpicker-c.c",
+          "line": 142
+        },
+        {
+          "path": "app/tests/test-painter-mypaint-tool.cpp",
+          "line": 618
+        },
+        {
+          "path": "app/tests/test-painter-mypaint-tool.cpp",
+          "line": 906
+        },
+        {
+          "path": "app/tools/gimpmypainttool.h",
+          "line": 21
+        },
+        {
+          "path": "app/tools/gimppaintermybrushtool.cpp",
+          "line": 329
+        },
+        {
+          "path": "app/tools/gimppaintermybrushtool.hpp",
+          "line": 20
+        }
+      ]
+    },
+    {
+      "c_entry": "gimp_mypaint_tool_get_type",
+      "legacy_site": "app/tools/gimpmypainttool.cpp:117",
+      "cpp_operation": "TypeTraits<GimpMypaintTool>::type",
+      "rule": "Lazy TypeTraits delegates to C GType registration; no C++ global class singleton or implementation placement",
+      "implementation": "TODO",
+      "source_tokens": []
+    },
+    {
+      "c_entry": "gimp_mypaint_tool_register",
+      "legacy_site": "app/tools/gimpmypainttool.cpp:813",
+      "cpp_operation": "MypaintToolRef::register_type",
+      "rule": "Explicit registration method delegates to this C entry; owner context is passed by adapter and lifecycle state belongs to one Application/ActionGroup store",
+      "implementation": "TODO",
+      "source_tokens": []
+    },
+    {
+      "c_entry": "gimp_perspective_guide_add_vanish_points",
+      "legacy_site": "app/core/gimpperspectiveguide.cpp:255",
+      "cpp_operation": "PerspectiveGuideRef::add_vanish_points",
+      "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+      "implementation": "TODO",
+      "source_tokens": [
+        {
+          "path": "app/core/gimpperspectiveguide.cpp",
+          "line": 110
+        },
+        {
+          "path": "app/core/gimpperspectiveguide.h",
+          "line": 30
+        },
+        {
+          "path": "app/core/gimpperspectiveguide.hpp",
+          "line": 34
+        },
+        {
+          "path": "app/tests/test-painter-mypaint-tool.cpp",
+          "line": 148
+        },
+        {
+          "path": "app/tests/test-painter-perspective-events.c",
+          "line": 104
+        },
+        {
+          "path": "app/tests/test-painter-perspective-ui.c",
+          "line": 173
+        },
+        {
+          "path": "app/tests/test-painter-perspective-ui.c",
+          "line": 196
+        },
+        {
+          "path": "app/tests/test-painter-perspective-ui.c",
+          "line": 216
+        },
+        {
+          "path": "app/tests/test-painter-perspective-ui.c",
+          "line": 232
+        },
+        {
+          "path": "app/tests/test-painter-perspective-ui.c",
+          "line": 254
+        },
+        {
+          "path": "app/tests/test-painter-perspective-ui.c",
+          "line": 326
+        },
+        {
+          "path": "app/tests/test-painter-perspective-ui.c",
+          "line": 449
+        },
+        {
+          "path": "app/tests/test-painter-perspective-ui.c",
+          "line": 588
+        },
+        {
+          "path": "app/tests/test-painter-perspective.c",
+          "line": 54
+        },
+        {
+          "path": "app/tests/test-painter-perspective.c",
+          "line": 55
+        },
+        {
+          "path": "app/tests/test-painter-perspective.c",
+          "line": 56
+        },
+        {
+          "path": "app/tests/test-painter-perspective.c",
+          "line": 57
+        },
+        {
+          "path": "app/tests/test-painter-perspective.c",
+          "line": 68
+        },
+        {
+          "path": "app/tests/test-painter-perspective.c",
+          "line": 80
+        },
+        {
+          "path": "app/tests/test-painter-perspective.c",
+          "line": 111
+        },
+        {
+          "path": "app/tests/test-painter-perspective.c",
+          "line": 123
+        },
+        {
+          "path": "app/tests/test-painter-perspective.c",
+          "line": 249
+        },
+        {
+          "path": "app/tests/test-painter-perspective.c",
+          "line": 278
+        },
+        {
+          "path": "app/tests/test-painter-perspective.c",
+          "line": 309
+        },
+        {
+          "path": "app/tests/test-painter-perspective.c",
+          "line": 330
+        }
+      ]
+    },
+    {
+      "c_entry": "gimp_perspective_guide_get_type",
+      "legacy_site": "app/core/gimpperspectiveguide.cpp:240",
+      "cpp_operation": "TypeTraits<GimpPerspectiveGuide>::type",
+      "rule": "Lazy TypeTraits delegates to C GType registration; no C++ global class singleton or implementation placement",
+      "implementation": "TODO",
+      "source_tokens": [
+        {
+          "path": "app/core/gimpperspectiveguide.h",
+          "line": 6
+        },
+        {
+          "path": "app/core/gimpperspectiveguide.h",
+          "line": 25
+        }
+      ]
+    },
+    {
+      "c_entry": "gimp_perspective_guide_get_vanish_point_length",
+      "legacy_site": "app/core/gimpperspectiveguide.cpp:250",
+      "cpp_operation": "PerspectiveGuideRef::get_vanish_point_length",
+      "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+      "implementation": "TODO",
+      "source_tokens": [
+        {
+          "path": "app/core/gimpperspectiveguide.cpp",
+          "line": 108
+        },
+        {
+          "path": "app/core/gimpperspectiveguide.h",
+          "line": 29
+        },
+        {
+          "path": "app/core/gimpperspectiveguide.hpp",
+          "line": 30
+        },
+        {
+          "path": "app/display/gimpdisplayshell-tool-events.c",
+          "line": 208
+        },
+        {
+          "path": "app/display/gimpdisplayshell-tool-events.c",
+          "line": 688
+        },
+        {
+          "path": "app/tests/test-painter-perspective-events.c",
+          "line": 197
+        },
+        {
+          "path": "app/tests/test-painter-perspective-ui.c",
+          "line": 104
+        },
+        {
+          "path": "app/tests/test-painter-perspective-ui.c",
+          "line": 117
+        },
+        {
+          "path": "app/tests/test-painter-perspective-ui.c",
+          "line": 618
+        },
+        {
+          "path": "app/tests/test-painter-perspective.c",
+          "line": 52
+        },
+        {
+          "path": "app/tests/test-painter-perspective.c",
+          "line": 80
+        }
+      ]
+    },
+    {
+      "c_entry": "gimp_perspective_guide_get_vanish_points",
+      "legacy_site": "app/core/gimpperspectiveguide.cpp:265",
+      "cpp_operation": "PerspectiveGuideRef::get_vanish_points",
+      "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+      "implementation": "TODO",
+      "source_tokens": [
+        {
+          "path": "app/core/gimpperspectiveguide.cpp",
+          "line": 127
+        },
+        {
+          "path": "app/core/gimpperspectiveguide.h",
+          "line": 32
+        },
+        {
+          "path": "app/core/gimpperspectiveguide.hpp",
+          "line": 32
+        },
+        {
+          "path": "app/tests/test-painter-perspective-events.c",
+          "line": 198
+        },
+        {
+          "path": "app/tests/test-painter-perspective-ui.c",
+          "line": 69
+        },
+        {
+          "path": "app/tests/test-painter-perspective.c",
+          "line": 45
+        },
+        {
+          "path": "app/tests/test-painter-perspective.c",
+          "line": 53
+        },
+        {
+          "path": "app/tests/test-painter-perspective.c",
+          "line": 60
+        },
+        {
+          "path": "app/tests/test-painter-perspective.c",
+          "line": 61
+        },
+        {
+          "path": "app/tests/test-painter-perspective.c",
+          "line": 62
+        }
+      ]
+    },
+    {
+      "c_entry": "gimp_perspective_guide_new",
+      "legacy_site": "app/core/gimpperspectiveguide.cpp:245",
+      "cpp_operation": "PerspectiveGuideRef::create",
+      "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+      "implementation": "TODO",
+      "source_tokens": [
+        {
+          "path": "app/core/gimpperspectiveguide.cpp",
+          "line": 81
+        },
+        {
+          "path": "app/core/gimpperspectiveguide.cpp",
+          "line": 102
+        },
+        {
+          "path": "app/core/gimpperspectiveguide.h",
+          "line": 26
+        },
+        {
+          "path": "app/core/gimpperspectiveguide.hpp",
+          "line": 21
+        },
+        {
+          "path": "app/tests/test-painter-mypaint-tool.cpp",
+          "line": 148
+        },
+        {
+          "path": "app/tests/test-painter-perspective-events.c",
+          "line": 102
+        },
+        {
+          "path": "app/tests/test-painter-perspective-handle.cpp",
+          "line": 36
+        },
+        {
+          "path": "app/tests/test-painter-perspective-ui.c",
+          "line": 173
+        },
+        {
+          "path": "app/tests/test-painter-perspective-ui.c",
+          "line": 193
+        },
+        {
+          "path": "app/tests/test-painter-perspective-ui.c",
+          "line": 215
+        },
+        {
+          "path": "app/tests/test-painter-perspective-ui.c",
+          "line": 232
+        },
+        {
+          "path": "app/tests/test-painter-perspective-ui.c",
+          "line": 254
+        },
+        {
+          "path": "app/tests/test-painter-perspective-ui.c",
+          "line": 325
+        },
+        {
+          "path": "app/tests/test-painter-perspective-ui.c",
+          "line": 448
+        },
+        {
+          "path": "app/tests/test-painter-perspective-ui.c",
+          "line": 541
+        },
+        {
+          "path": "app/tests/test-painter-perspective-ui.c",
+          "line": 556
+        },
+        {
+          "path": "app/tests/test-painter-perspective-ui.c",
+          "line": 569
+        },
+        {
+          "path": "app/tests/test-painter-perspective-ui.c",
+          "line": 586
+        },
+        {
+          "path": "app/tests/test-painter-perspective-ui.c",
+          "line": 587
+        },
+        {
+          "path": "app/tests/test-painter-perspective.c",
+          "line": 50
+        },
+        {
+          "path": "app/tests/test-painter-perspective.c",
+          "line": 74
+        },
+        {
+          "path": "app/tests/test-painter-perspective.c",
+          "line": 106
+        },
+        {
+          "path": "app/tests/test-painter-perspective.c",
+          "line": 122
+        },
+        {
+          "path": "app/tests/test-painter-perspective.c",
+          "line": 223
+        },
+        {
+          "path": "app/tests/test-painter-perspective.c",
+          "line": 224
+        },
+        {
+          "path": "app/tests/test-painter-perspective.c",
+          "line": 245
+        },
+        {
+          "path": "app/tests/test-painter-perspective.c",
+          "line": 270
+        },
+        {
+          "path": "app/tests/test-painter-perspective.c",
+          "line": 278
+        },
+        {
+          "path": "app/tests/test-painter-perspective.c",
+          "line": 291
+        },
+        {
+          "path": "app/tests/test-painter-perspective.c",
+          "line": 299
+        },
+        {
+          "path": "app/tests/test-painter-perspective.c",
+          "line": 308
+        },
+        {
+          "path": "app/tests/test-painter-perspective.c",
+          "line": 327
+        }
+      ]
+    },
+    {
+      "c_entry": "gimp_perspective_guide_options_get_type",
+      "legacy_site": "app/tools/gimpperspectiveguidetool.cpp:137",
+      "cpp_operation": "TypeTraits<GimpPerspectiveGuideOptions>::type",
+      "rule": "Lazy TypeTraits delegates to C GType registration; no C++ global class singleton or implementation placement",
+      "implementation": "TODO",
+      "source_tokens": []
+    },
+    {
+      "c_entry": "gimp_perspective_guide_remove_vanish_points",
+      "legacy_site": "app/core/gimpperspectiveguide.cpp:260",
+      "cpp_operation": "PerspectiveGuideRef::remove_vanish_points",
+      "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+      "implementation": "TODO",
+      "source_tokens": [
+        {
+          "path": "app/core/gimpperspectiveguide.cpp",
+          "line": 119
+        },
+        {
+          "path": "app/core/gimpperspectiveguide.h",
+          "line": 31
+        },
+        {
+          "path": "app/core/gimpperspectiveguide.hpp",
+          "line": 36
+        },
+        {
+          "path": "app/tests/test-painter-perspective-ui.c",
+          "line": 614
+        },
+        {
+          "path": "app/tests/test-painter-perspective.c",
+          "line": 58
+        },
+        {
+          "path": "app/tests/test-painter-perspective.c",
+          "line": 64
+        },
+        {
+          "path": "app/tests/test-painter-perspective.c",
+          "line": 86
+        }
+      ]
+    },
+    {
+      "c_entry": "gimp_perspective_guide_set_vanish_points",
+      "legacy_site": "app/core/gimpperspectiveguide.cpp:270",
+      "cpp_operation": "PerspectiveGuideRef::set_vanish_points",
+      "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+      "implementation": "TODO",
+      "source_tokens": [
+        {
+          "path": "app/core/gimpperspectiveguide.cpp",
+          "line": 133
+        },
+        {
+          "path": "app/core/gimpperspectiveguide.h",
+          "line": 33
+        },
+        {
+          "path": "app/core/gimpperspectiveguide.hpp",
+          "line": 38
+        },
+        {
+          "path": "app/tests/test-painter-perspective-ui.c",
+          "line": 207
+        },
+        {
+          "path": "app/tests/test-painter-perspective-ui.c",
+          "line": 236
+        },
+        {
+          "path": "app/tests/test-painter-perspective.c",
+          "line": 59
+        },
+        {
+          "path": "app/tests/test-painter-perspective.c",
+          "line": 63
+        },
+        {
+          "path": "app/tests/test-painter-perspective.c",
+          "line": 84
+        },
+        {
+          "path": "app/tests/test-painter-perspective.c",
+          "line": 262
+        },
+        {
+          "path": "app/tests/test-painter-perspective.c",
+          "line": 280
+        },
+        {
+          "path": "app/tests/test-painter-perspective.c",
+          "line": 314
+        }
+      ]
+    },
+    {
+      "c_entry": "gimp_perspective_guide_tool_get_type",
+      "legacy_site": "app/tools/gimpperspectiveguidetool.cpp:662",
+      "cpp_operation": "TypeTraits<GimpPerspectiveGuideTool>::type",
+      "rule": "Lazy TypeTraits delegates to C GType registration; no C++ global class singleton or implementation placement",
+      "implementation": "TODO",
+      "source_tokens": [
+        {
+          "path": "app/tools/gimpperspectiveguidetool.h",
+          "line": 6
+        },
+        {
+          "path": "app/tools/gimpperspectiveguidetool.h",
+          "line": 14
+        }
+      ]
+    },
+    {
+      "c_entry": "gimp_perspective_guide_tool_register",
+      "legacy_site": "app/tools/gimpperspectiveguidetool.cpp:627",
+      "cpp_operation": "PerspectiveGuideToolRef::register_type",
+      "rule": "Explicit registration method delegates to this C entry; owner context is passed by adapter and lifecycle state belongs to one Application/ActionGroup store",
+      "implementation": "TODO",
+      "source_tokens": [
+        {
+          "path": "app/tools/gimp-tools.c",
+          "line": 238
+        },
+        {
+          "path": "app/tools/gimpperspectiveguidetool.cpp",
+          "line": 305
+        },
+        {
+          "path": "app/tools/gimpperspectiveguidetool.h",
+          "line": 15
+        }
+      ]
+    },
+    {
+      "c_entry": "gimp_popover_new",
+      "legacy_site": "app/widgets/popupper.cpp:420",
+      "cpp_operation": "PopoverRef::create",
+      "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+      "implementation": "TODO",
+      "source_tokens": []
+    },
+    {
+      "c_entry": "gimp_tool_tile_view_get_type",
+      "legacy_site": "app/widgets/gimptooltileview.cpp:600",
+      "cpp_operation": "TypeTraits<GimpToolTileView>::type",
+      "rule": "Lazy TypeTraits delegates to C GType registration; no C++ global class singleton or implementation placement",
+      "implementation": "TODO",
+      "source_tokens": []
+    },
+    {
+      "c_entry": "gimp_tool_tile_view_new",
+      "legacy_site": "app/widgets/gimptooltileview.cpp:601",
+      "cpp_operation": "ToolTileViewRef::create",
+      "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+      "implementation": "TODO",
+      "source_tokens": []
+    },
+    {
+      "c_entry": "preset_factory_gui_action_group_entry_point",
+      "legacy_site": "app/presets/preset-factory-gui.cpp:247",
+      "cpp_operation": "ActionGroupRef::register_preset_actions",
+      "rule": "Explicit registration method delegates to this C entry; owner context is passed by adapter and lifecycle state belongs to one Application/ActionGroup store",
+      "implementation": "TODO",
+      "source_tokens": []
+    },
+    {
+      "c_entry": "preset_factory_gui_dialogs_actions_entry_point",
+      "legacy_site": "app/presets/preset-factory-gui.cpp:240",
+      "cpp_operation": "ActionGroupRef::register_preset_dialog_actions",
+      "rule": "Explicit registration method delegates to this C entry; owner context is passed by adapter and lifecycle state belongs to one Application/ActionGroup store",
+      "implementation": "TODO",
+      "source_tokens": []
+    },
+    {
+      "c_entry": "preset_factory_gui_prefs_entry_point",
+      "legacy_site": "app/presets/preset-factory-gui.cpp:233",
+      "cpp_operation": "ApplicationRef::preset_preferences",
+      "rule": "Explicit registration method delegates to this C entry; owner context is passed by adapter and lifecycle state belongs to one Application/ActionGroup store",
+      "implementation": "TODO",
+      "source_tokens": []
+    }
+  ],
+  "links": [
+    {
+      "file": "gimp-painter-mybrush",
+      "sha256": "9d9c4199cec2c1bbc849e3026aa98de3c67d32a61b9cc3b8298a7a6c621674b3",
+      "present": [
+        "gimp_canvas_perspective_guide_get_type",
+        "gimp_canvas_perspective_guide_new",
+        "gimp_cell_renderer_popup_clicked",
+        "gimp_cell_renderer_popup_get_type",
+        "gimp_cell_renderer_popup_new",
+        "gimp_clone_layer_get_source",
+        "gimp_clone_layer_get_type",
+        "gimp_clone_layer_new",
+        "gimp_clone_layer_set_source",
+        "gimp_clone_layer_set_source_by_name",
+        "gimp_clone_layer_undo_get_type",
+        "gimp_filter_layer_get_procedure",
+        "gimp_filter_layer_get_procedure_args",
+        "gimp_filter_layer_get_type",
+        "gimp_filter_layer_mark_as_loaded",
+        "gimp_filter_layer_new",
+        "gimp_layer_tile_view_get_type",
+        "gimp_layer_tile_view_new",
+        "gimp_mypaint_brush_button_with_popup",
+        "gimp_mypaint_brush_duplicate",
+        "gimp_mypaint_brush_get_type",
+        "gimp_mypaint_brush_new",
+        "gimp_mypaint_options_get_mapping_point",
+        "gimp_mypaint_options_set_mapping_point",
+        "gimp_mypaint_tool_enable_color_picker",
+        "gimp_perspective_guide_add_vanish_points",
+        "gimp_perspective_guide_get_type",
+        "gimp_perspective_guide_get_vanish_point_length",
+        "gimp_perspective_guide_get_vanish_points",
+        "gimp_perspective_guide_new",
+        "gimp_perspective_guide_remove_vanish_points",
+        "gimp_perspective_guide_set_vanish_points",
+        "gimp_perspective_guide_tool_get_type",
+        "gimp_perspective_guide_tool_register"
+      ],
+      "absent": [
+        "features_entry_point",
+        "gimp_bucket_fill_brush_tool_get_type",
+        "gimp_bucket_fill_brush_tool_register",
+        "gimp_display_shell_attach_on_canvas_view",
+        "gimp_display_shell_detach_on_canvas_view",
+        "gimp_display_shell_update_on_canvas_opacity",
+        "gimp_display_shell_update_on_canvas_views",
+        "gimp_editor_add_action_dropdown",
+        "gimp_editor_add_dropdown",
+        "gimp_filter_layer_set_procedure",
+        "gimp_image_generator_options_get_type",
+        "gimp_image_generator_tool_get_type",
+        "gimp_image_generator_tool_register",
+        "gimp_json_resource_get_type",
+        "gimp_json_resource_new",
+        "gimp_mypaint_brush_begin_use",
+        "gimp_mypaint_brush_editor_get_type",
+        "gimp_mypaint_brush_editor_new",
+        "gimp_mypaint_brush_end_use",
+        "gimp_mypaint_brush_get_standard",
+        "gimp_mypaint_brush_load",
+        "gimp_mypaint_brush_save",
+        "gimp_mypaint_brush_select_mypaint_brush",
+        "gimp_mypaint_brush_want_null_motion",
+        "gimp_mypaint_core_undo_get_type",
+        "gimp_mypaint_options_copy_brush_props",
+        "gimp_mypaint_options_get_brush_mode",
+        "gimp_mypaint_options_get_current_brush",
+        "gimp_mypaint_options_get_type",
+        "gimp_mypaint_options_gui",
+        "gimp_mypaint_options_gui_horizontal",
+        "gimp_mypaint_options_is_ready",
+        "gimp_mypaint_options_new",
+        "gimp_mypaint_tool_get_type",
+        "gimp_mypaint_tool_register",
+        "gimp_perspective_guide_options_get_type",
+        "gimp_popover_new",
+        "gimp_tool_tile_view_get_type",
+        "gimp_tool_tile_view_new",
+        "preset_factory_gui_action_group_entry_point",
+        "preset_factory_gui_dialogs_actions_entry_point",
+        "preset_factory_gui_prefs_entry_point"
+      ]
+    }
+  ],
+  "limitations": [
+    "Token occurrences include declarations, calls and inactive text.",
+    "G_DEFINE_TYPE registration expands its get_type provider.",
+    "Link garbage collection can omit unused providers.",
+    "Renamed routes require ownership and semantic review.",
+    "No source/ABI compatibility or runtime result follows from this census."
+  ]
+}

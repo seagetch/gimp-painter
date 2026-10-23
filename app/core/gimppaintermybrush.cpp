@@ -168,6 +168,16 @@ GimpData *gimp_painter_mybrush_new (GimpContext *, const gchar *name)
     return GIMP_DATA (owner.release ());
   });
 }
+GType gimp_mypaint_brush_get_type (void)
+{
+  return gimp_painter_mybrush_get_type ();
+}
+GimpData *gimp_mypaint_brush_new (GimpContext *context, const gchar *name)
+{
+  g_return_val_if_fail (name != nullptr, nullptr);
+  g_return_val_if_fail (name[0] != '\0', nullptr);
+  return gimp_painter_mybrush_new (context, name);
+}
 /* The legacy named operation is intentionally distinct from the native data
  * duplicate operation, which clears name and file. It uses the same staged
  * copy implementation, but can return failure instead of a default object. */

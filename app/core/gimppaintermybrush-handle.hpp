@@ -18,7 +18,7 @@ public:
   static PainterMybrushRef adopt (GimpPainterMybrush *brush)
   { return PainterMybrushRef (ObjectRef<GimpPainterMybrush>::adopt (brush)); }
   static PainterMybrushRef create (const char *name)
-  { return adopt (GIMP_PAINTER_MYBRUSH (gimp_painter_mybrush_new (nullptr, name))); }
+  { return adopt (GIMP_PAINTER_MYBRUSH (gimp_mypaint_brush_new (nullptr, name))); }
   GimpPainterMybrush *get () const noexcept { return owner_.get (); }
   PainterMybrushRef duplicate () const
   {

@@ -900,6 +900,66 @@ named_duplicate_copy_failure_atomic (void)
 }
 #endif
 
+static void
+factory_finalized (gpointer data, GObject *object)
+{
+  (void) object;
+  ++*(guint *) data;
+}
+
+static void
+named_factory_c_contract (void)
+{
+  GimpData *(*factory) (GimpContext *, const gchar *) = gimp_mypaint_brush_new;
+  GType (*type) (void) = gimp_mypaint_brush_get_type;
+  guint deaths = 0;
+  gchar name[] = "Original factory name";
+  GimpData *first = factory (NULL, name);
+  GimpData *second = factory (gimp_get_user_context (gimp), name);
+  gchar *mime = NULL;
+  GError *error = NULL;
+  gchar *json;
+  g_assert_cmpuint (type (), ==, GIMP_TYPE_PAINTER_MYBRUSH);
+  g_assert_cmpuint (type (), ==, GIMP_TYPE_MYPAINT_BRUSH);
+  g_assert_true (GIMP_IS_MYPAINT_BRUSH (first));
+  g_assert_true (first != second);
+  g_assert_false (g_object_is_floating (first));
+  g_assert_null (gimp_data_get_file (first));
+  g_object_get (first, "mime-type", &mime, NULL);
+  g_assert_cmpstr (mime, ==, "application/x-mypaint-brush");
+  g_free (mime);
+  name[0] = 'X';
+  g_assert_cmpstr (gimp_object_get_name (first), ==, "Original factory name");
+  json = gimp_painter_mybrush_dup_json (GIMP_PAINTER_MYBRUSH (first), &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (json);
+  g_free (json);
+  json = brush_json (GIMP_PAINTER_MYBRUSH (second));
+  g_assert_true (gimp_painter_mybrush_set_json (GIMP_PAINTER_MYBRUSH (first),
+    "{\"version\":3,\"settings\":{\"opaque\":{\"base_value\":0.375,\"inputs\":{}}}}", &error));
+  g_assert_no_error (error);
+  assert_brush_json (GIMP_PAINTER_MYBRUSH (second), json);
+  g_free (json);
+  g_object_weak_ref (G_OBJECT (first), factory_finalized, &deaths);
+  g_object_weak_ref (G_OBJECT (second), factory_finalized, &deaths);
+  g_object_unref (first);
+  g_assert_cmpuint (deaths, ==, 1);
+  g_assert_cmpstr (gimp_object_get_name (second), ==, "Original factory name");
+  g_object_unref (second);
+  g_assert_cmpuint (deaths, ==, 2);
+}
+
+static void
+named_factory_invalid_names (void)
+{
+  g_test_expect_message (NULL, G_LOG_LEVEL_CRITICAL, "*name != nullptr*failed*");
+  g_assert_null (gimp_mypaint_brush_new (NULL, NULL));
+  g_test_assert_expected_messages ();
+  g_test_expect_message (NULL, G_LOG_LEVEL_CRITICAL, "*name[0]*failed*");
+  g_assert_null (gimp_mypaint_brush_new (NULL, ""));
+  g_test_assert_expected_messages ();
+}
+
 void gimp_test_painter_mybrush_duplicate_handle_register (void);
 
 int main (int argc, char **argv)
@@ -931,6 +991,8 @@ int main (int argc, char **argv)
 #ifdef GIMP_TEST_MYBRUSH_WRAP_PIXBUF_COPY
   g_test_add_func ("/painter-mybrush/named-duplicate/copy-failure-atomic", named_duplicate_copy_failure_atomic);
 #endif
+  g_test_add_func ("/painter-mybrush/named-factory/c-contract", named_factory_c_contract);
+  g_test_add_func ("/painter-mybrush/named-factory/invalid-names", named_factory_invalid_names);
   gimp_test_painter_mybrush_duplicate_handle_register ();
   result = g_test_run ();
   gimp_test_utils_set_gimp3_directory ("GIMP_TESTING_ABS_TOP_BUILDDIR", "app/tests/gimpdir-output");

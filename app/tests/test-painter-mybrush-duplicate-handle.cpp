@@ -86,6 +86,25 @@ void expect_handle_error (Function function)
   g_assert_true (caught);
 }
 
+void named_factory_handle ()
+{
+  static_assert (std::is_same<decltype (&gimp_mypaint_brush_new),
+                 GimpData *(*)(GimpContext *, const gchar *)>::value,
+                 "C factory signature is preserved");
+  guint deaths = 0;
+  {
+    auto owner = MypaintBrushRef::create ("Factory owned handle");
+    g_object_weak_ref (G_OBJECT (owner.get ()), finalized, &deaths);
+    g_assert_cmpuint (G_OBJECT_TYPE (owner.get ()), ==, gimp_mypaint_brush_get_type ());
+    g_assert_cmpstr (gimp_object_get_name (owner.get ()), ==, "Factory owned handle");
+    auto snapshot = owner.snapshot ();
+    snapshot.set_base_value (BRUSH_OPAQUE, 0.375);
+    owner.replace (snapshot);
+    g_assert_cmpfloat (owner.snapshot ().base_value (BRUSH_OPAQUE), ==, 0.375);
+  }
+  g_assert_cmpuint (deaths, ==, 1);
+}
+
 void handle_alias_and_resource_independence ()
 {
   auto source = MypaintBrushRef::create ("Handle native name \316\262");
@@ -221,6 +240,7 @@ void handle_copy_failure_exception ()
 extern "C" void
 gimp_test_painter_mybrush_duplicate_handle_register (void)
 {
+  g_test_add_func ("/painter-mybrush/named-factory/handle", named_factory_handle);
   g_test_add_func ("/painter-mybrush/named-duplicate/handle-alias-resource", handle_alias_and_resource_independence);
   g_test_add_func ("/painter-mybrush/named-duplicate/handle-copy-move-ownership", handle_copy_move_ownership);
   g_test_add_func ("/painter-mybrush/named-duplicate/handle-failure-exceptions", handle_failure_exceptions);

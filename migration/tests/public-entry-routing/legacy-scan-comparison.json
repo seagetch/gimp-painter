@@ -1,0 +1,28 @@
+{
+  "baseline_commit": "4a83db492ffe90db2372866675d56a45b7355f3f",
+  "baseline_command": "git archive 4a83db492ffe90db2372866675d56a45b7355f3f app migration/contracts/legacy-adapter-removal.json tools/check_painter_legacy_adapters.py | tar -x -C BASELINE; python3 -B BASELINE/tools/check_painter_legacy_adapters.py --root BASELINE --report baseline.json",
+  "candidate_command": "python3 -B tools/check_painter_legacy_adapters.py --report candidate.json",
+  "baseline_status": "FAIL",
+  "candidate_status": "FAIL",
+  "identical_errors": true,
+  "errors": [
+    "unaudited object data site: ('app/gui/session.c', 'g_object_get_data', 'b7dc828d91763f728932afdd63630c5b935e8d4b0e58fafb60f155c40cf74516')",
+    "unaudited object data site: ('app/gui/session.c', 'g_object_set_data_full', 'c8e4712336ee4dda6b08f2f2f7e73fe11125240e516ebe6115b271c351e6dbd2')",
+    "unaudited object data site: ('app/tools/gimppaintertexttoolbar.inc', 'g_object_get_data', '277844a5876acbdaf968b02f569983584302402a210af1dffe1f9f14db9cd039')",
+    "unaudited object data site: ('app/tools/gimppaintertexttoolbar.inc', 'g_object_get_data', '4be6bc187a8ceb32264734e14feaf96f19a2a1b131c2ad0769e8536e145a56c6')",
+    "unaudited object data site: ('app/tools/gimppaintertexttoolbar.inc', 'g_object_set_data', 'c8929c5fe8774374097ebd8a70c88d0fa2663ed5e09f7a863bf967728064659a')",
+    "unaudited object data site: ('app/tools/gimppaintertexttoolbar.inc', 'g_object_set_data_full', 'dff18e62f1451db9d866a71b98f479dbbfce2813cd53d42f4e769189ebd19655')"
+  ],
+  "baseline_counts": {
+    "sources": 2491,
+    "data_sites": 705,
+    "dormant_findings": 4
+  },
+  "candidate_counts": {
+    "sources": 2491,
+    "data_sites": 705,
+    "dormant_findings": 4
+  },
+  "policy_changed": false,
+  "conclusion": "Six pre-existing unreviewed data identities; no allowlist change or aggregate PASS claimed."
+}

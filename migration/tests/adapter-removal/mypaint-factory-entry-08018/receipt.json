@@ -1,0 +1,73 @@
+{
+  "scope": "08.018 bounded original C entry rows 41 and 43; parent remains open",
+  "legacy_commit": "afa43fae3e920210146abed514f136fd49f671b5",
+  "legacy_source": "app/core/gimpmypaintbrush.cpp:100,334-347",
+  "legacy_blob": "c4e9eaaf991c8855e2a6155bd3a74915bdff657d",
+  "source_manifest": [
+    {
+      "path": "app/core/gimpmypaintbrush.h",
+      "sha256": "e9e74319963524810c8c1fe9a4e0a4313d2ecf34089ed282222490ce75ffbb67",
+      "build_copy_equal": true
+    },
+    {
+      "path": "app/core/gimppaintermybrush.cpp",
+      "sha256": "d1ad891ff18944f664d518b14e507faf355afab63011a35d83efb17dcfac3115",
+      "build_copy_equal": true
+    },
+    {
+      "path": "app/core/gimppaintermybrush-handle.hpp",
+      "sha256": "5a40836c4813535b4c3dc94e19afe7f7b59c6e283ece70fb697cdb21a13fc960",
+      "build_copy_equal": true
+    },
+    {
+      "path": "app/tests/test-gimp-painter-mybrush.c",
+      "sha256": "bea9ce5475c4871e894adf635c1dc3862bca2b6997eb6a7e448902821c2c5972",
+      "build_copy_equal": true
+    },
+    {
+      "path": "app/tests/test-painter-mybrush-duplicate-handle.cpp",
+      "sha256": "f8bceec21e620810e9e95f021972de2ea2933577df0006f37fb310bd72997917",
+      "build_copy_equal": true
+    }
+  ],
+  "native_binary_sha256": "9d9c4199cec2c1bbc849e3026aa98de3c67d32a61b9cc3b8298a7a6c621674b3",
+  "compiled_commands": [
+    {
+      "path": "app/core/gimppaintermybrush.cpp",
+      "command": "c++ -Iapp/core/libappcore.a.p -Iapp/core -I../source/app/core -I. -I../source -Iapp -I../source/app -Iapp/paint/painter-mypaint -I../source/app/paint/painter-mypaint -Iapp/painter -I../source/app/painter -Iapp/paint/painter-brush-settings -I../source/app/paint/painter-brush-settings -Igimp-data/cursors -Igimp-data/icons/Default -I$DEPS/root/usr/include/glib-2.0 -I$DEPS/root/usr/lib/x86_64-linux-gnu/glib-2.0/include -I$DEPS/root/usr/include/sysprof-6 -I$DEPS/root/usr/include/json-glib-1.0 -I$DEPS/root/usr/include/libmount -I$DEPS/root/usr/include/blkid -I$DEPS/root/usr/include/cairo -I$DEPS/root/usr/include/libpng16 -I$DEPS/root/usr/include/freetype2 -I$DEPS/root/usr/include/pixman-1 -I$DEPS/root/usr/include/gegl-0.4 -I$DEPS/root/usr/include/gio-unix-2.0 -I$DEPS/root/usr/include/babl-0.1 -I$DEPS/root/usr/include/gdk-pixbuf-2.0 -I$DEPS/root/usr/include/webp -I$DEPS/root/usr/include/libmypaint -I$DEPS/root/usr/include/json-c -I$DEPS/root/usr/include/appstream -I$DEPS/root/usr/include/pango-1.0 -I$DEPS/root/usr/include/harfbuzz -I$DEPS/root/usr/include/fribidi -fdiagnostics-color=always -D_GLIBCXX_ASSERTIONS=1 -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -std=c++14 -O2 -g -DGLIB_VERSION_MIN_REQUIRED=GLIB_VERSION_2_70 -DGLIB_VERSION_MAX_ALLOWED=GLIB_VERSION_2_76 -fdiagnostics-show-option -fno-common -Wformat -Wformat-security -Winit-self -Wlogical-op -Wmissing-declarations -Wmissing-format-attribute -Wpointer-arith -Wreturn-type -Wtype-limits -DHAVE_CONFIG_H -fPIC -pthread -fexceptions -fvisibility-inlines-hidden '-DGIMP_PAINTER_FILTER_BUILD_ROOT=\"$BUILD\"' '-DGIMP_PAINTER_FILTER_BIN_TO_WORKER=\"../libexec/gimp-painter-filter-worker\"' '-DGIMP_PAINTER_FILTER_WORKER_TO_PLUGINS=\"../lib/x86_64-linux-gnu/gimp/3.0/plug-ins\"' '-DGIMP_PAINTER_FILTER_EXECUTABLE_SUFFIX=\"\"' -MD -MQ app/core/libappcore.a.p/gimppaintermybrush.cpp.o -MF app/core/libappcore.a.p/gimppaintermybrush.cpp.o.d -o app/core/libappcore.a.p/gimppaintermybrush.cpp.o -c ../source/app/core/gimppaintermybrush.cpp"
+    },
+    {
+      "path": "app/tests/test-gimp-painter-mybrush.c",
+      "command": "cc -Iapp/tests/gimp-painter-mybrush.p -Iapp/tests -I../source/app/tests -I. -I../source -Iapp -I../source/app -Iapp/paint/painter-brush-settings -I../source/app/paint/painter-brush-settings -I$DEPS/root/usr/include/cairo -I$DEPS/root/usr/include/libpng16 -I$DEPS/root/usr/include/freetype2 -I$DEPS/root/usr/include/pixman-1 -I$DEPS/root/usr/include/gdk-pixbuf-2.0 -I$DEPS/root/usr/include/glib-2.0 -I$DEPS/root/usr/lib/x86_64-linux-gnu/glib-2.0/include -I$DEPS/root/usr/include/sysprof-6 -I$DEPS/root/usr/include/webp -I$DEPS/root/usr/include/libmount -I$DEPS/root/usr/include/blkid -I$DEPS/root/usr/include/gegl-0.4 -I$DEPS/root/usr/include/gio-unix-2.0 -I$DEPS/root/usr/include/json-glib-1.0 -I$DEPS/root/usr/include/babl-0.1 -I$DEPS/root/usr/include/pango-1.0 -I$DEPS/root/usr/include/harfbuzz -I$DEPS/root/usr/include/fribidi -I$DEPS/root/usr/include/libsoup-3.0 -I$DEPS/root/usr/include/gtk-3.0 -I$DEPS/root/usr/include/cloudproviders -I$DEPS/root/usr/include/atk-1.0 -I$DEPS/root/usr/include/at-spi2-atk/2.0 -I$DEPS/root/usr/include/at-spi-2.0 -I$DEPS/root/usr/include/dbus-1.0 -I$DEPS/root/usr/lib/x86_64-linux-gnu/dbus-1.0/include -I$DEPS/root/usr/include/appstream -fdiagnostics-color=always -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -std=c11 -O2 -g -Wabsolute-value -Wdeclaration-after-statement -Wenum-conversion -Wno-strict-prototypes -Wold-style-definition -Wunused-function -Wunused-value -Werror=implicit-function-declaration -DGDK_PIXBUF_VERSION_MIN_REQUIRED=GDK_PIXBUF_VERSION_2_30 -DGDK_PIXBUF_VERSION_MAX_ALLOWED=GDK_PIXBUF_VERSION_2_30 -DGLIB_VERSION_MIN_REQUIRED=GLIB_VERSION_2_70 -DGLIB_VERSION_MAX_ALLOWED=GLIB_VERSION_2_76 -DGDK_VERSION_MIN_REQUIRED=GDK_VERSION_3_24 -DGDK_VERSION_MAX_ALLOWED=GDK_VERSION_3_24 -fdiagnostics-show-option -fno-common -Wformat -Wformat-security -Winit-self -Wlogical-op -Wmissing-declarations -Wmissing-format-attribute -Wpointer-arith -Wreturn-type -Wtype-limits -DHAVE_CONFIG_H -pthread -isystem $DEPS/root/usr/include/mit-krb5 -DGIMP_TEST_MYBRUSH_WRAP_PIXBUF_COPY -MD -MQ app/tests/gimp-painter-mybrush.p/test-gimp-painter-mybrush.c.o -MF app/tests/gimp-painter-mybrush.p/test-gimp-painter-mybrush.c.o.d -o app/tests/gimp-painter-mybrush.p/test-gimp-painter-mybrush.c.o -c ../source/app/tests/test-gimp-painter-mybrush.c"
+    },
+    {
+      "path": "app/tests/test-painter-mybrush-duplicate-handle.cpp",
+      "command": "c++ -Iapp/tests/gimp-painter-mybrush.p -Iapp/tests -I../source/app/tests -I. -I../source -Iapp -I../source/app -Iapp/paint/painter-brush-settings -I../source/app/paint/painter-brush-settings -I$DEPS/root/usr/include/cairo -I$DEPS/root/usr/include/libpng16 -I$DEPS/root/usr/include/freetype2 -I$DEPS/root/usr/include/pixman-1 -I$DEPS/root/usr/include/gdk-pixbuf-2.0 -I$DEPS/root/usr/include/glib-2.0 -I$DEPS/root/usr/lib/x86_64-linux-gnu/glib-2.0/include -I$DEPS/root/usr/include/sysprof-6 -I$DEPS/root/usr/include/webp -I$DEPS/root/usr/include/libmount -I$DEPS/root/usr/include/blkid -I$DEPS/root/usr/include/gegl-0.4 -I$DEPS/root/usr/include/gio-unix-2.0 -I$DEPS/root/usr/include/json-glib-1.0 -I$DEPS/root/usr/include/babl-0.1 -I$DEPS/root/usr/include/pango-1.0 -I$DEPS/root/usr/include/harfbuzz -I$DEPS/root/usr/include/fribidi -I$DEPS/root/usr/include/libsoup-3.0 -I$DEPS/root/usr/include/gtk-3.0 -I$DEPS/root/usr/include/cloudproviders -I$DEPS/root/usr/include/atk-1.0 -I$DEPS/root/usr/include/at-spi2-atk/2.0 -I$DEPS/root/usr/include/at-spi-2.0 -I$DEPS/root/usr/include/dbus-1.0 -I$DEPS/root/usr/lib/x86_64-linux-gnu/dbus-1.0/include -I$DEPS/root/usr/include/appstream -fdiagnostics-color=always -D_GLIBCXX_ASSERTIONS=1 -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -std=c++14 -O2 -g -DGLIB_VERSION_MIN_REQUIRED=GLIB_VERSION_2_70 -DGLIB_VERSION_MAX_ALLOWED=GLIB_VERSION_2_76 -fdiagnostics-show-option -fno-common -Wformat -Wformat-security -Winit-self -Wlogical-op -Wmissing-declarations -Wmissing-format-attribute -Wpointer-arith -Wreturn-type -Wtype-limits -DHAVE_CONFIG_H -pthread -isystem $DEPS/root/usr/include/mit-krb5 -DGIMP_TEST_MYBRUSH_WRAP_PIXBUF_COPY -MD -MQ app/tests/gimp-painter-mybrush.p/test-painter-mybrush-duplicate-handle.cpp.o -MF app/tests/gimp-painter-mybrush.p/test-painter-mybrush-duplicate-handle.cpp.o.d -o app/tests/gimp-painter-mybrush.p/test-painter-mybrush-duplicate-handle.cpp.o -c ../source/app/tests/test-painter-mybrush-duplicate-handle.cpp"
+    }
+  ],
+  "native_result": {
+    "tap_cases": 28,
+    "new_cases": [
+      "/painter-mybrush/named-factory/c-contract",
+      "/painter-mybrush/named-factory/invalid-names",
+      "/painter-mybrush/named-factory/handle"
+    ],
+    "meson_result": "OK",
+    "exit_code": 0
+  },
+  "display": {
+    "server": "authenticated loopback Xvfb",
+    "resolution": "1080x1920x24",
+    "ui_change": false
+  },
+  "symbol_verification": [
+    "gimp_mypaint_brush_new",
+    "gimp_mypaint_brush_get_type"
+  ],
+  "limits": [
+    "No original class layout, runtime GType name or subclass ABI claim.",
+    "No equivalence claim for historical brush settings representation.",
+    "No full-app sanitizer, platform or arbitrary C-entry acceptance claim.",
+    "Unrelated aggregate legacy-adapter gate has six reproduced baseline failures."
+  ]
+}
