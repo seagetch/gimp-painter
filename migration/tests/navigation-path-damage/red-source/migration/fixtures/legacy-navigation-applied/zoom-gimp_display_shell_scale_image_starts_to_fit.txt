@@ -1,0 +1,44 @@
+static gboolean
+gimp_display_shell_scale_image_starts_to_fit (GimpDisplayShell *shell,
+                                              gdouble           new_scale,
+                                              gdouble           current_scale,
+                                              gboolean         *vertically,
+                                              gboolean         *horizontally)
+{
+  gboolean vertically_dummy;
+  gboolean horizontally_dummy;
+
+  if (! vertically)   vertically   = &vertically_dummy;
+  if (! horizontally) horizontally = &horizontally_dummy;
+
+  /* The image can only start to fit if we zoom out */
+  if (new_scale > current_scale)
+    {
+      *vertically   = FALSE;
+      *horizontally = FALSE;
+    }
+  else
+    {
+      gint current_scale_width;
+      gint current_scale_height;
+      gint new_scale_width;
+      gint new_scale_height;
+
+      gimp_display_shell_draw_get_scaled_image_size_for_scale (shell,
+                                                               current_scale,
+                                                               &current_scale_width,
+                                                               &current_scale_height);
+
+      gimp_display_shell_draw_get_scaled_image_size_for_scale (shell,
+                                                               new_scale,
+                                                               &new_scale_width,
+                                                               &new_scale_height);
+
+      *vertically   = (current_scale_width  >  shell->disp_width &&
+                       new_scale_width      <= shell->disp_width);
+      *horizontally = (current_scale_height >  shell->disp_height &&
+                       new_scale_height     <= shell->disp_height);
+    }
+
+  return *vertically && *horizontally;
+}

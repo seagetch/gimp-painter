@@ -2807,6 +2807,7 @@ device_image_origin (void)
 #include "test-painter-navigation-grid-damage.inc"
 #include "test-painter-navigation-handle-damage.inc"
 #include "test-painter-navigation-corner-safety.inc"
+#include "test-painter-navigation-path-damage.inc"
 
 int main(int argc,char **argv)
 {
@@ -2832,6 +2833,9 @@ int main(int argc,char **argv)
   g_test_add_func("/navigation-events/old-space/origin",old_space_pan_origin);
   g_test_add_func("/navigation-events/old-space/oncanvas-render",old_space_pan_render);
   g_test_add_func("/navigation-events/old-space/deferred-release",old_space_pan_deferred_release);
+  g_test_add_func("/navigation-events/path-damage/bounds",path_damage_bounds);
+  for(guint a=0;a<9;a++)
+    {gchar*path=g_strdup_printf("/navigation-events/path-damage/window-%u",a);g_test_add_data_func(path,GUINT_TO_POINTER(a),path_damage_window);g_free(path);}
   g_test_add_func("/navigation-events/corner-safety/default",corner_default_no_ink);
   g_test_add_func("/navigation-events/corner-safety/directional",corner_directional_geometry);
   for(guint a=0;a<3;a++)

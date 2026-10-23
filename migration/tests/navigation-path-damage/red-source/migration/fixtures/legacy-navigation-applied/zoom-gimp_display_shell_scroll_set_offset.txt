@@ -1,0 +1,28 @@
+void
+gimp_display_shell_scroll_set_offset (GimpDisplayShell *shell,
+                                      gint              offset_x,
+                                      gint              offset_y)
+{
+  g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
+
+  if (shell->offset_x == offset_x &&
+      shell->offset_y == offset_y)
+    return;
+
+  gimp_display_shell_scale_handle_zoom_revert (shell);
+
+  /* freeze the active tool */
+  gimp_display_shell_pause (shell);
+
+  shell->offset_x = offset_x;
+  shell->offset_y = offset_y;
+
+  gimp_display_shell_scroll_clamp_and_update (shell);
+
+  gimp_display_shell_scrolled (shell);
+
+  gimp_display_shell_expose_full (shell);
+
+  /* re-enable the active tool */
+  gimp_display_shell_resume (shell);
+}

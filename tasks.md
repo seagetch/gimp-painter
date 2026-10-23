@@ -1011,6 +1011,7 @@
 | 25.008 | [x] | 表示反転中の方向を移植する | 25.007 | 旧水平反転時の計算と一致 |
 | 25.008/mirrored-arrow-input | [x] | 表示反転中の左右キー入力を移植する | 25.007, 01.017 | mirrored時のLeft/Right変換と非反転時の不変を、押下・解除・toolへの転送・回転併用で試験する |
 | 25.009 | [ ] | 現行表示行列へ接続する | 25.008 | canvas と overlay が同じ角度を使用 |
+| 25.009/path-damage | [x] | pathのmiter strokeによる描画残像を除去する | 25.008, 01.017 | draw不変で3形状・3styles・filled/unfilled・0/37/90度・H/V反転の216boundsと216実window hide場面を通常10/ASan・UBSan10登録で検証、残像0。旧triangle9pixel red・初期layout失敗保持、認証1080x1920・oncanvas有効。原25.009の196dutiesは未完 |
 | 25.009/corner-center-safety | [x] | 未定義CENTER cornerをno-ink/no-extentsへ限定する | 25.008, 01.017 | enum/default/factory/callersを固定sourceで監査し8方向のproduction byteを維持。旧default extent red、3default/factory形態・192bounds・192実window遷移を通常5/ASan・UBSan5登録で検証、残像0、認証1080x1920・oncanvas有効。原25.009の196dutiesは未完 |
 | 25.009/handle-damage | [x] | handleのanchor・local angle・非正方寸法に対応するinvalidated領域を保証する | 25.008, 01.017 | draw/hit本体不変で156raster・8424bounds・156実window hide場面を通常18/ASan・UBSan18登録で検証し残存pixel0。129pixel旧redと回転square旧red保持、6 invalid-view extent拒否、認証1080x1920・oncanvas有効。原25.009の196dutiesは未完 |
 | 25.009/grid-damage | [x] | gridの回転後invalidated領域から残像を除去する | 25.008, 01.017 | 描画本体不変で5grid styles・2stroke policies・0/37/90度・H/V反転の120primitive/120実window hide場面を通常4/ASan・UBSan4登録で検証し残存pixel0。認証1080x1920・oncanvas有効、旧red154pixels保持。原25.009の196dutiesは未完 |

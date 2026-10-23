@@ -1,0 +1,282 @@
+{
+  "revision": "afa43fae3e920210146abed514f136fd49f671b5",
+  "scope": "Source-only unchanged extracted applied-zoom logic; no old runtime execution",
+  "functions": [
+    {
+      "name": "gimp_display_shell_scale",
+      "source_path": "app/display/gimpdisplayshell-scale.c",
+      "source_blob": "5543527ba0d8eb2c7b3d18053237f9f379aaaf47",
+      "source_sha256": "23d168e007dd029e93ab8e8fd442dd30a29c13f34b878fe3b53cf5cd6bd3b4c1",
+      "first_line": 374,
+      "last_line": 469,
+      "file": "zoom-gimp_display_shell_scale.txt",
+      "sha256": "bf6c811eb69826b266fbc70aab1b1681e87b83c3d2d16ef9c466b8a2c1a49bbd"
+    },
+    {
+      "name": "gimp_display_shell_scale_to",
+      "source_path": "app/display/gimpdisplayshell-scale.c",
+      "source_blob": "5543527ba0d8eb2c7b3d18053237f9f379aaaf47",
+      "source_sha256": "23d168e007dd029e93ab8e8fd442dd30a29c13f34b878fe3b53cf5cd6bd3b4c1",
+      "first_line": 861,
+      "last_line": 895,
+      "file": "zoom-gimp_display_shell_scale_to.txt",
+      "sha256": "4e078431b062f5d706e0ac31960bed555ddcf9375aa309b83820f83af5f469d4"
+    },
+    {
+      "name": "gimp_display_shell_scale_get_zoom_focus",
+      "source_path": "app/display/gimpdisplayshell-scale.c",
+      "source_blob": "5543527ba0d8eb2c7b3d18053237f9f379aaaf47",
+      "source_sha256": "23d168e007dd029e93ab8e8fd442dd30a29c13f34b878fe3b53cf5cd6bd3b4c1",
+      "first_line": 1014,
+      "last_line": 1147,
+      "file": "zoom-gimp_display_shell_scale_get_zoom_focus.txt",
+      "sha256": "d5e2a47f70b16ceae9b2ecbc08b584381740a7d1e039401b8a8a3e553794e8d7"
+    },
+    {
+      "name": "gimp_display_shell_scale_get_image_center_viewport",
+      "source_path": "app/display/gimpdisplayshell-scale.c",
+      "source_blob": "5543527ba0d8eb2c7b3d18053237f9f379aaaf47",
+      "source_sha256": "23d168e007dd029e93ab8e8fd442dd30a29c13f34b878fe3b53cf5cd6bd3b4c1",
+      "first_line": 989,
+      "last_line": 1002,
+      "file": "zoom-gimp_display_shell_scale_get_image_center_viewport.txt",
+      "sha256": "47bcf59a643180e367cfed6d16fa2bb11d1a983d2af9fc395e844f53f7d9ac8e"
+    },
+    {
+      "name": "gimp_display_shell_scale_image_is_within_viewport",
+      "source_path": "app/display/gimpdisplayshell-scale.c",
+      "source_blob": "5543527ba0d8eb2c7b3d18053237f9f379aaaf47",
+      "source_sha256": "23d168e007dd029e93ab8e8fd442dd30a29c13f34b878fe3b53cf5cd6bd3b4c1",
+      "first_line": 521,
+      "last_line": 545,
+      "file": "zoom-gimp_display_shell_scale_image_is_within_viewport.txt",
+      "sha256": "4185802f490b9bd9e6534e0386b9c6a1cd22d21792f0e0c554ffb139427102c8"
+    },
+    {
+      "name": "gimp_display_shell_scale_image_starts_to_fit",
+      "source_path": "app/display/gimpdisplayshell-scale.c",
+      "source_blob": "5543527ba0d8eb2c7b3d18053237f9f379aaaf47",
+      "source_sha256": "23d168e007dd029e93ab8e8fd442dd30a29c13f34b878fe3b53cf5cd6bd3b4c1",
+      "first_line": 897,
+      "last_line": 940,
+      "file": "zoom-gimp_display_shell_scale_image_starts_to_fit.txt",
+      "sha256": "9e836310a29a252c5821730ed3d887061f00ce21873145e23b334a087edfab15"
+    },
+    {
+      "name": "gimp_display_shell_scale_image_stops_to_fit",
+      "source_path": "app/display/gimpdisplayshell-scale.c",
+      "source_blob": "5543527ba0d8eb2c7b3d18053237f9f379aaaf47",
+      "source_sha256": "23d168e007dd029e93ab8e8fd442dd30a29c13f34b878fe3b53cf5cd6bd3b4c1",
+      "first_line": 942,
+      "last_line": 954,
+      "file": "zoom-gimp_display_shell_scale_image_stops_to_fit.txt",
+      "sha256": "bb27a7199ea16ce5ad2c95446a5389cc42ab35b9196137eda240b9a7e663b774"
+    },
+    {
+      "name": "gimp_display_shell_scale_viewport_coord_almost_centered",
+      "source_path": "app/display/gimpdisplayshell-scale.c",
+      "source_blob": "5543527ba0d8eb2c7b3d18053237f9f379aaaf47",
+      "source_sha256": "23d168e007dd029e93ab8e8fd442dd30a29c13f34b878fe3b53cf5cd6bd3b4c1",
+      "first_line": 965,
+      "last_line": 987,
+      "file": "zoom-gimp_display_shell_scale_viewport_coord_almost_centered.txt",
+      "sha256": "53971dd9e63f667fe79f63ccd3cb4a6f6611305f0d7a5903bb281ffe0529f254"
+    },
+    {
+      "name": "gimp_display_shell_calculate_scale_x_and_y",
+      "source_path": "app/display/gimpdisplayshell-scale.c",
+      "source_blob": "5543527ba0d8eb2c7b3d18053237f9f379aaaf47",
+      "source_sha256": "23d168e007dd029e93ab8e8fd442dd30a29c13f34b878fe3b53cf5cd6bd3b4c1",
+      "first_line": 724,
+      "last_line": 747,
+      "file": "zoom-gimp_display_shell_calculate_scale_x_and_y.txt",
+      "sha256": "8775cb1a4be69c7f22029637f02aefab4af557d8341552547db3dba4c091a934"
+    },
+    {
+      "name": "gimp_display_shell_scale_by_values",
+      "source_path": "app/display/gimpdisplayshell-scale.c",
+      "source_blob": "5543527ba0d8eb2c7b3d18053237f9f379aaaf47",
+      "source_sha256": "23d168e007dd029e93ab8e8fd442dd30a29c13f34b878fe3b53cf5cd6bd3b4c1",
+      "first_line": 627,
+      "last_line": 658,
+      "file": "zoom-gimp_display_shell_scale_by_values.txt",
+      "sha256": "fa2fb53cf729cbb6aa5e67e4f09206443dc60d00cfb9373b704efbc79981771a"
+    },
+    {
+      "name": "gimp_display_shell_scale_resize",
+      "source_path": "app/display/gimpdisplayshell-scale.c",
+      "source_blob": "5543527ba0d8eb2c7b3d18053237f9f379aaaf47",
+      "source_sha256": "23d168e007dd029e93ab8e8fd442dd30a29c13f34b878fe3b53cf5cd6bd3b4c1",
+      "first_line": 687,
+      "last_line": 714,
+      "file": "zoom-gimp_display_shell_scale_resize.txt",
+      "sha256": "2df7080abadd2793710b19deec3f4ffead76ea4d3bd9d8fb4f28950925e57dfb"
+    },
+    {
+      "name": "gimp_display_shell_get_screen_resolution",
+      "source_path": "app/display/gimpdisplayshell-scale.c",
+      "source_blob": "5543527ba0d8eb2c7b3d18053237f9f379aaaf47",
+      "source_sha256": "23d168e007dd029e93ab8e8fd442dd30a29c13f34b878fe3b53cf5cd6bd3b4c1",
+      "first_line": 340,
+      "last_line": 362,
+      "file": "zoom-gimp_display_shell_get_screen_resolution.txt",
+      "sha256": "0206359e5b16231371445b5a90a81af1eba753e1e0ba32221a217faabdba8223"
+    },
+    {
+      "name": "gimp_display_shell_scroll_center_image",
+      "source_path": "app/display/gimpdisplayshell-scroll.c",
+      "source_blob": "77fa7c1b9b0bbcdfb3d734c90d99f2e8ae9b8305",
+      "source_sha256": "d7f87567e504e8edbe0c9f8f776f1d2874299b784f82d0ebd7787192ac7d747b",
+      "first_line": 353,
+      "last_line": 386,
+      "file": "zoom-gimp_display_shell_scroll_center_image.txt",
+      "sha256": "d07efe1caea5733ef00dfefa00fe337387341b10827e5eff19b3258a886244ad"
+    },
+    {
+      "name": "gimp_display_shell_scroll_set_offset",
+      "source_path": "app/display/gimpdisplayshell-scroll.c",
+      "source_blob": "77fa7c1b9b0bbcdfb3d734c90d99f2e8ae9b8305",
+      "source_sha256": "d7f87567e504e8edbe0c9f8f776f1d2874299b784f82d0ebd7787192ac7d747b",
+      "first_line": 155,
+      "last_line": 182,
+      "file": "zoom-gimp_display_shell_scroll_set_offset.txt",
+      "sha256": "8db646457afda9b06cda087d6845127e13a48517e6e8ccb686d033d7081b0b03"
+    },
+    {
+      "name": "gimp_display_shell_scroll_clamp_offsets",
+      "source_path": "app/display/gimpdisplayshell-scroll.c",
+      "source_blob": "77fa7c1b9b0bbcdfb3d734c90d99f2e8ae9b8305",
+      "source_sha256": "d7f87567e504e8edbe0c9f8f776f1d2874299b784f82d0ebd7787192ac7d747b",
+      "first_line": 184,
+      "last_line": 268,
+      "file": "zoom-gimp_display_shell_scroll_clamp_offsets.txt",
+      "sha256": "3a2e700d9c4240f1ab559646f18bf4898245140ca945df75aa0b023f8126c5c8"
+    },
+    {
+      "name": "gimp_display_shell_scroll_clamp_and_update",
+      "source_path": "app/display/gimpdisplayshell-scroll.c",
+      "source_blob": "77fa7c1b9b0bbcdfb3d734c90d99f2e8ae9b8305",
+      "source_sha256": "d7f87567e504e8edbe0c9f8f776f1d2874299b784f82d0ebd7787192ac7d747b",
+      "first_line": 277,
+      "last_line": 282,
+      "file": "zoom-gimp_display_shell_scroll_clamp_and_update.txt",
+      "sha256": "fb7e4f5c00ae7680bca3283ec466445dc365e4d54d048dc6b4b37ac59f00b1b0"
+    },
+    {
+      "name": "gimp_display_shell_draw_get_scaled_image_size",
+      "source_path": "app/display/gimpdisplayshell-draw.c",
+      "source_blob": "b8c2d71bd6a9ddd65e79ddc2537af3c50a26b969",
+      "source_sha256": "8b88754cb2794f5154aa2bca7aa30e8dcc402ca538b8fe3ccfd07b26b756ebcd",
+      "first_line": 62,
+      "last_line": 73,
+      "file": "zoom-gimp_display_shell_draw_get_scaled_image_size.txt",
+      "sha256": "6bf7b7859579fca52523d517dbb0beeb7e5867fe8f0466f74f6d0d459d7de393"
+    },
+    {
+      "name": "gimp_display_shell_draw_get_scaled_image_size_for_scale",
+      "source_path": "app/display/gimpdisplayshell-draw.c",
+      "source_blob": "b8c2d71bd6a9ddd65e79ddc2537af3c50a26b969",
+      "source_sha256": "8b88754cb2794f5154aa2bca7aa30e8dcc402ca538b8fe3ccfd07b26b756ebcd",
+      "first_line": 83,
+      "last_line": 109,
+      "file": "zoom-gimp_display_shell_draw_get_scaled_image_size_for_scale.txt",
+      "sha256": "6302dbe3306c65e5e19fda7c98f28460941afe3bd5c13b0fe3f8343328abf51e"
+    },
+    {
+      "name": "gimp_display_shell_untransform_xy_f",
+      "source_path": "app/display/gimpdisplayshell-transform.c",
+      "source_blob": "11ec34bfee9b0ea7738994388e53bb59a3f50201",
+      "source_sha256": "0d39265a0c2256a0692f8b3e27616384d09a3daf0338ef181068deef6bf25c65",
+      "first_line": 264,
+      "last_line": 284,
+      "file": "zoom-gimp_display_shell_untransform_xy_f.txt",
+      "sha256": "a024a57fa62a93ec07690c53d9fcf5f8b3d5e6c50b2bc4f917be0cba6f815753"
+    },
+    {
+      "name": "gimp_display_shell_set_cairo_rotate",
+      "source_path": "app/display/gimpdisplayshell-rotate.c",
+      "source_blob": "25081806ecd255b3e54277cefc135ec08aea6488",
+      "source_sha256": "59374624ee30bd800d61677c6a120bcbe96ed9383be50431d70f32d506ab89e8",
+      "first_line": 45,
+      "last_line": 62,
+      "file": "zoom-gimp_display_shell_set_cairo_rotate.txt",
+      "sha256": "a13467967736451da0f22756587907727b4484e8475da10065fdfe0f19e362f2"
+    },
+    {
+      "name": "gimp_display_shell_scale_changed",
+      "source_path": "app/display/gimpdisplayshell.c",
+      "source_blob": "f8589c1f8bcbb12fc698d3ab9460ffa7e89c55e6",
+      "source_sha256": "889b1568b1b003973339a1c99d8219c812747e078f27dab0191f03b77a297d67",
+      "first_line": 1465,
+      "last_line": 1502,
+      "file": "zoom-gimp_display_shell_scale_changed.txt",
+      "sha256": "b089a73ad8a6142755517f52f7a07a685b3e1fb81b9a6f66aaabe20dda386468"
+    },
+    {
+      "name": "gimp_zoom_model_zoom",
+      "source_path": "libgimpwidgets/gimpzoommodel.c",
+      "source_blob": "caa557dff9d5a82a020a1f4a10b8d87ae6c7e300",
+      "source_sha256": "4255b685f1e4a98de45cc39b4cf6e970d483a9440f878b1101f981230b017a99",
+      "first_line": 340,
+      "last_line": 353,
+      "file": "zoom-gimp_zoom_model_zoom.txt",
+      "sha256": "c2e0c109247c439768fb126c6fe45a893b329d2a41bbfc45be035bde7fae31e9"
+    },
+    {
+      "name": "gimp_zoom_model_get_factor",
+      "source_path": "libgimpwidgets/gimpzoommodel.c",
+      "source_blob": "caa557dff9d5a82a020a1f4a10b8d87ae6c7e300",
+      "source_sha256": "4255b685f1e4a98de45cc39b4cf6e970d483a9440f878b1101f981230b017a99",
+      "first_line": 365,
+      "last_line": 371,
+      "file": "zoom-gimp_zoom_model_get_factor.txt",
+      "sha256": "8a4242162ae885f1f32398e8c07ade749d937af5eaa5db8cc890ded7e7d69a5b"
+    },
+    {
+      "name": "gimp_zoom_model_zoom_step",
+      "source_path": "libgimpwidgets/gimpzoommodel.c",
+      "source_blob": "caa557dff9d5a82a020a1f4a10b8d87ae6c7e300",
+      "source_sha256": "4255b685f1e4a98de45cc39b4cf6e970d483a9440f878b1101f981230b017a99",
+      "first_line": 590,
+      "last_line": 676,
+      "file": "zoom-gimp_zoom_model_zoom_step.txt",
+      "sha256": "277697fdfb7ba2176ef03f1c5be2ecf958725f05d545874393f442325c3a14ba"
+    },
+    {
+      "name": "gimp_zoom_model_set_property",
+      "source_path": "libgimpwidgets/gimpzoommodel.c",
+      "source_blob": "caa557dff9d5a82a020a1f4a10b8d87ae6c7e300",
+      "source_sha256": "4255b685f1e4a98de45cc39b4cf6e970d483a9440f878b1101f981230b017a99",
+      "first_line": 169,
+      "last_line": 220,
+      "file": "zoom-gimp_zoom_model_set_property.txt",
+      "sha256": "0c1c20082942a091b441e6c7ad85aab9d5628dea72daff99890d3c04edd3803b"
+    }
+  ],
+  "auxiliary_source": [
+    {
+      "source_path": "app/display/gimpdisplayshell.h",
+      "first_line": 23,
+      "last_line": 28,
+      "source_sha256": "e4c1d130dd77748c8bef25da88e25fc6c27545ef584f662a67a66befd2978826",
+      "file": "zoom-scale-macros.txt",
+      "sha256": "40c71e9a17589049825d345a8f361d5fc07ba3a7ccea876f9ab2c39df447a31d"
+    },
+    {
+      "source_path": "libgimpmath/gimpmath.h",
+      "first_line": 67,
+      "last_line": 77,
+      "source_sha256": "5be55b44288b5d3bac28e9fc51e5003af07734dc41b098f137e35ef6188f3ffe",
+      "file": "zoom-rint-macro.txt",
+      "sha256": "6abe78dc520a0559b9c7449b4cb6a7ff8e098b0af6ab3e03bea533d7d303b2eb"
+    },
+    {
+      "source_path": "app/display/gimpdisplayshell.c",
+      "first_line": 356,
+      "last_line": 360,
+      "source_sha256": "889b1568b1b003973339a1c99d8219c812747e078f27dab0191f03b77a297d67",
+      "file": "zoom-callback-wire.txt",
+      "sha256": "ccf16d37ad9f039321bc4b5fcbdf1f4e990e5aaf5334dc7695c209444024aa2c"
+    }
+  ]
+}

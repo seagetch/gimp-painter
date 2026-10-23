@@ -1,0 +1,12 @@
+void
+gimp_display_shell_draw_get_scaled_image_size (GimpDisplayShell *shell,
+                                               gint             *w,
+                                               gint             *h)
+{
+  g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
+
+  gimp_display_shell_draw_get_scaled_image_size_for_scale (shell,
+                                                           gimp_zoom_model_get_factor (shell->zoom),
+                                                           w,
+                                                           h);
+}

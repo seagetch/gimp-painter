@@ -1,0 +1,96 @@
+{
+  "scope": "Unchanged extracted old-source arithmetic with explicit boundary adapter; no old application/runtime. Seven normal+focused ASan/UBSan groups,7680 controlled portrait scenarios per run. GLib/GObject/Cairo uninstrumented;LSan off.",
+  "runs": [
+    {
+      "sanitized": false,
+      "exit_code": 0,
+      "stdout": "TAP version 14\n# random seed: R02Sb09a9003bf6579b50cf231875529a1f0\n1..7\n# Start of legacy-applied-zoom tests\nok 1 /legacy-applied-zoom/identity\nok 2 /legacy-applied-zoom/pointer-queue-event\nok 3 /legacy-applied-zoom/anisotropic\nok 4 /legacy-applied-zoom/rotation-mirror\nok 5 /legacy-applied-zoom/clamps\nok 6 /legacy-applied-zoom/starts-fit\n# 7680 controlled portrait scenarios (no old runtime)\nok 7 /legacy-applied-zoom/grid\n# End of legacy-applied-zoom tests\n",
+      "stderr": ""
+    },
+    {
+      "sanitized": true,
+      "exit_code": 0,
+      "stdout": "TAP version 14\n# random seed: R02Sa43abbe50b698bf0f1773a91c189e3a2\n1..7\n# Start of legacy-applied-zoom tests\nok 1 /legacy-applied-zoom/identity\nok 2 /legacy-applied-zoom/pointer-queue-event\nok 3 /legacy-applied-zoom/anisotropic\nok 4 /legacy-applied-zoom/rotation-mirror\nok 5 /legacy-applied-zoom/clamps\nok 6 /legacy-applied-zoom/starts-fit\n# 7680 controlled portrait scenarios (no old runtime)\nok 7 /legacy-applied-zoom/grid\n# End of legacy-applied-zoom tests\n",
+      "stderr": ""
+    }
+  ],
+  "negative_controls": [
+    {
+      "name": "round-instead-of-truncate",
+      "before": "target_offset_x = scale_x * image_focus_x - viewport_x;",
+      "after": "target_offset_x = RINT(scale_x * image_focus_x - viewport_x);",
+      "selected_test": "/legacy-applied-zoom/pointer-queue-event",
+      "exit_code": -6,
+      "stdout": "TAP version 14\n# random seed: R02Sfc93a8a18e9f8b8ea22f9eb99110fa6b\n# Start of legacy-applied-zoom tests\nnot ok /legacy-applied-zoom/pointer-queue-event - ERROR:<temporary>/round-instead-of-truncate/zoom-checks.c:5:exact: assertion failed (s->offset_x == x): (27 == 26)\nBail out!\n",
+      "stderr": "**\nERROR:<temporary>/round-instead-of-truncate/zoom-checks.c:5:exact: assertion failed (s->offset_x == x): (27 == 26)\n"
+    },
+    {
+      "name": "preclamp-request",
+      "before": "real_new_scale = new_scale;",
+      "after": "real_new_scale = CLAMP(new_scale,ZOOM_MIN,ZOOM_MAX);",
+      "selected_test": "/legacy-applied-zoom/clamps",
+      "exit_code": -6,
+      "stdout": "TAP version 14\n# random seed: R02S3ff80250850d18d7d3ce06c89e82a170\n# Start of legacy-applied-zoom tests\nnot ok /legacy-applied-zoom/clamps - ERROR:<temporary>/preclamp-request/zoom-checks.c:5:exact: assertion failed (s->offset_x == x): (5932 == 11884)\nBail out!\n",
+      "stderr": "**\nERROR:<temporary>/preclamp-request/zoom-checks.c:5:exact: assertion failed (s->offset_x == x): (5932 == 11884)\n"
+    },
+    {
+      "name": "omit-inverse",
+      "before": "if (shell->rotate_angle != 0.0 || shell->mirrored) {",
+      "after": "if (FALSE) {",
+      "selected_test": "/legacy-applied-zoom/rotation-mirror",
+      "exit_code": -6,
+      "stdout": "TAP version 14\n# random seed: R02S1a5aba286ef62e809480a797b7a23f27\n# Start of legacy-applied-zoom tests\nnot ok /legacy-applied-zoom/rotation-mirror - ERROR:<temporary>/omit-inverse/zoom-checks.c:5:exact: assertion failed (s->offset_x == x): (620 == 770)\nBail out!\n",
+      "stderr": "**\nERROR:<temporary>/omit-inverse/zoom-checks.c:5:exact: assertion failed (s->offset_x == x): (620 == 770)\n"
+    },
+    {
+      "name": "ignore-queued-x",
+      "before": "canvas_pointer_x = point->x;",
+      "after": "canvas_pointer_x = legacy_az_active->pointer_input.pointer_x;",
+      "selected_test": "/legacy-applied-zoom/pointer-queue-event",
+      "exit_code": -6,
+      "stdout": "TAP version 14\n# random seed: R02Sdfc75ca4d49f9926368fecedacb8c04b\n# Start of legacy-applied-zoom tests\nnot ok /legacy-applied-zoom/pointer-queue-event - ERROR:<temporary>/ignore-queued-x/zoom-checks.c:5:exact: assertion failed (s->offset_x == x): (26 == 46)\nBail out!\n",
+      "stderr": "**\nERROR:<temporary>/ignore-queued-x/zoom-checks.c:5:exact: assertion failed (s->offset_x == x): (26 == 46)\n"
+    }
+  ],
+  "source_sha256": {
+    "zoom-README.md": "ce5fdab693f7db78946424f43475cec2ad1fcc316af526b6a9f257f159f323ef",
+    "zoom-adapter-prelude.inc": "bcfb7897656902a1d2fc07ad9691edb66f4b050ae1e874ecbcc709b5eb886889",
+    "zoom-build-adapter.py": "21f793b8fc5734184737cf8b233fb9cffcdf385cee08ec5be8e20c03b0c11140",
+    "zoom-callback-wire.txt": "ccf16d37ad9f039321bc4b5fcbdf1f4e990e5aaf5334dc7695c209444024aa2c",
+    "zoom-checks.c": "371acef2eb46ddf39eeff9c2eb6dfd13e12ab211db589f0a1047918eb639cfa0",
+    "zoom-extract.py": "4e1327e633a1444d98899ac4a3824250e24bfd6c76e280808413de83983e1fc7",
+    "zoom-functions.inc": "66866ce77e7ab0c7ecb03fb3b4f45d3c24baab28c67b94a7beadabcd7c42702a",
+    "zoom-gimp_display_shell_calculate_scale_x_and_y.txt": "8775cb1a4be69c7f22029637f02aefab4af557d8341552547db3dba4c091a934",
+    "zoom-gimp_display_shell_draw_get_scaled_image_size.txt": "6bf7b7859579fca52523d517dbb0beeb7e5867fe8f0466f74f6d0d459d7de393",
+    "zoom-gimp_display_shell_draw_get_scaled_image_size_for_scale.txt": "6302dbe3306c65e5e19fda7c98f28460941afe3bd5c13b0fe3f8343328abf51e",
+    "zoom-gimp_display_shell_get_screen_resolution.txt": "0206359e5b16231371445b5a90a81af1eba753e1e0ba32221a217faabdba8223",
+    "zoom-gimp_display_shell_scale.txt": "bf6c811eb69826b266fbc70aab1b1681e87b83c3d2d16ef9c466b8a2c1a49bbd",
+    "zoom-gimp_display_shell_scale_by_values.txt": "fa2fb53cf729cbb6aa5e67e4f09206443dc60d00cfb9373b704efbc79981771a",
+    "zoom-gimp_display_shell_scale_changed.txt": "b089a73ad8a6142755517f52f7a07a685b3e1fb81b9a6f66aaabe20dda386468",
+    "zoom-gimp_display_shell_scale_get_image_center_viewport.txt": "47bcf59a643180e367cfed6d16fa2bb11d1a983d2af9fc395e844f53f7d9ac8e",
+    "zoom-gimp_display_shell_scale_get_zoom_focus.txt": "d5e2a47f70b16ceae9b2ecbc08b584381740a7d1e039401b8a8a3e553794e8d7",
+    "zoom-gimp_display_shell_scale_image_is_within_viewport.txt": "4185802f490b9bd9e6534e0386b9c6a1cd22d21792f0e0c554ffb139427102c8",
+    "zoom-gimp_display_shell_scale_image_starts_to_fit.txt": "9e836310a29a252c5821730ed3d887061f00ce21873145e23b334a087edfab15",
+    "zoom-gimp_display_shell_scale_image_stops_to_fit.txt": "bb27a7199ea16ce5ad2c95446a5389cc42ab35b9196137eda240b9a7e663b774",
+    "zoom-gimp_display_shell_scale_resize.txt": "2df7080abadd2793710b19deec3f4ffead76ea4d3bd9d8fb4f28950925e57dfb",
+    "zoom-gimp_display_shell_scale_to.txt": "4e078431b062f5d706e0ac31960bed555ddcf9375aa309b83820f83af5f469d4",
+    "zoom-gimp_display_shell_scale_viewport_coord_almost_centered.txt": "53971dd9e63f667fe79f63ccd3cb4a6f6611305f0d7a5903bb281ffe0529f254",
+    "zoom-gimp_display_shell_scroll_center_image.txt": "d07efe1caea5733ef00dfefa00fe337387341b10827e5eff19b3258a886244ad",
+    "zoom-gimp_display_shell_scroll_clamp_and_update.txt": "fb7e4f5c00ae7680bca3283ec466445dc365e4d54d048dc6b4b37ac59f00b1b0",
+    "zoom-gimp_display_shell_scroll_clamp_offsets.txt": "3a2e700d9c4240f1ab559646f18bf4898245140ca945df75aa0b023f8126c5c8",
+    "zoom-gimp_display_shell_scroll_set_offset.txt": "8db646457afda9b06cda087d6845127e13a48517e6e8ccb686d033d7081b0b03",
+    "zoom-gimp_display_shell_set_cairo_rotate.txt": "a13467967736451da0f22756587907727b4484e8475da10065fdfe0f19e362f2",
+    "zoom-gimp_display_shell_untransform_xy_f.txt": "a024a57fa62a93ec07690c53d9fcf5f8b3d5e6c50b2bc4f917be0cba6f815753",
+    "zoom-gimp_zoom_model_get_factor.txt": "8a4242162ae885f1f32398e8c07ade749d937af5eaa5db8cc890ded7e7d69a5b",
+    "zoom-gimp_zoom_model_set_property.txt": "0c1c20082942a091b441e6c7ad85aab9d5628dea72daff99890d3c04edd3803b",
+    "zoom-gimp_zoom_model_zoom.txt": "c2e0c109247c439768fb126c6fe45a893b329d2a41bbfc45be035bde7fae31e9",
+    "zoom-gimp_zoom_model_zoom_step.txt": "277697fdfb7ba2176ef03f1c5be2ecf958725f05d545874393f442325c3a14ba",
+    "zoom-oracle.inc": "5c474c849635786f30d2e70b6d52c612d2c8e1522fb116192e9fe57e8b698372",
+    "zoom-prototypes.inc": "e1c252f3a1f8afe60d45b621df49d15ee3ff6a51c523071b9563cc2a526014c4",
+    "zoom-rint-macro.txt": "6abe78dc520a0559b9c7449b4cb6a7ff8e098b0af6ab3e03bea533d7d303b2eb",
+    "zoom-run-checks.py": "42bca03646671cb25a03e3a1eb6ee3a6a95b77e0a0b1033675815c9e331f5f2b",
+    "zoom-scale-macros.txt": "40c71e9a17589049825d345a8f361d5fc07ba3a7ccea876f9ab2c39df447a31d",
+    "zoom-source-manifest.json": "4101f28d443daee808c2fd19e817660d69de6e0575affcc0a65b153a8b9526a1",
+    "zoom-verify.py": "a08216f5d4c15c082bf6ca41e5fa118e5a5c6996429f036e802d6a5c9fbe5b31"
+  }
+}

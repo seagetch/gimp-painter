@@ -260,7 +260,23 @@ gimp_canvas_path_get_extents (GimpCanvasItem *item)
       cairo_append_path (cr, private->path);
       cairo_restore (cr);
 
-      cairo_path_extents (cr, &x1, &y1, &x2, &y2);
+      /* PATH and OUTLINE retain Cairo's miter joins.  A sharp join can
+       * extend beyond the geometric path bounds by more than half the line
+       * width; radius padding alone leaves ink behind when hiding the item.
+       * Keep drawing unchanged and measure the actual outer stroke instead.
+       */
+      if (! private->filled &&
+          private->path_style != GIMP_PATH_STYLE_DEFAULT)
+        {
+          cairo_set_line_width (cr,
+                                private->path_style == GIMP_PATH_STYLE_PATH ?
+                                3.0 : 1.0);
+          cairo_stroke_extents (cr, &x1, &y1, &x2, &y2);
+        }
+      else
+        {
+          cairo_path_extents (cr, &x1, &y1, &x2, &y2);
+        }
 
       cairo_destroy (cr);
 
