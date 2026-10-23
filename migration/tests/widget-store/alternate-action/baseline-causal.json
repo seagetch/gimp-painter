@@ -1,0 +1,1138 @@
+{
+  "all_review_inputs_sha256": "efba55bcc4098e99e2af1d78d64ec9661f73b49e14d3955c2d05e34d7bc4c912",
+  "case_reviews": [
+    {
+      "ancillary_dummy_plugin_notice_lines": 68,
+      "ancillary_missing_application_icon_lines": 6,
+      "authenticated_terminal_stable_seals_verified": true,
+      "binary_sha256": "fb039da842018d64cf17640b59c595b5b3dd7ad35c14b8bd5c40362cc313ad06",
+      "build_capture_sha256": "79ae8665d9c6ec15a0a21a1ad1499bed9e151e901de503a54d01cfcdaf6d91a7",
+      "candidate_completion_witnesses": [
+        "alternate_finalization_live_button:1 kind=0"
+      ],
+      "case": "/editor-dropdown/alternate-finalization-live-button-dropdown",
+      "causal_diagnostic": "heap-use-after-free via GIMP_IS_ACTION -> gimp_action_get_private -> gimp_action_get_sensitive -> gimp_editor_button_extended_clicked; selected alternate_finalization_live_button:523",
+      "classification": "VERIFIED_CALLABLE_API_FINALIZED_ALTERNATE_REPRODUCER",
+      "mode": "asan",
+      "raw_record_sha256": "b49449856fdc17e1766edb2c1d83da688e5e0554d8a51e0b1cce14e908a61809",
+      "raw_result_sha256": "b6f853c573259f00674960d3ba4f5319fff4e2f4d37e9800e03781f58d397de2",
+      "result": "FAIL",
+      "returncode": -6,
+      "review_verified": true,
+      "run": "alternate-baseline-test-only-asan-alternate-finalization-live-button-dropdown",
+      "runtime_accepted": false,
+      "source80_sha256": "9a64bc24c81d7e1a88180e8eb91673a9c56fb7a570b629e99a3b9a09c6d8843b",
+      "source_boundary_line": 523,
+      "standard_asan_ubsan_no_leak_acceptance": true,
+      "tap_incomplete_due_to_causal_abort": true,
+      "tap_outcomes": [],
+      "tap_plans": [],
+      "witnesses_reached": [
+        "alternate_finalization_live_button:1 kind=0"
+      ]
+    },
+    {
+      "ancillary_dummy_plugin_notice_lines": 68,
+      "ancillary_missing_application_icon_lines": 6,
+      "authenticated_terminal_stable_seals_verified": true,
+      "binary_sha256": "fb039da842018d64cf17640b59c595b5b3dd7ad35c14b8bd5c40362cc313ad06",
+      "build_capture_sha256": "79ae8665d9c6ec15a0a21a1ad1499bed9e151e901de503a54d01cfcdaf6d91a7",
+      "candidate_completion_witnesses": [
+        "alternate_finalization_live_button:1 kind=1"
+      ],
+      "case": "/editor-dropdown/alternate-finalization-live-button-ordinary",
+      "causal_diagnostic": "heap-use-after-free via GIMP_IS_ACTION -> gimp_action_get_private -> gimp_action_get_sensitive -> gimp_editor_button_extended_clicked; selected alternate_finalization_live_button:523",
+      "classification": "VERIFIED_CALLABLE_API_FINALIZED_ALTERNATE_REPRODUCER",
+      "mode": "asan",
+      "raw_record_sha256": "d6ae03530fa980c4dfc39d108eac952f68bdbe956374042662c88cdfd90c4a5b",
+      "raw_result_sha256": "94c0bbb60752fdec2addf62ccd3681e95af9467c3d88161f30775ca8762a865e",
+      "result": "FAIL",
+      "returncode": -6,
+      "review_verified": true,
+      "run": "alternate-baseline-test-only-asan-alternate-finalization-live-button-ordinary",
+      "runtime_accepted": false,
+      "source80_sha256": "9a64bc24c81d7e1a88180e8eb91673a9c56fb7a570b629e99a3b9a09c6d8843b",
+      "source_boundary_line": 523,
+      "standard_asan_ubsan_no_leak_acceptance": true,
+      "tap_incomplete_due_to_causal_abort": true,
+      "tap_outcomes": [],
+      "tap_plans": [],
+      "witnesses_reached": [
+        "alternate_finalization_live_button:1 kind=1"
+      ]
+    },
+    {
+      "ancillary_dummy_plugin_notice_lines": 68,
+      "ancillary_missing_application_icon_lines": 6,
+      "authenticated_terminal_stable_seals_verified": true,
+      "binary_sha256": "fb039da842018d64cf17640b59c595b5b3dd7ad35c14b8bd5c40362cc313ad06",
+      "build_capture_sha256": "79ae8665d9c6ec15a0a21a1ad1499bed9e151e901de503a54d01cfcdaf6d91a7",
+      "candidate_completion_witnesses": [
+        "alternate_loss_preserves_precedence:1 kind=0",
+        "alternate_loss_preserves_precedence:2 kind=0"
+      ],
+      "case": "/editor-dropdown/alternate-loss-preserves-precedence-dropdown",
+      "causal_diagnostic": "heap-use-after-free via GIMP_IS_ACTION -> gimp_action_get_private -> gimp_action_get_sensitive -> gimp_editor_button_extended_clicked; selected alternate_loss_preserves_precedence:598",
+      "classification": "VERIFIED_CALLABLE_API_FINALIZED_ALTERNATE_REPRODUCER",
+      "mode": "asan",
+      "raw_record_sha256": "10763a8022056cf568eaf5ff2c007dabefb436b8c3ba19945fed59659eebd936",
+      "raw_result_sha256": "ebb6a031c90a4d0fd87df431eafeb0329c63accf8344e36e096b9ee18cee0b53",
+      "result": "FAIL",
+      "returncode": -6,
+      "review_verified": true,
+      "run": "alternate-baseline-test-only-asan-alternate-loss-preserves-precedence-dropdown",
+      "runtime_accepted": false,
+      "source80_sha256": "9a64bc24c81d7e1a88180e8eb91673a9c56fb7a570b629e99a3b9a09c6d8843b",
+      "source_boundary_line": 598,
+      "standard_asan_ubsan_no_leak_acceptance": true,
+      "tap_incomplete_due_to_causal_abort": true,
+      "tap_outcomes": [],
+      "tap_plans": [],
+      "witnesses_reached": [
+        "alternate_loss_preserves_precedence:1 kind=0"
+      ]
+    },
+    {
+      "ancillary_dummy_plugin_notice_lines": 68,
+      "ancillary_missing_application_icon_lines": 6,
+      "authenticated_terminal_stable_seals_verified": true,
+      "binary_sha256": "fb039da842018d64cf17640b59c595b5b3dd7ad35c14b8bd5c40362cc313ad06",
+      "build_capture_sha256": "79ae8665d9c6ec15a0a21a1ad1499bed9e151e901de503a54d01cfcdaf6d91a7",
+      "candidate_completion_witnesses": [
+        "alternate_loss_preserves_precedence:1 kind=1",
+        "alternate_loss_preserves_precedence:2 kind=1"
+      ],
+      "case": "/editor-dropdown/alternate-loss-preserves-precedence-ordinary",
+      "causal_diagnostic": "heap-use-after-free via GIMP_IS_ACTION -> gimp_action_get_private -> gimp_action_get_sensitive -> gimp_editor_button_extended_clicked; selected alternate_loss_preserves_precedence:598",
+      "classification": "VERIFIED_CALLABLE_API_FINALIZED_ALTERNATE_REPRODUCER",
+      "mode": "asan",
+      "raw_record_sha256": "6a43e0878e793e3f55b62e57ed065ac9de0acf4bb157f9bf7e886f400047c026",
+      "raw_result_sha256": "d00f1b168e5d57d3e71b287ac2f62ee7cdb2d80cd1b53503b3eac734287fb173",
+      "result": "FAIL",
+      "returncode": -6,
+      "review_verified": true,
+      "run": "alternate-baseline-test-only-asan-alternate-loss-preserves-precedence-ordinary",
+      "runtime_accepted": false,
+      "source80_sha256": "9a64bc24c81d7e1a88180e8eb91673a9c56fb7a570b629e99a3b9a09c6d8843b",
+      "source_boundary_line": 598,
+      "standard_asan_ubsan_no_leak_acceptance": true,
+      "tap_incomplete_due_to_causal_abort": true,
+      "tap_outcomes": [],
+      "tap_plans": [],
+      "witnesses_reached": [
+        "alternate_loss_preserves_precedence:1 kind=1"
+      ]
+    },
+    {
+      "ancillary_dummy_plugin_notice_lines": 68,
+      "ancillary_missing_application_icon_lines": 6,
+      "authenticated_terminal_stable_seals_verified": true,
+      "binary_sha256": "fb039da842018d64cf17640b59c595b5b3dd7ad35c14b8bd5c40362cc313ad06",
+      "build_capture_sha256": "79ae8665d9c6ec15a0a21a1ad1499bed9e151e901de503a54d01cfcdaf6d91a7",
+      "candidate_completion_witnesses": [
+        "alternate_manager_loss_live_button:1 kind=0"
+      ],
+      "case": "/editor-dropdown/alternate-manager-loss-live-button-dropdown",
+      "causal_diagnostic": "heap-use-after-free via GIMP_IS_ACTION -> gimp_action_get_private -> gimp_action_get_sensitive -> gimp_editor_button_extended_clicked; selected alternate_manager_loss_live_button:677",
+      "classification": "VERIFIED_CALLABLE_API_FINALIZED_ALTERNATE_REPRODUCER",
+      "mode": "asan",
+      "raw_record_sha256": "cc46341324de2c25966994e84f4c808bac5d2348bac5715311099f591dda1310",
+      "raw_result_sha256": "f7a7593f3c75ed39097345e2e71e851e20914be9b342a8cd3f6a27ab3560f77b",
+      "result": "FAIL",
+      "returncode": -6,
+      "review_verified": true,
+      "run": "alternate-baseline-test-only-asan-alternate-manager-loss-live-button-dropdown",
+      "runtime_accepted": false,
+      "source80_sha256": "9a64bc24c81d7e1a88180e8eb91673a9c56fb7a570b629e99a3b9a09c6d8843b",
+      "source_boundary_line": 677,
+      "standard_asan_ubsan_no_leak_acceptance": true,
+      "tap_incomplete_due_to_causal_abort": true,
+      "tap_outcomes": [],
+      "tap_plans": [],
+      "witnesses_reached": [
+        "alternate_manager_loss_live_button:1 kind=0"
+      ]
+    },
+    {
+      "ancillary_dummy_plugin_notice_lines": 68,
+      "ancillary_missing_application_icon_lines": 6,
+      "authenticated_terminal_stable_seals_verified": true,
+      "binary_sha256": "fb039da842018d64cf17640b59c595b5b3dd7ad35c14b8bd5c40362cc313ad06",
+      "build_capture_sha256": "79ae8665d9c6ec15a0a21a1ad1499bed9e151e901de503a54d01cfcdaf6d91a7",
+      "candidate_completion_witnesses": [
+        "alternate_manager_loss_live_button:1 kind=1"
+      ],
+      "case": "/editor-dropdown/alternate-manager-loss-live-button-ordinary",
+      "causal_diagnostic": "heap-use-after-free via GIMP_IS_ACTION -> gimp_action_get_private -> gimp_action_get_sensitive -> gimp_editor_button_extended_clicked; selected alternate_manager_loss_live_button:677",
+      "classification": "VERIFIED_CALLABLE_API_FINALIZED_ALTERNATE_REPRODUCER",
+      "mode": "asan",
+      "raw_record_sha256": "b09764cceb761884168e28830211e5ec540b4cdcae0333645826ba11eacef33e",
+      "raw_result_sha256": "52b58dec3b37814e09e45ff8435a6379bb05272862486212fc17e75198a0b390",
+      "result": "FAIL",
+      "returncode": -6,
+      "review_verified": true,
+      "run": "alternate-baseline-test-only-asan-alternate-manager-loss-live-button-ordinary",
+      "runtime_accepted": false,
+      "source80_sha256": "9a64bc24c81d7e1a88180e8eb91673a9c56fb7a570b629e99a3b9a09c6d8843b",
+      "source_boundary_line": 677,
+      "standard_asan_ubsan_no_leak_acceptance": true,
+      "tap_incomplete_due_to_causal_abort": true,
+      "tap_outcomes": [],
+      "tap_plans": [],
+      "witnesses_reached": [
+        "alternate_manager_loss_live_button:1 kind=1"
+      ]
+    },
+    {
+      "ancillary_dummy_plugin_notice_lines": 68,
+      "ancillary_missing_application_icon_lines": 6,
+      "authenticated_terminal_stable_seals_verified": true,
+      "binary_sha256": "fb039da842018d64cf17640b59c595b5b3dd7ad35c14b8bd5c40362cc313ad06",
+      "build_capture_sha256": "79ae8665d9c6ec15a0a21a1ad1499bed9e151e901de503a54d01cfcdaf6d91a7",
+      "candidate_completion_witnesses": [
+        "alternate_replacement_preserves_identity:1 kind=0"
+      ],
+      "case": "/editor-dropdown/alternate-replacement-preserves-identity-dropdown",
+      "causal_diagnostic": "heap-use-after-free via GIMP_IS_ACTION -> gimp_action_get_private -> gimp_action_get_sensitive -> gimp_editor_button_extended_clicked; selected alternate_replacement_preserves_identity:562",
+      "classification": "VERIFIED_CALLABLE_API_FINALIZED_ALTERNATE_REPRODUCER",
+      "mode": "asan",
+      "raw_record_sha256": "5614adccbc9d1847f7b896d4188b05f09210ac980143f1d0cc4e937f2f3f45c2",
+      "raw_result_sha256": "474fe51d644cced817223e3a190e69ced18b2fffe117f532bfe579f3ed44c5a5",
+      "result": "FAIL",
+      "returncode": -6,
+      "review_verified": true,
+      "run": "alternate-baseline-test-only-asan-alternate-replacement-preserves-identity-dropdown",
+      "runtime_accepted": false,
+      "source80_sha256": "9a64bc24c81d7e1a88180e8eb91673a9c56fb7a570b629e99a3b9a09c6d8843b",
+      "source_boundary_line": 562,
+      "standard_asan_ubsan_no_leak_acceptance": true,
+      "tap_incomplete_due_to_causal_abort": true,
+      "tap_outcomes": [],
+      "tap_plans": [],
+      "witnesses_reached": [
+        "alternate_replacement_preserves_identity:1 kind=0"
+      ]
+    },
+    {
+      "ancillary_dummy_plugin_notice_lines": 68,
+      "ancillary_missing_application_icon_lines": 6,
+      "authenticated_terminal_stable_seals_verified": true,
+      "binary_sha256": "fb039da842018d64cf17640b59c595b5b3dd7ad35c14b8bd5c40362cc313ad06",
+      "build_capture_sha256": "79ae8665d9c6ec15a0a21a1ad1499bed9e151e901de503a54d01cfcdaf6d91a7",
+      "candidate_completion_witnesses": [
+        "alternate_replacement_preserves_identity:1 kind=1"
+      ],
+      "case": "/editor-dropdown/alternate-replacement-preserves-identity-ordinary",
+      "causal_diagnostic": "heap-use-after-free via GIMP_IS_ACTION -> gimp_action_get_private -> gimp_action_get_sensitive -> gimp_editor_button_extended_clicked; selected alternate_replacement_preserves_identity:562",
+      "classification": "VERIFIED_CALLABLE_API_FINALIZED_ALTERNATE_REPRODUCER",
+      "mode": "asan",
+      "raw_record_sha256": "f1640e28c1973038af4cca7854bca9fa6388b2b4428fd18f043f2c904bf5b1dc",
+      "raw_result_sha256": "2a9ad3fd1b5370295acaf5a161598fe2dbc24379985e13a0bc284ee8a6d31a6e",
+      "result": "FAIL",
+      "returncode": -6,
+      "review_verified": true,
+      "run": "alternate-baseline-test-only-asan-alternate-replacement-preserves-identity-ordinary",
+      "runtime_accepted": false,
+      "source80_sha256": "9a64bc24c81d7e1a88180e8eb91673a9c56fb7a570b629e99a3b9a09c6d8843b",
+      "source_boundary_line": 562,
+      "standard_asan_ubsan_no_leak_acceptance": true,
+      "tap_incomplete_due_to_causal_abort": true,
+      "tap_outcomes": [],
+      "tap_plans": [],
+      "witnesses_reached": [
+        "alternate_replacement_preserves_identity:1 kind=1"
+      ]
+    },
+    {
+      "ancillary_dummy_plugin_notice_lines": 68,
+      "ancillary_missing_application_icon_lines": 6,
+      "authenticated_terminal_stable_seals_verified": true,
+      "binary_sha256": "fb039da842018d64cf17640b59c595b5b3dd7ad35c14b8bd5c40362cc313ad06",
+      "build_capture_sha256": "79ae8665d9c6ec15a0a21a1ad1499bed9e151e901de503a54d01cfcdaf6d91a7",
+      "candidate_completion_witnesses": [
+        "alternate_retained_destroyed_button:1 kind=0"
+      ],
+      "case": "/editor-dropdown/alternate-retained-destroyed-button-dropdown",
+      "causal_diagnostic": null,
+      "classification": "VERIFIED_BASELINE_POSITIVE_CONTROL",
+      "mode": "asan",
+      "raw_record_sha256": "01674b8f36a23e4b40a0b87063a1b340eaffefb268307e8c88b88ce041679731",
+      "raw_result_sha256": "ef7dad4f55f2ce93981c35b8930d5b1c976ea49b56831c4532bce86dbbbf5bd5",
+      "result": "OK",
+      "returncode": 0,
+      "review_verified": true,
+      "run": "alternate-baseline-test-only-asan-alternate-retained-destroyed-button-dropdown",
+      "runtime_accepted": false,
+      "source80_sha256": "9a64bc24c81d7e1a88180e8eb91673a9c56fb7a570b629e99a3b9a09c6d8843b",
+      "source_boundary_line": null,
+      "standard_asan_ubsan_no_leak_acceptance": true,
+      "tap_incomplete_due_to_causal_abort": false,
+      "tap_outcomes": [
+        "ok 1 /editor-dropdown/alternate-retained-destroyed-button-dropdown"
+      ],
+      "tap_plans": [
+        "1..1"
+      ],
+      "witnesses_reached": [
+        "alternate_retained_destroyed_button:1 kind=0"
+      ]
+    },
+    {
+      "ancillary_dummy_plugin_notice_lines": 68,
+      "ancillary_missing_application_icon_lines": 6,
+      "authenticated_terminal_stable_seals_verified": true,
+      "binary_sha256": "fb039da842018d64cf17640b59c595b5b3dd7ad35c14b8bd5c40362cc313ad06",
+      "build_capture_sha256": "79ae8665d9c6ec15a0a21a1ad1499bed9e151e901de503a54d01cfcdaf6d91a7",
+      "candidate_completion_witnesses": [
+        "alternate_retained_destroyed_button:1 kind=1"
+      ],
+      "case": "/editor-dropdown/alternate-retained-destroyed-button-ordinary",
+      "causal_diagnostic": null,
+      "classification": "VERIFIED_BASELINE_POSITIVE_CONTROL",
+      "mode": "asan",
+      "raw_record_sha256": "a22c8109480c23205fe8439d7efdb2e470640de7b3e3fb13c3cd154c73997bde",
+      "raw_result_sha256": "09bcad69dea6534958cd1fc69c59c089911dcd33e04fc22475bb50d729793b76",
+      "result": "OK",
+      "returncode": 0,
+      "review_verified": true,
+      "run": "alternate-baseline-test-only-asan-alternate-retained-destroyed-button-ordinary",
+      "runtime_accepted": false,
+      "source80_sha256": "9a64bc24c81d7e1a88180e8eb91673a9c56fb7a570b629e99a3b9a09c6d8843b",
+      "source_boundary_line": null,
+      "standard_asan_ubsan_no_leak_acceptance": true,
+      "tap_incomplete_due_to_causal_abort": false,
+      "tap_outcomes": [
+        "ok 1 /editor-dropdown/alternate-retained-destroyed-button-ordinary"
+      ],
+      "tap_plans": [
+        "1..1"
+      ],
+      "witnesses_reached": [
+        "alternate_retained_destroyed_button:1 kind=1"
+      ]
+    },
+    {
+      "ancillary_dummy_plugin_notice_lines": 68,
+      "ancillary_missing_application_icon_lines": 6,
+      "authenticated_terminal_stable_seals_verified": true,
+      "binary_sha256": "fb039da842018d64cf17640b59c595b5b3dd7ad35c14b8bd5c40362cc313ad06",
+      "build_capture_sha256": "79ae8665d9c6ec15a0a21a1ad1499bed9e151e901de503a54d01cfcdaf6d91a7",
+      "candidate_completion_witnesses": [
+        "alternate_self_removal_and_owner_loss:1 kind=0"
+      ],
+      "case": "/editor-dropdown/alternate-self-removal-and-owner-loss-dropdown-destroyed-owner",
+      "causal_diagnostic": null,
+      "classification": "VERIFIED_BASELINE_POSITIVE_CONTROL",
+      "mode": "asan",
+      "raw_record_sha256": "29611be342363be94c278d1fa3e637e1737f6e2e97a07d3f24a985b237d2a6bd",
+      "raw_result_sha256": "65b038a9d48199cb77675c0c1b678083e4d0ccfd870185fca43d45103a29814d",
+      "result": "OK",
+      "returncode": 0,
+      "review_verified": true,
+      "run": "alternate-baseline-test-only-asan-alternate-self-removal-and-owner-loss-dropdown-destroyed-owner",
+      "runtime_accepted": false,
+      "source80_sha256": "9a64bc24c81d7e1a88180e8eb91673a9c56fb7a570b629e99a3b9a09c6d8843b",
+      "source_boundary_line": null,
+      "standard_asan_ubsan_no_leak_acceptance": true,
+      "tap_incomplete_due_to_causal_abort": false,
+      "tap_outcomes": [
+        "ok 1 /editor-dropdown/alternate-self-removal-and-owner-loss-dropdown-destroyed-owner"
+      ],
+      "tap_plans": [
+        "1..1"
+      ],
+      "witnesses_reached": [
+        "alternate_self_removal_and_owner_loss:1 kind=0"
+      ]
+    },
+    {
+      "ancillary_dummy_plugin_notice_lines": 68,
+      "ancillary_missing_application_icon_lines": 6,
+      "authenticated_terminal_stable_seals_verified": true,
+      "binary_sha256": "fb039da842018d64cf17640b59c595b5b3dd7ad35c14b8bd5c40362cc313ad06",
+      "build_capture_sha256": "79ae8665d9c6ec15a0a21a1ad1499bed9e151e901de503a54d01cfcdaf6d91a7",
+      "candidate_completion_witnesses": [
+        "alternate_self_removal_and_owner_loss:1 kind=0"
+      ],
+      "case": "/editor-dropdown/alternate-self-removal-and-owner-loss-dropdown-surviving-owner",
+      "causal_diagnostic": "heap-use-after-free via GIMP_IS_ACTION -> gimp_action_get_private -> gimp_action_get_sensitive -> gimp_editor_button_extended_clicked; selected alternate_self_removal_and_owner_loss:647",
+      "classification": "VERIFIED_CALLABLE_API_FINALIZED_ALTERNATE_REPRODUCER",
+      "mode": "asan",
+      "raw_record_sha256": "0b4f98a04e88950f458b5de78dd09e9ababbe2a3d2f584887c6cb67f765ff868",
+      "raw_result_sha256": "d75b7771c1fe8a4c14779e9b71f39ff99e2af63c4564acf907c28a72a745d7ae",
+      "result": "FAIL",
+      "returncode": -6,
+      "review_verified": true,
+      "run": "alternate-baseline-test-only-asan-alternate-self-removal-and-owner-loss-dropdown-surviving-owner",
+      "runtime_accepted": false,
+      "source80_sha256": "9a64bc24c81d7e1a88180e8eb91673a9c56fb7a570b629e99a3b9a09c6d8843b",
+      "source_boundary_line": 647,
+      "standard_asan_ubsan_no_leak_acceptance": true,
+      "tap_incomplete_due_to_causal_abort": true,
+      "tap_outcomes": [],
+      "tap_plans": [],
+      "witnesses_reached": [
+        "alternate_self_removal_and_owner_loss:1 kind=0"
+      ]
+    },
+    {
+      "ancillary_dummy_plugin_notice_lines": 68,
+      "ancillary_missing_application_icon_lines": 6,
+      "authenticated_terminal_stable_seals_verified": true,
+      "binary_sha256": "fb039da842018d64cf17640b59c595b5b3dd7ad35c14b8bd5c40362cc313ad06",
+      "build_capture_sha256": "79ae8665d9c6ec15a0a21a1ad1499bed9e151e901de503a54d01cfcdaf6d91a7",
+      "candidate_completion_witnesses": [
+        "alternate_self_removal_and_owner_loss:1 kind=1"
+      ],
+      "case": "/editor-dropdown/alternate-self-removal-and-owner-loss-ordinary-destroyed-owner",
+      "causal_diagnostic": null,
+      "classification": "VERIFIED_BASELINE_POSITIVE_CONTROL",
+      "mode": "asan",
+      "raw_record_sha256": "bd6bd8cfd18d88f9ac629adcb9beca18fed424e395685223912cc398a6aafeac",
+      "raw_result_sha256": "5f7ba461873a30eb26a4afe1b989066386a842ee2c9cd5d6030529005f79af4e",
+      "result": "OK",
+      "returncode": 0,
+      "review_verified": true,
+      "run": "alternate-baseline-test-only-asan-alternate-self-removal-and-owner-loss-ordinary-destroyed-owner",
+      "runtime_accepted": false,
+      "source80_sha256": "9a64bc24c81d7e1a88180e8eb91673a9c56fb7a570b629e99a3b9a09c6d8843b",
+      "source_boundary_line": null,
+      "standard_asan_ubsan_no_leak_acceptance": true,
+      "tap_incomplete_due_to_causal_abort": false,
+      "tap_outcomes": [
+        "ok 1 /editor-dropdown/alternate-self-removal-and-owner-loss-ordinary-destroyed-owner"
+      ],
+      "tap_plans": [
+        "1..1"
+      ],
+      "witnesses_reached": [
+        "alternate_self_removal_and_owner_loss:1 kind=1"
+      ]
+    },
+    {
+      "ancillary_dummy_plugin_notice_lines": 68,
+      "ancillary_missing_application_icon_lines": 6,
+      "authenticated_terminal_stable_seals_verified": true,
+      "binary_sha256": "fb039da842018d64cf17640b59c595b5b3dd7ad35c14b8bd5c40362cc313ad06",
+      "build_capture_sha256": "79ae8665d9c6ec15a0a21a1ad1499bed9e151e901de503a54d01cfcdaf6d91a7",
+      "candidate_completion_witnesses": [
+        "alternate_self_removal_and_owner_loss:1 kind=1"
+      ],
+      "case": "/editor-dropdown/alternate-self-removal-and-owner-loss-ordinary-surviving-owner",
+      "causal_diagnostic": "heap-use-after-free via GIMP_IS_ACTION -> gimp_action_get_private -> gimp_action_get_sensitive -> gimp_editor_button_extended_clicked; selected alternate_self_removal_and_owner_loss:647",
+      "classification": "VERIFIED_CALLABLE_API_FINALIZED_ALTERNATE_REPRODUCER",
+      "mode": "asan",
+      "raw_record_sha256": "8367d0f40a5a334e5bcd7d0bd56bbc732c6a6aac0a4dba58a81d4a6496e8eb6c",
+      "raw_result_sha256": "c7523fdb5c449b340c755b3bdc733a585249ba63979973670da8ed0bd9e3fb04",
+      "result": "FAIL",
+      "returncode": -6,
+      "review_verified": true,
+      "run": "alternate-baseline-test-only-asan-alternate-self-removal-and-owner-loss-ordinary-surviving-owner",
+      "runtime_accepted": false,
+      "source80_sha256": "9a64bc24c81d7e1a88180e8eb91673a9c56fb7a570b629e99a3b9a09c6d8843b",
+      "source_boundary_line": 647,
+      "standard_asan_ubsan_no_leak_acceptance": true,
+      "tap_incomplete_due_to_causal_abort": true,
+      "tap_outcomes": [],
+      "tap_plans": [],
+      "witnesses_reached": [
+        "alternate_self_removal_and_owner_loss:1 kind=1"
+      ]
+    },
+    {
+      "ancillary_dummy_plugin_notice_lines": 68,
+      "ancillary_missing_application_icon_lines": 6,
+      "authenticated_terminal_stable_seals_verified": true,
+      "binary_sha256": "fb039da842018d64cf17640b59c595b5b3dd7ad35c14b8bd5c40362cc313ad06",
+      "build_capture_sha256": "79ae8665d9c6ec15a0a21a1ad1499bed9e151e901de503a54d01cfcdaf6d91a7",
+      "candidate_completion_witnesses": [],
+      "case": "/editor-dropdown/native-action-contract",
+      "causal_diagnostic": null,
+      "classification": "VERIFIED_BASELINE_POSITIVE_CONTROL",
+      "mode": "asan",
+      "raw_record_sha256": "0e7a00cb488f2faa554864b06f09e2d9ab38d014080f2dd69802e01ec70f3baa",
+      "raw_result_sha256": "9760b7a977bc7c01f8583459bf7f08a61f915ad35c591ae1958c2defbebe2c5e",
+      "result": "OK",
+      "returncode": 0,
+      "review_verified": true,
+      "run": "alternate-baseline-test-only-asan-native-action-contract",
+      "runtime_accepted": false,
+      "source80_sha256": "9a64bc24c81d7e1a88180e8eb91673a9c56fb7a570b629e99a3b9a09c6d8843b",
+      "source_boundary_line": null,
+      "standard_asan_ubsan_no_leak_acceptance": true,
+      "tap_incomplete_due_to_causal_abort": false,
+      "tap_outcomes": [
+        "ok 1 /editor-dropdown/native-action-contract"
+      ],
+      "tap_plans": [
+        "1..1"
+      ],
+      "witnesses_reached": []
+    },
+    {
+      "ancillary_dummy_plugin_notice_lines": 68,
+      "ancillary_missing_application_icon_lines": 6,
+      "authenticated_terminal_stable_seals_verified": true,
+      "binary_sha256": "fb039da842018d64cf17640b59c595b5b3dd7ad35c14b8bd5c40362cc313ad06",
+      "build_capture_sha256": "79ae8665d9c6ec15a0a21a1ad1499bed9e151e901de503a54d01cfcdaf6d91a7",
+      "candidate_completion_witnesses": [],
+      "case": "/editor-dropdown/ordinary-action-control",
+      "causal_diagnostic": null,
+      "classification": "VERIFIED_BASELINE_POSITIVE_CONTROL",
+      "mode": "asan",
+      "raw_record_sha256": "62aef0bc6c77f92ba9ea74855a4862b42598b98e854d47aca143cb88110093a8",
+      "raw_result_sha256": "0454372e3bdd167ee79e96897d0de64e74070725467b20b028279817e3328fce",
+      "result": "OK",
+      "returncode": 0,
+      "review_verified": true,
+      "run": "alternate-baseline-test-only-asan-ordinary-action-control",
+      "runtime_accepted": false,
+      "source80_sha256": "9a64bc24c81d7e1a88180e8eb91673a9c56fb7a570b629e99a3b9a09c6d8843b",
+      "source_boundary_line": null,
+      "standard_asan_ubsan_no_leak_acceptance": true,
+      "tap_incomplete_due_to_causal_abort": false,
+      "tap_outcomes": [
+        "ok 1 /editor-dropdown/ordinary-action-control"
+      ],
+      "tap_plans": [
+        "1..1"
+      ],
+      "witnesses_reached": []
+    },
+    {
+      "ancillary_dummy_plugin_notice_lines": 68,
+      "ancillary_missing_application_icon_lines": 6,
+      "authenticated_terminal_stable_seals_verified": true,
+      "binary_sha256": "25189709f4fd31a780ae13685326463c830aecb50847217ddc0fb8a71e065f4c",
+      "build_capture_sha256": "1a995bc80f87539df913c0d9c109234c1a96f21749550addcef359f2161f834f",
+      "candidate_completion_witnesses": [
+        "alternate_finalization_live_button:1 kind=0"
+      ],
+      "case": "/editor-dropdown/alternate-finalization-live-button-dropdown",
+      "causal_diagnostic": "not ok /editor-dropdown/alternate-finalization-live-button-dropdown - Gimp-Widgets-FATAL-CRITICAL: gimp_action_get_private: assertion 'GIMP_IS_ACTION (action)' failed",
+      "classification": "VERIFIED_CALLABLE_API_FINALIZED_ALTERNATE_REPRODUCER",
+      "mode": "native",
+      "raw_record_sha256": "965fd4e807e6d38f603a88d95b27fcfc9b0658c3a0ea6cd7f1a9a9bb71e9d448",
+      "raw_result_sha256": "b4cb387121a7fc212d109cfd4acd510acaef894fa24f3d5ede1709bc761e5900",
+      "result": "FAIL",
+      "returncode": -5,
+      "review_verified": true,
+      "run": "alternate-baseline-test-only-native-alternate-finalization-live-button-dropdown",
+      "runtime_accepted": false,
+      "source80_sha256": "9a64bc24c81d7e1a88180e8eb91673a9c56fb7a570b629e99a3b9a09c6d8843b",
+      "source_boundary_line": 523,
+      "standard_asan_ubsan_no_leak_acceptance": false,
+      "tap_incomplete_due_to_causal_abort": true,
+      "tap_outcomes": [
+        "not ok /editor-dropdown/alternate-finalization-live-button-dropdown - Gimp-Widgets-FATAL-CRITICAL: gimp_action_get_private: assertion 'GIMP_IS_ACTION (action)' failed"
+      ],
+      "tap_plans": [],
+      "witnesses_reached": [
+        "alternate_finalization_live_button:1 kind=0"
+      ]
+    },
+    {
+      "ancillary_dummy_plugin_notice_lines": 68,
+      "ancillary_missing_application_icon_lines": 6,
+      "authenticated_terminal_stable_seals_verified": true,
+      "binary_sha256": "25189709f4fd31a780ae13685326463c830aecb50847217ddc0fb8a71e065f4c",
+      "build_capture_sha256": "1a995bc80f87539df913c0d9c109234c1a96f21749550addcef359f2161f834f",
+      "candidate_completion_witnesses": [
+        "alternate_finalization_live_button:1 kind=1"
+      ],
+      "case": "/editor-dropdown/alternate-finalization-live-button-ordinary",
+      "causal_diagnostic": "not ok /editor-dropdown/alternate-finalization-live-button-ordinary - Gimp-Widgets-FATAL-CRITICAL: gimp_action_get_private: assertion 'GIMP_IS_ACTION (action)' failed",
+      "classification": "VERIFIED_CALLABLE_API_FINALIZED_ALTERNATE_REPRODUCER",
+      "mode": "native",
+      "raw_record_sha256": "d8ccff8a6951a83a6df65d34e4aab1248675f7d380176096e3eac20047a548b2",
+      "raw_result_sha256": "566d9263e2c4773022bcf761e9849c8a52cea847d61e04cfe9bb08cb10b068ac",
+      "result": "FAIL",
+      "returncode": -5,
+      "review_verified": true,
+      "run": "alternate-baseline-test-only-native-alternate-finalization-live-button-ordinary",
+      "runtime_accepted": false,
+      "source80_sha256": "9a64bc24c81d7e1a88180e8eb91673a9c56fb7a570b629e99a3b9a09c6d8843b",
+      "source_boundary_line": 523,
+      "standard_asan_ubsan_no_leak_acceptance": false,
+      "tap_incomplete_due_to_causal_abort": true,
+      "tap_outcomes": [
+        "not ok /editor-dropdown/alternate-finalization-live-button-ordinary - Gimp-Widgets-FATAL-CRITICAL: gimp_action_get_private: assertion 'GIMP_IS_ACTION (action)' failed"
+      ],
+      "tap_plans": [],
+      "witnesses_reached": [
+        "alternate_finalization_live_button:1 kind=1"
+      ]
+    },
+    {
+      "ancillary_dummy_plugin_notice_lines": 68,
+      "ancillary_missing_application_icon_lines": 6,
+      "authenticated_terminal_stable_seals_verified": true,
+      "binary_sha256": "25189709f4fd31a780ae13685326463c830aecb50847217ddc0fb8a71e065f4c",
+      "build_capture_sha256": "1a995bc80f87539df913c0d9c109234c1a96f21749550addcef359f2161f834f",
+      "candidate_completion_witnesses": [
+        "alternate_loss_preserves_precedence:1 kind=0",
+        "alternate_loss_preserves_precedence:2 kind=0"
+      ],
+      "case": "/editor-dropdown/alternate-loss-preserves-precedence-dropdown",
+      "causal_diagnostic": "not ok /editor-dropdown/alternate-loss-preserves-precedence-dropdown - Gimp-Widgets-FATAL-CRITICAL: gimp_action_get_private: assertion 'GIMP_IS_ACTION (action)' failed",
+      "classification": "VERIFIED_CALLABLE_API_FINALIZED_ALTERNATE_REPRODUCER",
+      "mode": "native",
+      "raw_record_sha256": "f321d56e3712079dcbb550e9fecf045bba125178dc39f316e99a7f6cd0a5df66",
+      "raw_result_sha256": "5aae6692827df1e85f5cd405c4db362d65617e1effbd88dfe235e1f7c550361f",
+      "result": "FAIL",
+      "returncode": -5,
+      "review_verified": true,
+      "run": "alternate-baseline-test-only-native-alternate-loss-preserves-precedence-dropdown",
+      "runtime_accepted": false,
+      "source80_sha256": "9a64bc24c81d7e1a88180e8eb91673a9c56fb7a570b629e99a3b9a09c6d8843b",
+      "source_boundary_line": 598,
+      "standard_asan_ubsan_no_leak_acceptance": false,
+      "tap_incomplete_due_to_causal_abort": true,
+      "tap_outcomes": [
+        "not ok /editor-dropdown/alternate-loss-preserves-precedence-dropdown - Gimp-Widgets-FATAL-CRITICAL: gimp_action_get_private: assertion 'GIMP_IS_ACTION (action)' failed"
+      ],
+      "tap_plans": [],
+      "witnesses_reached": [
+        "alternate_loss_preserves_precedence:1 kind=0"
+      ]
+    },
+    {
+      "ancillary_dummy_plugin_notice_lines": 68,
+      "ancillary_missing_application_icon_lines": 6,
+      "authenticated_terminal_stable_seals_verified": true,
+      "binary_sha256": "25189709f4fd31a780ae13685326463c830aecb50847217ddc0fb8a71e065f4c",
+      "build_capture_sha256": "1a995bc80f87539df913c0d9c109234c1a96f21749550addcef359f2161f834f",
+      "candidate_completion_witnesses": [
+        "alternate_loss_preserves_precedence:1 kind=1",
+        "alternate_loss_preserves_precedence:2 kind=1"
+      ],
+      "case": "/editor-dropdown/alternate-loss-preserves-precedence-ordinary",
+      "causal_diagnostic": "not ok /editor-dropdown/alternate-loss-preserves-precedence-ordinary - Gimp-Widgets-FATAL-CRITICAL: gimp_action_get_private: assertion 'GIMP_IS_ACTION (action)' failed",
+      "classification": "VERIFIED_CALLABLE_API_FINALIZED_ALTERNATE_REPRODUCER",
+      "mode": "native",
+      "raw_record_sha256": "14b4960ffd66f31a8ab577627a0d4c4f5464fd1c59d5c05a76b2386175126f91",
+      "raw_result_sha256": "309fa2657116eb731e3cfa4ed9e8ca03c456ccacccb6ef03db05e26e1107b3c7",
+      "result": "FAIL",
+      "returncode": -5,
+      "review_verified": true,
+      "run": "alternate-baseline-test-only-native-alternate-loss-preserves-precedence-ordinary",
+      "runtime_accepted": false,
+      "source80_sha256": "9a64bc24c81d7e1a88180e8eb91673a9c56fb7a570b629e99a3b9a09c6d8843b",
+      "source_boundary_line": 598,
+      "standard_asan_ubsan_no_leak_acceptance": false,
+      "tap_incomplete_due_to_causal_abort": true,
+      "tap_outcomes": [
+        "not ok /editor-dropdown/alternate-loss-preserves-precedence-ordinary - Gimp-Widgets-FATAL-CRITICAL: gimp_action_get_private: assertion 'GIMP_IS_ACTION (action)' failed"
+      ],
+      "tap_plans": [],
+      "witnesses_reached": [
+        "alternate_loss_preserves_precedence:1 kind=1"
+      ]
+    },
+    {
+      "ancillary_dummy_plugin_notice_lines": 68,
+      "ancillary_missing_application_icon_lines": 6,
+      "authenticated_terminal_stable_seals_verified": true,
+      "binary_sha256": "25189709f4fd31a780ae13685326463c830aecb50847217ddc0fb8a71e065f4c",
+      "build_capture_sha256": "1a995bc80f87539df913c0d9c109234c1a96f21749550addcef359f2161f834f",
+      "candidate_completion_witnesses": [
+        "alternate_manager_loss_live_button:1 kind=0"
+      ],
+      "case": "/editor-dropdown/alternate-manager-loss-live-button-dropdown",
+      "causal_diagnostic": "not ok /editor-dropdown/alternate-manager-loss-live-button-dropdown - Gimp-Widgets-FATAL-CRITICAL: gimp_action_get_private: assertion 'GIMP_IS_ACTION (action)' failed",
+      "classification": "VERIFIED_CALLABLE_API_FINALIZED_ALTERNATE_REPRODUCER",
+      "mode": "native",
+      "raw_record_sha256": "41530b232ec2b592c0685e3bca327b61ebf6abd99a2366c79636c8487abdfcb4",
+      "raw_result_sha256": "689a2b8b3f28282a04067d78a70e2bbcadc347b7c1425a06cdd71225b4c2e2c3",
+      "result": "FAIL",
+      "returncode": -5,
+      "review_verified": true,
+      "run": "alternate-baseline-test-only-native-alternate-manager-loss-live-button-dropdown",
+      "runtime_accepted": false,
+      "source80_sha256": "9a64bc24c81d7e1a88180e8eb91673a9c56fb7a570b629e99a3b9a09c6d8843b",
+      "source_boundary_line": 677,
+      "standard_asan_ubsan_no_leak_acceptance": false,
+      "tap_incomplete_due_to_causal_abort": true,
+      "tap_outcomes": [
+        "not ok /editor-dropdown/alternate-manager-loss-live-button-dropdown - Gimp-Widgets-FATAL-CRITICAL: gimp_action_get_private: assertion 'GIMP_IS_ACTION (action)' failed"
+      ],
+      "tap_plans": [],
+      "witnesses_reached": [
+        "alternate_manager_loss_live_button:1 kind=0"
+      ]
+    },
+    {
+      "ancillary_dummy_plugin_notice_lines": 68,
+      "ancillary_missing_application_icon_lines": 6,
+      "authenticated_terminal_stable_seals_verified": true,
+      "binary_sha256": "25189709f4fd31a780ae13685326463c830aecb50847217ddc0fb8a71e065f4c",
+      "build_capture_sha256": "1a995bc80f87539df913c0d9c109234c1a96f21749550addcef359f2161f834f",
+      "candidate_completion_witnesses": [
+        "alternate_manager_loss_live_button:1 kind=1"
+      ],
+      "case": "/editor-dropdown/alternate-manager-loss-live-button-ordinary",
+      "causal_diagnostic": "not ok /editor-dropdown/alternate-manager-loss-live-button-ordinary - Gimp-Widgets-FATAL-CRITICAL: gimp_action_get_private: assertion 'GIMP_IS_ACTION (action)' failed",
+      "classification": "VERIFIED_CALLABLE_API_FINALIZED_ALTERNATE_REPRODUCER",
+      "mode": "native",
+      "raw_record_sha256": "1882211a6048e44107bad17931b8d970d849ce02320fff8c40a207d4d0fb5a84",
+      "raw_result_sha256": "7da9676bb4c2cdb19f8e555b68fa6815264899f930137a386ca845ef1380fcc5",
+      "result": "FAIL",
+      "returncode": -5,
+      "review_verified": true,
+      "run": "alternate-baseline-test-only-native-alternate-manager-loss-live-button-ordinary",
+      "runtime_accepted": false,
+      "source80_sha256": "9a64bc24c81d7e1a88180e8eb91673a9c56fb7a570b629e99a3b9a09c6d8843b",
+      "source_boundary_line": 677,
+      "standard_asan_ubsan_no_leak_acceptance": false,
+      "tap_incomplete_due_to_causal_abort": true,
+      "tap_outcomes": [
+        "not ok /editor-dropdown/alternate-manager-loss-live-button-ordinary - Gimp-Widgets-FATAL-CRITICAL: gimp_action_get_private: assertion 'GIMP_IS_ACTION (action)' failed"
+      ],
+      "tap_plans": [],
+      "witnesses_reached": [
+        "alternate_manager_loss_live_button:1 kind=1"
+      ]
+    },
+    {
+      "ancillary_dummy_plugin_notice_lines": 68,
+      "ancillary_missing_application_icon_lines": 6,
+      "authenticated_terminal_stable_seals_verified": true,
+      "binary_sha256": "25189709f4fd31a780ae13685326463c830aecb50847217ddc0fb8a71e065f4c",
+      "build_capture_sha256": "1a995bc80f87539df913c0d9c109234c1a96f21749550addcef359f2161f834f",
+      "candidate_completion_witnesses": [
+        "alternate_replacement_preserves_identity:1 kind=0"
+      ],
+      "case": "/editor-dropdown/alternate-replacement-preserves-identity-dropdown",
+      "causal_diagnostic": "not ok /editor-dropdown/alternate-replacement-preserves-identity-dropdown - Gimp-Widgets-FATAL-CRITICAL: gimp_action_get_private: assertion 'GIMP_IS_ACTION (action)' failed",
+      "classification": "VERIFIED_CALLABLE_API_FINALIZED_ALTERNATE_REPRODUCER",
+      "mode": "native",
+      "raw_record_sha256": "03a591698a0289905592fb2c751ffd603645956ec87e1d69ce7f389c30117abb",
+      "raw_result_sha256": "577cc237d280abff0ddc98755545d544ffdca6018bb61fc108b4472b4253dc19",
+      "result": "FAIL",
+      "returncode": -5,
+      "review_verified": true,
+      "run": "alternate-baseline-test-only-native-alternate-replacement-preserves-identity-dropdown",
+      "runtime_accepted": false,
+      "source80_sha256": "9a64bc24c81d7e1a88180e8eb91673a9c56fb7a570b629e99a3b9a09c6d8843b",
+      "source_boundary_line": 562,
+      "standard_asan_ubsan_no_leak_acceptance": false,
+      "tap_incomplete_due_to_causal_abort": true,
+      "tap_outcomes": [
+        "not ok /editor-dropdown/alternate-replacement-preserves-identity-dropdown - Gimp-Widgets-FATAL-CRITICAL: gimp_action_get_private: assertion 'GIMP_IS_ACTION (action)' failed"
+      ],
+      "tap_plans": [],
+      "witnesses_reached": [
+        "alternate_replacement_preserves_identity:1 kind=0"
+      ]
+    },
+    {
+      "ancillary_dummy_plugin_notice_lines": 68,
+      "ancillary_missing_application_icon_lines": 6,
+      "authenticated_terminal_stable_seals_verified": true,
+      "binary_sha256": "25189709f4fd31a780ae13685326463c830aecb50847217ddc0fb8a71e065f4c",
+      "build_capture_sha256": "1a995bc80f87539df913c0d9c109234c1a96f21749550addcef359f2161f834f",
+      "candidate_completion_witnesses": [
+        "alternate_replacement_preserves_identity:1 kind=1"
+      ],
+      "case": "/editor-dropdown/alternate-replacement-preserves-identity-ordinary",
+      "causal_diagnostic": "not ok /editor-dropdown/alternate-replacement-preserves-identity-ordinary - Gimp-Widgets-FATAL-CRITICAL: gimp_action_get_private: assertion 'GIMP_IS_ACTION (action)' failed",
+      "classification": "VERIFIED_CALLABLE_API_FINALIZED_ALTERNATE_REPRODUCER",
+      "mode": "native",
+      "raw_record_sha256": "de84ff1e11d92026ac0ff6b1ba70b5d0268445b89046b8a0cf40bfbb95c7515f",
+      "raw_result_sha256": "6861e8799a162a88244782009ca5d862325cd7e37568913835e94ff011ad3259",
+      "result": "FAIL",
+      "returncode": -5,
+      "review_verified": true,
+      "run": "alternate-baseline-test-only-native-alternate-replacement-preserves-identity-ordinary",
+      "runtime_accepted": false,
+      "source80_sha256": "9a64bc24c81d7e1a88180e8eb91673a9c56fb7a570b629e99a3b9a09c6d8843b",
+      "source_boundary_line": 562,
+      "standard_asan_ubsan_no_leak_acceptance": false,
+      "tap_incomplete_due_to_causal_abort": true,
+      "tap_outcomes": [
+        "not ok /editor-dropdown/alternate-replacement-preserves-identity-ordinary - Gimp-Widgets-FATAL-CRITICAL: gimp_action_get_private: assertion 'GIMP_IS_ACTION (action)' failed"
+      ],
+      "tap_plans": [],
+      "witnesses_reached": [
+        "alternate_replacement_preserves_identity:1 kind=1"
+      ]
+    },
+    {
+      "ancillary_dummy_plugin_notice_lines": 68,
+      "ancillary_missing_application_icon_lines": 6,
+      "authenticated_terminal_stable_seals_verified": true,
+      "binary_sha256": "25189709f4fd31a780ae13685326463c830aecb50847217ddc0fb8a71e065f4c",
+      "build_capture_sha256": "1a995bc80f87539df913c0d9c109234c1a96f21749550addcef359f2161f834f",
+      "candidate_completion_witnesses": [
+        "alternate_retained_destroyed_button:1 kind=0"
+      ],
+      "case": "/editor-dropdown/alternate-retained-destroyed-button-dropdown",
+      "causal_diagnostic": null,
+      "classification": "VERIFIED_BASELINE_POSITIVE_CONTROL",
+      "mode": "native",
+      "raw_record_sha256": "825a90132f9012e70e4b6ebf8be64c83788953d8cbe6298686593b62a94f7a36",
+      "raw_result_sha256": "930051f17b83ed7a3296b05ce857e7e80ed2eeff80d2d2e3b3e834569120a0e5",
+      "result": "OK",
+      "returncode": 0,
+      "review_verified": true,
+      "run": "alternate-baseline-test-only-native-alternate-retained-destroyed-button-dropdown",
+      "runtime_accepted": false,
+      "source80_sha256": "9a64bc24c81d7e1a88180e8eb91673a9c56fb7a570b629e99a3b9a09c6d8843b",
+      "source_boundary_line": null,
+      "standard_asan_ubsan_no_leak_acceptance": false,
+      "tap_incomplete_due_to_causal_abort": false,
+      "tap_outcomes": [
+        "ok 1 /editor-dropdown/alternate-retained-destroyed-button-dropdown"
+      ],
+      "tap_plans": [
+        "1..1"
+      ],
+      "witnesses_reached": [
+        "alternate_retained_destroyed_button:1 kind=0"
+      ]
+    },
+    {
+      "ancillary_dummy_plugin_notice_lines": 68,
+      "ancillary_missing_application_icon_lines": 6,
+      "authenticated_terminal_stable_seals_verified": true,
+      "binary_sha256": "25189709f4fd31a780ae13685326463c830aecb50847217ddc0fb8a71e065f4c",
+      "build_capture_sha256": "1a995bc80f87539df913c0d9c109234c1a96f21749550addcef359f2161f834f",
+      "candidate_completion_witnesses": [
+        "alternate_retained_destroyed_button:1 kind=1"
+      ],
+      "case": "/editor-dropdown/alternate-retained-destroyed-button-ordinary",
+      "causal_diagnostic": null,
+      "classification": "VERIFIED_BASELINE_POSITIVE_CONTROL",
+      "mode": "native",
+      "raw_record_sha256": "859dd5b7af2c05b8c79381de63e185c86d7bc1c9118d11466001e96b7a2d4e82",
+      "raw_result_sha256": "c925f00453164ed24438ce320020f0d0678facf183da19c75f064b69805c30d4",
+      "result": "OK",
+      "returncode": 0,
+      "review_verified": true,
+      "run": "alternate-baseline-test-only-native-alternate-retained-destroyed-button-ordinary",
+      "runtime_accepted": false,
+      "source80_sha256": "9a64bc24c81d7e1a88180e8eb91673a9c56fb7a570b629e99a3b9a09c6d8843b",
+      "source_boundary_line": null,
+      "standard_asan_ubsan_no_leak_acceptance": false,
+      "tap_incomplete_due_to_causal_abort": false,
+      "tap_outcomes": [
+        "ok 1 /editor-dropdown/alternate-retained-destroyed-button-ordinary"
+      ],
+      "tap_plans": [
+        "1..1"
+      ],
+      "witnesses_reached": [
+        "alternate_retained_destroyed_button:1 kind=1"
+      ]
+    },
+    {
+      "ancillary_dummy_plugin_notice_lines": 68,
+      "ancillary_missing_application_icon_lines": 6,
+      "authenticated_terminal_stable_seals_verified": true,
+      "binary_sha256": "25189709f4fd31a780ae13685326463c830aecb50847217ddc0fb8a71e065f4c",
+      "build_capture_sha256": "1a995bc80f87539df913c0d9c109234c1a96f21749550addcef359f2161f834f",
+      "candidate_completion_witnesses": [
+        "alternate_self_removal_and_owner_loss:1 kind=0"
+      ],
+      "case": "/editor-dropdown/alternate-self-removal-and-owner-loss-dropdown-destroyed-owner",
+      "causal_diagnostic": null,
+      "classification": "VERIFIED_BASELINE_POSITIVE_CONTROL",
+      "mode": "native",
+      "raw_record_sha256": "b120782281c05bc89b98cf7a08dfcc1d2ef8f69e427bca6bfb449280f9c95cc4",
+      "raw_result_sha256": "587df2b7afa444f3fee3e29c67597af201779f9ef5a3d5d0cca81a548526cd84",
+      "result": "OK",
+      "returncode": 0,
+      "review_verified": true,
+      "run": "alternate-baseline-test-only-native-alternate-self-removal-and-owner-loss-dropdown-destroyed-owner",
+      "runtime_accepted": false,
+      "source80_sha256": "9a64bc24c81d7e1a88180e8eb91673a9c56fb7a570b629e99a3b9a09c6d8843b",
+      "source_boundary_line": null,
+      "standard_asan_ubsan_no_leak_acceptance": false,
+      "tap_incomplete_due_to_causal_abort": false,
+      "tap_outcomes": [
+        "ok 1 /editor-dropdown/alternate-self-removal-and-owner-loss-dropdown-destroyed-owner"
+      ],
+      "tap_plans": [
+        "1..1"
+      ],
+      "witnesses_reached": [
+        "alternate_self_removal_and_owner_loss:1 kind=0"
+      ]
+    },
+    {
+      "ancillary_dummy_plugin_notice_lines": 68,
+      "ancillary_missing_application_icon_lines": 6,
+      "authenticated_terminal_stable_seals_verified": true,
+      "binary_sha256": "25189709f4fd31a780ae13685326463c830aecb50847217ddc0fb8a71e065f4c",
+      "build_capture_sha256": "1a995bc80f87539df913c0d9c109234c1a96f21749550addcef359f2161f834f",
+      "candidate_completion_witnesses": [
+        "alternate_self_removal_and_owner_loss:1 kind=0"
+      ],
+      "case": "/editor-dropdown/alternate-self-removal-and-owner-loss-dropdown-surviving-owner",
+      "causal_diagnostic": "not ok /editor-dropdown/alternate-self-removal-and-owner-loss-dropdown-surviving-owner - Gimp-Widgets-FATAL-CRITICAL: gimp_action_get_private: assertion 'GIMP_IS_ACTION (action)' failed",
+      "classification": "VERIFIED_CALLABLE_API_FINALIZED_ALTERNATE_REPRODUCER",
+      "mode": "native",
+      "raw_record_sha256": "4d9875ba643e86000298e18627f2beb39efd6c08914aff6b05484bafb58d5bdb",
+      "raw_result_sha256": "0b7a342544c58767369e1564951bb202bb56f60f2f6a9268e9feba9443c42539",
+      "result": "FAIL",
+      "returncode": -5,
+      "review_verified": true,
+      "run": "alternate-baseline-test-only-native-alternate-self-removal-and-owner-loss-dropdown-surviving-owner",
+      "runtime_accepted": false,
+      "source80_sha256": "9a64bc24c81d7e1a88180e8eb91673a9c56fb7a570b629e99a3b9a09c6d8843b",
+      "source_boundary_line": 647,
+      "standard_asan_ubsan_no_leak_acceptance": false,
+      "tap_incomplete_due_to_causal_abort": true,
+      "tap_outcomes": [
+        "not ok /editor-dropdown/alternate-self-removal-and-owner-loss-dropdown-surviving-owner - Gimp-Widgets-FATAL-CRITICAL: gimp_action_get_private: assertion 'GIMP_IS_ACTION (action)' failed"
+      ],
+      "tap_plans": [],
+      "witnesses_reached": [
+        "alternate_self_removal_and_owner_loss:1 kind=0"
+      ]
+    },
+    {
+      "ancillary_dummy_plugin_notice_lines": 68,
+      "ancillary_missing_application_icon_lines": 6,
+      "authenticated_terminal_stable_seals_verified": true,
+      "binary_sha256": "25189709f4fd31a780ae13685326463c830aecb50847217ddc0fb8a71e065f4c",
+      "build_capture_sha256": "1a995bc80f87539df913c0d9c109234c1a96f21749550addcef359f2161f834f",
+      "candidate_completion_witnesses": [
+        "alternate_self_removal_and_owner_loss:1 kind=1"
+      ],
+      "case": "/editor-dropdown/alternate-self-removal-and-owner-loss-ordinary-destroyed-owner",
+      "causal_diagnostic": null,
+      "classification": "VERIFIED_BASELINE_POSITIVE_CONTROL",
+      "mode": "native",
+      "raw_record_sha256": "dbf15845848ff6545ee851059de15432e621a29088e3f81062f112b0e4426c08",
+      "raw_result_sha256": "85e36dc74484539f64918ec20b4113d000ea049c813de9973ddaf8217326a488",
+      "result": "OK",
+      "returncode": 0,
+      "review_verified": true,
+      "run": "alternate-baseline-test-only-native-alternate-self-removal-and-owner-loss-ordinary-destroyed-owner",
+      "runtime_accepted": false,
+      "source80_sha256": "9a64bc24c81d7e1a88180e8eb91673a9c56fb7a570b629e99a3b9a09c6d8843b",
+      "source_boundary_line": null,
+      "standard_asan_ubsan_no_leak_acceptance": false,
+      "tap_incomplete_due_to_causal_abort": false,
+      "tap_outcomes": [
+        "ok 1 /editor-dropdown/alternate-self-removal-and-owner-loss-ordinary-destroyed-owner"
+      ],
+      "tap_plans": [
+        "1..1"
+      ],
+      "witnesses_reached": [
+        "alternate_self_removal_and_owner_loss:1 kind=1"
+      ]
+    },
+    {
+      "ancillary_dummy_plugin_notice_lines": 68,
+      "ancillary_missing_application_icon_lines": 6,
+      "authenticated_terminal_stable_seals_verified": true,
+      "binary_sha256": "25189709f4fd31a780ae13685326463c830aecb50847217ddc0fb8a71e065f4c",
+      "build_capture_sha256": "1a995bc80f87539df913c0d9c109234c1a96f21749550addcef359f2161f834f",
+      "candidate_completion_witnesses": [
+        "alternate_self_removal_and_owner_loss:1 kind=1"
+      ],
+      "case": "/editor-dropdown/alternate-self-removal-and-owner-loss-ordinary-surviving-owner",
+      "causal_diagnostic": "not ok /editor-dropdown/alternate-self-removal-and-owner-loss-ordinary-surviving-owner - Gimp-Widgets-FATAL-CRITICAL: gimp_action_get_private: assertion 'GIMP_IS_ACTION (action)' failed",
+      "classification": "VERIFIED_CALLABLE_API_FINALIZED_ALTERNATE_REPRODUCER",
+      "mode": "native",
+      "raw_record_sha256": "d9574df4805811b5d3ca2c4eeeb4d91de21ed6ba93c2f5f60f675de8024b5f48",
+      "raw_result_sha256": "27251400a83f79e1f648e3f3c94c863c98acab073685fec0fb2058c70293893f",
+      "result": "FAIL",
+      "returncode": -5,
+      "review_verified": true,
+      "run": "alternate-baseline-test-only-native-alternate-self-removal-and-owner-loss-ordinary-surviving-owner",
+      "runtime_accepted": false,
+      "source80_sha256": "9a64bc24c81d7e1a88180e8eb91673a9c56fb7a570b629e99a3b9a09c6d8843b",
+      "source_boundary_line": 647,
+      "standard_asan_ubsan_no_leak_acceptance": false,
+      "tap_incomplete_due_to_causal_abort": true,
+      "tap_outcomes": [
+        "not ok /editor-dropdown/alternate-self-removal-and-owner-loss-ordinary-surviving-owner - Gimp-Widgets-FATAL-CRITICAL: gimp_action_get_private: assertion 'GIMP_IS_ACTION (action)' failed"
+      ],
+      "tap_plans": [],
+      "witnesses_reached": [
+        "alternate_self_removal_and_owner_loss:1 kind=1"
+      ]
+    },
+    {
+      "ancillary_dummy_plugin_notice_lines": 68,
+      "ancillary_missing_application_icon_lines": 6,
+      "authenticated_terminal_stable_seals_verified": true,
+      "binary_sha256": "25189709f4fd31a780ae13685326463c830aecb50847217ddc0fb8a71e065f4c",
+      "build_capture_sha256": "1a995bc80f87539df913c0d9c109234c1a96f21749550addcef359f2161f834f",
+      "candidate_completion_witnesses": [],
+      "case": "/editor-dropdown/native-action-contract",
+      "causal_diagnostic": null,
+      "classification": "VERIFIED_BASELINE_POSITIVE_CONTROL",
+      "mode": "native",
+      "raw_record_sha256": "97aded86525915fae09120a166a92ecb9521ca7d8ac458fbc7dac4c07ddb256b",
+      "raw_result_sha256": "6bb5eaf81733097d0800fa70cabba6b9bb9ecab8acf3c17f848f6a31302256cb",
+      "result": "OK",
+      "returncode": 0,
+      "review_verified": true,
+      "run": "alternate-baseline-test-only-native-native-action-contract",
+      "runtime_accepted": false,
+      "source80_sha256": "9a64bc24c81d7e1a88180e8eb91673a9c56fb7a570b629e99a3b9a09c6d8843b",
+      "source_boundary_line": null,
+      "standard_asan_ubsan_no_leak_acceptance": false,
+      "tap_incomplete_due_to_causal_abort": false,
+      "tap_outcomes": [
+        "ok 1 /editor-dropdown/native-action-contract"
+      ],
+      "tap_plans": [
+        "1..1"
+      ],
+      "witnesses_reached": []
+    },
+    {
+      "ancillary_dummy_plugin_notice_lines": 68,
+      "ancillary_missing_application_icon_lines": 6,
+      "authenticated_terminal_stable_seals_verified": true,
+      "binary_sha256": "25189709f4fd31a780ae13685326463c830aecb50847217ddc0fb8a71e065f4c",
+      "build_capture_sha256": "1a995bc80f87539df913c0d9c109234c1a96f21749550addcef359f2161f834f",
+      "candidate_completion_witnesses": [],
+      "case": "/editor-dropdown/ordinary-action-control",
+      "causal_diagnostic": null,
+      "classification": "VERIFIED_BASELINE_POSITIVE_CONTROL",
+      "mode": "native",
+      "raw_record_sha256": "189d65553a5baef97255d26e1ebca8fb2e19996c2845f3b7fd515f56a599780b",
+      "raw_result_sha256": "668646976924ef673942873ae09b69e676aff9ee653d4229964d81dbdf99e946",
+      "result": "OK",
+      "returncode": 0,
+      "review_verified": true,
+      "run": "alternate-baseline-test-only-native-ordinary-action-control",
+      "runtime_accepted": false,
+      "source80_sha256": "9a64bc24c81d7e1a88180e8eb91673a9c56fb7a570b629e99a3b9a09c6d8843b",
+      "source_boundary_line": null,
+      "standard_asan_ubsan_no_leak_acceptance": false,
+      "tap_incomplete_due_to_causal_abort": false,
+      "tap_outcomes": [
+        "ok 1 /editor-dropdown/ordinary-action-control"
+      ],
+      "tap_plans": [
+        "1..1"
+      ],
+      "witnesses_reached": []
+    }
+  ],
+  "case_reviews_sha256": "ccc831c6a0112ea2b607b397a9abb9a39cb81c06168e4db80eec7f1917364e3e",
+  "duty_reconciliation_sha256": "078feb6a4fc65833b1b01ad66dc0b7571581e9fe677c64e2a24f8fa3c48b4c36",
+  "replay_method": "Independently completed strict review and every original input byte pinned; no baseline application repeated by freezer.",
+  "review": {
+    "all93_accepted": false,
+    "ancillary_diagnostics": "Original missing application-icon and dummy-plugin notices plus debug bus/unsetenv notices remain in raw logs; no blanket warning-clean or complete-suite claim.",
+    "baseline_source80": {
+      "app/config/gimpcoreconfig.c": "23e25ae7461f5cd33d5351b1cd89d1efb43d9ae9796acd15fe3250cf9d359b34",
+      "app/config/gimprc.c": "bd91619e0aafa1ff77e8117a9d9f1aad13d152efc82ac38bf0d74bacf1d0e369",
+      "app/config/gimprc.h": "c16f4addd7d818f87adcfb4b50f9cf091fca6ebb1196f0a50f44f8af3fbb47ff",
+      "app/core/gimp.c": "c7f23e4d018f9b8423fea2f8bd53450add435612d8e20b707a4f894ea7567070",
+      "app/dialogs/painter-layer-dialog.cpp": "70a5333cd50da3e680997d808baf8a10d31754a0de78158d528581fe091feea3",
+      "app/display/gimppaintercanvasui.cpp": "d04a48fcf83e3716827ee2adad4752d38f84835ea0b5880b11a9d221bee032f5",
+      "app/painter/binding-store.cpp": "c69d65c22f26e6be8f6df69765cd30f7bbbd32b46b0eb847e9f6524b41c2b557",
+      "app/painter/binding-store.hpp": "c67deb0ccf33a13a5ba3ab3f50bdbb2ef8931f481acf62a9315d778388c90262",
+      "app/painter/filter-process.cpp": "87918ee52bfcdacca648203151292021996a850332ce25c3444cd82f83867fc8",
+      "app/painter/source.hpp": "88bb8935ba132345ddcb379aaee56340afc3b56ff3c463f0b4a0c1c5e1c5f418",
+      "app/painter/tests/headers/generate-probes.py": "7009bb39cd7796f782bd0b6952b8a5549d505a10ed3f3c67a2ffa96dfeecc096",
+      "app/painter/tests/headers/meson.build": "9b269b9e881ca862e9fe8d6d01fc6b05f0c725dbe732ecccba37fc2ea54e62c9",
+      "app/painter/tests/headers/test-additional-routes.py": "5793d3ac6ade04b49c2c12533e0a9a1b434373c0bf2ba709df30f885bba7e73c",
+      "app/plug-in/gimpplugin-message.c": "408e0b11808ced8b3451c15ca0c1e6ae08a46ba959b417de1d60bac0e8962c42",
+      "app/plug-in/gimpplugin.c": "96d65b9fd274bfb0a0c20910c4e988e9e2b822d7c6e0c3e5718a7fe9df94c15b",
+      "app/plug-in/plug-in-rc.c": "c544cb5770cebffbee8c7e41e7aee215ade9984f36179e81bbc4b6467f106271",
+      "app/tests/gimp-app-test-utils.c": "2d58f6f426f782cc2fca7207924d7d18f903b8b9519f1ef7b0c69b16c815929c",
+      "app/tests/icon-theme-fixture/generate.py": "42b3d179b24aba69366b3a1554f4f32833f9c48006cae4a47954a2785cc524fe",
+      "app/tests/icon-theme-fixture/meson.build": "923f0657f6dec18640d3a7c517a27be8546e46064af09e49438d75c006f48b8c",
+      "app/tests/icon-theme-fixture/test-generate.py": "cd636846a76b94083c7b8e706992ab24732785b036867fa96b155dd60b8d80e2",
+      "app/tests/meson.build": "05906eae7404d45b5f0cd2dac9e33adc32bd9969c228eb0cc88b0797b3739530",
+      "app/tests/test-editor-dropdown-preset-control.c": "db19373fddf1e95c60b1cfa7593501d0b85d87567d4419b1b418c173acab7c87",
+      "app/tests/test-editor-dropdown.cpp": "6a3625f8ca94d7e90d8a042cbbb1d5d7acc45233435f997a405093bf2a84b1cc",
+      "app/tests/test-filter-blinds-context.inc": "77657663773307b126d7ab61567fe0bac155e35fea39163e1f49dc13665e087c",
+      "app/tests/test-filter-convolution.inc": "c06550d15f4cd69c29c656370f08e9c4eff451357d4a32a93ae47b824604e20c",
+      "app/tests/test-filter-progress.inc": "ec6221e6dce35b6474bede835580489df23c4e5f9fa7579ae3c5fbfa52d792d2",
+      "app/tests/test-filter-schema-persistence.inc": "30d8127eca74f1325f0fce8405828607f0b97f394f0bd3714dc8bf767ee3bafb",
+      "app/tests/test-gimp-filter-layer.c": "05fa1226bf4f6835fcffc0ba66b7ce928d9e514337c0c2447483997bde9eb286",
+      "app/tests/test-gimp-test-config-fixture.c": "ab87dd34e9c2b291e159727635cd932c8250dc0a301aa9b5d450e6603052098d",
+      "app/tests/test-layer-presets-ui.c": "66f5e7f6b09ac13df1965c964e96182bd4bf7367aa38bfd26a169e4df53745dd",
+      "app/tests/test-painter-canvas-ui.c": "4889f86a34f65abf23ae225f7dc834f55f4197553ddfd0b83be01586908dbd59",
+      "app/tests/test-painter-compact-options.c": "b8659ad2b034736404d58af7bf6209fbbe5d89ffb73ea014429b65133beaaecb",
+      "app/tests/test-painter-layer-tree.c": "3601ad5cb9bcf6206354ead656fc1581676e75c0b9ed02ad0c620d29edcc2822",
+      "app/tests/test-painter-layer-ui.c": "c7195b3ff2040748a6ad97f3c077ed926887159a8f7263ec0df36cd8d995285a",
+      "app/tests/test-painter-mypaint-editor.cpp": "755de5a0025e4c346ac18fe8e022b224341962c76fd3418fbebc81cffb89e609",
+      "app/tests/test-widget-orientation-api.c": "d85281846b56ee88aa1a703ec5053ae677de9a08ab9f8cf8695c0c5359fa9648",
+      "app/tests/test-widget-orientation-api.cpp": "5e987e170aa64885ecf5c6fe6f400e47b0430a4dca7aabecbbb3a02dea480f8c",
+      "app/tests/test-widget-store-native-controls.inc": "3b6a2b8e9edc7e1f03ea04ca833c395088a2c395a68a4512bd2d7d14284b84d4",
+      "app/tests/test-widget-store-native-dnd.inc": "da68516c6a5d4314c07874626a28f82ff4ba8f3de7866b6fd3116b5335472432",
+      "app/tests/test-widget-store-orientation-callers.inc": "ad8d8b525b98b1360b32ba19d0e8467e4e0397116096e3a1df4e3685dd5448e6",
+      "app/tests/test-widget-store-orientation.inc": "83fac425c1114eaeb68a8b398a640241e10f80e521404175c1817e6f487b927b",
+      "app/tests/tests.c": "373bfc57b36015ff4853a11defd636c0abb1d9acc2740c47d056adb7ee43ec16",
+      "app/widgets/gimpcellrendererpopup.cpp": "b8980b5c2b45b60ff2112100f86327e4c587ea0c2473d0f5333f3f623fcc6648",
+      "app/widgets/gimpcellrendererpopup.h": "b9fdd7cf79b00f84902676f4305d64c21cd24130be2cb7d53d7c4bf503e33cf1",
+      "app/widgets/gimpcontainerbox.c": "fba1e434defbc21d7165ea6a0e0fb071b3cc0fdf06ec50c323db09a99ee07cd7",
+      "app/widgets/gimpcontainertreeview-dnd.c": "1414ab21bcb9d29ff6fbef5a18625d8121f4869327a4f6ff5e4b5a760e33fd9b",
+      "app/widgets/gimpcontainertreeview-private.h": "1edb149dc1613e1265568f353933c3e52f1a80cca8dd4ae68fd12cf27bbd321d",
+      "app/widgets/gimpcontainertreeview.c": "9fa7c61f8f7898fc1b622eeb3e214827ba047c2c463fa8fdbb6b5f1379f8a2d4",
+      "app/widgets/gimpcontainertreeview.h": "16b11ce91530eb3650773a46fdd60973011ad248d4a7619749cfd49f7c78347d",
+      "app/widgets/gimpeditor-cxx-private.h": "fc0bc5b8be989d98732b016795b47d4bc3975d9f0592085d2609b3a896079f50",
+      "app/widgets/gimpeditor-cxx.cpp": "daee8295e94acbfdfcdb08539691f628756fe18fc6257813c158961afe6a72ea",
+      "app/widgets/gimpeditor-cxx.h": "87b3ff4d1d021503dcbed13246f9dce4f732855bef6ccae054694de81e8a5e31",
+      "app/widgets/gimpeditor.c": "ad4e6b4fba01461894789f92716e5ae495f40537a380e5dcc76aab6e72f8de49",
+      "app/widgets/gimplayerpresetview.c": "5bada5c213100df67f522f73642b289a768ccb0049c70bdf3dbef8eb675ebbdc",
+      "app/widgets/gimplayertreeview.c": "d73ef4a0c8581d68c468aa2fee629bfdd9007152bfb52753d4d03c90c0c06b4f",
+      "app/widgets/gimppaintercompactoptions.cpp": "449aba2103d81a6438ca0282b21aa7057a89818595059f6eb0c94ce3eeff4b8a",
+      "app/widgets/gimppainterlayertiles.cpp": "293f5ff0006cff85a276ed9211df7e4f2215d102bad385b001b2974e9b69d613",
+      "app/widgets/gimppaintermybrusheditor.cpp": "09cbfacf9e51c00a3ce903354194b249ea66a1de43c4b8eddfed8de444aa3143",
+      "app/widgets/gimpwidgets-utils.c": "4f763c8cf4d79be2fd59b028bd6321eb8c4687d5a222d4e136b37d9a342140d4",
+      "app/widgets/gimpwidgets-utils.h": "08cbca718991a5f68fc117a09ab9c98bbf3dc12187e8fddf1d51e4aa1bf935cb",
+      "app/widgets/meson.build": "7cea4af1a1f7cc7d8e03e7daad433ea5a64207d61a969daade4b5852918cc6a0",
+      "libgimp/gimp-debug.c": "baa2956654372f0473965fee2591fbf4ae474179432153c1c50e86d3183f377d",
+      "libgimp/gimp.c": "952244785f88a9bc4b755e8ea0771e17088601f8e8c822fe9b04fde9cd56a00d",
+      "libgimp/gimpplugin.c": "b581adbe25f831fae89a86106c373160ba85c36bd14d86836e275f8baa9e1e46",
+      "libgimp/gimpprocedure.c": "5d22ee3ba7af2d4d6d9b1d403f13fc426dbbecd487d6942bd3ce964cd1cdcd5c",
+      "libgimp/tests/meson.build": "921c3e532857a23d44c6a25e93d050effb33fc985158ac7f941a1294cce02eb2",
+      "libgimp/tests/plug-in-protocol-fixture.c": "7ec8d89eef1b98556be488269b40080525dc6b8666d4dc3cfe106aa3ae5b7d52",
+      "libgimp/tests/test-plug-in-protocol.c": "6062798d7125d9853cd146f672eda2f233a662c48f20ad9128d2274b144a404e",
+      "libgimpbase/gimpprotocol.c": "42b00612efd048ec5e0c1ae278ad1c6244d16bf018308c8685852017a93e07bc",
+      "libgimpbase/gimpwire.c": "3ddd68f2d5d8c4315a32026e0d13954b45cc1d97a1193d7cfd568af1e926a366",
+      "libgimpconfig/gimpconfig-register.c": "c59929b3a17f2adb5223b7866b2f5daaa5543cb7ad1e7d078ac34cc38d4699e7",
+      "libgimpconfig/gimpconfigwriter.c": "c604932a1c60612d6ee07cdf183fd12ea7695fd88e04e76052863cfc252b5753",
+      "libgimpwidgets/gimpenumwidgets.c": "6133cb814246d4b150f05fd8aba07be69c0cbafad3125ae6cca73e23405f4a54",
+      "libgimpwidgets/gimpenumwidgets.h": "85053e5e17f8182a2031def42b00a29959ed5b175e028548da0f554ef6b92817",
+      "libgimpwidgets/gimppropwidgets.c": "66c5d07f15946dee2a719f6e8ab09e0cc52cfdc6b09524fca0974d5c79facbdb",
+      "libgimpwidgets/gimppropwidgets.h": "5e6a224f9d3429cee72245ac3ff49ff8ac620ec75d83d2aa0b7b41a7460a5397",
+      "libgimpwidgets/gimpwidgets.c": "a317c195dae7a0e37ee836c6fd3303bce9c664f993cec6e6fbbe24a1c45af55b",
+      "libgimpwidgets/gimpwidgets.def": "94c7bb9d3e34e43f42be97d87e6f6dffa3b76bd08d7b836b816d5fbd3a3cf04c",
+      "libgimpwidgets/gimpwidgets.h": "0b082ce95a8986f3a1841db108d17989bf7b8b8d8d655743d5b26cb36c9014fb",
+      "migration/inventory/additional-c-header-routes.json": "f9bd13954dcf6b803e1f062bbaa958db17d8c819a7a05e2c60a43c1c514aed0a"
+    },
+    "build_binary_sha256": {
+      "asan": "fb039da842018d64cf17640b59c595b5b3dd7ad35c14b8bd5c40362cc313ad06",
+      "native": "25189709f4fd31a780ae13685326463c830aecb50847217ddc0fb8a71e065f4c"
+    },
+    "candidate_runtime_accepted": false,
+    "end_utc": "2026-10-13T14:06:58.799717+00:00",
+    "old19_byte_preservation_verified": true,
+    "per_mode": {
+      "asan": {
+        "causal_red": 10,
+        "positive_control": 6
+      },
+      "native": {
+        "causal_red": 10,
+        "positive_control": 6
+      }
+    },
+    "precedence_red_witness_policy": "Only first Control-finalization witness required; ASan exact failing line598 proves failure before second witness. Full candidate needs both.",
+    "production_regression_claim": false,
+    "publication_state": "DnD40aab4a receipt and preservation verified locally; no remote query performed. Candidate publication and root row decisions pending.",
+    "runtime_build_source_lease_network_git_or_ledger_mutations": false,
+    "sanitizer_limits": "Standard address,undefined mode; detect_leaks=0; external GLib/GTK dependencies uninstrumented.",
+    "scope": "inherited native callable API finalized-alternate lifetime",
+    "self_removal_phase": "Outer activation and nested callback return before weak-null witness at645; both surviving-owner ASan stacks fault at subsequent dispatch647, not nested625.",
+    "start_utc": "2026-10-13T14:06:58.021247+00:00",
+    "status": "STRICT_BASELINE_CAUSAL_REVIEW_PASS",
+    "verified_observations": 32
+  },
+  "review_sha256": "2820e7a2bd2397cf43c5abe8130593e5e7e5df2015d1fd3f5cc896cefe1108f5"
+}

@@ -485,6 +485,236 @@ static void action_loss_during_construction () {
     g_object_unref (state.primary); g_object_unref (group);
   }
 }
+/* These tests exercise the existing public helper with real native action
+ * ownership. A weak witness proves finalization before a retained live button
+ * is used. No action internals, ExtendedAction layout or fake action are used.
+ * kind 0 is the migrated dropdown; kind 1 controls its ordinary shared caller. */
+static GtkWidget *lifetime_button (Fixture& fixture, guint kind, const char *group,
+                                  const char *primary, const char *alternate) {
+  return kind == 0 ?
+    gimp_editor_add_action_dropdown (GIMP_EDITOR (fixture.editor), nullptr, group, primary,
+                                    alternate, GDK_SHIFT_MASK, nullptr) :
+    gimp_editor_add_action_button (GIMP_EDITOR (fixture.editor), group, primary,
+                                  alternate, GDK_SHIFT_MASK, nullptr);
+}
+static void alternate_finalization_live_button (guint kind) {
+  {
+    g_test_message ("Finalized alternate: kind=%u", kind);
+    Fixture fixture; guint normal = 0, modified = 0;
+    auto *group = gimp_action_group_new (gimp, "alternate-lifetime", "Lifetime", nullptr, nullptr, nullptr);
+    gimp_ui_manager_add_action_group (gimp_editor_get_ui_manager (GIMP_EDITOR (fixture.editor)), group);
+    action (group, "lifetime-main", "Main", &normal);
+    auto *alternate = action (group, "lifetime-alternate", "Alternate", &modified);
+    GObject *weak_alternate = G_OBJECT (alternate);
+    g_object_add_weak_pointer (weak_alternate, reinterpret_cast<gpointer *> (&weak_alternate));
+    auto *button = lifetime_button (fixture, kind, "alternate-lifetime", "lifetime-main", "lifetime-alternate");
+    g_assert_nonnull (button); g_object_ref (button);
+    gtk_button_clicked (GTK_BUTTON (button));
+    g_signal_emit_by_name (button, "extended-clicked", GDK_SHIFT_MASK);
+    g_assert_cmpuint (normal, ==, 1); g_assert_cmpuint (modified, ==, 1);
+    gimp_action_group_remove_action (group, alternate);
+    g_assert_null (weak_alternate);
+    g_test_message ("Finalization witness alternate_finalization_live_button:1 kind=%u", kind);
+    g_assert_nonnull (gtk_widget_get_parent (button));
+    g_assert_true (gtk_widget_get_sensitive (button));
+    gtk_button_clicked (GTK_BUTTON (button)); g_assert_cmpuint (normal, ==, 2);
+    /* Baseline red boundary: no replacement allocation can disguise this
+     * already-proven finalized action. Fatal diagnostics remain enabled. */
+    g_signal_emit_by_name (button, "extended-clicked", GDK_SHIFT_MASK);
+    g_assert_cmpuint (modified, ==, 1); g_assert_cmpuint (normal, ==, 2);
+    g_object_unref (button); g_object_unref (group);
+  }
+}
+static void alternate_replacement_preserves_identity (guint kind) {
+  {
+    Fixture fixture; guint normal = 0, modified = 0, next_normal = 0, next_modified = 0;
+    auto *group = gimp_action_group_new (gimp, "alternate-replacement", "Replacement", nullptr, nullptr, nullptr);
+    gimp_ui_manager_add_action_group (gimp_editor_get_ui_manager (GIMP_EDITOR (fixture.editor)), group);
+    auto *main = action (group, "replacement-main", "Main", &normal); g_object_ref (main);
+    auto *alternate = action (group, "replacement-alternate", "Alternate", &modified); g_object_ref (alternate);
+    GObject *weak_main = G_OBJECT (main), *weak_alternate = G_OBJECT (alternate);
+    g_object_add_weak_pointer (weak_main, reinterpret_cast<gpointer *> (&weak_main));
+    g_object_add_weak_pointer (weak_alternate, reinterpret_cast<gpointer *> (&weak_alternate));
+    auto *button = lifetime_button (fixture, kind, "alternate-replacement", "replacement-main", "replacement-alternate");
+    g_assert_nonnull (button);
+    gimp_action_group_remove_action (group, main);
+    gimp_action_group_remove_action (group, alternate);
+    auto *next_main = action (group, "replacement-main", "Next main", &next_normal);
+    auto *next_alternate = action (group, "replacement-alternate", "Next alternate", &next_modified);
+    /* The old externally retained identities cannot share replacement storage.
+     * Native primary proxies do not dynamically rebind by action name. */
+    g_assert_true (next_main != main); g_assert_true (next_alternate != alternate);
+    gimp_action_set_sensitive (main, FALSE, "Old primary disabled");
+    g_assert_false (gtk_widget_get_sensitive (button));
+    gimp_action_set_sensitive (main, TRUE, nullptr);
+    gimp_action_set_sensitive (alternate, FALSE, "Old alternate disabled");
+    gtk_button_clicked (GTK_BUTTON (button));
+    g_signal_emit_by_name (button, "extended-clicked", GDK_SHIFT_MASK);
+    g_assert_cmpuint (normal, ==, 1); g_assert_cmpuint (modified, ==, 0);
+    g_assert_cmpuint (next_normal, ==, 0); g_assert_cmpuint (next_modified, ==, 0);
+    gimp_action_set_sensitive (alternate, TRUE, nullptr);
+    g_signal_emit_by_name (button, "extended-clicked", GDK_SHIFT_MASK);
+    g_assert_cmpuint (modified, ==, 1);
+    g_object_unref (main); g_object_unref (alternate);
+    g_assert_null (weak_main); g_assert_null (weak_alternate);
+    g_test_message ("Finalization witness alternate_replacement_preserves_identity:1 kind=%u", kind);
+    gtk_button_clicked (GTK_BUTTON (button));
+    g_signal_emit_by_name (button, "extended-clicked", GDK_SHIFT_MASK);
+    g_assert_cmpuint (normal, ==, 1); g_assert_cmpuint (modified, ==, 1);
+    g_assert_cmpuint (next_normal, ==, 0); g_assert_cmpuint (next_modified, ==, 0);
+    /* New controls independently bind the newly registered identities. */
+    auto *next_button = lifetime_button (fixture, kind, "alternate-replacement", "replacement-main", "replacement-alternate");
+    g_assert_nonnull (next_button);
+    gtk_button_clicked (GTK_BUTTON (next_button));
+    g_signal_emit_by_name (next_button, "extended-clicked", GDK_SHIFT_MASK);
+    g_assert_cmpuint (next_normal, ==, 1); g_assert_cmpuint (next_modified, ==, 1);
+    g_object_unref (group);
+  }
+}
+static void alternate_loss_preserves_precedence (guint kind) {
+  {
+    Fixture fixture; guint normal = 0, shift = 0, control = 0;
+    auto *group = gimp_action_group_new (gimp, "alternate-precedence", "Precedence", nullptr, nullptr, nullptr);
+    gimp_ui_manager_add_action_group (gimp_editor_get_ui_manager (GIMP_EDITOR (fixture.editor)), group);
+    action (group, "precedence-main", "Main", &normal);
+    auto *shift_action = action (group, "precedence-shift", "Shift", &shift);
+    auto *control_action = action (group, "precedence-control", "Control", &control);
+    GObject *weak_shift = G_OBJECT (shift_action), *weak_control = G_OBJECT (control_action);
+    g_object_add_weak_pointer (weak_shift, reinterpret_cast<gpointer *> (&weak_shift));
+    g_object_add_weak_pointer (weak_control, reinterpret_cast<gpointer *> (&weak_control));
+    auto *button = kind == 0 ?
+      gimp_editor_add_action_dropdown (GIMP_EDITOR (fixture.editor), nullptr, "alternate-precedence", "precedence-main",
+                                      "precedence-shift", GDK_SHIFT_MASK, "precedence-control", GDK_CONTROL_MASK, nullptr) :
+      gimp_editor_add_action_button (GIMP_EDITOR (fixture.editor), "alternate-precedence", "precedence-main",
+                                    "precedence-shift", GDK_SHIFT_MASK, "precedence-control", GDK_CONTROL_MASK, nullptr);
+    g_assert_nonnull (button);
+    g_signal_emit_by_name (button, "extended-clicked", GDK_SHIFT_MASK | GDK_CONTROL_MASK);
+    g_assert_cmpuint (control, ==, 1); g_assert_cmpuint (shift, ==, 0);
+    gimp_action_set_sensitive (control_action, FALSE, "Control disabled");
+    g_signal_emit_by_name (button, "extended-clicked", GDK_SHIFT_MASK | GDK_CONTROL_MASK);
+    g_assert_cmpuint (control, ==, 1); g_assert_cmpuint (shift, ==, 1);
+    gimp_action_group_remove_action (group, control_action); g_assert_null (weak_control);
+    g_test_message ("Finalization witness alternate_loss_preserves_precedence:1 kind=%u", kind);
+    g_signal_emit_by_name (button, "extended-clicked", GDK_SHIFT_MASK | GDK_CONTROL_MASK);
+    g_assert_cmpuint (control, ==, 1); g_assert_cmpuint (shift, ==, 2);
+    gimp_action_set_sensitive (shift_action, FALSE, "Shift disabled");
+    g_signal_emit_by_name (button, "extended-clicked", GDK_SHIFT_MASK | GDK_CONTROL_MASK);
+    g_assert_cmpuint (shift, ==, 2);
+    gimp_action_group_remove_action (group, shift_action); g_assert_null (weak_shift);
+    g_test_message ("Finalization witness alternate_loss_preserves_precedence:2 kind=%u", kind);
+    g_signal_emit_by_name (button, "extended-clicked", GDK_SHIFT_MASK | GDK_CONTROL_MASK);
+    gtk_button_clicked (GTK_BUTTON (button));
+    g_assert_cmpuint (normal, ==, 1); g_assert_cmpuint (control, ==, 1); g_assert_cmpuint (shift, ==, 2);
+    g_object_unref (group);
+  }
+}
+struct RemoveActivatingAlternate {
+  GimpActionGroup *group;
+  GtkWidget *button;
+  bool destroy;
+  guint calls = 0;
+};
+static void remove_activating_alternate (GimpAction *action, GVariant *, gpointer data) {
+  auto *state = static_cast<RemoveActivatingAlternate *> (data);
+  ++state->calls;
+  /* Disable before removal so even a temporary native signal-emission lease
+   * cannot legitimately re-enter this same action on the nested click. */
+  gimp_action_set_sensitive (action, FALSE, "Removing active alternate");
+  gimp_action_group_remove_action (state->group, action);
+  if (state->destroy) gtk_widget_destroy (state->button);
+  g_signal_emit_by_name (state->button, "extended-clicked", GDK_SHIFT_MASK);
+}
+static void alternate_self_removal_and_owner_loss (guint kind, guint destroy) {
+  {
+    {
+      Fixture fixture; guint normal = 0, modified = 0;
+      auto *group = gimp_action_group_new (gimp, "alternate-self-removal", "Self removal", nullptr, nullptr, nullptr);
+      gimp_ui_manager_add_action_group (gimp_editor_get_ui_manager (GIMP_EDITOR (fixture.editor)), group);
+      action (group, "self-removal-main", "Main", &normal);
+      auto *alternate = action (group, "self-removal-alternate", "Alternate", &modified);
+      GObject *weak_alternate = G_OBJECT (alternate);
+      g_object_add_weak_pointer (weak_alternate, reinterpret_cast<gpointer *> (&weak_alternate));
+      auto *button = lifetime_button (fixture, kind, "alternate-self-removal", "self-removal-main", "self-removal-alternate");
+      g_assert_nonnull (button); g_object_ref (button);
+      RemoveActivatingAlternate state {group, button, destroy != 0};
+      g_signal_connect (alternate, "activate", G_CALLBACK (remove_activating_alternate), &state);
+      gtk_button_clicked (GTK_BUTTON (button));
+      g_signal_emit_by_name (button, "extended-clicked", GDK_SHIFT_MASK);
+      g_assert_cmpuint (modified, ==, 1); g_assert_cmpuint (state.calls, ==, 1);
+      g_assert_null (weak_alternate);
+      g_test_message ("Finalization witness alternate_self_removal_and_owner_loss:1 kind=%u", kind);
+      gtk_button_clicked (GTK_BUTTON (button));
+      g_signal_emit_by_name (button, "extended-clicked", GDK_SHIFT_MASK);
+      g_assert_cmpuint (modified, ==, 1); g_assert_cmpuint (state.calls, ==, 1);
+      g_assert_cmpuint (normal, ==, destroy ? 1 : 2);
+      g_object_unref (button); g_object_unref (group);
+    }
+  }
+}
+static void alternate_manager_loss_live_button (guint kind) {
+  {
+    Fixture fixture; guint normal = 0, modified = 0, next_normal = 0, next_modified = 0;
+    auto *manager = gimp_editor_get_ui_manager (GIMP_EDITOR (fixture.editor));
+    GObject *weak_manager = G_OBJECT (manager);
+    g_object_add_weak_pointer (weak_manager, reinterpret_cast<gpointer *> (&weak_manager));
+    auto *group = gimp_action_group_new (gimp, "alternate-manager-loss", "Manager loss", nullptr, nullptr, nullptr);
+    gimp_ui_manager_add_action_group (manager, group);
+    GObject *weak_main = G_OBJECT (action (group, "manager-loss-main", "Main", &normal));
+    GObject *weak_alternate = G_OBJECT (action (group, "manager-loss-alternate", "Alternate", &modified));
+    g_object_add_weak_pointer (weak_main, reinterpret_cast<gpointer *> (&weak_main));
+    g_object_add_weak_pointer (weak_alternate, reinterpret_cast<gpointer *> (&weak_alternate));
+    auto *button = lifetime_button (fixture, kind, "alternate-manager-loss", "manager-loss-main", "manager-loss-alternate");
+    g_assert_nonnull (button); g_object_ref (button); g_object_unref (group);
+    gtk_button_clicked (GTK_BUTTON (button));
+    g_signal_emit_by_name (button, "extended-clicked", GDK_SHIFT_MASK);
+    g_assert_cmpuint (normal, ==, 1); g_assert_cmpuint (modified, ==, 1);
+    gimp_menu_factory_delete_manager (fixture.factory, "<LayerPresets>", fixture.editor); fixture.manager_deleted = true;
+    g_assert_null (weak_manager); g_assert_null (weak_main); g_assert_null (weak_alternate);
+    g_test_message ("Finalization witness alternate_manager_loss_live_button:1 kind=%u", kind);
+    g_assert_null (gimp_editor_get_ui_manager (GIMP_EDITOR (fixture.editor)));
+    g_assert_nonnull (gtk_widget_get_parent (button));
+    gtk_button_clicked (GTK_BUTTON (button));
+    g_signal_emit_by_name (button, "extended-clicked", GDK_SHIFT_MASK);
+    g_assert_cmpuint (normal, ==, 1); g_assert_cmpuint (modified, ==, 1);
+    gimp_editor_create_menu (GIMP_EDITOR (fixture.editor), fixture.factory, "<LayerPresets>", "/layer-presets-popup", fixture.editor);
+    fixture.manager_deleted = false;
+    auto *next_group = gimp_action_group_new (gimp, "alternate-manager-loss", "Next manager", nullptr, nullptr, nullptr);
+    gimp_ui_manager_add_action_group (gimp_editor_get_ui_manager (GIMP_EDITOR (fixture.editor)), next_group);
+    action (next_group, "manager-loss-main", "Next main", &next_normal);
+    action (next_group, "manager-loss-alternate", "Next alternate", &next_modified);
+    gtk_button_clicked (GTK_BUTTON (button));
+    g_signal_emit_by_name (button, "extended-clicked", GDK_SHIFT_MASK);
+    g_assert_cmpuint (normal, ==, 1); g_assert_cmpuint (modified, ==, 1);
+    g_assert_cmpuint (next_normal, ==, 0); g_assert_cmpuint (next_modified, ==, 0);
+    g_object_unref (button); g_object_unref (next_group);
+  }
+}
+static void alternate_retained_destroyed_button (guint kind) {
+  {
+    Fixture fixture; guint normal = 0, modified = 0;
+    auto *group = gimp_action_group_new (gimp, "alternate-destroyed", "Destroyed", nullptr, nullptr, nullptr);
+    gimp_ui_manager_add_action_group (gimp_editor_get_ui_manager (GIMP_EDITOR (fixture.editor)), group);
+    auto *main = action (group, "destroyed-main", "Main", &normal);
+    auto *alternate = action (group, "destroyed-alternate", "Alternate", &modified);
+    GObject *weak_alternate = G_OBJECT (alternate);
+    g_object_add_weak_pointer (weak_alternate, reinterpret_cast<gpointer *> (&weak_alternate));
+    auto *button = lifetime_button (fixture, kind, "alternate-destroyed", "destroyed-main", "destroyed-alternate");
+    g_assert_nonnull (button); g_object_ref (button);
+    gtk_widget_destroy (button);
+    gimp_action_set_sensitive (main, FALSE, "Destroyed proxy must be detached");
+    g_assert_true (gtk_widget_get_sensitive (button));
+    gtk_button_clicked (GTK_BUTTON (button));
+    g_signal_emit_by_name (button, "extended-clicked", GDK_SHIFT_MASK);
+    g_assert_cmpuint (normal, ==, 0); g_assert_cmpuint (modified, ==, 0);
+    gimp_action_group_remove_action (group, alternate); g_assert_null (weak_alternate);
+    g_test_message ("Finalization witness alternate_retained_destroyed_button:1 kind=%u", kind);
+    gtk_button_clicked (GTK_BUTTON (button));
+    g_signal_emit_by_name (button, "extended-clicked", GDK_SHIFT_MASK);
+    g_assert_cmpuint (normal, ==, 0); g_assert_cmpuint (modified, ==, 0);
+    g_object_unref (button); g_object_unref (group);
+  }
+}
+
 static void missing_context_can_reopen () {
   Fixture fixture; generic (fixture); auto *arrow = fixture.arrow ();
   auto *popup = GTK_WIDGET (gtk_menu_button_get_popover (GTK_MENU_BUTTON (arrow)));
@@ -764,6 +994,20 @@ int main (int argc, char **argv) {
   g_test_add_func ("/editor-dropdown/closed-retirement-reopens-newer-context", closed_retirement_reopens_newer_context);
   g_test_add_func ("/editor-dropdown/closed-retirement-respects-cancel-and-owner-loss", closed_retirement_respects_cancel_and_owner_loss);
   g_test_add_func ("/editor-dropdown/closed-retirement-newer-open-wins", closed_retirement_newer_open_wins);
+  g_test_add_func ("/editor-dropdown/alternate-finalization-live-button-dropdown", [] { alternate_finalization_live_button (0); });
+  g_test_add_func ("/editor-dropdown/alternate-finalization-live-button-ordinary", [] { alternate_finalization_live_button (1); });
+  g_test_add_func ("/editor-dropdown/alternate-replacement-preserves-identity-dropdown", [] { alternate_replacement_preserves_identity (0); });
+  g_test_add_func ("/editor-dropdown/alternate-replacement-preserves-identity-ordinary", [] { alternate_replacement_preserves_identity (1); });
+  g_test_add_func ("/editor-dropdown/alternate-loss-preserves-precedence-dropdown", [] { alternate_loss_preserves_precedence (0); });
+  g_test_add_func ("/editor-dropdown/alternate-loss-preserves-precedence-ordinary", [] { alternate_loss_preserves_precedence (1); });
+  g_test_add_func ("/editor-dropdown/alternate-self-removal-and-owner-loss-dropdown-surviving-owner", [] { alternate_self_removal_and_owner_loss (0, 0); });
+  g_test_add_func ("/editor-dropdown/alternate-self-removal-and-owner-loss-dropdown-destroyed-owner", [] { alternate_self_removal_and_owner_loss (0, 1); });
+  g_test_add_func ("/editor-dropdown/alternate-self-removal-and-owner-loss-ordinary-surviving-owner", [] { alternate_self_removal_and_owner_loss (1, 0); });
+  g_test_add_func ("/editor-dropdown/alternate-self-removal-and-owner-loss-ordinary-destroyed-owner", [] { alternate_self_removal_and_owner_loss (1, 1); });
+  g_test_add_func ("/editor-dropdown/alternate-manager-loss-live-button-dropdown", [] { alternate_manager_loss_live_button (0); });
+  g_test_add_func ("/editor-dropdown/alternate-manager-loss-live-button-ordinary", [] { alternate_manager_loss_live_button (1); });
+  g_test_add_func ("/editor-dropdown/alternate-retained-destroyed-button-dropdown", [] { alternate_retained_destroyed_button (0); });
+  g_test_add_func ("/editor-dropdown/alternate-retained-destroyed-button-ordinary", [] { alternate_retained_destroyed_button (1); });
   g_application_run (gimp->app, 0, nullptr);
   const gint result = gimp_core_app_get_exit_status (GIMP_CORE_APP (gimp->app));
   g_application_quit (G_APPLICATION (gimp->app)); g_clear_object (&gimp->app); return result;
