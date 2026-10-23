@@ -1,0 +1,37 @@
+{
+  "base_commit": "0953d681650249739fdcb17394f3962f822fdb39",
+  "observed_at_utc": "2026-10-12T10:14:27.745359+00:00",
+  "production_source_sha256": {
+    "libgimpwidgets/gimpruler.c": "8f99d3b237541e30a15216bc9bff86cf2af966172356fa1b0184be00ccee1718",
+    "libgimpwidgets/test-ruler.c": "6acfebde575989b8e86aebe0f319a81df70cb112d49d8f8221eeb090b0278d79",
+    "libgimpwidgets/meson.build": "9caefb5271ea01ecd7c71c2e127608456375945cafcd66e5d677c9170e62349e"
+  },
+  "normal": {
+    "configuration": "standard Meson b_sanitize=none; headless-tests=disabled; painter-http=disabled",
+    "ruler": 6,
+    "fill_core": 40,
+    "fill_tool_options": 32,
+    "failures": 0,
+    "skips": 0,
+    "timeouts": 0
+  },
+  "sanitizer_red": {
+    "source": "unchanged gimpruler.c at base_commit plus new tests/registration",
+    "result": "FAIL",
+    "diagnostic": "gimpruler.c:1208:55: signed integer overflow: -2147483648 + -9 cannot be represented in type int",
+    "first_case": "zero-range"
+  },
+  "sanitizer_green": {
+    "configuration": "standard Meson b_sanitize=address,undefined, RTTI/vptr retained",
+    "ruler": 6,
+    "failures": 0,
+    "skips": 0,
+    "timeouts": 0
+  },
+  "limitations": [
+    "LeakSanitizer was disabled; address, undefined and C++ vptr checks remained enabled.",
+    "External system libraries were not rebuilt with sanitizer instrumentation.",
+    "Full Fill tool/options standard sanitizer verification is pending.",
+    "WBS08.012 remains DOING; completion count135/661 unchanged."
+  ]
+}
