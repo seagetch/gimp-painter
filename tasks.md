@@ -371,7 +371,7 @@
 | 07.011 | [x] | weak handle と終了状態を試験する | 07.010 | 生存中だが close 済みの object を更新しない |
 | 07.012 | [x] | worker 完了と画像終了の競合を試験する | 07.011 | UI object の最終 unref を worker が行わない |
 | 07.013 | [x] | bridge の sanitizer 試験を実行する | 07.012 | ASan/UBSan の未解決異常がない |
-| 07.014 | [ ] | 最小混在 executable を各 OS でリンクする | 07.013 | runtime・visibility・callback ABI が一致 |
+| 07.014 | [x] | 最小混在 executable を各 OS でリンクする | 07.013 | runtime・visibility・callback ABI が一致 |
 | 07.015 | [ ] | 派生階層の取得を試験する | 07.014 | 基底・派生・複数 slot を正しい型として取得 |
 | 07.016 | [ ] | 構築失敗を注入して試験する | 07.015 | C 境界を越えず半構築資源を回収 |
 | 07.017 | [ ] | 親 dispose の再入を試験する | 07.016 | close 済みの子状態を親 callback が安全に扱う |

@@ -1,0 +1,28 @@
+{
+  "task": "07.014",
+  "status": "PASS",
+  "original_done": 121,
+  "original_total": 661,
+  "source_duty_changes": [
+    [
+      "legacy-9e61b8aac7871dfbd3cc",
+      "TODO",
+      "DONE"
+    ]
+  ],
+  "other_source_rows_unchanged": 22762,
+  "source_done": 581,
+  "source_total": 22763,
+  "focused_foundation_errors": [],
+  "unrelated_historical_foundation_errors": 98,
+  "historical_errors_rewritten": false,
+  "checks": [
+    "four native CI reports with30 seals each",
+    "exact artifact ZIP and report digests",
+    "five acceptance-control tests including11 execution mutations",
+    "check_tasks.py PASS",
+    "audit_legacy_granularity.py --check PASS",
+    "git diff --check PASS"
+  ],
+  "limitations": "Minimal common bridge only. Other historical foundation seals, full GIMP platform build/release, MSVC, tablet and sanitizer gates are separate."
+}

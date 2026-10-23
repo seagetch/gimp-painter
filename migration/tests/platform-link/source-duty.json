@@ -1,0 +1,31 @@
+{
+  "task": "07.014",
+  "work_id": "legacy-9e61b8aac7871dfbd3cc",
+  "source_id": "01.002/001892",
+  "source_blob": "f47f24a189e35eb614be51b166c6b2a71edfdf93",
+  "base_blob": "850d4468b11d67fb93397a1b389b35901d806c96",
+  "archive": "migration/tests/configure-hunk-routing/legacy-build-inputs.tar.gz",
+  "archive_sha256": "c045ae9fcbfc3a930b19bf680ca57c0c0ea123d2a083afeedd8d542f5fc416e3",
+  "source_range": "-165,0 -> 168,4",
+  "added_lines": [
+    "# Determine a CXX compiler to use",
+    "AC_PROG_CXX",
+    "AC_PROG_CXX_C_O",
+    "AX_CXX_COMPILE_STDCXX_14"
+  ],
+  "current_mapping": {
+    "meson.build": "C/C++ project with cpp_std=c++14",
+    "app/painter/meson.build": "Existing C fixtures compile as C; C++14 common objects, explicit exception/RTTI/visibility flags; C++ final link",
+    "app/meson.build": "Application and console link_language cpp",
+    "tools/test_painter_platform_link.py": "Same minimal production bridge compiled and executed natively in four required OS/architecture targets"
+  },
+  "current_mapping_sha256": {
+    "meson.build": "6cbbc986cae81fcbcd3234e70eac91d96ffa2a254ad8c1b0e56f64f19325959f",
+    "app/painter/meson.build": "b0d5dea9cd98cbc2fccef66c7f0e9514e2373a05cabee53b2c396f550e9075df",
+    "app/meson.build": "3805a0006baed2e5abdf15228d305364a0be0aec9b29e12785240ca5797f8451",
+    "tools/test_painter_platform_link.py": "5f6927efd96c5b6a6d4025b2f04c511ae001b58aeb94525ba5c90c9206678fa4"
+  },
+  "routing_changes": 0,
+  "accepted_source_duties": 1,
+  "other_source_duties_preserved": true
+}

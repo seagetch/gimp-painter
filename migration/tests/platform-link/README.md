@@ -1,6 +1,7 @@
 # Original WBS 07.014: native platform link gate
 
-This is an execution checkpoint, not completion of 07.014. The supported matrix
+The original 07.014 gate is now complete; see the final native acceptance below.
+The first two sections preserve the earlier execution checkpoint and its limits. The supported matrix
 is Linux x86_64, Windows x86_64, and macOS arm64/x86_64. The new workflow and
 runner must be published before GitHub can execute the other native targets.
 The original task remains unchecked until all four results are collected and
@@ -80,3 +81,32 @@ positive and deliberate negative compiled binaries test this behavior on each
 actual platform. No macOS success is inferred from this source correction.
 The full four report snapshots and their checkout transformations were verified;
 `ci-attempt-2.json` records the bounded result and exact failing export output.
+
+## Final original acceptance
+
+[Run 38027743135](https://github.com/seagetch/gimp-painter/actions/runs/38027743135)
+on source `f2137c9a7d4a9d58f8a007fdc911cf0626da7af5` passed all four
+native targets: Linux x86_64, Windows UCRT64 x86_64, macOS arm64 and macOS
+x86_64. Each compiled and linked the real minimal common bridge, passed the
+same 69 foundation cases, C/C++ layout/callback/error fixture, unmangled C
+entry checks, native binary/runtime checks, and positive/negative export controls.
+Windows uses its native 4-byte long; the other targets use 8-byte long. Each
+compares the C and C++ layouts on that target, rather than requiring unrelated
+platform ABIs to be byte-identical.
+
+`native-acceptance.json` binds the exact report snapshots to CI jobs, artifacts
+and source commit. The four `native-*.json.gz` files preserve original report
+bytes, including commands and failures being absent. All thirty source seals
+match current source bytes; Windows' exact LF-to-CRLF checkout transformation
+is explicitly recorded and rechecked. `tools/check_painter_platform_acceptance.py`
+verifies the matrix, report digests, real test output, native identities, controls
+and current source. The foundation acceptance checker delegates this OS-specific
+row to it; earlier unrelated historical seals are not rewritten.
+
+The sole assigned source duty `legacy-9e61b8aac7871dfbd3cc` is retained and
+accepted. `source-duty.json` verifies the pinned configure.ac source/base blobs
+and maps its four C++ compiler/C++14 configuration lines to the existing Meson
+C/C++ setup and the native executable gate. No assignments are moved or removed.
+The independent 34.006 obligation stays open. This closes the original minimal
+bridge task, with no claim of a full GIMP build on all platforms, MSVC acceptance,
+sanitizers on those runners, tablet behavior or completed platform releases.
