@@ -2584,7 +2584,7 @@ pan_transformed (void)
 typedef struct
 {
   GimpTool parent;
-  guint presses, releases;
+  guint presses, releases, motions;
   DragPoint press, release;
   GimpDisplay *press_display, *release_display;
 } DragRecordingTool;
@@ -2615,6 +2615,14 @@ drag_recording_release (GimpTool *tool, const GimpCoords *coords, guint32 time,
   gimp_tool_control_halt (tool->control);
 }
 
+/* Observe primary motion routing without changing the recorded click pairs. */
+static void
+drag_recording_motion (GimpTool *tool, const GimpCoords *coords, guint32 time,
+                       GdkModifierType state, GimpDisplay *display)
+{
+  ((DragRecordingTool *) tool)->motions++;
+}
+
 static void
 drag_recording_tool_class_init (DragRecordingToolClass *klass)
 {
@@ -2622,6 +2630,7 @@ drag_recording_tool_class_init (DragRecordingToolClass *klass)
   tool->initialize = start_recording_initialize;
   tool->button_press = drag_recording_press;
   tool->button_release = drag_recording_release;
+  tool->motion = drag_recording_motion;
 }
 
 static void
@@ -2675,6 +2684,68 @@ drag_probe_click (const DragScene *scene, DragPoint p, gint ox, gint oy)
                   p.x, p.y, expected.x, expected.y, ox, oy);
 }
 
+/* SOURCE-ONLY 25.009/fractional-pan-difference: one additional modern
+ * difference case, outside the frozen historical 16-drag inventory. This is
+ * not old inverse-before-gint parity or floating-pointer anchor invariance. */
+static void
+drag_fractional_pan_difference (void)
+{
+  DragScene scene = drag_scene_new (&drag_angles[1], FALSE, 1.5, TRUE,
+                                     "painter-drag-recording-test");
+  DragRecordingTool *recording = (DragRecordingTool *) scene.tool;
+  guint presses = recording->presses, releases = recording->releases;
+  guint motions = recording->motions;
+  DragPoint start = { scene.width / 2 + 31.25, scene.height / 2 - 18.75 };
+  DragPoint p = { start.x + 17.6, start.y - 10.6 };
+  DragPoint q0 = { (gint) start.x, (gint) start.y };
+  DragPoint q1 = { (gint) p.x, (gint) p.y };
+  DragPoint invariant = drag_inverse (scene.angle, FALSE, 1.5, scene.ox, scene.oy, q0);
+  DragPoint raw_expected = drag_inverse (scene.angle, FALSE, 1.5, scene.ox, scene.oy, start);
+  /* Raw residual (17.6,-10.6) - (17,-11) = (0.6,0.4). Independently
+   * inverse-rotate and divide by scale, never use a production transform. */
+  DragPoint drift = { (scene.angle->cosine * 0.6 + scene.angle->sine * 0.4) / 1.5,
+                     (-scene.angle->sine * 0.6 + scene.angle->cosine * 0.4) / 1.5 };
+  DragPoint anchor0, anchor1, raw0, raw1;
+  NavigationState held;
+
+  drag_assert_interior (&scene, scene.ox, scene.oy);
+  drag_assert_interior (&scene, scene.ox - 17, scene.oy + 11);
+  g_assert_cmpfloat (q1.x - q0.x, ==, 17.0);
+  g_assert_cmpfloat (q1.y - q0.y, ==, -11.0);
+  gimp_display_shell_untransform_xy_f (shell, q0.x, q0.y, &anchor0.x, &anchor0.y);
+  g_assert_cmpfloat_with_epsilon (anchor0.x, invariant.x, 1e-8);
+  g_assert_cmpfloat_with_epsilon (anchor0.y, invariant.y, 1e-8);
+  gimp_display_shell_untransform_xy_f (shell, start.x, start.y, &raw0.x, &raw0.y);
+  g_assert_cmpfloat_with_epsilon (raw0.x, raw_expected.x, 1e-8);
+  g_assert_cmpfloat_with_epsilon (raw0.y, raw_expected.y, 1e-8);
+
+  held = drag_begin (&scene, GIMP_MODIFIER_ACTION_PANNING, start);
+  drag_send_pointer (GDK_MOTION_NOTIFY, 0, GDK_BUTTON2_MASK, p);
+  drag_assert_held (&scene, &held, p, 1.5);
+  drag_assert_pan_geometry (&scene, scene.ox - 17, scene.oy + 11, q1, invariant);
+  gimp_display_shell_untransform_xy_f (shell, q1.x, q1.y, &anchor1.x, &anchor1.y);
+  g_assert_cmpfloat_with_epsilon (anchor1.x - anchor0.x, 0.0, 1e-8);
+  g_assert_cmpfloat_with_epsilon (anchor1.y - anchor0.y, 0.0, 1e-8);
+  gimp_display_shell_untransform_xy_f (shell, p.x, p.y, &raw1.x, &raw1.y);
+  g_assert_cmpfloat_with_epsilon (raw1.x, raw_expected.x + drift.x, 1e-8);
+  g_assert_cmpfloat_with_epsilon (raw1.y, raw_expected.y + drift.y, 1e-8);
+  g_assert_cmpfloat_with_epsilon (raw1.x - raw0.x, drift.x, 1e-8);
+  g_assert_cmpfloat_with_epsilon (raw1.y - raw0.y, drift.y, 1e-8);
+  drag_release (&scene, p);
+  g_assert_cmpint (shell->offset_x, ==, scene.ox - 17);
+  g_assert_cmpint (shell->offset_y, ==, scene.oy + 11);
+  g_assert_cmpuint (recording->presses, ==, presses);
+  g_assert_cmpuint (recording->releases, ==, releases);
+  g_assert_cmpuint (recording->motions, ==, motions);
+  g_test_message ("fractional-pan-difference offsets=%d,%d expected=%d,%d "
+                  "quantized-anchor-delta=(%.17g,%.17g) expected=(0,0) "
+                  "raw-drift=(%.17g,%.17g) expected=(%.17g,%.17g)",
+                  shell->offset_x, shell->offset_y, scene.ox - 17, scene.oy + 11,
+                  anchor1.x - anchor0.x, anchor1.y - anchor0.y,
+                  raw1.x - raw0.x, raw1.y - raw0.y, drift.x, drift.y);
+  drag_scene_free (&scene);
+}
+
 static void
 device_image_origin (void)
 {
@@ -2704,6 +2775,7 @@ device_image_origin (void)
       g_assert_cmpuint (recording->releases, ==, releases + 3);
       drag_scene_free (&scene);
     }
+  drag_fractional_pan_difference ();
 }
 
 int main(int argc,char **argv)

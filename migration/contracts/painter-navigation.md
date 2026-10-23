@@ -1358,3 +1358,114 @@ clamp-policy equivalence, new raster/overlay/damage/clipping acceptance,
 physical input, focus/device interruption and other platforms remain deferred.
 Old Edge/string-reader runtime remains **SKIPPED/unverified**. No parent,
 whole-section, aggregate, package, release or full-port acceptance is implied.
+
+
+## 25.009 fractional-pan difference: source-only regression
+
+**25.009/fractional-pan-difference is TODO / SOURCE-ONLY.** This bounded
+extension was prepared from public source
+`7e6fddd20ec134a626c3bcb5cc1bac1bf7c2f7cf`, tree
+`da9fe0c1cf154feb0d9cc3b40db272c25e43cc92`. It records the existing modern
+integer-device pan behavior and its difference from the original source.
+There is **no production behavior change**, no native execution claim, and
+no user-approved replacement of historical compatibility acceptance. Parent
+**25.009 and 25.009/drag-zoom-scroll remain TODO with their exact original
+criteria and dependencies**. Their old-operation comparison requirement is
+not redefined as modern-only acceptance by this regression.
+
+### Source-backed distinction and behavior effect
+
+Let T truncate each coordinate toward zero to `gint`, C be the integer
+viewport midpoint, and P0/P1 be floating device press/motion coordinates.
+Modern `gimpdisplayshell-tool-events.c` passes those coordinates to `gint`
+start/motion parameters, stores Q0=T(P0), and pans by `scroll_last - current`.
+`gimpdisplayshell-scroll.c` adds the integer request to integer offsets before
+clamping. Thus for this fixed-scale/orientation **interior** case,
+O1=O0+Q0-Q1. In the existing independent R*F/image-center geometry, this
+moves the picture by Q1-Q0 and preserves the image position at Q0/Q1.
+Raw P0/P1 need not share an image anchor when their fractional parts change.
+The separate full-precision primary-tool inverse route remains unchanged.
+
+The retained original event source inverse-rotates the floating press first,
+then passes it to a `gint` start parameter. With unmirrored A=R(37 degrees),
+U(P)=C+A^-1*(P-C), its start is T(U(P0)). The original scroll API, offsets,
+saved start fields and separate overlay rounding residuals are `gdouble`.
+These declarations and applied offset arithmetic are resolved from existing
+Git objects at the retained original pin
+`afa43fae3e920210146abed514f136fd49f671b5`, specifically:
+
+- `app/display/gimpdisplayshell-scroll.h:25-27`, blob
+  `79c6eb3175ef854a82010e708f7a068be5d67a77`;
+- `app/display/gimpdisplayshell.h:67-68,193-197`, blob
+  `703b631b434fcc85631660c810c0f5c147ed9617`;
+- `app/display/gimpdisplayshell-scroll.c:89-108,125-144,185-261`, blob
+  `77fa7c1b9b0bbcdfb3d734c90d99f2e8ae9b8305`;
+- `app/display/gimpdisplayshell-transform.c:227-247,265-283`, blob
+  `11ec34bfee9b0ea7738994388e53bb59a3f50201`.
+
+The unclamped original formula is
+O_old,1=O_old,0+T(U(P0))-U(P1); there is no second integer narrowing at the
+old scroll call. Its picture translation is
+P1-P0+A*(U(P0)-T(U(P0))), a fixed press-quantization bias. To compare
+coordinate systems rather than raw unlike offsets, align the initial view
+using O_old,0=K-C+A^-1*(O0+C-K), K=(192,192) at scale 1.5. For the previously
+recorded 849x450 scene, C=(424,225), O0=(-219,-42), the aligned old offset is
+approximately (-227.03407358,-48.01131489). Its post-motion offset
+(-235.38414731,-29.17269879) and the initial offset both lie inside the old
+source limits x=[-657,192], y=[-258,192]. The aligned old coordinate-transform
+translation is approximately **(18.00602758,-10.01998796)**, versus modern
+**(17,-11)**. The difference (1.00602758,0.98001204) is a source-formula result,
+not an old applied-raster/overlay observation or an old-runtime test pass.
+Old applied raster/overlay/runtime compatibility remains **SKIPPED/unverified**.
+No old environment, executable, capture or oracle is newly run or regenerated.
+
+### One finite additional case; historical inventory stays frozen
+
+`drag_fractional_pan_difference()` runs once after the existing two-case
+`device_image_origin()` loop, inside its existing registration. It reuses the
+unmirrored 37-degree interior scene, fixed scale 1.5, real viewport midpoint,
+fractional sender, independent affine helpers and normal navigation lifecycle:
+
+- P0=C+(31.25,-18.75), P1=P0+(17.6,-10.6); Q0=T(P0), Q1=T(P1).
+- Exact offset destination O0+(-17,+11), with both offsets admitted by the
+  existing independent 16-pixel interior-margin check.
+- Independent image anchor at Q0 before and Q1 after, with production inverse
+  results checked at both endpoints. The existing pan-geometry helper also
+  checks the three unchanged non-collinear landmarks at the destination.
+- Raw residual (P1-P0)-(Q1-Q0)=(0.6,0.4), independently inverse-rotated and
+  divided by 1.5. Expected raw-pointer image drift is
+  ((cos37*0.6+sin37*0.4)/1.5,(-sin37*0.6+cos37*0.4)/1.5), approximately
+  **(0.47993821019281,-0.02775653991488)**. This is explicitly a nonzero drift
+  assertion, never a raw-pointer invariance assertion.
+- Existing held-state/grab assertions and ordinary middle release/idle cleanup,
+  unchanged tool/image/scale/orientation, and no primary press, release or
+  motion callback during navigation. A passive motion counter extends the
+  existing recorder; all six earlier precise primary press/release pairs and
+  their assertions remain unchanged.
+
+One distinctive `fractional-pan-difference` diagnostic records observed and
+expected offsets, quantized-anchor delta and raw drift after normal release.
+A later native run must show it exactly once in both normal and focused event
+logs. There is no new GTest registration, matrix, capture or generic validator.
+The existing 31 event registrations, preceding cases and 38 draw assertions
+remain unchanged. The additional case contributes one main drag, one
+pan-geometry invocation and three landmark comparisons, without an additional
+stationary reentry or primary probe pair. The frozen historical inventory is
+still 16 main drags / 16 reentries / 32 pan-geometry calls / six primary pairs;
+current source adds this separately identified case, rather than rewriting
+those historical counts as though they had already been executed.
+
+`transformed-drag-cases.json`, its validator, retained fixtures, component and
+acceptance receipts/archives remain immutable historical evidence. Existing
+lightweight static checks passed: five transformed-drag controls, three
+navigation/zoom fixture checks, 16 retained rotation checks, `check_tasks.py`
+and `git diff --check`. They verify their retained scope and do not execute
+or accept this new C case. Exact-source publication and the unchanged bounded
+native gates (31 event + four UI + six pure normal cases, 31 focused event
+cases with the same nine C units) remain pending. The separate unchanged
+strict Clone 226 normal / 62 focused gate must be rerun for its new source
+checkpoint; its current receipt is stale after this source edit and is not
+refreshed here. No old-runtime, full legacy pan/radial, physical input, clamp
+focus/overshoot/reversal, raster/overlay, platform, parent, aggregate, package,
+release or whole-port acceptance is claimed. Both historical old GUI teardown
+`command_exit=-11` outcomes remain unchanged.
