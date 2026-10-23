@@ -321,7 +321,7 @@
 | 06.001 | [x] | ObjectRef の retain factory を実装する | 05.014 | 受取時に一参照を取得する |
 | 06.002 | [x] | ObjectRef の adopt factory を実装する | 06.001 | 受取済み所有参照を重複取得しない |
 | 06.003 | [x] | ObjectRef の sink factory を実装する | 06.002 | floating ref の扱いが GTK の所有規約と一致 |
-| 06.004 | [ ] | ObjectRef の copy/move を実装する | 06.003 | copy と移動の参照数が契約どおり |
+| 06.004 | [x] | ObjectRef の copy/move を実装する | 06.003 | copy と移動の参照数が契約どおり |
 | 06.005 | [ ] | ObjectRef の型検査を実装する | 06.004 | 誤った GType を拒否する |
 | 06.006 | [ ] | weak handle を実装する | 06.005 | 消滅後の取得が失敗し、取得時だけ strong ref を得る |
 | 06.007 | [ ] | BindingStore の qdata 登録を実装する | 06.006 | 予約 key 一つで store が一意に存在 |

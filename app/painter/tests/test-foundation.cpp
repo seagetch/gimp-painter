@@ -6,6 +6,7 @@
 #include "binding-store.hpp"
 #include <stdexcept>
 #include <thread>
+#include <type_traits>
 #include <vector>
 
 using namespace GimpPainter;
@@ -173,6 +174,78 @@ void sink_factory ()
       sunk.reset ();
       g_assert_cmpint (destroyed, ==, 1);
       sunk.reset ();
+      g_assert_cmpint (destroyed, ==, 1);
+    }
+}
+
+void copy_move_contract ()
+{
+  using Ref = ObjectRef<GObject>;
+  static_assert (std::is_nothrow_copy_constructible<Ref>::value, "copy construction");
+  static_assert (std::is_nothrow_copy_assignable<Ref>::value, "copy assignment");
+  static_assert (std::is_nothrow_move_constructible<Ref>::value, "move construction");
+  static_assert (std::is_nothrow_move_assignable<Ref>::value, "move assignment");
+
+  for (GType type : {G_TYPE_OBJECT, G_TYPE_INITIALLY_UNOWNED})
+    {
+      int destroyed = 0, displaced = 0, moved_over = 0;
+      auto owner = Ref::adopt (G_OBJECT (g_object_new (type, nullptr)));
+      auto *raw = owner.get ();
+      const bool floating = g_object_is_floating (raw);
+      g_object_weak_ref (raw, weak_notify, &destroyed);
+      g_assert_cmpuint (raw->ref_count, ==, 1);
+      Ref copy (owner);
+      g_assert_true (copy.get () == raw);
+      g_assert_cmpuint (raw->ref_count, ==, 2);
+      Ref moved (std::move (copy));
+      g_assert_null (copy.get ());
+      g_assert_true (moved.get () == raw);
+      g_assert_cmpuint (raw->ref_count, ==, 2);
+      auto *self = &moved;
+      moved = *self;
+      g_assert_cmpuint (raw->ref_count, ==, 2);
+      moved = std::move (*self);
+      g_assert_true (moved.get () == raw);
+      g_assert_cmpuint (raw->ref_count, ==, 2);
+
+      auto assigned = new_object ();
+      g_object_weak_ref (assigned.get (), weak_notify, &displaced);
+      assigned = moved;
+      g_assert_cmpint (displaced, ==, 1);
+      g_assert_true (assigned.get () == raw);
+      g_assert_cmpuint (raw->ref_count, ==, 3);
+      assigned = moved; // Distinct wrappers already own the same object.
+      g_assert_cmpuint (raw->ref_count, ==, 3);
+      Ref duplicate (owner);
+      g_assert_cmpuint (raw->ref_count, ==, 4);
+      assigned = std::move (duplicate);
+      g_assert_null (duplicate.get ());
+      g_assert_true (assigned.get () == raw);
+      g_assert_cmpuint (raw->ref_count, ==, 3);
+
+      Ref empty;
+      Ref empty_copy (empty);
+      Ref empty_moved (std::move (empty_copy));
+      g_assert_null (empty_copy.get ());
+      g_assert_null (empty_moved.get ());
+      assigned = empty;
+      g_assert_null (assigned.get ());
+      g_assert_cmpuint (raw->ref_count, ==, 2);
+      moved = std::move (empty_moved);
+      g_assert_null (moved.get ());
+      g_assert_cmpuint (raw->ref_count, ==, 1);
+
+      auto destination = new_object ();
+      g_object_weak_ref (destination.get (), weak_notify, &moved_over);
+      destination = std::move (owner);
+      g_assert_null (owner.get ());
+      g_assert_true (destination.get () == raw);
+      g_assert_cmpuint (raw->ref_count, ==, 1);
+      g_assert_cmpint (moved_over, ==, 1);
+      g_assert_cmpint (g_object_is_floating (raw), ==, floating);
+      g_assert_cmpint (destroyed, ==, 0);
+      if (floating) g_object_ref_sink (raw);
+      destination.reset ();
       g_assert_cmpint (destroyed, ==, 1);
     }
 }
@@ -383,6 +456,7 @@ void painter_test_register ()
   g_test_add_func ("/painter/ref/retain-factory", retain_factory);
   g_test_add_func ("/painter/ref/adopt-factory", adopt_factory);
   g_test_add_func ("/painter/ref/sink-factory", sink_factory);
+  g_test_add_func ("/painter/ref/copy-move-contract", copy_move_contract);
   g_test_add_func ("/painter/ref/floating-sink", floating);
   g_test_add_func ("/painter/ref/weak", weak_handles);
   g_test_add_func ("/painter/store/lifecycle", store_lifetime);
