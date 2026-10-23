@@ -1,0 +1,13 @@
+{
+  "status": "RETAINED FAILED V1; NOT ACCEPTANCE",
+  "case": "/painter-profile-native/image-generator/missing-selection",
+  "expected": "gimp-painter-mypaint-tool",
+  "observed": "gimp-painter-smudge-tool",
+  "signal": "SIGABRT",
+  "source_sha256": "57573b06effaf74f2f0abe91acdf6aadb2585deb21c8bb6fc0db06b1c9c20fc5",
+  "raw_log_sha256": "3f9f0af52f67b391574277abe7e53e2b1ca53832e6fc80168b54dcb66891f585",
+  "cause": "A prior installer case left Smudge selected. tool_manager_tool_ancestry_changed makes the current tool active when it joins a group, overriding the first-child default. The original authored fixture lacked this precondition.",
+  "correction": "Select and assert an outside Rect Select tool before checking exact MyPaint fallback; separately select Smudge before reload and check exact Smudge preference. Both phases assert roundtrip, then restore original context and layout. No either-value assertion or production change was introduced.",
+  "corrected_source_sha256": "4961f2cdaf1d5685cc60f095153a71e8ed9c0f4da89ba77cc1fd0f1f0952d72f",
+  "verification": "The complete corrected 48-case aggregate passed natively and under ASan/UBSan."
+}

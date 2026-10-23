@@ -14,6 +14,8 @@ struct _GimpPainterSession {GimpObject parent_instance;gboolean binding_failed;}
 struct _GimpPainterSessionClass {GimpObjectClass parent_class;};
 GType gimp_painter_session_get_type (void) G_GNUC_CONST;
 GimpPainterSession *gimp_painter_session_new (GimpPainterMybrushOptions *options,GError **error);
+/* For stroke_to and hover_to, split may be NULL. When supplied, its value
+ * is valid only when the function returns TRUE; do not read it on FALSE. */
 gboolean gimp_painter_session_stroke_to (GimpPainterSession *session,GimpDrawable *drawable,gdouble seconds,const GimpCoords *coords,gboolean *split,GError **error);
 /* Zero-pressure inactive input. A preceding press may finish positive-pressure
  * interpolated tail dabs in its existing transaction; settled hover only samples. */

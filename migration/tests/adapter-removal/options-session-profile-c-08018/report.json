@@ -1,0 +1,258 @@
+{
+  "scope": "Bounded Options/Session actual-C and ImageGenerator saved-profile controls",
+  "base_commit": "ac070d7bedccfed134aa1ffdf58e76bc01e8c70a",
+  "base_tree": "cd71fe2d360b4eed1560959eceff2fb3f44abd7d",
+  "gimp_data_commit": "a31e5dea4f572fb5f33b06f5c4b86db5f30643dc",
+  "production_delta": "Session optional split-output documentation only; no behavioral change",
+  "task_status": {
+    "08.017": "DONE",
+    "08.018": "OPEN",
+    "completed": 141,
+    "total": 661,
+    "remaining_c_entry_obligations": 76,
+    "separate_core_hooks": 31
+  },
+  "builds": {
+    "native": "PASS",
+    "asan_ubsan": "PASS",
+    "headless_tests": "disabled",
+    "painter_http": "disabled",
+    "auto_features": "disabled",
+    "libunwind": false,
+    "asan_options": "detect_leaks=0:halt_on_error=1:abort_on_error=1",
+    "ubsan_options": "halt_on_error=1:abort_on_error=1:print_stacktrace=1"
+  },
+  "coverage": [
+    {
+      "mode": "native",
+      "status": "PASS",
+      "registrations": 5,
+      "cases": 48,
+      "new_cases": 7,
+      "results": [
+        {
+          "name": "gimp-painter-options",
+          "cases": [
+            "/painter-options/generated-properties",
+            "/painter-options/all-native-properties-config",
+            "/painter-options/legacy-brush-mode-config",
+            "/painter-options/edit-curve-commit-conflict",
+            "/painter-options/history-config",
+            "/painter-options/native-config-reset-defaults",
+            "/painter-options/notification-last-ref",
+            "/painter-options/closed-invalid-curve",
+            "/painter-options/named-resources",
+            "/painter-options/selection-reentry",
+            "/painter-options/commit-close",
+            "/painter-options/cross-options-history",
+            "/painter-options/application-history-close"
+          ],
+          "result": "PASS",
+          "duration_seconds": 1.0065722465515137,
+          "stderr_lines": 71
+        },
+        {
+          "name": "gimp-painter-session",
+          "cases": [
+            "/painter-session/controller-pixels",
+            "/painter-session/registered-native-paint-core",
+            "/painter-session/options-first-stroke-ownership",
+            "/painter-session/settings-split-block",
+            "/painter-session/close-start",
+            "/painter-session/settings-during-motion",
+            "/painter-session/closed-options-cancel",
+            "/painter-session/notification-last-ref",
+            "/painter-session/deferred-sample-stop",
+            "/painter-session/cancel-native-start"
+          ],
+          "result": "PASS",
+          "duration_seconds": 1.1273736953735352,
+          "stderr_lines": 71
+        },
+        {
+          "name": "painter-options-session-c",
+          "cases": [
+            "/painter-c/options-owned-roundtrip",
+            "/painter-c/options-reject-close",
+            "/painter-c/session-native-transaction",
+            "/painter-c/session-errors-close"
+          ],
+          "result": "PASS",
+          "duration_seconds": 1.0622355937957764,
+          "stderr_lines": 71
+        },
+        {
+          "name": "painter-profile-parser",
+          "cases": [
+            "/painter-profile/structured-mapping",
+            "/painter-profile/toolrc-modes",
+            "/painter-profile/malformed",
+            "/painter-profile/origin-conflicts",
+            "/painter-profile/device-schema-paths",
+            "/painter-profile/symlink-nested-rejection",
+            "/painter-profile/options-only-origin",
+            "/painter-profile/blend-filename-options",
+            "/painter-profile/canvas-behavior-default"
+          ],
+          "result": "PASS",
+          "duration_seconds": 0.013621807098388672,
+          "stderr_lines": 0
+        },
+        {
+          "name": "painter-profile-native",
+          "cases": [
+            "/painter-profile-native/tool-order-roundtrip",
+            "/painter-profile-native/mypaint-preset-roundtrip",
+            "/painter-profile-native/smudge-context-roundtrip",
+            "/painter-profile-native/genuine-old-writer",
+            "/painter-profile-native/genuine-device-context",
+            "/painter-profile-native/independent-defaults",
+            "/painter-profile-native/first-run-installer-retry",
+            "/painter-profile-native/native-brush-defaults",
+            "/painter-profile-native/expanded-last-owner",
+            "/painter-profile-native/image-generator/genuine-writer",
+            "/painter-profile-native/image-generator/missing-selection",
+            "/painter-profile-native/image-generator/unknown-saved-data"
+          ],
+          "result": "PASS",
+          "duration_seconds": 1.9575631618499756,
+          "stderr_lines": 80
+        }
+      ],
+      "test_log_sha256": "fc86705b9359be0b52049a5e25ca3e339bd8612ed51eef714d95afb22fe0bfc7"
+    },
+    {
+      "mode": "asan",
+      "status": "PASS",
+      "registrations": 5,
+      "cases": 48,
+      "new_cases": 7,
+      "results": [
+        {
+          "name": "gimp-painter-options",
+          "cases": [
+            "/painter-options/generated-properties",
+            "/painter-options/all-native-properties-config",
+            "/painter-options/legacy-brush-mode-config",
+            "/painter-options/edit-curve-commit-conflict",
+            "/painter-options/history-config",
+            "/painter-options/native-config-reset-defaults",
+            "/painter-options/notification-last-ref",
+            "/painter-options/closed-invalid-curve",
+            "/painter-options/named-resources",
+            "/painter-options/selection-reentry",
+            "/painter-options/commit-close",
+            "/painter-options/cross-options-history",
+            "/painter-options/application-history-close"
+          ],
+          "result": "PASS",
+          "duration_seconds": 3.746269464492798,
+          "stderr_lines": 377
+        },
+        {
+          "name": "gimp-painter-session",
+          "cases": [
+            "/painter-session/controller-pixels",
+            "/painter-session/registered-native-paint-core",
+            "/painter-session/options-first-stroke-ownership",
+            "/painter-session/settings-split-block",
+            "/painter-session/close-start",
+            "/painter-session/settings-during-motion",
+            "/painter-session/closed-options-cancel",
+            "/painter-session/notification-last-ref",
+            "/painter-session/deferred-sample-stop",
+            "/painter-session/cancel-native-start"
+          ],
+          "result": "PASS",
+          "duration_seconds": 1.3844337463378906,
+          "stderr_lines": 71
+        },
+        {
+          "name": "painter-options-session-c",
+          "cases": [
+            "/painter-c/options-owned-roundtrip",
+            "/painter-c/options-reject-close",
+            "/painter-c/session-native-transaction",
+            "/painter-c/session-errors-close"
+          ],
+          "result": "PASS",
+          "duration_seconds": 1.2733616828918457,
+          "stderr_lines": 71
+        },
+        {
+          "name": "painter-profile-parser",
+          "cases": [
+            "/painter-profile/structured-mapping",
+            "/painter-profile/toolrc-modes",
+            "/painter-profile/malformed",
+            "/painter-profile/origin-conflicts",
+            "/painter-profile/device-schema-paths",
+            "/painter-profile/symlink-nested-rejection",
+            "/painter-profile/options-only-origin",
+            "/painter-profile/blend-filename-options",
+            "/painter-profile/canvas-behavior-default"
+          ],
+          "result": "PASS",
+          "duration_seconds": 0.029788970947265625,
+          "stderr_lines": 0
+        },
+        {
+          "name": "painter-profile-native",
+          "cases": [
+            "/painter-profile-native/tool-order-roundtrip",
+            "/painter-profile-native/mypaint-preset-roundtrip",
+            "/painter-profile-native/smudge-context-roundtrip",
+            "/painter-profile-native/genuine-old-writer",
+            "/painter-profile-native/genuine-device-context",
+            "/painter-profile-native/independent-defaults",
+            "/painter-profile-native/first-run-installer-retry",
+            "/painter-profile-native/native-brush-defaults",
+            "/painter-profile-native/expanded-last-owner",
+            "/painter-profile-native/image-generator/genuine-writer",
+            "/painter-profile-native/image-generator/missing-selection",
+            "/painter-profile-native/image-generator/unknown-saved-data"
+          ],
+          "result": "PASS",
+          "duration_seconds": 3.330751657485962,
+          "stderr_lines": 80
+        }
+      ],
+      "test_log_sha256": "2ccceb5dd8163212dcd4789e8ea8fcc8c772213a64ad89dd34327ccb53caf10c"
+    }
+  ],
+  "actual_c_translation_units": [
+    "app/tests/test-painter-options-session-c.c",
+    "app/tests/test-painter-profile-image-generator-c.c"
+  ],
+  "additional_checks": {
+    "legacy_adapter_scan": "PASS",
+    "legacy_adapter_policy_tests": 48,
+    "runtime_verifier_negative_controls": 6,
+    "source_whitespace": "PASS"
+  },
+  "limits": [
+    "No ImageGenerator implementation or native feature completion is claimed.",
+    "Synthetic rate/eraser data does not represent working legacy properties.",
+    "No global 08.018 or core-hook completion is claimed.",
+    "LeakSanitizer is disabled; no leak acceptance is claimed.",
+    "HTTP and platform-wide behavior are outside this subset.",
+    "Desktop application icons, session-bus and cloud-provider integrations are not validated.",
+    "Existing whole-build warnings are retained; neither new C source emitted a compiler warning.",
+    "Seven new controls plus 41 existing related cases are run; this is not the entire application suite."
+  ],
+  "runtime_notices": {
+    "retained": [
+      "dummy plug-in discovery",
+      "missing localization catalogs",
+      "six missing desktop application icons in GUI profile tests",
+      "unavailable session bus",
+      "one cloud-provider DEBUG record",
+      "two successful disabled Xvfb device notices"
+    ],
+    "first_plugin_scan": "The first native v1 and first ASan Options runs each contain 377 stderr lines, versus 71 on the warmed native v2 run. The 306 additional lines are 102 plug-in localization notice triplets. No sanitizer or warning/error diagnostic is accepted."
+  },
+  "display": "Authenticated loopback-only Xvfb; unauthenticated connection rejected; server and temporary authentication files removed after each run",
+  "dependency_recovery": "560 SHA256-pinned Debian 13 packages extracted locally; no system package installation",
+  "screenshots": "Not required: documentation/test-only delta; no visible feature change",
+  "perspective_guard": "Excluded; no perspective source is in this package"
+}

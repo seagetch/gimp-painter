@@ -36,6 +36,7 @@ extern "C" {
 #include "tests.h"
 #include "gimp-app-test-utils.h"
 #include "gimpcoreapp.h"
+void gimp_test_painter_profile_image_generator_register (Gimp *gimp);
 }
 #include "paint/painter-mypaint-surface/gimp-painter-options.h"
 static Gimp*gimp;
@@ -219,5 +220,6 @@ int main(int argc,char**argv) {
   g_test_add_func("/painter-profile-native/first-run-installer-retry",installer_startup_and_retry);
   g_test_add_func("/painter-profile-native/native-brush-defaults",old_native_brush_defaults);
   g_test_add_func("/painter-profile-native/expanded-last-owner",expanded_last_owner);
+  gimp_test_painter_profile_image_generator_register(gimp);
   g_application_run(gimp->app,0,nullptr);int result=gimp_core_app_get_exit_status(GIMP_CORE_APP(gimp->app));g_application_quit(G_APPLICATION(gimp->app));g_clear_object(&gimp->app);return result;
 }
