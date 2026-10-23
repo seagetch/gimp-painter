@@ -408,14 +408,14 @@ retained_old_starts (void)
       gchar **row = g_strsplit (lines[i], "\t", -1);
       guint   seq = (guint) g_ascii_strtoull (row[0], NULL, 10);
 
-      g_assert_cmpuint (g_strv_length (row), ==, 25);
+      g_assert_cmpuint (g_strv_length (row), ==, 24);
       if (matched < G_N_ELEMENTS (sequences) && seq == sequences[matched])
         {
           gchar **setup = g_strsplit (lines[i - 1], "\t", -1);
           gint x, y;
           gdouble angle;
 
-          g_assert_cmpuint (g_strv_length (setup), ==, 25);
+          g_assert_cmpuint (g_strv_length (setup), ==, 24);
           g_assert_cmpstr (setup[1], ==, row[1]);
           g_assert_cmpstr (setup[2], ==, "setup");
           g_assert_cmpint (atoi (row[3]), ==, 4); /* old GDK_BUTTON_PRESS */
