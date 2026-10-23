@@ -104,6 +104,13 @@ if host_machine.system() == 'linux' and cxx.get_id() in ['gcc', 'clang'] and cxx
   mybrush_copy_fault_link_args = [mybrush_copy_fault_wrap]
 endif
 
+# Inject one selected PNG encoder failure without changing the provider.
+mybrush_encode_fault_wrap = '-Wl,--wrap=gdk_pixbuf_save_to_buffer'
+if host_machine.system() == 'linux' and cxx.get_id() in ['gcc', 'clang'] and cxx.has_link_argument(mybrush_encode_fault_wrap)
+  mybrush_copy_fault_args += ['-DGIMP_TEST_MYBRUSH_WRAP_PIXBUF_ENCODE']
+  mybrush_copy_fault_link_args += [mybrush_encode_fault_wrap]
+endif
+
 # Prove named clone setters traverse their original C symbols without adding
 # instrumentation to the production provider.
 clone_route_args = []

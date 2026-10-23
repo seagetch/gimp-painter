@@ -199,9 +199,19 @@ def _validate_source_semantics(root):
        'if (embedded.empty () && path && g_str_has_suffix (path.get (), ".myb"))',
        'icon_path += "_prev.png";',
        'if (icon && !gimp_painter_mybrush_set_icon (owner.get (), icon.get (), error))')
-    _require_scope(source(root,BRUSH),'gboolean gimp_painter_mybrush_set_icon',
-       'gdk_pixbuf_save_to_buffer (icon.get (), &raw, &size, "png", error, nullptr)',
+    brush = source(root,BRUSH)
+    encoder = _require_scope(brush, 'bool encode_icon (GdkPixbuf *icon',
+       'encoded.clear ();', 'if (!icon) return true;',
+       'gdk_pixbuf_save_to_buffer (icon, &raw, &size, "png", error, nullptr)',
+       'String bytes (raw);', 'if (!success) return false;',
+       'g_base64_encode (reinterpret_cast<const guchar *> (raw), size)',
+       'encoded = base64.get ();')
+    assert encoder.index('String bytes (raw);') < encoder.index('if (!success) return false;')
+    setter = _require_scope(brush,'gboolean gimp_painter_mybrush_set_icon',
+       'auto icon = ObjectRef<GdkPixbuf>::retain (pixbuf);',
+       'if (!encode_icon (icon.get (), encoded, error)) return FALSE;',
        'impl.resource.set_preview_png_base64 (encoded);')
+    assert setter.index('if (!encode_icon') < setter.index('impl.resource.set_preview_png_base64')
     _require_scope(r,'std::vector<Point> parse_legacy_curve',
        'if (result.size () == 1 || result.size () > 8)',
        'if (result[i].x < result[i-1].x)')
@@ -231,9 +241,16 @@ def _validate_source_semantics(root):
     _require_scope(r,'void Resource::set_preview_png_base64',
        'if (value.empty ()) json_object_remove_member (impl_->object (), "painter_preview_png");',
        'else json_object_set_string_member (impl_->object (), "painter_preview_png", value.c_str ());')
-    _require_scope(source(root,BRUSH),'gboolean save (GimpData *data',
-       'auto snapshot = impl.resource;', 'const char *name = gimp_object_get_name (data);',
-       'snapshot.set_parent_brush_name (name ? name : "");', 'return snapshot.save (output, nullptr, error);')
+    serializer = _require_scope(brush,'gboolean save (GimpData *data',
+       'auto snapshot = impl.resource;', 'auto icon = impl.icon;',
+       'const char *name = gimp_object_get_name (data);',
+       'snapshot.set_parent_brush_name (name ? name : "");',
+       'if (!encode_icon (icon.get (), encoded, error)) return false;',
+       'snapshot.set_preview_png_base64 (encoded);',
+       'return snapshot.save (output, nullptr, error);')
+    assert serializer.index('if (!encode_icon') < serializer.index('snapshot.set_preview_png_base64') < serializer.index('return snapshot.save')
+    assert 'impl.resource.set_' not in serializer, 'save must not mutate the source resource'
+
     _require_scope(r,'float migrate (const std::string& key, double value)',
        'const float f = value;', 'if (key == "color_hue") return f*64.0/360.0;',
        'if (key == "color_saturation" || key == "color_value") return f*128.0/256.0;', 'return f;')

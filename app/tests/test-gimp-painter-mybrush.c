@@ -990,6 +990,7 @@ named_standard_c_contract (void)
 
 #include "test-painter-mybrush-filename.inc"
 #include "test-painter-mybrush-save.inc"
+#include "test-painter-mybrush-live-icon.inc"
 
 void gimp_test_painter_mybrush_duplicate_handle_register (void);
 
@@ -1029,6 +1030,12 @@ int main (int argc, char **argv)
 #ifdef GIMP_TEST_MYBRUSH_WRAP_PIXBUF_COPY
   g_test_add_func ("/painter-mybrush/named-duplicate/copy-failure-atomic", named_duplicate_copy_failure_atomic);
 #endif
+#ifdef GIMP_TEST_MYBRUSH_WRAP_PIXBUF_ENCODE
+  g_test_add_data_func ("/painter-mybrush/live-icon/encode-failure-named", GINT_TO_POINTER (0), save_live_icon_encode_failure);
+  g_test_add_data_func ("/painter-mybrush/live-icon/encode-failure-stream", GINT_TO_POINTER (1), save_live_icon_encode_failure);
+#endif
+  g_test_add_data_func ("/painter-mybrush/live-icon/named-save", GINT_TO_POINTER (0), save_live_icon_pixels);
+  g_test_add_data_func ("/painter-mybrush/live-icon/native-stream", GINT_TO_POINTER (1), save_live_icon_pixels);
   g_test_add_func ("/painter-mybrush/file-save/roundtrip", file_save_roundtrip);
   g_test_add_func ("/painter-mybrush/file-save/failures", file_save_failures);
   g_test_add_func ("/painter-mybrush/file-save/state-preconditions", file_save_state_and_preconditions);

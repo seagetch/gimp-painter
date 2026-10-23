@@ -52,13 +52,32 @@ void constructed (GObject *object)
 }
 void dispose (GObject *object)
 { gimp_painter_binding_close (object, nullptr); G_OBJECT_CLASS (gimp_painter_mybrush_parent_class)->dispose (object); }
+bool encode_icon (GdkPixbuf *icon, std::string& encoded, GError **error)
+{
+  encoded.clear ();
+  if (!icon) return true;
+  gchar *raw = nullptr; gsize size = 0;
+  const bool success = gdk_pixbuf_save_to_buffer (icon, &raw, &size, "png", error, nullptr);
+  String bytes (raw);
+  if (!success) return false;
+  String base64 (g_base64_encode (reinterpret_cast<const guchar *> (raw), size));
+  encoded = base64.get ();
+  return true;
+}
 gboolean save (GimpData *data, GOutputStream *output, GError **error)
 {
   return boundary<gboolean> (error, FALSE, [&] () -> gboolean {
     return store (GIMP_PAINTER_MYBRUSH (data)).read<BrushSlot> ([&] (const BrushImpl& impl) {
       auto snapshot = impl.resource;
+      auto icon = impl.icon; // Own the current pixels across encoder callbacks.
       const char *name = gimp_object_get_name (data);
       snapshot.set_parent_brush_name (name ? name : "");
+      // ref_icon exposes mutable pixels; its original encoded cache can be
+      // stale. Refresh only this detached serialization snapshot, not the
+      // source draft/settings. Complete encoding before writing any bytes.
+      std::string encoded;
+      if (!encode_icon (icon.get (), encoded, error)) return false;
+      snapshot.set_preview_png_base64 (encoded);
       return snapshot.save (output, nullptr, error);
     });
   });
@@ -314,12 +333,7 @@ gboolean gimp_painter_mybrush_set_icon (GimpPainterMybrush *brush, GdkPixbuf *pi
     auto owner = ObjectRef<GimpPainterMybrush>::retain (brush);
     auto icon = ObjectRef<GdkPixbuf>::retain (pixbuf); // Retain before replacing, including same-object assignment.
     std::string encoded;
-    if (icon) {
-      gchar *raw = nullptr; gsize size = 0;
-      if (!gdk_pixbuf_save_to_buffer (icon.get (), &raw, &size, "png", error, nullptr)) return FALSE;
-      String bytes (raw); String base64 (g_base64_encode (reinterpret_cast<const guchar *> (raw), size));
-      encoded = base64.get ();
-    }
+    if (!encode_icon (icon.get (), encoded, error)) return FALSE;
     store (brush).with<BrushSlot> ([&] (BrushImpl& impl) {
       impl.resource.set_preview_png_base64 (encoded); impl.icon = std::move (icon);
     });

@@ -145,6 +145,40 @@ def validate_manifest(actual,expected):
     # This is the same complete manifest comparison used by normal acceptance.
     exact(actual,expected,'unified manifest')
 
+def mypaint_preview_negative_controls(root, family):
+    from unittest.mock import patch
+    controls = []
+    def reject(label, fn):
+        try: fn()
+        except (AssertionError, KeyError) as error:
+            controls.append(dict(id=label, rejected=True, reason=str(error)[:500]))
+        else: raise AssertionError('negative control accepted: '+label)
+    # Follow the shared PNG encoder and both callers. These are read-only
+    # source overlays against the actual family validator, not count changes.
+    real_source = mypaint.source
+    path = 'app/core/gimppaintermybrush.cpp'
+    original = real_source(str(root), path)
+    for label, old, new in [
+      ('encoder-error', 'if (!success) return false;', 'if (!success) return true;'),
+      ('setter-bypass', 'if (!encode_icon (icon.get (), encoded, error)) return FALSE;', '/* bypass setter encoding */'),
+      ('save-bypass', 'if (!encode_icon (icon.get (), encoded, error)) return false;', '/* bypass save encoding */'),
+      ('save-no-icon-owner', 'auto icon = impl.icon;', 'auto *icon = impl.icon.get ();'),
+      ('save-stale-preview', 'snapshot.set_preview_png_base64 (encoded);', '/* stale preview */'),
+      ('save-source-mutation', 'snapshot.set_preview_png_base64 (encoded);', 'impl.resource.set_preview_png_base64 (encoded);')]:
+        assert original.count(old) == 1, (label, 'ambiguous source mutation')
+        changed = original.replace(old, new, 1)
+        def overlay(r,p,revision='native'):
+            return changed if p == path and revision == 'native' else real_source(r,p,revision)
+        overlay.cache_clear = real_source.cache_clear
+        # Match the synthetic source seal: rejection must be semantic, not
+        # merely the expected fingerprint mismatch of an edited fixture.
+        bad_family = copy.deepcopy(family)
+        next(row for row in bad_family['source_files']
+             if row['revision']=='native' and row['path']==path)['sha256'] = sha(changed.encode())
+        with patch.object(mypaint, 'source', overlay):
+            reject('mypaint:source:'+label, lambda:mypaint.validate_family(bad_family,root))
+    return controls
+
 def negative_controls(root,families,assertions,manifest):
     controls=[]
     def reject(label,fn):
@@ -200,6 +234,7 @@ def negative_controls(root,families,assertions,manifest):
         overlay.cache_clear=real_source.cache_clear
         with patch.object(xcf,'source',overlay):
             reject('xcf:source:'+label,lambda:xcf.validate_family(families['xcf'],root))
+    controls.extend(mypaint_preview_negative_controls(root, families['mypaint']))
     controls.extend(config.tool_group_negative_controls(root))
     return controls
 

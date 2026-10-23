@@ -1,0 +1,65 @@
+TAP version 14
+# random seed: R02Sd0717774efab9ade8c68ed65f97c63c2
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+1..42
+# Start of painter-mybrush tests
+ok 1 /painter-mybrush/177-native-load-copy
+# slow test /painter-mybrush/177-native-load-copy executed in 0.93 secs
+ok 2 /painter-mybrush/stream-icon-copy
+ok 3 /painter-mybrush/closed-owner
+ok 4 /painter-mybrush/duplicate-icon-pixel-independence
+ok 5 /painter-mybrush/copy-icon-pixel-independence
+ok 6 /painter-mybrush/copy-without-icon-clears-target
+ok 7 /painter-mybrush/self-copy-coherent
+ok 8 /painter-mybrush/copy-icon-finalizer-reentry
+# Start of tempbuf tests
+ok 9 /painter-mybrush/tempbuf/direct-rgb-padded
+ok 10 /painter-mybrush/tempbuf/direct-rgba-padded
+ok 11 /painter-mybrush/tempbuf/consumer-rgb-padded
+ok 12 /painter-mybrush/tempbuf/consumer-rgba-padded
+# End of tempbuf tests
+# Start of named-duplicate tests
+ok 13 /painter-mybrush/named-duplicate/c-signature-and-payload
+ok 14 /painter-mybrush/named-duplicate/live-icon-rgb-padded
+ok 15 /painter-mybrush/named-duplicate/live-icon-rgba
+ok 16 /painter-mybrush/named-duplicate/release-orders
+ok 17 /painter-mybrush/named-duplicate/invalid-inputs
+ok 18 /painter-mybrush/named-duplicate/closed-owner
+ok 19 /painter-mybrush/named-duplicate/wrong-thread
+ok 20 /painter-mybrush/named-duplicate/finalizer-reentry
+ok 21 /painter-mybrush/named-duplicate/copy-failure-atomic
+ok 22 /painter-mybrush/named-duplicate/handle-alias-resource
+ok 23 /painter-mybrush/named-duplicate/handle-copy-move-ownership
+ok 24 /painter-mybrush/named-duplicate/handle-failure-exceptions
+ok 25 /painter-mybrush/named-duplicate/handle-copy-failure-exception
+# End of named-duplicate tests
+# Start of live-icon tests
+ok 26 /painter-mybrush/live-icon/encode-failure-named
+ok 27 /painter-mybrush/live-icon/encode-failure-stream
+ok 28 /painter-mybrush/live-icon/named-save
+ok 29 /painter-mybrush/live-icon/native-stream
+# End of live-icon tests
+# Start of file-save tests
+ok 30 /painter-mybrush/file-save/roundtrip
+ok 31 /painter-mybrush/file-save/failures
+ok 32 /painter-mybrush/file-save/state-preconditions
+ok 33 /painter-mybrush/file-save/handle
+# End of file-save tests
+# Start of filename-load tests
+ok 34 /painter-mybrush/filename-load/ownership
+ok 35 /painter-mybrush/filename-load/failures
+ok 36 /painter-mybrush/filename-load/preconditions
+ok 37 /painter-mybrush/filename-load/handle
+# End of filename-load tests
+# Start of named-factory tests
+ok 38 /painter-mybrush/named-factory/c-contract
+ok 39 /painter-mybrush/named-factory/invalid-names
+ok 40 /painter-mybrush/named-factory/handle
+# End of named-factory tests
+# Start of named-standard tests
+ok 41 /painter-mybrush/named-standard/c-contract
+ok 42 /painter-mybrush/named-standard/cold-recreation
+# End of named-standard tests
+# End of painter-mybrush tests
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created

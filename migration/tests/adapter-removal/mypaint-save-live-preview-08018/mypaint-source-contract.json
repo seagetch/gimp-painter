@@ -1,0 +1,37 @@
+{
+  "result": "PASS",
+  "family_assertions": 201,
+  "negative_controls": [
+    {
+      "id": "mypaint:source:encoder-error",
+      "rejected": true,
+      "reason": "('bool encode_icon (GdkPixbuf *icon', 'if (!success) return false;')"
+    },
+    {
+      "id": "mypaint:source:setter-bypass",
+      "rejected": true,
+      "reason": "('gboolean gimp_painter_mybrush_set_icon', 'if (!encode_icon (icon.get (), encoded, error)) return FALSE;')"
+    },
+    {
+      "id": "mypaint:source:save-bypass",
+      "rejected": true,
+      "reason": "('gboolean save (GimpData *data', 'if (!encode_icon (icon.get (), encoded, error)) return false;')"
+    },
+    {
+      "id": "mypaint:source:save-no-icon-owner",
+      "rejected": true,
+      "reason": "('gboolean save (GimpData *data', 'auto icon = impl.icon;')"
+    },
+    {
+      "id": "mypaint:source:save-stale-preview",
+      "rejected": true,
+      "reason": "('gboolean save (GimpData *data', 'snapshot.set_preview_png_base64 (encoded);')"
+    },
+    {
+      "id": "mypaint:source:save-source-mutation",
+      "rejected": true,
+      "reason": "('gboolean save (GimpData *data', 'snapshot.set_preview_png_base64 (encoded);')"
+    }
+  ],
+  "scope": "MyPaint source-only semantics, not runtime or whole cross-family gate"
+}
