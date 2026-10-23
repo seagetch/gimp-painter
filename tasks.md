@@ -430,6 +430,7 @@
 | 09.001 | [x] | 画素形式の対応表を作る | 03.009, 06.029 | 旧形式と RGB/Gray/Indexed、alpha、精度、色空間を対応 |
 | 09.002 | [x] | 座標契約を固定する | 09.001 | 画像・レイヤー・buffer・画面の原点と境界を記録 |
 | 09.002/drawable-y-invalidation | [x] | drawable buffer置換の旧領域Y原点を修正する | 09.001 | X/Y非対称offsetで過剰更新と旧領域更新欠落を実再現し、Y offset修正後の6 native回帰と周辺5targetを検証 |
+| 09.002/projection-update-bounds | [x] | drawable/stackとprojection更新座標の整数overflowを防ぐ | 09.002 | default native buildと通常12target（313TAP・27Python・403header）、5C unit限定ASan/UBSan8path合格。通常grid範囲と空領域の通知を保持し極端offset・負座標・cleanupを検証。295既知XCF警告を保持し予期外診断ゼロ。入力座標側Sobel変更・group/show-all・全aggregateは別gate（migration/tests/projection-update-bounds.json） |
 | 09.003 | [ ] | DrawableFeature の buffer read を実装する | 09.002 | 負の offset と部分領域を読める |
 | 09.003/bounded-surface-read | [x] | Surfaceの部分buffer読取りと極端offsetを安全化する | 09.002 | stride・容量・半開領域を検査しINT_MIN選択offsetの実overflowを修正。通常7targetとproduction-source sanitizerを検証し親48義務は維持 |
 | 09.003/region-lifetime | [ ] | MyPaint Surface の一時領域を GEGL buffer 寿命へ移す | 09.003, 01.007/surface-regions | draw_dab と get_color の全 return・失敗経路で read/write/snapshot/mask/texture の buffer を一度だけ解放する |

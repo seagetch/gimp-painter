@@ -35,6 +35,7 @@
 
 #include "gimp.h"
 #include "gimp-memsize.h"
+#include "gimp-update-geometry.h"
 #include "gimpchunkiterator.h"
 #include "gimpimage.h"
 #include "gimpmarshal.h"
@@ -120,8 +121,8 @@ static void        gimp_projection_get_pixel_average     (GimpPickable    *picka
 static void        gimp_projection_allocate_buffer       (GimpProjection  *proj);
 static void        gimp_projection_free_buffer           (GimpProjection  *proj);
 static void        gimp_projection_add_update_area       (GimpProjection  *proj,
-                                                          gint             x,
-                                                          gint             y,
+                                                          gint64           x,
+                                                          gint64           y,
                                                           gint             w,
                                                           gint             h);
 static void        gimp_projection_update_priority_rect  (GimpProjection  *proj);
@@ -624,8 +625,8 @@ gimp_projection_free_buffer (GimpProjection  *proj)
 
 static void
 gimp_projection_add_update_area (GimpProjection *proj,
-                                 gint            x,
-                                 gint            y,
+                                 gint64          x,
+                                 gint64          y,
                                  gint            w,
                                  gint            h)
 {
@@ -634,19 +635,16 @@ gimp_projection_add_update_area (GimpProjection *proj,
 
   bounding_box = gimp_projectable_get_bounding_box (proj->priv->projectable);
 
-  /*  align the rectangle to the UPDATE_CHUNK_WIDTH x UPDATE_CHUNK_HEIGHT grid,
-   *  to decrease the complexity of the update area.
+  /* Align to the update grid to decrease region complexity, clipping in wide
+   * arithmetic before narrowing to cairo's signed-int coordinates.  Retain
+   * the padded intersection even for updates just outside the bounding box.
    */
-  w = ceil  ((gdouble) (x + w) / GIMP_PROJECTION_UPDATE_CHUNK_WIDTH ) * GIMP_PROJECTION_UPDATE_CHUNK_WIDTH;
-  h = ceil  ((gdouble) (y + h) / GIMP_PROJECTION_UPDATE_CHUNK_HEIGHT) * GIMP_PROJECTION_UPDATE_CHUNK_HEIGHT;
-  x = floor ((gdouble) x       / GIMP_PROJECTION_UPDATE_CHUNK_WIDTH ) * GIMP_PROJECTION_UPDATE_CHUNK_WIDTH;
-  y = floor ((gdouble) y       / GIMP_PROJECTION_UPDATE_CHUNK_HEIGHT) * GIMP_PROJECTION_UPDATE_CHUNK_HEIGHT;
-
-  w -= x;
-  h -= y;
-
-  if (gegl_rectangle_intersect ((GeglRectangle *) &rect,
-                                GEGL_RECTANGLE (x, y, w, h), &bounding_box))
+  if (gimp_update_interval_align (x, w, bounding_box.x, bounding_box.width,
+                                   GIMP_PROJECTION_UPDATE_CHUNK_WIDTH,
+                                   &rect.x, &rect.width) &&
+      gimp_update_interval_align (y, h, bounding_box.y, bounding_box.height,
+                                   GIMP_PROJECTION_UPDATE_CHUNK_HEIGHT,
+                                   &rect.y, &rect.height))
     {
       if (proj->priv->update_region)
         cairo_region_union_rectangle (proj->priv->update_region, &rect);
@@ -878,8 +876,10 @@ gimp_projection_paint_area (GimpProjection *proj,
   gimp_projectable_get_offset (proj->priv->projectable, &off_x, &off_y);
   bounding_box = gimp_projectable_get_bounding_box (proj->priv->projectable);
 
-  if (gegl_rectangle_intersect (&rect,
-                                GEGL_RECTANGLE (x, y, w, h), &bounding_box))
+  if (gimp_update_interval_align (x, w, bounding_box.x, bounding_box.width,
+                                   1, &rect.x, &rect.width) &&
+      gimp_update_interval_align (y, h, bounding_box.y, bounding_box.height,
+                                   1, &rect.y, &rect.height))
     {
       if (now)
         {
@@ -900,10 +900,15 @@ gimp_projection_paint_area (GimpProjection *proj,
        *  is in tile-pyramid coordinates, but our external API is always
        *  in terms of image coordinates.
        */
+      gimp_update_interval_translate (rect.x, rect.width, off_x,
+                                       &rect.x, &rect.width);
+      gimp_update_interval_translate (rect.y, rect.height, off_y,
+                                       &rect.y, &rect.height);
+
       g_signal_emit (proj, projection_signals[UPDATE], 0,
                      now,
-                     rect.x + off_x,
-                     rect.y + off_y,
+                     rect.x,
+                     rect.y,
                      rect.width,
                      rect.height);
     }
@@ -928,10 +933,10 @@ gimp_projection_projectable_invalidate (GimpProjectable *projectable,
    *  areas is in tile-pyramid coordinates, but our external API is
    *  always in terms of image coordinates.
    */
-  x -= off_x;
-  y -= off_y;
-
-  gimp_projection_add_update_area (proj, x, y, w, h);
+  gimp_projection_add_update_area (proj,
+                                   (gint64) x - off_x,
+                                   (gint64) y - off_y,
+                                   w, h);
 }
 
 static void

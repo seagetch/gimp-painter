@@ -40,6 +40,7 @@ apptests_links += libapptestutils
 # proper way.
 app_tests = [
   'core',
+  'projection-update-bounds',
   'gimp-test-config-fixture',
   'painter-type-startup',
   'file-load-pipeline',
@@ -79,6 +80,16 @@ app_tests = [
   'gimp-painter-context',
   'mypaint-selector-contracts',
 ]
+
+# Pure helper coverage is separate from the real top-level lifecycle test.
+update_geometry = executable('update-geometry', 'test-update-geometry.c',
+  include_directories: [rootAppInclude],
+  dependencies: [glib, math], override_options: ['c_std=c11'])
+test('update-geometry', update_geometry, suite: 'app',
+  is_parallel: false, timeout: 30)
+test('projection-update-sanitizer-runner', python,
+  args: [meson.project_source_root() / 'migration/tests/test_projection_update_sanitizers.py'],
+  suite: 'app', is_parallel: false, timeout: 30)
 
 # Prevent parallel builds for the tests
 # The tests must not be run in parallel or in a different order as specified
