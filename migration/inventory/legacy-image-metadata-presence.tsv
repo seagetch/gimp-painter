@@ -1,0 +1,21 @@
+scope	field	wire_record	writer_presence	representation	absence_or_limit
+header	signature-version	header	always	14bytes; old Painter audited v0-4	Required header; not a dialect discriminator alone
+header	dimensions-base-type	header	always	3*u32BE width,height,base-type; no precision word	Required image initialization
+header	layer-channel-tables	table	always	u32BE offsets with zero terminators	Empty table is a terminator, not absent required framing
+image	colormap	PROP_COLORMAP	when colormap exists	u32 count +3*count bytes	Absent retains constructor state; oldv0 loader substitutes grayscale; only applies to indexed image
+image	compression	PROP_COMPRESSION	when compression != NONE	one byte	Absent defaults NONE in old XcfInfo; recognition not pixel-decoder success
+image	guides	PROP_GUIDES	when guide list nonempty	i32 position +u8 orientation per guide	Absent no saved guides; negative positions skipped; invalid orientation diagnosed
+image	sample-points	PROP_SAMPLE_POINTS	when sample list nonempty	two32-bit coordinates per sample	Absent no saved sample points
+image	resolution	PROP_RESOLUTION	always	twofloat32 values	Out-of-range values reset to default template; absent uses initialization defaults
+image	tattoo-state	PROP_TATTOO	always	u32	Image identity allocator state, not image pixels; absent initial XcfInfo state
+image	built-in-unit	PROP_UNIT	unit below built-in count	u32 unit ID	Alternative to USER_UNIT; invalid unit handled by reader validation
+image	legacy-compatible-paths	PROP_PATHS	paths exist and compatible predicate true	legacy path encoding helper	Alternative to VECTORS; absent no saved paths
+image	user-unit	PROP_USER_UNIT	unit >= built-in count	float32 factor,u32 digits,5XCF strings	Reader reuses matching identifier/factor unit or creates unit; NULL strings normalized empty
+image	vectors	PROP_VECTORS	paths exist and compatible predicate false	vectors encoding helper	Alternative to PATHS; reader may skip unrecognized vector format by declared size
+image	parasites	PROP_PARASITES	persistent parasite count >0	XCF name string,u32flags,u32size,data repeated	Only persistent parasites saved; transient-only list emits no property
+image	end	PROP_END	always	tag0/size0	Terminates image property sequence
+parasite	color-profile	PROP_PARASITES:icc-profile	only if attached parasite is persistent	exact parasite bytes; no dedicated old profile property	Absent does not establish an explicit embedded ICC profile; do not invent one
+parasite	comment	PROP_PARASITES:gimp-comment	when persistent comment parasite attached	NUL-terminated comment bytes from image creation helper	No dedicated comment property; absent is not a stored empty comment
+parasite	grid	PROP_PARASITES:gimp-image-grid	when image grid exists	serialized grid config string as persistent parasite	Writer adds temporary grid parasite, writes list then removes it; reader restores grid from parasite
+omitted	explicit-precision	none	never as old header word	not recorded	Old header has dimensions/base-type only; modern precision must not be consumed at old offset26
+omitted	modern-dedicated-image-metadata	none	no dedicated property in old image writer	arbitrary persistent parasites may contain opaque data	Do not infer modern simulation profiles,item sets or other current dedicated records were emitted by old writer
