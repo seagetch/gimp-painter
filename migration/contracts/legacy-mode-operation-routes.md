@@ -31,7 +31,7 @@ Each row has the same explicit boundary contract:
   rather than an invented transparent-black backdrop blend. Direct PaintCore
   does not use this bottom-node special case.
 - Isolated groups evaluate children first. Pass-through groups retain graph
-  ordering; single-child reduction is disabled only for Painter byte modes,
+  ordering; single-child reduction is disabled for Painter byte and explicit float modes,
   because baking the child's mask/opacity then lifting its mode changed byte
   rounding. Ordinary modern modes keep their existing optimization.
 
@@ -48,6 +48,13 @@ controls; retained causal-red evidence demonstrates the fixed single-child bug.
 `legacy-mode-xcf/` additionally verifies mask/opacity and old projections across
 54 save/reopen cycles, but XCF transport by itself does not prove all ordering.
 
-Arbitrary group-level mask/opacity, broader reparenting/artwork and a separately
-identified high-precision extension remain open. This document does not change
-original task criteria or mark its prerequisite13.001 complete.
+Subsequent `legacy-group-strength/` verifies72 isolated group-level strength
+contexts and cross-group reparent/mask Undo. `legacy-pass-through-strength/`
+verifies108 pass-through group-level strength contexts against old child bytes
+and independent current linear interpolation. These finite representative tests
+are not old grouped-artwork captures or exhaustive arbitrary scene proofs.
+`painter-float-mode-policy.md` and `painter-float-native/` now document and test a
+separately identified opt-in float extension, never a silent change to old IDs.
+`section13-acceptance-audit.md` distinguishes direct criteria from outstanding
+dependencies and the remaining persistence/artwork boundaries. This document
+does not change original criteria or mark prerequisite13.001 complete.
