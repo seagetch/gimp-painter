@@ -1,0 +1,1172 @@
+{
+  "task": "04.016",
+  "baseline_head": "543d683e03db74702102771208de57447e9bcb18",
+  "duties": [
+    {
+      "work_id": "legacy-341d7c15a4c3a5468a62",
+      "source_id": "01.002/000001",
+      "path": "app/Makefile.am",
+      "source_blob": "01ecb1d4604460e385b36c7fdacf515a8ce95292",
+      "source_range": "-35,2 -> 35,8",
+      "source_sha256": "48e6d9d1fcd9e2b8eac3436a0fcab9013527570d41071dc3f66da0c716044e4d",
+      "source_scope": "SUBDIRS = \\",
+      "classification": "current-cpp-module-registration",
+      "current_paths": [
+        "app/core/gimplayerpreset.c",
+        "app/core/gimplayerpreset-apply.cpp",
+        "app/httpd/httpd.cpp"
+      ],
+      "rationale": "Presets moved into core; optional HTTP retains its conditional subdir. Both owning libraries join the app link.",
+      "installed_observation": "Same current production graph, installed GUI/console startup plus relocated Filter worker/native plug-in; actual resources, tool registrations and module loads verified",
+      "current_source_sha256": {
+        "app/core/gimplayerpreset.c": "ec6edcf6223f1cbc6d125f26c71644a77c6b7077db9a0b01e3cbf53eac9e7e8e",
+        "app/core/gimplayerpreset-apply.cpp": "da1e68b6b9fe9cf316b8f341b57e219bf99f5517150a3b550a83436e95097f58",
+        "app/httpd/httpd.cpp": "076867e07e80bb3a30edf9481b36ac4f437700228651220ad1841fe2d4686f93"
+      },
+      "remaining_implementation_duties": []
+    },
+    {
+      "work_id": "legacy-2c51e391d0158d137b6d",
+      "source_id": "01.002/000002",
+      "path": "app/Makefile.am",
+      "source_blob": "01ecb1d4604460e385b36c7fdacf515a8ce95292",
+      "source_range": "-73,0 -> 80,2",
+      "source_sha256": "4940e6b96a8062fc155f0e7f60438b726ffce13be3fb5aa11282c89df0bbfd54",
+      "source_scope": "libapp_sources = \\",
+      "classification": "current-cpp-module-registration",
+      "current_paths": [
+        "app/app.c",
+        "app/core/gimp.c",
+        "app/core/gimp-data-factories.c",
+        "app/actions/actions.c",
+        "app/painter/gimp-painter-binding.cpp"
+      ],
+      "rationale": "Legacy feature dispatcher is replaced by explicit native C startup/teardown and owning module registration. The common C++ bridge is a real app dependency.",
+      "installed_observation": "Same current production graph, installed GUI/console startup plus relocated Filter worker/native plug-in; actual resources, tool registrations and module loads verified",
+      "current_source_sha256": {
+        "app/app.c": "583c0f3ce2ed87d42aeddb2e9b41aced5007a0ed396a12fbcb0173295188f715",
+        "app/core/gimp.c": "cf6c8ae9600ca7d717fa2e4e7a74e54df6fe683d7981a62e41000a9751f0825a",
+        "app/core/gimp-data-factories.c": "4c5a1f058c975f525dc0beb62d50b24f4c199ab3835591611bb91bb9b3844681",
+        "app/actions/actions.c": "0627fb49a0a0215b589f37a38b43b202fd17f80c176f1a42a1c1b9387702cc09",
+        "app/painter/gimp-painter-binding.cpp": "22aca4f9e467e16b86f2cbeec431d7d069fc552c98fad985db770720fcf876fd"
+      },
+      "remaining_implementation_duties": []
+    },
+    {
+      "work_id": "legacy-b113803f3a12568e1581",
+      "source_id": "01.002/000003",
+      "path": "app/Makefile.am",
+      "source_blob": "01ecb1d4604460e385b36c7fdacf515a8ce95292",
+      "source_range": "-89 -> 97",
+      "source_sha256": "d84cb10b6f5b05a2c6e8441962ca08087b9fdcebf5cf1c0231c749d5b9fff070",
+      "source_scope": "libapp_a_SOURCES = $(libapp_sources) $(libapp_generated_sources)",
+      "classification": "link-only",
+      "current_paths": [
+        "app/meson.build"
+      ],
+      "rationale": "This hunk adds only a dummy C++ link-driver TU or an archive/HTTP LDADD entry. Final-link/runtime/archive checks belong to04.008/04.009; main.c stays C.",
+      "installed_observation": "Same current production graph, installed GUI/console startup plus relocated Filter worker/native plug-in; actual resources, tool registrations and module loads verified",
+      "current_source_sha256": {
+        "app/meson.build": "3805a0006baed2e5abdf15228d305364a0be0aec9b29e12785240ca5797f8451"
+      },
+      "remaining_implementation_duties": []
+    },
+    {
+      "work_id": "legacy-152f488efb42981d0fbb",
+      "source_id": "01.002/000004",
+      "path": "app/Makefile.am",
+      "source_blob": "01ecb1d4604460e385b36c7fdacf515a8ce95292",
+      "source_range": "-171,0 -> 180",
+      "source_sha256": "093addb9d344488c662e702c07c5a65ac82e821e8094111e911f0c898dead1a3",
+      "source_scope": "gimpconsoleldadd = \\",
+      "classification": "link-only",
+      "current_paths": [
+        "app/meson.build"
+      ],
+      "rationale": "This hunk adds only a dummy C++ link-driver TU or an archive/HTTP LDADD entry. Final-link/runtime/archive checks belong to04.008/04.009; main.c stays C.",
+      "installed_observation": "Same current production graph, installed GUI/console startup plus relocated Filter worker/native plug-in; actual resources, tool registrations and module loads verified",
+      "current_source_sha256": {
+        "app/meson.build": "3805a0006baed2e5abdf15228d305364a0be0aec9b29e12785240ca5797f8451"
+      },
+      "remaining_implementation_duties": []
+    },
+    {
+      "work_id": "legacy-04c80c0ed29237fa7995",
+      "source_id": "01.002/000005",
+      "path": "app/Makefile.am",
+      "source_blob": "01ecb1d4604460e385b36c7fdacf515a8ce95292",
+      "source_range": "-188,0 -> 198,8",
+      "source_sha256": "c8b6fa63a2f18768cc082ff3fbed4589c9094a5ef43367edc3e7c55f5097271a",
+      "source_scope": "gimpconsoleldadd = \\",
+      "classification": "link-only",
+      "current_paths": [
+        "app/meson.build"
+      ],
+      "rationale": "This hunk adds only a dummy C++ link-driver TU or an archive/HTTP LDADD entry. Final-link/runtime/archive checks belong to04.008/04.009; main.c stays C.",
+      "installed_observation": "Same current production graph, installed GUI/console startup plus relocated Filter worker/native plug-in; actual resources, tool registrations and module loads verified",
+      "current_source_sha256": {
+        "app/meson.build": "3805a0006baed2e5abdf15228d305364a0be0aec9b29e12785240ca5797f8451"
+      },
+      "remaining_implementation_duties": []
+    },
+    {
+      "work_id": "legacy-800837c823d94387a1ee",
+      "source_id": "01.002/000006",
+      "path": "app/Makefile.am",
+      "source_blob": "01ecb1d4604460e385b36c7fdacf515a8ce95292",
+      "source_range": "-206,0 -> 224",
+      "source_sha256": "63e5ebb77a3f2acbc803f133a8611e6d9dc851227c2e5b6a3d927c4107edf0e6",
+      "source_scope": "gimp_2_8_LDADD = \\",
+      "classification": "link-only",
+      "current_paths": [
+        "app/meson.build"
+      ],
+      "rationale": "This hunk adds only a dummy C++ link-driver TU or an archive/HTTP LDADD entry. Final-link/runtime/archive checks belong to04.008/04.009; main.c stays C.",
+      "installed_observation": "Same current production graph, installed GUI/console startup plus relocated Filter worker/native plug-in; actual resources, tool registrations and module loads verified",
+      "current_source_sha256": {
+        "app/meson.build": "3805a0006baed2e5abdf15228d305364a0be0aec9b29e12785240ca5797f8451"
+      },
+      "remaining_implementation_duties": []
+    },
+    {
+      "work_id": "legacy-0c9b43651bc826c87c4a",
+      "source_id": "01.002/000007",
+      "path": "app/Makefile.am",
+      "source_blob": "01ecb1d4604460e385b36c7fdacf515a8ce95292",
+      "source_range": "-212 -> 230",
+      "source_sha256": "9edef7090ee33f53503a1fe4cfbf010c15ad503048e98a515b62d3aabd5c060b",
+      "source_scope": "if ENABLE_GIMP_CONSOLE",
+      "classification": "link-only",
+      "current_paths": [
+        "app/meson.build"
+      ],
+      "rationale": "This hunk adds only a dummy C++ link-driver TU or an archive/HTTP LDADD entry. Final-link/runtime/archive checks belong to04.008/04.009; main.c stays C.",
+      "installed_observation": "Same current production graph, installed GUI/console startup plus relocated Filter worker/native plug-in; actual resources, tool registrations and module loads verified",
+      "current_source_sha256": {
+        "app/meson.build": "3805a0006baed2e5abdf15228d305364a0be0aec9b29e12785240ca5797f8451"
+      },
+      "remaining_implementation_duties": []
+    },
+    {
+      "work_id": "legacy-705b6c124337137461ed",
+      "source_id": "01.002/000008",
+      "path": "app/Makefile.am",
+      "source_blob": "01ecb1d4604460e385b36c7fdacf515a8ce95292",
+      "source_range": "-219,0 -> 238",
+      "source_sha256": "78766817876d0a3bd1c48dcae0e2be43935571878d338be2250ad0d28c50fd61",
+      "source_scope": "gimp_console_2_8_LDADD = \\",
+      "classification": "link-only",
+      "current_paths": [
+        "app/meson.build"
+      ],
+      "rationale": "This hunk adds only a dummy C++ link-driver TU or an archive/HTTP LDADD entry. Final-link/runtime/archive checks belong to04.008/04.009; main.c stays C.",
+      "installed_observation": "Same current production graph, installed GUI/console startup plus relocated Filter worker/native plug-in; actual resources, tool registrations and module loads verified",
+      "current_source_sha256": {
+        "app/meson.build": "3805a0006baed2e5abdf15228d305364a0be0aec9b29e12785240ca5797f8451"
+      },
+      "remaining_implementation_duties": []
+    },
+    {
+      "work_id": "legacy-d5dd86daa0d74c93cb7c",
+      "source_id": "01.002/000036",
+      "path": "app/app.c",
+      "source_blob": "bcc930281c4c2d5238ad3418549745a223d6fd80",
+      "source_range": "-62,0 -> 63,2",
+      "source_sha256": "14660b5a00e6f51438e77939366828a209ac0c873a3f341ba689303dc8a22cc4",
+      "source_scope": "file-level declarations/content",
+      "classification": "native-initialization-and-shutdown-entry",
+      "current_paths": [
+        "app/app.c",
+        "app/core/gimp.c",
+        "app/core/gimp-data-factories.c",
+        "app/core/gimpobject.c",
+        "app/paint/gimp-paint.c",
+        "app/tools/gimp-tools.c",
+        "app/painter/gimp-painter-binding.cpp"
+      ],
+      "rationale": "Current GIMP initialization, resource factories, paint/tool registration and common owner store replace the old feature-wrapper startup dependency. Installed host reaches restore and finalization while creating/saving/reopening an image; comprehensive feature and exceptional-lifetime acceptance remains under 30.016.",
+      "installed_observation": "Both GUI configurations serialize four Painter tool registrations and all Painter resources, then reach gimp_finalize; both installed Filter jobs execute and clean their owned worker/profile",
+      "current_source_sha256": {
+        "app/app.c": "583c0f3ce2ed87d42aeddb2e9b41aced5007a0ed396a12fbcb0173295188f715",
+        "app/core/gimp.c": "cf6c8ae9600ca7d717fa2e4e7a74e54df6fe683d7981a62e41000a9751f0825a",
+        "app/core/gimp-data-factories.c": "4c5a1f058c975f525dc0beb62d50b24f4c199ab3835591611bb91bb9b3844681",
+        "app/core/gimpobject.c": "4941e768a2b77b2ff4029ab182159bee75b0448c2015e1e6b08c94ab0377f839",
+        "app/paint/gimp-paint.c": "fa4b70c01f6c8c73d6a546902facd7cdd6fcc6c98ce4b275a40d79a6a9f3dbbe",
+        "app/tools/gimp-tools.c": "8ba516d3f0ae3bd8e9c0e38df9d2cb041b3e29565802013d7e9d090de8d1f435",
+        "app/painter/gimp-painter-binding.cpp": "22aca4f9e467e16b86f2cbeec431d7d069fc552c98fad985db770720fcf876fd"
+      },
+      "remaining_implementation_duties": [
+        {
+          "work_id": "legacy-825a1f323dd975e1b25a",
+          "task": "30.016",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-ed411e9410b8fb7ccbc3",
+          "task": "30.016/feature-entry-point",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-ed5d29a76f40467c090d",
+      "source_id": "01.002/000037",
+      "path": "app/app.c",
+      "source_blob": "bcc930281c4c2d5238ad3418549745a223d6fd80",
+      "source_range": "-172,0 -> 175,2",
+      "source_sha256": "c0923e419dd185168ff5a4f6d686a4d5975dc7e01fa9e14a292b8f3cf3474bb6",
+      "source_scope": "app_run (const gchar         *full_prog_name,",
+      "classification": "native-initialization-and-shutdown-entry",
+      "current_paths": [
+        "app/app.c",
+        "app/core/gimp.c",
+        "app/core/gimp-data-factories.c",
+        "app/core/gimpobject.c",
+        "app/paint/gimp-paint.c",
+        "app/tools/gimp-tools.c",
+        "app/painter/gimp-painter-binding.cpp"
+      ],
+      "rationale": "Current GIMP initialization, resource factories, paint/tool registration and common owner store replace the old feature-wrapper startup dependency. Installed host reaches restore and finalization while creating/saving/reopening an image; comprehensive feature and exceptional-lifetime acceptance remains under 30.016.",
+      "installed_observation": "Both GUI configurations serialize four Painter tool registrations and all Painter resources, then reach gimp_finalize; both installed Filter jobs execute and clean their owned worker/profile",
+      "current_source_sha256": {
+        "app/app.c": "583c0f3ce2ed87d42aeddb2e9b41aced5007a0ed396a12fbcb0173295188f715",
+        "app/core/gimp.c": "cf6c8ae9600ca7d717fa2e4e7a74e54df6fe683d7981a62e41000a9751f0825a",
+        "app/core/gimp-data-factories.c": "4c5a1f058c975f525dc0beb62d50b24f4c199ab3835591611bb91bb9b3844681",
+        "app/core/gimpobject.c": "4941e768a2b77b2ff4029ab182159bee75b0448c2015e1e6b08c94ab0377f839",
+        "app/paint/gimp-paint.c": "fa4b70c01f6c8c73d6a546902facd7cdd6fcc6c98ce4b275a40d79a6a9f3dbbe",
+        "app/tools/gimp-tools.c": "8ba516d3f0ae3bd8e9c0e38df9d2cb041b3e29565802013d7e9d090de8d1f435",
+        "app/painter/gimp-painter-binding.cpp": "22aca4f9e467e16b86f2cbeec431d7d069fc552c98fad985db770720fcf876fd"
+      },
+      "remaining_implementation_duties": [
+        {
+          "work_id": "legacy-4d8b4efaa456ff7306b4",
+          "task": "30.016",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-b53ae9b855c1c6bf1fba",
+          "task": "30.016/feature-entry-point",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-f2c5dcfb8d1711459d4b",
+      "source_id": "01.002/000128",
+      "path": "app/core/Makefile.am",
+      "source_blob": "3bcd9d2c0e3699fc4bb833093d572e6bfa6ee5ef",
+      "source_range": "-81,0 -> 82,8",
+      "source_sha256": "3547aa70b7ceeef9b528a46a32e6cdaf9bb928b456218c5697cbcf1e093f76ed",
+      "source_scope": "libappcore_a_sources = \\",
+      "classification": "current-cpp-module-registration",
+      "current_paths": [
+        "app/core/gimppaintermybrush.cpp",
+        "app/paint/painter-mypaint/resource.cpp",
+        "app/paint/painter-brush-settings/meson.build"
+      ],
+      "rationale": "Extended brush resource/reader/writer now share resource.cpp and the core adapter; generated setting constants remain a separate generator obligation.",
+      "installed_observation": "Same current production graph, installed GUI/console startup plus relocated Filter worker/native plug-in; actual resources, tool registrations and module loads verified",
+      "current_source_sha256": {
+        "app/core/gimppaintermybrush.cpp": "52dedd50fd3f6172511fd5311e521d2b74cd8b712e2c3ee4a8d98583f27da0d2",
+        "app/paint/painter-mypaint/resource.cpp": "128928c74ef99cbb754ba469e6df3946db1730588a1ddc5cb9daf21c3441f15b",
+        "app/paint/painter-brush-settings/meson.build": "49ffdc89681014266308b749cfda29e09d6e5a4296ce3aae6de48aa4ac4fa7bd"
+      },
+      "remaining_implementation_duties": []
+    },
+    {
+      "work_id": "legacy-dde3bab20d4c8cc3af30",
+      "source_id": "01.002/000130",
+      "path": "app/core/Makefile.am",
+      "source_blob": "3bcd9d2c0e3699fc4bb833093d572e6bfa6ee5ef",
+      "source_range": "-342,0 -> 353,2",
+      "source_sha256": "fb18c77627e55984949fd55bd9cba649b89d95eed5d38ca291642212f1a64190",
+      "source_scope": "libappcore_a_sources = \\",
+      "classification": "current-cpp-module-registration",
+      "current_paths": [
+        "app/core/gimpperspectiveguide.cpp"
+      ],
+      "rationale": "Perspective guide implementation is registered directly in appcore.",
+      "installed_observation": "Same current production graph, installed GUI/console startup plus relocated Filter worker/native plug-in; actual resources, tool registrations and module loads verified",
+      "current_source_sha256": {
+        "app/core/gimpperspectiveguide.cpp": "edcfce4efc37d41a66340c531be6fd558bc931fad927ad65a8dd0fc27272d1b4"
+      },
+      "remaining_implementation_duties": []
+    },
+    {
+      "work_id": "legacy-436394305d695a64c194",
+      "source_id": "01.002/000132",
+      "path": "app/core/Makefile.am",
+      "source_blob": "3bcd9d2c0e3699fc4bb833093d572e6bfa6ee5ef",
+      "source_range": "-396 -> 412,11",
+      "source_sha256": "5df3a8d7025f85984a1c650c2f2e94349159d8ef5d6d76106abc5cf36b2d1483",
+      "source_scope": "libappcore_a_sources = \\",
+      "classification": "current-cpp-module-registration",
+      "current_paths": [
+        "app/core/gimppaintermybrush.cpp",
+        "app/paint/painter-mypaint/resource.cpp",
+        "app/core/gimpfilterlayer.cpp",
+        "app/core/gimpclonelayer.cpp"
+      ],
+      "rationale": "Brush save shares resource.cpp; Clone reference Undo is in gimpclonelayer.cpp. Both independent layer types are registered in appcore.",
+      "installed_observation": "Same current production graph, installed GUI/console startup plus relocated Filter worker/native plug-in; actual resources, tool registrations and module loads verified",
+      "current_source_sha256": {
+        "app/core/gimppaintermybrush.cpp": "52dedd50fd3f6172511fd5311e521d2b74cd8b712e2c3ee4a8d98583f27da0d2",
+        "app/paint/painter-mypaint/resource.cpp": "128928c74ef99cbb754ba469e6df3946db1730588a1ddc5cb9daf21c3441f15b",
+        "app/core/gimpfilterlayer.cpp": "67658997dbdf8bd796567143d109348e2bddb2a4a421fcb363c7ce3122644925",
+        "app/core/gimpclonelayer.cpp": "22adedddcaeb6d70f4bf37e94cf92f3dbe4d1b84c7183097d3c24e49d02b081e"
+      },
+      "remaining_implementation_duties": []
+    },
+    {
+      "work_id": "legacy-f58c2d94f1ecf95fc1bd",
+      "source_id": "01.002/000351",
+      "path": "app/core/gimpimage.h",
+      "source_blob": "53e77d2b7654901e03bb774aee5c4c5d00bbda7d",
+      "source_range": "-268 -> 268,2",
+      "source_sha256": "54f26b7081d0aa1ce03000f4f892477248e34272a257660934aca92e497cdeca",
+      "source_scope": "void            gimp_image_invalidate            (GimpImage          *image,",
+      "classification": "native-initialization-and-shutdown-entry",
+      "current_paths": [
+        "app/app.c",
+        "app/core/gimp.c",
+        "app/core/gimp-data-factories.c",
+        "app/core/gimpobject.c",
+        "app/paint/gimp-paint.c",
+        "app/tools/gimp-tools.c",
+        "app/painter/gimp-painter-binding.cpp",
+        "app/core/gimpimage.c",
+        "app/core/gimpimage.h"
+      ],
+      "rationale": "Current GIMP initialization, resource factories, paint/tool registration and common owner store replace the old feature-wrapper startup dependency. Installed host reaches restore and finalization while creating/saving/reopening an image; comprehensive feature and exceptional-lifetime acceptance remains under 30.016.",
+      "installed_observation": "Both GUI configurations serialize four Painter tool registrations and all Painter resources, then reach gimp_finalize; both installed Filter jobs execute and clean their owned worker/profile",
+      "current_source_sha256": {
+        "app/app.c": "583c0f3ce2ed87d42aeddb2e9b41aced5007a0ed396a12fbcb0173295188f715",
+        "app/core/gimp.c": "cf6c8ae9600ca7d717fa2e4e7a74e54df6fe683d7981a62e41000a9751f0825a",
+        "app/core/gimp-data-factories.c": "4c5a1f058c975f525dc0beb62d50b24f4c199ab3835591611bb91bb9b3844681",
+        "app/core/gimpobject.c": "4941e768a2b77b2ff4029ab182159bee75b0448c2015e1e6b08c94ab0377f839",
+        "app/paint/gimp-paint.c": "fa4b70c01f6c8c73d6a546902facd7cdd6fcc6c98ce4b275a40d79a6a9f3dbbe",
+        "app/tools/gimp-tools.c": "8ba516d3f0ae3bd8e9c0e38df9d2cb041b3e29565802013d7e9d090de8d1f435",
+        "app/painter/gimp-painter-binding.cpp": "22aca4f9e467e16b86f2cbeec431d7d069fc552c98fad985db770720fcf876fd",
+        "app/core/gimpimage.c": "88cf26998cf9b591d1e13301f3422606ada64c58e9be31a20b4fe9593adb6f73",
+        "app/core/gimpimage.h": "803bae72bbd1dcbdd8518c604f1f4eabd6cfac291427bd6e42a419f8583346ac"
+      },
+      "remaining_implementation_duties": [
+        {
+          "work_id": "legacy-719bdd2e4cf09529aede",
+          "task": "30.016",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-9fd0c9a9fd0cb2594f77",
+          "task": "30.016/feature-entry-point",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-e3e612cc7d5a18f0999d",
+      "source_id": "01.002/000353",
+      "path": "app/core/gimpimage.h",
+      "source_blob": "53e77d2b7654901e03bb774aee5c4c5d00bbda7d",
+      "source_range": "-493,0 -> 500",
+      "source_sha256": "9bb41c2bdf539b1fb4e819f83915f240412c666c824efdc1cd2131a848e37a55",
+      "source_scope": "const gchar   * gimp_image_get_string_untitled   (void);",
+      "classification": "native-initialization-and-shutdown-entry",
+      "current_paths": [
+        "app/app.c",
+        "app/core/gimp.c",
+        "app/core/gimp-data-factories.c",
+        "app/core/gimpobject.c",
+        "app/paint/gimp-paint.c",
+        "app/tools/gimp-tools.c",
+        "app/painter/gimp-painter-binding.cpp",
+        "app/core/gimpimage.c",
+        "app/core/gimpimage.h"
+      ],
+      "rationale": "Current GIMP initialization, resource factories, paint/tool registration and common owner store replace the old feature-wrapper startup dependency. Installed host reaches restore and finalization while creating/saving/reopening an image; comprehensive feature and exceptional-lifetime acceptance remains under 30.016.",
+      "installed_observation": "Both GUI configurations serialize four Painter tool registrations and all Painter resources, then reach gimp_finalize; both installed Filter jobs execute and clean their owned worker/profile",
+      "current_source_sha256": {
+        "app/app.c": "583c0f3ce2ed87d42aeddb2e9b41aced5007a0ed396a12fbcb0173295188f715",
+        "app/core/gimp.c": "cf6c8ae9600ca7d717fa2e4e7a74e54df6fe683d7981a62e41000a9751f0825a",
+        "app/core/gimp-data-factories.c": "4c5a1f058c975f525dc0beb62d50b24f4c199ab3835591611bb91bb9b3844681",
+        "app/core/gimpobject.c": "4941e768a2b77b2ff4029ab182159bee75b0448c2015e1e6b08c94ab0377f839",
+        "app/paint/gimp-paint.c": "fa4b70c01f6c8c73d6a546902facd7cdd6fcc6c98ce4b275a40d79a6a9f3dbbe",
+        "app/tools/gimp-tools.c": "8ba516d3f0ae3bd8e9c0e38df9d2cb041b3e29565802013d7e9d090de8d1f435",
+        "app/painter/gimp-painter-binding.cpp": "22aca4f9e467e16b86f2cbeec431d7d069fc552c98fad985db770720fcf876fd",
+        "app/core/gimpimage.c": "88cf26998cf9b591d1e13301f3422606ada64c58e9be31a20b4fe9593adb6f73",
+        "app/core/gimpimage.h": "803bae72bbd1dcbdd8518c604f1f4eabd6cfac291427bd6e42a419f8583346ac"
+      },
+      "remaining_implementation_duties": [
+        {
+          "work_id": "legacy-701cd82692e25779f1c4",
+          "task": "30.016",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-29e186dd6bafc7a47542",
+          "task": "30.016/feature-entry-point",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-b4bfc9079f8132aebd4d",
+      "source_id": "01.002/000455",
+      "path": "app/display/Makefile.am",
+      "source_blob": "58e7a1dd8e003489ede49e48793285a51ac83f64",
+      "source_range": "-56,0 -> 57,2",
+      "source_sha256": "76de1fcacc3a8b14fe08f21e99b1a6c74cce1ec83aab813cb94d5b8472d24578",
+      "source_scope": "libappdisplay_a_sources = \\",
+      "classification": "current-cpp-module-registration",
+      "current_paths": [
+        "app/display/gimpcanvasperspectiveguide.cpp"
+      ],
+      "rationale": "Perspective canvas implementation is registered directly in appdisplay.",
+      "installed_observation": "Same current production graph, installed GUI/console startup plus relocated Filter worker/native plug-in; actual resources, tool registrations and module loads verified",
+      "current_source_sha256": {
+        "app/display/gimpcanvasperspectiveguide.cpp": "8ae697467c3cfff54b41c03828419000907cfc5b2ee92902246711523663f858"
+      },
+      "remaining_implementation_duties": []
+    },
+    {
+      "work_id": "legacy-a7af4dbdc4404644e28a",
+      "source_id": "01.002/000456",
+      "path": "app/display/Makefile.am",
+      "source_blob": "58e7a1dd8e003489ede49e48793285a51ac83f64",
+      "source_range": "-114,0 -> 117,2",
+      "source_sha256": "b6fc3a2e05f9f9240696b8d307e3a779c2b63b5209b3bae71646eda6b56d9f5f",
+      "source_scope": "libappdisplay_a_sources = \\",
+      "classification": "current-cpp-module-registration",
+      "current_paths": [
+        "app/display/gimppaintercanvasui.cpp"
+      ],
+      "rationale": "The current shell-owned canvas controller replaces the legacy overlays translation unit.",
+      "installed_observation": "Same current production graph, installed GUI/console startup plus relocated Filter worker/native plug-in; actual resources, tool registrations and module loads verified",
+      "current_source_sha256": {
+        "app/display/gimppaintercanvasui.cpp": "d51aca41662464a120ce3badf28e202381a2e0c0a2a03d4263a81b346c931fed"
+      },
+      "remaining_implementation_duties": []
+    },
+    {
+      "work_id": "legacy-5bb3ac52d6cd10cde1a8",
+      "source_id": "01.002/000818",
+      "path": "app/gimp-features.cpp",
+      "source_blob": "17fb53441909c532d8039e838e8f40203958039f",
+      "source_range": "-0,0 -> 1,130",
+      "source_sha256": "51840e1d081e220f7a3e87fd7d94a246ef4d497109ec208dff1831d1dc6ad34f",
+      "source_scope": "file-level declarations/content",
+      "classification": "native-initialization-and-shutdown-entry",
+      "current_paths": [
+        "app/app.c",
+        "app/core/gimp.c",
+        "app/core/gimp-data-factories.c",
+        "app/core/gimpobject.c",
+        "app/paint/gimp-paint.c",
+        "app/tools/gimp-tools.c",
+        "app/painter/gimp-painter-binding.cpp",
+        "app/dialogs/dialogs.c",
+        "app/httpd/httpd.cpp"
+      ],
+      "rationale": "Current GIMP initialization, resource factories, paint/tool registration and common owner store replace the old feature-wrapper startup dependency. Installed host reaches restore and finalization while creating/saving/reopening an image; comprehensive feature and exceptional-lifetime acceptance remains under 30.016.",
+      "installed_observation": "Both GUI configurations serialize four Painter tool registrations and all Painter resources, then reach gimp_finalize; both installed Filter jobs execute and clean their owned worker/profile",
+      "current_source_sha256": {
+        "app/app.c": "583c0f3ce2ed87d42aeddb2e9b41aced5007a0ed396a12fbcb0173295188f715",
+        "app/core/gimp.c": "cf6c8ae9600ca7d717fa2e4e7a74e54df6fe683d7981a62e41000a9751f0825a",
+        "app/core/gimp-data-factories.c": "4c5a1f058c975f525dc0beb62d50b24f4c199ab3835591611bb91bb9b3844681",
+        "app/core/gimpobject.c": "4941e768a2b77b2ff4029ab182159bee75b0448c2015e1e6b08c94ab0377f839",
+        "app/paint/gimp-paint.c": "fa4b70c01f6c8c73d6a546902facd7cdd6fcc6c98ce4b275a40d79a6a9f3dbbe",
+        "app/tools/gimp-tools.c": "8ba516d3f0ae3bd8e9c0e38df9d2cb041b3e29565802013d7e9d090de8d1f435",
+        "app/painter/gimp-painter-binding.cpp": "22aca4f9e467e16b86f2cbeec431d7d069fc552c98fad985db770720fcf876fd",
+        "app/dialogs/dialogs.c": "1ac5082fa888ca45039266ed7e187d1ee2a0e7baea47c766619a497d616d093c",
+        "app/httpd/httpd.cpp": "076867e07e80bb3a30edf9481b36ac4f437700228651220ad1841fe2d4686f93"
+      },
+      "remaining_implementation_duties": [
+        {
+          "work_id": "legacy-9185cfb7c215ba3bf4a7",
+          "task": "30.016",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-c922af4d9458cd827edf",
+          "task": "30.016/feature-entry-point",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-f893cbb1a300c8cf9c2d",
+      "source_id": "01.002/000819",
+      "path": "app/gimp-features.h",
+      "source_blob": "e71bbe7de1d96251eaa71a2ef16a6364fdccdf4e",
+      "source_range": "-0,0 -> 1,72",
+      "source_sha256": "573d4e221bf0a7653dd8efc117b644639c6ec712e810b27130177dc0783c3463",
+      "source_scope": "file-level declarations/content",
+      "classification": "native-initialization-and-shutdown-entry",
+      "current_paths": [
+        "app/app.c",
+        "app/core/gimp.c",
+        "app/core/gimp-data-factories.c",
+        "app/core/gimpobject.c",
+        "app/paint/gimp-paint.c",
+        "app/tools/gimp-tools.c",
+        "app/painter/gimp-painter-binding.cpp",
+        "app/dialogs/dialogs.c",
+        "app/httpd/httpd.cpp"
+      ],
+      "rationale": "Current GIMP initialization, resource factories, paint/tool registration and common owner store replace the old feature-wrapper startup dependency. Installed host reaches restore and finalization while creating/saving/reopening an image; comprehensive feature and exceptional-lifetime acceptance remains under 30.016.",
+      "installed_observation": "Both GUI configurations serialize four Painter tool registrations and all Painter resources, then reach gimp_finalize; both installed Filter jobs execute and clean their owned worker/profile",
+      "current_source_sha256": {
+        "app/app.c": "583c0f3ce2ed87d42aeddb2e9b41aced5007a0ed396a12fbcb0173295188f715",
+        "app/core/gimp.c": "cf6c8ae9600ca7d717fa2e4e7a74e54df6fe683d7981a62e41000a9751f0825a",
+        "app/core/gimp-data-factories.c": "4c5a1f058c975f525dc0beb62d50b24f4c199ab3835591611bb91bb9b3844681",
+        "app/core/gimpobject.c": "4941e768a2b77b2ff4029ab182159bee75b0448c2015e1e6b08c94ab0377f839",
+        "app/paint/gimp-paint.c": "fa4b70c01f6c8c73d6a546902facd7cdd6fcc6c98ce4b275a40d79a6a9f3dbbe",
+        "app/tools/gimp-tools.c": "8ba516d3f0ae3bd8e9c0e38df9d2cb041b3e29565802013d7e9d090de8d1f435",
+        "app/painter/gimp-painter-binding.cpp": "22aca4f9e467e16b86f2cbeec431d7d069fc552c98fad985db770720fcf876fd",
+        "app/dialogs/dialogs.c": "1ac5082fa888ca45039266ed7e187d1ee2a0e7baea47c766619a497d616d093c",
+        "app/httpd/httpd.cpp": "076867e07e80bb3a30edf9481b36ac4f437700228651220ad1841fe2d4686f93"
+      },
+      "remaining_implementation_duties": [
+        {
+          "work_id": "legacy-dfd9992a73be9647da19",
+          "task": "30.016",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-a25eebaab7977ba52621",
+          "task": "30.016/feature-entry-point",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-38fe48cafea92c8e8601",
+      "source_id": "01.002/000852",
+      "path": "app/httpd/Makefile.am",
+      "source_blob": "90d9e83353cc27d314914b3e25b16ebc89c5083d",
+      "source_range": "-0,0 -> 1,65",
+      "source_sha256": "91513434dd2641e668600ef54f103c2db91a1bc919da0fcce0d948a8676a053e",
+      "source_scope": "file-level declarations/content",
+      "classification": "current-cpp-module-registration",
+      "current_paths": [
+        "app/httpd/httpd.cpp",
+        "app/httpd/httpd-resource.cpp",
+        "app/httpd/httpd-images.cpp",
+        "app/httpd/httpd-pdb.cpp",
+        "app/httpd/httpd-navigation.cpp"
+      ],
+      "rationale": "Optional HTTP has explicit core and GUI C++ libraries; this configured build enables them. Disabled builds and old enum/platform behavior remain their own gates.",
+      "installed_observation": "Same current production graph, installed GUI/console startup plus relocated Filter worker/native plug-in; actual resources, tool registrations and module loads verified",
+      "current_source_sha256": {
+        "app/httpd/httpd.cpp": "076867e07e80bb3a30edf9481b36ac4f437700228651220ad1841fe2d4686f93",
+        "app/httpd/httpd-resource.cpp": "6b8385c98fc2c35df90f19783489ed8e95bf6072cf24a2cd16cad81d787e0567",
+        "app/httpd/httpd-images.cpp": "e8417637364357fda5c71353c06da27ad097c29d4f8a15eb23f256c3b4726c1d",
+        "app/httpd/httpd-pdb.cpp": "bd67443db09b8bea0daf99286aa931b62d1ac70bc69fc0145cc3d6a017520b14",
+        "app/httpd/httpd-navigation.cpp": "3c08a702de3a9873b0513dcf9f572284820bcac1a8dfbf7e51fd31fb98cda5fc"
+      },
+      "remaining_implementation_duties": []
+    },
+    {
+      "work_id": "legacy-94219c39be37e3e6a081",
+      "source_id": "01.002/000885",
+      "path": "app/paint/Makefile.am",
+      "source_blob": "c70a724ef07f1070c7059b82392f31c8b0ce090f",
+      "source_range": "-57,0 -> 58,6",
+      "source_sha256": "21114d439bb76d5bbb48f010ce3f692499ac790e302f92c0147e121be8f13cfe",
+      "source_scope": "libapppaint_a_sources = \\",
+      "classification": "current-cpp-module-registration",
+      "current_paths": [
+        "app/paint/painter-mypaint-surface/paint-core.cpp",
+        "app/paint/painter-mypaint-surface/gegl-surface.cpp",
+        "app/paint/painter-mypaint-surface/gimp-painter-session.cpp"
+      ],
+      "rationale": "Native PaintCore/session and GEGL Surface replace the old core, surface and empty Undo TU; registration does not close Undo/behavior acceptance.",
+      "installed_observation": "Same current production graph, installed GUI/console startup plus relocated Filter worker/native plug-in; actual resources, tool registrations and module loads verified",
+      "current_source_sha256": {
+        "app/paint/painter-mypaint-surface/paint-core.cpp": "f2acf89889fbb8c7ae57f700f1f455833c830ba38329c4f829a9bf4d9f00669a",
+        "app/paint/painter-mypaint-surface/gegl-surface.cpp": "e7ac2ab7781f9a278c1b4296424d353ef30758a79fa2ddddc5ae70fa342b3c2c",
+        "app/paint/painter-mypaint-surface/gimp-painter-session.cpp": "08909db4102da3937a2eacdb6f6fca70ea927b6053086c3c51e04dd67463e431"
+      },
+      "remaining_implementation_duties": []
+    },
+    {
+      "work_id": "legacy-8ce4c06b26f47ee5226b",
+      "source_id": "01.002/000886",
+      "path": "app/paint/Makefile.am",
+      "source_blob": "c70a724ef07f1070c7059b82392f31c8b0ce090f",
+      "source_range": "-63,0 -> 70,8",
+      "source_sha256": "5b5d48c7bd9a6f949e01526807be10e37d3918d6d449e15dde10a3ac5ebd36c9",
+      "source_scope": "libapppaint_a_sources = \\",
+      "classification": "current-cpp-module-registration",
+      "current_paths": [
+        "app/paint/painter-mypaint-surface/gimp-painter-options.cpp",
+        "app/paint/painter-mypaint/engine.cpp"
+      ],
+      "rationale": "Options and application-owned history share the options TU; stroke/engine code is in engine.cpp.",
+      "installed_observation": "Same current production graph, installed GUI/console startup plus relocated Filter worker/native plug-in; actual resources, tool registrations and module loads verified",
+      "current_source_sha256": {
+        "app/paint/painter-mypaint-surface/gimp-painter-options.cpp": "2126a82d73b1abb30ec7031449ec615a358b735584dd824b0c8c3840069ea813",
+        "app/paint/painter-mypaint/engine.cpp": "dafdaf2a791d51e3f1ce39642bc2ef7f06d09e8af66de07ba89848adba3aa94a"
+      },
+      "remaining_implementation_duties": []
+    },
+    {
+      "work_id": "legacy-ea7c1ea4a866a825820f",
+      "source_id": "01.002/000888",
+      "path": "app/paint/gimp-paint.c",
+      "source_blob": "cbe166cc20440d10c0bf203d8152c0b8fee32942",
+      "source_range": "-45 -> 45",
+      "source_sha256": "9194445bcb4356089b8fcf148d7108c9196ced752750a4954476f8aa935748fb",
+      "source_scope": "file-level declarations/content",
+      "classification": "native-initialization-and-shutdown-entry",
+      "current_paths": [
+        "app/app.c",
+        "app/core/gimp.c",
+        "app/core/gimp-data-factories.c",
+        "app/core/gimpobject.c",
+        "app/paint/gimp-paint.c",
+        "app/tools/gimp-tools.c",
+        "app/painter/gimp-painter-binding.cpp",
+        "app/paint/gimp-paint.h",
+        "app/paint/paint-types.h"
+      ],
+      "rationale": "Current GIMP initialization, resource factories, paint/tool registration and common owner store replace the old feature-wrapper startup dependency. Installed host reaches restore and finalization while creating/saving/reopening an image; comprehensive feature and exceptional-lifetime acceptance remains under 30.016.",
+      "installed_observation": "Both GUI configurations serialize four Painter tool registrations and all Painter resources, then reach gimp_finalize; both installed Filter jobs execute and clean their owned worker/profile",
+      "current_source_sha256": {
+        "app/app.c": "583c0f3ce2ed87d42aeddb2e9b41aced5007a0ed396a12fbcb0173295188f715",
+        "app/core/gimp.c": "cf6c8ae9600ca7d717fa2e4e7a74e54df6fe683d7981a62e41000a9751f0825a",
+        "app/core/gimp-data-factories.c": "4c5a1f058c975f525dc0beb62d50b24f4c199ab3835591611bb91bb9b3844681",
+        "app/core/gimpobject.c": "4941e768a2b77b2ff4029ab182159bee75b0448c2015e1e6b08c94ab0377f839",
+        "app/paint/gimp-paint.c": "fa4b70c01f6c8c73d6a546902facd7cdd6fcc6c98ce4b275a40d79a6a9f3dbbe",
+        "app/tools/gimp-tools.c": "8ba516d3f0ae3bd8e9c0e38df9d2cb041b3e29565802013d7e9d090de8d1f435",
+        "app/painter/gimp-painter-binding.cpp": "22aca4f9e467e16b86f2cbeec431d7d069fc552c98fad985db770720fcf876fd",
+        "app/paint/gimp-paint.h": "4271440caaefeae6e294a8b9567a8b26c8a0bbcc7b6cac3461aa5330e2c3a434",
+        "app/paint/paint-types.h": "72a1ec372d61527e62a8fb6031aa7ae8bd87498c5e204510b655776a2117fa7b"
+      },
+      "remaining_implementation_duties": [
+        {
+          "work_id": "legacy-6d80a55748586acbc9e8",
+          "task": "30.016",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-7c8eea82933cf65aba55",
+          "task": "30.016/feature-entry-point",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-37459c59b579bc0c1ff0",
+      "source_id": "01.002/000889",
+      "path": "app/paint/gimp-paint.c",
+      "source_blob": "cbe166cc20440d10c0bf203d8152c0b8fee32942",
+      "source_range": "-85 -> 85",
+      "source_sha256": "76c8424b33fcd424616b139d62e2c7ecd9cbe1e2ea61bb194e3a1661631512df",
+      "source_scope": "gimp_paint_init (Gimp *gimp)",
+      "classification": "native-initialization-and-shutdown-entry",
+      "current_paths": [
+        "app/app.c",
+        "app/core/gimp.c",
+        "app/core/gimp-data-factories.c",
+        "app/core/gimpobject.c",
+        "app/paint/gimp-paint.c",
+        "app/tools/gimp-tools.c",
+        "app/painter/gimp-painter-binding.cpp",
+        "app/paint/gimp-paint.h",
+        "app/paint/paint-types.h"
+      ],
+      "rationale": "Current GIMP initialization, resource factories, paint/tool registration and common owner store replace the old feature-wrapper startup dependency. Installed host reaches restore and finalization while creating/saving/reopening an image; comprehensive feature and exceptional-lifetime acceptance remains under 30.016.",
+      "installed_observation": "Both GUI configurations serialize four Painter tool registrations and all Painter resources, then reach gimp_finalize; both installed Filter jobs execute and clean their owned worker/profile",
+      "current_source_sha256": {
+        "app/app.c": "583c0f3ce2ed87d42aeddb2e9b41aced5007a0ed396a12fbcb0173295188f715",
+        "app/core/gimp.c": "cf6c8ae9600ca7d717fa2e4e7a74e54df6fe683d7981a62e41000a9751f0825a",
+        "app/core/gimp-data-factories.c": "4c5a1f058c975f525dc0beb62d50b24f4c199ab3835591611bb91bb9b3844681",
+        "app/core/gimpobject.c": "4941e768a2b77b2ff4029ab182159bee75b0448c2015e1e6b08c94ab0377f839",
+        "app/paint/gimp-paint.c": "fa4b70c01f6c8c73d6a546902facd7cdd6fcc6c98ce4b275a40d79a6a9f3dbbe",
+        "app/tools/gimp-tools.c": "8ba516d3f0ae3bd8e9c0e38df9d2cb041b3e29565802013d7e9d090de8d1f435",
+        "app/painter/gimp-painter-binding.cpp": "22aca4f9e467e16b86f2cbeec431d7d069fc552c98fad985db770720fcf876fd",
+        "app/paint/gimp-paint.h": "4271440caaefeae6e294a8b9567a8b26c8a0bbcc7b6cac3461aa5330e2c3a434",
+        "app/paint/paint-types.h": "72a1ec372d61527e62a8fb6031aa7ae8bd87498c5e204510b655776a2117fa7b"
+      },
+      "remaining_implementation_duties": [
+        {
+          "work_id": "legacy-d6780f7eca30d8c93f4f",
+          "task": "30.016",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-866b1eb8d8f15cf8ab5f",
+          "task": "30.016/feature-entry-point",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-7f1b4951f9d742db626a",
+      "source_id": "01.002/000890",
+      "path": "app/paint/gimp-paint.c",
+      "source_blob": "cbe166cc20440d10c0bf203d8152c0b8fee32942",
+      "source_range": "-107,0 -> 108,10",
+      "source_sha256": "dc9ea7b13de1898348f4d2f0d6049e7ad3441b151885ec6a8a5f382086508e36",
+      "source_scope": "gimp_paint_exit (Gimp *gimp)",
+      "classification": "native-initialization-and-shutdown-entry",
+      "current_paths": [
+        "app/app.c",
+        "app/core/gimp.c",
+        "app/core/gimp-data-factories.c",
+        "app/core/gimpobject.c",
+        "app/paint/gimp-paint.c",
+        "app/tools/gimp-tools.c",
+        "app/painter/gimp-painter-binding.cpp",
+        "app/paint/gimp-paint.h",
+        "app/paint/paint-types.h"
+      ],
+      "rationale": "Current GIMP initialization, resource factories, paint/tool registration and common owner store replace the old feature-wrapper startup dependency. Installed host reaches restore and finalization while creating/saving/reopening an image; comprehensive feature and exceptional-lifetime acceptance remains under 30.016.",
+      "installed_observation": "Both GUI configurations serialize four Painter tool registrations and all Painter resources, then reach gimp_finalize; both installed Filter jobs execute and clean their owned worker/profile",
+      "current_source_sha256": {
+        "app/app.c": "583c0f3ce2ed87d42aeddb2e9b41aced5007a0ed396a12fbcb0173295188f715",
+        "app/core/gimp.c": "cf6c8ae9600ca7d717fa2e4e7a74e54df6fe683d7981a62e41000a9751f0825a",
+        "app/core/gimp-data-factories.c": "4c5a1f058c975f525dc0beb62d50b24f4c199ab3835591611bb91bb9b3844681",
+        "app/core/gimpobject.c": "4941e768a2b77b2ff4029ab182159bee75b0448c2015e1e6b08c94ab0377f839",
+        "app/paint/gimp-paint.c": "fa4b70c01f6c8c73d6a546902facd7cdd6fcc6c98ce4b275a40d79a6a9f3dbbe",
+        "app/tools/gimp-tools.c": "8ba516d3f0ae3bd8e9c0e38df9d2cb041b3e29565802013d7e9d090de8d1f435",
+        "app/painter/gimp-painter-binding.cpp": "22aca4f9e467e16b86f2cbeec431d7d069fc552c98fad985db770720fcf876fd",
+        "app/paint/gimp-paint.h": "4271440caaefeae6e294a8b9567a8b26c8a0bbcc7b6cac3461aa5330e2c3a434",
+        "app/paint/paint-types.h": "72a1ec372d61527e62a8fb6031aa7ae8bd87498c5e204510b655776a2117fa7b"
+      },
+      "remaining_implementation_duties": [
+        {
+          "work_id": "legacy-227bda0c6d3358d06bb2",
+          "task": "30.016",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-529238d0ee937b75edd7",
+          "task": "30.016/feature-entry-point",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-f3d4a0febfa65d11c622",
+      "source_id": "01.002/000891",
+      "path": "app/paint/gimp-paint.c",
+      "source_blob": "cbe166cc20440d10c0bf203d8152c0b8fee32942",
+      "source_range": "-111 -> 121",
+      "source_sha256": "48bedfb2ebe5b4fbc4ffd3ebfc792bd20b8c9327142974ca700208c33ae3ac9e",
+      "source_scope": "static void",
+      "classification": "native-initialization-and-shutdown-entry",
+      "current_paths": [
+        "app/app.c",
+        "app/core/gimp.c",
+        "app/core/gimp-data-factories.c",
+        "app/core/gimpobject.c",
+        "app/paint/gimp-paint.c",
+        "app/tools/gimp-tools.c",
+        "app/painter/gimp-painter-binding.cpp",
+        "app/paint/gimp-paint.h",
+        "app/paint/paint-types.h"
+      ],
+      "rationale": "Current GIMP initialization, resource factories, paint/tool registration and common owner store replace the old feature-wrapper startup dependency. Installed host reaches restore and finalization while creating/saving/reopening an image; comprehensive feature and exceptional-lifetime acceptance remains under 30.016.",
+      "installed_observation": "Both GUI configurations serialize four Painter tool registrations and all Painter resources, then reach gimp_finalize; both installed Filter jobs execute and clean their owned worker/profile",
+      "current_source_sha256": {
+        "app/app.c": "583c0f3ce2ed87d42aeddb2e9b41aced5007a0ed396a12fbcb0173295188f715",
+        "app/core/gimp.c": "cf6c8ae9600ca7d717fa2e4e7a74e54df6fe683d7981a62e41000a9751f0825a",
+        "app/core/gimp-data-factories.c": "4c5a1f058c975f525dc0beb62d50b24f4c199ab3835591611bb91bb9b3844681",
+        "app/core/gimpobject.c": "4941e768a2b77b2ff4029ab182159bee75b0448c2015e1e6b08c94ab0377f839",
+        "app/paint/gimp-paint.c": "fa4b70c01f6c8c73d6a546902facd7cdd6fcc6c98ce4b275a40d79a6a9f3dbbe",
+        "app/tools/gimp-tools.c": "8ba516d3f0ae3bd8e9c0e38df9d2cb041b3e29565802013d7e9d090de8d1f435",
+        "app/painter/gimp-painter-binding.cpp": "22aca4f9e467e16b86f2cbeec431d7d069fc552c98fad985db770720fcf876fd",
+        "app/paint/gimp-paint.h": "4271440caaefeae6e294a8b9567a8b26c8a0bbcc7b6cac3461aa5330e2c3a434",
+        "app/paint/paint-types.h": "72a1ec372d61527e62a8fb6031aa7ae8bd87498c5e204510b655776a2117fa7b"
+      },
+      "remaining_implementation_duties": [
+        {
+          "work_id": "legacy-ad36bda7590a244dbd18",
+          "task": "30.016",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-051d73c7fbc709387668",
+          "task": "30.016/feature-entry-point",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-645bed818bd85e2af79d",
+      "source_id": "01.002/000892",
+      "path": "app/paint/gimp-paint.h",
+      "source_blob": "6747864952d1899c3d04bb0cef1a8cc0040df87d",
+      "source_range": "-23,0 -> 24",
+      "source_sha256": "7a8698af6bb38dfa93188184571bd6951a5e5fb6166e14716bb506f22d33e0c7",
+      "source_scope": "void   gimp_paint_exit (Gimp *gimp);",
+      "classification": "native-initialization-and-shutdown-entry",
+      "current_paths": [
+        "app/app.c",
+        "app/core/gimp.c",
+        "app/core/gimp-data-factories.c",
+        "app/core/gimpobject.c",
+        "app/paint/gimp-paint.c",
+        "app/tools/gimp-tools.c",
+        "app/painter/gimp-painter-binding.cpp",
+        "app/paint/gimp-paint.h",
+        "app/paint/paint-types.h"
+      ],
+      "rationale": "Current GIMP initialization, resource factories, paint/tool registration and common owner store replace the old feature-wrapper startup dependency. Installed host reaches restore and finalization while creating/saving/reopening an image; comprehensive feature and exceptional-lifetime acceptance remains under 30.016.",
+      "installed_observation": "Both GUI configurations serialize four Painter tool registrations and all Painter resources, then reach gimp_finalize; both installed Filter jobs execute and clean their owned worker/profile",
+      "current_source_sha256": {
+        "app/app.c": "583c0f3ce2ed87d42aeddb2e9b41aced5007a0ed396a12fbcb0173295188f715",
+        "app/core/gimp.c": "cf6c8ae9600ca7d717fa2e4e7a74e54df6fe683d7981a62e41000a9751f0825a",
+        "app/core/gimp-data-factories.c": "4c5a1f058c975f525dc0beb62d50b24f4c199ab3835591611bb91bb9b3844681",
+        "app/core/gimpobject.c": "4941e768a2b77b2ff4029ab182159bee75b0448c2015e1e6b08c94ab0377f839",
+        "app/paint/gimp-paint.c": "fa4b70c01f6c8c73d6a546902facd7cdd6fcc6c98ce4b275a40d79a6a9f3dbbe",
+        "app/tools/gimp-tools.c": "8ba516d3f0ae3bd8e9c0e38df9d2cb041b3e29565802013d7e9d090de8d1f435",
+        "app/painter/gimp-painter-binding.cpp": "22aca4f9e467e16b86f2cbeec431d7d069fc552c98fad985db770720fcf876fd",
+        "app/paint/gimp-paint.h": "4271440caaefeae6e294a8b9567a8b26c8a0bbcc7b6cac3461aa5330e2c3a434",
+        "app/paint/paint-types.h": "72a1ec372d61527e62a8fb6031aa7ae8bd87498c5e204510b655776a2117fa7b"
+      },
+      "remaining_implementation_duties": [
+        {
+          "work_id": "legacy-327327adebd7aa30dea8",
+          "task": "30.016",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-433602cb9d688e28e890",
+          "task": "30.016/feature-entry-point",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-e4ff4e958e0661213568",
+      "source_id": "01.002/001006",
+      "path": "app/paint/paint-types.h",
+      "source_blob": "effcf09b0b57f290426cb6e465095bbf9780f5fa",
+      "source_range": "-47,0 -> 48",
+      "source_sha256": "9115b2b8ae9777789a17b57c2cb16148b1326d2bc54ae7c60dbffa0a96e99ecf",
+      "source_scope": "typedef struct _GimpPaintOptions            GimpPaintOptions;",
+      "classification": "native-initialization-and-shutdown-entry",
+      "current_paths": [
+        "app/app.c",
+        "app/core/gimp.c",
+        "app/core/gimp-data-factories.c",
+        "app/core/gimpobject.c",
+        "app/paint/gimp-paint.c",
+        "app/tools/gimp-tools.c",
+        "app/painter/gimp-painter-binding.cpp",
+        "app/paint/gimp-paint.h",
+        "app/paint/paint-types.h"
+      ],
+      "rationale": "Current GIMP initialization, resource factories, paint/tool registration and common owner store replace the old feature-wrapper startup dependency. Installed host reaches restore and finalization while creating/saving/reopening an image; comprehensive feature and exceptional-lifetime acceptance remains under 30.016.",
+      "installed_observation": "Both GUI configurations serialize four Painter tool registrations and all Painter resources, then reach gimp_finalize; both installed Filter jobs execute and clean their owned worker/profile",
+      "current_source_sha256": {
+        "app/app.c": "583c0f3ce2ed87d42aeddb2e9b41aced5007a0ed396a12fbcb0173295188f715",
+        "app/core/gimp.c": "cf6c8ae9600ca7d717fa2e4e7a74e54df6fe683d7981a62e41000a9751f0825a",
+        "app/core/gimp-data-factories.c": "4c5a1f058c975f525dc0beb62d50b24f4c199ab3835591611bb91bb9b3844681",
+        "app/core/gimpobject.c": "4941e768a2b77b2ff4029ab182159bee75b0448c2015e1e6b08c94ab0377f839",
+        "app/paint/gimp-paint.c": "fa4b70c01f6c8c73d6a546902facd7cdd6fcc6c98ce4b275a40d79a6a9f3dbbe",
+        "app/tools/gimp-tools.c": "8ba516d3f0ae3bd8e9c0e38df9d2cb041b3e29565802013d7e9d090de8d1f435",
+        "app/painter/gimp-painter-binding.cpp": "22aca4f9e467e16b86f2cbeec431d7d069fc552c98fad985db770720fcf876fd",
+        "app/paint/gimp-paint.h": "4271440caaefeae6e294a8b9567a8b26c8a0bbcc7b6cac3461aa5330e2c3a434",
+        "app/paint/paint-types.h": "72a1ec372d61527e62a8fb6031aa7ae8bd87498c5e204510b655776a2117fa7b"
+      },
+      "remaining_implementation_duties": [
+        {
+          "work_id": "legacy-4b78ad7a4eedd4eb5f1d",
+          "task": "30.016",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-2069dde610b8bfdb96ad",
+          "task": "30.016/feature-entry-point",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-e64ff565266a5b6c1624",
+      "source_id": "01.002/001007",
+      "path": "app/paint/paint-types.h",
+      "source_blob": "effcf09b0b57f290426cb6e465095bbf9780f5fa",
+      "source_range": "-63,0 -> 65",
+      "source_sha256": "66ecc02aa517f65eef487715f87dcdc2d78371d0582e17086c84ff515043ea04",
+      "source_scope": "typedef struct _GimpPaintCoreUndo GimpPaintCoreUndo;",
+      "classification": "native-initialization-and-shutdown-entry",
+      "current_paths": [
+        "app/app.c",
+        "app/core/gimp.c",
+        "app/core/gimp-data-factories.c",
+        "app/core/gimpobject.c",
+        "app/paint/gimp-paint.c",
+        "app/tools/gimp-tools.c",
+        "app/painter/gimp-painter-binding.cpp",
+        "app/paint/gimp-paint.h",
+        "app/paint/paint-types.h"
+      ],
+      "rationale": "Current GIMP initialization, resource factories, paint/tool registration and common owner store replace the old feature-wrapper startup dependency. Installed host reaches restore and finalization while creating/saving/reopening an image; comprehensive feature and exceptional-lifetime acceptance remains under 30.016.",
+      "installed_observation": "Both GUI configurations serialize four Painter tool registrations and all Painter resources, then reach gimp_finalize; both installed Filter jobs execute and clean their owned worker/profile",
+      "current_source_sha256": {
+        "app/app.c": "583c0f3ce2ed87d42aeddb2e9b41aced5007a0ed396a12fbcb0173295188f715",
+        "app/core/gimp.c": "cf6c8ae9600ca7d717fa2e4e7a74e54df6fe683d7981a62e41000a9751f0825a",
+        "app/core/gimp-data-factories.c": "4c5a1f058c975f525dc0beb62d50b24f4c199ab3835591611bb91bb9b3844681",
+        "app/core/gimpobject.c": "4941e768a2b77b2ff4029ab182159bee75b0448c2015e1e6b08c94ab0377f839",
+        "app/paint/gimp-paint.c": "fa4b70c01f6c8c73d6a546902facd7cdd6fcc6c98ce4b275a40d79a6a9f3dbbe",
+        "app/tools/gimp-tools.c": "8ba516d3f0ae3bd8e9c0e38df9d2cb041b3e29565802013d7e9d090de8d1f435",
+        "app/painter/gimp-painter-binding.cpp": "22aca4f9e467e16b86f2cbeec431d7d069fc552c98fad985db770720fcf876fd",
+        "app/paint/gimp-paint.h": "4271440caaefeae6e294a8b9567a8b26c8a0bbcc7b6cac3461aa5330e2c3a434",
+        "app/paint/paint-types.h": "72a1ec372d61527e62a8fb6031aa7ae8bd87498c5e204510b655776a2117fa7b"
+      },
+      "remaining_implementation_duties": [
+        {
+          "work_id": "legacy-dca511aec61697bd8fdd",
+          "task": "30.016",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-884c5bc84b04d65cca34",
+          "task": "30.016/feature-entry-point",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-260e6f388de22b290132",
+      "source_id": "01.002/001008",
+      "path": "app/pdb/Makefile.am",
+      "source_blob": "12a94259835da77e2a77e97848b11619c61a7c5e",
+      "source_range": "-32,0 -> 33,2",
+      "source_sha256": "49d572fcfa22a73972a19bd5793957968b2bb40108adba3c4c097bc32a43eb8b",
+      "source_scope": "libapppdb_a_SOURCES = \\",
+      "classification": "current-cpp-module-registration",
+      "current_paths": [
+        "app/core/gimpfilterprocedure.cpp",
+        "app/core/gimpfilterprocedure-arguments.cpp",
+        "app/painter/filter-process.cpp"
+      ],
+      "rationale": "PDB/executor C++ adapters moved into appcore and apppainter; no old pdb-cxx-utils.cpp needs a duplicate registration. Arbitrary saved procedure coverage remains open.",
+      "installed_observation": "Same current production graph, installed GUI/console startup plus relocated Filter worker/native plug-in; actual resources, tool registrations and module loads verified",
+      "current_source_sha256": {
+        "app/core/gimpfilterprocedure.cpp": "14b68d4572b4e11870d46d9e34bbaba4c3e86eb1e4df15596cfb17d37e3efa61",
+        "app/core/gimpfilterprocedure-arguments.cpp": "cfa0028427f1ae19701f42d107a26883e4c143a25a15dbb4211d53fab0f9a055",
+        "app/painter/filter-process.cpp": "5d5bc162d3c26d9496cc5f52ceff926e6e7e57fdaae225fef02a8705edd6d42c"
+      },
+      "remaining_implementation_duties": []
+    },
+    {
+      "work_id": "legacy-a1a5446d088ff207d2b5",
+      "source_id": "01.002/001065",
+      "path": "app/presets/Makefile.am",
+      "source_blob": "d874add9c485d04b46255309c0228463e0062663",
+      "source_range": "-0,0 -> 1,62",
+      "source_sha256": "9cfe6a562755e05d4a7095bd4822099fa8fedce56bcad76a34fda4e691c212ab",
+      "source_scope": "file-level declarations/content",
+      "classification": "current-cpp-module-registration",
+      "current_paths": [
+        "app/core/gimplayerpreset.c",
+        "app/core/gimplayerpreset-apply.cpp",
+        "app/core/gimp-data-factories.c",
+        "app/actions/layer-presets-actions.c",
+        "app/widgets/gimplayerpresetview.c"
+      ],
+      "rationale": "Presets are native C data/factory/view and a private C++ applier in existing modules, not a separately named legacy library. Generator/behavior obligations stay open.",
+      "installed_observation": "Same current production graph, installed GUI/console startup plus relocated Filter worker/native plug-in; actual resources, tool registrations and module loads verified",
+      "current_source_sha256": {
+        "app/core/gimplayerpreset.c": "ec6edcf6223f1cbc6d125f26c71644a77c6b7077db9a0b01e3cbf53eac9e7e8e",
+        "app/core/gimplayerpreset-apply.cpp": "da1e68b6b9fe9cf316b8f341b57e219bf99f5517150a3b550a83436e95097f58",
+        "app/core/gimp-data-factories.c": "4c5a1f058c975f525dc0beb62d50b24f4c199ab3835591611bb91bb9b3844681",
+        "app/actions/layer-presets-actions.c": "740d7b1e9de1e4ec7bfc7ac1f5930190390172026befdaf635e787b2969d0f7d",
+        "app/widgets/gimplayerpresetview.c": "46a8763177097b16102f06481bab4750ebaa978757eda86030e5c34b4c2c9ced"
+      },
+      "remaining_implementation_duties": []
+    },
+    {
+      "work_id": "legacy-2d35b0e09987c716678b",
+      "source_id": "01.002/001082",
+      "path": "app/tools/Makefile.am",
+      "source_blob": "1bcf07be0e3f7b5db0223172b33a6f70fcf1501c",
+      "source_range": "-42,0 -> 45,2",
+      "source_sha256": "7db8e963d67d2487de10b7b67b8fee0303b6b9200c43213b4f26fa67c29e28e9",
+      "source_scope": "libapptools_a_sources = \\",
+      "classification": "current-cpp-module-registration",
+      "current_paths": [
+        "app/tools/gimpfillbrushtool.cpp",
+        "app/paint/gimpfillbrush.cpp"
+      ],
+      "rationale": "Bounded fill tool and paint-core implementations have explicit owning-module registrations.",
+      "installed_observation": "Same current production graph, installed GUI/console startup plus relocated Filter worker/native plug-in; actual resources, tool registrations and module loads verified",
+      "current_source_sha256": {
+        "app/tools/gimpfillbrushtool.cpp": "1bd3106959f64ac1692bbc318ed17bf2cb4a6297a4cd806f7872cddbec833d37",
+        "app/paint/gimpfillbrush.cpp": "f91685ff3853e89313aa038805630117c8dbfbe741b4b3af463be1c04dbf2a0e"
+      },
+      "remaining_implementation_duties": []
+    },
+    {
+      "work_id": "legacy-9fe8e07a5184358733e4",
+      "source_id": "01.002/001085",
+      "path": "app/tools/Makefile.am",
+      "source_blob": "1bcf07be0e3f7b5db0223172b33a6f70fcf1501c",
+      "source_range": "-144,0 -> 153,2",
+      "source_sha256": "8aa19abbd32aa4e5a8a82cdb6daff85dba45307407b6a3fa5d2c3b910a9a0614",
+      "source_scope": "libapptools_a_sources = \\",
+      "classification": "current-cpp-module-registration",
+      "current_paths": [
+        "app/tools/gimpperspectiveguidetool.cpp"
+      ],
+      "rationale": "Perspective editor tool is registered directly in apptools.",
+      "installed_observation": "Same current production graph, installed GUI/console startup plus relocated Filter worker/native plug-in; actual resources, tool registrations and module loads verified",
+      "current_source_sha256": {
+        "app/tools/gimpperspectiveguidetool.cpp": "08f839eea914b1d2baf22f0b266038929aa2db89509ebe71a9eb34683347884b"
+      },
+      "remaining_implementation_duties": []
+    },
+    {
+      "work_id": "legacy-59c3f08f6040495948bd",
+      "source_id": "01.002/001086",
+      "path": "app/tools/Makefile.am",
+      "source_blob": "1bcf07be0e3f7b5db0223172b33a6f70fcf1501c",
+      "source_range": "-198 -> 208,13",
+      "source_sha256": "5cdffcdda5b82f01e63348ee4fed2f3e3bd71be3a4cd9602524d789a713f9755",
+      "source_scope": "libapptools_a_sources = \\",
+      "classification": "current-cpp-module-registration",
+      "current_paths": [
+        "app/tools/gimppaintermybrushtool.cpp",
+        "app/widgets/gimppaintermybrusheditor.cpp",
+        "app/widgets/gimppaintercompactoptions.cpp"
+      ],
+      "rationale": "Tool, shared editor and reversible compact adapter replace duplicate legacy tool/editor/helper TUs. Full control/type equivalence remains under their existing feature tasks.",
+      "installed_observation": "Same current production graph, installed GUI/console startup plus relocated Filter worker/native plug-in; actual resources, tool registrations and module loads verified",
+      "current_source_sha256": {
+        "app/tools/gimppaintermybrushtool.cpp": "2b6a54cabe22fbb3b8cd113c8a3231955407ca67519822c0eb673c6f03575c90",
+        "app/widgets/gimppaintermybrusheditor.cpp": "d6a699fb1da5ca8f4ccf6cf68dcb4a4832c617fd9fd69c964e68f228102da633",
+        "app/widgets/gimppaintercompactoptions.cpp": "e5e35c593554587b3dfb931aca2d9bd5fc228332c157a79fb83d0bbedac38fa0"
+      },
+      "remaining_implementation_duties": []
+    },
+    {
+      "work_id": "legacy-435619570257ccfa22de",
+      "source_id": "01.002/001515",
+      "path": "app/widgets/Makefile.am",
+      "source_blob": "943009bb3350e08938bda729500f73cc17a28522",
+      "source_range": "-52,0 -> 57,2",
+      "source_sha256": "b61b6e95e6382ad76978e633753bee1419ce46c5fe78f2b6dadb978b9907b629",
+      "source_scope": "libappwidgets_a_sources = \\",
+      "classification": "current-cpp-module-registration",
+      "current_paths": [
+        "app/widgets/gimppainterlayertiles.cpp",
+        "app/widgets/gimppaintercompactoptions.cpp"
+      ],
+      "rationale": "Registered GTK3 popover consumers provide current UI routes; this does not prove that every old CellRendererPopup vfunc has been ported.",
+      "installed_observation": "Same current production graph, installed GUI/console startup plus relocated Filter worker/native plug-in; actual resources, tool registrations and module loads verified",
+      "current_source_sha256": {
+        "app/widgets/gimppainterlayertiles.cpp": "ba89c8287b963085e0d8949541a5686181b44a262523eac5f43fc17e497f980e",
+        "app/widgets/gimppaintercompactoptions.cpp": "e5e35c593554587b3dfb931aca2d9bd5fc228332c157a79fb83d0bbedac38fa0"
+      },
+      "remaining_implementation_duties": []
+    },
+    {
+      "work_id": "legacy-a74b1c51b6928e10716b",
+      "source_id": "01.002/001516",
+      "path": "app/widgets/Makefile.am",
+      "source_blob": "943009bb3350e08938bda729500f73cc17a28522",
+      "source_range": "-234,0 -> 241,4",
+      "source_sha256": "648de987d8ba08257f9f9c414dd482393a185b9e837938d8ee7807417f9f1eb1",
+      "source_scope": "libappwidgets_a_sources = \\",
+      "classification": "current-cpp-module-registration",
+      "current_paths": [
+        "app/widgets/gimppainterlayertiles.cpp",
+        "app/dialogs/layer-options-dialog.c",
+        "app/core/gimpfilterparametereditor.cpp"
+      ],
+      "rationale": "Layer tiles use registered C++ and canonical custom-layer editors. Full legacy popup/type acceptance remains separate.",
+      "installed_observation": "Same current production graph, installed GUI/console startup plus relocated Filter worker/native plug-in; actual resources, tool registrations and module loads verified",
+      "current_source_sha256": {
+        "app/widgets/gimppainterlayertiles.cpp": "ba89c8287b963085e0d8949541a5686181b44a262523eac5f43fc17e497f980e",
+        "app/dialogs/layer-options-dialog.c": "a7ae97a35bf0a1fc90c608523eefe0dc7a7f8696ab89a5c1171e85834075eef9",
+        "app/core/gimpfilterparametereditor.cpp": "fcf150ea7c938ab792770f3307d769e5f84dddcfba20b85030b6e7ca4c9e130f"
+      },
+      "remaining_implementation_duties": []
+    },
+    {
+      "work_id": "legacy-1f5113e667a1172aa45e",
+      "source_id": "01.002/001520",
+      "path": "app/widgets/Makefile.am",
+      "source_blob": "943009bb3350e08938bda729500f73cc17a28522",
+      "source_range": "-361,0 -> 377,2",
+      "source_sha256": "6553f8a63f0472c67d7ed31ced59ac11ff92ed74d06d61049aeee2ff12037101",
+      "source_scope": "libappwidgets_a_sources = \\",
+      "classification": "current-cpp-module-registration",
+      "current_paths": [
+        "app/display/gimppaintercanvasui.cpp"
+      ],
+      "rationale": "Current tool tile/group controller is registered in the shell canvas C++ TU; no duplicate legacy widget TU is added.",
+      "installed_observation": "Same current production graph, installed GUI/console startup plus relocated Filter worker/native plug-in; actual resources, tool registrations and module loads verified",
+      "current_source_sha256": {
+        "app/display/gimppaintercanvasui.cpp": "d51aca41662464a120ce3badf28e202381a2e0c0a2a03d4263a81b346c931fed"
+      },
+      "remaining_implementation_duties": []
+    },
+    {
+      "work_id": "legacy-ff15360bd75a5b9e3e99",
+      "source_id": "01.002/001521",
+      "path": "app/widgets/Makefile.am",
+      "source_blob": "943009bb3350e08938bda729500f73cc17a28522",
+      "source_range": "-415 -> 432,8",
+      "source_sha256": "11031674dfd628315fe52689ffb3447a10ff511dd6d1ed9fc422d95afd644cdd",
+      "source_scope": "libappwidgets_a_sources = \\",
+      "classification": "current-cpp-module-registration",
+      "current_paths": [
+        "app/widgets/gimppaintermybrusheditor.cpp",
+        "app/widgets/gimppaintercompactoptions.cpp",
+        "app/widgets/gimppainterlayertiles.cpp"
+      ],
+      "rationale": "Shared editor, native GTK3 popovers and compact controls are registered replacements; old helper/type contracts remain in their separate WBS/source obligations.",
+      "installed_observation": "Same current production graph, installed GUI/console startup plus relocated Filter worker/native plug-in; actual resources, tool registrations and module loads verified",
+      "current_source_sha256": {
+        "app/widgets/gimppaintermybrusheditor.cpp": "d6a699fb1da5ca8f4ccf6cf68dcb4a4832c617fd9fd69c964e68f228102da633",
+        "app/widgets/gimppaintercompactoptions.cpp": "e5e35c593554587b3dfb931aca2d9bd5fc228332c157a79fb83d0bbedac38fa0",
+        "app/widgets/gimppainterlayertiles.cpp": "ba89c8287b963085e0d8949541a5686181b44a262523eac5f43fc17e497f980e"
+      },
+      "remaining_implementation_duties": []
+    },
+    {
+      "work_id": "legacy-eac9a87a516009e3bbfd",
+      "source_id": "01.002/001896",
+      "path": "configure.ac",
+      "source_blob": "f47f24a189e35eb614be51b166c6b2a71edfdf93",
+      "source_range": "-2103 -> 2131",
+      "source_sha256": "1bb85d83116d84f5a4a5c12a7066d7c0d34602f91da5c7eac2a2b312a2e14707",
+      "source_scope": "AM_CONDITIONAL(ENABLE_GIMP_CONSOLE, test \"x$enable_gimp_console\" != xno)",
+      "classification": "installed-and-explicit-user-resource-paths",
+      "current_paths": [
+        "libgimpbase/gimpenv.c",
+        "app/config/gimpcoreconfig.c",
+        "app/core/gimppainterprofile.cpp",
+        "app/core/gimp-user-install.c"
+      ],
+      "rationale": "Original path identity is retained in this verifier through actual installed and explicitly selected current-format user resource loading. Automatic ~/.gimp-painter-2.8 discovery remains missing under 30.010/30.011; no assignment is removed or completed by inference.",
+      "installed_observation": "177 installed Painter brushes, 8 installed presets and two unchanged synthetic user resources appear in host tags.xml; application cannot access source/build roots",
+      "current_source_sha256": {
+        "libgimpbase/gimpenv.c": "e1f3b704b536926b1a8a580e808c168c4fd2328e6159de9aa07b250eb2e51a18",
+        "app/config/gimpcoreconfig.c": "23e25ae7461f5cd33d5351b1cd89d1efb43d9ae9796acd15fe3250cf9d359b34",
+        "app/core/gimppainterprofile.cpp": "7dcc7e77cb211d7c371baeae32677923f0d0429c6b069fa6ed0207848553907b",
+        "app/core/gimp-user-install.c": "6b5911fc5a36c28092e420b9e83b7c6701ba9544bf61b75e536a49c6df5ef633"
+      },
+      "remaining_implementation_duties": [
+        {
+          "work_id": "legacy-efa6c6fd6522d38f13c2",
+          "task": "30.010",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-e9580f2bb30aab19338b",
+          "task": "30.011",
+          "status": "TODO"
+        }
+      ]
+    }
+  ],
+  "assignments_changed": false
+}

@@ -279,7 +279,7 @@
 | 04.013/brush-setting-generator | [x] | 旧MyPaint設定の生成元を復元する | 04.002/common-foundation, 01.010 | 旧treeにないgenerate.pyの代わりに名前・index・型・既定値の正本を定め、103定数と設定tableを再生成し差分検査する |
 | 04.014 | [x] | ヘッダー単体のコンパイル試験を登録する | 04.013 | 対象 C ヘッダーを C と C++ で検査 |
 | 04.015 | [x] | incremental build を検証する | 04.014 | 共通ヘッダー変更で必要な object が更新される |
-| 04.016 | [ ] | install 後の起動を検証する | 04.015 | build tree に依存せず独自モジュールを含め起動する |
+| 04.016 | [x] | install 後の起動を検証する | 04.015 | build tree に依存せず独自モジュールを含め起動する |
 | 04.017 | [ ] | 生成 C ヘッダーの二重 include を試験する | 04.016 | C linkage と include guard が安定 |
 | 04.018 | [ ] | C++ static 初期化の順序依存を除去する | 04.017 | GIMP 初期化前に型登録や GTK 呼出しを行わない |
 | 04.019 | [ ] | 異なる allocator の解放を監査する | 04.018 | new/delete と GLib allocation の対応が全境界で一致 |

@@ -1,0 +1,125 @@
+{
+  "task": "04.016",
+  "status": "PASS",
+  "baseline_head": "543d683e03db74702102771208de57447e9bcb18",
+  "scope": "Linux x86_64 installed GUI/console/helper startup and explicit resource paths without source/build/development roots; no full release or feature completion claim",
+  "runs": [
+    {
+      "variant": "default",
+      "kind": "console",
+      "status": "passed",
+      "source_report": "runtime/default-console/report.json",
+      "log_sha256": "5446a82cfc13b224a1d677650ff271434e0d9f4119b960e0b90913509b3a2f62",
+      "probe_sha256": "5d55a1706796902be88946c68237a73ce9648934358e9a4d7cbea3db50271ead",
+      "resources_matched_file_by_file": 185,
+      "host_tools": [],
+      "startup_and_finalize": true,
+      "user_resource_count": 0
+    },
+    {
+      "variant": "default",
+      "kind": "gui",
+      "status": "passed",
+      "source_report": "runtime/default-gui/report.json",
+      "log_sha256": "6387df2832c42a29bc14c7da2c88193b0596fdccbb59d8f68bff2deab0a6725e",
+      "probe_sha256": "1120ac62c69de0b8addeb300be845ce9f1d873b196007e7a078a3b64493c20a9",
+      "resources_matched_file_by_file": 185,
+      "host_tools": [
+        "gimp-painter-mypaint-tool",
+        "gimp-bucket-fill-brush-tool",
+        "gimp-painter-smudge-tool",
+        "gimp-perspective-guide-tool"
+      ],
+      "startup_and_finalize": true,
+      "user_resource_count": 2
+    },
+    {
+      "variant": "default",
+      "kind": "filter",
+      "status": "passed",
+      "source_report": "runtime/default-filter/report.json",
+      "observed_helpers": 1,
+      "observed_plugins": 2,
+      "exact_legacy_pixels_and_save_reopen": true,
+      "no_survivors_or_profiles": true
+    },
+    {
+      "variant": "http",
+      "kind": "console",
+      "status": "passed",
+      "source_report": "runtime/http-console/report.json",
+      "log_sha256": "a1b1bb9abd3dea6d44116221eaecad1fffdeec67e8120186d4599a1065c688cf",
+      "probe_sha256": "b1f7f84f7922a84bcea996cc512e142d548d29838b525d52774d93d175c732cc",
+      "resources_matched_file_by_file": 185,
+      "host_tools": [],
+      "startup_and_finalize": true,
+      "user_resource_count": 0
+    },
+    {
+      "variant": "http",
+      "kind": "gui",
+      "status": "passed",
+      "source_report": "runtime/http-gui/report.json",
+      "log_sha256": "30a31e8703ba0bf7adca1a72085a2a8231f22e1ca6deaeb5021abb0f153b5222",
+      "probe_sha256": "415996c0ec94f17bf984fc5b58b577ad132b6614f51404a50713e3d3bbf0313a",
+      "resources_matched_file_by_file": 185,
+      "host_tools": [
+        "gimp-painter-mypaint-tool",
+        "gimp-bucket-fill-brush-tool",
+        "gimp-painter-smudge-tool",
+        "gimp-perspective-guide-tool"
+      ],
+      "startup_and_finalize": true,
+      "user_resource_count": 0
+    },
+    {
+      "variant": "http",
+      "kind": "filter",
+      "status": "passed",
+      "source_report": "runtime/http-filter/report.json",
+      "observed_helpers": 1,
+      "observed_plugins": 2,
+      "exact_legacy_pixels_and_save_reopen": true,
+      "no_survivors_or_profiles": true
+    }
+  ],
+  "source_verification_duties_closed": 39,
+  "package_tests": 60,
+  "startup_guard_tests": 5,
+  "missing_brush_negative_control": true,
+  "final_gui_observation_bound_to_run_and_image": true,
+  "runtime_restage_byte_identity": {
+    "default": 5057,
+    "http": 5059
+  },
+  "source_sha256": {
+    "tools/check_painter_installed_startup.py": "69e5728292495b4b57037e03438c917614fa026ed67fe5261d7ad304f9a861ba",
+    "tools/package-linux-runtime.py": "c57c9024f97f64025daa178fd799503c1e7493739b2c069d34d3c59e0827e7eb",
+    "tools/check_installed_startup.py": "1120ac62c69de0b8addeb300be845ce9f1d873b196007e7a078a3b64493c20a9",
+    "migration/tests/test_linux_runtime_package.py": "82a6a40fcedf8143d5b2b6621930832199af53826247f8d9fd5d7c222aa93c17",
+    "migration/tests/test_installed_startup_probe.py": "bcb3e3e9bfe6bc75b9f8645c901419997eda32e036ebe494fe6551a65403950b",
+    "migration/packaging/AppRun": "9f079ed230607950b970c2d3f33068f76345a4122265d99508146fe40f510424",
+    "tools/check_installed_filter.py": "26a5ea73b6cc51b96ce4c19b3eba3dd957f9c297d4328655766131006c9e6344",
+    "migration/tests/filter-package-smoke.py": "0e720d2202edcedd6f5cc7ea767b433b169b40f99eace80d9619fbd49d336167",
+    "app/core/gimp-modules.c": "e6716be5d6d017bb40d3994e83020fa12bd2572c035255fd25031787affbc4a1",
+    "app/core/gimpdatafactory.c": "d1a7a033197db51b7162ba5a81474d51771e2d7bbbe6b3e43edb47644a2759bf",
+    "app/core/gimpdataloaderfactory.c": "893389d7e1f3d4790f7ed1acfcbc2adc27d074759ec0dd3fc2fed4e322d4d702",
+    "app/core/gimptagcache.c": "59a44f526bf6977862a4f7591c7564dbfe8108581a80738625b7367ae7b88702",
+    "app/meson.build": "3805a0006baed2e5abdf15228d305364a0be0aec9b29e12785240ca5797f8451",
+    "modules/meson.build": "d54501c913900340309bb1d4e1333bf91f3290f65832128780b2c9aa05e6b1f1",
+    "data/meson.build": "bfc278077474f9540d918695d13a08e2c0c797385bb025ef178245793677d372",
+    "data/layer-presets/meson.build": "5aa418b31242a7d539ab6259ac2e76251fd1927ef23799235efc195352926e4c",
+    "migration/tests/installed-startup/source-duty-review.json": "3ce9d6337502f7025d58f7e2e4dc98360d7ab514d5e67a0251ee5cd795aef053"
+  },
+  "evidence_members": 82,
+  "evidence_sha256": "8a5823e49286bb7b5d00d1c678cc7b21646a8cc429ab9ccc630ae95c906cfeac",
+  "limitations": [
+    "Xvfb socket creation unavailable in shell; real GUI tested on existing cloud desktop display without changing socket/security settings",
+    "Automatic old ~/.gimp-painter-2.8 discovery remains open in 30.010/30.011",
+    "Optional HTTP service remains disabled at runtime during startup; endpoint acceptance is separate",
+    "GTK AT-SPI action defect, Wayland, Windows/macOS, physical tablet and complete legacy corpus remain separate open gates",
+    "Initial console harness used wrong PDB name and assumed non-normalized tag identifiers; diagnosed evidence preserved",
+    "Final package recipe preserves absolute /usr symlinks and passes 60 controls; 5057/5059 runtime files equal the accepted staged runtimes",
+    "Earlier accepted console/HTTP GUI executed prior probe versions; final default GUI exercises all final module/observation/tool guards; executed scripts are retained"
+  ]
+}
