@@ -1,0 +1,108 @@
+{
+  "schema": "filter-entry-prepublication-normal-v1",
+  "scope": "complete35case ordinary normal registration; finalgenericgate pending",
+  "base_commit": "99d398b54cf86fad3e9a6cb471373f8042db152d",
+  "base_tree": "21d50ee742cb0371e577033c2f1b56f73d2e8d9a",
+  "patch_sha256": "f7c36927dedb5fea1504c2329477f543b49d49df4f54548b5458f5535d656e48",
+  "candidate_files": {
+    "app/tests/test-filter-entry-contracts.cpp": {
+      "sha256": "d85cd3d34a8f0a1a3bb21b73bf456300679312f071b731799afa4e4192d64560",
+      "bytes": 63153
+    },
+    "migration/contracts/owned-generic-stroking.md": {
+      "sha256": "c9de7230bd56bb3e44a1556fc22fa58097c830cb14d0f2246e19f4ab76f1b140",
+      "bytes": 7260
+    },
+    "migration/progress.tsv": {
+      "sha256": "f881501c327f50548e2c10962b5e7b3e254ab235d2fbc4f4d7f512ce5980ae6d",
+      "bytes": 367251
+    },
+    "tasks.md": {
+      "sha256": "161b7676dc17c30befa4c6b517949b27ede9b08657c200ba19acbff21112157d",
+      "bytes": 223091
+    },
+    "migration/tests/filter-entry-fixture-quiescence/README.md": {
+      "sha256": "c4b4e81ff2ffe5a3be3215e97d694f4d971cad736a43913d34c390a5e3eab6fe",
+      "bytes": 4762
+    },
+    "migration/tests/filter-entry-fixture-quiescence/initial-failure.json": {
+      "sha256": "7313a6c6b2ee6bc0a1bde38927351df907b25b4c3163d61d144cc6f0a3783087",
+      "bytes": 23076
+    }
+  },
+  "source_review_sha256": "e15e453febde8a8d6958192410eddf9a70b0f28aea35f1433f81bb5c3cb9e4f0",
+  "setup_exit": 0,
+  "default_compile_exit": 0,
+  "catalogs_compile_exit": 0,
+  "test_exit": 0,
+  "registered_timeout": 120,
+  "timeout_multiplier": 1,
+  "cases": 35,
+  "tap_names": [
+    "/filter-entry-contracts/c/c_boundary_checks_and_closed_metadata",
+    "/filter-entry-contracts/c/c_exact_name_absent_and_empty",
+    "/filter-entry-contracts/c/c_expired_arrays_reject_atomically",
+    "/filter-entry-contracts/c/c_factory_native_identity",
+    "/filter-entry-contracts/c/c_legacy_array_shapes",
+    "/filter-entry-contracts/c/c_legacy_ignored_context",
+    "/filter-entry-contracts/c/c_legacy_null_typed_zero",
+    "/filter-entry-contracts/c/c_legacy_owned_exact_arguments",
+    "/filter-entry-contracts/c/c_legacy_owner_boundaries",
+    "/filter-entry-contracts/c/c_legacy_provider_rejections",
+    "/filter-entry-contracts/c/c_legacy_rejected_scalar_types",
+    "/filter-entry-contracts/c/c_legacy_render_no_undo",
+    "/filter-entry-contracts/c/c_legacy_scalar_conversions",
+    "/filter-entry-contracts/c/c_legacy_unsupported_names_preserve",
+    "/filter-entry-contracts/c/c_live_object_array_container_copy",
+    "/filter-entry-contracts/c/c_null_and_empty_argument_shapes",
+    "/filter-entry-contracts/c/c_opaque_model_stays_opaque",
+    "/filter-entry-contracts/c/c_owned_values_and_model_identity",
+    "/filter-entry-contracts/c/c_scalar_object_identity_and_ownership",
+    "/filter-entry/cpp/bounded_dialog_read_owners",
+    "/filter-entry/cpp/checked_entry_routes",
+    "/filter-entry/cpp/checked_model_api_separation",
+    "/filter-entry/cpp/checked_notify_close",
+    "/filter-entry/cpp/checked_notify_newer",
+    "/filter-entry/cpp/checked_retired_bytes_reentry",
+    "/filter-entry/cpp/checked_retired_model_after_transform",
+    "/filter-entry/cpp/checked_transform_reentry",
+    "/filter-entry/cpp/closed_and_wrong_thread_containment",
+    "/filter-entry/cpp/definition_mark_idle_then_rerun",
+    "/filter-entry/cpp/independent_image_handle_owners",
+    "/filter-entry/cpp/mark_cancels_all_native_phases",
+    "/filter-entry/cpp/native_type_factory_and_copy",
+    "/filter-entry/cpp/original_entry_routes",
+    "/filter-entry/cpp/owned_queries_outlive_definition_and_owner",
+    "/filter-entry/cpp/running_owner_close_keeps_retained_cache"
+  ],
+  "outcome": "passed",
+  "duration_seconds": 8.745286464691162,
+  "authenticated_portrait_xvfb": true,
+  "source_unchanged": true,
+  "elf_unchanged": true,
+  "freshness_unchanged": true,
+  "staged_catalogs_unchanged": true,
+  "verified_private_elf_aliases": [],
+  "sanitizer_acceptance": false,
+  "full_aggregate_acceptance": false,
+  "prior_failed_aggregate_relabelled": false,
+  "result_transform": {
+    "transform": "recursive-remove-env-fields-v1",
+    "raw_sha256": "c5a545c917a164cb7270fc42adb5e5fbb22bccfe07c29d109c96561972b661cd",
+    "public_sha256": "f32efe9f8a454ff134091e54a4d94a9b3533da38256342254ca33b37e30cd963",
+    "public_semantics_sha256": "f32efe9f8a454ff134091e54a4d94a9b3533da38256342254ca33b37e30cd963",
+    "jsonl_input": true
+  },
+  "text_transform": {
+    "transform": "remove-complete-pre-test-span-v1",
+    "raw_sha256": "9c51c82f8fd61b216ee6d4bba0903edf6b45f1b9ccbcd96e5653a153bb0bd3d2",
+    "public_sha256": "d584f1f920ab2fddbeb345243c86ac03356f4f4915f4011c8dcd34ada720305c",
+    "removed_start": 0,
+    "removed_end": 2311,
+    "removed_sha256": "58cd8cf324acbd7dcc8c7dc297a9f053654e96b2f7cc61a8eaf11b93005d6c76",
+    "raw_bytes": 15846,
+    "public_bytes": 13535,
+    "unchanged_test_suffix_sha256": "d584f1f920ab2fddbeb345243c86ac03356f4f4915f4011c8dcd34ada720305c"
+  },
+  "result_sha256": "f32efe9f8a454ff134091e54a4d94a9b3533da38256342254ca33b37e30cd963"
+}

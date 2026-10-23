@@ -15,6 +15,7 @@ extern "C" {
 #include "gegl/gimp-gegl.h"
 #include "core/gimpparamspecs.h"
 #include "pdb/gimppdb.h"
+#include "pdb/gimppdbcontext.h"
 #include "pdb/gimpprocedure.h"
 #include "plug-in/plug-in-types.h"
 #include "plug-in/gimpplugindef.h"
@@ -169,6 +170,33 @@ void drain_workers ()
 {
   wait_until ([] { return GimpPainter::FilterLifetime::pending () == 0; },
               "bounded filter workers to drain");
+}
+
+void retire_startup_plugins ()
+{
+  /* Successful query children can be closed yet still own the restore PDB
+   * context through their low-priority child-watch source. Its stroke options
+   * also borrow Gimp. Retire those unrelated startup owners before testing the
+   * synchronous surrender of every application reference inside an entry.
+   * Observe destruction without taking references or dispatching in the entry. */
+  guint observed = 0, retired = 0;
+  for (GList *list = application->context_list; list; list = list->next)
+    if (GIMP_IS_PDB_CONTEXT (list->data))
+      {
+        auto *context = GIMP_PDB_CONTEXT (list->data);
+        g_assert_nonnull (context->stroke_options);
+        g_object_weak_ref (G_OBJECT (context), finalized, &retired);
+        g_object_weak_ref (G_OBJECT (context->stroke_options), finalized, &retired);
+        observed += 2;
+      }
+  gimp_plug_in_manager_exit (application->plug_in_manager);
+  g_assert_null (application->plug_in_manager->open_plug_ins);
+  wait_until ([&] { return retired == observed; },
+              "startup plug-in contexts and stroke options to retire");
+  g_assert_null (application->plug_in_manager->open_plug_ins);
+  for (GList *list = application->context_list; list; list = list->next)
+    g_assert_false (GIMP_IS_PDB_CONTEXT (list->data));
+  gimp_test_filter_entry_assert_blinds_provider (application);
 }
 
 void settle (const FilterLayerRef& filter)
@@ -916,6 +944,7 @@ void checked_transform_reentry ()
       g_test_trap_assert_passed ();
       return;
     }
+  retire_startup_plugins ();
   g_value_register_transform_func (G_TYPE_DOUBLE, G_TYPE_INT, reentrant_double_to_int);
   g_value_register_transform_func (GIMP_TYPE_ORIENTATION_TYPE, G_TYPE_INT, forbidden_enum_transform);
   g_value_register_transform_func (G_TYPE_OBJECT, G_TYPE_INT, forbidden_enum_transform);
@@ -1074,6 +1103,7 @@ void checked_retired_bytes_reentry ()
       g_test_trap_assert_passed ();
       return;
     }
+  retire_startup_plugins ();
   auto *image = image_new ().release ();
   auto *filter = GIMP_FILTER_LAYER (gimp_filter_layer_new (image, 8, 8, "retired refs", 1.0, GIMP_LAYER_MODE_NORMAL));
   g_object_ref_sink (filter);
@@ -1137,6 +1167,7 @@ void checked_retired_model_after_transform ()
       g_test_trap_assert_passed ();
       return;
     }
+  retire_startup_plugins ();
   auto *image = image_new ().release ();
   auto *filter = GIMP_FILTER_LAYER (gimp_filter_layer_new (image, 8, 8, "model refs", 1.0, GIMP_LAYER_MODE_NORMAL));
   g_object_ref_sink (filter);

@@ -97,3 +97,23 @@ pass or task closure is claimed by this preparation checkpoint.
 Only `27.009/owned-generic-strokes` can close after these gates. The parent
 `27.009`, standalone PDB transport, full GUI/device, precision, resource/latency
 and platform obligations remain open.
+
+### First current aggregate and fixture repair in progress
+
+The unchanged unfiltered aggregate on published
+`99d398b54cf86fad3e9a6cb471373f8042db152d` completed all 171 registrations:
+170 passed and `filter-entry-contracts` failed. All six generic comparisons
+passed, and source, tree, ELF, registry and locale integrity checks passed.
+The aggregate is rejected; it is not current acceptance for this task.
+
+The failing destructive-entry subprocess dropped Gimp while a closed startup
+plug-in's low-priority child watch still owned its restore PDB context and
+stroke options. The fatal two-context teardown warning remains a failure.
+The test-only repair waits for observable retirement of these unrelated
+startup owners before the three destructive-entry cases, with the existing
+bounded deadline. It retains the real restored Blinds provider, fatal warnings
+and all entry/reentry/finalization assertions. The repaired 35-case registration
+passed its complete ordinary normal prepublication check (35 cases, original
+120-second budget, 8.75 seconds), with source/build/ELF/catalog seals unchanged.
+Its complete ASan/UBSan validation and the new unfiltered normal aggregate remain
+pending alongside the generic-stroke gate. No task closure is claimed here.
