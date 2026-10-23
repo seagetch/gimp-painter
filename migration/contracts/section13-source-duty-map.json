@@ -6884,7 +6884,20 @@
         "migration/tests/legacy-mode-ui/",
         "migration/tests/painter-float-native/"
       ],
-      "rationale": "Current mode arrays/context routing replace old fixed action/menu tables; native seven-label selection checks displayed names/internal enum and actual selected-layer mode. App/public/PDB GType parity has separate source/runtime receipts; Script-Fu/float integration limits are not silently expanded."
+      "rationale": "Current mode arrays/context routing replace old fixed action/menu tables; native seven-label selection checks displayed names/internal enum and actual selected-layer mode. App/public/PDB GType parity has separate source/runtime receipts; Script-Fu/float integration limits are not silently expanded.",
+      "current_mapping": [
+        {
+          "path": "app/actions/context-commands.c",
+          "anchor": "context_paint_mode_cmd_callback / context_paint_mode_index",
+          "sha256": "740119132de438d94aee6b18f778cc69f3b24a1e580acaed5cc5d7abe156bf48"
+        },
+        {
+          "path": "app/operations/layer-modes/gimp-layer-modes.c",
+          "anchor": "gimp_layer_mode_get_context_array; GIMP_LAYER_MODE_CONTEXT_PAINT",
+          "sha256": "3c6a6585cfaa03edb13de20acaeae262f486bbd13a0270e858f3aa83ac20ec0f"
+        }
+      ],
+      "proof_kind": "source route plus separately indexed task-specific receipts; no unrecorded runtime claim"
     },
     {
       "source_id": "01.002/000024",
@@ -6906,7 +6919,20 @@
         "migration/tests/legacy-mode-ui/",
         "migration/tests/painter-float-native/"
       ],
-      "rationale": "Current mode arrays/context routing replace old fixed action/menu tables; native seven-label selection checks displayed names/internal enum and actual selected-layer mode. App/public/PDB GType parity has separate source/runtime receipts; Script-Fu/float integration limits are not silently expanded."
+      "rationale": "Current mode arrays/context routing replace old fixed action/menu tables; native seven-label selection checks displayed names/internal enum and actual selected-layer mode. App/public/PDB GType parity has separate source/runtime receipts; Script-Fu/float integration limits are not silently expanded.",
+      "current_mapping": [
+        {
+          "path": "app/actions/layers-commands.c",
+          "anchor": "layers_mode_cmd_callback / layers_mode_index",
+          "sha256": "99031ad4e7a9de4cb2de9f7de9e66176b7f23d239a5e3ff88c33e9e1b4dd8b44"
+        },
+        {
+          "path": "app/operations/layer-modes/gimp-layer-modes.c",
+          "anchor": "gimp_layer_mode_get_context_array; GIMP_LAYER_MODE_CONTEXT_LAYER",
+          "sha256": "3c6a6585cfaa03edb13de20acaeae262f486bbd13a0270e858f3aa83ac20ec0f"
+        }
+      ],
+      "proof_kind": "source route plus separately indexed task-specific receipts; no unrecorded runtime claim"
     },
     {
       "source_id": "01.002/000039",
@@ -6928,7 +6954,15 @@
         "migration/tests/legacy-mode-ui/",
         "migration/tests/painter-float-native/"
       ],
-      "rationale": "Current mode arrays/context routing replace old fixed action/menu tables; native seven-label selection checks displayed names/internal enum and actual selected-layer mode. App/public/PDB GType parity has separate source/runtime receipts; Script-Fu/float integration limits are not silently expanded."
+      "rationale": "Current mode arrays/context routing replace old fixed action/menu tables; native seven-label selection checks displayed names/internal enum and actual selected-layer mode. App/public/PDB GType parity has separate source/runtime receipts; Script-Fu/float integration limits are not silently expanded.",
+      "current_mapping": [
+        {
+          "path": "app/operations/operations-enums.c",
+          "anchor": "gimp_layer_mode_get_type values[]; Painter enum names/nicks",
+          "sha256": "09a5ffcb615fb9f420bcfd887d5afd9c75dede7f155528550df96bbb3181822a"
+        }
+      ],
+      "proof_kind": "source route plus separately indexed task-specific receipts; no unrecorded runtime claim"
     },
     {
       "source_id": "01.002/000040",
@@ -6950,7 +6984,15 @@
         "migration/tests/legacy-mode-ui/",
         "migration/tests/painter-float-native/"
       ],
-      "rationale": "Current mode arrays/context routing replace old fixed action/menu tables; native seven-label selection checks displayed names/internal enum and actual selected-layer mode. App/public/PDB GType parity has separate source/runtime receipts; Script-Fu/float integration limits are not silently expanded."
+      "rationale": "Current mode arrays/context routing replace old fixed action/menu tables; native seven-label selection checks displayed names/internal enum and actual selected-layer mode. App/public/PDB GType parity has separate source/runtime receipts; Script-Fu/float integration limits are not silently expanded.",
+      "current_mapping": [
+        {
+          "path": "app/operations/operations-enums.c",
+          "anchor": "gimp_layer_mode_get_type descs[]; displayed legacy labels",
+          "sha256": "09a5ffcb615fb9f420bcfd887d5afd9c75dede7f155528550df96bbb3181822a"
+        }
+      ],
+      "proof_kind": "source route plus separately indexed task-specific receipts; no unrecorded runtime claim"
     },
     {
       "source_id": "01.002/000041",
@@ -6972,7 +7014,20 @@
         "migration/tests/legacy-mode-ui/",
         "migration/tests/painter-float-native/"
       ],
-      "rationale": "Current mode arrays/context routing replace old fixed action/menu tables; native seven-label selection checks displayed names/internal enum and actual selected-layer mode. App/public/PDB GType parity has separate source/runtime receipts; Script-Fu/float integration limits are not silently expanded."
+      "rationale": "Current mode arrays/context routing replace old fixed action/menu tables; native seven-label selection checks displayed names/internal enum and actual selected-layer mode. App/public/PDB GType parity has separate source/runtime receipts; Script-Fu/float integration limits are not silently expanded.",
+      "current_mapping": [
+        {
+          "path": "app/operations/operations-enums.h",
+          "anchor": "GimpLayerMode; explicit compatibility64..72 separate from old serialized raw IDs",
+          "sha256": "49e50ffffc9671c1a2c96fbe1cba74f69b1668a20f38ac3d3c6a2f71a3b6055e"
+        },
+        {
+          "path": "app/operations/layer-modes-legacy/gimpoperationpainterlegacy.c",
+          "anchor": "gimp_painter_layer_mode_from_legacy / to_legacy",
+          "sha256": "813d3ae4f4eec7fd37bda4b6fbed085bf92689cd3f923d16bbc99bc79349dd28"
+        }
+      ],
+      "proof_kind": "source route plus separately indexed task-specific receipts; no unrecorded runtime claim"
     },
     {
       "source_id": "01.002/000098",
@@ -7001,7 +7056,25 @@
         "migration/tests/legacy-seven-formulas/",
         "migration/tests/legacy-mode-precision/"
       ],
-      "rationale": "Old install/effect/enum/text tables and reverse_source dispatch are replaced by explicit current enum registry/dedicated byte operation; exact seven source formulas, mask/opacity and full-operand swap retained. High-precision/artwork verification remains original13.012–014."
+      "rationale": "Old install/effect/enum/text tables and reverse_source dispatch are replaced by explicit current enum registry/dedicated byte operation; exact seven source formulas, mask/opacity and full-operand swap retained. High-precision/artwork verification remains original13.012–014.",
+      "current_mapping": [
+        {
+          "path": "app/operations/layer-modes-legacy/gimpoperationpainterlegacy.c",
+          "anchor": "G_DEFINE_TYPE / class_init / prepare / process",
+          "sha256": "813d3ae4f4eec7fd37bda4b6fbed085bf92689cd3f923d16bbc99bc79349dd28"
+        },
+        {
+          "path": "app/operations/gimp-operations.c",
+          "anchor": "gimp_operations_init; register Painter legacy type",
+          "sha256": "befb0c8623e8d32e3bfe63c7735b8ff6b4b05f3f3340aef4252dbdedc0dbbe26"
+        },
+        {
+          "path": "app/operations/layer-modes/gimp-layer-modes.c",
+          "anchor": "layer_mode_infos[]; explicit Painter operations",
+          "sha256": "3c6a6585cfaa03edb13de20acaeae262f486bbd13a0270e858f3aa83ac20ec0f"
+        }
+      ],
+      "proof_kind": "source route plus separately indexed task-specific receipts; no unrecorded runtime claim"
     },
     {
       "source_id": "01.002/000099",
@@ -7030,7 +7103,15 @@
         "migration/tests/legacy-seven-formulas/",
         "migration/tests/legacy-mode-precision/"
       ],
-      "rationale": "Old install/effect/enum/text tables and reverse_source dispatch are replaced by explicit current enum registry/dedicated byte operation; exact seven source formulas, mask/opacity and full-operand swap retained. High-precision/artwork verification remains original13.012–014."
+      "rationale": "Old install/effect/enum/text tables and reverse_source dispatch are replaced by explicit current enum registry/dedicated byte operation; exact seven source formulas, mask/opacity and full-operand swap retained. High-precision/artwork verification remains original13.012–014.",
+      "current_mapping": [
+        {
+          "path": "app/operations/layer-modes-legacy/gimpoperationpainterlegacy.c",
+          "anchor": "gimp_painter_legacy_composite_u8; raw26/28 alpha intermediate followed by Replace",
+          "sha256": "813d3ae4f4eec7fd37bda4b6fbed085bf92689cd3f923d16bbc99bc79349dd28"
+        }
+      ],
+      "proof_kind": "source route plus separately indexed task-specific receipts; no unrecorded runtime claim"
     },
     {
       "source_id": "01.002/000100",
@@ -7059,7 +7140,15 @@
         "migration/tests/legacy-seven-formulas/",
         "migration/tests/legacy-mode-precision/"
       ],
-      "rationale": "Old install/effect/enum/text tables and reverse_source dispatch are replaced by explicit current enum registry/dedicated byte operation; exact seven source formulas, mask/opacity and full-operand swap retained. High-precision/artwork verification remains original13.012–014."
+      "rationale": "Old install/effect/enum/text tables and reverse_source dispatch are replaced by explicit current enum registry/dedicated byte operation; exact seven source formulas, mask/opacity and full-operand swap retained. High-precision/artwork verification remains original13.012–014.",
+      "current_mapping": [
+        {
+          "path": "app/operations/layer-modes-legacy/gimpoperationpainterlegacy.h",
+          "anchor": "gimp_painter_legacy_composite_u8 declaration; old internal composite declarations replaced",
+          "sha256": "c60b3967ef4c0e3088afa316bc6c17776bbfce255adb1671792acab551d03f21"
+        }
+      ],
+      "proof_kind": "source route plus separately indexed task-specific receipts; no unrecorded runtime claim"
     },
     {
       "source_id": "01.002/000101",
@@ -7088,7 +7177,20 @@
         "migration/tests/legacy-seven-formulas/",
         "migration/tests/legacy-mode-precision/"
       ],
-      "rationale": "Old install/effect/enum/text tables and reverse_source dispatch are replaced by explicit current enum registry/dedicated byte operation; exact seven source formulas, mask/opacity and full-operand swap retained. High-precision/artwork verification remains original13.012–014."
+      "rationale": "Old install/effect/enum/text tables and reverse_source dispatch are replaced by explicit current enum registry/dedicated byte operation; exact seven source formulas, mask/opacity and full-operand swap retained. High-precision/artwork verification remains original13.012–014.",
+      "current_mapping": [
+        {
+          "path": "app/operations/layer-modes/gimp-layer-modes.c",
+          "anchor": "layer_mode_infos[] composite/space/context fields",
+          "sha256": "3c6a6585cfaa03edb13de20acaeae262f486bbd13a0270e858f3aa83ac20ec0f"
+        },
+        {
+          "path": "app/operations/layer-modes-legacy/gimpoperationpainterlegacy.c",
+          "anchor": "affected; UNION and explicit alpha behavior",
+          "sha256": "813d3ae4f4eec7fd37bda4b6fbed085bf92689cd3f923d16bbc99bc79349dd28"
+        }
+      ],
+      "proof_kind": "source route plus separately indexed task-specific receipts; no unrecorded runtime claim"
     },
     {
       "source_id": "01.002/000102",
@@ -7117,7 +7219,15 @@
         "migration/tests/legacy-seven-formulas/",
         "migration/tests/legacy-mode-precision/"
       ],
-      "rationale": "Old install/effect/enum/text tables and reverse_source dispatch are replaced by explicit current enum registry/dedicated byte operation; exact seven source formulas, mask/opacity and full-operand swap retained. High-precision/artwork verification remains original13.012–014."
+      "rationale": "Old install/effect/enum/text tables and reverse_source dispatch are replaced by explicit current enum registry/dedicated byte operation; exact seven source formulas, mask/opacity and full-operand swap retained. High-precision/artwork verification remains original13.012–014.",
+      "current_mapping": [
+        {
+          "path": "app/operations/operations-enums.c",
+          "anchor": "gimp_layer_mode_get_type names/nicks/descriptions; replaces diagnostic mode text table",
+          "sha256": "09a5ffcb615fb9f420bcfd887d5afd9c75dede7f155528550df96bbb3181822a"
+        }
+      ],
+      "proof_kind": "source route plus separately indexed task-specific receipts; no unrecorded runtime claim"
     },
     {
       "source_id": "01.002/000103",
@@ -7146,7 +7256,20 @@
         "migration/tests/legacy-seven-formulas/",
         "migration/tests/legacy-mode-precision/"
       ],
-      "rationale": "Old install/effect/enum/text tables and reverse_source dispatch are replaced by explicit current enum registry/dedicated byte operation; exact seven source formulas, mask/opacity and full-operand swap retained. High-precision/artwork verification remains original13.012–014."
+      "rationale": "Old install/effect/enum/text tables and reverse_source dispatch are replaced by explicit current enum registry/dedicated byte operation; exact seven source formulas, mask/opacity and full-operand swap retained. High-precision/artwork verification remains original13.012–014.",
+      "current_mapping": [
+        {
+          "path": "app/operations/gimp-operations.c",
+          "anchor": "gimp_operations_init",
+          "sha256": "befb0c8623e8d32e3bfe63c7735b8ff6b4b05f3f3340aef4252dbdedc0dbbe26"
+        },
+        {
+          "path": "app/operations/layer-modes/gimp-layer-modes.c",
+          "anchor": "gimp_layer_mode_get_operation; current dispatch instead of old installer function table",
+          "sha256": "3c6a6585cfaa03edb13de20acaeae262f486bbd13a0270e858f3aa83ac20ec0f"
+        }
+      ],
+      "proof_kind": "source route plus separately indexed task-specific receipts; no unrecorded runtime claim"
     },
     {
       "source_id": "01.002/000104",
@@ -7175,7 +7298,20 @@
         "migration/tests/legacy-seven-formulas/",
         "migration/tests/legacy-mode-precision/"
       ],
-      "rationale": "Old install/effect/enum/text tables and reverse_source dispatch are replaced by explicit current enum registry/dedicated byte operation; exact seven source formulas, mask/opacity and full-operand swap retained. High-precision/artwork verification remains original13.012–014."
+      "rationale": "Old install/effect/enum/text tables and reverse_source dispatch are replaced by explicit current enum registry/dedicated byte operation; exact seven source formulas, mask/opacity and full-operand swap retained. High-precision/artwork verification remains original13.012–014.",
+      "current_mapping": [
+        {
+          "path": "app/operations/operations-enums.h",
+          "anchor": "GimpLayerMode Painter values",
+          "sha256": "49e50ffffc9671c1a2c96fbe1cba74f69b1668a20f38ac3d3c6a2f71a3b6055e"
+        },
+        {
+          "path": "app/operations/layer-modes-legacy/gimpoperationpainterlegacy.c",
+          "anchor": "from_legacy/to_legacy; oldraw-to-current-enum boundary",
+          "sha256": "813d3ae4f4eec7fd37bda4b6fbed085bf92689cd3f923d16bbc99bc79349dd28"
+        }
+      ],
+      "proof_kind": "source route plus separately indexed task-specific receipts; no unrecorded runtime claim"
     },
     {
       "source_id": "01.002/000361",
@@ -7197,7 +7333,20 @@
         "migration/tests/legacy-mode-ui/",
         "migration/tests/painter-float-native/"
       ],
-      "rationale": "Current mode arrays/context routing replace old fixed action/menu tables; native seven-label selection checks displayed names/internal enum and actual selected-layer mode. App/public/PDB GType parity has separate source/runtime receipts; Script-Fu/float integration limits are not silently expanded."
+      "rationale": "Current mode arrays/context routing replace old fixed action/menu tables; native seven-label selection checks displayed names/internal enum and actual selected-layer mode. App/public/PDB GType parity has separate source/runtime receipts; Script-Fu/float integration limits are not silently expanded.",
+      "current_mapping": [
+        {
+          "path": "app/operations/layer-modes/gimp-layer-modes.c",
+          "anchor": "gimp_layer_mode_get_operation",
+          "sha256": "3c6a6585cfaa03edb13de20acaeae262f486bbd13a0270e858f3aa83ac20ec0f"
+        },
+        {
+          "path": "app/operations/layer-modes-legacy/gimpoperationpainterlegacy.c",
+          "anchor": "GimpOperationPainterLegacy class_init; current GEGL operation instead of old gimp:point-layer-mode",
+          "sha256": "813d3ae4f4eec7fd37bda4b6fbed085bf92689cd3f923d16bbc99bc79349dd28"
+        }
+      ],
+      "proof_kind": "source route plus separately indexed task-specific receipts; no unrecorded runtime claim"
     },
     {
       "source_id": "01.002/000870",
@@ -7216,7 +7365,15 @@
         "migration/tests/smudge-pixels-native.json",
         "migration/tests/smudge-pixels-sanitizers.json"
       ],
-      "rationale": "Old only shade_region caller is app/paint/gimpsmudge.c:431. Preserve alpha-aware blend+1 weighting, zero-alpha zeroing, no-alpha /255 and rowstride separation. Existing DONE Smudge kernel/owner duties own this behavior, not seven layer modes."
+      "rationale": "Old only shade_region caller is app/paint/gimpsmudge.c:431. Preserve alpha-aware blend+1 weighting, zero-alpha zeroing, no-alpha /255 and rowstride separation. Existing DONE Smudge kernel/owner duties own this behavior, not seven layer modes.",
+      "current_mapping": [
+        {
+          "path": "app/paint/painter-smudge/legacy-pixels.hpp",
+          "anchor": "GimpPainter::Smudge::shade; channel-count alpha/no-alpha branches",
+          "sha256": "c06784b62ee7d51ac4253ff0deb7751a752778e3e20ae9c8b6309a65363a56a3"
+        }
+      ],
+      "proof_kind": "source route plus separately indexed task-specific receipts; no unrecorded runtime claim"
     },
     {
       "source_id": "01.002/000871",
@@ -7235,7 +7392,15 @@
         "migration/tests/smudge-pixels-native.json",
         "migration/tests/smudge-pixels-sanitizers.json"
       ],
-      "rationale": "Old only shade_region caller is app/paint/gimpsmudge.c:431. Preserve alpha-aware blend+1 weighting, zero-alpha zeroing, no-alpha /255 and rowstride separation. Existing DONE Smudge kernel/owner duties own this behavior, not seven layer modes."
+      "rationale": "Old only shade_region caller is app/paint/gimpsmudge.c:431. Preserve alpha-aware blend+1 weighting, zero-alpha zeroing, no-alpha /255 and rowstride separation. Existing DONE Smudge kernel/owner duties own this behavior, not seven layer modes.",
+      "current_mapping": [
+        {
+          "path": "app/paint/painter-smudge/legacy-pixels.hpp",
+          "anchor": "GimpPainter::Smudge::shade; channel-count alpha/no-alpha branches",
+          "sha256": "c06784b62ee7d51ac4253ff0deb7751a752778e3e20ae9c8b6309a65363a56a3"
+        }
+      ],
+      "proof_kind": "source route plus separately indexed task-specific receipts; no unrecorded runtime claim"
     },
     {
       "source_id": "01.002/000872",
@@ -7254,7 +7419,15 @@
         "migration/tests/smudge-pixels-native.json",
         "migration/tests/smudge-pixels-sanitizers.json"
       ],
-      "rationale": "Old only shade_region caller is app/paint/gimpsmudge.c:431. Preserve alpha-aware blend+1 weighting, zero-alpha zeroing, no-alpha /255 and rowstride separation. Existing DONE Smudge kernel/owner duties own this behavior, not seven layer modes."
+      "rationale": "Old only shade_region caller is app/paint/gimpsmudge.c:431. Preserve alpha-aware blend+1 weighting, zero-alpha zeroing, no-alpha /255 and rowstride separation. Existing DONE Smudge kernel/owner duties own this behavior, not seven layer modes.",
+      "current_mapping": [
+        {
+          "path": "app/paint/painter-smudge/legacy-pixels.hpp",
+          "anchor": "GimpPainter::Smudge::shade; channel-count alpha/no-alpha branches",
+          "sha256": "c06784b62ee7d51ac4253ff0deb7751a752778e3e20ae9c8b6309a65363a56a3"
+        }
+      ],
+      "proof_kind": "source route plus separately indexed task-specific receipts; no unrecorded runtime claim"
     },
     {
       "source_id": "01.002/000873",
@@ -7273,7 +7446,15 @@
         "migration/tests/smudge-pixels-native.json",
         "migration/tests/smudge-pixels-sanitizers.json"
       ],
-      "rationale": "Old only shade_region caller is app/paint/gimpsmudge.c:431. Preserve alpha-aware blend+1 weighting, zero-alpha zeroing, no-alpha /255 and rowstride separation. Existing DONE Smudge kernel/owner duties own this behavior, not seven layer modes."
+      "rationale": "Old only shade_region caller is app/paint/gimpsmudge.c:431. Preserve alpha-aware blend+1 weighting, zero-alpha zeroing, no-alpha /255 and rowstride separation. Existing DONE Smudge kernel/owner duties own this behavior, not seven layer modes.",
+      "current_mapping": [
+        {
+          "path": "app/paint/painter-smudge/legacy-pixels.hpp",
+          "anchor": "GimpPainter::Smudge::shade; channel-count alpha/no-alpha branches",
+          "sha256": "c06784b62ee7d51ac4253ff0deb7751a752778e3e20ae9c8b6309a65363a56a3"
+        }
+      ],
+      "proof_kind": "source route plus separately indexed task-specific receipts; no unrecorded runtime claim"
     },
     {
       "source_id": "01.002/000874",
@@ -7292,7 +7473,15 @@
         "migration/tests/smudge-pixels-native.json",
         "migration/tests/smudge-pixels-sanitizers.json"
       ],
-      "rationale": "Old only shade_region caller is app/paint/gimpsmudge.c:431. Preserve alpha-aware blend+1 weighting, zero-alpha zeroing, no-alpha /255 and rowstride separation. Existing DONE Smudge kernel/owner duties own this behavior, not seven layer modes."
+      "rationale": "Old only shade_region caller is app/paint/gimpsmudge.c:431. Preserve alpha-aware blend+1 weighting, zero-alpha zeroing, no-alpha /255 and rowstride separation. Existing DONE Smudge kernel/owner duties own this behavior, not seven layer modes.",
+      "current_mapping": [
+        {
+          "path": "app/paint/painter-smudge/legacy-pixels.hpp",
+          "anchor": "GimpPainter::Smudge::shade; channel-count alpha/no-alpha branches",
+          "sha256": "c06784b62ee7d51ac4253ff0deb7751a752778e3e20ae9c8b6309a65363a56a3"
+        }
+      ],
+      "proof_kind": "source route plus separately indexed task-specific receipts; no unrecorded runtime claim"
     },
     {
       "source_id": "01.002/000875",
@@ -7311,7 +7500,15 @@
         "migration/tests/smudge-pixels-native.json",
         "migration/tests/smudge-pixels-sanitizers.json"
       ],
-      "rationale": "Old only shade_region caller is app/paint/gimpsmudge.c:431. Preserve alpha-aware blend+1 weighting, zero-alpha zeroing, no-alpha /255 and rowstride separation. Existing DONE Smudge kernel/owner duties own this behavior, not seven layer modes."
+      "rationale": "Old only shade_region caller is app/paint/gimpsmudge.c:431. Preserve alpha-aware blend+1 weighting, zero-alpha zeroing, no-alpha /255 and rowstride separation. Existing DONE Smudge kernel/owner duties own this behavior, not seven layer modes.",
+      "current_mapping": [
+        {
+          "path": "app/paint/painter-smudge/legacy-pixels.hpp",
+          "anchor": "GimpPainter::Smudge::shade; channel-count alpha/no-alpha branches",
+          "sha256": "c06784b62ee7d51ac4253ff0deb7751a752778e3e20ae9c8b6309a65363a56a3"
+        }
+      ],
+      "proof_kind": "source route plus separately indexed task-specific receipts; no unrecorded runtime claim"
     },
     {
       "source_id": "01.002/000876",
@@ -7340,7 +7537,15 @@
         "migration/tests/legacy-seven-formulas/",
         "migration/tests/legacy-mode-precision/"
       ],
-      "rationale": "Old install/effect/enum/text tables and reverse_source dispatch are replaced by explicit current enum registry/dedicated byte operation; exact seven source formulas, mask/opacity and full-operand swap retained. High-precision/artwork verification remains original13.012–014."
+      "rationale": "Old install/effect/enum/text tables and reverse_source dispatch are replaced by explicit current enum registry/dedicated byte operation; exact seven source formulas, mask/opacity and full-operand swap retained. High-precision/artwork verification remains original13.012–014.",
+      "current_mapping": [
+        {
+          "path": "app/operations/layer-modes-legacy/gimpoperationpainterlegacy.c",
+          "anchor": "gimp_painter_legacy_composite_u8; raw27/29 complete source swap",
+          "sha256": "813d3ae4f4eec7fd37bda4b6fbed085bf92689cd3f923d16bbc99bc79349dd28"
+        }
+      ],
+      "proof_kind": "source route plus separately indexed task-specific receipts; no unrecorded runtime claim"
     },
     {
       "source_id": "01.002/000877",
@@ -7369,7 +7574,20 @@
         "migration/tests/legacy-seven-formulas/",
         "migration/tests/legacy-mode-precision/"
       ],
-      "rationale": "Old install/effect/enum/text tables and reverse_source dispatch are replaced by explicit current enum registry/dedicated byte operation; exact seven source formulas, mask/opacity and full-operand swap retained. High-precision/artwork verification remains original13.012–014."
+      "rationale": "Old install/effect/enum/text tables and reverse_source dispatch are replaced by explicit current enum registry/dedicated byte operation; exact seven source formulas, mask/opacity and full-operand swap retained. High-precision/artwork verification remains original13.012–014.",
+      "current_mapping": [
+        {
+          "path": "app/operations/layer-modes-legacy/gimpoperationpainterlegacy.c",
+          "anchor": "from_legacy/to_legacy; raw mode routing and swap",
+          "sha256": "813d3ae4f4eec7fd37bda4b6fbed085bf92689cd3f923d16bbc99bc79349dd28"
+        },
+        {
+          "path": "app/operations/layer-modes/gimp-layer-modes.c",
+          "anchor": "layer_mode_infos[]",
+          "sha256": "3c6a6585cfaa03edb13de20acaeae262f486bbd13a0270e858f3aa83ac20ec0f"
+        }
+      ],
+      "proof_kind": "source route plus separately indexed task-specific receipts; no unrecorded runtime claim"
     },
     {
       "source_id": "01.002/000878",
@@ -7388,7 +7606,15 @@
         "migration/tests/smudge-pixels-native.json",
         "migration/tests/smudge-pixels-sanitizers.json"
       ],
-      "rationale": "Old only shade_region caller is app/paint/gimpsmudge.c:431. Preserve alpha-aware blend+1 weighting, zero-alpha zeroing, no-alpha /255 and rowstride separation. Existing DONE Smudge kernel/owner duties own this behavior, not seven layer modes."
+      "rationale": "Old only shade_region caller is app/paint/gimpsmudge.c:431. Preserve alpha-aware blend+1 weighting, zero-alpha zeroing, no-alpha /255 and rowstride separation. Existing DONE Smudge kernel/owner duties own this behavior, not seven layer modes.",
+      "current_mapping": [
+        {
+          "path": "app/paint/painter-smudge/legacy-pixels.hpp",
+          "anchor": "GimpPainter::Smudge::shade; channel-count alpha/no-alpha branches",
+          "sha256": "c06784b62ee7d51ac4253ff0deb7751a752778e3e20ae9c8b6309a65363a56a3"
+        }
+      ],
+      "proof_kind": "source route plus separately indexed task-specific receipts; no unrecorded runtime claim"
     },
     {
       "source_id": "01.002/000879",
@@ -7407,7 +7633,15 @@
         "migration/tests/smudge-pixels-native.json",
         "migration/tests/smudge-pixels-sanitizers.json"
       ],
-      "rationale": "Old only shade_region caller is app/paint/gimpsmudge.c:431. Preserve alpha-aware blend+1 weighting, zero-alpha zeroing, no-alpha /255 and rowstride separation. Existing DONE Smudge kernel/owner duties own this behavior, not seven layer modes."
+      "rationale": "Old only shade_region caller is app/paint/gimpsmudge.c:431. Preserve alpha-aware blend+1 weighting, zero-alpha zeroing, no-alpha /255 and rowstride separation. Existing DONE Smudge kernel/owner duties own this behavior, not seven layer modes.",
+      "current_mapping": [
+        {
+          "path": "app/paint/painter-smudge/legacy-pixels.hpp",
+          "anchor": "GimpPainter::Smudge::shade; channel-count alpha/no-alpha branches",
+          "sha256": "c06784b62ee7d51ac4253ff0deb7751a752778e3e20ae9c8b6309a65363a56a3"
+        }
+      ],
+      "proof_kind": "source route plus separately indexed task-specific receipts; no unrecorded runtime claim"
     },
     {
       "source_id": "01.002/000880",
@@ -7426,7 +7660,15 @@
         "migration/tests/smudge-pixels-native.json",
         "migration/tests/smudge-pixels-sanitizers.json"
       ],
-      "rationale": "Old only shade_region caller is app/paint/gimpsmudge.c:431. Preserve alpha-aware blend+1 weighting, zero-alpha zeroing, no-alpha /255 and rowstride separation. Existing DONE Smudge kernel/owner duties own this behavior, not seven layer modes."
+      "rationale": "Old only shade_region caller is app/paint/gimpsmudge.c:431. Preserve alpha-aware blend+1 weighting, zero-alpha zeroing, no-alpha /255 and rowstride separation. Existing DONE Smudge kernel/owner duties own this behavior, not seven layer modes.",
+      "current_mapping": [
+        {
+          "path": "app/paint/painter-smudge/legacy-pixels.hpp",
+          "anchor": "GimpPainter::Smudge::shade; channel-count alpha/no-alpha branches",
+          "sha256": "c06784b62ee7d51ac4253ff0deb7751a752778e3e20ae9c8b6309a65363a56a3"
+        }
+      ],
+      "proof_kind": "source route plus separately indexed task-specific receipts; no unrecorded runtime claim"
     },
     {
       "source_id": "01.002/000881",
@@ -7445,7 +7687,15 @@
         "migration/tests/smudge-pixels-native.json",
         "migration/tests/smudge-pixels-sanitizers.json"
       ],
-      "rationale": "Old only shade_region caller is app/paint/gimpsmudge.c:431. Preserve alpha-aware blend+1 weighting, zero-alpha zeroing, no-alpha /255 and rowstride separation. Existing DONE Smudge kernel/owner duties own this behavior, not seven layer modes."
+      "rationale": "Old only shade_region caller is app/paint/gimpsmudge.c:431. Preserve alpha-aware blend+1 weighting, zero-alpha zeroing, no-alpha /255 and rowstride separation. Existing DONE Smudge kernel/owner duties own this behavior, not seven layer modes.",
+      "current_mapping": [
+        {
+          "path": "app/paint/painter-smudge/legacy-pixels.hpp",
+          "anchor": "GimpPainter::Smudge::shade; channel-count alpha/no-alpha branches",
+          "sha256": "c06784b62ee7d51ac4253ff0deb7751a752778e3e20ae9c8b6309a65363a56a3"
+        }
+      ],
+      "proof_kind": "source route plus separately indexed task-specific receipts; no unrecorded runtime claim"
     },
     {
       "source_id": "01.002/000882",
@@ -7474,7 +7724,15 @@
         "migration/tests/legacy-seven-formulas/",
         "migration/tests/legacy-mode-precision/"
       ],
-      "rationale": "Old install/effect/enum/text tables and reverse_source dispatch are replaced by explicit current enum registry/dedicated byte operation; exact seven source formulas, mask/opacity and full-operand swap retained. High-precision/artwork verification remains original13.012–014."
+      "rationale": "Old install/effect/enum/text tables and reverse_source dispatch are replaced by explicit current enum registry/dedicated byte operation; exact seven source formulas, mask/opacity and full-operand swap retained. High-precision/artwork verification remains original13.012–014.",
+      "current_mapping": [
+        {
+          "path": "app/operations/layer-modes-legacy/gimpoperationpainterlegacy.c",
+          "anchor": "gimp_painter_legacy_composite_u8; explicit full operand swap before formulas",
+          "sha256": "813d3ae4f4eec7fd37bda4b6fbed085bf92689cd3f923d16bbc99bc79349dd28"
+        }
+      ],
+      "proof_kind": "source route plus separately indexed task-specific receipts; no unrecorded runtime claim"
     },
     {
       "source_id": "01.002/000883",
@@ -7503,7 +7761,15 @@
         "migration/tests/legacy-seven-formulas/",
         "migration/tests/legacy-mode-precision/"
       ],
-      "rationale": "Old install/effect/enum/text tables and reverse_source dispatch are replaced by explicit current enum registry/dedicated byte operation; exact seven source formulas, mask/opacity and full-operand swap retained. High-precision/artwork verification remains original13.012–014."
+      "rationale": "Old install/effect/enum/text tables and reverse_source dispatch are replaced by explicit current enum registry/dedicated byte operation; exact seven source formulas, mask/opacity and full-operand swap retained. High-precision/artwork verification remains original13.012–014.",
+      "current_mapping": [
+        {
+          "path": "app/operations/layer-modes-legacy/gimpoperationpainterlegacy.c",
+          "anchor": "gimp_painter_legacy_composite_u8; explicit full operand swap before formulas",
+          "sha256": "813d3ae4f4eec7fd37bda4b6fbed085bf92689cd3f923d16bbc99bc79349dd28"
+        }
+      ],
+      "proof_kind": "source route plus separately indexed task-specific receipts; no unrecorded runtime claim"
     },
     {
       "source_id": "01.002/000884",
@@ -7522,7 +7788,15 @@
         "migration/tests/smudge-pixels-native.json",
         "migration/tests/smudge-pixels-sanitizers.json"
       ],
-      "rationale": "Old only shade_region caller is app/paint/gimpsmudge.c:431. Preserve alpha-aware blend+1 weighting, zero-alpha zeroing, no-alpha /255 and rowstride separation. Existing DONE Smudge kernel/owner duties own this behavior, not seven layer modes."
+      "rationale": "Old only shade_region caller is app/paint/gimpsmudge.c:431. Preserve alpha-aware blend+1 weighting, zero-alpha zeroing, no-alpha /255 and rowstride separation. Existing DONE Smudge kernel/owner duties own this behavior, not seven layer modes.",
+      "current_mapping": [
+        {
+          "path": "app/paint/painter-smudge/legacy-pixels.hpp",
+          "anchor": "GimpPainter::Smudge::shade; channel-count alpha/no-alpha branches",
+          "sha256": "c06784b62ee7d51ac4253ff0deb7751a752778e3e20ae9c8b6309a65363a56a3"
+        }
+      ],
+      "proof_kind": "source route plus separately indexed task-specific receipts; no unrecorded runtime claim"
     },
     {
       "source_id": "01.002/001808",
@@ -7544,7 +7818,20 @@
         "migration/tests/legacy-mode-ui/",
         "migration/tests/painter-float-native/"
       ],
-      "rationale": "Current mode arrays/context routing replace old fixed action/menu tables; native seven-label selection checks displayed names/internal enum and actual selected-layer mode. App/public/PDB GType parity has separate source/runtime receipts; Script-Fu/float integration limits are not silently expanded."
+      "rationale": "Current mode arrays/context routing replace old fixed action/menu tables; native seven-label selection checks displayed names/internal enum and actual selected-layer mode. App/public/PDB GType parity has separate source/runtime receipts; Script-Fu/float integration limits are not silently expanded.",
+      "current_mapping": [
+        {
+          "path": "app/widgets/gimplayermodecombobox.c",
+          "anchor": "gimp_layer_mode_combo_box_new / set_context",
+          "sha256": "9ccc391549565864353e0988f4902ef2634ae1a8598d6dce3dd00d03d1b273f4"
+        },
+        {
+          "path": "app/widgets/gimplayermodebox.c",
+          "anchor": "gimp_layer_mode_box_new",
+          "sha256": "71453fd771806fd988d614482f5f379f5ed9c7199ed703bcb488585c192375cd"
+        }
+      ],
+      "proof_kind": "source route plus separately indexed task-specific receipts; no unrecorded runtime claim"
     },
     {
       "source_id": "01.002/001809",
@@ -7566,7 +7853,20 @@
         "migration/tests/legacy-mode-ui/",
         "migration/tests/painter-float-native/"
       ],
-      "rationale": "Current mode arrays/context routing replace old fixed action/menu tables; native seven-label selection checks displayed names/internal enum and actual selected-layer mode. App/public/PDB GType parity has separate source/runtime receipts; Script-Fu/float integration limits are not silently expanded."
+      "rationale": "Current mode arrays/context routing replace old fixed action/menu tables; native seven-label selection checks displayed names/internal enum and actual selected-layer mode. App/public/PDB GType parity has separate source/runtime receipts; Script-Fu/float integration limits are not silently expanded.",
+      "current_mapping": [
+        {
+          "path": "app/operations/layer-modes/gimp-layer-modes.c",
+          "anchor": "layer_mode_groups[] current default group with Painter entries",
+          "sha256": "3c6a6585cfaa03edb13de20acaeae262f486bbd13a0270e858f3aa83ac20ec0f"
+        },
+        {
+          "path": "app/widgets/gimplayermodecombobox.c",
+          "anchor": "gimp_layer_mode_combo_box_update_model",
+          "sha256": "9ccc391549565864353e0988f4902ef2634ae1a8598d6dce3dd00d03d1b273f4"
+        }
+      ],
+      "proof_kind": "source route plus separately indexed task-specific receipts; no unrecorded runtime claim"
     },
     {
       "source_id": "01.002/001810",
@@ -7588,7 +7888,20 @@
         "migration/tests/legacy-mode-ui/",
         "migration/tests/painter-float-native/"
       ],
-      "rationale": "Current mode arrays/context routing replace old fixed action/menu tables; native seven-label selection checks displayed names/internal enum and actual selected-layer mode. App/public/PDB GType parity has separate source/runtime receipts; Script-Fu/float integration limits are not silently expanded."
+      "rationale": "Current mode arrays/context routing replace old fixed action/menu tables; native seven-label selection checks displayed names/internal enum and actual selected-layer mode. App/public/PDB GType parity has separate source/runtime receipts; Script-Fu/float integration limits are not silently expanded.",
+      "current_mapping": [
+        {
+          "path": "app/widgets/gimplayermodecombobox.c",
+          "anchor": "gimp_layer_mode_combo_box_update_model; mode group/context filtering",
+          "sha256": "9ccc391549565864353e0988f4902ef2634ae1a8598d6dce3dd00d03d1b273f4"
+        },
+        {
+          "path": "app/operations/layer-modes/gimp-layer-modes.c",
+          "anchor": "gimp_layer_mode_get_group_array / get_context",
+          "sha256": "3c6a6585cfaa03edb13de20acaeae262f486bbd13a0270e858f3aa83ac20ec0f"
+        }
+      ],
+      "proof_kind": "source route plus separately indexed task-specific receipts; no unrecorded runtime claim"
     },
     {
       "source_id": "01.002/001811",
@@ -7610,7 +7923,15 @@
         "migration/tests/legacy-mode-ui/",
         "migration/tests/painter-float-native/"
       ],
-      "rationale": "Current mode arrays/context routing replace old fixed action/menu tables; native seven-label selection checks displayed names/internal enum and actual selected-layer mode. App/public/PDB GType parity has separate source/runtime receipts; Script-Fu/float integration limits are not silently expanded."
+      "rationale": "Current mode arrays/context routing replace old fixed action/menu tables; native seven-label selection checks displayed names/internal enum and actual selected-layer mode. App/public/PDB GType parity has separate source/runtime receipts; Script-Fu/float integration limits are not silently expanded.",
+      "current_mapping": [
+        {
+          "path": "app/widgets/gimplayermodecombobox.c",
+          "anchor": "gimp_layer_mode_combo_box_set_mode / changed",
+          "sha256": "9ccc391549565864353e0988f4902ef2634ae1a8598d6dce3dd00d03d1b273f4"
+        }
+      ],
+      "proof_kind": "source route plus separately indexed task-specific receipts; no unrecorded runtime claim"
     },
     {
       "source_id": "01.002/001812",
@@ -7632,7 +7953,15 @@
         "migration/tests/legacy-mode-ui/",
         "migration/tests/painter-float-native/"
       ],
-      "rationale": "Current mode arrays/context routing replace old fixed action/menu tables; native seven-label selection checks displayed names/internal enum and actual selected-layer mode. App/public/PDB GType parity has separate source/runtime receipts; Script-Fu/float integration limits are not silently expanded."
+      "rationale": "Current mode arrays/context routing replace old fixed action/menu tables; native seven-label selection checks displayed names/internal enum and actual selected-layer mode. App/public/PDB GType parity has separate source/runtime receipts; Script-Fu/float integration limits are not silently expanded.",
+      "current_mapping": [
+        {
+          "path": "app/widgets/gimplayermodecombobox.c",
+          "anchor": "gimp_layer_mode_combo_box_set_context / update_model",
+          "sha256": "9ccc391549565864353e0988f4902ef2634ae1a8598d6dce3dd00d03d1b273f4"
+        }
+      ],
+      "proof_kind": "source route plus separately indexed task-specific receipts; no unrecorded runtime claim"
     },
     {
       "source_id": "01.002/002296",
@@ -7654,7 +7983,20 @@
         "migration/tests/legacy-mode-ui/",
         "migration/tests/painter-float-native/"
       ],
-      "rationale": "Current mode arrays/context routing replace old fixed action/menu tables; native seven-label selection checks displayed names/internal enum and actual selected-layer mode. App/public/PDB GType parity has separate source/runtime receipts; Script-Fu/float integration limits are not silently expanded."
+      "rationale": "Current mode arrays/context routing replace old fixed action/menu tables; native seven-label selection checks displayed names/internal enum and actual selected-layer mode. App/public/PDB GType parity has separate source/runtime receipts; Script-Fu/float integration limits are not silently expanded.",
+      "current_mapping": [
+        {
+          "path": "libgimp/gimpenums.c.tail",
+          "anchor": "get_type_funcs[] entry gimp_layer_mode_get_type",
+          "sha256": "cd1c6a9526147b1a7cbbc1a91aa28c1085b305748575c5ce1507e61b0e4cc0cf"
+        },
+        {
+          "path": "libgimp/gimpenums.h",
+          "anchor": "public GimpLayerMode enum; generated GType provider tested in built DSO",
+          "sha256": "a01f9f8a97073251e12c57f115d79c45894d71be082432509624308ec5e71220"
+        }
+      ],
+      "proof_kind": "source route plus separately indexed task-specific receipts; no unrecorded runtime claim"
     },
     {
       "source_id": "01.002/002297",
@@ -7676,7 +8018,15 @@
         "migration/tests/legacy-mode-ui/",
         "migration/tests/painter-float-native/"
       ],
-      "rationale": "Current mode arrays/context routing replace old fixed action/menu tables; native seven-label selection checks displayed names/internal enum and actual selected-layer mode. App/public/PDB GType parity has separate source/runtime receipts; Script-Fu/float integration limits are not silently expanded."
+      "rationale": "Current mode arrays/context routing replace old fixed action/menu tables; native seven-label selection checks displayed names/internal enum and actual selected-layer mode. App/public/PDB GType parity has separate source/runtime receipts; Script-Fu/float integration limits are not silently expanded.",
+      "current_mapping": [
+        {
+          "path": "libgimp/gimpenums.c.tail",
+          "anchor": "type_names[] entry GimpLayerMode",
+          "sha256": "cd1c6a9526147b1a7cbbc1a91aa28c1085b305748575c5ce1507e61b0e4cc0cf"
+        }
+      ],
+      "proof_kind": "source route plus separately indexed task-specific receipts; no unrecorded runtime claim"
     },
     {
       "source_id": "01.002/002298",
@@ -7698,7 +8048,15 @@
         "migration/tests/legacy-mode-ui/",
         "migration/tests/painter-float-native/"
       ],
-      "rationale": "Current mode arrays/context routing replace old fixed action/menu tables; native seven-label selection checks displayed names/internal enum and actual selected-layer mode. App/public/PDB GType parity has separate source/runtime receipts; Script-Fu/float integration limits are not silently expanded."
+      "rationale": "Current mode arrays/context routing replace old fixed action/menu tables; native seven-label selection checks displayed names/internal enum and actual selected-layer mode. App/public/PDB GType parity has separate source/runtime receipts; Script-Fu/float integration limits are not silently expanded.",
+      "current_mapping": [
+        {
+          "path": "libgimp/gimpenums.h",
+          "anchor": "public GimpLayerMode Painter constants",
+          "sha256": "a01f9f8a97073251e12c57f115d79c45894d71be082432509624308ec5e71220"
+        }
+      ],
+      "proof_kind": "source route plus separately indexed task-specific receipts; no unrecorded runtime claim"
     },
     {
       "source_id": "01.002/002472",
@@ -7707,15 +8065,24 @@
       "source_range": "-149,0 -> 150,7",
       "source_sha256": "33d50c7a27b9eda9197cf00f499353df87d387a5a5b57fa3e019ac5c3ec8c2d8",
       "source_scope": "static const NamedConstant const old_constants[] =",
-      "kind": "held-script-fu-verification",
+      "kind": "script-fu-legacy-aliases",
       "owners": [
         "13.013"
       ],
       "artifacts": [
-        "libgimp/gimpenums.h",
-        "pdb/enums.pl"
+        "plug-ins/script-fu/libscriptfu/scheme-wrapper.c",
+        "tools/check_painter_scheme_aliases.py",
+        "migration/tests/painter-scheme-aliases/"
       ],
-      "rationale": "Verification remains held with original13.013; public numeric/GType proof is not Scheme execution proof."
+      "rationale": "Seven historical short aliases map to byte compatibility64–70; actual TinyScheme production-extracted GI/table binding red7 missing aliases then green23 checks normal/ASan/UBSan; modern58/62 unchanged. Not full plug-in/PDB startup.",
+      "current_mapping": [
+        {
+          "path": "plug-ins/script-fu/libscriptfu/scheme-wrapper.c",
+          "anchor": "script_constants[]; ts_init_constants registration loop; ts_init_enum/ts_init_enums",
+          "sha256": "978c1fdc7a0a522dfe9788f938fe6a2a36ac112063e51cb761756232a6e335b3"
+        }
+      ],
+      "proof_kind": "actual interpreter; production-extracted binding bodies plus full wrapper compile"
     },
     {
       "source_id": "01.002/002485",
@@ -7737,7 +8104,15 @@
         "migration/tests/legacy-mode-ui/",
         "migration/tests/painter-float-native/"
       ],
-      "rationale": "Current mode arrays/context routing replace old fixed action/menu tables; native seven-label selection checks displayed names/internal enum and actual selected-layer mode. App/public/PDB GType parity has separate source/runtime receipts; Script-Fu/float integration limits are not silently expanded."
+      "rationale": "Current mode arrays/context routing replace old fixed action/menu tables; native seven-label selection checks displayed names/internal enum and actual selected-layer mode. App/public/PDB GType parity has separate source/runtime receipts; Script-Fu/float integration limits are not silently expanded.",
+      "current_mapping": [
+        {
+          "path": "pdb/enums.pl",
+          "anchor": "GimpLayerMode symbols",
+          "sha256": "aaf68f864c2e848fae5745fc579d75810d717818f42b8465342e89ab4087b98d"
+        }
+      ],
+      "proof_kind": "source route plus separately indexed task-specific receipts; no unrecorded runtime claim"
     },
     {
       "source_id": "01.002/002486",
@@ -7759,7 +8134,15 @@
         "migration/tests/legacy-mode-ui/",
         "migration/tests/painter-float-native/"
       ],
-      "rationale": "Current mode arrays/context routing replace old fixed action/menu tables; native seven-label selection checks displayed names/internal enum and actual selected-layer mode. App/public/PDB GType parity has separate source/runtime receipts; Script-Fu/float integration limits are not silently expanded."
+      "rationale": "Current mode arrays/context routing replace old fixed action/menu tables; native seven-label selection checks displayed names/internal enum and actual selected-layer mode. App/public/PDB GType parity has separate source/runtime receipts; Script-Fu/float integration limits are not silently expanded.",
+      "current_mapping": [
+        {
+          "path": "pdb/enums.pl",
+          "anchor": "GimpLayerMode mapping and contig flag",
+          "sha256": "aaf68f864c2e848fae5745fc579d75810d717818f42b8465342e89ab4087b98d"
+        }
+      ],
+      "proof_kind": "source route plus separately indexed task-specific receipts; no unrecorded runtime claim"
     },
     {
       "source_id": "01.002/002487",
@@ -7781,7 +8164,15 @@
         "migration/tests/legacy-mode-ui/",
         "migration/tests/painter-float-native/"
       ],
-      "rationale": "Current mode arrays/context routing replace old fixed action/menu tables; native seven-label selection checks displayed names/internal enum and actual selected-layer mode. App/public/PDB GType parity has separate source/runtime receipts; Script-Fu/float integration limits are not silently expanded."
+      "rationale": "Current mode arrays/context routing replace old fixed action/menu tables; native seven-label selection checks displayed names/internal enum and actual selected-layer mode. App/public/PDB GType parity has separate source/runtime receipts; Script-Fu/float integration limits are not silently expanded.",
+      "current_mapping": [
+        {
+          "path": "pdb/enums.pl",
+          "anchor": "GimpLayerMode numeric map; public/header parity checker",
+          "sha256": "aaf68f864c2e848fae5745fc579d75810d717818f42b8465342e89ab4087b98d"
+        }
+      ],
+      "proof_kind": "source route plus separately indexed task-specific receipts; no unrecorded runtime claim"
     }
   ],
   "work_item_count": 343,
@@ -7864,19 +8255,19 @@
       "artifacts": "app/tests/test-painter-layer-modes.c;migration/tests/legacy-mode-precision/; migration/contracts/painter-float-mode-policy.md; migration/tests/painter-float-kernel/; app/operations/layer-modes-legacy/gimpoperationpainterfloat.c; migration/tests/painter-float-native/; app/tests/test-painter-float-storage.inc; migration/tests/painter-float-storage/; app/tests/test-painter-float-source-extent.inc; migration/tests/painter-float-source-extent/; migration/tests/painter-float-xcf/",
       "test": "native GEGL six storage precisions x seven custom modes; focused ASan/UBSan; isolated continuous kernel independent oracle and test-only GEGL adapter; explicit float registry, independent native GEGL/direct/four-layout oracle, public ABI and real UI; six Babl input-storage routes into explicit float32 operator; causal-red source-only zero-weight endpoint and float-local shortcut fix; clean baseline plus four owned XCF sources, versioned item capsule and standard fallback wire",
       "recorded_result": "42 graphs match genuine old 64 pixels plus 118 outside-source backdrop pixels each; previous 72 projection and 216 direct cases pass; float prototype326196 vectors plus652392 aliases and45 GEGL test-adapter graphs pass normal/ASan/UBSan; 45 scenes x6 routes x64 pixels pass native/focused6-unit ASan/UBSan; public GType and9-label portrait UI verified; 162 graphs x16 independent oracle pixels +20 bit-identical outside-source pixels pass native/focused ASan/UBSan; 162 endpoint graphs across9modes/bottom/nonbottom/opacity/mask pass all12 native and focused-sanitizer suites; 115 normal +102 selected41-unit sanitizer cases,27transport scenes/54roundtrips,10schema scenes/9atomic refusals,2production mutants rejected; prior committed reader27files/54resaves preserves exact opaque capsule and fallback pixels",
-      "scope": "Original13.011 dependency and acceptance remain open. Historical byte-storage and unregistered-prototype receipts retain their own bounds; new opt-in native float path/ABI/UI is now independently verified. Companion versioned capsule/fallback XCF policy verified; older reader preserves opaque metadata and fallback only, not float semantics or safe backward editing; no old-reader appearance promise or whole-app sanitizer claim.; double storage is not lossless-double arithmetic; native precision-conversion UI remains separate; generic/oldbyte source unchanged; primary receipt scoped to owned sources, clean crossdomain aggregate separate"
+      "scope": "Original13.011 now DONE. Historical byte versus explicit float32 nonlinear semantics distinguished. Double storage is not double arithmetic. Versioned capsule fallback only in prior readers; no whole-app sanitizer or backward float appearance promise."
     },
     "13.013": {
-      "artifacts": "app/tests/test-painter-layer-modes.c; migration/tests/legacy-seven-formulas/; migration/tests/legacy-mode-groups/; migration/contracts/section13-acceptance-audit.md; migration/tests/painter-float-kernel/; migration/tests/painter-float-native/; migration/tests/painter-float-storage/; migration/tests/painter-float-source-extent/",
+      "artifacts": "app/tests/test-painter-layer-modes.c; migration/tests/legacy-seven-formulas/; migration/tests/legacy-mode-groups/; migration/contracts/section13-acceptance-audit.md; migration/tests/painter-float-kernel/; migration/tests/painter-float-native/; migration/tests/painter-float-storage/; migration/tests/painter-float-source-extent/; tools/check_painter_scheme_aliases.py; migration/tests/painter-scheme-aliases/",
       "test": "Pinned old byte oracle and independent float reference, native graph/storage/extent matrices and grouped order tests",
-      "recorded_result": "Both byte and explicit float transparent/semialpha/endpoint/order numerical evidence now exist and pass at recorded source checkpoints",
+      "recorded_result": "Both byte and explicit float transparent/semialpha/endpoint/order numerical evidence now exist and pass at recorded source checkpoints; seven old Scheme aliases repaired after causal missing-symbol red;23 binding/interpreter checks pass normal and focused ASan/UBSan",
       "scope": "Original criterion unchanged; dependency13.012 remains open; no aggregate clean-whole-HEAD claim or dependency waiver"
     },
     "13.014": {
-      "artifacts": "app/tests/test-painter-mode-anime.inc; migration/tests/legacy-anime-current/",
+      "artifacts": "app/tests/test-painter-mode-anime.inc; migration/tests/legacy-anime-current/; app/tests/test-painter-anime-replay.inc; migration/tests/legacy-anime-replay/",
       "test": "Native old anime XCF initial/edited projection, Clone type/reference, portrait oncanvas; focused UI ASan/UBSan",
-      "recorded_result": "Both synthetic fixtures match all 7680 RGBA pixels each; native and focused UI sanitizer pass; actual 1080x1920 oncanvas images verified",
-      "scope": "Original criterion unchanged; dependency 13.013 and broader artwork acceptance open; edited file loaded not replayed; watercolor/old Edge runtime SKIPPED"
+      "recorded_result": "Both synthetic fixtures match all 7680 RGBA pixels each; native and focused UI sanitizer pass; actual 1080x1920 oncanvas images verified; exact captured edit/Undo/Redo sequence now matches five independent old7680pixel states (843c747e82), clean selected normal+six-C sanitizer",
+      "scope": "Original criterion unchanged;13.013 prerequisite required. Native model replay, not GUI event replay. Watercolor/old Edge runtime SKIPPED; no claim for those paths."
     }
   }
 }

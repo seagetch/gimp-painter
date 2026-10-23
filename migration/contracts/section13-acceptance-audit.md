@@ -23,7 +23,7 @@ is checkpoint-scoped; combining receipts does not imply a clean whole-HEAD run.
 |13.013|透明・半透明・端値・順序を比較|Byte exact matrix plus float326,196 vectors/652,392 aliases, native graph/storage/zero-weight endpoint matrices and grouped order tests. Direct numerical criterion now has both byte and float evidence; prior 'float proof remains open' note is stale. Dependency13.012 open.|
 |13.014|CloneLayer と複合構造の見た目が一致|`legacy-anime-current/`: genuine old synthetic anime initial/edited fixtures, Clone type/source and hierarchy, exact7680 pixels each, rendered portrait screenshots. Current edit replay not yet demonstrated. This does not establish all composite fixture families: watercolor/old Edge runtime stays SKIPPED; no old runtime rerun. Dependency13.013 open.|
 
-## Concrete remaining boundaries
+## Historical checkpoint boundaries (superseded where stated below)
 
 1. Original09.017 buffer Undo prerequisite is still TODO in the ledger. The
    section13 formula and numerical work does not waive this prerequisite.
@@ -41,3 +41,39 @@ No historical source formula, task description, dependency or acceptance text
 is changed by this audit. Direct criteria and dependency status should be reviewed
 separately when closing tasks; existing finite representative evidence should not
 be discounted merely because it is not an impossible exhaustive scene proof.
+
+## Current supplement after original closures through 5123d08c66
+
+The table above records the earlier audit checkpoint, not current dependency
+status. Original09.017 is DONE (27de31a8bd); its separate engine child is not an
+invented dependency of section13. Original13.001 through13.011 and the explicit
+GEGL route child are now DONE in individual commits; their original criteria and
+all source duties remain represented. The source-duty map provides concrete
+current routes for all40 old hunks and a per-task evidence index.
+
+* **13.012:** committed opt-in float/nonlinear operation and six-storage proof
+  distinguish immutable historical byte arithmetic from float32 arithmetic
+  (including double storage, not double arithmetic). Committed9cc8 float XCF
+  evidence proves versioned stable semantic IDs with standard fallback and
+  opaque preservation by the prior port reader; it does not promise old-reader
+  float appearance or safe editing. The original precision-distinction criterion
+  is evidenced, without requiring an invented physical-HDR or lossless-double
+  criterion.
+* **13.013:** numerical transparency, half-alpha, endpoints and ordering have
+  byte/float/native/group evidence. Source duty01.002/002472 had seven missing old Script-Fu short aliases,
+  now repaired to byte IDs64–70. Actual TinyScheme evaluates extracted unchanged
+  production registration bodies/table: causal seven-symbol red, then23 checks
+  green normal and focused ASan/UBSan. Seven prefixed GI symbols and two modern
+  identities remain correct; no existing GI short aliases were overwritten. Full
+  wrapper compilation also passes; this is not full plug-in/PDB startup.
+* **13.014:**843c747e82 adds actual current-core replay of the exact captured old
+  anime actions: recolor, clear history, shadow opacity edit, Undo, Redo. Five
+  independent old projection states each match7680RGBA pixels, with Clone
+  identity/source and compound hierarchy assertions. Earlier actual oncanvas
+  portrait screenshots remain opening evidence, not GUI edit replay. The
+  original representative appearance criterion is evidenced; dependency13.013
+  still governs closure.
+
+Watercolor/old Edge runtime remains explicitly SKIPPED. These bounded genuine
+old anime fixtures do not silently establish skipped paths, nor introduce an
+unrequested requirement for arbitrary user artwork or unlimited scene coverage.
