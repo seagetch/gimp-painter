@@ -1,5 +1,7 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 #include "config.h"
+#include "painter/gimp-painter-binding.h"
+#include "widgets/gimppaintermybrusheditor.h"
 #include <gegl.h>
 #include <gtk/gtk.h>
 #include "libgimpbase/gimpbase.h"
@@ -395,11 +397,162 @@ static void canvas_dock_tool_transfer_and_preference (void) {
   close_shell(c);GimpDisplayShell *d=new_shell();g_assert_false(gimp_painter_canvas_ui_get_visible(d));close_shell(d);
   g_object_set(gimp->config,"painter-canvas-ui",old,NULL);
 }
+/* Original 08.017: native options boxes retain one store through presentation
+ * cycles; closed registration remains closed. Insert before main(). */
+static void common_store_registration_and_close (void)
+{
+  gimp_set_focused_once (gimp);
+  GimpToolInfo *tool = info ("gimp-paintbrush-tool");
+  GtkWidget *gui = gtk_box_new (GTK_ORIENTATION_VERTICAL, 4);
+  GtkWidget *other = gtk_box_new (GTK_ORIENTATION_VERTICAL, 4);
+  g_object_ref_sink (gui); g_object_ref_sink (other);
+  GQuark key = g_quark_from_static_string ("gimp-painter-binding-store-v1");
+  GQuark foreign_key = g_quark_from_static_string ("painter-08017-foreign-marker");
+  guint marker = 17;
+  g_object_set_qdata (G_OBJECT (gui), foreign_key, &marker);
+  g_assert_false (gimp_painter_compact_options_get (gui));
+  g_assert_null (g_object_get_qdata (G_OBJECT (gui), key));
+  GError *error = NULL;
+  g_assert_true (gimp_painter_binding_close (G_OBJECT (gui), &error));
+  g_assert_no_error (error);
+  g_assert_null (g_object_get_qdata (G_OBJECT (gui), key));
+  compact (gui, tool->tool_options, TRUE, GTK_ORIENTATION_HORIZONTAL);
+  compact (other, tool->tool_options, TRUE, GTK_ORIENTATION_HORIZONTAL);
+  gpointer identity = g_object_get_qdata (G_OBJECT (gui), key);
+  gpointer second_identity = g_object_get_qdata (G_OBJECT (other), key);
+  g_assert_nonnull (identity); g_assert_nonnull (second_identity);
+  g_assert_true (identity != second_identity);
+  for (guint cycle = 0; cycle < 3; ++cycle)
+    {
+      compact (gui, tool->tool_options, FALSE, GTK_ORIENTATION_HORIZONTAL);
+      compact (gui, tool->tool_options, TRUE, GTK_ORIENTATION_VERTICAL);
+      compact (gui, tool->tool_options, TRUE, GTK_ORIENTATION_HORIZONTAL);
+      g_assert_true (g_object_get_qdata (G_OBJECT (gui), key) == identity);
+      g_assert_true (g_object_get_qdata (G_OBJECT (gui), foreign_key) == &marker);
+    }
+  g_assert_true (gimp_painter_binding_close (G_OBJECT (gui), &error));
+  g_assert_no_error (error);
+  g_assert_false (gimp_painter_compact_options_get (gui));
+  g_assert_true (gimp_painter_compact_options_get (other));
+  g_assert_false (gimp_painter_compact_options_set (gui, tool->tool_options, TRUE,
+                                                 GTK_ORIENTATION_HORIZONTAL, &error));
+  g_assert_error (error, GIMP_PAINTER_ERROR, GIMP_PAINTER_ERROR_CLOSED);
+  g_clear_error (&error);
+  g_assert_true (gimp_painter_binding_close (G_OBJECT (gui), &error));
+  g_assert_no_error (error);
+  g_assert_true (g_object_get_qdata (G_OBJECT (gui), key) == identity);
+  g_assert_true (g_object_get_qdata (G_OBJECT (other), key) == second_identity);
+  g_assert_true (g_object_get_qdata (G_OBJECT (gui), foreign_key) == &marker);
+  gboolean first_gone = FALSE, second_gone = FALSE;
+  g_object_weak_ref (G_OBJECT (gui), finalized, &first_gone);
+  g_object_weak_ref (G_OBJECT (other), finalized, &second_gone);
+  gtk_widget_destroy (gui); g_object_unref (gui); g_assert_true (first_gone);
+  g_assert_false (second_gone);
+  compact (other, tool->tool_options, FALSE, GTK_ORIENTATION_HORIZONTAL);
+  gtk_widget_destroy (other); g_object_unref (other); g_assert_true (second_gone);
+}
+
+static void widget_store_finalized (gpointer data)
+{ *(gboolean *) data = TRUE; }
+
+static void mypaint_popup_store_and_page_retention (void)
+{
+  gimp_set_focused_once (gimp);
+  GimpToolInfo *tool = info ("gimp-painter-mypaint-tool");
+  GtkWidget *host = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  GtkWidget *gui = gtk_box_new (GTK_ORIENTATION_VERTICAL, 4);
+  g_object_ref_sink (host); g_object_ref_sink (gui);
+  GError *error = NULL;
+  GtkWidget *editor = gimp_painter_mybrush_editor_new (GIMP_CONTEXT (tool->tool_options), FALSE, &error);
+  g_assert_no_error (error); g_assert_nonnull (editor); g_object_ref_sink (editor);
+  gtk_box_pack_start (GTK_BOX (gui), editor, TRUE, TRUE, 0);
+  gtk_container_add (GTK_CONTAINER (host), gui);
+  gtk_widget_show_all (host);
+  GQuark key = g_quark_from_static_string ("gimp-painter-binding-store-v1");
+  gpointer editor_store = g_object_get_qdata (G_OBJECT (editor), key);
+  g_assert_nonnull (editor_store);
+  GtkWidget *notebook = find (editor, NULL, GTK_TYPE_NOTEBOOK);
+  g_assert_nonnull (notebook);
+  g_assert_cmpint (gtk_notebook_get_n_pages (GTK_NOTEBOOK (notebook)), >=, 3);
+  gtk_notebook_set_current_page (GTK_NOTEBOOK (notebook), 2);
+  for (guint cycle = 0; cycle < 4; ++cycle)
+    {
+      compact (gui, tool->tool_options, TRUE,
+               cycle % 2 ? GTK_ORIENTATION_VERTICAL : GTK_ORIENTATION_HORIZONTAL);
+      GtkWidget *button = find (gui, "painter-compact-mypaint", GTK_TYPE_MENU_BUTTON);
+      g_assert_nonnull (button);
+      GtkWidget *popup = GTK_WIDGET (gtk_menu_button_get_popover (GTK_MENU_BUTTON (button)));
+      g_assert_nonnull (popup);
+      g_assert_true (find (popup, NULL, GIMP_TYPE_PAINTER_MYBRUSH_EDITOR) == editor);
+      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button), TRUE); drain ();
+      g_assert_true (gtk_widget_get_visible (popup));
+      g_assert_cmpint (gtk_notebook_get_current_page (GTK_NOTEBOOK (notebook)), ==, 2);
+      g_assert_true (g_object_get_qdata (G_OBJECT (editor), key) == editor_store);
+      g_assert_true (g_object_get_qdata (G_OBJECT (gui), key) != editor_store);
+      gimp_painter_compact_options_popdown (gui); drain ();
+      compact (gui, tool->tool_options, FALSE, GTK_ORIENTATION_HORIZONTAL);
+      g_assert_true (gtk_widget_get_parent (editor) == gui);
+      g_assert_cmpint (gtk_notebook_get_current_page (GTK_NOTEBOOK (notebook)), ==, 2);
+    }
+  gboolean editor_gone = FALSE, gui_gone = FALSE;
+  g_object_set_data_full (G_OBJECT (editor), "08017-finalized", &editor_gone, widget_store_finalized);
+  g_object_set_data_full (G_OBJECT (gui), "08017-finalized", &gui_gone, widget_store_finalized);
+  gtk_widget_destroy (host);
+  g_assert_false (gimp_painter_mybrush_editor_set_context (GIMP_PAINTER_MYBRUSH_EDITOR (editor),
+                                                        GIMP_CONTEXT (tool->tool_options), &error));
+  g_assert_error (error, GIMP_PAINTER_ERROR, GIMP_PAINTER_ERROR_CLOSED); g_clear_error (&error);
+  g_assert_false (editor_gone); g_assert_false (gui_gone);
+  g_object_unref (gui); g_assert_true (gui_gone);
+  g_object_unref (editor); g_assert_true (editor_gone);
+  g_object_unref (host); drain ();
+}
+
+/* Exact active source duty 01.002/001613: mixed-width native editor buttons.
+ * The default constructor path remains active in both old and modern code. */
+static void native_editor_mixed_width_buttons (void)
+{
+  gimp_set_focused_once (gimp);
+  GtkWidget *host = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  g_object_ref_sink (host);
+  GtkWidget *editor = gimp_editor_new ();
+  gtk_container_add (GTK_CONTAINER (host), editor);
+  GtkWidget *narrow = gimp_editor_add_button (GIMP_EDITOR (editor), "document-new",
+                                             "Narrow", NULL, NULL, NULL, NULL);
+  GtkWidget *wide = gimp_editor_add_button (GIMP_EDITOR (editor), "document-new",
+                                           "Wide", NULL, NULL, NULL, NULL);
+  gtk_widget_set_size_request (narrow, 48, -1);
+  gtk_widget_set_size_request (wide, 144, -1);
+  GtkBox *box = gimp_editor_get_button_box (GIMP_EDITOR (editor));
+  g_assert_nonnull (box);
+  g_assert_false (gtk_box_get_homogeneous (box));
+  gtk_widget_show_all (host); drain ();
+  for (guint rtl = 0; rtl < 2; ++rtl)
+    {
+      gtk_widget_set_direction (GTK_WIDGET (box), rtl ? GTK_TEXT_DIR_RTL : GTK_TEXT_DIR_LTR);
+      gint width = 0, height = 0;
+      gtk_widget_get_preferred_width (GTK_WIDGET (box), &width, NULL);
+      gtk_widget_get_preferred_height (GTK_WIDGET (box), &height, NULL);
+      GtkAllocation allocation = {0, 0, width, height};
+      gtk_widget_size_allocate (GTK_WIDGET (box), &allocation);
+      g_assert_cmpint (gtk_widget_get_allocated_width (narrow), <,
+                       gtk_widget_get_allocated_width (wide));
+      g_assert_cmpint (gtk_widget_get_allocated_width (wide), >=, 144);
+      g_assert_true (gtk_widget_get_parent (narrow) == GTK_WIDGET (box));
+      g_assert_true (gtk_widget_get_parent (wide) == GTK_WIDGET (box));
+    }
+  gimp_editor_set_box_style (GIMP_EDITOR (editor), box);
+  g_assert_false (gtk_box_get_homogeneous (box));
+  gtk_widget_destroy (host); g_object_unref (host); drain ();
+}
+
 int main(int argc,char **argv) {
   g_test_init(&argc,&argv,NULL);if(!gtk_init_check(&argc,&argv))return GIMP_EXIT_TEST_SKIPPED;
   gimp_test_utils_setup_menus_path();gimp=gimp_init_for_gui_testing(TRUE);
   window=gtk_window_new(GTK_WINDOW_TOPLEVEL);g_object_ref_sink(window);gtk_window_set_default_size(GTK_WINDOW(window),1100,130);
   g_test_add_func("/painter-compact-options/inventory-all-registered",inventory_all_registered_tools);
+  g_test_add_func("/painter-compact-options/common-store-registration-close",common_store_registration_and_close);
+  g_test_add_func("/painter-compact-options/mypaint-store-page-retention",mypaint_popup_store_and_page_retention);
+  g_test_add_func("/painter-compact-options/native-editor-mixed-width",native_editor_mixed_width_buttons);
   g_test_add_func("/painter-compact-options/paint-bidirectional-resource",paint_bidirectional_reset_and_resource);
   g_test_add_func("/painter-compact-options/popup-repeat",popup_repeat);
   g_test_add_func("/painter-compact-options/popup-native-events-window-destroy",popup_native_events_and_window_destroy);

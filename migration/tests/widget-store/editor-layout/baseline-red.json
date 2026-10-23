@@ -1,0 +1,52 @@
+{
+  "base": "8f7cf21b5246e8261f3675d29f9034bb3eafb5fc",
+  "intended_regression": {
+    "case": "/painter-compact-options/native-editor-mixed-width",
+    "exit_code": -6,
+    "assertion": "not ok /painter-compact-options/native-editor-mixed-width - ERROR:../source/app/tests/test-painter-compact-options.c:524:native_editor_mixed_width_buttons: 'gtk_box_get_homogeneous (box)' should be FALSE",
+    "production_gimpeditor_sha256": "278cceb481599c4bcbea46403aae856e96c97584f13262ec55d8e2b6af27cb26"
+  },
+  "controls": {
+    "control-compact": {
+      "registration": "painter-compact-options",
+      "result": "OK",
+      "exit_code": 0,
+      "duration_seconds": 1.9160246849060059,
+      "cases_passed": 1,
+      "tap": "TAP version 14\nok 1 /painter-compact-options/common-store-registration-close\n1..1\n"
+    },
+    "control-editor": {
+      "registration": "painter-mypaint-editor",
+      "result": "OK",
+      "exit_code": 0,
+      "duration_seconds": 1.9719245433807373,
+      "cases_passed": 1,
+      "tap": "TAP version 14\nok 1 /painter-editor/14-common-store-widget-behaviors\n1..1\n"
+    },
+    "control-page-corrected": {
+      "registration": "painter-compact-options",
+      "result": "OK",
+      "exit_code": 0,
+      "duration_seconds": 2.525020122528076,
+      "cases_passed": 1,
+      "tap": "TAP version 14\nok 1 /painter-compact-options/mypaint-store-page-retention\n1..1\n"
+    },
+    "green-mixed": {
+      "registration": "painter-compact-options",
+      "result": "OK",
+      "exit_code": 0,
+      "duration_seconds": 1.973778486251831,
+      "cases_passed": 1,
+      "tap": "TAP version 14\nok 1 /painter-compact-options/native-editor-mixed-width\n1..1\n"
+    }
+  },
+  "retained_fixture_failure": {
+    "case": "/painter-compact-options/mypaint-store-page-retention",
+    "exit_code": -6,
+    "assertion": "not ok /painter-compact-options/mypaint-store-page-retention - ERROR:../source/app/tests/test-painter-compact-options.c:501:mypaint_popup_store_and_page_retention: 'editor_gone' should be FALSE",
+    "initial_test_source_sha256": "93645a8e187c62f15cead1c7a811d5d2f5b93422cd11e7c1c82bbd60a5582851",
+    "classification": "Fixture error, not a reproduced product bug",
+    "correction": "GObject weak notification occurs on widget disposal even while explicitly retained. The final test observes actual qdata destruction/finalization counters. Retention/page loops and finalization controls pass on unchanged production code after correction."
+  },
+  "boundary": "Only the non-homogeneous assertion is the intended baseline product failure. No first-version fixture failure is counted as a successful test."
+}

@@ -1,5 +1,6 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 #include "config.h"
+#include "painter/binding-store.hpp"
 #include <gegl.h>
 #include <gtk/gtk.h>
 #include <glib/gstdio.h>
@@ -344,10 +345,67 @@ static void registration(){
   auto*entry=gimp_dialog_factory_find_entry(gimp_dialog_factory_get_singleton(),"gimp-painter-mypaint-editor");g_assert_nonnull(entry);
   auto*dialog=preferences_dialog_create(gimp);g_object_ref_sink(dialog);gtk_dialog_response(GTK_DIALOG(dialog),GTK_RESPONSE_CANCEL);gtk_widget_destroy(dialog);g_object_unref(dialog);
 }
+/* Original 08.017: current shared widget controllers use one common store.
+ * This is slot/registration evidence, not equivalence for all 93 source duties.
+ * Insert before main(); add painter/binding-store.hpp and registration below. */
+static void common_store_widget_behaviors ()
+{
+  Editor first, second;
+  auto first_owner = ObjectRef<GObject>::retain (G_OBJECT (first.widget));
+  auto second_owner = ObjectRef<GObject>::retain (G_OBJECT (second.widget));
+  auto *first_store = BindingStore::find (first_owner.get ());
+  auto *second_store = BindingStore::find (second_owner.get ());
+  g_assert_nonnull (first_store); g_assert_nonnull (second_store);
+  g_assert_true (first_store != second_store);
+  g_assert_true (first_store->state () == BindingStore::State::active);
+  g_assert_true (second_store->state () == BindingStore::State::active);
+  g_assert_true (first.model.get () == second.model.get ());
+  const auto generation = first_store->generation ();
+  const auto second_generation = second_store->generation ();
+  auto first_spin = ObjectRef<GObject>::retain (G_OBJECT (first.get ("opaque")));
+  auto first_curve = ObjectRef<GObject>::retain (G_OBJECT (first.get ("painter-curve-enabled")));
+  auto second_spin = ObjectRef<GObject>::retain (G_OBJECT (second.get ("opaque")));
+
+  gtk_spin_button_set_value (GTK_SPIN_BUTTON (first_spin.get ()), .237);
+  g_assert_cmpfloat_with_epsilon (first.snapshot ().base_value (BRUSH_OPAQUE), .237, 1e-6);
+  g_assert_cmpfloat_with_epsilon (gtk_spin_button_get_value (GTK_SPIN_BUTTON (second_spin.get ())), .237, 1e-6);
+  GError *error = nullptr;
+  g_assert_true (gimp_painter_mybrush_editor_set_context (first.widget, gimp->user_context, &error));
+  g_assert_no_error (error);
+  g_assert_true (BindingStore::find (first_owner.get ()) == first_store);
+  g_assert_cmpuint (first_store->generation (), ==, generation);
+
+  g_assert_true (gimp_painter_binding_close (first_owner.get (), &error));
+  g_assert_no_error (error);
+  g_assert_true (first_store->state () == BindingStore::State::closed);
+  g_assert_false (first_store->accepts (generation));
+  const auto closed_generation = first_store->generation ();
+  g_assert_cmpuint (closed_generation, >, generation);
+  const auto before = first.snapshot ().encode ();
+  gtk_spin_button_set_value (GTK_SPIN_BUTTON (first_spin.get ()), .873);
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (first_curve.get ()),
+                               !gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (first_curve.get ())));
+  g_assert_true (first.snapshot ().encode () == before);
+  g_assert_false (gimp_painter_mybrush_editor_preview_pending (first.widget));
+  g_assert_null (gimp_painter_mybrush_editor_ref_preview (first.widget));
+
+  gtk_spin_button_set_value (GTK_SPIN_BUTTON (second_spin.get ()), .419);
+  g_assert_cmpfloat_with_epsilon (second.snapshot ().base_value (BRUSH_OPAQUE), .419, 1e-6);
+  g_assert_cmpfloat_with_epsilon (gtk_spin_button_get_value (GTK_SPIN_BUTTON (first_spin.get ())), .873, 1e-6);
+  g_assert_true (second_store->state () == BindingStore::State::active);
+  g_assert_cmpuint (second_store->generation (), ==, second_generation);
+  g_assert_false (gimp_painter_mybrush_editor_set_context (first.widget, gimp->user_context, &error));
+  g_assert_error (error, GIMP_PAINTER_ERROR, GIMP_PAINTER_ERROR_CLOSED); g_clear_error (&error);
+  g_assert_true (gimp_painter_binding_close (first_owner.get (), &error)); g_assert_no_error (error);
+  g_assert_true (BindingStore::find (first_owner.get ()) == first_store);
+  g_assert_cmpuint (first_store->generation (), ==, closed_generation);
+}
+
 int main(int argc,char**argv){
   g_test_init(&argc,&argv,nullptr);if(!gtk_init_check(&argc,&argv))return GIMP_EXIT_TEST_SKIPPED;
   gimp_test_utils_setup_menus_path();gimp=gimp_init_for_gui_testing(TRUE);
   add_editor_case("/painter-editor/01-constructors-shared",constructors_and_shared_model);
+  add_editor_case("/painter-editor/14-common-store-widget-behaviors",common_store_widget_behaviors);
   add_editor_case("/painter-editor/02-all-controls-curves",all_controls_and_curves);
   add_editor_case("/painter-editor/03-list-search-history",list_search_history);
   add_editor_case("/painter-editor/04-save-conflict-default-path",save_conflict_default_path);

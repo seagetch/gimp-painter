@@ -991,7 +991,8 @@ gimp_editor_ensure_button_box (GimpEditor     *editor,
     {
       priv->button_box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL,
                                       button_spacing);
-      gtk_box_set_homogeneous (GTK_BOX (priv->button_box), TRUE);
+      /* Preserve the Painter editor contract: buttons keep their natural widths. */
+      gtk_box_set_homogeneous (GTK_BOX (priv->button_box), FALSE);
       gtk_box_pack_end (GTK_BOX (editor), priv->button_box, FALSE, FALSE, 0);
       gtk_box_reorder_child (GTK_BOX (editor), priv->button_box, 0);
 

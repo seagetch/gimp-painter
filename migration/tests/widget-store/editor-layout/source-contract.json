@@ -1,0 +1,31 @@
+{
+  "task": "08.017",
+  "state": "TODO",
+  "all_original_source_duties": "93 unchanged TODO rows",
+  "exact_original_duty": {
+    "work_id": "legacy-a2996987255d491d7a89",
+    "source_kind": "hunk",
+    "source_id": "01.002/001613",
+    "path": "app/widgets/gimpeditor.c",
+    "source_blob": "e95e403fb53887faeedcbf3ce3e924fc8aa74302",
+    "source_range": "-861 -> 838",
+    "source_sha256": "f962b5320b51d0b719fdf45640e23d79b3b5e197716e43501f7ab2a7b2fd4b34",
+    "source_scope": "gimp_editor_ensure_button_box (GimpEditor     *editor,",
+    "phase": "implementation",
+    "wbs_task": "08.017",
+    "action": "既存 widget behavior を store に移す",
+    "acceptance": "全登録箇所が共通 slot を利用",
+    "status": "TODO",
+    "owner": "",
+    "artifact": "",
+    "test": "",
+    "result": "",
+    "limitations": "Assigned only; requires this source-specific action and evidence"
+  },
+  "source_url": "https://github.com/seagetch/gimp-painter/blob/afa43fae3e920210146abed514f136fd49f671b5/app/widgets/gimpeditor.c#L838",
+  "original_payload": "-      gtk_box_set_homogeneous (GTK_BOX (editor->priv->button_box), TRUE);\n+      gtk_box_set_homogeneous (GTK_BOX (editor->priv->button_box), FALSE);\n",
+  "active_contract": "This unconditional native button-box construction serves ordinary editor controls as well as the source-active dropdown provider. The two historical item-tree dropdown consumers are separately compile-time inactive. Their inactivity does not remove the global mixed-width layout contract.",
+  "correction": "The same current native ensure_button_box path now uses FALSE; no new C++ owner, callback or legacy ABI is introduced.",
+  "verification": "Targeted baseline failure; actual mixed-width allocation at preferred size in LTR/RTL; style refresh; complete selected compact/editor/canvas/layer UI/foundation regressions. Additional store controls observe identity, independent owners, scoped close, inert retained controls and preserved notebook state.",
+  "remaining": "No native misc-cell integration, old dropdown provider, full enum/property/session-helper, complete legacy feature equivalence, aggregate or platform closure. All existing WBS/source siblings remain unchanged."
+}
