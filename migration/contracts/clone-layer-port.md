@@ -1220,3 +1220,123 @@ legacy parity, transformed pan/zoom, canvas/overlay equivalence, other platforms
 whole section 25, full aggregate, final Clone freeze, packaging, release and
 whole-port acceptance remain outside this closure. Old Edge/string-reader
 runtime remains user-approved **SKIPPED/unverified**.
+
+
+## Bounded 25.009/common-angle-draw native checkpoint (2026-10-17)
+
+This independent child accepts only the finite common-angle draw and upright
+GTK-anchor implementation/test result. Its completed inputs are original
+25.008 and the 01.017 hunk assignment. The existing original **25.009 and
+25.009/drag-zoom-scroll stay TODO with byte-identical criteria and dependencies**.
+No existing task or progress row changes; only this bounded child is added.
+It does not accept all 196 jointly assigned historical hunks or the parent
+canvas/overlay obligation. Current actual-window portrait GUI remains pending
+as a separate next check.
+
+### Component evidence: tested source A and retained failure
+
+The native component receipt attests only to repaired source A
+`ad0dab2d49c2bafcd85da05d76f077071cd1c6e1`, tree
+`a237803fe42b33f6c608fb993e45d838c4ecd88b`. The unchanged
+`migration/tests/canvas-overlay-component-receipt.json` and compact
+`canvas-overlay-component-evidence.tar.xz` bind native receipt SHA-256
+`6be80fb0b6e1f87a5b239d1093455b3459f964ab6dbed24ffcda7fa8973a5404`.
+The default incremental build and all four component commands exited 0;
+**37 normal TAP cases (27 event + 4 UI + 6 arithmetic) and 27 focused event
+ASan/UBSan cases passed**. Exactly six C units are instrumented, including the
+changed display shell; remaining renderer, canvas items, selection, GTK overlay
+container/child, core, GTK and dependencies are uninstrumented. LSan is disabled,
+with no suppression files/options. All nine component integrity seals pass.
+
+Five added event registrations perform **38 actual GTK snapshots per event
+execution**: 16 raster/item pairs, three selection and three upright-widget
+draws. The public event route drives free 127, Ctrl-snap 120, unsnap 127,
+button release and unchanged redraw under both horizontal-reflection states.
+A pre-established mirrored 1.5x view, tiny negative/zero/positive CTMs, a
+separate selection boundary and an image-anchored upright GTK child are also
+checked. Literal trigonometric constants and independently specified geometry
+supply the expectations; production transforms do not supply the oracle.
+Frozen matrix and pixel tolerances remain exactly as documented in
+`painter-navigation.md`. Raster cache orientation, actual image-space line and
+rectangle pixels, separate selection pixels and the stationary screen-space
+control are checked. Full-surface draws do not establish damage or clipping.
+
+The retained unsuccessful source `bfbbbeade5ba733320b4c1b98a7f3213291928d2`
+passed 36/37 normal and 26/27 focused event cases, then failed the explicit
+widget-anchor assertion. At 37 degrees and unchanged offsets `(-296,-97)`,
+expected `(490.388929396,229.950762935)` stayed at stale `(480,189)`.
+This is an observed assertion failure, not an ASan/UBSan memory error.
+The bounded 13-line production repair refreshes transformed child anchors
+in `gimp_display_shell_rotated()` after the display matrix update and before
+the signal. It preserves upright child angle and basis. The exact same fixture
+SHA-256 `b5ff043ae3518784ebb485a1634cb38806fcdf1ab8b2f8ccf3d64b68255e6568`
+passes on A without changed assertions, expectations, tolerances or registrations.
+Immediate and both post-draw anchors now match, visible integer placement is
+`(490,229)`, and the unchanged second rotated redraw passes. Both full failed
+and passed public archives remain separately retained and hash-bound by the
+component evidence; neither failure nor its source identity is overwritten.
+
+The prior 22 event registrations remain successful, including 96 mirrored-key
+sends, 64 press/32 release callbacks and 24 crossing observations/20 signed
+steps per event execution. Logs retain the actual draw, marker, segment and
+anchor checks. The optional PNG hook was **disabled**: 38 GTK draws are not
+38 additional registered tests, saved screenshots or a portrait GUI run.
+The compact component archive contains 22 unchanged public originals plus a
+packaging manifest; eight omitted binary copies stay hash/size-bound to the
+separately retained full archive. It is not a standalone rebuild package.
+
+### Distinct strict-tested source B and documentary descendant
+
+Receipt-integrated source B is `4c4634ead724daa30f2b0276fc6310e575d072f2`,
+tree `31d6dc34db477061fa68c3cf22b451fa0cac1fd4`. Its only changes from A are
+the navigation contract, component receipt and compact component archive.
+The unchanged strict Clone gate ran on this frozen B; all three default-build,
+normal-test and focused-sanitizer commands passed:
+
+- Run: `canvas-overlay-run-001`
+- Current strict archive: `migration/tests/canvas-overlay-acceptance-evidence.tar.xz`
+- Archive SHA-256: `c740d94bd2598f6f181d8da4600770ff5749d54bec2d6189c920cd36fd7532ee`
+- Receipt SHA-256: `af617c9a318775b4ce0249e5a4a116c04a2b7191c04f7d6e65347657f24f79be`
+
+Seven exact normal Meson targets passed: `core` 4, `projection-update-bounds` 3,
+`gimp-clone-layer` 62, `painter-layer-ui` 68, `painter-layer-tree` 35,
+`painter-xcf-roundtrip` 49 and `update-geometry` 5, totaling **226 positive TAP
+cases**. Focused Clone ASan/UBSan passed **62 cases**. Both Clone executions
+retain the same 216 unique source-mode/type/mask scenes. Eight units are
+instrumented; 54 RTTI-only C++ rebuilds are not sanitizer coverage. LSan stays
+disabled. Strict Clone does not rerun navigation or the actual-window GUI.
+
+Strict review verifies equal source before build/before tests/after, unchanged
+2,880 normal ELF entries, full default-build freshness, compile database,
+all 164 registered target definitions, 361 locale catalogs and private Clone
+sanitizer artifact seals. Registry integrity is not aggregate execution.
+The archive retains exactly the existing **17 public strict members**, with
+unchanged raw bytes/hashes. The unchanged deterministic pack function and
+bounded XZ/flat-tar helpers produce byte-identical repacking. Original-directory,
+extracted-directory and archive validation give identical strict results with
+execution source/build/private paths blocked and Git as the only subprocess.
+Public environment-removal transformations remain intact; private profiles,
+raw environments and authentication material are excluded.
+
+The existing **44 receipt, 17 archive and 11 acceptance controls** pass,
+as do strict current Clone acceptance, task-ledger and whitespace checks.
+Only this appended contract, new bounded child task/progress rows, the Clone
+current-receipt route and its strict archive change. No production, test,
+fixture, validator, instrumentation, procedure, component/GUI archive or
+navigation-contract bytes change from B. Prior archives remain unchanged.
+The closure executes only Python/Git documentary checks: component claims
+remain on A, strict Clone on B, and no native claim transfers to this final
+documentary descendant.
+
+The historical portrait GUI receipt remains bound only to older source
+`22708f41d368c6c7c2e425d30ea2765b9d29158b`; actual current-window GUI is pending.
+Damage, clipping, extents, hit-testing, every overlay/selection topology,
+vertical-reflection legacy parity, physical input, transformed drag-zoom/pan/
+scroll, other platforms, all 196 hunks, whole section 25, full aggregate,
+final Clone freeze, packaging, release and whole-port acceptance remain open.
+Ordinary icon, plug-in, D-Bus and GLib diagnostics and the focused
+`navigation_draw_observer_get_type` missing-declarations warning remain;
+there is no warning-free application or clean-from-empty build claim.
+Both historical old GUI teardown `command_exit=-11` outcomes are retained.
+Old Edge/string-reader runtime remains user-approved **SKIPPED/unverified**;
+no old runtime, capture or oracle was accessed, executed or regenerated.
