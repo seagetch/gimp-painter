@@ -1,0 +1,1700 @@
+{
+  "schema_version": 1,
+  "generated_utc": "2026-10-14T03:54:23.139085+00:00",
+  "scope": "Exact 76-entry source and executed-evidence reconciliation for the final four-file Layer Presets dockable candidate. This worker only reads evidence and edits addenda; it does not rerun builds/tests/verifiers or publish. Acceptance is bounded to native construction/help/optional-preview/context/no-implicit-Apply/lifecycle behavior; real row-click double application remains open.",
+  "public_base_commit": "a6f5109fd04f100899e20a195262857ee51387a6",
+  "public_base_tree": "a338c4de19a976224fa97ba70c35cb97a064bb48",
+  "public_base_qualification": "Parent supplied publication identity; pinned Git source and tree resolved locally. No fresh remote publication query. Worktree HEAD is not treated as the public base.",
+  "legacy_commit": "afa43fae3e920210146abed514f136fd49f671b5",
+  "legacy_tree": "1832c591bf5856a7751788acd4e993ca505ddff7",
+  "legacy_sources": [
+    {
+      "path": "app/gimp-features.cpp",
+      "git_blob": "17fb53441909c532d8039e838e8f40203958039f",
+      "sha256": "fb7c2deb106477650b2bab51306991abc92e62cbad07b7037e8e41ff3ae549ae"
+    },
+    {
+      "path": "app/app.c",
+      "git_blob": "bcc930281c4c2d5238ad3418549745a223d6fd80",
+      "sha256": "f37d5238bac613bce31780fda9177d8cf1daad6774c0c14e6b3dec013ff0eb65"
+    },
+    {
+      "path": "app/presets/preset-factory-gui.cpp",
+      "git_blob": "c2f8bae6204ca16d4913a36cd6410ddf5dfe1c84",
+      "sha256": "9373cbd98b868c2bed2237dba9efd9737a9282d85fbcd070c542810ec77f3fb8"
+    },
+    {
+      "path": "app/presets/layer-preset-gui.cpp",
+      "git_blob": "166fa6a39c34e3e12635556015d244708a5081b3",
+      "sha256": "bfd686ae7b5d3b113464f433f75f17e97eaaffb072181f65315ecafccab0534f"
+    },
+    {
+      "path": "app/presets/preset-factory-gui.h",
+      "git_blob": "20003524d91df77589b5e5a8d16e5f29bf46a61f",
+      "sha256": "2e840cc77d5a2ea8a69388fd319daf1c8a903165b0e8f08cb0e6c72e1c3cb096"
+    },
+    {
+      "path": "app/actions/dialogs-actions.c",
+      "git_blob": "ae0feb3916c88180b64e073780c7c248a5ade334",
+      "sha256": "7a2c5f07a877799674aac2a99f5b6c00d314bbf001957d4547ba416249107ce1"
+    },
+    {
+      "path": "app/widgets/gimpitemtreeview.c",
+      "git_blob": "3c35fd5b3a6d4d4beb5140e8e5c2c9b53183178e",
+      "sha256": "87c485c01989a63c701184f17a78d7a5b75880e814dd73f1cfcc28ff966ff9be"
+    },
+    {
+      "path": "menus/dialogs-menuitems.xml",
+      "git_blob": "d66c3b9073e599469fc7f0440b83a4048990e53c",
+      "sha256": "d66ce4e36dfbfb6f5e00b37dad560b5cd818b4d35acf964d2cf80a2790021e7a"
+    }
+  ],
+  "candidate_paths": [
+    {
+      "path": "app/dialogs/dialogs.c",
+      "base_git_blob": "357800aec9b1450ff067bec801ae991d3d0277fb",
+      "base_sha256": "9d4bea7a59251ae756609730d0219a4298f82a10bfb18410de16ce86cc334556",
+      "candidate_sha256": "dd2320e084f0a49e7d55e60844bf64417e82b2190fa911a2fa086daa48884aae",
+      "candidate_git_blob": "bbfd45bb56796d78f07614ed7724f0508b6b5a41",
+      "bytes": 30594
+    },
+    {
+      "path": "app/actions/dialogs-actions.c",
+      "base_git_blob": "574891cda04cf00d896cead7ddf2fb2aa997f911",
+      "base_sha256": "5af0de60c1291f181cc5e19ffbf9f50e2541fec6c893f5627e1277b4bce504ca",
+      "candidate_sha256": "d65cf83962610c3bef8fd728bf76fb6094c3684303c6cafa963b94849856f883",
+      "candidate_git_blob": "7f82fa3517c5c01c9834ba0d3bb4fe63257296d8",
+      "bytes": 15852
+    },
+    {
+      "path": "app/widgets/gimplayerpresetview.c",
+      "base_git_blob": "10153cdf160401eacb818ac6964bd26b132f641b",
+      "base_sha256": "5bada5c213100df67f522f73642b289a768ccb0049c70bdf3dbef8eb675ebbdc",
+      "candidate_sha256": "9d9293289f0a6821dfe9ad3c5a0688a7d77ef207dd49714372b2f21258d18228",
+      "candidate_git_blob": "9b4b04f5b970f9a2704e3e086a7ff5d45945e7ac",
+      "bytes": 5558
+    },
+    {
+      "path": "app/tests/test-layer-presets-ui.c",
+      "base_git_blob": "e517c686a3860ac968e1019ad99e129351b8d1d7",
+      "base_sha256": "66f5e7f6b09ac13df1965c964e96182bd4bf7367aa38bfd26a169e4df53745dd",
+      "candidate_sha256": "0b44e96027df51e49f7b094eb794b764499e2937f9c00231bb8e0104143677ef",
+      "candidate_git_blob": "7bc84e823e4de34cca2f198dfa0b4e719ef91dd2",
+      "bytes": 31765
+    }
+  ],
+  "candidate_scoped_diff_sha256": "1fe4f43f84cd9018fa7a0fb540ac7e626d1682b6ad49cd63ac8bf8aa535daa45",
+  "candidate_snapshot_qualification": "Final four-file candidate matches stable source seal and both native-v3/ASan-v1 recorded source identities. No publication commit is claimed by this addendum. Any later source edit invalidates this acceptance binding.",
+  "design_report": "layer-presets-dockable-20261014/source-design-report.md",
+  "design_report_sha256": "ab28a39df5458b04a3927795854350b9a90b1e797b4e90a219ffddf2f0c89724",
+  "inventory_source": "c-entry-map-08018-20261014/all-76-entries.json",
+  "inventory_sha256": "09f24e66eb8b01f1a2dfb71bf97e530106b29ab8e6a5922c3f8bc8a9d06b48be",
+  "original_c_entry_count": 76,
+  "separate_core_hook_count": 31,
+  "direct_candidate_rows": [
+    75
+  ],
+  "supporting_candidate_rows": [
+    1,
+    74
+  ],
+  "unchanged_rows": 73,
+  "whole_rows_marked_complete": 0,
+  "runtime_results_assessed": true,
+  "source_finding": {
+    "legacy_factory_help": "Non-NULL empty string at app/presets/layer-preset-gui.cpp:197",
+    "legacy_action_help": "gimp-layer-preset-dialog at :231; only occurrence in pinned app/menus search, no manual-page existence proof",
+    "base_factory_and_action_help": "NULL",
+    "candidate_factory_and_action_help": "GIMP_HELP_DOCK, existing gimp-dock identifier at app/widgets/gimphelp-ids.h:734",
+    "mechanism": "Native dialog factory constructs child then wraps it with gimp_dockable_new; that API rejects NULL help before constructing wrapper. Inner-view or registration-presence tests do not execute this boundary.",
+    "semantic_delta": "Executed bounded restoration of native non-NULL help construction and optional tab-preview icon fallback, retaining inherited GimpDocked methods. Final tests accept context/no-implicit-Apply/close/reopen behavior. Original exported functions, exact old help metadata, full preview parity and real row-click Apply correctness remain separate.",
+    "preview_adaptation": {
+      "new_production_path": "app/widgets/gimplayerpresetview.c",
+      "operation": "Reimplement inherited GimpDocked interface narrowly with iface->get_preview = NULL; leave inherited context/menu/button-bar/aux-info methods untouched.",
+      "source_mechanism": [
+        "GimpContainerEditor get_preview forwards to the inner view (gimpcontainereditor.c:484-493).",
+        "GimpContainerBox get_preview obtains context property name from the container child type and passes it to property preview construction (gimpcontainerbox.c:245-276).",
+        "GimpLayerPreset has no GimpContext resource-property mapping; gimp_context_type_to_prop_name returns NULL (gimpcontext.c:1860-1873).",
+        "gimp_docked_get_preview returns NULL for an absent optional method (gimpdocked.c:152-165). Native gimp_dockable_create_tab_widget falls back to registered icon for Preview/Preview+Name/Preview+Blurb (gimpdockable.c:291-303).",
+        "gimp_dockable_set_tab_style maps preview styles to icon styles when child get_preview is NULL (gimpdockable.c:393-407)."
+      ],
+      "semantic_scope": "Native compatibility adaptation for a resource selected by this view, not a new GimpContext property or selected-resource thumbnail renderer. Uses existing GIMP_ICON_LAYER and normal icon fallback; no exact old preview/rendering parity claim.",
+      "lifecycle_scope": "Existing GimpDataFactoryView auxiliary-info and inherited context/menu/button-bar handlers remain registered; runtime correctness is not inferred solely from interface source."
+    }
+  },
+  "legacy_inactive_paths": [
+    "app/widgets/gimpitemtreeview.c:424-433 new-button preset dropdown and :460-466 duplicate-button preset dropdown are both under #else of literal #if 1; not active workflows and not enabled by this fix."
+  ],
+  "candidate_test_source": {
+    "cases": [
+      "/layer-presets-ui/dialog-factory-dockable-lifetime",
+      "/layer-presets-ui/action-dockable-close-reopen"
+    ],
+    "assertions_present": [
+      "Independent actual factory raise versus dialogs-layer-presets image UI action; action route only observes find_widget and has no creating fallback.",
+      "Opening precedes help metadata assertions, exposing production NULL-help guard rather than a proxy assertion.",
+      "Native wrapper/child mapped, registered factory identity, real notebook page/dockbook/dock ownership, matching help IDs.",
+      "Real image/display exists before first open; verifies inherited child context image/display without rescuing it after construction.",
+      "Wrapper-derived menu path/popup owner and cached action manager/group identity.",
+      "Two close/reopen cycles; repeat raise reuses exact wrapper and child with one registered open dialog.",
+      "No implicit source mutation checks include source identity/count/selection, pixels, name, dimensions, offsets, opacity, mode, dirty state and Undo/Redo depths before/after loop drains.",
+      "Selection and real Apply action produce one extra layer/Undo step; Undo restores source; context detach/reattach remains nonmutating.",
+      "Normal Close Tab command; weak wrapper/view/manager/group clearing, cache-key removal and absent factory widget/open registration.",
+      "Restore original display/image/path and drain autosave while owners remain alive.",
+      "Preview-specific source assertions: no GimpContext property for LayerPreset and NULL optional get_preview; registered GIMP_ICON_LAYER; construct/destroy all three Preview, Preview+Name and Preview+Blurb tab styles; assert Preview+Name normalizes to Icon+Name.",
+      "Natural bounded weak-pointer mapping wait preserves destruction/unmapped failures and does not force GTK state; final full aggregate executes both factory and action cases together."
+    ],
+    "source_design_limits": [
+      "New native-wrapper helper does not activate Refresh via the wrapper-derived menu; older synthetic-view selection-actions-lifetime exercises Refresh separately. Do not claim wrapper Refresh coverage from the new cases.",
+      "After selection/Apply the new helper checks two layers and one Undo step, but does not explicitly assert new layer is GimpCloneLayer or that its source equals the original. Do not claim those identity assertions are present.",
+      "Helper checks zero Undo/expected Redo depth and original source pixels/identity, but not Undo/Redo top-record identity. Depth preservation alone is not top-record preservation.",
+      "Actual row-click double application is an observed open defect; programmatic selection plus explicit action assertions do not prove whole physical-input Apply correctness."
+    ],
+    "runtime_status": "PASSED in final native-v3 and ASan-v1 strict 36-case selections: both new cases are included in UI6, alongside backend11 and editor19.",
+    "fixture_status": "Resolved: final wait_native_mapped uses a weak pointer, two-second monotonic bound, nonblocking context iterations and 1ms sleep; it neither retains widget nor forces visibility/mapping. Original mapped assertions and post-event source/history checks remain. Both final aggregates pass."
+  },
+  "preserved_open_items": [
+    "Layer Presets real row-click double application remains open: one native press/release added two clones, whereas explicit Apply button added one. No general Apply correctness or whole-row closure.",
+    "Separate 31 core-extension hooks are neither merged into nor completed by this 76-entry addendum.",
+    "MyPaint legacy overwrite remains open, independent of already published name/preset/copy restorations.",
+    "MyPaint configurable foreground/background colorpicker setter and exact API disposition remain open.",
+    "Blocked eleven-file perspective guard and valid-index/wrong-point identity gap remain open; no integration allowed by this report.",
+    "ImageGenerator retirement/dependency proof remains separate.",
+    "Original exported C symbols/named-handle contracts are not considered fulfilled merely because a native workflow is restored.",
+    "08.018 and overall migration completion are unchanged; no whole-row or aggregate acceptance."
+  ],
+  "entries": [
+    {
+      "inventory_index_1_based": 1,
+      "original": {
+        "c_entry": "features_entry_point",
+        "legacy_site": "app/gimp-features.cpp:70",
+        "cpp_operation": "ApplicationRef::initialize_features",
+        "rule": "Explicit registration method delegates to this C entry; owner context is passed by adapter and lifecycle state belongs to one Application/ActionGroup store",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "layers-presets.json",
+      "candidate_relationship": "supporting_integration",
+      "candidate_disposition": "bounded_native_preset_gui_registration_slice_accepted_entire_row_open",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": true,
+      "note": "Final acceptance covers the corrected Layer Presets native dock registration as one effect of the old feature restore path, not all application feature initialize/restore/exit families.",
+      "legacy_anchors": [
+        "app/app.c:175 features_entry_point(gimp)",
+        "app/gimp-features.cpp:49-81,87-132 feature factories and initialize/restore/exit callbacks",
+        "app/presets/preset-factory-gui.cpp:177-217 restore registration"
+      ],
+      "abi_disposition": "features_entry_point and ApplicationRef::initialize_features are not reintroduced. Native per-Gimp data-factory and app lifecycle replacement stays separately scoped.",
+      "still_open": [
+        "All-feature startup/restore/exit and headless/optional HTTP lifecycle are not covered by this narrow GUI metadata correction.",
+        "No whole-row acceptance or C ABI restoration."
+      ],
+      "acceptance_scope": "Only this bounded native dockable restoration and supporting integration, final UI6/backend11/editor19 each native and ASan+UBSan. No whole-row closure."
+    },
+    {
+      "inventory_index_1_based": 2,
+      "original": {
+        "c_entry": "gimp_bucket_fill_brush_tool_get_type",
+        "legacy_site": "app/tools/gimpbucketfillbrushtool.cpp:485",
+        "cpp_operation": "TypeTraits<GimpBucketFillBrushTool>::type",
+        "rule": "Lazy TypeTraits delegates to C GType registration; no C++ global class singleton or implementation placement",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "mypaint.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance."
+    },
+    {
+      "inventory_index_1_based": 3,
+      "original": {
+        "c_entry": "gimp_bucket_fill_brush_tool_register",
+        "legacy_site": "app/tools/gimpbucketfillbrushtool.cpp:490",
+        "cpp_operation": "BucketFillBrushToolRef::register_type",
+        "rule": "Explicit registration method delegates to this C entry; owner context is passed by adapter and lifecycle state belongs to one Application/ActionGroup store",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "mypaint.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance."
+    },
+    {
+      "inventory_index_1_based": 4,
+      "original": {
+        "c_entry": "gimp_canvas_perspective_guide_get_type",
+        "legacy_site": "app/display/gimpcanvasperspectiveguide.cpp:295",
+        "cpp_operation": "TypeTraits<GimpCanvasPerspectiveGuide>::type",
+        "rule": "Lazy TypeTraits delegates to C GType registration; no C++ global class singleton or implementation placement",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "perspective-image-generator.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance.",
+      "preserved_open_gap": "Separate eleven-file perspective guard stays blocked/excluded; valid-index/wrong-point identity gap stays open. No integration or acceptance credit."
+    },
+    {
+      "inventory_index_1_based": 5,
+      "original": {
+        "c_entry": "gimp_canvas_perspective_guide_new",
+        "legacy_site": "app/display/gimpcanvasperspectiveguide.cpp:300",
+        "cpp_operation": "CanvasPerspectiveGuideRef::create",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "perspective-image-generator.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance.",
+      "preserved_open_gap": "Separate eleven-file perspective guard stays blocked/excluded; valid-index/wrong-point identity gap stays open. No integration or acceptance credit."
+    },
+    {
+      "inventory_index_1_based": 6,
+      "original": {
+        "c_entry": "gimp_cell_renderer_popup_clicked",
+        "legacy_site": "app/widgets/gimpcellrendererpopup.cpp:344",
+        "cpp_operation": "CellRendererPopupRef::clicked",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "widgets.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance."
+    },
+    {
+      "inventory_index_1_based": 7,
+      "original": {
+        "c_entry": "gimp_cell_renderer_popup_get_type",
+        "legacy_site": "app/widgets/gimpcellrendererpopup.cpp:341",
+        "cpp_operation": "TypeTraits<GimpCellRendererPopup>::type",
+        "rule": "Lazy TypeTraits delegates to C GType registration; no C++ global class singleton or implementation placement",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "widgets.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance."
+    },
+    {
+      "inventory_index_1_based": 8,
+      "original": {
+        "c_entry": "gimp_cell_renderer_popup_new",
+        "legacy_site": "app/widgets/gimpcellrendererpopup.cpp:342",
+        "cpp_operation": "CellRendererPopupRef::create",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "widgets.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance."
+    },
+    {
+      "inventory_index_1_based": 9,
+      "original": {
+        "c_entry": "gimp_clone_layer_get_source",
+        "legacy_site": "app/core/gimpclonelayer.cpp:688",
+        "cpp_operation": "CloneLayerRef::source",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation; returned borrowed GimpLayer is retained by owning LayerRef, lazy name resolution semantics preserved",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "layers-presets.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance."
+    },
+    {
+      "inventory_index_1_based": 10,
+      "original": {
+        "c_entry": "gimp_clone_layer_get_type",
+        "legacy_site": "app/core/gimpclonelayer.cpp:664",
+        "cpp_operation": "TypeTraits<GimpCloneLayer>::type",
+        "rule": "Lazy TypeTraits delegates to C GType registration; no C++ global class singleton or implementation placement",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "layers-presets.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance."
+    },
+    {
+      "inventory_index_1_based": 11,
+      "original": {
+        "c_entry": "gimp_clone_layer_new",
+        "legacy_site": "app/core/gimpclonelayer.cpp:669",
+        "cpp_operation": "CloneLayerRef::create",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "layers-presets.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance."
+    },
+    {
+      "inventory_index_1_based": 12,
+      "original": {
+        "c_entry": "gimp_clone_layer_set_source",
+        "legacy_site": "app/core/gimpclonelayer.cpp:681",
+        "cpp_operation": "CloneLayerRef::set_source",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "layers-presets.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance."
+    },
+    {
+      "inventory_index_1_based": 13,
+      "original": {
+        "c_entry": "gimp_clone_layer_set_source_by_name",
+        "legacy_site": "app/core/gimpclonelayer.cpp:696",
+        "cpp_operation": "CloneLayerRef::set_source_name",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "layers-presets.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance."
+    },
+    {
+      "inventory_index_1_based": 14,
+      "original": {
+        "c_entry": "gimp_clone_layer_undo_get_type",
+        "legacy_site": "app/core/gimpclonelayerundo.cpp:61",
+        "cpp_operation": "TypeTraits<GimpCloneLayerUndo>::type",
+        "rule": "Lazy TypeTraits delegates to C GType registration; no C++ global class singleton or implementation placement",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "layers-presets.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance."
+    },
+    {
+      "inventory_index_1_based": 15,
+      "original": {
+        "c_entry": "gimp_display_shell_attach_on_canvas_view",
+        "legacy_site": "app/display/gimpdisplayshell-overlays.cpp:670",
+        "cpp_operation": "DisplayShellRef::attach_on_canvas_view",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "widgets.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance."
+    },
+    {
+      "inventory_index_1_based": 16,
+      "original": {
+        "c_entry": "gimp_display_shell_detach_on_canvas_view",
+        "legacy_site": "app/display/gimpdisplayshell-overlays.cpp:713",
+        "cpp_operation": "DisplayShellRef::detach_on_canvas_view",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "widgets.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance."
+    },
+    {
+      "inventory_index_1_based": 17,
+      "original": {
+        "c_entry": "gimp_display_shell_update_on_canvas_opacity",
+        "legacy_site": "app/display/gimpdisplayshell-overlays.cpp:659",
+        "cpp_operation": "DisplayShellRef::update_on_canvas_opacity",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "widgets.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance."
+    },
+    {
+      "inventory_index_1_based": 18,
+      "original": {
+        "c_entry": "gimp_display_shell_update_on_canvas_views",
+        "legacy_site": "app/display/gimpdisplayshell-overlays.cpp:601",
+        "cpp_operation": "DisplayShellRef::update_on_canvas_views",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "widgets.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance."
+    },
+    {
+      "inventory_index_1_based": 19,
+      "original": {
+        "c_entry": "gimp_editor_add_action_dropdown",
+        "legacy_site": "app/widgets/gimpeditor-cxx.cpp:182",
+        "cpp_operation": "EditorRef::add_action_dropdown",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "widgets.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance."
+    },
+    {
+      "inventory_index_1_based": 20,
+      "original": {
+        "c_entry": "gimp_editor_add_dropdown",
+        "legacy_site": "app/widgets/gimpeditor-cxx.cpp:89",
+        "cpp_operation": "EditorRef::add_dropdown",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "widgets.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance."
+    },
+    {
+      "inventory_index_1_based": 21,
+      "original": {
+        "c_entry": "gimp_filter_layer_get_procedure",
+        "legacy_site": "app/core/gimpfilterlayer.cpp:1186",
+        "cpp_operation": "FilterLayerRef::get_procedure",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "layers-presets.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance."
+    },
+    {
+      "inventory_index_1_based": 22,
+      "original": {
+        "c_entry": "gimp_filter_layer_get_procedure_args",
+        "legacy_site": "app/core/gimpfilterlayer.cpp:1192",
+        "cpp_operation": "FilterLayerRef::get_procedure_args",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation; deep-copy GValues with independently owned array; do not shallow-copy internal string/object pointers",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "layers-presets.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance."
+    },
+    {
+      "inventory_index_1_based": 23,
+      "original": {
+        "c_entry": "gimp_filter_layer_get_type",
+        "legacy_site": "app/core/gimpfilterlayer.cpp:1170",
+        "cpp_operation": "TypeTraits<GimpFilterLayer>::type",
+        "rule": "Lazy TypeTraits delegates to C GType registration; no C++ global class singleton or implementation placement",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "layers-presets.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance."
+    },
+    {
+      "inventory_index_1_based": 24,
+      "original": {
+        "c_entry": "gimp_filter_layer_mark_as_loaded",
+        "legacy_site": "app/core/gimpfilterlayer.cpp:1206",
+        "cpp_operation": "FilterLayerRef::mark_as_loaded",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "layers-presets.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance."
+    },
+    {
+      "inventory_index_1_based": 25,
+      "original": {
+        "c_entry": "gimp_filter_layer_new",
+        "legacy_site": "app/core/gimpfilterlayer.cpp:1175",
+        "cpp_operation": "FilterLayerRef::create",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "layers-presets.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance."
+    },
+    {
+      "inventory_index_1_based": 26,
+      "original": {
+        "c_entry": "gimp_filter_layer_set_procedure",
+        "legacy_site": "app/core/gimpfilterlayer.cpp:1198",
+        "cpp_operation": "FilterLayerRef::set_procedure",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "layers-presets.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance."
+    },
+    {
+      "inventory_index_1_based": 27,
+      "original": {
+        "c_entry": "gimp_image_generator_options_get_type",
+        "legacy_site": "app/tools/gimpimagegeneratortool.cpp:137",
+        "cpp_operation": "TypeTraits<GimpImageGeneratorOptions>::type",
+        "rule": "Lazy TypeTraits delegates to C GType registration; no C++ global class singleton or implementation placement; removal only after31.011 dependency proof, never assumed here",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "perspective-image-generator.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance.",
+      "preserved_open_gap": "ImageGenerator dependency/registration retirement proof remains separate; no safe retirement or native generation functionality is inferred."
+    },
+    {
+      "inventory_index_1_based": 28,
+      "original": {
+        "c_entry": "gimp_image_generator_tool_get_type",
+        "legacy_site": "app/tools/gimpimagegeneratortool.cpp:472",
+        "cpp_operation": "TypeTraits<GimpImageGeneratorTool>::type",
+        "rule": "Lazy TypeTraits delegates to C GType registration; no C++ global class singleton or implementation placement; removal only after31.011 dependency proof, never assumed here",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "perspective-image-generator.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance.",
+      "preserved_open_gap": "ImageGenerator dependency/registration retirement proof remains separate; no safe retirement or native generation functionality is inferred."
+    },
+    {
+      "inventory_index_1_based": 29,
+      "original": {
+        "c_entry": "gimp_image_generator_tool_register",
+        "legacy_site": "app/tools/gimpimagegeneratortool.cpp:437",
+        "cpp_operation": "ImageGeneratorToolRef::register_type",
+        "rule": "Explicit registration method delegates to this C entry; owner context is passed by adapter and lifecycle state belongs to one Application/ActionGroup store; removal only after31.011 dependency proof, never assumed here",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "perspective-image-generator.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance.",
+      "preserved_open_gap": "ImageGenerator dependency/registration retirement proof remains separate; no safe retirement or native generation functionality is inferred."
+    },
+    {
+      "inventory_index_1_based": 30,
+      "original": {
+        "c_entry": "gimp_json_resource_get_type",
+        "legacy_site": "app/presets/gimpjsonresource.cpp:215",
+        "cpp_operation": "TypeTraits<GimpJsonResource>::type",
+        "rule": "Lazy TypeTraits delegates to C GType registration; no C++ global class singleton or implementation placement",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "layers-presets.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance."
+    },
+    {
+      "inventory_index_1_based": 31,
+      "original": {
+        "c_entry": "gimp_json_resource_new",
+        "legacy_site": "app/presets/gimpjsonresource.cpp:219",
+        "cpp_operation": "JsonResourceRef::create",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "layers-presets.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance."
+    },
+    {
+      "inventory_index_1_based": 32,
+      "original": {
+        "c_entry": "gimp_layer_tile_view_get_type",
+        "legacy_site": "app/widgets/gimplayertileview.cpp:1594",
+        "cpp_operation": "TypeTraits<GimpLayerTileView>::type",
+        "rule": "Lazy TypeTraits delegates to C GType registration; no C++ global class singleton or implementation placement",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "widgets.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance."
+    },
+    {
+      "inventory_index_1_based": 33,
+      "original": {
+        "c_entry": "gimp_layer_tile_view_new",
+        "legacy_site": "app/widgets/gimplayertileview.cpp:1595",
+        "cpp_operation": "LayerTileViewRef::create",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "widgets.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance."
+    },
+    {
+      "inventory_index_1_based": 34,
+      "original": {
+        "c_entry": "gimp_mypaint_brush_begin_use",
+        "legacy_site": "app/core/gimpmypaintbrush.cpp:383",
+        "cpp_operation": "MypaintBrushRef::begin_use",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "mypaint.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance."
+    },
+    {
+      "inventory_index_1_based": 35,
+      "original": {
+        "c_entry": "gimp_mypaint_brush_button_with_popup",
+        "legacy_site": "app/tools/gimpmypaintbrushoptions-gui.cpp:325",
+        "cpp_operation": "ContextRef::create_mypaint_brush_button",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "mypaint.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance."
+    },
+    {
+      "inventory_index_1_based": 36,
+      "original": {
+        "c_entry": "gimp_mypaint_brush_duplicate",
+        "legacy_site": "app/core/gimpmypaintbrush.cpp:350",
+        "cpp_operation": "MypaintBrushRef::duplicate",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "mypaint.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance.",
+      "preserved_open_gap": "Legacy same-name Save/overwrite compatibility remains open: deleting a colliding factory resource is not equivalent to current rejection. Prior independent draft/copy restorations are not reversed or reaccepted by this addendum."
+    },
+    {
+      "inventory_index_1_based": 37,
+      "original": {
+        "c_entry": "gimp_mypaint_brush_editor_get_type",
+        "legacy_site": "app/widgets/gimpmypaintbrusheditor.cpp:84",
+        "cpp_operation": "TypeTraits<GimpMypaintBrushEditor>::type",
+        "rule": "Lazy TypeTraits delegates to C GType registration; no C++ global class singleton or implementation placement",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "mypaint.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance."
+    },
+    {
+      "inventory_index_1_based": 38,
+      "original": {
+        "c_entry": "gimp_mypaint_brush_editor_new",
+        "legacy_site": "app/widgets/gimpmypaintbrusheditor.cpp:284",
+        "cpp_operation": "MypaintBrushEditorRef::create",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "mypaint.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance."
+    },
+    {
+      "inventory_index_1_based": 39,
+      "original": {
+        "c_entry": "gimp_mypaint_brush_end_use",
+        "legacy_site": "app/core/gimpmypaintbrush.cpp:394",
+        "cpp_operation": "MypaintBrushRef::end_use",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "mypaint.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance."
+    },
+    {
+      "inventory_index_1_based": 40,
+      "original": {
+        "c_entry": "gimp_mypaint_brush_get_standard",
+        "legacy_site": "app/core/gimpmypaintbrush.cpp:364",
+        "cpp_operation": "MypaintBrushRef::get_standard",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation; borrowed standard resource is retained, never adopted as a newly-owned return",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "mypaint.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance."
+    },
+    {
+      "inventory_index_1_based": 41,
+      "original": {
+        "c_entry": "gimp_mypaint_brush_get_type",
+        "legacy_site": "app/core/gimpmypaintbrush.cpp:100",
+        "cpp_operation": "TypeTraits<GimpMypaintBrush>::type",
+        "rule": "Lazy TypeTraits delegates to C GType registration; no C++ global class singleton or implementation placement",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "mypaint.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance."
+    },
+    {
+      "inventory_index_1_based": 42,
+      "original": {
+        "c_entry": "gimp_mypaint_brush_load",
+        "legacy_site": "app/core/gimpmypaintbrush-load.cpp:111",
+        "cpp_operation": "MypaintBrushRef::load",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "mypaint.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance."
+    },
+    {
+      "inventory_index_1_based": 43,
+      "original": {
+        "c_entry": "gimp_mypaint_brush_new",
+        "legacy_site": "app/core/gimpmypaintbrush.cpp:334",
+        "cpp_operation": "MypaintBrushRef::create",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "mypaint.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance."
+    },
+    {
+      "inventory_index_1_based": 44,
+      "original": {
+        "c_entry": "gimp_mypaint_brush_save",
+        "legacy_site": "app/core/gimpmypaintbrush-save.cpp:101",
+        "cpp_operation": "MypaintBrushRef::save",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "mypaint.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance."
+    },
+    {
+      "inventory_index_1_based": 45,
+      "original": {
+        "c_entry": "gimp_mypaint_brush_select_mypaint_brush",
+        "legacy_site": "app/core/gimpmypaintbrush.cpp:406",
+        "cpp_operation": "MypaintBrushRef::select_mypaint_brush",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "mypaint.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance."
+    },
+    {
+      "inventory_index_1_based": 46,
+      "original": {
+        "c_entry": "gimp_mypaint_brush_want_null_motion",
+        "legacy_site": "app/core/gimpmypaintbrush.cpp:420",
+        "cpp_operation": "MypaintBrushRef::want_null_motion",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "mypaint.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance."
+    },
+    {
+      "inventory_index_1_based": 47,
+      "original": {
+        "c_entry": "gimp_mypaint_core_undo_get_type",
+        "legacy_site": "app/paint/gimpmypaintcoreundo.cpp:56",
+        "cpp_operation": "TypeTraits<GimpMypaintCoreUndo>::type",
+        "rule": "Lazy TypeTraits delegates to C GType registration; no C++ global class singleton or implementation placement",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "mypaint.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance."
+    },
+    {
+      "inventory_index_1_based": 48,
+      "original": {
+        "c_entry": "gimp_mypaint_options_copy_brush_props",
+        "legacy_site": "app/paint/gimpmypaintoptions.cpp:358",
+        "cpp_operation": "MypaintOptionsRef::copy_brush_props",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "mypaint.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance."
+    },
+    {
+      "inventory_index_1_based": 49,
+      "original": {
+        "c_entry": "gimp_mypaint_options_get_brush_mode",
+        "legacy_site": "app/paint/gimpmypaintoptions.cpp:347",
+        "cpp_operation": "MypaintOptionsRef::get_brush_mode",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "mypaint.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance."
+    },
+    {
+      "inventory_index_1_based": 50,
+      "original": {
+        "c_entry": "gimp_mypaint_options_get_current_brush",
+        "legacy_site": "app/paint/gimpmypaintoptions.cpp:533",
+        "cpp_operation": "MypaintOptionsRef::get_current_brush",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "mypaint.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance."
+    },
+    {
+      "inventory_index_1_based": 51,
+      "original": {
+        "c_entry": "gimp_mypaint_options_get_mapping_point",
+        "legacy_site": "app/paint/gimpmypaintoptions.cpp:571",
+        "cpp_operation": "MypaintOptionsRef::get_mapping_point",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "mypaint.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance."
+    },
+    {
+      "inventory_index_1_based": 52,
+      "original": {
+        "c_entry": "gimp_mypaint_options_get_type",
+        "legacy_site": "app/paint/gimpmypaintoptions.cpp:95",
+        "cpp_operation": "TypeTraits<GimpMypaintOptions>::type",
+        "rule": "Lazy TypeTraits delegates to C GType registration; no C++ global class singleton or implementation placement",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "mypaint.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance."
+    },
+    {
+      "inventory_index_1_based": 53,
+      "original": {
+        "c_entry": "gimp_mypaint_options_gui",
+        "legacy_site": "app/tools/gimpmypaintoptions-gui.cpp:543",
+        "cpp_operation": "MypaintOptionsRef::gui",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "mypaint.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance."
+    },
+    {
+      "inventory_index_1_based": 54,
+      "original": {
+        "c_entry": "gimp_mypaint_options_gui_horizontal",
+        "legacy_site": "app/tools/gimpmypaintoptions-gui.cpp:573",
+        "cpp_operation": "MypaintOptionsRef::gui_horizontal",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "mypaint.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance."
+    },
+    {
+      "inventory_index_1_based": 55,
+      "original": {
+        "c_entry": "gimp_mypaint_options_is_ready",
+        "legacy_site": "app/paint/gimpmypaintoptions.cpp:606",
+        "cpp_operation": "MypaintOptionsRef::is_ready",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "mypaint.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance."
+    },
+    {
+      "inventory_index_1_based": 56,
+      "original": {
+        "c_entry": "gimp_mypaint_options_new",
+        "legacy_site": "app/paint/gimpmypaintoptions.cpp:334",
+        "cpp_operation": "MypaintOptionsRef::create",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "mypaint.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance."
+    },
+    {
+      "inventory_index_1_based": 57,
+      "original": {
+        "c_entry": "gimp_mypaint_options_set_mapping_point",
+        "legacy_site": "app/paint/gimpmypaintoptions.cpp:539",
+        "cpp_operation": "MypaintOptionsRef::set_mapping_point",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "mypaint.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance."
+    },
+    {
+      "inventory_index_1_based": 58,
+      "original": {
+        "c_entry": "gimp_mypaint_tool_enable_color_picker",
+        "legacy_site": "app/tools/gimpmypainttool.cpp:222",
+        "cpp_operation": "MypaintToolRef::enable_color_picker",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "mypaint.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance.",
+      "preserved_open_gap": "Caller-configurable foreground/background pick mode and original setter/named-handle disposition remain open; foreground modifier behavior is not equivalent."
+    },
+    {
+      "inventory_index_1_based": 59,
+      "original": {
+        "c_entry": "gimp_mypaint_tool_get_type",
+        "legacy_site": "app/tools/gimpmypainttool.cpp:117",
+        "cpp_operation": "TypeTraits<GimpMypaintTool>::type",
+        "rule": "Lazy TypeTraits delegates to C GType registration; no C++ global class singleton or implementation placement",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "mypaint.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance."
+    },
+    {
+      "inventory_index_1_based": 60,
+      "original": {
+        "c_entry": "gimp_mypaint_tool_register",
+        "legacy_site": "app/tools/gimpmypainttool.cpp:813",
+        "cpp_operation": "MypaintToolRef::register_type",
+        "rule": "Explicit registration method delegates to this C entry; owner context is passed by adapter and lifecycle state belongs to one Application/ActionGroup store",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "mypaint.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance."
+    },
+    {
+      "inventory_index_1_based": 61,
+      "original": {
+        "c_entry": "gimp_perspective_guide_add_vanish_points",
+        "legacy_site": "app/core/gimpperspectiveguide.cpp:255",
+        "cpp_operation": "PerspectiveGuideRef::add_vanish_points",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "perspective-image-generator.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance.",
+      "preserved_open_gap": "Separate eleven-file perspective guard stays blocked/excluded; valid-index/wrong-point identity gap stays open. No integration or acceptance credit."
+    },
+    {
+      "inventory_index_1_based": 62,
+      "original": {
+        "c_entry": "gimp_perspective_guide_get_type",
+        "legacy_site": "app/core/gimpperspectiveguide.cpp:240",
+        "cpp_operation": "TypeTraits<GimpPerspectiveGuide>::type",
+        "rule": "Lazy TypeTraits delegates to C GType registration; no C++ global class singleton or implementation placement",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "perspective-image-generator.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance.",
+      "preserved_open_gap": "Separate eleven-file perspective guard stays blocked/excluded; valid-index/wrong-point identity gap stays open. No integration or acceptance credit."
+    },
+    {
+      "inventory_index_1_based": 63,
+      "original": {
+        "c_entry": "gimp_perspective_guide_get_vanish_point_length",
+        "legacy_site": "app/core/gimpperspectiveguide.cpp:250",
+        "cpp_operation": "PerspectiveGuideRef::get_vanish_point_length",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "perspective-image-generator.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance.",
+      "preserved_open_gap": "Separate eleven-file perspective guard stays blocked/excluded; valid-index/wrong-point identity gap stays open. No integration or acceptance credit."
+    },
+    {
+      "inventory_index_1_based": 64,
+      "original": {
+        "c_entry": "gimp_perspective_guide_get_vanish_points",
+        "legacy_site": "app/core/gimpperspectiveguide.cpp:265",
+        "cpp_operation": "PerspectiveGuideRef::get_vanish_points",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "perspective-image-generator.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance.",
+      "preserved_open_gap": "Separate eleven-file perspective guard stays blocked/excluded; valid-index/wrong-point identity gap stays open. No integration or acceptance credit."
+    },
+    {
+      "inventory_index_1_based": 65,
+      "original": {
+        "c_entry": "gimp_perspective_guide_new",
+        "legacy_site": "app/core/gimpperspectiveguide.cpp:245",
+        "cpp_operation": "PerspectiveGuideRef::create",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "perspective-image-generator.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance.",
+      "preserved_open_gap": "Separate eleven-file perspective guard stays blocked/excluded; valid-index/wrong-point identity gap stays open. No integration or acceptance credit."
+    },
+    {
+      "inventory_index_1_based": 66,
+      "original": {
+        "c_entry": "gimp_perspective_guide_options_get_type",
+        "legacy_site": "app/tools/gimpperspectiveguidetool.cpp:137",
+        "cpp_operation": "TypeTraits<GimpPerspectiveGuideOptions>::type",
+        "rule": "Lazy TypeTraits delegates to C GType registration; no C++ global class singleton or implementation placement",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "perspective-image-generator.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance.",
+      "preserved_open_gap": "Separate eleven-file perspective guard stays blocked/excluded; valid-index/wrong-point identity gap stays open. No integration or acceptance credit."
+    },
+    {
+      "inventory_index_1_based": 67,
+      "original": {
+        "c_entry": "gimp_perspective_guide_remove_vanish_points",
+        "legacy_site": "app/core/gimpperspectiveguide.cpp:260",
+        "cpp_operation": "PerspectiveGuideRef::remove_vanish_points",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "perspective-image-generator.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance.",
+      "preserved_open_gap": "Separate eleven-file perspective guard stays blocked/excluded; valid-index/wrong-point identity gap stays open. No integration or acceptance credit."
+    },
+    {
+      "inventory_index_1_based": 68,
+      "original": {
+        "c_entry": "gimp_perspective_guide_set_vanish_points",
+        "legacy_site": "app/core/gimpperspectiveguide.cpp:270",
+        "cpp_operation": "PerspectiveGuideRef::set_vanish_points",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "perspective-image-generator.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance.",
+      "preserved_open_gap": "Separate eleven-file perspective guard stays blocked/excluded; valid-index/wrong-point identity gap stays open. No integration or acceptance credit."
+    },
+    {
+      "inventory_index_1_based": 69,
+      "original": {
+        "c_entry": "gimp_perspective_guide_tool_get_type",
+        "legacy_site": "app/tools/gimpperspectiveguidetool.cpp:662",
+        "cpp_operation": "TypeTraits<GimpPerspectiveGuideTool>::type",
+        "rule": "Lazy TypeTraits delegates to C GType registration; no C++ global class singleton or implementation placement",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "perspective-image-generator.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance.",
+      "preserved_open_gap": "Separate eleven-file perspective guard stays blocked/excluded; valid-index/wrong-point identity gap stays open. No integration or acceptance credit."
+    },
+    {
+      "inventory_index_1_based": 70,
+      "original": {
+        "c_entry": "gimp_perspective_guide_tool_register",
+        "legacy_site": "app/tools/gimpperspectiveguidetool.cpp:627",
+        "cpp_operation": "PerspectiveGuideToolRef::register_type",
+        "rule": "Explicit registration method delegates to this C entry; owner context is passed by adapter and lifecycle state belongs to one Application/ActionGroup store",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "perspective-image-generator.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance.",
+      "preserved_open_gap": "Separate eleven-file perspective guard stays blocked/excluded; valid-index/wrong-point identity gap stays open. No integration or acceptance credit."
+    },
+    {
+      "inventory_index_1_based": 71,
+      "original": {
+        "c_entry": "gimp_popover_new",
+        "legacy_site": "app/widgets/popupper.cpp:420",
+        "cpp_operation": "PopoverRef::create",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "widgets.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance."
+    },
+    {
+      "inventory_index_1_based": 72,
+      "original": {
+        "c_entry": "gimp_tool_tile_view_get_type",
+        "legacy_site": "app/widgets/gimptooltileview.cpp:600",
+        "cpp_operation": "TypeTraits<GimpToolTileView>::type",
+        "rule": "Lazy TypeTraits delegates to C GType registration; no C++ global class singleton or implementation placement",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "widgets.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance."
+    },
+    {
+      "inventory_index_1_based": 73,
+      "original": {
+        "c_entry": "gimp_tool_tile_view_new",
+        "legacy_site": "app/widgets/gimptooltileview.cpp:601",
+        "cpp_operation": "ToolTileViewRef::create",
+        "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "widgets.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "No new implementation, acceptance, retirement or ABI disposition is credited by this Layer Presets NULL-help subset. Prior independently published subsets and remaining duties retain their own evidence; the old all-76 map is not promoted to current blanket acceptance."
+    },
+    {
+      "inventory_index_1_based": 74,
+      "original": {
+        "c_entry": "preset_factory_gui_action_group_entry_point",
+        "legacy_site": "app/presets/preset-factory-gui.cpp:247",
+        "cpp_operation": "ActionGroupRef::register_preset_actions",
+        "rule": "Explicit registration method delegates to this C entry; owner context is passed by adapter and lifecycle state belongs to one Application/ActionGroup store",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "layers-presets.json",
+      "candidate_relationship": "supporting_integration",
+      "candidate_disposition": "bounded_native_wrapper_action_cache_lifecycle_accepted_entire_row_open",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": true,
+      "note": "Both final modes pass wrapper-derived menu/real Apply callback and owner-keyed manager/group cleanup. Optional preview override retains inherited context/menu methods. This does not prove all real row-click dispatch or change original exported setup/named-delegate obligations.",
+      "legacy_anchors": [
+        "app/presets/preset-factory-gui.cpp:152-169 empty setup/update loops",
+        "app/presets/preset-factory-gui.cpp:207-217 registers callback",
+        "app/presets/preset-factory-gui.cpp:247-250 exported forwarding entry"
+      ],
+      "native_replacement": [
+        "app/actions/actions.c:184-185 static layer-presets setup/update",
+        "app/actions/layer-presets-actions.c layer_presets_actions_setup/update",
+        "app/widgets/gimplayerpresetview.c native view and dispose cache removal"
+      ],
+      "abi_disposition": "No legacy exported setup entry or ActionGroupRef::register_preset_actions facade is restored. Empty old method body must not be recast as an unimplemented secret behavior; current explicit Apply/Refresh remains a native extension.",
+      "still_open": [
+        "Original exported setup entry/named delegate and full action-factory lifecycle remain distinct.",
+        "Real row-click double application remains open; no blanket Apply acceptance."
+      ],
+      "acceptance_scope": "Only this bounded native dockable restoration and supporting integration, final UI6/backend11/editor19 each native and ASan+UBSan. No whole-row closure."
+    },
+    {
+      "inventory_index_1_based": 75,
+      "original": {
+        "c_entry": "preset_factory_gui_dialogs_actions_entry_point",
+        "legacy_site": "app/presets/preset-factory-gui.cpp:240",
+        "cpp_operation": "ActionGroupRef::register_preset_dialog_actions",
+        "rule": "Explicit registration method delegates to this C entry; owner context is passed by adapter and lifecycle state belongs to one Application/ActionGroup store",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "layers-presets.json",
+      "candidate_relationship": "direct",
+      "candidate_disposition": "bounded_native_dockable_semantics_accepted_entire_row_open",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": true,
+      "note": "Stable four-file candidate passes native-v3 and ASan-v1 strict 36/36 each. Actual factory and action construction, non-NULL help, optional preview icon fallback, context/no-implicit-Apply, re-raise/Close Tab/reopen/cache teardown are accepted within these fixtures. Real row-click double application remains open.",
+      "legacy_role": "Legacy exported C entry forwards to PresetGuiFactory::dialogs_actions_entry_point, builds string actions and connects dialogs_create_dockable_cmd_callback. Legacy dialogs_actions_setup calls it. PresetGuiFactory::restore separately registers the corresponding dockable constructor.",
+      "legacy_anchors": [
+        "app/presets/preset-factory-gui.cpp:123-144,177-217,240-243",
+        "app/actions/dialogs-actions.c:335",
+        "app/presets/layer-preset-gui.cpp:189-210,223-232",
+        "menus/dialogs-menuitems.xml:28"
+      ],
+      "native_replacement": [
+        "app/actions/dialogs-actions.c:246-250 static dialogs-layer-presets -> gimp-layer-preset-list",
+        "app/dialogs/dialogs.c:368-369 static DOCKABLE",
+        "app/actions/dialogs-commands.c:59-77 dialogs_create_dockable_cmd_callback -> native window strategy",
+        "app/dialogs/dialogs-constructors.c:921-926 -> gimp_layer_preset_view_new",
+        "app/widgets/gimpdialogfactory.c:1315-1347 wraps child",
+        "app/widgets/gimpdockable.c:347-357 requires non-NULL help",
+        "app/widgets/gimplayerpresetview.c:18-31 GimpDocked narrow optional get_preview=NULL override; inherited methods retained"
+      ],
+      "abi_disposition": "No legacy exported C function or ActionGroupRef::register_preset_dialog_actions facade is restored by these metadata edits. Explicit old-symbol/named-handle replacement or retirement disposition remains distinct from behavior restored via native static registration.",
+      "still_open": [
+        "Exact legacy exported C function/named-handle replacement or retirement disposition; no whole-row acceptance.",
+        "Real row click creates two clones from one press/release; explicit button creates one. General Apply correctness and complete legacy UI parity are not established.",
+        "No F1/help-browser, installed manual, feature-specific help page, exact old preview-rendering or historical help-string equivalence claim.",
+        "Wrapper Refresh and explicit clone type/source/top-history identity assertions remain absent from new wrapper tests; backend and older inner-view tests retain their own scope."
+      ],
+      "acceptance_scope": "Only this bounded native dockable restoration and supporting integration, final UI6/backend11/editor19 each native and ASan+UBSan. No whole-row closure."
+    },
+    {
+      "inventory_index_1_based": 76,
+      "original": {
+        "c_entry": "preset_factory_gui_prefs_entry_point",
+        "legacy_site": "app/presets/preset-factory-gui.cpp:233",
+        "cpp_operation": "ApplicationRef::preset_preferences",
+        "rule": "Explicit registration method delegates to this C entry; owner context is passed by adapter and lifecycle state belongs to one Application/ActionGroup store",
+        "implementation": "TODO"
+      },
+      "prior_component_review": "layers-presets.json",
+      "candidate_relationship": "unaffected",
+      "candidate_disposition": "not_changed_by_this_subset",
+      "whole_original_row_complete": false,
+      "runtime_credit_from_this_addendum": false,
+      "note": "Neighboring preset row remains unchanged: this candidate edits neither folder preferences nor configuration/search/writable paths. Existing preference tests remain separate; no new old C entry or ApplicationRef::preset_preferences disposition."
+    }
+  ],
+  "protected_maps_sha256": {
+    "c-entry-map-08018-20261014/all-76-entries.json": "09f24e66eb8b01f1a2dfb71bf97e530106b29ab8e6a5922c3f8bc8a9d06b48be",
+    "c-entry-map-08018-20261014/core-hooks-separate.json": "8ef53584508b19b9636ea771ae935d09e04952cefafcbd4ed79e083ef665cb61",
+    "c-entry-map-08018-20261014/layers-presets.json": "bb2c5644bd4c38d669d1df6fdfbd764e209c338809a078d22f3820d4cae2865c",
+    "c-entry-map-08018-20261014/acceptance-addendum.json": "534cc57c8167875fcef3962177d99a4c9f5459871919e05215c177416fce7882",
+    "gimp-c-boundaries-20261013/migration/contracts/cpp-c-entry-map.tsv": "0c92ac6eff0f948d0c2c01d734ec13017ee4af57c4a84944921170c11439526f"
+  },
+  "candidate_source_seal": {
+    "path": "layer-presets-dockable-20261014/candidate-source-seal.json",
+    "sha256": "3ef390d5a2faaa3362736485ee7e52ae8a4c53401635bfca006ed4d58f6b2880",
+    "kind": "stable final candidate source seal for native-v3 and ASan-v1 acceptance",
+    "all_current_paths_equal_supplied_seal": true
+  },
+  "scope_update_context": {
+    "reported_by_parent": "Help-only native v1 exposed missing tab preview property; task scope now includes narrow iface->get_preview=NULL adaptation.",
+    "qualification": "Earlier preview failure explains candidate expansion; final four-file native-v3 and ASan-v1 acceptance is now separately recorded above."
+  },
+  "acceptance": {
+    "scope": "Bounded native dockable acceptance; no complete legacy UI or Apply correctness claim.",
+    "runs": [
+      {
+        "mode": "native",
+        "run": "layer-presets-dockable-candidate-native-v3",
+        "verified_results_path": "c-boundaries-validation-20261013/validation/layer-presets-dockable-candidate-native-v3/verified-results.json",
+        "verified_results_sha256": "8c0deed376894a91fe0178e36d98283ba1086b1f4717524f994a4af5ad154299",
+        "status": "PASS",
+        "case_count": 36,
+        "registrations": [
+          {
+            "name": "gimp-layer-presets",
+            "cases": [
+              "/layer-presets/malformed_resource_loads",
+              "/layer-presets/unknown_filter_stays_inert",
+              "/layer-presets/all_bundled_construction",
+              "/layer-presets/resource_roundtrip",
+              "/layer-presets/reject_without_history_loss",
+              "/layer-presets/rollback_after_insert",
+              "/layer-presets/callback_rename_keeps_undo_name",
+              "/layer-presets/preflight_rejects_changed_target",
+              "/layer-presets/ordered_source_edits",
+              "/layer-presets/factory_paths",
+              "/layer-presets/save_reopen_editable"
+            ],
+            "case_count": 11,
+            "duration_seconds": 1.3737337589263916,
+            "registered_timeout_seconds": 90
+          },
+          {
+            "name": "layer-presets-ui",
+            "cases": [
+              "/layer-presets-ui/selection-actions-lifetime",
+              "/layer-presets-ui/preferences-registration",
+              "/layer-presets-ui/dialog-factory-dockable-lifetime",
+              "/layer-presets-ui/action-dockable-close-reopen",
+              "/layer-presets-ui/filter-storage-preferences",
+              "/layer-presets-ui/filter-storage-reentrant-close"
+            ],
+            "case_count": 6,
+            "duration_seconds": 9.334847450256348,
+            "registered_timeout_seconds": 120
+          },
+          {
+            "name": "painter-mypaint-editor",
+            "cases": [
+              "/painter-editor/01-constructors-shared",
+              "/painter-editor/14-common-store-widget-behaviors",
+              "/painter-editor/02-all-controls-curves",
+              "/painter-editor/03-list-search-history",
+              "/painter-editor/04-save-conflict-default-path",
+              "/painter-editor/05-preview-extended",
+              "/painter-editor/06-replace-close",
+              "/painter-editor/07-registration",
+              "/painter-editor/08-legacy-preview-oracle",
+              "/painter-editor/09-close-during-refresh",
+              "/painter-editor/13-owner-destruction-orders",
+              "/painter-editor/10-graph-gestures",
+              "/painter-editor/11-resource-notifications",
+              "/painter-editor/12-delete-failure",
+              "/painter-editor/15-registered-dock-selection-context",
+              "/painter-editor/16-factory-membership-context-lifetime",
+              "/painter-editor/17-draft-name-history-save",
+              "/painter-editor/18-dialog-factory-dockable-lifetime",
+              "/painter-editor/19-action-dockable-close-reopen"
+            ],
+            "case_count": 19,
+            "duration_seconds": 19.400068998336792,
+            "registered_timeout_seconds": 120
+          }
+        ],
+        "all_process_exit_codes": 0,
+        "meson_exit": 0,
+        "server_exit": 0,
+        "source_seal_sha256": "3ef390d5a2faaa3362736485ee7e52ae8a4c53401635bfca006ed4d58f6b2880",
+        "referenced_input_sha256_verified": true,
+        "registration_source_sha256_verified": true,
+        "timeouts_unchanged": true,
+        "timeout_multiplier": null,
+        "isolation_and_authenticated_loopback_verified": true,
+        "lsan_enabled": null,
+        "actual_C_consumers": "layer-presets-ui and gimp-layer-presets use cc; per-unit standard recorded; no language override",
+        "explicit_C11_claim": false,
+        "diagnostic_exception": {
+          "source": "https://sources.debian.org/patches/libcloudproviders/0.3.0-3/Fix-error-handling-on-bus-acquisition.patch/",
+          "dependency_sha256": "0e700324c5afa3f083893b6be9bf6ddbac6aafa91c5d207f9f815e5a882a0fbe",
+          "scope": "At most one exact nonfatal libcloudproviders DEBUG bus-launch notice per GUI process"
+        },
+        "verifier_sha256": "27d3ef35ec477742d4f6e9f343859a5d74b1081c3bb523caba76496fb5db647b",
+        "input_sha256": {
+          "results.json": "7888e770922aa2549cdd6b2273e780095e78295b2e4e7cf8e5ca6d4736f8da35",
+          "registrations.json": "9ccb4c45d7657973e6fe7846bdc9d61207d94322e8f7157fa8b3d4b9e3d91e6f",
+          "layer-presets-dockable-candidate-native-v3.json": "cc6181f051690b6eda8b8bb7cc780afe7e15598ea6b8c915397bb8654b804aed"
+        }
+      },
+      {
+        "mode": "asan",
+        "run": "layer-presets-dockable-candidate-asan-v1",
+        "verified_results_path": "c-boundaries-validation-20261013/validation/layer-presets-dockable-candidate-asan-v1/verified-results.json",
+        "verified_results_sha256": "34fc31064a72298f9f0f49f3bdef3ce76431215e06ae3b2ad34ecb8f87186925",
+        "status": "PASS",
+        "case_count": 36,
+        "registrations": [
+          {
+            "name": "gimp-layer-presets",
+            "cases": [
+              "/layer-presets/malformed_resource_loads",
+              "/layer-presets/unknown_filter_stays_inert",
+              "/layer-presets/all_bundled_construction",
+              "/layer-presets/resource_roundtrip",
+              "/layer-presets/reject_without_history_loss",
+              "/layer-presets/rollback_after_insert",
+              "/layer-presets/callback_rename_keeps_undo_name",
+              "/layer-presets/preflight_rejects_changed_target",
+              "/layer-presets/ordered_source_edits",
+              "/layer-presets/factory_paths",
+              "/layer-presets/save_reopen_editable"
+            ],
+            "case_count": 11,
+            "duration_seconds": 1.7754545211791992,
+            "registered_timeout_seconds": 90
+          },
+          {
+            "name": "layer-presets-ui",
+            "cases": [
+              "/layer-presets-ui/selection-actions-lifetime",
+              "/layer-presets-ui/preferences-registration",
+              "/layer-presets-ui/dialog-factory-dockable-lifetime",
+              "/layer-presets-ui/action-dockable-close-reopen",
+              "/layer-presets-ui/filter-storage-preferences",
+              "/layer-presets-ui/filter-storage-reentrant-close"
+            ],
+            "case_count": 6,
+            "duration_seconds": 20.81834578514099,
+            "registered_timeout_seconds": 120
+          },
+          {
+            "name": "painter-mypaint-editor",
+            "cases": [
+              "/painter-editor/01-constructors-shared",
+              "/painter-editor/14-common-store-widget-behaviors",
+              "/painter-editor/02-all-controls-curves",
+              "/painter-editor/03-list-search-history",
+              "/painter-editor/04-save-conflict-default-path",
+              "/painter-editor/05-preview-extended",
+              "/painter-editor/06-replace-close",
+              "/painter-editor/07-registration",
+              "/painter-editor/08-legacy-preview-oracle",
+              "/painter-editor/09-close-during-refresh",
+              "/painter-editor/13-owner-destruction-orders",
+              "/painter-editor/10-graph-gestures",
+              "/painter-editor/11-resource-notifications",
+              "/painter-editor/12-delete-failure",
+              "/painter-editor/15-registered-dock-selection-context",
+              "/painter-editor/16-factory-membership-context-lifetime",
+              "/painter-editor/17-draft-name-history-save",
+              "/painter-editor/18-dialog-factory-dockable-lifetime",
+              "/painter-editor/19-action-dockable-close-reopen"
+            ],
+            "case_count": 19,
+            "duration_seconds": 69.68315529823303,
+            "registered_timeout_seconds": 120
+          }
+        ],
+        "all_process_exit_codes": 0,
+        "meson_exit": 0,
+        "server_exit": 0,
+        "source_seal_sha256": "3ef390d5a2faaa3362736485ee7e52ae8a4c53401635bfca006ed4d58f6b2880",
+        "referenced_input_sha256_verified": true,
+        "registration_source_sha256_verified": true,
+        "timeouts_unchanged": true,
+        "timeout_multiplier": null,
+        "isolation_and_authenticated_loopback_verified": true,
+        "lsan_enabled": false,
+        "actual_C_consumers": "layer-presets-ui and gimp-layer-presets use cc; per-unit standard recorded; no language override",
+        "explicit_C11_claim": false,
+        "diagnostic_exception": {
+          "source": "https://sources.debian.org/patches/libcloudproviders/0.3.0-3/Fix-error-handling-on-bus-acquisition.patch/",
+          "dependency_sha256": "0e700324c5afa3f083893b6be9bf6ddbac6aafa91c5d207f9f815e5a882a0fbe",
+          "scope": "At most one exact nonfatal libcloudproviders DEBUG bus-launch notice per GUI process"
+        },
+        "verifier_sha256": "27d3ef35ec477742d4f6e9f343859a5d74b1081c3bb523caba76496fb5db647b",
+        "input_sha256": {
+          "results.json": "6e7451b4ee5f78727e6804cea1cadd28ec376aba643a33bf48ac9f2a4da1b800",
+          "registrations.json": "a36339572417abb5b6155903e29d3f4d8ad5d7e74685a40a58d21f751738bd9c",
+          "layer-presets-dockable-candidate-asan-v1.json": "52ac1f751aff57b87578370d17a9291fac412e5a58b0ee1682fccedeaeece576"
+        }
+      }
+    ],
+    "evidence_review": "Read saved strict verifier output, referenced input hashes, process/aggregate results, final mapping helper, source seal, ordinary receipt and relevant images. No independent rerun.",
+    "verification_limit": "Recorded source/compile/execution provenance is reconciled, not an independently reproduced build or proof of all migration behavior. ASan+UBSan passes have LeakSanitizer disabled.",
+    "prior_attempts": "Earlier help-only preview failure and action-after-factory mapping failure remain failed attempts; isolated v2 success is not substituted for final three-suite aggregate."
+  },
+  "ordinary_application_evidence": {
+    "results_path": "layer-presets-dockable-20261014/visual-prep/candidate-01/results.json",
+    "results_sha256": "b27b2f211d8d52339491d237b818485579b7a318ef50366a02427cd5f436f28a",
+    "receipt_path": "layer-presets-dockable-20261014/visual-prep/candidate-01/screenshots/capture-receipt.json",
+    "receipt_sha256": "4e03368a0b5cce45efa58dd6759a5a3876faf69c25c482da3d747fce5608cb21",
+    "application_sha256": "f8b6ef1215d1a011342f2216b26159919196fd5018235a5be5e8dd2061f95d4f",
+    "application_build_note": "Ordinary app uses candidate production built with native-v2; final v3 changes only test mapping wait, so do not describe visual run as executing the final test binary. Receipt seals runtime inputs, not an independent source-to-binary reproduction.",
+    "native_actions_observed": "Open, Close Tab, reopen, repeated open/raise, close and normal quit; initial/open/reopened/repeated-open scenes preserve original two-layer canvas.",
+    "normal_quit_exit": 0,
+    "application_exit": 0,
+    "document_bytes_unchanged": true,
+    "source_xcf_sha256": "a096d27e263f54996d96a84cb0e75323bd3c23b826acd2e130b073ceed123122",
+    "inputs_stable": true,
+    "resource_init_errors": [],
+    "regression_cases_added": 0,
+    "screenshots_shared_precommit": {
+      "value": true,
+      "basis": "Parent report in final reconciliation assignment; not a new send by this reviewer."
+    },
+    "inspected_images": [
+      "screenshots/action-10.png",
+      "screenshots/after-explicit-apply-one-clone.png"
+    ],
+    "limitation": "Ordinary visual/input observation is separate from automated case counts and does not establish all Apply semantics or prove the cause of earlier baseline shutdown failure."
+  },
+  "remaining_row_click_gap": {
+    "status": "OPEN",
+    "description": "A real preset-row click created two clones from one native left-button press/release, while the explicit Apply button created one clone. Opening/context attachment remains separately accepted as non-applying.",
+    "evidence": [
+      "visual-prep/candidate-01/screenshots/capture-receipt.json action-10: 4 layers from initial 2; action-11: 3 after first Undo; action-12: 2 after second Undo",
+      "visual-prep/candidate-01/screenshots/after-explicit-apply-one-clone.png: 3 total layers from original 2",
+      "visual-prep/native_input.py:26-30 one motion then exactly one XTest button-down/button-up pair"
+    ],
+    "source_interpretation": "Programmatic selection in the automated wrapper tests is not the entire real row-click event sequence. Callback cause is not established by these observations.",
+    "next_bounded_work": "Reproduce the real row-click event sequence with exact action count and diagnose duplicate dispatch before changing selection/activation behavior. No implementation or acceptance of that next fix is included.",
+    "whole_apply_correctness": false
+  }
+}

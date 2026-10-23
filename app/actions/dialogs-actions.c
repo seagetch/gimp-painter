@@ -247,7 +247,7 @@ const GimpStringActionEntry dialogs_dockable_actions[] =
     NC_("dialogs-action", "Layer Presets Dialog"),
     NC_("dialogs-action", "Layer Presets"), { NULL },
     NC_("dialogs-action", "Open layer presets dialog"),
-    "gimp-layer-preset-list", NULL },
+    "gimp-layer-preset-list", GIMP_HELP_DOCK },
 
   { "dialogs-tool-presets", GIMP_ICON_TOOL_PRESET,
     NC_("dialogs-action", "Tool Pre_sets Dialog"),

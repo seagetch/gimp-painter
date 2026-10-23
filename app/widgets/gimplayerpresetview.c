@@ -10,11 +10,22 @@
 #include "core/gimplayerpreset.h"
 #include "gimplayerpresetview.h"
 #include "gimpcontainerview.h"
+#include "gimpdocked.h"
 #include "gimpeditor.h"
 #include "gimpuimanager.h"
 #include "gimpmenufactory.h"
 
-G_DEFINE_TYPE (GimpLayerPresetView, gimp_layer_preset_view, GIMP_TYPE_DATA_FACTORY_VIEW)
+static void docked_iface_init (GimpDockedInterface *iface);
+G_DEFINE_TYPE_WITH_CODE (GimpLayerPresetView, gimp_layer_preset_view,
+                        GIMP_TYPE_DATA_FACTORY_VIEW,
+                        G_IMPLEMENT_INTERFACE (GIMP_TYPE_DOCKED, docked_iface_init))
+static void docked_iface_init (GimpDockedInterface *iface)
+{
+  /* Layer Presets selection belongs to this view, not a GimpContext resource
+   * property. Use the registered tab icon instead of a property-bound preview.
+   * Keep the inherited context, menu, button-bar and auxiliary-info methods. */
+  iface->get_preview = NULL;
+}
 static GimpLayerPreset *selected (GimpLayerPresetView *view, GimpContext **context, GimpLayer **source)
 {
   GimpContainerView *container = GIMP_CONTAINER_EDITOR (view)->view;
