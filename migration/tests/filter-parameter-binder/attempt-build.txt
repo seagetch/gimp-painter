@@ -1,0 +1,20 @@
+Initial native fixture build: exit 1
+All 19 compiler errors were the C++ int-to-GParamFlags conversion in the new test fixture.
+First diagnostic:
+../libgimpbase/gimpparamspecs.h:89:56: error: invalid conversion from ‘int’ to ‘GParamFlags’ [-fpermissive]
+   89 | #define GIMP_PARAM_READWRITE      (G_PARAM_READWRITE   | \
+      |                                   ~~~~~~~~~~~~~~~~~~~~~^~~
+      |                                                        |
+      |                                                        int
+   90 |                                    GIMP_PARAM_STATIC_STRINGS)
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~
+../app/tests/test-filter-parameters.cpp:63:73: note: in expansion of macro ‘GIMP_PARAM_READWRITE’
+   63 | { return g_param_spec_int (name, name, name, minimum, maximum, initial, GIMP_PARAM_READWRITE); }
+      |                                                                         ^~~~~~~~~~~~~~~~~~~~
+In file included from /workspace/scratch/5b5281e79681/.deps-debian13/root/usr/include/glib-2.0/glib-object.h:31,
+                 from /workspace/scratch/5b5281e79681/.deps-debian13/root/usr/include/gegl-0.4/gegl.h:22,
+                 from ../app/tests/test-filter-parameters.cpp:6:
+/workspace/scratch/5b5281e79681/.deps-debian13/root/usr/include/glib-2.0/gobject/gparamspecs.h:1018:59: note:   initializing argument 7 of ‘GParamSpec* g_param_spec_int(const gchar*, const gchar*, const gchar*, gint, gint, gint, GParamFlags)’
+ 1018 |                                           GParamFlags     flags);
+
+Fixed with an explicit GParamFlags cast; the final native build and all selected tests passed.

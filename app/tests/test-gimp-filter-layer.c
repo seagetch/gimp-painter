@@ -27,6 +27,10 @@
 #include "gimp-app-test-utils.h"
 void gimp_test_filter_cpp_config (Gimp *application);
 void gimp_test_filter_owner_context_native (Gimp *application);
+void gimp_test_filter_parameter_reordering (Gimp *application);
+void gimp_test_filter_parameter_metadata (Gimp *application);
+void gimp_test_filter_parameter_assignment (Gimp *application);
+void gimp_test_filter_parameter_lifetime (Gimp *application);
 void gimp_test_filter_cpp_layout (gsize size, gsize offset, GimpFilterLayer *layer);
 GBytes *gimp_test_filter_cpp_gauss_reference (const guint8 *native, gsize width, gsize height, guint channels, gint method);
 static Gimp *gimp;
@@ -2342,6 +2346,10 @@ static void image_close_during_strong_redo_callbacks (void) { undo_owner_lifetim
 #include "test-filter-convolution.inc"
 #include "test-filter-progress.inc"
 static void convolution_native_context (void) { gimp_test_filter_owner_context_native (gimp); }
+static void parameter_suffix_reordering (void) { gimp_test_filter_parameter_reordering (gimp); }
+static void parameter_metadata_rejections (void) { gimp_test_filter_parameter_metadata (gimp); }
+static void parameter_assignment_validation (void) { gimp_test_filter_parameter_assignment (gimp); }
+static void parameter_object_lifetime (void) { gimp_test_filter_parameter_lifetime (gimp); }
 
 int main (int argc, char **argv)
 {
@@ -2355,6 +2363,8 @@ int main (int argc, char **argv)
   }
   gimp = gimp_init_for_testing ();
 #define ADD(name) g_test_add_func ("/gimp-filter-layer/" #name,name)
+  ADD (parameter_suffix_reordering); ADD (parameter_metadata_rejections);
+  ADD (parameter_assignment_validation); ADD (parameter_object_lifetime);
   ADD(progress_native_abi); ADD(progress_start_reentry); ADD(progress_real_workers); ADD(progress_worker_cancel_replace_close); ADD(progress_independent_owners);
   ADD (blinds_owner_context); ADD (blinds_owner_context_phases);
   ADD (blinds_owner_context_expansion); ADD (blinds_owner_context_retry);
