@@ -1,0 +1,8 @@
+In file included from /workspace/scratch/0015fc5d1a03/gimp-painter/app/paint/painter-mypaint-surface/tests/region-lifetime.cpp:293:
+/workspace/scratch/0015fc5d1a03/gimp-painter/app/paint/painter-mypaint-surface/tests/region-lifetime-internal.inc: In function ‘void InternalRegionAudit::rejected_or_throwing_paths()’:
+/workspace/scratch/0015fc5d1a03/gimp-painter/app/paint/painter-mypaint-surface/tests/region-lifetime-internal.inc:58:38: error: ‘numeric_limits’ is not a member of ‘std’
+   58 |    if(route==5){const float nan=std::numeric_limits<float>::quiet_NaN();throws<std::invalid_argument>([&]{surface.draw_dab(4,4,2,nan,0,0,1,1);});float r,g,b,a;throws<std::invalid_argument>([&]{surface.get_color(nan,4,2,&r,&g,&b,&a);});}
+      |                                      ^~~~~~~~~~~~~~
+/workspace/scratch/0015fc5d1a03/gimp-painter/app/paint/painter-mypaint-surface/tests/region-lifetime-internal.inc:58:53: error: expected primary-expression before ‘float’
+   58 |    if(route==5){const float nan=std::numeric_limits<float>::quiet_NaN();throws<std::invalid_argument>([&]{surface.draw_dab(4,4,2,nan,0,0,1,1);});float r,g,b,a;throws<std::invalid_argument>([&]{surface.get_color(nan,4,2,&r,&g,&b,&a);});}
+      |                                                     ^~~~~

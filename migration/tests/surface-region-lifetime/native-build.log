@@ -1,0 +1,14 @@
+ninja: Entering directory `/workspace/shared/gimp-native-baseline/build-port'
+[1/7] Generating symbol file libgimpbase/libgimpbase-3.0.so.0.8.1.p/libgimpbase-3.0.so.0.8.1.symbols
+[2/6] Generating symbol file libgimpmath/libgimpmath-3.0.so.0.8.1.p/libgimpmath-3.0.so.0.8.1.symbols
+[3/6] Compiling C++ object app/paint/painter-mypaint-surface/painter-mypaint-region-lifetime.p/tests_region-lifetime.cpp.o
+[4/6] Linking target app/paint/painter-mypaint-surface/painter-mypaint-region-lifetime
+[5/6] Compiling C++ object app/paint/painter-mypaint-surface/painter-mypaint-region-internals.p/tests_region-lifetime.cpp.o
+In file included from ../source/app/paint/painter-mypaint-surface/tests/region-lifetime.cpp:293:
+../source/app/paint/painter-mypaint-surface/tests/region-lifetime-internal.inc:25:24: warning: no previous declaration for ‘GeglBuffer* __wrap_gegl_buffer_new(const GeglRectangle*, const Babl*)’ [-Wmissing-declarations]
+   25 | extern "C" GeglBuffer* __wrap_gegl_buffer_new(const GeglRectangle* rect,const Babl* format) {
+      |                        ^~~~~~~~~~~~~~~~~~~~~~
+../source/app/paint/painter-mypaint-surface/tests/region-lifetime-internal.inc:28:24: warning: no previous declaration for ‘GeglBuffer* __wrap_gegl_buffer_dup(GeglBuffer*)’ [-Wmissing-declarations]
+   28 | extern "C" GeglBuffer* __wrap_gegl_buffer_dup(GeglBuffer* buffer) {
+      |                        ^~~~~~~~~~~~~~~~~~~~~~
+[6/6] Linking target app/paint/painter-mypaint-surface/painter-mypaint-region-internals

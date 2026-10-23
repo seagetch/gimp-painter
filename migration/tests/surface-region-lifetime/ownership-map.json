@@ -1,0 +1,342 @@
+{
+  "task": "09.003/region-lifetime",
+  "original_acceptance": "draw_dab と get_color の全 return・失敗経路で read/write/snapshot/mask/texture の buffer を一度だけ解放する",
+  "criterion_status": "DONE",
+  "legacy_commit": "afa43fae3e920210146abed514f136fd49f671b5",
+  "legacy_path": "app/paint/gimpmypaintcore-surface.cpp",
+  "legacy_sha256": "5a59199b90b344adb09b4a3914bb6af180c6526179eb74ebf27f43a96b368669",
+  "legacy_sites": [
+    {
+      "site": "app/paint/gimpmypaintcore-surface.cpp:327",
+      "kind": "G_FREE",
+      "original_statement": "if (src1PR) g_free(src1PR);",
+      "role": "read",
+      "current_owner": "Impl::target / initial ObjectRef and local read() byte vector",
+      "status": "ownership-mapped",
+      "evidence": [
+        "retained-buffers",
+        "coverage-unwind",
+        "internal-owned-session-buffers",
+        "internal-rejected-throwing-paths"
+      ],
+      "remaining_tasks": []
+    },
+    {
+      "site": "app/paint/gimpmypaintcore-surface.cpp:331",
+      "kind": "G_FREE",
+      "original_statement": "if (destPR) g_free(destPR);",
+      "role": "write",
+      "current_owner": "Impl::target / floating ObjectRef and local pixels/result vectors",
+      "status": "ownership-mapped",
+      "evidence": [
+        "retained-buffers",
+        "coverage-unwind",
+        "internal-owned-session-buffers",
+        "internal-rejected-throwing-paths"
+      ],
+      "remaining_tasks": []
+    },
+    {
+      "site": "app/paint/gimpmypaintcore-surface.cpp:335",
+      "kind": "G_FREE",
+      "original_statement": "if (brushPR) g_free(brushPR);",
+      "role": "brush",
+      "current_owner": "coverage local ShapeMask and Dab mask/wide_mask vectors; floating composition local vectors",
+      "status": "ownership-mapped",
+      "evidence": [
+        "retained-buffers",
+        "coverage-unwind",
+        "internal-owned-session-buffers",
+        "internal-rejected-throwing-paths"
+      ],
+      "remaining_tasks": []
+    },
+    {
+      "site": "app/paint/gimpmypaintcore-surface.cpp:345",
+      "kind": "G_FREE",
+      "original_statement": "if (src1PR) g_free(src1PR);",
+      "role": "read",
+      "current_owner": "Impl::target / initial ObjectRef and local read() byte vector",
+      "status": "ownership-mapped",
+      "evidence": [
+        "retained-buffers",
+        "coverage-unwind",
+        "internal-owned-session-buffers",
+        "internal-rejected-throwing-paths"
+      ],
+      "remaining_tasks": []
+    },
+    {
+      "site": "app/paint/gimpmypaintcore-surface.cpp:346",
+      "kind": "G_FREE",
+      "original_statement": "if (destPR) g_free(destPR);",
+      "role": "write",
+      "current_owner": "Impl::target / floating ObjectRef and local pixels/result vectors",
+      "status": "ownership-mapped",
+      "evidence": [
+        "retained-buffers",
+        "coverage-unwind",
+        "internal-owned-session-buffers",
+        "internal-rejected-throwing-paths"
+      ],
+      "remaining_tasks": []
+    },
+    {
+      "site": "app/paint/gimpmypaintcore-surface.cpp:347",
+      "kind": "G_FREE",
+      "original_statement": "if (brushPR) g_free(brushPR);",
+      "role": "brush",
+      "current_owner": "coverage local ShapeMask and Dab mask/wide_mask vectors; floating composition local vectors",
+      "status": "ownership-mapped",
+      "evidence": [
+        "retained-buffers",
+        "coverage-unwind",
+        "internal-owned-session-buffers",
+        "internal-rejected-throwing-paths"
+      ],
+      "remaining_tasks": []
+    },
+    {
+      "site": "app/paint/gimpmypaintcore-surface.cpp:348",
+      "kind": "G_FREE",
+      "original_statement": "if (maskPR) g_free(maskPR);",
+      "role": "mask",
+      "current_owner": "Impl::selection ObjectRef plus local selected/wide_selected vectors",
+      "status": "ownership-mapped",
+      "evidence": [
+        "retained-buffers",
+        "coverage-unwind",
+        "internal-owned-session-buffers",
+        "internal-rejected-throwing-paths"
+      ],
+      "remaining_tasks": []
+    },
+    {
+      "site": "app/paint/gimpmypaintcore-surface.cpp:349",
+      "kind": "G_FREE",
+      "original_statement": "if (texturePR) g_free(texturePR);",
+      "role": "texture",
+      "current_owner": "local copied TextureProvider and shared_ptr<const Texture>; Impl Texture owns values",
+      "status": "ownership-mapped",
+      "evidence": [
+        "retained-buffers",
+        "coverage-unwind",
+        "internal-owned-session-buffers",
+        "internal-rejected-throwing-paths"
+      ],
+      "remaining_tasks": []
+    },
+    {
+      "site": "app/paint/gimpmypaintcore-surface.cpp:400",
+      "kind": "G_FREE",
+      "original_statement": "if (src1PR) g_free(src1PR);",
+      "role": "read",
+      "current_owner": "Impl::target / initial ObjectRef and local read() byte vector",
+      "status": "ownership-mapped",
+      "evidence": [
+        "retained-buffers",
+        "coverage-unwind",
+        "internal-owned-session-buffers",
+        "internal-rejected-throwing-paths"
+      ],
+      "remaining_tasks": []
+    },
+    {
+      "site": "app/paint/gimpmypaintcore-surface.cpp:401",
+      "kind": "G_FREE",
+      "original_statement": "if (brushPR) g_free(brushPR);",
+      "role": "brush",
+      "current_owner": "coverage local ShapeMask and Dab mask/wide_mask vectors; floating composition local vectors",
+      "status": "ownership-mapped",
+      "evidence": [
+        "retained-buffers",
+        "coverage-unwind",
+        "internal-owned-session-buffers",
+        "internal-rejected-throwing-paths"
+      ],
+      "remaining_tasks": []
+    },
+    {
+      "site": "app/paint/gimpmypaintcore-surface.cpp:402",
+      "kind": "G_FREE",
+      "original_statement": "if (maskPR) g_free(maskPR);",
+      "role": "mask",
+      "current_owner": "Impl::selection ObjectRef plus local selected/wide_selected vectors",
+      "status": "ownership-mapped",
+      "evidence": [
+        "retained-buffers",
+        "coverage-unwind",
+        "internal-owned-session-buffers",
+        "internal-rejected-throwing-paths"
+      ],
+      "remaining_tasks": []
+    },
+    {
+      "site": "app/paint/gimpmypaintcore-surface.cpp:403",
+      "kind": "G_FREE",
+      "original_statement": "if (texturePR) g_free(texturePR);",
+      "role": "texture",
+      "current_owner": "local copied TextureProvider and shared_ptr<const Texture>; Impl Texture owns values",
+      "status": "ownership-mapped",
+      "evidence": [
+        "retained-buffers",
+        "coverage-unwind",
+        "internal-owned-session-buffers",
+        "internal-rejected-throwing-paths"
+      ],
+      "remaining_tasks": []
+    },
+    {
+      "site": "app/paint/gimpmypaintcore-surface.cpp:614",
+      "kind": "NEW",
+      "original_statement": "return new GimpMypaintSurfaceImpl<GimpImageFeature>(drawable);",
+      "role": "factory-image",
+      "current_owner": "PaintCore shared_ptr<GeglSurface> owns Surface; Surface unique_ptr<Impl> owns buffers",
+      "status": "factory-owner-traced-not-semantic-parity",
+      "evidence": [
+        "source-owner-review"
+      ],
+      "remaining_tasks": [
+        "08.018",
+        "31.017"
+      ]
+    },
+    {
+      "site": "app/paint/gimpmypaintcore-surface.cpp:618",
+      "kind": "NEW",
+      "original_statement": "return new GimpMypaintSurfaceImpl<GimpTempBufFeature>(drawable);",
+      "role": "factory-preview",
+      "current_owner": "Modern preview/TempBuf conversion has separate owners; obsolete Surface factory not restored",
+      "status": "factory-owner-traced-not-semantic-parity",
+      "evidence": [
+        "source-owner-review"
+      ],
+      "remaining_tasks": [
+        "08.018",
+        "31.017"
+      ]
+    }
+  ],
+  "ancestor_duties": {
+    "migration/contracts/drawable-buffer-read-resolution.json": {
+      "sha256": "fd0e1f6e77de15269680e94177583afbc7ad69aa46958e9be1c33204438cf2db",
+      "duties": [
+        {
+          "work_id": "legacy-59c591933e446abda966",
+          "source_id": "01.002/000933",
+          "path": "app/paint/gimpmypaintcore-drawablefeature.hpp",
+          "source_blob": "f822f8d4ede027ac9185d38669b66f7133d8a7d7",
+          "source_range": "-0,0 -> 1,429",
+          "source_sha256": "def3ec2441c48c2b64e440e216c4c10ecd8a8948600a19d97a4499defa1a3866",
+          "source_duty": "GeneralDrawableFeature/GimpImageFeature/TempBufFeature contain read, write, masks, undo and floating storage. Existing GeglSurface is the actual current image-buffer reader, now with bounded byte and selection access. This does not certify TempBuf preview, Undo snapshots, writes or all feature paths.",
+          "historical_remaining_tasks": [
+            "09.003",
+            "09.003/region-lifetime",
+            "09.004",
+            "09.005",
+            "09.006",
+            "09.008",
+            "09.011"
+          ],
+          "whole_hunk_status": "TODO",
+          "read_proof": "migration/tests/drawable-buffer-read-parent/duty-audit.json#legacy-59c591933e446abda966",
+          "successor_obligations": {
+            "09.004": "Verify DrawableFeature write bounds, dirty results and floating composition.",
+            "09.005": "Verify TempBuf preview/conversion paths and storage ownership beyond bridge reads.",
+            "09.006": "Verify selection-mask offset/coverage integration beyond the combined read fixture.",
+            "09.007": "Verify layer-mask application distinction.",
+            "09.008": "Verify immutable stroke-start snapshot integration.",
+            "09.009": "Verify floating and work-buffer allocation limits.",
+            "09.011": "Verify native Undo difference recording and restoration.",
+            "09.012": "Verify commit/cancel behavior.",
+            "09.003/region-lifetime": "Verify all draw_dab/get_color early-return, failure and callback lifecycle paths for read/write/snapshot/mask/texture ownership."
+          }
+        }
+      ]
+    },
+    "migration/contracts/drawable-buffer-write.json": {
+      "sha256": "049f2442044542bd24290ef1e3b3018793b135f4dc9a21108430c0d95592dc14",
+      "duties": [
+        {
+          "work_id": "legacy-788dfcfdaadf20a03891",
+          "source_id": "01.002/000933",
+          "path": "app/paint/gimpmypaintcore-drawablefeature.hpp",
+          "source_blob": "f822f8d4ede027ac9185d38669b66f7133d8a7d7",
+          "source_range": "-0,0 -> 1,429",
+          "source_sha256": "def3ec2441c48c2b64e440e216c4c10ecd8a8948600a19d97a4499defa1a3866",
+          "source_scope": "file-level declarations/content",
+          "whole_hunk_checkpoint_status": "TODO",
+          "related_read_work_id": "legacy-59c591933e446abda966",
+          "historical_source_duty": "GeneralDrawableFeature/GimpImageFeature/TempBufFeature contain read, write, masks, undo and floating storage. Existing GeglSurface is the actual current image-buffer reader, now with bounded byte and selection access. This does not certify TempBuf preview, Undo snapshots, writes or all feature paths.",
+          "inherited_09_004_obligation": "Verify DrawableFeature write bounds, dirty results and floating composition.",
+          "write_criterion_evidence": [
+            "/write-domains/144-formats",
+            "/write-domains/coalesced-dirty-publication",
+            "/coordinates/selection-edges",
+            "/coordinates/empty-touch-intersections",
+            "/coordinates/overlapping-adjacent-dirty-union"
+          ],
+          "successor_obligations": {
+            "09.005": "Verify TempBuf preview/conversion paths.",
+            "09.006": "Verify selection-mask integration.",
+            "09.007": "Verify layer-mask apply distinction.",
+            "09.008": "Verify immutable stroke-start snapshot integration.",
+            "09.009": "Verify work/floating buffer allocation limits.",
+            "09.010": "Verify all application dirty-region aggregation consumers; this task tests Surface conservative ROI only.",
+            "09.011": "Verify native Undo difference recording/restoration.",
+            "09.012": "Verify full commit/cancel behavior.",
+            "09.003/region-lifetime": "Verify all callback/return/failure buffer lifetimes, not only successful writes."
+          }
+        }
+      ]
+    },
+    "migration/contracts/selection-mask.json": {
+      "sha256": "607c58dfe677f0338debef5e53d6c6f10d161fcf11177bcfa7703e83df8a2551",
+      "duties": [
+        {
+          "work_id": "legacy-8b9eba3c883fca55282a",
+          "source_id": "01.002/000933",
+          "path": "app/paint/gimpmypaintcore-drawablefeature.hpp",
+          "source_blob": "f822f8d4ede027ac9185d38669b66f7133d8a7d7",
+          "source_range": "-0,0 -> 1,429",
+          "source_sha256": "def3ec2441c48c2b64e440e216c4c10ecd8a8948600a19d97a4499defa1a3866",
+          "source_scope": "file-level declarations/content",
+          "source_blob_sha256": "6eb9434216b09585e6a45ed591ae5c2831cc032af5f1afca9c4c3e9f5dfcb283",
+          "whole_hunk_checkpoint_status": "TODO",
+          "historical_source_duty": "Entire 429-line GeneralDrawableFeature/GimpImageFeature/GimpTempBufFeature header: drawable reads/writes, selection, snapshots, undo, floating allocation, TempBuf preview and lifetime; selection acceptance alone does not complete this header.",
+          "related_obligations": [
+            {
+              "criterion": "09.003",
+              "work_id": "legacy-59c591933e446abda966",
+              "inherited_09_006_obligation": "Verify selection-mask offset/coverage integration beyond the combined read fixture."
+            },
+            {
+              "criterion": "09.004",
+              "work_id": "legacy-788dfcfdaadf20a03891",
+              "inherited_09_006_obligation": "Verify selection-mask integration."
+            }
+          ],
+          "successor_obligations": {
+            "09.004": "Verify DrawableFeature write bounds, dirty results and floating composition.",
+            "09.005": "Verify TempBuf preview/conversion paths and storage ownership beyond bridge reads. Verify TempBuf preview/conversion paths.",
+            "09.007": "Verify layer-mask application distinction. Verify layer-mask apply distinction.",
+            "09.008": "Verify immutable stroke-start snapshot integration.",
+            "09.009": "Verify floating and work-buffer allocation limits. Verify work/floating buffer allocation limits.",
+            "09.011": "Verify native Undo difference recording and restoration. Verify native Undo difference recording/restoration.",
+            "09.012": "Verify commit/cancel behavior. Verify full commit/cancel behavior.",
+            "09.003/region-lifetime": "Verify all draw_dab/get_color early-return, failure and callback lifecycle paths for read/write/snapshot/mask/texture ownership. Verify all callback/return/failure buffer lifetimes, not only successful writes.",
+            "09.010": "Verify all application dirty-region aggregation consumers; this task tests Surface conservative ROI only.",
+            "09.013": "Connect projection update notifications so changed regions reach the display.",
+            "21.010": "Switch sampling among stroke-start, working and composed buffers according to specification.",
+            "21.011": "Verify non-incremental working-buffer accumulation for coincident dabs against legacy semantics.",
+            "31.017": "Complete all remaining old TileManager/PixelRegion/TempBuf consumer replacement without dropping this entire header duty."
+          }
+        }
+      ]
+    }
+  },
+  "scope": "Source ownership proof for all C++ exits plus native normal/sanitizer runtime cases. No whole-process leak check or fatal OOM simulation.",
+  "production_change": false,
+  "whole_hunk_status": "TODO",
+  "factory_semantic_parity": false
+}

@@ -1,0 +1,24 @@
+[
+  {
+    "name": "gimp:painter / painter-mypaint-region-lifetime",
+    "result": "OK",
+    "returncode": 0,
+    "duration": 0.24965715408325195,
+    "stdout": "TAP version 14\n# random seed: R02Sb907fb66a1c379361a558f86c9ea70cd\n1..11\n# Start of region-lifetime tests\nok 1 /region-lifetime/retained-buffers\nok 2 /region-lifetime/selection-replacement\nok 3 /region-lifetime/snapshot-transitions\nok 4 /region-lifetime/provider-replacement\nok 5 /region-lifetime/coverage-unwind\nok 6 /region-lifetime/active-destructor-providers\nok 7 /region-lifetime/texture-self-clear\nok 8 /region-lifetime/notify-self-clear\nok 9 /region-lifetime/notify-exception-recovery\nok 10 /region-lifetime/notify-copy-before-write\nok 11 /region-lifetime/coverage-replaces-notify\n# End of region-lifetime tests\n",
+    "stderr": "",
+    "command": [
+      "/workspace/shared/gimp-native-baseline/build-port/app/paint/painter-mypaint-surface/painter-mypaint-region-lifetime"
+    ]
+  },
+  {
+    "name": "gimp:painter / painter-mypaint-region-internals",
+    "result": "OK",
+    "returncode": 0,
+    "duration": 0.252331018447876,
+    "stdout": "TAP version 14\n# random seed: R02S9f0517ec272e64855b9ad423efd0ce04\n1..14\n# Start of region-lifetime tests\nok 1 /region-lifetime/retained-buffers\nok 2 /region-lifetime/selection-replacement\nok 3 /region-lifetime/snapshot-transitions\nok 4 /region-lifetime/provider-replacement\nok 5 /region-lifetime/coverage-unwind\nok 6 /region-lifetime/active-destructor-providers\nok 7 /region-lifetime/texture-self-clear\nok 8 /region-lifetime/notify-self-clear\nok 9 /region-lifetime/notify-exception-recovery\nok 10 /region-lifetime/notify-copy-before-write\nok 11 /region-lifetime/coverage-replaces-notify\nok 12 /region-lifetime/internal-owned-session-buffers\nok 13 /region-lifetime/internal-rejected-throwing-paths\nok 14 /region-lifetime/internal-snapshot-transitions\n# End of region-lifetime tests\n",
+    "stderr": "",
+    "command": [
+      "/workspace/shared/gimp-native-baseline/build-port/app/paint/painter-mypaint-surface/painter-mypaint-region-internals"
+    ]
+  }
+]

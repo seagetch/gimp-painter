@@ -289,6 +289,9 @@ void active_destructor_providers() {
   target_final.expect(1); snapshot_final.expect(1); g_assert_cmpuint(destroyed,==,1);
 }
 }
+#ifdef GIMP_TEST_REGION_INTERNALS
+#include "region-lifetime-internal.inc"
+#endif
 int main(int argc,char**argv) {
   g_test_init(&argc,&argv,nullptr); gegl_init(&argc,&argv);
   g_test_add_func("/region-lifetime/retained-buffers",retained_buffers);
@@ -302,5 +305,8 @@ int main(int argc,char**argv) {
   g_test_add_func("/region-lifetime/notify-exception-recovery",notify_exception_recovery);
   g_test_add_func("/region-lifetime/notify-copy-before-write",notify_copy_before_write);
   g_test_add_func("/region-lifetime/coverage-replaces-notify",coverage_replaces_notify);
+#ifdef GIMP_TEST_REGION_INTERNALS
+  InternalRegionAudit::register_tests();
+#endif
   const int result=g_test_run(); gegl_exit(); return result;
 }

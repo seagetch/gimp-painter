@@ -1,0 +1,15 @@
+{
+  "tests": 8,
+  "result": "PASS",
+  "command": "python3 migration/tests/surface-region-lifetime/test_validate.py",
+  "controls": [
+    "missing legacy site",
+    "factory gap erased",
+    "whole-hunk premature closure",
+    "sanitizer failure",
+    "skipped test",
+    "extended timeout",
+    "dropped ancestor manifest",
+    "missing registered target"
+  ]
+}

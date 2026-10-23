@@ -99,3 +99,15 @@ if not meson.is_cross_build()
   test('painter-mypaint-buffer-read', painter_buffer_read,
     suite: 'painter', timeout: 60)
 endif
+
+# GNU ELF observation seams expose snapshot/floating-buffer finalization only
+# in this dedicated test, never in application linkage.
+painter_region_internal_wrap = ['-Wl,--wrap=gegl_buffer_new', '-Wl,--wrap=gegl_buffer_dup']
+if host_machine.system() == 'linux' and cxx.has_multi_link_arguments(painter_region_internal_wrap)
+  painter_region_internal = executable('painter-mypaint-region-internals',
+    'tests/region-lifetime.cpp', dependencies: painter_mypaint_surface_dep,
+    cpp_args: painter_cpp_args + ['-DGIMP_TEST_REGION_INTERNALS'],
+    link_args: painter_region_internal_wrap, override_options: ['cpp_std=c++14'])
+  test('painter-mypaint-region-internals', painter_region_internal,
+    env: ['GEGL_USE_OPENCL=no'], suite: 'painter', timeout: 60)
+endif

@@ -444,7 +444,7 @@
 | 09.002/projection-update-bounds | [x] | drawable/stackとprojection更新座標の整数overflowを防ぐ | 09.002 | default native buildと通常12target（313TAP・27Python・403header）、5C unit限定ASan/UBSan8path合格。通常grid範囲と空領域の通知を保持し極端offset・負座標・cleanupを検証。295既知XCF警告を保持し予期外診断ゼロ。入力座標側Sobel変更・group/show-all・全aggregateは別gate（migration/tests/projection-update-bounds.json） |
 | 09.003 | [x] | DrawableFeature の buffer read を実装する | 09.002 | 負の offset と部分領域を読める |
 | 09.003/bounded-surface-read | [x] | Surfaceの部分buffer読取りと極端offsetを安全化する | 09.002 | stride・容量・半開領域を検査しINT_MIN選択offsetの実overflowを修正。通常7targetとproduction-source sanitizerを検証し親48義務は維持 |
-| 09.003/region-lifetime | [ ] | MyPaint Surface の一時領域を GEGL buffer 寿命へ移す | 09.003, 01.007/surface-regions | draw_dab と get_color の全 return・失敗経路で read/write/snapshot/mask/texture の buffer を一度だけ解放する |
+| 09.003/region-lifetime | [x] | MyPaint Surface の一時領域を GEGL buffer 寿命へ移す | 09.003, 01.007/surface-regions | draw_dab と get_color の全 return・失敗経路で read/write/snapshot/mask/texture の buffer を一度だけ解放する |
 | 09.004 | [x] | DrawableFeature の buffer write を実装する | 09.003 | 範囲外に書かず dirty 領域を返す |
 | 09.005 | [x] | TempBuf の変換を実装する | 09.004 | stride・format・所有権を保持 |
 | 09.006 | [x] | 選択マスクの読取りを接続する | 09.005 | オフセットと coverage が一致 |
