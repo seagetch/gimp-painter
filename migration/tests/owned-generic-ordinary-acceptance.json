@@ -1,0 +1,1333 @@
+{
+  "schema": "owned-generic-ordinary-component-acceptance-v1",
+  "tasks": [
+    "27.009/owned-generic-strokes",
+    "08.018/blinds-entry-fixture-quiescence"
+  ],
+  "status": "passed",
+  "tested_commit": "cedf6968c2bfd1d7f7b0623be713b27e449ac3c2",
+  "tested_tree": "8b5b431de5ec05ee1bb6bc36cbccf4e1dd2920a9",
+  "gimp_data": "a31e5dea4f572fb5f33b06f5c4b86db5f30643dc",
+  "snapshot_sha256": "827d7cc704a29562e6146911f3ec630aaf44f3bd133e7af4bd414fcb2fb41af7",
+  "source_input_sha256": "947b23da7aa692fbbd0ba2f9ad72ca1422d9db57ad917348e2f7d13298263979",
+  "preparation_sha256": "f4937b1ef175444cc3d8d458b32d11c73a2635a7fdeed62a704aeb0a07e436e6",
+  "normal": {
+    "status": "passed",
+    "registrations": 171,
+    "ok": 171,
+    "failures": 0,
+    "timeouts": 0,
+    "skips": 0,
+    "whole_registry": true,
+    "original_registered_budgets": true,
+    "timeout_multiplier": 1,
+    "baseline_exemptions": false,
+    "packager_validation": "accepted",
+    "full_default_build": true,
+    "declared_catalogs": 493,
+    "staged_catalogs": 361,
+    "authenticated_loopback_portrait_display": true,
+    "unchanged_final_source_and_build_seals": true,
+    "started_utc": "2026-10-18T10:30:40.045509+00:00",
+    "finished_utc": "2026-10-18T11:22:49.408244+00:00",
+    "aggregate_gate_sha256": "6c178ac5950fc866e1ff732c7eef305bab6e19bcf3855a1bb5cf89cac074b9b0",
+    "public_phase_receipt_sha256": "1c7b51984b4a0b2265e18b3b0e21c03dbf9dd64b7d5f2f96151e26aed1075433",
+    "successful_aggregate_attempt": "normal-aggregate-002",
+    "artifact": {
+      "filename": "gimp-fresh-normal-171-passed-20261018-1123.tar.xz",
+      "sha256": "5233961c5ba802c81f782b9894c9e3719d2cd6cd733eaddca4d10eab22d9dfed",
+      "bytes": 12339116,
+      "library_file_id": "libfile_d138a3cb0fdc81919f4a6b4f505307d4",
+      "classification": "private durable evidence; preserve unchanged, not approved for wholesale repository publication"
+    },
+    "published_checkpoint_receipt": {
+      "repository_path": "migration/tests/owned-generic-fresh-normal-20261018.json",
+      "sha256": "976a0eed5a8bbdae380cd0084a4b9ffbb736dc310a7b2db4498a755755f2b178",
+      "checkpoint_commit": "51280702e5a7bc06319c2cc1677d4826aefb8378",
+      "preserve_unchanged": true
+    },
+    "outputs_disposal": {
+      "status": "complete",
+      "removed_count": 2814,
+      "observed_recovery": "approximately 6.520 GB; reported by owning parent",
+      "irreversible_disposal": true,
+      "compiled_output_preservation_archive_exists": false,
+      "later_runtime_packaging_requires_rebuild_and_full_revalidation": true,
+      "current_normal_output_tree_complete": false,
+      "result_relative_to_recovery_root": "cleanup-plan/fresh-normal-v1/disposal-result.json",
+      "receipt_artifact": {
+        "filename": "gimp-normal-disposal-receipts-20261018.tar.xz",
+        "sha256": "fa303664b31493131e24c389ba8cbd572d2c29a5ab4633f10ef22485b484d5b4",
+        "bytes": 584464,
+        "library_file_id": "libfile_1e5fa17f0f8c819192996eeeb9c0e5bd",
+        "classification": "durable cleanup receipts; retain privately unless exact publication subset is reviewed"
+      }
+    }
+  },
+  "fresh_input_replays": {
+    "normal": {
+      "status": "passed",
+      "tests_run": 5,
+      "sha256": "fbc97d2857b144b94c56b819954fc8ba824f6c6c167a68b4581da92c4975ecb7"
+    },
+    "optimized": {
+      "status": "passed",
+      "tests_run": 5,
+      "sha256": "c4b05467ed7d0dd9b3ded670da330ddd1434af0ab1bd4e01a76261f389817f96"
+    }
+  },
+  "sanitizer": {
+    "status": "passed",
+    "required_registrations": [
+      {
+        "name": "gimp-fill-brush",
+        "target": "gimp-fill-brush",
+        "timeout": 60
+      },
+      {
+        "name": "gimp-painter-smudge",
+        "target": "gimp-painter-smudge",
+        "timeout": 120
+      },
+      {
+        "name": "gimp-painter-batch",
+        "target": "gimp-painter-batch",
+        "timeout": 120
+      },
+      {
+        "name": "filter-entry-contracts",
+        "target": "filter-entry-contracts",
+        "timeout": 120
+      },
+      {
+        "name": "painter-fill-brush-legacy",
+        "target": "painter-fill-brush-trace",
+        "timeout": 60,
+        "comparator": "compare_fill_brush.py",
+        "fixture": "legacy-fill-brush/pixels.tsv.gz",
+        "tail": []
+      },
+      {
+        "name": "painter-fill-brush-legacyqueued",
+        "target": "painter-fill-brush-trace",
+        "timeout": 60,
+        "comparator": "compare_fill_brush.py",
+        "fixture": "legacy-fill-brush/pixels.tsv.gz",
+        "tail": [
+          "queued"
+        ]
+      },
+      {
+        "name": "painter-fill-brush-legacyasync",
+        "target": "painter-fill-brush-trace",
+        "timeout": 60,
+        "comparator": "compare_fill_brush.py",
+        "fixture": "legacy-fill-brush/pixels.tsv.gz",
+        "tail": [
+          "async"
+        ]
+      },
+      {
+        "name": "painter-smudge-legacy-strokes",
+        "target": "painter-smudge-trace",
+        "timeout": 120,
+        "comparator": "compare_smudge_strokes.py",
+        "fixture": "legacy-smudge/pixels.tsv.gz",
+        "tail": []
+      },
+      {
+        "name": "painter-smudge-owned-strokes",
+        "target": "painter-smudge-trace",
+        "timeout": 120,
+        "comparator": "compare_smudge_strokes.py",
+        "fixture": "legacy-smudge/pixels.tsv.gz",
+        "tail": [
+          "owned"
+        ]
+      },
+      {
+        "name": "painter-owned-generic-fill-brush-raw",
+        "target": "painter-fill-brush-trace",
+        "timeout": 120,
+        "family": "fill-brush",
+        "route": "raw"
+      },
+      {
+        "name": "painter-owned-generic-fill-brush-path",
+        "target": "painter-fill-brush-trace",
+        "timeout": 120,
+        "family": "fill-brush",
+        "route": "path"
+      },
+      {
+        "name": "painter-owned-generic-fill-brush-boundary",
+        "target": "painter-fill-brush-trace",
+        "timeout": 120,
+        "family": "fill-brush",
+        "route": "boundary"
+      },
+      {
+        "name": "painter-owned-generic-smudge-raw",
+        "target": "painter-smudge-trace",
+        "timeout": 120,
+        "family": "smudge",
+        "route": "raw"
+      },
+      {
+        "name": "painter-owned-generic-smudge-path",
+        "target": "painter-smudge-trace",
+        "timeout": 120,
+        "family": "smudge",
+        "route": "path"
+      },
+      {
+        "name": "painter-owned-generic-smudge-boundary",
+        "target": "painter-smudge-trace",
+        "timeout": 120,
+        "family": "smudge",
+        "route": "boundary"
+      }
+    ],
+    "required_core_tap_counts": {
+      "gimp-fill-brush": 40,
+      "gimp-painter-smudge": 23,
+      "gimp-painter-batch": 13,
+      "filter-entry-contracts": 35
+    },
+    "required_runtime_executables": 6,
+    "prepare_receipt_sha256": "cb9aee0a91755a06d403a59b2611a60c109699f47418d1e8cf458f07217eb869",
+    "build_receipt_sha256": "ca39699d24cc19917076906ca243e385fe4af1229b52d71e9275fb87fdfedb2a",
+    "final_seal_receipt_sha256": "4bd6667579db399f785c6ca730020ddcd64645ffe67f4e27ab0a2d66830a4ad2",
+    "successful_records": [
+      {
+        "attempt": "sanitizer-test-001",
+        "name": "gimp-fill-brush",
+        "status": "passed",
+        "complete": true,
+        "registered_budget": {
+          "registered_seconds": 60,
+          "multiplier": 1,
+          "rationale": null,
+          "original_budget_unchanged": true
+        },
+        "native_result": "OK",
+        "native_returncode": 0,
+        "native_duration_seconds": 4.744370222091675,
+        "started_utc": "2026-10-18T11:59:55.466601+00:00",
+        "finished_utc": "2026-10-18T12:03:21.488276+00:00",
+        "tap_cases": 40,
+        "public_receipt_member": "sanitizer/sanitizer-test-001/public/receipt.json",
+        "public_receipt_sha256": "a80d33fe16654a984bf0402fcadcf747a7870efe8436ed9dbe19a7d34a7b9e4d",
+        "results_sha256": "2bafc55d151cffaeaee31ddeba3f244ac6f2055389ee9c4826bb1b6e2cd3786d",
+        "actual_runtime_policy_sha256": "7fb508ee0fdfd41c3a4de6aa4037ea7a56da1fbc25a1419d654a89639a9172b8",
+        "native_observations_sha256": "1607560a511b79e9a89292a26f6a311849e543e2e603564c7eb06a8265206831",
+        "before_loaders_sha256": "7100320ba5106287308861a15a47b6e8ad58d36a959722df711fbe664674389a",
+        "after_loaders_sha256": "7100320ba5106287308861a15a47b6e8ad58d36a959722df711fbe664674389a",
+        "invocation_attribution": "original base preparation; unaffected registration"
+      },
+      {
+        "attempt": "sanitizer-test-002",
+        "name": "gimp-painter-smudge",
+        "status": "passed",
+        "complete": true,
+        "registered_budget": {
+          "registered_seconds": 120,
+          "multiplier": 1,
+          "rationale": null,
+          "original_budget_unchanged": true
+        },
+        "native_result": "OK",
+        "native_returncode": 0,
+        "native_duration_seconds": 1.4660851955413818,
+        "started_utc": "2026-10-18T12:03:21.990985+00:00",
+        "finished_utc": "2026-10-18T12:06:37.529886+00:00",
+        "tap_cases": 23,
+        "public_receipt_member": "sanitizer/sanitizer-test-002/public/receipt.json",
+        "public_receipt_sha256": "6860c4e0c429efb289315d3c4ecd03f8711e2dfaaa156dc78c96417ad8e2bf66",
+        "results_sha256": "953ac7c56bcdcc0b49fa9420beeb6162cfc5bf0569674c0f5f046be480e9eee2",
+        "actual_runtime_policy_sha256": "7fb508ee0fdfd41c3a4de6aa4037ea7a56da1fbc25a1419d654a89639a9172b8",
+        "native_observations_sha256": "54fc76b15e9bd09c94464377d3013cedaf507e6d2fffd9df1b4221845874c660",
+        "before_loaders_sha256": "7100320ba5106287308861a15a47b6e8ad58d36a959722df711fbe664674389a",
+        "after_loaders_sha256": "7100320ba5106287308861a15a47b6e8ad58d36a959722df711fbe664674389a",
+        "invocation_attribution": "original base preparation; unaffected registration"
+      },
+      {
+        "attempt": "sanitizer-test-003",
+        "name": "gimp-painter-batch",
+        "status": "passed",
+        "complete": true,
+        "registered_budget": {
+          "registered_seconds": 120,
+          "multiplier": 1,
+          "rationale": null,
+          "original_budget_unchanged": true
+        },
+        "native_result": "OK",
+        "native_returncode": 0,
+        "native_duration_seconds": 1.5504248142242432,
+        "started_utc": "2026-10-18T12:06:38.004326+00:00",
+        "finished_utc": "2026-10-18T12:09:50.087771+00:00",
+        "tap_cases": 13,
+        "public_receipt_member": "sanitizer/sanitizer-test-003/public/receipt.json",
+        "public_receipt_sha256": "4212c807a7a40b811104eef2b8522dd613d7dc6b944399145319c1517d3d4629",
+        "results_sha256": "92f5d3c4f42e0fb7d1c9630c130a8fa8b870b94e3b2085c4591167f234510397",
+        "actual_runtime_policy_sha256": "7fb508ee0fdfd41c3a4de6aa4037ea7a56da1fbc25a1419d654a89639a9172b8",
+        "native_observations_sha256": "3d71aa85e4464d65dcca24ddf89684abeefae3c10ac3be0017140a0e5900eb71",
+        "before_loaders_sha256": "7100320ba5106287308861a15a47b6e8ad58d36a959722df711fbe664674389a",
+        "after_loaders_sha256": "7100320ba5106287308861a15a47b6e8ad58d36a959722df711fbe664674389a",
+        "invocation_attribution": "original base preparation; unaffected registration"
+      },
+      {
+        "attempt": "sanitizer-test-004",
+        "name": "filter-entry-contracts",
+        "status": "passed",
+        "complete": true,
+        "registered_budget": {
+          "registered_seconds": 120,
+          "multiplier": 1,
+          "rationale": null,
+          "original_budget_unchanged": true
+        },
+        "native_result": "OK",
+        "native_returncode": 0,
+        "native_duration_seconds": 8.595678567886353,
+        "started_utc": "2026-10-18T12:09:50.545773+00:00",
+        "finished_utc": "2026-10-18T12:13:09.979457+00:00",
+        "tap_cases": 35,
+        "public_receipt_member": "sanitizer/sanitizer-test-004/public/receipt.json",
+        "public_receipt_sha256": "bd4246292c032073fa060cfa3886714877a0fa4bc4242dd1bd6954514ff0874a",
+        "results_sha256": "becc67fbf5fc9b436a1e5f329608042d6b681830a487aa000d171f9e4e5d3ba0",
+        "actual_runtime_policy_sha256": "7fb508ee0fdfd41c3a4de6aa4037ea7a56da1fbc25a1419d654a89639a9172b8",
+        "native_observations_sha256": "2e50a7aeb377de07227f2d56a641867499e58aaf15904dcb902557a15605bf90",
+        "before_loaders_sha256": "7100320ba5106287308861a15a47b6e8ad58d36a959722df711fbe664674389a",
+        "after_loaders_sha256": "7100320ba5106287308861a15a47b6e8ad58d36a959722df711fbe664674389a",
+        "invocation_attribution": "original base preparation; unaffected registration"
+      },
+      {
+        "attempt": "sanitizer-legacy-profile-001",
+        "name": "painter-fill-brush-legacy",
+        "status": "passed",
+        "complete": true,
+        "registered_budget": {
+          "registered_seconds": 60,
+          "multiplier": 1,
+          "rationale": null,
+          "original_budget_unchanged": true
+        },
+        "native_result": "OK",
+        "native_returncode": 0,
+        "native_duration_seconds": 1.7042527198791504,
+        "started_utc": "2026-10-18T12:47:15.531515+00:00",
+        "finished_utc": "2026-10-18T12:50:24.868055+00:00",
+        "tap_cases": null,
+        "public_receipt_member": "sanitizer/sanitizer-legacy-profile-001/public/receipt.json",
+        "public_receipt_sha256": "32610ff67e48e01adf08c743079b398553e011a9d11bf1da3d9cb9ab8c395553",
+        "results_sha256": "c93b9437c5888fb028c6e92f85e3657f3b5492030c6ae34463d83bb7758fc95a",
+        "actual_runtime_policy_sha256": "7fb508ee0fdfd41c3a4de6aa4037ea7a56da1fbc25a1419d654a89639a9172b8",
+        "native_observations_sha256": "2329383f5e1f41e1993c7e6a0234b79f13ef8b608e137835193ce22a631fac86",
+        "before_loaders_sha256": "7100320ba5106287308861a15a47b6e8ad58d36a959722df711fbe664674389a",
+        "after_loaders_sha256": "7100320ba5106287308861a15a47b6e8ad58d36a959722df711fbe664674389a",
+        "invocation_attribution": "base preparation plus reviewed registered-profile invocation amendment",
+        "invocation_amendment_sha256": "4f75912c8307a5d0fb71ac32317db3b82632eb0f3762a4176244521481958f1a",
+        "registered_profile_alignment_sha256": "cb2fdcc6e4f84215ea816a6607e8eb864073042e9a1c1c8fd5316882ff16d1c5"
+      },
+      {
+        "attempt": "sanitizer-legacy-profile-002",
+        "name": "painter-fill-brush-legacyqueued",
+        "status": "passed",
+        "complete": true,
+        "registered_budget": {
+          "registered_seconds": 60,
+          "multiplier": 1,
+          "rationale": null,
+          "original_budget_unchanged": true
+        },
+        "native_result": "OK",
+        "native_returncode": 0,
+        "native_duration_seconds": 1.6878621578216553,
+        "started_utc": "2026-10-18T12:50:25.346055+00:00",
+        "finished_utc": "2026-10-18T12:53:34.090079+00:00",
+        "tap_cases": null,
+        "public_receipt_member": "sanitizer/sanitizer-legacy-profile-002/public/receipt.json",
+        "public_receipt_sha256": "2c7c4d54142820ec4918e4b270719ff7d578d9c0189975b9653316c49d8778b1",
+        "results_sha256": "375458eaab90d49dc2bfa1fc08bc6bfa75d1dd153992b0d8a27ecf85bef5bf2f",
+        "actual_runtime_policy_sha256": "7fb508ee0fdfd41c3a4de6aa4037ea7a56da1fbc25a1419d654a89639a9172b8",
+        "native_observations_sha256": "a016e58c69bd52ff19a3d087e53d6f1cf3d73307a914046f807a23a4b530c0fe",
+        "before_loaders_sha256": "7100320ba5106287308861a15a47b6e8ad58d36a959722df711fbe664674389a",
+        "after_loaders_sha256": "7100320ba5106287308861a15a47b6e8ad58d36a959722df711fbe664674389a",
+        "invocation_attribution": "base preparation plus reviewed registered-profile invocation amendment",
+        "invocation_amendment_sha256": "7130a5f5e086a6b9a71d02039fd67afab35c886ab9687147a5f997eb3d198f73",
+        "registered_profile_alignment_sha256": "16e13f94e444f8ce5e6d62e86d0948645bf72362ecdbfba456f034f102e5ceae"
+      },
+      {
+        "attempt": "sanitizer-legacy-profile-003",
+        "name": "painter-fill-brush-legacyasync",
+        "status": "passed",
+        "complete": true,
+        "registered_budget": {
+          "registered_seconds": 60,
+          "multiplier": 1,
+          "rationale": null,
+          "original_budget_unchanged": true
+        },
+        "native_result": "OK",
+        "native_returncode": 0,
+        "native_duration_seconds": 1.697993278503418,
+        "started_utc": "2026-10-18T12:53:34.579107+00:00",
+        "finished_utc": "2026-10-18T12:56:47.390893+00:00",
+        "tap_cases": null,
+        "public_receipt_member": "sanitizer/sanitizer-legacy-profile-003/public/receipt.json",
+        "public_receipt_sha256": "48005b7e92c772b2e4b23da3a60eff7b559a0aecf81440b36b034cd73ea0e279",
+        "results_sha256": "94d5494af7dd242f4b1c7e4af85ff416be0a269004f99a603cd063a160f02f38",
+        "actual_runtime_policy_sha256": "7fb508ee0fdfd41c3a4de6aa4037ea7a56da1fbc25a1419d654a89639a9172b8",
+        "native_observations_sha256": "ce554e78c1007257c7d9fe575acfd4782f4db12e0cb0c87fb84a4082064d0ef6",
+        "before_loaders_sha256": "7100320ba5106287308861a15a47b6e8ad58d36a959722df711fbe664674389a",
+        "after_loaders_sha256": "7100320ba5106287308861a15a47b6e8ad58d36a959722df711fbe664674389a",
+        "invocation_attribution": "base preparation plus reviewed registered-profile invocation amendment",
+        "invocation_amendment_sha256": "88e5981262bbb4b1d15523b0795c873df0c3242e6c7f5a1430d5fc95b2040368",
+        "registered_profile_alignment_sha256": "63874176368b03389ca6f460791f82ff84722a2f8e9887241cc8e5043d04b178"
+      },
+      {
+        "attempt": "sanitizer-test-008",
+        "name": "painter-smudge-legacy-strokes",
+        "status": "passed",
+        "complete": true,
+        "registered_budget": {
+          "registered_seconds": 120,
+          "multiplier": 1,
+          "rationale": null,
+          "original_budget_unchanged": true
+        },
+        "native_result": "OK",
+        "native_returncode": 0,
+        "native_duration_seconds": 1.598527431488037,
+        "started_utc": "2026-10-18T12:20:41.759235+00:00",
+        "finished_utc": "2026-10-18T12:23:48.629857+00:00",
+        "tap_cases": null,
+        "public_receipt_member": "sanitizer/sanitizer-test-008/public/receipt.json",
+        "public_receipt_sha256": "4f85bb4e2d2a5207633b1c1b21dd42b83a5aac884bebc38cbef3622a4427de83",
+        "results_sha256": "fcbce3244c8bdd1772161d3dc8af5196121a67cbee8263e619d8cbc9dd67ccd6",
+        "actual_runtime_policy_sha256": "7fb508ee0fdfd41c3a4de6aa4037ea7a56da1fbc25a1419d654a89639a9172b8",
+        "native_observations_sha256": "adffb131e6f7be29845c0be0abf0c0bd1c9cd6a8324ea708f7e40a619e4821f2",
+        "before_loaders_sha256": "7100320ba5106287308861a15a47b6e8ad58d36a959722df711fbe664674389a",
+        "after_loaders_sha256": "7100320ba5106287308861a15a47b6e8ad58d36a959722df711fbe664674389a",
+        "invocation_attribution": "original base preparation; unaffected registration"
+      },
+      {
+        "attempt": "sanitizer-test-009",
+        "name": "painter-smudge-owned-strokes",
+        "status": "passed",
+        "complete": true,
+        "registered_budget": {
+          "registered_seconds": 120,
+          "multiplier": 1,
+          "rationale": null,
+          "original_budget_unchanged": true
+        },
+        "native_result": "OK",
+        "native_returncode": 0,
+        "native_duration_seconds": 1.6385843753814697,
+        "started_utc": "2026-10-18T12:23:49.078620+00:00",
+        "finished_utc": "2026-10-18T12:26:54.564690+00:00",
+        "tap_cases": null,
+        "public_receipt_member": "sanitizer/sanitizer-test-009/public/receipt.json",
+        "public_receipt_sha256": "08ee34d9c9a01c0b45b8e8d59711ce1dc8c1cec46406e76e034fe5ed025bdb36",
+        "results_sha256": "9215674c5dead99e0f3a81f6b941c0e8ebbf1bcae8876bf03575c948e0cdb7d6",
+        "actual_runtime_policy_sha256": "7fb508ee0fdfd41c3a4de6aa4037ea7a56da1fbc25a1419d654a89639a9172b8",
+        "native_observations_sha256": "68dc28f398fd288010e56ad16045cd188d9df18137d898f22671ec1ff5056669",
+        "before_loaders_sha256": "7100320ba5106287308861a15a47b6e8ad58d36a959722df711fbe664674389a",
+        "after_loaders_sha256": "7100320ba5106287308861a15a47b6e8ad58d36a959722df711fbe664674389a",
+        "invocation_attribution": "original base preparation; unaffected registration"
+      },
+      {
+        "attempt": "sanitizer-test-010",
+        "name": "painter-owned-generic-fill-brush-raw",
+        "status": "passed",
+        "complete": true,
+        "registered_budget": {
+          "registered_seconds": 120,
+          "multiplier": 1,
+          "rationale": null,
+          "original_budget_unchanged": true
+        },
+        "native_result": "OK",
+        "native_returncode": 0,
+        "native_duration_seconds": 2.200754165649414,
+        "started_utc": "2026-10-18T12:26:55.074048+00:00",
+        "finished_utc": "2026-10-18T12:30:02.717558+00:00",
+        "tap_cases": null,
+        "public_receipt_member": "sanitizer/sanitizer-test-010/public/receipt.json",
+        "public_receipt_sha256": "2b827d7470e7a548d2911cf6b7d362da09ac570177b62be1fcf4b27a5235e8c0",
+        "results_sha256": "1aab3b6857ef01ff1a89bef0ff3c3b0345a15c3066691999ab9acb6a6ab87cc7",
+        "actual_runtime_policy_sha256": "7fb508ee0fdfd41c3a4de6aa4037ea7a56da1fbc25a1419d654a89639a9172b8",
+        "native_observations_sha256": "27af42d07439767d6648d811013319b0f5ec2b965607c8aa4f4840207213dae2",
+        "before_loaders_sha256": "7100320ba5106287308861a15a47b6e8ad58d36a959722df711fbe664674389a",
+        "after_loaders_sha256": "7100320ba5106287308861a15a47b6e8ad58d36a959722df711fbe664674389a",
+        "invocation_attribution": "original base preparation; unaffected registration"
+      },
+      {
+        "attempt": "sanitizer-test-011",
+        "name": "painter-owned-generic-fill-brush-path",
+        "status": "passed",
+        "complete": true,
+        "registered_budget": {
+          "registered_seconds": 120,
+          "multiplier": 1,
+          "rationale": null,
+          "original_budget_unchanged": true
+        },
+        "native_result": "OK",
+        "native_returncode": 0,
+        "native_duration_seconds": 2.1912522315979004,
+        "started_utc": "2026-10-18T12:30:03.181692+00:00",
+        "finished_utc": "2026-10-18T12:33:09.555925+00:00",
+        "tap_cases": null,
+        "public_receipt_member": "sanitizer/sanitizer-test-011/public/receipt.json",
+        "public_receipt_sha256": "5275b7b4989b6b456257dd8c878599a4bddd42fcae29ef4964fd01c3612dce9b",
+        "results_sha256": "5fcade9c29955097654815f8c87acb401f2ffd8a50210c5b2254fb40c4ee2b95",
+        "actual_runtime_policy_sha256": "7fb508ee0fdfd41c3a4de6aa4037ea7a56da1fbc25a1419d654a89639a9172b8",
+        "native_observations_sha256": "73e1d4bdf3e150ca11e827bb7fb85ac6ed92b95f50cea33744af03e72b7ea760",
+        "before_loaders_sha256": "7100320ba5106287308861a15a47b6e8ad58d36a959722df711fbe664674389a",
+        "after_loaders_sha256": "7100320ba5106287308861a15a47b6e8ad58d36a959722df711fbe664674389a",
+        "invocation_attribution": "original base preparation; unaffected registration"
+      },
+      {
+        "attempt": "sanitizer-test-012",
+        "name": "painter-owned-generic-fill-brush-boundary",
+        "status": "passed",
+        "complete": true,
+        "registered_budget": {
+          "registered_seconds": 120,
+          "multiplier": 1,
+          "rationale": null,
+          "original_budget_unchanged": true
+        },
+        "native_result": "OK",
+        "native_returncode": 0,
+        "native_duration_seconds": 2.212754964828491,
+        "started_utc": "2026-10-18T12:33:10.014757+00:00",
+        "finished_utc": "2026-10-18T12:36:16.831022+00:00",
+        "tap_cases": null,
+        "public_receipt_member": "sanitizer/sanitizer-test-012/public/receipt.json",
+        "public_receipt_sha256": "356ebf8a50638473701294463bbc7911ba948d6548b7fba64f03a777d5274888",
+        "results_sha256": "ca6f166809d3fa8c4d532a4abf188489a7af4f7079e96622ddc761b92130e24f",
+        "actual_runtime_policy_sha256": "7fb508ee0fdfd41c3a4de6aa4037ea7a56da1fbc25a1419d654a89639a9172b8",
+        "native_observations_sha256": "bef409edf48f36316d30aecee7b881c5c7cd6febb89ef79eb0d5fd0f118665bc",
+        "before_loaders_sha256": "7100320ba5106287308861a15a47b6e8ad58d36a959722df711fbe664674389a",
+        "after_loaders_sha256": "7100320ba5106287308861a15a47b6e8ad58d36a959722df711fbe664674389a",
+        "invocation_attribution": "original base preparation; unaffected registration"
+      },
+      {
+        "attempt": "sanitizer-test-013",
+        "name": "painter-owned-generic-smudge-raw",
+        "status": "passed",
+        "complete": true,
+        "registered_budget": {
+          "registered_seconds": 120,
+          "multiplier": 1,
+          "rationale": null,
+          "original_budget_unchanged": true
+        },
+        "native_result": "OK",
+        "native_returncode": 0,
+        "native_duration_seconds": 1.8448727130889893,
+        "started_utc": "2026-10-18T12:36:17.286992+00:00",
+        "finished_utc": "2026-10-18T12:39:26.232042+00:00",
+        "tap_cases": null,
+        "public_receipt_member": "sanitizer/sanitizer-test-013/public/receipt.json",
+        "public_receipt_sha256": "7235375f549e78f5163608353d441b4647b28cba2aac8dddc63990e30c1adeca",
+        "results_sha256": "a85f9d984041d180481d36501af664100946bb7153b1198f15676b3c8d7d6b88",
+        "actual_runtime_policy_sha256": "7fb508ee0fdfd41c3a4de6aa4037ea7a56da1fbc25a1419d654a89639a9172b8",
+        "native_observations_sha256": "0f148431ea8ea158f56c371e3de7f02dc6d1048b47684b0caca25c49f3dc786a",
+        "before_loaders_sha256": "7100320ba5106287308861a15a47b6e8ad58d36a959722df711fbe664674389a",
+        "after_loaders_sha256": "7100320ba5106287308861a15a47b6e8ad58d36a959722df711fbe664674389a",
+        "invocation_attribution": "original base preparation; unaffected registration"
+      },
+      {
+        "attempt": "sanitizer-test-014",
+        "name": "painter-owned-generic-smudge-path",
+        "status": "passed",
+        "complete": true,
+        "registered_budget": {
+          "registered_seconds": 120,
+          "multiplier": 1,
+          "rationale": null,
+          "original_budget_unchanged": true
+        },
+        "native_result": "OK",
+        "native_returncode": 0,
+        "native_duration_seconds": 2.0920820236206055,
+        "started_utc": "2026-10-18T12:39:26.677827+00:00",
+        "finished_utc": "2026-10-18T12:42:39.962364+00:00",
+        "tap_cases": null,
+        "public_receipt_member": "sanitizer/sanitizer-test-014/public/receipt.json",
+        "public_receipt_sha256": "b2a0863eb63efe72ab2b72825e6e23fe93d92ca88ab0a107daf68ccb5b3dd256",
+        "results_sha256": "9cbf4cdcf3f5ecd46d7c0b558a327713e0f173c701cb5e000a88f368c8b1a1e4",
+        "actual_runtime_policy_sha256": "7fb508ee0fdfd41c3a4de6aa4037ea7a56da1fbc25a1419d654a89639a9172b8",
+        "native_observations_sha256": "27890bff67524be9c047664478b5ad31bbcb9aae81099a77b89c141bb44684b1",
+        "before_loaders_sha256": "7100320ba5106287308861a15a47b6e8ad58d36a959722df711fbe664674389a",
+        "after_loaders_sha256": "7100320ba5106287308861a15a47b6e8ad58d36a959722df711fbe664674389a",
+        "invocation_attribution": "original base preparation; unaffected registration"
+      },
+      {
+        "attempt": "sanitizer-test-015",
+        "name": "painter-owned-generic-smudge-boundary",
+        "status": "passed",
+        "complete": true,
+        "registered_budget": {
+          "registered_seconds": 120,
+          "multiplier": 1,
+          "rationale": null,
+          "original_budget_unchanged": true
+        },
+        "native_result": "OK",
+        "native_returncode": 0,
+        "native_duration_seconds": 2.1955387592315674,
+        "started_utc": "2026-10-18T12:42:40.464363+00:00",
+        "finished_utc": "2026-10-18T12:45:55.135213+00:00",
+        "tap_cases": null,
+        "public_receipt_member": "sanitizer/sanitizer-test-015/public/receipt.json",
+        "public_receipt_sha256": "a8a11ac7d1ad73de5efddd7ff05d55444ebad520f654e79756bcb351b737c586",
+        "results_sha256": "036db54b1d90b32b9d50723319e738535bf7e66b972e52900b2a4b4301b6ce95",
+        "actual_runtime_policy_sha256": "7fb508ee0fdfd41c3a4de6aa4037ea7a56da1fbc25a1419d654a89639a9172b8",
+        "native_observations_sha256": "8e75281bbcbaade0e7a08623ec2d9e52647fe08c967317d7facae6e89f8eb378",
+        "before_loaders_sha256": "7100320ba5106287308861a15a47b6e8ad58d36a959722df711fbe664674389a",
+        "after_loaders_sha256": "7100320ba5106287308861a15a47b6e8ad58d36a959722df711fbe664674389a",
+        "invocation_attribution": "original base preparation; unaffected registration"
+      }
+    ],
+    "instrumentation": {
+      "runtime_objects": 1377,
+      "c_runtime_objects": 1291,
+      "cpp_runtime_objects": 86,
+      "all_runtime_object_and_link_commands_address_undefined": true,
+      "runtime_archives": 33,
+      "runtime_archive_member_entries": 1239,
+      "runtime_links": 13,
+      "runtime_executables": 6,
+      "in_project_runtime_shared_libraries": 7,
+      "build_only_objects": 3,
+      "build_only_generators": 2,
+      "selected_runtime_DAG_compile_objects_including_generators": 1380,
+      "cpp_explicit_frtti_objects": 83,
+      "cpp_no_rtti_disable": true,
+      "vptr_symbol_lines": 126,
+      "vptr_distinct_cpp_objects": 63,
+      "vptr_symbol_counts": {
+        "__ubsan_handle_dynamic_type_cache_miss": 63,
+        "__ubsan_vptr_type_cache": 63
+      },
+      "counts_mean_conservative_link_input_closure_not_every_member_executed": true,
+      "external_dependencies_instrumented": false
+    },
+    "actual_runtime_observations": {
+      "status": "six_required_runtime_roots_observed_and_final_sealed",
+      "records": [
+        {
+          "executable": "app/tests/gimp-fill-brush",
+          "attempt": "sanitizer-test-001",
+          "recorded_executable": {
+            "sha256": "0b506d2250264431c5d2ace461183f0f5c31fa8ddfdf25dea186da67d21959cb",
+            "bytes": 229859312,
+            "mode": "0o700"
+          },
+          "observation_member": "sanitizer/sanitizer-test-001/provenance/native-observations.json",
+          "observation_sha256": "1607560a511b79e9a89292a26f6a311849e543e2e603564c7eb06a8265206831",
+          "maps_member": "sanitizer/sanitizer-test-001/provenance/native-test-maps-385-0.txt",
+          "raw_maps_sha256": "928b90a10dbc683439505c2d86e9da6c5d757f6ed62812f9442aa7b15a2e04e5",
+          "published_maps_sha256": "928b90a10dbc683439505c2d86e9da6c5d757f6ed62812f9442aa7b15a2e04e5",
+          "mapped_libasan": true,
+          "mapped_libubsan": true
+        },
+        {
+          "executable": "app/tests/gimp-painter-smudge",
+          "attempt": "sanitizer-test-002",
+          "recorded_executable": {
+            "sha256": "262316e56ca8829c6710e183b86656dc6b5643b00cfe3348204bade16aacaab6",
+            "bytes": 229618440,
+            "mode": "0o700"
+          },
+          "observation_member": "sanitizer/sanitizer-test-002/provenance/native-observations.json",
+          "observation_sha256": "54fc76b15e9bd09c94464377d3013cedaf507e6d2fffd9df1b4221845874c660",
+          "maps_member": "sanitizer/sanitizer-test-002/provenance/native-test-maps-1006-0.txt",
+          "raw_maps_sha256": "29f62c10582d9f56bc139f3a81eb6b657fc82c47250ca43e222210fb3d413eff",
+          "published_maps_sha256": "29f62c10582d9f56bc139f3a81eb6b657fc82c47250ca43e222210fb3d413eff",
+          "mapped_libasan": true,
+          "mapped_libubsan": true
+        },
+        {
+          "executable": "app/tests/gimp-painter-batch",
+          "attempt": "sanitizer-test-003",
+          "recorded_executable": {
+            "sha256": "04eb3f31d81efe4da7129fd4f3ce8b55c81cd8f29387ab5d254134f143a7774d",
+            "bytes": 229793672,
+            "mode": "0o700"
+          },
+          "observation_member": "sanitizer/sanitizer-test-003/provenance/native-observations.json",
+          "observation_sha256": "3d71aa85e4464d65dcca24ddf89684abeefae3c10ac3be0017140a0e5900eb71",
+          "maps_member": "sanitizer/sanitizer-test-003/provenance/native-test-maps-1535-0.txt",
+          "raw_maps_sha256": "a235e47ec9bfbe40f9aa20e3d4a3fe0f1b251bb8bf074fa28864e7926e294c15",
+          "published_maps_sha256": "a235e47ec9bfbe40f9aa20e3d4a3fe0f1b251bb8bf074fa28864e7926e294c15",
+          "mapped_libasan": true,
+          "mapped_libubsan": true
+        },
+        {
+          "executable": "app/tests/filter-entry-contracts",
+          "attempt": "sanitizer-test-004",
+          "recorded_executable": {
+            "sha256": "d60ac585e01f36a2ea706fed229effbcc38052b0aa8229e5f36cbe10ee9a9c6a",
+            "bytes": 230523624,
+            "mode": "0o700"
+          },
+          "observation_member": "sanitizer/sanitizer-test-004/provenance/native-observations.json",
+          "observation_sha256": "2e50a7aeb377de07227f2d56a641867499e58aaf15904dcb902557a15605bf90",
+          "maps_member": "sanitizer/sanitizer-test-004/provenance/native-test-maps-2064-0.txt",
+          "raw_maps_sha256": "f419a7a6bcdee4a5b4c55edda9255bf82856374908324a383b251a19b36aa14d",
+          "published_maps_sha256": "f419a7a6bcdee4a5b4c55edda9255bf82856374908324a383b251a19b36aa14d",
+          "mapped_libasan": true,
+          "mapped_libubsan": true
+        },
+        {
+          "executable": "app/tests/painter-fill-brush-trace",
+          "attempt": "sanitizer-test-010",
+          "recorded_executable": {
+            "sha256": "32f93d17d86153214b3f9f9cf8636cc8d11c9b6b3b271ab7b7c775bc3c720077",
+            "bytes": 229098464,
+            "mode": "0o700"
+          },
+          "observation_member": "sanitizer/sanitizer-test-010/provenance/native-observations.json",
+          "observation_sha256": "27af42d07439767d6648d811013319b0f5ec2b965607c8aa4f4840207213dae2",
+          "maps_member": "sanitizer/sanitizer-test-010/provenance/native-test-maps-1446-0.txt",
+          "raw_maps_sha256": "048a5c037122ca6a2c4e461500e9abe332f74d1c55f37af9d1a8eca0c969f26d",
+          "published_maps_sha256": "048a5c037122ca6a2c4e461500e9abe332f74d1c55f37af9d1a8eca0c969f26d",
+          "mapped_libasan": true,
+          "mapped_libubsan": true
+        },
+        {
+          "executable": "app/tests/painter-smudge-trace",
+          "attempt": "sanitizer-test-008",
+          "recorded_executable": {
+            "sha256": "6e5d0a5ef07df7e5266591fe29533438e12d87bc9ff29a7b44cda3654557a59c",
+            "bytes": 229120040,
+            "mode": "0o700"
+          },
+          "observation_member": "sanitizer/sanitizer-test-008/provenance/native-observations.json",
+          "observation_sha256": "adffb131e6f7be29845c0be0abf0c0bd1c9cd6a8324ea708f7e40a619e4821f2",
+          "maps_member": "sanitizer/sanitizer-test-008/provenance/native-test-maps-386-0.txt",
+          "raw_maps_sha256": "3af71b8eecd83cfacbd8b3f1553cad384186d31155b49be0a478610bf368a279",
+          "published_maps_sha256": "3af71b8eecd83cfacbd8b3f1553cad384186d31155b49be0a478610bf368a279",
+          "mapped_libasan": true,
+          "mapped_libubsan": true
+        }
+      ],
+      "final_seal_complete": true,
+      "external_dependencies_instrumented": false,
+      "final_observations_member": "sanitizer/sanitizer-seal-001/provenance/observed-runtime-processes.json",
+      "final_observations_sha256": "1413ff4e0156f74e63289c0639be8918d738e840a69c69164937919487174d61"
+    },
+    "all_required_complete": true,
+    "whole_registry_aggregate": false,
+    "ASAN_OPTIONS": "detect_leaks=0:halt_on_error=1:abort_on_error=1",
+    "UBSAN_OPTIONS": "halt_on_error=1:abort_on_error=1:print_stacktrace=1",
+    "rtti_vptr_required": true,
+    "lsan_coverage": false,
+    "lsan_reason": "Retained current-host trivial probe proves ptrace failure",
+    "external_dependencies_instrumented": false,
+    "prepare_attempt": "sanitizer-prepare-001",
+    "build_attempt": "sanitizer-build-001",
+    "final_seal_attempt": "sanitizer-seal-001",
+    "generic_report_records": [
+      {
+        "name": "painter-owned-generic-fill-brush-raw",
+        "attempt": "sanitizer-test-010",
+        "report_member": "sanitizer/sanitizer-test-010/public/oracle-report.json",
+        "report_sha256": "f6c478d1b41ee98e73a7716249921860820d0830ff6017fb0473e34120fb86c4",
+        "transform_member": "sanitizer/sanitizer-test-010/public/oracle-transform.json",
+        "transform_sha256": "7769bffde7c684f78400f102a3459da8038f948bf74b812b0c1c5c98e5ccf789",
+        "runs": [
+          {
+            "family": "fill-brush",
+            "route": "raw",
+            "exit_code": 0,
+            "bytes": 1814962,
+            "records": 37,
+            "exact": true,
+            "sha256": "6341528d069e328358db649f82a60c9966f7638b4481f9ec851d37f7a28a46c6",
+            "executable_sha256": "32f93d17d86153214b3f9f9cf8636cc8d11c9b6b3b271ab7b7c775bc3c720077"
+          }
+        ],
+        "complete_diagnostics_retained_in_report": true
+      },
+      {
+        "name": "painter-owned-generic-fill-brush-path",
+        "attempt": "sanitizer-test-011",
+        "report_member": "sanitizer/sanitizer-test-011/public/oracle-report.json",
+        "report_sha256": "96796f92480f9692b569a78b62d8bff1c61fe671231648e5d0112af802f81cb3",
+        "transform_member": "sanitizer/sanitizer-test-011/public/oracle-transform.json",
+        "transform_sha256": "bd13f880c3d39c0d1907d00371db4ecd0d052b8e3c8f274f02012d4b40480bcf",
+        "runs": [
+          {
+            "family": "fill-brush",
+            "route": "path",
+            "exit_code": 0,
+            "bytes": 1814962,
+            "records": 37,
+            "exact": true,
+            "sha256": "2ebca621a371dea2604815ca0436bfd71f12d72800112214673a033adb3fdf7f",
+            "executable_sha256": "32f93d17d86153214b3f9f9cf8636cc8d11c9b6b3b271ab7b7c775bc3c720077"
+          }
+        ],
+        "complete_diagnostics_retained_in_report": true
+      },
+      {
+        "name": "painter-owned-generic-fill-brush-boundary",
+        "attempt": "sanitizer-test-012",
+        "report_member": "sanitizer/sanitizer-test-012/public/oracle-report.json",
+        "report_sha256": "4807f2a49bb9a0459139f028b11ff77a0caf2397f7d1ef4cceb5a46bd49dd037",
+        "transform_member": "sanitizer/sanitizer-test-012/public/oracle-transform.json",
+        "transform_sha256": "746942edbdbb92ea4a095c8e7e5996332dd4a8bbfd63cb51630077a40bc86c40",
+        "runs": [
+          {
+            "family": "fill-brush",
+            "route": "boundary",
+            "exit_code": 0,
+            "bytes": 1814962,
+            "records": 37,
+            "exact": true,
+            "sha256": "ccad9bf5dadd69b7702165e2576591ffc9507b51663bc9b8d90087ddd8ac744b",
+            "executable_sha256": "32f93d17d86153214b3f9f9cf8636cc8d11c9b6b3b271ab7b7c775bc3c720077"
+          }
+        ],
+        "complete_diagnostics_retained_in_report": true
+      },
+      {
+        "name": "painter-owned-generic-smudge-raw",
+        "attempt": "sanitizer-test-013",
+        "report_member": "sanitizer/sanitizer-test-013/public/oracle-report.json",
+        "report_sha256": "5282e7c8999a9dea6953a4f7b7a24684db1974b4896540028497b0987191c3c4",
+        "transform_member": "sanitizer/sanitizer-test-013/public/oracle-transform.json",
+        "transform_sha256": "5bf300ed835b75bce9e10e8a2afcc386777651b18422cc3d82a5468f2d8d9176",
+        "runs": [
+          {
+            "family": "smudge",
+            "route": "raw",
+            "exit_code": 0,
+            "bytes": 2952800,
+            "records": 193,
+            "exact": true,
+            "sha256": "4a547ca7fc7545be3d248930feface0eac700302ab5b27063424a4e0f12d50ae",
+            "executable_sha256": "6e5d0a5ef07df7e5266591fe29533438e12d87bc9ff29a7b44cda3654557a59c"
+          }
+        ],
+        "complete_diagnostics_retained_in_report": true
+      },
+      {
+        "name": "painter-owned-generic-smudge-path",
+        "attempt": "sanitizer-test-014",
+        "report_member": "sanitizer/sanitizer-test-014/public/oracle-report.json",
+        "report_sha256": "c30b07d254adbcd2c4f7bac2812528f21ad939333b6ad1c4741aabd2e57a09af",
+        "transform_member": "sanitizer/sanitizer-test-014/public/oracle-transform.json",
+        "transform_sha256": "b221094fe193a200ee0745725d046d8fbf5bcd87371bcb8e7b978bf5858a8099",
+        "runs": [
+          {
+            "family": "smudge",
+            "route": "path",
+            "exit_code": 0,
+            "bytes": 2952800,
+            "records": 193,
+            "exact": true,
+            "sha256": "493b43af06e2bca812e6c3b51687644b9d620f5711494ef162795decfeb0272c",
+            "executable_sha256": "6e5d0a5ef07df7e5266591fe29533438e12d87bc9ff29a7b44cda3654557a59c"
+          }
+        ],
+        "complete_diagnostics_retained_in_report": true
+      },
+      {
+        "name": "painter-owned-generic-smudge-boundary",
+        "attempt": "sanitizer-test-015",
+        "report_member": "sanitizer/sanitizer-test-015/public/oracle-report.json",
+        "report_sha256": "6d11d798ae75f63a6dcefb7215e82e7b571bd9fbf8d71c639e561007d2c7e587",
+        "transform_member": "sanitizer/sanitizer-test-015/public/oracle-transform.json",
+        "transform_sha256": "7e82c7f8d62b086f747ae8991d65b50b5435122301d1904499f853ef0af0af7b",
+        "runs": [
+          {
+            "family": "smudge",
+            "route": "boundary",
+            "exit_code": 0,
+            "bytes": 2952800,
+            "records": 193,
+            "exact": true,
+            "sha256": "353b8ba671bf5952a5878d4647eadf6651dbad15b197628d5c5ca93eba2c9af1",
+            "executable_sha256": "6e5d0a5ef07df7e5266591fe29533438e12d87bc9ff29a7b44cda3654557a59c"
+          }
+        ],
+        "complete_diagnostics_retained_in_report": true
+      }
+    ],
+    "trace_family_records": [
+      {
+        "name": "painter-smudge-legacy-strokes",
+        "attempt": "sanitizer-test-008",
+        "status": "passed",
+        "comparison_output": "Exact legacy Smudge stroke/Undo: 2952800 bytes, 193 records\n",
+        "public_results_member": "sanitizer/sanitizer-test-008/public/results.json",
+        "public_results_sha256": "fcbce3244c8bdd1772161d3dc8af5196121a67cbee8263e619d8cbc9dd67ccd6"
+      },
+      {
+        "name": "painter-smudge-owned-strokes",
+        "attempt": "sanitizer-test-009",
+        "status": "passed",
+        "comparison_output": "Exact legacy Smudge stroke/Undo: 2952800 bytes, 193 records\n",
+        "public_results_member": "sanitizer/sanitizer-test-009/public/results.json",
+        "public_results_sha256": "9215674c5dead99e0f3a81f6b941c0e8ebbf1bcae8876bf03575c948e0cdb7d6"
+      },
+      {
+        "name": "painter-fill-brush-legacy",
+        "attempt": "sanitizer-legacy-profile-001",
+        "status": "passed",
+        "comparison_output": "Exact real legacy Fill Brush match: 1814962 bytes, 12 scenarios, 36 finish/Undo/Redo snapshots\n",
+        "public_results_member": "sanitizer/sanitizer-legacy-profile-001/public/results.json",
+        "public_results_sha256": "c93b9437c5888fb028c6e92f85e3657f3b5492030c6ae34463d83bb7758fc95a"
+      },
+      {
+        "name": "painter-fill-brush-legacyqueued",
+        "attempt": "sanitizer-legacy-profile-002",
+        "status": "passed",
+        "comparison_output": "Exact real legacy Fill Brush match: 1814962 bytes, 12 scenarios, 36 finish/Undo/Redo snapshots\n",
+        "public_results_member": "sanitizer/sanitizer-legacy-profile-002/public/results.json",
+        "public_results_sha256": "375458eaab90d49dc2bfa1fc08bc6bfa75d1dd153992b0d8a27ecf85bef5bf2f"
+      },
+      {
+        "name": "painter-fill-brush-legacyasync",
+        "attempt": "sanitizer-legacy-profile-003",
+        "status": "passed",
+        "comparison_output": "Exact real legacy Fill Brush match: 1814962 bytes, 12 scenarios, 36 finish/Undo/Redo snapshots\n",
+        "public_results_member": "sanitizer/sanitizer-legacy-profile-003/public/results.json",
+        "public_results_sha256": "94d5494af7dd242f4b1c7e4af85ff416be0a269004f99a603cd063a160f02f38"
+      }
+    ],
+    "invocation_provenance": {
+      "qualification": "Base preparation plus separately reviewed external registered-profile invocation amendment for the exact three affected legacy Fill Brush registrations and final seal. Source, original runner and validators remain unchanged; invocation attribution is amended.",
+      "base_preparation_sha256": "f4937b1ef175444cc3d8d458b32d11c73a2635a7fdeed62a704aeb0a07e436e6",
+      "amendment_sha256": "ba52fdbc944dd133a1ff510676ab250d7d069941eaa9e02fdc04320f00a3bd46",
+      "adapter_sha256": "c4aa911b4f88691148391bb748eb3a26e1a1036b71ff293bc7c2da829ca48a59",
+      "independent_amendment_review_sha256": "7f56a54ee897422b5d0c78d9d889ab6829fda113e66ae718d53a23b5a0da84d0",
+      "amendment_package_member_prefix": "invocation-amendment/registered-profile/",
+      "scope": [
+        "painter-fill-brush-legacy",
+        "painter-fill-brush-legacyqueued",
+        "painter-fill-brush-legacyasync",
+        "sanitizer final seal"
+      ],
+      "required_fresh_attempts": [
+        "sanitizer-legacy-profile-001",
+        "sanitizer-legacy-profile-002",
+        "sanitizer-legacy-profile-003"
+      ],
+      "required_amended_final_seal_attempt": "sanitizer-seal-001",
+      "required_per_registration_proofs": [
+        "invocation-amendment.json",
+        "registered-profile-alignment.json"
+      ],
+      "amended_success_receipt_and_proof_records": [
+        {
+          "attempt": "sanitizer-legacy-profile-001",
+          "registration": "painter-fill-brush-legacy",
+          "public_receipt_member": "sanitizer/sanitizer-legacy-profile-001/public/receipt.json",
+          "public_receipt_sha256": "32610ff67e48e01adf08c743079b398553e011a9d11bf1da3d9cb9ab8c395553",
+          "invocation_amendment_member": "sanitizer/sanitizer-legacy-profile-001/provenance/invocation-amendment.json",
+          "invocation_amendment_sha256": "4f75912c8307a5d0fb71ac32317db3b82632eb0f3762a4176244521481958f1a",
+          "registered_profile_alignment_member": "sanitizer/sanitizer-legacy-profile-001/provenance/registered-profile-alignment.json",
+          "registered_profile_alignment_sha256": "cb2fdcc6e4f84215ea816a6607e8eb864073042e9a1c1c8fd5316882ff16d1c5",
+          "only_launch_key_changed": "GIMP3_DIRECTORY",
+          "original_assertions_unchanged": true,
+          "failed005_reinterpreted": false
+        },
+        {
+          "attempt": "sanitizer-legacy-profile-002",
+          "registration": "painter-fill-brush-legacyqueued",
+          "public_receipt_member": "sanitizer/sanitizer-legacy-profile-002/public/receipt.json",
+          "public_receipt_sha256": "2c7c4d54142820ec4918e4b270719ff7d578d9c0189975b9653316c49d8778b1",
+          "invocation_amendment_member": "sanitizer/sanitizer-legacy-profile-002/provenance/invocation-amendment.json",
+          "invocation_amendment_sha256": "7130a5f5e086a6b9a71d02039fd67afab35c886ab9687147a5f997eb3d198f73",
+          "registered_profile_alignment_member": "sanitizer/sanitizer-legacy-profile-002/provenance/registered-profile-alignment.json",
+          "registered_profile_alignment_sha256": "16e13f94e444f8ce5e6d62e86d0948645bf72362ecdbfba456f034f102e5ceae",
+          "only_launch_key_changed": "GIMP3_DIRECTORY",
+          "original_assertions_unchanged": true,
+          "failed005_reinterpreted": false
+        },
+        {
+          "attempt": "sanitizer-legacy-profile-003",
+          "registration": "painter-fill-brush-legacyasync",
+          "public_receipt_member": "sanitizer/sanitizer-legacy-profile-003/public/receipt.json",
+          "public_receipt_sha256": "48005b7e92c772b2e4b23da3a60eff7b559a0aecf81440b36b034cd73ea0e279",
+          "invocation_amendment_member": "sanitizer/sanitizer-legacy-profile-003/provenance/invocation-amendment.json",
+          "invocation_amendment_sha256": "88e5981262bbb4b1d15523b0795c873df0c3242e6c7f5a1430d5fc95b2040368",
+          "registered_profile_alignment_member": "sanitizer/sanitizer-legacy-profile-003/provenance/registered-profile-alignment.json",
+          "registered_profile_alignment_sha256": "63874176368b03389ca6f460791f82ff84722a2f8e9887241cc8e5043d04b178",
+          "only_launch_key_changed": "GIMP3_DIRECTORY",
+          "original_assertions_unchanged": true,
+          "failed005_reinterpreted": false
+        }
+      ],
+      "amended_final_seal_receipt_and_proof_record": {
+        "attempt": "sanitizer-seal-001",
+        "public_receipt_member": "sanitizer/sanitizer-seal-001/public/receipt.json",
+        "public_receipt_sha256": "4bd6667579db399f785c6ca730020ddcd64645ffe67f4e27ab0a2d66830a4ad2",
+        "invocation_amendment_member": "sanitizer/sanitizer-seal-001/provenance/invocation-amendment.json",
+        "invocation_amendment_sha256": "343afebb00619787970d14c9dc25e60b76ba239b202992f83ae627a69e567621",
+        "status": "passed"
+      },
+      "original_preparation_and_runner_bytes_unchanged": true,
+      "unchanged_invocation_or_original_runner_only_claim": false,
+      "amended_native_acceptance_status": "three complete registrations and amended final seal passed",
+      "failed005_reinterpreted": false
+    },
+    "build_evidence": {
+      "status": "passed-build-only",
+      "started_utc": "2026-10-18T11:40:21.612577+00:00",
+      "finished_utc": "2026-10-18T11:58:08.883053+00:00",
+      "full_default_build": true,
+      "planned_default_outputs": 919,
+      "declared_catalogs": 493,
+      "staged_catalogs": 361,
+      "recorded_commands": 206,
+      "all_recorded_command_returncodes_zero": true,
+      "compiler_warning_string_occurrences": 842,
+      "zero_warning_claim": false,
+      "independent_build_review_sha256": "74a484772d29bd32f5bca5c9df81b6943a53128e3b244176cd1f0a8be56ec966",
+      "instrumentation_source_sha256": "512c811c10d3dc2c76e83ce1e97df68d25f34db00edf1d857bb8df06f997d295",
+      "compiled_loaders_sha256": "7100320ba5106287308861a15a47b6e8ad58d36a959722df711fbe664674389a",
+      "final_runtime_seal_pending": false
+    },
+    "successful_registrations_recorded": 15,
+    "actual_core_tap_counts": {
+      "gimp-fill-brush": 40,
+      "gimp-painter-smudge": 23,
+      "gimp-painter-batch": 13,
+      "filter-entry-contracts": 35
+    },
+    "final_seal": {
+      "status": "passed",
+      "started_utc": "2026-10-18T12:56:47.961786+00:00",
+      "finished_utc": "2026-10-18T13:00:10.451725+00:00",
+      "public_receipt_member": "sanitizer/sanitizer-seal-001/public/receipt.json",
+      "public_receipt_sha256": "4bd6667579db399f785c6ca730020ddcd64645ffe67f4e27ab0a2d66830a4ad2",
+      "registrations": {
+        "gimp-fill-brush": [
+          {
+            "phase": "/workspace/shared/gimp-generic-acceptance/run-003/evidence/sanitizer/sanitizer-test-001/phase.json",
+            "sha256": "6381a21c8bcc92a8b2294d3cb315a5fee8ef5a49672a1ccd5dc72bd14d0a6568"
+          }
+        ],
+        "gimp-painter-smudge": [
+          {
+            "phase": "/workspace/shared/gimp-generic-acceptance/run-003/evidence/sanitizer/sanitizer-test-002/phase.json",
+            "sha256": "8b1cdcc44a5b60e6d8b275b059aedec108fee1bd21b002c7ddf4e13a542cc3cf"
+          }
+        ],
+        "gimp-painter-batch": [
+          {
+            "phase": "/workspace/shared/gimp-generic-acceptance/run-003/evidence/sanitizer/sanitizer-test-003/phase.json",
+            "sha256": "1aeb440ba8fe9090216378c98ab8b87d7926265ba89d5566043e6d2849dc4cae"
+          }
+        ],
+        "filter-entry-contracts": [
+          {
+            "phase": "/workspace/shared/gimp-generic-acceptance/run-003/evidence/sanitizer/sanitizer-test-004/phase.json",
+            "sha256": "e0d1c9112ae7da8ead981da0d414419f1e76d62f53b019038eb8b21f12509da6"
+          }
+        ],
+        "painter-fill-brush-legacy": [
+          {
+            "phase": "/workspace/shared/gimp-generic-acceptance/run-003/evidence/sanitizer/sanitizer-legacy-profile-001/phase.json",
+            "sha256": "44fb603861aaed9ef5c829a8ac7b0a768f7202d57c393d751c1eeca5ef2d1541"
+          }
+        ],
+        "painter-fill-brush-legacyqueued": [
+          {
+            "phase": "/workspace/shared/gimp-generic-acceptance/run-003/evidence/sanitizer/sanitizer-legacy-profile-002/phase.json",
+            "sha256": "d17dd1f2e7084352178a8c9956bc630f54cc8d6aa56aec56e11166534aef1c4f"
+          }
+        ],
+        "painter-fill-brush-legacyasync": [
+          {
+            "phase": "/workspace/shared/gimp-generic-acceptance/run-003/evidence/sanitizer/sanitizer-legacy-profile-003/phase.json",
+            "sha256": "5f77b0c2237ea98aedbe425e7936ad8e082ac98cfb88ab103f765ccc3a88ac91"
+          }
+        ],
+        "painter-smudge-legacy-strokes": [
+          {
+            "phase": "/workspace/shared/gimp-generic-acceptance/run-003/evidence/sanitizer/sanitizer-test-008/phase.json",
+            "sha256": "d976bde0dc145a7f14572683b604db9452c530fd876937a96e20c12204179208"
+          }
+        ],
+        "painter-smudge-owned-strokes": [
+          {
+            "phase": "/workspace/shared/gimp-generic-acceptance/run-003/evidence/sanitizer/sanitizer-test-009/phase.json",
+            "sha256": "00fc6387862008559ca748a22687a248ff51507fe78f952c11565358488ef60d"
+          }
+        ],
+        "painter-owned-generic-fill-brush-raw": [
+          {
+            "phase": "/workspace/shared/gimp-generic-acceptance/run-003/evidence/sanitizer/sanitizer-test-010/phase.json",
+            "sha256": "161632f433c8379b9ed067520480c43c185a6587ab496b187dc123c4a5276079"
+          }
+        ],
+        "painter-owned-generic-fill-brush-path": [
+          {
+            "phase": "/workspace/shared/gimp-generic-acceptance/run-003/evidence/sanitizer/sanitizer-test-011/phase.json",
+            "sha256": "04c4f7b73e681f9789bbddb423a852fc4b14d6ec63f7ee8cacb882b2a2928568"
+          }
+        ],
+        "painter-owned-generic-fill-brush-boundary": [
+          {
+            "phase": "/workspace/shared/gimp-generic-acceptance/run-003/evidence/sanitizer/sanitizer-test-012/phase.json",
+            "sha256": "6c8768bc75393393c4f364c1ad2f9451f4f8711d40e831b4eea26984a55e9a73"
+          }
+        ],
+        "painter-owned-generic-smudge-raw": [
+          {
+            "phase": "/workspace/shared/gimp-generic-acceptance/run-003/evidence/sanitizer/sanitizer-test-013/phase.json",
+            "sha256": "785ca8b92b1f3a4fe09a70d6b7df79b7bb4372fa409bc26c6de9850a8a2019da"
+          }
+        ],
+        "painter-owned-generic-smudge-path": [
+          {
+            "phase": "/workspace/shared/gimp-generic-acceptance/run-003/evidence/sanitizer/sanitizer-test-014/phase.json",
+            "sha256": "60e715bbe0e1da0ea3257ded3f9c54195f2bebf987951e718c77b4485991314c"
+          }
+        ],
+        "painter-owned-generic-smudge-boundary": [
+          {
+            "phase": "/workspace/shared/gimp-generic-acceptance/run-003/evidence/sanitizer/sanitizer-test-015/phase.json",
+            "sha256": "1f4d5c14534ed91ca1df9411f8b8428aa972f0add3b14430e0002c59b9c79cb1"
+          }
+        ]
+      },
+      "prior_failures_preserved": [
+        {
+          "phase": "/workspace/shared/gimp-generic-acceptance/run-003/evidence/sanitizer/sanitizer-test-005/phase.json",
+          "sha256": "36a243237b3e8396e75ed4cf0c42034160a09b7f153dae63227f5e08cc26c7c3",
+          "status": "failed",
+          "errors": [
+            "RuntimeError: Test escaped private directory GIMP3_DIRECTORY"
+          ]
+        }
+      ],
+      "runtime_registrations": 15,
+      "recorded_commands": 163,
+      "all_recorded_command_returncodes_zero": true,
+      "final_seal_loaders_member": "sanitizer/sanitizer-seal-001/provenance/seal-loaders.json",
+      "final_seal_loaders_sha256": "7100320ba5106287308861a15a47b6e8ad58d36a959722df711fbe664674389a",
+      "final_observed_runtime_processes_member": "sanitizer/sanitizer-seal-001/provenance/observed-runtime-processes.json",
+      "final_observed_runtime_processes_sha256": "1413ff4e0156f74e63289c0639be8918d738e840a69c69164937919487174d61",
+      "required_runtime_roots": 6,
+      "observed_executable_names_including_ancillary_providers_and_worker": 33,
+      "ancillary_observations_expand_acceptance_scope": false,
+      "whole_registry_aggregate": false,
+      "lsan_coverage": false
+    },
+    "final_source_build_seals": {
+      "before-source": {
+        "member": "sanitizer/sanitizer-seal-001/provenance/before-source.json",
+        "public_sha256": "4ea1fe34d83be1161926c75a39c72d6dca5c376fb7c3762aea61f72fe14c1540",
+        "original_sha256": "4ea1fe34d83be1161926c75a39c72d6dca5c376fb7c3762aea61f72fe14c1540"
+      },
+      "after-source": {
+        "member": "sanitizer/sanitizer-seal-001/provenance/after-source.json",
+        "public_sha256": "4ea1fe34d83be1161926c75a39c72d6dca5c376fb7c3762aea61f72fe14c1540",
+        "original_sha256": "4ea1fe34d83be1161926c75a39c72d6dca5c376fb7c3762aea61f72fe14c1540"
+      },
+      "before-development": {
+        "member": "sanitizer/sanitizer-seal-001/provenance/before-development.json",
+        "public_sha256": "4ea1fe34d83be1161926c75a39c72d6dca5c376fb7c3762aea61f72fe14c1540",
+        "original_sha256": "4ea1fe34d83be1161926c75a39c72d6dca5c376fb7c3762aea61f72fe14c1540"
+      },
+      "after-development": {
+        "member": "sanitizer/sanitizer-seal-001/provenance/after-development.json",
+        "public_sha256": "4ea1fe34d83be1161926c75a39c72d6dca5c376fb7c3762aea61f72fe14c1540",
+        "original_sha256": "4ea1fe34d83be1161926c75a39c72d6dca5c376fb7c3762aea61f72fe14c1540"
+      },
+      "before-build-files": {
+        "member": "sanitizer/sanitizer-seal-001/provenance/before-build-files.json",
+        "public_sha256": "86ef5b3717330dae2623a06ceba6883739b42808742e7dce958e87d8e2f70f1b",
+        "original_sha256": "86ef5b3717330dae2623a06ceba6883739b42808742e7dce958e87d8e2f70f1b"
+      },
+      "after-build-files": {
+        "member": "sanitizer/sanitizer-seal-001/provenance/after-build-files.json",
+        "public_sha256": "7bafddac549d0750a1f8bc93511ed33ef42b149e62cf8536f51c6eabc531cb73",
+        "original_sha256": "7bafddac549d0750a1f8bc93511ed33ef42b149e62cf8536f51c6eabc531cb73"
+      },
+      "before-elf": {
+        "member": "sanitizer/sanitizer-seal-001/provenance/before-elf.json",
+        "public_sha256": "a1e208b1d45df97362dccbe2f7bfe2e32922c56c93c92b3fdd84bb4331762e0a",
+        "original_sha256": "a1e208b1d45df97362dccbe2f7bfe2e32922c56c93c92b3fdd84bb4331762e0a"
+      },
+      "after-elf": {
+        "member": "sanitizer/sanitizer-seal-001/provenance/after-elf.json",
+        "public_sha256": "a1e208b1d45df97362dccbe2f7bfe2e32922c56c93c92b3fdd84bb4331762e0a",
+        "original_sha256": "a1e208b1d45df97362dccbe2f7bfe2e32922c56c93c92b3fdd84bb4331762e0a"
+      },
+      "before-freshness": {
+        "member": "sanitizer/sanitizer-seal-001/provenance/before-freshness.json",
+        "public_sha256": "c58c91e5bed5c4b4380a6ada01fa6f1a9595f5389178d982a6d959fcc233fd33",
+        "original_sha256": "c58c91e5bed5c4b4380a6ada01fa6f1a9595f5389178d982a6d959fcc233fd33"
+      },
+      "after-freshness": {
+        "member": "sanitizer/sanitizer-seal-001/provenance/after-freshness.json",
+        "public_sha256": "c58c91e5bed5c4b4380a6ada01fa6f1a9595f5389178d982a6d959fcc233fd33",
+        "original_sha256": "c58c91e5bed5c4b4380a6ada01fa6f1a9595f5389178d982a6d959fcc233fd33"
+      },
+      "before-metadata-manifest": {
+        "member": "sanitizer/sanitizer-seal-001/provenance/before-metadata-manifest.json",
+        "public_sha256": "78cdc858f9e966c0aa2ff1b826b890ee3ad74a9cc0d5314c7659966546808e68",
+        "original_sha256": "78cdc858f9e966c0aa2ff1b826b890ee3ad74a9cc0d5314c7659966546808e68"
+      },
+      "after-metadata-manifest": {
+        "member": "sanitizer/sanitizer-seal-001/provenance/after-metadata-manifest.json",
+        "public_sha256": "78cdc858f9e966c0aa2ff1b826b890ee3ad74a9cc0d5314c7659966546808e68",
+        "original_sha256": "78cdc858f9e966c0aa2ff1b826b890ee3ad74a9cc0d5314c7659966546808e68"
+      },
+      "convergence-identity": {
+        "member": "sanitizer/sanitizer-seal-001/provenance/convergence-identity.json",
+        "public_sha256": "3092bd9526a019a68d9b18b0a8b119cc40fc12cb8a907256634d9d0639f96cee",
+        "original_sha256": "3092bd9526a019a68d9b18b0a8b119cc40fc12cb8a907256634d9d0639f96cee"
+      },
+      "resource-inputs": {
+        "member": "sanitizer/sanitizer-seal-001/provenance/resource-inputs.json",
+        "public_sha256": "58cc580bd91819d8457bd01822db16449547ce3ef4928b2c7c37b004fc95c3f3",
+        "original_sha256": "58cc580bd91819d8457bd01822db16449547ce3ef4928b2c7c37b004fc95c3f3"
+      },
+      "validation-only-targets": {
+        "member": "sanitizer/sanitizer-seal-001/provenance/validation-only-targets.json",
+        "public_sha256": "9eb97b4706d358d3bdc65db4663fa86dcfceebd0a62a850651af97bc09b573d6",
+        "original_sha256": "9eb97b4706d358d3bdc65db4663fa86dcfceebd0a62a850651af97bc09b573d6"
+      }
+    }
+  },
+  "prior_failures": {
+    "normal_99d398b": {
+      "status": "failed",
+      "aggregate_results": {
+        "OK": 170,
+        "FAIL": 1
+      },
+      "archive_sha256": "8500440db4ca5d27a83ed88c49e11379dfcbd05820b5fa8b29cddc634d60c76e",
+      "relabelled": false
+    },
+    "other_actual_attempts": [],
+    "fresh_normal_aggregate_001": {
+      "status": "failed",
+      "reason": "Initial fresh aggregate attempt failed before native launch because the parent shell did not source the ninja dependency PATH",
+      "preserved_in": "libfile_d138a3cb0fdc81919f4a6b4f505307d4",
+      "relabelled": false
+    },
+    "fresh_sanitizer_test_005": {
+      "status": "failed",
+      "registration": "painter-fill-brush-legacy",
+      "native_command_returncode": 0,
+      "phase_errors": [
+        "RuntimeError: Test escaped private directory GIMP3_DIRECTORY"
+      ],
+      "phase_sha256": "36a243237b3e8396e75ed4cf0c42034160a09b7f153dae63227f5e08cc26c7c3",
+      "public_receipt_sha256": "c7da10f22a94997dc18dff2b7401ed7f834b1ebdc517498e9d34bcf430117607",
+      "public_evidence_member_prefix": "sanitizer/failures/sanitizer-test-005/",
+      "relabelled": false,
+      "native_result_confers_acceptance": false,
+      "required_replacement": "Fresh complete reviewed-amendment invocation; retain this failed phase unchanged."
+    }
+  },
+  "evidence": {
+    "archive": "migration/tests/owned-generic-ordinary-acceptance.tar.xz",
+    "archive_sha256": "338b5031f46be0e75ae167bbc578b38023d7ceb2b5c7bb2946ab879f6ea7616f",
+    "archive_bytes": 7632448,
+    "manifest_sha256": "1c27be6a5606fbd4f8c38f3b3ce58db5efbefd745afa8d5578c2c9acac29f0c0",
+    "publication_scope": "Exact reviewed public receipts/logs and documented public transformations only; no wholesale private normal or cleanup archive embedding",
+    "private_packages": [
+      {
+        "filename": "gimp-fresh-normal-171-passed-20261018-1123.tar.xz",
+        "sha256": "5233961c5ba802c81f782b9894c9e3719d2cd6cd733eaddca4d10eab22d9dfed",
+        "bytes": 12339116,
+        "library_file_id": "libfile_d138a3cb0fdc81919f4a6b4f505307d4",
+        "classification": "private durable evidence; preserve unchanged, not approved for wholesale repository publication"
+      },
+      {
+        "filename": "gimp-normal-disposal-receipts-20261018.tar.xz",
+        "sha256": "fa303664b31493131e24c389ba8cbd572d2c29a5ab4633f10ef22485b484d5b4",
+        "bytes": 584464,
+        "library_file_id": "libfile_1e5fa17f0f8c819192996eeeb9c0e5bd",
+        "classification": "durable cleanup receipts; retain privately unless exact publication subset is reviewed"
+      }
+    ],
+    "additional_private_packages": [
+      {
+        "filename": "gimp-fresh-sanitizer-build-20261018.tar.xz",
+        "bytes": 7972316,
+        "sha256": "4b208c944b00d1e9de036f3834deb0b614288da4fb9673996193a40c18ca9858",
+        "library_file_id": "libfile_4144d466f8ac81918afac06f3dfde70b",
+        "classification": "private durable completed sanitizer build evidence; public archive uses reviewed bounded members"
+      },
+      {
+        "filename": "gimp-registered-profile-amendment-20261018.tar.xz",
+        "bytes": 7508,
+        "sha256": "6f7649683355dbee542af729c70a3c140780b2adb4f087e834bace1f40a48a60",
+        "library_file_id": "libfile_e84ace7ec3888191901430ad5112a581",
+        "classification": "durable reviewed invocation amendment kit; public members separately staged and reviewed"
+      },
+      {
+        "filename": "gimp-fresh-normal-sanitizer-complete-20261018.tar.xz",
+        "bytes": 40189928,
+        "sha256": "c886353008a60bf3e6a906532dceeed7672687257b790693a629c11f60f1d357",
+        "library_file_id": "libfile_e084c70e6c7c81918a0ee3cfda1fa847",
+        "classification": "private durable complete normal/sanitizer evidence and snapshot; never embedded wholesale in public payload",
+        "identity_source": "owning parent upload confirmation; parent checked evidence symlinks resolve within included blob directory",
+        "independent_materialization_sha256_verified": true
+      }
+    ],
+    "archive_readback": {
+      "status": "passed",
+      "exact_regular_members": 1033,
+      "all_member_sha256_and_sizes_match_stage": true,
+      "deterministic_metadata": {
+        "mode": "0644",
+        "uid": 0,
+        "gid": 0,
+        "mtime": 0
+      },
+      "compiled_payload_included": false
+    }
+  },
+  "independent_acceptance_review": {
+    "status": "passed",
+    "artifact": "review/acceptance-review.json",
+    "sha256": "336335822ff834752d47ff62d4c38f29984f9d1d656a6c9e4992cab0ff65da82",
+    "bytes": 25335,
+    "manifest_sha256": "1c27be6a5606fbd4f8c38f3b3ce58db5efbefd745afa8d5578c2c9acac29f0c0"
+  },
+  "documentary_closure": {
+    "native_tested_revision": "cedf6968c2bfd1d7f7b0623be713b27e449ac3c2",
+    "later_doc_revision_natively_rerun": false,
+    "changed_paths": [
+      "tasks.md",
+      "migration/progress.tsv",
+      "migration/contracts/owned-generic-stroking.md",
+      "migration/tests/filter-entry-fixture-quiescence/README.md",
+      "migration/tests/owned-generic-ordinary-acceptance.json",
+      "migration/tests/owned-generic-ordinary-acceptance.tar.xz"
+    ],
+    "code_gate_exceptions_added": false,
+    "editing_base_commit": "51280702e5a7bc06319c2cc1677d4826aefb8378",
+    "published_fresh_normal_checkpoint_preserved": true,
+    "publication_record": "Final documentary commit and remote readback are recorded separately after publication; this committed receipt has no self-referential commit field."
+  },
+  "limits": [
+    "Only these two bounded children may close after sanitizer and independent evidence review pass",
+    "Parents 27.009 and 08.018 remain open",
+    "No LSan or external-dependency instrumentation claim",
+    "No arbitrary standalone PDB, full GUI/device, all-precision/symmetry/ICC/pipe/resource/latency/platform or whole-port/release claim",
+    "Retained legacy fixtures are replayed; no fresh old runtime execution",
+    "Prior Clone receipt remains exact-source historical evidence; no current-root equivalence refresh",
+    "Normal compiled outputs were disposed after passing; a retained historical aggregate does not qualify the current incomplete normal tree or a documentary descendant for runtime packaging"
+  ]
+}

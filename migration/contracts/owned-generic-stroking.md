@@ -137,9 +137,36 @@ The successful retry sourced the unchanged environment. No source, test, warning
 policy or registered budget was changed. The earlier rejected 170/171 aggregate
 also remains failed historical evidence.
 
-The separate fresh full-default ASan/UBSan build, complete linked-object audit
-and all 15 original-budget sanitizer registrations are still pending.
-`27.009/owned-generic-strokes` remains DOING and unchecked. This documentary
-commit does not change tested native inputs or claim a new native run on itself.
-Scoped sanitizer acceptance, task closure, installed/runtime packaging, the
-parent 27.009 and all broader obligations remain separate.
+The separate fresh full-default ASan/UBSan build, linked-object audit and all
+15 complete original-budget registrations passed, followed by the final seal.
+The linked runtime closure contains 1,377 instrumented objects, 33 archives,
+six test executables and seven local shared libraries; RTTI/vptr checks remain
+intact. All compiler diagnostics are retained, including 842 warning occurrences.
+External dependencies are identity-sealed, not claimed instrumented; LSan remains
+excluded only by the reproduced host ptrace limitation.
+
+Three legacy Fill Brush registrations explicitly set their private build-profile
+directory. The original wrapper rejected that registered value after a successful
+native comparison. That attempt remains failed. A separately reviewed invocation
+amendment aligns only the launch GIMP3_DIRECTORY to the exact registered private
+path; Meson's effective native environment and every original validator remain
+unchanged. All three complete registrations then passed fresh attempts. The base
+preparation/snapshot stay immutable; the receipt explicitly binds the amendment,
+its negative controls and independent review, rather than claiming unchanged
+invocation bytes.
+
+See `../tests/owned-generic-ordinary-acceptance.json` and its reviewed evidence
+archive. Acceptance belongs to cedf6968c2bfd1d7f7b0623be713b27e449ac3c2,
+tree 8b5b431de5ec05ee1bb6bc36cbccf4e1dd2920a9, with pinned gimp-data
+a31e5dea4f572fb5f33b06f5c4b86db5f30643dc. Only the owned-generic-strokes and
+blinds-entry-fixture-quiescence children close. This later documentary commit
+changes no native input and has no new native/GUI run attributed to itself.
+
+After preserving the normal evidence, 2,814 reproducible compiled outputs were
+permanently disposed of under an independently reviewed finite manifest,
+recovering 6,520,283,136 bytes. This was not reversible parking. Source, generated
+inputs, the two application binaries, registry, reports and evidence were retained,
+but the remaining normal tree is not a complete runtime. Future runtime packaging
+requires a full rebuild and fresh aggregate revalidation. Parents 27.009/08.018,
+PDB, full GUI/device, resource/latency, precision/platform and release obligations
+remain open.

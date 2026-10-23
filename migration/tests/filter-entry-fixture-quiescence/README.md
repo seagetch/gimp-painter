@@ -1,8 +1,19 @@
 # Filter entry fixture startup quiescence
 
-Task `08.018/blinds-entry-fixture-quiescence` is **DOING**. This candidate has
-passed its complete 35-case ordinary normal registration before this WIP
-publication. Final sanitizer and aggregate acceptance remain pending.
+Task `08.018/blinds-entry-fixture-quiescence` is **DONE** for the bounded fixture
+repair at exact cedf6968c2bfd1d7f7b0623be713b27e449ac3c2. Fresh normal aggregate
+171/171 and the complete 35-case ordinary ASan/UBSan registration passed at the
+original 120-second budget, with the actual restored provider and original
+lifetime/finalization assertions intact. The final source/build/runtime seal
+passed. See `../owned-generic-ordinary-acceptance.json` and its reviewed archive.
+The shared acceptance explicitly records the separate invocation amendment for
+three legacy Fill Brush comparisons and preserves its earlier wrapper failure;
+this fixture registration itself needed no such amendment. Parent08.018 remains
+open; no blanket shutdown, leak-free or broader platform claim is made.
+
+This is a documentary descendant of the tested source. Normal compiled outputs
+were subsequently disposed of after evidence preservation; future runtime
+packaging requires a rebuild and fresh full revalidation.
 
 ## Retained failure
 
@@ -79,7 +90,7 @@ these results in the documentation and receipt; the executable test source,
 fixtures and build definitions are unchanged. This is a normal repair check,
 not sanitizer acceptance or a replacement aggregate.
 
-## Required acceptance
+## Acceptance criteria (satisfied by the shared receipt)
 
 - Complete ordinary Meson `filter-entry-contracts` registration, all 35 cases,
   on fresh profiles with actual bundled providers. Do not replace it with

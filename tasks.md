@@ -417,7 +417,7 @@
 | 08.017 | [x] | 既存 widget behavior を store に移す | 08.016 | 全登録箇所が共通 slot を利用 |
 | 08.018 | [ ] | C 公開操作を新 Impl へ接続する | 08.017 | C 入口から旧 Interface::cast を排除 |
 | 08.018/blinds-procedure-preparation | [x] | Blinds の旧引数準備を checked C entry と共通 FilterSlot へ接続する | 08.017, 16.010/parameter-semantic-policy | 型付きゼロ7枠・独立所有・変換・登録provider・再入を C/C++ と標準 Meson normal/ASan/UBSan で検証。旧void ABI・他procedure・親08.018は別 |
-| 08.018/blinds-entry-fixture-quiescence | [ ] | entry寿命試験の起動plug-in参照を有界に退役させる | 08.018/blinds-procedure-preparation | 実復元providerと全35caseを保持し、child-watch所有PDB contextとstroke optionsの破棄を観測してから3破壊再入試験を実行。標準normal全35case合格。ASan/UBSan全登録と再aggregateは未検証 |
+| 08.018/blinds-entry-fixture-quiescence | [x] | entry寿命試験の起動plug-in参照を有界に退役させる | 08.018/blinds-procedure-preparation | cedf6968の通常全171/171とASan/UBSan全35caseが元の120秒予算で合格。実復元provider、起動context/options退役観測、3破壊再入と元の寿命assertionを保持。最終source/runtime seal合格。旧170/171失敗は履歴保持、親08.018と漏洩全般の保証は対象外 |
 | 08.018/core-extension-hooks | [ ] | 標準coreの独自操作hookを現行APIへ接続する | 08.018, 01.013 | hunk台帳のcore補助関数・公開宣言ごとの子チェックを処理し、同名APIの所有・座標・更新・失敗時の意味を検証する |
 | 08.019 | [ ] | C++ 利用箇所をハンドルへ移す | 08.018 | ref 関数添字と公開 interface cast を排除 |
 | 08.020 | [ ] | 旧 registration helper の残用途を整理する | 08.019 | 必要な型登録だけ adapter に残り、旧 Impl 配置がない |
@@ -1026,7 +1026,7 @@
 | 27.009/stroke-lifecycle | [ ] | 描画中の snapshot と mask の寿命を paint vfunc の start・motion・finish に接続する | 27.009 | 終了と cancel で解放し複数 drawable・symmetry の扱いを明示して一筆の Undo を維持 |
 | 27.009/native-paint-transaction | [x] | Fill探索jobを実native PaintCore・Undoへ接続する | 27.004/runtime-search-foundation, 27.012/legacy-dab-origin, 10.005/native-paint-mode-route | 36実旧RGBA snapshotが逐次/全入力queue両方1814962 bytes完全一致。12 native試験と17unit ASan/UBSan/float-cast-overflow合格。再入・invalid入力・外部編集/format/size/lock失効とpending queryを検証。GUI/全brush/ICC/有界補間は別gate |
 | 27.009/native-start-preflight | [x] | Fill開始前の一回限りadmissionで未統合・再入native startを安全拒否する | 27.010/bounded-interpolation | 26 native/18source focused sanitizer合格、全app build・実旧Fill3通り・native補間6budget再確認。拒否時は既存stroke stateを変更しない。generic Stroke Path実装と自動Save継続は別gate |
-| 27.009/owned-generic-strokes | [ ] | Fill/Smudgeのnative stroke/path/boundaryを同一所有transactionへ接続する | 27.009/native-start-preflight, 23.002/native-owner-smudge, 21.001/atomic-generic-strokes | 実旧180scene/690record/14303286 bytesが6route完全一致、Fill36/Smudge23/MyPaint13群と既存5trace合格。複数subpath原子Undo・取消/再入・Boundary不変・Bezier metadata初期化を実装。旧通常結果は履歴のみ。旧99d398b通常aggregateの170/171失敗は履歴保持。修正後cedf6968を新環境で再構築し、通常全171/171合格・完全性seal合格。完全linked ASan/UBSanの全15登録受入は未完了。DOING継続 |
+| 27.009/owned-generic-strokes | [x] | Fill/Smudgeのnative stroke/path/boundaryを同一所有transactionへ接続する | 27.009/native-start-preflight, 23.002/native-owner-smudge, 21.001/atomic-generic-strokes | cedf6968の新規通常全171/171と完全linked ASan/UBSan全15登録が合格。core40/23/13/35case、実旧180scene/690record/14303286 bytesの6routeと既存5trace完全一致。元の失敗を保持し、登録済みprivate profileへ合わせる独立レビュー済み起動補正を明記。最終source/runtime seal合格。親27.009と広範なGUI/device/PDB/platform条件は未完了 |
 | 27.010 | [ ] | 大領域探索の実行量を制限する | 27.009 | 取消しと UI 入力へ戻れる |
 | 27.011 | [ ] | 塗りつぶしの Undo を接続する | 27.010 | 一操作で元画像へ復元 |
 | 27.012 | [ ] | tool options を移植する | 27.011 | 旧 rate・eraser-mode・継承描画設定を編集・保存し、固定閾値を新規 UI 設定と混同しない。rate の実効性を旧版で測定 |
