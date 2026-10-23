@@ -23,6 +23,7 @@ void painter_hierarchy_set (GObject *owner, gboolean child, gint value);
 gint painter_hierarchy_get (GObject *owner, gboolean child);
 gint painter_hierarchy_read (PainterReadable *owner, GError **error);
 void painter_hierarchy_parent_dispose (GObject *owner);
+void painter_hierarchy_finalize_phase (gint phase);
 void painter_hierarchy_reset_property_trace (void);
 PainterPropertyTrace painter_hierarchy_property_trace (void);
 G_END_DECLS

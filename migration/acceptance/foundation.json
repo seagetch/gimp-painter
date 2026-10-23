@@ -559,13 +559,16 @@
       ],
       "test_ids": [
         "/painter/hierarchy/parent-dispose-reentry",
+        "/painter/hierarchy/shutdown-paths",
+        "/painter/store/close-transitions",
+        "/painter/store/implementation-ownership",
         "/painter/reentry/finalizing-close-read"
       ],
       "reports": [
-        "migration/tests/painter-foundation-acceptance-native.json",
-        "migration/tests/painter-foundation-acceptance-sanitizers.json"
+        "migration/tests/hierarchy-teardown/native.json",
+        "migration/tests/hierarchy-teardown/sanitizers.json"
       ],
-      "scope_or_gap": "Derived/base hooks and repeated parent dispose reentry close each slot once; const closed reads are allowed, finalizing reads are rejected."
+      "scope_or_gap": "Original common hierarchy teardown accepted: real C base/child native dispose/finalize paths, per-slot close and destruction once, exact repeated/reentrant parent counts, generation once and closed-state read availability. Native and ASan/UBSan64, Meson64. Existing production logic unchanged; exactly one legacy duty accepted. No required Impl destructor order; LSan, all-feature, platform and async-job gates separate."
     },
     {
       "id": "06.028",

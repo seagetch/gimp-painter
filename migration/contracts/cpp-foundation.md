@@ -424,3 +424,15 @@ IDs preserve the final handler's warning and do not mutate implementation state.
 [Direct native callback tests](../tests/inherited-properties/README.md) distinguish
 fallback behavior from GObject's property-owner routing. These rules supplement
 the per-type and override policy in [cpp-vfunc-order.md](cpp-vfunc-order.md).
+
+## Hierarchy shutdown (original 06.027)
+
+Base and derived native dispose callbacks may both close their shared store.
+Closing and closed guards make this idempotent, including repeated disposal and
+parent-callback reentry. Logical close runs slots in reverse registration order;
+all slots remain owned until native finalization releases the qdata store.
+Required parent dispose calls still repeat, and closed-state const reads remain
+available for their cleanup. Finalization destroys each Impl once; the common
+contract does not specify an order between Impl destructors. The
+[native hierarchy tests](../tests/hierarchy-teardown/README.md) observe per-slot
+counts, generation, parent reentry and C finalize phases directly.
