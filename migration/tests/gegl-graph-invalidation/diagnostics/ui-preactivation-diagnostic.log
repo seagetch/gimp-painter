@@ -1,0 +1,31 @@
+Xvfb verified: 127.0.0.1:92, 1080x1920x24, authenticated accepted, empty authority rejected
+1/1 gimp:app / painter-graph-invalidation FAIL             0.27s   killed by signal 6 SIGABRT
+――――――――――――――――――――――――――――――――――――― ✀  ―――――――――――――――――――――――――――――――――――――
+stdout:
+TAP version 14
+# random seed: R02S63241075683b55a8f1ce23d086c2f3a0
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ‘gio-vfs’
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+1..3
+# Start of graph-invalidation tests
+# Start of ui tests
+not ok /graph-invalidation/ui/0 - ERROR:../source/app/tests/test-painter-graph-invalidation-ui.inc:20:void {anonymous}::graph_visible(gconstpointer): 'd' should not be nullptr
+Bail out!
+stderr:
+**
+ERROR:../source/app/tests/test-painter-graph-invalidation-ui.inc:20:void {anonymous}::graph_visible(gconstpointer): 'd' should not be nullptr
+――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+
+
+Summary of Failures:
+
+1/1 gimp:app / painter-graph-invalidation FAIL             0.27s   killed by signal 6 SIGABRT
+
+Ok:                 0   
+Expected Fail:      0   
+Fail:               1   
+Unexpected Pass:    0   
+Skipped:            0   
+Timeout:            0   
+
+Full log written to /workspace/shared/gimp-native-secondary/build/meson-logs/testlog.txt

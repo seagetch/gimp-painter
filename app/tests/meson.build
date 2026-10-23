@@ -1304,3 +1304,16 @@ test('paired-stroke-ui', paired_stroke_ui,
         'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
         'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
         'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 120)
+
+# Real source-node invalidation and projection tile compute observations.
+graph_invalidation_test = executable('painter-graph-invalidation',
+ 'test-painter-graph-invalidation.cpp', 'tests.c',
+ dependencies: [libapp_dep, appstream], link_with: apptests_links,
+ cpp_args: painter_cpp_args,
+ link_args: ['-Wl,--wrap=gegl_node_blit', '-Wl,--wrap=gegl_node_blit_buffer'],
+ override_options: ['c_std=c11', 'cpp_std=c++14'])
+test('painter-graph-invalidation', graph_invalidation_test,
+ env: ['GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+       'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+       'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
+       'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 120)

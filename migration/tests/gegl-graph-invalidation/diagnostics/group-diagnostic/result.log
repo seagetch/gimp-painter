@@ -1,0 +1,39 @@
+1/1 gimp:app / painter-graph-invalidation FAIL             1.26s   killed by signal 6 SIGABRT
+――――――――――――――――――――――――――――――――――――― ✀  ―――――――――――――――――――――――――――――――――――――
+stdout:
+TAP version 14
+# random seed: R02S54a42bada242df9883ab8465a27c365e
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+1..2
+# Start of graph-invalidation tests
+# projection tile 128x128
+# buffer 70,65 7x9
+# source 70,65 7x9
+# projection 64,64 32x64
+# computed 64,64 32x64
+ok 1 /graph-invalidation/ordinary-root
+# projection tile 128x128
+# buffer 70,65 7x9
+# source 70,65 7x9
+# projection 64,64 64x64
+not ok /graph-invalidation/ordinary-group - ERROR:../source/app/tests/test-painter-graph-invalidation.cpp:53:void {anonymous}::contains_union(const std::vector<_GeglRectangle>&, GeglRectangle, bool): 'cairo_region_equal(region,want)' should be TRUE
+Bail out!
+stderr:
+**
+ERROR:../source/app/tests/test-painter-graph-invalidation.cpp:53:void {anonymous}::contains_union(const std::vector<_GeglRectangle>&, GeglRectangle, bool): 'cairo_region_equal(region,want)' should be TRUE
+――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+
+
+Summary of Failures:
+
+1/1 gimp:app / painter-graph-invalidation FAIL             1.26s   killed by signal 6 SIGABRT
+
+Ok:                 0   
+Expected Fail:      0   
+Fail:               1   
+Unexpected Pass:    0   
+Skipped:            0   
+Timeout:            0   
+
+Full log written to /workspace/shared/gimp-native-secondary/build/meson-logs/testlog.txt

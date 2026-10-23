@@ -1,0 +1,7 @@
+{
+  "name": "gimp:app / painter-graph-invalidation",
+  "stdout": "TAP version 14\n# random seed: R02Se026f912aadcd00a3eeb74dc6d65cea2\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# Start of graph-invalidation tests\n# projection tile 128x128\nnot ok /graph-invalidation/hot-cache - ERROR:../source/app/tests/test-painter-graph-invalidation.cpp:56:void {anonymous}::Scene::pixel(int, int, const char*): assertion failed (actual == expected)\nBail out!\n",
+  "result": "FAIL",
+  "duration": 1.169874906539917,
+  "returncode": -6
+}

@@ -1,0 +1,9 @@
+[
+  {
+    "name": "gimp:app / painter-graph-invalidation",
+    "stdout": "TAP version 14\n# random seed: R02S0cbd7e060c1a5b8a0831005df28720c1\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n1..6\n# Start of graph-invalidation tests\n# projection tile 128x128\n# buffer 70,65 7x9\n# source 70,65 7x9\n# projection 64,64 32x64\n# computed 64,64 32x64\nok 1 /graph-invalidation/ordinary-root\n# projection tile 128x128\n# buffer 70,65 7x9\n# source 70,65 7x9\n# projection 64,64 64x64\n# computed 64,64 64x64\nok 2 /graph-invalidation/ordinary-group\n# projection tile 128x128\nok 3 /graph-invalidation/hot-cache\n# projection tile 128x128\nok 4 /graph-invalidation/negative-offset\n# projection tile 128x128\n# clone-buffer 70,65 7x9\n# clone-source 70,65 7x9\n# clone-projection 256,160 32x32\nok 5 /graph-invalidation/clone\n# projection tile 128x128\n# filter-source 0,0 256x192\n# filter-source 0,0 256x192\n# filter-projection 64,64 64x64\n# filter-projection 0,0 288x224\nok 6 /graph-invalidation/gaussian\n# End of graph-invalidation tests\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n",
+    "result": "OK",
+    "duration": 1.6521384716033936,
+    "returncode": 0
+  }
+]

@@ -1,0 +1,32 @@
+1/1 gimp:app / painter-graph-invalidation FAIL             1.13s   killed by signal 6 SIGABRT
+――――――――――――――――――――――――――――――――――――― ✀  ―――――――――――――――――――――――――――――――――――――
+stdout:
+TAP version 14
+# random seed: R02Sbbbce16e4733bbba4f93a39b3bbbe6ba
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+1..2
+# Start of graph-invalidation tests
+# buffer 70,65 7x9
+# source 70,65 7x9
+# projection 64,64 32x64
+not ok /graph-invalidation/ordinary-root - ERROR:../source/app/tests/test-painter-graph-invalidation.cpp:54:void {anonymous}::ordinary(bool): 's.trace.computed.empty()' should be TRUE
+Bail out!
+stderr:
+**
+ERROR:../source/app/tests/test-painter-graph-invalidation.cpp:54:void {anonymous}::ordinary(bool): 's.trace.computed.empty()' should be TRUE
+――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+
+
+Summary of Failures:
+
+1/1 gimp:app / painter-graph-invalidation FAIL             1.13s   killed by signal 6 SIGABRT
+
+Ok:                 0   
+Expected Fail:      0   
+Fail:               1   
+Unexpected Pass:    0   
+Skipped:            0   
+Timeout:            0   
+
+Full log written to /workspace/shared/gimp-native-secondary/build/meson-logs/testlog.txt

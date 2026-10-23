@@ -1,0 +1,16 @@
+[
+  {
+    "name": "drop-stack-origin",
+    "path": "app/core/gimpdrawablestack.c",
+    "case": "/graph-invalidation/ordinary-root",
+    "expected_red": true,
+    "returncode": -6
+  },
+  {
+    "name": "skip-hot-tile-flush",
+    "path": "app/core/gimpprojection.c",
+    "case": "/graph-invalidation/hot-cache",
+    "expected_red": true,
+    "returncode": -6
+  }
+]

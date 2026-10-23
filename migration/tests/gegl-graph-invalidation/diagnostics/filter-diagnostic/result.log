@@ -1,0 +1,51 @@
+1/1 gimp:app / painter-graph-invalidation FAIL             1.21s   killed by signal 6 SIGABRT
+――――――――――――――――――――――――――――――――――――― ✀  ―――――――――――――――――――――――――――――――――――――
+stdout:
+TAP version 14
+# random seed: R02Sf9eca4cb03f7b21bca9ef99c0fa02374
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+1..4
+# Start of graph-invalidation tests
+# projection tile 128x128
+# buffer 70,65 7x9
+# source 70,65 7x9
+# projection 64,64 32x64
+# computed 64,64 32x64
+ok 1 /graph-invalidation/ordinary-root
+# projection tile 128x128
+# buffer 70,65 7x9
+# source 70,65 7x9
+# projection 64,64 64x64
+# computed 64,64 64x64
+ok 2 /graph-invalidation/ordinary-group
+# projection tile 128x128
+# clone-buffer 70,65 7x9
+# clone-source 70,65 7x9
+# clone-projection 256,160 32x32
+ok 3 /graph-invalidation/clone
+# projection tile 128x128
+# filter-source 0,0 256x192
+# filter-source 0,0 256x192
+# filter-projection 64,64 64x64
+# filter-projection 0,0 288x224
+not ok /graph-invalidation/gaussian - ERROR:../source/app/tests/test-painter-graph-invalidation.cpp:53:void {anonymous}::contains_union(const std::vector<_GeglRectangle>&, GeglRectangle, bool): assertion failed (cairo_region_contains_rectangle(region,&e) == CAIRO_REGION_OVERLAP_IN): (1 == 0)
+Bail out!
+stderr:
+**
+ERROR:../source/app/tests/test-painter-graph-invalidation.cpp:53:void {anonymous}::contains_union(const std::vector<_GeglRectangle>&, GeglRectangle, bool): assertion failed (cairo_region_contains_rectangle(region,&e) == CAIRO_REGION_OVERLAP_IN): (1 == 0)
+――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+
+
+Summary of Failures:
+
+1/1 gimp:app / painter-graph-invalidation FAIL             1.21s   killed by signal 6 SIGABRT
+
+Ok:                 0   
+Expected Fail:      0   
+Fail:               1   
+Unexpected Pass:    0   
+Skipped:            0   
+Timeout:            0   
+
+Full log written to /workspace/shared/gimp-native-secondary/build/meson-logs/testlog.txt

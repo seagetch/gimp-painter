@@ -1,0 +1,91 @@
+{
+  "mode": "ordinary native Meson address,undefined build",
+  "leak_detection": false,
+  "relevant_instrumented_units": [
+    {
+      "path": "app/core/gimpprojection.c",
+      "sha256": "b64a76fcaf8912a9164f258390dc5ec50551c4ae6ccae5f34d513ee101a4be60",
+      "sanitize_flags": [
+        "-fsanitize=address,undefined"
+      ]
+    },
+    {
+      "path": "app/core/gimpdrawablestack.c",
+      "sha256": "38d0fcf9f64a985adfec02f0cde6ccc5d8a89eb9d20b019614fd06ce0d92b4de",
+      "sanitize_flags": [
+        "-fsanitize=address,undefined"
+      ]
+    },
+    {
+      "path": "app/core/gimpdrawable.c",
+      "sha256": "b7ecbd0ceb9bb3eff0689d978758ed5feead9afa4683a8b6d64521e7eebd506a",
+      "sanitize_flags": [
+        "-fsanitize=address,undefined"
+      ]
+    },
+    {
+      "path": "app/core/gimpgrouplayer.c",
+      "sha256": "9513fd1a56dd306f19dae35d13fb45cc3010a322b11ccc558c17c6954318a3fc",
+      "sanitize_flags": [
+        "-fsanitize=address,undefined"
+      ]
+    },
+    {
+      "path": "app/core/gimpimage.c",
+      "sha256": "88cf26998cf9b591d1e13301f3422606ada64c58e9be31a20b4fe9593adb6f73",
+      "sanitize_flags": [
+        "-fsanitize=address,undefined"
+      ]
+    },
+    {
+      "path": "app/core/gimpclonelayer.cpp",
+      "sha256": "22adedddcaeb6d70f4bf37e94cf92f3dbe4d1b84c7183097d3c24e49d02b081e",
+      "sanitize_flags": [
+        "-fsanitize=address,undefined"
+      ]
+    },
+    {
+      "path": "app/core/gimpfilterlayer.cpp",
+      "sha256": "33fae8e1a4c601e9577c8824d33d02d2294b0ff29253989378261d8b0e26963c",
+      "sanitize_flags": [
+        "-fsanitize=address,undefined"
+      ]
+    },
+    {
+      "path": "app/gegl/gimptilehandlervalidate.c",
+      "sha256": "6975dc77af215837f2369b7f2f3553ee5c7899b0b29e99a3c5a287b96a4a9a8c",
+      "sanitize_flags": [
+        "-fsanitize=address,undefined"
+      ]
+    },
+    {
+      "path": "app/operations/gimpoperationbuffersourcevalidate.c",
+      "sha256": "3501c15c827419f12b050f1f266e876bf1b5556a8fbb9dcaf2ff10385111aabc",
+      "sanitize_flags": [
+        "-fsanitize=address,undefined"
+      ]
+    },
+    {
+      "path": "app/painter/filter-gauss.cpp",
+      "sha256": "f296f5c50198ede8833ad01c50006581d808a1c4db69858e45c36df8f12bf5e5",
+      "sanitize_flags": [
+        "-fsanitize=address,undefined"
+      ]
+    },
+    {
+      "path": "app/painter/filter-scheduler.cpp",
+      "sha256": "3e3031de93f04f5694bb00946cf270d4accdb27ae3afc1d7e57579d4b647b031",
+      "sanitize_flags": [
+        "-fsanitize=address,undefined"
+      ]
+    },
+    {
+      "path": "app/tests/test-painter-graph-invalidation.cpp",
+      "sha256": "98cf13cd5fd7b52cfaab021cbda58eca6a7dea9d5202bdecaf18e7e8cdaa02b1",
+      "sanitize_flags": [
+        "-fsanitize=address,undefined"
+      ]
+    }
+  ],
+  "whole_current_application_claim": false
+}

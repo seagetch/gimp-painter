@@ -493,7 +493,7 @@
 | 09.011/paired-fixed-bounds | [x] | 固定境界のnative画素・evaluator・Resourceを一操作でUndo/Redoしcancelを復元する | 09.011/native-stroke-undo, 09.011/engine-historical | paired17/selected13-unit ASan17、Surface24、5変異、rollback通知、保持メモリ見積、portrait実画面4枚を検証。外部geometry変更後cancel通知の整合性は09.011/mypaint-undo-strokeに残す。migration/tests/paired-stroke-09011/ |
 | 09.012 | [x] | 描画の確定と破棄を実装する | 09.011 | cancel と commit で正しい画素が残る |
 | 09.013 | [x] | projection 更新通知を接続する | 09.012 | 変更領域が表示へ伝わる |
-| 09.013/gegl-graph-invalidation | [ ] | paint buffer 更新と GEGL 投影キャッシュの無効化を接続する | 09.013 | 変更 ROI と座標を source node・投影へ通知し画面更新と再評価範囲が一致 |
+| 09.013/gegl-graph-invalidation | [x] | paint buffer 更新と GEGL 投影キャッシュの無効化を接続する | 09.013 | 変更 ROI と座標を source node・投影へ通知し画面更新と再評価範囲が一致 |
 | 09.014 | [x] | 色変換の配置を実装する | 09.013 | 採色と合成で意図しない二重変換がない |
 | 09.015 | [x] | 高精度・色空間変換の扱いを実装する | 09.014 | unsupported 時も情報を黙って欠落させない |
 | 09.016 | [x] | buffer 基盤の境界試験を作る | 09.015 | 小画像・負座標・端・alpha・stride を検証 |
