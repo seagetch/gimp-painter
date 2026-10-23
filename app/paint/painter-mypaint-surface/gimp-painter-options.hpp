@@ -10,9 +10,12 @@ extern "C" {
 #include "paint/painter-mypaint/resource.hpp"
 namespace GimpPainter GIMP_PAINTER_PRIVATE {
 template<> struct TypeTraits<GimpPainterMybrushOptions>
-{ static GType type () noexcept { return GIMP_TYPE_PAINTER_MYBRUSH_OPTIONS; } };
+{ static GType type () noexcept { return gimp_mypaint_options_get_type (); } };
 class PainterOptionsRef {
 public:
+  static PainterOptionsRef create (GimpToolInfo *tool_info)
+  { return PainterOptionsRef (ObjectRef<GimpPainterMybrushOptions>::adopt (
+      gimp_mypaint_options_new (tool_info))); }
   static PainterOptionsRef retain (GimpPainterMybrushOptions *options)
   { return PainterOptionsRef (ObjectRef<GimpPainterMybrushOptions>::retain (options)); }
   GimpPainterMybrushOptions *get () const noexcept { return owner_.get (); }

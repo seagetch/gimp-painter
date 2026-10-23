@@ -1,0 +1,12 @@
+Xvfb verified: 127.0.0.1:94, 1080x1920x24, authenticated accepted, empty authority rejected
+TAP version 14
+# random seed: R02Sea99755ec9d62425f8daf0324f390284
+# Start of mypaint-options-construction tests
+# child process (/mypaint-options-construction/independent-owned-original-name [722]) exit status: 1 (error)
+# child process (/mypaint-options-construction/independent-owned-original-name [722]) stdout: ""
+# child process (/mypaint-options-construction/independent-owned-original-name [722]) stderr: "**\nERROR:../source/app/tests/test-mypaint-options-construction.cpp:50:void run_case(gconstpointer): assertion failed (gimp_object_get_name(a) == \"Mypaint\"): (\"Wrong\" == \"Mypaint\")\n"
+not ok /mypaint-options-construction/independent-owned-original-name - ERROR:../source/app/tests/test-mypaint-options-construction.cpp:32:void run_case(gconstpointer): child process (/mypaint-options-construction/independent-owned-original-name [722]) failed unexpectedly
+Bail out!
+ **
+ERROR:../source/app/tests/test-mypaint-options-construction.cpp:32:void run_case(gconstpointer): child process (/mypaint-options-construction/independent-owned-original-name [722]) failed unexpectedly
+

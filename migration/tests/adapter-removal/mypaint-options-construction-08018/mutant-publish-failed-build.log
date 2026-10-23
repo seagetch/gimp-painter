@@ -1,0 +1,8 @@
+compile app/painter/binding-store.cpp
+compile app/paint/painter-mypaint-surface/gimp-painter-options.cpp
+[01m[K/workspace/shared/gimp-clean-aggregate/build/options-construction-sanitizers-publish-failed/options-mutant.cpp:[m[K In lambda function:
+[01m[K/workspace/shared/gimp-clean-aggregate/build/options-construction-sanitizers-publish-failed/options-mutant.cpp:732:11:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kbinding[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  732 |     auto *[01;35m[Kbinding[m[K = BindingStore::find (G_OBJECT (owner.get ()));
+      |           [01;35m[K^~~~~~~[m[K
+compile app/tests/test-mypaint-options-construction.cpp
+compile app/tests/test-mypaint-options-construction-c.c

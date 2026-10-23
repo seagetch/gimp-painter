@@ -1,0 +1,13 @@
+[
+  {
+    "name": "gimp:app / mypaint-options-construction",
+    "result": "OK",
+    "returncode": 0,
+    "stdout": "TAP version 14\n# random seed: R02Sb5b6719d2415b10e5fa63fe28bcfb3fe\n1..9\n# Start of mypaint-options-construction tests\nok 1 /mypaint-options-construction/type-and-signatures\n# slow test /mypaint-options-construction/type-and-signatures executed in 1.04 secs\nok 2 /mypaint-options-construction/independent-owned-original-name\n# slow test /mypaint-options-construction/independent-owned-original-name executed in 0.99 secs\nok 3 /mypaint-options-construction/typed-owner\n# slow test /mypaint-options-construction/typed-owner executed in 0.99 secs\nok 4 /mypaint-options-construction/detached-application\n# slow test /mypaint-options-construction/detached-application executed in 0.96 secs\nok 5 /mypaint-options-construction/closed-application\n# slow test /mypaint-options-construction/closed-application executed in 1.03 secs\nok 6 /mypaint-options-construction/missing-config\n# slow test /mypaint-options-construction/missing-config executed in 1.02 secs\nok 7 /mypaint-options-construction/null-info\n# slow test /mypaint-options-construction/null-info executed in 1.00 secs\nok 8 /mypaint-options-construction/outlives-tool-info\n# slow test /mypaint-options-construction/outlives-tool-info executed in 1.00 secs\nok 9 /mypaint-options-construction/native-construction-failure\n# slow test /mypaint-options-construction/native-construction-failure executed in 0.95 secs\n# End of mypaint-options-construction tests\n",
+    "stderr": null,
+    "duration": 9.063864946365356,
+    "command": [
+      "/workspace/shared/gimp-clean-aggregate/build/app/tests/mypaint-options-construction"
+    ]
+  }
+]

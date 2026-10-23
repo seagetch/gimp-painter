@@ -1,0 +1,12 @@
+{
+  "command": [
+    "/workspace/shared/gimp-clean-aggregate/build/options-construction-sanitizers-publish-failed/mypaint-options-construction",
+    "--tap",
+    "-p",
+    "/mypaint-options-construction/native-construction-failure"
+  ],
+  "returncode": -6,
+  "stdout": "TAP version 14\n# random seed: R02S250c231f41871c06249d8b17f5759e1a\n# Start of mypaint-options-construction tests\n# child process (/mypaint-options-construction/native-construction-failure [803]) exit status: 1 (error)\n# child process (/mypaint-options-construction/native-construction-failure [803]) stdout: \"\"\n# child process (/mypaint-options-construction/native-construction-failure [803]) stderr: \"**\\nERROR:../source/app/tests/test-mypaint-options-construction.cpp:66:void run_case(gconstpointer): 'gimp_mypaint_options_new(info)' should be nullptr\\n\"\nnot ok /mypaint-options-construction/native-construction-failure - ERROR:../source/app/tests/test-mypaint-options-construction.cpp:32:void run_case(gconstpointer): child process (/mypaint-options-construction/native-construction-failure [803]) failed unexpectedly\nBail out!\n",
+  "stderr": "**\nERROR:../source/app/tests/test-mypaint-options-construction.cpp:32:void run_case(gconstpointer): child process (/mypaint-options-construction/native-construction-failure [803]) failed unexpectedly\n",
+  "case": "native-construction-failure"
+}

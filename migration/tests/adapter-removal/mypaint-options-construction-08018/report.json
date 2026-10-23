@@ -1,0 +1,24 @@
+{
+  "status": "PASS",
+  "task": "08.018/mypaint-options-construction",
+  "legacy_pin": "afa43fae3e920210146abed514f136fd49f671b5",
+  "entries": [
+    "gimp_mypaint_options_get_type",
+    "gimp_mypaint_options_new"
+  ],
+  "normal_cases": 9,
+  "sanitizer_cases": 9,
+  "instrumented_units": 4,
+  "compiled_mutants_rejected": 2,
+  "rendered_ui_claim": false,
+  "portrait": "1080x1920x24 authenticated",
+  "oncanvas_enabled_asserted": true,
+  "scope": "original type/constructor only; no whole-HEAD or original runtime/layout equivalence",
+  "remaining_entries": [
+    "gimp_mypaint_options_is_ready",
+    "gimp_mypaint_options_gui",
+    "gimp_mypaint_options_gui_horizontal"
+  ],
+  "held_paths_excluded": 4,
+  "held_provider_files": 8
+}

@@ -1254,3 +1254,28 @@ test('painter-stroke-undo', stroke_undo_test,
         'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
         'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
         'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 120)
+
+# Original options type/constructor entries, sole native model and owned result.
+mypaint_options_construction = executable('mypaint-options-construction',
+  ['test-mypaint-options-construction.cpp', 'test-mypaint-options-construction-c.c', 'tests.c'],
+  dependencies: [libapp_dep, painter_mypaint_surface_dep, appstream],
+  link_with: apptests_links, cpp_args: painter_cpp_args,
+  link_args: ['-Wl,--wrap=_ZN11GimpPainter12BindingStore6ensureEP8_GObject'],
+  override_options: ['cpp_std=c++14'])
+test('mypaint-options-construction', mypaint_options_construction,
+  env: ['GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+        'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+        'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
+        'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 120)
+
+# Causal endpoint acquisition and native-construction callback reentry.
+mypaint_options_construction_reentry = executable('mypaint-options-construction-reentry',
+  ['test-mypaint-options-construction-reentry.cpp', 'tests.c'],
+  dependencies: [libapp_dep, painter_mypaint_surface_dep, appstream],
+  link_with: apptests_links, cpp_args: painter_cpp_args,
+  override_options: ['cpp_std=c++14'])
+test('mypaint-options-construction-reentry', mypaint_options_construction_reentry,
+  env: ['GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+        'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+        'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
+        'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 120)

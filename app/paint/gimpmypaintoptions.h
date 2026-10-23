@@ -8,8 +8,22 @@ G_BEGIN_DECLS
 
 /* Operation-level source compatibility, not legacy layout or runtime GType. */
 typedef GimpPainterMybrushOptions GimpMypaintOptions;
+typedef GimpPainterMybrushOptionsClass GimpMypaintOptionsClass;
+#define GIMP_TYPE_MYPAINT_OPTIONS (gimp_mypaint_options_get_type ())
+#define GIMP_MYPAINT_OPTIONS_CLASS(klass) GIMP_PAINTER_MYBRUSH_OPTIONS_CLASS (klass)
+#define GIMP_IS_MYPAINT_OPTIONS_CLASS(klass) GIMP_IS_PAINTER_MYBRUSH_OPTIONS_CLASS (klass)
+#define GIMP_MYPAINT_OPTIONS_GET_CLASS(obj) GIMP_PAINTER_MYBRUSH_OPTIONS_GET_CLASS (obj)
 #define GIMP_MYPAINT_OPTIONS(obj) GIMP_PAINTER_MYBRUSH_OPTIONS (obj)
 #define GIMP_IS_MYPAINT_OPTIONS(obj) GIMP_IS_PAINTER_MYBRUSH_OPTIONS (obj)
+
+/* Original symbol, sole native runtime type; not historical class layout. */
+GType gimp_mypaint_options_get_type (void) G_GNUC_CONST;
+/* Transfer-full independent options using only tool_info->gimp and the original
+ * name "Mypaint". Does not bind tool-info or replace canonical tool options.
+ * Invalid/closed application or failed native construction returns NULL.
+ * Gimp remains borrowed as for native GimpContext: the caller must keep the
+ * application alive throughout the returned options lifetime. */
+GimpMypaintOptions *gimp_mypaint_options_new (GimpToolInfo *tool_info);
 
 /* Replaces one active draft mapping. Borrows name/points only for this call.
  * Zero points explicitly clears the mapping; otherwise 2 through 8 finite,

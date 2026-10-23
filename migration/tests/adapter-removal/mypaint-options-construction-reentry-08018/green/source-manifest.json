@@ -1,0 +1,48 @@
+{
+  "base": "81bc24545d",
+  "owned_source_sha256": {
+    "app/paint/gimpmypaintoptions.h": "bbf811594189a1e4b73f5fc516a27f860acb4d8baf7c2063adc9a31f35ab4a3a",
+    "app/paint/painter-mypaint-surface/gimp-painter-options.cpp": "d44c3bcae61baff0194377b5d2f70fe5bdac8a551f759608c55495a70a08bd1d",
+    "app/paint/painter-mypaint-surface/gimp-painter-options.hpp": "0d53d03486d9ff00c9d620a92506b71999a9fd2df74ad52abb044efcf57abef0",
+    "app/tests/test-mypaint-options-construction.cpp": "5b88136ad1d21ad46a1a9612273f0920bfeafca876cdb382f4a2f9b4572b45f5",
+    "app/tests/test-mypaint-options-construction-c.c": "0c39844e3ca662032540aa6590f995e2dbafef5a952907accac4036eb9b856b6",
+    "app/tests/test-mypaint-options-construction-reentry.cpp": "16400696e959c05a0551be584f54f5933d67f79fb1d9b332e1cbd9a20ea45c83",
+    "migration/tests/build_options_construction_reentry_sanitizers.py": "3e79a4a900fffe3474dce3532b702c9ce3cffd2d295e332b961eb254b8aedd81"
+  },
+  "input_sha256": {
+    "app/paint/gimpmypaintoptions.h": "bbf811594189a1e4b73f5fc516a27f860acb4d8baf7c2063adc9a31f35ab4a3a",
+    "app/paint/painter-mypaint-surface/gimp-painter-options.cpp": "d44c3bcae61baff0194377b5d2f70fe5bdac8a551f759608c55495a70a08bd1d",
+    "app/paint/painter-mypaint-surface/gimp-painter-options.hpp": "0d53d03486d9ff00c9d620a92506b71999a9fd2df74ad52abb044efcf57abef0",
+    "app/tests/test-mypaint-options-construction.cpp": "5b88136ad1d21ad46a1a9612273f0920bfeafca876cdb382f4a2f9b4572b45f5",
+    "app/tests/test-mypaint-options-construction-c.c": "0c39844e3ca662032540aa6590f995e2dbafef5a952907accac4036eb9b856b6",
+    "app/tests/test-mypaint-options-construction-reentry.cpp": "16400696e959c05a0551be584f54f5933d67f79fb1d9b332e1cbd9a20ea45c83",
+    "migration/tests/build_options_construction_reentry_sanitizers.py": "3e79a4a900fffe3474dce3532b702c9ce3cffd2d295e332b961eb254b8aedd81",
+    "app/widgets/gimpcellrendererpopup.cpp": "6ee7a2f3987c1c3106aab79188e40238e307159c7d6986c5cc2f3c47ed8c954d",
+    "app/display/gimppaintercanvasui.cpp": "3c5077f0ba87982a90fb90f2c0286c3c986cffe0faec3dc8aade7552ef1f9886",
+    "app/core/gimppaintermybrush.cpp": "380d658a72554156704380c28000a9f54bc424789383f6e774916f3818773b20",
+    "app/core/gimpviewable.c": "979cf4b6a561393f9332331a6242836edd85224ab47b3be873e35e65d97b31b3",
+    "app/widgets/gimpviewrenderer.c": "290da717b78aee26c0ba2a548aa696f0f56852fa321e9267f5286a123868fdf2",
+    "app/tools/gimpfillbrushtool.cpp": "bdf1e7bc8c6149bbf0ba89ed29a6158a8dfe421372f060bebd6de9d7ef41ca49",
+    "app/tools/gimpbucketfillbrushtool.h": "17bd4d7387b4d9fe327db99be892fb2e8eee711032d28c1d86122649154610ab",
+    "app/tools/gimp-tools.c": "ee1a445f0a626b90119008aab0a9fa29e56b8c1811bcc094f742886f3a44ccf3",
+    "app/tests/meson.build": "2791816da48952e8ddda859bdaf61a65ff678e7f7e5df7b92d8fe47ca4605669",
+    "app/core/gimpimage-undo.c": "1562e79e04ce658504e51aefea838859c2d316f17c67b6b0e8367248a6162088",
+    "app/core/gimpimage-undo.h": "724a16246470959ba91419bcc39dc5dff137a00a99aa00f5da38b01df3923ce7",
+    "app/painter/binding-store.cpp": "c69d65c22f26e6be8f6df69765cd30f7bbbd32b46b0eb847e9f6524b41c2b557",
+    "app/painter/binding-store.hpp": "c67deb0ccf33a13a5ba3ab3f50bdbb2ef8931f481acf62a9315d778388c90262",
+    "app/painter/object-ref.hpp": "5a8cc92afc56f652fd47c727269d71d9d97c4358015f13fe9c4764371fcb7c3a",
+    "app/painter/boundary.hpp": "d97a8b6e27a09fe69c7c1d6620361c3daaa1e5cf1bad8d2eb2d4b9a9faed6d2e",
+    "tools/run-painter-xvfb.py": "6481502846d9f896cb906c8b1cde26f59d6899d1d5f889e1ffbf8e106e743fde"
+  },
+  "scope": "selected options constructor reentry overlay, not whole HEAD; other Filter fixture/coreUndo overlays retained, not executed here",
+  "held_providers": [
+    "app/widgets/gimpcellrendererpopup.cpp",
+    "app/display/gimppaintercanvasui.cpp",
+    "app/core/gimppaintermybrush.cpp",
+    "app/core/gimpviewable.c",
+    "app/widgets/gimpviewrenderer.c",
+    "app/tools/gimpfillbrushtool.cpp",
+    "app/tools/gimpbucketfillbrushtool.h",
+    "app/tools/gimp-tools.c"
+  ]
+}

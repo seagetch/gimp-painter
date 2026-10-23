@@ -695,3 +695,54 @@ GimpPainterMybrushOptions*gimp_painter_mybrush_options_ref_for_context(GimpConte
     return target.release();
   });
 }
+
+GType gimp_mypaint_options_get_type (void)
+{
+  return gimp_painter_mybrush_options_get_type ();
+}
+GimpMypaintOptions *gimp_mypaint_options_new (GimpToolInfo *tool_info)
+{
+  g_return_val_if_fail (GIMP_IS_TOOL_INFO (tool_info), nullptr);
+  return boundary<GimpMypaintOptions *> (nullptr, nullptr, [&] {
+    // A toggle callback acquiring one endpoint can retire the other. Install
+    // weak witnesses before taking either lease; never dereference a stale
+    // borrowed application after acquiring the ToolInfo.
+    struct Witness {
+      GWeakRef ref;
+      explicit Witness (GObject *object) { g_weak_ref_init (&ref, object); }
+      ~Witness () { g_weak_ref_clear (&ref); }
+      ObjectRef<GObject> acquire () {
+        return ObjectRef<GObject>::adopt (G_OBJECT (g_weak_ref_get (&ref)));
+      }
+    } info_witness (G_OBJECT (tool_info)), app_witness (G_OBJECT (tool_info->gimp));
+    auto info_owner = info_witness.acquire ();
+    auto app_owner = app_witness.acquire ();
+    if (!info_owner || !app_owner || !GIMP_IS_GIMP (app_owner.get ()))
+      return static_cast<GimpMypaintOptions *> (nullptr);
+    auto *info = GIMP_TOOL_INFO (info_owner.get ());
+    auto *gimp = GIMP (app_owner.get ());
+    if (info->gimp != gimp || !gimp->config)
+      return static_cast<GimpMypaintOptions *> (nullptr);
+    auto *application_binding = BindingStore::find (G_OBJECT (gimp));
+    if (application_binding && application_binding->state () != BindingStore::State::active)
+      return static_cast<GimpMypaintOptions *> (nullptr);
+    auto owner = ObjectRef<GimpPainterMybrushOptions>::adopt (
+      GIMP_PAINTER_MYBRUSH_OPTIONS (g_object_new (GIMP_TYPE_MYPAINT_OPTIONS,
+        "gimp", gimp, "name", "Mypaint", nullptr)));
+    auto *binding = BindingStore::find (G_OBJECT (owner.get ()));
+    if (!binding || binding->state () != BindingStore::State::active ||
+        info->gimp != gimp || GIMP_CONTEXT (owner.get ())->gimp != gimp)
+      return static_cast<GimpMypaintOptions *> (nullptr);
+    // Native selection/notification callbacks may close the application after
+    // the precheck. Release the temporary info lease before the final check,
+    // since its last-ref callback may also close application-owned history.
+    info_owner.reset ();
+    application_binding = BindingStore::find (G_OBJECT (gimp));
+    if (!gimp->config || (application_binding &&
+        application_binding->state () != BindingStore::State::active))
+      return static_cast<GimpMypaintOptions *> (nullptr);
+    // As for every native GimpContext, Gimp remains borrowed after this call;
+    // the caller must keep the application alive throughout options use.
+    return owner.release ();
+  });
+}

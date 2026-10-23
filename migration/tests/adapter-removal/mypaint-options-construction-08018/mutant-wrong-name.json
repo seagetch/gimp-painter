@@ -1,0 +1,12 @@
+{
+  "command": [
+    "/workspace/shared/gimp-clean-aggregate/build/options-construction-sanitizers-wrong-name/mypaint-options-construction",
+    "--tap",
+    "-p",
+    "/mypaint-options-construction/independent-owned-original-name"
+  ],
+  "returncode": -6,
+  "stdout": "TAP version 14\n# random seed: R02Sea99755ec9d62425f8daf0324f390284\n# Start of mypaint-options-construction tests\n# child process (/mypaint-options-construction/independent-owned-original-name [722]) exit status: 1 (error)\n# child process (/mypaint-options-construction/independent-owned-original-name [722]) stdout: \"\"\n# child process (/mypaint-options-construction/independent-owned-original-name [722]) stderr: \"**\\nERROR:../source/app/tests/test-mypaint-options-construction.cpp:50:void run_case(gconstpointer): assertion failed (gimp_object_get_name(a) == \\\"Mypaint\\\"): (\\\"Wrong\\\" == \\\"Mypaint\\\")\\n\"\nnot ok /mypaint-options-construction/independent-owned-original-name - ERROR:../source/app/tests/test-mypaint-options-construction.cpp:32:void run_case(gconstpointer): child process (/mypaint-options-construction/independent-owned-original-name [722]) failed unexpectedly\nBail out!\n",
+  "stderr": "**\nERROR:../source/app/tests/test-mypaint-options-construction.cpp:32:void run_case(gconstpointer): child process (/mypaint-options-construction/independent-owned-original-name [722]) failed unexpectedly\n",
+  "case": "independent-owned-original-name"
+}

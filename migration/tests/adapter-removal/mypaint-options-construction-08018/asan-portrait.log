@@ -1,0 +1,26 @@
+Xvfb verified: 127.0.0.1:93, 1080x1920x24, authenticated accepted, empty authority rejected
+TAP version 14
+# random seed: R02Sa1abe0c8879deb50978c21d20b898174
+1..9
+# Start of mypaint-options-construction tests
+ok 1 /mypaint-options-construction/type-and-signatures
+# slow test /mypaint-options-construction/type-and-signatures executed in 1.27 secs
+ok 2 /mypaint-options-construction/independent-owned-original-name
+# slow test /mypaint-options-construction/independent-owned-original-name executed in 1.24 secs
+ok 3 /mypaint-options-construction/typed-owner
+# slow test /mypaint-options-construction/typed-owner executed in 1.15 secs
+ok 4 /mypaint-options-construction/detached-application
+# slow test /mypaint-options-construction/detached-application executed in 1.11 secs
+ok 5 /mypaint-options-construction/closed-application
+# slow test /mypaint-options-construction/closed-application executed in 1.19 secs
+ok 6 /mypaint-options-construction/missing-config
+# slow test /mypaint-options-construction/missing-config executed in 1.11 secs
+ok 7 /mypaint-options-construction/null-info
+# slow test /mypaint-options-construction/null-info executed in 1.08 secs
+ok 8 /mypaint-options-construction/outlives-tool-info
+# slow test /mypaint-options-construction/outlives-tool-info executed in 1.23 secs
+ok 9 /mypaint-options-construction/native-construction-failure
+# slow test /mypaint-options-construction/native-construction-failure executed in 1.12 secs
+# End of mypaint-options-construction tests
+
+
