@@ -15,6 +15,7 @@
 static Gimp *gimp;
 void preset_gui_handle_test (GimpActionGroup *group);
 void preset_gui_dialog_handle_test (GimpActionGroup *group);
+void preset_gui_preferences_handle_test (Gimp *application);
 static void signature_and_null (void)
 {
   void (*entry) (GimpActionGroup *) = preset_factory_gui_action_group_entry_point;
@@ -102,6 +103,38 @@ static void dialog_owner_callbacks (void)
   g_assert_null (gimp_action_group_list_actions (group));
   g_object_unref (group);
 }
+static void preferences_metadata (void)
+{
+  GArray *(*entry_point) (void) = preset_factory_gui_prefs_entry_point;
+  GArray *first = entry_point ();
+  GArray *second = entry_point ();
+  PrefsDialogEntry *entry;
+  const gchar *static_label;
+  g_assert_nonnull (first); g_assert_nonnull (second);
+  g_assert_true (first != second); g_assert_true (first->data != second->data);
+  g_assert_cmpuint (first->len, ==, 1);
+  g_assert_cmpuint (g_array_get_element_size (first), ==, sizeof (PrefsDialogEntry));
+  entry = &g_array_index (first, PrefsDialogEntry, 0);
+  g_assert_cmpstr (entry->tree_label, ==, "Layer Presets");
+  g_assert_cmpstr (entry->label, ==, "Layer Preset Folders");
+  g_assert_cmpstr (entry->icon, ==, "folders-tool-presets");
+  g_assert_cmpstr (entry->help_data, ==, "gimp-prefs-folders-layer-presets");
+  g_assert_cmpstr (entry->fs_label, ==, "Select Layer Preset Folders");
+  g_assert_cmpstr (entry->path_property_name, ==, "layer-presets-path");
+  g_assert_cmpstr (entry->writable_property_name, ==, "layer-presets-path-writable");
+  g_assert_nonnull (g_object_class_find_property (G_OBJECT_GET_CLASS (gimp->config), entry->path_property_name));
+  g_assert_nonnull (g_object_class_find_property (G_OBJECT_GET_CLASS (gimp->config), entry->writable_property_name));
+  static_label = entry->label;
+  entry->label = "caller-local replacement";
+  g_assert_cmpstr (g_array_index (second, PrefsDialogEntry, 0).label, ==, static_label);
+  g_array_unref (first); g_array_unref (second);
+  /* Static strings outlive the caller-owned array storage. */
+  g_assert_cmpstr (static_label, ==, "Layer Preset Folders");
+}
+static void preferences_handle (void)
+{
+  preset_gui_preferences_handle_test (gimp);
+}
 int main (int argc, char **argv)
 {
   int result;
@@ -112,6 +145,8 @@ int main (int argc, char **argv)
   g_test_add_func ("/preset-gui-entry/no-op-groups-handle", no_op_groups);
   g_test_add_func ("/preset-gui-entry/dialog-metadata", dialog_metadata);
   g_test_add_func ("/preset-gui-entry/dialog-owner-callbacks", dialog_owner_callbacks);
+  g_test_add_func ("/preset-gui-entry/preferences-metadata", preferences_metadata);
+  g_test_add_func ("/preset-gui-entry/preferences-handle", preferences_handle);
   result = g_test_run ();
   gimp_test_utils_set_gimp3_directory ("GIMP_TESTING_ABS_TOP_BUILDDIR", "app/tests/gimpdir-output");
   gimp_exit (gimp, TRUE);

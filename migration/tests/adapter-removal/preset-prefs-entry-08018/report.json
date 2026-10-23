@@ -1,0 +1,20 @@
+{
+  "scope": "08.018/preset-prefs-entry: original C metadata array and native page navigation",
+  "normal_groups": 6,
+  "sanitizer_groups": 6,
+  "sanitizer_units": 7,
+  "header_probes": 419,
+  "ui_layer_preset_groups": 18,
+  "ui_perspective_groups": 24,
+  "legacy_commit": "afa43fae3e920210146abed514f136fd49f671b5",
+  "baseline": "77bcdf2b7fb8da6e01492bf2522ef541c2ea05ab",
+  "prior_evidence": "migration/tests/adapter-removal/preset-dialog-entry-08018/",
+  "prior_replay": "validate.py without --check-source recursively replays immutable no-op predecessor",
+  "current_proof": "validate.py --check-source includes all three C routes and both ownership handles",
+  "limits": [
+    "Native labels/icon differ from legacy; unique page key fixes unmapped page; original C prefs row remains PARTIAL historical semantics",
+    "No old dynamic registry/Interface/binary subclass ABI claim; other ApplicationRef and ActionGroupRef operations open",
+    "Selected sanitizer7 units; dependencies uninstrumented, LSan/vptr off",
+    "Image shows original metadata + native tree cursor selection, not pointer click; all prior17 UI cases retained"
+  ]
+}

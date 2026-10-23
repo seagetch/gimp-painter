@@ -75,6 +75,7 @@
 #include "gui/themes.h"
 
 #include "preferences-dialog.h"
+#include "presets/preset-factory-gui.h"
 #include "preferences-dialog-utils.h"
 #include "resolution-calibrate-dialog.h"
 
@@ -83,6 +84,44 @@
 
 #define RESPONSE_RESET 1
 
+
+typedef struct
+{
+  const gchar *tree_label;
+  const gchar *label;
+  const gchar *icon;
+  const gchar *help_data;
+  const gchar *reset_label;
+  const gchar *fs_label;
+  const gchar *path_property_name;
+  const gchar *writable_property_name;
+} PrefsPathDescriptor;
+
+/* One native descriptor feeds both the real folder page and the original API. */
+static const PrefsPathDescriptor layer_preset_path =
+{
+  N_("Layer Presets"), N_("Layer Preset Folders"),
+  "folders-tool-presets", "gimp-prefs-folders-layer-presets",
+  N_("Reset Layer Preset _Folders"),
+  N_("Select Layer Preset Folders"),
+  "layer-presets-path", "layer-presets-path-writable"
+};
+
+GArray *
+preset_factory_gui_prefs_entry_point (void)
+{
+  const PrefsDialogEntry entry =
+  {
+    layer_preset_path.tree_label, layer_preset_path.label,
+    layer_preset_path.icon, layer_preset_path.help_data,
+    layer_preset_path.fs_label, layer_preset_path.path_property_name,
+    layer_preset_path.writable_property_name
+  };
+  GArray *entries = g_array_new (FALSE, TRUE, sizeof (PrefsDialogEntry));
+
+  g_array_append_val (entries, entry);
+  return entries;
+}
 
 /*  preferences local functions  */
 
@@ -3575,17 +3614,7 @@ prefs_boolean_combo_box_add (object, "initial-zoom-to-fit",
   /* Folders / <paths> */
   /*********************/
   {
-    static const struct
-    {
-      const gchar *tree_label;
-      const gchar *label;
-      const gchar *icon;
-      const gchar *help_data;
-      const gchar *reset_label;
-      const gchar *fs_label;
-      const gchar *path_property_name;
-      const gchar *writable_property_name;
-    }
+    static const PrefsPathDescriptor
     paths[] =
     {
       { N_("Brushes"), N_("Brush Folders"),
@@ -3624,10 +3653,6 @@ prefs_boolean_combo_box_add (object, "initial-zoom-to-fit",
         N_("Reset Font _Folders"),
         N_("Select Font Folders"),
         "font-path", NULL },
-      { N_("Layer Presets"), N_("Layer Preset Folders"),
-        "folders-tool-presets", NULL, N_("Reset Layer Preset _Folders"),
-        N_("Select Layer Preset Folders"),
-        "layer-presets-path", "layer-presets-path-writable" },
       { N_("Tool Presets"), N_("Tool Preset Folders"),
         "folders-tool-presets",
         GIMP_HELP_PREFS_FOLDERS_TOOL_PRESETS,
@@ -3688,36 +3713,39 @@ prefs_boolean_combo_box_add (object, "initial-zoom-to-fit",
         "icon-theme-path", NULL }
     };
 
-    for (i = 0; i < G_N_ELEMENTS (paths); i++)
+    for (i = 0; i < G_N_ELEMENTS (paths) + 1; i++)
       {
+        /* Preserve the native order: layer presets follow Fonts (index 6). */
+        const PrefsPathDescriptor *path = i == 6 ? &layer_preset_path :
+                                          &paths[i < 6 ? i : i - 1];
         GtkWidget *editor;
         gchar     *icon_name;
 
-        icon_name = g_strconcat ("gimp-prefs-", paths[i].icon, NULL);
+        icon_name = g_strconcat ("gimp-prefs-", path->icon, NULL);
         vbox = gimp_prefs_box_add_page (GIMP_PREFS_BOX (prefs_box),
                                         icon_name,
-                                        gettext (paths[i].label),
-                                        gettext (paths[i].tree_label),
-                                        paths[i].help_data,
+                                        gettext (path->label),
+                                        gettext (path->tree_label),
+                                        path->help_data,
                                         &top_iter,
                                         &child_iter);
         g_free (icon_name);
 
         button = gimp_prefs_box_set_page_resettable (GIMP_PREFS_BOX (prefs_box),
                                                      vbox,
-                                                     gettext (paths[i].reset_label));
+                                                     gettext (path->reset_label));
         g_object_set_data (G_OBJECT (button), "path",
-                           (gpointer) paths[i].path_property_name);
+                           (gpointer) path->path_property_name);
         g_object_set_data (G_OBJECT (button), "path-writable",
-                           (gpointer) paths[i].writable_property_name);
+                           (gpointer) path->writable_property_name);
         g_signal_connect (button, "clicked",
                           G_CALLBACK (prefs_path_reset),
                           config);
 
         editor = gimp_prop_path_editor_new (object,
-                                            paths[i].path_property_name,
-                                            paths[i].writable_property_name,
-                                            gettext (paths[i].fs_label));
+                                            path->path_property_name,
+                                            path->writable_property_name,
+                                            gettext (path->fs_label));
         gtk_box_pack_start (GTK_BOX (vbox), editor, TRUE, TRUE, 0);
       }
   }

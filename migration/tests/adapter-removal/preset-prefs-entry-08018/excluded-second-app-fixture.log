@@ -1,0 +1,35 @@
+Xvfb verified: 127.0.0.1:92, 1080x1920x24, authenticated accepted, empty authority rejected
+1/1 gimp:app / preset-gui-entries FAIL            1.00s   killed by signal 5 SIGTRAP
+>>> LD_LIBRARY_PATH=/workspace/shared/gimp-native-preset-gui/build/libgimpmodule:/workspace/shared/gimp-native-preset-gui/build/libgimpthumb:/workspace/shared/gimp-native-preset-gui/build/libgimpcolor:/workspace/shared/gimp-native-preset-gui/build/libgimpconfig:/workspace/shared/gimp-native-preset-gui/build/libgimpbase:/workspace/shared/gimp-native-preset-gui/build/libgimpwidgets:/workspace/shared/gimp-native-preset-gui/build/libgimpmath:/workspace/shared/gimp-native-preset-gui/prefix/lib/x86_64-linux-gnu:/workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu GIMP_TESTING_PLUGINDIRS=/workspace/shared/gimp-native-preset-gui/build/plug-ins/common UI_TEST=yes ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 GIMP_TESTING_ABS_TOP_BUILDDIR=/workspace/shared/gimp-native-preset-gui/build UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 GIMP_TESTING_ABS_TOP_SRCDIR=/workspace/shared/gimp-native-preset-gui/source MESON_TEST_ITERATION=1 MALLOC_PERTURB_=246 /workspace/shared/gimp-native-preset-gui/build/app/tests/preset-gui-entries
+――――――――――――――――――――――――――――――――――――― ✀  ―――――――――――――――――――――――――――――――――――――
+stdout:
+TAP version 14
+# random seed: R02S2bc1282d0644fb23054cfbdd00897d3a
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+1..6
+# Start of preset-gui-entry tests
+ok 1 /preset-gui-entry/signature-null
+ok 2 /preset-gui-entry/no-op-groups-handle
+ok 3 /preset-gui-entry/dialog-metadata
+ok 4 /preset-gui-entry/dialog-owner-callbacks
+ok 5 /preset-gui-entry/preferences-metadata
+not ok /preset-gui-entry/preferences-handle - Gimp-Core-FATAL-CRITICAL: gimp_units_init: assertion 'the_unit_gimp == NULL' failed
+Bail out!
+stderr:
+Refusing to add non-unique action 'dialogs-layer-presets' to action group 'restored-preset-dialog'
+――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+
+
+Summary of Failures:
+
+1/1 gimp:app / preset-gui-entries FAIL            1.00s   killed by signal 5 SIGTRAP
+
+Ok:                 0   
+Expected Fail:      0   
+Fail:               1   
+Unexpected Pass:    0   
+Skipped:            0   
+Timeout:            0   
+
+Full log written to /workspace/shared/gimp-native-preset-gui/build/meson-logs/preset-prefs.txt

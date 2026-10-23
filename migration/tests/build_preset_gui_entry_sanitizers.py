@@ -7,8 +7,8 @@ No unrelated C++ registration or blocked UI callback units are rebuilt here.
 import argparse,hashlib,json,pathlib,shlex,subprocess
 p=argparse.ArgumentParser();p.add_argument('build',type=pathlib.Path);p.add_argument('--report',type=pathlib.Path,required=True);a=p.parse_args()
 R=pathlib.Path(__file__).resolve().parents[2];B=a.build.resolve();O=B/'preset-gui-entry-sanitizers';O.mkdir(exist_ok=True)
-targets=['preset-gui-entries'];sources={'app/actions/dialogs-actions.c','app/actions/layer-presets-actions.c','app/widgets/gimpactiongroup.c','app/core/gimpobject.c','app/tests/test-preset-gui-entries.c','app/tests/test-preset-gui-entries.cpp'}
-headers={'app/presets/preset-factory-gui.h','app/presets/preset-factory-gui.hpp','app/widgets/gimpactiongroup.h','app/painter/object-ref.hpp','app/painter/boundary.hpp'}
+targets=['preset-gui-entries'];sources={'app/dialogs/preferences-dialog.c','app/actions/dialogs-actions.c','app/actions/layer-presets-actions.c','app/widgets/gimpactiongroup.c','app/core/gimpobject.c','app/tests/test-preset-gui-entries.c','app/tests/test-preset-gui-entries.cpp'}
+headers={'app/painter/resources.hpp','app/core/gimp.h','app/presets/preset-factory-gui.h','app/presets/preset-factory-gui.hpp','app/widgets/gimpactiongroup.h','app/painter/object-ref.hpp','app/painter/boundary.hpp'}
 sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest();hashes={n:sha(R/n) for n in sources|headers}
 links={t:shlex.split(subprocess.check_output(['ninja','-t','commands','app/tests/'+t],cwd=B,text=True).strip().splitlines()[-1]) for t in targets}
 linked=set();archive_members={}

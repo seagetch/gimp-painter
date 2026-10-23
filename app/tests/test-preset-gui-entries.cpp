@@ -43,3 +43,38 @@ extern "C" void preset_gui_dialog_handle_test (GimpActionGroup *group)
   auto owner = GimpPainter::ActionGroupRef::retain (group);
   owner.register_preset_dialog_actions ();
 }
+
+extern "C" void preset_gui_preferences_handle_test (Gimp *application);
+extern "C" void preset_gui_preferences_handle_test (Gimp *application)
+{
+  using namespace GimpPainter;
+  ApplicationRef empty;
+  auto independent = empty.preset_preferences ();
+  g_assert_cmpuint (independent.get ()->len, ==, 1);
+  auto owner = ApplicationRef::retain (application);
+  auto copy = owner;
+  owner.reset ();
+  g_assert_true (copy.get () == application);
+  auto array = copy.preset_preferences ();
+  auto shared = array;
+  array.reset ();
+  g_assert_cmpstr (g_array_index (shared.get (), PrefsDialogEntry, 0).tree_label, ==, "Layer Presets");
+  auto raw = shared.release ();
+  g_assert_null (shared.get ());
+  g_array_unref (raw);
+  copy.reset ();
+  auto *wrong = G_OBJECT (g_object_new (G_TYPE_OBJECT, nullptr));
+  bool rejected = false;
+  try { auto bad = ApplicationRef::retain (reinterpret_cast<Gimp *> (wrong)); }
+  catch (const Error &) { rejected = true; }
+  g_assert_true (rejected);
+  g_object_unref (wrong);
+  const guint initial_refs = G_OBJECT (application)->ref_count;
+  auto adopted = ApplicationRef::adopt (GIMP (g_object_ref (application)));
+  auto retained = ApplicationRef::retain (application);
+  g_assert_cmpuint (G_OBJECT (application)->ref_count, ==, initial_refs + 2);
+  adopted.reset ();
+  g_assert_cmpuint (G_OBJECT (application)->ref_count, ==, initial_refs + 1);
+  retained.reset ();
+  g_assert_cmpuint (G_OBJECT (application)->ref_count, ==, initial_refs);
+}

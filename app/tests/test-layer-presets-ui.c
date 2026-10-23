@@ -38,6 +38,7 @@
 #include "widgets/gimphelp-ids.h"
 #include "widgets/gimpmenufactory.h"
 #include "widgets/gimpuimanager.h"
+#include "widgets/gimpprefsbox.h"
 #include "display/display-types.h"
 #include "display/gimpdisplay.h"
 #include "display/gimppaintercanvasui.h"
@@ -1340,6 +1341,84 @@ static void preferences_and_registration (void)
       gtk_dialog_response (GTK_DIALOG (dialog), GTK_RESPONSE_CANCEL); gtk_widget_destroy (dialog); g_object_unref (dialog);
     }
 }
+static GtkWidget *find_prefs_widget (GtkWidget *widget, gboolean box)
+{
+  if ((box && GIMP_IS_PREFS_BOX (widget)) ||
+      (!box && g_strcmp0 (g_object_get_data (G_OBJECT (widget), "path"),
+                         "layer-presets-path") == 0)) return widget;
+  if (GTK_IS_CONTAINER (widget))
+    {
+      GList *children = gtk_container_get_children (GTK_CONTAINER (widget));
+      GtkWidget *found = NULL;
+      for (GList *l = children; l && !found; l = l->next)
+        found = find_prefs_widget (l->data, box);
+      g_list_free (children); return found;
+    }
+  return NULL;
+}
+typedef struct { const gchar *label; GtkTreePath *path; } PrefsPathSearch;
+static gboolean find_prefs_path (GtkTreeModel *model, GtkTreePath *path,
+                                 GtkTreeIter *iter, gpointer data)
+{
+  PrefsPathSearch *search = data;
+  LabelSearch label = {search->label, FALSE};
+  tree_label (model, path, iter, &label);
+  if (label.found) search->path = gtk_tree_path_copy (path);
+  return label.found;
+}
+static void original_preferences_entry_navigation (void)
+{
+  GestureFixture f;
+  GtkWidget *dialog, *box, *tree, *reset;
+  GArray *entries = preset_factory_gui_prefs_entry_point ();
+  PrefsDialogEntry entry = g_array_index (entries, PrefsDialogEntry, 0);
+  PrefsPathSearch search = {entry.tree_label, NULL};
+  const gchar *capture = g_getenv ("GIMP_TEST_PRESET_PREFS_SCREENSHOT");
+  gesture_fixture_init (&f);
+  dialog = preferences_dialog_create (gimp); g_object_ref_sink (dialog);
+  box = find_prefs_widget (dialog, TRUE); g_assert_nonnull (box);
+  tree = gimp_prefs_box_get_tree_view (GIMP_PREFS_BOX (box));
+  gtk_tree_model_foreach (gtk_tree_view_get_model (GTK_TREE_VIEW (tree)), find_prefs_path, &search);
+  g_assert_nonnull (search.path);
+  gtk_tree_view_expand_to_path (GTK_TREE_VIEW (tree), search.path);
+  gtk_tree_view_set_cursor (GTK_TREE_VIEW (tree), search.path, NULL, FALSE);
+  gtk_tree_view_scroll_to_cell (GTK_TREE_VIEW (tree), search.path, NULL, TRUE, 0.5, 0.0);
+  gtk_tree_path_free (search.path);
+  gtk_widget_show (dialog); gtk_window_present (GTK_WINDOW (dialog));
+  gimp_test_run_mainloop_until_idle ();
+  reset = find_prefs_widget (dialog, FALSE); g_assert_nonnull (reset);
+  g_assert_true (gtk_widget_get_mapped (reset));
+  g_assert_cmpstr (g_object_get_data (G_OBJECT (reset), "path-writable"), ==, entry.writable_property_name);
+  g_assert_true (has_label (dialog, entry.label));
+  g_assert_true (gimp_painter_canvas_ui_get_visible (gimp_display_get_shell (f.display)));
+  gesture_assert_operations (&f, 0);
+  if (capture)
+    {
+      GdkWindow *root = gdk_get_default_root_window ();
+      GError *error = NULL;
+      GdkPixbuf *pixels;
+      GtkWidget *image_window = gtk_widget_get_toplevel (GTK_WIDGET (gimp_display_get_shell (f.display)));
+      gint old_width, old_height;
+      gint64 deadline;
+      gtk_window_get_size (GTK_WINDOW (image_window), &old_width, &old_height);
+      gtk_window_resize (GTK_WINDOW (image_window), 1040, 1800);
+      gtk_window_move (GTK_WINDOW (image_window), 10, 20);
+      gtk_window_present (GTK_WINDOW (image_window));
+      gtk_window_move (GTK_WINDOW (dialog), 10, 700);
+      gtk_window_present (GTK_WINDOW (dialog));
+      deadline = g_get_monotonic_time () + G_TIME_SPAN_SECOND;
+      while (g_get_monotonic_time () < deadline)
+        { g_main_context_iteration (NULL, FALSE); g_usleep (10000); }
+      pixels = gdk_pixbuf_get_from_window (root, 0, 0, gdk_window_get_width (root), gdk_window_get_height (root));
+      g_assert_nonnull (pixels);
+      g_assert_true (gdk_pixbuf_save (pixels, capture, "png", &error, NULL));
+      g_assert_no_error (error); g_object_unref (pixels);
+      gtk_window_resize (GTK_WINDOW (image_window), old_width, old_height);
+    }
+  gtk_dialog_response (GTK_DIALOG (dialog), GTK_RESPONSE_CANCEL);
+  gtk_widget_destroy (dialog); g_object_unref (dialog);
+  g_array_unref (entries); gesture_fixture_clear (&f);
+}
 static GtkWidget *filter_storage_entry (GtkWidget *widget)
 {
   if (GTK_IS_ENTRY (widget) &&
@@ -1534,6 +1613,7 @@ int main (int argc, char **argv)
   g_test_add_func ("/layer-presets-ui/filter-storage-preferences", filter_storage_preferences);
   g_test_add_func ("/layer-presets-ui/filter-storage-reentrant-close", filter_storage_reentrant_close);
   g_test_add_func ("/layer-presets-ui/original-dialog-entry-activation", original_dialog_entry_activation);
+  g_test_add_func ("/layer-presets-ui/original-preferences-entry-navigation", original_preferences_entry_navigation);
   g_application_run (gimp->app, 0, NULL);
   gint result = gimp_core_app_get_exit_status (GIMP_CORE_APP (gimp->app));
   g_application_quit (G_APPLICATION (gimp->app)); g_clear_object (&gimp->app); return result;
