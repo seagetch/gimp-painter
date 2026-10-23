@@ -1,0 +1,30 @@
+Xvfb verified: 127.0.0.1:92, 1080x1920x24, authenticated accepted, empty authority rejected
+1/1 gimp:app / filter-entry-contracts FAIL             0.32s   exit status 1
+>>> UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 GIMP_TESTING_PLUGINDIRS=/workspace/shared/gimp-native-baseline/build-port/plug-ins/common MESON_TEST_ITERATION=1 GIMP_TESTING_ABS_TOP_SRCDIR=/workspace/shared/gimp-native-baseline/source MALLOC_PERTURB_=119 ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 GIMP_TESTING_ABS_TOP_BUILDDIR=/workspace/shared/gimp-native-baseline/build-port MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 UI_TEST=yes LD_LIBRARY_PATH=/workspace/shared/gimp-native-baseline/build-port/libgimpmodule:/workspace/shared/gimp-native-baseline/build-port/libgimpwidgets:/workspace/shared/gimp-native-baseline/build-port/libgimpcolor:/workspace/shared/gimp-native-baseline/build-port/libgimpmath:/workspace/shared/gimp-native-baseline/build-port/libgimpconfig:/workspace/shared/gimp-native-baseline/build-port/libgimpbase:/workspace/shared/gimp-native-baseline/build-port/libgimpthumb:/workspace/shared/gimp-native-baseline/prefix/lib/x86_64-linux-gnu:/workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu /usr/bin/python3 /workspace/shared/gimp-native-baseline/source/migration/tests/run_small_tiles_entry_fixture_test.py -- app/tests/filter-entry-contracts
+――――――――――――――――――――――――――――――――――――― ✀  ―――――――――――――――――――――――――――――――――――――
+stderr:
+Traceback (most recent call last):
+  File "/workspace/shared/gimp-native-baseline/source/migration/tests/run_small_tiles_entry_fixture_test.py", line 28, in <module>
+    raise SystemExit(main())
+                     ~~~~^^
+  File "/workspace/shared/gimp-native-baseline/source/migration/tests/run_small_tiles_entry_fixture_test.py", line 20, in main
+    verify_retinex(extract=Path(temporary))
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/shared/gimp-native-baseline/source/tools/check_retinex_evidence.py", line 183, in verify
+    raise ValueError('Extraction requires an empty isolated directory')
+ValueError: Extraction requires an empty isolated directory
+――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+
+
+Summary of Failures:
+
+1/1 gimp:app / filter-entry-contracts FAIL             0.32s   exit status 1
+
+Ok:                 0   
+Expected Fail:      0   
+Fail:               1   
+Unexpected Pass:    0   
+Skipped:            0   
+Timeout:            0   
+
+Full log written to /workspace/shared/gimp-native-baseline/build-port/meson-logs/testlog.txt

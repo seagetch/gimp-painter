@@ -1,0 +1,99 @@
+Xvfb verified: 127.0.0.1:92, 1080x1920x24, authenticated accepted, empty authority rejected
+1/1 gimp:app / filter-entry-contracts FAIL             1.31s   (exit status 250 or signal 122 SIGinvalid)
+>>> LD_LIBRARY_PATH=/workspace/shared/gimp-native-baseline/build-port/libgimpthumb:/workspace/shared/gimp-native-baseline/build-port/libgimpbase:/workspace/shared/gimp-native-baseline/build-port/libgimpwidgets:/workspace/shared/gimp-native-baseline/build-port/libgimpmodule:/workspace/shared/gimp-native-baseline/build-port/libgimpmath:/workspace/shared/gimp-native-baseline/build-port/libgimpcolor:/workspace/shared/gimp-native-baseline/build-port/libgimpconfig:/workspace/shared/gimp-native-baseline/prefix/lib/x86_64-linux-gnu:/workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu MALLOC_PERTURB_=99 GIMP_TESTING_ABS_TOP_SRCDIR=/workspace/shared/gimp-native-baseline/source MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 GIMP_TESTING_ABS_TOP_BUILDDIR=/workspace/shared/gimp-native-baseline/build-port GIMP_TESTING_PLUGINDIRS=/workspace/shared/gimp-native-baseline/build-port/plug-ins/common UI_TEST=yes ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 MESON_TEST_ITERATION=1 /usr/bin/python3 /workspace/shared/gimp-native-baseline/source/migration/tests/run_small_tiles_entry_fixture_test.py -- app/tests/filter-entry-contracts -p /filter-entry-contracts/retinex/zero
+――――――――――――――――――――――――――――――――――――― ✀  ―――――――――――――――――――――――――――――――――――――
+stdout:
+TAP version 14
+# random seed: R02S85a4c9457755f02002010d6c7cb53180
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+# Start of filter-entry-contracts tests
+# Start of retinex tests
+not ok /filter-entry-contracts/retinex/zero - ERROR:../source/app/tests/test-filter-retinex-entry.inc:10:c_retinex_preparation_zero: assertion failed (error == NULL): Unsupported legacy preparation route; only plug-in-blinds and plug-in-small-tiles are accepted (gimp-painter-error, 3)
+Bail out!
+stderr:
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/contrast-retinex.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/align-layers.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/convolution-matrix.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/animation-optimize.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/animation-play.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/blinds.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/border-average.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/busy-dialog.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/checkerboard.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/cml-explorer.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/compose.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/colormap-remap.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/crop-zealous.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/curve-bend.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/decompose.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/depth-merge.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/despeckle.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/destripe.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/file-cel.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/file-compressor.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/file-dicom.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/file-farbfeld.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/file-csource.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/file-gbr.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/file-gegl.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/file-gif-export.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/file-gif-load.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/file-gih.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/file-glob.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/file-header.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/file-html-table.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/file-pat.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/file-pcx.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/file-pdf-load.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/file-pix.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/file-png.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/file-pnm.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/file-psp.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/file-raw-data.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/file-sunras.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/file-svg.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/file-tga.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/file-wbmp.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/file-xwd.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/file-xbm.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/film.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/gradient-map.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/grid.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/guillotine.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/hot.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/nl-filter.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/jigsaw.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/plugin-browser.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/procedure-browser.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/qbist.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/sample-colorize.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/smooth-palette.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/sparkle.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/tile-small.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/sphere-designer.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/tile.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/unit-editor.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/van-gogh-lic.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/warp.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/wavelet-decompose.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/web-browser.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/file-desktop-link.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/mail.dummy' in plug-in directory.
+**
+ERROR:../source/app/tests/test-filter-retinex-entry.inc:10:c_retinex_preparation_zero: assertion failed (error == NULL): Unsupported legacy preparation route; only plug-in-blinds and plug-in-small-tiles are accepted (gimp-painter-error, 3)
+――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+
+
+Summary of Failures:
+
+1/1 gimp:app / filter-entry-contracts FAIL             1.31s   (exit status 250 or signal 122 SIGinvalid)
+
+Ok:                 0   
+Expected Fail:      0   
+Fail:               1   
+Unexpected Pass:    0   
+Skipped:            0   
+Timeout:            0   
+
+Full log written to /workspace/shared/gimp-native-baseline/build-port/meson-logs/testlog.txt

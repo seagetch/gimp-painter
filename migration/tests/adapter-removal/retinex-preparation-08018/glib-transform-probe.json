@@ -1,0 +1,5 @@
+{
+  "exit_code": 0,
+  "stdout": "gint 1\ngboolean 0\ngfloat 1\ngdouble 1\n",
+  "source": "#include <glib-object.h>\n#include <stdio.h>\nint main(void){GType types[]={G_TYPE_INT,G_TYPE_BOOLEAN,G_TYPE_FLOAT,G_TYPE_DOUBLE};for(int i=0;i<4;i++)printf(\"%s %d\\n\",g_type_name(types[i]),g_value_type_transformable(types[i],G_TYPE_DOUBLE));}\n"
+}

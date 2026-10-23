@@ -37,7 +37,7 @@ public:
     return sink (GIMP_FILTER_LAYER (layer));
   }
   GimpFilterLayer *get () const noexcept { return owner_.get (); }
-  /* Checked Blinds/Small Tiles preparation, with the C entry's finite scalar/provider and
+  /* Checked Blinds/Small Tiles/Retinex preparation, with the C entry's finite scalar/provider and
    * post-publication reentry contract. These are not old void-setter aliases. */
   gboolean try_set_legacy_procedure (const char *procedure, const GArray *arguments,
                                       GError **error) const noexcept

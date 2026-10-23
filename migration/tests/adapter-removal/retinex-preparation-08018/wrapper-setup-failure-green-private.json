@@ -1,0 +1,24 @@
+{
+  "name": "gimp:app / filter-entry-contracts",
+  "stdout": "",
+  "result": "FAIL",
+  "starttime": 1792553979.6204925,
+  "duration": 0.3208754062652588,
+  "returncode": 1,
+  "env": {
+    "LD_LIBRARY_PATH": "/workspace/shared/gimp-native-baseline/build-port/libgimpmodule:/workspace/shared/gimp-native-baseline/build-port/libgimpwidgets:/workspace/shared/gimp-native-baseline/build-port/libgimpcolor:/workspace/shared/gimp-native-baseline/build-port/libgimpmath:/workspace/shared/gimp-native-baseline/build-port/libgimpconfig:/workspace/shared/gimp-native-baseline/build-port/libgimpbase:/workspace/shared/gimp-native-baseline/build-port/libgimpthumb:/workspace/shared/gimp-native-baseline/prefix/lib/x86_64-linux-gnu:/workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu",
+    "GIMP_TESTING_ABS_TOP_SRCDIR": "/workspace/shared/gimp-native-baseline/source",
+    "GIMP_TESTING_ABS_TOP_BUILDDIR": "/workspace/shared/gimp-native-baseline/build-port",
+    "GIMP_TESTING_PLUGINDIRS": "/workspace/shared/gimp-native-baseline/build-port/plug-ins/common",
+    "UI_TEST": "yes",
+    "ASAN_OPTIONS": "halt_on_error=1:abort_on_error=1:print_summary=1",
+    "UBSAN_OPTIONS": "halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1"
+  },
+  "command": [
+    "/usr/bin/python3",
+    "/workspace/shared/gimp-native-baseline/source/migration/tests/run_small_tiles_entry_fixture_test.py",
+    "--",
+    "app/tests/filter-entry-contracts"
+  ],
+  "stderr": "Traceback (most recent call last):\n  File \"/workspace/shared/gimp-native-baseline/source/migration/tests/run_small_tiles_entry_fixture_test.py\", line 28, in <module>\n    raise SystemExit(main())\n                     ~~~~^^\n  File \"/workspace/shared/gimp-native-baseline/source/migration/tests/run_small_tiles_entry_fixture_test.py\", line 20, in main\n    verify_retinex(extract=Path(temporary))\n    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/shared/gimp-native-baseline/source/tools/check_retinex_evidence.py\", line 183, in verify\n    raise ValueError('Extraction requires an empty isolated directory')\nValueError: Extraction requires an empty isolated directory\n"
+}

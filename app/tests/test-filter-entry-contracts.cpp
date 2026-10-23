@@ -1238,6 +1238,7 @@ void checked_model_api_separation ()
 }
 
 #include "test-filter-small-tiles-entry-wrapper.inc"
+#include "test-filter-retinex-entry-wrapper.inc"
 
 }
 
@@ -1246,6 +1247,8 @@ extern "C" void gimp_test_filter_entry_cpp_register (Gimp *gimp)
   application = gimp;
   g_test_add_func ("/filter-entry/cpp/small-tiles-handles", tiles_checked_handles);
   g_test_add_func ("/filter-entry/cpp/small-tiles-reentry", tiles_checked_reentry);
+  g_test_add_func ("/filter-entry/cpp/retinex-handles", retinex_checked_handles);
+  g_test_add_func ("/filter-entry/cpp/retinex-reentry", retinex_checked_reentry);
   g_test_add_func ("/filter-entry/cpp/checked_entry_routes", checked_entry_routes);
   g_test_add_func ("/filter-entry/cpp/checked_transform_reentry", checked_transform_reentry);
   g_test_add_func ("/filter-entry/cpp/checked_notify_close", checked_notify_close);

@@ -1,0 +1,50 @@
+[
+  {
+    "name": "both-verified-fixtures",
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-B",
+      "/workspace/scratch/0015fc5d1a03/gimp-painter/migration/tests/run_small_tiles_entry_fixture_test.py",
+      "--",
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-c",
+      "import os,pathlib; assert all((pathlib.Path(os.environ[k])/\"live/cases.tsv\").is_file() for k in [\"GIMP_PAINTER_SMALL_TILES_FIXTURES\",\"GIMP_PAINTER_RETINEX_FIXTURES\"])"
+    ],
+    "expected_exit": 0,
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "name": "child-failure",
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-B",
+      "/workspace/scratch/0015fc5d1a03/gimp-painter/migration/tests/run_small_tiles_entry_fixture_test.py",
+      "--",
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-c",
+      "raise SystemExit(19)"
+    ],
+    "expected_exit": 19,
+    "exit_code": 19,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "name": "replace-unverified-environment",
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-B",
+      "/workspace/scratch/0015fc5d1a03/gimp-painter/migration/tests/run_small_tiles_entry_fixture_test.py",
+      "--",
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-c",
+      "import os; assert all(\"unverified\" not in os.environ[k] for k in [\"GIMP_PAINTER_SMALL_TILES_FIXTURES\",\"GIMP_PAINTER_RETINEX_FIXTURES\"])"
+    ],
+    "expected_exit": 0,
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  }
+]

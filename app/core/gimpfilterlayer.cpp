@@ -2140,12 +2140,13 @@ gboolean gimp_filter_layer_edit_definition (GimpFilterLayer *layer, const gchar 
                                            GBytes *raw, const GimpValueArray *args, GError **error)
 { return set_definition (layer, procedure, raw, args, true, error); }
 namespace {
-/* These two fixed legacy integer layouts are not a general PDB binder.
+/* These three fixed legacy scalar layouts are not a general PDB binder.
  * Never copy/reference the caller's ignored image/drawable values. */
-template<guint count>
-ArgsRef prepare_legacy_integer_route (const GArray *arguments, const std::string& label)
+template<guint count, bool double_tail = false>
+ArgsRef prepare_legacy_scalar_route (const GArray *arguments, const std::string& label)
 {
   static_assert (count == 4 || count == 7, "Only reviewed legacy layouts are admitted");
+  static_assert (!double_tail || count == 7, "Only Retinex has a double tail");
   std::array<Value, count - 2> staged;
   const bool supplied = arguments != nullptr;
   if (supplied)
@@ -2172,10 +2173,12 @@ ArgsRef prepare_legacy_integer_route (const GArray *arguments, const std::string
           if (type == G_TYPE_FLOAT || type == G_TYPE_DOUBLE)
             {
               const double number = type == G_TYPE_FLOAT ? g_value_get_float (value) : g_value_get_double (value);
-              if (!std::isfinite (number) || number < double (std::numeric_limits<gint>::min ()) ||
-                  number > double (std::numeric_limits<gint>::max ()))
+              if (!std::isfinite (number) ||
+                  (!(double_tail && slot == count - 1) &&
+                   (number < double (std::numeric_limits<gint>::min ()) ||
+                    number > double (std::numeric_limits<gint>::max ()))))
                 throw Error (GIMP_PAINTER_ERROR_INVALID_STATE,
-                             (label + " preparation requires finite scalars within the native integer range").c_str ());
+                             (label + " preparation requires finite scalars within the destination range").c_str ());
             }
           staged[i] = Value (type);
           if (type == G_TYPE_INT) g_value_set_int (staged[i].get (), g_value_get_int (value));
@@ -2189,13 +2192,14 @@ ArgsRef prepare_legacy_integer_route (const GArray *arguments, const std::string
   std::size_t next = 0;
   for (guint slot = 0; slot < count; ++slot)
     {
-      Value value (G_TYPE_INT); // Typed zero, never a modern/legacy pspec default.
+      const GType target = double_tail && slot == count - 1 ? G_TYPE_DOUBLE : G_TYPE_INT;
+      Value value (target); // Typed zero, never a modern/legacy pspec default.
       if (supplied && slot != 1 && slot != 2)
         {
           if (!g_value_transform (staged[next++].get (), value.get ()) ||
-              G_VALUE_TYPE (value.get ()) != G_TYPE_INT)
+              G_VALUE_TYPE (value.get ()) != target)
             throw Error (GIMP_PAINTER_ERROR_INVALID_STATE,
-                         (label + " scalar transformation did not produce a native integer").c_str ());
+                         (label + " scalar transformation did not produce its native destination type").c_str ());
         }
       gimp_value_array_append (result.get (), value.get ());
     }
@@ -2204,7 +2208,7 @@ ArgsRef prepare_legacy_integer_route (const GArray *arguments, const std::string
 
 /* All pointers below are leased by the synchronous C entry. No Impl borrow or
  * caller-array address survives a transformation or provider check. */
-struct LegacyIntegerRouteGuard
+struct LegacyScalarRouteGuard
 {
   GimpFilterLayer *layer;
   GimpImage *image;
@@ -2226,7 +2230,7 @@ struct LegacyIntegerRouteGuard
   static gboolean current (gpointer data) noexcept
   {
     return boundary<gboolean> (nullptr, FALSE, [&] () -> gboolean {
-      const auto& guard = *static_cast<const LegacyIntegerRouteGuard *> (data);
+      const auto& guard = *static_cast<const LegacyScalarRouteGuard *> (data);
       return guard.owner_current () && guard.schema->current (guard.gimp) && guard.owner_current ();
     });
   }
@@ -2252,12 +2256,14 @@ gboolean gimp_filter_layer_set_legacy_procedure (GimpFilterLayer *layer, const g
     });
     owner_pin = ObjectRef<GObject>::retain (G_OBJECT (layer));
     if (!procedure || (std::strcmp (procedure, FilterLegacy::blinds.saved) &&
-                       std::strcmp (procedure, FilterLegacy::small_tiles.saved)))
+                       std::strcmp (procedure, FilterLegacy::small_tiles.saved) &&
+                       std::strcmp (procedure, FilterLegacy::retinex.saved)))
       throw Error (GIMP_PAINTER_ERROR_INVALID_STATE,
-                   "Unsupported legacy preparation route; only plug-in-blinds and plug-in-small-tiles are accepted");
+                   "Unsupported legacy preparation route; only plug-in-blinds, plug-in-small-tiles and plug-in-retinex are accepted");
     const std::string name (procedure);
     const bool tiles = name == FilterLegacy::small_tiles.saved;
-    const std::string label = tiles ? "Legacy Small Tiles" : "Legacy Blinds";
+    const bool retinex = name == FilterLegacy::retinex.saved;
+    const std::string label = retinex ? "Legacy Retinex" : tiles ? "Legacy Small Tiles" : "Legacy Blinds";
     auto *image = gimp_item_get_image (GIMP_ITEM (layer));
     if (!GIMP_IS_IMAGE (image) || !GIMP_IS_GIMP (image->gimp))
       throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, (label + " preparation requires a live image and Gimp owner").c_str ());
@@ -2266,11 +2272,12 @@ gboolean gimp_filter_layer_set_legacy_procedure (GimpFilterLayer *layer, const g
     gimp_pin = ObjectRef<GObject>::retain (G_OBJECT (gimp));
     try
       {
-        FilterEditorSchema schema (gimp, tiles ? FilterProcedure::small_tiles : FilterProcedure::blinds);
-        LegacyIntegerRouteGuard guard {layer, image, gimp, &schema, &original, binding_token, revision};
-        ArgsRef prepared = tiles ? prepare_legacy_integer_route<4> (arguments, label) :
-                                   prepare_legacy_integer_route<7> (arguments, label);
-        if (!LegacyIntegerRouteGuard::current (&guard))
+        FilterEditorSchema schema (gimp, retinex ? FilterProcedure::retinex : tiles ? FilterProcedure::small_tiles : FilterProcedure::blinds);
+        LegacyScalarRouteGuard guard {layer, image, gimp, &schema, &original, binding_token, revision};
+        ArgsRef prepared = retinex ? prepare_legacy_scalar_route<7, true> (arguments, label) :
+                           tiles ? prepare_legacy_scalar_route<4> (arguments, label) :
+                                   prepare_legacy_scalar_route<7> (arguments, label);
+        if (!LegacyScalarRouteGuard::current (&guard))
           throw Error (GIMP_PAINTER_ERROR_INVALID_STATE,
                        (label + " owner, definition or trusted provider changed during preparation").c_str ());
         /* Carry the ORIGINAL model/revision into the final publication path;
@@ -2278,7 +2285,7 @@ gboolean gimp_filter_layer_set_legacy_procedure (GimpFilterLayer *layer, const g
          * The final synchronous guard also rechecks owner/provider identity.
          * A later notification failure is intentionally not rolled back. */
         return set_definition (layer, name.c_str (), nullptr, prepared.get (), false, error,
-                               nullptr, nullptr, &original, revision, LegacyIntegerRouteGuard::current, &guard);
+                               nullptr, nullptr, &original, revision, LegacyScalarRouteGuard::current, &guard);
       }
     catch (const FilterEditorSchemaError& failure)
       {
