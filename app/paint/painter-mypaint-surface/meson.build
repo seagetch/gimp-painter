@@ -130,3 +130,12 @@ if not meson.is_cross_build()
   test('painter-mypaint-color-placement', painter_color_placement,
     env: ['GEGL_USE_OPENCL=no', 'GEGL_SWAP=RAM'], suite: 'painter', timeout: 60)
 endif
+
+# Explicit refusal before native pixels/profile precision can be reinterpreted.
+painter_precision_refusal = executable('painter-mypaint-precision-refusal',
+  'tests/precision-refusal.cpp', dependencies: painter_mypaint_surface_dep,
+  cpp_args: painter_cpp_args, override_options: ['cpp_std=c++14'])
+if not meson.is_cross_build()
+  test('painter-mypaint-precision-refusal', painter_precision_refusal,
+    env: ['GEGL_USE_OPENCL=no', 'GEGL_SWAP=RAM'], suite: 'painter', timeout: 60)
+endif

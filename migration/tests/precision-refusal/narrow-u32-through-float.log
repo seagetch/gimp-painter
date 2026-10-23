@@ -1,0 +1,7 @@
+TAP version 14
+# random seed: R02S53a678b607155fc3e4416312aca92afb
+# Start of precision tests
+not ok /precision/quantization-native-lsb - ERROR:<checkout>/app/paint/painter-mypaint-surface/tests/native-precision.cpp:55:void quantization_and_native_lsb(): assertion failed (scalar<std::uint32_t>(q) == (std::uint64_t(scalar<std::uint32_t>(p))+1)/2): (1073741824 == 1073741825)
+Bail out!
+**
+ERROR:<checkout>/app/paint/painter-mypaint-surface/tests/native-precision.cpp:55:void quantization_and_native_lsb(): assertion failed (scalar<std::uint32_t>(q) == (std::uint64_t(scalar<std::uint32_t>(p))+1)/2): (1073741824 == 1073741825)

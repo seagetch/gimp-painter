@@ -1,0 +1,122 @@
+Xvfb verified: 127.0.0.1:92, 1080x1920x24, authenticated accepted, empty authority rejected
+1/3 gimp:painter / painter-mypaint-native-precision  OK               0.32s
+2/3 gimp:painter / painter-mypaint-precision-refusal OK               0.22s
+3/3 gimp:app / painter-mypaint-precision             FAIL             6.92s   killed by signal 6 SIGABRT
+>>> GIMP_TESTING_ABS_TOP_BUILDDIR=<native>/build-port MESON_TEST_ITERATION=1 MALLOC_PERTURB_=194 UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 GIMP_TESTING_PLUGINDIRS=<native>/build-port/plug-ins/common ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 LD_LIBRARY_PATH=<native>/build-port/libgimpthumb:<native>/build-port/libgimpbase:<native>/build-port/libgimpconfig:<native>/build-port/libgimpmodule:<native>/build-port/libgimpmath:<native>/build-port/libgimpcolor:<native>/build-port/libgimpwidgets:<native>/prefix/lib/x86_64-linux-gnu:<dependencies>/root/usr/lib/x86_64-linux-gnu GIMP_TESTING_ABS_TOP_SRCDIR=<native>/source UI_TEST=yes <native>/build-port/app/tests/painter-mypaint-precision
+――――――――――――――――――――――――――――――――――――― ✀  ―――――――――――――――――――――――――――――――――――――
+Listing only the last 100 lines from a long log.
+Time is running backwards!
+# context placement precision=750 base=1 custom=1 checked=92
+Time is running backwards!
+# context placement precision=775 base=0 custom=0 checked=92
+Time is running backwards!
+# context placement precision=775 base=0 custom=1 checked=92
+Time is running backwards!
+# context placement precision=775 base=1 custom=0 checked=92
+Time is running backwards!
+# context placement precision=775 base=1 custom=1 checked=92
+ok 5 /painter-precision/color-placement-ingress
+# base=0 unsupported-kind=0 retry=0 rejected at native profile assignment: ICC profile validation failed: Color profile is not for RGB color space
+# base=0 unsupported-kind=0 retry=1 rejected at native profile assignment: ICC profile validation failed: Color profile is not for RGB color space
+# base=0 unsupported-kind=1 retry=0 rejected at native profile assignment: ICC profile validation failed: Color profile is not for RGB color space
+# base=0 unsupported-kind=1 retry=1 rejected at native profile assignment: ICC profile validation failed: Color profile is not for RGB color space
+# base=0 unsupported-kind=2 retry=0 rejected at native profile assignment: ICC profile validation failed: Color profile is not for RGB color space
+# base=0 unsupported-kind=2 retry=1 rejected at native profile assignment: ICC profile validation failed: Color profile is not for RGB color space
+# retry stroke active=0 undo=2
+# rollback byte 4385 before=0 after=155
+# rollback byte 4386 before=0 after=60
+# rollback byte 4387 before=128 after=195
+# rollback byte 4388 before=245 after=162
+# rollback byte 4389 before=142 after=26
+# rollback byte 4390 before=212 after=205
+# rollback byte 4392 before=0 after=90
+# rollback byte 4393 before=0 after=125
+# rollback differing bytes=470
+not ok /painter-precision/unsupported-profile-refusal - ERROR:../source/app/tests/test-painter-precision-refusal.inc:28:void native_profile_refusal(): 'restored==before' should be TRUE
+Bail out!
+stderr:
+Skipping unknown file '<native>/build-port/plug-ins/common/contrast-retinex.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/align-layers.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/convolution-matrix.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/animation-optimize.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/animation-play.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/blinds.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/border-average.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/busy-dialog.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/checkerboard.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/cml-explorer.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/compose.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/colormap-remap.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/crop-zealous.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/curve-bend.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/decompose.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/depth-merge.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/despeckle.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/destripe.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/file-cel.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/file-compressor.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/file-dicom.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/file-farbfeld.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/file-csource.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/file-gbr.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/file-gegl.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/file-gif-export.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/file-gif-load.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/file-gih.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/file-glob.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/file-header.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/file-html-table.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/file-pat.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/file-pcx.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/file-pdf-load.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/file-pix.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/file-png.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/file-pnm.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/file-psp.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/file-raw-data.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/file-sunras.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/file-svg.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/file-tga.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/file-wbmp.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/file-xwd.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/file-xbm.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/film.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/gradient-map.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/grid.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/guillotine.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/hot.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/nl-filter.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/jigsaw.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/plugin-browser.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/procedure-browser.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/qbist.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/sample-colorize.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/smooth-palette.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/sparkle.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/tile-small.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/sphere-designer.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/tile.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/unit-editor.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/van-gogh-lic.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/warp.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/wavelet-decompose.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/web-browser.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/file-desktop-link.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/mail.dummy' in plug-in directory.
+**
+ERROR:../source/app/tests/test-painter-precision-refusal.inc:28:void native_profile_refusal(): 'restored==before' should be TRUE
+――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+
+
+Summary of Failures:
+
+3/3 gimp:app / painter-mypaint-precision             FAIL             6.92s   killed by signal 6 SIGABRT
+
+Ok:                 2   
+Expected Fail:      0   
+Fail:               1   
+Unexpected Pass:    0   
+Skipped:            0   
+Timeout:            0   
+
+Full log written to <native>/build-port/meson-logs/precision-refusal-native.txt

@@ -1,0 +1,82 @@
+{
+  "task": "09.015",
+  "criterion_status": "DONE",
+  "original_action": "高精度・色空間変換の扱いを実装する",
+  "original_acceptance": "unsupported 時も情報を黙って欠落させない",
+  "dependencies": [
+    "09.014"
+  ],
+  "direct_duties": [],
+  "inherited_duties": [
+    {
+      "work_id": "legacy-17eee03d887a058b7c5b",
+      "source_id": "01.002/000076",
+      "path": "app/base/pixel.hpp",
+      "source_blob": "0b2920644eb36b391f0c03f021c0dd0a19348529",
+      "source_range": "-0,0 -> 1,358",
+      "source_sha256": "27e6b82a44193d668e2a8b3783e0c15dcf14f5f1d48b9fed7891f915315fd397",
+      "source_scope": "file-level declarations/content",
+      "whole_hunk_checkpoint_status": "TODO",
+      "related_read_work_id": "legacy-2f53a694d7cd644819de",
+      "historical_source_duty": "Pixel scalar arithmetic has no spatial state. Native reads preserve bit patterns without byte-to-float or palette reinterpretation; blend arithmetic is unchanged.",
+      "inherited_09_004_obligation": "Verify scalar pixel arithmetic used by byte composition, not just copied component bytes.",
+      "write_criterion_evidence": [
+        "/write-domains/144-formats",
+        "/write-domains/coalesced-dirty-publication",
+        "/coordinates/selection-edges",
+        "/coordinates/empty-touch-intersections",
+        "/coordinates/overlapping-adjacent-dirty-union"
+      ],
+      "successor_obligations": {
+        "31.017": "Complete scalar arithmetic and old representation replacement beyond write-boundary checks."
+      },
+      "ancestor_contract": "drawable-buffer-write",
+      "inherited_09_015_obligation": "Verify all high-precision/color-space behavior and explicit unsupported handling; passing storage-boundary grid is not full colorimetric parity."
+    },
+    {
+      "work_id": "legacy-94d89586bd4912834262",
+      "source_id": "01.002/000076",
+      "path": "app/base/pixel.hpp",
+      "source_blob": "0b2920644eb36b391f0c03f021c0dd0a19348529",
+      "source_range": "-0,0 -> 1,358",
+      "source_sha256": "27e6b82a44193d668e2a8b3783e0c15dcf14f5f1d48b9fed7891f915315fd397",
+      "source_scope": "file-level declarations/content",
+      "source_blob_sha256": "1917b7267eb1253fbf14b5ce06bbfc6e77838d5d3b7bfc041eb35ba262bafa1c",
+      "historical_source_duty": "The entire scalar pixel arithmetic definition is broader than format-preserving storage conversion.",
+      "whole_hunk_checkpoint_status": "TODO",
+      "related_obligations": [
+        {
+          "criterion": "09.003",
+          "work_id": "legacy-2f53a694d7cd644819de",
+          "inherited_09_005_obligation": null
+        },
+        {
+          "criterion": "09.004",
+          "work_id": "legacy-17eee03d887a058b7c5b",
+          "inherited_09_005_obligation": null
+        }
+      ],
+      "criterion_evidence": [
+        "/tempbuf/144-native-format-copy-borrow",
+        "/tempbuf/converted-lock-access-modes",
+        "/tempbuf/padded-pixbuf-import-export",
+        "/tempbuf/explicit-pixbuf-conversion",
+        "/tempbuf/nested-surface-writes",
+        "/tempbuf/scale-owned-storage"
+      ],
+      "successor_obligations": {
+        "31.017": "Complete scalar representation/arithmetic replacement and all old consumers."
+      },
+      "ancestor_contract": "tempbuf-conversion",
+      "inherited_09_015_obligation": "Verify full precision/color-space semantics and explicit unsupported handling beyond this storage/conversion matrix."
+    }
+  ],
+  "whole_legacy_feature_complete": false,
+  "compatibility_policies": {
+    "migration/contracts/mypaint-gray-surface.md": "fa9735dfae8bebac926c344c4458d670bcb71cfe28b713a7b30ac135179c881c",
+    "migration/contracts/mypaint-native-precision.md": "afdc8dfe607cadc11095f041402f11ad35baa285411d7e4f810582620da6e8da"
+  },
+  "evidence": [
+    "migration/tests/precision-refusal/report.json"
+  ]
+}

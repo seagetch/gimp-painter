@@ -1,0 +1,13 @@
+TAP version 14
+# random seed: R02S3ca2bf78bb0d3f9e8e808b3021305b87
+1..2
+# Start of precision-refusal tests
+# explicit refusal, unchanged native storage: RaGaBaA float
+# explicit refusal, unchanged native storage: R'aG'aB'aA float
+# explicit refusal, unchanged native storage: YaA float
+# explicit refusal, unchanged native storage: CIE Lab float
+# explicit refusal, unchanged native storage: CIE XYZ float
+# explicit refusal, unchanged native storage: CMYK float
+ok 1 /precision-refusal/native-models
+ok 2 /precision-refusal/noncanonical-order
+# End of precision-refusal tests

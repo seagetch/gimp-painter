@@ -1,0 +1,18 @@
+[
+  {
+    "name": "accept-noncanonical",
+    "exit_code": -6,
+    "test": "/precision-refusal/noncanonical-order",
+    "rejected": true,
+    "old": "if(f!=babl_format_with_space((model+\" \"+name).c_str(),space)||babl_format_get_bytes_per_pixel(f)!=bytes)",
+    "new": "if(false)"
+  },
+  {
+    "name": "narrow-u32-through-float",
+    "exit_code": -6,
+    "test": "/precision/quantization-native-lsb",
+    "rejected": true,
+    "old": "case U32:return load<std::uint32_t>(p)/4294967295.;",
+    "new": "case U32:return float(load<std::uint32_t>(p)/4294967295.);"
+  }
+]

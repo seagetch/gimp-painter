@@ -1,0 +1,7 @@
+{
+  "name": "false-success-on-unsupported-profile",
+  "exit_code": 1,
+  "rejected": true,
+  "old": "if (dest_profile &&\n      ! gimp_image_validate_color_profile (image, dest_profile, NULL, error))\n    return FALSE;",
+  "new": "if (dest_profile &&\n      ! gimp_image_validate_color_profile (image, dest_profile, NULL, error))\n    return TRUE;"
+}

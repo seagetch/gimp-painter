@@ -1,0 +1,23 @@
+compile app/paint/painter-mypaint/resource.cpp
+compile app/paint/painter-mypaint/engine.cpp
+In file included from [01m[K../source/app/paint/painter-mypaint/engine.cpp:3[m[K:
+[01m[K../source/app/paint/painter-mypaint/legacy-brush.hpp:[m[K In member function ‘[01m[Kvoid GimpPainter::MyPaint::Legacy::Brush::[01;32m[Kupdate_states_and_setting_values[m[K(float, float, float, float, float, float)[m[K’:
+[01m[K../source/app/paint/painter-mypaint/legacy-brush.hpp:398:13:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kdx_old[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  398 |       float [01;35m[Kdx_old[m[K = states[STATE_DIRECTION_DX];
+      |             [01;35m[K^~~~~~[m[K
+[01m[K../source/app/paint/painter-mypaint/legacy-brush.hpp:399:13:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kdy_old[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  399 |       float [01;35m[Kdy_old[m[K = states[STATE_DIRECTION_DY];
+      |             [01;35m[K^~~~~~[m[K
+compile app/core/gimpdrawable.c
+compile app/core/gimpdrawableundo.c
+compile app/core/gimpimage-color-profile.c
+compile app/core/gimpimage-undo.c
+compile app/core/gimpundo.c
+compile app/core/gimpundostack.c
+compile app/paint/painter-mypaint-surface/gegl-surface.cpp
+compile app/paint/painter-mypaint-surface/paint-core.cpp
+compile app/paint/gimppaintcore.c
+compile app/tests/test-painter-mypaint-precision.cpp
+[01m[K../source/app/tests/test-painter-mypaint-precision.cpp:45:8:[m[K [01;35m[Kwarning: [m[K‘[01m[KCancelDuring[m[K’ declared with greater visibility than the type of its field ‘[01m[KCancelDuring::core[m[K’ [[01;35m[K-Wattributes[m[K]
+   45 | struct [01;35m[KCancelDuring[m[K {PaintCore*core;bool fired=false;};
+      |        [01;35m[K^~~~~~~~~~~~[m[K

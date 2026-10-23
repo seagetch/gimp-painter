@@ -6,6 +6,7 @@
 #include <limits>
 #include <cstring>
 #include <string>
+#include <lcms2.h>
 extern "C" {
 #include "libgimpbase/gimpbase.h"
 #include "libgimpmath/gimpmath.h"
@@ -202,4 +203,5 @@ static void negative_layer_offset_selection()
  }
 }
 #include "test-painter-color-placement.inc"
-int main(int argc,char**argv){g_test_init(&argc,&argv,nullptr);gimp_test_utils_set_gimp3_directory("GIMP_TESTING_ABS_TOP_SRCDIR","app/tests/gimpdir");gimp=gimp_init_for_testing();g_test_add_func("/painter-precision/native-144-matrix",native_matrix);g_test_add_func("/painter-precision/profile-change-after-hover",profile_change_after_hover);g_test_add_func("/painter-precision/indexed-refusal",indexed_refusal);g_test_add_func("/painter-precision/negative-layer-offset-selection",negative_layer_offset_selection);g_test_add_func("/painter-precision/color-placement-ingress",color_placement_ingress);int result=g_test_run();gimp_test_utils_set_gimp3_directory("GIMP_TESTING_ABS_TOP_BUILDDIR","app/tests/gimpdir-output");gimp_exit(gimp,TRUE);return result;}
+#include "test-painter-precision-refusal.inc"
+int main(int argc,char**argv){g_test_init(&argc,&argv,nullptr);gimp_test_utils_set_gimp3_directory("GIMP_TESTING_ABS_TOP_SRCDIR","app/tests/gimpdir");gimp=gimp_init_for_testing();g_test_add_func("/painter-precision/native-144-matrix",native_matrix);g_test_add_func("/painter-precision/profile-change-after-hover",profile_change_after_hover);g_test_add_func("/painter-precision/indexed-refusal",indexed_refusal);g_test_add_func("/painter-precision/negative-layer-offset-selection",negative_layer_offset_selection);g_test_add_func("/painter-precision/color-placement-ingress",color_placement_ingress);g_test_add_func("/painter-precision/unsupported-profile-refusal",native_profile_refusal);int result=g_test_run();gimp_test_utils_set_gimp3_directory("GIMP_TESTING_ABS_TOP_BUILDDIR","app/tests/gimpdir-output");gimp_exit(gimp,TRUE);return result;}
