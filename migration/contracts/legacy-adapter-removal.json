@@ -523,12 +523,6 @@
       ],
       "reason": "Native XcfEffectsData list transfers through g_steal_pointer to the unchanged xcf_load_free_effects destructor. No C++ implementation state."
     },
-    "native-color-button": {
-      "paths": [
-        "app/display/gimppaintercanvasui.cpp"
-      ],
-      "reason": "Borrowed GtkToggleButton metadata created by app/widgets/gimpcoloreditor.c; no new attachment or destroy protocol."
-    },
     "native-property-name": {
       "paths": [
         "app/widgets/gimppaintercompactoptions.cpp"
@@ -546,6 +540,45 @@
         "app/widgets/gimppaintercompactoptions.cpp"
       ],
       "reason": "Borrowed radio-button metadata installed by libgimpwidgets/gimppropwidgets.c native radio frame/box constructors; used only to find the native parent box. Presentation and Saved retain orientation/restoration state in BindingStore, with no new attachment."
+    },
+    "native-toolbar-factory": {
+      "paths": [
+        "app/tools/gimp-tools.c",
+        "app/widgets/gimpwidgets-utils.c"
+      ],
+      "reason": "Static GimpToolOptionsGUIFunc registration and immediate lookup/call on live tool_info. Both factories are application code with process lifetime, not allocated implementation state."
+    },
+    "native-toolbar-options": {
+      "paths": [
+        "app/tools/gimppainterpainttoolbar.c",
+        "app/tools/gimppaintertooltoolbar.c",
+        "app/tools/gimppaintertransformtoolbar.c"
+      ],
+      "reason": "Each independent GTK toolbar owns one GimpToolOptions reference through g_object_ref/g_object_unref. Finalization releases it; widget bindings and g_signal_connect_object callbacks use native objects, not feature Impl storage."
+    },
+    "native-toolbar-brush-property": {
+      "paths": [
+        "app/tools/gimppainterpainttoolbar.c"
+      ],
+      "reason": "Reset button owns a g_strdup property name with g_free. Its clicked handler reads the string synchronously before setting the options; it does not use the string after callbacks can destroy the button. g_signal_connect_object ties the options callback to the native options lifetime."
+    },
+    "native-toolbar-scalar": {
+      "paths": [
+        "app/tools/gimppaintertooltoolbar.c"
+      ],
+      "reason": "Fixed-rule enum and gradient-metric boolean use GINT_TO_POINTER/GPOINTER_TO_INT only, with no allocation or destructor. Native notify callbacks are connected with g_signal_connect_object to their row/combo and read metadata before changing GTK state."
+    },
+    "native-toolbar-popup-child": {
+      "paths": [
+        "app/tools/gimppainterpainttoolbar.c"
+      ],
+      "reason": "Borrowed contents is owned by scrolled window -> popover -> menu button, with no metadata destructor. This key has no consumers in current application or tests, including destruction/reentry. GTK destruction can invalidate this borrowed value on a retained button; this review does not authorize a future reader or independent child lifetime."
+    },
+    "native-toolbar-mode-child": {
+      "paths": [
+        "app/tools/gimppainterpainttoolbar.c"
+      ],
+      "reason": "Borrowed mode widget is packed into its toolbar before publication. The only current accessor consumer in gimppainttool.c obtains the canonical dock GUI via gimp_tools_get_tool_options_gui, never this independent toolbar. Canvas update/close destroys independent roots without reading child metadata. A retained destroyed toolbar may have stale metadata; this review does not authorize reading it after child destruction."
     }
   },
   "syntax_exceptions": [
@@ -1825,14 +1858,6 @@
       "provenance": "upstream"
     },
     {
-      "path": "app/display/gimppaintercanvasui.cpp",
-      "operation": "g_object_get_data",
-      "sha256": "9db5bdb5f58b43c26d07bfd924502a70e972e8e8a6e80ce8d7bf4bde024875b5",
-      "count": 1,
-      "reason": "Borrowed GtkToggleButton metadata created by app/widgets/gimpcoloreditor.c; no new attachment or destroy protocol.",
-      "provenance": "native-color-button"
-    },
-    {
       "path": "app/file/file-open.c",
       "operation": "g_object_set_data_full",
       "sha256": "93433dbfb109b91d1e270214e7d4d761d18784952bc551dfddd804c1916cc1b5",
@@ -2675,6 +2700,14 @@
     {
       "path": "app/tools/gimp-tools.c",
       "operation": "g_object_get_data",
+      "sha256": "210be2a0c318930adf198948b10b0955b844eb99d22755b2e9d9bd67e0e51213",
+      "count": 1,
+      "reason": "Static GimpToolOptionsGUIFunc registration and immediate lookup/call on live tool_info. Both factories are application code with process lifetime, not allocated implementation state.",
+      "provenance": "native-toolbar-factory"
+    },
+    {
+      "path": "app/tools/gimp-tools.c",
+      "operation": "g_object_get_data",
       "sha256": "2a20ad4a71a37f3179938c8c3cb388b7aad714b8b83d79eb75165b9be2d66b1c",
       "count": 1,
       "reason": "Unchanged native upstream data site",
@@ -2687,6 +2720,14 @@
       "count": 1,
       "reason": "Unchanged native upstream data site",
       "provenance": "upstream"
+    },
+    {
+      "path": "app/tools/gimp-tools.c",
+      "operation": "g_object_set_data",
+      "sha256": "c2cba03c6ffa32e15986fb629717ddc4475448d688996c8417505441f660d017",
+      "count": 1,
+      "reason": "Static GimpToolOptionsGUIFunc registration and immediate lookup/call on live tool_info. Both factories are application code with process lifetime, not allocated implementation state.",
+      "provenance": "native-toolbar-factory"
     },
     {
       "path": "app/tools/gimpalignoptions.c",
@@ -3039,6 +3080,94 @@
       "count": 1,
       "reason": "Unchanged native upstream data site",
       "provenance": "upstream"
+    },
+    {
+      "path": "app/tools/gimppainterpainttoolbar.c",
+      "operation": "g_object_get_data",
+      "sha256": "1ce683ec5b0aa17313fc28b0002bc6a49908c00dfec6dd83de8556206ca93e2d",
+      "count": 1,
+      "reason": "Reset button owns a g_strdup property name with g_free. Its clicked handler reads the string synchronously before setting the options; it does not use the string after callbacks can destroy the button. g_signal_connect_object ties the options callback to the native options lifetime.",
+      "provenance": "native-toolbar-brush-property"
+    },
+    {
+      "path": "app/tools/gimppainterpainttoolbar.c",
+      "operation": "g_object_set_data",
+      "sha256": "4e91be29b4311fa7a178a5d750ced1b61fab252fa20ec15dbb390e8a56ed3876",
+      "count": 1,
+      "reason": "Borrowed contents is owned by scrolled window -> popover -> menu button, with no metadata destructor. This key has no consumers in current application or tests, including destruction/reentry. GTK destruction can invalidate this borrowed value on a retained button; this review does not authorize a future reader or independent child lifetime.",
+      "provenance": "native-toolbar-popup-child"
+    },
+    {
+      "path": "app/tools/gimppainterpainttoolbar.c",
+      "operation": "g_object_set_data",
+      "sha256": "835f168c556b3fd36e25db438a3c9821085c5ac785127484aaac3117ad980484",
+      "count": 1,
+      "reason": "Borrowed mode widget is packed into its toolbar before publication. The only current accessor consumer in gimppainttool.c obtains the canonical dock GUI via gimp_tools_get_tool_options_gui, never this independent toolbar. Canvas update/close destroys independent roots without reading child metadata. A retained destroyed toolbar may have stale metadata; this review does not authorize reading it after child destruction.",
+      "provenance": "native-toolbar-mode-child"
+    },
+    {
+      "path": "app/tools/gimppainterpainttoolbar.c",
+      "operation": "g_object_set_data_full",
+      "sha256": "62ccd8a6750d1542b5719cdf1bedbedf5ade5e020661643a7358a59437578194",
+      "count": 1,
+      "reason": "Reset button owns a g_strdup property name with g_free. Its clicked handler reads the string synchronously before setting the options; it does not use the string after callbacks can destroy the button. g_signal_connect_object ties the options callback to the native options lifetime.",
+      "provenance": "native-toolbar-brush-property"
+    },
+    {
+      "path": "app/tools/gimppainterpainttoolbar.c",
+      "operation": "g_object_set_data_full",
+      "sha256": "9c2431cab9b0f75b10ca462b7194ce902746ecd4cbd9adc53b5e9a02be2b2d26",
+      "count": 1,
+      "reason": "Each independent GTK toolbar owns one GimpToolOptions reference through g_object_ref/g_object_unref. Finalization releases it; widget bindings and g_signal_connect_object callbacks use native objects, not feature Impl storage.",
+      "provenance": "native-toolbar-options"
+    },
+    {
+      "path": "app/tools/gimppaintertooltoolbar.c",
+      "operation": "g_object_get_data",
+      "sha256": "6a89ec623f3dddc2bf1d94c886202a57e410c443d8094bafaacf699efd4c2326",
+      "count": 1,
+      "reason": "Fixed-rule enum and gradient-metric boolean use GINT_TO_POINTER/GPOINTER_TO_INT only, with no allocation or destructor. Native notify callbacks are connected with g_signal_connect_object to their row/combo and read metadata before changing GTK state.",
+      "provenance": "native-toolbar-scalar"
+    },
+    {
+      "path": "app/tools/gimppaintertooltoolbar.c",
+      "operation": "g_object_get_data",
+      "sha256": "feaebce3f59b9b359a07e1b6056055b222467d67cd5c531a1374b82005e6f20e",
+      "count": 1,
+      "reason": "Fixed-rule enum and gradient-metric boolean use GINT_TO_POINTER/GPOINTER_TO_INT only, with no allocation or destructor. Native notify callbacks are connected with g_signal_connect_object to their row/combo and read metadata before changing GTK state.",
+      "provenance": "native-toolbar-scalar"
+    },
+    {
+      "path": "app/tools/gimppaintertooltoolbar.c",
+      "operation": "g_object_set_data",
+      "sha256": "0a7d7b4c87e395b33d53b7a7939cb1df5d357765ef80e0536e084edf6bd0937d",
+      "count": 1,
+      "reason": "Fixed-rule enum and gradient-metric boolean use GINT_TO_POINTER/GPOINTER_TO_INT only, with no allocation or destructor. Native notify callbacks are connected with g_signal_connect_object to their row/combo and read metadata before changing GTK state.",
+      "provenance": "native-toolbar-scalar"
+    },
+    {
+      "path": "app/tools/gimppaintertooltoolbar.c",
+      "operation": "g_object_set_data",
+      "sha256": "c652c481d5ed8153ae7a45b19dabc3f0a5ffb7a36cad495c9f5534d4d19c721f",
+      "count": 1,
+      "reason": "Fixed-rule enum and gradient-metric boolean use GINT_TO_POINTER/GPOINTER_TO_INT only, with no allocation or destructor. Native notify callbacks are connected with g_signal_connect_object to their row/combo and read metadata before changing GTK state.",
+      "provenance": "native-toolbar-scalar"
+    },
+    {
+      "path": "app/tools/gimppaintertooltoolbar.c",
+      "operation": "g_object_set_data_full",
+      "sha256": "38c5e9ed95972e0e6a48acb643e7bcf30379c9d467cdd408a8b07d5f0cd4d24c",
+      "count": 1,
+      "reason": "Each independent GTK toolbar owns one GimpToolOptions reference through g_object_ref/g_object_unref. Finalization releases it; widget bindings and g_signal_connect_object callbacks use native objects, not feature Impl storage.",
+      "provenance": "native-toolbar-options"
+    },
+    {
+      "path": "app/tools/gimppaintertransformtoolbar.c",
+      "operation": "g_object_set_data_full",
+      "sha256": "8595250acd6e0be229fd3c643fb517722893f41ee85bad33b41cae487fc91056",
+      "count": 1,
+      "reason": "Each independent GTK toolbar owns one GimpToolOptions reference through g_object_ref/g_object_unref. Finalization releases it; widget bindings and g_signal_connect_object callbacks use native objects, not feature Impl storage.",
+      "provenance": "native-toolbar-options"
     },
     {
       "path": "app/tools/gimppaintoptions-gui.c",
@@ -4831,6 +4960,14 @@
       "count": 2,
       "reason": "Unchanged native upstream data site",
       "provenance": "upstream"
+    },
+    {
+      "path": "app/widgets/gimpwidgets-utils.c",
+      "operation": "g_object_get_data",
+      "sha256": "f70a0826413b5d47f162fce9407395f331ab1db34f87c3d45b0977114eb9185e",
+      "count": 1,
+      "reason": "Static GimpToolOptionsGUIFunc registration and immediate lookup/call on live tool_info. Both factories are application code with process lifetime, not allocated implementation state.",
+      "provenance": "native-toolbar-factory"
     },
     {
       "path": "app/widgets/gimpwidgets-utils.c",
