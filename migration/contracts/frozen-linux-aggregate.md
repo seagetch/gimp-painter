@@ -29,10 +29,35 @@ Use the existing secure wrapper; the runner does not replace or weaken it.
 
 Start the wrapper/runner with `PYTHONDONTWRITEBYTECODE=1` as shown. The runner also
 disables its own bytecode writes and explicitly supplies that setting to the full
-build and Meson child environments, preserving every other inherited variable.
-Python helpers therefore do not leave `__pycache__` inside the committed source.
-Preexisting caches/untracked files still fail the unchanged clean-source checks;
-this setting is prevention, never a checker exemption or automatic cleanup.
+build and Meson child environments. Python helpers therefore do not leave
+`__pycache__` inside the committed source. Preexisting caches/untracked files still
+fail the unchanged clean-source checks; this setting is prevention, never a checker
+exemption or automatic cleanup.
+
+Before the default build, the runner creates fresh owner-private directories for
+`HOME`, `XDG_CONFIG_HOME`, `XDG_CACHE_HOME`, `XDG_DATA_HOME`, `XDG_STATE_HOME`,
+`XDG_RUNTIME_DIR`, `TMPDIR`, `GIMP3_DIRECTORY`, `GIMP3_TEMPDIR`, and `GIMP3_CACHEDIR`
+inside its private temporary root, outside the source and build trees. The root
+is explicitly placed beside the validated evidence directory, so inherited
+`TMPDIR`/`TMP`/`TEMP` cannot redirect it into frozen source or build inputs. It also
+creates Fontconfig's `XDG_CACHE_HOME/fontconfig` directory and proves that each
+directory supports creating and writing a temporary file. Any preflight failure
+rejects the run before Ninja or Meson executes. GIMP's explicit temporary/cache
+directories already exist when Filter spill admission queries filesystem capacity.
+`GSETTINGS_BACKEND=memory` keeps UI settings independent of the host dconf service.
+
+Both Ninja and the unfiltered Meson invocation receive the same isolated state.
+Every other inherited input is retained, including `DISPLAY`, `XAUTHORITY`, `PATH`,
+`LD_LIBRARY_PATH`, `FONTCONFIG_FILE`, `XDG_DATA_DIRS`, and `XDG_CONFIG_DIRS`; display
+authentication and dependency discovery are unchanged. Registered tests can still
+set their own committed environment, including their explicit GIMP profile fixtures.
+No user environment dump or authority contents are recorded. The gate records only
+the isolation variable names and successful write-preflight status. All isolated
+state is removed on success, failure, and handled interruption along with the raw
+private logs. As with other temporary evidence, SIGKILL or host failure cannot
+guarantee cleanup. The fixture suite exercises inherited read-only-path replacement,
+actual child writes, state preservation, preflight rejection, and lifecycle cleanup;
+native aggregate acceptance remains a separate exact-commit check.
 
 The default lock is `/workspace/shared/gimp-painter-build.lock`; `--lock` exists
 for isolated installations and fixtures, and must identify the lock used by
@@ -120,3 +145,15 @@ were corrected in a separate reviewed build-graph task before this passing run.
 Acceptance is for this exact normal Linux source, not subsequent changes,
 sanitizers, other operating systems, installed-runtime release certification,
 or complete legacy UI/full-port completion.
+
+## Runtime-environment reproducibility repair, 2026-10-16
+
+[Scoped implementation and regression receipt](../tests/aggregate-runtime-isolation/report.json)
+records 48 runner fixtures and 60 package fixtures with no skips, plus 39 focused
+native TAP cases from the previously failing editor progress/cancel, layer-tree,
+and dock-layout paths. The native receipt retains the exact tested runner hash.
+The environment helper remained byte-identical when review subsequently moved the
+aggregate private root beside the evidence directory; final orchestration passed
+the updated Python fixtures, including hostile inherited temp placement and late
+write/flush failure cleanup. This is bounded runtime-environment validation, not
+a new full aggregate acceptance or a replacement for previous rejected evidence.

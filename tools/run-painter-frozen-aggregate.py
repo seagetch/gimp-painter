@@ -29,6 +29,22 @@ SHARED_LOCK = Path('/workspace/shared/gimp-painter-build.lock')
 RUNNER = 'tools/run-painter-frozen-aggregate.py'
 HELPER = 'tools/package-linux-runtime.py'
 
+# Mutable user/runtime state belongs to this invocation, never the caller's
+# home or a previous run. Explicit GIMP directories must already exist before
+# Filter spill admission asks the filesystem for their available capacity.
+PRIVATE_DIRECTORIES = {
+    'HOME': 'home',
+    'XDG_CONFIG_HOME': 'config',
+    'XDG_CACHE_HOME': 'cache',
+    'XDG_DATA_HOME': 'data',
+    'XDG_STATE_HOME': 'state',
+    'XDG_RUNTIME_DIR': 'runtime',
+    'TMPDIR': 'tmp',
+    'GIMP3_DIRECTORY': 'gimp-profile',
+    'GIMP3_TEMPDIR': 'gimp-temp',
+    'GIMP3_CACHEDIR': 'gimp-cache',
+}
+
 # These are expected *negative-test output*, not exemptions for failing tests.
 # They remain visible in the sanitized per-target logs and gate.
 NEGATIVE_WARNINGS = {
@@ -377,10 +393,36 @@ def coverage_gate(registry, results):
             'suite_counts': dict(suites)}
 
 
-def run_command(command, log_path):
+def isolated_child_environment(private, inherited=None):
+    """Prepare fresh writable state while retaining dependency/display inputs."""
+    environment = dict(os.environ if inherited is None else inherited)
+    private = Path(private).resolve()
+    directories = []
+    for variable, name in PRIVATE_DIRECTORIES.items():
+        directory = private / name
+        # Refuse preexisting state, including symlinks. The caller owns the
+        # fresh temporary parent and removes all state when the run finishes.
+        directory.mkdir(mode=0o700)
+        environment[variable] = str(directory)
+        directories.append(directory)
+    font_cache = Path(environment['XDG_CACHE_HOME']) / 'fontconfig'
+    font_cache.mkdir(mode=0o700)
+    directories.append(font_cache)
+    # Test creation and writing, not os.access() or permission bits alone.
+    # These probes are removed before any build or test starts.
+    for directory in directories:
+        with tempfile.TemporaryFile(dir=directory) as probe:
+            probe.write(b'aggregate writable-directory preflight\n')
+            probe.flush()
+    environment['GSETTINGS_BACKEND'] = 'memory'
+    environment['PYTHONDONTWRITEBYTECODE'] = '1'
+    return environment
+
+
+def run_command(command, log_path, environment=None):
     # Python test helpers import modules from the committed source tree. Keep
     # their caches out of that tree without ignoring or excusing dirty files.
-    environment = os.environ.copy()
+    environment = dict(os.environ if environment is None else environment)
     environment['PYTHONDONTWRITEBYTECODE'] = '1'
     with log_path.open('w') as stream:
         process = subprocess.Popen(command, stdout=stream, stderr=subprocess.STDOUT,
@@ -431,7 +473,10 @@ def execute_locked(args, output, sanitizer):
     try:
         # Keep the lock through default build, both seals, test run, verification,
         # and evidence writes. Never acquire it separately around individual steps.
-        with tempfile.TemporaryDirectory(prefix='gimp-aggregate-private-') as private:
+        # Evidence is validated outside source/build; use its parent explicitly
+        # so an inherited TMPDIR inside either tree cannot dirty frozen inputs.
+        # Keep raw logs in a private sibling, never inside the evidence directory.
+        with tempfile.TemporaryDirectory(prefix='gimp-aggregate-private-', dir=output.parent) as private:
             private = Path(private)
             helper = load_committed_helper(repository, args.expected_commit)
             initial = source_state(repository, helper)
@@ -442,12 +487,19 @@ def execute_locked(args, output, sanitizer):
             if not os.environ.get('DISPLAY') or not os.environ.get('XAUTHORITY'):
                 raise RuntimeError('Run inside the authenticated portrait-Xvfb wrapper (DISPLAY and XAUTHORITY required)')
             gate['provenance'] = {name: {'sha256': sha(repository / name)} for name in (RUNNER, HELPER)}
+            child_environment = isolated_child_environment(private)
+            gate['runtime_isolation'] = {
+                'private_directory_variables': list(PRIVATE_DIRECTORIES),
+                'fontconfig_user_cache_created': True,
+                'directory_write_preflight': 'passed',
+                'gsettings_backend': 'memory',
+            }
             build_command = ['ninja', '-C', str(build)]
             build_log = private / 'build.log'
             build_status = None
             gate['default_build'] = {'command': build_command, 'exit_status': None}
             try:
-                build_status = run_command(build_command, build_log)
+                build_status = run_command(build_command, build_log, child_environment)
             finally:
                 gate['default_build']['exit_status'] = build_status
                 if build_log.is_file():
@@ -478,7 +530,7 @@ def execute_locked(args, output, sanitizer):
                        '--print-errorlogs', '--logbase', str(logbase)]
             gate['meson_command'] = command
             try:
-                gate['meson_exit_status'] = run_command(command, private / 'meson-console.log')
+                gate['meson_exit_status'] = run_command(command, private / 'meson-console.log', child_environment)
             finally:
                 # Even a failed/interrupted Meson invocation gets independently
                 # observed after-facts and any complete result rows it produced.

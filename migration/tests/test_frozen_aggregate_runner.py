@@ -202,6 +202,93 @@ class SanitizationTests(unittest.TestCase):
         self.assertTrue(errors)
 
 
+class EnvironmentTests(unittest.TestCase):
+    def test_private_paths_replace_host_state_without_changing_other_inputs(self):
+        inherited = {key: '/unwritable/host/' + key for key in runner.PRIVATE_DIRECTORIES}
+        inherited.update(GSETTINGS_BACKEND='dconf', PYTHONDONTWRITEBYTECODE='',
+                         DISPLAY='localhost:91', XAUTHORITY='/private/authority',
+                         PATH='/dependency/bin:/usr/bin', LD_LIBRARY_PATH='/dependency/lib',
+                         FONTCONFIG_FILE='/dependency/etc/fonts/fonts.conf',
+                         XDG_DATA_DIRS='/dependency/share:/usr/share',
+                         XDG_CONFIG_DIRS='/dependency/etc/xdg', LANG='C.UTF-8')
+        original = dict(inherited)
+        with tempfile.TemporaryDirectory() as directory:
+            environment = runner.isolated_child_environment(directory, inherited)
+            self.assertEqual(inherited, original)
+            for key in inherited.keys() - runner.PRIVATE_DIRECTORIES.keys() - {
+                    'GSETTINGS_BACKEND', 'PYTHONDONTWRITEBYTECODE'}:
+                self.assertEqual(environment[key], inherited[key], key)
+            for key, name in runner.PRIVATE_DIRECTORIES.items():
+                self.assertEqual(environment[key], str(Path(directory) / name))
+            self.assertEqual(environment['GSETTINGS_BACKEND'], 'memory')
+            self.assertEqual(environment['PYTHONDONTWRITEBYTECODE'], '1')
+
+    def test_directories_exist_are_writable_private_and_support_capacity_queries(self):
+        with tempfile.TemporaryDirectory() as directory:
+            environment = runner.isolated_child_environment(directory, {})
+            for key in runner.PRIVATE_DIRECTORIES:
+                path = Path(environment[key])
+                with self.subTest(variable=key):
+                    self.assertTrue(path.is_absolute())
+                    self.assertTrue(path.is_dir())
+                    self.assertFalse(path.is_symlink())
+                    self.assertEqual(path.stat().st_uid, os.getuid())
+                    self.assertEqual(path.stat().st_mode & 0o777, 0o700)
+                    (path / 'write-probe').write_text('writable')
+                    self.assertEqual((path / 'write-probe').read_text(), 'writable')
+            # Fontconfig can create its normal per-user cache, and GIMP's
+            # default spill paths support statvfs before native initialization.
+            font_cache = Path(environment['XDG_CACHE_HOME']) / 'fontconfig'
+            self.assertTrue(font_cache.is_dir())
+            self.assertEqual(font_cache.stat().st_mode & 0o777, 0o700)
+            (font_cache / 'cache-probe').write_bytes(b'cache')
+            for key in ('GIMP3_TEMPDIR', 'GIMP3_CACHEDIR'):
+                self.assertGreater(os.statvfs(environment[key]).f_frsize, 0)
+
+    def test_preexisting_directory_or_symlink_is_not_reused(self):
+        for symlink in (False, True):
+            with self.subTest(symlink=symlink), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                occupied = root / runner.PRIVATE_DIRECTORIES['HOME']
+                if symlink:
+                    occupied.symlink_to(root / 'missing-target', target_is_directory=True)
+                else:
+                    occupied.mkdir()
+                    (occupied / 'old-state').write_text('untouched')
+                with self.assertRaises(FileExistsError):
+                    runner.isolated_child_environment(root, {})
+                if not symlink:
+                    self.assertEqual((occupied / 'old-state').read_text(), 'untouched')
+
+    def test_child_uses_explicit_private_state_without_mutating_caller_environment(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            environment = runner.isolated_child_environment(root, {'FROZEN_FIXTURE_KEEP': 'retained'})
+            environment['PYTHONDONTWRITEBYTECODE'] = ''
+            original = dict(environment)
+            script = root / 'child.py'
+            script.write_text('import json, os, tempfile\n'
+                              'keys = ' + repr(list(runner.PRIVATE_DIRECTORIES)) + '\n'
+                              'for key in keys:\n'
+                              '    with open(os.path.join(os.environ[key], "child-write"), "w") as stream:\n'
+                              '        stream.write("child")\n'
+                              'print(json.dumps({key: os.environ[key] for key in keys}))\n'
+                              'print(tempfile.gettempdir())\n'
+                              'print(os.environ["GSETTINGS_BACKEND"])\n'
+                              'print(os.environ["PYTHONDONTWRITEBYTECODE"])\n'
+                              'print(os.environ["FROZEN_FIXTURE_KEEP"])\n')
+            with mock.patch.dict(os.environ, {'HOME': '/unwritable/host', 'GSETTINGS_BACKEND': 'dconf'}):
+                self.assertEqual(runner.run_command([sys.executable, str(script)], root / 'log', environment), 0)
+                self.assertEqual(os.environ['HOME'], '/unwritable/host')
+                self.assertEqual(os.environ['GSETTINGS_BACKEND'], 'dconf')
+            self.assertEqual(environment, original)
+            lines = (root / 'log').read_text().splitlines()
+            self.assertEqual(json.loads(lines[0]), {key: environment[key] for key in runner.PRIVATE_DIRECTORIES})
+            self.assertEqual(lines[1:], [environment['TMPDIR'], 'memory', '1', 'retained'])
+            for key in runner.PRIVATE_DIRECTORIES:
+                self.assertEqual((Path(environment[key]) / 'child-write').read_text(), 'child')
+
+
 class IntegrityTests(unittest.TestCase):
     def test_child_python_helpers_do_not_dirty_source_and_keep_other_environment(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -397,9 +484,19 @@ class ExecutionTests(unittest.TestCase):
         self.build_exit = self.meson_exit = 0
         self.observed = results(self.registry)
         self.calls = []
+        self.environments = []
 
-    def fake_run(self, command, log_path):
+    def fake_run(self, command, log_path, environment):
         self.calls.append(command)
+        self.environments.append(dict(environment))
+        for variable in runner.PRIVATE_DIRECTORIES:
+            self.assertTrue(Path(environment[variable]).is_dir(), variable)
+            self.assertFalse(Path(environment[variable]).is_relative_to(self.repo), variable)
+            self.assertFalse(Path(environment[variable]).is_relative_to(self.build), variable)
+        self.assertEqual(environment['GSETTINGS_BACKEND'], 'memory')
+        self.assertEqual(environment['PYTHONDONTWRITEBYTECODE'], '1')
+        self.assertEqual(environment['DISPLAY'], ':91')
+        self.assertEqual(environment['XAUTHORITY'], '/private/authority')
         # A second nonblocking exclusive lock must fail throughout both calls.
         with self.args.lock.open('a') as lock:
             import fcntl
@@ -423,6 +520,9 @@ class ExecutionTests(unittest.TestCase):
                 mock.patch.dict(os.environ, {'DISPLAY': ':91', 'XAUTHORITY': '/private/authority'}):
             status = runner.execute(self.args, self.output, runner.Sanitizer({}))
         gate = json.loads((self.output / 'aggregate-gate.json').read_text())
+        for environment in self.environments:
+            for variable in runner.PRIVATE_DIRECTORIES:
+                self.assertFalse(Path(environment[variable]).exists(), variable)
         return status, gate, capture.call_count
 
     def test_success_is_accepted_by_real_packager_and_uses_two_genuine_seals(self):
@@ -430,11 +530,64 @@ class ExecutionTests(unittest.TestCase):
         self.assertEqual(status, 0, gate['errors'])
         self.assertEqual(count, 2)
         self.assertEqual(len(self.calls), 2)
+        self.assertEqual(self.environments[0], self.environments[1])
+        for variable in runner.PRIVATE_DIRECTORIES:
+            self.assertFalse(Path(self.environments[0][variable]).exists(), variable)
         self.assertEqual(gate['packager_validation'], 'accepted')
+        self.assertEqual(gate['runtime_isolation']['directory_write_preflight'], 'passed')
+        self.assertTrue(gate['runtime_isolation']['fontconfig_user_cache_created'])
         self.assertEqual(gate['registry_sha256'], package.sha(self.registry_path))
         self.assertEqual(package.require_aggregate_gate(gate, self.source['commit'], self.build), self.snapshot)
         self.assertNotIn('private', (self.output / 'meson-console.log').read_text())
         self.assertFalse(Path(gate['meson_command'][-1]).parent.exists())
+
+    def test_inherited_temp_inside_source_or_build_cannot_place_private_state_there(self):
+        for inherited in (self.repo, self.build):
+            with self.subTest(inherited=inherited), \
+                    mock.patch.dict(os.environ, {'TMPDIR': str(inherited)}), \
+                    mock.patch.object(runner.tempfile, 'tempdir', str(inherited)):
+                status, gate, count = self.execute()
+            self.assertEqual((status, count), (0, 2), gate['errors'])
+            self.assertTrue(all(Path(environment['HOME']).is_relative_to(self.output.parent)
+                                for environment in self.environments))
+
+    def test_unwritable_private_directory_rejects_before_build_and_cleans_up(self):
+        attempted = []
+        def denied(*args, **kwargs):
+            attempted.append(Path(kwargs['dir']))
+            raise PermissionError('fixture cannot write runtime directory')
+        with mock.patch.object(runner.tempfile, 'TemporaryFile', side_effect=denied):
+            status, gate, count = self.execute()
+        self.assertEqual((status, count, len(self.calls)), (1, 0, 0))
+        self.assertTrue(attempted)
+        self.assertTrue(all(not path.parent.exists() for path in attempted))
+        self.assertNotIn('runtime_isolation', gate)
+        self.assertIn('cannot write runtime directory', gate['errors'][-1])
+
+    def test_late_fontconfig_write_or_flush_failure_rejects_and_cleans_all_state(self):
+        from contextlib import contextmanager
+        real_temporary_file = runner.tempfile.TemporaryFile
+        for operation in ('write', 'flush'):
+            attempted = []
+            @contextmanager
+            def fail_late(*args, **kwargs):
+                directory = Path(kwargs['dir'])
+                attempted.append(directory)
+                with real_temporary_file(*args, **kwargs) as stream:
+                    if directory.name == 'fontconfig':
+                        failing = mock.Mock(wraps=stream)
+                        getattr(failing, operation).side_effect = OSError('fixture late Fontconfig failure')
+                        yield failing
+                    else:
+                        yield stream
+            with self.subTest(operation=operation), \
+                    mock.patch.object(runner.tempfile, 'TemporaryFile', side_effect=fail_late):
+                status, gate, count = self.execute()
+            self.assertEqual((status, count, len(self.calls)), (1, 0, 0))
+            self.assertEqual(len(attempted), len(runner.PRIVATE_DIRECTORIES) + 1)
+            self.assertTrue(all(not path.exists() for path in attempted))
+            self.assertNotIn('runtime_isolation', gate)
+            self.assertIn('late Fontconfig failure', gate['errors'][-1])
 
     def test_default_build_failure_keeps_failing_gate_without_invented_before_facts(self):
         self.build_exit = 1
@@ -449,8 +602,8 @@ class ExecutionTests(unittest.TestCase):
     def test_interrupted_build_keeps_attempted_command_and_sanitized_log_under_lock(self):
         original_run = self.fake_run
         original_write = runner.write_json
-        def interrupted(command, log):
-            original_run(command, log)
+        def interrupted(command, log, environment):
+            original_run(command, log, environment)
             raise KeyboardInterrupt('interrupted default build')
         def write(path, value, sanitizer):
             if path.name == 'aggregate-gate.json':
@@ -516,8 +669,8 @@ class ExecutionTests(unittest.TestCase):
 
     def test_interrupted_meson_keeps_after_facts_and_partial_results(self):
         original = self.fake_run
-        def interrupted(command, log):
-            result = original(command, log)
+        def interrupted(command, log, environment):
+            result = original(command, log, environment)
             if command[0] == 'meson':
                 raise KeyboardInterrupt('fixture interruption')
             return result
@@ -533,8 +686,8 @@ class ExecutionTests(unittest.TestCase):
 
     def test_raw_registry_env_change_is_detected_without_publishing_environment(self):
         original = self.fake_run
-        def mutated(command, log):
-            result = original(command, log)
+        def mutated(command, log, environment):
+            result = original(command, log, environment)
             if command[0] == 'meson':
                 changed = copy.deepcopy(self.registry)
                 changed[0]['env'] = {'PRIVATE': 'not published'}
@@ -548,8 +701,8 @@ class ExecutionTests(unittest.TestCase):
 
     def test_changed_preexisting_executable_rejects_gate_even_with_ok_results(self):
         original = self.fake_run
-        def mutated(command, log):
-            result = original(command, log)
+        def mutated(command, log, environment):
+            result = original(command, log, environment)
             if command[0] == 'meson':
                 (self.build / runner.EXECUTABLES[0]).write_bytes(b'\x7fELFchanged')
             return result
