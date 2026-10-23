@@ -85,6 +85,25 @@ class AdditionalRoutes(unittest.TestCase):
                         self.assertNotIn('extern "C"', source['body'])
                     self.assertIn(row['path'], manifest['source_sha256'])
 
+    def test_tool_options_changed_baseline_routes_remain_required(self):
+        paths = ['app/tools/gimpalignoptions.h',
+                 'app/tools/gimprectangleoptions.h',
+                 'app/tools/gimpvectoroptions.h']
+        baseline = {row['path']: row['baseline_blob'] for row in
+                    json.loads((self.root/probes.C_SCOPE).read_text())[
+                        'all_baseline_app_headers']}
+        for path in paths:
+            with self.subTest(path=path):
+                row = next(row for row in self.inventory['routes']
+                           if row['path'] == path)
+                self.assertEqual(row['kind'], 'changed-baseline')
+                self.assertEqual(row['baseline_blob'], baseline[path])
+                self.assertEqual(row['context'], 'core')
+                value = copy.deepcopy(self.inventory)
+                value['routes'] = [row for row in value['routes']
+                                   if row['path'] != path]
+                self.reject(value, 'changed C header is outside the reviewed closure: '+path)
+
     def test_missing_inventory_is_rejected(self):
         (self.root/probes.ADDITIONAL_SCOPE).unlink()
         with self.assertRaises(FileNotFoundError):

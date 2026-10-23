@@ -1,0 +1,32 @@
+{
+  "task": "04.003/tool-options-header-routes",
+  "status": "PASS",
+  "base_commit": "6e6f2568e7593089c4f3c93e4613354c1f915001",
+  "patch_sha256": "ce6f23551c3ecad07d7cb9147eb6f8f5c511dd15854e017f06434a7ad7380b5d",
+  "source_patch_unchanged_after_build": true,
+  "reviewed_routes": [
+    "app/tools/gimpalignoptions.h",
+    "app/tools/gimprectangleoptions.h",
+    "app/tools/gimpvectoroptions.h"
+  ],
+  "route_controls": 17,
+  "compiled_c11_cpp14_probes": 393,
+  "fresh_build_steps": 3024,
+  "header_test_build_steps": 396,
+  "registered_header_tests": {
+    "ok": 2,
+    "fail": 0,
+    "timeout": 0,
+    "skip": 0
+  },
+  "verified_elf_executables": 241,
+  "invalid_executables": 0,
+  "source_sha256": {
+    "app/painter/tests/headers/test-additional-routes.py": "5bb11c3e957c0bcb8fac03cbc9b6865da66f105083e63e21a52d1f890c161c3c",
+    "migration/inventory/additional-c-header-routes.json": "ce449ebaf70990477a9eaf0f521a2650fee1d00d5866c6822e6a23f2455b3b9a",
+    "migration/tests/additional-header-routes/README.md": "2c60b4f40c45d3333443a42071bbae4850d4dd977d7f0b844d77793e7d789b3b"
+  },
+  "full_aggregate": "running separately; no aggregate acceptance",
+  "platform": "Debian13 x86_64 only",
+  "scope": "explicit header review routes and normal C/C++ double-include compilation; no UI parity or link ABI claim"
+}

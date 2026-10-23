@@ -115,6 +115,30 @@
       "context": "core",
       "prerequisites": [],
       "review": "Welcome dialog shutdown ownership: preserve the baseline constructor and add the idempotent shutdown entry point with C linkage. Double-include after normal core/widget prerequisites in C11 and C++14."
+    },
+    {
+      "path": "app/tools/gimpalignoptions.h",
+      "kind": "changed-baseline",
+      "baseline_blob": "27b2b8f64290bbc446be20fb601f056e8ab141a0",
+      "context": "core",
+      "prerequisites": [],
+      "review": "04.003/tool-options-header-routes: independent horizontal alignment options constructor. Double-include the identified baseline header after normal core/tool/GTK prerequisites in C11 and C++14; preserve its original identity. Compilation only, without an outer linkage wrapper; no C/C++ link ABI claim."
+    },
+    {
+      "path": "app/tools/gimprectangleoptions.h",
+      "kind": "changed-baseline",
+      "baseline_blob": "e3afeacdcd5b53900cb22fe46446372b81fa0c62",
+      "context": "core",
+      "prerequisites": [],
+      "review": "04.003/tool-options-header-routes: shared rectangle action endpoint, live size-entry metadata and retained history fields. Double-include the identified baseline header after normal core/tool/GTK prerequisites in C11 and C++14; preserve its original identity. Compilation only, without an outer linkage wrapper; no C/C++ link ABI claim."
+    },
+    {
+      "path": "app/tools/gimpvectoroptions.h",
+      "kind": "changed-baseline",
+      "baseline_blob": "783e4b5a91f5df87c8c5726e3133ac454bc8a308",
+      "context": "core",
+      "prerequisites": [],
+      "review": "04.003/tool-options-header-routes: horizontal path options constructor and runtime path availability. Double-include the identified baseline header after normal core/tool/GTK prerequisites in C11 and C++14; preserve its original identity. Compilation only, without an outer linkage wrapper; no C/C++ link ABI claim."
     }
   ]
 }
