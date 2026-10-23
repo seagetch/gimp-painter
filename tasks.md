@@ -998,6 +998,8 @@
 | 25.011/native-event-route | [x] | 実DisplayShellへ回転/zoom修飾キーeventを通して検証する | 25.001/start-relative-route, 25.009/radial-default | Native Xfce上の4通常/4 focused sanitizerで反転・Ctrl解除・任意button・radial zoom・picker grab回収を検証。synthetic GDKであり実tablet/全focus/panは別gate |
 | 25.012 | [ ] | ペン・マウスの両方を試験する | 25.011 | 入力デバイスで snap 条件が変わらない |
 
+2026-10-21進捗: `25.009/drag-zoom-scroll` は DOING。旧inverse-before-gintとdouble原点をdefault panへ復元し、24scene/1920motion/5760点対、35通常/35 ordinary Meson ASan・UBSan、UI4/pure6、認証1080x1920 oncanvas実画像を限定検証した。従来の整数device差分caseは明示custom設定で保持する（過去のdefault証跡を書き換えない）。原25.009とdrag-zoom-scrollのチェック・依存・完了条件は変更せず、新DONE子は追加しない。未完の旧回転/zoom操作fixture全受入れを継続する。契約・制約は `migration/contracts/painter-navigation-legacy-pan.md`。
+
 ### 26 パース定規
 
 主対象：定規 model・overlay・拘束 tool

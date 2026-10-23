@@ -18,6 +18,8 @@
 #ifndef __GIMP_DISPLAY_SHELL_SCROLL_H__
 #define __GIMP_DISPLAY_SHELL_SCROLL_H__
 
+G_BEGIN_DECLS
+
 
 void   gimp_display_shell_scroll                     (GimpDisplayShell *shell,
                                                       gint              x_offset,
@@ -25,6 +27,13 @@ void   gimp_display_shell_scroll                     (GimpDisplayShell *shell,
 void   gimp_display_shell_scroll_set_offset          (GimpDisplayShell *shell,
                                                       gint              offset_x,
                                                       gint              offset_y);
+
+gboolean gimp_display_shell_painter_pan_begin          (GimpDisplayShell *shell,
+                                                      gdouble           x,
+                                                      gdouble           y);
+void   gimp_display_shell_painter_pan_motion         (GimpDisplayShell *shell,
+                                                      gdouble           x,
+                                                      gdouble           y);
 
 void   gimp_display_shell_scroll_clamp_and_update    (GimpDisplayShell *shell);
 
@@ -55,5 +64,7 @@ void   gimp_display_shell_scroll_get_viewport        (GimpDisplayShell *shell,
                                                       gdouble          *w,
                                                       gdouble          *h);
 
+
+G_END_DECLS
 
 #endif  /*  __GIMP_DISPLAY_SHELL_SCROLL_H__  */

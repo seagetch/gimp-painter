@@ -156,7 +156,9 @@ gimp_display_shell_rotate_update_transform (GimpDisplayShell *shell)
 
   if ((shell->rotate_angle != 0.0 ||
        shell->flip_horizontally   ||
-       shell->flip_vertically) &&
+       shell->flip_vertically ||
+       shell->painter_pan_fraction_x != 0.0 ||
+       shell->painter_pan_fraction_y != 0.0) &&
       gimp_display_get_image (shell->display))
     {
       gint    image_width, image_height;
@@ -185,6 +187,10 @@ gimp_display_shell_rotate_update_transform (GimpDisplayShell *shell)
 
       cairo_matrix_translate (shell->rotate_transform, -cx, -cy);
 
+      /* Device translation is appended after image-centered rotation. All
+       * raster, item, selection, pointer and upright-anchor routes share it. */
+      shell->rotate_transform->x0 -= shell->painter_pan_fraction_x;
+      shell->rotate_transform->y0 -= shell->painter_pan_fraction_y;
       *shell->rotate_untransform = *shell->rotate_transform;
       cairo_matrix_invert (shell->rotate_untransform);
     }

@@ -1,0 +1,85 @@
+void
+gimp_display_shell_scroll_clamp_offsets (GimpDisplayShell *shell)
+{
+  GimpImage *image;
+
+  g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
+
+  image = gimp_display_get_image (shell->display);
+
+  if (image)
+    {
+      gint sw, sh;
+      gint min_offset_x;
+      gint max_offset_x;
+      gint min_offset_y;
+      gint max_offset_y;
+
+      sw = SCALEX (shell, gimp_image_get_width  (image));
+      sh = SCALEY (shell, gimp_image_get_height (image));
+
+      if (shell->disp_width < sw)
+        {
+          min_offset_x = 0  - shell->disp_width * OVERPAN_FACTOR;
+          max_offset_x = sw - shell->disp_width * (1.0 - OVERPAN_FACTOR);
+        }
+      else
+        {
+          gint overpan_amount;
+
+          overpan_amount = shell->disp_width - sw * (1.0 - OVERPAN_FACTOR);
+
+          min_offset_x = 0  - overpan_amount;
+          max_offset_x = sw + overpan_amount - shell->disp_width;
+        }
+
+      if (shell->disp_height < sh)
+        {
+          min_offset_y = 0  - shell->disp_height * OVERPAN_FACTOR;
+          max_offset_y = sh - shell->disp_height * (1.0 - OVERPAN_FACTOR);
+        }
+      else
+        {
+          gint overpan_amount;
+
+          overpan_amount = shell->disp_height - sh * (1.0 - OVERPAN_FACTOR);
+
+          min_offset_y = 0  - overpan_amount;
+          max_offset_y = sh + overpan_amount - shell->disp_height;
+        }
+
+
+      /* Handle scrollbar stepper sensitiity */
+
+      gtk_range_set_lower_stepper_sensitivity (GTK_RANGE (shell->hsb),
+                                               min_offset_x < shell->offset_x ?
+                                               GTK_SENSITIVITY_ON :
+                                               GTK_SENSITIVITY_OFF);
+
+      gtk_range_set_upper_stepper_sensitivity (GTK_RANGE (shell->hsb),
+                                               max_offset_x > shell->offset_x ?
+                                               GTK_SENSITIVITY_ON :
+                                               GTK_SENSITIVITY_OFF);
+
+      gtk_range_set_lower_stepper_sensitivity (GTK_RANGE (shell->vsb),
+                                               min_offset_y < shell->offset_y ?
+                                               GTK_SENSITIVITY_ON :
+                                               GTK_SENSITIVITY_OFF);
+
+      gtk_range_set_upper_stepper_sensitivity (GTK_RANGE (shell->vsb),
+                                               max_offset_y > shell->offset_y ?
+                                               GTK_SENSITIVITY_ON :
+                                               GTK_SENSITIVITY_OFF);
+
+
+      /* Clamp */
+
+      shell->offset_x = CLAMP (shell->offset_x, min_offset_x, max_offset_x);
+      shell->offset_y = CLAMP (shell->offset_y, min_offset_y, max_offset_y);
+    }
+  else
+    {
+      shell->offset_x = 0;
+      shell->offset_y = 0;
+    }
+}

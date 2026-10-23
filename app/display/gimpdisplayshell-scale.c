@@ -475,9 +475,12 @@ void
 gimp_display_shell_scale_update (GimpDisplayShell *shell)
 {
   GimpImage *image;
+  gdouble old_scale_x, old_scale_y;
 
   g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
 
+  old_scale_x = shell->scale_x;
+  old_scale_y = shell->scale_y;
   image = gimp_display_get_image (shell->display);
 
   if (image)
@@ -492,6 +495,14 @@ gimp_display_shell_scale_update (GimpDisplayShell *shell)
       shell->scale_x = 1.0;
       shell->scale_y = 1.0;
     }
+
+  if (shell->scale_x != old_scale_x || shell->scale_y != old_scale_y)
+    {
+      /* Resolution/dot-for-dot changes establish a new native pixel grid. */
+      shell->painter_pan_fraction_x = 0.0;
+      shell->painter_pan_fraction_y = 0.0;
+    }
+
 }
 
 /**
@@ -782,7 +793,9 @@ gimp_display_shell_scale_by_values (GimpDisplayShell *shell,
    */
   if (SCALE_EQUALS (gimp_zoom_model_get_factor (shell->zoom), scale) &&
       shell->offset_x == offset_x &&
-      shell->offset_y == offset_y)
+      shell->offset_y == offset_y &&
+      shell->painter_pan_fraction_x == 0.0 &&
+      shell->painter_pan_fraction_y == 0.0)
     return;
 
   gimp_display_shell_scale_save_revert_values (shell);
@@ -794,6 +807,8 @@ gimp_display_shell_scale_by_values (GimpDisplayShell *shell,
 
   shell->offset_x = offset_x;
   shell->offset_y = offset_y;
+  shell->painter_pan_fraction_x = 0.0;
+  shell->painter_pan_fraction_y = 0.0;
 
   gimp_display_shell_rotate_update_transform (shell);
 

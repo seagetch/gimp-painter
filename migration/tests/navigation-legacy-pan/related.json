@@ -1,0 +1,16 @@
+[
+  {
+    "name": "gimp:app / painter-navigation-ui",
+    "result": "OK",
+    "duration": 0.08187079429626465,
+    "returncode": 0,
+    "stdout": "TAP version 14\n# random seed: R02Sc8b5f9decd1dfb55f4e8bc347a543ed1\n1..4\n# Start of navigation-ui tests\nok 1 /navigation-ui/preferences-read\nok 2 /navigation-ui/partial-override-roundtrip\nok 3 /navigation-ui/existing-exact-config\nok 4 /navigation-ui/explicit-any-button\n# End of navigation-ui tests\n"
+  },
+  {
+    "name": "gimp:painter / painter-navigation",
+    "result": "OK",
+    "duration": 0.011440277099609375,
+    "returncode": 0,
+    "stdout": "TAP version 14\n# random seed: R02S0a6feb4d1746805e14d23d0a1eb4974a\n1..6\n# Start of navigation tests\nok 1 /navigation/golden-rotation\nok 2 /navigation/golden-zoom\nok 3 /navigation/modifier-bits\nok 4 /navigation/midpoint-toggle\nok 5 /navigation/mirrored-keys\nok 6 /navigation/custom-rotation\n# End of navigation tests\n"
+  }
+]

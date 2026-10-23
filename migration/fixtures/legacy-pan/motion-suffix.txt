@@ -1,0 +1,10 @@
+            gdouble offset_x = shell->offset_x;
+            gdouble offset_y = shell->offset_y;
+            gdouble start_x  = shell->scroll_start_x;
+            gdouble start_y  = shell->scroll_start_y;
+
+            gimp_display_shell_device_to_image_coords(shell, &x, &y);
+
+            gimp_display_shell_scroll (shell,
+                                       start_x - x - offset_x,
+                                       start_y - y - offset_y);

@@ -2352,10 +2352,19 @@ drag_begin (const DragScene *scene, GimpModifierAction action, DragPoint p)
   if (bearing < 0) bearing += 360.0;
   if (angle < 0) angle += 360.0;
   assert_navigation_idle ();
+  /* Historical bounded modern-pan cases originally used inherited defaults.
+   * Their unchanged integer-device expectations are now retained explicitly
+   * as custom policy, while the separate legacy/default oracle covers the
+   * restored inverse-before-gint and fractional-origin semantics. */
+  gimp_modifiers_manager_clear (manager);
+  if (action == GIMP_MODIFIER_ACTION_PANNING)
+    gimp_modifiers_manager_set (manager, device, 2, 0,
+                                GIMP_MODIFIER_ACTION_PANNING, NULL);
   drag_send_pointer (GDK_BUTTON_PRESS, 2, state, p);
   g_assert_cmpint (shell->mod_action, ==, action);
   g_assert_cmpuint (shell->mod_action_button, ==, 2);
-  g_assert_true (shell->painter_navigation_inherited);
+  g_assert_cmpint (shell->painter_navigation_inherited, ==,
+                   action != GIMP_MODIFIER_ACTION_PANNING);
   g_assert_cmpint (shell->scroll_start_x, ==, x);
   g_assert_cmpint (shell->scroll_start_y, ==, y);
   g_assert_cmpint (shell->scroll_last_x, ==, x);
@@ -2778,11 +2787,18 @@ device_image_origin (void)
   drag_fractional_pan_difference ();
 }
 
+
+#include "test-painter-navigation-legacy-pan.inc"
+
 int main(int argc,char **argv)
 {
   gint result;
   g_test_init(&argc,&argv,NULL);if(!gtk_init_check(&argc,&argv))return GIMP_EXIT_TEST_SKIPPED;
   gimp_test_utils_setup_menus_path();gimp=gimp_init_for_gui_testing(TRUE);
+  g_test_add_func("/navigation-events/legacy/inherited-fractional-pan",inherited_pan_fractional_origin);
+  g_test_add_func("/navigation-events/legacy/oncanvas-render",inherited_pan_render);
+  g_test_add_func("/navigation-events/legacy/transitions",inherited_pan_transitions);
+  g_test_add_func("/navigation-events/legacy/invalid-and-space",inherited_pan_invalid_and_space);
   g_test_add_func("/navigation-events/default-rotation",rotate_defaults);
   g_test_add_func("/navigation-events/arbitrary-buttons",arbitrary_button_constraints);
   g_test_add_func("/navigation-events/radial-zoom",radial_zoom_event);

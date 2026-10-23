@@ -1,0 +1,55 @@
+{
+  "scope": "Excluded attempts, not passing receipts; raw private build logs are retained outside publication artifacts",
+  "attempts": [
+    {
+      "kind": "test setup",
+      "result": "compile failure",
+      "reason": "Old-source extractor matched prototype; corrected to immutable definition extraction"
+    },
+    {
+      "kind": "test setup",
+      "result": "compile failure",
+      "reason": "Old-clamp shim missing RINT declaration; included existing math header"
+    },
+    {
+      "kind": "test setup",
+      "result": "assertion failure",
+      "reason": "Native transform_xy_f rounds scaled coordinates; expected oracle now includes that original API policy"
+    },
+    {
+      "kind": "test environment",
+      "result": "assertion failure",
+      "reason": "Globally enabled oncanvas toolbar colors triggered historical whole-canvas detector. Historical environment restored byte-exact; separate oncanvas ROI case added"
+    },
+    {
+      "kind": "test setup",
+      "result": "assertion failure",
+      "reason": "Flip API reflects current angle; vertical test now explicitly establishes specified angle after flip"
+    },
+    {
+      "kind": "production negative input",
+      "result": "fatal GLib critical",
+      "reason": "Raw gint-range coordinates inverse-transform beyond canvas-item center-x range before dispatch",
+      "error": "value \"3007443876.264617\" of type gdouble is invalid or out of range for property center-x",
+      "resolution": "Early finite/range validation before focus/coordinate processing; invalid-input tests retained"
+    },
+    {
+      "kind": "fresh configure admission",
+      "result": "rejected",
+      "reason": "Changed gimpdisplayshell-scroll.h missing reviewed compile route",
+      "resolution": "Explicit baseline-identity route and balanced C linkage, not gate bypass"
+    },
+    {
+      "kind": "isolated configure admission",
+      "result": "rejected",
+      "reason": "Concurrent unrelated JSON-resource header routes copied without their partial source",
+      "resolution": "Pinned ce40 baseline plus navigation route only; exact build inventory retained and structurally checked against current navigation row"
+    },
+    {
+      "kind": "sanitizer bootstrap",
+      "result": "platform failure",
+      "reason": "LeakSanitizer does not work under ptrace in this execution environment",
+      "resolution": "LSan disabled explicitly; ASan+UBSan ordinary Meson instrumentation retained"
+    }
+  ]
+}

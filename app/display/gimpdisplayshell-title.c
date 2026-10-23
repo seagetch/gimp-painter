@@ -540,8 +540,8 @@ gimp_display_shell_format_title (GimpDisplayShell *shell,
             case 'e': /* display's offsets in pixels */
               {
                 gdouble scale    = gimp_zoom_model_get_factor (shell->zoom);
-                gdouble offset_x = shell->offset_x / scale;
-                gdouble offset_y = shell->offset_y / scale;
+                gdouble offset_x = (shell->offset_x + shell->painter_pan_fraction_x) / scale;
+                gdouble offset_y = (shell->offset_y + shell->painter_pan_fraction_y) / scale;
 
                 i += print (title, title_len, i,
                             scale >= 0.15 ? "%.0fx%.0f" : "%.2fx%.2f",

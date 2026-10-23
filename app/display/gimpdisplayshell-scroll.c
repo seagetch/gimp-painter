@@ -48,6 +48,113 @@
 #define OVERPAN_FACTOR 0.5
 
 
+/* Old viewport-centered Flip*Rotate is represented by modern Rotate*Flip
+ * with the already converted public angle. No current render matrix is used
+ * for the old inverse-before-gint quantization. */
+static void
+painter_pan_matrix (GimpDisplayShell *shell, cairo_matrix_t *matrix)
+{
+  const gdouble cx = shell->disp_width / 2;
+  const gdouble cy = shell->disp_height / 2;
+  cairo_matrix_init_translate (matrix, cx, cy);
+  cairo_matrix_rotate (matrix, shell->rotate_angle * G_PI / 180.0);
+  cairo_matrix_scale (matrix, shell->flip_horizontally ? -1.0 : 1.0,
+                              shell->flip_vertically ? -1.0 : 1.0);
+  cairo_matrix_translate (matrix, -cx, -cy);
+}
+
+gboolean
+gimp_display_shell_painter_pan_begin (GimpDisplayShell *shell, gdouble x, gdouble y)
+{
+  cairo_matrix_t inverse;
+  gdouble zero_x, zero_y;
+  g_return_val_if_fail (GIMP_IS_DISPLAY_SHELL (shell), FALSE);
+  if (! isfinite (x) || ! isfinite (y))
+    return FALSE;
+  painter_pan_matrix (shell, &inverse);
+  if (cairo_matrix_invert (&inverse) != CAIRO_STATUS_SUCCESS)
+    return FALSE;
+  gimp_display_shell_transform_xy_f (shell, 0, 0, &zero_x, &zero_y);
+  cairo_matrix_transform_point (&inverse, &zero_x, &zero_y);
+  cairo_matrix_transform_point (&inverse, &x, &y);
+  if (! isfinite (x) || ! isfinite (y) ||
+      ! isfinite (zero_x) || ! isfinite (zero_y) ||
+      x < G_MININT || x > G_MAXINT || y < G_MININT || y > G_MAXINT)
+    return FALSE;
+  /* Initial old offset is minus inverse(native visible image origin).
+   * The historical function narrowed only these transformed press arguments. */
+  shell->painter_pan_start_x = (gint) x - zero_x;
+  shell->painter_pan_start_y = (gint) y - zero_y;
+  return TRUE;
+}
+
+static gdouble
+painter_pan_clamp (gdouble offset, gint viewport, gint image_extent)
+{
+  gint minimum, maximum;
+  if (viewport < image_extent)
+    {
+      minimum = -viewport * OVERPAN_FACTOR;
+      maximum = image_extent - viewport * (1.0 - OVERPAN_FACTOR);
+    }
+  else
+    {
+      gint overpan = viewport - image_extent * (1.0 - OVERPAN_FACTOR);
+      minimum = -overpan;
+      maximum = image_extent + overpan - viewport;
+    }
+  return CLAMP (offset, minimum, maximum);
+}
+
+void
+gimp_display_shell_painter_pan_motion (GimpDisplayShell *shell, gdouble x, gdouble y)
+{
+  cairo_matrix_t matrix, inverse;
+  GimpImage *image;
+  gint width, height, ix, iy;
+  gdouble old_x, old_y, native_zero_x, native_zero_y, cx, cy;
+  g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
+  g_return_if_fail (isfinite (x) && isfinite (y));
+  image = gimp_display_get_image (shell->display);
+  if (! image) return;
+  painter_pan_matrix (shell, &matrix); inverse = matrix;
+  cairo_matrix_invert (&inverse);
+  cairo_matrix_transform_point (&inverse, &x, &y);
+  /* Exact old pre-rotation axes and rounded scaled extent; do not substitute
+   * today's rotated bounding-box clamp. Old offsets remain double. */
+  old_x = painter_pan_clamp (shell->painter_pan_start_x - x, shell->disp_width,
+                             SCALEX (shell, gimp_image_get_width (image)));
+  old_y = painter_pan_clamp (shell->painter_pan_start_y - y, shell->disp_height,
+                             SCALEY (shell, gimp_image_get_height (image)));
+  x = -old_x; y = -old_y;
+  cairo_matrix_transform_point (&matrix, &x, &y);
+  /* Convert the same visible old image origin to the native image-centered
+   * offset representation, without rounding the resulting device origin. */
+  gimp_display_shell_scale_get_image_size (shell, &width, &height);
+  cx = width / 2; cy = height / 2;
+  native_zero_x = -cx; native_zero_y = -cy;
+  cairo_matrix_transform_distance (&matrix, &native_zero_x, &native_zero_y);
+  x = cx + native_zero_x - x; y = cy + native_zero_y - y;
+  g_return_if_fail (isfinite (x) && isfinite (y) &&
+                    x > G_MININT && x < G_MAXINT && y > G_MININT && y < G_MAXINT);
+  ix = floor (x); iy = floor (y);
+  if (shell->offset_x == ix && shell->offset_y == iy &&
+      shell->painter_pan_fraction_x == x - ix && shell->painter_pan_fraction_y == y - iy)
+    return;
+  gimp_display_shell_pause (shell);
+  shell->offset_x = ix; shell->offset_y = iy;
+  shell->painter_pan_fraction_x = x - ix; shell->painter_pan_fraction_y = y - iy;
+  gimp_display_shell_rotate_update_transform (shell);
+  gimp_display_shell_scrollbars_update (shell);
+  gimp_display_shell_rulers_update (shell);
+  /* Full invalidation is essential: integer render-cache/GTK scrolling would
+   * lose the residual and leave raster/selection/overlay damage inconsistent. */
+  gimp_display_shell_scrolled (shell);
+  gimp_display_shell_expose_full (shell);
+  gimp_display_shell_render_invalidate_full (shell);
+  gimp_display_shell_resume (shell);
+}
+
 /**
  * gimp_display_shell_scroll:
  * @shell:
@@ -67,12 +174,15 @@ gimp_display_shell_scroll (GimpDisplayShell *shell,
 {
   gint old_x;
   gint old_y;
+  gdouble old_fraction_x, old_fraction_y;
 
   g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
 
   if (x_offset == 0 && y_offset == 0)
     return;
 
+  old_fraction_x = shell->painter_pan_fraction_x;
+  old_fraction_y = shell->painter_pan_fraction_y;
   old_x = shell->offset_x;
   old_y = shell->offset_y;
 
@@ -88,7 +198,16 @@ gimp_display_shell_scroll (GimpDisplayShell *shell,
   x_offset = (shell->offset_x - old_x);
   y_offset = (shell->offset_y - old_y);
 
-  if (x_offset || y_offset)
+  if (old_fraction_x != shell->painter_pan_fraction_x ||
+      old_fraction_y != shell->painter_pan_fraction_y)
+    {
+      /* A fractional origin clipped onto an integer boundary cannot reuse
+       * an integer-shifted raster cache or child allocation. */
+      gimp_display_shell_scrolled (shell);
+      gimp_display_shell_expose_full (shell);
+      gimp_display_shell_render_invalidate_full (shell);
+    }
+  else if (x_offset || y_offset)
     {
       gimp_display_shell_scrolled (shell);
 
@@ -164,7 +283,9 @@ gimp_display_shell_scroll_set_offset (GimpDisplayShell *shell,
   g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
 
   if (shell->offset_x == offset_x &&
-      shell->offset_y == offset_y)
+      shell->offset_y == offset_y &&
+      shell->painter_pan_fraction_x == 0.0 &&
+      shell->painter_pan_fraction_y == 0.0)
     return;
 
   gimp_display_shell_scale_save_revert_values (shell);
@@ -174,6 +295,8 @@ gimp_display_shell_scroll_set_offset (GimpDisplayShell *shell,
 
   shell->offset_x = offset_x;
   shell->offset_y = offset_y;
+  shell->painter_pan_fraction_x = 0.0;
+  shell->painter_pan_fraction_y = 0.0;
 
   gimp_display_shell_scroll_clamp_and_update (shell);
 
@@ -272,6 +395,11 @@ gimp_display_shell_scroll_clamp_and_update (GimpDisplayShell *shell)
 
           if (offset_x != shell->offset_x || offset_y != shell->offset_y)
             {
+              /* A clipped native axis lands exactly on its integer bound. */
+              if (shell->offset_x != offset_x)
+                shell->painter_pan_fraction_x = 0.0;
+              if (shell->offset_y != offset_y)
+                shell->painter_pan_fraction_y = 0.0;
               shell->offset_x = offset_x;
               shell->offset_y = offset_y;
 
@@ -301,6 +429,8 @@ gimp_display_shell_scroll_clamp_and_update (GimpDisplayShell *shell)
     {
       shell->offset_x = 0;
       shell->offset_y = 0;
+      shell->painter_pan_fraction_x = 0.0;
+      shell->painter_pan_fraction_y = 0.0;
     }
 
   gimp_display_shell_scrollbars_update (shell);

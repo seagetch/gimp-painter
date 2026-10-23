@@ -188,6 +188,9 @@ gimp_display_shell_canvas_tick (GtkWidget     *widget,
 
           shell->offset_x = SCALEX (shell, offset_x);
           shell->offset_y = SCALEY (shell, offset_y);
+          /* Zoom-on-resize explicitly repositions to native integer pixels. */
+          shell->painter_pan_fraction_x = 0.0;
+          shell->painter_pan_fraction_y = 0.0;
         }
 
       /* When we size-allocate due to resize of the top level window,

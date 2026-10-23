@@ -277,6 +277,14 @@ struct _GimpDisplayShell
   gboolean           drawn;
 
   GimpDisplayShellPrivate *priv;
+
+  /* Painter default pan preserves the old double origin without changing
+   * native integer offset fields. The residual is a device-space translation
+   * in the shared forward/inverse matrix, also when rotation is zero. */
+  gdouble painter_pan_fraction_x;
+  gdouble painter_pan_fraction_y;
+  gdouble painter_pan_start_x;
+  gdouble painter_pan_start_y;
 };
 
 struct _GimpDisplayShellClass

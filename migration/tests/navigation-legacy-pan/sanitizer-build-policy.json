@@ -1,0 +1,15 @@
+{
+  "configured_commands": 2543,
+  "instrumented_configured_commands": 2542,
+  "noninstrumented_configured_commands": [
+    "../source/gimp-data/tools/colorsvg2png.c"
+  ],
+  "instrumentation": "ordinary Meson b_sanitize=address,undefined; no object substitution; configured graph is not all-target build claim",
+  "assertions_disabled": false,
+  "debug_symbols": false,
+  "optimization": 2,
+  "dependency_root_instrumented": false,
+  "leak_detection": false,
+  "reason": "platform LeakSanitizer/ptrace incompatibility during instrumented build generator; excluded failure retained privately",
+  "compile_commands_sha256": "28dbcab74621ba787423862fe5a779a6e48c644fc3432f002127564dd44af67d"
+}

@@ -1,0 +1,14 @@
+void
+gimp_display_shell_device_to_image_coords (const GimpDisplayShell *shell,
+                                           gdouble          *x,
+                                           gdouble          *y)
+{
+  if (shell->rotate_angle != 0.0 || shell->mirrored) {
+    cairo_t* cr = gdk_cairo_create(gtk_widget_get_window (shell->canvas));
+    g_return_if_fail (cr != NULL);
+    gimp_display_shell_set_cairo_rotate (shell, cr);
+    cairo_device_to_user(cr, x, y);
+    cairo_destroy(cr);
+  }
+  
+}

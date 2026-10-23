@@ -1,0 +1,1007 @@
+{
+  "scope": "Preimplementation source-use audit; plans are not passing evidence",
+  "files": [
+    {
+      "path": "app/display/gimpcanvasbufferpreview.c",
+      "sha256": "6ec1a5a66d5e158593071bbae8b43e5cbcd2d137bdd0ae147945f468692feae5",
+      "review": "Canvas item zoom-only coordinates are intentionally before shared outer cairo matrix; residual must not be double-added here. Item damage routes through shell rotate_bounds. No source edit required.",
+      "uses": [
+        {
+          "line": 179,
+          "source": "                   GEGL_RECTANGLE (rectangle.x + shell->offset_x,"
+        },
+        {
+          "line": 180,
+          "source": "                                   rectangle.y + shell->offset_y,"
+        }
+      ]
+    },
+    {
+      "path": "app/display/gimpcanvascanvasboundary.c",
+      "sha256": "113beec2719779bb30cfd26428338ced46b7c91c27c84b95ba835f78db962c7d",
+      "review": "Canvas item zoom-only coordinates are intentionally before shared outer cairo matrix; residual must not be double-added here. Item damage routes through shell rotate_bounds. No source edit required.",
+      "uses": [
+        {
+          "line": 183,
+          "source": "                                shell->offset_x, shell->offset_y);"
+        }
+      ]
+    },
+    {
+      "path": "app/display/gimpcanvasgrid.c",
+      "sha256": "cc9fd1267aa6e717a2ec8198dc2bac2e2f6112548ab42b56bddbdf7f7c865bd0",
+      "review": "Canvas item zoom-only coordinates are intentionally before shared outer cairo matrix; residual must not be double-added here. Item damage routes through shell rotate_bounds. No source edit required.",
+      "uses": [
+        {
+          "line": 262,
+          "source": "  xoffset = fmod (xoffset - shell->offset_x - x1, xspacing);"
+        },
+        {
+          "line": 263,
+          "source": "  yoffset = fmod (yoffset - shell->offset_y - y1, yspacing);"
+        },
+        {
+          "line": 394,
+          "source": "                                  shell->offset_x, shell->offset_y);"
+        }
+      ]
+    },
+    {
+      "path": "app/display/gimpcanvasguide.c",
+      "sha256": "8d27bff8e536c96d2143afacf9dccda20cc677a7e52968b455defed589788255",
+      "review": "Canvas item zoom-only coordinates are intentionally before shared outer cairo matrix; residual must not be double-added here. Item damage routes through shell rotate_bounds. No source edit required.",
+      "uses": [
+        {
+          "line": 255,
+          "source": "                                   shell->offset_x, shell->offset_y);"
+        }
+      ]
+    },
+    {
+      "path": "app/display/gimpcanvasitem.c",
+      "sha256": "9ec1528cd0fa350d3126d9e3863069f7fdb5dab5484ceb9f482ce6a8254c9d57",
+      "review": "Canvas item zoom-only coordinates are intentionally before shared outer cairo matrix; residual must not be double-added here. Item damage routes through shell rotate_bounds. No source edit required.",
+      "uses": [
+        {
+          "line": 567,
+          "source": "  cairo_translate (cr, -private->shell->offset_x, -private->shell->offset_y);"
+        }
+      ]
+    },
+    {
+      "path": "app/display/gimpcanvaslayerboundary.c",
+      "sha256": "75fff922c069428039e0f37bfa7efe21b9b505ec9d75e928c1a335a49cd90196",
+      "review": "Canvas item zoom-only coordinates are intentionally before shared outer cairo matrix; residual must not be double-added here. Item damage routes through shell rotate_bounds. No source edit required.",
+      "uses": [
+        {
+          "line": 230,
+          "source": "                                   iter->data, shell->offset_x, shell->offset_y);"
+        }
+      ]
+    },
+    {
+      "path": "app/display/gimpcanvaspassepartout.c",
+      "sha256": "944fd097b3a7f61225fe65965e92b3979a3a7aa224872b47a4885df6da74e41a",
+      "review": "Canvas item zoom-only coordinates are intentionally before shared outer cairo matrix; residual must not be double-added here. Item damage routes through shell rotate_bounds. No source edit required.",
+      "uses": [
+        {
+          "line": 153,
+          "source": "      x = -shell->offset_x;"
+        },
+        {
+          "line": 154,
+          "source": "      y = -shell->offset_y;"
+        },
+        {
+          "line": 179,
+          "source": "      rectangle.x = - shell->offset_x;"
+        },
+        {
+          "line": 180,
+          "source": "      rectangle.y = - shell->offset_y;"
+        }
+      ]
+    },
+    {
+      "path": "app/display/gimpcanvastransformpreview.c",
+      "sha256": "a05eeefff1a8007820335e75cbb3fdeb3cb51b9ae3ef4d521881a9f1bac31d84",
+      "review": "Canvas item zoom-only coordinates are intentionally before shared outer cairo matrix; residual must not be double-added here. Item damage routes through shell rotate_bounds. No source edit required.",
+      "uses": [
+        {
+          "line": 414,
+          "source": "                  GEGL_RECTANGLE (bounds.x + shell->offset_x,"
+        },
+        {
+          "line": 415,
+          "source": "                                  bounds.y + shell->offset_y,"
+        }
+      ]
+    },
+    {
+      "path": "app/display/gimpdisplayshell-callbacks.c",
+      "sha256": "4397687f5a08e1b464342584d62b27eaa8915feff5dfe4fbf8acfed5a716d278",
+      "review": "Direct zoom-on-resize writes reset residual; normal resize/clamp updates transform.",
+      "uses": [
+        {
+          "line": 184,
+          "source": "          offset_x = UNSCALEX (shell, shell->offset_x);"
+        },
+        {
+          "line": 185,
+          "source": "          offset_y = UNSCALEY (shell, shell->offset_y);"
+        },
+        {
+          "line": 189,
+          "source": "          shell->offset_x = SCALEX (shell, offset_x);"
+        },
+        {
+          "line": 190,
+          "source": "          shell->offset_y = SCALEY (shell, offset_y);"
+        },
+        {
+          "line": 229,
+          "source": "          target_offset_x = shell->offset_x;"
+        },
+        {
+          "line": 230,
+          "source": "          target_offset_y = shell->offset_y;"
+        },
+        {
+          "line": 234,
+          "source": "              target_offset_x = MAX (shell->offset_x, 0);"
+        },
+        {
+          "line": 239,
+          "source": "              target_offset_y = MAX (shell->offset_y, 0);"
+        },
+        {
+          "line": 444,
+          "source": "                               shell->offset_y);"
+        },
+        {
+          "line": 457,
+          "source": "                               shell->offset_x,"
+        },
+        {
+          "line": 547,
+          "source": "  if (shell->rotate_transform)"
+        },
+        {
+          "line": 548,
+          "source": "    cairo_transform (cr, shell->rotate_transform);"
+        },
+        {
+          "line": 633,
+          "source": "  if (shell->rotate_transform)"
+        },
+        {
+          "line": 634,
+          "source": "    cairo_transform (cr, shell->rotate_transform);"
+        }
+      ]
+    },
+    {
+      "path": "app/display/gimpdisplayshell-draw.c",
+      "sha256": "80e9a13121c0abf9d3fff5502abb5cebbdd9ea524a3c910d2c1947fac661b4f3",
+      "review": "Canvas draw applies common matrix; verify actual cairo CTM/raster.",
+      "uses": [
+        {
+          "line": 57,
+          "source": "                                       shell->offset_x, shell->offset_y);"
+        },
+        {
+          "line": 74,
+          "source": "                                      shell->offset_x, shell->offset_y);"
+        },
+        {
+          "line": 131,
+          "source": "  cairo_translate (cr, - shell->offset_x, - shell->offset_y);"
+        },
+        {
+          "line": 181,
+          "source": "  if (shell->rotate_untransform)"
+        }
+      ]
+    },
+    {
+      "path": "app/display/gimpdisplayshell-handlers.c",
+      "sha256": "84655fc3ea029bbd8c62d93192f47aa8071816e5fb3c3501a786e14e40f06011",
+      "review": "Image-origin changes call explicit scroll_set_offset; residual deliberately reset there as for any native integer reposition.",
+      "uses": [
+        {
+          "line": 923,
+          "source": "                                            shell->offset_x + scaled_previous_origin_x,"
+        },
+        {
+          "line": 924,
+          "source": "                                            shell->offset_y + scaled_previous_origin_y);"
+        }
+      ]
+    },
+    {
+      "path": "app/display/gimpdisplayshell-items.c",
+      "sha256": "11a926da7edd94f56d3f3d17528952f150e7bb140c7a6c7811c3b29e2aef8992",
+      "review": "Item damage converts every region rectangle through rotate_bounds when matrix exists. Read only: owned by another task.",
+      "uses": [
+        {
+          "line": 251,
+          "source": "  if (shell->rotate_transform)"
+        }
+      ]
+    },
+    {
+      "path": "app/display/gimpdisplayshell-render.c",
+      "sha256": "25758a52552f03f4dea85154c025d17d795406b08f6263e58fe7e30ab8df7c66",
+      "review": "Raster drawing applies common matrix; fractional changes must invalidate/expose full cache, not translate existing integer cache.",
+      "uses": [
+        {
+          "line": 258,
+          "source": "  if (shell->rotate_transform)"
+        },
+        {
+          "line": 259,
+          "source": "    cairo_transform (my_cr, shell->rotate_transform);"
+        },
+        {
+          "line": 260,
+          "source": "  cairo_translate (my_cr, -shell->offset_x, -shell->offset_y);"
+        }
+      ]
+    },
+    {
+      "path": "app/display/gimpdisplayshell-rotate.c",
+      "sha256": "14b2c4513a9e57d5861a82c3db824655f851c44c9db23b73c912ae2ed945c4d3",
+      "review": "Append device translation after ordinary rotate matrix; always create matrix for nonzero residual, even angle0. Existing center save/restore passes through inverse.",
+      "uses": [
+        {
+          "line": 146,
+          "source": "  g_clear_pointer (&shell->rotate_transform,   g_free);"
+        },
+        {
+          "line": 147,
+          "source": "  g_clear_pointer (&shell->rotate_untransform, g_free);"
+        },
+        {
+          "line": 165,
+          "source": "      shell->rotate_transform   = g_new (cairo_matrix_t, 1);"
+        },
+        {
+          "line": 166,
+          "source": "      shell->rotate_untransform = g_new (cairo_matrix_t, 1);"
+        },
+        {
+          "line": 171,
+          "source": "      cx = -shell->offset_x + image_width  / 2;"
+        },
+        {
+          "line": 172,
+          "source": "      cy = -shell->offset_y + image_height / 2;"
+        },
+        {
+          "line": 174,
+          "source": "      cairo_matrix_init_translate (shell->rotate_transform, cx, cy);"
+        },
+        {
+          "line": 177,
+          "source": "        cairo_matrix_rotate (shell->rotate_transform,"
+        },
+        {
+          "line": 181,
+          "source": "        cairo_matrix_scale (shell->rotate_transform, -1.0, 1.0);"
+        },
+        {
+          "line": 184,
+          "source": "        cairo_matrix_scale (shell->rotate_transform, 1.0, -1.0);"
+        },
+        {
+          "line": 186,
+          "source": "      cairo_matrix_translate (shell->rotate_transform, -cx, -cy);"
+        },
+        {
+          "line": 188,
+          "source": "      *shell->rotate_untransform = *shell->rotate_transform;"
+        },
+        {
+          "line": 189,
+          "source": "      cairo_matrix_invert (shell->rotate_untransform);"
+        },
+        {
+          "line": 250,
+          "source": "  x += shell->offset_x - shell->disp_width  / 2;"
+        },
+        {
+          "line": 251,
+          "source": "  y += shell->offset_y - shell->disp_height / 2;"
+        }
+      ]
+    },
+    {
+      "path": "app/display/gimpdisplayshell-rulers.c",
+      "sha256": "e0841d2237759618760b90f8bee1c4ff9335326f86316ca2ffa58174d933a222",
+      "review": "Uses rotated image bounds and rotated scale; fractional bounds need independent ruler/landmark check.",
+      "uses": [
+        {
+          "line": 82,
+          "source": "      offset_x = shell->offset_x - image_x;"
+        },
+        {
+          "line": 83,
+          "source": "      offset_y = shell->offset_y - image_y;"
+        }
+      ]
+    },
+    {
+      "path": "app/display/gimpdisplayshell-scale.c",
+      "sha256": "215c7ed5de5d36f823e91106d0147115bfd4290f6f97adb561625f33a355675c",
+      "review": "Explicit scale_by_values resets fractional origin after deriving focus; same integer values must not bypass reset. dot-for-dot/resolution update must clear or rescale consistently.",
+      "uses": [
+        {
+          "line": 175,
+          "source": "      shell->last_offset_x = shell->offset_x;"
+        },
+        {
+          "line": 176,
+          "source": "      shell->last_offset_y = shell->offset_y;"
+        },
+        {
+          "line": 279,
+          "source": "  if (x) *x = x1 + shell->offset_x;"
+        },
+        {
+          "line": 280,
+          "source": "  if (y) *y = y1 + shell->offset_y;"
+        },
+        {
+          "line": 309,
+          "source": "  if (x) *x = -shell->offset_x;"
+        },
+        {
+          "line": 310,
+          "source": "  if (y) *y = -shell->offset_y;"
+        },
+        {
+          "line": 364,
+          "source": "  if (x) *x = x1 + shell->offset_x;"
+        },
+        {
+          "line": 365,
+          "source": "  if (y) *y = y1 + shell->offset_y;"
+        },
+        {
+          "line": 397,
+          "source": "       shell->offset_x;"
+        },
+        {
+          "line": 399,
+          "source": "       shell->offset_y;"
+        },
+        {
+          "line": 402,
+          "source": "       shell->offset_x;"
+        },
+        {
+          "line": 404,
+          "source": "       shell->offset_y;"
+        },
+        {
+          "line": 454,
+          "source": "      sx -= shell->offset_x;"
+        },
+        {
+          "line": 455,
+          "source": "      sy -= shell->offset_y;"
+        },
+        {
+          "line": 652,
+          "source": "  x      += shell->offset_x;"
+        },
+        {
+          "line": 653,
+          "source": "  y      += shell->offset_y;"
+        },
+        {
+          "line": 705,
+          "source": "      offset_x = RINT (factor * (shell->offset_x + shell->disp_width  / 2) -"
+        },
+        {
+          "line": 706,
+          "source": "                       ((x + width  / 2.0) - shell->offset_x));"
+        },
+        {
+          "line": 708,
+          "source": "      offset_y = RINT (factor * (shell->offset_y + shell->disp_height / 2) -"
+        },
+        {
+          "line": 709,
+          "source": "                       ((y + height / 2.0) - shell->offset_y));"
+        },
+        {
+          "line": 717,
+          "source": "      offset_x  != shell->offset_x ||"
+        },
+        {
+          "line": 718,
+          "source": "      offset_y  != shell->offset_y)"
+        },
+        {
+          "line": 784,
+          "source": "      shell->offset_x == offset_x &&"
+        },
+        {
+          "line": 785,
+          "source": "      shell->offset_y == offset_y)"
+        },
+        {
+          "line": 795,
+          "source": "  shell->offset_x = offset_x;"
+        },
+        {
+          "line": 796,
+          "source": "  shell->offset_y = offset_y;"
+        },
+        {
+          "line": 1169,
+          "source": "                                      shell->offset_x,"
+        },
+        {
+          "line": 1170,
+          "source": "                                      shell->offset_y,"
+        },
+        {
+          "line": 1360,
+          "source": "  if (image_center_x) *image_center_x = -shell->offset_x + sw / 2;"
+        },
+        {
+          "line": 1361,
+          "source": "  if (image_center_y) *image_center_y = -shell->offset_y + sh / 2;"
+        }
+      ]
+    },
+    {
+      "path": "app/display/gimpdisplayshell-scroll.c",
+      "sha256": "78856a7185f915e174c39754cea8d38f90395d0c3fead43621401fc4c919d109",
+      "review": "Integer pan preserves residual as a constant translation; inherited fractional pan bypasses rotated modern clamp for exact old axis clamp. Explicit set-offset resets residual even at equal integer offsets. Native clamp clears clipped residual axis. Empty image clears both.",
+      "uses": [
+        {
+          "line": 76,
+          "source": "  old_x = shell->offset_x;"
+        },
+        {
+          "line": 77,
+          "source": "  old_y = shell->offset_y;"
+        },
+        {
+          "line": 82,
+          "source": "  shell->offset_x += x_offset;"
+        },
+        {
+          "line": 83,
+          "source": "  shell->offset_y += y_offset;"
+        },
+        {
+          "line": 88,
+          "source": "  x_offset = (shell->offset_x - old_x);"
+        },
+        {
+          "line": 89,
+          "source": "  y_offset = (shell->offset_y - old_y);"
+        },
+        {
+          "line": 166,
+          "source": "  if (shell->offset_x == offset_x &&"
+        },
+        {
+          "line": 167,
+          "source": "      shell->offset_y == offset_y)"
+        },
+        {
+          "line": 175,
+          "source": "  shell->offset_x = offset_x;"
+        },
+        {
+          "line": 176,
+          "source": "  shell->offset_y = offset_y;"
+        },
+        {
+          "line": 270,
+          "source": "          offset_x = CLAMP (shell->offset_x, min_offset_x, max_offset_x);"
+        },
+        {
+          "line": 271,
+          "source": "          offset_y = CLAMP (shell->offset_y, min_offset_y, max_offset_y);"
+        },
+        {
+          "line": 273,
+          "source": "          if (offset_x != shell->offset_x || offset_y != shell->offset_y)"
+        },
+        {
+          "line": 275,
+          "source": "              shell->offset_x = offset_x;"
+        },
+        {
+          "line": 276,
+          "source": "              shell->offset_y = offset_y;"
+        },
+        {
+          "line": 302,
+          "source": "      shell->offset_x = 0;"
+        },
+        {
+          "line": 303,
+          "source": "      shell->offset_y = 0;"
+        },
+        {
+          "line": 347,
+          "source": "                               MIN (0, 0 - shell->offset_x));"
+        },
+        {
+          "line": 354,
+          "source": "                               MAX (0, min_offset - shell->offset_x));"
+        },
+        {
+          "line": 360,
+          "source": "                               MIN (0, 0 - shell->offset_y));"
+        },
+        {
+          "line": 367,
+          "source": "                               MAX (0, min_offset - shell->offset_y));"
+        },
+        {
+          "line": 446,
+          "source": "    offset_x = center_x - shell->disp_width / 2 - shell->offset_x;"
+        },
+        {
+          "line": 449,
+          "source": "    offset_y = center_y - shell->disp_height / 2 - shell->offset_y;"
+        },
+        {
+          "line": 516,
+          "source": "    offset_x = center_x - shell->disp_width / 2 - shell->offset_x;"
+        },
+        {
+          "line": 519,
+          "source": "    offset_y = center_y - shell->disp_height / 2 - shell->offset_y;"
+        },
+        {
+          "line": 544,
+          "source": "  *x = shell->offset_x;"
+        },
+        {
+          "line": 545,
+          "source": "  *y = shell->offset_y;"
+        },
+        {
+          "line": 569,
+          "source": "  *x = shell->offset_x    / shell->scale_x;"
+        },
+        {
+          "line": 570,
+          "source": "  *y = shell->offset_y    / shell->scale_y;"
+        }
+      ]
+    },
+    {
+      "path": "app/display/gimpdisplayshell-scrollbars.c",
+      "sha256": "cedb6867e91885cb1ef68392111dc979753d0380f4334e9377192e125fa691d7",
+      "review": "Integer adjustment interface stays integer; exact fractional view is represented by matrix. Track boundary steppers separately for legacy clamp.",
+      "uses": [
+        {
+          "line": 56,
+          "source": "  gimp_display_shell_scrollbars_setup_horizontal (shell, shell->offset_x);"
+        },
+        {
+          "line": 59,
+          "source": "                \"value\",          (gdouble) shell->offset_x,"
+        },
+        {
+          "line": 72,
+          "source": "  gimp_display_shell_scrollbars_setup_vertical (shell, shell->offset_y);"
+        },
+        {
+          "line": 75,
+          "source": "                \"value\",          (gdouble) shell->offset_y,"
+        },
+        {
+          "line": 226,
+          "source": "                                           min_offset_x < shell->offset_x ?"
+        },
+        {
+          "line": 231,
+          "source": "                                           max_offset_x > shell->offset_x ?"
+        },
+        {
+          "line": 236,
+          "source": "                                           min_offset_y < shell->offset_y ?"
+        },
+        {
+          "line": 241,
+          "source": "                                           max_offset_y > shell->offset_y ?"
+        }
+      ]
+    },
+    {
+      "path": "app/display/gimpdisplayshell-selection.c",
+      "sha256": "15e4853f93644aa95133c2f47c00d68854a9be9b1e68eb189566cd2168b64d77",
+      "review": "Selection drawing and bounds apply common matrix, including zero-angle residual matrix; verify selection raster.",
+      "uses": [
+        {
+          "line": 289,
+          "source": "          if (shell->selection->shell->rotate_transform)"
+        },
+        {
+          "line": 290,
+          "source": "            cairo_transform (cr, shell->selection->shell->rotate_transform);"
+        },
+        {
+          "line": 333,
+          "source": "  if (selection->shell->rotate_transform)"
+        },
+        {
+          "line": 334,
+          "source": "    cairo_transform (cr, selection->shell->rotate_transform);"
+        },
+        {
+          "line": 365,
+          "source": "      if (! selection->shell->rotate_transform)"
+        }
+      ]
+    },
+    {
+      "path": "app/display/gimpdisplayshell-title.c",
+      "sha256": "7ea5370b95300870dc85d9ed54562440ade248d2c096b38574d3f9a65cdd0098",
+      "review": "Percent offset title is display metadata, not coordinate transform; include residual when reporting view position.",
+      "uses": [
+        {
+          "line": 543,
+          "source": "                gdouble offset_x = shell->offset_x / scale;"
+        },
+        {
+          "line": 544,
+          "source": "                gdouble offset_y = shell->offset_y / scale;"
+        }
+      ]
+    },
+    {
+      "path": "app/display/gimpdisplayshell-transform.c",
+      "sha256": "1532f024a9c23f673bbb6926fc8544cd8b40a5a09fdbf9184565e9e9520821fd",
+      "review": "All full forward/inverse coordinate and bounds APIs already apply rotate_transform/untransform; zoom/unzoom-only APIs intentionally operate before this matrix. Residual belongs in shared matrix, not duplicated in raw offset math.",
+      "uses": [
+        {
+          "line": 73,
+          "source": "  display_coords->x -= shell->offset_x;"
+        },
+        {
+          "line": 74,
+          "source": "  display_coords->y -= shell->offset_y;"
+        },
+        {
+          "line": 97,
+          "source": "  image_coords->x += shell->offset_x;"
+        },
+        {
+          "line": 98,
+          "source": "  image_coords->y += shell->offset_y;"
+        },
+        {
+          "line": 131,
+          "source": "  tx -= shell->offset_x;"
+        },
+        {
+          "line": 132,
+          "source": "  ty -= shell->offset_y;"
+        },
+        {
+          "line": 173,
+          "source": "      tx = SIGNED_ROUND (((gdouble) x + shell->offset_x) / shell->scale_x);"
+        },
+        {
+          "line": 174,
+          "source": "      ty = SIGNED_ROUND (((gdouble) y + shell->offset_y) / shell->scale_y);"
+        },
+        {
+          "line": 178,
+          "source": "      tx = ((gint64) x + shell->offset_x) / shell->scale_x;"
+        },
+        {
+          "line": 179,
+          "source": "      ty = ((gint64) y + shell->offset_y) / shell->scale_y;"
+        },
+        {
+          "line": 208,
+          "source": "  *nx = SCALEX (shell, x) - shell->offset_x;"
+        },
+        {
+          "line": 209,
+          "source": "  *ny = SCALEY (shell, y) - shell->offset_y;"
+        },
+        {
+          "line": 235,
+          "source": "  *nx = (x + shell->offset_x) / shell->scale_x;"
+        },
+        {
+          "line": 236,
+          "source": "  *ny = (y + shell->offset_y) / shell->scale_y;"
+        },
+        {
+          "line": 271,
+          "source": "      dest_segs[i].x1 = SCALEX (shell, x1) - shell->offset_x;"
+        },
+        {
+          "line": 272,
+          "source": "      dest_segs[i].x2 = SCALEX (shell, x2) - shell->offset_x;"
+        },
+        {
+          "line": 273,
+          "source": "      dest_segs[i].y1 = SCALEY (shell, y1) - shell->offset_y;"
+        },
+        {
+          "line": 274,
+          "source": "      dest_segs[i].y2 = SCALEY (shell, y2) - shell->offset_y;"
+        },
+        {
+          "line": 299,
+          "source": "  if (shell->rotate_transform)"
+        },
+        {
+          "line": 300,
+          "source": "    cairo_matrix_transform_point (shell->rotate_transform,"
+        },
+        {
+          "line": 324,
+          "source": "  if (shell->rotate_untransform)"
+        },
+        {
+          "line": 325,
+          "source": "    cairo_matrix_transform_point (shell->rotate_untransform,"
+        },
+        {
+          "line": 354,
+          "source": "  if (shell->rotate_transform)"
+        },
+        {
+          "line": 355,
+          "source": "    cairo_matrix_transform_point (shell->rotate_transform, &x, &y);"
+        },
+        {
+          "line": 390,
+          "source": "  if (shell->rotate_untransform)"
+        },
+        {
+          "line": 395,
+          "source": "      cairo_matrix_transform_point (shell->rotate_untransform, &fx, &fy);"
+        },
+        {
+          "line": 432,
+          "source": "  if (shell->rotate_transform)"
+        },
+        {
+          "line": 433,
+          "source": "    cairo_matrix_transform_point (shell->rotate_transform, nx, ny);"
+        },
+        {
+          "line": 462,
+          "source": "  if (shell->rotate_untransform)"
+        },
+        {
+          "line": 463,
+          "source": "    cairo_matrix_transform_point (shell->rotate_untransform, nx, ny);"
+        },
+        {
+          "line": 480,
+          "source": "  if (shell->rotate_transform)"
+        },
+        {
+          "line": 491,
+          "source": "      cairo_matrix_transform_point (shell->rotate_transform, &tx1, &ty1);"
+        },
+        {
+          "line": 492,
+          "source": "      cairo_matrix_transform_point (shell->rotate_transform, &tx2, &ty2);"
+        },
+        {
+          "line": 493,
+          "source": "      cairo_matrix_transform_point (shell->rotate_transform, &tx3, &ty3);"
+        },
+        {
+          "line": 494,
+          "source": "      cairo_matrix_transform_point (shell->rotate_transform, &tx4, &ty4);"
+        },
+        {
+          "line": 523,
+          "source": "  if (shell->rotate_untransform)"
+        },
+        {
+          "line": 534,
+          "source": "      cairo_matrix_transform_point (shell->rotate_untransform, &tx1, &ty1);"
+        },
+        {
+          "line": 535,
+          "source": "      cairo_matrix_transform_point (shell->rotate_untransform, &tx2, &ty2);"
+        },
+        {
+          "line": 536,
+          "source": "      cairo_matrix_transform_point (shell->rotate_untransform, &tx3, &ty3);"
+        },
+        {
+          "line": 537,
+          "source": "      cairo_matrix_transform_point (shell->rotate_untransform, &tx4, &ty4);"
+        },
+        {
+          "line": 576,
+          "source": "  display_coords->x -= shell->offset_x;"
+        },
+        {
+          "line": 577,
+          "source": "  display_coords->y -= shell->offset_y;"
+        },
+        {
+          "line": 579,
+          "source": "  if (shell->rotate_transform)"
+        },
+        {
+          "line": 580,
+          "source": "    cairo_matrix_transform_point (shell->rotate_transform,"
+        },
+        {
+          "line": 605,
+          "source": "  if (shell->rotate_untransform)"
+        },
+        {
+          "line": 606,
+          "source": "    cairo_matrix_transform_point (shell->rotate_untransform,"
+        },
+        {
+          "line": 610,
+          "source": "  image_coords->x += shell->offset_x;"
+        },
+        {
+          "line": 611,
+          "source": "  image_coords->y += shell->offset_y;"
+        },
+        {
+          "line": 652,
+          "source": "  tx -= shell->offset_x;"
+        },
+        {
+          "line": 653,
+          "source": "  ty -= shell->offset_y;"
+        },
+        {
+          "line": 655,
+          "source": "  if (shell->rotate_transform)"
+        },
+        {
+          "line": 660,
+          "source": "      cairo_matrix_transform_point (shell->rotate_transform, &fx, &fy);"
+        },
+        {
+          "line": 703,
+          "source": "  if (shell->rotate_untransform)"
+        },
+        {
+          "line": 708,
+          "source": "      cairo_matrix_transform_point (shell->rotate_untransform, &fx, &fy);"
+        },
+        {
+          "line": 716,
+          "source": "      tx = SIGNED_ROUND (((gdouble) x + shell->offset_x) / shell->scale_x);"
+        },
+        {
+          "line": 717,
+          "source": "      ty = SIGNED_ROUND (((gdouble) y + shell->offset_y) / shell->scale_y);"
+        },
+        {
+          "line": 721,
+          "source": "      tx = ((gint64) x + shell->offset_x) / shell->scale_x;"
+        },
+        {
+          "line": 722,
+          "source": "      ty = ((gint64) y + shell->offset_y) / shell->scale_y;"
+        },
+        {
+          "line": 751,
+          "source": "  *nx = SCALEX (shell, x) - shell->offset_x;"
+        },
+        {
+          "line": 752,
+          "source": "  *ny = SCALEY (shell, y) - shell->offset_y;"
+        },
+        {
+          "line": 754,
+          "source": "  if (shell->rotate_transform)"
+        },
+        {
+          "line": 755,
+          "source": "    cairo_matrix_transform_point (shell->rotate_transform, nx, ny);"
+        },
+        {
+          "line": 781,
+          "source": "  if (shell->rotate_untransform)"
+        },
+        {
+          "line": 782,
+          "source": "    cairo_matrix_transform_point (shell->rotate_untransform, &x, &y);"
+        },
+        {
+          "line": 784,
+          "source": "  *nx = (x + shell->offset_x) / shell->scale_x;"
+        },
+        {
+          "line": 785,
+          "source": "  *ny = (y + shell->offset_y) / shell->scale_y;"
+        },
+        {
+          "line": 805,
+          "source": "  if (shell->rotate_transform)"
+        },
+        {
+          "line": 846,
+          "source": "  if (shell->rotate_untransform)"
+        },
+        {
+          "line": 903,
+          "source": "  x1 = x1 * factor_x - shell->offset_x;"
+        },
+        {
+          "line": 904,
+          "source": "  y1 = y1 * factor_y - shell->offset_y;"
+        },
+        {
+          "line": 905,
+          "source": "  x2 = x2 * factor_x - shell->offset_x;"
+        },
+        {
+          "line": 906,
+          "source": "  y2 = y2 * factor_y - shell->offset_y;"
+        },
+        {
+          "line": 950,
+          "source": "  *nx1 = (*nx1 + shell->offset_x) * factor_x;"
+        },
+        {
+          "line": 951,
+          "source": "  *ny1 = (*ny1 + shell->offset_y) * factor_y;"
+        },
+        {
+          "line": 952,
+          "source": "  *nx2 = (*nx2 + shell->offset_x) * factor_x;"
+        },
+        {
+          "line": 953,
+          "source": "  *ny2 = (*ny2 + shell->offset_y) * factor_y;"
+        },
+        {
+          "line": 1020,
+          "source": "  *nx = shell->scale_x * x - shell->offset_x;"
+        },
+        {
+          "line": 1021,
+          "source": "  *ny = shell->scale_y * y - shell->offset_y;"
+        },
+        {
+          "line": 1023,
+          "source": "  if (shell->rotate_transform)"
+        },
+        {
+          "line": 1024,
+          "source": "    cairo_matrix_transform_point (shell->rotate_transform, nx, ny);"
+        }
+      ]
+    },
+    {
+      "path": "app/display/gimpdisplayshell.c",
+      "sha256": "a00ba4066f5e8ec8b034d9201013cba54407277018b6f9835546b5b5e15342bf",
+      "review": "Upright GTK overlay anchors use full transforms. Empty/fill lifecycle must clear residual; append state without changing existing integer types.",
+      "uses": [
+        {
+          "line": 921,
+          "source": "  g_clear_pointer (&shell->rotate_transform,   g_free);"
+        },
+        {
+          "line": 922,
+          "source": "  g_clear_pointer (&shell->rotate_untransform, g_free);"
+        }
+      ]
+    }
+  ]
+}

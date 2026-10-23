@@ -110,8 +110,8 @@ static void       gimp_display_shell_stop_scrolling           (GimpDisplayShell 
                                                                const GdkEvent    *event);
 static void       gimp_display_shell_handle_scrolling         (GimpDisplayShell  *shell,
                                                                GdkModifierType    state,
-                                                               gint               x,
-                                                               gint               y);
+                                                               gdouble            x,
+                                                               gdouble            y);
 
 static void       gimp_display_shell_rotate_gesture_maybe_get_state (GtkGestureRotate *gesture,
                                                                      GdkEventSequence *sequence,
@@ -469,9 +469,41 @@ gimp_display_shell_canvas_tool_events (GtkWidget        *canvas,
 
   g_return_val_if_fail (gtk_widget_get_realized (canvas), FALSE);
 
+  /* Reject non-finite/out-of-int device coordinates before any legacy/native
+   * narrowing or image-coordinate conversion. Invalid releases are ignored;
+   * the next valid initiating-button release still owns grab cleanup. */
+  if (event->type == GDK_BUTTON_PRESS || event->type == GDK_BUTTON_RELEASE ||
+      event->type == GDK_MOTION_NOTIFY)
+    {
+      gdouble x, y;
+      if (gdk_event_get_coords (event, &x, &y) &&
+          (! isfinite (x) || ! isfinite (y) ||
+           x < G_MININT || x > G_MAXINT || y < G_MININT || y > G_MAXINT))
+        return TRUE;
+    }
+
   /*  are we in destruction?  */
   if (! shell->display || ! gimp_display_get_shell (shell->display))
     return TRUE;
+
+  /* Rotated/image coordinates also feed gint-bounded canvas-item properties
+   * during focus/tool updates, before the action dispatch below. */
+  if (event->type == GDK_BUTTON_PRESS || event->type == GDK_BUTTON_RELEASE ||
+      event->type == GDK_MOTION_NOTIFY)
+    {
+      gdouble x, y, ux, uy;
+      if (gdk_event_get_coords (event, &x, &y))
+        {
+          gimp_display_shell_unrotate_xy_f (shell, x, y, &ux, &uy);
+          if (! isfinite (ux) || ! isfinite (uy) ||
+              ux < G_MININT || ux > G_MAXINT || uy < G_MININT || uy > G_MAXINT)
+            return TRUE;
+          gimp_display_shell_untransform_xy_f (shell, x, y, &ux, &uy);
+          if (! isfinite (ux) || ! isfinite (uy) ||
+              ux < G_MININT || ux > G_MAXINT || uy < G_MININT || uy > G_MAXINT)
+            return TRUE;
+        }
+    }
 
   /*  set the active display before doing any other canvas event processing  */
   if (gimp_display_shell_events (canvas, event, shell))
@@ -735,6 +767,15 @@ gimp_display_shell_canvas_tool_events (GtkWidget        *canvas,
               case GIMP_MODIFIER_ACTION_BRUSH_PIXEL_SIZE:
               case GIMP_MODIFIER_ACTION_BRUSH_RADIUS_PIXEL_SIZE:
               case GIMP_MODIFIER_ACTION_TOOL_OPACITY:
+                if (action == GIMP_MODIFIER_ACTION_PANNING &&
+                    shell->painter_navigation_inherited &&
+                    ! gimp_display_shell_painter_pan_begin (shell, bevent->x, bevent->y))
+                  {
+                    shell->mod_action = GIMP_MODIFIER_ACTION_NONE;
+                    shell->mod_action_button = 0;
+                    shell->painter_navigation_inherited = FALSE;
+                    return TRUE;
+                  }
                 gimp_display_shell_start_scrolling (shell, event, state,
                                                     bevent->x, bevent->y);
                 break;
@@ -1980,6 +2021,8 @@ gimp_display_shell_stop_scrolling (GimpDisplayShell *shell,
   shell->scroll_last_y     = 0;
   shell->rotate_drag_angle = 0.0;
   shell->painter_zoom_anchor = 0.0;
+  shell->painter_pan_start_x = 0.0;
+  shell->painter_pan_start_y = 0.0;
 
   /* We may have ungrabbed the pointer when space was released while
    * mouse was down, to be able to catch a GDK_BUTTON_RELEASE event.
@@ -1991,13 +2034,20 @@ gimp_display_shell_stop_scrolling (GimpDisplayShell *shell,
 static void
 gimp_display_shell_handle_scrolling (GimpDisplayShell *shell,
                                      GdkModifierType   state,
-                                     gint              x,
-                                     gint              y)
+                                     gdouble           x,
+                                     gdouble           y)
 {
   GimpModifierAction mod_action      = shell->mod_action;
   gboolean           constrain       = FALSE;
+
   gboolean           size_update_pos = TRUE;
   gdouble            size_multiplier = 1.0;
+
+  /* Keep the existing integer device policy for explicit/custom actions.
+   * Inherited pan alone needs the raw fractional motion coordinate. */
+  if (! (mod_action == GIMP_MODIFIER_ACTION_PANNING &&
+         shell->painter_navigation_inherited))
+    { x = (gint) x; y = (gint) y; }
 
   if (mod_action == GIMP_MODIFIER_ACTION_NONE && shell->space_release_pending)
     {
@@ -2129,9 +2179,12 @@ gimp_display_shell_handle_scrolling (GimpDisplayShell *shell,
         }
       break;
     case GIMP_MODIFIER_ACTION_PANNING:
-      gimp_display_shell_scroll (shell,
-                                 shell->scroll_last_x - x,
-                                 shell->scroll_last_y - y);
+      if (shell->painter_navigation_inherited)
+        gimp_display_shell_painter_pan_motion (shell, x, y);
+      else
+        gimp_display_shell_scroll (shell,
+                                   shell->scroll_last_x - x,
+                                   shell->scroll_last_y - y);
       break;
     case GIMP_MODIFIER_ACTION_LAYER_PICKING:
       /* Do nothing. We only pick the layer on click. */

@@ -1,0 +1,19 @@
+static void
+gimp_display_shell_start_scrolling (GimpDisplayShell *shell,
+                                    const GdkEvent   *event,
+                                    gint              x,
+                                    gint              y)
+{
+  g_return_if_fail (! shell->scrolling);
+
+  gimp_display_shell_pointer_grab (shell, event, GDK_POINTER_MOTION_MASK);
+
+  shell->scrolling      = TRUE;
+  shell->scroll_start_x = x;
+  shell->scroll_start_y = y;
+
+  shell->scroll_start_x += shell->offset_x;
+  shell->scroll_start_y += shell->offset_y;
+
+  gimp_display_shell_set_override_cursor (shell, GDK_FLEUR);
+}

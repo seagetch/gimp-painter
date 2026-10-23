@@ -1,0 +1,60 @@
+{
+  "status": "PASS",
+  "controls": [
+    {
+      "name": "valid receipt",
+      "expected": "PASS",
+      "observed": "PASS"
+    },
+    {
+      "name": "wrong portrait",
+      "expected": "REJECT",
+      "observed": "REJECT"
+    },
+    {
+      "name": "oncanvas disabled",
+      "expected": "REJECT",
+      "observed": "REJECT"
+    },
+    {
+      "name": "assertions disabled",
+      "expected": "REJECT",
+      "observed": "REJECT"
+    },
+    {
+      "name": "inflated native cases",
+      "expected": "REJECT",
+      "observed": "REJECT"
+    },
+    {
+      "name": "oracle point count",
+      "expected": "REJECT",
+      "observed": "REJECT"
+    },
+    {
+      "name": "failed receipt with matching digest",
+      "expected": "REJECT",
+      "observed": "REJECT"
+    },
+    {
+      "name": "missing transition with matching digest",
+      "expected": "REJECT",
+      "observed": "REJECT"
+    },
+    {
+      "name": "fake expected red with matching digest",
+      "expected": "REJECT",
+      "observed": "REJECT"
+    },
+    {
+      "name": "landscape screenshot with matching digest",
+      "expected": "REJECT",
+      "observed": "REJECT"
+    },
+    {
+      "name": "changed production source",
+      "expected": "REJECT",
+      "observed": "REJECT"
+    }
+  ]
+}

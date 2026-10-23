@@ -1,0 +1,145 @@
+{
+  "scope": "Tested-source binding for the preimplementation audit. Generic review text describes coordinate-layer ownership; concrete implemented reset/render policies are in README and contract. Not every item subtype has separate runtime coverage.",
+  "files": [
+    {
+      "path": "app/display/gimpcanvasbufferpreview.c",
+      "tested_source_sha256": "6ec1a5a66d5e158593071bbae8b43e5cbcd2d137bdd0ae147945f468692feae5",
+      "preimplementation_uses": 2,
+      "disposition": "Canvas item zoom-only coordinates are intentionally before shared outer cairo matrix; residual must not be double-added here. Item damage routes through shell rotate_bounds. No source edit required."
+    },
+    {
+      "path": "app/display/gimpcanvascanvasboundary.c",
+      "tested_source_sha256": "113beec2719779bb30cfd26428338ced46b7c91c27c84b95ba835f78db962c7d",
+      "preimplementation_uses": 1,
+      "disposition": "Canvas item zoom-only coordinates are intentionally before shared outer cairo matrix; residual must not be double-added here. Item damage routes through shell rotate_bounds. No source edit required."
+    },
+    {
+      "path": "app/display/gimpcanvasgrid.c",
+      "tested_source_sha256": "cc9fd1267aa6e717a2ec8198dc2bac2e2f6112548ab42b56bddbdf7f7c865bd0",
+      "preimplementation_uses": 3,
+      "disposition": "Canvas item zoom-only coordinates are intentionally before shared outer cairo matrix; residual must not be double-added here. Item damage routes through shell rotate_bounds. No source edit required."
+    },
+    {
+      "path": "app/display/gimpcanvasguide.c",
+      "tested_source_sha256": "8d27bff8e536c96d2143afacf9dccda20cc677a7e52968b455defed589788255",
+      "preimplementation_uses": 1,
+      "disposition": "Canvas item zoom-only coordinates are intentionally before shared outer cairo matrix; residual must not be double-added here. Item damage routes through shell rotate_bounds. No source edit required."
+    },
+    {
+      "path": "app/display/gimpcanvasitem.c",
+      "tested_source_sha256": "9ec1528cd0fa350d3126d9e3863069f7fdb5dab5484ceb9f482ce6a8254c9d57",
+      "preimplementation_uses": 1,
+      "disposition": "Canvas item zoom-only coordinates are intentionally before shared outer cairo matrix; residual must not be double-added here. Item damage routes through shell rotate_bounds. No source edit required."
+    },
+    {
+      "path": "app/display/gimpcanvaslayerboundary.c",
+      "tested_source_sha256": "75fff922c069428039e0f37bfa7efe21b9b505ec9d75e928c1a335a49cd90196",
+      "preimplementation_uses": 1,
+      "disposition": "Canvas item zoom-only coordinates are intentionally before shared outer cairo matrix; residual must not be double-added here. Item damage routes through shell rotate_bounds. No source edit required."
+    },
+    {
+      "path": "app/display/gimpcanvaspassepartout.c",
+      "tested_source_sha256": "944fd097b3a7f61225fe65965e92b3979a3a7aa224872b47a4885df6da74e41a",
+      "preimplementation_uses": 4,
+      "disposition": "Canvas item zoom-only coordinates are intentionally before shared outer cairo matrix; residual must not be double-added here. Item damage routes through shell rotate_bounds. No source edit required."
+    },
+    {
+      "path": "app/display/gimpcanvastransformpreview.c",
+      "tested_source_sha256": "a05eeefff1a8007820335e75cbb3fdeb3cb51b9ae3ef4d521881a9f1bac31d84",
+      "preimplementation_uses": 2,
+      "disposition": "Canvas item zoom-only coordinates are intentionally before shared outer cairo matrix; residual must not be double-added here. Item damage routes through shell rotate_bounds. No source edit required."
+    },
+    {
+      "path": "app/display/gimpdisplayshell-callbacks.c",
+      "tested_source_sha256": "245091ed6f08a36e470090bf7141d8ad04520014516a61bb4071796c66588461",
+      "preimplementation_uses": 14,
+      "disposition": "Direct zoom-on-resize writes reset residual; normal resize/clamp updates transform."
+    },
+    {
+      "path": "app/display/gimpdisplayshell-draw.c",
+      "tested_source_sha256": "80e9a13121c0abf9d3fff5502abb5cebbdd9ea524a3c910d2c1947fac661b4f3",
+      "preimplementation_uses": 4,
+      "disposition": "Canvas draw applies common matrix; verify actual cairo CTM/raster."
+    },
+    {
+      "path": "app/display/gimpdisplayshell-handlers.c",
+      "tested_source_sha256": "84655fc3ea029bbd8c62d93192f47aa8071816e5fb3c3501a786e14e40f06011",
+      "preimplementation_uses": 2,
+      "disposition": "Image-origin changes call explicit scroll_set_offset; residual deliberately reset there as for any native integer reposition."
+    },
+    {
+      "path": "app/display/gimpdisplayshell-items.c",
+      "tested_source_sha256": "f0f210287e4e0c216a0fc78b83144f2b2dbb1a444cc6856478473b62fe211e09",
+      "preimplementation_uses": 1,
+      "disposition": "Item damage converts every region rectangle through rotate_bounds when matrix exists. Read only: owned by another task."
+    },
+    {
+      "path": "app/display/gimpdisplayshell-render.c",
+      "tested_source_sha256": "25758a52552f03f4dea85154c025d17d795406b08f6263e58fe7e30ab8df7c66",
+      "preimplementation_uses": 3,
+      "disposition": "Raster drawing applies common matrix; fractional changes must invalidate/expose full cache, not translate existing integer cache."
+    },
+    {
+      "path": "app/display/gimpdisplayshell-rotate.c",
+      "tested_source_sha256": "e423c34a19f8374c7b0973bd2bf1dcaaf179f3f0f399438a5b4643a767a04a34",
+      "preimplementation_uses": 15,
+      "disposition": "Append device translation after ordinary rotate matrix; always create matrix for nonzero residual, even angle0. Existing center save/restore passes through inverse."
+    },
+    {
+      "path": "app/display/gimpdisplayshell-rulers.c",
+      "tested_source_sha256": "e0841d2237759618760b90f8bee1c4ff9335326f86316ca2ffa58174d933a222",
+      "preimplementation_uses": 2,
+      "disposition": "Uses rotated image bounds and rotated scale; fractional bounds need independent ruler/landmark check."
+    },
+    {
+      "path": "app/display/gimpdisplayshell-scale.c",
+      "tested_source_sha256": "e4ad23df7c8fbb5e13c2b16cb438fee232e0b996aac7816939bf8f9635214b5d",
+      "preimplementation_uses": 30,
+      "disposition": "Explicit scale_by_values resets fractional origin after deriving focus; same integer values must not bypass reset. dot-for-dot/resolution update must clear or rescale consistently."
+    },
+    {
+      "path": "app/display/gimpdisplayshell-scroll.c",
+      "tested_source_sha256": "b6f6e9e28c1eb15eed8be6c28fa75d4da28df4c0e983d7537004876f3c4f97f8",
+      "preimplementation_uses": 29,
+      "disposition": "Integer pan preserves residual as a constant translation; inherited fractional pan bypasses rotated modern clamp for exact old axis clamp. Explicit set-offset resets residual even at equal integer offsets. Native clamp clears clipped residual axis. Empty image clears both."
+    },
+    {
+      "path": "app/display/gimpdisplayshell-scrollbars.c",
+      "tested_source_sha256": "cedb6867e91885cb1ef68392111dc979753d0380f4334e9377192e125fa691d7",
+      "preimplementation_uses": 8,
+      "disposition": "Integer adjustment interface stays integer; exact fractional view is represented by matrix. Track boundary steppers separately for legacy clamp."
+    },
+    {
+      "path": "app/display/gimpdisplayshell-selection.c",
+      "tested_source_sha256": "15e4853f93644aa95133c2f47c00d68854a9be9b1e68eb189566cd2168b64d77",
+      "preimplementation_uses": 5,
+      "disposition": "Selection drawing and bounds apply common matrix, including zero-angle residual matrix; verify selection raster."
+    },
+    {
+      "path": "app/display/gimpdisplayshell-title.c",
+      "tested_source_sha256": "ab0235a28b007fad2aa7aa9383eda0947cee3317de5f14cd04a8ce6790fd48cc",
+      "preimplementation_uses": 2,
+      "disposition": "Percent offset title is display metadata, not coordinate transform; include residual when reporting view position."
+    },
+    {
+      "path": "app/display/gimpdisplayshell-transform.c",
+      "tested_source_sha256": "1532f024a9c23f673bbb6926fc8544cd8b40a5a09fdbf9184565e9e9520821fd",
+      "preimplementation_uses": 80,
+      "disposition": "All full forward/inverse coordinate and bounds APIs already apply rotate_transform/untransform; zoom/unzoom-only APIs intentionally operate before this matrix. Residual belongs in shared matrix, not duplicated in raw offset math."
+    },
+    {
+      "path": "app/display/gimpdisplayshell.c",
+      "tested_source_sha256": "bf1e75cc5a81716fd93a995824d700dd3a03362a116b49f434db7aa172c8e0f4",
+      "preimplementation_uses": 2,
+      "disposition": "Upright GTK overlay anchors use full transforms. Empty/fill lifecycle must clear residual; append state without changing existing integer types."
+    }
+  ],
+  "implemented_policies": {
+    "shared_matrix": "Fraction appended in rotate_update_transform including zero angle; common inverse generated from same matrix",
+    "render_damage": "Inherited fractional motion fully invalidates raster cache and emits scrolled for upright anchors. Native integer incremental scroll fully invalidates if clipping changes fraction. Image-space items and selection share outer matrix; no duplicate fraction in pre-matrix zoom helpers.",
+    "reset": "Explicit set-offset (including same integer value), scale-by-values, scale grid change, zoom-on-resize, empty shell clear fraction. Pan release clears anchors only.",
+    "native_integer_ui": "Scrollbar values remain native integer offsets. Rulers consume existing integer-rounded rotated bounds. Title offset formatter includes effective fraction. Not exact old scrollbar/ruler widget parity.",
+    "input": "Finite raw, unrotated and image-coordinate ranges checked before native processing. Pan begin checks Cairo inversion and finite transformed press/origin before narrowing.",
+    "runtime_coverage": "1920 motions /5760 point and inverse pairs; bounded actual raster ROI/item CTM/upright GTK anchor tests, native transition/custom/space/input cases. Not every canvas item subtype independently rendered."
+  }
+}

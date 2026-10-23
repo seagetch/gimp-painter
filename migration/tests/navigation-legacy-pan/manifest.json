@@ -1,0 +1,57 @@
+{
+  "base_commit": "ce40ac4cffa5b6dba48cd9100303c3c94653a5bc",
+  "scope": "Only explicitly owned changes applied to this isolated committed base; not current unrelated worktree build",
+  "source_sha256": {
+    "app/display/gimpdisplayshell-callbacks.c": "245091ed6f08a36e470090bf7141d8ad04520014516a61bb4071796c66588461",
+    "app/display/gimpdisplayshell-rotate.c": "e423c34a19f8374c7b0973bd2bf1dcaaf179f3f0f399438a5b4643a767a04a34",
+    "app/display/gimpdisplayshell-scale.c": "e4ad23df7c8fbb5e13c2b16cb438fee232e0b996aac7816939bf8f9635214b5d",
+    "app/display/gimpdisplayshell-scroll.c": "b6f6e9e28c1eb15eed8be6c28fa75d4da28df4c0e983d7537004876f3c4f97f8",
+    "app/display/gimpdisplayshell-scroll.h": "ab7da2ff5a5a460a7d2e4b11e881cf82ff05589e7ecb8843329ef7ba244f7950",
+    "app/display/gimpdisplayshell-title.c": "ab0235a28b007fad2aa7aa9383eda0947cee3317de5f14cd04a8ce6790fd48cc",
+    "app/display/gimpdisplayshell-tool-events.c": "32866e95a846d6cc4a65446f17341cbd530e19c530dd38167bb64985ca12d560",
+    "app/display/gimpdisplayshell.c": "bf1e75cc5a81716fd93a995824d700dd3a03362a116b49f434db7aa172c8e0f4",
+    "app/display/gimpdisplayshell.h": "3f542c6021ecde3940426a0eb5d80460569f83bed762968272d8fb42652a6f4f",
+    "app/tests/test-painter-navigation-events.c": "2fd5f87cc7a86ff2a83d45d107073c8f32e9696a974103911978e6c92c10e25c",
+    "app/tests/test-painter-navigation-legacy-pan.inc": "bd793031ed951565ba544e0f12401e48f4f7be2c1d446d364db4058f81e9bcae",
+    "migration/fixtures/legacy-pan/gimp_display_shell_device_to_image_coords.txt": "d9461c652b12225f3ba7e6ddee2cf6465dbb2ab73a44296748441de39d0c8fb1",
+    "migration/fixtures/legacy-pan/gimp_display_shell_scroll_clamp_offsets.txt": "3a2e700d9c4240f1ab559646f18bf4898245140ca945df75aa0b023f8126c5c8",
+    "migration/fixtures/legacy-pan/gimp_display_shell_set_cairo_rotate.txt": "a13467967736451da0f22756587907727b4484e8475da10065fdfe0f19e362f2",
+    "migration/fixtures/legacy-pan/gimp_display_shell_start_scrolling.txt": "1091a7bd0ab7c8d36be5ea52921cbe4ccbf607f0161c4b15c26fb4901bb33696",
+    "migration/fixtures/legacy-pan/motion-suffix.txt": "c30ce3a401716f102779fbadd7a624b83184ca7360e17847c9a140d70a06617f",
+    "migration/fixtures/legacy-pan/oracle.inc": "d86d5d9777162bdcbfd73822b081240b24904d1283288055e48d1f591e7bc06c",
+    "migration/fixtures/legacy-pan/source-manifest.json": "3e579a0a036a1c66edb19ee42c50a795be34ddc23fcd1fb4ec807baf371c9801"
+  },
+  "build_policy": {
+    "optimization": "2",
+    "debug": false,
+    "b_ndebug": false,
+    "painter-http": "enabled",
+    "auto_features": "disabled",
+    "headless-tests": "disabled",
+    "libunwind": false
+  },
+  "native_cases": 35,
+  "new_cases": 4,
+  "legacy_motion_checks": 1920,
+  "legacy_point_pairs": 5760,
+  "xvfb": {
+    "width": 1080,
+    "height": 1920,
+    "depth": 24,
+    "authenticated": true
+  },
+  "new_ui_oncanvas": true,
+  "original_render_environment_unchanged": true,
+  "sanitizer_status": "passed",
+  "artifact_sha256": {
+    "build-header-routes.json": "2751ca95ae18c3cc7646c607af25f1c4660301cc1ef151bb0ce21243f932f628",
+    "native.json": "87cae0ff5d70a8adef48f27c2cbf1f25848032ded7e3d1c5d6eca6c87bdd02b7",
+    "sanitizer.json": "8b90f3257a14945e676740128ce60f989ed64603db38fa97ee8591bd9665c3e2",
+    "sanitizer-build-policy.json": "7abc9df94b209573ffc1ebcd77aad235c61f54620582135b04d42c709daab71e",
+    "related.json": "41c65618c8ddb0c6e3a0c70f9fc52273d29382e66b86f7cbd5587de60590f99a",
+    "expected-red.json": "d08c67d0f87b6d4abdcdab797d125838ab7d4b220e8748f2a89dd23ac3438710",
+    "expected-red.log": "41f05182565afeec77322224299137aca7d7a5f303ed29a42b6ad449bd21485b",
+    "portrait-oncanvas-pan-m0.png": "1e0d9807220994537e6f0a03f2a984489d0763a2cff7e984eff6507a47fb3a7e",
+    "portrait-oncanvas-pan-m1.png": "c56f7d498a9690686d72d1e6bc59198895b3fc4830ed319af704e9e8537676af"
+  }
+}
