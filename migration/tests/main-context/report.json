@@ -1,0 +1,73 @@
+{
+  "results": [
+    {
+      "variant": "native",
+      "exit_code": 0,
+      "passed": 1,
+      "binary_sha256": "2cb9db43fc03af1cd8bea10c6aebd32f957252852374a28d95d6a2976f558f6d"
+    },
+    {
+      "variant": "sanitized",
+      "exit_code": 0,
+      "passed": 1,
+      "binary_sha256": "83d65c79b2e5d1df34d3e356a83ab5f77497b0b575d01b911da5fc13b3a0efdb"
+    }
+  ],
+  "commands": [
+    [
+      "c++",
+      "-std=c++14",
+      "-O1",
+      "-g",
+      "-fno-rtti",
+      "-fexceptions",
+      "-I/workspace/scratch/5b5281e79681/gimp-painter-port-active",
+      "/workspace/scratch/5b5281e79681/gimp-painter-port-active/migration/tests/main-context/owner-context.cpp",
+      "/workspace/scratch/5b5281e79681/gimp-painter-port-active/app/painter/binding-store.cpp",
+      "/workspace/scratch/5b5281e79681/gimp-painter-port-active/app/painter/gimp-painter-binding.cpp",
+      "/workspace/scratch/5b5281e79681/gimp-painter-port-active/app/painter/gimp-painter-error.cpp",
+      "-I/workspace/scratch/5b5281e79681/gimp-native-restore-20261009/deps/root/usr/include/glib-2.0",
+      "-I/workspace/scratch/5b5281e79681/gimp-native-restore-20261009/deps/root/usr/lib/x86_64-linux-gnu/glib-2.0/include",
+      "-I/workspace/scratch/5b5281e79681/gimp-native-restore-20261009/deps/root/usr/include/sysprof-6",
+      "-pthread",
+      "-lgobject-2.0",
+      "-lglib-2.0",
+      "-pthread",
+      "-o",
+      "/workspace/scratch/5b5281e79681/main-context-05012-verification/owner-context-native"
+    ],
+    [
+      "c++",
+      "-std=c++14",
+      "-O1",
+      "-g",
+      "-fno-rtti",
+      "-fexceptions",
+      "-I/workspace/scratch/5b5281e79681/gimp-painter-port-active",
+      "/workspace/scratch/5b5281e79681/gimp-painter-port-active/migration/tests/main-context/owner-context.cpp",
+      "/workspace/scratch/5b5281e79681/gimp-painter-port-active/app/painter/binding-store.cpp",
+      "/workspace/scratch/5b5281e79681/gimp-painter-port-active/app/painter/gimp-painter-binding.cpp",
+      "/workspace/scratch/5b5281e79681/gimp-painter-port-active/app/painter/gimp-painter-error.cpp",
+      "-fsanitize=address,undefined",
+      "-fno-sanitize=vptr",
+      "-fno-omit-frame-pointer",
+      "-I/workspace/scratch/5b5281e79681/gimp-native-restore-20261009/deps/root/usr/include/glib-2.0",
+      "-I/workspace/scratch/5b5281e79681/gimp-native-restore-20261009/deps/root/usr/lib/x86_64-linux-gnu/glib-2.0/include",
+      "-I/workspace/scratch/5b5281e79681/gimp-native-restore-20261009/deps/root/usr/include/sysprof-6",
+      "-pthread",
+      "-lgobject-2.0",
+      "-lglib-2.0",
+      "-pthread",
+      "-o",
+      "/workspace/scratch/5b5281e79681/main-context-05012-verification/owner-context-sanitized"
+    ]
+  ],
+  "source_sha256": {
+    "migration/tests/main-context/owner-context.cpp": "9dba62b16229ac841e99c3046a313abd6010180dfa695e2b80efe34f387a6585",
+    "app/painter/binding-store.cpp": "c69d65c22f26e6be8f6df69765cd30f7bbbd32b46b0eb847e9f6524b41c2b557",
+    "app/painter/gimp-painter-binding.cpp": "22aca4f9e467e16b86f2cbeec431d7d069fc552c98fad985db770720fcf876fd",
+    "app/painter/gimp-painter-error.cpp": "14bc510a2c3721894854b871402c7c95caa94d6559ab79731c7eb4ee76d83cf3"
+  },
+  "LSan": false,
+  "vptr": false
+}

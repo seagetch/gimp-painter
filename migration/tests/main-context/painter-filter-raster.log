@@ -1,0 +1,13 @@
+TAP version 14
+# random seed: R02S281747bb6e70f1e25933a76ed8096dfe
+1..7
+# Start of filter-raster tests
+ok 1 /filter-raster/available_capacity_is_advisory
+ok 2 /filter-raster/native_bytes_and_cleanup
+ok 3 /filter-raster/large_sparse_offset
+ok 4 /filter-raster/invalid_access_and_unwritten_read
+ok 5 /filter-raster/worker_affinity
+ok 6 /filter-raster/tiled_transpose_and_roundtrip
+# slow test /filter-raster/tiled_transpose_and_roundtrip executed in 0.74 secs
+ok 7 /filter-raster/cancelled_or_failed_output_stays_private
+# End of filter-raster tests

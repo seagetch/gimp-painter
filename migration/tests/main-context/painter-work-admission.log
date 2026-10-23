@@ -1,0 +1,18 @@
+TAP version 14
+# random seed: R02S7cff958129fe08aa8f12042ea5b4a3ea
+1..13
+# Start of work-admission tests
+ok 1 /work-admission/fifo_and_jobs
+ok 2 /work-admission/byte_limit_and_no_overtaking
+ok 3 /work-admission/cancelled_requests
+ok 4 /work-admission/repeated_edits_do_not_accumulate_queue_nodes
+ok 5 /work-admission/releases_on_worker
+ok 6 /work-admission/owner_can_close_without_waiting
+ok 7 /work-admission/moves_release_exactly_once
+ok 8 /work-admission/invalid_limits_and_requests
+ok 9 /work-admission/wrong_thread_is_rejected
+ok 10 /work-admission/spill_limits_and_fifo
+ok 11 /work-admission/lowered_limits_preserve_live_leases
+ok 12 /work-admission/spill_uint64_accounting
+ok 13 /work-admission/close_keeps_only_existing_reservations
+# End of work-admission tests

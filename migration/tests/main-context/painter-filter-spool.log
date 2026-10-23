@@ -1,0 +1,16 @@
+TAP version 14
+# random seed: R02S82a91dc1ecbca8209ebac963edcc8e85
+1..11
+# Start of filter-spool tests
+ok 1 /filter-spool/admitted_extent_quota_and_scratch_reuse
+ok 2 /filter-spool/filesystem_capacity_refusal_releases_lease
+ok 3 /filter-spool/roundtrip_and_output_geometry
+ok 4 /filter-spool/missing_directory_fails_without_start
+ok 5 /filter-spool/cancellation_while_collecting
+ok 6 /filter-spool/cancellation_while_output_is_full
+ok 7 /filter-spool/close_keeps_worker_lease_until_completion
+ok 8 /filter-spool/result_read_failure_never_certifies_partial_output
+ok 9 /filter-spool/owner_api_thread_guards
+ok 10 /filter-spool/processing_exception_is_reported
+ok 11 /filter-spool/invalid_input_is_transactional
+# End of filter-spool tests

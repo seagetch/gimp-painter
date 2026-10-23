@@ -1,0 +1,10 @@
+TAP version 14
+# random seed: R02S26d8aac7432eea4f4ffbe23ae40bc6e8
+1..5
+# Start of owner-gates tests
+ok 1 /owner-gates/bounded
+ok 2 /owner-gates/invalidation-reentry
+ok 3 /owner-gates/close-and-failure
+ok 4 /owner-gates/blocked-exporter-and-admission
+ok 5 /owner-gates/stable-capture-and-plain-context
+# End of owner-gates tests
