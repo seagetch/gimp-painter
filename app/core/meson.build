@@ -262,6 +262,7 @@ libappcore_sources = [
   'gimptoolpreset-load.c',
   'gimptoolpreset-save.c',
   'gimptoolpreset.c',
+  'gimpjsonresource.c',
   'gimplayerpreset.c',
   'gimplayerpreset-apply.cpp',
   'gimptreehandler.c',

@@ -50747,7 +50747,7 @@
       "saved_name": "$.*",
       "native_type": "arbitrary recursive JsonNode member/value",
       "legacy_type": "arbitrary recursive JsonNode member/value",
-      "owner": "GimpLayerPreset.root (native); GimpJsonResource.root (legacy)",
+      "owner": "GimpJsonResource private root, inherited by GimpLayerPreset (native); GimpJsonResource.root (legacy)",
       "default": "New native object starts with version1, source-layer.type any, replacement-layer empty array; legacy JSON object retains the loaded root without rebuilding.",
       "absence": "Unknown or absent members are not synthesized except native root.name during save.",
       "flags": "Complete JSON tree saved; only root.name is synchronized from resource name on native save. Apply interprets the paths below; retention does not imply successful application.",
@@ -50767,10 +50767,10 @@
       ],
       "evidence": [
         {
-          "path": "app/core/gimplayerpreset.c",
+          "path": "app/core/gimpjsonresource.c",
           "revision": "native",
-          "anchor": "preset->root = copy;",
-          "expected": "  preset->root = copy;"
+          "anchor": "private->root = owned;",
+          "expected": "  private->root = owned;"
         },
         {
           "path": "app/core/gimplayerpreset.c",
@@ -50809,7 +50809,7 @@
       "saved_name": "name",
       "native_type": "JSON string synchronized from GimpObject name",
       "legacy_type": "JSON string, name read from root but writer emits original root",
-      "owner": "GimpLayerPreset.root (native); GimpJsonResource.root (legacy)",
+      "owner": "GimpJsonResource private root, inherited by GimpLayerPreset (native); GimpJsonResource.root (legacy)",
       "default": "Native load begins with file basename; string name overrides. Native save sets root.name to current non-NULL resource name. Legacy reads string name if present.",
       "absence": "Native load keeps basename for missing/non-string name; legacy does not override initial resource name.",
       "flags": "Complete JSON tree saved; only root.name is synchronized from resource name on native save. Apply interprets the paths below; retention does not imply successful application.",
@@ -50829,10 +50829,10 @@
       ],
       "evidence": [
         {
-          "path": "app/core/gimplayerpreset.c",
+          "path": "app/core/gimpjsonresource.c",
           "revision": "native",
-          "anchor": "preset->root = copy;",
-          "expected": "  preset->root = copy;"
+          "anchor": "private->root = owned;",
+          "expected": "  private->root = owned;"
         },
         {
           "path": "app/core/gimplayerpreset.c",
@@ -50877,7 +50877,7 @@
       "saved_name": "version",
       "native_type": "JSON finite integral gint exactly1 for apply",
       "legacy_type": "Opaque JSON scalar retained; legacy applier does not inspect version",
-      "owner": "GimpLayerPreset.root (native); GimpJsonResource.root (legacy)",
+      "owner": "GimpJsonResource private root, inherited by GimpLayerPreset (native); GimpJsonResource.root (legacy)",
       "default": "Native new root1; loaded value is never replaced.",
       "absence": "Native apply fails missing/NULL/nonintegral/other version; legacy applies without a version gate.",
       "flags": "Complete JSON tree saved; only root.name is synchronized from resource name on native save. Apply interprets the paths below; retention does not imply successful application.",
@@ -50897,10 +50897,10 @@
       ],
       "evidence": [
         {
-          "path": "app/core/gimplayerpreset.c",
+          "path": "app/core/gimpjsonresource.c",
           "revision": "native",
-          "anchor": "preset->root = copy;",
-          "expected": "  preset->root = copy;"
+          "anchor": "private->root = owned;",
+          "expected": "  private->root = owned;"
         },
         {
           "path": "app/core/gimplayerpreset.c",
@@ -50946,7 +50946,7 @@
       "saved_name": "source-layer",
       "native_type": "JSON object",
       "legacy_type": "JSON object",
-      "owner": "GimpLayerPreset.root (native); GimpJsonResource.root (legacy)",
+      "owner": "GimpJsonResource private root, inherited by GimpLayerPreset (native); GimpJsonResource.root (legacy)",
       "default": "Native new root {type:any}.",
       "absence": "Missing/non-object rejects source match in both revisions.",
       "flags": "Complete JSON tree saved; only root.name is synchronized from resource name on native save. Apply interprets the paths below; retention does not imply successful application.",
@@ -50966,10 +50966,10 @@
       ],
       "evidence": [
         {
-          "path": "app/core/gimplayerpreset.c",
+          "path": "app/core/gimpjsonresource.c",
           "revision": "native",
-          "anchor": "preset->root = copy;",
-          "expected": "  preset->root = copy;"
+          "anchor": "private->root = owned;",
+          "expected": "  private->root = owned;"
         },
         {
           "path": "app/core/gimplayerpreset.c",
@@ -51006,7 +51006,7 @@
         ],
         [
           "native",
-          "preset->root",
+          "root.get ()",
           "source-layer"
         ],
         [
@@ -51025,7 +51025,7 @@
       "saved_name": "source-layer.type",
       "native_type": "JSON string: any/normal/group/clone/filter",
       "legacy_type": "JSON string: any/normal/group/clone/filter",
-      "owner": "GimpLayerPreset.root (native); GimpJsonResource.root (legacy)",
+      "owner": "GimpJsonResource private root, inherited by GimpLayerPreset (native); GimpJsonResource.root (legacy)",
       "default": "Native missing or null string fallback any; legacy absence imposes no type restriction.",
       "absence": "Native any fallback; legacy loops only present keys.",
       "flags": "Complete JSON tree saved; only root.name is synchronized from resource name on native save. Apply interprets the paths below; retention does not imply successful application.",
@@ -51045,10 +51045,10 @@
       ],
       "evidence": [
         {
-          "path": "app/core/gimplayerpreset.c",
+          "path": "app/core/gimpjsonresource.c",
           "revision": "native",
-          "anchor": "preset->root = copy;",
-          "expected": "  preset->root = copy;"
+          "anchor": "private->root = owned;",
+          "expected": "  private->root = owned;"
         },
         {
           "path": "app/core/gimplayerpreset.c",
@@ -51099,7 +51099,7 @@
       "saved_name": "source-layer.alpha",
       "native_type": "JSON boolean",
       "legacy_type": "JSON boolean coercion by legacy JSON::INode",
-      "owner": "GimpLayerPreset.root (native); GimpJsonResource.root (legacy)",
+      "owner": "GimpJsonResource private root, inherited by GimpLayerPreset (native); GimpJsonResource.root (legacy)",
       "default": "No restriction when absent.",
       "absence": "Native requires boolean and compares source alpha; legacy only checks when key exists.",
       "flags": "Complete JSON tree saved; only root.name is synchronized from resource name on native save. Apply interprets the paths below; retention does not imply successful application.",
@@ -51119,10 +51119,10 @@
       ],
       "evidence": [
         {
-          "path": "app/core/gimplayerpreset.c",
+          "path": "app/core/gimpjsonresource.c",
           "revision": "native",
-          "anchor": "preset->root = copy;",
-          "expected": "  preset->root = copy;"
+          "anchor": "private->root = owned;",
+          "expected": "  private->root = owned;"
         },
         {
           "path": "app/core/gimplayerpreset.c",
@@ -51173,7 +51173,7 @@
       "saved_name": "replacement-layer",
       "native_type": "JSON array of layer objects",
       "legacy_type": "JSON array of layer objects",
-      "owner": "GimpLayerPreset.root (native); GimpJsonResource.root (legacy)",
+      "owner": "GimpJsonResource private root, inherited by GimpLayerPreset (native); GimpJsonResource.root (legacy)",
       "default": "Native new root empty array.",
       "absence": "Native missing/non-array fails; legacy uses traverse on supplied array.",
       "flags": "Complete JSON tree saved; only root.name is synchronized from resource name on native save. Apply interprets the paths below; retention does not imply successful application.",
@@ -51193,10 +51193,10 @@
       ],
       "evidence": [
         {
-          "path": "app/core/gimplayerpreset.c",
+          "path": "app/core/gimpjsonresource.c",
           "revision": "native",
-          "anchor": "preset->root = copy;",
-          "expected": "  preset->root = copy;"
+          "anchor": "private->root = owned;",
+          "expected": "  private->root = owned;"
         },
         {
           "path": "app/core/gimplayerpreset.c",
@@ -51253,7 +51253,7 @@
       "saved_name": "replacement-layer[].target",
       "native_type": "JSON string new/source",
       "legacy_type": "JSON string new/source",
-      "owner": "GimpLayerPreset.root (native); GimpJsonResource.root (legacy)",
+      "owner": "GimpJsonResource private root, inherited by GimpLayerPreset (native); GimpJsonResource.root (legacy)",
       "default": "Native missing/null new; legacy null defaults new via target branch.",
       "absence": "Unknown non-null target fails native; legacy creates no target.",
       "flags": "Complete JSON tree saved; only root.name is synchronized from resource name on native save. Apply interprets the paths below; retention does not imply successful application.",
@@ -51273,10 +51273,10 @@
       ],
       "evidence": [
         {
-          "path": "app/core/gimplayerpreset.c",
+          "path": "app/core/gimpjsonresource.c",
           "revision": "native",
-          "anchor": "preset->root = copy;",
-          "expected": "  preset->root = copy;"
+          "anchor": "private->root = owned;",
+          "expected": "  private->root = owned;"
         },
         {
           "path": "app/core/gimplayerpreset.c",
@@ -51332,7 +51332,7 @@
       "saved_name": "replacement-layer[].type",
       "native_type": "JSON string normal/group/clone/filter",
       "legacy_type": "JSON string normal/group/clone/filter",
-      "owner": "GimpLayerPreset.root (native); GimpJsonResource.root (legacy)",
+      "owner": "GimpJsonResource private root, inherited by GimpLayerPreset (native); GimpJsonResource.root (legacy)",
       "default": "Native missing/null normal; legacy null defaults normal.",
       "absence": "Only new target uses type for creation.",
       "flags": "Complete JSON tree saved; only root.name is synchronized from resource name on native save. Apply interprets the paths below; retention does not imply successful application.",
@@ -51352,10 +51352,10 @@
       ],
       "evidence": [
         {
-          "path": "app/core/gimplayerpreset.c",
+          "path": "app/core/gimpjsonresource.c",
           "revision": "native",
-          "anchor": "preset->root = copy;",
-          "expected": "  preset->root = copy;"
+          "anchor": "private->root = owned;",
+          "expected": "  private->root = owned;"
         },
         {
           "path": "app/core/gimplayerpreset.c",
@@ -51406,7 +51406,7 @@
       "saved_name": "replacement-layer[].name",
       "native_type": "JSON string or null",
       "legacy_type": "JSON string or null",
-      "owner": "GimpLayerPreset.root (native); GimpJsonResource.root (legacy)",
+      "owner": "GimpJsonResource private root, inherited by GimpLayerPreset (native); GimpJsonResource.root (legacy)",
       "default": "Native new normal/group/clone/filter names New Layer/New Group Layer/New Clone Layer/New Filter Layer when absent. Legacy absent NULL passed to corresponding constructors.",
       "absence": "Source target keeps its existing name; neither applier renames source from this field.",
       "flags": "Complete JSON tree saved; only root.name is synchronized from resource name on native save. Apply interprets the paths below; retention does not imply successful application.",
@@ -51426,10 +51426,10 @@
       ],
       "evidence": [
         {
-          "path": "app/core/gimplayerpreset.c",
+          "path": "app/core/gimpjsonresource.c",
           "revision": "native",
-          "anchor": "preset->root = copy;",
-          "expected": "  preset->root = copy;"
+          "anchor": "private->root = owned;",
+          "expected": "  private->root = owned;"
         },
         {
           "path": "app/core/gimplayerpreset.c",
@@ -51480,7 +51480,7 @@
       "saved_name": "replacement-layer[].source",
       "native_type": "JSON string source or beginning # selects current source; other string/null no content source",
       "legacy_type": "JSON string source or beginning # selects current source",
-      "owner": "GimpLayerPreset.root (native); GimpJsonResource.root (legacy)",
+      "owner": "GimpJsonResource private root, inherited by GimpLayerPreset (native); GimpJsonResource.root (legacy)",
       "default": "NULL content source; source target independent.",
       "absence": "Native new normal empty content; new clone may unresolved source. Unknown source string has no content.",
       "flags": "Complete JSON tree saved; only root.name is synchronized from resource name on native save. Apply interprets the paths below; retention does not imply successful application.",
@@ -51500,10 +51500,10 @@
       ],
       "evidence": [
         {
-          "path": "app/core/gimplayerpreset.c",
+          "path": "app/core/gimpjsonresource.c",
           "revision": "native",
-          "anchor": "preset->root = copy;",
-          "expected": "  preset->root = copy;"
+          "anchor": "private->root = owned;",
+          "expected": "  private->root = owned;"
         },
         {
           "path": "app/core/gimplayerpreset.c",
@@ -51554,7 +51554,7 @@
       "saved_name": "replacement-layer[].boundary",
       "native_type": "JSON array [x1,y1,x2,y2] of gint, or source/selection/full string",
       "legacy_type": "JSON array four integer coordinates or source/selection/full",
-      "owner": "GimpLayerPreset.root (native); GimpJsonResource.root (legacy)",
+      "owner": "GimpJsonResource private root, inherited by GimpLayerPreset (native); GimpJsonResource.root (legacy)",
       "default": "Absent/null zero bounds; new layer nonpositive dimensions fall back to image width/height. Existing source bounds unchanged when w/h zero.",
       "absence": "Native rejects other string, non-four array, nonintegral/out-of-range or inverted/oversized dimensions. Legacy missing returns all-zero boundary.",
       "flags": "Complete JSON tree saved; only root.name is synchronized from resource name on native save. Apply interprets the paths below; retention does not imply successful application.",
@@ -51574,10 +51574,10 @@
       ],
       "evidence": [
         {
-          "path": "app/core/gimplayerpreset.c",
+          "path": "app/core/gimpjsonresource.c",
           "revision": "native",
-          "anchor": "preset->root = copy;",
-          "expected": "  preset->root = copy;"
+          "anchor": "private->root = owned;",
+          "expected": "  private->root = owned;"
         },
         {
           "path": "app/core/gimplayerpreset.c",
@@ -51628,7 +51628,7 @@
       "saved_name": "replacement-layer[].mode",
       "native_type": "JSON integral legacy mode or exact legacy nick string or source",
       "legacy_type": "JSON numeric GimpLayerModeEffects or enum nick or source",
-      "owner": "GimpLayerPreset.root (native); GimpJsonResource.root (legacy)",
+      "owner": "GimpJsonResource private root, inherited by GimpLayerPreset (native); GimpJsonResource.root (legacy)",
       "default": "Missing/null/unrecognized nick gives -1 sentinel; source target unchanged; new filter Painter replace and other new normal.",
       "absence": "Native numeric maps by explicit legacy map; unknown numeric fails. Uppercase Multiply is not a recognized nick.",
       "flags": "Complete JSON tree saved; only root.name is synchronized from resource name on native save. Apply interprets the paths below; retention does not imply successful application.",
@@ -51648,10 +51648,10 @@
       ],
       "evidence": [
         {
-          "path": "app/core/gimplayerpreset.c",
+          "path": "app/core/gimpjsonresource.c",
           "revision": "native",
-          "anchor": "preset->root = copy;",
-          "expected": "  preset->root = copy;"
+          "anchor": "private->root = owned;",
+          "expected": "  private->root = owned;"
         },
         {
           "path": "app/core/gimplayerpreset.c",
@@ -51702,7 +51702,7 @@
       "saved_name": "replacement-layer[].opacity",
       "native_type": "JSON finite number or source string",
       "legacy_type": "JSON number or source string",
-      "owner": "GimpLayerPreset.root (native); GimpJsonResource.root (legacy)",
+      "owner": "GimpJsonResource private root, inherited by GimpLayerPreset (native); GimpJsonResource.root (legacy)",
       "default": "Absent/null -1 sentinel; new layer invalid/outside0..1 becomes1; source target applied only within0..1.",
       "absence": "No source mutation for absent opacity.",
       "flags": "Complete JSON tree saved; only root.name is synchronized from resource name on native save. Apply interprets the paths below; retention does not imply successful application.",
@@ -51722,10 +51722,10 @@
       ],
       "evidence": [
         {
-          "path": "app/core/gimplayerpreset.c",
+          "path": "app/core/gimpjsonresource.c",
           "revision": "native",
-          "anchor": "preset->root = copy;",
-          "expected": "  preset->root = copy;"
+          "anchor": "private->root = owned;",
+          "expected": "  private->root = owned;"
         },
         {
           "path": "app/core/gimplayerpreset.c",
@@ -51776,7 +51776,7 @@
       "saved_name": "replacement-layer[].alpha",
       "native_type": "Opaque JSON retained; native replacement applier does not read alpha",
       "legacy_type": "JSON boolean or source string",
-      "owner": "GimpLayerPreset.root (native); GimpJsonResource.root (legacy)",
+      "owner": "GimpJsonResource private root, inherited by GimpLayerPreset (native); GimpJsonResource.root (legacy)",
       "default": "Legacy absent/null copies source has-alpha; non-value legacy returns true. Native new normal creation requests alpha TRUE regardless of this retained field.",
       "absence": "Native preserves value without application; legacy reads source alpha default.",
       "flags": "Complete JSON tree saved; only root.name is synchronized from resource name on native save. Apply interprets the paths below; retention does not imply successful application.",
@@ -51796,10 +51796,10 @@
       ],
       "evidence": [
         {
-          "path": "app/core/gimplayerpreset.c",
+          "path": "app/core/gimpjsonresource.c",
           "revision": "native",
-          "anchor": "preset->root = copy;",
-          "expected": "  preset->root = copy;"
+          "anchor": "private->root = owned;",
+          "expected": "  private->root = owned;"
         },
         {
           "path": "app/core/gimplayerpreset.c",
@@ -51845,7 +51845,7 @@
       "saved_name": "replacement-layer[].children",
       "native_type": "JSON array of recursive layer objects",
       "legacy_type": "JSON array of recursive layer objects",
-      "owner": "GimpLayerPreset.root (native); GimpJsonResource.root (legacy)",
+      "owner": "GimpJsonResource private root, inherited by GimpLayerPreset (native); GimpJsonResource.root (legacy)",
       "default": "No children when absent; only newly created group recurses.",
       "absence": "Native null/non-array if present fails; source target group does not recurse.",
       "flags": "Complete JSON tree saved; only root.name is synchronized from resource name on native save. Apply interprets the paths below; retention does not imply successful application.",
@@ -51865,10 +51865,10 @@
       ],
       "evidence": [
         {
-          "path": "app/core/gimplayerpreset.c",
+          "path": "app/core/gimpjsonresource.c",
           "revision": "native",
-          "anchor": "preset->root = copy;",
-          "expected": "  preset->root = copy;"
+          "anchor": "private->root = owned;",
+          "expected": "  private->root = owned;"
         },
         {
           "path": "app/core/gimplayerpreset.c",
@@ -51924,7 +51924,7 @@
       "saved_name": "replacement-layer[].filter",
       "native_type": "JSON object",
       "legacy_type": "JSON object",
-      "owner": "GimpLayerPreset.root (native); GimpJsonResource.root (legacy)",
+      "owner": "GimpJsonResource private root, inherited by GimpLayerPreset (native); GimpJsonResource.root (legacy)",
       "default": "No default definition; required for new filter type.",
       "absence": "Native fails when missing/non-object.",
       "flags": "Complete JSON tree saved; only root.name is synchronized from resource name on native save. Apply interprets the paths below; retention does not imply successful application.",
@@ -51944,10 +51944,10 @@
       ],
       "evidence": [
         {
-          "path": "app/core/gimplayerpreset.c",
+          "path": "app/core/gimpjsonresource.c",
           "revision": "native",
-          "anchor": "preset->root = copy;",
-          "expected": "  preset->root = copy;"
+          "anchor": "private->root = owned;",
+          "expected": "  private->root = owned;"
         },
         {
           "path": "app/core/gimplayerpreset.c",
@@ -51998,7 +51998,7 @@
       "saved_name": "replacement-layer[].filter.name",
       "native_type": "JSON nonempty string",
       "legacy_type": "JSON procedure string",
-      "owner": "GimpLayerPreset.root (native); GimpJsonResource.root (legacy)",
+      "owner": "GimpJsonResource private root, inherited by GimpLayerPreset (native); GimpJsonResource.root (legacy)",
       "default": "No default; native empty/missing fails.",
       "absence": "Legacy passes requested procedure name to filter layer; native preserves definition for supported exact executors.",
       "flags": "Complete JSON tree saved; only root.name is synchronized from resource name on native save. Apply interprets the paths below; retention does not imply successful application.",
@@ -52018,10 +52018,10 @@
       ],
       "evidence": [
         {
-          "path": "app/core/gimplayerpreset.c",
+          "path": "app/core/gimpjsonresource.c",
           "revision": "native",
-          "anchor": "preset->root = copy;",
-          "expected": "  preset->root = copy;"
+          "anchor": "private->root = owned;",
+          "expected": "  private->root = owned;"
         },
         {
           "path": "app/core/gimplayerpreset.c",
@@ -52072,7 +52072,7 @@
       "saved_name": "replacement-layer[].filter.args",
       "native_type": "JSON array, maximum65536 entries",
       "legacy_type": "JSON array",
-      "owner": "GimpLayerPreset.root (native); GimpJsonResource.root (legacy)",
+      "owner": "GimpJsonResource private root, inherited by GimpLayerPreset (native); GimpJsonResource.root (legacy)",
       "default": "No default; native requires array.",
       "absence": "Native missing/non-array fails; unknown argument types retained as null typed-value slots.",
       "flags": "Complete JSON tree saved; only root.name is synchronized from resource name on native save. Apply interprets the paths below; retention does not imply successful application.",
@@ -52092,10 +52092,10 @@
       ],
       "evidence": [
         {
-          "path": "app/core/gimplayerpreset.c",
+          "path": "app/core/gimpjsonresource.c",
           "revision": "native",
-          "anchor": "preset->root = copy;",
-          "expected": "  preset->root = copy;"
+          "anchor": "private->root = owned;",
+          "expected": "  private->root = owned;"
         },
         {
           "path": "app/core/gimplayerpreset.c",
@@ -52152,7 +52152,7 @@
       "saved_name": "replacement-layer[].filter.args[].type",
       "native_type": "JSON string FLOAT/INT32/INT8/STRING or opaque unknown",
       "legacy_type": "JSON string FLOAT/INT32/INT8/STRING/RGB/INT8ARRAY or unknown",
-      "owner": "GimpLayerPreset.root (native); GimpJsonResource.root (legacy)",
+      "owner": "GimpJsonResource private root, inherited by GimpLayerPreset (native); GimpJsonResource.root (legacy)",
       "default": "Native missing/null fallback empty string; unknown types produce uninitialized/null GValue slots.",
       "absence": "First3 Edge/Gauss argument positions become integer0 placeholders; arbitrary JSON still retained.",
       "flags": "Complete JSON tree saved; only root.name is synchronized from resource name on native save. Apply interprets the paths below; retention does not imply successful application.",
@@ -52172,10 +52172,10 @@
       ],
       "evidence": [
         {
-          "path": "app/core/gimplayerpreset.c",
+          "path": "app/core/gimpjsonresource.c",
           "revision": "native",
-          "anchor": "preset->root = copy;",
-          "expected": "  preset->root = copy;"
+          "anchor": "private->root = owned;",
+          "expected": "  private->root = owned;"
         },
         {
           "path": "app/core/gimplayerpreset.c",
@@ -52232,7 +52232,7 @@
       "saved_name": "replacement-layer[].filter.args[].value",
       "native_type": "JSON number/string/null/arbitrary retained value; FLOAT narrows to float then double, INT32 gint, INT8 guint cast, STRING UTF8",
       "legacy_type": "JSON value mapped to GValue FLOAT->double after float, INT32->gint, INT8->guint, STRING->gchar*; RGB/INT8ARRAY unsupported",
-      "owner": "GimpLayerPreset.root (native); GimpJsonResource.root (legacy)",
+      "owner": "GimpJsonResource private root, inherited by GimpLayerPreset (native); GimpJsonResource.root (legacy)",
       "default": "No default for numeric recognized type; missing string becomes NULL; opaque/unknown creates null typed slot.",
       "absence": "Native numeric missing/type/range/nonfinite failures; JSON preservation includes unsupported values.",
       "flags": "Complete JSON tree saved; only root.name is synchronized from resource name on native save. Apply interprets the paths below; retention does not imply successful application.",
@@ -52252,10 +52252,10 @@
       ],
       "evidence": [
         {
-          "path": "app/core/gimplayerpreset.c",
+          "path": "app/core/gimpjsonresource.c",
           "revision": "native",
-          "anchor": "preset->root = copy;",
-          "expected": "  preset->root = copy;"
+          "anchor": "private->root = owned;",
+          "expected": "  private->root = owned;"
         },
         {
           "path": "app/core/gimplayerpreset.c",
@@ -57981,14 +57981,19 @@
       "sha256": "d26768471495260bfece9dacc7acf3a6313f9f83819e7f59377de8d9ad1e1995"
     },
     {
+      "path": "app/core/gimpjsonresource.c",
+      "revision": "native",
+      "sha256": "e70a6a726289a51b0f1b0afde6c25622fd3fb74aacb4f970e11e5390c6899d90"
+    },
+    {
       "path": "app/core/gimplayerpreset-apply.cpp",
       "revision": "native",
-      "sha256": "ae0da5ec6c7d30c0ff52da5bc157aad14e1debf0c632a414586b6381a884c10f"
+      "sha256": "c315c18bd64afe71a8e7d0ed0f05b0de11ef9d6c02b74c811973183eca55dafa"
     },
     {
       "path": "app/core/gimplayerpreset.c",
       "revision": "native",
-      "sha256": "ec6edcf6223f1cbc6d125f26c71644a77c6b7077db9a0b01e3cbf53eac9e7e8e"
+      "sha256": "47eb010809dc41fe570f7459014926696da9cac5237038c4616bd87ba3acac2f"
     },
     {
       "path": "app/core/gimpparasitelist.c",
@@ -58553,7 +58558,7 @@
   ],
   "unresolved": [],
   "notes": [
-    "Static specification only: source assertions bind saved-field metadata and independent source-key coverage. No runtime roundtrip, ordering/platform or later WBS10.002\u201310.018 gate is claimed.",
+    "Static specification only: source assertions bind saved-field metadata and independent source-key coverage. No runtime roundtrip, ordering/platform or later WBS10.002–10.018 gate is claimed.",
     "Native standard GimpConfig members are concretely expanded through inherited option/config/resource owners. Legacy-only registrations remain explicit rather than being silently counted as native equivalents.",
     "Preset JSON retains whole root and unknown descendants. Native replacement alpha is retained but not applied; this difference is inventoried, not repaired or labeled equivalent.",
     "Two dockrc syntax candidates are genuine unchanged standard persistence outside fixed16 routes. HTTP/selection uses are transient and decompose flags0 is nonpersistent.",

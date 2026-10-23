@@ -672,7 +672,7 @@
     {
       "name": "config",
       "path": "migration/inventory/persistence-config-fields.json",
-      "sha256": "ad2007c74320ff964cd9010aab69749e31c6bcf2c1ea1cffcc4b2b49ab9bad82",
+      "sha256": "29c7f801aefedf060702831525bba714a4a686336d476732d1d0cc175a55eb7d",
       "test": "migration/tests/test_persistence_config_contract.py",
       "field_ids": [
         "config.06.parasite.data",
@@ -4033,18 +4033,23 @@
     },
     {
       "revision": "native",
+      "path": "app/core/gimpjsonresource.c",
+      "sha256": "e70a6a726289a51b0f1b0afde6c25622fd3fb74aacb4f970e11e5390c6899d90"
+    },
+    {
+      "revision": "native",
       "path": "app/core/gimplayer.c",
       "sha256": "318ab25e71247a368454dcf9093144cf2598db9d43b90ea6e5ef89ed8b88d1ef"
     },
     {
       "revision": "native",
       "path": "app/core/gimplayerpreset-apply.cpp",
-      "sha256": "ae0da5ec6c7d30c0ff52da5bc157aad14e1debf0c632a414586b6381a884c10f"
+      "sha256": "c315c18bd64afe71a8e7d0ed0f05b0de11ef9d6c02b74c811973183eca55dafa"
     },
     {
       "revision": "native",
       "path": "app/core/gimplayerpreset.c",
-      "sha256": "ec6edcf6223f1cbc6d125f26c71644a77c6b7077db9a0b01e3cbf53eac9e7e8e"
+      "sha256": "47eb010809dc41fe570f7459014926696da9cac5237038c4616bd87ba3acac2f"
     },
     {
       "revision": "native",
@@ -4469,7 +4474,7 @@
     },
     {
       "path": "migration/tests/test_persistence_field_contract.py",
-      "sha256": "ee75a2c4f52258996e76b3298e91fd08d0a9582c58424da1861eb498b1c0c77b"
+      "sha256": "35f8df0e7268ef580123c7b7ff19cf06bc542ad0e1c032ac6482981d2ecb9969"
     },
     {
       "path": "migration/tests/test_persistence_xcf_contract.py",
@@ -4481,7 +4486,7 @@
     },
     {
       "path": "migration/tests/test_persistence_config_contract.py",
-      "sha256": "7e6607f3a7d2aa7c569fcedabdd8629a2387d5a01a8268bc4e7aaa5bfcef7dda"
+      "sha256": "52b83536b8f0af91a2449aaf0fc90f3f61eeb4b343deb40e6bbeab80fd53a792"
     }
   ],
   "counts": {

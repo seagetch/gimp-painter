@@ -2,15 +2,15 @@
 #ifndef __GIMP_LAYER_PRESET_H__
 #define __GIMP_LAYER_PRESET_H__
 typedef struct _JsonNode JsonNode;
-#include "gimpdata.h"
+#include "gimpjsonresource.h"
 G_BEGIN_DECLS
 #define GIMP_TYPE_LAYER_PRESET (gimp_layer_preset_get_type ())
 #define GIMP_LAYER_PRESET(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_LAYER_PRESET, GimpLayerPreset))
 #define GIMP_IS_LAYER_PRESET(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_LAYER_PRESET))
 typedef struct _GimpLayerPreset GimpLayerPreset;
 typedef struct _GimpLayerPresetClass GimpLayerPresetClass;
-struct _GimpLayerPreset { GimpData parent_instance; JsonNode *root; };
-struct _GimpLayerPresetClass { GimpDataClass parent_class; };
+struct _GimpLayerPreset { GimpJsonResource parent_instance; };
+struct _GimpLayerPresetClass { GimpJsonResourceClass parent_class; };
 GType gimp_layer_preset_get_type (void) G_GNUC_CONST;
 GimpData *gimp_layer_preset_new (GimpContext *, const gchar *name);
 GList *gimp_layer_preset_load (GimpContext *, GFile *, GInputStream *, GError **);

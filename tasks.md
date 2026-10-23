@@ -420,6 +420,7 @@
 | 08.016/pixbuf-owner | [x] | popup renderer の pixbuf 寿命を修正する | 08.016, 01.007/cpp-ownership | 初期値・生成失敗・再生成・破棄時の参照を一回だけ解放し、NULL pixbuf を描画しない |
 | 08.017 | [x] | 既存 widget behavior を store に移す | 08.016 | 全登録箇所が共通 slot を利用 |
 | 08.018 | [ ] | C 公開操作を新 Impl へ接続する | 08.017 | C 入口から旧 Interface::cast を排除 |
+| 08.018/json-resource-entries | [x] | 元JSON resource C型取得・生成を単一native root ownerへ接続する | 08.017 | 元2署名/include・任意NULL/root・subclass失敗/破棄/再入・generic共有とpreset deep-copyを通常19/限定ASan19、417header・source gate55 negative controlsで検証。元C++Interface/旧layout ABI/filename loaderと親08.018は未完、UI再試験はclean aggregate待ち。migration/tests/adapter-removal/json-resource-entries-08018/ |
 | 08.018/brush-factory-entry | [x] | MyPaint brush の C 型取得・生成入口を共通 native 実装へ接続する | 08.017 | 元の C 署名・name/MIME・NULL/空名の前提条件・独立所有と解放を C11/C++14 の通常28/28で検証。単一 native GType/BrushSlotを共有し旧layout/型名/親08.018は対象外。migration/tests/adapter-removal/mypaint-factory-entry-08018/ |
 | 08.018/brush-standard-ownership | [x] | 標準 MyPaint brush の借用 C 入口と所有ハンドルを接続する | 08.018/brush-factory-entry | retain による寿命保持・C署名・native識別子・cold subprocess のseed退役/weak reset/再生成を通常30/30で検証。実app借用参照は消費せず、旧名称/ID差異により元row40はPARTIAL、親08.018は未完。migration/tests/adapter-removal/mypaint-standard-entry-08018/ |
 | 08.018/canvas-perspective-factory | [x] | native canvas perspective生成失敗と所有handleをC入口へ接続する | 08.017 | C11の3段階4例外・raw/factory24経路とtyped所有/不正shell/実shell生成失敗の通常27+UI全24・限定ASan27+24合格。非floating/借用shell/部分signal解除を確認。縦Xvfb oncanvas画像あり。別子のtoolrc退役修正後に全UI再検証、初回失敗は保存。旧2引数guide APIと親08.018は未完了。canvas-perspective-factory-08018参照 |

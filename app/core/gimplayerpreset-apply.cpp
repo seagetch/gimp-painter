@@ -358,7 +358,9 @@ gboolean gimp_layer_preset_matches (GimpLayerPreset *preset, GimpLayer *layer)
 {
   return boundary<gboolean> (nullptr, FALSE, [&] {
     if (!GIMP_IS_LAYER_PRESET (preset)) return FALSE;
-    return matches (member (preset->root, "source-layer"), layer) ? TRUE : FALSE;
+    auto root = std::unique_ptr<JsonNode, decltype(&json_node_unref)> (
+      gimp_layer_preset_dup_json (preset), json_node_unref);
+    return matches (member (root.get (), "source-layer"), layer) ? TRUE : FALSE;
   });
 }
 gboolean gimp_layer_preset_apply_full (GimpLayerPreset *preset, GimpContext *context, GimpLayer *source, GCancellable *cancellable, GError **error)

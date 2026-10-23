@@ -1,0 +1,149 @@
+ninja: Entering directory `/workspace/shared/gimp-native-baseline/build-port'
+[1/40] Generating symbol file libgimpbase/libgimpbase-3.0.so.0.8.1.p/libgimpbase-3.0.so.0.8.1.symbols
+[2/37] Generating symbol file libgimpcolor/libgimpcolor-3.0.so.0.8.1.p/libgimpcolor-3.0.so.0.8.1.symbols
+[3/37] Generating symbol file libgimpmath/libgimpmath-3.0.so.0.8.1.p/libgimpmath-3.0.so.0.8.1.symbols
+[4/36] Generating git-version.h.in.1 with a custom command
+[5/36] Generating git-version.h.in.2 with a custom command
+[6/36] Generating symbol file libgimpconfig/libgimpconfig-3.0.so.0.8.1.p/libgimpconfig-3.0.so.0.8.1.symbols
+[7/34] Generating git-version.h with a custom command
+[8/28] Compiling C object app/core/libappcore.a.p/gimp-data-factories.c.o
+[9/28] Generating app/tests/icon-theme-fixture/gimp-test-icon-theme-fixture with a custom command
+{"files": 1191, "manifest_sha256": "2f790ebf02244ef3c023f17f16ab614cbc315ee46d46abd87b7f73d4d5d9be41", "ownership_marker_sha256": "d3ebe76f57bdce73e82df17c3cd89f1a630f42f3c8d72dbfdacd4a000061b8bf", "plan_sha256": "0a16da7a76b5facf2d3d8084793b72e28d32d17c7ff6bf237d164075d4af4b95", "stamp_sha256": "c20e592420d8f1feb8e044c6114f8ed009473d411042806fd6e9aadd50c7ffc9", "status": "verified"}
+[10/28] Compiling C object app/core/libappcore.a.p/gimpjsonresource.c.o
+[11/28] Compiling C object app/core/libappcore.a.p/gimp.c.o
+[12/28] Compiling C object app/core/libappcore.a.p/gimplayerpreset.c.o
+[13/28] Compiling C++ object app/core/libappcore.a.p/gimplayerpreset-apply.cpp.o
+[14/28] Compiling C object app/widgets/libappwidgets.a.p/gimplayerpresetview.c.o
+../source/app/widgets/gimplayerpresetview.c: In function ‘gimp_layer_preset_view_new’:
+../source/app/widgets/gimplayerpresetview.c:395:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  395 |   GtkWidget *tree = GTK_WIDGET (gesture_tree (view));
+      |   ^~~~~~~~~
+[15/28] Compiling C++ object app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gegl-surface.cpp.o
+[16/28] Generating symbol file libgimpmodule/libgimpmodule-3.0.so.0.8.1.p/libgimpmodule-3.0.so.0.8.1.symbols
+[17/28] Generating symbol file libgimpthumb/libgimpthumb-3.0.so.0.8.1.p/libgimpthumb-3.0.so.0.8.1.symbols
+[18/28] Generating symbol file libgimpwidgets/libgimpwidgets-3.0.so.0.8.1.p/libgimpwidgets-3.0.so.0.8.1.symbols
+[19/28] Linking static target app/core/libappcore.a
+[20/28] Linking static target app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a
+[21/28] Compiling C object app/tests/gimp-layer-presets.p/test-gimp-layer-presets.c.o
+../source/app/tests/test-gimp-layer-presets.c: In function ‘load_file’:
+../source/app/tests/test-gimp-layer-presets.c:41:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   41 |   GimpLayerPreset *preset = list->data; g_list_free (list); return preset;
+      |   ^~~~~~~~~~~~~~~
+../source/app/tests/test-gimp-layer-presets.c: In function ‘from_json’:
+../source/app/tests/test-gimp-layer-presets.c:122:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  122 |   GimpLayerPreset *preset = GIMP_LAYER_PRESET (gimp_layer_preset_new (gimp->user_context, "test"));
+      |   ^~~~~~~~~~~~~~~
+../source/app/tests/test-gimp-layer-presets.c: In function ‘resource_roundtrip’:
+../source/app/tests/test-gimp-layer-presets.c:135:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  135 |   JsonNode *a = gimp_layer_preset_dup_json (preset), *b = gimp_layer_preset_dup_json (reloaded), *c = gimp_layer_preset_dup_json (copy);
+      |   ^~~~~~~~
+../source/app/tests/test-gimp-layer-presets.c:141:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  141 |   GFile *dir = g_file_new_for_path (directory); g_file_delete (dir, NULL, NULL); g_object_unref (dir); g_free (directory); g_free (filename);
+      |   ^~~~~
+../source/app/tests/test-gimp-layer-presets.c: In function ‘reject_without_history_loss’:
+../source/app/tests/test-gimp-layer-presets.c:157:7: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  157 |       GimpUndo *undo = gimp_undo_stack_peek (gimp_image_get_undo_stack (image)), *redo = gimp_undo_stack_peek (gimp_image_get_redo_stack (image));
+      |       ^~~~~~~~
+../source/app/tests/test-gimp-layer-presets.c: In function ‘rollback_after_insert’:
+../source/app/tests/test-gimp-layer-presets.c:173:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  173 |   GimpUndo *undo = gimp_undo_stack_peek (gimp_image_get_undo_stack (image)), *redo = gimp_undo_stack_peek (gimp_image_get_redo_stack (image));
+      |   ^~~~~~~~
+../source/app/tests/test-gimp-layer-presets.c: In function ‘custom_planner_ownership’:
+../source/app/tests/test-gimp-layer-presets.c:248:7: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  248 |       GCancellable *cancel = g_cancellable_new ();
+      |       ^~~~~~~~~~~~
+../source/app/tests/test-gimp-layer-presets.c:259:7: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  259 |       GimpUndo *undo = gimp_undo_stack_peek (gimp_image_get_undo_stack (image));
+      |       ^~~~~~~~
+../source/app/tests/test-gimp-layer-presets.c:263:7: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  263 |       gboolean applied = gimp_layer_preset_apply_full (preset, gimp->user_context, source, cancel, &error);
+      |       ^~~~~~~~
+../source/app/tests/test-gimp-layer-presets.c:272:11: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  272 |           GimpLayer *clone = GIMP_LAYER (gimp_container_get_child_by_index (gimp_image_get_layers (image), 0));
+      |           ^~~~~~~~~
+../source/app/tests/test-gimp-layer-presets.c:277:11: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  277 |           GimpValueArray *args = gimp_filter_layer_dup_args (GIMP_FILTER_LAYER (filter));
+      |           ^~~~~~~~~~~~~~
+../source/app/tests/test-gimp-layer-presets.c: In function ‘preflight_rejects_changed_target’:
+../source/app/tests/test-gimp-layer-presets.c:385:9: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  385 |         GimpLayerPreset *preset = from_json ("{\"version\":1,\"source-layer\":{\"type\":\"any\"},\"replacement-layer\":[{\"target\":\"new\",\"name\":\"Preflight probe\"}]}");
+      |         ^~~~~~~~~~~~~~~
+../source/app/tests/test-gimp-layer-presets.c:388:9: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  388 |         guint signal = g_signal_lookup ("name-changed", GIMP_TYPE_OBJECT);
+      |         ^~~~~
+../source/app/tests/test-gimp-layer-presets.c: In function ‘ordered_source_edits’:
+../source/app/tests/test-gimp-layer-presets.c:411:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  411 |   GimpLayer *duplicate = GIMP_LAYER (gimp_container_get_first_child (gimp_image_get_layers (image)));
+      |   ^~~~~~~~~
+../source/app/tests/test-gimp-layer-presets.c: In function ‘factory_paths’:
+../source/app/tests/test-gimp-layer-presets.c:427:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  427 |   GimpContainer *container = gimp_data_factory_get_container (gimp->layer_preset_factory);
+      |   ^~~~~~~~~~~~~
+../source/app/tests/test-gimp-layer-presets.c: In function ‘save_reopen_editable’:
+../source/app/tests/test-gimp-layer-presets.c:439:7: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  439 |       GOutputStream *output = g_memory_output_stream_new_resizable (); GFile *file = g_file_new_for_path ("/tmp/layer-preset-roundtrip.xcf");
+      |       ^~~~~~~~~~~~~
+../source/app/tests/test-gimp-layer-presets.c:442:7: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  442 |       GBytes *bytes = g_memory_output_stream_steal_as_bytes (G_MEMORY_OUTPUT_STREAM (output)); GInputStream *input = g_memory_input_stream_new_from_bytes (bytes);
+      |       ^~~~~~
+../source/app/tests/test-gimp-layer-presets.c:444:7: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  444 |       GimpLayer *group = GIMP_LAYER (gimp_container_get_first_child (gimp_image_get_layers (copy)));
+      |       ^~~~~~~~~
+../source/app/tests/test-gimp-layer-presets.c:445:52: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  445 |       g_assert_true (GIMP_IS_GROUP_LAYER (group)); GimpContainer *children = gimp_viewable_get_children (GIMP_VIEWABLE (group));
+      |                                                    ^~~~~~~~~~~~~
+../source/app/tests/test-gimp-layer-presets.c:448:60: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  448 |       else { g_assert_true (GIMP_IS_FILTER_LAYER (first)); gchar *proc = gimp_filter_layer_dup_procedure (GIMP_FILTER_LAYER (first)); g_assert_cmpstr (proc, ==, "plug-in-edge"); g_free (proc); }
+      |                                                            ^~~~~
+../source/app/tests/test-gimp-layer-presets.c:449:7: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  449 |       GeglColor *color = gegl_color_new ("rgba(0.2,0.7,0.4,0.8)"); gegl_buffer_set_color (gimp_drawable_get_buffer (GIMP_DRAWABLE (last)), NULL, color); g_object_unref (color);
+      |       ^~~~~~~~~
+../source/app/tests/test-gimp-layer-presets.c: In function ‘unknown_filter_stays_inert’:
+../source/app/tests/test-gimp-layer-presets.c:480:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  480 |   GimpFilterLayer *filter = GIMP_FILTER_LAYER (gimp_container_get_first_child (gimp_image_get_layers (image)));
+      |   ^~~~~~~~~~~~~~~
+../source/app/tests/test-gimp-layer-presets.c:486:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  486 |   GBytes *bytes = gimp_filter_layer_ref_definition (filter); gsize size; const char *data = g_bytes_get_data (bytes, &size);
+      |   ^~~~~~
+../source/app/tests/test-gimp-layer-presets.c: In function ‘main’:
+../source/app/tests/test-gimp-layer-presets.c:499:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  499 |   int result = g_test_run ();
+      |   ^~~
+[22/28] Compiling C object app/tests/gimp-json-resource.p/test-gimp-json-resource.c.o
+FAILED: app/tests/gimp-json-resource.p/test-gimp-json-resource.c.o 
+cc -Iapp/tests/gimp-json-resource.p -Iapp/tests -I../source/app/tests -I. -I../source -Iapp -I../source/app -I/workspace/shared/gimp-deps-locked/root/usr/include/cairo -I/workspace/shared/gimp-deps-locked/root/usr/include/libpng16 -I/workspace/shared/gimp-deps-locked/root/usr/include/freetype2 -I/workspace/shared/gimp-deps-locked/root/usr/include/pixman-1 -I/workspace/shared/gimp-deps-locked/root/usr/include/gdk-pixbuf-2.0 -I/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0 -I/workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu/glib-2.0/include -I/workspace/shared/gimp-deps-locked/root/usr/include/sysprof-6 -I/workspace/shared/gimp-deps-locked/root/usr/include/webp -I/workspace/shared/gimp-deps-locked/root/usr/include/libmount -I/workspace/shared/gimp-deps-locked/root/usr/include/blkid -I/workspace/shared/gimp-deps-locked/root/usr/include/gegl-0.4 -I/workspace/shared/gimp-deps-locked/root/usr/include/gio-unix-2.0 -I/workspace/shared/gimp-deps-locked/root/usr/include/json-glib-1.0 -I/workspace/shared/gimp-deps-locked/root/usr/include/babl-0.1 -I/workspace/shared/gimp-deps-locked/root/usr/include/pango-1.0 -I/workspace/shared/gimp-deps-locked/root/usr/include/harfbuzz -I/workspace/shared/gimp-deps-locked/root/usr/include/fribidi -I/workspace/shared/gimp-deps-locked/root/usr/include/libsoup-3.0 -I/workspace/shared/gimp-deps-locked/root/usr/include/gtk-3.0 -I/workspace/shared/gimp-deps-locked/root/usr/include/cloudproviders -I/workspace/shared/gimp-deps-locked/root/usr/include/atk-1.0 -I/workspace/shared/gimp-deps-locked/root/usr/include/at-spi2-atk/2.0 -I/workspace/shared/gimp-deps-locked/root/usr/include/at-spi-2.0 -I/workspace/shared/gimp-deps-locked/root/usr/include/dbus-1.0 -I/workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu/dbus-1.0/include -I/workspace/shared/gimp-deps-locked/root/usr/include/appstream -fdiagnostics-color=always -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -std=c11 -O2 -g -Wabsolute-value -Wdeclaration-after-statement -Wenum-conversion -Wno-strict-prototypes -Wold-style-definition -Wunused-function -Wunused-value -Werror=implicit-function-declaration -DGDK_PIXBUF_VERSION_MIN_REQUIRED=GDK_PIXBUF_VERSION_2_30 -DGDK_PIXBUF_VERSION_MAX_ALLOWED=GDK_PIXBUF_VERSION_2_30 -DGLIB_VERSION_MIN_REQUIRED=GLIB_VERSION_2_70 -DGLIB_VERSION_MAX_ALLOWED=GLIB_VERSION_2_76 -DGDK_VERSION_MIN_REQUIRED=GDK_VERSION_3_24 -DGDK_VERSION_MAX_ALLOWED=GDK_VERSION_3_24 -fdiagnostics-show-option -fno-common -Wformat -Wformat-security -Winit-self -Wlogical-op -Wmissing-declarations -Wmissing-format-attribute -Wpointer-arith -Wreturn-type -Wtype-limits -DHAVE_CONFIG_H -pthread -isystem /workspace/shared/gimp-deps-locked/root/usr/include/mit-krb5 -MD -MQ app/tests/gimp-json-resource.p/test-gimp-json-resource.c.o -MF app/tests/gimp-json-resource.p/test-gimp-json-resource.c.o.d -o app/tests/gimp-json-resource.p/test-gimp-json-resource.c.o -c ../source/app/tests/test-gimp-json-resource.c
+In file included from ../source/app/tests/test-gimp-json-resource.c:12:
+../source/app/tests/gimp-app-test-utils.h:35:55: error: unknown type name ‘GtkWidget’
+   35 | void            gimp_test_utils_synthesize_key_event (GtkWidget   *widget,
+      |                                                       ^~~~~~~~~
+../source/app/tests/gimp-app-test-utils.h:37:1: error: unknown type name ‘GimpUIManager’; did you mean ‘GimpPlugInManager’?
+   37 | GimpUIManager * gimp_test_utils_get_ui_manager       (Gimp        *gimp);
+      | ^~~~~~~~~~~~~
+      | GimpPlugInManager
+../source/app/tests/test-gimp-json-resource.c: In function ‘save_and_copy’:
+../source/app/tests/test-gimp-json-resource.c:48:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   48 |   JsonNode *node=json_from_string("{\"unknown\":[1,2],\"name\":\"kept\"}",NULL);
+      |   ^~~~~~~~
+../source/app/tests/test-gimp-json-resource.c:50:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   50 |   GimpData *copy=gimp_data_duplicate(data);g_assert_nonnull(copy);g_assert_true(GIMP_IS_JSON_RESOURCE(copy));
+      |   ^~~~~~~~
+../source/app/tests/test-gimp-json-resource.c:51:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   51 |   JsonNode *cloned=gimp_json_resource_ref_json(GIMP_JSON_RESOURCE(copy));
+      |   ^~~~~~~~
+../source/app/tests/test-gimp-json-resource.c:55:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   55 |   JsonParser *parser=json_parser_new();g_assert_true(json_parser_load_from_data(parser,g_memory_output_stream_get_data(G_MEMORY_OUTPUT_STREAM(out)),g_memory_output_stream_get_data_size(G_MEMORY_OUTPUT_STREAM(out)),&error));g_assert_no_error(error);
+      |   ^~~~~~~~~~
+../source/app/tests/test-gimp-json-resource.c: In function ‘specialized’:
+../source/app/tests/test-gimp-json-resource.c:77:46: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   77 |   g_assert_true(GIMP_IS_JSON_RESOURCE(data));JsonNode *root=gimp_layer_preset_dup_json(preset);g_assert_true(JSON_NODE_HOLDS_OBJECT(root));json_node_unref(root);
+      |                                              ^~~~~~~~
+../source/app/tests/test-gimp-json-resource.c:78:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   78 |   JsonNode *array=json_from_string("[1]",NULL);g_assert_false(gimp_json_resource_set_json(GIMP_JSON_RESOURCE(data),array));json_node_unref(array);
+      |   ^~~~~~~~
+../source/app/tests/test-gimp-json-resource.c:79:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   79 |   JsonNode *first=json_from_string("{\"name\":\"first\",\"nested\":{\"value\":1}}",NULL),*second=json_from_string("{\"name\":\"second\",\"nested\":{\"value\":2}}",NULL);
+      |   ^~~~~~~~
+[23/28] Compiling C++ object app/widgets/libappwidgets.a.p/gimppainterlayertiles.cpp.o
+ninja: build stopped: subcommand failed.
+INFO: autodetecting backend as ninja
+INFO: calculating backend command to run: /workspace/shared/gimp-deps-locked/root/usr/bin/ninja -C /workspace/shared/gimp-native-baseline/build-port -j 2 app/tests/gimp-json-resource app/tests/gimp-layer-presets

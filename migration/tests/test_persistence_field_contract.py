@@ -236,6 +236,7 @@ def negative_controls(root,families,assertions,manifest):
             reject('xcf:source:'+label,lambda:xcf.validate_family(families['xcf'],root))
     controls.extend(mypaint_preview_negative_controls(root, families['mypaint']))
     controls.extend(config.tool_group_negative_controls(root))
+    controls.extend(config.json_resource_negative_controls(root))
     return controls
 
 def main():

@@ -11,7 +11,7 @@
 #include "gimplayerpreset.h"
 #include "gimpcontext.h"
 
-G_DEFINE_TYPE (GimpLayerPreset, gimp_layer_preset, GIMP_TYPE_DATA)
+G_DEFINE_TYPE (GimpLayerPreset, gimp_layer_preset, GIMP_TYPE_JSON_RESOURCE)
 /* json_node_copy() shares JsonObject/JsonArray values. Resource snapshots and
  * duplicates must be independently editable, including unknown nested fields. */
 static JsonNode *deep_copy (JsonNode *node)
@@ -25,15 +25,10 @@ static JsonNode *deep_copy (JsonNode *node)
   return copy;
 }
 
-static void finalize (GObject *object)
-{
-  g_clear_pointer (&GIMP_LAYER_PRESET (object)->root, json_node_unref);
-  G_OBJECT_CLASS (gimp_layer_preset_parent_class)->finalize (object);
-}
 static gboolean save (GimpData *data, GOutputStream *output, GError **error)
 {
   JsonGenerator *generator = json_generator_new ();
-  JsonNode *snapshot = deep_copy (GIMP_LAYER_PRESET (data)->root);
+  JsonNode *snapshot = gimp_layer_preset_dup_json (GIMP_LAYER_PRESET (data));
   gchar *text;
   gsize length;
   gboolean result;
@@ -57,10 +52,32 @@ static gboolean save (GimpData *data, GOutputStream *output, GError **error)
 }
 static const gchar *extension (GimpData *data) { return ".json"; }
 static void copy (GimpData *data, GimpData *source)
-{ gimp_layer_preset_set_json (GIMP_LAYER_PRESET (data), GIMP_LAYER_PRESET (source)->root, NULL); }
+{
+  JsonNode *root = gimp_layer_preset_dup_json (GIMP_LAYER_PRESET (source));
+  gimp_layer_preset_set_json (GIMP_LAYER_PRESET (data), root, NULL);
+  if (root) json_node_unref (root);
+}
+static gboolean prepare_root (GimpJsonResource *resource, JsonNode *root, JsonNode **owned)
+{
+  (void) resource;
+  if (!root || !JSON_NODE_HOLDS_OBJECT (root)) return FALSE;
+  *owned = deep_copy (root);
+  return !root || *owned != NULL;
+}
+static void root_changed (GimpJsonResource *resource, JsonNode *root)
+{
+  if (root)
+    {
+      JsonNode *name = json_object_get_member (json_node_get_object (root), "name");
+      if (name && json_node_get_value_type (name) == G_TYPE_STRING)
+        gimp_object_set_name (GIMP_OBJECT (resource), json_node_get_string (name));
+    }
+  if (gimp_json_resource_is_live (resource)) gimp_data_dirty (GIMP_DATA (resource));
+}
 static void gimp_layer_preset_class_init (GimpLayerPresetClass *klass)
 {
-  G_OBJECT_CLASS (klass)->finalize = finalize;
+  GIMP_JSON_RESOURCE_CLASS (klass)->prepare_root = prepare_root;
+  GIMP_JSON_RESOURCE_CLASS (klass)->root_changed = root_changed;
   GIMP_DATA_CLASS (klass)->save = save;
   GIMP_DATA_CLASS (klass)->get_extension = extension;
   GIMP_DATA_CLASS (klass)->copy = copy;
@@ -73,13 +90,12 @@ GimpData *gimp_layer_preset_new (GimpContext *context, const gchar *name)
                                          "mime-type", "application/json", NULL);
   JsonParser *parser = json_parser_new ();
   json_parser_load_from_data (parser, "{\"version\":1,\"source-layer\":{\"type\":\"any\"},\"replacement-layer\":[]}", -1, NULL);
-  preset->root = deep_copy (json_parser_get_root (parser));
+  gimp_layer_preset_set_json (preset, json_parser_get_root (parser), NULL);
   g_object_unref (parser);
   return GIMP_DATA (preset);
 }
 gboolean gimp_layer_preset_set_json (GimpLayerPreset *preset, JsonNode *root, GError **error)
 {
-  JsonNode *copy;
   g_return_val_if_fail (GIMP_IS_LAYER_PRESET (preset), FALSE);
   if (!root || !JSON_NODE_HOLDS_OBJECT (root))
     {
@@ -87,30 +103,24 @@ gboolean gimp_layer_preset_set_json (GimpLayerPreset *preset, JsonNode *root, GE
                            "Layer preset root must be an object");
       return FALSE;
     }
-  copy = deep_copy (root);
-  if (!copy)
+  if (!gimp_json_resource_set_json (GIMP_JSON_RESOURCE (preset), root))
     {
       g_set_error_literal (error, GIMP_DATA_ERROR, GIMP_DATA_ERROR_READ,
-                           "Layer preset is not valid JSON");
+                           "Layer preset is closed or its JSON cannot be copied");
       return FALSE;
     }
-  /* Name/dirty observers may release their last reference during notification. */
-  g_object_ref (preset);
-  g_clear_pointer (&preset->root, json_node_unref);
-  preset->root = copy;
-  {
-    JsonNode *name = json_object_get_member (json_node_get_object (copy), "name");
-    if (name && json_node_get_value_type (name) == G_TYPE_STRING)
-      gimp_object_set_name (GIMP_OBJECT (preset), json_node_get_string (name));
-  }
-  gimp_data_dirty (GIMP_DATA (preset));
-  g_object_unref (preset);
   return TRUE;
 }
+
 JsonNode *gimp_layer_preset_dup_json (GimpLayerPreset *preset)
 {
   g_return_val_if_fail (GIMP_IS_LAYER_PRESET (preset), NULL);
-  return deep_copy (preset->root);
+  {
+    JsonNode *root = gimp_json_resource_ref_json (GIMP_JSON_RESOURCE (preset));
+    JsonNode *copy = deep_copy (root);
+    if (root) json_node_unref (root);
+    return copy;
+  }
 }
 GList *gimp_layer_preset_load (GimpContext *context, GFile *file,
                                GInputStream *input, GError **error)

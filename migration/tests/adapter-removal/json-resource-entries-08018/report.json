@@ -1,0 +1,23 @@
+{
+  "scope": "08.018/json-resource-entries; exact original C type/factory with single native root owner",
+  "legacy_commit": "afa43fae3e920210146abed514f136fd49f671b5",
+  "normal_groups": 19,
+  "sanitized_groups": 19,
+  "sanitized_sources": 9,
+  "header_probes": 417,
+  "facade_first_double_cpp14_no_rtti": true,
+  "persistence_records": 1378,
+  "persistence_candidates": 873,
+  "persistence_routes": 16,
+  "persistence_negative_controls": 55,
+  "json_negative_controls": 9,
+  "ui_result": "NOT RUN: preset UI not rerun against paused unrelated candidate UI; clean aggregate verification remains open",
+  "limits": [
+    "Historical C++ Interface, binary layout and subclass ABI excluded",
+    "Generic filename load via retired Interface not restored by these two public C entries",
+    "Generic duplicate preserves historical shallow object/array tree sharing; specialized preset APIs retain deep copies",
+    "LSan disabled; vptr disabled to retain production no-RTTI ABI; dependencies and whole app not instrumented",
+    "Source-contract root derives HEAD unrelated files and JSON-only edits, excludes paused preview changes",
+    "Native tests linked current detached baseline, not a clean isolated HEAD build"
+  ]
+}

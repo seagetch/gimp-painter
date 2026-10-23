@@ -1,0 +1,143 @@
+compile app/core/gimpdata.c
+compile app/core/gimpobject.c
+compile app/core/gimpresource.c
+compile app/core/gimpjsonresource.c
+compile app/core/gimplayerpreset.c
+compile app/core/gimplayerpreset-apply.cpp
+compile app/tests/test-gimp-layer-presets.c
+[01m[K../source/app/tests/test-gimp-layer-presets.c:[m[K In function ‘[01m[Kload_file[m[K’:
+[01m[K../source/app/tests/test-gimp-layer-presets.c:41:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   41 |   [01;35m[KGimpLayerPreset[m[K *preset = list->data; g_list_free (list); return preset;
+      |   [01;35m[K^~~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-gimp-layer-presets.c:[m[K In function ‘[01m[Kfrom_json[m[K’:
+[01m[K../source/app/tests/test-gimp-layer-presets.c:122:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  122 |   [01;35m[KGimpLayerPreset[m[K *preset = GIMP_LAYER_PRESET (gimp_layer_preset_new (gimp->user_context, "test"));
+      |   [01;35m[K^~~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-gimp-layer-presets.c:[m[K In function ‘[01m[Kresource_roundtrip[m[K’:
+[01m[K../source/app/tests/test-gimp-layer-presets.c:135:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  135 |   [01;35m[KJsonNode[m[K *a = gimp_layer_preset_dup_json (preset), *b = gimp_layer_preset_dup_json (reloaded), *c = gimp_layer_preset_dup_json (copy);
+      |   [01;35m[K^~~~~~~~[m[K
+[01m[K../source/app/tests/test-gimp-layer-presets.c:141:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  141 |   [01;35m[KGFile[m[K *dir = g_file_new_for_path (directory); g_file_delete (dir, NULL, NULL); g_object_unref (dir); g_free (directory); g_free (filename);
+      |   [01;35m[K^~~~~[m[K
+[01m[K../source/app/tests/test-gimp-layer-presets.c:[m[K In function ‘[01m[Kreject_without_history_loss[m[K’:
+[01m[K../source/app/tests/test-gimp-layer-presets.c:157:7:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  157 |       [01;35m[KGimpUndo[m[K *undo = gimp_undo_stack_peek (gimp_image_get_undo_stack (image)), *redo = gimp_undo_stack_peek (gimp_image_get_redo_stack (image));
+      |       [01;35m[K^~~~~~~~[m[K
+[01m[K../source/app/tests/test-gimp-layer-presets.c:[m[K In function ‘[01m[Krollback_after_insert[m[K’:
+[01m[K../source/app/tests/test-gimp-layer-presets.c:173:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  173 |   [01;35m[KGimpUndo[m[K *undo = gimp_undo_stack_peek (gimp_image_get_undo_stack (image)), *redo = gimp_undo_stack_peek (gimp_image_get_redo_stack (image));
+      |   [01;35m[K^~~~~~~~[m[K
+[01m[K../source/app/tests/test-gimp-layer-presets.c:[m[K In function ‘[01m[Kcustom_planner_ownership[m[K’:
+[01m[K../source/app/tests/test-gimp-layer-presets.c:248:7:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  248 |       [01;35m[KGCancellable[m[K *cancel = g_cancellable_new ();
+      |       [01;35m[K^~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-gimp-layer-presets.c:259:7:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  259 |       [01;35m[KGimpUndo[m[K *undo = gimp_undo_stack_peek (gimp_image_get_undo_stack (image));
+      |       [01;35m[K^~~~~~~~[m[K
+[01m[K../source/app/tests/test-gimp-layer-presets.c:263:7:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  263 |       [01;35m[Kgboolean[m[K applied = gimp_layer_preset_apply_full (preset, gimp->user_context, source, cancel, &error);
+      |       [01;35m[K^~~~~~~~[m[K
+[01m[K../source/app/tests/test-gimp-layer-presets.c:272:11:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  272 |           [01;35m[KGimpLayer[m[K *clone = GIMP_LAYER (gimp_container_get_child_by_index (gimp_image_get_layers (image), 0));
+      |           [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-gimp-layer-presets.c:277:11:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  277 |           [01;35m[KGimpValueArray[m[K *args = gimp_filter_layer_dup_args (GIMP_FILTER_LAYER (filter));
+      |           [01;35m[K^~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-gimp-layer-presets.c:[m[K In function ‘[01m[Kpreflight_rejects_changed_target[m[K’:
+[01m[K../source/app/tests/test-gimp-layer-presets.c:385:9:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  385 |         [01;35m[KGimpLayerPreset[m[K *preset = from_json ("{\"version\":1,\"source-layer\":{\"type\":\"any\"},\"replacement-layer\":[{\"target\":\"new\",\"name\":\"Preflight probe\"}]}");
+      |         [01;35m[K^~~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-gimp-layer-presets.c:388:9:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  388 |         [01;35m[Kguint[m[K signal = g_signal_lookup ("name-changed", GIMP_TYPE_OBJECT);
+      |         [01;35m[K^~~~~[m[K
+[01m[K../source/app/tests/test-gimp-layer-presets.c:[m[K In function ‘[01m[Kordered_source_edits[m[K’:
+[01m[K../source/app/tests/test-gimp-layer-presets.c:411:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  411 |   [01;35m[KGimpLayer[m[K *duplicate = GIMP_LAYER (gimp_container_get_first_child (gimp_image_get_layers (image)));
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-gimp-layer-presets.c:[m[K In function ‘[01m[Kfactory_paths[m[K’:
+[01m[K../source/app/tests/test-gimp-layer-presets.c:427:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  427 |   [01;35m[KGimpContainer[m[K *container = gimp_data_factory_get_container (gimp->layer_preset_factory);
+      |   [01;35m[K^~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-gimp-layer-presets.c:[m[K In function ‘[01m[Ksave_reopen_editable[m[K’:
+[01m[K../source/app/tests/test-gimp-layer-presets.c:439:7:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  439 |       [01;35m[KGOutputStream[m[K *output = g_memory_output_stream_new_resizable (); GFile *file = g_file_new_for_path ("/tmp/layer-preset-roundtrip.xcf");
+      |       [01;35m[K^~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-gimp-layer-presets.c:442:7:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  442 |       [01;35m[KGBytes[m[K *bytes = g_memory_output_stream_steal_as_bytes (G_MEMORY_OUTPUT_STREAM (output)); GInputStream *input = g_memory_input_stream_new_from_bytes (bytes);
+      |       [01;35m[K^~~~~~[m[K
+[01m[K../source/app/tests/test-gimp-layer-presets.c:444:7:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  444 |       [01;35m[KGimpLayer[m[K *group = GIMP_LAYER (gimp_container_get_first_child (gimp_image_get_layers (copy)));
+      |       [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-gimp-layer-presets.c:445:52:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  445 |       g_assert_true (GIMP_IS_GROUP_LAYER (group)); [01;35m[KGimpContainer[m[K *children = gimp_viewable_get_children (GIMP_VIEWABLE (group));
+      |                                                    [01;35m[K^~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-gimp-layer-presets.c:448:60:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  448 |       else { g_assert_true (GIMP_IS_FILTER_LAYER (first)); [01;35m[Kgchar[m[K *proc = gimp_filter_layer_dup_procedure (GIMP_FILTER_LAYER (first)); g_assert_cmpstr (proc, ==, "plug-in-edge"); g_free (proc); }
+      |                                                            [01;35m[K^~~~~[m[K
+[01m[K../source/app/tests/test-gimp-layer-presets.c:449:7:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  449 |       [01;35m[KGeglColor[m[K *color = gegl_color_new ("rgba(0.2,0.7,0.4,0.8)"); gegl_buffer_set_color (gimp_drawable_get_buffer (GIMP_DRAWABLE (last)), NULL, color); g_object_unref (color);
+      |       [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-gimp-layer-presets.c:[m[K In function ‘[01m[Kunknown_filter_stays_inert[m[K’:
+[01m[K../source/app/tests/test-gimp-layer-presets.c:480:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  480 |   [01;35m[KGimpFilterLayer[m[K *filter = GIMP_FILTER_LAYER (gimp_container_get_first_child (gimp_image_get_layers (image)));
+      |   [01;35m[K^~~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-gimp-layer-presets.c:486:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  486 |   [01;35m[KGBytes[m[K *bytes = gimp_filter_layer_ref_definition (filter); gsize size; const char *data = g_bytes_get_data (bytes, &size);
+      |   [01;35m[K^~~~~~[m[K
+[01m[K../source/app/tests/test-gimp-layer-presets.c:[m[K In function ‘[01m[Kmain[m[K’:
+[01m[K../source/app/tests/test-gimp-layer-presets.c:499:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  499 |   [01;35m[Kint[m[K result = g_test_run ();
+      |   [01;35m[K^~~[m[K
+compile app/tests/test-gimp-json-resource.c
+In file included from [01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/gobject/gobject.h:26[m[K,
+                 from [01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/gobject/gbinding.h:31[m[K,
+                 from [01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/glib-object.h:24[m[K,
+                 from [01m[K/workspace/shared/gimp-deps-locked/root/usr/include/gegl-0.4/gegl.h:22[m[K,
+                 from [01m[K../source/app/tests/test-gimp-json-resource.c:3[m[K:
+[01m[K../source/app/tests/test-gimp-json-resource.c:18:34:[m[K [01;35m[Kwarning: [m[Kno previous declaration for ‘[01m[Ktest_json_resource_get_type[m[K’ [[01;35m[K-Wmissing-declarations[m[K]
+   18 | G_DEFINE_TYPE (TestJsonResource, [01;35m[Ktest_json_resource[m[K, GIMP_TYPE_JSON_RESOURCE)
+      |                                  [01;35m[K^~~~~~~~~~~~~~~~~~[m[K
+[01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/gobject/gtype.h:2305:1:[m[K [01;36m[Knote: [m[Kin definition of macro ‘[01m[K_G_DEFINE_TYPE_EXTENDED_BEGIN_PRE[m[K’
+ 2305 | [01;36m[Ktype_name[m[K##_get_type (void) \
+      | [01;36m[K^~~~~~~~~[m[K
+[01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/gobject/gtype.h:2053:61:[m[K [01;36m[Knote: [m[Kin expansion of macro ‘[01m[K_G_DEFINE_TYPE_EXTENDED_BEGIN[m[K’
+ 2053 | #define G_DEFINE_TYPE_EXTENDED(TN, t_n, T_P, _f_, _C_)      [01;36m[K_G_DEFINE_TYPE_EXTENDED_BEGIN[m[K (TN, t_n, T_P, _f_) {_C_;} _G_DEFINE_TYPE_EXTENDED_END()
+      |                                                             [01;36m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/gobject/gtype.h:1834:61:[m[K [01;36m[Knote: [m[Kin expansion of macro ‘[01m[KG_DEFINE_TYPE_EXTENDED[m[K’
+ 1834 | #define G_DEFINE_TYPE(TN, t_n, T_P)                         [01;36m[KG_DEFINE_TYPE_EXTENDED[m[K (TN, t_n, T_P, 0, {})
+      |                                                             [01;36m[K^~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-gimp-json-resource.c:18:1:[m[K [01;36m[Knote: [m[Kin expansion of macro ‘[01m[KG_DEFINE_TYPE[m[K’
+   18 | [01;36m[KG_DEFINE_TYPE[m[K (TestJsonResource, test_json_resource, GIMP_TYPE_JSON_RESOURCE)
+      | [01;36m[K^~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-gimp-json-resource.c:[m[K In function ‘[01m[Ksave_and_copy[m[K’:
+[01m[K../source/app/tests/test-gimp-json-resource.c:64:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   64 |   [01;35m[KJsonNode[m[K *node=json_from_string("{\"unknown\":[1,2],\"name\":\"kept\"}",NULL);
+      |   [01;35m[K^~~~~~~~[m[K
+[01m[K../source/app/tests/test-gimp-json-resource.c:66:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   66 |   [01;35m[KGimpData[m[K *copy=gimp_data_duplicate(data);g_assert_nonnull(copy);g_assert_true(GIMP_IS_JSON_RESOURCE(copy));
+      |   [01;35m[K^~~~~~~~[m[K
+[01m[K../source/app/tests/test-gimp-json-resource.c:67:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   67 |   [01;35m[KJsonNode[m[K *cloned=gimp_json_resource_ref_json(GIMP_JSON_RESOURCE(copy));
+      |   [01;35m[K^~~~~~~~[m[K
+[01m[K../source/app/tests/test-gimp-json-resource.c:71:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   71 |   [01;35m[KJsonParser[m[K *parser=json_parser_new();g_assert_true(json_parser_load_from_data(parser,g_memory_output_stream_get_data(G_MEMORY_OUTPUT_STREAM(out)),g_memory_output_stream_get_data_size(G_MEMORY_OUTPUT_STREAM(out)),&error));g_assert_no_error(error);
+      |   [01;35m[K^~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-gimp-json-resource.c:[m[K In function ‘[01m[Ksubclass_failures[m[K’:
+[01m[K../source/app/tests/test-gimp-json-resource.c:96:7:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   96 |       [01;35m[KGimpJsonResource[m[K *resource = g_object_new (test_json_resource_get_type (), NULL);
+      |       [01;35m[K^~~~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-gimp-json-resource.c:[m[K In function ‘[01m[Kspecialized[m[K’:
+[01m[K../source/app/tests/test-gimp-json-resource.c:115:46:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  115 |   g_assert_true(GIMP_IS_JSON_RESOURCE(data));[01;35m[KJsonNode[m[K *root=gimp_layer_preset_dup_json(preset);g_assert_true(JSON_NODE_HOLDS_OBJECT(root));json_node_unref(root);
+      |                                              [01;35m[K^~~~~~~~[m[K
+[01m[K../source/app/tests/test-gimp-json-resource.c:118:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  118 |   [01;35m[KJsonNode[m[K *array=json_from_string("[1]",NULL);g_assert_false(gimp_json_resource_set_json(GIMP_JSON_RESOURCE(data),array));json_node_unref(array);
+      |   [01;35m[K^~~~~~~~[m[K
+[01m[K../source/app/tests/test-gimp-json-resource.c:119:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  119 |   [01;35m[KJsonNode[m[K *first=json_from_string("{\"name\":\"first\",\"nested\":{\"value\":1}}",NULL),*second=json_from_string("{\"name\":\"second\",\"nested\":{\"value\":2}}",NULL);
+      |   [01;35m[K^~~~~~~~[m[K
+compile app/tests/test-gimp-json-resource.cpp
+[01m[K../source/app/tests/test-gimp-json-resource.cpp:12:17:[m[K [01;35m[Kwarning: [m[Kno previous declaration for ‘[01m[Kvoid[01;32m[K json_resource_handle_test[m[K()[m[K’ [[01;35m[K-Wmissing-declarations[m[K]
+   12 | extern "C" void [01;35m[Kjson_resource_handle_test[m[K (void)
+      |                 [01;35m[K^~~~~~~~~~~~~~~~~~~~~~~~~[m[K

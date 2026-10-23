@@ -1103,3 +1103,14 @@ if host_machine.system() == 'linux' and cxx.get_id() in ['gcc', 'clang'] and cxx
           'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
           'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 60)
 endif
+
+# Generic JSON resource C entries and the shared native preset owner.
+json_resource_test = executable('gimp-json-resource',
+  'test-gimp-json-resource.c', 'test-gimp-json-resource.cpp', 'tests.c',
+  dependencies: [libapp_dep, json_glib, appstream], link_with: apptests_links,
+  cpp_args: painter_cpp_args, override_options: ['c_std=c11', 'cpp_std=c++14'])
+test('gimp-json-resource', json_resource_test,
+  env: ['GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+        'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+        'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
+        'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 60)

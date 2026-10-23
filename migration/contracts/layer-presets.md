@@ -55,8 +55,14 @@ uses Replace, and its source keeps its previous mode. No asset is rewritten.
 
 ## Ownership and transactions
 
-The resource is a normal C `GimpData` subclass with an owned JsonNode copy,
-GInputStream loader and GOutputStream saver. Search/writable paths are native
+The resource is a normal C `GimpJsonResource` subclass of `GimpData`. A single
+private root in the native C base owns the JsonNode; the preset subclass validates
+object roots and deep-copies incoming values and duplication/save snapshots. It
+retains its GInputStream loader and GOutputStream saver. The generic base instead
+preserves the old nullable arbitrary-root property and shallow JSON tree sharing
+on generic duplication; its saver does not rewrite the JSON name. Original
+`gimp_json_resource_get_type/new` C signatures and include path are restored, not
+the retired C++ Interface or old binary class layout. Search/writable paths are native
 GimpCoreConfig properties, with a dedicated extension-manager path property,
 GimpDataLoaderFactory, startup/refresh/tag cache/save/teardown hooks and installed
 assets. There is no NewGClass, private C++ placement, dynamic singleton registry,
