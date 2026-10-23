@@ -32,6 +32,12 @@
 
 #ifndef NCSA_Y_TAB_H
 # define NCSA_Y_TAB_H
+
+/* Keep this boundary in sync with tools/meson-bison.py. */
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /* Enabling traces.  */
 #ifndef YYDEBUG
 # define YYDEBUG 0
@@ -108,5 +114,9 @@ int ncsa_parse (void);
 int ncsa_parse ();
 #endif
 #endif /* ! YYPARSE_PARAM */
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* !NCSA_Y_TAB_H  */

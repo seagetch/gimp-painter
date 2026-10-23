@@ -102,21 +102,7 @@ if flex.found() and bison.found()
       output  : '@BASENAME@_lex.c'
   )
 
-  parse_gen = generator(
-                bison,
-     arguments: [
-        '--yacc',
-        '-d',
-        '@EXTRA_ARGS@',
-        '--output', '@OUTPUT0@',
-        '--defines=@OUTPUT1@',
-        '@INPUT@'
-      ],
-      output  : [
-        '@BASENAME@_parse.c',
-        '@BASENAME@_parse.h',
-      ]
-  )
+  parse_header_adapter = files('../../tools/meson-bison.py')
 
   foreach syntax : syntaxes
     syntax_prefix =  syntax + '_'
@@ -126,9 +112,20 @@ if flex.found() and bison.found()
                   imapname + '.l',
       extra_args: ['--prefix', syntax_prefix]
     )
-    plugin_sources += parse_gen.process(
-                  imapname + '.y',
-      extra_args: ['--name-prefix', syntax_prefix]
+    plugin_sources += custom_target(
+      imapname + '_parse',
+      input: imapname + '.y',
+      output: [imapname + '_parse.c', imapname + '_parse.h'],
+      command: [
+        python, parse_header_adapter, '@OUTPUT1@', bison,
+        '--yacc',
+        '-d',
+        '--name-prefix', syntax_prefix,
+        '--output', '@OUTPUT0@',
+        '--defines=@OUTPUT1@',
+        '@INPUT@',
+      ],
+      depend_files: parse_header_adapter,
     )
   endforeach
 else

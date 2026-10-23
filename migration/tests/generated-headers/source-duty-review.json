@@ -1,0 +1,2686 @@
+{
+  "task": "04.017",
+  "baseline_head": "efe844e99b641fda7821d3d02d63929a8ba9774c",
+  "duties": [
+    {
+      "work_id": "legacy-f57308983ae047f3ccea",
+      "source_id": "01.002/000105",
+      "path": "app/config/gimpbaseconfig.h",
+      "source_blob": "b0bf04f5bfce6adcb6cbc285f6d223db361dff14",
+      "source_range": "-53,0 -> 54,6",
+      "source_sha256": "251cab66860451ab0eb7ad655e29bde0fd537be0edeefb8558c9dffb15d7a3c5",
+      "source_scope": "GType  gimp_base_config_get_type (void) G_GNUC_CONST;",
+      "current_headers": [
+        "app/config/gimpgeglconfig.h"
+      ],
+      "current_source_sha256": {
+        "app/config/gimpgeglconfig.h": "d4ded6c2773ecc5e4105b9d45fd3c01a6e67af4e814328cb6bdb8e6b59cda84e"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-008.c",
+          "label": "public-header",
+          "header": "app/config/gimpgeglconfig.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-009.cpp",
+          "label": "public-header",
+          "header": "app/config/gimpgeglconfig.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-b6dd0f5cbee7d5f3695a",
+      "source_id": "01.002/000122",
+      "path": "app/config/gimpcoreconfig.h",
+      "source_blob": "103391ff6225f482870a51e43fb8d90e36d460d6",
+      "source_range": "-101,0 -> 106,6",
+      "source_sha256": "6760497612d1207212a139f898b2b83838a89b2eee719814193e3b5b26b78dc4",
+      "source_scope": "GType  gimp_core_config_get_type (void) G_GNUC_CONST;",
+      "current_headers": [
+        "app/config/gimpcoreconfig.h"
+      ],
+      "current_source_sha256": {
+        "app/config/gimpcoreconfig.h": "e3c844ba09d18d43b5cef03001ef6647fd5bad409ba60e727298d498279abebc"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-006.c",
+          "label": "public-header",
+          "header": "app/config/gimpcoreconfig.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-007.cpp",
+          "label": "public-header",
+          "header": "app/config/gimpcoreconfig.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-7683c85db610d296c1e4",
+      "source_id": "01.002/000149",
+      "path": "app/core/core-types.h",
+      "source_blob": "f5864341d797759bae2e054882e827d1be9cbabe",
+      "source_range": "-94,0 -> 95",
+      "source_sha256": "101ff2aa7925a5f9033da7f32805008542954d989a44f10c38bb5515e5bab4ac",
+      "source_scope": "typedef struct _GimpPaintInfo       GimpPaintInfo;",
+      "current_headers": [
+        "app/core/core-types.h"
+      ],
+      "current_source_sha256": {
+        "app/core/core-types.h": "6843c4d1a5962cc458f5cc8331e7de7e09165cde98ba76966f35b270f79817d7"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-016.c",
+          "label": "public-header",
+          "header": "app/core/core-types.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-017.cpp",
+          "label": "public-header",
+          "header": "app/core/core-types.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-f1df183189b7eb14db40",
+      "source_id": "01.002/000150",
+      "path": "app/core/core-types.h",
+      "source_blob": "f5864341d797759bae2e054882e827d1be9cbabe",
+      "source_range": "-95,0 -> 97,2",
+      "source_sha256": "95bcec2e8a87478861727ff1eb97973351a3c806ab1ded5ec59e083bde8dd26c",
+      "source_scope": "typedef struct _GimpToolInfo        GimpToolInfo;",
+      "current_headers": [
+        "app/core/core-types.h"
+      ],
+      "current_source_sha256": {
+        "app/core/core-types.h": "6843c4d1a5962cc458f5cc8331e7de7e09165cde98ba76966f35b270f79817d7"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-016.c",
+          "label": "public-header",
+          "header": "app/core/core-types.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-017.cpp",
+          "label": "public-header",
+          "header": "app/core/core-types.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-d3e6bfb2e60dde5daada",
+      "source_id": "01.002/000151",
+      "path": "app/core/core-types.h",
+      "source_blob": "f5864341d797759bae2e054882e827d1be9cbabe",
+      "source_range": "-116 -> 119,2",
+      "source_sha256": "fd202ad82cf23d60db5c98b13399c03c43f6f477fb0f722f1f57e9a1cdf07538",
+      "source_scope": "typedef struct _GimpTagCache         GimpTagCache;",
+      "current_headers": [
+        "app/core/core-types.h"
+      ],
+      "current_source_sha256": {
+        "app/core/core-types.h": "6843c4d1a5962cc458f5cc8331e7de7e09165cde98ba76966f35b270f79817d7"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-016.c",
+          "label": "public-header",
+          "header": "app/core/core-types.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-017.cpp",
+          "label": "public-header",
+          "header": "app/core/core-types.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-9c4b4254630e6ea139be",
+      "source_id": "01.002/000152",
+      "path": "app/core/core-types.h",
+      "source_blob": "f5864341d797759bae2e054882e827d1be9cbabe",
+      "source_range": "-125,0 -> 130,2",
+      "source_sha256": "9d41ac95d6ee3802161f4535a4f1f9729a097a5900d589f949fe1ec0f7fc462e",
+      "source_scope": "typedef struct _GimpGroupLayer      GimpGroupLayer;",
+      "current_headers": [
+        "app/core/core-types.h"
+      ],
+      "current_source_sha256": {
+        "app/core/core-types.h": "6843c4d1a5962cc458f5cc8331e7de7e09165cde98ba76966f35b270f79817d7"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-016.c",
+          "label": "public-header",
+          "header": "app/core/core-types.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-017.cpp",
+          "label": "public-header",
+          "header": "app/core/core-types.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-07e5ed79a010351f7012",
+      "source_id": "01.002/000153",
+      "path": "app/core/core-types.h",
+      "source_blob": "f5864341d797759bae2e054882e827d1be9cbabe",
+      "source_range": "-162,0 -> 169",
+      "source_sha256": "473488db651f9cd32946037c142c2551b77e640b420d2f6a44bc2b171ee23352",
+      "source_scope": "typedef struct _GimpPdbProgress     GimpPdbProgress;",
+      "current_headers": [
+        "app/core/core-types.h"
+      ],
+      "current_source_sha256": {
+        "app/core/core-types.h": "6843c4d1a5962cc458f5cc8331e7de7e09165cde98ba76966f35b270f79817d7"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-016.c",
+          "label": "public-header",
+          "header": "app/core/core-types.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-017.cpp",
+          "label": "public-header",
+          "header": "app/core/core-types.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-5e8f42fd7ec524e1cac7",
+      "source_id": "01.002/000167",
+      "path": "app/core/gimp.h",
+      "source_blob": "66119d6aed8e0ecbf28459a5b83f1821c219c567",
+      "source_range": "-98,0 -> 100,2",
+      "source_sha256": "470926f30e7ee0a8f8e42c3201792c89a1013d79cfac3b0a42ed02f3c65bd03c",
+      "source_scope": "struct _Gimp",
+      "current_headers": [
+        "app/core/gimp.h"
+      ],
+      "current_source_sha256": {
+        "app/core/gimp.h": "c974396ae0caf911cfe348a3bc80a3a5887e88e39c402cb7ed82cf97b30498a3"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-022.c",
+          "label": "public-header",
+          "header": "app/core/gimp.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-023.cpp",
+          "label": "public-header",
+          "header": "app/core/gimp.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-ae45f6f40201ae300ea7",
+      "source_id": "01.002/000171",
+      "path": "app/core/gimpbrush.h",
+      "source_blob": "f67bed808c8907116e55545a2715712e58485910",
+      "source_range": "-143,0 -> 144,6",
+      "source_sha256": "3c88f2f2944638c92a695c1d802c6b82232dcb9ecba6099ddfd9612381e2e3e0",
+      "source_scope": "void                   gimp_brush_set_spacing        (GimpBrush        *brush,",
+      "current_headers": [
+        "app/core/gimpbrush.h"
+      ],
+      "current_source_sha256": {
+        "app/core/gimpbrush.h": "8ef2105b07e272ce9ffe9d5f4013c8c929d39b5dba3efbb2fe6de420340ad309"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-024.c",
+          "label": "public-header",
+          "header": "app/core/gimpbrush.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-025.cpp",
+          "label": "public-header",
+          "header": "app/core/gimpbrush.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-acc0f3b5397a27e67554",
+      "source_id": "01.002/000172",
+      "path": "app/core/gimpchannel.h",
+      "source_blob": "fbe602efae90f803d78cfc30d547bcd250daf892",
+      "source_range": "-214,0 -> 215,6",
+      "source_sha256": "352935a32b917a3f79030570cd7d63e1857dcd0362808be0386285733e366524",
+      "source_scope": "void          gimp_channel_shrink             (GimpChannel      *mask,",
+      "current_headers": [
+        "app/core/gimpchannel.h"
+      ],
+      "current_source_sha256": {
+        "app/core/gimpchannel.h": "71ac815ddd65e2e7d903fa3c70a2c0ceb2b658c30ed715df726879d259842473"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-026.c",
+          "label": "public-header",
+          "header": "app/core/gimpchannel.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-027.cpp",
+          "label": "public-header",
+          "header": "app/core/gimpchannel.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-1baf642285db7583298f",
+      "source_id": "01.002/000194",
+      "path": "app/core/gimpcontext.c",
+      "source_blob": "bb576d36dd8aebd60baa351353e36cddf3195e14",
+      "source_range": "-759 -> 795",
+      "source_sha256": "0b30467dcb040993144696452ce7ee784ef4d2d13fdfe0c2109298fbfe363853",
+      "source_scope": "gimp_context_init (GimpContext *context)",
+      "current_headers": [
+        "app/core/gimpcontext.h"
+      ],
+      "current_source_sha256": {
+        "app/core/gimpcontext.h": "777954c5b8789c4595979e721e9c3c204147eed25ebca94be19550b76bbe8ccd"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-032.c",
+          "label": "public-header",
+          "header": "app/core/gimpcontext.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-033.cpp",
+          "label": "public-header",
+          "header": "app/core/gimpcontext.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-dcc079e3bda13ed09aec",
+      "source_id": "01.002/000197",
+      "path": "app/core/gimpcontext.c",
+      "source_blob": "bb576d36dd8aebd60baa351353e36cddf3195e14",
+      "source_range": "-962 -> 1012",
+      "source_sha256": "bd9e16115133d4dde6c86bf8f2ef248314d94db32105ca006318b505f9eaa00d",
+      "source_scope": "gimp_context_dispose (GObject *object)",
+      "current_headers": [
+        "app/core/gimpcontext.h"
+      ],
+      "current_source_sha256": {
+        "app/core/gimpcontext.h": "777954c5b8789c4595979e721e9c3c204147eed25ebca94be19550b76bbe8ccd"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-032.c",
+          "label": "public-header",
+          "header": "app/core/gimpcontext.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-033.cpp",
+          "label": "public-header",
+          "header": "app/core/gimpcontext.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-64502d58010c02d4cd94",
+      "source_id": "01.002/000198",
+      "path": "app/core/gimpcontext.c",
+      "source_blob": "bb576d36dd8aebd60baa351353e36cddf3195e14",
+      "source_range": "-964,2 -> 1014,2",
+      "source_sha256": "3d25bc40ce01c76fa4668f9b2f7b49497f6a9f31f625ee9f911a4667ae878177",
+      "source_scope": "gimp_context_dispose (GObject *object)",
+      "current_headers": [
+        "app/core/gimpcontext.h"
+      ],
+      "current_source_sha256": {
+        "app/core/gimpcontext.h": "777954c5b8789c4595979e721e9c3c204147eed25ebca94be19550b76bbe8ccd"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-032.c",
+          "label": "public-header",
+          "header": "app/core/gimpcontext.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-033.cpp",
+          "label": "public-header",
+          "header": "app/core/gimpcontext.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-7c345e20be7cd983d72d",
+      "source_id": "01.002/000206",
+      "path": "app/core/gimpcontext.c",
+      "source_blob": "bb576d36dd8aebd60baa351353e36cddf3195e14",
+      "source_range": "-1694 -> 1772",
+      "source_sha256": "755f7e42f66b796b62d5dd33f8471c70790dc4003bce668f0751203f92b13a96",
+      "source_scope": "gimp_context_copy_property (GimpContext         *src,",
+      "current_headers": [
+        "app/core/gimpcontext.h"
+      ],
+      "current_source_sha256": {
+        "app/core/gimpcontext.h": "777954c5b8789c4595979e721e9c3c204147eed25ebca94be19550b76bbe8ccd"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-032.c",
+          "label": "public-header",
+          "header": "app/core/gimpcontext.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-033.cpp",
+          "label": "public-header",
+          "header": "app/core/gimpcontext.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-6970cc72310be7232882",
+      "source_id": "01.002/000208",
+      "path": "app/core/gimpcontext.c",
+      "source_blob": "bb576d36dd8aebd60baa351353e36cddf3195e14",
+      "source_range": "-3575 -> 3774",
+      "source_sha256": "3ed23421928f02304ae89626c5b05d92638aaf238690988a5f491339cad85aae",
+      "source_scope": "gimp_context_get_template (GimpContext *context)",
+      "current_headers": [
+        "app/core/gimpcontext.h"
+      ],
+      "current_source_sha256": {
+        "app/core/gimpcontext.h": "777954c5b8789c4595979e721e9c3c204147eed25ebca94be19550b76bbe8ccd"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-032.c",
+          "label": "public-header",
+          "header": "app/core/gimpcontext.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-033.cpp",
+          "label": "public-header",
+          "header": "app/core/gimpcontext.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-3452855a845cdc430bd5",
+      "source_id": "01.002/000209",
+      "path": "app/core/gimpcontext.c",
+      "source_blob": "bb576d36dd8aebd60baa351353e36cddf3195e14",
+      "source_range": "-3595 -> 3794",
+      "source_sha256": "cecbaa927b2458b13352c19c85a221153e3227f0174b1956e8ce72c6388a160d",
+      "source_scope": "gimp_context_template_changed (GimpContext *context)",
+      "current_headers": [
+        "app/core/gimpcontext.h"
+      ],
+      "current_source_sha256": {
+        "app/core/gimpcontext.h": "777954c5b8789c4595979e721e9c3c204147eed25ebca94be19550b76bbe8ccd"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-032.c",
+          "label": "public-header",
+          "header": "app/core/gimpcontext.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-033.cpp",
+          "label": "public-header",
+          "header": "app/core/gimpcontext.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-776aff8de24dce2f16f3",
+      "source_id": "01.002/000210",
+      "path": "app/core/gimpcontext.c",
+      "source_blob": "bb576d36dd8aebd60baa351353e36cddf3195e14",
+      "source_range": "-3635 -> 3834",
+      "source_sha256": "a0cc32ad50228e839b5f744ccf2bfa53674b6f398f6ffad1faf34b3c60759e90",
+      "source_scope": "gimp_context_template_removed (GimpContainer *container,",
+      "current_headers": [
+        "app/core/gimpcontext.h"
+      ],
+      "current_source_sha256": {
+        "app/core/gimpcontext.h": "777954c5b8789c4595979e721e9c3c204147eed25ebca94be19550b76bbe8ccd"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-032.c",
+          "label": "public-header",
+          "header": "app/core/gimpcontext.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-033.cpp",
+          "label": "public-header",
+          "header": "app/core/gimpcontext.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-be0b1a6e4483ee1d7405",
+      "source_id": "01.002/000211",
+      "path": "app/core/gimpcontext.c",
+      "source_blob": "bb576d36dd8aebd60baa351353e36cddf3195e14",
+      "source_range": "-3637 -> 3836",
+      "source_sha256": "f7e22474c1e8add79d18fbcf8c3d7d15b1a86ba28014a0ce4cebce53b0c40aea",
+      "source_scope": "gimp_context_template_removed (GimpContainer *container,",
+      "current_headers": [
+        "app/core/gimpcontext.h"
+      ],
+      "current_source_sha256": {
+        "app/core/gimpcontext.h": "777954c5b8789c4595979e721e9c3c204147eed25ebca94be19550b76bbe8ccd"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-032.c",
+          "label": "public-header",
+          "header": "app/core/gimpcontext.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-033.cpp",
+          "label": "public-header",
+          "header": "app/core/gimpcontext.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-40e6ea6605b0e1c60bc5",
+      "source_id": "01.002/000212",
+      "path": "app/core/gimpcontext.c",
+      "source_blob": "bb576d36dd8aebd60baa351353e36cddf3195e14",
+      "source_range": "-3653 -> 3852",
+      "source_sha256": "c1eb489201e89ddff04d846cdf17865f42c8dbbb390c63249616d89a3f9602cb",
+      "source_scope": "gimp_context_real_set_template (GimpContext  *context,",
+      "current_headers": [
+        "app/core/gimpcontext.h"
+      ],
+      "current_source_sha256": {
+        "app/core/gimpcontext.h": "777954c5b8789c4595979e721e9c3c204147eed25ebca94be19550b76bbe8ccd"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-032.c",
+          "label": "public-header",
+          "header": "app/core/gimpcontext.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-033.cpp",
+          "label": "public-header",
+          "header": "app/core/gimpcontext.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-b39ab445e520eb1f7e0d",
+      "source_id": "01.002/000213",
+      "path": "app/core/gimpcontext.c",
+      "source_blob": "bb576d36dd8aebd60baa351353e36cddf3195e14",
+      "source_range": "-3663 -> 3862",
+      "source_sha256": "bd9e16115133d4dde6c86bf8f2ef248314d94db32105ca006318b505f9eaa00d",
+      "source_scope": "gimp_context_real_set_template (GimpContext  *context,",
+      "current_headers": [
+        "app/core/gimpcontext.h"
+      ],
+      "current_source_sha256": {
+        "app/core/gimpcontext.h": "777954c5b8789c4595979e721e9c3c204147eed25ebca94be19550b76bbe8ccd"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-032.c",
+          "label": "public-header",
+          "header": "app/core/gimpcontext.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-033.cpp",
+          "label": "public-header",
+          "header": "app/core/gimpcontext.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-1f5553c6492419c5e798",
+      "source_id": "01.002/000214",
+      "path": "app/core/gimpcontext.c",
+      "source_blob": "bb576d36dd8aebd60baa351353e36cddf3195e14",
+      "source_range": "-3665 -> 3864",
+      "source_sha256": "c99d93f61b317cf5fd7018697250f7c7ce370c93818a930970262297c8bf1999",
+      "source_scope": "gimp_context_real_set_template (GimpContext  *context,",
+      "current_headers": [
+        "app/core/gimpcontext.h"
+      ],
+      "current_source_sha256": {
+        "app/core/gimpcontext.h": "777954c5b8789c4595979e721e9c3c204147eed25ebca94be19550b76bbe8ccd"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-032.c",
+          "label": "public-header",
+          "header": "app/core/gimpcontext.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-033.cpp",
+          "label": "public-header",
+          "header": "app/core/gimpcontext.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-079f231b5ef8a1b8c0e7",
+      "source_id": "01.002/000215",
+      "path": "app/core/gimpcontext.c",
+      "source_blob": "bb576d36dd8aebd60baa351353e36cddf3195e14",
+      "source_range": "-3668 -> 3867",
+      "source_sha256": "8bf76b2c016be78a6e96289998764320e137b1af5c0e15ed343343ef7db6c3f2",
+      "source_scope": "gimp_context_real_set_template (GimpContext  *context,",
+      "current_headers": [
+        "app/core/gimpcontext.h"
+      ],
+      "current_source_sha256": {
+        "app/core/gimpcontext.h": "777954c5b8789c4595979e721e9c3c204147eed25ebca94be19550b76bbe8ccd"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-032.c",
+          "label": "public-header",
+          "header": "app/core/gimpcontext.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-033.cpp",
+          "label": "public-header",
+          "header": "app/core/gimpcontext.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-5955bc86e1b1087ab61a",
+      "source_id": "01.002/000216",
+      "path": "app/core/gimpcontext.c",
+      "source_blob": "bb576d36dd8aebd60baa351353e36cddf3195e14",
+      "source_range": "-3671 -> 3870",
+      "source_sha256": "13d5214b393c76d340883d4368d246a57f67561a672107389f03f9b783ecdbc1",
+      "source_scope": "gimp_context_real_set_template (GimpContext  *context,",
+      "current_headers": [
+        "app/core/gimpcontext.h"
+      ],
+      "current_source_sha256": {
+        "app/core/gimpcontext.h": "777954c5b8789c4595979e721e9c3c204147eed25ebca94be19550b76bbe8ccd"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-032.c",
+          "label": "public-header",
+          "header": "app/core/gimpcontext.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-033.cpp",
+          "label": "public-header",
+          "header": "app/core/gimpcontext.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-0b38d16e6a56e9064333",
+      "source_id": "01.002/000218",
+      "path": "app/core/gimpcontext.h",
+      "source_blob": "278a55c9f7e6be5e9348f9785045e09b4008f2c9",
+      "source_range": "-100 -> 103",
+      "source_sha256": "75ce3c32c39f7235ff5ecd83b87a0222eb7d0a7331a6f7e70010ae62d4388783",
+      "source_scope": "struct _GimpContext",
+      "current_headers": [
+        "app/core/gimpcontext.h"
+      ],
+      "current_source_sha256": {
+        "app/core/gimpcontext.h": "777954c5b8789c4595979e721e9c3c204147eed25ebca94be19550b76bbe8ccd"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-032.c",
+          "label": "public-header",
+          "header": "app/core/gimpcontext.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-033.cpp",
+          "label": "public-header",
+          "header": "app/core/gimpcontext.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-aefba3fa23e91dd07606",
+      "source_id": "01.002/000220",
+      "path": "app/core/gimpcontext.h",
+      "source_blob": "278a55c9f7e6be5e9348f9785045e09b4008f2c9",
+      "source_range": "-145 -> 150",
+      "source_sha256": "511e875c16a6c9a5ba33cab6aa8e16de632451f6af84235943850833ff2610b1",
+      "source_scope": "struct _GimpContextClass",
+      "current_headers": [
+        "app/core/gimpcontext.h"
+      ],
+      "current_source_sha256": {
+        "app/core/gimpcontext.h": "777954c5b8789c4595979e721e9c3c204147eed25ebca94be19550b76bbe8ccd"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-032.c",
+          "label": "public-header",
+          "header": "app/core/gimpcontext.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-033.cpp",
+          "label": "public-header",
+          "header": "app/core/gimpcontext.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-b7d765aef338498ab672",
+      "source_id": "01.002/000221",
+      "path": "app/core/gimpcontext.h",
+      "source_blob": "278a55c9f7e6be5e9348f9785045e09b4008f2c9",
+      "source_range": "-153 -> 158",
+      "source_sha256": "30e477f898d295e0bfccca633e0af81ebbcc8ed3a79e11bcc781d0cebe949c03",
+      "source_scope": "GimpContext * gimp_context_new               (Gimp                *gimp,",
+      "current_headers": [
+        "app/core/gimpcontext.h"
+      ],
+      "current_source_sha256": {
+        "app/core/gimpcontext.h": "777954c5b8789c4595979e721e9c3c204147eed25ebca94be19550b76bbe8ccd"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-032.c",
+          "label": "public-header",
+          "header": "app/core/gimpcontext.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-033.cpp",
+          "label": "public-header",
+          "header": "app/core/gimpcontext.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-d4320920d133e5f251a0",
+      "source_id": "01.002/000223",
+      "path": "app/core/gimpcontext.h",
+      "source_blob": "278a55c9f7e6be5e9348f9785045e09b4008f2c9",
+      "source_range": "-342 -> 354",
+      "source_sha256": "360190465f431e787c132bac52e16fe67ede162e76f4311418401ba30e31e859",
+      "source_scope": "void             gimp_context_set_template        (GimpContext     *context,",
+      "current_headers": [
+        "app/core/gimpcontext.h"
+      ],
+      "current_source_sha256": {
+        "app/core/gimpcontext.h": "777954c5b8789c4595979e721e9c3c204147eed25ebca94be19550b76bbe8ccd"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-032.c",
+          "label": "public-header",
+          "header": "app/core/gimpcontext.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-033.cpp",
+          "label": "public-header",
+          "header": "app/core/gimpcontext.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-55681bee3adbc1406235",
+      "source_id": "01.002/000224",
+      "path": "app/core/gimpcontext.h",
+      "source_blob": "278a55c9f7e6be5e9348f9785045e09b4008f2c9",
+      "source_range": "-344,0 -> 357,6",
+      "source_sha256": "bedadc0e190613b1f83cbe5e2384fe1ed320082d1ec3ef054f0981dfc233b842",
+      "source_scope": "void             gimp_context_template_changed    (GimpContext     *context);",
+      "current_headers": [
+        "app/core/gimpcontext.h"
+      ],
+      "current_source_sha256": {
+        "app/core/gimpcontext.h": "777954c5b8789c4595979e721e9c3c204147eed25ebca94be19550b76bbe8ccd"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-032.c",
+          "label": "public-header",
+          "header": "app/core/gimpcontext.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-033.cpp",
+          "label": "public-header",
+          "header": "app/core/gimpcontext.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-df20efcd45f95f890745",
+      "source_id": "01.002/000226",
+      "path": "app/core/gimpdata.h",
+      "source_blob": "14604b2fc213c56a8043adf7e3686dc5b3e2b739",
+      "source_range": "-118,0 -> 119,6",
+      "source_sha256": "0ed7a69cc5bdcb81ebfb62431af0e98484908e9a16548136f4aa41e3df9703e9",
+      "source_scope": "GQuark        gimp_data_error_quark      (void) G_GNUC_CONST;",
+      "current_headers": [
+        "app/core/gimpdata.h"
+      ],
+      "current_source_sha256": {
+        "app/core/gimpdata.h": "52050d5de04c23cced8d984364c178bd3d4d026ec0783b4aba1634573594645a"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-034.c",
+          "label": "public-header",
+          "header": "app/core/gimpdata.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-035.cpp",
+          "label": "public-header",
+          "header": "app/core/gimpdata.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-6c58441e8863a2eec0b4",
+      "source_id": "01.002/000228",
+      "path": "app/core/gimpdatafactory.h",
+      "source_blob": "54d48fee9adb4bff3b0f8c5acafa7968e4022af0",
+      "source_range": "-108,0 -> 109,6",
+      "source_sha256": "5cdd559fe7b88aecf3169a6da72ee9a7f7e9755dbc7d6276996341cbd65ff215",
+      "source_scope": "gboolean        gimp_data_factory_has_data_new_func (GimpDataFactory  *factory);",
+      "current_headers": [
+        "app/core/gimpdatafactory.h"
+      ],
+      "current_source_sha256": {
+        "app/core/gimpdatafactory.h": "76a2e1561bf50621181e01129576c2ee6b832953a9afb5649b186242080a4b40"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-036.c",
+          "label": "public-header",
+          "header": "app/core/gimpdatafactory.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-037.cpp",
+          "label": "public-header",
+          "header": "app/core/gimpdatafactory.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-3c0f5eaac4f36c56b5aa",
+      "source_id": "01.002/000232",
+      "path": "app/core/gimpdrawable.h",
+      "source_blob": "c5b2eee67172838f9ef98ca12524ddbfa107c674",
+      "source_range": "-39,0 -> 40,3",
+      "source_sha256": "efea016255664c3aefca0c2061be366fb6d75acb6f737d7c080579d58a062f49",
+      "source_scope": "struct _GimpDrawable",
+      "current_headers": [
+        "app/core/gimpdrawable.h"
+      ],
+      "current_source_sha256": {
+        "app/core/gimpdrawable.h": "c1de298fee095660cf998da214615fa97d88c6c85ded194c04d3dee033cd27b6"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-038.c",
+          "label": "public-header",
+          "header": "app/core/gimpdrawable.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-039.cpp",
+          "label": "public-header",
+          "header": "app/core/gimpdrawable.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-2fdfea37067cfdd2a7ae",
+      "source_id": "01.002/000233",
+      "path": "app/core/gimpdrawable.h",
+      "source_blob": "c5b2eee67172838f9ef98ca12524ddbfa107c674",
+      "source_range": "-40,0 -> 44",
+      "source_sha256": "9bb41c2bdf539b1fb4e819f83915f240412c666c824efdc1cd2131a848e37a55",
+      "source_scope": "struct _GimpDrawable",
+      "current_headers": [
+        "app/core/gimpdrawable.h"
+      ],
+      "current_source_sha256": {
+        "app/core/gimpdrawable.h": "c1de298fee095660cf998da214615fa97d88c6c85ded194c04d3dee033cd27b6"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-038.c",
+          "label": "public-header",
+          "header": "app/core/gimpdrawable.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-039.cpp",
+          "label": "public-header",
+          "header": "app/core/gimpdrawable.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-1fef377e80aca0423cb3",
+      "source_id": "01.002/000234",
+      "path": "app/core/gimpdrawable.h",
+      "source_blob": "c5b2eee67172838f9ef98ca12524ddbfa107c674",
+      "source_range": "-239,0 -> 244,6",
+      "source_sha256": "066753d97a207c44ece32a8990f23b44fcd04ed02166e428e9923fdec72b2cc5",
+      "source_scope": "void           gimp_drawable_detach_floating_sel (GimpDrawable       *drawable);",
+      "current_headers": [
+        "app/core/gimpdrawable.h"
+      ],
+      "current_source_sha256": {
+        "app/core/gimpdrawable.h": "c1de298fee095660cf998da214615fa97d88c6c85ded194c04d3dee033cd27b6"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-038.c",
+          "label": "public-header",
+          "header": "app/core/gimpdrawable.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-039.cpp",
+          "label": "public-header",
+          "header": "app/core/gimpdrawable.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-8e552b48847277c8dbcd",
+      "source_id": "01.002/000242",
+      "path": "app/core/gimpdrawablestack.h",
+      "source_blob": "90b5c52711e03375128bce078ed3ea8f99ffe3e9",
+      "source_range": "-59,0 -> 60,6",
+      "source_sha256": "6b059846635aec10cd51900671338d66f319c3ef8fe7e01fcb722332f175fcd5",
+      "source_scope": "GeglNode      * gimp_drawable_stack_get_graph (GimpDrawableStack *stack);",
+      "current_headers": [
+        "app/core/gimpdrawablestack.h"
+      ],
+      "current_source_sha256": {
+        "app/core/gimpdrawablestack.h": "c0bf3fb20fa9926a862e53c8c6bd421fbd30b5156df2315e82df22ceccd38c30"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-040.c",
+          "label": "public-header",
+          "header": "app/core/gimpdrawablestack.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-041.cpp",
+          "label": "public-header",
+          "header": "app/core/gimpdrawablestack.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-5df6c681d733791f3235",
+      "source_id": "01.002/000253",
+      "path": "app/core/gimpdynamics.h",
+      "source_blob": "22fe1dc3495737de4bfb5ab5f9922bb3f694de42",
+      "source_range": "-54,0 -> 55,6",
+      "source_sha256": "f64b169d7ccbae34f32ca01b1d69340cf7051cd6a50c1333f671def10e61300d",
+      "source_scope": "GimpDynamicsOutput * gimp_dynamics_get_output   (GimpDynamics           *dynamic",
+      "current_headers": [
+        "app/core/gimpdynamics.h"
+      ],
+      "current_source_sha256": {
+        "app/core/gimpdynamics.h": "eba773e1988b37f71fd14b956c27b1b355593faec15d21c87029aa2c5cf7430c"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-042.c",
+          "label": "public-header",
+          "header": "app/core/gimpdynamics.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-043.cpp",
+          "label": "public-header",
+          "header": "app/core/gimpdynamics.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-5c97c0af0746768fe74c",
+      "source_id": "01.002/000254",
+      "path": "app/core/gimpdynamicsoutput.h",
+      "source_blob": "407fc79175a4efead54f38e44a0265cab3b7dc87",
+      "source_range": "-67 -> 67,6",
+      "source_sha256": "84afddbd64ca6e09916064cc6c7f0ce5820909fa23f9f611aca22b3a172aa617",
+      "source_scope": "gdouble    gimp_dynamics_output_get_aspect_value   (GimpDynamicsOutput *output,",
+      "current_headers": [
+        "app/core/gimpdynamicsoutput.h"
+      ],
+      "current_source_sha256": {
+        "app/core/gimpdynamicsoutput.h": "3360b2918469131396f07d27335eb235fd1d2f05acebab3d398d495a7378da02"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-044.c",
+          "label": "public-header",
+          "header": "app/core/gimpdynamicsoutput.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-045.cpp",
+          "label": "public-header",
+          "header": "app/core/gimpdynamicsoutput.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-7a7a07bbc890122a41a1",
+      "source_id": "01.002/000265",
+      "path": "app/core/gimpgrouplayer.h",
+      "source_blob": "906b4d120ecd3bca75eb1b2b4a757fcdc34a9352",
+      "source_range": "-59,0 -> 60,6",
+      "source_sha256": "78d55d45dcaa243b6ea10c30dbc422569c2c4043e0029e33620b5af5b7c9dc7d",
+      "source_scope": "void             gimp_group_layer_resume_resize  (GimpGroupLayer *group,",
+      "current_headers": [
+        "app/core/gimpgrouplayer.h"
+      ],
+      "current_source_sha256": {
+        "app/core/gimpgrouplayer.h": "2b42d9fca5157c6257c7d198777550a9e704ddc90119f4866dc8b77d116fba8d"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-054.c",
+          "label": "public-header",
+          "header": "app/core/gimpgrouplayer.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-055.cpp",
+          "label": "public-header",
+          "header": "app/core/gimpgrouplayer.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-0c89e2c751f2c2200160",
+      "source_id": "01.002/000331",
+      "path": "app/core/gimpimage-new.h",
+      "source_blob": "bf0adcfd47e0ecdcf4c1e89421d6b4f4c92fbf88",
+      "source_range": "-25 -> 25",
+      "source_sha256": "db81026901d7cdd7c0552989e2931ba98bf128a44b63281c0f424b73865421b5",
+      "source_scope": "void           gimp_image_new_set_last_template (Gimp            *gimp,",
+      "current_headers": [
+        "app/core/gimpimage-new.h"
+      ],
+      "current_source_sha256": {
+        "app/core/gimpimage-new.h": "49752eb57a65f2b8808747bb0b0332b8b17de73a993f09027edc55dbf28404b3"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-056.c",
+          "label": "public-header",
+          "header": "app/core/gimpimage-new.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-057.cpp",
+          "label": "public-header",
+          "header": "app/core/gimpimage-new.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-00cff238c5a4c366e1eb",
+      "source_id": "01.002/000332",
+      "path": "app/core/gimpimage-new.h",
+      "source_blob": "bf0adcfd47e0ecdcf4c1e89421d6b4f4c92fbf88",
+      "source_range": "-28 -> 28",
+      "source_sha256": "8f288b301b484e9ebf0a1885ea3a46b168f4e82dd27e7f13a25860e971c7f641",
+      "source_scope": "GimpImage    * gimp_image_new_from_template     (Gimp            *gimp,",
+      "current_headers": [
+        "app/core/gimpimage-new.h"
+      ],
+      "current_source_sha256": {
+        "app/core/gimpimage-new.h": "49752eb57a65f2b8808747bb0b0332b8b17de73a993f09027edc55dbf28404b3"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-056.c",
+          "label": "public-header",
+          "header": "app/core/gimpimage-new.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-057.cpp",
+          "label": "public-header",
+          "header": "app/core/gimpimage-new.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-5f192076e2017ca578da",
+      "source_id": "01.002/000352",
+      "path": "app/core/gimpimage.h",
+      "source_blob": "53e77d2b7654901e03bb774aee5c4c5d00bbda7d",
+      "source_range": "-492,0 -> 494,5",
+      "source_sha256": "1c6ad1d8bac463283b97e956def1d1f10118335a8f5f23ac35a588590d77402f",
+      "source_scope": "const gchar   * gimp_image_get_string_untitled   (void);",
+      "current_headers": [
+        "app/core/gimpimage.h"
+      ],
+      "current_source_sha256": {
+        "app/core/gimpimage.h": "803bae72bbd1dcbdd8518c604f1f4eabd6cfac291427bd6e42a419f8583346ac"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-062.c",
+          "label": "public-header",
+          "header": "app/core/gimpimage.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-063.cpp",
+          "label": "public-header",
+          "header": "app/core/gimpimage.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-dd63f979d0533e679da2",
+      "source_id": "01.002/000360",
+      "path": "app/core/gimpitemundo.h",
+      "source_blob": "e0342152a22d25f0a1c46838726e649c297b0b58",
+      "source_range": "-49,0 -> 50,6",
+      "source_sha256": "9e6d22bad3460c567df61a991857755eb4c173fc3563b5f4ac7a49423c4654d5",
+      "source_scope": "GType   gimp_item_undo_get_type (void) G_GNUC_CONST;",
+      "current_headers": [
+        "app/core/gimpitemundo.h"
+      ],
+      "current_source_sha256": {
+        "app/core/gimpitemundo.h": "f5d3776d6153301914b82cc1a0406b808dadcdc7914cdbf35db0287f2fb7aa2e"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-064.c",
+          "label": "public-header",
+          "header": "app/core/gimpitemundo.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-065.cpp",
+          "label": "public-header",
+          "header": "app/core/gimpitemundo.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-a0d8d2263e616643d122",
+      "source_id": "01.002/000362",
+      "path": "app/core/gimplayer.h",
+      "source_blob": "c3c5d86d709a4932464490c3efd3d3f3b4b7b91f",
+      "source_range": "-141,0 -> 142,7",
+      "source_sha256": "c2b6fa1b126d8cbc1a725a8e43cb5111759ee660a18041ef337930217ec48000",
+      "source_scope": "gboolean        gimp_layer_can_lock_alpha      (const GimpLayer      *layer);",
+      "current_headers": [
+        "app/core/gimplayer.h"
+      ],
+      "current_source_sha256": {
+        "app/core/gimplayer.h": "1c4506b263d63d87806dd2aa0f644ee1d4a8028146515697496c8b731ea68a44"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-066.c",
+          "label": "public-header",
+          "header": "app/core/gimplayer.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-067.cpp",
+          "label": "public-header",
+          "header": "app/core/gimplayer.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-59204a50d71e6a39fb6b",
+      "source_id": "01.002/000374",
+      "path": "app/core/gimpobject.h",
+      "source_blob": "e06a3a812c4aef704f7c2a93b8db99904039f476",
+      "source_range": "-71,0 -> 72,5",
+      "source_sha256": "456e2534292c46daa9447ca27149bf58f6303d7a36fc3a3a1bd94cc017f666a8",
+      "source_scope": "gint64        gimp_object_get_memsize     (GimpObject       *object,",
+      "current_headers": [
+        "app/core/gimpobject.h"
+      ],
+      "current_source_sha256": {
+        "app/core/gimpobject.h": "f29b1f418b285a9c581c71f6cddd485ebb9e837b9b945b8b9ec389812b284b78"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-070.c",
+          "label": "public-header",
+          "header": "app/core/gimpobject.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-071.cpp",
+          "label": "public-header",
+          "header": "app/core/gimpobject.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-c1f23c36eda9e3cdc5b6",
+      "source_id": "01.002/000375",
+      "path": "app/core/gimpobject.h",
+      "source_blob": "e06a3a812c4aef704f7c2a93b8db99904039f476",
+      "source_range": "-72,0 -> 78",
+      "source_sha256": "9bb41c2bdf539b1fb4e819f83915f240412c666c824efdc1cd2131a848e37a55",
+      "source_scope": "gint64        gimp_object_get_memsize     (GimpObject       *object,",
+      "current_headers": [
+        "app/core/gimpobject.h"
+      ],
+      "current_source_sha256": {
+        "app/core/gimpobject.h": "f29b1f418b285a9c581c71f6cddd485ebb9e837b9b945b8b9ec389812b284b78"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-070.c",
+          "label": "public-header",
+          "header": "app/core/gimpobject.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-071.cpp",
+          "label": "public-header",
+          "header": "app/core/gimpobject.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-bda2669f2571cc3063c8",
+      "source_id": "01.002/000382",
+      "path": "app/core/gimppickable.h",
+      "source_blob": "71f4712188d35cb5a8ad1f46d03038b80f786a4e",
+      "source_range": "-79 -> 79,6",
+      "source_sha256": "030298a58bb8eb82361894776d47ff943d776dd5c82723b4ade9a55c56f8bc2e",
+      "source_scope": "gboolean        gimp_pickable_pick_color         (GimpPickable *pickable,",
+      "current_headers": [
+        "app/core/gimppickable.h"
+      ],
+      "current_source_sha256": {
+        "app/core/gimppickable.h": "2a345e77c784ba3dde6254d33522a879dea928287450c0410a055dc30fde496b"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-078.c",
+          "label": "public-header",
+          "header": "app/core/gimppickable.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-079.cpp",
+          "label": "public-header",
+          "header": "app/core/gimppickable.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-1a83095c89071a253d2d",
+      "source_id": "01.002/000383",
+      "path": "app/core/gimpprogress.h",
+      "source_blob": "9133f9691ce1e6f092843454b8dab40d611c82db",
+      "source_range": "-93,0 -> 94,6",
+      "source_sha256": "f8dad0f6141d11c958a2b2b33865a52b30ee060da90668e8a2660b29b9540bc7",
+      "source_scope": "void           gimp_progress_update_and_flush   (gint                 min,",
+      "current_headers": [
+        "app/core/gimpprogress.h"
+      ],
+      "current_source_sha256": {
+        "app/core/gimpprogress.h": "d1b625e9a9406ac2bb21e387dc125d34afa8bf653f351d61b906626e8edf6c1a"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-080.c",
+          "label": "public-header",
+          "header": "app/core/gimpprogress.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-081.cpp",
+          "label": "public-header",
+          "header": "app/core/gimpprogress.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-54471c61909b7445ad97",
+      "source_id": "01.002/000384",
+      "path": "app/core/gimpprojectable.h",
+      "source_blob": "9e62887eff8e47e3fa082c513bde8629cba9aeb5",
+      "source_range": "-90,0 -> 91,6",
+      "source_sha256": "a2139e966f945e97b10ef8210d5d52af51aa314f4ba419afd34b460d9b0da92d",
+      "source_scope": "GList        * gimp_projectable_get_channels       (GimpProjectable *projectable",
+      "current_headers": [
+        "app/core/gimpprojectable.h"
+      ],
+      "current_source_sha256": {
+        "app/core/gimpprojectable.h": "8f619d78b9b76cebdfab5239e12a41955a13bae47d9ca9369fc5b27ccce33287"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-082.c",
+          "label": "public-header",
+          "header": "app/core/gimpprojectable.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-083.cpp",
+          "label": "public-header",
+          "header": "app/core/gimpprojectable.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-5e5791de438d75109f31",
+      "source_id": "01.002/000386",
+      "path": "app/core/gimpprojection.h",
+      "source_blob": "1f346eddd7b2173e2cdd280d5e70b0171f776d35",
+      "source_range": "-105,0 -> 106,6",
+      "source_sha256": "59bad2b2332811d2c122abd6bb6e06b6ddecaed960d942b825429fc3a6276453",
+      "source_scope": "gint64           gimp_projection_estimate_memsize (GimpImageBaseType     type,",
+      "current_headers": [
+        "app/core/gimpprojection.h"
+      ],
+      "current_source_sha256": {
+        "app/core/gimpprojection.h": "ed2f2f592c433a7ef23f8587d3e8e779fd7da0847fed25a37d700fbf143038e0"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-084.c",
+          "label": "public-header",
+          "header": "app/core/gimpprojection.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-085.cpp",
+          "label": "public-header",
+          "header": "app/core/gimpprojection.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-fdd29d167b82774cbc81",
+      "source_id": "01.002/000387",
+      "path": "app/core/gimptemplate.h",
+      "source_blob": "f02c9705a7a0536e01de6884e0f4f6c570616b31",
+      "source_range": "-69 -> 69",
+      "source_sha256": "d0f1b1aaf044d2f8eae647dafa528204effbf99f4c7fa0640ca79fdc5677644c",
+      "source_scope": "GimpTemplate      * gimp_template_new                 (const gchar  *name);",
+      "current_headers": [
+        "app/core/gimptemplate.h"
+      ],
+      "current_source_sha256": {
+        "app/core/gimptemplate.h": "b30144d3d7b9badc52698da343acc88a5d3d8da8ae2e8d5697e5817566ceca84"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-086.c",
+          "label": "public-header",
+          "header": "app/core/gimptemplate.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-087.cpp",
+          "label": "public-header",
+          "header": "app/core/gimptemplate.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-20c4b4caee348eb42606",
+      "source_id": "01.002/000388",
+      "path": "app/core/gimptemplate.h",
+      "source_blob": "f02c9705a7a0536e01de6884e0f4f6c570616b31",
+      "source_range": "-72,3 -> 72,3",
+      "source_sha256": "dda3611f4c4ccc246532be8fcf582e494ede5ebba0945a9a1bacf6d538276435",
+      "source_scope": "void                gimp_template_set_from_image      (GimpTemplate *template,",
+      "current_headers": [
+        "app/core/gimptemplate.h"
+      ],
+      "current_source_sha256": {
+        "app/core/gimptemplate.h": "b30144d3d7b9badc52698da343acc88a5d3d8da8ae2e8d5697e5817566ceca84"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-086.c",
+          "label": "public-header",
+          "header": "app/core/gimptemplate.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-087.cpp",
+          "label": "public-header",
+          "header": "app/core/gimptemplate.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-4bcfca1981359ee569ac",
+      "source_id": "01.002/000389",
+      "path": "app/core/gimptemplate.h",
+      "source_blob": "f02c9705a7a0536e01de6884e0f4f6c570616b31",
+      "source_range": "-76,3 -> 76,3",
+      "source_sha256": "ad7f598a5682aea3b07a8c4bb130edba93899c68478a780d66313e761349d17f",
+      "source_scope": "GimpUnit            gimp_template_get_unit            (GimpTemplate *template);",
+      "current_headers": [
+        "app/core/gimptemplate.h"
+      ],
+      "current_source_sha256": {
+        "app/core/gimptemplate.h": "b30144d3d7b9badc52698da343acc88a5d3d8da8ae2e8d5697e5817566ceca84"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-086.c",
+          "label": "public-header",
+          "header": "app/core/gimptemplate.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-087.cpp",
+          "label": "public-header",
+          "header": "app/core/gimptemplate.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-fb6e4cf7c98de7257602",
+      "source_id": "01.002/000390",
+      "path": "app/core/gimptemplate.h",
+      "source_blob": "f02c9705a7a0536e01de6884e0f4f6c570616b31",
+      "source_range": "-80,2 -> 80,2",
+      "source_sha256": "edf498c416b452c188ef26fb3517223269dabdc3c672107bbbd8473b6c480349",
+      "source_scope": "GimpUnit            gimp_template_get_resolution_unit (GimpTemplate *template);",
+      "current_headers": [
+        "app/core/gimptemplate.h"
+      ],
+      "current_source_sha256": {
+        "app/core/gimptemplate.h": "b30144d3d7b9badc52698da343acc88a5d3d8da8ae2e8d5697e5817566ceca84"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-086.c",
+          "label": "public-header",
+          "header": "app/core/gimptemplate.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-087.cpp",
+          "label": "public-header",
+          "header": "app/core/gimptemplate.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-54ba7a2d421dc65f33d4",
+      "source_id": "01.002/000391",
+      "path": "app/core/gimptemplate.h",
+      "source_blob": "f02c9705a7a0536e01de6884e0f4f6c570616b31",
+      "source_range": "-83 -> 83",
+      "source_sha256": "7d0ada68459b1262c4893550b547b406b20386f4135ae34e5384ec5209707a90",
+      "source_scope": "GimpFillType        gimp_template_get_fill_type       (GimpTemplate *template);",
+      "current_headers": [
+        "app/core/gimptemplate.h"
+      ],
+      "current_source_sha256": {
+        "app/core/gimptemplate.h": "b30144d3d7b9badc52698da343acc88a5d3d8da8ae2e8d5697e5817566ceca84"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-086.c",
+          "label": "public-header",
+          "header": "app/core/gimptemplate.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-087.cpp",
+          "label": "public-header",
+          "header": "app/core/gimptemplate.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-9658f49d21b016a28df0",
+      "source_id": "01.002/000392",
+      "path": "app/core/gimptemplate.h",
+      "source_blob": "f02c9705a7a0536e01de6884e0f4f6c570616b31",
+      "source_range": "-85 -> 85",
+      "source_sha256": "2881b6f3b5dd9766b0bc176b6c33ee7b30980f650b9915db1aa0bacf6db5de3a",
+      "source_scope": "const gchar       * gimp_template_get_comment         (GimpTemplate *template);",
+      "current_headers": [
+        "app/core/gimptemplate.h"
+      ],
+      "current_source_sha256": {
+        "app/core/gimptemplate.h": "b30144d3d7b9badc52698da343acc88a5d3d8da8ae2e8d5697e5817566ceca84"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-086.c",
+          "label": "public-header",
+          "header": "app/core/gimptemplate.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-087.cpp",
+          "label": "public-header",
+          "header": "app/core/gimptemplate.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-ad961352c22be0132121",
+      "source_id": "01.002/000429",
+      "path": "app/core/gimptooloptions.h",
+      "source_blob": "cd1ef21732b203df0e6261d58391c2af363d0cbb",
+      "source_range": "-63 -> 63,3",
+      "source_sha256": "bd7d1a2b6f2fa1ab21b77665f7728cc0e75c1301dae4079f494d9e26894c2fab",
+      "source_scope": "void       gimp_tool_options_create_folder (void);",
+      "current_headers": [
+        "app/core/gimptooloptions.h"
+      ],
+      "current_source_sha256": {
+        "app/core/gimptooloptions.h": "aa1c9732cd31511a0a3938e33306797ee6644ff92905e095de961f7b8f1191a3"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-088.c",
+          "label": "public-header",
+          "header": "app/core/gimptooloptions.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-089.cpp",
+          "label": "public-header",
+          "header": "app/core/gimptooloptions.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-54b3d6d0a65b4391b512",
+      "source_id": "01.002/000436",
+      "path": "app/core/gimpviewable.h",
+      "source_blob": "a36f697f8bcfe65e9e9e93d755ec27d5e3511b30",
+      "source_range": "-189 -> 190,6",
+      "source_sha256": "f48b37fe24e9e6784a012bd6f7ef06011c04e7dde2cadae4a2261452373fc650",
+      "source_scope": "gboolean        gimp_viewable_is_ancestor        (GimpViewable  *ancestor,",
+      "current_headers": [
+        "app/core/gimpviewable.h"
+      ],
+      "current_source_sha256": {
+        "app/core/gimpviewable.h": "38889e398c2e3f4a52b6c5d427835e32cb958fc632f895304dca88d1e0c6ca97"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-092.c",
+          "label": "public-header",
+          "header": "app/core/gimpviewable.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-093.cpp",
+          "label": "public-header",
+          "header": "app/core/gimpviewable.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-bd94a91b914cc1c2276c",
+      "source_id": "01.002/000528",
+      "path": "app/display/gimpcanvasitem.h",
+      "source_blob": "a480e396db1d46bd6faae64501644c3491087573",
+      "source_range": "-112,0 -> 113,3",
+      "source_sha256": "609bdb799b96dfd049dc35fa21979690f1b85c9d5e25c5a414b30a5ffeed04e3",
+      "source_scope": "void             _gimp_canvas_item_fill            (GimpCanvasItem   *item,",
+      "current_headers": [
+        "app/display/gimpcanvasitem.h"
+      ],
+      "current_source_sha256": {
+        "app/display/gimpcanvasitem.h": "8db9193731f0cdf8e2751eda61f5cadbbb1921dfb9c39f8573c586be6a4eaece"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-102.c",
+          "label": "public-header",
+          "header": "app/display/gimpcanvasitem.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-103.cpp",
+          "label": "public-header",
+          "header": "app/display/gimpcanvasitem.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-09d396b089b84ae403e4",
+      "source_id": "01.002/000927",
+      "path": "app/paint/gimpbrushcore.h",
+      "source_blob": "e5e17105aca0f14029efbd23b082d7dd315f2367",
+      "source_range": "-139,0 -> 171,6",
+      "source_sha256": "ad479299e4c241a4664247dd63dcd61eac351697064f5790bc0e8437138cc6c9",
+      "source_scope": "void   gimp_brush_core_eval_transform_dynamics",
+      "current_headers": [
+        "app/paint/gimpbrushcore.h"
+      ],
+      "current_source_sha256": {
+        "app/paint/gimpbrushcore.h": "b95d16c3202d79d7ca9bca340eea60718d2b82c445c3ffe88de83690cd4a168e"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-126.c",
+          "label": "public-header",
+          "header": "app/paint/gimpbrushcore.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-127.cpp",
+          "label": "public-header",
+          "header": "app/paint/gimpbrushcore.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-2c1960219954bbb1998f",
+      "source_id": "01.002/000948",
+      "path": "app/paint/gimppaintcore.h",
+      "source_blob": "4493f064204c4f3440e0ed1690d8a12a609e4a73",
+      "source_range": "-209 -> 210,6",
+      "source_sha256": "3867f7fddaaca3c252bd413e00988f4460e09447d03d5b348660bf1c2e2bfb04",
+      "source_scope": "void      gimp_paint_core_smooth_coords             (GimpPaintCore    *core,",
+      "current_headers": [
+        "app/paint/gimppaintcore.h"
+      ],
+      "current_source_sha256": {
+        "app/paint/gimppaintcore.h": "c4daffd4560445fe4796bd902006efadb91762781102f83d3745a0f2ba99967a"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-132.c",
+          "label": "public-header",
+          "header": "app/paint/gimppaintcore.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-133.cpp",
+          "label": "public-header",
+          "header": "app/paint/gimppaintcore.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-2b8eb62a5c1c8275985c",
+      "source_id": "01.002/000963",
+      "path": "app/paint/gimppaintoptions.h",
+      "source_blob": "0cb042630b3b2f5b1e456a3624973819ec6c4c47",
+      "source_range": "-145 -> 174,6",
+      "source_sha256": "118e99fc9a42e79eae0e9f018a932c81c5afb89b1effd68f0bc9def2b702eac2",
+      "source_scope": "void    gimp_paint_options_copy_gradient_props (GimpPaintOptions *src,",
+      "current_headers": [
+        "app/paint/gimppaintoptions.h"
+      ],
+      "current_source_sha256": {
+        "app/paint/gimppaintoptions.h": "5138abd4268b4a7036a1a6433adbc826f74cf6b79914f0467c6b5c271dada073"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-144.c",
+          "label": "public-header",
+          "header": "app/paint/gimppaintoptions.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-145.cpp",
+          "label": "public-header",
+          "header": "app/paint/gimppaintoptions.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-57eaa97054947d7b59be",
+      "source_id": "01.002/001039",
+      "path": "app/pdb/gimpprocedure.h",
+      "source_blob": "f97af4366b4b082ad1c54326c09c558f98f7949d",
+      "source_range": "-145,2 -> 145,6",
+      "source_sha256": "035a5fd40c798dcb4ba84e908760c2fe79880f3f024f7a22faabcb438f0d6375",
+      "source_scope": "gint            gimp_procedure_name_compare       (GimpProcedure    *proc1,",
+      "current_headers": [
+        "app/pdb/gimpprocedure.h"
+      ],
+      "current_source_sha256": {
+        "app/pdb/gimpprocedure.h": "978a44b48f47b91ec609bb361ba9f3d6fd32bbf394a12c04e6e72721f95ec7df"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-156.c",
+          "label": "public-header",
+          "header": "app/pdb/gimpprocedure.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-157.cpp",
+          "label": "public-header",
+          "header": "app/pdb/gimpprocedure.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-e51c5efd4cfb23db61f5",
+      "source_id": "01.002/001241",
+      "path": "app/tools/gimpdrawtool.h",
+      "source_blob": "21e796894ccba73b7c62546f1dbbe47cf0c9fa40",
+      "source_range": "-257 -> 257,3",
+      "source_sha256": "6c51c5cec741ce0f90ee52c8771848b8bc5195bfdbfee4b10ea63439d260775c",
+      "source_scope": "gboolean         gimp_draw_tool_on_vectors           (GimpDrawTool     *draw_too",
+      "current_headers": [
+        "app/tools/gimpdrawtool.h"
+      ],
+      "current_source_sha256": {
+        "app/tools/gimpdrawtool.h": "b8b1b49039fcd0ab2f787cf31ec274f45197dc3bc2852a24e0be298a9e3d9d72"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-158.c",
+          "label": "public-header",
+          "header": "app/tools/gimpdrawtool.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-159.cpp",
+          "label": "public-header",
+          "header": "app/tools/gimpdrawtool.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-af436ccfe363ed753c4f",
+      "source_id": "01.002/001479",
+      "path": "app/tools/gimptool.h",
+      "source_blob": "fc8590fe01e02ac9a752a44ed49d0e5ed6e3a860",
+      "source_range": "-252 -> 254,3",
+      "source_sha256": "5e3fd8031d9ac5e7458a4c97a686da0fcd2a321eb0a5392818a46ccf8bad3340",
+      "source_scope": "void              gimp_tool_set_cursor          (GimpTool            *tool,",
+      "current_headers": [
+        "app/tools/gimptool.h"
+      ],
+      "current_source_sha256": {
+        "app/tools/gimptool.h": "c72fae2f17e4fb53b2b239f081db5826e09118508522a9265e77394f9e0c1861"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-168.c",
+          "label": "public-header",
+          "header": "app/tools/gimptool.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-169.cpp",
+          "label": "public-header",
+          "header": "app/tools/gimptool.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-3de7843417318511e4d1",
+      "source_id": "01.002/001527",
+      "path": "app/widgets/gimpcontainereditor.h",
+      "source_blob": "07e40a05c9e526031aef779df6eac99b848c890e",
+      "source_range": "-63,0 -> 64,6",
+      "source_sha256": "dd1b123fb6093129e58c4734e75fa22307f4958886c53ff572077974409ccb46",
+      "source_scope": "void             gimp_container_editor_set_selection_mode (GimpContainerEditor *",
+      "current_headers": [
+        "app/widgets/gimpcontainereditor.h"
+      ],
+      "current_source_sha256": {
+        "app/widgets/gimpcontainereditor.h": "50571a77a6d45a30a5a69ac8d33ac7bd6814deedd232316b3ffb9879ad9d2d75"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-170.c",
+          "label": "public-header",
+          "header": "app/widgets/gimpcontainereditor.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-171.cpp",
+          "label": "public-header",
+          "header": "app/widgets/gimpcontainereditor.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-a0040a9dbf7ccc9188d2",
+      "source_id": "01.002/001546",
+      "path": "app/widgets/gimpcontainerview.h",
+      "source_blob": "a3035ee408d8300af71632952f6373b30c066340",
+      "source_range": "-163,0 -> 164,7",
+      "source_sha256": "05bf84962ca93c1e8f109bde13f34f0e7e32a8f4efe983747acc44ca6a3bc1f1",
+      "source_scope": "void      gimp_container_view_get_property       (GObject      *object,",
+      "current_headers": [
+        "app/widgets/gimpcontainerview.h"
+      ],
+      "current_source_sha256": {
+        "app/widgets/gimpcontainerview.h": "f263a7ef02457e5f9d1269977ece80700b4731d8073cc52c1d28caabe61f9753"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-172.c",
+          "label": "public-header",
+          "header": "app/widgets/gimpcontainerview.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-173.cpp",
+          "label": "public-header",
+          "header": "app/widgets/gimpcontainerview.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-b2249f8c0cd83f70fb80",
+      "source_id": "01.002/001554",
+      "path": "app/widgets/gimpdatafactoryview.h",
+      "source_blob": "ab93f3df8dfd69f5fbac0e440ffb99fa416961ba",
+      "source_range": "-71,0 -> 72,6",
+      "source_sha256": "7f3e3b4a641e5134f917d92fd15de68f6223c77c8eca8291f27c618b5719e2b0",
+      "source_scope": "gboolean          gimp_data_factory_view_have                 (GimpDataFactoryVi",
+      "current_headers": [
+        "app/widgets/gimpdatafactoryview.h"
+      ],
+      "current_source_sha256": {
+        "app/widgets/gimpdatafactoryview.h": "3f68df7a1d810aaa3bb9e34a871fb792df2758a62ae477afd664cdec51b8683d"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-174.c",
+          "label": "public-header",
+          "header": "app/widgets/gimpdatafactoryview.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-175.cpp",
+          "label": "public-header",
+          "header": "app/widgets/gimpdatafactoryview.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-eef57c2cd7c6c0ccff6f",
+      "source_id": "01.002/001614",
+      "path": "app/widgets/gimpeditor.h",
+      "source_blob": "35e74ca7a5de0033c60aae7a4e4169dde92a45be",
+      "source_range": "-94,0 -> 95,8",
+      "source_sha256": "7676dc7c88c233dd23054a2692f3d9f4a3c90e9e864bfd7d0a3fd773d62692be",
+      "source_scope": "gchar *     gimp_editor_get_ui_path         (GimpEditor         *editor);",
+      "current_headers": [
+        "app/widgets/gimpeditor.h"
+      ],
+      "current_source_sha256": {
+        "app/widgets/gimpeditor.h": "c0e74c83703c7137ec37528d3518cac9e27ad2bcdf33e5b514204a1da3843ca8"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-176.c",
+          "label": "public-header",
+          "header": "app/widgets/gimpeditor.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-177.cpp",
+          "label": "public-header",
+          "header": "app/widgets/gimpeditor.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-0c927aa00b0a1520fe5b",
+      "source_id": "01.002/002303",
+      "path": "libgimpcolor/gimpcairocolor.h",
+      "source_blob": "97b177c8f9569547e66a7f6f5ef383bbf6eba66b",
+      "source_range": "-25,0 -> 26",
+      "source_sha256": "17fe0838765bc9a6699b35abec70eead5675c955fa107e9c20f72edcb0f11d6f",
+      "source_scope": "file-level declarations/content",
+      "current_headers": [
+        "libgimpcolor/gimpcolor.h"
+      ],
+      "current_source_sha256": {
+        "libgimpcolor/gimpcolor.h": "db26b4ee2bd9c9cbb3fa2635abf79737783ce0af826553a571f26133436286c8"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-198.c",
+          "label": "public-header",
+          "header": "libgimpcolor/gimpcolor.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-199.cpp",
+          "label": "public-header",
+          "header": "libgimpcolor/gimpcolor.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-053eb3ffc704fdcece55",
+      "source_id": "01.002/002304",
+      "path": "libgimpconfig/gimpconfig-params.h",
+      "source_blob": "55d8e97ec8e142c65a3fd262040c3a55d0301c38",
+      "source_range": "-78 -> 78",
+      "source_sha256": "12b391b5d05a5471205a0a96d0d1250de44da9ca1e289eb94b80d5537be0ab7d",
+      "source_scope": "G_BEGIN_DECLS",
+      "current_headers": [
+        "libgimpconfig/gimpconfig.h"
+      ],
+      "current_source_sha256": {
+        "libgimpconfig/gimpconfig.h": "8b316341d2b1384317afc844f79f7bc31b2dfeec7e7e835deb3fe8de05f68885"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-200.c",
+          "label": "public-header",
+          "header": "libgimpconfig/gimpconfig.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-201.cpp",
+          "label": "public-header",
+          "header": "libgimpconfig/gimpconfig.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-b1f9045447b8663e0629",
+      "source_id": "01.002/002305",
+      "path": "libgimpconfig/gimpconfig-params.h",
+      "source_blob": "55d8e97ec8e142c65a3fd262040c3a55d0301c38",
+      "source_range": "-84 -> 84",
+      "source_sha256": "12b391b5d05a5471205a0a96d0d1250de44da9ca1e289eb94b80d5537be0ab7d",
+      "source_scope": "G_BEGIN_DECLS",
+      "current_headers": [
+        "libgimpconfig/gimpconfig.h"
+      ],
+      "current_source_sha256": {
+        "libgimpconfig/gimpconfig.h": "8b316341d2b1384317afc844f79f7bc31b2dfeec7e7e835deb3fe8de05f68885"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-200.c",
+          "label": "public-header",
+          "header": "libgimpconfig/gimpconfig.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-201.cpp",
+          "label": "public-header",
+          "header": "libgimpconfig/gimpconfig.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-f5964337fce826de2287",
+      "source_id": "01.002/002306",
+      "path": "libgimpconfig/gimpconfig-params.h",
+      "source_blob": "55d8e97ec8e142c65a3fd262040c3a55d0301c38",
+      "source_range": "-90 -> 90",
+      "source_sha256": "12b391b5d05a5471205a0a96d0d1250de44da9ca1e289eb94b80d5537be0ab7d",
+      "source_scope": "G_BEGIN_DECLS",
+      "current_headers": [
+        "libgimpconfig/gimpconfig.h"
+      ],
+      "current_source_sha256": {
+        "libgimpconfig/gimpconfig.h": "8b316341d2b1384317afc844f79f7bc31b2dfeec7e7e835deb3fe8de05f68885"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-200.c",
+          "label": "public-header",
+          "header": "libgimpconfig/gimpconfig.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-201.cpp",
+          "label": "public-header",
+          "header": "libgimpconfig/gimpconfig.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-4f65a88296d2f37a6427",
+      "source_id": "01.002/002307",
+      "path": "libgimpconfig/gimpconfig-params.h",
+      "source_blob": "55d8e97ec8e142c65a3fd262040c3a55d0301c38",
+      "source_range": "-97 -> 97",
+      "source_sha256": "12b391b5d05a5471205a0a96d0d1250de44da9ca1e289eb94b80d5537be0ab7d",
+      "source_scope": "G_BEGIN_DECLS",
+      "current_headers": [
+        "libgimpconfig/gimpconfig.h"
+      ],
+      "current_source_sha256": {
+        "libgimpconfig/gimpconfig.h": "8b316341d2b1384317afc844f79f7bc31b2dfeec7e7e835deb3fe8de05f68885"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-200.c",
+          "label": "public-header",
+          "header": "libgimpconfig/gimpconfig.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-201.cpp",
+          "label": "public-header",
+          "header": "libgimpconfig/gimpconfig.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-4c60f0c0bd88799b8400",
+      "source_id": "01.002/002308",
+      "path": "libgimpconfig/gimpconfig-params.h",
+      "source_blob": "55d8e97ec8e142c65a3fd262040c3a55d0301c38",
+      "source_range": "-103 -> 103",
+      "source_sha256": "12b391b5d05a5471205a0a96d0d1250de44da9ca1e289eb94b80d5537be0ab7d",
+      "source_scope": "G_BEGIN_DECLS",
+      "current_headers": [
+        "libgimpconfig/gimpconfig.h"
+      ],
+      "current_source_sha256": {
+        "libgimpconfig/gimpconfig.h": "8b316341d2b1384317afc844f79f7bc31b2dfeec7e7e835deb3fe8de05f68885"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-200.c",
+          "label": "public-header",
+          "header": "libgimpconfig/gimpconfig.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-201.cpp",
+          "label": "public-header",
+          "header": "libgimpconfig/gimpconfig.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-3627da7e4eac5df5f937",
+      "source_id": "01.002/002309",
+      "path": "libgimpconfig/gimpconfig-params.h",
+      "source_blob": "55d8e97ec8e142c65a3fd262040c3a55d0301c38",
+      "source_range": "-109 -> 109",
+      "source_sha256": "12b391b5d05a5471205a0a96d0d1250de44da9ca1e289eb94b80d5537be0ab7d",
+      "source_scope": "G_BEGIN_DECLS",
+      "current_headers": [
+        "libgimpconfig/gimpconfig.h"
+      ],
+      "current_source_sha256": {
+        "libgimpconfig/gimpconfig.h": "8b316341d2b1384317afc844f79f7bc31b2dfeec7e7e835deb3fe8de05f68885"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-200.c",
+          "label": "public-header",
+          "header": "libgimpconfig/gimpconfig.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-201.cpp",
+          "label": "public-header",
+          "header": "libgimpconfig/gimpconfig.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-960a3068f66682a7c49f",
+      "source_id": "01.002/002310",
+      "path": "libgimpconfig/gimpconfig-params.h",
+      "source_blob": "55d8e97ec8e142c65a3fd262040c3a55d0301c38",
+      "source_range": "-115 -> 115",
+      "source_sha256": "12b391b5d05a5471205a0a96d0d1250de44da9ca1e289eb94b80d5537be0ab7d",
+      "source_scope": "G_BEGIN_DECLS",
+      "current_headers": [
+        "libgimpconfig/gimpconfig.h"
+      ],
+      "current_source_sha256": {
+        "libgimpconfig/gimpconfig.h": "8b316341d2b1384317afc844f79f7bc31b2dfeec7e7e835deb3fe8de05f68885"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-200.c",
+          "label": "public-header",
+          "header": "libgimpconfig/gimpconfig.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-201.cpp",
+          "label": "public-header",
+          "header": "libgimpconfig/gimpconfig.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-9cc8f75386b5289edf6c",
+      "source_id": "01.002/002311",
+      "path": "libgimpconfig/gimpconfig-params.h",
+      "source_blob": "55d8e97ec8e142c65a3fd262040c3a55d0301c38",
+      "source_range": "-121 -> 121",
+      "source_sha256": "12b391b5d05a5471205a0a96d0d1250de44da9ca1e289eb94b80d5537be0ab7d",
+      "source_scope": "G_BEGIN_DECLS",
+      "current_headers": [
+        "libgimpconfig/gimpconfig.h"
+      ],
+      "current_source_sha256": {
+        "libgimpconfig/gimpconfig.h": "8b316341d2b1384317afc844f79f7bc31b2dfeec7e7e835deb3fe8de05f68885"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-200.c",
+          "label": "public-header",
+          "header": "libgimpconfig/gimpconfig.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-201.cpp",
+          "label": "public-header",
+          "header": "libgimpconfig/gimpconfig.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-da8d488f7ee1b80e2c1a",
+      "source_id": "01.002/002312",
+      "path": "libgimpconfig/gimpconfig-params.h",
+      "source_blob": "55d8e97ec8e142c65a3fd262040c3a55d0301c38",
+      "source_range": "-127 -> 127",
+      "source_sha256": "12b391b5d05a5471205a0a96d0d1250de44da9ca1e289eb94b80d5537be0ab7d",
+      "source_scope": "G_BEGIN_DECLS",
+      "current_headers": [
+        "libgimpconfig/gimpconfig.h"
+      ],
+      "current_source_sha256": {
+        "libgimpconfig/gimpconfig.h": "8b316341d2b1384317afc844f79f7bc31b2dfeec7e7e835deb3fe8de05f68885"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-200.c",
+          "label": "public-header",
+          "header": "libgimpconfig/gimpconfig.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-201.cpp",
+          "label": "public-header",
+          "header": "libgimpconfig/gimpconfig.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-4f286aed39d81d19841e",
+      "source_id": "01.002/002313",
+      "path": "libgimpconfig/gimpconfig-params.h",
+      "source_blob": "55d8e97ec8e142c65a3fd262040c3a55d0301c38",
+      "source_range": "-133 -> 133",
+      "source_sha256": "12b391b5d05a5471205a0a96d0d1250de44da9ca1e289eb94b80d5537be0ab7d",
+      "source_scope": "G_BEGIN_DECLS",
+      "current_headers": [
+        "libgimpconfig/gimpconfig.h"
+      ],
+      "current_source_sha256": {
+        "libgimpconfig/gimpconfig.h": "8b316341d2b1384317afc844f79f7bc31b2dfeec7e7e835deb3fe8de05f68885"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-200.c",
+          "label": "public-header",
+          "header": "libgimpconfig/gimpconfig.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-201.cpp",
+          "label": "public-header",
+          "header": "libgimpconfig/gimpconfig.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-ee058a1fc356e8f7a649",
+      "source_id": "01.002/002314",
+      "path": "libgimpconfig/gimpconfig-params.h",
+      "source_blob": "55d8e97ec8e142c65a3fd262040c3a55d0301c38",
+      "source_range": "-139 -> 139",
+      "source_sha256": "12b391b5d05a5471205a0a96d0d1250de44da9ca1e289eb94b80d5537be0ab7d",
+      "source_scope": "G_BEGIN_DECLS",
+      "current_headers": [
+        "libgimpconfig/gimpconfig.h"
+      ],
+      "current_source_sha256": {
+        "libgimpconfig/gimpconfig.h": "8b316341d2b1384317afc844f79f7bc31b2dfeec7e7e835deb3fe8de05f68885"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-200.c",
+          "label": "public-header",
+          "header": "libgimpconfig/gimpconfig.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-201.cpp",
+          "label": "public-header",
+          "header": "libgimpconfig/gimpconfig.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-775526678282569b74e9",
+      "source_id": "01.002/002315",
+      "path": "libgimpconfig/gimpconfig-params.h",
+      "source_blob": "55d8e97ec8e142c65a3fd262040c3a55d0301c38",
+      "source_range": "-145 -> 145",
+      "source_sha256": "12b391b5d05a5471205a0a96d0d1250de44da9ca1e289eb94b80d5537be0ab7d",
+      "source_scope": "G_BEGIN_DECLS",
+      "current_headers": [
+        "libgimpconfig/gimpconfig.h"
+      ],
+      "current_source_sha256": {
+        "libgimpconfig/gimpconfig.h": "8b316341d2b1384317afc844f79f7bc31b2dfeec7e7e835deb3fe8de05f68885"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-200.c",
+          "label": "public-header",
+          "header": "libgimpconfig/gimpconfig.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-201.cpp",
+          "label": "public-header",
+          "header": "libgimpconfig/gimpconfig.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-913020563b5e5f8fc1ac",
+      "source_id": "01.002/002316",
+      "path": "libgimpconfig/gimpconfig-params.h",
+      "source_blob": "55d8e97ec8e142c65a3fd262040c3a55d0301c38",
+      "source_range": "-154 -> 154",
+      "source_sha256": "29ffc9526c28a08a8e1d4035f25149ac7e54dcca5f0725bdc280a6fa022c1c37",
+      "source_scope": "G_BEGIN_DECLS",
+      "current_headers": [
+        "libgimpconfig/gimpconfig.h"
+      ],
+      "current_source_sha256": {
+        "libgimpconfig/gimpconfig.h": "8b316341d2b1384317afc844f79f7bc31b2dfeec7e7e835deb3fe8de05f68885"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-200.c",
+          "label": "public-header",
+          "header": "libgimpconfig/gimpconfig.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-201.cpp",
+          "label": "public-header",
+          "header": "libgimpconfig/gimpconfig.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-b8c48462d0439edce7f8",
+      "source_id": "01.002/002317",
+      "path": "libgimpconfig/gimpconfig-params.h",
+      "source_blob": "55d8e97ec8e142c65a3fd262040c3a55d0301c38",
+      "source_range": "-156 -> 156",
+      "source_sha256": "17231912e1a6e55afe03411e2159b5c5ece8433c85af9d8153ac3ba729fd49fe",
+      "source_scope": "G_BEGIN_DECLS",
+      "current_headers": [
+        "libgimpconfig/gimpconfig.h"
+      ],
+      "current_source_sha256": {
+        "libgimpconfig/gimpconfig.h": "8b316341d2b1384317afc844f79f7bc31b2dfeec7e7e835deb3fe8de05f68885"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-200.c",
+          "label": "public-header",
+          "header": "libgimpconfig/gimpconfig.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-201.cpp",
+          "label": "public-header",
+          "header": "libgimpconfig/gimpconfig.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-2edb2cfd9c5d2e1fc487",
+      "source_id": "01.002/002318",
+      "path": "libgimpconfig/gimpconfig-params.h",
+      "source_blob": "55d8e97ec8e142c65a3fd262040c3a55d0301c38",
+      "source_range": "-162 -> 162",
+      "source_sha256": "29ffc9526c28a08a8e1d4035f25149ac7e54dcca5f0725bdc280a6fa022c1c37",
+      "source_scope": "G_BEGIN_DECLS",
+      "current_headers": [
+        "libgimpconfig/gimpconfig.h"
+      ],
+      "current_source_sha256": {
+        "libgimpconfig/gimpconfig.h": "8b316341d2b1384317afc844f79f7bc31b2dfeec7e7e835deb3fe8de05f68885"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-200.c",
+          "label": "public-header",
+          "header": "libgimpconfig/gimpconfig.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-201.cpp",
+          "label": "public-header",
+          "header": "libgimpconfig/gimpconfig.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-aee08d97cf29e6d768f7",
+      "source_id": "01.002/002319",
+      "path": "libgimpconfig/gimpconfig-params.h",
+      "source_blob": "55d8e97ec8e142c65a3fd262040c3a55d0301c38",
+      "source_range": "-164 -> 164",
+      "source_sha256": "17231912e1a6e55afe03411e2159b5c5ece8433c85af9d8153ac3ba729fd49fe",
+      "source_scope": "G_BEGIN_DECLS",
+      "current_headers": [
+        "libgimpconfig/gimpconfig.h"
+      ],
+      "current_source_sha256": {
+        "libgimpconfig/gimpconfig.h": "8b316341d2b1384317afc844f79f7bc31b2dfeec7e7e835deb3fe8de05f68885"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-200.c",
+          "label": "public-header",
+          "header": "libgimpconfig/gimpconfig.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-201.cpp",
+          "label": "public-header",
+          "header": "libgimpconfig/gimpconfig.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-1e8849a11c9502d3aceb",
+      "source_id": "01.002/002320",
+      "path": "libgimpconfig/gimpconfig-params.h",
+      "source_blob": "55d8e97ec8e142c65a3fd262040c3a55d0301c38",
+      "source_range": "-169 -> 169",
+      "source_sha256": "29ffc9526c28a08a8e1d4035f25149ac7e54dcca5f0725bdc280a6fa022c1c37",
+      "source_scope": "G_BEGIN_DECLS",
+      "current_headers": [
+        "libgimpconfig/gimpconfig.h"
+      ],
+      "current_source_sha256": {
+        "libgimpconfig/gimpconfig.h": "8b316341d2b1384317afc844f79f7bc31b2dfeec7e7e835deb3fe8de05f68885"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-200.c",
+          "label": "public-header",
+          "header": "libgimpconfig/gimpconfig.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-201.cpp",
+          "label": "public-header",
+          "header": "libgimpconfig/gimpconfig.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-469a96e0457ff62f88ec",
+      "source_id": "01.002/002321",
+      "path": "libgimpconfig/gimpconfig-params.h",
+      "source_blob": "55d8e97ec8e142c65a3fd262040c3a55d0301c38",
+      "source_range": "-171 -> 171",
+      "source_sha256": "17231912e1a6e55afe03411e2159b5c5ece8433c85af9d8153ac3ba729fd49fe",
+      "source_scope": "G_BEGIN_DECLS",
+      "current_headers": [
+        "libgimpconfig/gimpconfig.h"
+      ],
+      "current_source_sha256": {
+        "libgimpconfig/gimpconfig.h": "8b316341d2b1384317afc844f79f7bc31b2dfeec7e7e835deb3fe8de05f68885"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-200.c",
+          "label": "public-header",
+          "header": "libgimpconfig/gimpconfig.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-201.cpp",
+          "label": "public-header",
+          "header": "libgimpconfig/gimpconfig.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-fadece1cf85554e28f0c",
+      "source_id": "01.002/002322",
+      "path": "libgimpwidgets/gimpcolorselector.h",
+      "source_blob": "e3ca33b33d6ffcdf057f64ee928fc21490d8340e",
+      "source_range": "-142,0 -> 143,4",
+      "source_sha256": "81d10cf5791d95663d7af3e25629f1cca633c10943df9cda89c0cd485579c721",
+      "source_scope": "void   gimp_color_selector_set_config            (GimpColorSelector *selector,",
+      "current_headers": [
+        "libgimpwidgets/gimpwidgets.h"
+      ],
+      "current_source_sha256": {
+        "libgimpwidgets/gimpwidgets.h": "86f5e258df800ade341114469d5986965f86e80869c3c5b87fe9a6f74f46bb6d"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-202.c",
+          "label": "public-header",
+          "header": "libgimpwidgets/gimpwidgets.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-203.cpp",
+          "label": "public-header",
+          "header": "libgimpwidgets/gimpwidgets.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-3d7e3c41d8ff002a1334",
+      "source_id": "01.002/002343",
+      "path": "libgimpwidgets/gimpframe.h",
+      "source_blob": "50b4bab37f1fb8133dc24f2b2f5e2a3f27ed4e4d",
+      "source_range": "-66,0 -> 67,8",
+      "source_sha256": "5faeca3ef54f733c0613240fd6ef5b065de72c5cb20ae538ac6f22992dc4b3e8",
+      "source_scope": "G_END_DECLS",
+      "current_headers": [
+        "libgimpwidgets/gimpwidgets.h"
+      ],
+      "current_source_sha256": {
+        "libgimpwidgets/gimpwidgets.h": "86f5e258df800ade341114469d5986965f86e80869c3c5b87fe9a6f74f46bb6d"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-202.c",
+          "label": "public-header",
+          "header": "libgimpwidgets/gimpwidgets.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-203.cpp",
+          "label": "public-header",
+          "header": "libgimpwidgets/gimpwidgets.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    },
+    {
+      "work_id": "legacy-689495acf9387c8d1c30",
+      "source_id": "01.002/002344",
+      "path": "libgimpwidgets/gimpintcombobox.h",
+      "source_blob": "b3662307486e379d8c0314176efd9aaaa0d48ea8",
+      "source_range": "-100,0 -> 101,8",
+      "source_sha256": "1f1c76e17ecf7a2dfbb4a85cc1e366a39b498322f69e5e1444c650eed52044b8",
+      "source_scope": "G_END_DECLS",
+      "current_headers": [
+        "libgimpwidgets/gimpwidgets.h"
+      ],
+      "current_source_sha256": {
+        "libgimpwidgets/gimpwidgets.h": "86f5e258df800ade341114469d5986965f86e80869c3c5b87fe9a6f74f46bb6d"
+      },
+      "compiled_probes": [
+        {
+          "name": "probe-202.c",
+          "label": "public-header",
+          "header": "libgimpwidgets/gimpwidgets.h",
+          "language": "c"
+        },
+        {
+          "name": "probe-203.cpp",
+          "label": "public-header",
+          "header": "libgimpwidgets/gimpwidgets.h",
+          "language": "cpp"
+        }
+      ],
+      "acceptance_scope": "Repeated inclusion in C/C++ with no outer linkage wrapper; generated ABI verified separately. No sibling feature semantics completion."
+    }
+  ],
+  "unrelated_rows_preserved": 22855,
+  "mutable_columns": [
+    "artifact",
+    "limitations",
+    "owner",
+    "result",
+    "status",
+    "test"
+  ],
+  "other_implementation_states_unchanged": true
+}

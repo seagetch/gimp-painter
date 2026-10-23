@@ -20,6 +20,8 @@
 #ifndef __INTERNAL_PROCS_H__
 #define __INTERNAL_PROCS_H__
 
+G_BEGIN_DECLS
+
 void   internal_procs_init                (GimpPDB *pdb);
 
 /* Forward declarations for registering PDB procs */
@@ -81,5 +83,7 @@ void   register_selection_procs           (GimpPDB *pdb);
 void   register_text_layer_procs          (GimpPDB *pdb);
 void   register_text_tool_procs           (GimpPDB *pdb);
 void   register_unit_procs                (GimpPDB *pdb);
+
+G_END_DECLS
 
 #endif /* __INTERNAL_PROCS_H__ */

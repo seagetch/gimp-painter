@@ -32,6 +32,12 @@
 
 #ifndef CERN_Y_TAB_H
 # define CERN_Y_TAB_H
+
+/* Keep this boundary in sync with tools/meson-bison.py. */
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /* Enabling traces.  */
 #ifndef YYDEBUG
 # define YYDEBUG 0
@@ -106,5 +112,9 @@ int cern_parse (void);
 int cern_parse ();
 #endif
 #endif /* ! YYPARSE_PARAM */
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* !CERN_Y_TAB_H  */
