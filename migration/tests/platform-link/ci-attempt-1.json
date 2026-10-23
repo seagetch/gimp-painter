@@ -1,0 +1,95 @@
+{
+  "run_id": 38026874552,
+  "url": "https://github.com/seagetch/gimp-painter/actions/runs/38026874552",
+  "source_commit": "a2bddfa2ed3e01b1addfd7ed3399365030b81ee5",
+  "all_report_source_hashes_verified": true,
+  "targets": [
+    {
+      "target": "linux-x86_64",
+      "status": "PASS",
+      "foundation_cases": 69,
+      "failure": null,
+      "abi_result": "PLATFORM_ABI_PASS pointer=8 long=8 object=24 value=24 error=16",
+      "report_sha256": "276d7c92ce8b52a19c7acb15a73293f056fcdbe95e3b0efcf16c11067ffae200",
+      "zip_sha256": "be74c26a33fedceddfd5813b9880cb615550d2c4e7cb01fb29d3cf9afbd03a57",
+      "source_verification": {
+        "repository_byte_matches": 30,
+        "exact_LF_to_CRLF_checkout_matches": []
+      }
+    },
+    {
+      "target": "windows-x86_64",
+      "status": "FAIL",
+      "foundation_cases": 69,
+      "failure": "Export inspection missed positive control",
+      "abi_result": "PLATFORM_ABI_PASS pointer=8 long=4 object=24 value=24 error=16",
+      "report_sha256": "d5875e2482db97736a891afdcb379db37133b9bf1fb90d1120f7e811746179ab",
+      "zip_sha256": "8f27c60f223761eed32a33a01060a348c8a08be0ceb365a5e6a00c139894fed6",
+      "source_verification": {
+        "repository_byte_matches": 0,
+        "exact_LF_to_CRLF_checkout_matches": [
+          "app/painter/binding-store.cpp",
+          "app/painter/binding-store.hpp",
+          "app/painter/boundary.hpp",
+          "app/painter/connection.hpp",
+          "app/painter/gimp-painter-binding.cpp",
+          "app/painter/gimp-painter-binding.h",
+          "app/painter/gimp-painter-error.cpp",
+          "app/painter/gimp-painter-error.h",
+          "app/painter/gimp-painter-visibility.h",
+          "app/painter/object-ref.hpp",
+          "app/painter/resources.hpp",
+          "app/painter/source.hpp",
+          "app/painter/tests/platform-abi.c",
+          "app/painter/tests/platform-abi.cpp",
+          "app/painter/tests/platform-abi.h",
+          "app/painter/tests/test-c-api.c",
+          "app/painter/tests/test-c-api.h",
+          "app/painter/tests/test-fixture-traits.hpp",
+          "app/painter/tests/test-fixture.c",
+          "app/painter/tests/test-fixture.h",
+          "app/painter/tests/test-foundation.cpp",
+          "app/painter/tests/test-gobject.cpp",
+          "app/painter/tests/test-hierarchy.c",
+          "app/painter/tests/test-hierarchy.cpp",
+          "app/painter/tests/test-hierarchy.h",
+          "app/painter/tests/test-reentry.cpp",
+          "app/painter/tests/test-registry.hpp",
+          "app/painter/tests/test-resources.cpp",
+          "tools/test_painter_foundation.py",
+          "tools/test_painter_platform_link.py"
+        ]
+      },
+      "actual_export_name_table": " -- Ordinal Base 1\n\t          Ordinal   Hint Name\n\t[   0] +base[   1]  0000 painter_platform_export_control"
+    },
+    {
+      "target": "macos-arm64",
+      "status": "FAIL",
+      "foundation_cases": 0,
+      "failure": "Archive contains unrecorded or missing objects",
+      "abi_result": null,
+      "report_sha256": "a73708514d0f2ded110be2012e1c1f9a4b06fb92b4635a5f59cb6bb67d5f4d66",
+      "zip_sha256": "6fb95c24b0f00462501d8baf2074cea3488cebaef5a778a09b97172b9fc0fed5",
+      "source_verification": {
+        "repository_byte_matches": 30,
+        "exact_LF_to_CRLF_checkout_matches": []
+      },
+      "archive_listing": "__.SYMDEF\ngimp-painter-error.cpp.o\ngimp-painter-binding.cpp.o\nbinding-store.cpp.o\n"
+    },
+    {
+      "target": "macos-x86_64",
+      "status": "FAIL",
+      "foundation_cases": 0,
+      "failure": "Archive contains unrecorded or missing objects",
+      "abi_result": null,
+      "report_sha256": "c8c72e3cccf2c3af9bfebde20e625b66adf59e91f548c104d4ac19154ddb6a28",
+      "zip_sha256": "2d58989a1a5cae0b886291f3c156a82a57376022dd38567c11111ceb55208979",
+      "source_verification": {
+        "repository_byte_matches": 30,
+        "exact_LF_to_CRLF_checkout_matches": []
+      },
+      "archive_listing": "__.SYMDEF\ngimp-painter-error.cpp.o\ngimp-painter-binding.cpp.o\nbinding-store.cpp.o\n"
+    }
+  ],
+  "diagnosis": "Linux passed. Windows actual69+ABI passed before recorder rejected modern binutils export-table columns. Both macOS targets compiled11 units then recorder rejected Apple ar generated symbol index. Recorder defects do not establish production failure or platform PASS. Windows checked-out source bytes are exact LF-to-CRLF conversions of repository blobs, recorded individually; not reported as raw hash equality."
+}

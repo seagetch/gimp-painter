@@ -48,3 +48,20 @@ References: [supported GitHub runners](https://docs.github.com/en/actions/refere
 [MSYS2 setup v2.33.0](https://github.com/msys2/setup-msys2/releases/tag/v2.33.0),
 [Apple dyld export inspection](https://github.com/apple-oss-distributions/dyld/blob/main/other-tools/dyld_info.cpp),
 and [the initial port support policy](../../support-policy.md).
+
+## First native CI result and bounded recorder correction
+
+[Run38026874552](https://github.com/seagetch/gimp-painter/actions/runs/38026874552)
+actually started all four hosted targets. Linux passed. Windows passed all69
+foundation cases and the mixed ABI fixture, then failed export inspection because
+current binutils inserts ordinal-base/hint columns. Both macOS targets compiled
+the11 units, then stopped because Apple ar lists its standard __.SYMDEF symbol
+index alongside objects. The recorder now recognizes only the known Apple index
+forms and both PE export table formats, while still rejecting stale/missing
+objects. Mach-O re-exports are also included, not silently ignored. Seven recorder
+cases exercise these formats and prior failure controls. Full first-run reports
+were downloaded and ZIP/report SHA-256 verified. Linux/macOS source hashes match
+repository blobs exactly. All30 Windows source hashes match the exact LF-to-CRLF
+checkout transformation; these are recorded individually, not described as raw
+hash equality. The bounded details are in ci-attempt-1.json. No Windows/macOS PASS
+is inferred from the correction; a new native matrix run is required.
