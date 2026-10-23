@@ -118,8 +118,6 @@ BindingStore& store(GimpPainterMybrushOptions*o)
   if(!GIMP_IS_PAINTER_MYBRUSH_OPTIONS(o))throw Error(GIMP_PAINTER_ERROR_WRONG_TYPE,"Expected painter options");
   return BindingStore::require(G_OBJECT(o));
 }
-std::string property_name(const char*name)
-{std::string result(name);std::replace(result.begin(),result.end(),'_','-');return result;}
 void sync_resources(GimpPainterMybrushOptions*options,std::uint64_t revision);
 void notify_changed(GimpPainterMybrushOptions*options,std::uint64_t revision,bool all=true,bool settings_changed=true)
 {
@@ -345,9 +343,11 @@ static void gimp_painter_mybrush_options_class_init(GimpPainterMybrushOptionsCla
   GIMP_CONTEXT_CLASS(klass)->brush_changed=brush_changed;
   GIMP_CONTEXT_CLASS(klass)->pattern_changed=pattern_changed;
   const auto flags=GParamFlags(G_PARAM_READWRITE|GIMP_CONFIG_PARAM_SERIALIZE);
-  for(const auto&s:painter_mypaint_settings){auto name=property_name(s.internal_name);properties[s.index+1]=g_param_spec_double(name.c_str(),s.displayed_name,s.tooltip,s.minimum,s.maximum,s.default_value,flags);}
-  for(const auto&s:painter_mypaint_switches){auto name=property_name(s.internal_name);properties[s.index+1]=g_param_spec_boolean(name.c_str(),s.displayed_name,nullptr,FALSE,flags);}
-  for(const auto&s:painter_mypaint_texts){auto name=property_name(s.internal_name);properties[s.index+1]=g_param_spec_string(name.c_str(),s.displayed_name,nullptr,nullptr,flags);}
+  // GParamSpec copies and canonicalizes '_' to '-'. Do not allocate C++
+  // strings inside this native class initializer (no G_PARAM_STATIC_NAME).
+  for(const auto&s:painter_mypaint_settings){properties[s.index+1]=g_param_spec_double(s.internal_name,s.displayed_name,s.tooltip,s.minimum,s.maximum,s.default_value,flags);}
+  for(const auto&s:painter_mypaint_switches){properties[s.index+1]=g_param_spec_boolean(s.internal_name,s.displayed_name,nullptr,FALSE,flags);}
+  for(const auto&s:painter_mypaint_texts){properties[s.index+1]=g_param_spec_string(s.internal_name,s.displayed_name,nullptr,nullptr,flags);}
   properties[PROP_JSON]=g_param_spec_string("painter-settings","Full painter brush","Lossless settings, curves and unknown data",nullptr,flags);
   properties[PROP_DIRTY]=g_param_spec_boolean("painter-dirty","Edited painter brush",nullptr,FALSE,G_PARAM_READABLE);
   properties[PROP_CONFLICT]=g_param_spec_boolean("painter-conflict","Saved brush changed",nullptr,FALSE,G_PARAM_READABLE);

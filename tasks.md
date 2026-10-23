@@ -308,7 +308,7 @@
 | 05.011 | [x] | 親 vfunc の呼出し規約を定義する | 05.010 | 対象型ごとの呼出し順と callback 再入を記載 |
 | 05.012 | [x] | main context の所有規約を定義する | 05.011 | GObject・UI と worker の操作可能範囲を記載 |
 | 05.013 | [x] | エラー境界を定義する | 05.012 | 型不一致・未登録・終了済み・例外の返し方を統一 |
-| 05.013/class-init-error | [ ] | class 初期化失敗を C ABI 内で処理する | 05.013, 01.007/class-pointer-exception | pointer 例外を廃止し、部分登録と再試行の状態を試験する |
+| 05.013/class-init-error | [x] | class 初期化失敗を C ABI 内で処理する | 05.013, 01.007/class-pointer-exception | pointer 例外を廃止し、部分登録と再試行の状態を試験する |
 | 05.013/legacy-exit-removal | [ ] | 旧 property callback の例外時 exit を C ABI 安全な処理へ変更する | 05.013, 01.005/gimp3-remaining-callbacks | setter/getter の例外でプロセスを終了せず、GValue と登録済み property の状態を整合させて通知・復帰する |
 | 05.014 | [ ] | 移行 adapter の撤去条件を定義する | 05.013 | 旧 API 利用箇所ゼロを機械検査できる |
 
