@@ -84,6 +84,13 @@ foreach test_name : app_tests
     link_with: apptests_links,
   )
 
+  # Filter tests include real 8193x8193 spill and hundreds of old Gauss buffers.
+  test_timeout = test_name == 'gimp-filter-layer' ? 600 : 60
+  if test_name == 'painter-layer-ui'
+    # All 63 cases took 83.69s under Xvfb; keep the full suite within its budget.
+    test_timeout = 180
+  endif
+
   test(test_name,
     test_name == 'gimp-filter-layer' ? python : test_exe,
     args: test_name == 'gimp-filter-layer' ? [meson.project_source_root() /
@@ -95,8 +102,7 @@ foreach test_name : app_tests
       'UI_TEST=yes',
     ],
     suite: 'app',
-    # This suite includes real8193x8193 spill and hundreds of old Gauss buffers.
-    timeout: test_name == 'gimp-filter-layer' ? 600 : 60,
+    timeout: test_timeout,
     is_parallel : false,
     priority: prio,
   )
@@ -416,10 +422,11 @@ painter_save_continuation_test = executable('painter-save-continuation',
   dependencies: [libapp_dep, painter_bounded_fill_dep, appstream],
   link_with: apptests_links, cpp_args: painter_cpp_args, override_options: ['cpp_std=c++14'])
 test('painter-save-continuation', painter_save_continuation_test,
+  # Exercise save/dialog continuations without requiring persistent dconf/D-Bus.
   env: ['GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
         'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
         'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
-        'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 120)
+        'UI_TEST=yes', 'GSETTINGS_BACKEND=memory'], suite: 'app', is_parallel: false, timeout: 120)
 
 painter_batch_test = executable('gimp-painter-batch', 'test-gimp-painter-batch.cpp', 'tests.c',
   dependencies: [libapp_dep, painter_mypaint_surface_dep, appstream],
@@ -481,10 +488,13 @@ painter_profile_native = executable('painter-profile-native',
   link_with: apptests_links, cpp_args: painter_cpp_args,
   override_options: ['cpp_std=c++14'])
 test('painter-profile-native', painter_profile_native,
+  # The first-run installer copies generated tags, even in an uninstalled build.
+  depends: [gimp_tags_default],
   env: [
     'GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
     'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
     'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
+    'GIMP3_DATADIR=' + meson.project_build_root() / 'data',
     'UI_TEST=yes',
   ], suite: 'painter', is_parallel: false, timeout: 120)
 
