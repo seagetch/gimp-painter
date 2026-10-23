@@ -16,6 +16,8 @@
 #include <utility>
 #include <vector>
 
+extern "C" void painter_legacy_vinvert_row (const unsigned char *, unsigned char *, int, int);
+
 using namespace GimpPainter;
 using Bytes = std::vector<std::uint8_t>;
 using Outcome = FilterPointShadowOutcome;
@@ -75,6 +77,8 @@ Bytes expected_shadow (const Bytes& input, std::size_t width, std::size_t height
             std::copy_n (input.data () + offset, 3, result.data () + offset);
             result[offset + 3] = threshold < input[offset + 3] ? 255 : 0;
           }
+        else if (operation == PointOperation::value_invert)
+          painter_legacy_vinvert_row (input.data () + offset, result.data () + offset, 1, 4);
         else
           {
             // Independent pairwise predicates retain every tied channel. Never
@@ -629,7 +633,8 @@ void cancellation_errors_and_progress (PointOperation point_operation = PointOpe
   require (alias == input,"Malformed aliased vector changed input");
   require (run_shadow_vector (alias,width,height,{true,false,0,0,0,7},int_minimum,cancel,alias,{},point_operation) == Outcome::no_merge &&
            alias == Bytes (input.size (),0),"Aliased no-merge lost distinct zero-workspace outcome");
-  std::cout << (point_operation == PointOperation::max_rgb ? "Max RGB " : "Threshold Alpha ")
+  std::cout << (point_operation == PointOperation::max_rgb ? "Max RGB " :
+                point_operation == PointOperation::value_invert ? "Value Invert " : "Threshold Alpha ")
             << "Every read/write/flush cancellation and storage-error ordinal: " << cases
             << " vector/spill cases; monotone progress and transactional aliases passed\n";
 }
@@ -800,7 +805,7 @@ void max_rgb_validation ()
   for (bool cancelled : {false,true})
     {
       std::atomic<bool> cancel{cancelled};
-      for (const auto invalid : {static_cast<PointOperation>(-1),static_cast<PointOperation>(2),static_cast<PointOperation>(99)})
+      for (const auto invalid : {static_cast<PointOperation>(-1),static_cast<PointOperation>(3),static_cast<PointOperation>(99)})
         for (const auto& selected : {region,FilterSelectionRegion{true,false,0,0,0,7}})
           {
             rejects<std::invalid_argument> ([&] { filter_point_shadow_raster(input,width,height,selected,invalid,0,cancel,output); },
@@ -865,7 +870,7 @@ struct RawAudit
   RawAudit(std::atomic<bool>& cancel,const std::shared_ptr<FilterProgress>& progress) : cancel(cancel),progress(progress) {}
   void event(Operation operation,std::size_t count = 0)
   {
-    require(!cancel.load(),"Raw Max RGB performed I/O after cancellation");
+    require(!cancel.load(),"Raw point kernel performed I/O after cancellation");
     FilterProgress::Snapshot snapshot; require(progress->try_snapshot(snapshot),"Cannot read raw progress");
     require(snapshot.value >= last && snapshot.value < 1,"Raw progress regressed or completed before I/O");
     last = snapshot.value;
@@ -888,7 +893,7 @@ public:
   void flush() override
   { require(!source_,"Raw kernel flushed input"); audit_.event(Operation::flush); base_.flush(); }
 };
-void max_rgb_raw_faults ()
+void raw_point_faults (PointOperation point_operation)
 {
   constexpr std::size_t width = 8205,height = 3;
   const auto input = fixture(width,height); const Bytes sentinel{17,29,43};
@@ -905,18 +910,272 @@ void max_rgb_raw_faults ()
               return filter_native_vector(input,cancel,published,
                 [&](FilterRaster& in,FilterRaster& out,std::atomic<bool>& stop,const FilterRasterFactory&) {
                   RawObserved source(in,audit,true),destination(out,audit,false);
-                  return filter_max_rgb_raw_raster(source,destination,width,height,mode,stop,progress);
+                  return point_operation == PointOperation::value_invert ?
+                    filter_value_invert_raw_raster(source,destination,width,height,stop,progress) :
+                    filter_max_rgb_raw_raster(source,destination,width,height,mode,stop,progress);
                 });
             };
-            if(fail) rejects<StorageFailure>(run,"Raw Max RGB storage failure did not propagate");
-            else require(!run() && cancel.load(),"Raw Max RGB cancellation completed");
+            if(fail) rejects<StorageFailure>(run,"Raw point storage failure did not propagate");
+            else require(!run() && cancel.load(),"Raw point cancellation completed");
             require(published == sentinel && input == fixture(width,height),"Raw fault changed source/completed output");
             FilterProgress::Snapshot snapshot;
             require(progress->try_snapshot(snapshot) && snapshot.value < 1,"Raw failure/cancellation reported completion");
             const auto observed = operation == Operation::read ? audit.reads : operation == Operation::write ? audit.writes : audit.flushes;
-            require(observed == at,"Raw Max RGB continued after injected cancellation/error");
+            require(observed == at,"Raw point continued after injected cancellation/error");
           }
-  std::cout << "Direct raw Max RGB bounded read/write/flush cancellation/error ordinals preserve completed output\n";
+  std::cout << (point_operation == PointOperation::value_invert ? "Value Invert" : "Max RGB")
+            << " direct raw bounded read/write/flush cancellation/error ordinals preserve completed output\n";
+}
+
+
+void value_invert_exhaustive_rgb ()
+{
+  // Every RGB triple, in bounded 65,536-pixel batches. The literal pinned C
+  // callback retains its original branch order and runs as separately compiled
+  // C. Both bpp=3 and bpp=4 are checked; modern transport is always RGBA8.
+  constexpr std::size_t pixels = 256 * 256;
+  Bytes rgba (pixels * 4), rgb (pixels * 3), expected (rgba.size ()), rgb_expected (rgb.size ());
+  std::atomic<bool> cancel {false};
+  for (unsigned red = 0; red < 256; ++red)
+    {
+      for (unsigned green = 0; green < 256; ++green)
+        for (unsigned blue = 0; blue < 256; ++blue)
+          {
+            const auto pixel = green * 256 + blue;
+            rgba[pixel * 4] = rgb[pixel * 3] = red;
+            rgba[pixel * 4 + 1] = rgb[pixel * 3 + 1] = green;
+            rgba[pixel * 4 + 2] = rgb[pixel * 3 + 2] = blue;
+            rgba[pixel * 4 + 3] = (red + 3 * green + 5 * blue) & 255;
+          }
+      painter_legacy_vinvert_row (rgba.data (), expected.data (), pixels, 4);
+      painter_legacy_vinvert_row (rgb.data (), rgb_expected.data (), pixels, 3);
+      Memory source (rgba), destination (rgba.size ());
+      auto progress = std::make_shared<FilterProgress> ();
+      require (filter_value_invert_raw_raster (source, destination, pixels, 1, cancel, progress) &&
+               destination.data == expected && source.data == rgba,
+               "Raw Value Invert differs from exact pinned C callback across exhaustive RGB triples");
+      for (std::size_t pixel = 0; pixel < pixels; ++pixel)
+        {
+          require (destination.data[pixel * 4 + 3] == rgba[pixel * 4 + 3],
+                   "Raw Value Invert changed alpha");
+          for (unsigned channel = 0; channel < 3; ++channel)
+            require (destination.data[pixel * 4 + channel] == rgb_expected[pixel * 3 + channel],
+                     "Pinned RGB and RGBA Value Invert callbacks disagree");
+        }
+      FilterProgress::Snapshot snapshot;
+      require (progress->try_snapshot (snapshot) && snapshot.value == 1,
+               "Raw Value Invert did not complete progress");
+    }
+  std::cout << "Value Invert exact pinned C callback: all 16,777,216 RGB triples, bpp=3/4, varying copied alpha passed\n";
+}
+
+void value_invert_all_alpha_and_legacy ()
+{
+  const unsigned colors[][3] = {
+    {0,0,0},{1,1,1},{127,127,127},{254,254,254},{255,255,255},
+    {1,0,0},{0,1,0},{0,0,1},{2,1,0},{1,2,0},{1,0,2},
+    {3,1,2},{1,3,2},{1,2,3},{7,3,1},{3,7,1},{3,1,7},
+    {17,83,139},{139,17,83},{83,139,17},{139,83,17},{83,17,139},{17,139,83},
+    {139,139,17},{139,17,139},{17,139,139},{254,127,1},{127,254,1},{127,1,254},
+    {255,128,0},{128,255,0},{128,0,255},{0,255,255},{255,0,255},{255,255,0}
+  };
+  Bytes input;
+  for (const auto& color : colors)
+    for (unsigned alpha = 0; alpha < 256; ++alpha)
+      { for (const auto channel : color) input.push_back (channel); input.push_back (alpha); }
+  const auto width = input.size () / 4;
+  const auto expected = expected_shadow (input,width,1,full_region(width,1),0,PointOperation::value_invert);
+  std::atomic<bool> cancel {false}; Memory source (input), raw (input.size ()), legacy (input.size ());
+  require (filter_value_invert_raw_raster (source,raw,width,1,cancel) && raw.data == expected,
+           "Value Invert all-alpha representative raw arithmetic differs");
+  unsigned hidden_changes = 0;
+  for (const auto argument : {int_minimum,-1,0,1,255,int_maximum})
+    {
+      require (filter_point_raster (source,legacy,width,1,FilterPoint::value_invert,argument,false,cancel),
+               "Existing Value Invert byte route failed");
+      for (std::size_t offset = 0; offset < input.size (); offset += 4)
+        {
+          require (legacy.data[offset+3] == input[offset+3],"Legacy Value Invert changed alpha");
+          for (unsigned channel = 0; channel < 3; ++channel)
+            {
+              require (legacy.data[offset+channel] == (input[offset+3] ? expected[offset+channel] : input[offset+channel]),
+                       "Legacy Value Invert byte route changed its merged hidden-color contract");
+              if (!input[offset+3] && raw.data[offset+channel] != input[offset+channel]) ++hidden_changes;
+            }
+        }
+      verify_paths (input,width,1,full_region(width,1),argument,false,PointOperation::value_invert);
+    }
+  require (hidden_changes > 0,"Value Invert raw/legacy hidden-color distinction unexercised");
+  // Positive alpha, normalized values, extended finite RGB, and achromatic
+  // inputs ensure the existing real route retains its non-rounded arithmetic.
+  const double samples[][4] = {{.17,.83,.39,.5},{1,1,1,1},{0,0,0,.1},{.5,.5,.5,.8},
+                                {1.2,.3,.7,1},{-.2,.4,.1,.4},{.9,.4,.7,0}};
+  for (const auto& pixel : samples)
+    {
+      double wanted[4]; std::copy_n (pixel,4,wanted);
+      const double maximum = std::max ({pixel[0],pixel[1],pixel[2]});
+      const double minimum = std::min ({pixel[0],pixel[1],pixel[2]});
+      if (pixel[3])
+        for (unsigned channel = 0; channel < 3; ++channel)
+          wanted[channel] = !maximum || maximum == minimum ? 1-maximum : (1-maximum)*pixel[channel]/maximum;
+      Bytes bytes (sizeof pixel), answer (sizeof wanted);
+      std::memcpy (bytes.data (),pixel,sizeof pixel); std::memcpy (answer.data (),wanted,sizeof wanted);
+      Memory real_source(bytes),real_output(bytes.size());
+      require (filter_point_raster(real_source,real_output,1,1,FilterPoint::value_invert,0,true,cancel) &&
+               real_output.data == answer && real_source.data == bytes,
+               "Existing normalized-real Value Invert arithmetic changed");
+    }
+  std::cout << "Value Invert all-alpha black/achromatic/ties/rounding/hidden-color and unchanged byte/real APIs passed\n";
+}
+
+void value_invert_geometry_and_isolation ()
+{
+  unsigned cases = 0;
+  for (const auto& shape : {std::pair<std::size_t,std::size_t>{1,1},{1,7},{7,1},{2,2},{17,13},{67,66},{8201,3}})
+    {
+      const auto width = shape.first,height = shape.second;
+      const auto input = fixture (width,height);
+      std::vector<FilterSelectionRegion> regions {full_region(width,height),full_region(width,height,true),
+        {true,true,0,0,1,1}, {true,true,std::int32_t(width)-1,0,std::int32_t(width),std::int32_t(height)},
+        {true,true,0,std::int32_t(height)-1,std::int32_t(width),std::int32_t(height)},
+        {true,false,0,0,0,std::int32_t(height)}};
+      if (width > 2 && height > 2) regions.push_back ({true,true,1,1,std::int32_t(width)-1,std::int32_t(height)-1});
+      if (width == 67) regions.push_back ({true,true,63,63,65,65});
+      for (const auto& region : regions)
+        for (const auto argument : {int_minimum,0,int_maximum})
+          { verify_paths (input,width,height,region,argument,true,PointOperation::value_invert); ++cases; }
+    }
+  constexpr std::size_t width = 19,height = 13;
+  const FilterSelectionRegion region {true,true,3,2,16,11};
+  const auto input = fixture (width,height); auto changed = input;
+  for (std::size_t y = 0; y < height; ++y) for (std::size_t x = 0; x < width; ++x)
+    if (x < 3 || x >= 16 || y < 2 || y >= 11) std::fill_n (changed.data()+(y*width+x)*4,4,255);
+  std::atomic<bool> cancel {false}; Bytes completed,other;
+  require (filter_point_shadow_vector(input,width,height,region,PointOperation::value_invert,0,cancel,completed) == Outcome::shadow &&
+           filter_point_shadow_vector(changed,width,height,region,PointOperation::value_invert,0,cancel,other) == Outcome::shadow &&
+           completed == other,"Outside pixels influenced Value Invert ROI");
+  const auto saved = completed;
+  require (filter_point_shadow_vector(input,width,height,full_region(width,height),PointOperation::value_invert,0,cancel,other) == Outcome::shadow &&
+           completed == saved,"Later Value Invert operation mutated completed shadow");
+  cancel.store(true);
+  require (filter_point_shadow_vector(input,width,height,region,PointOperation::value_invert,0,cancel,completed) == Outcome::cancelled &&
+           completed == saved,"Cancelled Value Invert overwrote completed shadow");
+  cancel.store(false); Audit audit(width,height,region,cancel); audit.fail_on = Operation::flush; audit.fail_at = 1;
+  rejects<StorageFailure> ([&] { audited_vector(input,0,completed,audit,PointOperation::value_invert); },
+                           "Value Invert flush failure did not propagate");
+  require (completed == saved,"Value Invert storage failure overwrote completed shadow");
+  const auto offset_region = selected_region ({false,103,-39,114,-32},99,-42,width,height);
+  verify_paths(input,width,height,offset_region,0,true,PointOperation::value_invert);
+  std::cout << "Value Invert vector/memory/spill tiny/ROI/row-boundary/no-merge cases: " << cases
+            << "; offset and completed-buffer isolation passed\n";
+}
+
+void genuine_value_invert_corpus (const std::string& manifest)
+{
+  const auto base = manifest.substr (0,manifest.find_last_of ('/') + 1);
+  std::ifstream input(manifest); require(bool(input),"Cannot read genuine Value Invert manifest");
+  std::string line; unsigned cases = 0,hidden_differences = 0;
+  while (std::getline(input,line))
+    {
+      if (line.empty() || line[0] == '#') continue;
+      std::istringstream row(line); std::string proc,src,dst,extra;
+      std::int32_t argument; std::size_t width,height,channels;
+      require (bool(row >> proc >> argument >> width >> height >> channels >> src >> dst) && !(row >> extra),
+               "Malformed genuine Value Invert fixture row");
+      if (proc != "plug-in-vinvert") continue;
+      require (channels == 3 || channels == 4,"Genuine Value Invert fixture is not RGB/RGBA");
+      const auto native = read_bytes(base+src),expected = read_bytes(base+dst);
+      require (native.size() == width*height*channels && expected.size() == native.size(),"Wrong Value Invert fixture extent");
+      Bytes rgba(width*height*4),shadow,merged(rgba.size());
+      for (std::size_t pixel = 0; pixel < width*height; ++pixel)
+        {
+          std::copy_n (native.data()+pixel*channels,3,rgba.data()+pixel*4);
+          rgba[pixel*4+3] = channels == 3 ? 255 : native[pixel*channels+3];
+        }
+      std::atomic<bool> cancel {false};
+      require (filter_point_shadow_vector(rgba,width,height,full_region(width,height),PointOperation::value_invert,argument,cancel,shadow) == Outcome::shadow,
+               "Genuine Value Invert raw shadow failed");
+      require (shadow == expected_shadow(rgba,width,height,full_region(width,height),0,PointOperation::value_invert) &&
+               spill_result(rgba,width,height,full_region(width,height),0,PointOperation::value_invert) == shadow,
+               "Genuine Value Invert raw pinned-C/vector/spill mismatch");
+      // Archived PDB outputs are observations only of the final merged pixels.
+      require (filter_replace_inten_row(rgba.data(),shadow.data(),nullptr,merged.data(),width*height,4,15),
+               "Genuine Value Invert full-coverage merge rejected");
+      for (std::size_t pixel = 0; pixel < width*height; ++pixel)
+        for (std::size_t channel = 0; channel < channels; ++channel)
+          {
+            require (merged[pixel*4+channel] == expected[pixel*channels+channel],
+                     "Archived genuine final Value Invert bytes differ: "+dst);
+            if (channel < 3 && !rgba[pixel*4+3] && shadow[pixel*4+channel] != merged[pixel*4+channel]) ++hidden_differences;
+          }
+      ++cases;
+    }
+  require (cases == 4 && hidden_differences > 0,"Value Invert archived cases or raw/final distinction lost");
+  std::cout << "4 archived original PDB Value Invert outputs matched after explicit merge; no fresh owner-context capture claimed\n";
+}
+
+void value_invert_validation ()
+{
+  constexpr std::size_t width = 8,height = 7,size = width*height*4;
+  Sized input(size),output(size),short_raster(size-1),long_raster(size+1);
+  const auto region = full_region(width,height); const Bytes original = fixture(width,height),sentinel{11,23,47};
+  for (bool cancelled : {false,true})
+    {
+      std::atomic<bool> cancel{cancelled};
+      for (auto *bad : {&short_raster,&long_raster})
+        {
+          rejects<std::invalid_argument> ([&] { filter_value_invert_raw_raster(*bad,output,width,height,cancel); },"Raw Value Invert inexact input accepted");
+          rejects<std::invalid_argument> ([&] { filter_value_invert_raw_raster(input,*bad,width,height,cancel); },"Raw Value Invert inexact output accepted");
+          rejects<std::invalid_argument> ([&] { filter_point_shadow_raster(*bad,width,height,region,PointOperation::value_invert,0,cancel,output); },
+                                          "Value Invert shadow inexact input accepted");
+          rejects<std::invalid_argument> ([&] { filter_point_shadow_raster(input,width,height,region,PointOperation::value_invert,0,cancel,*bad); },
+                                          "Value Invert shadow inexact output accepted");
+        }
+      rejects<std::invalid_argument> ([&] { filter_value_invert_raw_raster(input,input,width,height,cancel); },"Raw Value Invert alias accepted");
+      rejects<std::invalid_argument> ([&] { filter_point_shadow_raster(input,width,height,region,PointOperation::value_invert,0,cancel,input); },
+                                      "Value Invert shadow alias accepted");
+      for (const auto& shape : {std::pair<std::size_t,std::size_t>{0,height},{width,0},
+                                 {std::numeric_limits<std::size_t>::max(),height},{width,std::numeric_limits<std::size_t>::max()}})
+        rejects<std::invalid_argument> ([&] { filter_value_invert_raw_raster(input,output,shape.first,shape.second,cancel); },
+                                        "Raw Value Invert invalid extent accepted");
+      for (const auto& bad : {FilterSelectionRegion{false,false,0,0,0,0},{false,true,1,0,8,7},{true,false,1,1,7,6},
+                              {true,true,1,1,1,6},{true,true,-1,0,8,7},{true,true,0,0,9,7},{true,false,7,0,3,7}})
+        {
+          rejects<std::invalid_argument> ([&] { filter_point_shadow_raster(input,width,height,bad,PointOperation::value_invert,0,cancel,output); },
+                                          "Value Invert malformed region accepted");
+          Bytes published = sentinel;
+          rejects<std::invalid_argument> ([&] { filter_point_shadow_vector(original,width,height,bad,PointOperation::value_invert,0,cancel,published); },
+                                          "Value Invert malformed vector region accepted");
+          require(published == sentinel,"Value Invert validation changed output");
+        }
+      for (const auto bad_size : {size-1,size+1})
+        {
+          Bytes published = sentinel;
+          rejects<std::invalid_argument> ([&] { filter_point_shadow_vector(Bytes(bad_size),width,height,region,PointOperation::value_invert,0,cancel,published); },
+                                          "Value Invert vector inexact extent accepted");
+          require(published == sentinel,"Value Invert inexact extent changed output");
+        }
+    }
+  require(input.calls == 0 && output.calls == 0 && short_raster.calls == 0 && long_raster.calls == 0,"Value Invert rejection accessed storage");
+  std::atomic<bool> cancel{true};
+  require(!filter_value_invert_raw_raster(input,output,width,height,cancel) && input.calls == 0 && output.calls == 0,
+          "Pre-cancelled raw Value Invert accessed storage");
+  for (const auto& shape : {std::pair<std::size_t,std::size_t>{46341,46341},{32768,65536},{std::size_t(int_maximum),2}})
+    {
+      Sized in(std::uint64_t(shape.first)*shape.second*4),out(in.size());
+      rejects<std::invalid_argument> ([&] { filter_point_shadow_raster(in,shape.first,shape.second,full_region(shape.first,shape.second),
+                                                                     PointOperation::value_invert,0,cancel,out); },
+                                      "Value Invert accepted undefined signed width*height product");
+      require(in.calls == 0 && out.calls == 0,"Value Invert area rejection performed I/O");
+    }
+  for (const auto& shape : {std::pair<std::size_t,std::size_t>{1,std::size_t(int_maximum)},{std::size_t(int_maximum),1},{46340,46340}})
+    {
+      Sized in(std::uint64_t(shape.first)*shape.second*4),out(in.size());
+      require(filter_point_shadow_raster(in,shape.first,shape.second,full_region(shape.first,shape.second),
+                                         PointOperation::value_invert,0,cancel,out) == Outcome::cancelled && in.calls == 0 && out.calls == 0,
+              "Value Invert valid signed-area boundary rejected or accessed storage");
+    }
+  std::cout << "Value Invert raw/tagged no-I/O validation, alias/geometry/extents/signed-area boundaries passed\n";
 }
 
 } // namespace
@@ -944,9 +1203,16 @@ int main (int argc, char **argv)
       max_rgb_geometry_and_isolation ();
       genuine_max_rgb_corpus (argv[1]);
       max_rgb_validation ();
-      max_rgb_raw_faults ();
+      raw_point_faults (PointOperation::max_rgb);
       cancellation_errors_and_progress (PointOperation::max_rgb,1);
       cancellation_errors_and_progress (PointOperation::max_rgb,int_minimum);
+      value_invert_exhaustive_rgb ();
+      value_invert_all_alpha_and_legacy ();
+      value_invert_geometry_and_isolation ();
+      genuine_value_invert_corpus (argv[1]);
+      value_invert_validation ();
+      raw_point_faults (PointOperation::value_invert);
+      cancellation_errors_and_progress (PointOperation::value_invert,0);
     }
   catch (const std::exception& failure) { std::cerr << failure.what () << '\n'; status = 1; }
   if (g_rmdir (directory.c_str ()) != 0)

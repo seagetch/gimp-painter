@@ -19,6 +19,15 @@ bool filter_point_raster (FilterRaster&, FilterRaster&, std::size_t, std::size_t
 bool filter_max_rgb_raw_raster (FilterRaster&, FilterRaster&, std::size_t, std::size_t,
                                 std::int32_t mode, std::atomic<bool>&,
                                 const std::shared_ptr<FilterProgress>& progress = {});
+/* Legacy vinvert_render_row output before REPLACE_INTEN merging. Each RGB
+ * byte c becomes ((255-M)*c + M/2)/M for M=max(R,G,B)>0 with unequal channels;
+ * black/achromatic RGB becomes 255-M. Alpha is copied even at alpha zero,
+ * where hidden RGB is still transformed. Private independent tightly packed
+ * RGBA8 transport only; the caller promotes RGB with alpha 255. No Gray or
+ * indexed admission, owner merge, or normalized-real API is implied. */
+bool filter_value_invert_raw_raster (FilterRaster&, FilterRaster&, std::size_t, std::size_t,
+                                     std::atomic<bool>&,
+                                     const std::shared_ptr<FilterProgress>& progress = {});
 bool filter_edge_real_raster (FilterRaster&, FilterRaster&, std::size_t, std::size_t,
                                const EdgeOptions&, std::atomic<bool>&,
                                const std::shared_ptr<FilterProgress>& progress = {});
