@@ -488,7 +488,9 @@ gimp_painter_httpd_start (Gimp *g, guint port, const gchar *token,
       return static_cast<GObject *> (nullptr);
     auto *uris = soup_server_get_uris (SOUP_SERVER (s->server.get ()));
     s->port    = uris ? g_uri_get_port (static_cast<GUri *> (uris->data)) : 0;
-    g_slist_free_full (uris, reinterpret_cast<GDestroyNotify> (g_uri_unref));
+    g_slist_free_full (uris, [] (gpointer data) {
+      g_uri_unref (static_cast<GUri *> (data));
+    });
     return owner.release ();
   });
 }

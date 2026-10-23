@@ -339,8 +339,8 @@
 | 06.019 | [x] | idle source の所有管理を実装する | 06.018 | close 後に user data を参照しない |
 | 06.020 | [x] | GValue の所有 wrapper を実装する | 06.019 | borrow・copy・unset・free を明示して二重解放しない |
 | 06.020/value-assignment | [x] | GValue wrapper の再代入を安全にする | 06.020, 01.007/value-wrapper | copy/move/self 代入で旧値を解放し、確保領域と値を一度だけ破棄する |
-| 06.021 | [ ] | GLib 配列と文字列の所有 wrapper を実装する | 06.020 | allocator 対応が一致 |
-| 06.021/array-reassignment | [ ] | 配列 wrapper の再代入を安全にする | 06.021, 01.007/array-wrapper | 旧 GArray 参照を解放し、自己移動と空配列の操作を検証する |
+| 06.021 | [x] | GLib 配列と文字列の所有 wrapper を実装する | 06.020 | allocator 対応が一致 |
+| 06.021/array-reassignment | [x] | 配列 wrapper の再代入を安全にする | 06.021, 01.007/array-wrapper | 旧 GArray 参照を解放し、自己移動と空配列の操作を検証する |
 | 06.022 | [ ] | mutex guard の置換を実装する | 06.021 | 早期 return・例外でも unlock する |
 | 06.023 | [ ] | GTK DSL を新ハンドルへ接続する | 06.022 | Definer/Packer の旧二重所有を排除 |
 | 06.024 | [ ] | qdata lookup の処理単位を制限する | 06.023 | 画素ループ内では解決済み借用だけを使う |
