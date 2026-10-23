@@ -1868,3 +1868,82 @@ not replace the newly required executions. Failed attempts stay preserved.
 Only after those gates pass may the explicitly reopened checks be reconsidered.
 This correction makes no ordinary-sanitizer PASS, new GUI, whole-port, historical
 pan-parity, platform or release-completion claim.
+
+
+## Ordinary Meson acceptance restored (2026-10-17)
+
+This section supersedes the pending current state of the dated correction above,
+while retaining that correction and all historical focused results. The exact
+tested source is `47202852286b654d88d3fa4f0bafd59e08030cad`, tree
+`47edf23ea7f95390751c76d649acb9429d38ff61`, with pinned gimp-data
+`a31e5dea4f572fb5f33b06f5c4b86db5f30643dc`. The ten complete normal registrations
+passed **267** positive cases. The four complete ordinary Meson ASan/UBSan
+registrations passed **103**: Clone 62, navigation events 31, navigation UI 4,
+and navigation 6. No skip, TODO, timeout, crash or sanitizer diagnostic qualified
+as a passing case. Both batches used fresh isolated profiles, all 361 catalogs
+and authenticated TCP portrait Xvfb at 1080x1920.
+
+The fresh ordinary `b_sanitize=address,undefined` build was created in run-002.
+Structural compile/link evidence accounts for 1,373 instrumented runtime objects
+and three separately proven build-machine generator objects, 33 runtime archives,
+seven shared libraries and the four test links. Prescribed RTTI is retained;
+no individual object substitution or generated-backend rewriting occurred.
+Run-003 completed only the three declared missing menu resources. Run-004
+executed zero build commands and reran the complete 267+103 cases on that exact
+sealed build. Source, ELF, full freshness, metadata and resource fingerprints
+remained identical through all five current phases. Current `before_build` and
+`after_build` keys mean pre/post reuse verification, not a new compilation.
+
+Failures remain explicit. Run-001 stopped at an overbroad build-generator audit;
+run-002 stopped on a fatal missing-menu warning; run-003 hit the unchanged 1 GB
+disk reserve during normal large-XCF testing. Run-004 restored 4 GB admission
+and retained the 1 GB live reserve. Its native batches passed, but its owner
+exited **1** because the public writer redacted the fixed ASAN_OPTIONS and
+UBSAN_OPTIONS strings, and the offline validator correctly rejected those
+redacted fields. The original public tree, receipt, policy and failed validation
+are preserved byte-for-byte inside the package.
+
+A separate reviewed policy-disclosure supplement, executed with exit **0** and
+no native rerun, extracts only allowlisted settings from the four actual private
+Meson result rows. Their original raw-log hash already matches the sealed
+transformation manifest. Independent extraction reproduces the attestation.
+The unchanged frozen validator must first reproduce the sole original failure;
+a one-use in-memory adapter then supplies only those two observed policy values,
+and every original assertion must pass. This is a reviewed extraction attestation:
+the withheld raw environment cannot be reconstructed from its hash. No private
+environment, credentials, suppression file or invented test result is published.
+
+The canonical artifact is
+`migration/tests/ordinary-meson-clone-navigation-evidence.tar.xz`, SHA256
+`7b4a3ab67e7d008f3889f57df9b22d1a6ea0c9279646aab605b74398b75c3b2f`.
+It contains the exact blocked run-004 archive once, including both failed
+provenance origins, plus the pinned disclosure helper, attestation and validation.
+The original execution receipt SHA256 is
+`db0cbf6086c25eb82314ff649a8b01aa5079e8dec349c1b697377f90b854186f`.
+All execution/recovery pins and both distinct terminal outcomes are recorded
+in `ordinary_meson_supplement` in `migration/acceptance/clone.json`.
+
+The authoritative current check is:
+
+```sh
+python3 -B tools/check_ordinary_meson_acceptance.py --root . --frozen-source /path/to/exact-47202852-source
+```
+
+The first publication also requires `--audit-closure`. The default gate allows
+subsequent documentary progress while preserving covered acceptance facts; it
+does not permanently freeze unrelated task rows. It validates the unchanged
+historical focused checker against the exact frozen source and validates the
+current native-input equivalence separately. Only the four existing documentary
+paths and three exact hash-pinned integration additions are permitted. Production,
+test, build and historical helper/archive changes still fail. The new checker and
+its controls are artifact-only additions, not code executed by the native runs.
+
+This restores precisely the fourteen directly reopened checks and three
+GUI-dependency checks. The latter retain their existing exact-source observations
+and screenshots; they were not rerun. Exactly the original 23 Clone rows return
+to COMPONENT_VERIFIED; 14.007, 14.009, 14.018, 14.019 and 14.020 remain PARTIAL.
+Original parents 14.006, 14.007, 25.009, 25.009/drag-zoom-scroll and 34.005 remain
+open. Historical pan-origin differences remain unresolved. Leak detection stays
+unavailable, external dependencies are uninstrumented, and these 103 cases do
+not establish whole-application, platform, release or whole-port acceptance.
+The earlier f271 all-163 normal aggregate remains the only claimed full aggregate.

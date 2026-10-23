@@ -593,8 +593,8 @@
 | 14.006 | [ ] | clone 自身の座標処理を実装する | 14.005 | source 座標との合成が一致 |
 | 14.006/editability-contract | [ ] | CloneLayer の編集可否を現行ロック規約へ対応付ける | 14.005, 01.005/gimp3-layer-slots | 廃止された GimpItemClass.is_editable を仮定せず、許可操作と選択・移動の可否を確認 |
 | 14.007 | [ ] | source の可視性・合成変更を処理する | 14.006 | 旧版の更新範囲と表示が一致 |
-| 14.007/component-visibility-regression | [ ] | Cloneのcomponent可視性と遅延ROI更新を検証する | 14.001/core-implementation, 02.005, 09.002 | 旧source由来のRGB/RGBA/Gray/Gray-alpha全component組合せ・toggle時cache保持・1x1更新通知・source-node・opacity/mask丸め・show-maskを通常/focused sanitizerで検証。親14.007/14.006とgenuine runtime/合成/UI/release gateは別途保持 |
-| 14.007/source-mode-projection-regression | [ ] | Cloneの非Dissolve source modeとinitial-region更新を検証する | 14.001/core-implementation, 14.007/component-visibility-regression, 10.005/normal-multiply-parity, 02.005, 09.002 | 通常layerで有効な旧27 modeの明示mapping・RGB/RGBA/Gray/Gray-alpha×mask有無216場面でsource由来cache/source-node・mode変更/復帰の全領域通知・同mode無通知・後続1x1更新と周囲保持を通常62 Clone/focused ASan/UBSan62・七登録target計226 TAPで検証。親14.007/14.006とgenuine runtime/合成/UI/release gateは保持 |
+| 14.007/component-visibility-regression | [x] | Cloneのcomponent可視性と遅延ROI更新を検証する | 14.001/core-implementation, 02.005, 09.002 | 旧source由来のRGB/RGBA/Gray/Gray-alpha全component組合せ・toggle時cache保持・1x1更新通知・source-node・opacity/mask丸め・show-maskを通常/focused sanitizerで検証。親14.007/14.006とgenuine runtime/合成/UI/release gateは別途保持 |
+| 14.007/source-mode-projection-regression | [x] | Cloneの非Dissolve source modeとinitial-region更新を検証する | 14.001/core-implementation, 14.007/component-visibility-regression, 10.005/normal-multiply-parity, 02.005, 09.002 | 通常layerで有効な旧27 modeの明示mapping・RGB/RGBA/Gray/Gray-alpha×mask有無216場面でsource由来cache/source-node・mode変更/復帰の全領域通知・同mode無通知・後続1x1更新と周囲保持を通常62 Clone/focused ASan/UBSan62・七登録target計226 TAPで検証。親14.007/14.006とgenuine runtime/合成/UI/release gateは保持 |
 | 14.008 | [ ] | source 改名を処理する | 14.007 | 既存参照を旧仕様に沿って維持 |
 | 14.009 | [ ] | 同名 source を処理する | 14.008 | 保存前後で別レイヤーへ変わらない |
 | 14.010 | [ ] | clone の複製を実装する | 14.009 | 複製先の source が旧仕様と一致 |
@@ -955,20 +955,20 @@
 
 | ID | 完了 | 作業 | 依存ID | 完了条件・証跡 |
 |---|:---:|---|---|---|
-| 25.001 | [ ] | 旧回転の開始条件を移植する | 02.015, 03.009 | button・modifier・tool 状態が一致 |
+| 25.001 | [x] | 旧回転の開始条件を移植する | 02.015, 03.009 | button・modifier・tool 状態が一致 |
 | 25.001/start-relative-route | [x] | 旧回転開始基準と修飾キーrouteを現行表示へ接続する | 01.017, 04.003 | 5184件の不変旧関数演算/Cairo行列一致、5 pure通常/ASan/UBSanと4実native GTK設定往復に合格。custom制約・任意button ID・設定inheritanceを保持。実drag/device・旧zoom/panは別gate |
-| 25.002 | [ ] | 開始角度基準の計算を移植する | 25.001 | 旧位置基準から角度を算出 |
-| 25.003 | [ ] | Ctrl ビットの判定を移植する | 25.002 | 追加 modifier があっても旧条件で判定 |
-| 25.004 | [ ] | Ctrl 押下中への切替を実装する | 25.003 | drag 継続中に旧仕様の snap へ切替 |
-| 25.005 | [ ] | Ctrl 解除時の切替を実装する | 25.004 | 非 snap の角度へ旧仕様で戻る |
-| 25.006 | [ ] | 15度の丸めを実装する | 25.005 | 正負と半刻みの期待値が一致 |
-| 25.007 | [ ] | 0/360度の境界を処理する | 25.006 | 角度飛びと方向反転がない |
-| 25.008 | [ ] | 表示反転中の方向を移植する | 25.007 | 旧水平反転時の計算と一致 |
-| 25.008/mirrored-arrow-input | [ ] | 表示反転中の左右キー入力を移植する | 25.007, 01.017 | mirrored時のLeft/Right変換と非反転時の不変を、押下・解除・toolへの転送・回転併用で試験する |
+| 25.002 | [x] | 開始角度基準の計算を移植する | 25.001 | 旧位置基準から角度を算出 |
+| 25.003 | [x] | Ctrl ビットの判定を移植する | 25.002 | 追加 modifier があっても旧条件で判定 |
+| 25.004 | [x] | Ctrl 押下中への切替を実装する | 25.003 | drag 継続中に旧仕様の snap へ切替 |
+| 25.005 | [x] | Ctrl 解除時の切替を実装する | 25.004 | 非 snap の角度へ旧仕様で戻る |
+| 25.006 | [x] | 15度の丸めを実装する | 25.005 | 正負と半刻みの期待値が一致 |
+| 25.007 | [x] | 0/360度の境界を処理する | 25.006 | 角度飛びと方向反転がない |
+| 25.008 | [x] | 表示反転中の方向を移植する | 25.007 | 旧水平反転時の計算と一致 |
+| 25.008/mirrored-arrow-input | [x] | 表示反転中の左右キー入力を移植する | 25.007, 01.017 | mirrored時のLeft/Right変換と非反転時の不変を、押下・解除・toolへの転送・回転併用で試験する |
 | 25.009 | [ ] | 現行表示行列へ接続する | 25.008 | canvas と overlay が同じ角度を使用 |
-| 25.009/common-angle-draw | [ ] | 共通角度描画とupright GTK anchorの限定native経路を検証する | 25.008, 01.017 | 独立geometryで38実GTK draw/回のraster・代表item・selection・upright anchorと13行anchor修正を37通常/27 focused eventで検証し、別sourceのstrict Clone 226通常/62 focusedを保持。実window GUIは別34.005/canvas-overlay-portrait-smokeでsource0f16限定検証。原25.009全体は未完了 |
-| 25.009/transformed-drag-events | [ ] | 回転・水平反転下のradial zoomと内部middle-panの限定event経路を検証する | 25.008, 01.017 | 独立geometryで4追加登録・16 drag/16再開・6小数primary座標を41通常/31 focused eventで検証し、別sourceのstrict Clone 226通常/62 focusedを保持。実window GUIは別34.005/transformed-drag-portrait-smokeでsource adcb50e8限定検証。原25.009全体は未完了 |
-| 25.009/fractional-pan-difference | [ ] | 小数部が変わるmiddle-panの現行整数device原点と旧source差分を限定検証する | 25.008, 01.017 | exact public A 8e92569d/tree 25bec9e5の限定native41 normal/31 focused・9 C unitsと、別source B fbe7efac/tree ef9ae384のstrict Clone226 normal/62 focusedを確認。1caseの整数offset・量子化anchor・非零raw driftを限定受入れ、31登録・6 primary pairs・旧16-drag証跡保持。最終documentary Cへnative/GUI合格は転用しない。現行source-backed differenceはexact旧互換の承認ではなく、旧runtime/raster/overlay・原25.009・drag-zoom-scrollは未完了 |
+| 25.009/common-angle-draw | [x] | 共通角度描画とupright GTK anchorの限定native経路を検証する | 25.008, 01.017 | 独立geometryで38実GTK draw/回のraster・代表item・selection・upright anchorと13行anchor修正を37通常/27 focused eventで検証し、別sourceのstrict Clone 226通常/62 focusedを保持。実window GUIは別34.005/canvas-overlay-portrait-smokeでsource0f16限定検証。原25.009全体は未完了 |
+| 25.009/transformed-drag-events | [x] | 回転・水平反転下のradial zoomと内部middle-panの限定event経路を検証する | 25.008, 01.017 | 独立geometryで4追加登録・16 drag/16再開・6小数primary座標を41通常/31 focused eventで検証し、別sourceのstrict Clone 226通常/62 focusedを保持。実window GUIは別34.005/transformed-drag-portrait-smokeでsource adcb50e8限定検証。原25.009全体は未完了 |
+| 25.009/fractional-pan-difference | [x] | 小数部が変わるmiddle-panの現行整数device原点と旧source差分を限定検証する | 25.008, 01.017 | exact public A 8e92569d/tree 25bec9e5の限定native41 normal/31 focused・9 C unitsと、別source B fbe7efac/tree ef9ae384のstrict Clone226 normal/62 focusedを確認。1caseの整数offset・量子化anchor・非零raw driftを限定受入れ、31登録・6 primary pairs・旧16-drag証跡保持。最終documentary Cへnative/GUI合格は転用しない。現行source-backed differenceはexact旧互換の承認ではなく、旧runtime/raster/overlay・原25.009・drag-zoom-scrollは未完了 |
 | 25.009/drag-zoom-scroll | [ ] | 修飾キー付きdrag zoomと変換座標panを維持する | 25.008, 01.017 | Shift回転・Ctrl scaling・通常scrollの開始/drag/終了、zoom距離300、device→image変換と原点を旧操作fixtureで比較する |
 | 25.009/radial-default | [x] | 旧Ctrl+middleの距離300 radial zoomを接続する | 25.001/start-relative-route | 開始scale最大値・整数中心・固定anchorを保持し2400不変旧関数演算に一致、6 pure通常/ASan/UBSan合格。明示custom zoomは現行設定を保持。実display clamp/pan/deviceは未完了 |
 | 25.010 | [ ] | 回転 reset action を接続する | 25.009 | 状態と UI 表示が一致 |
@@ -1244,9 +1244,9 @@
 | 34.005/tested-freshness-gate | [x] | PHONY/restatと実変更を区別する梱包gateを検証する | 34.005/runtime-prototype | 全source/output/graph/command/install inputの集約前後sealを要求しNinja収束後も同一でなければstage前拒否。32fixtureと実失敗gate3改竄拒否合格。旧gateや104/4結果を合格へ変えず、実Gimp新集約/候補作成は未実行 |
 | 34.005/installed-filter-smoke | [x] | 再配置runtimeで実Filter process・旧画素・Save再読込を検証する | 34.005/runtime-prototype, 16.003/isolated-blinds-route | fresh buildの5270file/419ELF runtimeを再配置、実helper/Blinds・4096²実旧byte・Save再読込と欠損2caseのFAILED/定義cache保持・無残留を確認。6native target・selector12通常/ASan/UBSan・35recipe・focused23source/11native合格。prototypeのみ、全aggregate/GUI/platform/release gateは未完了 |
 | 34.005/value-invert-portrait-smoke | [x] | 公開Value Invertを実縦長GUIで保存・再読込し独立layer編集を確認する | 03.009/tcp-portrait-environment, 16.003/native-value-invert-context, 29.001/native-canvas-tiles | 公開8cade86785/tree4b224b54を固定560package・3460stepでbuild/install。認証付き1080x1920実Painter layer作成/表示切替/Save/Close/Open/編集Cancel、可視340340画素一致・Quit0、13760sourceと276runtime seal不変。font/dconf/compiler警告を保持、全UI/package/aggregateは別gate（migration/tests/value-invert-portrait-smoke.json） |
-| 34.005/clone-components-portrait-smoke | [ ] | 公開Cloneのcomponent可視性・混在cache保存再読込・局所修復を実縦長GUIで確認する | 03.009/tcp-portrait-environment, 14.007/component-visibility-regression, 29.001/native-canvas-tiles | 公開1d2b621a15/tree8addde80を96step増分default build/installし認証付き1080x1920実Painterでlive参照/Cancel・Red非表示時白dabのcyan cache・source白・toggle非再生成・混在XCF再読込・独立BとA修復・Quit0を確認。可視340340画素一致、13803source/278runtime entry seal不変。font/dconf警告保持、全Clone/UI/package/aggregate gateは未完了（clone-layer-port契約の外部証跡appendix） |
-| 34.005/canvas-overlay-portrait-smoke | [ ] | 公開canvas回転とguide・selectionを実縦長GUIで保存・再読込する | 03.009/tcp-portrait-environment, 25.009/common-angle-draw, 29.001/native-canvas-tiles | 公開0f16f81557/tree f4b7c2dcの96step増分default build/install後、認証付き1080x1920実Painterで同一held dragの28.43→Ctrl30→Shift解除30→Ctrl解除28.43→releaseと固定panel・guide・selectionを確認。XCF再読込の角度0・379010画素一致、13838source/2842runtime seal不変、終了0。保存focus誤りと回復・font/dconf警告を保持、全renderer/親/aggregate/packageは別gate（clone-layer-port契約の外部証跡appendix） |
-| 34.005/transformed-drag-portrait-smoke | [ ] | 公開transformed zoom・panを実縦長GUIで保存・再読込する | 03.009/tcp-portrait-environment, 25.009/transformed-drag-events, 29.001/native-canvas-tiles | 公開adcb50e8/tree 0ee3cd81を96step増分default build/installし認証付き1080x1920実Painterで37度・水平反転・held zoom 60→64→68→64→60%とCtrl/Alt解除、middle-pan往復、focus済Save/Close/Openを確認。内部276060画素一致、pan ROIは24/818400画素差を明記、13843source/2842runtime seal不変、終了0。親TODO・native41/31とstrict226/62の別source・font/dconf警告・XCF即時hashの親観測限定を保持（clone-layer-port契約の外部証跡appendix） |
+| 34.005/clone-components-portrait-smoke | [x] | 公開Cloneのcomponent可視性・混在cache保存再読込・局所修復を実縦長GUIで確認する | 03.009/tcp-portrait-environment, 14.007/component-visibility-regression, 29.001/native-canvas-tiles | 公開1d2b621a15/tree8addde80を96step増分default build/installし認証付き1080x1920実Painterでlive参照/Cancel・Red非表示時白dabのcyan cache・source白・toggle非再生成・混在XCF再読込・独立BとA修復・Quit0を確認。可視340340画素一致、13803source/278runtime entry seal不変。font/dconf警告保持、全Clone/UI/package/aggregate gateは未完了（clone-layer-port契約の外部証跡appendix） |
+| 34.005/canvas-overlay-portrait-smoke | [x] | 公開canvas回転とguide・selectionを実縦長GUIで保存・再読込する | 03.009/tcp-portrait-environment, 25.009/common-angle-draw, 29.001/native-canvas-tiles | 公開0f16f81557/tree f4b7c2dcの96step増分default build/install後、認証付き1080x1920実Painterで同一held dragの28.43→Ctrl30→Shift解除30→Ctrl解除28.43→releaseと固定panel・guide・selectionを確認。XCF再読込の角度0・379010画素一致、13838source/2842runtime seal不変、終了0。保存focus誤りと回復・font/dconf警告を保持、全renderer/親/aggregate/packageは別gate（clone-layer-port契約の外部証跡appendix） |
+| 34.005/transformed-drag-portrait-smoke | [x] | 公開transformed zoom・panを実縦長GUIで保存・再読込する | 03.009/tcp-portrait-environment, 25.009/transformed-drag-events, 29.001/native-canvas-tiles | 公開adcb50e8/tree 0ee3cd81を96step増分default build/installし認証付き1080x1920実Painterで37度・水平反転・held zoom 60→64→68→64→60%とCtrl/Alt解除、middle-pan往復、focus済Save/Close/Openを確認。内部276060画素一致、pan ROIは24/818400画素差を明記、13843source/2842runtime seal不変、終了0。親TODO・native41/31とstrict226/62の別source・font/dconf警告・XCF即時hashの親観測限定を保持（clone-layer-port契約の外部証跡appendix） |
 | 34.005/license-manifest | [ ] | 実配布依存の版とlicense noticeを収集する | 34.005, 01.011 | 各OSの実リンク・同梱ライブラリーと資産を実source hashへ対応し、旧台帳の未取得noticeを解消してpackageへ添付する |
 | 34.006 | [ ] | C/C++ compile CI を登録する | 34.005 | 主要 OS で全追加 module を検査 |
 | 34.007 | [ ] | bridge 単体試験を CI に登録する | 34.006 | 寿命と例外の回帰を検知 |
