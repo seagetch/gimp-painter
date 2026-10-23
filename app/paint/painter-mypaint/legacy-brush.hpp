@@ -24,6 +24,8 @@
 #include <math.h>
 #include <stdlib.h>
 #include <array>
+#include <algorithm>
+#include <iterator>
 #include <memory>
 #include "legacy-color.hpp"
 #include "surface.hpp"
@@ -157,7 +159,7 @@ private:
   std::array<Mapping, BRUSH_SETTINGS_COUNT> settings;
 
   // the current value of all settings (calculated using the current state)
-  float settings_value[BRUSH_SETTINGS_COUNT];
+  float settings_value[BRUSH_SETTINGS_COUNT]{};
 
   // cached calculation results
   float speed_mapping_gamma[2], speed_mapping_m[2], speed_mapping_q[2];
@@ -180,7 +182,21 @@ public:
   }
 
   ~Brush() = default;
-  Brush (const Brush&) = delete;
+  // Exact value checkpoint, including the random stream and cached mappings.
+  // Copies are private evaluator snapshots, never another live model owner.
+  Brush (const Brush& other)
+    : print_inputs(other.print_inputs),
+      stroke_total_painting_time(other.stroke_total_painting_time),
+      stroke_current_idling_time(other.stroke_current_idling_time),
+      rng(g_rand_copy(other.rng.get())), settings(other.settings),
+      reset_requested(other.reset_requested)
+  {
+    std::copy(std::begin(other.states),std::end(other.states),std::begin(states));
+    std::copy(std::begin(other.settings_value),std::end(other.settings_value),std::begin(settings_value));
+    std::copy(std::begin(other.speed_mapping_gamma),std::end(other.speed_mapping_gamma),std::begin(speed_mapping_gamma));
+    std::copy(std::begin(other.speed_mapping_m),std::end(other.speed_mapping_m),std::begin(speed_mapping_m));
+    std::copy(std::begin(other.speed_mapping_q),std::end(other.speed_mapping_q),std::begin(speed_mapping_q));
+  }
   Brush& operator= (const Brush&) = delete;
 
   void reset()

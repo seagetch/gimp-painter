@@ -1,0 +1,51 @@
+1/4 gimp:painter / painter-mypaint-checkpoint     OK              0.01s
+2/4 gimp:painter / painter-mypaint-legacy-decoder FAIL            0.05s   exit status 1
+>>> MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 MESON_TEST_ITERATION=1 MALLOC_PERTURB_=22 ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 /usr/bin/python3 /workspace/shared/gimp-native-preset-gui/build/../source/app/paint/painter-mypaint/tests/compare-trace.py /workspace/shared/gimp-native-preset-gui/source/migration/fixtures/legacy-mypaint/resource-values.tsv.gz app/paint/painter-mypaint/painter-mypaint-resource-trace /workspace/shared/gimp-native-preset-gui/source/data/painter-mypaint-brushes
+――――――――――――――――――――――――――――――――――――― ✀  ―――――――――――――――――――――――――――――――――――――
+stderr:
+Traceback (most recent call last):
+  File "/workspace/shared/gimp-native-preset-gui/build/../source/app/paint/painter-mypaint/tests/compare-trace.py", line 5, in <module>
+    run = subprocess.run(sys.argv[2:], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
+  File "/usr/lib/python3.13/subprocess.py", line 554, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/subprocess.py", line 1039, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        pass_fds, cwd, env,
+                        ^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+                        gid, gids, uid, umask,
+                        ^^^^^^^^^^^^^^^^^^^^^^
+                        start_new_session, process_group)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/subprocess.py", line 1857, in _execute_child
+    self._posix_spawn(args, executable, env, restore_signals, close_fds,
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                      p2cread, p2cwrite,
+                      ^^^^^^^^^^^^^^^^^^
+                      c2pread, c2pwrite,
+                      ^^^^^^^^^^^^^^^^^^
+                      errread, errwrite)
+                      ^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/subprocess.py", line 1801, in _posix_spawn
+    self.pid = os.posix_spawn(executable, args, env, **kwargs)
+               ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'app/paint/painter-mypaint/painter-mypaint-resource-trace'
+――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+
+3/4 gimp:painter / painter-mypaint-legacy-engine  OK              0.25s
+4/4 gimp:painter / painter-mypaint-resource       OK              0.31s
+
+Summary of Failures:
+
+2/4 gimp:painter / painter-mypaint-legacy-decoder FAIL            0.05s   exit status 1
+
+Ok:                 3   
+Expected Fail:      0   
+Fail:               1   
+Unexpected Pass:    0   
+Skipped:            0   
+Timeout:            0   
+
+Full log written to /workspace/shared/gimp-native-preset-gui/build/meson-logs/engine-checkpoint.txt

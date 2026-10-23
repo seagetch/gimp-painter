@@ -50,3 +50,11 @@ if not meson.is_cross_build()
            meson.project_source_root() / 'data/painter-mypaint-brushes'],
     suite: 'painter', timeout: 60)
 endif
+
+# Immutable evaluator state prerequisite for paired native stroke Undo.
+painter_mypaint_checkpoint_test = executable('painter-mypaint-checkpoint',
+  'tests/test-checkpoint.cpp', dependencies: painter_mypaint_dep,
+  link_args: ['-Wl,--wrap=_Znwm'],
+  cpp_args: painter_cpp_args, override_options: ['cpp_std=c++14'])
+test('painter-mypaint-checkpoint', painter_mypaint_checkpoint_test,
+  suite: 'painter', timeout: 60)

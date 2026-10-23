@@ -6,9 +6,22 @@ struct Engine::Impl {
   Legacy::Brush brush;
   float opacity = 1;
   bool non_incremental = false;
+  bool processing = false;
 };
 Engine::Engine (const Resource& r) : impl_ (new Impl) { configure (r); }
 Engine::~Engine () = default;
+Engine::Checkpoint Engine::checkpoint () const
+{
+  if (impl_->processing) throw std::logic_error("Evaluator sample is in progress");
+  return Checkpoint(std::make_shared<const Impl>(*impl_));
+}
+void Engine::restore (const Checkpoint& checkpoint)
+{
+  if (impl_->processing) throw std::logic_error("Evaluator sample is in progress");
+  if (checkpoint.empty()) throw std::invalid_argument("Empty evaluator checkpoint");
+  std::unique_ptr<Impl> replacement(new Impl(*checkpoint.value_));
+  impl_.swap(replacement);
+}
 void Engine::configure (const Resource& r)
 {
   for (const auto& d : r.diagnostics ())
@@ -46,6 +59,12 @@ bool Engine::stroke_to (Surface& surface, float x, float y, float pressure, floa
     throw std::invalid_argument ("Invalid brush input sample");
   // Coordinate equality is intentional: stationary pressure/time events must
   // still reach the integrator. GIMP input compression is a separate adapter.
+  if (impl_->processing) throw std::logic_error("Evaluator sample is in progress");
+  struct Processing {
+    bool& active;
+    explicit Processing(bool& value) : active(value) { active = true; }
+    ~Processing() { active = false; }
+  } processing(impl_->processing);
   return impl_->brush.stroke_to (&surface, x, y, pressure, xtilt, ytilt, dtime);
 }
 float Engine::state (int i) const

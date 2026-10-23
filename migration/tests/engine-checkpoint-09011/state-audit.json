@@ -1,0 +1,21 @@
+{
+  "fields": [
+    "print_inputs",
+    "stroke_total_painting_time",
+    "stroke_current_idling_time",
+    "states[STATE_COUNT] including STATE_RNG_SEED",
+    "rng (g_rand_copy; own RAII destroy)",
+    "settings[BRUSH_SETTINGS_COUNT] including value-owned Mapping points",
+    "settings_value[BRUSH_SETTINGS_COUNT]",
+    "speed_mapping_gamma[2]",
+    "speed_mapping_m[2]",
+    "speed_mapping_q[2]",
+    "reset_requested",
+    "Engine opacity",
+    "Engine non_incremental"
+  ],
+  "processing": "Not a restorable evaluator state: capture/restore allowed only when false; recursive stroke/capture/restore rejected",
+  "initial_cache": "settings_value zero-initialized so pre-first-sample checkpoint never reads indeterminate floats; exact pinned traces unchanged",
+  "random": "Complete GRand deep copy plus float STATE_RNG_SEED; current evaluator re-seeds from state at each input sample, explicit mutant verifies lost seed changes continuation",
+  "remaining": "No original raw Stroke* property, native Undo class/provider, paired pixel history or controller restoration yet;09.011/mypaint-undo-stroke and09.017 remain open"
+}

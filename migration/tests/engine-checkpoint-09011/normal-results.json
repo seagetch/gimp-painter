@@ -1,0 +1,51 @@
+[
+  {
+    "name": "gimp:painter / painter-mypaint-checkpoint",
+    "result": "OK",
+    "returncode": 0,
+    "stdout": "TAP version 14\n# random seed: R02S5708e0103130acc45f10712c7d4611ec\n1..9\n# Start of checkpoint tests\nok 1 /checkpoint/initial\nok 2 /checkpoint/midstroke-random\nok 3 /checkpoint/changed-settings\nok 4 /checkpoint/reset-pending\nok 5 /checkpoint/owner-gone\nok 6 /checkpoint/independent\nok 7 /checkpoint/empty-rejected\nok 8 /checkpoint/reentrant-boundary\nok 9 /checkpoint/allocation-failure\n# End of checkpoint tests\n",
+    "duration": 0.011212825775146484,
+    "command": [
+      "/workspace/shared/gimp-native-preset-gui/build/app/paint/painter-mypaint/painter-mypaint-checkpoint"
+    ]
+  },
+  {
+    "name": "gimp:painter / painter-mypaint-legacy-decoder",
+    "result": "OK",
+    "returncode": 0,
+    "stdout": "Exact pinned-runtime trace match: 1125707 bytes, 81420 records\n",
+    "duration": 0.1020047664642334,
+    "command": [
+      "/usr/bin/python3",
+      "/workspace/shared/gimp-native-preset-gui/build/../source/app/paint/painter-mypaint/tests/compare-trace.py",
+      "/workspace/shared/gimp-native-preset-gui/source/migration/fixtures/legacy-mypaint/resource-values.tsv.gz",
+      "app/paint/painter-mypaint/painter-mypaint-resource-trace",
+      "/workspace/shared/gimp-native-preset-gui/source/data/painter-mypaint-brushes"
+    ]
+  },
+  {
+    "name": "gimp:painter / painter-mypaint-resource",
+    "result": "OK",
+    "returncode": 0,
+    "stdout": "TAP version 14\n# random seed: R02Saa64d503eb0fb52bc33bdf053acf19d3\n1..9\n# Start of painter tests\n# Start of myb tests\n# 177 pinned brushes loaded/configured/round-tripped; 221 legacy-ignored fields retained\nok 1 /painter/myb/corpus\nok 2 /painter/myb/defaults\nok 3 /painter/myb/unknown\nok 4 /painter/myb/legacy-curves\nok 5 /painter/myb/legacy-unknown-input\nok 6 /painter/myb/static-lookup-recreation\nok 7 /painter/myb/mapping\nok 8 /painter/myb/stream\nok 9 /painter/myb/malformed\n# End of myb tests\n# End of painter tests\n",
+    "duration": 0.20080137252807617,
+    "command": [
+      "/workspace/shared/gimp-native-preset-gui/build/app/paint/painter-mypaint/painter-mypaint-resource",
+      "/workspace/shared/gimp-native-preset-gui/source/data/painter-mypaint-brushes"
+    ]
+  },
+  {
+    "name": "gimp:painter / painter-mypaint-legacy-engine",
+    "result": "OK",
+    "returncode": 0,
+    "stdout": "Exact pinned-runtime trace match: 5637911 bytes, 33768 records\n177 brushes + 1 synthetic; 27392 dabs, 3172 samples\n\n",
+    "duration": 0.2060532569885254,
+    "command": [
+      "/usr/bin/python3",
+      "/workspace/shared/gimp-native-preset-gui/build/../source/app/paint/painter-mypaint/tests/compare-trace.py",
+      "/workspace/shared/gimp-native-preset-gui/source/migration/fixtures/legacy-mypaint/engine.trace.gz",
+      "app/paint/painter-mypaint/painter-mypaint-engine-trace",
+      "/workspace/shared/gimp-native-preset-gui/source/data/painter-mypaint-brushes"
+    ]
+  }
+]

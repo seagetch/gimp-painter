@@ -1,0 +1,13 @@
+In file included from [01m[K/workspace/shared/gimp-native-preset-gui/engine-checkpoint-evidence/mutations/lost-random-state/engine-mutant.cpp:3[m[K:
+[01m[K/workspace/shared/gimp-native-preset-gui/engine-checkpoint-evidence/mutations/lost-random-state/legacy-brush.hpp:[m[K In member function ‘[01m[Kvoid GimpPainter::MyPaint::Legacy::Brush::[01;32m[Kupdate_states_and_setting_values[m[K(float, float, float, float, float, float)[m[K’:
+[01m[K/workspace/shared/gimp-native-preset-gui/engine-checkpoint-evidence/mutations/lost-random-state/legacy-brush.hpp:414:13:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kdx_old[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  414 |       float [01;35m[Kdx_old[m[K = states[STATE_DIRECTION_DX];
+      |             [01;35m[K^~~~~~[m[K
+[01m[K/workspace/shared/gimp-native-preset-gui/engine-checkpoint-evidence/mutations/lost-random-state/legacy-brush.hpp:415:13:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kdy_old[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  415 |       float [01;35m[Kdy_old[m[K = states[STATE_DIRECTION_DY];
+      |             [01;35m[K^~~~~~[m[K
+Traceback (most recent call last):
+  File "/workspace/shared/gimp-native-preset-gui/source/migration/tests/engine_checkpoint_mutations.py", line 20, in <module>
+    q=subprocess.run([str(exe),'-p',test],capture_output=True,text=True,timeout=60);rows.append(dict(mutation=name,returncode=q.returncode,stdout=q.stdout,stderr=q.stderr,production_sha256=hashlib.sha256(header.read_bytes()).hexdigest(),command=cmd,link=link));(O/'results.json').write_text(json.dumps(rows,indent=2)+'\n');assert q.returncode!=0 and 'a==b' in q.stderr+q.stdout,(name,q.stderr,q.stdout)
+                                                                                                                                                                                                                                                                                                                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ('lost-random-state', '**\nERROR:../source/app/paint/painter-mypaint/tests/test-checkpoint.cpp:47:void equal(const std::string&, const std::string&): assertion failed (a.size() == b.size()): (7370 == 7215)\n', 'TAP version 14\n# random seed: R02S6799a6ae07094e2f91b6c6ff3cf5e7f8\n# Start of checkpoint tests\nnot ok /checkpoint/midstroke-random - ERROR:../source/app/paint/painter-mypaint/tests/test-checkpoint.cpp:47:void equal(const std::string&, const std::string&): assertion failed (a.size() == b.size()): (7370 == 7215)\nBail out!\n')

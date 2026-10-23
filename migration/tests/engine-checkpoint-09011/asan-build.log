@@ -1,0 +1,17 @@
+compile app/paint/painter-mypaint/resource.cpp
+compile app/paint/painter-mypaint/engine.cpp
+In file included from [01m[K../source/app/paint/painter-mypaint/engine.cpp:3[m[K:
+[01m[K../source/app/paint/painter-mypaint/legacy-brush.hpp:[m[K In member function ‘[01m[Kvoid GimpPainter::MyPaint::Legacy::Brush::[01;32m[Kupdate_states_and_setting_values[m[K(float, float, float, float, float, float)[m[K’:
+[01m[K../source/app/paint/painter-mypaint/legacy-brush.hpp:414:13:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kdx_old[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  414 |       float [01;35m[Kdx_old[m[K = states[STATE_DIRECTION_DX];
+      |             [01;35m[K^~~~~~[m[K
+[01m[K../source/app/paint/painter-mypaint/legacy-brush.hpp:415:13:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kdy_old[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  415 |       float [01;35m[Kdy_old[m[K = states[STATE_DIRECTION_DY];
+      |             [01;35m[K^~~~~~[m[K
+compile app/paint/painter-mypaint/tests/test-checkpoint.cpp
+[01m[K../source/app/paint/painter-mypaint/tests/test-checkpoint.cpp:12:18:[m[K [01;35m[Kwarning: [m[Kno previous declaration for ‘[01m[Kvoid*[01;32m[K __wrap__Znwm[m[K(std::size_t)[m[K’ [[01;35m[K-Wmissing-declarations[m[K]
+   12 | extern "C" void *[01;35m[K__wrap__Znwm[m[K(std::size_t size)
+      |                  [01;35m[K^~~~~~~~~~~~[m[K
+[01m[K../source/app/paint/painter-mypaint/tests/test-checkpoint.cpp:17:8:[m[K [01;35m[Kwarning: [m[K‘[01m[KTrace[m[K’ declared with greater visibility than its base ‘[01m[KGimpPainter::MyPaint::Surface[m[K’ [[01;35m[K-Wattributes[m[K]
+   17 | struct [01;35m[KTrace[m[K : Surface {
+      |        [01;35m[K^~~~~[m[K

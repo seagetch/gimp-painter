@@ -1,0 +1,17 @@
+In file included from [01m[K/workspace/shared/gimp-native-preset-gui/engine-checkpoint-evidence/mutations/lost-random-state/engine-mutant.cpp:3[m[K:
+[01m[K/workspace/shared/gimp-native-preset-gui/engine-checkpoint-evidence/mutations/lost-random-state/legacy-brush.hpp:[m[K In member function ‘[01m[Kvoid GimpPainter::MyPaint::Legacy::Brush::[01;32m[Kupdate_states_and_setting_values[m[K(float, float, float, float, float, float)[m[K’:
+[01m[K/workspace/shared/gimp-native-preset-gui/engine-checkpoint-evidence/mutations/lost-random-state/legacy-brush.hpp:414:13:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kdx_old[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  414 |       float [01;35m[Kdx_old[m[K = states[STATE_DIRECTION_DX];
+      |             [01;35m[K^~~~~~[m[K
+[01m[K/workspace/shared/gimp-native-preset-gui/engine-checkpoint-evidence/mutations/lost-random-state/legacy-brush.hpp:415:13:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kdy_old[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  415 |       float [01;35m[Kdy_old[m[K = states[STATE_DIRECTION_DY];
+      |             [01;35m[K^~~~~~[m[K
+In file included from [01m[K/workspace/shared/gimp-native-preset-gui/engine-checkpoint-evidence/mutations/lost-settings/engine-mutant.cpp:3[m[K:
+[01m[K/workspace/shared/gimp-native-preset-gui/engine-checkpoint-evidence/mutations/lost-settings/legacy-brush.hpp:[m[K In member function ‘[01m[Kvoid GimpPainter::MyPaint::Legacy::Brush::[01;32m[Kupdate_states_and_setting_values[m[K(float, float, float, float, float, float)[m[K’:
+[01m[K/workspace/shared/gimp-native-preset-gui/engine-checkpoint-evidence/mutations/lost-settings/legacy-brush.hpp:414:13:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kdx_old[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  414 |       float [01;35m[Kdx_old[m[K = states[STATE_DIRECTION_DX];
+      |             [01;35m[K^~~~~~[m[K
+[01m[K/workspace/shared/gimp-native-preset-gui/engine-checkpoint-evidence/mutations/lost-settings/legacy-brush.hpp:415:13:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kdy_old[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  415 |       float [01;35m[Kdy_old[m[K = states[STATE_DIRECTION_DY];
+      |             [01;35m[K^~~~~~[m[K
+PASS: lost random state and lost settings checkpoint mutants rejected
