@@ -214,9 +214,14 @@ struct FilterImpl
   }
   void refresh_connections ()
   {
+    if (scheduler.state () == FilterScheduler::State::closed) return;
+    const auto revision = ++connections_revision;
     graph_valid = false;
     dependencies.clear ();
-    GimpContainer *container = current_stack ();
+    /* invalidate() emits synchronously. Keep the old stack alive until its
+     * interrupted refresh returns, even if the callback reparents the owner. */
+    auto container_lease = ObjectRef<GObject>::retain (G_OBJECT (current_stack ()));
+    auto *container = reinterpret_cast<GimpContainer *> (container_lease.get ());
     stack = WeakRef<GObject> (ObjectRef<GObject>::retain (G_OBJECT (container)));
     topology_dirty = false;
     std::vector<WeakRef<GObject>> current_lower;
@@ -236,6 +241,10 @@ struct FilterImpl
     if (current_lower.size () != lower_objects.size ()) different = true;
     lower_objects = std::move (current_lower);
     if (different) invalidate ();
+    /* Close must be terminal, and a nested refresh owns the new registrations.
+     * Never append stale handlers after it has replaced our dependency list. */
+    if (scheduler.state () == FilterScheduler::State::closed ||
+        revision != connections_revision || current_stack () != container) return;
     if (!container) return;
     dependencies.push_back (connect (G_OBJECT (container), "add", G_CALLBACK (topology_changed)));
     dependencies.push_back (connect (G_OBJECT (container), "remove", G_CALLBACK (topology_changed)));
@@ -1230,6 +1239,7 @@ struct FilterImpl
   bool graph_valid = false, graph_recheck = false;
   Connection image_connection, profile_connection, config_connection, selection_connection;
   std::vector<WeakRef<GObject>> lower_objects;
+  std::uint64_t connections_revision = 0;
   bool topology_dirty = false;
   gint64 maximum_quantum_us = 0, maximum_graph_us = 0, maximum_read_us = 0;
   std::size_t read_budget = 1024, import_budget = FilterScheduler::pixel_budget;
