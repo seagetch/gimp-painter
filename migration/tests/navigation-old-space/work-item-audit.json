@@ -1,0 +1,1340 @@
+{
+  "source_revision": "afa43fae3e920210146abed514f136fd49f671b5",
+  "checkpoint": "4ec50d3626",
+  "task": "25.009/drag-zoom-scroll",
+  "rows": [
+    {
+      "work_id": "legacy-bef034529de647ddc7f7",
+      "source_id": "01.002/000641",
+      "source_blob": "b670161eb5906349f84a51da961ae339b7209574",
+      "source_range": "-22,0 -> 23,3",
+      "source_sha256": "786e969e08be76c2410176ddb2858f7231683621c001db1136c0c3d87d992389",
+      "original_action": "\u4fee\u98fe\u30ad\u30fc\u4ed8\u304ddrag zoom\u3068\u5909\u63db\u5ea7\u6a19pan\u3092\u7dad\u6301\u3059\u308b",
+      "original_acceptance": "Shift\u56de\u8ee2\u30fbCtrl scaling\u30fb\u901a\u5e38scroll\u306e\u958b\u59cb/drag/\u7d42\u4e86\u3001zoom\u8ddd\u96e2300\u3001device\u2192image\u5909\u63db\u3068\u539f\u70b9\u3092\u65e7\u64cd\u4f5cfixture\u3067\u6bd4\u8f03\u3059\u308b",
+      "pinned_excerpt_sha256": "346e214b0aca01f8d9c41cacf715552a23d51cc7fff8030f91ba87225a46c0d1",
+      "coverage": "math headers; registered C/C++ source/header build",
+      "status": "PROVEN_CURRENT_SCOPE",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-2a36aaefbf57559c8ea1",
+          "task": "25.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-2a43137e7348fdc52046",
+          "task": "25.002",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-f7931bd4a520401bce2a",
+          "task": "25.003",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-c1a1f80968872449732f",
+          "task": "25.004",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-b44bf2f4370dc7e3f7d4",
+          "task": "25.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-35b771a58c67d4b78f23",
+          "task": "25.006",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-cd1e02dc4cff01d9be2f",
+          "task": "25.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-69c5f1bbaff5cefe6fa2",
+          "task": "25.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-0bf4a600ab7acd600490",
+          "task": "25.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-950f9219d394029b8196",
+          "task": "25.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-f3fb81f77640a8e96845",
+          "task": "25.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-1c919758d90a0be35ec6",
+          "task": "29.020",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-3a061bb9f3f8b0ba0f87",
+      "source_id": "01.002/000643",
+      "source_blob": "b670161eb5906349f84a51da961ae339b7209574",
+      "source_range": "-55,0 -> 61",
+      "source_sha256": "e6fa45a6d344e967626fde4427e9f2cd593c60459224c45954e091cc522af585",
+      "original_action": "\u4fee\u98fe\u30ad\u30fc\u4ed8\u304ddrag zoom\u3068\u5909\u63db\u5ea7\u6a19pan\u3092\u7dad\u6301\u3059\u308b",
+      "original_acceptance": "Shift\u56de\u8ee2\u30fbCtrl scaling\u30fb\u901a\u5e38scroll\u306e\u958b\u59cb/drag/\u7d42\u4e86\u3001zoom\u8ddd\u96e2300\u3001device\u2192image\u5909\u63db\u3068\u539f\u70b9\u3092\u65e7\u64cd\u4f5cfixture\u3067\u6bd4\u8f03\u3059\u308b",
+      "pinned_excerpt_sha256": "86ed4946017d4a09761d86d8cf40442c34e2f3b3c56ba5c2ff023abd1522a8d2",
+      "coverage": "display invalidation declarations and completed actual draw",
+      "status": "PROVEN_CURRENT_SCOPE",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-e4f6924206cbde1f8363",
+          "task": "25.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-394bb51c737f20db5eb1",
+          "task": "25.002",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-316d561c5a0b461d5562",
+          "task": "25.003",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-eb8381249bf000baea7b",
+          "task": "25.004",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-545359a573caa864f76b",
+          "task": "25.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-ac70c1f29ec7ea6d45bc",
+          "task": "25.006",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-239330eac8a853ff0855",
+          "task": "25.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-e237a3edf4be3979ad73",
+          "task": "25.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-f4fe09cc649123474659",
+          "task": "25.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-6430b6778de6bc6f348f",
+          "task": "25.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-1e4b9f2733d9c4ee5d6e",
+          "task": "25.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-ee0470d37229f8f19f49",
+          "task": "29.020",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-7246b019e15a29408991",
+      "source_id": "01.002/000644",
+      "source_blob": "b670161eb5906349f84a51da961ae339b7209574",
+      "source_range": "-57,0 -> 64,2",
+      "source_sha256": "ff466b5ba2286c6f5728ea151c118c2ad0fa5372e3eef5c43d0ec053cc2c11cd",
+      "original_action": "\u4fee\u98fe\u30ad\u30fc\u4ed8\u304ddrag zoom\u3068\u5909\u63db\u5ea7\u6a19pan\u3092\u7dad\u6301\u3059\u308b",
+      "original_acceptance": "Shift\u56de\u8ee2\u30fbCtrl scaling\u30fb\u901a\u5e38scroll\u306e\u958b\u59cb/drag/\u7d42\u4e86\u3001zoom\u8ddd\u96e2300\u3001device\u2192image\u5909\u63db\u3068\u539f\u70b9\u3092\u65e7\u64cd\u4f5cfixture\u3067\u6bd4\u8f03\u3059\u308b",
+      "pinned_excerpt_sha256": "4aa2f6787deb3155e1d375b19a3f58e689665f7c7192d8219b149489038e97c9",
+      "coverage": "overlays and rotate declarations; actual draw/overlay matrix",
+      "status": "PROVEN_CURRENT_SCOPE",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-46f03f17f379eb80df73",
+          "task": "25.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-e55dcb92553856905f4b",
+          "task": "25.002",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-3377dda2bc3fee0e0e06",
+          "task": "25.003",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-2806c783ccdb495adca3",
+          "task": "25.004",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-f5ed858400e8984850cb",
+          "task": "25.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-23bda2409cea455b9b0d",
+          "task": "25.006",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-17584b62c0612c3cb204",
+          "task": "25.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-8e90570fed9dd2a94e26",
+          "task": "25.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-1a30075d8b1b2457efab",
+          "task": "25.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-88c7d5d238ac2fb682c3",
+          "task": "25.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-154ee69e47e940ed9114",
+          "task": "25.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-9c22225efd50b9ff440b",
+          "task": "29.020",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-1c1fbd74c0ddf68e7f0c",
+      "source_id": "01.002/000646",
+      "source_blob": "b670161eb5906349f84a51da961ae339b7209574",
+      "source_range": "-66,0 -> 79,3",
+      "source_sha256": "42d3d63cd74812bba873e1b14fc0c0d88e044c475618017a381581f9aeaca8f9",
+      "original_action": "\u4fee\u98fe\u30ad\u30fc\u4ed8\u304ddrag zoom\u3068\u5909\u63db\u5ea7\u6a19pan\u3092\u7dad\u6301\u3059\u308b",
+      "original_acceptance": "Shift\u56de\u8ee2\u30fbCtrl scaling\u30fb\u901a\u5e38scroll\u306e\u958b\u59cb/drag/\u7d42\u4e86\u3001zoom\u8ddd\u96e2300\u3001device\u2192image\u5909\u63db\u3068\u539f\u70b9\u3092\u65e7\u64cd\u4f5cfixture\u3067\u6bd4\u8f03\u3059\u308b",
+      "pinned_excerpt_sha256": "3fad0714dff91a4ce47ebaa8786901316a8625d96b75e4d1827301aaf95ae2d6",
+      "coverage": "distance300/snap15 source oracle and registered tests",
+      "status": "PROVEN_CURRENT_SCOPE",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-a472a292ad62cd9a5c33",
+          "task": "25.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-781e1d09b0514cbf781f",
+          "task": "25.002",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-ab04b0d802ce5b619a97",
+          "task": "25.003",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-271fa6bc4ba6dd1f020b",
+          "task": "25.004",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-7ad4a1a80bce67c85a56",
+          "task": "25.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-96788d17c242d4c90ead",
+          "task": "25.006",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-53cd472aff8ebc84d37a",
+          "task": "25.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-ed43490aeee1a6d591fa",
+          "task": "25.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-6d1e539a1f8276f17c0e",
+          "task": "25.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-8386c0bc546eaecced53",
+          "task": "25.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-d75221e965656f1120d5",
+          "task": "25.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-9bb871faa99c32603222",
+          "task": "29.020",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-7528c1ef61f1e3f8e6c5",
+      "source_id": "01.002/000647",
+      "source_blob": "b670161eb5906349f84a51da961ae339b7209574",
+      "source_range": "-86,0 -> 102,21",
+      "source_sha256": "8070bf74e108d37692afefa637d21f41d80b7cf76f1fb2416c6f6215d402f7d3",
+      "original_action": "\u4fee\u98fe\u30ad\u30fc\u4ed8\u304ddrag zoom\u3068\u5909\u63db\u5ea7\u6a19pan\u3092\u7dad\u6301\u3059\u308b",
+      "original_acceptance": "Shift\u56de\u8ee2\u30fbCtrl scaling\u30fb\u901a\u5e38scroll\u306e\u958b\u59cb/drag/\u7d42\u4e86\u3001zoom\u8ddd\u96e2300\u3001device\u2192image\u5909\u63db\u3068\u539f\u70b9\u3092\u65e7\u64cd\u4f5cfixture\u3067\u6bd4\u8f03\u3059\u308b",
+      "pinned_excerpt_sha256": "07820f05b6c2070737a6d0dcf87b48ea030a3cc62b778d57898e238926e34a3f",
+      "coverage": "rotation/zoom begin/motion/end prototype equivalents",
+      "status": "PROVEN_CURRENT_SCOPE",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-721df43bb7cce08045a2",
+          "task": "25.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-69d87ab8453c17be0a61",
+          "task": "25.002",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-390513688cc6772d9b0d",
+          "task": "25.003",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-4ccd6d7c85fb931710d4",
+          "task": "25.004",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-e4abe9d90c864fe6b09e",
+          "task": "25.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-3c426125b53e40c6555f",
+          "task": "25.006",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-04135cdbb8bfa834e3e3",
+          "task": "25.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-9cab527689de2931951a",
+          "task": "25.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-beb46dc724cd604fa29f",
+          "task": "25.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-bb9f756f9e7fe9574356",
+          "task": "25.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-bf56269ed11b0fb5a085",
+          "task": "25.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-dc4f757a2145dae8e228",
+          "task": "29.020",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-d755dca85fb74be38ba3",
+      "source_id": "01.002/000659",
+      "source_blob": "b670161eb5906349f84a51da961ae339b7209574",
+      "source_range": "-475 -> 747",
+      "source_sha256": "841d03968a4baa18836bd367dfa64d377563fb5b42481898fe856d1bd903301e",
+      "original_action": "\u4fee\u98fe\u30ad\u30fc\u4ed8\u304ddrag zoom\u3068\u5909\u63db\u5ea7\u6a19pan\u3092\u7dad\u6301\u3059\u308b",
+      "original_acceptance": "Shift\u56de\u8ee2\u30fbCtrl scaling\u30fb\u901a\u5e38scroll\u306e\u958b\u59cb/drag/\u7d42\u4e86\u3001zoom\u8ddd\u96e2300\u3001device\u2192image\u5909\u63db\u3068\u539f\u70b9\u3092\u65e7\u64cd\u4f5cfixture\u3067\u6bd4\u8f03\u3059\u308b",
+      "pinned_excerpt_sha256": "49af487117cc90164cc5986ae2cbdefc9d637edc4b8eb7f05eb7813f38ad5610",
+      "coverage": "Current tool-events button-press source gate checks busy, mod_action and grab_seat before tool dispatch; navigation lifecycle regression covers active grabs. This scoped navigation duty does not claim every primary/history gate branch; other original hunk owners remain open.",
+      "status": "PROVEN_CURRENT_SCOPE",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-2aaa48822ba3eed3c5da",
+          "task": "25.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-799c33aacb3a53448d76",
+          "task": "25.002",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-c817ea16e45a1ae6d229",
+          "task": "25.003",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-25fbb645a605a3ba65f7",
+          "task": "25.004",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-981dbaa2767907328e7b",
+          "task": "25.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-11b4ef69080f3c3aaf0a",
+          "task": "25.006",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-fd02605a5e393813563f",
+          "task": "25.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-66d46ecfca4f2b28fda7",
+          "task": "25.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-8554fa9cea12353e8316",
+          "task": "25.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-7b25b8e535a99e217b01",
+          "task": "25.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-87e7d32abdc467907c2b",
+          "task": "25.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-ed652b08f4a4c0ad8ee9",
+          "task": "29.020",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-10496755c71a1420f922",
+      "source_id": "01.002/000662",
+      "source_blob": "b670161eb5906349f84a51da961ae339b7209574",
+      "source_range": "-579,2 -> 831,12",
+      "source_sha256": "709e96f03e6c021c9d00b57f288cca7f6832a04ec2be03ca824cea8e585bb7e4",
+      "original_action": "\u4fee\u98fe\u30ad\u30fc\u4ed8\u304ddrag zoom\u3068\u5909\u63db\u5ea7\u6a19pan\u3092\u7dad\u6301\u3059\u308b",
+      "original_acceptance": "Shift\u56de\u8ee2\u30fbCtrl scaling\u30fb\u901a\u5e38scroll\u306e\u958b\u59cb/drag/\u7d42\u4e86\u3001zoom\u8ddd\u96e2300\u3001device\u2192image\u5909\u63db\u3068\u539f\u70b9\u3092\u65e7\u64cd\u4f5cfixture\u3067\u6bd4\u8f03\u3059\u308b",
+      "pinned_excerpt_sha256": "fd67c7120163a8df8b087dbcf1d8d7fc6188e1477f06b8512eedfda513a6cb88",
+      "coverage": "default middle routing Shift/Control/normal, unchanged old pan/rotation/zoom fixtures",
+      "status": "PROVEN_CURRENT_SCOPE",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-a78631abd3330cc671bd",
+          "task": "25.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-da78d905c4ebacfa197c",
+          "task": "25.002",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-6c199241abaeb7689ff8",
+          "task": "25.003",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-0088fdbb0d40da1738b0",
+          "task": "25.004",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-4857cb94bc5b34491d48",
+          "task": "25.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-81471dfe83c41c731131",
+          "task": "25.006",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-6c2361dc501da89853c5",
+          "task": "25.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-84ed052536b08f1da8c6",
+          "task": "25.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-65b4ef709d129e9a6899",
+          "task": "25.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-8a654e7f825d858d50ae",
+          "task": "25.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-50d8ee0749b01e69dc6d",
+          "task": "25.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-8211eeaea215ccba9998",
+          "task": "29.020",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-0373e88bb2b14ad84bde",
+      "source_id": "01.002/000665",
+      "source_blob": "b670161eb5906349f84a51da961ae339b7209574",
+      "source_range": "-696,0 -> 966,4",
+      "source_sha256": "da3260daa1af09c4898c6bfb8d6b391a80102806e5e1ea53f916ad27184c046f",
+      "original_action": "\u4fee\u98fe\u30ad\u30fc\u4ed8\u304ddrag zoom\u3068\u5909\u63db\u5ea7\u6a19pan\u3092\u7dad\u6301\u3059\u308b",
+      "original_acceptance": "Shift\u56de\u8ee2\u30fbCtrl scaling\u30fb\u901a\u5e38scroll\u306e\u958b\u59cb/drag/\u7d42\u4e86\u3001zoom\u8ddd\u96e2300\u3001device\u2192image\u5909\u63db\u3068\u539f\u70b9\u3092\u65e7\u64cd\u4f5cfixture\u3067\u6bd4\u8f03\u3059\u308b",
+      "pinned_excerpt_sha256": "c9a64e459a8c932b7fdf7b68a72339f0f47afe51e16446fa4fbfb55e89aeaac9",
+      "coverage": "release termination and grab/anchor cleanup; registered lifecycle and old operation tests",
+      "status": "PROVEN_CURRENT_SCOPE",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-3d870a20cbc8b789e0dd",
+          "task": "25.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-ae2105f3150ceb4b5866",
+          "task": "25.002",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-3214aedd17038486883e",
+          "task": "25.003",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-0aef9319d8e83d5105f6",
+          "task": "25.004",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-b86735267365bb82d104",
+          "task": "25.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-ff7edcb10825d1dca09d",
+          "task": "25.006",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-123f60f5b07be8877076",
+          "task": "25.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-cc548e0a8096f3d37bbb",
+          "task": "25.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-f1ac6b1dbad2a034e68e",
+          "task": "25.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-4bdf903167480d849479",
+          "task": "25.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-7af789850430365dbaea",
+          "task": "25.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-936cd1977be2acff5fef",
+          "task": "29.020",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-8799a50be33a35c72b3f",
+      "source_id": "01.002/000668",
+      "source_blob": "b670161eb5906349f84a51da961ae339b7209574",
+      "source_range": "-852 -> 1128",
+      "source_sha256": "0fff0b848a8704367463a3ba1dbd64d1d13a2eb3eff51e0efb583fb030e137c4",
+      "original_action": "\u4fee\u98fe\u30ad\u30fc\u4ed8\u304ddrag zoom\u3068\u5909\u63db\u5ea7\u6a19pan\u3092\u7dad\u6301\u3059\u308b",
+      "original_acceptance": "Shift\u56de\u8ee2\u30fbCtrl scaling\u30fb\u901a\u5e38scroll\u306e\u958b\u59cb/drag/\u7d42\u4e86\u3001zoom\u8ddd\u96e2300\u3001device\u2192image\u5909\u63db\u3068\u539f\u70b9\u3092\u65e7\u64cd\u4f5cfixture\u3067\u6bd4\u8f03\u3059\u308b",
+      "pinned_excerpt_sha256": "493e7278120fed8b1d1d045e1acd9ef5b3afd05f7b3202533c4ea8268ce39eb3",
+      "coverage": "raw fractional motion x retained for inherited pan",
+      "status": "PROVEN_CURRENT_SCOPE",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-32088cf90d2f0cb1200e",
+          "task": "25.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-959bde6b993eb790bf7d",
+          "task": "25.002",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-4a5c33d8a973e07b6507",
+          "task": "25.003",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-71d0a3eea7fda66d5df7",
+          "task": "25.004",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-bbfc516d1d07eb9375b3",
+          "task": "25.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-ea01479939b6f3b8e40f",
+          "task": "25.006",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-0167f728fa173eba4686",
+          "task": "25.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-38086e1ae48fb9f36594",
+          "task": "25.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-7e818f0031968dd49d40",
+          "task": "25.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-ad8391dfbca910af446e",
+          "task": "25.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-e2432c69b180c28910d2",
+          "task": "25.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-334fad425b028c823485",
+          "task": "29.020",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-c86a26629ae332106fed",
+      "source_id": "01.002/000669",
+      "source_blob": "b670161eb5906349f84a51da961ae339b7209574",
+      "source_range": "-855 -> 1131",
+      "source_sha256": "b54a8c6de8e5b4aed9ba8771cc7bd04d79d4654176a9573e15a94686bf3a8090",
+      "original_action": "\u4fee\u98fe\u30ad\u30fc\u4ed8\u304ddrag zoom\u3068\u5909\u63db\u5ea7\u6a19pan\u3092\u7dad\u6301\u3059\u308b",
+      "original_acceptance": "Shift\u56de\u8ee2\u30fbCtrl scaling\u30fb\u901a\u5e38scroll\u306e\u958b\u59cb/drag/\u7d42\u4e86\u3001zoom\u8ddd\u96e2300\u3001device\u2192image\u5909\u63db\u3068\u539f\u70b9\u3092\u65e7\u64cd\u4f5cfixture\u3067\u6bd4\u8f03\u3059\u308b",
+      "pinned_excerpt_sha256": "9d270ae36a406d9f580e3392c0c30780a9821636977fb615475005fa6fc831b4",
+      "coverage": "raw fractional motion y retained for inherited pan",
+      "status": "PROVEN_CURRENT_SCOPE",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-9595e16470953db683ca",
+          "task": "25.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-644d51a62260b5f9cded",
+          "task": "25.002",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-94d746b9ee254d533c99",
+          "task": "25.003",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-ea178b06be1dca4bacda",
+          "task": "25.004",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-b173f30bd7b69761ed74",
+          "task": "25.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-072f1e42d04f3cfc4296",
+          "task": "25.006",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-ac4a2ca7bba00d78f7e4",
+          "task": "25.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-9860c5f497a770ee5dca",
+          "task": "25.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-854f90c117440213c8bd",
+          "task": "25.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-22094edd5895e3004092",
+          "task": "25.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-58204b0b3fb02d70baf1",
+          "task": "25.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-20f83235e20682cf693c",
+          "task": "29.020",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-59340fac867b27e1101d",
+      "source_id": "01.002/000670",
+      "source_blob": "b670161eb5906349f84a51da961ae339b7209574",
+      "source_range": "-857,0 -> 1134,6",
+      "source_sha256": "d7fea2b3ba0b08a4ae863c83dddc537c72c2774cede0a91dc0d636ecc12ce989",
+      "original_action": "\u4fee\u98fe\u30ad\u30fc\u4ed8\u304ddrag zoom\u3068\u5909\u63db\u5ea7\u6a19pan\u3092\u7dad\u6301\u3059\u308b",
+      "original_acceptance": "Shift\u56de\u8ee2\u30fbCtrl scaling\u30fb\u901a\u5e38scroll\u306e\u958b\u59cb/drag/\u7d42\u4e86\u3001zoom\u8ddd\u96e2300\u3001device\u2192image\u5909\u63db\u3068\u539f\u70b9\u3092\u65e7\u64cd\u4f5cfixture\u3067\u6bd4\u8f03\u3059\u308b",
+      "pinned_excerpt_sha256": "19acf83363c285c9079dee1e0df2030ef003febf957f6c08e804b236241c684c",
+      "coverage": "old inverse-before-gint anchor/double-origin pan",
+      "status": "PROVEN_CURRENT_SCOPE",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-cd8011303ab72e501a85",
+          "task": "25.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-a39bcfbe1e041ae8b7b4",
+          "task": "25.002",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-d5a6983934768b558f5c",
+          "task": "25.003",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-20bcdd485493af9affbc",
+          "task": "25.004",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-87daea1b05041756affc",
+          "task": "25.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-8c2d1570b29e825ffa4f",
+          "task": "25.006",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-da5c893da956c61fc2a6",
+          "task": "25.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-ac98f453c575befd5791",
+          "task": "25.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-c966266c0f5d838dc5b9",
+          "task": "25.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-e1e26ed8b34db2a12100",
+          "task": "25.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-fafe241d1bba33da6fc9",
+          "task": "25.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-71dd5eb72d1948a6e9d8",
+          "task": "29.020",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-b9909dc66cf0718de378",
+      "source_id": "01.002/000671",
+      "source_blob": "b670161eb5906349f84a51da961ae339b7209574",
+      "source_range": "-860,4 -> 1142,13",
+      "source_sha256": "3fbff4e66b10aa530d730aed3bc52545f26bfc2436631487597ebc575e0bbe69",
+      "original_action": "\u4fee\u98fe\u30ad\u30fc\u4ed8\u304ddrag zoom\u3068\u5909\u63db\u5ea7\u6a19pan\u3092\u7dad\u6301\u3059\u308b",
+      "original_acceptance": "Shift\u56de\u8ee2\u30fbCtrl scaling\u30fb\u901a\u5e38scroll\u306e\u958b\u59cb/drag/\u7d42\u4e86\u3001zoom\u8ddd\u96e2300\u3001device\u2192image\u5909\u63db\u3068\u539f\u70b9\u3092\u65e7\u64cd\u4f5cfixture\u3067\u6bd4\u8f03\u3059\u308b",
+      "pinned_excerpt_sha256": "e95271fe5f327a5eb740b6282d269c83a10d925f67bcc9acb383ea37ca2fa5ba",
+      "coverage": "applied pan/rotation motion, old point/inverse pairs",
+      "status": "PROVEN_CURRENT_SCOPE",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-52d732b2f049334c9fc5",
+          "task": "25.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-66ea3b95d3f735ab7c65",
+          "task": "25.002",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-78cd31d0032d7e993212",
+          "task": "25.003",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-5e134eb075e2ed9d9c44",
+          "task": "25.004",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-de57e5d419d3bfff0f26",
+          "task": "25.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-1fb44fa98b1a723d85f0",
+          "task": "25.006",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-be0777476ec491dfdf4c",
+          "task": "25.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-259e46df32a6e33e7843",
+          "task": "25.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-add752da6bff9e30340e",
+          "task": "25.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-c5b50b4aa2a6cee82561",
+          "task": "25.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-861e289680c0af8e6a69",
+          "task": "25.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-248c2f94282b2bd2597d",
+          "task": "29.020",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-fea9a1dc640497e09215",
+      "source_id": "01.002/000672",
+      "source_blob": "b670161eb5906349f84a51da961ae339b7209574",
+      "source_range": "-865 -> 1156,14",
+      "source_sha256": "4629c877b755457f1515a627a6f93bf8a3238b80d96542e2ea2bf315862b3b85",
+      "original_action": "\u4fee\u98fe\u30ad\u30fc\u4ed8\u304ddrag zoom\u3068\u5909\u63db\u5ea7\u6a19pan\u3092\u7dad\u6301\u3059\u308b",
+      "original_acceptance": "Shift\u56de\u8ee2\u30fbCtrl scaling\u30fb\u901a\u5e38scroll\u306e\u958b\u59cb/drag/\u7d42\u4e86\u3001zoom\u8ddd\u96e2300\u3001device\u2192image\u5909\u63db\u3068\u539f\u70b9\u3092\u65e7\u64cd\u4f5cfixture\u3067\u6bd4\u8f03\u3059\u308b",
+      "pinned_excerpt_sha256": "a88e77f768741608ed53c75e0f1807d98ad7e282dbaec1ae8055b043076026bc",
+      "coverage": "applied scaling; full-motion/snap suffix belongs to separately retained parent/event pipeline duties",
+      "status": "PROVEN_CURRENT_SCOPE",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-c69f478121d20f0054f5",
+          "task": "25.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-304ff7531dcfd1118764",
+          "task": "25.002",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-57e40ead10d1a34435f8",
+          "task": "25.003",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-3ba4e60bef92534a1e35",
+          "task": "25.004",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-40b65c13d9d4ca963a9e",
+          "task": "25.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-e398bf77ec97ef0b915e",
+          "task": "25.006",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-7c4975bd46c66603d1a3",
+          "task": "25.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-7140bcc7ff65c0f9f957",
+          "task": "25.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-12cc1335a91cab82b77c",
+          "task": "25.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-ed2ddc39ff10e31e7cf7",
+          "task": "25.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-8b6fc7ba489ec48601d3",
+          "task": "25.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-42e56b48f6b8078a33cd",
+          "task": "29.020",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-6a6b97539cf96af04847",
+      "source_id": "01.002/000683",
+      "source_blob": "b670161eb5906349f84a51da961ae339b7209574",
+      "source_range": "-1431,2 -> 1788,5",
+      "source_sha256": "79edac3edcbe92c7e6ecd6fe0242e43572960837b78b0d86151565ba22ba6df5",
+      "original_action": "\u4fee\u98fe\u30ad\u30fc\u4ed8\u304ddrag zoom\u3068\u5909\u63db\u5ea7\u6a19pan\u3092\u7dad\u6301\u3059\u308b",
+      "original_acceptance": "Shift\u56de\u8ee2\u30fbCtrl scaling\u30fb\u901a\u5e38scroll\u306e\u958b\u59cb/drag/\u7d42\u4e86\u3001zoom\u8ddd\u96e2300\u3001device\u2192image\u5909\u63db\u3068\u539f\u70b9\u3092\u65e7\u64cd\u4f5cfixture\u3067\u6bd4\u8f03\u3059\u308b",
+      "pinned_excerpt_sha256": "447cc21ddc62f2ca2c5bd40b975cb0ed614163deb70fea44705fc9db225b2167",
+      "coverage": "old scroll start adds exact double origin after integer inverse coordinate",
+      "status": "PROVEN_CURRENT_SCOPE",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-4d9f7b8bb8a51903e3ba",
+          "task": "25.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-54f2bcaa760ac3250aae",
+          "task": "25.002",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-f89b3b4769a7538d3504",
+          "task": "25.003",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-313f643bb39d83a5b140",
+          "task": "25.004",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-edc157e29006e7c488c2",
+          "task": "25.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-5a9df421ad6798a98505",
+          "task": "25.006",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-7646be7fcf5725793701",
+          "task": "25.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-4a852f0e54c0a338c029",
+          "task": "25.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-003827fbe823c76f1891",
+          "task": "25.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-1ba5c363ee469ea4c55a",
+          "task": "25.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-77933c4240901d59a28e",
+          "task": "25.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-2f0705c699738c353701",
+          "task": "29.020",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-6a02bd43e1974ffebf1a",
+      "source_id": "01.002/000684",
+      "source_blob": "b670161eb5906349f84a51da961ae339b7209574",
+      "source_range": "-1448,0 -> 1809,142",
+      "source_sha256": "dbacc6de55a348f5da3ebe844e63689cab47d8867978d70e99e80615174b6f3c",
+      "original_action": "\u4fee\u98fe\u30ad\u30fc\u4ed8\u304ddrag zoom\u3068\u5909\u63db\u5ea7\u6a19pan\u3092\u7dad\u6301\u3059\u308b",
+      "original_acceptance": "Shift\u56de\u8ee2\u30fbCtrl scaling\u30fb\u901a\u5e38scroll\u306e\u958b\u59cb/drag/\u7d42\u4e86\u3001zoom\u8ddd\u96e2300\u3001device\u2192image\u5909\u63db\u3068\u539f\u70b9\u3092\u65e7\u64cd\u4f5cfixture\u3067\u6bd4\u8f03\u3059\u308b",
+      "pinned_excerpt_sha256": "bee1c8f57dac148afd2e078e2313e523c751d63bfdaf3de297553922ae72c181",
+      "coverage": "old stop invalidation; rotation/zoom unchanged begin/motion/end functions",
+      "status": "PROVEN_CURRENT_SCOPE",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-582623639ababf666714",
+          "task": "25.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-91f09bda526d421a7668",
+          "task": "25.002",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-a813acc3e2e483b865b2",
+          "task": "25.003",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-392b1cbb2ea036468f60",
+          "task": "25.004",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-acb3657d3218ea800cfd",
+          "task": "25.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-878cb52e9b2cdd3d94cb",
+          "task": "25.006",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-b4f31e3ff19597486fc7",
+          "task": "25.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-9558708788188b2f3940",
+          "task": "25.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-80c1d045a108034bbd9b",
+          "task": "25.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-97306fcbd120a56e5f8e",
+          "task": "25.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-5c52c23d460dd547ec7f",
+          "task": "25.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-024889e1209648d29a31",
+          "task": "29.020",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-fb2e59057dd9c953fe59",
+      "source_id": "01.002/000685",
+      "source_blob": "b670161eb5906349f84a51da961ae339b7209574",
+      "source_range": "-1473,0 -> 1976,2",
+      "source_sha256": "120df15bc5913f365c1f0b952b46d7951afb739341653b3b3b821e794eb25ceb",
+      "original_action": "\u4fee\u98fe\u30ad\u30fc\u4ed8\u304ddrag zoom\u3068\u5909\u63db\u5ea7\u6a19pan\u3092\u7dad\u6301\u3059\u308b",
+      "original_acceptance": "Shift\u56de\u8ee2\u30fbCtrl scaling\u30fb\u901a\u5e38scroll\u306e\u958b\u59cb/drag/\u7d42\u4e86\u3001zoom\u8ddd\u96e2300\u3001device\u2192image\u5909\u63db\u3068\u539f\u70b9\u3092\u65e7\u64cd\u4f5cfixture\u3067\u6bd4\u8f03\u3059\u308b",
+      "pinned_excerpt_sha256": "8cea293f040d6a8959d2968284f39505ce63991f8fcc57eb8167948579829ecd",
+      "coverage": "Space PAN coordinate temporary values (unchanged pinned Space PAN case + new24scene/120entry/600motion/1800point-pair native matrix, modifier keys and repeated Space)",
+      "status": "PROVEN_CURRENT_SCOPE",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-f6e6ccf30dcfabd341f1",
+          "task": "25.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-04922bc339735ee1c25e",
+          "task": "25.002",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-b6a19095a01e06de426c",
+          "task": "25.003",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-e6e3b3041f475a0b441e",
+          "task": "25.004",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-091862c186b5575113b3",
+          "task": "25.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-71d22aae2019facd607f",
+          "task": "25.006",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-fc663023480eb0ba97b7",
+          "task": "25.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-7c469aa8879f54c06f64",
+          "task": "25.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-88587141c1535cd1d18c",
+          "task": "25.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-1e1329a3630da47cd3d2",
+          "task": "25.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-dd675b959bce28cb1579",
+          "task": "25.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-309fffaebcae19caa9d8",
+          "task": "29.020",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-c4ef6cb61522de64d948",
+      "source_id": "01.002/000686",
+      "source_blob": "b670161eb5906349f84a51da961ae339b7209574",
+      "source_range": "-1481 -> 1985,4",
+      "source_sha256": "8686a03beaa8bf08e943c64b22ad9c932cd92b7d05bb623abaf261a15a6d4204",
+      "original_action": "\u4fee\u98fe\u30ad\u30fc\u4ed8\u304ddrag zoom\u3068\u5909\u63db\u5ea7\u6a19pan\u3092\u7dad\u6301\u3059\u308b",
+      "original_acceptance": "Shift\u56de\u8ee2\u30fbCtrl scaling\u30fb\u901a\u5e38scroll\u306e\u958b\u59cb/drag/\u7d42\u4e86\u3001zoom\u8ddd\u96e2300\u3001device\u2192image\u5909\u63db\u3068\u539f\u70b9\u3092\u65e7\u64cd\u4f5cfixture\u3067\u6bd4\u8f03\u3059\u308b",
+      "pinned_excerpt_sha256": "a4157f8baf5a9d029aeaf6f8c33b9c2e32d308ffa34bf6d3d678682a83e46b96",
+      "coverage": "Space PAN inverse-before-gint (unchanged pinned Space PAN case + new24scene/120entry/600motion/1800point-pair native matrix, modifier keys and repeated Space)",
+      "status": "PROVEN_CURRENT_SCOPE",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-0f31e1965d09a3e8e872",
+          "task": "25.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-40587c063e4ca8ed26c1",
+          "task": "25.002",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-4b0a9a97808207359ba9",
+          "task": "25.003",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-c99b7e2d412c5f275a6b",
+          "task": "25.004",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-b20e0c62bc13ac478266",
+          "task": "25.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-2fac1df79a0856242afa",
+          "task": "25.006",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-e5f8f571311e78b763a8",
+          "task": "25.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-5eeff158fa771fbe9ee8",
+          "task": "25.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-e85c70a36fdceb249dfc",
+          "task": "25.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-7fcf2652a21b72c47205",
+          "task": "25.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-9231b09ba696dbd34532",
+          "task": "25.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-ae3b7a426c3fb268b207",
+          "task": "29.020",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-30c3de6f5b3f61680b0d",
+      "source_id": "01.002/000687",
+      "source_blob": "b670161eb5906349f84a51da961ae339b7209574",
+      "source_range": "-1483 -> 1990",
+      "source_sha256": "b13867c0b518499361aa9656591caedf57a7e859dfbd838eacfcfa92fa2797da",
+      "original_action": "\u4fee\u98fe\u30ad\u30fc\u4ed8\u304ddrag zoom\u3068\u5909\u63db\u5ea7\u6a19pan\u3092\u7dad\u6301\u3059\u308b",
+      "original_acceptance": "Shift\u56de\u8ee2\u30fbCtrl scaling\u30fb\u901a\u5e38scroll\u306e\u958b\u59cb/drag/\u7d42\u4e86\u3001zoom\u8ddd\u96e2300\u3001device\u2192image\u5909\u63db\u3068\u539f\u70b9\u3092\u65e7\u64cd\u4f5cfixture\u3067\u6bd4\u8f03\u3059\u308b",
+      "pinned_excerpt_sha256": "807972ec02a630cbe82944f419761864126caf2d299c934402b06f2c34570649",
+      "coverage": "Space PAN integer start arguments (unchanged pinned Space PAN case + new24scene/120entry/600motion/1800point-pair native matrix, modifier keys and repeated Space)",
+      "status": "PROVEN_CURRENT_SCOPE",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-c23532299c8f3d84d6fb",
+          "task": "25.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-0abb3ca206ee215fe06b",
+          "task": "25.002",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-0d779dab0989d4bcafb9",
+          "task": "25.003",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-297f74e97656fc684ca3",
+          "task": "25.004",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-1ea0f6b3e91f71dbbf54",
+          "task": "25.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-da6e6c0f5fb8b2b6080b",
+          "task": "25.006",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-1e21dd1e7d2f80994b1d",
+          "task": "25.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-e2f1e9611e2d068b1a1d",
+          "task": "25.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-0ee5eb8b2f5a5549958a",
+          "task": "25.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-97d09ba3f1b2566f0868",
+          "task": "25.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-52a224af6397057a18b4",
+          "task": "25.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-ef7e5f2514a92d9cf607",
+          "task": "29.020",
+          "status": "TODO"
+        }
+      ]
+    }
+  ],
+  "note": "All18 original obligations retain exact IDs/action/acceptance and source attribution. Other whole-hunk obligations remain represented by their existing IDs/owners; current50 normal+50 sanitizer cases prove this child scope, not unrelated primary/history/device work."
+}

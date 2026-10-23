@@ -1004,7 +1004,7 @@
 | 25.009/common-angle-draw | [x] | 共通角度描画とupright GTK anchorの限定native経路を検証する | 25.008, 01.017 | 独立geometryで38実GTK draw/回のraster・代表item・selection・upright anchorと13行anchor修正を37通常/27 focused eventで検証し、別sourceのstrict Clone 226通常/62 focusedを保持。実window GUIは別34.005/canvas-overlay-portrait-smokeでsource0f16限定検証。原25.009全体は未完了 |
 | 25.009/transformed-drag-events | [x] | 回転・水平反転下のradial zoomと内部middle-panの限定event経路を検証する | 25.008, 01.017 | 独立geometryで4追加登録・16 drag/16再開・6小数primary座標を41通常/31 focused eventで検証し、別sourceのstrict Clone 226通常/62 focusedを保持。実window GUIは別34.005/transformed-drag-portrait-smokeでsource adcb50e8限定検証。原25.009全体は未完了 |
 | 25.009/fractional-pan-difference | [x] | 小数部が変わるmiddle-panの現行整数device原点と旧source差分を限定検証する | 25.008, 01.017 | exact public A 8e92569d/tree 25bec9e5の限定native41 normal/31 focused・9 C unitsと、別source B fbe7efac/tree ef9ae384のstrict Clone226 normal/62 focusedを確認。1caseの整数offset・量子化anchor・非零raw driftを限定受入れ、31登録・6 primary pairs・旧16-drag証跡保持。最終documentary Cへnative/GUI合格は転用しない。現行source-backed differenceはexact旧互換の承認ではなく、旧runtime/raster/overlay・原25.009・drag-zoom-scrollは未完了 |
-| 25.009/drag-zoom-scroll | [ ] | 修飾キー付きdrag zoomと変換座標panを維持する | 25.008, 01.017 | Shift回転・Ctrl scaling・通常scrollの開始/drag/終了、zoom距離300、device→image変換と原点を旧操作fixtureで比較する |
+| 25.009/drag-zoom-scroll | [x] | 修飾キー付きdrag zoomと変換座標panを維持する | 25.008, 01.017 | Shift回転・Ctrl scaling・通常scrollの開始/drag/終了、zoom距離300、device→image変換と原点を旧操作fixtureで比較する |
 | 25.009/radial-default | [x] | 旧Ctrl+middleの距離300 radial zoomを接続する | 25.001/start-relative-route | 開始scale最大値・整数中心・固定anchorを保持し2400不変旧関数演算に一致、6 pure通常/ASan/UBSan合格。明示custom zoomは現行設定を保持。実display clamp/pan/deviceは未完了 |
 | 25.010 | [ ] | 回転 reset action を接続する | 25.009 | 状態と UI 表示が一致 |
 | 25.011 | [ ] | modifier を含む操作試験を実行する | 25.010 | 記録した全キー遷移の期待角に一致 |
@@ -1016,6 +1016,8 @@
 
 
 2026-10-21追加進捗: 同じDOINGタスクでdefault回転の旧viewport中心・double原点を復元した。旧3関数を変更せず24scene×2再entry×7motion×3点の1008往復比較、oncanvas実描画/overlayを追加。37case全体のASan診断は60秒を超えたため完了根拠にせず、既存35と追加2を別processで元の60秒予算のまま通常/ASan各検証する。証跡は `migration/tests/navigation-old-operations/README.md`。旧zoomの適用後focus/fit/clamp原点は未完であり元のチェックと受入れを保持する。
+
+2026-10-21 Space PAN補完: 18旧hunk義務の監査で見つかったSpace PANのinverse-before-gintと修飾キー非依存を旧case原文で復元し、元の `25.009/drag-zoom-scroll` のみ再完了。50通常/50 ordinary Meson ASan・UBSan（34既存不変＋Space期待値を明示改訂した1＋回転2＋zoom10＋Space3）、各群60秒以内。24scene/120開始/600motion/1800点対、実modifier key遷移・Space再押下・遅延primary release、認証1080x1920 oncanvas描画/overlayを検証。18対象work行のみ元ID/基準/出典を保持しDONE、他owner/親196行は未変更。4ec50の47件証跡と513becの再開理由を履歴として保持。`migration/tests/navigation-old-space/README.md` 参照。
 
 ### 26 パース定規
 

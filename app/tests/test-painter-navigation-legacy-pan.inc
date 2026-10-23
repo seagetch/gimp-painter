@@ -314,26 +314,27 @@ static void inherited_pan_invalid_and_space (void)
   drag_send_pointer(GDK_BUTTON_RELEASE,2,GDK_BUTTON2_MASK,start);assert_navigation_idle();
   g_assert_cmpfloat(shell->painter_pan_start_x,==,0.0);
   g_assert_cmpfloat(shell->painter_pan_start_y,==,0.0);
-  /* Space is deliberately the existing native dynamic-modifier route, not
-   * the inherited middle-button compatibility route. */
+  /* The old bounded checkpoint documented native dynamic Space behavior.
+   * The subsequent pinned18-duty audit proved that configured Space PAN is
+   * part of the original compatibility criterion. Historical receipts remain
+   * unchanged; current behavior is fixed pan, with the exact old-source
+   * geometry matrix in old-space/origin (including modifier transitions). */
   g_object_get(shell->display->config,"space-bar-action",&old_space,NULL);
   g_object_set(shell->display->config,"space-bar-action",GIMP_SPACE_BAR_ACTION_PAN,NULL);
   send_event(GDK_KEY_PRESS,0,0,0,0,GDK_KEY_space);
   g_assert_true(shell->space_release_pending);assert_grab();
-  g_assert_false(shell->painter_navigation_inherited);
-  g_assert_cmpfloat(shell->painter_pan_start_x,==,0.0);
-  g_assert_cmpfloat(shell->painter_pan_start_y,==,0.0);
+  g_assert_true(shell->painter_navigation_inherited);
   {
-    gint ox=shell->offset_x,oy=shell->offset_y;
+    gdouble angle=shell->rotate_angle,scale=gimp_zoom_model_get_factor(shell->zoom);
     DragPoint motion={shell->scroll_last_x+7.25,shell->scroll_last_y+5.25};
-    drag_send_pointer(GDK_MOTION_NOTIFY,0,0,motion);
-    g_assert_cmpint(shell->offset_x,==,ox-7);g_assert_cmpint(shell->offset_y,==,oy-5);
-    drag_send_pointer(GDK_MOTION_NOTIFY,0,GDK_SHIFT_MASK,(DragPoint){motion.x+11,motion.y+9});
-    g_assert_false(shell->painter_navigation_inherited);assert_grab();
-    drag_send_pointer(GDK_MOTION_NOTIFY,0,GDK_CONTROL_MASK,(DragPoint){motion.x+12,motion.y+10});
-    g_assert_false(shell->painter_navigation_inherited);assert_grab();
-    drag_send_pointer(GDK_MOTION_NOTIFY,0,0,(DragPoint){motion.x+13,motion.y+11});
-    g_assert_false(shell->painter_navigation_inherited);assert_grab();
+    const guint states[]={0,GDK_SHIFT_MASK,GDK_CONTROL_MASK,0};
+    for(guint n=0;n<G_N_ELEMENTS(states);n++)
+      {
+        drag_send_pointer(GDK_MOTION_NOTIFY,0,states[n],(DragPoint){motion.x+n*3.25,motion.y+n*2.25});
+        g_assert_true(shell->painter_navigation_inherited);assert_grab();
+        g_assert_cmpfloat(shell->rotate_angle,==,angle);
+        g_assert_cmpfloat(gimp_zoom_model_get_factor(shell->zoom),==,scale);
+      }
   }
   send_event(GDK_KEY_RELEASE,0,0,0,0,GDK_KEY_space);assert_navigation_idle();
   g_assert_false(shell->space_release_pending);

@@ -1,0 +1,2864 @@
+/* SPDX-License-Identifier: GPL-3.0-or-later */
+#include "config.h"
+#include <math.h>
+#include <stdlib.h>
+#include <gtk/gtk.h>
+#include <gegl.h>
+#include "libgimpbase/gimpbase.h"
+#include "libgimpwidgets/gimpwidgets.h"
+#include "core/core-types.h"
+#include "display/display-types.h"
+#include "tools/tools-types.h"
+#include "core/gimp.h"
+#include "core/gimp-gui.h"
+#include "core/gimpcontainer.h"
+#include "core/gimpcontext.h"
+#include "core/gimptoolinfo.h"
+#include "core/gimptooloptions.h"
+#include "core/gimpimage.h"
+#include "config/gimpdisplayconfig.h"
+#include "display/gimpdisplay.h"
+#include "display/gimpdisplayshell.h"
+#include "display/gimpdisplayshell-tool-events.h"
+#include "display/gimpdisplayshell-rotate.h"
+#include "display/gimpdisplayshell-scale.h"
+#include "display/gimpdisplayshell-scroll.h"
+#include "display/gimpdisplayshell-transform.h"
+#include "tools/gimptool.h"
+#include "tools/gimptoolcontrol.h"
+#include "tools/gimptooloptions-gui.h"
+#include "tools/tool_manager.h"
+#include "widgets/gimpwidgets-utils.h"
+#include "display/gimppainternavigation.h"
+#include "display/gimpmodifiersmanager.h"
+#include "core/gimpdrawable.h"
+#include "core/gimpchannel-select.h"
+#include "core/gimppickable.h"
+#include "core/gimpprojection.h"
+#include "display/gimpcanvasitem.h"
+#include "display/gimpcanvasgroup.h"
+#include "display/gimpcanvasline.h"
+#include "display/gimpcanvasrectangle.h"
+#include "display/gimpdisplayshell-items.h"
+#include "display/gimpdisplayshell-appearance.h"
+#include "display/gimpdisplayshell-selection.h"
+#include "display/gimppaintercanvasui.h"
+#include "widgets/gimpoverlaybox.h"
+#include "widgets/gimpoverlaychild.h"
+#include "gimpcoreapp.h"
+#include "gimp-app-test-utils.h"
+#include "tests.h"
+static Gimp *gimp;
+static GimpDisplayShell *shell;
+static GdkDevice *device;
+static GimpModifiersManager *manager;
+static void send_event (GdkEventType type,guint button,guint state,gint x,gint y,guint key)
+{
+  GdkEvent *event=gdk_event_new(type);
+  GdkWindow *window=gtk_widget_get_window(shell->canvas);
+  gdk_event_set_device(event,device);
+  gdk_event_set_source_device(event,device);
+  event->any.window=g_object_ref(window);event->any.send_event=TRUE;
+  if(type==GDK_BUTTON_PRESS || type==GDK_BUTTON_RELEASE)
+    {event->button.button=button;event->button.state=state;event->button.x=x;event->button.y=y;event->button.time=GDK_CURRENT_TIME;}
+  else if(type==GDK_MOTION_NOTIFY)
+    {event->motion.state=state;event->motion.x=x;event->motion.y=y;event->motion.time=GDK_CURRENT_TIME;}
+  else
+    {event->key.keyval=key;event->key.state=state;event->key.time=GDK_CURRENT_TIME;}
+  gimp_display_shell_canvas_tool_events(shell->canvas,event,shell);
+  gdk_event_free(event);
+}
+static void create_image(void)
+{
+  /* The production GUI defers device creation until its first focus event.
+   * Synthetic test events must initialize that same normal lifecycle first. */
+  gimp_set_focused_once(gimp);
+  gimp_test_utils_create_image(gimp,256,256);gimp_test_run_mainloop_until_idle();
+  g_assert_cmpuint(g_list_length(gimp_get_display_iter(gimp)),==,1);
+  shell=gimp_display_get_shell(gimp_get_display_iter(gimp)->data);
+  device=gdk_seat_get_pointer(gdk_display_get_default_seat(gtk_widget_get_display(shell->canvas)));
+  manager=GIMP_MODIFIERS_MANAGER(shell->display->config->modifiers_manager);
+  gimp_modifiers_manager_clear(manager);
+  gtk_widget_grab_focus(shell->canvas);
+}
+static void close_image(void)
+{
+  GimpImage *image=gimp_display_get_image(shell->display);
+  GimpDisplay *display=shell->display;
+  g_object_unref(image);gimp_display_close(display);gimp_test_run_mainloop_until_idle();
+}
+static void rotate_defaults(void)
+{
+  create_image();
+  for(guint mirror=0;mirror<2;++mirror)
+    {
+      gint cx=shell->disp_width/2,cy=shell->disp_height/2;
+      gdouble anchor,expected;
+      gimp_display_shell_flip(shell,mirror,FALSE);
+      gimp_display_shell_rotate_to(shell,42.5);
+      anchor=gimp_painter_navigation_begin(shell->disp_width,shell->disp_height,cx+80,cy,42.5,mirror,FALSE);
+      send_event(GDK_BUTTON_PRESS,2,GDK_SHIFT_MASK|GDK_CONTROL_MASK|GDK_MOD1_MASK,cx+80,cy,0);
+      g_assert_cmpuint(shell->mod_action_button,==,2);g_assert_true(shell->painter_navigation_inherited);
+      send_event(GDK_MOTION_NOTIFY,0,GDK_BUTTON2_MASK|GDK_SHIFT_MASK|GDK_CONTROL_MASK|GDK_MOD1_MASK,cx,cy+80,0);
+      expected=gimp_painter_navigation_rotate(shell->disp_width,shell->disp_height,cx,cy+80,anchor,mirror,FALSE,GDK_CONTROL_MASK);
+      g_assert_cmpfloat_with_epsilon(shell->rotate_angle,expected,1e-8);
+      send_event(GDK_KEY_RELEASE,0,GDK_BUTTON2_MASK|GDK_CONTROL_MASK|GDK_MOD1_MASK,0,0,GDK_KEY_Control_L);
+      g_assert_cmpuint(shell->mod_action_button,==,2);
+      send_event(GDK_MOTION_NOTIFY,0,GDK_BUTTON2_MASK|GDK_MOD1_MASK,cx,cy+80,0);
+      expected=gimp_painter_navigation_rotate(shell->disp_width,shell->disp_height,cx,cy+80,anchor,mirror,FALSE,0);
+      g_assert_cmpfloat_with_epsilon(shell->rotate_angle,expected,1e-8);
+      send_event(GDK_BUTTON_RELEASE,2,GDK_BUTTON2_MASK,cx,cy+80,0);
+      g_assert_cmpint(shell->mod_action,==,GIMP_MODIFIER_ACTION_NONE);
+      g_assert_cmpuint(shell->mod_action_button,==,0);g_assert_null(shell->grab_seat);
+    }
+  close_image();
+}
+static void arbitrary_button_constraints(void)
+{
+  const guint buttons[]={4,5,8};
+  create_image();
+  for(guint i=0;i<G_N_ELEMENTS(buttons);++i)
+    {
+      gint cx=shell->disp_width/2,cy=shell->disp_height/2;
+      gimp_modifiers_manager_set(manager,device,buttons[i],GDK_MOD1_MASK,GIMP_MODIFIER_ACTION_STEP_ROTATING,NULL);
+      gimp_display_shell_rotate_to(shell,12.5);
+      send_event(GDK_BUTTON_PRESS,buttons[i],GDK_MOD1_MASK,cx+80,cy,0);
+      g_assert_cmpuint(shell->mod_action_button,==,buttons[i]);g_assert_false(shell->painter_navigation_inherited);
+      send_event(GDK_KEY_RELEASE,0,GDK_MOD1_MASK,0,0,GDK_KEY_Alt_L);
+      g_assert_cmpuint(shell->mod_action_button,==,buttons[i]);
+      send_event(GDK_BUTTON_PRESS,3,0,cx,cy,0);
+      g_assert_cmpuint(shell->mod_action_button,==,buttons[i]);
+      send_event(GDK_BUTTON_RELEASE,3,0,cx,cy,0);
+      g_assert_cmpuint(shell->mod_action_button,==,buttons[i]);
+      send_event(GDK_MOTION_NOTIFY,0,0,cx,cy+80,0);
+      g_assert_cmpfloat_with_epsilon(shell->rotate_angle,105,1e-8);
+      send_event(GDK_BUTTON_RELEASE,buttons[i],0,cx,cy+80,0);
+      g_assert_cmpuint(shell->mod_action_button,==,0);g_assert_null(shell->grab_seat);
+    }
+  close_image();
+}
+static void radial_zoom_event(void)
+{
+  gint cx,cy;
+  gdouble anchor;
+  create_image();
+  cx=shell->disp_width/2;cy=shell->disp_height/2;
+  anchor=gimp_painter_navigation_zoom_begin(shell->disp_width,shell->disp_height,cx+40,cy,shell->scale_x,shell->scale_y);
+  send_event(GDK_BUTTON_PRESS,2,GDK_CONTROL_MASK|GDK_MOD1_MASK,cx+40,cy,0);
+  g_assert_cmpint(shell->mod_action,==,GIMP_MODIFIER_ACTION_ZOOMING);
+  send_event(GDK_MOTION_NOTIFY,0,GDK_BUTTON2_MASK,cx+70,cy,0);
+  g_assert_cmpfloat_with_epsilon(shell->scale_x,gimp_painter_navigation_zoom(shell->disp_width,shell->disp_height,cx+70,cy,anchor),1e-8);
+  send_event(GDK_BUTTON_RELEASE,2,GDK_BUTTON2_MASK,cx+70,cy,0);
+  g_assert_cmpfloat(shell->painter_zoom_anchor,==,0);close_image();
+}
+static void picker_clears_grab(void)
+{
+  create_image();
+  gimp_modifiers_manager_set(manager,device,3,GDK_MOD1_MASK,GIMP_MODIFIER_ACTION_LAYER_PICKING,NULL);
+  send_event(GDK_BUTTON_PRESS,3,GDK_MOD1_MASK,shell->disp_width/2,shell->disp_height/2,0);
+  g_assert_cmpint(shell->mod_action,==,GIMP_MODIFIER_ACTION_LAYER_PICKING);
+  send_event(GDK_KEY_RELEASE,0,GDK_MOD1_MASK,0,0,GDK_KEY_Alt_L);
+  g_assert_cmpuint(shell->mod_action_button,==,0);g_assert_null(shell->grab_seat);
+  close_image();
+}
+/* Original 25.001: start selection and valid occupied-input lifecycles only.
+ * Expectations below come from the pinned old handler (747-842, 1813-1839),
+ * not from the production action helper.  The two real tools remain essential:
+ * the recorder supplements them with primary-callback counts.
+ */
+typedef struct
+{
+  const gchar        *name;
+  GdkModifierType     state;
+  GimpModifierAction  action;
+} StartCase;
+
+static const StartCase start_cases[] =
+{
+  { "plain",             0,                                               GIMP_MODIFIER_ACTION_PANNING },
+  { "alt",               GDK_MOD1_MASK,                                   GIMP_MODIFIER_ACTION_PANNING },
+  { "super",             GDK_SUPER_MASK,                                  GIMP_MODIFIER_ACTION_PANNING },
+  { "meta",              GDK_META_MASK,                                   GIMP_MODIFIER_ACTION_PANNING },
+  { "control",           GDK_CONTROL_MASK,                                GIMP_MODIFIER_ACTION_ZOOMING },
+  { "control-alt",       GDK_CONTROL_MASK | GDK_MOD1_MASK,                GIMP_MODIFIER_ACTION_ZOOMING },
+  { "control-super-meta",GDK_CONTROL_MASK | GDK_SUPER_MASK | GDK_META_MASK,GIMP_MODIFIER_ACTION_ZOOMING },
+  { "shift",             GDK_SHIFT_MASK,                                  GIMP_MODIFIER_ACTION_ROTATING },
+  { "shift-control",     GDK_SHIFT_MASK | GDK_CONTROL_MASK,               GIMP_MODIFIER_ACTION_STEP_ROTATING },
+  { "shift-control-alt", GDK_SHIFT_MASK | GDK_CONTROL_MASK | GDK_MOD1_MASK,GIMP_MODIFIER_ACTION_STEP_ROTATING },
+  { "shift-super",       GDK_SHIFT_MASK | GDK_SUPER_MASK,                 GIMP_MODIFIER_ACTION_ROTATING },
+  { "shift-meta",        GDK_SHIFT_MASK | GDK_META_MASK,                  GIMP_MODIFIER_ACTION_ROTATING }
+};
+
+static const gchar *real_tool_names[] =
+{
+  "gimp-paintbrush-tool", "gimp-move-tool"
+};
+
+typedef struct
+{
+  GimpModifierAction action;
+  guint              button;
+  gboolean           inherited;
+  gint               start_x, start_y, last_x, last_y;
+  gdouble            anchor, zoom_anchor, angle, scale_x, scale_y;
+  GdkSeat           *seat;
+  GdkDevice         *pointer, *source;
+  gboolean           grabbed;
+} NavigationState;
+
+static NavigationState
+navigation_state (void)
+{
+  NavigationState saved =
+  {
+    shell->mod_action, shell->mod_action_button,
+    shell->painter_navigation_inherited,
+    shell->scroll_start_x, shell->scroll_start_y,
+    shell->scroll_last_x, shell->scroll_last_y,
+    shell->rotate_drag_angle, shell->painter_zoom_anchor,
+    shell->rotate_angle, shell->scale_x, shell->scale_y,
+    shell->grab_seat, shell->grab_pointer, shell->grab_pointer_source,
+    gdk_display_device_is_grabbed (gdk_device_get_display (device), device)
+  };
+  return saved;
+}
+
+static void
+assert_navigation_unchanged (const NavigationState *saved)
+{
+  g_assert_cmpint (shell->mod_action, ==, saved->action);
+  g_assert_cmpuint (shell->mod_action_button, ==, saved->button);
+  g_assert_cmpint (shell->painter_navigation_inherited, ==, saved->inherited);
+  g_assert_cmpint (shell->scroll_start_x, ==, saved->start_x);
+  g_assert_cmpint (shell->scroll_start_y, ==, saved->start_y);
+  g_assert_cmpint (shell->scroll_last_x, ==, saved->last_x);
+  g_assert_cmpint (shell->scroll_last_y, ==, saved->last_y);
+  g_assert_cmpfloat (shell->rotate_drag_angle, ==, saved->anchor);
+  g_assert_cmpfloat (shell->painter_zoom_anchor, ==, saved->zoom_anchor);
+  g_assert_cmpfloat (shell->rotate_angle, ==, saved->angle);
+  g_assert_cmpfloat (shell->scale_x, ==, saved->scale_x);
+  g_assert_cmpfloat (shell->scale_y, ==, saved->scale_y);
+  g_assert_true (shell->grab_seat == saved->seat);
+  g_assert_true (shell->grab_pointer == saved->pointer);
+  g_assert_true (shell->grab_pointer_source == saved->source);
+  g_assert_cmpint (gdk_display_device_is_grabbed (gdk_device_get_display (device), device),
+                   ==, saved->grabbed);
+}
+
+static void
+assert_grab (void)
+{
+  g_assert_true (shell->grab_seat == gdk_device_get_seat (device));
+  g_assert_true (shell->grab_pointer == device);
+  /* gimp_devices_get_from_event() deliberately reports no physical source
+   * for synthesized events from the seat's master pointer. */
+  g_assert_cmpint (gdk_device_get_device_type (device), ==, GDK_DEVICE_TYPE_MASTER);
+  g_assert_null (shell->grab_pointer_source);
+  g_assert_true (gdk_display_device_is_grabbed (gdk_device_get_display (device), device));
+}
+
+static void
+assert_navigation_idle (void)
+{
+  gboolean grabbed_before_sync;
+
+  g_assert_cmpint (shell->mod_action, ==, GIMP_MODIFIER_ACTION_NONE);
+  g_assert_cmpuint (shell->mod_action_button, ==, 0);
+  g_assert_false (shell->painter_navigation_inherited);
+  g_assert_cmpint (shell->scroll_start_x, ==, 0);
+  g_assert_cmpint (shell->scroll_start_y, ==, 0);
+  g_assert_cmpint (shell->scroll_last_x, ==, 0);
+  g_assert_cmpint (shell->scroll_last_y, ==, 0);
+  g_assert_cmpfloat (shell->rotate_drag_angle, ==, 0.0);
+  g_assert_cmpfloat (shell->painter_zoom_anchor, ==, 0.0);
+  g_assert_null (shell->grab_seat);
+  g_assert_null (shell->grab_pointer);
+  g_assert_null (shell->grab_pointer_source);
+  g_assert_false (shell->button1_release_pending);
+  /* The direct canvas call bypasses the normal event-loop turn.  GDK X11
+   * retires its explicit-grab record in an idle callback after an asynchronous
+   * server roundtrip.  Check the synchronous shell cleanup above first, then
+   * observe GDK after both stages; never ungrab or alter state in the test. */
+  grabbed_before_sync = gdk_display_device_is_grabbed (gdk_device_get_display (device), device);
+  gdk_display_sync (gdk_device_get_display (device));
+  gimp_test_run_mainloop_until_idle ();
+  if (grabbed_before_sync)
+    g_test_message ("pending GDK grab after shell cleanup: before-sync=1 after-sync=%d",
+                    gdk_display_device_is_grabbed (gdk_device_get_display (device), device));
+  g_assert_false (gdk_display_device_is_grabbed (gdk_device_get_display (device), device));
+}
+
+static GimpTool *
+select_start_tool (const gchar *name)
+{
+  GimpToolInfo *info = gimp_get_tool_info (gimp, name);
+  GimpTool     *tool;
+
+  g_assert_nonnull (info);
+  gimp_context_set_tool (gimp_get_user_context (gimp), info);
+  tool = tool_manager_get_active (gimp);
+  g_assert_nonnull (tool);
+  g_assert_true (tool->tool_info == info);
+  g_assert_cmpstr (gimp_object_get_name (tool->tool_info), ==, name);
+  g_assert_false (gimp_tool_control_is_active (tool->control));
+  return tool;
+}
+
+static void
+prepare_start (void)
+{
+  assert_navigation_idle ();
+  gimp_display_shell_flip (shell, FALSE, FALSE);
+  gimp_display_shell_rotate_to (shell, 42.5);
+}
+
+static void
+assert_middle_start (GimpTool          *tool,
+                     GdkModifierType   state,
+                     GimpModifierAction action,
+                     gint              x,
+                     gint              y)
+{
+  GimpToolInfo    *info = tool->tool_info;
+  GimpToolControl *control = tool->control;
+  gint            id = tool->ID;
+  guint           press_state = tool->button_press_state;
+  guint           active_state = tool->active_modifier_state;
+  gdouble         angle = shell->rotate_angle;
+  gdouble         scale_x = shell->scale_x, scale_y = shell->scale_y;
+
+  assert_navigation_idle ();
+  g_assert_false (gimp_tool_control_is_active (control));
+  send_event (GDK_BUTTON_PRESS, 2, state, x, y, 0);
+  g_assert_true (tool_manager_get_active (gimp) == tool);
+  g_assert_true (tool->tool_info == info);
+  g_assert_true (tool->control == control);
+  g_assert_cmpint (tool->ID, ==, id);
+  g_assert_false (gimp_tool_control_is_active (control));
+  g_assert_true (tool->focus_display == shell->display);
+  g_assert_cmpuint (tool->modifier_state, ==, state | GDK_BUTTON2_MASK);
+  g_assert_cmpuint (tool->button_press_state, ==, press_state);
+  g_assert_cmpuint (tool->active_modifier_state, ==, active_state);
+  g_assert_cmpint (shell->mod_action, ==, action);
+  g_assert_cmpuint (shell->mod_action_button, ==, 2);
+  g_assert_true (shell->painter_navigation_inherited);
+  g_assert_cmpfloat (shell->rotate_angle, ==, angle);
+  g_assert_cmpfloat (shell->scale_x, ==, scale_x);
+  g_assert_cmpfloat (shell->scale_y, ==, scale_y);
+  g_assert_cmpint (shell->scroll_start_x, ==, x);
+  g_assert_cmpint (shell->scroll_start_y, ==, y);
+  g_assert_cmpint (shell->scroll_last_x, ==, x);
+  g_assert_cmpint (shell->scroll_last_y, ==, y);
+  /* All new starts use the unmirrored bottom-center ray: its bearing is zero.
+   * This checks anchor establishment without replaying drag-angle arithmetic. */
+  g_assert_cmpint (x, ==, shell->disp_width / 2);
+  g_assert_cmpint (y, >, shell->disp_height / 2);
+  g_assert_cmpfloat_with_epsilon (shell->rotate_drag_angle, angle, 1e-8);
+  g_assert_cmpfloat_with_epsilon (shell->painter_zoom_anchor,
+                                  MAX (scale_x, scale_y) * 300.0 -
+                                  (y - shell->disp_height / 2), 1e-8);
+  assert_grab ();
+}
+
+static void
+release_middle (GdkModifierType state)
+{
+  send_event (GDK_BUTTON_RELEASE, 2, state | GDK_BUTTON2_MASK,
+              shell->scroll_start_x, shell->scroll_start_y, 0);
+  g_test_message ("checking navigation cleanup after middle release");
+  assert_navigation_idle ();
+  /* Middle release does not update the tool's idle modifier state. */
+}
+
+static void
+start_matrix_for_tool (GimpTool *tool)
+{
+  for (guint i = 0; i < G_N_ELEMENTS (start_cases); i++)
+    {
+      const StartCase *test = &start_cases[i];
+      g_test_message ("tool=%s start=%s state=%u action=%d",
+                      gimp_object_get_name (tool->tool_info), test->name,
+                      test->state, test->action);
+      prepare_start ();
+      assert_middle_start (tool, test->state, test->action,
+                           shell->disp_width / 2, shell->disp_height / 2 + 80);
+      release_middle (test->state);
+    }
+}
+
+static void
+real_tool_start_matrix (gconstpointer data)
+{
+  create_image ();
+  start_matrix_for_tool (select_start_tool (data));
+  close_image ();
+}
+
+static void
+retained_old_starts (void)
+{
+  const guint sequences[] = { 2, 222 };
+  const guint states[] = { GDK_SHIFT_MASK,
+                          GDK_SHIFT_MASK | GDK_CONTROL_MASK | GDK_MOD1_MASK };
+  const GimpModifierAction actions[] = { GIMP_MODIFIER_ACTION_ROTATING,
+                                        GIMP_MODIFIER_ACTION_STEP_ROTATING };
+  const gchar *root = g_getenv ("GIMP_TESTING_ABS_TOP_SRCDIR");
+  gchar       *path, *contents, *checksum;
+  gchar      **lines;
+  GError      *error = NULL;
+  guint        matched = 0;
+
+  g_assert_nonnull (root);
+  path = g_build_filename (root, "migration", "fixtures",
+                           "legacy-rotation-operations", "gui-captures",
+                           "rotation.tsv", NULL);
+  g_assert_true (g_file_get_contents (path, &contents, NULL, &error));
+  g_assert_no_error (error);
+  checksum = g_compute_checksum_for_string (G_CHECKSUM_SHA256, contents, -1);
+  g_assert_cmpstr (checksum, ==,
+                  "bfc8b4ab8f532f5b8e0d97f2dd7cace9eec1aefe7a4cd532dbf4e4162cd9d46a");
+  lines = g_strsplit (contents, "\n", -1);
+  create_image ();
+  for (guint i = 1; lines[i] && *lines[i]; i++)
+    {
+      gchar **row = g_strsplit (lines[i], "\t", -1);
+      guint   seq = (guint) g_ascii_strtoull (row[0], NULL, 10);
+
+      g_assert_cmpuint (g_strv_length (row), ==, 24);
+      if (matched < G_N_ELEMENTS (sequences) && seq == sequences[matched])
+        {
+          gchar **setup = g_strsplit (lines[i - 1], "\t", -1);
+          gint x, y;
+          gdouble angle;
+
+          g_assert_cmpuint (g_strv_length (setup), ==, 24);
+          g_assert_cmpstr (setup[1], ==, row[1]);
+          g_assert_cmpstr (setup[2], ==, "setup");
+          g_assert_cmpint (atoi (row[3]), ==, 4); /* old GDK_BUTTON_PRESS */
+          g_assert_cmpuint (g_ascii_strtoull (row[4], NULL, 10), ==, states[matched]);
+          g_assert_cmpint (atoi (row[7]), ==, 2);
+          g_assert_cmpint (atoi (row[8]), ==, 1);
+          g_assert_cmpint (atoi (row[11]), ==, 0);
+          g_assert_cmpint (atoi (row[14]), ==, 1); /* rotating */
+          g_assert_cmpint (atoi (row[15]), ==, 0); /* scrolling */
+          g_assert_cmpint (atoi (row[16]), ==, 0); /* scaling */
+          g_assert_cmpint (atoi (row[17]), ==, 1); /* grabbed */
+          angle = g_ascii_strtod (setup[12], NULL);
+          g_assert_cmpfloat (g_ascii_strtod (row[12], NULL), ==, angle);
+          /* Retain the recorded center-relative input on the modern viewport. */
+          x = shell->disp_width / 2 + atoi (row[5]) - atoi (row[9]) / 2;
+          y = shell->disp_height / 2 + atoi (row[6]) - atoi (row[10]) / 2;
+          for (guint t = 0; t < G_N_ELEMENTS (real_tool_names); t++)
+            {
+              GimpTool *tool = select_start_tool (real_tool_names[t]);
+              g_test_message ("retained old seq=%u tool=%s", seq, real_tool_names[t]);
+              prepare_start ();
+              gimp_display_shell_rotate_to (shell, angle);
+              assert_middle_start (tool, states[matched], actions[matched], x, y);
+              g_assert_cmpfloat_with_epsilon (shell->rotate_drag_angle,
+                                              g_ascii_strtod (row[13], NULL), 1e-8);
+              release_middle (states[matched]);
+            }
+          matched++;
+          g_strfreev (setup);
+        }
+      g_strfreev (row);
+    }
+  g_assert_cmpuint (matched, ==, G_N_ELEMENTS (sequences));
+  close_image ();
+  g_strfreev (lines);
+  g_free (checksum);
+  g_free (contents);
+  g_free (path);
+}
+
+/* Original 25.004: one stationary, unmirrored old GUI sequence, with the
+ * reverse transition retained for 25.005 timing.  These literal expectations
+ * are checked against immutable rows 22-30, never a production math helper. */
+static void
+retained_ctrl_mid_drag (void)
+{
+  static const struct
+  {
+    const gchar     *step;
+    GdkEventType     type;
+    GdkModifierType  state;
+    guint            detail;
+    gdouble          angle;
+  } sequence[] =
+  {
+    { "shift-middle", GDK_BUTTON_PRESS,
+      GDK_SHIFT_MASK, 2, 7.5 },
+    { "free", GDK_MOTION_NOTIFY,
+      GDK_BUTTON2_MASK | GDK_SHIFT_MASK, 0, 7.5 },
+    { "ctrl-press", GDK_KEY_PRESS,
+      GDK_BUTTON2_MASK | GDK_SHIFT_MASK, GDK_KEY_Control_L, 7.5 },
+    { "snap", GDK_MOTION_NOTIFY,
+      GDK_BUTTON2_MASK | GDK_SHIFT_MASK | GDK_CONTROL_MASK, 0, 15.0 },
+    { "shift-release", GDK_KEY_RELEASE,
+      GDK_BUTTON2_MASK | GDK_SHIFT_MASK | GDK_CONTROL_MASK, GDK_KEY_Shift_L, 15.0 },
+    { "snap-without-shift", GDK_MOTION_NOTIFY,
+      GDK_BUTTON2_MASK | GDK_CONTROL_MASK, 0, 15.0 },
+    { "ctrl-release", GDK_KEY_RELEASE,
+      GDK_BUTTON2_MASK | GDK_CONTROL_MASK, GDK_KEY_Control_L, 15.0 },
+    { "restored", GDK_MOTION_NOTIFY,
+      GDK_BUTTON2_MASK, 0, 7.5 },
+    { "middle-release", GDK_BUTTON_RELEASE,
+      GDK_BUTTON2_MASK, 2, 7.5 }
+  };
+  const gchar *root = g_getenv ("GIMP_TESTING_ABS_TOP_SRCDIR");
+  gchar       *path, *contents, *checksum;
+  gchar      **lines;
+  GError      *error = NULL;
+
+  g_assert_nonnull (root);
+  path = g_build_filename (root, "migration", "fixtures",
+                           "legacy-rotation-operations", "gui-captures",
+                           "rotation.tsv", NULL);
+  g_assert_true (g_file_get_contents (path, &contents, NULL, &error));
+  g_assert_no_error (error);
+  checksum = g_compute_checksum_for_string (G_CHECKSUM_SHA256, contents, -1);
+  g_assert_cmpstr (checksum, ==,
+                  "bfc8b4ab8f532f5b8e0d97f2dd7cace9eec1aefe7a4cd532dbf4e4162cd9d46a");
+  lines = g_strsplit (contents, "\n", -1);
+  g_assert_cmpuint (g_strv_length (lines), >, 30);
+  g_assert_cmpstr (lines[0], ==,
+                  "seq\tscene\tstep\ttype\tstate\tx\ty\tdetail\thandled\twidth\theight"
+                  "\tmirror\tangle\tanchor\trotating\tscrolling\tscaling\tgrabbed"
+                  "\tdevice_x\tdevice_y\tunrotated_x\tunrotated_y\tback_x\tback_y");
+  for (guint i = 0; i < G_N_ELEMENTS (sequence); i++)
+    {
+      gchar    **row = g_strsplit (lines[22 + i], "\t", -1);
+      gboolean   held = sequence[i].type != GDK_BUTTON_RELEASE;
+      gboolean   key = sequence[i].type == GDK_KEY_PRESS ||
+                       sequence[i].type == GDK_KEY_RELEASE;
+
+      g_assert_cmpuint (g_strv_length (row), ==, 24);
+      g_assert_cmpuint (g_ascii_strtoull (row[0], NULL, 10), ==, 22 + i);
+      g_assert_cmpstr (row[1], ==, "stationary-m0-i2");
+      g_assert_cmpstr (row[2], ==, sequence[i].step);
+      g_assert_cmpint (atoi (row[3]), ==, sequence[i].type);
+      g_assert_cmpuint (g_ascii_strtoull (row[4], NULL, 10), ==, sequence[i].state);
+      g_assert_cmpint (atoi (row[5]) - atoi (row[9]) / 2, ==, 0);
+      g_assert_cmpint (atoi (row[6]) - atoi (row[10]) / 2, ==, 100);
+      g_assert_cmpuint (g_ascii_strtoull (row[7], NULL, 10), ==, sequence[i].detail);
+      g_assert_cmpint (atoi (row[8]), ==, ! key);
+      g_assert_cmpint (atoi (row[11]), ==, 0);
+      g_assert_cmpfloat (g_ascii_strtod (row[12], NULL), ==, sequence[i].angle);
+      g_assert_cmpfloat (g_ascii_strtod (row[13], NULL), ==, held ? 7.5 : 0.0);
+      g_assert_cmpint (atoi (row[14]), ==, held);
+      g_assert_cmpint (atoi (row[15]), ==, 0);
+      g_assert_cmpint (atoi (row[16]), ==, 0);
+      g_assert_cmpint (atoi (row[17]), ==, held);
+      g_strfreev (row);
+    }
+
+  create_image ();
+  for (guint t = 0; t < G_N_ELEMENTS (real_tool_names); t++)
+    {
+      GimpTool       *tool = select_start_tool (real_tool_names[t]);
+      NavigationState held;
+      gint            x = shell->disp_width / 2;
+      gint            y = shell->disp_height / 2 + 100;
+
+      prepare_start ();
+      gimp_display_shell_rotate_to (shell, 7.5);
+      assert_middle_start (tool, sequence[0].state, GIMP_MODIFIER_ACTION_ROTATING, x, y);
+      held = navigation_state ();
+      for (guint i = 1; i < G_N_ELEMENTS (sequence); i++)
+        {
+          NavigationState before = navigation_state ();
+
+          g_test_message ("retained old seq=%u step=%s tool=%s",
+                          22 + i, sequence[i].step, real_tool_names[t]);
+          if (sequence[i].type == GDK_BUTTON_RELEASE)
+            release_middle (0);
+          else
+            {
+              send_event (sequence[i].type, 0, sequence[i].state,
+                          x, y, sequence[i].detail);
+              if (sequence[i].type == GDK_KEY_PRESS ||
+                  sequence[i].type == GDK_KEY_RELEASE)
+                assert_navigation_unchanged (&before);
+              /* Only the displayed angle may change on stationary motion.
+               * Both anchors, initiating button, action and actual grab stay. */
+              held.angle = shell->rotate_angle;
+              assert_navigation_unchanged (&held);
+              assert_grab ();
+            }
+          g_assert_cmpfloat_with_epsilon (shell->rotate_angle, sequence[i].angle, 1e-8);
+          g_assert_true (tool_manager_get_active (gimp) == tool);
+          g_assert_false (gimp_tool_control_is_active (tool->control));
+        }
+      assert_middle_start (tool, GDK_SHIFT_MASK, GIMP_MODIFIER_ACTION_ROTATING, x, y);
+      release_middle (GDK_SHIFT_MASK);
+    }
+  close_image ();
+  g_strfreev (lines);
+  g_free (checksum);
+  g_free (contents);
+  g_free (path);
+}
+
+/* Original 25.007: source-derived geometry, not newly captured old output.
+ * The old right-center press has bearing/anchor 90 degrees.  For a motion at
+ * (cx + 100000, cy + k), its angle is atan(k / 100000) in degrees, wrapped
+ * into [0, 360).  The free x basis is 100 * (100000, k) / hypot(100000, k).
+ * Constants below are independent of the production navigation helper.
+ * k=+/-1 is strictly inside the ordinary 0.001-degree epsilon, +/-2 outside;
+ * nominal decimal epsilon endpoints would have asymmetric rounding at 360.
+ */
+typedef struct
+{
+  gint    k;
+  gdouble angle, unwrapped, vx, vy;
+} BoundarySample;
+
+static const BoundarySample free_boundary[] =
+{
+  { -2, 359.9988540844099, -0.0011459155901088576, 99.99999998,  -0.0019999999996 },
+  { -1, 359.9994270422049, -0.0005729577951117246, 99.999999995, -0.00099999999995 },
+  {  0, 0.0,              0.0,                   100.0,          0.0 },
+  {  1, 0.0005729577951117246, 0.0005729577951117246, 99.999999995, 0.00099999999995 },
+  {  2, 0.0011459155901088576, 0.0011459155901088576, 99.99999998,  0.0019999999996 }
+};
+
+/* +/-25000 gives raw +/-14.036243467926477 degrees.  Old positive-normalized
+ * 15-degree rounding therefore enters zero from 345 and leaves toward 15. */
+static const BoundarySample snapped_boundary[] =
+{
+  { -25000, 345.0, -15.0, 96.59258262890683, -25.881904510252074 },
+  {     -2,   0.0,   0.0, 100.0,             0.0 },
+  {     -1,   0.0,   0.0, 100.0,             0.0 },
+  {      0,   0.0,   0.0, 100.0,             0.0 },
+  {      1,   0.0,   0.0, 100.0,             0.0 },
+  {      2,   0.0,   0.0, 100.0,             0.0 },
+  {  25000,  15.0,  15.0, 96.59258262890683, 25.881904510252074 }
+};
+
+typedef struct
+{
+  const BoundarySample *samples;
+  guint                 count;
+  gboolean              snapped, decreasing;
+} BoundaryCase;
+
+static const BoundaryCase boundary_cases[] =
+{
+  { free_boundary,    G_N_ELEMENTS (free_boundary),    FALSE, FALSE },
+  { free_boundary,    G_N_ELEMENTS (free_boundary),    FALSE, TRUE  },
+  { snapped_boundary, G_N_ELEMENTS (snapped_boundary), TRUE,  FALSE },
+  { snapped_boundary, G_N_ELEMENTS (snapped_boundary), TRUE,  TRUE  }
+};
+
+typedef struct { gdouble x, y; } RotationBasis;
+
+static RotationBasis
+assert_rotation_basis (gdouble  angle,
+                       gdouble  vx,
+                       gdouble  vy,
+                       gboolean flip_h,
+                       gboolean flip_v)
+{
+  gdouble x0, y0, xx, xy, yx, yy;
+  gdouble sign_h = flip_h ? -1.0 : 1.0;
+  gdouble sign_v = flip_v ? -1.0 : 1.0;
+
+  g_assert_cmpint (shell->flip_horizontally, ==, flip_h);
+  g_assert_cmpint (shell->flip_vertically, ==, flip_v);
+  if (angle == 0.0)
+    g_assert_cmpfloat (shell->rotate_angle, ==, 0.0);
+  else
+    g_assert_cmpfloat_with_epsilon (shell->rotate_angle, angle, 1e-10);
+  if (angle == 0.0 && ! flip_h && ! flip_v)
+    {
+      g_assert_null (shell->rotate_transform);
+      g_assert_null (shell->rotate_untransform);
+    }
+  else
+    {
+      g_assert_nonnull (shell->rotate_transform);
+      g_assert_nonnull (shell->rotate_untransform);
+    }
+
+  /* Observe the real display transform, subtracting a common origin to remove
+   * viewport-center/offset translation.  Do not construct an expected matrix. */
+  gimp_display_shell_rotate_xy_f (shell, 10.0, 20.0, &x0, &y0);
+  gimp_display_shell_rotate_xy_f (shell, 110.0, 20.0, &xx, &xy);
+  gimp_display_shell_rotate_xy_f (shell, 10.0, 120.0, &yx, &yy);
+  xx -= x0; xy -= y0; yx -= x0; yy -= y0;
+  g_test_message ("boundary display: expected=%.17g actual=%.17g "
+                  "expected-basis=(%.17g,%.17g;%.17g,%.17g) "
+                  "actual-basis=(%.17g,%.17g;%.17g,%.17g)",
+                  angle, shell->rotate_angle, sign_h * vx, sign_h * vy,
+                  -sign_v * vy, sign_v * vx, xx, xy, yx, yy);
+  g_assert_cmpfloat_with_epsilon (xx,  sign_h * vx, 1e-8);
+  g_assert_cmpfloat_with_epsilon (xy,  sign_h * vy, 1e-8);
+  g_assert_cmpfloat_with_epsilon (yx, -sign_v * vy, 1e-8);
+  g_assert_cmpfloat_with_epsilon (yy,  sign_v * vx, 1e-8);
+  g_assert_cmpfloat_with_epsilon (hypot (xx, xy), 100.0, 1e-8);
+  g_assert_cmpfloat_with_epsilon (hypot (yx, yy), 100.0, 1e-8);
+  g_assert_cmpfloat_with_epsilon ((xx * yy - xy * yx) / 10000.0,
+                                  sign_h * sign_v, 1e-10);
+  return (RotationBasis) { xx, xy };
+}
+
+static NavigationState
+start_boundary_drag (GimpTool *tool,
+                     guint     state)
+{
+  gint x = shell->disp_width / 2 + 80;
+  gint y = shell->disp_height / 2;
+
+  assert_navigation_idle ();
+  gimp_display_shell_flip (shell, FALSE, FALSE);
+  gimp_display_shell_rotate_to (shell, 0.0);
+  g_assert_false (shell->rotate_angle_exact);
+  send_event (GDK_BUTTON_PRESS, 2, state, x, y, 0);
+  g_assert_true (tool_manager_get_active (gimp) == tool);
+  g_assert_false (gimp_tool_control_is_active (tool->control));
+  g_assert_true (tool->focus_display == shell->display);
+  g_assert_cmpint (shell->mod_action, ==,
+                  (state & GDK_CONTROL_MASK) ? GIMP_MODIFIER_ACTION_STEP_ROTATING :
+                                              GIMP_MODIFIER_ACTION_ROTATING);
+  g_assert_cmpuint (shell->mod_action_button, ==, 2);
+  g_assert_true (shell->painter_navigation_inherited);
+  g_assert_cmpint (shell->scroll_start_x, ==, x);
+  g_assert_cmpint (shell->scroll_start_y, ==, y);
+  g_assert_cmpint (shell->scroll_last_x, ==, x);
+  g_assert_cmpint (shell->scroll_last_y, ==, y);
+  g_assert_cmpfloat (shell->rotate_drag_angle, ==, 90.0);
+  g_assert_cmpfloat (shell->rotate_angle, ==, 0.0);
+  g_assert_false (shell->rotate_angle_exact); /* press does not replace angle */
+  assert_grab ();
+  return navigation_state ();
+}
+
+static void
+boundary_motion (NavigationState *held,
+                 GimpTool        *tool,
+                 guint            state,
+                 gint             k)
+{
+  gint x = shell->disp_width / 2 + 100000;
+  gint y = shell->disp_height / 2 + k;
+
+  send_event (GDK_MOTION_NOTIFY, 0, state | GDK_BUTTON2_MASK, x, y, 0);
+  /* Only the displayed angle and last pointer position may change.  In
+   * particular the nonzero 90-degree anchor must survive crossing zero. */
+  held->angle = shell->rotate_angle;
+  held->last_x = x;
+  held->last_y = y;
+  assert_navigation_unchanged (held);
+  g_assert_cmpfloat (shell->rotate_drag_angle, ==, 90.0);
+  g_assert_true (shell->rotate_angle_exact);
+  g_assert_true (tool_manager_get_active (gimp) == tool);
+  g_assert_false (gimp_tool_control_is_active (tool->control));
+  assert_grab ();
+}
+
+static void
+ordered_rotation_boundary (gconstpointer data)
+{
+  const BoundaryCase   *test = data;
+  const BoundarySample *previous = NULL;
+  RotationBasis         previous_basis = { 0.0, 0.0 };
+  NavigationState       held;
+  GimpTool             *tool;
+  guint                 state = GDK_SHIFT_MASK |
+                                (test->snapped ? GDK_CONTROL_MASK : 0);
+
+  create_image ();
+  tool = select_start_tool (real_tool_names[0]);
+  held = start_boundary_drag (tool, state);
+  for (guint i = 0; i < test->count; i++)
+    {
+      guint index = test->decreasing ? test->count - 1 - i : i;
+      const BoundarySample *sample = &test->samples[index];
+      RotationBasis basis;
+
+      g_test_message ("boundary %s %s observation=%u k=%d anchor=90 old-math=%.17g",
+                      test->snapped ? "snapped" : "free",
+                      test->decreasing ? "decreasing" : "increasing",
+                      i + 1, sample->k, sample->angle);
+      boundary_motion (&held, tool, state, sample->k);
+      basis = assert_rotation_basis (sample->angle, sample->vx, sample->vy,
+                                      FALSE, FALSE);
+      if (previous)
+        {
+          gdouble step = atan2 (previous_basis.x * basis.y - previous_basis.y * basis.x,
+                                previous_basis.x * basis.x + previous_basis.y * basis.y) *
+                         180.0 / G_PI;
+          gdouble expected = sample->unwrapped - previous->unwrapped;
+
+          g_test_message ("boundary signed step: expected=%.17g actual=%.17g", expected, step);
+          g_assert_cmpfloat_with_epsilon (step, expected, 1e-10);
+          if (expected == 0.0)
+            g_assert_cmpfloat (step, ==, 0.0);
+          else
+            g_assert_cmpfloat (step * (test->decreasing ? -1.0 : 1.0), >, 0.0);
+        }
+      previous = sample;
+      previous_basis = basis;
+    }
+  /* The first motion positions the crossing; only later steps are ordered. */
+  release_middle (state);
+  g_assert_true (shell->rotate_angle_exact);
+  assert_rotation_basis (previous->angle, previous->vx, previous->vy, FALSE, FALSE);
+  close_image ();
+}
+
+static void
+free_boundary_increasing (void)
+{
+  ordered_rotation_boundary (&boundary_cases[0]);
+}
+
+static void
+free_boundary_decreasing (void)
+{
+  ordered_rotation_boundary (&boundary_cases[1]);
+}
+
+static void
+snapped_boundary_increasing (void)
+{
+  ordered_rotation_boundary (&boundary_cases[2]);
+}
+
+static void
+snapped_boundary_decreasing (void)
+{
+  ordered_rotation_boundary (&boundary_cases[3]);
+}
+
+static void
+boundary_angle_persistence (void)
+{
+  const guint inner_samples[] = { 1, 3 };
+  GimpTool *tool;
+
+  create_image ();
+  tool = select_start_tool (real_tool_names[0]);
+  for (guint i = 0; i < G_N_ELEMENTS (inner_samples); i++)
+    {
+      const BoundarySample *sample = &free_boundary[inner_samples[i]];
+      NavigationState held = start_boundary_drag (tool, GDK_SHIFT_MASK);
+
+      boundary_motion (&held, tool, GDK_SHIFT_MASK, sample->k);
+      release_middle (GDK_SHIFT_MASK);
+      g_assert_true (shell->rotate_angle_exact);
+      assert_rotation_basis (sample->angle, sample->vx, sample->vy, FALSE, FALSE);
+      for (guint rebuild = 0; rebuild < 2; rebuild++)
+        {
+          gimp_display_shell_rotate_update_transform (shell);
+          assert_rotation_basis (sample->angle, sample->vx, sample->vy, FALSE, FALSE);
+        }
+      gimp_display_shell_scroll_set_offset (shell, shell->offset_x + 1, shell->offset_y + 1);
+      assert_rotation_basis (sample->angle, sample->vx, sample->vy, FALSE, FALSE);
+      gimp_display_shell_scale_by_values (shell, 1.25 + i * 0.25,
+                                          shell->offset_x, shell->offset_y, FALSE);
+      gimp_test_run_mainloop_until_idle ();
+      assert_rotation_basis (sample->angle, sample->vx, sample->vy, FALSE, FALSE);
+      gimp_display_shell_flip (shell, TRUE, FALSE);
+      g_assert_true (shell->rotate_angle_exact);
+      assert_rotation_basis (360.0 - sample->angle, sample->vx, -sample->vy, TRUE, FALSE);
+      gimp_display_shell_flip (shell, FALSE, FALSE);
+      g_assert_true (shell->rotate_angle_exact);
+      assert_rotation_basis (sample->angle, sample->vx, sample->vy, FALSE, FALSE);
+      assert_navigation_idle ();
+    }
+  /* With the only display, ordinary close empties rather than destroys it. */
+  close_image ();
+  g_assert_null (gimp_display_get_image (shell->display));
+  g_assert_false (shell->rotate_angle_exact);
+  assert_rotation_basis (0.0, 100.0, 0.0, FALSE, FALSE);
+}
+
+static void
+boundary_policy_isolation (void)
+{
+  const gdouble ordinary_angles[] = { 0.0005729577951117246, -0.0005729577951117246,
+                                     0.001, 359.999 };
+  GimpTool *tool;
+  NavigationState held;
+  gint x, y;
+
+  create_image ();
+  tool = select_start_tool (real_tool_names[0]);
+  for (guint i = 0; i < G_N_ELEMENTS (ordinary_angles); i++)
+    {
+      held = start_boundary_drag (tool, GDK_SHIFT_MASK);
+      boundary_motion (&held, tool, GDK_SHIFT_MASK, 1);
+      release_middle (GDK_SHIFT_MASK);
+      assert_rotation_basis (free_boundary[3].angle, free_boundary[3].vx,
+                              free_boundary[3].vy, FALSE, FALSE);
+      gimp_display_shell_rotate_to (shell, ordinary_angles[i]);
+      g_assert_false (shell->rotate_angle_exact);
+      if (ordinary_angles[i] == 0.001)
+        {
+          /* Existing represented-value endpoint policy: +0.001 is retained,
+           * whereas 360 - 359.999 is represented just below the epsilon. */
+          g_assert_cmpfloat (shell->rotate_angle, ==, 0.001);
+          g_assert_nonnull (shell->rotate_transform);
+          g_assert_nonnull (shell->rotate_untransform);
+        }
+      else
+        assert_rotation_basis (0.0, 100.0, 0.0, FALSE, FALSE);
+    }
+  held = start_boundary_drag (tool, GDK_SHIFT_MASK);
+  boundary_motion (&held, tool, GDK_SHIFT_MASK, 1);
+  release_middle (GDK_SHIFT_MASK);
+  assert_rotation_basis (free_boundary[3].angle, free_boundary[3].vx,
+                          free_boundary[3].vy, FALSE, FALSE);
+  gimp_display_shell_rotate (shell, 0.0); /* ordinary relative operation */
+  g_assert_false (shell->rotate_angle_exact);
+  assert_rotation_basis (0.0, 100.0, 0.0, FALSE, FALSE);
+
+  held = start_boundary_drag (tool, GDK_SHIFT_MASK);
+  boundary_motion (&held, tool, GDK_SHIFT_MASK, 1);
+  release_middle (GDK_SHIFT_MASK);
+  assert_rotation_basis (free_boundary[3].angle, free_boundary[3].vx,
+                          free_boundary[3].vy, FALSE, FALSE);
+  gimp_modifiers_manager_set (manager, device, 2, GDK_SHIFT_MASK,
+                              GIMP_MODIFIER_ACTION_ROTATING, NULL);
+  x = shell->disp_width / 2 + 80;
+  y = shell->disp_height / 2;
+  send_event (GDK_BUTTON_PRESS, 2, GDK_SHIFT_MASK, x, y, 0);
+  g_assert_false (shell->painter_navigation_inherited);
+  g_assert_true (shell->rotate_angle_exact); /* still the previous angle */
+  g_assert_cmpint (shell->mod_action, ==, GIMP_MODIFIER_ACTION_ROTATING);
+  g_assert_cmpuint (shell->mod_action_button, ==, 2);
+  assert_grab ();
+  held = navigation_state ();
+  /* Same ray preserves the tiny requested angle, but this explicit binding
+   * replaces its policy.  A stale exact flag would incorrectly retain it. */
+  send_event (GDK_MOTION_NOTIFY, 0, GDK_SHIFT_MASK | GDK_BUTTON2_MASK, x, y, 0);
+  held.angle = 0.0;
+  assert_navigation_unchanged (&held);
+  assert_grab ();
+  g_assert_false (shell->rotate_angle_exact);
+  assert_rotation_basis (0.0, 100.0, 0.0, FALSE, FALSE);
+  g_assert_true (tool_manager_get_active (gimp) == tool);
+  g_assert_false (gimp_tool_control_is_active (tool->control));
+  release_middle (GDK_SHIFT_MASK);
+  gimp_modifiers_manager_clear (manager);
+  close_image ();
+}
+
+typedef enum
+{
+  START_BUSY, START_HELD_PRIMARY, START_HELD_TERTIARY, START_UNBOUND,
+  START_OCCUPIED_PAN, START_OCCUPIED_ZOOM, START_OCCUPIED_ROTATION
+} RejectedStart;
+
+static void
+rejected_start_matrix (gconstpointer data)
+{
+  GimpTool *tool;
+
+  create_image ();
+  tool = select_start_tool (data);
+
+  for (guint test = START_BUSY; test <= START_OCCUPIED_ROTATION; test++)
+    {
+      NavigationState saved;
+      guint state = GDK_SHIFT_MASK, button = 2, occupied_state = 0;
+      guint press_state = tool->button_press_state;
+      guint active_state = tool->active_modifier_state;
+      gint x = shell->disp_width / 2, y = shell->disp_height / 2 + 80;
+
+      g_test_message ("tool=%s rejected-start=%u", (const gchar *) data, test);
+      prepare_start ();
+      if (test == START_BUSY)
+        gimp_set_busy (gimp);
+      else if (test == START_HELD_PRIMARY)
+        state |= GDK_BUTTON1_MASK;
+      else if (test == START_HELD_TERTIARY)
+        state |= GDK_BUTTON3_MASK;
+      else if (test == START_UNBOUND)
+        button = 8;
+      else
+        {
+          GimpModifierAction action = GIMP_MODIFIER_ACTION_PANNING;
+          if (test == START_OCCUPIED_ZOOM)
+            { occupied_state = GDK_CONTROL_MASK; action = GIMP_MODIFIER_ACTION_ZOOMING; }
+          else if (test == START_OCCUPIED_ROTATION)
+            { occupied_state = GDK_SHIFT_MASK; action = GIMP_MODIFIER_ACTION_ROTATING; }
+          assert_middle_start (tool, occupied_state, action, x, y);
+          state |= GDK_BUTTON2_MASK;
+        }
+      saved = navigation_state ();
+      /* A distinct position would replace the start/anchor if incorrectly accepted. */
+      send_event (GDK_BUTTON_PRESS, button, state, x + 60, y - 130, 0);
+      assert_navigation_unchanged (&saved);
+      g_assert_true (tool_manager_get_active (gimp) == tool);
+      g_assert_false (gimp_tool_control_is_active (tool->control));
+      g_assert_cmpuint (tool->button_press_state, ==, press_state);
+      g_assert_cmpuint (tool->active_modifier_state, ==, active_state);
+      /* Unbound input still updates focus/modifiers before selecting NONE.
+       * Device/display selection may also precede the other rejection guards. */
+      if (test == START_UNBOUND)
+        {
+          g_assert_true (tool->focus_display == shell->display);
+          g_assert_cmpuint (tool->modifier_state, ==, GDK_SHIFT_MASK);
+          send_event (GDK_BUTTON_RELEASE, 8, GDK_SHIFT_MASK, x, y, 0);
+        }
+      else if (test == START_BUSY)
+        gimp_unset_busy (gimp);
+      else if (test == START_HELD_PRIMARY || test == START_HELD_TERTIARY)
+        send_event (GDK_BUTTON_RELEASE,
+                    test == START_HELD_PRIMARY ? 1 : 3, state, x, y, 0);
+      else
+        release_middle (occupied_state);
+      assert_navigation_idle ();
+      assert_middle_start (tool, GDK_SHIFT_MASK, GIMP_MODIFIER_ACTION_ROTATING, x, y);
+      release_middle (GDK_SHIFT_MASK);
+    }
+  close_image ();
+}
+
+/* An ordinary primary press must establish both active control and a real grab.
+ * Never fabricate an active/no-grab tool state: the old route had no blanket
+ * tool-control veto.  Test both the real Paintbrush and the callback recorder. */
+static void
+primary_drag_rejects_rotation (GimpTool *tool)
+{
+  NavigationState saved;
+  guint press_state, active_state, modifier_state;
+  GimpDisplay *focus;
+  gdouble dx, dy;
+  gint x, y;
+
+  prepare_start ();
+  gimp_display_shell_transform_xy_f (shell, 128, 128, &dx, &dy);
+  x = (gint) dx; y = (gint) dy;
+  send_event (GDK_BUTTON_PRESS, 1, 0, x, y, 0);
+  g_assert_true (tool_manager_get_active (gimp) == tool);
+  g_assert_true (gimp_tool_control_is_active (tool->control));
+  g_assert_cmpint (shell->mod_action, ==, GIMP_MODIFIER_ACTION_NONE);
+  g_assert_cmpuint (tool->button_press_state, ==, GDK_BUTTON1_MASK);
+  assert_grab ();
+  saved = navigation_state ();
+  press_state = tool->button_press_state;
+  active_state = tool->active_modifier_state;
+  modifier_state = tool->modifier_state;
+  focus = tool->focus_display;
+  send_event (GDK_BUTTON_PRESS, 2, GDK_SHIFT_MASK | GDK_BUTTON1_MASK, x + 50, y + 30, 0);
+  assert_navigation_unchanged (&saved);
+  g_assert_true (tool_manager_get_active (gimp) == tool);
+  g_assert_true (gimp_tool_control_is_active (tool->control));
+  g_assert_true (tool->focus_display == focus);
+  g_assert_cmpuint (tool->modifier_state, ==, modifier_state);
+  g_assert_cmpuint (tool->button_press_state, ==, press_state);
+  g_assert_cmpuint (tool->active_modifier_state, ==, active_state);
+  /* Releasing the rejected middle press must not terminate the primary drag. */
+  send_event (GDK_BUTTON_RELEASE, 2,
+              GDK_SHIFT_MASK | GDK_BUTTON1_MASK | GDK_BUTTON2_MASK, x + 50, y + 30, 0);
+  assert_navigation_unchanged (&saved);
+  g_assert_true (gimp_tool_control_is_active (tool->control));
+  send_event (GDK_BUTTON_RELEASE, 1, GDK_BUTTON1_MASK, x, y, 0);
+  g_assert_false (gimp_tool_control_is_active (tool->control));
+  assert_navigation_idle ();
+  assert_middle_start (tool, GDK_SHIFT_MASK, GIMP_MODIFIER_ACTION_ROTATING,
+                       shell->disp_width / 2, shell->disp_height / 2 + 80);
+  release_middle (GDK_SHIFT_MASK);
+}
+
+static void
+paintbrush_primary_drag (void)
+{
+  GimpTool *tool;
+
+  create_image ();
+  tool = select_start_tool (real_tool_names[0]);
+  g_assert_nonnull (gimp_context_get_brush (GIMP_CONTEXT (tool->tool_info->tool_options)));
+  primary_drag_rejects_rotation (tool);
+  gimp_test_run_mainloop_until_idle ();
+  close_image ();
+}
+
+typedef enum
+{
+  KEY_NORMAL,
+  KEY_ALL_CONSUME,
+  KEY_ALL_FALLTHROUGH
+} KeyRecordingMode;
+
+typedef struct
+{
+  GdkEventType  callback_type;
+  GdkEventKey   event;
+  GimpTool     *tool;
+  GimpDisplay  *display;
+} RecordedKey;
+
+typedef struct
+{
+  GimpTool         parent;
+  KeyRecordingMode key_mode;
+  guint            n_keys;
+  RecordedKey      keys[2];
+} StartRecordingTool;
+typedef struct { GimpToolClass parent; } StartRecordingToolClass;
+GType start_recording_tool_get_type (void);
+G_DEFINE_TYPE (StartRecordingTool, start_recording_tool, GIMP_TYPE_TOOL)
+static guint start_tool_presses, start_tool_releases;
+
+static gboolean
+start_recording_initialize (GimpTool *tool, GimpDisplay *display, GError **error)
+{
+  tool->display = display;
+  return TRUE;
+}
+
+static void
+start_recording_press (GimpTool *tool, const GimpCoords *coords, guint32 time,
+                       GdkModifierType state, GimpButtonPressType type, GimpDisplay *display)
+{
+  start_tool_presses++;
+  tool->display = display;
+  gimp_tool_control_activate (tool->control);
+}
+
+static void
+start_recording_release (GimpTool *tool, const GimpCoords *coords, guint32 time,
+                         GdkModifierType state, GimpButtonReleaseType type, GimpDisplay *display)
+{
+  start_tool_releases++;
+  gimp_tool_control_halt (tool->control);
+}
+
+static void
+record_key (GimpTool     *tool,
+            GdkEventKey  *event,
+            GimpDisplay *display,
+            GdkEventType callback_type)
+{
+  StartRecordingTool *recording = (StartRecordingTool *) tool;
+
+  g_assert_cmpuint (recording->n_keys, <, G_N_ELEMENTS (recording->keys));
+  /* The normal press route passes a stack copy.  Only copy public key fields;
+   * do not query GDK's allocation-private device metadata through this pointer.
+   * The borrowed window/string are inspected before the sender frees input. */
+  recording->keys[recording->n_keys++] =
+    (RecordedKey) { callback_type, *event, tool, display };
+}
+
+static gboolean
+start_recording_key_press (GimpTool     *tool,
+                           GdkEventKey  *event,
+                           GimpDisplay *display)
+{
+  StartRecordingTool *recording = (StartRecordingTool *) tool;
+
+  record_key (tool, event, display, GDK_KEY_PRESS);
+  return recording->key_mode != KEY_ALL_FALLTHROUGH || recording->n_keys == 2;
+}
+
+static gboolean
+start_recording_key_release (GimpTool     *tool,
+                             GdkEventKey  *event,
+                             GimpDisplay *display)
+{
+  StartRecordingTool *recording = (StartRecordingTool *) tool;
+
+  record_key (tool, event, display, GDK_KEY_RELEASE);
+  return recording->key_mode == KEY_ALL_CONSUME;
+}
+
+static void
+start_recording_tool_class_init (StartRecordingToolClass *klass)
+{
+  GimpToolClass *tool = GIMP_TOOL_CLASS (klass);
+  tool->initialize = start_recording_initialize;
+  tool->button_press = start_recording_press;
+  tool->button_release = start_recording_release;
+  tool->key_press = start_recording_key_press;
+  tool->key_release = start_recording_key_release;
+}
+
+static void
+start_recording_tool_init (StartRecordingTool *recording)
+{
+  gimp_tool_control_set_handle_empty_image (GIMP_TOOL (recording)->control, TRUE);
+}
+
+static void
+ensure_start_recording_tool (void)
+{
+  GimpToolInfo *info;
+
+  if (gimp_get_tool_info (gimp, "painter-start-recording-test"))
+    return;
+
+  info = gimp_tool_info_new (gimp, start_recording_tool_get_type (), GIMP_TYPE_TOOL_OPTIONS, 0,
+                             "painter-start-recording-test", "Record starts", "Record starts",
+                             NULL, NULL, NULL, "gimp-tool-paintbrush", "gimp-paintbrush",
+                             GIMP_ICON_TOOL_PAINTBRUSH);
+  gimp_tools_set_tool_options_gui_func (info->tool_options, gimp_tool_options_gui);
+  gimp_container_add (gimp->tool_info_list, GIMP_OBJECT (info));
+  gimp_container_add (gimp->tool_item_list, GIMP_OBJECT (info));
+  g_object_unref (info);
+}
+
+static void
+recording_tool_starts (void)
+{
+  GimpTool *tool;
+
+  create_image ();
+  ensure_start_recording_tool ();
+  tool = select_start_tool ("painter-start-recording-test");
+  start_tool_presses = start_tool_releases = 0;
+  start_matrix_for_tool (tool);
+  g_assert_cmpuint (start_tool_presses, ==, 0);
+  g_assert_cmpuint (start_tool_releases, ==, 0);
+  primary_drag_rejects_rotation (tool);
+  g_assert_cmpuint (start_tool_presses, ==, 1);
+  g_assert_cmpuint (start_tool_releases, ==, 1);
+  select_start_tool (real_tool_names[0]);
+  close_image ();
+}
+
+/* 25.008/mirrored-arrow-input: pinned old handler lines 1363-1422 and
+ * 1493-1542 define this asymmetric routing.  These literal callback sequences
+ * are independent of gimp_painter_navigation_key(), including the unchanged
+ * first callback when a wants-all tool declines a press.  The second callback
+ * consumes that press so configurable keyboard-controller actions stay out of
+ * this bounded test.  Releases never enter the ordinary arrow callback route.
+ */
+typedef struct
+{
+  const gchar      *name;
+  KeyRecordingMode  mode;
+  gboolean          mirrored;
+  guint             n_press;
+  guint             press_keys[2][2]; /* Left/Right, in callback order */
+  guint             n_release;
+  gboolean          release_handled;
+} KeyRouteCase;
+
+static const KeyRouteCase key_routes[] =
+{
+  { "normal", KEY_NORMAL, FALSE, 1,
+    { { GDK_KEY_Left, 0 }, { GDK_KEY_Right, 0 } }, 0, FALSE },
+  { "normal", KEY_NORMAL, TRUE, 1,
+    { { GDK_KEY_Right, 0 }, { GDK_KEY_Left, 0 } }, 0, FALSE },
+  { "all-consume", KEY_ALL_CONSUME, FALSE, 1,
+    { { GDK_KEY_Left, 0 }, { GDK_KEY_Right, 0 } }, 1, TRUE },
+  { "all-consume", KEY_ALL_CONSUME, TRUE, 1,
+    { { GDK_KEY_Left, 0 }, { GDK_KEY_Right, 0 } }, 1, TRUE },
+  { "all-fallthrough", KEY_ALL_FALLTHROUGH, FALSE, 2,
+    { { GDK_KEY_Left, GDK_KEY_Left }, { GDK_KEY_Right, GDK_KEY_Right } }, 1, FALSE },
+  { "all-fallthrough", KEY_ALL_FALLTHROUGH, TRUE, 2,
+    { { GDK_KEY_Left, GDK_KEY_Right }, { GDK_KEY_Right, GDK_KEY_Left } }, 1, FALSE }
+};
+
+typedef struct
+{
+  const gchar        *name;
+  gdouble             initial_angle;
+  guint               state;
+  GimpModifierAction  action;
+  gdouble             key_angle, continued_angle;
+} KeyContext;
+
+static const KeyContext key_contexts[] =
+{
+  { "idle-zero", 0.0, 0, GIMP_MODIFIER_ACTION_NONE, 0.0, 0.0 },
+  { "idle-rotated", 37.0, 0, GIMP_MODIFIER_ACTION_NONE, 37.0, 37.0 },
+  { "rotation-free", 37.0, GDK_BUTTON2_MASK | GDK_SHIFT_MASK,
+    GIMP_MODIFIER_ACTION_ROTATING, 127.0, 217.0 },
+  { "rotation-snapped", 37.0, GDK_BUTTON2_MASK | GDK_SHIFT_MASK | GDK_CONTROL_MASK,
+    GIMP_MODIFIER_ACTION_STEP_ROTATING, 120.0, 210.0 }
+};
+
+static const gchar key_event_string[] = "arrow-input";
+
+static void
+assert_key_fields (const GdkEventKey *actual,
+                   const GdkEventKey *supplied,
+                   guint              expected_key)
+{
+  g_assert_cmpint (actual->type, ==, supplied->type);
+  g_assert_true (actual->window == supplied->window);
+  g_assert_cmpint (actual->send_event, ==, supplied->send_event);
+  g_assert_cmpuint (actual->time, ==, supplied->time);
+  g_assert_cmpuint (actual->state, ==, supplied->state);
+  g_assert_cmpuint (actual->keyval, ==, expected_key);
+  g_assert_cmpint (actual->length, ==, supplied->length);
+  g_assert_true (actual->string == supplied->string);
+  g_assert_cmpstr (actual->string, ==, key_event_string);
+  g_assert_cmpuint (actual->hardware_keycode, ==, supplied->hardware_keycode);
+  g_assert_cmpuint (actual->group, ==, supplied->group);
+  g_assert_cmpuint (actual->is_modifier, ==, supplied->is_modifier);
+}
+
+static gboolean
+send_recorded_key (StartRecordingTool *recording,
+                   GdkEventType        type,
+                   guint               state,
+                   guint               key,
+                   const guint        *expected_keys,
+                   guint               expected_count)
+{
+  GimpTool    *tool = GIMP_TOOL (recording);
+  GdkEvent    *event = gdk_event_new (type);
+  GdkEventKey  supplied;
+  gboolean    handled;
+
+  gdk_event_set_device (event, device);
+  gdk_event_set_source_device (event, device);
+  event->key.window = g_object_ref (gtk_widget_get_window (shell->canvas));
+  event->key.send_event = TRUE;
+  event->key.time = 123456789;
+  event->key.state = state;
+  event->key.keyval = key;
+  event->key.length = sizeof (key_event_string) - 1;
+  event->key.string = g_strdup (key_event_string);
+  event->key.hardware_keycode = key == GDK_KEY_Left ? 113 : 114;
+  event->key.group = 1;
+  event->key.is_modifier = FALSE;
+  supplied = event->key;
+  g_assert_true (gdk_event_get_device (event) == device);
+  g_assert_true (gdk_event_get_source_device (event) == device);
+
+  recording->n_keys = 0;
+  handled = gimp_display_shell_canvas_tool_events (shell->canvas, event, shell);
+
+  g_assert_cmpuint (recording->n_keys, ==, expected_count);
+  for (guint i = 0; i < recording->n_keys; ++i)
+    {
+      const RecordedKey *observed = &recording->keys[i];
+
+      g_assert_cmpint (observed->callback_type, ==, type);
+      g_assert_true (observed->tool == tool);
+      g_assert_true (observed->display == shell->display);
+      assert_key_fields (&observed->event, &supplied, expected_keys[i]);
+    }
+  /* Unlike the retained old in-place swap, modern dispatch must preserve the
+   * original allocated event for other handlers.  Compare fields, not padding. */
+  assert_key_fields (&event->key, &supplied, key);
+  g_assert_true (gdk_event_get_device (event) == device);
+  g_assert_true (gdk_event_get_source_device (event) == device);
+  g_assert_true (tool_manager_get_active (gimp) == tool);
+  g_assert_true (tool->focus_display == shell->display);
+  g_assert_false (gimp_tool_control_is_active (tool->control));
+  gdk_event_free (event);
+  return handled;
+}
+
+static void
+mirrored_arrow_keys (gconstpointer data)
+{
+  const KeyContext   *context = data;
+  const guint         keys[] = { GDK_KEY_Left, GDK_KEY_Right };
+  StartRecordingTool *recording;
+  GimpTool           *tool;
+  guint               events = 0, press_callbacks = 0, release_callbacks = 0;
+  gboolean            rotating = context->action != GIMP_MODIFIER_ACTION_NONE;
+
+  create_image ();
+  ensure_start_recording_tool ();
+  tool = select_start_tool ("painter-start-recording-test");
+  g_assert_cmpuint (G_OBJECT_TYPE (tool), ==, start_recording_tool_get_type ());
+  recording = (StartRecordingTool *) tool;
+  tool_manager_focus_display_active (gimp, shell->display);
+  g_assert_true (gtk_widget_has_focus (shell->canvas));
+  g_assert_true (tool->focus_display == shell->display);
+  start_tool_presses = start_tool_releases = 0;
+
+  for (guint mirror = 0; mirror < 2; ++mirror)
+    {
+      NavigationState held;
+      gboolean        exact;
+      gint            cx = shell->disp_width / 2, cy = shell->disp_height / 2;
+
+      assert_navigation_idle ();
+      gimp_display_shell_flip (shell, mirror, FALSE);
+      gimp_display_shell_rotate_to (shell, context->initial_angle);
+      g_assert_cmpfloat (shell->rotate_angle, ==, context->initial_angle);
+      g_assert_false (shell->rotate_angle_exact);
+      if (rotating)
+        {
+          send_event (GDK_BUTTON_PRESS, 2, context->state & ~GDK_BUTTON2_MASK,
+                      cx + 80, cy, 0);
+          g_assert_cmpint (shell->mod_action, ==, context->action);
+          g_assert_cmpuint (shell->mod_action_button, ==, 2);
+          g_assert_true (shell->painter_navigation_inherited);
+          /* Pinned old 1827-1869: old initial angles 37/323 plus the
+           * right-hand bearing 90/270 give anchors 127/593. */
+          g_assert_cmpfloat (shell->rotate_drag_angle, ==, mirror ? 593.0 : 127.0);
+          g_assert_cmpfloat (shell->rotate_angle, ==, 37.0);
+          g_assert_false (shell->rotate_angle_exact);
+          g_assert_cmpint (shell->scroll_start_x, ==, cx + 80);
+          g_assert_cmpint (shell->scroll_start_y, ==, cy);
+          assert_grab ();
+          send_event (GDK_MOTION_NOTIFY, 0, context->state, cx, cy + 80, 0);
+          g_assert_cmpint (shell->mod_action, ==, context->action);
+          g_assert_true (shell->rotate_angle_exact);
+          assert_grab ();
+        }
+      g_assert_cmpfloat (shell->rotate_angle, ==, context->key_angle);
+      held = navigation_state ();
+      exact = shell->rotate_angle_exact;
+
+      for (guint row = 0; row < G_N_ELEMENTS (key_routes); ++row)
+        {
+          const KeyRouteCase *route = &key_routes[row];
+
+          if (route->mirrored != mirror)
+            continue;
+          recording->key_mode = route->mode;
+          gimp_tool_control_set_wants_all_key_events (tool->control,
+                                                     route->mode != KEY_NORMAL);
+          for (guint direction = 0; direction < G_N_ELEMENTS (keys); ++direction)
+            for (guint phase = 0; phase < 2; ++phase)
+              {
+                GdkEventType type = phase ? GDK_KEY_RELEASE : GDK_KEY_PRESS;
+                const guint *expected_keys = phase ? &keys[direction] :
+                                                     route->press_keys[direction];
+                guint        count = phase ? route->n_release : route->n_press;
+                gboolean     expected_handled = phase ? route->release_handled : TRUE;
+                gboolean     handled;
+
+                g_test_message ("mirrored arrows: context=%s mirror=%u mode=%s "
+                                "key=%u phase=%s callbacks=%u handled=%d",
+                                context->name, mirror, route->name, keys[direction],
+                                phase ? "release" : "press", count, expected_handled);
+                handled = send_recorded_key (recording, type, context->state,
+                                             keys[direction], expected_keys, count);
+                g_assert_cmpint (handled, ==, expected_handled);
+                assert_navigation_unchanged (&held);
+                g_assert_cmpint (shell->rotate_angle_exact, ==, exact);
+                g_assert_cmpint (shell->flip_horizontally, ==, mirror);
+                g_assert_false (shell->flip_vertically);
+                events++;
+                if (phase)
+                  release_callbacks += recording->n_keys;
+                else
+                  press_callbacks += recording->n_keys;
+              }
+        }
+
+      if (rotating)
+        {
+          /* The same start reference must still drive motion after all keys.
+           * Old left-ray angles 217/143 (snapped 210/150), with mirrored
+           * boundary negation, independently give modern 217 or 210. */
+          send_event (GDK_MOTION_NOTIFY, 0, context->state, cx - 80, cy, 0);
+          held.angle = context->continued_angle;
+          held.last_x = cx - 80;
+          held.last_y = cy;
+          assert_navigation_unchanged (&held);
+          g_assert_true (shell->rotate_angle_exact);
+          assert_grab ();
+          send_event (GDK_BUTTON_RELEASE, 2, context->state, cx - 80, cy, 0);
+          g_assert_cmpfloat (shell->rotate_angle, ==, context->continued_angle);
+          g_assert_true (shell->rotate_angle_exact);
+        }
+      assert_navigation_idle ();
+    }
+
+  g_assert_cmpuint (events, ==, 24);
+  g_assert_cmpuint (press_callbacks, ==, 16);
+  g_assert_cmpuint (release_callbacks, ==, 8);
+  g_assert_cmpuint (start_tool_presses, ==, 0);
+  g_assert_cmpuint (start_tool_releases, ==, 0);
+  recording->key_mode = KEY_NORMAL;
+  recording->n_keys = 0;
+  gimp_tool_control_set_wants_all_key_events (tool->control, FALSE);
+  select_start_tool (real_tool_names[0]);
+  close_image ();
+}
+
+/* Original 25.009: bounded, current-source common-angle draw checkpoint.
+ * This observer is reached only through the production GTK canvas draw signal.
+ * It does not apply a transform or paint an image-space substitute. */
+typedef struct
+{
+  GimpCanvasItem parent_instance;
+  cairo_matrix_t matrix;
+  guint          draws;
+  gboolean       screen_control;
+} NavigationDrawObserver;
+
+typedef struct { GimpCanvasItemClass parent_class; } NavigationDrawObserverClass;
+G_DEFINE_TYPE (NavigationDrawObserver, navigation_draw_observer, GIMP_TYPE_CANVAS_ITEM)
+
+static void
+navigation_draw_observer_draw (GimpCanvasItem *item,
+                               cairo_t        *cr)
+{
+  NavigationDrawObserver *observer = (NavigationDrawObserver *) item;
+
+  cairo_get_matrix (cr, &observer->matrix);
+  observer->draws++;
+  if (observer->screen_control)
+    {
+      cairo_set_source_rgb (cr, 1.0, 0.0, 1.0);
+      cairo_rectangle (cr, 24, 30, 13, 7);
+      cairo_fill (cr);
+    }
+}
+
+static cairo_region_t *
+navigation_draw_observer_extents (GimpCanvasItem *item)
+{
+  GimpDisplayShell *owner = gimp_canvas_item_get_shell (item);
+  cairo_rectangle_int_t rect = { 0, 0, owner->disp_width, owner->disp_height };
+
+  return cairo_region_create_rectangle (&rect);
+}
+
+static void
+navigation_draw_observer_class_init (NavigationDrawObserverClass *klass)
+{
+  GimpCanvasItemClass *item_class = GIMP_CANVAS_ITEM_CLASS (klass);
+
+  item_class->draw = navigation_draw_observer_draw;
+  item_class->get_extents = navigation_draw_observer_extents;
+}
+
+static void
+navigation_draw_observer_init (NavigationDrawObserver *observer)
+{
+  observer->draws = 0;
+}
+
+typedef struct { gdouble x, y; } DrawPoint;
+typedef struct { DrawPoint a, b; } DrawSegment;
+typedef struct { gint x, y, w, h; } DrawLandmark;
+typedef struct { const gchar *name; gdouble angle, cosine, sine; } DrawAngle;
+typedef struct
+{
+  NavigationDrawObserver *rotated, *unrotated;
+  GimpCanvasItem         *items;
+  GimpDrawable           *drawable;
+  gchar                  *pixels_sha256;
+} DrawScene;
+
+/* Independent constants: accepted 25.008 right-ray press from 37 degrees,
+ * down-ray free motion is 127; Ctrl gives 120; release restores 127. Neither
+ * angle nor expected geometry is obtained from the target navigation helper.
+ * The tiny +/-1 samples come from the existing 100000-pixel boundary rays. */
+static const DrawAngle draw_zero = { "zero", 0.0, 1.0, 0.0 };
+static const DrawAngle draw_free =
+  { "free", 127.0, -0.6018150231520483, 0.7986355100472928 };
+static const DrawAngle draw_snap =
+  { "snap", 120.0, -0.5, 0.8660254037844386 };
+static const DrawAngle draw_anchor_angle =
+  { "anchor", 37.0, 0.7986355100472928, 0.6018150231520483 };
+static const DrawAngle draw_tiny[] =
+{
+  { "negative", 359.9994270422049, 0.99999999995, -0.0000099999999995 },
+  { "zero",     0.0,               1.0,            0.0 },
+  { "positive", 0.0005729577951117246, 0.99999999995, 0.0000099999999995 }
+};
+static const DrawLandmark draw_landmarks[] =
+{
+  { 61, 71, 14, 10 }, { 179, 83, 10, 18 }, { 99, 178, 18, 12 }
+};
+static const DrawSegment draw_segments[] =
+{
+  { { 68, 76 }, { 184, 92 } }, { { 68, 76 }, { 108, 184 } },
+  { { 99, 178 }, { 117, 178 } }, { { 117, 178 }, { 117, 190 } },
+  { { 117, 190 }, { 99, 190 } }, { { 99, 190 }, { 99, 178 } }
+};
+static const DrawSegment draw_selection_segments[] =
+{
+  { { 48, 54 }, { 168, 54 } }, { { 168, 54 }, { 168, 150 } },
+  { { 168, 150 }, { 48, 150 } }, { { 48, 150 }, { 48, 54 } }
+};
+
+/* Source-independent Euclidean point geometry using a frozen sine/cosine,
+ * explicit image dimensions and observed view parameters. The expected CTM
+ * never reads shell->rotate_transform or calls a production transform helper. */
+static DrawPoint
+draw_expected_point (const DrawAngle *angle,
+                     gboolean         mirror,
+                     gdouble          x,
+                     gdouble          y)
+{
+  gdouble cx = -shell->offset_x + ((gint) (256 * shell->scale_x)) / 2;
+  gdouble cy = -shell->offset_y + ((gint) (256 * shell->scale_y)) / 2;
+  gdouble dx = x * shell->scale_x - shell->offset_x - cx;
+  gdouble dy = y * shell->scale_y - shell->offset_y - cy;
+
+  if (mirror)
+    dx = -dx;
+  /* The original frozen-angle geometry above is unchanged. The old-origin
+   * bridge now represents a default gesture's effective offset as integer +
+   * device-space residual, applied after rotation. Account for that explicit
+   * translation without reading the production matrix or changing detectors.
+   * Pre-bridge proofs retain the original integer-only oracle verbatim. */
+  return (DrawPoint) { cx + angle->cosine * dx - angle->sine * dy -
+                           shell->painter_pan_fraction_x,
+                       cy + angle->sine * dx + angle->cosine * dy -
+                           shell->painter_pan_fraction_y };
+}
+
+static gchar *
+draw_image_checksum (GimpDrawable *drawable)
+{
+  guchar pixels[256 * 256 * 4];
+
+  gegl_buffer_get (gimp_drawable_get_buffer (drawable),
+                   GEGL_RECTANGLE (0, 0, 256, 256), 1.0,
+                   babl_format ("R'G'B'A u8"), pixels,
+                   GEGL_AUTO_ROWSTRIDE, GEGL_ABYSS_NONE);
+  return g_compute_checksum_for_data (G_CHECKSUM_SHA256, pixels, sizeof pixels);
+}
+
+static DrawScene
+draw_scene_new (void)
+{
+  DrawScene scene = { 0 };
+  GimpImage *image;
+  GimpCanvasItem *item;
+  guchar pixels[256 * 256 * 4];
+
+  create_image ();
+  select_start_tool (real_tool_names[0]);
+  image = gimp_display_get_image (shell->display);
+  scene.drawable = GIMP_DRAWABLE (gimp_image_get_layer_iter (image)->data);
+  for (guint p = 0; p < 256 * 256; p++)
+    {
+      pixels[4 * p] = pixels[4 * p + 1] = pixels[4 * p + 2] = 128;
+      pixels[4 * p + 3] = 255;
+    }
+  for (guint n = 0; n < G_N_ELEMENTS (draw_landmarks); n++)
+    {
+      const DrawLandmark *mark = &draw_landmarks[n];
+      for (gint y = mark->y; y < mark->y + mark->h; y++)
+        for (gint x = mark->x; x < mark->x + mark->w; x++)
+          {
+            guchar *pixel = pixels + 4 * (256 * y + x);
+            pixel[0] = pixel[1] = pixel[2] = 24;
+            pixel[n] = 232;
+          }
+    }
+  gegl_buffer_set (gimp_drawable_get_buffer (scene.drawable),
+                   GEGL_RECTANGLE (0, 0, 256, 256), 0,
+                   babl_format ("R'G'B'A u8"), pixels, GEGL_AUTO_ROWSTRIDE);
+  gimp_drawable_update (scene.drawable, 0, 0, 256, 256);
+  gimp_image_flush (image);
+  gimp_pickable_flush (GIMP_PICKABLE (gimp_image_get_projection (image)));
+  scene.pixels_sha256 = draw_image_checksum (scene.drawable);
+
+  gimp_painter_canvas_ui_set_visible (shell, FALSE);
+  gimp_display_shell_set_show_layer (shell, FALSE);
+  gimp_display_shell_set_show_canvas (shell, FALSE);
+  gimp_display_shell_set_show_selection (shell, FALSE);
+  gimp_canvas_item_set_visible (shell->tool_items, FALSE);
+  gimp_canvas_item_set_visible (shell->cursor, FALSE);
+  gimp_display_shell_flip (shell, FALSE, FALSE);
+  gimp_display_shell_rotate_to (shell, 0.0);
+  gimp_display_shell_scale_set_dot_for_dot (shell, TRUE);
+  gimp_display_shell_scale (shell, GIMP_ZOOM_TO, 1.0, GIMP_ZOOM_FOCUS_IMAGE_CENTER);
+  gimp_test_run_temp_mainloop (100);
+  gimp_display_shell_scroll_set_offset (shell, 128 - shell->disp_width / 2,
+                                       128 - shell->disp_height / 2);
+
+  scene.rotated = g_object_new (navigation_draw_observer_get_type (), "shell", shell, NULL);
+  scene.unrotated = g_object_new (navigation_draw_observer_get_type (), "shell", shell, NULL);
+  scene.unrotated->screen_control = TRUE;
+  gimp_display_shell_add_item (shell, GIMP_CANVAS_ITEM (scene.rotated));
+  gimp_display_shell_add_unrotated_item (shell, GIMP_CANVAS_ITEM (scene.unrotated));
+  scene.items = gimp_canvas_group_new (shell);
+  for (guint n = 0; n < 2; n++)
+    {
+      item = gimp_canvas_line_new (shell, draw_segments[n].a.x, draw_segments[n].a.y,
+                                   draw_segments[n].b.x, draw_segments[n].b.y);
+      gimp_canvas_group_add_item (GIMP_CANVAS_GROUP (scene.items), item);
+      g_object_unref (item);
+    }
+  item = gimp_canvas_rectangle_new (shell, 99, 178, 18, 12, FALSE);
+  gimp_canvas_group_add_item (GIMP_CANVAS_GROUP (scene.items), item);
+  g_object_unref (item);
+  gimp_display_shell_add_item (shell, scene.items);
+  gimp_canvas_item_set_visible (scene.items, FALSE);
+  return scene;
+}
+
+static void
+draw_scene_free (DrawScene *scene)
+{
+  gchar *checksum = draw_image_checksum (scene->drawable);
+
+  g_assert_cmpstr (checksum, ==, scene->pixels_sha256);
+  g_free (checksum);
+  g_free (scene->pixels_sha256);
+  assert_navigation_idle ();
+  gimp_display_shell_remove_item (shell, scene->items);
+  gimp_display_shell_remove_item (shell, GIMP_CANVAS_ITEM (scene->rotated));
+  gimp_display_shell_remove_unrotated_item (shell, GIMP_CANVAS_ITEM (scene->unrotated));
+  g_object_unref (scene->items);
+  g_object_unref (scene->rotated);
+  g_object_unref (scene->unrotated);
+  gimp_canvas_item_set_visible (shell->tool_items, TRUE);
+  close_image ();
+}
+
+static guint32
+draw_pixel (cairo_surface_t *surface,
+            gint             x,
+            gint             y)
+{
+  return ((guint32 *) (cairo_image_surface_get_data (surface) +
+                       y * cairo_image_surface_get_stride (surface)))[x];
+}
+
+static cairo_surface_t *
+draw_snapshot (DrawScene   *scene,
+               const gchar *name)
+{
+  GtkAllocation allocation;
+  cairo_surface_t *surface;
+  cairo_t *cr;
+  const gchar *directory = g_getenv ("GIMP_TEST_NAVIGATION_DRAW_DIR");
+
+  /* Settle ordinary frame-clock work. Do not force child size allocation or
+   * invalidate the image cache: either could hide the regression under test. */
+  gimp_test_run_temp_mainloop (50);
+  g_assert_false (shell->size_allocate_center_image);
+  gtk_widget_get_allocation (shell->canvas, &allocation);
+  g_assert_cmpint (allocation.width, ==, shell->disp_width);
+  g_assert_cmpint (allocation.height, ==, shell->disp_height);
+  surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, allocation.width, allocation.height);
+  cr = cairo_create (surface);
+  scene->rotated->draws = scene->unrotated->draws = 0;
+  gtk_widget_draw (shell->canvas, cr);
+  g_assert_cmpint (cairo_status (cr), ==, CAIRO_STATUS_SUCCESS);
+  cairo_destroy (cr);
+  cairo_surface_flush (surface);
+  if (directory)
+    {
+      gchar *file = g_strdup_printf ("%s.png", name);
+      gchar *path = g_build_filename (directory, file, NULL);
+      g_assert_cmpint (g_mkdir_with_parents (directory, 0700), ==, 0);
+      g_assert_cmpint (cairo_surface_write_to_png (surface, path), ==, CAIRO_STATUS_SUCCESS);
+      g_free (path);
+      g_free (file);
+    }
+  /* Earlier event-loop paints cannot satisfy these observations. */
+  g_assert_cmpuint (scene->rotated->draws, ==, 1);
+  g_assert_cmpuint (scene->unrotated->draws, ==, 1);
+  return surface;
+}
+
+static void
+draw_assert_ctm (DrawScene       *scene,
+                 const DrawAngle *angle,
+                 gboolean         mirror)
+{
+  const cairo_matrix_t *m = &scene->rotated->matrix;
+  const cairo_matrix_t *u = &scene->unrotated->matrix;
+  gdouble h = mirror ? -1.0 : 1.0;
+  DrawPoint origin = draw_expected_point (angle, mirror,
+                                          shell->offset_x / shell->scale_x,
+                                          shell->offset_y / shell->scale_y);
+
+  g_test_message ("draw CTM angle=%.17g mirror=%d zoom=%.17g offsets=%d,%d "
+                  "matrix=(%.17g,%.17g,%.17g,%.17g,%.17g,%.17g)",
+                  shell->rotate_angle, mirror, shell->scale_x,
+                  shell->offset_x, shell->offset_y,
+                  m->xx, m->yx, m->xy, m->yy, m->x0, m->y0);
+  g_assert_cmpfloat_with_epsilon (shell->rotate_angle, angle->angle, 1e-10);
+  g_assert_cmpint (shell->flip_horizontally, ==, mirror);
+  g_assert_false (shell->flip_vertically);
+  g_assert_cmpfloat_with_epsilon (m->xx, h * angle->cosine, 1e-10);
+  g_assert_cmpfloat_with_epsilon (m->yx, h * angle->sine, 1e-10);
+  g_assert_cmpfloat_with_epsilon (m->xy, -angle->sine, 1e-10);
+  g_assert_cmpfloat_with_epsilon (m->yy, angle->cosine, 1e-10);
+  g_assert_cmpfloat_with_epsilon (m->x0, origin.x, 1e-7);
+  g_assert_cmpfloat_with_epsilon (m->y0, origin.y, 1e-7);
+  g_assert_cmpfloat_with_epsilon (u->xx, 1.0, 1e-10);
+  g_assert_cmpfloat_with_epsilon (u->yy, 1.0, 1e-10);
+  g_assert_cmpfloat_with_epsilon (u->xy, 0.0, 1e-10);
+  g_assert_cmpfloat_with_epsilon (u->yx, 0.0, 1e-10);
+  g_assert_cmpfloat_with_epsilon (u->x0, 0.0, 1e-7);
+  g_assert_cmpfloat_with_epsilon (u->y0, 0.0, 1e-7);
+}
+
+static void
+draw_assert_raster (cairo_surface_t *surface,
+                    const DrawAngle *angle,
+                    gboolean         mirror)
+{
+  gint width = cairo_image_surface_get_width (surface);
+  gint height = cairo_image_surface_get_height (surface);
+
+  for (guint n = 0; n < G_N_ELEMENTS (draw_landmarks); n++)
+    {
+      const DrawLandmark *mark = &draw_landmarks[n];
+      DrawPoint expected = draw_expected_point (angle, mirror,
+                                                mark->x + mark->w / 2.0,
+                                                mark->y + mark->h / 2.0);
+      gdouble radius = hypot (mark->w * shell->scale_x, mark->h * shell->scale_y) / 2 + 2;
+      gdouble sx = 0, sy = 0;
+      guint count = 0;
+
+      g_assert_cmpfloat (expected.x - radius, >, 0);
+      g_assert_cmpfloat (expected.y - radius, >, 0);
+      g_assert_cmpfloat (expected.x + radius, <, width);
+      g_assert_cmpfloat (expected.y + radius, <, height);
+      for (gint y = 0; y < height; y++)
+        for (gint x = 0; x < width; x++)
+          {
+            guint32 pixel = draw_pixel (surface, x, y);
+            guint rgb[] = { (pixel >> 16) & 255, (pixel >> 8) & 255, pixel & 255 };
+            if (rgb[n] > 130 && rgb[(n + 1) % 3] < 110 && rgb[(n + 2) % 3] < 110)
+              {
+                count++;
+                sx += x + 0.5; sy += y + 0.5;
+                /* Reject stale colored cache trails anywhere on this canvas. */
+                g_assert_cmpfloat (hypot (x + 0.5 - expected.x, y + 0.5 - expected.y), <=, radius);
+              }
+          }
+      g_test_message ("draw raster %u expected=(%.9f,%.9f) count=%u centroid=(%.9f,%.9f)",
+                      n, expected.x, expected.y, count,
+                      count ? sx / count : 0, count ? sy / count : 0);
+      g_assert_cmpfloat (count, >=, 0.45 * mark->w * mark->h * shell->scale_x * shell->scale_y);
+      g_assert_cmpfloat (count, <=, 1.50 * mark->w * mark->h * shell->scale_x * shell->scale_y);
+      g_assert_cmpfloat_with_epsilon (sx / count, expected.x, 1.0);
+      g_assert_cmpfloat_with_epsilon (sy / count, expected.y, 1.0);
+    }
+  /* Deliberately screen-fixed control: exact solid interior, in both views. */
+  g_assert_cmphex (draw_pixel (surface, 28, 33), ==, 0xffff00ffu);
+}
+
+static gdouble
+draw_segment_distance (DrawPoint point,
+                       DrawPoint a,
+                       DrawPoint b)
+{
+  gdouble dx = b.x - a.x, dy = b.y - a.y;
+  gdouble t = CLAMP (((point.x - a.x) * dx + (point.y - a.y) * dy) /
+                    (dx * dx + dy * dy), 0.0, 1.0);
+  return hypot (point.x - a.x - t * dx, point.y - a.y - t * dy);
+}
+
+static gboolean
+draw_pixels_differ (guint32 a,
+                    guint32 b)
+{
+  for (guint shift = 0; shift < 24; shift += 8)
+    if (ABS ((gint) ((a >> shift) & 255) - (gint) ((b >> shift) & 255)) > 16)
+      return TRUE;
+  return FALSE;
+}
+
+static void
+draw_assert_segments (cairo_surface_t   *plain,
+                      cairo_surface_t   *overlay,
+                      const DrawAngle   *angle,
+                      gboolean           mirror,
+                      const DrawSegment *segments,
+                      guint              n_segments)
+{
+  DrawSegment expected[G_N_ELEMENTS (draw_segments)];
+  guint changed = 0;
+  gint width = cairo_image_surface_get_width (plain);
+  gint height = cairo_image_surface_get_height (plain);
+
+  g_assert_cmpuint (n_segments, <=, G_N_ELEMENTS (expected));
+  for (guint s = 0; s < n_segments; s++)
+    {
+      expected[s].a = draw_expected_point (angle, mirror, segments[s].a.x, segments[s].a.y);
+      expected[s].b = draw_expected_point (angle, mirror, segments[s].b.x, segments[s].b.y);
+    }
+  for (gint y = 0; y < height; y++)
+    for (gint x = 0; x < width; x++)
+      if (draw_pixels_differ (draw_pixel (plain, x, y), draw_pixel (overlay, x, y)))
+        {
+          gdouble distance = G_MAXDOUBLE;
+          changed++;
+          for (guint s = 0; s < n_segments; s++)
+            distance = MIN (distance, draw_segment_distance ((DrawPoint) { x + 0.5, y + 0.5 },
+                                                             expected[s].a, expected[s].b));
+          /* Frozen allowance for item half-pixel rounding, 3px double stroke,
+           * selection closing-edge adjustment and antialiasing. */
+          g_assert_cmpfloat (distance, <=, 3.0);
+        }
+  g_test_message ("draw overlay segments=%u changed-pixels=%u band=3px", n_segments, changed);
+  g_assert_cmpuint (changed, >, 40);
+  for (guint s = 0; s < n_segments; s++)
+    for (guint sample = 1; sample <= 3; sample++)
+      {
+        gdouble t = sample / 4.0;
+        DrawPoint p = { (1 - t) * expected[s].a.x + t * expected[s].b.x,
+                        (1 - t) * expected[s].a.y + t * expected[s].b.y };
+        gboolean found = FALSE;
+        for (gint y = MAX (0, (gint) floor (p.y) - 3); y <= MIN (height - 1, (gint) ceil (p.y) + 3); y++)
+          for (gint x = MAX (0, (gint) floor (p.x) - 3); x <= MIN (width - 1, (gint) ceil (p.x) + 3); x++)
+            if (hypot (x + 0.5 - p.x, y + 0.5 - p.y) <= 3.0 &&
+                draw_pixels_differ (draw_pixel (plain, x, y), draw_pixel (overlay, x, y)))
+              found = TRUE;
+        g_assert_true (found);
+      }
+}
+
+static void
+draw_checkpoint (DrawScene       *scene,
+                 const gchar     *name,
+                 const DrawAngle *angle,
+                 gboolean         mirror)
+{
+  cairo_surface_t *plain, *overlay;
+  gchar *plain_name = g_strdup_printf ("%s-raster", name);
+
+  gimp_canvas_item_set_visible (scene->items, FALSE);
+  plain = draw_snapshot (scene, plain_name);
+  draw_assert_ctm (scene, angle, mirror);
+  draw_assert_raster (plain, angle, mirror);
+  gimp_canvas_item_set_visible (scene->items, TRUE);
+  overlay = draw_snapshot (scene, name);
+  draw_assert_ctm (scene, angle, mirror);
+  draw_assert_segments (plain, overlay, angle, mirror, draw_segments, G_N_ELEMENTS (draw_segments));
+  cairo_surface_destroy (plain);
+  cairo_surface_destroy (overlay);
+  g_free (plain_name);
+}
+
+static void
+draw_start_oblique (gboolean mirror)
+{
+  gint cx = shell->disp_width / 2, cy = shell->disp_height / 2;
+
+  gimp_display_shell_flip (shell, mirror, FALSE);
+  gimp_display_shell_rotate_to (shell, 37.0);
+  send_event (GDK_BUTTON_PRESS, 2, GDK_SHIFT_MASK, cx + 80, cy, 0);
+  g_assert_true (shell->painter_navigation_inherited);
+  send_event (GDK_MOTION_NOTIFY, 0, GDK_BUTTON2_MASK | GDK_SHIFT_MASK, cx, cy + 80, 0);
+  g_assert_true (shell->rotate_angle_exact);
+  g_assert_cmpfloat_with_epsilon (shell->rotate_angle, 127.0, 1e-10);
+  assert_grab ();
+}
+
+static void
+canvas_common_angle (void)
+{
+  DrawScene scene = draw_scene_new ();
+  const gchar *steps[] = { "zero", "free", "snap", "unsnap", "release", "redraw" };
+  const DrawAngle *angles[] = { &draw_zero, &draw_free, &draw_snap, &draw_free, &draw_free, &draw_free };
+  guint checkpoints = 0;
+
+  for (guint mirror = 0; mirror < 2; mirror++)
+    {
+      gint cx = shell->disp_width / 2, cy = shell->disp_height / 2;
+      gimp_display_shell_flip (shell, mirror, FALSE);
+      gimp_display_shell_rotate_to (shell, 0.0);
+      for (guint step = 0; step < G_N_ELEMENTS (steps); step++)
+        {
+          gchar *name = g_strdup_printf ("common-m%u-%s", mirror, steps[step]);
+          if (step == 1)
+            draw_start_oblique (mirror);
+          else if (step == 2)
+            {
+              send_event (GDK_KEY_PRESS, 0, GDK_BUTTON2_MASK | GDK_SHIFT_MASK, 0, 0, GDK_KEY_Control_L);
+              send_event (GDK_MOTION_NOTIFY, 0, GDK_BUTTON2_MASK | GDK_SHIFT_MASK | GDK_CONTROL_MASK,
+                          cx, cy + 80, 0);
+            }
+          else if (step == 3)
+            {
+              send_event (GDK_KEY_RELEASE, 0, GDK_BUTTON2_MASK | GDK_SHIFT_MASK | GDK_CONTROL_MASK,
+                          0, 0, GDK_KEY_Control_L);
+              send_event (GDK_MOTION_NOTIFY, 0, GDK_BUTTON2_MASK | GDK_SHIFT_MASK, cx, cy + 80, 0);
+            }
+          else if (step == 4)
+            {
+              send_event (GDK_BUTTON_RELEASE, 2, GDK_BUTTON2_MASK | GDK_SHIFT_MASK, cx, cy + 80, 0);
+              assert_navigation_idle ();
+            }
+          draw_checkpoint (&scene, name, angles[step], mirror);
+          checkpoints++;
+          if (step >= 1 && step <= 3)
+            assert_grab ();
+          g_free (name);
+        }
+    }
+  g_assert_cmpuint (checkpoints, ==, 12);
+  draw_scene_free (&scene);
+}
+
+static void
+canvas_fixed_view (void)
+{
+  DrawScene scene = draw_scene_new ();
+  gint ox, oy;
+
+  /* Establish the non-unit, off-center view before the inherited drag. */
+  gimp_display_shell_flip (shell, TRUE, FALSE);
+  gimp_display_shell_rotate_to (shell, 37.0);
+  gimp_display_shell_scale (shell, GIMP_ZOOM_TO, 1.5, GIMP_ZOOM_FOCUS_IMAGE_CENTER);
+  ox = 192 - shell->disp_width / 2;
+  oy = 192 - shell->disp_height / 2;
+  gimp_display_shell_scroll_set_offset (shell, ox + 13, oy - 9);
+  g_assert_cmpint (shell->offset_x, ==, ox + 13);
+  g_assert_cmpint (shell->offset_y, ==, oy - 9);
+  draw_start_oblique (TRUE);
+  send_event (GDK_BUTTON_RELEASE, 2, GDK_BUTTON2_MASK | GDK_SHIFT_MASK,
+              shell->disp_width / 2, shell->disp_height / 2 + 80, 0);
+  g_assert_cmpfloat (shell->scale_x, ==, 1.5);
+  g_assert_cmpfloat (shell->scale_y, ==, 1.5);
+  /* The 90-degree change carries viewport-center displacement (13,-9) to
+   * (9,13). These literals independently specify center-preserving offsets. */
+  g_assert_cmpint (shell->offset_x, ==, ox + 9);
+  g_assert_cmpint (shell->offset_y, ==, oy + 13);
+  g_assert_true (shell->offset_x != 0 || shell->offset_y != 0);
+  draw_checkpoint (&scene, "fixed-view-m1", &draw_free, TRUE);
+  draw_scene_free (&scene);
+}
+
+static void
+canvas_tiny_ctm (void)
+{
+  DrawScene scene = draw_scene_new ();
+  GimpTool *tool = tool_manager_get_active (gimp);
+  NavigationState held = start_boundary_drag (tool, GDK_SHIFT_MASK);
+
+  for (guint n = 0; n < G_N_ELEMENTS (draw_tiny); n++)
+    {
+      gchar *name = g_strdup_printf ("tiny-%s", draw_tiny[n].name);
+      boundary_motion (&held, tool, GDK_SHIFT_MASK, (gint) n - 1);
+      draw_checkpoint (&scene, name, &draw_tiny[n], FALSE);
+      g_free (name);
+    }
+  release_middle (GDK_SHIFT_MASK);
+  draw_scene_free (&scene);
+}
+
+static void
+canvas_selection_boundary (void)
+{
+  DrawScene scene = draw_scene_new ();
+  GimpImage *image = gimp_display_get_image (shell->display);
+  cairo_surface_t *plain, *selection, *redraw;
+
+  draw_start_oblique (TRUE);
+  release_middle (GDK_SHIFT_MASK);
+  gimp_channel_select_rectangle (gimp_image_get_mask (image), 48, 54, 120, 96,
+                                  GIMP_CHANNEL_OP_REPLACE, FALSE, 0, 0, FALSE);
+  gimp_image_flush (image);
+  gimp_display_shell_selection_pause (shell);
+  plain = draw_snapshot (&scene, "selection-m1-hidden");
+  draw_assert_ctm (&scene, &draw_free, TRUE);
+  draw_assert_raster (plain, &draw_free, TRUE);
+  gimp_display_shell_set_show_selection (shell, TRUE);
+  selection = draw_snapshot (&scene, "selection-m1-visible");
+  draw_assert_segments (plain, selection, &draw_free, TRUE,
+                         draw_selection_segments, G_N_ELEMENTS (draw_selection_segments));
+  redraw = draw_snapshot (&scene, "selection-m1-redraw");
+  draw_assert_segments (plain, redraw, &draw_free, TRUE,
+                         draw_selection_segments, G_N_ELEMENTS (draw_selection_segments));
+  cairo_surface_destroy (plain);
+  cairo_surface_destroy (selection);
+  cairo_surface_destroy (redraw);
+  gimp_display_shell_set_show_selection (shell, FALSE);
+  gimp_display_shell_selection_resume (shell);
+  draw_scene_free (&scene);
+}
+
+static void
+draw_assert_anchor (GimpOverlayChild *child,
+                    const DrawAngle  *angle)
+{
+  DrawPoint expected = draw_expected_point (angle, FALSE, 184, 92);
+
+  g_test_message ("draw widget angle=%.17g expected=(%.9f,%.9f) stored=(%.9f,%.9f) "
+                  "visible=(%.9f,%.9f) child-angle=%.17g",
+                  angle->angle, expected.x, expected.y, child->x, child->y,
+                  child->matrix.x0, child->matrix.y0, child->angle);
+  g_assert_cmpfloat_with_epsilon (child->x, expected.x, 1e-7);
+  g_assert_cmpfloat_with_epsilon (child->y, expected.y, 1e-7);
+  g_assert_cmpfloat_with_epsilon (child->matrix.x0, expected.x, 1.0);
+  g_assert_cmpfloat_with_epsilon (child->matrix.y0, expected.y, 1.0);
+  g_assert_cmpfloat (child->angle, ==, 0.0);
+  g_assert_cmpfloat_with_epsilon (child->matrix.xx, 1.0, 1e-10);
+  g_assert_cmpfloat_with_epsilon (child->matrix.yy, 1.0, 1e-10);
+  g_assert_cmpfloat_with_epsilon (child->matrix.xy, 0.0, 1e-10);
+  g_assert_cmpfloat_with_epsilon (child->matrix.yx, 0.0, 1e-10);
+}
+
+static void
+canvas_widget_anchor (void)
+{
+  DrawScene scene = draw_scene_new ();
+  /* Overlay children must be containers: the production draw path traverses
+   * their children to handle pass-through controls. */
+  GtkWidget *widget = gtk_event_box_new ();
+  GimpOverlayChild *child;
+  GtkAllocation initial, current;
+  cairo_surface_t *surface;
+  gint ox, oy;
+
+  gtk_widget_set_size_request (widget, 19, 11);
+  gimp_display_shell_add_overlay (shell, widget, 184, 92,
+                                  GIMP_HANDLE_ANCHOR_NORTH_WEST, 0, 0);
+  gtk_widget_show (widget);
+  surface = draw_snapshot (&scene, "widget-zero");
+  cairo_surface_destroy (surface);
+  child = gimp_overlay_child_find (GIMP_OVERLAY_BOX (shell->canvas), widget);
+  g_assert_nonnull (child);
+  draw_assert_anchor (child, &draw_zero);
+  gtk_widget_get_allocation (widget, &initial);
+  ox = shell->offset_x; oy = shell->offset_y;
+  g_assert_cmpint (ox, ==, 128 - shell->disp_width / 2);
+  g_assert_cmpint (oy, ==, 128 - shell->disp_height / 2);
+  gimp_display_shell_rotate_to (shell, 37.0);
+  g_test_message ("draw widget immediately after rotation: stored=(%.9f,%.9f) offsets=%d,%d",
+                  child->x, child->y, shell->offset_x, shell->offset_y);
+  g_assert_cmpint (shell->offset_x, ==, ox);
+  g_assert_cmpint (shell->offset_y, ==, oy);
+  /* Only ordinary rotation/GTK processing may refresh the anchor. No move,
+   * scrolled signal, forced allocation or test repair is permitted here. */
+  surface = draw_snapshot (&scene, "widget-rotated");
+  cairo_surface_destroy (surface);
+  g_assert_cmpint (shell->offset_x, ==, ox);
+  g_assert_cmpint (shell->offset_y, ==, oy);
+  draw_assert_ctm (&scene, &draw_anchor_angle, FALSE);
+  draw_assert_anchor (child, &draw_anchor_angle);
+  surface = draw_snapshot (&scene, "widget-redraw");
+  cairo_surface_destroy (surface);
+  draw_assert_anchor (child, &draw_anchor_angle);
+  gtk_widget_get_allocation (widget, &current);
+  g_assert_cmpint (current.width, ==, initial.width);
+  g_assert_cmpint (current.height, ==, initial.height);
+  gtk_widget_destroy (widget);
+  draw_scene_free (&scene);
+}
+
+/* SOURCE-ONLY 25.009/drag-zoom-scroll checkpoint. These four registrations
+ * freeze 16 main drags and 16 stationary reentries, not old pan acceptance.
+ * Literal geometry/retained old radial rows are independent oracles; production
+ * transforms below are outputs under test, never expected-value generators. */
+typedef struct { gdouble angle, cosine, sine; } DragAngle;
+typedef struct { gdouble x, y; } DragPoint;
+typedef struct
+{
+  const DragAngle *angle;
+  gboolean mirror, resize_on_zoom;
+  gint width, height, ox, oy;
+  gdouble scale;
+  GimpTool *tool;
+  GimpToolInfo *info;
+  GimpToolControl *control;
+  gint tool_id;
+  GimpDrawable *drawable;
+  gchar *checksum;
+} DragScene;
+
+static const DragAngle drag_angles[] =
+{
+  { 0.0, 1.0, 0.0 },
+  { 37.0, 0.7986355100472928, 0.6018150231520483 },
+  { 90.0, 0.0, 1.0 }
+};
+static const DragPoint drag_landmarks[] = { { 68, 76 }, { 184, 92 }, { 108, 184 } };
+
+static DragPoint
+drag_forward (const DragAngle *angle, gboolean mirror, gdouble scale,
+              gint ox, gint oy, DragPoint p)
+{
+  gint k = ((gint) (256.0 * scale)) / 2;
+  gdouble dx = (mirror ? -1.0 : 1.0) * (scale * p.x - k);
+  gdouble dy = scale * p.y - k;
+  return (DragPoint) { k - ox + angle->cosine * dx - angle->sine * dy,
+                       k - oy + angle->sine * dx + angle->cosine * dy };
+}
+
+static DragPoint
+drag_inverse (const DragAngle *angle, gboolean mirror, gdouble scale,
+              gint ox, gint oy, DragPoint p)
+{
+  gint k = ((gint) (256.0 * scale)) / 2;
+  gdouble dx = p.x - (k - ox), dy = p.y - (k - oy);
+  return (DragPoint) { (k + (mirror ? -1.0 : 1.0) *
+                            (angle->cosine * dx + angle->sine * dy)) / scale,
+                       (k - angle->sine * dx + angle->cosine * dy) / scale };
+}
+
+/* Separate fractional sender: do not narrow or change the previous sender. */
+static void
+drag_send_pointer (GdkEventType type, guint button, guint state, DragPoint p)
+{
+  GdkEvent *event = gdk_event_new (type);
+  gdk_event_set_device (event, device);
+  gdk_event_set_source_device (event, device);
+  event->any.window = g_object_ref (gtk_widget_get_window (shell->canvas));
+  event->any.send_event = TRUE;
+  if (type == GDK_MOTION_NOTIFY)
+    {
+      event->motion.state = state;
+      event->motion.x = p.x; event->motion.y = p.y;
+      event->motion.time = GDK_CURRENT_TIME;
+    }
+  else
+    {
+      event->button.button = button; event->button.state = state;
+      event->button.x = p.x; event->button.y = p.y;
+      event->button.time = GDK_CURRENT_TIME;
+    }
+  gimp_display_shell_canvas_tool_events (shell->canvas, event, shell);
+  gdk_event_free (event);
+}
+
+static void
+drag_assert_scene (const DragScene *scene, gdouble scale)
+{
+  gchar *checksum = draw_image_checksum (scene->drawable);
+  g_assert_cmpint (shell->disp_width, ==, scene->width);
+  g_assert_cmpint (shell->disp_height, ==, scene->height);
+  g_assert_cmpfloat_with_epsilon (shell->rotate_angle, scene->angle->angle, 1e-10);
+  g_assert_cmpint (shell->flip_horizontally, ==, scene->mirror);
+  g_assert_false (shell->flip_vertically);
+  if (scene->angle->angle == 0.0 && ! scene->mirror)
+    {
+      g_assert_null (shell->rotate_transform);
+      g_assert_null (shell->rotate_untransform);
+    }
+  else
+    {
+      const cairo_matrix_t *m = shell->rotate_transform;
+      gdouble h = scene->mirror ? -1.0 : 1.0;
+      g_assert_nonnull (m);
+      g_assert_nonnull (shell->rotate_untransform);
+      g_assert_cmpfloat_with_epsilon (m->xx, h * scene->angle->cosine, 1e-10);
+      g_assert_cmpfloat_with_epsilon (m->yx, h * scene->angle->sine, 1e-10);
+      g_assert_cmpfloat_with_epsilon (m->xy, -scene->angle->sine, 1e-10);
+      g_assert_cmpfloat_with_epsilon (m->yy, scene->angle->cosine, 1e-10);
+    }
+  g_assert_true (shell->dot_for_dot);
+  g_assert_false (shell->show_all);
+  g_assert_false (shell->display->config->resize_windows_on_zoom);
+  g_assert_cmpfloat_with_epsilon (gimp_zoom_model_get_factor (shell->zoom), scale, 1e-8);
+  g_assert_cmpfloat_with_epsilon (shell->scale_x, scale, 1e-8);
+  g_assert_cmpfloat_with_epsilon (shell->scale_y, scale, 1e-8);
+  g_assert_true (tool_manager_get_active (gimp) == scene->tool);
+  g_assert_true (scene->tool->tool_info == scene->info);
+  g_assert_true (scene->tool->control == scene->control);
+  g_assert_cmpint (scene->tool->ID, ==, scene->tool_id);
+  g_assert_false (gimp_tool_control_is_active (scene->control));
+  g_assert_cmpstr (checksum, ==, scene->checksum);
+  g_free (checksum);
+}
+
+static DragScene
+drag_scene_new (const DragAngle *angle, gboolean mirror, gdouble scale,
+                gboolean interior, const gchar *tool_name)
+{
+  DragScene scene = { 0 };
+  GimpImage *image;
+  gint k = ((gint) (256.0 * scale)) / 2;
+
+  create_image ();
+  scene.angle = angle; scene.mirror = mirror; scene.scale = scale;
+  scene.tool = select_start_tool (tool_name);
+  scene.info = scene.tool->tool_info; scene.control = scene.tool->control;
+  scene.tool_id = scene.tool->ID;
+  image = gimp_display_get_image (shell->display);
+  scene.drawable = GIMP_DRAWABLE (gimp_image_get_layer_iter (image)->data);
+  scene.checksum = draw_image_checksum (scene.drawable);
+  scene.resize_on_zoom = shell->display->config->resize_windows_on_zoom;
+  g_object_set (shell->display->config, "resize-windows-on-zoom", FALSE, NULL);
+  gimp_display_shell_set_show_all (shell, FALSE);
+  gimp_display_shell_set_snap_to_grid (shell, FALSE);
+  gimp_display_shell_set_snap_to_guides (shell, FALSE);
+  gimp_display_shell_set_snap_to_canvas (shell, FALSE);
+  gimp_display_shell_set_snap_to_path (shell, FALSE);
+  gimp_display_shell_set_snap_to_bbox (shell, FALSE);
+  gimp_display_shell_set_snap_to_equidistance (shell, FALSE);
+  g_assert_false (gimp_display_shell_get_snap_to_grid (shell));
+  g_assert_false (gimp_display_shell_get_snap_to_guides (shell));
+  g_assert_false (gimp_display_shell_get_snap_to_canvas (shell));
+  g_assert_false (gimp_display_shell_get_snap_to_path (shell));
+  g_assert_false (gimp_display_shell_get_snap_to_bbox (shell));
+  g_assert_false (gimp_display_shell_get_snap_to_equidistance (shell));
+  gimp_display_shell_flip (shell, mirror, FALSE);
+  gimp_display_shell_rotate_to (shell, angle->angle);
+  gimp_display_shell_scale_set_dot_for_dot (shell, TRUE);
+  gimp_display_shell_scale (shell, GIMP_ZOOM_TO, scale, GIMP_ZOOM_FOCUS_IMAGE_CENTER);
+  gimp_test_run_temp_mainloop (100);
+  scene.width = shell->disp_width; scene.height = shell->disp_height;
+  scene.ox = k - scene.width / 2 + (interior ? 13 : 0);
+  scene.oy = k - scene.height / 2 - (interior ? 9 : 0);
+  gimp_display_shell_scroll_set_offset (shell, scene.ox, scene.oy);
+  g_assert_cmpint (shell->offset_x, ==, scene.ox);
+  g_assert_cmpint (shell->offset_y, ==, scene.oy);
+  assert_navigation_idle ();
+  drag_assert_scene (&scene, scale);
+  g_test_message ("transformed drag setup angle=%.17g mirror=%d scale=%.17g "
+                  "viewport=%dx%d offsets=%d,%d", angle->angle, mirror, scale,
+                  scene.width, scene.height, scene.ox, scene.oy);
+  return scene;
+}
+
+static void
+drag_scene_free (DragScene *scene)
+{
+  drag_assert_scene (scene, scene->scale);
+  assert_navigation_idle ();
+  g_object_set (shell->display->config, "resize-windows-on-zoom", scene->resize_on_zoom, NULL);
+  g_free (scene->checksum);
+  select_start_tool (real_tool_names[0]);
+  close_image ();
+}
+
+/* Compute the actual current policy's admissible interior independently from
+ * four literal corners, ceil/floor bounds and C gint truncation at half-overpan.
+ * Bounds are offset-independent because offsets cancel in this affine model. */
+static void
+drag_assert_interior (const DragScene *scene, gint ox, gint oy)
+{
+  gdouble lo[2] = { G_MAXDOUBLE, G_MAXDOUBLE };
+  gdouble hi[2] = { -G_MAXDOUBLE, -G_MAXDOUBLE };
+  gint viewport[] = { scene->width, scene->height }, offset[] = { ox, oy };
+  for (guint n = 0; n < 4; n++)
+    {
+      DragPoint p = drag_forward (scene->angle, scene->mirror, scene->scale, 0, 0,
+                                  (DragPoint) { (n & 1) ? 256 : 0, (n & 2) ? 256 : 0 });
+      lo[0] = MIN (lo[0], p.x); lo[1] = MIN (lo[1], p.y);
+      hi[0] = MAX (hi[0], p.x); hi[1] = MAX (hi[1], p.y);
+    }
+  for (guint axis = 0; axis < 2; axis++)
+    {
+      gint low = (gint) ceil (lo[axis]), extent = (gint) floor (hi[axis]) - low;
+      gint minimum, maximum;
+      if (viewport[axis] < extent)
+        {
+          minimum = (gint) (low - viewport[axis] * 0.5);
+          maximum = (gint) (low + extent - viewport[axis] * 0.5);
+        }
+      else
+        {
+          gint overpan = (gint) (viewport[axis] - extent * 0.5);
+          minimum = low - overpan;
+          maximum = low + extent - viewport[axis] + overpan;
+        }
+      g_test_message ("interior axis=%u offset=%d limits=%d,%d margin=%d,%d",
+                      axis, offset[axis], minimum, maximum,
+                      offset[axis] - minimum, maximum - offset[axis]);
+      g_assert_cmpint (offset[axis] - minimum, >=, 16);
+      g_assert_cmpint (maximum - offset[axis], >=, 16);
+    }
+}
+
+static NavigationState
+drag_begin (const DragScene *scene, GimpModifierAction action, DragPoint p)
+{
+  guint state = action == GIMP_MODIFIER_ACTION_ZOOMING ? GDK_CONTROL_MASK | GDK_MOD1_MASK : 0;
+  gint x = (gint) p.x, y = (gint) p.y;
+  gdouble dx = x - scene->width / 2, dy = y - scene->height / 2;
+  gdouble bearing = atan2 (scene->mirror ? -dx : dx, dy) * 180.0 / G_PI;
+  gdouble angle = scene->mirror ? -scene->angle->angle : scene->angle->angle;
+  guint press_state = scene->tool->button_press_state;
+  guint active_state = scene->tool->active_modifier_state;
+
+  if (bearing < 0) bearing += 360.0;
+  if (angle < 0) angle += 360.0;
+  assert_navigation_idle ();
+  /* Historical bounded modern-pan cases originally used inherited defaults.
+   * Their unchanged integer-device expectations are now retained explicitly
+   * as custom policy, while the separate legacy/default oracle covers the
+   * restored inverse-before-gint and fractional-origin semantics. */
+  gimp_modifiers_manager_clear (manager);
+  if (action == GIMP_MODIFIER_ACTION_PANNING)
+    gimp_modifiers_manager_set (manager, device, 2, 0,
+                                GIMP_MODIFIER_ACTION_PANNING, NULL);
+  drag_send_pointer (GDK_BUTTON_PRESS, 2, state, p);
+  g_assert_cmpint (shell->mod_action, ==, action);
+  g_assert_cmpuint (shell->mod_action_button, ==, 2);
+  g_assert_cmpint (shell->painter_navigation_inherited, ==,
+                   action != GIMP_MODIFIER_ACTION_PANNING);
+  g_assert_cmpint (shell->scroll_start_x, ==, x);
+  g_assert_cmpint (shell->scroll_start_y, ==, y);
+  g_assert_cmpint (shell->scroll_last_x, ==, x);
+  g_assert_cmpint (shell->scroll_last_y, ==, y);
+  g_assert_cmpfloat_with_epsilon (shell->rotate_drag_angle, angle + bearing, 1e-8);
+  g_assert_cmpfloat_with_epsilon (shell->painter_zoom_anchor,
+                                  300.0 * scene->scale - hypot (dx, dy), 1e-8);
+  g_assert_true (scene->tool->focus_display == shell->display);
+  g_assert_cmpuint (scene->tool->modifier_state, ==, state | GDK_BUTTON2_MASK);
+  g_assert_cmpuint (scene->tool->button_press_state, ==, press_state);
+  g_assert_cmpuint (scene->tool->active_modifier_state, ==, active_state);
+  drag_assert_scene (scene, scene->scale);
+  assert_grab ();
+  return navigation_state ();
+}
+
+static void
+drag_assert_held (const DragScene *scene, const NavigationState *start,
+                  DragPoint p, gdouble scale)
+{
+  NavigationState expected = *start;
+  expected.last_x = (gint) p.x; expected.last_y = (gint) p.y;
+  /* The retained lifetime helper uses exact scale equality. Numerical
+   * factors are checked independently at the frozen 1e-8 tolerance below. */
+  expected.scale_x = shell->scale_x; expected.scale_y = shell->scale_y;
+  assert_navigation_unchanged (&expected);
+  assert_grab ();
+  drag_assert_scene (scene, scale);
+}
+
+static void
+drag_release (const DragScene *scene, DragPoint p)
+{
+  drag_send_pointer (GDK_BUTTON_RELEASE, 2, GDK_BUTTON2_MASK, p);
+  assert_navigation_idle ();
+  drag_assert_scene (scene, scene->scale);
+}
+
+static void
+drag_reenter (const DragScene *scene, GimpModifierAction action)
+{
+  DragPoint p = { scene->width / 2, scene->height / 2 + 60 };
+  NavigationState held = drag_begin (scene, action, p);
+  gint ox = shell->offset_x, oy = shell->offset_y;
+  drag_send_pointer (GDK_MOTION_NOTIFY, 0, GDK_BUTTON2_MASK, p);
+  drag_assert_held (scene, &held, p, scene->scale);
+  g_assert_cmpint (shell->offset_x, ==, ox);
+  g_assert_cmpint (shell->offset_y, ==, oy);
+  drag_release (scene, p);
+}
+
+/* Retained old-function rows, not old GUI observations. Native isotropic
+ * 1.25 reuses max(1,1.25); center-relative rebasing is source-derived. */
+static void
+drag_check_retained_zoom (gboolean mirror, guint row_number,
+                          gint start_radius, gint dx, gint dy, gdouble expected)
+{
+  const gchar *root = g_getenv ("GIMP_TESTING_ABS_TOP_SRCDIR");
+  gchar *path, *contents, *checksum, **lines, **row;
+  GError *error = NULL;
+  g_assert_nonnull (root);
+  path = g_build_filename (root, "migration", "fixtures", "legacy-zoom", "zoom.tsv", NULL);
+  g_assert_true (g_file_get_contents (path, &contents, NULL, &error));
+  g_assert_no_error (error);
+  checksum = g_compute_checksum_for_string (G_CHECKSUM_SHA256, contents, -1);
+  g_assert_cmpstr (checksum, ==, "5fcf9b0f0c66b707a6a57de8e617c49ed9d32dd21750bf1670d2e46ce711a21e");
+  lines = g_strsplit (contents, "\n", -1);
+  g_assert_cmpuint (g_strv_length (lines), ==, 2401);
+  row = g_strsplit (lines[row_number - 1 + (mirror ? 600 : 0)], "\t", -1);
+  g_assert_cmpuint (g_strv_length (row), ==, 10);
+  g_assert_cmpint (atoi (row[0]), ==, 101);
+  g_assert_cmpint (atoi (row[1]), ==, 113);
+  g_assert_cmpint (atoi (row[2]), ==, mirror);
+  g_assert_cmpfloat (g_ascii_strtod (row[3], NULL), ==, 1.0);
+  g_assert_cmpfloat (g_ascii_strtod (row[4], NULL), ==, 1.25);
+  g_assert_cmpint (atoi (row[5]) - 50, ==, start_radius);
+  g_assert_cmpint (atoi (row[6]), ==, 56);
+  g_assert_cmpint (atoi (row[7]) - 50, ==, dx);
+  g_assert_cmpint (atoi (row[8]) - 56, ==, dy);
+  g_assert_cmpfloat_with_epsilon (g_ascii_strtod (row[9], NULL), expected, 1e-8);
+  g_strfreev (row); g_strfreev (lines);
+  g_free (checksum); g_free (contents); g_free (path);
+}
+
+static void
+radial_transformed (void)
+{
+  static const struct { gint x, y; gdouble scale; guint row; } motions[] =
+  {
+    { 40, 0, 1.25, 1412 }, { 0, 40, 1.25, 1413 },
+    { 400, 0, 2.45, 1420 }, { 0, 0, 67.0 / 60.0, 1411 },
+    { 40, 0, 1.25, 1412 }
+  };
+  for (guint a = 0; a < G_N_ELEMENTS (drag_angles); a++)
+    for (guint mirror = 0; mirror < 2; mirror++)
+      {
+        DragScene scene = drag_scene_new (&drag_angles[a], mirror, 1.25, FALSE, real_tool_names[0]);
+        DragPoint p = { scene.width / 2 + 40, scene.height / 2 };
+        NavigationState held = drag_begin (&scene, GIMP_MODIFIER_ACTION_ZOOMING, p);
+        g_assert_cmpfloat (shell->painter_zoom_anchor, ==, 335.0);
+        for (guint n = 0; n < G_N_ELEMENTS (motions); n++)
+          {
+            DragPoint center;
+            drag_check_retained_zoom (mirror, motions[n].row, 40, motions[n].x, motions[n].y, motions[n].scale);
+            if (n == 2)
+              {
+                send_event (GDK_KEY_RELEASE, 0, GDK_BUTTON2_MASK | GDK_CONTROL_MASK | GDK_MOD1_MASK,
+                            0, 0, GDK_KEY_Control_L);
+                drag_assert_held (&scene, &held, p, motions[n - 1].scale);
+                drag_send_pointer (GDK_BUTTON_RELEASE, 3, GDK_BUTTON2_MASK | GDK_BUTTON3_MASK, p);
+                drag_assert_held (&scene, &held, p, motions[n - 1].scale);
+              }
+            p = (DragPoint) { scene.width / 2 + motions[n].x, scene.height / 2 + motions[n].y };
+            drag_send_pointer (GDK_MOTION_NOTIFY, 0, GDK_BUTTON2_MASK, p);
+            drag_assert_held (&scene, &held, p, motions[n].scale);
+            center = drag_forward (scene.angle, mirror, motions[n].scale,
+                                    shell->offset_x, shell->offset_y, (DragPoint) { 128, 128 });
+            /* Retain the original geometric center bound and frozen-angle
+             * model, now including the explicitly represented device residual.
+             * This remains distinct from the exact old-source zoom oracle. */
+            center.x -= shell->painter_pan_fraction_x;
+            center.y -= shell->painter_pan_fraction_y;
+            g_test_message ("radial angle=%.17g mirror=%u motion=%u factor=%.17g offsets=%d,%d center=%.17g,%.17g",
+                            scene.angle->angle, mirror, n, motions[n].scale,
+                            shell->offset_x, shell->offset_y, center.x, center.y);
+            g_assert_cmpfloat (fabs (center.x - scene.width / 2), <=, 1.0);
+            g_assert_cmpfloat (fabs (center.y - scene.height / 2), <=, 1.0);
+          }
+        drag_release (&scene, p);
+        drag_reenter (&scene, GIMP_MODIFIER_ACTION_ZOOMING);
+        drag_scene_free (&scene);
+      }
+}
+
+static void
+radial_clamp (void)
+{
+  static const struct
+  { gboolean mirror; gdouble initial; gint start; gdouble anchor, raw, applied; } cases[] =
+  {
+    { TRUE, 1.25, 400, -25.0, -1.0 / 12.0, 1.0 / 256.0 },
+    { FALSE, 255.75, 40, 76685.0, 256.95, 256.0 }
+  };
+  for (guint n = 0; n < G_N_ELEMENTS (cases); n++)
+    {
+      DragScene scene = drag_scene_new (&drag_angles[1], cases[n].mirror,
+                                        cases[n].initial, FALSE, real_tool_names[0]);
+      DragPoint start = { scene.width / 2 + cases[n].start, scene.height / 2 };
+      DragPoint p = start;
+      NavigationState held = drag_begin (&scene, GIMP_MODIFIER_ACTION_ZOOMING, start);
+      g_assert_cmpfloat (shell->painter_zoom_anchor, ==, cases[n].anchor);
+      for (guint motion = 0; motion < 3; motion++)
+        {
+          gint radius = motion == 2 ? cases[n].start : (n == 0 ? 0 : 400);
+          gdouble raw = motion == 2 ? cases[n].initial : cases[n].raw;
+          gdouble applied = motion == 2 ? cases[n].initial : cases[n].applied;
+          g_assert_cmpfloat_with_epsilon ((radius + cases[n].anchor) / 300.0, raw, 1e-8);
+          if (n == 0)
+            drag_check_retained_zoom (TRUE, motion == 2 ? 1500 : 1491, 400, radius, 0, raw);
+          p = (DragPoint) { scene.width / 2 + radius, scene.height / 2 };
+          drag_send_pointer (GDK_MOTION_NOTIFY, 0, GDK_BUTTON2_MASK, p);
+          drag_assert_held (&scene, &held, p, applied);
+          g_test_message ("radial clamp=%u motion=%u raw=%.17g applied=%.17g offsets=%d,%d (focus not accepted)",
+                          n, motion, raw, applied, shell->offset_x, shell->offset_y);
+        }
+      drag_release (&scene, p);
+      drag_reenter (&scene, GIMP_MODIFIER_ACTION_ZOOMING);
+      drag_scene_free (&scene);
+    }
+}
+
+static void
+drag_assert_pan_geometry (const DragScene *scene, gint ox, gint oy, DragPoint p,
+                          DragPoint invariant)
+{
+  DragPoint expected = drag_inverse (scene->angle, scene->mirror, scene->scale, ox, oy, p);
+  gdouble x, y;
+  g_assert_cmpint (shell->offset_x, ==, ox);
+  g_assert_cmpint (shell->offset_y, ==, oy);
+  g_assert_cmpfloat_with_epsilon (expected.x, invariant.x, 1e-8);
+  g_assert_cmpfloat_with_epsilon (expected.y, invariant.y, 1e-8);
+  gimp_display_shell_untransform_xy_f (shell, p.x, p.y, &x, &y);
+  g_assert_cmpfloat_with_epsilon (x, expected.x, 1e-8);
+  g_assert_cmpfloat_with_epsilon (y, expected.y, 1e-8);
+  for (guint n = 0; n < G_N_ELEMENTS (drag_landmarks); n++)
+    {
+      expected = drag_forward (scene->angle, scene->mirror, scene->scale, ox, oy, drag_landmarks[n]);
+      gimp_display_shell_transform_xy_f (shell, drag_landmarks[n].x, drag_landmarks[n].y, &x, &y);
+      g_assert_cmpfloat_with_epsilon (x, expected.x, 1e-8);
+      g_assert_cmpfloat_with_epsilon (y, expected.y, 1e-8);
+    }
+}
+
+static void
+pan_transformed (void)
+{
+  static const struct { gint x, y; } motions[] = { { 0, 0 }, { 17, -11 }, { 17, -11 }, { -9, 7 }, { 0, 0 } };
+  for (guint a = 0; a < G_N_ELEMENTS (drag_angles); a++)
+    for (guint mirror = 0; mirror < 2; mirror++)
+      {
+        DragScene scene = drag_scene_new (&drag_angles[a], mirror, 1.5, TRUE, real_tool_names[0]);
+        DragPoint start = { scene.width / 2 + 31, scene.height / 2 - 19 }, p = start;
+        DragPoint invariant = drag_inverse (scene.angle, mirror, 1.5, scene.ox, scene.oy, start);
+        NavigationState held;
+        for (guint n = 0; n < G_N_ELEMENTS (motions); n++)
+          drag_assert_interior (&scene, scene.ox - motions[n].x, scene.oy - motions[n].y);
+        held = drag_begin (&scene, GIMP_MODIFIER_ACTION_PANNING, start);
+        for (guint n = 0; n < G_N_ELEMENTS (motions); n++)
+          {
+            if (n == 1)
+              {
+                send_event (GDK_KEY_PRESS, 0, GDK_BUTTON2_MASK, 0, 0, GDK_KEY_Control_L);
+                drag_assert_held (&scene, &held, p, 1.5);
+                send_event (GDK_KEY_RELEASE, 0, GDK_BUTTON2_MASK | GDK_CONTROL_MASK, 0, 0, GDK_KEY_Control_L);
+                drag_assert_held (&scene, &held, p, 1.5);
+                drag_send_pointer (GDK_BUTTON_RELEASE, 3, GDK_BUTTON2_MASK | GDK_BUTTON3_MASK, p);
+                drag_assert_held (&scene, &held, p, 1.5);
+              }
+            p = (DragPoint) { start.x + motions[n].x, start.y + motions[n].y };
+            drag_send_pointer (GDK_MOTION_NOTIFY, 0, GDK_BUTTON2_MASK, p);
+            drag_assert_held (&scene, &held, p, 1.5);
+            drag_assert_pan_geometry (&scene, scene.ox - motions[n].x, scene.oy - motions[n].y, p, invariant);
+          }
+        drag_release (&scene, p);
+        drag_reenter (&scene, GIMP_MODIFIER_ACTION_PANNING);
+        drag_scene_free (&scene);
+      }
+}
+
+/* A distinct recorder leaves every previous fixture function body untouched. */
+typedef struct
+{
+  GimpTool parent;
+  guint presses, releases, motions;
+  DragPoint press, release;
+  GimpDisplay *press_display, *release_display;
+} DragRecordingTool;
+typedef struct { GimpToolClass parent; } DragRecordingToolClass;
+GType drag_recording_tool_get_type (void);
+G_DEFINE_TYPE (DragRecordingTool, drag_recording_tool, GIMP_TYPE_TOOL)
+
+static void
+drag_recording_press (GimpTool *tool, const GimpCoords *coords, guint32 time,
+                      GdkModifierType state, GimpButtonPressType type, GimpDisplay *display)
+{
+  DragRecordingTool *recording = (DragRecordingTool *) tool;
+  recording->presses++;
+  recording->press = (DragPoint) { coords->x, coords->y };
+  recording->press_display = display;
+  tool->display = display;
+  gimp_tool_control_activate (tool->control);
+}
+
+static void
+drag_recording_release (GimpTool *tool, const GimpCoords *coords, guint32 time,
+                        GdkModifierType state, GimpButtonReleaseType type, GimpDisplay *display)
+{
+  DragRecordingTool *recording = (DragRecordingTool *) tool;
+  recording->releases++;
+  recording->release = (DragPoint) { coords->x, coords->y };
+  recording->release_display = display;
+  gimp_tool_control_halt (tool->control);
+}
+
+/* Observe primary motion routing without changing the recorded click pairs. */
+static void
+drag_recording_motion (GimpTool *tool, const GimpCoords *coords, guint32 time,
+                       GdkModifierType state, GimpDisplay *display)
+{
+  ((DragRecordingTool *) tool)->motions++;
+}
+
+static void
+drag_recording_tool_class_init (DragRecordingToolClass *klass)
+{
+  GimpToolClass *tool = GIMP_TOOL_CLASS (klass);
+  tool->initialize = start_recording_initialize;
+  tool->button_press = drag_recording_press;
+  tool->button_release = drag_recording_release;
+  tool->motion = drag_recording_motion;
+}
+
+static void
+drag_recording_tool_init (DragRecordingTool *recording)
+{
+  gimp_tool_control_set_handle_empty_image (GIMP_TOOL (recording)->control, TRUE);
+  gimp_tool_control_set_snap_to (GIMP_TOOL (recording)->control, FALSE);
+}
+
+static void
+ensure_drag_recording_tool (void)
+{
+  GimpToolInfo *info;
+  if (gimp_get_tool_info (gimp, "painter-drag-recording-test")) return;
+  info = gimp_tool_info_new (gimp, drag_recording_tool_get_type (), GIMP_TYPE_TOOL_OPTIONS, 0,
+                             "painter-drag-recording-test", "Record drag coordinates", "Record drag coordinates",
+                             NULL, NULL, NULL, "gimp-tool-paintbrush", "gimp-paintbrush",
+                             GIMP_ICON_TOOL_PAINTBRUSH);
+  gimp_tools_set_tool_options_gui_func (info->tool_options, gimp_tool_options_gui);
+  gimp_container_add (gimp->tool_info_list, GIMP_OBJECT (info));
+  gimp_container_add (gimp->tool_item_list, GIMP_OBJECT (info));
+  g_object_unref (info);
+}
+
+static void
+drag_probe_click (const DragScene *scene, DragPoint p, gint ox, gint oy)
+{
+  DragRecordingTool *recording = (DragRecordingTool *) scene->tool;
+  guint presses = recording->presses, releases = recording->releases;
+  DragPoint expected = drag_inverse (scene->angle, scene->mirror, 1.5, ox, oy, p);
+  assert_navigation_idle ();
+  drag_send_pointer (GDK_BUTTON_PRESS, 1, 0, p);
+  g_assert_cmpuint (recording->presses, ==, presses + 1);
+  g_assert_cmpuint (recording->releases, ==, releases);
+  g_assert_true (recording->press_display == shell->display);
+  g_assert_true (gimp_tool_control_is_active (scene->control));
+  assert_grab ();
+  g_assert_cmpfloat_with_epsilon (recording->press.x, expected.x, 1e-8);
+  g_assert_cmpfloat_with_epsilon (recording->press.y, expected.y, 1e-8);
+  drag_send_pointer (GDK_BUTTON_RELEASE, 1, GDK_BUTTON1_MASK, p);
+  g_assert_cmpuint (recording->presses, ==, presses + 1);
+  g_assert_cmpuint (recording->releases, ==, releases + 1);
+  g_assert_true (recording->release_display == shell->display);
+  g_assert_cmpfloat_with_epsilon (recording->release.x, expected.x, 1e-8);
+  g_assert_cmpfloat_with_epsilon (recording->release.y, expected.y, 1e-8);
+  assert_navigation_idle ();
+  drag_assert_scene (scene, 1.5);
+  g_assert_cmpint (shell->offset_x, ==, ox);
+  g_assert_cmpint (shell->offset_y, ==, oy);
+  g_test_message ("primary device=(%.17g,%.17g) image=(%.17g,%.17g) offsets=%d,%d",
+                  p.x, p.y, expected.x, expected.y, ox, oy);
+}
+
+/* SOURCE-ONLY 25.009/fractional-pan-difference: one additional modern
+ * difference case, outside the frozen historical 16-drag inventory. This is
+ * not old inverse-before-gint parity or floating-pointer anchor invariance. */
+static void
+drag_fractional_pan_difference (void)
+{
+  DragScene scene = drag_scene_new (&drag_angles[1], FALSE, 1.5, TRUE,
+                                     "painter-drag-recording-test");
+  DragRecordingTool *recording = (DragRecordingTool *) scene.tool;
+  guint presses = recording->presses, releases = recording->releases;
+  guint motions = recording->motions;
+  DragPoint start = { scene.width / 2 + 31.25, scene.height / 2 - 18.75 };
+  DragPoint p = { start.x + 17.6, start.y - 10.6 };
+  DragPoint q0 = { (gint) start.x, (gint) start.y };
+  DragPoint q1 = { (gint) p.x, (gint) p.y };
+  DragPoint invariant = drag_inverse (scene.angle, FALSE, 1.5, scene.ox, scene.oy, q0);
+  DragPoint raw_expected = drag_inverse (scene.angle, FALSE, 1.5, scene.ox, scene.oy, start);
+  /* Raw residual (17.6,-10.6) - (17,-11) = (0.6,0.4). Independently
+   * inverse-rotate and divide by scale, never use a production transform. */
+  DragPoint drift = { (scene.angle->cosine * 0.6 + scene.angle->sine * 0.4) / 1.5,
+                     (-scene.angle->sine * 0.6 + scene.angle->cosine * 0.4) / 1.5 };
+  DragPoint anchor0, anchor1, raw0, raw1;
+  NavigationState held;
+
+  drag_assert_interior (&scene, scene.ox, scene.oy);
+  drag_assert_interior (&scene, scene.ox - 17, scene.oy + 11);
+  g_assert_cmpfloat (q1.x - q0.x, ==, 17.0);
+  g_assert_cmpfloat (q1.y - q0.y, ==, -11.0);
+  gimp_display_shell_untransform_xy_f (shell, q0.x, q0.y, &anchor0.x, &anchor0.y);
+  g_assert_cmpfloat_with_epsilon (anchor0.x, invariant.x, 1e-8);
+  g_assert_cmpfloat_with_epsilon (anchor0.y, invariant.y, 1e-8);
+  gimp_display_shell_untransform_xy_f (shell, start.x, start.y, &raw0.x, &raw0.y);
+  g_assert_cmpfloat_with_epsilon (raw0.x, raw_expected.x, 1e-8);
+  g_assert_cmpfloat_with_epsilon (raw0.y, raw_expected.y, 1e-8);
+
+  held = drag_begin (&scene, GIMP_MODIFIER_ACTION_PANNING, start);
+  drag_send_pointer (GDK_MOTION_NOTIFY, 0, GDK_BUTTON2_MASK, p);
+  drag_assert_held (&scene, &held, p, 1.5);
+  drag_assert_pan_geometry (&scene, scene.ox - 17, scene.oy + 11, q1, invariant);
+  gimp_display_shell_untransform_xy_f (shell, q1.x, q1.y, &anchor1.x, &anchor1.y);
+  g_assert_cmpfloat_with_epsilon (anchor1.x - anchor0.x, 0.0, 1e-8);
+  g_assert_cmpfloat_with_epsilon (anchor1.y - anchor0.y, 0.0, 1e-8);
+  gimp_display_shell_untransform_xy_f (shell, p.x, p.y, &raw1.x, &raw1.y);
+  g_assert_cmpfloat_with_epsilon (raw1.x, raw_expected.x + drift.x, 1e-8);
+  g_assert_cmpfloat_with_epsilon (raw1.y, raw_expected.y + drift.y, 1e-8);
+  g_assert_cmpfloat_with_epsilon (raw1.x - raw0.x, drift.x, 1e-8);
+  g_assert_cmpfloat_with_epsilon (raw1.y - raw0.y, drift.y, 1e-8);
+  drag_release (&scene, p);
+  g_assert_cmpint (shell->offset_x, ==, scene.ox - 17);
+  g_assert_cmpint (shell->offset_y, ==, scene.oy + 11);
+  g_assert_cmpuint (recording->presses, ==, presses);
+  g_assert_cmpuint (recording->releases, ==, releases);
+  g_assert_cmpuint (recording->motions, ==, motions);
+  g_test_message ("fractional-pan-difference offsets=%d,%d expected=%d,%d "
+                  "quantized-anchor-delta=(%.17g,%.17g) expected=(0,0) "
+                  "raw-drift=(%.17g,%.17g) expected=(%.17g,%.17g)",
+                  shell->offset_x, shell->offset_y, scene.ox - 17, scene.oy + 11,
+                  anchor1.x - anchor0.x, anchor1.y - anchor0.y,
+                  raw1.x - raw0.x, raw1.y - raw0.y, drift.x, drift.y);
+  drag_scene_free (&scene);
+}
+
+static void
+device_image_origin (void)
+{
+  ensure_drag_recording_tool ();
+  for (guint mirror = 0; mirror < 2; mirror++)
+    {
+      DragScene scene = drag_scene_new (&drag_angles[1], mirror, 1.5, TRUE, "painter-drag-recording-test");
+      DragRecordingTool *recording = (DragRecordingTool *) scene.tool;
+      DragPoint start = { scene.width / 2 + 31.25, scene.height / 2 - 18.75 };
+      DragPoint p = { start.x + 17, start.y - 11 };
+      DragPoint invariant = drag_inverse (scene.angle, mirror, 1.5, scene.ox, scene.oy, start);
+      NavigationState held;
+      guint presses = recording->presses, releases = recording->releases;
+      drag_assert_interior (&scene, scene.ox, scene.oy);
+      drag_assert_interior (&scene, scene.ox - 17, scene.oy + 11);
+      drag_probe_click (&scene, start, scene.ox, scene.oy);
+      held = drag_begin (&scene, GIMP_MODIFIER_ACTION_PANNING, start);
+      drag_send_pointer (GDK_MOTION_NOTIFY, 0, GDK_BUTTON2_MASK, p);
+      drag_assert_held (&scene, &held, p, 1.5);
+      drag_assert_pan_geometry (&scene, scene.ox - 17, scene.oy + 11, p, invariant);
+      drag_release (&scene, p);
+      drag_reenter (&scene, GIMP_MODIFIER_ACTION_PANNING);
+      drag_probe_click (&scene, p, scene.ox - 17, scene.oy + 11);
+      drag_probe_click (&scene, (DragPoint) { scene.width / 2 + 67.5, scene.height / 2 + 29.25 },
+                        scene.ox - 17, scene.oy + 11);
+      g_assert_cmpuint (recording->presses, ==, presses + 3);
+      g_assert_cmpuint (recording->releases, ==, releases + 3);
+      drag_scene_free (&scene);
+    }
+  drag_fractional_pan_difference ();
+}
+
+
+#include "test-painter-navigation-legacy-pan.inc"
+#include "test-painter-navigation-old-operations.inc"
+#include "test-painter-navigation-old-zoom.inc"
+#include "test-painter-navigation-old-space.inc"
+
+int main(int argc,char **argv)
+{
+  gint result;
+  g_test_init(&argc,&argv,NULL);if(!gtk_init_check(&argc,&argv))return GIMP_EXIT_TEST_SKIPPED;
+  gimp_test_utils_setup_menus_path();gimp=gimp_init_for_gui_testing(TRUE);
+  g_test_add_func("/navigation-events/legacy/inherited-fractional-pan",inherited_pan_fractional_origin);
+  g_test_add_func("/navigation-events/legacy/oncanvas-render",inherited_pan_render);
+  g_test_add_func("/navigation-events/legacy/transitions",inherited_pan_transitions);
+  g_test_add_func("/navigation-events/legacy/invalid-and-space",inherited_pan_invalid_and_space);
+  g_test_add_func("/navigation-events/old-operations/rotation-origin",old_applied_rotation_origin);
+  g_test_add_func("/navigation-events/old-operations/rotation-render",old_applied_rotation_render);
+  g_test_add_func("/navigation-events/old-zoom/origin",old_applied_zoom_origin);
+  g_test_add_func("/navigation-events/old-zoom/limits",old_applied_zoom_limits);
+  g_test_add_func("/navigation-events/old-zoom/oncanvas-render",old_applied_zoom_render);
+  g_test_add_func("/navigation-events/old-zoom/extreme-pointer",old_applied_zoom_extreme_pointer);
+  g_test_add_func("/navigation-events/old-zoom/invalidation",old_applied_zoom_invalidation);
+  g_test_add_func("/navigation-events/old-zoom/invalid-inputs",old_applied_zoom_invalid_inputs);
+  g_test_add_func("/navigation-events/old-zoom/boundary-pattern",old_applied_zoom_boundary_pattern);
+  g_test_add_func("/navigation-events/old-zoom/mixed-chain",old_applied_zoom_mixed_chain);
+  g_test_add_func("/navigation-events/old-zoom/focus-fallback",old_applied_zoom_focus_fallback);
+  g_test_add_func("/navigation-events/old-zoom/resize-preference",old_applied_zoom_resize_preference);
+  g_test_add_func("/navigation-events/old-space/origin",old_space_pan_origin);
+  g_test_add_func("/navigation-events/default-rotation",rotate_defaults);
+  g_test_add_func("/navigation-events/arbitrary-buttons",arbitrary_button_constraints);
+  g_test_add_func("/navigation-events/radial-zoom",radial_zoom_event);
+  g_test_add_func("/navigation-events/picker-cleanup",picker_clears_grab);
+  g_test_add_data_func ("/navigation-events/start/paintbrush", real_tool_names[0], real_tool_start_matrix);
+  g_test_add_data_func ("/navigation-events/start/move", real_tool_names[1], real_tool_start_matrix);
+  g_test_add_func ("/navigation-events/start/retained-old", retained_old_starts);
+  g_test_add_data_func ("/navigation-events/start/reject-paintbrush", real_tool_names[0], rejected_start_matrix);
+  g_test_add_data_func ("/navigation-events/start/reject-move", real_tool_names[1], rejected_start_matrix);
+  g_test_add_func ("/navigation-events/start/primary-paintbrush", paintbrush_primary_drag);
+  g_test_add_func ("/navigation-events/start/recording-tool", recording_tool_starts);
+  g_test_add_func ("/navigation-events/rotation/ctrl-mid-drag", retained_ctrl_mid_drag);
+  g_test_add_func ("/navigation-events/rotation/boundary/free-increasing", free_boundary_increasing);
+  g_test_add_func ("/navigation-events/rotation/boundary/free-decreasing", free_boundary_decreasing);
+  g_test_add_func ("/navigation-events/rotation/boundary/snapped-increasing", snapped_boundary_increasing);
+  g_test_add_func ("/navigation-events/rotation/boundary/snapped-decreasing", snapped_boundary_decreasing);
+  g_test_add_func ("/navigation-events/rotation/boundary/persistence", boundary_angle_persistence);
+  g_test_add_func ("/navigation-events/rotation/boundary/policy-isolation", boundary_policy_isolation);
+  g_test_add_data_func ("/navigation-events/keys/idle-zero", &key_contexts[0], mirrored_arrow_keys);
+  g_test_add_data_func ("/navigation-events/keys/idle-rotated", &key_contexts[1], mirrored_arrow_keys);
+  g_test_add_data_func ("/navigation-events/keys/rotation-free", &key_contexts[2], mirrored_arrow_keys);
+  g_test_add_data_func ("/navigation-events/keys/rotation-snapped", &key_contexts[3], mirrored_arrow_keys);
+  g_test_add_func ("/navigation-events/draw/common-angle", canvas_common_angle);
+  g_test_add_func ("/navigation-events/draw/fixed-view", canvas_fixed_view);
+  g_test_add_func ("/navigation-events/draw/tiny-ctm", canvas_tiny_ctm);
+  g_test_add_func ("/navigation-events/draw/selection-boundary", canvas_selection_boundary);
+  g_test_add_func ("/navigation-events/draw/widget-anchor", canvas_widget_anchor);
+  g_test_add_func ("/navigation-events/drag/radial-transformed", radial_transformed);
+  g_test_add_func ("/navigation-events/drag/radial-clamp", radial_clamp);
+  g_test_add_func ("/navigation-events/drag/pan-transformed", pan_transformed);
+  g_test_add_func ("/navigation-events/drag/device-image-origin", device_image_origin);
+  g_application_run(gimp->app,0,NULL);
+  result=gimp_core_app_get_exit_status(GIMP_CORE_APP(gimp->app));
+  g_application_quit(G_APPLICATION(gimp->app));g_clear_object(&gimp->app);return result;
+}

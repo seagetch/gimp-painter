@@ -2803,6 +2803,7 @@ device_image_origin (void)
 #include "test-painter-navigation-legacy-pan.inc"
 #include "test-painter-navigation-old-operations.inc"
 #include "test-painter-navigation-old-zoom.inc"
+#include "test-painter-navigation-old-space.inc"
 
 int main(int argc,char **argv)
 {
@@ -2825,6 +2826,9 @@ int main(int argc,char **argv)
   g_test_add_func("/navigation-events/old-zoom/mixed-chain",old_applied_zoom_mixed_chain);
   g_test_add_func("/navigation-events/old-zoom/focus-fallback",old_applied_zoom_focus_fallback);
   g_test_add_func("/navigation-events/old-zoom/resize-preference",old_applied_zoom_resize_preference);
+  g_test_add_func("/navigation-events/old-space/origin",old_space_pan_origin);
+  g_test_add_func("/navigation-events/old-space/oncanvas-render",old_space_pan_render);
+  g_test_add_func("/navigation-events/old-space/deferred-release",old_space_pan_deferred_release);
   g_test_add_func("/navigation-events/default-rotation",rotate_defaults);
   g_test_add_func("/navigation-events/arbitrary-buttons",arbitrary_button_constraints);
   g_test_add_func("/navigation-events/radial-zoom",radial_zoom_event);

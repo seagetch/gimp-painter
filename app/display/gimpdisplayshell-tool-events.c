@@ -1890,7 +1890,7 @@ gimp_display_shell_start_scrolling (GimpDisplayShell *shell,
       gdk_event_get_state (event, &state);
       state &= gimp_get_all_modifiers_mask ();
 
-      if (state == 0)
+      if (shell->painter_navigation_inherited || state == 0)
         mod_action = GIMP_MODIFIER_ACTION_PANNING;
       else if (state == gimp_get_extend_selection_mask ())
         mod_action = GIMP_MODIFIER_ACTION_ROTATING;
@@ -2056,15 +2056,16 @@ gimp_display_shell_handle_scrolling (GimpDisplayShell *shell,
 
   /* Keep the existing integer device policy for explicit/custom actions.
    * Inherited pan alone needs the raw fractional motion coordinate. */
-  if (! (mod_action == GIMP_MODIFIER_ACTION_PANNING &&
-         shell->painter_navigation_inherited))
+  if (! (shell->painter_navigation_inherited &&
+         (mod_action == GIMP_MODIFIER_ACTION_PANNING ||
+          (mod_action == GIMP_MODIFIER_ACTION_NONE && shell->space_release_pending))))
     { x = (gint) x; y = (gint) y; }
 
   if (mod_action == GIMP_MODIFIER_ACTION_NONE && shell->space_release_pending)
     {
       state &= gimp_get_all_modifiers_mask ();
 
-      if (state == 0)
+      if (shell->painter_navigation_inherited || state == 0)
         mod_action = GIMP_MODIFIER_ACTION_PANNING;
       else if (state == gimp_get_extend_selection_mask ())
         mod_action = GIMP_MODIFIER_ACTION_ROTATING;
@@ -2266,6 +2267,15 @@ gimp_display_shell_space_pressed (GimpDisplayShell *shell,
                                             &coords);
         gdk_event_get_state (event, &state);
 
+        /* The configured Space PAN action is the old fixed pan route,
+         * regardless of modifiers. Initialize its inverse-before-gint anchor
+         * before grabbing; custom mouse-button actions remain separate. */
+        if (! gimp_display_shell_painter_pan_begin (shell, coords.x, coords.y))
+          {
+            shell->space_release_pending = FALSE;
+            return;
+          }
+        shell->painter_navigation_inherited = TRUE;
         gimp_display_shell_start_scrolling (shell, event, state,
                                             coords.x, coords.y);
       }
