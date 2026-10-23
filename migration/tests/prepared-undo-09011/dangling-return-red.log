@@ -1,0 +1,48 @@
+Xvfb verified: 127.0.0.1:92, 1080x1920x24, authenticated accepted, empty authority rejected
+1/1 gimp:app / prepared-undo FAIL             9.62s   killed by signal 6 SIGABRT
+>>> GIMP_TESTING_PLUGINDIRS=/workspace/shared/gimp-native-preset-gui/build/plug-ins/common LD_LIBRARY_PATH=/workspace/shared/gimp-native-preset-gui/build/libgimpbase:/workspace/shared/gimp-native-preset-gui/build/libgimpwidgets:/workspace/shared/gimp-native-preset-gui/build/libgimpconfig:/workspace/shared/gimp-native-preset-gui/build/libgimpmath:/workspace/shared/gimp-native-preset-gui/build/libgimpthumb:/workspace/shared/gimp-native-preset-gui/build/libgimpcolor:/workspace/shared/gimp-native-preset-gui/build/libgimpmodule:/workspace/shared/gimp-native-preset-gui/prefix/lib/x86_64-linux-gnu:/workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu GIMP_TESTING_ABS_TOP_SRCDIR=/workspace/shared/gimp-native-preset-gui/source MESON_TEST_ITERATION=1 MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 MALLOC_PERTURB_=73 GIMP_TESTING_ABS_TOP_BUILDDIR=/workspace/shared/gimp-native-preset-gui/build ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 UI_TEST=yes /workspace/shared/gimp-native-preset-gui/build/app/tests/prepared-undo
+――――――――――――――――――――――――――――――――――――― ✀  ―――――――――――――――――――――――――――――――――――――
+stdout:
+TAP version 14
+# random seed: R02Sc46138b9110734dfea8248e717e72e58
+1..9
+# Start of prepared-undo tests
+ok 1 /prepared-undo/success
+# slow test /prepared-undo/success executed in 1.08 secs
+ok 2 /prepared-undo/failure-preserves-redo
+# slow test /prepared-undo/failure-preserves-redo executed in 1.03 secs
+ok 3 /prepared-undo/frozen
+# slow test /prepared-undo/frozen executed in 1.07 secs
+ok 4 /prepared-undo/invalid-owner
+# slow test /prepared-undo/invalid-owner executed in 1.12 secs
+ok 5 /prepared-undo/duplicate
+# slow test /prepared-undo/duplicate executed in 1.10 secs
+ok 6 /prepared-undo/group
+# slow test /prepared-undo/group executed in 1.06 secs
+ok 7 /prepared-undo/reentry
+# slow test /prepared-undo/reentry executed in 1.03 secs
+ok 8 /prepared-undo/immediate-expiry
+# slow test /prepared-undo/immediate-expiry executed in 1.05 secs
+# child process (/prepared-undo/last-image-owner [563]) exit status: 1 (error)
+# child process (/prepared-undo/last-image-owner [563]) stdout: ""
+# child process (/prepared-undo/last-image-owner [563]) stderr: "**\nERROR:../source/app/tests/test-prepared-undo.c:85:last_image_owner: 'gimp_image_undo_push_prepared(image,u,NULL)' should be NULL\n"
+not ok /prepared-undo/last-image-owner - ERROR:../source/app/tests/test-prepared-undo.c:42:begin: child process (/prepared-undo/last-image-owner [563]) failed unexpectedly
+Bail out!
+stderr:
+**
+ERROR:../source/app/tests/test-prepared-undo.c:42:begin: child process (/prepared-undo/last-image-owner [563]) failed unexpectedly
+――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+
+
+Summary of Failures:
+
+1/1 gimp:app / prepared-undo FAIL             9.62s   killed by signal 6 SIGABRT
+
+Ok:                 0   
+Expected Fail:      0   
+Fail:               1   
+Unexpected Pass:    0   
+Skipped:            0   
+Timeout:            0   
+
+Full log written to /workspace/shared/gimp-native-preset-gui/build/meson-logs/prepared-undo.txt

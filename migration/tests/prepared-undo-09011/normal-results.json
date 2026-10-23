@@ -1,0 +1,14 @@
+[
+  {
+    "name": "gimp:app / prepared-undo",
+    "stdout": "TAP version 14\n# random seed: R02S7c1a8d1ff36db1244f6993afbc29d91e\n1..12\n# Start of prepared-undo tests\nok 1 /prepared-undo/success\n# slow test /prepared-undo/success executed in 0.98 secs\nok 2 /prepared-undo/failure-preserves-redo\n# slow test /prepared-undo/failure-preserves-redo executed in 1.02 secs\nok 3 /prepared-undo/frozen\n# slow test /prepared-undo/frozen executed in 1.02 secs\nok 4 /prepared-undo/invalid-owner\n# slow test /prepared-undo/invalid-owner executed in 0.97 secs\nok 5 /prepared-undo/duplicate\n# slow test /prepared-undo/duplicate executed in 1.04 secs\nok 6 /prepared-undo/group\n# slow test /prepared-undo/group executed in 1.00 secs\nok 7 /prepared-undo/reentry\n# slow test /prepared-undo/reentry executed in 1.00 secs\nok 8 /prepared-undo/immediate-expiry\n# slow test /prepared-undo/immediate-expiry executed in 0.99 secs\nok 9 /prepared-undo/last-image-owner\n# slow test /prepared-undo/last-image-owner executed in 1.01 secs\nok 10 /prepared-undo/toggle-owner-reentry\n# slow test /prepared-undo/toggle-owner-reentry executed in 0.99 secs\nok 11 /prepared-undo/legacy-constructor-reentry\n# slow test /prepared-undo/legacy-constructor-reentry executed in 0.97 secs\nok 12 /prepared-undo/legacy-last-owner\n# slow test /prepared-undo/legacy-last-owner executed in 0.98 secs\n# End of prepared-undo tests\n",
+    "result": "OK",
+    "starttime": 1792558828.2690473,
+    "duration": 12.007246732711792,
+    "returncode": 0,
+    
+    "command": [
+      "/workspace/shared/gimp-native-preset-gui/build/app/tests/prepared-undo"
+    ]
+  }
+]

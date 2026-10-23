@@ -282,6 +282,14 @@
       "context": "standalone",
       "prerequisites": [],
       "review": "08.018/native-popover-factory: original GtkWindow popup C factory and native type/class action interface, not GtkPopover or paused cell-renderer/decorator route. Own GTK prerequisite, include guard and C linkage; twice-include C11/C++14 without outer adapter. No GTK2 binary class-layout ABI claim."
+    },
+    {
+      "path": "app/core/gimpimage-undo.h",
+      "kind": "changed-baseline",
+      "baseline_blob": "34bd2f4ce18a0b8631b9b493867d9f24cdf8dffd",
+      "context": "core",
+      "prerequisites": [],
+      "review": "09.011/prepared-undo: native prepared-object publication entry shares existing stack backend; core type prelude, header-owned C linkage, double include C11/C++14. Typed construction preflight is not original raw Stroke pointer compatibility."
     }
   ]
 }

@@ -31,6 +31,7 @@
 #include "gimpimage-private.h"
 #include "gimpimage-undo.h"
 #include "gimpitem.h"
+#include "gimpcontainer.h"
 #include "gimplist.h"
 #include "gimpundostack.h"
 
@@ -43,6 +44,8 @@ static void          gimp_image_undo_pop_stack       (GimpImage     *image,
                                                       GimpUndoMode   undo_mode);
 static void          gimp_image_undo_free_space      (GimpImage     *image);
 static void          gimp_image_undo_free_redo       (GimpImage     *image);
+static GimpUndo *     gimp_image_undo_publish         (GimpImage     *image,
+                                                      GimpUndo      *undo);
 
 static GimpDirtyMask gimp_image_undo_dirty_from_type (GimpUndoType   undo_type);
 
@@ -383,6 +386,7 @@ gimp_image_undo_push (GimpImage     *image,
   g_return_val_if_fail (g_type_is_a (object_type, GIMP_TYPE_UNDO), NULL);
   g_return_val_if_fail (undo_type > GIMP_UNDO_GROUP_LAST, NULL);
 
+  g_object_ref (image);
   private = GIMP_IMAGE_GET_PRIVATE (image);
 
   /* Does this undo dirty the image?  If so, we always want to mark
@@ -392,7 +396,10 @@ gimp_image_undo_push (GimpImage     *image,
     gimp_image_dirty (image, dirty_mask);
 
   if (private->undo_freeze_count > 0)
-    return NULL;
+    {
+      g_object_unref (image);
+      return NULL;
+    }
 
   if (! name)
     name = gimp_undo_type_to_name (undo_type);
@@ -421,6 +428,7 @@ gimp_image_undo_push (GimpImage     *image,
   /* Fallible native subclasses must finish construction before an unusable
    * entry can replace redo history or enter an Undo group. Ordinary Undo
    * types do not implement GInitable and retain their existing behavior. */
+  g_object_set_data (G_OBJECT (undo), "gimp-undo-publishing", GINT_TO_POINTER (1));
   if (G_IS_INITABLE (undo))
     {
       GError *error = NULL;
@@ -430,38 +438,104 @@ gimp_image_undo_push (GimpImage     *image,
           g_warning ("Unable to construct Undo: %s",
                      error ? error->message : "unspecified initialization failure");
           g_clear_error (&error);
+          g_object_set_data (G_OBJECT (undo), "gimp-undo-publishing", NULL);
           g_object_unref (undo);
+          g_object_unref (image);
           return NULL;
         }
     }
 
-  /*  nuke the redo stack  */
+  undo = gimp_image_undo_publish (image, undo);
+  if (undo) g_object_add_weak_pointer (G_OBJECT (undo), (gpointer *) &undo);
+  g_object_unref (image);
+  if (undo) g_object_remove_weak_pointer (G_OBJECT (undo), (gpointer *) &undo);
+  return undo;
+}
+
+/* The caller transfers one reference after the argument preconditions. Failed
+ * initialization/frozen history consumes it without dirtying or replacing redo.
+ * Native construction is separate so fallible payloads can be prepared before
+ * their associated pixel transaction is committed. */
+GimpUndo *
+gimp_image_undo_push_prepared (GimpImage *image,
+                                GimpUndo  *undo,
+                                GError   **error)
+{
+  g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
+  g_return_val_if_fail (GIMP_IS_UNDO (undo), NULL);
+  g_return_val_if_fail (undo->image == image, NULL);
+  g_return_val_if_fail (undo->undo_type > GIMP_UNDO_GROUP_LAST, NULL);
+  g_return_val_if_fail (error == NULL || *error == NULL, NULL);
+  g_return_val_if_fail (! g_object_get_data (G_OBJECT (undo), "gimp-undo-published"), NULL);
+
+  g_return_val_if_fail (! g_object_get_data (G_OBJECT (undo), "gimp-undo-publishing"), NULL);
+
+  g_object_set_data (G_OBJECT (undo), "gimp-undo-publishing", GINT_TO_POINTER (1));
+  g_object_ref (image);
+  if ((G_IS_INITABLE (undo) &&
+       ! g_initable_init (G_INITABLE (undo), NULL, error)) ||
+      ! gimp_image_undo_is_enabled (image))
+    {
+      if (error && ! *error)
+        g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                             "Undo history is frozen");
+      g_object_set_data (G_OBJECT (undo), "gimp-undo-publishing", NULL);
+      g_object_unref (undo);
+      g_object_unref (image);
+      return NULL;
+    }
+
+  /* The image lease also spans initialization callbacks. */
+  if (undo->dirty_mask != GIMP_DIRTY_NONE)
+    gimp_image_dirty (image, undo->dirty_mask);
+  undo = gimp_image_undo_publish (image, undo);
+  /* Releasing the operation's last image lease can expire its history. */
+  if (undo) g_object_add_weak_pointer (G_OBJECT (undo), (gpointer *) &undo);
+  g_object_unref (image);
+  if (undo) g_object_remove_weak_pointer (G_OBJECT (undo), (gpointer *) &undo);
+  return undo;
+}
+
+/* Sole native stack publication path for both fresh and prepared objects.
+ * The initial reference becomes the stack's explicit ownership; an additional
+ * lease protects observer-driven immediate history expiration. */
+static GimpUndo *
+gimp_image_undo_publish (GimpImage *image,
+                         GimpUndo  *undo)
+{
+  GimpImagePrivate *private = GIMP_IMAGE_GET_PRIVATE (image);
+  GimpUndo        *result = NULL;
+
+  g_object_set_data (G_OBJECT (undo), "gimp-undo-published", GINT_TO_POINTER (1));
+  g_object_set_data (G_OBJECT (undo), "gimp-undo-publishing", NULL);
+  g_object_ref (image);
+  g_object_ref (undo);
   gimp_image_undo_free_redo (image);
 
   if (private->pushing_undo_group == GIMP_UNDO_GROUP_NONE)
     {
       gimp_undo_stack_push_undo (private->undo_stack, undo);
-
       gimp_image_undo_event (image, GIMP_UNDO_EVENT_UNDO_PUSHED, undo);
-
       gimp_image_undo_free_space (image);
-
-      /*  freeing undo space may have freed the newly pushed undo  */
       if (gimp_undo_stack_peek (private->undo_stack) == undo)
-        return undo;
+        result = undo;
     }
   else
     {
-      GimpUndoStack *undo_group;
+      GimpUndoStack *group;
 
-      undo_group = GIMP_UNDO_STACK (gimp_undo_stack_peek (private->undo_stack));
-
-      gimp_undo_stack_push_undo (undo_group, undo);
-
-      return undo;
+      group = GIMP_UNDO_STACK (g_object_ref (gimp_undo_stack_peek (private->undo_stack)));
+      gimp_undo_stack_push_undo (group, undo);
+      if (gimp_container_have (group->undos, GIMP_OBJECT (undo)))
+        result = undo;
+      g_object_unref (group);
     }
 
-  return NULL;
+  if (result) g_object_add_weak_pointer (G_OBJECT (result), (gpointer *) &result);
+  g_object_unref (undo);
+  g_object_unref (image);
+  if (result) g_object_remove_weak_pointer (G_OBJECT (result), (gpointer *) &result);
+  return result;
 }
 
 GimpUndo *

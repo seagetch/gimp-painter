@@ -1187,3 +1187,24 @@ container_reentry_test = executable('container-reentry',
 test('container-reentry', container_reentry_test, suite: 'app',
   is_parallel: false, timeout: 120)
 
+# Prepared typed Undo publication before fallible controller/pixel commit.
+prepared_undo_test = executable('prepared-undo',
+  'test-prepared-undo.c', 'test-prepared-undo.cpp', 'tests.c',
+  dependencies: [libapp_dep, appstream], link_with: apptests_links,
+  cpp_args: painter_cpp_args, override_options: ['c_std=c11', 'cpp_std=c++14'])
+test('prepared-undo', prepared_undo_test,
+  env: ['GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+        'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+        'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
+        'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 120)
+
+# Retained unique-type tool options retire without adopting a fallback tool.
+tool_options_retirement_test = executable('tool-options-retirement',
+  'test-tool-options-retirement.c', 'tests.c',
+  dependencies: [libapp_dep, appstream], link_with: apptests_links,
+  cpp_args: painter_cpp_args, override_options: ['c_std=c11', 'cpp_std=c++14'])
+test('tool-options-retirement', tool_options_retirement_test,
+  env: ['GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+        'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+        'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
+        'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 120)

@@ -18,6 +18,8 @@
 #ifndef __GIMP_IMAGE__UNDO_H__
 #define __GIMP_IMAGE__UNDO_H__
 
+G_BEGIN_DECLS
+
 
 gboolean        gimp_image_undo_is_enabled      (GimpImage     *image);
 gboolean        gimp_image_undo_enable          (GimpImage     *image);
@@ -53,5 +55,15 @@ GimpUndo      * gimp_image_undo_can_compress    (GimpImage     *image,
                                                  GType          object_type,
                                                  GimpUndoType   undo_type);
 
+
+/* Transfers one reference after valid image/type/owner/error/not-published
+ * preconditions. Initialization failure or frozen history consumes it and
+ * preserves dirty/history/redo state. Returns borrowed current entry or NULL
+ * if rejected/immediately expired. Invalid arguments remain caller-owned. */
+GimpUndo *      gimp_image_undo_push_prepared    (GimpImage     *image,
+                                               GimpUndo      *undo,
+                                               GError       **error);
+
+G_END_DECLS
 
 #endif /* __GIMP_IMAGE__UNDO_H__ */
