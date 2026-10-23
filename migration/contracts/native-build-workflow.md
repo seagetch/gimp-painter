@@ -199,3 +199,68 @@ also require investigation if the comparison changes.
 
 This separation isolates ordinary source generation; it is not a sandbox for
 untrusted build commands. Never move a configured build to another source path.
+
+
+## Recovered normal aggregate and calibrated completion (2026-10-11)
+
+An executor replacement removed the previous source, build and dependency directories.
+The checkpoint retained evidence, not runnable build artifacts. The standard rebuild
+used public source `fca9fa6ed21e76a027d0edcf2c6684f9b38ad4b9`, pinned `gimp-data`
+`a31e5dea4f572fb5f33b06f5c4b86db5f30643dc`, and the unchanged Debian lock/preparer.
+All 560 package checksums and both Git integrity checks passed. Ordinary Meson
+setup, 2,943 compilation steps and 363 subsequent test prerequisite steps passed.
+No generated backend, object, production source or assertion was patched.
+
+The single serial unfiltered normal command was `meson test -C build-native
+--num-processes 1 --print-errorlogs` (with a distinct logbase). It executed all
+124 registrations with **120 OK, 4 TIMEOUT, 0 FAIL, 0 registration SKIP**. The
+unchanged registered budgets expired for FilterLayer (600 s), Layer UI (180 s),
+XCF roundtrip (60 s) and Filter procedure (900 s). TAP recorded 1,075 passes,
+one intentional >256 MiB slow-case skip and 108 planned cases not reached.
+This original aggregate remains failed; its complete outputs are preserved.
+Fill Brush core 40/40 and tool/options GUI 32/32 passed in that aggregate.
+
+The saved sample of 27 matched completed registrations showed a 3.09x median
+increase against prior normal timings. Compiler, build type and known environment
+requirements matched; no single cause was established. A fixed-allocator SmallTiles live-update comparison found
+that one-CPU affinity did not improve the case (35.47 s versus 38.37 s); no thread
+limit was adopted. That exact case took 30.89 s in the aggregate, distinct from
+the 108.16 s SmallTiles actual-old-live case. Full process-tree CPU measurements
+and available host-resource observations are retained without inferring cause.
+
+Measured execution rates then justified bounded **affected-only** completion using
+ordinary Meson per-run `--timeout-multiplier`, keeping full registrations and all
+assertions: FilterLayer 3 (1,800 s), Layer UI 3 (540 s), XCF 4 (240 s), Filter
+procedure 3 (2,700 s). All four passed: 719.12 s, 277.52 s, 133.93 s and
+1,864.68 s respectively. Three TAP registrations produced 258 passes and the
+same intentional skip. The procedure reported 320 Blinds, 196 SmallTiles and
+174 Retinex byte-exact legacy oracles, plus its analytic ROI/rejection/identity
+checks. No production timeout, registered budget or assertion was changed.
+These multipliers were the only timeout-policy change. Separate invocations,
+fresh per-target profiles, verbose output and process sampling are also recorded.
+This accommodates observed execution time in this environment; it does not
+establish a runtime fix or a single host cause.
+
+All 108 previously unreached TAP cases completed. Unique TAP coverage across the
+original and affected-only runs is 1,183 passes and one skip. This union is not a
+new all-124 aggregate. The two affected-only Xvfb sessions each remained below
+one hour, required authentication, rejected unauthenticated access, bound only
+loopback, and cleaned up their children and private credentials. HOME/XDG/TMP
+were private; parent GSETTINGS_BACKEND/GIMP3_DATADIR overrides were removed so
+registered fixture conditions remained effective. Tracked source matched all
+10,511 pre-run hashes when evidence was frozen before any subsequent task edits.
+
+WBS 08.012 remains DOING with no original-task completion credit. The known
+brush-transform ASan/UBSan overflow is unfixed and was not rerun. Installed-prefix,
+full sanitizer/LSan, HTTP and platform acceptance remain separate requirements.
+
+See `../tests/native-full-aggregate-20261011.json`, its text TAP extracts, and
+`../tests/native-affected-budget-20261011.json` with the affected output extract.
+Their checksum-pinned Library checkpoint retains full sanitized stdout/stderr,
+resource samples, source/dependency hashes and recovery runners; no public Git
+ZIP is required. For another executor replacement, first check actual artifacts,
+then recreate the pinned worktree, run the unchanged dependency preparer and use
+ordinary Meson setup/compile. Replay the archived secure runner only with its
+matching source/configuration and a private writable profile; never reconstruct
+or modify generated Meson internals. The original unfiltered run has no multiplier;
+the separate measured-budget invocations must remain explicitly labeled.
