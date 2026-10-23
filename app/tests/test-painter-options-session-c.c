@@ -245,6 +245,167 @@ options_owned_roundtrip (void)
 }
 
 static void
+assert_options_json (GimpPainterMybrushOptions *options,
+                     const gchar               *expected)
+{
+  GError *error = NULL;
+  gchar *actual = gimp_painter_mybrush_options_dup_json (options, &error);
+  g_assert_no_error (error);
+  g_assert_cmpstr (actual, ==, expected);
+  g_free (actual);
+}
+
+static void
+options_prepare_restore_and_saved_json (void)
+{
+  guint with_icon;
+
+  /* Saved custom drafts cover both an independent icon and intentional absence.
+   * Both are deserialized after the same already-selected-source startup path. */
+  for (with_icon = 0; with_icon < 2; ++with_icon)
+    {
+      GimpPainterMybrushOptions *options = options_new ();
+      GimpPainterMybrushOptions *saved = options_new ();
+      GimpPainterMybrushOptions *copy = options_new ();
+      GimpPainterMybrushOptions *duplicate;
+      GimpPainterMybrush *source = GIMP_PAINTER_MYBRUSH (
+        gimp_painter_mybrush_new (NULL, "Actual C startup source"));
+      GimpPainterMybrush *custom = GIMP_PAINTER_MYBRUSH (
+        gimp_painter_mybrush_new (NULL, "Actual C saved custom draft"));
+      GdkPixbuf *icon = gdk_pixbuf_new (GDK_COLORSPACE_RGB, TRUE, 8, 3, 5);
+      GError *error = NULL;
+      gchar *source_json, *custom_json, *config, *actual;
+      const gchar *pending_name = "Startup keeps pending name";
+      gboolean dirty = FALSE, conflict = FALSE, name_dirty = FALSE;
+      guint history;
+
+      g_assert_true (gimp_painter_mybrush_set_json (source,
+        "{\"version\":3,\"group\":\"startup-source-group\","
+        "\"unknown\":{\"startup_source\":43},\"settings\":{"
+        "\"opaque\":{\"base_value\":0.27,\"inputs\":{\"pressure\":[[0,0.1],[1,0.9]]}},"
+        "\"radius_logarithmic\":{\"base_value\":1.7}}}", &error));
+      g_assert_no_error (error);
+      gdk_pixbuf_fill (icon, 0xa04080ff);
+      g_assert_true (gimp_painter_mybrush_set_icon (source, icon, &error));
+      g_assert_no_error (error);
+      gimp_context_set_painter_mybrush (GIMP_CONTEXT (options), source);
+      g_assert_true (gimp_painter_mybrush_options_set_draft_name (options, pending_name, &error));
+      g_assert_no_error (error);
+      g_object_set (options, "opaque", 0.14, NULL);
+      /* A changed selected source makes conflict nontrivial before preparation. */
+      gdk_pixbuf_fill (icon, 0xc05090ff);
+      g_assert_true (gimp_painter_mybrush_set_icon (source, icon, &error));
+      g_assert_no_error (error);
+      source_json = gimp_painter_mybrush_dup_json (source, &error);
+      g_assert_no_error (error);
+      /* Reload publishes the changed encoded source through settings-changed. */
+      g_assert_true (gimp_painter_mybrush_set_json (source, source_json, &error));
+      g_assert_no_error (error);
+      g_object_get (options, "painter-dirty", &dirty, "painter-conflict", &conflict, NULL);
+      g_assert_true (dirty);
+      g_assert_true (conflict);
+      history = gimp_painter_mybrush_options_history_size (options);
+      /* Hold the caller's owner across native Reset, including its notify thaw. */
+      gimp_config_reset (GIMP_CONFIG (options));
+      g_assert_true (gimp_context_get_painter_mybrush (GIMP_CONTEXT (options)) == source);
+      g_assert_true (gimp_painter_mybrush_options_prepare_restore (options, &error));
+      g_assert_no_error (error);
+      assert_options_json (options, source_json);
+      assert_draft_name (options, pending_name);
+      g_object_get (options, "painter-dirty", &dirty, "painter-conflict", &conflict,
+                    "painter-name-dirty", &name_dirty, NULL);
+      g_assert_false (dirty);
+      g_assert_false (conflict);
+      g_assert_true (name_dirty);
+      g_assert_cmpuint (gimp_painter_mybrush_options_history_size (options), ==, history);
+      /* Context setters intentionally do nothing for an already-current pointer. */
+      gimp_context_set_painter_mybrush (GIMP_CONTEXT (options), source);
+      assert_options_json (options, source_json);
+      assert_draft_name (options, pending_name);
+      g_assert_cmpuint (gimp_painter_mybrush_options_history_size (options), ==, history);
+
+      g_assert_true (gimp_painter_mybrush_set_json (custom,
+        "{\"version\":3,\"group\":\"saved-custom-group\","
+        "\"unknown\":{\"saved_custom\":71},\"settings\":{"
+        "\"opaque\":{\"base_value\":0.61,\"inputs\":{\"pressure\":[[0,0.3],[1,0.6]]}}}}",
+        &error));
+      g_assert_no_error (error);
+      if (with_icon)
+        {
+          GdkPixbuf *custom_icon = gdk_pixbuf_new (GDK_COLORSPACE_RGB, TRUE, 8, 3, 5);
+          gdk_pixbuf_fill (custom_icon, 0x30b070ff);
+          g_assert_true (gimp_painter_mybrush_set_icon (custom, custom_icon, &error));
+          g_assert_no_error (error);
+          g_object_unref (custom_icon);
+        }
+      else
+        g_assert_null (gimp_painter_mybrush_ref_icon (custom));
+      custom_json = gimp_painter_mybrush_dup_json (custom, &error);
+      g_assert_no_error (error);
+      g_assert_cmpstr (custom_json, !=, source_json);
+      g_assert_true (gimp_painter_mybrush_options_set_json (saved, custom_json, &error));
+      g_assert_no_error (error);
+      /* Save real GObject property values with the native config serializer.
+       * No unrelated context selection is needed in this tool-options fixture. */
+      gimp_context_set_serialize_properties (GIMP_CONTEXT (saved), 0);
+      config = gimp_config_serialize_to_string (GIMP_CONFIG (saved), NULL);
+      g_assert_nonnull (config);
+      g_assert_nonnull (strstr (config, "(painter-settings \""));
+      g_assert_nonnull (strstr (config, "saved_custom"));
+      g_assert_true (gimp_config_deserialize_string (GIMP_CONFIG (options), config,
+                                                   -1, NULL, &error));
+      g_assert_no_error (error);
+      assert_options_json (options, custom_json);
+      assert_draft_name (options, pending_name);
+      g_assert_true (gimp_context_get_painter_mybrush (GIMP_CONTEXT (options)) == source);
+      /* Re-selecting the same resource must not erase the explicitly saved JSON. */
+      gimp_context_set_painter_mybrush (GIMP_CONTEXT (options), source);
+      assert_options_json (options, custom_json);
+      duplicate = GIMP_PAINTER_MYBRUSH_OPTIONS (gimp_config_duplicate (GIMP_CONFIG (options)));
+      g_assert_nonnull (duplicate);
+      assert_options_json (duplicate, custom_json);
+      assert_draft_name (duplicate, pending_name);
+      g_assert_true (gimp_config_copy (GIMP_CONFIG (options), GIMP_CONFIG (copy), 0));
+      assert_options_json (copy, custom_json);
+      assert_draft_name (copy, pending_name);
+      history = gimp_painter_mybrush_options_history_size (options);
+      gimp_context_set_painter_mybrush (GIMP_CONTEXT (options), custom);
+      g_assert_cmpuint (gimp_painter_mybrush_options_history_size (options), ==, history + 1);
+      g_assert_true (gimp_painter_mybrush_options_restore_history (copy, history, &error));
+      g_assert_no_error (error);
+      assert_options_json (copy, custom_json);
+      assert_draft_name (copy, pending_name);
+      g_assert_true (gimp_context_get_painter_mybrush (GIMP_CONTEXT (copy)) == source);
+      actual = gimp_painter_mybrush_dup_json (source, &error);
+      g_assert_no_error (error);
+      g_assert_cmpstr (actual, ==, source_json);
+      g_free (actual);
+      /* Check the live preview as well as its JSON, so pixbuf aliasing cannot
+       * make custom icon B silently repaint selected source icon A. */
+      {
+        GdkPixbuf *source_icon = gimp_painter_mybrush_ref_icon (source);
+        const guchar expected_pixel[] = {0xc0, 0x50, 0x90, 0xff};
+        g_assert_nonnull (source_icon);
+        g_assert_cmpint (gdk_pixbuf_get_width (source_icon), ==, 3);
+        g_assert_cmpint (gdk_pixbuf_get_height (source_icon), ==, 5);
+        g_assert_cmpmem (gdk_pixbuf_get_pixels (source_icon), sizeof expected_pixel,
+                         expected_pixel, sizeof expected_pixel);
+        g_object_unref (source_icon);
+      }
+      g_free (config);
+      g_free (custom_json);
+      g_free (source_json);
+      g_object_unref (duplicate);
+      g_object_unref (icon);
+      g_object_unref (options);
+      g_object_unref (saved);
+      g_object_unref (copy);
+      g_object_unref (source);
+      g_object_unref (custom);
+    }
+}
+
+static void
 options_reject_and_close (void)
 {
   GimpPainterMybrushOptions *options = options_new ();
@@ -272,6 +433,9 @@ options_reject_and_close (void)
   g_assert_true (gimp_painter_binding_close (G_OBJECT (options), &error));
   g_assert_no_error (error);
   g_assert_null (gimp_painter_mybrush_options_dup_json (options, &error));
+  g_assert_error (error, GIMP_PAINTER_ERROR, GIMP_PAINTER_ERROR_CLOSED);
+  g_clear_error (&error);
+  g_assert_false (gimp_painter_mybrush_options_prepare_restore (options, &error));
   g_assert_error (error, GIMP_PAINTER_ERROR, GIMP_PAINTER_ERROR_CLOSED);
   g_clear_error (&error);
   g_assert_null (gimp_painter_mybrush_options_dup_draft_name (options, &error));
@@ -412,6 +576,7 @@ main (int argc, char **argv)
   gimp = gimp_init_for_testing ();
   g_test_add_func ("/painter-c/options-owned-roundtrip", options_owned_roundtrip);
   g_test_add_func ("/painter-c/options-draft-name-history-copy", options_draft_name_history_copy);
+  g_test_add_func ("/painter-c/options-prepare-restore-saved-json", options_prepare_restore_and_saved_json);
   g_test_add_func ("/painter-c/options-reject-close", options_reject_and_close);
   g_test_add_func ("/painter-c/session-native-transaction", session_native_transaction);
   g_test_add_func ("/painter-c/session-errors-close", session_errors_and_close);

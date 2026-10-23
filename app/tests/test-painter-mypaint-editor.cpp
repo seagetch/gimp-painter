@@ -639,6 +639,12 @@ static void draft_name_history_save_workflow ()
   g_object_set (gimp->config, "painter-mypaint-brush-path", search.get (),
                 "painter-mypaint-brush-path-writable", directory.get (), nullptr);
   BoundaryBrushes resources;
+  auto source_icon = ObjectRef<GObject>::adopt (
+    G_OBJECT (gdk_pixbuf_new (GDK_COLORSPACE_RGB, TRUE, 8, 3, 5)));
+  gdk_pixbuf_fill (GDK_PIXBUF (source_icon.get ()), 0xa04080ff);
+  g_assert_true (gimp_painter_mybrush_set_icon (
+    resources.first.get (), GDK_PIXBUF (source_icon.get ()), &error));
+  g_assert_no_error (error);
   auto context = ObjectRef<GObject>::adopt (
     G_OBJECT (gimp_context_new (gimp, "Draft name workflow", nullptr)));
   gimp_context_set_painter_mybrush (GIMP_CONTEXT (context.get ()), resources.first.get ());
@@ -695,6 +701,26 @@ static void draft_name_history_save_workflow ()
   g_assert_cmpstr (gtk_entry_get_text (GTK_ENTRY (peer.get ("painter-brush-name"))), ==, pending_name);
   g_assert_true (editor.snapshot ().encode () == source_json);
 
+  /* A draft can own a different stored icon from its selected source. User
+   * Reset must retain that icon, and history/Save must persist the draft's
+   * snapshot rather than borrowing the selected resource's current icon. */
+  auto draft_icon = ObjectRef<GObject>::adopt (
+    G_OBJECT (gdk_pixbuf_new (GDK_COLORSPACE_RGB, TRUE, 8, 3, 5)));
+  gdk_pixbuf_fill (GDK_PIXBUF (draft_icon.get ()), 0x30b070ff);
+  gchar *png = nullptr; gsize png_size = 0;
+  g_assert_true (gdk_pixbuf_save_to_buffer (GDK_PIXBUF (draft_icon.get ()),
+    &png, &png_size, "png", &error, nullptr));
+  g_assert_no_error (error);
+  String encoded_icon (g_base64_encode (reinterpret_cast<const guchar *> (png), png_size));
+  g_free (png);
+  auto icon_draft = editor.snapshot ();
+  g_assert_true (icon_draft.preview_png_base64 () != encoded_icon.get ());
+  icon_draft.set_preview_png_base64 (encoded_icon.get ());
+  editor.set (icon_draft);
+  gimp_config_reset (GIMP_CONFIG (editor.model.get ()));
+  g_assert_true (editor.snapshot ().preview_png_base64 () == encoded_icon.get ());
+  g_assert_cmpstr (gtk_entry_get_text (name), ==, pending_name);
+  g_assert_true (resources.first.snapshot ().encode () == source_json);
   gtk_spin_button_set_value (GTK_SPIN_BUTTON (editor.get ("opaque")), .413);
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (editor.get ("non-incremental")), TRUE);
   const auto draft = editor.snapshot ();

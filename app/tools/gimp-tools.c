@@ -38,6 +38,8 @@
 #include "core/gimptoolinfo.h"
 #include "core/gimptooloptions.h"
 
+#include "paint/painter-mypaint-surface/gimp-painter-options.h"
+
 #include "gimp-tool-options-manager.h"
 #include "gimp-tools.h"
 #include "gimptooloptions-gui.h"
@@ -284,6 +286,18 @@ gimp_tools_restore (Gimp *gimp)
 
       /*  get default values from prefs (see bug #120832)  */
       gimp_config_reset (GIMP_CONFIG (tool_info->tool_options));
+
+      /*  Start MyPaint restore from the complete selected preset, even when
+       *  contextrc later selects the already-current resource.  Do this before
+       *  context loading can archive reset-generated edits as brush history.
+       */
+      if (GIMP_IS_PAINTER_MYBRUSH_OPTIONS (tool_info->tool_options) &&
+          ! gimp_painter_mybrush_options_prepare_restore (
+              GIMP_PAINTER_MYBRUSH_OPTIONS (tool_info->tool_options), &error))
+        {
+          gimp_message_literal (gimp, NULL, GIMP_MESSAGE_WARNING, error->message);
+          g_clear_error (&error);
+        }
     }
 
   if (! gimp_contexts_load (gimp, &error))

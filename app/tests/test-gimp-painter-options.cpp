@@ -23,6 +23,7 @@ extern "C" {
 using namespace GimpPainter;
 using MyPaint::Resource;
 static Gimp*gimp;
+static Resource reset_scalar_defaults(Resource resource);
 static GimpPainterMybrushOptions*options_new()
 {return GIMP_PAINTER_MYBRUSH_OPTIONS(g_object_new(GIMP_TYPE_PAINTER_MYBRUSH_OPTIONS,"gimp",gimp,nullptr));}
 static std::string name(const char*n){std::string s(n);std::replace(s.begin(),s.end(),'_','-');return s;}
@@ -100,8 +101,8 @@ static void all_native_properties_config()
   g_assert_cmpint (view_type, ==, GIMP_VIEW_TYPE_LIST);
   g_assert_cmpint (view_size, ==, 48);
   gimp_config_reset (GIMP_CONFIG (copy));
-  const Resource defaults;
-  g_assert_true (PainterOptionsRef::retain (copy).snapshot ().encode () == defaults.encode ());
+  g_assert_true (PainterOptionsRef::retain (copy).snapshot ().encode () ==
+                 reset_scalar_defaults(Resource::decode(before)).encode ());
   g_assert_true (PainterOptionsRef::retain (options).snapshot ().encode () == before);
   g_object_unref (copy); g_object_unref (options);
 }
@@ -310,31 +311,98 @@ static void draft_name_external_settings_and_errors()
   g_assert_false(gimp_painter_mybrush_options_set_draft_name(options,"Closed",&error));g_assert_error(error,GIMP_PAINTER_ERROR,GIMP_PAINTER_ERROR_CLOSED);g_clear_error(&error);
   g_assert_cmpstr(owned.get(),==,"Preserved pending name");g_object_unref(options);
 }
+static Resource preset_with_icon(const char *json, guint32 rgba)
+{
+  auto resource=Resource::decode(json);
+  auto *icon=gdk_pixbuf_new(GDK_COLORSPACE_RGB,TRUE,8,3,5);
+  gdk_pixbuf_fill(icon,rgba);
+  gchar *png=nullptr;gsize size=0;GError *error=nullptr;
+  g_assert_true(gdk_pixbuf_save_to_buffer(icon,&png,&size,"png",&error,nullptr));
+  g_assert_no_error(error);
+  String encoded(g_base64_encode(reinterpret_cast<const guchar*>(png),size));
+  resource.set_preview_png_base64(encoded.get());
+  g_free(png);g_object_unref(icon);
+  return resource;
+}
+static Resource reset_scalar_defaults(Resource resource)
+{
+  // Native Reset skips properties already equal to their pspec defaults. Keep
+  // untouched sparse fields absent rather than materializing new JSON members.
+  for(const auto &setting:painter_mypaint_settings)
+    if(resource.base_value(setting.index)!=setting.default_value)
+      resource.set_base_value(setting.index,setting.default_value);
+  for(const auto &setting:painter_mypaint_switches)
+    if(resource.switch_value(setting.index))
+      resource.set_switch(setting.index,false);
+  for(const auto &setting:painter_mypaint_texts)
+    if(!resource.text_is_null(setting.index))
+      resource.set_text(setting.index,nullptr);
+  return resource;
+}
 static void native_config_reset_defaults()
 {
   auto *options=options_new();auto brush=PainterMybrushRef::create("reset-source");
-  const auto source_before=brush.snapshot().encode();
-  gimp_context_set_painter_mybrush(GIMP_CONTEXT(options),brush.get());
-  const char *edited="{\"version\":3,\"settings\":{\"opaque\":{\"base_value\":0.17,\"inputs\":{\"pressure\":[[0,0],[1,0.4]]}}},\"switches\":{\"non_incremental\":true},\"unknown\":{\"reset_me\":23}}";
+  const auto source=preset_with_icon(
+    "{\"version\":3,\"group\":\"source-group\",\"unknown\":{\"source\":17},"
+    "\"settings\":{\"opaque\":{\"base_value\":0.23,\"inputs\":{\"pressure\":[[0,0.1],[1,0.9]]}},"
+    "\"radius_logarithmic\":{\"base_value\":1.7}}}",0xa04080ff);
+  brush.replace(source);gimp_context_set_painter_mybrush(GIMP_CONTEXT(options),brush.get());
+  const auto draft=preset_with_icon(
+    "{\"version\":3,\"group\":\"draft-group\",\"unknown\":{\"retain_after_reset\":23},"
+    "\"settings\":{\"opaque\":{\"base_value\":0.17,\"inputs\":{\"pressure\":[[0,0.2],[1,0.4]]}},"
+    "\"radius_logarithmic\":{\"base_value\":2.1}},"
+    "\"switches\":{\"non_incremental\":true},\"texts\":{\"texture_name\":\"draft-paper\"}}",0x30b070ff);
+  g_assert_true(source.preview_png_base64()!=draft.preview_png_base64());
   GError *error=nullptr;
-  g_assert_true(gimp_painter_mybrush_options_set_json(options,edited,&error));g_assert_no_error(error);
-  g_assert_true(gimp_painter_mybrush_options_set_draft_name(options,"Reset keeps this draft name",&error));g_assert_no_error(error);
-  // The native Reset and GUI tool-registration path applies each pspec default.
+  g_assert_true(gimp_painter_mybrush_options_set_json(options,draft.encode().c_str(),&error));
+  g_assert_no_error(error);
+  g_assert_true(gimp_painter_mybrush_options_set_draft_name(options,"Reset keeps this draft name",&error));
+  g_assert_no_error(error);
+  const auto expected=reset_scalar_defaults(draft);
+  const guint history=gimp_painter_mybrush_options_history_size(options);
+  // Reset applies legacy property defaults, but does not replace the owned preset.
   gimp_config_reset(GIMP_CONFIG(options));
   assert_draft_name(options,"Reset keeps this draft name",TRUE);
-  const Resource defaults;
-  g_assert_true(PainterOptionsRef::retain(options).snapshot().encode()==defaults.encode());
-  g_assert_true(brush.snapshot().encode()==source_before);
+  auto actual=PainterOptionsRef::retain(options).snapshot();
+  for(const auto &setting:painter_mypaint_settings)
+    g_assert_cmpfloat(actual.base_value(setting.index),==,setting.default_value);
+  g_assert_false(actual.switch_value(BRUSH_NON_INCREMENTAL));
+  g_assert_true(actual.text_is_null(BRUSH_TEXTURE_NAME));
+  g_assert_true(brush.snapshot().encode()==source.encode());
+  g_assert_true(gimp_context_get_painter_mybrush(GIMP_CONTEXT(options))==brush.get());
+  g_assert_cmpuint(gimp_painter_mybrush_options_history_size(options),==,history);
+  // Keep these explicit: the old JSON pspec default silently destroys this data.
+  g_assert_true(actual.preview_png_base64()==draft.preview_png_base64());
+  g_assert_true(actual.group()=="draft-group");
+  g_assert_true(actual.has_member("unknown","retain_after_reset"));
+  const auto curve=actual.curve(BRUSH_OPAQUE,INPUT_PRESSURE);
+  g_assert_cmpuint(curve.size(),==,2);
+  g_assert_cmpfloat(curve[0].y,==,.2);g_assert_cmpfloat(curve[1].y,==,.4);
+  g_assert_true(actual.encode()==expected.encode());
+  gimp_config_reset(GIMP_CONFIG(options));
+  g_assert_true(PainterOptionsRef::retain(options).snapshot().encode()==expected.encode());
+  assert_draft_name(options,"Reset keeps this draft name",TRUE);
   auto *pspec=g_object_class_find_property(G_OBJECT_GET_CLASS(options),"painter-settings");
-  const char *text=g_value_get_string(g_param_spec_get_default_value(pspec));
-  g_assert_nonnull(text);g_assert_true(Resource::decode(text).encode()==defaults.encode());
-  gimp_config_reset(GIMP_CONFIG(options));
+  g_assert_null(g_value_get_string(g_param_spec_get_default_value(pspec)));
+  const guint before_null_history=gimp_painter_mybrush_options_history_size(options);
+  guint settings_notifications=0;
+  g_signal_connect(options,"settings-changed",G_CALLBACK(+[](GimpPainterMybrushOptions*,gpointer p){++*static_cast<guint*>(p);}),&settings_notifications);
+  g_object_set(options,"painter-settings",nullptr,nullptr);
+  g_assert_cmpuint(settings_notifications,==,0);
+  g_assert_cmpuint(gimp_painter_mybrush_options_history_size(options),==,before_null_history);
+  g_assert_true(PainterOptionsRef::retain(options).snapshot().encode()==expected.encode());
   assert_draft_name(options,"Reset keeps this draft name",TRUE);
-  g_assert_true(PainterOptionsRef::retain(options).snapshot().encode()==defaults.encode());
-  // Invalid C API input remains rejected without replacing the draft.
+  // Invalid public API input is not the property-reset sentinel.
   g_assert_false(gimp_painter_mybrush_options_set_json(options,nullptr,&error));
   g_assert_nonnull(error);g_clear_error(&error);
-  g_assert_true(PainterOptionsRef::retain(options).snapshot().encode()==defaults.encode());
+  g_assert_true(PainterOptionsRef::retain(options).snapshot().encode()==expected.encode());
+  // An explicit valid replacement can intentionally remove the draft icon.
+  const auto replacement=Resource::decode("{\"version\":3,\"group\":\"explicit-iconless\",\"settings\":{}}");
+  g_assert_true(gimp_painter_mybrush_options_set_json(options,replacement.encode().c_str(),&error));
+  g_assert_no_error(error);actual=PainterOptionsRef::retain(options).snapshot();
+  g_assert_true(actual.encode()==replacement.encode());g_assert_true(actual.preview_png_base64().empty());
+  assert_draft_name(options,"Reset keeps this draft name",TRUE);
+  g_assert_true(brush.snapshot().encode()==source.encode());
   g_object_unref(options);
 }
 static void drop_options(GObject*,GParamSpec*,gpointer data){auto**owner=static_cast<GimpPainterMybrushOptions**>(data);g_clear_object(owner);}
@@ -344,6 +412,13 @@ static void notification_releases_caller()
   auto*options=options_new();bool finalized=false;g_object_weak_ref(G_OBJECT(options),gone,&finalized);
   g_signal_connect(options,"notify::opaque",G_CALLBACK(drop_options),&options);GError*error=nullptr;
   g_assert_true(gimp_painter_mybrush_options_set_json(options,"{\"version\":3,\"settings\":{}}",&error));g_assert_no_error(error);g_assert_null(options);g_assert_true(finalized);
+  // The restore helper owns its caller through all notifications. The outer
+  // native Reset operation is deliberately finished before dropping this owner.
+  options=options_new();gimp_config_reset(GIMP_CONFIG(options));finalized=false;
+  g_object_weak_ref(G_OBJECT(options),gone,&finalized);
+  g_signal_connect(options,"notify::opaque",G_CALLBACK(drop_options),&options);
+  g_assert_true(gimp_painter_mybrush_options_prepare_restore(options,&error));
+  g_assert_no_error(error);g_assert_null(options);g_assert_true(finalized);
 }
 static void draft_name_notification_lifetime()
 {
@@ -444,6 +519,18 @@ static void selection_reentry()
   auto value=last.snapshot();value.set_base_value(BRUSH_STROKE_OPACITY,.234);last.replace(value);
   gimp_context_set_painter_mybrush(GIMP_CONTEXT(options),old);Reenter state{options,last.get()};g_object_weak_ref(G_OBJECT(old),choose_again,&state);g_object_unref(old);
   gimp_context_set_painter_mybrush(GIMP_CONTEXT(options),first.get());g_assert_true(state.fired);g_assert_true(gimp_context_get_painter_mybrush(GIMP_CONTEXT(options))==last.get());
+  g_assert_true(PainterOptionsRef::retain(options).snapshot().encode()==value.encode());g_object_unref(options);
+
+  options=options_new();gimp_context_set_painter_mybrush(GIMP_CONTEXT(options),first.get());
+  gimp_config_reset(GIMP_CONFIG(options));
+  struct RestoreSelect {GimpPainterMybrush*next;bool fired=false;} restore{last.get()};
+  g_signal_connect(options,"notify::opaque",G_CALLBACK(+[](GObject*object,GParamSpec*,gpointer data){
+    auto &state=*static_cast<RestoreSelect*>(data);if(state.fired)return;state.fired=true;
+    gimp_context_set_painter_mybrush(GIMP_CONTEXT(object),state.next);
+  }),&restore);
+  GError *error=nullptr;
+  g_assert_true(gimp_painter_mybrush_options_prepare_restore(options,&error));g_assert_no_error(error);
+  g_assert_true(restore.fired);g_assert_true(gimp_context_get_painter_mybrush(GIMP_CONTEXT(options))==last.get());
   g_assert_true(PainterOptionsRef::retain(options).snapshot().encode()==value.encode());g_object_unref(options);
 }
 static void close_during_commit(GimpPainterMybrush*,gpointer data){gimp_painter_binding_close(G_OBJECT(data),nullptr);}

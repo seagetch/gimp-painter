@@ -20,7 +20,14 @@ struct _GimpPainterMybrushOptions { GimpPaintOptions parent_instance; gboolean b
 struct _GimpPainterMybrushOptionsClass { GimpPaintOptionsClass parent_class; };
 GType gimp_painter_mybrush_options_get_type (void) G_GNUC_CONST;
 gchar *gimp_painter_mybrush_options_dup_json (GimpPainterMybrushOptions *options, GError **error);
+/* NULL GObject painter-settings is the config default (no override); this
+ * explicit API still requires non-NULL, authoritative full-resource JSON. */
 gboolean gimp_painter_mybrush_options_set_json (GimpPainterMybrushOptions *options, const gchar *json, GError **error);
+/* Startup-only reseed after native reset and before persisted options restore.
+ * Uses the complete currently selected resource without changing selection or
+ * history, clears settings dirty/conflict and preserves the pending draft name.
+ * Rejects an unavailable/closed model, inconsistent selection or active commit. */
+gboolean gimp_painter_mybrush_options_prepare_restore (GimpPainterMybrushOptions *options, GError **error);
 /* Transfer-full draft name, independent of the selected resource's identity.
  * UTF-8 names may be empty while editing. NULL/invalid UTF-8 is rejected.
  * Runtime properties painter-draft-name and painter-name-dirty are read-only

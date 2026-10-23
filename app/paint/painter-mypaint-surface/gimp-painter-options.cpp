@@ -356,7 +356,18 @@ void set_property(GObject*object,guint id,const GValue*value,GParamSpec*pspec)
       else binding.with<OptionsSlot>(update);
       return;
     }
-    if(id==PROP_JSON){GError*error=nullptr;if(!gimp_painter_mybrush_options_set_json(owner.get(),g_value_get_string(value),&error)){std::string why = GimpPainter::take_error_message (error, "Invalid draft");throw std::runtime_error(why);}return;}
+    if(id==PROP_JSON){
+      // NULL is the config default: no serialized full-resource override.
+      // Reset still applies the inherited numeric/bool/text/native defaults.
+      const gchar*json=g_value_get_string(value);
+      if(!json)return;
+      GError*error=nullptr;
+      if(!gimp_painter_mybrush_options_set_json(owner.get(),json,&error)){
+        std::string why=GimpPainter::take_error_message(error,"Invalid draft");
+        throw std::runtime_error(why);
+      }
+      return;
+    }
     if(id<1||id>BRUSH_SETTINGS_COUNT){G_OBJECT_WARN_INVALID_PROPERTY_ID(object,id,pspec);return;}
     auto&binding=store(owner.get());const bool constructing=binding.state()==BindingStore::State::constructing;
     const auto update=[&](OptionsImpl&i){
@@ -444,9 +455,9 @@ static void gimp_painter_mybrush_options_class_init(GimpPainterMybrushOptionsCla
   for(const auto&s:painter_mypaint_settings){properties[s.index+1]=g_param_spec_double(s.internal_name,s.displayed_name,s.tooltip,s.minimum,s.maximum,s.default_value,flags);}
   for(const auto&s:painter_mypaint_switches){properties[s.index+1]=g_param_spec_boolean(s.internal_name,s.displayed_name,nullptr,FALSE,flags);}
   for(const auto&s:painter_mypaint_texts){properties[s.index+1]=g_param_spec_string(s.internal_name,s.displayed_name,nullptr,nullptr,flags);}
-  // Native GimpConfig reset sends the pspec default through set_property.
-  // Keep it a valid default brush, matching Resource(), rather than NULL JSON.
-  properties[PROP_JSON]=g_param_spec_string("painter-settings","Full painter brush","Lossless settings, curves and unknown data","{\"version\":3}",flags);
+  // No full-resource override is the config default. Reset changes only the
+  // exposed settings, preserving draft curves, icon and non-property metadata.
+  properties[PROP_JSON]=g_param_spec_string("painter-settings","Full painter brush","Lossless settings, curves and unknown data",nullptr,flags);
   properties[PROP_DIRTY]=g_param_spec_boolean("painter-dirty","Edited painter brush",nullptr,FALSE,G_PARAM_READABLE);
   properties[PROP_CONFLICT]=g_param_spec_boolean("painter-conflict","Saved brush changed",nullptr,FALSE,G_PARAM_READABLE);
   properties[PROP_BRUSH_MODE]=g_param_spec_enum("brush-mode","Legacy brush mode",
@@ -477,6 +488,38 @@ gboolean gimp_painter_mybrush_options_set_json(GimpPainterMybrushOptions*options
   return boundary<gboolean>(error,FALSE,[&]() -> gboolean{
     auto owner=ObjectRef<GimpPainterMybrushOptions>::retain(options);if(!json)throw std::invalid_argument("Expected painter settings JSON");auto next=Resource::decode(json);
     auto revision=store(options).with<OptionsSlot>([&](OptionsImpl&i){i.draft=std::move(next);i.dirty=true;return ++i.revision;});notify_changed(options,revision);return TRUE;
+  });
+}
+gboolean gimp_painter_mybrush_options_prepare_restore(GimpPainterMybrushOptions*options,GError**error)
+{
+  return boundary<gboolean>(error,FALSE,[&]() -> gboolean{
+    auto owner=ObjectRef<GimpPainterMybrushOptions>::retain(options);
+    auto&binding=store(owner.get());const auto generation=binding.generation();
+    struct RestoreSource {ObjectRef<GimpPainterMybrush> selected;std::uint64_t revision;};
+    const auto source=binding.with<OptionsSlot>([&](const OptionsImpl&i){
+      if(i.committing)throw Error(GIMP_PAINTER_ERROR_INVALID_STATE,"Painter brush commit is in progress");
+      if(!i.selected)throw std::invalid_argument("No selected painter brush");
+      if(gimp_context_get_painter_mybrush(GIMP_CONTEXT(owner.get()))!=i.selected.get())
+        throw std::runtime_error("Painter brush selection is inconsistent before restore");
+      return RestoreSource{i.selected,i.revision};
+    });
+    // Stage the complete selected resource and encoded baseline before any
+    // mutation. Startup must not turn reset-generated edits into history.
+    Resource next=PainterMybrushRef::retain(source.selected.get()).snapshot();
+    std::string next_baseline=next.encode();
+    if(!binding.accepts(generation))throw Error(GIMP_PAINTER_ERROR_CLOSED,"Painter options closed before restore");
+    const auto revision=binding.with<OptionsSlot>([&](OptionsImpl&i){
+      if(i.committing)throw Error(GIMP_PAINTER_ERROR_INVALID_STATE,"Painter brush commit is in progress");
+      if(i.selected.get()!=source.selected.get()||i.revision!=source.revision||
+         gimp_context_get_painter_mybrush(GIMP_CONTEXT(owner.get()))!=source.selected.get())
+        throw std::runtime_error("Painter brush state changed before restore");
+      i.draft=std::move(next);i.baseline=std::move(next_baseline);
+      i.dirty=false;i.conflict=false;
+      return ++i.revision;
+    });
+    // The independent draft name is untouched. Callbacks may close, select or
+    // edit: the existing revision guard owns notification reentry from here.
+    notify_changed(owner.get(),revision);return TRUE;
   });
 }
 gboolean gimp_painter_mybrush_options_set_curve(GimpPainterMybrushOptions*options,gint setting,gint input,const GimpVector2*points,guint count,GError**error)
