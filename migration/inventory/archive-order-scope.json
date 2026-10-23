@@ -1,0 +1,2316 @@
+{
+  "task": "04.009",
+  "source_parent": "c7dc45b35c7ed35cf319891a739014e02ed72340",
+  "status": "PASS",
+  "duties": [
+    {
+      "work_id": "legacy-ac3114be669633f913f3",
+      "source_id": "01.002/000001",
+      "path": "app/Makefile.am",
+      "source_blob": "01ecb1d4604460e385b36c7fdacf515a8ce95292",
+      "source_range": "-35,2 -> 35,8",
+      "source_sha256": "48e6d9d1fcd9e2b8eac3436a0fcab9013527570d41071dc3f66da0c716044e4d",
+      "source_scope": "SUBDIRS = \\",
+      "status": "PASS",
+      "current_paths": [
+        "app/core/gimplayerpreset.c",
+        "app/core/gimplayerpreset-apply.cpp",
+        "app/httpd/httpd.cpp"
+      ],
+      "registration_rationale": "Presets moved into core; optional HTTP retains its conditional subdir. Both owning libraries join the app link.",
+      "source_payload": "-\t.\t\t\\\n-\ttests\n+\tpresets\n+\n+if USE_HTTPD\n+SUBDIRS += httpd\n+endif\n+\n+SUBDIRS += .\t\t\\\n+\t   tests\n",
+      "current_sha256": {
+        "app/core/gimplayerpreset.c": "ec6edcf6223f1cbc6d125f26c71644a77c6b7077db9a0b01e3cbf53eac9e7e8e",
+        "app/core/gimplayerpreset-apply.cpp": "da1e68b6b9fe9cf316b8f341b57e219bf99f5517150a3b550a83436e95097f58",
+        "app/httpd/httpd.cpp": "22450de1872fe672f6f20ba1a220abba5e52f32a2d7cb1ccbecdd77e046682df"
+      },
+      "criterion": "Current archive order resolves actual links; explicit roots retain applicable registration/type members; controlled unrooted and cyclic links expose failure modes",
+      "evidence": [
+        "migration/tests/archive-order/native.json",
+        "migration/tests/archive-order/evidence.tar.gz"
+      ],
+      "result": "Listed counterparts match actual object hashes and extraction maps; preset apply is intentionally unreferenced in both consoles and retained in both GUIs. Target/generator metadata is identified separately"
+    },
+    {
+      "work_id": "legacy-834df1e769cf7e53ba0d",
+      "source_id": "01.002/000002",
+      "path": "app/Makefile.am",
+      "source_blob": "01ecb1d4604460e385b36c7fdacf515a8ce95292",
+      "source_range": "-73,0 -> 80,2",
+      "source_sha256": "4940e6b96a8062fc155f0e7f60438b726ffce13be3fb5aa11282c89df0bbfd54",
+      "source_scope": "libapp_sources = \\",
+      "status": "PASS",
+      "current_paths": [
+        "app/app.c",
+        "app/core/gimp.c",
+        "app/core/gimp-data-factories.c",
+        "app/actions/actions.c",
+        "app/painter/gimp-painter-binding.cpp"
+      ],
+      "registration_rationale": "Legacy feature dispatcher is replaced by explicit native C startup/teardown and owning module registration. The common C++ bridge is a real app dependency.",
+      "source_payload": "+\tgimp-features.cpp\t\\\n+\tgimp-features.hpp\t\\\n",
+      "current_sha256": {
+        "app/app.c": "583c0f3ce2ed87d42aeddb2e9b41aced5007a0ed396a12fbcb0173295188f715",
+        "app/core/gimp.c": "cf6c8ae9600ca7d717fa2e4e7a74e54df6fe683d7981a62e41000a9751f0825a",
+        "app/core/gimp-data-factories.c": "4c5a1f058c975f525dc0beb62d50b24f4c199ab3835591611bb91bb9b3844681",
+        "app/actions/actions.c": "0627fb49a0a0215b589f37a38b43b202fd17f80c176f1a42a1c1b9387702cc09",
+        "app/painter/gimp-painter-binding.cpp": "22aca4f9e467e16b86f2cbeec431d7d069fc552c98fad985db770720fcf876fd"
+      },
+      "criterion": "Current archive order resolves actual links; explicit roots retain applicable registration/type members; controlled unrooted and cyclic links expose failure modes",
+      "evidence": [
+        "migration/tests/archive-order/native.json",
+        "migration/tests/archive-order/evidence.tar.gz"
+      ],
+      "result": "Listed counterparts match actual object hashes and extraction maps; preset apply is intentionally unreferenced in both consoles and retained in both GUIs. Target/generator metadata is identified separately"
+    },
+    {
+      "work_id": "legacy-58d3b5181b3cdeace55c",
+      "source_id": "01.002/000003",
+      "path": "app/Makefile.am",
+      "source_blob": "01ecb1d4604460e385b36c7fdacf515a8ce95292",
+      "source_range": "-89 -> 97",
+      "source_sha256": "d84cb10b6f5b05a2c6e8441962ca08087b9fdcebf5cf1c0231c749d5b9fff070",
+      "source_scope": "libapp_a_SOURCES = $(libapp_sources) $(libapp_generated_sources)",
+      "status": "PASS",
+      "current_paths": [
+        "app/meson.build"
+      ],
+      "registration_rationale": "This hunk adds only a dummy C++ link-driver TU or an archive/HTTP LDADD entry. Final-link/runtime/archive checks belong to04.008/04.009; main.c stays C.",
+      "source_payload": "-gimp_2_8_SOURCES = $(libapp_sources) main.c\n+gimp_2_8_SOURCES = $(libapp_sources) main.c dummy.cpp\n",
+      "current_sha256": {
+        "app/meson.build": "80fae75399f85e4f78b212dc93c0c2db072b16108be6b8419c9a73071813b648"
+      },
+      "criterion": "Current archive order resolves actual links; explicit roots retain applicable registration/type members; controlled unrooted and cyclic links expose failure modes",
+      "evidence": [
+        "migration/tests/archive-order/native.json",
+        "migration/tests/archive-order/evidence.tar.gz"
+      ],
+      "result": "Listed counterparts match actual object hashes and extraction maps; preset apply is intentionally unreferenced in both consoles and retained in both GUIs. Target/generator metadata is identified separately"
+    },
+    {
+      "work_id": "legacy-21a8b9a72a5f5020ae88",
+      "source_id": "01.002/000004",
+      "path": "app/Makefile.am",
+      "source_blob": "01ecb1d4604460e385b36c7fdacf515a8ce95292",
+      "source_range": "-171,0 -> 180",
+      "source_sha256": "093addb9d344488c662e702c07c5a65ac82e821e8094111e911f0c898dead1a3",
+      "source_scope": "gimpconsoleldadd = \\",
+      "status": "PASS",
+      "current_paths": [
+        "app/meson.build"
+      ],
+      "registration_rationale": "This hunk adds only a dummy C++ link-driver TU or an archive/HTTP LDADD entry. Final-link/runtime/archive checks belong to04.008/04.009; main.c stays C.",
+      "source_payload": "+\tpresets/libapppresets.a         \\\n",
+      "current_sha256": {
+        "app/meson.build": "80fae75399f85e4f78b212dc93c0c2db072b16108be6b8419c9a73071813b648"
+      },
+      "criterion": "Current archive order resolves actual links; explicit roots retain applicable registration/type members; controlled unrooted and cyclic links expose failure modes",
+      "evidence": [
+        "migration/tests/archive-order/native.json",
+        "migration/tests/archive-order/evidence.tar.gz"
+      ],
+      "result": "Listed counterparts match actual object hashes and extraction maps; preset apply is intentionally unreferenced in both consoles and retained in both GUIs. Target/generator metadata is identified separately"
+    },
+    {
+      "work_id": "legacy-983203c9d3e8e62fa41d",
+      "source_id": "01.002/000005",
+      "path": "app/Makefile.am",
+      "source_blob": "01ecb1d4604460e385b36c7fdacf515a8ce95292",
+      "source_range": "-188,0 -> 198,8",
+      "source_sha256": "c8b6fa63a2f18768cc082ff3fbed4589c9094a5ef43367edc3e7c55f5097271a",
+      "source_scope": "gimpconsoleldadd = \\",
+      "status": "PASS",
+      "current_paths": [
+        "app/meson.build"
+      ],
+      "registration_rationale": "This hunk adds only a dummy C++ link-driver TU or an archive/HTTP LDADD entry. Final-link/runtime/archive checks belong to04.008/04.009; main.c stays C.",
+      "source_payload": "+if USE_HTTPD\n+gimphttpdldadd = \\\n+\thttpd/libapphttpd.a\t\t\\\n+\t$(SOUP_LIBS)\n+else\n+gimphttpdldadd =\n+endif\n+\n",
+      "current_sha256": {
+        "app/meson.build": "80fae75399f85e4f78b212dc93c0c2db072b16108be6b8419c9a73071813b648"
+      },
+      "criterion": "Current archive order resolves actual links; explicit roots retain applicable registration/type members; controlled unrooted and cyclic links expose failure modes",
+      "evidence": [
+        "migration/tests/archive-order/native.json",
+        "migration/tests/archive-order/evidence.tar.gz"
+      ],
+      "result": "Listed counterparts match actual object hashes and extraction maps; preset apply is intentionally unreferenced in both consoles and retained in both GUIs. Target/generator metadata is identified separately"
+    },
+    {
+      "work_id": "legacy-3cd683841f88676d0304",
+      "source_id": "01.002/000006",
+      "path": "app/Makefile.am",
+      "source_blob": "01ecb1d4604460e385b36c7fdacf515a8ce95292",
+      "source_range": "-206,0 -> 224",
+      "source_sha256": "63e5ebb77a3f2acbc803f133a8611e6d9dc851227c2e5b6a3d927c4107edf0e6",
+      "source_scope": "gimp_2_8_LDADD = \\",
+      "status": "PASS",
+      "current_paths": [
+        "app/meson.build"
+      ],
+      "registration_rationale": "This hunk adds only a dummy C++ link-driver TU or an archive/HTTP LDADD entry. Final-link/runtime/archive checks belong to04.008/04.009; main.c stays C.",
+      "source_payload": "+\t$(gimphttpdldadd)\t\t\\\n",
+      "current_sha256": {
+        "app/meson.build": "80fae75399f85e4f78b212dc93c0c2db072b16108be6b8419c9a73071813b648"
+      },
+      "criterion": "Current archive order resolves actual links; explicit roots retain applicable registration/type members; controlled unrooted and cyclic links expose failure modes",
+      "evidence": [
+        "migration/tests/archive-order/native.json",
+        "migration/tests/archive-order/evidence.tar.gz"
+      ],
+      "result": "Listed counterparts match actual object hashes and extraction maps; preset apply is intentionally unreferenced in both consoles and retained in both GUIs. Target/generator metadata is identified separately"
+    },
+    {
+      "work_id": "legacy-c820ff5af0bf588558f2",
+      "source_id": "01.002/000007",
+      "path": "app/Makefile.am",
+      "source_blob": "01ecb1d4604460e385b36c7fdacf515a8ce95292",
+      "source_range": "-212 -> 230",
+      "source_sha256": "9edef7090ee33f53503a1fe4cfbf010c15ad503048e98a515b62d3aabd5c060b",
+      "source_scope": "if ENABLE_GIMP_CONSOLE",
+      "status": "PASS",
+      "current_paths": [
+        "app/meson.build"
+      ],
+      "registration_rationale": "This hunk adds only a dummy C++ link-driver TU or an archive/HTTP LDADD entry. Final-link/runtime/archive checks belong to04.008/04.009; main.c stays C.",
+      "source_payload": "-gimp_console_2_8_SOURCES = $(libapp_sources) main.c\n+gimp_console_2_8_SOURCES = $(libapp_sources) main.c dummy.cpp\n",
+      "current_sha256": {
+        "app/meson.build": "80fae75399f85e4f78b212dc93c0c2db072b16108be6b8419c9a73071813b648"
+      },
+      "criterion": "Current archive order resolves actual links; explicit roots retain applicable registration/type members; controlled unrooted and cyclic links expose failure modes",
+      "evidence": [
+        "migration/tests/archive-order/native.json",
+        "migration/tests/archive-order/evidence.tar.gz"
+      ],
+      "result": "Listed counterparts match actual object hashes and extraction maps; preset apply is intentionally unreferenced in both consoles and retained in both GUIs. Target/generator metadata is identified separately"
+    },
+    {
+      "work_id": "legacy-9ee5f6b056d86afff5ac",
+      "source_id": "01.002/000008",
+      "path": "app/Makefile.am",
+      "source_blob": "01ecb1d4604460e385b36c7fdacf515a8ce95292",
+      "source_range": "-219,0 -> 238",
+      "source_sha256": "78766817876d0a3bd1c48dcae0e2be43935571878d338be2250ad0d28c50fd61",
+      "source_scope": "gimp_console_2_8_LDADD = \\",
+      "status": "PASS",
+      "current_paths": [
+        "app/meson.build"
+      ],
+      "registration_rationale": "This hunk adds only a dummy C++ link-driver TU or an archive/HTTP LDADD entry. Final-link/runtime/archive checks belong to04.008/04.009; main.c stays C.",
+      "source_payload": "+\t$(gimphttpdldadd)\n",
+      "current_sha256": {
+        "app/meson.build": "80fae75399f85e4f78b212dc93c0c2db072b16108be6b8419c9a73071813b648"
+      },
+      "criterion": "Current archive order resolves actual links; explicit roots retain applicable registration/type members; controlled unrooted and cyclic links expose failure modes",
+      "evidence": [
+        "migration/tests/archive-order/native.json",
+        "migration/tests/archive-order/evidence.tar.gz"
+      ],
+      "result": "Listed counterparts match actual object hashes and extraction maps; preset apply is intentionally unreferenced in both consoles and retained in both GUIs. Target/generator metadata is identified separately"
+    },
+    {
+      "work_id": "legacy-c03f7692d39abeb790d7",
+      "source_id": "01.002/000128",
+      "path": "app/core/Makefile.am",
+      "source_blob": "3bcd9d2c0e3699fc4bb833093d572e6bfa6ee5ef",
+      "source_range": "-81,0 -> 82,8",
+      "source_sha256": "3547aa70b7ceeef9b528a46a32e6cdaf9bb928b456218c5697cbcf1e093f76ed",
+      "source_scope": "libappcore_a_sources = \\",
+      "status": "PASS",
+      "current_paths": [
+        "app/core/gimppaintermybrush.cpp",
+        "app/paint/painter-mypaint/resource.cpp",
+        "app/paint/painter-brush-settings/meson.build"
+      ],
+      "registration_rationale": "Extended brush resource/reader/writer now share resource.cpp and the core adapter; generated setting constants remain a separate generator obligation.",
+      "source_payload": "+  gimpmypaintbrush.h                      \\\n+\tgimpmypaintbrush.cpp\t\t\t\\\n+  gimpmypaintbrush-load.h\t\t\t\\\n+\tgimpmypaintbrush-load.cpp\t\t\t\\\n+\tmypaintbrush-enum-settings.h \\\n+\tmypaintbrush-brushsettings.h \\\n+\tmypaintbrush-brushsettings.c \\\n+\tmypaintbrush-mapping.hpp \\\n",
+      "current_sha256": {
+        "app/core/gimppaintermybrush.cpp": "52dedd50fd3f6172511fd5311e521d2b74cd8b712e2c3ee4a8d98583f27da0d2",
+        "app/paint/painter-mypaint/resource.cpp": "128928c74ef99cbb754ba469e6df3946db1730588a1ddc5cb9daf21c3441f15b",
+        "app/paint/painter-brush-settings/meson.build": "49ffdc89681014266308b749cfda29e09d6e5a4296ce3aae6de48aa4ac4fa7bd"
+      },
+      "criterion": "Current archive order resolves actual links; explicit roots retain applicable registration/type members; controlled unrooted and cyclic links expose failure modes",
+      "evidence": [
+        "migration/tests/archive-order/native.json",
+        "migration/tests/archive-order/evidence.tar.gz"
+      ],
+      "result": "Listed counterparts match actual object hashes and extraction maps; preset apply is intentionally unreferenced in both consoles and retained in both GUIs. Target/generator metadata is identified separately"
+    },
+    {
+      "work_id": "legacy-182be180ba23045aa586",
+      "source_id": "01.002/000130",
+      "path": "app/core/Makefile.am",
+      "source_blob": "3bcd9d2c0e3699fc4bb833093d572e6bfa6ee5ef",
+      "source_range": "-342,0 -> 353,2",
+      "source_sha256": "fb18c77627e55984949fd55bd9cba649b89d95eed5d38ca291642212f1a64190",
+      "source_scope": "libappcore_a_sources = \\",
+      "status": "PASS",
+      "current_paths": [
+        "app/core/gimpperspectiveguide.cpp"
+      ],
+      "registration_rationale": "Perspective guide implementation is registered directly in appcore.",
+      "source_payload": "+\tgimpperspectiveguide.cpp    \\\n+\tgimpperspectiveguide.h \t\t\\\n",
+      "current_sha256": {
+        "app/core/gimpperspectiveguide.cpp": "edcfce4efc37d41a66340c531be6fd558bc931fad927ad65a8dd0fc27272d1b4"
+      },
+      "criterion": "Current archive order resolves actual links; explicit roots retain applicable registration/type members; controlled unrooted and cyclic links expose failure modes",
+      "evidence": [
+        "migration/tests/archive-order/native.json",
+        "migration/tests/archive-order/evidence.tar.gz"
+      ],
+      "result": "Listed counterparts match actual object hashes and extraction maps; preset apply is intentionally unreferenced in both consoles and retained in both GUIs. Target/generator metadata is identified separately"
+    },
+    {
+      "work_id": "legacy-2f307500b9afd5c85a98",
+      "source_id": "01.002/000132",
+      "path": "app/core/Makefile.am",
+      "source_blob": "3bcd9d2c0e3699fc4bb833093d572e6bfa6ee5ef",
+      "source_range": "-396 -> 412,11",
+      "source_sha256": "5df3a8d7025f85984a1c650c2f2e94349159d8ef5d6d76106abc5cf36b2d1483",
+      "source_scope": "libappcore_a_sources = \\",
+      "status": "PASS",
+      "current_paths": [
+        "app/core/gimppaintermybrush.cpp",
+        "app/paint/painter-mypaint/resource.cpp",
+        "app/core/gimpfilterlayer.cpp",
+        "app/core/gimpclonelayer.cpp"
+      ],
+      "registration_rationale": "Brush save shares resource.cpp; Clone reference Undo is in gimpclonelayer.cpp. Both independent layer types are registered in appcore.",
+      "source_payload": "-\tgimpviewable.h\n+\tgimpviewable.h\t\t\t\t\\\n+\tgimpmypaintbrush-private.hpp\t\t\\\n+\tgimpmypaintbrush-save.cpp\t\t\\\n+\tgimpmypaintbrush-save.h\t\t\t\\\n+\tgimpfilterlayer.h\t\t\t\\\n+\tgimpfilterlayer.cpp\t\t\t\\\n+\tgimpclonelayer.h\t\t\t\\\n+\tgimpclonelayer.cpp\t\t\t\\\n+\tgimpclonelayerundo.h\t\t\t\\\n+\tgimpclonelayerundo.cpp\n+\n",
+      "current_sha256": {
+        "app/core/gimppaintermybrush.cpp": "52dedd50fd3f6172511fd5311e521d2b74cd8b712e2c3ee4a8d98583f27da0d2",
+        "app/paint/painter-mypaint/resource.cpp": "128928c74ef99cbb754ba469e6df3946db1730588a1ddc5cb9daf21c3441f15b",
+        "app/core/gimpfilterlayer.cpp": "abcda53a71ea70000569649fec6c72b802bae828d1748e4c7810a665db3b6b9a",
+        "app/core/gimpclonelayer.cpp": "22adedddcaeb6d70f4bf37e94cf92f3dbe4d1b84c7183097d3c24e49d02b081e"
+      },
+      "criterion": "Current archive order resolves actual links; explicit roots retain applicable registration/type members; controlled unrooted and cyclic links expose failure modes",
+      "evidence": [
+        "migration/tests/archive-order/native.json",
+        "migration/tests/archive-order/evidence.tar.gz"
+      ],
+      "result": "Listed counterparts match actual object hashes and extraction maps; preset apply is intentionally unreferenced in both consoles and retained in both GUIs. Target/generator metadata is identified separately"
+    },
+    {
+      "work_id": "legacy-324b15011f7b0e05c215",
+      "source_id": "01.002/000455",
+      "path": "app/display/Makefile.am",
+      "source_blob": "58e7a1dd8e003489ede49e48793285a51ac83f64",
+      "source_range": "-56,0 -> 57,2",
+      "source_sha256": "76de1fcacc3a8b14fe08f21e99b1a6c74cce1ec83aab813cb94d5b8472d24578",
+      "source_scope": "libappdisplay_a_sources = \\",
+      "status": "PASS",
+      "current_paths": [
+        "app/display/gimpcanvasperspectiveguide.cpp"
+      ],
+      "registration_rationale": "Perspective canvas implementation is registered directly in appdisplay.",
+      "source_payload": "+\tgimpcanvasperspectiveguide.cpp\t\t\t\t\\\n+\tgimpcanvasperspectiveguide.h\t\t\t\t\\\n",
+      "current_sha256": {
+        "app/display/gimpcanvasperspectiveguide.cpp": "8ae697467c3cfff54b41c03828419000907cfc5b2ee92902246711523663f858"
+      },
+      "criterion": "Current archive order resolves actual links; explicit roots retain applicable registration/type members; controlled unrooted and cyclic links expose failure modes",
+      "evidence": [
+        "migration/tests/archive-order/native.json",
+        "migration/tests/archive-order/evidence.tar.gz"
+      ],
+      "result": "Listed counterparts match actual object hashes and extraction maps; preset apply is intentionally unreferenced in both consoles and retained in both GUIs. Target/generator metadata is identified separately"
+    },
+    {
+      "work_id": "legacy-906108cd4b068f50578f",
+      "source_id": "01.002/000456",
+      "path": "app/display/Makefile.am",
+      "source_blob": "58e7a1dd8e003489ede49e48793285a51ac83f64",
+      "source_range": "-114,0 -> 117,2",
+      "source_sha256": "b6fc3a2e05f9f9240696b8d307e3a779c2b63b5209b3bae71646eda6b56d9f5f",
+      "source_scope": "libappdisplay_a_sources = \\",
+      "status": "PASS",
+      "current_paths": [
+        "app/display/gimppaintercanvasui.cpp"
+      ],
+      "registration_rationale": "The current shell-owned canvas controller replaces the legacy overlays translation unit.",
+      "source_payload": "+\tgimpdisplayshell-overlays.cpp\t\\\n+\tgimpdisplayshell-overlays.h\t\t\\\n",
+      "current_sha256": {
+        "app/display/gimppaintercanvasui.cpp": "d51aca41662464a120ce3badf28e202381a2e0c0a2a03d4263a81b346c931fed"
+      },
+      "criterion": "Current archive order resolves actual links; explicit roots retain applicable registration/type members; controlled unrooted and cyclic links expose failure modes",
+      "evidence": [
+        "migration/tests/archive-order/native.json",
+        "migration/tests/archive-order/evidence.tar.gz"
+      ],
+      "result": "Listed counterparts match actual object hashes and extraction maps; preset apply is intentionally unreferenced in both consoles and retained in both GUIs. Target/generator metadata is identified separately"
+    },
+    {
+      "work_id": "legacy-597a49aa606f083fcf84",
+      "source_id": "01.002/000852",
+      "path": "app/httpd/Makefile.am",
+      "source_blob": "90d9e83353cc27d314914b3e25b16ebc89c5083d",
+      "source_range": "-0,0 -> 1,65",
+      "source_sha256": "91513434dd2641e668600ef54f103c2db91a1bc919da0fcce0d948a8676a053e",
+      "source_scope": "file-level declarations/content",
+      "status": "PASS",
+      "current_paths": [
+        "app/httpd/httpd.cpp",
+        "app/httpd/httpd-resource.cpp",
+        "app/httpd/httpd-images.cpp",
+        "app/httpd/httpd-pdb.cpp",
+        "app/httpd/httpd-navigation.cpp"
+      ],
+      "registration_rationale": "Optional HTTP has explicit core and GUI C++ libraries; this configured build enables them. Disabled builds and old enum/platform behavior remain their own gates.",
+      "source_payload": "+## Process this file with automake to produce Makefile.in\n+\n+if PLATFORM_OSX\n+xobjective_c = \"-xobjective-c\"\n+endif\n+\n+AM_CPPFLAGS = \\\n+        -DISO_CODES_LOCATION=\\\"$(ISO_CODES_LOCATION)\\\"\t\t\\\n+        -DISO_CODES_LOCALEDIR=\\\"$(ISO_CODES_LOCALEDIR)\\\"\t\\\n+\t-DG_LOG_DOMAIN=\\\"Gimp-Presets\\\"\n+\n+INCLUDES = \\\n+\t-I$(top_builddir)\t\t\\\n+\t-I$(top_srcdir)\t\t\t\\\n+\t-I$(top_builddir)/app\t\\\n+\t-I$(top_srcdir)/app\t\t\\\n+\t$(GEGL_CFLAGS)\t\t\t\\\n+\t$(GTK_CFLAGS)\t\t\t\\\n+\t$(SOUP_CFLAGS)\t\t\t\\\n+\t-I$(includedir) \t\t\\\n+\t$(xobjective_c)\n+\n+noinst_LIBRARIES = libapphttpd.a\n+\n+libapphttpd_a_sources = \\\n+\thttpd-enums.h   \t\t\\\n+\thttpd.cpp\t\t\t\\\n+\thttpd.h\t\t\t\t\\\n+\trest-pdb.cpp\t\t\t\\\n+\trest-pdb.h\t\t\t\\\n+\trest-image-tree.cpp\t\t\\\n+\trest-image-tree.h\t\t\\\n+\thttpd-features.cpp\t\t\\\n+\thttpd-features.h        \\\n+\thttpd-features-gui.cpp\t\t\\\n+\thttpd-features-gui.h        \\\n+\tnavigation-guide.cpp    \\\n+\tnavigation-guide.h\n+\n+libapphttpd_a_built_sources = httpd-enums.c\n+\n+libapphttpd_a_SOURCES = \\\n+\t$(libapphttpd_a_built_sources) $(libapphttpd_a_sources)\n+\n+\n+#\n+# rules to generate built sources\n+#\n+# setup autogeneration dependencies\n+gen_sources = xgen-wec\n+CLEANFILES = $(gen_sources)\n+\n+httpd-enums.c: $(srcdir)/httpd-enums.h $(GIMP_MKENUMS)\n+\t$(GIMP_MKENUMS) \\\n+\t\t--fhead \"#include \\\"config.h\\\"\\n#include <gtk/gtk.h>\\n#include \\\"libgimpbase/gimpbase.h\\\"\\n#include \\\"httpd-enums.h\\\"\\n#include \\\"gimp-intl.h\\\"\" \\\n+\t\t--fprod \"\\n/* enumerations from \\\"@filename@\\\" */\" \\\n+\t\t--vhead \"GType\\n@enum_name@_get_type (void)\\n{\\n  static const G@Type@Value values[] =\\n  {\" \\\n+\t\t--vprod \"    { @VALUENAME@, \\\"@VALUENAME@\\\", \\\"@valuenick@\\\" },\" \\\n+\t\t--vtail \"    { 0, NULL, NULL }\\n  };\\n\" \\\n+\t\t--dhead \"  static const Gimp@Type@Desc descs[] =\\n  {\" \\\n+\t\t--dprod \"    { @VALUENAME@, @valuedesc@, @valuehelp@ },\" \\\n+\t\t--dtail \"    { 0, NULL, NULL }\\n  };\\n\\n  static GType type = 0;\\n\\n  if (G_UNLIKELY (! type))\\n    {\\n      type = g_@type@_register_static (\\\"@EnumName@\\\", values);\\n      gimp_type_set_translation_context (type, \\\"@enumnick@\\\");\\n      gimp_@type@_set_value_descriptions (type, descs);\\n    }\\n\\n  return type;\\n}\\n\" \\\n+\t\t$(srcdir)/httpd-enums.h > xgen-wec \\\n+\t&& cp xgen-wec $(@F) \\\n+\t&& rm -f xgen-wec\n",
+      "current_sha256": {
+        "app/httpd/httpd.cpp": "22450de1872fe672f6f20ba1a220abba5e52f32a2d7cb1ccbecdd77e046682df",
+        "app/httpd/httpd-resource.cpp": "1b048f9cdea036e50d7fa54becaa37bb08d7f4685cca281b08e9ab5321232651",
+        "app/httpd/httpd-images.cpp": "084e0fe355b97a806e9fb021bcfa73881a9a917203bbfdafe0dd609103554631",
+        "app/httpd/httpd-pdb.cpp": "745a694918a67bd15962e7dd035dd78d14183d4a07f01c7c50e5a80014329a97",
+        "app/httpd/httpd-navigation.cpp": "3c08a702de3a9873b0513dcf9f572284820bcac1a8dfbf7e51fd31fb98cda5fc"
+      },
+      "criterion": "Current archive order resolves actual links; explicit roots retain applicable registration/type members; controlled unrooted and cyclic links expose failure modes",
+      "evidence": [
+        "migration/tests/archive-order/native.json",
+        "migration/tests/archive-order/evidence.tar.gz"
+      ],
+      "result": "Listed counterparts match actual object hashes and extraction maps; preset apply is intentionally unreferenced in both consoles and retained in both GUIs. Target/generator metadata is identified separately"
+    },
+    {
+      "work_id": "legacy-a7c63cd4c25d6065d334",
+      "source_id": "01.002/000885",
+      "path": "app/paint/Makefile.am",
+      "source_blob": "c70a724ef07f1070c7059b82392f31c8b0ce090f",
+      "source_range": "-57,0 -> 58,6",
+      "source_sha256": "21114d439bb76d5bbb48f010ce3f692499ac790e302f92c0147e121be8f13cfe",
+      "source_scope": "libapppaint_a_sources = \\",
+      "status": "PASS",
+      "current_paths": [
+        "app/paint/painter-mypaint-surface/paint-core.cpp",
+        "app/paint/painter-mypaint-surface/gegl-surface.cpp",
+        "app/paint/painter-mypaint-surface/gimp-painter-session.cpp"
+      ],
+      "registration_rationale": "Native PaintCore/session and GEGL Surface replace the old core, surface and empty Undo TU; registration does not close Undo/behavior acceptance.",
+      "source_payload": "+\tgimpmypaintcore.cpp\t\t\\\n+\tgimpmypaintcore.hpp\t\t\\\n+\tgimpmypaintcoreundo.cpp\t\t\\\n+\tgimpmypaintcoreundo.h\t\t\\\n+\tgimpmypaintcore-surface.cpp\t\t\\\n+\tgimpmypaintcore-surface.hpp\t\t\\\n",
+      "current_sha256": {
+        "app/paint/painter-mypaint-surface/paint-core.cpp": "f2acf89889fbb8c7ae57f700f1f455833c830ba38329c4f829a9bf4d9f00669a",
+        "app/paint/painter-mypaint-surface/gegl-surface.cpp": "e7ac2ab7781f9a278c1b4296424d353ef30758a79fa2ddddc5ae70fa342b3c2c",
+        "app/paint/painter-mypaint-surface/gimp-painter-session.cpp": "08909db4102da3937a2eacdb6f6fca70ea927b6053086c3c51e04dd67463e431"
+      },
+      "criterion": "Current archive order resolves actual links; explicit roots retain applicable registration/type members; controlled unrooted and cyclic links expose failure modes",
+      "evidence": [
+        "migration/tests/archive-order/native.json",
+        "migration/tests/archive-order/evidence.tar.gz"
+      ],
+      "result": "Listed counterparts match actual object hashes and extraction maps; preset apply is intentionally unreferenced in both consoles and retained in both GUIs. Target/generator metadata is identified separately"
+    },
+    {
+      "work_id": "legacy-95d7bc373edc1babb307",
+      "source_id": "01.002/000886",
+      "path": "app/paint/Makefile.am",
+      "source_blob": "c70a724ef07f1070c7059b82392f31c8b0ce090f",
+      "source_range": "-63,0 -> 70,8",
+      "source_sha256": "5b5d48c7bd9a6f949e01526807be10e37d3918d6d449e15dde10a3ac5ebd36c9",
+      "source_scope": "libapppaint_a_sources = \\",
+      "status": "PASS",
+      "current_paths": [
+        "app/paint/painter-mypaint-surface/gimp-painter-options.cpp",
+        "app/paint/painter-mypaint/engine.cpp"
+      ],
+      "registration_rationale": "Options and application-owned history share the options TU; stroke/engine code is in engine.cpp.",
+      "source_payload": "+\tgimpmypaintoptions.cpp\t\t\\\n+\tgimpmypaintoptions.h\t\t\\\n+\tgimpmypaintoptions-history.cpp\t\\\n+\tgimpmypaintoptions-history.hpp\t\\\n+\tmypaintbrush-brush.hpp\t\t\\\n+\tmypaintbrush-surface.hpp\t\t\\\n+\tmypaintbrush-stroke.hpp\t\t\\\n+\tmypaintbrush-stroke.cpp\t\t\\\n",
+      "current_sha256": {
+        "app/paint/painter-mypaint-surface/gimp-painter-options.cpp": "2126a82d73b1abb30ec7031449ec615a358b735584dd824b0c8c3840069ea813",
+        "app/paint/painter-mypaint/engine.cpp": "dafdaf2a791d51e3f1ce39642bc2ef7f06d09e8af66de07ba89848adba3aa94a"
+      },
+      "criterion": "Current archive order resolves actual links; explicit roots retain applicable registration/type members; controlled unrooted and cyclic links expose failure modes",
+      "evidence": [
+        "migration/tests/archive-order/native.json",
+        "migration/tests/archive-order/evidence.tar.gz"
+      ],
+      "result": "Listed counterparts match actual object hashes and extraction maps; preset apply is intentionally unreferenced in both consoles and retained in both GUIs. Target/generator metadata is identified separately"
+    },
+    {
+      "work_id": "legacy-8479fd4c584ff4536fc8",
+      "source_id": "01.002/001008",
+      "path": "app/pdb/Makefile.am",
+      "source_blob": "12a94259835da77e2a77e97848b11619c61a7c5e",
+      "source_range": "-32,0 -> 33,2",
+      "source_sha256": "49d572fcfa22a73972a19bd5793957968b2bb40108adba3c4c097bc32a43eb8b",
+      "source_scope": "libapppdb_a_SOURCES = \\",
+      "status": "PASS",
+      "current_paths": [
+        "app/core/gimpfilterprocedure.cpp",
+        "app/core/gimpfilterprocedure-arguments.cpp",
+        "app/painter/filter-process.cpp"
+      ],
+      "registration_rationale": "PDB/executor C++ adapters moved into appcore and apppainter; no old pdb-cxx-utils.cpp needs a duplicate registration. Arbitrary saved procedure coverage remains open.",
+      "source_payload": "+\tpdb-cxx-utils.cpp\t\t\\\n+\tpdb-cxx-utils.hpp\t\t\\\n",
+      "current_sha256": {
+        "app/core/gimpfilterprocedure.cpp": "14b68d4572b4e11870d46d9e34bbaba4c3e86eb1e4df15596cfb17d37e3efa61",
+        "app/core/gimpfilterprocedure-arguments.cpp": "cfa0028427f1ae19701f42d107a26883e4c143a25a15dbb4211d53fab0f9a055",
+        "app/painter/filter-process.cpp": "5d5bc162d3c26d9496cc5f52ceff926e6e7e57fdaae225fef02a8705edd6d42c"
+      },
+      "criterion": "Current archive order resolves actual links; explicit roots retain applicable registration/type members; controlled unrooted and cyclic links expose failure modes",
+      "evidence": [
+        "migration/tests/archive-order/native.json",
+        "migration/tests/archive-order/evidence.tar.gz"
+      ],
+      "result": "Listed counterparts match actual object hashes and extraction maps; preset apply is intentionally unreferenced in both consoles and retained in both GUIs. Target/generator metadata is identified separately"
+    },
+    {
+      "work_id": "legacy-3f1979eb538d35e91a6e",
+      "source_id": "01.002/001065",
+      "path": "app/presets/Makefile.am",
+      "source_blob": "d874add9c485d04b46255309c0228463e0062663",
+      "source_range": "-0,0 -> 1,62",
+      "source_sha256": "9cfe6a562755e05d4a7095bd4822099fa8fedce56bcad76a34fda4e691c212ab",
+      "source_scope": "file-level declarations/content",
+      "status": "PASS",
+      "current_paths": [
+        "app/core/gimplayerpreset.c",
+        "app/core/gimplayerpreset-apply.cpp",
+        "app/core/gimp-data-factories.c",
+        "app/actions/layer-presets-actions.c",
+        "app/widgets/gimplayerpresetview.c"
+      ],
+      "registration_rationale": "Presets are native C data/factory/view and a private C++ applier in existing modules, not a separately named legacy library. Generator/behavior obligations stay open.",
+      "source_payload": "+## Process this file with automake to produce Makefile.in\n+\n+if PLATFORM_OSX\n+xobjective_c = \"-xobjective-c\"\n+endif\n+\n+AM_CPPFLAGS = \\\n+        -DISO_CODES_LOCATION=\\\"$(ISO_CODES_LOCATION)\\\"\t\t\\\n+        -DISO_CODES_LOCALEDIR=\\\"$(ISO_CODES_LOCALEDIR)\\\"\t\\\n+\t-DG_LOG_DOMAIN=\\\"Gimp-Presets\\\"\n+\n+INCLUDES = \\\n+\t-I$(top_builddir)\t\t\\\n+\t-I$(top_srcdir)\t\t\t\\\n+\t-I$(top_builddir)/app\t\\\n+\t-I$(top_srcdir)/app\t\t\\\n+\t$(GEGL_CFLAGS)\t\t\t\\\n+\t$(GTK_CFLAGS)\t\t\t\\\n+\t-I$(includedir) \t\t\\\n+\t$(xobjective_c)\n+\n+noinst_LIBRARIES = libapppresets.a\n+\n+libapppresets_a_sources = \\\n+\tpresets-enums.h   \t\t\\\n+\tgimpjsonresource.cpp\t\t\\\n+\tgimpjsonresource.h\t\t\\\n+\tpreset-factory.cpp\t\t\\\n+\tpreset-factory.h\t\t\\\n+\tpreset-factory-gui.cpp\t\t\\\n+\tpreset-factory-gui.h\t\t\\\n+\tlayer-preset.cpp\t\t\\\n+\tlayer-preset.h\t\t\t\\\n+\tlayer-preset-gui.cpp\t\t\\\n+\tlayer-preset-gui.h\n+\n+libapppresets_a_built_sources = presets-enums.c\n+\n+libapppresets_a_SOURCES = \\\n+\t$(libapppresets_a_built_sources) $(libapppresets_a_sources)\n+\n+\n+#\n+# rules to generate built sources\n+#\n+# setup autogeneration dependencies\n+gen_sources = xgen-wec\n+CLEANFILES = $(gen_sources)\n+\n+presets-enums.c: $(srcdir)/presets-enums.h $(GIMP_MKENUMS)\n+\t$(GIMP_MKENUMS) \\\n+\t\t--fhead \"#include \\\"config.h\\\"\\n#include <gtk/gtk.h>\\n#include \\\"libgimpbase/gimpbase.h\\\"\\n#include \\\"presets-enums.h\\\"\\n#include \\\"gimp-intl.h\\\"\" \\\n+\t\t--fprod \"\\n/* enumerations from \\\"@filename@\\\" */\" \\\n+\t\t--vhead \"GType\\n@enum_name@_get_type (void)\\n{\\n  static const G@Type@Value values[] =\\n  {\" \\\n+\t\t--vprod \"    { @VALUENAME@, \\\"@VALUENAME@\\\", \\\"@valuenick@\\\" },\" \\\n+\t\t--vtail \"    { 0, NULL, NULL }\\n  };\\n\" \\\n+\t\t--dhead \"  static const Gimp@Type@Desc descs[] =\\n  {\" \\\n+\t\t--dprod \"    { @VALUENAME@, @valuedesc@, @valuehelp@ },\" \\\n+\t\t--dtail \"    { 0, NULL, NULL }\\n  };\\n\\n  static GType type = 0;\\n\\n  if (G_UNLIKELY (! type))\\n    {\\n      type = g_@type@_register_static (\\\"@EnumName@\\\", values);\\n      gimp_type_set_translation_context (type, \\\"@enumnick@\\\");\\n      gimp_@type@_set_value_descriptions (type, descs);\\n    }\\n\\n  return type;\\n}\\n\" \\\n+\t\t$(srcdir)/presets-enums.h > xgen-wec \\\n+\t&& cp xgen-wec $(@F) \\\n+\t&& rm -f xgen-wec\n",
+      "current_sha256": {
+        "app/core/gimplayerpreset.c": "ec6edcf6223f1cbc6d125f26c71644a77c6b7077db9a0b01e3cbf53eac9e7e8e",
+        "app/core/gimplayerpreset-apply.cpp": "da1e68b6b9fe9cf316b8f341b57e219bf99f5517150a3b550a83436e95097f58",
+        "app/core/gimp-data-factories.c": "4c5a1f058c975f525dc0beb62d50b24f4c199ab3835591611bb91bb9b3844681",
+        "app/actions/layer-presets-actions.c": "740d7b1e9de1e4ec7bfc7ac1f5930190390172026befdaf635e787b2969d0f7d",
+        "app/widgets/gimplayerpresetview.c": "46a8763177097b16102f06481bab4750ebaa978757eda86030e5c34b4c2c9ced"
+      },
+      "criterion": "Current archive order resolves actual links; explicit roots retain applicable registration/type members; controlled unrooted and cyclic links expose failure modes",
+      "evidence": [
+        "migration/tests/archive-order/native.json",
+        "migration/tests/archive-order/evidence.tar.gz"
+      ],
+      "result": "Listed counterparts match actual object hashes and extraction maps; preset apply is intentionally unreferenced in both consoles and retained in both GUIs. Target/generator metadata is identified separately"
+    },
+    {
+      "work_id": "legacy-bc98c584c5c203fe7561",
+      "source_id": "01.002/001082",
+      "path": "app/tools/Makefile.am",
+      "source_blob": "1bcf07be0e3f7b5db0223172b33a6f70fcf1501c",
+      "source_range": "-42,0 -> 45,2",
+      "source_sha256": "7db8e963d67d2487de10b7b67b8fee0303b6b9200c43213b4f26fa67c29e28e9",
+      "source_scope": "libapptools_a_sources = \\",
+      "status": "PASS",
+      "current_paths": [
+        "app/tools/gimpfillbrushtool.cpp",
+        "app/paint/gimpfillbrush.cpp"
+      ],
+      "registration_rationale": "Bounded fill tool and paint-core implementations have explicit owning-module registrations.",
+      "source_payload": "+\tgimpbucketfillbrushtool.cpp\t\t\\\n+\tgimpbucketfillbrushtool.h\t\t\\\n",
+      "current_sha256": {
+        "app/tools/gimpfillbrushtool.cpp": "1bd3106959f64ac1692bbc318ed17bf2cb4a6297a4cd806f7872cddbec833d37",
+        "app/paint/gimpfillbrush.cpp": "f91685ff3853e89313aa038805630117c8dbfbe741b4b3af463be1c04dbf2a0e"
+      },
+      "criterion": "Current archive order resolves actual links; explicit roots retain applicable registration/type members; controlled unrooted and cyclic links expose failure modes",
+      "evidence": [
+        "migration/tests/archive-order/native.json",
+        "migration/tests/archive-order/evidence.tar.gz"
+      ],
+      "result": "Listed counterparts match actual object hashes and extraction maps; preset apply is intentionally unreferenced in both consoles and retained in both GUIs. Target/generator metadata is identified separately"
+    },
+    {
+      "work_id": "legacy-c80b5a74aac2ff4c4310",
+      "source_id": "01.002/001085",
+      "path": "app/tools/Makefile.am",
+      "source_blob": "1bcf07be0e3f7b5db0223172b33a6f70fcf1501c",
+      "source_range": "-144,0 -> 153,2",
+      "source_sha256": "8aa19abbd32aa4e5a8a82cdb6daff85dba45307407b6a3fa5d2c3b910a9a0614",
+      "source_scope": "libapptools_a_sources = \\",
+      "status": "PASS",
+      "current_paths": [
+        "app/tools/gimpperspectiveguidetool.cpp"
+      ],
+      "registration_rationale": "Perspective editor tool is registered directly in apptools.",
+      "source_payload": "+\tgimpperspectiveguidetool.cpp\t\t\\\n+\tgimpperspectiveguidetool.h\t\t\\\n",
+      "current_sha256": {
+        "app/tools/gimpperspectiveguidetool.cpp": "08f839eea914b1d2baf22f0b266038929aa2db89509ebe71a9eb34683347884b"
+      },
+      "criterion": "Current archive order resolves actual links; explicit roots retain applicable registration/type members; controlled unrooted and cyclic links expose failure modes",
+      "evidence": [
+        "migration/tests/archive-order/native.json",
+        "migration/tests/archive-order/evidence.tar.gz"
+      ],
+      "result": "Listed counterparts match actual object hashes and extraction maps; preset apply is intentionally unreferenced in both consoles and retained in both GUIs. Target/generator metadata is identified separately"
+    },
+    {
+      "work_id": "legacy-43d3f84ad83a1e505178",
+      "source_id": "01.002/001086",
+      "path": "app/tools/Makefile.am",
+      "source_blob": "1bcf07be0e3f7b5db0223172b33a6f70fcf1501c",
+      "source_range": "-198 -> 208,13",
+      "source_sha256": "5cdffcdda5b82f01e63348ee4fed2f3e3bd71be3a4cd9602524d789a713f9755",
+      "source_scope": "libapptools_a_sources = \\",
+      "status": "PASS",
+      "current_paths": [
+        "app/tools/gimppaintermybrushtool.cpp",
+        "app/widgets/gimppaintermybrusheditor.cpp",
+        "app/widgets/gimppaintercompactoptions.cpp"
+      ],
+      "registration_rationale": "Tool, shared editor and reversible compact adapter replace duplicate legacy tool/editor/helper TUs. Full control/type equivalence remains under their existing feature tasks.",
+      "source_payload": "-\tgimpvectortool.h\n+\tgimpvectortool.h   \t\t\\\n+\tgimpmypainttool.cpp\t\t\\\n+\tgimpmypainttool.h\t\t\\\n+\tgimpmypaintoptions-gui.cpp\t\\\n+\tgimpmypaintoptions-gui.h  \t\\\n+\tgimpmypaintbrushoptions-gui.cpp\t\\\n+\tgimpmypaintbrushoptions-gui.h\t\\\n+\tgimptooloptions-gui-cxx.cpp\t\\\n+\tgimptooloptions-gui-cxx.hpp\t\t\\\n+\tgimpmypaintbrusheditor.cpp\t\t\\\n+\tgimpmypaintbrusheditor.hpp\t\t\\\n+\tgimpmypaint-gui-base.hpp\n+\n",
+      "current_sha256": {
+        "app/tools/gimppaintermybrushtool.cpp": "2b6a54cabe22fbb3b8cd113c8a3231955407ca67519822c0eb673c6f03575c90",
+        "app/widgets/gimppaintermybrusheditor.cpp": "d6a699fb1da5ca8f4ccf6cf68dcb4a4832c617fd9fd69c964e68f228102da633",
+        "app/widgets/gimppaintercompactoptions.cpp": "e5e35c593554587b3dfb931aca2d9bd5fc228332c157a79fb83d0bbedac38fa0"
+      },
+      "criterion": "Current archive order resolves actual links; explicit roots retain applicable registration/type members; controlled unrooted and cyclic links expose failure modes",
+      "evidence": [
+        "migration/tests/archive-order/native.json",
+        "migration/tests/archive-order/evidence.tar.gz"
+      ],
+      "result": "Listed counterparts match actual object hashes and extraction maps; preset apply is intentionally unreferenced in both consoles and retained in both GUIs. Target/generator metadata is identified separately"
+    },
+    {
+      "work_id": "legacy-0a9b7e820da54930ea0d",
+      "source_id": "01.002/001515",
+      "path": "app/widgets/Makefile.am",
+      "source_blob": "943009bb3350e08938bda729500f73cc17a28522",
+      "source_range": "-52,0 -> 57,2",
+      "source_sha256": "b61b6e95e6382ad76978e633753bee1419ce46c5fe78f2b6dadb978b9907b629",
+      "source_scope": "libappwidgets_a_sources = \\",
+      "status": "PASS",
+      "current_paths": [
+        "app/widgets/gimppainterlayertiles.cpp",
+        "app/widgets/gimppaintercompactoptions.cpp"
+      ],
+      "registration_rationale": "Registered GTK3 popover consumers provide current UI routes; this does not prove that every old CellRendererPopup vfunc has been ported.",
+      "source_payload": "+\tgimpcellrendererpopup.cpp\t\\\n+\tgimpcellrendererpopup.h\t\\\n",
+      "current_sha256": {
+        "app/widgets/gimppainterlayertiles.cpp": "ba89c8287b963085e0d8949541a5686181b44a262523eac5f43fc17e497f980e",
+        "app/widgets/gimppaintercompactoptions.cpp": "e5e35c593554587b3dfb931aca2d9bd5fc228332c157a79fb83d0bbedac38fa0"
+      },
+      "criterion": "Current archive order resolves actual links; explicit roots retain applicable registration/type members; controlled unrooted and cyclic links expose failure modes",
+      "evidence": [
+        "migration/tests/archive-order/native.json",
+        "migration/tests/archive-order/evidence.tar.gz"
+      ],
+      "result": "Listed counterparts match actual object hashes and extraction maps; preset apply is intentionally unreferenced in both consoles and retained in both GUIs. Target/generator metadata is identified separately"
+    },
+    {
+      "work_id": "legacy-83a2a5de39e89a2772e0",
+      "source_id": "01.002/001516",
+      "path": "app/widgets/Makefile.am",
+      "source_blob": "943009bb3350e08938bda729500f73cc17a28522",
+      "source_range": "-234,0 -> 241,4",
+      "source_sha256": "648de987d8ba08257f9f9c414dd482393a185b9e837938d8ee7807417f9f1eb1",
+      "source_scope": "libappwidgets_a_sources = \\",
+      "status": "PASS",
+      "current_paths": [
+        "app/widgets/gimppainterlayertiles.cpp",
+        "app/dialogs/layer-options-dialog.c",
+        "app/core/gimpfilterparametereditor.cpp"
+      ],
+      "registration_rationale": "Layer tiles use registered C++ and canonical custom-layer editors. Full legacy popup/type acceptance remains separate.",
+      "source_payload": "+\tgimplayerpopup.cpp\t\t\\\n+\tgimplayerpopup.h\t\t\\\n+\tgimplayertileview.cpp\t\\\n+\tgimplayertileview.h\t\t\\\n",
+      "current_sha256": {
+        "app/widgets/gimppainterlayertiles.cpp": "ba89c8287b963085e0d8949541a5686181b44a262523eac5f43fc17e497f980e",
+        "app/dialogs/layer-options-dialog.c": "a7ae97a35bf0a1fc90c608523eefe0dc7a7f8696ab89a5c1171e85834075eef9",
+        "app/core/gimpfilterparametereditor.cpp": "fcf150ea7c938ab792770f3307d769e5f84dddcfba20b85030b6e7ca4c9e130f"
+      },
+      "criterion": "Current archive order resolves actual links; explicit roots retain applicable registration/type members; controlled unrooted and cyclic links expose failure modes",
+      "evidence": [
+        "migration/tests/archive-order/native.json",
+        "migration/tests/archive-order/evidence.tar.gz"
+      ],
+      "result": "Listed counterparts match actual object hashes and extraction maps; preset apply is intentionally unreferenced in both consoles and retained in both GUIs. Target/generator metadata is identified separately"
+    },
+    {
+      "work_id": "legacy-14b535f90304e5bd92a6",
+      "source_id": "01.002/001520",
+      "path": "app/widgets/Makefile.am",
+      "source_blob": "943009bb3350e08938bda729500f73cc17a28522",
+      "source_range": "-361,0 -> 377,2",
+      "source_sha256": "6553f8a63f0472c67d7ed31ced59ac11ff92ed74d06d61049aeee2ff12037101",
+      "source_scope": "libappwidgets_a_sources = \\",
+      "status": "PASS",
+      "current_paths": [
+        "app/display/gimppaintercanvasui.cpp"
+      ],
+      "registration_rationale": "Current tool tile/group controller is registered in the shell canvas C++ TU; no duplicate legacy widget TU is added.",
+      "source_payload": "+\tgimptooltileview.cpp\t\\\n+\tgimptooltileview.h\t\t\\\n",
+      "current_sha256": {
+        "app/display/gimppaintercanvasui.cpp": "d51aca41662464a120ce3badf28e202381a2e0c0a2a03d4263a81b346c931fed"
+      },
+      "criterion": "Current archive order resolves actual links; explicit roots retain applicable registration/type members; controlled unrooted and cyclic links expose failure modes",
+      "evidence": [
+        "migration/tests/archive-order/native.json",
+        "migration/tests/archive-order/evidence.tar.gz"
+      ],
+      "result": "Listed counterparts match actual object hashes and extraction maps; preset apply is intentionally unreferenced in both consoles and retained in both GUIs. Target/generator metadata is identified separately"
+    },
+    {
+      "work_id": "legacy-7dea72816fba11b7ebe6",
+      "source_id": "01.002/001521",
+      "path": "app/widgets/Makefile.am",
+      "source_blob": "943009bb3350e08938bda729500f73cc17a28522",
+      "source_range": "-415 -> 432,8",
+      "source_sha256": "11031674dfd628315fe52689ffb3447a10ff511dd6d1ed9fc422d95afd644cdd",
+      "source_scope": "libappwidgets_a_sources = \\",
+      "status": "PASS",
+      "current_paths": [
+        "app/widgets/gimppaintermybrusheditor.cpp",
+        "app/widgets/gimppaintercompactoptions.cpp",
+        "app/widgets/gimppainterlayertiles.cpp"
+      ],
+      "registration_rationale": "Shared editor, native GTK3 popovers and compact controls are registered replacements; old helper/type contracts remain in their separate WBS/source obligations.",
+      "source_payload": "-\tgtkhwrapbox.h\n+\tgtkhwrapbox.h\t\t\t\\\n+\tgimpmypaintbrusheditor.cpp\t\\\n+\tgimpmypaintbrusheditor.h\t\\\n+\tpopupper.cpp\t\t\t\\\n+\tpopupper.h\t\t\t\\\n+\tgimpeditor-private.h\t\t\\\n+\tgimpeditor-cxx.cpp\t\t\\\n+\tgimpeditor-cxx.h\n",
+      "current_sha256": {
+        "app/widgets/gimppaintermybrusheditor.cpp": "d6a699fb1da5ca8f4ccf6cf68dcb4a4832c617fd9fd69c964e68f228102da633",
+        "app/widgets/gimppaintercompactoptions.cpp": "e5e35c593554587b3dfb931aca2d9bd5fc228332c157a79fb83d0bbedac38fa0",
+        "app/widgets/gimppainterlayertiles.cpp": "ba89c8287b963085e0d8949541a5686181b44a262523eac5f43fc17e497f980e"
+      },
+      "criterion": "Current archive order resolves actual links; explicit roots retain applicable registration/type members; controlled unrooted and cyclic links expose failure modes",
+      "evidence": [
+        "migration/tests/archive-order/native.json",
+        "migration/tests/archive-order/evidence.tar.gz"
+      ],
+      "result": "Listed counterparts match actual object hashes and extraction maps; preset apply is intentionally unreferenced in both consoles and retained in both GUIs. Target/generator metadata is identified separately"
+    },
+    {
+      "work_id": "legacy-292c51c1982b9d590183",
+      "source_id": "01.002/001891",
+      "path": "configure.ac",
+      "source_blob": "f47f24a189e35eb614be51b166c6b2a71edfdf93",
+      "source_range": "-69,0 -> 71",
+      "source_sha256": "250882ee928e086b0ecfd32f6ac0b87b78f3c96b66faa81f50b64455a204e7f6",
+      "source_scope": "m4_define([python2_required_version], [2.5.0])",
+      "status": "PASS",
+      "current_paths": [
+        "app/core/meson.build",
+        "app/paint/painter-mypaint/meson.build",
+        "app/core/gimplayerpreset.c",
+        "app/core/gimplayerpreset-apply.cpp",
+        "app/paint/painter-mypaint/resource.cpp"
+      ],
+      "registration_rationale": "Adds JSON-GLib >=1.0 metadata. JSON is shared by brush/preset persistence and must not become HTTP-only or rely on an accidental transitive archive dependency. Existing original 04.009 owns link dependency/order verification; its already-existing 04.009/json-dependency child contains the precise direct-link duty and remains unchanged. Verify brush/preset round trips and HTTP-disabled persistence.",
+      "source_payload": "+m4_define([json_glib_required_version],[1.0])\n",
+      "current_sha256": {
+        "app/core/meson.build": "1779f00e028bd5f4f3cd3bd1ed1679272660a15065fec66b1ccc772dda3906f2",
+        "app/paint/painter-mypaint/meson.build": "c84e92c0c1a65c336ab8257153fc5422b2f434fbef00d2affef40c84f33315d8",
+        "app/core/gimplayerpreset.c": "ec6edcf6223f1cbc6d125f26c71644a77c6b7077db9a0b01e3cbf53eac9e7e8e",
+        "app/core/gimplayerpreset-apply.cpp": "da1e68b6b9fe9cf316b8f341b57e219bf99f5517150a3b550a83436e95097f58",
+        "app/paint/painter-mypaint/resource.cpp": "128928c74ef99cbb754ba469e6df3946db1730588a1ddc5cb9daf21c3441f15b"
+      },
+      "criterion": "Current archive order resolves actual links; explicit roots retain applicable registration/type members; controlled unrooted and cyclic links expose failure modes",
+      "evidence": [
+        "migration/tests/archive-order/native.json",
+        "migration/tests/archive-order/evidence.tar.gz",
+        "migration/tests/json-link/default.json",
+        "migration/tests/json-link/http.json"
+      ],
+      "result": "Required JSON version/probe and direct native dependencies are verified; removing JSON alone fails even with GEGL/Soup; isolated Resource links and narrow read/write smoke pass without GEGL/Soup/GTK"
+    },
+    {
+      "work_id": "legacy-08fcd913dcbf4ae344b6",
+      "source_id": "01.002/001894",
+      "path": "configure.ac",
+      "source_blob": "f47f24a189e35eb614be51b166c6b2a71edfdf93",
+      "source_range": "-545,0 -> 552,2",
+      "source_sha256": "28504a4a06d711fc6fe1ed30100f321bafa220eaf32612accd4031e97790ebdf",
+      "source_scope": "AC_MSG_RESULT($have_glib_2_31)",
+      "status": "PASS",
+      "current_paths": [
+        "app/core/meson.build",
+        "app/paint/painter-mypaint/meson.build",
+        "app/core/gimplayerpreset.c",
+        "app/core/gimplayerpreset-apply.cpp",
+        "app/paint/painter-mypaint/resource.cpp"
+      ],
+      "registration_rationale": "Adds the JSON-GLib pkg-config probe, paired with hunk 4 version metadata. Preserve explicit direct include/link dependencies for brush/preset persistence. The existing 04.009/json-dependency child specifies that work; this recommendation references its original parent and keeps all obligations TODO. Verify persistence with HTTP disabled as well as round trips.",
+      "source_payload": "+PKG_CHECK_MODULES(JSON, json-glib-1.0 >= json_glib_required_version)\n+\n",
+      "current_sha256": {
+        "app/core/meson.build": "1779f00e028bd5f4f3cd3bd1ed1679272660a15065fec66b1ccc772dda3906f2",
+        "app/paint/painter-mypaint/meson.build": "c84e92c0c1a65c336ab8257153fc5422b2f434fbef00d2affef40c84f33315d8",
+        "app/core/gimplayerpreset.c": "ec6edcf6223f1cbc6d125f26c71644a77c6b7077db9a0b01e3cbf53eac9e7e8e",
+        "app/core/gimplayerpreset-apply.cpp": "da1e68b6b9fe9cf316b8f341b57e219bf99f5517150a3b550a83436e95097f58",
+        "app/paint/painter-mypaint/resource.cpp": "128928c74ef99cbb754ba469e6df3946db1730588a1ddc5cb9daf21c3441f15b"
+      },
+      "criterion": "Current archive order resolves actual links; explicit roots retain applicable registration/type members; controlled unrooted and cyclic links expose failure modes",
+      "evidence": [
+        "migration/tests/archive-order/native.json",
+        "migration/tests/archive-order/evidence.tar.gz",
+        "migration/tests/json-link/default.json",
+        "migration/tests/json-link/http.json"
+      ],
+      "result": "Required JSON version/probe and direct native dependencies are verified; removing JSON alone fails even with GEGL/Soup; isolated Resource links and narrow read/write smoke pass without GEGL/Soup/GTK"
+    }
+  ],
+  "counterpart_observations": [
+    {
+      "variant": "default",
+      "path": "app/actions/actions.c",
+      "kind": "translation-unit",
+      "source_sha256": "0627fb49a0a0215b589f37a38b43b202fd17f80c176f1a42a1c1b9387702cc09",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/actions/libappactions.a.p/actions.c.o",
+          "object_sha256": "1baf4b9b6cad7c77dc7714db1f55a51ae6544087a4f8ab687280557290352ace",
+          "archive": "app/actions/libappactions.a",
+          "extraction_reason": "app/gui/libappgui.a.p/gui.c.o (actions_init)",
+          "retention": "archive member extracted"
+        }
+      ]
+    },
+    {
+      "variant": "default",
+      "path": "app/actions/layer-presets-actions.c",
+      "kind": "translation-unit",
+      "source_sha256": "740d7b1e9de1e4ec7bfc7ac1f5930190390172026befdaf635e787b2969d0f7d",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/actions/libappactions.a.p/layer-presets-actions.c.o",
+          "object_sha256": "716f3c1833368031127d9964f12e78fe5f7ea00b8ef3161896beec0c87dd8120",
+          "archive": "app/actions/libappactions.a",
+          "extraction_reason": "app/actions/libappactions.a.p/actions.c.o (layer_presets_actions_setup)",
+          "retention": "archive member extracted"
+        }
+      ]
+    },
+    {
+      "variant": "default",
+      "path": "app/app.c",
+      "kind": "translation-unit",
+      "source_sha256": "583c0f3ce2ed87d42aeddb2e9b41aced5007a0ed396a12fbcb0173295188f715",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/libapp.a.p/app.c.o",
+          "object_sha256": "d73d37045fc9b55764d505b665a8585aaefa70ae614590b80d07c4a9b0fec538",
+          "archive": "app/libapp.a",
+          "extraction_reason": "app/gimp-3.0.p/main.c.o (app_libs_init)",
+          "retention": "archive member extracted"
+        },
+        {
+          "target": "gimp-console-3.0",
+          "object": "app/gimp-console-3.0.p/app.c.o",
+          "object_sha256": "4ff91a6c135dc4ebcdf6bf6c47fe99f53a5c10ba176ddb46a528887a63e6a7b2",
+          "retention": "direct final link object"
+        }
+      ]
+    },
+    {
+      "variant": "default",
+      "path": "app/core/gimp-data-factories.c",
+      "kind": "translation-unit",
+      "source_sha256": "4c5a1f058c975f525dc0beb62d50b24f4c199ab3835591611bb91bb9b3844681",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/core/libappcore.a.p/gimp-data-factories.c.o",
+          "object_sha256": "ff1ea8785ad3a1a04b731fa1716f8f6c2841b9642c35904e83c0312b06b79d37",
+          "archive": "app/core/libappcore.a",
+          "extraction_reason": "app/core/libappcore.a.p/gimp.c.o (gimp_data_factories_init)",
+          "retention": "archive member extracted"
+        },
+        {
+          "target": "gimp-console-3.0",
+          "object": "app/core/libappcore.a.p/gimp-data-factories.c.o",
+          "object_sha256": "ff1ea8785ad3a1a04b731fa1716f8f6c2841b9642c35904e83c0312b06b79d37",
+          "archive": "app/core/libappcore.a",
+          "extraction_reason": "app/core/libappcore.a.p/gimp.c.o (gimp_data_factories_init)",
+          "retention": "archive member extracted"
+        }
+      ]
+    },
+    {
+      "variant": "default",
+      "path": "app/core/gimp.c",
+      "kind": "translation-unit",
+      "source_sha256": "cf6c8ae9600ca7d717fa2e4e7a74e54df6fe683d7981a62e41000a9751f0825a",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/core/libappcore.a.p/gimp.c.o",
+          "object_sha256": "692ef0405a7f143345c369ac924745a1aa5817b6a20b89a3bed617a7171e2f64",
+          "archive": "app/core/libappcore.a",
+          "extraction_reason": "app/gimp-3.0.p/main.c.o (gimp_get_type)",
+          "retention": "archive member extracted"
+        },
+        {
+          "target": "gimp-console-3.0",
+          "object": "app/core/libappcore.a.p/gimp.c.o",
+          "object_sha256": "692ef0405a7f143345c369ac924745a1aa5817b6a20b89a3bed617a7171e2f64",
+          "archive": "app/core/libappcore.a",
+          "extraction_reason": "app/gimp-console-3.0.p/main.c.o (gimp_get_type)",
+          "retention": "archive member extracted"
+        }
+      ]
+    },
+    {
+      "variant": "default",
+      "path": "app/core/gimpclonelayer.cpp",
+      "kind": "translation-unit",
+      "source_sha256": "22adedddcaeb6d70f4bf37e94cf92f3dbe4d1b84c7183097d3c24e49d02b081e",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/core/libappcore.a.p/gimpclonelayer.cpp.o",
+          "object_sha256": "0b3ed6adf18e50e6e8e69da9b0084e456cab2f2613c2cdc9b96ad5f8f11dae20",
+          "archive": "app/core/libappcore.a",
+          "extraction_reason": "app/core/libappcore.a.p/gimpgrouplayer.c.o (gimp_clone_layer_get_type)",
+          "retention": "archive member extracted"
+        },
+        {
+          "target": "gimp-console-3.0",
+          "object": "app/core/libappcore.a.p/gimpclonelayer.cpp.o",
+          "object_sha256": "0b3ed6adf18e50e6e8e69da9b0084e456cab2f2613c2cdc9b96ad5f8f11dae20",
+          "archive": "app/core/libappcore.a",
+          "extraction_reason": "app/core/libappcore.a.p/gimpgrouplayer.c.o (gimp_clone_layer_get_type)",
+          "retention": "archive member extracted"
+        }
+      ]
+    },
+    {
+      "variant": "default",
+      "path": "app/core/gimpfilterlayer.cpp",
+      "kind": "translation-unit",
+      "source_sha256": "abcda53a71ea70000569649fec6c72b802bae828d1748e4c7810a665db3b6b9a",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/core/libappcore.a.p/gimpfilterlayer.cpp.o",
+          "object_sha256": "1e1c594288bef5cc03978dcff161052711350995294db6675de512d1811e2018",
+          "archive": "app/core/libappcore.a",
+          "extraction_reason": "app/xcf/libappxcf.a.p/painter-xcf-load.cpp.o (gimp_filter_layer_get_type)",
+          "retention": "archive member extracted"
+        },
+        {
+          "target": "gimp-console-3.0",
+          "object": "app/core/libappcore.a.p/gimpfilterlayer.cpp.o",
+          "object_sha256": "1e1c594288bef5cc03978dcff161052711350995294db6675de512d1811e2018",
+          "archive": "app/core/libappcore.a",
+          "extraction_reason": "app/xcf/libappxcf.a.p/painter-xcf-load.cpp.o (gimp_filter_layer_get_type)",
+          "retention": "archive member extracted"
+        }
+      ]
+    },
+    {
+      "variant": "default",
+      "path": "app/core/gimpfilterparametereditor.cpp",
+      "kind": "translation-unit",
+      "source_sha256": "fcf150ea7c938ab792770f3307d769e5f84dddcfba20b85030b6e7ca4c9e130f",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/core/libappcore.a.p/gimpfilterparametereditor.cpp.o",
+          "object_sha256": "2bc878401e7c41e83f63a2ca1971e71f4e1d92176ecad7b72344d4277f163486",
+          "archive": "app/core/libappcore.a",
+          "extraction_reason": "app/plug-in/libappplug-in.a.p/gimppluginmanager.c.o (gimp_filter_parameter_editor_activate)",
+          "retention": "archive member extracted"
+        },
+        {
+          "target": "gimp-console-3.0",
+          "object": "app/core/libappcore.a.p/gimpfilterparametereditor.cpp.o",
+          "object_sha256": "2bc878401e7c41e83f63a2ca1971e71f4e1d92176ecad7b72344d4277f163486",
+          "archive": "app/core/libappcore.a",
+          "extraction_reason": "app/plug-in/libappplug-in.a.p/gimppluginmanager.c.o (gimp_filter_parameter_editor_activate)",
+          "retention": "archive member extracted"
+        }
+      ]
+    },
+    {
+      "variant": "default",
+      "path": "app/core/gimpfilterprocedure-arguments.cpp",
+      "kind": "translation-unit",
+      "source_sha256": "cfa0028427f1ae19701f42d107a26883e4c143a25a15dbb4211d53fab0f9a055",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/core/libappcore.a.p/gimpfilterprocedure-arguments.cpp.o",
+          "object_sha256": "0e39c27524c0c014e04ad264b1110fdfbbb0fa9095f24799f9033888ade3028c",
+          "archive": "app/core/libappcore.a",
+          "extraction_reason": "app/core/libappcore.a.p/gimpfilterprocedure.cpp.o (GimpPainter::FilterParameterSchema::FilterParameterSchema(_GimpProcedure*, GimpPainter::FilterProcedure, bool))",
+          "retention": "archive member extracted"
+        },
+        {
+          "target": "gimp-console-3.0",
+          "object": "app/core/libappcore.a.p/gimpfilterprocedure-arguments.cpp.o",
+          "object_sha256": "0e39c27524c0c014e04ad264b1110fdfbbb0fa9095f24799f9033888ade3028c",
+          "archive": "app/core/libappcore.a",
+          "extraction_reason": "app/core/libappcore.a.p/gimpfilterprocedure.cpp.o (GimpPainter::FilterParameterSchema::FilterParameterSchema(_GimpProcedure*, GimpPainter::FilterProcedure, bool))",
+          "retention": "archive member extracted"
+        }
+      ]
+    },
+    {
+      "variant": "default",
+      "path": "app/core/gimpfilterprocedure.cpp",
+      "kind": "translation-unit",
+      "source_sha256": "14b68d4572b4e11870d46d9e34bbaba4c3e86eb1e4df15596cfb17d37e3efa61",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/core/libappcore.a.p/gimpfilterprocedure.cpp.o",
+          "object_sha256": "64e194647ee1a27d7e78f9d1e4241628720de01fe8e220b3863d57f002aa5358",
+          "archive": "app/core/libappcore.a",
+          "extraction_reason": "app/pdb/libappinternalprocs.a.p/progress-cmds.c.o (gimp_filter_procedure_progress_is_private)",
+          "retention": "archive member extracted"
+        },
+        {
+          "target": "gimp-console-3.0",
+          "object": "app/core/libappcore.a.p/gimpfilterprocedure.cpp.o",
+          "object_sha256": "64e194647ee1a27d7e78f9d1e4241628720de01fe8e220b3863d57f002aa5358",
+          "archive": "app/core/libappcore.a",
+          "extraction_reason": "app/pdb/libappinternalprocs.a.p/progress-cmds.c.o (gimp_filter_procedure_progress_is_private)",
+          "retention": "archive member extracted"
+        }
+      ]
+    },
+    {
+      "variant": "default",
+      "path": "app/core/gimplayerpreset-apply.cpp",
+      "kind": "translation-unit",
+      "source_sha256": "da1e68b6b9fe9cf316b8f341b57e219bf99f5517150a3b550a83436e95097f58",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/core/libappcore.a.p/gimplayerpreset-apply.cpp.o",
+          "object_sha256": "7bcf5ef7ef0c53f553f90a963c20974373aceb92d754913bae173391cd1d5c11",
+          "archive": "app/core/libappcore.a",
+          "extraction_reason": "app/widgets/libappwidgets.a.p/gimplayerpresetview.c.o (gimp_layer_preset_matches)",
+          "retention": "archive member extracted"
+        },
+        {
+          "target": "gimp-console-3.0",
+          "object": "app/core/libappcore.a.p/gimplayerpreset-apply.cpp.o",
+          "object_sha256": "7bcf5ef7ef0c53f553f90a963c20974373aceb92d754913bae173391cd1d5c11",
+          "archive": "app/core/libappcore.a",
+          "retention": "not extracted: GUI-only current consumers",
+          "review": "gimp_layer_preset_apply is called only by gimplayerpresetview.c and gimppainterlayertiles.cpp; apply.cpp has no registration constructor. Both GUI maps extract it; console has no caller."
+        }
+      ]
+    },
+    {
+      "variant": "default",
+      "path": "app/core/gimplayerpreset.c",
+      "kind": "translation-unit",
+      "source_sha256": "ec6edcf6223f1cbc6d125f26c71644a77c6b7077db9a0b01e3cbf53eac9e7e8e",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/core/libappcore.a.p/gimplayerpreset.c.o",
+          "object_sha256": "e40f0b900decc19c11730b8dbcd4b7bbf9c7309bb75e35ac6c21727a420d3d76",
+          "archive": "app/core/libappcore.a",
+          "extraction_reason": "app/core/libappcore.a.p/gimp.c.o (gimp_layer_preset_get_type)",
+          "retention": "archive member extracted"
+        },
+        {
+          "target": "gimp-console-3.0",
+          "object": "app/core/libappcore.a.p/gimplayerpreset.c.o",
+          "object_sha256": "e40f0b900decc19c11730b8dbcd4b7bbf9c7309bb75e35ac6c21727a420d3d76",
+          "archive": "app/core/libappcore.a",
+          "extraction_reason": "app/core/libappcore.a.p/gimp.c.o (gimp_layer_preset_get_type)",
+          "retention": "archive member extracted"
+        }
+      ]
+    },
+    {
+      "variant": "default",
+      "path": "app/core/gimppaintermybrush.cpp",
+      "kind": "translation-unit",
+      "source_sha256": "52dedd50fd3f6172511fd5311e521d2b74cd8b712e2c3ee4a8d98583f27da0d2",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/core/libappcore.a.p/gimppaintermybrush.cpp.o",
+          "object_sha256": "2d2d5e5c426286c6671f12b1e4deb1c463550aaca0ad44b66d5aeb59b3658bdb",
+          "archive": "app/core/libappcore.a",
+          "extraction_reason": "app/core/libappcore.a.p/gimp.c.o (gimp_painter_mybrush_get_type)",
+          "retention": "archive member extracted"
+        },
+        {
+          "target": "gimp-console-3.0",
+          "object": "app/core/libappcore.a.p/gimppaintermybrush.cpp.o",
+          "object_sha256": "2d2d5e5c426286c6671f12b1e4deb1c463550aaca0ad44b66d5aeb59b3658bdb",
+          "archive": "app/core/libappcore.a",
+          "extraction_reason": "app/core/libappcore.a.p/gimp.c.o (gimp_painter_mybrush_get_type)",
+          "retention": "archive member extracted"
+        }
+      ]
+    },
+    {
+      "variant": "default",
+      "path": "app/core/gimpperspectiveguide.cpp",
+      "kind": "translation-unit",
+      "source_sha256": "edcfce4efc37d41a66340c531be6fd558bc931fad927ad65a8dd0fc27272d1b4",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/core/libappcore.a.p/gimpperspectiveguide.cpp.o",
+          "object_sha256": "6c296307fe59369358f017cd08984ffbb903fda8c04f10db98884fa9b052433a",
+          "archive": "app/core/libappcore.a",
+          "extraction_reason": "app/core/libappcore.a.p/gimpimage-perspective-guide.c.o (gimp_perspective_guide_get_type)",
+          "retention": "archive member extracted"
+        },
+        {
+          "target": "gimp-console-3.0",
+          "object": "app/core/libappcore.a.p/gimpperspectiveguide.cpp.o",
+          "object_sha256": "6c296307fe59369358f017cd08984ffbb903fda8c04f10db98884fa9b052433a",
+          "archive": "app/core/libappcore.a",
+          "extraction_reason": "app/core/libappcore.a.p/gimpimage-perspective-guide.c.o (gimp_perspective_guide_get_type)",
+          "retention": "archive member extracted"
+        }
+      ]
+    },
+    {
+      "variant": "default",
+      "path": "app/dialogs/layer-options-dialog.c",
+      "kind": "translation-unit",
+      "source_sha256": "a7ae97a35bf0a1fc90c608523eefe0dc7a7f8696ab89a5c1171e85834075eef9",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/dialogs/libappdialogs.a.p/layer-options-dialog.c.o",
+          "object_sha256": "f6142f44b24faa89802aee09ab965289d9de387ff074e1ab98e225957cdc2ed5",
+          "archive": "app/dialogs/libappdialogs.a",
+          "extraction_reason": "app/actions/libappactions.a.p/layers-commands.c.o (layer_options_dialog_new)",
+          "retention": "archive member extracted"
+        }
+      ]
+    },
+    {
+      "variant": "default",
+      "path": "app/display/gimpcanvasperspectiveguide.cpp",
+      "kind": "translation-unit",
+      "source_sha256": "8ae697467c3cfff54b41c03828419000907cfc5b2ee92902246711523663f858",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/display/libappdisplay.a.p/gimpcanvasperspectiveguide.cpp.o",
+          "object_sha256": "a7559a8b54eec4164ac16a88afb111e30d8304e772ea62776ab13d67dbdc678c",
+          "archive": "app/display/libappdisplay.a",
+          "extraction_reason": "app/display/libappdisplay.a.p/gimpdisplayshell-items.c.o (gimp_canvas_perspective_guide_new)",
+          "retention": "archive member extracted"
+        }
+      ]
+    },
+    {
+      "variant": "default",
+      "path": "app/display/gimppaintercanvasui.cpp",
+      "kind": "translation-unit",
+      "source_sha256": "d51aca41662464a120ce3badf28e202381a2e0c0a2a03d4263a81b346c931fed",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/display/libappdisplay.a.p/gimppaintercanvasui.cpp.o",
+          "object_sha256": "956a27f638d6c0ab13e8977983479f967fb8517726dee7f5274283ceb364c207",
+          "archive": "app/display/libappdisplay.a",
+          "extraction_reason": "app/actions/libappactions.a.p/view-actions.c.o (gimp_painter_canvas_ui_get_visible)",
+          "retention": "archive member extracted"
+        }
+      ]
+    },
+    {
+      "variant": "default",
+      "path": "app/httpd/httpd-images.cpp",
+      "kind": "translation-unit",
+      "source_sha256": "084e0fe355b97a806e9fb021bcfa73881a9a917203bbfdafe0dd609103554631",
+      "result": "excluded by painter-http=disabled"
+    },
+    {
+      "variant": "default",
+      "path": "app/httpd/httpd-navigation.cpp",
+      "kind": "translation-unit",
+      "source_sha256": "3c08a702de3a9873b0513dcf9f572284820bcac1a8dfbf7e51fd31fb98cda5fc",
+      "result": "excluded by painter-http=disabled"
+    },
+    {
+      "variant": "default",
+      "path": "app/httpd/httpd-pdb.cpp",
+      "kind": "translation-unit",
+      "source_sha256": "745a694918a67bd15962e7dd035dd78d14183d4a07f01c7c50e5a80014329a97",
+      "result": "excluded by painter-http=disabled"
+    },
+    {
+      "variant": "default",
+      "path": "app/httpd/httpd-resource.cpp",
+      "kind": "translation-unit",
+      "source_sha256": "1b048f9cdea036e50d7fa54becaa37bb08d7f4685cca281b08e9ab5321232651",
+      "result": "excluded by painter-http=disabled"
+    },
+    {
+      "variant": "default",
+      "path": "app/httpd/httpd.cpp",
+      "kind": "translation-unit",
+      "source_sha256": "22450de1872fe672f6f20ba1a220abba5e52f32a2d7cb1ccbecdd77e046682df",
+      "result": "excluded by painter-http=disabled"
+    },
+    {
+      "variant": "default",
+      "path": "app/meson.build",
+      "kind": "configuration",
+      "source_sha256": "80fae75399f85e4f78b212dc93c0c2db072b16108be6b8419c9a73071813b648",
+      "result": "Configured target/generator ownership from byte-matched 04.008 membership evidence; not an archive registration object"
+    },
+    {
+      "variant": "default",
+      "path": "app/paint/gimpfillbrush.cpp",
+      "kind": "translation-unit",
+      "source_sha256": "f91685ff3853e89313aa038805630117c8dbfbe741b4b3af463be1c04dbf2a0e",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/paint/libapppaint.a.p/gimpfillbrush.cpp.o",
+          "object_sha256": "a40bd2c0ed1ae10b8a008f6b1d84c03d39546a8168c39d0a859bfb1e94a69d3c",
+          "archive": "app/paint/libapppaint.a",
+          "extraction_reason": "app/paint/libapppaint.a.p/gimp-paint.c.o (gimp_fill_brush_register)",
+          "retention": "archive member extracted"
+        },
+        {
+          "target": "gimp-console-3.0",
+          "object": "app/paint/libapppaint.a.p/gimpfillbrush.cpp.o",
+          "object_sha256": "a40bd2c0ed1ae10b8a008f6b1d84c03d39546a8168c39d0a859bfb1e94a69d3c",
+          "archive": "app/paint/libapppaint.a",
+          "extraction_reason": "app/paint/libapppaint.a.p/gimp-paint.c.o (gimp_fill_brush_register)",
+          "retention": "archive member extracted"
+        }
+      ]
+    },
+    {
+      "variant": "default",
+      "path": "app/paint/painter-brush-settings/meson.build",
+      "kind": "configuration",
+      "source_sha256": "49ffdc89681014266308b749cfda29e09d6e5a4296ce3aae6de48aa4ac4fa7bd",
+      "result": "Configured target/generator ownership from byte-matched 04.008 membership evidence; not an archive registration object"
+    },
+    {
+      "variant": "default",
+      "path": "app/paint/painter-mypaint-surface/gegl-surface.cpp",
+      "kind": "translation-unit",
+      "source_sha256": "e7ac2ab7781f9a278c1b4296424d353ef30758a79fa2ddddc5ae70fa342b3c2c",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gegl-surface.cpp.o",
+          "object_sha256": "11ca4333fefed1f02226c2c1e78af44f5d694c15b55037ce05307123f74ae8f9",
+          "archive": "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a",
+          "extraction_reason": "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/paint-core.cpp.o (GimpPainter::MyPaint::GeglSurface::set_selection(_GeglBuffer*, int, int))",
+          "retention": "archive member extracted"
+        },
+        {
+          "target": "gimp-console-3.0",
+          "object": "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gegl-surface.cpp.o",
+          "object_sha256": "11ca4333fefed1f02226c2c1e78af44f5d694c15b55037ce05307123f74ae8f9",
+          "archive": "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a",
+          "extraction_reason": "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/paint-core.cpp.o (GimpPainter::MyPaint::GeglSurface::set_selection(_GeglBuffer*, int, int))",
+          "retention": "archive member extracted"
+        }
+      ]
+    },
+    {
+      "variant": "default",
+      "path": "app/paint/painter-mypaint-surface/gimp-painter-options.cpp",
+      "kind": "translation-unit",
+      "source_sha256": "2126a82d73b1abb30ec7031449ec615a358b735584dd824b0c8c3840069ea813",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-painter-options.cpp.o",
+          "object_sha256": "5184a4456c2d759c4eec9b20350e6a61c8cd412ab216331e3834b8d9a866a74c",
+          "archive": "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a",
+          "extraction_reason": "app/paint/libapppaint.a.p/gimppainterpaintgate.cpp.o (gimp_painter_mybrush_options_get_type)",
+          "retention": "archive member extracted"
+        },
+        {
+          "target": "gimp-console-3.0",
+          "object": "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-painter-options.cpp.o",
+          "object_sha256": "5184a4456c2d759c4eec9b20350e6a61c8cd412ab216331e3834b8d9a866a74c",
+          "archive": "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a",
+          "extraction_reason": "app/paint/libapppaint.a.p/gimppainterpaintgate.cpp.o (gimp_painter_mybrush_options_get_type)",
+          "retention": "archive member extracted"
+        }
+      ]
+    },
+    {
+      "variant": "default",
+      "path": "app/paint/painter-mypaint-surface/gimp-painter-session.cpp",
+      "kind": "translation-unit",
+      "source_sha256": "08909db4102da3937a2eacdb6f6fca70ea927b6053086c3c51e04dd67463e431",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-painter-session.cpp.o",
+          "object_sha256": "18cda2dca42ad87443f1a0070226f2ccf529d27db76af91356a51aff6e365553",
+          "archive": "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a",
+          "extraction_reason": "app/paint/libapppaint.a.p/gimppainterpaintgate.cpp.o (gimp_painter_session_get_type)",
+          "retention": "archive member extracted"
+        },
+        {
+          "target": "gimp-console-3.0",
+          "object": "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-painter-session.cpp.o",
+          "object_sha256": "18cda2dca42ad87443f1a0070226f2ccf529d27db76af91356a51aff6e365553",
+          "archive": "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a",
+          "extraction_reason": "app/paint/libapppaint.a.p/gimppainterpaintgate.cpp.o (gimp_painter_session_get_type)",
+          "retention": "archive member extracted"
+        }
+      ]
+    },
+    {
+      "variant": "default",
+      "path": "app/paint/painter-mypaint-surface/paint-core.cpp",
+      "kind": "translation-unit",
+      "source_sha256": "f2acf89889fbb8c7ae57f700f1f455833c830ba38329c4f829a9bf4d9f00669a",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/paint-core.cpp.o",
+          "object_sha256": "0512d5c57a968ebf0aacaa655c2e1a563cfc6f6215ff15cb88a0f15353582ddd",
+          "archive": "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a",
+          "extraction_reason": "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-painter-session.cpp.o (GimpPainter::MyPaint::PaintCore::active() const)",
+          "retention": "archive member extracted"
+        },
+        {
+          "target": "gimp-console-3.0",
+          "object": "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/paint-core.cpp.o",
+          "object_sha256": "0512d5c57a968ebf0aacaa655c2e1a563cfc6f6215ff15cb88a0f15353582ddd",
+          "archive": "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a",
+          "extraction_reason": "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-painter-session.cpp.o (GimpPainter::MyPaint::PaintCore::active() const)",
+          "retention": "archive member extracted"
+        }
+      ]
+    },
+    {
+      "variant": "default",
+      "path": "app/paint/painter-mypaint/engine.cpp",
+      "kind": "translation-unit",
+      "source_sha256": "dafdaf2a791d51e3f1ce39642bc2ef7f06d09e8af66de07ba89848adba3aa94a",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/paint/painter-mypaint/libpainter-mypaint.a.p/engine.cpp.o",
+          "object_sha256": "d1b6435e22fc84e5346029d2a73709b51f42ab447d0a556a30790019dba34b84",
+          "archive": "app/paint/painter-mypaint/libpainter-mypaint.a",
+          "extraction_reason": "(--whole-archive)",
+          "retention": "archive member extracted"
+        },
+        {
+          "target": "gimp-console-3.0",
+          "object": "app/paint/painter-mypaint/libpainter-mypaint.a.p/engine.cpp.o",
+          "object_sha256": "d1b6435e22fc84e5346029d2a73709b51f42ab447d0a556a30790019dba34b84",
+          "archive": "app/paint/painter-mypaint/libpainter-mypaint.a",
+          "extraction_reason": "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/paint-core.cpp.o (GimpPainter::MyPaint::Engine::~Engine())",
+          "retention": "archive member extracted"
+        }
+      ]
+    },
+    {
+      "variant": "default",
+      "path": "app/paint/painter-mypaint/resource.cpp",
+      "kind": "translation-unit",
+      "source_sha256": "128928c74ef99cbb754ba469e6df3946db1730588a1ddc5cb9daf21c3441f15b",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/paint/painter-mypaint/libpainter-mypaint.a.p/resource.cpp.o",
+          "object_sha256": "c44252ed8243fa5775c82dd6e5014f0bdc8eceb8c0354f7026c7e1043b3c9c78",
+          "archive": "app/paint/painter-mypaint/libpainter-mypaint.a",
+          "extraction_reason": "(--whole-archive)",
+          "retention": "archive member extracted"
+        },
+        {
+          "target": "gimp-console-3.0",
+          "object": "app/paint/painter-mypaint/libpainter-mypaint.a.p/resource.cpp.o",
+          "object_sha256": "c44252ed8243fa5775c82dd6e5014f0bdc8eceb8c0354f7026c7e1043b3c9c78",
+          "archive": "app/paint/painter-mypaint/libpainter-mypaint.a",
+          "extraction_reason": "app/core/libappcore.a.p/gimppaintermybrush.cpp.o (typeinfo for std::invalid_argument)",
+          "retention": "archive member extracted"
+        }
+      ]
+    },
+    {
+      "variant": "default",
+      "path": "app/painter/filter-process.cpp",
+      "kind": "translation-unit",
+      "source_sha256": "5d5bc162d3c26d9496cc5f52ceff926e6e7e57fdaae225fef02a8705edd6d42c",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/painter/libapppainter.a.p/filter-process.cpp.o",
+          "object_sha256": "85fbfd7df53387e864b23d3a97c98a0fd5903af751128c6a476ce505d88a90c5",
+          "archive": "app/painter/libapppainter.a",
+          "extraction_reason": "app/core/libappcore.a.p/gimpfilterlayer.cpp.o (GimpPainter::filter_process(GimpPainter::FilterProcedureRequest const&, GimpPainter::FilterRaster&, GimpPainter::FilterRaster&, std::atomic<bool>&, GimpPainter::FilterProcessOptions const&, std::shared_ptr<GimpPainter::FilterProcedureResult>, std::shared_ptr<GimpPainter::FilterProgress>))",
+          "retention": "archive member extracted"
+        },
+        {
+          "target": "gimp-console-3.0",
+          "object": "app/painter/libapppainter.a.p/filter-process.cpp.o",
+          "object_sha256": "85fbfd7df53387e864b23d3a97c98a0fd5903af751128c6a476ce505d88a90c5",
+          "archive": "app/painter/libapppainter.a",
+          "extraction_reason": "app/core/libappcore.a.p/gimpfilterlayer.cpp.o (GimpPainter::filter_process(GimpPainter::FilterProcedureRequest const&, GimpPainter::FilterRaster&, GimpPainter::FilterRaster&, std::atomic<bool>&, GimpPainter::FilterProcessOptions const&, std::shared_ptr<GimpPainter::FilterProcedureResult>, std::shared_ptr<GimpPainter::FilterProgress>))",
+          "retention": "archive member extracted"
+        }
+      ]
+    },
+    {
+      "variant": "default",
+      "path": "app/painter/gimp-painter-binding.cpp",
+      "kind": "translation-unit",
+      "source_sha256": "22aca4f9e467e16b86f2cbeec431d7d069fc552c98fad985db770720fcf876fd",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/painter/libapppainter.a.p/gimp-painter-binding.cpp.o",
+          "object_sha256": "59efc9c05529f1af0744cc3c8c017b63cdd33e8dc620743fcf398ddedacb38ae",
+          "archive": "app/painter/libapppainter.a",
+          "extraction_reason": "app/core/libappcore.a.p/gimp.c.o (gimp_painter_binding_close)",
+          "retention": "archive member extracted"
+        },
+        {
+          "target": "gimp-console-3.0",
+          "object": "app/painter/libapppainter.a.p/gimp-painter-binding.cpp.o",
+          "object_sha256": "59efc9c05529f1af0744cc3c8c017b63cdd33e8dc620743fcf398ddedacb38ae",
+          "archive": "app/painter/libapppainter.a",
+          "extraction_reason": "app/core/libappcore.a.p/gimp.c.o (gimp_painter_binding_close)",
+          "retention": "archive member extracted"
+        }
+      ]
+    },
+    {
+      "variant": "default",
+      "path": "app/tools/gimpfillbrushtool.cpp",
+      "kind": "translation-unit",
+      "source_sha256": "1bd3106959f64ac1692bbc318ed17bf2cb4a6297a4cd806f7872cddbec833d37",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/tools/libapptools.a.p/gimpfillbrushtool.cpp.o",
+          "object_sha256": "7655b89e272ac68a743836625aaeefb7276cbfaa765799e18d85a5e2574ee1d4",
+          "archive": "app/tools/libapptools.a",
+          "extraction_reason": "app/tools/libapptools.a.p/gimp-tools.c.o (gimp_fill_brush_tool_get_type)",
+          "retention": "archive member extracted"
+        }
+      ]
+    },
+    {
+      "variant": "default",
+      "path": "app/tools/gimppaintermybrushtool.cpp",
+      "kind": "translation-unit",
+      "source_sha256": "2b6a54cabe22fbb3b8cd113c8a3231955407ca67519822c0eb673c6f03575c90",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/tools/libapptools.a.p/gimppaintermybrushtool.cpp.o",
+          "object_sha256": "07bb89724bacd89ca51e2c4b8f4a849ac52033c3ee1b60402eaaec4b699fd83e",
+          "archive": "app/tools/libapptools.a",
+          "extraction_reason": "app/tools/libapptools.a.p/gimp-tools.c.o (gimp_painter_mybrush_tool_get_type)",
+          "retention": "archive member extracted"
+        }
+      ]
+    },
+    {
+      "variant": "default",
+      "path": "app/tools/gimpperspectiveguidetool.cpp",
+      "kind": "translation-unit",
+      "source_sha256": "08f839eea914b1d2baf22f0b266038929aa2db89509ebe71a9eb34683347884b",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/tools/libapptools.a.p/gimpperspectiveguidetool.cpp.o",
+          "object_sha256": "a022938fd7a6cf19183075eadaa401b15d713d9a3a4efa4b1b32daa1b480cea2",
+          "archive": "app/tools/libapptools.a",
+          "extraction_reason": "app/tools/libapptools.a.p/gimp-tools.c.o (gimp_perspective_guide_tool_get_type)",
+          "retention": "archive member extracted"
+        }
+      ]
+    },
+    {
+      "variant": "default",
+      "path": "app/widgets/gimplayerpresetview.c",
+      "kind": "translation-unit",
+      "source_sha256": "46a8763177097b16102f06481bab4750ebaa978757eda86030e5c34b4c2c9ced",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/widgets/libappwidgets.a.p/gimplayerpresetview.c.o",
+          "object_sha256": "eb44ec0c18989f1d86735c3141a1c8924d1c403f55b173073922bd23da7a9787",
+          "archive": "app/widgets/libappwidgets.a",
+          "extraction_reason": "app/actions/libappactions.a.p/layer-presets-actions.c.o (gimp_layer_preset_view_get_type)",
+          "retention": "archive member extracted"
+        }
+      ]
+    },
+    {
+      "variant": "default",
+      "path": "app/widgets/gimppaintercompactoptions.cpp",
+      "kind": "translation-unit",
+      "source_sha256": "e5e35c593554587b3dfb931aca2d9bd5fc228332c157a79fb83d0bbedac38fa0",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/widgets/libappwidgets.a.p/gimppaintercompactoptions.cpp.o",
+          "object_sha256": "52c482a035bc5456ab8c8dfbc1f898a103a309d11e1e13b6df679978ea2cc8a5",
+          "archive": "app/widgets/libappwidgets.a",
+          "extraction_reason": "app/display/libappdisplay.a.p/gimppaintercanvasui.cpp.o (gimp_painter_compact_options_set)",
+          "retention": "archive member extracted"
+        }
+      ]
+    },
+    {
+      "variant": "default",
+      "path": "app/widgets/gimppainterlayertiles.cpp",
+      "kind": "translation-unit",
+      "source_sha256": "ba89c8287b963085e0d8949541a5686181b44a262523eac5f43fc17e497f980e",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/widgets/libappwidgets.a.p/gimppainterlayertiles.cpp.o",
+          "object_sha256": "7144d771429f8cb739e264f48facc4b2f98ae1b6d406098b3a9460615c732cb1",
+          "archive": "app/widgets/libappwidgets.a",
+          "extraction_reason": "app/display/libappdisplay.a.p/gimppaintercanvasui.cpp.o (gimp_painter_layer_tiles_new)",
+          "retention": "archive member extracted"
+        }
+      ]
+    },
+    {
+      "variant": "default",
+      "path": "app/widgets/gimppaintermybrusheditor.cpp",
+      "kind": "translation-unit",
+      "source_sha256": "d6a699fb1da5ca8f4ccf6cf68dcb4a4832c617fd9fd69c964e68f228102da633",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/widgets/libappwidgets.a.p/gimppaintermybrusheditor.cpp.o",
+          "object_sha256": "60e2d2a696ef91a87ebe2e3c60c72686e0cd811073ce5865bba9018a1ec090ea",
+          "archive": "app/widgets/libappwidgets.a",
+          "extraction_reason": "app/tools/libapptools.a.p/gimppaintermybrushtool.cpp.o (gimp_painter_mybrush_editor_new)",
+          "retention": "archive member extracted"
+        }
+      ]
+    },
+    {
+      "variant": "http",
+      "path": "app/actions/actions.c",
+      "kind": "translation-unit",
+      "source_sha256": "0627fb49a0a0215b589f37a38b43b202fd17f80c176f1a42a1c1b9387702cc09",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/actions/libappactions.a.p/actions.c.o",
+          "object_sha256": "641cb37f205473820863974cc6637403c65a78a00493371f3b5642939174af33",
+          "archive": "app/actions/libappactions.a",
+          "extraction_reason": "app/gui/libappgui.a.p/gui.c.o (actions_init)",
+          "retention": "archive member extracted"
+        }
+      ]
+    },
+    {
+      "variant": "http",
+      "path": "app/actions/layer-presets-actions.c",
+      "kind": "translation-unit",
+      "source_sha256": "740d7b1e9de1e4ec7bfc7ac1f5930190390172026befdaf635e787b2969d0f7d",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/actions/libappactions.a.p/layer-presets-actions.c.o",
+          "object_sha256": "e6600d21796a10d04e5adceaed4858fedcfc4634797b7c9587afb2b4bb2d6168",
+          "archive": "app/actions/libappactions.a",
+          "extraction_reason": "app/actions/libappactions.a.p/actions.c.o (layer_presets_actions_setup)",
+          "retention": "archive member extracted"
+        }
+      ]
+    },
+    {
+      "variant": "http",
+      "path": "app/app.c",
+      "kind": "translation-unit",
+      "source_sha256": "583c0f3ce2ed87d42aeddb2e9b41aced5007a0ed396a12fbcb0173295188f715",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/libapp.a.p/app.c.o",
+          "object_sha256": "86d3d2f3a9cabefc7e3a29ccdf5e3603a8501630dbdae8ec0323f4f15a4695b9",
+          "archive": "app/libapp.a",
+          "extraction_reason": "app/gimp-3.0.p/main.c.o (app_libs_init)",
+          "retention": "archive member extracted"
+        },
+        {
+          "target": "gimp-console-3.0",
+          "object": "app/gimp-console-3.0.p/app.c.o",
+          "object_sha256": "97cbf792f4336be0cdcc0739c53fc600c3d70c00d4575dc08555da878db4f8b0",
+          "retention": "direct final link object"
+        }
+      ]
+    },
+    {
+      "variant": "http",
+      "path": "app/core/gimp-data-factories.c",
+      "kind": "translation-unit",
+      "source_sha256": "4c5a1f058c975f525dc0beb62d50b24f4c199ab3835591611bb91bb9b3844681",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/core/libappcore.a.p/gimp-data-factories.c.o",
+          "object_sha256": "e739cf099cac76990c33ba6ee84e82814f95702f3cffc9a3647ace10d5cd622b",
+          "archive": "app/core/libappcore.a",
+          "extraction_reason": "app/core/libappcore.a.p/gimp.c.o (gimp_data_factories_init)",
+          "retention": "archive member extracted"
+        },
+        {
+          "target": "gimp-console-3.0",
+          "object": "app/core/libappcore.a.p/gimp-data-factories.c.o",
+          "object_sha256": "e739cf099cac76990c33ba6ee84e82814f95702f3cffc9a3647ace10d5cd622b",
+          "archive": "app/core/libappcore.a",
+          "extraction_reason": "app/core/libappcore.a.p/gimp.c.o (gimp_data_factories_init)",
+          "retention": "archive member extracted"
+        }
+      ]
+    },
+    {
+      "variant": "http",
+      "path": "app/core/gimp.c",
+      "kind": "translation-unit",
+      "source_sha256": "cf6c8ae9600ca7d717fa2e4e7a74e54df6fe683d7981a62e41000a9751f0825a",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/core/libappcore.a.p/gimp.c.o",
+          "object_sha256": "cce1a6b2dee4642c73ca45216aabbbc21dd98980e7de995093b1282f7ddbb2e3",
+          "archive": "app/core/libappcore.a",
+          "extraction_reason": "app/gimp-3.0.p/main.c.o (gimp_get_type)",
+          "retention": "archive member extracted"
+        },
+        {
+          "target": "gimp-console-3.0",
+          "object": "app/core/libappcore.a.p/gimp.c.o",
+          "object_sha256": "cce1a6b2dee4642c73ca45216aabbbc21dd98980e7de995093b1282f7ddbb2e3",
+          "archive": "app/core/libappcore.a",
+          "extraction_reason": "app/gimp-console-3.0.p/main.c.o (gimp_get_type)",
+          "retention": "archive member extracted"
+        }
+      ]
+    },
+    {
+      "variant": "http",
+      "path": "app/core/gimpclonelayer.cpp",
+      "kind": "translation-unit",
+      "source_sha256": "22adedddcaeb6d70f4bf37e94cf92f3dbe4d1b84c7183097d3c24e49d02b081e",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/core/libappcore.a.p/gimpclonelayer.cpp.o",
+          "object_sha256": "adc896c120ee2b9004920c7abf6410f31ddce509412608c498ee48641c031517",
+          "archive": "app/core/libappcore.a",
+          "extraction_reason": "app/core/libappcore.a.p/gimpgrouplayer.c.o (gimp_clone_layer_get_type)",
+          "retention": "archive member extracted"
+        },
+        {
+          "target": "gimp-console-3.0",
+          "object": "app/core/libappcore.a.p/gimpclonelayer.cpp.o",
+          "object_sha256": "adc896c120ee2b9004920c7abf6410f31ddce509412608c498ee48641c031517",
+          "archive": "app/core/libappcore.a",
+          "extraction_reason": "app/core/libappcore.a.p/gimpgrouplayer.c.o (gimp_clone_layer_get_type)",
+          "retention": "archive member extracted"
+        }
+      ]
+    },
+    {
+      "variant": "http",
+      "path": "app/core/gimpfilterlayer.cpp",
+      "kind": "translation-unit",
+      "source_sha256": "abcda53a71ea70000569649fec6c72b802bae828d1748e4c7810a665db3b6b9a",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/core/libappcore.a.p/gimpfilterlayer.cpp.o",
+          "object_sha256": "5dcf1109c12ddd5b7b4dcee9493da76b0368fad94e597262779acd21373eb7b1",
+          "archive": "app/core/libappcore.a",
+          "extraction_reason": "app/xcf/libappxcf.a.p/painter-xcf-load.cpp.o (gimp_filter_layer_get_type)",
+          "retention": "archive member extracted"
+        },
+        {
+          "target": "gimp-console-3.0",
+          "object": "app/core/libappcore.a.p/gimpfilterlayer.cpp.o",
+          "object_sha256": "5dcf1109c12ddd5b7b4dcee9493da76b0368fad94e597262779acd21373eb7b1",
+          "archive": "app/core/libappcore.a",
+          "extraction_reason": "app/xcf/libappxcf.a.p/painter-xcf-load.cpp.o (gimp_filter_layer_get_type)",
+          "retention": "archive member extracted"
+        }
+      ]
+    },
+    {
+      "variant": "http",
+      "path": "app/core/gimpfilterparametereditor.cpp",
+      "kind": "translation-unit",
+      "source_sha256": "fcf150ea7c938ab792770f3307d769e5f84dddcfba20b85030b6e7ca4c9e130f",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/core/libappcore.a.p/gimpfilterparametereditor.cpp.o",
+          "object_sha256": "d1ebd443935ed4427110e5b4df464b4130843e37e1d31f64bad61a91c529c603",
+          "archive": "app/core/libappcore.a",
+          "extraction_reason": "app/plug-in/libappplug-in.a.p/gimppluginmanager.c.o (gimp_filter_parameter_editor_activate)",
+          "retention": "archive member extracted"
+        },
+        {
+          "target": "gimp-console-3.0",
+          "object": "app/core/libappcore.a.p/gimpfilterparametereditor.cpp.o",
+          "object_sha256": "d1ebd443935ed4427110e5b4df464b4130843e37e1d31f64bad61a91c529c603",
+          "archive": "app/core/libappcore.a",
+          "extraction_reason": "app/plug-in/libappplug-in.a.p/gimppluginmanager.c.o (gimp_filter_parameter_editor_activate)",
+          "retention": "archive member extracted"
+        }
+      ]
+    },
+    {
+      "variant": "http",
+      "path": "app/core/gimpfilterprocedure-arguments.cpp",
+      "kind": "translation-unit",
+      "source_sha256": "cfa0028427f1ae19701f42d107a26883e4c143a25a15dbb4211d53fab0f9a055",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/core/libappcore.a.p/gimpfilterprocedure-arguments.cpp.o",
+          "object_sha256": "95200bdb6891d46c82a0961af6debf3eb3fd64a953f1665b35658e2e226ca809",
+          "archive": "app/core/libappcore.a",
+          "extraction_reason": "app/core/libappcore.a.p/gimpfilterprocedure.cpp.o (GimpPainter::FilterParameterSchema::FilterParameterSchema(_GimpProcedure*, GimpPainter::FilterProcedure, bool))",
+          "retention": "archive member extracted"
+        },
+        {
+          "target": "gimp-console-3.0",
+          "object": "app/core/libappcore.a.p/gimpfilterprocedure-arguments.cpp.o",
+          "object_sha256": "95200bdb6891d46c82a0961af6debf3eb3fd64a953f1665b35658e2e226ca809",
+          "archive": "app/core/libappcore.a",
+          "extraction_reason": "app/core/libappcore.a.p/gimpfilterprocedure.cpp.o (GimpPainter::FilterParameterSchema::FilterParameterSchema(_GimpProcedure*, GimpPainter::FilterProcedure, bool))",
+          "retention": "archive member extracted"
+        }
+      ]
+    },
+    {
+      "variant": "http",
+      "path": "app/core/gimpfilterprocedure.cpp",
+      "kind": "translation-unit",
+      "source_sha256": "14b68d4572b4e11870d46d9e34bbaba4c3e86eb1e4df15596cfb17d37e3efa61",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/core/libappcore.a.p/gimpfilterprocedure.cpp.o",
+          "object_sha256": "ef6afc72d7f8cea696eefbe2c41cee3ce06f1bc3018819f06a3e9b9e76a20ad5",
+          "archive": "app/core/libappcore.a",
+          "extraction_reason": "app/pdb/libappinternalprocs.a.p/progress-cmds.c.o (gimp_filter_procedure_progress_is_private)",
+          "retention": "archive member extracted"
+        },
+        {
+          "target": "gimp-console-3.0",
+          "object": "app/core/libappcore.a.p/gimpfilterprocedure.cpp.o",
+          "object_sha256": "ef6afc72d7f8cea696eefbe2c41cee3ce06f1bc3018819f06a3e9b9e76a20ad5",
+          "archive": "app/core/libappcore.a",
+          "extraction_reason": "app/pdb/libappinternalprocs.a.p/progress-cmds.c.o (gimp_filter_procedure_progress_is_private)",
+          "retention": "archive member extracted"
+        }
+      ]
+    },
+    {
+      "variant": "http",
+      "path": "app/core/gimplayerpreset-apply.cpp",
+      "kind": "translation-unit",
+      "source_sha256": "da1e68b6b9fe9cf316b8f341b57e219bf99f5517150a3b550a83436e95097f58",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/core/libappcore.a.p/gimplayerpreset-apply.cpp.o",
+          "object_sha256": "a514bd61a062d37c4ce1531af8d39cc8de535ab78a23d3c59d171bd508cbbdf3",
+          "archive": "app/core/libappcore.a",
+          "extraction_reason": "app/widgets/libappwidgets.a.p/gimplayerpresetview.c.o (gimp_layer_preset_matches)",
+          "retention": "archive member extracted"
+        },
+        {
+          "target": "gimp-console-3.0",
+          "object": "app/core/libappcore.a.p/gimplayerpreset-apply.cpp.o",
+          "object_sha256": "a514bd61a062d37c4ce1531af8d39cc8de535ab78a23d3c59d171bd508cbbdf3",
+          "archive": "app/core/libappcore.a",
+          "retention": "not extracted: GUI-only current consumers",
+          "review": "gimp_layer_preset_apply is called only by gimplayerpresetview.c and gimppainterlayertiles.cpp; apply.cpp has no registration constructor. Both GUI maps extract it; console has no caller."
+        }
+      ]
+    },
+    {
+      "variant": "http",
+      "path": "app/core/gimplayerpreset.c",
+      "kind": "translation-unit",
+      "source_sha256": "ec6edcf6223f1cbc6d125f26c71644a77c6b7077db9a0b01e3cbf53eac9e7e8e",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/core/libappcore.a.p/gimplayerpreset.c.o",
+          "object_sha256": "29f13094b433906cf3f7937ce2f6fe9440b781b6f04cffc0eae31b11d3cf7a72",
+          "archive": "app/core/libappcore.a",
+          "extraction_reason": "app/core/libappcore.a.p/gimp.c.o (gimp_layer_preset_get_type)",
+          "retention": "archive member extracted"
+        },
+        {
+          "target": "gimp-console-3.0",
+          "object": "app/core/libappcore.a.p/gimplayerpreset.c.o",
+          "object_sha256": "29f13094b433906cf3f7937ce2f6fe9440b781b6f04cffc0eae31b11d3cf7a72",
+          "archive": "app/core/libappcore.a",
+          "extraction_reason": "app/core/libappcore.a.p/gimp.c.o (gimp_layer_preset_get_type)",
+          "retention": "archive member extracted"
+        }
+      ]
+    },
+    {
+      "variant": "http",
+      "path": "app/core/gimppaintermybrush.cpp",
+      "kind": "translation-unit",
+      "source_sha256": "52dedd50fd3f6172511fd5311e521d2b74cd8b712e2c3ee4a8d98583f27da0d2",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/core/libappcore.a.p/gimppaintermybrush.cpp.o",
+          "object_sha256": "fe02aa04bb97b8b71dbdb2458a53e84288ce2a32656abcb7c9a3e18221df4a7e",
+          "archive": "app/core/libappcore.a",
+          "extraction_reason": "app/core/libappcore.a.p/gimp.c.o (gimp_painter_mybrush_get_type)",
+          "retention": "archive member extracted"
+        },
+        {
+          "target": "gimp-console-3.0",
+          "object": "app/core/libappcore.a.p/gimppaintermybrush.cpp.o",
+          "object_sha256": "fe02aa04bb97b8b71dbdb2458a53e84288ce2a32656abcb7c9a3e18221df4a7e",
+          "archive": "app/core/libappcore.a",
+          "extraction_reason": "app/core/libappcore.a.p/gimp.c.o (gimp_painter_mybrush_get_type)",
+          "retention": "archive member extracted"
+        }
+      ]
+    },
+    {
+      "variant": "http",
+      "path": "app/core/gimpperspectiveguide.cpp",
+      "kind": "translation-unit",
+      "source_sha256": "edcfce4efc37d41a66340c531be6fd558bc931fad927ad65a8dd0fc27272d1b4",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/core/libappcore.a.p/gimpperspectiveguide.cpp.o",
+          "object_sha256": "8bf3b1530facd440eef52a966fb991d458db957312b933cc978cd5c0657e3a75",
+          "archive": "app/core/libappcore.a",
+          "extraction_reason": "app/core/libappcore.a.p/gimpimage-perspective-guide.c.o (gimp_perspective_guide_get_type)",
+          "retention": "archive member extracted"
+        },
+        {
+          "target": "gimp-console-3.0",
+          "object": "app/core/libappcore.a.p/gimpperspectiveguide.cpp.o",
+          "object_sha256": "8bf3b1530facd440eef52a966fb991d458db957312b933cc978cd5c0657e3a75",
+          "archive": "app/core/libappcore.a",
+          "extraction_reason": "app/core/libappcore.a.p/gimpimage-perspective-guide.c.o (gimp_perspective_guide_get_type)",
+          "retention": "archive member extracted"
+        }
+      ]
+    },
+    {
+      "variant": "http",
+      "path": "app/dialogs/layer-options-dialog.c",
+      "kind": "translation-unit",
+      "source_sha256": "a7ae97a35bf0a1fc90c608523eefe0dc7a7f8696ab89a5c1171e85834075eef9",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/dialogs/libappdialogs.a.p/layer-options-dialog.c.o",
+          "object_sha256": "c962c98894738202edf162aa5a7f102c1e534339ddadb87f7694603155bcaeaf",
+          "archive": "app/dialogs/libappdialogs.a",
+          "extraction_reason": "app/actions/libappactions.a.p/layers-commands.c.o (layer_options_dialog_new)",
+          "retention": "archive member extracted"
+        }
+      ]
+    },
+    {
+      "variant": "http",
+      "path": "app/display/gimpcanvasperspectiveguide.cpp",
+      "kind": "translation-unit",
+      "source_sha256": "8ae697467c3cfff54b41c03828419000907cfc5b2ee92902246711523663f858",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/display/libappdisplay.a.p/gimpcanvasperspectiveguide.cpp.o",
+          "object_sha256": "72b82c59328fd9beb97d9370f50cf6227ae2a220e1852c4133eddeaf39b779f3",
+          "archive": "app/display/libappdisplay.a",
+          "extraction_reason": "app/display/libappdisplay.a.p/gimpdisplayshell-items.c.o (gimp_canvas_perspective_guide_new)",
+          "retention": "archive member extracted"
+        }
+      ]
+    },
+    {
+      "variant": "http",
+      "path": "app/display/gimppaintercanvasui.cpp",
+      "kind": "translation-unit",
+      "source_sha256": "d51aca41662464a120ce3badf28e202381a2e0c0a2a03d4263a81b346c931fed",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/display/libappdisplay.a.p/gimppaintercanvasui.cpp.o",
+          "object_sha256": "2aaf8eda5d114f8d77587813bf8872bc63d232d994708a6a6d7355cb79b65179",
+          "archive": "app/display/libappdisplay.a",
+          "extraction_reason": "app/actions/libappactions.a.p/view-actions.c.o (gimp_painter_canvas_ui_get_visible)",
+          "retention": "archive member extracted"
+        }
+      ]
+    },
+    {
+      "variant": "http",
+      "path": "app/httpd/httpd-images.cpp",
+      "kind": "translation-unit",
+      "source_sha256": "084e0fe355b97a806e9fb021bcfa73881a9a917203bbfdafe0dd609103554631",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/httpd/libapphttpd.a.p/httpd-images.cpp.o",
+          "object_sha256": "c28af59acecc89b93fda37352e3a9403d27c44466fde272f3d5744085b944c27",
+          "archive": "app/httpd/libapphttpd.a",
+          "extraction_reason": "app/httpd/libapphttpd.a.p/httpd-resource.cpp.o (GimpPainter::Http::images_resource())",
+          "retention": "archive member extracted"
+        },
+        {
+          "target": "gimp-console-3.0",
+          "object": "app/httpd/libapphttpd.a.p/httpd-images.cpp.o",
+          "object_sha256": "c28af59acecc89b93fda37352e3a9403d27c44466fde272f3d5744085b944c27",
+          "archive": "app/httpd/libapphttpd.a",
+          "extraction_reason": "app/httpd/libapphttpd.a.p/httpd-resource.cpp.o (GimpPainter::Http::images_resource())",
+          "retention": "archive member extracted"
+        }
+      ]
+    },
+    {
+      "variant": "http",
+      "path": "app/httpd/httpd-navigation.cpp",
+      "kind": "translation-unit",
+      "source_sha256": "3c08a702de3a9873b0513dcf9f572284820bcac1a8dfbf7e51fd31fb98cda5fc",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/httpd/libapphttpdgui.a.p/httpd-navigation.cpp.o",
+          "object_sha256": "b68859de15f575fa15575cc5f4a49c7656b85301f97551e664596e2e3411ef8f",
+          "archive": "app/httpd/libapphttpdgui.a",
+          "extraction_reason": "app/libapp.a.p/app.c.o (gimp_painter_httpd_enable_navigation)",
+          "retention": "archive member extracted"
+        }
+      ]
+    },
+    {
+      "variant": "http",
+      "path": "app/httpd/httpd-pdb.cpp",
+      "kind": "translation-unit",
+      "source_sha256": "745a694918a67bd15962e7dd035dd78d14183d4a07f01c7c50e5a80014329a97",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/httpd/libapphttpd.a.p/httpd-pdb.cpp.o",
+          "object_sha256": "936c66a08ca71acc00dd9acfb2a3058595913a86c6ed12bdd9fcbf4aa8263176",
+          "archive": "app/httpd/libapphttpd.a",
+          "extraction_reason": "app/httpd/libapphttpd.a.p/httpd-resource.cpp.o (GimpPainter::Http::pdb_resource())",
+          "retention": "archive member extracted"
+        },
+        {
+          "target": "gimp-console-3.0",
+          "object": "app/httpd/libapphttpd.a.p/httpd-pdb.cpp.o",
+          "object_sha256": "936c66a08ca71acc00dd9acfb2a3058595913a86c6ed12bdd9fcbf4aa8263176",
+          "archive": "app/httpd/libapphttpd.a",
+          "extraction_reason": "app/httpd/libapphttpd.a.p/httpd-resource.cpp.o (GimpPainter::Http::pdb_resource())",
+          "retention": "archive member extracted"
+        }
+      ]
+    },
+    {
+      "variant": "http",
+      "path": "app/httpd/httpd-resource.cpp",
+      "kind": "translation-unit",
+      "source_sha256": "1b048f9cdea036e50d7fa54becaa37bb08d7f4685cca281b08e9ab5321232651",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/httpd/libapphttpd.a.p/httpd-resource.cpp.o",
+          "object_sha256": "c76540e6b436cd6e21e6665fa149eba58cd83373fe64ff3d62c6607f5fc59e02",
+          "archive": "app/httpd/libapphttpd.a",
+          "extraction_reason": "app/httpd/libapphttpd.a.p/httpd.cpp.o (GimpPainter::Http::object())",
+          "retention": "archive member extracted"
+        },
+        {
+          "target": "gimp-console-3.0",
+          "object": "app/httpd/libapphttpd.a.p/httpd-resource.cpp.o",
+          "object_sha256": "c76540e6b436cd6e21e6665fa149eba58cd83373fe64ff3d62c6607f5fc59e02",
+          "archive": "app/httpd/libapphttpd.a",
+          "extraction_reason": "app/httpd/libapphttpd.a.p/httpd.cpp.o (GimpPainter::Http::object())",
+          "retention": "archive member extracted"
+        }
+      ]
+    },
+    {
+      "variant": "http",
+      "path": "app/httpd/httpd.cpp",
+      "kind": "translation-unit",
+      "source_sha256": "22450de1872fe672f6f20ba1a220abba5e52f32a2d7cb1ccbecdd77e046682df",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/httpd/libapphttpd.a.p/httpd.cpp.o",
+          "object_sha256": "334607886aafee27e725d0d7ce24280940db33467b532a13afb5ebab592d2209",
+          "archive": "app/httpd/libapphttpd.a",
+          "extraction_reason": "app/libapp.a.p/app.c.o (gimp_painter_httpd_from_environment)",
+          "retention": "archive member extracted"
+        },
+        {
+          "target": "gimp-console-3.0",
+          "object": "app/httpd/libapphttpd.a.p/httpd.cpp.o",
+          "object_sha256": "334607886aafee27e725d0d7ce24280940db33467b532a13afb5ebab592d2209",
+          "archive": "app/httpd/libapphttpd.a",
+          "extraction_reason": "app/gimp-console-3.0.p/app.c.o (gimp_painter_httpd_from_environment)",
+          "retention": "archive member extracted"
+        }
+      ]
+    },
+    {
+      "variant": "http",
+      "path": "app/meson.build",
+      "kind": "configuration",
+      "source_sha256": "80fae75399f85e4f78b212dc93c0c2db072b16108be6b8419c9a73071813b648",
+      "result": "Configured target/generator ownership from byte-matched 04.008 membership evidence; not an archive registration object"
+    },
+    {
+      "variant": "http",
+      "path": "app/paint/gimpfillbrush.cpp",
+      "kind": "translation-unit",
+      "source_sha256": "f91685ff3853e89313aa038805630117c8dbfbe741b4b3af463be1c04dbf2a0e",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/paint/libapppaint.a.p/gimpfillbrush.cpp.o",
+          "object_sha256": "3e729acb2d46973a748b5f505df51063a88d185102d852a56bb7126d6aac7ba3",
+          "archive": "app/paint/libapppaint.a",
+          "extraction_reason": "app/paint/libapppaint.a.p/gimp-paint.c.o (gimp_fill_brush_register)",
+          "retention": "archive member extracted"
+        },
+        {
+          "target": "gimp-console-3.0",
+          "object": "app/paint/libapppaint.a.p/gimpfillbrush.cpp.o",
+          "object_sha256": "3e729acb2d46973a748b5f505df51063a88d185102d852a56bb7126d6aac7ba3",
+          "archive": "app/paint/libapppaint.a",
+          "extraction_reason": "app/paint/libapppaint.a.p/gimp-paint.c.o (gimp_fill_brush_register)",
+          "retention": "archive member extracted"
+        }
+      ]
+    },
+    {
+      "variant": "http",
+      "path": "app/paint/painter-brush-settings/meson.build",
+      "kind": "configuration",
+      "source_sha256": "49ffdc89681014266308b749cfda29e09d6e5a4296ce3aae6de48aa4ac4fa7bd",
+      "result": "Configured target/generator ownership from byte-matched 04.008 membership evidence; not an archive registration object"
+    },
+    {
+      "variant": "http",
+      "path": "app/paint/painter-mypaint-surface/gegl-surface.cpp",
+      "kind": "translation-unit",
+      "source_sha256": "e7ac2ab7781f9a278c1b4296424d353ef30758a79fa2ddddc5ae70fa342b3c2c",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gegl-surface.cpp.o",
+          "object_sha256": "7bcaeedf6082838890a4bcb1a830e6a8ea28ad07491990994db9567dadd41850",
+          "archive": "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a",
+          "extraction_reason": "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/paint-core.cpp.o (GimpPainter::MyPaint::GeglSurface::set_selection(_GeglBuffer*, int, int))",
+          "retention": "archive member extracted"
+        },
+        {
+          "target": "gimp-console-3.0",
+          "object": "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gegl-surface.cpp.o",
+          "object_sha256": "7bcaeedf6082838890a4bcb1a830e6a8ea28ad07491990994db9567dadd41850",
+          "archive": "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a",
+          "extraction_reason": "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/paint-core.cpp.o (GimpPainter::MyPaint::GeglSurface::set_selection(_GeglBuffer*, int, int))",
+          "retention": "archive member extracted"
+        }
+      ]
+    },
+    {
+      "variant": "http",
+      "path": "app/paint/painter-mypaint-surface/gimp-painter-options.cpp",
+      "kind": "translation-unit",
+      "source_sha256": "2126a82d73b1abb30ec7031449ec615a358b735584dd824b0c8c3840069ea813",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-painter-options.cpp.o",
+          "object_sha256": "73ffe9c5d52b1e34ffd40ee4fe4a82dfae60b57aa0f323b4cbd8bddc4a24e87a",
+          "archive": "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a",
+          "extraction_reason": "app/paint/libapppaint.a.p/gimppainterpaintgate.cpp.o (gimp_painter_mybrush_options_get_type)",
+          "retention": "archive member extracted"
+        },
+        {
+          "target": "gimp-console-3.0",
+          "object": "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-painter-options.cpp.o",
+          "object_sha256": "73ffe9c5d52b1e34ffd40ee4fe4a82dfae60b57aa0f323b4cbd8bddc4a24e87a",
+          "archive": "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a",
+          "extraction_reason": "app/paint/libapppaint.a.p/gimppainterpaintgate.cpp.o (gimp_painter_mybrush_options_get_type)",
+          "retention": "archive member extracted"
+        }
+      ]
+    },
+    {
+      "variant": "http",
+      "path": "app/paint/painter-mypaint-surface/gimp-painter-session.cpp",
+      "kind": "translation-unit",
+      "source_sha256": "08909db4102da3937a2eacdb6f6fca70ea927b6053086c3c51e04dd67463e431",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-painter-session.cpp.o",
+          "object_sha256": "10cad8523a56c322cf53a06bda362e8e8873b7a7412cb4201235ce53771eff6e",
+          "archive": "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a",
+          "extraction_reason": "app/paint/libapppaint.a.p/gimppainterpaintgate.cpp.o (gimp_painter_session_get_type)",
+          "retention": "archive member extracted"
+        },
+        {
+          "target": "gimp-console-3.0",
+          "object": "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-painter-session.cpp.o",
+          "object_sha256": "10cad8523a56c322cf53a06bda362e8e8873b7a7412cb4201235ce53771eff6e",
+          "archive": "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a",
+          "extraction_reason": "app/paint/libapppaint.a.p/gimppainterpaintgate.cpp.o (gimp_painter_session_get_type)",
+          "retention": "archive member extracted"
+        }
+      ]
+    },
+    {
+      "variant": "http",
+      "path": "app/paint/painter-mypaint-surface/paint-core.cpp",
+      "kind": "translation-unit",
+      "source_sha256": "f2acf89889fbb8c7ae57f700f1f455833c830ba38329c4f829a9bf4d9f00669a",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/paint-core.cpp.o",
+          "object_sha256": "f6daeace6133a3324b1684935e1ef50296b7400eeda35f67c23d6c8e0c8669cd",
+          "archive": "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a",
+          "extraction_reason": "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-painter-session.cpp.o (GimpPainter::MyPaint::PaintCore::active() const)",
+          "retention": "archive member extracted"
+        },
+        {
+          "target": "gimp-console-3.0",
+          "object": "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/paint-core.cpp.o",
+          "object_sha256": "f6daeace6133a3324b1684935e1ef50296b7400eeda35f67c23d6c8e0c8669cd",
+          "archive": "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a",
+          "extraction_reason": "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/gimp-painter-session.cpp.o (GimpPainter::MyPaint::PaintCore::active() const)",
+          "retention": "archive member extracted"
+        }
+      ]
+    },
+    {
+      "variant": "http",
+      "path": "app/paint/painter-mypaint/engine.cpp",
+      "kind": "translation-unit",
+      "source_sha256": "dafdaf2a791d51e3f1ce39642bc2ef7f06d09e8af66de07ba89848adba3aa94a",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/paint/painter-mypaint/libpainter-mypaint.a.p/engine.cpp.o",
+          "object_sha256": "9b035f7e0a973ecd9530f61a7cc5483ac38915e56072a8c596f136dd1d865f45",
+          "archive": "app/paint/painter-mypaint/libpainter-mypaint.a",
+          "extraction_reason": "(--whole-archive)",
+          "retention": "archive member extracted"
+        },
+        {
+          "target": "gimp-console-3.0",
+          "object": "app/paint/painter-mypaint/libpainter-mypaint.a.p/engine.cpp.o",
+          "object_sha256": "9b035f7e0a973ecd9530f61a7cc5483ac38915e56072a8c596f136dd1d865f45",
+          "archive": "app/paint/painter-mypaint/libpainter-mypaint.a",
+          "extraction_reason": "app/paint/painter-mypaint-surface/libpainter-mypaint-surface.a.p/paint-core.cpp.o (GimpPainter::MyPaint::Engine::~Engine())",
+          "retention": "archive member extracted"
+        }
+      ]
+    },
+    {
+      "variant": "http",
+      "path": "app/paint/painter-mypaint/resource.cpp",
+      "kind": "translation-unit",
+      "source_sha256": "128928c74ef99cbb754ba469e6df3946db1730588a1ddc5cb9daf21c3441f15b",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/paint/painter-mypaint/libpainter-mypaint.a.p/resource.cpp.o",
+          "object_sha256": "5659ce87fc7546f4cdf7162c67a83ab4079be60172c37bd65c8cf3e4817d7f0b",
+          "archive": "app/paint/painter-mypaint/libpainter-mypaint.a",
+          "extraction_reason": "(--whole-archive)",
+          "retention": "archive member extracted"
+        },
+        {
+          "target": "gimp-console-3.0",
+          "object": "app/paint/painter-mypaint/libpainter-mypaint.a.p/resource.cpp.o",
+          "object_sha256": "5659ce87fc7546f4cdf7162c67a83ab4079be60172c37bd65c8cf3e4817d7f0b",
+          "archive": "app/paint/painter-mypaint/libpainter-mypaint.a",
+          "extraction_reason": "app/core/libappcore.a.p/gimppaintermybrush.cpp.o (typeinfo for std::invalid_argument)",
+          "retention": "archive member extracted"
+        }
+      ]
+    },
+    {
+      "variant": "http",
+      "path": "app/painter/filter-process.cpp",
+      "kind": "translation-unit",
+      "source_sha256": "5d5bc162d3c26d9496cc5f52ceff926e6e7e57fdaae225fef02a8705edd6d42c",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/painter/libapppainter.a.p/filter-process.cpp.o",
+          "object_sha256": "f5e6dea261cd78375e34305e18f5746c14922f26bb296551ded1b8f1d088d13f",
+          "archive": "app/painter/libapppainter.a",
+          "extraction_reason": "app/core/libappcore.a.p/gimpfilterlayer.cpp.o (GimpPainter::filter_process(GimpPainter::FilterProcedureRequest const&, GimpPainter::FilterRaster&, GimpPainter::FilterRaster&, std::atomic<bool>&, GimpPainter::FilterProcessOptions const&, std::shared_ptr<GimpPainter::FilterProcedureResult>, std::shared_ptr<GimpPainter::FilterProgress>))",
+          "retention": "archive member extracted"
+        },
+        {
+          "target": "gimp-console-3.0",
+          "object": "app/painter/libapppainter.a.p/filter-process.cpp.o",
+          "object_sha256": "f5e6dea261cd78375e34305e18f5746c14922f26bb296551ded1b8f1d088d13f",
+          "archive": "app/painter/libapppainter.a",
+          "extraction_reason": "app/core/libappcore.a.p/gimpfilterlayer.cpp.o (GimpPainter::filter_process(GimpPainter::FilterProcedureRequest const&, GimpPainter::FilterRaster&, GimpPainter::FilterRaster&, std::atomic<bool>&, GimpPainter::FilterProcessOptions const&, std::shared_ptr<GimpPainter::FilterProcedureResult>, std::shared_ptr<GimpPainter::FilterProgress>))",
+          "retention": "archive member extracted"
+        }
+      ]
+    },
+    {
+      "variant": "http",
+      "path": "app/painter/gimp-painter-binding.cpp",
+      "kind": "translation-unit",
+      "source_sha256": "22aca4f9e467e16b86f2cbeec431d7d069fc552c98fad985db770720fcf876fd",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/painter/libapppainter.a.p/gimp-painter-binding.cpp.o",
+          "object_sha256": "47b6e779dbe2553f257055f55e0e2cf9aec034006fc25393760283809d5d01ce",
+          "archive": "app/painter/libapppainter.a",
+          "extraction_reason": "app/core/libappcore.a.p/gimp.c.o (gimp_painter_binding_close)",
+          "retention": "archive member extracted"
+        },
+        {
+          "target": "gimp-console-3.0",
+          "object": "app/painter/libapppainter.a.p/gimp-painter-binding.cpp.o",
+          "object_sha256": "47b6e779dbe2553f257055f55e0e2cf9aec034006fc25393760283809d5d01ce",
+          "archive": "app/painter/libapppainter.a",
+          "extraction_reason": "app/core/libappcore.a.p/gimp.c.o (gimp_painter_binding_close)",
+          "retention": "archive member extracted"
+        }
+      ]
+    },
+    {
+      "variant": "http",
+      "path": "app/tools/gimpfillbrushtool.cpp",
+      "kind": "translation-unit",
+      "source_sha256": "1bd3106959f64ac1692bbc318ed17bf2cb4a6297a4cd806f7872cddbec833d37",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/tools/libapptools.a.p/gimpfillbrushtool.cpp.o",
+          "object_sha256": "c44d57dc196cfba5e02ff5dd50c197b559b2a83a77a212e4bfe7346adb6c878b",
+          "archive": "app/tools/libapptools.a",
+          "extraction_reason": "app/tools/libapptools.a.p/gimp-tools.c.o (gimp_fill_brush_tool_get_type)",
+          "retention": "archive member extracted"
+        }
+      ]
+    },
+    {
+      "variant": "http",
+      "path": "app/tools/gimppaintermybrushtool.cpp",
+      "kind": "translation-unit",
+      "source_sha256": "2b6a54cabe22fbb3b8cd113c8a3231955407ca67519822c0eb673c6f03575c90",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/tools/libapptools.a.p/gimppaintermybrushtool.cpp.o",
+          "object_sha256": "e6f6411f0eebf8daf706b1562e633592c058d63b27b9c7cb2b25f1b32198c8d1",
+          "archive": "app/tools/libapptools.a",
+          "extraction_reason": "app/tools/libapptools.a.p/gimp-tools.c.o (gimp_painter_mybrush_tool_get_type)",
+          "retention": "archive member extracted"
+        }
+      ]
+    },
+    {
+      "variant": "http",
+      "path": "app/tools/gimpperspectiveguidetool.cpp",
+      "kind": "translation-unit",
+      "source_sha256": "08f839eea914b1d2baf22f0b266038929aa2db89509ebe71a9eb34683347884b",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/tools/libapptools.a.p/gimpperspectiveguidetool.cpp.o",
+          "object_sha256": "541e853ec26ad8f57c24fb56745c43cf07e7507214357f789a38ced2e519a213",
+          "archive": "app/tools/libapptools.a",
+          "extraction_reason": "app/tools/libapptools.a.p/gimp-tools.c.o (gimp_perspective_guide_tool_get_type)",
+          "retention": "archive member extracted"
+        }
+      ]
+    },
+    {
+      "variant": "http",
+      "path": "app/widgets/gimplayerpresetview.c",
+      "kind": "translation-unit",
+      "source_sha256": "46a8763177097b16102f06481bab4750ebaa978757eda86030e5c34b4c2c9ced",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/widgets/libappwidgets.a.p/gimplayerpresetview.c.o",
+          "object_sha256": "c0e20e2f21791d7cc4094167e6ee631dad8f74601e4f524f497800bad180b83f",
+          "archive": "app/widgets/libappwidgets.a",
+          "extraction_reason": "app/actions/libappactions.a.p/layer-presets-actions.c.o (gimp_layer_preset_view_get_type)",
+          "retention": "archive member extracted"
+        }
+      ]
+    },
+    {
+      "variant": "http",
+      "path": "app/widgets/gimppaintercompactoptions.cpp",
+      "kind": "translation-unit",
+      "source_sha256": "e5e35c593554587b3dfb931aca2d9bd5fc228332c157a79fb83d0bbedac38fa0",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/widgets/libappwidgets.a.p/gimppaintercompactoptions.cpp.o",
+          "object_sha256": "e2915025d6cb7dfb8d8c41bae091accd4060620f7908ccebb34c6c7acde243ef",
+          "archive": "app/widgets/libappwidgets.a",
+          "extraction_reason": "app/display/libappdisplay.a.p/gimppaintercanvasui.cpp.o (gimp_painter_compact_options_set)",
+          "retention": "archive member extracted"
+        }
+      ]
+    },
+    {
+      "variant": "http",
+      "path": "app/widgets/gimppainterlayertiles.cpp",
+      "kind": "translation-unit",
+      "source_sha256": "ba89c8287b963085e0d8949541a5686181b44a262523eac5f43fc17e497f980e",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/widgets/libappwidgets.a.p/gimppainterlayertiles.cpp.o",
+          "object_sha256": "00ac9e2025ad021493891fc370afdd2dc34c8194b4726bba9d80315927cc1e68",
+          "archive": "app/widgets/libappwidgets.a",
+          "extraction_reason": "app/display/libappdisplay.a.p/gimppaintercanvasui.cpp.o (gimp_painter_layer_tiles_new)",
+          "retention": "archive member extracted"
+        }
+      ]
+    },
+    {
+      "variant": "http",
+      "path": "app/widgets/gimppaintermybrusheditor.cpp",
+      "kind": "translation-unit",
+      "source_sha256": "d6a699fb1da5ca8f4ccf6cf68dcb4a4832c617fd9fd69c964e68f228102da633",
+      "observations": [
+        {
+          "target": "gimp-3.0",
+          "object": "app/widgets/libappwidgets.a.p/gimppaintermybrusheditor.cpp.o",
+          "object_sha256": "80ece3e890e54528a253896ac772167e3c220db04d07aeb1a42065cb0ded4489",
+          "archive": "app/widgets/libappwidgets.a",
+          "extraction_reason": "app/tools/libapptools.a.p/gimppaintermybrushtool.cpp.o (gimp_painter_mybrush_editor_new)",
+          "retention": "archive member extracted"
+        }
+      ]
+    }
+  ],
+  "prior_membership_sha256": "012d5c8619c23e062b78821305c1e1e285870b7345ea680ffa815f867f63b23d",
+  "archive_native_sha256": "f43c63ac91f78eb4073edc3e677d7a506a3f702b6e9847dc79ec27ae0219f453",
+  "json_report_sha256": {
+    "default": "2fb187b788647a4735af90742f292eb43e22013b98042f5d864f853ac7dcb998",
+    "http": "6c2119455dd7f0a9c0843e60d6286573aa6e575971c3b888de3801d24f67d796"
+  },
+  "limitations": [
+    "Native GNU/Linux default/HTTP only. This is link/extraction evidence, not execution of registrations or complete feature behavior.",
+    "Current implemented counterparts only; future feature ports must extend explicit roots. Full old-file parity, all platform gates and complete reader/writer fixtures remain separate.",
+    "Default frozen checker is historical evidence validation, not full current header/source-list closure.",
+    "Existing 04.009/json-dependency child is not closed by this original-task update."
+  ]
+}

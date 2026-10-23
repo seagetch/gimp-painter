@@ -1,0 +1,265 @@
+{
+  "scope": "Explicit currently implemented retention roots; lazy get_type functions need not execute at startup. Future feature registrations must add their own roots. This is not a claim that every legacy feature is implemented.",
+  "roots": [
+    {
+      "name": "owner close bridge",
+      "provider": "app/painter/gimp-painter-binding.cpp",
+      "consumer": "app/core/gimp.c",
+      "trigger_symbol": "gimp_painter_binding_close",
+      "source_anchor": "gimp_painter_binding_close",
+      "required_symbols": [
+        "gimp_painter_binding_close"
+      ],
+      "scope": "all"
+    },
+    {
+      "name": "Clone layer lazy type",
+      "provider": "app/core/gimpclonelayer.cpp",
+      "consumer": "app/core/gimpgrouplayer.c",
+      "trigger_symbol": "gimp_clone_layer_get_type",
+      "source_anchor": "GIMP_IS_CLONE_LAYER",
+      "required_symbols": [
+        "gimp_clone_layer_get_type",
+        "gimp_clone_layer_undo_get_type"
+      ],
+      "scope": "all"
+    },
+    {
+      "name": "Filter layer lazy construction",
+      "provider": "app/core/gimpfilterlayer.cpp",
+      "consumer": "app/xcf/painter-xcf-load.cpp",
+      "trigger_symbol": "gimp_filter_layer_get_type",
+      "source_anchor": "GIMP_IS_FILTER_LAYER",
+      "required_symbols": [
+        "gimp_filter_layer_get_type",
+        "gimp_filter_layer_new"
+      ],
+      "scope": "all"
+    },
+    {
+      "name": "Painter brush factory type",
+      "provider": "app/core/gimppaintermybrush.cpp",
+      "consumer": "app/core/gimp-data-factories.c",
+      "trigger_symbol": "gimp_painter_mybrush_get_type",
+      "source_anchor": "GIMP_TYPE_PAINTER_MYBRUSH",
+      "required_symbols": [
+        "gimp_painter_mybrush_get_type"
+      ],
+      "scope": "all"
+    },
+    {
+      "name": "Fill Brush paint registration",
+      "provider": "app/paint/gimpfillbrush.cpp",
+      "consumer": "app/paint/gimp-paint.c",
+      "trigger_symbol": "gimp_fill_brush_register",
+      "source_anchor": "gimp_fill_brush_register",
+      "required_symbols": [
+        "gimp_fill_brush_register",
+        "gimp_fill_brush_get_type",
+        "gimp_fill_brush_options_get_type"
+      ],
+      "scope": "all"
+    },
+    {
+      "name": "Painter Smudge paint registration",
+      "provider": "app/paint/gimppaintersmudge.cpp",
+      "consumer": "app/paint/gimp-paint.c",
+      "trigger_symbol": "gimp_painter_smudge_register",
+      "source_anchor": "gimp_painter_smudge_register",
+      "required_symbols": [
+        "gimp_painter_smudge_register",
+        "gimp_painter_smudge_get_type",
+        "gimp_painter_smudge_options_get_type"
+      ],
+      "scope": "all"
+    },
+    {
+      "name": "Painter paint gate registration",
+      "provider": "app/paint/gimppainterpaintgate.cpp",
+      "consumer": "app/paint/gimp-paint.c",
+      "trigger_symbol": "gimp_painter_paint_gate_register",
+      "source_anchor": "gimp_painter_paint_gate_register",
+      "required_symbols": [
+        "gimp_painter_paint_gate_register",
+        "gimp_painter_paint_gate_get_type"
+      ],
+      "scope": "all"
+    },
+    {
+      "name": "Painter session lazy construction",
+      "provider": "app/paint/painter-mypaint-surface/gimp-painter-session.cpp",
+      "consumer": "app/paint/gimppainterpaintgate.cpp",
+      "trigger_symbol": "gimp_painter_session_new",
+      "source_anchor": "gimp_painter_session_new",
+      "required_symbols": [
+        "gimp_painter_session_new",
+        "gimp_painter_session_get_type"
+      ],
+      "scope": "all"
+    },
+    {
+      "name": "Painter options type",
+      "provider": "app/paint/painter-mypaint-surface/gimp-painter-options.cpp",
+      "consumer": "app/paint/gimppainterpaintgate.cpp",
+      "trigger_symbol": "gimp_painter_mybrush_options_get_type",
+      "source_anchor": "GIMP_TYPE_PAINTER_MYBRUSH_OPTIONS",
+      "required_symbols": [
+        "gimp_painter_mybrush_options_get_type"
+      ],
+      "scope": "all"
+    },
+    {
+      "name": "Painter provenance lazy type",
+      "provider": "app/core/gimp-painter-provenance.cpp",
+      "consumer": "app/core/gimpobject.c",
+      "trigger_symbol": "gimp_painter_provenance_get_type",
+      "source_anchor": "gimp_painter_provenance_get_type",
+      "required_symbols": [
+        "gimp_painter_provenance_get_type"
+      ],
+      "scope": "all"
+    },
+    {
+      "name": "Fill Brush tool registration",
+      "provider": "app/tools/gimpfillbrushtool.cpp",
+      "consumer": "app/tools/gimp-tools.c",
+      "trigger_symbol": "gimp_fill_brush_tool_register",
+      "source_anchor": "gimp_fill_brush_tool_register",
+      "required_symbols": [
+        "gimp_fill_brush_tool_register",
+        "gimp_fill_brush_tool_get_type"
+      ],
+      "scope": "gui"
+    },
+    {
+      "name": "Painter Smudge tool registration",
+      "provider": "app/tools/gimppaintersmudgetool.cpp",
+      "consumer": "app/tools/gimp-tools.c",
+      "trigger_symbol": "gimp_painter_smudge_tool_register",
+      "source_anchor": "gimp_painter_smudge_tool_register",
+      "required_symbols": [
+        "gimp_painter_smudge_tool_register",
+        "gimp_painter_smudge_tool_get_type"
+      ],
+      "scope": "gui"
+    },
+    {
+      "name": "Painter Mybrush tool registration",
+      "provider": "app/tools/gimppaintermybrushtool.cpp",
+      "consumer": "app/tools/gimp-tools.c",
+      "trigger_symbol": "gimp_painter_mybrush_tool_register",
+      "source_anchor": "gimp_painter_mybrush_tool_register",
+      "required_symbols": [
+        "gimp_painter_mybrush_tool_register",
+        "gimp_painter_mybrush_tool_get_type"
+      ],
+      "scope": "gui"
+    },
+    {
+      "name": "Painter brush editor lazy construction",
+      "provider": "app/widgets/gimppaintermybrusheditor.cpp",
+      "consumer": "app/dialogs/dialogs-constructors.c",
+      "trigger_symbol": "gimp_painter_mybrush_editor_new",
+      "source_anchor": "gimp_painter_mybrush_editor_new",
+      "required_symbols": [
+        "gimp_painter_mybrush_editor_new",
+        "gimp_painter_mybrush_editor_get_type"
+      ],
+      "scope": "gui"
+    },
+    {
+      "name": "Optional HTTP lifecycle",
+      "provider": "app/httpd/httpd.cpp",
+      "consumer": "app/app.c",
+      "trigger_symbol": "gimp_painter_httpd_from_environment",
+      "source_anchor": "gimp_painter_httpd_from_environment",
+      "required_symbols": [
+        "gimp_painter_httpd_from_environment",
+        "gimp_painter_httpd_get_type",
+        "gimp_painter_httpd_start",
+        "gimp_painter_httpd_stop"
+      ],
+      "scope": "http"
+    },
+    {
+      "name": "Layer preset factory type",
+      "provider": "app/core/gimplayerpreset.c",
+      "consumer": "app/core/gimp-data-factories.c",
+      "trigger_symbol": "gimp_layer_preset_get_type",
+      "source_anchor": "GIMP_TYPE_LAYER_PRESET",
+      "required_symbols": [
+        "gimp_layer_preset_get_type"
+      ],
+      "scope": "all"
+    },
+    {
+      "name": "Device profile option type",
+      "provider": "app/core/gimptooloptions.c",
+      "consumer": "app/core/gimptoolpreset.c",
+      "trigger_symbol": "gimp_painter_device_options_get_type",
+      "source_anchor": "GIMP_TYPE_PAINTER_DEVICE_OPTIONS",
+      "required_symbols": [
+        "gimp_painter_device_options_get_type"
+      ],
+      "scope": "all"
+    },
+    {
+      "name": "Perspective guide lazy type",
+      "provider": "app/core/gimpperspectiveguide.cpp",
+      "consumer": "app/core/gimpimage-perspective-guide.c",
+      "trigger_symbol": "gimp_perspective_guide_get_type",
+      "source_anchor": "GIMP_IS_PERSPECTIVE_GUIDE",
+      "required_symbols": [
+        "gimp_perspective_guide_get_type"
+      ],
+      "scope": "all"
+    },
+    {
+      "name": "Perspective guide tool registration",
+      "provider": "app/tools/gimpperspectiveguidetool.cpp",
+      "consumer": "app/tools/gimp-tools.c",
+      "trigger_symbol": "gimp_perspective_guide_tool_register",
+      "source_anchor": "gimp_perspective_guide_tool_register",
+      "required_symbols": [
+        "gimp_perspective_guide_tool_register",
+        "gimp_perspective_guide_tool_get_type"
+      ],
+      "scope": "gui"
+    },
+    {
+      "name": "Layer tiles lazy construction",
+      "provider": "app/widgets/gimppainterlayertiles.cpp",
+      "consumer": "app/display/gimppaintercanvasui.cpp",
+      "trigger_symbol": "gimp_painter_layer_tiles_new",
+      "source_anchor": "gimp_painter_layer_tiles_new",
+      "required_symbols": [
+        "gimp_painter_layer_tiles_new",
+        "gimp_painter_layer_tiles_get_type"
+      ],
+      "scope": "gui"
+    },
+    {
+      "name": "Layer preset action setup",
+      "provider": "app/actions/layer-presets-actions.c",
+      "consumer": "app/actions/actions.c",
+      "trigger_symbol": "layer_presets_actions_setup",
+      "source_anchor": "layer_presets_actions_setup",
+      "required_symbols": [
+        "layer_presets_actions_setup",
+        "layer_presets_actions_update"
+      ],
+      "scope": "gui"
+    },
+    {
+      "name": "Layer preset view lazy type",
+      "provider": "app/widgets/gimplayerpresetview.c",
+      "consumer": "app/actions/layer-presets-actions.c",
+      "trigger_symbol": "gimp_layer_preset_view_get_type",
+      "source_anchor": "GIMP_IS_LAYER_PRESET_VIEW",
+      "required_symbols": [
+        "gimp_layer_preset_view_get_type"
+      ],
+      "scope": "gui"
+    }
+  ]
+}
