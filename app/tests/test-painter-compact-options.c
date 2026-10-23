@@ -546,11 +546,18 @@ static void native_editor_mixed_width_buttons (void)
 }
 
 #include "test-widget-store-native-controls.inc"
+#include "test-widget-store-orientation.inc"
+#include "test-widget-store-orientation-callers.inc"
 
 int main(int argc,char **argv) {
   g_test_init(&argc,&argv,NULL);if(!gtk_init_check(&argc,&argv))return GIMP_EXIT_TEST_SKIPPED;
   gimp_test_utils_setup_menus_path();gimp=gimp_init_for_gui_testing(TRUE);
   window=gtk_window_new(GTK_WINDOW_TOPLEVEL);g_object_ref_sink(window);gtk_window_set_default_size(GTK_WINDOW(window),1100,130);
+  g_test_add_func ("/painter-compact-options/orientation-enum-contract", orientation_enum_contract);
+  g_test_add_func ("/painter-compact-options/orientation-integer-contract", orientation_integer_contract);
+  g_test_add_func ("/painter-compact-options/orientation-property-contract", orientation_property_contract);
+  g_test_add_func ("/painter-compact-options/orientation-active-callers", orientation_active_callers);
+  g_test_add_func ("/painter-compact-options/orientation-histogram-current-controls", orientation_histogram_current_controls);
   g_test_add_func ("/painter-compact-options/native-preview-factory-failure", native_preview_factory_failure);
   g_test_add_func ("/painter-compact-options/native-preview-factory-success", native_preview_factory_success);
   g_test_add_func ("/painter-compact-options/native-property-controls", native_property_controls);

@@ -184,9 +184,13 @@ EXPORTS
 	gimp_enum_label_new
 	gimp_enum_label_set_value
 	gimp_enum_radio_box_new
+	gimp_enum_radio_box_new_with_orientation
 	gimp_enum_radio_box_new_with_range
 	gimp_enum_radio_frame_new
+	gimp_enum_radio_frame_new_full
+	gimp_enum_radio_frame_new_with_orientation
 	gimp_enum_radio_frame_new_with_range
+	gimp_enum_stock_box_new_with_orientation
 	gimp_enum_store_get_type
 	gimp_enum_store_new
 	gimp_enum_store_new_with_range
@@ -250,6 +254,7 @@ EXPORTS
 	gimp_int_radio_frame_set_sensitivity
 	gimp_int_radio_frame_set_title
 	gimp_int_radio_group_new
+	gimp_int_radio_group_new_with_orientation
 	gimp_int_radio_group_set_active
 	gimp_int_store_get_type
 	gimp_int_store_lookup_by_user_data
@@ -377,6 +382,7 @@ EXPORTS
 	gimp_preview_untransform
 	gimp_prop_boolean_combo_box_new
 	gimp_prop_boolean_radio_frame_new
+	gimp_prop_boolean_radio_frame_new_with_orientation
 	gimp_prop_check_button_new
 	gimp_prop_choice_combo_box_new
 	gimp_prop_choice_radio_frame_new
@@ -391,6 +397,8 @@ EXPORTS
 	gimp_prop_enum_label_new
 	gimp_prop_enum_radio_box_new
 	gimp_prop_enum_radio_frame_new
+	gimp_prop_enum_radio_frame_new_with_orientation
+	gimp_prop_enum_stock_box_new_with_orientation
 	gimp_prop_expander_new
 	gimp_prop_file_chooser_button_new
 	gimp_prop_file_chooser_button_new_with_dialog
