@@ -69,6 +69,32 @@ static void check_point(gint index,gdouble ex,gdouble ey)
   g_assert_nonnull(guide);g_assert_true(gimp_perspective_guide_get_vanish_points(guide,index,&x,&y));
   g_assert_cmpfloat(x,==,ex);g_assert_cmpfloat(y,==,ey);
 }
+/* Optional evidence capture of the real integrated GUI, never a mock scene. */
+static void capture_guide_scene (void)
+{
+  const gchar *path = g_getenv ("GIMP_TEST_PERSPECTIVE_SCREENSHOT");
+  GtkWidget *window;
+  GdkWindow *native;
+  GdkPixbuf *pixels;
+  GError *error = NULL;
+  gint64 deadline;
+  if (!path) return;
+  window = gtk_widget_get_toplevel (GTK_WIDGET (shell));
+  gtk_window_resize (GTK_WINDOW (window), 1040, 1800);
+  gtk_window_present (GTK_WINDOW (window));
+  deadline = g_get_monotonic_time () + G_TIME_SPAN_SECOND;
+  while (g_get_monotonic_time () < deadline) {
+    g_main_context_iteration (NULL, FALSE);
+    g_usleep (10000);
+  }
+  native = gtk_widget_get_window (window);
+  pixels = gdk_pixbuf_get_from_window (native, 0, 0,
+    gdk_window_get_width (native), gdk_window_get_height (native));
+  g_assert_nonnull (pixels);
+  g_assert_true (gdk_pixbuf_save (pixels, path, "png", &error, NULL));
+  g_assert_no_error (error);
+  g_object_unref (pixels);
+}
 static void add_move_remove_undo(void)
 {
   GimpCoords coords={0};gint depth;
@@ -77,6 +103,7 @@ static void add_move_remove_undo(void)
   click(10,20,GDK_SHIFT_MASK);click(70,90,GDK_SHIFT_MASK);click(200,240,GDK_SHIFT_MASK);click(250,250,GDK_SHIFT_MASK);
   g_assert_cmpint(gimp_perspective_guide_get_vanish_point_length(gimp_image_get_perspective_guide(image)),==,3);
   check_point(0,10,20);check_point(1,70,90);check_point(2,200,240);
+  capture_guide_scene ();
   klass->modifier_key(tool,GDK_SHIFT_MASK,FALSE,0,shell->display);
   depth=gimp_undo_stack_get_depth(gimp_image_get_undo_stack(image));
   coords.x=70;coords.y=90;klass->button_press(tool,&coords,0,0,GIMP_BUTTON_PRESS_NORMAL,shell->display);
@@ -569,11 +596,36 @@ static void property_finalizer_replaces_model (void)
   check_point (0, 100, 110);
   g_object_unref (replacement); close_image ();
 }
+/* A model can change between press and motion without being replaced. */
+static void stale_target_motion (void)
+{
+  GimpCoords coords = { 0 };
+  GimpPerspectiveGuide *guide;
+  gint depth;
+  create_image ();
+  klass->modifier_key (tool, GDK_SHIFT_MASK, TRUE, GDK_SHIFT_MASK, shell->display);
+  click (24, 36, GDK_SHIFT_MASK);
+  click (100, 110, GDK_SHIFT_MASK);
+  klass->modifier_key (tool, GDK_SHIFT_MASK, FALSE, 0, shell->display);
+  guide = gimp_image_get_perspective_guide (image);
+  depth = gimp_undo_stack_get_depth (gimp_image_get_undo_stack (image));
+  coords.x = 100; coords.y = 110;
+  klass->button_press (tool, &coords, 0, 0, GIMP_BUTTON_PRESS_NORMAL, shell->display);
+  g_assert_true (gimp_perspective_guide_remove_vanish_points (guide, 1));
+  coords.x = 130; coords.y = 140;
+  klass->motion (tool, &coords, 0, GDK_BUTTON1_MASK, shell->display);
+  klass->button_release (tool, &coords, 0, 0, GIMP_BUTTON_RELEASE_NORMAL, shell->display);
+  g_assert_cmpint (gimp_perspective_guide_get_vanish_point_length (guide), ==, 1);
+  check_point (0, 24, 36);
+  g_assert_cmpint (gimp_undo_stack_get_depth (gimp_image_get_undo_stack (image)), ==, depth);
+  close_image ();
+}
 int main(int argc,char **argv)
 {
   gint result;g_test_init(&argc,&argv,NULL);if(!gtk_init_check(&argc,&argv))return GIMP_EXIT_TEST_SKIPPED;
   gimp_test_utils_setup_menus_path();gimp=gimp_init_for_gui_testing(TRUE);
   g_test_add_func("/perspective-ui/add-move-remove-undo",add_move_remove_undo);
+  g_test_add_func("/perspective-ui/stale-target-motion",stale_target_motion);
   g_test_add_func("/perspective-ui/close-pending-resize",close_with_pending_resize);
   g_test_add_func("/perspective-ui/cancel-hit-transforms",cancel_and_hit_transforms);
   g_test_add_func("/perspective-ui/overlay-extents-replace",overlay_extents_and_replace);

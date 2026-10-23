@@ -32,7 +32,7 @@ struct ToolImpl {
   explicit ToolImpl (GimpTool *tool) : tool (tool) {}
   GimpTool *tool;
   WeakRef<GObject> image;
-  ObjectRef<GimpPerspectiveGuide> guide, before;
+  PerspectiveGuideRef guide, before;
   Operation operation = Operation::Move;
   gint target = -1;
   bool editing = false, changed = false;
@@ -65,7 +65,7 @@ struct ToolImpl {
       gimp_image_flush (GIMP_IMAGE (owner.get ()));
       if (generation != token) return false;
     }
-    if (owner) guide = ObjectRef<GimpPerspectiveGuide>::retain (gimp_image_get_perspective_guide (GIMP_IMAGE (owner.get ())));
+    if (owner) guide = PerspectiveGuideRef::retain (gimp_image_get_perspective_guide (GIMP_IMAGE (owner.get ())));
     /* Last-unref callbacks also invalidate the result seen by attach(). */
     edited.reset (); previous.reset (); owner.reset ();
     return generation == token;
@@ -84,7 +84,7 @@ struct ToolImpl {
     }
     auto *current = current_image ? GIMP_IMAGE (current_image.get ()) : nullptr;
     const auto token = generation;
-    guide = ObjectRef<GimpPerspectiveGuide>::retain (current ? gimp_image_get_perspective_guide (current) : nullptr);
+    guide = PerspectiveGuideRef::retain (current ? gimp_image_get_perspective_guide (current) : nullptr);
     if (generation != token) return false;
     tool->display = display;
     if (!gimp_draw_tool_is_active (draw)) gimp_draw_tool_start (draw, display);
@@ -95,7 +95,7 @@ struct ToolImpl {
   gint hit (GimpDisplay *display, double x, double y) {
     if (!guide) return -1;
     GimpPerspectiveGuideState state {};
-    gimp_perspective_guide_get_state (guide.get (), &state);
+    guide.state (&state);
     gint nearest = -1; double minimum = 0;
     /* Legacy nearest selection in image space, with a display-space handle test. */
     for (int i = 0; i < state.n_points; ++i) {
@@ -116,7 +116,7 @@ void set_property (GObject *object, guint prop, const GValue *value, GParamSpec 
     return;
   }
   property_boundary (object, pspec, "set", [&] {
-    auto model = ObjectRef<GimpPerspectiveGuide>::retain (
+    auto model = PerspectiveGuideRef::retain (
       static_cast<GimpPerspectiveGuide *> (g_value_get_object (value)));
     auto& binding = BindingStore::require (object);
     auto set = [&] (ToolImpl& impl) { impl.guide = model; };
@@ -174,22 +174,22 @@ void press (GimpTool *tool, const GimpCoords *coords, guint32, GdkModifierType,
     if (!std::isfinite (coords->x) || !std::isfinite (coords->y)) return;
     DrawPause pause (tool); if (!impl.attach (display)) return;
     auto owner = impl.image.lock (); if (!owner) return;
-    impl.before = ObjectRef<GimpPerspectiveGuide>::adopt (gimp_perspective_guide_duplicate (impl.guide.get ()));
+    impl.before = impl.guide.duplicate ();
     impl.editing = true; impl.changed = false; impl.target = -1;
     const auto token = ++impl.generation;
     gimp_tool_control_activate (tool->control);
     if (impl.operation == Operation::Add) {
       if (!impl.guide) {
-        auto added = ObjectRef<GimpPerspectiveGuide>::adopt (gimp_perspective_guide_new (0));
-        if (!added || gimp_perspective_guide_add_vanish_points (added.get (), coords->x, coords->y) < 0) return;
+        auto added = PerspectiveGuideRef::create (0);
+        if (!added || added.add_point (coords->x, coords->y) < 0) return;
         impl.guide = added;
         impl.changed = true;
         gimp_image_set_perspective_guide (GIMP_IMAGE (owner.get ()), added.get ());
-      } else if (gimp_perspective_guide_get_vanish_point_length (impl.guide.get ()) < 3) {
+      } else if (impl.guide.count () < 3) {
         auto model = impl.guide;
         const bool was_changed = impl.changed;
         impl.changed = true;
-        const bool added = gimp_perspective_guide_add_vanish_points (model.get (), coords->x, coords->y) >= 0;
+        const bool added = model.add_point (coords->x, coords->y) >= 0;
         if (impl.current (token, owner.get (), model.get ()) && !added) impl.changed = was_changed;
       }
     } else {
@@ -198,10 +198,10 @@ void press (GimpTool *tool, const GimpCoords *coords, guint32, GdkModifierType,
         auto model = impl.guide;
         const gint target = impl.target;
         impl.target = -1; impl.changed = true;
-        const bool removed = gimp_perspective_guide_remove_vanish_points (model.get (), target);
+        const bool removed = model.remove_point (target);
         if (!impl.current (token, owner.get (), model.get ())) return;
         impl.changed = removed;
-        if (removed && !gimp_perspective_guide_get_vanish_point_length (model.get ())) {
+        if (removed && !model.count ()) {
           impl.guide.reset ();
           gimp_image_set_perspective_guide (GIMP_IMAGE (owner.get ()), nullptr);
         }
@@ -219,7 +219,8 @@ void motion (GimpTool *tool, const GimpCoords *coords, guint32, GdkModifierType,
     if (!owner || gimp_image_get_perspective_guide (GIMP_IMAGE (owner.get ())) != impl.guide.get ()) {
       impl.editing = impl.changed = false; impl.target = -1; return;
     }
-    double x, y; gimp_perspective_guide_get_vanish_points (impl.guide.get (), impl.target, &x, &y);
+    double x, y;
+    if (!impl.guide.get_point (impl.target, &x, &y)) return;
     if (x == coords->x && y == coords->y) return;
     if (!std::isfinite (coords->x) || !std::isfinite (coords->y)) return;
     DrawPause pause (tool);
@@ -227,7 +228,7 @@ void motion (GimpTool *tool, const GimpCoords *coords, guint32, GdkModifierType,
     const auto token = impl.generation;
     const bool was_changed = impl.changed;
     impl.changed = true;
-    const bool moved = gimp_perspective_guide_set_vanish_points (model.get (), impl.target, coords->x, coords->y);
+    const bool moved = model.set_point (impl.target, coords->x, coords->y);
     if (impl.current (token, owner.get (), model.get ()) && !moved) impl.changed = was_changed;
   });
 }
@@ -267,7 +268,7 @@ void draw (GimpDrawTool *draw_tool)
 {
   with (GIMP_TOOL (draw_tool), [&] (ToolImpl& impl) {
     if (!impl.guide) return;
-    GimpPerspectiveGuideState state {}; gimp_perspective_guide_get_state (impl.guide.get (), &state);
+    GimpPerspectiveGuideState state {}; impl.guide.state (&state);
     for (int i = 0; i < state.n_points; ++i)
       gimp_draw_tool_add_handle (draw_tool, impl.target == i ? GIMP_HANDLE_CIRCLE : GIMP_HANDLE_FILLED_CIRCLE,
         state.points[i].x, state.points[i].y, GIMP_TOOL_HANDLE_SIZE_CIRCLE, GIMP_TOOL_HANDLE_SIZE_CIRCLE, GIMP_HANDLE_ANCHOR_CENTER);

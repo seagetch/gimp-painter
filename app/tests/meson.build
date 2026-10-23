@@ -116,6 +116,7 @@ foreach test_name : app_tests
   test_exe = executable(test_name,
     'test-@0@.@1@'.format(test_name, test_name == 'painter-type-startup' ? 'cpp' : 'c'),
     'tests.c',
+    test_name == 'painter-perspective' ? ['test-painter-perspective-handle.cpp'] : [],
     test_name == 'mypaint-selector-contracts' ? ['test-mypaint-selector-contracts.cpp'] : [],
     test_name == 'painter-compact-options' ? ['test-widget-orientation-api.c', 'test-widget-orientation-api.cpp'] : [],
     test_name == 'gimp-clone-layer' ? ['test-gimp-clone-layout.cpp'] : [],
@@ -126,7 +127,8 @@ foreach test_name : app_tests
     c_args: test_name == 'gimp-painter-mybrush' ? mybrush_copy_fault_args : [],
     cpp_args: (test_name == 'gimp-painter-mybrush' ? mybrush_copy_fault_args : []) +
       (test_name == 'gimp-clone-layer' ? clone_route_args : []) +
-      (test_name == 'mypaint-selector-contracts' ? painter_cpp_args + selector_route_args : []),
+      (test_name == 'mypaint-selector-contracts' ? painter_cpp_args + selector_route_args : []) +
+      (test_name == 'painter-perspective' ? painter_cpp_args : []),
     link_args: (test_name == 'gimp-painter-mybrush' ? mybrush_copy_fault_link_args : []) +
       (test_name == 'gimp-clone-layer' ? clone_route_link_args : []) +
       (test_name == 'mypaint-selector-contracts' ? selector_route_link_args : []),
@@ -134,7 +136,8 @@ foreach test_name : app_tests
       (test_name == 'gimp-painter-mybrush' ? [painter_brush_settings_dep] : []) +
       (test_name == 'mypaint-selector-contracts' ? [painter_mypaint_surface_dep] : []),
     link_with: apptests_links,
-    override_options: ['painter-compact-options', 'gimp-painter-mybrush', 'painter-layer-tree', 'gimp-clone-layer', 'mypaint-selector-contracts'].contains(test_name) ? ['c_std=c11', 'cpp_std=c++14'] : [],
+    override_options: (['painter-compact-options', 'gimp-painter-mybrush', 'painter-layer-tree', 'gimp-clone-layer', 'mypaint-selector-contracts'].contains(test_name) ? ['c_std=c11', 'cpp_std=c++14'] : []) +
+      (test_name == 'painter-perspective' ? ['cpp_std=c++14'] : []),
   )
 
   # Filter tests include real 8193x8193 spill and hundreds of old Gauss buffers.

@@ -17,6 +17,8 @@
 #include "tests.h"
 #include "gimp-app-test-utils.h"
 
+void gimp_test_perspective_handle_register (void);
+
 static Gimp *gimp;
 typedef struct {
   GimpPerspectiveGuide parent_instance;
@@ -335,5 +337,6 @@ int main(int argc,char **argv)
   ADD(model_bounds);ADD(runtime_model_fixture);ADD(source_oracle);ADD(threshold_ties_and_constraint);ADD(image_ownership);
   ADD(reentrant_replacement);ADD(dispose_reentry);ADD(edit_undo);ADD(signal_lifetime);
   ADD(removed_class_slot);ADD(setter_owner_release);ADD(duplicate_ownership);
+  gimp_test_perspective_handle_register ();
   result=g_test_run();gimp_test_utils_set_gimp3_directory("GIMP_TESTING_ABS_TOP_BUILDDIR","app/tests/gimpdir-output");gimp_exit(gimp,TRUE);return result;
 }

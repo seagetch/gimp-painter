@@ -50,7 +50,7 @@ struct OverlayImpl {
   explicit OverlayImpl (GimpCanvasItem *item) : item (item) {}
   GimpCanvasItem *item;
   WeakRef<GObject> image;
-  ObjectRef<GimpPerspectiveGuide> guide;
+  PerspectiveGuideRef guide;
   GimpPerspectiveGuideState state {};
   Connection shell_connection, display_connection, image_connection, guide_connection;
   void close () noexcept {
@@ -66,12 +66,12 @@ struct OverlayImpl {
   void refresh_state () {
     gimp_canvas_item_begin_change (item);
     state = {};
-    if (guide) gimp_perspective_guide_get_state (guide.get (), &state);
+    if (guide) guide.state (&state);
     gimp_canvas_item_end_change (item);
   }
   void refresh_guide () {
     auto image_ref = image.lock ();
-    auto replacement = ObjectRef<GimpPerspectiveGuide>::retain (image_ref ?
+    auto replacement = PerspectiveGuideRef::retain (image_ref ?
       gimp_image_get_perspective_guide (GIMP_IMAGE (image_ref.get ())) : nullptr);
     guide_connection.close ();
     guide = std::move (replacement);
