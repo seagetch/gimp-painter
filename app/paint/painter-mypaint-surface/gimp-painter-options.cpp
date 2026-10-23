@@ -356,7 +356,9 @@ static void gimp_painter_mybrush_options_class_init(GimpPainterMybrushOptionsCla
   for(const auto&s:painter_mypaint_settings){properties[s.index+1]=g_param_spec_double(s.internal_name,s.displayed_name,s.tooltip,s.minimum,s.maximum,s.default_value,flags);}
   for(const auto&s:painter_mypaint_switches){properties[s.index+1]=g_param_spec_boolean(s.internal_name,s.displayed_name,nullptr,FALSE,flags);}
   for(const auto&s:painter_mypaint_texts){properties[s.index+1]=g_param_spec_string(s.internal_name,s.displayed_name,nullptr,nullptr,flags);}
-  properties[PROP_JSON]=g_param_spec_string("painter-settings","Full painter brush","Lossless settings, curves and unknown data",nullptr,flags);
+  // Native GimpConfig reset sends the pspec default through set_property.
+  // Keep it a valid default brush, matching Resource(), rather than NULL JSON.
+  properties[PROP_JSON]=g_param_spec_string("painter-settings","Full painter brush","Lossless settings, curves and unknown data","{\"version\":3}",flags);
   properties[PROP_DIRTY]=g_param_spec_boolean("painter-dirty","Edited painter brush",nullptr,FALSE,G_PARAM_READABLE);
   properties[PROP_CONFLICT]=g_param_spec_boolean("painter-conflict","Saved brush changed",nullptr,FALSE,G_PARAM_READABLE);
   for(unsigned i=1;i<=PROP_CONFLICT;++i)g_object_class_install_property(object,i,properties[i]);

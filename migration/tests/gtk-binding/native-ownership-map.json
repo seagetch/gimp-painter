@@ -1,0 +1,306 @@
+{
+  "current_commit": "4f2f5de894c556ae0218049913179ac998d8c7ed",
+  "source_commit": "afa43fae3e920210146abed514f136fd49f671b5",
+  "native_source_proof": [
+    {
+      "path": "app/painter/object-ref.hpp",
+      "commit": "4f2f5de894c556ae0218049913179ac998d8c7ed",
+      "sha256": "5a8cc92afc56f652fd47c727269d71d9d97c4358015f13fe9c4764371fcb7c3a",
+      "git_blob": "c1f1ae35191269c442ccf74fa834aa228dd9fbc5"
+    },
+    {
+      "path": "app/painter/binding-store.hpp",
+      "commit": "4f2f5de894c556ae0218049913179ac998d8c7ed",
+      "sha256": "c67deb0ccf33a13a5ba3ab3f50bdbb2ef8931f481acf62a9315d778388c90262",
+      "git_blob": "eec80344987fed5318b857b74fc815dbb57faba0"
+    },
+    {
+      "path": "app/widgets/gimppainterlayertiles.cpp",
+      "commit": "4f2f5de894c556ae0218049913179ac998d8c7ed",
+      "sha256": "ba89c8287b963085e0d8949541a5686181b44a262523eac5f43fc17e497f980e",
+      "git_blob": "02991a5132bca1f9fe23da460846a89df95c6db1"
+    },
+    {
+      "path": "app/display/gimppaintercanvasui.cpp",
+      "commit": "4f2f5de894c556ae0218049913179ac998d8c7ed",
+      "sha256": "d51aca41662464a120ce3badf28e202381a2e0c0a2a03d4263a81b346c931fed",
+      "git_blob": "ecb4410042cf73bc09340debcba143639fbc206c"
+    },
+    {
+      "path": "app/dialogs/painter-layer-dialog.cpp",
+      "commit": "4f2f5de894c556ae0218049913179ac998d8c7ed",
+      "sha256": "70a5333cd50da3e680997d808baf8a10d31754a0de78158d528581fe091feea3",
+      "git_blob": "8cd67879392d71faf4eabd138ee48fc271926c3b"
+    },
+    {
+      "path": "app/widgets/gimppaintercompactoptions.cpp",
+      "commit": "4f2f5de894c556ae0218049913179ac998d8c7ed",
+      "sha256": "e5e35c593554587b3dfb931aca2d9bd5fc228332c157a79fb83d0bbedac38fa0",
+      "git_blob": "9e7abe749759877002796e07453d0e2f7ff591ba"
+    },
+    {
+      "path": "app/widgets/gimpeditor.c",
+      "commit": "4f2f5de894c556ae0218049913179ac998d8c7ed",
+      "sha256": "278cceb481599c4bcbea46403aae856e96c97584f13262ec55d8e2b6af27cb26",
+      "git_blob": "14297dbe7c427007da39849326c749818466ed6a"
+    },
+    {
+      "path": "app/tests/test-painter-canvas-ui.c",
+      "commit": "4f2f5de894c556ae0218049913179ac998d8c7ed",
+      "sha256": "c992b9dd28ae2df3380a3f521af39132522363927570e9b5d4cef65a7eb005aa",
+      "git_blob": "1160b780a5c8a92935463e4bd6fcf1dbc284fc1f"
+    },
+    {
+      "path": "app/tests/test-painter-layer-ui.c",
+      "commit": "4f2f5de894c556ae0218049913179ac998d8c7ed",
+      "sha256": "c7195b3ff2040748a6ad97f3c077ed926887159a8f7263ec0df36cd8d995285a",
+      "git_blob": "be6cdbc6b79fea16edbb0324a7f1823fc737fa44"
+    },
+    {
+      "path": "app/tests/test-painter-compact-options.c",
+      "commit": "4f2f5de894c556ae0218049913179ac998d8c7ed",
+      "sha256": "c68da1b825b17c31de4a0a3d3f03d917c2c94ebe05736d1523eb7caae25e22b0",
+      "git_blob": "4e58f90f693c73584000183fbcc977bc46a27bde"
+    }
+  ],
+  "mappings": [
+    {
+      "hunk_id": "01.002/000044",
+      "source_path": "app/base/glib-cxx-def-utils.hpp",
+      "source_role": "Provider: Definer retains through IObject; Packer stores Definer& and creates temporary Definer children; all three GLib::with overloads create/pass/return Definer values.",
+      "native": [
+        {
+          "path": "app/painter/object-ref.hpp",
+          "lines": [
+            21,
+            22,
+            24,
+            25,
+            31,
+            33,
+            35,
+            41
+          ],
+          "evidence": "Explicit retain/adopt/sink APIs and balanced copy/move/reset semantics replace implicit IObject-derived ownership."
+        },
+        {
+          "path": "app/painter/binding-store.hpp",
+          "lines": [
+            87,
+            89,
+            96,
+            114
+          ],
+          "evidence": "with<Slot> is a scoped borrow of typed implementation state with a retained owner lease; it neither constructs GTK children nor returns Definer/Packer."
+        }
+      ],
+      "coverage_limit": "Foundation semantics alone do not prove callers were migrated or equivalent."
+    },
+    {
+      "hunk_id": "01.002/001604",
+      "source_path": "app/widgets/gimpeditor-cxx.cpp",
+      "source_role": "PopupWindow::create_view preset popup; gimp_editor_add_dropdown constructs button/arrow/boxes, attaches decorator, then packs returned widgets into the editor button box.",
+      "native": [
+        {
+          "path": "app/widgets/gimpeditor.c",
+          "lines": [
+            574,
+            620,
+            730,
+            977,
+            994
+          ],
+          "evidence": "Native upstream editor uses ordinary GTK button-box construction; no direct surviving equivalent of gimp_editor_add_dropdown was identified in the reviewed replacement paths."
+        },
+        {
+          "path": "app/widgets/gimppainterlayertiles.cpp",
+          "lines": [
+            673,
+            684,
+            685,
+            731,
+            735
+          ],
+          "evidence": "Current layer creation/properties popup owns its GtkPopover with ObjectRef::sink and packs preset/action buttons into GTK containers."
+        },
+        {
+          "path": "app/widgets/gimppaintercompactoptions.cpp",
+          "lines": [
+            226,
+            228,
+            229,
+            230,
+            250,
+            251,
+            343,
+            349
+          ],
+          "evidence": "Related compact-options path owns row/button/popover/box via explicit sink and then packs through GTK. This is a concrete ownership pattern, not a proven one-to-one replacement of the removed dropdown API."
+        }
+      ],
+      "prepared_regressions": [
+        "/painter-canvas-ui/popup_repeat_and_owner_close",
+        "/painter-canvas-ui/popup_controls_and_clone",
+        "/painter-compact-options/canvas-dock-tool-transfer-preference"
+      ],
+      "coverage_limit": "Ownership replacement paths are present, but exact dropdown/preset behavior mapping and broader source-specific duties must remain separate; no feature-equivalence claim."
+    },
+    {
+      "hunk_id": "01.002/001641",
+      "source_path": "app/widgets/gimplayerpopup.cpp",
+      "source_role": "PopupWindowDecorator constructs label trees, generated filter argument controls, GtkAdjustments, filter selector, opacity, and clone-layer controls. Ten GLib::with calls and explicit Definer copy at line 300.",
+      "native": [
+        {
+          "path": "app/widgets/gimppainterlayertiles.cpp",
+          "lines": [
+            70,
+            94,
+            101,
+            673,
+            684,
+            685,
+            695,
+            704,
+            727
+          ],
+          "evidence": "Tiles stores the popup in ObjectRef, closes popup connections before destroy, and constructs standard opacity/mode/lock controls in GtkPopover; clone/filter settings route to canonical layer actions."
+        },
+        {
+          "path": "app/dialogs/painter-layer-dialog.cpp",
+          "lines": [
+            115,
+            121,
+            127,
+            142,
+            149,
+            171,
+            177,
+            195,
+            266,
+            281,
+            284,
+            286,
+            290,
+            298,
+            307
+          ],
+          "evidence": "Canonical clone/filter dialog stores one PainterLayerDialog in DialogSlot; native GTK children are parented under the dialog; Connection holds emitter refs, hooks hold weak owner plus generation, dispatch obtains a store lease, and destroy closes the store. Constructor retains input/owner leases and uses initialize then activate."
+        }
+      ],
+      "prepared_regressions": [
+        "/painter-canvas-ui/popup_repeat_and_owner_close",
+        "/painter-canvas-ui/popup_controls_and_clone",
+        "/painter-layer-ui/dialog_binding_close",
+        "/painter-layer-ui/retained_child_widgets",
+        "/painter-layer-ui/detached_child_widgets",
+        "/painter-layer-ui/clone_response_close_reentry",
+        "/painter-layer-ui/filter_response_close_reentry",
+        "/painter-layer-ui/filter_choice_last_owner_reentry",
+        "/painter-layer-ui/filter_status_last_owner_reentry",
+        "/painter-layer-ui/dialog_destroy_last_owner_reentry",
+        "/painter-layer-ui/dialog_factory_reentry",
+        "/painter-layer-ui/isolated_editor_lifetimes"
+      ],
+      "coverage_limit": "Generated legacy parameter heuristics and GTK2 layout are not proven equivalent by these ownership tests; existing 29.006/proc-args-owner, menu-borrowed-reference, popover-handler-teardown, and all verification assignments remain unchanged."
+    },
+    {
+      "hunk_id": "01.002/001643",
+      "source_path": "app/widgets/gimplayertileview.cpp",
+      "source_role": "LayerTileView::constructed builds action buttons, scroller, and drawing area through chained Packer; popup_layer_operation constructs menus/items through GLib::with.",
+      "native": [
+        {
+          "path": "app/widgets/gimppainterlayertiles.cpp",
+          "lines": [
+            55,
+            56,
+            60,
+            68,
+            70,
+            72,
+            94,
+            101,
+            125,
+            132,
+            365,
+            368,
+            380,
+            383,
+            390,
+            391,
+            392,
+            673,
+            740,
+            756,
+            758,
+            759
+          ],
+          "evidence": "One BindingStore Slot owns Tiles. Explicit ObjectRef fields retain model/root widget lifetimes; initial GTK children are packed/added directly. Popup uses ObjectRef::sink, Connection vectors, close-before-destroy, and widget destroy closes the store. No Packer wrapper owns a second implicit child reference."
+        }
+      ],
+      "prepared_regressions": [
+        "/painter-canvas-ui/image_switch_disconnect",
+        "/painter-canvas-ui/long_press_cancel_destroy",
+        "/painter-canvas-ui/preview_pending_destroy",
+        "/painter-canvas-ui/popup_repeat_and_owner_close",
+        "/painter-canvas-ui/reentrant_visibility_close",
+        "/painter-canvas-ui/hide_cancels_grab",
+        "/painter-canvas-ui/multiple_canvas_context_and_dock_transfer"
+      ],
+      "coverage_limit": "This is ownership and construction mapping only; tile geometry, selection, ordering, icon fallback, previews, and native pointer/pen parity stay with their existing tasks."
+    },
+    {
+      "hunk_id": "01.002/001802",
+      "source_path": "app/widgets/gimptooltileview.cpp",
+      "source_role": "ToolTileView::constructed wraps owner with GLib::with, packs a scrolled window, and adds drawing area via Definer::add_with_viewport with event callbacks.",
+      "native": [
+        {
+          "path": "app/display/gimppaintercanvasui.cpp",
+          "lines": [
+            51,
+            53,
+            57,
+            64,
+            73,
+            74,
+            91,
+            96,
+            101,
+            112,
+            192,
+            194,
+            195,
+            235,
+            237,
+            252,
+            255,
+            330,
+            339,
+            342,
+            354,
+            359,
+            369,
+            370,
+            371,
+            496,
+            497,
+            507
+          ],
+          "evidence": "Tool controls now live within shell-owned Canvas Slot. Overlay frames use explicit ObjectRef::sink, root children use explicit retain, and GTK containers parent scrollers/boxes/buttons. Rebuild retains old children while destroying them; callbacks use weak owner/generation and leases; close disconnects sources/signals before destroying panel roots."
+        }
+      ],
+      "prepared_regressions": [
+        "/painter-canvas-ui/overlay_tools_and_colors",
+        "/painter-canvas-ui/overlay_tool_group",
+        "/painter-canvas-ui/multiple_canvas_context_and_dock_transfer",
+        "/painter-canvas-ui/overlay_owner_destroy_callbacks",
+        "/painter-canvas-ui/dock_restore_and_parent_close"
+      ],
+      "coverage_limit": "Legacy tool group state/persistence and display behavior remain assigned separately; GTK layout redesign is not feature equivalence."
+    }
+  ],
+  "execution_status": "Read-only review; no tests or legacy code executed in this census.",
+  "generic_with_distinction": "BindingStore::with<Slot> consumes a function borrowing existing implementation state; it is not GLib::with GTK construction and must not be classified as legacy DSL.",
+  "completion_claim": false,
+  "feature_equivalence_claim": false,
+  "snapshot_note": "Native paths and lines refer to public parent 4f2f5de8. Prepared regression names are a crosswalk, not execution results; current execution evidence is in native.json and sanitizers.json."
+}

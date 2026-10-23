@@ -66,6 +66,30 @@ static void history_and_config_roundtrip()
   g_assert_true(gimp_config_copy(GIMP_CONFIG(options),GIMP_CONFIG(copy),GParamFlags(0)));g_assert_true(PainterOptionsRef::retain(copy).snapshot().encode()==before);
   g_object_unref(duplicate);g_object_unref(copy);g_object_unref(options);
 }
+static void native_config_reset_defaults()
+{
+  auto *options=options_new();auto brush=PainterMybrushRef::create("reset-source");
+  const auto source_before=brush.snapshot().encode();
+  gimp_context_set_painter_mybrush(GIMP_CONTEXT(options),brush.get());
+  const char *edited="{\"version\":3,\"settings\":{\"opaque\":{\"base_value\":0.17,\"inputs\":{\"pressure\":[[0,0],[1,0.4]]}}},\"switches\":{\"non_incremental\":true},\"unknown\":{\"reset_me\":23}}";
+  GError *error=nullptr;
+  g_assert_true(gimp_painter_mybrush_options_set_json(options,edited,&error));g_assert_no_error(error);
+  // The native Reset and GUI tool-registration path applies each pspec default.
+  gimp_config_reset(GIMP_CONFIG(options));
+  const Resource defaults;
+  g_assert_true(PainterOptionsRef::retain(options).snapshot().encode()==defaults.encode());
+  g_assert_true(brush.snapshot().encode()==source_before);
+  auto *pspec=g_object_class_find_property(G_OBJECT_GET_CLASS(options),"painter-settings");
+  const char *text=g_value_get_string(g_param_spec_get_default_value(pspec));
+  g_assert_nonnull(text);g_assert_true(Resource::decode(text).encode()==defaults.encode());
+  gimp_config_reset(GIMP_CONFIG(options));
+  g_assert_true(PainterOptionsRef::retain(options).snapshot().encode()==defaults.encode());
+  // Invalid C API input remains rejected without replacing the draft.
+  g_assert_false(gimp_painter_mybrush_options_set_json(options,nullptr,&error));
+  g_assert_nonnull(error);g_clear_error(&error);
+  g_assert_true(PainterOptionsRef::retain(options).snapshot().encode()==defaults.encode());
+  g_object_unref(options);
+}
 static void drop_options(GObject*,GParamSpec*,gpointer data){auto**owner=static_cast<GimpPainterMybrushOptions**>(data);g_clear_object(owner);}
 static void gone(gpointer data,GObject*){*static_cast<bool*>(data)=true;}
 static void notification_releases_caller()
@@ -173,6 +197,7 @@ int main(int argc,char**argv)
   g_test_add_func("/painter-options/generated-properties",generated_properties);
   g_test_add_func("/painter-options/edit-curve-commit-conflict",edit_curve_commit_and_conflict);
   g_test_add_func("/painter-options/history-config",history_and_config_roundtrip);
+  g_test_add_func("/painter-options/native-config-reset-defaults",native_config_reset_defaults);
   g_test_add_func("/painter-options/notification-last-ref",notification_releases_caller);
   g_test_add_func("/painter-options/closed-invalid-curve",closed_and_invalid_curves);
   g_test_add_func("/painter-options/named-resources",named_resources);
