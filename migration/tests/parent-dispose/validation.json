@@ -1,0 +1,18 @@
+{
+  "task": "07.017",
+  "status": "PASS",
+  "original_done": 124,
+  "original_total": 661,
+  "source_done": 588,
+  "source_total": 22763,
+  "source_duties_accepted": [
+    "legacy-b7378cb884cde25e0184"
+  ],
+  "other_source_rows_unchanged": 22762,
+  "production_and_test_changes": false,
+  "new_test_executions": 0,
+  "focused_foundation_errors": [],
+  "unrelated_historical_foundation_errors": 108,
+  "limits": "Reuses exact current70-case reports and actual fourOS70; no historical digest changes, no LSan/full release claim",
+  "independent_review": "Pinned legacy blob, actual C parent/child native dispose chain and current native/sanitizer/Meson/four-OS reports independently verified; no missing behavior or assertion for the original scope"
+}
