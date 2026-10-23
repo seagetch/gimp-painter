@@ -148,6 +148,17 @@ typedef enum
   GIMP_LAYER_MODE_PAINTER_NORMAL, /*< desc="Normal (Painter legacy)" >*/
   GIMP_LAYER_MODE_PAINTER_MULTIPLY, /*< desc="Multiply (Painter legacy)" >*/
 
+  /* Explicit opt-in continuous nonlinear modes; never old XCF raw IDs. */
+  GIMP_LAYER_MODE_PAINTER_FLOAT_ERASE = 73, /*< desc="Erase (Painter float nonlinear)" >*/
+  GIMP_LAYER_MODE_PAINTER_FLOAT_REPLACE, /*< desc="Replace (Painter float nonlinear)" >*/
+  GIMP_LAYER_MODE_PAINTER_FLOAT_ANTI_ERASE, /*< desc="Anti erase (Painter float nonlinear)" >*/
+  GIMP_LAYER_MODE_PAINTER_FLOAT_SRC_IN, /*< desc="SRC IN (Painter float nonlinear)" >*/
+  GIMP_LAYER_MODE_PAINTER_FLOAT_DST_IN, /*< desc="DST IN (Painter float nonlinear)" >*/
+  GIMP_LAYER_MODE_PAINTER_FLOAT_SRC_OUT, /*< desc="SRC OUT (Painter float nonlinear)" >*/
+  GIMP_LAYER_MODE_PAINTER_FLOAT_DST_OUT, /*< desc="DST OUT (Painter float nonlinear)" >*/
+  GIMP_LAYER_MODE_PAINTER_FLOAT_NORMAL, /*< desc="Normal (Painter float nonlinear)" >*/
+  GIMP_LAYER_MODE_PAINTER_FLOAT_MULTIPLY, /*< desc="Multiply (Painter float nonlinear)" >*/
+
   /*  Layer mode menu separator  */
   GIMP_LAYER_MODE_SEPARATOR = -1         /*< pdb-skip, skip                                                 >*/
 } GimpLayerMode;

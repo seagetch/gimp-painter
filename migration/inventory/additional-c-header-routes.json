@@ -251,6 +251,15 @@
       "context": "core",
       "prerequisites": [],
       "review": "08.018/bucket-fill-tool-entries: original C get_type/register operation names and source aliases to sole native FillBrush tool. Double-include C11/C++14 with normal core/tool prerequisites and owned C linkage; not historical runtime GType name, object/class layout, direct registry or old options semantics."
+    },
+    {
+      "path": "app/operations/layer-modes-legacy/gimpoperationpainterfloat.h",
+      "kind": "new",
+      "context": "core",
+      "prerequisites": [
+        "app/operations/layer-modes/gimpoperationlayermode.h"
+      ],
+      "review": "13.012: distinct native continuous-float operation type, direct preparation and is_float query. Owns include guard and C linkage. Matches existing painter legacy operation core/type prelude with the registered layer-mode parent prerequisite; twice-include C11/C++14 without outer linkage adapter. No legacy wire mapping or public enum equivalence claim."
     }
   ]
 }

@@ -1,0 +1,47 @@
+{
+  "scope": "owned native float registration sources matched tested shared build; not whole-HEAD",
+  "scenes": 45,
+  "pixels_per_scene": 64,
+  "routes": [
+    "GEGL",
+    "cached PaintCore",
+    "native flat",
+    "native isolated",
+    "native two-child pass-through",
+    "native single-child pass-through"
+  ],
+  "normal_tests": 8,
+  "normal_exit": 0,
+  "focused_sanitizer_exit": 0,
+  "ui_focused_sanitizer_tests": 4,
+  "ui_focused_sanitizer_exit": 0,
+  "public_enum_compile_and_runtime": true,
+  "header_compilation": true,
+  "screen": [
+    1080,
+    1920,
+    24
+  ],
+  "oncanvas_enabled": true,
+  "source_sha256": {
+    "app/operations/operations-enums.h": "49e50ffffc9671c1a2c96fbe1cba74f69b1668a20f38ac3d3c6a2f71a3b6055e",
+    "app/operations/operations-enums.c": "09a5ffcb615fb9f420bcfd887d5afd9c75dede7f155528550df96bbb3181822a",
+    "app/operations/gimp-operations.c": "befb0c8623e8d32e3bfe63c7735b8ff6b4b05f3f3340aef4252dbdedc0dbbe26",
+    "app/operations/layer-modes/gimp-layer-modes.c": "3c6a6585cfaa03edb13de20acaeae262f486bbd13a0270e858f3aa83ac20ec0f",
+    "app/operations/layer-modes-legacy/meson.build": "1a491b93e6df6c9790cb74dc077e09f1c1fc1d9fdad9c7362c752fc1f0d6437f",
+    "app/operations/layer-modes-legacy/gimpoperationpainterfloat.c": "104ada47ea008d0282e9de29df9ea5945042c213366c988918ef6175bc7d8551",
+    "app/operations/layer-modes-legacy/gimpoperationpainterfloat.h": "c3d9b67092ed4c8dde9c1eb17ae0969e0a02b38aaeaac2ab1d5046b350f927e0",
+    "app/operations/layer-modes-legacy/gimppainterfloatkernel.c": "9ccfdaee1ecb004a6d796df36c679283feb8b9d6343eb6bc2267434d63bdee66",
+    "app/operations/layer-modes-legacy/gimppainterfloatkernel.h": "ada64197a3cc61c19344dbb45016790c2d629ea1ef26aa3c5edcc3805e02e40a",
+    "app/core/gimpgrouplayer.c": "147296ee6102a46601c826ea9dedda513f07df8bc72e5aa8ddfcf833c41dd0c5",
+    "app/tests/test-painter-layer-modes.c": "e4b6bdcfeec2725e62b5e413120d9b6e09282f724e9e2978fb309808e5605d83",
+    "app/tests/test-painter-float-modes.inc": "378a6f5b42635bca009997bed0ff4fa3d614f7174ae380319845d940606899d6",
+    "app/tests/test-painter-mode-ui.c": "a85f6f427afefff5ddca13d58c270ab9338ddabd6e067772b2c7f6d662a656db",
+    "libgimp/gimpenums.h": "a01f9f8a97073251e12c57f115d79c45894d71be082432509624308ec5e71220",
+    "pdb/enums.pl": "aaf68f864c2e848fae5745fc579d75810d717818f42b8465342e89ab4087b98d",
+    "tools/check_painter_public_modes.py": "0d8fbe511f6c440443927324c545b381f00a9d4fe0628a6a16b23fb33779ce45",
+    "migration/tests/run_painter_float_mode_sanitizers.py": "2bbcb97b47ec0c2a668ac43b4bb758f49215931f41ccb85e34f9e3393b4b8f9e",
+    "migration/fixtures/painter-float/vectors.bin": "492c3dca6d8b7c26ad240dde30dda4ee168b455b36921641cc5808f0c8ddd6a9"
+  },
+  "screenshot_sha256": "5290626177177dd44cbed79d1373a1d3260845b79c880a32388e03b7aefa9b1b"
+}

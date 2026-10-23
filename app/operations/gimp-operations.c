@@ -69,6 +69,7 @@
 
 #include "layer-modes-legacy/gimpoperationadditionlegacy.h"
 #include "layer-modes-legacy/gimpoperationpainterlegacy.h"
+#include "layer-modes-legacy/gimpoperationpainterfloat.h"
 #include "layer-modes-legacy/gimpoperationburnlegacy.h"
 #include "layer-modes-legacy/gimpoperationdarkenonlylegacy.h"
 #include "layer-modes-legacy/gimpoperationdifferencelegacy.h"
@@ -157,6 +158,7 @@ gimp_operations_init (Gimp *gimp)
   g_type_class_ref (GIMP_TYPE_OPERATION_THRESHOLD);
 
   g_type_class_ref (GIMP_TYPE_OPERATION_PAINTER_LEGACY);
+  g_type_class_ref (GIMP_TYPE_OPERATION_PAINTER_FLOAT);
   g_type_class_ref (GIMP_TYPE_OPERATION_NORMAL);
   g_type_class_ref (GIMP_TYPE_OPERATION_DISSOLVE);
   g_type_class_ref (GIMP_TYPE_OPERATION_BEHIND);

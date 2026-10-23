@@ -3,6 +3,7 @@
 #include <gegl.h>
 #include <gtk/gtk.h>
 #include <string.h>
+#include <math.h>
 #include "libgimpbase/gimpbase.h"
 #include "core/core-types.h"
 #include "widgets/widgets-types.h"
@@ -251,6 +252,7 @@ static void modern_group_strength_reduction (void)
 }
 #include "test-painter-mode-xcf.inc"
 #include "test-painter-mode-group-undo.inc"
+#include "test-painter-float-modes.inc"
 
 int main (int argc, char **argv)
 {
@@ -265,6 +267,7 @@ int main (int argc, char **argv)
   g_test_add_func ("/painter-layer-modes/modern_group_strength_reduction",modern_group_strength_reduction);
   g_test_add_func ("/painter-layer-modes/modes_xcf_roundtrip",modes_xcf_roundtrip);
   g_test_add_func ("/painter-layer-modes/group_reorder_undo_projection",group_reorder_undo_projection);
+  g_test_add_func ("/painter-layer-modes/float_native_routes",float_native_routes);
   result = g_test_run ();
   gimp_test_utils_set_gimp3_directory ("GIMP_TESTING_ABS_TOP_BUILDDIR","app/tests/gimpdir-output");
   gimp_exit (gimp,TRUE); return result;

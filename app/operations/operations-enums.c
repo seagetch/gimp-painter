@@ -157,6 +157,15 @@ gimp_layer_mode_get_type (void)
     { GIMP_LAYER_MODE_PAINTER_DST_OUT, "GIMP_LAYER_MODE_PAINTER_DST_OUT", "painter-dst-out" },
     { GIMP_LAYER_MODE_PAINTER_NORMAL, "GIMP_LAYER_MODE_PAINTER_NORMAL", "painter-normal" },
     { GIMP_LAYER_MODE_PAINTER_MULTIPLY, "GIMP_LAYER_MODE_PAINTER_MULTIPLY", "painter-multiply" },
+    { GIMP_LAYER_MODE_PAINTER_FLOAT_ERASE, "GIMP_LAYER_MODE_PAINTER_FLOAT_ERASE", "painter-float-erase" },
+    { GIMP_LAYER_MODE_PAINTER_FLOAT_REPLACE, "GIMP_LAYER_MODE_PAINTER_FLOAT_REPLACE", "painter-float-replace" },
+    { GIMP_LAYER_MODE_PAINTER_FLOAT_ANTI_ERASE, "GIMP_LAYER_MODE_PAINTER_FLOAT_ANTI_ERASE", "painter-float-anti-erase" },
+    { GIMP_LAYER_MODE_PAINTER_FLOAT_SRC_IN, "GIMP_LAYER_MODE_PAINTER_FLOAT_SRC_IN", "painter-float-src-in" },
+    { GIMP_LAYER_MODE_PAINTER_FLOAT_DST_IN, "GIMP_LAYER_MODE_PAINTER_FLOAT_DST_IN", "painter-float-dst-in" },
+    { GIMP_LAYER_MODE_PAINTER_FLOAT_SRC_OUT, "GIMP_LAYER_MODE_PAINTER_FLOAT_SRC_OUT", "painter-float-src-out" },
+    { GIMP_LAYER_MODE_PAINTER_FLOAT_DST_OUT, "GIMP_LAYER_MODE_PAINTER_FLOAT_DST_OUT", "painter-float-dst-out" },
+    { GIMP_LAYER_MODE_PAINTER_FLOAT_NORMAL, "GIMP_LAYER_MODE_PAINTER_FLOAT_NORMAL", "painter-float-normal" },
+    { GIMP_LAYER_MODE_PAINTER_FLOAT_MULTIPLY, "GIMP_LAYER_MODE_PAINTER_FLOAT_MULTIPLY", "painter-float-multiply" },
     { 0, NULL, NULL }
   };
 
@@ -307,6 +316,15 @@ gimp_layer_mode_get_type (void)
     { GIMP_LAYER_MODE_PAINTER_DST_OUT, NC_("layer-mode", "DST OUT (Painter legacy)"), NULL },
     { GIMP_LAYER_MODE_PAINTER_NORMAL, NC_("layer-mode", "Normal (Painter legacy)"), NULL },
     { GIMP_LAYER_MODE_PAINTER_MULTIPLY, NC_("layer-mode", "Multiply (Painter legacy)"), NULL },
+    { GIMP_LAYER_MODE_PAINTER_FLOAT_ERASE, NC_("layer-mode", "Erase (Painter float nonlinear)"), NULL },
+    { GIMP_LAYER_MODE_PAINTER_FLOAT_REPLACE, NC_("layer-mode", "Replace (Painter float nonlinear)"), NULL },
+    { GIMP_LAYER_MODE_PAINTER_FLOAT_ANTI_ERASE, NC_("layer-mode", "Anti erase (Painter float nonlinear)"), NULL },
+    { GIMP_LAYER_MODE_PAINTER_FLOAT_SRC_IN, NC_("layer-mode", "SRC IN (Painter float nonlinear)"), NULL },
+    { GIMP_LAYER_MODE_PAINTER_FLOAT_DST_IN, NC_("layer-mode", "DST IN (Painter float nonlinear)"), NULL },
+    { GIMP_LAYER_MODE_PAINTER_FLOAT_SRC_OUT, NC_("layer-mode", "SRC OUT (Painter float nonlinear)"), NULL },
+    { GIMP_LAYER_MODE_PAINTER_FLOAT_DST_OUT, NC_("layer-mode", "DST OUT (Painter float nonlinear)"), NULL },
+    { GIMP_LAYER_MODE_PAINTER_FLOAT_NORMAL, NC_("layer-mode", "Normal (Painter float nonlinear)"), NULL },
+    { GIMP_LAYER_MODE_PAINTER_FLOAT_MULTIPLY, NC_("layer-mode", "Multiply (Painter float nonlinear)"), NULL },
     { 0, NULL, NULL }
   };
 

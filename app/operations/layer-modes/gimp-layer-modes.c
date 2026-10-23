@@ -33,6 +33,7 @@
 
 #include "gimp-layer-modes.h"
 #include "operations/layer-modes-legacy/gimpoperationpainterlegacy.h"
+#include "operations/layer-modes-legacy/gimpoperationpainterfloat.h"
 
 
 typedef struct _GimpLayerModeInfo GimpLayerModeInfo;
@@ -940,7 +941,97 @@ static const GimpLayerModeInfo layer_mode_infos[] =
     .paint_composite_mode = GIMP_LAYER_COMPOSITE_UNION,
     .composite_mode = GIMP_LAYER_COMPOSITE_UNION,
     .composite_space = GIMP_LAYER_COLOR_SPACE_RGB_NON_LINEAR
-  }
+  },
+  { GIMP_LAYER_MODE_PAINTER_FLOAT_ERASE,
+    .op_name = "gimp:painter-float-mode",
+    .flags = GIMP_LAYER_MODE_FLAG_BLEND_SPACE_IMMUTABLE |
+             GIMP_LAYER_MODE_FLAG_COMPOSITE_SPACE_IMMUTABLE |
+             GIMP_LAYER_MODE_FLAG_COMPOSITE_MODE_IMMUTABLE,
+    .context = GIMP_LAYER_MODE_CONTEXT_ALL,
+    .paint_composite_mode = GIMP_LAYER_COMPOSITE_UNION,
+    .composite_mode = GIMP_LAYER_COMPOSITE_UNION,
+    .composite_space = GIMP_LAYER_COLOR_SPACE_RGB_NON_LINEAR
+  },
+  { GIMP_LAYER_MODE_PAINTER_FLOAT_REPLACE,
+    .op_name = "gimp:painter-float-mode",
+    .flags = GIMP_LAYER_MODE_FLAG_BLEND_SPACE_IMMUTABLE |
+             GIMP_LAYER_MODE_FLAG_COMPOSITE_SPACE_IMMUTABLE |
+             GIMP_LAYER_MODE_FLAG_COMPOSITE_MODE_IMMUTABLE,
+    .context = GIMP_LAYER_MODE_CONTEXT_ALL,
+    .paint_composite_mode = GIMP_LAYER_COMPOSITE_UNION,
+    .composite_mode = GIMP_LAYER_COMPOSITE_UNION,
+    .composite_space = GIMP_LAYER_COLOR_SPACE_RGB_NON_LINEAR
+  },
+  { GIMP_LAYER_MODE_PAINTER_FLOAT_ANTI_ERASE,
+    .op_name = "gimp:painter-float-mode",
+    .flags = GIMP_LAYER_MODE_FLAG_BLEND_SPACE_IMMUTABLE |
+             GIMP_LAYER_MODE_FLAG_COMPOSITE_SPACE_IMMUTABLE |
+             GIMP_LAYER_MODE_FLAG_COMPOSITE_MODE_IMMUTABLE,
+    .context = GIMP_LAYER_MODE_CONTEXT_ALL,
+    .paint_composite_mode = GIMP_LAYER_COMPOSITE_UNION,
+    .composite_mode = GIMP_LAYER_COMPOSITE_UNION,
+    .composite_space = GIMP_LAYER_COLOR_SPACE_RGB_NON_LINEAR
+  },
+  { GIMP_LAYER_MODE_PAINTER_FLOAT_SRC_IN,
+    .op_name = "gimp:painter-float-mode",
+    .flags = GIMP_LAYER_MODE_FLAG_BLEND_SPACE_IMMUTABLE |
+             GIMP_LAYER_MODE_FLAG_COMPOSITE_SPACE_IMMUTABLE |
+             GIMP_LAYER_MODE_FLAG_COMPOSITE_MODE_IMMUTABLE,
+    .context = GIMP_LAYER_MODE_CONTEXT_ALL,
+    .paint_composite_mode = GIMP_LAYER_COMPOSITE_UNION,
+    .composite_mode = GIMP_LAYER_COMPOSITE_UNION,
+    .composite_space = GIMP_LAYER_COLOR_SPACE_RGB_NON_LINEAR
+  },
+  { GIMP_LAYER_MODE_PAINTER_FLOAT_DST_IN,
+    .op_name = "gimp:painter-float-mode",
+    .flags = GIMP_LAYER_MODE_FLAG_BLEND_SPACE_IMMUTABLE |
+             GIMP_LAYER_MODE_FLAG_COMPOSITE_SPACE_IMMUTABLE |
+             GIMP_LAYER_MODE_FLAG_COMPOSITE_MODE_IMMUTABLE,
+    .context = GIMP_LAYER_MODE_CONTEXT_ALL,
+    .paint_composite_mode = GIMP_LAYER_COMPOSITE_UNION,
+    .composite_mode = GIMP_LAYER_COMPOSITE_UNION,
+    .composite_space = GIMP_LAYER_COLOR_SPACE_RGB_NON_LINEAR
+  },
+  { GIMP_LAYER_MODE_PAINTER_FLOAT_SRC_OUT,
+    .op_name = "gimp:painter-float-mode",
+    .flags = GIMP_LAYER_MODE_FLAG_BLEND_SPACE_IMMUTABLE |
+             GIMP_LAYER_MODE_FLAG_COMPOSITE_SPACE_IMMUTABLE |
+             GIMP_LAYER_MODE_FLAG_COMPOSITE_MODE_IMMUTABLE,
+    .context = GIMP_LAYER_MODE_CONTEXT_ALL,
+    .paint_composite_mode = GIMP_LAYER_COMPOSITE_UNION,
+    .composite_mode = GIMP_LAYER_COMPOSITE_UNION,
+    .composite_space = GIMP_LAYER_COLOR_SPACE_RGB_NON_LINEAR
+  },
+  { GIMP_LAYER_MODE_PAINTER_FLOAT_DST_OUT,
+    .op_name = "gimp:painter-float-mode",
+    .flags = GIMP_LAYER_MODE_FLAG_BLEND_SPACE_IMMUTABLE |
+             GIMP_LAYER_MODE_FLAG_COMPOSITE_SPACE_IMMUTABLE |
+             GIMP_LAYER_MODE_FLAG_COMPOSITE_MODE_IMMUTABLE,
+    .context = GIMP_LAYER_MODE_CONTEXT_ALL,
+    .paint_composite_mode = GIMP_LAYER_COMPOSITE_UNION,
+    .composite_mode = GIMP_LAYER_COMPOSITE_UNION,
+    .composite_space = GIMP_LAYER_COLOR_SPACE_RGB_NON_LINEAR
+  },
+  { GIMP_LAYER_MODE_PAINTER_FLOAT_NORMAL,
+    .op_name = "gimp:painter-float-mode",
+    .flags = GIMP_LAYER_MODE_FLAG_BLEND_SPACE_IMMUTABLE |
+             GIMP_LAYER_MODE_FLAG_COMPOSITE_SPACE_IMMUTABLE |
+             GIMP_LAYER_MODE_FLAG_COMPOSITE_MODE_IMMUTABLE,
+    .context = GIMP_LAYER_MODE_CONTEXT_ALL,
+    .paint_composite_mode = GIMP_LAYER_COMPOSITE_UNION,
+    .composite_mode = GIMP_LAYER_COMPOSITE_UNION,
+    .composite_space = GIMP_LAYER_COLOR_SPACE_RGB_NON_LINEAR
+  },
+  { GIMP_LAYER_MODE_PAINTER_FLOAT_MULTIPLY,
+    .op_name = "gimp:painter-float-mode",
+    .flags = GIMP_LAYER_MODE_FLAG_BLEND_SPACE_IMMUTABLE |
+             GIMP_LAYER_MODE_FLAG_COMPOSITE_SPACE_IMMUTABLE |
+             GIMP_LAYER_MODE_FLAG_COMPOSITE_MODE_IMMUTABLE,
+    .context = GIMP_LAYER_MODE_CONTEXT_ALL,
+    .paint_composite_mode = GIMP_LAYER_COMPOSITE_UNION,
+    .composite_mode = GIMP_LAYER_COMPOSITE_UNION,
+    .composite_space = GIMP_LAYER_COLOR_SPACE_RGB_NON_LINEAR
+  },
 };
 
 static const GimpLayerMode layer_mode_group_default[] =
@@ -1010,7 +1101,18 @@ static const GimpLayerMode layer_mode_group_default[] =
   GIMP_LAYER_MODE_LCH_CHROMA,
   GIMP_LAYER_MODE_LCH_COLOR,
   GIMP_LAYER_MODE_LCH_LIGHTNESS,
-  GIMP_LAYER_MODE_LUMINANCE
+  GIMP_LAYER_MODE_LUMINANCE,
+
+  GIMP_LAYER_MODE_SEPARATOR,
+  GIMP_LAYER_MODE_PAINTER_FLOAT_ERASE,
+  GIMP_LAYER_MODE_PAINTER_FLOAT_REPLACE,
+  GIMP_LAYER_MODE_PAINTER_FLOAT_ANTI_ERASE,
+  GIMP_LAYER_MODE_PAINTER_FLOAT_SRC_IN,
+  GIMP_LAYER_MODE_PAINTER_FLOAT_DST_IN,
+  GIMP_LAYER_MODE_PAINTER_FLOAT_SRC_OUT,
+  GIMP_LAYER_MODE_PAINTER_FLOAT_DST_OUT,
+  GIMP_LAYER_MODE_PAINTER_FLOAT_NORMAL,
+  GIMP_LAYER_MODE_PAINTER_FLOAT_MULTIPLY,
 };
 
 static const GimpLayerMode layer_mode_group_legacy[] =
@@ -1439,6 +1541,8 @@ gimp_layer_mode_get_operation (GimpLayerMode mode)
           layer_mode->composite_mode  = gimp_layer_mode_get_paint_composite_mode (mode);
           if (gimp_painter_layer_mode_is_compatibility (mode))
             gimp_painter_legacy_prepare_direct (operation);
+          else if (gimp_painter_layer_mode_is_float (mode))
+            gimp_painter_float_prepare_direct (operation);
         }
     }
 

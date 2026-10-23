@@ -50,7 +50,11 @@ def check(compile_probes=False, runtime_build=None):
     if len(set(public.values()))!=len(public):errors.append('Duplicate public mode identity')
     if 63 in public.values():errors.append('Hidden upstream slot63 was exported')
     expected={name:value for name,value in app.items() if '_PAINTER_' in name}
-    if len(expected)!=9 or not set(expected)<=public.keys():errors.append('Missing Painter public modes')
+    if len(expected)!=18 or not set(expected)<=public.keys():errors.append('Missing Painter public modes')
+    legacy_names=['ERASE','REPLACE','ANTI_ERASE','SRC_IN','DST_IN','SRC_OUT','DST_OUT','NORMAL','MULTIPLY']
+    for offset,name in enumerate(legacy_names):
+        if app.get('GIMP_LAYER_MODE_PAINTER_'+name)!=64+offset:errors.append('Legacy Painter identity changed: '+name)
+        if app.get('GIMP_LAYER_MODE_PAINTER_FLOAT_'+name)!=73+offset:errors.append('Float Painter identity mismatch: '+name)
     if 'GIMP_LAYER_MODE_ANTI_ERASE' in public:errors.append('Hidden upstream mode leaked into public API')
     probes=[]
     if compile_probes and not errors:

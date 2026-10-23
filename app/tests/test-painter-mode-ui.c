@@ -37,11 +37,15 @@ static GtkWidget *find_combo(GtkWidget *widget)
   }
   return NULL;
 }
-static void mode_selection(void)
+static void mode_selection(gconstpointer data)
 {
   static const gchar *labels[]={"Erase (Painter legacy)","Replace (Painter legacy)",
     "Anti erase (Painter legacy)","SRC IN (Painter legacy)","DST IN (Painter legacy)",
     "SRC OUT (Painter legacy)","DST OUT (Painter legacy)"};
+  const gboolean float_modes=GPOINTER_TO_INT(data);
+  static const gchar *float_labels[]={"Erase (Painter float nonlinear)","Replace (Painter float nonlinear)",
+    "Anti erase (Painter float nonlinear)","SRC IN (Painter float nonlinear)","DST IN (Painter float nonlinear)",
+    "SRC OUT (Painter float nonlinear)","DST OUT (Painter float nonlinear)","Normal (Painter float nonlinear)","Multiply (Painter float nonlinear)"};
   GtkWidget *combo=NULL,*window;
   GimpDisplayShell *shell;
   GimpImage *image;
@@ -59,7 +63,7 @@ static void mode_selection(void)
     guint p=4*(256*y+x);pixels[p]=x;pixels[p+1]=y;pixels[p+2]=196;pixels[p+3]=255;
   }
   gegl_buffer_set(gimp_drawable_get_buffer(GIMP_DRAWABLE(layer)),GEGL_RECTANGLE(0,0,256,256),0,babl_format("R'G'B'A u8"),pixels,GEGL_AUTO_ROWSTRIDE);
-  layer=gimp_layer_new(image,256,256,babl_format("R'G'B'A u8"),"Seven legacy modes — native selector",1,GIMP_LAYER_MODE_PAINTER_NORMAL);
+  layer=gimp_layer_new(image,256,256,babl_format("R'G'B'A u8"),float_modes?"Nine float nonlinear modes — native selector":"Seven legacy modes — native selector",1,GIMP_LAYER_MODE_PAINTER_NORMAL);
   for(guint y=0;y<256;++y) for(guint x=0;x<256;++x) {
     guint p=4*(256*y+x);pixels[p]=240;pixels[p+1]=48;pixels[p+2]=x;pixels[p+3]=(x/32+y/32)%2?64:192;
   }
@@ -74,10 +78,12 @@ static void mode_selection(void)
   g_assert_nonnull(dockable);combo=find_combo(dockable);g_assert_nonnull(combo);
   gimp_test_run_mainloop_until_idle();
   g_assert_true(gtk_widget_get_mapped(combo));
-  gimp_layer_mode_combo_box_set_group(GIMP_LAYER_MODE_COMBO_BOX(combo),GIMP_LAYER_MODE_GROUP_LEGACY);
-  for(guint raw=23;raw<=29;++raw) {
+  gimp_layer_mode_combo_box_set_group(GIMP_LAYER_MODE_COMBO_BOX(combo),float_modes?GIMP_LAYER_MODE_GROUP_DEFAULT:GIMP_LAYER_MODE_GROUP_LEGACY);
+  for(guint index=0;index<(float_modes?9:7);++index) {
+    guint raw=23+index;
     GimpLayerMode mode;GtkTreeIter iter;gchar *label=NULL;gint value;
-    g_assert_true(gimp_painter_layer_mode_from_legacy(raw,&mode));
+    if(float_modes)mode=GIMP_LAYER_MODE_PAINTER_FLOAT_ERASE+index;
+    else g_assert_true(gimp_painter_layer_mode_from_legacy(raw,&mode));
     /* Native GtkComboBox selection emits changed into the actual layer dock.
      * This is a widget-signal integration test, not pointer-event synthesis. */
     g_assert_true(gimp_int_combo_box_set_active(GIMP_INT_COMBO_BOX(combo),mode));
@@ -86,10 +92,10 @@ static void mode_selection(void)
     g_assert_cmpint(gimp_layer_mode_combo_box_get_mode(GIMP_LAYER_MODE_COMBO_BOX(combo)),==,mode);
     g_assert_true(gtk_combo_box_get_active_iter(GTK_COMBO_BOX(combo),&iter));
     gtk_tree_model_get(gtk_combo_box_get_model(GTK_COMBO_BOX(combo)),&iter,GIMP_INT_STORE_VALUE,&value,GIMP_INT_STORE_LABEL,&label,-1);
-    g_assert_cmpint(value,==,mode);g_assert_cmpstr(label,==,labels[raw-23]);
-    g_test_message("raw %u enum %d label %s applied to selected layer",raw,value,label);g_free(label);
+    g_assert_cmpint(value,==,mode);g_assert_cmpstr(label,==,float_modes?float_labels[index]:labels[index]);
+    g_test_message("%s index %u enum %d label %s applied to selected layer",float_modes?"float":"legacy",index,value,label);g_free(label);
   }
-  g_assert_true(gimp_int_combo_box_set_active(GIMP_INT_COMBO_BOX(combo),GIMP_LAYER_MODE_PAINTER_REPLACE));
+  g_assert_true(gimp_int_combo_box_set_active(GIMP_INT_COMBO_BOX(combo),float_modes?GIMP_LAYER_MODE_PAINTER_FLOAT_REPLACE:GIMP_LAYER_MODE_PAINTER_REPLACE));
   g_object_get(gimp->config,"painter-canvas-ui",&enabled,NULL);g_assert_true(enabled);
   g_assert_true(gimp_painter_canvas_ui_get_visible(shell));
   window=gtk_widget_get_toplevel(GTK_WIDGET(shell));
@@ -114,7 +120,8 @@ int main(int argc,char **argv)
   gint result;g_test_init(&argc,&argv,NULL);if(!gtk_init_check(&argc,&argv))return GIMP_EXIT_TEST_SKIPPED;
   gimp_test_utils_setup_menus_path();gimp=gimp_init_for_gui_testing(TRUE);
   g_object_set(gimp->config,"painter-canvas-ui",TRUE,NULL);
-  g_test_add_func("/painter-mode-ui/native-selector",mode_selection);
+  g_test_add_data_func("/painter-mode-ui/native-selector",GINT_TO_POINTER(FALSE),mode_selection);
+  g_test_add_data_func("/painter-mode-ui/float-selector",GINT_TO_POINTER(TRUE),mode_selection);
   g_test_add_data_func("/painter-mode-ui/anime-initial",GUINT_TO_POINTER(0),anime_composite_reference);
   g_test_add_data_func("/painter-mode-ui/anime-edited",GUINT_TO_POINTER(1),anime_composite_reference);
   g_application_run(gimp->app,0,NULL);result=gimp_core_app_get_exit_status(GIMP_CORE_APP(gimp->app));

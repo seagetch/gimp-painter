@@ -1,6 +1,8 @@
 libapplayermodeslegacy_sources = [
   'gimpcolor-legacy.c',
   'gimpoperationpainterlegacy.c',
+  'gimpoperationpainterfloat.c',
+  'gimppainterfloatkernel.c',
   'gimpoperationadditionlegacy.c',
   'gimpoperationburnlegacy.c',
   'gimpoperationdarkenonlylegacy.c',
