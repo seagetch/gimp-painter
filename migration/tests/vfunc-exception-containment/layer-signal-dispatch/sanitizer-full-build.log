@@ -1,0 +1,723 @@
+In file included from [01m[K../source/app/paint/painter-mypaint/engine.cpp:3[m[K:
+[01m[K../source/app/paint/painter-mypaint/legacy-brush.hpp:[m[K In member function ‘[01m[Kvoid GimpPainter::MyPaint::Legacy::Brush::[01;32m[Kupdate_states_and_setting_values[m[K(float, float, float, float, float, float)[m[K’:
+[01m[K../source/app/paint/painter-mypaint/legacy-brush.hpp:398:13:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kdx_old[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  398 |       float [01;35m[Kdx_old[m[K = states[STATE_DIRECTION_DX];
+      |             [01;35m[K^~~~~~[m[K
+[01m[K../source/app/paint/painter-mypaint/legacy-brush.hpp:399:13:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kdy_old[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  399 |       float [01;35m[Kdy_old[m[K = states[STATE_DIRECTION_DY];
+      |             [01;35m[K^~~~~~[m[K
+[01m[K../source/app/actions/layers-commands.c:[m[K In function ‘[01m[Klayers_mask_add_cmd_callback[m[K’:
+[01m[K../source/app/actions/layers-commands.c:1587:6:[m[K [01;35m[Kwarning: [m[K‘[01m[Kdialog[m[K’ may be used uninitialized [[01;35m[K-Wmaybe-uninitialized[m[K]
+ 1587 |   if [01;35m[K([m[K! dialog)
+      |      [01;35m[K^[m[K
+[01m[K../source/app/actions/layers-commands.c:1558:14:[m[K [01;36m[Knote: [m[K‘[01m[Kdialog[m[K’ was declared here
+ 1558 |   GtkWidget *[01;36m[Kdialog[m[K;
+      |              [01;36m[K^~~~~~[m[K
+[01m[K../source/app/core/gimpgrouplayer.c:[m[K In function ‘[01m[Kgimp_group_layer_resume_resize[m[K’:
+[01m[K../source/app/core/gimpgrouplayer.c:1697:14:[m[K [01;35m[Kwarning: [m[K‘[01m[Kmask_buffer[m[K’ may be used uninitialized [[01;35m[K-Wmaybe-uninitialized[m[K]
+ 1697 |           if [01;35m[K([m[Kgimp_drawable_get_buffer (GIMP_DRAWABLE (mask)) != mask_buffer)
+      |              [01;35m[K^[m[K
+[01m[K../source/app/core/gimpgrouplayer.c:1637:26:[m[K [01;36m[Knote: [m[K‘[01m[Kmask_buffer[m[K’ was declared here
+ 1637 |   GeglBuffer            *[01;36m[Kmask_buffer[m[K;
+      |                          [01;36m[K^~~~~~~~~~~[m[K
+[01m[K../source/app/core/gimpimage.c:[m[K In function ‘[01m[Kgimp_image_get_xcf_version[m[K’:
+[01m[K../source/app/core/gimpimage.c:2864:7:[m[K [01;35m[Kwarning: [m[Kenumeration value ‘[01m[KGIMP_LAYER_MODE_PAINTER_ERASE[m[K’ not handled in switch [[01;35m[K-Wswitch[m[K]
+ 2864 |       [01;35m[Kswitch[m[K (gimp_layer_get_mode (layer))
+      |       [01;35m[K^~~~~~[m[K
+[01m[K../source/app/core/gimpimage.c:2864:7:[m[K [01;35m[Kwarning: [m[Kenumeration value ‘[01m[KGIMP_LAYER_MODE_PAINTER_REPLACE[m[K’ not handled in switch [[01;35m[K-Wswitch[m[K]
+[01m[K../source/app/core/gimpimage.c:2864:7:[m[K [01;35m[Kwarning: [m[Kenumeration value ‘[01m[KGIMP_LAYER_MODE_PAINTER_ANTI_ERASE[m[K’ not handled in switch [[01;35m[K-Wswitch[m[K]
+[01m[K../source/app/core/gimpimage.c:2864:7:[m[K [01;35m[Kwarning: [m[Kenumeration value ‘[01m[KGIMP_LAYER_MODE_PAINTER_SRC_IN[m[K’ not handled in switch [[01;35m[K-Wswitch[m[K]
+[01m[K../source/app/core/gimpimage.c:2864:7:[m[K [01;35m[Kwarning: [m[Kenumeration value ‘[01m[KGIMP_LAYER_MODE_PAINTER_DST_IN[m[K’ not handled in switch [[01;35m[K-Wswitch[m[K]
+[01m[K../source/app/core/gimpimage.c:2864:7:[m[K [01;35m[Kwarning: [m[Kenumeration value ‘[01m[KGIMP_LAYER_MODE_PAINTER_SRC_OUT[m[K’ not handled in switch [[01;35m[K-Wswitch[m[K]
+[01m[K../source/app/core/gimpimage.c:2864:7:[m[K [01;35m[Kwarning: [m[Kenumeration value ‘[01m[KGIMP_LAYER_MODE_PAINTER_DST_OUT[m[K’ not handled in switch [[01;35m[K-Wswitch[m[K]
+[01m[K../source/app/core/gimpimage.c:2864:7:[m[K [01;35m[Kwarning: [m[Kenumeration value ‘[01m[KGIMP_LAYER_MODE_PAINTER_NORMAL[m[K’ not handled in switch [[01;35m[K-Wswitch[m[K]
+[01m[K../source/app/core/gimpimage.c:2864:7:[m[K [01;35m[Kwarning: [m[Kenumeration value ‘[01m[KGIMP_LAYER_MODE_PAINTER_MULTIPLY[m[K’ not handled in switch [[01;35m[K-Wswitch[m[K]
+[01m[K../source/app/display/gimppaintercanvasui.cpp:635:6:[m[K [01;35m[Kwarning: [m[K‘[01m[Kvoid {anonymous}::Canvas::[01;32m[Kfinish_compact_restore[m[K(const std::shared_ptr<{anonymous}::Borrow>&)[m[K’ defined but not used [[01;35m[K-Wunused-function[m[K]
+  635 | void [01;35m[KCanvas[m[K::finish_compact_restore (const std::shared_ptr<Borrow>& borrowed) noexcept {
+      |      [01;35m[K^~~~~~[m[K
+[01m[K../source/app/display/gimppaintercanvasui.cpp:282:12:[m[K [01;35m[Kwarning: [m[K‘[01m[KGtkWidget* {anonymous}::[01;32m[Kaction_button[m[K(Canvas&, GtkWidget*, const char*, const char*)[m[K’ defined but not used [[01;35m[K-Wunused-function[m[K]
+  282 | GtkWidget *[01;35m[Kaction_button[m[K(Canvas&s,GtkWidget*box,const char*label,const char*name) {
+      |            [01;35m[K^~~~~~~~~~~~~[m[K
+[01m[K../source/app/paint/gimppainterbrushgeometry.cpp:[m[K In lambda function:
+[01m[K../source/app/paint/gimppainterbrushgeometry.cpp:88:54:[m[K [01;35m[Kwarning: [m[Kcomparison of integer expressions of different signedness: ‘[01m[Kconst std::size_t[m[K’ {aka ‘[01m[Kconst long unsigned int[m[K’} and ‘[01m[Kint[m[K’ [[01;35m[K-Wsign-compare[m[K]
+   88 |     if (mask.width <= 0 || mask.height <= 0 || [01;35m[Kcount > G_MAXINT / channels[m[K)
+      |                                                [01;35m[K~~~~~~^~~~~~~~~~~~~~~~~~~~~[m[K
+In file included from [01m[K../source/app/tests/test-painter-layer-ui.c:887[m[K:
+[01m[K../source/app/tests/test-filter-schema-editors.inc:[m[K In function ‘[01m[Kfilter_schema_undo_provider_reentry[m[K’:
+[01m[K../source/app/tests/test-filter-schema-editors.inc:668:7:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  668 |       [01;35m[Kgint[m[K maximum = mutation.spec->maximum;
+      |       [01;35m[K^~~~[m[K
+[01m[K../source/app/tests/test-filter-schema-editors.inc:673:7:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  673 |       [01;35m[Kgulong[m[K hook = g_signal_connect (image, "undo-event", G_CALLBACK (schema_undo_mutation), &mutation);
+      |       [01;35m[K^~~~~~[m[K
+In file included from [01m[K<dependencies>/root/usr/include/glib-2.0/glib.h:89[m[K,
+                 from [01m[K<dependencies>/root/usr/include/glib-2.0/gobject/gbinding.h:30[m[K,
+                 from [01m[K<dependencies>/root/usr/include/glib-2.0/glib-object.h:24[m[K,
+                 from [01m[K<dependencies>/root/usr/include/gegl-0.4/gegl.h:22[m[K,
+                 from [01m[K../source/app/tests/test-painter-layer-ui.c:3[m[K:
+[01m[K../source/app/tests/test-filter-schema-persistence-failures.inc:[m[K In function ‘[01m[Kfilter_schema_persistence_failures[m[K’:
+[01m[K../source/app/tests/test-filter-schema-persistence-failures.inc:321:52:[m[K [01;35m[Kwarning: [m[Kcomparison of constant ‘[01m[K4[m[K’ with boolean expression is always false [[01;35m[K-Wbool-compare[m[K]
+  321 |           g_assert_error (error, G_IO_ERROR, scene [01;35m[K==[m[K 4 ? G_IO_ERROR_NO_SPACE : G_IO_ERROR_FAILED);
+      |                                                    [01;35m[K^~[m[K
+[01m[K<dependencies>/root/usr/include/glib-2.0/glib/gtestutils.h:223:99:[m[K [01;36m[Knote: [m[Kin definition of macro ‘[01m[Kg_assert_error[m[K’
+  223 |                                                if (!err || (err)->domain != dom || (err)->code != [01;36m[Kc[m[K) \
+      |                                                                                                   [01;36m[K^[m[K
+[01m[K<dependencies>/root/usr/include/glib-2.0/glib/gtestutils.h:223:96:[m[K [01;35m[Kwarning: [m[Ksuggest parentheses around comparison in operand of ‘[01m[K==[m[K’ [[01;35m[K-Wparentheses[m[K]
+  223 |                                                if (!err || (err)->domain != dom || (err)->code != c) \
+[01m[K../source/app/tests/test-filter-schema-persistence-failures.inc:321:11:[m[K [01;36m[Knote: [m[Kin expansion of macro ‘[01m[Kg_assert_error[m[K’
+  321 |           [01;36m[Kg_assert_error[m[K (error, G_IO_ERROR, scene == 4 ? G_IO_ERROR_NO_SPACE : G_IO_ERROR_FAILED);
+      |           [01;36m[K^~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-filter-schema-persistence-failures.inc:321:79:[m[K [01;35m[Kwarning: [m[K‘[01m[K?:[m[K’ using integer constants in boolean context [[01;35m[K-Wint-in-bool-context[m[K]
+  321 |           g_assert_error (error, G_IO_ERROR, scene == 4 ? G_IO_ERROR_NO_SPACE : G_IO_ERROR_FAILED);
+[01m[K<dependencies>/root/usr/include/glib-2.0/glib/gtestutils.h:223:99:[m[K [01;36m[Knote: [m[Kin definition of macro ‘[01m[Kg_assert_error[m[K’
+  223 |                                                if (!err || (err)->domain != dom || (err)->code != [01;36m[Kc[m[K) \
+      |                                                                                                   [01;36m[K^[m[K
+In file included from [01m[K../source/app/tests/test-painter-layer-ui.c:890[m[K:
+[01m[K../source/app/tests/test-filter-progress-ui.inc:[m[K In function ‘[01m[Kfilter_progress_widgets[m[K’:
+[01m[K../source/app/tests/test-filter-progress-ui.inc:10:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   10 |   [01;35m[KGtkWidget[m[K *dialog=new_filter_dialog(image,GIMP_LAYER(layer));
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-filter-progress-ui.inc:27:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   27 |   [01;35m[Kconst[m[K guint64 generation=gimp_filter_layer_get_generation(layer);
+      |   [01;35m[K^~~~~[m[K
+[01m[K../source/app/tests/test-filter-progress-ui.inc:[m[K In function ‘[01m[Kfilter_progress_running_cancel[m[K’:
+[01m[K../source/app/tests/test-filter-progress-ui.inc:41:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   41 |     [01;35m[KGimpValueArray[m[K *args=isolated_args(route,0);
+      |     [01;35m[K^~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-filter-progress-ui.inc:43:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   43 |     [01;35m[KGimpFilterLayer[m[K *layer=isolated_layer(image,route,args);
+      |     [01;35m[K^~~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-filter-progress-ui.inc:45:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   45 |     [01;35m[KGtkWidget[m[K *dialog=new_filter_dialog(image,GIMP_LAYER(layer));
+      |     [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-filter-progress-ui.inc:56:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   56 |     [01;35m[Kgchar[m[K *procedure=g_strconcat("plug-in-",isolated_choices[route],NULL);
+      |     [01;35m[K^~~~~[m[K
+[01m[K../source/app/tests/test-filter-progress-ui.inc:58:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   58 |     [01;35m[Kconst[m[K guint64 generation=gimp_filter_layer_get_generation(layer);
+      |     [01;35m[K^~~~~[m[K
+[01m[K../source/app/tests/test-filter-progress-ui.inc:[m[K In function ‘[01m[Kfilter_progress_render_reentry[m[K’:
+[01m[K../source/app/tests/test-filter-progress-ui.inc:85:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   85 |     [01;35m[KGtkWidget[m[K *dialog=new_filter_dialog(image,GIMP_LAYER(layer));
+      |     [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-filter-progress-ui.inc:89:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   89 |     [01;35m[KProgressUiReentry[m[K state={layer,dialog,args,action,FALSE};
+      |     [01;35m[K^~~~~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:[m[K In function ‘[01m[Kchannel_preview_components[m[K’:
+[01m[K../source/app/tests/test-painter-canvas-ui.c:100:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  100 |     [01;35m[KGimpViewRenderer[m[K *renderer=gimp_view_renderer_new_full(gimp_get_user_context(gimp),GIMP_TYPE_IMAGE,2,1,0,FALSE);
+      |     [01;35m[K^~~~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:105:7:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  105 |       [01;35m[Kconst[m[K guint32 *pixels=(const guint32*)cairo_image_surface_get_data(renderer->surface);
+      |       [01;35m[K^~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:[m[K In function ‘[01m[Klayer_position[m[K’:
+[01m[K../source/app/tests/test-painter-canvas-ui.c:125:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  125 |     [01;35m[KGimpContainer[m[K *children=gimp_viewable_get_children(GIMP_VIEWABLE(item));
+      |     [01;35m[K^~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:[m[K In function ‘[01m[Kcanvas_button[m[K’:
+[01m[K../source/app/tests/test-painter-canvas-ui.c:138:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  138 |   [01;35m[Kgboolean[m[K handled=gtk_widget_event(canvas,event);gdk_event_free(event);return handled;
+      |   [01;35m[K^~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:[m[K In function ‘[01m[Klayer_button[m[K’:
+[01m[K../source/app/tests/test-painter-canvas-ui.c:144:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  144 |   [01;35m[KGtkWidget[m[K *canvas=layer_canvas(owner);
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:[m[K In function ‘[01m[Kcanvas_snapshot[m[K’:
+[01m[K../source/app/tests/test-painter-canvas-ui.c:153:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  153 |   [01;35m[KGtkAllocation[m[K a;gtk_widget_get_allocation(canvas,&a);
+      |   [01;35m[K^~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:155:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  155 |   [01;35m[Kcairo_surface_t[m[K *surface=cairo_image_surface_create(CAIRO_FORMAT_ARGB32,a.width,a.height);
+      |   [01;35m[K^~~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:[m[K In function ‘[01m[Kselection_and_visibility[m[K’:
+[01m[K../source/app/tests/test-painter-canvas-ui.c:170:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  170 |   [01;35m[KGList[m[K *sel=g_list_append(NULL,a);gimp_image_set_selected_layers(image,sel);g_list_free(sel);drain();
+      |   [01;35m[K^~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:171:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  171 |   [01;35m[Kcairo_surface_t[m[K *single=canvas_snapshot(layer_canvas(w));
+      |   [01;35m[K^~~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:173:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  173 |   [01;35m[KGList[m[K *selected=gimp_image_get_selected_layers(image);
+      |   [01;35m[K^~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:175:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  175 |   [01;35m[Kcairo_surface_t[m[K *multiple=canvas_snapshot(layer_canvas(w));
+      |   [01;35m[K^~~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:[m[K In function ‘[01m[Kgroup_move_and_undo[m[K’:
+[01m[K../source/app/tests/test-painter-canvas-ui.c:184:50:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  184 |   gimp_image_add_layer(image,group,NULL,0,FALSE);[01;35m[KGimpLayer[m[K *b=layer(image,group,"B");
+      |                                                  [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:[m[K In function ‘[01m[Krenderer_key_event[m[K’:
+[01m[K../source/app/tests/test-painter-canvas-ui.c:215:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  215 |   [01;35m[KGdkEvent[m[K *event=gdk_event_new(GDK_KEY_PRESS);
+      |   [01;35m[K^~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:219:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  219 |   [01;35m[Kgboolean[m[K handled=gtk_widget_event(w,event);gdk_event_free(event);return handled;
+      |   [01;35m[K^~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:[m[K In function ‘[01m[Krenderer_native_size_draw[m[K’:
+[01m[K../source/app/tests/test-painter-canvas-ui.c:234:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  234 |   [01;35m[KGtkWidget[m[K *widgets[]={button,preview,w};
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:243:7:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  243 |       [01;35m[Kgint[m[K minimum,natural;gtk_widget_get_preferred_width(widget,&minimum,&natural);
+      |       [01;35m[K^~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:247:7:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  247 |       [01;35m[KGtkAllocation[m[K allocation;gtk_widget_get_allocation(widget,&allocation);
+      |       [01;35m[K^~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:251:7:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  251 |       [01;35m[Kcairo_surface_t[m[K *surface=cairo_image_surface_create(CAIRO_FORMAT_ARGB32,allocation.width,allocation.height);
+      |       [01;35m[K^~~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:231:43:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Ka[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  231 |   GimpImage *image=new_image();GimpLayer *[01;35m[Ka[m[K=layer(image,NULL,"Native renderer");GtkWidget *w=tiles(image);
+      |                                           [01;35m[K^[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:[m[K In function ‘[01m[Krenderer_native_activation_routes[m[K’:
+[01m[K../source/app/tests/test-painter-canvas-ui.c:265:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  265 |   [01;35m[KGtkWidget[m[K *w=tiles(image);g_assert_nonnull(layer_canvas(w));
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:270:13:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  270 |     drain();[01;35m[KGtkWidget[m[K *popup=renderer_current_popup(w);
+      |             [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:272:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  272 |     [01;35m[KGtkWidget[m[K *opacity=find(popup,"painter-layer-opacity");g_assert_nonnull(opacity);
+      |     [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:[m[K In function ‘[01m[Krenderer_select_newer[m[K’:
+[01m[K../source/app/tests/test-painter-canvas-ui.c:282:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  282 |   [01;35m[KGList[m[K *incoming=gimp_image_get_selected_layers(image);g_assert_cmpuint(g_list_length(incoming),==,1);g_assert_true(incoming->data==f->original);
+      |   [01;35m[K^~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:283:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  283 |   [01;35m[KGList[m[K *selection=g_list_append(NULL,f->newer);gimp_image_set_selected_layers(image,selection);g_list_free(selection);
+      |   [01;35m[K^~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:[m[K In function ‘[01m[Krenderer_selection_reentry_case[m[K’:
+[01m[K../source/app/tests/test-painter-canvas-ui.c:288:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  288 |   [01;35m[KRendererReentry[m[K f={0};f.owner=w;f.original=a;f.newer=superseded?b:a;
+      |   [01;35m[K^~~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:[m[K In function ‘[01m[Krenderer_escape_owner_close[m[K’:
+[01m[K../source/app/tests/test-painter-canvas-ui.c:309:54:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  309 |   GimpImage *image=new_image();layer(image,NULL,"A");[01;35m[KGtkWidget[m[K *w=tiles(image);g_object_ref(w);
+      |                                                      [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:311:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  311 |   [01;35m[KRendererReentry[m[K f={0};f.owner=w;
+      |   [01;35m[K^~~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:313:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  313 |   [01;35m[Kguint[m[K focus_signal=g_signal_lookup("grab-focus",GTK_TYPE_WIDGET);GSignalQuery query;
+      |   [01;35m[K^~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:315:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  315 |   [01;35m[Kgulong[m[K focus_hook=g_signal_add_emission_hook(focus_signal,0,renderer_focus_observe,&f,NULL);
+      |   [01;35m[K^~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:[m[K In function ‘[01m[Krenderer_stale_preview_disconnected[m[K’:
+[01m[K../source/app/tests/test-painter-canvas-ui.c:327:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  327 |   [01;35m[Kgpointer[m[K weak_canvas=canvas;g_object_add_weak_pointer(G_OBJECT(canvas),&weak_canvas);
+      |   [01;35m[K^~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:330:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  330 |   [01;35m[Kcairo_surface_t[m[K *before=canvas_snapshot(canvas);
+      |   [01;35m[K^~~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:333:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  333 |   [01;35m[Kcairo_surface_t[m[K *after=canvas_snapshot(canvas);
+      |   [01;35m[K^~~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:[m[K In function ‘[01m[Krenderer_modifier_activation[m[K’:
+[01m[K../source/app/tests/test-painter-canvas-ui.c:358:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  358 |   [01;35m[KGdkModifierType[m[K states[]={0,GDK_CONTROL_MASK,GDK_SHIFT_MASK,GDK_CONTROL_MASK,GDK_CONTROL_MASK};
+      |   [01;35m[K^~~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:[m[K In function ‘[01m[Klong_press_cancel_destroy[m[K’:
+[01m[K../source/app/tests/test-painter-canvas-ui.c:376:58:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  376 |   GimpImage *image=new_image();layer(image,NULL,"Layer");[01;35m[KGtkWidget[m[K *w=tiles(image),*add=find(w,"painter-layer-add");
+      |                                                          [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:379:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  379 |   [01;35m[KGdkEventMotion[m[K ev={0};gboolean handled;ev.type=GDK_MOTION_NOTIFY;ev.x=60;ev.y=8;g_signal_emit_by_name(add,"motion-notify-event",&ev,&handled);
+      |   [01;35m[K^~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:[m[K In function ‘[01m[Kpopup_repeat_and_owner_close[m[K’:
+[01m[K../source/app/tests/test-painter-canvas-ui.c:391:58:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  391 |   GimpImage *image=new_image();layer(image,NULL,"Layer");[01;35m[KGtkWidget[m[K *w=tiles(image);
+      |                                                          [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:393:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  393 |   [01;35m[KGtkWidget[m[K *p=gimp_painter_layer_tiles_popup(GIMP_PAINTER_LAYER_TILES(w),TRUE);g_object_ref(p);
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:394:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  394 |   [01;35m[KGtkWidget[m[K *button=find(p,"layers-new-clone");g_object_ref(button);close_tiles(w);
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:[m[K In function ‘[01m[Knative_popup_key[m[K’:
+[01m[K../source/app/tests/test-painter-canvas-ui.c:410:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  410 |   [01;35m[KGdkEvent[m[K *event=gdk_event_new(GDK_KEY_PRESS);
+      |   [01;35m[K^~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:414:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  414 |   [01;35m[Kgboolean[m[K handled=gtk_widget_event(popup,event);gdk_event_free(event);return handled;
+      |   [01;35m[K^~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:[m[K In function ‘[01m[Knative_popup_button[m[K’:
+[01m[K../source/app/tests/test-painter-canvas-ui.c:418:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  418 |   [01;35m[KGdkEvent[m[K *event=gdk_event_new(type);
+      |   [01;35m[K^~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:[m[K In function ‘[01m[Kpopup_native_events_and_parent[m[K’:
+[01m[K../source/app/tests/test-painter-canvas-ui.c:430:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  430 |   [01;35m[Kguint[m[K closed=0;g_signal_connect(w,"popup-closed",G_CALLBACK(count_popup_closed),&closed);
+      |   [01;35m[K^~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:435:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  435 |     [01;35m[KGtkWidget[m[K *scroll=gtk_bin_get_child(GTK_BIN(popup));g_assert_true(GTK_IS_SCROLLED_WINDOW(scroll));
+      |     [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:436:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  436 |     [01;35m[KGtkWidget[m[K *viewport=gtk_bin_get_child(GTK_BIN(scroll));g_assert_true(GTK_IS_VIEWPORT(viewport));
+      |     [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:439:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  439 |     [01;35m[KGtkWidget[m[K *opacity=find(popup,"painter-layer-opacity");g_assert_nonnull(opacity);
+      |     [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:451:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  451 |     [01;35m[KGtkAllocation[m[K allocation;gtk_widget_get_allocation(gtk_bin_get_child(GTK_BIN(popup)),&allocation);
+      |     [01;35m[K^~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:453:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  453 |     [01;35m[Kgdouble[m[K x=allocation.x+allocation.width/2.,y=allocation.y+allocation.height/2.;
+      |     [01;35m[K^~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:[m[K In function ‘[01m[Kpopup_destroy_orders[m[K’:
+[01m[K../source/app/tests/test-painter-canvas-ui.c:467:60:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  467 |     GimpImage *image=new_image();layer(image,NULL,"Layer");[01;35m[KGtkWidget[m[K *w=tiles(image);g_object_ref(w);
+      |                                                            [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:468:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  468 |     [01;35m[KGtkWidget[m[K *popup=gimp_painter_layer_tiles_popup(GIMP_PAINTER_LAYER_TILES(w),TRUE);g_assert_nonnull(popup);g_object_ref(popup);
+      |     [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:469:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  469 |     [01;35m[KGtkWidget[m[K *button=find(popup,"layers-new-clone");g_assert_nonnull(button);g_object_ref(button);
+      |     [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:471:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  471 |     [01;35m[KGtkWidget[m[K *next=NULL;gpointer weak_next=NULL;
+      |     [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:[m[K In function ‘[01m[Kpopup_replacement_newer_same_image[m[K’:
+[01m[K../source/app/tests/test-painter-canvas-ui.c:498:58:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  498 |   GimpImage *image=new_image();layer(image,NULL,"Layer");[01;35m[KGtkWidget[m[K *w=tiles(image);
+      |                                                          [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:501:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  501 |   [01;35m[KGtkWidget[m[K *stale=find(first,"layers-new-clone");g_assert_nonnull(stale);g_object_ref(stale);
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:502:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  502 |   [01;35m[KPopupReplacement[m[K f={NULL,0,!creation};
+      |   [01;35m[K^~~~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:511:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  511 |   [01;35m[Kgpointer[m[K weak_first=first,weak_newer=f.newer;
+      |   [01;35m[K^~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:[m[K In function ‘[01m[Kpopup_replacement_owner_close[m[K’:
+[01m[K../source/app/tests/test-painter-canvas-ui.c:531:58:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  531 |   GimpImage *image=new_image();layer(image,NULL,"Layer");[01;35m[KGtkWidget[m[K *w=tiles(image);
+      |                                                          [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:537:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  537 |   [01;35m[Kgulong[m[K handler=g_signal_connect(w,"popup-closed",G_CALLBACK(destroy_on_popup_closed),&calls);
+      |   [01;35m[K^~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:[m[K In function ‘[01m[Kpopup_replacement_image_switch[m[K’:
+[01m[K../source/app/tests/test-painter-canvas-ui.c:560:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  560 |   [01;35m[KGtkWidget[m[K *w=tiles(a);
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:563:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  563 |   [01;35m[Kgulong[m[K handler=g_signal_connect(w,"popup-closed",G_CALLBACK(switch_on_popup_closed),&switch_image);
+      |   [01;35m[K^~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:[m[K In function ‘[01m[Knew_group_action[m[K’:
+[01m[K../source/app/tests/test-painter-canvas-ui.c:581:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  581 |   [01;35m[KGtkWidget[m[K *button=find(p,"layers-new-group");g_assert_nonnull(button);
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:[m[K In function ‘[01m[Kpopup_action_image_switch[m[K’:
+[01m[K../source/app/tests/test-painter-canvas-ui.c:586:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  586 |   [01;35m[KGtkWidget[m[K *w=tiles(a),*button=new_group_action(w);
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:[m[K In function ‘[01m[Kpopup_action_newer_same_image[m[K’:
+[01m[K../source/app/tests/test-painter-canvas-ui.c:600:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  600 |   [01;35m[KGtkWidget[m[K *w=tiles(image),*button=new_group_action(w);
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:[m[K In function ‘[01m[Kpopup_action_context_switch[m[K’:
+[01m[K../source/app/tests/test-painter-canvas-ui.c:618:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  618 |   [01;35m[KGtkWidget[m[K *w=tiles(image),*button=new_group_action(w);
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:[m[K In function ‘[01m[Kpopup_action_owner_close[m[K’:
+[01m[K../source/app/tests/test-painter-canvas-ui.c:634:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  634 |   [01;35m[KGtkWidget[m[K *w=tiles(image),*button=new_group_action(w);gpointer weak=w;
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:[m[K In function ‘[01m[Kpopup_action_layer_menu_switch[m[K’:
+[01m[K../source/app/tests/test-painter-canvas-ui.c:659:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  659 |   [01;35m[KGtkWidget[m[K *w=tiles(a),*p=gimp_painter_layer_tiles_popup(GIMP_PAINTER_LAYER_TILES(w),FALSE);
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:661:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  661 |   [01;35m[KMenuActionSwitch[m[K f={b,0,0,FALSE};
+      |   [01;35m[K^~~~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:663:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  663 |   [01;35m[Kgulong[m[K update_handler=g_signal_connect(manager,"update",G_CALLBACK(rejected_menu_update),&f);
+      |   [01;35m[K^~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:[m[K In function ‘[01m[Kpopup_action_normal_group[m[K’:
+[01m[K../source/app/tests/test-painter-canvas-ui.c:673:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  673 |   [01;35m[KGtkWidget[m[K *w=tiles(image),*button=new_group_action(w);
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:[m[K In function ‘[01m[Kdestroyed_tiles_reject_image[m[K’:
+[01m[K../source/app/tests/test-painter-canvas-ui.c:684:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  684 |   [01;35m[KGtkWidget[m[K *w=tiles(a);gpointer weak=w;
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:[m[K In function ‘[01m[Kimage_switch_popup_owner_close[m[K’:
+[01m[K../source/app/tests/test-painter-canvas-ui.c:710:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  710 |   [01;35m[KGtkWidget[m[K *w=tiles(a);gpointer weak=w;guint calls=0;
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:719:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  719 |   [01;35m[Kgpointer[m[K weak_image=b;g_object_add_weak_pointer(G_OBJECT(b),&weak_image);
+      |   [01;35m[K^~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:[m[K In function ‘[01m[Kimage_switch_popup_newer_image[m[K’:
+[01m[K../source/app/tests/test-painter-canvas-ui.c:726:28:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  726 |   layer(a,NULL,"Original");[01;35m[KGimpLayer[m[K *lb=layer(b,NULL,"Obsolete"),*lc=layer(c,NULL,"Latest");
+      |                            [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:729:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  729 |   [01;35m[Kgulong[m[K handler=g_signal_connect(w,"popup-closed",G_CALLBACK(switch_on_popup_closed),&switch_image);
+      |   [01;35m[K^~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:[m[K In function ‘[01m[Kparent_image_notify_owner_close[m[K’:
+[01m[K../source/app/tests/test-painter-canvas-ui.c:744:58:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  744 |   GimpImage *image=new_image();layer(image,NULL,"Layer");[01;35m[KGtkWidget[m[K *w=tiles(NULL);
+      |                                                          [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:[m[K In function ‘[01m[Kpopup_controls_and_clone[m[K’:
+[01m[K../source/app/tests/test-painter-canvas-ui.c:767:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  767 |   [01;35m[KGimpLayer[m[K *clone=gimp_image_get_selected_layers(image)->data;
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:[m[K In function ‘[01m[Kmask_controls[m[K’:
+[01m[K../source/app/tests/test-painter-canvas-ui.c:778:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  778 |   [01;35m[KGtkWidget[m[K *w=tiles(image),*p=gimp_painter_layer_tiles_popup(GIMP_PAINTER_LAYER_TILES(w),FALSE);
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:[m[K In function ‘[01m[Klong_press_once[m[K’:
+[01m[K../source/app/tests/test-painter-canvas-ui.c:788:58:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  788 |   GimpImage *image=new_image();layer(image,NULL,"Layer");[01;35m[KGtkWidget[m[K *w=tiles(image),*add=find(w,"painter-layer-add");
+      |                                                          [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:790:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  790 |   [01;35m[Kgint64[m[K deadline=g_get_monotonic_time()+650000;
+      |   [01;35m[K^~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:[m[K In function ‘[01m[Kreentrant_visibility_close[m[K’:
+[01m[K../source/app/tests/test-painter-canvas-ui.c:800:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  800 |   [01;35m[KGtkWidget[m[K *control=layer_canvas(w);g_object_ref(control);
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:[m[K In function ‘[01m[Kmultiple_reorder_one_undo[m[K’:
+[01m[K../source/app/tests/test-painter-canvas-ui.c:812:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  812 |   [01;35m[KGList[m[K *items=gimp_image_get_layer_iter(image);
+      |   [01;35m[K^~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:[m[K In function ‘[01m[Khide_cancels_grab[m[K’:
+[01m[K../source/app/tests/test-painter-canvas-ui.c:820:58:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  820 |   GimpImage *image=new_image();layer(image,NULL,"Layer");[01;35m[KGtkWidget[m[K *w=tiles(image),*add=find(w,"painter-layer-add");
+      |                                                          [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:[m[K In function ‘[01m[Knew_shell[m[K’:
+[01m[K../source/app/tests/test-painter-canvas-ui.c:828:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  828 |   [01;35m[KGimpDisplay[m[K *display=gimp_context_get_display(gimp_get_user_context(gimp));
+      |   [01;35m[K^~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:[m[K In function ‘[01m[Klayer_panel[m[K’:
+[01m[K../source/app/tests/test-painter-canvas-ui.c:837:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  837 |   [01;35m[KGtkWidget[m[K *frame=gtk_widget_get_parent(tiles);
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:[m[K In function ‘[01m[Koverlay_topmost_visible_input[m[K’:
+[01m[K../source/app/tests/test-painter-canvas-ui.c:855:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  855 |   [01;35m[KGimpOverlayChild[m[K *bottom=gimp_overlay_child_find(GIMP_OVERLAY_BOX(box),lower);
+      |   [01;35m[K^~~~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:[m[K In function ‘[01m[Koverlay_input_and_restore[m[K’:
+[01m[K../source/app/tests/test-painter-canvas-ui.c:881:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  881 |   [01;35m[KGimpOverlayChild[m[K *child=layer_panel(shell);
+      |   [01;35m[K^~~~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:[m[K In function ‘[01m[Kdock_restore_and_parent_close[m[K’:
+[01m[K../source/app/tests/test-painter-canvas-ui.c:896:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  896 |   [01;35m[KGtkWidget[m[K *parent=gtk_box_new(GTK_ORIENTATION_VERTICAL,0),*child=gtk_label_new("Dock child");
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:[m[K In function ‘[01m[Koverlay_tools_and_colors[m[K’:
+[01m[K../source/app/tests/test-painter-canvas-ui.c:909:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  909 |   [01;35m[KGimpToolInfo[m[K *info=GIMP_TOOL_INFO(gimp_container_get_child_by_name(gimp->tool_info_list,"gimp-paintbrush-tool"));
+      |   [01;35m[K^~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:911:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  911 |   [01;35m[KGtkWidget[m[K *button=find(shell->canvas,"gimp-paintbrush-tool");g_assert_nonnull(button);
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:916:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  916 |   [01;35m[KGtkWidget[m[K *gui=gimp_tools_get_tool_options_gui(info->tool_options);
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:918:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  918 |   [01;35m[KGtkWidget[m[K *swatches=find(shell->canvas,"painter-fg-bg"),*editor=find(shell->canvas,"painter-color-editor");
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:920:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  920 |   [01;35m[KGeglColor[m[K *color=gegl_color_new("rgb(0.125,0.25,0.75)");
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:923:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  923 |   [01;35m[Kgdouble[m[K actual[3],expected[3];
+      |   [01;35m[K^~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:[m[K In function ‘[01m[Koverlay_tool_group[m[K’:
+[01m[K../source/app/tests/test-painter-canvas-ui.c:936:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  936 |   [01;35m[KGimpToolInfo[m[K *move=GIMP_TOOL_INFO(gimp_container_get_child_by_name(gimp->tool_info_list,"gimp-move-tool"));
+      |   [01;35m[K^~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:939:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  939 |   [01;35m[KGimpViewable[m[K *mp=gimp_viewable_get_parent(GIMP_VIEWABLE(move)),*ap=gimp_viewable_get_parent(GIMP_VIEWABLE(align));
+      |   [01;35m[K^~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:944:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  944 |   [01;35m[KGimpToolGroup[m[K *group=gimp_tool_group_new();GimpContainer *children=gimp_viewable_get_children(GIMP_VIEWABLE(group));
+      |   [01;35m[K^~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:946:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  946 |   [01;35m[KGtkWidget[m[K *expander=gtk_widget_get_ancestor(find(shell->canvas,"gimp-align-tool"),GTK_TYPE_EXPANDER);g_assert_nonnull(expander);
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:951:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  951 |   [01;35m[KGtkWidget[m[K *button=find(shell->canvas,"gimp-align-tool");g_assert_nonnull(button);gtk_button_clicked(GTK_BUTTON(button));drain();
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:[m[K In function ‘[01m[Ktool_reentry_begin[m[K’:
+[01m[K../source/app/tests/test-painter-canvas-ui.c:974:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  974 |   [01;35m[KGimpViewable[m[K *mp=gimp_viewable_get_parent(GIMP_VIEWABLE(f->move)),*ap=gimp_viewable_get_parent(GIMP_VIEWABLE(f->align));
+      |   [01;35m[K^~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:981:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  981 |   [01;35m[KGimpContainer[m[K *children=gimp_viewable_get_children(GIMP_VIEWABLE(f->group));
+      |   [01;35m[K^~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:[m[K In function ‘[01m[Ktool_reentry_end[m[K’:
+[01m[K../source/app/tests/test-painter-canvas-ui.c:991:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  991 |   [01;35m[KGimpContainer[m[K *children=gimp_viewable_get_children(GIMP_VIEWABLE(f->group));
+      |   [01;35m[K^~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:[m[K In function ‘[01m[Ktool_click_close[m[K’:
+[01m[K../source/app/tests/test-painter-canvas-ui.c:1021:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+ 1021 |   [01;35m[KGtkWidget[m[K *button=find(f.shell->canvas,"gimp-align-tool");g_assert_nonnull(button);g_object_ref(button);
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:[m[K In function ‘[01m[Ktool_expander_owner_close[m[K’:
+[01m[K../source/app/tests/test-painter-canvas-ui.c:1038:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+ 1038 |   [01;35m[KGtkWidget[m[K *button=find(f.shell->canvas,"gimp-align-tool");g_assert_nonnull(button);
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:1039:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+ 1039 |   [01;35m[KGtkWidget[m[K *expander=gtk_widget_get_ancestor(button,GTK_TYPE_EXPANDER);g_assert_nonnull(expander);g_object_ref(expander);
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:1041:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+ 1041 |   [01;35m[Kgulong[m[K expanded_handler=canvas_handler(expander,"notify::expanded");
+      |   [01;35m[K^~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:1048:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+ 1048 |   [01;35m[Kgboolean[m[K expanded=gimp_viewable_get_expanded(GIMP_VIEWABLE(f.group));
+      |   [01;35m[K^~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:[m[K In function ‘[01m[Ktool_click_newer_selection[m[K’:
+[01m[K../source/app/tests/test-painter-canvas-ui.c:1059:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+ 1059 |   [01;35m[KGtkWidget[m[K *button=find(f.shell->canvas,"gimp-align-tool");g_assert_nonnull(button);g_object_ref(button);
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:1065:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+ 1065 |   [01;35m[KGtkWidget[m[K *selected=find(f.shell->canvas,"gimp-paintbrush-tool");g_assert_nonnull(selected);
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:[m[K In function ‘[01m[Ktool_group_selection_restores_canvas_focus[m[K’:
+[01m[K../source/app/tests/test-painter-canvas-ui.c:1071:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+ 1071 |   [01;35m[KGtkWidget[m[K *entry=gtk_entry_new();g_object_ref_sink(entry);
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:1073:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+ 1073 |   [01;35m[KGtkWidget[m[K *toplevel=gtk_widget_get_toplevel(GTK_WIDGET(f.shell));g_assert_true(GTK_IS_WINDOW(toplevel));
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:1076:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+ 1076 |   [01;35m[KGtkWidget[m[K *button=find(f.shell->canvas,"gimp-align-tool");g_assert_nonnull(button);g_object_ref(button);
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:[m[K In function ‘[01m[Ktool_pending_refresh_owner_destroy[m[K’:
+[01m[K../source/app/tests/test-painter-canvas-ui.c:1089:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+ 1089 |   [01;35m[KGtkWidget[m[K *button=find(f.shell->canvas,"gimp-align-tool");g_assert_nonnull(button);g_object_ref(button);
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:1090:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+ 1090 |   [01;35m[KGtkWidget[m[K *expander=gtk_widget_get_ancestor(button,GTK_TYPE_EXPANDER);g_assert_nonnull(expander);
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:1091:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+ 1091 |   [01;35m[KGtkWidget[m[K *root=gtk_widget_get_parent(expander);g_assert_true(GTK_IS_BOX(root));
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:1095:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+ 1095 |   [01;35m[Kgpointer[m[K weak_root=root,weak_shell=f.shell;
+      |   [01;35m[K^~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:[m[K In function ‘[01m[Kmultiple_canvas_context_and_dock_transfer[m[K’:
+[01m[K../source/app/tests/test-painter-canvas-ui.c:1111:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+ 1111 |   [01;35m[KGimpImage[m[K *ia=gimp_display_get_image(a->display);
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:1114:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+ 1114 |   [01;35m[KGimpImage[m[K *ib=gimp_display_get_image(b->display);
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:1133:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+ 1133 |   [01;35m[KGtkWidget[m[K *parent=gtk_box_new(GTK_ORIENTATION_VERTICAL,0),*child=gtk_label_new("Transferred dock");
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:1143:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+ 1143 |   [01;35m[Kgboolean[m[K expand,fill;guint padding;GtkPackType pack;
+      |   [01;35m[K^~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:[m[K In function ‘[01m[Koverlay_owner_destroy_callbacks[m[K’:
+[01m[K../source/app/tests/test-painter-canvas-ui.c:1150:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+ 1150 |   [01;35m[KGtkWidget[m[K *button=find(shell->canvas,"gimp-paintbrush-tool");g_assert_nonnull(button);g_object_ref(button);
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:[m[K In function ‘[01m[Kcanvas_handler[m[K’:
+[01m[K../source/app/tests/test-painter-canvas-ui.c:1161:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+ 1161 |   [01;35m[Kgulong[m[K handler=g_signal_handler_find(emitter,G_SIGNAL_MATCH_ID|G_SIGNAL_MATCH_DETAIL,
+      |   [01;35m[K^~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:[m[K In function ‘[01m[Kcanvas_emitters_disconnected[m[K’:
+[01m[K../source/app/tests/test-painter-canvas-ui.c:1190:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+ 1190 |   [01;35m[KGimpContext[m[K *context=gimp_get_user_context(gimp);
+      |   [01;35m[K^~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:1199:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+ 1199 |   [01;35m[KGdkEventCrossing[m[K crossing={0};gboolean handled=FALSE;
+      |   [01;35m[K^~~~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:1206:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+ 1206 |   [01;35m[Kgdouble[m[K actual[4],expected[4];
+      |   [01;35m[K^~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:[m[K In function ‘[01m[Koverlay_context_color_reentrant_close[m[K’:
+[01m[K../source/app/tests/test-painter-canvas-ui.c:1260:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+ 1260 |   [01;35m[KGimpContext[m[K *context=gimp_get_user_context(gimp);guint calls=0;
+      |   [01;35m[K^~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:[m[K In function ‘[01m[Koverlay_selector_color_close[m[K’:
+[01m[K../source/app/tests/test-painter-canvas-ui.c:1289:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+ 1289 |   [01;35m[KGimpContext[m[K *context=gimp_get_user_context(gimp);
+      |   [01;35m[K^~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:1295:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+ 1295 |   [01;35m[KCanvasColorReentry[m[K reentry={&f,0};
+      |   [01;35m[K^~~~~~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:1300:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+ 1300 |   [01;35m[Kgdouble[m[K actual[4],expected[4];
+      |   [01;35m[K^~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:[m[K In function ‘[01m[Koverlay_active_color_reentrant_close[m[K’:
+[01m[K../source/app/tests/test-painter-canvas-ui.c:1317:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+ 1317 |   [01;35m[KGimpContext[m[K *context=gimp_get_user_context(gimp);guint calls=0;
+      |   [01;35m[K^~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:[m[K In function ‘[01m[Kdemo[m[K’:
+[01m[K../source/app/tests/test-painter-canvas-ui.c:1341:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+ 1341 |   [01;35m[KGimpLayer[m[K *group=gimp_group_layer_new(image);gimp_object_set_name(GIMP_OBJECT(group),"Group");gimp_image_add_layer(image,group,NULL,0,FALSE);
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:1344:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+ 1344 |   [01;35m[KGFile[m[K *file=g_file_new_for_path("/workspace/shared/Painter-Canvas-UI-Demo.xcf");gimp_image_set_file(image,file);g_object_unref(file);
+      |   [01;35m[K^~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:1345:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+ 1345 |   [01;35m[KGimpToolInfo[m[K *paintbrush=GIMP_TOOL_INFO(gimp_container_get_child_by_name(gimp->tool_info_list,"gimp-paintbrush-tool"));
+      |   [01;35m[K^~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:1347:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+ 1347 |   [01;35m[KGimpContext[m[K *context=gimp_get_user_context(gimp);
+      |   [01;35m[K^~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:1350:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+ 1350 |   [01;35m[KGeglColor[m[K *black=gegl_color_new("black");gimp_context_set_foreground(context,black);g_object_unref(black);
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:1352:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+ 1352 |   [01;35m[KGList[m[K *selected=g_list_append(NULL,background);gimp_image_set_selected_layers(image,selected);g_list_free(selected);
+      |   [01;35m[K^~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:1354:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+ 1354 |   [01;35m[KGMainLoop[m[K *loop=g_main_loop_new(NULL,FALSE);
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:[m[K In function ‘[01m[Knative_layer_preview_render[m[K’:
+[01m[K../source/app/tests/test-painter-canvas-ui.c:1689:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+ 1689 |   [01;35m[Kgint64[m[K deadline=g_get_monotonic_time()+5*G_TIME_SPAN_SECOND;
+      |   [01;35m[K^~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:1694:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+ 1694 |     [01;35m[Kguint32[m[K pixel=canvas_pixel(surface,depth*8+28,row*64+32);
+      |     [01;35m[K^~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:[m[K In function ‘[01m[Knative_layer_preview_pixels_lifetime[m[K’:
+[01m[K../source/app/tests/test-painter-canvas-ui.c:1718:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+ 1718 |   [01;35m[KGtkWidget[m[K *widget=tiles(image);guint canvas_finalized=0,layer_finalized=0;
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:1723:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+ 1723 |   [01;35m[Kcairo_surface_t[m[K *blue_surface=native_layer_preview_render(widget,target,FALSE);
+      |   [01;35m[K^~~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:[m[K In function ‘[01m[Krenderer_group_cache_and_hit_regions[m[K’:
+[01m[K../source/app/tests/test-painter-canvas-ui.c:1752:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+ 1752 |   [01;35m[KGimpLayer[m[K *child=layer(image,group,"Nested pixels");
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:1755:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+ 1755 |   [01;35m[KGtkWidget[m[K *w=tiles(image),*canvas=layer_canvas(w);
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:1760:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+ 1760 |   [01;35m[Kguint32[m[K bar=canvas_pixel(surface,2,96);
+      |   [01;35m[K^~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:1778:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+ 1778 |   [01;35m[Kgint[m[K width,height;gtk_widget_get_size_request(canvas,&width,&height);
+      |   [01;35m[K^~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:[m[K In function ‘[01m[Krenderer_mask_cache_and_release[m[K’:
+[01m[K../source/app/tests/test-painter-canvas-ui.c:1795:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+ 1795 |   [01;35m[KGimpLayerMask[m[K *mask=gimp_layer_create_mask(target,GIMP_ADD_MASK_WHITE,NULL);
+      |   [01;35m[K^~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:1798:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+ 1798 |   [01;35m[KGtkWidget[m[K *w=tiles(image);
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:1801:44:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+ 1801 |   surface=canvas_snapshot(layer_canvas(w));[01;35m[Kguint32[m[K white=canvas_pixel(surface,28,32);
+      |                                            [01;35m[K^~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:1805:44:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+ 1805 |   surface=canvas_snapshot(layer_canvas(w));[01;35m[Kguint32[m[K black=canvas_pixel(surface,28,32);
+      |                                            [01;35m[K^~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:1808:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+ 1808 |   [01;35m[Kguint[m[K mask_finalized=0;
+      |   [01;35m[K^~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:[m[K In function ‘[01m[Krenderer_drag_gesture_payload_and_cancel[m[K’:
+[01m[K../source/app/tests/test-painter-canvas-ui.c:1842:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+ 1842 |   [01;35m[KLayerDragFixture[m[K f={canvas,NULL,0};
+      |   [01;35m[K^~~~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:1847:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+ 1847 |   [01;35m[KGdkEvent[m[K *motion=gdk_event_new(GDK_MOTION_NOTIFY);
+      |   [01;35m[K^~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:1856:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+ 1856 |   [01;35m[KGtkTargetEntry[m[K target={(gchar *)"application/x-gimp-painter-layer-tile",GTK_TARGET_SAME_APP,0};
+      |   [01;35m[K^~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:1860:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+ 1860 |   [01;35m[KGtkClipboard[m[K *clipboard=gtk_clipboard_get(gdk_atom_intern_static_string("_GIMP_PAINTER_LAYER_DRAG_TEST"));
+      |   [01;35m[K^~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:1862:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+ 1862 |   [01;35m[KGtkSelectionData[m[K *payload=gtk_clipboard_wait_for_contents(clipboard,atom);
+      |   [01;35m[K^~~~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:1864:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+ 1864 |   [01;35m[Kgint[m[K id=0;memcpy(&id,gtk_selection_data_get_data(payload),sizeof(id));
+      |   [01;35m[K^~~~[m[K
+In file included from [01m[K../source/app/tests/test-painter-canvas-ui.c:2187[m[K:
+[01m[K../source/app/tests/test-painter-right-docks.inc:[m[K In function ‘[01m[Kright_docks_settle_home[m[K’:
+[01m[K../source/app/tests/test-painter-right-docks.inc:377:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  377 |   [01;35m[Kgulong[m[K handler = g_signal_connect (clock, "after-paint", G_CALLBACK (right_docks_home_painted), &geometry);
+      |   [01;35m[K^~~~~~[m[K
+[01m[K../source/app/tests/test-painter-right-docks.inc:[m[K In function ‘[01m[Kright_docks_options_coexist[m[K’:
+[01m[K../source/app/tests/test-painter-right-docks.inc:827:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  827 |   [01;35m[KGtkWidget[m[K *toolbar = right_docks_toolbar (&f, 0);
+      |   [01;35m[K^~~~~~~~~[m[K
+In file included from [01m[K../source/app/tests/test-painter-canvas-ui.c:2188[m[K:
+[01m[K../source/app/tests/test-painter-right-docks-width.inc:[m[K In function ‘[01m[Kright_width_begin[m[K’:
+[01m[K../source/app/tests/test-painter-right-docks-width.inc:200:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  200 |   [01;35m[KGtkWidget[m[K *left = GTK_WIDGET (gimp_image_window_get_left_docks (f->image_window));
+      |   [01;35m[K^~~~~~~~~[m[K
+In file included from [01m[K../source/app/tests/test-painter-canvas-ui.c:2189[m[K:
+[01m[K../source/app/tests/test-painter-right-docks-conversion.inc:[m[K In function ‘[01m[Kright_conversion_assert_options[m[K’:
+[01m[K../source/app/tests/test-painter-right-docks-conversion.inc:352:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  352 |   [01;35m[KGtkWidget[m[K *toolbar = right_docks_toolbar (f, 1);
+      |   [01;35m[K^~~~~~~~~[m[K
+In file included from [01m[K../source/app/tests/test-painter-canvas-ui.c:2192[m[K:
+[01m[K../source/app/tests/test-painter-legacy-layout.inc:[m[K In function ‘[01m[Klegacy_tabs_and_collection[m[K’:
+[01m[K../source/app/tests/test-painter-legacy-layout.inc:20:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   20 |   [01;35m[KGimpDisplayShell[m[K *a=new_shell();
+      |   [01;35m[K^~~~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-legacy-layout.inc:24:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   24 |   [01;35m[KGimpDockColumns[m[K *left=gimp_image_window_get_left_docks(w);
+      |   [01;35m[K^~~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-legacy-layout.inc:35:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   35 |   [01;35m[Kconst[m[K gint dimensions[][2]={{1200,800},{600,1300},{1000,1000},{1200,800}};
+      |   [01;35m[K^~~~~[m[K
+[01m[K../source/app/tests/test-painter-legacy-layout.inc:38:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   38 |     [01;35m[Kgint[m[K width=gtk_widget_get_allocated_width(notebook),height=gtk_widget_get_allocated_height(notebook);
+      |     [01;35m[K^~~~[m[K
+[01m[K../source/app/tests/test-painter-legacy-layout.inc:42:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   42 |     [01;35m[Kgint[m[K window_width=gtk_widget_get_allocated_width(GTK_WIDGET(w));
+      |     [01;35m[K^~~~[m[K
+[01m[K../source/app/tests/test-painter-legacy-layout.inc:45:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   45 |     [01;35m[Kgboolean[m[K portrait=window_width<=window_height;
+      |     [01;35m[K^~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-legacy-layout.inc:50:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   50 |   [01;35m[KGimpDisplayShell[m[K *b=new_shell();legacy_settle();
+      |   [01;35m[K^~~~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-legacy-layout.inc:[m[K In function ‘[01m[Klegacy_options_repeated_open[m[K’:
+[01m[K../source/app/tests/test-painter-legacy-layout.inc:79:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   79 |   [01;35m[KGimpDisplayShell[m[K *shell=new_shell();GimpImageWindow *w=gimp_display_shell_get_window(shell);
+      |   [01;35m[K^~~~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-legacy-layout.inc:96:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   96 |   [01;35m[KGtkWidget[m[K *book=NULL;
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-legacy-layout.inc:99:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   99 |   [01;35m[KGtkWidget[m[K *sibling=gimp_dockbook_add_from_dialog_factory(GIMP_DOCKBOOK(book),"gimp-buffer-list");
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-legacy-layout.inc:101:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  101 |   [01;35m[KGtkWidget[m[K *first=gimp_dockbook_add_from_dialog_factory(GIMP_DOCKBOOK(book),"gimp-tool-options");
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-legacy-layout.inc:122:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  122 |   [01;35m[KGimpDock[m[K *old=gimp_dockbook_get_dock(GIMP_DOCKBOOK(book));
+      |   [01;35m[K^~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-legacy-layout.inc:124:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  124 |   [01;35m[KGtkWidget[m[K *placeholder=NULL;
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-legacy-layout.inc:126:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  126 |   [01;35m[KGimpDock[m[K *left_dock=gimp_dockbook_get_dock(GIMP_DOCKBOOK(placeholder));
+      |   [01;35m[K^~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-legacy-layout.inc:129:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  129 |   [01;35m[Kguint[m[K closes=0;
+      |   [01;35m[K^~~~~[m[K
+[01m[K../source/app/tests/test-painter-legacy-layout.inc:140:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  140 |   [01;35m[KGtkWidget[m[K *closed=gimp_window_strategy_show_dockable_dialog(
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-canvas-ui.c:[m[K In function ‘[01m[Kmain[m[K’:
+[01m[K../source/app/tests/test-painter-canvas-ui.c:2310:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+ 2310 |   [01;35m[Kint[m[K result=gimp_core_app_get_exit_status(GIMP_CORE_APP(gimp->app));
+      |   [01;35m[K^~~[m[K
+[01m[K../source/app/tests/test-painter-layer-dispatch.c:[m[K In function ‘[01m[Ktest_dispatch[m[K’:
+[01m[K../source/app/tests/test-painter-layer-dispatch.c:41:2:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   41 |  [01;35m[KGtkWidget[m[K*window=gtk_window_new(GTK_WINDOW_TOPLEVEL);g_object_ref_sink(window);
+      |  [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-layer-dispatch.c:42:2:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   42 |  [01;35m[KGtkWidget[m[K*tiles=gimp_painter_layer_tiles_new(gimp_get_user_context(gimp),image);g_object_ref_sink(tiles);
+      |  [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-layer-dispatch.c:44:2:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   44 |  [01;35m[KGtkWidget[m[K*popup=gimp_painter_layer_tiles_popup(GIMP_PAINTER_LAYER_TILES(tiles),FALSE);g_assert_nonnull(popup);
+      |  [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-layer-dispatch.c:45:2:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   45 |  [01;35m[KGtkWidget[m[K*control=find(popup,"painter-layer-opacity");g_assert_nonnull(control);g_object_ref(control);
+      |  [01;35m[K^~~~~~~~~[m[K
+{"painter-layer-dispatch": {"path": "<native>/build-port/app/tests/painter-layer-dispatch-asan", "sha256": "ab9af9e66e6d3913c74c2cceefe7a231e1cced6fad3c96921cc1d1296998df04"}, "painter-layer-ui": {"path": "<native>/build-port/app/tests/painter-layer-ui-asan", "sha256": "29ba647729e968dc5f9b1b31a1fbc628426c5c57cfa4f2e6bc3e2734d5454130"}, "painter-canvas-ui": {"path": "<native>/build-port/app/tests/painter-canvas-ui-asan", "sha256": "f05e3e23370b9447311b6dea05bd0e031615f01c5d59fa98ee67b005f3d334f6"}}

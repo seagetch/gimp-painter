@@ -1027,3 +1027,23 @@ painter_tempbuf_test = executable('painter-tempbuf',
   override_options: ['cpp_std=c++14'])
 test('painter-tempbuf', painter_tempbuf_test,
   env: ['GEGL_USE_OPENCL=no'], suite: 'app', is_parallel: false, timeout: 60)
+
+# Real C caller / C++ signal dispatch continuation seam; never present in the app link.
+painter_layer_dispatch_wrap = [
+  '-Wl,--wrap=g_weak_ref_get',
+]
+if host_machine.system() == 'linux' and cxx.get_id() in ['gcc', 'clang'] and cxx.has_multi_link_arguments(painter_layer_dispatch_wrap)
+  painter_layer_dispatch_test = executable('painter-layer-dispatch',
+    'test-painter-layer-dispatch.c', 'test-painter-layer-dispatch.cpp', 'tests.c',
+    dependencies: [libapp_dep, appstream], link_with: apptests_links,
+    cpp_args: painter_cpp_args, link_args: painter_layer_dispatch_wrap,
+    override_options: ['c_std=c11', 'cpp_std=c++14'])
+  test('painter-layer-dispatch', painter_layer_dispatch_test,
+    depends: gimp_test_icon_dependencies,
+    env: [
+      'GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+      'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+      'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
+      'UI_TEST=yes',
+    ], suite: 'app', is_parallel: false, timeout: 60)
+endif

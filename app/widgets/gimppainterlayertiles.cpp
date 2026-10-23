@@ -164,6 +164,7 @@ template<class F> void dispatch (gpointer data, F&& f) noexcept {
   auto command = hook->command;
   if (owner) use (owner.get (), [&] (Tiles& s) { f (s, target.get (), command); });
   } catch (const std::exception& error) { g_warning ("Painter layer callback: %s", error.what ()); }
+  catch (...) { g_warning ("Painter layer callback: Unknown C++ exception"); }
 }
 void destroy_hook (gpointer data, GClosure *) { delete static_cast<Hook *> (data); }
 void connect (Tiles& s, std::vector<Connection>& connections, GObject *emitter,

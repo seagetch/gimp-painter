@@ -1,0 +1,63 @@
+{
+  "task": "38.004/layer-signal-dispatch-containment",
+  "status": "PASS_BOUNDED_DISPATCH",
+  "normal": {
+    "dispatch": 4,
+    "layer": 70,
+    "canvas": 107
+  },
+  "sanitizers": [
+    {
+      "name": "painter-layer-dispatch",
+      "returncode": 0,
+      "timeout": 60,
+      "duration": 4.264708511999743,
+      "passed": 4,
+      "executable_sha256": "ab9af9e66e6d3913c74c2cceefe7a231e1cced6fad3c96921cc1d1296998df04"
+    },
+    {
+      "name": "painter-layer-ui",
+      "returncode": 0,
+      "timeout": 180,
+      "duration": 150.77173499399942,
+      "passed": 70,
+      "executable_sha256": "29ba647729e968dc5f9b1b31a1fbc628426c5c57cfa4f2e6bc3e2734d5454130"
+    },
+    {
+      "name": "painter-canvas-ui",
+      "returncode": 0,
+      "timeout": 60,
+      "duration": 51.06922950099943,
+      "passed": 107,
+      "executable_sha256": "f05e3e23370b9447311b6dea05bd0e031615f01c5d59fa98ee67b005f3d334f6"
+    }
+  ],
+  "instrumented_sources": 73,
+  "rtti_only_sources": 37,
+  "leak_detection": false,
+  "source_sha256": {
+    "app/widgets/gimppainterlayertiles.cpp": "8310a8f040007ae90cb9a591461178cc8e666a14ac91c1218c219a3fbaa601e6",
+    "app/widgets/gimppainterlayertiles.h": "3d8a51e76366fda4a3ccb3080c6c9541560711a7b2bf9eae424b071922e314b1",
+    "app/tests/test-painter-layer-dispatch.c": "4a0fac128468ee452a827c29748949cfc5f5c032d9bf143891aa0ec695f5197f",
+    "app/tests/test-painter-layer-dispatch.cpp": "4b33cf28e39ffe371c3e003ecec857deeb3e01cc9034d941e3b00912a61ad9d0",
+    "app/tests/test-painter-layer-dispatch.h": "b3b062c6c656d4388990f175bc260cee6e4c62df44cca67c4b8b782ec48e892c",
+    "app/tests/test-painter-layer-ui.c": "609b34b82668a75d37de18b2c312e52d587bb93f02a91dc279f849bf6f2ed3ec",
+    "app/tests/test-painter-canvas-ui.c": "0af0bf202b59381d726740eadf8ad8f2fc2c01ebf03716a8c05c1fb38e5b872c",
+    "app/tests/test-painter-layer-signal-lifetimes.inc": "ae0cb5882159c7c91f9d496fcbc2b633dbdba9ae3d7a7846aaa8411461cc61b2",
+    "app/display/gimppaintercanvasui.cpp": "3c5077f0ba87982a90fb90f2c0286c3c986cffe0faec3dc8aade7552ef1f9886",
+    "app/display/gimppaintercanvasui.h": "0b53364a49585796b3bb0e48bf50fe120339e5c36465b4d6145b436618e66f42"
+  },
+  "sources_unchanged_since_normal": true,
+  "portrait": "authenticated1080x1920x24;oncanvas enabled in canvas fixture",
+  "limits": [
+    "Original111 callback parent remains open",
+    "Full suite snapshot includes not-yet-committed07.008 test additions, explicitly archived",
+    "Dependencies and remaining app units not fully instrumented",
+    "No historical binary ABI compatibility claim",
+    "GLib returns before the test-only C++ fault; actual GLib C functions are not fault-thrown through"
+  ],
+  "sanitizer_recipe_sha256": {
+    "migration/tests/build_layer_dispatch_sanitizers.py": "3399ddbfa05ba86a93e3a10e366c44d83fa0b62688f5298102a2b66a323a8d81",
+    "migration/tests/painter_sanitizer_scope.py": "a0d355e2b68b01fd058cf53cd2d9881009f844972c275476bcaf399c9e797537"
+  }
+}
