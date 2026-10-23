@@ -1,0 +1,11 @@
+Xvfb verified: 127.0.0.1:96, 1080x1920x24, authenticated accepted, empty authority rejected
+TAP version 14
+# random seed: R02S184ac1c2a9d9670cdb1af71102f20748
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+1..16
+# Start of stroke-undo tests
+**
+ERROR:../source/app/tests/test-painter-stroke-undo.cpp:46:void {anonymous}::roundtrip(): assertion failed (f.state->live == 1): (99 == 1)
+not ok /stroke-undo/roundtrip - ERROR:../source/app/tests/test-painter-stroke-undo.cpp:46:void {anonymous}::roundtrip(): assertion failed (f.state->live == 1): (99 == 1)
+Bail out!

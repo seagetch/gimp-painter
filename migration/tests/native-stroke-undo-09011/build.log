@@ -1,0 +1,20 @@
+ninja: Entering directory `<native-build>'
+[1/27] Generating git-version.h.in.1 with a custom command
+fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+[2/27] Generating symbol file libgimpbase/libgimpbase-3.0.so.0.8.1.p/libgimpbase-3.0.so.0.8.1.symbols
+[3/20] Generating git-version.h.in.2 with a custom command
+fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+[4/20] Generating symbol file libgimpconfig/libgimpconfig-3.0.so.0.8.1.p/libgimpconfig-3.0.so.0.8.1.symbols
+[5/16] Generating git-version.h with a custom command
+fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+[6/10] Generating app/tests/icon-theme-fixture/gimp-test-icon-theme-fixture with a custom command
+{"files": 1191, "manifest_sha256": "2f790ebf02244ef3c023f17f16ab614cbc315ee46d46abd87b7f73d4d5d9be41", "ownership_marker_sha256": "d3ebe76f57bdce73e82df17c3cd89f1a630f42f3c8d72dbfdacd4a000061b8bf", "plan_sha256": "0a16da7a76b5facf2d3d8084793b72e28d32d17c7ff6bf237d164075d4af4b95", "stamp_sha256": "c20e592420d8f1feb8e044c6114f8ed009473d411042806fd6e9aadd50c7ffc9", "status": "verified"}
+[7/10] Compiling C++ object app/paint/libapppaint.a.p/gimpmypaintcoreundo.cpp.o
+[8/10] Linking static target app/paint/libapppaint.a
+[9/10] Compiling C++ object app/tests/painter-stroke-undo.p/test-painter-stroke-undo.cpp.o
+[10/10] Linking target app/tests/painter-stroke-undo
+INFO: autodetecting backend as ninja
+INFO: calculating backend command to run: <locked-dependencies>/root/usr/bin/ninja -C <native-build> -j 4 app/tests/painter-stroke-undo

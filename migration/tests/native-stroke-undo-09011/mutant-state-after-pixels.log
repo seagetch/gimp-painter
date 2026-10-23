@@ -1,0 +1,13 @@
+Xvfb verified: 127.0.0.1:93, 1080x1920x24, authenticated accepted, empty authority rejected
+TAP version 14
+# random seed: R02Sb0f47262190934045a842433eac3d9c0
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+1..16
+# Start of stroke-undo tests
+ok 1 /stroke-undo/roundtrip
+ok 2 /stroke-undo/active-rejection
+**
+ERROR:../source/app/tests/test-painter-stroke-undo.cpp:51:void {anonymous}::update(GimpDrawable*, gint, gint, gint, gint, gpointer): assertion failed (o.f->state->live == o.expected): (2 == 1)
+not ok /stroke-undo/observer-coherence - ERROR:../source/app/tests/test-painter-stroke-undo.cpp:51:void {anonymous}::update(GimpDrawable*, gint, gint, gint, gint, gpointer): assertion failed (o.f->state->live == o.expected): (2 == 1)
+Bail out!

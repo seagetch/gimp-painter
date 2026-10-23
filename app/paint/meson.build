@@ -25,6 +25,7 @@ subdir('painter-smudge')
 
 libapppaint_sources = [
   'gimp-paint.c',
+  'gimpmypaintcoreundo.cpp',
   'gimpairbrush.c',
   'gimpairbrushoptions.c',
   'gimpbrushcore-loops.cc',

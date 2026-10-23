@@ -1243,3 +1243,14 @@ test('painter-prepared-pixels', prepared_pixels_test,
         'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
         'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
         'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 120)
+
+# Typed paired native Undo payload lifecycle; controller integration is separate.
+stroke_undo_test = executable('painter-stroke-undo',
+  'test-painter-stroke-undo.cpp', 'tests.c',
+  dependencies: [libapp_dep, appstream], link_with: apptests_links,
+  cpp_args: painter_cpp_args, override_options: ['c_std=c11', 'cpp_std=c++14'])
+test('painter-stroke-undo', stroke_undo_test,
+  env: ['GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+        'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+        'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
+        'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 120)

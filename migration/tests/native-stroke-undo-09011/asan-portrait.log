@@ -1,0 +1,32 @@
+Xvfb verified: 127.0.0.1:94, 1080x1920x24, authenticated accepted, empty authority rejected
+TAP version 14
+# random seed: R02S99f192784e7e77093b299c7ffc28aab2
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+1..16
+# Start of stroke-undo tests
+ok 1 /stroke-undo/roundtrip
+ok 2 /stroke-undo/active-rejection
+ok 3 /stroke-undo/observer-coherence
+ok 4 /stroke-undo/update-dispose
+ok 5 /stroke-undo/dirty-dispose
+ok 6 /stroke-undo/unpublished-lifetime
+ok 7 /stroke-undo/typed-property
+ok 8 /stroke-undo/expired-owner
+ok 9 /stroke-undo/invalid-factory
+ok 10 /stroke-undo/prepare-dispose
+ok 11 /stroke-undo/finish-reentry
+ok 12 /stroke-undo/guard-once
+ok 13 /stroke-undo/factory-reentry
+# live changed: historical-state=1 live-pixel=1 guarded=1
+# payload changed: historical-state=1 live-pixel=1 guarded=1
+# Undo changed counts payload=1 live=1
+# live changed: historical-state=2 live-pixel=2 guarded=1
+# payload changed: historical-state=2 live-pixel=2 guarded=1
+ok 14 /stroke-undo/buffer-observer-coherence
+# live-dispose changed: historical-state=1 live-pixel=1 guarded=1
+# payload-dispose changed: historical-state=1 live-pixel=1 guarded=1
+ok 15 /stroke-undo/buffer-observer-dispose
+ok 16 /stroke-undo/nested-buffer-freeze
+# End of stroke-undo tests
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
