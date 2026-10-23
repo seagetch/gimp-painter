@@ -1,0 +1,20 @@
+[
+  {
+    "mutation": "skip-points",
+    "returncode": -6,
+    "stdout": "TAP version 14\n# random seed: R02Sa75c9ba743b093e69c49b6a20e1a5867\n# Start of painter tests\n# Start of myb tests\nnot ok /painter/myb/v1-curve-matrix - ERROR:/workspace/shared/v1-curve-matrix/test-resource.cpp:114:void test_v1_curve_matrix(): assertion failed (points.size () == 3): (0 == 3)\nBail out!\n",
+    "stderr": "**\nERROR:/workspace/shared/v1-curve-matrix/test-resource.cpp:114:void test_v1_curve_matrix(): assertion failed (points.size () == 3): (0 == 3)\n"
+  },
+  {
+    "mutation": "omit-y-transform",
+    "returncode": -6,
+    "stdout": "TAP version 14\n# random seed: R02S2bd2e63146d7a1e725471ca2da148637\n# Start of painter tests\n# Start of myb tests\nnot ok /painter/myb/v1-curve-matrix - ERROR:/workspace/shared/v1-curve-matrix/test-resource.cpp:135:void test_v1_curve_matrix(): assertion failed (points[1].y == value.last / 2): (180 == 32)\nBail out!\n",
+    "stderr": "**\nERROR:/workspace/shared/v1-curve-matrix/test-resource.cpp:135:void test_v1_curve_matrix(): assertion failed (points[1].y == value.last / 2): (180 == 32)\n"
+  },
+  {
+    "mutation": "allow-descending",
+    "returncode": -6,
+    "stdout": "TAP version 14\n# random seed: R02S5a48594703e4f3757aeaf7aa513690f0\n# Start of painter tests\n# Start of myb tests\nnot ok /painter/myb/v1-curve-matrix - ERROR:/workspace/shared/v1-curve-matrix/test-resource.cpp:152:void test_v1_curve_matrix(): 'caught' should be TRUE\nBail out!\n",
+    "stderr": "**\nERROR:/workspace/shared/v1-curve-matrix/test-resource.cpp:152:void test_v1_curve_matrix(): 'caught' should be TRUE\n"
+  }
+]

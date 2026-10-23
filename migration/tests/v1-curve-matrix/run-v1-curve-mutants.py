@@ -1,0 +1,8 @@
+import pathlib,json,subprocess,os
+E=pathlib.Path('/workspace/shared/v1-curve-matrix');B=pathlib.Path('/workspace/shared/gimp-clean-aggregate/build');S=B.parent/'source';commands=json.load(open(E/'commands.json'));original=(S/'app/paint/painter-mypaint/resource.cpp').read_text();records=[]
+mutants={'skip-points':('result.push_back ({x, migrate (key, y)});','(void) x; (void) y;'), 'omit-y-transform':('result.push_back ({x, migrate (key, y)});','result.push_back ({x, y});'), 'allow-descending':('if (result[i].x < result[i-1].x) throw std::invalid_argument ("Descending legacy curve");','if (false) throw std::invalid_argument ("Descending legacy curve");')}
+for name,(old,new)in mutants.items():
+ assert original.count(old)==1;D=E/name;D.mkdir(exist_ok=True);(D/'resource.cpp').write_text(original.replace(old,new));cmd=commands[0].copy();cmd[cmd.index('-o')+1]=str(D/'resource.o');cmd=[str(D/'resource.cpp')if x.endswith('/resource.cpp')or x=='../source/app/paint/painter-mypaint/resource.cpp'else x for x in cmd];subprocess.run(cmd,cwd=B,check=True)
+ link=commands[3].copy();link[link.index('-o')+1]=str(D/'probe');link=[str(D/'resource.o')if x==str(E/'normal-resource.cpp.o')else x for x in link];subprocess.run(link,cwd=B,check=True)
+ r=subprocess.run([str(D/'probe'),str(S/'data/painter-mypaint-brushes'),'-p','/painter/myb/v1-curve-matrix'],text=True,capture_output=True,timeout=60);records.append({'mutation':name,'returncode':r.returncode,'stdout':r.stdout,'stderr':r.stderr});assert r.returncode!=0 and ('assertion' in r.stderr or 'Bail out' in r.stdout),(name,r)
+(E/'mutants.json').write_text(json.dumps(records,indent=2)+'\n');print('PASS',len(records),'causal mutants')

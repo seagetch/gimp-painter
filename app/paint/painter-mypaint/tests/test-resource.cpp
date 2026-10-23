@@ -93,6 +93,66 @@ static void test_legacy_curves ()
     g_assert_true (caught);
   }
 }
+// Explicit v1 point syntax, independent of the shipped v2/v3 corpus.
+static void test_v1_curve_matrix ()
+{
+  unsigned curves = 0;
+  std::ostringstream source;
+  source << "version 1\n";
+  for (const auto& setting : painter_mypaint_settings) {
+    source << setting.internal_name << " 0.125";
+    for (const auto& input : painter_mypaint_inputs)
+      source << " | " << input.name << " -1 -0.25 0 0.5 1 0.25";
+    source << '\n';
+  }
+  auto original = Resource::decode (source.str ());
+  auto reopened = Resource::decode (original.encode ());
+  for (const auto& setting : painter_mypaint_settings)
+    for (const auto& input : painter_mypaint_inputs) {
+      for (const auto* resource : {&original, &reopened}) {
+        auto points = resource->curve (setting.index, input.index);
+        g_assert_cmpuint (points.size (), ==, 3);
+        for (unsigned i = 0; i < 3; ++i) {
+          const double xs[] = {-1, 0, 1}, ys[] = {-.25, .5, .25};
+          g_assert_cmpfloat (points[i].x, ==, xs[i]);
+          g_assert_cmpfloat (points[i].y, ==, ys[i]);
+        }
+      }
+      ++curves;
+    }
+  equal_semantics (original, reopened);
+  struct Converted {const char* name; int id; double last;};
+  for (const auto& value : {Converted{"color_hue", BRUSH_CHANGE_COLOR_H, 64},
+                           Converted{"color_saturation", BRUSH_CHANGE_COLOR_HSV_S, 180},
+                           Converted{"color_value", BRUSH_CHANGE_COLOR_V, 180}}) {
+    auto r = Resource::decode (std::string ("version 1\n") + value.name +
+                              " 0 | pressure 0 0 0.5 180 1 360\n");
+    auto copy = Resource::decode (r.encode ());
+    for (const auto* resource : {&r, &copy}) {
+      auto points = resource->curve (value.id, INPUT_PRESSURE);
+      g_assert_cmpuint (points.size (), ==, 3);
+      g_assert_cmpfloat (points[1].x, ==, .5);
+      g_assert_cmpfloat (points[1].y, ==, value.last / 2);
+      g_assert_cmpfloat (points[2].y, ==, value.last);
+    }
+  }
+  // Current Mapping intentionally supports equal-x discontinuities; preserve
+  // that explicit native policy instead of silently inventing strict ordering.
+  auto equal = Resource::decode ("version 1\nhardness 1 | pressure 0 1 0 2 1 3\n");
+  g_assert_cmpuint (equal.curve (BRUSH_HARDNESS, INPUT_PRESSURE).size (), ==, 3);
+  equal_semantics (equal, Resource::decode (equal.encode ()));
+  unsigned rejected = 0;
+  for (const char* bad : {"0", "0 1", "0 1 2", "1 0 0 1", "0 1 2 2 1 3",
+                         "nan 0 1 1", "0 inf 1 1", "0 0 1 -inf", "0 0 1 1e999",
+                         "x 0 1 1", "0 0 1 x", "(0 0), (1 1)",
+                         "0 0 1 1 trailing", "0 0 1 1 2 2 3 3 4 4 5 5 6 6 7 7 8 8"}) {
+    bool caught = false;
+    try { Resource::decode (std::string ("version 1\nhardness 1 | pressure ") + bad + "\n"); }
+    catch (const std::invalid_argument&) { caught = true; }
+    g_assert_true (caught); ++rejected;
+  }
+  g_test_message ("v1 setting/input curves=%u; transformed aliases=3; malformed point lists=%u", curves, rejected);
+}
 static void test_legacy_unknown_input ()
 {
   for (const auto *text : {"version 1\nopaque 1 | future_input 0 0 1 1\n",
@@ -202,6 +262,7 @@ int main (int argc, char **argv)
   g_test_init (&argc, &argv, nullptr); g_assert_cmpint (argc, ==, 2); corpus = argv[1];
   g_test_add_func ("/painter/myb/corpus", test_corpus); g_test_add_func ("/painter/myb/defaults", test_defaults);
   g_test_add_func ("/painter/myb/unknown", test_unknown); g_test_add_func ("/painter/myb/legacy-curves", test_legacy_curves);
+  g_test_add_func ("/painter/myb/v1-curve-matrix", test_v1_curve_matrix);
   g_test_add_func ("/painter/myb/legacy-unknown-input", test_legacy_unknown_input);
   g_test_add_func ("/painter/myb/static-lookup-recreation", test_static_lookup_recreation);
   g_test_add_func ("/painter/myb/mapping", test_mapping); g_test_add_func ("/painter/myb/stream", test_stream);
