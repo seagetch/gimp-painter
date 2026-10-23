@@ -1,0 +1,22 @@
+{
+  "scope": "08.018/preset-dialog-entry: original C registration route, native single descriptor, actual native callback opening",
+  "normal_groups": 4,
+  "sanitizer_groups": 4,
+  "sanitizer_units": 6,
+  "header_probes": 419,
+  "ui_layer_preset_groups": 17,
+  "ui_perspective_groups": 24,
+  "legacy_commit": "afa43fae3e920210146abed514f136fd49f671b5",
+  "baseline": "77bcdf2b7fb8da6e01492bf2522ef541c2ea05ab",
+  "prior_evidence": "migration/tests/adapter-removal/preset-action-group-entry-08018/",
+  "prior_replay": "validate.py without --check-source; immutable source archive retained",
+  "current_proof": "validate.py --check-source includes both no-op and dialog C routes/typed ownership",
+  "limits": [
+    "Native labels, short label and help differ from legacy; original C dialog row remains PARTIAL historical semantics",
+    "No legacy dynamic registry/Interface/binary subclass ABI claim",
+    "Native current duplicate-registration policy retained; NULL is diagnosed before native dereference",
+    "Model callback tests cover disposal during registration and last-owner release, not general post-dispose reinitialization",
+    "Selected sanitizer6 units; dependencies uninstrumented, LSan/vptr off",
+    "UI image uses original C entry + native action activation, not pointer gesture; prior16 gesture cases remain passing"
+  ]
+}

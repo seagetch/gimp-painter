@@ -7,5 +7,6 @@ G_BEGIN_DECLS
 /* Original registry operation was deliberately empty. This does not install
  * native layer-presets Apply/Refresh actions; those have their own setup route. */
 void preset_factory_gui_action_group_entry_point (GimpActionGroup *group);
+void preset_factory_gui_dialogs_actions_entry_point (GimpActionGroup *group);
 G_END_DECLS
 #endif

@@ -45,6 +45,7 @@
 #include "actions/actions.h"
 #include "actions/dockable-commands.h"
 #include "actions/layer-presets-actions.h"
+#include "presets/preset-factory-gui.h"
 #include "menus/menus.h"
 #include "dialogs/preferences-dialog.h"
 #include "gimpcoreapp.h"
@@ -830,9 +831,11 @@ gesture_undo_all (GestureFixture *f,
 /* Capture only after verified native queued click/release and Undo assertions.
  * Resizing is evidence presentation after the interaction, never hit-test setup. */
 static void
-capture_native_preset_result (GestureFixture *f)
+capture_native_preset_scene (GestureFixture *f,
+                             guint operations,
+                             const gchar *environment_name)
 {
-  const gchar *path = g_getenv ("GIMP_TEST_PRESET_SCREENSHOT");
+  const gchar *path = g_getenv (environment_name);
   GimpDisplayShell *shell;
   GtkWidget *window;
   GdkWindow *native;
@@ -844,7 +847,7 @@ capture_native_preset_result (GestureFixture *f)
   if (!path) return;
   shell = gimp_display_get_shell (f->display);
   g_assert_true (gimp_painter_canvas_ui_get_visible (shell));
-  gesture_assert_operations (f, 1);
+  gesture_assert_operations (f, operations);
   window = gtk_widget_get_toplevel (GTK_WIDGET (shell));
   gtk_window_get_size (GTK_WINDOW (window), &old_width, &old_height);
   gtk_window_resize (GTK_WINDOW (window), 1040, 1800);
@@ -875,7 +878,7 @@ native_primary_click (void)
   gesture_button (&f, GDK_BUTTON_RELEASE, 1010, FALSE);
   g_assert_cmpuint (f.release_selections, ==, 1);
   gesture_assert_operations (&f, 1);
-  capture_native_preset_result (&f);
+  capture_native_preset_scene (&f, 1, "GIMP_TEST_PRESET_SCREENSHOT");
   g_assert_true (gimp_image_undo (f.image));
   assert_native_source (f.image, f.source, f.pixels, 1);
   g_assert_true (gimp_image_redo (f.image));
@@ -1463,6 +1466,52 @@ static void filter_storage_reentrant_close (void)
   g_object_unref (entry); g_assert_null (weak_entry);
   gimp_test_run_mainloop_until_idle ();
 }
+static void
+original_dialog_entry_activation (void)
+{
+  GestureFixture f;
+  GimpActionGroup *group;
+  GimpAction *action;
+  GtkWidget *dockable, *view;
+  GimpDockbook *book;
+  gpointer weak_dockable, weak_view;
+
+  gesture_fixture_init (&f);
+  gesture_close (&f);
+  g_assert_null (gimp_dialog_factory_find_widget (
+    gimp_dialog_factory_get_singleton (), "gimp-layer-preset-list"));
+  group = gimp_action_group_new (gimp, "restored-preset-dialog-ui", "Restored", NULL,
+                                f.display, NULL);
+  preset_factory_gui_dialogs_actions_entry_point (group);
+  action = gimp_action_group_get_action (group, "dialogs-layer-presets");
+  g_assert_nonnull (action);
+  /* Invoke the actual registered native string-action callback, not the dialog
+   * factory constructor. The factory lookup below cannot create a missing view. */
+  gimp_action_activate (action);
+  dockable = gimp_dialog_factory_find_widget (gimp_dialog_factory_get_singleton (),
+                                             "gimp-layer-preset-list");
+  g_assert_true (GIMP_IS_DOCKABLE (dockable));
+  view = gtk_bin_get_child (GTK_BIN (dockable));
+  g_assert_true (GIMP_IS_LAYER_PRESET_VIEW (view));
+  wait_native_mapped (dockable);
+  wait_native_mapped (view);
+  g_assert_true (gimp_container_view_get_context (GIMP_CONTAINER_EDITOR (view)->view) ==
+                 gimp->user_context);
+  gesture_assert_operations (&f, 0);
+  capture_native_preset_scene (&f, 0, "GIMP_TEST_PRESET_DIALOG_SCREENSHOT");
+  weak_dockable = dockable; weak_view = view;
+  g_object_add_weak_pointer (G_OBJECT (dockable), &weak_dockable);
+  g_object_add_weak_pointer (G_OBJECT (view), &weak_view);
+  book = gimp_dockable_get_dockbook (GIMP_DOCKABLE (dockable));
+  gtk_notebook_set_current_page (GTK_NOTEBOOK (book),
+    gtk_notebook_page_num (GTK_NOTEBOOK (book), dockable));
+  dockable_close_tab_cmd_callback (NULL, NULL, book);
+  gimp_test_run_mainloop_until_idle ();
+  g_assert_null (weak_dockable); g_assert_null (weak_view);
+  g_object_unref (group);
+  gesture_open (&f);
+  gesture_fixture_clear (&f);
+}
 int main (int argc, char **argv)
 {
   g_test_init (&argc, &argv, NULL); if (!gtk_init_check (&argc, &argv)) return GIMP_EXIT_TEST_SKIPPED;
@@ -1484,6 +1533,7 @@ int main (int argc, char **argv)
   g_test_add_func ("/layer-presets-ui/native-stale-release", native_stale_release);
   g_test_add_func ("/layer-presets-ui/filter-storage-preferences", filter_storage_preferences);
   g_test_add_func ("/layer-presets-ui/filter-storage-reentrant-close", filter_storage_reentrant_close);
+  g_test_add_func ("/layer-presets-ui/original-dialog-entry-activation", original_dialog_entry_activation);
   g_application_run (gimp->app, 0, NULL);
   gint result = gimp_core_app_get_exit_status (GIMP_CORE_APP (gimp->app));
   g_application_quit (G_APPLICATION (gimp->app)); g_clear_object (&gimp->app); return result;

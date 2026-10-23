@@ -37,6 +37,7 @@
 #include "actions.h"
 #include "dialogs-actions.h"
 #include "dialogs-commands.h"
+#include "presets/preset-factory-gui.h"
 
 #include "gimp-intl.h"
 
@@ -431,6 +432,27 @@ dialogs_actions_toolbox_exists (Gimp *gimp)
     }
 
   return toolbox_found;
+}
+
+/* Restore the original public entry without a second preset registry or a
+ * duplicate descriptor. Full native dialogs setup retains its existing order. */
+void
+preset_factory_gui_dialogs_actions_entry_point (GimpActionGroup *group)
+{
+  guint i;
+
+  g_return_if_fail (GIMP_IS_ACTION_GROUP (group));
+  for (i = 0; i < G_N_ELEMENTS (dialogs_dockable_actions); ++i)
+    if (g_str_equal (dialogs_dockable_actions[i].name, "dialogs-layer-presets"))
+      {
+        /* Native action-added observers may release their last group owner. */
+        g_object_ref (group);
+        gimp_action_group_add_string_actions (group, "dialogs-action",
+          &dialogs_dockable_actions[i], 1, dialogs_create_dockable_cmd_callback);
+        g_object_unref (group);
+        return;
+      }
+  g_assert_not_reached ();
 }
 
 void

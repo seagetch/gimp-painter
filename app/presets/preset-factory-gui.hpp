@@ -21,6 +21,8 @@ public:
   void reset () noexcept { owner_.reset (); }
   void register_preset_actions () const
   { preset_factory_gui_action_group_entry_point (get ()); }
+  void register_preset_dialog_actions () const
+  { preset_factory_gui_dialogs_actions_entry_point (get ()); }
 private:
   explicit ActionGroupRef (ObjectRef<GimpActionGroup> value) noexcept : owner_ (std::move (value)) {}
   ObjectRef<GimpActionGroup> owner_;

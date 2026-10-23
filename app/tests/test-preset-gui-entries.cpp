@@ -36,3 +36,10 @@ extern "C" void preset_gui_handle_test (GimpActionGroup *group)
   g_assert_true (rejected);
   g_object_unref (wrong);
 }
+
+extern "C" void preset_gui_dialog_handle_test (GimpActionGroup *group);
+extern "C" void preset_gui_dialog_handle_test (GimpActionGroup *group)
+{
+  auto owner = GimpPainter::ActionGroupRef::retain (group);
+  owner.register_preset_dialog_actions ();
+}
