@@ -36,6 +36,7 @@ extern "C" {
 #include "painter/fair-dispatcher.hpp"
 #include "painter/filter-edge.hpp"
 #include "painter/filter-gauss.hpp"
+#include "painter/filter-sharpen-shadow.hpp"
 #include "painter/filter-raster-kernels.hpp"
 #include "painter/filter-native-kernels.hpp"
 #include "painter/filter-process.hpp"
@@ -308,6 +309,7 @@ struct FilterImpl
     std::shared_ptr<FilterProcedureRequest> procedure;
     std::shared_ptr<FilterProcessOptions> process_options;
     std::shared_ptr<FilterProcedureResult> outcome;
+    std::shared_ptr<FilterSelectionRegion> kernel_region;
   };
   bool publish_definition (GeglBuffer *restore_buffer = nullptr, bool cache_complete = true,
                            PreparedConfiguration *prepared = nullptr)
@@ -375,7 +377,49 @@ struct FilterImpl
                                   std::uint64_t (std::max (request.width, request.height)) * (real ? 128 : 72) + 2 * 1024 * 1024;
         request.peak_bytes = std::size_t (std::min (peak, std::uint64_t (std::numeric_limits<std::size_t>::max ())));
       }
-    if (procedure == "plug-in-edge" && args &&
+    if (procedure == "plug-in-sharpen" && !real && args && args->size () == 4 &&
+        (gimp_drawable_get_base_type (GIMP_DRAWABLE (owner)) == GIMP_RGB || gray ()) &&
+        G_VALUE_HOLDS_INT (args->at (0)) && G_VALUE_HOLDS_INT (args->at (1)) &&
+        G_VALUE_HOLDS_INT (args->at (2)) && G_VALUE_HOLDS_INT (args->at (3)) &&
+        g_value_get_int (args->at (3)) >= 100 - std::numeric_limits<std::int32_t>::max ())
+      {
+        /* Sharpen has no isolated PDB descriptor or wire-protocol route. The
+         * worker sees only this plain captured region, sealed before launch.
+         * A later generation cannot write it until the old worker is gone. */
+        const auto region = std::make_shared<FilterSelectionRegion> ();
+        const SharpenOptions options { g_value_get_int (args->at (3)) };
+        const auto width = request.width, height = request.height;
+        if (width && height && width <= std::size_t (std::numeric_limits<std::int32_t>::max () / 4) &&
+            height <= std::size_t (std::numeric_limits<std::int32_t>::max ()) &&
+            std::uint64_t (width) <= (std::numeric_limits<std::uint64_t>::max () - 4 * 1024 * 1024) / 17 / height)
+          {
+            /* Charge original native snapshot, final mask and private native
+             * staging in both storage classes. Vector input/raw result add two
+             * RGBA rasters; spill uses two files and six bounded transport
+             * chunks. The allowance covers strip/LUT scratch and owner merge
+             * chunks. GEGL's shared cache/swap policy is not a total-RSS bound. */
+            const auto pixels = std::uint64_t (width) * height;
+            const auto owner_bytes = pixels * (gray () ? 5u : 9u);
+            const auto peak = owner_bytes + (spill ?
+              std::uint64_t (FilterScheduler::pixel_budget) * 4 * 6 : pixels * 8) + 2 * 1024 * 1024;
+            request.peak_bytes = std::size_t (std::min (peak,
+              std::uint64_t (std::numeric_limits<std::size_t>::max ())));
+            if (spill) request.peak_spill_bytes = pixels * 8 + owner_bytes;
+            request.process = [width, height, region, options, channel]
+              (const FilterScheduler::Bytes& input, std::atomic<bool>& cancel, FilterScheduler::Bytes& output) {
+                return filter_sharpen_shadow_vector (input, width, height, *region, options,
+                  cancel, output, channel) != FilterSharpenShadowOutcome::cancelled;
+              };
+            if (spill)
+              request.raster_process = [width, height, region, options, channel]
+                (FilterRaster& input, FilterRaster& output, std::atomic<bool>& cancel, const FilterRasterFactory&) {
+                  return filter_sharpen_shadow_raster (input, width, height, *region, options,
+                    cancel, output, channel) != FilterSharpenShadowOutcome::cancelled;
+                };
+            prepared.kernel_region = region;
+          }
+      }
+    else if (procedure == "plug-in-edge" && args &&
         (args->size () == 5 || args->size () == 6))
       {
         const GValue *amount = args->at (3);
@@ -615,6 +659,7 @@ struct FilterImpl
     native_procedure = std::move (prepared.procedure);
     native_process_options = std::move (prepared.process_options);
     native_outcome = std::move (prepared.outcome);
+    native_kernel_region = std::move (prepared.kernel_region);
     native_context.reset ();
     scheduler.set_request (std::move (prepared.request));
     staged.reset ();
@@ -1126,7 +1171,7 @@ struct FilterImpl
              * directory copied into this admitted spool, not a later setting. */
             native_process_options->temporary_directory = preparing_process_directory;
           }
-        if (native_procedure)
+        if (native_procedure || native_kernel_region)
           native_context.capture_input (GIMP_DRAWABLE (owner), offset, count, input.data () + size);
         maximum_read_us = std::max (maximum_read_us, g_get_monotonic_time () - read_started);
         tune_budget (count, g_get_monotonic_time () - read_started, read_budget);
@@ -1134,7 +1179,7 @@ struct FilterImpl
       [&] (std::size_t offset, std::size_t count, const std::uint8_t *pixels) {
         const auto import_started = g_get_monotonic_time ();
         std::vector<std::uint8_t> merged;
-        if (native_procedure)
+        if (native_procedure || native_kernel_region)
           { native_context.merge_chunk (offset, count, pixels, merged); pixels = merged.data (); }
         if (!offset)
           {
@@ -1192,8 +1237,21 @@ struct FilterImpl
         auto completed = std::move (staged);
         publish_buffer (GEGL_BUFFER (completed.get ()), token, true);
       },
-      native_procedure ? FilterScheduler::Gate ([&] {
+      native_procedure || native_kernel_region ? FilterScheduler::Gate ([&] {
         refresh_context_selection ();
+        if (native_kernel_region)
+          {
+            if (!native_context.before_process (GIMP_DRAWABLE (owner), *native_kernel_region, read_budget))
+              return false;
+            /* The pinned kernel has undefined width-one/height-one-or-two
+             * behavior. Reject the actual crop before launching any worker;
+             * an outside selection is instead a valid no-merge completion. */
+            if (native_kernel_region->intersects &&
+                (native_kernel_region->x2 - native_kernel_region->x1 < 2 ||
+                 native_kernel_region->y2 - native_kernel_region->y1 < 3))
+              throw std::invalid_argument ("Unsupported legacy sharpen selection dimensions; definition and cache are retained");
+            return true;
+          }
         if (!native_context.before_process (GIMP_DRAWABLE (owner), *native_procedure, read_budget)) return false;
         /* Retinex's native entry rejects an outside or narrower-than-16 ROI.
          * Validate the captured start rectangle before launching any helper. */
@@ -1201,9 +1259,12 @@ struct FilterImpl
         native_outcome->reset ();
         return true;
       }) : FilterScheduler::Gate (),
-      native_procedure ? FilterScheduler::Gate ([&] {
+      native_procedure || native_kernel_region ? FilterScheduler::Gate ([&] {
         refresh_context_selection ();
-        return native_context.before_import (GIMP_DRAWABLE (owner), native_outcome->disposition (), import_budget);
+        const auto disposition = native_kernel_region ?
+          (native_kernel_region->intersects ? FilterProcedureDisposition::shadow : FilterProcedureDisposition::no_merge) :
+          native_outcome->disposition ();
+        return native_context.before_import (GIMP_DRAWABLE (owner), disposition, import_budget);
       }) : FilterScheduler::Gate ());
     if (scheduler.state () == FilterScheduler::State::closed) return false;
     if (scheduler.state () != FilterScheduler::State::importing) staged.reset ();
@@ -1226,6 +1287,7 @@ struct FilterImpl
   std::shared_ptr<FilterProcedureRequest> native_procedure;
   std::shared_ptr<FilterProcessOptions> native_process_options;
   std::shared_ptr<FilterProcedureResult> native_outcome;
+  std::shared_ptr<FilterSelectionRegion> native_kernel_region;
   FilterOwnerContext native_context;
   std::string preparing_process_directory;
   FairDispatcher::Ticket pending;

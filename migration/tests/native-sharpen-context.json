@@ -1,0 +1,901 @@
+{
+  "format": 1,
+  "status": "passed",
+  "scope": "Native nonlinear U8 RGB/Gray Sharpen owner-context execution and genuine old-XCF materialization",
+  "source_base": "161bfeac62e7891a403e9c6c6b053ce6d26b48e7",
+  "tested_sources": {
+    "app/core/gimpfiltercontext.cpp": "74e037543a5a8783d2c90983a85e687204974ca1ad3d963b6fb20a8a026f2d07",
+    "app/core/gimpfiltercontext.hpp": "462442b7d2cb09c6735793d80382c3d3859cd069f81364a911cf1f31f25f42f0",
+    "app/core/gimpfilterlayer.cpp": "32a556e3c78f355ffd7251d2a8909c04a47d6f270af3ef446b4eaa87198a7f97",
+    "app/painter/meson.build": "bf530b4c8bef523a483e96e2c0ce168d23e6ff5bdd89742d5a7aab8ede8a6caa",
+    "app/painter/tests/run_filter_sharpen_tests.py": "e76ea622887215721b5be61f9ee135f606c98c78abdf2f6ca6684c52c56eb116",
+    "app/tests/meson.build": "9855fb7eead14c47113b47e7c708a4ff1086af494048191bec730d179a1b9305",
+    "app/tests/test-gimp-filter-layer.c": "a43f89ba0de3b185ced84d752a5a147f23c9fc6c652999f4ed64847a2ed7fddf",
+    "app/tests/test-painter-xcf-open.c": "60fcba5cfa1ce065afff64ef104059a73482ef82d721c20dddbffcbe79496170",
+    "app/xcf/painter-xcf-load.cpp": "8d30f8b80061010a79181abce8c5094c02ec74fdc8adca571633df28403b026f",
+    "migration/tests/run_filter_owner_context_fixture_test.py": "a2400944b07a95d84ddbe0786caebe93eff63c76c36fecadb75c96c42c4726c8",
+    "app/painter/filter-sharpen-shadow.cpp": "7afa099e93efeb45b2a43844bfa69cd5b312329a602f51ab48642d7d1f70bacd",
+    "app/painter/filter-sharpen-shadow.hpp": "2d3dc765b85b583e2019c87d1e2f1300b571f7529b2578b81b2924aee59ec966",
+    "app/painter/tests/test-filter-sharpen-shadow.cpp": "c1b0c0025e2c831d5838257f5fbcd7ab2e560e8080d542ab3008ca381847b584",
+    "app/tests/test-filter-sharpen.inc": "b9ac580d5cf115c3cc81cae7596ca64d49338a7624a7e50e8c3db0272d9b0593",
+    "app/tests/test-painter-xcf-sharpen.inc": "d2f4684aeb250a8428aab957020d2a842c0dd7326545d3983587a863f0f5555d",
+    "migration/fixtures/legacy-sharpen-README.md": "b98c4150a904619a1c8688d5fcb9d689103f588188181331b028a52624d92b88",
+    "migration/fixtures/legacy-sharpen-context.tar.manifest.json": "269175d2a3e9e00e437c46afa1b1f2e68f60817dba8c0cacc04e11f455be6df5",
+    "migration/fixtures/legacy-sharpen-context.tar.xz": "d54b50fe358aa5915303f4ea92deb26fec6df90113d7fe4b0b06b2706e5120b5",
+    "migration/fixtures/legacy-sharpen-large.tar.manifest.json": "37c55a760d8c30c2334a6722fa734b6bea590780f12bd40b0c8958bee0b75f15",
+    "migration/fixtures/legacy-sharpen-large.tar.xz": "afd9483df4cff23c4ffb80d594f9468cb8e76cfe20cf04fda38e43f2190d2acd",
+    "migration/tests/legacy-sharpen-capture.c": "1e92343c1e79dfe9ad86ae111b5c22ad2df8acb7b00a7f35266da9b392252eeb",
+    "tools/capture_legacy_sharpen.py": "387ee7c797aebe66a30d4e3461c95b12b64f14a4a56c62631b66ecead8869f34",
+    "tools/check_sharpen_evidence.py": "1334f6a0a0def8afbc8ed7464b00481bfc72947272192dd252b1fbe94c6e48ae",
+    "migration/tests/run_filter_layer_sanitizers.py": "4aef329c4035c6bb440ab0281399b82bea5db2d9f7fddf19daca35b4ac32ecdd",
+    "migration/tests/run_sharpen_context_sanitizers.py": "f047028536f7726b4d44c2113b995ae1d5d19561d6242efad1170301afe0e821",
+    "migration/tests/test_sharpen_context_sanitizers.py": "a7e0e5bb25949a6ee52eb5854401d40c688f1c20d1138250af706f44c5765539"
+  },
+  "default_build": {
+    "result": "passed",
+    "log_sha256": "215a8c699317c13d3be2c83a86d2090f97bb5be0a53453ceb6cbdbc67b980743",
+    "note": "Inherited upstream ignored-return-qualifier warnings; no warning-free build claim"
+  },
+  "standalone_shadow": [
+    {
+      "mode": "normal",
+      "all_passed": true,
+      "source_sha256": {
+        "app/painter/filter-context.cpp": "35e6e934f5a6a826a67e2707baadad084cb2302d87676276894509452aa897fd",
+        "app/painter/filter-context.hpp": "68971d1845cf91ed98aa8dc938a211023b37b7c963a764fec6b56657be8f7d30",
+        "app/painter/filter-edge-kernel-private.hpp": "dbb9852b334b3279a3c9a904eef9db99efe4c1e4f8cd8beeb540ad51a65584b7",
+        "app/painter/filter-edge.hpp": "7e7aa1053ea366f7d0991c718fcee553e2e90b41b06b553a2ef97267bc62afd2",
+        "app/painter/filter-gauss-kernel-private.hpp": "e0cf85d418cd0cf6767bba3350fa6e0770c40731589298927ffd83a6b72e94d4",
+        "app/painter/filter-gauss.hpp": "6942b7e5ec8b181b96cff94d6f38f9a20a7feb34f07c19b03b60d6a4f1c6d675",
+        "app/painter/filter-native-kernels.cpp": "7603a0a5a1c9ed5fa86a01ea24a38a14699e8b5c22baf47a27312e60f004e6b4",
+        "app/painter/filter-native-kernels.hpp": "848a0d458281ab3494a78eac3030a8cddddd3af55ea64082d1b4d7c1b3f94ffb",
+        "app/painter/filter-progress.hpp": "a6c13320a7c76a7f3bd9d80be2ad91fe8324c9b36a04bf2589b7b42a91229ca2",
+        "app/painter/filter-raster-kernels.hpp": "02e55a238cc5d9805376a7d623c2eac3643a4344fe18ca3597bfd61ff3cd0ee7",
+        "app/painter/filter-raster.cpp": "3a110ef1be1dd8fcddf19268bbd1dd1ef39a5f982eadc31a3b654e7368334374",
+        "app/painter/filter-raster.hpp": "3da85d78912475d9e23c3dff5f1ae32aafa46ccd2d7f8be34d6eb03429175a29",
+        "app/painter/filter-sharpen-shadow.cpp": "7afa099e93efeb45b2a43844bfa69cd5b312329a602f51ab48642d7d1f70bacd",
+        "app/painter/filter-sharpen-shadow.hpp": "2d3dc765b85b583e2019c87d1e2f1300b571f7529b2578b81b2924aee59ec966",
+        "app/painter/filter-sharpen.cpp": "6327ea299abd054725e5aea2324cfe02d6c5e4ee4fcd28bb75dc76049b749ab7",
+        "app/painter/filter-sharpen.hpp": "a634868d51e25f991cd8d7e28d80a01d21f421d1eb1a0d60f90f89f7eaf47fd5",
+        "app/painter/gimp-painter-visibility.h": "d832e5442d969ff8439292a61d0143532d85c1b7eaab0b29689c6dc04e9c4532",
+        "app/painter/meson.build": "bf530b4c8bef523a483e96e2c0ce168d23e6ff5bdd89742d5a7aab8ede8a6caa",
+        "app/painter/tests/legacy-sharpen-oracle.c": "043cf96ff8527fbb46f2da21b57d1244f81762aeb46a9557800bbf6711f732f2",
+        "app/painter/tests/legacy-sharpen-oracle.h": "3fe7ae149ca7fe75da56b14d0f6740e3c09af5ca05f5592e67e66f818d9bb03b",
+        "app/painter/tests/run_filter_sharpen_tests.py": "e76ea622887215721b5be61f9ee135f606c98c78abdf2f6ca6684c52c56eb116",
+        "app/painter/tests/test-filter-sharpen-shadow.cpp": "c1b0c0025e2c831d5838257f5fbcd7ab2e560e8080d542ab3008ca381847b584"
+      },
+      "sanitizers": [],
+      "leak_detection": null,
+      "executable_sha256": "5dce8f49e3623009989bf06f570dddd07b8fc424cdf0dec56c27175253a64772",
+      "elapsed_seconds": 5.258577130996855,
+      "stdout": "Full/partial/all-edge native Y/YA/RGB/RGBA source-C/vector/spill shadow cases: 648\nDrawable offsets, extreme coordinates, no-selection/outside distinction and independent raw components passed\nMalformed/overflow/tiny/alias/exact backing validation and declared 64-bit full extents passed\nEvery read/write/flush cancellation and storage-error ordinal: 344 vector/spill cases; zero/kernel progress and transactional aliases passed\n",
+      "stderr": "",
+      "raw_receipt_sha256": "828443449d4dcb9c15b88c8c5e00aeca0939611764ff4eedb84123d5e6403fd8"
+    },
+    {
+      "mode": "sanitize",
+      "all_passed": true,
+      "source_sha256": {
+        "app/painter/filter-context.cpp": "35e6e934f5a6a826a67e2707baadad084cb2302d87676276894509452aa897fd",
+        "app/painter/filter-context.hpp": "68971d1845cf91ed98aa8dc938a211023b37b7c963a764fec6b56657be8f7d30",
+        "app/painter/filter-edge-kernel-private.hpp": "dbb9852b334b3279a3c9a904eef9db99efe4c1e4f8cd8beeb540ad51a65584b7",
+        "app/painter/filter-edge.hpp": "7e7aa1053ea366f7d0991c718fcee553e2e90b41b06b553a2ef97267bc62afd2",
+        "app/painter/filter-gauss-kernel-private.hpp": "e0cf85d418cd0cf6767bba3350fa6e0770c40731589298927ffd83a6b72e94d4",
+        "app/painter/filter-gauss.hpp": "6942b7e5ec8b181b96cff94d6f38f9a20a7feb34f07c19b03b60d6a4f1c6d675",
+        "app/painter/filter-native-kernels.cpp": "7603a0a5a1c9ed5fa86a01ea24a38a14699e8b5c22baf47a27312e60f004e6b4",
+        "app/painter/filter-native-kernels.hpp": "848a0d458281ab3494a78eac3030a8cddddd3af55ea64082d1b4d7c1b3f94ffb",
+        "app/painter/filter-progress.hpp": "a6c13320a7c76a7f3bd9d80be2ad91fe8324c9b36a04bf2589b7b42a91229ca2",
+        "app/painter/filter-raster-kernels.hpp": "02e55a238cc5d9805376a7d623c2eac3643a4344fe18ca3597bfd61ff3cd0ee7",
+        "app/painter/filter-raster.cpp": "3a110ef1be1dd8fcddf19268bbd1dd1ef39a5f982eadc31a3b654e7368334374",
+        "app/painter/filter-raster.hpp": "3da85d78912475d9e23c3dff5f1ae32aafa46ccd2d7f8be34d6eb03429175a29",
+        "app/painter/filter-sharpen-shadow.cpp": "7afa099e93efeb45b2a43844bfa69cd5b312329a602f51ab48642d7d1f70bacd",
+        "app/painter/filter-sharpen-shadow.hpp": "2d3dc765b85b583e2019c87d1e2f1300b571f7529b2578b81b2924aee59ec966",
+        "app/painter/filter-sharpen.cpp": "6327ea299abd054725e5aea2324cfe02d6c5e4ee4fcd28bb75dc76049b749ab7",
+        "app/painter/filter-sharpen.hpp": "a634868d51e25f991cd8d7e28d80a01d21f421d1eb1a0d60f90f89f7eaf47fd5",
+        "app/painter/gimp-painter-visibility.h": "d832e5442d969ff8439292a61d0143532d85c1b7eaab0b29689c6dc04e9c4532",
+        "app/painter/meson.build": "bf530b4c8bef523a483e96e2c0ce168d23e6ff5bdd89742d5a7aab8ede8a6caa",
+        "app/painter/tests/legacy-sharpen-oracle.c": "043cf96ff8527fbb46f2da21b57d1244f81762aeb46a9557800bbf6711f732f2",
+        "app/painter/tests/legacy-sharpen-oracle.h": "3fe7ae149ca7fe75da56b14d0f6740e3c09af5ca05f5592e67e66f818d9bb03b",
+        "app/painter/tests/run_filter_sharpen_tests.py": "e76ea622887215721b5be61f9ee135f606c98c78abdf2f6ca6684c52c56eb116",
+        "app/painter/tests/test-filter-sharpen-shadow.cpp": "c1b0c0025e2c831d5838257f5fbcd7ab2e560e8080d542ab3008ca381847b584"
+      },
+      "sanitizers": [
+        "address",
+        "undefined"
+      ],
+      "leak_detection": false,
+      "executable_sha256": "d65d2768633f97dc942ca8362651612884c2a3e0eca06d8274df782beccd3dbd",
+      "elapsed_seconds": 10.487325068002974,
+      "stdout": "Full/partial/all-edge native Y/YA/RGB/RGBA source-C/vector/spill shadow cases: 648\nDrawable offsets, extreme coordinates, no-selection/outside distinction and independent raw components passed\nMalformed/overflow/tiny/alias/exact backing validation and declared 64-bit full extents passed\nEvery read/write/flush cancellation and storage-error ordinal: 344 vector/spill cases; zero/kernel progress and transactional aliases passed\n",
+      "stderr": "",
+      "raw_receipt_sha256": "f72b3914500cba5f0b37cec4c82f99bf24c5c77211ad91a2c799cbf83bb4c399"
+    }
+  ],
+  "registered": [
+    {
+      "logbase": "sharpen-context-second",
+      "target": "gimp-filter-layer",
+      "result": "OK",
+      "duration_seconds": 21.54223656654358,
+      "tap_pass_count": 11,
+      "skips": [],
+      "crashes": [],
+      "unexpected_diagnostics": [],
+      "raw_log_sha256": "5ceb8e9751e3d39f947f0996b1e0e5d75c433e5a3b4ec25d96e154b355d08523",
+      "expected_negative_diagnostic_counts": {}
+    },
+    {
+      "logbase": "sharpen-xcf-second",
+      "target": "painter-xcf-open",
+      "result": "OK",
+      "duration_seconds": 4.158514738082886,
+      "tap_pass_count": 2,
+      "skips": [],
+      "crashes": [],
+      "unexpected_diagnostics": [],
+      "raw_log_sha256": "c9307755e527a86c2bd19b62845bc10a59f8bb02ebb449d4e02069e37356e222",
+      "expected_negative_diagnostic_counts": {}
+    },
+    {
+      "logbase": "sharpen-context-independent",
+      "target": "painter-filter-raster",
+      "result": "OK",
+      "duration_seconds": 1.213864803314209,
+      "tap_pass_count": 7,
+      "skips": [],
+      "crashes": [],
+      "unexpected_diagnostics": [],
+      "raw_log_sha256": "b3ffe465ce50821468b5f3daacbe3c23d6667a11abfa0268dd4d60f19171a0c2",
+      "expected_negative_diagnostic_counts": {}
+    },
+    {
+      "logbase": "sharpen-context-independent",
+      "target": "painter-filter-raster-kernels",
+      "result": "OK",
+      "duration_seconds": 1.983769416809082,
+      "tap_pass_count": 0,
+      "skips": [],
+      "crashes": [],
+      "unexpected_diagnostics": [],
+      "raw_log_sha256": "b3ffe465ce50821468b5f3daacbe3c23d6667a11abfa0268dd4d60f19171a0c2",
+      "expected_negative_diagnostic_counts": {}
+    },
+    {
+      "logbase": "sharpen-context-independent",
+      "target": "painter-filter-native-kernels",
+      "result": "OK",
+      "duration_seconds": 0.009610652923583984,
+      "tap_pass_count": 6,
+      "skips": [],
+      "crashes": [],
+      "unexpected_diagnostics": [],
+      "raw_log_sha256": "b3ffe465ce50821468b5f3daacbe3c23d6667a11abfa0268dd4d60f19171a0c2",
+      "expected_negative_diagnostic_counts": {}
+    },
+    {
+      "logbase": "sharpen-context-independent",
+      "target": "painter-filter-kernel-progress",
+      "result": "OK",
+      "duration_seconds": 0.10437703132629395,
+      "tap_pass_count": 3,
+      "skips": [],
+      "crashes": [],
+      "unexpected_diagnostics": [],
+      "raw_log_sha256": "b3ffe465ce50821468b5f3daacbe3c23d6667a11abfa0268dd4d60f19171a0c2",
+      "expected_negative_diagnostic_counts": {}
+    },
+    {
+      "logbase": "sharpen-context-independent",
+      "target": "painter-filter-sharpen",
+      "result": "OK",
+      "duration_seconds": 0.24005651473999023,
+      "tap_pass_count": 0,
+      "skips": [],
+      "crashes": [],
+      "unexpected_diagnostics": [],
+      "raw_log_sha256": "b3ffe465ce50821468b5f3daacbe3c23d6667a11abfa0268dd4d60f19171a0c2",
+      "expected_negative_diagnostic_counts": {}
+    },
+    {
+      "logbase": "sharpen-context-independent",
+      "target": "painter-filter-sharpen-shadow",
+      "result": "OK",
+      "duration_seconds": 0.40941882133483887,
+      "tap_pass_count": 0,
+      "skips": [],
+      "crashes": [],
+      "unexpected_diagnostics": [],
+      "raw_log_sha256": "b3ffe465ce50821468b5f3daacbe3c23d6667a11abfa0268dd4d60f19171a0c2",
+      "expected_negative_diagnostic_counts": {}
+    },
+    {
+      "logbase": "sharpen-context-independent",
+      "target": "painter-filter-context",
+      "result": "OK",
+      "duration_seconds": 0.1754758358001709,
+      "tap_pass_count": 0,
+      "skips": [],
+      "crashes": [],
+      "unexpected_diagnostics": [],
+      "raw_log_sha256": "b3ffe465ce50821468b5f3daacbe3c23d6667a11abfa0268dd4d60f19171a0c2",
+      "expected_negative_diagnostic_counts": {}
+    },
+    {
+      "logbase": "sharpen-context-regression",
+      "target": "gimp-filter-layer",
+      "result": "OK",
+      "duration_seconds": 353.47515201568604,
+      "tap_pass_count": 160,
+      "skips": [],
+      "crashes": [],
+      "unexpected_diagnostics": [],
+      "raw_log_sha256": "7dfcab76bce5dd738327deb1d6c6d0de5b6632874f01a09769d1f67ade4005a4",
+      "expected_negative_diagnostic_counts": {}
+    },
+    {
+      "logbase": "sharpen-context-regression",
+      "target": "painter-xcf-open",
+      "result": "OK",
+      "duration_seconds": 3.938499689102173,
+      "tap_pass_count": 16,
+      "skips": [],
+      "crashes": [],
+      "unexpected_diagnostics": [],
+      "raw_log_sha256": "7dfcab76bce5dd738327deb1d6c6d0de5b6632874f01a09769d1f67ade4005a4",
+      "expected_negative_diagnostic_counts": {}
+    },
+    {
+      "logbase": "sharpen-context-regression",
+      "target": "painter-xcf-roundtrip",
+      "result": "OK",
+      "duration_seconds": 85.91431546211243,
+      "tap_pass_count": 49,
+      "skips": [],
+      "crashes": [],
+      "unexpected_diagnostics": [],
+      "raw_log_sha256": "7dfcab76bce5dd738327deb1d6c6d0de5b6632874f01a09769d1f67ade4005a4",
+      "expected_negative_diagnostic_counts": {
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: unknown extension version": 44,
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Unsupported or malformed saved Filter argument; original definition is retained": 13,
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Invalid arguments": 2,
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Duplicate Painter metadata key; original capsule is retained and cannot be safely rewritten": 3,
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: unknown layer kind": 6,
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Missing layer kind": 2,
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert": 218,
+        "GIMP-Warning: XCF Warning: version 0:0 of filter \"gegl:brightness-contrast\" does not have the future-value property. The property was ignored and the filter may not render properly.": 3,
+        "GIMP-Warning: XCF Warning: the \"unavailable effect\" (xxxxxxxxxxxxxxxxxxxxxxxx) filter is not installed. It was discarded.": 1,
+        "GIMP-Warning: XCF Warning: argument \"format\" of filter gegl:color has unsupported type gpointer. It was discarded.": 1,
+        "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Saved Filter arguments exceed the mutable materialization limit; original definition is retained": 2
+      }
+    },
+    {
+      "logbase": "sharpen-context-regression",
+      "target": "painter-filter-scheduler",
+      "result": "OK",
+      "duration_seconds": 3.5606472492218018,
+      "tap_pass_count": 39,
+      "skips": [],
+      "crashes": [],
+      "unexpected_diagnostics": [],
+      "raw_log_sha256": "7dfcab76bce5dd738327deb1d6c6d0de5b6632874f01a09769d1f67ade4005a4",
+      "expected_negative_diagnostic_counts": {}
+    },
+    {
+      "logbase": "sharpen-context-regression",
+      "target": "painter-filter-owner-gates",
+      "result": "OK",
+      "duration_seconds": 0.18075060844421387,
+      "tap_pass_count": 5,
+      "skips": [],
+      "crashes": [],
+      "unexpected_diagnostics": [],
+      "raw_log_sha256": "7dfcab76bce5dd738327deb1d6c6d0de5b6632874f01a09769d1f67ade4005a4",
+      "expected_negative_diagnostic_counts": {}
+    },
+    {
+      "logbase": "sharpen-context-regression",
+      "target": "painter-filter-context-native",
+      "result": "OK",
+      "duration_seconds": 0.004594564437866211,
+      "tap_pass_count": 0,
+      "skips": [],
+      "crashes": [],
+      "unexpected_diagnostics": [],
+      "raw_log_sha256": "7dfcab76bce5dd738327deb1d6c6d0de5b6632874f01a09769d1f67ade4005a4",
+      "expected_negative_diagnostic_counts": {}
+    },
+    {
+      "logbase": "sharpen-context-regression",
+      "target": "painter-filter-import-completion",
+      "result": "OK",
+      "duration_seconds": 0.007930278778076172,
+      "tap_pass_count": 0,
+      "skips": [],
+      "crashes": [],
+      "unexpected_diagnostics": [],
+      "raw_log_sha256": "7dfcab76bce5dd738327deb1d6c6d0de5b6632874f01a09769d1f67ade4005a4",
+      "expected_negative_diagnostic_counts": {}
+    }
+  ],
+  "genuine_legacy": {
+    "commit": "afa43fae3e920210146abed514f136fd49f671b5",
+    "pdb_observations": 114,
+    "live_scenes": 74,
+    "modern_exact_output_comparisons": 116,
+    "old_writer_xcf_files": 20,
+    "malformed_capsule_variants": 11,
+    "archive_sha256": {
+      "legacy-sharpen-context.tar.xz": "d54b50fe358aa5915303f4ea92deb26fec6df90113d7fe4b0b06b2706e5120b5",
+      "legacy-sharpen-context.tar.manifest.json": "269175d2a3e9e00e437c46afa1b1f2e68f60817dba8c0cacc04e11f455be6df5",
+      "legacy-sharpen-large.tar.xz": "afd9483df4cff23c4ffb80d594f9468cb8e76cfe20cf04fda38e43f2190d2acd",
+      "legacy-sharpen-large.tar.manifest.json": "37c55a760d8c30c2334a6722fa734b6bea590780f12bd40b0c8958bee0b75f15"
+    },
+    "limitations": [
+      "Legacy capture retained two startup GValue criticals and missing tag-cache diagnostic, matching historical captures; not a warning-free legacy runtime claim",
+      "Live async PDB return status is unavailable, explicitly recorded as -1; observed pixels, merge count and lifecycle provide evidence",
+      "Legacy rebuild retained GEGL test-gegl-tile failure and two skips; no full legacy-suite pass claimed"
+    ]
+  },
+  "not_covered": [
+    "Full frozen aggregate on this source",
+    "LeakSanitizer or whole-program sanitizer coverage",
+    "Installed-runtime packaging acceptance",
+    "Windows/macOS",
+    "Parameter-editor UI",
+    "Actual Sharpen I/O beyond 4 GiB",
+    "Undefined tiny intersections or undefined signed percentages",
+    "Other precision/encoding domains"
+  ],
+  "native_sanitizers": {
+    "status": "passed",
+    "raw_receipt_sha256": "e56da6cb64d99786041d788a621a2c6ec975340466cd45a8664d06462943035b",
+    "scope": "Sharpen kernels and owner-context capture/merge, FilterLayer, scheduler/raster/spool storage, bindings, Undo/duplication, XCF load/save/typed metadata/compatibility and both C harnesses. Listed RTTI-only units are not sanitizer-instrumented; remaining GIMP/dependencies are uninstrumented. Leak detection is disabled.",
+    "instrumented_sources": [
+      "app/config/gimpgeglconfig.c",
+      "app/config/gimppainterfilterconfig.cpp",
+      "app/core/gimpclonelayer.cpp",
+      "app/core/gimpfiltercontext.cpp",
+      "app/core/gimpfilterlayer.cpp",
+      "app/core/gimpgrouplayer.c",
+      "app/core/gimpimage-duplicate.c",
+      "app/core/gimpimage-undo.c",
+      "app/core/gimpitem.c",
+      "app/painter/binding-store.cpp",
+      "app/painter/filter-context.cpp",
+      "app/painter/filter-native-kernels.cpp",
+      "app/painter/filter-raster-kernels.cpp",
+      "app/painter/filter-raster.cpp",
+      "app/painter/filter-scheduler.cpp",
+      "app/painter/filter-sharpen-shadow.cpp",
+      "app/painter/filter-sharpen.cpp",
+      "app/painter/filter-spool.cpp",
+      "app/painter/gimp-painter-binding.cpp",
+      "app/painter/gimp-painter-error.cpp",
+      "app/tests/test-gimp-filter-layer.c",
+      "app/tests/test-painter-xcf-open.c",
+      "app/xcf/painter-xcf-arguments.cpp",
+      "app/xcf/painter-xcf-compat.cpp",
+      "app/xcf/painter-xcf-load.cpp",
+      "app/xcf/painter-xcf-multipart.cpp",
+      "app/xcf/painter-xcf-preserve.cpp",
+      "app/xcf/painter-xcf-storage.cpp",
+      "app/xcf/painter-xcf-transport.cpp",
+      "app/xcf/xcf-load.c",
+      "app/xcf/xcf-read.c",
+      "app/xcf/xcf-save.c",
+      "app/xcf/xcf-seek.c",
+      "app/xcf/xcf-utils.c",
+      "app/xcf/xcf-write.c",
+      "app/xcf/xcf.c"
+    ],
+    "rtti_compatibility_only_sources": [
+      "app/dialogs/file-save-deferred.cpp",
+      "app/dialogs/painter-layer-dialog.cpp",
+      "app/paint/gimpbrushcore-loops.cc",
+      "app/paint/gimpfillbrush.cpp",
+      "app/paint/gimppaintcore-loops.cc",
+      "app/paint/gimppainterbrushgeometry.cpp",
+      "app/paint/gimppainterpaintgate.cpp",
+      "app/paint/gimppainterpaper-paste.cpp",
+      "app/paint/gimppainterpaper.cpp",
+      "app/paint/gimppaintersmudge.cpp",
+      "app/paint/painter-bounded-fill/search.cpp",
+      "app/paint/painter-mypaint-surface/gegl-surface.cpp",
+      "app/paint/painter-mypaint-surface/gimp-painter-options.cpp",
+      "app/paint/painter-mypaint-surface/gimp-painter-session.cpp",
+      "app/paint/painter-mypaint-surface/gimp-resources.cpp",
+      "app/paint/painter-mypaint-surface/legacy-generated-mask.cpp",
+      "app/paint/painter-mypaint-surface/legacy-mask-transform.cpp",
+      "app/paint/painter-mypaint-surface/paint-core.cpp",
+      "app/paint/painter-mypaint/engine.cpp",
+      "app/paint/painter-mypaint/resource.cpp",
+      "app/painter/filter-edge.cpp",
+      "app/painter/filter-gauss.cpp",
+      "app/painter/filter-lifetime.cpp",
+      "app/painter/filter-process.cpp",
+      "app/painter/filter-wire.cpp",
+      "app/tools/gimpfillbrushtool.cpp",
+      "app/tools/gimppaintermybrushtool.cpp",
+      "app/tools/gimppaintersmudgetool.cpp",
+      "app/tools/gimpperspectiveguidetool.cpp",
+      "app/widgets/gimpcellrendererpopup.cpp",
+      "app/widgets/gimpeditor-cxx.cpp",
+      "app/widgets/gimpmypaintbrushoptions-gui.cpp",
+      "app/widgets/gimppaintercompactoptions.cpp",
+      "app/widgets/gimppainterlayertiles.cpp",
+      "app/widgets/gimppaintermybrusheditor.cpp"
+    ],
+    "unlinked_rtti_discoveries": {
+      "app/painter-filter-worker.cpp": {
+        "reason": "No object for this source is in either selected harness link closure",
+        "compile_outputs": [
+          "/workspace/shared/gimp-profile.0SY6Brlg/build/app/gimp-painter-filter-worker.p/painter-filter-worker.cpp.o"
+        ]
+      }
+    },
+    "sanitizers": [
+      "address",
+      "undefined"
+    ],
+    "leak_detection": false,
+    "elapsed_seconds": 199.769,
+    "seal_scope": "All selected sources/scripts, every repository header/include, and canonical Ninja transitive dependencies, including generated/system headers. New dependencies missing from this precompile seal fail the run.",
+    "ordinary_build_seal_scope": "Canonical replacement inputs, direct link objects, original test executables, compile database/build.ninja and build-local archive containers. Other unmodified thin-archive members and shared libraries are not individually sealed; the caller owns the build lock.",
+    "seals": {
+      "source_seals": {
+        "before_count": 3040,
+        "after_count": 3040,
+        "changed": [],
+        "read_errors": {}
+      },
+      "ordinary_build_seals": {
+        "before_count": 113,
+        "after_count": 113,
+        "changed": [],
+        "read_errors": {}
+      },
+      "executable_seals": {
+        "before_count": 2,
+        "after_count": 2,
+        "changed": [],
+        "read_errors": {}
+      },
+      "fixture_seals": {
+        "before_count": 2260,
+        "after_count": 2260,
+        "changed": [],
+        "read_errors": {}
+      }
+    },
+    "tests": [
+      {
+        "kind": "native",
+        "path": "/gimp-filter-layer/sharpen_integer_native_route",
+        "passed": true,
+        "exit_code": 0,
+        "process_status": "passed",
+        "command_index": 121,
+        "tap": {
+          "plan_counts": [
+            1
+          ],
+          "result_count": 1,
+          "results": [
+            {
+              "status": "ok",
+              "number": 1,
+              "path": "/gimp-filter-layer/sharpen_integer_native_route",
+              "directive": ""
+            }
+          ],
+          "exact_positive_result": true
+        },
+        "executable_sha256": "44c70b16c5ca8aee2ab29b2ede5fc2158f2f8c24c74b0dadd452237d3a18dc43",
+        "elapsed_seconds": 1.807,
+        "stdout_sha256": "3302af3018493eb2b2d129f3bf9307ec3382bd35e6c5ce81f52e53f903ed3dfa",
+        "stderr_sha256": "acde37c7db441d79190d9f86a4724efa4adf5940e6db6d4ccdf21a5308c7637f",
+        "skip_count": 0,
+        "crash_count": 0,
+        "unexpected_diagnostics": [],
+        "expected_negative_diagnostics": []
+      },
+      {
+        "kind": "native",
+        "path": "/gimp-filter-layer/sharpen_invalid_definitions_keep_cache",
+        "passed": true,
+        "exit_code": 0,
+        "process_status": "passed",
+        "command_index": 122,
+        "tap": {
+          "plan_counts": [
+            1
+          ],
+          "result_count": 1,
+          "results": [
+            {
+              "status": "ok",
+              "number": 1,
+              "path": "/gimp-filter-layer/sharpen_invalid_definitions_keep_cache",
+              "directive": ""
+            }
+          ],
+          "exact_positive_result": true
+        },
+        "executable_sha256": "44c70b16c5ca8aee2ab29b2ede5fc2158f2f8c24c74b0dadd452237d3a18dc43",
+        "elapsed_seconds": 1.36,
+        "stdout_sha256": "75334c1674fe0592920e67abb4621e184ca4cbc2d19e7464b54f4169419d0683",
+        "stderr_sha256": "acde37c7db441d79190d9f86a4724efa4adf5940e6db6d4ccdf21a5308c7637f",
+        "skip_count": 0,
+        "crash_count": 0,
+        "unexpected_diagnostics": [],
+        "expected_negative_diagnostics": []
+      },
+      {
+        "kind": "native",
+        "path": "/gimp-filter-layer/sharpen_unsupported_geometry_precision",
+        "passed": true,
+        "exit_code": 0,
+        "process_status": "passed",
+        "command_index": 123,
+        "tap": {
+          "plan_counts": [
+            1
+          ],
+          "result_count": 1,
+          "results": [
+            {
+              "status": "ok",
+              "number": 1,
+              "path": "/gimp-filter-layer/sharpen_unsupported_geometry_precision",
+              "directive": ""
+            }
+          ],
+          "exact_positive_result": true
+        },
+        "executable_sha256": "44c70b16c5ca8aee2ab29b2ede5fc2158f2f8c24c74b0dadd452237d3a18dc43",
+        "elapsed_seconds": 1.425,
+        "stdout_sha256": "d28888fc05edad108f173356dff684afbc1279f181bf9bf7ee5ea6b920af7bd0",
+        "stderr_sha256": "acde37c7db441d79190d9f86a4724efa4adf5940e6db6d4ccdf21a5308c7637f",
+        "skip_count": 0,
+        "crash_count": 0,
+        "unexpected_diagnostics": [],
+        "expected_negative_diagnostics": []
+      },
+      {
+        "kind": "native",
+        "path": "/gimp-filter-layer/sharpen_late_context_routes",
+        "passed": true,
+        "exit_code": 0,
+        "process_status": "passed",
+        "command_index": 124,
+        "tap": {
+          "plan_counts": [
+            1
+          ],
+          "result_count": 1,
+          "results": [
+            {
+              "status": "ok",
+              "number": 1,
+              "path": "/gimp-filter-layer/sharpen_late_context_routes",
+              "directive": ""
+            }
+          ],
+          "exact_positive_result": true
+        },
+        "executable_sha256": "44c70b16c5ca8aee2ab29b2ede5fc2158f2f8c24c74b0dadd452237d3a18dc43",
+        "elapsed_seconds": 6.204,
+        "stdout_sha256": "7035091430ffbc470b1e4f83478bb74ae803113a545d205cf0d8e6af5f291224",
+        "stderr_sha256": "acde37c7db441d79190d9f86a4724efa4adf5940e6db6d4ccdf21a5308c7637f",
+        "skip_count": 0,
+        "crash_count": 0,
+        "unexpected_diagnostics": [],
+        "expected_negative_diagnostics": []
+      },
+      {
+        "kind": "native",
+        "path": "/gimp-filter-layer/sharpen_sealed_context_routes",
+        "passed": true,
+        "exit_code": 0,
+        "process_status": "passed",
+        "command_index": 125,
+        "tap": {
+          "plan_counts": [
+            1
+          ],
+          "result_count": 1,
+          "results": [
+            {
+              "status": "ok",
+              "number": 1,
+              "path": "/gimp-filter-layer/sharpen_sealed_context_routes",
+              "directive": ""
+            }
+          ],
+          "exact_positive_result": true
+        },
+        "executable_sha256": "44c70b16c5ca8aee2ab29b2ede5fc2158f2f8c24c74b0dadd452237d3a18dc43",
+        "elapsed_seconds": 2.206,
+        "stdout_sha256": "49e40bbbd6fd065fe8e86aa465d926c9635b8d827e4e81aeacb42441c53bad73",
+        "stderr_sha256": "acde37c7db441d79190d9f86a4724efa4adf5940e6db6d4ccdf21a5308c7637f",
+        "skip_count": 0,
+        "crash_count": 0,
+        "unexpected_diagnostics": [],
+        "expected_negative_diagnostics": []
+      },
+      {
+        "kind": "native",
+        "path": "/gimp-filter-layer/sharpen_outside_selection_no_merge",
+        "passed": true,
+        "exit_code": 0,
+        "process_status": "passed",
+        "command_index": 126,
+        "tap": {
+          "plan_counts": [
+            1
+          ],
+          "result_count": 1,
+          "results": [
+            {
+              "status": "ok",
+              "number": 1,
+              "path": "/gimp-filter-layer/sharpen_outside_selection_no_merge",
+              "directive": ""
+            }
+          ],
+          "exact_positive_result": true
+        },
+        "executable_sha256": "44c70b16c5ca8aee2ab29b2ede5fc2158f2f8c24c74b0dadd452237d3a18dc43",
+        "elapsed_seconds": 1.956,
+        "stdout_sha256": "cfc0d3d5db5eb67b4eee704229e21ad86c4069f1928fbe3fd2d6002ecf25f02c",
+        "stderr_sha256": "acde37c7db441d79190d9f86a4724efa4adf5940e6db6d4ccdf21a5308c7637f",
+        "skip_count": 0,
+        "crash_count": 0,
+        "unexpected_diagnostics": [],
+        "expected_negative_diagnostics": []
+      },
+      {
+        "kind": "native",
+        "path": "/gimp-filter-layer/sharpen_cancel_replace_lower_close",
+        "passed": true,
+        "exit_code": 0,
+        "process_status": "passed",
+        "command_index": 127,
+        "tap": {
+          "plan_counts": [
+            1
+          ],
+          "result_count": 1,
+          "results": [
+            {
+              "status": "ok",
+              "number": 1,
+              "path": "/gimp-filter-layer/sharpen_cancel_replace_lower_close",
+              "directive": ""
+            }
+          ],
+          "exact_positive_result": true
+        },
+        "executable_sha256": "44c70b16c5ca8aee2ab29b2ede5fc2158f2f8c24c74b0dadd452237d3a18dc43",
+        "elapsed_seconds": 5.395,
+        "stdout_sha256": "31c034980a76682a26cf7db8ef7fe707598d10c5a67d17fc3e8802921cce892b",
+        "stderr_sha256": "acde37c7db441d79190d9f86a4724efa4adf5940e6db6d4ccdf21a5308c7637f",
+        "skip_count": 0,
+        "crash_count": 0,
+        "unexpected_diagnostics": [],
+        "expected_negative_diagnostics": []
+      },
+      {
+        "kind": "native",
+        "path": "/gimp-filter-layer/sharpen_actual_old_live",
+        "passed": true,
+        "exit_code": 0,
+        "process_status": "passed",
+        "command_index": 128,
+        "tap": {
+          "plan_counts": [
+            1
+          ],
+          "result_count": 1,
+          "results": [
+            {
+              "status": "ok",
+              "number": 1,
+              "path": "/gimp-filter-layer/sharpen_actual_old_live",
+              "directive": ""
+            }
+          ],
+          "exact_positive_result": true
+        },
+        "executable_sha256": "44c70b16c5ca8aee2ab29b2ede5fc2158f2f8c24c74b0dadd452237d3a18dc43",
+        "elapsed_seconds": 5.198,
+        "stdout_sha256": "3cc8cf8b0ce8209d43bbf2d6529b943b651a8c7802b523f270d7cd10590987b4",
+        "stderr_sha256": "acde37c7db441d79190d9f86a4724efa4adf5940e6db6d4ccdf21a5308c7637f",
+        "skip_count": 0,
+        "crash_count": 0,
+        "unexpected_diagnostics": [],
+        "expected_negative_diagnostics": []
+      },
+      {
+        "kind": "native",
+        "path": "/gimp-filter-layer/sharpen_native_profile_bytes",
+        "passed": true,
+        "exit_code": 0,
+        "process_status": "passed",
+        "command_index": 129,
+        "tap": {
+          "plan_counts": [
+            1
+          ],
+          "result_count": 1,
+          "results": [
+            {
+              "status": "ok",
+              "number": 1,
+              "path": "/gimp-filter-layer/sharpen_native_profile_bytes",
+              "directive": ""
+            }
+          ],
+          "exact_positive_result": true
+        },
+        "executable_sha256": "44c70b16c5ca8aee2ab29b2ede5fc2158f2f8c24c74b0dadd452237d3a18dc43",
+        "elapsed_seconds": 3.02,
+        "stdout_sha256": "a368f34ecf3b2560199aaae855abe38bc2b5e4c1b7b4215bc9722d81792bbe7c",
+        "stderr_sha256": "acde37c7db441d79190d9f86a4724efa4adf5940e6db6d4ccdf21a5308c7637f",
+        "skip_count": 0,
+        "crash_count": 0,
+        "unexpected_diagnostics": [],
+        "expected_negative_diagnostics": []
+      },
+      {
+        "kind": "native",
+        "path": "/gimp-filter-layer/sharpen_admission_preserves_cache",
+        "passed": true,
+        "exit_code": 0,
+        "process_status": "passed",
+        "command_index": 130,
+        "tap": {
+          "plan_counts": [
+            1
+          ],
+          "result_count": 1,
+          "results": [
+            {
+              "status": "ok",
+              "number": 1,
+              "path": "/gimp-filter-layer/sharpen_admission_preserves_cache",
+              "directive": ""
+            }
+          ],
+          "exact_positive_result": true
+        },
+        "executable_sha256": "44c70b16c5ca8aee2ab29b2ede5fc2158f2f8c24c74b0dadd452237d3a18dc43",
+        "elapsed_seconds": 2.12,
+        "stdout_sha256": "f75fb00fd9738aafd9528a6be5b01bf165efc2f7fe845101f3cecbc6d197645d",
+        "stderr_sha256": "acde37c7db441d79190d9f86a4724efa4adf5940e6db6d4ccdf21a5308c7637f",
+        "skip_count": 0,
+        "crash_count": 0,
+        "unexpected_diagnostics": [],
+        "expected_negative_diagnostics": []
+      },
+      {
+        "kind": "native",
+        "path": "/gimp-filter-layer/sharpen_partial_import_lifecycle",
+        "passed": true,
+        "exit_code": 0,
+        "process_status": "passed",
+        "command_index": 131,
+        "tap": {
+          "plan_counts": [
+            1
+          ],
+          "result_count": 1,
+          "results": [
+            {
+              "status": "ok",
+              "number": 1,
+              "path": "/gimp-filter-layer/sharpen_partial_import_lifecycle",
+              "directive": ""
+            }
+          ],
+          "exact_positive_result": true
+        },
+        "executable_sha256": "44c70b16c5ca8aee2ab29b2ede5fc2158f2f8c24c74b0dadd452237d3a18dc43",
+        "elapsed_seconds": 7.599,
+        "stdout_sha256": "4d044f1e3ef83437b59c25ebecdcd130839a9927306a6d72c33c21e35bf3277b",
+        "stderr_sha256": "acde37c7db441d79190d9f86a4724efa4adf5940e6db6d4ccdf21a5308c7637f",
+        "skip_count": 0,
+        "crash_count": 0,
+        "unexpected_diagnostics": [],
+        "expected_negative_diagnostics": []
+      },
+      {
+        "kind": "xcf",
+        "path": "/painter-xcf-open/sharpen_old_writer_roundtrip",
+        "passed": true,
+        "exit_code": 0,
+        "process_status": "passed",
+        "command_index": 132,
+        "tap": {
+          "plan_counts": [
+            1
+          ],
+          "result_count": 1,
+          "results": [
+            {
+              "status": "ok",
+              "number": 1,
+              "path": "/painter-xcf-open/sharpen_old_writer_roundtrip",
+              "directive": ""
+            }
+          ],
+          "exact_positive_result": true
+        },
+        "executable_sha256": "202fb7c8c6a0f10d9df89788192812df15c76124b30678169cbf6c97ffbfa7fe",
+        "elapsed_seconds": 2.74,
+        "stdout_sha256": "9d6d0d02539ab6485c7e83911a39bcf2822c4981263028307f20d70e0b123a2a",
+        "stderr_sha256": "acde37c7db441d79190d9f86a4724efa4adf5940e6db6d4ccdf21a5308c7637f",
+        "skip_count": 0,
+        "crash_count": 0,
+        "unexpected_diagnostics": [],
+        "expected_negative_diagnostics": []
+      },
+      {
+        "kind": "xcf",
+        "path": "/painter-xcf-open/sharpen_malformed_writer_capsules",
+        "passed": true,
+        "exit_code": 0,
+        "process_status": "passed",
+        "command_index": 133,
+        "tap": {
+          "plan_counts": [
+            1
+          ],
+          "result_count": 1,
+          "results": [
+            {
+              "status": "ok",
+              "number": 1,
+              "path": "/painter-xcf-open/sharpen_malformed_writer_capsules",
+              "directive": ""
+            }
+          ],
+          "exact_positive_result": true
+        },
+        "executable_sha256": "202fb7c8c6a0f10d9df89788192812df15c76124b30678169cbf6c97ffbfa7fe",
+        "elapsed_seconds": 1.379,
+        "stdout_sha256": "bab4c5300fbaa1b18cb5f6de64fa2d71b6d96df4406fd097d3a57834b471533a",
+        "stderr_sha256": "acde37c7db441d79190d9f86a4724efa4adf5940e6db6d4ccdf21a5308c7637f",
+        "skip_count": 0,
+        "crash_count": 0,
+        "unexpected_diagnostics": [],
+        "expected_negative_diagnostics": []
+      }
+    ],
+    "stderr_note": "Expected .dummy plug-in filtering/startup text is retained in raw receipts; no sanitizer or unexpected runtime diagnostics"
+  },
+  "runner_regression": {
+    "status": "passed",
+    "tests_run": 14,
+    "failures": 0,
+    "errors": 0,
+    "runner_sha256": "f047028536f7726b4d44c2113b995ae1d5d19561d6242efad1170301afe0e821",
+    "check_script_sha256": "a7e0e5bb25949a6ee52eb5854401d40c688f1c20d1138250af706f44c5765539",
+    "scope": "Pure-Python syntax/helper/report checks with mocked subprocesses; no compiler, linker, display or GIMP/native harness execution",
+    "instrumented_translation_units": 36
+  },
+  "retained_attempts": [
+    {
+      "status": "failed",
+      "error": "Expected one canonical production/harness command for app/paint/gimppainterpaper.cpp; found []",
+      "commands_executed": 0,
+      "tests_run": 0,
+      "raw_receipt_sha256": "c344f51f2dcb1237fbab5075ef0ae4c86062b407ce152e71cdba86cb385d40da",
+      "resolution": "Canonical selection now follows actual harness link/archive member closures, including nested libpainter production libraries and excluding the standalone worker executable;14 portable regression checks and native retry passed"
+    }
+  ],
+  "review": {
+    "result": "passed",
+    "report_sha256": "18dc8426280466e5b360f6d7607fb86a54c89819a8559ee0880be0362e35cb4a"
+  }
+}

@@ -34,6 +34,12 @@
 static Gimp *gimp;
 static gchar *fixture_path (const gchar *name)
 {
+  if (g_str_has_prefix (name, "legacy-sharpen-context/"))
+    {
+      const gchar *root = g_getenv ("GIMP_PAINTER_SHARPEN_FIXTURES");
+      g_assert_nonnull (root); /* Registered wrapper verifies/materializes evidence. */
+      return g_build_filename (root, name + strlen ("legacy-sharpen-context/"), NULL);
+    }
   return g_build_filename (g_getenv ("GIMP_TESTING_ABS_TOP_SRCDIR"), "migration", "fixtures", name, NULL);
 }
 static GimpImage *open_file (GFile *file, const gchar *procedure, GimpProgress *progress, GError **error)
@@ -460,6 +466,8 @@ static void unknown_extension_preserves_destination (void)
   g_assert_cmpmem (contents, size, sentinel, sizeof sentinel);
   g_free (contents); g_file_delete (file, NULL, NULL); g_object_unref (file); g_object_unref (image);
 }
+#include "test-painter-xcf-sharpen.inc"
+
 int main (int argc, char **argv)
 {
   int result;
@@ -469,6 +477,7 @@ int main (int argc, char **argv)
 #define ADD(name) g_test_add_func ("/painter-xcf-open/" #name, name)
   ADD (absent_mode_historical_default); ADD (unknown_extension_preserves_destination); ADD (dual_valid_short_extension); ADD (explicit_provenance_resolves_ambiguity); ADD (ambiguity_and_failures); ADD (unresolved_and_length_recovery); ADD (large_source);
   ADD (ordinary); ADD (ordinary_projection_exact_gate); ADD (clones); ADD (filter_recovery); ADD (standard); ADD (recovery_handlers); ADD (cancel);
+  ADD (sharpen_old_writer_roundtrip); ADD (sharpen_malformed_writer_capsules);
   result = g_test_run ();
   gimp_test_utils_set_gimp3_directory ("GIMP_TESTING_ABS_TOP_BUILDDIR", "app/tests/gimpdir-output");
   gimp_exit (gimp, TRUE); return result;

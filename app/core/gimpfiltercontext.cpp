@@ -188,7 +188,7 @@ bool FilterOwnerContext::bounds_quantum (GimpDrawable *drawable, std::size_t bud
 }
 
 bool FilterOwnerContext::before_process (GimpDrawable *drawable,
-                                        FilterProcedureRequest& request,
+                                        FilterSelectionRegion& region,
                                         std::size_t budget)
 {
   if (!input_ || input_cursor_ != std::size_t (width_) * height_)
@@ -196,8 +196,16 @@ bool FilterOwnerContext::before_process (GimpDrawable *drawable,
   if (!bounds_quantum (drawable, budget)) return false;
   if (!filter_selection_region (bounds_, gimp_item_get_offset_x (GIMP_ITEM (drawable)),
                                  gimp_item_get_offset_y (GIMP_ITEM (drawable)), width_, height_,
-                                 request.start_region))
+                                 region))
     throw std::runtime_error ("Invalid Filter start selection bounds");
+  return !selection_dirty_;
+}
+
+bool FilterOwnerContext::before_process (GimpDrawable *drawable,
+                                        FilterProcedureRequest& request,
+                                        std::size_t budget)
+{
+  if (!before_process (drawable, request.start_region, budget)) return false;
   request.raw_shadow = true;
   auto image = image_for (drawable);
   double rgba[4];
