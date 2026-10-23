@@ -1,0 +1,63 @@
+{
+  "local_status": "PASS",
+  "foundation_cases": 69,
+  "abi_result": "PLATFORM_ABI_PASS pointer=8 long=8 object=24 value=24 error=16",
+  "exports": {
+    "names": [
+      "_IO_stdin_used",
+      "_ZTISt13runtime_error",
+      "_ZTISt9exception",
+      "_ZTSSt13runtime_error",
+      "_ZTSSt9exception",
+      "__bss_start",
+      "__data_start",
+      "_edata",
+      "_end",
+      "_start",
+      "data_start",
+      "main",
+      "painter_platform_cpp_layout",
+      "painter_platform_export_control",
+      "painter_platform_roundtrip"
+    ],
+    "private_cpp_exports": []
+  },
+  "negative_export_control": [
+    "GimpPainter::platform_export_leak_control()"
+  ],
+  "source_sha256": {
+    "app/painter/binding-store.cpp": "c69d65c22f26e6be8f6df69765cd30f7bbbd32b46b0eb847e9f6524b41c2b557",
+    "app/painter/binding-store.hpp": "c67deb0ccf33a13a5ba3ab3f50bdbb2ef8931f481acf62a9315d778388c90262",
+    "app/painter/boundary.hpp": "d97a8b6e27a09fe69c7c1d6620361c3daaa1e5cf1bad8d2eb2d4b9a9faed6d2e",
+    "app/painter/connection.hpp": "3f81d5889f046a12beae6f2c8975be2007742e4d8f99e8fc44877fc809d6e898",
+    "app/painter/gimp-painter-binding.cpp": "22aca4f9e467e16b86f2cbeec431d7d069fc552c98fad985db770720fcf876fd",
+    "app/painter/gimp-painter-binding.h": "d0269c7b9dd84535d95f714e2227c280030cc922ba967823c00e98daa77d8c04",
+    "app/painter/gimp-painter-error.cpp": "14bc510a2c3721894854b871402c7c95caa94d6559ab79731c7eb4ee76d83cf3",
+    "app/painter/gimp-painter-error.h": "b3c1e3550f83abd54726e752d069f0a591b105bcea249239277d2005ccf61465",
+    "app/painter/gimp-painter-visibility.h": "d832e5442d969ff8439292a61d0143532d85c1b7eaab0b29689c6dc04e9c4532",
+    "app/painter/object-ref.hpp": "5a8cc92afc56f652fd47c727269d71d9d97c4358015f13fe9c4764371fcb7c3a",
+    "app/painter/resources.hpp": "0a337c7467ed382dc087a1fb611fa9639981ae2879fb36a0642833d787143bfa",
+    "app/painter/source.hpp": "88bb8935ba132345ddcb379aaee56340afc3b56ff3c463f0b4a0c1c5e1c5f418",
+    "app/painter/tests/platform-abi.c": "f8679726aa2a2003be9b65df8ef21ee73d957e9dfe8e21956c18c1c1b49f7117",
+    "app/painter/tests/platform-abi.cpp": "a436318a15b057ca2c8c04164c007cb0809f812c5b2500d45d2b349a8d32af53",
+    "app/painter/tests/platform-abi.h": "9d32d7310f819e45d9bde03e9b3e2e8dc0130d2b5adaee40778392a3164a72d2",
+    "app/painter/tests/test-c-api.c": "609f376f12c4ef43aecd21b00a50cc8567b9f8827aef36d0b48848a89c6e0c7d",
+    "app/painter/tests/test-c-api.h": "e9b3208f78777d72e27b321d53203c770900409718bdd0b7b7159fd86b28ed13",
+    "app/painter/tests/test-fixture-traits.hpp": "354a1608ae71a4c51377127df6e0934e6c987b55677c06dfc67df391dedd669e",
+    "app/painter/tests/test-fixture.c": "a10eab637aecab527de0c1058fd805219c5668531d6f45075a20733cbedbfb84",
+    "app/painter/tests/test-fixture.h": "947447f665e88b6000b9e1cf4bf51eaa186b38653ac9cc319d0b0814b10fa454",
+    "app/painter/tests/test-foundation.cpp": "615d03addbd41aa9afaf0203cd8083eea74b2584bc308d0baf6421e81580f50f",
+    "app/painter/tests/test-gobject.cpp": "edd8cec84a2884795ec8e62327033edd8de77aa1b892c559f28553da177a723f",
+    "app/painter/tests/test-hierarchy.c": "e7664beef325143ff2c569c03ba3b677d844662cabe92ad5664828dee79a12f3",
+    "app/painter/tests/test-hierarchy.cpp": "d835265d890295a0c486c20d846d4fb42070a826f752f7a25d8b3df1b5ba4779",
+    "app/painter/tests/test-hierarchy.h": "53f455eba0bcd15ed3b547d5e470e33c06448fc9f811456cd992a10eb854f74d",
+    "app/painter/tests/test-reentry.cpp": "f1c2ff06baeaa16faf7ccfad43b88c638f55bbd5cb88a5e585cf7d951a2d6e0c",
+    "app/painter/tests/test-registry.hpp": "4bd2aff639d1cef2459e41c4039a44d728634fe38ef5d4653e4bb08938b3b0e4",
+    "app/painter/tests/test-resources.cpp": "9bf8ffaa683e5ed488946e5cdcd2300ed8bab46a250ed7328263d630da22faf8",
+    "tools/test_painter_foundation.py": "32bcb2f7b5e06b04737ba59a9a98763560de0233691bb22838d006f0da740c4d",
+    "tools/test_painter_platform_link.py": "5f6927efd96c5b6a6d4025b2f04c511ae001b58aeb94525ba5c90c9206678fa4"
+  },
+  "report_sha256": "6946147f3104d0a70bfeb101e9b8564607c9d515dce7d59887410906c1de0d64",
+  "recorder_tests": ".......\n----------------------------------------------------------------------\nRan 7 tests in 1.021s\n\nOK\n",
+  "scope": "Native Linux verification after explicit c++filt -n policy; Windows/macOS require actual matrix rerun."
+}

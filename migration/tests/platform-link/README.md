@@ -65,3 +65,18 @@ repository blobs exactly. All30 Windows source hashes match the exact LF-to-CRLF
 checkout transformation; these are recorded individually, not described as raw
 hash equality. The bounded details are in ci-attempt-1.json. No Windows/macOS PASS
 is inferred from the correction; a new native matrix run is required.
+
+## Explicit native demangler policy
+
+[Run 38027444418](https://github.com/seagetch/gimp-painter/actions/runs/38027444418)
+passes every gate on Linux and Windows. Both macOS targets now run all 69
+foundation cases and the ABI fixture, then reject the intentional export-leak
+control. The raw Mach-O table contains the expected C++ symbol, but the recorder
+already removed its object prefix and Darwin's c++filt removed another underscore.
+The recorder now passes `-n` explicitly, as documented by
+[LLVM](https://releases.llvm.org/20.1.0/docs/CommandGuide/llvm-cxxfilt.html),
+so normalized Itanium names retain their required underscore. The existing
+positive and deliberate negative compiled binaries test this behavior on each
+actual platform. No macOS success is inferred from this source correction.
+The full four report snapshots and their checkout transformations were verified;
+`ci-attempt-2.json` records the bounded result and exact failing export output.
