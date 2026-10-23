@@ -1360,15 +1360,17 @@ Old Edge/string-reader runtime remains **SKIPPED/unverified**. No parent,
 whole-section, aggregate, package, release or full-port acceptance is implied.
 
 
-## 25.009 fractional-pan difference: source-only regression
+## 25.009 fractional-pan difference: component A passed, strict B pending
 
-**25.009/fractional-pan-difference is TODO / SOURCE-ONLY.** This bounded
-extension was prepared from public source
-`7e6fddd20ec134a626c3bcb5cc1bac1bf7c2f7cf`, tree
-`da9fe0c1cf154feb0d9cc3b40db272c25e43cc92`. It records the existing modern
+**25.009/fractional-pan-difference remains TODO.** Its bounded component run
+passed on exact public source A
+`8e92569df4841a458202de2dd89ed6db1cb4c974`, tree
+`25bec9e511414ea7dca1e8fd7ff9740d089a7b31`. The extension was prepared from
+`7e6fddd20ec134a626c3bcb5cc1bac1bf7c2f7cf` and records the existing modern
 integer-device pan behavior and its difference from the original source.
-There is **no production behavior change**, no native execution claim, and
-no user-approved replacement of historical compatibility acceptance. Parent
+There is **no production behavior change** and no user-approved replacement
+of historical compatibility acceptance. Exact historical compatibility stays
+open; the separate strict gate on evidence-only descendant B is pending. Parent
 **25.009 and 25.009/drag-zoom-scroll remain TODO with their exact original
 criteria and dependencies**. Their old-operation comparison requirement is
 not redefined as modern-only acceptance by this regression.
@@ -1445,27 +1447,111 @@ fractional sender, independent affine helpers and normal navigation lifecycle:
 
 One distinctive `fractional-pan-difference` diagnostic records observed and
 expected offsets, quantized-anchor delta and raw drift after normal release.
-A later native run must show it exactly once in both normal and focused event
-logs. There is no new GTest registration, matrix, capture or generic validator.
+The exact-A run shows it exactly once in each normal and focused event log.
+There is no new GTest registration, matrix, capture or generic validator.
 The existing 31 event registrations, preceding cases and 38 draw assertions
 remain unchanged. The additional case contributes one main drag, one
 pan-geometry invocation and three landmark comparisons, without an additional
 stationary reentry or primary probe pair. The frozen historical inventory is
 still 16 main drags / 16 reentries / 32 pan-geometry calls / six primary pairs;
-current source adds this separately identified case, rather than rewriting
-those historical counts as though they had already been executed.
+exact A adds and executes this separately identified case, without rewriting
+those historical counts or extending their historical acceptance.
 
-`transformed-drag-cases.json`, its validator, retained fixtures, component and
-acceptance receipts/archives remain immutable historical evidence. Existing
-lightweight static checks passed: five transformed-drag controls, three
-navigation/zoom fixture checks, 16 retained rotation checks, `check_tasks.py`
-and `git diff --check`. They verify their retained scope and do not execute
-or accept this new C case. Exact-source publication and the unchanged bounded
-native gates (31 event + four UI + six pure normal cases, 31 focused event
-cases with the same nine C units) remain pending. The separate unchanged
-strict Clone 226 normal / 62 focused gate must be rerun for its new source
-checkpoint; its current receipt is stale after this source edit and is not
-refreshed here. No old-runtime, full legacy pan/radial, physical input, clamp
-focus/overshoot/reversal, raster/overlay, platform, parent, aggregate, package,
-release or whole-port acceptance is claimed. Both historical old GUI teardown
-`command_exit=-11` outcomes remain unchanged.
+`transformed-drag-cases.json`, its validator, retained fixtures, earlier
+component and acceptance receipts/archives remain immutable historical
+evidence. Their SOURCE-ONLY labels and finite counts keep their original
+pre-execution meaning; the new result is recorded separately below.
+
+### Exact public A: bounded execution and sealed evidence
+
+`component-run-001` ran on 2026-10-17 from 14:29:43 to 14:31:45 UTC. All four
+commands exited 0: incremental default build, focused sanitizer builder,
+registered no-rebuild normal targets and the focused event binary. **41 normal
+cases (31 event, four UI, six pure) and 31 focused event cases passed**, in the
+source-defined order within each target, with no skipped/failing TAP or
+sanitizer failure diagnostics. All 31 event registrations are retained; none
+is added. The event source SHA-256 is
+`6b2e3fc0b7aa05e09e51ac013cf5469ca723f61515910462035f2c5ed5a0445b`.
+
+Both executions observe offsets **(-236,-31)**, quantized-anchor delta
+**(-2.8421709430404007e-14,-2.8421709430404007e-14)** against (0,0), and raw
+image drift **(0.47993821019281313,-0.0277565399148898)** against the independent
+expectation **(0.4799382101927967,-0.027756539914874517)** at absolute 1e-8.
+The unique marker follows the normal lifecycle and callback assertions. This
+accepts one modern integer-device difference case, not exact historical pan
+quantization or an old/current applied-render comparison.
+
+Each execution retains the actual **849 x 450** viewport, **17 main drags,
+16 stationary reentries, six precise primary press/release pairs, 33 pan-helper
+calls and 99 forward landmark comparisons**. The new case contributes one
+drag, one helper call and three landmarks. The 72 interior-axis rows are the
+previous 68 plus four; 39 synchronized cleanup rows are the previous 38 plus
+one. The 38 actual GTK draw snapshots, 34 draw CTMs, 51 raster-marker rows,
+18 overlay differences, three anchors, 96 key sends with 64 press/32 release
+callbacks, and 24 boundary observations/20 signed steps remain retained.
+Source assertion counts are not additional log rows or GTest registrations.
+The optional PNG hook stayed off; no new screenshot or GUI smoke is included.
+
+The original receipt SHA-256 is
+`459c289f3c2cc0d61c4e5f010731d3ff669fb6264dae8ad4c7748df00abf4f61`.
+All **33 receipt-listed files plus receipt.json (34 original files)** were
+hash-checked and byte-compared with the full public archive
+`component-run-001-passed-public.tar.xz`, **22,350,520 bytes**, SHA-256
+`601fbcc75302cf9b076fb408a0d7f902b7316b3d2110c6903618ce2b8df11cf0`.
+`migration/tests/fractional-pan-component-evidence.tar.xz` contains **23
+unchanged original nonbinary files plus one compact manifest**. It preserves
+the complete original receipt, and binds exact size/hash for the eleven
+omitted sanitizer artifacts (nine objects, one executable, one private thin
+archive), all retained in the separate full archive. Deterministic repacking
+reproduces identical bytes. This compact package is not a standalone rebuild
+package or strict Clone evidence. The concise publication summary is
+`migration/tests/fractional-pan-component-receipt.json`.
+
+All nine integrity seals pass: four equal clean exact-A source snapshots,
+three equal 2,873-entry normal ELF inventories, focused-builder preservation
+of normal ELFs, freshness, compile database, registry, sanitizer artifacts and
+copies, and all 361 locale catalogs. The run binds 40 source/fixture inputs
+and five committed procedures. Parent and independent native audits passed;
+both reproduced all nine public privacy transformations and verified reuse
+of the actual registered event environment with only the two exact sanitizer
+option overrides. Only completed public files are packaged, with no private
+profiles, raw environment or authentication data.
+
+The same **nine C units** are ASan/UBSan-instrumented: rotate, scale, scroll,
+tool-events, transform, display shell, modifier manager, navigation arithmetic
+and the event fixture. Remaining GIMP, zoom-model, device adapter, tool
+dispatch, renderer/GTK and dependencies are uninstrumented. **LSan is off;
+no suppressions are used.** Both default and focused build logs retain one
+`-Wmissing-declarations` warning for `navigation_draw_observer_get_type` at
+`app/tests/test-painter-navigation-events.c:1488:40`. Ordinary icon, plug-in,
+D-Bus and debug diagnostics remain; this is neither a warning-free nor a
+clean-from-empty build claim.
+
+### Five-file evidence-only B and remaining gates
+
+B changes only this fractional-pan appendix, the new compact archive and
+publication summary, and the existing fractional-pan TODO rows in `tasks.md`
+and `migration/progress.tsv`. No production/test source, frozen fixture,
+builder, validator or Clone acceptance file is changed. **A's native result
+does not transfer to B.** The unchanged strict checker must reject the actual
+changed source fingerprints until a separate exact-B **226 normal / 62 focused**
+run refreshes acceptance. That gate is **pending** and the child stays TODO.
+The bounded static five transformed-drag, three navigation, 16 rotation,
+task-ledger, 44 receipt and 17 archive controls do not replace either native
+gate or extend their acceptance scope.
+
+The latest separately accepted actual-window portrait GUI is exact
+`adcb50e8c7481a86f5c15e858dffb5a6dbd930ff` only. No GUI claim transfers to
+current A or B. Original **25.009 and 25.009/drag-zoom-scroll remain TODO with
+unchanged rows, criteria and dependencies**. Exact old inverse-before-gint
+quantization and applied raster/overlay/runtime compatibility remain open;
+this is a source-backed modern replacement/difference, not permission to
+redefine historical acceptance. Native anisotropy, off-center focus, clamp
+focus/offsets/overshoot/reversal and old-policy equivalence, full legacy
+pan/radial behavior, physical-device interruption and other platforms remain
+unverified. No new raster/overlay/damage/clipping, all-196-hunk, parent,
+whole-section, full aggregate, final Clone freeze, package, release or
+whole-port acceptance is claimed. Old Edge/string-reader runtime remains
+**SKIPPED/unverified**, with no old runtime, capture or oracle run or
+regeneration. Both historical old GUI teardown `command_exit=-11` outcomes
+remain unchanged.
