@@ -900,20 +900,23 @@
       "implementation_paths": [
         "app/painter/binding-store.hpp",
         "app/painter/binding-store.cpp",
+        "app/painter/object-ref.hpp",
         "app/painter/source.hpp",
-        "app/painter/object-ref.hpp"
+        "app/painter/tests/test-foundation.cpp",
+        "app/painter/tests/test-reentry.cpp"
       ],
       "test_ids": [
+        "/painter/source/queued-callback-invalidation",
         "/painter/store/lifecycle",
-        "/painter/ref/weak",
-        "/painter/source/cancel-repeat",
-        "/painter/source/self-close"
+        "/painter/store/close-transitions",
+        "/painter/ref/weak"
       ],
       "reports": [
-        "migration/tests/painter-foundation-acceptance-native.json",
-        "migration/tests/painter-foundation-acceptance-sanitizers.json"
+        "migration/tests/boundary-conversion/native.json",
+        "migration/tests/boundary-conversion/sanitizers.json",
+        "migration/tests/boundary-conversion/meson.json"
       ],
-      "scope_or_gap": "Generation invalidation and cancelled callback ownership are verified in common fixtures; per-feature queued callback audit is separate."
+      "scope_or_gap": "Original live-but-closed owner update rejection accepted; existing exact-current69 reports reused. Successful weak lock does not bypass lifecycle/generation or mutable-entry checks. Feature-specific queue/revision and platform acceptance remain separate."
     },
     {
       "id": "07.012",

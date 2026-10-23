@@ -1,0 +1,62 @@
+{
+  "task": "07.011",
+  "status": "PASS",
+  "parent": "0d514e9ab992cdfcca5bc5f0fa05ee642e64b35a",
+  "reports": [
+    {
+      "path": "migration/tests/boundary-conversion/native.json",
+      "sha256": "b75e794109596ec7cd71cf4609e54d6183dd0ddd4c0c39362cc67f7896a31268",
+      "suite_cases": 69,
+      "current_source_seals": 25,
+      "new_execution": false
+    },
+    {
+      "path": "migration/tests/boundary-conversion/sanitizers.json",
+      "sha256": "cf5e920226f0fd7b772e6a165c2844efb12a35cabc11765549d4647131c0a469",
+      "suite_cases": 69,
+      "current_source_seals": 25,
+      "new_execution": false
+    },
+    {
+      "path": "migration/tests/boundary-conversion/meson.json",
+      "sha256": "cf072fdb26e5b1abf05b63edd683f293e8de69fe1efd970c21ae3aa2dc5f8f84",
+      "suite_cases": 69,
+      "current_source_seals": 25,
+      "new_execution": false
+    }
+  ],
+  "tests": [
+    "/painter/source/queued-callback-invalidation",
+    "/painter/store/lifecycle",
+    "/painter/store/close-transitions",
+    "/painter/ref/weak"
+  ],
+  "production_or_test_changes": false,
+  "original_tasks": 661,
+  "original_done": 118,
+  "source_ledger_rows": 22778,
+  "source_ledger_done": 576,
+  "accepted_source_duties": [
+    "legacy-eedaf9eaab471cc55723"
+  ],
+  "all_other_work_and_progress_rows_preserved": true,
+  "legacy_source": {
+    "archive": "migration/tests/gtk-binding/caller-census.tar.gz",
+    "member": "source/app/base/glib-cxx-utils.hpp",
+    "git_blob": "a1a77acd0ebcba4ad5f400bfe362628259788922",
+    "sha256": "0f21fae6457846eda2b35e742eb3d56435b3f41b88ac5a4d0633ae25d80ede98",
+    "scope": "Owning Object/IObject and raw BoundMethod wrappers; no old GWeakRef/lifecycle primitive"
+  },
+  "current_acceptance_errors": [],
+  "whole_historical_foundation_status": "FAIL",
+  "unrelated_historical_errors": 112,
+  "limits": [
+    "Existing exact-current reports reused; no new runtime execution.",
+    "No feature-specific raw callback/revision, cross-thread GTK, LSan or platform claim."
+  ],
+  "checks": {
+    "python3 -B tools/check_tasks.py": "WBS dependencies, states, and completion evidence: OK\n",
+    "python3 -B tools/audit_legacy_granularity.py --check": "{\"assets\": 402, \"compound_action_rows\": 0, \"hunks\": 2489, \"implementation_actions\": 15999, \"source_checks\": 2891, \"statuses\": {\"DONE\": 576, \"TODO\": 22202}, \"unassigned_sources\": 0, \"verification_actions\": 6779}\n",
+    "git diff --check": ""
+  }
+}
