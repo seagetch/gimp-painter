@@ -1,0 +1,71 @@
+{
+  "format": 1,
+  "status": "passed",
+  "scope": "Default build dependency graph for registered public-header compilation; not aggregate acceptance",
+  "source_base": "b170d6f424d82dd2f46d59ebdb97eb3a389eb7c3",
+  "failed_aggregate": {
+    "source_commit": "b170d6f424d82dd2f46d59ebdb97eb3a389eb7c3",
+    "all_passed": false,
+    "result_counts": {
+      "OK": 153,
+      "FAIL": 1
+    },
+    "coverage_complete": true,
+    "integrity_checks": {
+      "expected_source_commit": true,
+      "expected_source_tree": true,
+      "commit_unchanged": true,
+      "tree_unchanged": true,
+      "tracked_tree_clean_before_and_after": true,
+      "tracked_files_unchanged": true,
+      "pinned_submodules_unchanged": true,
+      "preexisting_elf_files_unchanged": true,
+      "all_new_elf_entries_are_verified_private_test_profile_aliases": true,
+      "test_registry_unchanged": true
+    },
+    "gate_sha256": "e14190ad8c3d2bf486ef6c509e8d8c942bc5f902624b0d2aca2f89e9a0717359",
+    "failure": "Header manifest and both archives absent because both libraries were excluded from default build"
+  },
+  "native": {
+    "default_ninja_exit": 0,
+    "compiled_probes": 393,
+    "c_probes": 187,
+    "cpp_probes": 206,
+    "tests": [
+      {
+        "name": "gimp:painter / painter-public-header-compilation",
+        "result": "OK",
+        "returncode": 0,
+        "duration": 0.12519049644470215
+      },
+      {
+        "name": "gimp:painter / painter-additional-header-routes",
+        "result": "OK",
+        "returncode": 0,
+        "duration": 2.6275901794433594
+      }
+    ]
+  },
+  "limitations": [
+    "New exact-commit frozen aggregate not yet run",
+    "Installed runtime, other platforms and full UI parity not verified by this unit"
+  ],
+  "tested_sources": {
+    "app/painter/tests/headers/meson.build": "5cf32e9c1d6567971a5f11f91744e24aa517a35c33fcbb078a625ef8b973b8a4",
+    "migration/tests/test_header_default_build.py": "01a48104e83124f1dcebce32474f7a3810ab543112293520744d151ce4b98cd8"
+  },
+  "graph_regression": {
+    "methods": 4,
+    "fresh_projects": 5,
+    "positive_http_modes": [
+      false,
+      true
+    ],
+    "negative_controls": [
+      "C archive excluded",
+      "C++ archive excluded",
+      "only generator default-built"
+    ],
+    "result": "OK"
+  }
+}

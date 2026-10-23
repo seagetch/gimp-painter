@@ -33,20 +33,23 @@ foreach index : range(painter_header_names.length())
     painter_header_c_sources += painter_header_sources[index]
   endif
 endforeach
+# The frozen aggregate builds the default graph before running tests with
+# --no-rebuild. Both compile archives must therefore be default roots; their
+# generated sources also bring the probe manifest into that graph.
 painter_header_c = static_library('painter-public-headers-c',
   painter_header_c_sources,
   include_directories: [rootInclude, rootAppInclude],
   dependencies: [gegl, gtk3, gexiv2],
   c_args: cc.get_supported_arguments(['-Wno-error=ignored-qualifiers']),
   override_options: ['c_std=c11', 'warning_level=2', 'werror=true'],
-  build_by_default: false, install: false)
+  build_by_default: true, install: false)
 painter_header_cpp = static_library('painter-public-headers-cpp',
   painter_header_cpp_sources,
   include_directories: [rootInclude, rootAppInclude],
   dependencies: [gegl, gtk3, gexiv2, json_glib, painter_brush_settings_dep],
   cpp_args: painter_cpp_args + cxx.get_supported_arguments(['-Wno-error=ignored-qualifiers']),
   override_options: ['cpp_std=c++14', 'warning_level=2', 'werror=true'],
-  build_by_default: false, install: false)
+  build_by_default: true, install: false)
 test('painter-public-header-compilation', python,
   args: [painter_header_generator, '--http', painter_header_http,
          '--verify-build', meson.current_build_dir(),
