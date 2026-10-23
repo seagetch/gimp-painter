@@ -1,0 +1,12 @@
+/workspace/shared/gimp-native-baseline/source/app/painter/tests/test-filter-native-kernels.cpp:14:7: error: ‘Memory’ declared with greater visibility than its base ‘GimpPainter::FilterRaster’ [-Werror=attributes]
+   14 | class Memory final : public FilterRaster {
+      |       ^~~~~~
+cc1plus: all warnings being treated as errors
+Traceback (most recent call last):
+  File "/workspace/shared/gimp-native-baseline/source/migration/tests/run_filter_native_sanitizers.py", line 27, in <module>
+    subprocess.run(command, check=True)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/subprocess.py", line 577, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['g++', '-std=c++14', '-Wall', '-Wextra', '-Werror', '-g', '-O1', '-pthread', '-fsanitize=address,undefined,float-cast-overflow', '-fno-omit-frame-pointer', '-frtti', '-I/workspace/shared/gimp-native-baseline/source/app/painter', '/workspace/shared/gimp-native-baseline/source/app/painter/filter-raster.cpp', '/workspace/shared/gimp-native-baseline/source/app/painter/filter-native-kernels.cpp', '/workspace/shared/gimp-native-baseline/source/app/painter/tests/test-filter-native-kernels.cpp', '-I/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0', '-I/workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu/glib-2.0/include', '-I/workspace/shared/gimp-deps-locked/root/usr/include/sysprof-6', '-pthread', '-lglib-2.0', '-o', '/workspace/shared/gimp-native-baseline/build-port/filter-native-sanitizers/painter-filter-native-kernels']' returned non-zero exit status 1.

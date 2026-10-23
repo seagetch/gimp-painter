@@ -1,0 +1,83 @@
+Xvfb verified: 127.0.0.1:92, 1080x1920x24, authenticated accepted, empty authority rejected
+{
+  "mode": "core-asan",
+  "watchdog_seconds": 180,
+  "command": [
+    "/workspace/shared/gimp-native-baseline/build-port/app/tests/gimp-filter-layer-asan",
+    "-p",
+    "/gimp-filter-layer/genuine_point_filter_transfer",
+    "-p",
+    "/gimp-filter-layer/native_precision_loaded_cache_and_rerun",
+    "-p",
+    "/gimp-filter-layer/native_precision_point_and_gaussian_transfer",
+    "-p",
+    "/gimp-filter-layer/native_precision_spill_transfer",
+    "-p",
+    "/gimp-filter-layer/spill_gaussian_native_gray",
+    "-p",
+    "/gimp-filter-layer/spill_gaussian_native_rgb",
+    "-p",
+    "/gimp-filter-layer/gaussian_alias_and_negative_fixtures",
+    "-p",
+    "/gimp-filter-layer/gaussian_alias_failures_preserve_cache",
+    "-p",
+    "/gimp-filter-layer/gaussian_alias_identity_spills"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 27.2772020780003,
+  "initial_memory_kib": {
+    "MemTotal": 10206484,
+    "MemAvailable": 8662392,
+    "SwapTotal": 0,
+    "SwapFree": 0,
+    "Shmem": 179184
+  },
+  "final_memory_kib": {
+    "MemTotal": 10206484,
+    "MemAvailable": 8772596,
+    "SwapTotal": 0,
+    "SwapFree": 0,
+    "Shmem": 179140
+  },
+  "peak_sampled_process_tree_rss_kib": 710332,
+  "peak_processes": [
+    {
+      "name": "gimp-filter-lay",
+      "rss_kib": 710332
+    }
+  ],
+  "rusage_children_maxrss_kib": 729736,
+  "sources_changed": [],
+  "log_sha256": "afddd29df02e0c3951ac8819e52cde100b480bb012adc1d453c0e4619c502f86",
+  "selected_test_paths": [
+    "/gimp-filter-layer/genuine_point_filter_transfer",
+    "/gimp-filter-layer/native_precision_loaded_cache_and_rerun",
+    "/gimp-filter-layer/native_precision_point_and_gaussian_transfer",
+    "/gimp-filter-layer/native_precision_spill_transfer",
+    "/gimp-filter-layer/spill_gaussian_native_gray",
+    "/gimp-filter-layer/spill_gaussian_native_rgb",
+    "/gimp-filter-layer/gaussian_alias_and_negative_fixtures",
+    "/gimp-filter-layer/gaussian_alias_failures_preserve_cache",
+    "/gimp-filter-layer/gaussian_alias_identity_spills"
+  ],
+  "executable_sha256": "e43af2c7006d392273e1981bb922d93d4213f2e783c7253f9e184b403523e7b5",
+  "limits": [
+    "Only named source hashes and process memory counters captured; no inherited environment.",
+    "RSS excludes file-system cache; sampled tree aggregate may count shared pages more than once.",
+    "Unmodified selected native tests/assertions; default GEGL cache and existing build/filter-spill-cache; no memory limiting."
+  ],
+  "executed_paths": [
+    "/gimp-filter-layer/genuine_point_filter_transfer",
+    "/gimp-filter-layer/native_precision_loaded_cache_and_rerun",
+    "/gimp-filter-layer/native_precision_point_and_gaussian_transfer",
+    "/gimp-filter-layer/native_precision_spill_transfer",
+    "/gimp-filter-layer/spill_gaussian_native_gray",
+    "/gimp-filter-layer/spill_gaussian_native_rgb",
+    "/gimp-filter-layer/gaussian_alias_and_negative_fixtures",
+    "/gimp-filter-layer/gaussian_alias_failures_preserve_cache",
+    "/gimp-filter-layer/gaussian_alias_identity_spills"
+  ],
+  "skipped_lines": [],
+  "sanitizer_diagnostics": [],
+  "passed": true
+}

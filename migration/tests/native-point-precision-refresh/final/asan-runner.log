@@ -1,0 +1,55 @@
+Xvfb verified: 127.0.0.1:91, 1080x1920x24, authenticated accepted, empty authority rejected
+{
+  "mode": "asan",
+  "command": [
+    "/usr/bin/python3",
+    "-B",
+    "/workspace/shared/gimp-native-baseline/source/migration/tests/run_filter_layer_sanitizers.py",
+    "/workspace/shared/gimp-native-baseline/build-port",
+    "--report",
+    "/workspace/shared/gimp-native-baseline/point-precision-evidence/final/large-asan-build-and-test.json",
+    "--test-path",
+    "/gimp-filter-layer/large_spill_execution_finishes"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 165.07712547099982,
+  "initial_memory_kib": {
+    "MemTotal": 10206484,
+    "MemAvailable": 8538936,
+    "SwapTotal": 0,
+    "SwapFree": 0,
+    "Shmem": 179344
+  },
+  "final_memory_kib": {
+    "MemTotal": 10206484,
+    "MemAvailable": 8538136,
+    "SwapTotal": 0,
+    "SwapFree": 0,
+    "Shmem": 179344
+  },
+  "peak_sampled_process_tree_rss_kib": 36796,
+  "peak_processes": [
+    {
+      "name": "python3",
+      "rss_kib": 36796
+    }
+  ],
+  "rusage_children_maxrss_kib": 1825064,
+  "sources_changed": [],
+  "log_sha256": "4cdee3fcd252e9a5accf2ec448417023983f176b87462081970665cf5242c4d3",
+  "selected_test_paths": [
+    "/gimp-filter-layer/large_spill_execution_finishes"
+  ],
+  "executable_sha256": "889c603f0d17cb54060951bcf4c4f9b8c9ebd9e52b392c70209bbb9755d797d9",
+  "limits": [
+    "Only named source hashes and process memory counters captured; no inherited environment.",
+    "RSS excludes file-system cache; sampled tree aggregate may count shared pages more than once.",
+    "Unmodified selected native tests/assertions; default GEGL cache and existing build/filter-spill-cache; no memory limiting."
+  ],
+  "executed_paths": [
+    "/gimp-filter-layer/large_spill_execution_finishes"
+  ],
+  "skipped_lines": [],
+  "sanitizer_diagnostics": [],
+  "passed": true
+}

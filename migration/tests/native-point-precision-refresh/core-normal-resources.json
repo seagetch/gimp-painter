@@ -1,0 +1,331 @@
+{
+  "mode": "core-normal",
+  "command": [
+    "/workspace/shared/gimp-native-baseline/build-port/app/tests/gimp-filter-layer",
+    "-p",
+    "/gimp-filter-layer/genuine_point_filter_transfer",
+    "-p",
+    "/gimp-filter-layer/native_precision_loaded_cache_and_rerun",
+    "-p",
+    "/gimp-filter-layer/native_precision_point_and_gaussian_transfer",
+    "-p",
+    "/gimp-filter-layer/native_precision_spill_transfer",
+    "-p",
+    "/gimp-filter-layer/spill_gaussian_native_gray",
+    "-p",
+    "/gimp-filter-layer/spill_gaussian_native_rgb",
+    "-p",
+    "/gimp-filter-layer/gaussian_alias_and_negative_fixtures",
+    "-p",
+    "/gimp-filter-layer/gaussian_alias_failures_preserve_cache",
+    "-p",
+    "/gimp-filter-layer/gaussian_alias_identity_spills"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 10.233295113999702,
+  "initial_memory_kib": {
+    "MemTotal": 10206484,
+    "MemAvailable": 8534688,
+    "SwapTotal": 0,
+    "SwapFree": 0,
+    "Shmem": 179376
+  },
+  "final_memory_kib": {
+    "MemTotal": 10206484,
+    "MemAvailable": 8647076,
+    "SwapTotal": 0,
+    "SwapFree": 0,
+    "Shmem": 179376
+  },
+  "peak_sampled_process_tree_rss_kib": 296316,
+  "peak_processes": [
+    {
+      "name": "gimp-filter-lay",
+      "rss_kib": 296316
+    }
+  ],
+  "rusage_children_maxrss_kib": 387484,
+  "samples_seconds_rss_kib_available_kib": [
+    [
+      0.001,
+      96,
+      8534688
+    ],
+    [
+      0.201,
+      296316,
+      8172176
+    ],
+    [
+      0.402,
+      38528,
+      8336636
+    ],
+    [
+      0.602,
+      39184,
+      8385144
+    ],
+    [
+      0.803,
+      39248,
+      8391740
+    ],
+    [
+      1.003,
+      39248,
+      8403412
+    ],
+    [
+      1.204,
+      41956,
+      8403412
+    ],
+    [
+      1.405,
+      55828,
+      8403868
+    ],
+    [
+      1.605,
+      55816,
+      8410968
+    ],
+    [
+      1.806,
+      55048,
+      8416724
+    ],
+    [
+      2.007,
+      58356,
+      8424332
+    ],
+    [
+      2.207,
+      57432,
+      8424412
+    ],
+    [
+      2.408,
+      57108,
+      8423724
+    ],
+    [
+      2.608,
+      58920,
+      8437816
+    ],
+    [
+      2.809,
+      57060,
+      8455060
+    ],
+    [
+      3.009,
+      57868,
+      8454812
+    ],
+    [
+      3.21,
+      57848,
+      8454812
+    ],
+    [
+      3.41,
+      79320,
+      8479740
+    ],
+    [
+      3.61,
+      86788,
+      8551628
+    ],
+    [
+      3.811,
+      90892,
+      8559728
+    ],
+    [
+      4.011,
+      103708,
+      8560064
+    ],
+    [
+      4.212,
+      110800,
+      8548160
+    ],
+    [
+      4.413,
+      110696,
+      8561896
+    ],
+    [
+      4.613,
+      110696,
+      8561896
+    ],
+    [
+      4.814,
+      131916,
+      8560500
+    ],
+    [
+      5.015,
+      136020,
+      8548768
+    ],
+    [
+      5.215,
+      136028,
+      8548996
+    ],
+    [
+      5.415,
+      119364,
+      8556788
+    ],
+    [
+      5.616,
+      123468,
+      8556788
+    ],
+    [
+      5.819,
+      123468,
+      8556892
+    ],
+    [
+      6.02,
+      142408,
+      8559924
+    ],
+    [
+      6.22,
+      142408,
+      8563764
+    ],
+    [
+      6.424,
+      143148,
+      8563424
+    ],
+    [
+      6.625,
+      160892,
+      8551696
+    ],
+    [
+      6.825,
+      160892,
+      8547704
+    ],
+    [
+      7.026,
+      160892,
+      8539952
+    ],
+    [
+      7.226,
+      83188,
+      8580444
+    ],
+    [
+      7.427,
+      86176,
+      8585460
+    ],
+    [
+      7.627,
+      86528,
+      8594084
+    ],
+    [
+      7.828,
+      89464,
+      8593924
+    ],
+    [
+      8.028,
+      89464,
+      8593696
+    ],
+    [
+      8.229,
+      87160,
+      8593696
+    ],
+    [
+      8.429,
+      86176,
+      8593468
+    ],
+    [
+      8.63,
+      89464,
+      8603520
+    ],
+    [
+      8.83,
+      89464,
+      8603212
+    ],
+    [
+      9.031,
+      86176,
+      8603212
+    ],
+    [
+      9.231,
+      88644,
+      8602984
+    ],
+    [
+      9.432,
+      90272,
+      8602984
+    ],
+    [
+      9.632,
+      86236,
+      8602572
+    ],
+    [
+      9.833,
+      108624,
+      8609720
+    ],
+    [
+      10.033,
+      134680,
+      8585032
+    ]
+  ],
+  "source_sha256": {
+    "app/tests/test-gimp-filter-layer.c": "576bc8f2745327c4fa9db736b89823bb9049850cf82e6da32029fa8810486698",
+    "app/core/gimpfilterlayer.cpp": "33fae8e1a4c601e9577c8824d33d02d2294b0ff29253989378261d8b0e26963c",
+    "app/painter/filter-scheduler.cpp": "3e3031de93f04f5694bb00946cf270d4accdb27ae3afc1d7e57579d4b647b031",
+    "app/painter/filter-spool.cpp": "ac44597a80a2246b99393bf81731ec060c64f7be8b401491a5b94f256bbff91f",
+    "app/config/gimpgeglconfig.c": "9a88ef495155eaa308304b00ab9f4f64800a156d472c316cdadac64b0941f748"
+  },
+  "sources_changed": [],
+  "log_sha256": "402458c16fe20e3b597d7a51bedd479f1d13155b2b466e8156f92295518ea6cb",
+  "selected_test_paths": [
+    "/gimp-filter-layer/genuine_point_filter_transfer",
+    "/gimp-filter-layer/native_precision_loaded_cache_and_rerun",
+    "/gimp-filter-layer/native_precision_point_and_gaussian_transfer",
+    "/gimp-filter-layer/native_precision_spill_transfer",
+    "/gimp-filter-layer/spill_gaussian_native_gray",
+    "/gimp-filter-layer/spill_gaussian_native_rgb",
+    "/gimp-filter-layer/gaussian_alias_and_negative_fixtures",
+    "/gimp-filter-layer/gaussian_alias_failures_preserve_cache",
+    "/gimp-filter-layer/gaussian_alias_identity_spills"
+  ],
+  "executable_sha256": "2138302bfc6ab611405c7b25866c32fd80aab3fa517a649e420d83c733b2cca0",
+  "limits": [
+    "Only named source hashes and process memory counters captured; no inherited environment.",
+    "RSS excludes file-system cache; sampled tree aggregate may count shared pages more than once.",
+    "Unmodified selected native tests/assertions; default GEGL cache and existing build/filter-spill-cache; no memory limiting."
+  ]
+}

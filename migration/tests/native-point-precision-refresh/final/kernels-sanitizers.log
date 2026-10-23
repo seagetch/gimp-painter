@@ -1,0 +1,13 @@
+TAP version 14
+# random seed: R02S2b1d263b89ccb6118efa9da73c65e26a
+1..6
+# Start of filter-native tests
+# 40 real original PDB point outputs matched byte-for-byte
+ok 1 /filter-native/genuine_point_corpus
+ok 2 /filter-native/real_point_equations
+ok 3 /filter-native/real_edge_ramp_and_hidden
+ok 4 /filter-native/real_gauss_constant_and_impulse
+ok 5 /filter-native/native_rejection_and_cancel
+ok 6 /filter-native/native_transpose
+# End of filter-native tests
+

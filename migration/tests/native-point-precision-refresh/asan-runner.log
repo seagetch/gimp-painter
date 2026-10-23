@@ -1,0 +1,45 @@
+Xvfb verified: 127.0.0.1:91, 1080x1920x24, authenticated accepted, empty authority rejected
+{
+  "mode": "asan",
+  "command": [
+    "/usr/bin/python3",
+    "-B",
+    "/workspace/shared/gimp-native-baseline/source/migration/tests/run_filter_layer_sanitizers.py",
+    "/workspace/shared/gimp-native-baseline/build-port",
+    "--report",
+    "/workspace/shared/gimp-native-baseline/point-precision-evidence/large-asan-build-and-test.json",
+    "--test-path",
+    "/gimp-filter-layer/large_spill_execution_finishes"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 161.2545151700001,
+  "initial_memory_kib": {
+    "MemTotal": 10206484,
+    "MemAvailable": 8727296,
+    "SwapTotal": 0,
+    "SwapFree": 0,
+    "Shmem": 179020
+  },
+  "final_memory_kib": {
+    "MemTotal": 10206484,
+    "MemAvailable": 8409084,
+    "SwapTotal": 0,
+    "SwapFree": 0,
+    "Shmem": 179172
+  },
+  "peak_sampled_process_tree_rss_kib": 36644,
+  "peak_processes": [
+    {
+      "name": "python3",
+      "rss_kib": 36644
+    }
+  ],
+  "rusage_children_maxrss_kib": 1821048,
+  "sources_changed": [],
+  "log_sha256": "0aa7766778aa0aa97b5d42e15e556e96feac3c8770be9547c8d6da5c238c4b59",
+  "limits": [
+    "Only named source hashes and process memory counters captured; no inherited environment.",
+    "RSS excludes file-system cache; sampled tree aggregate may count shared pages more than once.",
+    "Native same8193x8193 test and assertions, default GEGL cache, existing build/filter-spill-cache on overlay; no memory limiting."
+  ]
+}

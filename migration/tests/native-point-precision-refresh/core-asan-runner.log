@@ -1,0 +1,68 @@
+Xvfb verified: 127.0.0.1:91, 1080x1920x24, authenticated accepted, empty authority rejected
+{
+  "mode": "core-asan",
+  "command": [
+    "/workspace/shared/gimp-native-baseline/build-port/app/tests/gimp-filter-layer-asan",
+    "-p",
+    "/gimp-filter-layer/genuine_point_filter_transfer",
+    "-p",
+    "/gimp-filter-layer/native_precision_loaded_cache_and_rerun",
+    "-p",
+    "/gimp-filter-layer/native_precision_point_and_gaussian_transfer",
+    "-p",
+    "/gimp-filter-layer/native_precision_spill_transfer",
+    "-p",
+    "/gimp-filter-layer/spill_gaussian_native_gray",
+    "-p",
+    "/gimp-filter-layer/spill_gaussian_native_rgb",
+    "-p",
+    "/gimp-filter-layer/gaussian_alias_and_negative_fixtures",
+    "-p",
+    "/gimp-filter-layer/gaussian_alias_failures_preserve_cache",
+    "-p",
+    "/gimp-filter-layer/gaussian_alias_identity_spills"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 27.271926270000222,
+  "initial_memory_kib": {
+    "MemTotal": 10206484,
+    "MemAvailable": 8343448,
+    "SwapTotal": 0,
+    "SwapFree": 0,
+    "Shmem": 179400
+  },
+  "final_memory_kib": {
+    "MemTotal": 10206484,
+    "MemAvailable": 8529904,
+    "SwapTotal": 0,
+    "SwapFree": 0,
+    "Shmem": 179392
+  },
+  "peak_sampled_process_tree_rss_kib": 685416,
+  "peak_processes": [
+    {
+      "name": "gimp-filter-lay",
+      "rss_kib": 685416
+    }
+  ],
+  "rusage_children_maxrss_kib": 691056,
+  "sources_changed": [],
+  "log_sha256": "d03af1e88da66823b2a081c442a424912a270c42eaf4d7da7c55db87078f80c1",
+  "selected_test_paths": [
+    "/gimp-filter-layer/genuine_point_filter_transfer",
+    "/gimp-filter-layer/native_precision_loaded_cache_and_rerun",
+    "/gimp-filter-layer/native_precision_point_and_gaussian_transfer",
+    "/gimp-filter-layer/native_precision_spill_transfer",
+    "/gimp-filter-layer/spill_gaussian_native_gray",
+    "/gimp-filter-layer/spill_gaussian_native_rgb",
+    "/gimp-filter-layer/gaussian_alias_and_negative_fixtures",
+    "/gimp-filter-layer/gaussian_alias_failures_preserve_cache",
+    "/gimp-filter-layer/gaussian_alias_identity_spills"
+  ],
+  "executable_sha256": "b996ccbcaee273f57428d30d41c85018109d531abf7d98a6c7d6d3c27ad6e963",
+  "limits": [
+    "Only named source hashes and process memory counters captured; no inherited environment.",
+    "RSS excludes file-system cache; sampled tree aggregate may count shared pages more than once.",
+    "Unmodified selected native tests/assertions; default GEGL cache and existing build/filter-spill-cache; no memory limiting."
+  ]
+}

@@ -1,0 +1,50 @@
+Xvfb verified: 127.0.0.1:91, 1080x1920x24, authenticated accepted, empty authority rejected
+{
+  "mode": "large-asan-direct",
+  "command": [
+    "/workspace/shared/gimp-native-baseline/build-port/app/tests/gimp-filter-layer-asan",
+    "-p",
+    "/gimp-filter-layer/large_spill_execution_finishes"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 14.040273795000758,
+  "initial_memory_kib": {
+    "MemTotal": 10206484,
+    "MemAvailable": 8535872,
+    "SwapTotal": 0,
+    "SwapFree": 0,
+    "Shmem": 179344
+  },
+  "final_memory_kib": {
+    "MemTotal": 10206484,
+    "MemAvailable": 8448184,
+    "SwapTotal": 0,
+    "SwapFree": 0,
+    "Shmem": 179344
+  },
+  "peak_sampled_process_tree_rss_kib": 1812228,
+  "peak_processes": [
+    {
+      "name": "gimp-filter-lay",
+      "rss_kib": 1812228
+    }
+  ],
+  "rusage_children_maxrss_kib": 1819480,
+  "sources_changed": [],
+  "log_sha256": "f1cb1d9274f358b597df61066c0deb341cc6f6a2a11da75161dc711bf8ddde87",
+  "selected_test_paths": [
+    "/gimp-filter-layer/large_spill_execution_finishes"
+  ],
+  "executable_sha256": "e43af2c7006d392273e1981bb922d93d4213f2e783c7253f9e184b403523e7b5",
+  "limits": [
+    "Only named source hashes and process memory counters captured; no inherited environment.",
+    "RSS excludes file-system cache; sampled tree aggregate may count shared pages more than once.",
+    "Unmodified selected native tests/assertions; default GEGL cache and existing build/filter-spill-cache; no memory limiting."
+  ],
+  "executed_paths": [
+    "/gimp-filter-layer/large_spill_execution_finishes"
+  ],
+  "skipped_lines": [],
+  "sanitizer_diagnostics": [],
+  "passed": true
+}

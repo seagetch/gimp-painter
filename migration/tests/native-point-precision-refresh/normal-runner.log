@@ -1,0 +1,40 @@
+Xvfb verified: 127.0.0.1:91, 1080x1920x24, authenticated accepted, empty authority rejected
+{
+  "mode": "normal",
+  "command": [
+    "/workspace/shared/gimp-native-baseline/build-port/app/tests/gimp-filter-layer",
+    "-p",
+    "/gimp-filter-layer/large_spill_execution_finishes"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 14.237627169000007,
+  "initial_memory_kib": {
+    "MemTotal": 10206484,
+    "MemAvailable": 8747808,
+    "SwapTotal": 0,
+    "SwapFree": 0,
+    "Shmem": 179016
+  },
+  "final_memory_kib": {
+    "MemTotal": 10206484,
+    "MemAvailable": 8544768,
+    "SwapTotal": 0,
+    "SwapFree": 0,
+    "Shmem": 179020
+  },
+  "peak_sampled_process_tree_rss_kib": 1394400,
+  "peak_processes": [
+    {
+      "name": "gimp-filter-lay",
+      "rss_kib": 1394400
+    }
+  ],
+  "rusage_children_maxrss_kib": 1393980,
+  "sources_changed": [],
+  "log_sha256": "e599fdb6f60dea63326fa82ea068eb1a0407a25bac57c5aff8cc173c77ccb41a",
+  "limits": [
+    "Only named source hashes and process memory counters captured; no inherited environment.",
+    "RSS excludes file-system cache; sampled tree aggregate may count shared pages more than once.",
+    "Native same8193x8193 test and assertions, default GEGL cache, existing build/filter-spill-cache on overlay; no memory limiting."
+  ]
+}

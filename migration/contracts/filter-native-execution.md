@@ -164,7 +164,23 @@ has not been refreshed for these editor changes at this WIP checkpoint.
 carry the current source hashes and the two retained-handle/image-close tests
 used by foundation acceptance entries 06.028 and 07.012.
 
-The full procedure inventory still has 99 rows without an accepted execution route.
-External process launch/termination/crash/unresponsive handling and native
-GimpProgress remain required, implementable follow-on work. The finite mappings
-in this checkpoint cannot be presented as a complete generic FilterLayer port.
+The original checkpoint had 99 rows without an accepted execution route; this
+is a historical count, not the present inventory status. Later bounded children
+include native Max RGB and Value Invert owner-context acceptance, recorded in
+`native-max-rgb-context.json` and `native-value-invert-context.json`. Their
+nonlinear-U8 RGB owner routes and strict legacy XCF slices do not promote the
+retained context-free normalized-real extension to legacy precision/context
+parity; Gray/indexed raw owner routes remain unsupported. Sobel's later nonlinear-U8 RGB/Gray owner/XCF acceptance is also reflected
+explicitly; Sharpen and Threshold Alpha retain their already accepted bounded
+dispositions when regenerating the inventory. The generator and ledger agree
+on these five children. The inventory now labels 93 rows as requiring
+compatibility or isolated adapters. This is a literal ledger count, not proof
+that every row has been re-audited against every subsequent task; no parent
+completion follows from it.
+
+Separate later children cover bounded process bridges and native GimpProgress;
+their acceptance does not discharge arbitrary-procedure crash/unresponsive
+isolation or the global latency/platform gates. Installed UI/full aggregate,
+whole-program sanitizers and enormous-I/O/resource guarantees remain distinct.
+The finite mappings in this checkpoint cannot be presented as a complete
+generic FilterLayer port.

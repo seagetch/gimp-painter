@@ -74,6 +74,35 @@ context={'filter-pack','gflare','gimpressionist','gradmap','hot','iwarp','lic','
          'palettemap','rotate-colormap','sample-colorize','warp','bump-map','displace'}
 exact={'plug-in-edge','plug-in-gauss','plug-in-gauss-iir','plug-in-gauss-rle','plug-in-gauss-iir2','plug-in-gauss-rle2'}
 new_exact={'plug-in-vinvert','plug-in-max-rgb','plug-in-threshold-alpha'}
+# Accepted bounded children supersede historical discovery/development labels.
+# Preserve their exact per-route caveats; no generic or whole-port acceptance.
+BOUNDED_CONTEXT_ROUTES = {
+    "plug-in-max-rgb": {
+        "executor_route": "accepted bounded native nonlinear-U8 RGB owner-context route; existing context-free real point extension retained",
+        "missing_port_work": "Gray/indexed raw owner route, real-extension owner context and legacy precision parity, generic PDB/process isolation, installed UI/full aggregate/other OS and global memory/latency remain",
+        "dependency_status": "bounded child accepted; see migration/tests/native-max-rgb-context.json and migration/contracts/native-max-rgb-context.md"
+    },
+    "plug-in-sharpen": {
+        "executor_route": "explicit legacy integer native kernel with bounded owner-context and strict old-XCF restoration",
+        "missing_port_work": "unsupported precision/tiny/undefined domains; parameter-editor UI; platform and full aggregate gates",
+        "dependency_status": "bounded nonlinear U8 RGB/Gray accepted; genuine74 live scenes/116 outputs;20 old writer files; native and focused ASan/UBSan receipt migration/tests/native-sharpen-context.json"
+    },
+    "plug-in-sobel": {
+        "executor_route": "accepted bounded native nonlinear-U8 RGB/Gray owner-context and strict old-XCF route; signed INT32 flags retained",
+        "missing_port_work": "unsupported precision/TRC and indexed inputs, arbitrary-PDB/process isolation, editor activation, installed UI/full aggregate/other OS and global resource/latency gates",
+        "dependency_status": "bounded child accepted; see migration/tests/native-sobel-context.json and migration/contracts/native-sobel-context.md"
+    },
+    "plug-in-threshold-alpha": {
+        "executor_route": "accepted bounded native U8 owner-context route; existing real point route retained",
+        "missing_port_work": "genuine174 live scenes/256 outputs plus16 history scenes/48 outputs;28 old XCF;15 native+3 XCF;12 regressions;focused18-path ASan/UBSan",
+        "dependency_status": "in-process async private output/staging and complete-buffer publication; generic PDB/process isolation and broader gates remain; receipt migration/tests/native-threshold-alpha-context.json"
+    },
+    "plug-in-vinvert": {
+        "executor_route": "accepted bounded native nonlinear-U8 RGB owner-context route; existing context-free real point extension retained",
+        "missing_port_work": "Gray/indexed raw owner route, real-extension owner context and legacy precision parity, generic PDB/process isolation, installed UI/full aggregate/other OS and global memory/latency remain",
+        "dependency_status": "bounded child accepted; see migration/tests/native-value-invert-context.json and migration/contracts/native-value-invert-context.md"
+    }
+}
 rows=[]
 def row(name,menu,args,source_kind,source_paths):
     short=name.removeprefix('plug-in-')
@@ -81,7 +110,8 @@ def row(name,menu,args,source_kind,source_paths):
     op=counterparts.get(short,short)
     if op and ':' not in op: op='gegl:'+op
     if op not in operations: op=''
-    if name in exact: route='exact independent byte kernel; native-double extension'; gap='precision/extension validation'
+    if name in BOUNDED_CONTEXT_ROUTES: route=BOUNDED_CONTEXT_ROUTES[name]['executor_route']; gap=BOUNDED_CONTEXT_ROUTES[name]['missing_port_work']
+    elif name in exact: route='exact independent byte kernel; native-double extension'; gap='precision/extension validation'
     elif name in new_exact: route='audited point kernel in development'; gap='genuine byte and native precision validation'
     elif name == 'plug-in-blinds':
         route='audited isolated bundled PDB adapter; U8 nonlinear RGB/Gray; angle 0..90, segments 1..100'
@@ -101,7 +131,8 @@ def row(name,menu,args,source_kind,source_paths):
     rows.append(dict(procedure=name,eligibility=source_kind,menu=';'.join(menu),argument_types=','.join(map(str,args)),
         legacy_source=';'.join(source_paths),current_source_mentions=';'.join(native),current_gegl_counterpart=op,
         executor_route=route,missing_port_work=gap,
-        dependency_status=('bounded Convolution route implemented; see migration/contracts/filter-convolution.md' if name == 'plug-in-convmatrix' else
+        dependency_status=(BOUNDED_CONTEXT_ROUTES[name]['dependency_status'] if name in BOUNDED_CONTEXT_ROUTES else
+            'bounded Convolution route implemented; see migration/contracts/filter-convolution.md' if name == 'plug-in-convmatrix' else
             'bounded Retinex route implemented; see migration/contracts/filter-retinex.md' if name == 'plug-in-retinex' else
             'bounded SmallTiles route implemented; see migration/contracts/filter-small-tiles.md' if name == 'plug-in-small-tiles' else
             'bounded route implemented; see migration/contracts/filter-process-bridge.md' if name == 'plug-in-blinds' else

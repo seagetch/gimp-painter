@@ -1,0 +1,7 @@
+{
+  "checkpoint_commit": "92f958cd990717075db9d24683b279cb9f74f328",
+  "task": "16.003/native-point-precision",
+  "original_task_row": "| 16.003/native-point-precision | [ ] | 旧point処理・native精度拡張・alias編集を検証する | 16.003/gauss-alias-regions, 17.001/configured-spill-budget | 108行の旧選択候補台帳、3pointの実旧40buffer、34追加native形式/2種spillとalias原形編集を実装。通常82+単独巨大1・GTK24・kernel6/scheduler37/native82 sanitizer合格。巨大単独ASanもSIGKILLで未合格、一般99route/process/latencyは未完了 |",
+  "original_progress_row": "16.003/native-point-precision\tDOING\tCodex\tmigration/contracts/filter-native-execution.md; migration/inventory/filter-procedure-routes.tsv\t40 genuine old point buffers; 34 native format/TRC cases; 82 normal app plus separate large1; native GTK24; independent6 and scheduler37 sanitizers\tSource-frozen WIP checkpoint; native82 split sanitizer passes; combined and standalone8193-square ASan runs end SIGKILL without diagnosis\t-\t99 inventoried routes still lack accepted execution; no generic process isolation/GimpProgress/latency completion",
+  "retention": "HistoricalSIGKILL remains failed and unexplained; source-backed inventories clarify checkpoint counts without reducing broad parent obligations."
+}

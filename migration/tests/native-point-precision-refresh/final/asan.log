@@ -1,0 +1,177 @@
+In file included from [01m[K../source/app/paint/painter-mypaint/engine.cpp:3[m[K:
+[01m[K../source/app/paint/painter-mypaint/legacy-brush.hpp:[m[K In member function ‘[01m[Kvoid GimpPainter::MyPaint::Legacy::Brush::[01;32m[Kupdate_states_and_setting_values[m[K(float, float, float, float, float, float)[m[K’:
+[01m[K../source/app/paint/painter-mypaint/legacy-brush.hpp:398:13:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kdx_old[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  398 |       float [01;35m[Kdx_old[m[K = states[STATE_DIRECTION_DX];
+      |             [01;35m[K^~~~~~[m[K
+[01m[K../source/app/paint/painter-mypaint/legacy-brush.hpp:399:13:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kdy_old[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  399 |       float [01;35m[Kdy_old[m[K = states[STATE_DIRECTION_DY];
+      |             [01;35m[K^~~~~~[m[K
+[01m[K../source/app/core/gimpgrouplayer.c:[m[K In function ‘[01m[Kgimp_group_layer_resume_resize[m[K’:
+[01m[K../source/app/core/gimpgrouplayer.c:1697:14:[m[K [01;35m[Kwarning: [m[K‘[01m[Kmask_buffer[m[K’ may be used uninitialized [[01;35m[K-Wmaybe-uninitialized[m[K]
+ 1697 |           if [01;35m[K([m[Kgimp_drawable_get_buffer (GIMP_DRAWABLE (mask)) != mask_buffer)
+      |              [01;35m[K^[m[K
+[01m[K../source/app/core/gimpgrouplayer.c:1637:26:[m[K [01;36m[Knote: [m[K‘[01m[Kmask_buffer[m[K’ was declared here
+ 1637 |   GeglBuffer            *[01;36m[Kmask_buffer[m[K;
+      |                          [01;36m[K^~~~~~~~~~~[m[K
+[01m[K../source/app/paint/gimppainterbrushgeometry.cpp:[m[K In lambda function:
+[01m[K../source/app/paint/gimppainterbrushgeometry.cpp:88:54:[m[K [01;35m[Kwarning: [m[Kcomparison of integer expressions of different signedness: ‘[01m[Kconst std::size_t[m[K’ {aka ‘[01m[Kconst long unsigned int[m[K’} and ‘[01m[Kint[m[K’ [[01;35m[K-Wsign-compare[m[K]
+   88 |     if (mask.width <= 0 || mask.height <= 0 || [01;35m[Kcount > G_MAXINT / channels[m[K)
+      |                                                [01;35m[K~~~~~~^~~~~~~~~~~~~~~~~~~~~[m[K
+In file included from [01m[K../source/app/tests/test-gimp-filter-layer.c:2643[m[K:
+[01m[K../source/app/tests/test-filter-convolution.inc:[m[K In function ‘[01m[Kconvolution_actual_old_live[m[K’:
+[01m[K../source/app/tests/test-filter-convolution.inc:56:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   56 |     [01;35m[Kconst[m[K gint w=atoi(v[1]), h=atoi(v[2]), components=atoi(v[3]);
+      |     [01;35m[K^~~~~[m[K
+[01m[K../source/app/tests/test-filter-convolution.inc:64:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   64 |     [01;35m[KGimpImage[m[K *image=gimp_image_new(gimp,w,h,gray?GIMP_GRAY:GIMP_RGB,GIMP_PRECISION_U8_NON_LINEAR);
+      |     [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-filter-convolution.inc:68:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   68 |     [01;35m[Kconst[m[K gint selection=atoi(strstr(v[0],"-s")+2), final=atoi(strstr(v[0],"-f")+2);
+      |     [01;35m[K^~~~~[m[K
+[01m[K../source/app/tests/test-filter-convolution.inc:76:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   76 |     [01;35m[KGimpFilterLayer[m[K *filter=filter_new(image,NULL,w,h);
+      |     [01;35m[K^~~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-filter-convolution.inc:81:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   81 |     [01;35m[Kguchar[m[K *actual=g_malloc(w*h*components);
+      |     [01;35m[K^~~~~~[m[K
+[01m[K../source/app/tests/test-filter-convolution.inc:[m[K In function ‘[01m[Kconvolution_invalid_arrays_keep_cache[m[K’:
+[01m[K../source/app/tests/test-filter-convolution.inc:98:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   98 |     [01;35m[Kguint64[m[K count=gimp_filter_layer_get_run_count(filter);
+      |     [01;35m[K^~~~~~~[m[K
+[01m[K../source/app/tests/test-filter-convolution.inc:123:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  123 |   [01;35m[KGimpImage[m[K *image=image_new(9,8);GimpFilterLayer *filter=filter_new(image,NULL,9,8);
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-filter-convolution.inc:128:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  128 |   [01;35m[KGBytes[m[K *saved=gimp_filter_layer_ref_definition(filter);g_assert_cmpmem(g_bytes_get_data(saved,NULL),g_bytes_get_size(saved),omitted,sizeof omitted);
+      |   [01;35m[K^~~~~~[m[K
+[01m[K../source/app/tests/test-filter-convolution.inc:[m[K In function ‘[01m[Kconvolution_native_precisions[m[K’:
+[01m[K../source/app/tests/test-filter-convolution.inc:138:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  138 |     [01;35m[KGimpImage[m[K *image=gimp_image_new(gimp,9,8,gray?GIMP_GRAY:GIMP_RGB,precision);
+      |     [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-filter-convolution.inc:141:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  141 |     [01;35m[Kconst[m[K Babl *format=gimp_babl_format(gray?GIMP_GRAY:GIMP_RGB,gimp_babl_precision(GIMP_COMPONENT_TYPE_DOUBLE,trcs[r]),TRUE,
+      |     [01;35m[K^~~~~[m[K
+[01m[K../source/app/tests/test-filter-convolution.inc:145:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  145 |     [01;35m[Kgdouble[m[K values[9*8*4];const guint channels=gray?2:4;
+      |     [01;35m[K^~~~~~~[m[K
+[01m[K../source/app/tests/test-filter-convolution.inc:148:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  148 |     [01;35m[KGimpFilterLayer[m[K *filter=filter_new(image,NULL,9,8);gdouble matrix[25];memcpy(matrix,convolution_identity,sizeof matrix);
+      |     [01;35m[K^~~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-filter-convolution.inc:149:19:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  149 |     matrix[12]=.5;[01;35m[KGimpValueArray[m[K *args=convolution_args(matrix,convolution_all,1,0,0);
+      |                   [01;35m[K^~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-filter-convolution.inc:152:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  152 |     [01;35m[Kgdouble[m[K actual[4];gegl_buffer_get(gimp_drawable_get_buffer(GIMP_DRAWABLE(filter)),GEGL_RECTANGLE(4,4,1,1),1,format,actual,GEGL_AUTO_ROWSTRIDE,GEGL_ABYSS_NONE);
+      |     [01;35m[K^~~~~~~[m[K
+[01m[K../source/app/tests/test-filter-convolution.inc:157:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  157 |     [01;35m[Kgdouble[m[K expected[4]={0};
+      |     [01;35m[K^~~~~~~[m[K
+[01m[K../source/app/tests/test-filter-convolution.inc:161:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  161 |     [01;35m[KGeglBuffer[m[K *rounded=gegl_buffer_new(GEGL_RECTANGLE(0,0,1,1),gimp_drawable_get_format(GIMP_DRAWABLE(filter)));
+      |     [01;35m[K^~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-filter-convolution.inc:[m[K In function ‘[01m[Kconvolution_save_reopen[m[K’:
+[01m[K../source/app/tests/test-filter-convolution.inc:178:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  178 |     [01;35m[Kguint8[m[K *samples=g_malloc(w*h*bpp),*actual=g_malloc(w*h*bpp),*reopened=g_malloc(w*h*bpp);
+      |     [01;35m[K^~~~~~[m[K
+[01m[K../source/app/tests/test-filter-convolution.inc:184:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  184 |     [01;35m[KGimpFilterLayer[m[K *filter=filter_new(image,NULL,w,h);gimp_object_set_name(GIMP_OBJECT(filter),"Convolution filter");
+      |     [01;35m[K^~~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-filter-convolution.inc:185:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  185 |     [01;35m[Kgdouble[m[K matrix[25];memcpy(matrix,convolution_identity,sizeof matrix);matrix[12]=native?1+ldexp(1.,-30):2;
+      |     [01;35m[K^~~~~~~[m[K
+[01m[K../source/app/tests/test-filter-convolution.inc:186:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  186 |     [01;35m[Kgint32[m[K flags[5]={1,1,1,1,0};GimpValueArray *args=convolution_args(matrix,flags,1,0,0);
+      |     [01;35m[K^~~~~~[m[K
+[01m[K../source/app/tests/test-filter-convolution.inc:190:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  190 |     [01;35m[KGOutputStream[m[K *output=g_memory_output_stream_new_resizable();GFile *file=g_file_new_for_path("/tmp/convolution-roundtrip.xcf");GError *error=NULL;
+      |     [01;35m[K^~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-filter-convolution.inc:192:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  192 |     [01;35m[KGBytes[m[K *bytes=g_memory_output_stream_steal_as_bytes(G_MEMORY_OUTPUT_STREAM(output));
+      |     [01;35m[K^~~~~~[m[K
+[01m[K../source/app/tests/test-filter-convolution.inc:196:7:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  196 |       [01;35m[Kconst[m[K gchar *id=native?"double":"u8";gchar *name=g_strdup_printf("%s.xcf",id),*path=g_build_filename(export_dir,name,NULL);
+      |       [01;35m[K^~~~~[m[K
+[01m[K../source/app/tests/test-filter-convolution.inc:201:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  201 |     [01;35m[KGInputStream[m[K *input=g_memory_input_stream_new_from_bytes(bytes);GimpImage *copy=xcf_load_stream(gimp,input,file,NULL,&error);
+      |     [01;35m[K^~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-filter-convolution.inc:202:53:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  202 |     g_assert_no_error(error);g_assert_nonnull(copy);[01;35m[KGimpFilterLayer[m[K *loaded=GIMP_FILTER_LAYER(gimp_container_get_first_child(gimp_image_get_layers(copy)));
+      |                                                     [01;35m[K^~~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-filter-convolution.inc:[m[K In function ‘[01m[Kconvolution_ignored_legacy_tail[m[K’:
+[01m[K../source/app/tests/test-filter-convolution.inc:222:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  222 |     [01;35m[Kguint8[m[K samples[36]={0},actual[36]={0};const guint channels=gray?2:4;
+      |     [01;35m[K^~~~~~[m[K
+[01m[K../source/app/tests/test-filter-convolution.inc:225:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  225 |     [01;35m[KGimpFilterLayer[m[K *filter=filter_new(image,NULL,3,3);
+      |     [01;35m[K^~~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-filter-convolution.inc:233:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  233 |     [01;35m[KGOutputStream[m[K *output=g_memory_output_stream_new_resizable();GFile *file=g_file_new_for_path("/tmp/convolution-tail.xcf");
+      |     [01;35m[K^~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-filter-convolution.inc:235:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  235 |     [01;35m[KGBytes[m[K *bytes=g_memory_output_stream_steal_as_bytes(G_MEMORY_OUTPUT_STREAM(output));GInputStream *input=g_memory_input_stream_new_from_bytes(bytes);
+      |     [01;35m[K^~~~~~[m[K
+[01m[K../source/app/tests/test-filter-convolution.inc:237:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  237 |     [01;35m[KGimpFilterLayer[m[K *loaded=GIMP_FILTER_LAYER(gimp_container_get_first_child(gimp_image_get_layers(copy)));
+      |     [01;35m[K^~~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-filter-convolution.inc:[m[K In function ‘[01m[Kconvolution_native_storage_overflow[m[K’:
+[01m[K../source/app/tests/test-filter-convolution.inc:252:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  252 |     [01;35m[Kgdouble[m[K samples[9*8*4],actual[9*8*4],before[9*8*4];
+      |     [01;35m[K^~~~~~~[m[K
+[01m[K../source/app/tests/test-filter-convolution.inc:255:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  255 |     [01;35m[KGimpFilterLayer[m[K *filter=filter_new(image,NULL,9,8);
+      |     [01;35m[K^~~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-filter-convolution.inc:257:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  257 |     [01;35m[Kgint32[m[K flags[5]={1,1,1,1,0};GimpValueArray *args=convolution_args(matrix,flags,1,0,0);
+      |     [01;35m[K^~~~~~[m[K
+[01m[K../source/app/tests/test-filter-convolution.inc:261:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  261 |     [01;35m[Kconst[m[K guint64 cache=gimp_filter_layer_get_cache_generation(filter);
+      |     [01;35m[K^~~~~[m[K
+[01m[K../source/app/tests/test-filter-convolution.inc:264:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  264 |     [01;35m[Kgchar[m[K *message=gimp_filter_layer_dup_error(filter);g_assert_nonnull(strstr(message,"finite native storage"));g_free(message);
+      |     [01;35m[K^~~~~[m[K
+[01m[K../source/app/tests/test-filter-convolution.inc:[m[K In function ‘[01m[Kconvolution_native_failure_keeps_cache[m[K’:
+[01m[K../source/app/tests/test-filter-convolution.inc:281:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  281 |   [01;35m[Kgdouble[m[K samples[9*8*4],actual[9*8*4],before[9*8*4];
+      |   [01;35m[K^~~~~~~[m[K
+[01m[K../source/app/tests/test-filter-convolution.inc:284:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  284 |   [01;35m[KGimpFilterLayer[m[K *filter=filter_new(image,NULL,9,8);
+      |   [01;35m[K^~~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-filter-convolution.inc:288:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  288 |   [01;35m[Kgdouble[m[K matrix[25];memcpy(matrix,convolution_identity,sizeof matrix);matrix[12]=1e308;
+      |   [01;35m[K^~~~~~~[m[K
+[01m[K../source/app/tests/test-filter-convolution.inc:[m[K In function ‘[01m[Kconvolution_cancel_replace_close[m[K’:
+[01m[K../source/app/tests/test-filter-convolution.inc:301:77:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  301 |   fill(source,41,83,127,255);convolution_define(filter,args);settle(filter);[01;35m[Kguint64[m[K runs=gimp_filter_layer_get_run_count(filter);
+      |                                                                             [01;35m[K^~~~~~~[m[K
+[01m[K../source/app/tests/test-filter-convolution.inc:304:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  304 |   [01;35m[Kgdouble[m[K matrix[25];memcpy(matrix,convolution_identity,sizeof matrix);matrix[12]=2;gimp_value_set_double_array(gimp_value_array_index(args,4),matrix,25);
+      |   [01;35m[K^~~~~~~[m[K
+In file included from [01m[K../source/app/tests/test-gimp-filter-layer.c:2644[m[K:
+[01m[K../source/app/tests/test-filter-progress.inc:[m[K In function ‘[01m[Kprogress_real_workers[m[K’:
+[01m[K../source/app/tests/test-filter-progress.inc:138:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  138 |     [01;35m[Kconst[m[K gint64 started=g_get_monotonic_time();
+      |     [01;35m[K^~~~~[m[K
+[01m[K../source/app/tests/test-filter-progress.inc:140:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  140 |     [01;35m[Kconst[m[K gint64 elapsed=g_get_monotonic_time()-started;
+      |     [01;35m[K^~~~~[m[K
+[01m[K../source/app/tests/test-filter-progress.inc:[m[K In function ‘[01m[Kprogress_worker_cancel_replace_close[m[K’:
+[01m[K../source/app/tests/test-filter-progress.inc:170:7:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  170 |       [01;35m[Kconst[m[K guint64 obsolete=state.generation;
+      |       [01;35m[K^~~~~[m[K
+[01m[K../source/app/tests/test-filter-progress.inc:[m[K In function ‘[01m[Kprogress_independent_owners[m[K’:
+[01m[K../source/app/tests/test-filter-progress.inc:200:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  200 |   [01;35m[Kconst[m[K guint64 token=gimp_filter_layer_get_generation(fb);
+      |   [01;35m[K^~~~~[m[K
+TAP version 14
+# random seed: R02S772e850a250ae04a08c2c9dc8417eed2
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+# Start of gimp-filter-layer tests
+# large-spill width=8193 height=8193 pixels=67125249 wall_us=12920951 max_quantum_us=24701 heartbeat_samples=6116 heartbeat_p50_us=2069 heartbeat_p95_us=2165 heartbeat_p99_us=2999 heartbeat_max_us=25083
+# large-spill-close wall_us=134442
+ok 1 /gimp-filter-layer/large_spill_execution_finishes
+# slow test /gimp-filter-layer/large_spill_execution_finishes executed in 13.10 secs
+# End of gimp-filter-layer tests
+1..1
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+
