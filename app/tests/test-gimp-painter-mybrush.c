@@ -12,6 +12,8 @@
 #include "core/gimppaintermybrush.h"
 #include "core/gimpmypaintbrush.h"
 #include "core/gimpmypaintbrush-load.h"
+#include "core/gimpmypaintbrush-save.h"
+#include "painter/gimp-painter-error.h"
 #include "core/gimp.h"
 #include "core/gimpcontext.h"
 #include "tests.h"
@@ -987,6 +989,7 @@ named_standard_c_contract (void)
 }
 
 #include "test-painter-mybrush-filename.inc"
+#include "test-painter-mybrush-save.inc"
 
 void gimp_test_painter_mybrush_duplicate_handle_register (void);
 
@@ -1026,6 +1029,9 @@ int main (int argc, char **argv)
 #ifdef GIMP_TEST_MYBRUSH_WRAP_PIXBUF_COPY
   g_test_add_func ("/painter-mybrush/named-duplicate/copy-failure-atomic", named_duplicate_copy_failure_atomic);
 #endif
+  g_test_add_func ("/painter-mybrush/file-save/roundtrip", file_save_roundtrip);
+  g_test_add_func ("/painter-mybrush/file-save/failures", file_save_failures);
+  g_test_add_func ("/painter-mybrush/file-save/state-preconditions", file_save_state_and_preconditions);
   g_test_add_func ("/painter-mybrush/filename-load/ownership", filename_load_owned_resource);
   g_test_add_func ("/painter-mybrush/filename-load/failures", filename_load_failures);
   g_test_add_func ("/painter-mybrush/filename-load/preconditions", filename_load_preconditions);

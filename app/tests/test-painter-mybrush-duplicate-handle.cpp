@@ -269,6 +269,37 @@ void filename_load_handle ()
   g_free (path); g_free (dir);
 }
 
+void file_save_handle ()
+{
+  static_assert (std::is_same<decltype (&gimp_mypaint_brush_save),
+    gboolean (*)(GimpData *, GError **)>::value, "Original save C signature");
+  GError *error = nullptr;
+  gchar *dir = g_dir_make_tmp ("painter-save-handle-XXXXXX", &error);
+  gchar *path = g_build_filename (dir, "saved.myb", nullptr);
+  g_assert_no_error (error);
+  guint deaths = 0;
+  {
+    auto owner = MypaintBrushRef::create ("Handle save");
+    g_object_weak_ref (G_OBJECT (owner.get ()), finalized, &deaths);
+    expect_handle_error ([&] { owner.save (); });
+    GFile *file = g_file_new_for_path (path);
+    gimp_data_set_file (GIMP_DATA (owner.get ()), file, TRUE, TRUE);
+    g_object_unref (file);
+    owner.save ();
+    g_assert_false (gimp_data_is_dirty (GIMP_DATA (owner.get ())));
+    auto loaded = MypaintBrushRef::load (path);
+    g_assert_cmpstr (gimp_object_get_name (loaded.get ()), ==, "Handle save");
+    g_assert_true (gimp_painter_binding_close (G_OBJECT (owner.get ()), &error));
+    g_assert_no_error (error);
+    expect_handle_error ([&] { owner.save (); });
+    g_assert_cmpuint (deaths, ==, 0);
+  }
+  g_assert_cmpuint (deaths, ==, 1);
+  g_assert_cmpint (g_unlink (path), ==, 0);
+  g_assert_cmpint (g_rmdir (dir), ==, 0);
+  g_free (path); g_free (dir);
+}
+
 struct WrongThreadCall { const PainterMybrushRef *source; bool caught; };
 gpointer handle_duplicate_wrong_thread (gpointer data)
 {
@@ -332,6 +363,7 @@ void handle_copy_failure_exception ()
 extern "C" void
 gimp_test_painter_mybrush_duplicate_handle_register (void)
 {
+  g_test_add_func ("/painter-mybrush/file-save/handle", file_save_handle);
   g_test_add_func ("/painter-mybrush/filename-load/handle", filename_load_handle);
   g_test_add_func ("/painter-mybrush/named-standard/cold-recreation", named_standard_cold_recreation);
   g_test_add_func ("/painter-mybrush/named-factory/handle", named_factory_handle);

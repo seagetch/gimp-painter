@@ -8,6 +8,7 @@ extern "C" {
 #include "gimppaintermybrush.h"
 #include "gimpmypaintbrush.h"
 #include "gimpmypaintbrush-load.h"
+#include "gimpmypaintbrush-save.h"
 #include "gimptempbuf.h"
 #include "gimptagged.h"
 }
@@ -261,6 +262,26 @@ GList *gimp_mypaint_brush_load (GimpContext *context, const gchar *filename, GEr
     // stream nor file is borrowed by its returned resource.
     return gimp_painter_mybrush_load (context, G_FILE (file.get ()),
                                     G_INPUT_STREAM (input.get ()), error);
+  });
+}
+gboolean gimp_mypaint_brush_save (GimpData *data, GError **error)
+{
+  g_return_val_if_fail (GIMP_IS_PAINTER_MYBRUSH (data), FALSE);
+  g_return_val_if_fail (error == nullptr || *error == nullptr, FALSE);
+  return boundary<gboolean> (error, FALSE, [&] () -> gboolean {
+    auto *brush = GIMP_PAINTER_MYBRUSH (data);
+    auto owner = ObjectRef<GimpPainterMybrush>::retain (brush);
+    if (store (brush).state () != BindingStore::State::active)
+      throw Error (GIMP_PAINTER_ERROR_CLOSED, "Brush resource is not active");
+    if (!gimp_data_get_file (data)) return FALSE;
+    if (!gimp_data_is_writable (data)) {
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_PERMISSION_DENIED,
+                           "Brush resource is not writable");
+      return FALSE;
+    }
+    // Share the native replacement/close/error/dirty transaction and the same
+    // save vfunc; do not create a second serializer or unchecked file writer.
+    return gimp_data_save (data, error);
   });
 }
 gchar *gimp_painter_mybrush_dup_json (GimpPainterMybrush *brush, GError **error)

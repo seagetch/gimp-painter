@@ -6,6 +6,7 @@ extern "C" {
 #include "gimppaintermybrush.h"
 #include "gimpmypaintbrush.h"
 #include "gimpmypaintbrush-load.h"
+#include "gimpmypaintbrush-save.h"
 }
 #include "gimp-painter-type-traits.hpp"
 #include "painter/resources.hpp"
@@ -34,6 +35,11 @@ public:
     auto *brush = static_cast<GimpPainterMybrush *> (loaded->data);
     g_list_free (loaded);
     return adopt (brush);
+  }
+  void save () const
+  {
+    GError *error = nullptr;
+    if (!gimp_mypaint_brush_save (GIMP_DATA (get ()), &error)) fail (error);
   }
   GimpPainterMybrush *get () const noexcept { return owner_.get (); }
   PainterMybrushRef duplicate () const

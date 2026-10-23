@@ -1,0 +1,25 @@
+{
+  "canonical_row": 44,
+  "entry": "gimp_mypaint_brush_save",
+  "task_parent": "08.018",
+  "prerequisite": "08.017",
+  "original_acceptance": "C \u5165\u53e3\u304b\u3089\u65e7 Interface::cast \u3092\u6392\u9664",
+  "baseline_files": {
+    "app/core/gimpmypaintbrush-save.cpp": {
+      "blob": "37b5af576bf64d596835a6eaf97958b28cb51fa3",
+      "sha256": "035bc35328bb6c9fb7cd46f8d0b56b471d95fc48b77553b0a3e0378a8c0b4603"
+    },
+    "app/core/gimpmypaintbrush-save.h": {
+      "blob": "192fc92a836e7d9e18115a47c45facc3a893a51f",
+      "sha256": "c5dd39b069b268a0e6f26cbf9a6a0158c3dc6e90ee78736d60a1554613ef9590"
+    }
+  },
+  "signature": "gboolean (GimpData *, GError **)",
+  "original_no_file": "FALSE without setting error",
+  "original_error_precondition": "error == NULL || *error == NULL",
+  "legacy_write_policy": "JSON and sidecar PNG return values ignored; TRUE returned regardless; does not clean GimpData dirty flag",
+  "native_write_policy": "One native gimp_data_save checked replacement/close/error/dirty/mtime transaction and one BrushSlot serializer; embedded preview, no sidecar",
+  "ownership": "Borrowed caller resource retained during operation; no ownership transfer",
+  "canonical_disposition": "PARTIAL: safe named operation routed; historical IO/state/icon differences retained",
+  "remaining_live_icon_review": "Native preview encoded at set_icon may not reflect externally mutated live icon pixels; not runtime-tested by this bounded entry task"
+}
