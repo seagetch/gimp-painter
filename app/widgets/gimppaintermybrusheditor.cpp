@@ -111,11 +111,30 @@ struct PreviewJob {
     return pix;
   }
 };
+struct EditorPrompt : std::enable_shared_from_this<EditorPrompt> {
+  WeakRef<GimpPainterMybrushEditor> editor;
+  std::uint64_t generation, ui;
+  int operation;
+  ObjectRef<GObject> dialog, entry;
+  ObjectRef<GimpPainterMybrush> resource;
+  Connection response, destroyed;
+  bool closed = false;
+
+  void close () noexcept {
+    if (closed) return;
+    closed = true;
+    response.close (); destroyed.close ();
+    if (dialog && !gtk_widget_in_destruction (GTK_WIDGET (dialog.get ())))
+      gtk_widget_destroy (GTK_WIDGET (dialog.get ()));
+  }
+  ~EditorPrompt () noexcept { close (); }
+};
 struct EditorImpl {
   GimpPainterMybrushEditor *owner; // owner contains the single slot
   ObjectRef<GObject> context;
   ObjectRef<GimpPainterMybrushOptions> options;
   std::vector<Connection> connections;
+  std::vector<std::shared_ptr<EditorPrompt>> prompts;
   Connection resource_changed[2];
   ObjectRef<GObject> watched_resource[2];
   std::vector<ObjectRef<GObject>> widgets; // keep destroyed controls alive across synchronous reentry
@@ -140,6 +159,9 @@ struct EditorImpl {
   explicit EditorImpl (GimpPainterMybrushEditor *o) : owner (o) {}
   void detach () noexcept {
     ++ui_revision; ++requested; preview_source.close (); job.reset (); preview.reset ();
+    // Remove owner-side records before dialog destruction can reenter us.
+    auto old_prompts = std::move (prompts);
+    for (auto& prompt : old_prompts) prompt->close ();
     connections.clear ();
     for (auto& connection : resource_changed) connection.close ();
     for (auto& resource : watched_resource) resource.reset ();
@@ -447,29 +469,70 @@ void request_preview(EditorImpl&i) {
     return more;
   });
 }
+void retire_prompt (const std::shared_ptr<EditorPrompt>& prompt) noexcept {
+  boundary_void (nullptr, [&] {
+    auto owner = prompt->editor.lock ();
+    if (owner) {
+      auto *binding = BindingStore::find (G_OBJECT (owner.get ()));
+      if (binding && binding->accepts (prompt->generation))
+        binding->with<EditorSlot> ([&] (EditorImpl& i) {
+          auto found = std::find (i.prompts.begin (), i.prompts.end (), prompt);
+          if (found != i.prompts.end ()) i.prompts.erase (found);
+        });
+    }
+  });
+  prompt->close ();
+}
 void prompt(EditorImpl&i,int operation) {
-  /* Dialog owns only weak, generation-checked callbacks. No nested main loop
-   * can retain an editor borrow while context replacement is in progress. */
+  /* The editor owns each pending response. An executing callback leases its
+   * record, dialog, entry and resource across synchronous editor retirement. */
+  const auto revision = i.ui_revision;
+  auto payload = std::make_shared<EditorPrompt> ();
+  payload->editor = WeakRef<GimpPainterMybrushEditor> (ObjectRef<GimpPainterMybrushEditor>::retain (i.owner));
+  payload->generation = store (i.owner).generation ();
+  payload->ui = revision; payload->operation = operation;
+  payload->resource = ObjectRef<GimpPainterMybrush>::retain (gimp_context_get_painter_mybrush (i.ctx ()));
   auto*dialog=gtk_dialog_new_with_buttons(operation==2?_("Delete Painter Brush"):operation==1?_("Rename Painter Brush"):_("Save Painter Brush As"),
     GTK_IS_WINDOW(gtk_widget_get_toplevel(GTK_WIDGET(i.owner)))?GTK_WINDOW(gtk_widget_get_toplevel(GTK_WIDGET(i.owner))):nullptr,
     GtkDialogFlags(GTK_DIALOG_DESTROY_WITH_PARENT),_("Cancel"),GTK_RESPONSE_CANCEL,
     operation==2?_("Delete"):_("Save"),GTK_RESPONSE_OK,nullptr);
+  payload->dialog = ObjectRef<GObject>::sink (G_OBJECT (dialog));
+  payload->destroyed = Connection::connect(payload->dialog,"destroy",G_CALLBACK(+[](GtkWidget*,gpointer data){
+    boundary_void(nullptr,[&]{auto p=static_cast<EditorPrompt*>(data)->shared_from_this();retire_prompt(p);});
+  }),payload.get(),nullptr);
   auto*entry=gtk_entry_new();
-  auto*source=gimp_context_get_painter_mybrush(i.ctx());const char*source_name=source?gimp_object_get_name(source):"";
+  payload->entry = ObjectRef<GObject>::sink (G_OBJECT (entry));
+  if (payload->closed || i.closed || i.ui_revision != revision) return;
+  auto*source=payload->resource.get();const char*source_name=source?gimp_object_get_name(source):"";
   gtk_entry_set_text(GTK_ENTRY(entry),operation==1?source_name:gtk_entry_get_text(GTK_ENTRY(i.name)));
   if(operation==0&&g_strcmp0(gtk_entry_get_text(GTK_ENTRY(entry)),source_name)==0){std::string n=gtk_entry_get_text(GTK_ENTRY(entry));n+=_(" copy");gtk_entry_set_text(GTK_ENTRY(entry),n.c_str());}
   gtk_container_add(GTK_CONTAINER(gtk_dialog_get_content_area(GTK_DIALOG(dialog))),operation==2?gtk_label_new(_("Delete the selected brush from disk?")):entry);
-  struct Prompt {WeakRef<GimpPainterMybrushEditor> editor;std::uint64_t generation,ui;int operation;GtkWidget*entry;ObjectRef<GimpPainterMybrush> resource;};
-  auto*payload=new Prompt{WeakRef<GimpPainterMybrushEditor>(ObjectRef<GimpPainterMybrushEditor>::retain(i.owner)),store(i.owner).generation(),i.ui_revision,operation,entry,ObjectRef<GimpPainterMybrush>::retain(gimp_context_get_painter_mybrush(i.ctx()))};
-  g_signal_connect_data(dialog,"response",G_CALLBACK(+[](GtkDialog*d,gint response,gpointer data){
-    auto*p=static_cast<Prompt*>(data);auto owner=p->editor.lock();
-    if(response==GTK_RESPONSE_OK&&owner){auto*b=BindingStore::find(G_OBJECT(owner.get()));if(b&&b->accepts(p->generation))b->with<EditorSlot>([&](EditorImpl&i){
-      if(i.ui_revision!=p->ui||i.closed||gimp_context_get_painter_mybrush(i.ctx())!=p->resource.get()){status(i,_("Selection changed; no brush was modified"));return;}
-      GError*error=nullptr;gboolean ok=p->operation==2?gimp_painter_mybrush_editor_delete(i.owner,&error):p->operation==1?gimp_painter_mybrush_editor_rename(i.owner,gtk_entry_get_text(GTK_ENTRY(p->entry)),&error):gimp_painter_mybrush_editor_save(i.owner,gtk_entry_get_text(GTK_ENTRY(p->entry)),&error);
-      if(!ok)status(i,error?error->message:_("Unable to save brush"));g_clear_error(&error);
-    });}gtk_widget_destroy(GTK_WIDGET(d));
-  }),payload,+[](gpointer p,GClosure*){delete static_cast<Prompt*>(p);},GConnectFlags(0));
+  if (payload->closed || i.closed || i.ui_revision != revision) return;
+  payload->response = Connection::connect(payload->dialog,"response",G_CALLBACK(+[](GtkDialog*,gint response,gpointer data){
+    boundary_void(nullptr,[&]{
+      auto p=static_cast<EditorPrompt*>(data)->shared_from_this();
+      struct Retirement {
+        const std::shared_ptr<EditorPrompt>& prompt;
+        ~Retirement () noexcept { retire_prompt (prompt); }
+      } retirement {p};
+      // A factory observer may emit another response during save/delete.
+      // Consume this response before entering any operation that can reenter.
+      p->response.close ();
+      auto owner=p->editor.lock();
+      if(response==GTK_RESPONSE_OK&&owner){auto*b=BindingStore::find(G_OBJECT(owner.get()));if(b&&b->accepts(p->generation))b->with<EditorSlot>([&](EditorImpl&i){
+        if(i.ui_revision!=p->ui||i.closed||gimp_context_get_painter_mybrush(i.ctx())!=p->resource.get()){status(i,_("Selection changed; no brush was modified"));return;}
+        GError*error=nullptr;gboolean ok=p->operation==2?gimp_painter_mybrush_editor_delete(i.owner,&error):p->operation==1?gimp_painter_mybrush_editor_rename(i.owner,gtk_entry_get_text(GTK_ENTRY(p->entry.get())),&error):gimp_painter_mybrush_editor_save(i.owner,gtk_entry_get_text(GTK_ENTRY(p->entry.get())),&error);
+        if(!ok)status(i,error?error->message:_("Unable to save brush"));g_clear_error(&error);
+      });}
+    });
+  }),payload.get(),nullptr);
+  if (payload->closed || i.closed || i.ui_revision != revision) return;
+  if (!payload->response.connected () || !payload->destroyed.connected ())
+    throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, "Unable to track painter editor prompt");
+  if (payload->closed || i.closed || i.ui_revision != revision) return;
+  i.prompts.push_back (payload);
   if(operation==2)gtk_widget_destroy(entry);
+  if (payload->closed || i.closed || i.ui_revision != revision) return;
   gtk_widget_show_all(dialog);
 }
 void build(EditorImpl&i) {

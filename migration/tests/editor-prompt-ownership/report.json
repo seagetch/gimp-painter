@@ -1,0 +1,83 @@
+{
+  "task": "07.008/editor-prompt-ownership",
+  "status": "DONE",
+  "date_utc": "2026-10-19",
+  "source_parent": "af16522c8f146a7d849e28cf0ea17eb5e9a0c0e9",
+  "native_files_sha256": {
+    "app/widgets/gimppaintermybrusheditor.cpp": "5b831c1b358f26734738810c28752866739d518fea086fe7d016ed92695e9e45",
+    "app/tests/test-painter-mypaint-editor.cpp": "f75240c6c24bb06fc6cc4830f89e04d84b348154ecbafd6a6f8233b6a1168a8c"
+  },
+  "scope": {
+    "stale_prompt_combinations": 9,
+    "operation_reentry_scenarios": 10,
+    "cancel_emitter_first_repetitions": 18,
+    "full_registered_editor_cases": 25
+  },
+  "tests": [
+    {
+      "attempt": "normal-baseline-case23",
+      "result": "FAIL",
+      "duration_seconds": 5.3325724601745605,
+      "returncode": -6,
+      "tap_passes": 0,
+      "original_json_sha256": "d5d6548fcb523f55e4c2ec569a593342c3e7df5fb122498904461763278c37b2",
+      "public_json_sha256": "699ff68a2a30604ec2e52d1e84720df3cf06b94a90188899d3aba4f469a2fd1b"
+    },
+    {
+      "attempt": "normal-corrected-full-editor",
+      "result": "OK",
+      "duration_seconds": 46.478585958480835,
+      "returncode": 0,
+      "tap_passes": 25,
+      "original_json_sha256": "838160bad27cf483feb1b2b40758c6eeec2164025e29393b05680a16c0c1e8e9",
+      "public_json_sha256": "47374538beb85f59af40d7eeed659bae4bb5c0633197ed7f7ec7bd0ab7d95785"
+    },
+    {
+      "attempt": "sanitizer-corrected-full-editor",
+      "result": "TIMEOUT",
+      "duration_seconds": 120.11325597763062,
+      "returncode": -15,
+      "tap_passes": 22,
+      "original_json_sha256": "4986f34d2e4a353394969924bbfe7f66c25d13c2eae2da832ae11774593d7905",
+      "public_json_sha256": "0fdee9aec8b893fb10960643410ac8099bf80588729eb6928e361759800b69a9"
+    },
+    {
+      "attempt": "normal-fixture-full-editor",
+      "result": "OK",
+      "duration_seconds": 31.75147271156311,
+      "returncode": 0,
+      "tap_passes": 25,
+      "original_json_sha256": "863b7059302965dcb7a335ad3aff8589b1553644572f44053369ed79e6c899a3",
+      "public_json_sha256": "b7074e036aebcaf48081a711c5c19df06fdba90d03f325a54d4b46a090059742"
+    },
+    {
+      "attempt": "sanitizer-fixture-full-editor",
+      "result": "OK",
+      "duration_seconds": 117.06178617477417,
+      "returncode": 0,
+      "tap_passes": 25,
+      "original_json_sha256": "3a964ccdb31c2ed4d1eeddca21b840b5a51595573e252fea81961c9d235ff410",
+      "public_json_sha256": "190c5f9f9f652d1391f17d45f43c756be810d3e3d08e92f09a1e0cd93b98e74c"
+    }
+  ],
+  "budget_seconds": 120,
+  "sanitizer_remaining_budget_seconds": 2.93821382522583,
+  "sanitizer_options": {
+    "ASAN_OPTIONS": "detect_leaks=0:halt_on_error=1:abort_on_error=1",
+    "UBSAN_OPTIONS": "halt_on_error=1:abort_on_error=1:print_stacktrace=1"
+  },
+  "instrumentation": "Fresh full address,undefined build; 1617 runtime compile records checked and editor links libasan/libubsan; colorsvg2png is an upstream build-only generator",
+  "host": "Debian13 amd64 GCC14.2.0; 560 SHA-pinned official Debian dependencies",
+  "archive_sha256": "309b90493069de6cd84a8b8404b6a14c035e6463aa62dd39485d2fd9792258dd",
+  "evidence_policy": "Public logs retain stdout/stderr/diagnostics; inherited environment omitted and local roots tokenized. Original raw hashes bind private receipts. No compiled binaries.",
+  "limitations": [
+    "No LeakSanitizer coverage: current-host ptrace probe fails with detect_leaks=1.",
+    "Full171-registration acceptance is historical and is not claimed for this native patch.",
+    "Sanitizer full editor margin is only2.94 seconds; not a broad performance headroom claim.",
+    "Original expected-red uses the earlier fixture revision; revised fixture preserves the same lifetime assertions.",
+    "Original full sanitizer TIMEOUT retained; only fixture setup/cleanup widget churn changed before final runs.",
+    "Portrait Save As/cancel/reopen captured; app child exit0 but capture helper245, broad plugin ASan-order and profile warnings remain qualified.",
+    "Normal79 disposable test executables were removed after durable normal proof; full normal packaging/suite requires rebuild.",
+    "Broader untracked signal routes and legacy UI parity remain open."
+  ]
+}

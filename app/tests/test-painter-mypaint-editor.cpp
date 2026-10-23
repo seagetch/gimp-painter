@@ -1396,6 +1396,68 @@ static void curve_emitter_first_teardown ()
     }
 }
 
+static ObjectRef<GObject> retained_editor_prompt (Editor& editor, const char *button)
+{
+  gtk_button_clicked (GTK_BUTTON (editor.get (button)));
+  GtkDialog *dialog = nullptr;
+  auto *windows = gtk_window_list_toplevels ();
+  for (auto *item = windows; item; item = item->next)
+    if (GTK_IS_DIALOG (item->data) && gtk_window_get_transient_for (GTK_WINDOW (item->data)) == GTK_WINDOW (editor.window))
+      { g_assert_null (dialog); dialog = GTK_DIALOG (item->data); }
+  g_list_free (windows); g_assert_nonnull (dialog);
+  return ObjectRef<GObject>::retain (G_OBJECT (dialog));
+}
+
+static gulong prompt_response_handler (GObject *dialog)
+{
+  const auto handler = g_signal_handler_find (dialog, G_SIGNAL_MATCH_ID,
+    g_signal_lookup ("response", GTK_TYPE_DIALOG), 0, nullptr, nullptr, nullptr);
+  g_assert_cmpuint (handler, >, 0);
+  return handler;
+}
+
+static void seed_prompt_fixture (GimpPainterMybrushOptions *options, const char *name)
+{
+  // Match Save As's snapshot/tags/persistence/selection without constructing
+  // an editor or refreshing a widget tree just to prepare the saved resource.
+  auto selected = ObjectRef<GimpPainterMybrush>::retain (
+    gimp_context_get_painter_mybrush (GIMP_CONTEXT (options)));
+  g_assert_nonnull (selected.get ());
+  const auto draft = PainterOptionsRef::retain (options).snapshot ();
+  auto resource = PainterMybrushRef::create (name);
+  resource.replace (draft);
+  gimp_tagged_set_tags (GIMP_TAGGED (resource.get ()), gimp_tagged_get_tags (GIMP_TAGGED (selected.get ())));
+  auto *container = gimp_data_factory_get_container (gimp->painter_mybrush_factory);
+  g_assert_null (gimp_container_get_child_by_name (container, name));
+  GError *error = nullptr;
+  g_assert_true (gimp_data_factory_data_save_single (gimp->painter_mybrush_factory, GIMP_DATA (resource.get ()), &error));
+  g_assert_no_error (error);
+  g_assert_true (gimp_container_add (container, GIMP_OBJECT (resource.get ())));
+  gimp_context_set_painter_mybrush (GIMP_CONTEXT (options), resource.get ());
+  g_assert_true (gimp_context_get_painter_mybrush (GIMP_CONTEXT (options)) == resource.get ());
+  g_assert_true (PainterOptionsRef::retain (options).snapshot ().encode () == draft.encode ());
+}
+
+static void remove_prompt_fixture (Editor& editor, GimpPainterMybrush *saved)
+{
+  // Call only after every behavior assertion and after removing injected hooks.
+  // Retire the tested UI before cleanup can emit factory/selection notifications.
+  auto resource = ObjectRef<GimpPainterMybrush>::retain (saved);
+  gtk_widget_destroy (editor.window); g_object_unref (editor.window); editor.window = nullptr;
+  auto *container = gimp_data_factory_get_container (gimp->painter_mybrush_factory);
+  g_assert_true (gimp_container_have (container, GIMP_OBJECT (resource.get ())));
+  auto *saved_file = gimp_data_get_file (GIMP_DATA (resource.get ()));
+  g_assert_nonnull (saved_file);
+  auto file = ObjectRef<GObject>::retain (G_OBJECT (saved_file));
+  GError *error = nullptr;
+  g_assert_true (gimp_data_delete_from_disk (GIMP_DATA (resource.get ()), &error));
+  g_assert_no_error (error);
+  g_assert_true (gimp_data_factory_data_delete (gimp->painter_mybrush_factory, GIMP_DATA (resource.get ()), FALSE, &error));
+  g_assert_no_error (error);
+  g_assert_false (gimp_container_have (container, GIMP_OBJECT (resource.get ())));
+  g_assert_false (g_file_query_exists (G_FILE (file.get ()), nullptr));
+}
+
 static void stale_prompt_responses ()
 {
   prepare ();
@@ -1404,24 +1466,19 @@ static void stale_prompt_responses ()
       {
         auto options = ObjectRef<GimpPainterMybrushOptions>::adopt (
           GIMP_PAINTER_MYBRUSH_OPTIONS (g_object_new (GIMP_TYPE_PAINTER_MYBRUSH_OPTIONS, "gimp", gimp, nullptr)));
-        Editor editor (false, GIMP_CONTEXT (options.get ()));
         GError *error = nullptr;
         const auto name = std::string ("Prompt lifetime fixture ") + std::to_string (operation) + "-" + std::to_string (retirement);
-        g_assert_true (gimp_painter_mybrush_editor_save (editor.widget, name.c_str (), &error));
-        g_assert_no_error (error);
+        seed_prompt_fixture (options.get (), name.c_str ());
+        Editor editor (false, GIMP_CONTEXT (options.get ()));
         auto resource = ObjectRef<GimpPainterMybrush>::retain (gimp_context_get_painter_mybrush (GIMP_CONTEXT (options.get ())));
         auto *container = gimp_data_factory_get_container (gimp->painter_mybrush_factory);
         const auto count = gimp_container_get_n_children (container);
         const auto before = editor.snapshot ().encode ();
         auto file = ObjectRef<GObject>::retain (G_OBJECT (gimp_data_get_file (GIMP_DATA (resource.get ()))));
         const char *buttons[] = {"painter-brush-save-as", "painter-brush-rename", "painter-brush-delete"};
-        gtk_button_clicked (GTK_BUTTON (editor.get (buttons[operation])));
-        GtkDialog *dialog = nullptr;
-        auto *windows = gtk_window_list_toplevels ();
-        for (auto *item = windows; item; item = item->next)
-          if (GTK_IS_DIALOG (item->data) && gtk_window_get_transient_for (GTK_WINDOW (item->data)) == GTK_WINDOW (editor.window))
-            { g_assert_null (dialog); dialog = GTK_DIALOG (item->data); }
-        g_list_free (windows); g_assert_nonnull (dialog); g_object_ref (dialog);
+        auto retained = retained_editor_prompt (editor, buttons[operation]);
+        auto *dialog = GTK_DIALOG (retained.get ());
+        const auto response_handler = prompt_response_handler (retained.get ());
         auto *children = gtk_container_get_children (GTK_CONTAINER (gtk_dialog_get_content_area (dialog)));
         for (auto *item = children; item; item = item->next)
           if (GTK_IS_ENTRY (item->data)) gtk_entry_set_text (GTK_ENTRY (item->data), "Stale prompt must not create this");
@@ -1440,25 +1497,64 @@ static void stale_prompt_responses ()
             gtk_widget_destroy (GTK_WIDGET (editor.widget)); g_assert_null (weak);
           }
         g_assert_no_error (error);
-        gtk_dialog_response (dialog, GTK_RESPONSE_OK); g_object_unref (dialog);
+        // Generation rejection alone is insufficient: retirement must remove
+        // the handler while a caller still retains the native emitter.
+        g_assert_false (g_signal_handler_is_connected (dialog, response_handler));
+        g_assert_false (gtk_widget_get_visible (GTK_WIDGET (dialog)));
+        gtk_dialog_response (dialog, GTK_RESPONSE_OK);
         g_assert_cmpint (gimp_container_get_n_children (container), ==, count);
         g_assert_true (gimp_container_have (container, GIMP_OBJECT (resource.get ())));
         g_assert_cmpstr (gimp_object_get_name (resource.get ()), ==, name.c_str ());
         g_assert_true (g_file_query_exists (G_FILE (file.get ()), nullptr));
         g_assert_true (editor.snapshot ().encode () == before);
         g_assert_true (PainterOptionsRef::retain (replacement.get ()).snapshot ().encode () == replacement_before);
-        Editor cleanup (false, GIMP_CONTEXT (options.get ()));
-        g_assert_true (gimp_painter_mybrush_editor_delete (cleanup.widget, &error));
-        g_assert_no_error (error);
+        remove_prompt_fixture (editor, resource.get ());
+      }
+}
+
+static void prompt_emitter_first_and_cancel ()
+{
+  prepare ();
+  const char *buttons[] = {"painter-brush-save-as", "painter-brush-rename", "painter-brush-delete"};
+  for (const char *button : buttons)
+    for (bool destroy_first : {false, true})
+      {
+        Editor editor;
+        editor.preview ();
+        auto resource = ObjectRef<GimpPainterMybrush>::retain (
+          gimp_context_get_painter_mybrush (GIMP_CONTEXT (editor.model.get ())));
+        const auto resource_refs = G_OBJECT (resource.get ())->ref_count;
+        const auto before = editor.snapshot ().encode ();
+        for (int repeat = 0; repeat < 3; ++repeat)
+          {
+            auto retained = retained_editor_prompt (editor, button);
+            const auto response_handler = prompt_response_handler (retained.get ());
+            GObject *weak = retained.get ();
+            g_object_add_weak_pointer (weak, reinterpret_cast<gpointer *> (&weak));
+            g_assert_cmpuint (G_OBJECT (resource.get ())->ref_count, ==, resource_refs + 1);
+            if (destroy_first) gtk_widget_destroy (GTK_WIDGET (retained.get ()));
+            else gtk_dialog_response (GTK_DIALOG (retained.get ()), GTK_RESPONSE_CANCEL);
+            g_assert_false (g_signal_handler_is_connected (retained.get (), response_handler));
+            g_assert_cmpuint (G_OBJECT (resource.get ())->ref_count, ==, resource_refs);
+            retained.reset ();
+            // A stale owner-side prompt record would keep this dialog alive.
+            g_assert_null (weak);
+            g_assert_true (editor.snapshot ().encode () == before);
+          }
+        g_assert_true (gimp_painter_binding_close (G_OBJECT (editor.widget), nullptr));
       }
 }
 
 static void operation_context_reentry ()
 {
   prepare ();
-  for (bool deleting : {false, true})
+  for (int operation = 0; operation < 3; ++operation)
     for (bool closing : {false, true})
+      for (bool response : {false, true})
       {
+        const bool renaming = operation == 1, deleting = operation == 2;
+        if (renaming && !response) continue; // Add only the two requested prompt paths.
+        const char *operation_name = deleting ? "delete" : renaming ? "rename" : "save";
         auto options = ObjectRef<GimpPainterMybrushOptions>::adopt (
           GIMP_PAINTER_MYBRUSH_OPTIONS (g_object_new (GIMP_TYPE_PAINTER_MYBRUSH_OPTIONS, "gimp", gimp, nullptr)));
         auto replacement = ObjectRef<GimpPainterMybrushOptions>::adopt (
@@ -1467,40 +1563,95 @@ static void operation_context_reentry ()
         auto settings = newer.snapshot (); settings.set_base_value (BRUSH_OPAQUE, .326); newer.replace (settings);
         gimp_context_set_painter_mybrush (GIMP_CONTEXT (replacement.get ()), newer.get ());
         const auto before = PainterOptionsRef::retain (replacement.get ()).snapshot ().encode ();
-        g_test_message ("operation=%s retirement=%s", deleting ? "delete" : "save", closing ? "close" : "replace");
-        Editor editor (false, GIMP_CONTEXT (options.get ()));
+        g_test_message ("operation=%s retirement=%s entry=%s", operation_name, closing ? "close" : "replace", response ? "prompt" : "direct");
         GError *error = nullptr;
-        const auto name = std::string ("Editor operation reentry ") + (deleting ? "delete" : "save") + (closing ? " close" : " replace");
-        if (deleting)
-          { g_assert_true (gimp_painter_mybrush_editor_save (editor.widget, name.c_str (), &error)); g_assert_no_error (error); }
+        const auto original_name = std::string ("Editor operation reentry ") + operation_name + (closing ? " close" : " replace");
+        const auto name = original_name + (renaming ? " renamed" : "");
+        if (deleting || renaming)
+          seed_prompt_fixture (options.get (), original_name.c_str ());
+        Editor editor (false, GIMP_CONTEXT (options.get ()));
         auto *container = gimp_data_factory_get_container (gimp->painter_mybrush_factory);
-        struct Reentry { GimpPainterMybrushEditor *editor; GimpContext *context; bool closing; bool fired = false; };
-        Reentry state {editor.widget, GIMP_CONTEXT (replacement.get ()), closing};
-        auto handler = g_signal_connect (container, deleting ? "remove" : "add",
-          G_CALLBACK (+[](GimpContainer *, GimpObject *, gpointer data) {
-            auto &state = *static_cast<Reentry *> (data);
-            g_assert_false (state.fired); state.fired = true;
+        auto watched = ObjectRef<GObject>::retain (renaming
+          ? G_OBJECT (gimp_context_get_painter_mybrush (GIMP_CONTEXT (options.get ())))
+          : G_OBJECT (container));
+        struct Reentry {
+          GimpPainterMybrushEditor *editor; GimpContext *context; bool closing;
+          bool fired = false; GtkDialog *dialog = nullptr; gulong response_handler = 0;
+          GObject *resource = nullptr; const char *expected_name = nullptr;
+          void invoke (GObject *emitter) {
+            g_assert_false (fired); fired = true;
+            if (resource)
+              {
+                g_assert_true (emitter == resource);
+                g_assert_cmpstr (gimp_object_get_name (resource), ==, expected_name);
+              }
+            if (dialog)
+              {
+                g_assert_false (g_signal_handler_is_connected (dialog, response_handler));
+                gtk_dialog_response (dialog, GTK_RESPONSE_OK);
+              }
             GError *error = nullptr;
-            if (state.closing) gtk_widget_destroy (GTK_WIDGET (state.editor));
-            else g_assert_true (gimp_painter_mybrush_editor_set_context (state.editor, state.context, &error));
+            if (closing) gtk_widget_destroy (GTK_WIDGET (editor));
+            else g_assert_true (gimp_painter_mybrush_editor_set_context (editor, context, &error));
             g_assert_no_error (error);
+            if (resource)
+              g_assert_cmpstr (gimp_object_get_name (resource), ==, expected_name);
+          }
+        };
+        Reentry state {editor.widget, GIMP_CONTEXT (replacement.get ()), closing};
+        gulong handler;
+        if (renaming)
+          {
+            state.resource = watched.get (); state.expected_name = name.c_str ();
+            // Rename thaws notify::name after persistence, before its selected
+            // resource lease and the prompt response's shared lease unwind.
+            handler = g_signal_connect (watched.get (), "notify::name",
+              G_CALLBACK (+[](GObject *object, GParamSpec *, gpointer data) {
+                static_cast<Reentry *> (data)->invoke (object);
+              }), &state);
+          }
+        else handler = g_signal_connect (container, deleting ? "remove" : "add",
+          G_CALLBACK (+[](GimpContainer *, GimpObject *, gpointer data) {
+            static_cast<Reentry *> (data)->invoke (nullptr);
           }), &state);
         // The public operation has an active BindingStore borrow while the
         // owner's last widget reference may disappear in the factory signal.
         auto owner = ObjectRef<GObject>::retain (G_OBJECT (editor.widget));
-        if (deleting) g_assert_true (gimp_painter_mybrush_editor_delete (editor.widget, &error));
+        if (response)
+          {
+            auto retained = retained_editor_prompt (editor, deleting ? "painter-brush-delete" : renaming ? "painter-brush-rename" : "painter-brush-save-as");
+            const auto response_handler = prompt_response_handler (retained.get ());
+            state.dialog = GTK_DIALOG (retained.get ());
+            state.response_handler = response_handler;
+            GObject *weak = retained.get ();
+            g_object_add_weak_pointer (weak, reinterpret_cast<gpointer *> (&weak));
+            auto *children = gtk_container_get_children (GTK_CONTAINER (gtk_dialog_get_content_area (GTK_DIALOG (retained.get ()))));
+            for (auto *item = children; item; item = item->next)
+              if (GTK_IS_ENTRY (item->data)) gtk_entry_set_text (GTK_ENTRY (item->data), name.c_str ());
+            g_list_free (children);
+            gtk_dialog_response (GTK_DIALOG (retained.get ()), GTK_RESPONSE_OK);
+            g_assert_false (g_signal_handler_is_connected (retained.get (), response_handler));
+            state.dialog = nullptr;
+            retained.reset (); g_assert_null (weak);
+          }
+        else if (deleting) g_assert_true (gimp_painter_mybrush_editor_delete (editor.widget, &error));
         else g_assert_true (gimp_painter_mybrush_editor_save (editor.widget, name.c_str (), &error));
-        g_assert_no_error (error); g_signal_handler_disconnect (container, handler);
+        g_assert_no_error (error); g_signal_handler_disconnect (watched.get (), handler);
         g_assert_true (state.fired);
+        if (renaming)
+          {
+            g_assert_true (gimp_container_get_child_by_name (container, name.c_str ()) == GIMP_OBJECT (watched.get ()));
+            g_assert_null (gimp_container_get_child_by_name (container, original_name.c_str ()));
+            auto *file = gimp_data_get_file (GIMP_DATA (watched.get ()));
+            g_assert_nonnull (file); g_assert_true (g_file_query_exists (file, nullptr));
+          }
         g_assert_true (gimp_context_get_painter_mybrush (GIMP_CONTEXT (replacement.get ())) == newer.get ());
         g_assert_true (PainterOptionsRef::retain (replacement.get ()).snapshot ().encode () == before);
         if (!deleting)
           {
             auto *saved = GIMP_PAINTER_MYBRUSH (gimp_container_get_child_by_name (container, name.c_str ()));
             g_assert_nonnull (saved);
-            gimp_context_set_painter_mybrush (GIMP_CONTEXT (options.get ()), saved);
-            Editor cleanup (false, GIMP_CONTEXT (options.get ()));
-            g_assert_true (gimp_painter_mybrush_editor_delete (cleanup.widget, &error)); g_assert_no_error (error);
+            remove_prompt_fixture (editor, saved);
           }
       }
 }
@@ -1532,6 +1683,7 @@ int main(int argc,char**argv){
   add_editor_case("/painter-editor/22-curve-emitter-first-teardown",curve_emitter_first_teardown);
   add_editor_case("/painter-editor/23-stale-prompt-responses",stale_prompt_responses);
   add_editor_case("/painter-editor/24-operation-context-reentry",operation_context_reentry);
+  add_editor_case("/painter-editor/25-prompt-emitter-first-cancel",prompt_emitter_first_and_cancel);
   if(g_getenv("PAINTER_EDITOR_DEMO"))add_editor_case("/painter-editor/visual-demo",visual_demo);
   if(g_getenv("GIMP_TEST_MAPPING_SETTER_VISUAL_DEMO"))add_editor_case("/painter-editor/mapping-setter/visual-demo",mapping_setter_visual_demo);
   g_application_run(gimp->app,0,nullptr);int result=gimp_core_app_get_exit_status(GIMP_CORE_APP(gimp->app));g_application_quit(gimp->app);g_clear_object(&gimp->app);g_free(original_search);return result;
