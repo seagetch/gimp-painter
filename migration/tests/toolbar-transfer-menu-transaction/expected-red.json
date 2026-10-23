@@ -1,0 +1,108 @@
+{
+  "run": {
+    "expected_failure": [
+      "ERROR:../source/app/tests/test-painter-toolbar-transfer.inc:75:transfer_membership_probe: 'gimp_display_shell_get_show_guides (probe->shell)' should be TRUE",
+      "ERROR:../source/app/tests/test-painter-toolbar-window.c:2298:run_case: child process (/painter-toolbar-window/transfer-global-actions [53]) failed unexpectedly"
+    ],
+    "xvfb": [
+      "Xvfb verified: 127.0.0.1:91, 1080x1920x24, authenticated accepted, empty authority rejected"
+    ],
+    "result": [
+      "1/1 gimp:app / painter-toolbar-window FAIL             2.49s   killed by signal 6 SIGABRT"
+    ]
+  },
+  "transfer-radio-notification": {
+    "expected_failure": [
+      "ERROR:../source/app/tests/test-painter-toolbar-transfer.inc:247:transfer_radio_notification: assertion failed (gimp_color_config_get_display_intent (config) == probe.intent_at_withdrawal): (2 == 0)",
+      "ERROR:../source/app/tests/test-painter-toolbar-window.c:2298:run_case: child process (/painter-toolbar-window/transfer-radio-notification [52]) failed unexpectedly"
+    ],
+    "xvfb": [
+      "Xvfb verified: 127.0.0.1:91, 1080x1920x24, authenticated accepted, empty authority rejected"
+    ],
+    "result": [
+      "1/1 gimp:app / painter-toolbar-window FAIL             2.35s   killed by signal 6 SIGABRT"
+    ]
+  },
+  "transfer-action-publication": {
+    "expected_failure": [
+      "ERROR:../source/app/tests/test-painter-toolbar-transfer.inc:305:transfer_action_publication: assertion failed (changes == 0): (2 == 0)",
+      "ERROR:../source/app/tests/test-painter-toolbar-window.c:2298:run_case: child process (/painter-toolbar-window/transfer-action-publication [109]) failed unexpectedly"
+    ],
+    "xvfb": [
+      "Xvfb verified: 127.0.0.1:92, 1080x1920x24, authenticated accepted, empty authority rejected"
+    ],
+    "result": [
+      "1/1 gimp:app / painter-toolbar-window FAIL             2.61s   killed by signal 6 SIGABRT"
+    ]
+  },
+  "transfer-radio-command-supersession": {
+    "expected_failure": [
+      "ERROR:../source/app/tests/test-painter-toolbar-transfer.inc:370:transfer_radio_command_supersession: assertion failed (probe.obsolete == 1): (3 == 1)",
+      "ERROR:../source/app/tests/test-painter-toolbar-window.c:2299:run_case: child process (/painter-toolbar-window/transfer-radio-command-supersession [52]) failed unexpectedly"
+    ],
+    "xvfb": [
+      "Xvfb verified: 127.0.0.1:91, 1080x1920x24, authenticated accepted, empty authority rejected"
+    ],
+    "result": [
+      "1/1 gimp:app / painter-toolbar-window FAIL             2.01s   killed by signal 6 SIGABRT"
+    ]
+  },
+  "production_baseline": {
+    "app/display/gimpimagewindow.c": {
+      "baseline_sha256": "afa8b1cee16c2aa29c3448b8a16728b71ea732c7e63209cf61a0b91e86de3986",
+      "head_sha256": "afa8b1cee16c2aa29c3448b8a16728b71ea732c7e63209cf61a0b91e86de3986",
+      "matches_head": true
+    },
+    "app/display/gimppaintercanvasui.h": {
+      "baseline_sha256": "f5066c8f1b463df037f50b8f8d79795b0be0fe12481e1fb454cc9103f155cd1f",
+      "head_sha256": "f5066c8f1b463df037f50b8f8d79795b0be0fe12481e1fb454cc9103f155cd1f",
+      "matches_head": true
+    },
+    "app/widgets/gimpaction.c": {
+      "baseline_sha256": "b474af7ac4dda6a5fc1ed9282001a5acad3af83ccc1ecc88bad121e8234ae44c",
+      "head_sha256": "b474af7ac4dda6a5fc1ed9282001a5acad3af83ccc1ecc88bad121e8234ae44c",
+      "matches_head": true
+    },
+    "app/widgets/gimpaction.h": {
+      "baseline_sha256": "fd2cf67a6fcfc02f47ae9a880c8a56bf9a48a203e1e05746c2e89c61c771e294",
+      "head_sha256": "fd2cf67a6fcfc02f47ae9a880c8a56bf9a48a203e1e05746c2e89c61c771e294",
+      "matches_head": true
+    },
+    "app/widgets/gimpactiongroup.c": {
+      "baseline_sha256": "e1842357a7cae4cad0ea2eaf3e1fcf496b37e61d0189c37338cb8ffcfa379a8a",
+      "head_sha256": "e1842357a7cae4cad0ea2eaf3e1fcf496b37e61d0189c37338cb8ffcfa379a8a",
+      "matches_head": true
+    },
+    "app/widgets/gimpactionimpl.c": {
+      "baseline_sha256": "8e98f1ca458d74888ee568cc834fb6cb8263910cea92035801a82cb1cc9d5d7e",
+      "head_sha256": "8e98f1ca458d74888ee568cc834fb6cb8263910cea92035801a82cb1cc9d5d7e",
+      "matches_head": true
+    },
+    "app/widgets/gimptoggleaction.c": {
+      "baseline_sha256": "a101331890d76ee2df29a8aaadcdd1bc5b3cf50c50049d929219a348ebfba9e5",
+      "head_sha256": "a101331890d76ee2df29a8aaadcdd1bc5b3cf50c50049d929219a348ebfba9e5",
+      "matches_head": true
+    },
+    "app/widgets/gimpradioaction.c": {
+      "baseline_sha256": "c560b044eb7b3c242d005112d46207da5696f771846177746acd318233c50191",
+      "head_sha256": "c560b044eb7b3c242d005112d46207da5696f771846177746acd318233c50191",
+      "matches_head": true
+    },
+    "app/widgets/gimpuimanager.c": {
+      "baseline_sha256": "9a8d30ffb1ad3e8f27eef5bb58f467648a22d238a5eaf9b7c10315495b0c4bfc",
+      "head_sha256": "9a8d30ffb1ad3e8f27eef5bb58f467648a22d238a5eaf9b7c10315495b0c4bfc",
+      "matches_head": true
+    },
+    "app/widgets/gimpmenu.c": {
+      "baseline_sha256": "99255b9a14efd22c3d14c8774946225eae255037b0f768edc85b14bd510e5e27",
+      "head_sha256": "99255b9a14efd22c3d14c8774946225eae255037b0f768edc85b14bd510e5e27",
+      "matches_head": true
+    }
+  },
+  "first_three_source_binary": {
+    "source/app/tests/test-painter-toolbar-window.c": "45f14979c52e37915100abaf14157b85d7569a606c794891da1486b9db05bc09",
+    "source/app/tests/test-painter-toolbar-transfer.inc": "7ddabb5f9d68c5ec8a034509cb285fcd3558786cdafdc57b5e517418ba953a29",
+    "build-port/app/tests/painter-toolbar-window": "5711eff9df19783e0ab9dc8a59342fe000fd83db5e568b6e827eb711edb24416"
+  },
+  "fixture_correction": "The initial GtkContainer remove emission hook ran after the class closure and never observed old ancestry; its calls==0 failure is NOT a regression proof. The replacement observes actual shell unmap and asserts old owner plus withdrawn action route before attempting actions."
+}

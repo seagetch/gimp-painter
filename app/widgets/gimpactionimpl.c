@@ -302,6 +302,9 @@ static void
 gimp_action_impl_change_state (GAction  *action,
                                GVariant *value)
 {
+  if (! gimp_action_dispatch_allowed (GIMP_ACTION (action)))
+    return;
+
   /* If the user connected a signal handler then they are responsible
    * for handling state changes.
    */

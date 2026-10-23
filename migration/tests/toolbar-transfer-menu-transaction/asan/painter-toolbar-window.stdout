@@ -1,0 +1,60 @@
+TAP version 14
+# random seed: R02Sf1e8a427e06fea2c40d1aa8fbc105034
+1..26
+# Start of painter-toolbar-window tests
+ok 1 /painter-toolbar-window/single-mode-painter-preserves-external-docks
+# slow test /painter-toolbar-window/single-mode-painter-preserves-external-docks executed in 4.25 secs
+ok 2 /painter-toolbar-window/transfer-radio-command-supersession
+# slow test /painter-toolbar-window/transfer-radio-command-supersession executed in 3.32 secs
+ok 3 /painter-toolbar-window/transfer-radio-notification
+# slow test /painter-toolbar-window/transfer-radio-notification executed in 4.81 secs
+ok 4 /painter-toolbar-window/transfer-action-publication
+# slow test /painter-toolbar-window/transfer-action-publication executed in 4.84 secs
+ok 5 /painter-toolbar-window/transfer-global-actions
+# slow test /painter-toolbar-window/transfer-global-actions executed in 4.90 secs
+ok 6 /painter-toolbar-window/new-open-focus-routing
+# slow test /painter-toolbar-window/new-open-focus-routing executed in 7.52 secs
+ok 7 /painter-toolbar-window/host-actions-close-accelerator
+# slow test /painter-toolbar-window/host-actions-close-accelerator executed in 5.28 secs
+ok 8 /painter-toolbar-window/nested-conversion-supersession
+# slow test /painter-toolbar-window/nested-conversion-supersession executed in 9.18 secs
+ok 9 /painter-toolbar-window/display-closes-during-dock-separation
+# slow test /painter-toolbar-window/display-closes-during-dock-separation executed in 7.16 secs
+ok 10 /painter-toolbar-window/source-closes-during-dock-transfer
+# slow test /painter-toolbar-window/source-closes-during-dock-transfer executed in 6.83 secs
+ok 11 /painter-toolbar-window/toolbar-publication-superseded
+# slow test /painter-toolbar-window/toolbar-publication-superseded executed in 6.61 secs
+ok 12 /painter-toolbar-window/tool-models-native-ownership
+# slow test /painter-toolbar-window/tool-models-native-ownership executed in 8.79 secs
+ok 13 /painter-toolbar-window/close-active-inactive-last
+# slow test /painter-toolbar-window/close-active-inactive-last executed in 7.33 secs
+ok 14 /painter-toolbar-window/repeat-mode-painter-toggles
+# slow test /painter-toolbar-window/repeat-mode-painter-toggles executed in 23.67 secs
+ok 15 /painter-toolbar-window/wm-close-requests-quit
+# slow test /painter-toolbar-window/wm-close-requests-quit executed in 3.68 secs
+ok 16 /painter-toolbar-window/wm-close-dirty-cancel
+# slow test /painter-toolbar-window/wm-close-dirty-cancel executed in 5.81 secs
+ok 17 /painter-toolbar-window/portrait-toolbar-scroll-reaches-end
+# slow test /painter-toolbar-window/portrait-toolbar-scroll-reaches-end executed in 5.52 secs
+ok 18 /painter-toolbar-window/menu-scroll-role-titlebar-lifecycle
+# slow test /painter-toolbar-window/menu-scroll-role-titlebar-lifecycle executed in 5.58 secs
+ok 19 /painter-toolbar-window/retained-destroyed-pending-updates
+# slow test /painter-toolbar-window/retained-destroyed-pending-updates executed in 6.17 secs
+ok 20 /painter-toolbar-window/borrowed-display-closes-finalizes
+# slow test /painter-toolbar-window/borrowed-display-closes-finalizes executed in 4.98 secs
+ok 21 /painter-toolbar-window/unretained-toolbar-finalizes
+# slow test /painter-toolbar-window/unretained-toolbar-finalizes executed in 4.30 secs
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ‘gio-vfs’
+ok 22 /painter-toolbar-window/session-save-fresh-restore
+# slow test /painter-toolbar-window/session-save-fresh-restore executed in 9.98 secs
+# Start of startup tests
+ok 23 /painter-toolbar-window/startup/native-multi
+# slow test /painter-toolbar-window/startup/native-multi executed in 3.45 secs
+ok 24 /painter-toolbar-window/startup/native-single
+# slow test /painter-toolbar-window/startup/native-single executed in 3.73 secs
+ok 25 /painter-toolbar-window/startup/painter-single
+# slow test /painter-toolbar-window/startup/painter-single executed in 4.47 secs
+ok 26 /painter-toolbar-window/startup/painter-multi
+# slow test /painter-toolbar-window/startup/painter-multi executed in 4.71 secs
+# End of startup tests
+# End of painter-toolbar-window tests

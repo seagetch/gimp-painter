@@ -64,6 +64,8 @@ struct _GimpActionInterface
 
 void             gimp_action_init                (GimpAction       *action);
 
+gboolean         gimp_action_dispatch_allowed    (GimpAction       *action);
+
 void             gimp_action_emit_activate       (GimpAction       *action,
                                                   GVariant         *value);
 void             gimp_action_emit_change_state   (GimpAction       *action,

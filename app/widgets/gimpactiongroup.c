@@ -384,6 +384,8 @@ gimp_action_group_add_action_with_accel (GimpActionGroup    *group,
 
   if (! g_list_find (group->actions, action))
     {
+      /* Bind the dispatch owner before callback-producing publication. */
+      gimp_action_set_group (action, group);
       group->actions = g_list_prepend (group->actions, g_object_ref (action));
 
       g_signal_emit_by_name (group, "action-added", gimp_action_get_name (action));
@@ -472,7 +474,6 @@ gimp_action_group_add_action_with_accel (GimpActionGroup    *group,
             g_free (accel_strs[i]);
         }
 
-      gimp_action_set_group (action, group);
     }
 }
 

@@ -222,6 +222,9 @@ gimp_toggle_action_real_toggle (GimpToggleAction *action)
 static void
 gimp_toggle_action_toggle (GimpToggleAction *action)
 {
+  if (! gimp_action_dispatch_allowed (GIMP_ACTION (action)))
+    return;
+
   if (GIMP_TOGGLE_ACTION_GET_CLASS (action)->toggle != NULL &&
       GIMP_TOGGLE_ACTION_GET_CLASS (action)->toggle (action))
     {

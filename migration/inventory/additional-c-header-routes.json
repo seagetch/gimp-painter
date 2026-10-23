@@ -178,6 +178,14 @@
       "context": "core",
       "prerequisites": [],
       "review": "29.010/startup-session-mode-barrier: native restore ownership and GUI/session readiness declarations or private state. Double-include the identified baseline header after standard core/widget prerequisites in C11 and C++14; no outer linkage wrapper, historical identity changes, or link ABI claim."
+    },
+    {
+      "path": "app/widgets/gimpaction.h",
+      "kind": "changed-baseline",
+      "baseline_blob": "95b757b65c3bcbcb584376e0ab4fc48d761f54a0",
+      "context": "core",
+      "prerequisites": [],
+      "review": "29.010/toolbar-transfer-menu-transaction: native GimpAction dispatch guard declaration, gboolean result and borrowed GimpAction pointer. Header retains its own C linkage/include guard; compile twice in C11 and C++14 with normal core/widget prerequisites, no outer linkage wrapper. No new type layout or historical ABI acceptance."
     }
   ]
 }

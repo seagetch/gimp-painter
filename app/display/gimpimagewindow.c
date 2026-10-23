@@ -3187,6 +3187,18 @@ gimp_image_window_toolbar_target_pending (GimpImageWindow *window)
           gimp_display_get_image (display));
 }
 
+gboolean
+gimp_image_window_painter_actions_pending (Gimp *gimp)
+{
+  g_return_val_if_fail (GIMP_IS_GIMP (gimp), FALSE);
+
+  for (GList *iter = gimp->image_windows; iter; iter = iter->next)
+    if (gimp_image_window_toolbar_target_pending (iter->data))
+      return TRUE;
+
+  return FALSE;
+}
+
 static gboolean
 gimp_image_window_update_ui_manager_idle (GimpImageWindow *window)
 {

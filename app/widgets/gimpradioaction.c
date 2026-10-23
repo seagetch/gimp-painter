@@ -59,6 +59,7 @@ struct _GimpRadioActionPrivate
   gchar  *group_label;
 
   gint    value;
+  guint64 revision;
 };
 
 static void      gimp_radio_action_g_action_iface_init (GActionInterface *iface);
@@ -207,9 +208,11 @@ gimp_radio_action_dispose (GObject *object)
           GimpRadioAction *tmp_action = slist->data;
 
           tmp_action->priv->group = group;
+          tmp_action->priv->revision++;
         }
 
       action->priv->group = NULL;
+      action->priv->revision++;
     }
 
   G_OBJECT_CLASS (parent_class)->dispose (object);
@@ -364,6 +367,9 @@ gimp_radio_action_activate (GAction  *action,
 
   g_return_if_fail (GIMP_IS_RADIO_ACTION (action));
 
+  if (! gimp_action_dispatch_allowed (GIMP_ACTION (action)))
+    return;
+
   radio = GIMP_RADIO_ACTION (action);
 
   gimp_radio_action_set_current_value (radio, radio->priv->value);
@@ -442,9 +448,11 @@ gimp_radio_action_set_group (GimpRadioAction *action,
           GimpRadioAction *tmp_action = slist->data;
 
           tmp_action->priv->group = action->priv->group;
+          tmp_action->priv->revision++;
         }
     }
 
+  action->priv->revision++;
   action->priv->group = g_slist_prepend (group, action);
   g_clear_pointer (&action->priv->group_label, g_free);
 
@@ -459,6 +467,7 @@ gimp_radio_action_set_group (GimpRadioAction *action,
           GimpRadioAction *tmp_action = slist->data;
 
           tmp_action->priv->group = action->priv->group;
+          tmp_action->priv->revision++;
         }
     }
   else
@@ -529,6 +538,9 @@ gimp_radio_action_set_current_value (GimpRadioAction *action,
 
   g_return_if_fail (GIMP_IS_RADIO_ACTION (action));
 
+  if (! gimp_action_dispatch_allowed (GIMP_ACTION (action)))
+    return;
+
   if (action->priv->group)
     {
       for (slist = action->priv->group; slist; slist = slist->next)
@@ -565,23 +577,61 @@ gimp_radio_action_set_current_value (GimpRadioAction *action,
     }
   else
     {
-      if (changed2)
-        {
-          _gimp_toggle_action_set_active (changed2, FALSE);
-          g_object_notify (G_OBJECT (changed2), "active");
-          g_signal_emit_by_name (changed2, "toggled");
-          g_object_notify (G_OBJECT (changed2), "enabled");
-          g_object_notify (G_OBJECT (changed2), "state");
-        }
-      g_object_notify (G_OBJECT (changed1), "active");
+      GPtrArray *members = g_ptr_array_new_with_free_func (g_object_unref);
+      guint64 revision;
 
+      /* Command delivery is part of the state transition, not a consequence
+       * of notifying its proxies. A notify observer may transfer the display;
+       * publish notifications only after the command has seen the live owner.
+       * Keep an owning snapshot because command observers may alter the group.
+       * Its revision also rejects obsolete commands/notifications after nested
+       * selection, regrouping, or explicit disposal (ownership alone cannot). */
       for (slist = action->priv->group; slist; slist = slist->next)
         {
-          g_object_notify (slist->data, "current-value");
-          gimp_action_emit_change_state (GIMP_ACTION (slist->data),
+          GimpRadioAction *member = slist->data;
+          member->priv->revision++;
+          g_ptr_array_add (members, g_object_ref (member));
+        }
+      revision = action->priv->revision;
+      if (changed2)
+        _gimp_toggle_action_set_active (changed2, FALSE);
+      for (guint i = 0; i < members->len; i++)
+        {
+          gimp_action_emit_change_state (g_ptr_array_index (members, i),
                                          g_variant_new_int32 (current_value));
+          if (action->priv->revision != revision)
+            goto superseded;
+        }
+
+      if (changed2)
+        {
+          g_object_notify (G_OBJECT (changed2), "active");
+          if (action->priv->revision != revision)
+            goto superseded;
+          g_signal_emit_by_name (changed2, "toggled");
+          if (action->priv->revision != revision)
+            goto superseded;
+          g_object_notify (G_OBJECT (changed2), "enabled");
+          if (action->priv->revision != revision)
+            goto superseded;
+          g_object_notify (G_OBJECT (changed2), "state");
+          if (action->priv->revision != revision)
+            goto superseded;
+        }
+      g_object_notify (G_OBJECT (changed1), "active");
+      if (action->priv->revision != revision)
+        goto superseded;
+      for (guint i = 0; i < members->len; i++)
+        {
+          g_object_notify (g_ptr_array_index (members, i), "current-value");
+          if (action->priv->revision != revision)
+            goto superseded;
         }
       g_object_notify (G_OBJECT (changed1), "enabled");
+      if (action->priv->revision != revision)
+        goto superseded;
       g_object_notify (G_OBJECT (changed1), "state");
+    superseded:
+      g_ptr_array_unref (members);
     }
 }

@@ -35,7 +35,10 @@
 #include "core/gimpcontext.h"
 #include "core/gimpimagefile.h"  /* eek */
 
+#include "display/gimppaintercanvasui.h"
+
 #include "gimpaction.h"
+#include "gimpactiongroup.h"
 #include "gimpprocedureaction.h"
 #include "gimpview.h"
 #include "gimpviewrenderer.h"
@@ -59,6 +62,7 @@ struct _GimpActionPrivate
   /* This recursive pointer is needed for the finalize(). */
   GimpAction            *action;
   GimpActionGroup       *group;
+  GWeakRef               dispatch_gimp;
 
   gboolean               sensitive;
   gchar                 *disable_reason;
@@ -240,6 +244,29 @@ gimp_action_init (GimpAction *action)
 
 /*  public functions  */
 
+/* Consult the live topology at dispatch, not the last sensitivity update:
+ * an already-open menu and direct GAction calls can bypass window events. */
+gboolean
+gimp_action_dispatch_allowed (GimpAction *action)
+{
+  GimpActionPrivate *priv;
+  Gimp *gimp;
+  gboolean allowed;
+
+  g_return_val_if_fail (GIMP_IS_ACTION (action), FALSE);
+  priv = GET_PRIVATE (action);
+  if (! priv->group)
+    return TRUE;
+  /* The historical group back-pointer is not owning and may outlive its
+   * group. Never dereference it here or extend the application lifetime. */
+  gimp = g_weak_ref_get (&priv->dispatch_gimp);
+  if (! gimp)
+    return FALSE;
+  allowed = ! gimp_image_window_painter_actions_pending (gimp);
+  g_object_unref (gimp);
+  return allowed;
+}
+
 void
 gimp_action_emit_activate (GimpAction *action,
                            GVariant   *value)
@@ -249,7 +276,8 @@ gimp_action_emit_activate (GimpAction *action,
   if (value)
     g_variant_ref_sink (value);
 
-  g_signal_emit (action, action_signals[ACTIVATE], 0, value);
+  if (gimp_action_dispatch_allowed (action))
+    g_signal_emit (action, action_signals[ACTIVATE], 0, value);
 
   if (value)
     g_variant_unref (value);
@@ -264,7 +292,8 @@ gimp_action_emit_change_state (GimpAction *action,
   if (value)
     g_variant_ref_sink (value);
 
-  g_signal_emit_by_name (action, "change-state", value);
+  if (gimp_action_dispatch_allowed (action))
+    g_signal_emit_by_name (action, "change-state", value);
 
   if (value)
     g_variant_unref (value);
@@ -1220,6 +1249,7 @@ gimp_action_set_group (GimpAction      *action,
   g_return_if_fail (priv->group == NULL);
 
   priv->group = group;
+  g_weak_ref_set (&priv->dispatch_gimp, group->gimp);
 }
 
 /* This function is only meant to be run by the GimpActionGroup class. */
@@ -1298,6 +1328,7 @@ gimp_action_get_private (GimpAction *action)
   if (! priv)
     {
       priv = g_slice_new0 (GimpActionPrivate);
+      g_weak_ref_init (&priv->dispatch_gimp, NULL);
 
       g_object_set_qdata_full ((GObject *) action, private_key, priv,
                                (GDestroyNotify) gimp_action_private_finalize);
@@ -1309,6 +1340,7 @@ gimp_action_get_private (GimpAction *action)
 static void
 gimp_action_private_finalize (GimpActionPrivate *priv)
 {
+  g_weak_ref_clear (&priv->dispatch_gimp);
   g_clear_pointer (&priv->disable_reason, g_free);
   g_clear_object  (&priv->context);
   g_clear_object  (&priv->color);

@@ -34,6 +34,7 @@
 #include "config/gimpxmlparser.h"
 
 #include "core/gimp.h"
+#include "display/gimppaintercanvasui.h"
 
 #include "gimpaction.h"
 #include "gimpactiongroup.h"
@@ -417,7 +418,10 @@ gimp_ui_manager_update (GimpUIManager *manager,
 {
   g_return_if_fail (GIMP_IS_UI_MANAGER (manager));
 
-  g_signal_emit (manager, manager_signals[UPDATE], 0, update_data);
+  /* No-image synchronization can emit toggles against the still-selected
+   * image during a native transfer. Preserve state until ownership returns. */
+  if (! gimp_image_window_painter_actions_pending (manager->gimp))
+    g_signal_emit (manager, manager_signals[UPDATE], 0, update_data);
 }
 
 void

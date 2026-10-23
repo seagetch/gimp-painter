@@ -52,5 +52,9 @@ void               gimp_image_window_set_painter_toolbar (GimpImageWindow  *wind
                                                            gboolean          toolbar);
 GimpDisplay      * gimp_image_window_get_action_display   (GimpImageWindow  *window);
 
+/* Suppress synchronous actions while a selected live image has no valid
+ * native owner/membership during a Painter toolbar transfer. */
+gboolean gimp_image_window_painter_actions_pending (Gimp *gimp);
+
 G_END_DECLS
 #endif

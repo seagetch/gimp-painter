@@ -11,6 +11,7 @@
 #include <gtk/gtk.h>
 
 #include "libgimpbase/gimpbase.h"
+#include "libgimpconfig/gimpconfig.h"
 #include "libgimpwidgets/gimpwidgets.h"
 #include "core/core-types.h"
 #include "widgets/widgets-types.h"
@@ -45,6 +46,9 @@
 #include "widgets/gimppaintercompactoptions.h"
 #include "widgets/gimptooloptionseditor.h"
 #include "widgets/gimpuimanager.h"
+#include "widgets/gimpactiongroup.h"
+#include "widgets/gimptoggleaction.h"
+#include "widgets/gimpradioaction.h"
 #include "widgets/gimpwidgets-utils.h"
 #include "widgets/gimpwindowstrategy.h"
 #include "actions/actions-types.h"
@@ -2279,6 +2283,9 @@ session_save_fresh_restore (void)
   }
 }
 
+// Task 29.010/toolbar-transfer-menu-transaction.
+#include "test-painter-toolbar-transfer.inc"
+
 static void
 run_case (gconstpointer data)
 {
@@ -2318,6 +2325,10 @@ main (int argc, char **argv)
   ADD ("startup/painter-single", startup_and_native_reuse, TRUE, TRUE);
   ADD ("startup/painter-multi", startup_and_native_reuse, TRUE, FALSE);
   ADD ("single-mode-painter-preserves-external-docks", single_mode_painter_preserves_external_docks, FALSE, TRUE);
+  ADD ("transfer-radio-command-supersession", transfer_radio_command_supersession, TRUE, FALSE);
+  ADD ("transfer-radio-notification", transfer_radio_notification, TRUE, FALSE);
+  ADD ("transfer-action-publication", transfer_action_publication, TRUE, FALSE);
+  ADD ("transfer-global-actions", transfer_global_actions, TRUE, FALSE);
   ADD ("new-open-focus-routing", new_open_and_focus_routing, TRUE, FALSE);
   ADD ("host-actions-close-accelerator", host_actions_and_close_accelerator, TRUE, FALSE);
   ADD ("nested-conversion-supersession", nested_conversion_supersession, TRUE, FALSE);

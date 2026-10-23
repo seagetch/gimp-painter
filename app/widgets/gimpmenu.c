@@ -709,6 +709,15 @@ gimp_menu_toggle_item_toggled (GtkWidget *item,
 {
   gboolean active = gtk_check_menu_item_get_active (GTK_CHECK_MENU_ITEM (item));
 
+  if (! gimp_action_dispatch_allowed (GIMP_ACTION (action)))
+    {
+      /* GtkCheckMenuItem already toggled before this callback. Reconcile the
+       * proxy without running the action or leaving a phantom checkmark. */
+      gimp_menu_toggle_action_toggled (GIMP_ACTION (action),
+                                       GTK_CHECK_MENU_ITEM (item));
+      return;
+    }
+
   g_signal_handlers_block_by_func (action,
                                    G_CALLBACK (gimp_menu_toggle_action_toggled),
                                    item);
