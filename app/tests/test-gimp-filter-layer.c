@@ -2645,6 +2645,8 @@ static void image_close_during_strong_redo_callbacks (void) { undo_owner_lifetim
 #include "test-filter-sharpen.inc"
 #include "test-filter-threshold-context.inc"
 #include "test-filter-sobel-context.inc"
+#include "test-filter-max-rgb-context.inc"
+#include "test-filter-max-rgb-capture.inc"
 
 static void
 blinds_assert_saved_arguments (GimpFilterLayer *filter,
@@ -2788,6 +2790,14 @@ int main (int argc, char **argv)
   ADD (threshold_partial_import_lifecycle); ADD (threshold_real_routes_unchanged);
   ADD (threshold_idle_unchanged_notification); ADD (threshold_projection_input_bounds);
   ADD (threshold_actual_old_projection_history);
+  ADD (max_rgb_integer_native_route); ADD (max_rgb_invalid_definitions_keep_cache);
+  ADD (max_rgb_gray_unsupported); ADD (max_rgb_tiny_selection_routes);
+  ADD (max_rgb_late_context_routes); ADD (max_rgb_component_masks);
+  ADD (max_rgb_sealed_context_routes); ADD (max_rgb_outside_selection_no_merge);
+  ADD (max_rgb_cancel_replace_lower_close); ADD (max_rgb_partial_import_lifecycle);
+  ADD (max_rgb_native_profile_bytes); ADD (max_rgb_admission_preserves_cache);
+  ADD (max_rgb_real_routes_unchanged); ADD (max_rgb_projection_input_bounds);
+  ADD (max_rgb_actual_old_live); ADD (max_rgb_actual_old_projection_history);
   ADD (sobel_integer_native_route); ADD (sobel_invalid_definitions_keep_cache);
   ADD (sobel_tiny_selection_routes); ADD (sobel_unsupported_precision);
   ADD (sobel_late_context_routes); ADD (sobel_component_masks);

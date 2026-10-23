@@ -88,6 +88,43 @@ class Checks(unittest.TestCase):
         sobel['instrumented'].clear()
         self.assertIn('app/painter/filter-sobel.cpp', m.operation_config('sobel')['instrumented'])
 
+    def test_max_rgb_scope_is_separate_and_complete(self):
+        sharpen = m.operation_config('sharpen')
+        max_rgb = m.operation_config('max-rgb')
+        self.assertEqual(max_rgb['instrumented'] - sharpen['instrumented'],
+                         {'app/painter/filter-point-shadow.cpp',
+                          'app/core/gimpdrawablestack.c',
+                          'app/core/gimplayerstack.c',
+                          'app/core/gimpprojection.c'})
+        self.assertNotIn('app/painter/filter-sobel.cpp', max_rgb['instrumented'])
+        self.assertEqual(max_rgb['fixtures'], ['GIMP_PAINTER_SHARPEN_FIXTURES',
+                                              'GIMP_TEST_MAX_RGB_FIXTURE_DIR',
+                                              'GIMP_TEST_MAX_RGB_PROJECTION_FIXTURE_DIR'])
+        self.assertIn('tools/check_max_rgb_evidence.py', max_rgb['scripts'])
+        self.assertIn('tools/check_max_rgb_projection_evidence.py', max_rgb['scripts'])
+        self.assertEqual(max_rgb['report_format'], 'max-rgb-context-sanitizers-v1')
+        max_rgb['instrumented'].clear()
+        self.assertIn('app/painter/filter-point-shadow.cpp', m.operation_config('max-rgb')['instrumented'])
+
+    def test_private_harness_uses_registered_build_libraries_first(self):
+        info = self.root / 'meson-info'
+        info.mkdir()
+        first, second = self.root / 'libgimpconfig', self.root / 'libgimpbase'
+        first.mkdir(); second.mkdir()
+        rows = [{'name': name, 'env': {'LD_LIBRARY_PATH': str(first)+':'+str(second)}}
+                for name in m.TARGETS.values()]
+        path = info / 'intro-tests.json'
+        path.write_text(json.dumps(rows))
+        self.assertEqual(m.build_library_path(self.root, '/signed/deps/lib'),
+                         str(first)+':'+str(second)+':/signed/deps/lib')
+        self.assertEqual(m.build_library_path(self.root), str(first)+':'+str(second))
+        for invalid in [rows[:1], rows+[rows[0]],
+                        [{'name': name, 'env': {}} for name in m.TARGETS.values()],
+                        [{'name': name, 'env': {'LD_LIBRARY_PATH': '/usr/lib'}} for name in m.TARGETS.values()],
+                        [{'name': name, 'env': {'LD_LIBRARY_PATH': str(first)+':'}} for name in m.TARGETS.values()]]:
+            path.write_text(json.dumps(invalid))
+            with self.assertRaises(RuntimeError): m.build_library_path(self.root)
+
     def test_other_operation_report_is_not_overwritten(self):
         report = self.root / 'other.json'
         content = '{"report_format":"sharpen-context-sanitizers-v1","status":"passed"}'

@@ -25,6 +25,8 @@ from check_threshold_alpha_evidence import verify as verify_threshold_alpha
 from check_threshold_projection_evidence import verify as verify_threshold_projection
 from check_sobel_evidence import verify as verify_sobel
 from check_sobel_projection_evidence import verify as verify_sobel_projection
+from check_max_rgb_evidence import verify as verify_max_rgb
+from check_max_rgb_projection_evidence import verify as verify_max_rgb_projection
 COMMIT = "afa43fae3e920210146abed514f136fd49f671b5"
 BUNDLES = (
     ("legacy-filter-context", "GIMP_PAINTER_CONTEXT_FIXTURES", 280, 24,
@@ -108,6 +110,12 @@ def main(argv=None):
         sobel_projection = Path(temporary) / "sobel-projection"
         verify_sobel_projection(extract=sobel_projection)
         environment["GIMP_PAINTER_SOBEL_PROJECTION_FIXTURES"] = str(sobel_projection)
+        max_rgb = Path(temporary) / "max-rgb"
+        verify_max_rgb(extract=max_rgb)
+        environment["GIMP_TEST_MAX_RGB_FIXTURE_DIR"] = str(max_rgb)
+        max_rgb_projection = Path(temporary) / "max-rgb-projection"
+        verify_max_rgb_projection(extract=max_rgb_projection)
+        environment["GIMP_TEST_MAX_RGB_PROJECTION_FIXTURE_DIR"] = str(max_rgb_projection)
         return subprocess.run(command, env=environment).returncode
 
 

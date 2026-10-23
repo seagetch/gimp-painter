@@ -35,6 +35,12 @@
 static Gimp *gimp;
 static gchar *fixture_path (const gchar *name)
 {
+  if (g_str_has_prefix (name, "legacy-max-rgb-context/"))
+    {
+      const gchar *root = g_getenv ("GIMP_TEST_MAX_RGB_FIXTURE_DIR");
+      g_assert_nonnull (root); /* Genuine corpus materialization is mandatory. */
+      return g_build_filename (root, name + strlen ("legacy-max-rgb-context/"), NULL);
+    }
   if (g_str_has_prefix (name, "legacy-sobel-context/"))
     {
       const gchar *root = g_getenv ("GIMP_PAINTER_SOBEL_FIXTURES");
@@ -482,6 +488,7 @@ static void unknown_extension_preserves_destination (void)
 #include "test-painter-xcf-sharpen.inc"
 #include "test-painter-xcf-threshold.inc"
 #include "test-painter-xcf-sobel.inc"
+#include "test-painter-xcf-max-rgb.inc"
 
 int main (int argc, char **argv)
 {
@@ -497,6 +504,8 @@ int main (int argc, char **argv)
   ADD (threshold_active_save_close_reopen);
   ADD (sobel_old_writer_roundtrip); ADD (sobel_malformed_writer_capsules);
   ADD (sobel_active_save_close_reopen);
+  ADD (max_rgb_synthetic_capsule_roundtrip); ADD (max_rgb_malformed_capsules);
+  ADD (max_rgb_active_save_close_reopen); ADD (max_rgb_old_writer_roundtrip);
   result = g_test_run ();
   gimp_test_utils_set_gimp3_directory ("GIMP_TESTING_ABS_TOP_BUILDDIR", "app/tests/gimpdir-output");
   gimp_exit (gimp, TRUE); return result;

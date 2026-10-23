@@ -6,7 +6,9 @@ The historical default is Sharpen. --operation threshold-alpha adds the point
 shadow wrapper and requires verified Threshold Alpha, projection-history and
 Sharpen corpora. --operation sobel instruments the independent Sobel raster
 plus its changed host invalidation geometry, and requires verified Sobel,
-projection-history and Sharpen corpora. Selected
+projection-history and Sharpen corpora. --operation max-rgb instruments the
+raw point-shadow and host projection boundary units, requiring verified Max RGB
+base/large/projection and Sharpen corpora. Selected
 paths still run exactly as requested, with no implicit extra tests.
 
 First build both ordinary app/tests targets in the configured build environment.
@@ -91,7 +93,7 @@ SCRIPTS = {
 
 
 def operation_config(name):
-    if name not in ("sharpen", "threshold-alpha", "sobel"):
+    if name not in ("sharpen", "threshold-alpha", "sobel", "max-rgb"):
         raise ValueError("Unknown native operation: " + str(name))
     instrumented, scripts = set(INSTRUMENTED), set(SCRIPTS)
     fixtures = ["GIMP_PAINTER_SHARPEN_FIXTURES"]
@@ -101,6 +103,15 @@ def operation_config(name):
                         "tools/check_threshold_projection_evidence.py"})
         fixtures.extend(["GIMP_PAINTER_THRESHOLD_ALPHA_FIXTURES",
                          "GIMP_PAINTER_THRESHOLD_PROJECTION_FIXTURES"])
+    if name == "max-rgb":
+        instrumented.update({"app/painter/filter-point-shadow.cpp",
+                             "app/core/gimpdrawablestack.c",
+                             "app/core/gimplayerstack.c",
+                             "app/core/gimpprojection.c"})
+        scripts.update({"tools/check_max_rgb_evidence.py",
+                        "tools/check_max_rgb_projection_evidence.py"})
+        fixtures.extend(["GIMP_TEST_MAX_RGB_FIXTURE_DIR",
+                         "GIMP_TEST_MAX_RGB_PROJECTION_FIXTURE_DIR"])
     if name == "sobel":
         instrumented.update({"app/painter/filter-sobel.cpp",
                              "app/core/gimpdrawablestack.c",
@@ -113,6 +124,29 @@ def operation_config(name):
     return {"name": name, "instrumented": instrumented, "scripts": scripts,
             "fixtures": fixtures,
             "report_format": name + "-context-sanitizers-v1"}
+
+
+def build_library_path(build, inherited=""):
+    """Keep private harnesses on the same libraries as registered Meson tests."""
+    build = Path(build).resolve()
+    registry = json.loads((build / "meson-info/intro-tests.json").read_text())
+    selected = [row for row in registry if row.get("name") in TARGETS.values()]
+    if {row.get("name") for row in selected} != set(TARGETS.values()) or len(selected) != len(TARGETS):
+        raise RuntimeError("Missing or ambiguous registered sanitizer harness environment")
+    paths = []
+    for row in selected:
+        value = row.get("env", {}).get("LD_LIBRARY_PATH", "")
+        if not value:
+            raise RuntimeError("Registered harness has no build library path")
+        for item in value.split(":"):
+            path = Path(item)
+            if not item or not path.is_absolute() or not path.resolve().is_relative_to(build) or not path.is_dir():
+                raise RuntimeError("Registered harness library path is outside this build")
+            if str(path) not in paths:
+                paths.append(str(path))
+    if inherited:
+        paths.append(inherited)
+    return ":".join(paths)
 
 
 def sha(path):
@@ -359,6 +393,7 @@ class Run:
         report["display"] = {"DISPLAY": os.environ["DISPLAY"], "XAUTHORITY": str(authority),
                              "verification": "Authentication is owned by the outer secure-Xvfb wrapper; credential contents are never read"}
         env = dict(os.environ)
+        env["LD_LIBRARY_PATH"] = build_library_path(build, env.get("LD_LIBRARY_PATH", ""))
         mandatory = {"GIMP_TESTING_ABS_TOP_SRCDIR": str(ROOT),
                      "GIMP_TESTING_ABS_TOP_BUILDDIR": str(build)}
         for key, value in mandatory.items():
@@ -554,7 +589,7 @@ def positive_seconds(value):
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("build", type=Path)
-    parser.add_argument("--operation", choices=("sharpen", "threshold-alpha", "sobel"), default="sharpen")
+    parser.add_argument("--operation", choices=("sharpen", "threshold-alpha", "sobel", "max-rgb"), default="sharpen")
     parser.add_argument("--report", type=Path, required=True)
     parser.add_argument("--lock-fd", type=int, required=True)
     parser.add_argument("--lock-file", type=Path, default=Path("/workspace/shared/gimp-painter-build.lock"))

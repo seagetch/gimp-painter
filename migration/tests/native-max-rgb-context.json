@@ -1,0 +1,114 @@
+{
+  "status": "passed",
+  "scope": "Bounded nonlinear U8 RGB/RGBA native Max RGB owner context and strict legacy XCF execution",
+  "implementation_commit": "004f4c9c856909db5ff65dfae32f48b0f7bc6ced",
+  "tested_sources": {
+    "app/core/gimpfilterlayer.cpp": "9af782c13fa8f33b9a98ffcb71d2439084f43bebf1c58464dc0648d85233bc53",
+    "app/tests/test-gimp-filter-layer.c": "63c0794e5459e8e2f3f94504968da13a4162c758c2fb621b28642fa6bcd609d4",
+    "app/tests/test-filter-max-rgb-context.inc": "08d3116a32ff4abf9ad7614617b7f1a4d95af46387f5ce4a5679f40126d72b87",
+    "app/tests/test-filter-max-rgb-capture.inc": "b990ad35d7fefe5049638d5907cfcd0618b31f77514c5a0293e25cc0bad95395",
+    "app/tests/test-painter-xcf-open.c": "a9d4e71e3afedfeba12f4bc23e55e1eb27e56c04ffc64506a3a086ed6ddde437",
+    "app/tests/test-painter-xcf-max-rgb.inc": "bfc09894cd5828a4f92560b0b6a8baf7d9241a207b8a8b801189344a227c8d6b",
+    "app/xcf/painter-xcf-load.cpp": "265074cf39617f2914dc2e668be157c6520bf6ea421486e29b2f3d9fe701cf26",
+    "migration/tests/run_filter_owner_context_fixture_test.py": "47b9cefbcba2f0f141be0d4bdcedfd9759f4b51bd6a569d1dc3bd8873d002e1a",
+    "migration/tests/run_sharpen_context_sanitizers.py": "d7ca78d0d1d4234fc64089be2db2d1ab93e49397cc1ac3308d1a1444317025e3",
+    "migration/tests/test_sharpen_context_sanitizers.py": "72923fc066a9c024eddc196dc0a8357169114b3dcab225c3f3c1295708243269"
+  },
+  "default_build": {
+    "exit_code": 0,
+    "steps": 3459,
+    "registered_tests": 163
+  },
+  "normal": {
+    "passed_paths": 20,
+    "source_seals": 11942,
+    "source_changed": [],
+    "executables_unchanged": true,
+    "test_paths": [
+      "/gimp-filter-layer/max_rgb_integer_native_route",
+      "/gimp-filter-layer/max_rgb_invalid_definitions_keep_cache",
+      "/gimp-filter-layer/max_rgb_gray_unsupported",
+      "/gimp-filter-layer/max_rgb_tiny_selection_routes",
+      "/gimp-filter-layer/max_rgb_late_context_routes",
+      "/gimp-filter-layer/max_rgb_component_masks",
+      "/gimp-filter-layer/max_rgb_sealed_context_routes",
+      "/gimp-filter-layer/max_rgb_outside_selection_no_merge",
+      "/gimp-filter-layer/max_rgb_cancel_replace_lower_close",
+      "/gimp-filter-layer/max_rgb_partial_import_lifecycle",
+      "/gimp-filter-layer/max_rgb_native_profile_bytes",
+      "/gimp-filter-layer/max_rgb_admission_preserves_cache",
+      "/gimp-filter-layer/max_rgb_real_routes_unchanged",
+      "/gimp-filter-layer/max_rgb_projection_input_bounds",
+      "/gimp-filter-layer/max_rgb_actual_old_live",
+      "/gimp-filter-layer/max_rgb_actual_old_projection_history",
+      "/painter-xcf-open/max_rgb_synthetic_capsule_roundtrip",
+      "/painter-xcf-open/max_rgb_malformed_capsules",
+      "/painter-xcf-open/max_rgb_active_save_close_reopen",
+      "/painter-xcf-open/max_rgb_old_writer_roundtrip"
+    ]
+  },
+  "focused_sanitizers": {
+    "passed_paths": 20,
+    "instrumented_translation_units": 40,
+    "rtti_only_translation_units": 36,
+    "source_dependency_seals": 3064,
+    "ordinary_build_seals": 118,
+    "private_executable_seals": 2,
+    "fixture_seals": 5537,
+    "all_seals_unchanged": true,
+    "leak_detection": false,
+    "remaining_code": "Uninstrumented GIMP and dependencies; no whole-program sanitizer claim"
+  },
+  "genuine_legacy": {
+    "receipt": "migration/tests/max-rgb-capture-evidence.json",
+    "base_cases": 218,
+    "large_cases": 2,
+    "live_scenes": 126,
+    "live_output_comparisons": 176,
+    "projection_scenes": 16,
+    "projection_runs": 48,
+    "actual_old_writer_files": 14
+  },
+  "synthetic_xcf": {
+    "malformed_cases": 16,
+    "active_save_cases": 4,
+    "capsule_bytes": 68
+  },
+  "buffer_visibility": "Private raw output and distinct private native import; complete current-generation swap only. Retained completed buffers checked across running/partial import cancellation, replacement, lower changes and close. No whole-screen vsync guarantee.",
+  "controls": {
+    "capture": 31,
+    "sanitizer_runner": 19
+  },
+  "artifacts_sha256": {
+    "normal.json.gz": "aaf8f14b1ee0cdb33a4bc3dac079b014e426b5e87a5687214894d8dd1f166c9a",
+    "sanitizer.json.gz": "fc6ad1f61b85ceaa248a6c15ffd80cb8119e1fbedc0b54a858f0c8b8098b6c6a"
+  },
+  "retained_attempts": [
+    {
+      "kind": "legacy capture prefix",
+      "status": "failed before cases",
+      "receipt": "migration/tests/legacy-max-rgb-rejected-prefix-capture-report.json",
+      "resolution": "Resolve temporary plug-in symlink targets absolutely; regression tests added; fresh three captures passed"
+    },
+    {
+      "kind": "native sanitizer first attempt",
+      "status": "failed",
+      "owner_paths_passed": 16,
+      "xcf_paths_failed": 4,
+      "exit_code": 127,
+      "diagnostic": "undefined symbol: gimp_config_set_xcf_version",
+      "resolution": "Private harness had loaded extracted system GIMP library. Runner now prepends verified Meson registered build library paths; new controls and fresh normal/sanitizer runs passed"
+    }
+  ],
+  "not_covered": [
+    "Strict integrated aggregate for this commit (next gate)",
+    "Installed or UI parity",
+    "Other operating systems",
+    "Arbitrary PDB procedures",
+    "Indexed palette mutation or Gray raw Max RGB",
+    "General precision/real-route context expansion",
+    "Huge I/O and all latency/memory limits",
+    "LeakSanitizer",
+    "Whole-port completion"
+  ]
+}

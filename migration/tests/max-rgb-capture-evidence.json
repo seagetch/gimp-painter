@@ -1,0 +1,288 @@
+{
+  "schema_version": 1,
+  "status": "passed-bounded-old-runtime-capture-only",
+  "date": "2026-10-16",
+  "source_commit": "afa43fae3e920210146abed514f136fd49f671b5",
+  "accepted_baseline": "8f0a7eea7c25e539791369de3eecd7839583a801",
+  "coverage": {
+    "base_scenes": 218,
+    "large_scenes": 2,
+    "pdb_scenes": 94,
+    "live_scenes": 126,
+    "live_final_comparisons": 176,
+    "changed_source_reruns": 14,
+    "unchanged_source_reruns": 36,
+    "actual_merge_entry_mutations": 16,
+    "observed_strict_mid_work_mutations": 18,
+    "old_writer_files": 14,
+    "source_layouts": [
+      3,
+      4
+    ],
+    "live_output_layouts": [
+      4
+    ],
+    "projection_scenes": 16,
+    "projection_runs": 48,
+    "loaded_idle_controls": 8
+  },
+  "archives": {
+    "base": {
+      "archive": "migration/fixtures/legacy-max-rgb-context.tar.xz",
+      "archive_sha256": "67c571b0353d449bfed89c6f7a0780c8ea176adb0a616bd6f66ae89192ff0b28",
+      "manifest_sha256": "77a7a9d8d45152f1dc56f28cdf26cf4da8ac8bf9045114647a2f24625d69be79",
+      "report_sha256": "2540c736fb01a249bb47145ff1c21c44263165c967f2125521f5b72a3aeac9dd",
+      "expected_cases": 218,
+      "observed_cases": 218,
+      "member_count": 2606,
+      "uncompressed_bytes": 19056653,
+      "compressed_bytes": 315360,
+      "dictionary_bytes": 8388608,
+      "source_sha256": {
+        "app/core/gimpfilterlayer.cpp": "b65c569e13123fd9e89ab74c6178e75b20beaa3bd7072892314d905aa5781708",
+        "app/core/gimpdrawable-shadow.c": "4f7492e158f793c18144bb0f55df0ca8b70a5f6eac7048a2d3d1589c1268fa97",
+        "app/core/gimpdrawable-combine.c": "b6766935ce9a53b043d1bb631fa3bcd297c75f78aa27c809b2f80b76b82970a9",
+        "app/core/gimpitem.c": "ab94cf266e03ebbd5d7802b6bc6cddd1d8070a54cddbe822dbcd78a1618c60b0",
+        "app/core/gimplayer.c": "3da1fffe7178ae3434aeaa06da5e09919ed033fb9cb73f3122f9cc2c00dc1b54",
+        "app/core/gimpimage.c": "3ad0220951737f6a737457337a93772d32137afdf284808b1137fc49c22d48b1",
+        "app/paint-funcs/paint-funcs.c": "41a5b121529718048b8cf3d6a9edd5bf67fb7e0734664393ea3c2a497d6d1cb5",
+        "app/paint-funcs/paint-funcs-utils.h": "12917e95afa5dabb2ce961d2978878cd72c12632e5ff90426aa6eba14f04cc14",
+        "app/pdb/progress-cmds.c": "b46c25f5c2687217cda44d00b3eb501e78abc0d25c53dc69585789315a187845",
+        "app/pdb/pdb-cxx-utils.hpp": "d3d086928b1fa2104fb257f190f6e4032c6b45a6de8e3c8392d5e160f26d064e",
+        "plug-ins/common/max-rgb.c": "e783de344ff3230ad611453dd4b4c7f87a40ffa0b0fa4b49a40b4449283cfcc1",
+        "libgimp/gimpregioniterator.c": "1289b75a1c49185d9ddaa5f97b5a406b297eab78560854344e8b9a4da41213be",
+        "libgimp/gimpprogress.c": "d1a26e9008ff6d94d54feff49071586d7a742818fa648aa0c22b5eba00ef0098",
+        "app/core/gimpchannel.c": "749f7cd7f008495cedd59f381b91a940b30868b4477e369fb91ee5139e411f02",
+        "app/pdb/drawable-cmds.c": "0d952b31ff9c096bd82432aa1dfd158855f64a708613e47faef807cab8e086b6",
+        "libgimp/gimpdrawable_pdb.c": "d9aa1cf0f77fd62560c2be0dbe8378605e533845611ba263ca48c43884dfe11f",
+        "app/base/tile-manager.c": "c0f56f68295c900a6be2e5177e433a4f2767cc56a60164e1b8e107d484624b22",
+        "app/plug-in/gimpplugin-cleanup.c": "7e2e838ff205aa83b08f48cce0341146655e30df4e92bdfd478258a49c3f824b",
+        "app/xcf/xcf-save.c": "4fa9155d28054d62baa5b7c77bd17e27fbea254df1f68c85c2ac4708de1653ce",
+        "app/xcf/xcf-write.c": "ec8bce3cf10d36a99842e391723da968eaf1a3aa96e798e7bca9612c4303d09d",
+        "app/core/gimpparamspecs.c": "884a7dfe9e1a38a91ed2b5907a0b08cf1fec3f5c74af57f07455e5cb984cbfab",
+        "app/plug-in/gimppluginprocedure.c": "3427261876ccff141fbfa1cc2a5a9507442e8193665f2dc3f24d7f9629749b6d",
+        "app/plug-in/gimppluginmanager-call.c": "45f5130f4fbc21ee7d371d2cccdd88456edbc2878a451d8d719f3207be12001a",
+        "libgimp/gimppixelrgn.c": "46bb7842319e6eb9de56dcb58ed92853611a126793f2bd28309be0d571a7b7e1",
+        "libgimp/gimpdrawable.c": "b1254b63e66f72adde49d53aa6f846ba937e245b1a07b6ec9846c11ae7ad22e0"
+      },
+      "executable_sha256": {
+        "/workspace/shared/gimp-recovered-20261016/max-rgb-base-capture-work-2/.libs/legacy-max-rgb": "8a6da750bd6a5e4212b647d293d37c39619287706d3691766f66ad53a2e47f71",
+        "/workspace/shared/gimp-recovered-20261016/legacy-runtime/prefix/bin/gimp-2.8": "bc390a8418fcf267636b85107a574b1ff9f6a786ee8e6e046de761b6b7b7f1ee",
+        "/workspace/shared/gimp-recovered-20261016/legacy-runtime/prefix/lib/gimp/2.0/plug-ins/max-rgb": "d8e750f3b8b9b2b52943ae973f038817bdb653d065ea807ada63ead680c25c7c"
+      },
+      "original_source_seal_unchanged": true,
+      "original_executable_seal_unchanged": true,
+      "runtime_diagnostics": [
+        "(process:436): GLib-GObject-CRITICAL **: 22:09:22.361: g_value_set_object: assertion 'G_VALUE_HOLDS_OBJECT (value)' failed",
+        "(process:436): GLib-GObject-CRITICAL **: 22:09:22.361: g_value_set_object: assertion 'G_VALUE_HOLDS_OBJECT (value)' failed",
+        "Failed to parse tag cache: No such file or directory"
+      ],
+      "raw_proof": {
+        "raw_pixels_checked": 395084,
+        "chosen_channel_tie_pixels": 124808,
+        "hidden_rgb_raw_changed_pixels": 13123
+      },
+      "zero_alpha_hidden_color_channels": 178339,
+      "projection_proof": null
+    },
+    "large": {
+      "archive": "migration/fixtures/legacy-max-rgb-large.tar.xz",
+      "archive_sha256": "ed6abdcfe75be94fc6971fa400f9607386ba047a717f009e6b3a1df34dff0306",
+      "manifest_sha256": "6fa51b03fa776e25d9b96e22be5e3a89a7a5c76f24fcf8d69f84940cd5fc065c",
+      "report_sha256": "6cee0c54271c7c8663cc585da7584a2644318f5b51135904e149c7e5c53c4d70",
+      "expected_cases": 2,
+      "observed_cases": 2,
+      "member_count": 58,
+      "uncompressed_bytes": 120287769,
+      "compressed_bytes": 267644,
+      "dictionary_bytes": 33554432,
+      "source_sha256": {
+        "app/core/gimpfilterlayer.cpp": "b65c569e13123fd9e89ab74c6178e75b20beaa3bd7072892314d905aa5781708",
+        "app/core/gimpdrawable-shadow.c": "4f7492e158f793c18144bb0f55df0ca8b70a5f6eac7048a2d3d1589c1268fa97",
+        "app/core/gimpdrawable-combine.c": "b6766935ce9a53b043d1bb631fa3bcd297c75f78aa27c809b2f80b76b82970a9",
+        "app/core/gimpitem.c": "ab94cf266e03ebbd5d7802b6bc6cddd1d8070a54cddbe822dbcd78a1618c60b0",
+        "app/core/gimplayer.c": "3da1fffe7178ae3434aeaa06da5e09919ed033fb9cb73f3122f9cc2c00dc1b54",
+        "app/core/gimpimage.c": "3ad0220951737f6a737457337a93772d32137afdf284808b1137fc49c22d48b1",
+        "app/paint-funcs/paint-funcs.c": "41a5b121529718048b8cf3d6a9edd5bf67fb7e0734664393ea3c2a497d6d1cb5",
+        "app/paint-funcs/paint-funcs-utils.h": "12917e95afa5dabb2ce961d2978878cd72c12632e5ff90426aa6eba14f04cc14",
+        "app/pdb/progress-cmds.c": "b46c25f5c2687217cda44d00b3eb501e78abc0d25c53dc69585789315a187845",
+        "app/pdb/pdb-cxx-utils.hpp": "d3d086928b1fa2104fb257f190f6e4032c6b45a6de8e3c8392d5e160f26d064e",
+        "plug-ins/common/max-rgb.c": "e783de344ff3230ad611453dd4b4c7f87a40ffa0b0fa4b49a40b4449283cfcc1",
+        "libgimp/gimpregioniterator.c": "1289b75a1c49185d9ddaa5f97b5a406b297eab78560854344e8b9a4da41213be",
+        "libgimp/gimpprogress.c": "d1a26e9008ff6d94d54feff49071586d7a742818fa648aa0c22b5eba00ef0098",
+        "app/core/gimpchannel.c": "749f7cd7f008495cedd59f381b91a940b30868b4477e369fb91ee5139e411f02",
+        "app/pdb/drawable-cmds.c": "0d952b31ff9c096bd82432aa1dfd158855f64a708613e47faef807cab8e086b6",
+        "libgimp/gimpdrawable_pdb.c": "d9aa1cf0f77fd62560c2be0dbe8378605e533845611ba263ca48c43884dfe11f",
+        "app/base/tile-manager.c": "c0f56f68295c900a6be2e5177e433a4f2767cc56a60164e1b8e107d484624b22",
+        "app/plug-in/gimpplugin-cleanup.c": "7e2e838ff205aa83b08f48cce0341146655e30df4e92bdfd478258a49c3f824b",
+        "app/xcf/xcf-save.c": "4fa9155d28054d62baa5b7c77bd17e27fbea254df1f68c85c2ac4708de1653ce",
+        "app/xcf/xcf-write.c": "ec8bce3cf10d36a99842e391723da968eaf1a3aa96e798e7bca9612c4303d09d",
+        "app/core/gimpparamspecs.c": "884a7dfe9e1a38a91ed2b5907a0b08cf1fec3f5c74af57f07455e5cb984cbfab",
+        "app/plug-in/gimppluginprocedure.c": "3427261876ccff141fbfa1cc2a5a9507442e8193665f2dc3f24d7f9629749b6d",
+        "app/plug-in/gimppluginmanager-call.c": "45f5130f4fbc21ee7d371d2cccdd88456edbc2878a451d8d719f3207be12001a",
+        "libgimp/gimppixelrgn.c": "46bb7842319e6eb9de56dcb58ed92853611a126793f2bd28309be0d571a7b7e1",
+        "libgimp/gimpdrawable.c": "b1254b63e66f72adde49d53aa6f846ba937e245b1a07b6ec9846c11ae7ad22e0"
+      },
+      "executable_sha256": {
+        "/workspace/shared/gimp-recovered-20261016/max-rgb-large-capture-work/.libs/legacy-max-rgb": "a9225e2fe761da249c16ff89fe1a8e66c5a7a8802be1a146a7f58d33d886ba9d",
+        "/workspace/shared/gimp-recovered-20261016/legacy-runtime/prefix/bin/gimp-2.8": "bc390a8418fcf267636b85107a574b1ff9f6a786ee8e6e046de761b6b7b7f1ee",
+        "/workspace/shared/gimp-recovered-20261016/legacy-runtime/prefix/lib/gimp/2.0/plug-ins/max-rgb": "d8e750f3b8b9b2b52943ae973f038817bdb653d065ea807ada63ead680c25c7c"
+      },
+      "original_source_seal_unchanged": true,
+      "original_executable_seal_unchanged": true,
+      "runtime_diagnostics": [
+        "(process:436): GLib-GObject-CRITICAL **: 22:09:46.474: g_value_set_object: assertion 'G_VALUE_HOLDS_OBJECT (value)' failed",
+        "(process:436): GLib-GObject-CRITICAL **: 22:09:46.474: g_value_set_object: assertion 'G_VALUE_HOLDS_OBJECT (value)' failed",
+        "Failed to parse tag cache: No such file or directory"
+      ],
+      "raw_proof": {
+        "raw_pixels_checked": 2639862,
+        "chosen_channel_tie_pixels": 832715,
+        "hidden_rgb_raw_changed_pixels": 82495
+      },
+      "zero_alpha_hidden_color_channels": 2618703,
+      "projection_proof": null
+    },
+    "projection": {
+      "archive": "migration/fixtures/legacy-max-rgb-projection.tar.xz",
+      "archive_sha256": "e4f145a116a7672073e31711bcb9a30dcadea79cef20d2f79eb4934dfadc4468",
+      "manifest_sha256": "253d4b19f9c7fe31b2bc999f382e7c10387ec432a90cb9d2e828692f8c686bd5",
+      "report_sha256": "f41b02949a008c5ae3f96922a1c1d775ef10fea8f2bec3ce5c47871a03ce15ab",
+      "expected_cases": 16,
+      "observed_cases": 16,
+      "member_count": 574,
+      "uncompressed_bytes": 822686,
+      "compressed_bytes": 52688,
+      "dictionary_bytes": 8388608,
+      "source_sha256": {
+        "app/core/gimpfilterlayer.cpp": "b65c569e13123fd9e89ab74c6178e75b20beaa3bd7072892314d905aa5781708",
+        "app/core/gimpdrawable-shadow.c": "4f7492e158f793c18144bb0f55df0ca8b70a5f6eac7048a2d3d1589c1268fa97",
+        "app/core/gimpdrawable-combine.c": "b6766935ce9a53b043d1bb631fa3bcd297c75f78aa27c809b2f80b76b82970a9",
+        "app/core/gimpitem.c": "ab94cf266e03ebbd5d7802b6bc6cddd1d8070a54cddbe822dbcd78a1618c60b0",
+        "app/core/gimplayer.c": "3da1fffe7178ae3434aeaa06da5e09919ed033fb9cb73f3122f9cc2c00dc1b54",
+        "app/core/gimpimage.c": "3ad0220951737f6a737457337a93772d32137afdf284808b1137fc49c22d48b1",
+        "app/paint-funcs/paint-funcs.c": "41a5b121529718048b8cf3d6a9edd5bf67fb7e0734664393ea3c2a497d6d1cb5",
+        "app/paint-funcs/paint-funcs-utils.h": "12917e95afa5dabb2ce961d2978878cd72c12632e5ff90426aa6eba14f04cc14",
+        "app/pdb/progress-cmds.c": "b46c25f5c2687217cda44d00b3eb501e78abc0d25c53dc69585789315a187845",
+        "app/pdb/pdb-cxx-utils.hpp": "d3d086928b1fa2104fb257f190f6e4032c6b45a6de8e3c8392d5e160f26d064e",
+        "plug-ins/common/max-rgb.c": "e783de344ff3230ad611453dd4b4c7f87a40ffa0b0fa4b49a40b4449283cfcc1",
+        "libgimp/gimpregioniterator.c": "1289b75a1c49185d9ddaa5f97b5a406b297eab78560854344e8b9a4da41213be",
+        "libgimp/gimpprogress.c": "d1a26e9008ff6d94d54feff49071586d7a742818fa648aa0c22b5eba00ef0098",
+        "app/core/gimpgrouplayer.c": "66dbca9480720c4bad1983e4bb2ede63dcc6f89f2be479a2f097e4d44553bfea",
+        "app/core/gimpchannel.c": "749f7cd7f008495cedd59f381b91a940b30868b4477e369fb91ee5139e411f02",
+        "app/core/gimpprojection.c": "53da0effbdd0cd6a2f8fa7be16f2cac6d2e432c43874be936d1786b518cc1c2c",
+        "app/base/tile-manager.c": "c0f56f68295c900a6be2e5177e433a4f2767cc56a60164e1b8e107d484624b22",
+        "app/plug-in/gimpplugin-cleanup.c": "7e2e838ff205aa83b08f48cce0341146655e30df4e92bdfd478258a49c3f824b",
+        "app/xcf/xcf-save.c": "4fa9155d28054d62baa5b7c77bd17e27fbea254df1f68c85c2ac4708de1653ce",
+        "app/xcf/xcf-write.c": "ec8bce3cf10d36a99842e391723da968eaf1a3aa96e798e7bca9612c4303d09d",
+        "app/core/gimpparamspecs.c": "884a7dfe9e1a38a91ed2b5907a0b08cf1fec3f5c74af57f07455e5cb984cbfab",
+        "app/plug-in/gimppluginprocedure.c": "3427261876ccff141fbfa1cc2a5a9507442e8193665f2dc3f24d7f9629749b6d",
+        "app/plug-in/gimppluginmanager-call.c": "45f5130f4fbc21ee7d371d2cccdd88456edbc2878a451d8d719f3207be12001a",
+        "libgimp/gimppixelrgn.c": "46bb7842319e6eb9de56dcb58ed92853611a126793f2bd28309be0d571a7b7e1",
+        "libgimp/gimpdrawable.c": "b1254b63e66f72adde49d53aa6f846ba937e245b1a07b6ec9846c11ae7ad22e0"
+      },
+      "executable_sha256": {
+        "/workspace/shared/gimp-recovered-20261016/max-rgb-projection-capture-work/.libs/legacy-max-rgb-projection": "aab84979d5a33ba5719bdb927a42184e719214e5b6eebd356cf0d19e78fcc396",
+        "/workspace/shared/gimp-recovered-20261016/legacy-runtime/prefix/bin/gimp-2.8": "bc390a8418fcf267636b85107a574b1ff9f6a786ee8e6e046de761b6b7b7f1ee",
+        "/workspace/shared/gimp-recovered-20261016/legacy-runtime/prefix/lib/gimp/2.0/plug-ins/max-rgb": "d8e750f3b8b9b2b52943ae973f038817bdb653d065ea807ada63ead680c25c7c"
+      },
+      "original_source_seal_unchanged": true,
+      "original_executable_seal_unchanged": true,
+      "runtime_diagnostics": [
+        "(process:895): GLib-GObject-CRITICAL **: 22:10:08.399: g_value_set_object: assertion 'G_VALUE_HOLDS_OBJECT (value)' failed",
+        "(process:895): GLib-GObject-CRITICAL **: 22:10:08.399: g_value_set_object: assertion 'G_VALUE_HOLDS_OBJECT (value)' failed",
+        "Failed to parse tag cache: No such file or directory"
+      ],
+      "raw_proof": {
+        "raw_pixels_checked": 0,
+        "chosen_channel_tie_pixels": 0,
+        "hidden_rgb_raw_changed_pixels": 0
+      },
+      "zero_alpha_hidden_color_channels": 0,
+      "projection_proof": {
+        "preserved_after_first_run_pixels": 888,
+        "nonzero_preserved_pixels": 444,
+        "retained_pixels_changed_from_seed": 314,
+        "group_outside_image_pixels": 2664,
+        "raw_pixels_checked": 10608,
+        "zero_alpha_hidden_color_channels": 708
+      }
+    }
+  },
+  "verification": {
+    "pure_python_control_tests": 31,
+    "pure_python_status": "passed",
+    "context_validator": {
+      "base_report_sha256": "2540c736fb01a249bb47145ff1c21c44263165c967f2125521f5b72a3aeac9dd",
+      "case_count": 220,
+      "large_archive_sha256": "ed6abdcfe75be94fc6971fa400f9607386ba047a717f009e6b3a1df34dff0306",
+      "large_live_cases": 2,
+      "live_cases": 126,
+      "old_writer_files": 14,
+      "pdb_cases": 94,
+      "source_commit": "afa43fae3e920210146abed514f136fd49f671b5"
+    },
+    "projection_validator": {
+      "case_count": 16,
+      "group_outside_image_pixels": 2664,
+      "live_runs": 48,
+      "nonzero_preserved_pixels": 444,
+      "output_layouts": [
+        4
+      ],
+      "preserved_after_first_run_pixels": 888,
+      "raw_pixels_checked": 10608,
+      "report_sha256": "f41b02949a008c5ae3f96922a1c1d775ef10fea8f2bec3ce5c47871a03ce15ab",
+      "retained_pixels_changed_from_seed": 314,
+      "source_commit": "afa43fae3e920210146abed514f136fd49f671b5",
+      "source_layouts": [
+        3,
+        4
+      ],
+      "zero_alpha_hidden_color_channels": 708
+    },
+    "commands": [
+      "PYTHONPYCACHEPREFIX=/tmp/max-rgb-python-cache python3 tools/tests/test_max_rgb_capture.py",
+      "python3 tools/check_max_rgb_evidence.py --extract <fresh-empty-context-directory>",
+      "python3 tools/check_max_rgb_projection_evidence.py --extract <fresh-empty-projection-directory>"
+    ]
+  },
+  "artifact_audit": {
+    "regular_members_only": true,
+    "symlinks": 0,
+    "hardlinks": 0,
+    "unexpected_nested_members": 0,
+    "source_and_mask_provenance": "Every captured synthetic source/sourceN and mask is independently regenerated and compared, without generating oracle output artifacts.",
+    "privacy": "Fresh temporary profiles; no connected accounts, user images, or credentials are used. Text/log/source scan found no private-key headers, AWS key IDs, bearer tokens, or GitHub token matches.",
+    "audit_scope": "Finite capture lineage and bounded archive member/content audit; not a generic secret-scanner guarantee."
+  },
+  "rejected_attempt": {
+    "status": "failed-before-any-case",
+    "exit_code": -6,
+    "observed_cases": 0,
+    "cause": "Relative plug-in prefix formed a dangling symlink inside the isolated temporary profile; original procedure lookup asserted.",
+    "fix": "Both producers and run helpers resolve the prefix before symlink creation; regression inspects actual temporary symlinks for relative-prefix invocations.",
+    "replacement": "Fresh base, large, and projection captures passed; rejected attempt is never part of accepted corpus.",
+    "report": "migration/tests/legacy-max-rgb-rejected-prefix-capture-report.json",
+    "report_sha256": "13c2efc69e3fe44ba7921ba2a0b2181ee69c0a2b6d3031b00df13cd06ca2f54e",
+    "log": "migration/tests/legacy-max-rgb-rejected-prefix-capture.log.gz",
+    "log_sha256": "9f02d0678f893bc669538526da0ad5d48d03682122f2831a346c4adb8f21df6f"
+  },
+  "final_tooling_sha256": {
+    "tools/capture_legacy_max_rgb.py": "686f7bb6f14f036367d7c43dc3232964e5df7b676a9d2683b49f1a48432eb401",
+    "tools/capture_legacy_max_rgb_projection.py": "32afe95577e61c828be4d32dedec87bd7e2eb9bffaa4cd181dde9ad8693d4264",
+    "tools/check_max_rgb_evidence.py": "b415b1d00173d7fe6845dada6bebdcaca4a540124480af464b664e8d6f8f3962",
+    "tools/check_max_rgb_projection_evidence.py": "547004ba9d91bad610e5f44afb1d8eff2d8989efad61cd445dced48c83e61687",
+    "migration/tests/legacy-max-rgb-capture.c": "5652264d7b6732e507458c4073f836f751511f2f8813b87fe682c9621fb6af2b",
+    "migration/tests/legacy-max-rgb-projection-capture.c": "dcaa69afaa309a318817b39c1fdb93eb2da5ba78003a26a017d3dbbb606a6ff6",
+    "tools/tests/test_max_rgb_capture.py": "083d42b3352937636badfd5dd4c07cb2fbe0e3bbf391166e47b544d0f412a5c9",
+    "tools/seal_legacy_max_rgb_capture.py": "76d96a8571ba704866bd37a71a28f7da2c9ebceb4238523170a5e5039863a2a5",
+    "migration/fixtures/legacy-max-rgb-README.md": "f1b6ebe4f496e19aa626dab05e7fb94d47dd737f470c1d0f812072bf27e32cdc"
+  },
+  "limits": [
+    "Native owner and XCF consumer acceptance is separate.",
+    "General precision, huge actual I/O, installed UI, other operating systems, and whole-project/whole-port acceptance are not established.",
+    "Seeded projection scenes exercise actual mark-as-loaded API, not actual XCF reopening.",
+    "Known old startup diagnostics are retained, not asserted warning-free."
+  ]
+}
