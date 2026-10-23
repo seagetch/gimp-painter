@@ -1,0 +1,23 @@
+{
+  "task": "09.014",
+  "criterion_status": "DONE",
+  "original_action": "色変換の配置を実装する",
+  "original_acceptance": "採色と合成で意図しない二重変換がない",
+  "dependencies": [
+    "09.013"
+  ],
+  "duties": [],
+  "whole_legacy_feature_complete": false,
+  "compatibility_policies": {
+    "migration/contracts/mypaint-gray-surface.md": "fa9735dfae8bebac926c344c4458d670bcb71cfe28b713a7b30ac135179c881c",
+    "migration/contracts/mypaint-native-precision.md": "afdc8dfe607cadc11095f041402f11ad35baa285411d7e4f810582620da6e8da"
+  },
+  "deferred_criteria": {
+    "09.015": "高精度・色空間変換の扱いを実装する; unsupported 時も情報を黙って欠落させない",
+    "09.016": "buffer 基盤の境界試験を作る; 小画像・負座標・端・alpha・stride を検証",
+    "09.017": "buffer 基盤の Undo 試験を作る; 描画前後の差分と復元が一致"
+  },
+  "evidence": [
+    "migration/tests/color-placement/report.json"
+  ]
+}

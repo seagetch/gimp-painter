@@ -1,0 +1,26 @@
+[
+  {
+    "name": "missing-ingress",
+    "exit_code": -6,
+    "test": "/color-placement/composition-background",
+    "rejected": true,
+    "old": "babl_process(babl_fish(evaluation,working),input,result,1);",
+    "new": "std::memcpy(result,input,sizeof result);"
+  },
+  {
+    "name": "double-ingress",
+    "exit_code": -6,
+    "test": "/color-placement/composition-background",
+    "rejected": true,
+    "old": "babl_process(babl_fish(evaluation,working),input,result,1);",
+    "new": "babl_process(babl_fish(evaluation,working),input,result,1); double second[4];std::memcpy(second,result,sizeof second);babl_process(babl_fish(evaluation,working),second,result,1);"
+  },
+  {
+    "name": "missing-egress",
+    "exit_code": -6,
+    "test": "/color-placement/sample-after-native-average",
+    "rejected": true,
+    "old": "babl_process(babl_fish(working,evaluation),pixel,output,1);",
+    "new": "std::memcpy(output,pixel,sizeof pixel);"
+  }
+]

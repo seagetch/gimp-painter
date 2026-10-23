@@ -1,0 +1,7 @@
+{
+  "name": "missing-context-to-profile-ingress",
+  "exit_code": 1,
+  "rejected": true,
+  "old": "gegl_color_get_pixel(gimp_context_get_foreground(GIMP_CONTEXT(options.get())),GeglSurface::evaluation_format(gimp_drawable_get_buffer(d)),rgba);",
+  "new": "gegl_color_get_pixel(gimp_context_get_foreground(GIMP_CONTEXT(options.get())),babl_format(\"R'G'B'A double\"),rgba);"
+}

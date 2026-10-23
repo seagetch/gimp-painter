@@ -121,3 +121,12 @@ if not meson.is_cross_build()
     env: ['GEGL_USE_OPENCL=no', 'GEGL_SWAP=RAM', 'GEGL_THREADS=1'],
     suite: 'painter', timeout: 60)
 endif
+
+# Exactly-once evaluator/native conversion and intentional byte-Gray policy.
+painter_color_placement = executable('painter-mypaint-color-placement',
+  'tests/color-placement.cpp', dependencies: [painter_mypaint_surface_dep, lcms],
+  cpp_args: painter_cpp_args, override_options: ['cpp_std=c++14'])
+if not meson.is_cross_build()
+  test('painter-mypaint-color-placement', painter_color_placement,
+    env: ['GEGL_USE_OPENCL=no', 'GEGL_SWAP=RAM'], suite: 'painter', timeout: 60)
+endif

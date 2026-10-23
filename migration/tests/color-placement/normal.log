@@ -1,0 +1,11 @@
+TAP version 14
+# random seed: R02S77045b2e604501bd0b159eb8fc5b9000
+1..3
+# Start of color-placement tests
+# 24 exact placement cells: native composition and background, builtin/custom RGB/Gray, all TRCs, incremental/floating
+ok 1 /color-placement/composition-background
+# 12 native alpha-weighted sampling cells; 5 distinguish convert-after-average from premature conversion
+ok 2 /color-placement/sample-after-native-average
+# 4 historical byte-Gray red-component/replicated-sample policies preserved; no luminance reinterpretation
+ok 3 /color-placement/intentional-byte-gray
+# End of color-placement tests

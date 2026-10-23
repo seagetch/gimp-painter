@@ -1,0 +1,22 @@
+ninja: Entering directory `<native>/build-port'
+[1/27] Generating symbol file libgimpbase/libgimpbase-3.0.so.0.8.1.p/libgimpbase-3.0.so.0.8.1.symbols
+[2/24] Generating symbol file libgimpcolor/libgimpcolor-3.0.so.0.8.1.p/libgimpcolor-3.0.so.0.8.1.symbols
+[3/24] Generating symbol file libgimpmath/libgimpmath-3.0.so.0.8.1.p/libgimpmath-3.0.so.0.8.1.symbols
+[4/23] Generating git-version.h.in.1 with a custom command
+[5/23] Generating symbol file libgimpconfig/libgimpconfig-3.0.so.0.8.1.p/libgimpconfig-3.0.so.0.8.1.symbols
+[6/21] Generating git-version.h.in.2 with a custom command
+[7/21] Generating git-version.h with a custom command
+[8/15] Generating symbol file libgimpmodule/libgimpmodule-3.0.so.0.8.1.p/libgimpmodule-3.0.so.0.8.1.symbols
+[9/15] Generating symbol file libgimpthumb/libgimpthumb-3.0.so.0.8.1.p/libgimpthumb-3.0.so.0.8.1.symbols
+[10/15] Generating symbol file libgimpwidgets/libgimpwidgets-3.0.so.0.8.1.p/libgimpwidgets-3.0.so.0.8.1.symbols
+[11/15] Generating app/tests/icon-theme-fixture/gimp-test-icon-theme-fixture with a custom command
+{"files": 1191, "manifest_sha256": "2f790ebf02244ef3c023f17f16ab614cbc315ee46d46abd87b7f73d4d5d9be41", "ownership_marker_sha256": "d3ebe76f57bdce73e82df17c3cd89f1a630f42f3c8d72dbfdacd4a000061b8bf", "plan_sha256": "0a16da7a76b5facf2d3d8084793b72e28d32d17c7ff6bf237d164075d4af4b95", "stamp_sha256": "c20e592420d8f1feb8e044c6114f8ed009473d411042806fd6e9aadd50c7ffc9", "status": "verified"}
+[12/15] Compiling C++ object app/paint/painter-mypaint-surface/painter-mypaint-color-placement.p/tests_color-placement.cpp.o
+[13/15] Linking target app/paint/painter-mypaint-surface/painter-mypaint-color-placement
+[14/15] Compiling C++ object app/tests/painter-mypaint-precision.p/test-painter-mypaint-precision.cpp.o
+../source/app/tests/test-painter-mypaint-precision.cpp:44:8: warning: ‘CancelDuring’ declared with greater visibility than the type of its field ‘CancelDuring::core’ [-Wattributes]
+   44 | struct CancelDuring {PaintCore*core;bool fired=false;};
+      |        ^~~~~~~~~~~~
+[15/15] Linking target app/tests/painter-mypaint-precision
+INFO: autodetecting backend as ninja
+INFO: calculating backend command to run: <dependencies>/root/usr/bin/ninja -C <native>/build-port -j 4 app/tests/painter-mypaint-precision app/paint/painter-mypaint-surface/painter-mypaint-color-placement
