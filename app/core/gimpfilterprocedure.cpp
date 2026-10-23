@@ -262,6 +262,39 @@ gchar *private_display_name (Gimp *, gint, GObject **monitor, gint *number) noex
   return nullptr;
 }
 
+void drain_private_swap () noexcept
+{
+  /* GEGL 0.4's writer also queues OP_DESTROY when the last buffer reference
+   * goes away. Those operations carry no queued bytes, so queued-total == 0
+   * is not a drain condition. After the sole producer has released every
+   * request object and Gimp, swap-busy becomes false only after the writer
+   * has finished its current operation and reached an empty queue. Calling
+   * gegl_exit earlier tells that writer to stop, abandoning pending destroys.
+   * Use the public stats object; no private GEGL lock/API or cache workaround.
+   * The process-group watchdog remains available during this bounded wait. */
+  GeglStats *stats = gegl_stats (); // borrowed until gegl_exit()
+  const gint64 deadline = g_get_monotonic_time () + 5 * G_USEC_PER_SEC;
+  for (;;)
+    {
+      gboolean busy = TRUE;
+      g_object_get (stats, "swap-busy", &busy, nullptr);
+      if (!busy) break;
+      if (g_get_monotonic_time () >= deadline)
+        g_error ("Private Filter GEGL swap drain exceeded the 5 second deadline");
+      g_thread_yield ();
+    }
+
+  guint64 total = 0, queued = 0;
+  g_object_get (stats, "swap-total", &total, "swap-queued-total", &queued, nullptr);
+  /* An idle writer with live swap storage means an ownership invariant was
+   * broken, not a reason to wait longer or publish a successful wire result.
+   * This destructor must also handle exception unwind without throwing. */
+  if (total || queued)
+    g_error ("Private Filter GEGL swap drain left live storage: "
+             "total=%" G_GUINT64_FORMAT ", queued=%" G_GUINT64_FORMAT,
+             total, queued);
+}
+
 /* No rc deserialization, general plug-in search, interpreter definitions,
  * environment files, fonts, modules, saved contexts, or resource-file loaders.
  * The helper main redirects GIMP3 directories before this code, so gimp_new's
@@ -279,7 +312,11 @@ public:
         gimp_contexts_exit (gimp_.get ());
         gimp_.reset ();
       }
-    if (gegl_started_) gegl_exit ();
+    if (gegl_started_)
+      {
+        drain_private_swap ();
+        gegl_exit ();
+      }
   }
   void initialize ()
   {
