@@ -98,3 +98,25 @@ Run fixture verification with:
 PYTHONDONTWRITEBYTECODE=1 python3 migration/tests/test_frozen_aggregate_runner.py
 PYTHONDONTWRITEBYTECODE=1 python3 migration/tests/test_linux_runtime_package.py
 ```
+
+## Accepted normal Linux run, 2026-10-15
+
+The exact public source `b6f0a033011492c42204a4fddb9b2ca8f691d426`, tree
+`7502a59fcfd7e86d2574b2b4069f7471bc559a62`, passed all 154 registrations
+under the unfiltered serial runner, with no skipped subtests, unexpected
+diagnostics, or baseline exemptions. Every source/submodule/ELF/registry
+integrity check passed; complete build freshness remained equal, and the real
+package helper accepted the gate. The run lasted from 19:48:44 to 20:36:36 UTC.
+
+[Sanitized receipt](../tests/frozen-linux-b6f0.json) preserves all target
+classifications, visible expected negative-test warnings, executable and runner
+hashes, and the full gate's SHA-256. The receipt is a summary, not a substitute
+package-consumable gate. The full gate and before/after observations are retained
+with the external execution evidence.
+
+Earlier interrupted five-result attempts and the complete 153/154 rejected
+run remain failures/incomplete evidence. The missing default header archives
+were corrected in a separate reviewed build-graph task before this passing run.
+Acceptance is for this exact normal Linux source, not subsequent changes,
+sanitizers, other operating systems, installed-runtime release certification,
+or complete legacy UI/full-port completion.
