@@ -1,0 +1,91 @@
+{
+  "task": "06.010",
+  "status": "PASS",
+  "condition": "store が一度だけ destructor を呼ぶ",
+  "production_implementation_changed": false,
+  "source_work_ids": [
+    "legacy-bb33363ce7f20440f007",
+    "legacy-6ea0a43254bd0aaf640c"
+  ],
+  "native_cases": 49,
+  "sanitizer_cases": 49,
+  "specific_test": "/painter/store/implementation-ownership",
+  "source_sha256": {
+    "app/painter/binding-store.cpp": "c69d65c22f26e6be8f6df69765cd30f7bbbd32b46b0eb847e9f6524b41c2b557",
+    "app/painter/binding-store.hpp": "c67deb0ccf33a13a5ba3ab3f50bdbb2ef8931f481acf62a9315d778388c90262",
+    "app/painter/boundary.hpp": "d97a8b6e27a09fe69c7c1d6620361c3daaa1e5cf1bad8d2eb2d4b9a9faed6d2e",
+    "app/painter/connection.hpp": "3f81d5889f046a12beae6f2c8975be2007742e4d8f99e8fc44877fc809d6e898",
+    "app/painter/gimp-painter-binding.cpp": "22aca4f9e467e16b86f2cbeec431d7d069fc552c98fad985db770720fcf876fd",
+    "app/painter/gimp-painter-binding.h": "d0269c7b9dd84535d95f714e2227c280030cc922ba967823c00e98daa77d8c04",
+    "app/painter/gimp-painter-error.cpp": "14bc510a2c3721894854b871402c7c95caa94d6559ab79731c7eb4ee76d83cf3",
+    "app/painter/gimp-painter-error.h": "b3c1e3550f83abd54726e752d069f0a591b105bcea249239277d2005ccf61465",
+    "app/painter/gimp-painter-visibility.h": "d832e5442d969ff8439292a61d0143532d85c1b7eaab0b29689c6dc04e9c4532",
+    "app/painter/object-ref.hpp": "5a8cc92afc56f652fd47c727269d71d9d97c4358015f13fe9c4764371fcb7c3a",
+    "app/painter/resources.hpp": "0a337c7467ed382dc087a1fb611fa9639981ae2879fb36a0642833d787143bfa",
+    "app/painter/source.hpp": "88bb8935ba132345ddcb379aaee56340afc3b56ff3c463f0b4a0c1c5e1c5f418",
+    "app/painter/tests/test-c-api.c": "609f376f12c4ef43aecd21b00a50cc8567b9f8827aef36d0b48848a89c6e0c7d",
+    "app/painter/tests/test-c-api.h": "e9b3208f78777d72e27b321d53203c770900409718bdd0b7b7159fd86b28ed13",
+    "app/painter/tests/test-fixture-traits.hpp": "b5a91c8c312a9253208cf2cfe2988100d3259c3abb095b9bc26472d9a4c4ab68",
+    "app/painter/tests/test-fixture.c": "50696abdf8d4598fa7e431ee628e43a89912ead7c10891fdac90462441dd41af",
+    "app/painter/tests/test-fixture.h": "5a26cdf5bc2ce9208e0666be126885e9ea4d9ba09cf9accded89ea673cab8946",
+    "app/painter/tests/test-foundation.cpp": "96a657f2c18dd759e7edd967bf89593e07b2faa101aa7a8522577129abb5cf7d",
+    "app/painter/tests/test-gobject.cpp": "e51d1d5abfc737ee792c6fec32be834b441fe82985bbac5046f68d6887fc1515",
+    "app/painter/tests/test-hierarchy.c": "fd448e354f15d5cec1d85fa53ed8f62253943ff90fda5a5c28b2c729beba8688",
+    "app/painter/tests/test-hierarchy.cpp": "46f086fa9efb9e4fd5f495c2d1420fa72b4a3bf49868275d64bddfce9916c09a",
+    "app/painter/tests/test-hierarchy.h": "ff70fb38099ec19b86c15d5f1e2e4c02c3f4777689bcc391cd6c15af6d225674",
+    "app/painter/tests/test-reentry.cpp": "27d5e099f4fc2c3b5e3e27856c9dd1b76a0d612d3695a6b2cb8864d438d403d5",
+    "app/painter/tests/test-registry.hpp": "4bd2aff639d1cef2459e41c4039a44d728634fe38ef5d4653e4bb08938b3b0e4",
+    "app/painter/tests/test-resources.cpp": "78f4be301a173e96d69ad5ead9f15a5826f791df2c1f58e1536a08a037ec5274"
+  },
+  "native_executable_sha256": "527c00352067b1439f7856ccc13a56285dbd65ab345c96a237ebacae15f88810",
+  "sanitizer_executable_sha256": "3a4adc5ba49737f11b6475b0b298eff2544127c2b4e1493c5826e2fe26b8218d",
+  "evidence_members": 48,
+  "evidence_bytes": 55850,
+  "evidence_sha256": "1a6896d3cd79978aa5f85873b11764a179fc8b21eec6ce928e3931ccf528c6da",
+  "routing_correction": {
+    "baseline": "ea5dc194d17cdbfcda753b0b613e2af797e76ab3",
+    "source": "app/base/selectcase-utils.hpp",
+    "hunk": "01.002/000079",
+    "source_blob": "35ef728e6cba705cd168247a27660d1f0656d7da",
+    "payload_sha256": "a6b1ee524283527fd612a480cb91f576ec0fb93b0af8d120374e90021575a6dc",
+    "removed_todo_work_ids": [
+      "legacy-8ddcc7c0964a9622e9ce",
+      "legacy-c472f83aef6fe6246e89"
+    ],
+    "preserved_selection_work_ids": [
+      "legacy-24662fcf6c2b5fb1ae6b",
+      "legacy-822bd0cb7211f156699e",
+      "legacy-bfe2b925e0404bde620f",
+      "legacy-9077262cc5df2edf4ba4"
+    ],
+    "preserved_work_items": 22942,
+    "done_before_implementation_acceptance": 515,
+    "assignment_correction_added_done": 0,
+    "full_historical_generator_pass": false,
+    "limitation": "Only the byte-verified affected added file is rerouted; absent complete historical trees are not claimed regenerated.",
+    "corrected_table_sha256_before_implementation_acceptance": {
+      "changed-hunks.tsv": "99f62c5626c6c086627d7c3e82f60b656d770ac509e22bde03a0046438d5c0c4",
+      "hunk-wbs.tsv": "402bd4867e0437b680c8bcc3322bad9cf3a5dcbe8bd3cc376f05e6e4ce4539b8",
+      "cleanup-candidate-review.tsv": "5f47abc919e28b3ed025f5b78b871fe08411c64c93d624bd72b2208a67738597",
+      "legacy-port-work-items.tsv": "32b441988225ba206bf2a2c68c502105ed21187dfa7e712e3e7864678b5a172c",
+      "granularity-review.tsv": "fcb08a34e82bcd3893cc034003f0deb33f3cb91d7c91ebc3ed4a77064df57235",
+      "wbs-assignment-summary.json": "d7d0793c08ba2048eb7a0ac7ff3c38235aaa22137e19550403829015dde8e7b9",
+      "changed-hunks.json": "a570798780c46074c0949c5c05ead24fc65d3891a4699dee52c7907c3156117b",
+      "granularity-summary.json": "632f1de8dbc9c06b38d3752b7535c0c8b0f3445a1614f7522b132769579b9390"
+    }
+  },
+  "limitations": [
+    "Bounded affected-file routing reproduction; full original Git trees unavailable",
+    "Other lifecycle/caller gates remain separate",
+    "LSan unavailable under executor ptrace; UBSan vptr excluded; system GLib not instrumented"
+  ],
+  "routing_source_sha256": {
+    "tools/legacy_assignment_rules.py": "538ac380e9761ea08c7ef7c381674d6056f28b22431bcc2c8cfc1212b252ea73",
+    "migration/tests/impl-ownership/reproduce-selection-routing.py": "2433004288a11367e1e5edbe2eff002a505e23c660e15c200c85965ebc294f07"
+  },
+  "routing_write_guard": {
+    "check": "bounded generator refuses to overwrite the two later DONE updates",
+    "exit_nonzero": true,
+    "inventory_bytes_unchanged": true
+  }
+}
