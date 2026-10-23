@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 #ifndef GIMP_PAINTER_NATIVE_STROKING_HPP
 #define GIMP_PAINTER_NATIVE_STROKING_HPP
+#include "../painter/gimp-painter-visibility.h"
 #include "painter/connection.hpp"
 #include <atomic>
 #include <memory>
@@ -8,7 +9,7 @@
 #include <utility>
 #include <string>
 
-namespace GimpPainter {
+namespace GimpPainter GIMP_PAINTER_PRIVATE {
 /* An operation-local watch, not a second GObject implementation. Signal data
  * owns only a weak pointer to this independent cancellation record. */
 struct NativeStrokeWatch {

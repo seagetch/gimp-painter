@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 #ifndef GIMP_PAINTER_NATIVE_PIXELS_HPP
 #define GIMP_PAINTER_NATIVE_PIXELS_HPP
+#include "../../painter/gimp-painter-visibility.h"
 #include <babl/babl.h>
 #include <algorithm>
 #include <cmath>
@@ -9,7 +10,7 @@
 #include <limits>
 #include <stdexcept>
 #include <string>
-namespace GimpPainter { namespace MyPaint { namespace NativePixel {
+namespace GimpPainter GIMP_PAINTER_PRIVATE { namespace MyPaint { namespace NativePixel {
 inline double unit(double v){return std::max(0.,std::min(1.,v));}
 inline void finite(double v){if(!std::isfinite(v))throw std::invalid_argument("Nonfinite consumed paint pixel");}
 template<class T>T load(const unsigned char*p){T v;std::memcpy(&v,p,sizeof v);return v;}

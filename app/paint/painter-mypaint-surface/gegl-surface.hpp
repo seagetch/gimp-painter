@@ -1,12 +1,13 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 #ifndef GIMP_PAINTER_MYPAINT_GEGL_SURFACE_HPP
 #define GIMP_PAINTER_MYPAINT_GEGL_SURFACE_HPP
+#include "../../painter/gimp-painter-visibility.h"
 #include <gegl.h>
 #include "paint/painter-mypaint/surface.hpp"
 #include <functional>
 #include <memory>
 #include <vector>
-namespace GimpPainter { namespace MyPaint {
+namespace GimpPainter GIMP_PAINTER_PRIVATE { namespace MyPaint {
 struct ShapeMask {
   int width = 0, height = 0;
   std::vector<unsigned char> pixels;

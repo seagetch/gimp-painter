@@ -5,11 +5,12 @@
 #ifndef GIMP_PAINTER_XCF_COMPAT_HPP
 #define GIMP_PAINTER_XCF_COMPAT_HPP
 
+#include "../painter/gimp-painter-visibility.h"
 #include <cstddef>
 #include <cstdint>
 #include <vector>
 
-namespace gimp { namespace painter { namespace xcf {
+namespace gimp { namespace painter { namespace xcf GIMP_PAINTER_PRIVATE {
 
 /* A read-only, caller-owned contiguous input. No pointer is retained in the
  * result: all records are absolute byte ranges into this exact input. Keep it

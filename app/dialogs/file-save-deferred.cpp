@@ -25,7 +25,7 @@ extern "C" {
 using namespace GimpPainter;
 struct GimpDeferredSave { GObject parent; };
 struct GimpDeferredSaveClass { GObjectClass parent; };
-GType gimp_deferred_save_get_type (void);
+static GType gimp_deferred_save_get_type (void);
 G_DEFINE_TYPE (GimpDeferredSave, gimp_deferred_save, G_TYPE_OBJECT)
 namespace GimpPainter {
 template<> struct TypeTraits<GimpDeferredSave> { static GType type(){return gimp_deferred_save_get_type();} };

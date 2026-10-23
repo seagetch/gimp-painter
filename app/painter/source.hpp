@@ -1,12 +1,13 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 #ifndef GIMP_PAINTER_SOURCE_HPP
 #define GIMP_PAINTER_SOURCE_HPP
+#include "gimp-painter-visibility.h"
 #include "boundary.hpp"
 #include <functional>
 #include <memory>
 #include <utility>
 
-namespace GimpPainter {
+namespace GimpPainter GIMP_PAINTER_PRIVATE {
 
 class Source
 {

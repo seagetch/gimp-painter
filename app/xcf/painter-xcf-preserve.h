@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 #ifndef GIMP_PAINTER_XCF_PRESERVE_H
 #define GIMP_PAINTER_XCF_PRESERVE_H
+#include "../painter/gimp-painter-visibility.h"
 G_BEGIN_DECLS
 GBytes *xcf_painter_snapshot_bytes (GInputStream *, GCancellable *, GError **);
 void xcf_painter_discard_snapshot_pages (const void *, gsize);
@@ -8,20 +9,21 @@ guint xcf_painter_storage_live_files (void);
 /* -1 absent, 0 present but unsupported/noncanonical, 1 recognized standard. */
 gint xcf_painter_provenance_in_parasites (GBytes *, gsize, gsize);
 /* Opaque, immutable save transaction. Prepare it before replacing any file. */
+struct GIMP_PAINTER_PRIVATE _XcfPainterSave;
 typedef struct _XcfPainterSave XcfPainterSave;
-XcfPainterSave *xcf_painter_prepare_save (GimpImage *, GError **);
-XcfPainterSave *xcf_painter_prepare_save_full (GimpImage *, GCancellable *, gboolean, GError **);
-void            xcf_painter_free_save (XcfPainterSave *);
-GCancellable   *xcf_painter_save_cancellable (XcfPainterSave *);
-gboolean        xcf_painter_save_unchanged (XcfPainterSave *);
-gboolean        xcf_painter_save_needs_v11 (XcfPainterSave *);
-void            xcf_painter_commit_save (XcfPainterSave *);
-guint32         xcf_painter_saved_id (XcfPainterSave *, GimpItem *);
-guint32         xcf_painter_saved_tattoo_state (XcfPainterSave *, GimpImage *);
-GimpParasite   *xcf_painter_image_parasite (XcfPainterSave *);
-GimpParasite   *xcf_painter_origin_parasite (XcfPainterSave *, GObject *);
-GimpParasite   *xcf_painter_item_parasite (XcfPainterSave *, GimpItem *);
-GeglBuffer     *xcf_painter_saved_buffer (XcfPainterSave *, GimpDrawable *);
+GIMP_PAINTER_C_ENTRY XcfPainterSave *xcf_painter_prepare_save (GimpImage *, GError **);
+GIMP_PAINTER_C_ENTRY XcfPainterSave *xcf_painter_prepare_save_full (GimpImage *, GCancellable *, gboolean, GError **);
+GIMP_PAINTER_C_ENTRY void            xcf_painter_free_save (XcfPainterSave *);
+GIMP_PAINTER_C_ENTRY GCancellable   *xcf_painter_save_cancellable (XcfPainterSave *);
+GIMP_PAINTER_C_ENTRY gboolean        xcf_painter_save_unchanged (XcfPainterSave *);
+GIMP_PAINTER_C_ENTRY gboolean        xcf_painter_save_needs_v11 (XcfPainterSave *);
+GIMP_PAINTER_C_ENTRY void            xcf_painter_commit_save (XcfPainterSave *);
+GIMP_PAINTER_C_ENTRY guint32         xcf_painter_saved_id (XcfPainterSave *, GimpItem *);
+GIMP_PAINTER_C_ENTRY guint32         xcf_painter_saved_tattoo_state (XcfPainterSave *, GimpImage *);
+GIMP_PAINTER_C_ENTRY GimpParasite   *xcf_painter_image_parasite (XcfPainterSave *);
+GIMP_PAINTER_C_ENTRY GimpParasite   *xcf_painter_origin_parasite (XcfPainterSave *, GObject *);
+GIMP_PAINTER_C_ENTRY GimpParasite   *xcf_painter_item_parasite (XcfPainterSave *, GimpItem *);
+GIMP_PAINTER_C_ENTRY GeglBuffer     *xcf_painter_saved_buffer (XcfPainterSave *, GimpDrawable *);
 GimpLayerMode   xcf_painter_standard_mode (GimpLayerMode);
 #ifdef __XCF_PRIVATE_H__
 gint      xcf_painter_intercept_parasite (XcfInfo *, GPtrArray *, goffset);

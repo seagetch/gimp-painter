@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 #ifndef GIMP_FILTER_LAYER_ARGUMENTS_HPP
 #define GIMP_FILTER_LAYER_ARGUMENTS_HPP
+#include "../painter/gimp-painter-visibility.h"
 /* Included after the core/GimpValueArray C declarations. Main-thread only. */
 #include "painter/resources.hpp"
 #include "painter/object-ref.hpp"
@@ -10,7 +11,7 @@
 #include <stdexcept>
 #include <vector>
 
-namespace GimpPainter {
+namespace GimpPainter GIMP_PAINTER_PRIVATE {
 /* Persistent object arguments are descriptors plus weak links, never GValues
  * owning images/layers. This prevents image -> layer -> argument -> image
  * cycles without losing the reference type or the recorded core ID. */

@@ -1868,7 +1868,7 @@ gboolean gimp_filter_layer_restore_snapshot_state (GimpFilterLayer *layer,
   });
 }
 
-struct _GimpFilterArgumentsSnapshot
+struct GIMP_PAINTER_PRIVATE _GimpFilterArgumentsSnapshot
 {
   explicit _GimpFilterArgumentsSnapshot (std::shared_ptr<const FilterArguments> arguments)
     : arguments (std::move (arguments)) {}

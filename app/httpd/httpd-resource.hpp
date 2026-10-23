@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 #ifndef GIMP_PAINTER_HTTP_RESOURCE_HPP
 #define GIMP_PAINTER_HTTP_RESOURCE_HPP
+#include "../painter/gimp-painter-visibility.h"
 #include <json-glib/json-glib.h>
 #include <functional>
 #include <memory>
@@ -11,8 +12,7 @@ extern "C"
 {
 #include "core/core-types.h"
 }
-namespace GimpPainter
-{
+namespace GimpPainter GIMP_PAINTER_PRIVATE {
 namespace Http
 {
 struct JsonFree

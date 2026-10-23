@@ -1,13 +1,14 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 #ifndef GIMP_PAINTER_MYPAINT_GIMP_RESOURCES_HPP
 #define GIMP_PAINTER_MYPAINT_GIMP_RESOURCES_HPP
+#include "../../painter/gimp-painter-visibility.h"
 #include "gegl-surface.hpp"
 #include "paint/painter-mypaint/resource.hpp"
 typedef struct _GimpContext GimpContext;
 typedef struct _GimpBrush GimpBrush;
 typedef struct _GimpPattern GimpPattern;
 typedef struct _GimpCoords GimpCoords;
-namespace GimpPainter { namespace MyPaint {
+namespace GimpPainter GIMP_PAINTER_PRIVATE { namespace MyPaint {
 struct ResourceResolution {
   bool brush_missing = false, texture_missing = false;
   std::string requested_brush, requested_texture;

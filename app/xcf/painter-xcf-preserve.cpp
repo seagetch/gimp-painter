@@ -634,7 +634,7 @@ extern "C" gint xcf_painter_provenance_in_parasites (GBytes *source, gsize offse
   catch (...) { return 0; }
 }
 
-struct _XcfPainterSave
+struct GIMP_PAINTER_PRIVATE _XcfPainterSave
 {
   struct PreparedCapsule
   {

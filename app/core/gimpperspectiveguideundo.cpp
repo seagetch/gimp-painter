@@ -16,7 +16,7 @@ extern "C" {
 using namespace GimpPainter;
 typedef struct { GimpUndo parent; gboolean binding_failed; } GimpPerspectiveGuideUndo;
 typedef struct { GimpUndoClass parent; } GimpPerspectiveGuideUndoClass;
-GType gimp_perspective_guide_undo_get_type (void);
+static GType gimp_perspective_guide_undo_get_type (void);
 G_DEFINE_TYPE (GimpPerspectiveGuideUndo, gimp_perspective_guide_undo, GIMP_TYPE_UNDO)
 namespace GimpPainter {
 template<> struct TypeTraits<GimpPerspectiveGuideUndo>

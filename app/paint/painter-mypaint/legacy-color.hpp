@@ -19,8 +19,9 @@
 /* Isolated pinned GIMP 2.8 HSV/HSL mathematics, not a GIMP 3 public API. */
 #ifndef GIMP_PAINTER_MYPAINT_LEGACY_COLOR_HPP
 #define GIMP_PAINTER_MYPAINT_LEGACY_COLOR_HPP
+#include "../../painter/gimp-painter-visibility.h"
 #include <glib.h>
-namespace GimpPainter { namespace MyPaint { namespace Legacy {
+namespace GimpPainter GIMP_PAINTER_PRIVATE { namespace MyPaint { namespace Legacy {
 struct GimpRGB { double r = 0, g = 0, b = 0, a = 1; };
 struct GimpHSV { double h = 0, s = 0, v = 0, a = 1; };
 struct GimpHSL { double h = 0, s = 0, l = 0, a = 1; };

@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 #ifndef GIMP_PAINTER_FILTER_WIRE_HPP
 #define GIMP_PAINTER_FILTER_WIRE_HPP
+#include "gimp-painter-visibility.h"
 #include "filter-procedure.hpp"
 #include "filter-progress.hpp"
 #include <array>
@@ -9,7 +10,7 @@
 #include <functional>
 #include <utility>
 #include <vector>
-namespace GimpPainter { namespace FilterWire {
+namespace GimpPainter GIMP_PAINTER_PRIVATE { namespace FilterWire {
 constexpr std::size_t header_size = 24;
 constexpr std::size_t metadata_limit = 64 * 1024;
 constexpr std::size_t pixel_limit = 128 * 1024;

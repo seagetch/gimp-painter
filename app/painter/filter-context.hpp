@@ -2,10 +2,11 @@
 #ifndef GIMP_PAINTER_FILTER_CONTEXT_HPP
 #define GIMP_PAINTER_FILTER_CONTEXT_HPP
 
+#include "gimp-painter-visibility.h"
 #include <cstddef>
 #include <cstdint>
 
-namespace GimpPainter {
+namespace GimpPainter GIMP_PAINTER_PRIVATE {
 
 /* Scalar snapshots only. These types never retain a GObject, GEGL object,
  * selection buffer or callback. Bounds are half-open image coordinates. */

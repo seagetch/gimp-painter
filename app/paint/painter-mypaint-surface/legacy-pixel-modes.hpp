@@ -10,9 +10,10 @@
 #ifndef __MYPAINT_BRUSHMODES_HPP__
 #define __MYPAINT_BRUSHMODES_HPP__
 
+#include "../../painter/gimp-painter-visibility.h"
 #define REAL_CALC
 #include "legacy-pixel.hpp"
-namespace GimpPainter { namespace MyPaint { namespace LegacyPixel {
+namespace GimpPainter GIMP_PAINTER_PRIVATE { namespace MyPaint { namespace LegacyPixel {
 
 struct BrushPixelIteratorForRunLength {
   Pixel::real*   mask;

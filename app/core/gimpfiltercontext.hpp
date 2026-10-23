@@ -2,6 +2,7 @@
 #ifndef GIMP_PAINTER_FILTER_OWNER_CONTEXT_HPP
 #define GIMP_PAINTER_FILTER_OWNER_CONTEXT_HPP
 
+#include "../painter/gimp-painter-visibility.h"
 #include "painter/filter-context.hpp"
 #include "painter/filter-procedure.hpp"
 #include "painter/object-ref.hpp"
@@ -11,7 +12,7 @@
 
 typedef struct _GimpDrawable GimpDrawable;
 
-namespace GimpPainter {
+namespace GimpPainter GIMP_PAINTER_PRIVATE {
 
 /* Owner-only state contained in the FilterLayer's existing typed slot. This is
  * not a GObject implementation/store. No instance or method crosses a worker

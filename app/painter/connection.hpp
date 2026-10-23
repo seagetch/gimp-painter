@@ -1,9 +1,10 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 #ifndef GIMP_PAINTER_CONNECTION_HPP
 #define GIMP_PAINTER_CONNECTION_HPP
+#include "gimp-painter-visibility.h"
 #include "object-ref.hpp"
 
-namespace GimpPainter {
+namespace GimpPainter GIMP_PAINTER_PRIVATE {
 
 /* Signal adapters supply an exact signal signature and catch exceptions.
  * GCallback is the GLib registration transport, never a vfunc cast. */

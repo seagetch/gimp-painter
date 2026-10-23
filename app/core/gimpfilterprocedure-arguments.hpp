@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 #ifndef GIMP_FILTER_PROCEDURE_ARGUMENTS_HPP
 #define GIMP_FILTER_PROCEDURE_ARGUMENTS_HPP
+#include "../painter/gimp-painter-visibility.h"
 #include "painter/filter-procedure.hpp"
 #include <glib-object.h>
 #include <array>
@@ -10,7 +11,7 @@ typedef struct _GimpProcedure GimpProcedure;
 typedef struct _GimpImage GimpImage;
 typedef struct _GimpValueArray GimpValueArray;
 
-namespace GimpPainter {
+namespace GimpPainter GIMP_PAINTER_PRIVATE {
 /* Core-only metadata. Schema and binder borrow the procedure and its immutable
  * specs: the caller's retained procedure must outlive both. The private helper
  * already keeps its ObjectRef through execution and output recovery. The

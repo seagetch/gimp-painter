@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 #ifndef GIMP_PAINTER_FILTER_RASTER_HPP
 #define GIMP_PAINTER_FILTER_RASTER_HPP
+#include "gimp-painter-visibility.h"
 #include <atomic>
 #include <cstddef>
 #include <cstdint>
@@ -10,7 +11,7 @@
 #include <string>
 #include <thread>
 
-namespace GimpPainter {
+namespace GimpPainter GIMP_PAINTER_PRIVATE {
 /* Independent worker-owned byte storage. No GObject, GEGL or owner callback.
  * Operations may block on local storage and must never be called by the UI
  * adapter. Offsets are 64-bit even where individual bounded chunks are not. */

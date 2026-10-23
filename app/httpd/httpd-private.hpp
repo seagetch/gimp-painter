@@ -1,11 +1,11 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 #ifndef GIMP_PAINTER_HTTPD_PRIVATE_HPP
 #define GIMP_PAINTER_HTTPD_PRIVATE_HPP
+#include "../painter/gimp-painter-visibility.h"
 #include "httpd-resource.hpp"
 #include "painter/object-ref.hpp"
 #include <functional>
-namespace GimpPainter
-{
+namespace GimpPainter GIMP_PAINTER_PRIVATE {
 namespace Http
 {
 using Completion = std::function<void (std::string)>;

@@ -1,13 +1,14 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 #ifndef GIMP_PAINTER_FILTER_PROCEDURE_POLICY_HPP
 #define GIMP_PAINTER_FILTER_PROCEDURE_POLICY_HPP
+#include "gimp-painter-visibility.h"
 #include <array>
 #include <cmath>
 #include <cstdint>
 #include <limits>
 #include <stdexcept>
 
-namespace GimpPainter {
+namespace GimpPainter GIMP_PAINTER_PRIVATE {
 /* The complete untrusted wire selector. These identities describe audited
  * adapters, not permission to resolve arbitrary saved names or executables. */
 enum class FilterProcedure : std::uint32_t { blinds = 1, small_tiles = 2, retinex = 3, convolution = 4 };

@@ -1,10 +1,11 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 #ifndef GIMP_PAINTER_MYPAINT_PAINT_CORE_HPP
 #define GIMP_PAINTER_MYPAINT_PAINT_CORE_HPP
+#include "../../painter/gimp-painter-visibility.h"
 #include "gimp-resources.hpp"
 typedef struct _GimpPaintOptions GimpPaintOptions;
 typedef struct _GimpDrawable GimpDrawable;
-namespace GimpPainter { namespace MyPaint {
+namespace GimpPainter GIMP_PAINTER_PRIVATE { namespace MyPaint {
 /* Extended engine/controller with a real current GimpPaintCore transaction.
  * One controller persists brush states across logical strokes, as the old core.
  * This is not the standard MyPaint engine or an alternate GObject framework. */

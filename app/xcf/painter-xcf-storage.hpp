@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 #ifndef GIMP_PAINTER_XCF_STORAGE_HPP
 #define GIMP_PAINTER_XCF_STORAGE_HPP
+#include "../painter/gimp-painter-visibility.h"
 #include <gio/gio.h>
 #include "../painter/bytes.hpp"
 #include <cstdint>
@@ -8,7 +9,7 @@
 #include <vector>
 #include <stdexcept>
 
-namespace GimpPainterXcf {
+namespace GimpPainterXcf GIMP_PAINTER_PRIVATE {
 struct StorageError : std::runtime_error
 {
   StorageError (GQuark domain, gint code, const char *message)

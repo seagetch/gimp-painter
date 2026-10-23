@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 #ifndef GIMP_PAINTER_FILTER_PROGRESS_HPP
 #define GIMP_PAINTER_FILTER_PROGRESS_HPP
+#include "gimp-painter-visibility.h"
 #include <algorithm>
 #include <array>
 #include <cmath>
@@ -8,7 +9,7 @@
 #include <limits>
 #include <mutex>
 
-namespace GimpPainter {
+namespace GimpPainter GIMP_PAINTER_PRIVATE {
 /* Independent, fixed-size worker data. This object never calls the owner or
  * holds native objects. Reset only after the previous worker has completed. */
 class FilterProgress final {

@@ -2,12 +2,13 @@
 #ifndef GIMP_PAINTER_BOUNDARY_HPP
 #define GIMP_PAINTER_BOUNDARY_HPP
 
+#include "gimp-painter-visibility.h"
 #include "gimp-painter-error.h"
 #include <exception>
 #include <stdexcept>
 #include <utility>
 
-namespace GimpPainter {
+namespace GimpPainter GIMP_PAINTER_PRIVATE {
 
 class Error : public std::runtime_error
 {

@@ -17,7 +17,8 @@
 #ifndef __MYPAINTBRUSH_SURFACE_HPP__
 #define __MYPAINTBRUSH_SURFACE_HPP__
 
-namespace GimpPainter { namespace MyPaint {
+#include "../../painter/gimp-painter-visibility.h"
+namespace GimpPainter GIMP_PAINTER_PRIVATE { namespace MyPaint {
 
 // Extended surface contract required by the pinned painter engine
 class Surface {

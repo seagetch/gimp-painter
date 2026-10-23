@@ -2,6 +2,7 @@
 #ifndef GIMP_PAINTER_BINDING_STORE_HPP
 #define GIMP_PAINTER_BINDING_STORE_HPP
 
+#include "gimp-painter-visibility.h"
 #include "object-ref.hpp"
 #include <cstdint>
 #include <memory>
@@ -9,7 +10,7 @@
 #include <utility>
 #include <vector>
 
-namespace GimpPainter {
+namespace GimpPainter GIMP_PAINTER_PRIVATE {
 
 /* Declare each slot as a distinct type deriving from SlotSpec<Owner, Impl>.
  * Its identity cannot be supplied independently of these two types. */

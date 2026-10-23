@@ -28,8 +28,7 @@ extern "C"
 #include "display/gimpdisplay.h"
 }
 #include "painter/object-ref.hpp"
-namespace GimpPainter
-{
+namespace GimpPainter GIMP_PAINTER_PRIVATE {
 namespace Http
 {
 using Refs = std::vector<ObjectRef<GObject> >;

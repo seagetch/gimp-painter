@@ -1,11 +1,12 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 #ifndef GIMP_PAINTER_MYBRUSH_EDITOR_HPP
 #define GIMP_PAINTER_MYBRUSH_EDITOR_HPP
+#include "../painter/gimp-painter-visibility.h"
 extern "C" {
 #include "gimppaintermybrusheditor.h"
 }
 #include "painter/object-ref.hpp"
-namespace GimpPainter {
+namespace GimpPainter GIMP_PAINTER_PRIVATE {
 template<> struct TypeTraits<GimpPainterMybrushEditor> {
   static GType type () noexcept { return GIMP_TYPE_PAINTER_MYBRUSH_EDITOR; }
 };

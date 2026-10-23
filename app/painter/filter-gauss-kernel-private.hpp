@@ -7,6 +7,7 @@
  * Preserve historical operation order and byte rounding in one place. */
 #ifndef GIMP_PAINTER_FILTER_GAUSS_KERNEL_PRIVATE_HPP
 #define GIMP_PAINTER_FILTER_GAUSS_KERNEL_PRIVATE_HPP
+#include "gimp-painter-visibility.h"
 #include <algorithm>
 #include <atomic>
 #include <cmath>
@@ -16,7 +17,7 @@
 #include <stdexcept>
 #include <vector>
 #include <type_traits>
-namespace GimpPainter { namespace FilterGaussDetail {
+namespace GimpPainter GIMP_PAINTER_PRIVATE { namespace FilterGaussDetail {
 using Bytes = std::vector<std::uint8_t>;
 
 struct Cancelled {};
