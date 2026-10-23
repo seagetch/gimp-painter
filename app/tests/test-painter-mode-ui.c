@@ -107,12 +107,16 @@ static void mode_selection(void)
   }
   g_object_unref(image);gimp_display_close(shell->display);gimp_test_run_mainloop_until_idle();
 }
+#include "test-painter-mode-anime.inc"
+
 int main(int argc,char **argv)
 {
   gint result;g_test_init(&argc,&argv,NULL);if(!gtk_init_check(&argc,&argv))return GIMP_EXIT_TEST_SKIPPED;
   gimp_test_utils_setup_menus_path();gimp=gimp_init_for_gui_testing(TRUE);
   g_object_set(gimp->config,"painter-canvas-ui",TRUE,NULL);
   g_test_add_func("/painter-mode-ui/native-selector",mode_selection);
+  g_test_add_data_func("/painter-mode-ui/anime-initial",GUINT_TO_POINTER(0),anime_composite_reference);
+  g_test_add_data_func("/painter-mode-ui/anime-edited",GUINT_TO_POINTER(1),anime_composite_reference);
   g_application_run(gimp->app,0,NULL);result=gimp_core_app_get_exit_status(GIMP_CORE_APP(gimp->app));
   g_application_quit(G_APPLICATION(gimp->app));g_clear_object(&gimp->app);return result;
 }
