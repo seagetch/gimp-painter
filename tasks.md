@@ -463,7 +463,7 @@
 | 10.001 | [x] | 保存項目台帳を埋める | 01.017, 02.015 | 全項目に型・既定値・所有型・reader/writer・試験 ID がある |
 | 10.001/wire-framing-audit | [x] | 旧XCFのwire定数と実消費長を監査する | 01.017, 02.005 | 63 wire記録のreader/writer位置・衝突・既定動作を記録。constructor既定値とapp適用/全保存項目は親作業に残す（`migration/inventory/xcf-wire-records.tsv`） |
 | 10.002 | [x] | 旧 v4 ヘッダーを解析する | 10.001 | precision がない実レイアウトを byte fixture で説明 |
-| 10.003 | [ ] | 標準 XCF と旧 XCF の判定規則を決める | 10.002 | v004 文字列だけで判定しない |
+| 10.003 | [x] | 標準 XCF と旧 XCF の判定規則を決める | 10.002 | v004 文字列だけで判定しない |
 | 10.004 | [ ] | 属性32と33の識別規則を決める | 10.003 | 標準属性との衝突を文脈で判別 |
 | 10.005 | [ ] | 旧 mode23〜29の対応を固定する | 10.004 | 数値の直接流用を禁止した対応表がある |
 | 10.005/gegl-byte-operators | [x] | 衝突する旧7modeを明示IDとGEGL byte演算へ接続する | 10.001/wire-framing-audit, 04.003 | upstream値を変えず独立modeを追加。56実旧projection fixtureをC kernel/GEGL graph/実GimpImageで全RGBA byte比較し通常/focused ASan/UBSan合格。高精度・全mode・新保存は別gate |
