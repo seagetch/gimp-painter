@@ -228,7 +228,7 @@ def main(argv=None):
         report["sources"] = plan["instrumented_sources"]
         report["rtti_compatibility_only_sources"] = plan["rtti_compatibility_only_sources"]
         report["original_archive_sha256_before"] = original_archives
-        report["scope"] = ("8 ASan/UBSan-instrumented sources; " +
+        report["scope"] = (str(len(plan["instrumented_sources"])) + " ASan/UBSan-instrumented sources; " +
             str(len(plan["rtti_compatibility_only_sources"])) +
             " linked production RTTI-only compatibility sources; all remaining GIMP/dependencies uninstrumented; LSan disabled")
         save()
