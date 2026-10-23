@@ -1,5 +1,13 @@
 # Original 04.014: registered C/C++ header compilation
 
+> Historical checkpoint: the original counts, source seals and non-default build
+> membership below describe commit27f34ac3282c, not every later descendant.
+> The unchanged proof is now checked in a pinned snapshot; current duty coverage
+> is checked separately. Use `tools/check_painter_header_registration.py --build BUILD`
+> for current configured compilation. See
+> `migration/tests/header-registration/recovery/README.md`; no old report/hash was
+> refreshed or original duty removed.
+
 The `painter-public-header-compilation` Meson test now depends on real C11 and
 C++14 compile targets. Meson builds them with its selected compilers, dependency
 objects and include paths; the test does not invoke a host compiler or execute a

@@ -1,0 +1,17 @@
+[
+  {
+    "name": "gimp:painter / painter-public-header-compilation",
+    "stdout": "PASS: 196 C and 217 C++ header compile probes\n",
+    "result": "OK",
+    "duration": 0.10831189155578613,
+    "returncode": 0
+  },
+  {
+    "name": "gimp:painter / painter-additional-header-routes",
+    "stdout": "",
+    "result": "OK",
+    "duration": 3.68371319770813,
+    "returncode": 0,
+    "stderr": "test_baseline_identity_and_category_are_required (__main__.AdditionalRoutes.test_baseline_identity_and_category_are_required) ... ok\ntest_changed_baseline_header_still_needs_historical_closure (__main__.AdditionalRoutes.test_changed_baseline_header_still_needs_historical_closure) ... ok\ntest_deleted_route_is_rejected (__main__.AdditionalRoutes.test_deleted_route_is_rejected) ... ok\ntest_duplicate_route_is_rejected (__main__.AdditionalRoutes.test_duplicate_route_is_rejected) ... ok\ntest_historical_headers_cannot_be_laundered_as_additions (__main__.AdditionalRoutes.test_historical_headers_cannot_be_laundered_as_additions) ... ok\ntest_historical_inventory_and_probe_names_are_preserved (__main__.AdditionalRoutes.test_historical_inventory_and_probe_names_are_preserved) ... ok\ntest_invalid_paths_contexts_and_fields_are_rejected (__main__.AdditionalRoutes.test_invalid_paths_contexts_and_fields_are_rejected) ... ok\ntest_invalid_prerequisites_are_rejected (__main__.AdditionalRoutes.test_invalid_prerequisites_are_rejected) ... ok\ntest_missing_header_is_rejected (__main__.AdditionalRoutes.test_missing_header_is_rejected) ... ok\ntest_missing_inventory_is_rejected (__main__.AdditionalRoutes.test_missing_inventory_is_rejected) ... ok\ntest_missing_route_is_rejected_even_with_other_reviewed_routes (__main__.AdditionalRoutes.test_missing_route_is_rejected_even_with_other_reviewed_routes) ... ok\ntest_removed_baseline_extension_is_rejected (__main__.AdditionalRoutes.test_removed_baseline_extension_is_rejected) ... ok\ntest_reviewed_core_extension_gets_both_probes_and_source_hash (__main__.AdditionalRoutes.test_reviewed_core_extension_gets_both_probes_and_source_hash) ... ok\ntest_schema_and_unreviewed_rows_are_rejected (__main__.AdditionalRoutes.test_schema_and_unreviewed_rows_are_rejected) ... ok\ntest_scope_argument_must_point_to_reviewed_inventory (__main__.AdditionalRoutes.test_scope_argument_must_point_to_reviewed_inventory) ... ok\ntest_symlink_outside_source_is_rejected (__main__.AdditionalRoutes.test_symlink_outside_source_is_rejected) ... ok\ntest_tool_options_changed_baseline_routes_remain_required (__main__.AdditionalRoutes.test_tool_options_changed_baseline_routes_remain_required) ... ok\n\n----------------------------------------------------------------------\nRan 17 tests in 3.629s\n\nOK\n"
+  }
+]

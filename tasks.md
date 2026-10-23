@@ -289,6 +289,7 @@
 | 04.013 | [x] | enum 等の生成規則を Meson に接続する | 04.012 | 生成元変更で C/C++ 両方の対象が再ビルドされる |
 | 04.013/brush-setting-generator | [x] | 旧MyPaint設定の生成元を復元する | 04.002/common-foundation, 01.010 | 旧treeにないgenerate.pyの代わりに名前・index・型・既定値の正本を定め、103定数と設定tableを再生成し差分検査する |
 | 04.014 | [x] | ヘッダー単体のコンパイル試験を登録する | 04.013 | 対象 C ヘッダーを C と C++ で検査 |
+| 04.014/header-registration-recovery | [x] | 元header登録の不変証拠と現在build admissionを分離して検査する | 04.014, 34.015/header-default-build | 元27f34ac checkerを172file snapshotで無変更実行し231/233probe・18control・全92義務/元受入文を保持。現HTTP413probe/登録2test・25破損controlとsource/archive/vector seal検証。現在default未compile・runtime/ABI/platformは別。header-registration/recovery参照 |
 | 04.015 | [x] | incremental build を検証する | 04.014 | 共通ヘッダー変更で必要な object が更新される |
 | 04.016 | [x] | install 後の起動を検証する | 04.015 | build tree に依存せず独自モジュールを含め起動する |
 | 04.017 | [x] | 生成 C ヘッダーの二重 include を試験する | 04.016 | C linkage と include guard が安定 |

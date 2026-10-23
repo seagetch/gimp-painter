@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "/workspace/scratch/0015fc5d1a03/gimp-painter/tools/check_painter_header_registration.py", line 86, in <module>
+    if __name__=='__main__':main()
+                            ^^^^^^
+  File "/workspace/scratch/0015fc5d1a03/gimp-painter/tools/check_painter_header_registration.py", line 83, in main
+    if args.build:result['current_build']=check_build(args.build)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/0015fc5d1a03/gimp-painter/tools/check_painter_header_registration.py", line 57, in check_build
+    assert json.loads((directory/'header-probes.json').read_text())==manifest,'stale generated header inputs'
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: stale generated header inputs
