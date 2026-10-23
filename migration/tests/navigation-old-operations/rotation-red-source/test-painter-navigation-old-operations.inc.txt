@@ -1,0 +1,34 @@
+/* Applied legacy operation geometry, independent of current view helpers. */
+#include "../../migration/fixtures/legacy-navigation-applied/rotation-oracle.inc"
+static void old_applied_rotation_origin(void)
+{
+  for(guint mirror=0;mirror<2;mirror++)
+    {
+      DragScene scene=drag_scene_new(&drag_angles[1],mirror,1.5,TRUE,real_tool_names[0]);
+      LegacyAppliedRotation old={0};
+      DragPoint start={scene.width/2+40.25,scene.height/2-0.75};
+      DragPoint motion={scene.width/2+0.75,scene.height/2+80.25};
+      gdouble ox,oy,x,y,actual_x,actual_y;
+      GdkEventMotion event={0};
+      old.view.disp_width=scene.width;old.view.disp_height=scene.height;
+      old.view.rotate_angle=mirror?-scene.angle->angle:scene.angle->angle;
+      old.view.mirrored=mirror;
+      gimp_display_shell_transform_xy_f(shell,0,0,&ox,&oy);
+      legacy_pan_inverse(&old.view,&ox,&oy);old.view.offset_x=-ox;old.view.offset_y=-oy;
+      legacy_applied_rotation_begin(&old,NULL,start.x,start.y);
+      drag_send_pointer(GDK_BUTTON_PRESS,2,GDK_SHIFT_MASK,start);assert_grab();
+      g_assert_true(shell->painter_navigation_inherited);
+      event.state=GDK_SHIFT_MASK|GDK_BUTTON2_MASK;
+      legacy_applied_rotation_motion(&old,(const GdkEvent *)&event,motion.x,motion.y);
+      drag_send_pointer(GDK_MOTION_NOTIFY,0,event.state,motion);
+      x=128*scene.scale-old.view.offset_x;y=128*scene.scale-old.view.offset_y;
+      {cairo_t*cr=legacy_pan_cairo();legacy_pan_set_rotate(&old.view,cr);cairo_user_to_device(cr,&x,&y);cairo_destroy(cr);}
+      gimp_display_shell_transform_xy_f(shell,128,128,&actual_x,&actual_y);
+      g_test_message("old applied rotation mirror=%u oldangle=%.17g currentangle=%.17g expected origin=%.17g,%.17g actual=%.17g,%.17g",mirror,old.view.rotate_angle,shell->rotate_angle,x,y,actual_x,actual_y);
+      g_assert_cmpfloat_with_epsilon(actual_x,x,1e-8);g_assert_cmpfloat_with_epsilon(actual_y,y,1e-8);
+      legacy_applied_rotation_end(&old,NULL);g_assert_false(old.rotating);g_assert_cmpfloat(old.rotate_start_angle,==,0.0);
+      drag_send_pointer(GDK_BUTTON_RELEASE,2,event.state,motion);assert_navigation_idle();
+      gimp_display_shell_rotate_to(shell,scene.angle->angle);
+      drag_scene_free(&scene);
+    }
+}

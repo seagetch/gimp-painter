@@ -1900,6 +1900,20 @@ gimp_display_shell_start_scrolling (GimpDisplayShell *shell,
         mod_action = GIMP_MODIFIER_ACTION_ZOOMING;
     }
 
+  if (shell->painter_navigation_inherited &&
+      (mod_action == GIMP_MODIFIER_ACTION_ROTATING ||
+       mod_action == GIMP_MODIFIER_ACTION_STEP_ROTATING))
+    {
+      gimp_display_shell_unrotate_xy_f (shell,
+        shell->disp_width / 2, shell->disp_height / 2,
+        &shell->painter_rotate_origin_x, &shell->painter_rotate_origin_y);
+      /* A viewport-centered old matrix fixes its center. Subtracting that
+       * center from the corresponding scaled image point gives the old
+       * double origin, fixed for the gesture rather than re-inverted each frame. */
+      shell->painter_rotate_origin_x += shell->offset_x - shell->disp_width / 2;
+      shell->painter_rotate_origin_y += shell->offset_y - shell->disp_height / 2;
+    }
+
   gimp_display_shell_pointer_grab (shell, event,
                                    GDK_POINTER_MOTION_MASK |
                                    GDK_BUTTON_RELEASE_MASK);
@@ -2023,6 +2037,8 @@ gimp_display_shell_stop_scrolling (GimpDisplayShell *shell,
   shell->painter_zoom_anchor = 0.0;
   shell->painter_pan_start_x = 0.0;
   shell->painter_pan_start_y = 0.0;
+  shell->painter_rotate_origin_x = 0.0;
+  shell->painter_rotate_origin_y = 0.0;
 
   /* We may have ungrabbed the pointer when space was released while
    * mouse was down, to be able to catch a GDK_BUTTON_RELEASE event.

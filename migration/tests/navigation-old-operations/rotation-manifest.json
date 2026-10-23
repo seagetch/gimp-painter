@@ -1,0 +1,59 @@
+{
+  "base_commit": "ce40ac4cffa5b6dba48cd9100303c3c94653a5bc",
+  "previous_checkpoint": "c49648e13db656eb27c362c9277639dd162e04b8",
+  "scope": "Default rotation origin only, original25.009 DOING; applied zoom not yet accepted",
+  "native_cases": 37,
+  "new_cases": 2,
+  "old_rotation_scenes": 24,
+  "reentries": 2,
+  "motions_per_entry": 7,
+  "point_pairs": 1008,
+  "oncanvas": true,
+  "xvfb": {
+    "width": 1080,
+    "height": 1920,
+    "depth": 24,
+    "authenticated": true
+  },
+  "source_sha256": {
+    "app/display/gimpdisplayshell.h": "d65777848f531c9611a3f8c2df7de636fef8cee55f5a7ae4b9ba9bc9140cdf5f",
+    "app/display/gimpdisplayshell-scroll.h": "ab7da2ff5a5a460a7d2e4b11e881cf82ff05589e7ecb8843329ef7ba244f7950",
+    "app/display/gimpdisplayshell-scroll.c": "b6f6e9e28c1eb15eed8be6c28fa75d4da28df4c0e983d7537004876f3c4f97f8",
+    "app/display/gimpdisplayshell-rotate.c": "6365569d2e487443b797221fe597c1f8fe89aee65255a3966142d8a25e237f8b",
+    "app/display/gimpdisplayshell-tool-events.c": "2ea4c3f91699684439ade82416b578c97362a231a697faa5819acaa725f7e5cc",
+    "app/display/gimpdisplayshell-scale.c": "e4ad23df7c8fbb5e13c2b16cb438fee232e0b996aac7816939bf8f9635214b5d",
+    "app/display/gimpdisplayshell.c": "2048dd626df60e5824d4698440a46792772cb5d2342861315d81ad1badf3cd02",
+    "app/display/gimpdisplayshell-callbacks.c": "245091ed6f08a36e470090bf7141d8ad04520014516a61bb4071796c66588461",
+    "app/display/gimpdisplayshell-title.c": "ab0235a28b007fad2aa7aa9383eda0947cee3317de5f14cd04a8ce6790fd48cc",
+    "app/tests/test-painter-navigation-events.c": "a1c156eb0940602c55f7afb49554e4208ec25c172a385872053594c3e84dfc1c",
+    "app/tests/test-painter-navigation-legacy-pan.inc": "bd793031ed951565ba544e0f12401e48f4f7be2c1d446d364db4058f81e9bcae",
+    "app/tests/test-painter-navigation-old-operations.inc": "3cf65136b1724b5c06e75f3e5958fcff1e77de192ee7bb76cd7aaa5fb2776fb0",
+    "migration/fixtures/legacy-navigation-applied/manifest.json": "e01a986d07cd017095cc8f75e42a54626cb21489dbd20181c80da93aa662dc9c",
+    "migration/fixtures/legacy-navigation-applied/rotation-oracle.inc": "dbc85945df155c20a6e4aa7cfbfaf08319013fa0efc2f3deb2c6354d0c67ec95",
+    "migration/fixtures/legacy-navigation-applied/gimp_display_shell_start_rotating.txt": "0e93b43bfd5aeb7c15d5343b3d64d6724450d3ed1cadcca00f6bac45bfa7a3ea",
+    "migration/fixtures/legacy-navigation-applied/gimp_display_shell_rotate.txt": "773e210008eb25c9003949e707b63097d76bdaa5d20588971031ccae9d6c451f",
+    "migration/fixtures/legacy-navigation-applied/gimp_display_shell_stop_rotating.txt": "08c7e2c5cec4581fc104411cd8864b4bec6501464158b5ee12d1c2864a09ebba"
+  },
+  "artifact_sha256": {
+    "rotation-native.json": "20ad262ee6a63be17689dc87823f089ada6927a5be20d6bb6d2c520b9d9b4c62",
+    "rotation-sanitizer.json": "5a034d1a86bae2341c652f2b2a20bfeea5e70a46647b8b1d9477e630243146d5",
+    "rotation-expected-red.json": "ced65c95df325798c24107f65c709f5138a9377011fdf2751d839638ab54e8c8",
+    "rotation-red-source.json": "3524e27e580cb1310c10aedb261be9e6432c4ee73364af0e4bce3730424023e2",
+    "rotation-build-header-routes.json": "2751ca95ae18c3cc7646c607af25f1c4660301cc1ef151bb0ce21243f932f628",
+    "portrait-oncanvas-rotation-m0.png": "e64977995ad86b82dc02b4a0672dec14974ede57bac344b34dada0a8d51a72a5",
+    "portrait-oncanvas-rotation-m1.png": "92fbe28f3472739b2c2bfd7436913b5b12a452daaefcf8f5c4194084e80b54b8",
+    "rotation-budget-build-original.json": "a133b286756a3cde33f6a2b6388bd8e1221cae82d50375de7575cc2deeb7ac77",
+    "rotation-budget-build-added.json": "11788ab3a9608c1f11c65c5037f3f27a0db64114d754681f44b15f9196d8cf65",
+    "rotation-budget-build-asan-original.json": "2d95bcf9d1a0274a61eb2f2e05d5b0e6f69bc0a13793064f2c1252c4bfd96549",
+    "rotation-budget-build-asan-added.json": "83955e28e9e9fdf9f930a3ff50f9ee30d397e8d9f56ebc975c352bb6f79cdd85"
+  },
+  "build_policy": {
+    "optimization": "2",
+    "debug": false,
+    "b_ndebug": false,
+    "asan": true,
+    "ubsan": true,
+    "lsan": false,
+    "dependency_instrumentation": false
+  }
+}

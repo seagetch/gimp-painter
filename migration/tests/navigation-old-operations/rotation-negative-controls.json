@@ -1,0 +1,58 @@
+{
+  "positive": {
+    "status": "PASS",
+    "cases": 37,
+    "old_rotation_point_pairs": 1008,
+    "task_closed": false
+  },
+  "negative_controls": [
+    {
+      "name": "missing source",
+      "result": "rejected"
+    },
+    {
+      "name": "wrong source hash",
+      "result": "rejected"
+    },
+    {
+      "name": "wrong pair count",
+      "result": "rejected"
+    },
+    {
+      "name": "oncanvas disabled",
+      "result": "rejected"
+    },
+    {
+      "name": "landscape",
+      "result": "rejected"
+    },
+    {
+      "name": "assertions disabled",
+      "result": "rejected"
+    },
+    {
+      "name": "failed sanitizer",
+      "result": "rejected"
+    },
+    {
+      "name": "missing new render case",
+      "result": "rejected"
+    },
+    {
+      "name": "missing old pair",
+      "result": "rejected"
+    },
+    {
+      "name": "raw environment",
+      "result": "rejected"
+    },
+    {
+      "name": "false expected red",
+      "result": "rejected"
+    },
+    {
+      "name": "changed pre-fix source",
+      "result": "rejected"
+    }
+  ]
+}

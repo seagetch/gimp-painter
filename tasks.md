@@ -1002,6 +1002,8 @@
 
 2026-10-21進捗: `25.009/drag-zoom-scroll` は DOING。旧inverse-before-gintとdouble原点をdefault panへ復元し、24scene/1920motion/5760点対、35通常/35 ordinary Meson ASan・UBSan、UI4/pure6、認証1080x1920 oncanvas実画像を限定検証した。従来の整数device差分caseは明示custom設定で保持する（過去のdefault証跡を書き換えない）。原25.009とdrag-zoom-scrollのチェック・依存・完了条件は変更せず、新DONE子は追加しない。未完の旧回転/zoom操作fixture全受入れを継続する。契約・制約は `migration/contracts/painter-navigation-legacy-pan.md`。
 
+2026-10-21追加進捗: 同じDOINGタスクでdefault回転の旧viewport中心・double原点を復元した。旧3関数を変更せず24scene×2再entry×7motion×3点の1008往復比較、oncanvas実描画/overlayを追加。37case全体のASan診断は60秒を超えたため完了根拠にせず、既存35と追加2を別processで元の60秒予算のまま通常/ASan各検証する。証跡は `migration/tests/navigation-old-operations/README.md`。旧zoomの適用後focus/fit/clamp原点は未完であり元のチェックと受入れを保持する。
+
 ### 26 パース定規
 
 主対象：定規 model・overlay・拘束 tool

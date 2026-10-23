@@ -1588,8 +1588,15 @@ draw_expected_point (const DrawAngle *angle,
 
   if (mirror)
     dx = -dx;
-  return (DrawPoint) { cx + angle->cosine * dx - angle->sine * dy,
-                       cy + angle->sine * dx + angle->cosine * dy };
+  /* The original frozen-angle geometry above is unchanged. The old-origin
+   * bridge now represents a default gesture's effective offset as integer +
+   * device-space residual, applied after rotation. Account for that explicit
+   * translation without reading the production matrix or changing detectors.
+   * Pre-bridge proofs retain the original integer-only oracle verbatim. */
+  return (DrawPoint) { cx + angle->cosine * dx - angle->sine * dy -
+                           shell->painter_pan_fraction_x,
+                       cy + angle->sine * dx + angle->cosine * dy -
+                           shell->painter_pan_fraction_y };
 }
 
 static gchar *
@@ -2789,6 +2796,7 @@ device_image_origin (void)
 
 
 #include "test-painter-navigation-legacy-pan.inc"
+#include "test-painter-navigation-old-operations.inc"
 
 int main(int argc,char **argv)
 {
@@ -2799,6 +2807,8 @@ int main(int argc,char **argv)
   g_test_add_func("/navigation-events/legacy/oncanvas-render",inherited_pan_render);
   g_test_add_func("/navigation-events/legacy/transitions",inherited_pan_transitions);
   g_test_add_func("/navigation-events/legacy/invalid-and-space",inherited_pan_invalid_and_space);
+  g_test_add_func("/navigation-events/old-operations/rotation-origin",old_applied_rotation_origin);
+  g_test_add_func("/navigation-events/old-operations/rotation-render",old_applied_rotation_render);
   g_test_add_func("/navigation-events/default-rotation",rotate_defaults);
   g_test_add_func("/navigation-events/arbitrary-buttons",arbitrary_button_constraints);
   g_test_add_func("/navigation-events/radial-zoom",radial_zoom_event);

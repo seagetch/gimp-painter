@@ -34,6 +34,8 @@
 #include "gimppainternavigation.h"
 #include "gimpdisplayshell-scale.h"
 #include "gimpdisplayshell-scroll.h"
+#include "gimpdisplayshell-scrollbars.h"
+#include "gimpdisplayshell-rulers.h"
 #include "gimpdisplayshell-transform.h"
 
 
@@ -205,6 +207,7 @@ gimp_display_shell_rotate_to_internal (GimpDisplayShell *shell,
                                        gboolean          exact)
 {
   gdouble cx, cy;
+  gdouble precise_x = 0.0, precise_y = 0.0;
 
   g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
 
@@ -216,17 +219,51 @@ gimp_display_shell_rotate_to_internal (GimpDisplayShell *shell,
   if (value < 0.0)
     value += 360.0;
 
+  if (exact)
+    {
+      cairo_matrix_t linear;
+      gint width, height;
+
+      /* Old rotation changes a viewport-centered matrix without changing its
+       * double origin or clamping. Preserve that same viewport-center image
+       * point, not the rounded native set-offset approximation. */
+      gimp_display_shell_scale_get_image_size (shell, &width, &height);
+      precise_x = shell->disp_width / 2 + shell->painter_rotate_origin_x - width / 2;
+      precise_y = shell->disp_height / 2 + shell->painter_rotate_origin_y - height / 2;
+      cairo_matrix_init_rotate (&linear, value * G_PI / 180.0);
+      cairo_matrix_scale (&linear, shell->flip_horizontally ? -1.0 : 1.0,
+                                   shell->flip_vertically ? -1.0 : 1.0);
+      cairo_matrix_transform_distance (&linear, &precise_x, &precise_y);
+      precise_x += width / 2 - shell->disp_width / 2;
+      precise_y += height / 2 - shell->disp_height / 2;
+      if (! isfinite (precise_x) || ! isfinite (precise_y) ||
+          precise_x <= G_MININT || precise_x >= G_MAXINT ||
+          precise_y <= G_MININT || precise_y >= G_MAXINT)
+        return;
+    }
+
   shell->rotate_angle       = value;
   shell->rotate_angle_exact = exact;
 
   /* freeze the active tool */
   gimp_display_shell_pause (shell);
 
-  gimp_display_shell_scroll_clamp_and_update (shell);
-
-  gimp_display_shell_rotated (shell);
-
-  gimp_display_shell_restore_viewport_center (shell, cx, cy);
+  if (exact)
+    {
+      shell->offset_x = floor (precise_x);
+      shell->offset_y = floor (precise_y);
+      shell->painter_pan_fraction_x = precise_x - shell->offset_x;
+      shell->painter_pan_fraction_y = precise_y - shell->offset_y;
+      gimp_display_shell_rotated (shell);
+      gimp_display_shell_scrollbars_update (shell);
+      gimp_display_shell_rulers_update (shell);
+    }
+  else
+    {
+      gimp_display_shell_scroll_clamp_and_update (shell);
+      gimp_display_shell_rotated (shell);
+      gimp_display_shell_restore_viewport_center (shell, cx, cy);
+    }
 
   gimp_display_shell_expose_full (shell);
   gimp_display_shell_render_invalidate_full (shell);

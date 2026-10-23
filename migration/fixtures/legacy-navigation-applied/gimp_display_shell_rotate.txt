@@ -1,0 +1,30 @@
+static void
+gimp_display_shell_rotate        (GimpDisplayShell *shell,
+                                  const GdkEvent*         event,
+                                  gint              x,
+                                  gint              y)
+{
+  gdouble cx, cy;
+  gdouble rx, ry;
+  gdouble angle;
+  GdkEventMotion* mevent = (GdkEventMotion*)event;
+  g_return_if_fail (shell->rotating);
+
+  cx = shell->disp_width  / 2;
+  cy = shell->disp_height / 2;
+  rx = x - cx;
+  ry = y - cy;
+
+  if (shell->mirrored)
+    rx = -rx;
+
+  angle               = shell->rotate_start_angle - 
+                        fmod(atan2(rx, ry) / M_PI * 180.0 + 360.0, 360.0);
+  angle = fmod(angle + 360.0, 360.0);
+  if (mevent->state & GDK_CONTROL_MASK) {
+    angle = (gint)((angle + ROTATE_SNAP_UNIT / 2) / ROTATE_SNAP_UNIT) * ROTATE_SNAP_UNIT;
+    angle = fmod(angle + 360.0, 360.0);
+  }
+  shell->rotate_angle = angle;
+  gimp_display_shell_expose_full(shell);
+}

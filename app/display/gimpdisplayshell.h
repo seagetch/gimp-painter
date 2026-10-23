@@ -285,6 +285,9 @@ struct _GimpDisplayShell
   gdouble painter_pan_fraction_y;
   gdouble painter_pan_start_x;
   gdouble painter_pan_start_y;
+  /* Fixed old viewport-centered origin for one inherited rotation gesture. */
+  gdouble painter_rotate_origin_x;
+  gdouble painter_rotate_origin_y;
 };
 
 struct _GimpDisplayShellClass

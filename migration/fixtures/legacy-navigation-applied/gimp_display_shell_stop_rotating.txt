@@ -1,0 +1,13 @@
+static void
+gimp_display_shell_stop_rotating (GimpDisplayShell *shell,
+                                   const GdkEvent   *event)
+{
+  g_return_if_fail (shell->rotating);
+
+  gimp_display_shell_unset_override_cursor (shell);
+
+  shell->rotating           = FALSE;
+  shell->rotate_start_angle = 0;
+
+  gimp_display_shell_pointer_ungrab (shell, event);
+}

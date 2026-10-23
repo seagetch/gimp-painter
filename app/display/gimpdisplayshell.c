@@ -1613,6 +1613,8 @@ gimp_display_shell_empty (GimpDisplayShell *shell)
   shell->painter_pan_fraction_y = 0.0;
   shell->painter_pan_start_x = 0.0;
   shell->painter_pan_start_y = 0.0;
+  shell->painter_rotate_origin_x = 0.0;
+  shell->painter_rotate_origin_y = 0.0;
   gimp_display_shell_rotate_update_transform (shell);
 
   gimp_display_shell_expose_full (shell);
