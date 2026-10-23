@@ -1366,6 +1366,7 @@
 | 38.003 | [ ] | 独自型の対応を再集計する | 38.002 | 全型に登録・所有・終了・保存方針を対応 |
 | 38.004 | [ ] | C++ 境界の旧 API を検索する | 38.003 | 移行 adapter の残存がない |
 | 38.004/all-vfunc-exception-containment | [ ] | 全 vfunc callback の C ABI 例外封じ込めを実装・試験する | 05.013, 01.005/gimp3-vfunc-contract | Binder 71 件と class callback 40 件の実装に例外方針を適用し、初期化・描画・保存・終了の失敗が C を越えない |
+| 38.004/layer-tiles-initializer-containment | [x] | Layer tileのnative初期化失敗をC ABI内に封じ込める | 05.013, 01.005/gimp3-vfunc-contract | 実C11呼出しの4例外種×初期/activate後×3入口24caseとlayer70/canvas107を通常・限定ASan/UBSanで検証。失敗factoryはNULL、raw objectはinert、部分所有を解放し再試行成功。元111全件は未完。migration/tests/vfunc-exception-containment/layer-tiles-initializer/ |
 | 38.005 | [ ] | 資源の全件対応を再集計する | 38.004 | 全配布資産に利用先か除外根拠がある |
 | 38.006 | [ ] | 機能36項目の完了を監査する | 38.005 | 末尾追跡表の各項目に実装・検証証跡がある |
 | 38.007 | [ ] | 未解決 P0 を監査する | 38.006 | 旧作品不可・情報損失・clone差異・filter停止を残さない |

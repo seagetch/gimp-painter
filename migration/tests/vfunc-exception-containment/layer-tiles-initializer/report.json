@@ -1,0 +1,60 @@
+{
+  "task": "38.004/layer-tiles-initializer-containment",
+  "status": "PASS_BOUNDED_INITIALIZER",
+  "normal": {
+    "initializer": 24,
+    "layer": 70,
+    "canvas": 107
+  },
+  "sanitizers": [
+    {
+      "name": "painter-layer-initializer",
+      "returncode": 0,
+      "timeout": 60,
+      "duration": 3.828602504000628,
+      "passed": 24,
+      "executable_sha256": "c5466139d551b3cb39917b3736b52458d11c3dcb5d93803f709d8fdc2b97fa54"
+    },
+    {
+      "name": "painter-layer-ui",
+      "returncode": 0,
+      "timeout": 180,
+      "duration": 147.78092487900085,
+      "passed": 70,
+      "executable_sha256": "0cf3f61e4d37a05d9868be4a5f9b42c7d1b36c903e512075a9db2613a4587ff5"
+    },
+    {
+      "name": "painter-canvas-ui",
+      "returncode": 0,
+      "timeout": 60,
+      "duration": 49.541940760000216,
+      "passed": 107,
+      "executable_sha256": "ffb7dcb52c4cf3182003bb9c43042f7fa0036029b7236d3d9ea2de25c4ea7531"
+    }
+  ],
+  "instrumented_sources": 73,
+  "rtti_only_sources": 37,
+  "leak_detection": false,
+  "source_sha256": {
+    "app/widgets/gimppainterlayertiles.cpp": "306f962bcad7867cbefc01b4ae25fea28786f81eaa4d732b46e57535374e21b0",
+    "app/widgets/gimppainterlayertiles.h": "3d8a51e76366fda4a3ccb3080c6c9541560711a7b2bf9eae424b071922e314b1",
+    "app/tests/test-painter-layer-initializer.c": "36a9c44f0a76557def4a1df8c1336d570e7a5d1f44dee49fae7550042726ad0c",
+    "app/tests/test-painter-layer-initializer.cpp": "2150d2de1311a23e2cf1fa1e49affd15eceb29269f595a071cd47905ed54af04",
+    "app/tests/test-painter-layer-initializer.h": "5f6dfe34f27ad0b0e233b7916f6234374172dfd2b4144512368e092c09fdfa57",
+    "app/tests/test-painter-layer-ui.c": "609b34b82668a75d37de18b2c312e52d587bb93f02a91dc279f849bf6f2ed3ec",
+    "app/tests/test-painter-layer-signal-lifetimes.inc": "ae0cb5882159c7c91f9d496fcbc2b633dbdba9ae3d7a7846aaa8411461cc61b2",
+    "app/tests/test-painter-canvas-ui.c": "0af0bf202b59381d726740eadf8ad8f2fc2c01ebf03716a8c05c1fb38e5b872c"
+  },
+  "sources_unchanged_since_normal": true,
+  "portrait": "authenticated1080x1920x24;oncanvas enabled in canvas fixture",
+  "limits": [
+    "Original111 callback parent remains open",
+    "Full suite snapshot includes not-yet-committed07.008 test additions, explicitly archived",
+    "Dependencies and remaining app units not fully instrumented",
+    "No historical binary ABI compatibility claim",
+    "Excluded first union attempt omitted full RTTI compatibility set; no vptr suppression used"
+  ],
+  "sanitizer_recipe_sha256": {
+    "migration/tests/build_layer_initializer_sanitizers.py": "b0192c069beddf85474df7d6d2e3706f6fb901607f0c393c01e00af29a39822a"
+  }
+}

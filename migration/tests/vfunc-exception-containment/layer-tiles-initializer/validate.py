@@ -1,0 +1,33 @@
+#!/usr/bin/env python3
+"""Verify the bounded initializer fault matrix and retained source receipt."""
+import argparse,hashlib,json,pathlib,re,tarfile
+P=pathlib.Path(__file__).resolve().parent;ROOT=P.parents[3]
+a=argparse.ArgumentParser();a.add_argument('--check-source',action='store_true');args=a.parse_args()
+r=json.loads((P/'report.json').read_text());assert r['status']=='PASS_BOUNDED_INITIALIZER'
+expected={'painter-layer-initializer':(24,60),'painter-layer-ui':(70,180),'painter-canvas-ui':(107,60)}
+assert len(r['sanitizers'])==3 and {t['name'] for t in r['sanitizers']}==set(expected)
+normal=json.loads((P/'normal-tests.json').read_text())
+assert len(normal)==3 and {t['name'].split(' / ')[-1] for t in normal}==set(expected)
+for test in normal:
+ name=test['name'].split(' / ')[-1];assert test['result']=='OK' and test['returncode']==0
+ assert len(re.findall(r'^ok \d+ ',test['stdout'],re.M))==expected[name][0]
+ assert not re.search(r'^not ok|^ok .*#\s*SKIP',test['stdout'],re.M|re.I)
+ if 'timeout' in test:assert test['timeout']==expected[name][1]
+ assert 'env' not in test
+for test in r['sanitizers']:
+ count,budget=expected[test['name']];assert test['returncode']==0 and test['passed']==count and test['timeout']==budget
+ log=(P/('sanitizer-'+test['name']+'.log')).read_text();assert len(re.findall(r'^ok \d+ ',log,re.M))==count
+ assert not re.search(r'^not ok|ERROR: AddressSanitizer|runtime error:',log,re.M)
+ assert not re.search(r'^ok .*#\s*SKIP',log,re.M|re.I)
+with tarfile.open(P/'tested-source-snapshot.tar.gz') as archive:
+ members=archive.getmembers()
+ assert len(members)==len(r['source_sha256']) and {m.name for m in members}==set(r['source_sha256'])
+ assert all(m.isfile() and not pathlib.PurePosixPath(m.name).is_absolute() and '..' not in pathlib.PurePosixPath(m.name).parts for m in members)
+ for path,digest in r['source_sha256'].items():
+  assert hashlib.sha256(archive.extractfile(path).read()).hexdigest()==digest
+  if args.check_source:assert hashlib.sha256((ROOT/path).read_bytes()).hexdigest()==digest
+if args.check_source:
+ for path,digest in r['sanitizer_recipe_sha256'].items():assert hashlib.sha256((ROOT/path).read_bytes()).hexdigest()==digest
+red=json.loads((P.parent/'initializer-causal-red/results.json').read_text());assert [x['returncode']for x in red]==[-6,-6,-6,0,-6]
+assert r['leak_detection'] is False
+print('PASS bounded initializer24 + layer70 + canvas107; original111 duty remains open')

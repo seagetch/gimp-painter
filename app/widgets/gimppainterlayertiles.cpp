@@ -1115,25 +1115,55 @@ static void gimp_painter_layer_tiles_class_init (GimpPainterLayerTilesClass *kla
   GIMP_IMAGE_EDITOR_CLASS (klass)->set_image=set_image;
 }
 static void gimp_painter_layer_tiles_init (GimpPainterLayerTiles *owner) {
-  try {
-    auto& store=BindingStore::ensure (G_OBJECT (owner)); store.emplace<Slot> (owner); store.activate ();
-    store.with<Slot> ([] (Tiles& s) { s.build (); });
-  } catch (const std::exception& e) { g_warning ("Cannot construct painter layer tiles: %s", e.what ()); }
+  owner->binding_failed = TRUE;
+  GError *error = nullptr;
+  const bool initialized = boundary<bool> (&error, false, [&] {
+    auto& store = BindingStore::ensure (G_OBJECT (owner));
+    store.emplace<Slot> (owner);
+    /* Native signals may fire while widgets are assembled. Keep callbacks
+     * disabled until the complete tree and its owned connections are ready. */
+    store.initialize<Slot> ([] (Tiles& s) { s.build (); });
+    store.activate ();
+    return true;
+  });
+  if (initialized) owner->binding_failed = FALSE;
+  else {
+    /* This also retires a partially built tree's sources and connections. The
+     * native container owns child widgets and disposes them normally. */
+    boundary_void (nullptr, [&] {
+      if (auto *store = BindingStore::find (G_OBJECT (owner))) store->close ();
+    });
+    g_warning ("Cannot construct painter layer tiles: %s", error->message);
+    g_clear_error (&error);
+  }
+}
+namespace {
+GimpPainterLayerTiles *checked_tiles (GimpPainterLayerTiles *tiles) noexcept {
+  if (!tiles->binding_failed) return tiles;
+  /* GtkWidget factories return a floating reference. Sink that reference before
+   * disposing a failed instance so neither a leak nor a floating-finalize
+   * diagnostic can escape this failure path. */
+  g_object_ref_sink (tiles);
+  gtk_widget_destroy (GTK_WIDGET (tiles));
+  g_object_unref (tiles);
+  return nullptr;
+}
 }
 GType gimp_layer_tile_view_get_type (void) {
   return gimp_painter_layer_tiles_get_type ();
 }
 GimpLayerTileView *gimp_layer_tile_view_new (void) {
   return boundary<GimpLayerTileView *> (nullptr, nullptr, [] {
-    return static_cast<GimpLayerTileView *> (g_object_new (GIMP_TYPE_PAINTER_LAYER_TILES, nullptr));
+    return static_cast<GimpLayerTileView *> (checked_tiles (GIMP_PAINTER_LAYER_TILES (
+      g_object_new (GIMP_TYPE_PAINTER_LAYER_TILES, nullptr))));
   });
 }
 GtkWidget *gimp_painter_layer_tiles_new (GimpContext *context, GimpImage *image) {
   g_return_val_if_fail (GIMP_IS_CONTEXT (context), nullptr);
   g_return_val_if_fail (!image || GIMP_IS_IMAGE (image), nullptr);
   return boundary<GtkWidget *> (nullptr, nullptr, [&] {
-    return GTK_WIDGET (g_object_new (GIMP_TYPE_PAINTER_LAYER_TILES,
-                                    "context", context, "image", image, nullptr));
+    return GTK_WIDGET (checked_tiles (GIMP_PAINTER_LAYER_TILES (
+      g_object_new (GIMP_TYPE_PAINTER_LAYER_TILES, "context", context, "image", image, nullptr))));
   });
 }
 void gimp_painter_layer_tiles_set_image (GimpPainterLayerTiles *tiles, GimpImage *image) {

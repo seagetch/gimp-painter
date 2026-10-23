@@ -1,0 +1,8 @@
+[01m[K<native>/vfunc-initializer-red/test.c:[m[K In function ‘[01m[Ktest_init[m[K’:
+[01m[K<native>/vfunc-initializer-red/test.c:35:66:[m[K [01;31m[Kerror: [m[Kimplicit declaration of function ‘[01m[Kgimp_layer_tile_view_new[m[K’; did you mean ‘[01m[Kgimp_color_profile_view_new[m[K’? [[01;31m[K-Wimplicit-function-declaration[m[K]
+   35 |  result=raw ? g_object_new(GIMP_TYPE_PAINTER_LAYER_TILES,NULL) : [01;31m[Kgimp_layer_tile_view_new[m[K();
+      |                                                                  [01;31m[K^~~~~~~~~~~~~~~~~~~~~~~~[m[K
+      |                                                                  [32m[Kgimp_color_profile_view_new[m[K
+[01m[K<native>/vfunc-initializer-red/test.c:35:64:[m[K [01;31m[Kerror: [m[Kpointer/integer type mismatch in conditional expression [[01;31m[K-Wint-conversion[m[K]
+   35 |  result=raw ? g_object_new(GIMP_TYPE_PAINTER_LAYER_TILES,NULL) [01;31m[K:[m[K gimp_layer_tile_view_new();
+      |                                                                [01;31m[K^[m[K

@@ -1,0 +1,55 @@
+{
+  "meaning": "causal-red baseline, not acceptance",
+  "production_changed": false,
+  "seam": "test-only GNU ELF --wrap BindingStore::ensure(GObject*), actual ordinary production archives",
+  "c_caller": "test.c compiled C11",
+  "cpp_fault_adapter": "fault.cpp compiled as existing dedicated C++ test target",
+  "portrait": "1080x1920x24 authenticated loopback Xvfb",
+  "results": [
+    {
+      "kind": "typed",
+      "returncode": -6,
+      "duration": 1.9994263340004181
+    },
+    {
+      "kind": "standard",
+      "returncode": -6,
+      "duration": 1.3315599550001025
+    },
+    {
+      "kind": "allocation",
+      "returncode": -6,
+      "duration": 1.4362678709999273
+    },
+    {
+      "kind": "unknown",
+      "returncode": 0,
+      "duration": 1.752091659999678
+    },
+    {
+      "kind": "raw-unknown",
+      "returncode": -6,
+      "duration": 1.3681598429998303
+    }
+  ],
+  "interpretation": {
+    "typed_standard_allocation": "non-NULL factory result after inner callback caught failure; NULL assertion intentionally fails",
+    "unknown_factory": "returns NULL via outer public factory boundary; this does NOT prove callback containment",
+    "unknown_raw_GObject": "uncaught integer terminates process, proves callback escapes C ABI"
+  },
+  "limits": [
+    "Early ensure failure only; no post-activation rollback tested",
+    "No sanitizer acceptance run for this causal-red test",
+    "No all111-callback acceptance claim",
+    "Production archives read only under shared exclusive lock; executable hash seals final link, per-archive pre-run hashes not collected"
+  ],
+  "executable_sha256": "41a9dc7383d7dcee57fa74c7c3dad46f80290db382beea35d164e697cba2ad8d",
+  "source_sha256": {
+    "test.c": "974af173ead20d2d0b692d6e8c3efdf9ebbc1597c0e1e7ee78a497786cc6bc8d",
+    "fault.cpp": "611fcdeeae70c18a59a837132db9f001cbd664489933a4e13762bbb27ace7bf6"
+  },
+  "production_source_sha256": {
+    "app/widgets/gimppainterlayertiles.cpp": "645283109a51948d67117219f520759db2d730e3101dba9b663688e39af19cff"
+  },
+  "setup_failure": "First compile omitted widgets/gimplayertileview.h. Added real public header; failed compile logs retained."
+}

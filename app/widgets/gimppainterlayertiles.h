@@ -8,7 +8,10 @@ G_BEGIN_DECLS
 #define GIMP_IS_PAINTER_LAYER_TILES(o) (G_TYPE_CHECK_INSTANCE_TYPE ((o), GIMP_TYPE_PAINTER_LAYER_TILES))
 typedef struct _GimpPainterLayerTiles GimpPainterLayerTiles;
 typedef struct _GimpPainterLayerTilesClass GimpPainterLayerTilesClass;
-struct _GimpPainterLayerTiles { GimpImageEditor parent_instance; };
+struct _GimpPainterLayerTiles {
+  GimpImageEditor parent_instance;
+  gboolean binding_failed; /* Failed native initialization leaves an inert object. */
+};
 struct _GimpPainterLayerTilesClass { GimpImageEditorClass parent_class; };
 GType gimp_painter_layer_tiles_get_type (void) G_GNUC_CONST;
 GtkWidget *gimp_painter_layer_tiles_new (GimpContext *context, GimpImage *image);

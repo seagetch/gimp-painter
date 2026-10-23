@@ -996,3 +996,24 @@ test('painter-roi-transfers', painter_roi_transfers,
     'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
     'UI_TEST=yes',
   ], suite: 'app', is_parallel: false, timeout: 60)
+
+# Real C caller / C++ initializer failure seams; never present in the app link.
+painter_layer_init_wrap = [
+  '-Wl,--wrap=_ZN11GimpPainter12BindingStore6ensureEP8_GObject',
+  '-Wl,--wrap=_ZN11GimpPainter12BindingStore8activateEv',
+]
+if host_machine.system() == 'linux' and cxx.get_id() in ['gcc', 'clang'] and cxx.has_multi_link_arguments(painter_layer_init_wrap)
+  painter_layer_initializer_test = executable('painter-layer-initializer',
+    'test-painter-layer-initializer.c', 'test-painter-layer-initializer.cpp', 'tests.c',
+    dependencies: [libapp_dep, appstream], link_with: apptests_links,
+    cpp_args: painter_cpp_args, link_args: painter_layer_init_wrap,
+    override_options: ['c_std=c11', 'cpp_std=c++14'])
+  test('painter-layer-initializer', painter_layer_initializer_test,
+    depends: gimp_test_icon_dependencies,
+    env: [
+      'GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+      'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+      'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
+      'UI_TEST=yes',
+    ], suite: 'app', is_parallel: false, timeout: 60)
+endif

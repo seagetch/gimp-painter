@@ -1,0 +1,50 @@
+Xvfb verified: 127.0.0.1:91, 1080x1920x24, authenticated accepted, empty authority rejected
+typed -6 name_lost: connection to the bus cannot be established.
+# DEBUG: Error acquiring bus for cloud providers: Error spawning command line “dbus-launch --autolaunch=f09796fd086547da9ddf7488d4386bdf --binary-syntax --close-stderr”: Child process exited with code 1
+# Start of vfunc-init tests
+# factory result after injected failure: NONNULL
+**
+ERROR:<native>/vfunc-initializer-red/test.c:40:test_init: 'result' should be NULL
+not ok /vfunc-init/typed - ERROR:<native>/vfunc-initializer-red/test.c:40:test_init: 'result' should be NULL
+Bail out!
+
+standard -6 e_lost: connection to the bus cannot be established.
+# DEBUG: Error acquiring bus for cloud providers: Error spawning command line “dbus-launch --autolaunch=f09796fd086547da9ddf7488d4386bdf --binary-syntax --close-stderr”: Child process exited with code 1
+# Start of vfunc-init tests
+# factory result after injected failure: NONNULL
+**
+ERROR:<native>/vfunc-initializer-red/test.c:40:test_init: 'result' should be NULL
+not ok /vfunc-init/standard - ERROR:<native>/vfunc-initializer-red/test.c:40:test_init: 'result' should be NULL
+Bail out!
+
+allocation -6 lost: connection to the bus cannot be established.
+# DEBUG: Error acquiring bus for cloud providers: Error spawning command line “dbus-launch --autolaunch=f09796fd086547da9ddf7488d4386bdf --binary-syntax --close-stderr”: Child process exited with code 1
+# Start of vfunc-init tests
+# factory result after injected failure: NONNULL
+**
+ERROR:<native>/vfunc-initializer-red/test.c:40:test_init: 'result' should be NULL
+not ok /vfunc-init/allocation - ERROR:<native>/vfunc-initializer-red/test.c:40:test_init: 'result' should be NULL
+Bail out!
+
+unknown 0  not thread-safe and should not be used after threads are created
+set device 'Virtual core XTEST pointer' to mode: disabled
+set device 'Xvfb mouse' to mode: disabled
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+
+raw-unknown -6 .
+Skipping unknown file '<native>/build-port/plug-ins/common/mail.dummy' in plug-in directory.
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation dconf (DConfSettingsBackend) for ‘gsettings-backend’
+gui_dbus_name_lost: connection to the bus cannot be established.
+# DEBUG: Error acquiring bus for cloud providers: Error spawning command line “dbus-launch --autolaunch=f09796fd086547da9ddf7488d4386bdf --binary-syntax --close-stderr”: Child process exited with code 1
+# Start of vfunc-init tests
+terminate called after throwing an instance of 'int'
+
