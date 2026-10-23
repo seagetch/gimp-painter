@@ -431,6 +431,7 @@
 | 09.002 | [x] | 座標契約を固定する | 09.001 | 画像・レイヤー・buffer・画面の原点と境界を記録 |
 | 09.002/drawable-y-invalidation | [x] | drawable buffer置換の旧領域Y原点を修正する | 09.001 | X/Y非対称offsetで過剰更新と旧領域更新欠落を実再現し、Y offset修正後の6 native回帰と周辺5targetを検証 |
 | 09.003 | [ ] | DrawableFeature の buffer read を実装する | 09.002 | 負の offset と部分領域を読める |
+| 09.003/bounded-surface-read | [x] | Surfaceの部分buffer読取りと極端offsetを安全化する | 09.002 | stride・容量・半開領域を検査しINT_MIN選択offsetの実overflowを修正。通常7targetとproduction-source sanitizerを検証し親48義務は維持 |
 | 09.003/region-lifetime | [ ] | MyPaint Surface の一時領域を GEGL buffer 寿命へ移す | 09.003, 01.007/surface-regions | draw_dab と get_color の全 return・失敗経路で read/write/snapshot/mask/texture の buffer を一度だけ解放する |
 | 09.004 | [ ] | DrawableFeature の buffer write を実装する | 09.003 | 範囲外に書かず dirty 領域を返す |
 | 09.005 | [ ] | TempBuf の変換を実装する | 09.004 | stride・format・所有権を保持 |

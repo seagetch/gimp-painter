@@ -1,0 +1,247 @@
+{
+  "task": "09.003/bounded-surface-read",
+  "parent_complete": false,
+  "kind": "registered-normal-native-tests",
+  "sanitizers": false,
+  "date_utc": "2026-10-15",
+  "totals": {
+    "passed": 7,
+    "failed": 0,
+    "skipped": 0,
+    "timed_out": 0
+  },
+  "preparation": "Ordinary meson setup --reconfigure registered the newly added target. An initial pre-regeneration target lookup failed; the parent retained that diagnostic. This is not a failed behavioral test.",
+  "evidence_source": {
+    "log_basename": "bounded-read-native.json",
+    "sha256": "5ff0dd705a6897285972c824c102d6066b75f5d2146b1a160789335781031196",
+    "privacy": "Only allowlisted test results are copied; no environment, process command or machine-specific profile data is retained."
+  },
+  "runs": [
+    {
+      "name": "painter-mypaint-legacy-surface",
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 0.09684419631958008,
+      "test_cases": [],
+      "trace_summary": [
+        "Exact pinned-runtime trace match: 161061 bytes, 148 records"
+      ]
+    },
+    {
+      "name": "painter-mypaint-native-precision",
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 0.15429472923278809,
+      "test_cases": [
+        "/precision/72-formats",
+        "/precision/quantization-native-lsb",
+        "/precision/half-boundaries",
+        "/precision/alpha-hdr-selection-nonincremental",
+        "/precision/finite-hidden",
+        "/precision/background-exception-safety",
+        "/precision/shape-paper-sampling",
+        "/precision/profile-trc"
+      ],
+      "trace_summary": []
+    },
+    {
+      "name": "painter-mypaint-coordinate-boundaries",
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 0.07728838920593262,
+      "test_cases": [
+        "/coordinates/selection-edges",
+        "/coordinates/empty-touch-intersections",
+        "/coordinates/target-sampling-domain",
+        "/coordinates/overlapping-adjacent-dirty-union",
+        "/coordinates/nonincremental-cancel-dirty-union"
+      ],
+      "trace_summary": []
+    },
+    {
+      "name": "painter-mypaint-region-lifetime",
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 0.08489632606506348,
+      "test_cases": [
+        "/region-lifetime/retained-buffers",
+        "/region-lifetime/selection-replacement",
+        "/region-lifetime/snapshot-transitions",
+        "/region-lifetime/provider-replacement",
+        "/region-lifetime/coverage-unwind",
+        "/region-lifetime/active-destructor-providers",
+        "/region-lifetime/texture-self-clear",
+        "/region-lifetime/notify-self-clear",
+        "/region-lifetime/notify-exception-recovery",
+        "/region-lifetime/notify-copy-before-write",
+        "/region-lifetime/coverage-replaces-notify"
+      ],
+      "trace_summary": []
+    },
+    {
+      "name": "painter-mypaint-legacy-selection",
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 0.8706130981445312,
+      "test_cases": [],
+      "trace_summary": [
+        "Exact actual-old selection Surface match: 10 cases, 104 records, 2076990 bytes"
+      ]
+    },
+    {
+      "name": "painter-mypaint-snapshot-isolation",
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 0.11505508422851562,
+      "test_cases": [
+        "/snapshot-isolation/default",
+        "/snapshot-isolation/supplied"
+      ],
+      "trace_summary": []
+    },
+    {
+      "name": "painter-mypaint-buffer-read",
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 0.3386654853820801,
+      "test_cases": [
+        "/buffer-read/native-formats-and-partial-regions",
+        "/buffer-read/indexed-native-bytes",
+        "/buffer-read/explicit-conversion",
+        "/buffer-read/signed-offsets-and-extents",
+        "/buffer-read/exhaustive-intersections",
+        "/buffer-read/invalid-inputs",
+        "/buffer-read/ownership",
+        "/buffer-read/surface-extreme-selection-offsets"
+      ],
+      "trace_summary": []
+    }
+  ],
+  "source_equality": [
+    {
+      "path": "app/paint/painter-mypaint-surface/buffer-read.hpp",
+      "checkout_sha256": "fe4ad4518f6223505f65d7b2173b30608b8c4e049ea5af9f7ec0cdeaf7d3b02d",
+      "native_source_sha256": "fe4ad4518f6223505f65d7b2173b30608b8c4e049ea5af9f7ec0cdeaf7d3b02d",
+      "equal": true
+    },
+    {
+      "path": "app/paint/painter-mypaint-surface/gegl-surface.cpp",
+      "checkout_sha256": "24921337d94409ac87460dfaa9a54d045bc8f8670af44b001bc63637da7c81dc",
+      "native_source_sha256": "24921337d94409ac87460dfaa9a54d045bc8f8670af44b001bc63637da7c81dc",
+      "equal": true
+    },
+    {
+      "path": "app/paint/painter-mypaint-surface/tests/buffer-read.cpp",
+      "checkout_sha256": "e2d74f6fdb2b6797ac9e63be02e08be4b5d0d3fdec2b9fc35f2723a25214bc6d",
+      "native_source_sha256": "e2d74f6fdb2b6797ac9e63be02e08be4b5d0d3fdec2b9fc35f2723a25214bc6d",
+      "equal": true
+    },
+    {
+      "path": "app/paint/painter-mypaint-surface/tests/coordinate-boundaries.cpp",
+      "checkout_sha256": "51887438ad95aa6e6a310e4028b7f076e56e889127f0b5c56c2ea36c89b9637d",
+      "native_source_sha256": "51887438ad95aa6e6a310e4028b7f076e56e889127f0b5c56c2ea36c89b9637d",
+      "equal": true
+    },
+    {
+      "path": "app/paint/painter-mypaint-surface/gegl-surface.hpp",
+      "checkout_sha256": "884084cf46a02639014ab8e777f55155cdd4571807f196874b6f7c68f7fe324d",
+      "native_source_sha256": "884084cf46a02639014ab8e777f55155cdd4571807f196874b6f7c68f7fe324d",
+      "equal": true
+    },
+    {
+      "path": "app/paint/painter-mypaint-surface/legacy-pixel-modes.hpp",
+      "checkout_sha256": "afa0a00ffa5a99766ffce48e448f04b862659b6a52eaf3652998116b6cf90f15",
+      "native_source_sha256": "afa0a00ffa5a99766ffce48e448f04b862659b6a52eaf3652998116b6cf90f15",
+      "equal": true
+    },
+    {
+      "path": "app/paint/painter-mypaint-surface/gray-alpha-pixels.hpp",
+      "checkout_sha256": "8e8f51e9ad81e7098599849713395e50908a0e259587f3cd31d150a5c60455f6",
+      "native_source_sha256": "8e8f51e9ad81e7098599849713395e50908a0e259587f3cd31d150a5c60455f6",
+      "equal": true
+    },
+    {
+      "path": "app/paint/painter-mypaint-surface/native-pixels.hpp",
+      "checkout_sha256": "2a3e657e97fea07fd8b16f14ecbda1bb28a477324f9fe1c4b29ea7514a5f8d97",
+      "native_source_sha256": "2a3e657e97fea07fd8b16f14ecbda1bb28a477324f9fe1c4b29ea7514a5f8d97",
+      "equal": true
+    },
+    {
+      "path": "app/paint/painter-mypaint/surface.hpp",
+      "checkout_sha256": "1fea253715323cf35faa80ff38ff73cf239decc9393a2557cb2faa4e456762cb",
+      "native_source_sha256": "1fea253715323cf35faa80ff38ff73cf239decc9393a2557cb2faa4e456762cb",
+      "equal": true
+    },
+    {
+      "path": "app/painter/object-ref.hpp",
+      "checkout_sha256": "5a8cc92afc56f652fd47c727269d71d9d97c4358015f13fe9c4764371fcb7c3a",
+      "native_source_sha256": "5a8cc92afc56f652fd47c727269d71d9d97c4358015f13fe9c4764371fcb7c3a",
+      "equal": true
+    },
+    {
+      "path": "app/painter/boundary.hpp",
+      "checkout_sha256": "d97a8b6e27a09fe69c7c1d6620361c3daaa1e5cf1bad8d2eb2d4b9a9faed6d2e",
+      "native_source_sha256": "d97a8b6e27a09fe69c7c1d6620361c3daaa1e5cf1bad8d2eb2d4b9a9faed6d2e",
+      "equal": true
+    },
+    {
+      "path": "app/painter/gimp-painter-error.h",
+      "checkout_sha256": "b3c1e3550f83abd54726e752d069f0a591b105bcea249239277d2005ccf61465",
+      "native_source_sha256": "b3c1e3550f83abd54726e752d069f0a591b105bcea249239277d2005ccf61465",
+      "equal": true
+    },
+    {
+      "path": "app/painter/gimp-painter-visibility.h",
+      "checkout_sha256": "d832e5442d969ff8439292a61d0143532d85c1b7eaab0b29689c6dc04e9c4532",
+      "native_source_sha256": "d832e5442d969ff8439292a61d0143532d85c1b7eaab0b29689c6dc04e9c4532",
+      "equal": true
+    },
+    {
+      "path": "app/paint/painter-mypaint-surface/meson.build",
+      "checkout_sha256": "18e5f2ec83d87b5b1daa2f2f3bf8d2c7657fa6c2279571cc1a7746ad0c855485",
+      "native_source_sha256": "18e5f2ec83d87b5b1daa2f2f3bf8d2c7657fa6c2279571cc1a7746ad0c855485",
+      "equal": true
+    },
+    {
+      "path": "app/paint/painter-mypaint-surface/tests/native-precision.cpp",
+      "checkout_sha256": "b362b6c1e9f508522d7344de94f69cbc57584e6684d5d8a64073d35deb2c9d4d",
+      "native_source_sha256": "b362b6c1e9f508522d7344de94f69cbc57584e6684d5d8a64073d35deb2c9d4d",
+      "equal": true
+    },
+    {
+      "path": "app/paint/painter-mypaint-surface/tests/region-lifetime.cpp",
+      "checkout_sha256": "2bff58051ce7ce0e3aba29edd64079e1277a94c40ba82700263ad2120201676e",
+      "native_source_sha256": "2bff58051ce7ce0e3aba29edd64079e1277a94c40ba82700263ad2120201676e",
+      "equal": true
+    },
+    {
+      "path": "app/paint/painter-mypaint-surface/tests/selection-trace.cpp",
+      "checkout_sha256": "1d25d66e1387613cccdfc8ecdd872da32e3a8f6e4399b14f42bce2c7b1a5bc0d",
+      "native_source_sha256": "1d25d66e1387613cccdfc8ecdd872da32e3a8f6e4399b14f42bce2c7b1a5bc0d",
+      "equal": true
+    },
+    {
+      "path": "app/paint/painter-mypaint-surface/tests/snapshot-isolation.cpp",
+      "checkout_sha256": "f09e1cd1f51783d03331c3fe154509c8ea7dd947b49134d6dd0e0b2418778934",
+      "native_source_sha256": "f09e1cd1f51783d03331c3fe154509c8ea7dd947b49134d6dd0e0b2418778934",
+      "equal": true
+    },
+    {
+      "path": "app/paint/painter-mypaint-surface/tests/surface-trace.cpp",
+      "checkout_sha256": "edbe2b1e0732e6f7f6b2cb2b1da83facd0ce596725acdb2e213866854be683e5",
+      "native_source_sha256": "edbe2b1e0732e6f7f6b2cb2b1da83facd0ce596725acdb2e213866854be683e5",
+      "equal": true
+    },
+    {
+      "path": "app/paint/painter-mypaint-surface/tests/compare-selection.py",
+      "checkout_sha256": "cd17577fd5356f756d8af21ecd78344ec64b6770469ab5c6beb300af4284f8e6",
+      "native_source_sha256": "cd17577fd5356f756d8af21ecd78344ec64b6770469ab5c6beb300af4284f8e6",
+      "equal": true
+    }
+  ],
+  "limitations": [
+    "Normal native build only; ASan/UBSan evidence is the separate standalone sanitizers.json report.",
+    "Seven registered targets are not a full application or cross-platform test pass.",
+    "Parent09.003 and all broader source duties remain open."
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "task": "09.003/bounded-surface-read",
+  "parent_complete": false,
+  "source_duties": 48,
+  "sanitized": true,
+  "scope": "Current production Surface and helper compiled standalone against real GEGL/babl; no full GIMP or cross-platform claim",
+  "limitations": [
+    "Uninstrumented dependency libraries",
+    "LeakSanitizer disabled",
+    "TempBuf, fill, clone/filter paths and broader parent obligations remain open"
+  ],
+  "source_sha256": {
+    "app/paint/painter-mypaint-surface/buffer-read.hpp": "fe4ad4518f6223505f65d7b2173b30608b8c4e049ea5af9f7ec0cdeaf7d3b02d",
+    "app/paint/painter-mypaint-surface/gegl-surface.cpp": "24921337d94409ac87460dfaa9a54d045bc8f8670af44b001bc63637da7c81dc",
+    "app/paint/painter-mypaint-surface/tests/buffer-read.cpp": "e2d74f6fdb2b6797ac9e63be02e08be4b5d0d3fdec2b9fc35f2723a25214bc6d",
+    "app/paint/painter-mypaint-surface/tests/coordinate-boundaries.cpp": "51887438ad95aa6e6a310e4028b7f076e56e889127f0b5c56c2ea36c89b9637d",
+    "app/paint/painter-mypaint-surface/gegl-surface.hpp": "884084cf46a02639014ab8e777f55155cdd4571807f196874b6f7c68f7fe324d",
+    "app/paint/painter-mypaint-surface/legacy-pixel-modes.hpp": "afa0a00ffa5a99766ffce48e448f04b862659b6a52eaf3652998116b6cf90f15",
+    "app/paint/painter-mypaint-surface/gray-alpha-pixels.hpp": "8e8f51e9ad81e7098599849713395e50908a0e259587f3cd31d150a5c60455f6",
+    "app/paint/painter-mypaint-surface/native-pixels.hpp": "2a3e657e97fea07fd8b16f14ecbda1bb28a477324f9fe1c4b29ea7514a5f8d97",
+    "app/paint/painter-mypaint/surface.hpp": "1fea253715323cf35faa80ff38ff73cf239decc9393a2557cb2faa4e456762cb",
+    "app/painter/object-ref.hpp": "5a8cc92afc56f652fd47c727269d71d9d97c4358015f13fe9c4764371fcb7c3a",
+    "app/painter/boundary.hpp": "d97a8b6e27a09fe69c7c1d6620361c3daaa1e5cf1bad8d2eb2d4b9a9faed6d2e",
+    "app/painter/gimp-painter-error.h": "b3c1e3550f83abd54726e752d069f0a591b105bcea249239277d2005ccf61465",
+    "app/painter/gimp-painter-visibility.h": "d832e5442d969ff8439292a61d0143532d85c1b7eaab0b29689c6dc04e9c4532",
+    "migration/contracts/drawable-buffer-read.json": "71d54871934635122c488be539cb68ea881ec46a0c639c9a8bfc772d08209ec2",
+    "tools/check_drawable_buffer_read.py": "a2592cdb7a308edfd270775908347b66ac70e7b11d30f807e8eb6ba5f90badb1"
+  },
+  "gegl": "0.4.62",
+  "babl": "0.1.114",
+  "compiler": "c++ (Debian 14.2.0-19) 14.2.0",
+  "compile_flags": [
+    "-std=c++14",
+    "-Wall",
+    "-Wextra",
+    "-Werror",
+    "-g",
+    "-O1",
+    "-I/workspace/shared/gimp-painter/app",
+    "-I/workspace/shared/gimp-painter/app/paint/painter-mypaint-surface",
+    "-fsanitize=address,undefined,float-cast-overflow",
+    "-fno-sanitize-recover=all",
+    "-fno-omit-frame-pointer"
+  ],
+  "runs": [
+    {
+      "name": "buffer-read",
+      "passed_groups": 8,
+      "exit": 0,
+      "stdout": "TAP version 14\n# random seed: R02S86384edfecf29ec3d2d7eb16473e4cdb\n1..8\n# Start of buffer-read tests\nok 1 /buffer-read/native-formats-and-partial-regions\nok 2 /buffer-read/indexed-native-bytes\nok 3 /buffer-read/explicit-conversion\nok 4 /buffer-read/signed-offsets-and-extents\nok 5 /buffer-read/exhaustive-intersections\nok 6 /buffer-read/invalid-inputs\nok 7 /buffer-read/ownership\nok 8 /buffer-read/surface-extreme-selection-offsets\n# End of buffer-read tests\n",
+      "stderr": ""
+    },
+    {
+      "name": "coordinates",
+      "passed_groups": 5,
+      "exit": 0,
+      "stdout": "TAP version 14\n# random seed: R02Sa1be45be49ece6085c178c5093c3bb15\n1..5\n# Start of coordinates tests\n# selection edges: legacy-u8 offset=(-9,-7)\n# selection edges: legacy-u8 offset=(9,7)\n# selection edges: double offset=(-9,-7)\n# selection edges: double offset=(9,7)\nok 1 /coordinates/selection-edges\nok 2 /coordinates/empty-touch-intersections\nok 3 /coordinates/target-sampling-domain\n# dirty overlap/adjacency: legacy-u8 incremental\n# dirty overlap/adjacency: legacy-u8 nonincremental\n# dirty overlap/adjacency: double incremental\n# dirty overlap/adjacency: double nonincremental\nok 4 /coordinates/overlapping-adjacent-dirty-union\nok 5 /coordinates/nonincremental-cancel-dirty-union\n# End of coordinates tests\n",
+      "stderr": ""
+    }
+  ],
+  "baseline": {
+    "revision": "000527cc3931dff4df3347a375104ee90da23816",
+    "source_sha256": "0f2a38fbf34b48ef54c43e8d4e4806d4353457cbadd9acef99fa1ce35d188691",
+    "exit": 1,
+    "stdout": "TAP version 14\n# random seed: R02Sa25aec3d14a23cfe416db8ef3694347a\n# Start of buffer-read tests\n",
+    "stderr": "/tmp/painter-buffer-read-ljry9519/baseline.cpp:98:19: runtime error: signed integer overflow: 0 - -2147483648 cannot be represented in type 'int'\n"
+  }
+}
