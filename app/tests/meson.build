@@ -881,3 +881,15 @@ if painter_http_enabled
           'UI_TEST=yes', 'GSETTINGS_BACKEND=memory'],
     suite: 'painter', is_parallel: false, timeout: 180)
 endif
+
+# Deferred device discovery must not overwrite an unread profile on early exit.
+device_save_lifecycle = executable('device-save-lifecycle',
+  'test-device-save-lifecycle.c', 'tests.c',
+  dependencies: [libapp_dep, painter_mypaint_surface_dep, appstream],
+  link_with: apptests_links, override_options: ['c_std=c11'])
+test('device-save-lifecycle', device_save_lifecycle,
+  env: ['GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+        'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+        'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
+        'GIMP3_DATADIR=' + meson.project_build_root() / 'data',
+        'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 120)

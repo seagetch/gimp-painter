@@ -112,6 +112,14 @@ gimp_devices_save (Gimp     *gimp,
 
   g_return_if_fail (GIMP_IS_DEVICE_MANAGER (manager));
 
+  /* Device discovery and devicerc restoration are deferred until the first
+   * focus.  An early exit must preserve that unread profile, rather than
+   * saving an empty manager (or trying to save a nonexistent current tool).
+   * always_save only overrides an explicitly deleted devicerc below.
+   */
+  if (! gimp_has_focused_once (gimp))
+    return;
+
   if (devicerc_deleted && ! always_save)
     return;
 
