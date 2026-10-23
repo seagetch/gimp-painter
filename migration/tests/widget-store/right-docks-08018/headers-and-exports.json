@@ -1,0 +1,1092 @@
+{
+  "accepted": true,
+  "accepted_bounded_feature_subset": true,
+  "diagnostic_disclosure": "Original native header-v1 compilation emitted the same two preexisting ignored scalar-return qualifier warnings before its parser failure. Native-v2 reused current objects and emitted zero new lines; ASan-v2 emitted those two existing warnings. This is not a fresh warning-free native compilation claim.",
+  "exports": {
+    "asan": {
+      "all76_c_entry_acceptance_claim": false,
+      "raw_nm": {
+        "app/gimp-3.0": {
+          "bytes": 343685,
+          "path": "right-dock-final-export-proofs-20261013/right-dock-final-v18-asan-exports/app_gimp-3.0.nm",
+          "sha256": "72657f256f02f491243bf6e71987af1ae482857b40e425ccce867c4975fdc684"
+        },
+        "app/tests/painter-canvas-ui": {
+          "bytes": 341165,
+          "path": "right-dock-final-export-proofs-20261013/right-dock-final-v18-asan-exports/app_tests_painter-canvas-ui.nm",
+          "sha256": "4cb483644f419747d7c08b1bd6250306266ff3cd5f3a6a6757d892f47776822f"
+        }
+      },
+      "record": {
+        "accepted": false,
+        "build_capture_sha256": "aa908d9024b883ee33d3f95445ef51f0df7cb796bbd89c33c3dca3ea358194cc",
+        "count": 23,
+        "expected_names": [
+          "gimp_image_window_get_right_docks_geometry",
+          "gimp_image_window_get_right_docks_width",
+          "gimp_image_window_painter_can_attach",
+          "gimp_image_window_painter_reconcile",
+          "gimp_image_window_painter_resume",
+          "gimp_image_window_painter_suspend",
+          "gimp_painter_canvas_ui_attach_dock",
+          "gimp_painter_canvas_ui_attach_right_docks",
+          "gimp_painter_canvas_ui_close",
+          "gimp_painter_canvas_ui_detach_dock",
+          "gimp_painter_canvas_ui_detach_right_docks",
+          "gimp_painter_canvas_ui_get_options_presentation",
+          "gimp_painter_canvas_ui_get_right_docks_width",
+          "gimp_painter_canvas_ui_get_visible",
+          "gimp_painter_canvas_ui_has_right_docks",
+          "gimp_painter_canvas_ui_init",
+          "gimp_painter_canvas_ui_pointer",
+          "gimp_painter_canvas_ui_set_options_presentation",
+          "gimp_painter_canvas_ui_set_right_docks_width",
+          "gimp_painter_canvas_ui_set_visible",
+          "gimp_painter_compact_options_get",
+          "gimp_painter_compact_options_popdown",
+          "gimp_painter_compact_options_set"
+        ],
+        "headers_sha256": {
+          "app/display/gimppaintercanvasui.h": "dd0bee041e5bc4847476300166292208c3c4f85aedd59a2cba87d920c897753e",
+          "app/widgets/gimppaintercompactoptions.h": "65421cb89e1c1cb8cb7baca3c251a94ead195f48c77de0361a65e37247b4e882"
+        },
+        "mode": "asan",
+        "recorded_utc": "2026-10-13T19:37:09.685155+00:00",
+        "runtime_preparation": "right-dock-08018-public-v18-runtime-prep-20261013",
+        "scope": "Only canonical Canvas/window bridge and compact-options declarations; no all76 C-entry acceptance",
+        "source_and_pipeline_stable": true,
+        "source_map_sha256": "0648841afb85b7b5bcd2978ae7117b97ff4c70f0ad1001b9cec32f62b7190fa8",
+        "status": "OBSERVED_EXACT_C_SYMBOLS",
+        "targets": {
+          "app/gimp-3.0": {
+            "elf_sha256": "bdbcaef39e8136688392187f989baea1ce9092fed6e2dc8ee7f378aeaab28438",
+            "raw_nm_sha256": "72657f256f02f491243bf6e71987af1ae482857b40e425ccce867c4975fdc684",
+            "unmangled_global_text_definitions": {
+              "gimp_image_window_get_right_docks_geometry": [
+                "0000000004a55c10",
+                "T",
+                "gimp_image_window_get_right_docks_geometry"
+              ],
+              "gimp_image_window_get_right_docks_width": [
+                "0000000004a584d0",
+                "T",
+                "gimp_image_window_get_right_docks_width"
+              ],
+              "gimp_image_window_painter_can_attach": [
+                "0000000004a552b0",
+                "T",
+                "gimp_image_window_painter_can_attach"
+              ],
+              "gimp_image_window_painter_reconcile": [
+                "0000000004a58900",
+                "T",
+                "gimp_image_window_painter_reconcile"
+              ],
+              "gimp_image_window_painter_resume": [
+                "0000000004a5a6b0",
+                "T",
+                "gimp_image_window_painter_resume"
+              ],
+              "gimp_image_window_painter_suspend": [
+                "0000000004a5a040",
+                "T",
+                "gimp_image_window_painter_suspend"
+              ],
+              "gimp_painter_canvas_ui_attach_dock": [
+                "0000000004be14d0",
+                "T",
+                "gimp_painter_canvas_ui_attach_dock"
+              ],
+              "gimp_painter_canvas_ui_attach_right_docks": [
+                "0000000004be24c0",
+                "T",
+                "gimp_painter_canvas_ui_attach_right_docks"
+              ],
+              "gimp_painter_canvas_ui_close": [
+                "0000000004ba2b30",
+                "T",
+                "gimp_painter_canvas_ui_close"
+              ],
+              "gimp_painter_canvas_ui_detach_dock": [
+                "0000000004bd8950",
+                "T",
+                "gimp_painter_canvas_ui_detach_dock"
+              ],
+              "gimp_painter_canvas_ui_detach_right_docks": [
+                "0000000004bd8580",
+                "T",
+                "gimp_painter_canvas_ui_detach_right_docks"
+              ],
+              "gimp_painter_canvas_ui_get_options_presentation": [
+                "0000000004ba8af0",
+                "T",
+                "gimp_painter_canvas_ui_get_options_presentation"
+              ],
+              "gimp_painter_canvas_ui_get_right_docks_width": [
+                "0000000004ba7860",
+                "T",
+                "gimp_painter_canvas_ui_get_right_docks_width"
+              ],
+              "gimp_painter_canvas_ui_get_visible": [
+                "0000000004ba6cd0",
+                "T",
+                "gimp_painter_canvas_ui_get_visible"
+              ],
+              "gimp_painter_canvas_ui_has_right_docks": [
+                "0000000004ba7250",
+                "T",
+                "gimp_painter_canvas_ui_has_right_docks"
+              ],
+              "gimp_painter_canvas_ui_init": [
+                "0000000004bf9500",
+                "T",
+                "gimp_painter_canvas_ui_init"
+              ],
+              "gimp_painter_canvas_ui_pointer": [
+                "0000000004bac1c0",
+                "T",
+                "gimp_painter_canvas_ui_pointer"
+              ],
+              "gimp_painter_canvas_ui_set_options_presentation": [
+                "0000000004ba90b0",
+                "T",
+                "gimp_painter_canvas_ui_set_options_presentation"
+              ],
+              "gimp_painter_canvas_ui_set_right_docks_width": [
+                "0000000004baa800",
+                "T",
+                "gimp_painter_canvas_ui_set_right_docks_width"
+              ],
+              "gimp_painter_canvas_ui_set_visible": [
+                "0000000004bf9030",
+                "T",
+                "gimp_painter_canvas_ui_set_visible"
+              ],
+              "gimp_painter_compact_options_get": [
+                "0000000004d0c920",
+                "T",
+                "gimp_painter_compact_options_get"
+              ],
+              "gimp_painter_compact_options_popdown": [
+                "0000000004d18260",
+                "T",
+                "gimp_painter_compact_options_popdown"
+              ],
+              "gimp_painter_compact_options_set": [
+                "0000000004d36b70",
+                "T",
+                "gimp_painter_compact_options_set"
+              ]
+            }
+          },
+          "app/tests/painter-canvas-ui": {
+            "elf_sha256": "0387fce7e33b6295c470df8e95c9346a2b0f5f92666272d438d1ac9c6112cbc4",
+            "raw_nm_sha256": "4cb483644f419747d7c08b1bd6250306266ff3cd5f3a6a6757d892f47776822f",
+            "unmangled_global_text_definitions": {
+              "gimp_image_window_get_right_docks_geometry": [
+                "0000000003234650",
+                "T",
+                "gimp_image_window_get_right_docks_geometry"
+              ],
+              "gimp_image_window_get_right_docks_width": [
+                "0000000003236f10",
+                "T",
+                "gimp_image_window_get_right_docks_width"
+              ],
+              "gimp_image_window_painter_can_attach": [
+                "0000000003233cf0",
+                "T",
+                "gimp_image_window_painter_can_attach"
+              ],
+              "gimp_image_window_painter_reconcile": [
+                "0000000003237340",
+                "T",
+                "gimp_image_window_painter_reconcile"
+              ],
+              "gimp_image_window_painter_resume": [
+                "00000000032390f0",
+                "T",
+                "gimp_image_window_painter_resume"
+              ],
+              "gimp_image_window_painter_suspend": [
+                "0000000003238a80",
+                "T",
+                "gimp_image_window_painter_suspend"
+              ],
+              "gimp_painter_canvas_ui_attach_dock": [
+                "00000000031a5e60",
+                "T",
+                "gimp_painter_canvas_ui_attach_dock"
+              ],
+              "gimp_painter_canvas_ui_attach_right_docks": [
+                "00000000031a6e50",
+                "T",
+                "gimp_painter_canvas_ui_attach_right_docks"
+              ],
+              "gimp_painter_canvas_ui_close": [
+                "00000000031674c0",
+                "T",
+                "gimp_painter_canvas_ui_close"
+              ],
+              "gimp_painter_canvas_ui_detach_dock": [
+                "000000000319d2e0",
+                "T",
+                "gimp_painter_canvas_ui_detach_dock"
+              ],
+              "gimp_painter_canvas_ui_detach_right_docks": [
+                "000000000319cf10",
+                "T",
+                "gimp_painter_canvas_ui_detach_right_docks"
+              ],
+              "gimp_painter_canvas_ui_get_options_presentation": [
+                "000000000316d480",
+                "T",
+                "gimp_painter_canvas_ui_get_options_presentation"
+              ],
+              "gimp_painter_canvas_ui_get_right_docks_width": [
+                "000000000316c1f0",
+                "T",
+                "gimp_painter_canvas_ui_get_right_docks_width"
+              ],
+              "gimp_painter_canvas_ui_get_visible": [
+                "000000000316b660",
+                "T",
+                "gimp_painter_canvas_ui_get_visible"
+              ],
+              "gimp_painter_canvas_ui_has_right_docks": [
+                "000000000316bbe0",
+                "T",
+                "gimp_painter_canvas_ui_has_right_docks"
+              ],
+              "gimp_painter_canvas_ui_init": [
+                "00000000031bde90",
+                "T",
+                "gimp_painter_canvas_ui_init"
+              ],
+              "gimp_painter_canvas_ui_pointer": [
+                "0000000003170b50",
+                "T",
+                "gimp_painter_canvas_ui_pointer"
+              ],
+              "gimp_painter_canvas_ui_set_options_presentation": [
+                "000000000316da40",
+                "T",
+                "gimp_painter_canvas_ui_set_options_presentation"
+              ],
+              "gimp_painter_canvas_ui_set_right_docks_width": [
+                "000000000316f190",
+                "T",
+                "gimp_painter_canvas_ui_set_right_docks_width"
+              ],
+              "gimp_painter_canvas_ui_set_visible": [
+                "00000000031bd9c0",
+                "T",
+                "gimp_painter_canvas_ui_set_visible"
+              ],
+              "gimp_painter_compact_options_get": [
+                "0000000003b39560",
+                "T",
+                "gimp_painter_compact_options_get"
+              ],
+              "gimp_painter_compact_options_popdown": [
+                "0000000003b44ea0",
+                "T",
+                "gimp_painter_compact_options_popdown"
+              ],
+              "gimp_painter_compact_options_set": [
+                "0000000003b637b0",
+                "T",
+                "gimp_painter_compact_options_set"
+              ]
+            }
+          }
+        }
+      },
+      "report": {
+        "bytes": 9596,
+        "path": "right-dock-final-export-proofs-20261013/right-dock-final-v18-asan-exports/result.json",
+        "sha256": "9f5490ce6f5073fc8428578f50daa4bd65e95894972734d2c1765899a3fc9f92"
+      },
+      "status": "PARENT_ACCEPTED_OBSERVED_PASS"
+    },
+    "native": {
+      "all76_c_entry_acceptance_claim": false,
+      "raw_nm": {
+        "app/gimp-3.0": {
+          "bytes": 333841,
+          "path": "right-dock-final-export-proofs-20261013/right-dock-final-v18-native-exports/app_gimp-3.0.nm",
+          "sha256": "228582537e1bcdfeae221bde9dbf09c6d275f48cfe6beed55a673e33148a3f57"
+        },
+        "app/tests/painter-canvas-ui": {
+          "bytes": 332742,
+          "path": "right-dock-final-export-proofs-20261013/right-dock-final-v18-native-exports/app_tests_painter-canvas-ui.nm",
+          "sha256": "08339de13278c136efde0d3e03364c219721852691a3df90b784a63e4417d8d6"
+        }
+      },
+      "record": {
+        "accepted": false,
+        "build_capture_sha256": "b3419bc153b56b560aec53c04ee8aa98336738790676d895a332be77013bbebb",
+        "count": 23,
+        "expected_names": [
+          "gimp_image_window_get_right_docks_geometry",
+          "gimp_image_window_get_right_docks_width",
+          "gimp_image_window_painter_can_attach",
+          "gimp_image_window_painter_reconcile",
+          "gimp_image_window_painter_resume",
+          "gimp_image_window_painter_suspend",
+          "gimp_painter_canvas_ui_attach_dock",
+          "gimp_painter_canvas_ui_attach_right_docks",
+          "gimp_painter_canvas_ui_close",
+          "gimp_painter_canvas_ui_detach_dock",
+          "gimp_painter_canvas_ui_detach_right_docks",
+          "gimp_painter_canvas_ui_get_options_presentation",
+          "gimp_painter_canvas_ui_get_right_docks_width",
+          "gimp_painter_canvas_ui_get_visible",
+          "gimp_painter_canvas_ui_has_right_docks",
+          "gimp_painter_canvas_ui_init",
+          "gimp_painter_canvas_ui_pointer",
+          "gimp_painter_canvas_ui_set_options_presentation",
+          "gimp_painter_canvas_ui_set_right_docks_width",
+          "gimp_painter_canvas_ui_set_visible",
+          "gimp_painter_compact_options_get",
+          "gimp_painter_compact_options_popdown",
+          "gimp_painter_compact_options_set"
+        ],
+        "headers_sha256": {
+          "app/display/gimppaintercanvasui.h": "dd0bee041e5bc4847476300166292208c3c4f85aedd59a2cba87d920c897753e",
+          "app/widgets/gimppaintercompactoptions.h": "65421cb89e1c1cb8cb7baca3c251a94ead195f48c77de0361a65e37247b4e882"
+        },
+        "mode": "native",
+        "recorded_utc": "2026-10-13T19:37:03.142909+00:00",
+        "runtime_preparation": "right-dock-08018-public-v18-runtime-prep-20261013",
+        "scope": "Only canonical Canvas/window bridge and compact-options declarations; no all76 C-entry acceptance",
+        "source_and_pipeline_stable": true,
+        "source_map_sha256": "0648841afb85b7b5bcd2978ae7117b97ff4c70f0ad1001b9cec32f62b7190fa8",
+        "status": "OBSERVED_EXACT_C_SYMBOLS",
+        "targets": {
+          "app/gimp-3.0": {
+            "elf_sha256": "e90a52dcfcfad2cb46517b22c6e44a77d23ee0f342c2b2dba3d9f19b90806c75",
+            "raw_nm_sha256": "228582537e1bcdfeae221bde9dbf09c6d275f48cfe6beed55a673e33148a3f57",
+            "unmangled_global_text_definitions": {
+              "gimp_image_window_get_right_docks_geometry": [
+                "00000000006215e0",
+                "T",
+                "gimp_image_window_get_right_docks_geometry"
+              ],
+              "gimp_image_window_get_right_docks_width": [
+                "0000000000621b60",
+                "T",
+                "gimp_image_window_get_right_docks_width"
+              ],
+              "gimp_image_window_painter_can_attach": [
+                "0000000000621400",
+                "T",
+                "gimp_image_window_painter_can_attach"
+              ],
+              "gimp_image_window_painter_reconcile": [
+                "0000000000621c20",
+                "T",
+                "gimp_image_window_painter_reconcile"
+              ],
+              "gimp_image_window_painter_resume": [
+                "00000000006222c0",
+                "T",
+                "gimp_image_window_painter_resume"
+              ],
+              "gimp_image_window_painter_suspend": [
+                "0000000000622170",
+                "T",
+                "gimp_image_window_painter_suspend"
+              ],
+              "gimp_painter_canvas_ui_attach_dock": [
+                "00000000006630f0",
+                "T",
+                "gimp_painter_canvas_ui_attach_dock"
+              ],
+              "gimp_painter_canvas_ui_attach_right_docks": [
+                "0000000000663040",
+                "T",
+                "gimp_painter_canvas_ui_attach_right_docks"
+              ],
+              "gimp_painter_canvas_ui_close": [
+                "000000000065e5b0",
+                "T",
+                "gimp_painter_canvas_ui_close"
+              ],
+              "gimp_painter_canvas_ui_detach_dock": [
+                "0000000000660e60",
+                "T",
+                "gimp_painter_canvas_ui_detach_dock"
+              ],
+              "gimp_painter_canvas_ui_detach_right_docks": [
+                "0000000000660dd0",
+                "T",
+                "gimp_painter_canvas_ui_detach_right_docks"
+              ],
+              "gimp_painter_canvas_ui_get_options_presentation": [
+                "000000000065f110",
+                "T",
+                "gimp_painter_canvas_ui_get_options_presentation"
+              ],
+              "gimp_painter_canvas_ui_get_right_docks_width": [
+                "000000000065f060",
+                "T",
+                "gimp_painter_canvas_ui_get_right_docks_width"
+              ],
+              "gimp_painter_canvas_ui_get_visible": [
+                "000000000065ef40",
+                "T",
+                "gimp_painter_canvas_ui_get_visible"
+              ],
+              "gimp_painter_canvas_ui_has_right_docks": [
+                "000000000065efd0",
+                "T",
+                "gimp_painter_canvas_ui_has_right_docks"
+              ],
+              "gimp_painter_canvas_ui_init": [
+                "00000000006656e0",
+                "T",
+                "gimp_painter_canvas_ui_init"
+              ],
+              "gimp_painter_canvas_ui_pointer": [
+                "000000000065f240",
+                "T",
+                "gimp_painter_canvas_ui_pointer"
+              ],
+              "gimp_painter_canvas_ui_set_options_presentation": [
+                "000000000065f1a0",
+                "T",
+                "gimp_painter_canvas_ui_set_options_presentation"
+              ],
+              "gimp_painter_canvas_ui_set_right_docks_width": [
+                "000000000065e670",
+                "T",
+                "gimp_painter_canvas_ui_set_right_docks_width"
+              ],
+              "gimp_painter_canvas_ui_set_visible": [
+                "0000000000665650",
+                "T",
+                "gimp_painter_canvas_ui_set_visible"
+              ],
+              "gimp_painter_compact_options_get": [
+                "00000000006a1280",
+                "T",
+                "gimp_painter_compact_options_get"
+              ],
+              "gimp_painter_compact_options_popdown": [
+                "00000000006a13a0",
+                "T",
+                "gimp_painter_compact_options_popdown"
+              ],
+              "gimp_painter_compact_options_set": [
+                "00000000006a5300",
+                "T",
+                "gimp_painter_compact_options_set"
+              ]
+            }
+          },
+          "app/tests/painter-canvas-ui": {
+            "elf_sha256": "59f5914ac980265c73d4f2193de6264155754bd48a950a37f86c7669b5833768",
+            "raw_nm_sha256": "08339de13278c136efde0d3e03364c219721852691a3df90b784a63e4417d8d6",
+            "unmangled_global_text_definitions": {
+              "gimp_image_window_get_right_docks_geometry": [
+                "000000000020b160",
+                "T",
+                "gimp_image_window_get_right_docks_geometry"
+              ],
+              "gimp_image_window_get_right_docks_width": [
+                "000000000020b6e0",
+                "T",
+                "gimp_image_window_get_right_docks_width"
+              ],
+              "gimp_image_window_painter_can_attach": [
+                "000000000020af80",
+                "T",
+                "gimp_image_window_painter_can_attach"
+              ],
+              "gimp_image_window_painter_reconcile": [
+                "000000000020b7a0",
+                "T",
+                "gimp_image_window_painter_reconcile"
+              ],
+              "gimp_image_window_painter_resume": [
+                "000000000020be40",
+                "T",
+                "gimp_image_window_painter_resume"
+              ],
+              "gimp_image_window_painter_suspend": [
+                "000000000020bcf0",
+                "T",
+                "gimp_image_window_painter_suspend"
+              ],
+              "gimp_painter_canvas_ui_attach_dock": [
+                "00000000001f2eb0",
+                "T",
+                "gimp_painter_canvas_ui_attach_dock"
+              ],
+              "gimp_painter_canvas_ui_attach_right_docks": [
+                "00000000001f2e00",
+                "T",
+                "gimp_painter_canvas_ui_attach_right_docks"
+              ],
+              "gimp_painter_canvas_ui_close": [
+                "00000000001ee370",
+                "T",
+                "gimp_painter_canvas_ui_close"
+              ],
+              "gimp_painter_canvas_ui_detach_dock": [
+                "00000000001f0c20",
+                "T",
+                "gimp_painter_canvas_ui_detach_dock"
+              ],
+              "gimp_painter_canvas_ui_detach_right_docks": [
+                "00000000001f0b90",
+                "T",
+                "gimp_painter_canvas_ui_detach_right_docks"
+              ],
+              "gimp_painter_canvas_ui_get_options_presentation": [
+                "00000000001eeed0",
+                "T",
+                "gimp_painter_canvas_ui_get_options_presentation"
+              ],
+              "gimp_painter_canvas_ui_get_right_docks_width": [
+                "00000000001eee20",
+                "T",
+                "gimp_painter_canvas_ui_get_right_docks_width"
+              ],
+              "gimp_painter_canvas_ui_get_visible": [
+                "00000000001eed00",
+                "T",
+                "gimp_painter_canvas_ui_get_visible"
+              ],
+              "gimp_painter_canvas_ui_has_right_docks": [
+                "00000000001eed90",
+                "T",
+                "gimp_painter_canvas_ui_has_right_docks"
+              ],
+              "gimp_painter_canvas_ui_init": [
+                "00000000001f54a0",
+                "T",
+                "gimp_painter_canvas_ui_init"
+              ],
+              "gimp_painter_canvas_ui_pointer": [
+                "00000000001ef000",
+                "T",
+                "gimp_painter_canvas_ui_pointer"
+              ],
+              "gimp_painter_canvas_ui_set_options_presentation": [
+                "00000000001eef60",
+                "T",
+                "gimp_painter_canvas_ui_set_options_presentation"
+              ],
+              "gimp_painter_canvas_ui_set_right_docks_width": [
+                "00000000001ee430",
+                "T",
+                "gimp_painter_canvas_ui_set_right_docks_width"
+              ],
+              "gimp_painter_canvas_ui_set_visible": [
+                "00000000001f5410",
+                "T",
+                "gimp_painter_canvas_ui_set_visible"
+              ],
+              "gimp_painter_compact_options_get": [
+                "00000000003af400",
+                "T",
+                "gimp_painter_compact_options_get"
+              ],
+              "gimp_painter_compact_options_popdown": [
+                "00000000003af520",
+                "T",
+                "gimp_painter_compact_options_popdown"
+              ],
+              "gimp_painter_compact_options_set": [
+                "00000000003b3480",
+                "T",
+                "gimp_painter_compact_options_set"
+              ]
+            }
+          }
+        }
+      },
+      "report": {
+        "bytes": 9598,
+        "path": "right-dock-final-export-proofs-20261013/right-dock-final-v18-native-exports/result.json",
+        "sha256": "6601abe8a6fbcab192d9157ec4d671c67abbeddf50c6528fe71b37d1fd65d336"
+      },
+      "status": "PARENT_ACCEPTED_OBSERVED_PASS"
+    }
+  },
+  "header_v1_history": {
+    "note": "Retained as observed failure; the narrower v2 checker is a separate gate, not a rewritten v1 pass.",
+    "raw_dependencies": {
+      "bytes": 35199369,
+      "path": "right-dock-header-dependency-diagnosis-20261013/native-raw-dependencies.txt",
+      "sha256": "6fb704089192536286ca68735d2d2cdefcc3819cf412d6f3365411e1e2b49a7a"
+    },
+    "record": {
+      "accepted": false,
+      "build_targets": [
+        "painter-public-headers-c",
+        "painter-public-headers-cpp"
+      ],
+      "compiler_suppression_added": false,
+      "completed_utc": "2026-10-13T19:31:43.422828+00:00",
+      "display_or_gui_started": false,
+      "error": "Ninja dependency count/identity differs",
+      "error_type": "RuntimeError",
+      "full_build_receipt": "right-dock-08018-v18-candidate-runtime-20261013/build-native-1-capture.json",
+      "full_build_receipt_sha256": "b3419bc153b56b560aec53c04ee8aa98336738790676d895a332be77013bbebb",
+      "gate_scope_expanded": false,
+      "header_build_exit": 0,
+      "header_build_outer_timeout": false,
+      "lock": "exclusive shared build.lock",
+      "mode": "native",
+      "outer_build_bound_seconds": 1800,
+      "outer_test_bound_seconds": 180,
+      "production_patch": "right-docks-production-v17.patch",
+      "run": "right-dock-final-v18-native-headers",
+      "runner_exit": 2,
+      "runtime_preparation": "right-dock-08018-public-v18-runtime-prep-20261013",
+      "source175_changes_from_v9_reference": {
+        "app/display/gimppaintercanvasui.cpp": {
+          "reference": "4d414662751eef80bc8353c7d92b6f9338680d48f846ba0fd58112036951eca9",
+          "stage": "7e0fede26fa47706b1c33127535289c451e58f951bcee9b6d30cc52484a86090"
+        },
+        "app/gui/gimpuiconfigurer.c": {
+          "reference": "7b54f46d2803ff62c27db7edf928394989dc69a0fdde603c2ac3080c61a6a3fe",
+          "stage": "4ab84b04fa6793a5779a0a5cc443980b7f45ccee1a334967c638fb6058a955fc"
+        },
+        "app/tests/meson.build": {
+          "reference": "dc1fa8129d2e50bf239962de19de5ebf13d48db1ce946d9c39f964c99adaa0ec",
+          "stage": "f136c028a209ee871e5b6b5ef600268ff02b36c77064ff8cd48a0872d67e0e4e"
+        },
+        "app/tests/test-painter-canvas-ui.c": {
+          "reference": "1d5295a32fb2ae147290a573a33c7e0912497ed924453b881ecf9f9e56366e8a",
+          "stage": "313db1debd25117b05d178b39957f7f9ac2eb95fe214f8a1f9ff2f262353d41d"
+        },
+        "app/tests/test-painter-right-docks-conversion.inc": {
+          "reference": "528eb52a57775aead61195a18573639af95c9ed1f31226fd6903287275a8f1b7",
+          "stage": "7add88318d3336e4c56258b97e4de0daa9e51491a4a3f3d5448943cc5d19b9d1"
+        },
+        "app/tests/test-painter-right-host-interactions.inc": {
+          "reference": "e7d278c7deccde577472e0f7d93e66ab7463a849483b6644ee78d8049dc95f26",
+          "stage": "4f69a3addfd523391d16b3f7f57f83a85891e53c0839452969ba8bd977129b34"
+        },
+        "app/widgets/gimppaintercompactoptions.cpp": {
+          "reference": "449aba2103d81a6438ca0282b21aa7057a89818595059f6eb0c94ce3eeff4b8a",
+          "stage": "8a02888d76f052fcacfe26880ef78e926bcd6e23ad1156ed7f22f0d0e649cf31"
+        }
+      },
+      "source_mutations": false,
+      "source_stage": "right-dock-08018-v18-candidate-runtime-20261013",
+      "started_utc": "2026-10-13T19:31:39.292956+00:00",
+      "status": "OBSERVED_FAILURE",
+      "test_timeouts": {
+        "painter-additional-header-routes": 60,
+        "painter-public-header-compilation": 60
+      }
+    },
+    "report": {
+      "bytes": 2868,
+      "path": "right-dock-final-header-gates-20261013/right-dock-final-v18-native-headers/result.json",
+      "sha256": "8bf1e585b48f39f6deb7e4cc8788655356974c77638fa98327188540c32e5a04"
+    },
+    "status": "HEADER_BUILD0_CHECKER_REJECTED_DUPLICATE_DEPENDENCY_PATHS"
+  },
+  "header_v2_tooling": {
+    "independent_parser_review": {
+      "record": {
+        "accepted_runtime_header_gates": false,
+        "c": 175,
+        "cpp": 194,
+        "duplicate_occurrences_per_affected_object": 2,
+        "duplicate_path": "../source/app/painter/gimp-painter-visibility.h",
+        "duplicate_probes": [
+          212,
+          213,
+          214,
+          215,
+          216,
+          217,
+          218,
+          219,
+          222
+        ],
+        "exact_declared_counts": true,
+        "final_tooling_seal_sha256": "ab53c63ef0b2f6a75b3b1a4c2960e3289c65ccfaad9b681a287b869eebd3a473",
+        "parser_sha256": "32eee1dc9413452e208843d17db885e812d1eba3894e24c03d8c87346da2bf6b",
+        "preserved_checks": [
+          "369 unique object records",
+          "exact positive dependency occurrence count",
+          "VALID records",
+          "object command provenance",
+          "source/header/probe identities",
+          "each dependency occurrence bytes and freshness",
+          "thin archive membership",
+          "before/after source and application identity"
+        ],
+        "raw_native_file": "right-dock-header-dependency-diagnosis-20261013/native-raw-dependencies.txt",
+        "raw_native_sha256": "6fb704089192536286ca68735d2d2cdefcc3819cf412d6f3365411e1e2b49a7a",
+        "record_count": 369,
+        "retained_failed_observation": "right-dock-final-header-gates-20261013/right-dock-final-v18-native-headers",
+        "review_source": "collaboration agent review_dependency_parser messages at2026-10-13T19:36\u201319:37Z",
+        "schema_note": "Existing dependency_count and dependency_set_sha256 retain unique-set semantics. Added ordered occurrence IDs/count/hash.",
+        "status": "NARROW_PARSER_CORRECTION_REVIEWED",
+        "sum_unique_per_object": 312335,
+        "synthetic_final_count": 40,
+        "synthetic_final_log_sha256": "f1f34ef35d7c19ed7ec0acbc4265e3660b5a3164d98209274fc4355b3ad89802",
+        "synthetic_final_status": "PASS",
+        "total_occurrences": 312344
+      },
+      "source": {
+        "bytes": 1716,
+        "path": "right-dock-header-dependency-diagnosis-20261013/review-receipt.json",
+        "sha256": "3be9ab143cd15c50af738cc96feb9d07cb0d586945e0fee9f0d43ee127ef7d30"
+      }
+    },
+    "parser": {
+      "bytes": 20292,
+      "path": "right-dock-header-gates-v2-prep-20261013/capture_header_objects.py",
+      "sha256": "32eee1dc9413452e208843d17db885e812d1eba3894e24c03d8c87346da2bf6b"
+    },
+    "scope": "Narrow duplicate dependency path correction retains exact counts and ordered occurrences plus freshness/hash checks; separate final native/ASan header results still required.",
+    "synthetic_controls": {
+      "bytes": 4285,
+      "path": "right-dock-header-gates-v2-prep-20261013/object-provenance-synthetic-tests-v2-final.log",
+      "sha256": "f1f34ef35d7c19ed7ec0acbc4265e3660b5a3164d98209274fc4355b3ad89802"
+    },
+    "synthetic_count": 40,
+    "synthetic_status": "RECORDED_PASS_NOT_RERUN",
+    "tooling_seal": {
+      "bytes": 1718,
+      "path": "right-dock-header-gates-v2-prep-20261013/tooling-seal.json",
+      "sha256": "ab53c63ef0b2f6a75b3b1a4c2960e3289c65ccfaad9b681a287b869eebd3a473"
+    }
+  },
+  "headers": {
+    "asan": {
+      "all369_fresh_compilation_claim": false,
+      "all_current369_objects_verified": true,
+      "build_diagnostics": {
+        "record": {
+          "all_diagnostic_lines": [
+            "../source/libgimpwidgets/gimpspinscale.h:61:1: warning: type qualifiers ignored on function return type [-Wignored-qualifiers]",
+            "../source/libgimpwidgets/gimpspinscale.h:61:1: warning: type qualifiers ignored on function return type [-Wignored-qualifiers]"
+          ],
+          "compiler_success_is_not_warning_free": true,
+          "diagnostic_count": 2,
+          "diagnostics_accepted": false,
+          "warning_policy": "Retain existing header Meson flags and every diagnostic. No new suppression or warning acceptance."
+        },
+        "source": {
+          "bytes": 531,
+          "path": "right-dock-final-header-gates-20261013/right-dock-final-v18-asan-headers-v2/build-diagnostics.json",
+          "sha256": "3a6a78497254baa4b40143ae4b34ae2cbb7badecff2aeabe96067af018d33822"
+        }
+      },
+      "evidence_identity_map": {
+        "bytes": 1794,
+        "path": "right-dock-final-header-gates-20261013/right-dock-final-v18-asan-headers-v2/evidence-sha256.json",
+        "sha256": "c876a458436e1d37cc63be0379af4b00cec0d2c293cbb62ea14b44ec576c9f8f"
+      },
+      "header_objects_after": {
+        "bytes": 21202473,
+        "path": "right-dock-final-header-gates-20261013/right-dock-final-v18-asan-headers-v2/objects-after-gates.json",
+        "sha256": "1ec19b0c440bd144e7d476b2743f878b313924670b6a9f179100841a851a1765"
+      },
+      "header_objects_before": {
+        "bytes": 21202473,
+        "path": "right-dock-final-header-gates-20261013/right-dock-final-v18-asan-headers-v2/objects-before-gates.json",
+        "sha256": "1ec19b0c440bd144e7d476b2743f878b313924670b6a9f179100841a851a1765"
+      },
+      "raw_tests": {
+        "bytes": 27114,
+        "path": "right-dock-final-header-gates-20261013/right-dock-final-v18-asan-headers-v2/tests.json",
+        "sha256": "7d0ab7a99d5eedf82d21e909c03a79300cc2f0ac8e54017c108957b5eb029420"
+      },
+      "record": {
+        "accepted": false,
+        "build_targets": [
+          "painter-public-headers-c",
+          "painter-public-headers-cpp"
+        ],
+        "c_probes": 175,
+        "compiled_probes": 369,
+        "compiler_suppression_added": false,
+        "completed_utc": "2026-10-13T19:41:01.906490+00:00",
+        "cpp_probes": 194,
+        "current_objects_and_command_associations_verified": true,
+        "diagnostics_accepted": false,
+        "display_or_gui_started": false,
+        "fresh_all369_compilation_claimed": false,
+        "fresh_compile_verification_report": true,
+        "full_build_receipt": "right-dock-08018-v18-candidate-runtime-20261013/build-asan-1-capture.json",
+        "full_build_receipt_sha256": "aa908d9024b883ee33d3f95445ef51f0df7cb796bbd89c33c3dca3ea358194cc",
+        "gate_scope_expanded": false,
+        "header_build_exit": 0,
+        "header_build_outer_timeout": false,
+        "header_object_identity_stable": true,
+        "lock": "exclusive shared build.lock",
+        "meson_exit": 0,
+        "mode": "asan",
+        "object_provenance_sha256": "1ec19b0c440bd144e7d476b2743f878b313924670b6a9f179100841a851a1765",
+        "outer_build_bound_seconds": 1800,
+        "outer_test_bound_seconds": 180,
+        "production_patch": "right-docks-production-v17.patch",
+        "route_controls": 16,
+        "run": "right-dock-final-v18-asan-headers-v2",
+        "runner_exit": 0,
+        "runtime_preparation": "right-dock-08018-public-v18-runtime-prep-20261013",
+        "source175_changes_from_v9_reference": {
+          "app/display/gimppaintercanvasui.cpp": {
+            "reference": "4d414662751eef80bc8353c7d92b6f9338680d48f846ba0fd58112036951eca9",
+            "stage": "7e0fede26fa47706b1c33127535289c451e58f951bcee9b6d30cc52484a86090"
+          },
+          "app/gui/gimpuiconfigurer.c": {
+            "reference": "7b54f46d2803ff62c27db7edf928394989dc69a0fdde603c2ac3080c61a6a3fe",
+            "stage": "4ab84b04fa6793a5779a0a5cc443980b7f45ccee1a334967c638fb6058a955fc"
+          },
+          "app/tests/meson.build": {
+            "reference": "dc1fa8129d2e50bf239962de19de5ebf13d48db1ce946d9c39f964c99adaa0ec",
+            "stage": "f136c028a209ee871e5b6b5ef600268ff02b36c77064ff8cd48a0872d67e0e4e"
+          },
+          "app/tests/test-painter-canvas-ui.c": {
+            "reference": "1d5295a32fb2ae147290a573a33c7e0912497ed924453b881ecf9f9e56366e8a",
+            "stage": "313db1debd25117b05d178b39957f7f9ac2eb95fe214f8a1f9ff2f262353d41d"
+          },
+          "app/tests/test-painter-right-docks-conversion.inc": {
+            "reference": "528eb52a57775aead61195a18573639af95c9ed1f31226fd6903287275a8f1b7",
+            "stage": "7add88318d3336e4c56258b97e4de0daa9e51491a4a3f3d5448943cc5d19b9d1"
+          },
+          "app/tests/test-painter-right-host-interactions.inc": {
+            "reference": "e7d278c7deccde577472e0f7d93e66ab7463a849483b6644ee78d8049dc95f26",
+            "stage": "4f69a3addfd523391d16b3f7f57f83a85891e53c0839452969ba8bd977129b34"
+          },
+          "app/widgets/gimppaintercompactoptions.cpp": {
+            "reference": "449aba2103d81a6438ca0282b21aa7057a89818595059f6eb0c94ce3eeff4b8a",
+            "stage": "8a02888d76f052fcacfe26880ef78e926bcd6e23ad1156ed7f22f0d0e649cf31"
+          }
+        },
+        "source_and_build_identity_stable": true,
+        "source_mutations": false,
+        "source_stage": "right-dock-08018-v18-candidate-runtime-20261013",
+        "started_utc": "2026-10-13T19:39:08.807663+00:00",
+        "status": "OBSERVED_HEADER_GATES_PASS",
+        "test_outer_timeout": false,
+        "test_timeouts": {
+          "painter-additional-header-routes": 60,
+          "painter-public-header-compilation": 60
+        }
+      },
+      "report": {
+        "bytes": 3296,
+        "path": "right-dock-final-header-gates-20261013/right-dock-final-v18-asan-headers-v2/result.json",
+        "sha256": "12575b76524316ca5d38cc38bd4f8fa8f0343e7accc2aca7c12f1087135247be"
+      },
+      "status": "PARENT_ACCEPTED_OBSERVED_PASS",
+      "test_results": [
+        {
+          "duration_seconds": 0.10341906547546387,
+          "name": "gimp:painter / painter-public-header-compilation",
+          "result": "OK",
+          "returncode": 0
+        },
+        {
+          "duration_seconds": 4.569901943206787,
+          "name": "gimp:painter / painter-additional-header-routes",
+          "result": "OK",
+          "returncode": 0
+        }
+      ]
+    },
+    "native": {
+      "all369_fresh_compilation_claim": false,
+      "all_current369_objects_verified": true,
+      "build_diagnostics": {
+        "record": {
+          "all_diagnostic_lines": [],
+          "compiler_success_is_not_warning_free": true,
+          "diagnostic_count": 0,
+          "diagnostics_accepted": false,
+          "warning_policy": "Retain existing header Meson flags and every diagnostic. No new suppression or warning acceptance."
+        },
+        "source": {
+          "bytes": 261,
+          "path": "right-dock-final-header-gates-20261013/right-dock-final-v18-native-headers-v2/build-diagnostics.json",
+          "sha256": "7c4865c1d56db57731768ab39851c417ef47b51a845a604567f19983387d3764"
+        }
+      },
+      "evidence_identity_map": {
+        "bytes": 1794,
+        "path": "right-dock-final-header-gates-20261013/right-dock-final-v18-native-headers-v2/evidence-sha256.json",
+        "sha256": "8acf2bd0469fdcc2d82492566e7dad65910e1bfd3f954f7540a0b0698e7e74e6"
+      },
+      "header_objects_after": {
+        "bytes": 21202474,
+        "path": "right-dock-final-header-gates-20261013/right-dock-final-v18-native-headers-v2/objects-after-gates.json",
+        "sha256": "fa3aed7c127fd72f9e8b78c62003b59383d7c7e6edd071b50f2cd01df85bd7e4"
+      },
+      "header_objects_before": {
+        "bytes": 21202474,
+        "path": "right-dock-final-header-gates-20261013/right-dock-final-v18-native-headers-v2/objects-before-gates.json",
+        "sha256": "fa3aed7c127fd72f9e8b78c62003b59383d7c7e6edd071b50f2cd01df85bd7e4"
+      },
+      "raw_tests": {
+        "bytes": 27179,
+        "path": "right-dock-final-header-gates-20261013/right-dock-final-v18-native-headers-v2/tests.json",
+        "sha256": "4892ca86fa016ddf12bb132c65d189fc055425ece1c24713bb336e2e74135abd"
+      },
+      "record": {
+        "accepted": false,
+        "build_targets": [
+          "painter-public-headers-c",
+          "painter-public-headers-cpp"
+        ],
+        "c_probes": 175,
+        "compiled_probes": 369,
+        "compiler_suppression_added": false,
+        "completed_utc": "2026-10-13T19:39:08.655131+00:00",
+        "cpp_probes": 194,
+        "current_objects_and_command_associations_verified": true,
+        "diagnostics_accepted": false,
+        "display_or_gui_started": false,
+        "fresh_all369_compilation_claimed": false,
+        "fresh_compile_verification_report": true,
+        "full_build_receipt": "right-dock-08018-v18-candidate-runtime-20261013/build-native-1-capture.json",
+        "full_build_receipt_sha256": "b3419bc153b56b560aec53c04ee8aa98336738790676d895a332be77013bbebb",
+        "gate_scope_expanded": false,
+        "header_build_exit": 0,
+        "header_build_outer_timeout": false,
+        "header_object_identity_stable": true,
+        "lock": "exclusive shared build.lock",
+        "meson_exit": 0,
+        "mode": "native",
+        "object_provenance_sha256": "fa3aed7c127fd72f9e8b78c62003b59383d7c7e6edd071b50f2cd01df85bd7e4",
+        "outer_build_bound_seconds": 1800,
+        "outer_test_bound_seconds": 180,
+        "production_patch": "right-docks-production-v17.patch",
+        "route_controls": 16,
+        "run": "right-dock-final-v18-native-headers-v2",
+        "runner_exit": 0,
+        "runtime_preparation": "right-dock-08018-public-v18-runtime-prep-20261013",
+        "source175_changes_from_v9_reference": {
+          "app/display/gimppaintercanvasui.cpp": {
+            "reference": "4d414662751eef80bc8353c7d92b6f9338680d48f846ba0fd58112036951eca9",
+            "stage": "7e0fede26fa47706b1c33127535289c451e58f951bcee9b6d30cc52484a86090"
+          },
+          "app/gui/gimpuiconfigurer.c": {
+            "reference": "7b54f46d2803ff62c27db7edf928394989dc69a0fdde603c2ac3080c61a6a3fe",
+            "stage": "4ab84b04fa6793a5779a0a5cc443980b7f45ccee1a334967c638fb6058a955fc"
+          },
+          "app/tests/meson.build": {
+            "reference": "dc1fa8129d2e50bf239962de19de5ebf13d48db1ce946d9c39f964c99adaa0ec",
+            "stage": "f136c028a209ee871e5b6b5ef600268ff02b36c77064ff8cd48a0872d67e0e4e"
+          },
+          "app/tests/test-painter-canvas-ui.c": {
+            "reference": "1d5295a32fb2ae147290a573a33c7e0912497ed924453b881ecf9f9e56366e8a",
+            "stage": "313db1debd25117b05d178b39957f7f9ac2eb95fe214f8a1f9ff2f262353d41d"
+          },
+          "app/tests/test-painter-right-docks-conversion.inc": {
+            "reference": "528eb52a57775aead61195a18573639af95c9ed1f31226fd6903287275a8f1b7",
+            "stage": "7add88318d3336e4c56258b97e4de0daa9e51491a4a3f3d5448943cc5d19b9d1"
+          },
+          "app/tests/test-painter-right-host-interactions.inc": {
+            "reference": "e7d278c7deccde577472e0f7d93e66ab7463a849483b6644ee78d8049dc95f26",
+            "stage": "4f69a3addfd523391d16b3f7f57f83a85891e53c0839452969ba8bd977129b34"
+          },
+          "app/widgets/gimppaintercompactoptions.cpp": {
+            "reference": "449aba2103d81a6438ca0282b21aa7057a89818595059f6eb0c94ce3eeff4b8a",
+            "stage": "8a02888d76f052fcacfe26880ef78e926bcd6e23ad1156ed7f22f0d0e649cf31"
+          }
+        },
+        "source_and_build_identity_stable": true,
+        "source_mutations": false,
+        "source_stage": "right-dock-08018-v18-candidate-runtime-20261013",
+        "started_utc": "2026-10-13T19:37:29.389573+00:00",
+        "status": "OBSERVED_HEADER_GATES_PASS",
+        "test_outer_timeout": false,
+        "test_timeouts": {
+          "painter-additional-header-routes": 60,
+          "painter-public-header-compilation": 60
+        }
+      },
+      "report": {
+        "bytes": 3302,
+        "path": "right-dock-final-header-gates-20261013/right-dock-final-v18-native-headers-v2/result.json",
+        "sha256": "1ac71ed42fe289d11d2a6af12cbbeb85b34377da65f4a3b170b38d98df41040b"
+      },
+      "status": "PARENT_ACCEPTED_OBSERVED_PASS",
+      "test_results": [
+        {
+          "duration_seconds": 0.11267352104187012,
+          "name": "gimp:painter / painter-public-header-compilation",
+          "result": "OK",
+          "returncode": 0
+        },
+        {
+          "duration_seconds": 2.6524336338043213,
+          "name": "gimp:painter / painter-additional-header-routes",
+          "result": "OK",
+          "returncode": 0
+        }
+      ]
+    }
+  },
+  "historical_native_header_diagnostics": {
+    "record": {
+      "exact_lines": [
+        "../source/libgimpwidgets/gimpspinscale.h:61:1: warning: type qualifiers ignored on function return type [-Wignored-qualifiers]",
+        "../source/libgimpwidgets/gimpspinscale.h:61:1: warning: type qualifiers ignored on function return type [-Wignored-qualifiers]"
+      ],
+      "explanation": "The original native header compilation succeeded and emitted these same two existing ignored scalar-return qualifier warnings before the provenance-parser failure. The v2 native compile reused those current objects and emitted zero new lines. Final native evidence is not a warning-free fresh compilation claim.",
+      "same_warning_source_as": "right-dock-parent-final-acceptance-20261013/header-diagnostic-review.json",
+      "sha256": "3a6a78497254baa4b40143ae4b34ae2cbb7badecff2aeabe96067af018d33822",
+      "source": "right-dock-final-header-gates-20261013/right-dock-final-v18-native-headers/build-diagnostics.json",
+      "status": "REVIEWED_HISTORICAL_NATIVE_HEADER_DIAGNOSTICS"
+    },
+    "source": {
+      "bytes": 985,
+      "path": "right-dock-parent-final-acceptance-20261013/historical-native-header-diagnostics.json",
+      "sha256": "69fff3b1522ca38889525434c4a2ee8d45d507086b56c6ddb8b6a2c47127ef00"
+    }
+  },
+  "parent_header_diagnostics_review": {
+    "record": {
+      "asan_count": 2,
+      "exact_lines": [
+        "../source/libgimpwidgets/gimpspinscale.h:61:1: warning: type qualifiers ignored on function return type [-Wignored-qualifiers]",
+        "../source/libgimpwidgets/gimpspinscale.h:61:1: warning: type qualifiers ignored on function return type [-Wignored-qualifiers]"
+      ],
+      "explanation": "Existing top-level const qualifier on scalar return type is ignored. The two ordinary C/C++ probe compilations disclose this warning. No new suppression or header-source edit is introduced. Existing header target flags retain -Wno-error=ignored-qualifiers.",
+      "header_gate_results": {
+        "asan": "12575b76524316ca5d38cc38bd4f8fa8f0343e7accc2aca7c12f1087135247be",
+        "native": "1ac71ed42fe289d11d2a6af12cbbeb85b34377da65f4a3b170b38d98df41040b"
+      },
+      "native_count": 0,
+      "source_declaration": "const guint gimp_spin_scale_get_mnemonic_keyval (GimpSpinScale *scale);",
+      "source_header": "tool-08014-validation-20261012/source/libgimpwidgets/gimpspinscale.h",
+      "source_header_sha256": "0aee860af65702dbed79cbc527c91ddc3be271862ae95e9ba2fcd47f20adef89",
+      "source_unchanged_basis": "Source header is outside all13 code delta paths; header provenance verifies current bytes and unchanged compilation flags.",
+      "status": "REVIEWED_INHERITED_HEADER_DIAGNOSTICS",
+      "warning_free_claim": false
+    },
+    "source": {
+      "bytes": 1326,
+      "path": "right-dock-parent-final-acceptance-20261013/header-diagnostic-review.json",
+      "sha256": "bc5cf90d2838e3a03f9ae6b6a12bcc912221d02964aecd94d0a2162189370aa5"
+    }
+  },
+  "parent_terminal_acceptance": {
+    "bytes": 6720,
+    "path": "right-dock-parent-final-acceptance-20261013/acceptance.json",
+    "sha256": "11575c1e832373a7854e515e5750f7ab6879736f01d8de1118e169d3e0a3d20a"
+  },
+  "public_perspective_guard_changes_included": false,
+  "required_gates": [
+    "C/C++ header probes for final source",
+    "Unmangled C ABI exports and public symbols",
+    "Exact compile/archive/relink provenance, including final compact-options object"
+  ],
+  "results": "NATIVE_ASAN_HEADER369_ROUTE16_EXPORT23_PARENT_ACCEPTED",
+  "status": "PARENT_ACCEPTED_BOUNDED_RIGHT_DOCK_FEATURE_SUBSET"
+}

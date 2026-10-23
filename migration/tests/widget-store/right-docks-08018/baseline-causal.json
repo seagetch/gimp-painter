@@ -1,0 +1,61 @@
+{
+  "accepted_bounded_feature_subset": true,
+  "later_candidate_acceptance": true,
+  "parent_terminal_acceptance": {
+    "bytes": 6720,
+    "path": "right-dock-parent-final-acceptance-20261013/acceptance.json",
+    "sha256": "11575c1e832373a7854e515e5750f7ab6879736f01d8de1118e169d3e0a3d20a"
+  },
+  "public_base": "f90fbc8dd121ffc249d14b4a52786cdc90113d00",
+  "reports": [
+    {
+      "assertion": "test-painter-right-docks.inc:287:right_docks_assert_canvas:'gtk_widget_is_ancestor (f->columns, shell->canvas)' should be TRUE",
+      "case_ids": [
+        "/painter-canvas-ui/right_docks_native_notebook_transfer"
+      ],
+      "classification": "OBSERVED_NATIVE_COLUMNS_AT_HOME",
+      "meson_exit": 1,
+      "mode": "native",
+      "positive_control": {
+        "bytes": 12313,
+        "git_blob_sha1": "0bc10d17c5a864f29e53e9449230fe8ce6fd9bf2",
+        "path": "right-dock-08018-v4-baseline-test-only-runtime-20261013/right-dock-v4-native-positive.inspected.json",
+        "sha256": "f954eca7c0f1af974d90671b383a59e3f75038d1e686ab46804e6f809a8e0ea2"
+      },
+      "raw_records_sha256": "31d7a0c52555d951a956aaf6450090655cc5fb7569fd50f37089ade45dd2f702",
+      "raw_results_sha256": "658968257f4cdbb8f3644e0e6dcc97bf26b21ba94ad1b8657ea2d3b8dd4cec9f",
+      "source": {
+        "bytes": 12514,
+        "git_blob_sha1": "ce78d9406b6c51a760c73d2b800c79da8d721e98",
+        "path": "right-dock-08018-v4-baseline-test-only-runtime-20261013/right-dock-v4-native-primary-red.inspected.json",
+        "sha256": "67294dafd0cf2f9214c99b0c4575890ea2808f5a776a059974e4d8b66cba21ca"
+      },
+      "status": "HISTORICAL_EXPECTED_FEATURE_FAILURE"
+    },
+    {
+      "assertion": "test-painter-right-docks.inc:287:right_docks_assert_canvas:'gtk_widget_is_ancestor (f->columns, shell->canvas)' should be TRUE",
+      "case_ids": [
+        "/painter-canvas-ui/right_docks_native_notebook_transfer"
+      ],
+      "classification": "OBSERVED_NATIVE_COLUMNS_AT_HOME",
+      "meson_exit": 1,
+      "mode": "asan",
+      "positive_control": {
+        "bytes": 12308,
+        "git_blob_sha1": "3f4d11941951caec06deecd4e0ffa8e05154d0be",
+        "path": "right-dock-08018-v4-baseline-test-only-runtime-20261013/right-dock-v4-asan-positive.inspected.json",
+        "sha256": "1f51b8bbb1ee251cff561064d7d977180f3009f5a2d911ad44a35007f9244c8c"
+      },
+      "raw_records_sha256": "cee9e1376421647908763ec888de30bb4a922f7265ba5b7a0021f6adcdcab517",
+      "raw_results_sha256": "348b4b3ebdc3e2b390bf3f2ea45eaa0ad3d51f2557a675e75754a96bf8e8025b",
+      "source": {
+        "bytes": 12503,
+        "git_blob_sha1": "b8731cf6cfa4d9c5d49a06df8ce07983760e9815",
+        "path": "right-dock-08018-v4-baseline-test-only-runtime-20261013/right-dock-v4-asan-primary-red.inspected.json",
+        "sha256": "65a937c59d982fedb56ea5551e8111c75ce57e6b850c2eeb41d6a52d4890b57f"
+      },
+      "status": "HISTORICAL_EXPECTED_FEATURE_FAILURE"
+    }
+  ],
+  "status": "PARENT_ACCEPTED_BOUNDED_RIGHT_DOCK_FEATURE_SUBSET"
+}

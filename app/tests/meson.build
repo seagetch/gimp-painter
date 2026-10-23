@@ -108,13 +108,75 @@ foreach test_name : app_tests
       'GIMP_TESTING_ABS_TOP_BUILDDIR='+ meson.project_build_root(),
       'GIMP_TESTING_PLUGINDIRS='      + meson.project_build_root()/'plug-ins'/'common',
       'UI_TEST=yes',
-    ],
+    ] + (test_name == 'painter-canvas-ui' ?
+      ['GIMP_TEST_PAINTER_CANVAS_GROUP=original'] : []),
     suite: 'app',
     depends: gimp_test_icon_dependencies,
     timeout: test_timeout,
     is_parallel : false,
     priority: prio,
   )
+
+  if test_name == 'painter-canvas-ui'
+    # Both registrations use the same binary and preserve their original IDs.
+    test('painter-right-docks-ui', test_exe,
+      env: [
+        'GIMP_TESTING_ABS_TOP_SRCDIR='  + meson.project_source_root(),
+        'GIMP_TESTING_ABS_TOP_BUILDDIR='+ meson.project_build_root(),
+        'GIMP_TESTING_PLUGINDIRS='      + meson.project_build_root()/'plug-ins'/'common',
+        'UI_TEST=yes',
+        'GIMP_TEST_PAINTER_CANVAS_GROUP=right-docks',
+      ],
+      suite: 'app',
+      depends: gimp_test_icon_dependencies,
+      timeout: test_timeout,
+      is_parallel: false,
+      # Preserve the full harness's right-docks-before-original-cases order.
+      priority: prio + 1,
+    )
+    test('painter-dock-session-ui', test_exe,
+      env: [
+        'GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+        'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+        'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root()/'plug-ins'/'common',
+        'UI_TEST=yes',
+        'GIMP_TEST_PAINTER_CANVAS_GROUP=dock-session',
+      ],
+      suite: 'app',
+      depends: gimp_test_icon_dependencies,
+      timeout: test_timeout,
+      is_parallel: false,
+      priority: prio + 2,
+    )
+    test('painter-dock-input-ui', test_exe,
+      env: [
+        'GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+        'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+        'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root()/'plug-ins'/'common',
+        'UI_TEST=yes',
+        'GIMP_TEST_PAINTER_CANVAS_GROUP=dock-input',
+      ],
+      suite: 'app',
+      depends: gimp_test_icon_dependencies,
+      timeout: test_timeout,
+      is_parallel: false,
+      priority: prio + 3,
+    )
+    test('painter-dock-layout-ui', test_exe,
+      env: [
+        'GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+        'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+        'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root()/'plug-ins'/'common',
+        'UI_TEST=yes',
+        'GIMP_TEST_PAINTER_CANVAS_GROUP=dock-layout',
+      ],
+      suite: 'app',
+      depends: gimp_test_icon_dependencies,
+      timeout: test_timeout,
+      is_parallel: false,
+      priority: prio + 4,
+    )
+  endif
 
   prio = prio - 10
 
