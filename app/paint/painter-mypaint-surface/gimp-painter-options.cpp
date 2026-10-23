@@ -738,7 +738,12 @@ GimpMypaintOptions *gimp_mypaint_options_new (GimpToolInfo *tool_info)
     // since its last-ref callback may also close application-owned history.
     info_owner.reset ();
     application_binding = BindingStore::find (G_OBJECT (gimp));
-    if (!gimp->config || (application_binding &&
+    // The same last-ref callback may dispose the new options through the
+    // application's context list without closing the application itself.
+    binding = BindingStore::find (G_OBJECT (owner.get ()));
+    if (!binding || binding->state () != BindingStore::State::active ||
+        GIMP_CONTEXT (owner.get ())->gimp != gimp ||
+        !gimp->config || (application_binding &&
         application_binding->state () != BindingStore::State::active))
       return static_cast<GimpMypaintOptions *> (nullptr);
     // As for every native GimpContext, Gimp remains borrowed after this call;

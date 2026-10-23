@@ -1,0 +1,24 @@
+[
+  {
+    "name": "gimp:app / mypaint-options-construction",
+    "result": "OK",
+    "returncode": 0,
+    "stdout": "TAP version 14\n# random seed: R02Sa94241fa1d87dda53e809e9bd63134b3\n1..9\n# Start of mypaint-options-construction tests\nok 1 /mypaint-options-construction/type-and-signatures\n# slow test /mypaint-options-construction/type-and-signatures executed in 1.01 secs\nok 2 /mypaint-options-construction/independent-owned-original-name\n# slow test /mypaint-options-construction/independent-owned-original-name executed in 0.97 secs\nok 3 /mypaint-options-construction/typed-owner\n# slow test /mypaint-options-construction/typed-owner executed in 1.04 secs\nok 4 /mypaint-options-construction/detached-application\n# slow test /mypaint-options-construction/detached-application executed in 0.97 secs\nok 5 /mypaint-options-construction/closed-application\n# slow test /mypaint-options-construction/closed-application executed in 0.98 secs\nok 6 /mypaint-options-construction/missing-config\n# slow test /mypaint-options-construction/missing-config executed in 0.98 secs\nok 7 /mypaint-options-construction/null-info\n# slow test /mypaint-options-construction/null-info executed in 0.95 secs\nok 8 /mypaint-options-construction/outlives-tool-info\n# slow test /mypaint-options-construction/outlives-tool-info executed in 1.08 secs\nok 9 /mypaint-options-construction/native-construction-failure\n# slow test /mypaint-options-construction/native-construction-failure executed in 1.06 secs\n# End of mypaint-options-construction tests\n",
+    "stderr": null,
+    "duration": 9.136834621429443,
+    "command": [
+      "/workspace/shared/gimp-clean-aggregate/build/app/tests/mypaint-options-construction"
+    ]
+  },
+  {
+    "name": "gimp:app / mypaint-options-construction-reentry",
+    "result": "FAIL",
+    "returncode": -6,
+    "stdout": "TAP version 14\n# random seed: R02S0f80925b9ffdbef7ba7a661e9d109cbe\n1..4\n# Start of options-construction-reentry tests\nok 1 /options-construction-reentry/info-lease-finalizes-app\nok 2 /options-construction-reentry/app-lease-releases-info\nok 3 /options-construction-reentry/native-selection-closes-app\n# slow test /options-construction-reentry/native-selection-closes-app executed in 1.07 secs\n# child process (/options-construction-reentry/last-info-lease-disposes-options [286]) exit status: 1 (error)\n# child process (/options-construction-reentry/last-info-lease-disposes-options [286]) stdout: \"\"\n# child process (/options-construction-reentry/last-info-lease-disposes-options [286]) stderr: \"**\\nERROR:../source/app/tests/test-mypaint-options-construction-reentry.cpp:54:void run_case(gconstpointer): 'options' should be nullptr\\n\"\nnot ok /options-construction-reentry/last-info-lease-disposes-options - ERROR:../source/app/tests/test-mypaint-options-construction-reentry.cpp:32:void run_case(gconstpointer): child process (/options-construction-reentry/last-info-lease-disposes-options [286]) failed unexpectedly\nBail out!\n",
+    "stderr": "**\nERROR:../source/app/tests/test-mypaint-options-construction-reentry.cpp:32:void run_case(gconstpointer): child process (/options-construction-reentry/last-info-lease-disposes-options [286]) failed unexpectedly\n",
+    "duration": 2.4633257389068604,
+    "command": [
+      "/workspace/shared/gimp-clean-aggregate/build/app/tests/mypaint-options-construction-reentry"
+    ]
+  }
+]

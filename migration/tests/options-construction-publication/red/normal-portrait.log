@@ -1,0 +1,37 @@
+Xvfb verified: 127.0.0.1:92, 1080x1920x24, authenticated accepted, empty authority rejected
+1/2 gimp:app / mypaint-options-construction         OK               9.14s
+2/2 gimp:app / mypaint-options-construction-reentry FAIL             2.46s   killed by signal 6 SIGABRT
+>>> GIMP_TESTING_ABS_TOP_SRCDIR=/workspace/shared/gimp-clean-aggregate/source UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 UI_TEST=yes ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 GIMP_TESTING_ABS_TOP_BUILDDIR=/workspace/shared/gimp-clean-aggregate/build MALLOC_PERTURB_=219 LD_LIBRARY_PATH=/workspace/shared/gimp-clean-aggregate/build/libgimpthumb:/workspace/shared/gimp-clean-aggregate/build/libgimpmodule:/workspace/shared/gimp-clean-aggregate/build/libgimpcolor:/workspace/shared/gimp-clean-aggregate/build/libgimpmath:/workspace/shared/gimp-clean-aggregate/build/libgimpbase:/workspace/shared/gimp-clean-aggregate/build/libgimpconfig:/workspace/shared/gimp-clean-aggregate/build/libgimpwidgets:/workspace/shared/gimp-clean-aggregate/prefix/lib/x86_64-linux-gnu:/workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 GIMP_TESTING_PLUGINDIRS=/workspace/shared/gimp-clean-aggregate/build/plug-ins/common MESON_TEST_ITERATION=1 /workspace/shared/gimp-clean-aggregate/build/app/tests/mypaint-options-construction-reentry
+――――――――――――――――――――――――――――――――――――― ✀  ―――――――――――――――――――――――――――――――――――――
+stdout:
+TAP version 14
+# random seed: R02S0f80925b9ffdbef7ba7a661e9d109cbe
+1..4
+# Start of options-construction-reentry tests
+ok 1 /options-construction-reentry/info-lease-finalizes-app
+ok 2 /options-construction-reentry/app-lease-releases-info
+ok 3 /options-construction-reentry/native-selection-closes-app
+# slow test /options-construction-reentry/native-selection-closes-app executed in 1.07 secs
+# child process (/options-construction-reentry/last-info-lease-disposes-options [286]) exit status: 1 (error)
+# child process (/options-construction-reentry/last-info-lease-disposes-options [286]) stdout: ""
+# child process (/options-construction-reentry/last-info-lease-disposes-options [286]) stderr: "**\nERROR:../source/app/tests/test-mypaint-options-construction-reentry.cpp:54:void run_case(gconstpointer): 'options' should be nullptr\n"
+not ok /options-construction-reentry/last-info-lease-disposes-options - ERROR:../source/app/tests/test-mypaint-options-construction-reentry.cpp:32:void run_case(gconstpointer): child process (/options-construction-reentry/last-info-lease-disposes-options [286]) failed unexpectedly
+Bail out!
+stderr:
+**
+ERROR:../source/app/tests/test-mypaint-options-construction-reentry.cpp:32:void run_case(gconstpointer): child process (/options-construction-reentry/last-info-lease-disposes-options [286]) failed unexpectedly
+――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+
+
+Summary of Failures:
+
+2/2 gimp:app / mypaint-options-construction-reentry FAIL             2.46s   killed by signal 6 SIGABRT
+
+Ok:                 1   
+Expected Fail:      0   
+Fail:               1   
+Unexpected Pass:    0   
+Skipped:            0   
+Timeout:            0   
+
+Full log written to /workspace/shared/gimp-clean-aggregate/build/meson-logs/options-reentry.txt
