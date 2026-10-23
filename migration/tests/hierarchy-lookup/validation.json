@@ -1,0 +1,28 @@
+{
+  "task": "07.015",
+  "status": "PASS",
+  "original_done": 122,
+  "original_total": 661,
+  "source_duties_accepted": [
+    "legacy-faf836ca7033b5a0a31d",
+    "legacy-21409d0302e398fe755f",
+    "legacy-0e1cebc69eaaa0635b95"
+  ],
+  "other_source_rows_unchanged": 22760,
+  "source_done": 584,
+  "source_total": 22763,
+  "routing_changes": 0,
+  "focused_foundation_errors": [],
+  "unrelated_historical_foundation_errors": 92,
+  "reports_unchanged": true,
+  "new_test_execution_claimed": false,
+  "independent_source_review": "All three pinned blobs and current hierarchy assertions inspected; no concrete implementation or acceptance gap found",
+  "checks": [
+    "check_tasks.py PASS",
+    "audit_legacy_granularity.py --check PASS",
+    "git diff --check PASS",
+    "all25 native/sanitizer/Meson source seals current",
+    "eight exact passing test cases in each report",
+    "only07.015 foundation row changes"
+  ]
+}
