@@ -1,0 +1,43 @@
+{
+  "source_base": "fca9fa6ed21e76a027d0edcf2c6684f9b38ad4b9",
+  "publication_parent": "91b540de77f49c2469ce60c11c675cd73b7fd4f3",
+  "fix": "Use guint for all four nonnegative bilinear weights in mask and RGB pixmap paths",
+  "bounds": {
+    "fraction_bits": 12,
+    "horizontal_max": 1044480,
+    "combined_max": 4278190080,
+    "uint32_max": 4294967295
+  },
+  "arithmetic_validation": {
+    "method": "Compile extracted production interpolation expressions with UBSan; compare with independent uint64 reference",
+    "before": "UBSan signed integer overflow: 1044480 * 2304",
+    "after_comparisons": 102663296,
+    "after_exit": 0,
+    "scope": "Extracted arithmetic only, not full instrumented application"
+  },
+  "normal_validation": {
+    "meson_selected_registrations": 7,
+    "passed": 7,
+    "failed": 0,
+    "skipped": 0,
+    "includes": [
+      "gimp-fill-brush",
+      "painter-fill-brush-legacy",
+      "painter-fill-brush-legacyqueued",
+      "painter-fill-brush-legacyasync",
+      "painter-brush-geometry",
+      "painter-brush-geometry-strokes",
+      "painter-brush-geometry-pixmap"
+    ],
+    "ordinary_incremental_build": true
+  },
+  "limitations": [
+    "No complete standard application ASan/UBSan rerun after this patch",
+    "Existing unrelated popup WIP in native test checkout was preserved and excluded from publication",
+    "08.012 remains DOING; no WBS completion credit"
+  ],
+  "source_sha256": {
+    "app/core/gimpbrush-transform.cc": "5b50a521567e497846a7ce1c22eb5d8c96d3004d035589b1e6e936479dd639c9",
+    "migration/tests/test_brush_interpolation_arithmetic.py": "7fb30670d7a09b71d7dd308372510bc3f15e5ba803bf3e45cfdd39eb5b9728e3"
+  }
+}
