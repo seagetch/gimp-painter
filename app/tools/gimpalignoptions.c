@@ -80,18 +80,31 @@ struct _GimpAlignOptionsPrivate
   GList     *selected_guides;
   GObject   *reference;
 
+  GList    *views;
+  gboolean  observing_image;
+  gboolean  updating_views;
+  gboolean  update_pending;
+};
+
+
+/* Per-view controls coexist with the ordinary cached options GUI. */
+typedef struct
+{
+  GimpAlignOptions *options; /* weak, permits either destruction order */
+  guint             ref_count;
+  GPtrArray        *widgets; /* retained during synchronous update reentry */
   GtkWidget *selected_guides_label;
   GtkWidget *reference_combo;
   GtkWidget *reference_box;
   GtkWidget *reference_label;
   GtkWidget *pivot_selector;
+  GtkWidget *details_button;
 
   GtkWidget *align_ver_button[ALIGN_VER_N_BUTTONS];
   GtkWidget *align_hor_button[ALIGN_HOR_N_BUTTONS];
   GtkWidget *distr_ver_button[DISTR_VER_N_BUTTONS];
   GtkWidget *distr_hor_button[DISTR_HOR_N_BUTTONS];
-};
-
+} GimpAlignOptionsView;
 
 static void   gimp_align_options_finalize               (GObject           *object);
 static void   gimp_align_options_set_property           (GObject           *object,
@@ -108,13 +121,13 @@ static void   gimp_align_options_image_changed          (GimpContext      *conte
                                                          GimpAlignOptions *options);
 
 static void   gimp_align_options_update_area            (GimpAlignOptions *options);
+static void   gimp_align_options_update_area_once       (GimpAlignOptions *options);
 static void   gimp_align_options_guide_removed          (GimpImage        *image,
                                                          GimpGuide        *guide,
                                                          GimpAlignOptions *options);
 static void   gimp_align_options_reference_removed      (GObject          *object,
                                                          GimpAlignOptions *options);
-static void   gimp_align_options_pivot_changed          (GimpPivotSelector *selector,
-                                                         GimpAlignOptions  *options);
+
 
 
 G_DEFINE_TYPE_WITH_PRIVATE (GimpAlignOptions, gimp_align_options, GIMP_TYPE_TOOL_OPTIONS)
@@ -200,9 +213,14 @@ gimp_align_options_finalize (GObject *object)
 {
   GimpAlignOptions *options = GIMP_ALIGN_OPTIONS (object);
 
-  if (GIMP_CONTEXT (options)->gimp)
-    gimp_align_options_image_changed (gimp_get_user_context (GIMP_CONTEXT (options)->gimp),
-                                      NULL, options);
+  if (options->priv->image)
+    {
+      g_signal_handlers_disconnect_by_data (options->priv->image, options);
+      g_clear_weak_pointer (&options->priv->image);
+    }
+  g_clear_pointer (&options->priv->selected_guides, g_list_free);
+  g_clear_object (&options->priv->reference);
+  g_clear_pointer (&options->priv->views, g_list_free);
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }
@@ -361,19 +379,87 @@ gimp_align_options_button_new (GimpAlignOptions  *options,
 
   g_object_set_data (G_OBJECT (button), "align-action",
                      GINT_TO_POINTER (action));
-  g_signal_connect (button, "clicked",
+  g_signal_connect_object (button, "clicked",
                     G_CALLBACK (gimp_align_options_button_clicked),
-                    options);
+                    options, 0);
 
   return button;
 }
 
-GtkWidget *
-gimp_align_options_gui (GimpToolOptions *tool_options)
+static void
+gimp_align_options_view_unref (GimpAlignOptionsView *view)
+{
+  if (--view->ref_count == 0)
+    {
+      g_ptr_array_unref (view->widgets);
+      g_free (view);
+    }
+}
+
+static GList *
+gimp_align_options_views_ref (GimpAlignOptions *options)
+{
+  GList *views = g_list_copy (options->priv->views);
+
+  for (GList *iter = views; iter; iter = iter->next)
+    ((GimpAlignOptionsView *) iter->data)->ref_count++;
+  return views;
+}
+
+static void
+gimp_align_options_view_destroy (GtkWidget            *widget,
+                                 GimpAlignOptionsView *view)
+{
+  if (view->options)
+    {
+      view->options->priv->views = g_list_remove (view->options->priv->views, view);
+      g_signal_handlers_disconnect_by_data (view->options, view->pivot_selector);
+      g_signal_handlers_disconnect_by_data (view->pivot_selector, view->options);
+      for (guint i = 0; i < view->widgets->len; i++)
+        g_signal_handlers_disconnect_by_data (g_ptr_array_index (view->widgets, i),
+                                              view->options);
+      g_object_remove_weak_pointer (G_OBJECT (view->options),
+                                    (gpointer *) &view->options);
+    }
+  view->options = NULL;
+  gimp_align_options_view_unref (view);
+}
+
+static void
+gimp_align_options_pivot_changed (GimpPivotSelector *selector,
+                                  GimpAlignOptions  *options)
+{
+  gdouble x, y;
+
+  gimp_pivot_selector_get_position (selector, &x, &y);
+  g_object_set (options, "pivot-x", x, "pivot-y", y, NULL);
+}
+
+static void
+gimp_align_options_pivot_notify (GimpAlignOptions  *options,
+                                 GParamSpec        *pspec,
+                                 GimpPivotSelector *selector)
+{
+  g_signal_handlers_block_by_func (selector,
+                                    gimp_align_options_pivot_changed, options);
+  gimp_pivot_selector_set_position (selector, options->priv->pivot_x,
+                                    options->priv->pivot_y);
+  g_signal_handlers_unblock_by_func (selector,
+                                      gimp_align_options_pivot_changed, options);
+}
+
+/* The legacy horizontal factory placed Align and Distribute side by side.
+ * GIMP 3 replaces edge offsets with target anchors and even-gap distribution;
+ * keep those native semantics and expose targeting details in a popover. */
+static GtkWidget *
+gimp_align_options_gui_full (GimpToolOptions *tool_options,
+                             gboolean         horizontal)
 {
   GObject          *config  = G_OBJECT (tool_options);
   GimpAlignOptions *options = GIMP_ALIGN_OPTIONS (tool_options);
   GtkWidget        *vbox    = gimp_tool_options_gui (tool_options);
+  GimpAlignOptionsView *view = g_new0 (GimpAlignOptionsView, 1);
+  GtkWidget        *details = vbox;
   GtkWidget        *widget;
   GtkWidget        *section_vbox;
   GtkWidget        *items_grid;
@@ -383,9 +469,34 @@ gimp_align_options_gui (GimpToolOptions *tool_options)
   gchar            *text;
   gint              n = 0;
 
+  view->ref_count = 1;
+  view->widgets = g_ptr_array_new_with_free_func (g_object_unref);
+  view->options = options;
+  g_object_add_weak_pointer (config, (gpointer *) &view->options);
+  g_signal_connect (vbox, "destroy",
+                    G_CALLBACK (gimp_align_options_view_destroy), view);
+  if (horizontal)
+    {
+      GtkWidget *button = gtk_menu_button_new ();
+      GtkWidget *popover = gtk_popover_new (button);
+
+      view->details_button = button;
+
+      gtk_orientable_set_orientation (GTK_ORIENTABLE (vbox), GTK_ORIENTATION_HORIZONTAL);
+      gtk_button_set_label (GTK_BUTTON (button), _("Targets"));
+      details = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
+      gtk_container_set_border_width (GTK_CONTAINER (details), 8);
+      gtk_container_add (GTK_CONTAINER (popover), details);
+      gtk_popover_set_position (GTK_POPOVER (popover), GTK_POS_TOP);
+      gtk_menu_button_set_popover (GTK_MENU_BUTTON (button), popover);
+      gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);
+      gtk_widget_show (details);
+      gtk_widget_show (button);
+    }
+
   /* Selected objects */
   frame = gimp_frame_new (_("Targets"));
-  gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (details), frame, FALSE, FALSE, 0);
   gtk_widget_show (frame);
 
   section_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
@@ -404,17 +515,22 @@ gimp_align_options_gui (GimpToolOptions *tool_options)
   widget = gimp_prop_check_button_new (config, "align-vectors", NULL);
   gtk_grid_attach (GTK_GRID (items_grid), widget, 0, 1, 1, 1);
 
-  options->priv->pivot_selector = gimp_pivot_selector_new (0.0, 0.0, 1.0, 1.0);
-  gtk_widget_set_tooltip_text (options->priv->pivot_selector,
+  view->pivot_selector = gimp_pivot_selector_new (0.0, 0.0, 1.0, 1.0);
+  gtk_widget_set_tooltip_text (view->pivot_selector,
                                _("Set anchor point of targets"));
-  gimp_pivot_selector_set_position (GIMP_PIVOT_SELECTOR (options->priv->pivot_selector),
+  gimp_pivot_selector_set_position (GIMP_PIVOT_SELECTOR (view->pivot_selector),
                                     options->priv->pivot_x, options->priv->pivot_y);
-  gtk_grid_attach (GTK_GRID (items_grid), options->priv->pivot_selector, 1, 0, 1, 2);
-  gtk_widget_show (options->priv->pivot_selector);
+  gtk_grid_attach (GTK_GRID (items_grid), view->pivot_selector, 1, 0, 1, 2);
+  gtk_widget_show (view->pivot_selector);
 
-  g_signal_connect (options->priv->pivot_selector, "changed",
-                    G_CALLBACK (gimp_align_options_pivot_changed),
-                    options);
+  g_signal_connect_object (view->pivot_selector, "changed",
+                           G_CALLBACK (gimp_align_options_pivot_changed), options, 0);
+  g_signal_connect_object (options, "notify::pivot-x",
+                           G_CALLBACK (gimp_align_options_pivot_notify),
+                           view->pivot_selector, 0);
+  g_signal_connect_object (options, "notify::pivot-y",
+                           G_CALLBACK (gimp_align_options_pivot_notify),
+                           view->pivot_selector, 0);
 
   hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
   gtk_box_pack_start (GTK_BOX (section_vbox), hbox, FALSE, FALSE, 0);
@@ -439,14 +555,15 @@ gimp_align_options_gui (GimpToolOptions *tool_options)
   widget = gtk_label_new (NULL);
   gtk_box_pack_start (GTK_BOX (section_vbox), widget, FALSE, FALSE, 0);
   gtk_widget_show (widget);
-  options->priv->selected_guides_label = widget;
+  view->selected_guides_label = widget;
 
   /* Align frame */
   frame = gimp_frame_new (_("Align"));
   gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
   gtk_widget_show (frame);
 
-  section_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
+  section_vbox = gtk_box_new (horizontal ? GTK_ORIENTATION_HORIZONTAL :
+                                            GTK_ORIENTATION_VERTICAL, 6);
   gtk_container_add (GTK_CONTAINER (frame), section_vbox);
   gtk_widget_show (section_vbox);
 
@@ -455,12 +572,12 @@ gimp_align_options_gui (GimpToolOptions *tool_options)
   gimp_int_combo_box_set_label (GIMP_INT_COMBO_BOX (combo), _("Relative to"));
   g_object_set (combo, "ellipsize", PANGO_ELLIPSIZE_END, NULL);
   gtk_box_pack_start (GTK_BOX (section_vbox), combo, FALSE, FALSE, 0);
-  options->priv->reference_combo = combo;
+  view->reference_combo = combo;
 
   hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
-  gtk_box_pack_start (GTK_BOX (section_vbox), hbox, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (horizontal ? details : section_vbox), hbox, FALSE, FALSE, 0);
   gtk_widget_show (hbox);
-  options->priv->reference_box = hbox;
+  view->reference_box = hbox;
 
   widget = gtk_image_new_from_icon_name (GIMP_ICON_CURSOR, GTK_ICON_SIZE_BUTTON);
   gtk_box_pack_start (GTK_BOX (hbox), widget, FALSE, FALSE, 0);
@@ -471,9 +588,9 @@ gimp_align_options_gui (GimpToolOptions *tool_options)
   gtk_widget_show (widget);
 
   widget = gtk_label_new (NULL);
-  gtk_box_pack_start (GTK_BOX (section_vbox), widget, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (horizontal ? details : section_vbox), widget, FALSE, FALSE, 0);
   gtk_widget_show (widget);
-  options->priv->reference_label = widget;
+  view->reference_label = widget;
 
   /* Align frame: buttons */
 
@@ -482,15 +599,15 @@ gimp_align_options_gui (GimpToolOptions *tool_options)
   gtk_widget_show (hbox);
 
   n = 0;
-  options->priv->align_ver_button[n++] =
+  view->align_ver_button[n++] =
     gimp_align_options_button_new (options, GIMP_ALIGN_LEFT, hbox,
                                    _("Align anchor points of targets on left edge of reference"));
 
-  options->priv->align_ver_button[n++] =
+  view->align_ver_button[n++] =
     gimp_align_options_button_new (options, GIMP_ALIGN_HCENTER, hbox,
                                    _("Align anchor points of targets on vertical middle of reference"));
 
-  options->priv->align_ver_button[n++] =
+  view->align_ver_button[n++] =
     gimp_align_options_button_new (options, GIMP_ALIGN_RIGHT, hbox,
                                    _("Align anchor points of targets on right edge of reference"));
 
@@ -499,15 +616,15 @@ gimp_align_options_gui (GimpToolOptions *tool_options)
   gtk_widget_show (hbox);
 
   n = 0;
-  options->priv->align_hor_button[n++] =
+  view->align_hor_button[n++] =
     gimp_align_options_button_new (options, GIMP_ALIGN_TOP, hbox,
                                    _("Align anchor points of targets on top edge of reference"));
 
-  options->priv->align_hor_button[n++] =
+  view->align_hor_button[n++] =
     gimp_align_options_button_new (options, GIMP_ALIGN_VCENTER, hbox,
                                    _("Align anchor points of targets on horizontal middle of reference"));
 
-  options->priv->align_hor_button[n++] =
+  view->align_hor_button[n++] =
     gimp_align_options_button_new (options, GIMP_ALIGN_BOTTOM, hbox,
                                    _("Align anchor points of targets on bottom of reference"));
 
@@ -516,7 +633,8 @@ gimp_align_options_gui (GimpToolOptions *tool_options)
   gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
   gtk_widget_show (frame);
 
-  section_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
+  section_vbox = gtk_box_new (horizontal ? GTK_ORIENTATION_HORIZONTAL :
+                                            GTK_ORIENTATION_VERTICAL, 6);
   gtk_container_add (GTK_CONTAINER (frame), section_vbox);
   gtk_widget_show (section_vbox);
 
@@ -525,10 +643,10 @@ gimp_align_options_gui (GimpToolOptions *tool_options)
   gtk_widget_show (hbox);
 
   n = 0;
-  options->priv->distr_ver_button[n++] =
+  view->distr_ver_button[n++] =
     gimp_align_options_button_new (options, GIMP_ARRANGE_HFILL, hbox,
                                    _("Distribute anchor points of targets evenly in the horizontal"));
-  options->priv->distr_ver_button[n++] =
+  view->distr_ver_button[n++] =
     gimp_align_options_button_new (options, GIMP_DISTRIBUTE_EVEN_HORIZONTAL_GAP, hbox,
                                    _("Distribute horizontally with even horizontal gaps"));
 
@@ -537,22 +655,60 @@ gimp_align_options_gui (GimpToolOptions *tool_options)
   gtk_widget_show (hbox);
 
   n = 0;
-  options->priv->distr_hor_button[n++] =
+  view->distr_hor_button[n++] =
     gimp_align_options_button_new (options, GIMP_ARRANGE_VFILL, hbox,
                                    _("Distribute anchor points of targets evenly in the vertical"));
-  options->priv->distr_hor_button[n++] =
+  view->distr_hor_button[n++] =
     gimp_align_options_button_new (options, GIMP_DISTRIBUTE_EVEN_VERTICAL_GAP, hbox,
                                    _("Distribute vertically with even vertical gaps"));
 
-  g_signal_connect_object (gimp_get_user_context (GIMP_CONTEXT (options)->gimp),
-                           "image-changed",
-                           G_CALLBACK (gimp_align_options_image_changed),
-                           tool_options, 0);
+  /* Keep controls valid if a notify/visibility callback destroys a view in
+   * the middle of an update. The record is removed immediately on destroy. */
+  g_ptr_array_add (view->widgets, g_object_ref (view->pivot_selector));
+  if (view->details_button)
+    g_ptr_array_add (view->widgets, g_object_ref (view->details_button));
+  g_ptr_array_add (view->widgets, g_object_ref (view->reference_combo));
+  g_ptr_array_add (view->widgets, g_object_ref (view->reference_box));
+  g_ptr_array_add (view->widgets, g_object_ref (view->reference_label));
+  g_ptr_array_add (view->widgets, g_object_ref (view->selected_guides_label));
+  for (gint i = 0; i < ALIGN_VER_N_BUTTONS; i++)
+    g_ptr_array_add (view->widgets, g_object_ref (view->align_ver_button[i]));
+  for (gint i = 0; i < ALIGN_HOR_N_BUTTONS; i++)
+    g_ptr_array_add (view->widgets, g_object_ref (view->align_hor_button[i]));
+  for (gint i = 0; i < DISTR_VER_N_BUTTONS; i++)
+    g_ptr_array_add (view->widgets, g_object_ref (view->distr_ver_button[i]));
+  for (gint i = 0; i < DISTR_HOR_N_BUTTONS; i++)
+    g_ptr_array_add (view->widgets, g_object_ref (view->distr_hor_button[i]));
+  gtk_widget_set_no_show_all (view->selected_guides_label, TRUE);
+  gtk_widget_set_no_show_all (view->reference_box, TRUE);
+  options->priv->views = g_list_append (options->priv->views, view);
+  if (! options->priv->observing_image)
+    {
+      options->priv->observing_image = TRUE;
+      g_signal_connect_object (gimp_get_user_context (GIMP_CONTEXT (options)->gimp),
+                               "image-changed",
+                               G_CALLBACK (gimp_align_options_image_changed),
+                               tool_options, 0);
+    }
   gimp_align_options_image_changed (gimp_get_user_context (GIMP_CONTEXT (options)->gimp),
                                     gimp_context_get_image (gimp_get_user_context (GIMP_CONTEXT (options)->gimp)),
                                     options);
 
+  gimp_align_options_update_area (options);
+
   return vbox;
+}
+
+GtkWidget *
+gimp_align_options_gui (GimpToolOptions *tool_options)
+{
+  return gimp_align_options_gui_full (tool_options, FALSE);
+}
+
+GtkWidget *
+gimp_align_options_gui_horizontal (GimpToolOptions *tool_options)
+{
+  return gimp_align_options_gui_full (tool_options, TRUE);
 }
 
 GList *
@@ -599,8 +755,8 @@ gimp_align_options_get_pivot (GimpAlignOptions *options,
                               gdouble          *x,
                               gdouble          *y)
 {
-  gimp_pivot_selector_get_position (GIMP_PIVOT_SELECTOR (options->priv->pivot_selector),
-                                    x, y);
+  if (x) *x = options->priv->pivot_x;
+  if (y) *y = options->priv->pivot_y;
 }
 
 void
@@ -655,10 +811,22 @@ gimp_align_options_get_reference (GimpAlignOptions *options,
 
       if (reference == NULL && blink_if_none)
         {
-          if (options->align_reference == GIMP_ALIGN_REFERENCE_PICK)
-            gimp_widget_blink (options->priv->reference_box);
-          else
-            gimp_widget_blink (options->priv->reference_combo);
+          GList *views = gimp_align_options_views_ref (options);
+
+          for (GList *iter = views; iter; iter = iter->next)
+            {
+              GimpAlignOptionsView *view = iter->data;
+
+              if (! view->options)
+                continue;
+              if (view->details_button &&
+                  options->align_reference == GIMP_ALIGN_REFERENCE_PICK)
+                gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (view->details_button), TRUE);
+              if (view->options)
+                gimp_widget_blink (options->align_reference == GIMP_ALIGN_REFERENCE_PICK ?
+                                   view->reference_box : view->reference_combo);
+            }
+          g_list_free_full (views, (GDestroyNotify) gimp_align_options_view_unref);
         }
     }
 
@@ -721,6 +889,9 @@ gimp_align_options_image_changed (GimpContext      *context,
           g_signal_connect_object (image, "selected-channels-changed",
                                    G_CALLBACK (gimp_align_options_update_area),
                                    options, G_CONNECT_SWAPPED);
+          g_signal_connect_object (image, "selected-paths-changed",
+                                   G_CALLBACK (gimp_align_options_update_area),
+                                   options, G_CONNECT_SWAPPED);
           g_signal_connect_object (image, "selected-layers-changed",
                                    G_CALLBACK (gimp_align_options_update_area),
                                    options, G_CONNECT_SWAPPED);
@@ -736,7 +907,29 @@ gimp_align_options_image_changed (GimpContext      *context,
 static void
 gimp_align_options_update_area (GimpAlignOptions *options)
 {
+  if (options->priv->updating_views)
+    {
+      options->priv->update_pending = TRUE;
+      return;
+    }
+
+  g_object_ref (options);
+  options->priv->updating_views = TRUE;
+  do
+    {
+      options->priv->update_pending = FALSE;
+      gimp_align_options_update_area_once (options);
+    }
+  while (options->priv->update_pending);
+  options->priv->updating_views = FALSE;
+  g_object_unref (options);
+}
+
+static void
+gimp_align_options_update_area_once (GimpAlignOptions *options)
+{
   GimpImage *image;
+  GList     *views;
   GList     *layers           = NULL;
   GList     *paths            = NULL;
   gboolean   enable_ver_align = FALSE;
@@ -748,9 +941,6 @@ gimp_align_options_update_area (GimpAlignOptions *options)
 
   image = gimp_context_get_image (gimp_get_user_context (GIMP_CONTEXT (options)->gimp));
 
-  /* GUI not created yet. */
-  if (! options->priv->reference_combo)
-    return;
 
   if (image)
     {
@@ -779,70 +969,83 @@ gimp_align_options_update_area (GimpAlignOptions *options)
                            gimp_guide_get_orientation (GIMP_GUIDE (reference)) == GIMP_ORIENTATION_HORIZONTAL));
       enable_ver_distr = enable_hor_distr = (n_items > 2);
     }
-  for (gint i = 0; i < ALIGN_VER_N_BUTTONS; i++)
-    gtk_widget_set_sensitive (options->priv->align_ver_button[i], enable_ver_align);
-  for (gint i = 0; i < ALIGN_HOR_N_BUTTONS; i++)
-    gtk_widget_set_sensitive (options->priv->align_hor_button[i], enable_hor_align);
-  for (gint i = 0; i < DISTR_VER_N_BUTTONS; i++)
-    gtk_widget_set_sensitive (options->priv->distr_ver_button[i], enable_ver_distr);
-  for (gint i = 0; i < DISTR_HOR_N_BUTTONS; i++)
-    gtk_widget_set_sensitive (options->priv->distr_hor_button[i], enable_hor_distr);
-
-  /* Update the guide picking widgets. */
-  if (options->priv->selected_guides)
+  views = gimp_align_options_views_ref (options);
+  for (GList *iter = views; iter; iter = iter->next)
     {
-      gchar *tmp_txt;
+      GimpAlignOptionsView *view = iter->data;
 
-      tmp_txt = g_strdup_printf (ngettext ("1 guide will be aligned or distributed",
-                                           "%d guides will be aligned or distributed",
-                                           g_list_length (options->priv->selected_guides)),
-                                 g_list_length (options->priv->selected_guides));
-      text = g_strdup_printf ("<i>%s</i>", tmp_txt);
-      g_free (tmp_txt);
-      gtk_widget_show (options->priv->selected_guides_label);
-    }
-  else
-    {
-      text = NULL;
-      gtk_widget_hide (options->priv->selected_guides_label);
-    }
+      if (! view->options)
+        continue;
 
-  gtk_label_set_markup (GTK_LABEL (options->priv->selected_guides_label), text);
-  g_free (text);
+      for (gint i = 0; i < ALIGN_VER_N_BUTTONS; i++)
+        gtk_widget_set_sensitive (view->align_ver_button[i], enable_ver_align);
+      for (gint i = 0; i < ALIGN_HOR_N_BUTTONS; i++)
+        gtk_widget_set_sensitive (view->align_hor_button[i], enable_hor_align);
+      for (gint i = 0; i < DISTR_VER_N_BUTTONS; i++)
+        gtk_widget_set_sensitive (view->distr_ver_button[i], enable_ver_distr);
+      for (gint i = 0; i < DISTR_HOR_N_BUTTONS; i++)
+        gtk_widget_set_sensitive (view->distr_hor_button[i], enable_hor_distr);
 
-  /* Update the reference widgets. */
-  text = NULL;
-  if (options->align_reference == GIMP_ALIGN_REFERENCE_PICK)
-    {
-      if (options->priv->reference)
+      /* Update the guide picking widgets. */
+      if (options->priv->selected_guides)
         {
           gchar *tmp_txt;
 
-          if (GIMP_IS_LAYER (options->priv->reference))
-            tmp_txt = g_strdup_printf (_("Reference layer: %s"),
-                                       gimp_object_get_name (options->priv->reference));
-          else if (GIMP_IS_CHANNEL (options->priv->reference))
-            tmp_txt = g_strdup_printf (_("Reference channel: %s"),
-                                       gimp_object_get_name (options->priv->reference));
-          else if (GIMP_IS_PATH (options->priv->reference))
-            tmp_txt = g_strdup_printf (_("Reference path: %s"),
-                                       gimp_object_get_name (options->priv->reference));
-          else if (GIMP_IS_GUIDE (options->priv->reference))
-            tmp_txt = g_strdup (_("Reference guide"));
-          else
-            g_return_if_reached ();
-
+          tmp_txt = g_strdup_printf (ngettext ("1 guide will be aligned or distributed",
+                                               "%d guides will be aligned or distributed",
+                                               g_list_length (options->priv->selected_guides)),
+                                     g_list_length (options->priv->selected_guides));
           text = g_strdup_printf ("<i>%s</i>", tmp_txt);
           g_free (tmp_txt);
+          gtk_widget_show (view->selected_guides_label);
         }
-      gtk_widget_show (options->priv->reference_box);
+      else
+        {
+          text = NULL;
+          gtk_widget_hide (view->selected_guides_label);
+        }
+
+      gtk_label_set_markup (GTK_LABEL (view->selected_guides_label), text);
+      g_free (text);
+
+      /* Update the reference widgets. */
+      text = NULL;
+      if (options->align_reference == GIMP_ALIGN_REFERENCE_PICK)
+        {
+          if (options->priv->reference)
+            {
+              gchar *tmp_txt;
+
+              if (GIMP_IS_LAYER (options->priv->reference))
+                tmp_txt = g_strdup_printf (_("Reference layer: %s"),
+                                           gimp_object_get_name (options->priv->reference));
+              else if (GIMP_IS_CHANNEL (options->priv->reference))
+                tmp_txt = g_strdup_printf (_("Reference channel: %s"),
+                                           gimp_object_get_name (options->priv->reference));
+              else if (GIMP_IS_PATH (options->priv->reference))
+                tmp_txt = g_strdup_printf (_("Reference path: %s"),
+                                           gimp_object_get_name (options->priv->reference));
+              else if (GIMP_IS_GUIDE (options->priv->reference))
+                tmp_txt = g_strdup (_("Reference guide"));
+              else
+                {
+                  g_warn_if_reached ();
+                  continue;
+                }
+
+              text = g_strdup_printf ("<i>%s</i>", tmp_txt);
+              g_free (tmp_txt);
+            }
+          gtk_widget_show (view->reference_box);
+        }
+      else
+        {
+          gtk_widget_hide (view->reference_box);
+        }
+      gtk_label_set_markup (GTK_LABEL (view->reference_label), text);
+      g_free (text);
     }
-  else
-    {
-      gtk_widget_hide (options->priv->reference_box);
-    }
-  gtk_label_set_markup (GTK_LABEL (options->priv->reference_label), text);
-  g_free (text);
+  g_list_free_full (views, (GDestroyNotify) gimp_align_options_view_unref);
 }
 
 static void
@@ -867,18 +1070,4 @@ gimp_align_options_reference_removed (GObject          *object,
 {
   if (G_OBJECT (object) == options->priv->reference)
     gimp_align_options_pick_reference (options, NULL);
-}
-
-static void
-gimp_align_options_pivot_changed (GimpPivotSelector *selector,
-                                  GimpAlignOptions  *options)
-{
-  gdouble x;
-  gdouble y;
-
-  gimp_pivot_selector_get_position (selector, &x, &y);
-  g_object_set (options,
-                "pivot-x", x,
-                "pivot-y", y,
-                NULL);
 }

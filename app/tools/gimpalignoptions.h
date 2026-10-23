@@ -55,6 +55,7 @@ struct _GimpAlignOptionsClass
 GType       gimp_align_options_get_type          (void) G_GNUC_CONST;
 
 GtkWidget * gimp_align_options_gui               (GimpToolOptions  *tool_options);
+GtkWidget * gimp_align_options_gui_horizontal    (GimpToolOptions  *tool_options);
 
 GList     * gimp_align_options_get_objects       (GimpAlignOptions *options);
 void        gimp_align_options_get_pivot         (GimpAlignOptions *options,
