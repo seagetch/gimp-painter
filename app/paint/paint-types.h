@@ -46,6 +46,9 @@ typedef struct _GimpSmudge           GimpSmudge;
 /*  paint options  */
 
 typedef struct _GimpPaintOptions            GimpPaintOptions;
+/* Source-level opaque alias for the existing native painter options model;
+ * not the old _GimpMypaintOptions layout or runtime type. */
+typedef struct _GimpPainterMybrushOptions   GimpMypaintOptions;
 typedef struct _GimpSourceOptions           GimpSourceOptions;
 
 typedef struct _GimpAirbrushOptions         GimpAirbrushOptions;

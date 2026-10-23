@@ -1,0 +1,22 @@
+{
+  "original": {
+    "child_id": "01.013/hunk-001006",
+    "status": "DONE",
+    "hunk_id": "01.002/001006",
+    "path": "app/paint/paint-types.h",
+    "source_blob": "effcf09b0b57f290426cb6e465095bbf9780f5fa",
+    "base_blob": "87e73697f794f3b10a3fbca0f343c3ce00d5a601",
+    "old_new_lines": "-47,0 -> 48",
+    "payload_sha256": "9115b2b8ae9777789a17b57c2cb16148b1326d2bc54ae7c60dbffa0a96e99ecf",
+    "profile": "init",
+    "feature": "Feature initialization and lifetime",
+    "implementation_tasks": "30.016,30.016/feature-entry-point",
+    "verification_tasks": "04.016,36.019",
+    "disposition": "retain-contract-and-port-or-prove-replacement",
+    "source_scope": "typedef struct _GimpPaintOptions            GimpPaintOptions;",
+    "reason": "Register required types/resources in GUI and console paths and disconnect feature callbacks at shutdown.",
+    "implementation_state": "TODO"
+  },
+  "owner": "30.016/mypaint-options-forward",
+  "remaining": "Operation-level opaque pointer name only; old struct tag/layout, get_type/constructor/properties and runtime remain under08.018 and parent30.016"
+}

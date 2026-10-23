@@ -1196,6 +1196,7 @@
 | 30.015 | [ ] | ヘルプ ID と操作説明を接続する | 30.014 | 独自設定の意味を参照できる |
 | 30.016 | [ ] | 起動・終了順を統合する | 30.015 | 資源と UI の終了で stale callback がない |
 | 30.016/feature-entry-point | [ ] | 旧 features_entry_point の起動時登録を現行初期化へ接続する | 04.018, 28.003 | GUI/console と HTTPD 条件分岐、Gimp 所有者、initialize/restore/exit の接続と解除を検証 |
+| 30.016/mypaint-options-forward | [x] | 元MyPaint options名のopaque前方宣言をnative型へ接続する | 30.016/paint-registration | paint-types.h単独で旧名pointerを宣言可能にし、既存operation aliasと同じnative型をC11/C++14の18正負compile/423headerで確認。旧tag/layout/runtimeと親30.016は未完。migration/tests/mypaint-forward-alias-30016/ |
 | 30.016/paint-registration | [x] | 元の消費型paint登録C入口を単一native registryへ復元する | 08.018/features-entry | 正確な2引数symbol・private provider改名・参照消費をnative9/ASan9、423header、2変異とUI18+24/既存entry11+6で検証。元5hunk原文保持、他8責務と親lifecycleは未完。migration/tests/paint-registration-30016/ |
 | 30.016/feature-http-disabled | [x] | HTTP無効の実console buildと起動終了を検証する | 08.018/features-entry | 独立disabled設定で707step実consoleをbuild、元symbol存在、実initialize/restore/exit/dispose/finalizeとexit0を確認。ENABLE=1/PORT=0でもHTTP処理/直接libsoup依存なし。元13hunkを原文/owner付き監査、親30.016/feature-entry-pointは未完。migration/tests/feature-http-disabled-30016/ |
 | 30.017 | [ ] | インストール資産の一覧を生成する | 30.016 | 必要ファイルの欠落を検出できる |
