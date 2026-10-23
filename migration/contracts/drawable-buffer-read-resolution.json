@@ -172,7 +172,8 @@
       "read_proof": "migration/tests/drawable-buffer-read-parent/duty-audit.json#legacy-e3325d39b7ceab27d426",
       "successor_obligations": {
         "09.004": "Verify writes through shared storage do not escape the child domain.",
-        "09.005": "Preserve TempBuf/subwindow conversion, logical origin, ancestor stride, alias ownership, copy/export semantics and wrapper destruction; read-only bridge tests are insufficient."
+        "09.005": "Preserve TempBuf/subwindow conversion, logical origin, ancestor stride, alias ownership, copy/export semantics and wrapper destruction; read-only bridge tests are insufficient.",
+        "31.017": "09.005 establishes conversion stride/format/ownership, not completion of every legacy TempBuf/subwindow consumer. Preserve full consumer/API removal under31.017 before whole-hunk completion."
       }
     },
     {
@@ -191,7 +192,8 @@
       "read_proof": "migration/tests/drawable-buffer-read-parent/duty-audit.json#legacy-a9084a76d3013dde424e",
       "successor_obligations": {
         "09.004": "Verify writes through shared storage do not escape the child domain.",
-        "09.005": "Preserve TempBuf/subwindow conversion, logical origin, ancestor stride, alias ownership, copy/export semantics and wrapper destruction; read-only bridge tests are insufficient."
+        "09.005": "Preserve TempBuf/subwindow conversion, logical origin, ancestor stride, alias ownership, copy/export semantics and wrapper destruction; read-only bridge tests are insufficient.",
+        "31.017": "09.005 establishes conversion stride/format/ownership, not completion of every legacy TempBuf/subwindow consumer. Preserve full consumer/API removal under31.017 before whole-hunk completion."
       }
     },
     {
@@ -210,7 +212,8 @@
       "read_proof": "migration/tests/drawable-buffer-read-parent/duty-audit.json#legacy-69327a727628540a2d8b",
       "successor_obligations": {
         "09.004": "Verify writes through shared storage do not escape the child domain.",
-        "09.005": "Preserve TempBuf/subwindow conversion, logical origin, ancestor stride, alias ownership, copy/export semantics and wrapper destruction; read-only bridge tests are insufficient."
+        "09.005": "Preserve TempBuf/subwindow conversion, logical origin, ancestor stride, alias ownership, copy/export semantics and wrapper destruction; read-only bridge tests are insufficient.",
+        "31.017": "09.005 establishes conversion stride/format/ownership, not completion of every legacy TempBuf/subwindow consumer. Preserve full consumer/API removal under31.017 before whole-hunk completion."
       }
     },
     {
@@ -229,7 +232,8 @@
       "read_proof": "migration/tests/drawable-buffer-read-parent/duty-audit.json#legacy-52c1420506b3e40e8607",
       "successor_obligations": {
         "09.004": "Verify writes through shared storage do not escape the child domain.",
-        "09.005": "Preserve TempBuf/subwindow conversion, logical origin, ancestor stride, alias ownership, copy/export semantics and wrapper destruction; read-only bridge tests are insufficient."
+        "09.005": "Preserve TempBuf/subwindow conversion, logical origin, ancestor stride, alias ownership, copy/export semantics and wrapper destruction; read-only bridge tests are insufficient.",
+        "31.017": "09.005 establishes conversion stride/format/ownership, not completion of every legacy TempBuf/subwindow consumer. Preserve full consumer/API removal under31.017 before whole-hunk completion."
       }
     },
     {
@@ -248,7 +252,8 @@
       "read_proof": "migration/tests/drawable-buffer-read-parent/duty-audit.json#legacy-38c31780fc8a03d7fc8f",
       "successor_obligations": {
         "09.004": "Verify writes through shared storage do not escape the child domain.",
-        "09.005": "Preserve TempBuf/subwindow conversion, logical origin, ancestor stride, alias ownership, copy/export semantics and wrapper destruction; read-only bridge tests are insufficient."
+        "09.005": "Preserve TempBuf/subwindow conversion, logical origin, ancestor stride, alias ownership, copy/export semantics and wrapper destruction; read-only bridge tests are insufficient.",
+        "31.017": "09.005 establishes conversion stride/format/ownership, not completion of every legacy TempBuf/subwindow consumer. Preserve full consumer/API removal under31.017 before whole-hunk completion."
       }
     },
     {
@@ -267,7 +272,8 @@
       "read_proof": "migration/tests/drawable-buffer-read-parent/duty-audit.json#legacy-23d55e687f3e4bd4fc40",
       "successor_obligations": {
         "09.004": "Verify writes through shared storage do not escape the child domain.",
-        "09.005": "Preserve TempBuf/subwindow conversion, logical origin, ancestor stride, alias ownership, copy/export semantics and wrapper destruction; read-only bridge tests are insufficient."
+        "09.005": "Preserve TempBuf/subwindow conversion, logical origin, ancestor stride, alias ownership, copy/export semantics and wrapper destruction; read-only bridge tests are insufficient.",
+        "31.017": "09.005 establishes conversion stride/format/ownership, not completion of every legacy TempBuf/subwindow consumer. Preserve full consumer/API removal under31.017 before whole-hunk completion."
       }
     },
     {
@@ -1048,6 +1054,12 @@
         "09.012": "Verify commit/cancel behavior.",
         "09.003/region-lifetime": "Verify all draw_dab/get_color early-return, failure and callback lifecycle paths for read/write/snapshot/mask/texture ownership."
       }
+    }
+  ],
+  "lineage_updates": [
+    {
+      "task": "09.005",
+      "scope": "Six TempBuf duties gain explicit31.017 owner so completion of09.004/09.005criteria alone cannot close unfinished whole-hunks. Original source IDs, inherited obligation text, historical task lists and TODO checkpoint are unchanged."
     }
   ]
 }

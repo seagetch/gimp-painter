@@ -193,7 +193,8 @@
         "/coordinates/overlapping-adjacent-dirty-union"
       ],
       "successor_obligations": {
-        "09.005": "Verify real TempBuf conversion/subwindow writes, logical origin, ancestor stride, aliasing, independent copies, export layout and wrapper ownership. Surface GEGL child write tests do not certify every old TempBuf consumer."
+        "09.005": "Verify real TempBuf conversion/subwindow writes, logical origin, ancestor stride, aliasing, independent copies, export layout and wrapper ownership. Surface GEGL child write tests do not certify every old TempBuf consumer.",
+        "31.017": "09.005 establishes conversion stride/format/ownership, not completion of every legacy TempBuf/subwindow consumer. Preserve full consumer/API removal under31.017 before whole-hunk completion."
       }
     },
     {
@@ -216,7 +217,8 @@
         "/coordinates/overlapping-adjacent-dirty-union"
       ],
       "successor_obligations": {
-        "09.005": "Verify real TempBuf conversion/subwindow writes, logical origin, ancestor stride, aliasing, independent copies, export layout and wrapper ownership. Surface GEGL child write tests do not certify every old TempBuf consumer."
+        "09.005": "Verify real TempBuf conversion/subwindow writes, logical origin, ancestor stride, aliasing, independent copies, export layout and wrapper ownership. Surface GEGL child write tests do not certify every old TempBuf consumer.",
+        "31.017": "09.005 establishes conversion stride/format/ownership, not completion of every legacy TempBuf/subwindow consumer. Preserve full consumer/API removal under31.017 before whole-hunk completion."
       }
     },
     {
@@ -239,7 +241,8 @@
         "/coordinates/overlapping-adjacent-dirty-union"
       ],
       "successor_obligations": {
-        "09.005": "Verify real TempBuf conversion/subwindow writes, logical origin, ancestor stride, aliasing, independent copies, export layout and wrapper ownership. Surface GEGL child write tests do not certify every old TempBuf consumer."
+        "09.005": "Verify real TempBuf conversion/subwindow writes, logical origin, ancestor stride, aliasing, independent copies, export layout and wrapper ownership. Surface GEGL child write tests do not certify every old TempBuf consumer.",
+        "31.017": "09.005 establishes conversion stride/format/ownership, not completion of every legacy TempBuf/subwindow consumer. Preserve full consumer/API removal under31.017 before whole-hunk completion."
       }
     },
     {
@@ -262,7 +265,8 @@
         "/coordinates/overlapping-adjacent-dirty-union"
       ],
       "successor_obligations": {
-        "09.005": "Verify real TempBuf conversion/subwindow writes, logical origin, ancestor stride, aliasing, independent copies, export layout and wrapper ownership. Surface GEGL child write tests do not certify every old TempBuf consumer."
+        "09.005": "Verify real TempBuf conversion/subwindow writes, logical origin, ancestor stride, aliasing, independent copies, export layout and wrapper ownership. Surface GEGL child write tests do not certify every old TempBuf consumer.",
+        "31.017": "09.005 establishes conversion stride/format/ownership, not completion of every legacy TempBuf/subwindow consumer. Preserve full consumer/API removal under31.017 before whole-hunk completion."
       }
     },
     {
@@ -285,7 +289,8 @@
         "/coordinates/overlapping-adjacent-dirty-union"
       ],
       "successor_obligations": {
-        "09.005": "Verify real TempBuf conversion/subwindow writes, logical origin, ancestor stride, aliasing, independent copies, export layout and wrapper ownership. Surface GEGL child write tests do not certify every old TempBuf consumer."
+        "09.005": "Verify real TempBuf conversion/subwindow writes, logical origin, ancestor stride, aliasing, independent copies, export layout and wrapper ownership. Surface GEGL child write tests do not certify every old TempBuf consumer.",
+        "31.017": "09.005 establishes conversion stride/format/ownership, not completion of every legacy TempBuf/subwindow consumer. Preserve full consumer/API removal under31.017 before whole-hunk completion."
       }
     },
     {
@@ -308,7 +313,8 @@
         "/coordinates/overlapping-adjacent-dirty-union"
       ],
       "successor_obligations": {
-        "09.005": "Verify real TempBuf conversion/subwindow writes, logical origin, ancestor stride, aliasing, independent copies, export layout and wrapper ownership. Surface GEGL child write tests do not certify every old TempBuf consumer."
+        "09.005": "Verify real TempBuf conversion/subwindow writes, logical origin, ancestor stride, aliasing, independent copies, export layout and wrapper ownership. Surface GEGL child write tests do not certify every old TempBuf consumer.",
+        "31.017": "09.005 establishes conversion stride/format/ownership, not completion of every legacy TempBuf/subwindow consumer. Preserve full consumer/API removal under31.017 before whole-hunk completion."
       }
     },
     {
@@ -347,5 +353,11 @@
     "migration/tests/drawable-buffer-write/registered-native.json",
     "migration/tests/drawable-buffer-write/standalone.json",
     "migration/tests/drawable-buffer-write/report.json"
+  ],
+  "lineage_updates": [
+    {
+      "task": "09.005",
+      "scope": "Six TempBuf duties gain explicit31.017 owner so completion of09.004/09.005criteria alone cannot close unfinished whole-hunks. Original source IDs, inherited obligation text, historical task lists and TODO checkpoint are unchanged."
+    }
   ]
 }

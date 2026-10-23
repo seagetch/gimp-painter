@@ -26,4 +26,11 @@ class WriteCriterion(unittest.TestCase):
   self.args[3]['31.017'].update(status='DONE',test='Native dispatcher replacement tests',result='PASS')
   self.args[3]['31.017']['commit_or_artifact']+='; migration/tests/future-dispatch.json'
   self.assertEqual(c.validate(self.m,self.args),14)
+ def test_tempbuf_consumer_owner(self):self.reject(lambda m:next(d for d in m['duties'] if 'temp-buf' in d['path'])['successor_obligations'].pop('31.017'))
+ def test_conversion_not_whole_consumer_completion(self):
+  row=next(d for d in self.m['duties'] if 'temp-buf' in d['path']);args=copy.deepcopy(self.args)
+  args[1][row['work_id']]['status']='DONE';args[2]['09.005'][0]='[x]'
+  args[3]['09.005'].update(status='DONE',test='Conversion criterion verified',result='PASS')
+  args[3]['09.005']['commit_or_artifact']+='; migration/tests/tempbuf-conversion/standalone.json'
+  with self.assertRaises(ValueError):c.validate(self.m,args)
 if __name__=='__main__':unittest.main()

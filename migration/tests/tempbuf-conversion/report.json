@@ -1,0 +1,35 @@
+{
+  "task": "09.005",
+  "criterion": "stride・format・所有権を保持",
+  "production_changes": false,
+  "source_sha256": {
+    "app/core/gimptempbuf.c": "271eda001c7d27d87b0c26ab8779f14021462bc7a968f1fcd4c9b931e59557ce",
+    "libgimpcolor/gimppixbuf.c": "57951c42aeef1f80c31056f5cf0b541d3825698ff2ecb2892fbb4a00b6f3ab50",
+    "app/tests/test-painter-tempbuf.cpp": "fdfa3782db01a0c9815b2d4420ef578f5d0fdcf1dd7e46517923ad18e32c56f3",
+    "app/paint/painter-mypaint-surface/gegl-surface.cpp": "24921337d94409ac87460dfaa9a54d045bc8f8670af44b001bc63637da7c81dc",
+    "app/core/gimptempbuf.h": "be15f49b53a6ac57232274d2441259f4abd137a1173c549da2e4490edd6166ff",
+    "libgimpcolor/gimppixbuf.h": "13f06009deaf43b6f6c56dde5d9317dc7b6581816cd5447e3c9df6a67241dcfe",
+    "app/paint/painter-mypaint-surface/gegl-surface.hpp": "884084cf46a02639014ab8e777f55155cdd4571807f196874b6f7c68f7fe324d",
+    "app/paint/painter-mypaint-surface/buffer-read.hpp": "fe4ad4518f6223505f65d7b2173b30608b8c4e049ea5af9f7ec0cdeaf7d3b02d",
+    "app/paint/painter-mypaint-surface/native-pixels.hpp": "2a3e657e97fea07fd8b16f14ecbda1bb28a477324f9fe1c4b29ea7514a5f8d97",
+    "app/paint/painter-mypaint-surface/legacy-pixel-modes.hpp": "afa0a00ffa5a99766ffce48e448f04b862659b6a52eaf3652998116b6cf90f15",
+    "app/paint/painter-mypaint-surface/gray-alpha-pixels.hpp": "8e8f51e9ad81e7098599849713395e50908a0e259587f3cd31d150a5c60455f6",
+    "app/tests/test-gimp-painter-surface.cpp": "79f0a80dc12678d0ef88060add99b4a7374fae97c02f2e534b643c5d72f736be",
+    "app/tests/test-painter-buffer-read-domains.inc": "44263930557d8e37ad9620a133e495a78209491fdd8e09379f0e87506b8e552c",
+    "app/paint/painter-mypaint-surface/tests/coordinate-boundaries.cpp": "886e3526a14e8cfbcbcca1e05200a89b3085850cf6d8b2dcab2b29d6fd4d9cf3",
+    "app/paint/painter-mypaint-surface/tests/write-domains.inc": "d3769dcc39630840d82961d1fa9acc1b6bcdcd9af984c7a408dda9bc255e1ef2"
+  },
+  "native_tree_hashes_match": true,
+  "scope": "6 normal + 6 focused ASan/UBSan/float-cast-overflow actual C TempBuf/pixbuf + C++ Surface; 25 native TAP across 3 executables; dependencies uninstrumented, LSan off; no full-app sanitizer claim",
+  "evidence_sha256": {
+    "README.md": "0ad7d2e0bfa48fdb0f519fefb6a4e1a616ad79c73a94787698b86f002abb5a64",
+    "excluded-fixture-attempts/initial-target-lookup.log": "0adb14f097e6924eef27abf52b50b47030d00dce41cfe2bf584a1e8b428647ff",
+    "native-build.log": "33e84269991b8fbbc1a4f734f9d1f07b576908d1014ae6391888e148457d23c3",
+    "native-run.log": "be2f6a0ca0804b096df1d3f5a9ffce29e06f7ee650081c2d30f9fd034cee92f6",
+    "registered-native.json": "8ac6ded790ae9a8fe2a763370b23d0163809d50d3b6382362244b4a727dae8fd",
+    "run-native.sh": "b5e3210cfb8ebe0cea150c1b7f86f0c7f09227636965b8af06fe7c68692c5b85",
+    "run-standalone.py": "12145701fb191853a09a6b24ba350585f07e9a93479ccd654ded0486c83e3bec",
+    "standalone.json": "f753952059075c436c3924dbcba17f84498d777bf181d3a961dccc0bc062189c",
+    "validate.py": "c1ecb3e10f5b22f56508ec346ab768d81d093b9d2881b935cdaf2eff1ae4835e"
+  }
+}

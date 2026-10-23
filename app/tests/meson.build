@@ -1017,3 +1017,13 @@ if host_machine.system() == 'linux' and cxx.get_id() in ['gcc', 'clang'] and cxx
       'UI_TEST=yes',
     ], suite: 'app', is_parallel: false, timeout: 60)
 endif
+
+# Actual C TempBuf/pixbuf bridge with a GEGL Surface consumer; no replacement model.
+painter_tempbuf_test = executable('painter-tempbuf',
+  'test-painter-tempbuf.cpp', '../core/gimptempbuf.c', '../../libgimpcolor/gimppixbuf.c',
+  dependencies: [painter_mypaint_surface_dep, gdk_pixbuf],
+  include_directories: [rootInclude, rootAppInclude],
+  c_args: ['-DGIMP_COLOR_COMPILATION'], cpp_args: painter_cpp_args,
+  override_options: ['cpp_std=c++14'])
+test('painter-tempbuf', painter_tempbuf_test,
+  env: ['GEGL_USE_OPENCL=no'], suite: 'app', is_parallel: false, timeout: 60)

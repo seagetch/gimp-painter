@@ -1,0 +1,981 @@
+{
+  "task": "09.005",
+  "criterion_status": "DONE",
+  "original_action": "TempBuf の変換を実装する",
+  "original_acceptance": "stride・format・所有権を保持",
+  "dependencies": [
+    "09.004"
+  ],
+  "legacy_commit": "afa43fae3e920210146abed514f136fd49f671b5",
+  "whole_hunk_checkpoint_status": "TODO",
+  "rationale": "Modern GimpTempBuf and GEGL/GdkPixbuf bridges replace legacy TempBuf storage adapters. Actual production tests establish stride/format/ownership conversion without recreating obsolete leaking wrappers. All34assigned source identities and unfinished whole-hunk statuses remain; 6dispatcher,21PixelRegion,1pixel.hpp and6TempBuf duties retain explicit existing successor ownership.",
+  "duties": [
+    {
+      "work_id": "legacy-a877f11e064c4d0be6d8",
+      "source_id": "01.002/000049",
+      "path": "app/base/pixel-processor.c",
+      "source_blob": "7f0049bd0285366eeb128c9e085f1ed222d27452",
+      "source_range": "-60,0 -> 61,6",
+      "source_sha256": "22b0fb45e1a9734d3bb06f2573bb1a3163a004b2d364a000ab6fae096fa752bf",
+      "source_scope": "typedef void  (* p4_func) (gpointer      data,",
+      "source_blob_sha256": "7652e6ab170b343feac703f9000341c0831c0294bde67a144bbce1511031deb8",
+      "historical_source_duty": "Independent five-region registration, serial/parallel invocation, descriptor copying and storage lifetime remain beyond TempBuf conversion.",
+      "whole_hunk_checkpoint_status": "TODO",
+      "related_obligations": [
+        {
+          "criterion": "09.003",
+          "work_id": "legacy-b88ebdbc813c1a81681c",
+          "inherited_09_005_obligation": null
+        },
+        {
+          "criterion": "09.004",
+          "work_id": "legacy-7dfc95788fb38179b213",
+          "inherited_09_005_obligation": null
+        }
+      ],
+      "criterion_evidence": [
+        "/tempbuf/144-native-format-copy-borrow",
+        "/tempbuf/converted-lock-access-modes",
+        "/tempbuf/padded-pixbuf-import-export",
+        "/tempbuf/explicit-pixbuf-conversion",
+        "/tempbuf/nested-surface-writes",
+        "/tempbuf/scale-owned-storage"
+      ],
+      "successor_obligations": {
+        "31.017": "Independent five-region registration, serial/parallel invocation, descriptor copying and storage lifetime remain beyond TempBuf conversion."
+      }
+    },
+    {
+      "work_id": "legacy-2a52d70a908c506c7c14",
+      "source_id": "01.002/000050",
+      "path": "app/base/pixel-processor.c",
+      "source_blob": "7f0049bd0285366eeb128c9e085f1ed222d27452",
+      "source_range": "-78 -> 84",
+      "source_sha256": "5eb666c56e0f6b70bcc5f648166ee4947de2e0cc23a83ebc4ddaab0058cece2d",
+      "source_scope": "struct _PixelProcessor",
+      "source_blob_sha256": "7652e6ab170b343feac703f9000341c0831c0294bde67a144bbce1511031deb8",
+      "historical_source_duty": "Independent five-region registration, serial/parallel invocation, descriptor copying and storage lifetime remain beyond TempBuf conversion.",
+      "whole_hunk_checkpoint_status": "TODO",
+      "related_obligations": [
+        {
+          "criterion": "09.003",
+          "work_id": "legacy-389e65c37241aad27f12",
+          "inherited_09_005_obligation": null
+        },
+        {
+          "criterion": "09.004",
+          "work_id": "legacy-5c4641b5a9a771ef42f9",
+          "inherited_09_005_obligation": null
+        }
+      ],
+      "criterion_evidence": [
+        "/tempbuf/144-native-format-copy-borrow",
+        "/tempbuf/converted-lock-access-modes",
+        "/tempbuf/padded-pixbuf-import-export",
+        "/tempbuf/explicit-pixbuf-conversion",
+        "/tempbuf/nested-surface-writes",
+        "/tempbuf/scale-owned-storage"
+      ],
+      "successor_obligations": {
+        "31.017": "Independent five-region registration, serial/parallel invocation, descriptor copying and storage lifetime remain beyond TempBuf conversion."
+      }
+    },
+    {
+      "work_id": "legacy-f2939e0a1224182d3c3c",
+      "source_id": "01.002/000051",
+      "path": "app/base/pixel-processor.c",
+      "source_blob": "7f0049bd0285366eeb128c9e085f1ed222d27452",
+      "source_range": "-88 -> 94",
+      "source_sha256": "a8999843b77003ffca7f984f2bdc758fb3c5e5007b11c4f627e06a4d83519934",
+      "source_scope": "do_parallel_regions (PixelProcessor *processor)",
+      "source_blob_sha256": "7652e6ab170b343feac703f9000341c0831c0294bde67a144bbce1511031deb8",
+      "historical_source_duty": "Independent five-region registration, serial/parallel invocation, descriptor copying and storage lifetime remain beyond TempBuf conversion.",
+      "whole_hunk_checkpoint_status": "TODO",
+      "related_obligations": [
+        {
+          "criterion": "09.003",
+          "work_id": "legacy-c0bd1e91bd03c5c6a374",
+          "inherited_09_005_obligation": null
+        },
+        {
+          "criterion": "09.004",
+          "work_id": "legacy-73848da136582e1bf142",
+          "inherited_09_005_obligation": null
+        }
+      ],
+      "criterion_evidence": [
+        "/tempbuf/144-native-format-copy-borrow",
+        "/tempbuf/converted-lock-access-modes",
+        "/tempbuf/padded-pixbuf-import-export",
+        "/tempbuf/explicit-pixbuf-conversion",
+        "/tempbuf/nested-surface-writes",
+        "/tempbuf/scale-owned-storage"
+      ],
+      "successor_obligations": {
+        "31.017": "Independent five-region registration, serial/parallel invocation, descriptor copying and storage lifetime remain beyond TempBuf conversion."
+      }
+    },
+    {
+      "work_id": "legacy-41966140b1a4d0e97344",
+      "source_id": "01.002/000052",
+      "path": "app/base/pixel-processor.c",
+      "source_blob": "7f0049bd0285366eeb128c9e085f1ed222d27452",
+      "source_range": "-143,0 -> 150,8",
+      "source_sha256": "545f78cae36ad14bd1d7bda5c5a3ae63c33efe3ffb0029554cd685baacdae380",
+      "source_scope": "do_parallel_regions (PixelProcessor *processor)",
+      "source_blob_sha256": "7652e6ab170b343feac703f9000341c0831c0294bde67a144bbce1511031deb8",
+      "historical_source_duty": "Independent five-region registration, serial/parallel invocation, descriptor copying and storage lifetime remain beyond TempBuf conversion.",
+      "whole_hunk_checkpoint_status": "TODO",
+      "related_obligations": [
+        {
+          "criterion": "09.003",
+          "work_id": "legacy-fafda9f0fe26654cb9b4",
+          "inherited_09_005_obligation": null
+        },
+        {
+          "criterion": "09.004",
+          "work_id": "legacy-7f48468cb838a4009c5a",
+          "inherited_09_005_obligation": null
+        }
+      ],
+      "criterion_evidence": [
+        "/tempbuf/144-native-format-copy-borrow",
+        "/tempbuf/converted-lock-access-modes",
+        "/tempbuf/padded-pixbuf-import-export",
+        "/tempbuf/explicit-pixbuf-conversion",
+        "/tempbuf/nested-surface-writes",
+        "/tempbuf/scale-owned-storage"
+      ],
+      "successor_obligations": {
+        "31.017": "Independent five-region registration, serial/parallel invocation, descriptor copying and storage lifetime remain beyond TempBuf conversion."
+      }
+    },
+    {
+      "work_id": "legacy-b6af4b352c5bd5bd7bb5",
+      "source_id": "01.002/000053",
+      "path": "app/base/pixel-processor.c",
+      "source_blob": "7f0049bd0285366eeb128c9e085f1ed222d27452",
+      "source_range": "-233,0 -> 248,9",
+      "source_sha256": "a066146a27bf8e373e714609f98a6c0b8ebe1bc5d49b0d5214cdee20acff7d1e",
+      "source_scope": "do_parallel_regions_single (PixelProcessor             *processor,",
+      "source_blob_sha256": "7652e6ab170b343feac703f9000341c0831c0294bde67a144bbce1511031deb8",
+      "historical_source_duty": "Independent five-region registration, serial/parallel invocation, descriptor copying and storage lifetime remain beyond TempBuf conversion.",
+      "whole_hunk_checkpoint_status": "TODO",
+      "related_obligations": [
+        {
+          "criterion": "09.003",
+          "work_id": "legacy-18579eaf2ef909b31a6c",
+          "inherited_09_005_obligation": null
+        },
+        {
+          "criterion": "09.004",
+          "work_id": "legacy-0122669e9532669cb4a5",
+          "inherited_09_005_obligation": null
+        }
+      ],
+      "criterion_evidence": [
+        "/tempbuf/144-native-format-copy-borrow",
+        "/tempbuf/converted-lock-access-modes",
+        "/tempbuf/padded-pixbuf-import-export",
+        "/tempbuf/explicit-pixbuf-conversion",
+        "/tempbuf/nested-surface-writes",
+        "/tempbuf/scale-owned-storage"
+      ],
+      "successor_obligations": {
+        "31.017": "Independent five-region registration, serial/parallel invocation, descriptor copying and storage lifetime remain beyond TempBuf conversion."
+      }
+    },
+    {
+      "work_id": "legacy-aad4ddb9cde9013245c5",
+      "source_id": "01.002/000054",
+      "path": "app/base/pixel-processor.c",
+      "source_blob": "7f0049bd0285366eeb128c9e085f1ed222d27452",
+      "source_range": "-386,0 -> 410,9",
+      "source_sha256": "7ab4c7c2492e6cb8890873a1c45223c9fb91799e53006504c3e65830ae8dacc9",
+      "source_scope": "pixel_regions_process_parallel_valist (PixelProcessorFunc         func,",
+      "source_blob_sha256": "7652e6ab170b343feac703f9000341c0831c0294bde67a144bbce1511031deb8",
+      "historical_source_duty": "Independent five-region registration, serial/parallel invocation, descriptor copying and storage lifetime remain beyond TempBuf conversion.",
+      "whole_hunk_checkpoint_status": "TODO",
+      "related_obligations": [
+        {
+          "criterion": "09.003",
+          "work_id": "legacy-5cde6456f7ed2a777a74",
+          "inherited_09_005_obligation": null
+        },
+        {
+          "criterion": "09.004",
+          "work_id": "legacy-eae7e82a79f6db10bd23",
+          "inherited_09_005_obligation": null
+        }
+      ],
+      "criterion_evidence": [
+        "/tempbuf/144-native-format-copy-borrow",
+        "/tempbuf/converted-lock-access-modes",
+        "/tempbuf/padded-pixbuf-import-export",
+        "/tempbuf/explicit-pixbuf-conversion",
+        "/tempbuf/nested-surface-writes",
+        "/tempbuf/scale-owned-storage"
+      ],
+      "successor_obligations": {
+        "31.017": "Independent five-region registration, serial/parallel invocation, descriptor copying and storage lifetime remain beyond TempBuf conversion."
+      }
+    },
+    {
+      "work_id": "legacy-24ec62abed548dd97118",
+      "source_id": "01.002/000055",
+      "path": "app/base/pixel-region.c",
+      "source_blob": "ecbf50c77b0e8366948dbabe83053f73b1ba5198",
+      "source_range": "-82,0 -> 83,33",
+      "source_sha256": "26678edef82921bc93140c32093b4a73ace4a25890260607d6059c425fe2b45d",
+      "source_scope": "pixel_region_init (PixelRegion *PR,",
+      "source_blob_sha256": "3a9a7cf4e03958e4084832756b4b69690eb2c709d3c9d72601722cdd2934bdff",
+      "historical_source_duty": "Duplicate all descriptor fields, including source pointers, stride, origin, dirty state and loop dimensions; duplication is shallow, not a storage snapshot.",
+      "whole_hunk_checkpoint_status": "TODO",
+      "related_obligations": [],
+      "criterion_evidence": [
+        "/tempbuf/144-native-format-copy-borrow",
+        "/tempbuf/converted-lock-access-modes",
+        "/tempbuf/padded-pixbuf-import-export",
+        "/tempbuf/explicit-pixbuf-conversion",
+        "/tempbuf/nested-surface-writes",
+        "/tempbuf/scale-owned-storage"
+      ],
+      "successor_obligations": {
+        "31.017": "Duplicate all descriptor fields, including source pointers, stride, origin, dirty state and loop dimensions; duplication is shallow, not a storage snapshot. Verify all remaining consumers and replace old TileManager/PixelRegion dependencies; these conversion tests do not establish generic periodic iterator equivalence."
+      }
+    },
+    {
+      "work_id": "legacy-dc4dbd767523743ec1f2",
+      "source_id": "01.002/000056",
+      "path": "app/base/pixel-region.c",
+      "source_blob": "ecbf50c77b0e8366948dbabe83053f73b1ba5198",
+      "source_range": "-99 -> 132",
+      "source_sha256": "26ddd1bed956df623a60df333c91e52b409914df6bd968ef417b731349b77a87",
+      "source_scope": "pixel_region_init_temp_buf (PixelRegion *PR,",
+      "source_blob_sha256": "3a9a7cf4e03958e4084832756b4b69690eb2c709d3c9d72601722cdd2934bdff",
+      "historical_source_duty": "TempBuf initialization obtains actual ancestor rowstride rather than inferring width times bytes.",
+      "whole_hunk_checkpoint_status": "TODO",
+      "related_obligations": [],
+      "criterion_evidence": [
+        "/tempbuf/144-native-format-copy-borrow",
+        "/tempbuf/converted-lock-access-modes",
+        "/tempbuf/padded-pixbuf-import-export",
+        "/tempbuf/explicit-pixbuf-conversion",
+        "/tempbuf/nested-surface-writes",
+        "/tempbuf/scale-owned-storage"
+      ],
+      "successor_obligations": {
+        "31.017": "TempBuf initialization obtains actual ancestor rowstride rather than inferring width times bytes. Verify all remaining consumers and replace old TileManager/PixelRegion dependencies; these conversion tests do not establish generic periodic iterator equivalence."
+      }
+    },
+    {
+      "work_id": "legacy-e83073a906d155b8b2b4",
+      "source_id": "01.002/000057",
+      "path": "app/base/pixel-region.c",
+      "source_blob": "ecbf50c77b0e8366948dbabe83053f73b1ba5198",
+      "source_range": "-105,0 -> 139,3",
+      "source_sha256": "b7d267e0cb914032dff6dcfec9103a70efd57f2c7783dc93df98edab89ca2eaf",
+      "source_scope": "pixel_region_init_temp_buf (PixelRegion *PR,",
+      "source_blob_sha256": "3a9a7cf4e03958e4084832756b4b69690eb2c709d3c9d72601722cdd2934bdff",
+      "historical_source_duty": "TempBuf region initialization explicitly resets closed-loop state and loop dimensions.",
+      "whole_hunk_checkpoint_status": "TODO",
+      "related_obligations": [],
+      "criterion_evidence": [
+        "/tempbuf/144-native-format-copy-borrow",
+        "/tempbuf/converted-lock-access-modes",
+        "/tempbuf/padded-pixbuf-import-export",
+        "/tempbuf/explicit-pixbuf-conversion",
+        "/tempbuf/nested-surface-writes",
+        "/tempbuf/scale-owned-storage"
+      ],
+      "successor_obligations": {
+        "31.017": "TempBuf region initialization explicitly resets closed-loop state and loop dimensions. Verify all remaining consumers and replace old TileManager/PixelRegion dependencies; these conversion tests do not establish generic periodic iterator equivalence."
+      }
+    },
+    {
+      "work_id": "legacy-43674c5e4284e2598d29",
+      "source_id": "01.002/000058",
+      "path": "app/base/pixel-region.c",
+      "source_blob": "ecbf50c77b0e8366948dbabe83053f73b1ba5198",
+      "source_range": "-130,0 -> 167,3",
+      "source_sha256": "b7d267e0cb914032dff6dcfec9103a70efd57f2c7783dc93df98edab89ca2eaf",
+      "source_scope": "pixel_region_init_data (PixelRegion *PR,",
+      "source_blob_sha256": "3a9a7cf4e03958e4084832756b4b69690eb2c709d3c9d72601722cdd2934bdff",
+      "historical_source_duty": "Raw-data region initialization explicitly initializes closed-loop state and dimensions.",
+      "whole_hunk_checkpoint_status": "TODO",
+      "related_obligations": [],
+      "criterion_evidence": [
+        "/tempbuf/144-native-format-copy-borrow",
+        "/tempbuf/converted-lock-access-modes",
+        "/tempbuf/padded-pixbuf-import-export",
+        "/tempbuf/explicit-pixbuf-conversion",
+        "/tempbuf/nested-surface-writes",
+        "/tempbuf/scale-owned-storage"
+      ],
+      "successor_obligations": {
+        "31.017": "Raw-data region initialization explicitly initializes closed-loop state and dimensions. Verify all remaining consumers and replace old TileManager/PixelRegion dependencies; these conversion tests do not establish generic periodic iterator equivalence."
+      }
+    },
+    {
+      "work_id": "legacy-a9b39b0df1c685d0772f",
+      "source_id": "01.002/000059",
+      "path": "app/base/pixel-region.c",
+      "source_blob": "ecbf50c77b0e8366948dbabe83053f73b1ba5198",
+      "source_range": "-143,0 -> 183,4",
+      "source_sha256": "533490f3e2e4322c90c768334150b8efbae118bc668e96fbee7ff000ef0d1061",
+      "source_scope": "pixel_region_resize (PixelRegion *PR,",
+      "source_blob_sha256": "3a9a7cf4e03958e4084832756b4b69690eb2c709d3c9d72601722cdd2934bdff",
+      "historical_source_duty": "Region resize refreshes loop dimensions when closed-loop mode is active.",
+      "whole_hunk_checkpoint_status": "TODO",
+      "related_obligations": [],
+      "criterion_evidence": [
+        "/tempbuf/144-native-format-copy-borrow",
+        "/tempbuf/converted-lock-access-modes",
+        "/tempbuf/padded-pixbuf-import-export",
+        "/tempbuf/explicit-pixbuf-conversion",
+        "/tempbuf/nested-surface-writes",
+        "/tempbuf/scale-owned-storage"
+      ],
+      "successor_obligations": {
+        "31.017": "Region resize refreshes loop dimensions when closed-loop mode is active. Verify all remaining consumers and replace old TileManager/PixelRegion dependencies; these conversion tests do not establish generic periodic iterator equivalence."
+      }
+    },
+    {
+      "work_id": "legacy-ee81ee53293772b02efe",
+      "source_id": "01.002/000060",
+      "path": "app/base/pixel-region.c",
+      "source_blob": "ecbf50c77b0e8366948dbabe83053f73b1ba5198",
+      "source_range": "-276,0 -> 320,17",
+      "source_sha256": "ae2c787b4bb7423c5971887daf9bca236425555c99cc13fbeeece8a39055e06e",
+      "source_scope": "pixel_region_set_col (PixelRegion  *PR,",
+      "source_blob_sha256": "3a9a7cf4e03958e4084832756b4b69690eb2c709d3c9d72601722cdd2934bdff",
+      "historical_source_duty": "Closed-loop set/get APIs enable periodic region traversal and snapshot current dimensions.",
+      "whole_hunk_checkpoint_status": "TODO",
+      "related_obligations": [],
+      "criterion_evidence": [
+        "/tempbuf/144-native-format-copy-borrow",
+        "/tempbuf/converted-lock-access-modes",
+        "/tempbuf/padded-pixbuf-import-export",
+        "/tempbuf/explicit-pixbuf-conversion",
+        "/tempbuf/nested-surface-writes",
+        "/tempbuf/scale-owned-storage"
+      ],
+      "successor_obligations": {
+        "31.017": "Closed-loop set/get APIs enable periodic region traversal and snapshot current dimensions. Verify all remaining consumers and replace old TileManager/PixelRegion dependencies; these conversion tests do not establish generic periodic iterator equivalence."
+      }
+    },
+    {
+      "work_id": "legacy-28639ee37dd13d07c3a9",
+      "source_id": "01.002/000061",
+      "path": "app/base/pixel-region.c",
+      "source_blob": "ecbf50c77b0e8366948dbabe83053f73b1ba5198",
+      "source_range": "-324 -> 384",
+      "source_sha256": "ddfa5d70e798351fd939fd59e7a85e363d1c5c58f3cf7ad2a6b49cc4211c032b",
+      "source_scope": "pixel_regions_register (gint num_regions,",
+      "source_blob_sha256": "3a9a7cf4e03958e4084832756b4b69690eb2c709d3c9d72601722cdd2934bdff",
+      "historical_source_duty": "Registration chooses the first non-closed-loop region as the traversal width/height; periodic regions must not define the operation extent.",
+      "whole_hunk_checkpoint_status": "TODO",
+      "related_obligations": [],
+      "criterion_evidence": [
+        "/tempbuf/144-native-format-copy-borrow",
+        "/tempbuf/converted-lock-access-modes",
+        "/tempbuf/padded-pixbuf-import-export",
+        "/tempbuf/explicit-pixbuf-conversion",
+        "/tempbuf/nested-surface-writes",
+        "/tempbuf/scale-owned-storage"
+      ],
+      "successor_obligations": {
+        "31.017": "Registration chooses the first non-closed-loop region as the traversal width/height; periodic regions must not define the operation extent. Verify remaining consumers and replace old PixelRegion dependencies; conversion tests do not prove generic iterator equivalence."
+      }
+    },
+    {
+      "work_id": "legacy-120a297aff0372a16010",
+      "source_id": "01.002/000062",
+      "path": "app/base/pixel-region.c",
+      "source_blob": "ecbf50c77b0e8366948dbabe83053f73b1ba5198",
+      "source_range": "-440 -> 500,2",
+      "source_sha256": "35b1242028a1780b3870a008f87a2868de33533eb7fdd47b0833f992de48c733",
+      "source_scope": "get_portion_height (PixelRegionIterator *PRI)",
+      "source_blob_sha256": "3a9a7cf4e03958e4084832756b4b69690eb2c709d3c9d72601722cdd2934bdff",
+      "historical_source_duty": "Height termination is conditional on non-looping regions.",
+      "whole_hunk_checkpoint_status": "TODO",
+      "related_obligations": [],
+      "criterion_evidence": [
+        "/tempbuf/144-native-format-copy-borrow",
+        "/tempbuf/converted-lock-access-modes",
+        "/tempbuf/padded-pixbuf-import-export",
+        "/tempbuf/explicit-pixbuf-conversion",
+        "/tempbuf/nested-surface-writes",
+        "/tempbuf/scale-owned-storage"
+      ],
+      "successor_obligations": {
+        "31.017": "Height termination is conditional on non-looping regions. Verify all remaining consumers and replace old TileManager/PixelRegion dependencies; these conversion tests do not establish generic periodic iterator equivalence."
+      }
+    },
+    {
+      "work_id": "legacy-edffb0a5b53857ab14ce",
+      "source_id": "01.002/000063",
+      "path": "app/base/pixel-region.c",
+      "source_blob": "ecbf50c77b0e8366948dbabe83053f73b1ba5198",
+      "source_range": "-445,4 -> 506,9",
+      "source_sha256": "5cf982782a40cb87eef81836817eb23b2342786fe126ec57dc19968e9c8f4266",
+      "source_scope": "get_portion_height (PixelRegionIterator *PRI)",
+      "source_blob_sha256": "3a9a7cf4e03958e4084832756b4b69690eb2c709d3c9d72601722cdd2934bdff",
+      "historical_source_duty": "Tiled periodic height portions use wrapped coordinates and tile boundaries.",
+      "whole_hunk_checkpoint_status": "TODO",
+      "related_obligations": [],
+      "criterion_evidence": [
+        "/tempbuf/144-native-format-copy-borrow",
+        "/tempbuf/converted-lock-access-modes",
+        "/tempbuf/padded-pixbuf-import-export",
+        "/tempbuf/explicit-pixbuf-conversion",
+        "/tempbuf/nested-surface-writes",
+        "/tempbuf/scale-owned-storage"
+      ],
+      "successor_obligations": {
+        "31.017": "Tiled periodic height portions use wrapped coordinates and tile boundaries. Verify all remaining consumers and replace old TileManager/PixelRegion dependencies; these conversion tests do not establish generic periodic iterator equivalence."
+      }
+    },
+    {
+      "work_id": "legacy-edae2e1c4d30ec34b61f",
+      "source_id": "01.002/000064",
+      "path": "app/base/pixel-region.c",
+      "source_blob": "ecbf50c77b0e8366948dbabe83053f73b1ba5198",
+      "source_range": "-452 -> 518,6",
+      "source_sha256": "7e176fce44a81d98001ab76dbb400b933640a87cca9384a1a2a729e447397eec",
+      "source_scope": "get_portion_height (PixelRegionIterator *PRI)",
+      "source_blob_sha256": "3a9a7cf4e03958e4084832756b4b69690eb2c709d3c9d72601722cdd2934bdff",
+      "historical_source_duty": "Linear periodic height portions stop at wrapped row boundaries.",
+      "whole_hunk_checkpoint_status": "TODO",
+      "related_obligations": [],
+      "criterion_evidence": [
+        "/tempbuf/144-native-format-copy-borrow",
+        "/tempbuf/converted-lock-access-modes",
+        "/tempbuf/padded-pixbuf-import-export",
+        "/tempbuf/explicit-pixbuf-conversion",
+        "/tempbuf/nested-surface-writes",
+        "/tempbuf/scale-owned-storage"
+      ],
+      "successor_obligations": {
+        "31.017": "Linear periodic height portions stop at wrapped row boundaries. Verify all remaining consumers and replace old TileManager/PixelRegion dependencies; these conversion tests do not establish generic periodic iterator equivalence."
+      }
+    },
+    {
+      "work_id": "legacy-685e2e25d6e398e1283d",
+      "source_id": "01.002/000065",
+      "path": "app/base/pixel-region.c",
+      "source_blob": "ecbf50c77b0e8366948dbabe83053f73b1ba5198",
+      "source_range": "-483 -> 554,2",
+      "source_sha256": "058299973a2e3bf9b56cdabf8978c43e2cf2a8c7b378fb5ea60ed404977591c0",
+      "source_scope": "get_portion_width (PixelRegionIterator *PRI)",
+      "source_blob_sha256": "3a9a7cf4e03958e4084832756b4b69690eb2c709d3c9d72601722cdd2934bdff",
+      "historical_source_duty": "Width termination is conditional on non-looping regions.",
+      "whole_hunk_checkpoint_status": "TODO",
+      "related_obligations": [],
+      "criterion_evidence": [
+        "/tempbuf/144-native-format-copy-borrow",
+        "/tempbuf/converted-lock-access-modes",
+        "/tempbuf/padded-pixbuf-import-export",
+        "/tempbuf/explicit-pixbuf-conversion",
+        "/tempbuf/nested-surface-writes",
+        "/tempbuf/scale-owned-storage"
+      ],
+      "successor_obligations": {
+        "31.017": "Width termination is conditional on non-looping regions. Verify all remaining consumers and replace old TileManager/PixelRegion dependencies; these conversion tests do not establish generic periodic iterator equivalence."
+      }
+    },
+    {
+      "work_id": "legacy-777be75a32fc40beb527",
+      "source_id": "01.002/000066",
+      "path": "app/base/pixel-region.c",
+      "source_blob": "ecbf50c77b0e8366948dbabe83053f73b1ba5198",
+      "source_range": "-488,4 -> 560,9",
+      "source_sha256": "7b23b4fdb3fd7407338fa0af94ce56ca48ba6d93dc68127bb32ad2c67f107b2a",
+      "source_scope": "get_portion_width (PixelRegionIterator *PRI)",
+      "source_blob_sha256": "3a9a7cf4e03958e4084832756b4b69690eb2c709d3c9d72601722cdd2934bdff",
+      "historical_source_duty": "Tiled periodic width portions use wrapped coordinates and tile boundaries.",
+      "whole_hunk_checkpoint_status": "TODO",
+      "related_obligations": [],
+      "criterion_evidence": [
+        "/tempbuf/144-native-format-copy-borrow",
+        "/tempbuf/converted-lock-access-modes",
+        "/tempbuf/padded-pixbuf-import-export",
+        "/tempbuf/explicit-pixbuf-conversion",
+        "/tempbuf/nested-surface-writes",
+        "/tempbuf/scale-owned-storage"
+      ],
+      "successor_obligations": {
+        "31.017": "Tiled periodic width portions use wrapped coordinates and tile boundaries. Verify all remaining consumers and replace old TileManager/PixelRegion dependencies; these conversion tests do not establish generic periodic iterator equivalence."
+      }
+    },
+    {
+      "work_id": "legacy-57bb1392d185690f57c8",
+      "source_id": "01.002/000067",
+      "path": "app/base/pixel-region.c",
+      "source_blob": "ecbf50c77b0e8366948dbabe83053f73b1ba5198",
+      "source_range": "-495 -> 572,5",
+      "source_sha256": "3fdb77a2084d7676aebd87b6f957a06a2ac46f2e36861638dc8c67409db44066",
+      "source_scope": "get_portion_width (PixelRegionIterator *PRI)",
+      "source_blob_sha256": "3a9a7cf4e03958e4084832756b4b69690eb2c709d3c9d72601722cdd2934bdff",
+      "historical_source_duty": "Linear periodic width portions stop at wrapped column boundaries.",
+      "whole_hunk_checkpoint_status": "TODO",
+      "related_obligations": [],
+      "criterion_evidence": [
+        "/tempbuf/144-native-format-copy-borrow",
+        "/tempbuf/converted-lock-access-modes",
+        "/tempbuf/padded-pixbuf-import-export",
+        "/tempbuf/explicit-pixbuf-conversion",
+        "/tempbuf/nested-surface-writes",
+        "/tempbuf/scale-owned-storage"
+      ],
+      "successor_obligations": {
+        "31.017": "Linear periodic width portions stop at wrapped column boundaries. Verify all remaining consumers and replace old TileManager/PixelRegion dependencies; these conversion tests do not establish generic periodic iterator equivalence."
+      }
+    },
+    {
+      "work_id": "legacy-63942c83f4e5ddfec255",
+      "source_id": "01.002/000068",
+      "path": "app/base/pixel-region.c",
+      "source_blob": "ecbf50c77b0e8366948dbabe83053f73b1ba5198",
+      "source_range": "-558,0 -> 640,6",
+      "source_sha256": "32648044ddf57e12a92ce92cb02c5e68bb229b854792e40a4ff97c6ed644be67",
+      "source_scope": "pixel_region_configure (PixelRegionHolder   *PRH,",
+      "source_blob_sha256": "3a9a7cf4e03958e4084832756b4b69690eb2c709d3c9d72601722cdd2934bdff",
+      "historical_source_duty": "Configure wraps X/Y before addressing tiled or linear storage.",
+      "whole_hunk_checkpoint_status": "TODO",
+      "related_obligations": [],
+      "criterion_evidence": [
+        "/tempbuf/144-native-format-copy-borrow",
+        "/tempbuf/converted-lock-access-modes",
+        "/tempbuf/padded-pixbuf-import-export",
+        "/tempbuf/explicit-pixbuf-conversion",
+        "/tempbuf/nested-surface-writes",
+        "/tempbuf/scale-owned-storage"
+      ],
+      "successor_obligations": {
+        "31.017": "Configure wraps X/Y before addressing tiled or linear storage. Verify all remaining consumers and replace old TileManager/PixelRegion dependencies; these conversion tests do not establish generic periodic iterator equivalence."
+      }
+    },
+    {
+      "work_id": "legacy-f6df9a90df745614a9a4",
+      "source_id": "01.002/000069",
+      "path": "app/base/pixel-region.c",
+      "source_blob": "ecbf50c77b0e8366948dbabe83053f73b1ba5198",
+      "source_range": "-566,2 -> 653,2",
+      "source_sha256": "820a48d58b42f84a73a0bc6c3899cde6875a07ab4a3717b84523e17ba53430ed",
+      "source_scope": "pixel_region_configure (PixelRegionHolder   *PRH,",
+      "source_blob_sha256": "3a9a7cf4e03958e4084832756b4b69690eb2c709d3c9d72601722cdd2934bdff",
+      "historical_source_duty": "Tile lookup uses configured wrapped coordinates.",
+      "whole_hunk_checkpoint_status": "TODO",
+      "related_obligations": [],
+      "criterion_evidence": [
+        "/tempbuf/144-native-format-copy-borrow",
+        "/tempbuf/converted-lock-access-modes",
+        "/tempbuf/padded-pixbuf-import-export",
+        "/tempbuf/explicit-pixbuf-conversion",
+        "/tempbuf/nested-surface-writes",
+        "/tempbuf/scale-owned-storage"
+      ],
+      "successor_obligations": {
+        "31.017": "Tile lookup uses configured wrapped coordinates. Verify all remaining consumers and replace old TileManager/PixelRegion dependencies; these conversion tests do not establish generic periodic iterator equivalence."
+      }
+    },
+    {
+      "work_id": "legacy-2d52aa9195b00a89504c",
+      "source_id": "01.002/000070",
+      "path": "app/base/pixel-region.c",
+      "source_blob": "ecbf50c77b0e8366948dbabe83053f73b1ba5198",
+      "source_range": "-571,2 -> 658,2",
+      "source_sha256": "c3293e7e2eb08a3e0107c6aa37f407435c9939a7604e9b66f47b0b41809b834e",
+      "source_scope": "pixel_region_configure (PixelRegionHolder   *PRH,",
+      "source_blob_sha256": "3a9a7cf4e03958e4084832756b4b69690eb2c709d3c9d72601722cdd2934bdff",
+      "historical_source_duty": "Tile offsets use configured wrapped coordinates.",
+      "whole_hunk_checkpoint_status": "TODO",
+      "related_obligations": [],
+      "criterion_evidence": [
+        "/tempbuf/144-native-format-copy-borrow",
+        "/tempbuf/converted-lock-access-modes",
+        "/tempbuf/padded-pixbuf-import-export",
+        "/tempbuf/explicit-pixbuf-conversion",
+        "/tempbuf/nested-surface-writes",
+        "/tempbuf/scale-owned-storage"
+      ],
+      "successor_obligations": {
+        "31.017": "Tile offsets use configured wrapped coordinates. Verify all remaining consumers and replace old TileManager/PixelRegion dependencies; these conversion tests do not establish generic periodic iterator equivalence."
+      }
+    },
+    {
+      "work_id": "legacy-1d3c2ca5e7151c6481fc",
+      "source_id": "01.002/000071",
+      "path": "app/base/pixel-region.c",
+      "source_blob": "ecbf50c77b0e8366948dbabe83053f73b1ba5198",
+      "source_range": "-580,0 -> 668",
+      "source_sha256": "e998ea0ef0c62bdc9a9013ad3794b5949479b2884c2b6ac5af252026288828a9",
+      "source_scope": "pixel_region_configure (PixelRegionHolder   *PRH,",
+      "source_blob_sha256": "3a9a7cf4e03958e4084832756b4b69690eb2c709d3c9d72601722cdd2934bdff",
+      "historical_source_duty": "The added empty if (closed_loop); is a no-op, so the linear pointer update remains unconditional; replacement must not invent conditional semantics.",
+      "whole_hunk_checkpoint_status": "TODO",
+      "related_obligations": [],
+      "criterion_evidence": [
+        "/tempbuf/144-native-format-copy-borrow",
+        "/tempbuf/converted-lock-access-modes",
+        "/tempbuf/padded-pixbuf-import-export",
+        "/tempbuf/explicit-pixbuf-conversion",
+        "/tempbuf/nested-surface-writes",
+        "/tempbuf/scale-owned-storage"
+      ],
+      "successor_obligations": {
+        "31.017": "The added empty if (closed_loop); is a no-op, so the linear pointer update remains unconditional; replacement must not invent conditional semantics. Verify remaining consumers and replace old PixelRegion dependencies; conversion tests do not prove generic iterator equivalence."
+      }
+    },
+    {
+      "work_id": "legacy-586ca20c0aed994159fd",
+      "source_id": "01.002/000072",
+      "path": "app/base/pixel-region.c",
+      "source_blob": "ecbf50c77b0e8366948dbabe83053f73b1ba5198",
+      "source_range": "-582,2 -> 670,2",
+      "source_sha256": "1e9d23cfba6caec1dc05a68006c003e7cbf1b9fe5c10f63307db48afe8ab2c3d",
+      "source_scope": "pixel_region_configure (PixelRegionHolder   *PRH,",
+      "source_blob_sha256": "3a9a7cf4e03958e4084832756b4b69690eb2c709d3c9d72601722cdd2934bdff",
+      "historical_source_duty": "Linear address calculation uses wrapped X/Y and actual rowstride.",
+      "whole_hunk_checkpoint_status": "TODO",
+      "related_obligations": [],
+      "criterion_evidence": [
+        "/tempbuf/144-native-format-copy-borrow",
+        "/tempbuf/converted-lock-access-modes",
+        "/tempbuf/padded-pixbuf-import-export",
+        "/tempbuf/explicit-pixbuf-conversion",
+        "/tempbuf/nested-surface-writes",
+        "/tempbuf/scale-owned-storage"
+      ],
+      "successor_obligations": {
+        "31.017": "Linear address calculation uses wrapped X/Y and actual rowstride. Verify all remaining consumers and replace old TileManager/PixelRegion dependencies; these conversion tests do not establish generic periodic iterator equivalence."
+      }
+    },
+    {
+      "work_id": "legacy-d646dc6871067885a18a",
+      "source_id": "01.002/000073",
+      "path": "app/base/pixel-region.h",
+      "source_blob": "3e3be550908d09c312f82f693018599fc586497f",
+      "source_range": "-36,0 -> 37,3",
+      "source_sha256": "cd3c0e9a3ced02c48f22f8687962111bfbce074b4e7e4a13bd934eec4c1a343f",
+      "source_scope": "struct _PixelRegion",
+      "source_blob_sha256": "d6976812ed40984af8f52bee0e1ff80f9d316a55a1352d306767f4dc196c1f9b",
+      "historical_source_duty": "Descriptor declares closed-loop flag and independent loop dimensions.",
+      "whole_hunk_checkpoint_status": "TODO",
+      "related_obligations": [],
+      "criterion_evidence": [
+        "/tempbuf/144-native-format-copy-borrow",
+        "/tempbuf/converted-lock-access-modes",
+        "/tempbuf/padded-pixbuf-import-export",
+        "/tempbuf/explicit-pixbuf-conversion",
+        "/tempbuf/nested-surface-writes",
+        "/tempbuf/scale-owned-storage"
+      ],
+      "successor_obligations": {
+        "31.017": "Descriptor declares closed-loop flag and independent loop dimensions. Verify all remaining consumers and replace old TileManager/PixelRegion dependencies; these conversion tests do not establish generic periodic iterator equivalence."
+      }
+    },
+    {
+      "work_id": "legacy-0ee297b8b9b483bd2a4e",
+      "source_id": "01.002/000074",
+      "path": "app/base/pixel-region.h",
+      "source_blob": "3e3be550908d09c312f82f693018599fc586497f",
+      "source_range": "-67,0 -> 71,2",
+      "source_sha256": "3030012b2d9922f6162c652fbc7864cc84000b84a29e2549325744c99d450997",
+      "source_scope": "void     pixel_region_init          (PixelRegion         *PR,",
+      "source_blob_sha256": "d6976812ed40984af8f52bee0e1ff80f9d316a55a1352d306767f4dc196c1f9b",
+      "historical_source_duty": "Public region duplication declaration preserves descriptor-copy semantics.",
+      "whole_hunk_checkpoint_status": "TODO",
+      "related_obligations": [],
+      "criterion_evidence": [
+        "/tempbuf/144-native-format-copy-borrow",
+        "/tempbuf/converted-lock-access-modes",
+        "/tempbuf/padded-pixbuf-import-export",
+        "/tempbuf/explicit-pixbuf-conversion",
+        "/tempbuf/nested-surface-writes",
+        "/tempbuf/scale-owned-storage"
+      ],
+      "successor_obligations": {
+        "31.017": "Public region duplication declaration preserves descriptor-copy semantics. Verify all remaining consumers and replace old TileManager/PixelRegion dependencies; these conversion tests do not establish generic periodic iterator equivalence."
+      }
+    },
+    {
+      "work_id": "legacy-d73dd48deebd2c532e75",
+      "source_id": "01.002/000075",
+      "path": "app/base/pixel-region.h",
+      "source_blob": "3e3be550908d09c312f82f693018599fc586497f",
+      "source_range": "-108,0 -> 114,4",
+      "source_sha256": "d4f17d3717992c2e2bc6b6d69195c9920f8a96508e8df5f27e618b56b2791532",
+      "source_scope": "void     pixel_region_set_col       (PixelRegion         *PR,",
+      "source_blob_sha256": "d6976812ed40984af8f52bee0e1ff80f9d316a55a1352d306767f4dc196c1f9b",
+      "historical_source_duty": "Public closed-loop declarations expose set/get behavior.",
+      "whole_hunk_checkpoint_status": "TODO",
+      "related_obligations": [],
+      "criterion_evidence": [
+        "/tempbuf/144-native-format-copy-borrow",
+        "/tempbuf/converted-lock-access-modes",
+        "/tempbuf/padded-pixbuf-import-export",
+        "/tempbuf/explicit-pixbuf-conversion",
+        "/tempbuf/nested-surface-writes",
+        "/tempbuf/scale-owned-storage"
+      ],
+      "successor_obligations": {
+        "31.017": "Public closed-loop declarations expose set/get behavior. Verify all remaining consumers and replace old TileManager/PixelRegion dependencies; these conversion tests do not establish generic periodic iterator equivalence."
+      }
+    },
+    {
+      "work_id": "legacy-94d89586bd4912834262",
+      "source_id": "01.002/000076",
+      "path": "app/base/pixel.hpp",
+      "source_blob": "0b2920644eb36b391f0c03f021c0dd0a19348529",
+      "source_range": "-0,0 -> 1,358",
+      "source_sha256": "27e6b82a44193d668e2a8b3783e0c15dcf14f5f1d48b9fed7891f915315fd397",
+      "source_scope": "file-level declarations/content",
+      "source_blob_sha256": "1917b7267eb1253fbf14b5ce06bbfc6e77838d5d3b7bfc041eb35ba262bafa1c",
+      "historical_source_duty": "The entire scalar pixel arithmetic definition is broader than format-preserving storage conversion.",
+      "whole_hunk_checkpoint_status": "TODO",
+      "related_obligations": [
+        {
+          "criterion": "09.003",
+          "work_id": "legacy-2f53a694d7cd644819de",
+          "inherited_09_005_obligation": null
+        },
+        {
+          "criterion": "09.004",
+          "work_id": "legacy-17eee03d887a058b7c5b",
+          "inherited_09_005_obligation": null
+        }
+      ],
+      "criterion_evidence": [
+        "/tempbuf/144-native-format-copy-borrow",
+        "/tempbuf/converted-lock-access-modes",
+        "/tempbuf/padded-pixbuf-import-export",
+        "/tempbuf/explicit-pixbuf-conversion",
+        "/tempbuf/nested-surface-writes",
+        "/tempbuf/scale-owned-storage"
+      ],
+      "successor_obligations": {
+        "31.017": "Complete scalar representation/arithmetic replacement and all old consumers.",
+        "09.015": "Verify full precision/color-space semantics and explicit unsupported handling beyond this storage/conversion matrix."
+      }
+    },
+    {
+      "work_id": "legacy-778116ca2e4424cddabe",
+      "source_id": "01.002/000081",
+      "path": "app/base/temp-buf.c",
+      "source_blob": "efa555b2a43b1609e9c73441ad4c2e5b94b34936",
+      "source_range": "-67,0 -> 68",
+      "source_sha256": "2e726669ca470ef24ade1ed01aed0f92b54a846a13999b81c22f7d22b98f4b82",
+      "source_scope": "temp_buf_new (gint          width,",
+      "source_blob_sha256": "ed5dda2ade828ef62460ded3085bbd3bf2bfedf3faf91f196a3d53646c953956",
+      "historical_source_duty": "Root allocation initializes parent ownership.",
+      "whole_hunk_checkpoint_status": "TODO",
+      "related_obligations": [
+        {
+          "criterion": "09.003",
+          "work_id": "legacy-e3325d39b7ceab27d426",
+          "inherited_09_005_obligation": "Preserve TempBuf/subwindow conversion, logical origin, ancestor stride, alias ownership, copy/export semantics and wrapper destruction; read-only bridge tests are insufficient."
+        },
+        {
+          "criterion": "09.004",
+          "work_id": "legacy-0ecfe363426f9ec577cd",
+          "inherited_09_005_obligation": "Verify real TempBuf conversion/subwindow writes, logical origin, ancestor stride, aliasing, independent copies, export layout and wrapper ownership. Surface GEGL child write tests do not certify every old TempBuf consumer."
+        }
+      ],
+      "criterion_evidence": [
+        "/tempbuf/144-native-format-copy-borrow",
+        "/tempbuf/converted-lock-access-modes",
+        "/tempbuf/padded-pixbuf-import-export",
+        "/tempbuf/explicit-pixbuf-conversion",
+        "/tempbuf/nested-surface-writes",
+        "/tempbuf/scale-owned-storage"
+      ],
+      "successor_obligations": {
+        "31.017": "Complete every legacy TempBuf/subwindow consumer migration and remove old representation/API dependencies; conversion criterion tests do not establish whole-consumer closure."
+      }
+    },
+    {
+      "work_id": "legacy-1488a84d78644c1419a9",
+      "source_id": "01.002/000082",
+      "path": "app/base/temp-buf.c",
+      "source_blob": "efa555b2a43b1609e9c73441ad4c2e5b94b34936",
+      "source_range": "-149,0 -> 151,43",
+      "source_sha256": "e8433ef033793e56674a8df7d327fc22122fcf1e6d419563990eff34c04d1ccb",
+      "source_scope": "temp_buf_copy (TempBuf *src,",
+      "source_blob_sha256": "ed5dda2ade828ef62460ded3085bbd3bf2bfedf3faf91f196a3d53646c953956",
+      "historical_source_duty": "Subwindow clips logical coordinates and retains ancestor rowstride.",
+      "whole_hunk_checkpoint_status": "TODO",
+      "related_obligations": [
+        {
+          "criterion": "09.003",
+          "work_id": "legacy-a9084a76d3013dde424e",
+          "inherited_09_005_obligation": "Preserve TempBuf/subwindow conversion, logical origin, ancestor stride, alias ownership, copy/export semantics and wrapper destruction; read-only bridge tests are insufficient."
+        },
+        {
+          "criterion": "09.004",
+          "work_id": "legacy-5d5ae6044b3e38535cca",
+          "inherited_09_005_obligation": "Verify real TempBuf conversion/subwindow writes, logical origin, ancestor stride, aliasing, independent copies, export layout and wrapper ownership. Surface GEGL child write tests do not certify every old TempBuf consumer."
+        }
+      ],
+      "criterion_evidence": [
+        "/tempbuf/144-native-format-copy-borrow",
+        "/tempbuf/converted-lock-access-modes",
+        "/tempbuf/padded-pixbuf-import-export",
+        "/tempbuf/explicit-pixbuf-conversion",
+        "/tempbuf/nested-surface-writes",
+        "/tempbuf/scale-owned-storage"
+      ],
+      "successor_obligations": {
+        "31.017": "Complete every legacy TempBuf/subwindow consumer migration and remove old representation/API dependencies; conversion criterion tests do not establish whole-consumer closure."
+      }
+    },
+    {
+      "work_id": "legacy-376fcdf74b3ecb6970f1",
+      "source_id": "01.002/000083",
+      "path": "app/base/temp-buf.c",
+      "source_blob": "efa555b2a43b1609e9c73441ad4c2e5b94b34936",
+      "source_range": "-348,0 -> 393,3",
+      "source_sha256": "ecd11421d80dd69f8de37c586386cae9456a5c931678543aa5f93cbd111ea25b",
+      "source_scope": "temp_buf_free (TempBuf *buf)",
+      "source_blob_sha256": "ed5dda2ade828ef62460ded3085bbd3bf2bfedf3faf91f196a3d53646c953956",
+      "historical_source_duty": "Old child free returned early and leaked its wrapper; modern ownership must not inherit that leak.",
+      "whole_hunk_checkpoint_status": "TODO",
+      "related_obligations": [
+        {
+          "criterion": "09.003",
+          "work_id": "legacy-69327a727628540a2d8b",
+          "inherited_09_005_obligation": "Preserve TempBuf/subwindow conversion, logical origin, ancestor stride, alias ownership, copy/export semantics and wrapper destruction; read-only bridge tests are insufficient."
+        },
+        {
+          "criterion": "09.004",
+          "work_id": "legacy-016486194167e8295baa",
+          "inherited_09_005_obligation": "Verify real TempBuf conversion/subwindow writes, logical origin, ancestor stride, aliasing, independent copies, export layout and wrapper ownership. Surface GEGL child write tests do not certify every old TempBuf consumer."
+        }
+      ],
+      "criterion_evidence": [
+        "/tempbuf/144-native-format-copy-borrow",
+        "/tempbuf/converted-lock-access-modes",
+        "/tempbuf/padded-pixbuf-import-export",
+        "/tempbuf/explicit-pixbuf-conversion",
+        "/tempbuf/nested-surface-writes",
+        "/tempbuf/scale-owned-storage"
+      ],
+      "successor_obligations": {
+        "31.017": "Complete every legacy TempBuf/subwindow consumer migration and remove old representation/API dependencies; conversion criterion tests do not establish whole-consumer closure."
+      }
+    },
+    {
+      "work_id": "legacy-95b037b524c4d0bacb47",
+      "source_id": "01.002/000084",
+      "path": "app/base/temp-buf.c",
+      "source_blob": "efa555b2a43b1609e9c73441ad4c2e5b94b34936",
+      "source_range": "-502,0 -> 550,10",
+      "source_sha256": "dd3bd20a85f768aa0b5137104106c635263abf742fd3c7c4996c5001f7bb16bf",
+      "source_scope": "temp_buf_to_gray (TempBuf *src_buf,",
+      "source_blob_sha256": "ed5dda2ade828ef62460ded3085bbd3bf2bfedf3faf91f196a3d53646c953956",
+      "historical_source_duty": "Rowstride lookup follows ancestor storage rather than child width.",
+      "whole_hunk_checkpoint_status": "TODO",
+      "related_obligations": [
+        {
+          "criterion": "09.003",
+          "work_id": "legacy-52c1420506b3e40e8607",
+          "inherited_09_005_obligation": "Preserve TempBuf/subwindow conversion, logical origin, ancestor stride, alias ownership, copy/export semantics and wrapper destruction; read-only bridge tests are insufficient."
+        },
+        {
+          "criterion": "09.004",
+          "work_id": "legacy-eef522de1e118ee61adc",
+          "inherited_09_005_obligation": "Verify real TempBuf conversion/subwindow writes, logical origin, ancestor stride, aliasing, independent copies, export layout and wrapper ownership. Surface GEGL child write tests do not certify every old TempBuf consumer."
+        }
+      ],
+      "criterion_evidence": [
+        "/tempbuf/144-native-format-copy-borrow",
+        "/tempbuf/converted-lock-access-modes",
+        "/tempbuf/padded-pixbuf-import-export",
+        "/tempbuf/explicit-pixbuf-conversion",
+        "/tempbuf/nested-surface-writes",
+        "/tempbuf/scale-owned-storage"
+      ],
+      "successor_obligations": {
+        "31.017": "Complete every legacy TempBuf/subwindow consumer migration and remove old representation/API dependencies; conversion criterion tests do not establish whole-consumer closure."
+      }
+    },
+    {
+      "work_id": "legacy-512b0f22cbfad6d7334c",
+      "source_id": "01.002/000085",
+      "path": "app/base/temp-buf.h",
+      "source_blob": "6094354a057238e104ed0baa734e41d3346ff91d",
+      "source_range": "-29,0 -> 30,4",
+      "source_sha256": "6195a468f4586941c8182ebb7a93058d2d6b21e7803ff5ccb5290d3905ea75f7",
+      "source_scope": "struct _TempBuf",
+      "source_blob_sha256": "baf2dae7c0d9467af1d958c63f90ecb8acb944ffceeabf6c993082384996346c",
+      "historical_source_duty": "The parent field denotes aliasing, not an independent packed allocation.",
+      "whole_hunk_checkpoint_status": "TODO",
+      "related_obligations": [
+        {
+          "criterion": "09.003",
+          "work_id": "legacy-38c31780fc8a03d7fc8f",
+          "inherited_09_005_obligation": "Preserve TempBuf/subwindow conversion, logical origin, ancestor stride, alias ownership, copy/export semantics and wrapper destruction; read-only bridge tests are insufficient."
+        },
+        {
+          "criterion": "09.004",
+          "work_id": "legacy-bcd04d9ff7ffec3c415b",
+          "inherited_09_005_obligation": "Verify real TempBuf conversion/subwindow writes, logical origin, ancestor stride, aliasing, independent copies, export layout and wrapper ownership. Surface GEGL child write tests do not certify every old TempBuf consumer."
+        }
+      ],
+      "criterion_evidence": [
+        "/tempbuf/144-native-format-copy-borrow",
+        "/tempbuf/converted-lock-access-modes",
+        "/tempbuf/padded-pixbuf-import-export",
+        "/tempbuf/explicit-pixbuf-conversion",
+        "/tempbuf/nested-surface-writes",
+        "/tempbuf/scale-owned-storage"
+      ],
+      "successor_obligations": {
+        "31.017": "Complete every legacy TempBuf/subwindow consumer migration and remove old representation/API dependencies; conversion criterion tests do not establish whole-consumer closure."
+      }
+    },
+    {
+      "work_id": "legacy-424241a8c98a108a842a",
+      "source_id": "01.002/000086",
+      "path": "app/base/temp-buf.h",
+      "source_blob": "6094354a057238e104ed0baa734e41d3346ff91d",
+      "source_range": "-71,0 -> 76,7",
+      "source_sha256": "a89f18c48f787ed74c13c3c9d38f0a21b34e7b6ed2667feaa1d5af0892381777",
+      "source_scope": "void      temp_buf_dump          (TempBuf       *buf,",
+      "source_blob_sha256": "baf2dae7c0d9467af1d958c63f90ecb8acb944ffceeabf6c993082384996346c",
+      "historical_source_duty": "Subwindow/rowstride APIs expose shared-storage layout and ownership.",
+      "whole_hunk_checkpoint_status": "TODO",
+      "related_obligations": [
+        {
+          "criterion": "09.003",
+          "work_id": "legacy-23d55e687f3e4bd4fc40",
+          "inherited_09_005_obligation": "Preserve TempBuf/subwindow conversion, logical origin, ancestor stride, alias ownership, copy/export semantics and wrapper destruction; read-only bridge tests are insufficient."
+        },
+        {
+          "criterion": "09.004",
+          "work_id": "legacy-6a9c96d87a30431e7551",
+          "inherited_09_005_obligation": "Verify real TempBuf conversion/subwindow writes, logical origin, ancestor stride, aliasing, independent copies, export layout and wrapper ownership. Surface GEGL child write tests do not certify every old TempBuf consumer."
+        }
+      ],
+      "criterion_evidence": [
+        "/tempbuf/144-native-format-copy-borrow",
+        "/tempbuf/converted-lock-access-modes",
+        "/tempbuf/padded-pixbuf-import-export",
+        "/tempbuf/explicit-pixbuf-conversion",
+        "/tempbuf/nested-surface-writes",
+        "/tempbuf/scale-owned-storage"
+      ],
+      "successor_obligations": {
+        "31.017": "Complete every legacy TempBuf/subwindow consumer migration and remove old representation/API dependencies; conversion criterion tests do not establish whole-consumer closure."
+      }
+    }
+  ],
+  "evidence": [
+    "migration/tests/tempbuf-conversion/report.json",
+    "migration/tests/tempbuf-conversion/standalone.json",
+    "migration/tests/tempbuf-conversion/registered-native.json",
+    "migration/tests/tempbuf-conversion/native-build.log",
+    "migration/tests/tempbuf-conversion/native-run.log"
+  ]
+}

@@ -26,6 +26,7 @@ def validate(current, historical, inventory, tasks, progress):
   owners=r['successor_obligations']
   require(set(d['remaining_tasks'])-{'09.003'} <= set(owners),'Dropped preexisting successor')
   require(owners and '09.003' not in owners,'Read criterion used as unresolved self-dependency')
+  if 'temp-buf' in d['path']:require('31.017' in owners,'Missing downstream TempBuf consumer owner')
   if d['path'].endswith('drawablefeature.hpp'):
    require({'09.004','09.005','09.006','09.007','09.008','09.009','09.011','09.012','09.003/region-lifetime'}<=set(owners),'Dropped DrawableFeature behavior')
   for owner,obligation in owners.items():

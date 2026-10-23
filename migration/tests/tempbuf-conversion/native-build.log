@@ -1,0 +1,20 @@
+ninja: Entering directory `/workspace/shared/gimp-native-baseline/build-port'
+[1/29] Generating symbol file libgimpbase/libgimpbase-3.0.so.0.8.1.p/libgimpbase-3.0.so.0.8.1.symbols
+[2/26] Generating symbol file libgimpcolor/libgimpcolor-3.0.so.0.8.1.p/libgimpcolor-3.0.so.0.8.1.symbols
+[3/26] Generating symbol file libgimpmath/libgimpmath-3.0.so.0.8.1.p/libgimpmath-3.0.so.0.8.1.symbols
+[4/24] Generating git-version.h.in.1 with a custom command
+[5/24] Generating git-version.h.in.2 with a custom command
+[6/24] Generating symbol file libgimpconfig/libgimpconfig-3.0.so.0.8.1.p/libgimpconfig-3.0.so.0.8.1.symbols
+[7/22] Generating git-version.h with a custom command
+[8/16] Generating symbol file libgimpmodule/libgimpmodule-3.0.so.0.8.1.p/libgimpmodule-3.0.so.0.8.1.symbols
+[9/16] Generating symbol file libgimpthumb/libgimpthumb-3.0.so.0.8.1.p/libgimpthumb-3.0.so.0.8.1.symbols
+[10/16] Generating symbol file libgimpwidgets/libgimpwidgets-3.0.so.0.8.1.p/libgimpwidgets-3.0.so.0.8.1.symbols
+[11/16] Generating app/tests/icon-theme-fixture/gimp-test-icon-theme-fixture with a custom command
+{"files": 1191, "manifest_sha256": "2f790ebf02244ef3c023f17f16ab614cbc315ee46d46abd87b7f73d4d5d9be41", "ownership_marker_sha256": "d3ebe76f57bdce73e82df17c3cd89f1a630f42f3c8d72dbfdacd4a000061b8bf", "plan_sha256": "0a16da7a76b5facf2d3d8084793b72e28d32d17c7ff6bf237d164075d4af4b95", "stamp_sha256": "c20e592420d8f1feb8e044c6114f8ed009473d411042806fd6e9aadd50c7ffc9", "status": "verified"}
+[12/16] Compiling C object app/tests/painter-tempbuf.p/.._.._libgimpcolor_gimppixbuf.c.o
+[13/16] Compiling C object app/tests/painter-tempbuf.p/.._core_gimptempbuf.c.o
+[14/16] Compiling C++ object app/tests/painter-tempbuf.p/test-painter-tempbuf.cpp.o
+[15/16] Linking target app/tests/painter-tempbuf
+[16/16] Linking target app/tests/gimp-painter-surface
+INFO: autodetecting backend as ninja
+INFO: calculating backend command to run: /workspace/shared/gimp-deps-locked/root/usr/bin/ninja -C /workspace/shared/gimp-native-baseline/build-port -j 4 app/tests/painter-tempbuf app/tests/gimp-painter-surface app/paint/painter-mypaint-surface/painter-mypaint-coordinate-boundaries

@@ -36,4 +36,12 @@ class Resolution(unittest.TestCase):
   args=self.future();args[3]['31.017']['commit_or_artifact']='migration/contracts/drawable-buffer-read-resolution.json#31.017'
   with self.assertRaises(ValueError):c.validate(self.m,*args)
  def test_future_evidenced_completion(self):self.assertEqual(c.validate(self.m,*self.future()),48)
+ def test_tempbuf_consumer_owner(self):self.reject(lambda m:next(d for d in m['duties'] if 'temp-buf' in d['path'])['successor_obligations'].pop('31.017'))
+ def test_read_write_conversion_not_whole_consumer_completion(self):
+  row=next(d for d in self.m['duties'] if 'temp-buf' in d['path']);args=copy.deepcopy(self.args)
+  args[1][row['work_id']]['status']='DONE'
+  for owner in ('09.004','09.005'):
+   args[2][owner][0]='[x]';args[3][owner].update(status='DONE',test='Original criterion verified',result='PASS')
+   args[3][owner]['commit_or_artifact']+='; migration/tests/tempbuf-conversion/standalone.json'
+  with self.assertRaises(ValueError):c.validate(self.m,*args)
 if __name__=='__main__':unittest.main()

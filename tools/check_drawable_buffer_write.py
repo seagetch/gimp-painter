@@ -20,7 +20,7 @@ def validate(m,args=None):
   require(d['inherited_09_004_obligation']==related['successor_obligations']['09.004'],'Dropped inherited read duty')
   require(d['whole_hunk_checkpoint_status']=='TODO','Checkpoint hunk completion not proven')
   owners=d['successor_obligations'];path=d['path']
-  needed={'31.017'} if path.endswith('pixel-processor.c') else {'31.017','09.015'} if path.endswith('pixel.hpp') else {'09.005'} if 'temp-buf' in path else {'09.005','09.006','09.007','09.008','09.009','09.010','09.011','09.012','09.003/region-lifetime'}
+  needed={'31.017'} if path.endswith('pixel-processor.c') else {'31.017','09.015'} if path.endswith('pixel.hpp') else {'09.005','31.017'} if 'temp-buf' in path else {'09.005','09.006','09.007','09.008','09.009','09.010','09.011','09.012','09.003/region-lifetime'}
   require(needed<=set(owners) and '09.004' not in owners,'Missing successor or self dependency')
   for owner,text in owners.items():
    require(owner in tasks and owner in progress and bool(text.strip()),'Unknown owner or missing obligation')
