@@ -1584,7 +1584,7 @@ gimp_drawable_set_buffer_full (GimpDrawable        *drawable,
 
       old_extent = *gegl_buffer_get_extent (old_buffer);
       old_extent.x += gimp_item_get_offset_x (item);
-      old_extent.y += gimp_item_get_offset_x (item);
+      old_extent.y += gimp_item_get_offset_y (item);
 
       new_extent = *gegl_buffer_get_extent (buffer);
       new_extent.x += bounds->x;

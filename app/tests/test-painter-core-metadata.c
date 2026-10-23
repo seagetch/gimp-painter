@@ -2,14 +2,24 @@
 #include "config.h"
 
 #include <gegl.h>
-#include <gdk-pixbuf/gdk-pixbuf.h>
+#include <gtk/gtk.h>
 
 #include "libgimpconfig/gimpconfig.h"
 
 #include "core/core-types.h"
+#include "widgets/widgets-types.h"
+#include "core/gimp.h"
 #include "core/gimpcurve.h"
 #include "core/gimpcurve-map.h"
+#include "core/gimpimage.h"
+#include "core/gimplayer.h"
+#include "core/gimplayer-new.h"
 #include "gegl/gimp-gegl-utils.h"
+
+#include "tests.h"
+#include "gimp-app-test-utils.h"
+
+static Gimp *gimp;
 
 static void
 assert_single_point (GimpCurve *curve,
@@ -141,10 +151,146 @@ multiline_metadata_copy (gconstpointer data)
   g_param_spec_unref (copy);
 }
 
+typedef struct
+{
+  const gchar  *path;
+  GeglRectangle extent;
+  gint          new_offset_y;
+  gboolean      implicit_bounds;
+} DrawableBufferCase;
+
+typedef struct
+{
+  GeglBuffer   *buffer;
+  GeglRectangle local_region;
+  GeglRectangle image_region;
+} DrawableUpdate;
+
+typedef struct
+{
+  guint          count;
+  DrawableUpdate updates[2];
+} DrawableUpdateLog;
+
+static void
+record_drawable_update (GimpDrawable      *drawable,
+                        gint               x,
+                        gint               y,
+                        gint               width,
+                        gint               height,
+                        DrawableUpdateLog *log)
+{
+  DrawableUpdate *update;
+
+  g_assert_cmpuint (log->count, <, G_N_ELEMENTS (log->updates));
+  update = &log->updates[log->count++];
+  update->buffer = gimp_drawable_get_buffer (drawable);
+  update->local_region = *GEGL_RECTANGLE (x, y, width, height);
+  update->image_region = update->local_region;
+  update->image_region.x += gimp_item_get_offset_x (GIMP_ITEM (drawable));
+  update->image_region.y += gimp_item_get_offset_y (GIMP_ITEM (drawable));
+}
+
+static void
+assert_drawable_update (const DrawableUpdate *update,
+                        GeglBuffer           *buffer,
+                        const GeglRectangle  *extent,
+                        gint                  offset_y)
+{
+  GeglRectangle image_region = *extent;
+
+  image_region.x += 7;
+  image_region.y += offset_y;
+  g_assert_true (update->buffer == buffer);
+  g_assert_true (gegl_rectangle_equal (&update->local_region, extent));
+  g_assert_true (gegl_rectangle_equal (&update->image_region, &image_region));
+}
+
+static void
+drawable_buffer_update_regions (gconstpointer data)
+{
+  const DrawableBufferCase *test = data;
+  const Babl               *format = babl_format ("R'G'B'A u8");
+  GimpImage                *image;
+  GimpLayer                *layer;
+  GimpDrawable             *drawable;
+  GeglBuffer               *old_buffer;
+  GeglBuffer               *new_buffer;
+  GeglRectangle             old_bounds = { 7, -3, 0, 0 };
+  GeglRectangle             new_bounds = { 7, test->new_offset_y, 0, 0 };
+  GeglRectangle             bounding_box;
+  DrawableUpdateLog         log = { 0 };
+  gulong                    handler;
+  gboolean                  moved = test->new_offset_y != old_bounds.y;
+
+  /* Keep the existing metadata-only selections lightweight.  These cases
+   * need real image/layer ownership and native GEGL operations, but no GUI. */
+  if (! gimp)
+    {
+      gimp_test_utils_set_gimp3_directory ("GIMP_TESTING_ABS_TOP_SRCDIR",
+                                           "app/tests/gimpdir");
+      gimp = gimp_init_for_testing ();
+    }
+
+  image = gimp_image_new (gimp, 32, 32, GIMP_RGB,
+                          GIMP_PRECISION_U8_NON_LINEAR);
+  layer = gimp_layer_new (image, test->extent.width, test->extent.height,
+                          format, "Drawable invalidation", 1.0,
+                          GIMP_LAYER_MODE_NORMAL);
+  g_assert_true (gimp_image_add_layer (image, layer, NULL, 0, FALSE));
+  drawable = GIMP_DRAWABLE (layer);
+  old_buffer = gegl_buffer_new (&test->extent, format);
+  new_buffer = gegl_buffer_new (&test->extent, format);
+  gimp_drawable_set_buffer_full (drawable, FALSE, NULL, old_buffer,
+                                 &old_bounds, FALSE);
+  bounding_box = gimp_drawable_get_bounding_box (drawable);
+  g_assert_true (gegl_rectangle_equal (&bounding_box, &test->extent));
+
+  handler = g_signal_connect (drawable, "update",
+                              G_CALLBACK (record_drawable_update), &log);
+  gimp_drawable_set_buffer_full (drawable, FALSE, NULL, new_buffer,
+                                 test->implicit_bounds ? NULL : &new_bounds,
+                                 TRUE);
+
+  /* Equal translated extents need only the post-replacement update.  For
+   * a y-only move to old x, the wrong-axis comparison instead drops the
+   * required old-region update.  Record the live buffer and offset at each
+   * signal to prove the old region is invalidated before replacement. */
+  g_assert_cmpuint (log.count, ==, moved ? 2 : 1);
+  if (moved)
+    assert_drawable_update (&log.updates[0], old_buffer,
+                            &test->extent, old_bounds.y);
+  assert_drawable_update (&log.updates[log.count - 1], new_buffer,
+                          &test->extent, test->new_offset_y);
+  g_assert_true (gimp_drawable_get_buffer (drawable) == new_buffer);
+  g_assert_cmpint (gimp_item_get_offset_x (GIMP_ITEM (drawable)), ==, 7);
+  g_assert_cmpint (gimp_item_get_offset_y (GIMP_ITEM (drawable)), ==,
+                   test->new_offset_y);
+  g_assert_cmpint (gimp_item_get_width (GIMP_ITEM (drawable)), ==,
+                   test->extent.width);
+  g_assert_cmpint (gimp_item_get_height (GIMP_ITEM (drawable)), ==,
+                   test->extent.height);
+
+  g_signal_handler_disconnect (drawable, handler);
+  g_object_unref (new_buffer);
+  g_object_unref (old_buffer);
+  g_object_unref (image);
+}
+
 int
 main (int argc, char **argv)
 {
+  static const DrawableBufferCase drawable_cases[] =
+  {
+    { "same-size-explicit-bounds", { 0, 0, 4, 3 }, -3, FALSE },
+    { "same-size-implicit-bounds", { 0, 0, 4, 3 }, -3, TRUE  },
+    { "y-only-move",               { 0, 0, 4, 3 },  7, FALSE },
+    { "nonzero-same-size",         {-2, 5, 4, 3 }, -3, FALSE },
+    { "nonzero-implicit-bounds",   {-2, 5, 4, 3 }, -3, TRUE  },
+    { "nonzero-y-only-move",       {-2, 5, 4, 3 },  7, FALSE }
+  };
   gint result;
+  guint i;
 
   g_test_init (&argc, &argv, NULL);
   gegl_init (NULL, NULL);
@@ -157,9 +303,25 @@ main (int argc, char **argv)
                         multiline_metadata_copy);
   g_test_add_data_func ("/painter/core-metadata/multiline/absent", NULL,
                         multiline_metadata_copy);
+  for (i = 0; i < G_N_ELEMENTS (drawable_cases); i++)
+    {
+      gchar *path = g_strconcat ("/painter/core-metadata/drawable-buffer/",
+                                 drawable_cases[i].path, NULL);
+
+      g_test_add_data_func (path, &drawable_cases[i],
+                            drawable_buffer_update_regions);
+      g_free (path);
+    }
 
   result = g_test_run ();
-  gegl_exit ();
+  if (gimp)
+    {
+      gimp_test_utils_set_gimp3_directory ("GIMP_TESTING_ABS_TOP_BUILDDIR",
+                                           "app/tests/gimpdir-output");
+      gimp_exit (gimp, TRUE);
+    }
+  else
+    gegl_exit ();
 
   return result;
 }
