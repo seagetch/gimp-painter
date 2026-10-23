@@ -55,3 +55,15 @@ semantics and all differing fields remain explicit open criteria of the above
 owner task, not silently accepted parity. Existing native GUI behavior is preserved
 except the demonstrated broken page selection. Interface/binary layout compatibility
 is not evidenced here. The original empty action-group operation remains empty.
+
+## Successor source and native startup audit
+
+`migration/tests/features-legacy-contract/` now records the exact static
+`typeid(config)` key, both legitimate built-in registration callsites, ten
+native replacement boundaries and actual before-entry/initialize/restore/exit
+observations (native13+6; selected sanitizer13+6). The preceding discussion
+is historical checkpoint context, not evidence that the old registry provided
+a per-dynamic-type plug-in extension API. Public metadata was restored in
+`migration/tests/preset-legacy-metadata/`; before-entry availability and old
+lazy observer timing remain explicitly different, with original task criteria
+unchanged and no claim of arbitrary-call or old binary parity.

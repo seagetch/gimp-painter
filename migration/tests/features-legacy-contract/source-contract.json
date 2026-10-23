@@ -1,0 +1,17 @@
+{
+  "revision": "afa43fae3e920210146abed514f136fd49f671b5",
+  "sha256": {
+    "app/gimp-features.cpp": "fb7c2deb106477650b2bab51306991abc92e62cbad07b7037e8e41ff3ae549ae",
+    "app/gimp-features.h": "7d7d370927bd8be15e5c4341e52a49d336b34ad3c724217495321674c1d8df8b",
+    "app/presets/preset-factory.cpp": "b611dc430cffb904806cb223f08f9967528c0e55e7c749f9bfceae0683e2d6f1",
+    "app/presets/preset-factory.h": "8562edf614f66844eefe7007b19af62e600a906a5efdfa89ea90dc7da031af57",
+    "app/presets/preset-factory-gui.cpp": "9373cbd98b868c2bed2237dba9efd9737a9282d85fbcd070c542810ec77f3fb8",
+    "app/presets/layer-preset-gui.cpp": "bfd686ae7b5d3b113464f433f75f17e97eaaffb072181f65315ecafccab0534f",
+    "app/app.c": "f37d5238bac613bce31780fda9177d8cf1daad6774c0c14e6b3dec013ff0eb65",
+    "app/httpd/httpd-features.cpp": "93e8eae35787f43a47289e044e921fd2dab10ef752974610f6978763d15927cb",
+    "app/httpd/httpd-features-gui.cpp": "44ef65f623b9367fd09aa577e39a59a083a12b38d4d066b349f49332898f1cd1",
+    "app/presets/layer-preset.cpp": "abbacd43779ac593b4cddc2363a0f9c0c3965145c6d5e3d71eff041ad4288a8e"
+  },
+  "exact_body": "void\nPresetFactory::register_config (PresetConfig* config)\n{\n  gconstpointer type_ptr = &typeid(config);\n  registry().insert(type_ptr, config);\n}",
+  "limits": "Exact extracted register_config body with std::map stand-in for hash insertion; C++ static-type semantics only, not old GIMP runtime or custom factory lifecycle"
+}

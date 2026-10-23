@@ -7,6 +7,8 @@
 #include "core/gimp.h"
 #include "core/gimp-contexts.h"
 #include "core/gimpdatafactory.h"
+#include "core/gimplayerpreset.h"
+#include "presets/preset-factory-gui.h"
 #include "gimp-features.h"
 #include "httpd/httpd.h"
 #include "painter/gimp-painter-error.h"
@@ -232,9 +234,76 @@ static void dispose_fallback (void)
   g_object_run_dispose (G_OBJECT (application));
   g_object_unref (application);
 }
+/* Explicit native replacement contract, not old singleton ABI parity. */
+static void preentry_preferences (void)
+{
+  GArray *first, *second;
+  if (!g_test_subprocess ())
+    { g_test_trap_subprocess (NULL, 30 * G_TIME_SPAN_SECOND, 0);
+      g_test_trap_assert_passed (); return; }
+  /* No Gimp construction or features_entry_point has occurred in this process. */
+  first = preset_factory_gui_prefs_entry_point ();
+  second = preset_factory_gui_prefs_entry_point ();
+  g_assert_cmpuint (first->len, ==, 1);
+  g_assert_true (first != second);
+  g_assert_cmpstr (g_array_index (first, PrefsDialogEntry, 0).path_property_name,
+                   ==, "layer-presets-path");
+  g_array_unref (first); g_array_unref (second);
+}
+static guint observed_phase;
+static GimpDataFactory *observed_factory;
+static gboolean startup_hook (GSignalInvocationHint *hint, guint n_values,
+                              const GValue *values, gpointer data)
+{
+  Gimp *gimp = g_value_get_object (&values[0]);
+  guint phase = GPOINTER_TO_UINT (data);
+  GError *error = NULL;
+  (void) hint; (void) n_values;
+  g_assert_cmpuint (phase, ==, ++observed_phase);
+  g_assert_nonnull (gimp->layer_preset_factory);
+  if (phase == 1) observed_factory = gimp->layer_preset_factory;
+  g_assert_true (observed_factory == gimp->layer_preset_factory);
+  g_assert_true (gimp_get_data_factory (gimp, GIMP_TYPE_LAYER_PRESET) == observed_factory);
+  g_assert_cmpuint (provider_calls, ==, phase == 3 ? 1 : 0);
+  if (phase < 3)
+    {
+      g_assert_false (gimp_features_restored (gimp, &error));
+      g_assert_error (error, GIMP_PAINTER_ERROR, GIMP_PAINTER_ERROR_INVALID_STATE);
+      g_clear_error (&error);
+    }
+  return TRUE;
+}
+static void supported_startup_order (void)
+{
+  const gchar *names[] = { "initialize", "restore", "exit" };
+  guint signals[3], i; gulong hooks[3]; gpointer klass;
+  GError *error = NULL;
+  if (!g_test_subprocess ())
+    { g_test_trap_subprocess (NULL, 30 * G_TIME_SPAN_SECOND, 0);
+      g_test_trap_assert_passed (); return; }
+  g_setenv ("GIMP_PAINTER_HTTP_ENABLE", "0", TRUE);
+  gimp_test_utils_set_gimp3_directory ("GIMP_TESTING_ABS_TOP_SRCDIR", "app/tests/gimpdir");
+  klass = g_type_class_ref (GIMP_TYPE_GIMP);
+  for (i = 0; i < 3; i++)
+    { signals[i] = g_signal_lookup (names[i], GIMP_TYPE_GIMP);
+      hooks[i] = g_signal_add_emission_hook (signals[i], 0, startup_hook,
+                                            GUINT_TO_POINTER (i + 1), NULL); }
+  application = gimp_init_for_testing ();
+  g_assert_cmpuint (observed_phase, ==, 2);
+  g_assert_true (gimp_features_restored (application, &error));
+  g_assert_no_error (error); g_assert_cmpuint (provider_calls, ==, 1);
+  /* Close is explicit at accepted application exit, not an extra signal handler. */
+  gimp_features_close (application);
+  finish_case ();
+  g_assert_cmpuint (observed_phase, ==, 3);
+  for (i = 0; i < 3; i++) g_signal_remove_emission_hook (signals[i], hooks[i]);
+  g_type_class_unref (klass);
+}
 int main (int argc, char **argv)
 {
   g_test_init (&argc, &argv, NULL);
+  g_test_add_func ("/feature-lifecycle/preentry-preferences", preentry_preferences);
+  g_test_add_func ("/feature-lifecycle/supported-startup-order", supported_startup_order);
   g_test_add_func ("/feature-lifecycle/registration", registration);
   g_test_add_func ("/feature-lifecycle/restore-order", restore_order);
   g_test_add_func ("/feature-lifecycle/partial-provider-failure", partial_provider_failure);

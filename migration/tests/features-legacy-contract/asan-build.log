@@ -1,0 +1,35 @@
+compile app/actions/dialogs-actions.c
+compile app/actions/layer-presets-actions.c
+compile app/core/gimp-data-factories.c
+compile app/core/gimp.c
+compile app/core/gimpobject.c
+compile app/dialogs/preferences-dialog.c
+compile app/widgets/gimpactiongroup.c
+compile app/httpd/httpd.cpp
+compile app/app.c
+In file included from [01m[K../source/app/app.c:27[m[K:
+[01m[K/workspace/shared/gimp-deps-locked/root/usr/include/x86_64-linux-gnu/sys/param.h:102:9:[m[K [01;35m[Kwarning: [m[K"MIN" redefined
+  102 | #define [01;35m[KMIN[m[K(a,b) (((a)<(b))?(a):(b))
+      |         [01;35m[K^~~[m[K
+In file included from [01m[K/workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu/glib-2.0/include/glibconfig.h:9[m[K,
+                 from [01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/glib/gtypes.h:34[m[K,
+                 from [01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/glib/galloca.h:34[m[K,
+                 from [01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/glib.h:32[m[K,
+                 from [01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/gobject/gbinding.h:30[m[K,
+                 from [01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/glib-object.h:24[m[K,
+                 from [01m[K../source/app/gimp-features.h:4[m[K,
+                 from [01m[K../source/app/app.c:19[m[K:
+[01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/glib/gmacros.h:942:9:[m[K [01;36m[Knote: [m[Kthis is the location of the previous definition
+  942 | #define [01;36m[KMIN[m[K(a, b)  (((a) < (b)) ? (a) : (b))
+      |         [01;36m[K^~~[m[K
+[01m[K/workspace/shared/gimp-deps-locked/root/usr/include/x86_64-linux-gnu/sys/param.h:103:9:[m[K [01;35m[Kwarning: [m[K"MAX" redefined
+  103 | #define [01;35m[KMAX[m[K(a,b) (((a)>(b))?(a):(b))
+      |         [01;35m[K^~~[m[K
+[01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/glib/gmacros.h:939:9:[m[K [01;36m[Knote: [m[Kthis is the location of the previous definition
+  939 | #define [01;36m[KMAX[m[K(a, b)  (((a) > (b)) ? (a) : (b))
+      |         [01;36m[K^~~[m[K
+compile app/gimp-features.c
+compile app/tests/test-preset-gui-entries.c
+compile app/tests/test-preset-gui-entries.cpp
+compile app/tests/test-feature-lifecycle.c
+compile app/tests/test-feature-lifecycle.cpp
