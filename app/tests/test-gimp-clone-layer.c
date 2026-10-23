@@ -31,6 +31,7 @@
 
 void gimp_test_clone_retained_image (GimpImage *image, GimpCloneLayer *clone);
 void gimp_test_clone_cpp_layout (gsize size, gsize offset, GimpCloneLayer *layer);
+void gimp_test_clone_undo_cpp_type (GimpCloneLayerUndo *undo);
 typedef struct { GimpCloneLayer parent; } TestBrokenClone;
 typedef struct { GimpCloneLayerClass parent; } TestBrokenCloneClass;
 GType test_broken_clone_get_type (void);
@@ -1181,6 +1182,90 @@ static void native_type_lifecycle (void)
     }
   g_object_unref (image);
 }
+static void undo_type_destroyed (gpointer data)
+{ ++*(guint *) data; }
+static void undo_parent_memsize (GimpCloneLayerUndo *undo)
+{
+  GimpObjectClass *parent = GIMP_OBJECT_CLASS (g_type_class_peek (GIMP_TYPE_ITEM_UNDO));
+  gint64 parent_gui = 0, actual_gui = 0;
+  gint64 base = parent->get_memsize (GIMP_OBJECT (undo), &parent_gui);
+  gint64 actual = gimp_object_get_memsize (GIMP_OBJECT (undo), &actual_gui);
+  g_assert_cmpint (base, >, 0);
+  g_assert_cmpint (actual, >=, base);
+  g_assert_cmpint (actual_gui, ==, parent_gui);
+}
+static void native_undo_parent_contract (void)
+{
+  GTypeQuery query;
+  g_type_query (GIMP_TYPE_CLONE_LAYER_UNDO, &query);
+  g_assert_cmpuint (g_type_parent (GIMP_TYPE_CLONE_LAYER_UNDO), ==, GIMP_TYPE_ITEM_UNDO);
+  g_assert_cmpuint (query.instance_size, ==, sizeof (GimpCloneLayerUndo));
+  g_assert_cmpuint (query.class_size, ==, sizeof (GimpCloneLayerUndoClass));
+  for (gint mode = 0; mode < 3; mode++)
+    {
+      GimpImage *image = new_image ();
+      GimpLayer *layer = gimp_clone_layer_new (image, NULL, 7, 9, "Undo owner", 1.0,
+                                               GIMP_LAYER_MODE_NORMAL);
+      GimpLayer *weak_layer = layer;
+      GimpCloneLayerUndo *undo;
+      GimpItem *property_item = NULL;
+      GimpUndoAccumulator accum = {0};
+      GError *error = NULL;
+      guint destroyed = 0;
+      gint item_id;
+      gchar *name;
+      const GimpUndoMode free_mode = mode == 1 ? GIMP_UNDO_MODE_REDO : GIMP_UNDO_MODE_UNDO;
+      g_object_ref_sink (layer);
+      item_id = gimp_item_get_id (GIMP_ITEM (layer));
+      g_assert_true (gimp_clone_layer_set_source_name_full (GIMP_CLONE_LAYER (layer), "before-source", &error));
+      g_assert_no_error (error);
+      undo = g_object_new (GIMP_TYPE_CLONE_LAYER_UNDO, "image", image, "item", layer,
+                            "undo-type", mode == 2 ? GIMP_UNDO_GROUP_NONE : GIMP_UNDO_CLONE_LAYER_SOURCE,
+                            "dirty-mask", GIMP_DIRTY_NONE, NULL);
+      /* GimpUndo is born owned; ref_sink would add an extra reference. */
+      g_assert_false (g_object_is_floating (undo));
+      g_object_set_data_full (G_OBJECT (undo), "painter-test-native-undo-destroy", &destroyed,
+                               undo_type_destroyed);
+      g_assert_cmpint (undo->binding_failed, ==, mode == 2);
+      g_assert_true (GIMP_IS_CLONE_LAYER_UNDO_CLASS (GIMP_CLONE_LAYER_UNDO_GET_CLASS (undo)));
+      g_assert_true (GIMP_CLONE_LAYER_UNDO_CLASS (G_OBJECT_GET_CLASS (undo)) ==
+                      GIMP_CLONE_LAYER_UNDO_GET_CLASS (undo));
+      gimp_test_clone_undo_cpp_type (undo);
+      undo_parent_memsize (undo);
+      g_assert_true (GIMP_UNDO (undo)->image == image);
+      g_object_get (undo, "item", &property_item, NULL);
+      g_assert_true (property_item == GIMP_ITEM (layer));
+      g_object_unref (property_item);
+      if (!undo->binding_failed)
+        {
+          g_assert_true (gimp_clone_layer_set_source_name_full (GIMP_CLONE_LAYER (layer), "after-source", &error));
+          g_assert_no_error (error);
+          gimp_undo_pop (GIMP_UNDO (undo), GIMP_UNDO_MODE_UNDO, &accum);
+          name = gimp_clone_layer_dup_source_name (GIMP_CLONE_LAYER (layer));
+          g_assert_cmpstr (name, ==, "before-source"); g_free (name);
+          gimp_undo_pop (GIMP_UNDO (undo), GIMP_UNDO_MODE_REDO, &accum);
+          name = gimp_clone_layer_dup_source_name (GIMP_CLONE_LAYER (layer));
+          g_assert_cmpstr (name, ==, "after-source"); g_free (name);
+        }
+      g_object_add_weak_pointer (G_OBJECT (layer), (gpointer *) &weak_layer);
+      g_object_unref (layer);
+      g_assert_nonnull (weak_layer); /* inherited item property owns a reference */
+      g_assert_true (gimp_item_get_by_id (gimp, item_id) == GIMP_ITEM (weak_layer));
+      /* Native GimpItemUndo's lifecycle explicitly frees before final unref. */
+      gimp_undo_free (GIMP_UNDO (undo), free_mode);
+      g_assert_null (GIMP_ITEM_UNDO (undo)->item);
+      g_assert_null (weak_layer);
+      g_assert_null (gimp_item_get_by_id (gimp, item_id));
+      gimp_undo_free (GIMP_UNDO (undo), free_mode);
+      undo_parent_memsize (undo);
+      g_object_run_dispose (G_OBJECT (undo));
+      g_object_run_dispose (G_OBJECT (undo));
+      g_assert_cmpuint (destroyed, ==, 0);
+      g_object_unref (undo);
+      g_assert_cmpuint (destroyed, ==, 1);
+      g_object_unref (image);
+    }
+}
 static void replace_on_update (GimpDrawable *drawable, gint x, gint y, gint w, gint h, gpointer data)
 {
   GimpLayer **replacement = data;
@@ -1384,6 +1469,7 @@ int main (int argc, char **argv)
   ADD (frozen_source_disposal); ADD (group_duplicate_internal_reference);
   ADD (inert_construction); ADD (reentrant_source_replace); ADD (cpp_header_layout); ADD (projected_pixels); ADD (partial_update_and_graph); ADD (deferred_name);
   ADD (native_type_lifecycle);
+  ADD (native_undo_parent_contract);
   ADD (recursive_first_match); ADD (offset_size_and_noop_transforms);
   ADD (source_delete_undo); ADD (source_lifetime_and_detach); ADD (freeze_and_close); ADD (cycles);
   ADD (duplicate_and_group_update);

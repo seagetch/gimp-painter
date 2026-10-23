@@ -10,8 +10,20 @@ extern "C" {
 #include "core/gimpimage-undo.h"
 }
 #include "core/gimpclonelayer-handle.hpp"
+#include "core/gimpclonelayerundo.h"
 #include <cstddef>
 #include <type_traits>
+extern "C" void gimp_test_clone_undo_cpp_type (GimpCloneLayerUndo *undo);
+extern "C" void gimp_test_clone_undo_cpp_type (GimpCloneLayerUndo *undo)
+{
+  auto *klass = GIMP_CLONE_LAYER_UNDO_GET_CLASS (undo);
+  g_assert_true (GIMP_IS_CLONE_LAYER_UNDO_CLASS (klass));
+  g_assert_true (GIMP_CLONE_LAYER_UNDO_CLASS (G_OBJECT_GET_CLASS (undo)) == klass);
+  GTypeQuery query {};
+  g_type_query (GIMP_TYPE_CLONE_LAYER_UNDO, &query);
+  g_assert_cmpuint (query.instance_size, ==, sizeof (GimpCloneLayerUndo));
+  g_assert_cmpuint (query.class_size, ==, sizeof (GimpCloneLayerUndoClass));
+}
 extern "C" void gimp_test_clone_cpp_layout (gsize size, gsize offset, GimpCloneLayer *layer);
 extern "C" void gimp_test_clone_cpp_layout (gsize size, gsize offset, GimpCloneLayer *layer)
 {

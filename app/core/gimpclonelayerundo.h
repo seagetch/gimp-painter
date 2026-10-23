@@ -5,7 +5,10 @@
 G_BEGIN_DECLS
 #define GIMP_TYPE_CLONE_LAYER_UNDO (gimp_clone_layer_undo_get_type ())
 #define GIMP_CLONE_LAYER_UNDO(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_CLONE_LAYER_UNDO, GimpCloneLayerUndo))
+#define GIMP_CLONE_LAYER_UNDO_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_CLONE_LAYER_UNDO, GimpCloneLayerUndoClass))
 #define GIMP_IS_CLONE_LAYER_UNDO(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_CLONE_LAYER_UNDO))
+#define GIMP_IS_CLONE_LAYER_UNDO_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_CLONE_LAYER_UNDO))
+#define GIMP_CLONE_LAYER_UNDO_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_CLONE_LAYER_UNDO, GimpCloneLayerUndoClass))
 typedef struct _GimpCloneLayerUndo GimpCloneLayerUndo;
 typedef struct _GimpCloneLayerUndoClass GimpCloneLayerUndoClass;
 struct _GimpCloneLayerUndo { GimpItemUndo parent_instance; gboolean binding_failed; };
