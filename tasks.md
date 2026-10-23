@@ -607,7 +607,7 @@
 | 13.005 | [x] | src-in 演算を移植する | 13.004 | source/destination の扱いが一致 |
 | 13.006 | [x] | dst-in 演算を移植する | 13.005 | source/destination の扱いが一致 |
 | 13.007 | [x] | src-out 演算を移植する | 13.006 | source/destination の扱いが一致 |
-| 13.008 | [ ] | dst-out 演算を移植する | 13.007 | source/destination の扱いが一致 |
+| 13.008 | [x] | dst-out 演算を移植する | 13.007 | source/destination の扱いが一致 |
 | 13.009 | [ ] | モード選択 UI を登録する | 13.008 | 表示名と内部値が一致 |
 | 13.010 | [ ] | layer opacity と mask を接続する | 13.009 | 演算順が旧仕様と一致 |
 | 13.011 | [ ] | group compositing を接続する | 13.010 | 隔離・通過・順序を現行基盤と整合 |
