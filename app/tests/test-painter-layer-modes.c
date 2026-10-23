@@ -249,6 +249,8 @@ static void modern_group_strength_reduction (void)
     g_object_unref(image);
   }
 }
+#include "test-painter-mode-xcf.inc"
+
 int main (int argc, char **argv)
 {
   int result;
@@ -260,6 +262,7 @@ int main (int argc, char **argv)
   g_test_add_func ("/painter-layer-modes/precision_and_offset_projection",precision_and_offset_projection);
   g_test_add_func ("/painter-layer-modes/group_projection_routes",group_projection_routes);
   g_test_add_func ("/painter-layer-modes/modern_group_strength_reduction",modern_group_strength_reduction);
+  g_test_add_func ("/painter-layer-modes/modes_xcf_roundtrip",modes_xcf_roundtrip);
   result = g_test_run ();
   gimp_test_utils_set_gimp3_directory ("GIMP_TESTING_ABS_TOP_BUILDDIR","app/tests/gimpdir-output");
   gimp_exit (gimp,TRUE); return result;

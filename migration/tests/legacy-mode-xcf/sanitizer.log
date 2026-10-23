@@ -1,0 +1,256 @@
+Xvfb verified: 127.0.0.1:92, 1080x1920x24, authenticated accepted, empty authority rejected
+[01m[K../source/app/core/gimpgrouplayer.c:[m[K In function ‘[01m[Kgimp_group_layer_resume_resize[m[K’:
+[01m[K../source/app/core/gimpgrouplayer.c:1709:14:[m[K [01;35m[Kwarning: [m[K‘[01m[Kmask_buffer[m[K’ may be used uninitialized [[01;35m[K-Wmaybe-uninitialized[m[K]
+ 1709 |           if [01;35m[K([m[Kgimp_drawable_get_buffer (GIMP_DRAWABLE (mask)) != mask_buffer)
+      |              [01;35m[K^[m[K
+[01m[K../source/app/core/gimpgrouplayer.c:1649:26:[m[K [01;36m[Knote: [m[K‘[01m[Kmask_buffer[m[K’ was declared here
+ 1649 |   GeglBuffer            *[01;36m[Kmask_buffer[m[K;
+      |                          [01;36m[K^~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-layer-modes.c:[m[K In function ‘[01m[Kdirect_paint_operation[m[K’:
+[01m[K../source/app/tests/test-painter-layer-modes.c:123:11:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  123 |           [01;35m[KGimpOperationLayerMode[m[K *operation = GIMP_OPERATION_LAYER_MODE(gimp_layer_mode_get_operation(mode));
+      |           [01;35m[K^~~~~~~~~~~~~~~~~~~~~~[m[K
+TAP version 14
+# random seed: R02S427e3c3939eb20e6cf85b84a2eac18cb
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+1..6
+# Start of painter-layer-modes tests
+# reference mode-0-o100-mnone-projection.rgba
+# reference mode-0-o50-mnone-projection.rgba
+# reference mode-0-o0-mnone-projection.rgba
+# reference mode-0-o100-m128-projection.rgba
+# reference mode-0-o50-m128-projection.rgba
+# reference mode-0-o100-m0-projection.rgba
+# reference mode-0-o1-m254-projection.rgba
+# reference mode-0-o99-m1-projection.rgba
+# reference mode-3-o100-mnone-projection.rgba
+# reference mode-3-o50-mnone-projection.rgba
+# reference mode-3-o0-mnone-projection.rgba
+# reference mode-3-o100-m128-projection.rgba
+# reference mode-3-o50-m128-projection.rgba
+# reference mode-3-o100-m0-projection.rgba
+# reference mode-3-o1-m254-projection.rgba
+# reference mode-3-o99-m1-projection.rgba
+# reference mode-23-o100-mnone-projection.rgba
+# reference mode-23-o50-mnone-projection.rgba
+# reference mode-23-o0-mnone-projection.rgba
+# reference mode-23-o100-m128-projection.rgba
+# reference mode-23-o50-m128-projection.rgba
+# reference mode-23-o100-m0-projection.rgba
+# reference mode-23-o1-m254-projection.rgba
+# reference mode-23-o99-m1-projection.rgba
+# reference mode-24-o100-mnone-projection.rgba
+# reference mode-24-o50-mnone-projection.rgba
+# reference mode-24-o0-mnone-projection.rgba
+# reference mode-24-o100-m128-projection.rgba
+# reference mode-24-o50-m128-projection.rgba
+# reference mode-24-o100-m0-projection.rgba
+# reference mode-24-o1-m254-projection.rgba
+# reference mode-24-o99-m1-projection.rgba
+# reference mode-25-o100-mnone-projection.rgba
+# reference mode-25-o50-mnone-projection.rgba
+# reference mode-25-o0-mnone-projection.rgba
+# reference mode-25-o100-m128-projection.rgba
+# reference mode-25-o50-m128-projection.rgba
+# reference mode-25-o100-m0-projection.rgba
+# reference mode-25-o1-m254-projection.rgba
+# reference mode-25-o99-m1-projection.rgba
+# reference mode-26-o100-mnone-projection.rgba
+# reference mode-26-o50-mnone-projection.rgba
+# reference mode-26-o0-mnone-projection.rgba
+# reference mode-26-o100-m128-projection.rgba
+# reference mode-26-o50-m128-projection.rgba
+# reference mode-26-o100-m0-projection.rgba
+# reference mode-26-o1-m254-projection.rgba
+# reference mode-26-o99-m1-projection.rgba
+# reference mode-27-o100-mnone-projection.rgba
+# reference mode-27-o50-mnone-projection.rgba
+# reference mode-27-o0-mnone-projection.rgba
+# reference mode-27-o100-m128-projection.rgba
+# reference mode-27-o50-m128-projection.rgba
+# reference mode-27-o100-m0-projection.rgba
+# reference mode-27-o1-m254-projection.rgba
+# reference mode-27-o99-m1-projection.rgba
+# reference mode-28-o100-mnone-projection.rgba
+# reference mode-28-o50-mnone-projection.rgba
+# reference mode-28-o0-mnone-projection.rgba
+# reference mode-28-o100-m128-projection.rgba
+# reference mode-28-o50-m128-projection.rgba
+# reference mode-28-o100-m0-projection.rgba
+# reference mode-28-o1-m254-projection.rgba
+# reference mode-28-o99-m1-projection.rgba
+# reference mode-29-o100-mnone-projection.rgba
+# reference mode-29-o50-mnone-projection.rgba
+# reference mode-29-o0-mnone-projection.rgba
+# reference mode-29-o100-m128-projection.rgba
+# reference mode-29-o50-m128-projection.rgba
+# reference mode-29-o100-m0-projection.rgba
+# reference mode-29-o1-m254-projection.rgba
+# reference mode-29-o99-m1-projection.rgba
+ok 1 /painter-layer-modes/genuine_projection_and_kernel
+# slow test /painter-layer-modes/genuine_projection_and_kernel executed in 0.77 secs
+ok 2 /painter-layer-modes/direct_paint_operation
+# mode 23 format R'G'B'A u8: 64 old pixels + 118 outside-source pixels
+# mode 24 format R'G'B'A u8: 64 old pixels + 118 outside-source pixels
+# mode 25 format R'G'B'A u8: 64 old pixels + 118 outside-source pixels
+# mode 26 format R'G'B'A u8: 64 old pixels + 118 outside-source pixels
+# mode 27 format R'G'B'A u8: 64 old pixels + 118 outside-source pixels
+# mode 28 format R'G'B'A u8: 64 old pixels + 118 outside-source pixels
+# mode 29 format R'G'B'A u8: 64 old pixels + 118 outside-source pixels
+# mode 23 format R'G'B'A u16: 64 old pixels + 118 outside-source pixels
+# mode 24 format R'G'B'A u16: 64 old pixels + 118 outside-source pixels
+# mode 25 format R'G'B'A u16: 64 old pixels + 118 outside-source pixels
+# mode 26 format R'G'B'A u16: 64 old pixels + 118 outside-source pixels
+# mode 27 format R'G'B'A u16: 64 old pixels + 118 outside-source pixels
+# mode 28 format R'G'B'A u16: 64 old pixels + 118 outside-source pixels
+# mode 29 format R'G'B'A u16: 64 old pixels + 118 outside-source pixels
+# mode 23 format R'G'B'A u32: 64 old pixels + 118 outside-source pixels
+# mode 24 format R'G'B'A u32: 64 old pixels + 118 outside-source pixels
+# mode 25 format R'G'B'A u32: 64 old pixels + 118 outside-source pixels
+# mode 26 format R'G'B'A u32: 64 old pixels + 118 outside-source pixels
+# mode 27 format R'G'B'A u32: 64 old pixels + 118 outside-source pixels
+# mode 28 format R'G'B'A u32: 64 old pixels + 118 outside-source pixels
+# mode 29 format R'G'B'A u32: 64 old pixels + 118 outside-source pixels
+# mode 23 format R'G'B'A half: 64 old pixels + 118 outside-source pixels
+# mode 24 format R'G'B'A half: 64 old pixels + 118 outside-source pixels
+# mode 25 format R'G'B'A half: 64 old pixels + 118 outside-source pixels
+# mode 26 format R'G'B'A half: 64 old pixels + 118 outside-source pixels
+# mode 27 format R'G'B'A half: 64 old pixels + 118 outside-source pixels
+# mode 28 format R'G'B'A half: 64 old pixels + 118 outside-source pixels
+# mode 29 format R'G'B'A half: 64 old pixels + 118 outside-source pixels
+# mode 23 format R'G'B'A float: 64 old pixels + 118 outside-source pixels
+# mode 24 format R'G'B'A float: 64 old pixels + 118 outside-source pixels
+# mode 25 format R'G'B'A float: 64 old pixels + 118 outside-source pixels
+# mode 26 format R'G'B'A float: 64 old pixels + 118 outside-source pixels
+# mode 27 format R'G'B'A float: 64 old pixels + 118 outside-source pixels
+# mode 28 format R'G'B'A float: 64 old pixels + 118 outside-source pixels
+# mode 29 format R'G'B'A float: 64 old pixels + 118 outside-source pixels
+# mode 23 format R'G'B'A double: 64 old pixels + 118 outside-source pixels
+# mode 24 format R'G'B'A double: 64 old pixels + 118 outside-source pixels
+# mode 25 format R'G'B'A double: 64 old pixels + 118 outside-source pixels
+# mode 26 format R'G'B'A double: 64 old pixels + 118 outside-source pixels
+# mode 27 format R'G'B'A double: 64 old pixels + 118 outside-source pixels
+# mode 28 format R'G'B'A double: 64 old pixels + 118 outside-source pixels
+# mode 29 format R'G'B'A double: 64 old pixels + 118 outside-source pixels
+ok 3 /painter-layer-modes/precision_and_offset_projection
+# group depth 0 isolated mode 0: 64 pixels match old child-composite reference
+# group depth 0 isolated mode 3: 64 pixels match old child-composite reference
+# group depth 0 isolated mode 23: 64 pixels match old child-composite reference
+# group depth 0 isolated mode 24: 64 pixels match old child-composite reference
+# group depth 0 isolated mode 25: 64 pixels match old child-composite reference
+# group depth 0 isolated mode 26: 64 pixels match old child-composite reference
+# group depth 0 isolated mode 27: 64 pixels match old child-composite reference
+# group depth 0 isolated mode 28: 64 pixels match old child-composite reference
+# group depth 0 isolated mode 29: 64 pixels match old child-composite reference
+# group depth 0 pass-through mode 0: 64 pixels match old child-composite reference
+# group depth 0 pass-through mode 3: 64 pixels match old child-composite reference
+# group depth 0 pass-through mode 23: 64 pixels match old child-composite reference
+# group depth 0 pass-through mode 24: 64 pixels match old child-composite reference
+# group depth 0 pass-through mode 25: 64 pixels match old child-composite reference
+# group depth 0 pass-through mode 26: 64 pixels match old child-composite reference
+# group depth 0 pass-through mode 27: 64 pixels match old child-composite reference
+# group depth 0 pass-through mode 28: 64 pixels match old child-composite reference
+# group depth 0 pass-through mode 29: 64 pixels match old child-composite reference
+# group depth 1 isolated mode 0: 64 pixels match old child-composite reference
+# group depth 1 isolated mode 3: 64 pixels match old child-composite reference
+# group depth 1 isolated mode 23: 64 pixels match old child-composite reference
+# group depth 1 isolated mode 24: 64 pixels match old child-composite reference
+# group depth 1 isolated mode 25: 64 pixels match old child-composite reference
+# group depth 1 isolated mode 26: 64 pixels match old child-composite reference
+# group depth 1 isolated mode 27: 64 pixels match old child-composite reference
+# group depth 1 isolated mode 28: 64 pixels match old child-composite reference
+# group depth 1 isolated mode 29: 64 pixels match old child-composite reference
+# group depth 1 pass-through mode 0: 64 pixels match old child-composite reference
+# group depth 1 pass-through mode 3: 64 pixels match old child-composite reference
+# group depth 1 pass-through mode 23: 64 pixels match old child-composite reference
+# group depth 1 pass-through mode 24: 64 pixels match old child-composite reference
+# group depth 1 pass-through mode 25: 64 pixels match old child-composite reference
+# group depth 1 pass-through mode 26: 64 pixels match old child-composite reference
+# group depth 1 pass-through mode 27: 64 pixels match old child-composite reference
+# group depth 1 pass-through mode 28: 64 pixels match old child-composite reference
+# group depth 1 pass-through mode 29: 64 pixels match old child-composite reference
+# group depth 2 isolated mode 0: 64 pixels match old child-composite reference
+# group depth 2 isolated mode 3: 64 pixels match old child-composite reference
+# group depth 2 isolated mode 23: 64 pixels match old child-composite reference
+# group depth 2 isolated mode 24: 64 pixels match old child-composite reference
+# group depth 2 isolated mode 25: 64 pixels match old child-composite reference
+# group depth 2 isolated mode 26: 64 pixels match old child-composite reference
+# group depth 2 isolated mode 27: 64 pixels match old child-composite reference
+# group depth 2 isolated mode 28: 64 pixels match old child-composite reference
+# group depth 2 isolated mode 29: 64 pixels match old child-composite reference
+# group depth 2 pass-through mode 0: 64 pixels match old child-composite reference
+# group depth 2 pass-through mode 3: 64 pixels match old child-composite reference
+# group depth 2 pass-through mode 23: 64 pixels match old child-composite reference
+# group depth 2 pass-through mode 24: 64 pixels match old child-composite reference
+# group depth 2 pass-through mode 25: 64 pixels match old child-composite reference
+# group depth 2 pass-through mode 26: 64 pixels match old child-composite reference
+# group depth 2 pass-through mode 27: 64 pixels match old child-composite reference
+# group depth 2 pass-through mode 28: 64 pixels match old child-composite reference
+# group depth 2 pass-through mode 29: 64 pixels match old child-composite reference
+ok 4 /painter-layer-modes/group_projection_routes
+# slow test /painter-layer-modes/group_projection_routes executed in 0.91 secs
+# modern mode 28 retains single-child strength reduction
+# modern mode 30 retains single-child strength reduction
+# modern mode 58 retains single-child strength reduction
+# modern mode 31 retains single-child strength reduction
+ok 5 /painter-layer-modes/modern_group_strength_reduction
+# XCF layout 0 mode 0 cycle 1: ID, opacity, mask, hierarchy and 64 genuine pixels preserved
+# XCF layout 0 mode 0 cycle 2: ID, opacity, mask, hierarchy and 64 genuine pixels preserved
+# XCF layout 0 mode 3 cycle 1: ID, opacity, mask, hierarchy and 64 genuine pixels preserved
+# XCF layout 0 mode 3 cycle 2: ID, opacity, mask, hierarchy and 64 genuine pixels preserved
+# XCF layout 0 mode 23 cycle 1: ID, opacity, mask, hierarchy and 64 genuine pixels preserved
+# XCF layout 0 mode 23 cycle 2: ID, opacity, mask, hierarchy and 64 genuine pixels preserved
+# XCF layout 0 mode 24 cycle 1: ID, opacity, mask, hierarchy and 64 genuine pixels preserved
+# XCF layout 0 mode 24 cycle 2: ID, opacity, mask, hierarchy and 64 genuine pixels preserved
+# XCF layout 0 mode 25 cycle 1: ID, opacity, mask, hierarchy and 64 genuine pixels preserved
+# XCF layout 0 mode 25 cycle 2: ID, opacity, mask, hierarchy and 64 genuine pixels preserved
+# XCF layout 0 mode 26 cycle 1: ID, opacity, mask, hierarchy and 64 genuine pixels preserved
+# XCF layout 0 mode 26 cycle 2: ID, opacity, mask, hierarchy and 64 genuine pixels preserved
+# XCF layout 0 mode 27 cycle 1: ID, opacity, mask, hierarchy and 64 genuine pixels preserved
+# XCF layout 0 mode 27 cycle 2: ID, opacity, mask, hierarchy and 64 genuine pixels preserved
+# XCF layout 0 mode 28 cycle 1: ID, opacity, mask, hierarchy and 64 genuine pixels preserved
+# XCF layout 0 mode 28 cycle 2: ID, opacity, mask, hierarchy and 64 genuine pixels preserved
+# XCF layout 0 mode 29 cycle 1: ID, opacity, mask, hierarchy and 64 genuine pixels preserved
+# XCF layout 0 mode 29 cycle 2: ID, opacity, mask, hierarchy and 64 genuine pixels preserved
+# XCF layout 1 mode 0 cycle 1: ID, opacity, mask, hierarchy and 64 genuine pixels preserved
+# XCF layout 1 mode 0 cycle 2: ID, opacity, mask, hierarchy and 64 genuine pixels preserved
+# XCF layout 1 mode 3 cycle 1: ID, opacity, mask, hierarchy and 64 genuine pixels preserved
+# XCF layout 1 mode 3 cycle 2: ID, opacity, mask, hierarchy and 64 genuine pixels preserved
+# XCF layout 1 mode 23 cycle 1: ID, opacity, mask, hierarchy and 64 genuine pixels preserved
+# XCF layout 1 mode 23 cycle 2: ID, opacity, mask, hierarchy and 64 genuine pixels preserved
+# XCF layout 1 mode 24 cycle 1: ID, opacity, mask, hierarchy and 64 genuine pixels preserved
+# XCF layout 1 mode 24 cycle 2: ID, opacity, mask, hierarchy and 64 genuine pixels preserved
+# XCF layout 1 mode 25 cycle 1: ID, opacity, mask, hierarchy and 64 genuine pixels preserved
+# XCF layout 1 mode 25 cycle 2: ID, opacity, mask, hierarchy and 64 genuine pixels preserved
+# XCF layout 1 mode 26 cycle 1: ID, opacity, mask, hierarchy and 64 genuine pixels preserved
+# XCF layout 1 mode 26 cycle 2: ID, opacity, mask, hierarchy and 64 genuine pixels preserved
+# XCF layout 1 mode 27 cycle 1: ID, opacity, mask, hierarchy and 64 genuine pixels preserved
+# XCF layout 1 mode 27 cycle 2: ID, opacity, mask, hierarchy and 64 genuine pixels preserved
+# XCF layout 1 mode 28 cycle 1: ID, opacity, mask, hierarchy and 64 genuine pixels preserved
+# XCF layout 1 mode 28 cycle 2: ID, opacity, mask, hierarchy and 64 genuine pixels preserved
+# XCF layout 1 mode 29 cycle 1: ID, opacity, mask, hierarchy and 64 genuine pixels preserved
+# XCF layout 1 mode 29 cycle 2: ID, opacity, mask, hierarchy and 64 genuine pixels preserved
+# XCF layout 2 mode 0 cycle 1: ID, opacity, mask, hierarchy and 64 genuine pixels preserved
+# XCF layout 2 mode 0 cycle 2: ID, opacity, mask, hierarchy and 64 genuine pixels preserved
+# XCF layout 2 mode 3 cycle 1: ID, opacity, mask, hierarchy and 64 genuine pixels preserved
+# XCF layout 2 mode 3 cycle 2: ID, opacity, mask, hierarchy and 64 genuine pixels preserved
+# XCF layout 2 mode 23 cycle 1: ID, opacity, mask, hierarchy and 64 genuine pixels preserved
+# XCF layout 2 mode 23 cycle 2: ID, opacity, mask, hierarchy and 64 genuine pixels preserved
+# XCF layout 2 mode 24 cycle 1: ID, opacity, mask, hierarchy and 64 genuine pixels preserved
+# XCF layout 2 mode 24 cycle 2: ID, opacity, mask, hierarchy and 64 genuine pixels preserved
+# XCF layout 2 mode 25 cycle 1: ID, opacity, mask, hierarchy and 64 genuine pixels preserved
+# XCF layout 2 mode 25 cycle 2: ID, opacity, mask, hierarchy and 64 genuine pixels preserved
+# XCF layout 2 mode 26 cycle 1: ID, opacity, mask, hierarchy and 64 genuine pixels preserved
+# XCF layout 2 mode 26 cycle 2: ID, opacity, mask, hierarchy and 64 genuine pixels preserved
+# XCF layout 2 mode 27 cycle 1: ID, opacity, mask, hierarchy and 64 genuine pixels preserved
+# XCF layout 2 mode 27 cycle 2: ID, opacity, mask, hierarchy and 64 genuine pixels preserved
+# XCF layout 2 mode 28 cycle 1: ID, opacity, mask, hierarchy and 64 genuine pixels preserved
+# XCF layout 2 mode 28 cycle 2: ID, opacity, mask, hierarchy and 64 genuine pixels preserved
+# XCF layout 2 mode 29 cycle 1: ID, opacity, mask, hierarchy and 64 genuine pixels preserved
+# XCF layout 2 mode 29 cycle 2: ID, opacity, mask, hierarchy and 64 genuine pixels preserved
+ok 6 /painter-layer-modes/modes_xcf_roundtrip
+# slow test /painter-layer-modes/modes_xcf_roundtrip executed in 1.32 secs
+# End of painter-layer-modes tests
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+

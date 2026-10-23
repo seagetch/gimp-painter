@@ -1,0 +1,37 @@
+{
+  "owned_source_sha256": {
+    "app/tests/test-painter-layer-modes.c": "daed44602bbea37721324db178d0aab1e2bda0c5eed7a47737ae48f8a20bea42",
+    "app/tests/test-painter-mode-xcf.inc": "874ae2078c6c4fdb4fcfe5f40f020f2a3a04fdb6224e9895f0cefa3f02b2f21c",
+    "migration/tests/run_painter_mode_xcf_sanitizers.py": "42daafe0457c0b1931b8e950e259e2af2216eb66a4eb25e7d75734cab1f1ceef"
+  },
+  "uninstrumented_capsule_source_sha256": {
+    "app/xcf/painter-xcf-preserve.cpp": "9d79e3ba4657e0e4a15bf89f10a08555cfee935b362086991c59ad656df7af7a",
+    "app/xcf/painter-xcf-load.cpp": "1fdf2bc2292101e2a455beacdb980c89618b3cb02c4db63f47225c598a37218a",
+    "app/core/gimp-painter-provenance.cpp": "aa67639002b93907eac76978d907aa197025a5da2fbc2e41e7a45b5fe432bd18"
+  },
+  "normal_exit": 0,
+  "sanitizer_exit": 0,
+  "instrumented_c_units": 10,
+  "scenes": 27,
+  "save_reopen_cycles_per_scene": 2,
+  "total_save_reopen_cycles": 54,
+  "genuine_reference_pixels_per_cycle": 64,
+  "byte_modes": [
+    0,
+    3,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29
+  ],
+  "layouts": [
+    "flat",
+    "isolated Painter Normal",
+    "pass-through"
+  ],
+  "cpp_capsule_instrumented": false,
+  "full_xcf_receipt_equivalence": false
+}
