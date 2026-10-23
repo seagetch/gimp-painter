@@ -1,0 +1,2275 @@
+{
+  "scope": "52 original section15 work rows/16 source hunks retained, plus6 explicitly cross-owned viewable source hunks from section14. No closures or criterion/dependency changes. Committed providers only.",
+  "baseline_commit": "bf547afdb60bbad58d42678791105ac3b9201570",
+  "work_items": [
+    {
+      "work_id": "legacy-a794c7ba884d6267f489",
+      "source_kind": "hunk",
+      "source_id": "01.002/000255",
+      "path": "app/core/gimpfilterlayer.cpp",
+      "source_blob": "9141c8c7ea6009be3bb7be3141cd62d8930ed976",
+      "source_range": "-0,0 -> 1,1209",
+      "source_sha256": "05f67cfe5f278592c5b6f0ba5fe42b7013df189088c496909dc1636ef684cc4b",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "15.001",
+      "action": "procedure 定義の所有モデルを実装する",
+      "acceptance": "名前と型付き引数を独立に保持",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-fc88899b751daf291712",
+      "source_kind": "hunk",
+      "source_id": "01.002/000255",
+      "path": "app/core/gimpfilterlayer.cpp",
+      "source_blob": "9141c8c7ea6009be3bb7be3141cd62d8930ed976",
+      "source_range": "-0,0 -> 1,1209",
+      "source_sha256": "05f67cfe5f278592c5b6f0ba5fe42b7013df189088c496909dc1636ef684cc4b",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "15.001/gvalue-deep-copy",
+      "action": "FilterLayer の GValue 配列を深くコピーする",
+      "acceptance": "元 GValueArray と保存先を独立に解放し、getter の値を正しく返す",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-5f3ccf9bd641369e408b",
+      "source_kind": "hunk",
+      "source_id": "01.002/000255",
+      "path": "app/core/gimpfilterlayer.cpp",
+      "source_blob": "9141c8c7ea6009be3bb7be3141cd62d8930ed976",
+      "source_range": "-0,0 -> 1,1209",
+      "source_sha256": "05f67cfe5f278592c5b6f0ba5fe42b7013df189088c496909dc1636ef684cc4b",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "15.002",
+      "action": "引数の旧値と実行値を分離する",
+      "acceptance": "変換後も保存された元情報を失わない",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-848ba21a7ab59ea87d92",
+      "source_kind": "hunk",
+      "source_id": "01.002/000255",
+      "path": "app/core/gimpfilterlayer.cpp",
+      "source_blob": "9141c8c7ea6009be3bb7be3141cd62d8930ed976",
+      "source_range": "-0,0 -> 1,1209",
+      "source_sha256": "05f67cfe5f278592c5b6f0ba5fe42b7013df189088c496909dc1636ef684cc4b",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "15.003",
+      "action": "FilterLayer の property を接続する",
+      "acceptance": "設定の読取り・変更・通知が一経路",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-d45acfb86829a83db084",
+      "source_kind": "hunk",
+      "source_id": "01.002/000255",
+      "path": "app/core/gimpfilterlayer.cpp",
+      "source_blob": "9141c8c7ea6009be3bb7be3141cd62d8930ed976",
+      "source_range": "-0,0 -> 1,1209",
+      "source_sha256": "05f67cfe5f278592c5b6f0ba5fe42b7013df189088c496909dc1636ef684cc4b",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "15.004",
+      "action": "処理対象の下層範囲を実装する",
+      "acceptance": "位置と階層に応じ旧範囲を選ぶ",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-83e65082b3e711491be4",
+      "source_kind": "hunk",
+      "source_id": "01.002/000255",
+      "path": "app/core/gimpfilterlayer.cpp",
+      "source_blob": "9141c8c7ea6009be3bb7be3141cd62d8930ed976",
+      "source_range": "-0,0 -> 1,1209",
+      "source_sha256": "05f67cfe5f278592c5b6f0ba5fe42b7013df189088c496909dc1636ef684cc4b",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "15.005",
+      "action": "位置・サイズ変更を処理する",
+      "acceptance": "入力と出力 buffer の座標が一致",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-7080dad786ba169cb52c",
+      "source_kind": "hunk",
+      "source_id": "01.002/000255",
+      "path": "app/core/gimpfilterlayer.cpp",
+      "source_blob": "9141c8c7ea6009be3bb7be3141cd62d8930ed976",
+      "source_range": "-0,0 -> 1,1209",
+      "source_sha256": "05f67cfe5f278592c5b6f0ba5fe42b7013df189088c496909dc1636ef684cc4b",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "15.006",
+      "action": "マスク・opacity・mode を接続する",
+      "acceptance": "独自型でも通常属性が適用される",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-1d8ada13baa4366d512d",
+      "source_kind": "hunk",
+      "source_id": "01.002/000255",
+      "path": "app/core/gimpfilterlayer.cpp",
+      "source_blob": "9141c8c7ea6009be3bb7be3141cd62d8930ed976",
+      "source_range": "-0,0 -> 1,1209",
+      "source_sha256": "05f67cfe5f278592c5b6f0ba5fe42b7013df189088c496909dc1636ef684cc4b",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "15.006/gegl-result-source",
+      "action": "FilterLayer の確定結果を GEGL source node へ供給する",
+      "acceptance": "未完成・旧世代の結果を見せず source 変更が投影を更新し operator 評価から runner を起動しない",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-3df41b4fd6044d2d63e9",
+      "source_kind": "hunk",
+      "source_id": "01.002/000255",
+      "path": "app/core/gimpfilterlayer.cpp",
+      "source_blob": "9141c8c7ea6009be3bb7be3141cd62d8930ed976",
+      "source_range": "-0,0 -> 1,1209",
+      "source_sha256": "05f67cfe5f278592c5b6f0ba5fe42b7013df189088c496909dc1636ef684cc4b",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "15.006/filter-pickable-opacity",
+      "action": "FilterLayer の不透明度照会を現行型へ接続する",
+      "acceptance": "旧 gint 返却のゼロ透明を現行 gdouble 契約で保ち、合成結果との矛盾を試験",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-52b7687dcf47239101f3",
+      "source_kind": "hunk",
+      "source_id": "01.002/000255",
+      "path": "app/core/gimpfilterlayer.cpp",
+      "source_blob": "9141c8c7ea6009be3bb7be3141cd62d8930ed976",
+      "source_range": "-0,0 -> 1,1209",
+      "source_sha256": "05f67cfe5f278592c5b6f0ba5fe42b7013df189088c496909dc1636ef684cc4b",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "15.006/filter-progress-start",
+      "action": "FilterLayer の progress 開始 callback を現行 ABI に合わせる",
+      "acceptance": "cancellable と message の新しい引数順を守り、進捗通知・取消しが逆転しない",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-71df9f13b4b3a42727ef",
+      "source_kind": "hunk",
+      "source_id": "01.002/000255",
+      "path": "app/core/gimpfilterlayer.cpp",
+      "source_blob": "9141c8c7ea6009be3bb7be3141cd62d8930ed976",
+      "source_range": "-0,0 -> 1,1209",
+      "source_sha256": "05f67cfe5f278592c5b6f0ba5fe42b7013df189088c496909dc1636ef684cc4b",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "15.006/editability-contract",
+      "action": "FilterLayer の編集可否を現行ロック規約へ対応付ける",
+      "acceptance": "廃止された GimpItemClass.is_editable を仮定せず、定義編集と通常画素編集の権限を検証",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-a61960bb0c9254b6d988",
+      "source_kind": "hunk",
+      "source_id": "01.002/000255",
+      "path": "app/core/gimpfilterlayer.cpp",
+      "source_blob": "9141c8c7ea6009be3bb7be3141cd62d8930ed976",
+      "source_range": "-0,0 -> 1,1209",
+      "source_sha256": "05f67cfe5f278592c5b6f0ba5fe42b7013df189088c496909dc1636ef684cc4b",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "15.007",
+      "action": "loaded 状態を実装する",
+      "acceptance": "保存済み cache の初回表示を区別",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-f47d65060ed7d7c51256",
+      "source_kind": "hunk",
+      "source_id": "01.002/000255",
+      "path": "app/core/gimpfilterlayer.cpp",
+      "source_blob": "9141c8c7ea6009be3bb7be3141cd62d8930ed976",
+      "source_range": "-0,0 -> 1,1209",
+      "source_sha256": "05f67cfe5f278592c5b6f0ba5fe42b7013df189088c496909dc1636ef684cc4b",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "15.008",
+      "action": "定義変更の世代を実装する",
+      "acceptance": "procedure/引数変更で結果を失効",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-6eda1d3971a0514781e6",
+      "source_kind": "hunk",
+      "source_id": "01.002/000255",
+      "path": "app/core/gimpfilterlayer.cpp",
+      "source_blob": "9141c8c7ea6009be3bb7be3141cd62d8930ed976",
+      "source_range": "-0,0 -> 1,1209",
+      "source_sha256": "05f67cfe5f278592c5b6f0ba5fe42b7013df189088c496909dc1636ef684cc4b",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "15.009",
+      "action": "依存構造の世代を実装する",
+      "acceptance": "並替え・移動で結果を失効",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-65b1c66f5cdad9ae3b6e",
+      "source_kind": "hunk",
+      "source_id": "01.002/000255",
+      "path": "app/core/gimpfilterlayer.cpp",
+      "source_blob": "9141c8c7ea6009be3bb7be3141cd62d8930ed976",
+      "source_range": "-0,0 -> 1,1209",
+      "source_sha256": "05f67cfe5f278592c5b6f0ba5fe42b7013df189088c496909dc1636ef684cc4b",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "15.010",
+      "action": "FilterLayer の複製を実装する",
+      "acceptance": "定義は複製し実行中 runner は共有しない",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-09e6b2e729f3e28bdb98",
+      "source_kind": "hunk",
+      "source_id": "01.002/000255",
+      "path": "app/core/gimpfilterlayer.cpp",
+      "source_blob": "9141c8c7ea6009be3bb7be3141cd62d8930ed976",
+      "source_range": "-0,0 -> 1,1209",
+      "source_sha256": "05f67cfe5f278592c5b6f0ba5fe42b7013df189088c496909dc1636ef684cc4b",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "15.011",
+      "action": "設定変更の Undo を実装する",
+      "acceptance": "旧定義と再評価状態を復元",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-3898595773a2e2a82e20",
+      "source_kind": "hunk",
+      "source_id": "01.002/000255",
+      "path": "app/core/gimpfilterlayer.cpp",
+      "source_blob": "9141c8c7ea6009be3bb7be3141cd62d8930ed976",
+      "source_range": "-0,0 -> 1,1209",
+      "source_sha256": "05f67cfe5f278592c5b6f0ba5fe42b7013df189088c496909dc1636ef684cc4b",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "15.012",
+      "action": "削除・復元の Undo を実装する",
+      "acceptance": "復元後に最新下層から評価",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-9af3743a7dd98fa4632c",
+      "source_kind": "hunk",
+      "source_id": "01.002/000255",
+      "path": "app/core/gimpfilterlayer.cpp",
+      "source_blob": "9141c8c7ea6009be3bb7be3141cd62d8930ed976",
+      "source_range": "-0,0 -> 1,1209",
+      "source_sha256": "05f67cfe5f278592c5b6f0ba5fe42b7013df189088c496909dc1636ef684cc4b",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "15.013",
+      "action": "未解決 procedure の保持を実装する",
+      "acceptance": "ファイルは開け、定義を再保存できる",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-7e54c3f3da8e24e1d242",
+      "source_kind": "hunk",
+      "source_id": "01.002/000255",
+      "path": "app/core/gimpfilterlayer.cpp",
+      "source_blob": "9141c8c7ea6009be3bb7be3141cd62d8930ed976",
+      "source_range": "-0,0 -> 1,1209",
+      "source_sha256": "05f67cfe5f278592c5b6f0ba5fe42b7013df189088c496909dc1636ef684cc4b",
+      "source_scope": "file-level declarations/content",
+      "phase": "verification",
+      "wbs_task": "15.014",
+      "action": "FilterLayer の構造試験を実行する",
+      "acceptance": "設定・属性・複製・Undo が一致",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-ebebf2fa0c7f190a6a32",
+      "source_kind": "hunk",
+      "source_id": "01.002/000256",
+      "path": "app/core/gimpfilterlayer.h",
+      "source_blob": "b4948258d35e802d9c5c51578a9b17c08e50d2a0",
+      "source_range": "-0,0 -> 1,90",
+      "source_sha256": "1c9978f2dfb6adfcb149c1acd408ed6e3c3eaa2061a6fc4d2d2f4f589ff53845",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "15.001",
+      "action": "procedure 定義の所有モデルを実装する",
+      "acceptance": "名前と型付き引数を独立に保持",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-2f913d2b9c81d8dfcd85",
+      "source_kind": "hunk",
+      "source_id": "01.002/000256",
+      "path": "app/core/gimpfilterlayer.h",
+      "source_blob": "b4948258d35e802d9c5c51578a9b17c08e50d2a0",
+      "source_range": "-0,0 -> 1,90",
+      "source_sha256": "1c9978f2dfb6adfcb149c1acd408ed6e3c3eaa2061a6fc4d2d2f4f589ff53845",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "15.001/gvalue-deep-copy",
+      "action": "FilterLayer の GValue 配列を深くコピーする",
+      "acceptance": "元 GValueArray と保存先を独立に解放し、getter の値を正しく返す",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-1359eb61450589fe79a6",
+      "source_kind": "hunk",
+      "source_id": "01.002/000256",
+      "path": "app/core/gimpfilterlayer.h",
+      "source_blob": "b4948258d35e802d9c5c51578a9b17c08e50d2a0",
+      "source_range": "-0,0 -> 1,90",
+      "source_sha256": "1c9978f2dfb6adfcb149c1acd408ed6e3c3eaa2061a6fc4d2d2f4f589ff53845",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "15.002",
+      "action": "引数の旧値と実行値を分離する",
+      "acceptance": "変換後も保存された元情報を失わない",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-e0858c235c0c341da66b",
+      "source_kind": "hunk",
+      "source_id": "01.002/000256",
+      "path": "app/core/gimpfilterlayer.h",
+      "source_blob": "b4948258d35e802d9c5c51578a9b17c08e50d2a0",
+      "source_range": "-0,0 -> 1,90",
+      "source_sha256": "1c9978f2dfb6adfcb149c1acd408ed6e3c3eaa2061a6fc4d2d2f4f589ff53845",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "15.003",
+      "action": "FilterLayer の property を接続する",
+      "acceptance": "設定の読取り・変更・通知が一経路",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-19dea1b667ee33adf3dd",
+      "source_kind": "hunk",
+      "source_id": "01.002/000256",
+      "path": "app/core/gimpfilterlayer.h",
+      "source_blob": "b4948258d35e802d9c5c51578a9b17c08e50d2a0",
+      "source_range": "-0,0 -> 1,90",
+      "source_sha256": "1c9978f2dfb6adfcb149c1acd408ed6e3c3eaa2061a6fc4d2d2f4f589ff53845",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "15.004",
+      "action": "処理対象の下層範囲を実装する",
+      "acceptance": "位置と階層に応じ旧範囲を選ぶ",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-f70146dfdb5f5931d3e7",
+      "source_kind": "hunk",
+      "source_id": "01.002/000256",
+      "path": "app/core/gimpfilterlayer.h",
+      "source_blob": "b4948258d35e802d9c5c51578a9b17c08e50d2a0",
+      "source_range": "-0,0 -> 1,90",
+      "source_sha256": "1c9978f2dfb6adfcb149c1acd408ed6e3c3eaa2061a6fc4d2d2f4f589ff53845",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "15.005",
+      "action": "位置・サイズ変更を処理する",
+      "acceptance": "入力と出力 buffer の座標が一致",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-1f8497d87ad580c18f47",
+      "source_kind": "hunk",
+      "source_id": "01.002/000256",
+      "path": "app/core/gimpfilterlayer.h",
+      "source_blob": "b4948258d35e802d9c5c51578a9b17c08e50d2a0",
+      "source_range": "-0,0 -> 1,90",
+      "source_sha256": "1c9978f2dfb6adfcb149c1acd408ed6e3c3eaa2061a6fc4d2d2f4f589ff53845",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "15.006",
+      "action": "マスク・opacity・mode を接続する",
+      "acceptance": "独自型でも通常属性が適用される",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-b26a14ccdf5418149676",
+      "source_kind": "hunk",
+      "source_id": "01.002/000256",
+      "path": "app/core/gimpfilterlayer.h",
+      "source_blob": "b4948258d35e802d9c5c51578a9b17c08e50d2a0",
+      "source_range": "-0,0 -> 1,90",
+      "source_sha256": "1c9978f2dfb6adfcb149c1acd408ed6e3c3eaa2061a6fc4d2d2f4f589ff53845",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "15.006/gegl-result-source",
+      "action": "FilterLayer の確定結果を GEGL source node へ供給する",
+      "acceptance": "未完成・旧世代の結果を見せず source 変更が投影を更新し operator 評価から runner を起動しない",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-1a4b9177e357010f91b9",
+      "source_kind": "hunk",
+      "source_id": "01.002/000256",
+      "path": "app/core/gimpfilterlayer.h",
+      "source_blob": "b4948258d35e802d9c5c51578a9b17c08e50d2a0",
+      "source_range": "-0,0 -> 1,90",
+      "source_sha256": "1c9978f2dfb6adfcb149c1acd408ed6e3c3eaa2061a6fc4d2d2f4f589ff53845",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "15.006/filter-pickable-opacity",
+      "action": "FilterLayer の不透明度照会を現行型へ接続する",
+      "acceptance": "旧 gint 返却のゼロ透明を現行 gdouble 契約で保ち、合成結果との矛盾を試験",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-bed4c3662e8f0e900a24",
+      "source_kind": "hunk",
+      "source_id": "01.002/000256",
+      "path": "app/core/gimpfilterlayer.h",
+      "source_blob": "b4948258d35e802d9c5c51578a9b17c08e50d2a0",
+      "source_range": "-0,0 -> 1,90",
+      "source_sha256": "1c9978f2dfb6adfcb149c1acd408ed6e3c3eaa2061a6fc4d2d2f4f589ff53845",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "15.006/filter-progress-start",
+      "action": "FilterLayer の progress 開始 callback を現行 ABI に合わせる",
+      "acceptance": "cancellable と message の新しい引数順を守り、進捗通知・取消しが逆転しない",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-4932b42d3d518837c365",
+      "source_kind": "hunk",
+      "source_id": "01.002/000256",
+      "path": "app/core/gimpfilterlayer.h",
+      "source_blob": "b4948258d35e802d9c5c51578a9b17c08e50d2a0",
+      "source_range": "-0,0 -> 1,90",
+      "source_sha256": "1c9978f2dfb6adfcb149c1acd408ed6e3c3eaa2061a6fc4d2d2f4f589ff53845",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "15.006/editability-contract",
+      "action": "FilterLayer の編集可否を現行ロック規約へ対応付ける",
+      "acceptance": "廃止された GimpItemClass.is_editable を仮定せず、定義編集と通常画素編集の権限を検証",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-6d7d30380c41df471066",
+      "source_kind": "hunk",
+      "source_id": "01.002/000256",
+      "path": "app/core/gimpfilterlayer.h",
+      "source_blob": "b4948258d35e802d9c5c51578a9b17c08e50d2a0",
+      "source_range": "-0,0 -> 1,90",
+      "source_sha256": "1c9978f2dfb6adfcb149c1acd408ed6e3c3eaa2061a6fc4d2d2f4f589ff53845",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "15.007",
+      "action": "loaded 状態を実装する",
+      "acceptance": "保存済み cache の初回表示を区別",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-064b255cca37ad4a0cd9",
+      "source_kind": "hunk",
+      "source_id": "01.002/000256",
+      "path": "app/core/gimpfilterlayer.h",
+      "source_blob": "b4948258d35e802d9c5c51578a9b17c08e50d2a0",
+      "source_range": "-0,0 -> 1,90",
+      "source_sha256": "1c9978f2dfb6adfcb149c1acd408ed6e3c3eaa2061a6fc4d2d2f4f589ff53845",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "15.008",
+      "action": "定義変更の世代を実装する",
+      "acceptance": "procedure/引数変更で結果を失効",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-c2ff93691be379199173",
+      "source_kind": "hunk",
+      "source_id": "01.002/000256",
+      "path": "app/core/gimpfilterlayer.h",
+      "source_blob": "b4948258d35e802d9c5c51578a9b17c08e50d2a0",
+      "source_range": "-0,0 -> 1,90",
+      "source_sha256": "1c9978f2dfb6adfcb149c1acd408ed6e3c3eaa2061a6fc4d2d2f4f589ff53845",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "15.009",
+      "action": "依存構造の世代を実装する",
+      "acceptance": "並替え・移動で結果を失効",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-88606ccaeecaa4666c5a",
+      "source_kind": "hunk",
+      "source_id": "01.002/000256",
+      "path": "app/core/gimpfilterlayer.h",
+      "source_blob": "b4948258d35e802d9c5c51578a9b17c08e50d2a0",
+      "source_range": "-0,0 -> 1,90",
+      "source_sha256": "1c9978f2dfb6adfcb149c1acd408ed6e3c3eaa2061a6fc4d2d2f4f589ff53845",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "15.010",
+      "action": "FilterLayer の複製を実装する",
+      "acceptance": "定義は複製し実行中 runner は共有しない",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-20d5d465d2b8d7e07ab1",
+      "source_kind": "hunk",
+      "source_id": "01.002/000256",
+      "path": "app/core/gimpfilterlayer.h",
+      "source_blob": "b4948258d35e802d9c5c51578a9b17c08e50d2a0",
+      "source_range": "-0,0 -> 1,90",
+      "source_sha256": "1c9978f2dfb6adfcb149c1acd408ed6e3c3eaa2061a6fc4d2d2f4f589ff53845",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "15.011",
+      "action": "設定変更の Undo を実装する",
+      "acceptance": "旧定義と再評価状態を復元",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-9c7f12f7d565ddfe88e5",
+      "source_kind": "hunk",
+      "source_id": "01.002/000256",
+      "path": "app/core/gimpfilterlayer.h",
+      "source_blob": "b4948258d35e802d9c5c51578a9b17c08e50d2a0",
+      "source_range": "-0,0 -> 1,90",
+      "source_sha256": "1c9978f2dfb6adfcb149c1acd408ed6e3c3eaa2061a6fc4d2d2f4f589ff53845",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "15.012",
+      "action": "削除・復元の Undo を実装する",
+      "acceptance": "復元後に最新下層から評価",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-3a2309a95398d8912d3e",
+      "source_kind": "hunk",
+      "source_id": "01.002/000256",
+      "path": "app/core/gimpfilterlayer.h",
+      "source_blob": "b4948258d35e802d9c5c51578a9b17c08e50d2a0",
+      "source_range": "-0,0 -> 1,90",
+      "source_sha256": "1c9978f2dfb6adfcb149c1acd408ed6e3c3eaa2061a6fc4d2d2f4f589ff53845",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "15.013",
+      "action": "未解決 procedure の保持を実装する",
+      "acceptance": "ファイルは開け、定義を再保存できる",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-5f963e2cf4e36537376f",
+      "source_kind": "hunk",
+      "source_id": "01.002/000256",
+      "path": "app/core/gimpfilterlayer.h",
+      "source_blob": "b4948258d35e802d9c5c51578a9b17c08e50d2a0",
+      "source_range": "-0,0 -> 1,90",
+      "source_sha256": "1c9978f2dfb6adfcb149c1acd408ed6e3c3eaa2061a6fc4d2d2f4f589ff53845",
+      "source_scope": "file-level declarations/content",
+      "phase": "verification",
+      "wbs_task": "15.014",
+      "action": "FilterLayer の構造試験を実行する",
+      "acceptance": "設定・属性・複製・Undo が一致",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-6e75c8ad7b63f02af7ed",
+      "source_kind": "hunk",
+      "source_id": "01.002/000338",
+      "path": "app/core/gimpimage-undo.c",
+      "source_blob": "db9dbeaf21b107e54c47bb6ce4a38e88cf51ff81",
+      "source_range": "-374,5 -> 374,8",
+      "source_sha256": "401bce8e1c213bfd85189683aaa272fcdc704cc23e1c5d7baa9f722e9463cad8",
+      "source_scope": "gimp_image_undo_push (GimpImage     *image,",
+      "phase": "implementation",
+      "wbs_task": "15.006/editability-contract",
+      "action": "FilterLayer の編集可否を現行ロック規約へ対応付ける",
+      "acceptance": "廃止された GimpItemClass.is_editable を仮定せず、定義編集と通常画素編集の権限を検証",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-986faf89d4feb279bdbb",
+      "source_kind": "hunk",
+      "source_id": "01.002/000339",
+      "path": "app/core/gimpimage-undo.c",
+      "source_blob": "db9dbeaf21b107e54c47bb6ce4a38e88cf51ff81",
+      "source_range": "-380 -> 382,0",
+      "source_sha256": "310f32cb1efa70de154145a26eda87e37b1dc81afd6a89ee712e6d9302304229",
+      "source_scope": "gimp_image_undo_push (GimpImage     *image,",
+      "phase": "implementation",
+      "wbs_task": "15.006/editability-contract",
+      "action": "FilterLayer の編集可否を現行ロック規約へ対応付ける",
+      "acceptance": "廃止された GimpItemClass.is_editable を仮定せず、定義編集と通常画素編集の権限を検証",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-b26dae909d24460d4d7a",
+      "source_kind": "hunk",
+      "source_id": "01.002/000340",
+      "path": "app/core/gimpimage-undo.c",
+      "source_blob": "db9dbeaf21b107e54c47bb6ce4a38e88cf51ff81",
+      "source_range": "-381,0 -> 384",
+      "source_sha256": "44715b14d3a3f24e6edd94a6ecef759cde76089de7c3bb134349ccdcdd3d53b5",
+      "source_scope": "gimp_image_undo_push (GimpImage     *image,",
+      "phase": "implementation",
+      "wbs_task": "15.006/editability-contract",
+      "action": "FilterLayer の編集可否を現行ロック規約へ対応付ける",
+      "acceptance": "廃止された GimpItemClass.is_editable を仮定せず、定義編集と通常画素編集の権限を検証",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-d5900726df3e7bcd42a2",
+      "source_kind": "hunk",
+      "source_id": "01.002/000341",
+      "path": "app/core/gimpimage-undo.c",
+      "source_blob": "db9dbeaf21b107e54c47bb6ce4a38e88cf51ff81",
+      "source_range": "-400,0 -> 404,12",
+      "source_sha256": "96d659193611d48d9735329115fc907004265274f27d82bd809deb061e640ba9",
+      "source_scope": "gimp_image_undo_push (GimpImage     *image,",
+      "phase": "implementation",
+      "wbs_task": "15.006/editability-contract",
+      "action": "FilterLayer の編集可否を現行ロック規約へ対応付ける",
+      "acceptance": "廃止された GimpItemClass.is_editable を仮定せず、定義編集と通常画素編集の権限を検証",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-2ce0d15c7a3ca5852245",
+      "source_kind": "hunk",
+      "source_id": "01.002/000354",
+      "path": "app/core/gimpitem.c",
+      "source_blob": "1b2af588f403e0d865e49fc40d9773d8f4bb7019",
+      "source_range": "-150,0 -> 151",
+      "source_sha256": "966c28347b15e6f1356174af53d88e56cfded66278b4487e7a93c7e168d7df33",
+      "source_scope": "static void       gimp_item_sync_offset_node        (GimpItem       *item);",
+      "phase": "implementation",
+      "wbs_task": "15.006/editability-contract",
+      "action": "FilterLayer の編集可否を現行ロック規約へ対応付ける",
+      "acceptance": "廃止された GimpItemClass.is_editable を仮定せず、定義編集と通常画素編集の権限を検証",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-293ac28d50649ad0935a",
+      "source_kind": "hunk",
+      "source_id": "01.002/000355",
+      "path": "app/core/gimpitem.c",
+      "source_blob": "1b2af588f403e0d865e49fc40d9773d8f4bb7019",
+      "source_range": "-242,0 -> 244",
+      "source_sha256": "b7aec831ffb146d3a20fb894894252a3916425fa4d8a84d706862d9184c2eb26",
+      "source_scope": "gimp_item_class_init (GimpItemClass *klass)",
+      "phase": "implementation",
+      "wbs_task": "15.006/editability-contract",
+      "action": "FilterLayer の編集可否を現行ロック規約へ対応付ける",
+      "acceptance": "廃止された GimpItemClass.is_editable を仮定せず、定義編集と通常画素編集の権限を検証",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-e99e91dd48fe00c6bfa3",
+      "source_kind": "hunk",
+      "source_id": "01.002/000356",
+      "path": "app/core/gimpitem.c",
+      "source_blob": "1b2af588f403e0d865e49fc40d9773d8f4bb7019",
+      "source_range": "-641,0 -> 644,6",
+      "source_sha256": "5a99f34e5e1efebfa84fa721d4c324443cb4c1d25e544c6ab50c850627f6eb96",
+      "source_scope": "gimp_item_sync_offset_node (GimpItem *item)",
+      "phase": "implementation",
+      "wbs_task": "15.006/editability-contract",
+      "action": "FilterLayer の編集可否を現行ロック規約へ対応付ける",
+      "acceptance": "廃止された GimpItemClass.is_editable を仮定せず、定義編集と通常画素編集の権限を検証",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-8ecc5f3ba9fde24e001c",
+      "source_kind": "hunk",
+      "source_id": "01.002/000357",
+      "path": "app/core/gimpitem.c",
+      "source_blob": "1b2af588f403e0d865e49fc40d9773d8f4bb7019",
+      "source_range": "-2213,0 -> 2222,12",
+      "source_sha256": "987041932df869604eb6c427941950b913eb3627e8cd16499a25c5b95ae70ab5",
+      "source_scope": "gimp_item_is_in_set (GimpItem    *item,",
+      "phase": "implementation",
+      "wbs_task": "15.006/editability-contract",
+      "action": "FilterLayer の編集可否を現行ロック規約へ対応付ける",
+      "acceptance": "廃止された GimpItemClass.is_editable を仮定せず、定義編集と通常画素編集の権限を検証",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-c029d9d7de3f243ab3e5",
+      "source_kind": "hunk",
+      "source_id": "01.002/000358",
+      "path": "app/core/gimpitem.h",
+      "source_blob": "d500addc99f699091a8604410d8f7a7b77ed1853",
+      "source_range": "-111,0 -> 112",
+      "source_sha256": "c08238aa65afbaec91bd966974a4882bc2a0fd534070d7ecd2442ce5c807dcf6",
+      "source_scope": "struct _GimpItemClass",
+      "phase": "implementation",
+      "wbs_task": "15.006/editability-contract",
+      "action": "FilterLayer の編集可否を現行ロック規約へ対応付ける",
+      "acceptance": "廃止された GimpItemClass.is_editable を仮定せず、定義編集と通常画素編集の権限を検証",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-19048541dc7c33ec68e4",
+      "source_kind": "hunk",
+      "source_id": "01.002/000359",
+      "path": "app/core/gimpitem.h",
+      "source_blob": "d500addc99f699091a8604410d8f7a7b77ed1853",
+      "source_range": "-321,0 -> 323,8",
+      "source_sha256": "b98723e0185a10c3b4e5d876700b0e83c9209d2f566daa464d7856ca35454d83",
+      "source_scope": "gboolean        gimp_item_is_in_set          (GimpItem           *item,",
+      "phase": "implementation",
+      "wbs_task": "15.006/editability-contract",
+      "action": "FilterLayer の編集可否を現行ロック規約へ対応付ける",
+      "acceptance": "廃止された GimpItemClass.is_editable を仮定せず、定義編集と通常画素編集の権限を検証",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-c9c7dd828befdf876465",
+      "source_kind": "hunk",
+      "source_id": "01.002/001394",
+      "path": "app/tools/gimppainttool.c",
+      "source_blob": "e8a79052efe0fc0fb9306c4f226ee4f43ccf58d7",
+      "source_range": "-256 -> 256",
+      "source_sha256": "54c8bdd7db9c261e386387ba9e53560b618617a37c0f7a67756f46098f8edb13",
+      "source_scope": "gimp_paint_tool_button_press (GimpTool            *tool,",
+      "phase": "implementation",
+      "wbs_task": "15.006/editability-contract",
+      "action": "FilterLayer の編集可否を現行ロック規約へ対応付ける",
+      "acceptance": "廃止された GimpItemClass.is_editable を仮定せず、定義編集と通常画素編集の権限を検証",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-a1dfbf6b3f99fac942f7",
+      "source_kind": "hunk",
+      "source_id": "01.002/001395",
+      "path": "app/tools/gimppainttool.c",
+      "source_blob": "e8a79052efe0fc0fb9306c4f226ee4f43ccf58d7",
+      "source_range": "-527 -> 527",
+      "source_sha256": "f818c9858cfaf8d9215fbd7e10d0849ecb6cc1e5932abb075d35dac8e8cced5b",
+      "source_scope": "gimp_paint_tool_cursor_update (GimpTool         *tool,",
+      "phase": "implementation",
+      "wbs_task": "15.006/editability-contract",
+      "action": "FilterLayer の編集可否を現行ロック規約へ対応付ける",
+      "acceptance": "廃止された GimpItemClass.is_editable を仮定せず、定義編集と通常画素編集の権限を検証",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-b194f4079860962b8512",
+      "source_kind": "hunk",
+      "source_id": "01.002/001641",
+      "path": "app/widgets/gimplayerpopup.cpp",
+      "source_blob": "75ef0f1afcd688e199b58891ef7a813688e678f8",
+      "source_range": "-0,0 -> 1,1154",
+      "source_sha256": "fc16b9fb5b707263332725327dfc273944b9a301085a339a9f5ddecbcfb10396",
+      "source_scope": "file-level declarations/content",
+      "phase": "verification",
+      "wbs_task": "15.014",
+      "action": "FilterLayer の構造試験を実行する",
+      "acceptance": "設定・属性・複製・Undo が一致",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-37d4b6c5cf5fa0d7e30d",
+      "source_kind": "hunk",
+      "source_id": "01.002/001642",
+      "path": "app/widgets/gimplayerpopup.h",
+      "source_blob": "cc18b9429ac954d569984477d119dc2a8060ac9d",
+      "source_range": "-0,0 -> 1,20",
+      "source_sha256": "dc09a9e4a8af74846f99efba51cac695342d5663c809a9addfbe414a7ef82b82",
+      "source_scope": "file-level declarations/content",
+      "phase": "verification",
+      "wbs_task": "15.014",
+      "action": "FilterLayer の構造試験を実行する",
+      "acceptance": "設定・属性・複製・Undo が一致",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    }
+  ],
+  "source_resolutions": [
+    {
+      "source_id": "01.002/000255",
+      "path": "app/core/gimpfilterlayer.cpp",
+      "source_blob": "9141c8c7ea6009be3bb7be3141cd62d8930ed976",
+      "source_range": "-0,0 -> 1,1209",
+      "source_sha256": "05f67cfe5f278592c5b6f0ba5fe42b7013df189088c496909dc1636ef684cc4b",
+      "source_scope": "file-level declarations/content",
+      "owners": [
+        "15.001",
+        "15.001/gvalue-deep-copy",
+        "15.002",
+        "15.003",
+        "15.004",
+        "15.005",
+        "15.006",
+        "15.006/editability-contract",
+        "15.006/filter-pickable-opacity",
+        "15.006/filter-progress-start",
+        "15.006/gegl-result-source",
+        "15.007",
+        "15.008",
+        "15.009",
+        "15.010",
+        "15.011",
+        "15.012",
+        "15.013",
+        "15.014"
+      ],
+      "current_mapping": [
+        {
+          "path": "app/core/gimpfilterlayer.cpp",
+          "anchor": "FilterSlot/FilterImpl: saved definition, scheduler, completed cache, native GObject properties and definition Undo",
+          "committed_sha256": "1b9bc8dd7dcc92473d7ce2db046ba0da705325e1f6cb7a163ea0e68a0e5e6d75"
+        },
+        {
+          "path": "app/core/gimpfilterlayer.h",
+          "anchor": "Native FilterLayer C layout, typed model/argument/progress APIs",
+          "committed_sha256": "e228c7b5f5560fe3cf006f946435b8c298d00dcdc53bb41da0b622393d626832"
+        },
+        {
+          "path": "app/core/gimpfilterlayer-arguments.hpp",
+          "anchor": "FilterArguments persistent typed scalar ownership and weak object descriptors",
+          "committed_sha256": "940a0296d1adb1f063b323a0fb092c2abf749bda4db81e02f84f7d9291f48ecc"
+        },
+        {
+          "path": "app/core/gimpfilterlayer-handle.hpp",
+          "anchor": "Typed named C++ owning entry delegation",
+          "committed_sha256": "61e331b2799335daed936b6c38dd3533eb97cb8b31f6a31fc1538ae80515d3a0"
+        }
+      ],
+      "evidence": [
+        "migration/contracts/filter-layer-port.md",
+        "migration/contracts/filter-native-execution.md",
+        "migration/tests/adapter-removal/filter-entry-handles-08018/",
+        "migration/tests/filter-editability-contract/",
+        "migration/tests/filter-pickable-contract/"
+      ],
+      "status": "source mapped; original prerequisites and evidence scopes retained",
+      "rationale": "Two full old source/header hunks span19 original tasks, not closed by one kernel/test. Per-task index separates ownership, properties, topology, coordinates, attributes, generation, clone/Undo, opaque XCF and UI duties. Existing historical Edge evidence remains immutable; no new old Edge execution."
+    },
+    {
+      "source_id": "01.002/000256",
+      "path": "app/core/gimpfilterlayer.h",
+      "source_blob": "b4948258d35e802d9c5c51578a9b17c08e50d2a0",
+      "source_range": "-0,0 -> 1,90",
+      "source_sha256": "1c9978f2dfb6adfcb149c1acd408ed6e3c3eaa2061a6fc4d2d2f4f589ff53845",
+      "source_scope": "file-level declarations/content",
+      "owners": [
+        "15.001",
+        "15.001/gvalue-deep-copy",
+        "15.002",
+        "15.003",
+        "15.004",
+        "15.005",
+        "15.006",
+        "15.006/editability-contract",
+        "15.006/filter-pickable-opacity",
+        "15.006/filter-progress-start",
+        "15.006/gegl-result-source",
+        "15.007",
+        "15.008",
+        "15.009",
+        "15.010",
+        "15.011",
+        "15.012",
+        "15.013",
+        "15.014"
+      ],
+      "current_mapping": [
+        {
+          "path": "app/core/gimpfilterlayer.cpp",
+          "anchor": "FilterSlot/FilterImpl: saved definition, scheduler, completed cache, native GObject properties and definition Undo",
+          "committed_sha256": "1b9bc8dd7dcc92473d7ce2db046ba0da705325e1f6cb7a163ea0e68a0e5e6d75"
+        },
+        {
+          "path": "app/core/gimpfilterlayer.h",
+          "anchor": "Native FilterLayer C layout, typed model/argument/progress APIs",
+          "committed_sha256": "e228c7b5f5560fe3cf006f946435b8c298d00dcdc53bb41da0b622393d626832"
+        },
+        {
+          "path": "app/core/gimpfilterlayer-arguments.hpp",
+          "anchor": "FilterArguments persistent typed scalar ownership and weak object descriptors",
+          "committed_sha256": "940a0296d1adb1f063b323a0fb092c2abf749bda4db81e02f84f7d9291f48ecc"
+        },
+        {
+          "path": "app/core/gimpfilterlayer-handle.hpp",
+          "anchor": "Typed named C++ owning entry delegation",
+          "committed_sha256": "61e331b2799335daed936b6c38dd3533eb97cb8b31f6a31fc1538ae80515d3a0"
+        }
+      ],
+      "evidence": [
+        "migration/contracts/filter-layer-port.md",
+        "migration/contracts/filter-native-execution.md",
+        "migration/tests/adapter-removal/filter-entry-handles-08018/",
+        "migration/tests/filter-editability-contract/",
+        "migration/tests/filter-pickable-contract/"
+      ],
+      "status": "source mapped; original prerequisites and evidence scopes retained",
+      "rationale": "Two full old source/header hunks span19 original tasks, not closed by one kernel/test. Per-task index separates ownership, properties, topology, coordinates, attributes, generation, clone/Undo, opaque XCF and UI duties. Existing historical Edge evidence remains immutable; no new old Edge execution."
+    },
+    {
+      "source_id": "01.002/000338",
+      "path": "app/core/gimpimage-undo.c",
+      "source_blob": "db9dbeaf21b107e54c47bb6ce4a38e88cf51ff81",
+      "source_range": "-374,5 -> 374,8",
+      "source_sha256": "401bce8e1c213bfd85189683aaa272fcdc704cc23e1c5d7baa9f722e9463cad8",
+      "source_scope": "gimp_image_undo_push (GimpImage     *image,",
+      "owners": [
+        "15.006/editability-contract"
+      ],
+      "current_mapping": [
+        {
+          "path": "app/core/gimpimage-undo.c",
+          "anchor": "generic retained-property preflight and prepared Undo Clone/Filter derived-cache predicates",
+          "committed_sha256": "1562e79e04ce658504e51aefea838859c2d316f17c67b6b0e8367248a6162088"
+        }
+      ],
+      "evidence": [
+        "migration/tests/filter-editability-contract/"
+      ],
+      "status": "source mapped; original prerequisites and evidence scopes retained",
+      "rationale": "2fbd2e72c5 adds only Filter alongside Clone.10 rejection contexts preserve dirty/redo and prepared ownership; normal locked-layer controls and nonDrawable definition Undo stay allowed. Old frozen uninitialized-pointer defect not copied."
+    },
+    {
+      "source_id": "01.002/000339",
+      "path": "app/core/gimpimage-undo.c",
+      "source_blob": "db9dbeaf21b107e54c47bb6ce4a38e88cf51ff81",
+      "source_range": "-380 -> 382,0",
+      "source_sha256": "310f32cb1efa70de154145a26eda87e37b1dc81afd6a89ee712e6d9302304229",
+      "source_scope": "gimp_image_undo_push (GimpImage     *image,",
+      "owners": [
+        "15.006/editability-contract"
+      ],
+      "current_mapping": [
+        {
+          "path": "app/core/gimpimage-undo.c",
+          "anchor": "generic retained-property preflight and prepared Undo Clone/Filter derived-cache predicates",
+          "committed_sha256": "1562e79e04ce658504e51aefea838859c2d316f17c67b6b0e8367248a6162088"
+        }
+      ],
+      "evidence": [
+        "migration/tests/filter-editability-contract/"
+      ],
+      "status": "source mapped; original prerequisites and evidence scopes retained",
+      "rationale": "2fbd2e72c5 adds only Filter alongside Clone.10 rejection contexts preserve dirty/redo and prepared ownership; normal locked-layer controls and nonDrawable definition Undo stay allowed. Old frozen uninitialized-pointer defect not copied."
+    },
+    {
+      "source_id": "01.002/000340",
+      "path": "app/core/gimpimage-undo.c",
+      "source_blob": "db9dbeaf21b107e54c47bb6ce4a38e88cf51ff81",
+      "source_range": "-381,0 -> 384",
+      "source_sha256": "44715b14d3a3f24e6edd94a6ecef759cde76089de7c3bb134349ccdcdd3d53b5",
+      "source_scope": "gimp_image_undo_push (GimpImage     *image,",
+      "owners": [
+        "15.006/editability-contract"
+      ],
+      "current_mapping": [
+        {
+          "path": "app/core/gimpimage-undo.c",
+          "anchor": "generic retained-property preflight and prepared Undo Clone/Filter derived-cache predicates",
+          "committed_sha256": "1562e79e04ce658504e51aefea838859c2d316f17c67b6b0e8367248a6162088"
+        }
+      ],
+      "evidence": [
+        "migration/tests/filter-editability-contract/"
+      ],
+      "status": "source mapped; original prerequisites and evidence scopes retained",
+      "rationale": "2fbd2e72c5 adds only Filter alongside Clone.10 rejection contexts preserve dirty/redo and prepared ownership; normal locked-layer controls and nonDrawable definition Undo stay allowed. Old frozen uninitialized-pointer defect not copied."
+    },
+    {
+      "source_id": "01.002/000341",
+      "path": "app/core/gimpimage-undo.c",
+      "source_blob": "db9dbeaf21b107e54c47bb6ce4a38e88cf51ff81",
+      "source_range": "-400,0 -> 404,12",
+      "source_sha256": "96d659193611d48d9735329115fc907004265274f27d82bd809deb061e640ba9",
+      "source_scope": "gimp_image_undo_push (GimpImage     *image,",
+      "owners": [
+        "15.006/editability-contract"
+      ],
+      "current_mapping": [
+        {
+          "path": "app/core/gimpimage-undo.c",
+          "anchor": "generic retained-property preflight and prepared Undo Clone/Filter derived-cache predicates",
+          "committed_sha256": "1562e79e04ce658504e51aefea838859c2d316f17c67b6b0e8367248a6162088"
+        }
+      ],
+      "evidence": [
+        "migration/tests/filter-editability-contract/"
+      ],
+      "status": "source mapped; original prerequisites and evidence scopes retained",
+      "rationale": "2fbd2e72c5 adds only Filter alongside Clone.10 rejection contexts preserve dirty/redo and prepared ownership; normal locked-layer controls and nonDrawable definition Undo stay allowed. Old frozen uninitialized-pointer defect not copied."
+    },
+    {
+      "source_id": "01.002/000354",
+      "path": "app/core/gimpitem.c",
+      "source_blob": "1b2af588f403e0d865e49fc40d9773d8f4bb7019",
+      "source_range": "-150,0 -> 151",
+      "source_sha256": "966c28347b15e6f1356174af53d88e56cfded66278b4487e7a93c7e168d7df33",
+      "source_scope": "static void       gimp_item_sync_offset_node        (GimpItem       *item);",
+      "owners": [
+        "15.006/editability-contract"
+      ],
+      "current_mapping": [
+        {
+          "path": "app/core/gimpitem.c",
+          "anchor": "native content/position lock queries",
+          "committed_sha256": "e8c047589f9aa8b201d12b72678e528082034126d0becadd5b5a4180172c924e"
+        },
+        {
+          "path": "app/core/gimpitem.h",
+          "anchor": "native GimpItemClass.is_content_locked contract",
+          "committed_sha256": "378ba81dc8f38e3a02ffd6bd4cdf9b380bb0d6f81916d32847b9cc6677383144"
+        },
+        {
+          "path": "app/core/gimpfilterlayer.cpp",
+          "anchor": "content_locked callback and definition-edit setter",
+          "committed_sha256": "1b9bc8dd7dcc92473d7ce2db046ba0da705325e1f6cb7a163ea0e68a0e5e6d75"
+        }
+      ],
+      "evidence": [
+        "migration/tests/filter-editability-contract/",
+        "migration/inventory/gimp3-layer-vfunc-review.tsv"
+      ],
+      "status": "source mapped; original prerequisites and evidence scopes retained",
+      "rationale": "Removed is_editable is not revived. Filter immutable derived pixels are distinct from editable definition and ordinary user-content locks."
+    },
+    {
+      "source_id": "01.002/000355",
+      "path": "app/core/gimpitem.c",
+      "source_blob": "1b2af588f403e0d865e49fc40d9773d8f4bb7019",
+      "source_range": "-242,0 -> 244",
+      "source_sha256": "b7aec831ffb146d3a20fb894894252a3916425fa4d8a84d706862d9184c2eb26",
+      "source_scope": "gimp_item_class_init (GimpItemClass *klass)",
+      "owners": [
+        "15.006/editability-contract"
+      ],
+      "current_mapping": [
+        {
+          "path": "app/core/gimpitem.c",
+          "anchor": "native content/position lock queries",
+          "committed_sha256": "e8c047589f9aa8b201d12b72678e528082034126d0becadd5b5a4180172c924e"
+        },
+        {
+          "path": "app/core/gimpitem.h",
+          "anchor": "native GimpItemClass.is_content_locked contract",
+          "committed_sha256": "378ba81dc8f38e3a02ffd6bd4cdf9b380bb0d6f81916d32847b9cc6677383144"
+        },
+        {
+          "path": "app/core/gimpfilterlayer.cpp",
+          "anchor": "content_locked callback and definition-edit setter",
+          "committed_sha256": "1b9bc8dd7dcc92473d7ce2db046ba0da705325e1f6cb7a163ea0e68a0e5e6d75"
+        }
+      ],
+      "evidence": [
+        "migration/tests/filter-editability-contract/",
+        "migration/inventory/gimp3-layer-vfunc-review.tsv"
+      ],
+      "status": "source mapped; original prerequisites and evidence scopes retained",
+      "rationale": "Removed is_editable is not revived. Filter immutable derived pixels are distinct from editable definition and ordinary user-content locks."
+    },
+    {
+      "source_id": "01.002/000356",
+      "path": "app/core/gimpitem.c",
+      "source_blob": "1b2af588f403e0d865e49fc40d9773d8f4bb7019",
+      "source_range": "-641,0 -> 644,6",
+      "source_sha256": "5a99f34e5e1efebfa84fa721d4c324443cb4c1d25e544c6ab50c850627f6eb96",
+      "source_scope": "gimp_item_sync_offset_node (GimpItem *item)",
+      "owners": [
+        "15.006/editability-contract"
+      ],
+      "current_mapping": [
+        {
+          "path": "app/core/gimpitem.c",
+          "anchor": "native content/position lock queries",
+          "committed_sha256": "e8c047589f9aa8b201d12b72678e528082034126d0becadd5b5a4180172c924e"
+        },
+        {
+          "path": "app/core/gimpitem.h",
+          "anchor": "native GimpItemClass.is_content_locked contract",
+          "committed_sha256": "378ba81dc8f38e3a02ffd6bd4cdf9b380bb0d6f81916d32847b9cc6677383144"
+        },
+        {
+          "path": "app/core/gimpfilterlayer.cpp",
+          "anchor": "content_locked callback and definition-edit setter",
+          "committed_sha256": "1b9bc8dd7dcc92473d7ce2db046ba0da705325e1f6cb7a163ea0e68a0e5e6d75"
+        }
+      ],
+      "evidence": [
+        "migration/tests/filter-editability-contract/",
+        "migration/inventory/gimp3-layer-vfunc-review.tsv"
+      ],
+      "status": "source mapped; original prerequisites and evidence scopes retained",
+      "rationale": "Removed is_editable is not revived. Filter immutable derived pixels are distinct from editable definition and ordinary user-content locks."
+    },
+    {
+      "source_id": "01.002/000357",
+      "path": "app/core/gimpitem.c",
+      "source_blob": "1b2af588f403e0d865e49fc40d9773d8f4bb7019",
+      "source_range": "-2213,0 -> 2222,12",
+      "source_sha256": "987041932df869604eb6c427941950b913eb3627e8cd16499a25c5b95ae70ab5",
+      "source_scope": "gimp_item_is_in_set (GimpItem    *item,",
+      "owners": [
+        "15.006/editability-contract"
+      ],
+      "current_mapping": [
+        {
+          "path": "app/core/gimpitem.c",
+          "anchor": "native content/position lock queries",
+          "committed_sha256": "e8c047589f9aa8b201d12b72678e528082034126d0becadd5b5a4180172c924e"
+        },
+        {
+          "path": "app/core/gimpitem.h",
+          "anchor": "native GimpItemClass.is_content_locked contract",
+          "committed_sha256": "378ba81dc8f38e3a02ffd6bd4cdf9b380bb0d6f81916d32847b9cc6677383144"
+        },
+        {
+          "path": "app/core/gimpfilterlayer.cpp",
+          "anchor": "content_locked callback and definition-edit setter",
+          "committed_sha256": "1b9bc8dd7dcc92473d7ce2db046ba0da705325e1f6cb7a163ea0e68a0e5e6d75"
+        }
+      ],
+      "evidence": [
+        "migration/tests/filter-editability-contract/",
+        "migration/inventory/gimp3-layer-vfunc-review.tsv"
+      ],
+      "status": "source mapped; original prerequisites and evidence scopes retained",
+      "rationale": "Removed is_editable is not revived. Filter immutable derived pixels are distinct from editable definition and ordinary user-content locks."
+    },
+    {
+      "source_id": "01.002/000358",
+      "path": "app/core/gimpitem.h",
+      "source_blob": "d500addc99f699091a8604410d8f7a7b77ed1853",
+      "source_range": "-111,0 -> 112",
+      "source_sha256": "c08238aa65afbaec91bd966974a4882bc2a0fd534070d7ecd2442ce5c807dcf6",
+      "source_scope": "struct _GimpItemClass",
+      "owners": [
+        "15.006/editability-contract"
+      ],
+      "current_mapping": [
+        {
+          "path": "app/core/gimpitem.c",
+          "anchor": "native content/position lock queries",
+          "committed_sha256": "e8c047589f9aa8b201d12b72678e528082034126d0becadd5b5a4180172c924e"
+        },
+        {
+          "path": "app/core/gimpitem.h",
+          "anchor": "native GimpItemClass.is_content_locked contract",
+          "committed_sha256": "378ba81dc8f38e3a02ffd6bd4cdf9b380bb0d6f81916d32847b9cc6677383144"
+        },
+        {
+          "path": "app/core/gimpfilterlayer.cpp",
+          "anchor": "content_locked callback and definition-edit setter",
+          "committed_sha256": "1b9bc8dd7dcc92473d7ce2db046ba0da705325e1f6cb7a163ea0e68a0e5e6d75"
+        }
+      ],
+      "evidence": [
+        "migration/tests/filter-editability-contract/",
+        "migration/inventory/gimp3-layer-vfunc-review.tsv"
+      ],
+      "status": "source mapped; original prerequisites and evidence scopes retained",
+      "rationale": "Removed is_editable is not revived. Filter immutable derived pixels are distinct from editable definition and ordinary user-content locks."
+    },
+    {
+      "source_id": "01.002/000359",
+      "path": "app/core/gimpitem.h",
+      "source_blob": "d500addc99f699091a8604410d8f7a7b77ed1853",
+      "source_range": "-321,0 -> 323,8",
+      "source_sha256": "b98723e0185a10c3b4e5d876700b0e83c9209d2f566daa464d7856ca35454d83",
+      "source_scope": "gboolean        gimp_item_is_in_set          (GimpItem           *item,",
+      "owners": [
+        "15.006/editability-contract"
+      ],
+      "current_mapping": [
+        {
+          "path": "app/core/gimpitem.c",
+          "anchor": "native content/position lock queries",
+          "committed_sha256": "e8c047589f9aa8b201d12b72678e528082034126d0becadd5b5a4180172c924e"
+        },
+        {
+          "path": "app/core/gimpitem.h",
+          "anchor": "native GimpItemClass.is_content_locked contract",
+          "committed_sha256": "378ba81dc8f38e3a02ffd6bd4cdf9b380bb0d6f81916d32847b9cc6677383144"
+        },
+        {
+          "path": "app/core/gimpfilterlayer.cpp",
+          "anchor": "content_locked callback and definition-edit setter",
+          "committed_sha256": "1b9bc8dd7dcc92473d7ce2db046ba0da705325e1f6cb7a163ea0e68a0e5e6d75"
+        }
+      ],
+      "evidence": [
+        "migration/tests/filter-editability-contract/",
+        "migration/inventory/gimp3-layer-vfunc-review.tsv"
+      ],
+      "status": "source mapped; original prerequisites and evidence scopes retained",
+      "rationale": "Removed is_editable is not revived. Filter immutable derived pixels are distinct from editable definition and ordinary user-content locks."
+    },
+    {
+      "source_id": "01.002/001394",
+      "path": "app/tools/gimppainttool.c",
+      "source_blob": "e8a79052efe0fc0fb9306c4f226ee4f43ccf58d7",
+      "source_range": "-256 -> 256",
+      "source_sha256": "54c8bdd7db9c261e386387ba9e53560b618617a37c0f7a67756f46098f8edb13",
+      "source_scope": "gimp_paint_tool_button_press (GimpTool            *tool,",
+      "owners": [
+        "15.006/editability-contract"
+      ],
+      "current_mapping": [
+        {
+          "path": "app/tools/gimppainttool.c",
+          "anchor": "gimp_paint_tool_button_press and cursor_update native content-lock checks",
+          "committed_sha256": "718529f24de3816e14170ef202ad87e08cca915f1f4463e428ab4e6a14f62089"
+        }
+      ],
+      "evidence": [
+        "migration/tests/filter-editability-contract/"
+      ],
+      "status": "source mapped; original prerequisites and evidence scopes retained",
+      "rationale": "Frontend source mapping plus native permission test; not paint pointer-event or GUI evidence."
+    },
+    {
+      "source_id": "01.002/001395",
+      "path": "app/tools/gimppainttool.c",
+      "source_blob": "e8a79052efe0fc0fb9306c4f226ee4f43ccf58d7",
+      "source_range": "-527 -> 527",
+      "source_sha256": "f818c9858cfaf8d9215fbd7e10d0849ecb6cc1e5932abb075d35dac8e8cced5b",
+      "source_scope": "gimp_paint_tool_cursor_update (GimpTool         *tool,",
+      "owners": [
+        "15.006/editability-contract"
+      ],
+      "current_mapping": [
+        {
+          "path": "app/tools/gimppainttool.c",
+          "anchor": "gimp_paint_tool_button_press and cursor_update native content-lock checks",
+          "committed_sha256": "718529f24de3816e14170ef202ad87e08cca915f1f4463e428ab4e6a14f62089"
+        }
+      ],
+      "evidence": [
+        "migration/tests/filter-editability-contract/"
+      ],
+      "status": "source mapped; original prerequisites and evidence scopes retained",
+      "rationale": "Frontend source mapping plus native permission test; not paint pointer-event or GUI evidence."
+    },
+    {
+      "source_id": "01.002/001641",
+      "path": "app/widgets/gimplayerpopup.cpp",
+      "source_blob": "75ef0f1afcd688e199b58891ef7a813688e678f8",
+      "source_range": "-0,0 -> 1,1154",
+      "source_sha256": "fc16b9fb5b707263332725327dfc273944b9a301085a339a9f5ddecbcfb10396",
+      "source_scope": "file-level declarations/content",
+      "owners": [
+        "13.009",
+        "15.014",
+        "29.006",
+        "29.006/menu-borrowed-reference",
+        "29.006/popover-handler-teardown",
+        "29.006/proc-args-owner",
+        "30.001/isolated-filter-editors",
+        "30.001/parameter-schema-editor"
+      ],
+      "current_mapping": [
+        {
+          "path": "app/dialogs/painter-layer-dialog.cpp",
+          "anchor": "native custom layer definition dialogs, schema-backed parameter controls, saved-definition preservation",
+          "committed_sha256": "572e96bbdbe28004c3445c8e0c8207d977bf15f821553e8aad3a9022505386db"
+        },
+        {
+          "path": "app/actions/layers-actions.c",
+          "anchor": "native custom Clone/Filter create/edit actions",
+          "committed_sha256": "2b7d35647209755248b7c38979b0e78202b1ad0ba3b54a3c760f95a59ab88fc0"
+        },
+        {
+          "path": "app/actions/layers-commands.c",
+          "anchor": "native actions route to custom layer definitions",
+          "committed_sha256": "99031ad4e7a9de4cb2de9f7de9e66176b7f23d239a5e3ff88c33e9e1b4dd8b44"
+        }
+      ],
+      "evidence": [
+        "migration/contracts/painter-layer-ui.md",
+        "migration/contracts/filter-isolated-editors.md",
+        "migration/contracts/filter-parameter-editor.md",
+        "migration/contracts/layer-popup-reentry.md"
+      ],
+      "status": "full popup source cross-ownership retained, not closed by model tests",
+      "rationale": "Entire1154-line cpp and20-line header remain represented: procedure list/admission, parameter widgets, ordinary mode/opacity/alpha controls and popup/layer actions. Native dialog adapter is not wholesale old popup compatibility. Shared popup lifetime hold remains separate; no paused candidate used. Known unsupported arbitrary procedures remain explicit rather than silently accepted."
+    },
+    {
+      "source_id": "01.002/001642",
+      "path": "app/widgets/gimplayerpopup.h",
+      "source_blob": "cc18b9429ac954d569984477d119dc2a8060ac9d",
+      "source_range": "-0,0 -> 1,20",
+      "source_sha256": "dc09a9e4a8af74846f99efba51cac695342d5663c809a9addfbe414a7ef82b82",
+      "source_scope": "file-level declarations/content",
+      "owners": [
+        "13.009",
+        "15.014",
+        "29.006",
+        "29.006/menu-borrowed-reference",
+        "29.006/popover-handler-teardown",
+        "29.006/proc-args-owner",
+        "30.001/isolated-filter-editors",
+        "30.001/parameter-schema-editor"
+      ],
+      "current_mapping": [
+        {
+          "path": "app/dialogs/painter-layer-dialog.cpp",
+          "anchor": "native custom layer definition dialogs, schema-backed parameter controls, saved-definition preservation",
+          "committed_sha256": "572e96bbdbe28004c3445c8e0c8207d977bf15f821553e8aad3a9022505386db"
+        },
+        {
+          "path": "app/actions/layers-actions.c",
+          "anchor": "native custom Clone/Filter create/edit actions",
+          "committed_sha256": "2b7d35647209755248b7c38979b0e78202b1ad0ba3b54a3c760f95a59ab88fc0"
+        },
+        {
+          "path": "app/actions/layers-commands.c",
+          "anchor": "native actions route to custom layer definitions",
+          "committed_sha256": "99031ad4e7a9de4cb2de9f7de9e66176b7f23d239a5e3ff88c33e9e1b4dd8b44"
+        }
+      ],
+      "evidence": [
+        "migration/contracts/painter-layer-ui.md",
+        "migration/contracts/filter-isolated-editors.md",
+        "migration/contracts/filter-parameter-editor.md",
+        "migration/contracts/layer-popup-reentry.md"
+      ],
+      "status": "full popup source cross-ownership retained, not closed by model tests",
+      "rationale": "Entire1154-line cpp and20-line header remain represented: procedure list/admission, parameter widgets, ordinary mode/opacity/alpha controls and popup/layer actions. Native dialog adapter is not wholesale old popup compatibility. Shared popup lifetime hold remains separate; no paused candidate used. Known unsupported arbitrary procedures remain explicit rather than silently accepted."
+    }
+  ],
+  "per_task_artifact_index": {
+    "15.001": {
+      "original_action": "procedure 定義の所有モデルを実装する",
+      "dependencies": "08.020, 09.017, 10.018",
+      "original_criterion": "名前と型付き引数を独立に保持",
+      "checkbox_snapshot": "[ ]",
+      "progress_snapshot": {
+        "id": "15.001",
+        "status": "DOING",
+        "owner": "Codex",
+        "commit_or_artifact": "app/core/gimpfilterlayer.cpp; app/core/gimpfilterparametereditor.cpp; app/xcf/painter-xcf-preserve.cpp; app/dialogs/layer-options-dialog.c; migration/contracts/filter-layer-port.md",
+        "test": "Current source audit; existing core, XCF, editor and spill checkpoints; no new Filter feature run in04.002",
+        "result": "Independent definition/cache/executor, XCF preservation, custom-layer editors and spill-backed execution are implemented; full procedure and data-model acceptance remain open",
+        "added_children": "15.001/core-scheduler-edge",
+        "limitations": "Not a full15-18 gate; current aggregate responsiveness, arbitrary saved procedures, original dependency/source coverage and platforms remain unverified"
+      },
+      "historical_named_tests": [
+        "/gimp-filter-layer/saved_definition_is_separate",
+        "/gimp-filter-layer/object_arguments_do_not_cycle",
+        "/gimp-filter-layer/object_array_arguments_do_not_dangle"
+      ],
+      "historical_receipt": "migration/tests/filter-layer-testlog.json",
+      "current_mapping_note": "Separate std::string procedure/raw immutable bytes/FilterArguments typed model. Real08.020 predecessor still open; no aggregate closure.",
+      "scope": "Historical receipt only; exact original runtime snapshot, not current whole-HEAD proof or a new old-runtime run."
+    },
+    "15.001/core-scheduler-edge": {
+      "original_action": "独立FilterLayerと世代scheduler・edge互換実行を統合する",
+      "dependencies": "14.001/core-implementation, 05.010, 02.006/writer-negative-fixture",
+      "original_criterion": "定義/raw値/weak引数とUndo、完成cacheのみGEGL公開、依存順・非待機cancel・分割入出力を実装。20 app/14 scheduler/76実旧edge比較とfocused sanitizer合格。全PDB/XCF/UI/性能gateは未完了",
+      "checkbox_snapshot": "[x]",
+      "progress_snapshot": {
+        "id": "15.001/core-scheduler-edge",
+        "status": "DONE",
+        "owner": "Codex",
+        "commit_or_artifact": "migration/contracts/filter-layer-port.md; migration/tests/filter-layer-testlog.json; migration/tests/filter-layer-sanitizers.json; migration/tests/filter-scheduler-sanitizers.json",
+        "test": "20 full GIMP integration cases;14 scheduler normal+ASan/UBSan;76 actual oldPDB edge RGBA8 cases",
+        "result": "PASS weak argument lifetime+definition Undo, generation/checkpoints/cancel, lower dependency cycles, atomic complete cache, exact edge bytes and read/import rejection reentry",
+        "added_children": "-",
+        "limitations": "Gauss separate; arbitrary PDB/process adapter/XCF/UI/lower-stack full parity and aggregate latency gates open; focused instrumentation only,LSanoff"
+      }
+    },
+    "15.001/gvalue-deep-copy": {
+      "original_action": "FilterLayer の GValue 配列を深くコピーする",
+      "dependencies": "15.001, 01.007/gvalue",
+      "original_criterion": "元 GValueArray と保存先を独立に解放し、getter の値を正しく返す",
+      "checkbox_snapshot": "[ ]",
+      "progress_snapshot": {
+        "id": "15.001/gvalue-deep-copy",
+        "status": "TODO",
+        "owner": "Codex",
+        "commit_or_artifact": "migration/inventory/cpp-reference-candidates.md",
+        "test": "-",
+        "result": "pending",
+        "added_children": "-",
+        "limitations": "Implement typed deep-copy and getter validation"
+      },
+      "direct_artifact": "migration/tests/adapter-removal/filter-entry-handles-08018/",
+      "current_mapping_note": "Current c_owned_values_and_model_identity exercises12 rich argument slots, both free orders, caller/result mutations, independent strings/nested arrays, exact getters and unchanged saved identity. No duplicate implementation needed."
+    },
+    "15.001/pdb-temporary-gvalue": {
+      "original_action": "PDB 一時 GValue の破棄を保証する",
+      "dependencies": "15.001, 01.007/gvalue",
+      "original_criterion": "変換用一時値を全経路で unset し、引数配列との所有権を分ける",
+      "checkbox_snapshot": "[ ]",
+      "progress_snapshot": {
+        "id": "15.001/pdb-temporary-gvalue",
+        "status": "TODO",
+        "owner": "Codex",
+        "commit_or_artifact": "migration/inventory/cpp-reference-candidates.md",
+        "test": "-",
+        "result": "pending",
+        "added_children": "-",
+        "limitations": "Ensure temporary GValue unset on all paths"
+      },
+      "direct_artifact": "migration/contracts/filter-legacy-procedure-entry.md",
+      "current_mapping_note": "Old pdb-cxx-utils string temporaries are not ported wholesale. Native RAII Value/ArgsRef and checked bounded preparation replace admitted paths; generic arbitrary-PDB compatibility remains separate16/17 ownership. Need precise complete old-site mapping before closure, not merely no old filename."
+    },
+    "15.002": {
+      "original_action": "引数の旧値と実行値を分離する",
+      "dependencies": "15.001",
+      "original_criterion": "変換後も保存された元情報を失わない",
+      "checkbox_snapshot": "[ ]",
+      "progress_snapshot": {
+        "id": "15.002",
+        "status": "TODO",
+        "owner": "-",
+        "commit_or_artifact": "tasks.md",
+        "test": "WBS/progress ID reconciliation",
+        "result": "Existing unchecked task recorded explicitly as TODO",
+        "added_children": "-",
+        "limitations": "Code may exist; original acceptance and dependencies remain open"
+      },
+      "historical_named_tests": [
+        "/gimp-filter-layer/typed_argument_import_preserves_descriptors",
+        "/gimp-filter-layer/typed_argument_snapshot_survives_expiration"
+      ],
+      "historical_receipt": "migration/tests/filter-layer-testlog.json",
+      "current_mapping_note": "Raw serialized values and weak object-ID descriptors survive execution mapping; independently owned materialized values do not rewrite originals.",
+      "scope": "Historical receipt only; exact original runtime snapshot, not current whole-HEAD proof or a new old-runtime run."
+    },
+    "15.003": {
+      "original_action": "FilterLayer の property を接続する",
+      "dependencies": "15.002",
+      "original_criterion": "設定の読取り・変更・通知が一経路",
+      "checkbox_snapshot": "[ ]",
+      "progress_snapshot": {
+        "id": "15.003",
+        "status": "TODO",
+        "owner": "-",
+        "commit_or_artifact": "tasks.md",
+        "test": "WBS/progress ID reconciliation",
+        "result": "Existing unchecked task recorded explicitly as TODO",
+        "added_children": "-",
+        "limitations": "Code may exist; original acceptance and dependencies remain open"
+      },
+      "historical_named_tests": [
+        "/gimp-filter-layer/definition_notifications_stop_after_close"
+      ],
+      "historical_receipt": "migration/tests/filter-layer-testlog.json",
+      "current_mapping_note": "Read-only filter-procedure/filter-arguments/filter-original-definition/opaque properties materialize via one get_property and notify only installation/Undo path. Source mapping, not a new complete property matrix.",
+      "scope": "Historical receipt only; exact original runtime snapshot, not current whole-HEAD proof or a new old-runtime run."
+    },
+    "15.004": {
+      "original_action": "処理対象の下層範囲を実装する",
+      "dependencies": "15.003",
+      "original_criterion": "位置と階層に応じ旧範囲を選ぶ",
+      "checkbox_snapshot": "[ ]",
+      "progress_snapshot": {
+        "id": "15.004",
+        "status": "TODO",
+        "owner": "-",
+        "commit_or_artifact": "tasks.md",
+        "test": "WBS/progress ID reconciliation",
+        "result": "Existing unchecked task recorded explicitly as TODO",
+        "added_children": "-",
+        "limitations": "Code may exist; original acceptance and dependencies remain open"
+      },
+      "historical_named_tests": [
+        "/gimp-filter-layer/group_scope",
+        "/gimp-filter-layer/dependency_order",
+        "/gimp-filter-layer/automatic_updates_and_self_exclusion"
+      ],
+      "historical_receipt": "migration/tests/filter-layer-testlog.json",
+      "current_mapping_note": "Current stack snapshot excludes owner/upper siblings and follows actual parent. Historical named receipts used Edge; proposed non-Edge ancestry/stack receipt will not rerun them.",
+      "scope": "Historical receipt only; exact original runtime snapshot, not current whole-HEAD proof or a new old-runtime run."
+    },
+    "15.005": {
+      "original_action": "位置・サイズ変更を処理する",
+      "dependencies": "15.004",
+      "original_criterion": "入力と出力 buffer の座標が一致",
+      "checkbox_snapshot": "[ ]",
+      "progress_snapshot": {
+        "id": "15.005",
+        "status": "TODO",
+        "owner": "-",
+        "commit_or_artifact": "tasks.md",
+        "test": "WBS/progress ID reconciliation",
+        "result": "Existing unchecked task recorded explicitly as TODO",
+        "added_children": "-",
+        "limitations": "Code may exist; original acceptance and dependencies remain open"
+      },
+      "historical_named_tests": [
+        "/gimp-filter-layer/hidden_filter_and_offset"
+      ],
+      "historical_receipt": "migration/tests/filter-layer-testlog.json",
+      "current_mapping_note": "Inherited offset/size callbacks configure native input/output extents; independent graph invalidation worker owns ROI/offset proof. Pinned old Filter flip only resets/invalidates without parent geometry/pixel transform; scale/resize/rotate/transform do call parent. Current native class inherits flip: concrete mismatch candidate requiring bounded expected-red test.",
+      "scope": "Historical receipt only; exact original runtime snapshot, not current whole-HEAD proof or a new old-runtime run."
+    },
+    "15.006": {
+      "original_action": "マスク・opacity・mode を接続する",
+      "dependencies": "15.005",
+      "original_criterion": "独自型でも通常属性が適用される",
+      "checkbox_snapshot": "[ ]",
+      "progress_snapshot": {
+        "id": "15.006",
+        "status": "TODO",
+        "owner": "-",
+        "commit_or_artifact": "tasks.md",
+        "test": "WBS/progress ID reconciliation",
+        "result": "Existing unchecked task recorded explicitly as TODO",
+        "added_children": "-",
+        "limitations": "Code may exist; original acceptance and dependencies remain open"
+      },
+      "historical_named_tests": [
+        "/gimp-filter-layer/independent_type_and_edge"
+      ],
+      "historical_receipt": "migration/tests/filter-layer-testlog.json",
+      "current_mapping_note": "Native GimpLayer attributes remain inherited. New pickability proof establishes loaded/result projection separately, not exhaustive mask/mode combinations.",
+      "scope": "Historical receipt only; exact original runtime snapshot, not current whole-HEAD proof or a new old-runtime run."
+    },
+    "15.006/gegl-result-source": {
+      "original_action": "FilterLayer の確定結果を GEGL source node へ供給する",
+      "dependencies": "15.006, 09.013/gegl-graph-invalidation",
+      "original_criterion": "未完成・旧世代の結果を見せず source 変更が投影を更新し operator 評価から runner を起動しない",
+      "checkbox_snapshot": "[ ]",
+      "progress_snapshot": {
+        "id": "15.006/gegl-result-source",
+        "status": "TODO",
+        "owner": "Codex",
+        "commit_or_artifact": "migration/design.md section 7.1",
+        "test": "-",
+        "result": "pending",
+        "added_children": "-",
+        "limitations": "Publish only committed filter generation through source node"
+      },
+      "direct_artifact": "migration/contracts/filter-layer-port.md",
+      "current_mapping_note": "completed_buffer_only and completion_flushes_image_projection historical receipts, newGaussian refresh; independent09.013 worker owns current exactROI/source-cache proof."
+    },
+    "15.006/filter-pickable-opacity": {
+      "original_action": "FilterLayer の不透明度照会を現行型へ接続する",
+      "dependencies": "15.005, 01.005/gimp3-layer-slots",
+      "original_criterion": "旧 gint 返却のゼロ透明を現行 gdouble 契約で保ち、合成結果との矛盾を試験",
+      "checkbox_snapshot": "[ ]",
+      "progress_snapshot": {
+        "id": "15.006/filter-pickable-opacity",
+        "status": "DOING",
+        "owner": "Codex",
+        "commit_or_artifact": "migration/inventory/gimp3-layer-vfunc-review.tsv; app/tests/test-filter-pickable-contract.inc; migration/tests/filter-pickable-contract/",
+        "test": "-; selected clean native and focused sanitizer",
+        "result": "PASS 325 zero queries,3 projection pixels,3 picking controls; native1+selected sanitizer",
+        "added_children": "-",
+        "limitations": "Verify rendering and opacity behavior; Original15.005 prerequisite retained; explicit checkpoint overlays, no GUI/old-runtime/whole-HEAD claim."
+      },
+      "direct_artifact": "migration/tests/filter-pickable-contract/",
+      "current_mapping_note": "1ae9221541 current325 zero queries+3 projection pixels+3 picking controls; loaded cache then native Gaussian refresh."
+    },
+    "15.006/filter-progress-start": {
+      "original_action": "FilterLayer の progress 開始 callback を現行 ABI に合わせる",
+      "dependencies": "15.005, 06.016, 01.005/gimp3-layer-slots",
+      "original_criterion": "cancellable と message の新しい引数順を守り、進捗通知・取消しが逆転しない",
+      "checkbox_snapshot": "[ ]",
+      "progress_snapshot": {
+        "id": "15.006/filter-progress-start",
+        "status": "TODO",
+        "owner": "Codex",
+        "commit_or_artifact": "migration/inventory/gimp3-layer-vfunc-review.tsv; migration/contracts/filter-progress.md",
+        "test": "-",
+        "result": "Runtime/ABI implementation accepted by15.006/native-owner-progress; original parent prerequisites remain open",
+        "added_children": "-",
+        "limitations": "15.005 and06.016 completion remains required; no duplicate implementation requested"
+      },
+      "direct_artifact": "migration/tests/filter-progress/",
+      "current_mapping_note": "Existing completed native-owner-progress child covers actual current ABI and cancellation; unchanged15.005/06.016 prerequisites retained."
+    },
+    "15.006/native-owner-progress": {
+      "original_action": "実GimpProgressと独立worker通知・GTK取消しを接続する",
+      "dependencies": "15.001/core-scheduler-edge, 17.022/explicit-owner-cancel, 16.003/isolated-convolution-route, 30.001/isolated-filter-editors, 01.005/gimp3-layer-slots",
+      "original_criterion": "現行start ABI、固定mailbox/GPF6、native kernel/4実helper進捗、世代別cancelとGTK再入を検証。通常5target・native7/GTK7と33source+39RTTI focused sanitizer合格、3072RGB実Retinexの表示/取消し/可視cache保持/正常終了を確認。全latency/platformとmanual GTK/GDK critical原因は未完了",
+      "checkbox_snapshot": "[x]",
+      "progress_snapshot": {
+        "id": "15.006/native-owner-progress",
+        "status": "DONE",
+        "owner": "Codex",
+        "commit_or_artifact": "migration/contracts/filter-progress.md; migration/tests/filter-progress/acceptance.json",
+        "test": "5 independent targets;7 native+7 GTK normal and focused ASan/UBSan;33 instrumented+39 RTTI-only;1728 input seals;3072 RGB actual app",
+        "result": "PASS modern ABI, bounded/coalesced native+4 real helper reports, GPF6 validation/backlog/flood cancellation, generation/reentry/close/two-owner isolation, GTK Cancel and visible cache retention",
+        "added_children": "-",
+        "limitations": "Focused only;LSanoff;short Blinds had no intermediate owner fraction sample though real text arrived. Manual GDK/GTK accessibility critical cause remains open;global latency/platform/general routes/parent gates unchanged"
+      }
+    },
+    "15.006/editability-contract": {
+      "original_action": "FilterLayer の編集可否を現行ロック規約へ対応付ける",
+      "dependencies": "15.005, 01.005/gimp3-layer-slots",
+      "original_criterion": "廃止された GimpItemClass.is_editable を仮定せず、定義編集と通常画素編集の権限を検証",
+      "checkbox_snapshot": "[ ]",
+      "progress_snapshot": {
+        "id": "15.006/editability-contract",
+        "status": "DOING",
+        "owner": "Codex",
+        "commit_or_artifact": "migration/inventory/gimp3-layer-vfunc-review.tsv; app/tests/test-filter-editability-contract.inc; migration/tests/filter-editability-contract/",
+        "test": "-; selected clean native and focused sanitizer",
+        "result": "PASS causal red repaired;10 refusal contexts,definition Undo/Redo payload; native2+Clone4+prepared18+combined sanitizer3",
+        "added_children": "-",
+        "limitations": "Verify definition edit versus pixel edit permissions; Original15.005 prerequisite retained; explicit checkpoint overlays, no GUI/old-runtime/whole-HEAD claim."
+      },
+      "direct_artifact": "migration/tests/filter-editability-contract/",
+      "current_mapping_note": "2fbd2e72c5 causal red repaired;10 contexts,definition Undo/Redo exact payload,Clone4/prepared18 and focused sanitizer3."
+    },
+    "15.007": {
+      "original_action": "loaded 状態を実装する",
+      "dependencies": "15.006",
+      "original_criterion": "保存済み cache の初回表示を区別",
+      "checkbox_snapshot": "[ ]",
+      "progress_snapshot": {
+        "id": "15.007",
+        "status": "TODO",
+        "owner": "-",
+        "commit_or_artifact": "tasks.md",
+        "test": "WBS/progress ID reconciliation",
+        "result": "Existing unchecked task recorded explicitly as TODO",
+        "added_children": "-",
+        "limitations": "Code may exist; original acceptance and dependencies remain open"
+      },
+      "historical_named_tests": [
+        "/gimp-filter-layer/loaded_cache",
+        "/gimp-filter-layer/saved_snapshot_generation_restore"
+      ],
+      "historical_receipt": "migration/tests/filter-layer-testlog.json",
+      "current_mapping_note": "Loaded cache and clean/stale lineage distinguish first display from new execution; native Gaussian pickability receipt now also proves loaded green cache then red refresh.",
+      "scope": "Historical receipt only; exact original runtime snapshot, not current whole-HEAD proof or a new old-runtime run."
+    },
+    "15.008": {
+      "original_action": "定義変更の世代を実装する",
+      "dependencies": "15.007",
+      "original_criterion": "procedure/引数変更で結果を失効",
+      "checkbox_snapshot": "[ ]",
+      "progress_snapshot": {
+        "id": "15.008",
+        "status": "TODO",
+        "owner": "-",
+        "commit_or_artifact": "tasks.md",
+        "test": "WBS/progress ID reconciliation",
+        "result": "Existing unchecked task recorded explicitly as TODO",
+        "added_children": "-",
+        "limitations": "Code may exist; original acceptance and dependencies remain open"
+      },
+      "historical_named_tests": [
+        "/gimp-filter-layer/definition_revision_separates_cache_updates",
+        "/gimp-filter-layer/retired_definition_payload_reentry"
+      ],
+      "historical_receipt": "migration/tests/filter-layer-testlog.json",
+      "current_mapping_note": "Definition revision distinct from cache generation; opaque-definition child carries separate completed receipt.",
+      "scope": "Historical receipt only; exact original runtime snapshot, not current whole-HEAD proof or a new old-runtime run."
+    },
+    "15.008/opaque-definition-state": {
+      "original_action": "未解釈引数と確定cacheをdefinition所有へ統一する",
+      "dependencies": "17.001/dependency-publication, 12.001/preservation-writer",
+      "original_criterion": "57 app通常/focused sanitizer合格。opaque bytesの複製/Undo/明示clear、実行後Undoで元cache復元、stale保持と再入を検証。file統合は次子作業",
+      "checkbox_snapshot": "[x]",
+      "progress_snapshot": {
+        "id": "15.008/opaque-definition-state",
+        "status": "DONE",
+        "owner": "Codex",
+        "commit_or_artifact": "app/core/gimpfilterlayer.cpp; app/core/gimpfilterlayer.h; migration/tests/filter-layer-sanitizers.json; migration/contracts/filter-layer-port.md",
+        "test": "57 real app cases normal+focused ASan/UBSan;21 scheduler/8 dispatcher/180 executor cases remain green;independent14 XCF roundtrips pass",
+        "result": "PASS core-owned opaque args including empty;duplicate/definition Undo/Redo preserve payload and COW committed pixels;ordinary replacement clears current opaque state;restored caches conservatively stale;callback-safe payload retirement",
+        "added_children": "-",
+        "limitations": "Opaque models are not executable;stale cache is not falsely certified;file schema changes separate;Gray/performance/large-raster/process/platform gates remain open"
+      }
+    },
+    "15.009": {
+      "original_action": "依存構造の世代を実装する",
+      "dependencies": "15.008",
+      "original_criterion": "並替え・移動で結果を失効",
+      "checkbox_snapshot": "[ ]",
+      "progress_snapshot": {
+        "id": "15.009",
+        "status": "TODO",
+        "owner": "-",
+        "commit_or_artifact": "tasks.md",
+        "test": "WBS/progress ID reconciliation",
+        "result": "Existing unchecked task recorded explicitly as TODO",
+        "added_children": "-",
+        "limitations": "Code may exist; original acceptance and dependencies remain open"
+      },
+      "historical_named_tests": [
+        "/gimp-filter-layer/cached_graph_tracks_clone_reassignment",
+        "/gimp-filter-layer/changed_dependency_invalidation_can_close_owner"
+      ],
+      "historical_receipt": "migration/tests/filter-layer-testlog.json",
+      "current_mapping_note": "Topology refresh invalidates generation and rebuilds subscriptions. Six cross-owned viewable ancestry hunks need explicit non-Edge current reparent/subscription checkpoint, not generic renderer lifetime work.",
+      "scope": "Historical receipt only; exact original runtime snapshot, not current whole-HEAD proof or a new old-runtime run."
+    },
+    "15.010": {
+      "original_action": "FilterLayer の複製を実装する",
+      "dependencies": "15.009",
+      "original_criterion": "定義は複製し実行中 runner は共有しない",
+      "checkbox_snapshot": "[ ]",
+      "progress_snapshot": {
+        "id": "15.010",
+        "status": "TODO",
+        "owner": "-",
+        "commit_or_artifact": "tasks.md",
+        "test": "WBS/progress ID reconciliation",
+        "result": "Existing unchecked task recorded explicitly as TODO",
+        "added_children": "-",
+        "limitations": "Code may exist; original acceptance and dependencies remain open"
+      },
+      "historical_named_tests": [
+        "/gimp-filter-layer/duplicate_keeps_definition",
+        "/gimp-filter-layer/duplicate_preserves_cache_freshness",
+        "/gimp-filter-layer/duplicate_reentry_cannot_certify_new_definition"
+      ],
+      "historical_receipt": "migration/tests/filter-layer-testlog.json",
+      "current_mapping_note": "Duplicate immutable definition/cache lineage but never share an active scheduler or runner; original09 chain remains.",
+      "scope": "Historical receipt only; exact original runtime snapshot, not current whole-HEAD proof or a new old-runtime run."
+    },
+    "15.011": {
+      "original_action": "設定変更の Undo を実装する",
+      "dependencies": "15.010",
+      "original_criterion": "旧定義と再評価状態を復元",
+      "checkbox_snapshot": "[ ]",
+      "progress_snapshot": {
+        "id": "15.011",
+        "status": "TODO",
+        "owner": "-",
+        "commit_or_artifact": "tasks.md",
+        "test": "WBS/progress ID reconciliation",
+        "result": "Existing unchecked task recorded explicitly as TODO",
+        "added_children": "-",
+        "limitations": "Code may exist; original acceptance and dependencies remain open"
+      },
+      "historical_named_tests": [
+        "/gimp-filter-layer/definition_undo_redo",
+        "/gimp-filter-layer/opaque_arguments_duplicate_and_undo"
+      ],
+      "historical_receipt": "migration/tests/filter-layer-testlog.json",
+      "current_mapping_note": "Dedicated nonDrawable definition Undo restores saved definition/cache conservatively stale, then reevaluates. Current15.006 editability proves this remains allowed after pixel-cache prohibition.",
+      "scope": "Historical receipt only; exact original runtime snapshot, not current whole-HEAD proof or a new old-runtime run."
+    },
+    "15.012": {
+      "original_action": "削除・復元の Undo を実装する",
+      "dependencies": "15.011",
+      "original_criterion": "復元後に最新下層から評価",
+      "checkbox_snapshot": "[ ]",
+      "progress_snapshot": {
+        "id": "15.012",
+        "status": "TODO",
+        "owner": "-",
+        "commit_or_artifact": "tasks.md",
+        "test": "WBS/progress ID reconciliation",
+        "result": "Existing unchecked task recorded explicitly as TODO",
+        "added_children": "-",
+        "limitations": "Code may exist; original acceptance and dependencies remain open"
+      },
+      "historical_named_tests": [
+        "/gimp-filter-layer/removal_and_undo"
+      ],
+      "historical_receipt": "migration/tests/filter-layer-testlog.json",
+      "current_mapping_note": "Deletion/restoration native image Undo reconnects current lower content; historical receipt retained, not rerun on paused Edge path.",
+      "scope": "Historical receipt only; exact original runtime snapshot, not current whole-HEAD proof or a new old-runtime run."
+    },
+    "15.013": {
+      "original_action": "未解決 procedure の保持を実装する",
+      "dependencies": "15.012",
+      "original_criterion": "ファイルは開け、定義を再保存できる",
+      "checkbox_snapshot": "[ ]",
+      "progress_snapshot": {
+        "id": "15.013",
+        "status": "TODO",
+        "owner": "-",
+        "commit_or_artifact": "tasks.md",
+        "test": "WBS/progress ID reconciliation",
+        "result": "Existing unchecked task recorded explicitly as TODO",
+        "added_children": "-",
+        "limitations": "Code may exist; original acceptance and dependencies remain open"
+      },
+      "historical_named_tests": [
+        "/gimp-filter-layer/opaque_arguments_never_execute",
+        "/gimp-filter-layer/empty_opaque_arguments_are_distinct"
+      ],
+      "historical_receipt": "migration/tests/filter-layer-testlog.json",
+      "current_mapping_note": "Unsupported definitions preserve opaque/raw metadata and cache without executable substitution; XCF field/roundtrip module separately verifies wire preservation.",
+      "scope": "Historical receipt only; exact original runtime snapshot, not current whole-HEAD proof or a new old-runtime run."
+    },
+    "15.014": {
+      "original_action": "FilterLayer の構造試験を実行する",
+      "dependencies": "15.013",
+      "original_criterion": "設定・属性・複製・Undo が一致",
+      "checkbox_snapshot": "[ ]",
+      "progress_snapshot": {
+        "id": "15.014",
+        "status": "TODO",
+        "owner": "-",
+        "commit_or_artifact": "tasks.md",
+        "test": "WBS/progress ID reconciliation",
+        "result": "Existing unchecked task recorded explicitly as TODO",
+        "added_children": "-",
+        "limitations": "Code may exist; original acceptance and dependencies remain open"
+      },
+      "historical_named_tests": [
+        "/gimp-filter-layer/duplicate_preserves_cache_freshness",
+        "/gimp-filter-layer/definition_undo_redo"
+      ],
+      "historical_receipt": "migration/tests/filter-layer-testlog.json",
+      "current_mapping_note": "Model structure tests are not full old popup equivalence. Entire old popup hunks keep explicit29/30/13 owners, historical GTK receipts and current platform holds; no coverage removed.",
+      "scope": "Historical receipt only; exact original runtime snapshot, not current whole-HEAD proof or a new old-runtime run."
+    }
+  },
+  "cross_owned_viewable_hunks": [
+    {
+      "source_id": "01.002/000430",
+      "path": "app/core/gimpviewable.c",
+      "source_blob": "48f056842c38ed3c0dd9f381a2be75a9a99cd331",
+      "source_range": "-52,0 -> 53",
+      "source_sha256": "f6a84c38eb02d9ab1359f7d46f8f7669f8bae7ab01a0e10cd5cba3122d357f80",
+      "source_scope": "enum",
+      "owners": [
+        "14.019",
+        "15.001/core-scheduler-edge",
+        "15.004",
+        "15.009"
+      ],
+      "current_mapping": [
+        {
+          "path": "app/core/gimpviewable.c",
+          "anchor": "committed native ancestry-changed emission in gimp_viewable_set_parent",
+          "committed_sha256": "979cf4b6a561393f9332331a6242836edd85224ab47b3be873e35e65d97b31b3"
+        },
+        {
+          "path": "app/core/gimpfilterlayer.cpp",
+          "anchor": "FilterImpl::attach ancestry-changed connection; owner_ancestry->structure_changed->refresh_connections",
+          "committed_sha256": "1b9bc8dd7dcc92473d7ce2db046ba0da705325e1f6cb7a163ea0e68a0e5e6d75"
+        }
+      ],
+      "evidence": [
+        "app/tests/test-gimp-filter-layer.c",
+        "migration/contracts/filter-layer-port.md"
+      ],
+      "status": "cross-owner Filter verification retained; not closed by Clone corpus",
+      "rationale": "Old Clone parent-changed connection is commented atafa43fae:261; active consumer is old FilterLayer:320. Current Filter uses ancestry-changed with topology refresh. These6 old shared signal/default-vfunc hunks remain explicit Filter-owned duties; no paused coreviewable lifetime edit/test, no new dependency invented, and no old Edge runtime executed."
+    },
+    {
+      "source_id": "01.002/000431",
+      "path": "app/core/gimpviewable.c",
+      "source_blob": "48f056842c38ed3c0dd9f381a2be75a9a99cd331",
+      "source_range": "-115,0 -> 117,2",
+      "source_sha256": "5a06b8ff69bc6b9908099360b5b32c4ec2c181ef2895a364b974488ac26c732b",
+      "source_scope": "static gboolean gimp_viewable_serialize_property     (GimpConfig    *config,",
+      "owners": [
+        "14.019",
+        "15.001/core-scheduler-edge",
+        "15.004",
+        "15.009"
+      ],
+      "current_mapping": [
+        {
+          "path": "app/core/gimpviewable.c",
+          "anchor": "committed native ancestry-changed emission in gimp_viewable_set_parent",
+          "committed_sha256": "979cf4b6a561393f9332331a6242836edd85224ab47b3be873e35e65d97b31b3"
+        },
+        {
+          "path": "app/core/gimpfilterlayer.cpp",
+          "anchor": "FilterImpl::attach ancestry-changed connection; owner_ancestry->structure_changed->refresh_connections",
+          "committed_sha256": "1b9bc8dd7dcc92473d7ce2db046ba0da705325e1f6cb7a163ea0e68a0e5e6d75"
+        }
+      ],
+      "evidence": [
+        "app/tests/test-gimp-filter-layer.c",
+        "migration/contracts/filter-layer-port.md"
+      ],
+      "status": "cross-owner Filter verification retained; not closed by Clone corpus",
+      "rationale": "Old Clone parent-changed connection is commented atafa43fae:261; active consumer is old FilterLayer:320. Current Filter uses ancestry-changed with topology refresh. These6 old shared signal/default-vfunc hunks remain explicit Filter-owned duties; no paused coreviewable lifetime edit/test, no new dependency invented, and no old Edge runtime executed."
+    },
+    {
+      "source_id": "01.002/000432",
+      "path": "app/core/gimpviewable.c",
+      "source_blob": "48f056842c38ed3c0dd9f381a2be75a9a99cd331",
+      "source_range": "-150,0 -> 154,9",
+      "source_sha256": "8da1279b7148d3b1d6e70221adb597733efca467fb40d14e9e55c9bc3c6bbb17",
+      "source_scope": "gimp_viewable_class_init (GimpViewableClass *klass)",
+      "owners": [
+        "14.019",
+        "15.001/core-scheduler-edge",
+        "15.004",
+        "15.009"
+      ],
+      "current_mapping": [
+        {
+          "path": "app/core/gimpviewable.c",
+          "anchor": "committed native ancestry-changed emission in gimp_viewable_set_parent",
+          "committed_sha256": "979cf4b6a561393f9332331a6242836edd85224ab47b3be873e35e65d97b31b3"
+        },
+        {
+          "path": "app/core/gimpfilterlayer.cpp",
+          "anchor": "FilterImpl::attach ancestry-changed connection; owner_ancestry->structure_changed->refresh_connections",
+          "committed_sha256": "1b9bc8dd7dcc92473d7ce2db046ba0da705325e1f6cb7a163ea0e68a0e5e6d75"
+        }
+      ],
+      "evidence": [
+        "app/tests/test-gimp-filter-layer.c",
+        "migration/contracts/filter-layer-port.md"
+      ],
+      "status": "cross-owner Filter verification retained; not closed by Clone corpus",
+      "rationale": "Old Clone parent-changed connection is commented atafa43fae:261; active consumer is old FilterLayer:320. Current Filter uses ancestry-changed with topology refresh. These6 old shared signal/default-vfunc hunks remain explicit Filter-owned duties; no paused coreviewable lifetime edit/test, no new dependency invented, and no old Edge runtime executed."
+    },
+    {
+      "source_id": "01.002/000433",
+      "path": "app/core/gimpviewable.c",
+      "source_blob": "48f056842c38ed3c0dd9f381a2be75a9a99cd331",
+      "source_range": "-1171 -> 1183,4",
+      "source_sha256": "16423d33a9dac8f7b9a8da7bf5eb96565a4eda5a4afe95fc4db3b4fb9f0a3e73",
+      "source_scope": "gimp_viewable_set_parent (GimpViewable *viewable,",
+      "owners": [
+        "14.019",
+        "15.001/core-scheduler-edge",
+        "15.004",
+        "15.009"
+      ],
+      "current_mapping": [
+        {
+          "path": "app/core/gimpviewable.c",
+          "anchor": "committed native ancestry-changed emission in gimp_viewable_set_parent",
+          "committed_sha256": "979cf4b6a561393f9332331a6242836edd85224ab47b3be873e35e65d97b31b3"
+        },
+        {
+          "path": "app/core/gimpfilterlayer.cpp",
+          "anchor": "FilterImpl::attach ancestry-changed connection; owner_ancestry->structure_changed->refresh_connections",
+          "committed_sha256": "1b9bc8dd7dcc92473d7ce2db046ba0da705325e1f6cb7a163ea0e68a0e5e6d75"
+        }
+      ],
+      "evidence": [
+        "app/tests/test-gimp-filter-layer.c",
+        "migration/contracts/filter-layer-port.md"
+      ],
+      "status": "cross-owner Filter verification retained; not closed by Clone corpus",
+      "rationale": "Old Clone parent-changed connection is commented atafa43fae:261; active consumer is old FilterLayer:320. Current Filter uses ancestry-changed with topology refresh. These6 old shared signal/default-vfunc hunks remain explicit Filter-owned duties; no paused coreviewable lifetime edit/test, no new dependency invented, and no old Edge runtime executed."
+    },
+    {
+      "source_id": "01.002/000434",
+      "path": "app/core/gimpviewable.c",
+      "source_blob": "48f056842c38ed3c0dd9f381a2be75a9a99cd331",
+      "source_range": "-1221,0 -> 1237,6",
+      "source_sha256": "cd62039e2ab3fce5dcdb332d3b1742257eb61876365a1214e487c73693706afa",
+      "source_scope": "gimp_viewable_is_ancestor (GimpViewable *ancestor,",
+      "owners": [
+        "14.019",
+        "15.001/core-scheduler-edge",
+        "15.004",
+        "15.009"
+      ],
+      "current_mapping": [
+        {
+          "path": "app/core/gimpviewable.c",
+          "anchor": "committed native ancestry-changed emission in gimp_viewable_set_parent",
+          "committed_sha256": "979cf4b6a561393f9332331a6242836edd85224ab47b3be873e35e65d97b31b3"
+        },
+        {
+          "path": "app/core/gimpfilterlayer.cpp",
+          "anchor": "FilterImpl::attach ancestry-changed connection; owner_ancestry->structure_changed->refresh_connections",
+          "committed_sha256": "1b9bc8dd7dcc92473d7ce2db046ba0da705325e1f6cb7a163ea0e68a0e5e6d75"
+        }
+      ],
+      "evidence": [
+        "app/tests/test-gimp-filter-layer.c",
+        "migration/contracts/filter-layer-port.md"
+      ],
+      "status": "cross-owner Filter verification retained; not closed by Clone corpus",
+      "rationale": "Old Clone parent-changed connection is commented atafa43fae:261; active consumer is old FilterLayer:320. Current Filter uses ancestry-changed with topology refresh. These6 old shared signal/default-vfunc hunks remain explicit Filter-owned duties; no paused coreviewable lifetime edit/test, no new dependency invented, and no old Edge runtime executed."
+    },
+    {
+      "source_id": "01.002/000435",
+      "path": "app/core/gimpviewable.h",
+      "source_blob": "a36f697f8bcfe65e9e9e93d755ec27d5e3511b30",
+      "source_range": "-62,0 -> 63",
+      "source_sha256": "ee62e018478ae174b6d884da9c5fa963f78f77e37b45880a16f6ea8e56000287",
+      "source_scope": "struct _GimpViewableClass",
+      "owners": [
+        "14.019",
+        "15.001/core-scheduler-edge",
+        "15.004",
+        "15.009"
+      ],
+      "current_mapping": [
+        {
+          "path": "app/core/gimpviewable.c",
+          "anchor": "committed native ancestry-changed emission in gimp_viewable_set_parent",
+          "committed_sha256": "979cf4b6a561393f9332331a6242836edd85224ab47b3be873e35e65d97b31b3"
+        },
+        {
+          "path": "app/core/gimpfilterlayer.cpp",
+          "anchor": "FilterImpl::attach ancestry-changed connection; owner_ancestry->structure_changed->refresh_connections",
+          "committed_sha256": "1b9bc8dd7dcc92473d7ce2db046ba0da705325e1f6cb7a163ea0e68a0e5e6d75"
+        }
+      ],
+      "evidence": [
+        "app/tests/test-gimp-filter-layer.c",
+        "migration/contracts/filter-layer-port.md"
+      ],
+      "status": "cross-owner Filter verification retained; not closed by Clone corpus",
+      "rationale": "Old Clone parent-changed connection is commented atafa43fae:261; active consumer is old FilterLayer:320. Current Filter uses ancestry-changed with topology refresh. These6 old shared signal/default-vfunc hunks remain explicit Filter-owned duties; no paused coreviewable lifetime edit/test, no new dependency invented, and no old Edge runtime executed."
+    }
+  ],
+  "cross_owned_snapshot_note": "Cross-owned providers retain section14 recorded committed7f033 snapshot; not current paused worktree. Current ancestry/Filter mapping still requires bounded native non-Edge proof for a fresh claim.",
+  "counts": {
+    "work_items": 52,
+    "source_hunks": 16,
+    "cross_owned_hunks": 6
+  }
+}
