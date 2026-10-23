@@ -1,0 +1,147 @@
+{
+  "task": "04.006",
+  "status": "PASS",
+  "source_parent": "ca2fa41bd7a9f8a25814b5377c6850873442889b",
+  "scope": "Original minimal mixed-language value/error round trip; no full application/platform completion",
+  "named_cases": [
+    "/painter/interop/c-cpp-c-value",
+    "/painter/interop/cpp-error-to-c",
+    "/painter/interop/cpp-error-without-gerror"
+  ],
+  "value_assertions": [
+    "7 enters the C callback once and returns 15 through C++",
+    "0 enters the C callback once more and returns 1 through C++"
+  ],
+  "error_assertions": [
+    "negative input returns FALSE with result 0 and no C callback",
+    "GError domain/code and exact injected message survive C++ exception conversion",
+    "C clears the owned GError",
+    "NULL GError output still returns FALSE and initialized result 0"
+  ],
+  "meson_result": {
+    "name": "gimp:painter / painter-foundation",
+    "result": "OK",
+    "returncode": 0,
+    "duration": 0.007165193557739258,
+    "command": [
+      "/workspace/shared/gimp-cpp-boundary-04005/build-default/app/painter/painter-foundation"
+    ],
+    "stdout": "TAP version 14\n# random seed: R02S89f0ddb78a665de6b8ea852996563ada\n1..37\n# Start of painter tests\n# Start of interop tests\nok 1 /painter/interop/c-cpp-c-value\nok 2 /painter/interop/cpp-error-to-c\nok 3 /painter/interop/cpp-error-without-gerror\n# End of interop tests\n# Start of resources tests\nok 4 /painter/resources/value-assignment\nok 5 /painter/resources/array-assignment\nok 6 /painter/resources/mutex-exception\n# End of resources tests\n# Start of signal tests\nok 7 /painter/signal/lifetime-blocks\nok 8 /painter/signal/after-order\nok 9 /painter/signal/reentrant-disconnect\n# End of signal tests\n# Start of source tests\nok 10 /painter/source/cancel-repeat\nok 11 /painter/source/self-close\nok 12 /painter/source/exception\n# End of source tests\n# Start of gobject tests\nok 13 /painter/gobject/property-dispose-finalize\nok 14 /painter/gobject/type-rejection\n# End of gobject tests\n# Start of reentry tests\nok 15 /painter/reentry/ref-move\nok 16 /painter/reentry/value-reset-move\nok 17 /painter/reentry/array-move\nok 18 /painter/reentry/source-move\nok 19 /painter/reentry/connection-move\nok 20 /painter/reentry/receiver-deletion\nok 21 /painter/reentry/constructor-close\nok 22 /painter/reentry/constructor-duplicate\nok 23 /painter/reentry/constructor-owner-loss\nok 24 /painter/reentry/finalizing-close-read\n# End of reentry tests\n# Start of hierarchy tests\nok 25 /painter/hierarchy/properties-interface\nok 26 /painter/hierarchy/interface-exception\nok 27 /painter/hierarchy/parent-dispose-reentry\n# End of hierarchy tests\n# Start of ref tests\nok 28 /painter/ref/copy-move-adopt-retain\nok 29 /painter/ref/floating-sink\nok 30 /painter/ref/weak\n# End of ref tests\n# Start of store tests\nok 31 /painter/store/lifecycle\nok 32 /painter/store/multiple-slots\nok 33 /painter/store/reentrant-close\nok 34 /painter/store/construction-failure\nok 35 /painter/store/thread-rejection\n# End of store tests\n# Start of boundary tests\nok 36 /painter/boundary/c-close\nok 37 /painter/boundary/exception\n# End of boundary tests\n# End of painter tests\n",
+    "stderr": ""
+  },
+  "selected_interop_stdout": "TAP version 14\n# random seed: R02Scf17016cd73a58d0421c151e86b7a6d4\n# Start of painter tests\n# Start of interop tests\nok 1 /painter/interop/c-cpp-c-value\nok 2 /painter/interop/cpp-error-to-c\nok 3 /painter/interop/cpp-error-without-gerror\n# End of interop tests\n# End of painter tests\n1..3\n",
+  "compile_entries": [
+    {
+      "directory": "/workspace/shared/gimp-cpp-boundary-04005/build-default",
+      "command": "cc -Iapp/painter/painter-foundation.p -Iapp/painter -I../../../scratch/5b5281e79681/gimp-painter-port-active/app/painter -I/workspace/shared/gimp-build-deps-04005/root/usr/include/glib-2.0 -I/workspace/shared/gimp-build-deps-04005/root/usr/lib/x86_64-linux-gnu/glib-2.0/include -I/workspace/shared/gimp-build-deps-04005/root/usr/include/sysprof-6 -fvisibility=hidden -fdiagnostics-color=always -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -O2 -g -Wabsolute-value -Wdeclaration-after-statement -Wenum-conversion -Wno-strict-prototypes -Wold-style-definition -Wunused-function -Wunused-value -Werror=implicit-function-declaration -DGDK_PIXBUF_VERSION_MIN_REQUIRED=GDK_PIXBUF_VERSION_2_30 -DGDK_PIXBUF_VERSION_MAX_ALLOWED=GDK_PIXBUF_VERSION_2_30 -DGLIB_VERSION_MIN_REQUIRED=GLIB_VERSION_2_70 -DGLIB_VERSION_MAX_ALLOWED=GLIB_VERSION_2_76 -DGDK_VERSION_MIN_REQUIRED=GDK_VERSION_3_24 -DGDK_VERSION_MAX_ALLOWED=GDK_VERSION_3_24 -fdiagnostics-show-option -fno-common -Wformat -Wformat-security -Winit-self -Wlogical-op -Wmissing-declarations -Wmissing-format-attribute -Wpointer-arith -Wreturn-type -Wtype-limits -DHAVE_CONFIG_H -pthread -MD -MQ app/painter/painter-foundation.p/tests_test-c-api.c.o -MF app/painter/painter-foundation.p/tests_test-c-api.c.o.d -o app/painter/painter-foundation.p/tests_test-c-api.c.o -c ../../../scratch/5b5281e79681/gimp-painter-port-active/app/painter/tests/test-c-api.c",
+      "file": "../../../scratch/5b5281e79681/gimp-painter-port-active/app/painter/tests/test-c-api.c",
+      "output": "app/painter/painter-foundation.p/tests_test-c-api.c.o"
+    },
+    {
+      "directory": "/workspace/shared/gimp-cpp-boundary-04005/build-default",
+      "command": "c++ -Iapp/painter/painter-foundation.p -Iapp/painter -I../../../scratch/5b5281e79681/gimp-painter-port-active/app/painter -I/workspace/shared/gimp-build-deps-04005/root/usr/include/glib-2.0 -I/workspace/shared/gimp-build-deps-04005/root/usr/lib/x86_64-linux-gnu/glib-2.0/include -I/workspace/shared/gimp-build-deps-04005/root/usr/include/sysprof-6 -fvisibility=hidden -fdiagnostics-color=always -D_GLIBCXX_ASSERTIONS=1 -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -std=c++14 -O2 -g -DGLIB_VERSION_MIN_REQUIRED=GLIB_VERSION_2_70 -DGLIB_VERSION_MAX_ALLOWED=GLIB_VERSION_2_76 -fdiagnostics-show-option -fno-common -Wformat -Wformat-security -Winit-self -Wlogical-op -Wmissing-declarations -Wmissing-format-attribute -Wpointer-arith -Wreturn-type -Wtype-limits -DHAVE_CONFIG_H -pthread -fexceptions -fno-rtti -MD -MQ app/painter/painter-foundation.p/tests_test-foundation.cpp.o -MF app/painter/painter-foundation.p/tests_test-foundation.cpp.o.d -o app/painter/painter-foundation.p/tests_test-foundation.cpp.o -c ../../../scratch/5b5281e79681/gimp-painter-port-active/app/painter/tests/test-foundation.cpp",
+      "file": "../../../scratch/5b5281e79681/gimp-painter-port-active/app/painter/tests/test-foundation.cpp",
+      "output": "app/painter/painter-foundation.p/tests_test-foundation.cpp.o"
+    }
+  ],
+  "object_c_symbols": [
+    {
+      "painter_test_c_callback": "T",
+      "painter_test_cpp_roundtrip": "U"
+    },
+    {
+      "painter_test_c_callback": "U",
+      "painter_test_cpp_roundtrip": "T"
+    }
+  ],
+  "actual_cpp_link_command": "c++  -o app/painter/painter-foundation app/painter/painter-foundation.p/tests_test-c-api.c.o app/painter/painter-foundation.p/tests_test-fixture.c.o app/painter/painter-foundation.p/tests_test-hierarchy.c.o app/painter/painter-foundation.p/tests_test-hierarchy.cpp.o app/painter/painter-foundation.p/tests_test-foundation.cpp.o app/painter/painter-foundation.p/tests_test-resources.cpp.o app/painter/painter-foundation.p/tests_test-gobject.cpp.o app/painter/painter-foundation.p/tests_test-reentry.cpp.o -L/usr/lib/gcc/x86_64-linux-gnu/14 -L/usr/lib/x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu -L/usr/lib -L/usr/lib/gcc/x86_64-linux-gnu/14/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/../lib -L/workspace/shared/gimp-build-deps-04005/root/usr/lib/x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/14/../../.. -L/lib -Wl,--as-needed -Wl,--no-undefined -Wl,--start-group app/painter/libapppainter.a /workspace/shared/gimp-build-deps-04005/root/usr/lib/x86_64-linux-gnu/libgobject-2.0.so /workspace/shared/gimp-build-deps-04005/root/usr/lib/x86_64-linux-gnu/libglib-2.0.so -pthread -lstdc++ -Wl,--end-group",
+  "no_pending_rebuild": true,
+  "executable_sha256": "9e6ef5d1af13e73f372881f78989901494143487e1f41041cef7987d72c04d4a",
+  "source_sha256": {
+    "app/painter/binding-store.cpp": "c69d65c22f26e6be8f6df69765cd30f7bbbd32b46b0eb847e9f6524b41c2b557",
+    "app/painter/binding-store.hpp": "72ccd52c058c15d456517c8ed9a8cf9ec98ca14d08e277bf68f3e40febb7f1f9",
+    "app/painter/boundary.hpp": "3023d89825dc146aefd9f8451ba986f211f42fd9b677cc147b84ed71e2119ff4",
+    "app/painter/bytes.hpp": "fca7937dedc4b52a661cbaaa3ce5858074fba62ea2a9fbe70f3687882f9864a4",
+    "app/painter/connection.hpp": "cf3fb4127a0726340492972c17c34d1bc3047a3c4d52bae44d15ba0741fb9708",
+    "app/painter/fair-dispatcher.hpp": "c57d018d9b7d951d2b776164ba0ca1443a065c82045e431c3caf5992d16a9cef",
+    "app/painter/filter-context.cpp": "35e6e934f5a6a826a67e2707baadad084cb2302d87676276894509452aa897fd",
+    "app/painter/filter-context.hpp": "5ecde6228c5fc0143d44112b6bfe4d2a96abda1b2b9b6f276416231f7c17cce9",
+    "app/painter/filter-edge-kernel-private.hpp": "e48ac6f29c3af18bba60252b7b7676663e055d866ae6ddd2eee9faa41c6587bd",
+    "app/painter/filter-edge.cpp": "ff9d6c77932043585c8e914ee98cbfb2278eabbc8928d3ea821e6a7c955b7d67",
+    "app/painter/filter-edge.hpp": "7e9b7427883ff6eff9a36629ae0315a10811eac3df98c13192026bf32660877f",
+    "app/painter/filter-gauss-kernel-private.hpp": "8f9a9e3cc7d336a0d021d8aee387ab96116a8b771acb8fc893693bc0f82c9f2f",
+    "app/painter/filter-gauss.cpp": "f296f5c50198ede8833ad01c50006581d808a1c4db69858e45c36df8f12bf5e5",
+    "app/painter/filter-gauss.hpp": "0f2678a5c3cfc242fd3d3fec7fd5cfc9ac46f1e1b6813c0fa39f140f11156189",
+    "app/painter/filter-lifetime.cpp": "8e63ba43031919c1c058016838b86eb4aa2bdf77466ea4a95d3dbe0979cdf28b",
+    "app/painter/filter-lifetime.hpp": "653113d3c0ad98a7dfcebc5199c8069dec5b419aa2b74eb581f1961b9f402a81",
+    "app/painter/filter-native-kernels.cpp": "7603a0a5a1c9ed5fa86a01ea24a38a14699e8b5c22baf47a27312e60f004e6b4",
+    "app/painter/filter-native-kernels.hpp": "60c8ca7bbeba821d7205d29b27b598195fc082fc61b79a9057c3cdee7d32b88c",
+    "app/painter/filter-procedure-policy.hpp": "52759c7df1acf1acfe0ca4d06b629a571f368c2c2eebe79030c59c79ff0e0a98",
+    "app/painter/filter-procedure.hpp": "a78f664f14985701eca4db16f6405f78b8faf173d5c486268944558b13908d24",
+    "app/painter/filter-process.cpp": "5d5bc162d3c26d9496cc5f52ceff926e6e7e57fdaae225fef02a8705edd6d42c",
+    "app/painter/filter-process.hpp": "564362dd115d1250dc4b9ba2bec7787cd8ff2848317a7b59505c90f10d5e72f2",
+    "app/painter/filter-progress.hpp": "a0786aaf22b2aa55d4af3c00833be4f47298ab5c879ae3f992d544452ee4a8f5",
+    "app/painter/filter-raster-kernels.cpp": "70b6551e5bb4b800b3fc4145f9f07f25fe7400e52ca9543bd9bddf343bba6b06",
+    "app/painter/filter-raster-kernels.hpp": "c1dbc539013bfd1bf9a0118f678cd4c5ef8f53f39c0cc64ddb3c6ccbbd57edfc",
+    "app/painter/filter-raster.cpp": "3a110ef1be1dd8fcddf19268bbd1dd1ef39a5f982eadc31a3b654e7368334374",
+    "app/painter/filter-raster.hpp": "065083d88ddbcf21fed56f813c796b5ac933cc14b6da8457ed76104afdbfc50b",
+    "app/painter/filter-scheduler.cpp": "3e3031de93f04f5694bb00946cf270d4accdb27ae3afc1d7e57579d4b647b031",
+    "app/painter/filter-scheduler.hpp": "416e7e8b34adbd6ddfa2b2a82e87052dfe25e5785aef3599ddd035f6ccf4a53f",
+    "app/painter/filter-spool.cpp": "ac44597a80a2246b99393bf81731ec060c64f7be8b401491a5b94f256bbff91f",
+    "app/painter/filter-spool.hpp": "e6d2eae6eafd24bc28b7be0961a36dff1cdfd9def372879e474d261157c9356a",
+    "app/painter/filter-wire.cpp": "24ce90825a3480c69e90d04f9048d020638004676389681d5f7d196eb279ccd6",
+    "app/painter/filter-wire.hpp": "5d5cb1e87bf7e1b9c4e1367390c540596fefcb9af2df380b03aacecb6c6ab287",
+    "app/painter/gimp-painter-binding.cpp": "22aca4f9e467e16b86f2cbeec431d7d069fc552c98fad985db770720fcf876fd",
+    "app/painter/gimp-painter-binding.h": "d0269c7b9dd84535d95f714e2227c280030cc922ba967823c00e98daa77d8c04",
+    "app/painter/gimp-painter-error.cpp": "14bc510a2c3721894854b871402c7c95caa94d6559ab79731c7eb4ee76d83cf3",
+    "app/painter/gimp-painter-error.h": "b3c1e3550f83abd54726e752d069f0a591b105bcea249239277d2005ccf61465",
+    "app/painter/gio-type-traits.hpp": "b9e6ce2a86ac5811783cac5c65cc3bd11bc512735b3b56442dcc49ab399a0af4",
+    "app/painter/object-ref.hpp": "46006b8f2bc6216e6486fa473fe10ffbc9311c3550825b82798b0858165f8dac",
+    "app/painter/resources.hpp": "8265ca64628465872ea815c578a59711e563708cb4041a251482d237a7ef8d13",
+    "app/painter/source.hpp": "627136e9747edbd589023d420767697f5fcd2b20feeb96fd1d9c524bb1490334",
+    "app/painter/tests/test-c-api.c": "9b1762ff2ea15b7c91850e4e97886d72866cf28a3fb4e0702f800e8eabb62353",
+    "app/painter/tests/test-c-api.h": "c9006fae3d8ae40bac6961601203d50edf3f451cbceb7f5023ad39b856cc6f35",
+    "app/painter/tests/test-fair-dispatcher.cpp": "8f96fd4f9db78b5378de465e73b49fcacb26eb1655b36e8eae55909013665465",
+    "app/painter/tests/test-filter-context-native.cpp": "ad86e0053d552d50b896aedd82277bbb2590fd332d7f34d0b5f95e335db92931",
+    "app/painter/tests/test-filter-context.cpp": "ab564a04cf15214ea7a331694800f222dd479a19adf0d4063b8454cc6a2cdc00",
+    "app/painter/tests/test-filter-convolution.cpp": "f4a096ec39d2c4f9fc45004fde110df08eebf005dc659df296af6030b42dd0b6",
+    "app/painter/tests/test-filter-edge.cpp": "8e4530b78f6fe13b30c060a390bb2f2f7b6929b2b4db4149a9bb47bf99c49d90",
+    "app/painter/tests/test-filter-gauss-alias.cpp": "7ec00e5a74678e826ae8fd71b210f5a2bc02dc779e6368575144063ec923cab4",
+    "app/painter/tests/test-filter-gauss.cpp": "a6e1d705ca61ef7771928ee8f9a3d123ca153b897569c56e705618251568567a",
+    "app/painter/tests/test-filter-gray.cpp": "7aaebd3878c30be8be615b18772317326595003e816385aea9d5ae7037c16575",
+    "app/painter/tests/test-filter-import-completion.cpp": "00fd1a9cb29fe08116471cda478a09ca401a2a909fff6174fb4cfb92ebdceff4",
+    "app/painter/tests/test-filter-kernel-progress.cpp": "0d2f16ea4b1f85c1db2c6f94d0ad768958f4fae3619e5b129765f5b9fbc59442",
+    "app/painter/tests/test-filter-native-kernels.cpp": "30b61fb038e2c3c3477228874aa7c3592c48a89cce340533935e9e90e008365f",
+    "app/painter/tests/test-filter-owner-gates.cpp": "41e4136bf876cd7bb00c6e615bcb8c98a5b1d470f7644c43abdec3f5e29f1296",
+    "app/painter/tests/test-filter-procedure.cpp": "232dda9520777e4ca238442accb94aa44a8f3b19fb0dae3366dccce98b7bec50",
+    "app/painter/tests/test-filter-process.cpp": "a4df9836b29153920bc9dba0a49cf4d17a8737e2b8e99d6d54d3e096325dbc83",
+    "app/painter/tests/test-filter-raster-kernels.cpp": "f897cbd0c6fd8c7b9ca136553bcc30645996559b19a1fa78c82c0a1357430e31",
+    "app/painter/tests/test-filter-raster.cpp": "68cb63b8fc4b21e85ae3acc8ede94de32d0b1af02370bc27c1326a13c52016af",
+    "app/painter/tests/test-filter-scheduler.cpp": "8ce8787123b2fe26de6091cff3a8cc751209626ce5d66ed5b1d9927917034dba",
+    "app/painter/tests/test-filter-semantic-policy.cpp": "538ab964ab3101035482ac3de17c114f8b7596b06ea55e59b4f223def9ab56b0",
+    "app/painter/tests/test-filter-spool.cpp": "befacf7bd2e2668f3d6f3228814365406ba7d8b2f0f62b98f0884d1a67568c08",
+    "app/painter/tests/test-filter-wire.cpp": "5ae5f7c127f57393e780b8e0de0e3e86cf4f98f09531105d1667fb153b241892",
+    "app/painter/tests/test-fixture.c": "50696abdf8d4598fa7e431ee628e43a89912ead7c10891fdac90462441dd41af",
+    "app/painter/tests/test-fixture.h": "5a26cdf5bc2ce9208e0666be126885e9ea4d9ba09cf9accded89ea673cab8946",
+    "app/painter/tests/test-foundation.cpp": "1850f9077b71bbaa94f70b2762a7419db1feb152ad20382ae1253c5348f92041",
+    "app/painter/tests/test-gobject.cpp": "08c0e2a76521ba5a64b2feef23983084f9c42d627b094d84ca33ba8da36e955b",
+    "app/painter/tests/test-hierarchy.c": "fd448e354f15d5cec1d85fa53ed8f62253943ff90fda5a5c28b2c729beba8688",
+    "app/painter/tests/test-hierarchy.cpp": "032621605ee064420a528c183b7907de93b4e688fa9c3c90054120bc892d570e",
+    "app/painter/tests/test-hierarchy.h": "ff70fb38099ec19b86c15d5f1e2e4c02c3f4777689bcc391cd6c15af6d225674",
+    "app/painter/tests/test-reentry.cpp": "53da4804a46cf3f9b6119e3b05eb67c143d4278e8ad7e0fcad34eacb951d5420",
+    "app/painter/tests/test-registry.hpp": "4bd2aff639d1cef2459e41c4039a44d728634fe38ef5d4653e4bb08938b3b0e4",
+    "app/painter/tests/test-resources.cpp": "559501c980a47c62b3bdf0af0691e04d6176fcf1f30a6dfcf9d7d75f25c3de6f",
+    "app/painter/tests/test-work-admission.cpp": "dfea75b460016351f2eaa984cd11bf2e7fdfb2b43d1a4b21848109cd954a1133",
+    "app/painter/work-admission.hpp": "d483512981f42b90c68fc4f3e11ae4f03f4e8e74612a483b3f9d20394d96dfbf"
+  },
+  "build_logs": {
+    "initial": "ninja: Entering directory `/workspace/shared/gimp-cpp-boundary-04005/build-default'\n[1/24] Compiling C++ object app/painter/libapppainter.a.p/gimp-painter-error.cpp.o\n[2/24] Compiling C++ object app/painter/libapppainter.a.p/gimp-painter-binding.cpp.o\n[3/24] Compiling C++ object app/painter/libapppainter.a.p/filter-context.cpp.o\n[4/24] Compiling C++ object app/painter/libapppainter.a.p/binding-store.cpp.o\n[5/24] Compiling C++ object app/painter/libapppainter.a.p/filter-lifetime.cpp.o\n[6/24] Compiling C++ object app/painter/libapppainter.a.p/filter-raster.cpp.o\n[7/24] Compiling C++ object app/painter/libapppainter.a.p/filter-wire.cpp.o\n[8/24] Compiling C++ object app/painter/libapppainter.a.p/filter-process.cpp.o\n[9/24] Compiling C++ object app/painter/libapppainter.a.p/filter-scheduler.cpp.o\n[10/24] Compiling C++ object app/painter/libapppainter.a.p/filter-edge.cpp.o\n[11/24] Compiling C++ object app/painter/libapppainter.a.p/filter-spool.cpp.o\n[12/24] Compiling C object app/painter/painter-foundation.p/tests_test-c-api.c.o\n[13/24] Compiling C object app/painter/painter-foundation.p/tests_test-fixture.c.o\n[14/24] Compiling C object app/painter/painter-foundation.p/tests_test-hierarchy.c.o\n[15/24] Compiling C++ object app/painter/libapppainter.a.p/filter-raster-kernels.cpp.o\n[16/24] Compiling C++ object app/painter/libapppainter.a.p/filter-gauss.cpp.o\n[17/24] Compiling C++ object app/painter/painter-foundation.p/tests_test-hierarchy.cpp.o\n[18/24] Compiling C++ object app/painter/libapppainter.a.p/filter-native-kernels.cpp.o\n[19/24] Linking static target app/painter/libapppainter.a\n[20/24] Compiling C++ object app/painter/painter-foundation.p/tests_test-foundation.cpp.o\n[21/24] Compiling C++ object app/painter/painter-foundation.p/tests_test-resources.cpp.o\n[22/24] Compiling C++ object app/painter/painter-foundation.p/tests_test-gobject.cpp.o\n[23/24] Compiling C++ object app/painter/painter-foundation.p/tests_test-reentry.cpp.o\n[24/24] Linking target app/painter/painter-foundation\n",
+    "final": "ninja: Entering directory `/workspace/shared/gimp-cpp-boundary-04005/build-default'\n[1/2] Compiling C object app/painter/painter-foundation.p/tests_test-c-api.c.o\n[2/2] Linking target app/painter/painter-foundation\n"
+  },
+  "canonical_04006_source_duties": 0,
+  "limitations": [
+    "Native Linux normal runtime only; sanitizers and other platforms were not rerun.",
+    "04.007 GObject callback/lifetime and 04.008 full app link acceptance remain separate.",
+    "Prior frozen foundation/header reports retain their historical source hashes."
+  ]
+}
