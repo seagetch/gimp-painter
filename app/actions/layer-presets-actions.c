@@ -11,6 +11,7 @@
 #include "widgets/gimplayerpresetview.h"
 #include "actions.h"
 #include "layer-presets-actions.h"
+#include "presets/preset-factory-gui.h"
 #include "gimp-intl.h"
 static void apply (GimpAction *action, GVariant *value, gpointer data)
 { if (GIMP_IS_LAYER_PRESET_VIEW (data)) gimp_layer_preset_view_apply (GIMP_LAYER_PRESET_VIEW (data)); }
@@ -35,4 +36,12 @@ void layer_presets_actions_update (GimpActionGroup *group, gpointer data)
 {
   gimp_action_group_set_action_sensitive (group, "layer-presets-apply",
     GIMP_IS_LAYER_PRESET_VIEW (data) && gimp_layer_preset_view_can_apply (GIMP_LAYER_PRESET_VIEW (data)), NULL);
+}
+
+/* Legacy PresetGuiFactory::action_group_entry_point iterated its registry with
+ * an empty body. Preserve that contract, including NULL and repeated calls;
+ * do not conflate it with the separate native Apply/Refresh action setup. */
+void preset_factory_gui_action_group_entry_point (GimpActionGroup *group)
+{
+  (void) group;
 }

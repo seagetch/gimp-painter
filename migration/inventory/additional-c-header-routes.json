@@ -222,6 +222,13 @@
       "context": "core",
       "prerequisites": [],
       "review": "08.017 original001813/001814: retain the callable native gimp_session_write_boolean true/false token helper and its original signature. Extends the identified historical header with C linkage for this declaration. Double-include with the normal core/config/widget type prelude in C11 and C++14; no outer linkage wrapper and no change to historical duties."
+    },
+    {
+      "path": "app/presets/preset-factory-gui.h",
+      "kind": "new",
+      "context": "standalone",
+      "prerequisites": [],
+      "review": "08.018/preset-action-group-entry: original C action-group entry declaration, GLib prerequisite and opaque GimpActionGroup; exact original no-op contract distinct from native Apply/Refresh setup."
     }
   ]
 }

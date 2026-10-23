@@ -1,0 +1,22 @@
+{
+  "scope": "08.018/preset-action-group-entry: exact original no-op C route and typed ownership",
+  "normal_groups": 2,
+  "sanitizer_groups": 2,
+  "sanitizer_units": 5,
+  "header_probes": 419,
+  "original_missing_symbol_red": true,
+  "incorrect_native_alias_mutation_rejected": true,
+  "legacy_commit": "afa43fae3e920210146abed514f136fd49f671b5",
+  "clean_baseline": "77bcdf2b7fb8da6e01492bf2522ef541c2ea05ab",
+  "ui": {
+    "perspective": "PASS24",
+    "layer_presets": "FAIL after4 groups: native-primary-click fixture hit-test before dispatch",
+    "caption": "Separate clean UI regression, not a visual effect of no-op API"
+  },
+  "remaining": [
+    "Original dialogs-actions and preference entry routes not implemented by this task",
+    "No historical C++ Interface, dynamic registry lifecycle or binary subclass ABI claim",
+    "UI fixture geometry failure remains open; no assertion removal",
+    "Sanitizer only5 units; dependencies uninstrumented, LSan/vptr off"
+  ]
+}

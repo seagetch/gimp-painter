@@ -1,0 +1,12 @@
+[
+  {
+    "name": "gimp:app / preset-gui-entries",
+    "result": "OK",
+    "returncode": 0,
+    "stdout": "TAP version 14\n# random seed: R02Sa9b815bb15b221e7b34863dc64fc52d4\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n1..2\n# Start of preset-gui-entry tests\nok 1 /preset-gui-entry/signature-null\nok 2 /preset-gui-entry/no-op-groups-handle\n# End of preset-gui-entry tests\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n",
+    "duration": 1.0674951076507568,
+    "command": [
+      "/workspace/shared/gimp-native-preset-gui/build/app/tests/preset-gui-entries"
+    ]
+  }
+]

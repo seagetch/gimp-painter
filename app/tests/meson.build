@@ -1115,3 +1115,14 @@ test('gimp-json-resource', json_resource_test,
         'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
         'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
         'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 60)
+
+# Original preset GUI C routes, distinct from native layer-preset actions.
+preset_gui_entries_test = executable('preset-gui-entries',
+  'test-preset-gui-entries.c', 'test-preset-gui-entries.cpp', 'tests.c',
+  dependencies: [libapp_dep, appstream], link_with: apptests_links,
+  cpp_args: painter_cpp_args, override_options: ['c_std=c11', 'cpp_std=c++14'])
+test('preset-gui-entries', preset_gui_entries_test,
+  env: ['GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+        'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+        'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
+        'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 60)
