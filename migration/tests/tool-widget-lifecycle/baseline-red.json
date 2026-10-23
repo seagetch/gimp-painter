@@ -1,0 +1,65 @@
+{
+  "task": "08.014",
+  "baseline_head": "762db20a68e9063a31620f0d90c02214e00306b1",
+  "baseline_source_sha256": {
+    "app/display/gimppaintercanvasui.cpp": "d51aca41662464a120ce3badf28e202381a2e0c0a2a03d4263a81b346c931fed",
+    "app/widgets/gimppainterlayertiles.cpp": "218033b3a7ad19a2347bc263268397dbae514529abb3ae4b282060cbb8597011",
+    "app/tests/test-painter-canvas-ui.c": "183e94581e8ec0457651446993e473288b024d4cd763791d66556fef2b974304"
+  },
+  "targeted_regressions": [
+    {
+      "case": "tool_click_active_owner_close",
+      "result": "FAIL",
+      "exit_code": -6,
+      "duration_seconds": 2.466183662414551,
+      "assertion": "not ok /painter-canvas-ui/tool_click_active_owner_close - ERROR:../source/app/tests/test-painter-canvas-ui.c:508:tool_click_close: 'gimp_context_get_tool(gimp_get_user_context(gimp))==f.replacement' should be TRUE"
+    },
+    {
+      "case": "tool_click_expanded_owner_close",
+      "result": "FAIL",
+      "exit_code": -6,
+      "duration_seconds": 2.125378131866455,
+      "assertion": "not ok /painter-canvas-ui/tool_click_expanded_owner_close - ERROR:../source/app/tests/test-painter-canvas-ui.c:508:tool_click_close: 'gimp_context_get_tool(gimp_get_user_context(gimp))==f.replacement' should be TRUE"
+    },
+    {
+      "case": "tool_expander_owner_close",
+      "result": "FAIL",
+      "exit_code": -6,
+      "duration_seconds": 2.188472270965576,
+      "assertion": "not ok /painter-canvas-ui/tool_expander_owner_close - ERROR:../source/app/tests/test-painter-canvas-ui.c:526:tool_expander_owner_close: 'gimp_context_get_tool(gimp_get_user_context(gimp))==f.replacement' should be TRUE"
+    },
+    {
+      "case": "tool_click_newer_selection",
+      "result": "FAIL",
+      "exit_code": -6,
+      "duration_seconds": 2.0348825454711914,
+      "assertion": "not ok /painter-canvas-ui/tool_click_newer_selection - ERROR:../source/app/tests/test-painter-canvas-ui.c:537:tool_click_newer_selection: 'gimp_context_get_tool(gimp_get_user_context(gimp))==f.replacement' should be TRUE"
+    }
+  ],
+  "positive_controls": [
+    {
+      "test_registration": "painter-canvas-ui",
+      "result": "OK",
+      "exit_code": 0,
+      "duration_seconds": 2.2649409770965576,
+      "passed_cases": 1,
+      "tap": "TAP version 14\nok 1 /painter-canvas-ui/tool_pending_refresh_owner_destroy\n1..1\n"
+    },
+    {
+      "test_registration": "painter-canvas-ui",
+      "result": "OK",
+      "exit_code": 0,
+      "duration_seconds": 2.649517059326172,
+      "passed_cases": 1,
+      "tap": "TAP version 14\nok 1 /painter-canvas-ui/tool_group_selection_restores_canvas_focus\n1..1\n"
+    }
+  ],
+  "interim_fix_regression": {
+    "controller_sha256": "b253f9de54813bdca96533486ce45b008d9089e44e1f99b04d13e276fbd9bd7b",
+    "case": "tool_group_selection_restores_canvas_focus",
+    "result": "FAIL",
+    "assertion": "not ok /painter-canvas-ui/tool_group_selection_restores_canvas_focus - ERROR:../source/app/tests/test-painter-canvas-ui.c:556:tool_group_selection_restores_canvas_focus: 'gtk_window_get_focus(GTK_WINDOW(toplevel))==f.shell->canvas' should be TRUE",
+    "resolution": "Restore focus for same-target synchronous completion without replaying interrupted model changes; final native and ASan suites both pass the focus case."
+  },
+  "fixture_correction": "Initial close fixtures used the current group and confused the upstream tool manager synchronous selection with post-close continuation. Corrected fixtures select a supported unrelated current Paintbrush tool first. Initial failed-fixture evidence was preserved separately and is not counted as baseline defect proof."
+}

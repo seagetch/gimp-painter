@@ -60,6 +60,7 @@ struct Canvas {
   std::vector<Panel> panels;
   std::vector<Connection> signals, controls, tool_signals;
   Source refresh_tools;
+  guint64 tool_revision = 0;
   GtkWidget *layers = nullptr, *colors = nullptr, *tools = nullptr, *bar = nullptr, *swatches = nullptr;
   ObjectRef<GObject> popup, dock, dock_host, dock_options, canvas;
   Connection popup_connection;
@@ -129,28 +130,52 @@ void active_color (GObject *widget,GParamSpec*,gpointer data) {
 }
 void tool_changed (GimpContext*,GimpToolInfo *tool,gpointer data) {
   dispatch(data,[&](Canvas&s,GObject*,const std::string&){
-    auto *parent=tool?gimp_viewable_get_parent(GIMP_VIEWABLE(tool)):nullptr;
-    if(GIMP_IS_TOOL_GROUP(parent)) {
-      gimp_tool_group_set_active_tool_info(GIMP_TOOL_GROUP(parent),tool);
-      gimp_viewable_set_expanded(parent,TRUE);
+    /* Signals can synchronously close this owner or select a newer tool.
+     * The binding lease keeps the controller alive, not the operation valid. */
+    if(gimp_context_get_tool(s.ctx())!=tool)return;
+    const auto revision=++s.tool_revision;
+    auto selected=ObjectRef<GObject>::retain(tool?G_OBJECT(tool):nullptr);
+    auto parent=ObjectRef<GObject>::retain(tool?G_OBJECT(gimp_viewable_get_parent(GIMP_VIEWABLE(tool))):nullptr);
+    if(GIMP_IS_TOOL_GROUP(parent.get())) {
+      gimp_tool_group_set_active_tool_info(GIMP_TOOL_GROUP(parent.get()),tool);
+      if(s.closed || s.tool_revision!=revision)return;
+      gimp_viewable_set_expanded(GIMP_VIEWABLE(parent.get()),TRUE);
+      if(s.closed || s.tool_revision!=revision)return;
     }
     s.schedule_tools();
   });
 }
 void tool_selected (GtkWidget*,gpointer data) { dispatch(data,[](Canvas&s,GObject*target,const std::string&){
   if (GIMP_IS_TOOL_INFO(target)) {
-    auto *parent=gimp_viewable_get_parent(GIMP_VIEWABLE(target));
-    if(GIMP_IS_TOOL_GROUP(parent)) {gimp_tool_group_set_active_tool_info(GIMP_TOOL_GROUP(parent),GIMP_TOOL_INFO(target));gimp_viewable_set_expanded(parent,TRUE);}
-    gimp_context_set_tool(s.ctx(),GIMP_TOOL_INFO(target));s.schedule_tools();gtk_widget_grab_focus(s.shell->canvas);
+    const auto revision=++s.tool_revision;
+    auto focus_selected=[&](){
+      if(!s.closed && gimp_context_get_tool(s.ctx())==GIMP_TOOL_INFO(target))
+        gtk_widget_grab_focus(s.shell->canvas);
+    };
+    auto parent=ObjectRef<GObject>::retain(G_OBJECT(gimp_viewable_get_parent(GIMP_VIEWABLE(target))));
+    if(GIMP_IS_TOOL_GROUP(parent.get())) {
+      gimp_tool_group_set_active_tool_info(GIMP_TOOL_GROUP(parent.get()),GIMP_TOOL_INFO(target));
+      /* A same-target tool-manager notification completes this choice;
+       * preserve its focus handoff without replaying model changes. */
+      if(s.closed || s.tool_revision!=revision){focus_selected();return;}
+      gimp_viewable_set_expanded(GIMP_VIEWABLE(parent.get()),TRUE);
+      if(s.closed || s.tool_revision!=revision){focus_selected();return;}
+    }
+    gimp_context_set_tool(s.ctx(),GIMP_TOOL_INFO(target));
+    if(s.closed)return;
+    s.schedule_tools();focus_selected();
   }
 }); }
 void group_expanded (GObject*widget,GParamSpec*,gpointer data) { dispatch(data,[&](Canvas&s,GObject*target,const std::string&){
   if(target) {
+    const auto revision=++s.tool_revision;
     bool expanded=gtk_expander_get_expanded(GTK_EXPANDER(widget));
     gimp_viewable_set_expanded(GIMP_VIEWABLE(target),expanded);
+    if(s.closed || s.tool_revision!=revision)return;
     if(expanded) {
       auto *active=gimp_tool_group_get_active_tool_info(GIMP_TOOL_GROUP(target));
       if(active)gimp_context_set_tool(s.ctx(),active);
+      if(s.closed)return;
       s.schedule_tools();
     }
   }

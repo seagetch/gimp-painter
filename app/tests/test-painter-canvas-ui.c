@@ -438,6 +438,148 @@ static void overlay_tool_group(void) {
   else{gimp_container_insert(mc,GIMP_OBJECT(move),mi);gimp_container_insert(ac,GIMP_OBJECT(align),ai);}
   gimp_context_set_tool(gimp_get_user_context(gimp),saved);g_object_unref(saved);g_object_unref(group);g_object_unref(mc);g_object_unref(ac);drain();close_shell(shell);
 }
+/* The tool controller uses native GTK parents and a shell BindingStore slot.
+ * Keep the actual clicked/expanded widget retained across reentrant close. */
+typedef struct {
+  GimpDisplayShell *shell;
+  GimpToolGroup *group;
+  GimpToolInfo *move, *align, *saved, *replacement;
+  GimpContainer *mc, *ac;
+  gint mi, ai;
+  guint calls;
+} ToolReentry;
+static void tool_reentry_begin(ToolReentry *f) {
+  f->shell=new_shell();gimp_painter_canvas_ui_set_visible(f->shell,TRUE);drain();
+  f->move=GIMP_TOOL_INFO(gimp_container_get_child_by_name(gimp->tool_info_list,"gimp-move-tool"));
+  f->align=GIMP_TOOL_INFO(gimp_container_get_child_by_name(gimp->tool_info_list,"gimp-align-tool"));
+  f->saved=g_object_ref(gimp_context_get_tool(gimp_get_user_context(gimp)));
+  GimpViewable *mp=gimp_viewable_get_parent(GIMP_VIEWABLE(f->move)),*ap=gimp_viewable_get_parent(GIMP_VIEWABLE(f->align));
+  f->mc=g_object_ref(mp?gimp_viewable_get_children(mp):gimp->tool_item_list);
+  f->ac=g_object_ref(ap?gimp_viewable_get_children(ap):gimp->tool_item_list);
+  f->mi=gimp_container_get_child_index(f->mc,GIMP_OBJECT(f->move));
+  f->ai=gimp_container_get_child_index(f->ac,GIMP_OBJECT(f->align));
+  gimp_container_remove(f->mc,GIMP_OBJECT(f->move));gimp_container_remove(f->ac,GIMP_OBJECT(f->align));
+  f->group=gimp_tool_group_new();
+  GimpContainer *children=gimp_viewable_get_children(GIMP_VIEWABLE(f->group));
+  gimp_container_add(children,GIMP_OBJECT(f->move));gimp_container_add(children,GIMP_OBJECT(f->align));
+  gimp_container_add(gimp->tool_item_list,GIMP_OBJECT(f->group));
+  gimp_context_set_tool(gimp_get_user_context(gimp),f->move);
+  gimp_tool_group_set_active_tool_info(f->group,f->move);
+  gimp_viewable_set_expanded(GIMP_VIEWABLE(f->group),FALSE);drain();
+}
+static void tool_reentry_end(ToolReentry *f) {
+  g_signal_handlers_disconnect_by_data(f->group,f);
+  gimp_painter_canvas_ui_close(f->shell);gimp_painter_canvas_ui_close(f->shell);drain();
+  GimpContainer *children=gimp_viewable_get_children(GIMP_VIEWABLE(f->group));
+  gimp_container_remove(children,GIMP_OBJECT(f->move));gimp_container_remove(children,GIMP_OBJECT(f->align));
+  gimp_container_remove(gimp->tool_item_list,GIMP_OBJECT(f->group));
+  if(f->mc==f->ac&&f->mi>f->ai) {
+    gimp_container_insert(f->ac,GIMP_OBJECT(f->align),f->ai);gimp_container_insert(f->mc,GIMP_OBJECT(f->move),f->mi);
+  } else {
+    gimp_container_insert(f->mc,GIMP_OBJECT(f->move),f->mi);gimp_container_insert(f->ac,GIMP_OBJECT(f->align),f->ai);
+  }
+  gimp_context_set_tool(gimp_get_user_context(gimp),f->saved);
+  g_object_unref(f->saved);g_object_unref(f->group);g_object_unref(f->mc);g_object_unref(f->ac);
+  close_shell(f->shell);
+}
+static void tool_reentry_close(GObject *emitter,gpointer data) {
+  ToolReentry *f=data;(void)emitter;
+  if(f->calls++==0)gimp_painter_canvas_ui_close(f->shell);
+}
+static void tool_reentry_select(GObject *emitter,gpointer data) {
+  ToolReentry *f=data;(void)emitter;
+  if(f->calls++==0)gimp_context_set_tool(gimp_get_user_context(gimp),f->replacement);
+}
+static void tool_reentry_inactive_group(ToolReentry *f) {
+  /* The standard tool manager follows active-tool changes in the current
+   * group. Use a different current tool so this fixture isolates continuation
+   * after our notification, rather than that earlier upstream transition. */
+  f->replacement=GIMP_TOOL_INFO(gimp_container_get_child_by_name(gimp->tool_info_list,"gimp-paintbrush-tool"));
+  g_assert_nonnull(f->replacement);
+  gimp_context_set_tool(gimp_get_user_context(gimp),f->replacement);drain();
+}
+static void tool_click_close(gboolean expanded) {
+  ToolReentry f={0};tool_reentry_begin(&f);tool_reentry_inactive_group(&f);
+  GtkWidget *button=find(f.shell->canvas,"gimp-align-tool");g_assert_nonnull(button);g_object_ref(button);
+  g_signal_connect(f.group,expanded?"expanded-changed":"active-tool-changed",G_CALLBACK(tool_reentry_close),&f);
+  gtk_button_clicked(GTK_BUTTON(button));
+  g_assert_cmpuint(f.calls,==,1);
+  g_assert_false(gimp_painter_canvas_ui_get_visible(f.shell));
+  g_assert_true(gimp_context_get_tool(gimp_get_user_context(gimp))==f.replacement);
+  /* Disconnected stale controls and pending refreshes must not revive work. */
+  gtk_button_clicked(GTK_BUTTON(button));drain();
+  g_assert_true(gimp_context_get_tool(gimp_get_user_context(gimp))==f.replacement);
+  g_object_unref(button);tool_reentry_end(&f);
+}
+static void tool_click_active_owner_close(void) { tool_click_close(FALSE); }
+static void tool_click_expanded_owner_close(void) { tool_click_close(TRUE); }
+static void tool_expander_owner_close(void) {
+  ToolReentry f={0};tool_reentry_begin(&f);tool_reentry_inactive_group(&f);
+  gimp_tool_group_set_active_tool_info(f.group,f.align);drain();
+  GtkWidget *button=find(f.shell->canvas,"gimp-align-tool");g_assert_nonnull(button);
+  GtkWidget *expander=gtk_widget_get_ancestor(button,GTK_TYPE_EXPANDER);g_assert_nonnull(expander);g_object_ref(expander);
+  g_assert_false(gtk_expander_get_expanded(GTK_EXPANDER(expander)));
+  g_signal_connect(f.group,"expanded-changed",G_CALLBACK(tool_reentry_close),&f);
+  gtk_expander_set_expanded(GTK_EXPANDER(expander),TRUE);
+  g_assert_cmpuint(f.calls,==,1);
+  g_assert_false(gimp_painter_canvas_ui_get_visible(f.shell));
+  g_assert_true(gimp_context_get_tool(gimp_get_user_context(gimp))==f.replacement);
+  drain();g_object_unref(expander);tool_reentry_end(&f);
+}
+static void tool_click_newer_selection(void) {
+  ToolReentry f={0};tool_reentry_begin(&f);
+  f.replacement=GIMP_TOOL_INFO(gimp_container_get_child_by_name(gimp->tool_info_list,"gimp-paintbrush-tool"));
+  g_assert_nonnull(f.replacement);
+  GtkWidget *button=find(f.shell->canvas,"gimp-align-tool");g_assert_nonnull(button);g_object_ref(button);
+  g_signal_connect(f.group,"active-tool-changed",G_CALLBACK(tool_reentry_select),&f);
+  gtk_button_clicked(GTK_BUTTON(button));
+  g_assert_cmpuint(f.calls,==,1);
+  g_assert_true(gimp_context_get_tool(gimp_get_user_context(gimp))==f.replacement);
+  drain();g_assert_true(gimp_context_get_tool(gimp_get_user_context(gimp))==f.replacement);
+  GtkWidget *selected=find(f.shell->canvas,"gimp-paintbrush-tool");g_assert_nonnull(selected);
+  g_assert_true(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(selected)));
+  g_object_unref(button);tool_reentry_end(&f);
+}
+static void tool_group_selection_restores_canvas_focus(void) {
+  ToolReentry f={0};tool_reentry_begin(&f);
+  GtkWidget *entry=gtk_entry_new();g_object_ref_sink(entry);
+  g_assert_true(gimp_painter_canvas_ui_attach_dock(f.shell,entry));
+  GtkWidget *toplevel=gtk_widget_get_toplevel(GTK_WIDGET(f.shell));g_assert_true(GTK_IS_WINDOW(toplevel));
+  gtk_widget_grab_focus(entry);
+  g_assert_true(gtk_window_get_focus(GTK_WINDOW(toplevel))==entry);
+  GtkWidget *button=find(f.shell->canvas,"gimp-align-tool");g_assert_nonnull(button);g_object_ref(button);
+  /* The standard tool manager changes the context synchronously when choosing
+   * another member of the current group. That is completion of this choice,
+   * not a newer conflicting request, and must still restore canvas focus. */
+  gtk_button_clicked(GTK_BUTTON(button));
+  g_assert_true(gimp_context_get_tool(gimp_get_user_context(gimp))==f.align);
+  g_assert_true(gtk_window_get_focus(GTK_WINDOW(toplevel))==f.shell->canvas);
+  drain();g_assert_true(gtk_window_get_focus(GTK_WINDOW(toplevel))==f.shell->canvas);
+  g_object_unref(button);gimp_painter_canvas_ui_detach_dock(f.shell);gtk_widget_destroy(entry);g_object_unref(entry);
+  tool_reentry_end(&f);
+}
+static void tool_pending_refresh_owner_destroy(void) {
+  ToolReentry f={0};tool_reentry_begin(&f);tool_reentry_inactive_group(&f);
+  GtkWidget *button=find(f.shell->canvas,"gimp-align-tool");g_assert_nonnull(button);g_object_ref(button);
+  GtkWidget *expander=gtk_widget_get_ancestor(button,GTK_TYPE_EXPANDER);g_assert_nonnull(expander);
+  GtkWidget *root=gtk_widget_get_parent(expander);g_assert_true(GTK_IS_BOX(root));
+  g_assert_cmpint(gtk_orientable_get_orientation(GTK_ORIENTABLE(root)),==,GTK_ORIENTATION_VERTICAL);
+  g_assert_nonnull(gtk_widget_get_ancestor(root,GTK_TYPE_SCROLLED_WINDOW));
+  g_assert_true(gtk_widget_get_ancestor(root,GIMP_TYPE_DISPLAY_SHELL)==GTK_WIDGET(f.shell));
+  gpointer weak_root=root,weak_shell=f.shell;
+  g_object_add_weak_pointer(G_OBJECT(root),&weak_root);
+  g_object_add_weak_pointer(G_OBJECT(f.shell),&weak_shell);
+  g_object_ref(f.shell);
+  /* Queue model refresh, then retire its owner without dispatching the idle. */
+  gimp_tool_group_set_active_tool_info(f.group,f.align);
+  gimp_painter_canvas_ui_close(f.shell);gimp_painter_canvas_ui_close(f.shell);
+  gtk_button_clicked(GTK_BUTTON(button));drain();
+  g_assert_false(gimp_painter_canvas_ui_get_visible(f.shell));
+  g_assert_true(gimp_context_get_tool(gimp_get_user_context(gimp))==f.replacement);
+  g_object_unref(button);tool_reentry_end(&f);
+  g_object_unref(f.shell);drain();
+  g_assert_null(weak_shell);g_assert_null(weak_root);
+}
 static void multiple_canvas_context_and_dock_transfer(void) {
   GimpDisplayShell *a=new_shell();gimp_painter_canvas_ui_set_visible(a,TRUE);drain();
   GimpImage *ia=gimp_display_get_image(a->display);
@@ -523,7 +665,7 @@ int main(int argc,char **argv) {
   ADD(popup_properties_reentrant_owner_close);ADD(popup_creation_reentrant_owner_close);ADD(popup_properties_reentrant_image_switch);ADD(popup_creation_reentrant_image_switch);
   ADD(destroyed_tiles_reject_image);ADD(image_switch_popup_owner_close);ADD(image_switch_popup_newer_image);ADD(parent_image_notify_owner_close);
   ADD(popup_controls_and_clone);ADD(mask_controls);ADD(long_press_once);ADD(reentrant_visibility_close);ADD(multiple_reorder_one_undo);ADD(hide_cancels_grab);
-  ADD(overlay_input_and_restore);ADD(dock_restore_and_parent_close);ADD(overlay_tools_and_colors);ADD(overlay_tool_group);ADD(multiple_canvas_context_and_dock_transfer);ADD(overlay_owner_destroy_callbacks);
+  ADD(overlay_input_and_restore);ADD(dock_restore_and_parent_close);ADD(overlay_tools_and_colors);ADD(overlay_tool_group);ADD(tool_click_active_owner_close);ADD(tool_click_expanded_owner_close);ADD(tool_expander_owner_close);ADD(tool_click_newer_selection);ADD(tool_pending_refresh_owner_destroy);ADD(tool_group_selection_restores_canvas_focus);ADD(multiple_canvas_context_and_dock_transfer);ADD(overlay_owner_destroy_callbacks);
   }
   g_application_run(gimp->app,0,NULL);
   int result=gimp_core_app_get_exit_status(GIMP_CORE_APP(gimp->app));
