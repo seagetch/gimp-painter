@@ -124,7 +124,6 @@ static void     gimp_vector_tool_vectors_changed (GimpImage             *image,
 static void     gimp_vector_tool_vectors_removed (GimpPath              *vectors,
                                                   GimpVectorTool        *vector_tool);
 
-static void     gimp_vector_tool_to_selection    (GimpVectorTool        *vector_tool);
 static void     gimp_vector_tool_to_selection_extended
                                                  (GimpVectorTool        *vector_tool,
                                                   GdkModifierType        state);
@@ -583,32 +582,13 @@ gimp_vector_tool_set_path (GimpVectorTool *vector_tool,
 
       g_clear_object (&vector_tool->path);
 
-      if (options->to_selection_button)
-        {
-          gtk_widget_set_sensitive (options->to_selection_button, FALSE);
-          g_signal_handlers_disconnect_by_func (options->to_selection_button,
-                                                gimp_vector_tool_to_selection,
-                                                tool);
-          g_signal_handlers_disconnect_by_func (options->to_selection_button,
-                                                gimp_vector_tool_to_selection_extended,
-                                                tool);
-        }
-
-      if (options->fill_button)
-        {
-          gtk_widget_set_sensitive (options->fill_button, FALSE);
-          g_signal_handlers_disconnect_by_func (options->fill_button,
-                                                gimp_vector_tool_fill_vectors,
-                                                tool);
-        }
-
-      if (options->stroke_button)
-        {
-          gtk_widget_set_sensitive (options->stroke_button, FALSE);
-          g_signal_handlers_disconnect_by_func (options->stroke_button,
-                                                gimp_vector_tool_stroke_vectors,
-                                                tool);
-        }
+      g_signal_handlers_disconnect_by_func (options,
+                                            gimp_vector_tool_to_selection_extended,
+                                            tool);
+      g_signal_handlers_disconnect_by_func (options,
+                                            gimp_vector_tool_fill_vectors, tool);
+      g_signal_handlers_disconnect_by_func (options,
+                                            gimp_vector_tool_stroke_vectors, tool);
     }
 
   if (! vectors ||
@@ -619,7 +599,10 @@ gimp_vector_tool_set_path (GimpVectorTool *vector_tool,
     }
 
   if (! vectors)
-    return;
+    {
+      gimp_vector_options_set_path_active (options, FALSE);
+      return;
+    }
 
   vector_tool->path = g_object_ref (vectors);
 
@@ -630,32 +613,15 @@ gimp_vector_tool_set_path (GimpVectorTool *vector_tool,
                            G_CALLBACK (gimp_vector_tool_vectors_removed),
                            vector_tool, 0);
 
-  if (options->to_selection_button)
-    {
-      g_signal_connect_swapped (options->to_selection_button, "clicked",
-                                G_CALLBACK (gimp_vector_tool_to_selection),
-                                tool);
-      g_signal_connect_swapped (options->to_selection_button, "extended-clicked",
-                                G_CALLBACK (gimp_vector_tool_to_selection_extended),
-                                tool);
-      gtk_widget_set_sensitive (options->to_selection_button, TRUE);
-    }
-
-  if (options->fill_button)
-    {
-      g_signal_connect_swapped (options->fill_button, "clicked",
-                                G_CALLBACK (gimp_vector_tool_fill_vectors),
-                                tool);
-      gtk_widget_set_sensitive (options->fill_button, TRUE);
-    }
-
-  if (options->stroke_button)
-    {
-      g_signal_connect_swapped (options->stroke_button, "clicked",
-                                G_CALLBACK (gimp_vector_tool_stroke_vectors),
-                                tool);
-      gtk_widget_set_sensitive (options->stroke_button, TRUE);
-    }
+  g_signal_connect_object (options, "to-selection",
+                           G_CALLBACK (gimp_vector_tool_to_selection_extended),
+                           tool, G_CONNECT_SWAPPED);
+  g_signal_connect_object (options, "fill-path",
+                           G_CALLBACK (gimp_vector_tool_fill_vectors),
+                           tool, G_CONNECT_SWAPPED);
+  g_signal_connect_object (options, "stroke-path",
+                           G_CALLBACK (gimp_vector_tool_stroke_vectors),
+                           tool, G_CONNECT_SWAPPED);
 
   if (tool->display)
     {
@@ -696,12 +662,8 @@ gimp_vector_tool_set_path (GimpVectorTool *vector_tool,
   if (options->edit_mode != GIMP_PATH_MODE_DESIGN)
     g_object_set (options, "vectors-edit-mode",
                   GIMP_PATH_MODE_DESIGN, NULL);
-}
 
-static void
-gimp_vector_tool_to_selection (GimpVectorTool *vector_tool)
-{
-  gimp_vector_tool_to_selection_extended (vector_tool, 0);
+  gimp_vector_options_set_path_active (options, vector_tool->path != NULL);
 }
 
 static void
@@ -721,6 +683,23 @@ gimp_vector_tool_to_selection_extended (GimpVectorTool  *vector_tool,
   gimp_image_flush (image);
 }
 
+
+/* Native dialogs capture their original targets.  Closing a target must close
+ * the dialog as well: its drawable list is borrowed, and a later selection or
+ * tool change must neither retarget the operation nor leave dangling targets. */
+static void
+gimp_vector_tool_watch_dialog_targets (GtkWidget *dialog,
+                                       GimpImage *image,
+                                       GList     *drawables)
+{
+  g_signal_connect_object (image, "disconnect",
+                           G_CALLBACK (gtk_widget_destroy), dialog,
+                           G_CONNECT_SWAPPED);
+  for (GList *iter = drawables; iter; iter = iter->next)
+    g_signal_connect_object (iter->data, "removed",
+                             G_CALLBACK (gtk_widget_destroy), dialog,
+                             G_CONNECT_SWAPPED);
+}
 
 static void
 gimp_vector_tool_fill_vectors (GimpVectorTool *vector_tool,
@@ -767,7 +746,8 @@ gimp_vector_tool_fill_vectors (GimpVectorTool *vector_tool,
                             button,
                             config->fill_options,
                             gimp_vector_tool_fill_callback,
-                            vector_tool);
+                            NULL);
+  gimp_vector_tool_watch_dialog_targets (dialog, image, drawables);
   gtk_widget_show (dialog);
   g_list_free (vectors_list);
   g_list_free (drawables);
@@ -856,7 +836,8 @@ gimp_vector_tool_stroke_vectors (GimpVectorTool *vector_tool,
                               button,
                               config->stroke_options,
                               gimp_vector_tool_stroke_callback,
-                              vector_tool);
+                              NULL);
+  gimp_vector_tool_watch_dialog_targets (dialog, image, drawables);
   gtk_widget_show (dialog);
   g_list_free (vectors_list);
   g_list_free (drawables);
