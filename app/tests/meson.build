@@ -636,3 +636,23 @@ filter_quit_fixture = executable('filter-quit-fixture',
   dependencies: [libapp_dep, appstream],
   link_with: apptests_links,
 )
+
+editor_dropdown_test = executable('editor-dropdown', 'test-editor-dropdown.cpp', 'tests.c',
+  dependencies: [libapp_dep, appstream], link_with: apptests_links,
+  cpp_args: painter_cpp_args, override_options: ['cpp_std=c++14'])
+test('editor-dropdown', editor_dropdown_test,
+  depends: gimp_test_icon_dependencies,
+  env: ['GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+        'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+        'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
+        'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 120)
+
+editor_dropdown_preset_control = executable('editor-dropdown-preset-control',
+  'test-editor-dropdown-preset-control.c', 'tests.c',
+  dependencies: [libapp_dep, appstream], link_with: apptests_links)
+test('editor-dropdown-preset-control', editor_dropdown_preset_control,
+  depends: gimp_test_icon_dependencies,
+  env: ['GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+        'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+        'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
+        'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 120)
