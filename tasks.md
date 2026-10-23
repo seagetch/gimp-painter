@@ -604,7 +604,7 @@
 | 13.002 | [x] | Erase 演算を移植する | 13.001 | 旧代表画素と一致 |
 | 13.003 | [x] | Replace 演算を移植する | 13.002 | 旧代表画素と一致 |
 | 13.004 | [x] | Anti-Erase 演算を移植する | 13.003 | 旧代表画素と一致 |
-| 13.005 | [ ] | src-in 演算を移植する | 13.004 | source/destination の扱いが一致 |
+| 13.005 | [x] | src-in 演算を移植する | 13.004 | source/destination の扱いが一致 |
 | 13.006 | [ ] | dst-in 演算を移植する | 13.005 | source/destination の扱いが一致 |
 | 13.007 | [ ] | src-out 演算を移植する | 13.006 | source/destination の扱いが一致 |
 | 13.008 | [ ] | dst-out 演算を移植する | 13.007 | source/destination の扱いが一致 |
