@@ -5,7 +5,8 @@ Run after building app/tests/painter-navigation-events, with the build environme
 This builder does not start GTK. Run the emitted executable on a real display.
 Use ASAN_OPTIONS=detect_leaks=0:halt_on_error=1:abort_on_error=1 and
 UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1, plus the regular test environment.
-Does not claim to instrument all upstream GIMP/dependencies. Original build
+Instruments six C units: navigation, modifiers, shell, rotate, tool-events,
+and the event fixture, not all upstream GIMP/dependencies. Original build
 objects are never replaced. Hold /tmp/gimp-painter-build.lock when sharing it.
 """
 import argparse
@@ -25,11 +26,12 @@ build = args.build.resolve()
 root = Path(__file__).resolve().parents[2]
 output = build / "painter-navigation-event-sanitizers"
 output.mkdir(exist_ok=True)
-report = {"scope": "Navigation arithmetic, modifier configuration, rotation and event adapter plus full GUI test; underlying core/GTK/dependencies uninstrumented",
+report = {"scope": "Six C units: navigation arithmetic, modifier configuration, display shell, rotation, event adapter and GUI event fixture; other GIMP/GTK/dependencies uninstrumented",
           "sanitizers": ["address", "undefined"], "leak_detection": False,
           "sources": [], "commands": [], "run_status": "not run by builder"}
 flags = ["-fsanitize=address,undefined", "-fno-omit-frame-pointer", "-O1"]
 wanted = {"app/display/gimppainternavigation.c", "app/display/gimpmodifiersmanager.c",
+          "app/display/gimpdisplayshell.c",
           "app/display/gimpdisplayshell-rotate.c", "app/display/gimpdisplayshell-tool-events.c",
           "app/tests/test-painter-navigation-events.c"}
 replacements = {}

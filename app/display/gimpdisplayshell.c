@@ -1749,9 +1749,22 @@ gimp_display_shell_scrolled (GimpDisplayShell *shell)
 void
 gimp_display_shell_rotated (GimpDisplayShell *shell)
 {
+  GList *list;
+
   g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
 
   gimp_display_shell_rotate_update_transform (shell);
+
+  for (list = shell->children; list; list = g_list_next (list))
+    {
+      GtkWidget *child = list->data;
+      gdouble    x, y;
+
+      gimp_display_shell_transform_overlay (shell, child, &x, &y);
+
+      gimp_overlay_box_set_child_position (GIMP_OVERLAY_BOX (shell->canvas),
+                                           child, x, y);
+    }
 
   g_signal_emit (shell, display_shell_signals[ROTATED], 0);
 }
