@@ -124,3 +124,5 @@ extern "C" void gimp_test_perspective_handle_register (void)
   g_test_add_func ("/perspective/handle/rejection-and-close", rejection_and_close);
   g_test_add_func ("/perspective/handle/callback-reentry", callback_reentry);
 }
+
+#include "test-painter-guide-factory-wrapper.inc"

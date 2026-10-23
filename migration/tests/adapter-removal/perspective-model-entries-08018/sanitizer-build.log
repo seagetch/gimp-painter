@@ -1,0 +1,44 @@
+In file included from [01m[K../source/app/paint/painter-mypaint/engine.cpp:3[m[K:
+[01m[K../source/app/paint/painter-mypaint/legacy-brush.hpp:[m[K In member function ‘[01m[Kvoid GimpPainter::MyPaint::Legacy::Brush::[01;32m[Kupdate_states_and_setting_values[m[K(float, float, float, float, float, float)[m[K’:
+[01m[K../source/app/paint/painter-mypaint/legacy-brush.hpp:398:13:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kdx_old[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  398 |       float [01;35m[Kdx_old[m[K = states[STATE_DIRECTION_DX];
+      |             [01;35m[K^~~~~~[m[K
+[01m[K../source/app/paint/painter-mypaint/legacy-brush.hpp:399:13:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kdy_old[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  399 |       float [01;35m[Kdy_old[m[K = states[STATE_DIRECTION_DY];
+      |             [01;35m[K^~~~~~[m[K
+[01m[K../source/app/display/gimppaintercanvasui.cpp:635:6:[m[K [01;35m[Kwarning: [m[K‘[01m[Kvoid {anonymous}::Canvas::[01;32m[Kfinish_compact_restore[m[K(const std::shared_ptr<{anonymous}::Borrow>&)[m[K’ defined but not used [[01;35m[K-Wunused-function[m[K]
+  635 | void [01;35m[KCanvas[m[K::finish_compact_restore (const std::shared_ptr<Borrow>& borrowed) noexcept {
+      |      [01;35m[K^~~~~~[m[K
+[01m[K../source/app/display/gimppaintercanvasui.cpp:282:12:[m[K [01;35m[Kwarning: [m[K‘[01m[KGtkWidget* {anonymous}::[01;32m[Kaction_button[m[K(Canvas&, GtkWidget*, const char*, const char*)[m[K’ defined but not used [[01;35m[K-Wunused-function[m[K]
+  282 | GtkWidget *[01;35m[Kaction_button[m[K(Canvas&s,GtkWidget*box,const char*label,const char*name) {
+      |            [01;35m[K^~~~~~~~~~~~~[m[K
+[01m[K../source/app/paint/gimppainterbrushgeometry.cpp:[m[K In lambda function:
+[01m[K../source/app/paint/gimppainterbrushgeometry.cpp:88:54:[m[K [01;35m[Kwarning: [m[Kcomparison of integer expressions of different signedness: ‘[01m[Kconst std::size_t[m[K’ {aka ‘[01m[Kconst long unsigned int[m[K’} and ‘[01m[Kint[m[K’ [[01;35m[K-Wsign-compare[m[K]
+   88 |     if (mask.width <= 0 || mask.height <= 0 || [01;35m[Kcount > G_MAXINT / channels[m[K)
+      |                                                [01;35m[K~~~~~~^~~~~~~~~~~~~~~~~~~~~[m[K
+In file included from [01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/gobject/gobject.h:26[m[K,
+                 from [01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/gobject/gbinding.h:31[m[K,
+                 from [01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/glib-object.h:24[m[K,
+                 from [01m[K/workspace/shared/gimp-deps-locked/root/usr/include/gegl-0.4/gegl.h:22[m[K,
+                 from [01m[K../source/app/tests/test-painter-perspective.c:6[m[K:
+[01m[K../source/app/tests/test-painter-perspective.c:28:28:[m[K [01;35m[Kwarning: [m[Kno previous declaration for ‘[01m[Kprobe_guide_get_type[m[K’ [[01;35m[K-Wmissing-declarations[m[K]
+   28 | G_DEFINE_TYPE (ProbeGuide, [01;35m[Kprobe_guide[m[K, GIMP_TYPE_PERSPECTIVE_GUIDE)
+      |                            [01;35m[K^~~~~~~~~~~[m[K
+[01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/gobject/gtype.h:2305:1:[m[K [01;36m[Knote: [m[Kin definition of macro ‘[01m[K_G_DEFINE_TYPE_EXTENDED_BEGIN_PRE[m[K’
+ 2305 | [01;36m[Ktype_name[m[K##_get_type (void) \
+      | [01;36m[K^~~~~~~~~[m[K
+[01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/gobject/gtype.h:2053:61:[m[K [01;36m[Knote: [m[Kin expansion of macro ‘[01m[K_G_DEFINE_TYPE_EXTENDED_BEGIN[m[K’
+ 2053 | #define G_DEFINE_TYPE_EXTENDED(TN, t_n, T_P, _f_, _C_)      [01;36m[K_G_DEFINE_TYPE_EXTENDED_BEGIN[m[K (TN, t_n, T_P, _f_) {_C_;} _G_DEFINE_TYPE_EXTENDED_END()
+      |                                                             [01;36m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/gobject/gtype.h:1834:61:[m[K [01;36m[Knote: [m[Kin expansion of macro ‘[01m[KG_DEFINE_TYPE_EXTENDED[m[K’
+ 1834 | #define G_DEFINE_TYPE(TN, t_n, T_P)                         [01;36m[KG_DEFINE_TYPE_EXTENDED[m[K (TN, t_n, T_P, 0, {})
+      |                                                             [01;36m[K^~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-perspective.c:28:1:[m[K [01;36m[Knote: [m[Kin expansion of macro ‘[01m[KG_DEFINE_TYPE[m[K’
+   28 | [01;36m[KG_DEFINE_TYPE[m[K (ProbeGuide, probe_guide, GIMP_TYPE_PERSPECTIVE_GUIDE)
+      | [01;36m[K^~~~~~~~~~~~~[m[K
+In file included from [01m[K../source/app/tests/test-painter-perspective-ui.c:626[m[K:
+[01m[K../source/app/tests/test-painter-tool-group-retirement.inc:[m[K In function ‘[01m[Kretained_groups_deserialize[m[K’:
+[01m[K../source/app/tests/test-painter-tool-group-retirement.inc:51:7:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   51 |       [01;35m[KGimpObject[m[K *first = gimp_container_get_child_by_index (gimp->tool_item_list, 0);
+      |       [01;35m[K^~~~~~~~~~[m[K
+{"painter-perspective": {"path": "/workspace/shared/gimp-native-baseline/build-port/app/tests/painter-perspective-asan", "sha256": "f0ba49dea242bae92c63d91f2e807c707850a1adcb608263faa192570c3992ba"}, "painter-perspective-ui": {"path": "/workspace/shared/gimp-native-baseline/build-port/app/tests/painter-perspective-ui-asan", "sha256": "803e4067375056007244e87d0ae130b4f0b2e62cf4c45558ac97699ad802a914"}}

@@ -32,7 +32,12 @@ static void probe_guide_class_init (ProbeGuideClass *klass)
 { GIMP_PERSPECTIVE_GUIDE_CLASS (klass)->removed = probe_removed; }
 static void probe_guide_init (ProbeGuide *guide) { }
 
-/* This is an extracted SOURCE oracle, not a claim to run the old binary. */
+/* This is an extracted SOURCE oracle, not a claim to run the old binary.
+ * C11 does not require the nonstandard M_PI name; GLib supplies the same
+ * double constant without changing the immutable extracted oracle. */
+#ifndef M_PI
+#define M_PI G_PI
+#endif
 #define gimp_display_shell_snap_angle legacy_snap_angle
 #define g_print(...) ((void)0)
 #include "../../migration/fixtures/legacy-perspective/snap-angle-source.inc"
@@ -329,6 +334,8 @@ static void signal_lifetime(void)
   g_signal_connect(guide,"changed",G_CALLBACK(changed_unref),NULL);
   g_assert_cmpint(gimp_perspective_guide_add_vanish_points(guide,1,2),==,0);g_assert_null(weak);
 }
+
+#include "test-painter-guide-factory.inc"
 int main(int argc,char **argv)
 {
   gint result;g_test_init(&argc,&argv,NULL);
@@ -338,5 +345,6 @@ int main(int argc,char **argv)
   ADD(reentrant_replacement);ADD(dispose_reentry);ADD(edit_undo);ADD(signal_lifetime);
   ADD(removed_class_slot);ADD(setter_owner_release);ADD(duplicate_ownership);
   gimp_test_perspective_handle_register ();
+  register_guide_factory_faults ();
   result=g_test_run();gimp_test_utils_set_gimp3_directory("GIMP_TESTING_ABS_TOP_BUILDDIR","app/tests/gimpdir-output");gimp_exit(gimp,TRUE);return result;
 }

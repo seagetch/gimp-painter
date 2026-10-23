@@ -151,13 +151,14 @@ foreach test_name : app_tests
       (test_name == 'painter-perspective' ? painter_cpp_args : []),
     link_args: (test_name == 'gimp-painter-mybrush' ? mybrush_copy_fault_link_args : []) +
       (test_name == 'gimp-clone-layer' ? clone_route_link_args : []) +
-      (test_name == 'mypaint-selector-contracts' ? selector_route_link_args : []),
+      (test_name == 'mypaint-selector-contracts' ? selector_route_link_args : []) +
+      (test_name == 'painter-perspective' ? ['-Wl,--wrap=_ZN11GimpPainter12BindingStore6ensureEP8_GObject', '-Wl,--wrap=_ZN11GimpPainter12BindingStore8activateEv'] : []),
     dependencies: [ libapp_dep, appstream ] +
       (test_name == 'gimp-painter-mybrush' ? [painter_brush_settings_dep] : []) +
       (test_name == 'mypaint-selector-contracts' ? [painter_mypaint_surface_dep] : []),
     link_with: apptests_links,
     override_options: (['painter-compact-options', 'gimp-painter-mybrush', 'painter-layer-tree', 'gimp-clone-layer', 'mypaint-selector-contracts'].contains(test_name) ? ['c_std=c11', 'cpp_std=c++14'] : []) +
-      (test_name == 'painter-perspective' ? ['cpp_std=c++14'] : []),
+      (test_name == 'painter-perspective' ? ['c_std=c11', 'cpp_std=c++14'] : []),
   )
 
   # Filter tests include real 8193x8193 spill and hundreds of old Gauss buffers.
