@@ -36,32 +36,61 @@ struct ToolImpl {
   Operation operation = Operation::Move;
   gint target = -1;
   bool editing = false, changed = false;
-  void close () noexcept { image.reset (); guide.reset (); before.reset (); target = -1; editing = changed = false; }
-  void finish (bool cancel) {
-    auto owner = image.lock ();
-    if (editing && changed && owner &&
-        gimp_image_get_perspective_guide (GIMP_IMAGE (owner.get ())) == guide.get ()) {
-      if (cancel) gimp_image_set_perspective_guide (GIMP_IMAGE (owner.get ()), before.get ());
-      else gimp_image_perspective_guide_push_undo (GIMP_IMAGE (owner.get ()), before.get (), _("Perspective Guide"));
-      gimp_image_flush (GIMP_IMAGE (owner.get ()));
-    }
-    target = -1; editing = changed = false; before.reset ();
-    if (gimp_tool_control_is_active (tool->control)) gimp_tool_control_halt (tool->control);
-    if (owner) guide = ObjectRef<GimpPerspectiveGuide>::retain (gimp_image_get_perspective_guide (GIMP_IMAGE (owner.get ())));
+  std::uint64_t generation = 0;
+  void close () noexcept {
+    ++generation; target = -1; editing = changed = false;
+    auto old_image = std::move (image);
+    auto old_guide = std::move (guide);
+    auto old_before = std::move (before);
   }
-  void attach (GimpDisplay *display) {
+  bool current (std::uint64_t expected, GObject *owner,
+                GimpPerspectiveGuide *model) const {
+    return editing && generation == expected && image.lock ().get () == owner &&
+      gimp_image_get_perspective_guide (GIMP_IMAGE (owner)) == model;
+  }
+  bool finish (bool cancel) {
+    auto owner = image.lock ();
+    auto edited = guide;
+    auto previous = std::move (before);
+    const bool apply = editing && changed && owner &&
+      gimp_image_get_perspective_guide (GIMP_IMAGE (owner.get ())) == edited.get ();
+    const auto token = ++generation;
+    /* Publish completion before image/Undo notifications can reenter HALT. */
+    target = -1; editing = changed = false;
+    if (gimp_tool_control_is_active (tool->control)) gimp_tool_control_halt (tool->control);
+    if (apply) {
+      if (cancel) gimp_image_set_perspective_guide (GIMP_IMAGE (owner.get ()), previous.get ());
+      else gimp_image_perspective_guide_push_undo (GIMP_IMAGE (owner.get ()), previous.get (), _("Perspective Guide"));
+      if (generation != token) return false;
+      gimp_image_flush (GIMP_IMAGE (owner.get ()));
+      if (generation != token) return false;
+    }
+    if (owner) guide = ObjectRef<GimpPerspectiveGuide>::retain (gimp_image_get_perspective_guide (GIMP_IMAGE (owner.get ())));
+    /* Last-unref callbacks also invalidate the result seen by attach(). */
+    edited.reset (); previous.reset (); owner.reset ();
+    return generation == token;
+  }
+  bool attach (GimpDisplay *display) {
     auto *draw = GIMP_DRAW_TOOL (tool);
     auto owner = image.lock ();
-    auto *current = gimp_display_get_image (display);
-    if (draw->display != display || owner.get () != (current ? G_OBJECT (current) : nullptr)) {
-      finish (true);
+    auto current_image = ObjectRef<GObject>::retain (G_OBJECT (gimp_display_get_image (display)));
+    if (draw->display != display || owner.get () != current_image.get ()) {
+      if (!finish (true)) return false;
+      const auto token = generation;
       if (gimp_draw_tool_is_active (draw)) gimp_draw_tool_stop (draw);
-      image = WeakRef<GObject> (ObjectRef<GObject>::retain (current ? G_OBJECT (current) : nullptr));
+      if (generation != token) return false;
+      image = WeakRef<GObject> (current_image);
       target = -1;
     }
+    auto *current = current_image ? GIMP_IMAGE (current_image.get ()) : nullptr;
+    const auto token = generation;
     guide = ObjectRef<GimpPerspectiveGuide>::retain (current ? gimp_image_get_perspective_guide (current) : nullptr);
+    if (generation != token) return false;
     tool->display = display;
     if (!gimp_draw_tool_is_active (draw)) gimp_draw_tool_start (draw, display);
+    owner.reset (); current_image.reset ();
+    return generation == token && gimp_display_get_image (display) == current &&
+      (!current || gimp_image_get_perspective_guide (current) == guide.get ());
   }
   gint hit (GimpDisplay *display, double x, double y) {
     if (!guide) return -1;
@@ -79,6 +108,32 @@ struct ToolImpl {
   }
 };
 struct ToolSlot : SlotSpec<GimpPerspectiveGuideTool, ToolImpl> {};
+enum { PROP_0, PROP_GUIDE };
+void set_property (GObject *object, guint prop, const GValue *value, GParamSpec *pspec)
+{
+  if (pspec->owner_type != GIMP_TYPE_PERSPECTIVE_GUIDE_TOOL) {
+    G_OBJECT_CLASS (gimp_perspective_guide_tool_parent_class)->set_property (object, prop, value, pspec);
+    return;
+  }
+  property_boundary (object, pspec, "set", [&] {
+    auto model = ObjectRef<GimpPerspectiveGuide>::retain (
+      static_cast<GimpPerspectiveGuide *> (g_value_get_object (value)));
+    auto& binding = BindingStore::require (object);
+    auto set = [&] (ToolImpl& impl) { impl.guide = model; };
+    if (binding.state () == BindingStore::State::constructing) binding.initialize<ToolSlot> (set);
+    else binding.with<ToolSlot> ([&] (ToolImpl& impl) { if (impl.finish (true)) set (impl); });
+  });
+}
+void get_property (GObject *object, guint prop, GValue *value, GParamSpec *pspec)
+{
+  if (pspec->owner_type != GIMP_TYPE_PERSPECTIVE_GUIDE_TOOL) {
+    G_OBJECT_CLASS (gimp_perspective_guide_tool_parent_class)->get_property (object, prop, value, pspec);
+    return;
+  }
+  property_boundary (object, pspec, "get", [&] {
+    BindingStore::require (object).read<ToolSlot> ([&] (const ToolImpl& impl) { g_value_set_object (value, impl.guide.get ()); });
+  });
+}
 template<class F> void with (GimpTool *tool, F function)
 {
   boundary_void (nullptr, [&] {
@@ -116,24 +171,39 @@ void press (GimpTool *tool, const GimpCoords *coords, guint32, GdkModifierType,
             GimpButtonPressType, GimpDisplay *display)
 {
   with (tool, [&] (ToolImpl& impl) {
-    DrawPause pause (tool); impl.attach (display);
+    if (!std::isfinite (coords->x) || !std::isfinite (coords->y)) return;
+    DrawPause pause (tool); if (!impl.attach (display)) return;
     auto owner = impl.image.lock (); if (!owner) return;
     impl.before = ObjectRef<GimpPerspectiveGuide>::adopt (gimp_perspective_guide_duplicate (impl.guide.get ()));
     impl.editing = true; impl.changed = false; impl.target = -1;
+    const auto token = ++impl.generation;
     gimp_tool_control_activate (tool->control);
     if (impl.operation == Operation::Add) {
       if (!impl.guide) {
-        impl.guide = ObjectRef<GimpPerspectiveGuide>::adopt (gimp_perspective_guide_new (0));
-        gimp_image_set_perspective_guide (GIMP_IMAGE (owner.get ()), impl.guide.get ());
+        auto added = ObjectRef<GimpPerspectiveGuide>::adopt (gimp_perspective_guide_new (0));
+        if (!added || gimp_perspective_guide_add_vanish_points (added.get (), coords->x, coords->y) < 0) return;
+        impl.guide = added;
+        impl.changed = true;
+        gimp_image_set_perspective_guide (GIMP_IMAGE (owner.get ()), added.get ());
+      } else if (gimp_perspective_guide_get_vanish_point_length (impl.guide.get ()) < 3) {
+        auto model = impl.guide;
+        const bool was_changed = impl.changed;
+        impl.changed = true;
+        const bool added = gimp_perspective_guide_add_vanish_points (model.get (), coords->x, coords->y) >= 0;
+        if (impl.current (token, owner.get (), model.get ()) && !added) impl.changed = was_changed;
       }
-      impl.changed = gimp_perspective_guide_add_vanish_points (impl.guide.get (), coords->x, coords->y) >= 0;
     } else {
       impl.target = impl.hit (display, coords->x, coords->y);
       if (impl.target >= 0 && impl.operation == Operation::Remove) {
-        impl.changed = gimp_perspective_guide_remove_vanish_points (impl.guide.get (), impl.target);
-        impl.target = -1;
-        if (!gimp_perspective_guide_get_vanish_point_length (impl.guide.get ())) {
-          gimp_image_set_perspective_guide (GIMP_IMAGE (owner.get ()), nullptr); impl.guide.reset ();
+        auto model = impl.guide;
+        const gint target = impl.target;
+        impl.target = -1; impl.changed = true;
+        const bool removed = gimp_perspective_guide_remove_vanish_points (model.get (), target);
+        if (!impl.current (token, owner.get (), model.get ())) return;
+        impl.changed = removed;
+        if (removed && !gimp_perspective_guide_get_vanish_point_length (model.get ())) {
+          impl.guide.reset ();
+          gimp_image_set_perspective_guide (GIMP_IMAGE (owner.get ()), nullptr);
         }
       }
     }
@@ -151,8 +221,14 @@ void motion (GimpTool *tool, const GimpCoords *coords, guint32, GdkModifierType,
     }
     double x, y; gimp_perspective_guide_get_vanish_points (impl.guide.get (), impl.target, &x, &y);
     if (x == coords->x && y == coords->y) return;
+    if (!std::isfinite (coords->x) || !std::isfinite (coords->y)) return;
     DrawPause pause (tool);
-    impl.changed = gimp_perspective_guide_set_vanish_points (impl.guide.get (), impl.target, coords->x, coords->y) || impl.changed;
+    auto model = impl.guide;
+    const auto token = impl.generation;
+    const bool was_changed = impl.changed;
+    impl.changed = true;
+    const bool moved = gimp_perspective_guide_set_vanish_points (model.get (), impl.target, coords->x, coords->y);
+    if (impl.current (token, owner.get (), model.get ()) && !moved) impl.changed = was_changed;
   });
 }
 void modifier (GimpTool *tool, GdkModifierType key, gboolean pressed, GdkModifierType, GimpDisplay *)
@@ -165,8 +241,14 @@ void modifier (GimpTool *tool, GdkModifierType key, gboolean pressed, GdkModifie
                             (key == GDK_CONTROL_MASK && impl.operation == Operation::Remove))) impl.operation = Operation::Move;
   });
 }
-void oper_update (GimpTool *tool, const GimpCoords *, GdkModifierType, gboolean, GimpDisplay *display)
-{ with (tool, [&] (ToolImpl& impl) { if (!impl.editing) { DrawPause pause (tool); impl.attach (display); } }); }
+void oper_update (GimpTool *tool, const GimpCoords *coords, GdkModifierType state,
+                  gboolean proximity, GimpDisplay *display)
+{
+  with (tool, [&] (ToolImpl& impl) {
+    if (!impl.editing) { DrawPause pause (tool); if (!impl.attach (display)) return; }
+    GIMP_TOOL_CLASS (gimp_perspective_guide_tool_parent_class)->oper_update (tool, coords, state, proximity, display);
+  });
+}
 void cursor_update (GimpTool *tool, const GimpCoords *coords, GdkModifierType state, GimpDisplay *display)
 {
   with (tool, [&] (ToolImpl& impl) {
@@ -196,6 +278,11 @@ void draw (GimpDrawTool *draw_tool)
 static void gimp_perspective_guide_tool_class_init (GimpPerspectiveGuideToolClass *klass)
 {
   G_OBJECT_CLASS (klass)->constructed = constructed; G_OBJECT_CLASS (klass)->dispose = dispose;
+  G_OBJECT_CLASS (klass)->set_property = set_property;
+  G_OBJECT_CLASS (klass)->get_property = get_property;
+  g_object_class_install_property (G_OBJECT_CLASS (klass), PROP_GUIDE,
+    g_param_spec_object ("guide", nullptr, nullptr, GIMP_TYPE_PERSPECTIVE_GUIDE,
+      GParamFlags (G_PARAM_READWRITE | G_PARAM_CONSTRUCT | G_PARAM_STATIC_STRINGS)));
   auto *tool = GIMP_TOOL_CLASS (klass);
   tool->control = control; tool->button_press = press; tool->button_release = release; tool->motion = motion;
   tool->modifier_key = modifier; tool->oper_update = oper_update; tool->cursor_update = cursor_update; tool->key_press = key_press;

@@ -11,6 +11,10 @@
 #include "tools/tools-types.h"
 #include "core/gimp.h"
 #include "core/gimpcontainer.h"
+#include "core/gimpcontext.h"
+#include "core/gimptooloptions.h"
+#include "tools/tool_manager.h"
+#include "widgets/gimpwidgets-utils.h"
 #include "core/gimpimage.h"
 #include "core/gimpimage-undo.h"
 #include "core/gimpimage-perspective-guide.h"
@@ -228,6 +232,7 @@ static void old_toolrc_preserves_groups(void)
 {
   gchar *text=NULL,*path=g_build_filename(g_getenv("GIMP_TESTING_ABS_TOP_SRCDIR"),"migration","fixtures","legacy-perspective","gimp3-before-ruler-toolrc",NULL);
   GError *error=NULL;GScanner *scanner;GimpContainer *items=gimp->tool_item_list;GimpObject *first;GimpContainer *children;
+  create_image();
   g_assert_true(g_file_get_contents(path,&text,NULL,&error));g_assert_no_error(error);g_free(path);
   scanner=gimp_scanner_new_string(text,-1,&error);g_assert_no_error(error);
   /* Move the live tool infos only after detaching their existing groups, as reset does. */
@@ -257,7 +262,312 @@ static void old_toolrc_preserves_groups(void)
                          gimp_container_get_child_index (items, last_old));
       }
   }
-  gimp_scanner_unref(scanner);g_free(text);
+  gimp_scanner_unref(scanner);g_free(text);close_image();
+}
+typedef struct { guint calls; gboolean dispose; } InterruptState;
+static void interrupt_edit (GObject *emitter, InterruptState *state)
+{
+  if (state->calls++) return;
+  if (state->dispose) g_object_run_dispose (G_OBJECT (tool));
+  else gimp_tool_control (tool, GIMP_TOOL_ACTION_HALT, shell->display);
+}
+static void interrupted_add (gconstpointer data)
+{
+  GimpCoords coords = { 0 };
+  InterruptState state = { 0, GPOINTER_TO_INT (data) };
+  gulong handler;
+  create_image ();
+  coords.x = 24; coords.y = 36;
+  klass->oper_update (tool, &coords, 0, TRUE, shell->display);
+  klass->modifier_key (tool, GDK_SHIFT_MASK, TRUE, GDK_SHIFT_MASK, shell->display);
+  handler = g_signal_connect (image, "perspective-guide-changed", G_CALLBACK (interrupt_edit), &state);
+  klass->button_press (tool, &coords, 0, GDK_SHIFT_MASK, GIMP_BUTTON_PRESS_NORMAL, shell->display);
+  g_signal_handler_disconnect (image, handler);
+  g_assert_cmpuint (state.calls, >, 0);
+  g_assert_false (gimp_tool_control_is_active (tool->control));
+  g_assert_null (gimp_image_get_perspective_guide (image));
+  close_image ();
+}
+static void interrupted_remove (gconstpointer data)
+{
+  GimpCoords coords = { 0 };
+  InterruptState state = { 0, GPOINTER_TO_INT (data) };
+  GimpPerspectiveGuide *guide;
+  gulong handler;
+  create_image ();
+  guide = gimp_perspective_guide_new (0);
+  gimp_perspective_guide_add_vanish_points (guide, 24, 36);
+  gimp_image_set_perspective_guide (image, guide);
+  coords.x = 24; coords.y = 36;
+  klass->oper_update (tool, &coords, 0, TRUE, shell->display);
+  klass->modifier_key (tool, GDK_CONTROL_MASK, TRUE, GDK_CONTROL_MASK, shell->display);
+  handler = g_signal_connect (guide, "changed", G_CALLBACK (interrupt_edit), &state);
+  klass->button_press (tool, &coords, 0, GDK_CONTROL_MASK, GIMP_BUTTON_PRESS_NORMAL, shell->display);
+  g_signal_handler_disconnect (guide, handler);
+  g_assert_cmpuint (state.calls, ==, 1);
+  g_assert_false (gimp_tool_control_is_active (tool->control));
+  check_point (0, 24, 36);
+  g_object_unref (guide);
+  close_image ();
+}
+static void proximity_status (void)
+{
+  GimpCoords coords = { 0 };
+  create_image ();
+  klass->oper_update (tool, &coords, 0, TRUE, shell->display);
+  g_assert_nonnull (g_list_find (tool->status_displays, shell->display));
+  klass->oper_update (tool, &coords, 0, FALSE, shell->display);
+  g_assert_null (g_list_find (tool->status_displays, shell->display));
+  close_image ();
+}
+static void mark_finalized (gpointer data)
+{ *(gboolean *) data = TRUE; }
+static void registered_type_options (void)
+{
+  GimpToolInfo *info;
+  GimpTool *active;
+  GimpPerspectiveGuideToolClass *native_class;
+  GTypeQuery query;
+  GtkWidget *gui;
+  gboolean visible = FALSE;
+  create_image ();
+  info = gimp_get_tool_info (gimp, "gimp-perspective-guide-tool");
+  g_assert_cmpuint (info->tool_type, ==, GIMP_TYPE_PERSPECTIVE_GUIDE_TOOL);
+  g_assert_cmpuint (info->tool_options_type, ==, GIMP_TYPE_TOOL_OPTIONS);
+  g_assert_cmpuint (info->context_props, ==, 0);
+  g_assert_false (info->hidden);
+  g_object_get (info, "visible", &visible, NULL);
+  g_assert_true (visible);
+  /* GIMP3 restores visibility from toolrc, not the old private qdata. */
+  gimp_tool_item_set_visible (GIMP_TOOL_ITEM (info), FALSE);
+  {
+    /* Test this checkout's shipped defaults, independent of the dependency
+     * prefix's installed GIMP configuration. */
+    gchar *path = g_build_filename (g_getenv ("GIMP_TESTING_ABS_TOP_SRCDIR"), "etc", "toolrc", NULL);
+    gchar *text = NULL;
+    GError *error = NULL;
+    GScanner *scanner;
+    g_assert_true (g_file_get_contents (path, &text, NULL, &error)); g_assert_no_error (error);
+    scanner = gimp_scanner_new_string (text, -1, &error); g_assert_no_error (error);
+    gimp_container_clear (gimp->tool_item_list);
+    g_assert_true (gimp_tools_deserialize (gimp, gimp->tool_item_list, scanner));
+    gimp_scanner_unref (scanner); g_free (text); g_free (path);
+  }
+  g_assert_true (gimp_tool_item_get_visible (GIMP_TOOL_ITEM (info)));
+  gimp_context_set_tool (gimp_get_user_context (gimp), info);
+  active = g_object_ref (tool_manager_get_active (gimp));
+  g_assert_true (GIMP_IS_PERSPECTIVE_GUIDE_TOOL (active));
+  g_assert_true (GIMP_TOOL (GIMP_PERSPECTIVE_GUIDE_TOOL (active)) == active);
+  g_assert_true (active->tool_info == info);
+  g_assert_true (gimp_tool_get_options (active) == info->tool_options);
+  g_assert_cmpuint (G_OBJECT_TYPE (info->tool_options), ==, GIMP_TYPE_TOOL_OPTIONS);
+  g_assert_cmpuint (g_type_parent (G_OBJECT_TYPE (active)), ==, GIMP_TYPE_DRAW_TOOL);
+  native_class = GIMP_PERSPECTIVE_GUIDE_TOOL_GET_CLASS (active);
+  g_assert_true (GIMP_IS_PERSPECTIVE_GUIDE_TOOL_CLASS (native_class));
+  g_assert_true (GIMP_PERSPECTIVE_GUIDE_TOOL_CLASS (G_OBJECT_GET_CLASS (active)) == native_class);
+  g_type_query (G_OBJECT_TYPE (active), &query);
+  g_assert_cmpuint (query.instance_size, ==, sizeof (GimpPerspectiveGuideTool));
+  g_assert_cmpuint (query.class_size, ==, sizeof (GimpPerspectiveGuideToolClass));
+  gui = gimp_tools_get_tool_options_gui (info->tool_options);
+  g_assert_true (GTK_IS_BOX (gui));
+  g_assert_true (gui == gimp_tools_get_tool_options_gui (info->tool_options));
+  gimp_context_set_tool (gimp_get_user_context (gimp), gimp_get_tool_info (gimp, "gimp-paintbrush-tool"));
+  g_object_unref (active);
+  close_image ();
+}
+static void standalone_lifetime (void)
+{
+  for (guint phase = 0; phase < 3; phase++)
+    {
+      gboolean finalized = FALSE, control_finalized = FALSE;
+      GimpCoords coords = { 0 };
+      create_image ();
+      g_object_set_data_full (G_OBJECT (tool), "lifetime-probe", &finalized, mark_finalized);
+      g_object_set_data_full (G_OBJECT (tool->control), "lifetime-probe", &control_finalized, mark_finalized);
+      coords.x = 24; coords.y = 36;
+      klass->oper_update (tool, &coords, 0, TRUE, shell->display);
+      if (phase)
+        {
+          klass->modifier_key (tool, GDK_SHIFT_MASK, TRUE, GDK_SHIFT_MASK, shell->display);
+          klass->button_press (tool, &coords, 0, GDK_SHIFT_MASK, GIMP_BUTTON_PRESS_NORMAL, shell->display);
+          if (phase == 2) klass->button_release (tool, &coords, 0, 0, GIMP_BUTTON_RELEASE_NORMAL, shell->display);
+        }
+      g_object_run_dispose (G_OBJECT (tool));
+      g_object_run_dispose (G_OBJECT (tool));
+      g_assert_false (finalized);
+      g_assert_false (control_finalized);
+      g_assert_false (gimp_tool_control_is_active (tool->control));
+      g_assert_false (gimp_draw_tool_is_active (GIMP_DRAW_TOOL (tool)));
+      g_object_unref (tool); tool = NULL;
+      g_assert_true (finalized); g_assert_true (control_finalized);
+      if (phase == 2)
+        {
+          check_point (0, 24, 36);
+          g_assert_true (gimp_image_undo (image));
+          g_assert_null (gimp_image_get_perspective_guide (image));
+          g_assert_true (gimp_image_redo (image)); check_point (0, 24, 36);
+        }
+      else g_assert_null (gimp_image_get_perspective_guide (image));
+      g_object_unref (image); gimp_display_close (shell->display); gimp_test_run_mainloop_until_idle ();
+    }
+}
+static void interrupted_motion (void)
+{
+  GimpCoords coords = { 0 };
+  InterruptState state = { 0 };
+  GimpPerspectiveGuide *guide;
+  gulong handler;
+  create_image ();
+  guide = gimp_perspective_guide_new (0);
+  gimp_perspective_guide_add_vanish_points (guide, 24, 36);
+  gimp_image_set_perspective_guide (image, guide);
+  coords.x = 24; coords.y = 36;
+  klass->oper_update (tool, &coords, 0, TRUE, shell->display);
+  klass->button_press (tool, &coords, 0, 0, GIMP_BUTTON_PRESS_NORMAL, shell->display);
+  handler = g_signal_connect (guide, "changed", G_CALLBACK (interrupt_edit), &state);
+  coords.x = 40; coords.y = 50;
+  klass->motion (tool, &coords, 0, 0, shell->display);
+  g_signal_handler_disconnect (guide, handler);
+  g_assert_cmpuint (state.calls, ==, 1);
+  g_assert_false (gimp_tool_control_is_active (tool->control)); check_point (0, 24, 36);
+  g_object_unref (guide); close_image ();
+}
+static void recursive_cancel (void)
+{
+  GimpCoords coords = { 0 };
+  InterruptState state = { 0 };
+  gulong handler;
+  create_image ();
+  coords.x = 24; coords.y = 36;
+  klass->oper_update (tool, &coords, 0, TRUE, shell->display);
+  klass->modifier_key (tool, GDK_SHIFT_MASK, TRUE, GDK_SHIFT_MASK, shell->display);
+  klass->button_press (tool, &coords, 0, GDK_SHIFT_MASK, GIMP_BUTTON_PRESS_NORMAL, shell->display);
+  handler = g_signal_connect (image, "perspective-guide-changed", G_CALLBACK (interrupt_edit), &state);
+  klass->button_release (tool, &coords, 0, 0, GIMP_BUTTON_RELEASE_CANCEL, shell->display);
+  g_signal_handler_disconnect (image, handler);
+  g_assert_cmpuint (state.calls, ==, 1);
+  g_assert_null (gimp_image_get_perspective_guide (image));
+  g_assert_false (gimp_tool_control_is_active (tool->control)); close_image ();
+}
+static void guide_finalized_disposes_tool (gpointer data, GObject *old_guide)
+{
+  *(gboolean *) data = TRUE;
+  g_object_run_dispose (G_OBJECT (tool));
+}
+static void switch_finalizer_disposes_tool (void)
+{
+  GimpCoords coords = { 0 };
+  GimpImage *other;
+  gboolean callback = FALSE;
+  create_image ();
+  coords.x = 24; coords.y = 36;
+  klass->oper_update (tool, &coords, 0, TRUE, shell->display);
+  klass->modifier_key (tool, GDK_SHIFT_MASK, TRUE, GDK_SHIFT_MASK, shell->display);
+  klass->button_press (tool, &coords, 0, GDK_SHIFT_MASK, GIMP_BUTTON_PRESS_NORMAL, shell->display);
+  g_object_weak_ref (G_OBJECT (gimp_image_get_perspective_guide (image)), guide_finalized_disposes_tool, &callback);
+  other = gimp_image_new (gimp, 256, 256, GIMP_RGB, GIMP_PRECISION_U8_NON_LINEAR);
+  gimp_display_set_image (shell->display, other);
+  klass->button_press (tool, &coords, 0, 0, GIMP_BUTTON_PRESS_NORMAL, shell->display);
+  g_assert_true (callback);
+  g_assert_false (gimp_draw_tool_is_active (GIMP_DRAW_TOOL (tool)));
+  g_assert_false (gimp_tool_control_is_active (tool->control));
+  g_assert_null (gimp_image_get_perspective_guide (image));
+  g_assert_null (gimp_image_get_perspective_guide (other));
+  gimp_display_set_image (shell->display, image); g_object_unref (other);
+  close_image ();
+}
+static void release_tool_owner (GObject *emitter, guint *calls)
+{
+  if ((*calls)++ == 0) { GimpTool *released = tool; tool = NULL; g_object_unref (released); }
+}
+static void notification_last_owner (void)
+{
+  GimpCoords coords = { 0 };
+  gboolean finalized = FALSE;
+  guint calls = 0;
+  gulong handler;
+  create_image ();
+  g_object_set_data_full (G_OBJECT (tool), "lifetime-probe", &finalized, mark_finalized);
+  coords.x = 24; coords.y = 36;
+  klass->oper_update (tool, &coords, 0, TRUE, shell->display);
+  klass->modifier_key (tool, GDK_SHIFT_MASK, TRUE, GDK_SHIFT_MASK, shell->display);
+  handler = g_signal_connect (image, "perspective-guide-changed", G_CALLBACK (release_tool_owner), &calls);
+  klass->button_press (tool, &coords, 0, GDK_SHIFT_MASK, GIMP_BUTTON_PRESS_NORMAL, shell->display);
+  g_signal_handler_disconnect (image, handler);
+  g_assert_true (finalized); g_assert_null (tool);
+  g_assert_null (gimp_image_get_perspective_guide (image));
+  g_object_unref (image); gimp_display_close (shell->display); gimp_test_run_mainloop_until_idle ();
+}
+static void guide_property_ownership (void)
+{
+  GimpTool *temporary;
+  GimpPerspectiveGuide *guide, *returned = NULL;
+  GParamSpec *spec;
+  gboolean finalized = FALSE;
+  create_image ();
+  spec = g_object_class_find_property (G_OBJECT_GET_CLASS (tool), "guide");
+  g_assert_nonnull (spec);
+  g_assert_true (G_IS_PARAM_SPEC_OBJECT (spec));
+  g_assert_cmpuint (G_PARAM_SPEC_VALUE_TYPE (spec), ==, GIMP_TYPE_PERSPECTIVE_GUIDE);
+  g_assert_cmpuint (spec->flags & (G_PARAM_READWRITE | G_PARAM_CONSTRUCT), ==, G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+  g_assert_false (spec->flags & GIMP_CONFIG_PARAM_SERIALIZE);
+  guide = gimp_perspective_guide_new (42);
+  g_object_set_data_full (G_OBJECT (guide), "lifetime-probe", &finalized, mark_finalized);
+  temporary = g_object_new (GIMP_TYPE_PERSPECTIVE_GUIDE_TOOL, "tool-info", tool->tool_info, "guide", guide, NULL);
+  g_object_unref (guide);
+  g_assert_false (finalized);
+  g_object_get (temporary, "guide", &returned, NULL);
+  g_assert_true (returned == guide);
+  g_object_run_dispose (G_OBJECT (temporary));
+  g_object_run_dispose (G_OBJECT (temporary));
+  g_assert_false (finalized);
+  g_object_unref (returned); returned = NULL;
+  g_assert_true (finalized);
+  g_object_get (temporary, "guide", &returned, NULL); g_assert_null (returned);
+  g_object_unref (temporary);
+  /* Runtime set/get retains a borrowed input without changing image ownership. */
+  guide = gimp_perspective_guide_new (43);
+  g_object_set (tool, "guide", guide, NULL); g_object_unref (guide);
+  g_object_get (tool, "guide", &returned, NULL); g_assert_true (returned == guide);
+  g_assert_null (gimp_image_get_perspective_guide (image));
+  g_object_set (tool, "guide", NULL, NULL); g_object_unref (returned);
+  close_image ();
+}
+static void property_finalizer_disposes_tool (void)
+{
+  GimpCoords coords = { 0 };
+  GimpPerspectiveGuide *guide;
+  gboolean callback = FALSE;
+  create_image ();
+  guide = gimp_perspective_guide_new (44);
+  g_object_weak_ref (G_OBJECT (guide), guide_finalized_disposes_tool, &callback);
+  g_object_set (tool, "guide", guide, NULL); g_object_unref (guide);
+  klass->oper_update (tool, &coords, 0, TRUE, shell->display);
+  g_assert_true (callback);
+  g_assert_false (gimp_draw_tool_is_active (GIMP_DRAW_TOOL (tool)));
+  g_assert_false (gimp_tool_control_is_active (tool->control));
+  g_assert_null (g_list_find (tool->status_displays, shell->display));
+  close_image ();
+}
+static void guide_finalized_replaces_image_model (gpointer data, GObject *old_guide)
+{ gimp_image_set_perspective_guide (image, data); }
+static void property_finalizer_replaces_model (void)
+{
+  GimpCoords coords = { 0 };
+  GimpPerspectiveGuide *guide, *replacement;
+  create_image ();
+  guide = gimp_perspective_guide_new (45);
+  replacement = gimp_perspective_guide_new (46);
+  gimp_perspective_guide_add_vanish_points (replacement, 100, 110);
+  g_object_weak_ref (G_OBJECT (guide), guide_finalized_replaces_image_model, replacement);
+  g_object_set (tool, "guide", guide, NULL); g_object_unref (guide);
+  klass->modifier_key (tool, GDK_SHIFT_MASK, TRUE, GDK_SHIFT_MASK, shell->display);
+  coords.x = 24; coords.y = 36;
+  klass->button_press (tool, &coords, 0, GDK_SHIFT_MASK, GIMP_BUTTON_PRESS_NORMAL, shell->display);
+  g_assert_true (gimp_image_get_perspective_guide (image) == replacement);
+  g_assert_false (gimp_tool_control_is_active (tool->control));
+  check_point (0, 100, 110);
+  g_object_unref (replacement); close_image ();
 }
 int main(int argc,char **argv)
 {
@@ -270,6 +580,20 @@ int main(int argc,char **argv)
   g_test_add_func("/perspective-ui/overlay-pixels-image-switch",overlay_pixels_and_image_switch);
   g_test_add_func("/perspective-ui/registration-external-replace",registration_and_external_replace);
   g_test_add_func("/perspective-ui/old-toolrc-preserves-groups",old_toolrc_preserves_groups);
+  g_test_add_data_func("/perspective-ui/interrupted-add",NULL,interrupted_add);
+  g_test_add_data_func("/perspective-ui/interrupted-add-dispose",GINT_TO_POINTER(1),interrupted_add);
+  g_test_add_data_func("/perspective-ui/interrupted-remove",NULL,interrupted_remove);
+  g_test_add_data_func("/perspective-ui/interrupted-remove-dispose",GINT_TO_POINTER(1),interrupted_remove);
+  g_test_add_func("/perspective-ui/proximity-status",proximity_status);
+  g_test_add_func("/perspective-ui/registered-type-options",registered_type_options);
+  g_test_add_func("/perspective-ui/standalone-lifetime",standalone_lifetime);
+  g_test_add_func("/perspective-ui/interrupted-motion",interrupted_motion);
+  g_test_add_func("/perspective-ui/recursive-cancel",recursive_cancel);
+  g_test_add_func("/perspective-ui/switch-finalizer-disposes-tool",switch_finalizer_disposes_tool);
+  g_test_add_func("/perspective-ui/notification-last-owner",notification_last_owner);
+  g_test_add_func("/perspective-ui/guide-property-ownership",guide_property_ownership);
+  g_test_add_func("/perspective-ui/property-finalizer-disposes-tool",property_finalizer_disposes_tool);
+  g_test_add_func("/perspective-ui/property-finalizer-replaces-model",property_finalizer_replaces_model);
   g_application_run(gimp->app,0,NULL);result=gimp_core_app_get_exit_status(GIMP_CORE_APP(gimp->app));
   g_application_quit(G_APPLICATION(gimp->app));g_clear_object(&gimp->app);return result;
 }
