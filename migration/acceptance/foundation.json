@@ -647,17 +647,20 @@
       "dependencies": "07.001",
       "state": "COMPONENT_VERIFIED",
       "implementation_paths": [
-        "app/painter/object-ref.hpp"
+        "app/painter/object-ref.hpp",
+        "app/painter/tests/test-foundation.cpp",
+        "app/painter/tests/test-reentry.cpp"
       ],
       "test_ids": [
-        "/painter/ref/copy-move-adopt-retain",
-        "/painter/reentry/ref-move"
+        "/painter/ref/copy-move-contract",
+        "/painter/reentry/ref-move",
+        "/painter/ref/copy-move-adopt-retain"
       ],
       "reports": [
-        "migration/tests/painter-foundation-acceptance-native.json",
-        "migration/tests/painter-foundation-acceptance-sanitizers.json"
+        "migration/tests/construction-failure/native.json",
+        "migration/tests/construction-failure/sanitizers.json"
       ],
-      "scope_or_gap": "Common implementation only; all-feature registration and platform acceptance are separate."
+      "scope_or_gap": "Original copy/move/null verification complete from unchanged current65-case native/ASanUBSan and Meson reports. Exact counts, self-assignment, empty/moved-from states, same-pointee wrappers, displaced finalizers and copy/move native-finalizer reentry verified. One old source duty mapped; no production change or redundant rerun. LSan and non-Linux/platform acceptance remain separate."
     },
     {
       "id": "07.003",
