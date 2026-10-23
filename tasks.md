@@ -272,7 +272,7 @@
 | 04.009 | [x] | 静的 library のリンク順を検証する | 04.008 | 未参照登録 object の脱落と循環依存を検出 |
 | 04.009/json-dependency | [x] | JSON reader/writer の直接リンク依存を登録する | 04.009, 01.011 | JSON-GLib のinclude/linkをcore・presetsへ明示し、他依存を外しても未解決symbolが出ない |
 | 04.010 | [x] | 例外方針を compiler 設定に反映する | 04.009 | C++ 内部での扱いと C 境界での捕捉が一致 |
-| 04.011 | [ ] | RTTI 使用箇所を分離する | 04.010 | 移行用 dynamic_cast の条件と新 API の非依存を記録 |
+| 04.011 | [x] | RTTI 使用箇所を分離する | 04.010 | 移行用 dynamic_cast の条件と新 API の非依存を記録 |
 | 04.011/sanitizer-rtti-scope | [x] | focused sanitizerのRTTI補完範囲を実compile DBから区別する | 04.002/common-foundation | 3 metadata試験でC++各suffix・command/arguments・production境界を確認。-fno-rtti補完はRTTI-onlyとinstrumentedを区別しvptrを無効化しない。過去cpp-only helperをSHA付き保存し拡張closureの全runtime合格は主張しない |
 | 04.012 | [ ] | symbol visibility を設定する | 04.011 | 必要な C 入口のみ公開し、内部 C++ ABI を配布契約にしない |
 | 04.013 | [ ] | enum 等の生成規則を Meson に接続する | 04.012 | 生成元変更で C/C++ 両方の対象が再ビルドされる |
