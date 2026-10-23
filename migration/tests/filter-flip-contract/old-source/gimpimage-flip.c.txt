@@ -1,0 +1,12 @@
+  /*  Flip all layers  */
+  for (list = gimp_image_get_layer_iter (image);
+       list;
+       list = g_list_next (list))
+    {
+      GimpItem *item = list->data;
+
+      gimp_item_flip (item, context, flip_type, axis, FALSE);
+
+      if (progress)
+        gimp_progress_set_value (progress, progress_current++ / progress_max);
+    }

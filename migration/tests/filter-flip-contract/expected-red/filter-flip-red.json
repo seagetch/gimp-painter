@@ -1,0 +1,11 @@
+{
+  "command": [
+    "/workspace/shared/gimp-clean-aggregate/build/app/tests/gimp-filter-layer",
+    "-p",
+    "/gimp-filter-layer/filter_flip_legacy_reset_contract"
+  ],
+  "exit_code": -6,
+  "duration": 1.101379632949829,
+  "stdout": "TAP version 14\n# random seed: R02Sdeac26df192dc77008c64b4888eb0b3f\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# Start of gimp-filter-layer tests\nnot ok /gimp-filter-layer/filter_flip_legacy_reset_contract - ERROR:../source/app/tests/test-filter-flip-contract.inc:37:filter_flip_legacy_reset_contract: assertion failed (gimp_item_get_offset_x (GIMP_ITEM (filter)) == 4): (20 == 4)\nBail out!\n",
+  "stderr": "**\nERROR:../source/app/tests/test-filter-flip-contract.inc:37:filter_flip_legacy_reset_contract: assertion failed (gimp_item_get_offset_x (GIMP_ITEM (filter)) == 4): (20 == 4)\n"
+}

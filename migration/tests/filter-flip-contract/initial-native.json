@@ -1,0 +1,11 @@
+{
+  "command": [
+    "/workspace/shared/gimp-clean-aggregate/build/app/tests/gimp-filter-layer",
+    "-p",
+    "/gimp-filter-layer/filter_flip_legacy_reset_contract"
+  ],
+  "exit_code": 0,
+  "duration": 1.120844841003418,
+  "stdout": "TAP version 14\n# random seed: R02S20739198a34dbaae76417932bdd36ee2\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# Start of gimp-filter-layer tests\n# four H/V direct/image flips retain Filter extent and reevaluate lower pixels;whole-image Undo/Redo and four inherited-transform slots preserved\nok 1 /gimp-filter-layer/filter_flip_legacy_reset_contract\n# End of gimp-filter-layer tests\n1..1\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n",
+  "stderr": ""
+}

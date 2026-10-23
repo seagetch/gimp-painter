@@ -1,0 +1,28 @@
+--- a/app/core/gimpfilterlayer.cpp
++++ b/app/core/gimpfilterlayer.cpp
+@@ -1844,6 +1844,17 @@
+     return GIMP_ITEM (partial.release ());
+   });
+ }
++/* The old Filter flip invalidated its derived result without transforming
++ * the layer geometry or cached pixels. Other transforms retain native parent
++ * behavior; an image-wide flip still transforms the lower ordinary layers. */
++void flip (GimpItem *item, GimpContext *, GimpOrientationType, gdouble, gboolean)
++{
++  boundary_void (nullptr, [&] {
++    BindingStore::require (G_OBJECT (item)).with<FilterSlot> ([] (FilterImpl& impl) {
++      impl.invalidate ();
++    });
++  });
++}
+ gboolean content_locked (GimpItem *item, GimpItem **locked) { if (locked) *locked = item; return TRUE; }
+ gdouble opacity_at (GimpPickable *, gint, gint) { return 0.0; }
+ } // namespace
+@@ -1878,6 +1889,7 @@
+     g_param_spec_boxed ("filter-opaque-arguments", "Opaque arguments", "Unavailable converted argument model, retained uninterpreted",
+                         G_TYPE_BYTES, G_PARAM_READABLE));
+   GIMP_ITEM_CLASS (klass)->duplicate = duplicate;
++  GIMP_ITEM_CLASS (klass)->flip = flip;
+   GIMP_ITEM_CLASS (klass)->is_content_locked = content_locked;
+   GIMP_VIEWABLE_CLASS (klass)->default_icon_name = "gimp-gegl";
+   GIMP_VIEWABLE_CLASS (klass)->default_name = "Filter Layer";
