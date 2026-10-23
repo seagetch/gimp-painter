@@ -533,6 +533,7 @@
 | 12.015/semantic-envelope-validation | [x] | 既知Filter/Clone envelopeを型変換前に検証する | 12.015/native-recovery-save | 38通常/20 focused sanitizer合格。Filter24/Clone18不正sceneと有効境界7sceneでopaque保持・無誤fresh・duplicate/resaveを確認。旧unitで両欠陥を再現し証跡保持 |
 | 12.015/field-owner-checkpoint | [ ] | XCF全保存fieldとowner・実行中状態を照合する | 12.015/semantic-envelope-validation, 31.016/typed-provenance-store | 185行台帳と実旧text/unit/palette/path、wrong owner10、native precision72、同名Clone ID、RUNNING/IMPORTING Saveを実装し通常59case合格。追加sanitizer・全不正順序/graph/platformは未完了。巨大未知recordの通常Save chunk保持は12.015/multipart-storage参照、GUI応答/全platformは別gate |
 | 12.015/multipart-storage | [x] | 巨大未知XCF記録を不変file snapshotと分割transportで保持する | 12.015/semantic-envelope-validation, 31.016/typed-provenance-store, 11.020/effects-offset-cleanup | 325 native＋307 focused sanitizer（38 instrumented/34 RTTI-only）、256/512MiB+1通常PDBを3回往復。owner/digest/inert保持、複製/re-edit、OOM保護・cancel/disk/stream/close失敗と実RSS/disk/FDを検証。全field/GUI/全platformは別gate |
+| 12.015/parameter-schema-roundtrip | [ ] | 引数schema統合後の既存XCF保存互換を往復検証する | 30.001/parameter-schema-editor, 12.015/multipart-storage | 保存仕様を変えずordinary Save/Open/再編集・Duplicate/Undo・巨大opaque・実行中Save・失敗時元file保持を検証。raw/型/bits/null/未知/ignored tail/cache lineageを維持 |
 | 12.015/clone-unresolved-roundtrip | [ ] | 未解決 CloneLayer 参照を往復試験する | 12.014, 12.002/clone-unresolved-write | 保存前に source が NULL の fixture を保存・再読込し、参照名を欠落させず crash しない |
 | 12.015/filter-args-roundtrip | [ ] | FilterLayer の引数所有権と往復を試験する | 12.014, 12.003/filter-args-ownership | 複数の型付き引数を繰返し保存・再読込し、値一致と一時領域の解放を確認する |
 | 12.016 | [ ] | 保存中断からの回復を試験する | 12.015 | 元作品が開け、編集状態を誤って保存済みにしない |
@@ -630,6 +631,8 @@
 |---|:---:|---|---|---|
 | 16.001 | [ ] | 使用 procedure の全件対応表を作る | 04.019, 15.014 | fixture・preset の名前と現行実装を対応 |
 | 16.002 | [ ] | 現行内部 PDB API の型を確定する | 16.001 | 公開 libgimp API と本体内部 API を混同しない |
+| 16.002/parameter-schema-contract | [x] | GIMP3引数取得・検証・編集・保持の段階契約を採用する | 16.003/isolated-blinds-route, 16.003/isolated-small-tiles-route, 16.003/isolated-retinex-route, 16.003/isolated-convolution-route, 30.001/isolated-filter-editors, 15.006/native-owner-progress | 現行source/API・context位置ABI・copy/validation/寿命・旧意味と保存no-opを照合し、filter-parameter-schema.mdと5未着手子を登録。文書/WBSのみ、実装・最低GLib build・追加資源上限の達成は未検証。既存親/GTK AT-SPI/全移植gateは未完了 |
+| 16.002/parameter-name-binder | [ ] | helper4経路の引数bindingと署名・制約照合を名前へ移す | 16.002/parameter-schema-contract, 16.003/isolated-blinds-route, 16.003/isolated-small-tiles-route, 16.003/isolated-retinex-route, 16.003/isolated-convolution-route, 15.006/native-owner-progress | context prefix0/1/2固定・input reorder、missing/duplicate/type/constraint拒否、assigned検査、コピー前後exact比較とFALSE mutation、既存強参照寿命を検証。4経路pixel/status/progress/cancel不変、GUI/wire/保存/scheduler無変更 |
 | 16.003 | [ ] | 旧 procedure 名の変換を実装する | 16.002 | 改名された手順を同じ意味へ解決 |
 | 16.003/gauss-executor | [x] | 同梱presetの旧Gaussian実行を復元する | 15.001/core-scheduler-edge | plug-in-gaussのIIR/RLE・分数/片軸半径・旧shadow mergeを実装し104実旧PDB fixtureにbyte一致。実FilterLayer両methodと21 app通常/focused sanitizer合格 |
 | 16.003/native-color-transfer | [x] | 旧Filterのnative符号化色空間と世代変更を保持する | 16.003/gauss-executor, 17.001/fair-checkpoint-state | sRGB/Adobe RGB両Gaussianと実行中profile変更を含む36 app通常/focused sanitizer合格。Gray/高精度の再実行は一時的に明示失敗し元定義/cacheを保持、対応gateは未完了 |
@@ -650,6 +653,7 @@
 | 16.008 | [ ] | 旧配列引数の変換を実装する | 16.007 | 保存から復元可能な範囲を正しく渡す |
 | 16.009 | [ ] | 旧画像・drawable 引数の解決を実装する | 16.008 | 一時入力と現行参照型へ対応 |
 | 16.010 | [ ] | 引数の default と順序を実装する | 16.009 | 省略値の意味が旧版と一致 |
+| 16.010/parameter-semantic-policy | [ ] | runtime引数schemaと旧意味adapterを分離する | 16.002/parameter-name-binder | range/default/alias/count/flagの由来を保持し、型別exact比較・境界/配列/float/errorと旧corpus不変、GLib2.70/GIMP3.0 buildを検証。declared型parseと明示legacy narrowingを区別 |
 | 16.011 | [ ] | 一時入力画像または drawable を生成する | 16.010 | 独立した世代の入力を処理できる |
 | 16.012 | [ ] | 出力 buffer の回収を実装する | 16.011 | 実行途中の出力を確定画像に混ぜない |
 | 16.013 | [ ] | 非同期起動を実装する | 16.012 | UI で完了を待たない |
@@ -663,6 +667,7 @@
 | 16.021 | [ ] | Undo 抑制の範囲を接続する | 16.020 | 内部実行がユーザー Undo を汚染しない |
 | 16.022 | [ ] | 互換処理の不足分を実装する | 16.021 | 対応表の各不足手順に実装と比較試験がある |
 | 16.023 | [ ] | 実行器の試験を実行する | 16.022 | 成功・失敗・中止・crash・遅延完了で資源が残らない |
+| 16.023/parameter-schema-acceptance | [ ] | 引数schema統合をsanitizer・実app・再配置runtimeで受け入れる | 12.015/parameter-schema-roundtrip | source/binary hash付き新旧pixel・4経路native/editor/取消/終了/再Open・OOM/malformed/schema drift証跡を保存。未検証platform・GTK AT-SPI・全移植残課題を別記し親gateを閉じない |
 
 ### 17 FilterLayer の優先順位・チェックポイント
 
@@ -1078,6 +1083,7 @@
 | 30.001 | [ ] | 追加 actions の登録を統合する | 24.017, 25.012, 26.014, 27.015, 28.015, 29.020 | 重複 ID と未登録 command がない |
 | 30.001/layer-create-edit | [x] | Clone/Filter作成・編集を実GTK actions/menuへ接続する | 14.015/reference-undo-snapshot, 17.001/dependency-publication | 16 native GTK通常/focused sanitizer合格、複製参照/定義Undo・未知bytes表示保持・dialog/child寿命再入を確認。実appでbrush→Clone→Filter/Undo/Redoを視認。全popup/device/platformは未完了 |
 | 30.001/isolated-filter-editors | [x] | Blinds/Small Tiles/Retinex/Convolutionの作成・再編集をnative GTKへ接続する | 30.001/layer-create-edit, 16.003/isolated-convolution-route | 実GTK35群＋最終境界2群を通常/7unit ASan・UBSanで合格（36unique、51 RTTI-only）。typed値・signed flags・配列・未知値・ignored tail保持、Undo/再入/実行中cache/Save再編集を確認。実app完走は報告済み、raw log消失・GTK/GDK診断原因未検証。全popup/platformは別gate |
+| 30.001/parameter-schema-editor | [ ] | 既存lossless editorをschema keyと有界metadata取得へ接続する | 16.010/parameter-semantic-policy, 30.001/isolated-filter-editors, 15.006/native-owner-progress | trusted既登録metadataの有界借用を先に比較し必要時だけdescribe IPC/cache。no-op/stale/取得寿命/取消/64bit/未知保持/native GTKを検証し追加予算を実測。通信/cache追加時だけ版・不正入力・失効試験 |
 | 30.001/native-dialog-diagnostics | [x] | 実editor/Quitの2assertionをstackと独立GTK対照で分類する | 15.006/native-owner-progress | 同一binaryのAT-SPI操作で2組再現、bounded stackとGTK単独controlでDebian grabのNULL window・upstream ancestor型不一致を確認。既知欠陥mode0/fixed要求mode1、通常Retinex作成/編集/進捗取消し・Quit Cancel・新規XCF保存/正常終了0。依存欠陥と別device16criticalは未修正、全GTK clean/旧log全件同一原因とはしない |
 | 30.001/tool-group-state | [ ] | 上流tool groupへ旧展開・選択・保存状態を接続する | 30.001, 01.012 | 旧expanded state、active-tool、toolrc順序とgroup変更を個別に比較し、上流モデルで失う状態は移行する |
 | 30.002 | [ ] | 旧 shortcut の対応を実装する | 30.001 | 回転等の旧操作を復元可能 |
