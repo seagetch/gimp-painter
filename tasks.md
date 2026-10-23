@@ -667,7 +667,7 @@
 | 16.021 | [ ] | Undo 抑制の範囲を接続する | 16.020 | 内部実行がユーザー Undo を汚染しない |
 | 16.022 | [ ] | 互換処理の不足分を実装する | 16.021 | 対応表の各不足手順に実装と比較試験がある |
 | 16.023 | [ ] | 実行器の試験を実行する | 16.022 | 成功・失敗・中止・crash・遅延完了で資源が残らない |
-| 16.023/parameter-schema-acceptance | [ ] | 引数schema統合をsanitizer・実app・再配置runtimeで受け入れる | 12.015/parameter-schema-roundtrip | source/binary hash付き新旧pixel・4経路native/editor/取消/終了/再Open・OOM/malformed/schema drift証跡を保存。未検証platform・GTK AT-SPI・全移植残課題を別記し親gateを閉じない |
+| 16.023/parameter-schema-acceptance | [x] | 引数schema統合をsanitizer・実app・再配置runtimeで受け入れる | 12.015/parameter-schema-roundtrip | source/binary hash付き新旧pixel・4経路native/editor/取消/終了/再Open・OOM/malformed/schema drift証跡を保存。未検証platform・GTK AT-SPI・全移植残課題を別記し親gateを閉じない |
 
 ### 17 FilterLayer の優先順位・チェックポイント
 

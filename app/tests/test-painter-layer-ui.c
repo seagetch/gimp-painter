@@ -786,6 +786,10 @@ void gimp_test_filter_argument_patch (Gimp *application);
 static void filter_schema_argument_patch (void)
 { gimp_test_filter_argument_patch (gimp); }
 
+#ifdef GIMP_PAINTER_FAULT_TEST
+void gimp_test_filter_allocation_register (Gimp *application);
+#endif
+
 int main (int argc, char **argv)
 {
   int result;
@@ -844,6 +848,9 @@ int main (int argc, char **argv)
   ADD (filter_schema_persistence_active_save);
   ADD (filter_schema_persistence_reference_lease);
   ADD (filter_schema_persistence_double_cache);
+#ifdef GIMP_PAINTER_FAULT_TEST
+  gimp_test_filter_allocation_register (gimp);
+#endif
   result = g_test_run ();
   gtk_widget_destroy (parent); g_object_unref (parent);
   gimp_test_utils_set_gimp3_directory ("GIMP_TESTING_ABS_TOP_BUILDDIR", "app/tests/gimpdir-output");

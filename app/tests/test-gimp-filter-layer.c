@@ -766,6 +766,118 @@ static void definition_notifications_stop_after_close (void)
     }
 }
 
+typedef enum
+{
+  DEFINITION_GUARD_RESIZE,
+  DEFINITION_GUARD_PRECISION,
+  DEFINITION_GUARD_NESTED_LOOP
+} DefinitionGuardAction;
+
+typedef struct
+{
+  GimpFilterLayer *filter;
+  DefinitionGuardAction action;
+  guint calls;
+  guint64 revision;
+  guint64 runs;
+} DefinitionGuardReentry;
+
+static gboolean
+definition_guard_reentry (gpointer data)
+{
+  DefinitionGuardReentry *state = data;
+
+  /* The first check precedes staging; exercise the second, post-Undo check. */
+  if (++state->calls != 2) return TRUE;
+  g_assert_cmpint (gimp_filter_layer_get_state (state->filter), ==, GIMP_FILTER_LAYER_CLEAN);
+  g_assert_cmpuint (gimp_filter_layer_get_definition_revision (state->filter), ==, state->revision);
+  if (state->action == DEFINITION_GUARD_NESTED_LOOP)
+    {
+      /* A prematurely scheduled ticket observes the old CLEAN request and is
+       * consumed here. Publication must still arrange execution of the edit. */
+      spin_ms (25);
+      g_assert_cmpint (gimp_filter_layer_get_state (state->filter), ==, GIMP_FILTER_LAYER_CLEAN);
+      g_assert_cmpuint (gimp_filter_layer_get_run_count (state->filter), ==, state->runs);
+    }
+  else
+    {
+      const Babl *format = gimp_drawable_get_format (GIMP_DRAWABLE (state->filter));
+      GeglRectangle extent = {0, 0, 8, 8};
+      GeglBuffer *buffer;
+      if (state->action == DEFINITION_GUARD_RESIZE)
+        { extent.width = 16; extent.height = 12; }
+      else
+        format = gimp_babl_format (GIMP_RGB, GIMP_PRECISION_FLOAT_NON_LINEAR, TRUE,
+                                  babl_format_get_space (format));
+      buffer = gegl_buffer_new (&extent, format);
+      gimp_drawable_set_buffer (GIMP_DRAWABLE (state->filter), FALSE, NULL, buffer);
+      g_object_unref (buffer);
+    }
+  /* Geometry/format changes reconfigure execution without replacing the model. */
+  g_assert_cmpuint (gimp_filter_layer_get_definition_revision (state->filter), ==, state->revision);
+  return TRUE;
+}
+
+static void
+checked_definition_guard_reentry (DefinitionGuardAction action)
+{
+  static const guchar original[] = {0x91, 0, 0xff, 3, 0};
+  GimpImage *image = image_new (16,12);
+  GimpLayer *source = source_new (image,NULL,16,12);
+  GimpFilterLayer *filter = filter_new (image,NULL,8,8);
+  GimpValueArray *args = gimp_value_array_new_from_types (NULL,
+    G_TYPE_INT, 1, G_TYPE_INT, 123, G_TYPE_INT, 456, G_TYPE_INT, 0, G_TYPE_NONE);
+  GimpValueArray *saved_args;
+  GBytes *raw = g_bytes_new_static (original,sizeof original), *saved_raw;
+  GError *error = NULL;
+  DefinitionGuardReentry state = {filter,action,0,0,0};
+  guchar actual[4];
+  gint width = action == DEFINITION_GUARD_RESIZE ? 16 : 8;
+  gint height = action == DEFINITION_GUARD_RESIZE ? 12 : 8;
+
+  fill (source,200,80,40,255);
+  g_assert_true (gimp_filter_layer_set_definition (filter,"plug-in-max-rgb",raw,args,&error));
+  g_assert_no_error (error); settle (filter); spin_ms (10);
+  pixel (GIMP_LAYER (filter),0,0,40,255);
+  state.revision = gimp_filter_layer_get_definition_revision (filter);
+  state.runs = gimp_filter_layer_get_run_count (filter);
+  g_value_set_int (gimp_value_array_index (args,3),1);
+  g_assert_true (gimp_filter_layer_set_definition_checked (filter,"plug-in-max-rgb",raw,args,
+    TRUE,definition_guard_reentry,&state,&error));
+  g_assert_no_error (error); g_assert_cmpuint (state.calls, ==, 2);
+  g_assert_cmpuint (gimp_filter_layer_get_definition_revision (filter), ==, state.revision+1);
+  g_assert_cmpint (gimp_item_get_width (GIMP_ITEM (filter)), ==, width);
+  g_assert_cmpint (gimp_item_get_height (GIMP_ITEM (filter)), ==, height);
+  if (action == DEFINITION_GUARD_PRECISION)
+    g_assert_cmpint (gimp_drawable_get_precision (GIMP_DRAWABLE (filter)), ==, GIMP_PRECISION_FLOAT_NON_LINEAR);
+  settle (filter);
+  g_assert_cmpuint (gimp_filter_layer_get_run_count (filter), ==, state.runs+1);
+  g_assert_cmpuint (gimp_filter_layer_get_cache_generation (filter), ==, gimp_filter_layer_get_generation (filter));
+  pixel (GIMP_LAYER (filter),200,0,0,255);
+  /* A stale 8x8 request can finish while leaving the expanded area empty. */
+  gegl_buffer_get (gimp_drawable_get_buffer (GIMP_DRAWABLE (filter)),
+                  GEGL_RECTANGLE (width-1,height-1,1,1),1.0,babl_format ("R'G'B'A u8"),
+                  actual,GEGL_AUTO_ROWSTRIDE,GEGL_ABYSS_NONE);
+  g_assert_cmpint (actual[0], ==, 200); g_assert_cmpint (actual[1], ==, 0);
+  g_assert_cmpint (actual[2], ==, 0); g_assert_cmpint (actual[3], ==, 255);
+  saved_raw = gimp_filter_layer_ref_definition (filter);
+  g_assert_true (g_bytes_equal (saved_raw,raw)); g_bytes_unref (saved_raw);
+  saved_args = gimp_filter_layer_dup_args (filter);
+  g_assert_cmpuint (gimp_value_array_length (saved_args), ==, 4);
+  g_assert_cmpint (g_value_get_int (gimp_value_array_index (saved_args,1)), ==, 123);
+  g_assert_cmpint (g_value_get_int (gimp_value_array_index (saved_args,2)), ==, 456);
+  g_assert_cmpint (g_value_get_int (gimp_value_array_index (saved_args,3)), ==, 1);
+  gimp_value_array_unref (saved_args); gimp_value_array_unref (args);
+  g_bytes_unref (raw); g_object_unref (image);
+}
+
+static void checked_guard_resize_reprepares_request (void)
+{ checked_definition_guard_reentry (DEFINITION_GUARD_RESIZE); }
+static void checked_guard_precision_reprepares_request (void)
+{ checked_definition_guard_reentry (DEFINITION_GUARD_PRECISION); }
+static void checked_guard_nested_loop_preserves_wakeup (void)
+{ checked_definition_guard_reentry (DEFINITION_GUARD_NESTED_LOOP); }
+
 static void assert_opaque (GimpFilterLayer *filter, GBytes *expected)
 {
   GBytes *actual = gimp_filter_layer_ref_opaque_arguments (filter);
@@ -2520,6 +2632,8 @@ int main (int argc, char **argv)
   ADD (duplicate_preserves_cache_freshness); ADD (opaque_arguments_duplicate_and_undo); ADD (opaque_arguments_never_execute); ADD (empty_opaque_arguments_are_distinct);
   ADD (retired_definition_payload_reentry); ADD (duplicate_reentry_cannot_certify_new_definition);
   ADD (definition_edit_stops_after_undo_close); ADD (definition_edit_preserves_reentered_install); ADD (definition_notifications_stop_after_close);
+  ADD (checked_guard_resize_reprepares_request); ADD (checked_guard_precision_reprepares_request);
+  ADD (checked_guard_nested_loop_preserves_wakeup);
   ADD (pending_cycle_resolved_during_graph_read_is_discarded); ADD (definition_revision_separates_cache_updates);
   ADD (dependency_walk_does_not_resolve_pending_names); ADD (changed_dependency_invalidation_can_close_owner);
   ADD (full_quantum_includes_state_callbacks); ADD (cold_graph_nodes_are_prepared_one_per_quantum); ADD (node_preparation_survives_callback_mutation);
