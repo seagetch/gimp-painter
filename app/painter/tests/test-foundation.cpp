@@ -268,16 +268,81 @@ void floating ()
 
 void weak_handles ()
 {
-  auto owner = new_object ();
-  WeakRef<GObject> weak (owner);
-  WeakRef<GObject> moved (std::move (weak));
-  g_assert_false (static_cast<bool> (weak.lock ()));
-  auto temporary = moved.lock ();
-  g_assert_true (temporary.get () == owner.get ());
-  owner.reset ();
-  g_assert_true (static_cast<bool> (moved.lock ()));
-  temporary.reset ();
-  g_assert_false (static_cast<bool> (moved.lock ()));
+  using Weak = WeakRef<GObject>;
+  static_assert (!std::is_copy_constructible<Weak>::value, "weak handle is move-only");
+  static_assert (!std::is_copy_assignable<Weak>::value, "weak handle is move-only");
+  static_assert (std::is_nothrow_move_constructible<Weak>::value, "weak move construction");
+  static_assert (std::is_nothrow_move_assignable<Weak>::value, "weak move assignment");
+  Weak empty;
+  g_assert_null (empty.lock ().get ());
+  ObjectRef<GObject> no_owner;
+  Weak null_owner (no_owner);
+  g_assert_null (null_owner.lock ().get ());
+  null_owner.reset ();
+  null_owner.reset ();
+
+  for (GType type : {G_TYPE_OBJECT, G_TYPE_INITIALLY_UNOWNED})
+    {
+      int finalized = 0;
+      auto owner = ObjectRef<GObject>::adopt (G_OBJECT (g_object_new (type, nullptr)));
+      auto *raw = owner.get ();
+      const bool floating = g_object_is_floating (raw);
+      g_object_weak_ref (raw, weak_notify, &finalized);
+      Weak weak (owner), independent (owner);
+      g_assert_cmpuint (raw->ref_count, ==, 1);
+      {
+        Weak scoped (owner);
+        g_assert_cmpuint (raw->ref_count, ==, 1);
+      }
+      g_assert_cmpuint (raw->ref_count, ==, 1);
+      Weak moved (std::move (weak));
+      g_assert_null (weak.lock ().get ());
+      g_assert_cmpuint (raw->ref_count, ==, 1);
+      auto temporary = moved.lock ();
+      g_assert_true (temporary.get () == raw);
+      g_assert_cmpuint (raw->ref_count, ==, 2);
+      g_assert_cmpint (g_object_is_floating (raw), ==, floating);
+      {
+        auto second = independent.lock ();
+        g_assert_true (second.get () == raw);
+        g_assert_cmpuint (raw->ref_count, ==, 3);
+      }
+      g_assert_cmpuint (raw->ref_count, ==, 2);
+      if (floating) g_object_ref_sink (raw);
+      owner.reset ();
+      g_assert_cmpuint (raw->ref_count, ==, 1);
+      g_assert_cmpint (finalized, ==, 0);
+      moved.reset (); // Removing a weak observer cannot release the strong lock.
+      g_assert_cmpuint (raw->ref_count, ==, 1);
+      g_assert_null (moved.lock ().get ());
+      temporary.reset ();
+      g_assert_cmpint (finalized, ==, 1);
+      for (int i = 0; i != 3; ++i) g_assert_null (independent.lock ().get ());
+      independent.reset ();
+      g_assert_cmpint (finalized, ==, 1);
+    }
+
+  int first_finalized = 0, second_finalized = 0;
+  auto first = new_object (), second = new_object ();
+  g_object_weak_ref (first.get (), weak_notify, &first_finalized);
+  g_object_weak_ref (second.get (), weak_notify, &second_finalized);
+  Weak destination (first), source (second);
+  destination = std::move (source);
+  g_assert_null (source.lock ().get ());
+  g_assert_cmpuint (first.get ()->ref_count, ==, 1);
+  g_assert_cmpuint (second.get ()->ref_count, ==, 1);
+  auto *self = &destination;
+  destination = std::move (*self);
+  {
+    auto lock = destination.lock ();
+    g_assert_true (lock.get () == second.get ());
+    g_assert_cmpuint (second.get ()->ref_count, ==, 2);
+  }
+  first.reset ();
+  g_assert_cmpint (first_finalized, ==, 1);
+  second.reset ();
+  g_assert_cmpint (second_finalized, ==, 1);
+  g_assert_null (destination.lock ().get ());
 }
 
 void store_lifetime ()
