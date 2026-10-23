@@ -131,6 +131,16 @@ const GValue *gimp_filter_arguments_snapshot_peek_value (const GimpFilterArgumen
 guint    gimp_filter_arguments_snapshot_reference_count (const GimpFilterArgumentsSnapshot *, guint argument);
 gboolean gimp_filter_arguments_snapshot_reference (const GimpFilterArgumentsSnapshot *, guint argument,
                                                    guint element, GimpFilterArgumentReference *);
+/* Read a descriptor and acquire its live target with one weak lock. The caller
+ * owns *target (possibly NULL) and must unref it. These are the current model's
+ * descriptor fields: an explicit import may supply recorded IDs; XCF reopen
+ * normalizes live IDs to its fresh runtime targets and archives the original
+ * on-disk tuple separately. Never use descriptor IDs to rediscover an object.
+ * Expiration is consistent with this lease. No strong target is installed in
+ * the immutable saved model. */
+gboolean gimp_filter_arguments_snapshot_acquire_reference (const GimpFilterArgumentsSnapshot *, guint argument,
+                                                           guint element, GimpFilterArgumentReference *,
+                                                           GObject **target);
 GimpFilterArgumentsSnapshot *gimp_filter_arguments_snapshot_nested (const GimpFilterArgumentsSnapshot *, guint argument);
 
 /* Transient owner-thread progress. Fixed strings and one coalesced message;

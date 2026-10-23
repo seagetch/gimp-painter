@@ -1,0 +1,169 @@
+{
+  "task": "12.015/parameter-schema-roundtrip",
+  "status": "PASS",
+  "date": "2026-10-04",
+  "scope": "Phase D only: schema-based native GTK edits, ordinary registered file_save/file_open_image persistence, exact model/cache/metadata preservation and failure transactions; no wire/schema/query/scheduler/algorithm change",
+  "base_commit": "bb9575fecaa3cff52d9bd02e07ffda940fb3498f",
+  "source_sha256": {
+    "app/core/gimpfilterlayer.cpp": "cf510047f1114dde3fca5d2c0be8910c4d951d42bfba6713fd5a23edb272392a",
+    "app/core/gimpfilterlayer.h": "04f135eebdb99d98ce6da06740ef1a4c0ed8c927680b75d05c673853271124eb",
+    "app/xcf/painter-xcf-arguments.cpp": "35927b8787496ba21ae7a5468fcb780fed09a097108eee4f4ca460e5b89f7562",
+    "app/tests/test-painter-layer-ui.c": "d23a9520406881f4dd67f3f266d2128904a66d7c5b3b48635028d59031beafc6",
+    "app/tests/test-filter-schema-persistence.inc": "533eff5ea05e407bb044beeeaf802aa14f3b47b4860593ab8f7c5a1bec7e08f8",
+    "app/tests/test-filter-schema-persistence-failures.inc": "0a2aa81977d524d9797106bfef6d91a4900b3cee504c23a9aa18e398af2e511b",
+    "migration/tests/build_painter_ui_sanitizers.py": "23991cae2cd977e5030333cb8b7d1fb075fc8a48e86228323e8fe6feec6a3303",
+    "migration/contracts/filter-parameter-schema.md": "b261899d7152869769362ed48dcd15fbc4b212d3f96a3d98de564bbce0a26c1a",
+    "migration/contracts/filter-parameter-editor.md": "6a041cc5c9a7344d75fac764563dc6e41e5452fb7178e0286abf0f3966ebad02",
+    "migration/contracts/filter-parameter-persistence.md": "9fcf1ca4192b4f202190d9ac58e7fd30eadb50fd629e9f06f69aee697fae314e",
+    "migration/contracts/xcf-painter-v1.md": "69fd4702414e03d8ae50553cd91d9ae15a91312a7fe5fd88a1daa7b34f2d18c0",
+    "migration/tests/filter-parameter-persistence/README.md": "50f47b45c0304b455d762352ec3533f1cb4f5075a6921fa393188383d804c46a",
+    "tasks.md": "b6e7a8c64165e11457f9dfc4dc192dfdd86be047269d26c428e30c0e70b3f4b0",
+    "migration/progress.tsv": "bdcaea06100c545a20f2e3b47ff879d63021ce7b7817ea85284c88308f84e363"
+  },
+  "final_binary_sha256": {
+    "build-installed-filter/app/tests/painter-layer-ui": "f012c21d2d50215b9f276f7117c777e1035e24fb686f2bc06896c7fc09b9f5e6",
+    "build-installed-filter/app/tests/painter-layer-ui-asan": "e628e91a65927de57a5a540032dc72a8ed7b66bb0148afeacd988f0cc0a5b7f2",
+    "build-installed-filter/app/tests/painter-xcf-roundtrip": "56855cebd72d59dfc5b7b81e9aba4d949360bf678b7ebf354218cfb0c5ebaf23",
+    "build-installed-filter/app/gimp-painter-filter-worker": "773f5b2304d03b34e00ab53fc037a5d355910b2995d4f690561ed61434c00aa4"
+  },
+  "production_fix": {
+    "files": [
+      "app/core/gimpfilterlayer.h",
+      "app/core/gimpfilterlayer.cpp",
+      "app/xcf/painter-xcf-arguments.cpp"
+    ],
+    "before_fix": "Actual native GTK Convolution edit followed by ordinary Save refused imported generic declared type/nonruntime recorded ID; raw failure and binary identity retained",
+    "after_fix": "One accessor retains the immutable model and acquires descriptor+strong target from one weak lock. XCF encodes actual target file identity, preserving current descriptor fields and enforcing same-image/external boundaries without process-table lookup by recorded ID. Returned lease lifetime/null/expiry and ID collisions are tested.",
+    "wire_layout_changed": false,
+    "reader_live_id_normalization_changed": false,
+    "provenance": "Explicit import can retain arbitrary signed64 recorded ID/type. On ordinary XCF reopen, live current-model IDs still become fresh target runtime IDs under the established API; original tuple survives in input capsule and later original-argument-model. Expired descriptor IDs stay exact. External origin diagnostics retain actual target/image IDs even when the descriptor ID collides with the saved image."
+  },
+  "native_gtk": {
+    "new_unique_groups": 10,
+    "normal_ten_group_snapshot": {
+      "groups": 10,
+      "exit_code": 0,
+      "elapsed_seconds": 30.679355519998353,
+      "binary_sha256": "6bacd05784ccae650eab80b9c4a6753cfd5665e8bdf42cdba98f294ccc1b1fba",
+      "sources_changed_during_run": []
+    },
+    "focused_asan_ubsan_ten_group_snapshot": {
+      "groups": 10,
+      "exit_code": 0,
+      "elapsed_seconds": 56.18021642799431,
+      "binary_sha256": "1cea84f328110a6f05ecbdcd2e9e0d5b5fda8fc2879a93980c1ecf28f02b5370",
+      "sources_changed_during_run": []
+    },
+    "final_test_only_assertion_reruns": {
+      "normal": {
+        "groups": 2,
+        "exit_code": 0,
+        "elapsed_seconds": 9.403444916999433,
+        "binary_sha256": "f012c21d2d50215b9f276f7117c777e1035e24fb686f2bc06896c7fc09b9f5e6",
+        "sources_changed_during_run": []
+      },
+      "focused_asan_ubsan": {
+        "groups": 2,
+        "exit_code": 0,
+        "elapsed_seconds": 12.530843260996335,
+        "binary_sha256": "e628e91a65927de57a5a540032dc72a8ed7b66bb0148afeacd988f0cc0a5b7f2",
+        "sources_changed_during_run": []
+      },
+      "groups": [
+        "filter_schema_persistence_reference_identity",
+        "filter_schema_persistence_active_save"
+      ],
+      "delta": "reviewed-test-only-delta.patch in evidence archive",
+      "change": "Only added actual external-origin ID checks and whole newly committed buffer comparison after active-job completion/clean Save/Open. No production source or other test function changed. Ten unchanged/expanded groups are not twelve unique groups; the full ten-group suite was not rerun after this assertion-only delta."
+    },
+    "instrumented_units": 29,
+    "rtti_only_units": 45,
+    "leak_detection": false,
+    "whole_application_or_dependency_instrumentation": false,
+    "asan_ubsan_diagnostics": false
+  },
+  "ordinary_xcf_regressions": {
+    "groups": 6,
+    "exit_code": 0,
+    "cases": [
+      "/painter-xcf-roundtrip/filter_cache_and_arguments",
+      "/painter-xcf-roundtrip/typed_nested_expired_arguments",
+      "/painter-xcf-roundtrip/replace_uninterpreted_arguments",
+      "/painter-xcf-roundtrip/external_references_remain_unresolved",
+      "/painter-xcf-multipart/native-owner-duplicate-edit",
+      "/painter-xcf-multipart/native-callback-argument-leases"
+    ],
+    "binary_sha256": "56855cebd72d59dfc5b7b81e9aba4d949360bf678b7ebf354218cfb0c5ebaf23",
+    "scope": "Existing genuine legacy Edge Save/Open, typed nested live/expired image/item/path references, opaque replacement, external references, owner duplication/re-edit and callback argument leases; other unchanged XCF/Phase A-C suites reused, not rerun"
+  },
+  "minimum_glib": {
+    "version": "2.70.0",
+    "changed_production_units_compiled": 2,
+    "passed": true,
+    "units": [
+      "app/core/gimpfilterlayer.cpp",
+      "app/xcf/painter-xcf-arguments.cpp"
+    ],
+    "scope": "Compile-only with actual frozen minimum headers and resolved dependency hashes; no new full minimum-environment build/runtime pass"
+  },
+  "preservation_matrix": {
+    "ordinary_four_routes": "Blinds, Small Tiles, Retinex, Convolution Save/Close/Open/re-edit, one Undo, saved Undo/Redo, independent image Duplicate and re-edit; raw and exact typed values retained",
+    "cache_lineage": "Entire clean U8 cache survives with zero initial runs; saved history keeps completeness and equal/stale relationship without requiring identical session counters",
+    "native_precision": "Real RGB DOUBLE_LINEAR Convolution executes to CLEAN; exact native buffer format and all double bytes compared across Save/Open before and after coefficient+offset edit and completed recomputation",
+    "float_and_flags": "binary64 and nested binary32 NaN payloads, positive/negative Inf and signed zero retained untouched; unknown border enum and noncanonical signed flags survive; equivalent text/toggle-return/no-op/Cancel add no revision/generation/run/Undo",
+    "shape_and_null": "11/12-slot forms; null/empty string, STRV, raw arrays and nested models; nested signed64/unsigned64 boundaries and unknown variant content preserved",
+    "multipart": "Five 2MiB string/STRV/double-array/int32-array/raw-array ignored tails;2MiB+19 unknown field and unknown opaque argument model;1MiB+17 GBytes tail in failure matrix. Real multipart capsules asserted",
+    "reference_identity": "Imported G_MAXINT64 generic live descriptor, different same-image item with colliding recorded ID, true expired negative signed64 descriptor, external target with local-ID collision; active tuples, archived originals, fresh runtime mapping and actual external-origin IDs checked separately",
+    "active_save": "Actual1025x1025 RUNNING worker Save for all4 U8 routes; IMPORTING Save for Small Tiles only. Invalid unaccepted editor text excluded, accepted typed/raw values and full previous committed cache survive. Reopen starts at zero runs, stale lineage completes once; new pixels differ from prior cache and survive final clean Save/Open byte-for-byte",
+    "failures": "Six scenes after accepted Convolution GTK edit: duplicate-key preflight, preparation-start/write/final-close cancellation, injected partial-write and final-close error. Exact previous destination bytes, typed/raw/model revision/generations/run/Undo/cache, dirty state, save IDs/tattoos and temporary count preserved; ordinary Save/Open retry passes"
+  },
+  "old_corpus": {
+    "base_commit": "bb9575fecaa3cff52d9bd02e07ffda940fb3498f",
+    "verified_tracked_fixture_files": 2626,
+    "mismatches": [],
+    "seal_sha256": "406f07cbf042f70ff5bc61efdf12bac44b80af12af7f1fdd5a71bdd51dd43407",
+    "method": "Tracked migration/fixtures blob identities compared with working bytes; no fixtures regenerated and no pixel corpus replay claimed"
+  },
+  "contract_clauses": {
+    "P15": "Phase D integration accepted by the matrix above",
+    "P04_P06_P07_P14_P16": "Persistence-specific bits/null/shape/unknown/tail/multipart and failure aspects covered; unchanged parser/metadata/resource bounds retain Phase A-C and existing multipart acceptance",
+    "P18": "Focused native sanitizer scope above only; full-app/relocation/OOM integrated Phase E remains open",
+    "remaining_P01_to_P21": "Unchanged requirements retain their explicit Phase A-C evidence and future Phase E gates; this task does not claim21 newly completed tests"
+  },
+  "failed_attempts": [
+    {
+      "evidence": "before-fix-native.log",
+      "meaning": "Reproduced production Save refusal before the weak-target encoding fix"
+    },
+    {
+      "evidence": "matrix2-native.log",
+      "meaning": "Generated modern unknown-field fixture initially changed the transient loader dictionary instead of authoritative capsule. Fixture corrected; no additional production fix"
+    },
+    {
+      "evidence": "reference-production-identities.json",
+      "meaning": "Preliminary5-group source list omitted writer/header/failure include. Final ten-group and reviewed two-group receipts cover the complete relevant sources before/after execution."
+    }
+  ],
+  "bookkeeping_checks": {
+    "check_tasks": "PASS",
+    "git_diff_check": "PASS",
+    "new_file_whitespace": "PASS"
+  },
+  "limitations": [
+    "Phase E full-app keyboard/menu, relocation, integrated/OOM, wider precision/route/platform and full migration gates remain open",
+    "IMPORTING scene is Small Tiles U8 only; real RUNNING scenes cover4 U8 routes; DOUBLE cache coverage is separate settled Convolution",
+    "Prior >256MiB/512MiB transport/resource evidence is reused, not rerun; no total RSS or fixed latency guarantee",
+    "Preparation cancellation is at its start; prior multipart evidence separately covers mid-preparation/disk failure. Final-close error is injected with explicit replacement abandonment, not an OS rename-failure reproduction",
+    "29 focused instrumented and45 RTTI-only units; other GIMP/dependencies uninstrumented; LeakSanitizer disabled",
+    "Known GTK/GDK AT-SPI34.003 and broader image-history atomicity limitation remain open",
+    "Build C90/declaration/unused/maybe-uninitialized warnings and plugin locale/test-profile diagnostics retained; no warning-free claim",
+    "New scenes are generated modern fixtures. Genuine old fixtures were not regenerated; missing arrays/references in the old writer are not reconstructed"
+  ],
+  "evidence": {
+    "archive": "raw-evidence.tar.gz",
+    "bytes": 109745,
+    "sha256": "80d3d1ba27e03cbfa9d44566fa570612a52775c5affc0124a71303f4fcfa3fdf",
+    "members": 54,
+    "manifest_sha256": "88ce4549a347fa6a61d5fd96dc8a223f5dd1505ff04a68c330377daadc520c0a"
+  }
+}
