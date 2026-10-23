@@ -36,6 +36,79 @@ def run(args, cwd=ROOT):
     return subprocess.check_output(args, cwd=cwd, text=True)
 
 
+RECOVERY = EVIDENCE / 'recovery'
+ORIGINAL = 'aa8e7fad108269e2c1dd5ebcbf78865fb37d1ee9'
+PRIOR = 'a1912fc6b4357827fc7199a0429992d006a76327'
+
+
+def check_historical():
+    pin = json.loads((RECOVERY/'historical-pin.json').read_text())
+    assert pin['original_commit'] == ORIGINAL and pin['prior_commit'] == PRIOR
+    archive_path = RECOVERY/'historical-checkpoint.tar.gz'
+    assert sha(archive_path) == pin['archive_sha256']
+    with tempfile.TemporaryDirectory(prefix='painter-registration-history-') as directory:
+        root = Path(directory)
+        with tarfile.open(archive_path) as archive:
+            members = archive.getmembers()
+            assert all(m.isfile() and not Path(m.name).is_absolute() and '..' not in Path(m.name).parts for m in members)
+            assert {m.name for m in members} == set(pin['files'])
+            for member in members:
+                data = archive.extractfile(member).read()
+                assert digest(data) == pin['files'][member.name], member.name
+                path = root/member.name
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_bytes(data)
+                path.chmod(0o444)
+        prior = json.loads((root/'migration/tests/cpp-registration/prior-work-items.json').read_text())
+        assert prior['baseline_commit'] == PRIOR
+        assert sha(root/'prior/legacy-port-work-items.tsv') == prior['previous_ledger_sha256']
+        # Execute the exact original checker AND original assignment rules.
+        # This preserves its unchanged/unreviewed/TODO-at-checkpoint assertions.
+        result = subprocess.run(['python3', '-B', str(root/'tools/check_cpp_registration.py')],
+                                cwd=root, capture_output=True, text=True)
+        assert result.returncode == 0, result.stdout + result.stderr
+        assert 'Pinned47-source registration review' in result.stdout
+        for name in ('cpp-registration-review.json',):
+            assert (ROOT/'migration/inventory'/name).read_bytes() == (root/'migration/inventory'/name).read_bytes()
+        for name in ('prior-work-items.json','legacy-build-inputs.tar.gz','current-build.json',
+                     'compile-commands.json.gz','progress-consistency.json','strict-gates.json'):
+            assert (EVIDENCE/name).read_bytes() == (root/'migration/tests/cpp-registration'/name).read_bytes(), name
+
+
+def check_current_lineage(review, work, assignments, inv):
+    rows = review['reviews']
+    pinned_routing = RECOVERY/'successor-routing-review.json'
+    assert pinned_routing.read_bytes() == (inv/'enum-generation-routing-review.json').read_bytes()
+    reassignment = json.loads(pinned_routing.read_text())['source_registration_review']
+    removed = {r['removed_duplicate_work_id']: r for r in reassignment}
+    registered = {r['original_work_id'] for r in rows if r['registration_status']=='VERIFIED_AFTER_CURRENT_BUILD'}
+    assert {r['work_id'] for r in work.values() if r['wbs_task']=='04.002'} == registered
+    assert all(work[wid]['status']=='DONE' for wid in registered)
+    asset_rows = {r['child_id']:r for r in read_tsv(inv/'asset-wbs.tsv')}
+    for row in rows:
+        live = [w for w in work.values() if w['source_id']==row['source_id']]
+        assert live, ('source duty lost',row['source_id'])
+        assignment = assignments[row['source_id']] if row['source_kind']=='hunk' else asset_rows[row['source_id']]
+        expected = {(phase, task) for phase,key in [('implementation','implementation_tasks'),('verification','verification_tasks')]
+                    for task in assignment[key].split(',')}
+        assert {(w['phase'],w['wbs_task']) for w in live} == expected, ('current owner coverage',row['source_id'])
+        for w in live:
+            assert w['path']==row['path'] and w['source_blob']==row['source_blob'] and w['source_sha256']==row['source_sha256']
+            assert w['status'] in ('TODO','DONE','IN_PROGRESS','BLOCKED','SKIPPED')
+            if w['status']=='DONE':
+                assert all(w[k] not in ('','-','pending') for k in ('owner','artifact','test','result')), w['work_id']
+        for wid in row['corrected_source_work_ids']:
+            if wid in work: continue
+            # Four duplicate common-generation duties were explicitly retired,
+            # not replaced with a blanket allowlist or silently dropped.
+            change = removed[wid]
+            assert change['source_id']==row['source_id'] and change['source_blob']==row['source_blob']
+            assert change['source_payload_sha256']==row['source_sha256']
+            assert {w['wbs_task'] for w in live} == set(change['implementation_tasks']+change['verification_tasks'])
+            assert any(w['work_id']==wid and w['wbs_task']=='04.013' and w['status']=='TODO' for w in change['existing_duties'])
+            assert change['reason'] == assignment['reason']
+
+
 def check_review():
     inv = ROOT / 'migration/inventory'
     review = json.loads((inv/'cpp-registration-review.json').read_text())
@@ -47,26 +120,9 @@ def check_review():
     hunk_rows = {r['child_id']: r for r in read_tsv(inv/'changed-hunks.tsv')}
     files = {r['path']: r for r in read_tsv(inv/'changed-files.tsv')}
     work = {r['work_id']: r for r in read_tsv(inv/'legacy-port-work-items.tsv')}
-    prior = json.loads((EVIDENCE/'prior-work-items.json').read_text())
-    old = prior['reviewed_sources']
-    reviewed_ids = {r['source_id'] for r in rows}
-    unreviewed = [r for r in work.values() if r['source_id'] not in reviewed_ids]
-    assert len(unreviewed) == prior['unreviewed_count']
-    assert digest(json.dumps(unreviewed, sort_keys=True, ensure_ascii=False).encode()) == prior['unreviewed_sha256']
-    touched = {r['source_id'] for r in rows if r['registration_status']=='REASSIGNED_TODO'}
-    registered = {r['original_work_id'] for r in rows if r['registration_status']=='VERIFIED_AFTER_CURRENT_BUILD'}
-    # Reassignments may replace stable source/phase/task keys, never silently
-    # discard a completed obligation or change unrelated execution evidence.
-    for before in old:
-        if before['source_id'] in touched:
-            assert before['status'] == 'TODO'
-        elif before['work_id'] not in registered:
-            assert work[before['work_id']] == before
-    assert all(wid in work for r in rows for wid in r['corrected_source_work_ids'])
-    assert all(work[wid]['status']=='DONE' for wid in registered)
-    assert {r['work_id'] for r in work.values() if r['wbs_task']=='04.002'} == registered
-    assert all(work[wid]['status']=='TODO' for r in rows if r['source_id'] in touched
-               for wid in r['corrected_source_work_ids'])
+    # Original reassignment invariants are evaluated against their immutable
+    # aa8e checkpoint below, not against unrelated later ledger completions.
+    check_current_lineage(review, work, current, inv)
     with tarfile.open(EVIDENCE/'legacy-build-inputs.tar.gz') as archive:
         blobs = {m.name: archive.extractfile(m).read() for m in archive.getmembers() if m.isfile()}
     assert len(blobs) == 28  # 15 source files, 13 existing base files
@@ -109,14 +165,10 @@ def check_review():
     assert asset['implementation_tasks']==','.join(profile['tasks'])
     assert asset['verification_tasks']==','.join(profile['tests'])
     assert asset['preservation']==profile['reason']
-    affected_paths = {r['path'] for r in rows if r['registration_status']=='REASSIGNED_TODO'}
-    unions = {path: {key: ','.join(sorted({task for row in current.values() if row['path']==path
-                for task in row[key].split(',')})) for key in ('implementation_tasks','verification_tasks')}
-              for path in affected_paths}
-    for filename in ('auxiliary-script-review.tsv','cleanup-candidate-review.tsv'):
-        for record in read_tsv(inv/filename):
-            if record['path'] in unions:
-                assert all(record[key]==value for key,value in unions[record['path']].items())
+    # Auxiliary inventories recorded file-wide unions at the original checkpoint;
+    # later reviewed rows may be hunk-scoped. Their original invariance is tested
+    # in check_historical, while current obligations are checked against the
+    # canonical assignment/work ledgers above (no future-TODO requirement).
     for row in rows:
         for path in row['current_paths']:
             assert (ROOT/path).is_file(), path
@@ -225,6 +277,7 @@ def main():
     parser.add_argument('--build-log',type=Path)
     parser.add_argument('--output',type=Path)
     args=parser.parse_args()
+    check_historical()
     review=check_review()
     if args.build:
         assert args.foundation_log and args.build_log and args.output
@@ -232,7 +285,7 @@ def main():
         args.output.write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
         print('Current mixed-language registration,19 duties, C-main34 cases and3 C++ final links: PASS')
     else:
-        print('Pinned47-source registration review and exact affected assignment regeneration: PASS')
+        print('Historical04.002 invariants pinned; current47-source ownership and assignment regeneration: PASS (no fresh build claim)')
 
 
 if __name__=='__main__':
