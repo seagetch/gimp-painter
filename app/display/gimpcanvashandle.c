@@ -482,50 +482,124 @@ static cairo_region_t *
 gimp_canvas_handle_get_extents (GimpCanvasItem *item)
 {
   GimpCanvasHandlePrivate *private = GET_PRIVATE (item);
+  GimpDisplayShell       *shell = gimp_canvas_item_get_shell (item);
   cairo_rectangle_int_t    rectangle;
-  gdouble                  x, y;
-  gdouble                  w, h;
+  gdouble                  x, y, x1, y1, x2, y2;
+  gboolean                 rotate = TRUE;
+  gdouble                  scaled_x = private->x * shell->scale_x;
+  gdouble                  scaled_y = private->y * shell->scale_y;
+
+  /* zoom_xy_f still uses PROJ_ROUND's integer conversion and integer offset
+   * subtraction. Reject invalid internal views BEFORE that shared helper. */
+  if (! isfinite (scaled_x) || ! isfinite (scaled_y) ||
+      ! isfinite (private->start_angle) ||
+      RINT (scaled_x) < G_MININT || RINT (scaled_x) > G_MAXINT ||
+      RINT (scaled_y) < G_MININT || RINT (scaled_y) > G_MAXINT ||
+      RINT (scaled_x) - shell->offset_x < G_MININT ||
+      RINT (scaled_x) - shell->offset_x > G_MAXINT ||
+      RINT (scaled_y) - shell->offset_y < G_MININT ||
+      RINT (scaled_y) - shell->offset_y > G_MAXINT)
+    return NULL;
 
   gimp_canvas_handle_transform (item, &x, &y);
+
+  if (! isfinite (x) || ! isfinite (y) ||
+      ! isfinite (private->start_angle))
+    return NULL;
 
   switch (private->type)
     {
     case GIMP_HANDLE_SQUARE:
     case GIMP_HANDLE_DASHED_SQUARE:
     case GIMP_HANDLE_FILLED_SQUARE:
-      w = private->width * (sqrt(2) - 1) / 2;
-      h = private->height * (sqrt(2) - 1) / 2;
-      rectangle.x      = x - 1.5 - w;
-      rectangle.y      = y - 1.5 - h;
-      rectangle.width  = private->width  + 3.0 + w * 2;
-      rectangle.height = private->height + 3.0 + h * 2;
+      x1 = x - 0.5;
+      y1 = y - 0.5;
+      x2 = x + private->width;
+      y2 = y + private->height;
       break;
 
     case GIMP_HANDLE_CIRCLE:
     case GIMP_HANDLE_DASHED_CIRCLE:
     case GIMP_HANDLE_FILLED_CIRCLE:
-    case GIMP_HANDLE_CROSS:
+      /* The draw path uses width / 2 on BOTH axes. */
+      x1 = x - private->width / 2.0;
+      y1 = y - private->width / 2.0;
+      x2 = x + private->width / 2.0;
+      y2 = y + private->width / 2.0;
+      rotate = FALSE;
+      break;
+
     case GIMP_HANDLE_CROSSHAIR:
+      rotate = FALSE;
+      /* fall through */
+    case GIMP_HANDLE_CROSS:
     case GIMP_HANDLE_DIAMOND:
     case GIMP_HANDLE_DASHED_DIAMOND:
     case GIMP_HANDLE_FILLED_DIAMOND:
-      rectangle.x      = x - private->width  / 2.0 - 2.0;
-      rectangle.y      = y - private->height / 2.0 - 2.0;
-      rectangle.width  = private->width  + 4.0;
-      rectangle.height = private->height + 4.0;
+      x1 = x - private->width / 2.0;
+      y1 = y - private->height / 2.0;
+      x2 = x + private->width / 2.0;
+      y2 = y + private->height / 2.0;
       break;
 
     case GIMP_HANDLE_DROP:
     case GIMP_HANDLE_FILLED_DROP:
-      rectangle.x      = x - private->width  / 2.0 - 2.0;
-      rectangle.y      = y - private->height / 2.0 - 2.0;
-      rectangle.width  = private->width * 1.5 + 4.0;
-      rectangle.height = private->height + 4.0;
+      x1 = x - private->width / 2.0;
+      y1 = y - private->width / 2.0;
+      x2 = x + private->width;
+      y2 = y + private->width / 2.0;
       break;
 
     default:
-      break;
+      return NULL;
     }
+
+  if (rotate && private->start_angle != 0.0)
+    {
+      cairo_matrix_t matrix;
+      gdouble        tx, ty;
+      gdouble        min_x = G_MAXDOUBLE, min_y = G_MAXDOUBLE;
+      gdouble        max_x = -G_MAXDOUBLE, max_y = -G_MAXDOUBLE;
+      gint           i;
+
+      /* Match the draw path's anchor-relative pivot, not the shifted handle
+       * center. Non-center anchors make those different. */
+      gimp_canvas_item_transform_xy_f (item, private->x, private->y, &tx, &ty);
+      tx = floor (tx) + 0.5;
+      ty = floor (ty) + 0.5;
+      cairo_matrix_init_translate (&matrix, tx, ty);
+      cairo_matrix_rotate (&matrix, private->start_angle);
+      cairo_matrix_translate (&matrix, -tx, -ty);
+
+      for (i = 0; i < 4; i++)
+        {
+          gdouble px = (i & 1) ? x2 : x1;
+          gdouble py = (i & 2) ? y2 : y1;
+
+          cairo_matrix_transform_point (&matrix, &px, &py);
+          min_x = MIN (min_x, px);
+          min_y = MIN (min_y, py);
+          max_x = MAX (max_x, px);
+          max_y = MAX (max_y, py);
+        }
+      x1 = min_x; y1 = min_y;
+      x2 = max_x; y2 = max_y;
+    }
+
+  /* An invalid internal view must not reach floating-to-integer casts. */
+  if (! isfinite (x1) || ! isfinite (y1) ||
+      ! isfinite (x2) || ! isfinite (y2) ||
+      x1 < G_MININT + 2.0 || y1 < G_MININT + 2.0 ||
+      x2 > G_MAXINT - 2.0 || y2 > G_MAXINT - 2.0 ||
+      x2 - x1 > G_MAXINT - 4.0 || y2 - y1 > G_MAXINT - 4.0)
+    return NULL;
+
+  /* Three-pixel tool stroke plus antialiasing, rounded outwards. The shell
+   * subsequently transforms this local region through its display matrix. */
+  rectangle.x      = floor (x1 - 2.0);
+  rectangle.y      = floor (y1 - 2.0);
+  rectangle.width  = ceil (x2 + 2.0) - rectangle.x;
+  rectangle.height = ceil (y2 + 2.0) - rectangle.y;
 
   return cairo_region_create_rectangle (&rectangle);
 }

@@ -1,0 +1,100 @@
+
+static void
+gimp_canvas_handle_transform (GimpCanvasItem   *item,
+                              GimpDisplayShell *shell,
+                              gdouble          *x,
+                              gdouble          *y)
+{
+  GimpCanvasHandlePrivate *private = GET_PRIVATE (item);
+
+  gimp_display_shell_transform_xy_f (shell,
+                                     private->x, private->y,
+                                     x, y);
+
+  switch (private->type)
+    {
+    case GIMP_HANDLE_SQUARE:
+    case GIMP_HANDLE_FILLED_SQUARE:
+      gimp_canvas_item_shift_to_north_west (private->anchor,
+                                            *x, *y,
+                                            private->width,
+                                            private->height,
+                                            x, y);
+      break;
+
+    case GIMP_HANDLE_CIRCLE:
+    case GIMP_HANDLE_FILLED_CIRCLE:
+    case GIMP_HANDLE_CROSS:
+      gimp_canvas_item_shift_to_center (private->anchor,
+                                        *x, *y,
+                                        private->width,
+                                        private->height,
+                                        x, y);
+      break;
+
+    default:
+      break;
+    }
+
+  *x = floor (*x) + 0.5;
+  *y = floor (*y) + 0.5;
+}
+
+static void
+gimp_canvas_handle_draw (GimpCanvasItem   *item,
+                         GimpDisplayShell *shell,
+                         cairo_t          *cr)
+{
+  GimpCanvasHandlePrivate *private = GET_PRIVATE (item);
+  gdouble                  x, y;
+
+  gimp_canvas_handle_transform (item, shell, &x, &y);
+
+  switch (private->type)
+    {
+    case GIMP_HANDLE_SQUARE:
+      cairo_rectangle (cr, x, y, private->width - 1.0, private->height - 1.0);
+
+      _gimp_canvas_item_stroke (item, cr);
+      break;
+
+    case GIMP_HANDLE_FILLED_SQUARE:
+      cairo_rectangle (cr, x - 0.5, y - 0.5, private->width, private->height);
+
+      _gimp_canvas_item_fill (item, cr);
+      break;
+
+    case GIMP_HANDLE_CIRCLE:
+    {
+      gdouble rotated_angle = shell->rotate_angle / 180.0 * G_PI;
+        
+      gimp_cairo_add_arc (cr, x, y, private->width / 2,
+                          private->start_angle - rotated_angle,
+                          private->slice_angle);
+
+      _gimp_canvas_item_stroke (item, cr);
+      break;
+    }
+    case GIMP_HANDLE_FILLED_CIRCLE:
+      cairo_move_to (cr, x, y);
+
+      gimp_cairo_add_arc (cr, x, y, (gdouble) private->width / 2.0,
+                          private->start_angle,
+                          private->slice_angle);
+
+      _gimp_canvas_item_fill (item, cr);
+      break;
+
+    case GIMP_HANDLE_CROSS:
+      cairo_move_to (cr, x - private->width / 2, y);
+      cairo_line_to (cr, x + private->width / 2, y);
+
+      cairo_move_to (cr, x, y - private->height / 2);
+      cairo_line_to (cr, x, y + private->height / 2);
+
+      _gimp_canvas_item_stroke (item, cr);
+      break;
+
+    default:
+      break;
+    }

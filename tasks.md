@@ -1005,6 +1005,7 @@
 | 25.008 | [x] | 表示反転中の方向を移植する | 25.007 | 旧水平反転時の計算と一致 |
 | 25.008/mirrored-arrow-input | [x] | 表示反転中の左右キー入力を移植する | 25.007, 01.017 | mirrored時のLeft/Right変換と非反転時の不変を、押下・解除・toolへの転送・回転併用で試験する |
 | 25.009 | [ ] | 現行表示行列へ接続する | 25.008 | canvas と overlay が同じ角度を使用 |
+| 25.009/handle-damage | [x] | handleのanchor・local angle・非正方寸法に対応するinvalidated領域を保証する | 25.008, 01.017 | draw/hit本体不変で156raster・8424bounds・156実window hide場面を通常18/ASan・UBSan18登録で検証し残存pixel0。129pixel旧redと回転square旧red保持、6 invalid-view extent拒否、認証1080x1920・oncanvas有効。原25.009の196dutiesは未完 |
 | 25.009/grid-damage | [x] | gridの回転後invalidated領域から残像を除去する | 25.008, 01.017 | 描画本体不変で5grid styles・2stroke policies・0/37/90度・H/V反転の120primitive/120実window hide場面を通常4/ASan・UBSan4登録で検証し残存pixel0。認証1080x1920・oncanvas有効、旧red154pixels保持。原25.009の196dutiesは未完 |
 | 25.009/common-angle-draw | [x] | 共通角度描画とupright GTK anchorの限定native経路を検証する | 25.008, 01.017 | 独立geometryで38実GTK draw/回のraster・代表item・selection・upright anchorと13行anchor修正を37通常/27 focused eventで検証し、別sourceのstrict Clone 226通常/62 focusedを保持。実window GUIは別34.005/canvas-overlay-portrait-smokeでsource0f16限定検証。原25.009全体は未完了 |
 | 25.009/transformed-drag-events | [x] | 回転・水平反転下のradial zoomと内部middle-panの限定event経路を検証する | 25.008, 01.017 | 独立geometryで4追加登録・16 drag/16再開・6小数primary座標を41通常/31 focused eventで検証し、別sourceのstrict Clone 226通常/62 focusedを保持。実window GUIは別34.005/transformed-drag-portrait-smokeでsource adcb50e8限定検証。原25.009全体は未完了 |
