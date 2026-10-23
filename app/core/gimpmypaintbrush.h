@@ -21,6 +21,12 @@ GType gimp_mypaint_brush_get_type (void) G_GNUC_CONST;
  * Construction failure returns NULL; no C++ exception crosses this entry. */
 GimpData *gimp_mypaint_brush_new (GimpContext *context, const gchar *name);
 
+/* Transfer-none native standard resource. Repeated calls share the native
+ * provider identity; a caller needing ownership must retain, never adopt.
+ * Native name/internal identifier replace the legacy identifiers. A retained
+ * closed standard remains that same object until actual finalization. */
+GimpData *gimp_mypaint_brush_get_standard (GimpContext *context);
+
 /* Returns a distinct, transfer-full named resource, with independent settings
  * and live icon pixels and no inherited file association. Invalid, unnamed,
  * inactive or wrong-thread sources and copy failure return NULL. */

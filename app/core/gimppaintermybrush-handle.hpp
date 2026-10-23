@@ -19,6 +19,8 @@ public:
   { return PainterMybrushRef (ObjectRef<GimpPainterMybrush>::adopt (brush)); }
   static PainterMybrushRef create (const char *name)
   { return adopt (GIMP_PAINTER_MYBRUSH (gimp_mypaint_brush_new (nullptr, name))); }
+  static PainterMybrushRef get_standard (GimpContext *context = nullptr)
+  { return retain (GIMP_PAINTER_MYBRUSH (gimp_mypaint_brush_get_standard (context))); }
   GimpPainterMybrush *get () const noexcept { return owner_.get (); }
   PainterMybrushRef duplicate () const
   {

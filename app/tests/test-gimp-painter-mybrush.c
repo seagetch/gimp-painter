@@ -960,14 +960,45 @@ named_factory_invalid_names (void)
   g_test_assert_expected_messages ();
 }
 
+static void
+named_standard_c_contract (void)
+{
+  GimpData *(*provider) (GimpContext *) = gimp_mypaint_brush_get_standard;
+  GimpData *standard = provider (NULL);
+  guint references = G_OBJECT (standard)->ref_count;
+  gchar *name, *collection;
+  gboolean internal;
+
+  g_assert_true (provider (gimp_get_user_context (gimp)) == standard);
+  g_assert_true (gimp_painter_mybrush_get_standard (NULL) == standard);
+  g_assert_cmpuint (G_OBJECT (standard)->ref_count, ==, references);
+  g_assert_false (g_object_is_floating (standard));
+  g_assert_false (gimp_data_is_dirty (standard));
+  g_assert_null (gimp_data_get_file (standard));
+  gimp_data_get_identifiers (standard, &name, &collection, &internal);
+  g_assert_true (internal);
+  g_assert_cmpstr (name, ==, "Painter Standard");
+  g_assert_cmpstr (collection, ==, "gimp-painter-mybrush-standard");
+  g_free (name);
+  g_free (collection);
+  /* Do not consume the borrowed provider reference in the live application. */
+}
+
 void gimp_test_painter_mybrush_duplicate_handle_register (void);
 
 int main (int argc, char **argv)
 {
   int result;
+  gboolean cold_standard = FALSE;
+  for (int i = 1; i < argc; ++i)
+    if (g_strcmp0 (argv[i], "/painter-mybrush/named-standard/cold-recreation") == 0)
+      cold_standard = TRUE;
   g_test_init (&argc, &argv, NULL);
   gimp_test_utils_set_gimp3_directory ("GIMP_TESTING_ABS_TOP_SRCDIR", "app/tests/gimpdir");
-  gimp = gimp_init_for_testing ();
+  /* Only the deliberately isolated provider-root test skips application
+   * startup. Ordinary tests and ordinary -p runs keep their normal fixture. */
+  if (! (cold_standard && g_test_subprocess ()))
+    gimp = gimp_init_for_testing ();
   g_test_add_func ("/painter-mybrush/177-native-load-copy", load_all);
   g_test_add_func ("/painter-mybrush/stream-icon-copy", stream_icon_and_copy);
   g_test_add_func ("/painter-mybrush/closed-owner", closed_owner);
@@ -993,8 +1024,10 @@ int main (int argc, char **argv)
 #endif
   g_test_add_func ("/painter-mybrush/named-factory/c-contract", named_factory_c_contract);
   g_test_add_func ("/painter-mybrush/named-factory/invalid-names", named_factory_invalid_names);
+  g_test_add_func ("/painter-mybrush/named-standard/c-contract", named_standard_c_contract);
   gimp_test_painter_mybrush_duplicate_handle_register ();
   result = g_test_run ();
   gimp_test_utils_set_gimp3_directory ("GIMP_TESTING_ABS_TOP_BUILDDIR", "app/tests/gimpdir-output");
-  gimp_exit (gimp, TRUE); return result;
+  if (gimp) gimp_exit (gimp, TRUE);
+  return result;
 }

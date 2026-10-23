@@ -212,6 +212,10 @@ GimpData *gimp_painter_mybrush_get_standard (GimpContext *context)
   }
   return standard;
 }
+GimpData *gimp_mypaint_brush_get_standard (GimpContext *context)
+{
+  return gimp_painter_mybrush_get_standard (context);
+}
 GList *gimp_painter_mybrush_load (GimpContext *context, GFile *file, GInputStream *input, GError **error)
 {
   return boundary<GList *> (error, nullptr, [&] {

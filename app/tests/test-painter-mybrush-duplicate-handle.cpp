@@ -86,6 +86,68 @@ void expect_handle_error (Function function)
   g_assert_true (caught);
 }
 
+void named_standard_cold_recreation ()
+{
+  static_assert (std::is_same<decltype (&gimp_mypaint_brush_get_standard),
+                 GimpData *(*)(GimpContext *)>::value,
+                 "The original standard provider is a borrowed C result");
+  if (! g_test_subprocess ())
+    {
+      g_test_trap_subprocess (nullptr, 20 * G_USEC_PER_SEC, GTestSubprocessFlags (0));
+      g_test_trap_assert_passed ();
+      return;
+    }
+
+  /* No application/context/factory has run in this process. The sole initial
+   * reference is the native provider's creation seed, explicitly retired here
+   * to model provider teardown. This is not permission for ordinary callers
+   * to unref a borrowed get_standard result. */
+  guint deaths = 0;
+  auto *seed = gimp_mypaint_brush_get_standard (nullptr);
+  g_assert_nonnull (seed);
+  g_assert_cmpuint (G_OBJECT (seed)->ref_count, ==, 1);
+  g_object_weak_ref (G_OBJECT (seed), finalized, &deaths);
+  {
+    auto first = MypaintBrushRef::get_standard ();
+    g_assert_true (GIMP_DATA (first.get ()) == seed);
+    g_assert_cmpuint (G_OBJECT (seed)->ref_count, ==, 2);
+    {
+      auto second = MypaintBrushRef::get_standard ();
+      g_assert_true (second.get () == first.get ());
+      g_assert_cmpuint (G_OBJECT (seed)->ref_count, ==, 3);
+      g_object_unref (seed); // Cold fixture retires the known provider seed.
+      g_assert_cmpuint (G_OBJECT (first.get ())->ref_count, ==, 2);
+      g_assert_cmpuint (deaths, ==, 0);
+    }
+    g_assert_cmpuint (G_OBJECT (first.get ())->ref_count, ==, 1);
+    g_assert_cmpuint (deaths, ==, 0);
+    g_assert_true (gimp_mypaint_brush_get_standard (nullptr) == GIMP_DATA (first.get ()));
+    g_assert_true (gimp_painter_binding_close (G_OBJECT (first.get ()), nullptr));
+    // Native closed-read policy: identity survives, no shadow standard appears.
+    {
+      auto closed = MypaintBrushRef::get_standard ();
+      g_assert_true (closed.get () == first.get ());
+      auto resource = closed.snapshot ();
+      expect_handle_error ([&] { closed.replace (resource); });
+    }
+  }
+  g_assert_cmpuint (deaths, ==, 1);
+  // Address reuse is legal: prove a fresh active object by state and teardown.
+  auto *replacement = gimp_mypaint_brush_get_standard (nullptr);
+  g_assert_cmpuint (G_OBJECT (replacement)->ref_count, ==, 1);
+  g_object_weak_ref (G_OBJECT (replacement), finalized, &deaths);
+  {
+    auto owner = MypaintBrushRef::get_standard ();
+    auto resource = owner.snapshot ();
+    resource.set_base_value (BRUSH_OPAQUE, 0.375);
+    owner.replace (resource);
+    g_assert_cmpfloat (owner.snapshot ().base_value (BRUSH_OPAQUE), ==, 0.375);
+    g_object_unref (replacement); // Retire this cold provider seed as well.
+    g_assert_cmpuint (deaths, ==, 1);
+  }
+  g_assert_cmpuint (deaths, ==, 2);
+}
+
 void named_factory_handle ()
 {
   static_assert (std::is_same<decltype (&gimp_mypaint_brush_new),
@@ -240,6 +302,7 @@ void handle_copy_failure_exception ()
 extern "C" void
 gimp_test_painter_mybrush_duplicate_handle_register (void)
 {
+  g_test_add_func ("/painter-mybrush/named-standard/cold-recreation", named_standard_cold_recreation);
   g_test_add_func ("/painter-mybrush/named-factory/handle", named_factory_handle);
   g_test_add_func ("/painter-mybrush/named-duplicate/handle-alias-resource", handle_alias_and_resource_independence);
   g_test_add_func ("/painter-mybrush/named-duplicate/handle-copy-move-ownership", handle_copy_move_ownership);
