@@ -1,0 +1,18 @@
+[
+  {
+    "name": "missing-retain",
+    "returncode": -6,
+    "stdout": "TAP version 14\n# random seed: R02S9191ed9fdd6fac20d9b94d4568fc7cf4\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# Start of mypaint-undo-ref tests\nnot ok /mypaint-undo-ref/ownership - ERROR:../source/app/tests/test-mypaint-undo-ref.cpp:29:void ownership(): 'witness' should not be nullptr\nBail out!\n",
+    "stderr": "**\nERROR:../source/app/tests/test-mypaint-undo-ref.cpp:29:void ownership(): 'witness' should not be nullptr\n",
+    "duration": 1.0511195920007594,
+    "header_sha256": "8694602fb8fbe9be75d5fb908982edad0db6454b80d057634e8a7e9370c1a966"
+  },
+  {
+    "name": "wrong-native-type",
+    "returncode": -6,
+    "stdout": "TAP version 14\n# random seed: R02S9ef5e2fbfcf6900a71c300554a3ecccc\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# Start of mypaint-undo-ref tests\nnot ok /mypaint-undo-ref/empty-type - ERROR:../source/app/tests/test-mypaint-undo-ref.cpp:27:void empty_type(): 'TypeTraits<GimpMypaintCoreUndo>::type()==gimp_mypaint_core_undo_get_type()' should be TRUE\nBail out!\n",
+    "stderr": "**\nERROR:../source/app/tests/test-mypaint-undo-ref.cpp:27:void empty_type(): 'TypeTraits<GimpMypaintCoreUndo>::type()==gimp_mypaint_core_undo_get_type()' should be TRUE\n",
+    "duration": 1.096448252999835,
+    "header_sha256": "8694602fb8fbe9be75d5fb908982edad0db6454b80d057634e8a7e9370c1a966"
+  }
+]

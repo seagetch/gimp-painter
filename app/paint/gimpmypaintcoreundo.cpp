@@ -27,7 +27,7 @@ G_DEFINE_TYPE_WITH_CODE(GimpMypaintCoreUndo,gimp_mypaint_core_undo,GIMP_TYPE_DRA
  G_IMPLEMENT_INTERFACE(G_TYPE_INITABLE,initable_iface)
  G_IMPLEMENT_INTERFACE(GIMP_TYPE_UNDO_POP_GUARD,guard_iface))
 namespace GimpPainter {
-template<> struct TypeTraits<GimpMypaintCoreUndo>{static GType type()noexcept{return gimp_mypaint_core_undo_get_type();}};
+/* Public typed ownership uses the single TypeTraits specialization in the header. */
 template<> struct TypeTraits<GimpPainterStrokePayload>{static GType type()noexcept{return gimp_painter_stroke_payload_get_type();}};
 }
 namespace {

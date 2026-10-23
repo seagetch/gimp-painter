@@ -63,6 +63,10 @@ typedef struct _GimpPerspectiveCloneOptions GimpPerspectiveCloneOptions;
 typedef struct _GimpSmudgeOptions           GimpSmudgeOptions;
 
 
+/* Native historical pixel/state Undo; opaque source name, not the legacy layout. */
+typedef struct _GimpMypaintCoreUndo GimpMypaintCoreUndo;
+
+
 /*  functions  */
 
 typedef void (* GimpPaintRegisterCallback) (Gimp        *gimp,

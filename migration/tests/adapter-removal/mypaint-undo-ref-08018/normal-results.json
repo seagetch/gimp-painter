@@ -1,0 +1,14 @@
+[
+  {
+    "name": "gimp:app / mypaint-undo-ref",
+    "stdout": "TAP version 14\n# random seed: R02Sed1acfc6fe7a6d23f234caf246b211ef\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n1..3\n# Start of mypaint-undo-ref tests\nok 1 /mypaint-undo-ref/empty-type\nok 2 /mypaint-undo-ref/wrong-type\nok 3 /mypaint-undo-ref/ownership\n# End of mypaint-undo-ref tests\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n",
+    "result": "OK",
+    "starttime": 1792564575.345469,
+    "duration": 1.0891671180725098,
+    "returncode": 0,
+    
+    "command": [
+      "/workspace/shared/gimp-native-preset-gui/build/app/tests/mypaint-undo-ref"
+    ]
+  }
+]

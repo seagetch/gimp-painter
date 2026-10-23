@@ -1317,3 +1317,14 @@ test('painter-graph-invalidation', graph_invalidation_test,
        'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
        'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
        'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 120)
+
+# Original native MyPaint Undo opaque name and typed ownership facade.
+mypaint_undo_ref = executable('mypaint-undo-ref',
+  ['test-mypaint-undo-ref.cpp', 'tests.c'],
+  dependencies: [libapp_dep, appstream], link_with: apptests_links,
+  cpp_args: painter_cpp_args, override_options: ['cpp_std=c++14'])
+test('mypaint-undo-ref', mypaint_undo_ref,
+  env: ['GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+        'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+        'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
+        'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 120)
