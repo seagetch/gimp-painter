@@ -1,0 +1,31 @@
+{
+  "source_commit": "6e6f2568e7593089c4f3c93e4613354c1f915001",
+  "source_branch_at_clone": "gimp-3-0-port",
+  "repository": "https://github.com/seagetch/gimp-painter",
+  "source_directory": "/workspace/shared/gimp-native.RoEPfcPS/source",
+  "source_patch_sha256": "ce6f23551c3ecad07d7cb9147eb6f8f5c511dd15854e017f06434a7ad7380b5d",
+  "source_patch_matches_after_build": true,
+  "build_executable": "/workspace/shared/gimp-native.RoEPfcPS/build/app/gimp-3.0",
+  "installed_executable": "/workspace/shared/gimp-native.RoEPfcPS/prefix/bin/gimp-3.0",
+  "build_executable_sha256": "1aa5f4ab926d6450934d946024cdb3f8a9f3c112d8189ef77ce1f9600151fc2e",
+  "installed_executable_sha256": "a472fb82d753a0198989d010c5558cb65f85bf4cdcba951bbe508461d171b8ef",
+  "matching_elf_build_id": "bcb32da884f385415c8c9e3b5d75f5b771c3ff97",
+  "matching_text_section_sha256": "53f94ffe269b204dd378ca6788e0cdafab0c078de00e1d5cd301ba175ebd7974",
+  "whole_file_difference": "Meson installation removes build-tree RUNPATH; matching Build ID and exact .text verified",
+  "painter_symbol_present": "gimp_painter_canvas_ui_init",
+  "portrait_dimensions": [
+    1080,
+    1920
+  ],
+  "display_transport": "authenticated loopback IPv4 Xvfb, DISPLAY=127.0.0.1:92",
+  "fixture": "migration/fixtures/gimp3-baseline.xcf",
+  "fixture_sha256": "e9622c6bb195ec5de7a4e00d1bd558527b43b728fdefae8b721d589c8cc7c9ae",
+  "test_profile_override": "painter-canvas-ui=yes",
+  "default_source_value": false,
+  "ui_action": "View > Painter Canvas Controls",
+  "screenshots": {
+    "gimp-portrait.png": "c4cac75a753d3197b465675092c37a8814c45e028b5d4d31d0e1f5ed84911be2",
+    "gimp-painter-canvas.png": "b569aaded154d717d9b4946c2f19b6b8977e585825a1feadc985246ace9c6be9"
+  },
+  "scope": "Startup and visible Painter controls; not full UI parity or clean shutdown acceptance"
+}
