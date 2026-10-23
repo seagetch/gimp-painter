@@ -13,18 +13,33 @@ ROOT = Path(__file__).resolve().parents[1]
 
 # Reviewed bounded native claims, not completion of legacy feature/layout duties.
 # Updating a claim requires reviewing its exact row, receipts and source proof.
-BOUNDED_HANDLE_PROOFS = {'GimpActionGroup': {'row_sha256': '9cefd8d72905c39348344fc6a0d7bf255be1b7aeec985f82e7ffbb881a58b37c',
-                     'directory': 'migration/tests/adapter-removal/preset-action-group-entry-08018',
-                     'files': {'validate.py': '59946db2032b3e211397584ae84ba4a6b1e452d78be5ce051239a2f4966c8bcd',
-                               'source-manifest.json': '98bdb9b04aa7d4e030226265d28fb2713bd041669dae906758299681064087b6',
-                               'tested-owner-sources.tar.gz': 'eec41d504c59326a0222da5a1a07175a4dafe5a315cffffd5bb19c38e5a06e8f',
-                               'normal-results.json': 'b644b49e000d181655ca342df0f177bc5687c6deaf0340c5d50067c823f7bd8f',
-                               'asan-results.json': 'cf01c6cd495130ea763c2e74799fdb82ff084884726f8dbe5c8ef457b776f17a',
-                               'asan-build.json': '68cf29576b131848d82cf6158c83f2dd76030e1db62ed25bff5fc0094f9d0245',
-                               'header-compile-result.json': 'f3dafc14f883074ca908c52d8759027298200baafeb3e230a227fa35aa54ecee',
+BOUNDED_HANDLE_PROOFS = {'GimpActionGroup': {'row_sha256': '8f118ef4184e6216937298be6751debb6b6c0463801d6c0b51c0b5989e86a189',
+                     'directory': 'migration/tests/adapter-removal/preset-dialog-entry-08018',
+                     'files': {'report.json': 'b4bb736fc0c1e84907779b37fe72fbb5edca1c518447964d864d3054ccc922be',
+                               'source-manifest.json': '5921ec3b1d2268d8b75b6f7eb7777aa633bd1d57596d5cf0613473b1e9379563',
+                               'tested-owner-ui-sources.tar.gz': '8a2638e973029528726f750ceb088d6bdb9be3817ef595e2c7d08df06527ce03',
+                               'normal-results.json': '505bdd21c102ff019a8f58132652c24f8f00cfea45412a6d0631e5bd883d5602',
+                               'asan-build.json': '358efcfb815cafbc485a49d443add97573a5a33e95660628a25e19d43041405e',
+                               'asan-results.json': 'f5c8dd1f37eaeb5d05e089320b00a941ef27537d6dd5e8901ac680d05bc60ce4',
+                               'ui-results.json': '004b58ad94a9deed683436c55b96c1ca1d4253719a1c9271891283f68deb725c',
+                               'header-compile-result.json': '23290ad361dcf93d77e688bbe179cf3bf10a0b70ed99d1f45dbdda042e9425c9',
+                               'native-mutation.json': '315ab1fa698e9678044cc830d3c37b878d981a6adda36fbe6ff54ee1147f7e31',
+                               'expected-red.log': '2513ef16fcae2081b7c04dd5cd979c80bde222f7ce21f30bb675984ce201918a',
                                'red-status.txt': '4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865',
-                               'expected-red.log': '6ca100c3e30875c8b7531c185c7ab2141ef5e6a7d60ac9d7292be43349027267',
-                               'native-mutation.json': '6fa8284e75cb132de91f7c90e60b30934d8d9a5044725d67451283b189bbbc52'}},
+                               'validate.py': '5932f6bda0c43f559ace75d60a5081866dc1e970196e600e8221b97937b325e1',
+                               'original-dialog-entry-oncanvas-portrait.png': '50417cc5a47c300e0c4d42a5bd07a80514768902eefd40d7e7eb6b4479e519a2'},
+                     'predecessors': [{'row_sha256': '9cefd8d72905c39348344fc6a0d7bf255be1b7aeec985f82e7ffbb881a58b37c',
+                                       'directory': 'migration/tests/adapter-removal/preset-action-group-entry-08018',
+                                       'files': {'validate.py': '59946db2032b3e211397584ae84ba4a6b1e452d78be5ce051239a2f4966c8bcd',
+                                                 'source-manifest.json': '98bdb9b04aa7d4e030226265d28fb2713bd041669dae906758299681064087b6',
+                                                 'tested-owner-sources.tar.gz': 'eec41d504c59326a0222da5a1a07175a4dafe5a315cffffd5bb19c38e5a06e8f',
+                                                 'normal-results.json': 'b644b49e000d181655ca342df0f177bc5687c6deaf0340c5d50067c823f7bd8f',
+                                                 'asan-results.json': 'cf01c6cd495130ea763c2e74799fdb82ff084884726f8dbe5c8ef457b776f17a',
+                                                 'asan-build.json': '68cf29576b131848d82cf6158c83f2dd76030e1db62ed25bff5fc0094f9d0245',
+                                                 'header-compile-result.json': 'f3dafc14f883074ca908c52d8759027298200baafeb3e230a227fa35aa54ecee',
+                                                 'red-status.txt': '4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865',
+                                                 'expected-red.log': '6ca100c3e30875c8b7531c185c7ab2141ef5e6a7d60ac9d7292be43349027267',
+                                                 'native-mutation.json': '6fa8284e75cb132de91f7c90e60b30934d8d9a5044725d67451283b189bbbc52'}}]},
  'GimpJsonResource': {'row_sha256': '88077bf418398c57fb76263381d4ce962977c4c4c39c486256b05061af70748f',
                       'directory': 'migration/tests/adapter-removal/json-resource-entries-08018',
                       'files': {'validate.py': '36919260ead5d843581e0fea8f4b167fc877c4d744c16140965cb0ee437a682a',
@@ -57,19 +72,22 @@ def verify_handle_implementations(handles, root=None):
         if digest != proof['row_sha256']:
             errors.append('bounded handle claim differs from reviewed scope: ' + name)
             continue
-        evidence = root / proof['directory']
         try:
-            for filename, expected in proof['files'].items():
-                if hashlib.sha256((evidence / filename).read_bytes()).hexdigest() != expected:
-                    raise ValueError('changed receipt: ' + filename)
-            # The pinned validator verifies its archive, native/sanitizer results,
-            # exclusions, and all current production/test owner source identities.
-            result = subprocess.run([sys.executable, '-I', str(evidence / 'validate.py'),
-                                     '--check-source'], cwd=root,
-                                    capture_output=True, text=True)
-            if result.returncode:
-                raise ValueError('source-bound evidence validation failed: ' +
-                                 result.stderr.strip().splitlines()[-1])
+            # Immutable predecessors retain their reviewed archives/results; only
+            # the successor checks current sources. Never reseal old receipts.
+            chain = proof.get('predecessors', []) + [proof]
+            for checkpoint in chain:
+                evidence = root / checkpoint['directory']
+                for filename, expected in checkpoint['files'].items():
+                    if hashlib.sha256((evidence / filename).read_bytes()).hexdigest() != expected:
+                        raise ValueError('changed receipt: ' + filename)
+                command = [sys.executable, '-I', str(evidence / 'validate.py')]
+                if checkpoint is proof:
+                    command.append('--check-source')
+                result = subprocess.run(command, cwd=root, capture_output=True, text=True)
+                if result.returncode:
+                    raise ValueError('source-bound evidence validation failed: ' +
+                                     (result.stderr.strip().splitlines() or ['no diagnostic'])[-1])
         except (OSError, ValueError) as error:
             errors.append('invalid bounded handle proof: ' + name + ': ' + str(error))
     return errors

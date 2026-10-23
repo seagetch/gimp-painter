@@ -22,7 +22,8 @@ class HandleProofTests(unittest.TestCase):
         self.addCleanup(self.temp.cleanup)
         self.root = Path(self.temp.name)
         self.rows = c.read('migration/contracts/cpp-handle-registry.tsv')
-        for proof in c.BOUNDED_HANDLE_PROOFS.values():
+        for proof in [q for p in c.BOUNDED_HANDLE_PROOFS.values()
+                      for q in p.get('predecessors', []) + [p]]:
             source = ROOT / proof['directory']
             dest = self.root / proof['directory']
             dest.mkdir(parents=True)
@@ -30,7 +31,7 @@ class HandleProofTests(unittest.TestCase):
                 shutil.copyfile(source / name, dest / name)
             # Immutable tested checkpoint: current source evolution is checked
             # separately by the aggregate, not silently blessed by this fixture.
-            with tarfile.open(source / 'tested-owner-sources.tar.gz') as archive:
+            with tarfile.open(source / next(n for n in proof['files'] if n.endswith('.tar.gz'))) as archive:
                 for item in json.loads((source / 'source-manifest.json').read_text()):
                     target = self.root / item['path']
                     target.parent.mkdir(parents=True, exist_ok=True)
@@ -57,7 +58,8 @@ class HandleProofTests(unittest.TestCase):
                     self.assertTrue(self.check(rows))
 
     def test_receipts_missing_or_changed_rejected(self):
-        for proof in c.BOUNDED_HANDLE_PROOFS.values():
+        for proof in [q for p in c.BOUNDED_HANDLE_PROOFS.values()
+                      for q in p.get('predecessors', []) + [p]]:
             for filename in proof['files']:
                 with self.subTest(proof=proof['directory'], filename=filename):
                     path = self.root / proof['directory'] / filename

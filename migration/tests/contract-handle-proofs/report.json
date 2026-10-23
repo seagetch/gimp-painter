@@ -1,0 +1,81 @@
+{
+  "kind": "aggregate-checker-maintenance",
+  "checkpoint_commit": "e6fc48d6b0e767c9a550e63a3a22dcd7ef3d3ca8",
+  "handles": 90,
+  "c_entries": 76,
+  "test_methods": 8,
+  "todo_handle_rows": 88,
+  "bounded_handle_rows": 2,
+  "claim_scope": "Only exact reviewed native handle routes. No completion of legacy features, original Interface/layout ABI or entire source duties.",
+  "predecessor_policy": "Pin every original receipt and validate immutable archive without current-source check; validate successor against current owner source. Do not reseal historical receipts.",
+  "checker_sources_sha256": {
+    "tools/check_painter_contracts.py": "4349e6e258e28f4506de61044f898986bcfe3832329137e613aba33fc63df3c6",
+    "tools/tests/test_painter_contracts.py": "a7a2ebceb0dc9215498f8176309675314ff0bcdd292eaaee69e36995b38d0e0a"
+  },
+  "proofs": {
+    "GimpActionGroup": {
+      "row_sha256": "8f118ef4184e6216937298be6751debb6b6c0463801d6c0b51c0b5989e86a189",
+      "directory": "migration/tests/adapter-removal/preset-dialog-entry-08018",
+      "files": {
+        "report.json": "b4bb736fc0c1e84907779b37fe72fbb5edca1c518447964d864d3054ccc922be",
+        "source-manifest.json": "5921ec3b1d2268d8b75b6f7eb7777aa633bd1d57596d5cf0613473b1e9379563",
+        "tested-owner-ui-sources.tar.gz": "8a2638e973029528726f750ceb088d6bdb9be3817ef595e2c7d08df06527ce03",
+        "normal-results.json": "505bdd21c102ff019a8f58132652c24f8f00cfea45412a6d0631e5bd883d5602",
+        "asan-build.json": "358efcfb815cafbc485a49d443add97573a5a33e95660628a25e19d43041405e",
+        "asan-results.json": "f5c8dd1f37eaeb5d05e089320b00a941ef27537d6dd5e8901ac680d05bc60ce4",
+        "ui-results.json": "004b58ad94a9deed683436c55b96c1ca1d4253719a1c9271891283f68deb725c",
+        "header-compile-result.json": "23290ad361dcf93d77e688bbe179cf3bf10a0b70ed99d1f45dbdda042e9425c9",
+        "native-mutation.json": "315ab1fa698e9678044cc830d3c37b878d981a6adda36fbe6ff54ee1147f7e31",
+        "expected-red.log": "2513ef16fcae2081b7c04dd5cd979c80bde222f7ce21f30bb675984ce201918a",
+        "red-status.txt": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+        "validate.py": "5932f6bda0c43f559ace75d60a5081866dc1e970196e600e8221b97937b325e1",
+        "original-dialog-entry-oncanvas-portrait.png": "50417cc5a47c300e0c4d42a5bd07a80514768902eefd40d7e7eb6b4479e519a2"
+      },
+      "predecessors": [
+        {
+          "row_sha256": "9cefd8d72905c39348344fc6a0d7bf255be1b7aeec985f82e7ffbb881a58b37c",
+          "directory": "migration/tests/adapter-removal/preset-action-group-entry-08018",
+          "files": {
+            "validate.py": "59946db2032b3e211397584ae84ba4a6b1e452d78be5ce051239a2f4966c8bcd",
+            "source-manifest.json": "98bdb9b04aa7d4e030226265d28fb2713bd041669dae906758299681064087b6",
+            "tested-owner-sources.tar.gz": "eec41d504c59326a0222da5a1a07175a4dafe5a315cffffd5bb19c38e5a06e8f",
+            "normal-results.json": "b644b49e000d181655ca342df0f177bc5687c6deaf0340c5d50067c823f7bd8f",
+            "asan-results.json": "cf01c6cd495130ea763c2e74799fdb82ff084884726f8dbe5c8ef457b776f17a",
+            "asan-build.json": "68cf29576b131848d82cf6158c83f2dd76030e1db62ed25bff5fc0094f9d0245",
+            "header-compile-result.json": "f3dafc14f883074ca908c52d8759027298200baafeb3e230a227fa35aa54ecee",
+            "red-status.txt": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+            "expected-red.log": "6ca100c3e30875c8b7531c185c7ab2141ef5e6a7d60ac9d7292be43349027267",
+            "native-mutation.json": "6fa8284e75cb132de91f7c90e60b30934d8d9a5044725d67451283b189bbbc52"
+          }
+        }
+      ]
+    },
+    "GimpJsonResource": {
+      "row_sha256": "88077bf418398c57fb76263381d4ce962977c4c4c39c486256b05061af70748f",
+      "directory": "migration/tests/adapter-removal/json-resource-entries-08018",
+      "files": {
+        "validate.py": "36919260ead5d843581e0fea8f4b167fc877c4d744c16140965cb0ee437a682a",
+        "source-manifest.json": "8b72de54ff7ccba9dd7955d864efa15ac1561829781e73c9f1182eef74556eea",
+        "tested-owner-sources.tar.gz": "f13c1e63d57b6d6d6c72ef2da0fdc91ef60f4f906c283d575dd33086b4382a77",
+        "normal-results.json": "efdd6d112164459926a8d45761994d93f0c44f00beca9bf3fd2c54d9cda41c76",
+        "asan-results.json": "23b0be7cbd3d608b21d8604de3a737f057b1486c88b450fd85568acc73343895",
+        "asan-build.json": "6c472228eae28b7372fccbf24e1df7fc8802b0d6105af27d81f430046ad895cd",
+        "header-compile-result.json": "da6d9a648233cbe0650865f3d8b790f52dfdd3fb915770bba374e9078fcf443f",
+        "facade-header.json": "c213b5bc73511f65836d24025383d4bfb864c96e3d538fa831895e541be995e9",
+        "source-contract.json": "90998f9c3dab503f57278653a1b60c60aab57a2060fbbb2cd9e7119f4eb3a22a"
+      }
+    }
+  },
+  "negative_controls": {
+    "reviewed_row_field_mutations": 12,
+    "missing_or_tampered_receipts": 64,
+    "current_source_mutations": 27,
+    "unknown_claim": true,
+    "incomplete_todo": true,
+    "rollback": true
+  },
+  "artifact_sha256": {
+    "checker.log": "635782e672fee4896ccf131af6b2077117e9e58a12d2334a728246728ee8e116",
+    "tests.log": "b4e719c7c82cb1a75db9a7bdd9c8133a6dab39f5aade81fb31107fc35feb4f7c"
+  }
+}
