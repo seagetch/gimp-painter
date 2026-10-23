@@ -59,3 +59,12 @@ if not meson.is_cross_build()
   test('painter-mypaint-coordinate-boundaries', painter_coordinate_boundaries,
     suite: 'painter', timeout: 60)
 endif
+
+# Explicit finalization evidence for exposed buffers and provider resources.
+painter_region_lifetime = executable('painter-mypaint-region-lifetime',
+  'tests/region-lifetime.cpp', dependencies: painter_mypaint_surface_dep,
+  cpp_args: painter_cpp_args, override_options: ['cpp_std=c++14'])
+if not meson.is_cross_build()
+  test('painter-mypaint-region-lifetime', painter_region_lifetime,
+    suite: 'painter', timeout: 60)
+endif

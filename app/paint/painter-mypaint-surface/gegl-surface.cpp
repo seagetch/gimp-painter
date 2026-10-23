@@ -61,7 +61,9 @@ struct GeglSurface::Impl {
   {
     for (auto v : {x,y,radius,hardness,aspect,angle,grain,contrast}) finite (v);
     Dab result;
-    const auto texture_owner = texture_provider ? texture_provider () : nullptr;
+    // A provider may replace itself; keep its captures alive until it returns.
+    auto provider = texture_provider;
+    const auto texture_owner = provider ? provider () : nullptr;
     const Texture& paper = texture_owner ? *texture_owner : texture;
     if (!paper.values.empty ()) {
       if (paper.width <= 0 || paper.height <= 0 || paper.values.size () != std::size_t(paper.width)*paper.height)
@@ -280,7 +282,8 @@ bool GeglSurface::draw_dab (float x,float y,float radius,float r,float g,float b
   if(!impl_->native.legacy){
     if(!impl_->draw_wide(dab,r,g,b,opaque,alpha,lock_alpha,colorize))return false;
     if(!impl_->dirty.width)impl_->dirty=rect;else gegl_rectangle_bounding_box(&impl_->dirty,&impl_->dirty,&rect);
-    if(impl_->notify)impl_->notify(rect);
+    auto notify=impl_->notify;
+    if(notify)notify(rect);
     return true;
   }
   auto *target=impl_->non_incremental ? impl_->floating.get() : impl_->target.get();
@@ -317,7 +320,8 @@ bool GeglSurface::draw_dab (float x,float y,float radius,float r,float g,float b
     impl_->write(impl_->target.get(),rect,result);
   }
   if (!impl_->dirty.width) impl_->dirty=rect;else gegl_rectangle_bounding_box(&impl_->dirty,&impl_->dirty,&rect);
-  if (impl_->notify) impl_->notify(rect);
+  auto notify=impl_->notify;
+  if (notify) notify(rect);
   return true;
 }
 void GeglSurface::get_color (float x,float y,float radius,float *r,float *g,float *b,float *a,float hardness,float aspect,float angle,float grain,float contrast)
