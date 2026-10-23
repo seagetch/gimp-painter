@@ -1,0 +1,15 @@
+[
+  {
+    "name": "gimp:app / preset-gui-entries",
+    "result": "FAIL",
+    "returncode": -6,
+    "stdout": "TAP version 14\n# random seed: R02S35198e67ea772651a8565a41d593ddb5\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# Start of preset-gui-entry tests\nnot ok /preset-gui-entry/preferences-metadata - ERROR:../source/app/tests/test-preset-gui-entries.c:120:preferences_metadata: assertion failed (entry->label == \"Layer presets Folders\"): (\"Layer Preset Folders\" == \"Layer presets Folders\")\nBail out!\n",
+    "stderr": "**\nERROR:../source/app/tests/test-preset-gui-entries.c:120:preferences_metadata: assertion failed (entry->label == \"Layer presets Folders\"): (\"Layer Preset Folders\" == \"Layer presets Folders\")\n",
+    "duration": 1.0468964576721191,
+    "command": [
+      "/workspace/shared/gimp-clean-aggregate/build/app/tests/preset-gui-entries",
+      "-p",
+      "/preset-gui-entry/preferences-metadata"
+    ]
+  }
+]

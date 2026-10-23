@@ -314,7 +314,7 @@ native_dockable_close_reopen (gboolean through_action)
                        GIMP_HELP_DOCK);
       g_assert_cmpstr (gimp_action_get_help_id (gimp_ui_manager_find_action (
         gimp_test_utils_get_ui_manager (gimp), "dialogs", "dialogs-layer-presets")), ==,
-        GIMP_HELP_DOCK);
+        "gimp-layer-preset-dialog");
       book = gimp_dockable_get_dockbook (GIMP_DOCKABLE (dockable));
       g_assert_true (GIMP_IS_DOCKBOOK (book));
       g_assert_true (GIMP_IS_DOCK (gimp_dockbook_get_dock (book)));

@@ -1,0 +1,30 @@
+{
+  "task": "08.018/preset-legacy-gui-compatibility",
+  "status": "DOING",
+  "normal_cases": 24,
+  "sanitizer_cases": 6,
+  "instrumented_units": 7,
+  "portrait_size": [
+    1080,
+    1920
+  ],
+  "oncanvas": true,
+  "screenshot_input": "native GtkTreeView cursor API; actual GTK/GDK window rendering, not physical pointer gesture",
+  "base_commit": "81bc24545ddaf50ab3fc3ad99f8b326248d7fa5a",
+  "original_metadata": "seven preference fields and dialog label/short-label/help",
+  "remaining": [
+    "dynamic mutable preset registry enumeration and config registration",
+    "historical interface/binary layout ABI not claimed"
+  ],
+  "native_adaptation": [
+    "native GtkStack stable page key independent of empty public help field",
+    "missing historical icon rendered with native tool-preset folder fallback",
+    "native reset button wording and dock factory help retained"
+  ],
+  "limits": [
+    "selected sanitizer only; dependencies/LSan/vptr excluded",
+    "not whole-current-HEAD aggregate",
+    "no historical icon appearance equivalence",
+    "no installed historical help document promised"
+  ]
+}

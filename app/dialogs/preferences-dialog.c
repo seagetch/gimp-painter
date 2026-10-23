@@ -100,10 +100,10 @@ typedef struct
 /* One native descriptor feeds both the real folder page and the original API. */
 static const PrefsPathDescriptor layer_preset_path =
 {
-  N_("Layer Presets"), N_("Layer Preset Folders"),
-  "folders-tool-presets", "gimp-prefs-folders-layer-presets",
+  N_("Layer Presets"), N_("Layer presets Folders"),
+  "folders-layer-presets", "",
   N_("Reset Layer Preset _Folders"),
-  N_("Select Layer Preset Folders"),
+  N_("Select Layer Presets Folders"),
   "layer-presets-path", "layer-presets-path-writable"
 };
 
@@ -3721,12 +3721,19 @@ prefs_boolean_combo_box_add (object, "initial-zoom-to-fit",
         GtkWidget *editor;
         gchar     *icon_name;
 
-        icon_name = g_strconcat ("gimp-prefs-", path->icon, NULL);
+        /* Preserve original public descriptor metadata, while adapting the
+         * absent historical icon and empty help ID to current GTK resources.
+         * Keep the native GtkStack page identity independent of the legacy
+         * help string. These are presentation mappings, not another registry. */
+        icon_name = g_strconcat ("gimp-prefs-",
+                                path == &layer_preset_path ?
+                                  "folders-tool-presets" : path->icon, NULL);
         vbox = gimp_prefs_box_add_page (GIMP_PREFS_BOX (prefs_box),
                                         icon_name,
                                         gettext (path->label),
                                         gettext (path->tree_label),
-                                        path->help_data,
+                                        path == &layer_preset_path ?
+                                          "gimp-prefs-folders-layer-presets" : path->help_data,
                                         &top_iter,
                                         &child_iter);
         g_free (icon_name);

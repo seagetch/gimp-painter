@@ -245,10 +245,10 @@ const GimpStringActionEntry dialogs_dockable_actions[] =
     "gimp-painter-mypaint-editor", GIMP_HELP_MYPAINT_BRUSH_EDIT },
 
   { "dialogs-layer-presets", GIMP_ICON_LAYER,
-    NC_("dialogs-action", "Layer Presets Dialog"),
-    NC_("dialogs-action", "Layer Presets"), { NULL },
+    NC_("dialogs-action", "Layer presets"),
+    NULL, { NULL },
     NC_("dialogs-action", "Open layer presets dialog"),
-    "gimp-layer-preset-list", GIMP_HELP_DOCK },
+    "gimp-layer-preset-list", "gimp-layer-preset-dialog" },
 
   { "dialogs-tool-presets", GIMP_ICON_TOOL_PRESET,
     NC_("dialogs-action", "Tool Pre_sets Dialog"),

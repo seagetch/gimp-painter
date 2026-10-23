@@ -65,11 +65,12 @@ static void dialog_metadata (void)
   g_assert_true (GIMP_IS_STRING_ACTION (action));
   g_assert_cmpstr (GIMP_STRING_ACTION (action)->value, ==, "gimp-layer-preset-list");
   g_assert_cmpstr (gimp_action_get_label (action), ==,
-    g_dpgettext2 (NULL, "dialogs-action", "Layer Presets Dialog"));
+    g_dpgettext2 (NULL, "dialogs-action", "Layer presets"));
   g_assert_cmpstr (gimp_action_get_short_label (action), ==,
-    g_dpgettext2 (NULL, "dialogs-action", "Layer Presets"));
+    g_dpgettext2 (NULL, "dialogs-action", "Layer presets"));
   g_assert_cmpstr (gimp_action_get_tooltip (action), ==,
     g_dpgettext2 (NULL, "dialogs-action", "Open layer presets dialog"));
+  g_assert_cmpstr (gimp_action_get_help_id (action), ==, "gimp-layer-preset-dialog");
   /* Delegate duplicate policy to the same native provider; existing identity wins. */
   entry (group);
   g_assert_true (gimp_action_group_get_action (group, "dialogs-layer-presets") == action);
@@ -116,10 +117,10 @@ static void preferences_metadata (void)
   g_assert_cmpuint (g_array_get_element_size (first), ==, sizeof (PrefsDialogEntry));
   entry = &g_array_index (first, PrefsDialogEntry, 0);
   g_assert_cmpstr (entry->tree_label, ==, "Layer Presets");
-  g_assert_cmpstr (entry->label, ==, "Layer Preset Folders");
-  g_assert_cmpstr (entry->icon, ==, "folders-tool-presets");
-  g_assert_cmpstr (entry->help_data, ==, "gimp-prefs-folders-layer-presets");
-  g_assert_cmpstr (entry->fs_label, ==, "Select Layer Preset Folders");
+  g_assert_cmpstr (entry->label, ==, "Layer presets Folders");
+  g_assert_cmpstr (entry->icon, ==, "folders-layer-presets");
+  g_assert_cmpstr (entry->help_data, ==, "");
+  g_assert_cmpstr (entry->fs_label, ==, "Select Layer Presets Folders");
   g_assert_cmpstr (entry->path_property_name, ==, "layer-presets-path");
   g_assert_cmpstr (entry->writable_property_name, ==, "layer-presets-path-writable");
   g_assert_nonnull (g_object_class_find_property (G_OBJECT_GET_CLASS (gimp->config), entry->path_property_name));
@@ -129,7 +130,7 @@ static void preferences_metadata (void)
   g_assert_cmpstr (g_array_index (second, PrefsDialogEntry, 0).label, ==, static_label);
   g_array_unref (first); g_array_unref (second);
   /* Static strings outlive the caller-owned array storage. */
-  g_assert_cmpstr (static_label, ==, "Layer Preset Folders");
+  g_assert_cmpstr (static_label, ==, "Layer presets Folders");
 }
 static void preferences_handle (void)
 {
