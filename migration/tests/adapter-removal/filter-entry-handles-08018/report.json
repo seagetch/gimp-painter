@@ -1,0 +1,2477 @@
+{
+  "scope": "08.018 original FilterLayer query/lifecycle rows 21\u201325",
+  "public_base": "fdd2e15f0fb74ce8c6af32de960cfae8410e674e",
+  "public_tree": "13dbf918381926555e4271174938a08f094694c7",
+  "source_manifest": [
+    {
+      "path": "app/core/gimpfilterlayer.cpp",
+      "before_blob": "56de4407ab83802cdee2545c519892fc150d16b9",
+      "after_blob": "164c5a2de309bb7059f46de829177059a8b8727b",
+      "sha256": "75a5813aec8c6bd67cf06abda5b336fb174295428ac72edbe13df845a653e70c",
+      "bytes": 110192
+    },
+    {
+      "path": "app/core/gimpfilterlayer.h",
+      "before_blob": "5581f170eff70a53ebf0ba1c9108498df1b23221",
+      "after_blob": "596d2142e2d40e841def9812c20223fcb319d35f",
+      "sha256": "a87a9a4a035b35f3224983fad0c6b73980919ebf86242701f80892fcd9a4830c",
+      "bytes": 14258
+    },
+    {
+      "path": "app/core/gimpfilterlayer-handle.hpp",
+      "before_blob": "136f486c9460c26382930ca355eec363f2621828",
+      "after_blob": "033a6d7d8489bb961b286f6cd1e241f62112735a",
+      "sha256": "b73e9c731130318b10aae60d7ce76f5a9019a730fa6651bed16c5640a74dcbe4",
+      "bytes": 2859
+    },
+    {
+      "path": "app/tests/test-filter-entry-contracts.c",
+      "before_blob": null,
+      "after_blob": "e0781aba9777a970083a40bd8eb6d409b1dda30f",
+      "sha256": "9f0edbf9e637178d12a648d3580af532ccd5d5dd75969188400fa3363818cae9",
+      "bytes": 30064
+    },
+    {
+      "path": "app/tests/test-filter-entry-contracts.cpp",
+      "before_blob": null,
+      "after_blob": "f5e2b16082bb2f42a60ebff0bd954022a7e1d4e3",
+      "sha256": "10fb6215afa6db5b276cec5dc0ae5b9bf5b0dd161971c4a76ed8998ed17df7af",
+      "bytes": 23798
+    },
+    {
+      "path": "app/tests/meson.build",
+      "before_blob": "0a8f862c097a74e233fa705615fec4f9b44873a4",
+      "after_blob": "74058de06a817550298a0fa27c543ee55b8dccb6",
+      "sha256": "28ee4f74ade2f69ce7ab72e288705394a8cf329c0ef4e91619fd539c4d90175c",
+      "bytes": 42190
+    },
+    {
+      "path": "migration/contracts/cpp-c-entry-map.tsv",
+      "before_blob": "32570dc08f0eea2d44de6393758d988fd686b385",
+      "after_blob": "1f7908605b0da5233ee0fbb788b0960a618469fc",
+      "sha256": "d7037d814e08d2882eea640e9984a55110bfa848a2cdd35f0d335f64669c9024",
+      "bytes": 28519
+    }
+  ],
+  "results": {
+    "native": [
+      {
+        "mode": "native",
+        "run": "filter-entry-handles-candidate-native-v1",
+        "status": "PASS",
+        "registrations": 1,
+        "case_count": 17,
+        "results": [
+          {
+            "name": "filter-entry-contracts",
+            "cases": [
+              "/filter-entry-contracts/c/c_factory_native_identity",
+              "/filter-entry-contracts/c/c_exact_name_absent_and_empty",
+              "/filter-entry-contracts/c/c_owned_values_and_model_identity",
+              "/filter-entry-contracts/c/c_null_and_empty_argument_shapes",
+              "/filter-entry-contracts/c/c_scalar_object_identity_and_ownership",
+              "/filter-entry-contracts/c/c_live_object_array_container_copy",
+              "/filter-entry-contracts/c/c_expired_arrays_reject_atomically",
+              "/filter-entry-contracts/c/c_boundary_checks_and_closed_metadata",
+              "/filter-entry-contracts/c/c_opaque_model_stays_opaque",
+              "/filter-entry/cpp/original_entry_routes",
+              "/filter-entry/cpp/native_type_factory_and_copy",
+              "/filter-entry/cpp/independent_image_handle_owners",
+              "/filter-entry/cpp/owned_queries_outlive_definition_and_owner",
+              "/filter-entry/cpp/definition_mark_idle_then_rerun",
+              "/filter-entry/cpp/mark_cancels_all_native_phases",
+              "/filter-entry/cpp/closed_and_wrong_thread_containment",
+              "/filter-entry/cpp/running_owner_close_keeps_retained_cache"
+            ],
+            "case_count": 17,
+            "duration_seconds": 1.6918392181396484,
+            "registered_timeout_seconds": 120,
+            "stderr_lines": 71,
+            "allowed_cloud_debug_notices": [],
+            "expected_opaque_diagnostics": {
+              "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Invalid arguments": 0,
+              "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Unsupported or malformed saved Filter argument; original definition is retained": 0
+            }
+          }
+        ],
+        "source_seal": {
+          "path": "filter-entry-handles-20261014/candidate-source-seal.json",
+          "sha256": "5e4578b1f298d33679b621e2b8367720b99033820ad77c9a56d200d5633af478",
+          "files": [
+            {
+              "path": "app/core/gimpfilterlayer.cpp",
+              "bytes": 110192,
+              "after_sha256": "75a5813aec8c6bd67cf06abda5b336fb174295428ac72edbe13df845a653e70c",
+              "after_git_blob": "164c5a2de309bb7059f46de829177059a8b8727b"
+            },
+            {
+              "path": "app/core/gimpfilterlayer.h",
+              "bytes": 14258,
+              "after_sha256": "a87a9a4a035b35f3224983fad0c6b73980919ebf86242701f80892fcd9a4830c",
+              "after_git_blob": "596d2142e2d40e841def9812c20223fcb319d35f"
+            },
+            {
+              "path": "app/core/gimpfilterlayer-handle.hpp",
+              "bytes": 2859,
+              "after_sha256": "b73e9c731130318b10aae60d7ce76f5a9019a730fa6651bed16c5640a74dcbe4",
+              "after_git_blob": "033a6d7d8489bb961b286f6cd1e241f62112735a"
+            },
+            {
+              "path": "app/tests/test-filter-entry-contracts.c",
+              "bytes": 30064,
+              "after_sha256": "9f0edbf9e637178d12a648d3580af532ccd5d5dd75969188400fa3363818cae9",
+              "after_git_blob": "e0781aba9777a970083a40bd8eb6d409b1dda30f"
+            },
+            {
+              "path": "app/tests/test-filter-entry-contracts.cpp",
+              "bytes": 23798,
+              "after_sha256": "10fb6215afa6db5b276cec5dc0ae5b9bf5b0dd161971c4a76ed8998ed17df7af",
+              "after_git_blob": "f5e2b16082bb2f42a60ebff0bd954022a7e1d4e3"
+            },
+            {
+              "path": "app/tests/meson.build",
+              "bytes": 42190,
+              "after_sha256": "28ee4f74ade2f69ce7ab72e288705394a8cf329c0ef4e91619fd539c4d90175c",
+              "after_git_blob": "74058de06a817550298a0fa27c543ee55b8dccb6"
+            }
+          ]
+        },
+        "registration_sources_sha256": {
+          "app/tests/test-filter-entry-contracts.cpp": "10fb6215afa6db5b276cec5dc0ae5b9bf5b0dd161971c4a76ed8998ed17df7af",
+          "app/tests/test-filter-entry-contracts.c": "9f0edbf9e637178d12a648d3580af532ccd5d5dd75969188400fa3363818cae9"
+        },
+        "actual_c11": true,
+        "actual_c11_scope": [
+          "filter-entry-contracts"
+        ],
+        "other_c_consumers": "focused C uses cc -std=c11; helper c++14; selected existing C regressions use project-default C standard",
+        "compile_evidence": {
+          "sha256": "09a47d971d3a85d4a6f6cceb7e420e8599e1d56b42235aa24c0e5588ca7f2cad",
+          "units": [
+            {
+              "file": "test-filter-entry-contracts.c",
+              "compiler": "cc",
+              "sanitized": false,
+              "standard": [
+                "-std=c11"
+              ],
+              "wrap_define": false
+            },
+            {
+              "file": "test-filter-entry-contracts.cpp",
+              "compiler": "c++",
+              "sanitized": false,
+              "standard": [
+                "-std=c++14"
+              ],
+              "wrap_define": true
+            },
+            {
+              "file": "gimpfilterlayer.cpp",
+              "compiler": "c++",
+              "sanitized": false,
+              "standard": [
+                "-std=c++14"
+              ],
+              "wrap_define": false
+            }
+          ]
+        },
+        "timeouts_unchanged": true,
+        "timeout_multiplier": null,
+        "isolation_and_authenticated_loopback_verified": true,
+        "lsan_enabled": null,
+        "diagnostic_exception": {
+          "source": "https://sources.debian.org/patches/libcloudproviders/0.3.0-3/Fix-error-handling-on-bus-acquisition.patch/",
+          "dependency_sha256": "0e700324c5afa3f083893b6be9bf6ddbac6aafa91c5d207f9f815e5a882a0fbe",
+          "scope": "At most one exact nonfatal libcloudproviders DEBUG bus-launch notice per GUI process"
+        },
+        "verifier_sha256": "6bfeea0eeff462f642bb199e75a625849d651e4b25739ac98cae08b3246d6ac2",
+        "input_sha256": {
+          "results.json": "822fee2b087edf5af3b795e9347d985f306c649790fd28c23f326c014e890d9c",
+          "registrations.json": "1ce7f41faad16dea6b5329069ab005e5e0f320528992013b62a117da20d1049f",
+          "filter-entry-handles-candidate-native-v1.json": "63c64689d1e6f9301396b17ec23e2ef87d990e4764e352ca34aca7ea9ae77d01"
+        }
+      },
+      {
+        "mode": "native",
+        "run": "filter-entry-regression-native-case1-v1",
+        "status": "PASS",
+        "registrations": 1,
+        "case_count": 1,
+        "results": [
+          {
+            "name": "gimp-filter-layer",
+            "cases": [
+              "/gimp-filter-layer/saved_definition_is_separate"
+            ],
+            "case_count": 1,
+            "duration_seconds": 1.4892578125,
+            "registered_timeout_seconds": 600,
+            "stderr_lines": 71,
+            "allowed_cloud_debug_notices": [],
+            "expected_opaque_diagnostics": {
+              "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Invalid arguments": 0,
+              "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Unsupported or malformed saved Filter argument; original definition is retained": 0
+            }
+          }
+        ],
+        "source_seal": {
+          "path": "filter-entry-handles-20261014/candidate-source-seal.json",
+          "sha256": "5e4578b1f298d33679b621e2b8367720b99033820ad77c9a56d200d5633af478",
+          "files": [
+            {
+              "path": "app/core/gimpfilterlayer.cpp",
+              "bytes": 110192,
+              "after_sha256": "75a5813aec8c6bd67cf06abda5b336fb174295428ac72edbe13df845a653e70c",
+              "after_git_blob": "164c5a2de309bb7059f46de829177059a8b8727b"
+            },
+            {
+              "path": "app/core/gimpfilterlayer.h",
+              "bytes": 14258,
+              "after_sha256": "a87a9a4a035b35f3224983fad0c6b73980919ebf86242701f80892fcd9a4830c",
+              "after_git_blob": "596d2142e2d40e841def9812c20223fcb319d35f"
+            },
+            {
+              "path": "app/core/gimpfilterlayer-handle.hpp",
+              "bytes": 2859,
+              "after_sha256": "b73e9c731130318b10aae60d7ce76f5a9019a730fa6651bed16c5640a74dcbe4",
+              "after_git_blob": "033a6d7d8489bb961b286f6cd1e241f62112735a"
+            },
+            {
+              "path": "app/tests/test-filter-entry-contracts.c",
+              "bytes": 30064,
+              "after_sha256": "9f0edbf9e637178d12a648d3580af532ccd5d5dd75969188400fa3363818cae9",
+              "after_git_blob": "e0781aba9777a970083a40bd8eb6d409b1dda30f"
+            },
+            {
+              "path": "app/tests/test-filter-entry-contracts.cpp",
+              "bytes": 23798,
+              "after_sha256": "10fb6215afa6db5b276cec5dc0ae5b9bf5b0dd161971c4a76ed8998ed17df7af",
+              "after_git_blob": "f5e2b16082bb2f42a60ebff0bd954022a7e1d4e3"
+            },
+            {
+              "path": "app/tests/meson.build",
+              "bytes": 42190,
+              "after_sha256": "28ee4f74ade2f69ce7ab72e288705394a8cf329c0ef4e91619fd539c4d90175c",
+              "after_git_blob": "74058de06a817550298a0fa27c543ee55b8dccb6"
+            }
+          ]
+        },
+        "registration_sources_sha256": {
+          "app/tests/test-gimp-filter-layer.c": "05fa1226bf4f6835fcffc0ba66b7ce928d9e514337c0c2447483997bde9eb286"
+        },
+        "actual_c11": false,
+        "actual_c11_scope": [],
+        "other_c_consumers": "focused C uses cc -std=c11; helper c++14; selected existing C regressions use project-default C standard",
+        "compile_evidence": {
+          "sha256": "09a47d971d3a85d4a6f6cceb7e420e8599e1d56b42235aa24c0e5588ca7f2cad",
+          "units": [
+            {
+              "file": "test-gimp-filter-layer.c",
+              "compiler": "cc",
+              "sanitized": false,
+              "standard": [],
+              "wrap_define": false
+            }
+          ]
+        },
+        "timeouts_unchanged": true,
+        "timeout_multiplier": null,
+        "isolation_and_authenticated_loopback_verified": true,
+        "lsan_enabled": null,
+        "diagnostic_exception": {
+          "source": "https://sources.debian.org/patches/libcloudproviders/0.3.0-3/Fix-error-handling-on-bus-acquisition.patch/",
+          "dependency_sha256": "0e700324c5afa3f083893b6be9bf6ddbac6aafa91c5d207f9f815e5a882a0fbe",
+          "scope": "At most one exact nonfatal libcloudproviders DEBUG bus-launch notice per GUI process"
+        },
+        "verifier_sha256": "6bfeea0eeff462f642bb199e75a625849d651e4b25739ac98cae08b3246d6ac2",
+        "input_sha256": {
+          "results.json": "845677f20f443dcc05ad489c43a8e293d17c32ef32b2df010eaa4e54f9e5a655",
+          "registrations.json": "1ce7f41faad16dea6b5329069ab005e5e0f320528992013b62a117da20d1049f",
+          "filter-entry-regression-native-case1-v1.json": "1927ae7137e9e579b25f2cddcf812707dcf2b04549a3e1cd332ed8eec595a40d"
+        }
+      },
+      {
+        "mode": "native",
+        "run": "filter-entry-regression-native-case2-v1",
+        "status": "PASS",
+        "registrations": 1,
+        "case_count": 1,
+        "results": [
+          {
+            "name": "gimp-filter-layer",
+            "cases": [
+              "/gimp-filter-layer/loaded_cache"
+            ],
+            "case_count": 1,
+            "duration_seconds": 1.7160601615905762,
+            "registered_timeout_seconds": 600,
+            "stderr_lines": 71,
+            "allowed_cloud_debug_notices": [],
+            "expected_opaque_diagnostics": {
+              "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Invalid arguments": 0,
+              "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Unsupported or malformed saved Filter argument; original definition is retained": 0
+            }
+          }
+        ],
+        "source_seal": {
+          "path": "filter-entry-handles-20261014/candidate-source-seal.json",
+          "sha256": "5e4578b1f298d33679b621e2b8367720b99033820ad77c9a56d200d5633af478",
+          "files": [
+            {
+              "path": "app/core/gimpfilterlayer.cpp",
+              "bytes": 110192,
+              "after_sha256": "75a5813aec8c6bd67cf06abda5b336fb174295428ac72edbe13df845a653e70c",
+              "after_git_blob": "164c5a2de309bb7059f46de829177059a8b8727b"
+            },
+            {
+              "path": "app/core/gimpfilterlayer.h",
+              "bytes": 14258,
+              "after_sha256": "a87a9a4a035b35f3224983fad0c6b73980919ebf86242701f80892fcd9a4830c",
+              "after_git_blob": "596d2142e2d40e841def9812c20223fcb319d35f"
+            },
+            {
+              "path": "app/core/gimpfilterlayer-handle.hpp",
+              "bytes": 2859,
+              "after_sha256": "b73e9c731130318b10aae60d7ce76f5a9019a730fa6651bed16c5640a74dcbe4",
+              "after_git_blob": "033a6d7d8489bb961b286f6cd1e241f62112735a"
+            },
+            {
+              "path": "app/tests/test-filter-entry-contracts.c",
+              "bytes": 30064,
+              "after_sha256": "9f0edbf9e637178d12a648d3580af532ccd5d5dd75969188400fa3363818cae9",
+              "after_git_blob": "e0781aba9777a970083a40bd8eb6d409b1dda30f"
+            },
+            {
+              "path": "app/tests/test-filter-entry-contracts.cpp",
+              "bytes": 23798,
+              "after_sha256": "10fb6215afa6db5b276cec5dc0ae5b9bf5b0dd161971c4a76ed8998ed17df7af",
+              "after_git_blob": "f5e2b16082bb2f42a60ebff0bd954022a7e1d4e3"
+            },
+            {
+              "path": "app/tests/meson.build",
+              "bytes": 42190,
+              "after_sha256": "28ee4f74ade2f69ce7ab72e288705394a8cf329c0ef4e91619fd539c4d90175c",
+              "after_git_blob": "74058de06a817550298a0fa27c543ee55b8dccb6"
+            }
+          ]
+        },
+        "registration_sources_sha256": {
+          "app/tests/test-gimp-filter-layer.c": "05fa1226bf4f6835fcffc0ba66b7ce928d9e514337c0c2447483997bde9eb286"
+        },
+        "actual_c11": false,
+        "actual_c11_scope": [],
+        "other_c_consumers": "focused C uses cc -std=c11; helper c++14; selected existing C regressions use project-default C standard",
+        "compile_evidence": {
+          "sha256": "09a47d971d3a85d4a6f6cceb7e420e8599e1d56b42235aa24c0e5588ca7f2cad",
+          "units": [
+            {
+              "file": "test-gimp-filter-layer.c",
+              "compiler": "cc",
+              "sanitized": false,
+              "standard": [],
+              "wrap_define": false
+            }
+          ]
+        },
+        "timeouts_unchanged": true,
+        "timeout_multiplier": null,
+        "isolation_and_authenticated_loopback_verified": true,
+        "lsan_enabled": null,
+        "diagnostic_exception": {
+          "source": "https://sources.debian.org/patches/libcloudproviders/0.3.0-3/Fix-error-handling-on-bus-acquisition.patch/",
+          "dependency_sha256": "0e700324c5afa3f083893b6be9bf6ddbac6aafa91c5d207f9f815e5a882a0fbe",
+          "scope": "At most one exact nonfatal libcloudproviders DEBUG bus-launch notice per GUI process"
+        },
+        "verifier_sha256": "6bfeea0eeff462f642bb199e75a625849d651e4b25739ac98cae08b3246d6ac2",
+        "input_sha256": {
+          "results.json": "bbe536afe2a83f7a7c54ab2c8e92817ec691deac186bace4ab91033fd8fbd4cd",
+          "registrations.json": "1ce7f41faad16dea6b5329069ab005e5e0f320528992013b62a117da20d1049f",
+          "filter-entry-regression-native-case2-v1.json": "6029a0686d20b38a64bc1c6b4f0525b18306edd720097f884953ec6391db799d"
+        }
+      },
+      {
+        "mode": "native",
+        "run": "filter-entry-regression-native-case3-v1",
+        "status": "PASS",
+        "registrations": 1,
+        "case_count": 1,
+        "results": [
+          {
+            "name": "gimp-filter-layer",
+            "cases": [
+              "/gimp-filter-layer/object_arguments_do_not_cycle"
+            ],
+            "case_count": 1,
+            "duration_seconds": 1.5792346000671387,
+            "registered_timeout_seconds": 600,
+            "stderr_lines": 71,
+            "allowed_cloud_debug_notices": [],
+            "expected_opaque_diagnostics": {
+              "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Invalid arguments": 0,
+              "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Unsupported or malformed saved Filter argument; original definition is retained": 0
+            }
+          }
+        ],
+        "source_seal": {
+          "path": "filter-entry-handles-20261014/candidate-source-seal.json",
+          "sha256": "5e4578b1f298d33679b621e2b8367720b99033820ad77c9a56d200d5633af478",
+          "files": [
+            {
+              "path": "app/core/gimpfilterlayer.cpp",
+              "bytes": 110192,
+              "after_sha256": "75a5813aec8c6bd67cf06abda5b336fb174295428ac72edbe13df845a653e70c",
+              "after_git_blob": "164c5a2de309bb7059f46de829177059a8b8727b"
+            },
+            {
+              "path": "app/core/gimpfilterlayer.h",
+              "bytes": 14258,
+              "after_sha256": "a87a9a4a035b35f3224983fad0c6b73980919ebf86242701f80892fcd9a4830c",
+              "after_git_blob": "596d2142e2d40e841def9812c20223fcb319d35f"
+            },
+            {
+              "path": "app/core/gimpfilterlayer-handle.hpp",
+              "bytes": 2859,
+              "after_sha256": "b73e9c731130318b10aae60d7ce76f5a9019a730fa6651bed16c5640a74dcbe4",
+              "after_git_blob": "033a6d7d8489bb961b286f6cd1e241f62112735a"
+            },
+            {
+              "path": "app/tests/test-filter-entry-contracts.c",
+              "bytes": 30064,
+              "after_sha256": "9f0edbf9e637178d12a648d3580af532ccd5d5dd75969188400fa3363818cae9",
+              "after_git_blob": "e0781aba9777a970083a40bd8eb6d409b1dda30f"
+            },
+            {
+              "path": "app/tests/test-filter-entry-contracts.cpp",
+              "bytes": 23798,
+              "after_sha256": "10fb6215afa6db5b276cec5dc0ae5b9bf5b0dd161971c4a76ed8998ed17df7af",
+              "after_git_blob": "f5e2b16082bb2f42a60ebff0bd954022a7e1d4e3"
+            },
+            {
+              "path": "app/tests/meson.build",
+              "bytes": 42190,
+              "after_sha256": "28ee4f74ade2f69ce7ab72e288705394a8cf329c0ef4e91619fd539c4d90175c",
+              "after_git_blob": "74058de06a817550298a0fa27c543ee55b8dccb6"
+            }
+          ]
+        },
+        "registration_sources_sha256": {
+          "app/tests/test-gimp-filter-layer.c": "05fa1226bf4f6835fcffc0ba66b7ce928d9e514337c0c2447483997bde9eb286"
+        },
+        "actual_c11": false,
+        "actual_c11_scope": [],
+        "other_c_consumers": "focused C uses cc -std=c11; helper c++14; selected existing C regressions use project-default C standard",
+        "compile_evidence": {
+          "sha256": "09a47d971d3a85d4a6f6cceb7e420e8599e1d56b42235aa24c0e5588ca7f2cad",
+          "units": [
+            {
+              "file": "test-gimp-filter-layer.c",
+              "compiler": "cc",
+              "sanitized": false,
+              "standard": [],
+              "wrap_define": false
+            }
+          ]
+        },
+        "timeouts_unchanged": true,
+        "timeout_multiplier": null,
+        "isolation_and_authenticated_loopback_verified": true,
+        "lsan_enabled": null,
+        "diagnostic_exception": {
+          "source": "https://sources.debian.org/patches/libcloudproviders/0.3.0-3/Fix-error-handling-on-bus-acquisition.patch/",
+          "dependency_sha256": "0e700324c5afa3f083893b6be9bf6ddbac6aafa91c5d207f9f815e5a882a0fbe",
+          "scope": "At most one exact nonfatal libcloudproviders DEBUG bus-launch notice per GUI process"
+        },
+        "verifier_sha256": "6bfeea0eeff462f642bb199e75a625849d651e4b25739ac98cae08b3246d6ac2",
+        "input_sha256": {
+          "results.json": "0e8a53a374a601a7a97d27e28d1623a06de5435e0ab7a41f7ff8edd5733e7f4b",
+          "registrations.json": "1ce7f41faad16dea6b5329069ab005e5e0f320528992013b62a117da20d1049f",
+          "filter-entry-regression-native-case3-v1.json": "621b896c3bf50a26783f3b8fac992d84141fa417a59aa9f706cafb6f2bdeb00d"
+        }
+      },
+      {
+        "mode": "native",
+        "run": "filter-entry-regression-native-case4-v1",
+        "status": "PASS",
+        "registrations": 1,
+        "case_count": 1,
+        "results": [
+          {
+            "name": "gimp-filter-layer",
+            "cases": [
+              "/gimp-filter-layer/object_array_arguments_do_not_dangle"
+            ],
+            "case_count": 1,
+            "duration_seconds": 1.4946274757385254,
+            "registered_timeout_seconds": 600,
+            "stderr_lines": 71,
+            "allowed_cloud_debug_notices": [],
+            "expected_opaque_diagnostics": {
+              "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Invalid arguments": 0,
+              "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Unsupported or malformed saved Filter argument; original definition is retained": 0
+            }
+          }
+        ],
+        "source_seal": {
+          "path": "filter-entry-handles-20261014/candidate-source-seal.json",
+          "sha256": "5e4578b1f298d33679b621e2b8367720b99033820ad77c9a56d200d5633af478",
+          "files": [
+            {
+              "path": "app/core/gimpfilterlayer.cpp",
+              "bytes": 110192,
+              "after_sha256": "75a5813aec8c6bd67cf06abda5b336fb174295428ac72edbe13df845a653e70c",
+              "after_git_blob": "164c5a2de309bb7059f46de829177059a8b8727b"
+            },
+            {
+              "path": "app/core/gimpfilterlayer.h",
+              "bytes": 14258,
+              "after_sha256": "a87a9a4a035b35f3224983fad0c6b73980919ebf86242701f80892fcd9a4830c",
+              "after_git_blob": "596d2142e2d40e841def9812c20223fcb319d35f"
+            },
+            {
+              "path": "app/core/gimpfilterlayer-handle.hpp",
+              "bytes": 2859,
+              "after_sha256": "b73e9c731130318b10aae60d7ce76f5a9019a730fa6651bed16c5640a74dcbe4",
+              "after_git_blob": "033a6d7d8489bb961b286f6cd1e241f62112735a"
+            },
+            {
+              "path": "app/tests/test-filter-entry-contracts.c",
+              "bytes": 30064,
+              "after_sha256": "9f0edbf9e637178d12a648d3580af532ccd5d5dd75969188400fa3363818cae9",
+              "after_git_blob": "e0781aba9777a970083a40bd8eb6d409b1dda30f"
+            },
+            {
+              "path": "app/tests/test-filter-entry-contracts.cpp",
+              "bytes": 23798,
+              "after_sha256": "10fb6215afa6db5b276cec5dc0ae5b9bf5b0dd161971c4a76ed8998ed17df7af",
+              "after_git_blob": "f5e2b16082bb2f42a60ebff0bd954022a7e1d4e3"
+            },
+            {
+              "path": "app/tests/meson.build",
+              "bytes": 42190,
+              "after_sha256": "28ee4f74ade2f69ce7ab72e288705394a8cf329c0ef4e91619fd539c4d90175c",
+              "after_git_blob": "74058de06a817550298a0fa27c543ee55b8dccb6"
+            }
+          ]
+        },
+        "registration_sources_sha256": {
+          "app/tests/test-gimp-filter-layer.c": "05fa1226bf4f6835fcffc0ba66b7ce928d9e514337c0c2447483997bde9eb286"
+        },
+        "actual_c11": false,
+        "actual_c11_scope": [],
+        "other_c_consumers": "focused C uses cc -std=c11; helper c++14; selected existing C regressions use project-default C standard",
+        "compile_evidence": {
+          "sha256": "09a47d971d3a85d4a6f6cceb7e420e8599e1d56b42235aa24c0e5588ca7f2cad",
+          "units": [
+            {
+              "file": "test-gimp-filter-layer.c",
+              "compiler": "cc",
+              "sanitized": false,
+              "standard": [],
+              "wrap_define": false
+            }
+          ]
+        },
+        "timeouts_unchanged": true,
+        "timeout_multiplier": null,
+        "isolation_and_authenticated_loopback_verified": true,
+        "lsan_enabled": null,
+        "diagnostic_exception": {
+          "source": "https://sources.debian.org/patches/libcloudproviders/0.3.0-3/Fix-error-handling-on-bus-acquisition.patch/",
+          "dependency_sha256": "0e700324c5afa3f083893b6be9bf6ddbac6aafa91c5d207f9f815e5a882a0fbe",
+          "scope": "At most one exact nonfatal libcloudproviders DEBUG bus-launch notice per GUI process"
+        },
+        "verifier_sha256": "6bfeea0eeff462f642bb199e75a625849d651e4b25739ac98cae08b3246d6ac2",
+        "input_sha256": {
+          "results.json": "0511f20e5425f1f3e2a6e581c68e7d5c2b5dc795456034cee53df5f0fbdf4746",
+          "registrations.json": "1ce7f41faad16dea6b5329069ab005e5e0f320528992013b62a117da20d1049f",
+          "filter-entry-regression-native-case4-v1.json": "0ce04b48c523895bfe811a40c23cb1d5a3def7903ff355c8632a0bbad27a43e2"
+        }
+      },
+      {
+        "mode": "native",
+        "run": "filter-entry-regression-native-case5-v1",
+        "status": "PASS",
+        "registrations": 1,
+        "case_count": 1,
+        "results": [
+          {
+            "name": "gimp-filter-layer",
+            "cases": [
+              "/gimp-filter-layer/retired_definition_payload_reentry"
+            ],
+            "case_count": 1,
+            "duration_seconds": 1.5863583087921143,
+            "registered_timeout_seconds": 600,
+            "stderr_lines": 71,
+            "allowed_cloud_debug_notices": [],
+            "expected_opaque_diagnostics": {
+              "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Invalid arguments": 0,
+              "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Unsupported or malformed saved Filter argument; original definition is retained": 0
+            }
+          }
+        ],
+        "source_seal": {
+          "path": "filter-entry-handles-20261014/candidate-source-seal.json",
+          "sha256": "5e4578b1f298d33679b621e2b8367720b99033820ad77c9a56d200d5633af478",
+          "files": [
+            {
+              "path": "app/core/gimpfilterlayer.cpp",
+              "bytes": 110192,
+              "after_sha256": "75a5813aec8c6bd67cf06abda5b336fb174295428ac72edbe13df845a653e70c",
+              "after_git_blob": "164c5a2de309bb7059f46de829177059a8b8727b"
+            },
+            {
+              "path": "app/core/gimpfilterlayer.h",
+              "bytes": 14258,
+              "after_sha256": "a87a9a4a035b35f3224983fad0c6b73980919ebf86242701f80892fcd9a4830c",
+              "after_git_blob": "596d2142e2d40e841def9812c20223fcb319d35f"
+            },
+            {
+              "path": "app/core/gimpfilterlayer-handle.hpp",
+              "bytes": 2859,
+              "after_sha256": "b73e9c731130318b10aae60d7ce76f5a9019a730fa6651bed16c5640a74dcbe4",
+              "after_git_blob": "033a6d7d8489bb961b286f6cd1e241f62112735a"
+            },
+            {
+              "path": "app/tests/test-filter-entry-contracts.c",
+              "bytes": 30064,
+              "after_sha256": "9f0edbf9e637178d12a648d3580af532ccd5d5dd75969188400fa3363818cae9",
+              "after_git_blob": "e0781aba9777a970083a40bd8eb6d409b1dda30f"
+            },
+            {
+              "path": "app/tests/test-filter-entry-contracts.cpp",
+              "bytes": 23798,
+              "after_sha256": "10fb6215afa6db5b276cec5dc0ae5b9bf5b0dd161971c4a76ed8998ed17df7af",
+              "after_git_blob": "f5e2b16082bb2f42a60ebff0bd954022a7e1d4e3"
+            },
+            {
+              "path": "app/tests/meson.build",
+              "bytes": 42190,
+              "after_sha256": "28ee4f74ade2f69ce7ab72e288705394a8cf329c0ef4e91619fd539c4d90175c",
+              "after_git_blob": "74058de06a817550298a0fa27c543ee55b8dccb6"
+            }
+          ]
+        },
+        "registration_sources_sha256": {
+          "app/tests/test-gimp-filter-layer.c": "05fa1226bf4f6835fcffc0ba66b7ce928d9e514337c0c2447483997bde9eb286"
+        },
+        "actual_c11": false,
+        "actual_c11_scope": [],
+        "other_c_consumers": "focused C uses cc -std=c11; helper c++14; selected existing C regressions use project-default C standard",
+        "compile_evidence": {
+          "sha256": "09a47d971d3a85d4a6f6cceb7e420e8599e1d56b42235aa24c0e5588ca7f2cad",
+          "units": [
+            {
+              "file": "test-gimp-filter-layer.c",
+              "compiler": "cc",
+              "sanitized": false,
+              "standard": [],
+              "wrap_define": false
+            }
+          ]
+        },
+        "timeouts_unchanged": true,
+        "timeout_multiplier": null,
+        "isolation_and_authenticated_loopback_verified": true,
+        "lsan_enabled": null,
+        "diagnostic_exception": {
+          "source": "https://sources.debian.org/patches/libcloudproviders/0.3.0-3/Fix-error-handling-on-bus-acquisition.patch/",
+          "dependency_sha256": "0e700324c5afa3f083893b6be9bf6ddbac6aafa91c5d207f9f815e5a882a0fbe",
+          "scope": "At most one exact nonfatal libcloudproviders DEBUG bus-launch notice per GUI process"
+        },
+        "verifier_sha256": "6bfeea0eeff462f642bb199e75a625849d651e4b25739ac98cae08b3246d6ac2",
+        "input_sha256": {
+          "results.json": "c5d56d137959c80ee107b0bea28c271b4afb112e46c19633aa4a514e6043d892",
+          "registrations.json": "1ce7f41faad16dea6b5329069ab005e5e0f320528992013b62a117da20d1049f",
+          "filter-entry-regression-native-case5-v1.json": "616a76760b77f8c561bc7a8abd5992c0f959e76fb719fe785538d2d20722fcdd"
+        }
+      },
+      {
+        "mode": "native",
+        "run": "filter-entry-regression-native-case6-v1",
+        "status": "PASS",
+        "registrations": 1,
+        "case_count": 1,
+        "results": [
+          {
+            "name": "gimp-filter-layer",
+            "cases": [
+              "/gimp-filter-layer/native_precision_loaded_cache_and_rerun"
+            ],
+            "case_count": 1,
+            "duration_seconds": 1.7317631244659424,
+            "registered_timeout_seconds": 600,
+            "stderr_lines": 71,
+            "allowed_cloud_debug_notices": [],
+            "expected_opaque_diagnostics": {
+              "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Invalid arguments": 0,
+              "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Unsupported or malformed saved Filter argument; original definition is retained": 0
+            }
+          }
+        ],
+        "source_seal": {
+          "path": "filter-entry-handles-20261014/candidate-source-seal.json",
+          "sha256": "5e4578b1f298d33679b621e2b8367720b99033820ad77c9a56d200d5633af478",
+          "files": [
+            {
+              "path": "app/core/gimpfilterlayer.cpp",
+              "bytes": 110192,
+              "after_sha256": "75a5813aec8c6bd67cf06abda5b336fb174295428ac72edbe13df845a653e70c",
+              "after_git_blob": "164c5a2de309bb7059f46de829177059a8b8727b"
+            },
+            {
+              "path": "app/core/gimpfilterlayer.h",
+              "bytes": 14258,
+              "after_sha256": "a87a9a4a035b35f3224983fad0c6b73980919ebf86242701f80892fcd9a4830c",
+              "after_git_blob": "596d2142e2d40e841def9812c20223fcb319d35f"
+            },
+            {
+              "path": "app/core/gimpfilterlayer-handle.hpp",
+              "bytes": 2859,
+              "after_sha256": "b73e9c731130318b10aae60d7ce76f5a9019a730fa6651bed16c5640a74dcbe4",
+              "after_git_blob": "033a6d7d8489bb961b286f6cd1e241f62112735a"
+            },
+            {
+              "path": "app/tests/test-filter-entry-contracts.c",
+              "bytes": 30064,
+              "after_sha256": "9f0edbf9e637178d12a648d3580af532ccd5d5dd75969188400fa3363818cae9",
+              "after_git_blob": "e0781aba9777a970083a40bd8eb6d409b1dda30f"
+            },
+            {
+              "path": "app/tests/test-filter-entry-contracts.cpp",
+              "bytes": 23798,
+              "after_sha256": "10fb6215afa6db5b276cec5dc0ae5b9bf5b0dd161971c4a76ed8998ed17df7af",
+              "after_git_blob": "f5e2b16082bb2f42a60ebff0bd954022a7e1d4e3"
+            },
+            {
+              "path": "app/tests/meson.build",
+              "bytes": 42190,
+              "after_sha256": "28ee4f74ade2f69ce7ab72e288705394a8cf329c0ef4e91619fd539c4d90175c",
+              "after_git_blob": "74058de06a817550298a0fa27c543ee55b8dccb6"
+            }
+          ]
+        },
+        "registration_sources_sha256": {
+          "app/tests/test-gimp-filter-layer.c": "05fa1226bf4f6835fcffc0ba66b7ce928d9e514337c0c2447483997bde9eb286"
+        },
+        "actual_c11": false,
+        "actual_c11_scope": [],
+        "other_c_consumers": "focused C uses cc -std=c11; helper c++14; selected existing C regressions use project-default C standard",
+        "compile_evidence": {
+          "sha256": "09a47d971d3a85d4a6f6cceb7e420e8599e1d56b42235aa24c0e5588ca7f2cad",
+          "units": [
+            {
+              "file": "test-gimp-filter-layer.c",
+              "compiler": "cc",
+              "sanitized": false,
+              "standard": [],
+              "wrap_define": false
+            }
+          ]
+        },
+        "timeouts_unchanged": true,
+        "timeout_multiplier": null,
+        "isolation_and_authenticated_loopback_verified": true,
+        "lsan_enabled": null,
+        "diagnostic_exception": {
+          "source": "https://sources.debian.org/patches/libcloudproviders/0.3.0-3/Fix-error-handling-on-bus-acquisition.patch/",
+          "dependency_sha256": "0e700324c5afa3f083893b6be9bf6ddbac6aafa91c5d207f9f815e5a882a0fbe",
+          "scope": "At most one exact nonfatal libcloudproviders DEBUG bus-launch notice per GUI process"
+        },
+        "verifier_sha256": "6bfeea0eeff462f642bb199e75a625849d651e4b25739ac98cae08b3246d6ac2",
+        "input_sha256": {
+          "results.json": "39259a72231dbc1828e774d83619ecac616895d476245976ac6f99490558663f",
+          "registrations.json": "1ce7f41faad16dea6b5329069ab005e5e0f320528992013b62a117da20d1049f",
+          "filter-entry-regression-native-case6-v1.json": "4ee00daf7aa060d4b8eb640a5c31406335675f08f842e6c5e549e775eb604a71"
+        }
+      },
+      {
+        "mode": "native",
+        "run": "filter-entry-xcf-native-case1-v1",
+        "status": "PASS",
+        "registrations": 1,
+        "case_count": 1,
+        "results": [
+          {
+            "name": "painter-xcf-roundtrip",
+            "cases": [
+              "/painter-xcf-roundtrip/filter_cache_and_arguments"
+            ],
+            "case_count": 1,
+            "duration_seconds": 1.3133463859558105,
+            "registered_timeout_seconds": 60,
+            "stderr_lines": 71,
+            "allowed_cloud_debug_notices": [],
+            "expected_opaque_diagnostics": {
+              "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Invalid arguments": 0,
+              "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Unsupported or malformed saved Filter argument; original definition is retained": 0
+            }
+          }
+        ],
+        "source_seal": {
+          "path": "filter-entry-handles-20261014/candidate-source-seal.json",
+          "sha256": "5e4578b1f298d33679b621e2b8367720b99033820ad77c9a56d200d5633af478",
+          "files": [
+            {
+              "path": "app/core/gimpfilterlayer.cpp",
+              "bytes": 110192,
+              "after_sha256": "75a5813aec8c6bd67cf06abda5b336fb174295428ac72edbe13df845a653e70c",
+              "after_git_blob": "164c5a2de309bb7059f46de829177059a8b8727b"
+            },
+            {
+              "path": "app/core/gimpfilterlayer.h",
+              "bytes": 14258,
+              "after_sha256": "a87a9a4a035b35f3224983fad0c6b73980919ebf86242701f80892fcd9a4830c",
+              "after_git_blob": "596d2142e2d40e841def9812c20223fcb319d35f"
+            },
+            {
+              "path": "app/core/gimpfilterlayer-handle.hpp",
+              "bytes": 2859,
+              "after_sha256": "b73e9c731130318b10aae60d7ce76f5a9019a730fa6651bed16c5640a74dcbe4",
+              "after_git_blob": "033a6d7d8489bb961b286f6cd1e241f62112735a"
+            },
+            {
+              "path": "app/tests/test-filter-entry-contracts.c",
+              "bytes": 30064,
+              "after_sha256": "9f0edbf9e637178d12a648d3580af532ccd5d5dd75969188400fa3363818cae9",
+              "after_git_blob": "e0781aba9777a970083a40bd8eb6d409b1dda30f"
+            },
+            {
+              "path": "app/tests/test-filter-entry-contracts.cpp",
+              "bytes": 23798,
+              "after_sha256": "10fb6215afa6db5b276cec5dc0ae5b9bf5b0dd161971c4a76ed8998ed17df7af",
+              "after_git_blob": "f5e2b16082bb2f42a60ebff0bd954022a7e1d4e3"
+            },
+            {
+              "path": "app/tests/meson.build",
+              "bytes": 42190,
+              "after_sha256": "28ee4f74ade2f69ce7ab72e288705394a8cf329c0ef4e91619fd539c4d90175c",
+              "after_git_blob": "74058de06a817550298a0fa27c543ee55b8dccb6"
+            }
+          ]
+        },
+        "registration_sources_sha256": {
+          "app/tests/test-painter-xcf-roundtrip.c": "a40812956fe8b7de8047bad5c864bd1561b208199419392cd005c780f8b477c9"
+        },
+        "actual_c11": false,
+        "actual_c11_scope": [],
+        "other_c_consumers": "focused C uses cc -std=c11; helper c++14; selected existing C regressions use project-default C standard",
+        "compile_evidence": {
+          "sha256": "09a47d971d3a85d4a6f6cceb7e420e8599e1d56b42235aa24c0e5588ca7f2cad",
+          "units": [
+            {
+              "file": "test-painter-xcf-roundtrip.c",
+              "compiler": "cc",
+              "sanitized": false,
+              "standard": [],
+              "wrap_define": false
+            }
+          ]
+        },
+        "timeouts_unchanged": true,
+        "timeout_multiplier": null,
+        "isolation_and_authenticated_loopback_verified": true,
+        "lsan_enabled": null,
+        "diagnostic_exception": {
+          "source": "https://sources.debian.org/patches/libcloudproviders/0.3.0-3/Fix-error-handling-on-bus-acquisition.patch/",
+          "dependency_sha256": "0e700324c5afa3f083893b6be9bf6ddbac6aafa91c5d207f9f815e5a882a0fbe",
+          "scope": "At most one exact nonfatal libcloudproviders DEBUG bus-launch notice per GUI process"
+        },
+        "verifier_sha256": "6bfeea0eeff462f642bb199e75a625849d651e4b25739ac98cae08b3246d6ac2",
+        "input_sha256": {
+          "results.json": "de433d683cbf2f7a52b038026bd9b962cd91a0a20dde3bd0acbc91029e914f66",
+          "registrations.json": "1ce7f41faad16dea6b5329069ab005e5e0f320528992013b62a117da20d1049f",
+          "filter-entry-xcf-native-case1-v1.json": "5fcdf4b1708575034330caf4f076b45dfc7c738fef38bf0c96f60f2049708b30"
+        }
+      },
+      {
+        "mode": "native",
+        "run": "filter-entry-xcf-native-case2-v1",
+        "status": "PASS",
+        "registrations": 1,
+        "case_count": 1,
+        "results": [
+          {
+            "name": "painter-xcf-roundtrip",
+            "cases": [
+              "/painter-xcf-roundtrip/opaque_argument_shapes"
+            ],
+            "case_count": 1,
+            "duration_seconds": 1.176009178161621,
+            "registered_timeout_seconds": 60,
+            "stderr_lines": 79,
+            "allowed_cloud_debug_notices": [],
+            "expected_opaque_diagnostics": {
+              "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Invalid arguments": 2,
+              "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Unsupported or malformed saved Filter argument; original definition is retained": 2
+            }
+          }
+        ],
+        "source_seal": {
+          "path": "filter-entry-handles-20261014/candidate-source-seal.json",
+          "sha256": "5e4578b1f298d33679b621e2b8367720b99033820ad77c9a56d200d5633af478",
+          "files": [
+            {
+              "path": "app/core/gimpfilterlayer.cpp",
+              "bytes": 110192,
+              "after_sha256": "75a5813aec8c6bd67cf06abda5b336fb174295428ac72edbe13df845a653e70c",
+              "after_git_blob": "164c5a2de309bb7059f46de829177059a8b8727b"
+            },
+            {
+              "path": "app/core/gimpfilterlayer.h",
+              "bytes": 14258,
+              "after_sha256": "a87a9a4a035b35f3224983fad0c6b73980919ebf86242701f80892fcd9a4830c",
+              "after_git_blob": "596d2142e2d40e841def9812c20223fcb319d35f"
+            },
+            {
+              "path": "app/core/gimpfilterlayer-handle.hpp",
+              "bytes": 2859,
+              "after_sha256": "b73e9c731130318b10aae60d7ce76f5a9019a730fa6651bed16c5640a74dcbe4",
+              "after_git_blob": "033a6d7d8489bb961b286f6cd1e241f62112735a"
+            },
+            {
+              "path": "app/tests/test-filter-entry-contracts.c",
+              "bytes": 30064,
+              "after_sha256": "9f0edbf9e637178d12a648d3580af532ccd5d5dd75969188400fa3363818cae9",
+              "after_git_blob": "e0781aba9777a970083a40bd8eb6d409b1dda30f"
+            },
+            {
+              "path": "app/tests/test-filter-entry-contracts.cpp",
+              "bytes": 23798,
+              "after_sha256": "10fb6215afa6db5b276cec5dc0ae5b9bf5b0dd161971c4a76ed8998ed17df7af",
+              "after_git_blob": "f5e2b16082bb2f42a60ebff0bd954022a7e1d4e3"
+            },
+            {
+              "path": "app/tests/meson.build",
+              "bytes": 42190,
+              "after_sha256": "28ee4f74ade2f69ce7ab72e288705394a8cf329c0ef4e91619fd539c4d90175c",
+              "after_git_blob": "74058de06a817550298a0fa27c543ee55b8dccb6"
+            }
+          ]
+        },
+        "registration_sources_sha256": {
+          "app/tests/test-painter-xcf-roundtrip.c": "a40812956fe8b7de8047bad5c864bd1561b208199419392cd005c780f8b477c9"
+        },
+        "actual_c11": false,
+        "actual_c11_scope": [],
+        "other_c_consumers": "focused C uses cc -std=c11; helper c++14; selected existing C regressions use project-default C standard",
+        "compile_evidence": {
+          "sha256": "09a47d971d3a85d4a6f6cceb7e420e8599e1d56b42235aa24c0e5588ca7f2cad",
+          "units": [
+            {
+              "file": "test-painter-xcf-roundtrip.c",
+              "compiler": "cc",
+              "sanitized": false,
+              "standard": [],
+              "wrap_define": false
+            }
+          ]
+        },
+        "timeouts_unchanged": true,
+        "timeout_multiplier": null,
+        "isolation_and_authenticated_loopback_verified": true,
+        "lsan_enabled": null,
+        "diagnostic_exception": {
+          "source": "https://sources.debian.org/patches/libcloudproviders/0.3.0-3/Fix-error-handling-on-bus-acquisition.patch/",
+          "dependency_sha256": "0e700324c5afa3f083893b6be9bf6ddbac6aafa91c5d207f9f815e5a882a0fbe",
+          "scope": "At most one exact nonfatal libcloudproviders DEBUG bus-launch notice per GUI process"
+        },
+        "verifier_sha256": "6bfeea0eeff462f642bb199e75a625849d651e4b25739ac98cae08b3246d6ac2",
+        "input_sha256": {
+          "results.json": "1ce45efdc836e7085e5484571214ec2d03c3bc791de9e3433a30838bf131fd25",
+          "registrations.json": "1ce7f41faad16dea6b5329069ab005e5e0f320528992013b62a117da20d1049f",
+          "filter-entry-xcf-native-case2-v1.json": "eaa91080c27d9a6b4db24e6cc6bd70e6a101814f05843948e0d63be1e0630074"
+        }
+      }
+    ],
+    "asan": [
+      {
+        "mode": "asan",
+        "run": "filter-entry-handles-candidate-asan-v1",
+        "status": "PASS",
+        "registrations": 1,
+        "case_count": 17,
+        "results": [
+          {
+            "name": "filter-entry-contracts",
+            "cases": [
+              "/filter-entry-contracts/c/c_factory_native_identity",
+              "/filter-entry-contracts/c/c_exact_name_absent_and_empty",
+              "/filter-entry-contracts/c/c_owned_values_and_model_identity",
+              "/filter-entry-contracts/c/c_null_and_empty_argument_shapes",
+              "/filter-entry-contracts/c/c_scalar_object_identity_and_ownership",
+              "/filter-entry-contracts/c/c_live_object_array_container_copy",
+              "/filter-entry-contracts/c/c_expired_arrays_reject_atomically",
+              "/filter-entry-contracts/c/c_boundary_checks_and_closed_metadata",
+              "/filter-entry-contracts/c/c_opaque_model_stays_opaque",
+              "/filter-entry/cpp/original_entry_routes",
+              "/filter-entry/cpp/native_type_factory_and_copy",
+              "/filter-entry/cpp/independent_image_handle_owners",
+              "/filter-entry/cpp/owned_queries_outlive_definition_and_owner",
+              "/filter-entry/cpp/definition_mark_idle_then_rerun",
+              "/filter-entry/cpp/mark_cancels_all_native_phases",
+              "/filter-entry/cpp/closed_and_wrong_thread_containment",
+              "/filter-entry/cpp/running_owner_close_keeps_retained_cache"
+            ],
+            "case_count": 17,
+            "duration_seconds": 2.0333456993103027,
+            "registered_timeout_seconds": 120,
+            "stderr_lines": 71,
+            "allowed_cloud_debug_notices": [],
+            "expected_opaque_diagnostics": {
+              "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Invalid arguments": 0,
+              "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Unsupported or malformed saved Filter argument; original definition is retained": 0
+            }
+          }
+        ],
+        "source_seal": {
+          "path": "filter-entry-handles-20261014/candidate-source-seal.json",
+          "sha256": "5e4578b1f298d33679b621e2b8367720b99033820ad77c9a56d200d5633af478",
+          "files": [
+            {
+              "path": "app/core/gimpfilterlayer.cpp",
+              "bytes": 110192,
+              "after_sha256": "75a5813aec8c6bd67cf06abda5b336fb174295428ac72edbe13df845a653e70c",
+              "after_git_blob": "164c5a2de309bb7059f46de829177059a8b8727b"
+            },
+            {
+              "path": "app/core/gimpfilterlayer.h",
+              "bytes": 14258,
+              "after_sha256": "a87a9a4a035b35f3224983fad0c6b73980919ebf86242701f80892fcd9a4830c",
+              "after_git_blob": "596d2142e2d40e841def9812c20223fcb319d35f"
+            },
+            {
+              "path": "app/core/gimpfilterlayer-handle.hpp",
+              "bytes": 2859,
+              "after_sha256": "b73e9c731130318b10aae60d7ce76f5a9019a730fa6651bed16c5640a74dcbe4",
+              "after_git_blob": "033a6d7d8489bb961b286f6cd1e241f62112735a"
+            },
+            {
+              "path": "app/tests/test-filter-entry-contracts.c",
+              "bytes": 30064,
+              "after_sha256": "9f0edbf9e637178d12a648d3580af532ccd5d5dd75969188400fa3363818cae9",
+              "after_git_blob": "e0781aba9777a970083a40bd8eb6d409b1dda30f"
+            },
+            {
+              "path": "app/tests/test-filter-entry-contracts.cpp",
+              "bytes": 23798,
+              "after_sha256": "10fb6215afa6db5b276cec5dc0ae5b9bf5b0dd161971c4a76ed8998ed17df7af",
+              "after_git_blob": "f5e2b16082bb2f42a60ebff0bd954022a7e1d4e3"
+            },
+            {
+              "path": "app/tests/meson.build",
+              "bytes": 42190,
+              "after_sha256": "28ee4f74ade2f69ce7ab72e288705394a8cf329c0ef4e91619fd539c4d90175c",
+              "after_git_blob": "74058de06a817550298a0fa27c543ee55b8dccb6"
+            }
+          ]
+        },
+        "registration_sources_sha256": {
+          "app/tests/test-filter-entry-contracts.cpp": "10fb6215afa6db5b276cec5dc0ae5b9bf5b0dd161971c4a76ed8998ed17df7af",
+          "app/tests/test-filter-entry-contracts.c": "9f0edbf9e637178d12a648d3580af532ccd5d5dd75969188400fa3363818cae9"
+        },
+        "actual_c11": true,
+        "actual_c11_scope": [
+          "filter-entry-contracts"
+        ],
+        "other_c_consumers": "focused C uses cc -std=c11; helper c++14; selected existing C regressions use project-default C standard",
+        "compile_evidence": {
+          "sha256": "2d68d50ba5b2a535d91f0b2608aaba95532fe1ca33e3324f83de733d29bc38cd",
+          "units": [
+            {
+              "file": "test-filter-entry-contracts.c",
+              "compiler": "cc",
+              "sanitized": true,
+              "standard": [
+                "-std=c11"
+              ],
+              "wrap_define": false
+            },
+            {
+              "file": "test-filter-entry-contracts.cpp",
+              "compiler": "c++",
+              "sanitized": true,
+              "standard": [
+                "-std=c++14"
+              ],
+              "wrap_define": true
+            },
+            {
+              "file": "gimpfilterlayer.cpp",
+              "compiler": "c++",
+              "sanitized": true,
+              "standard": [
+                "-std=c++14"
+              ],
+              "wrap_define": false
+            }
+          ]
+        },
+        "timeouts_unchanged": true,
+        "timeout_multiplier": null,
+        "isolation_and_authenticated_loopback_verified": true,
+        "lsan_enabled": false,
+        "diagnostic_exception": {
+          "source": "https://sources.debian.org/patches/libcloudproviders/0.3.0-3/Fix-error-handling-on-bus-acquisition.patch/",
+          "dependency_sha256": "0e700324c5afa3f083893b6be9bf6ddbac6aafa91c5d207f9f815e5a882a0fbe",
+          "scope": "At most one exact nonfatal libcloudproviders DEBUG bus-launch notice per GUI process"
+        },
+        "verifier_sha256": "6bfeea0eeff462f642bb199e75a625849d651e4b25739ac98cae08b3246d6ac2",
+        "input_sha256": {
+          "results.json": "cd8a04607d9041b32d1a8add5ebb304726f6a794ded44a2ea58a2ffa45a1a6fa",
+          "registrations.json": "4c9cb3ea60f797fc3fbff05cbfa91c591d9ede1c885f77b992f3ae6080c5e747",
+          "filter-entry-handles-candidate-asan-v1.json": "7ae7d8da69ddbc6c8ebd16bebedd846a1f6b8b5b08fd64d1808a5095d80fcfe3"
+        }
+      },
+      {
+        "mode": "asan",
+        "run": "filter-entry-regression-asan-case1-v1",
+        "status": "PASS",
+        "registrations": 1,
+        "case_count": 1,
+        "results": [
+          {
+            "name": "gimp-filter-layer",
+            "cases": [
+              "/gimp-filter-layer/saved_definition_is_separate"
+            ],
+            "case_count": 1,
+            "duration_seconds": 1.8216862678527832,
+            "registered_timeout_seconds": 600,
+            "stderr_lines": 71,
+            "allowed_cloud_debug_notices": [],
+            "expected_opaque_diagnostics": {
+              "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Invalid arguments": 0,
+              "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Unsupported or malformed saved Filter argument; original definition is retained": 0
+            }
+          }
+        ],
+        "source_seal": {
+          "path": "filter-entry-handles-20261014/candidate-source-seal.json",
+          "sha256": "5e4578b1f298d33679b621e2b8367720b99033820ad77c9a56d200d5633af478",
+          "files": [
+            {
+              "path": "app/core/gimpfilterlayer.cpp",
+              "bytes": 110192,
+              "after_sha256": "75a5813aec8c6bd67cf06abda5b336fb174295428ac72edbe13df845a653e70c",
+              "after_git_blob": "164c5a2de309bb7059f46de829177059a8b8727b"
+            },
+            {
+              "path": "app/core/gimpfilterlayer.h",
+              "bytes": 14258,
+              "after_sha256": "a87a9a4a035b35f3224983fad0c6b73980919ebf86242701f80892fcd9a4830c",
+              "after_git_blob": "596d2142e2d40e841def9812c20223fcb319d35f"
+            },
+            {
+              "path": "app/core/gimpfilterlayer-handle.hpp",
+              "bytes": 2859,
+              "after_sha256": "b73e9c731130318b10aae60d7ce76f5a9019a730fa6651bed16c5640a74dcbe4",
+              "after_git_blob": "033a6d7d8489bb961b286f6cd1e241f62112735a"
+            },
+            {
+              "path": "app/tests/test-filter-entry-contracts.c",
+              "bytes": 30064,
+              "after_sha256": "9f0edbf9e637178d12a648d3580af532ccd5d5dd75969188400fa3363818cae9",
+              "after_git_blob": "e0781aba9777a970083a40bd8eb6d409b1dda30f"
+            },
+            {
+              "path": "app/tests/test-filter-entry-contracts.cpp",
+              "bytes": 23798,
+              "after_sha256": "10fb6215afa6db5b276cec5dc0ae5b9bf5b0dd161971c4a76ed8998ed17df7af",
+              "after_git_blob": "f5e2b16082bb2f42a60ebff0bd954022a7e1d4e3"
+            },
+            {
+              "path": "app/tests/meson.build",
+              "bytes": 42190,
+              "after_sha256": "28ee4f74ade2f69ce7ab72e288705394a8cf329c0ef4e91619fd539c4d90175c",
+              "after_git_blob": "74058de06a817550298a0fa27c543ee55b8dccb6"
+            }
+          ]
+        },
+        "registration_sources_sha256": {
+          "app/tests/test-gimp-filter-layer.c": "05fa1226bf4f6835fcffc0ba66b7ce928d9e514337c0c2447483997bde9eb286"
+        },
+        "actual_c11": false,
+        "actual_c11_scope": [],
+        "other_c_consumers": "focused C uses cc -std=c11; helper c++14; selected existing C regressions use project-default C standard",
+        "compile_evidence": {
+          "sha256": "2d68d50ba5b2a535d91f0b2608aaba95532fe1ca33e3324f83de733d29bc38cd",
+          "units": [
+            {
+              "file": "test-gimp-filter-layer.c",
+              "compiler": "cc",
+              "sanitized": true,
+              "standard": [],
+              "wrap_define": false
+            }
+          ]
+        },
+        "timeouts_unchanged": true,
+        "timeout_multiplier": null,
+        "isolation_and_authenticated_loopback_verified": true,
+        "lsan_enabled": false,
+        "diagnostic_exception": {
+          "source": "https://sources.debian.org/patches/libcloudproviders/0.3.0-3/Fix-error-handling-on-bus-acquisition.patch/",
+          "dependency_sha256": "0e700324c5afa3f083893b6be9bf6ddbac6aafa91c5d207f9f815e5a882a0fbe",
+          "scope": "At most one exact nonfatal libcloudproviders DEBUG bus-launch notice per GUI process"
+        },
+        "verifier_sha256": "6bfeea0eeff462f642bb199e75a625849d651e4b25739ac98cae08b3246d6ac2",
+        "input_sha256": {
+          "results.json": "8d273a57b8157f2e8a97926cb2f0684c1870e230d2e6dfe5d69cc52865b3dd02",
+          "registrations.json": "4c9cb3ea60f797fc3fbff05cbfa91c591d9ede1c885f77b992f3ae6080c5e747",
+          "filter-entry-regression-asan-case1-v1.json": "5e535f3bbc6170bd84ff3fb04358a0ab7a307c6a6957275d4209e0abc39c8013"
+        }
+      },
+      {
+        "mode": "asan",
+        "run": "filter-entry-regression-asan-case2-v1",
+        "status": "PASS",
+        "registrations": 1,
+        "case_count": 1,
+        "results": [
+          {
+            "name": "gimp-filter-layer",
+            "cases": [
+              "/gimp-filter-layer/loaded_cache"
+            ],
+            "case_count": 1,
+            "duration_seconds": 1.7366526126861572,
+            "registered_timeout_seconds": 600,
+            "stderr_lines": 71,
+            "allowed_cloud_debug_notices": [],
+            "expected_opaque_diagnostics": {
+              "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Invalid arguments": 0,
+              "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Unsupported or malformed saved Filter argument; original definition is retained": 0
+            }
+          }
+        ],
+        "source_seal": {
+          "path": "filter-entry-handles-20261014/candidate-source-seal.json",
+          "sha256": "5e4578b1f298d33679b621e2b8367720b99033820ad77c9a56d200d5633af478",
+          "files": [
+            {
+              "path": "app/core/gimpfilterlayer.cpp",
+              "bytes": 110192,
+              "after_sha256": "75a5813aec8c6bd67cf06abda5b336fb174295428ac72edbe13df845a653e70c",
+              "after_git_blob": "164c5a2de309bb7059f46de829177059a8b8727b"
+            },
+            {
+              "path": "app/core/gimpfilterlayer.h",
+              "bytes": 14258,
+              "after_sha256": "a87a9a4a035b35f3224983fad0c6b73980919ebf86242701f80892fcd9a4830c",
+              "after_git_blob": "596d2142e2d40e841def9812c20223fcb319d35f"
+            },
+            {
+              "path": "app/core/gimpfilterlayer-handle.hpp",
+              "bytes": 2859,
+              "after_sha256": "b73e9c731130318b10aae60d7ce76f5a9019a730fa6651bed16c5640a74dcbe4",
+              "after_git_blob": "033a6d7d8489bb961b286f6cd1e241f62112735a"
+            },
+            {
+              "path": "app/tests/test-filter-entry-contracts.c",
+              "bytes": 30064,
+              "after_sha256": "9f0edbf9e637178d12a648d3580af532ccd5d5dd75969188400fa3363818cae9",
+              "after_git_blob": "e0781aba9777a970083a40bd8eb6d409b1dda30f"
+            },
+            {
+              "path": "app/tests/test-filter-entry-contracts.cpp",
+              "bytes": 23798,
+              "after_sha256": "10fb6215afa6db5b276cec5dc0ae5b9bf5b0dd161971c4a76ed8998ed17df7af",
+              "after_git_blob": "f5e2b16082bb2f42a60ebff0bd954022a7e1d4e3"
+            },
+            {
+              "path": "app/tests/meson.build",
+              "bytes": 42190,
+              "after_sha256": "28ee4f74ade2f69ce7ab72e288705394a8cf329c0ef4e91619fd539c4d90175c",
+              "after_git_blob": "74058de06a817550298a0fa27c543ee55b8dccb6"
+            }
+          ]
+        },
+        "registration_sources_sha256": {
+          "app/tests/test-gimp-filter-layer.c": "05fa1226bf4f6835fcffc0ba66b7ce928d9e514337c0c2447483997bde9eb286"
+        },
+        "actual_c11": false,
+        "actual_c11_scope": [],
+        "other_c_consumers": "focused C uses cc -std=c11; helper c++14; selected existing C regressions use project-default C standard",
+        "compile_evidence": {
+          "sha256": "2d68d50ba5b2a535d91f0b2608aaba95532fe1ca33e3324f83de733d29bc38cd",
+          "units": [
+            {
+              "file": "test-gimp-filter-layer.c",
+              "compiler": "cc",
+              "sanitized": true,
+              "standard": [],
+              "wrap_define": false
+            }
+          ]
+        },
+        "timeouts_unchanged": true,
+        "timeout_multiplier": null,
+        "isolation_and_authenticated_loopback_verified": true,
+        "lsan_enabled": false,
+        "diagnostic_exception": {
+          "source": "https://sources.debian.org/patches/libcloudproviders/0.3.0-3/Fix-error-handling-on-bus-acquisition.patch/",
+          "dependency_sha256": "0e700324c5afa3f083893b6be9bf6ddbac6aafa91c5d207f9f815e5a882a0fbe",
+          "scope": "At most one exact nonfatal libcloudproviders DEBUG bus-launch notice per GUI process"
+        },
+        "verifier_sha256": "6bfeea0eeff462f642bb199e75a625849d651e4b25739ac98cae08b3246d6ac2",
+        "input_sha256": {
+          "results.json": "695bb09eb5b862e24a072dd40d87f827bb78cf488e768f64c5cd2494f3f5afcb",
+          "registrations.json": "4c9cb3ea60f797fc3fbff05cbfa91c591d9ede1c885f77b992f3ae6080c5e747",
+          "filter-entry-regression-asan-case2-v1.json": "e550fa7d436a87da84509602b9ae51638ed12163a9ceaba4cb046dd82b1994ea"
+        }
+      },
+      {
+        "mode": "asan",
+        "run": "filter-entry-regression-asan-case3-v1",
+        "status": "PASS",
+        "registrations": 1,
+        "case_count": 1,
+        "results": [
+          {
+            "name": "gimp-filter-layer",
+            "cases": [
+              "/gimp-filter-layer/object_arguments_do_not_cycle"
+            ],
+            "case_count": 1,
+            "duration_seconds": 1.6703569889068604,
+            "registered_timeout_seconds": 600,
+            "stderr_lines": 71,
+            "allowed_cloud_debug_notices": [],
+            "expected_opaque_diagnostics": {
+              "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Invalid arguments": 0,
+              "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Unsupported or malformed saved Filter argument; original definition is retained": 0
+            }
+          }
+        ],
+        "source_seal": {
+          "path": "filter-entry-handles-20261014/candidate-source-seal.json",
+          "sha256": "5e4578b1f298d33679b621e2b8367720b99033820ad77c9a56d200d5633af478",
+          "files": [
+            {
+              "path": "app/core/gimpfilterlayer.cpp",
+              "bytes": 110192,
+              "after_sha256": "75a5813aec8c6bd67cf06abda5b336fb174295428ac72edbe13df845a653e70c",
+              "after_git_blob": "164c5a2de309bb7059f46de829177059a8b8727b"
+            },
+            {
+              "path": "app/core/gimpfilterlayer.h",
+              "bytes": 14258,
+              "after_sha256": "a87a9a4a035b35f3224983fad0c6b73980919ebf86242701f80892fcd9a4830c",
+              "after_git_blob": "596d2142e2d40e841def9812c20223fcb319d35f"
+            },
+            {
+              "path": "app/core/gimpfilterlayer-handle.hpp",
+              "bytes": 2859,
+              "after_sha256": "b73e9c731130318b10aae60d7ce76f5a9019a730fa6651bed16c5640a74dcbe4",
+              "after_git_blob": "033a6d7d8489bb961b286f6cd1e241f62112735a"
+            },
+            {
+              "path": "app/tests/test-filter-entry-contracts.c",
+              "bytes": 30064,
+              "after_sha256": "9f0edbf9e637178d12a648d3580af532ccd5d5dd75969188400fa3363818cae9",
+              "after_git_blob": "e0781aba9777a970083a40bd8eb6d409b1dda30f"
+            },
+            {
+              "path": "app/tests/test-filter-entry-contracts.cpp",
+              "bytes": 23798,
+              "after_sha256": "10fb6215afa6db5b276cec5dc0ae5b9bf5b0dd161971c4a76ed8998ed17df7af",
+              "after_git_blob": "f5e2b16082bb2f42a60ebff0bd954022a7e1d4e3"
+            },
+            {
+              "path": "app/tests/meson.build",
+              "bytes": 42190,
+              "after_sha256": "28ee4f74ade2f69ce7ab72e288705394a8cf329c0ef4e91619fd539c4d90175c",
+              "after_git_blob": "74058de06a817550298a0fa27c543ee55b8dccb6"
+            }
+          ]
+        },
+        "registration_sources_sha256": {
+          "app/tests/test-gimp-filter-layer.c": "05fa1226bf4f6835fcffc0ba66b7ce928d9e514337c0c2447483997bde9eb286"
+        },
+        "actual_c11": false,
+        "actual_c11_scope": [],
+        "other_c_consumers": "focused C uses cc -std=c11; helper c++14; selected existing C regressions use project-default C standard",
+        "compile_evidence": {
+          "sha256": "2d68d50ba5b2a535d91f0b2608aaba95532fe1ca33e3324f83de733d29bc38cd",
+          "units": [
+            {
+              "file": "test-gimp-filter-layer.c",
+              "compiler": "cc",
+              "sanitized": true,
+              "standard": [],
+              "wrap_define": false
+            }
+          ]
+        },
+        "timeouts_unchanged": true,
+        "timeout_multiplier": null,
+        "isolation_and_authenticated_loopback_verified": true,
+        "lsan_enabled": false,
+        "diagnostic_exception": {
+          "source": "https://sources.debian.org/patches/libcloudproviders/0.3.0-3/Fix-error-handling-on-bus-acquisition.patch/",
+          "dependency_sha256": "0e700324c5afa3f083893b6be9bf6ddbac6aafa91c5d207f9f815e5a882a0fbe",
+          "scope": "At most one exact nonfatal libcloudproviders DEBUG bus-launch notice per GUI process"
+        },
+        "verifier_sha256": "6bfeea0eeff462f642bb199e75a625849d651e4b25739ac98cae08b3246d6ac2",
+        "input_sha256": {
+          "results.json": "3270376b09323a822d191fe91f2504629a1ef26087d6c866147ba98976196774",
+          "registrations.json": "4c9cb3ea60f797fc3fbff05cbfa91c591d9ede1c885f77b992f3ae6080c5e747",
+          "filter-entry-regression-asan-case3-v1.json": "fe35f35dbe9e0741fa68bfa6b7d927612f6a5d9e5ed215490b77c94e5bcc0627"
+        }
+      },
+      {
+        "mode": "asan",
+        "run": "filter-entry-regression-asan-case4-v1",
+        "status": "PASS",
+        "registrations": 1,
+        "case_count": 1,
+        "results": [
+          {
+            "name": "gimp-filter-layer",
+            "cases": [
+              "/gimp-filter-layer/object_array_arguments_do_not_dangle"
+            ],
+            "case_count": 1,
+            "duration_seconds": 1.729680061340332,
+            "registered_timeout_seconds": 600,
+            "stderr_lines": 71,
+            "allowed_cloud_debug_notices": [],
+            "expected_opaque_diagnostics": {
+              "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Invalid arguments": 0,
+              "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Unsupported or malformed saved Filter argument; original definition is retained": 0
+            }
+          }
+        ],
+        "source_seal": {
+          "path": "filter-entry-handles-20261014/candidate-source-seal.json",
+          "sha256": "5e4578b1f298d33679b621e2b8367720b99033820ad77c9a56d200d5633af478",
+          "files": [
+            {
+              "path": "app/core/gimpfilterlayer.cpp",
+              "bytes": 110192,
+              "after_sha256": "75a5813aec8c6bd67cf06abda5b336fb174295428ac72edbe13df845a653e70c",
+              "after_git_blob": "164c5a2de309bb7059f46de829177059a8b8727b"
+            },
+            {
+              "path": "app/core/gimpfilterlayer.h",
+              "bytes": 14258,
+              "after_sha256": "a87a9a4a035b35f3224983fad0c6b73980919ebf86242701f80892fcd9a4830c",
+              "after_git_blob": "596d2142e2d40e841def9812c20223fcb319d35f"
+            },
+            {
+              "path": "app/core/gimpfilterlayer-handle.hpp",
+              "bytes": 2859,
+              "after_sha256": "b73e9c731130318b10aae60d7ce76f5a9019a730fa6651bed16c5640a74dcbe4",
+              "after_git_blob": "033a6d7d8489bb961b286f6cd1e241f62112735a"
+            },
+            {
+              "path": "app/tests/test-filter-entry-contracts.c",
+              "bytes": 30064,
+              "after_sha256": "9f0edbf9e637178d12a648d3580af532ccd5d5dd75969188400fa3363818cae9",
+              "after_git_blob": "e0781aba9777a970083a40bd8eb6d409b1dda30f"
+            },
+            {
+              "path": "app/tests/test-filter-entry-contracts.cpp",
+              "bytes": 23798,
+              "after_sha256": "10fb6215afa6db5b276cec5dc0ae5b9bf5b0dd161971c4a76ed8998ed17df7af",
+              "after_git_blob": "f5e2b16082bb2f42a60ebff0bd954022a7e1d4e3"
+            },
+            {
+              "path": "app/tests/meson.build",
+              "bytes": 42190,
+              "after_sha256": "28ee4f74ade2f69ce7ab72e288705394a8cf329c0ef4e91619fd539c4d90175c",
+              "after_git_blob": "74058de06a817550298a0fa27c543ee55b8dccb6"
+            }
+          ]
+        },
+        "registration_sources_sha256": {
+          "app/tests/test-gimp-filter-layer.c": "05fa1226bf4f6835fcffc0ba66b7ce928d9e514337c0c2447483997bde9eb286"
+        },
+        "actual_c11": false,
+        "actual_c11_scope": [],
+        "other_c_consumers": "focused C uses cc -std=c11; helper c++14; selected existing C regressions use project-default C standard",
+        "compile_evidence": {
+          "sha256": "2d68d50ba5b2a535d91f0b2608aaba95532fe1ca33e3324f83de733d29bc38cd",
+          "units": [
+            {
+              "file": "test-gimp-filter-layer.c",
+              "compiler": "cc",
+              "sanitized": true,
+              "standard": [],
+              "wrap_define": false
+            }
+          ]
+        },
+        "timeouts_unchanged": true,
+        "timeout_multiplier": null,
+        "isolation_and_authenticated_loopback_verified": true,
+        "lsan_enabled": false,
+        "diagnostic_exception": {
+          "source": "https://sources.debian.org/patches/libcloudproviders/0.3.0-3/Fix-error-handling-on-bus-acquisition.patch/",
+          "dependency_sha256": "0e700324c5afa3f083893b6be9bf6ddbac6aafa91c5d207f9f815e5a882a0fbe",
+          "scope": "At most one exact nonfatal libcloudproviders DEBUG bus-launch notice per GUI process"
+        },
+        "verifier_sha256": "6bfeea0eeff462f642bb199e75a625849d651e4b25739ac98cae08b3246d6ac2",
+        "input_sha256": {
+          "results.json": "59a3770720781e7e4723952de170a3c5ca1a9c3eeeb0d1f53f10c02f672e9346",
+          "registrations.json": "4c9cb3ea60f797fc3fbff05cbfa91c591d9ede1c885f77b992f3ae6080c5e747",
+          "filter-entry-regression-asan-case4-v1.json": "c94219877043ddc1986221edb526bb3e548dadc0544aceba3d748edf7464ac6c"
+        }
+      },
+      {
+        "mode": "asan",
+        "run": "filter-entry-regression-asan-case5-v1",
+        "status": "PASS",
+        "registrations": 1,
+        "case_count": 1,
+        "results": [
+          {
+            "name": "gimp-filter-layer",
+            "cases": [
+              "/gimp-filter-layer/retired_definition_payload_reentry"
+            ],
+            "case_count": 1,
+            "duration_seconds": 1.7008709907531738,
+            "registered_timeout_seconds": 600,
+            "stderr_lines": 71,
+            "allowed_cloud_debug_notices": [],
+            "expected_opaque_diagnostics": {
+              "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Invalid arguments": 0,
+              "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Unsupported or malformed saved Filter argument; original definition is retained": 0
+            }
+          }
+        ],
+        "source_seal": {
+          "path": "filter-entry-handles-20261014/candidate-source-seal.json",
+          "sha256": "5e4578b1f298d33679b621e2b8367720b99033820ad77c9a56d200d5633af478",
+          "files": [
+            {
+              "path": "app/core/gimpfilterlayer.cpp",
+              "bytes": 110192,
+              "after_sha256": "75a5813aec8c6bd67cf06abda5b336fb174295428ac72edbe13df845a653e70c",
+              "after_git_blob": "164c5a2de309bb7059f46de829177059a8b8727b"
+            },
+            {
+              "path": "app/core/gimpfilterlayer.h",
+              "bytes": 14258,
+              "after_sha256": "a87a9a4a035b35f3224983fad0c6b73980919ebf86242701f80892fcd9a4830c",
+              "after_git_blob": "596d2142e2d40e841def9812c20223fcb319d35f"
+            },
+            {
+              "path": "app/core/gimpfilterlayer-handle.hpp",
+              "bytes": 2859,
+              "after_sha256": "b73e9c731130318b10aae60d7ce76f5a9019a730fa6651bed16c5640a74dcbe4",
+              "after_git_blob": "033a6d7d8489bb961b286f6cd1e241f62112735a"
+            },
+            {
+              "path": "app/tests/test-filter-entry-contracts.c",
+              "bytes": 30064,
+              "after_sha256": "9f0edbf9e637178d12a648d3580af532ccd5d5dd75969188400fa3363818cae9",
+              "after_git_blob": "e0781aba9777a970083a40bd8eb6d409b1dda30f"
+            },
+            {
+              "path": "app/tests/test-filter-entry-contracts.cpp",
+              "bytes": 23798,
+              "after_sha256": "10fb6215afa6db5b276cec5dc0ae5b9bf5b0dd161971c4a76ed8998ed17df7af",
+              "after_git_blob": "f5e2b16082bb2f42a60ebff0bd954022a7e1d4e3"
+            },
+            {
+              "path": "app/tests/meson.build",
+              "bytes": 42190,
+              "after_sha256": "28ee4f74ade2f69ce7ab72e288705394a8cf329c0ef4e91619fd539c4d90175c",
+              "after_git_blob": "74058de06a817550298a0fa27c543ee55b8dccb6"
+            }
+          ]
+        },
+        "registration_sources_sha256": {
+          "app/tests/test-gimp-filter-layer.c": "05fa1226bf4f6835fcffc0ba66b7ce928d9e514337c0c2447483997bde9eb286"
+        },
+        "actual_c11": false,
+        "actual_c11_scope": [],
+        "other_c_consumers": "focused C uses cc -std=c11; helper c++14; selected existing C regressions use project-default C standard",
+        "compile_evidence": {
+          "sha256": "2d68d50ba5b2a535d91f0b2608aaba95532fe1ca33e3324f83de733d29bc38cd",
+          "units": [
+            {
+              "file": "test-gimp-filter-layer.c",
+              "compiler": "cc",
+              "sanitized": true,
+              "standard": [],
+              "wrap_define": false
+            }
+          ]
+        },
+        "timeouts_unchanged": true,
+        "timeout_multiplier": null,
+        "isolation_and_authenticated_loopback_verified": true,
+        "lsan_enabled": false,
+        "diagnostic_exception": {
+          "source": "https://sources.debian.org/patches/libcloudproviders/0.3.0-3/Fix-error-handling-on-bus-acquisition.patch/",
+          "dependency_sha256": "0e700324c5afa3f083893b6be9bf6ddbac6aafa91c5d207f9f815e5a882a0fbe",
+          "scope": "At most one exact nonfatal libcloudproviders DEBUG bus-launch notice per GUI process"
+        },
+        "verifier_sha256": "6bfeea0eeff462f642bb199e75a625849d651e4b25739ac98cae08b3246d6ac2",
+        "input_sha256": {
+          "results.json": "d57a2295fddd93f357da4a9c70bbbe92f347415ab15104c91d1568f228547b11",
+          "registrations.json": "4c9cb3ea60f797fc3fbff05cbfa91c591d9ede1c885f77b992f3ae6080c5e747",
+          "filter-entry-regression-asan-case5-v1.json": "c9049534d5e65abc138ebc2d6b483886b7207cc8fe07bb3b45238e2cf8d67a45"
+        }
+      },
+      {
+        "mode": "asan",
+        "run": "filter-entry-regression-asan-case6-v1",
+        "status": "PASS",
+        "registrations": 1,
+        "case_count": 1,
+        "results": [
+          {
+            "name": "gimp-filter-layer",
+            "cases": [
+              "/gimp-filter-layer/native_precision_loaded_cache_and_rerun"
+            ],
+            "case_count": 1,
+            "duration_seconds": 1.9563658237457275,
+            "registered_timeout_seconds": 600,
+            "stderr_lines": 71,
+            "allowed_cloud_debug_notices": [],
+            "expected_opaque_diagnostics": {
+              "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Invalid arguments": 0,
+              "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Unsupported or malformed saved Filter argument; original definition is retained": 0
+            }
+          }
+        ],
+        "source_seal": {
+          "path": "filter-entry-handles-20261014/candidate-source-seal.json",
+          "sha256": "5e4578b1f298d33679b621e2b8367720b99033820ad77c9a56d200d5633af478",
+          "files": [
+            {
+              "path": "app/core/gimpfilterlayer.cpp",
+              "bytes": 110192,
+              "after_sha256": "75a5813aec8c6bd67cf06abda5b336fb174295428ac72edbe13df845a653e70c",
+              "after_git_blob": "164c5a2de309bb7059f46de829177059a8b8727b"
+            },
+            {
+              "path": "app/core/gimpfilterlayer.h",
+              "bytes": 14258,
+              "after_sha256": "a87a9a4a035b35f3224983fad0c6b73980919ebf86242701f80892fcd9a4830c",
+              "after_git_blob": "596d2142e2d40e841def9812c20223fcb319d35f"
+            },
+            {
+              "path": "app/core/gimpfilterlayer-handle.hpp",
+              "bytes": 2859,
+              "after_sha256": "b73e9c731130318b10aae60d7ce76f5a9019a730fa6651bed16c5640a74dcbe4",
+              "after_git_blob": "033a6d7d8489bb961b286f6cd1e241f62112735a"
+            },
+            {
+              "path": "app/tests/test-filter-entry-contracts.c",
+              "bytes": 30064,
+              "after_sha256": "9f0edbf9e637178d12a648d3580af532ccd5d5dd75969188400fa3363818cae9",
+              "after_git_blob": "e0781aba9777a970083a40bd8eb6d409b1dda30f"
+            },
+            {
+              "path": "app/tests/test-filter-entry-contracts.cpp",
+              "bytes": 23798,
+              "after_sha256": "10fb6215afa6db5b276cec5dc0ae5b9bf5b0dd161971c4a76ed8998ed17df7af",
+              "after_git_blob": "f5e2b16082bb2f42a60ebff0bd954022a7e1d4e3"
+            },
+            {
+              "path": "app/tests/meson.build",
+              "bytes": 42190,
+              "after_sha256": "28ee4f74ade2f69ce7ab72e288705394a8cf329c0ef4e91619fd539c4d90175c",
+              "after_git_blob": "74058de06a817550298a0fa27c543ee55b8dccb6"
+            }
+          ]
+        },
+        "registration_sources_sha256": {
+          "app/tests/test-gimp-filter-layer.c": "05fa1226bf4f6835fcffc0ba66b7ce928d9e514337c0c2447483997bde9eb286"
+        },
+        "actual_c11": false,
+        "actual_c11_scope": [],
+        "other_c_consumers": "focused C uses cc -std=c11; helper c++14; selected existing C regressions use project-default C standard",
+        "compile_evidence": {
+          "sha256": "2d68d50ba5b2a535d91f0b2608aaba95532fe1ca33e3324f83de733d29bc38cd",
+          "units": [
+            {
+              "file": "test-gimp-filter-layer.c",
+              "compiler": "cc",
+              "sanitized": true,
+              "standard": [],
+              "wrap_define": false
+            }
+          ]
+        },
+        "timeouts_unchanged": true,
+        "timeout_multiplier": null,
+        "isolation_and_authenticated_loopback_verified": true,
+        "lsan_enabled": false,
+        "diagnostic_exception": {
+          "source": "https://sources.debian.org/patches/libcloudproviders/0.3.0-3/Fix-error-handling-on-bus-acquisition.patch/",
+          "dependency_sha256": "0e700324c5afa3f083893b6be9bf6ddbac6aafa91c5d207f9f815e5a882a0fbe",
+          "scope": "At most one exact nonfatal libcloudproviders DEBUG bus-launch notice per GUI process"
+        },
+        "verifier_sha256": "6bfeea0eeff462f642bb199e75a625849d651e4b25739ac98cae08b3246d6ac2",
+        "input_sha256": {
+          "results.json": "0e27030a8665c97598c90cb130d10e2c30e22ae901d39282cc894cb7c95f121a",
+          "registrations.json": "4c9cb3ea60f797fc3fbff05cbfa91c591d9ede1c885f77b992f3ae6080c5e747",
+          "filter-entry-regression-asan-case6-v1.json": "a9114f8b3c866878d72dda0ca5bfd0863c8538fe60dfbc2bedaaefc31a26594a"
+        }
+      },
+      {
+        "mode": "asan",
+        "run": "filter-entry-xcf-asan-case1-v1",
+        "status": "PASS",
+        "registrations": 1,
+        "case_count": 1,
+        "results": [
+          {
+            "name": "painter-xcf-roundtrip",
+            "cases": [
+              "/painter-xcf-roundtrip/filter_cache_and_arguments"
+            ],
+            "case_count": 1,
+            "duration_seconds": 1.6774392127990723,
+            "registered_timeout_seconds": 60,
+            "stderr_lines": 71,
+            "allowed_cloud_debug_notices": [],
+            "expected_opaque_diagnostics": {
+              "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Invalid arguments": 0,
+              "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Unsupported or malformed saved Filter argument; original definition is retained": 0
+            }
+          }
+        ],
+        "source_seal": {
+          "path": "filter-entry-handles-20261014/candidate-source-seal.json",
+          "sha256": "5e4578b1f298d33679b621e2b8367720b99033820ad77c9a56d200d5633af478",
+          "files": [
+            {
+              "path": "app/core/gimpfilterlayer.cpp",
+              "bytes": 110192,
+              "after_sha256": "75a5813aec8c6bd67cf06abda5b336fb174295428ac72edbe13df845a653e70c",
+              "after_git_blob": "164c5a2de309bb7059f46de829177059a8b8727b"
+            },
+            {
+              "path": "app/core/gimpfilterlayer.h",
+              "bytes": 14258,
+              "after_sha256": "a87a9a4a035b35f3224983fad0c6b73980919ebf86242701f80892fcd9a4830c",
+              "after_git_blob": "596d2142e2d40e841def9812c20223fcb319d35f"
+            },
+            {
+              "path": "app/core/gimpfilterlayer-handle.hpp",
+              "bytes": 2859,
+              "after_sha256": "b73e9c731130318b10aae60d7ce76f5a9019a730fa6651bed16c5640a74dcbe4",
+              "after_git_blob": "033a6d7d8489bb961b286f6cd1e241f62112735a"
+            },
+            {
+              "path": "app/tests/test-filter-entry-contracts.c",
+              "bytes": 30064,
+              "after_sha256": "9f0edbf9e637178d12a648d3580af532ccd5d5dd75969188400fa3363818cae9",
+              "after_git_blob": "e0781aba9777a970083a40bd8eb6d409b1dda30f"
+            },
+            {
+              "path": "app/tests/test-filter-entry-contracts.cpp",
+              "bytes": 23798,
+              "after_sha256": "10fb6215afa6db5b276cec5dc0ae5b9bf5b0dd161971c4a76ed8998ed17df7af",
+              "after_git_blob": "f5e2b16082bb2f42a60ebff0bd954022a7e1d4e3"
+            },
+            {
+              "path": "app/tests/meson.build",
+              "bytes": 42190,
+              "after_sha256": "28ee4f74ade2f69ce7ab72e288705394a8cf329c0ef4e91619fd539c4d90175c",
+              "after_git_blob": "74058de06a817550298a0fa27c543ee55b8dccb6"
+            }
+          ]
+        },
+        "registration_sources_sha256": {
+          "app/tests/test-painter-xcf-roundtrip.c": "a40812956fe8b7de8047bad5c864bd1561b208199419392cd005c780f8b477c9"
+        },
+        "actual_c11": false,
+        "actual_c11_scope": [],
+        "other_c_consumers": "focused C uses cc -std=c11; helper c++14; selected existing C regressions use project-default C standard",
+        "compile_evidence": {
+          "sha256": "2d68d50ba5b2a535d91f0b2608aaba95532fe1ca33e3324f83de733d29bc38cd",
+          "units": [
+            {
+              "file": "test-painter-xcf-roundtrip.c",
+              "compiler": "cc",
+              "sanitized": true,
+              "standard": [],
+              "wrap_define": false
+            }
+          ]
+        },
+        "timeouts_unchanged": true,
+        "timeout_multiplier": null,
+        "isolation_and_authenticated_loopback_verified": true,
+        "lsan_enabled": false,
+        "diagnostic_exception": {
+          "source": "https://sources.debian.org/patches/libcloudproviders/0.3.0-3/Fix-error-handling-on-bus-acquisition.patch/",
+          "dependency_sha256": "0e700324c5afa3f083893b6be9bf6ddbac6aafa91c5d207f9f815e5a882a0fbe",
+          "scope": "At most one exact nonfatal libcloudproviders DEBUG bus-launch notice per GUI process"
+        },
+        "verifier_sha256": "6bfeea0eeff462f642bb199e75a625849d651e4b25739ac98cae08b3246d6ac2",
+        "input_sha256": {
+          "results.json": "358f8d5640d0a31236b044e788f6820c1e178be0d94654550d115c84898eefa7",
+          "registrations.json": "4c9cb3ea60f797fc3fbff05cbfa91c591d9ede1c885f77b992f3ae6080c5e747",
+          "filter-entry-xcf-asan-case1-v1.json": "0404553e9e311059d4c420083131dc9ab13bd8f9c5b54069cdbc1a2188f0c432"
+        }
+      },
+      {
+        "mode": "asan",
+        "run": "filter-entry-xcf-asan-case2-v1",
+        "status": "PASS",
+        "registrations": 1,
+        "case_count": 1,
+        "results": [
+          {
+            "name": "painter-xcf-roundtrip",
+            "cases": [
+              "/painter-xcf-roundtrip/opaque_argument_shapes"
+            ],
+            "case_count": 1,
+            "duration_seconds": 1.4837353229522705,
+            "registered_timeout_seconds": 60,
+            "stderr_lines": 79,
+            "allowed_cloud_debug_notices": [],
+            "expected_opaque_diagnostics": {
+              "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Invalid arguments": 2,
+              "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Unsupported or malformed saved Filter argument; original definition is retained": 2
+            }
+          }
+        ],
+        "source_seal": {
+          "path": "filter-entry-handles-20261014/candidate-source-seal.json",
+          "sha256": "5e4578b1f298d33679b621e2b8367720b99033820ad77c9a56d200d5633af478",
+          "files": [
+            {
+              "path": "app/core/gimpfilterlayer.cpp",
+              "bytes": 110192,
+              "after_sha256": "75a5813aec8c6bd67cf06abda5b336fb174295428ac72edbe13df845a653e70c",
+              "after_git_blob": "164c5a2de309bb7059f46de829177059a8b8727b"
+            },
+            {
+              "path": "app/core/gimpfilterlayer.h",
+              "bytes": 14258,
+              "after_sha256": "a87a9a4a035b35f3224983fad0c6b73980919ebf86242701f80892fcd9a4830c",
+              "after_git_blob": "596d2142e2d40e841def9812c20223fcb319d35f"
+            },
+            {
+              "path": "app/core/gimpfilterlayer-handle.hpp",
+              "bytes": 2859,
+              "after_sha256": "b73e9c731130318b10aae60d7ce76f5a9019a730fa6651bed16c5640a74dcbe4",
+              "after_git_blob": "033a6d7d8489bb961b286f6cd1e241f62112735a"
+            },
+            {
+              "path": "app/tests/test-filter-entry-contracts.c",
+              "bytes": 30064,
+              "after_sha256": "9f0edbf9e637178d12a648d3580af532ccd5d5dd75969188400fa3363818cae9",
+              "after_git_blob": "e0781aba9777a970083a40bd8eb6d409b1dda30f"
+            },
+            {
+              "path": "app/tests/test-filter-entry-contracts.cpp",
+              "bytes": 23798,
+              "after_sha256": "10fb6215afa6db5b276cec5dc0ae5b9bf5b0dd161971c4a76ed8998ed17df7af",
+              "after_git_blob": "f5e2b16082bb2f42a60ebff0bd954022a7e1d4e3"
+            },
+            {
+              "path": "app/tests/meson.build",
+              "bytes": 42190,
+              "after_sha256": "28ee4f74ade2f69ce7ab72e288705394a8cf329c0ef4e91619fd539c4d90175c",
+              "after_git_blob": "74058de06a817550298a0fa27c543ee55b8dccb6"
+            }
+          ]
+        },
+        "registration_sources_sha256": {
+          "app/tests/test-painter-xcf-roundtrip.c": "a40812956fe8b7de8047bad5c864bd1561b208199419392cd005c780f8b477c9"
+        },
+        "actual_c11": false,
+        "actual_c11_scope": [],
+        "other_c_consumers": "focused C uses cc -std=c11; helper c++14; selected existing C regressions use project-default C standard",
+        "compile_evidence": {
+          "sha256": "2d68d50ba5b2a535d91f0b2608aaba95532fe1ca33e3324f83de733d29bc38cd",
+          "units": [
+            {
+              "file": "test-painter-xcf-roundtrip.c",
+              "compiler": "cc",
+              "sanitized": true,
+              "standard": [],
+              "wrap_define": false
+            }
+          ]
+        },
+        "timeouts_unchanged": true,
+        "timeout_multiplier": null,
+        "isolation_and_authenticated_loopback_verified": true,
+        "lsan_enabled": false,
+        "diagnostic_exception": {
+          "source": "https://sources.debian.org/patches/libcloudproviders/0.3.0-3/Fix-error-handling-on-bus-acquisition.patch/",
+          "dependency_sha256": "0e700324c5afa3f083893b6be9bf6ddbac6aafa91c5d207f9f815e5a882a0fbe",
+          "scope": "At most one exact nonfatal libcloudproviders DEBUG bus-launch notice per GUI process"
+        },
+        "verifier_sha256": "6bfeea0eeff462f642bb199e75a625849d651e4b25739ac98cae08b3246d6ac2",
+        "input_sha256": {
+          "results.json": "8bd759f2ae29c96a4bf575101176b1f1b1ce9bc65598529c1423e408117b1e85",
+          "registrations.json": "4c9cb3ea60f797fc3fbff05cbfa91c591d9ede1c885f77b992f3ae6080c5e747",
+          "filter-entry-xcf-asan-case2-v1.json": "927a255b9fb711636f210ad15842a7ca975caded17698cb3726ea2c4de48007e"
+        }
+      }
+    ]
+  },
+  "acceptance": {
+    "native_focused": 17,
+    "asan_focused": 17,
+    "actual_C11": 9,
+    "Cpp14": 8,
+    "native_selected_filter": 6,
+    "asan_selected_filter": 6,
+    "native_selected_xcf": 2,
+    "asan_selected_xcf": 2,
+    "full_filter_or_xcf_suite_claim": false
+  },
+  "binary_sha256": {
+    "native/app/tests/filter-entry-contracts": "bd1a3329da0f016d9d29b42028adb147c18048e41988e662edd0582940722167",
+    "native/app/tests/gimp-filter-layer": "1928d8c0cb43c5defe447aa7fc8e11bc002960b294ff5291b50b9a90152f8f6d",
+    "native/app/tests/painter-xcf-roundtrip": "84f20b2a2315f62aff6914a341a5d4ffd6512648db0454bac307c8f1560760d4",
+    "native/compile_commands.json": "09a47d971d3a85d4a6f6cceb7e420e8599e1d56b42235aa24c0e5588ca7f2cad",
+    "native/meson-info/intro-tests.json": "401536519682faaf678d7362c132429b9643b1386e72043f36c9082e7e6b0a67",
+    "asan/app/tests/filter-entry-contracts": "b6bd734d3363c212c9f7f8e48f2ac697287c4944c14754ef2177cbcff6eceba0",
+    "asan/app/tests/gimp-filter-layer": "bc1ad4bed7fe5fde0f901fd25ba726de0b37a8c9f2b2d8da374018c9f3282c12",
+    "asan/app/tests/painter-xcf-roundtrip": "f2898e6bd5e902fd1dfd1c14560f5326c882fb6e1e3fd12f8f041d54a4813fdd",
+    "asan/compile_commands.json": "2d68d50ba5b2a535d91f0b2608aaba95532fe1ca33e3324f83de733d29bc38cd",
+    "asan/meson-info/intro-tests.json": "097a29dabe4cdbc5277970eff103f5ebcadbe4f5ba55410413e0a5a1e06a0da0",
+    "native/app/gimp-3.0": "1d90137969286738236f161c9739b7b097d0a824c6eee156337b8933c1b4d604"
+  },
+  "symbol_evidence": {
+    "native": {
+      "gimp_filter_layer_get_type": 1,
+      "gimp_filter_layer_new": 1,
+      "gimp_filter_layer_get_procedure": 1,
+      "gimp_filter_layer_get_procedure_args": 1,
+      "gimp_filter_layer_mark_as_loaded": 1,
+      "__wrap_gimp_filter_layer_new": 1,
+      "__wrap_gimp_filter_layer_get_procedure": 1,
+      "__wrap_gimp_filter_layer_get_procedure_args": 1,
+      "__wrap_gimp_filter_layer_mark_as_loaded": 1
+    },
+    "asan": {
+      "gimp_filter_layer_get_type": 1,
+      "gimp_filter_layer_new": 1,
+      "gimp_filter_layer_get_procedure": 1,
+      "gimp_filter_layer_get_procedure_args": 1,
+      "gimp_filter_layer_mark_as_loaded": 1,
+      "__wrap_gimp_filter_layer_new": 1,
+      "__wrap_gimp_filter_layer_get_procedure": 1,
+      "__wrap_gimp_filter_layer_get_procedure_args": 1,
+      "__wrap_gimp_filter_layer_mark_as_loaded": 1
+    },
+    "native_application": {
+      "gimp_filter_layer_get_type": 1,
+      "gimp_filter_layer_new": 1,
+      "gimp_filter_layer_get_procedure": 1,
+      "gimp_filter_layer_get_procedure_args": 1,
+      "gimp_filter_layer_mark_as_loaded": 1
+    }
+  },
+  "header_compilation": {
+    "status": "PASS",
+    "compiled_probes": 375,
+    "report_sha256": "63ada73d5f084e6f7541651c83e6906e7bf2206ad8a804afe1c2a4825ba484db",
+    "libraries": {
+      "c-boundaries-validation-20261013/build-native/app/painter/tests/headers/libpainter-public-headers-c.a": {
+        "bytes": 22594,
+        "sha256": "0ca49bf1db865489b630db25dbd7c259af894ed016b2800c16ad986540484d33"
+      },
+      "c-boundaries-validation-20261013/build-native/app/painter/tests/headers/libpainter-public-headers-cpp.a": {
+        "bytes": 25796,
+        "sha256": "b486ff5018126a5d6a2c648c1e97f1ea33c7f49d710f5d56b21ec955814fec97"
+      }
+    },
+    "registrations": [
+      {
+        "name": "gimp:painter / painter-public-header-compilation",
+        "result": "OK",
+        "returncode": 0,
+        "duration": 0.1286027431488037
+      },
+      {
+        "name": "gimp:painter / painter-additional-header-routes",
+        "result": "OK",
+        "returncode": 0,
+        "duration": 1.6652734279632568
+      }
+    ]
+  },
+  "handle_compile_controls": {
+    "status": "PASS",
+    "standard": "C++14",
+    "double_include": true,
+    "positive_count": 4,
+    "negative_count": 3,
+    "header_sha256": "b73e9c731130318b10aae60d7ce76f5a9019a730fa6651bed16c5640a74dcbe4",
+    "results": [
+      {
+        "name": "header-only",
+        "expected": "compile",
+        "exit": 0,
+        "status": "PASS",
+        "source_sha256": "3456aaab59f1710255a302932e6fd9cc2f403970180a76bf0d5101ea2bb5cef1",
+        "log_sha256": "dcc36ff38086c78921eef1a09b695886ed3602ee7943891919c88a49933dca51"
+      },
+      {
+        "name": "create-owning-queries",
+        "expected": "compile",
+        "exit": 0,
+        "status": "PASS",
+        "source_sha256": "34e53efe61622516f90819ba093e9209b93b34039d00b3cc60c2a16ebc9b1435",
+        "log_sha256": "88e3437e61d7a2c69d387a6efe718cb22e66340eb2d19dc9afce17127e174e5b"
+      },
+      {
+        "name": "mark-loaded",
+        "expected": "compile",
+        "exit": 0,
+        "status": "PASS",
+        "source_sha256": "c4a1d70e44bc22efebf2f2931744a5250abccbc78d5f5974e29e10284ea69440",
+        "log_sha256": "fe5ad48ae0120fabf33c10877a18e42674c0c38660895872f9c1c7cbd5b108fb"
+      },
+      {
+        "name": "modern-unchanged",
+        "expected": "compile",
+        "exit": 0,
+        "status": "PASS",
+        "source_sha256": "052334684c31b600e597518e1b87f391045a51c272991a489d05f45524bdec5e",
+        "log_sha256": "1ad3abbbef94680698ce1403d6a1fcec930eddf21df81431ff0aefbf92685f3c"
+      },
+      {
+        "name": "wrong-owner",
+        "expected": "reject-wrong-type",
+        "exit": 1,
+        "status": "PASS",
+        "source_sha256": "579fd00309663352e12a6348d2acf9347665ecad6071885d935abc284dd8695f",
+        "log_sha256": "9270a326e7f370a23f4e0eee2b7ae7433f637ce3251233c5cb2c1c28e48801d9"
+      },
+      {
+        "name": "query-argument",
+        "expected": "reject-wrong-type",
+        "exit": 1,
+        "status": "PASS",
+        "source_sha256": "38e1a8e656b0cd6d2c5d6148f8c5a98e7537fe6cb435d405fb0be14c1b9feb35",
+        "log_sha256": "0fe7c4e4425f70cfab755942cd609fb70a2679169d7cdcdd2b113d8e7bfb2635"
+      },
+      {
+        "name": "loaded-argument",
+        "expected": "reject-wrong-type",
+        "exit": 1,
+        "status": "PASS",
+        "source_sha256": "18650addf66054929ae5db70e31b37e26d84161445df68381c0bb339be29bca6",
+        "log_sha256": "7fb47712f81b3724e0d517d459f7a3df072407ef3b4f41923efbf25ea236de6d"
+      }
+    ]
+  },
+  "negative_controls": {
+    "status": "PASS",
+    "positive_control": "Unmodified isolated native-v1 report accepted",
+    "negative_case_count": 12,
+    "original_inputs_source_and_build_unchanged": true,
+    "protected_sha256": {
+      "c-boundaries-validation-20261013/validation/filter-entry-handles-candidate-native-v1/results.json": "822fee2b087edf5af3b795e9347d985f306c649790fd28c23f326c014e890d9c",
+      "c-boundaries-validation-20261013/validation/filter-entry-handles-candidate-native-v1/registrations.json": "1ce7f41faad16dea6b5329069ab005e5e0f320528992013b62a117da20d1049f",
+      "c-boundaries-validation-20261013/validation/filter-entry-handles-candidate-native-v1/filter-entry-handles-candidate-native-v1.json": "63c64689d1e6f9301396b17ec23e2ef87d990e4764e352ca34aca7ea9ae77d01",
+      "c-boundaries-validation-20261013/validation/filter-entry-handles-candidate-native-v1/verified-results.json": "7a7373bfb0191d9efb09e440761607e6a11bc8c3440aacdceb3cc44426c2d8a2",
+      "filter-entry-handles-20261014/candidate-source-seal.json": "5e4578b1f298d33679b621e2b8367720b99033820ad77c9a56d200d5633af478",
+      "filter-entry-handles-20261014/verify_candidate.py": "6bfeea0eeff462f642bb199e75a625849d651e4b25739ac98cae08b3246d6ac2",
+      "c-boundaries-validation-20261013/build-native/compile_commands.json": "09a47d971d3a85d4a6f6cceb7e420e8599e1d56b42235aa24c0e5588ca7f2cad",
+      "gimp-c-boundaries-20261013/app/core/gimpfilterlayer.cpp": "75a5813aec8c6bd67cf06abda5b336fb174295428ac72edbe13df845a653e70c",
+      "gimp-c-boundaries-20261013/app/core/gimpfilterlayer.h": "a87a9a4a035b35f3224983fad0c6b73980919ebf86242701f80892fcd9a4830c",
+      "gimp-c-boundaries-20261013/app/core/gimpfilterlayer-handle.hpp": "b73e9c731130318b10aae60d7ce76f5a9019a730fa6651bed16c5640a74dcbe4",
+      "gimp-c-boundaries-20261013/app/tests/test-filter-entry-contracts.c": "9f0edbf9e637178d12a648d3580af532ccd5d5dd75969188400fa3363818cae9",
+      "gimp-c-boundaries-20261013/app/tests/test-filter-entry-contracts.cpp": "10fb6215afa6db5b276cec5dc0ae5b9bf5b0dd161971c4a76ed8998ed17df7af",
+      "gimp-c-boundaries-20261013/app/tests/meson.build": "28ee4f74ade2f69ce7ab72e288705394a8cf329c0ef4e91619fd539c4d90175c"
+    },
+    "verifier_sha256": "6bfeea0eeff462f642bb199e75a625849d651e4b25739ac98cae08b3246d6ac2",
+    "scope": "Verifier-only execution against isolated JSON copies; no application or build execution",
+    "results": [
+      {
+        "mutation": "none",
+        "passed": true,
+        "expected_rejection": null,
+        "observed_error": null,
+        "accepted_output_written": true,
+        "log_sha256": "8099715319b1f1eae339c85be8ccfdc514f91e01d5d99ac29afca0858e03747b"
+      },
+      {
+        "mutation": "aggregate_nonzero",
+        "passed": true,
+        "expected_rejection": "aggregate or X server exit failed",
+        "observed_error": "aggregate or X server exit failed",
+        "accepted_output_written": false,
+        "log_sha256": "cf2754e8bd750a22ff0c0ca6a4847a6c4031017e4cda75f7ea385b3006b7fcce"
+      },
+      {
+        "mutation": "process_nonzero_after_all_tap_ok",
+        "passed": true,
+        "expected_rejection": "test process failed: filter-entry-contracts",
+        "observed_error": "test process failed: filter-entry-contracts",
+        "accepted_output_written": false,
+        "log_sha256": "98a92838959f2adf62a54901df4b93890a3ed7434062a596c381fed11a6a24bf"
+      },
+      {
+        "mutation": "missing_tap_case",
+        "passed": true,
+        "expected_rejection": "TAP numbering missing/duplicated: filter-entry-contracts",
+        "observed_error": "TAP numbering missing/duplicated: filter-entry-contracts",
+        "accepted_output_written": false,
+        "log_sha256": "bb3b401a14bb75e47cfbba0528e98c4a563eb1794150535284a63492872890b1"
+      },
+      {
+        "mutation": "duplicate_tap_case",
+        "passed": true,
+        "expected_rejection": "TAP numbering missing/duplicated: filter-entry-contracts",
+        "observed_error": "TAP numbering missing/duplicated: filter-entry-contracts",
+        "accepted_output_written": false,
+        "log_sha256": "bb3b401a14bb75e47cfbba0528e98c4a563eb1794150535284a63492872890b1"
+      },
+      {
+        "mutation": "tap_skip_directive",
+        "passed": true,
+        "expected_rejection": "TAP IDs/order differ from source registration: filter-entry-contracts",
+        "observed_error": "TAP IDs/order differ from source registration: filter-entry-contracts",
+        "accepted_output_written": false,
+        "log_sha256": "be9566f7f08077fb9822867ac096192679bf84f277c4892f9e733d17a08c6c61"
+      },
+      {
+        "mutation": "comment_skip",
+        "passed": true,
+        "expected_rejection": "forbidden diagnostic: # SKIP injected",
+        "observed_error": "filter-entry-contracts: forbidden diagnostic: # SKIP injected",
+        "accepted_output_written": false,
+        "log_sha256": "b9a98e8a59bb8309365c38c2d3a096d33b3fa24c0d835003fcde47731fcbf0af"
+      },
+      {
+        "mutation": "teardown_critical_after_all_tap_ok",
+        "passed": true,
+        "expected_rejection": "forbidden diagnostic: Gimp-Core-CRITICAL",
+        "observed_error": "filter-entry-contracts: forbidden diagnostic: Gimp-Core-CRITICAL: injected teardown failure",
+        "accepted_output_written": false,
+        "log_sha256": "bb59d0619fefc84e60f55b17b8834fa270cb3585fdbf868cd3edda82328b1886"
+      },
+      {
+        "mutation": "sanitizer_after_all_tap_ok",
+        "passed": true,
+        "expected_rejection": "forbidden diagnostic: AddressSanitizer",
+        "observed_error": "filter-entry-contracts: forbidden diagnostic: AddressSanitizer: injected error",
+        "accepted_output_written": false,
+        "log_sha256": "de525b19beb223f9ed174aef1c3bfaab7e4b28d1538c77426842078c1d4cbf25"
+      },
+      {
+        "mutation": "increased_registered_timeout",
+        "passed": true,
+        "expected_rejection": "registered timeout/serial contract changed: filter-entry-contracts",
+        "observed_error": "registered timeout/serial contract changed: filter-entry-contracts",
+        "accepted_output_written": false,
+        "log_sha256": "4d4d61bb33144b6d79531334cd93f40485734257a60985361c8324ef65a60659"
+      },
+      {
+        "mutation": "command_timeout_multiplier",
+        "passed": true,
+        "expected_rejection": "aggregate command differs",
+        "observed_error": "aggregate command differs, filters/timeout multipliers are forbidden",
+        "accepted_output_written": false,
+        "log_sha256": "f71a692667dd7b6ea75783219de8bf3a684564e109c026f994644b9f56dcf69d"
+      },
+      {
+        "mutation": "environment_timeout_multiplier",
+        "passed": true,
+        "expected_rejection": "timeout multiplier environment set",
+        "observed_error": "filter-entry-contracts: timeout multiplier environment set",
+        "accepted_output_written": false,
+        "log_sha256": "d794dfb3a8509471c2b8db720d49d5cf73598fff94daea289512dc77fec3b0a5"
+      },
+      {
+        "mutation": "source_seal_tamper",
+        "passed": true,
+        "expected_rejection": "sealed SHA256 changed",
+        "observed_error": "sealed SHA256 changed: app/core/gimpfilterlayer.cpp",
+        "accepted_output_written": false,
+        "log_sha256": "c773d03dd3f8c3edaf0a3b013ff9518c743f8280055da5d752fa06007c61feb3"
+      }
+    ]
+  },
+  "xcf_negative_controls": {
+    "status": "PASS",
+    "positive_controls": 1,
+    "negative_controls": 7,
+    "results": [
+      {
+        "mutation": "none",
+        "status": "PASS",
+        "error": null,
+        "accepted_output_written": true
+      },
+      {
+        "mutation": "one_warning_missing",
+        "status": "PASS",
+        "error": "opaque fixture warning count differs from two reloads of each shape",
+        "accepted_output_written": false
+      },
+      {
+        "mutation": "one_warning_extra",
+        "status": "PASS",
+        "error": "opaque fixture warning count differs from two reloads of each shape",
+        "accepted_output_written": false
+      },
+      {
+        "mutation": "different_warning",
+        "status": "PASS",
+        "error": "painter-xcf-roundtrip: forbidden diagnostic: GIMP-Warning: unexpected injected warning",
+        "accepted_output_written": false
+      },
+      {
+        "mutation": "warning_wrong_case",
+        "status": "PASS",
+        "error": "painter-xcf-roundtrip: forbidden diagnostic: GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Invalid arguments",
+        "accepted_output_written": false
+      },
+      {
+        "mutation": "empty_selection",
+        "status": "PASS",
+        "error": "TAP numbering missing/duplicated: painter-xcf-roundtrip",
+        "accepted_output_written": false
+      },
+      {
+        "mutation": "wrong_case_command",
+        "status": "PASS",
+        "error": "aggregate command differs, filters/timeout multipliers are forbidden",
+        "accepted_output_written": false
+      },
+      {
+        "mutation": "warning_stdout",
+        "status": "PASS",
+        "error": "opaque diagnostic on stdout is not allowlisted",
+        "accepted_output_written": false
+      }
+    ]
+  },
+  "source_gate": "2467 sources; 683 reviewed data sites; 4 dormant findings",
+  "policy_tests": 48,
+  "contract_gate": "90 unique typed-handle contracts; 76 C entries",
+  "independent_review": "# Independent final review: PASS\n\nNo remaining blocker found in the bounded query/lifecycle routes, focused tests\nor final evidence. Review remained read-only.\n\nBorrowed name uses existing storage with documented replacement/destruction\nlifetime; the named handle copies immediately. GArray output initializes/copies\nGValues with temporary/partial RAII cleanup. Scalar GObjects retain identity and\nownership. CORE_OBJECT_ARRAY retains its native borrowed-element contract;\nheader and tests explicitly require caller keepalive. Closed metadata reads and\nowner-thread rejection remain native behavior. Partial output-loop cleanup is\nstructurally reviewed, not claimed as injected runtime failure coverage.\n\nAll 18 final reports match current verifier, input hashes and six-file source\nseal. Fifty case executions passed: 17 focused + six filter + two XCF cases in\neach mode. All process, Meson and authenticated X-server exits are zero. ASan\nand UBSan passed, with LSan disabled. Selected regression coverage is not a full\nsuite claim. All 14 protected hashes match; row 26 remains untouched.\n\nThe opaque XCF case has two malformed shapes loaded twice: missing arguments\ntriggers its exact warning twice, and wrong snapshot type triggers the other\nexact warning twice. Verified allowlist accepts only those complete stderr\nmessages/counts for that case and rejects wrong streams/cases/alterations or\nmissing/extra warnings. Standard 12 and selected-XCF seven mutation controls pass.\n\nNative header gates/375 probes, production incremental relink, four positive\nand three negative compile controls, source/policy/contract checks pass. Initial\nC test compilation needed the ordinary widgets-types prerequisite; reviewed fix\npreceded successful runs. No scheduler/serializer behavior fix was necessary.\n\nFinal reviewed SHA256:\n- app/core/gimpfilterlayer.cpp: 75a5813aec8c6bd67cf06abda5b336fb174295428ac72edbe13df845a653e70c\n- app/core/gimpfilterlayer.h: a87a9a4a035b35f3224983fad0c6b73980919ebf86242701f80892fcd9a4830c\n- app/core/gimpfilterlayer-handle.hpp: b73e9c731130318b10aae60d7ce76f5a9019a730fa6651bed16c5640a74dcbe4\n- app/tests/test-filter-entry-contracts.c: 9f0edbf9e637178d12a648d3580af532ccd5d5dd75969188400fa3363818cae9\n- app/tests/test-filter-entry-contracts.cpp: 10fb6215afa6db5b276cec5dc0ae5b9bf5b0dd161971c4a76ed8998ed17df7af\n- app/tests/meson.build: 28ee4f74ade2f69ce7ab72e288705394a8cf329c0ef4e91619fd539c4d90175c\n",
+  "restored_missing_original_queries": [
+    "gimp_filter_layer_get_procedure (",
+    "gimp_filter_layer_get_procedure_args ("
+  ],
+  "unchanged_contracts_sha256": {
+    "app/core/gimpfilterlayer-arguments.hpp": "940a0296d1adb1f063b323a0fb092c2abf749bda4db81e02f84f7d9291f48ecc",
+    "app/painter/filter-scheduler.cpp": "3e3031de93f04f5694bb00946cf270d4accdb27ae3afc1d7e57579d4b647b031",
+    "app/painter/filter-scheduler.hpp": "4939ca47e3afb0a7fc7774df18c2d9d27e333c9669d936ccf843a67216d032e1",
+    "app/xcf/painter-xcf-preserve.cpp": "9d79e3ba4657e0e4a15bf89f10a08555cfee935b362086991c59ad656df7af7a",
+    "app/xcf/painter-xcf-load.cpp": "d08022d60ccdb29a8119057ed3e5f375101be080b782a36b26c3b41e1132efb2",
+    "app/dialogs/painter-layer-dialog.cpp": "70a5333cd50da3e680997d808baf8a10d31754a0de78158d528581fe091feea3",
+    "app/core/gimplayerpreset-apply.cpp": "f00c7043b3365c243475341e926122ee57c93af82f26e7721e045eb5cf417419",
+    "app/tests/test-gimp-filter-layer.c": "05fa1226bf4f6835fcffc0ba66b7ce928d9e514337c0c2447483997bde9eb286",
+    "app/tests/test-painter-xcf-roundtrip.c": "a40812956fe8b7de8047bad5c864bd1561b208199419392cd005c780f8b477c9",
+    "app/core/gimp-painter-type-traits.hpp": "5bc16efd001f1f83dfd2fa6de6260dbc4d3c646969a7801d27f1eb398869f29f",
+    "tasks.md": "0a7274e11b0d5f554d99f9020988031765c23a3cbc82410cfb36594a3e1b7198",
+    "migration/progress.tsv": "bf3f867cecf4635f47e9c5d9d007c9d8ab2574080e376453ea31fdf572b3f3ba",
+    "migration/contracts/cpp-handle-registry.tsv": "6e63af0d9d79ccd4d8af6dbcfdb5f01a2278e203326ad6aae368b730fabb8e5c",
+    "app/xcf/painter-xcf-arguments.cpp": "35927b8787496ba21ae7a5468fcb780fed09a097108eee4f4ca460e5b89f7562"
+  },
+  "expected_xcf_diagnostics": {
+    "case": "/painter-xcf-roundtrip/opaque_argument_shapes",
+    "count_each_message_each_mode": 2,
+    "stream": "stderr only",
+    "messages": [
+      "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Invalid arguments",
+      "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Unsupported or malformed saved Filter argument; original definition is retained"
+    ],
+    "derivation": "Two malformed shapes, each loaded twice. Missing value hits Invalid arguments; string instead of a(sbv) hits malformed snapshot. Four warnings total per mode.",
+    "source_anchors": [
+      "app/tests/test-painter-xcf-roundtrip.c:705-741",
+      "app/xcf/painter-xcf-preserve.cpp:1075-1078,1231-1235",
+      "app/xcf/painter-xcf-arguments.cpp:47,569"
+    ],
+    "scope": "Exact messages/counts on stderr only in selected case; seven mutation controls reject missing, extra, changed, wrong-case or stdout diagnostics and missing/wrong selection"
+  },
+  "retained_intermediate_findings": [
+    "First test compilation required the ordinary widgets-types.h prerequisite; no production fix was needed.",
+    "Pre-build review corrected expected critical log domain and owned String temporary lifetime in tests.",
+    "Verifier draft corrected existing filter registration macro spacing and registered Python fixture wrapper relative executable path; initial opaque fixture warning rejection was refined only after source-derived review. Final reports use final verifier hash."
+  ],
+  "limits": [
+    "Focused C11/C++14 entry suite plus six selected filter and two selected XCF cases; not full GIMP/filter/XCF regression. ASan+UBSan active, LSan disabled; ordinary registration timeouts unchanged.",
+    "Borrowed name lifetime ends at definition replacement/destruction. Owned scalar GObject GValues retain identity. CORE_OBJECT_ARRAY owns pointer container only and borrows elements: callers must provide keepalive and never dereference after owner loss.",
+    "Expired object-array failures exercise existing materializer cleanup. New output-copy loop partial cleanup is structurally reviewed RAII, not forced mid-loop runtime injection; fatal GLib allocation policy is unchanged.",
+    "Rows21/22/24/25 remain PARTIAL for saved-model identity/arguments, scheduler loaded semantics, factory enum and native construction behavior. Row23 is native registration only; no historical Interface/layout/subclass ABI claim.",
+    "Scheduler, immutable argument model, serializers, loader ordering and production callers unchanged. Row26 arbitrary PDB setter remains untouched.",
+    "Native application relinked with all five relevant C symbols. No new ordinary UI or artificial screenshot; no full ASan application relink/shutdown claim.",
+    "Only rows21\u201325 implementation cells change; other71 rows, separate31hooks/typecatalog/counts and excluded work unchanged."
+  ],
+  "evidence_sha256": {
+    "filter-entry-handles-candidate-native-v1/results.json": "822fee2b087edf5af3b795e9347d985f306c649790fd28c23f326c014e890d9c",
+    "filter-entry-handles-candidate-native-v1/verified-results.json": "7a7373bfb0191d9efb09e440761607e6a11bc8c3440aacdceb3cc44426c2d8a2",
+    "filter-entry-handles-candidate-native-v1/filter-entry-handles-candidate-native-v1.json": "63c64689d1e6f9301396b17ec23e2ef87d990e4764e352ca34aca7ea9ae77d01",
+    "filter-entry-handles-candidate-native-v1/filter-entry-handles-candidate-native-v1.txt": "67291a0e7b1bc0eacc8900a2b2aaca824f6729b197bbf52d02273b307ead6941",
+    "filter-entry-regression-native-case1-v1/results.json": "845677f20f443dcc05ad489c43a8e293d17c32ef32b2df010eaa4e54f9e5a655",
+    "filter-entry-regression-native-case1-v1/verified-results.json": "8ed95a2dac38539b16f314ac24b1c1257431e5f6480c26274c1b939ccca0a199",
+    "filter-entry-regression-native-case1-v1/filter-entry-regression-native-case1-v1.json": "1927ae7137e9e579b25f2cddcf812707dcf2b04549a3e1cd332ed8eec595a40d",
+    "filter-entry-regression-native-case1-v1/filter-entry-regression-native-case1-v1.txt": "7f3733d605060c368e1f4951dde14cd682c9e3995948deada9ec6db9c9bba5f7",
+    "filter-entry-regression-native-case2-v1/results.json": "bbe536afe2a83f7a7c54ab2c8e92817ec691deac186bace4ab91033fd8fbd4cd",
+    "filter-entry-regression-native-case2-v1/verified-results.json": "1be56bc512b7134b02379949f65ba6674e26d20e48c6e07e67205e8f96da54ce",
+    "filter-entry-regression-native-case2-v1/filter-entry-regression-native-case2-v1.json": "6029a0686d20b38a64bc1c6b4f0525b18306edd720097f884953ec6391db799d",
+    "filter-entry-regression-native-case2-v1/filter-entry-regression-native-case2-v1.txt": "ef514c95dcc698e6f3b17d9ac5113489a96bd0561464cb443cb49c4d207baa79",
+    "filter-entry-regression-native-case3-v1/results.json": "0e8a53a374a601a7a97d27e28d1623a06de5435e0ab7a41f7ff8edd5733e7f4b",
+    "filter-entry-regression-native-case3-v1/verified-results.json": "2f845d0c7b54592fe1694d241f0a68753edb48269b4e38a4d04be86ac1ce7986",
+    "filter-entry-regression-native-case3-v1/filter-entry-regression-native-case3-v1.json": "621b896c3bf50a26783f3b8fac992d84141fa417a59aa9f706cafb6f2bdeb00d",
+    "filter-entry-regression-native-case3-v1/filter-entry-regression-native-case3-v1.txt": "986cd54f43a543dda062edc91b3ca4c3d756b8dcea0e7f8e16621d7c45a6a178",
+    "filter-entry-regression-native-case4-v1/results.json": "0511f20e5425f1f3e2a6e581c68e7d5c2b5dc795456034cee53df5f0fbdf4746",
+    "filter-entry-regression-native-case4-v1/verified-results.json": "218efb3bd9498362b32499aacbb8db4bd9331fdd857ac8c3057583cb45820e7c",
+    "filter-entry-regression-native-case4-v1/filter-entry-regression-native-case4-v1.json": "0ce04b48c523895bfe811a40c23cb1d5a3def7903ff355c8632a0bbad27a43e2",
+    "filter-entry-regression-native-case4-v1/filter-entry-regression-native-case4-v1.txt": "e5df99ccde6351c3969ab65a95731e44a3f098c44d2c48ca7e45231848764c9a",
+    "filter-entry-regression-native-case5-v1/results.json": "c5d56d137959c80ee107b0bea28c271b4afb112e46c19633aa4a514e6043d892",
+    "filter-entry-regression-native-case5-v1/verified-results.json": "652aab72cc8b82b2b8373c63d2f14ba2c7ff5084a03c7149e8eca96bc5415154",
+    "filter-entry-regression-native-case5-v1/filter-entry-regression-native-case5-v1.json": "616a76760b77f8c561bc7a8abd5992c0f959e76fb719fe785538d2d20722fcdd",
+    "filter-entry-regression-native-case5-v1/filter-entry-regression-native-case5-v1.txt": "084605179fdbdd92f404361f5569f1f655577e81b0f22f544f4c5c7c58016492",
+    "filter-entry-regression-native-case6-v1/results.json": "39259a72231dbc1828e774d83619ecac616895d476245976ac6f99490558663f",
+    "filter-entry-regression-native-case6-v1/verified-results.json": "f4d12309efc032fe5c6b6d44264628e978b611bb64dc6006681746b7ce90097d",
+    "filter-entry-regression-native-case6-v1/filter-entry-regression-native-case6-v1.json": "4ee00daf7aa060d4b8eb640a5c31406335675f08f842e6c5e549e775eb604a71",
+    "filter-entry-regression-native-case6-v1/filter-entry-regression-native-case6-v1.txt": "ba5e6f8241e614648846092359d3eeee9cace80b98f65b1b541166f3281a232c",
+    "filter-entry-xcf-native-case1-v1/results.json": "de433d683cbf2f7a52b038026bd9b962cd91a0a20dde3bd0acbc91029e914f66",
+    "filter-entry-xcf-native-case1-v1/verified-results.json": "f8afa7a331ed893c261888d1bc7e4f6dd36f2566453ffc5bdece59aa313924ca",
+    "filter-entry-xcf-native-case1-v1/filter-entry-xcf-native-case1-v1.json": "5fcdf4b1708575034330caf4f076b45dfc7c738fef38bf0c96f60f2049708b30",
+    "filter-entry-xcf-native-case1-v1/filter-entry-xcf-native-case1-v1.txt": "a9d2de70ff8a67bbf3979ae33193c5cb9e3c81c4858353a802a64278f198df95",
+    "filter-entry-xcf-native-case2-v1/results.json": "1ce45efdc836e7085e5484571214ec2d03c3bc791de9e3433a30838bf131fd25",
+    "filter-entry-xcf-native-case2-v1/verified-results.json": "4164e9ca90e38ca47955dae5100ff42c9697d4d21af121dc382f4637cbf81323",
+    "filter-entry-xcf-native-case2-v1/filter-entry-xcf-native-case2-v1.json": "eaa91080c27d9a6b4db24e6cc6bd70e6a101814f05843948e0d63be1e0630074",
+    "filter-entry-xcf-native-case2-v1/filter-entry-xcf-native-case2-v1.txt": "8230c63d0bb7fc7442c189efd4c26ee2b3e6426d5a5063ea7ff1d18a5095c5db",
+    "filter-entry-handles-candidate-asan-v1/results.json": "cd8a04607d9041b32d1a8add5ebb304726f6a794ded44a2ea58a2ffa45a1a6fa",
+    "filter-entry-handles-candidate-asan-v1/verified-results.json": "c23fe62cfb4fe72e7d917313f04d35554b0af4eefa20e121b3b5ed60d7341b39",
+    "filter-entry-handles-candidate-asan-v1/filter-entry-handles-candidate-asan-v1.json": "7ae7d8da69ddbc6c8ebd16bebedd846a1f6b8b5b08fd64d1808a5095d80fcfe3",
+    "filter-entry-handles-candidate-asan-v1/filter-entry-handles-candidate-asan-v1.txt": "3cce9ebc37342b28f1d5f933c9e3e64caaededdf4613c297ef5861974ffeadc3",
+    "filter-entry-regression-asan-case1-v1/results.json": "8d273a57b8157f2e8a97926cb2f0684c1870e230d2e6dfe5d69cc52865b3dd02",
+    "filter-entry-regression-asan-case1-v1/verified-results.json": "7e9a93b025a8602d441e3a86bf104ee407e7f6d8b62a00730af6294a7a43c9af",
+    "filter-entry-regression-asan-case1-v1/filter-entry-regression-asan-case1-v1.json": "5e535f3bbc6170bd84ff3fb04358a0ab7a307c6a6957275d4209e0abc39c8013",
+    "filter-entry-regression-asan-case1-v1/filter-entry-regression-asan-case1-v1.txt": "151ce093c002c9af828718d353ff0d45571f1bce0b9b5596707ed129fe851b2a",
+    "filter-entry-regression-asan-case2-v1/results.json": "695bb09eb5b862e24a072dd40d87f827bb78cf488e768f64c5cd2494f3f5afcb",
+    "filter-entry-regression-asan-case2-v1/verified-results.json": "557dc64bec12b5fcbd873c5b179174d61c42734eabfc39128e2367c44450ad17",
+    "filter-entry-regression-asan-case2-v1/filter-entry-regression-asan-case2-v1.json": "e550fa7d436a87da84509602b9ae51638ed12163a9ceaba4cb046dd82b1994ea",
+    "filter-entry-regression-asan-case2-v1/filter-entry-regression-asan-case2-v1.txt": "b654248a11179b26a33de8f774538f04e44a55e2ecd7bd63c312a28c83294b5e",
+    "filter-entry-regression-asan-case3-v1/results.json": "3270376b09323a822d191fe91f2504629a1ef26087d6c866147ba98976196774",
+    "filter-entry-regression-asan-case3-v1/verified-results.json": "b30eef53a2398bd27144597fbb2d2b75c933bd606d8773cdeb13f4589834120a",
+    "filter-entry-regression-asan-case3-v1/filter-entry-regression-asan-case3-v1.json": "fe35f35dbe9e0741fa68bfa6b7d927612f6a5d9e5ed215490b77c94e5bcc0627",
+    "filter-entry-regression-asan-case3-v1/filter-entry-regression-asan-case3-v1.txt": "81e84c876562e4d46040ec8ef0b736534ae95540a1676f83783da636cf78b422",
+    "filter-entry-regression-asan-case4-v1/results.json": "59a3770720781e7e4723952de170a3c5ca1a9c3eeeb0d1f53f10c02f672e9346",
+    "filter-entry-regression-asan-case4-v1/verified-results.json": "d04d6b72881376157b4739075530f2b104b7cfc943fc5d711d5acb515acd4e06",
+    "filter-entry-regression-asan-case4-v1/filter-entry-regression-asan-case4-v1.json": "c94219877043ddc1986221edb526bb3e548dadc0544aceba3d748edf7464ac6c",
+    "filter-entry-regression-asan-case4-v1/filter-entry-regression-asan-case4-v1.txt": "4771ff386b7b04a1cad513c4d59a3d6a49ac018eea287936fac43467fd3faf12",
+    "filter-entry-regression-asan-case5-v1/results.json": "d57a2295fddd93f357da4a9c70bbbe92f347415ab15104c91d1568f228547b11",
+    "filter-entry-regression-asan-case5-v1/verified-results.json": "f919609725c88c86fca14bd92f42b13a998fffab7015a600b7521470022522f3",
+    "filter-entry-regression-asan-case5-v1/filter-entry-regression-asan-case5-v1.json": "c9049534d5e65abc138ebc2d6b483886b7207cc8fe07bb3b45238e2cf8d67a45",
+    "filter-entry-regression-asan-case5-v1/filter-entry-regression-asan-case5-v1.txt": "ffe7e59f7504474cb5723321edf9e7e7d7c80e940d959df79298e955f89f71ee",
+    "filter-entry-regression-asan-case6-v1/results.json": "0e27030a8665c97598c90cb130d10e2c30e22ae901d39282cc894cb7c95f121a",
+    "filter-entry-regression-asan-case6-v1/verified-results.json": "946de3f02422cd9c3ee8086fb21a134fa2721ebfd2d8f740c847800e1a59f404",
+    "filter-entry-regression-asan-case6-v1/filter-entry-regression-asan-case6-v1.json": "a9114f8b3c866878d72dda0ca5bfd0863c8538fe60dfbc2bedaaefc31a26594a",
+    "filter-entry-regression-asan-case6-v1/filter-entry-regression-asan-case6-v1.txt": "2f27a4a22f192e8abc49c96464b80643afd1636a39f8e5beb30914dd9b2f1094",
+    "filter-entry-xcf-asan-case1-v1/results.json": "358f8d5640d0a31236b044e788f6820c1e178be0d94654550d115c84898eefa7",
+    "filter-entry-xcf-asan-case1-v1/verified-results.json": "92af38297f8daac4bcdfe59cd8dbb246a4ce0ecfee9d0a752f71bdb7930fc034",
+    "filter-entry-xcf-asan-case1-v1/filter-entry-xcf-asan-case1-v1.json": "0404553e9e311059d4c420083131dc9ab13bd8f9c5b54069cdbc1a2188f0c432",
+    "filter-entry-xcf-asan-case1-v1/filter-entry-xcf-asan-case1-v1.txt": "c5e08006abeb51ae87afa85ab2f87a92be16cf1a77839e75a625660aa6b64e37",
+    "filter-entry-xcf-asan-case2-v1/results.json": "8bd759f2ae29c96a4bf575101176b1f1b1ce9bc65598529c1423e408117b1e85",
+    "filter-entry-xcf-asan-case2-v1/verified-results.json": "c500a0bb95b1c02162c425e824e0905d380fd538af37877455fb0d219aa5ce95",
+    "filter-entry-xcf-asan-case2-v1/filter-entry-xcf-asan-case2-v1.json": "927a255b9fb711636f210ad15842a7ca975caded17698cb3726ea2c4de48007e",
+    "filter-entry-xcf-asan-case2-v1/filter-entry-xcf-asan-case2-v1.txt": "e7c1485d8a20af7cbd9119a20217b931214abb193c0552b3f4dfa04aeeb07283",
+    "candidate-native-v2-build.log": "6d2aa944ace283e1520b0826415c26ba8839a83980e00bbc9e7b71e20a90a6d5",
+    "filter-entry-regression-asan-case2-v1.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "headers-native-v1-build.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "candidate-source-seal.json": "5e4578b1f298d33679b621e2b8367720b99033820ad77c9a56d200d5633af478",
+    "filter-entry-regression-asan-case6-v1-console.log": "0e9aff4cefd13ab451495cd80476647f0a10d50153deaa88412983733a862d39",
+    "production-native-v1-build.log": "55a4dc76d62eeccf2ca6bc0bddafdb7624b299707202680e2bb8214fde0469f9",
+    "candidate-asan-v1-build.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "filter-entry-xcf-native-case2-v1-console.log": "9d22751a8266a3745ca064ad6aa53043a5ce9303b3c14124beaa95fba82af63f",
+    "filter-entry-xcf-asan-case1-v1.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "candidate-asan-v1-build.log": "e06ce2216c00c6dfafec34a04eac33c77da2a6d4f9480ff3e1af5e0f63fd2b37",
+    "candidate-native-v1-build.log": "28dd32b39c329b4ae4954e7d6f585f89855934114ef594bd731cfe07bf1d6c12",
+    "verification-native.log": "7e17e332c4d727c50d59bbe90266ebd398e4e01c2fab92a0baf02888f2aa89f6",
+    "filter-entry-regression-native-case4-v1-console.log": "7795fd1f40394ffdebb3afb6f0812f39dfd04369cbf4efaf711b5ac79ddee981",
+    "filter-entry-xcf-native-case2-v1.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "test_verify_candidate.py": "53c7606ac72593bf42b84e9390fa823bf7c5d2f0648fdb83ca16a0720deca8bf",
+    "filter-entry-handles-candidate-native-v1-console.log": "6adb509e0e0b5a96df423c77b495d1bd5bd8cd1d59ba821ac1c84390bff91c0f",
+    "filter-entry-regression-native-case2-v1.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "filter-entry-handles-candidate-asan-v1-console.log": "efb90df28ab82a5c4f3587fdd28c40ff5f846b8365de2d097fa7eb7188ba3db2",
+    "regression-asan.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "filter-entry-xcf-native-case1-v1.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "filter-entry-regression-asan-case3-v1.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "xcf-verifier-negative-results.json": "931360fb4f464c094265aa73a923db673ef24e55e08176514788674be2196e63",
+    "filter-entry-regression-asan-case1-v1-console.log": "0cd7ffddb4e7241578f76fa10814215d364bba69a4c9e43e4b8cd35da5fcf673",
+    "negative-controls.log": "d694181cd6ed0dcd00606f4db8a3fff1f6b2580b7e6026fce22167682ca0710f",
+    "filter-entry-regression-native-case4-v1.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "xcf-negative-controls.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "verification-native.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "regression-verification-trial.log": "71f7cb1fa1a18328881d320d8c145812bc203db74353a2e965b0ea8bd9c18101",
+    "negative-controls.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "filter-entry-regression-native-case3-v1-console.log": "c4362bf60854909e9dced950e20c4a40f442199cbb4ca87d551a51103f2b7ce9",
+    "scope-and-contract.md": "217d277920bd2abd4d94a2007a7c39bdb447d0c332b61e6b0145cf9c3fb81765",
+    "regression-filter-asan-v1-build.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "handle-compile-results.json": "c418b188eb5d61b69f59f9e707309c1b204da695251fef7e225ca67daa447c3d",
+    "filter-entry-regression-asan-case3-v1-console.log": "d2ed355b8b7048c43c26822f39030630234c110371cb15cd8fd8ecda0bbe18cc",
+    "regression-native.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "verify_all.py": "31d7a78036434ab937605051b532078b2d77acc90353750143839f5dc97ad077",
+    "candidate-native-v2-build.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "verification-asan.log": "6444535900124a3e2c7b2b56868ba3d7102db559287563185810ed16a278fd94",
+    "headers-native-v1-build.log": "a58ada4f6aacc91f78d042523933f03e0c81cf5d6883213b2eedcc8904343f8f",
+    "filter-entry-regression-native-case5-v1-console.log": "dedd97b0c599271366e0a37c3f03fe9e9bd27f80ac87cc1b21061dbf5a787ec7",
+    "production-native-v1-build.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "regression-xcf-native-v1-build.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "filter-entry-regression-asan-case4-v1.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "regression-xcf-asan-v1-build.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "regression-xcf-asan-v1-build.log": "2f4e3b3cc1361d91f2091029d3901ae95dd0864d67647f7e202632f04c3f9fd7",
+    "filter-entry-regression-asan-case1-v1.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "filter-entry-regression-native-case5-v1.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "adapter-check.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "filter-entry-regression-native-case6-v1.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "regression-filter-native-v1-build.log": "7969b759e3aa28ddc0bd6cd5c19452a7855940ef4d624d4576df471fb0d60894",
+    "filter-entry-regression-native-case1-v1-console.log": "53d84afb9a54bc8a2fc893a063cd45740dd3e383d6b04fb015c2917d1bd3f643",
+    "native-verification.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "native-verification.log": "15fc68af17134e57040e93852c3d2a99b2d05a122b97de4339d2d402f647c14b",
+    "independent-review.md": "4f6691c7a64f1068c1cdee79aabf2f287556c2d69e78efbda405778aff99a655",
+    "filter-entry-xcf-asan-case2-v1.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "filter-entry-handles-candidate-native-v1.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "handle-compile.log": "2571ad6ad4d8c4cfbcf7cf0c9a259c0f8bd1b62825b1b81f34183fa2f920915e",
+    "regression-filter-native-v1-build.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "filter-entry-regression-asan-case4-v1-console.log": "ee6bcb7dc99277eb9e333cb145c88b03dbd84d86cb310e38883dba54ce4f69c5",
+    "filter-entry-handles-candidate-asan-v1.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "regression-xcf-native-v1-build.log": "804df635ab07a70c5b73a73377bb5cbba320ebe08fc381977b6cb5fc61e275df",
+    "handle-compile.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "test_verify_xcf_subset.py": "909a64a29513aa849911a4ba77a2c48ffe9101e2fd840e4530fa6708d1219f42",
+    "filter-entry-regression-native-case3-v1.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "regression-verification-trial-v2.log": "9e5bf0d776494270ba44246d7d08dee7b64410c048eb1012a1bae340f553ad03",
+    "filter-entry-regression-native-case6-v1-console.log": "cb7684bceebc4901b872f546c41e5022fdbb3065ab49d0b67e1bb5f4d43caa32",
+    "adapter-policy-tests.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "filter-entry-regression-asan-case2-v1-console.log": "e31484ba0fdb39bb76b6d3e7dd559d13f44874ae79a523789ce95b07e02cf858",
+    "baseline-source.json": "47a82c2c8959bc28a970363791ee9c1e6d570679805af87db4556a3b2f60764f",
+    "filter-entry-regression-asan-case5-v1.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "filter-entry-xcf-native-case1-v1-console.log": "9ed466d19a986c75a001ec5ded37abeb5c48f7b4e7e45628b81265ae5feb7f3a",
+    "filter-entry-regression-native-case2-v1-console.log": "3a3e644bc2c2d0239c141a68e28a8bc3bf297f7707b4a8cbcc479ae50c3d2e0a",
+    "unchanged-contracts.json": "164018d46fcbb67fd2a33b3b7101747d2bd0c8fe9e21a2ba9909607c5798bc86",
+    "filter-entry-regression-native-case1-v1.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "adapter-policy-tests.log": "13320517a46a73f236a3500bbc0d1450a0647ed52703d9ed5f3a0575a82d6239",
+    "xcf-negative-controls.log": "4517ea658b380a5eb5a1469a4c26e18f878082d91efc5b563c0a4ae6d7c975c5",
+    "verify_candidate.py": "6bfeea0eeff462f642bb199e75a625849d651e4b25739ac98cae08b3246d6ac2",
+    "verifier-negative-results.json": "f11524aa53c5b25ad3344444fee535a3775aa65002b4eabe2d09fdf6c4db88c9",
+    "contracts.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "headers-native-validation.log": "637fc9cee9a9146474247bceb15637cb7da8416ac3609c3c8c0112b80cab7136",
+    "filter-entry-regression-asan-case5-v1-console.log": "7f2336ccf5393c8597571761d99332455baa7907c6255f5323a3aa972509df3c",
+    "filter-entry-xcf-asan-case1-v1-console.log": "21383945dd77445c9975d6858527e71437f80e7baa48c121e2811bc37a6d7330",
+    "final-runs.json": "2df3dcb77e5bc3c656ded9cfb5abe84183fad60c8e3a488d789760e4970a6ea5",
+    "check_handle_compile.py": "e0f112cd25f25a7ac1d557f2dcbafa2bcec5d3dc1346cad91ec26e4f2ebe3550",
+    "regression-filter-asan-v1-build.log": "1fa1f2ab6d060bc98b40a15b12500ea4759d28fa1e1563a2594ec3319073a693",
+    "filter-entry-regression-asan-case6-v1.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "verification-asan.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "adapter-check.log": "6b16c285a7d2328318fbb01a5bef77c3aeb2d8a9e586b7ef7517702b4b4f435a",
+    "candidate-native-v1-build.exit": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "freeze.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "headers-native-validation.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "filter-entry-xcf-asan-case2-v1-console.log": "187491be016e3e3a3c501e223517c5711b7903b31ffd5ecf5a58b0e25cf5d6cb",
+    "contracts.log": "5d7679fe57fa10916ee636e18c811f3cf0e7f5655dce2cb6868f62a4741265e1"
+  }
+}

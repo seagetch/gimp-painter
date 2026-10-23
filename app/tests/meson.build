@@ -802,3 +802,26 @@ test('painter-popup-handles', painter_popup_handles_test,
         'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
         'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
         'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 120)
+
+# Original FilterLayer query names and native loaded-cache owning routes.
+filter_entry_args = []
+filter_entry_link_args = []
+filter_entry_wraps = ['-Wl,--wrap=gimp_filter_layer_new',
+                      '-Wl,--wrap=gimp_filter_layer_get_procedure',
+                      '-Wl,--wrap=gimp_filter_layer_get_procedure_args',
+                      '-Wl,--wrap=gimp_filter_layer_mark_as_loaded']
+if host_machine.system() == 'linux' and cxx.get_id() in ['gcc', 'clang'] and cxx.has_multi_link_arguments(filter_entry_wraps)
+  filter_entry_args = ['-DGIMP_TEST_FILTER_WRAP_ENTRIES']
+  filter_entry_link_args = filter_entry_wraps
+endif
+filter_entry_contracts_test = executable('filter-entry-contracts',
+  'test-filter-entry-contracts.c', 'test-filter-entry-contracts.cpp', 'tests.c',
+  dependencies: [libapp_dep, appstream], link_with: apptests_links,
+  cpp_args: painter_cpp_args + filter_entry_args, link_args: filter_entry_link_args,
+  override_options: ['c_std=c11', 'cpp_std=c++14'])
+test('filter-entry-contracts', filter_entry_contracts_test,
+  depends: gimp_test_icon_dependencies,
+  env: ['GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+        'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+        'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
+        'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 120)

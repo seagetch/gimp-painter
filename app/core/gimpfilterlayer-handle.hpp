@@ -36,6 +36,14 @@ public:
         throw Error (code, take_error_message (error, "FilterLayer definition failed").c_str ());
       }
   }
+  /* Original-name query routes over the saved native model. Copy a borrowed
+   * name immediately; adopt the independently owned GArray returned by C. */
+  String get_procedure () const
+  { return String (g_strdup (gimp_filter_layer_get_procedure (get ()))); }
+  ArrayRef get_procedure_args () const
+  { return ArrayRef::adopt (gimp_filter_layer_get_procedure_args (get ())); }
+  /* Native cache certification/cancellation, not the historical one-shot flag. */
+  void mark_as_loaded () const noexcept { gimp_filter_layer_mark_as_loaded (get ()); }
   String procedure () const { return String (gimp_filter_layer_dup_procedure (get ())); }
   GimpFilterLayerState state () const noexcept { return gimp_filter_layer_get_state (get ()); }
   void cancel () const noexcept { gimp_filter_layer_cancel (get ()); }
