@@ -1243,7 +1243,7 @@
 | 34.015/large-xcf-registration | [x] | 巨大XCF往復を通常登録集約のskip対象から外す | 12.015/multipart-storage, 03.009/tcp-portrait-environment | 既存256MiB+1caseを38.96sで測定し登録slow mode/180s枠を設定。追加引数なしで全49case87.50s合格、TAP skipゼロ。全集約再実行は別gate |
 | 34.015/frozen-aggregate-runner | [x] | commit・全登録・完全freshnessを検査する集約runnerを用意する | 03.009/tcp-portrait-environment | 共通lock下の全buildと前後seal・全登録serial実行・診断分類・失敗証跡を実装。41新規/60既存fixtureと独立review合格。native gate合格は未主張 |
 | 34.015/header-default-build | [x] | 全登録header compile試験の前提をdefault buildへ含める | 34.015/frozen-aggregate-runner | fresh buildの失敗集約153/154を保持。C/C++ archiveをdefault rootへ変更し実393probe/2登録と4fixture method/5 fresh graph（HTTP両mode・3負control）合格。新commit全集約は別gate（migration/tests/header-default-build.json） |
-| 34.015/frozen-linux-aggregate | [x] | commit固定の全Linux登録targetを一括検証する | 03.009, 34.005/runtime-prototype | 2026-10-15公開b6f0a03301/tree7502a59fをdefault build後に全154登録serial検証。154 OK・skip/予期外診断/免除ゼロ、全source/ELF/registry/freshness前後一致、packager gate accepted。過去失敗/中断は保持、合格はこのexact commit限定（migration/tests/frozen-linux-b6f0.json） |
+| 34.015/frozen-linux-aggregate | [x] | commit固定の全Linux登録targetを一括検証する | 03.009, 34.005/runtime-prototype | 2026-10-15公開9ff9ffd1c2/tree4a7ccbbfをdefault build後に全155登録serial検証。155 OK・skip/予期外診断/免除ゼロ、全source/ELF/registry/freshness前後一致、packager gate accepted。以前のb6f0 154登録合格と過去失敗/中断も保持。合格は各exact commit限定（migration/tests/frozen-linux-9ff9.json; frozen-linux-b6f0.json） |
 | 34.015/baseline-batch-repair | [x] | 基準由来のfile-loadとScript-Fu起動・終了障害を修正する | 03.009 | 復旧環境の16通常targetと6native+7Script-Fuの5C unit focused ASan/UBSanが診断込み合格。282source/header/scriptと879外部headerをseal。過去の失敗集約は維持し全aggregateは別gate |
 
 ### 35 GIMP 3.x の版間適合
