@@ -578,3 +578,78 @@ as a run of this source. Genuine old-runtime comparison, raw 2/22 admission,
 show-mask mode transitions and the wider group/indexed/precision/compositing,
 XCF, GUI/platform/full aggregate and whole-port gates remain open. The skipped
 legacy Edge/runtime work is not resumed or counted as accepted.
+
+
+## Saved-field contract handoff and retained Clone refresh (10.001, 2026-10-17)
+
+Original task `10.001` is now DONE for its actual metadata/schema criterion:
+every in-scope saved item has a type, default, owning type, reader/writer and
+executable source assertion ID. The frozen source-only contract covers 1,378
+records, 873 classified syntax candidates and the existing 16 persistence
+routes. Its 32 direct negative controls and 720 independent controls (510
+MyPaint, 173 configuration and 37 XCF/unified) rejected their mutations. Counts
+describe the reviewed population, not completeness or runtime-parity oracles.
+
+The authoritative source artifacts remain byte-identical to reviewed source
+`522738a8fc31073878b4bcb7d6bff67fa77e526d`, tree
+`d412b1cc289e8773524cf00519e81507f9dcfd96`. This includes
+`migration/contracts/persistence-field-contract.md` and both source/review
+receipts. Their handoff-pending statements describe the frozen source-stage
+checkpoint; this appendix and the task/progress ledgers record acceptance of
+that handoff. No schema, source assertions, native production code or test
+registration was changed after review. Original `10.002`–`10.018`, `14.001`
+and the broader Clone and port parents remain open.
+
+Adding the tracked contract artifacts made the previous all-source-sealed Clone
+receipt stale for the current tree. The same strict gate was rerun without
+weakening its requirements. Its new archive is
+`migration/tests/persistence-contract-acceptance-evidence.tar.xz`:
+
+- Tested source commit: `522738a8fc31073878b4bcb7d6bff67fa77e526d`
+- Tested source tree: `d412b1cc289e8773524cf00519e81507f9dcfd96`
+- Archive SHA-256: `8581d325d9d62893bf3e1ff6fa7a17b81bbed32cf790eb2fbfd158e35214c40f`
+- Receipt SHA-256: `774bdb01229c7af35bfae7fdbc9e92c3a1c1ce71b66e067858cb75db75780e37`
+- Run: `persistence-contract-run-001`; all three build/test/sanitizer commands exited zero
+
+The retained configured build completed a full default incremental Ninja build,
+then the same seven exact registered Meson targets: `core` 4,
+`projection-update-bounds` 3, `gimp-clone-layer` 62, `painter-layer-ui` 68,
+`painter-layer-tree` 35, `painter-xcf-roundtrip` 49 and `update-geometry` 5.
+All 226 positive normal TAP cases and all 62 focused ASan/UBSan Clone cases
+passed. Each Clone run includes 216 distinct source-mode/type/mask scenes.
+Exactly eight translation units are instrumented; 54 linked C++ units are
+rebuilt with RTTI only and are not additional sanitizer coverage. LSan remains
+disabled and other GIMP/dependency units remain uninstrumented. This retained
+build is not a from-empty build.
+
+Strict offline review verified all command statuses, unchanged source before
+build/before tests/after tests, normal ELF and sanitizer artifact seals,
+default-build freshness, compile database, full 164-target registry and all 361
+locale catalogs. The 164-target registry was sealed, not executed as an
+aggregate. The historical strict 163-target aggregate remains scoped to
+`f271db84bb9cd3d99c404a43d5c727c19d96ca5f`; no latest 164-target aggregate pass
+is claimed.
+
+The new archive contains exactly the existing 17 public receipt members with
+unchanged bytes. The unchanged deterministic pack function was reused; an
+independent repack is byte-identical. The existing bounded decompressor and
+flat-tar extractor were reused without modification. Original-directory,
+extracted-directory and archive validation return identical strict results
+while access to the original execution source, build and private output paths
+is blocked and only Git subprocesses are allowed. Logged environment-removal
+transformations remain intact. Every prior evidence archive is unchanged.
+
+The current Clone acceptance route now uses this new sealed archive. The
+44 receipt controls, 17 archive controls and 11 acceptance controls pass,
+together with the source contract's 32 direct controls, strict current Clone
+acceptance, task-ledger validation and `git diff --check`. These Python/Git
+checks do not constitute another native execution. The closure commit changes
+only the four documentary files permitted by the existing receipt contract and
+the exact new archive; the native tested source remains the commit above.
+
+This native refresh preserves the retained Clone acceptance after tracked
+source artifacts were added. It does not validate runtime persistence of every
+contract field or establish property order/duplicates, broad malformed-input
+handling, rendering, GUI/platform equivalence, release or whole-port acceptance.
+No old executable or legacy Edge runtime was built or run. All earlier Clone,
+XCF and GUI receipts remain historical evidence of their exact original source.
