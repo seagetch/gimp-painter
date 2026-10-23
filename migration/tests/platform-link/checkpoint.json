@@ -1,0 +1,49 @@
+{
+  "task": "07.014",
+  "state": "LINUX_PASSED_OTHER_NATIVE_TARGETS_PENDING",
+  "original_done": 120,
+  "local_tests": 69,
+  "source_seals": 30,
+  "recorder_test_cases": 4,
+  "tap_negative_variants": 8,
+  "stale_archive_seed_members": [
+    "gimp-painter-error.cpp.o",
+    "gimp-painter-binding.cpp.o",
+    "binding-store.cpp.o",
+    "test-fixture.c.o"
+  ],
+  "final_archive_members": [
+    "gimp-painter-error.cpp.o",
+    "gimp-painter-binding.cpp.o",
+    "binding-store.cpp.o"
+  ],
+  "workflow_targets": [
+    {
+      "target": "linux-x86_64",
+      "runner": "ubuntu-24.04",
+      "system": "linux",
+      "arch": "x86_64"
+    },
+    {
+      "target": "windows-x86_64",
+      "runner": "windows-2025",
+      "system": "windows",
+      "arch": "x86_64"
+    },
+    {
+      "target": "macos-arm64",
+      "runner": "macos-15",
+      "system": "darwin",
+      "arch": "arm64"
+    },
+    {
+      "target": "macos-x86_64",
+      "runner": "macos-15-intel",
+      "system": "darwin",
+      "arch": "x86_64"
+    }
+  ],
+  "linux_report_sha256": "4b2bdc2c37ab5bcdc08d1f840f8e6a3b86a280aa91651c7d9061674d3b69c899",
+  "source_ledger_unchanged": true,
+  "future_ci_pass_claimed": false
+}

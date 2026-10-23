@@ -1,0 +1,96 @@
+name: Painter bridge native platforms
+
+on:
+  push:
+    branches: [gimp-3-0-port]
+    paths:
+      - 'app/painter/**'
+      - 'tools/test_painter_foundation.py'
+      - 'tools/test_painter_platform_link.py'
+      - 'tools/tests/test_painter_platform_link.py'
+      - '.github/workflows/painter-bridge-platforms.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  native-bridge:
+    name: ${{ matrix.target }}
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: linux-x86_64
+            runner: ubuntu-24.04
+            system: linux
+            arch: x86_64
+          - target: windows-x86_64
+            runner: windows-2025
+            system: windows
+            arch: x86_64
+          - target: macos-arm64
+            runner: macos-15
+            system: darwin
+            arch: arm64
+          - target: macos-x86_64
+            runner: macos-15-intel
+            system: darwin
+            arch: x86_64
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Linux dependencies
+        if: matrix.system == 'linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y gcc g++ binutils pkg-config libglib2.0-dev python3
+      - name: macOS dependencies
+        if: matrix.system == 'darwin'
+        run: brew install glib pkgconf
+      - name: Windows UCRT64 dependencies
+        if: matrix.system == 'windows'
+        uses: msys2/setup-msys2@ec48f7c5447b3140e2b088413ae3a55687bccb6e # v2.33.0
+        with:
+          msystem: UCRT64
+          path-type: strict
+          update: true
+          cache: false
+          install: >-
+            mingw-w64-ucrt-x86_64-gcc
+            mingw-w64-ucrt-x86_64-binutils
+            mingw-w64-ucrt-x86_64-glib2
+            mingw-w64-ucrt-x86_64-pkgconf
+            mingw-w64-ucrt-x86_64-python
+      - name: Native Unix bridge
+        if: matrix.system != 'windows'
+        shell: bash
+        run: |
+          python3 -B tools/tests/test_painter_platform_link.py
+          python3 -B tools/test_painter_platform_link.py \
+            --system '${{ matrix.system }}' --arch '${{ matrix.arch }}' \
+            --build-dir platform-build \
+            --report 'platform-results/${{ matrix.target }}.json'
+      - name: Native Windows bridge
+        if: matrix.system == 'windows'
+        shell: msys2 {0}
+        env:
+          CC: gcc
+          CXX: g++
+        run: |
+          /ucrt64/bin/python -B tools/tests/test_painter_platform_link.py
+          /ucrt64/bin/python -B tools/test_painter_platform_link.py \
+            --system windows --arch x86_64 \
+            --build-dir platform-build \
+            --report platform-results/windows-x86_64.json
+      - name: Preserve native verification report
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: painter-bridge-${{ matrix.target }}
+          path: platform-results/*.json
+          if-no-files-found: warn
+          retention-days: 14
