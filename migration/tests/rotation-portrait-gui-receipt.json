@@ -1,0 +1,236 @@
+{
+  "schema": 1,
+  "kind": "rotation-portrait-gui-publication-summary",
+  "scope": "bounded-modern-rotation-portrait-gui-smoke",
+  "gui_status": "passed",
+  "attempt": "run-001",
+  "tested_source_commit": "22708f41d368c6c7c2e425d30ea2765b9d29158b",
+  "tested_source_tree": "0a48c7e042ae2f2b46e6cfe828926470e1ace9ab",
+  "pinned_gimp_data_commit": "a31e5dea4f572fb5f33b06f5c4b86db5f30643dc",
+  "original_gui_receipt_sha256": "b8d9cd3af5518d14a74d9ee3c499dfd1e46cb0dcdc40b2c243fd43da1a35e52c",
+  "compact_archive": {
+    "path": "migration/tests/rotation-portrait-gui-evidence.tar.xz",
+    "sha256": "60bad8422e880cee38bfab5c464b934cdf93b54af1eae571d6ea5861235a018a",
+    "bytes": 624308,
+    "member_count": 112,
+    "included_original_member_count": 111,
+    "manifest": "compact-manifest.json",
+    "omitted_image_and_xcf_member_count": 21
+  },
+  "full_public_archive": {
+    "filename": "gimp-modern-rotation-portrait-22708f41-evidence.tar.gz",
+    "sha256": "05c56367dfe4cc4d416fc23a2610fb29d24d232513cb01774b78ccefbfd6f877",
+    "bytes": 6730062,
+    "file_member_count": 132,
+    "storage": "Retained separately from the repository; contains full raw screenshots, synthetic input and saved XCF, plus the original sanitized evidence."
+  },
+  "build_and_install": {
+    "default_build_passed": true,
+    "install_no_rebuild_passed": true,
+    "incremental_not_clean_from_empty": true,
+    "build_and_installed_elf_build_id": "143e3f68cd62eca3fcd22c2cc80a49961c5bfe99",
+    "build_executable_sha256": "9e36302917ed7def4d793694b545c7c3b72eae9919ef8f7bcc1ef01995e3fa09",
+    "installed_executable_sha256": "df0d4095b02d43c64b2e658ad2ec692c786396624c4aabf52d175d02128c2e2f"
+  },
+  "inspected_result": {
+    "status": "PASS_BOUNDED_MODERN_ROTATION_PORTRAIT_GUI_SMOKE",
+    "source_commit": "22708f41d368c6c7c2e425d30ea2765b9d29158b",
+    "source_tree": "0a48c7e042ae2f2b46e6cfe828926470e1ace9ab",
+    "clean_source": true,
+    "full_default_build_and_install_passed": true,
+    "source_seal_equal": true,
+    "runtime_seal_equal": true,
+    "binary_seal_equal": true,
+    "source_sealed_files": 13824,
+    "runtime_sealed_files": 2842,
+    "request_response_count": 19,
+    "all_requests_ok": true,
+    "idle_timeout_release_count": 0,
+    "angles_degrees": [
+      28.43,
+      30.0,
+      30.0,
+      28.43,
+      28.43
+    ],
+    "optional_post_reopen_angle_degrees": 28.43,
+    "geometry_retry_used": false,
+    "save_reopen_xcf_sha256": "01a1846108e57776bed5b132928f6524de81c7d936dfe2be4b7cb60616c5c931",
+    "xcf_hash_unchanged": true,
+    "reopened_view_angle_degrees": 0,
+    "reopened_artwork_pixel_comparison": {
+      "scope": "Read-only comparison of visible rendered artwork at the same 70 percent geometry; not a numerical GIMP buffer proof. No cropped deliverable created.",
+      "baseline": "005-canvas-controls-baseline.png",
+      "reopened": "070-xcf-reopened.png",
+      "full_capture_dimensions": [
+        1080,
+        1920
+      ],
+      "rendered_artwork_box_xyxy": [
+        289,
+        606,
+        791,
+        1361
+      ],
+      "rendered_artwork_region_equal": true,
+      "baseline_region_sha256": "4925f91b27039998a4b1fcf294df7349d2f11ce0a488f9cb3463df708c0448f7",
+      "reopen_region_sha256": "4925f91b27039998a4b1fcf294df7349d2f11ce0a488f9cb3463df708c0448f7"
+    },
+    "gui_exit": {
+      "exit": 0,
+      "driver_status": 0,
+      "reason": "application_exit",
+      "time": 1792231403.1182117,
+      "held_after_cleanup": {
+        "keys": [],
+        "buttons": []
+      },
+      "cleanup_errors": []
+    },
+    "display_check": {
+      "display": "127.0.0.1:91",
+      "listener": [
+        "127.0.0.1",
+        6091
+      ],
+      "width": 1080,
+      "height": 1920,
+      "depth": 24,
+      "authenticated_client_accepted": true,
+      "empty_authority_client_rejected": true,
+      "inherited_systemd_socket": true,
+      "automatic_tcp_unix_local_listeners_disabled": true
+    },
+    "display_exit": {
+      "command_status": 0,
+      "server_status": 0,
+      "shutdown_connect_errno": 111
+    },
+    "launcher_status": 0,
+    "final_seal_status": 0,
+    "known_diagnostics": {
+      "unsupported_fonts_ignored": 112,
+      "session_bus_unavailable": true,
+      "dconf_warnings": 47,
+      "gimp_critical_count": 0
+    },
+    "claims_excluded": [
+      "whole task 25 acceptance",
+      "full port acceptance",
+      "physical mouse or tablet testing",
+      "new legacy runtime capture",
+      "numerical GIMP buffer proof",
+      "warning-free runtime"
+    ]
+  },
+  "input_scope": "Ordinary XTest input to the directly launched installed branch executable on an authenticated loopback-TCP 1080 x 1920 x 24 display. Fresh profile, inherited Painter rotation defaults, normal menu controls, Save and Open dialogs; no internal state setters.",
+  "observed_phase_screenshots": {
+    "free_28_43": "screenshots/010-rotation-free.png",
+    "ctrl_snap_30": "screenshots/020-rotation-ctrl-snap.png",
+    "shift_released_30": "screenshots/030-rotation-shift-released.png",
+    "ctrl_released_28_43": "screenshots/040-rotation-ctrl-unsnap.png",
+    "middle_released_28_43": "screenshots/050-rotation-released.png",
+    "saved_xcf": "screenshots/060-xcf-saved.png",
+    "reopened_zero_view": "screenshots/070-xcf-reopened.png",
+    "post_reopen_28_43": "screenshots/075-post-reopen-rotation.png"
+  },
+  "omitted_original_members": {
+    "rotation-portrait-smoke.xcf": {
+      "sha256": "01a1846108e57776bed5b132928f6524de81c7d936dfe2be4b7cb60616c5c931",
+      "bytes": 124278
+    },
+    "screenshots/001-initial.png": {
+      "sha256": "37732e1fa55763106ae141d2f96d3a03e5e40e774898c7d27942300c0e908f9a",
+      "bytes": 138194
+    },
+    "screenshots/002-full-window.png": {
+      "sha256": "b6947805c8e31c098b18c63bea2e6a85ff4493879642489dcfaa31e9f75315ab",
+      "bytes": 156378
+    },
+    "screenshots/003-view-menu.png": {
+      "sha256": "5e557aaf2cc37a165f318239f55f5ef87a1c571b4654dd44e2941e6feb3a3ac4",
+      "bytes": 183635
+    },
+    "screenshots/004-canvas-controls-enabled.png": {
+      "sha256": "401ac68e439d79295a20772c3a798e105f6906c4321b9618ea3c2c92290e9553",
+      "bytes": 219942
+    },
+    "screenshots/005-canvas-controls-baseline.png": {
+      "sha256": "749f5e1bd914438e965e243280c7eaefafbc4d6ba3afdd8bffee662fcf0fbff3",
+      "bytes": 238012
+    },
+    "screenshots/010-rotation-free.png": {
+      "sha256": "68cecaa04e92338b7c7ad36605b1b5e6bfa36b0e999e438290e486db72f0eecf",
+      "bytes": 356946
+    },
+    "screenshots/020-rotation-ctrl-snap.png": {
+      "sha256": "e91893a0f92a2120ae99f8f213cbdd4349d18fb4eacb50d399fe795026405bd4",
+      "bytes": 357829
+    },
+    "screenshots/030-rotation-shift-released.png": {
+      "sha256": "aacfb53ff417bc2a7abe0d8d31c37f1241c4c2c50bc1fc95b7e7da269c5b4e47",
+      "bytes": 357861
+    },
+    "screenshots/040-rotation-ctrl-unsnap.png": {
+      "sha256": "5130c019be0994c26a7f9db11c1504b14962056fa87256015fe95c0d213c1067",
+      "bytes": 357004
+    },
+    "screenshots/050-rotation-released.png": {
+      "sha256": "5130c019be0994c26a7f9db11c1504b14962056fa87256015fe95c0d213c1067",
+      "bytes": 357004
+    },
+    "screenshots/055-save-dialog.png": {
+      "sha256": "d687e45c10a7d3bb2a7801bb7ccd18e5d84062671108c7419c9413b85bfb482a",
+      "bytes": 204700
+    },
+    "screenshots/060-xcf-saved.png": {
+      "sha256": "ca01a7755184ad089e416ebce54867f339171a7fb2ac9c731aff8c5435320a64",
+      "bytes": 358246
+    },
+    "screenshots/065-image-closed.png": {
+      "sha256": "d9196c639876c5979514a46bc6b891d3d26370157cfff875cdc060831f583525",
+      "bytes": 104546
+    },
+    "screenshots/066-open-dialog.png": {
+      "sha256": "3b6de4883030a190054e869ecd5b3ab847c4e999ee52c1a3b3ae672abcd050f7",
+      "bytes": 85979
+    },
+    "screenshots/067-xcf-selected.png": {
+      "sha256": "8ab620e9f97b4f160890a743d8c3eb111f30e41561295a0c1067b7be40650fca",
+      "bytes": 106091
+    },
+    "screenshots/068-reopened-initial.png": {
+      "sha256": "ac6dc7ee34a5ef6d7fda265690a78ce452104611adc64ae0ae5a0327e9f33685",
+      "bytes": 232533
+    },
+    "screenshots/070-xcf-reopened.png": {
+      "sha256": "71438088d4fd6cdc742d9e03b3b82d5b1421abab40f7c8d3c59ed4d4023e22b4",
+      "bytes": 238083
+    },
+    "screenshots/075-post-reopen-rotation.png": {
+      "sha256": "1c4c224104ae0126c68aa9beae6de1114fc8811f865c7b95af4f12c2aa5ff5ee",
+      "bytes": 356984
+    },
+    "screenshots/080-normal-quit.png": {
+      "sha256": "11a38a5aeeff45a6a161f71005c3e4b069871382c1e7347576d9f8e0cf0bc57f",
+      "bytes": 6122
+    },
+    "synthetic-u8-rgb-study.png": {
+      "sha256": "877e76def58edd44a7c7cfb4f441f69c463062c6fd05a53910f9ed8cf5ff55cb",
+      "bytes": 23986
+    }
+  },
+  "limits": [
+    "whole task 25 acceptance",
+    "full port acceptance",
+    "physical mouse or tablet testing",
+    "new legacy runtime capture",
+    "numerical GIMP buffer proof",
+    "warning-free runtime",
+    "The smoke used older exact source 22708f41d368c6c7c2e425d30ea2765b9d29158b. Neither later component source edf861423cd438f275332c0e7f3b899dc3126d51 nor the receipt-only integration descendant was GUI-tested by this run.",
+    "Visible artwork comparison is a same-geometry rendered-region equality, not a complete numerical pixel-buffer or XCF semantic proof.",
+    "Rotation reset after normal reopen is view-state behavior; XCF bytes stayed unchanged.",
+    "No old runtime or new legacy capture was used; old runtime remains skipped/unverified.",
+    "Neither original 25.004 nor 25.005 is closed in this receipt-only checkpoint."
+  ]
+}

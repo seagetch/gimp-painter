@@ -358,10 +358,10 @@ Physical mouse/tablet equivalence, focus/device interruption, other platforms,
 all of section 25, the historical full aggregate, packaging/release and skipped
 old Edge/string-reader runtime remain outside this component acceptance.
 
-## Original 25.004: deferred Ctrl timing regression (source-only)
+## Original 25.004: deferred Ctrl timing regression
 
-The new `/navigation-events/rotation/ctrl-mid-drag` case is **source-only,
-pending native acceptance**. It replays the single unmirrored stationary old
+The `/navigation-events/rotation/ctrl-mid-drag` case is accepted by the bounded
+component run recorded below, with ledger closure pending. It replays the single unmirrored stationary old
 GUI sequence 22–30 with each real Paintbrush and Move tool. The retained
 `legacy-rotation-operations/gui-captures/rotation.tsv` is checked against its
 24-column header, the consumed row widths and SHA-256
@@ -388,9 +388,91 @@ anchor. The reverse transition tightens 25.005 timing evidence without closing
 that row. Both original GUI captures retain teardown `command_exit=-11`; no old
 runtime is executed or reclassified, and its skipped/unverified status remains.
 
-Acceptance still requires an exact-source run of the three existing normal
-targets (expected 12 event + 4 UI + 6 arithmetic cases) and the five-C-unit
-focused event ASan/UBSan target (expected 12 cases). No production, fixture,
-receipt, procedure or ledger change is included here; physical input, other
-platforms, display-boundary acceptance and the remaining original rows are
-outside this source checkpoint.
+The source checkpoint required exact-source acceptance of the three existing
+normal targets (12 event + 4 UI + 6 arithmetic cases) and the five-C-unit focused
+event ASan/UBSan target (12 cases). The following receipt records that bounded
+run; physical input, other platforms, display-boundary acceptance and the
+remaining original rows stay outside this component checkpoint.
+
+### Accepted Ctrl-timing component receipt (2026-10-17)
+
+`migration/tests/rotation-ctrl-component-receipt.json` and the matching
+`rotation-ctrl-component-evidence.tar.xz` preserve the accepted
+`component-run-001`, with distinct exact identities:
+
+- Tested source A: `edf861423cd438f275332c0e7f3b899dc3126d51`
+- Tested tree: `cdb92379f0c983dbfe6c0473993e4c58ea43e9b9`
+- Event test SHA-256: `bc06069a04b1d8816279854485c75aa9c8f675ce409649612c1a6e6821936257`
+- Native receipt SHA-256: `43e1de63ef396f2c7a9547793dfb5791426843f8470b775648b51c3ebba92ad7`
+- Pinned `gimp-data`: `a31e5dea4f572fb5f33b06f5c4b86db5f30643dc`
+
+From 10:05:34 to 10:07:18 UTC, the recorded full default incremental build,
+unchanged focused sanitizer builder, three exact registered normal Meson
+targets and focused event executable all exited 0. Exact argument arrays,
+workdirs, timestamps and runner bytes are retained. The normal results are
+**12 event + 4 UI + 6 arithmetic = 22 positive TAP cases**; focused event
+ASan/UBSan passed **12/12** with all five instrumented C units. The new timing
+case replays rows 22–30 with each real tool; this is one registration over two
+tools, not 18 new registered tests. No skipped GTest, incomplete TAP plan,
+crash or sanitizer failure was accepted.
+
+All nine integrity checks are true, with four clean identical source snapshots,
+three unchanged 2,873-entry normal ELF snapshots, full build freshness, compile
+database, registry, focused artifacts/copies and all 361 locale catalogs sealed.
+The original 28 file hashes were checked. The compact archive keeps 22 original
+public members plus its manifest; seven copied sanitizer binary/object/archive
+members are hash/size-bound and retained in the separate complete public archive.
+That archive is `component-run-001-passed-public.tar.xz`, 21,680,848 bytes,
+SHA-256 `19032ddda16c72a031edaf5afb6c98f8cf61f7d21f710b8eed9c3605911fc441`.
+No source, fixture, test or committed procedure changed in this publication.
+
+The actual registered Meson environment was reused with only the recorded
+ASan/UBSan overrides. LSan remains disabled, with no suppression files/options;
+other GIMP, GTK and dependency units remain uninstrumented. Logs retain missing
+icons, dummy plug-in discovery, unavailable D-Bus and GLib environment-thread
+messages; diagnostic-classifier arrays do not establish a warning-free run.
+Private profiles, raw environments and authentication data are excluded.
+
+### Separately source-bound portrait GUI smoke
+
+`migration/tests/rotation-portrait-gui-receipt.json` and the matching
+`rotation-portrait-gui-evidence.tar.xz` preserve a bounded modern GUI smoke on
+**older source** `22708f41d368c6c7c2e425d30ea2765b9d29158b`, tree
+`0a48c7e042ae2f2b46e6cfe828926470e1ace9ab`. Its actual default build and install
+passed; it is not a GUI run of component source A or this evidence descendant B.
+
+Ordinary XTest input on an authenticated loopback-TCP 1080×1920 portrait display
+produced the uninterrupted same-drag visible angles **28.43 → 30 → 30 → 28.43 →
+28.43 degrees** through free rotation, Ctrl snap, Shift release, Ctrl release and
+middle release. All 19 requests succeeded, with no geometry retry or idle input
+release. Artwork and Painter controls remained visible. Normal Save/Open dialogs
+saved and reopened the XCF with unchanged SHA-256
+`01a1846108e57776bed5b132928f6524de81c7d936dfe2be4b7cb60616c5c931`.
+The reopened view returned to zero rotation; the same-geometry visible artwork
+region was byte-identical. This compares rendered pixels, not internal buffers
+or all XCF semantics. A short post-reopen rotation again showed 28.43 degrees.
+
+Application, driver, launcher and display exited 0, all held inputs were cleared,
+and source/runtime/binary seals matched. Logs retain 112 ignored unsupported
+fonts, unavailable session bus and 47 dconf warnings; no GIMP CRITICAL was logged.
+The compact archive retains 111 original public files plus its manifest and binds
+19 raw screenshots, the synthetic PNG and the saved XCF by hash/size without
+copying those image/document bytes. The complete sanitized archive is
+`gimp-modern-rotation-portrait-22708f41-evidence.tar.gz`, 6,730,062 bytes,
+SHA-256 `05c56367dfe4cc4d416fc23a2610fb29d24d232513cb01774b78ccefbfd6f877`.
+Private profile, raw environment and Xauthority/authentication material are excluded.
+
+### Receipt-integration boundary
+
+These source-bound results do not claim a native or GUI run on this receipt-only
+integration descendant B. Adding tracked evidence invalidates the previous
+strict Clone source seal; the parent must rerun the unchanged **226 normal / 62
+focused sanitizer** Clone gate on B before deciding original 25.004 closure.
+Neither compact archive is valid input to
+`check_clone_acceptance.py --current-evidence`. The ledgers remain unchanged;
+25.005 timing is supported without closing that row. Physical mouse/tablet,
+focus/device interruptions, other platforms, full task 25, full port, historical
+full aggregate and packaging/release acceptance remain outside this checkpoint.
+Both retained old GUI captures still have teardown `command_exit=-11`; no old
+runtime was executed or reclassified, and skipped/unverified old-runtime status
+is preserved.
