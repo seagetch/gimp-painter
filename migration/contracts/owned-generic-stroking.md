@@ -117,3 +117,29 @@ passed its complete ordinary normal prepublication check (35 cases, original
 120-second budget, 8.75 seconds), with source/build/ELF/catalog seals unchanged.
 Its complete ASan/UBSan validation and the new unfiltered normal aggregate remain
 pending alongside the generic-stroke gate. No task closure is claimed here.
+
+### Fresh full normal checkpoint (2026-10-18 11:22 UTC)
+
+After executor replacement, exact published source
+`cedf6968c2bfd1d7f7b0623be713b27e449ac3c2` was rebuilt with all 560 pinned
+dependencies in a fresh ordinary Meson source/build pair. The complete serial,
+unfiltered normal aggregate passed **171/171**, with no failures, timeouts,
+registration skips, budget multipliers or baseline exemptions. All 493 declared
+catalogs were built; 361 were staged. The authenticated loopback-only portrait
+display, source/build/ELF/registry/catalog integrity and final freshness seals
+passed. The normal package gate accepted this exact pre-cleanup build.
+
+See `../tests/owned-generic-fresh-normal-20261018.json` for all registration
+outcomes and the checksum-pinned, readback-verified private evidence checkpoint.
+The initial fresh aggregate launch stopped before tests because its outer shell
+had not sourced the dependency environment; that failed attempt is retained.
+The successful retry sourced the unchanged environment. No source, test, warning
+policy or registered budget was changed. The earlier rejected 170/171 aggregate
+also remains failed historical evidence.
+
+The separate fresh full-default ASan/UBSan build, complete linked-object audit
+and all 15 original-budget sanitizer registrations are still pending.
+`27.009/owned-generic-strokes` remains DOING and unchecked. This documentary
+commit does not change tested native inputs or claim a new native run on itself.
+Scoped sanitizer acceptance, task closure, installed/runtime packaging, the
+parent 27.009 and all broader obligations remain separate.

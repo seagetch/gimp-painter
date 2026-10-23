@@ -1,0 +1,1086 @@
+{
+  "schema": "owned-generic-fresh-normal-checkpoint-v1",
+  "status": "normal-passed-sanitizer-pending",
+  "tested_commit": "cedf6968c2bfd1d7f7b0623be713b27e449ac3c2",
+  "tested_tree": "8b5b431de5ec05ee1bb6bc36cbccf4e1dd2920a9",
+  "gimp_data": "a31e5dea4f572fb5f33b06f5c4b86db5f30643dc",
+  "snapshot_sha256": "827d7cc704a29562e6146911f3ec630aaf44f3bd133e7af4bd414fcb2fb41af7",
+  "preparation_sha256": "f4937b1ef175444cc3d8d458b32d11c73a2635a7fdeed62a704aeb0a07e436e6",
+  "source_input_sha256": "947b23da7aa692fbbd0ba2f9ad72ca1422d9db57ad917348e2f7d13298263979",
+  "normal": {
+    "status": "passed",
+    "registrations": 171,
+    "ok": 171,
+    "failures": 0,
+    "timeouts": 0,
+    "skips": 0,
+    "whole_registry": true,
+    "original_registered_budgets": true,
+    "timeout_multiplier": 1,
+    "baseline_exemptions": false,
+    "packager_validation": "accepted",
+    "full_default_build": true,
+    "declared_catalogs": 493,
+    "staged_catalogs": 361,
+    "authenticated_loopback_portrait_display": true,
+    "unchanged_final_source_and_build_seals": true,
+    "started_utc": "2026-10-18T10:30:40.045509+00:00",
+    "finished_utc": "2026-10-18T11:22:49.408244+00:00",
+    "aggregate_gate_sha256": "6c178ac5950fc866e1ff732c7eef305bab6e19bcf3855a1bb5cf89cac074b9b0",
+    "public_phase_receipt_sha256": "1c7b51984b4a0b2265e18b3b0e21c03dbf9dd64b7d5f2f96151e26aed1075433",
+    "results": [
+      {
+        "name": "gimp:app / core",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 2.679448127746582
+      },
+      {
+        "name": "gimp:app / projection-update-bounds",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 1.0872282981872559
+      },
+      {
+        "name": "gimp:app / gimp-test-config-fixture",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 13.944085597991943
+      },
+      {
+        "name": "gimp:app / painter-type-startup",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 0.5504419803619385
+      },
+      {
+        "name": "gimp:app / file-load-pipeline",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 1.1068522930145264
+      },
+      {
+        "name": "gimp:app / gimp-clone-layer",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 4.536540985107422
+      },
+      {
+        "name": "gimp:app / gimp-filter-layer",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 429.5878076553345
+      },
+      {
+        "name": "gimp:app / painter-layer-ui",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 85.73641180992126
+      },
+      {
+        "name": "gimp:app / painter-layer-tree",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 3.9823079109191895
+      },
+      {
+        "name": "gimp:app / painter-dock-layout-ui",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 35.91979765892029
+      },
+      {
+        "name": "gimp:app / painter-dock-input-ui",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 12.319743394851685
+      },
+      {
+        "name": "gimp:app / painter-dock-session-ui",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 16.411816120147705
+      },
+      {
+        "name": "gimp:app / painter-right-docks-ui",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 16.78943109512329
+      },
+      {
+        "name": "gimp:app / painter-canvas-ui",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 28.847381114959717
+      },
+      {
+        "name": "gimp:app / painter-toolbar-window",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 82.91398453712463
+      },
+      {
+        "name": "gimp:app / painter-session-restore-barrier",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 80.28180193901062
+      },
+      {
+        "name": "gimp:app / painter-compact-options",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 114.36030650138855
+      },
+      {
+        "name": "gimp:app / gimp-painter-mybrush",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 1.6397342681884766
+      },
+      {
+        "name": "gimp:app / gimp-painter-mybrush-factory",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 1.8053855895996094
+      },
+      {
+        "name": "gimp:app / gimpidtable",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 0.030280113220214844
+      },
+      {
+        "name": "gimp:app / gimp-container-deserialize",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 0.03751635551452637
+      },
+      {
+        "name": "gimp:app / gimp-tool-owner",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 1.0183632373809814
+      },
+      {
+        "name": "gimp:app / xcf",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 1.5827929973602295
+      },
+      {
+        "name": "gimp:app / painter-xcf-open",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 90.28152227401733
+      },
+      {
+        "name": "gimp:app / painter-xcf-adversarial",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 1.9574944972991943
+      },
+      {
+        "name": "gimp:app / painter-xcf-roundtrip",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 86.43816590309143
+      },
+      {
+        "name": "gimp:app / painter-provenance",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 0.04112982749938965
+      },
+      {
+        "name": "gimp:app / painter-layer-modes",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 2.479259729385376
+      },
+      {
+        "name": "gimp:app / painter-dynamics",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 0.15321016311645508
+      },
+      {
+        "name": "gimp:app / painter-core-metadata",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 1.0765492916107178
+      },
+      {
+        "name": "gimp:app / painter-ancestry-contract",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 0.03606390953063965
+      },
+      {
+        "name": "gimp:app / painter-navigation-ui",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 0.04728198051452637
+      },
+      {
+        "name": "gimp:app / painter-navigation-events",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 9.690803527832031
+      },
+      {
+        "name": "gimp:app / device-dialog-events",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 2.0501198768615723
+      },
+      {
+        "name": "gimp:app / painter-perspective",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 1.0804286003112793
+      },
+      {
+        "name": "gimp:app / painter-perspective-ui",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 3.2040855884552
+      },
+      {
+        "name": "gimp:app / painter-perspective-events",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 2.800550699234009
+      },
+      {
+        "name": "gimp:app / gimp-painter-context",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 0.9847402572631836
+      },
+      {
+        "name": "gimp:app / mypaint-selector-contracts",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 11.165478467941284
+      },
+      {
+        "name": "gimp:libgimpwidgets / gimp-ruler",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 0.06391263008117676
+      },
+      {
+        "name": "gimp:painter / painter-foundation",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 0.010522127151489258
+      },
+      {
+        "name": "gimp:painter / painter-qdata-operations",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 0.006928920745849609
+      },
+      {
+        "name": "gimp:painter / painter-filter-wire",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 0.008269786834716797
+      },
+      {
+        "name": "gimp:painter / painter-filter-process",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 5.070562124252319
+      },
+      {
+        "name": "gimp:painter / painter-filter-scheduler",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 3.3814501762390137
+      },
+      {
+        "name": "gimp:painter / painter-filter-owner-gates",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 0.18259787559509277
+      },
+      {
+        "name": "gimp:painter / painter-filter-edge",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 0.01891946792602539
+      },
+      {
+        "name": "gimp:painter / painter-filter-gauss",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 0.049843549728393555
+      },
+      {
+        "name": "gimp:painter / painter-filter-gray",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 0.02082204818725586
+      },
+      {
+        "name": "gimp:painter / painter-filter-gauss-alias",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 0.13834095001220703
+      },
+      {
+        "name": "gimp:painter / painter-fair-dispatcher",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 0.005547523498535156
+      },
+      {
+        "name": "gimp:painter / painter-work-admission",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 0.007861137390136719
+      },
+      {
+        "name": "gimp:painter / painter-filter-raster",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 1.1259229183197021
+      },
+      {
+        "name": "gimp:painter / painter-filter-spool",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 0.08060741424560547
+      },
+      {
+        "name": "gimp:painter / painter-filter-raster-kernels",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 1.993631362915039
+      },
+      {
+        "name": "gimp:painter / painter-filter-native-kernels",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 0.011713743209838867
+      },
+      {
+        "name": "gimp:painter / painter-filter-kernel-progress",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 0.08969783782958984
+      },
+      {
+        "name": "gimp:painter / painter-filter-context-native",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 0.004910469055175781
+      },
+      {
+        "name": "gimp:painter / painter-filter-point-shadow",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 0.9051294326782227
+      },
+      {
+        "name": "gimp:painter / painter-filter-sharpen",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 0.372819185256958
+      },
+      {
+        "name": "gimp:painter / painter-filter-sharpen-shadow",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 0.42321205139160156
+      },
+      {
+        "name": "gimp:painter / painter-filter-sobel",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 0.8920595645904541
+      },
+      {
+        "name": "gimp:painter / painter-filter-edge-shadow",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 10.475392580032349
+      },
+      {
+        "name": "gimp:painter / painter-filter-context",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 0.21664667129516602
+      },
+      {
+        "name": "gimp:painter / painter-filter-import-completion",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 0.007818222045898438
+      },
+      {
+        "name": "gimp:painter / painter-public-mode-abi",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 0.04103803634643555
+      },
+      {
+        "name": "gimp:painter / painter-brush-metadata-c",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 0.006725788116455078
+      },
+      {
+        "name": "gimp:painter / painter-brush-metadata-cpp",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 0.0040950775146484375
+      },
+      {
+        "name": "gimp:painter / painter-brush-generator",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 0.45881223678588867
+      },
+      {
+        "name": "gimp:painter / painter-mypaint-resource",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 0.2054908275604248
+      },
+      {
+        "name": "gimp:painter / painter-mypaint-legacy-decoder",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 0.1053006649017334
+      },
+      {
+        "name": "gimp:painter / painter-mypaint-legacy-engine",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 0.18436455726623535
+      },
+      {
+        "name": "gimp:painter / painter-navigation",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 0.014457464218139648
+      },
+      {
+        "name": "gimp:painter / painter-bounded-fill-legacy",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 0.4217355251312256
+      },
+      {
+        "name": "gimp:painter / painter-bounded-fill",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 0.07918238639831543
+      },
+      {
+        "name": "gimp:painter / painter-mypaint-legacy-surface",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 0.15196704864501953
+      },
+      {
+        "name": "gimp:painter / painter-mypaint-legacy-generated",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 0.048603057861328125
+      },
+      {
+        "name": "gimp:painter / painter-gray-alpha-equations",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 0.01318979263305664
+      },
+      {
+        "name": "gimp:painter / painter-mypaint-native-precision",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 0.21393752098083496
+      },
+      {
+        "name": "gimp:painter / painter-mypaint-coordinate-boundaries",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 0.10588645935058594
+      },
+      {
+        "name": "gimp:painter / painter-mypaint-region-lifetime",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 0.1123495101928711
+      },
+      {
+        "name": "gimp:painter / painter-mypaint-legacy-selection",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 0.6110038757324219
+      },
+      {
+        "name": "gimp:painter / painter-mypaint-snapshot-isolation",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 0.07935905456542969
+      },
+      {
+        "name": "gimp:painter / painter-mypaint-buffer-read",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 0.3043556213378906
+      },
+      {
+        "name": "gimp:painter / painter-smudge-legacy-pixels",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 0.054476022720336914
+      },
+      {
+        "name": "gimp:painter / painter-xcf-compat",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 0.013519048690795898
+      },
+      {
+        "name": "gimp:painter / painter-public-header-compilation",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 0.16497135162353516
+      },
+      {
+        "name": "gimp:painter / painter-additional-header-routes",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 6.337610244750977
+      },
+      {
+        "name": "gimp:app / app-config",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 0.19789767265319824
+      },
+      {
+        "name": "gimp:painter / painter-filter-procedure",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 735.6687798500061
+      },
+      {
+        "name": "gimp:painter / painter-filter-convolution",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 303.8011884689331
+      },
+      {
+        "name": "gimp:desktop / validate-desktop",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 0.0062427520751953125
+      },
+      {
+        "name": "gimp:app+test-fixtures / gimp-test-icon-theme-generator",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 0.14409780502319336
+      },
+      {
+        "name": "gimp:app / update-geometry",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 0.027049779891967773
+      },
+      {
+        "name": "gimp:app / projection-update-sanitizer-runner",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 0.12549924850463867
+      },
+      {
+        "name": "gimp:app / save-and-export",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 24.25527787208557
+      },
+      {
+        "name": "gimp:app / in-build-gimp-wrapper",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 1.4477102756500244
+      },
+      {
+        "name": "gimp:app / script-fu-startup",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 164.40546941757202
+      },
+      {
+        "name": "gimp:app / gimp-painter-surface",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 1.2705085277557373
+      },
+      {
+        "name": "gimp:painter / painter-mypaint-legacy-session",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 1.6266705989837646
+      },
+      {
+        "name": "gimp:app / painter-widget-exceptions",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 3.906075954437256
+      },
+      {
+        "name": "gimp:app / gimp-painter-options",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 2.069767951965332
+      },
+      {
+        "name": "gimp:app / gimp-painter-session",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 1.2166011333465576
+      },
+      {
+        "name": "gimp:app / painter-options-session-c",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 1.2302651405334473
+      },
+      {
+        "name": "gimp:app / gimp-painter-qdata-operations",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 1.2326676845550537
+      },
+      {
+        "name": "gimp:app / gimp-painter-hover",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 1.0905182361602783
+      },
+      {
+        "name": "gimp:app / gimp-fill-brush",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 2.212476968765259
+      },
+      {
+        "name": "gimp:painter / painter-fill-brush-legacy",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 1.4944531917572021
+      },
+      {
+        "name": "gimp:painter / painter-fill-brush-legacyqueued",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 1.573387622833252
+      },
+      {
+        "name": "gimp:painter / painter-fill-brush-legacyasync",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 1.666698932647705
+      },
+      {
+        "name": "gimp:app / painter-fill-brush-ui",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 7.282878875732422
+      },
+      {
+        "name": "gimp:app / gimp-layer-presets",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 1.6494414806365967
+      },
+      {
+        "name": "gimp:app / layer-presets-ui",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 10.914500951766968
+      },
+      {
+        "name": "gimp:app / painter-mypaint-tool",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 37.943984031677246
+      },
+      {
+        "name": "gimp:painter / painter-native-interpolation",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 8.455644607543945
+      },
+      {
+        "name": "gimp:app / gimp-painter-preview",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 1.183210849761963
+      },
+      {
+        "name": "gimp:painter / painter-mypaint-legacy-rgb-session",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 2.958413600921631
+      },
+      {
+        "name": "gimp:painter / painter-mypaint-rgb-session-fixtures",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 0.187591552734375
+      },
+      {
+        "name": "gimp:painter / painter-owned-generic-fill-brush-raw",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 1.676642894744873
+      },
+      {
+        "name": "gimp:painter / painter-owned-generic-fill-brush-path",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 1.6541922092437744
+      },
+      {
+        "name": "gimp:painter / painter-owned-generic-fill-brush-boundary",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 1.6831746101379395
+      },
+      {
+        "name": "gimp:painter / painter-owned-generic-smudge-raw",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 1.3821823596954346
+      },
+      {
+        "name": "gimp:painter / painter-owned-generic-smudge-path",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 1.423635482788086
+      },
+      {
+        "name": "gimp:painter / painter-owned-generic-smudge-boundary",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 1.4503223896026611
+      },
+      {
+        "name": "gimp:painter / painter-owned-generic-comparator",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 0.5674054622650146
+      },
+      {
+        "name": "gimp:painter / painter-smudge-legacy-strokes",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 1.3760631084442139
+      },
+      {
+        "name": "gimp:app / gimp-painter-smudge",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 1.2406032085418701
+      },
+      {
+        "name": "gimp:painter / painter-smudge-owned-strokes",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 1.3123219013214111
+      },
+      {
+        "name": "gimp:app / painter-mypaint-editor",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 35.58723974227905
+      },
+      {
+        "name": "gimp:painter / painter-mypaint-preview-fixture",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 0.0950171947479248
+      },
+      {
+        "name": "gimp:app / painter-smudge-ui",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 4.64558482170105
+      },
+      {
+        "name": "gimp:app / painter-save-continuation",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 5.2236433029174805
+      },
+      {
+        "name": "gimp:app / gimp-painter-batch",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 1.1988027095794678
+      },
+      {
+        "name": "gimp:painter / painter-mypaint-legacy-gray-session",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 1.3147504329681396
+      },
+      {
+        "name": "gimp:painter / painter-mypaint-gray-session-fixtures",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 0.04915761947631836
+      },
+      {
+        "name": "gimp:app / gimp-painter-gray",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 1.1580119132995605
+      },
+      {
+        "name": "gimp:app / gimp-painter-gray-extension",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 3.1215662956237793
+      },
+      {
+        "name": "gimp:painter / painter-profile-parser",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 0.02646660804748535
+      },
+      {
+        "name": "gimp:painter / painter-profile-native",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 2.208742380142212
+      },
+      {
+        "name": "gimp:painter / painter-paper",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 1.3355450630187988
+      },
+      {
+        "name": "gimp:painter / painter-paper-ui",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 2.8676717281341553
+      },
+      {
+        "name": "gimp:painter / painter-legacy-paper",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 1.4840114116668701
+      },
+      {
+        "name": "gimp:painter / painter-legacy-paper-modes",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 4.60684609413147
+      },
+      {
+        "name": "gimp:painter / painter-mypaint-legacy-pipe",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 1.84354829788208
+      },
+      {
+        "name": "gimp:painter / painter-brush-geometry",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 1.2859740257263184
+      },
+      {
+        "name": "gimp:painter / painter-brush-geometry-strokes",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 7.692204236984253
+      },
+      {
+        "name": "gimp:painter / painter-brush-geometry-pixmap",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 1.3759803771972656
+      },
+      {
+        "name": "gimp:painter / painter-brush-geometry-fixtures",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 0.09744763374328613
+      },
+      {
+        "name": "gimp:app / painter-mypaint-precision",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 7.141161203384399
+      },
+      {
+        "name": "gimp:app / editor-dropdown",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 6.106921911239624
+      },
+      {
+        "name": "gimp:app / editor-dropdown-preset-control",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 2.1755475997924805
+      },
+      {
+        "name": "gimp:app / painter-popup-handles",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 2.078728675842285
+      },
+      {
+        "name": "gimp:app / filter-entry-contracts",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 7.267929792404175
+      },
+      {
+        "name": "gimp:app / layer-tile-entry-contracts",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 5.066138982772827
+      },
+      {
+        "name": "gimp:app / device-save-lifecycle",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 1.8403575420379639
+      },
+      {
+        "name": "gimp:app / welcome-shutdown",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 114.8572769165039
+      },
+      {
+        "name": "gimp:app / painter-roi-transfers",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 2.0061473846435547
+      },
+      {
+        "name": "gimp:libgimp+C / plug-in-protocol",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 2.1292340755462646
+      },
+      {
+        "name": "gimp:libgimp+C / procedure-config",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 0.1652965545654297
+      },
+      {
+        "name": "gimp:libgimp+python3 / color-parser",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 23.899961948394775
+      },
+      {
+        "name": "gimp:libgimp+C / color-parser",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 23.59928870201111
+      },
+      {
+        "name": "gimp:libgimp+python3 / export-options",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 24.18402671813965
+      },
+      {
+        "name": "gimp:libgimp+C / export-options",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 25.724704027175903
+      },
+      {
+        "name": "gimp:libgimp+python3 / image",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 26.211687803268433
+      },
+      {
+        "name": "gimp:libgimp+C / image",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 25.266854286193848
+      },
+      {
+        "name": "gimp:libgimp+python3 / palette",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 23.459256649017334
+      },
+      {
+        "name": "gimp:libgimp+C / palette",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 23.636948347091675
+      },
+      {
+        "name": "gimp:libgimp+python3 / selection-float",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 23.476557731628418
+      },
+      {
+        "name": "gimp:libgimp+C / selection-float",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 23.749157428741455
+      },
+      {
+        "name": "gimp:libgimp+python3 / unit",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 24.119029760360718
+      },
+      {
+        "name": "gimp:libgimp+C / unit",
+        "result": "OK",
+        "returncode": 0,
+        "duration_seconds": 23.487423419952393
+      }
+    ]
+  },
+  "evidence": {
+    "library_file_id": "libfile_d138a3cb0fdc81919f4a6b4f505307d4",
+    "archive_name": "gimp-fresh-normal-171-passed-20261018-1123.tar.xz",
+    "archive_sha256": "5233961c5ba802c81f782b9894c9e3719d2cd6cd733eaddca4d10eab22d9dfed",
+    "bytes": 12339116,
+    "readback_verified": true,
+    "scope": "Complete private run evidence and blobs, source snapshot, normal setup/build/aggregate receipts, fresh-input controls and failed initial PATH-only attempt; no compiled build payload."
+  },
+  "preparation_controls": {
+    "normal": 38,
+    "optimized": 38,
+    "fresh_input_equivalent_replays_normal": 5,
+    "fresh_input_equivalent_replays_optimized": 5
+  },
+  "sanitizer": {
+    "status": "pending",
+    "required_complete_registrations": 15,
+    "required_runtime_executables": 6,
+    "full_default_build_required": true,
+    "linked_instrumentation_audit_required": true,
+    "rtti_vptr_required": true,
+    "lsan_coverage": false,
+    "reason_no_lsan": "Fresh host probe confirms ptrace limitation; no other suppression permitted."
+  },
+  "task_status": "DOING",
+  "qualification": "Documentary checkpoint of exact tested source, not sanitizer acceptance, task closure, current runtime packaging after cleanup, or a native run on the documentary descendant. Previous failed attempts remain failed."
+}
