@@ -110,6 +110,48 @@ GimpValueArray *execution_args (const compat::Extension &ext, const gchar *name,
         G_TYPE_INT, 0, G_TYPE_INT, 0,
         G_TYPE_INT, static_cast<gint32> (ext.arguments[3].scalar_bits), G_TYPE_NONE);
     }
+  if (name && std::strcmp (name, "plug-in-threshold-alpha") == 0)
+    {
+      /* Genuine pinned old-writer Threshold Alpha capture: 28 actual files
+       * independently confirmed the 76-byte shape before this activation; exactly four arguments and
+       * END. Inspect the original name bytes, never the repaired display name.
+       * The old writer omits image/drawable IDs; current context is substituted
+       * only in the separate executable model. Retained bytes stay untouched. */
+      static constexpr char literal[] = "plug-in-threshold-alpha";
+      static constexpr guint32 tags[] = {2, 1, 10, 2, 0};
+      static constexpr guint32 sizes[] = {4, 0, 0, 4, 0};
+      static constexpr compat::ArgumentKind kinds[] = {
+        compat::ArgumentKind::int32_bits, compat::ArgumentKind::unsupported,
+        compat::ArgumentKind::omitted_drawable, compat::ArgumentKind::int32_bits,
+        compat::ArgumentKind::terminator};
+      if (ext.diagnostic.status != compat::Status::ok ||
+          capsule.size != 76 || declared_size != capsule.size ||
+          ext.arguments.size () != 5 || !ext.name.has_terminal_nul ||
+          ext.name.encoded.offset != capsule.offset ||
+          ext.name.encoded.size != sizeof literal + 4 ||
+          ext.name.bytes.size != sizeof literal ||
+          ext.name.bytes.offset > bytes.size ||
+          sizeof literal > bytes.size - ext.name.bytes.offset ||
+          std::memcmp (bytes.data + ext.name.bytes.offset, literal, sizeof literal) != 0 ||
+          ext.tail.offset != capsule.offset + capsule.size)
+        return nullptr;
+      std::size_t position = ext.name.encoded.offset + ext.name.encoded.size;
+      for (std::size_t i = 0; i < 5; ++i)
+        {
+          const auto &arg = ext.arguments[i];
+          if (arg.tag != tags[i] || arg.kind != kinds[i] ||
+              arg.declared_size != sizes[i] || arg.payload.size != sizes[i] ||
+              arg.encoded.offset != position || arg.encoded.size != 8 + sizes[i] ||
+              arg.length_mismatch)
+            return nullptr;
+          position += arg.encoded.size;
+        }
+      /* Raw run-mode and signed threshold are evidence, not UI defaults. */
+      return gimp_value_array_new_from_types (nullptr,
+        G_TYPE_INT, static_cast<gint32> (ext.arguments[0].scalar_bits),
+        G_TYPE_INT, 0, G_TYPE_INT, 0,
+        G_TYPE_INT, static_cast<gint32> (ext.arguments[3].scalar_bits), G_TYPE_NONE);
+    }
   if (ext.diagnostic.status != compat::Status::ok || !name ||
       (std::strcmp (name, "plug-in-edge") != 0 && std::strcmp (name, "plug-in-gauss") != 0) ||
       (ext.arguments.size () != 6 && ext.arguments.size () != 7)) return nullptr;

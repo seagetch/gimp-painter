@@ -52,6 +52,32 @@ class Checks(unittest.TestCase):
                 'output': output, 'arguments': ['c++', '-fno-rtti', '-MMD', '-MF', 'old.d',
                 '-MQold.o', '-c', str(m.ROOT / 'app/painter/filter-context.cpp'), '-o', output]}
 
+    def test_operation_scope_is_explicit_and_independent(self):
+        sharpen = m.operation_config('sharpen')
+        threshold = m.operation_config('threshold-alpha')
+        point = 'app/painter/filter-point-shadow.cpp'
+        self.assertNotIn(point, sharpen['instrumented'])
+        self.assertEqual(threshold['instrumented'] - sharpen['instrumented'], {point})
+        self.assertEqual(threshold['fixtures'], ['GIMP_PAINTER_SHARPEN_FIXTURES',
+                                                'GIMP_PAINTER_THRESHOLD_ALPHA_FIXTURES',
+                                                'GIMP_PAINTER_THRESHOLD_PROJECTION_FIXTURES'])
+        self.assertIn('tools/check_threshold_alpha_evidence.py', threshold['scripts'])
+        self.assertIn('tools/check_threshold_projection_evidence.py', threshold['scripts'])
+        self.assertEqual(sharpen['report_format'], 'sharpen-context-sanitizers-v1')
+        self.assertEqual(threshold['report_format'], 'threshold-alpha-context-sanitizers-v1')
+        threshold['instrumented'].clear()
+        self.assertIn(point, m.operation_config('threshold-alpha')['instrumented'])
+        with self.assertRaises(ValueError):
+            m.operation_config('unknown')
+
+    def test_other_operation_report_is_not_overwritten(self):
+        report = self.root / 'other.json'
+        content = '{"report_format":"sharpen-context-sanitizers-v1","status":"passed"}'
+        report.write_text(content)
+        with redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
+            m.main(self.argv(report) + ['--operation', 'threshold-alpha'])
+        self.assertEqual(report.read_text(), content)
+
     def test_syntax(self):
         ast.parse(args.runner.read_text())
 
@@ -182,7 +208,8 @@ receipt = {
     'check_script': str(pathlib.Path(__file__).resolve()),
     'check_script_sha256': hashlib.sha256(pathlib.Path(__file__).read_bytes()).hexdigest(),
     'scope': 'Pure-Python syntax/helper/report checks with mocked subprocesses; no compiler, linker, display or GIMP/native harness execution',
-    'instrumented_translation_units': len(m.INSTRUMENTED),
+    'instrumented_translation_units_by_operation': {name: len(m.operation_config(name)['instrumented'])
+                                                   for name in ('sharpen', 'threshold-alpha')},
 }
 if args.receipt is not None:
     args.receipt.parent.mkdir(parents=True, exist_ok=True)

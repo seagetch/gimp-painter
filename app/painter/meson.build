@@ -69,6 +69,7 @@ libapppainter = static_library('apppainter',
   'filter-gauss.cpp',
   'filter-sharpen.cpp',
   'filter-sharpen-shadow.cpp',
+  'filter-point-shadow.cpp',
   'filter-native-kernels.cpp',
   dependencies: [gobject, painter_threads],
   include_directories: painter_include,
@@ -116,7 +117,7 @@ qdata_operations_test = executable('painter-qdata-operations',
 test('painter-qdata-operations', qdata_operations_test, suite: 'painter', timeout: 30)
 
 # The feature scheduler and exact legacy-edge executor own no GIMP objects.
-foreach feature : ['filter-wire', 'filter-process', 'filter-scheduler', 'filter-owner-gates', 'filter-edge', 'filter-gauss', 'filter-gray', 'filter-gauss-alias', 'fair-dispatcher', 'work-admission', 'filter-raster', 'filter-spool', 'filter-raster-kernels', 'filter-native-kernels', 'filter-kernel-progress', 'filter-context-native']
+foreach feature : ['filter-wire', 'filter-process', 'filter-scheduler', 'filter-owner-gates', 'filter-edge', 'filter-gauss', 'filter-gray', 'filter-gauss-alias', 'fair-dispatcher', 'work-admission', 'filter-raster', 'filter-spool', 'filter-raster-kernels', 'filter-native-kernels', 'filter-kernel-progress', 'filter-context-native', 'filter-point-shadow']
   feature_cpp_args = painter_cpp_args
   feature_link_args = []
   if feature == 'filter-process' and host_machine.system() == 'linux'
@@ -134,7 +135,7 @@ foreach feature : ['filter-wire', 'filter-process', 'filter-scheduler', 'filter-
     override_options: ['cpp_std=c++14'],
   )
   feature_args = []
-  if feature == 'filter-native-kernels'
+  if feature == 'filter-native-kernels' or feature == 'filter-point-shadow'
     feature_args = [meson.project_source_root() / 'migration/fixtures/legacy-filter-points/fixtures.tsv']
   elif feature == 'filter-edge'
     feature_args = [meson.project_source_root() / 'migration/fixtures/legacy-edge/fixtures.tsv']

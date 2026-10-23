@@ -2643,6 +2643,7 @@ static void image_close_during_strong_redo_callbacks (void) { undo_owner_lifetim
 #include "test-filter-convolution.inc"
 #include "test-filter-progress.inc"
 #include "test-filter-sharpen.inc"
+#include "test-filter-threshold-context.inc"
 
 static void
 blinds_assert_saved_arguments (GimpFilterLayer *filter,
@@ -2778,6 +2779,14 @@ int main (int argc, char **argv)
   ADD (sharpen_cancel_replace_lower_close); ADD (sharpen_actual_old_live);
   ADD (sharpen_native_profile_bytes); ADD (sharpen_admission_preserves_cache);
   ADD (sharpen_partial_import_lifecycle);
+  ADD (threshold_integer_native_route); ADD (threshold_invalid_definitions_keep_cache);
+  ADD (threshold_tiny_selection_routes); ADD (threshold_late_context_routes);
+  ADD (threshold_sealed_context_routes); ADD (threshold_outside_selection_no_merge);
+  ADD (threshold_cancel_replace_lower_close); ADD (threshold_actual_old_live);
+  ADD (threshold_native_profile_bytes); ADD (threshold_admission_preserves_cache);
+  ADD (threshold_partial_import_lifecycle); ADD (threshold_real_routes_unchanged);
+  ADD (threshold_idle_unchanged_notification); ADD (threshold_projection_input_bounds);
+  ADD (threshold_actual_old_projection_history);
   ADD(progress_native_abi); ADD(progress_start_reentry); ADD(progress_real_workers); ADD(progress_worker_cancel_replace_close); ADD(progress_independent_owners);
   ADD (blinds_owner_context); ADD (blinds_owner_context_phases);
   ADD (blinds_owner_context_expansion); ADD (blinds_owner_context_retry);

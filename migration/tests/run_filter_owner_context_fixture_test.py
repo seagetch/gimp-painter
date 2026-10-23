@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run a native test binary with verified old context, SmallTiles and Retinex corpora.
+"""Run a native test binary with all verified owner-context and writer corpora.
 
 Usage: python3 run_filter_owner_context_fixture_test.py -- BINARY [ARG ...]
 Build orchestration, sanitizer settings, test selection, and timeouts belong to
@@ -21,6 +21,8 @@ from check_small_tiles_evidence import verify as verify_small_tiles
 from check_retinex_evidence import verify as verify_retinex
 from check_convolution_evidence import verify as verify_convolution
 from check_sharpen_evidence import verify as verify_sharpen
+from check_threshold_alpha_evidence import verify as verify_threshold_alpha
+from check_threshold_projection_evidence import verify as verify_threshold_projection
 COMMIT = "afa43fae3e920210146abed514f136fd49f671b5"
 BUNDLES = (
     ("legacy-filter-context", "GIMP_PAINTER_CONTEXT_FIXTURES", 280, 24,
@@ -92,6 +94,12 @@ def main(argv=None):
         sharpen = Path(temporary) / "sharpen"
         verify_sharpen(extract=sharpen)
         environment["GIMP_PAINTER_SHARPEN_FIXTURES"] = str(sharpen)
+        threshold_alpha = Path(temporary) / "threshold-alpha"
+        verify_threshold_alpha(extract=threshold_alpha)
+        environment["GIMP_PAINTER_THRESHOLD_ALPHA_FIXTURES"] = str(threshold_alpha)
+        threshold_projection = Path(temporary) / "threshold-projection"
+        verify_threshold_projection(extract=threshold_projection)
+        environment["GIMP_PAINTER_THRESHOLD_PROJECTION_FIXTURES"] = str(threshold_projection)
         return subprocess.run(command, env=environment).returncode
 
 

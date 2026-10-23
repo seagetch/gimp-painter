@@ -17,6 +17,7 @@
 #include "core/gimpimage-undo.h"
 #include "core/gimpundostack.h"
 #include "core/gimplayer.h"
+#include "core/gimplayer-new.h"
 #include "core/gimppickable.h"
 #include "core/gimpprogress.h"
 #include "core/gimpselection.h"
@@ -34,6 +35,12 @@
 static Gimp *gimp;
 static gchar *fixture_path (const gchar *name)
 {
+  if (g_str_has_prefix (name, "legacy-threshold-alpha-context/"))
+    {
+      const gchar *root = g_getenv ("GIMP_PAINTER_THRESHOLD_ALPHA_FIXTURES");
+      g_assert_nonnull (root); /* Verified, sealed old observations are mandatory. */
+      return g_build_filename (root, name + strlen ("legacy-threshold-alpha-context/"), NULL);
+    }
   if (g_str_has_prefix (name, "legacy-sharpen-context/"))
     {
       const gchar *root = g_getenv ("GIMP_PAINTER_SHARPEN_FIXTURES");
@@ -467,6 +474,7 @@ static void unknown_extension_preserves_destination (void)
   g_free (contents); g_file_delete (file, NULL, NULL); g_object_unref (file); g_object_unref (image);
 }
 #include "test-painter-xcf-sharpen.inc"
+#include "test-painter-xcf-threshold.inc"
 
 int main (int argc, char **argv)
 {
@@ -478,6 +486,8 @@ int main (int argc, char **argv)
   ADD (absent_mode_historical_default); ADD (unknown_extension_preserves_destination); ADD (dual_valid_short_extension); ADD (explicit_provenance_resolves_ambiguity); ADD (ambiguity_and_failures); ADD (unresolved_and_length_recovery); ADD (large_source);
   ADD (ordinary); ADD (ordinary_projection_exact_gate); ADD (clones); ADD (filter_recovery); ADD (standard); ADD (recovery_handlers); ADD (cancel);
   ADD (sharpen_old_writer_roundtrip); ADD (sharpen_malformed_writer_capsules);
+  ADD (threshold_old_writer_roundtrip); ADD (threshold_malformed_writer_capsules);
+  ADD (threshold_active_save_close_reopen);
   result = g_test_run ();
   gimp_test_utils_set_gimp3_directory ("GIMP_TESTING_ABS_TOP_BUILDDIR", "app/tests/gimpdir-output");
   gimp_exit (gimp, TRUE); return result;

@@ -37,6 +37,7 @@ extern "C" {
 #include "painter/filter-edge.hpp"
 #include "painter/filter-gauss.hpp"
 #include "painter/filter-sharpen-shadow.hpp"
+#include "painter/filter-point-shadow.hpp"
 #include "painter/filter-raster-kernels.hpp"
 #include "painter/filter-native-kernels.hpp"
 #include "painter/filter-process.hpp"
@@ -45,6 +46,7 @@ extern "C" {
 #include <algorithm>
 #include <cmath>
 #include <cstring>
+#include <functional>
 #include <memory>
 #include <limits>
 #include <set>
@@ -310,6 +312,8 @@ struct FilterImpl
     std::shared_ptr<FilterProcessOptions> process_options;
     std::shared_ptr<FilterProcedureResult> outcome;
     std::shared_ptr<FilterSelectionRegion> kernel_region;
+    std::function<void ()> kernel_validate;
+    bool projection_input = false;
   };
   bool publish_definition (GeglBuffer *restore_buffer = nullptr, bool cache_complete = true,
                            PreparedConfiguration *prepared = nullptr)
@@ -387,6 +391,7 @@ struct FilterImpl
          * worker sees only this plain captured region, sealed before launch.
          * A later generation cannot write it until the old worker is gone. */
         const auto region = std::make_shared<FilterSelectionRegion> ();
+        const auto outcome = std::make_shared<FilterProcedureResult> ();
         const SharpenOptions options { g_value_get_int (args->at (3)) };
         const auto width = request.width, height = request.height;
         if (width && height && width <= std::size_t (std::numeric_limits<std::int32_t>::max () / 4) &&
@@ -405,18 +410,94 @@ struct FilterImpl
             request.peak_bytes = std::size_t (std::min (peak,
               std::uint64_t (std::numeric_limits<std::size_t>::max ())));
             if (spill) request.peak_spill_bytes = pixels * 8 + owner_bytes;
-            request.process = [width, height, region, options, channel]
+            request.process = [width, height, region, options, channel, outcome]
               (const FilterScheduler::Bytes& input, std::atomic<bool>& cancel, FilterScheduler::Bytes& output) {
-                return filter_sharpen_shadow_vector (input, width, height, *region, options,
-                  cancel, output, channel) != FilterSharpenShadowOutcome::cancelled;
+                const auto result = filter_sharpen_shadow_vector (input, width, height, *region, options,
+                  cancel, output, channel);
+                if (result == FilterSharpenShadowOutcome::cancelled) return false;
+                outcome->publish (result == FilterSharpenShadowOutcome::shadow ?
+                  FilterProcedureDisposition::shadow : FilterProcedureDisposition::no_merge);
+                return true;
               };
             if (spill)
-              request.raster_process = [width, height, region, options, channel]
+              request.raster_process = [width, height, region, options, channel, outcome]
                 (FilterRaster& input, FilterRaster& output, std::atomic<bool>& cancel, const FilterRasterFactory&) {
-                  return filter_sharpen_shadow_raster (input, width, height, *region, options,
-                    cancel, output, channel) != FilterSharpenShadowOutcome::cancelled;
+                  const auto result = filter_sharpen_shadow_raster (input, width, height, *region, options,
+                    cancel, output, channel);
+                  if (result == FilterSharpenShadowOutcome::cancelled) return false;
+                  outcome->publish (result == FilterSharpenShadowOutcome::shadow ?
+                    FilterProcedureDisposition::shadow : FilterProcedureDisposition::no_merge);
+                  return true;
                 };
             prepared.kernel_region = region;
+            prepared.kernel_validate = [width, height, region, options] {
+              filter_sharpen_shadow_validate (width, height, *region, options);
+            };
+            prepared.outcome = outcome;
+          }
+      }
+    else if (procedure == "plug-in-threshold-alpha" && !real)
+      {
+        /* Claim this literal name even for malformed byte definitions. Falling
+         * through to the historical point route would bypass owner context.
+         * Other encodings retain that route's existing typed compatibility. */
+        if (args && args->size () == 4 &&
+            (gimp_drawable_get_base_type (GIMP_DRAWABLE (owner)) == GIMP_RGB || gray ()) &&
+            G_VALUE_HOLDS_INT (args->at (0)) && G_VALUE_HOLDS_INT (args->at (1)) &&
+            G_VALUE_HOLDS_INT (args->at (2)) && G_VALUE_HOLDS_INT (args->at (3)))
+          {
+            const auto width = request.width, height = request.height;
+            constexpr auto maximum = std::numeric_limits<std::int32_t>::max ();
+            /* Full logical storage and the fixed bound below must fit before
+             * admission. The smaller legacy selected-area limit is checked
+             * after owner capture, before any point kernel can run. */
+            if (width && height && width <= std::size_t (maximum) && height <= std::size_t (maximum) &&
+                std::uint64_t (width) <= std::uint64_t (std::numeric_limits<std::int64_t>::max ()) / 4 / height &&
+                std::uint64_t (width) <= (std::numeric_limits<std::uint64_t>::max () - 2 * 1024 * 1024) / 17 / height)
+              {
+                const auto region = std::make_shared<FilterSelectionRegion> ();
+                const auto outcome = std::make_shared<FilterProcedureResult> ();
+                const std::int32_t threshold = g_value_get_int (args->at (3));
+                const auto pixels = std::uint64_t (width) * height;
+                const auto owner_bytes = pixels * (gray () ? 5u : 9u);
+                /* Native input + final mask + private native staging: 5/9 Bpp.
+                 * Two RGBA vectors or files: 8 Bpp. Bounded owner capture/merge
+                 * needs at most eight bytes per transport pixel, and the raw
+                 * wrapper/kernel retain 16 + 32 KiB stack pixel arrays. Spill
+                 * additionally charges the established six RGBA queue chunks.
+                 * These are logical reservations, not process-RSS limits. */
+                const auto bounded = std::uint64_t (FilterScheduler::pixel_budget) * 8 + 48 * 1024;
+                const auto peak = owner_bytes + bounded + (spill ?
+                  std::uint64_t (FilterScheduler::pixel_budget) * 4 * 6 : pixels * 8);
+                request.peak_bytes = std::size_t (std::min (peak,
+                  std::uint64_t (std::numeric_limits<std::size_t>::max ())));
+                if (spill) request.peak_spill_bytes = pixels * 8 + owner_bytes;
+                request.process = [width, height, region, threshold, channel, outcome]
+                  (const FilterScheduler::Bytes& input, std::atomic<bool>& cancel, FilterScheduler::Bytes& output) {
+                    const auto result = filter_point_shadow_vector (input, width, height, *region,
+                      threshold, cancel, output, channel);
+                    if (result == FilterPointShadowOutcome::cancelled) return false;
+                    outcome->publish (result == FilterPointShadowOutcome::shadow ?
+                      FilterProcedureDisposition::shadow : FilterProcedureDisposition::no_merge);
+                    return true;
+                  };
+                if (spill)
+                  request.raster_process = [width, height, region, threshold, channel, outcome]
+                    (FilterRaster& input, FilterRaster& output, std::atomic<bool>& cancel, const FilterRasterFactory&) {
+                      const auto result = filter_point_shadow_raster (input, width, height, *region,
+                        threshold, cancel, output, channel);
+                      if (result == FilterPointShadowOutcome::cancelled) return false;
+                      outcome->publish (result == FilterPointShadowOutcome::shadow ?
+                        FilterProcedureDisposition::shadow : FilterProcedureDisposition::no_merge);
+                      return true;
+                    };
+                prepared.kernel_region = region;
+                prepared.kernel_validate = [width, height, region] {
+                  filter_point_shadow_validate (width, height, *region);
+                };
+                prepared.outcome = outcome;
+                prepared.projection_input = true;
+              }
           }
       }
     else if (procedure == "plug-in-edge" && args &&
@@ -660,6 +741,8 @@ struct FilterImpl
     native_process_options = std::move (prepared.process_options);
     native_outcome = std::move (prepared.outcome);
     native_kernel_region = std::move (prepared.kernel_region);
+    native_kernel_validate = std::move (prepared.kernel_validate);
+    native_projection_input = prepared.projection_input;
     native_context.reset ();
     scheduler.set_request (std::move (prepared.request));
     staged.reset ();
@@ -1133,12 +1216,49 @@ struct FilterImpl
         const auto size = input.size ();
         const bool real = real_samples ();
         input.resize (size + count * (real ? 32 : 4));
+        const auto blit_input = [&] (void *bytes, std::size_t stride) {
+          if (!native_projection_input)
+            {
+              gegl_node_blit (below_node, 1.0, &rect, encoded_format (), bytes,
+                              GEGL_AUTO_ROWSTRIDE, GEGL_BLIT_CACHE);
+              return;
+            }
+          /* The old FilterLayer copied the parent projection into its existing
+           * drawable tiles, leaving prior pixels outside the copied rectangle.
+           * Prefill this already admitted native chunk from the completed cache
+           * so loaded pixels and earlier off-canvas results survive there; then
+           * overwrite only current lower-projection coverage. Reading the raw
+           * GEGL proxy unrestricted would instead expose off-canvas source.
+           * A group projection uses its own offset/extent, not the image canvas.
+           * This policy belongs only to the nonlinear-U8 Threshold route. */
+          const auto local = rectangle (offset, count);
+          auto cache = ObjectRef<GObject>::retain (G_OBJECT (gimp_drawable_get_buffer (GIMP_DRAWABLE (owner))));
+          gegl_buffer_get (GEGL_BUFFER (cache.get ()), &local, 1.0, encoded_format (),
+                           bytes, GEGL_AUTO_ROWSTRIDE, GEGL_ABYSS_NONE);
+          auto *parent = gimp_item_get_parent (GIMP_ITEM (owner));
+          const std::int64_t x1 = parent ? gimp_item_get_offset_x (parent) : 0;
+          const std::int64_t y1 = parent ? gimp_item_get_offset_y (parent) : 0;
+          const auto x2 = x1 + (parent ? gimp_item_get_width (parent) :
+            gimp_image_get_width (GIMP_IMAGE (image.get ())));
+          const auto y2 = y1 + (parent ? gimp_item_get_height (parent) :
+            gimp_image_get_height (GIMP_IMAGE (image.get ())));
+          const auto left = std::max<std::int64_t> (rect.x, x1);
+          const auto top = std::max<std::int64_t> (rect.y, y1);
+          const auto right = std::min<std::int64_t> (std::int64_t (rect.x) + rect.width, x2);
+          const auto bottom = std::min<std::int64_t> (std::int64_t (rect.y) + rect.height, y2);
+          if (left >= right || top >= bottom) return;
+          const GeglRectangle clipped {int (left), int (top), int (right-left), int (bottom-top)};
+          const auto destination = (std::size_t (top-rect.y) * rect.width + std::size_t (left-rect.x)) * stride;
+          gegl_node_blit (below_node, 1.0, &clipped, encoded_format (),
+                          static_cast<std::uint8_t *> (bytes) + destination,
+                          rect.width * stride, GEGL_BLIT_CACHE);
+        };
         if (real)
           {
             /* Aligned staging avoids treating byte-vector storage as live
              * double objects. Gray channels are replicated without conversion. */
             std::vector<double> native (count * (gray () ? 2 : 4));
-            gegl_node_blit (below_node,1.0,&rect,encoded_format (),native.data (),GEGL_AUTO_ROWSTRIDE,GEGL_BLIT_CACHE);
+            blit_input (native.data (), (gray () ? 2 : 4) * sizeof (double));
             if (gray ())
               for (std::size_t i = 0; i < count; ++i)
                 {
@@ -1153,8 +1273,7 @@ struct FilterImpl
              * the channel-independent legacy kernels retain their exact byte
              * arithmetic without introducing an ICC RGB/Gray conversion. */
             std::vector<std::uint8_t> native (count * 2);
-            gegl_node_blit (below_node, 1.0, &rect, encoded_format (), native.data (),
-                            GEGL_AUTO_ROWSTRIDE, GEGL_BLIT_CACHE);
+            blit_input (native.data (), 2);
             for (std::size_t i = 0; i < count; ++i)
               {
                 input[size + i * 4] = input[size + i * 4 + 1] = input[size + i * 4 + 2] = native[i * 2];
@@ -1162,8 +1281,7 @@ struct FilterImpl
               }
           }
         else
-          gegl_node_blit (below_node, 1.0, &rect, encoded_format (), input.data () + size,
-                          GEGL_AUTO_ROWSTRIDE, GEGL_BLIT_CACHE);
+          blit_input (input.data () + size, 4);
         if (!input_current (generation)) return;
         if (native_process_options && !offset)
           {
@@ -1243,13 +1361,11 @@ struct FilterImpl
           {
             if (!native_context.before_process (GIMP_DRAWABLE (owner), *native_kernel_region, read_budget))
               return false;
-            /* The pinned kernel has undefined width-one/height-one-or-two
-             * behavior. Reject the actual crop before launching any worker;
-             * an outside selection is instead a valid no-merge completion. */
-            if (native_kernel_region->intersects &&
-                (native_kernel_region->x2 - native_kernel_region->x1 < 2 ||
-                 native_kernel_region->y2 - native_kernel_region->y1 < 3))
-              throw std::invalid_argument ("Unsupported legacy sharpen selection dimensions; definition and cache are retained");
+            /* Each kernel owns its captured-crop domain. In particular,
+             * Threshold Alpha accepts one-pixel intersections while Sharpen
+             * retains the pinned kernel's unsafe tiny-crop rejection. */
+            native_kernel_validate ();
+            native_outcome->reset ();
             return true;
           }
         if (!native_context.before_process (GIMP_DRAWABLE (owner), *native_procedure, read_budget)) return false;
@@ -1261,10 +1377,7 @@ struct FilterImpl
       }) : FilterScheduler::Gate (),
       native_procedure || native_kernel_region ? FilterScheduler::Gate ([&] {
         refresh_context_selection ();
-        const auto disposition = native_kernel_region ?
-          (native_kernel_region->intersects ? FilterProcedureDisposition::shadow : FilterProcedureDisposition::no_merge) :
-          native_outcome->disposition ();
-        return native_context.before_import (GIMP_DRAWABLE (owner), disposition, import_budget);
+        return native_context.before_import (GIMP_DRAWABLE (owner), native_outcome->disposition (), import_budget);
       }) : FilterScheduler::Gate ());
     if (scheduler.state () == FilterScheduler::State::closed) return false;
     if (scheduler.state () != FilterScheduler::State::importing) staged.reset ();
@@ -1288,6 +1401,8 @@ struct FilterImpl
   std::shared_ptr<FilterProcessOptions> native_process_options;
   std::shared_ptr<FilterProcedureResult> native_outcome;
   std::shared_ptr<FilterSelectionRegion> native_kernel_region;
+  std::function<void ()> native_kernel_validate;
+  bool native_projection_input = false;
   FilterOwnerContext native_context;
   std::string preparing_process_directory;
   FairDispatcher::Ticket pending;
