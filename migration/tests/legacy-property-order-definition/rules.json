@@ -1,0 +1,233 @@
+{
+  "task": "10.018",
+  "source_commit": "afa43fae3e920210146abed514f136fd49f671b5",
+  "source_sha256": {
+    "app/xcf/xcf-load.c": "9a0aeebda8471f78237b67df7418f56f92790fb1a5ac0504eaf14c02ac6e3168",
+    "app/core/gimpparasitelist.c": "3a37624be2e342b4461ed3f343864c7528ed1e5a0f796dd9da4c09acc0d8fd70",
+    "app/core/gimpimage-guides.c": "5416d6b4eef874d615be4098cdbb408fa20c5df47131e07fdbea02e10da6dfe6",
+    "app/core/gimpimage-sample-points.c": "c7e6295bf6ec57e7fa5466b17eb8b4bb536611bdf0f66bd1969d62cba71e6141"
+  },
+  "evidence_kind": "source-derived property-order semantics; not native permutation execution",
+  "rules": [
+    {
+      "owner": "image",
+      "property": "PROP_END",
+      "rule": "stop immediately; no later property adopted"
+    },
+    {
+      "owner": "image",
+      "property": "PROP_COLORMAP",
+      "rule": "later successful handler assignment/setter wins on the current object, subject to validation and later structural replacement"
+    },
+    {
+      "owner": "image",
+      "property": "PROP_COMPRESSION",
+      "rule": "later successful handler assignment/setter wins on the current object, subject to validation and later structural replacement"
+    },
+    {
+      "owner": "image",
+      "property": "PROP_GUIDES",
+      "rule": "accumulate by prepending then reverse entire accumulated list per block"
+    },
+    {
+      "owner": "image",
+      "property": "PROP_SAMPLE_POINTS",
+      "rule": "append accepted points; duplicate properties accumulate"
+    },
+    {
+      "owner": "image",
+      "property": "PROP_RESOLUTION",
+      "rule": "later successful handler assignment/setter wins on the current object, subject to validation and later structural replacement"
+    },
+    {
+      "owner": "image",
+      "property": "PROP_TATTOO",
+      "rule": "later successful handler assignment/setter wins on the current object, subject to validation and later structural replacement"
+    },
+    {
+      "owner": "image",
+      "property": "PROP_PARASITES",
+      "rule": "attach in wire order; same name replaces previous through parasite list"
+    },
+    {
+      "owner": "image",
+      "property": "PROP_UNIT",
+      "rule": "later successful handler assignment/setter wins on the current object, subject to validation and later structural replacement"
+    },
+    {
+      "owner": "image",
+      "property": "PROP_PATHS",
+      "rule": "append decoded paths; active index selects from current accumulated container"
+    },
+    {
+      "owner": "image",
+      "property": "PROP_USER_UNIT",
+      "rule": "later successful handler assignment/setter wins on the current object, subject to validation and later structural replacement"
+    },
+    {
+      "owner": "image",
+      "property": "PROP_VECTORS",
+      "rule": "append decoded vectors; active index selects from current accumulated container; version/size recovery special"
+    },
+    {
+      "owner": "layer",
+      "property": "PROP_END",
+      "rule": "stop immediately; no later property adopted"
+    },
+    {
+      "owner": "layer",
+      "property": "PROP_ACTIVE_LAYER",
+      "rule": "assign current layer to shared active pointer"
+    },
+    {
+      "owner": "layer",
+      "property": "PROP_FLOATING_SELECTION",
+      "rule": "assign current layer and offset to shared floating selection fields"
+    },
+    {
+      "owner": "layer",
+      "property": "PROP_OPACITY",
+      "rule": "later successful handler assignment/setter wins on the current object, subject to validation and later structural replacement"
+    },
+    {
+      "owner": "layer",
+      "property": "PROP_VISIBLE",
+      "rule": "later successful handler assignment/setter wins on the current object, subject to validation and later structural replacement"
+    },
+    {
+      "owner": "layer",
+      "property": "PROP_LINKED",
+      "rule": "later successful handler assignment/setter wins on the current object, subject to validation and later structural replacement"
+    },
+    {
+      "owner": "layer",
+      "property": "PROP_LOCK_CONTENT",
+      "rule": "later successful handler assignment/setter wins on the current object, subject to validation and later structural replacement"
+    },
+    {
+      "owner": "layer",
+      "property": "PROP_LOCK_ALPHA",
+      "rule": "later successful handler assignment/setter wins on the current object, subject to validation and later structural replacement"
+    },
+    {
+      "owner": "layer",
+      "property": "PROP_APPLY_MASK",
+      "rule": "later successful handler assignment/setter wins on the current object, subject to validation and later structural replacement"
+    },
+    {
+      "owner": "layer",
+      "property": "PROP_EDIT_MASK",
+      "rule": "later successful handler assignment/setter wins on the current object, subject to validation and later structural replacement"
+    },
+    {
+      "owner": "layer",
+      "property": "PROP_SHOW_MASK",
+      "rule": "later successful handler assignment/setter wins on the current object, subject to validation and later structural replacement"
+    },
+    {
+      "owner": "layer",
+      "property": "PROP_OFFSETS",
+      "rule": "later successful handler assignment/setter wins on the current object, subject to validation and later structural replacement"
+    },
+    {
+      "owner": "layer",
+      "property": "PROP_MODE",
+      "rule": "later successful handler assignment/setter wins on the current object, subject to validation and later structural replacement"
+    },
+    {
+      "owner": "layer",
+      "property": "PROP_TATTOO",
+      "rule": "later successful handler assignment/setter wins on the current object, subject to validation and later structural replacement"
+    },
+    {
+      "owner": "layer",
+      "property": "PROP_PARASITES",
+      "rule": "attach in wire order; same name replaces previous through parasite list"
+    },
+    {
+      "owner": "layer",
+      "property": "PROP_TEXT_LAYER_FLAGS",
+      "rule": "later successful handler assignment/setter wins on the current object, subject to validation and later structural replacement"
+    },
+    {
+      "owner": "layer",
+      "property": "PROP_GROUP_ITEM",
+      "rule": "replace layer with new group; only explicitly copied fields survive"
+    },
+    {
+      "owner": "layer",
+      "property": "PROP_ITEM_PATH",
+      "rule": "replace output hierarchy path with newly read ordered index list"
+    },
+    {
+      "owner": "layer",
+      "property": "PROP_GROUP_ITEM_FLAGS",
+      "rule": "later successful handler assignment/setter wins on the current object, subject to validation and later structural replacement"
+    },
+    {
+      "owner": "layer",
+      "property": "PROP_FILTER_SPEC",
+      "rule": "replace layer with Filter; copy selected current attributes then parse procedure/arguments"
+    },
+    {
+      "owner": "layer",
+      "property": "PROP_CLONE_SPEC",
+      "rule": "replace layer with Clone; copy selected current attributes then parse pending source name"
+    },
+    {
+      "owner": "channel",
+      "property": "PROP_END",
+      "rule": "stop immediately; no later property adopted"
+    },
+    {
+      "owner": "channel",
+      "property": "PROP_ACTIVE_CHANNEL",
+      "rule": "assign current channel to shared active pointer"
+    },
+    {
+      "owner": "channel",
+      "property": "PROP_SELECTION",
+      "rule": "replace channel with selection; move tiles, reset state and clear active pointer"
+    },
+    {
+      "owner": "channel",
+      "property": "PROP_OPACITY",
+      "rule": "later successful handler assignment/setter wins on the current object, subject to validation and later structural replacement"
+    },
+    {
+      "owner": "channel",
+      "property": "PROP_VISIBLE",
+      "rule": "later successful handler assignment/setter wins on the current object, subject to validation and later structural replacement"
+    },
+    {
+      "owner": "channel",
+      "property": "PROP_LINKED",
+      "rule": "later successful handler assignment/setter wins on the current object, subject to validation and later structural replacement"
+    },
+    {
+      "owner": "channel",
+      "property": "PROP_LOCK_CONTENT",
+      "rule": "later successful handler assignment/setter wins on the current object, subject to validation and later structural replacement"
+    },
+    {
+      "owner": "channel",
+      "property": "PROP_SHOW_MASKED",
+      "rule": "later successful handler assignment/setter wins on the current object, subject to validation and later structural replacement"
+    },
+    {
+      "owner": "channel",
+      "property": "PROP_COLOR",
+      "rule": "later successful handler assignment/setter wins on the current object, subject to validation and later structural replacement"
+    },
+    {
+      "owner": "channel",
+      "property": "PROP_TATTOO",
+      "rule": "later successful handler assignment/setter wins on the current object, subject to validation and later structural replacement"
+    },
+    {
+      "owner": "channel",
+      "property": "PROP_PARASITES",
+      "rule": "attach in wire order; same name replaces previous through parasite list"
+    }
+  ]
+}
