@@ -1,0 +1,35 @@
+[
+  {
+    "name": "gimp:painter / application-owned-lifecycle",
+    "result": "OK",
+    "returncode": 0,
+    "stdout": "TAP version 14\n# random seed: R02S36da605fc59edff58e251e709120efac\n1..4\n# Start of application-owned tests\nok 1 /application-owned/disabled-accepted-exit\n# slow test /application-owned/disabled-accepted-exit executed in 2.48 secs\nok 2 /application-owned/enabled-pending-accepted-exit\n# slow test /application-owned/enabled-pending-accepted-exit executed in 2.22 secs\nok 3 /application-owned/enabled-navigation-accepted-exit\n# slow test /application-owned/enabled-navigation-accepted-exit executed in 3.24 secs\nok 4 /application-owned/enabled-direct-dispose\n# slow test /application-owned/enabled-direct-dispose executed in 2.28 secs\n# End of application-owned tests\n",
+    "stderr": null,
+    "duration": 10.283900022506714,
+    "command": [
+      "/workspace/shared/gimp-clean-aggregate/build/app/tests/application-owned-lifecycle"
+    ]
+  },
+  {
+    "name": "gimp:app / preset-gui-entries",
+    "result": "OK",
+    "returncode": 0,
+    "stdout": "TAP version 14\n# random seed: R02S9fd45c63cb7cd9d05f1998cbdc193106\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n1..6\n# Start of preset-gui-entry tests\nok 1 /preset-gui-entry/signature-null\nok 2 /preset-gui-entry/no-op-groups-handle\nok 3 /preset-gui-entry/dialog-metadata\nok 4 /preset-gui-entry/dialog-owner-callbacks\nok 5 /preset-gui-entry/preferences-metadata\nok 6 /preset-gui-entry/preferences-handle\n# End of preset-gui-entry tests\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n",
+    "stderr": "Refusing to add non-unique action 'dialogs-layer-presets' to action group 'restored-preset-dialog'\n",
+    "duration": 1.1242539882659912,
+    "command": [
+      "/workspace/shared/gimp-clean-aggregate/build/app/tests/preset-gui-entries"
+    ]
+  },
+  {
+    "name": "gimp:app / feature-lifecycle",
+    "result": "OK",
+    "returncode": 0,
+    "stdout": "TAP version 14\n# random seed: R02S62143c4c20c84f7a3b36a36a13108df3\n1..14\n# Start of feature-lifecycle tests\nok 1 /feature-lifecycle/resource-factory-wait\n# slow test /feature-lifecycle/resource-factory-wait executed in 1.04 secs\nok 2 /feature-lifecycle/preentry-preferences\nok 3 /feature-lifecycle/supported-startup-order\n# slow test /feature-lifecycle/supported-startup-order executed in 1.18 secs\nok 4 /feature-lifecycle/registration\n# slow test /feature-lifecycle/registration executed in 1.14 secs\nok 5 /feature-lifecycle/restore-order\n# slow test /feature-lifecycle/restore-order executed in 1.08 secs\nok 6 /feature-lifecycle/partial-provider-failure\n# slow test /feature-lifecycle/partial-provider-failure executed in 1.04 secs\nok 7 /feature-lifecycle/restore-disabled\n# slow test /feature-lifecycle/restore-disabled executed in 1.21 secs\nok 8 /feature-lifecycle/restore-opt-in\n# slow test /feature-lifecycle/restore-opt-in executed in 1.15 secs\nok 9 /feature-lifecycle/restore-failure\n# slow test /feature-lifecycle/restore-failure executed in 1.06 secs\nok 10 /feature-lifecycle/restore-reentry\n# slow test /feature-lifecycle/restore-reentry executed in 1.26 secs\nok 11 /feature-lifecycle/restore-close\n# slow test /feature-lifecycle/restore-close executed in 1.10 secs\nok 12 /feature-lifecycle/close-reentry\n# slow test /feature-lifecycle/close-reentry executed in 1.02 secs\nok 13 /feature-lifecycle/close-last-owner\n# slow test /feature-lifecycle/close-last-owner executed in 1.05 secs\nok 14 /feature-lifecycle/dispose-fallback\n# slow test /feature-lifecycle/dispose-fallback executed in 1.03 secs\n# End of feature-lifecycle tests\n",
+    "stderr": null,
+    "duration": 14.45182466506958,
+    "command": [
+      "/workspace/shared/gimp-clean-aggregate/build/app/tests/feature-lifecycle"
+    ]
+  }
+]

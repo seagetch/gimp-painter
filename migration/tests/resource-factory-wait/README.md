@@ -1,0 +1,13 @@
+# Standalone JSON resource readiness without losing preset waits
+
+Actual application-owned activation failed in `gimp_is_restored()` after the native JSON root was introduced: recursive `GimpData` enumeration included `GimpJsonResource`, which has no global loader factory. The real failed application run and a temporary diagnostic backtrace identify `gimp_data_factories_wait`→`gimp_get_data_factory(GimpJsonResource)`. The diagnostic was removed before all final runs; it is not production code.
+
+Skip only the standalone JSON resource family **outside** the LayerPreset family when waiting for factories. Do not exclude the JSON root from recursive enumeration: that would also hide the real LayerPreset loader and its pending work. The generic public factory lookup retains its unsupported-type diagnostics; no false generic factory is returned.
+
+A new native subprocess calls actual public readiness, adds an unfinished async to the actual preset factory, and verifies wait admission. Completion starts on a worker only from the async `waiting` signal (emitted with its mutex held), not an elapsed timer. The finished/single-wait assertions therefore detect silently skipping the preset subtree deterministically.
+
+Final normal and selected16-unit ASan/UBSan results: feature14, preset entries6, actual application-owned lifecycle4 (24 each). The four real application cases load the preset through normal activation, modify/save its data through accepted exit, distinguish canceled exit, and exercise opted-in HTTP/navigation and disposal. This restores actual startup readiness; isolated phase tests alone had missed it. No new rendered UI or old application runtime equivalence is claimed. Xvfb is authenticated1080×1920; existing oncanvas configuration remains enabled.
+
+Two compiled production mutants are rejected by the new test: no standalone skip fails the unknown-factory assertion; excluding the entire JSON family returns with unfinished preset work. The restored production test passes. Selected instrumentation includes both real activation glue and C++ lifecycle fixture; external libraries, remaining application units, vptr and LSan are not instrumented.
+
+Source checkpoint/overlays are explicit in dependency-overlay.json; five paused providers remain exact81bc24545d. This is bounded checkpoint evidence, not whole latest HEAD. Prior feature13 evidence remains immutable: this is its14-case successor with a real production fix, not resealed prior success. Original feature/preset compatibility criteria remain separately open until supported replacement semantics are reviewed.

@@ -1,0 +1,31 @@
+Xvfb verified: 127.0.0.1:92, 1080x1920x24, authenticated accepted, empty authority rejected
+1/1 gimp:painter / application-owned-lifecycle FAIL             1.95s   killed by signal 6 SIGABRT
+>>> GIMP_TESTING_ABS_TOP_BUILDDIR=/workspace/shared/gimp-clean-aggregate/build MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 GSETTINGS_BACKEND=memory UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 MESON_TEST_ITERATION=1 MALLOC_PERTURB_=106 GIMP_TESTING_PLUGINDIRS=/workspace/shared/gimp-clean-aggregate/build/plug-ins/common LD_LIBRARY_PATH=/workspace/shared/gimp-clean-aggregate/build/libgimpmath:/workspace/shared/gimp-clean-aggregate/build/libgimpwidgets:/workspace/shared/gimp-clean-aggregate/build/libgimpthumb:/workspace/shared/gimp-clean-aggregate/build/libgimpconfig:/workspace/shared/gimp-clean-aggregate/build/libgimpmodule:/workspace/shared/gimp-clean-aggregate/build/libgimpcolor:/workspace/shared/gimp-clean-aggregate/build/libgimpbase:/workspace/shared/gimp-clean-aggregate/prefix/lib/x86_64-linux-gnu:/workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu GIMP_TESTING_ABS_TOP_SRCDIR=/workspace/shared/gimp-clean-aggregate/source UI_TEST=yes /workspace/shared/gimp-clean-aggregate/build/app/tests/application-owned-lifecycle -p /application-owned/disabled-accepted-exit
+――――――――――――――――――――――――――――――――――――― ✀  ―――――――――――――――――――――――――――――――――――――
+stdout:
+TAP version 14
+# random seed: R02S3befdc41cbbb78d59baad21395a6fd45
+# Start of application-owned tests
+# child process (/application-owned/disabled-accepted-exit [50]) exit status: 1 (error)
+# child process (/application-owned/disabled-accepted-exit [50]) stdout: ""
+# child process (/application-owned/disabled-accepted-exit [50]) stderr: "Failed to parse tag cache: No such file or directory\nUNKNOWN FACTORY TYPE GimpJsonResource\n/workspace/shared/gimp-clean-aggregate/build/app/tests/application-owned-lifecycle(gimp_get_data_factory+0x2ce) [0x56224623db1e]\n/workspace/shared/gimp-clean-aggregate/build/app/tests/application-owned-lifecycle(gimp_data_factories_wait+0x75) [0x56224632b115]\n/workspace/shared/gimp-clean-aggregate/build/app/tests/application-owned-lifecycle(gimp_is_restored+0x78) [0x56224623c4a8]\n/workspace/shared/gimp-clean-aggregate/build/app/tests/application-owned-lifecycle(+0x16b6f2) [0x5622460696f2]\n/workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0(g_closure_invoke+0x140) [0x7fe16ea8a950]\n/workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0(+0x2c09d) [0x7fe16ea9f09d]\n/workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0(+0x2d769) [0x7fe16eaa0769]\n/workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0(g_signal_emit_valist+0x36) [0x7fe16eaa65a6]\n/workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0(g_signal_emit+0x93) [0x7fe16eaa6663]\n/workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu/libgio-2.0.so.0(+0xeaca0) [0x7fe16e6f1ca0]\n/workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu/libgio-2.0.so.0(g_application_run+0x108) [0x7fe16e6f1e38]\n/workspace/shared/gimp-clean-aggregate/build/app/tests/application-owned-lifecycle(+0x16b32d) [0x56224606932d]\n/workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu/libglib-2.0.so.0(+0x8c0d9) [0x7fe16e9a60d9]\n/workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu/libglib-2.0.so.0(+0x8c053) [0x7fe16e9a6053]\n/workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu/libglib-2.0.so.0(g_test_run_suite+0x7b) [0x7fe16e9a658b]\n/workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu/libglib-2.0.so.0(g_test_run+0x58) [0x7fe16e9a6668]\n/workspace/shared/gimp-clean-aggregate/build/app/tests/application-owned-lifecycle(main+0x6e) [0x5622460662de]\n/workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu/libc.so.6(+0x29ca8) [0x7fe16d028ca8]\n/workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x85) [0x7fe16d028d65]\n/workspace/shared/gimp-clean-aggregate/build/app/tests/application-owned-lifecycle(_start+0x21) [0x562246066321]\n\n(/workspace/shared/gimp-clean-aggregate/build/app/tests/application-owned-lifecycle:50): Gimp-Core-CRITICAL **: 14:37:41.628: file ../source/app/core/gimp.c: line 1388 (gimp_get_data_factory): should not be reached\n"
+not ok /application-owned/disabled-accepted-exit - ERROR:../source/app/tests/test-application-owned-lifecycle.cpp:287:void lifecycle(bool, bool): child process (/application-owned/disabled-accepted-exit [50]) failed unexpectedly
+Bail out!
+stderr:
+**
+ERROR:../source/app/tests/test-application-owned-lifecycle.cpp:287:void lifecycle(bool, bool): child process (/application-owned/disabled-accepted-exit [50]) failed unexpectedly
+――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+
+
+Summary of Failures:
+
+1/1 gimp:painter / application-owned-lifecycle FAIL             1.95s   killed by signal 6 SIGABRT
+
+Ok:                 0   
+Expected Fail:      0   
+Fail:               1   
+Unexpected Pass:    0   
+Skipped:            0   
+Timeout:            0   
+
+Full log written to /workspace/shared/gimp-clean-aggregate/build/meson-logs/feature-diagnostic.txt

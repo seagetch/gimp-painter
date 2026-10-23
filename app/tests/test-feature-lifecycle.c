@@ -7,6 +7,9 @@
 #include "core/gimp.h"
 #include "core/gimp-contexts.h"
 #include "core/gimpdatafactory.h"
+#include "core/gimp-data-factories.h"
+#include "core/gimpasync.h"
+#include "core/gimpasyncset.h"
 #include "core/gimplayerpreset.h"
 #include "presets/preset-factory-gui.h"
 #include "gimp-features.h"
@@ -234,6 +237,40 @@ static void dispose_fallback (void)
   g_object_run_dispose (G_OBJECT (application));
   g_object_unref (application);
 }
+typedef struct { guint count; GThread *worker; } PresetWait;
+static gpointer complete_preset_load (gpointer data)
+{ gimp_async_finish (GIMP_ASYNC (data), NULL); return NULL; }
+static void finish_preset_load (GimpAsync *async, gpointer data)
+{
+  PresetWait *waited = data;
+  ++waited->count;
+  /* waiting is emitted while the async mutex is held; completion runs on a
+   * worker only AFTER actual wait admission, without a timer race. */
+  waited->worker = g_thread_new ("preset-load-test", complete_preset_load, async);
+}
+static void resource_factory_wait (void)
+{
+  GimpAsync *async;
+  PresetWait waited = { 0, NULL };
+  GimpAsyncSet *set;
+  if (!begin_case ()) return;
+  /* Actual app activation sets this flag; the small helper deliberately does
+   * not. Exercise the public readiness query rather than reading the field. */
+  application->initialized = TRUE;
+  g_assert_true (gimp_is_restored (application));
+  set = gimp_data_factory_get_async_set (application->layer_preset_factory);
+  async = gimp_async_new ();
+  gimp_async_set_add (set, async);
+  g_assert_false (gimp_async_set_is_empty (set));
+  g_signal_connect (async, "waiting", G_CALLBACK (finish_preset_load), &waited);
+  g_assert_true (gimp_data_factories_wait (application));
+  /* Excluding the whole JSON subtree would return before this real work. */
+  g_assert_true (gimp_async_is_finished (async));
+  g_assert_cmpuint (waited.count, ==, 1);
+  g_thread_join (waited.worker);
+  g_object_unref (async);
+  finish_case ();
+}
 /* Explicit native replacement contract, not old singleton ABI parity. */
 static void preentry_preferences (void)
 {
@@ -302,6 +339,7 @@ static void supported_startup_order (void)
 int main (int argc, char **argv)
 {
   g_test_init (&argc, &argv, NULL);
+  g_test_add_func ("/feature-lifecycle/resource-factory-wait", resource_factory_wait);
   g_test_add_func ("/feature-lifecycle/preentry-preferences", preentry_preferences);
   g_test_add_func ("/feature-lifecycle/supported-startup-order", supported_startup_order);
   g_test_add_func ("/feature-lifecycle/registration", registration);

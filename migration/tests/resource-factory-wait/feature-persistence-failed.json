@@ -1,0 +1,13 @@
+[
+  {
+    "name": "gimp:painter / application-owned-lifecycle",
+    "result": "FAIL",
+    "returncode": -6,
+    "stdout": "TAP version 14\n# random seed: R02S61940e6ae0188558561ddc32f56e66cc\n1..4\n# Start of application-owned tests\n# child process (/application-owned/disabled-accepted-exit [57]) exit status: 1 (error)\n# child process (/application-owned/disabled-accepted-exit [57]) stdout: \"\"\n# child process (/application-owned/disabled-accepted-exit [57]) stderr: \"Failed to parse tag cache: No such file or directory\\n\\n(/workspace/shared/gimp-clean-aggregate/build/app/tests/application-owned-lifecycle:57): Gimp-Core-CRITICAL **: 14:36:16.996: file ../source/app/core/gimp.c: line 1385 (gimp_get_data_factory): should not be reached\\n\"\nnot ok /application-owned/disabled-accepted-exit - ERROR:../source/app/tests/test-application-owned-lifecycle.cpp:287:void lifecycle(bool, bool): child process (/application-owned/disabled-accepted-exit [57]) failed unexpectedly\nBail out!\n",
+    "stderr": "**\nERROR:../source/app/tests/test-application-owned-lifecycle.cpp:287:void lifecycle(bool, bool): child process (/application-owned/disabled-accepted-exit [57]) failed unexpectedly\n",
+    "duration": 1.9577405452728271,
+    "command": [
+      "/workspace/shared/gimp-clean-aggregate/build/app/tests/application-owned-lifecycle"
+    ]
+  }
+]

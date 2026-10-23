@@ -1,0 +1,31 @@
+Xvfb verified: 127.0.0.1:92, 1080x1920x24, authenticated accepted, empty authority rejected
+1/1 gimp:app / feature-lifecycle FAIL             0.97s   killed by signal 6 SIGABRT
+>>> UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 GIMP_TESTING_PLUGINDIRS=/workspace/shared/gimp-clean-aggregate/build/plug-ins/common MALLOC_PERTURB_=26 GIMP_TESTING_ABS_TOP_BUILDDIR=/workspace/shared/gimp-clean-aggregate/build GIMP_TESTING_ABS_TOP_SRCDIR=/workspace/shared/gimp-clean-aggregate/source LD_LIBRARY_PATH=/workspace/shared/gimp-clean-aggregate/build/libgimpmath:/workspace/shared/gimp-clean-aggregate/build/libgimpwidgets:/workspace/shared/gimp-clean-aggregate/build/libgimpthumb:/workspace/shared/gimp-clean-aggregate/build/libgimpconfig:/workspace/shared/gimp-clean-aggregate/build/libgimpmodule:/workspace/shared/gimp-clean-aggregate/build/libgimpcolor:/workspace/shared/gimp-clean-aggregate/build/libgimpbase:/workspace/shared/gimp-clean-aggregate/prefix/lib/x86_64-linux-gnu:/workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 MESON_TEST_ITERATION=1 UI_TEST=yes /workspace/shared/gimp-clean-aggregate/build/app/tests/feature-lifecycle -p /feature-lifecycle/resource-factory-wait
+――――――――――――――――――――――――――――――――――――― ✀  ―――――――――――――――――――――――――――――――――――――
+stdout:
+TAP version 14
+# random seed: R02Safe21e72b871a4526054a221811ebfa7
+# Start of feature-lifecycle tests
+# child process (/feature-lifecycle/resource-factory-wait [52]) exit status: 1 (error)
+# child process (/feature-lifecycle/resource-factory-wait [52]) stdout: ""
+# child process (/feature-lifecycle/resource-factory-wait [52]) stderr: "\n(/workspace/shared/gimp-clean-aggregate/build/app/tests/feature-lifecycle:52): Gimp-Core-CRITICAL **: 14:43:42.502: file ../source/app/core/gimp.c: line 1385 (gimp_get_data_factory): should not be reached\n"
+not ok /feature-lifecycle/resource-factory-wait - ERROR:../source/app/tests/test-feature-lifecycle.c:54:begin_case: child process (/feature-lifecycle/resource-factory-wait [52]) failed unexpectedly
+Bail out!
+stderr:
+**
+ERROR:../source/app/tests/test-feature-lifecycle.c:54:begin_case: child process (/feature-lifecycle/resource-factory-wait [52]) failed unexpectedly
+――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+
+
+Summary of Failures:
+
+1/1 gimp:app / feature-lifecycle FAIL             0.97s   killed by signal 6 SIGABRT
+
+Ok:                 0   
+Expected Fail:      0   
+Fail:               1   
+Unexpected Pass:    0   
+Skipped:            0   
+Timeout:            0   
+
+Full log written to /workspace/shared/gimp-clean-aggregate/build/meson-logs/factory-mutant-missing-skip.txt

@@ -1,0 +1,15 @@
+[
+  {
+    "name": "gimp:app / feature-lifecycle",
+    "result": "FAIL",
+    "returncode": -6,
+    "stdout": "TAP version 14\n# random seed: R02S957e56d805bec99e98996ccb7eeb83e5\n# Start of feature-lifecycle tests\n# child process (/feature-lifecycle/resource-factory-wait [101]) exit status: 1 (error)\n# child process (/feature-lifecycle/resource-factory-wait [101]) stdout: \"\"\n# child process (/feature-lifecycle/resource-factory-wait [101]) stderr: \"\\n(/workspace/shared/gimp-clean-aggregate/build/app/tests/feature-lifecycle:101): Gimp-Core-CRITICAL **: 14:43:45.283: gimp_async_is_finished: assertion 'async->priv->stopped' failed\\n\"\nnot ok /feature-lifecycle/resource-factory-wait - ERROR:../source/app/tests/test-feature-lifecycle.c:54:begin_case: child process (/feature-lifecycle/resource-factory-wait [101]) failed unexpectedly\nBail out!\n",
+    "stderr": "**\nERROR:../source/app/tests/test-feature-lifecycle.c:54:begin_case: child process (/feature-lifecycle/resource-factory-wait [101]) failed unexpectedly\n",
+    "duration": 0.9542145729064941,
+    "command": [
+      "/workspace/shared/gimp-clean-aggregate/build/app/tests/feature-lifecycle",
+      "-p",
+      "/feature-lifecycle/resource-factory-wait"
+    ]
+  }
+]

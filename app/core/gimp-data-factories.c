@@ -357,6 +357,13 @@ gimp_data_factories_wait (Gimp *gimp)
     {
       GimpDataFactory *factory;
 
+      /* The standalone JSON resource family has no global loader factory.
+       * Its LayerPreset descendants do, so do not exclude the whole subtree
+       * from gimp_get_type_children() and silently skip their pending loads. */
+      if (g_type_is_a (GIMPPOINTER_TO_TYPE (iter->data), GIMP_TYPE_JSON_RESOURCE) &&
+          ! g_type_is_a (GIMPPOINTER_TO_TYPE (iter->data), GIMP_TYPE_LAYER_PRESET))
+        continue;
+
       factory = gimp_get_data_factory (gimp, GIMPPOINTER_TO_TYPE (iter->data));
 
       if (factory)
