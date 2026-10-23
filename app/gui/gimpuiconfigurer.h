@@ -49,6 +49,8 @@ struct _GimpUIConfigurerClass
 };
 
 
+gboolean      gimp_ui_configurer_is_ready  (GimpUIConfigurer *ui_configurer);
+void          gimp_ui_configurer_stop      (GimpUIConfigurer *ui_configurer);
 GType         gimp_ui_configurer_get_type  (void) G_GNUC_CONST;
 void          gimp_ui_configurer_configure (GimpUIConfigurer *ui_configurer,
                                             gboolean          single_window_mode);

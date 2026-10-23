@@ -27,6 +27,12 @@ void gimp_painter_canvas_ui_set_options_presentation (GimpDisplayShell *shell, g
  * the Canvas implementation. */
 /* Native Painter integration.  The revision predicate grants no ownership;
  * Canvas must revalidate it after each callback-producing hierarchy change. */
+/* Native session ownership is released only after topology reconciliation.
+ * Hold every participant through the complete sync pass; sync may emit GTK
+ * callbacks, whose new ownership requests remain deferred by that hold. */
+void               gimp_image_window_session_suspend     (GimpImageWindow   *window);
+gboolean           gimp_image_window_session_resume      (GimpImageWindow   *window);
+gboolean           gimp_image_window_session_sync        (GimpImageWindow   *window);
 void               gimp_image_window_painter_reconcile    (GimpImageWindow   *window);
 void               gimp_image_window_painter_suspend      (GimpImageWindow   *window);
 void               gimp_image_window_painter_resume       (GimpImageWindow   *window);

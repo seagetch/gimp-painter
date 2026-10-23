@@ -551,14 +551,20 @@ gimp_session_info_restore_docks (GimpRestoreDocksData *data)
 
   gimp_session_info_clear_info (info);
 
-  g_object_unref (dialog);
-  g_object_unref (monitor);
-  g_object_unref (factory);
-  g_object_unref (info);
+  return G_SOURCE_REMOVE;
+}
 
+static void
+gimp_session_info_restore_free (gpointer user_data)
+{
+  GimpRestoreDocksData *data = user_data;
+
+  g_clear_object (&data->dialog);
+  g_object_unref (data->monitor);
+  g_object_unref (data->factory);
+  data->info->p->restoring = FALSE;
+  g_object_unref (data->info);
   g_slice_free (GimpRestoreDocksData, data);
-
-  return FALSE;
 }
 
 static void
@@ -596,13 +602,30 @@ gimp_session_info_restore (GimpSessionInfo   *info,
                            GdkMonitor        *monitor)
 {
   GtkWidget            *dialog = NULL;
-  GimpRestoreDocksData *data;
+  GimpRestoreDocksData *data = NULL;
 
   g_return_if_fail (GIMP_IS_SESSION_INFO (info));
   g_return_if_fail (GIMP_IS_DIALOG_FACTORY (factory));
   g_return_if_fail (GDK_IS_MONITOR (monitor));
 
+  /* Geometry notifications can set open again before this restore finishes.
+   * A second batch must never consume the same saved lists concurrently. */
+  if (info->p->restoring)
+    return;
+
   g_object_ref (info);
+  g_object_ref (monitor);
+  info->p->restoring = TRUE;
+  if (! gimp_dialog_factory_restore_begin (factory))
+    {
+      info->p->restoring = FALSE;
+      g_object_unref (monitor);
+      g_object_unref (info);
+      return;
+    }
+
+  if (! gimp_dialog_factory_restore_claim (factory, info))
+    goto done;
 
   info->p->open = FALSE;
 
@@ -616,7 +639,11 @@ gimp_session_info_restore (GimpSessionInfo   *info,
   else
     g_printerr ("EEEEK\n");
 
-  if (GIMP_IS_SESSION_MANAGED (dialog) && info->p->aux_info)
+  if (dialog)
+    g_object_ref (dialog);
+
+  if (! gimp_dialog_factory_restore_stopping (factory) &&
+      GIMP_IS_SESSION_MANAGED (dialog) && info->p->aux_info)
     gimp_session_managed_set_aux_info (GIMP_SESSION_MANAGED (dialog),
                                        info->p->aux_info);
 
@@ -632,11 +659,18 @@ gimp_session_info_restore (GimpSessionInfo   *info,
   data->info    = g_object_ref (info);
   data->factory = g_object_ref (factory);
   data->monitor = g_object_ref (monitor);
-  data->dialog  = dialog ? g_object_ref (dialog) : NULL;
+  data->dialog  = dialog; /* lease acquired before auxiliary callbacks */
 
-  g_idle_add ((GSourceFunc) gimp_session_info_restore_docks, data);
+  gimp_dialog_factory_restore_add (factory, dialog,
+                                   (GSourceFunc) gimp_session_info_restore_docks,
+                                   data, gimp_session_info_restore_free);
 
+done:
+  if (! data)
+    info->p->restoring = FALSE;
+  g_object_unref (monitor);
   g_object_unref (info);
+  gimp_dialog_factory_restore_end (factory);
 }
 
 /**

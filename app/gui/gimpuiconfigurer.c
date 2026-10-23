@@ -54,7 +54,8 @@
 enum
 {
   PROP_0,
-  PROP_GIMP
+  PROP_GIMP,
+  PROP_READY
 };
 
 
@@ -66,6 +67,7 @@ struct _PainterConversion
   guint64            revision;
   gboolean           single_window_mode;
   gboolean           painter_canvas_ui;
+  gboolean           suspend_painter;
 };
 
 struct _GimpUIConfigurerPrivate
@@ -77,9 +79,16 @@ struct _GimpUIConfigurerPrivate
   gboolean settled_single_window_mode;
   gboolean settled_painter_canvas_ui;
   gboolean painter_dirty;
+  gboolean restore_replay_pending;
+  gboolean stopping;
+  GimpDialogFactory *restore_factory;
 };
 
 
+static void              gimp_ui_configurer_queue_replay                (GimpUIConfigurer  *ui_configurer);
+static void              gimp_ui_configurer_restore_notify              (GimpDialogFactory *factory,
+                                                                         GParamSpec        *pspec,
+                                                                         GimpUIConfigurer  *ui_configurer);
 static void              gimp_ui_configurer_dispose                     (GObject           *object);
 static void              gimp_ui_configurer_set_property                (GObject           *object,
                                                                          guint              property_id,
@@ -129,6 +138,10 @@ gimp_ui_configurer_class_init (GimpUIConfigurerClass *klass)
                                                         GIMP_TYPE_GIMP,
                                                         GIMP_PARAM_READWRITE |
                                                         G_PARAM_CONSTRUCT_ONLY));
+  g_object_class_install_property (object_class, PROP_READY,
+                                   g_param_spec_boolean ("ready", NULL, NULL,
+                                                         TRUE, G_PARAM_READABLE |
+                                                         G_PARAM_STATIC_STRINGS));
 }
 
 static void
@@ -142,11 +155,8 @@ gimp_ui_configurer_dispose (GObject *object)
 {
   GimpUIConfigurer *ui_configurer = GIMP_UI_CONFIGURER (object);
 
-  if (ui_configurer->p->painter_idle_id)
-    {
-      g_source_remove (ui_configurer->p->painter_idle_id);
-      ui_configurer->p->painter_idle_id = 0;
-    }
+  gimp_ui_configurer_stop (ui_configurer);
+  g_clear_object (&ui_configurer->p->restore_factory);
 
   G_OBJECT_CLASS (parent_class)->dispose (object);
 }
@@ -165,6 +175,12 @@ gimp_ui_configurer_set_property (GObject      *object,
       ui_configurer->p->gimp = g_value_get_object (value); /* don't ref */
       if (ui_configurer->p->gimp)
         {
+          ui_configurer->p->restore_factory =
+            g_object_ref (gimp_dialog_factory_get_singleton ());
+          g_signal_connect_object (ui_configurer->p->restore_factory,
+                                   "notify::restore-pending",
+                                   G_CALLBACK (gimp_ui_configurer_restore_notify),
+                                   ui_configurer, 0);
           ui_configurer->p->settled_single_window_mode =
             GIMP_GUI_CONFIG (ui_configurer->p->gimp->config)->single_window_mode;
           ui_configurer->p->settled_painter_canvas_ui =
@@ -192,6 +208,10 @@ gimp_ui_configurer_get_property (GObject    *object,
       g_value_set_object (value, ui_configurer->p->gimp);
       break;
 
+    case PROP_READY:
+      g_value_set_boolean (value, gimp_ui_configurer_is_ready (ui_configurer));
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
       break;
@@ -207,10 +227,25 @@ gimp_ui_configurer_current (GimpUIConfigurer *ui_configurer)
   PainterConversion *conversion = ui_configurer->p->painter_conversion;
   GimpGuiConfig     *config = GIMP_GUI_CONFIG (ui_configurer->p->gimp->config);
 
-  return (conversion &&
+  return (! ui_configurer->p->stopping &&
+          ! gimp_dialog_factory_restore_stopping (ui_configurer->p->restore_factory) &&
+          ! gimp_dialog_factory_restore_pending (ui_configurer->p->restore_factory) &&
+          conversion &&
           conversion->revision == ui_configurer->p->painter_conversion_revision &&
           conversion->single_window_mode == config->single_window_mode &&
           conversion->painter_canvas_ui == ui_configurer->p->gimp->config->painter_canvas_ui);
+}
+
+/* Finish an already detached child's transfer, but never retire a native
+ * restore target enrolled by one of that transfer's callbacks. */
+static gboolean
+gimp_ui_configurer_can_retire (GimpUIConfigurer *ui_configurer,
+                               GtkWidget        *widget)
+{
+  return (! ui_configurer->p->stopping &&
+          ! gimp_dialog_factory_restore_stopping (ui_configurer->p->restore_factory) &&
+          ! gimp_dialog_factory_restore_owns_widget (ui_configurer->p->restore_factory,
+                                                    widget));
 }
 
 static gboolean
@@ -271,7 +306,9 @@ gimp_ui_configurer_enroll_window (GimpUIConfigurer *ui_configurer,
       {
         conversion->windows = g_list_append (conversion->windows,
                                               g_object_ref (window));
-        gimp_image_window_painter_suspend (window);
+        gimp_image_window_session_suspend (window);
+        if (conversion->suspend_painter)
+          gimp_image_window_painter_suspend (window);
       }
 }
 
@@ -422,7 +459,8 @@ gimp_ui_configurer_move_docks_to_columns (GimpUIConfigurer *ui_configurer,
       if (gimp_ui_configurer_dialog_live (GTK_WIDGET (dock_window)))
         {
           docks = gimp_dock_container_get_docks (GIMP_DOCK_CONTAINER (dock_window));
-          if (! docks)
+          if (! docks &&
+              gimp_ui_configurer_can_retire (ui_configurer, GTK_WIDGET (dock_window)))
             {
               gimp_dialog_factory_remove_dialog (gimp_dialog_factory_get_singleton (),
                                                  GTK_WIDGET (dock_window));
@@ -678,7 +716,7 @@ finish_transfer:
     gboolean empty = moved == NULL;
 
     g_list_free (moved);
-    if (empty)
+    if (empty && gimp_ui_configurer_can_retire (ui_configurer, dock_window))
       {
         /* Construction or show can emit a newer mode request.  Do not leave
          * its unpopulated dock window behind when the transfer was skipped. */
@@ -729,7 +767,8 @@ gimp_ui_configurer_separate_shells (GimpUIConfigurer *ui_configurer,
       if (! gimp_ui_configurer_current (ui_configurer) ||
           ! gimp_ui_configurer_window_live (ui_configurer, source_image_window))
         {
-          if (gimp_ui_configurer_window_live (ui_configurer, new_image_window))
+          if (gimp_ui_configurer_window_live (ui_configurer, new_image_window) &&
+              gimp_ui_configurer_can_retire (ui_configurer, GTK_WIDGET (new_image_window)))
             gimp_image_window_destroy (new_image_window);
           break;
         }
@@ -737,7 +776,8 @@ gimp_ui_configurer_separate_shells (GimpUIConfigurer *ui_configurer,
       shell = gimp_image_window_get_shell (source_image_window, 1);
       if (! shell)
         {
-          gimp_image_window_destroy (new_image_window);
+          if (gimp_ui_configurer_can_retire (ui_configurer, GTK_WIDGET (new_image_window)))
+            gimp_image_window_destroy (new_image_window);
           break;
         }
 
@@ -758,7 +798,8 @@ gimp_ui_configurer_separate_shells (GimpUIConfigurer *ui_configurer,
 
       if (gimp_ui_configurer_window_live (ui_configurer, new_image_window))
         {
-          if (gimp_image_window_get_n_shells (new_image_window) == 0)
+          if (gimp_image_window_get_n_shells (new_image_window) == 0 &&
+              gimp_ui_configurer_can_retire (ui_configurer, GTK_WIDGET (new_image_window)))
             gimp_image_window_destroy (new_image_window);
           else if (gimp_ui_configurer_current (ui_configurer))
             {
@@ -844,7 +885,8 @@ gimp_ui_configurer_configure_for_single_window (GimpUIConfigurer *ui_configurer)
       gimp_image_window_set_painter_toolbar (image_window, FALSE);
       gimp_ui_configurer_move_shells (ui_configurer, image_window, uber_image_window);
       if (gimp_ui_configurer_window_live (ui_configurer, image_window) &&
-          gimp_image_window_get_n_shells (image_window) == 0)
+          gimp_image_window_get_n_shells (image_window) == 0 &&
+          gimp_ui_configurer_can_retire (ui_configurer, GTK_WIDGET (image_window)))
         gimp_image_window_destroy (image_window);
     }
 
@@ -1097,6 +1139,84 @@ gimp_ui_configurer_painter_idle_free (gpointer data)
   g_free (data);
 }
 
+static void
+gimp_ui_configurer_queue_replay (GimpUIConfigurer *ui_configurer)
+{
+  GWeakRef *weak;
+
+  if (ui_configurer->p->stopping || ui_configurer->p->painter_idle_id ||
+      ui_configurer->p->painter_conversion ||
+      gimp_dialog_factory_restore_stopping (ui_configurer->p->restore_factory) ||
+      gimp_dialog_factory_restore_pending (ui_configurer->p->restore_factory))
+    return;
+
+  weak = g_new0 (GWeakRef, 1);
+  g_weak_ref_init (weak, ui_configurer);
+  ui_configurer->p->painter_idle_id =
+    g_idle_add_full (G_PRIORITY_DEFAULT_IDLE,
+                     gimp_ui_configurer_painter_idle, weak,
+                     gimp_ui_configurer_painter_idle_free);
+}
+
+static void
+gimp_ui_configurer_restore_notify (GimpDialogFactory *factory,
+                                   GParamSpec        *pspec,
+                                   GimpUIConfigurer  *ui_configurer)
+{
+  if (ui_configurer->p->stopping ||
+      gimp_dialog_factory_restore_stopping (factory))
+    return;
+
+  if (gimp_dialog_factory_restore_pending (factory))
+    {
+      /* Even unchanged startup needs an owner sync: an initially unrealized
+       * empty image window may not yet have registered its native entry. */
+      ui_configurer->p->restore_replay_pending = TRUE;
+      if (ui_configurer->p->painter_conversion)
+        ++ui_configurer->p->painter_conversion_revision;
+    }
+  else if (ui_configurer->p->restore_replay_pending ||
+           ui_configurer->p->painter_dirty)
+    {
+      /* Never convert from the native source's cleanup stack. */
+      gimp_ui_configurer_queue_replay (ui_configurer);
+    }
+
+  g_object_notify (G_OBJECT (ui_configurer), "ready");
+}
+
+gboolean
+gimp_ui_configurer_is_ready (GimpUIConfigurer *ui_configurer)
+{
+  g_return_val_if_fail (GIMP_IS_UI_CONFIGURER (ui_configurer), FALSE);
+
+  return (! ui_configurer->p->stopping &&
+          ui_configurer->p->restore_factory &&
+          ! gimp_dialog_factory_restore_stopping (ui_configurer->p->restore_factory) &&
+          ! gimp_dialog_factory_restore_pending (ui_configurer->p->restore_factory) &&
+          ! ui_configurer->p->painter_conversion &&
+          ! ui_configurer->p->painter_dirty &&
+          ! ui_configurer->p->restore_replay_pending &&
+          ! ui_configurer->p->painter_idle_id);
+}
+
+void
+gimp_ui_configurer_stop (GimpUIConfigurer *ui_configurer)
+{
+  g_return_if_fail (GIMP_IS_UI_CONFIGURER (ui_configurer));
+
+  ui_configurer->p->stopping = TRUE;
+  if (ui_configurer->p->painter_idle_id)
+    {
+      g_source_remove (ui_configurer->p->painter_idle_id);
+      ui_configurer->p->painter_idle_id = 0;
+    }
+  if (ui_configurer->p->restore_factory)
+    g_signal_handlers_disconnect_by_func (ui_configurer->p->restore_factory,
+                                          gimp_ui_configurer_restore_notify,
+                                          ui_configurer);
+}
+
 /**
  * gimp_ui_configurer_configure:
  * @ui_configurer:
@@ -1112,9 +1232,23 @@ gimp_ui_configurer_configure (GimpUIConfigurer *ui_configurer,
   Gimp        *gimp;
   GimpDisplay *selected;
   gboolean     superseded = FALSE;
+  gboolean     session_replay;
   guint        pass;
 
   g_return_if_fail (GIMP_IS_UI_CONFIGURER (ui_configurer));
+
+  if (ui_configurer->p->stopping ||
+      gimp_dialog_factory_restore_stopping (ui_configurer->p->restore_factory))
+    return;
+
+  if (gimp_dialog_factory_restore_pending (ui_configurer->p->restore_factory))
+    {
+      ui_configurer->p->restore_replay_pending = TRUE;
+      if (ui_configurer->p->painter_conversion)
+        ++ui_configurer->p->painter_conversion_revision;
+      g_object_notify (G_OBJECT (ui_configurer), "ready");
+      return;
+    }
 
   if (ui_configurer->p->painter_conversion)
     {
@@ -1129,39 +1263,46 @@ gimp_ui_configurer_configure (GimpUIConfigurer *ui_configurer,
       return;
     }
 
-  /* Session restoration fills newly created dock windows in a later idle.
-   * An unchanged action-state notification must not convert that incomplete
-   * topology.  A superseded conversion remains dirty until replay settles,
-   * even when callbacks have returned to the previously settled flags. */
-  if (! ui_configurer->p->painter_dirty &&
-      single_window_mode == ui_configurer->p->settled_single_window_mode &&
-      ui_configurer->p->gimp->config->painter_canvas_ui ==
-      ui_configurer->p->settled_painter_canvas_ui)
-    return;
-
-  /* Painter-only changes in settled single-window mode are presentation
-   * changes, owned by each image window's config notification.  There is no
-   * toolbar-host lifecycle here, and merging unrelated floating docks would
-   * change the native layout.  Stay outside the conversion bracket so a
-   * reentrant presentation cancellation does not become a topology replay. */
-  if (! ui_configurer->p->painter_dirty &&
-      single_window_mode && ui_configurer->p->settled_single_window_mode)
-    {
-      ui_configurer->p->settled_painter_canvas_ui =
-        ui_configurer->p->gimp->config->painter_canvas_ui;
-      return;
-    }
-
-  ui_configurer->p->painter_dirty = TRUE;
-  ++ui_configurer->p->painter_conversion_revision;
-
+  session_replay = ui_configurer->p->restore_replay_pending;
+  ui_configurer->p->restore_replay_pending = FALSE;
   if (ui_configurer->p->painter_idle_id)
     {
       g_source_remove (ui_configurer->p->painter_idle_id);
       ui_configurer->p->painter_idle_id = 0;
     }
 
+  /* Session restoration fills newly created dock windows in a later idle.
+   * An unchanged action-state notification must not convert that incomplete
+   * topology.  A superseded conversion remains dirty until replay settles,
+   * even when callbacks have returned to the previously settled flags. */
+  if (! session_replay && ! ui_configurer->p->painter_dirty &&
+      single_window_mode == ui_configurer->p->settled_single_window_mode &&
+      ui_configurer->p->gimp->config->painter_canvas_ui ==
+      ui_configurer->p->settled_painter_canvas_ui)
+    {
+      g_object_notify (G_OBJECT (ui_configurer), "ready");
+      return;
+    }
+
+  /* Painter-only changes in settled single-window mode are presentation
+   * changes, owned by each image window's config notification.  There is no
+   * toolbar-host lifecycle here, and merging unrelated floating docks would
+   * change the native layout.  Stay outside the conversion bracket so a
+   * reentrant presentation cancellation does not become a topology replay. */
+  if (! session_replay && ! ui_configurer->p->painter_dirty &&
+      single_window_mode && ui_configurer->p->settled_single_window_mode)
+    {
+      ui_configurer->p->settled_painter_canvas_ui =
+        ui_configurer->p->gimp->config->painter_canvas_ui;
+      g_object_notify (G_OBJECT (ui_configurer), "ready");
+      return;
+    }
+
+  ++ui_configurer->p->painter_conversion_revision;
+  ui_configurer->p->restore_replay_pending = TRUE;
+
   g_object_ref (ui_configurer);
+  g_object_notify (G_OBJECT (ui_configurer), "ready");
   gimp = g_object_ref (ui_configurer->p->gimp);
   selected = gimp_ui_configurer_selected_display (ui_configurer);
   if (selected)
@@ -1176,6 +1317,15 @@ gimp_ui_configurer_configure (GimpUIConfigurer *ui_configurer,
       GList            *initial;
       GList            *iter;
 
+      gboolean          topology = (ui_configurer->p->painter_dirty ||
+                                    single_window_mode != ui_configurer->p->settled_single_window_mode ||
+                                    (! single_window_mode &&
+                                     gimp->config->painter_canvas_ui !=
+                                     ui_configurer->p->settled_painter_canvas_ui));
+
+      if (topology)
+        ui_configurer->p->painter_dirty = TRUE;
+      conversion.suspend_painter = topology;
       conversion.windows = gimp_ui_configurer_ref_windows (ui_configurer);
       conversion.previous = ui_configurer->p->painter_conversion;
       conversion.revision = ui_configurer->p->painter_conversion_revision;
@@ -1185,10 +1335,15 @@ gimp_ui_configurer_configure (GimpUIConfigurer *ui_configurer,
 
       /* A fixed initial list avoids enrolling a callback-created window twice. */
       initial = g_list_copy (conversion.windows);
+      /* Hold every owner before the first callback. A later mode notify
+       * cannot claim the singleton while peer windows still await merging. */
       for (iter = initial; iter; iter = iter->next)
-        gimp_image_window_painter_suspend (iter->data);
+        gimp_image_window_session_suspend (iter->data);
+      if (topology)
+        for (iter = initial; iter; iter = iter->next)
+          gimp_image_window_painter_suspend (iter->data);
       g_list_free (initial);
-      if (gimp_ui_configurer_current (ui_configurer))
+      if (topology && gimp_ui_configurer_current (ui_configurer))
         {
           if (single_window_mode)
             gimp_ui_configurer_configure_for_single_window (ui_configurer);
@@ -1196,7 +1351,7 @@ gimp_ui_configurer_configure (GimpUIConfigurer *ui_configurer,
             gimp_ui_configurer_configure_for_multi_window (ui_configurer);
         }
 
-      if (gimp_ui_configurer_current (ui_configurer))
+      if (topology && gimp_ui_configurer_current (ui_configurer))
         {
           GimpDisplayShell *shell;
 
@@ -1217,13 +1372,27 @@ gimp_ui_configurer_configure (GimpUIConfigurer *ui_configurer,
             }
         }
 
-      if (gimp_ui_configurer_current (ui_configurer))
+      if (topology && gimp_ui_configurer_current (ui_configurer))
         gimp_ui_configurer_update_appearance (ui_configurer);
 
       /* Keep the bracket installed during resume: presenters can emit new
        * mode requests too, and those must not recurse into half-resumed UI. */
+      if (topology)
+        for (iter = conversion.windows; iter; iter = iter->next)
+          gimp_image_window_painter_resume (iter->data);
+
+      /* Recompute from the surviving live windows, under the same revision
+       * barrier. Native filling and GTK callbacks may replace intent again. */
+      for (iter = conversion.windows;
+           iter && gimp_ui_configurer_current (ui_configurer);
+           iter = iter->next)
+        if (gimp_ui_configurer_window_live (ui_configurer, iter->data) &&
+            ! gimp_image_window_session_sync (iter->data))
+          ++ui_configurer->p->painter_conversion_revision;
       for (iter = conversion.windows; iter; iter = iter->next)
-        gimp_image_window_painter_resume (iter->data);
+        if (! gimp_image_window_session_resume (iter->data) &&
+            gimp_ui_configurer_window_live (ui_configurer, iter->data))
+          ++ui_configurer->p->painter_conversion_revision;
       g_list_free_full (conversion.windows, g_object_unref);
       superseded = ! gimp_ui_configurer_current (ui_configurer);
       ui_configurer->p->painter_conversion = conversion.previous;
@@ -1232,22 +1401,28 @@ gimp_ui_configurer_configure (GimpUIConfigurer *ui_configurer,
           ui_configurer->p->settled_single_window_mode = conversion.single_window_mode;
           ui_configurer->p->settled_painter_canvas_ui = conversion.painter_canvas_ui;
           ui_configurer->p->painter_dirty = FALSE;
+          ui_configurer->p->restore_replay_pending = FALSE;
           break;
         }
 
+      if (ui_configurer->p->stopping ||
+          gimp_dialog_factory_restore_stopping (ui_configurer->p->restore_factory))
+        break;
+      if (gimp_dialog_factory_restore_pending (ui_configurer->p->restore_factory))
+        {
+          ui_configurer->p->restore_replay_pending = TRUE;
+          break;
+        }
       single_window_mode = GIMP_GUI_CONFIG (gimp->config)->single_window_mode;
     }
 
-  if (superseded && ! ui_configurer->p->painter_idle_id)
+  if (superseded)
     {
-      GWeakRef *weak = g_new0 (GWeakRef, 1);
-
-      g_weak_ref_init (weak, ui_configurer);
-      ui_configurer->p->painter_idle_id =
-        g_idle_add_full (G_PRIORITY_DEFAULT_IDLE,
-                         gimp_ui_configurer_painter_idle, weak,
-                         gimp_ui_configurer_painter_idle_free);
+      ui_configurer->p->restore_replay_pending = TRUE;
+      gimp_ui_configurer_queue_replay (ui_configurer);
     }
+
+  g_object_notify (G_OBJECT (ui_configurer), "ready");
 
   g_clear_object (&selected);
   g_object_unref (gimp);

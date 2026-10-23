@@ -19,6 +19,13 @@
 #define __SESSION_H__
 
 
+void       session_bind_ui_configurer (Gimp             *gimp,
+                                        GimpUIConfigurer *configurer);
+gboolean   session_is_ready           (Gimp             *gimp);
+gboolean   session_exit_defer         (Gimp             *gimp,
+                                        gboolean          force);
+void       session_stop               (Gimp             *gimp);
+
 void       session_init    (Gimp       *gimp);
 void       session_exit    (Gimp       *gimp);
 

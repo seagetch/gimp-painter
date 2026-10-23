@@ -21,6 +21,19 @@ static gboolean finalized[6];
 static gboolean destroyed;
 static guint responses;
 static GtkWidget *retained;
+static guint accepted_exits;
+static gulong response_hook_id;
+static guint response_signal;
+
+static gboolean
+accepted_exit (Gimp *instance, gboolean force, gpointer data)
+{
+  /* Connected after the GUI handlers: deferred/intercepted exits do not
+   * reach this observer because the exit signal uses true-handled. */
+  g_assert_false (force);
+  accepted_exits++;
+  return FALSE;
+}
 
 static void
 finalized_cb (gpointer data, GObject *object)
@@ -64,8 +77,7 @@ static void
 activated (GApplication *application, gpointer data)
 {
   GtkWidget *dialog = NULL;
-  gulong response_hook_id = 0;
-  guint response_signal = g_signal_lookup ("response", GTK_TYPE_DIALOG);
+  response_signal = g_signal_lookup ("response", GTK_TYPE_DIALOG);
 
   if (mode)
     {
@@ -134,20 +146,11 @@ activated (GApplication *application, gpointer data)
         }
     }
 
+  g_signal_connect_after (gimp, "exit", G_CALLBACK (accepted_exit), NULL);
+  /* Startup can still own real saved dock-fill records here. Accepted Quit
+   * is resumed after restoration and topology settle; do not issue a second
+   * request or pump the event loop from this activation callback. */
   gimp_exit (gimp, FALSE);
-  if (mode)
-    {
-      g_assert_true (destroyed);
-      for (guint i = 0; i < G_N_ELEMENTS (finalized); i++)
-        { g_test_message ("config/context witness %u: %d", i, finalized[i]);
-          g_assert_true (finalized[i]); }
-      g_assert_cmpuint (responses, ==, mode == 7 ? 1 : 0);
-      g_signal_remove_emission_hook (response_signal, response_hook_id);
-    }
-  /* The ordinary GUI exit already ran this; repeated shutdown must be safe. */
-  welcome_dialog_exit ();
-  welcome_dialog_exit ();
-  g_clear_object (&retained);
 }
 
 static void
@@ -198,6 +201,22 @@ lifecycle (gconstpointer data)
   gimp = gimp_test_application_owned_start (directory, &application, TRUE);
   g_signal_connect_after (application, "activate", G_CALLBACK (activated), NULL);
   g_assert_cmpint (g_application_run (application, 0, NULL), ==, 0);
+  /* The application loop bounds the real accepted-exit continuation. Keep
+   * every lifetime witness before releasing either application or Gimp. */
+  g_assert_cmpuint (accepted_exits, ==, 1);
+  if (mode)
+    {
+      g_assert_true (destroyed);
+      for (guint i = 0; i < G_N_ELEMENTS (finalized); i++)
+        { g_test_message ("config/context witness %u: %d", i, finalized[i]);
+          g_assert_true (finalized[i]); }
+      g_assert_cmpuint (responses, ==, mode == 7 ? 1 : 0);
+      g_signal_remove_emission_hook (response_signal, response_hook_id);
+    }
+  /* The ordinary GUI exit already ran this; repeated shutdown must be safe. */
+  welcome_dialog_exit ();
+  welcome_dialog_exit ();
+  g_clear_object (&retained);
   while (g_main_context_pending (NULL))
     g_main_context_iteration (NULL, FALSE);
   gimp_test_application_owned_release (gimp, application);

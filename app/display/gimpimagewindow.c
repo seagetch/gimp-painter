@@ -139,6 +139,9 @@ struct _GimpImageWindowPrivate
   GdkWindowState     window_state;
 
   const gchar       *entry_id;
+  guint              session_suspend_count;
+  guint64            session_revision;
+  gboolean           session_update_pending;
 
   GdkMonitor        *initial_monitor;
 
@@ -276,6 +279,13 @@ static void      gimp_image_window_set_aux_info        (GimpSessionManaged  *ses
 static void      gimp_image_window_config_notify       (GimpImageWindow     *window,
                                                         GParamSpec          *pspec,
                                                         GimpGuiConfig       *config);
+static gboolean  gimp_image_window_session_current     (GimpImageWindow     *window,
+                                                        guint64              revision);
+static void      gimp_image_window_session_update_aux  (GimpImageWindow     *window,
+                                                        GimpDisplay         *new_display,
+                                                        const gchar         *new_entry_id,
+                                                        GdkMonitor          *monitor,
+                                                        guint64              revision);
 static void      gimp_image_window_session_clear       (GimpImageWindow     *window);
 static void      gimp_image_window_session_apply       (GimpImageWindow     *window,
                                                         const gchar         *entry_id,
@@ -3579,6 +3589,14 @@ gimp_image_window_session_apply (GimpImageWindow *window,
   GimpSessionInfo        *session_info = NULL;
   gint                    width        = -1;
   gint                    height       = -1;
+  guint64                 revision     = private->session_revision;
+
+  session_info = gimp_dialog_factory_find_session_info (private->dialog_factory,
+                                                        entry_id);
+  /* Reconciliation can revisit an unchanged owner after any native wave. */
+  if (session_info &&
+      gimp_session_info_get_widget (session_info) == GTK_WIDGET (window))
+    return;
 
   if (private->gimp->config->painter_canvas_ui &&
       strcmp (entry_id, GIMP_EMPTY_IMAGE_WINDOW_ENTRY_ID) == 0)
@@ -3596,6 +3614,8 @@ gimp_image_window_session_apply (GimpImageWindow *window,
     }
 
   gtk_window_unfullscreen (GTK_WINDOW (window));
+  if (! gimp_image_window_session_current (window, revision))
+    return;
 
   /*  get the NIW size before adding the display to the dialog
    *  factory so the window's current size doesn't affect the
@@ -3624,8 +3644,79 @@ gimp_image_window_session_apply (GimpImageWindow *window,
                                    GTK_WIDGET (window),
                                    monitor);
 
+  if (! gimp_image_window_session_current (window, revision))
+    return;
   gtk_window_unmaximize (GTK_WINDOW (window));
-  gtk_window_resize (GTK_WINDOW (window), width, height);
+  if (gimp_image_window_session_current (window, revision))
+    gtk_window_resize (GTK_WINDOW (window), width, height);
+}
+
+static gboolean
+gimp_image_window_session_current (GimpImageWindow *window,
+                                   guint64          revision)
+{
+  GimpImageWindowPrivate *private = GIMP_IMAGE_WINDOW_GET_PRIVATE (window);
+
+  return (! private->painter_closing &&
+          private->session_revision == revision &&
+          ! gimp_dialog_factory_restore_pending (private->dialog_factory) &&
+          ! gimp_dialog_factory_restore_stopping (private->dialog_factory));
+}
+
+/* Session ownership follows the settled topology, not an early config
+ * notification. Presentation is deliberately independent of this hold. */
+void
+gimp_image_window_session_suspend (GimpImageWindow *window)
+{
+  GimpImageWindowPrivate *private = GIMP_IMAGE_WINDOW_GET_PRIVATE (window);
+
+  private->session_suspend_count++;
+}
+
+gboolean
+gimp_image_window_session_resume (GimpImageWindow *window)
+{
+  GimpImageWindowPrivate *private = GIMP_IMAGE_WINDOW_GET_PRIVATE (window);
+
+  g_return_val_if_fail (private->session_suspend_count > 0, FALSE);
+  private->session_suspend_count--;
+
+  return ! private->session_update_pending;
+}
+
+gboolean
+gimp_image_window_session_sync (GimpImageWindow *window)
+{
+  GimpImageWindowPrivate *private = GIMP_IMAGE_WINDOW_GET_PRIVATE (window);
+  GimpDisplay           *display;
+  GdkMonitor            *monitor;
+  guint64                revision;
+  gboolean               complete;
+
+  if (private->painter_closing ||
+      gimp_dialog_factory_restore_pending (private->dialog_factory) ||
+      gimp_dialog_factory_restore_stopping (private->dialog_factory))
+    return FALSE;
+
+  g_object_ref (window);
+  display = private->active_shell ? private->active_shell->display : NULL;
+  if (display)
+    g_object_ref (display);
+  monitor = g_object_ref (gimp_widget_get_monitor (GTK_WIDGET (window)));
+  /* Clear before callbacks: a new notification must survive for replay. */
+  private->session_update_pending = FALSE;
+  revision = ++private->session_revision;
+  gimp_image_window_session_update_aux (window, display,
+                                        gimp_image_window_config_to_entry_id
+                                          (GIMP_GUI_CONFIG (private->gimp->config)),
+                                        monitor, revision);
+  complete = (! private->session_update_pending &&
+              gimp_image_window_session_current (window, revision));
+  g_object_unref (monitor);
+  g_clear_object (&display);
+  g_object_unref (window);
+
+  return complete;
 }
 
 static void
@@ -3633,6 +3724,38 @@ gimp_image_window_session_update (GimpImageWindow *window,
                                   GimpDisplay     *new_display,
                                   const gchar     *new_entry_id,
                                   GdkMonitor      *monitor)
+{
+  GimpImageWindowPrivate *private = GIMP_IMAGE_WINDOW_GET_PRIVATE (window);
+  guint64                revision = ++private->session_revision;
+
+  if (private->painter_closing ||
+      gimp_dialog_factory_restore_stopping (private->dialog_factory))
+    return;
+
+  if (private->session_suspend_count || private->session_update_pending ||
+      gimp_dialog_factory_restore_pending (private->dialog_factory))
+    {
+      private->session_update_pending = TRUE;
+      return;
+    }
+
+  g_object_ref (window);
+  if (new_display)
+    g_object_ref (new_display);
+  g_object_ref (monitor);
+  gimp_image_window_session_update_aux (window, new_display, new_entry_id,
+                                        monitor, revision);
+  g_object_unref (monitor);
+  g_clear_object (&new_display);
+  g_object_unref (window);
+}
+
+static void
+gimp_image_window_session_update_aux (GimpImageWindow *window,
+                                      GimpDisplay     *new_display,
+                                      const gchar     *new_entry_id,
+                                      GdkMonitor      *monitor,
+                                      guint64          revision)
 {
   GimpImageWindowPrivate *private = GIMP_IMAGE_WINDOW_GET_PRIVATE (window);
 
@@ -3643,54 +3766,27 @@ gimp_image_window_session_update (GimpImageWindow *window,
       ! g_list_find (gimp_get_display_iter (private->gimp), new_display))
     new_display = NULL;
 
-  /* Handle changes to the entry id */
+  /* Preserve the old mapping until the configurer has settled the window
+   * topology. A same-entry sync also repairs an initially unrealized owner. */
   if (new_entry_id)
     {
-      if (! private->entry_id)
+      if (private->entry_id && strcmp (private->entry_id, new_entry_id) != 0)
         {
-          /* We're initializing. If we're in single-window mode, this
-           * will be the only window, so start to session manage
-           * it. If we're in multi-window mode, we will find out if we
-           * should session manage ourselves when we get a display
-           */
-          if (strcmp (new_entry_id, GIMP_SINGLE_IMAGE_WINDOW_ENTRY_ID) == 0)
-            {
-              gimp_image_window_session_apply (window, new_entry_id, monitor);
-            }
-        }
-      else if (strcmp (private->entry_id, new_entry_id) != 0)
-        {
-          /* The entry id changed, immediately and always stop session
-           * managing the old entry
-           */
           gimp_image_window_session_clear (window);
-
-          if (strcmp (new_entry_id, GIMP_EMPTY_IMAGE_WINDOW_ENTRY_ID) == 0)
-            {
-              /* If there is only one imageless display, we shall
-               * become the empty image window
-               */
-              if (private->active_shell &&
-                  private->active_shell->display &&
-                  ! gimp_display_get_image (private->active_shell->display) &&
-                  g_list_length (private->shells) <= 1)
-                {
-                  gimp_image_window_session_apply (window, new_entry_id,
-                                                   monitor);
-                }
-            }
-          else if (strcmp (new_entry_id, GIMP_SINGLE_IMAGE_WINDOW_ENTRY_ID) == 0)
-            {
-              /* As soon as we become the single image window, we
-               * shall session manage ourself until single-window mode
-               * is exited
-               */
-              gimp_image_window_session_apply (window, new_entry_id,
-                                               monitor);
-            }
+          if (! gimp_image_window_session_current (window, revision))
+            return;
         }
-
       private->entry_id = new_entry_id;
+      if (strcmp (new_entry_id, GIMP_SINGLE_IMAGE_WINDOW_ENTRY_ID) == 0)
+        {
+          gimp_image_window_session_apply (window, new_entry_id, monitor);
+          if (! gimp_image_window_session_current (window, revision))
+            return;
+        }
+      else if (! new_display && private->active_shell &&
+               g_list_find (gimp_get_display_iter (private->gimp),
+                            private->active_shell->display))
+        new_display = private->active_shell->display;
     }
 
   /* Handle changes to the displays. When in single-window mode, we

@@ -59,6 +59,12 @@
 
 enum
 {
+  PROP_0,
+  PROP_RESTORE_PENDING
+};
+
+enum
+{
   DOCK_WINDOW_ADDED,
   DOCK_WINDOW_REMOVED,
   LAST_SIGNAL
@@ -75,9 +81,35 @@ struct _GimpDialogFactoryPrivate
   GList            *registered_dialogs;
 
   GimpDialogsState  dialog_state;
+
+  guint             restore_depth;
+  guint             restore_count;
+  GList            *restore_sources;
+  GHashTable       *restore_infos;
+  gboolean          restore_stopping;
+  gboolean          dispose_pending;
+  gboolean          disposing;
 };
 
+typedef struct
+{
+  GimpDialogFactory *factory;
+  GSourceFunc        callback;
+  gpointer           data;
+  GDestroyNotify     destroy;
+  guint              source_id;
+  guint              refs;
+  gboolean           running;
+  GtkWidget         *target; /* borrowed from data until destroy */
+} GimpDialogRestore;
 
+
+
+static void        gimp_dialog_factory_get_property         (GObject                *object,
+                                                             guint                   property_id,
+                                                             GValue                 *value,
+                                                             GParamSpec             *pspec);
+static void        gimp_dialog_factory_restore_cancel       (GimpDialogFactory      *factory);
 static void        gimp_dialog_factory_dispose              (GObject                *object);
 static void        gimp_dialog_factory_finalize             (GObject                *object);
 static GtkWidget * gimp_dialog_factory_constructor          (GimpDialogFactory      *factory,
@@ -127,8 +159,14 @@ gimp_dialog_factory_class_init (GimpDialogFactoryClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
+  object_class->get_property = gimp_dialog_factory_get_property;
   object_class->dispose  = gimp_dialog_factory_dispose;
   object_class->finalize = gimp_dialog_factory_finalize;
+
+  g_object_class_install_property (object_class, PROP_RESTORE_PENDING,
+                                   g_param_spec_boolean ("restore-pending", NULL, NULL,
+                                                         FALSE, G_PARAM_READABLE |
+                                                         G_PARAM_STATIC_STRINGS));
 
   factory_signals[DOCK_WINDOW_ADDED] =
     g_signal_new ("dock-window-added",
@@ -157,10 +195,47 @@ gimp_dialog_factory_init (GimpDialogFactory *factory)
 }
 
 static void
+gimp_dialog_factory_get_property (GObject    *object,
+                                  guint       property_id,
+                                  GValue     *value,
+                                  GParamSpec *pspec)
+{
+  switch (property_id)
+    {
+    case PROP_RESTORE_PENDING:
+      g_value_set_boolean (value,
+                           gimp_dialog_factory_restore_pending (GIMP_DIALOG_FACTORY (object)));
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+      break;
+    }
+}
+
+static void
 gimp_dialog_factory_dispose (GObject *object)
 {
   GimpDialogFactory *factory = GIMP_DIALOG_FACTORY (object);
   GList             *list;
+
+  /* Constructors, auxiliary-state setters and native dock fills can all
+   * dispatch application callbacks.  Terminal teardown cancels queued peers,
+   * but cannot destroy a target or its saved lists under an active frame. */
+  if (factory->p->disposing)
+    return;
+
+  factory->p->disposing = TRUE;
+  factory->p->dispose_pending = TRUE;
+  gimp_dialog_factory_restore_stop (factory);
+  if (factory->p->restore_depth)
+    {
+      factory->p->disposing = FALSE;
+      return;
+    }
+
+  factory->p->dispose_pending = FALSE;
+  g_clear_pointer (&factory->p->restore_infos, g_hash_table_unref);
 
   /*  start iterating from the beginning each time we destroyed a
    *  toplevel because destroying a dock may cause lots of items
@@ -198,6 +273,7 @@ gimp_dialog_factory_dispose (GObject *object)
     }
 
   G_OBJECT_CLASS (parent_class)->dispose (object);
+  factory->p->disposing = FALSE;
 }
 
 static void
@@ -1477,6 +1553,9 @@ gimp_dialog_factory_save (GimpDialogFactory *factory,
 {
   GList *infos;
 
+  g_return_if_fail (! gimp_dialog_factory_restore_pending (factory));
+  g_return_if_fail (! gimp_dialog_factory_restore_stopping (factory));
+
   for (infos = factory->p->session_infos; infos; infos = g_list_next (infos))
     {
       GimpSessionInfo *info = infos->data;
@@ -1505,13 +1584,252 @@ gimp_dialog_factory_save (GimpDialogFactory *factory,
     }
 }
 
+/* Native restore leases also cover the synchronous scheduling walk.  A
+ * nested main loop must not report readiness between two original entries. */
+gboolean
+gimp_dialog_factory_restore_pending (GimpDialogFactory *factory)
+{
+  g_return_val_if_fail (GIMP_IS_DIALOG_FACTORY (factory), FALSE);
+
+  return factory->p->restore_depth || factory->p->restore_count;
+}
+
+gboolean
+gimp_dialog_factory_restore_stopping (GimpDialogFactory *factory)
+{
+  g_return_val_if_fail (GIMP_IS_DIALOG_FACTORY (factory), TRUE);
+
+  return factory->p->restore_stopping;
+}
+
+void
+gimp_dialog_factory_restore_stop (GimpDialogFactory *factory)
+{
+  g_return_if_fail (GIMP_IS_DIALOG_FACTORY (factory));
+
+  factory->p->restore_stopping = TRUE;
+  gimp_dialog_factory_restore_cancel (factory);
+}
+
+gboolean
+gimp_dialog_factory_restore_begin (GimpDialogFactory *factory)
+{
+  gboolean pending;
+
+  g_return_val_if_fail (GIMP_IS_DIALOG_FACTORY (factory), FALSE);
+
+  if (factory->p->restore_stopping)
+    return FALSE;
+
+  pending = gimp_dialog_factory_restore_pending (factory);
+  g_object_ref (factory);
+  factory->p->restore_depth++;
+  if (! pending)
+    g_object_notify (G_OBJECT (factory), "restore-pending");
+
+  return TRUE;
+}
+
+static void
+gimp_dialog_factory_restore_finished (GimpDialogFactory *factory)
+{
+  if (gimp_dialog_factory_restore_pending (factory))
+    return;
+
+  /* Retain claimed identities for the entire scheduling/fill wave.  A nested
+   * batch can finish an entry before the outer snapshot reaches it. */
+  g_clear_pointer (&factory->p->restore_infos, g_hash_table_unref);
+  if (! gimp_dialog_factory_restore_pending (factory) &&
+      ! factory->p->restore_stopping)
+    g_object_notify (G_OBJECT (factory), "restore-pending");
+}
+
+gboolean
+gimp_dialog_factory_restore_claim (GimpDialogFactory *factory,
+                                   GimpSessionInfo   *info)
+{
+  g_return_val_if_fail (GIMP_IS_DIALOG_FACTORY (factory), FALSE);
+  g_return_val_if_fail (GIMP_IS_SESSION_INFO (info), FALSE);
+  g_return_val_if_fail (factory->p->restore_depth > 0, FALSE);
+
+  if (factory->p->restore_stopping)
+    return FALSE;
+  if (! factory->p->restore_infos)
+    factory->p->restore_infos = g_hash_table_new_full (g_direct_hash, g_direct_equal,
+                                                      g_object_unref, NULL);
+  if (g_hash_table_contains (factory->p->restore_infos, info))
+    return FALSE;
+  g_hash_table_add (factory->p->restore_infos, g_object_ref (info));
+  return TRUE;
+}
+
+gboolean
+gimp_dialog_factory_restore_owns_widget (GimpDialogFactory *factory,
+                                         GtkWidget         *widget)
+{
+  GList *iter;
+
+  g_return_val_if_fail (GIMP_IS_DIALOG_FACTORY (factory), FALSE);
+
+  for (iter = factory->p->restore_sources; iter; iter = iter->next)
+    if (((GimpDialogRestore *) iter->data)->target == widget)
+      return TRUE;
+
+  return FALSE;
+}
+
+void
+gimp_dialog_factory_restore_end (GimpDialogFactory *factory)
+{
+  g_return_if_fail (GIMP_IS_DIALOG_FACTORY (factory));
+  g_return_if_fail (factory->p->restore_depth > 0);
+
+  factory->p->restore_depth--;
+  if (! factory->p->restore_depth && factory->p->dispose_pending)
+    g_object_run_dispose (G_OBJECT (factory));
+  else
+    gimp_dialog_factory_restore_finished (factory);
+
+  g_object_unref (factory);
+}
+
+static void
+gimp_dialog_factory_restore_unref (GimpDialogRestore *restore)
+{
+  GimpDialogFactory *factory = restore->factory;
+
+  if (--restore->refs)
+    return;
+
+  factory->p->restore_sources = g_list_remove (factory->p->restore_sources,
+                                               restore);
+  /* Keep the pending lease through every payload finalizer. */
+  restore->destroy (restore->data);
+  factory->p->restore_count--;
+  g_free (restore);
+
+  gimp_dialog_factory_restore_finished (factory);
+  g_object_unref (factory);
+}
+
+static void
+gimp_dialog_factory_restore_source_free (gpointer data)
+{
+  GimpDialogRestore *restore = data;
+
+  restore->source_id = 0;
+  gimp_dialog_factory_restore_unref (restore);
+}
+
+static gboolean
+gimp_dialog_factory_restore_dispatch (gpointer data)
+{
+  GimpDialogRestore *restore = data;
+  GimpDialogFactory *factory = restore->factory;
+
+  /* Source removal during a nested loop must not free the dispatch payload. */
+  restore->refs++;
+  restore->running = TRUE;
+  if (gimp_dialog_factory_restore_begin (factory))
+    {
+      if (! factory->p->restore_stopping)
+        restore->callback (restore->data);
+      restore->running = FALSE;
+      gimp_dialog_factory_restore_end (factory);
+    }
+  else
+    restore->running = FALSE;
+  gimp_dialog_factory_restore_unref (restore);
+
+  return G_SOURCE_REMOVE;
+}
+
+void
+gimp_dialog_factory_restore_add (GimpDialogFactory *factory,
+                                 GtkWidget         *target,
+                                 GSourceFunc        callback,
+                                 gpointer           data,
+                                 GDestroyNotify     destroy)
+{
+  GimpDialogRestore *restore;
+
+  g_return_if_fail (GIMP_IS_DIALOG_FACTORY (factory));
+  g_return_if_fail (factory->p->restore_depth > 0);
+  g_return_if_fail (callback != NULL);
+  g_return_if_fail (destroy != NULL);
+
+  if (factory->p->restore_stopping)
+    {
+      destroy (data);
+      return;
+    }
+
+  restore = g_new0 (GimpDialogRestore, 1);
+  restore->factory = g_object_ref (factory);
+  restore->target = target;
+  restore->callback = callback;
+  restore->data = data;
+  restore->destroy = destroy;
+  restore->refs = 1;
+  factory->p->restore_count++;
+  factory->p->restore_sources = g_list_prepend (factory->p->restore_sources,
+                                                restore);
+  restore->source_id =
+    g_idle_add_full (G_PRIORITY_DEFAULT_IDLE,
+                     gimp_dialog_factory_restore_dispatch, restore,
+                     gimp_dialog_factory_restore_source_free);
+}
+
+static void
+gimp_dialog_factory_restore_cancel (GimpDialogFactory *factory)
+{
+  GList *iter;
+
+  /* Removing one source can finalize its payload and reenter disposal.  Find
+   * the next queued peer afresh instead of retaining an invalid list cursor. */
+  for (;;)
+    {
+      guint source_id = 0;
+
+      for (iter = factory->p->restore_sources; iter; iter = iter->next)
+        {
+          GimpDialogRestore *restore = iter->data;
+
+          if (restore->source_id && ! restore->running)
+            {
+              source_id = restore->source_id;
+              restore->source_id = 0;
+              break;
+            }
+        }
+      if (! source_id)
+        break;
+      g_source_remove (source_id);
+    }
+}
+
 void
 gimp_dialog_factory_restore (GimpDialogFactory *factory,
                              GdkMonitor        *monitor)
 {
+  GList *snapshot;
   GList *infos;
 
-  for (infos = factory->p->session_infos; infos; infos = g_list_next (infos))
+  g_return_if_fail (GDK_IS_MONITOR (monitor));
+
+  g_object_ref (monitor);
+  if (! gimp_dialog_factory_restore_begin (factory))
+    {
+      g_object_unref (monitor);
+      return;
+    }
+
+  snapshot = g_list_copy (factory->p->session_infos);
+  for (infos = snapshot; infos; infos = infos->next)
+    g_object_ref (infos->data);
+
+  for (infos = snapshot; infos && ! factory->p->restore_stopping;
+       infos = g_list_next (infos))
     {
       GimpSessionInfo *info = infos->data;
 
@@ -1526,6 +1844,10 @@ gimp_dialog_factory_restore (GimpDialogFactory *factory,
                     info);
         }
     }
+
+  g_list_free_full (snapshot, g_object_unref);
+  gimp_dialog_factory_restore_end (factory);
+  g_object_unref (monitor);
 }
 
 static void

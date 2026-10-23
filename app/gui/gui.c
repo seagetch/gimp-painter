@@ -575,6 +575,8 @@ gui_restore_after_callback (Gimp               *gimp,
                                 "gimp", gimp,
                                 NULL);
 
+  session_bind_ui_configurer (gimp, ui_configurer);
+
   image_ui_manager = menus_get_image_manager_singleton (gimp);
   gimp_ui_manager_update (image_ui_manager, gimp);
 
@@ -680,6 +682,11 @@ gui_exit_callback (Gimp     *gimp,
       return TRUE; /* stop exit for now */
     }
 
+  /* A permitted Quit must let native dock fills and the latest requested
+   * topology settle before saving or deleting any display. */
+  if (session_exit_defer (gimp, force))
+    return TRUE;
+
   gimp->message_handler = GIMP_CONSOLE;
 
   gui_unique_exit ();
@@ -708,6 +715,8 @@ gui_exit_callback (Gimp     *gimp,
     }
 
   modifiers_save (gimp, FALSE);
+
+  session_stop (gimp);
 
   g_signal_handlers_disconnect_by_func (gimp_get_user_context (gimp),
                                         gui_display_changed,

@@ -449,6 +449,30 @@ gimp_osx_focus_window (gpointer user_data)
 }
 #endif
 
+/* A lifecycle test may exercise a real accepted GUI/core exit itself.  This
+ * observer runs after gui_exit_after_callback(), never handles the signal, and
+ * cannot mistake a deferred or cancelled exit for completed teardown. */
+static gboolean
+gimp_test_gui_exit_completed (Gimp     *gimp,
+                               gboolean  force,
+                               gpointer  data)
+{
+  (void) force;
+  (void) data;
+  g_object_set_data (G_OBJECT (gimp), "gimp-test-gui-exited",
+                     GINT_TO_POINTER (TRUE));
+  return FALSE;
+}
+
+gboolean
+gimp_test_gui_has_exited (Gimp *gimp)
+{
+  g_return_val_if_fail (GIMP_IS_GIMP (gimp), FALSE);
+
+  return GPOINTER_TO_INT (g_object_get_data (G_OBJECT (gimp),
+                                            "gimp-test-gui-exited"));
+}
+
 static void
 gimp_test_app_activate_callback (GimpCoreApp *app,
                                  gpointer     user_data)
@@ -463,6 +487,8 @@ gimp_test_app_activate_callback (GimpCoreApp *app,
 
   gui_init (gimp, TRUE, NULL, g_getenv ("GIMP_TESTING_ABS_TOP_SRCDIR"), "System Language");
   gimp_init_icon_theme_for_testing ();
+  g_signal_connect_after (gimp, "exit",
+                          G_CALLBACK (gimp_test_gui_exit_completed), NULL);
   gimp_initialize (gimp, gimp_status_func_dummy);
   gimp_restore (gimp, gimp_status_func_dummy, NULL);
 #ifdef GDK_WINDOWING_QUARTZ
@@ -471,11 +497,13 @@ gimp_test_app_activate_callback (GimpCoreApp *app,
   gimp->initialized = TRUE;
   gimp_core_app_set_exit_status (app, g_test_run ());
 
-  /* Don't write files to the source dir */
-  gimp_test_utils_set_gimp3_directory ("GIMP_TESTING_ABS_TOP_BUILDDIR",
-                                       "app/tests/gimpdir-output");
-
-  gimp_exit (gimp, TRUE);
+  if (! gimp_test_gui_has_exited (gimp))
+    {
+      /* Don't write files to the source dir. */
+      gimp_test_utils_set_gimp3_directory ("GIMP_TESTING_ABS_TOP_BUILDDIR",
+                                          "app/tests/gimpdir-output");
+      gimp_exit (gimp, TRUE);
+    }
 }
 
 static Gimp *
