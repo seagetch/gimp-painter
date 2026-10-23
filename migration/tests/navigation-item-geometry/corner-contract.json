@@ -1,0 +1,64 @@
+{
+  "sources": [
+    {
+      "revision": "afa43fae3e920210146abed514f136fd49f671b5",
+      "path": "app/tools/gimpdrawtool.c",
+      "snapshot": "afa43fae3e-gimpdrawtool.c.txt",
+      "blob": "fe40a3f60d33add8cfea8e038c7da5a0eca67a89",
+      "sha256": "bfd2d762b3589555121273502da552d68808a3f618eac06ab6035bdb6f093b1e"
+    },
+    {
+      "revision": "afa43fae3e920210146abed514f136fd49f671b5",
+      "path": "app/tools/gimprectangletool.c",
+      "snapshot": "afa43fae3e-gimprectangletool.c.txt",
+      "blob": "3d2e942d33ec036282458e3409880d8b39c9f916",
+      "sha256": "c2dadb8a019c8a12e15bb56dd57a96123100c8d195f7dad852cec1896b080a0b"
+    },
+    {
+      "revision": "afa43fae3e920210146abed514f136fd49f671b5",
+      "path": "app/display/gimpcanvascorner.c",
+      "snapshot": "afa43fae3e-gimpcanvascorner.c.txt",
+      "blob": "f913521caa3d5e42bbd144fbff24ed69dfa5c143",
+      "sha256": "c497d88409d31bc4755e7a27779f90f225b8e1c12e5a45b33468fd88ab67589a"
+    },
+    {
+      "revision": "afa43fae3e920210146abed514f136fd49f671b5",
+      "path": "app/display/display-enums.h",
+      "snapshot": "afa43fae3e-display-enums.h.txt",
+      "blob": "da7655278bc8d66e3270035d246295172c988cc5",
+      "sha256": "772168ac1cc0882b9762a908ad663c227aaddc935fff7ece8db7d5fece6f5da2"
+    },
+    {
+      "revision": "4023015ec1c3096322f7d711c22572b1cf51d408",
+      "path": "app/display/gimptoolwidget.c",
+      "snapshot": "4023015ec1-gimptoolwidget.c.txt",
+      "blob": "22db01215e1fcefbb08ad166310760dfe6fe34fe",
+      "sha256": "d914136691036e9dd87c4d7ce6cc164583567bfb69445023f4afae4262994fde"
+    },
+    {
+      "revision": "4023015ec1c3096322f7d711c22572b1cf51d408",
+      "path": "app/display/gimptoolrectangle.c",
+      "snapshot": "4023015ec1-gimptoolrectangle.c.txt",
+      "blob": "e4db0c5b4ef0a6ee0c1e0e9c43b4f80dc6de0f87",
+      "sha256": "2e8394617b16e959ef40b80c5dc982607b45dac4b6b25355106bd840f10f93e7"
+    },
+    {
+      "revision": "4023015ec1c3096322f7d711c22572b1cf51d408",
+      "path": "app/display/gimpcanvascorner.c",
+      "snapshot": "4023015ec1-gimpcanvascorner.c.txt",
+      "blob": "50aebfb4f0eeca4481238602b5c87167ac794b75",
+      "sha256": "f70399a0bf9bfa26a6ef7472a2faaf19d4509143271c6915ddc87b8d7c0d8ece"
+    },
+    {
+      "revision": "4023015ec1c3096322f7d711c22572b1cf51d408",
+      "path": "app/display/display-enums.h",
+      "snapshot": "4023015ec1-display-enums.h.txt",
+      "blob": "24f3dc4e6f2c9ab982cf97ce90f04c6db47904a0",
+      "sha256": "1f245251d35fdece02122e390124e71da245b6c9b6574578018ae24eedaa7000"
+    }
+  ],
+  "policy": "CENTER remains enum/property-admissible, but has no documented corner geometry and left x/y unassigned. Define deterministic no-ink/no-extents, not a centered rectangle. All directional cases remain unchanged.",
+  "old_callers": "Only draw-tool wrapper calls factory. Rectangle-tool resize anchors map eight directional modes; default mapper returns CENTER but has no specified corner semantics. Explicit creation uses NW NE SW SE.",
+  "current_callers": "Only tool-widget wrapper calls factory. Rectangle-widget construction loops exactly eight resize directions; center control uses separate CROSS handle.",
+  "evidence_scope": "Source audit and observed empty output, not memory-sanitizer proof of an observed uninitialized read. Initial nonempty expectation was invalid for unsupported CENTER and is retained as diagnostic."
+}

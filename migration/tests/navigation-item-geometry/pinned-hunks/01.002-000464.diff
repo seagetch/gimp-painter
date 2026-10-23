@@ -1,0 +1,2 @@
++  // FIXME! flip and rotation should be handled in gimp_display_shell_rotate.c
++  cairo_rotate (cr, (shell->mirrored? -1: 1)*shell->rotate_angle / 180.0 * M_PI);

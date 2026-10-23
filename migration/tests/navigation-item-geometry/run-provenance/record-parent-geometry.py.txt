@@ -1,0 +1,19 @@
+import json,pathlib,hashlib,sys,re
+D=pathlib.Path('/workspace/shared/gimp-native-secondary');R=pathlib.Path('/workspace/scratch/0015fc5d1a03/gimp-painter');E=R/'migration/tests/navigation-item-geometry'
+build,name=sys.argv[1:]
+row=[json.loads(x) for x in (D/build/'meson-logs/testlog.json').read_text().splitlines() if json.loads(x)['name']=='gimp:app / painter-navigation-events'][0]
+paths=['app/display/'+n for n in ['gimpdisplayshell.h','gimpdisplayshell-scroll.h','gimpdisplayshell-scroll.c','gimpdisplayshell-rotate.c','gimpdisplayshell-tool-events.c','gimpdisplayshell-scale.c','gimpdisplayshell-scale.h','gimpdisplayshell.c','gimpdisplayshell-callbacks.c','gimpdisplayshell-title.c','gimpcanvaslayerboundary.c','gimpcanvasrectangle.c','gimpcanvasgrid.c','gimpcanvashandle.c','gimpcanvascorner.c','gimpcanvaspath.c']]+['app/tests/'+n for n in ['test-painter-navigation-events.c','test-painter-navigation-legacy-pan.inc','test-painter-navigation-old-operations.inc','test-painter-navigation-old-zoom.inc','test-painter-navigation-old-space.inc','test-painter-navigation-grid-damage.inc','test-painter-navigation-handle-damage.inc','test-painter-navigation-item-geometry.inc']]
+paths += [str(p.relative_to(R)) for p in (R/'migration/fixtures/legacy-navigation-applied').glob('zoom-*') if p.is_file()]
+paths += [str(p.relative_to(R)) for p in (R/'migration/fixtures/legacy-navigation-space').glob('*') if p.is_file() and p.suffix != '.py']
+paths += ['app/display/'+n for n in ['gimpcanvasarc.c','gimpcanvasguide.c','gimpcanvasrectangleguides.c','gimpdisplayshell-render.c','gimpdisplayshell-draw.c','gimpdisplayshell-selection.c','gimpdisplayshell-transform.c','gimpdisplayshell-expose.c','gimpcanvasitem.c','gimpcanvas-style.c']]
+# Bind every registered navigation include, not a fragile suffix replacement.
+paths += ['app/tests/'+name for name in re.findall(r'#include \"(test-painter-navigation-[^\"]+\.inc)\"',(R/'app/tests/test-painter-navigation-events.c').read_text())]
+# Bind direct and nested source-only oracle includes as well.
+for directory in ['legacy-pan','legacy-navigation-applied','legacy-navigation-space']:
+ paths += [str(p.relative_to(R)) for p in (R/'migration/fixtures'/directory).glob('*.inc')]
+paths=list(dict.fromkeys(paths))
+for p in paths:assert (R/p).read_bytes()==(D/'source'/p).read_bytes(),p
+out={k:row.get(k,'') for k in ['name','result','duration','returncode','stdout','stderr']}
+out['source_sha256']={p:hashlib.sha256((D/'source'/p).read_bytes()).hexdigest() for p in paths}
+out['cases']=sum(x.startswith('ok ') and '# SKIP' not in x for x in row['stdout'].splitlines());out['test_budget_seconds']=60;out['xvfb']={'width':1080,'height':1920,'depth':24,'authenticated':True}
+(E/name).write_text(json.dumps(out,indent=2)+'\n');print(name,out['result'],out['cases'],out['duration'])

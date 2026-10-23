@@ -1,0 +1,11 @@
+-  gdouble                  rx, ry;
+-  gdouble                  rw, rh;
+-  gint                     top_and_bottom_handle_x_offset;
+-  gint                     left_and_right_handle_y_offset;
+-
++  gdouble                  rx1, ry1, rx2, ry2, rx3, ry3, rx4, ry4;
++  gdouble                  vec_xx, vec_xy, vec_yx, vec_yy;
++  gdouble                  vec_x_len, vec_y_len;
++  gdouble                  h_handle_x_offset;
++  gdouble                  v_handle_y_offset;
++  

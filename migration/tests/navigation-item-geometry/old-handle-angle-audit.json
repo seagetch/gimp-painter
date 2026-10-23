@@ -1,0 +1,21 @@
+{
+  "sources": [
+    {
+      "revision": "afa43fae3e920210146abed514f136fd49f671b5",
+      "path": "app/widgets/gimpcairo.c",
+      "start": 80,
+      "end": 116,
+      "snapshot": "old-handle-gimpcairo.c.txt",
+      "sha256": "a38e0234bbe9e4c8afd018303bd432ed9902e503e13e568152f5a3fee2a9cf12"
+    },
+    {
+      "revision": "afa43fae3e920210146abed514f136fd49f671b5",
+      "path": "app/display/gimpcanvashandle.c",
+      "start": 253,
+      "end": 352,
+      "snapshot": "old-handle-gimpcanvashandle.c.txt",
+      "sha256": "8330c58408a5a758e365f4ee3e2038308bfda2746e38d5386018e50f0f3e7e7d"
+    }
+  ],
+  "finding": "Old gimp_cairo_add_arc negates start_angle. Therefore old start_angle - rotation_angle renders at -start_angle + rotation_angle. Native common display CTM with unchanged gimp_cairo_arc performs the same angle addition for unmirrored circles; subtracting shell angle again would double-correct. Integer snapping, mirrored primitive details and filled/other handle semantics are not claimed pixel-identical by this observation."
+}

@@ -1,0 +1,36 @@
+{
+  "scope": "Allowlisted Meson build options and tested executable identity only; no raw environment",
+  "builds": [
+    {
+      "build": "build",
+      "options": {
+        "auto_features": "disabled",
+        "debug": false,
+        "optimization": "2",
+        "b_ndebug": "false",
+        "b_sanitize": "none",
+        "headless-tests": "disabled",
+        "libunwind": false,
+        "painter-http": "enabled"
+      },
+      "executable_sha256": "9d1e9d71fd0c748536dba8b7f104b43b6df92d42d7e7965936402c137049f9b7",
+      "executable_bytes": 11868696
+    },
+    {
+      "build": "build-asan",
+      "options": {
+        "auto_features": "disabled",
+        "debug": false,
+        "optimization": "2",
+        "b_ndebug": "false",
+        "b_sanitize": "address,undefined",
+        "headless-tests": "disabled",
+        "libunwind": false,
+        "painter-http": "enabled"
+      },
+      "executable_sha256": "af43e21eb9a6b064248b6a1fc994283b71c31215519b7e5492cb4b0905d2e13c",
+      "executable_bytes": 148337472
+    }
+  ],
+  "xvfb_helper_sha256": "6481502846d9f896cb906c8b1cde26f59d6899d1d5f889e1ffbf8e106e743fde"
+}

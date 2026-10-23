@@ -1,0 +1,27 @@
+#!/bin/bash
+set -euo pipefail
+D=/workspace/shared/gimp-native-secondary
+R=/workspace/scratch/0015fc5d1a03/gimp-painter
+source "$D/env.sh";exec 9>"$D/build.lock";flock 9
+sync_fixture() { local rel="$1"; mkdir -p "$D/source/$rel"; for f in "$R/$rel"/*; do [[ -f "$f" ]] || continue; cmp -s "$f" "$D/source/$rel/${f##*/}" || cp "$f" "$D/source/$rel/"; done; }
+for f in test-painter-navigation-events.c test-painter-navigation-legacy-pan.inc test-painter-navigation-old-operations.inc test-painter-navigation-old-zoom.inc test-painter-navigation-old-space.inc test-painter-navigation-grid-damage.inc test-painter-navigation-handle-damage.inc test-painter-navigation-corner-safety.inc test-painter-navigation-path-damage.inc test-painter-navigation-render-geometry.inc test-painter-navigation-item-geometry.inc test-painter-navigation-checker-geometry.inc test-painter-navigation-selection-geometry.inc test-painter-navigation-signed-geometry.inc test-painter-navigation-grid-precise.inc; do cmp -s "$R/app/tests/$f" "$D/source/app/tests/$f" || cp "$R/app/tests/$f" "$D/source/app/tests/$f"; done
+sync_fixture migration/fixtures/legacy-pan
+sync_fixture migration/fixtures/legacy-navigation-applied
+for f in gimpdisplayshell.h gimpdisplayshell-scroll.h gimpdisplayshell-scroll.c gimpdisplayshell-rotate.c gimpdisplayshell-tool-events.c gimpdisplayshell-scale.c gimpdisplayshell-scale.h gimpdisplayshell.c gimpdisplayshell-callbacks.c gimpdisplayshell-title.c gimpcanvasrectangle.c gimpcanvaslayerboundary.c gimpcanvasgrid.c gimpcanvashandle.c gimpcanvascorner.c gimpcanvaspath.c; do cmp -s "$R/app/display/$f" "$D/source/app/display/$f" || cp "$R/app/display/$f" "$D/source/app/display/$f"; done
+sync_fixture migration/fixtures/legacy-navigation-space
+python3 "$D/sync-zoom-routes.py"
+ninja -j2 -C "$D/build" app/tests/painter-navigation-events > "$D/parent-final-normal-build.log" 2>&1
+for group in selection-{0..2} checker-{0..2} image-edges-{0..2} signed-{0..5} grid-precise-{0..2} chunks-{0..5} window-{arc,guide,path,rectangle,rectangle-guides}-{0..2} geometry-{arc,corner,grid,guide,handle,path,rectangle,rectangle-guides} original rotation zoom space; do
+case "$group" in
+original) args='--skip-prefix /navigation-events/old-zoom --skip-prefix /navigation-events/old-operations --skip-prefix /navigation-events/old-space --skip-prefix /navigation-events/grid-damage --skip-prefix /navigation-events/handle-damage --skip-prefix /navigation-events/corner-safety --skip-prefix /navigation-events/path-damage --skip-prefix /navigation-events/item-geometry';;
+rotation) args='-p /navigation-events/old-operations';;
+zoom) args='-p /navigation-events/old-zoom';;
+space) args='-p /navigation-events/old-space';;
+*) args="-p /navigation-events/item-geometry/$group";;
+esac
+set +e
+GIMP_TEST_NAVIGATION_DRAW_DIR="$D/pan-screenshots" python3 "$D/source/tools/run-painter-xvfb.py" meson test -C "$D/build" --no-rebuild --print-errorlogs --test-args="$args" painter-navigation-events > "$D/parent-final-normal-$group.log" 2>&1
+status=$?;set -e
+python3 "$D/record-parent-geometry.py" build "normal-$group.json"
+[[ $status == 0 ]] || exit "$status"
+done

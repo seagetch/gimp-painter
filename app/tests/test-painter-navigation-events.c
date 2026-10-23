@@ -2808,6 +2808,12 @@ device_image_origin (void)
 #include "test-painter-navigation-handle-damage.inc"
 #include "test-painter-navigation-corner-safety.inc"
 #include "test-painter-navigation-path-damage.inc"
+#include "test-painter-navigation-render-geometry.inc"
+#include "test-painter-navigation-item-geometry.inc"
+#include "test-painter-navigation-checker-geometry.inc"
+#include "test-painter-navigation-selection-geometry.inc"
+#include "test-painter-navigation-signed-geometry.inc"
+#include "test-painter-navigation-grid-precise.inc"
 
 int main(int argc,char **argv)
 {
@@ -2833,6 +2839,23 @@ int main(int argc,char **argv)
   g_test_add_func("/navigation-events/old-space/origin",old_space_pan_origin);
   g_test_add_func("/navigation-events/old-space/oncanvas-render",old_space_pan_render);
   g_test_add_func("/navigation-events/old-space/deferred-release",old_space_pan_deferred_release);
+  for(guint a=0;a<3;a++)
+    {
+      gchar*path=g_strdup_printf("/navigation-events/item-geometry/selection-%u",a);g_test_add_data_func(path,GUINT_TO_POINTER(a),selection_window_clear);g_free(path);
+      path=g_strdup_printf("/navigation-events/item-geometry/checker-%u",a);g_test_add_data_func(path,GUINT_TO_POINTER(a),checker_window_geometry);g_free(path);
+      path=g_strdup_printf("/navigation-events/item-geometry/image-edges-%u",a);g_test_add_data_func(path,GUINT_TO_POINTER(a),render_image_edges);g_free(path);
+      path=g_strdup_printf("/navigation-events/item-geometry/grid-precise-%u",a);g_test_add_data_func(path,GUINT_TO_POINTER(a),grid_precise_window);g_free(path);
+    }
+  for(guint a=0;a<6;a++)
+    {
+      gchar*path=g_strdup_printf("/navigation-events/item-geometry/signed-%u",a);g_test_add_data_func(path,GUINT_TO_POINTER(a),signed_rectangle_geometry);g_free(path);
+      path=g_strdup_printf("/navigation-events/item-geometry/chunks-%u",a);g_test_add_data_func(path,GUINT_TO_POINTER(a),render_chunk_interiors);g_free(path);
+    }
+  for(guint f=0;f<8;f++)
+    {gchar*path=g_strdup_printf("/navigation-events/item-geometry/geometry-%s",item_family_names[f]);g_test_add_data_func(path,GUINT_TO_POINTER(f),item_geometry_family);g_free(path);}
+  const guint primitive_families[]={0,3,5,6,7};
+  for(guint f=0;f<G_N_ELEMENTS(primitive_families);f++)for(guint a=0;a<3;a++)
+    {guint family=primitive_families[f];gchar*path=g_strdup_printf("/navigation-events/item-geometry/window-%s-%u",item_family_names[family],a);g_test_add_data_func(path,GUINT_TO_POINTER(family*3+a),item_primitive_window);g_free(path);}
   g_test_add_func("/navigation-events/path-damage/bounds",path_damage_bounds);
   for(guint a=0;a<9;a++)
     {gchar*path=g_strdup_printf("/navigation-events/path-damage/window-%u",a);g_test_add_data_func(path,GUINT_TO_POINTER(a),path_damage_window);g_free(path);}

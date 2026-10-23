@@ -1,0 +1,1 @@
+The collector closure audit additionally found the two existing pan/rotation oracle includes absent from the inherited collector list. This attempt binds new tests but is not final complete-input acceptance. Corrected collection includes every .inc in all three oracle directories; affected groups rerun, never rehashed.

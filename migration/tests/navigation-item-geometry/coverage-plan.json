@@ -1,0 +1,112 @@
+{
+  "parent": "25.009",
+  "original_rows": 196,
+  "status": "OPEN_NOT_ACCEPTANCE",
+  "entries": [
+    {
+      "path": "app/display/gimpcanvasarc.c",
+      "original_rows": 11,
+      "plan": "Prototype12 angle/H/V views x4 arc variants passed; retain old ellipse-direction source mapping, then actual window clear/clip."
+    },
+    {
+      "path": "app/display/gimpcanvascorner.c",
+      "original_rows": 32,
+      "plan": "Pending bounded CENTER safety proof; eight directional branches byte-exact.192 actual directional-to-CENTER transitions planned; no whole32-duty closure yet."
+    },
+    {
+      "path": "app/display/gimpcanvasgrid.c",
+      "original_rows": 21,
+      "plan": "167f2cb636 bounded damage fix proven120 primitive/120 window scenes normal+san. Original21 rows still require explicit old-hunk mapping and infinite-canvas/fraction/aniso coverage."
+    },
+    {
+      "path": "app/display/gimpcanvasguide.c",
+      "original_rows": 3,
+      "plan": "Prototype6 axis/boundary guide variants x12views pass. Need actual viewport-clipped show/hide and explicit old manualline replacement mapping."
+    },
+    {
+      "path": "app/display/gimpcanvashandle.c",
+      "original_rows": 3,
+      "plan": "Bounded18normal/18san fix ready:156raster/8424bounds/156window. Old negative start-angle helper audit rules out double correction; no whole-parent closure."
+    },
+    {
+      "path": "app/display/gimpcanvaspath.c",
+      "original_rows": 3,
+      "plan": "Prototype3 path styles xfilled/unfilled x12views pass; actual window damage/clip pending."
+    },
+    {
+      "path": "app/display/gimpcanvasrectangle.c",
+      "original_rows": 19,
+      "plan": "Prototype filled/unfilled ordinary/clipped shapes x12views pass. Explicit negative dimensions, giant clipped edge and actual show/hide pending. Prior layer-boundary OOM checkpoint remains separate."
+    },
+    {
+      "path": "app/display/gimpcanvasrectangleguides.c",
+      "original_rows": 21,
+      "plan": "Prototype8 enums x12views pass after documenting old/current SPACING no-op. Need actual damage and complete signed rectangle/count coverage."
+    },
+    {
+      "path": "app/display/gimpdisplayshell-draw.c",
+      "original_rows": 14,
+      "plan": "Old chunk overlap/checkerboard rotation replaced native screen-chunk clipping and shared CTM. Add multi-chunk seam/interior oracle and transparent checkerboard alignment; do not claim256px representative scene covers all chunk boundaries."
+    },
+    {
+      "path": "app/display/gimpdisplayshell-render.c",
+      "original_rows": 17,
+      "plan": "Old TileManager fault/null checks retired by GEGL renderer. Explicit source replacement mapping and native image-edge/multi-chunk/zero-exposure tests pending; no old tile runtime claim."
+    },
+    {
+      "path": "app/display/gimpdisplayshell-expose.c",
+      "original_rows": 1,
+      "plan": "Old accum_error reset replaced fractional residual/common matrix. Existing pan source checkpoint demonstrates full invalidation; map exact obsolete-field obligation without dropping it."
+    },
+    {
+      "path": "app/display/gimpdisplayshell-expose.h",
+      "original_rows": 1,
+      "plan": "Old struct forward/include signature obligation; map registered header proof and replacement API."
+    },
+    {
+      "path": "app/display/gimpdisplayshell-rotate.c",
+      "original_rows": 1,
+      "plan": "Existing pan/rotation/zoom/Space checkpoint gives native shared CTM/cache lifecycle. Tie pinned hunk to exact current source and aggregate regression."
+    },
+    {
+      "path": "app/display/gimpdisplayshell-rotate.h",
+      "original_rows": 1,
+      "plan": "Tie unchanged current rotation API to registered C/C++ header proof; preserve original hunk ID."
+    },
+    {
+      "path": "app/display/gimpdisplayshell-scroll.c",
+      "original_rows": 7,
+      "plan": "Seven old viewport/render-origin helpers replaced native integer fields+fractional bridge. Existing old-source gestures prove runtime subset; explicit function mapping needed."
+    },
+    {
+      "path": "app/display/gimpdisplayshell-scroll.h",
+      "original_rows": 1,
+      "plan": "Registered additional header route admitted at bounded pan checkpoint; bind exact current signature rather than reuse historical compile as fresh."
+    },
+    {
+      "path": "app/display/gimpdisplayshell-selection.c",
+      "original_rows": 5,
+      "plan": "Old manual segment clipping disabled under rotation. Native selection uses current transformed segments/common matrix; extend real selection redraw/clear while respecting timer phase."
+    },
+    {
+      "path": "app/display/gimpdisplayshell-tool-events.c",
+      "original_rows": 18,
+      "plan": "18 parent rows retain distinct IDs from18 closed drag-zoom-scroll rows. Reference exact retained original action/acceptance and checkpoint; no duplicate ID deletion."
+    },
+    {
+      "path": "app/display/gimpdisplayshell-transform.c",
+      "original_rows": 15,
+      "plan": "15 old transform helpers mapped to native display/zoom/unzoom/common CTM and precise residual. Existing50gesture cases cover many paths; inventory each helper, including bounds/segment/inverse and rounding."
+    },
+    {
+      "path": "app/display/gimpdisplayshell-transform.h",
+      "original_rows": 1,
+      "plan": "Old signature additions map current transform header/registered build; not a new runtime function claim."
+    },
+    {
+      "path": "app/widgets/gimpnavigationview.c",
+      "original_rows": 1,
+      "plan": "Only owned hunk removes GDK_EXTENSION_EVENTS_ALL event mask, not preview rotation implementation. Map GTK3 pointer grab event contract and avoid inventing unrelated preview obligation."
+    }
+  ]
+}

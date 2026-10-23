@@ -1,0 +1,4 @@
+-  *nx = CLAMP (tx, G_MININT, G_MAXINT);
+-  *ny = CLAMP (ty, G_MININT, G_MAXINT);
++  *nx = CLAMP (r_tx, G_MININT, G_MAXINT);
++  *ny = CLAMP (r_ty, G_MININT, G_MAXINT);

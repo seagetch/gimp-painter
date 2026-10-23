@@ -1,0 +1,6 @@
++                                     MIN (private->y,
++                                          private->y + private->height),
++                                     x2, y2);
++  gimp_display_shell_transform_xy_f (shell,
++                                     MIN (private->x,
++                                          private->x + private->width),

@@ -1,0 +1,5 @@
+-                               -x_offset, -y_offset);
++                               -ROUND(rx_offset), -ROUND(ry_offset));
++
++      shell->accum_error_x = rx_offset - ROUND(rx_offset);
++      shell->accum_error_y = ry_offset - ROUND(ry_offset);

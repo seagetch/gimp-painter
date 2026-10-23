@@ -1,0 +1,4 @@
++            else if (shell->scaling)
++              gimp_display_shell_stop_scaling (shell, NULL);
++            else if (shell->rotating)
++              gimp_display_shell_stop_rotating (shell, NULL);

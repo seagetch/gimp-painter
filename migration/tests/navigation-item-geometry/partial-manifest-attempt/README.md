@@ -1,0 +1,1 @@
+These runtime outcomes are retained, but the receipt collector accidentally omitted several newly included fixture files through a suffix replacement. They are NOT final-source acceptance. The corrected collector enumerates every navigation include and requires byte equality with the private source. Missing-scope groups are rerun; no old receipt is rehashed into a new claim.

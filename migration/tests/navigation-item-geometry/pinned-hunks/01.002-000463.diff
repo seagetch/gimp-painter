@@ -1,0 +1,4 @@
+-  *radius_x = (x2 - x1) / 2.0;
+-  *radius_y = (y2 - y1) / 2.0;
++  *radius_x = sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)) / 2.0;
++  *radius_y = sqrt((x3 - x1) * (x3 - x1) + (y3 - y1) * (y3 - y1)) / 2.0;

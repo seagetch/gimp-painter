@@ -1,0 +1,684 @@
+{
+  "scope": "Read-only 38 original draw/render/expose/selection source duties; no WBS closure or runtime parity inferred",
+  "review_commit": "aa12595aa6fa0789f17febc6aff976da08179294",
+  "current_sources_sha256": {
+    "app/display/gimpdisplayshell-callbacks.c": "1b2c56ce1ff5e3d9f2dcbb9ecf9ddebace3886802985826d678b83663c80ebeb",
+    "app/display/gimpdisplayshell-draw.c": "80e9a13121c0abf9d3fff5502abb5cebbdd9ea524a3c910d2c1947fac661b4f3",
+    "app/display/gimpdisplayshell-expose.c": "42f06075c8a1242442a2d45e7ce7ab107f2d6b62eecfb8f4731c979f51ad16a8",
+    "app/display/gimpdisplayshell-expose.h": "a0e48678c1400de1e7a122fc28d4663604ecdebf74f1dcfe0750c3a2b5859974",
+    "app/display/gimpdisplayshell-render.c": "25758a52552f03f4dea85154c025d17d795406b08f6263e58fe7e30ab8df7c66",
+    "app/display/gimpdisplayshell-scroll.c": "aeadd556556cf41dee34e800cbb6afddbe8a8de23ebc6199ea50fb46ee8acf7a",
+    "app/display/gimpdisplayshell-selection.c": "15e4853f93644aa95133c2f47c00d68854a9be9b1e68eb189566cd2168b64d77",
+    "app/display/gimpdisplayshell.c": "1577ba570231d747e8a5cff3a69de24f0bb4281acc4d20f4b3baf8b3e18cab28",
+    "app/display/gimpdisplayshell.h": "f252c410848b22709827bd3b4a75b03aeac4fed5141a622438236486ca539f09"
+  },
+  "rows": [
+    {
+      "work_id": "legacy-b748d5af6045afc4a692",
+      "source_id": "01.002/000591",
+      "path": "app/display/gimpdisplayshell-draw.c",
+      "range": "-43,0 -> 44",
+      "sha256": "0695a0542dda12b9b1c9884cc0b8782443c28410d27e45c3fe0f8459d60694f6",
+      "payload": "pinned-hunks/01.002-000591.diff",
+      "added_lines": 1,
+      "removed_lines": 0,
+      "status": "PAYLOAD_VERIFIED_BEHAVIOR_OPEN",
+      "current_routes": [
+        "app/display/gimpdisplayshell-draw.c:gimp_display_shell_draw_image",
+        "app/display/gimpdisplayshell-callbacks.c:gimp_display_shell_canvas_draw_image",
+        "app/display/gimpdisplayshell-render.c:gimp_display_shell_render"
+      ],
+      "review_status": "SOURCE_ROUTE_IDENTIFIED_RUNTIME_ACCEPTANCE_OPEN",
+      "source_resolution": "Old include/comment-only additions; executable rotation is at native canvas/image/selection caller boundaries, not these commented statements."
+    },
+    {
+      "work_id": "legacy-dcc792ae4b9d6dde3af5",
+      "source_id": "01.002/000592",
+      "path": "app/display/gimpdisplayshell-draw.c",
+      "range": "-119,0 -> 121",
+      "sha256": "fccfa3af10826493a16e86257abfefd11e03c05f9dbcde52c6701e9da9be430f",
+      "payload": "pinned-hunks/01.002-000592.diff",
+      "added_lines": 1,
+      "removed_lines": 0,
+      "status": "PAYLOAD_VERIFIED_BEHAVIOR_OPEN",
+      "current_routes": [
+        "app/display/gimpdisplayshell-draw.c:gimp_display_shell_draw_image",
+        "app/display/gimpdisplayshell-callbacks.c:gimp_display_shell_canvas_draw_image",
+        "app/display/gimpdisplayshell-render.c:gimp_display_shell_render"
+      ],
+      "review_status": "SOURCE_ROUTE_IDENTIFIED_RUNTIME_ACCEPTANCE_OPEN",
+      "source_resolution": "Old include/comment-only additions; executable rotation is at native canvas/image/selection caller boundaries, not these commented statements."
+    },
+    {
+      "work_id": "legacy-5d654bc35c38d7051fac",
+      "source_id": "01.002/000593",
+      "path": "app/display/gimpdisplayshell-draw.c",
+      "range": "-135,0 -> 138",
+      "sha256": "fccfa3af10826493a16e86257abfefd11e03c05f9dbcde52c6701e9da9be430f",
+      "payload": "pinned-hunks/01.002-000593.diff",
+      "added_lines": 1,
+      "removed_lines": 0,
+      "status": "PAYLOAD_VERIFIED_BEHAVIOR_OPEN",
+      "current_routes": [
+        "app/display/gimpdisplayshell-draw.c:gimp_display_shell_draw_image",
+        "app/display/gimpdisplayshell-callbacks.c:gimp_display_shell_canvas_draw_image",
+        "app/display/gimpdisplayshell-render.c:gimp_display_shell_render"
+      ],
+      "review_status": "SOURCE_ROUTE_IDENTIFIED_RUNTIME_ACCEPTANCE_OPEN",
+      "source_resolution": "Old include/comment-only additions; executable rotation is at native canvas/image/selection caller boundaries, not these commented statements."
+    },
+    {
+      "work_id": "legacy-857a5edb76992bb9f1a5",
+      "source_id": "01.002/000594",
+      "path": "app/display/gimpdisplayshell-draw.c",
+      "range": "-149 -> 152,3",
+      "sha256": "05e2ad1006297c323b8a3a4f49d175ff36130274c17e26e20e5186c7f0bfcefa",
+      "payload": "pinned-hunks/01.002-000594.diff",
+      "added_lines": 3,
+      "removed_lines": 1,
+      "status": "PAYLOAD_VERIFIED_BEHAVIOR_OPEN",
+      "current_routes": [
+        "app/display/gimpdisplayshell-draw.c:gimp_display_shell_draw_image",
+        "app/display/gimpdisplayshell-callbacks.c:gimp_display_shell_canvas_draw_image",
+        "app/display/gimpdisplayshell-render.c:gimp_display_shell_render"
+      ],
+      "review_status": "SOURCE_ROUTE_IDENTIFIED_RUNTIME_ACCEPTANCE_OPEN",
+      "source_resolution": "Old inverse device bounds, extra edge pixels and one-pixel overlapping image chunks are replaced by native evenly partitioned screen chunks, inverse bounds per chunk, scaled render cache and screen-space clips. Same rotated geometry is explicit; original heuristic overlap is not copied. Needs actual seam/edge/anisotropy verification."
+    },
+    {
+      "work_id": "legacy-542fe3c688f61674e69b",
+      "source_id": "01.002/000595",
+      "path": "app/display/gimpdisplayshell-draw.c",
+      "range": "-150,0 -> 156",
+      "sha256": "8ee08276e65197c1eecb1ef32f909991b40cfd6a6e0fc409a08f95be25ed840d",
+      "payload": "pinned-hunks/01.002-000595.diff",
+      "added_lines": 1,
+      "removed_lines": 0,
+      "status": "PAYLOAD_VERIFIED_BEHAVIOR_OPEN",
+      "current_routes": [
+        "app/display/gimpdisplayshell-draw.c:gimp_display_shell_draw_image",
+        "app/display/gimpdisplayshell-callbacks.c:gimp_display_shell_canvas_draw_image",
+        "app/display/gimpdisplayshell-render.c:gimp_display_shell_render"
+      ],
+      "review_status": "SOURCE_ROUTE_IDENTIFIED_RUNTIME_ACCEPTANCE_OPEN",
+      "source_resolution": "Old inverse device bounds, extra edge pixels and one-pixel overlapping image chunks are replaced by native evenly partitioned screen chunks, inverse bounds per chunk, scaled render cache and screen-space clips. Same rotated geometry is explicit; original heuristic overlap is not copied. Needs actual seam/edge/anisotropy verification."
+    },
+    {
+      "work_id": "legacy-c2deca23bc1ee76d1ab0",
+      "source_id": "01.002/000596",
+      "path": "app/display/gimpdisplayshell-draw.c",
+      "range": "-156,2 -> 162,31",
+      "sha256": "35fde6f9677c805ac42cb26de29f111cbfa57019cd4cc0ef34c979476b3e81d0",
+      "payload": "pinned-hunks/01.002-000596.diff",
+      "added_lines": 31,
+      "removed_lines": 2,
+      "status": "PAYLOAD_VERIFIED_BEHAVIOR_OPEN",
+      "current_routes": [
+        "app/display/gimpdisplayshell-draw.c:gimp_display_shell_draw_image",
+        "app/display/gimpdisplayshell-callbacks.c:gimp_display_shell_canvas_draw_image",
+        "app/display/gimpdisplayshell-render.c:gimp_display_shell_render"
+      ],
+      "review_status": "SOURCE_ROUTE_IDENTIFIED_RUNTIME_ACCEPTANCE_OPEN",
+      "source_resolution": "Old inverse device bounds, extra edge pixels and one-pixel overlapping image chunks are replaced by native evenly partitioned screen chunks, inverse bounds per chunk, scaled render cache and screen-space clips. Same rotated geometry is explicit; original heuristic overlap is not copied. Needs actual seam/edge/anisotropy verification."
+    },
+    {
+      "work_id": "legacy-8a57e458f53cf27935cb",
+      "source_id": "01.002/000597",
+      "path": "app/display/gimpdisplayshell-draw.c",
+      "range": "-162 -> 197,4",
+      "sha256": "ddb15e86c9e428f6229ce1eede9f7c4f0820522666aa964fc263fa6f9053687e",
+      "payload": "pinned-hunks/01.002-000597.diff",
+      "added_lines": 4,
+      "removed_lines": 1,
+      "status": "PAYLOAD_VERIFIED_BEHAVIOR_OPEN",
+      "current_routes": [
+        "app/display/gimpdisplayshell-draw.c:gimp_display_shell_draw_image",
+        "app/display/gimpdisplayshell-callbacks.c:gimp_display_shell_canvas_draw_image",
+        "app/display/gimpdisplayshell-render.c:gimp_display_shell_render"
+      ],
+      "review_status": "SOURCE_ROUTE_IDENTIFIED_RUNTIME_ACCEPTANCE_OPEN",
+      "source_resolution": "Old inverse device bounds, extra edge pixels and one-pixel overlapping image chunks are replaced by native evenly partitioned screen chunks, inverse bounds per chunk, scaled render cache and screen-space clips. Same rotated geometry is explicit; original heuristic overlap is not copied. Needs actual seam/edge/anisotropy verification."
+    },
+    {
+      "work_id": "legacy-46b81a78c341ed40b3ba",
+      "source_id": "01.002/000598",
+      "path": "app/display/gimpdisplayshell-draw.c",
+      "range": "-164 -> 202",
+      "sha256": "10e33d3b4d9b8b2c79fa9a83bca68af8d5eaa68600b2fb3c4d2661b7f7f109d0",
+      "payload": "pinned-hunks/01.002-000598.diff",
+      "added_lines": 1,
+      "removed_lines": 1,
+      "status": "PAYLOAD_VERIFIED_BEHAVIOR_OPEN",
+      "current_routes": [
+        "app/display/gimpdisplayshell-draw.c:gimp_display_shell_draw_image",
+        "app/display/gimpdisplayshell-callbacks.c:gimp_display_shell_canvas_draw_image",
+        "app/display/gimpdisplayshell-render.c:gimp_display_shell_render"
+      ],
+      "review_status": "SOURCE_ROUTE_IDENTIFIED_RUNTIME_ACCEPTANCE_OPEN",
+      "source_resolution": "Old inverse device bounds, extra edge pixels and one-pixel overlapping image chunks are replaced by native evenly partitioned screen chunks, inverse bounds per chunk, scaled render cache and screen-space clips. Same rotated geometry is explicit; original heuristic overlap is not copied. Needs actual seam/edge/anisotropy verification."
+    },
+    {
+      "work_id": "legacy-46f8b81069e10d2d8737",
+      "source_id": "01.002/000599",
+      "path": "app/display/gimpdisplayshell-draw.c",
+      "range": "-166 -> 203,0",
+      "sha256": "d5c4e2ad5692a32a4d1f5068a391457cd9471e72dbb913bc02081ea4e604fee3",
+      "payload": "pinned-hunks/01.002-000599.diff",
+      "added_lines": 0,
+      "removed_lines": 1,
+      "status": "PAYLOAD_VERIFIED_BEHAVIOR_OPEN",
+      "current_routes": [
+        "app/display/gimpdisplayshell-draw.c:gimp_display_shell_draw_image",
+        "app/display/gimpdisplayshell-callbacks.c:gimp_display_shell_canvas_draw_image",
+        "app/display/gimpdisplayshell-render.c:gimp_display_shell_render"
+      ],
+      "review_status": "SOURCE_ROUTE_IDENTIFIED_RUNTIME_ACCEPTANCE_OPEN",
+      "source_resolution": "Old inverse device bounds, extra edge pixels and one-pixel overlapping image chunks are replaced by native evenly partitioned screen chunks, inverse bounds per chunk, scaled render cache and screen-space clips. Same rotated geometry is explicit; original heuristic overlap is not copied. Needs actual seam/edge/anisotropy verification."
+    },
+    {
+      "work_id": "legacy-d1ecf9cbfef4218ff140",
+      "source_id": "01.002/000600",
+      "path": "app/display/gimpdisplayshell-draw.c",
+      "range": "-169,6 -> 206,2",
+      "sha256": "c7df4cb3157636562487c1151fa762b91abacda645a75d68c90cf5e2b4690b37",
+      "payload": "pinned-hunks/01.002-000600.diff",
+      "added_lines": 2,
+      "removed_lines": 6,
+      "status": "PAYLOAD_VERIFIED_BEHAVIOR_OPEN",
+      "current_routes": [
+        "app/display/gimpdisplayshell-draw.c:gimp_display_shell_draw_image",
+        "app/display/gimpdisplayshell-callbacks.c:gimp_display_shell_canvas_draw_image",
+        "app/display/gimpdisplayshell-render.c:gimp_display_shell_render"
+      ],
+      "review_status": "SOURCE_ROUTE_IDENTIFIED_RUNTIME_ACCEPTANCE_OPEN",
+      "source_resolution": "Old inverse device bounds, extra edge pixels and one-pixel overlapping image chunks are replaced by native evenly partitioned screen chunks, inverse bounds per chunk, scaled render cache and screen-space clips. Same rotated geometry is explicit; original heuristic overlap is not copied. Needs actual seam/edge/anisotropy verification."
+    },
+    {
+      "work_id": "legacy-f45e052c99ebf5b373bd",
+      "source_id": "01.002/000601",
+      "path": "app/display/gimpdisplayshell-draw.c",
+      "range": "-215,0 -> 249,2",
+      "sha256": "1384b7f2437184513dfe25d54bb88d692b8e742c47b0225c8a8d6257f37d072f",
+      "payload": "pinned-hunks/01.002-000601.diff",
+      "added_lines": 2,
+      "removed_lines": 0,
+      "status": "PAYLOAD_VERIFIED_BEHAVIOR_OPEN",
+      "current_routes": [
+        "app/display/gimpdisplayshell-draw.c:gimp_display_shell_draw_checkerboard",
+        "app/display/gimpdisplayshell-callbacks.c:gimp_display_shell_canvas_draw_image"
+      ],
+      "review_status": "SOURCE_ROUTE_IDENTIFIED_RUNTIME_ACCEPTANCE_OPEN",
+      "source_resolution": "Checkerboard rotation is now applied by caller before draw_checkerboard, which applies native integer offset; rotation matrix carries fractional pan. Old helper combined transform replaces explicit translate; do not apply rotation twice. Needs native checker pattern orientation/phase evidence."
+    },
+    {
+      "work_id": "legacy-4437ec700324d66ed5c9",
+      "source_id": "01.002/000602",
+      "path": "app/display/gimpdisplayshell-draw.c",
+      "range": "-218,0 -> 254,3",
+      "sha256": "22d94e53715e36f493b3e21022c5fc2d3bc31a241b60cb430360876b4377f858",
+      "payload": "pinned-hunks/01.002-000602.diff",
+      "added_lines": 3,
+      "removed_lines": 0,
+      "status": "PAYLOAD_VERIFIED_BEHAVIOR_OPEN",
+      "current_routes": [
+        "app/display/gimpdisplayshell-draw.c:gimp_display_shell_draw_checkerboard",
+        "app/display/gimpdisplayshell-callbacks.c:gimp_display_shell_canvas_draw_image"
+      ],
+      "review_status": "SOURCE_ROUTE_IDENTIFIED_RUNTIME_ACCEPTANCE_OPEN",
+      "source_resolution": "Checkerboard rotation is now applied by caller before draw_checkerboard, which applies native integer offset; rotation matrix carries fractional pan. Old helper combined transform replaces explicit translate; do not apply rotation twice. Needs native checker pattern orientation/phase evidence."
+    },
+    {
+      "work_id": "legacy-e2556e2ab104cacded7d",
+      "source_id": "01.002/000603",
+      "path": "app/display/gimpdisplayshell-draw.c",
+      "range": "-221,0 -> 260,2",
+      "sha256": "be68269ac9115fd9a157163809c27ced1472494210b00c7e4642484c903ae8b9",
+      "payload": "pinned-hunks/01.002-000603.diff",
+      "added_lines": 2,
+      "removed_lines": 0,
+      "status": "PAYLOAD_VERIFIED_BEHAVIOR_OPEN",
+      "current_routes": [
+        "app/display/gimpdisplayshell-draw.c:gimp_display_shell_draw_checkerboard",
+        "app/display/gimpdisplayshell-callbacks.c:gimp_display_shell_canvas_draw_image"
+      ],
+      "review_status": "SOURCE_ROUTE_IDENTIFIED_RUNTIME_ACCEPTANCE_OPEN",
+      "source_resolution": "Checkerboard rotation is now applied by caller before draw_checkerboard, which applies native integer offset; rotation matrix carries fractional pan. Old helper combined transform replaces explicit translate; do not apply rotation twice. Needs native checker pattern orientation/phase evidence."
+    },
+    {
+      "work_id": "legacy-a70545327ad88749d87b",
+      "source_id": "01.002/000604",
+      "path": "app/display/gimpdisplayshell-draw.c",
+      "range": "-225 -> 265",
+      "sha256": "7db6a8bc0079ffe5f7fb34e9ccfedac0990a18a46e8a7eaa94b90d119dba322d",
+      "payload": "pinned-hunks/01.002-000604.diff",
+      "added_lines": 1,
+      "removed_lines": 1,
+      "status": "PAYLOAD_VERIFIED_BEHAVIOR_OPEN",
+      "current_routes": [
+        "app/display/gimpdisplayshell-draw.c:gimp_display_shell_draw_checkerboard",
+        "app/display/gimpdisplayshell-callbacks.c:gimp_display_shell_canvas_draw_image"
+      ],
+      "review_status": "SOURCE_ROUTE_IDENTIFIED_RUNTIME_ACCEPTANCE_OPEN",
+      "source_resolution": "Checkerboard rotation is now applied by caller before draw_checkerboard, which applies native integer offset; rotation matrix carries fractional pan. Old helper combined transform replaces explicit translate; do not apply rotation twice. Needs native checker pattern orientation/phase evidence."
+    },
+    {
+      "work_id": "legacy-2fa082f964aef178de18",
+      "source_id": "01.002/000605",
+      "path": "app/display/gimpdisplayshell-expose.c",
+      "range": "-76,0 -> 77,2",
+      "sha256": "3cc0eed44169e6864ee0da828062af431f508ca51f3ea2abb321940d7f24c8f3",
+      "payload": "pinned-hunks/01.002-000605.diff",
+      "added_lines": 2,
+      "removed_lines": 0,
+      "status": "PAYLOAD_VERIFIED_BEHAVIOR_OPEN",
+      "current_routes": [
+        "app/display/gimpdisplayshell-expose.c:gimp_display_shell_expose_full",
+        "app/display/gimpdisplayshell-scroll.c:gimp_display_shell_scroll_set_origin",
+        "app/display/gimpdisplayshell.h:painter_pan_fraction_x/y"
+      ],
+      "review_status": "SOURCE_ROUTE_IDENTIFIED_RUNTIME_ACCEPTANCE_OPEN",
+      "source_resolution": "Old expose_full reset accum_error_x/y. Those fields no longer exist. Native fractional origin is retained logical state and deliberately survives redraw; set_origin updates render/selection/overlay coherently. Do not erase native pan fraction on expose. Requires existing fractional-origin replay link, not byte-layout parity."
+    },
+    {
+      "work_id": "legacy-6c85a50925644c08c499",
+      "source_id": "01.002/000606",
+      "path": "app/display/gimpdisplayshell-expose.h",
+      "range": "-26,0 -> 27,5",
+      "sha256": "3b79a4410f7d32dd8dae09f30d92dcc771d673d67c6fdb0d1120e3e328f2af1e",
+      "payload": "pinned-hunks/01.002-000606.diff",
+      "added_lines": 5,
+      "removed_lines": 0,
+      "status": "PAYLOAD_VERIFIED_BEHAVIOR_OPEN",
+      "current_routes": [
+        "app/display/gimpdisplayshell-expose.h",
+        "app/display/gimpdisplayshell-expose.c:gimp_display_shell_expose_area"
+      ],
+      "review_status": "DECLARATION_ONLY_NO_OLD_IMPLEMENTATION_OR_CALL",
+      "source_resolution": "Pinned git grep finds expose_area_transformed solely in this declaration, no old body or caller. Current transformed damage producers pass device bounds to expose_area/region. No callable old behavior exists to restore; original source duty remains represented, not deleted."
+    },
+    {
+      "work_id": "legacy-3fd84c70aff8fcf5eb07",
+      "source_id": "01.002/000609",
+      "path": "app/display/gimpdisplayshell-render.c",
+      "range": "-22,0 -> 23",
+      "sha256": "8b605a05a9d4d78199428245584a9f20e27134edef32b0b6fabc5ad4d38e6248",
+      "payload": "pinned-hunks/01.002-000609.diff",
+      "added_lines": 1,
+      "removed_lines": 0,
+      "status": "PAYLOAD_VERIFIED_BEHAVIOR_OPEN",
+      "current_routes": [
+        "app/display/gimpdisplayshell-render.c:gimp_display_shell_render",
+        "app/display/gimpdisplayshell-callbacks.c:gimp_display_shell_canvas_draw_image"
+      ],
+      "review_status": "SOURCE_ROUTE_IDENTIFIED_RUNTIME_ACCEPTANCE_OPEN",
+      "source_resolution": "Old math/rotation includes and local image/render-offset variables are replaced by native inverse bounds and matrix/cache locals; native geometry not old TileManager layout."
+    },
+    {
+      "work_id": "legacy-ee5e0312c04a8c12dd6c",
+      "source_id": "01.002/000610",
+      "path": "app/display/gimpdisplayshell-render.c",
+      "range": "-41,0 -> 43",
+      "sha256": "0695a0542dda12b9b1c9884cc0b8782443c28410d27e45c3fe0f8459d60694f6",
+      "payload": "pinned-hunks/01.002-000610.diff",
+      "added_lines": 1,
+      "removed_lines": 0,
+      "status": "PAYLOAD_VERIFIED_BEHAVIOR_OPEN",
+      "current_routes": [
+        "app/display/gimpdisplayshell-render.c:gimp_display_shell_render",
+        "app/display/gimpdisplayshell-callbacks.c:gimp_display_shell_canvas_draw_image"
+      ],
+      "review_status": "SOURCE_ROUTE_IDENTIFIED_RUNTIME_ACCEPTANCE_OPEN",
+      "source_resolution": "Old math/rotation includes and local image/render-offset variables are replaced by native inverse bounds and matrix/cache locals; native geometry not old TileManager layout."
+    },
+    {
+      "work_id": "legacy-aa1088ab9bc5c756d96c",
+      "source_id": "01.002/000611",
+      "path": "app/display/gimpdisplayshell-render.c",
+      "range": "-139,0 -> 142,2",
+      "sha256": "7cdebeaeacc7a3957e3345b1c33ddd303c9c501a8c004ea7a9757ebf9a85afeb",
+      "payload": "pinned-hunks/01.002-000611.diff",
+      "added_lines": 2,
+      "removed_lines": 0,
+      "status": "PAYLOAD_VERIFIED_BEHAVIOR_OPEN",
+      "current_routes": [
+        "app/display/gimpdisplayshell-render.c:gimp_display_shell_render",
+        "app/display/gimpdisplayshell-callbacks.c:gimp_display_shell_canvas_draw_image"
+      ],
+      "review_status": "SOURCE_ROUTE_IDENTIFIED_RUNTIME_ACCEPTANCE_OPEN",
+      "source_resolution": "Old math/rotation includes and local image/render-offset variables are replaced by native inverse bounds and matrix/cache locals; native geometry not old TileManager layout."
+    },
+    {
+      "work_id": "legacy-e4978d379ce7ee57b77f",
+      "source_id": "01.002/000612",
+      "path": "app/display/gimpdisplayshell-render.c",
+      "range": "-143 -> 146,0",
+      "sha256": "ee9082f0df7cc4be3fe299b5882513f5b1e3684075b9830c3eefdfb60ede15cb",
+      "payload": "pinned-hunks/01.002-000612.diff",
+      "added_lines": 0,
+      "removed_lines": 1,
+      "status": "PAYLOAD_VERIFIED_BEHAVIOR_OPEN",
+      "current_routes": [
+        "app/display/gimpdisplayshell-render.c:gimp_display_shell_render",
+        "app/display/gimpdisplayshell-callbacks.c:gimp_display_shell_canvas_draw_image"
+      ],
+      "review_status": "SOURCE_ROUTE_IDENTIFIED_RUNTIME_ACCEPTANCE_OPEN",
+      "source_resolution": "Old nonpositive requests returned quietly. Current canvas caller invokes only positive clip intersections; native renderer asserts resulting buffer dimensions. Direct invalid-call diagnostic behavior differs; no unconditional API equivalence claim. Need empty visible-region no-render runtime case."
+    },
+    {
+      "work_id": "legacy-d581cfd85a1361dae7f9",
+      "source_id": "01.002/000613",
+      "path": "app/display/gimpdisplayshell-render.c",
+      "range": "-144,0 -> 148,2",
+      "sha256": "48544813108c92d84fc68efc6eff64700ce7806567a394afae3fbd85c083a16b",
+      "payload": "pinned-hunks/01.002-000613.diff",
+      "added_lines": 2,
+      "removed_lines": 0,
+      "status": "PAYLOAD_VERIFIED_BEHAVIOR_OPEN",
+      "current_routes": [
+        "app/display/gimpdisplayshell-render.c:gimp_display_shell_render",
+        "app/display/gimpdisplayshell-callbacks.c:gimp_display_shell_canvas_draw_image"
+      ],
+      "review_status": "SOURCE_ROUTE_IDENTIFIED_RUNTIME_ACCEPTANCE_OPEN",
+      "source_resolution": "Old nonpositive requests returned quietly. Current canvas caller invokes only positive clip intersections; native renderer asserts resulting buffer dimensions. Direct invalid-call diagnostic behavior differs; no unconditional API equivalence claim. Need empty visible-region no-render runtime case."
+    },
+    {
+      "work_id": "legacy-664a494d97250fc1453a",
+      "source_id": "01.002/000614",
+      "path": "app/display/gimpdisplayshell-render.c",
+      "range": "-153,0 -> 159,26",
+      "sha256": "c72c1d1535bc8e1c354e989f83a6bb6988f38f06fd2e5c2979a30085574d24b8",
+      "payload": "pinned-hunks/01.002-000614.diff",
+      "added_lines": 26,
+      "removed_lines": 0,
+      "status": "PAYLOAD_VERIFIED_BEHAVIOR_OPEN",
+      "current_routes": [
+        "app/display/gimpdisplayshell-render.c:gimp_display_shell_render",
+        "app/display/gimpdisplayshell-callbacks.c:gimp_display_shell_canvas_draw_image"
+      ],
+      "review_status": "SOURCE_ROUTE_IDENTIFIED_RUNTIME_ACCEPTANCE_OPEN",
+      "source_resolution": "Old clipped image tile read bounds become rotated canvas clip and GEGL abyss policy (CLAMP normally, NONE show-all) after inverse scaled bounds. Need outside-image transparent/opaque and clipping edge tests."
+    },
+    {
+      "work_id": "legacy-13eba4e4f3aaa87ba740",
+      "source_id": "01.002/000615",
+      "path": "app/display/gimpdisplayshell-render.c",
+      "range": "-219,0 -> 251,2",
+      "sha256": "264b68de8571d4b29b1da86c49cee7ae7e4fcc1e42157a5a736f7cdfe56e26a5",
+      "payload": "pinned-hunks/01.002-000615.diff",
+      "added_lines": 2,
+      "removed_lines": 0,
+      "status": "PAYLOAD_VERIFIED_BEHAVIOR_OPEN",
+      "current_routes": [
+        "app/display/gimpdisplayshell-render.c:gimp_display_shell_render",
+        "app/display/gimpdisplayshell-callbacks.c:gimp_display_shell_canvas_draw_image"
+      ],
+      "review_status": "SOURCE_ROUTE_IDENTIFIED_RUNTIME_ACCEPTANCE_OPEN",
+      "source_resolution": "Render cache Cairo matrix applies render_scale, shared rotate_transform, negative integer offsets and uneven scale. Same angle/flip/fractional translation basis is shared with overlays; old display-offset helper replaced."
+    },
+    {
+      "work_id": "legacy-1d73a07ce898d4f32233",
+      "source_id": "01.002/000616",
+      "path": "app/display/gimpdisplayshell-render.c",
+      "range": "-223,2 -> 256",
+      "sha256": "4e65974a72074b0e36d67a4ced9193ff8f311f5295c40bc540ccd4322a8d2341",
+      "payload": "pinned-hunks/01.002-000616.diff",
+      "added_lines": 1,
+      "removed_lines": 2,
+      "status": "PAYLOAD_VERIFIED_BEHAVIOR_OPEN",
+      "current_routes": [
+        "app/display/gimpdisplayshell-render.c:gimp_display_shell_render",
+        "app/display/gimpdisplayshell-callbacks.c:gimp_display_shell_canvas_draw_image"
+      ],
+      "review_status": "SOURCE_ROUTE_IDENTIFIED_RUNTIME_ACCEPTANCE_OPEN",
+      "source_resolution": "Render cache Cairo matrix applies render_scale, shared rotate_transform, negative integer offsets and uneven scale. Same angle/flip/fractional translation basis is shared with overlays; old display-offset helper replaced."
+    },
+    {
+      "work_id": "legacy-7b2c9274dcab3aaa72a0",
+      "source_id": "01.002/000617",
+      "path": "app/display/gimpdisplayshell-render.c",
+      "range": "-226 -> 258,7",
+      "sha256": "5ca603b14998a41c24ada480f0423f466b5f5bff1a494a6eb8c7c05558e2f749",
+      "payload": "pinned-hunks/01.002-000617.diff",
+      "added_lines": 7,
+      "removed_lines": 1,
+      "status": "PAYLOAD_VERIFIED_BEHAVIOR_OPEN",
+      "current_routes": [
+        "app/display/gimpdisplayshell-render.c:gimp_display_shell_render",
+        "app/display/gimpdisplayshell-callbacks.c:gimp_display_shell_canvas_draw_image"
+      ],
+      "review_status": "SOURCE_ROUTE_IDENTIFIED_RUNTIME_ACCEPTANCE_OPEN",
+      "source_resolution": "Old FIXME shrank short right/bottom chunks to hide rotated noise. Native screen clip plus cache transform replaces this heuristic. Do not reproduce dropped edge pixels as compatibility; actual no-seam and edge coverage required."
+    },
+    {
+      "work_id": "legacy-29523d76a454c8c2782c",
+      "source_id": "01.002/000618",
+      "path": "app/display/gimpdisplayshell-render.c",
+      "range": "-228 -> 265,0",
+      "sha256": "61d1954b9aba0c9aedb8d1338804e817c7262cfc36da94161dab8e3ed7a3a43a",
+      "payload": "pinned-hunks/01.002-000618.diff",
+      "added_lines": 0,
+      "removed_lines": 1,
+      "status": "PAYLOAD_VERIFIED_BEHAVIOR_OPEN",
+      "current_routes": [
+        "app/display/gimpdisplayshell-render.c:gimp_display_shell_render",
+        "app/display/gimpdisplayshell-callbacks.c:gimp_display_shell_canvas_draw_image"
+      ],
+      "review_status": "SOURCE_ROUTE_IDENTIFIED_RUNTIME_ACCEPTANCE_OPEN",
+      "source_resolution": "Whitespace or commented debug-only hunk has no runtime effect. Nearby executable renderer replacement is mapped explicitly."
+    },
+    {
+      "work_id": "legacy-5fe066e1eae6f4d65682",
+      "source_id": "01.002/000619",
+      "path": "app/display/gimpdisplayshell-render.c",
+      "range": "-230,0 -> 268",
+      "sha256": "4e3cf60495dca6411d155372c42aa62f07a6f0c5792f016cff361dd7a3965b20",
+      "payload": "pinned-hunks/01.002-000619.diff",
+      "added_lines": 1,
+      "removed_lines": 0,
+      "status": "PAYLOAD_VERIFIED_BEHAVIOR_OPEN",
+      "current_routes": [
+        "app/display/gimpdisplayshell-render.c:gimp_display_shell_render",
+        "app/display/gimpdisplayshell-callbacks.c:gimp_display_shell_canvas_draw_image"
+      ],
+      "review_status": "SOURCE_ROUTE_IDENTIFIED_RUNTIME_ACCEPTANCE_OPEN",
+      "source_resolution": "Whitespace or commented debug-only hunk has no runtime effect. Nearby executable renderer replacement is mapped explicitly."
+    },
+    {
+      "work_id": "legacy-a6f5fb67150d23174382",
+      "source_id": "01.002/000620",
+      "path": "app/display/gimpdisplayshell-render.c",
+      "range": "-374 -> 412,2",
+      "sha256": "682d534511fc860ff9507a905515b42ab277a391ac88f513e4646e46c745260e",
+      "payload": "pinned-hunks/01.002-000620.diff",
+      "added_lines": 2,
+      "removed_lines": 1,
+      "status": "PAYLOAD_VERIFIED_BEHAVIOR_OPEN",
+      "current_routes": [
+        "app/display/gimpdisplayshell-render.c:gimp_display_shell_render",
+        "app/display/gimpdisplayshell-callbacks.c:gimp_display_shell_canvas_draw_image"
+      ],
+      "review_status": "SOURCE_ROUTE_IDENTIFIED_RUNTIME_ACCEPTANCE_OPEN",
+      "source_resolution": "Whitespace or commented debug-only hunk has no runtime effect. Nearby executable renderer replacement is mapped explicitly."
+    },
+    {
+      "work_id": "legacy-cd9b369201bc8b21746d",
+      "source_id": "01.002/000621",
+      "path": "app/display/gimpdisplayshell-render.c",
+      "range": "-644,0 -> 684,2",
+      "sha256": "c53089c6cfd7d8a58bdef488cdee29a42c447e9c48348010a979f84b776720ff",
+      "payload": "pinned-hunks/01.002-000621.diff",
+      "added_lines": 2,
+      "removed_lines": 0,
+      "status": "PAYLOAD_VERIFIED_BEHAVIOR_OPEN",
+      "current_routes": [
+        "app/display/gimpdisplayshell-render.c:gimp_display_shell_render",
+        "app/display/gimpdisplayshell-callbacks.c:gimp_display_shell_canvas_draw_image"
+      ],
+      "review_status": "SOURCE_ROUTE_IDENTIFIED_RUNTIME_ACCEPTANCE_OPEN",
+      "source_resolution": "Whitespace or commented debug-only hunk has no runtime effect. Nearby executable renderer replacement is mapped explicitly."
+    },
+    {
+      "work_id": "legacy-1af2aa8c2261a068137e",
+      "source_id": "01.002/000622",
+      "path": "app/display/gimpdisplayshell-render.c",
+      "range": "-727 -> 768,2",
+      "sha256": "dc6ec688f3d4e7a795bc2cf916724f64e0aaadee16fa0fdca0e56988286248e1",
+      "payload": "pinned-hunks/01.002-000622.diff",
+      "added_lines": 2,
+      "removed_lines": 1,
+      "status": "PAYLOAD_VERIFIED_BEHAVIOR_OPEN",
+      "current_routes": [
+        "app/display/gimpdisplayshell-render.c:gimp_display_shell_render",
+        "app/display/gimpdisplayshell-callbacks.c:gimp_display_shell_canvas_draw_image"
+      ],
+      "review_status": "SOURCE_ROUTE_IDENTIFIED_RUNTIME_ACCEPTANCE_OPEN",
+      "source_resolution": "Old manual tile null checks/goto/release ownership are removed with TileManager sampling. Native GEGL borrowed projection buffers and owned render surfaces replace these tile pointers; no tile_release equivalent should be added. Bounded native pixel/edge/cache tests required, not old null-tile layout claim."
+    },
+    {
+      "work_id": "legacy-9bccb718c1292b3cba37",
+      "source_id": "01.002/000623",
+      "path": "app/display/gimpdisplayshell-render.c",
+      "range": "-1129 -> 1171,2",
+      "sha256": "6be2ffdd5f72137b39d06fcf0bead8a732966d6a3b40afe09e60b7ea9942223d",
+      "payload": "pinned-hunks/01.002-000623.diff",
+      "added_lines": 2,
+      "removed_lines": 1,
+      "status": "PAYLOAD_VERIFIED_BEHAVIOR_OPEN",
+      "current_routes": [
+        "app/display/gimpdisplayshell-render.c:gimp_display_shell_render",
+        "app/display/gimpdisplayshell-callbacks.c:gimp_display_shell_canvas_draw_image"
+      ],
+      "review_status": "SOURCE_ROUTE_IDENTIFIED_RUNTIME_ACCEPTANCE_OPEN",
+      "source_resolution": "Old manual tile null checks/goto/release ownership are removed with TileManager sampling. Native GEGL borrowed projection buffers and owned render surfaces replace these tile pointers; no tile_release equivalent should be added. Bounded native pixel/edge/cache tests required, not old null-tile layout claim."
+    },
+    {
+      "work_id": "legacy-fe2d635bc148f4fc00cb",
+      "source_id": "01.002/000624",
+      "path": "app/display/gimpdisplayshell-render.c",
+      "range": "-1380 -> 1423,2",
+      "sha256": "ea8606ecab35a7e9d59341f85e47c38249a658bb0a0e98205f40722da3b2270c",
+      "payload": "pinned-hunks/01.002-000624.diff",
+      "added_lines": 2,
+      "removed_lines": 1,
+      "status": "PAYLOAD_VERIFIED_BEHAVIOR_OPEN",
+      "current_routes": [
+        "app/display/gimpdisplayshell-render.c:gimp_display_shell_render",
+        "app/display/gimpdisplayshell-callbacks.c:gimp_display_shell_canvas_draw_image"
+      ],
+      "review_status": "SOURCE_ROUTE_IDENTIFIED_RUNTIME_ACCEPTANCE_OPEN",
+      "source_resolution": "Old manual tile null checks/goto/release ownership are removed with TileManager sampling. Native GEGL borrowed projection buffers and owned render surfaces replace these tile pointers; no tile_release equivalent should be added. Bounded native pixel/edge/cache tests required, not old null-tile layout claim."
+    },
+    {
+      "work_id": "legacy-8b968391b103c119fde0",
+      "source_id": "01.002/000625",
+      "path": "app/display/gimpdisplayshell-render.c",
+      "range": "-1472,2 -> 1516,3",
+      "sha256": "cefca096e590cb69611bcd3b539ed325cacee08b852a1443a468911e8e69556c",
+      "payload": "pinned-hunks/01.002-000625.diff",
+      "added_lines": 3,
+      "removed_lines": 2,
+      "status": "PAYLOAD_VERIFIED_BEHAVIOR_OPEN",
+      "current_routes": [
+        "app/display/gimpdisplayshell-render.c:gimp_display_shell_render",
+        "app/display/gimpdisplayshell-callbacks.c:gimp_display_shell_canvas_draw_image"
+      ],
+      "review_status": "SOURCE_ROUTE_IDENTIFIED_RUNTIME_ACCEPTANCE_OPEN",
+      "source_resolution": "Old manual tile null checks/goto/release ownership are removed with TileManager sampling. Native GEGL borrowed projection buffers and owned render surfaces replace these tile pointers; no tile_release equivalent should be added. Bounded native pixel/edge/cache tests required, not old null-tile layout claim."
+    },
+    {
+      "work_id": "legacy-fc3ca7edf2aa17bb6f4d",
+      "source_id": "01.002/000636",
+      "path": "app/display/gimpdisplayshell-selection.c",
+      "range": "-273 -> 273",
+      "sha256": "8f0df035ed54db1c3cb187c700059c4253528720d00c48eb33f11c7a9444e85f",
+      "payload": "pinned-hunks/01.002-000636.diff",
+      "added_lines": 1,
+      "removed_lines": 1,
+      "status": "PAYLOAD_VERIFIED_BEHAVIOR_OPEN",
+      "current_routes": [
+        "app/display/gimpdisplayshell-selection.c:selection_undraw",
+        "app/display/gimpdisplayshell-selection.c:selection_render_mask",
+        "app/display/gimpdisplayshell-selection.c:selection_zoom_segs",
+        "app/display/gimpdisplayshell.c:gimp_display_shell_mask_bounds"
+      ],
+      "review_status": "POSSIBLE_DAMAGE_PADDING_GAP_RUNTIME_TEST_REQUIRED",
+      "source_resolution": "Old expose bounds explicitly expanded -1/+3. Native transformed mask bounds floor/ceil/clamp, then selection_undraw exposes without explicit stroke/AA padding. Read-only inspection cannot claim equivalent cleanup; actual ants show/hide at rotation/flip/fractional pan requested."
+    },
+    {
+      "work_id": "legacy-ce3478f71912920bbeb1",
+      "source_id": "01.002/000637",
+      "path": "app/display/gimpdisplayshell-selection.c",
+      "range": "-313,0 -> 314",
+      "sha256": "b0232c9f5bf1d447826bb1d64afa7ab9b6bafa42336891ded92886a31e3e271f",
+      "payload": "pinned-hunks/01.002-000637.diff",
+      "added_lines": 1,
+      "removed_lines": 0,
+      "status": "PAYLOAD_VERIFIED_BEHAVIOR_OPEN",
+      "current_routes": [
+        "app/display/gimpdisplayshell-selection.c:selection_undraw",
+        "app/display/gimpdisplayshell-selection.c:selection_render_mask",
+        "app/display/gimpdisplayshell-selection.c:selection_zoom_segs",
+        "app/display/gimpdisplayshell.c:gimp_display_shell_mask_bounds"
+      ],
+      "review_status": "SOURCE_ROUTE_IDENTIFIED_RUNTIME_ACCEPTANCE_OPEN",
+      "source_resolution": "Old #if0 disables unrotated screen clamps globally. Native disables clamp only when rotate_transform exists (including fractional origin), transforms mask and outside segments by same matrix, preserves identity-view clamp. Must test boundary/offscreen selection; not literal old no-clamp behavior."
+    },
+    {
+      "work_id": "legacy-a882153e52f18820e541",
+      "source_id": "01.002/000638",
+      "path": "app/display/gimpdisplayshell-selection.c",
+      "range": "-315,0 -> 317",
+      "sha256": "9bb41c2bdf539b1fb4e819f83915f240412c666c824efdc1cd2131a848e37a55",
+      "payload": "pinned-hunks/01.002-000638.diff",
+      "added_lines": 1,
+      "removed_lines": 0,
+      "status": "PAYLOAD_VERIFIED_BEHAVIOR_OPEN",
+      "current_routes": [
+        "app/display/gimpdisplayshell-selection.c:selection_undraw",
+        "app/display/gimpdisplayshell-selection.c:selection_render_mask",
+        "app/display/gimpdisplayshell-selection.c:selection_zoom_segs",
+        "app/display/gimpdisplayshell.c:gimp_display_shell_mask_bounds"
+      ],
+      "review_status": "SOURCE_ROUTE_IDENTIFIED_RUNTIME_ACCEPTANCE_OPEN",
+      "source_resolution": "Old #if0 disables unrotated screen clamps globally. Native disables clamp only when rotate_transform exists (including fractional origin), transforms mask and outside segments by same matrix, preserves identity-view clamp. Must test boundary/offscreen selection; not literal old no-clamp behavior."
+    },
+    {
+      "work_id": "legacy-3ea6bf28be4b9d95b91d",
+      "source_id": "01.002/000639",
+      "path": "app/display/gimpdisplayshell-selection.c",
+      "range": "-323,0 -> 326",
+      "sha256": "b0232c9f5bf1d447826bb1d64afa7ab9b6bafa42336891ded92886a31e3e271f",
+      "payload": "pinned-hunks/01.002-000639.diff",
+      "added_lines": 1,
+      "removed_lines": 0,
+      "status": "PAYLOAD_VERIFIED_BEHAVIOR_OPEN",
+      "current_routes": [
+        "app/display/gimpdisplayshell-selection.c:selection_undraw",
+        "app/display/gimpdisplayshell-selection.c:selection_render_mask",
+        "app/display/gimpdisplayshell-selection.c:selection_zoom_segs",
+        "app/display/gimpdisplayshell.c:gimp_display_shell_mask_bounds"
+      ],
+      "review_status": "SOURCE_ROUTE_IDENTIFIED_RUNTIME_ACCEPTANCE_OPEN",
+      "source_resolution": "Old #if0 disables unrotated screen clamps globally. Native disables clamp only when rotate_transform exists (including fractional origin), transforms mask and outside segments by same matrix, preserves identity-view clamp. Must test boundary/offscreen selection; not literal old no-clamp behavior."
+    },
+    {
+      "work_id": "legacy-f397d5ce3f3392abe974",
+      "source_id": "01.002/000640",
+      "path": "app/display/gimpdisplayshell-selection.c",
+      "range": "-329 -> 332,2",
+      "sha256": "ff472884e4b45eb587634f660048860bb5eb0ecfbf6761905a63603b7dd614d3",
+      "payload": "pinned-hunks/01.002-000640.diff",
+      "added_lines": 2,
+      "removed_lines": 1,
+      "status": "PAYLOAD_VERIFIED_BEHAVIOR_OPEN",
+      "current_routes": [
+        "app/display/gimpdisplayshell-selection.c:selection_undraw",
+        "app/display/gimpdisplayshell-selection.c:selection_render_mask",
+        "app/display/gimpdisplayshell-selection.c:selection_zoom_segs",
+        "app/display/gimpdisplayshell.c:gimp_display_shell_mask_bounds"
+      ],
+      "review_status": "SOURCE_ROUTE_IDENTIFIED_RUNTIME_ACCEPTANCE_OPEN",
+      "source_resolution": "Old #if0 disables unrotated screen clamps globally. Native disables clamp only when rotate_transform exists (including fractional origin), transforms mask and outside segments by same matrix, preserves identity-view clamp. Must test boundary/offscreen selection; not literal old no-clamp behavior."
+    }
+  ]
+}

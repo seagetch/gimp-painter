@@ -1,0 +1,465 @@
+{
+  "scope": "45 remaining original25.009 duties, source mapping only",
+  "current_sources_sha256": {
+    "app/display/gimpdisplayshell-rotate.c": "f0d43ee83dfb6d9510aba8d1674ff65d974f5be771e2adaf051255d175934d39",
+    "app/display/gimpdisplayshell-rotate.h": "e8d84913349fb3b2ca624bfe98278b9e63e084ef909c3efd17956583f29073d6",
+    "app/display/gimpdisplayshell-scroll.c": "aeadd556556cf41dee34e800cbb6afddbe8a8de23ebc6199ea50fb46ee8acf7a",
+    "app/display/gimpdisplayshell-scroll.h": "d5a841fc9e7d2f40cb9ba79ce02dca43a069ed16ac38f0628a1045d23a292e7d",
+    "app/display/gimpdisplayshell-tool-events.c": "b0fc9430e170ab1855f2b4e890cf1d2babbd464773b0d053cdf3012f858151d8",
+    "app/display/gimpdisplayshell-transform.c": "1532f024a9c23f673bbb6926fc8544cd8b40a5a09fdbf9184565e9e9520821fd",
+    "app/display/gimpdisplayshell-transform.h": "6c5fc3ed216f53d18369e8561b3502bfec192b0a0b49062bfa11fecf2260e190",
+    "app/widgets/gimpnavigationview.c": "d491691622cca4a16c7e08b1c6c18d8381ceb94419575a8ed7ad79dfd12d7d3a"
+  },
+  "rows": [
+    {
+      "work_id": "legacy-0c022b73ab59eab08e94",
+      "source_id": "01.002/000626",
+      "path": "app/display/gimpdisplayshell-rotate.c",
+      "original_acceptance": "canvas \u3068 overlay \u304c\u540c\u3058\u89d2\u5ea6\u3092\u4f7f\u7528",
+      "current_route": "gimp_display_shell_rotate_update_transform; rotate_bounds/unrotate_bounds; gimp_display_shell_handle_scrolling and gimp_display_shell_painter_origin_get/remember; native transform/untransform helpers",
+      "rationale": "The old complete rotate translation/mirror/matrix and four-corner bounding-box helper file is replaced by native shared forward/inverse matrices and bounding APIs. Inherited painter rotation uses viewport-centered exact old origin policy with residual bridge; explicit custom rotation retains native behavior. Old header surface is mapped to these current interfaces, not restored as unused duplicate functions.",
+      "evidence_scope": "0a10 rotation37 normal/scoped sanitizer checkpoint, later a16550+50, independent landmarks/inverse and real oncanvas raster; old source-only not old runtime",
+      "status": "SOURCE_REPLACEMENT_REVIEWED_PARENT_ACCEPTANCE_OPEN"
+    },
+    {
+      "work_id": "legacy-4afb05daee2602e55987",
+      "source_id": "01.002/000627",
+      "path": "app/display/gimpdisplayshell-rotate.h",
+      "original_acceptance": "canvas \u3068 overlay \u304c\u540c\u3058\u89d2\u5ea6\u3092\u4f7f\u7528",
+      "current_route": "gimp_display_shell_rotate_update_transform; rotate_bounds/unrotate_bounds; gimp_display_shell_handle_scrolling and gimp_display_shell_painter_origin_get/remember; native transform/untransform helpers",
+      "rationale": "The old complete rotate translation/mirror/matrix and four-corner bounding-box helper file is replaced by native shared forward/inverse matrices and bounding APIs. Inherited painter rotation uses viewport-centered exact old origin policy with residual bridge; explicit custom rotation retains native behavior. Old header surface is mapped to these current interfaces, not restored as unused duplicate functions.",
+      "evidence_scope": "0a10 rotation37 normal/scoped sanitizer checkpoint, later a16550+50, independent landmarks/inverse and real oncanvas raster; old source-only not old runtime",
+      "status": "SOURCE_REPLACEMENT_REVIEWED_PARENT_ACCEPTANCE_OPEN"
+    },
+    {
+      "work_id": "legacy-3791a6b0f5c8b3ddc4d7",
+      "source_id": "01.002/000628",
+      "path": "app/display/gimpdisplayshell-scroll.c",
+      "original_acceptance": "canvas \u3068 overlay \u304c\u540c\u3058\u89d2\u5ea6\u3092\u4f7f\u7528",
+      "current_route": "gimp_display_shell_scroll[_set_offset]; gimp_display_shell_painter_pan_begin/painter_pan_motion and gimp_display_shell_stop_scrolling; painter_pan_fraction_x/y; gimp_display_shell_rotate_update_transform",
+      "rationale": "Old double scroll offsets and device-space integer scroll delta/accum_error are represented by native integer offsets plus bounded precise fractional residual in the shared matrix. Integer public/custom scroll ABI is retained. Fractional changes fully invalidate rather than rounding away motion or shifting cached pixels incorrectly. Default legacy inverse-before-gint anchor and old origin are independently tested.",
+      "evidence_scope": "c496 pan35+35 and later a16550+50 source checkpoints; repeated subpixel drags, custom-route isolation, bounds, cancel/reentry and mixed gestures",
+      "status": "SOURCE_REPLACEMENT_REVIEWED_PARENT_ACCEPTANCE_OPEN"
+    },
+    {
+      "work_id": "legacy-b1d3da193c44943a8d4b",
+      "source_id": "01.002/000629",
+      "path": "app/display/gimpdisplayshell-scroll.c",
+      "original_acceptance": "canvas \u3068 overlay \u304c\u540c\u3058\u89d2\u5ea6\u3092\u4f7f\u7528",
+      "current_route": "gimp_display_shell_scroll[_set_offset]; gimp_display_shell_painter_pan_begin/painter_pan_motion and gimp_display_shell_stop_scrolling; painter_pan_fraction_x/y; gimp_display_shell_rotate_update_transform",
+      "rationale": "Old double scroll offsets and device-space integer scroll delta/accum_error are represented by native integer offsets plus bounded precise fractional residual in the shared matrix. Integer public/custom scroll ABI is retained. Fractional changes fully invalidate rather than rounding away motion or shifting cached pixels incorrectly. Default legacy inverse-before-gint anchor and old origin are independently tested.",
+      "evidence_scope": "c496 pan35+35 and later a16550+50 source checkpoints; repeated subpixel drags, custom-route isolation, bounds, cancel/reentry and mixed gestures",
+      "status": "SOURCE_REPLACEMENT_REVIEWED_PARENT_ACCEPTANCE_OPEN"
+    },
+    {
+      "work_id": "legacy-1ca590dc3c427600dbe1",
+      "source_id": "01.002/000630",
+      "path": "app/display/gimpdisplayshell-scroll.c",
+      "original_acceptance": "canvas \u3068 overlay \u304c\u540c\u3058\u89d2\u5ea6\u3092\u4f7f\u7528",
+      "current_route": "gimp_display_shell_scroll[_set_offset]; gimp_display_shell_painter_pan_begin/painter_pan_motion and gimp_display_shell_stop_scrolling; painter_pan_fraction_x/y; gimp_display_shell_rotate_update_transform",
+      "rationale": "Old double scroll offsets and device-space integer scroll delta/accum_error are represented by native integer offsets plus bounded precise fractional residual in the shared matrix. Integer public/custom scroll ABI is retained. Fractional changes fully invalidate rather than rounding away motion or shifting cached pixels incorrectly. Default legacy inverse-before-gint anchor and old origin are independently tested.",
+      "evidence_scope": "c496 pan35+35 and later a16550+50 source checkpoints; repeated subpixel drags, custom-route isolation, bounds, cancel/reentry and mixed gestures",
+      "status": "SOURCE_REPLACEMENT_REVIEWED_PARENT_ACCEPTANCE_OPEN"
+    },
+    {
+      "work_id": "legacy-029d8f6b9cff96b79ef6",
+      "source_id": "01.002/000631",
+      "path": "app/display/gimpdisplayshell-scroll.c",
+      "original_acceptance": "canvas \u3068 overlay \u304c\u540c\u3058\u89d2\u5ea6\u3092\u4f7f\u7528",
+      "current_route": "gimp_display_shell_scroll[_set_offset]; gimp_display_shell_painter_pan_begin/painter_pan_motion and gimp_display_shell_stop_scrolling; painter_pan_fraction_x/y; gimp_display_shell_rotate_update_transform",
+      "rationale": "Old double scroll offsets and device-space integer scroll delta/accum_error are represented by native integer offsets plus bounded precise fractional residual in the shared matrix. Integer public/custom scroll ABI is retained. Fractional changes fully invalidate rather than rounding away motion or shifting cached pixels incorrectly. Default legacy inverse-before-gint anchor and old origin are independently tested.",
+      "evidence_scope": "c496 pan35+35 and later a16550+50 source checkpoints; repeated subpixel drags, custom-route isolation, bounds, cancel/reentry and mixed gestures",
+      "status": "SOURCE_REPLACEMENT_REVIEWED_PARENT_ACCEPTANCE_OPEN"
+    },
+    {
+      "work_id": "legacy-82a2fac3fea96ec9d137",
+      "source_id": "01.002/000632",
+      "path": "app/display/gimpdisplayshell-scroll.c",
+      "original_acceptance": "canvas \u3068 overlay \u304c\u540c\u3058\u89d2\u5ea6\u3092\u4f7f\u7528",
+      "current_route": "gimp_display_shell_scroll[_set_offset]; gimp_display_shell_painter_pan_begin/painter_pan_motion and gimp_display_shell_stop_scrolling; painter_pan_fraction_x/y; gimp_display_shell_rotate_update_transform",
+      "rationale": "Old double scroll offsets and device-space integer scroll delta/accum_error are represented by native integer offsets plus bounded precise fractional residual in the shared matrix. Integer public/custom scroll ABI is retained. Fractional changes fully invalidate rather than rounding away motion or shifting cached pixels incorrectly. Default legacy inverse-before-gint anchor and old origin are independently tested.",
+      "evidence_scope": "c496 pan35+35 and later a16550+50 source checkpoints; repeated subpixel drags, custom-route isolation, bounds, cancel/reentry and mixed gestures",
+      "status": "SOURCE_REPLACEMENT_REVIEWED_PARENT_ACCEPTANCE_OPEN"
+    },
+    {
+      "work_id": "legacy-326955f65c01ead142a3",
+      "source_id": "01.002/000633",
+      "path": "app/display/gimpdisplayshell-scroll.c",
+      "original_acceptance": "canvas \u3068 overlay \u304c\u540c\u3058\u89d2\u5ea6\u3092\u4f7f\u7528",
+      "current_route": "gimp_display_shell_scroll[_set_offset]; gimp_display_shell_painter_pan_begin/painter_pan_motion and gimp_display_shell_stop_scrolling; painter_pan_fraction_x/y; gimp_display_shell_rotate_update_transform",
+      "rationale": "Old double scroll offsets and device-space integer scroll delta/accum_error are represented by native integer offsets plus bounded precise fractional residual in the shared matrix. Integer public/custom scroll ABI is retained. Fractional changes fully invalidate rather than rounding away motion or shifting cached pixels incorrectly. Default legacy inverse-before-gint anchor and old origin are independently tested.",
+      "evidence_scope": "c496 pan35+35 and later a16550+50 source checkpoints; repeated subpixel drags, custom-route isolation, bounds, cancel/reentry and mixed gestures",
+      "status": "SOURCE_REPLACEMENT_REVIEWED_PARENT_ACCEPTANCE_OPEN"
+    },
+    {
+      "work_id": "legacy-d157e9edd64f22097081",
+      "source_id": "01.002/000634",
+      "path": "app/display/gimpdisplayshell-scroll.c",
+      "original_acceptance": "canvas \u3068 overlay \u304c\u540c\u3058\u89d2\u5ea6\u3092\u4f7f\u7528",
+      "current_route": "gimp_display_shell_scroll[_set_offset]; gimp_display_shell_painter_pan_begin/painter_pan_motion and gimp_display_shell_stop_scrolling; painter_pan_fraction_x/y; gimp_display_shell_rotate_update_transform",
+      "rationale": "Old double scroll offsets and device-space integer scroll delta/accum_error are represented by native integer offsets plus bounded precise fractional residual in the shared matrix. Integer public/custom scroll ABI is retained. Fractional changes fully invalidate rather than rounding away motion or shifting cached pixels incorrectly. Default legacy inverse-before-gint anchor and old origin are independently tested.",
+      "evidence_scope": "c496 pan35+35 and later a16550+50 source checkpoints; repeated subpixel drags, custom-route isolation, bounds, cancel/reentry and mixed gestures",
+      "status": "SOURCE_REPLACEMENT_REVIEWED_PARENT_ACCEPTANCE_OPEN"
+    },
+    {
+      "work_id": "legacy-9ac295064c6a500201e2",
+      "source_id": "01.002/000635",
+      "path": "app/display/gimpdisplayshell-scroll.h",
+      "original_acceptance": "canvas \u3068 overlay \u304c\u540c\u3058\u89d2\u5ea6\u3092\u4f7f\u7528",
+      "current_route": "gimp_display_shell_scroll[_set_offset]; gimp_display_shell_painter_pan_begin/painter_pan_motion and gimp_display_shell_stop_scrolling; painter_pan_fraction_x/y; gimp_display_shell_rotate_update_transform",
+      "rationale": "Old double scroll offsets and device-space integer scroll delta/accum_error are represented by native integer offsets plus bounded precise fractional residual in the shared matrix. Integer public/custom scroll ABI is retained. Fractional changes fully invalidate rather than rounding away motion or shifting cached pixels incorrectly. Default legacy inverse-before-gint anchor and old origin are independently tested.",
+      "evidence_scope": "c496 pan35+35 and later a16550+50 source checkpoints; repeated subpixel drags, custom-route isolation, bounds, cancel/reentry and mixed gestures",
+      "status": "SOURCE_REPLACEMENT_REVIEWED_PARENT_ACCEPTANCE_OPEN"
+    },
+    {
+      "work_id": "legacy-0bf4a600ab7acd600490",
+      "source_id": "01.002/000641",
+      "path": "app/display/gimpdisplayshell-tool-events.c",
+      "original_acceptance": "canvas \u3068 overlay \u304c\u540c\u3058\u89d2\u5ea6\u3092\u4f7f\u7528",
+      "current_route": "gimp_display_shell_canvas_tool_events; gimp_display_shell_painter_pan_begin/painter_pan_motion and gimp_display_shell_stop_scrolling; painter rotate/zoom default routes; gimp_display_shell_space_pressed",
+      "rationale": "Inherited middle-button Shift rotation, Ctrl radial zoom and ordinary inverse-before-gint pan are routed through the explicit default navigation policy. Old300-distance/15-degree operations, grab lifetime and origin are compared to unchanged pinned C source. Configured Space PAN uses old current-device inverse regardless modifiers (a165), not silently relabeled custom. Explicit custom bindings retain native policy. Duplicate declarations/includes and state glue are represented by these same live routes.",
+      "evidence_scope": "a165 old-space50+50 checkpoint includes prior pan/rotation/applied-zoom regressions, legacy source-only oracles and actual oncanvas render; no old app runtime",
+      "status": "SOURCE_REPLACEMENT_REVIEWED_PARENT_ACCEPTANCE_OPEN"
+    },
+    {
+      "work_id": "legacy-f4fe09cc649123474659",
+      "source_id": "01.002/000643",
+      "path": "app/display/gimpdisplayshell-tool-events.c",
+      "original_acceptance": "canvas \u3068 overlay \u304c\u540c\u3058\u89d2\u5ea6\u3092\u4f7f\u7528",
+      "current_route": "gimp_display_shell_canvas_tool_events; gimp_display_shell_painter_pan_begin/painter_pan_motion and gimp_display_shell_stop_scrolling; painter rotate/zoom default routes; gimp_display_shell_space_pressed",
+      "rationale": "Inherited middle-button Shift rotation, Ctrl radial zoom and ordinary inverse-before-gint pan are routed through the explicit default navigation policy. Old300-distance/15-degree operations, grab lifetime and origin are compared to unchanged pinned C source. Configured Space PAN uses old current-device inverse regardless modifiers (a165), not silently relabeled custom. Explicit custom bindings retain native policy. Duplicate declarations/includes and state glue are represented by these same live routes.",
+      "evidence_scope": "a165 old-space50+50 checkpoint includes prior pan/rotation/applied-zoom regressions, legacy source-only oracles and actual oncanvas render; no old app runtime",
+      "status": "SOURCE_REPLACEMENT_REVIEWED_PARENT_ACCEPTANCE_OPEN"
+    },
+    {
+      "work_id": "legacy-1a30075d8b1b2457efab",
+      "source_id": "01.002/000644",
+      "path": "app/display/gimpdisplayshell-tool-events.c",
+      "original_acceptance": "canvas \u3068 overlay \u304c\u540c\u3058\u89d2\u5ea6\u3092\u4f7f\u7528",
+      "current_route": "gimp_display_shell_canvas_tool_events; gimp_display_shell_painter_pan_begin/painter_pan_motion and gimp_display_shell_stop_scrolling; painter rotate/zoom default routes; gimp_display_shell_space_pressed",
+      "rationale": "Inherited middle-button Shift rotation, Ctrl radial zoom and ordinary inverse-before-gint pan are routed through the explicit default navigation policy. Old300-distance/15-degree operations, grab lifetime and origin are compared to unchanged pinned C source. Configured Space PAN uses old current-device inverse regardless modifiers (a165), not silently relabeled custom. Explicit custom bindings retain native policy. Duplicate declarations/includes and state glue are represented by these same live routes.",
+      "evidence_scope": "a165 old-space50+50 checkpoint includes prior pan/rotation/applied-zoom regressions, legacy source-only oracles and actual oncanvas render; no old app runtime",
+      "status": "SOURCE_REPLACEMENT_REVIEWED_PARENT_ACCEPTANCE_OPEN"
+    },
+    {
+      "work_id": "legacy-6d1e539a1f8276f17c0e",
+      "source_id": "01.002/000646",
+      "path": "app/display/gimpdisplayshell-tool-events.c",
+      "original_acceptance": "canvas \u3068 overlay \u304c\u540c\u3058\u89d2\u5ea6\u3092\u4f7f\u7528",
+      "current_route": "gimp_display_shell_canvas_tool_events; gimp_display_shell_painter_pan_begin/painter_pan_motion and gimp_display_shell_stop_scrolling; painter rotate/zoom default routes; gimp_display_shell_space_pressed",
+      "rationale": "Inherited middle-button Shift rotation, Ctrl radial zoom and ordinary inverse-before-gint pan are routed through the explicit default navigation policy. Old300-distance/15-degree operations, grab lifetime and origin are compared to unchanged pinned C source. Configured Space PAN uses old current-device inverse regardless modifiers (a165), not silently relabeled custom. Explicit custom bindings retain native policy. Duplicate declarations/includes and state glue are represented by these same live routes.",
+      "evidence_scope": "a165 old-space50+50 checkpoint includes prior pan/rotation/applied-zoom regressions, legacy source-only oracles and actual oncanvas render; no old app runtime",
+      "status": "SOURCE_REPLACEMENT_REVIEWED_PARENT_ACCEPTANCE_OPEN"
+    },
+    {
+      "work_id": "legacy-beb46dc724cd604fa29f",
+      "source_id": "01.002/000647",
+      "path": "app/display/gimpdisplayshell-tool-events.c",
+      "original_acceptance": "canvas \u3068 overlay \u304c\u540c\u3058\u89d2\u5ea6\u3092\u4f7f\u7528",
+      "current_route": "gimp_display_shell_canvas_tool_events; gimp_display_shell_painter_pan_begin/painter_pan_motion and gimp_display_shell_stop_scrolling; painter rotate/zoom default routes; gimp_display_shell_space_pressed",
+      "rationale": "Inherited middle-button Shift rotation, Ctrl radial zoom and ordinary inverse-before-gint pan are routed through the explicit default navigation policy. Old300-distance/15-degree operations, grab lifetime and origin are compared to unchanged pinned C source. Configured Space PAN uses old current-device inverse regardless modifiers (a165), not silently relabeled custom. Explicit custom bindings retain native policy. Duplicate declarations/includes and state glue are represented by these same live routes.",
+      "evidence_scope": "a165 old-space50+50 checkpoint includes prior pan/rotation/applied-zoom regressions, legacy source-only oracles and actual oncanvas render; no old app runtime",
+      "status": "SOURCE_REPLACEMENT_REVIEWED_PARENT_ACCEPTANCE_OPEN"
+    },
+    {
+      "work_id": "legacy-8554fa9cea12353e8316",
+      "source_id": "01.002/000659",
+      "path": "app/display/gimpdisplayshell-tool-events.c",
+      "original_acceptance": "canvas \u3068 overlay \u304c\u540c\u3058\u89d2\u5ea6\u3092\u4f7f\u7528",
+      "current_route": "gimp_display_shell_canvas_tool_events; gimp_display_shell_painter_pan_begin/painter_pan_motion and gimp_display_shell_stop_scrolling; painter rotate/zoom default routes; gimp_display_shell_space_pressed",
+      "rationale": "Inherited middle-button Shift rotation, Ctrl radial zoom and ordinary inverse-before-gint pan are routed through the explicit default navigation policy. Old300-distance/15-degree operations, grab lifetime and origin are compared to unchanged pinned C source. Configured Space PAN uses old current-device inverse regardless modifiers (a165), not silently relabeled custom. Explicit custom bindings retain native policy. Duplicate declarations/includes and state glue are represented by these same live routes.",
+      "evidence_scope": "a165 old-space50+50 checkpoint includes prior pan/rotation/applied-zoom regressions, legacy source-only oracles and actual oncanvas render; no old app runtime",
+      "status": "SOURCE_REPLACEMENT_REVIEWED_PARENT_ACCEPTANCE_OPEN"
+    },
+    {
+      "work_id": "legacy-65b4ef709d129e9a6899",
+      "source_id": "01.002/000662",
+      "path": "app/display/gimpdisplayshell-tool-events.c",
+      "original_acceptance": "canvas \u3068 overlay \u304c\u540c\u3058\u89d2\u5ea6\u3092\u4f7f\u7528",
+      "current_route": "gimp_display_shell_canvas_tool_events; gimp_display_shell_painter_pan_begin/painter_pan_motion and gimp_display_shell_stop_scrolling; painter rotate/zoom default routes; gimp_display_shell_space_pressed",
+      "rationale": "Inherited middle-button Shift rotation, Ctrl radial zoom and ordinary inverse-before-gint pan are routed through the explicit default navigation policy. Old300-distance/15-degree operations, grab lifetime and origin are compared to unchanged pinned C source. Configured Space PAN uses old current-device inverse regardless modifiers (a165), not silently relabeled custom. Explicit custom bindings retain native policy. Duplicate declarations/includes and state glue are represented by these same live routes.",
+      "evidence_scope": "a165 old-space50+50 checkpoint includes prior pan/rotation/applied-zoom regressions, legacy source-only oracles and actual oncanvas render; no old app runtime",
+      "status": "SOURCE_REPLACEMENT_REVIEWED_PARENT_ACCEPTANCE_OPEN"
+    },
+    {
+      "work_id": "legacy-f1ac6b1dbad2a034e68e",
+      "source_id": "01.002/000665",
+      "path": "app/display/gimpdisplayshell-tool-events.c",
+      "original_acceptance": "canvas \u3068 overlay \u304c\u540c\u3058\u89d2\u5ea6\u3092\u4f7f\u7528",
+      "current_route": "gimp_display_shell_canvas_tool_events; gimp_display_shell_painter_pan_begin/painter_pan_motion and gimp_display_shell_stop_scrolling; painter rotate/zoom default routes; gimp_display_shell_space_pressed",
+      "rationale": "Inherited middle-button Shift rotation, Ctrl radial zoom and ordinary inverse-before-gint pan are routed through the explicit default navigation policy. Old300-distance/15-degree operations, grab lifetime and origin are compared to unchanged pinned C source. Configured Space PAN uses old current-device inverse regardless modifiers (a165), not silently relabeled custom. Explicit custom bindings retain native policy. Duplicate declarations/includes and state glue are represented by these same live routes.",
+      "evidence_scope": "a165 old-space50+50 checkpoint includes prior pan/rotation/applied-zoom regressions, legacy source-only oracles and actual oncanvas render; no old app runtime",
+      "status": "SOURCE_REPLACEMENT_REVIEWED_PARENT_ACCEPTANCE_OPEN"
+    },
+    {
+      "work_id": "legacy-7e818f0031968dd49d40",
+      "source_id": "01.002/000668",
+      "path": "app/display/gimpdisplayshell-tool-events.c",
+      "original_acceptance": "canvas \u3068 overlay \u304c\u540c\u3058\u89d2\u5ea6\u3092\u4f7f\u7528",
+      "current_route": "gimp_display_shell_canvas_tool_events; gimp_display_shell_painter_pan_begin/painter_pan_motion and gimp_display_shell_stop_scrolling; painter rotate/zoom default routes; gimp_display_shell_space_pressed",
+      "rationale": "Inherited middle-button Shift rotation, Ctrl radial zoom and ordinary inverse-before-gint pan are routed through the explicit default navigation policy. Old300-distance/15-degree operations, grab lifetime and origin are compared to unchanged pinned C source. Configured Space PAN uses old current-device inverse regardless modifiers (a165), not silently relabeled custom. Explicit custom bindings retain native policy. Duplicate declarations/includes and state glue are represented by these same live routes.",
+      "evidence_scope": "a165 old-space50+50 checkpoint includes prior pan/rotation/applied-zoom regressions, legacy source-only oracles and actual oncanvas render; no old app runtime",
+      "status": "SOURCE_REPLACEMENT_REVIEWED_PARENT_ACCEPTANCE_OPEN"
+    },
+    {
+      "work_id": "legacy-854f90c117440213c8bd",
+      "source_id": "01.002/000669",
+      "path": "app/display/gimpdisplayshell-tool-events.c",
+      "original_acceptance": "canvas \u3068 overlay \u304c\u540c\u3058\u89d2\u5ea6\u3092\u4f7f\u7528",
+      "current_route": "gimp_display_shell_canvas_tool_events; gimp_display_shell_painter_pan_begin/painter_pan_motion and gimp_display_shell_stop_scrolling; painter rotate/zoom default routes; gimp_display_shell_space_pressed",
+      "rationale": "Inherited middle-button Shift rotation, Ctrl radial zoom and ordinary inverse-before-gint pan are routed through the explicit default navigation policy. Old300-distance/15-degree operations, grab lifetime and origin are compared to unchanged pinned C source. Configured Space PAN uses old current-device inverse regardless modifiers (a165), not silently relabeled custom. Explicit custom bindings retain native policy. Duplicate declarations/includes and state glue are represented by these same live routes.",
+      "evidence_scope": "a165 old-space50+50 checkpoint includes prior pan/rotation/applied-zoom regressions, legacy source-only oracles and actual oncanvas render; no old app runtime",
+      "status": "SOURCE_REPLACEMENT_REVIEWED_PARENT_ACCEPTANCE_OPEN"
+    },
+    {
+      "work_id": "legacy-c966266c0f5d838dc5b9",
+      "source_id": "01.002/000670",
+      "path": "app/display/gimpdisplayshell-tool-events.c",
+      "original_acceptance": "canvas \u3068 overlay \u304c\u540c\u3058\u89d2\u5ea6\u3092\u4f7f\u7528",
+      "current_route": "gimp_display_shell_canvas_tool_events; gimp_display_shell_painter_pan_begin/painter_pan_motion and gimp_display_shell_stop_scrolling; painter rotate/zoom default routes; gimp_display_shell_space_pressed",
+      "rationale": "Inherited middle-button Shift rotation, Ctrl radial zoom and ordinary inverse-before-gint pan are routed through the explicit default navigation policy. Old300-distance/15-degree operations, grab lifetime and origin are compared to unchanged pinned C source. Configured Space PAN uses old current-device inverse regardless modifiers (a165), not silently relabeled custom. Explicit custom bindings retain native policy. Duplicate declarations/includes and state glue are represented by these same live routes.",
+      "evidence_scope": "a165 old-space50+50 checkpoint includes prior pan/rotation/applied-zoom regressions, legacy source-only oracles and actual oncanvas render; no old app runtime",
+      "status": "SOURCE_REPLACEMENT_REVIEWED_PARENT_ACCEPTANCE_OPEN"
+    },
+    {
+      "work_id": "legacy-add752da6bff9e30340e",
+      "source_id": "01.002/000671",
+      "path": "app/display/gimpdisplayshell-tool-events.c",
+      "original_acceptance": "canvas \u3068 overlay \u304c\u540c\u3058\u89d2\u5ea6\u3092\u4f7f\u7528",
+      "current_route": "gimp_display_shell_canvas_tool_events; gimp_display_shell_painter_pan_begin/painter_pan_motion and gimp_display_shell_stop_scrolling; painter rotate/zoom default routes; gimp_display_shell_space_pressed",
+      "rationale": "Inherited middle-button Shift rotation, Ctrl radial zoom and ordinary inverse-before-gint pan are routed through the explicit default navigation policy. Old300-distance/15-degree operations, grab lifetime and origin are compared to unchanged pinned C source. Configured Space PAN uses old current-device inverse regardless modifiers (a165), not silently relabeled custom. Explicit custom bindings retain native policy. Duplicate declarations/includes and state glue are represented by these same live routes.",
+      "evidence_scope": "a165 old-space50+50 checkpoint includes prior pan/rotation/applied-zoom regressions, legacy source-only oracles and actual oncanvas render; no old app runtime",
+      "status": "SOURCE_REPLACEMENT_REVIEWED_PARENT_ACCEPTANCE_OPEN"
+    },
+    {
+      "work_id": "legacy-12cc1335a91cab82b77c",
+      "source_id": "01.002/000672",
+      "path": "app/display/gimpdisplayshell-tool-events.c",
+      "original_acceptance": "canvas \u3068 overlay \u304c\u540c\u3058\u89d2\u5ea6\u3092\u4f7f\u7528",
+      "current_route": "gimp_display_shell_canvas_tool_events; gimp_display_shell_painter_pan_begin/painter_pan_motion and gimp_display_shell_stop_scrolling; painter rotate/zoom default routes; gimp_display_shell_space_pressed",
+      "rationale": "Inherited middle-button Shift rotation, Ctrl radial zoom and ordinary inverse-before-gint pan are routed through the explicit default navigation policy. Old300-distance/15-degree operations, grab lifetime and origin are compared to unchanged pinned C source. Configured Space PAN uses old current-device inverse regardless modifiers (a165), not silently relabeled custom. Explicit custom bindings retain native policy. Duplicate declarations/includes and state glue are represented by these same live routes. This whole hunk also changes full-motion-tracking/snapping dispatch; that unrelated criterion is retained with the original other_whole_hunk_owners in audit.json, not claimed completed by this common-angle work row.",
+      "evidence_scope": "a165 old-space50+50 checkpoint includes prior pan/rotation/applied-zoom regressions, legacy source-only oracles and actual oncanvas render; no old app runtime",
+      "status": "SOURCE_REPLACEMENT_REVIEWED_PARENT_ACCEPTANCE_OPEN"
+    },
+    {
+      "work_id": "legacy-003827fbe823c76f1891",
+      "source_id": "01.002/000683",
+      "path": "app/display/gimpdisplayshell-tool-events.c",
+      "original_acceptance": "canvas \u3068 overlay \u304c\u540c\u3058\u89d2\u5ea6\u3092\u4f7f\u7528",
+      "current_route": "gimp_display_shell_canvas_tool_events; gimp_display_shell_painter_pan_begin/painter_pan_motion and gimp_display_shell_stop_scrolling; painter rotate/zoom default routes; gimp_display_shell_space_pressed",
+      "rationale": "Inherited middle-button Shift rotation, Ctrl radial zoom and ordinary inverse-before-gint pan are routed through the explicit default navigation policy. Old300-distance/15-degree operations, grab lifetime and origin are compared to unchanged pinned C source. Configured Space PAN uses old current-device inverse regardless modifiers (a165), not silently relabeled custom. Explicit custom bindings retain native policy. Duplicate declarations/includes and state glue are represented by these same live routes.",
+      "evidence_scope": "a165 old-space50+50 checkpoint includes prior pan/rotation/applied-zoom regressions, legacy source-only oracles and actual oncanvas render; no old app runtime",
+      "status": "SOURCE_REPLACEMENT_REVIEWED_PARENT_ACCEPTANCE_OPEN"
+    },
+    {
+      "work_id": "legacy-80c1d045a108034bbd9b",
+      "source_id": "01.002/000684",
+      "path": "app/display/gimpdisplayshell-tool-events.c",
+      "original_acceptance": "canvas \u3068 overlay \u304c\u540c\u3058\u89d2\u5ea6\u3092\u4f7f\u7528",
+      "current_route": "gimp_display_shell_canvas_tool_events; gimp_display_shell_painter_pan_begin/painter_pan_motion and gimp_display_shell_stop_scrolling; painter rotate/zoom default routes; gimp_display_shell_space_pressed",
+      "rationale": "Inherited middle-button Shift rotation, Ctrl radial zoom and ordinary inverse-before-gint pan are routed through the explicit default navigation policy. Old300-distance/15-degree operations, grab lifetime and origin are compared to unchanged pinned C source. Configured Space PAN uses old current-device inverse regardless modifiers (a165), not silently relabeled custom. Explicit custom bindings retain native policy. Duplicate declarations/includes and state glue are represented by these same live routes.",
+      "evidence_scope": "a165 old-space50+50 checkpoint includes prior pan/rotation/applied-zoom regressions, legacy source-only oracles and actual oncanvas render; no old app runtime",
+      "status": "SOURCE_REPLACEMENT_REVIEWED_PARENT_ACCEPTANCE_OPEN"
+    },
+    {
+      "work_id": "legacy-88587141c1535cd1d18c",
+      "source_id": "01.002/000685",
+      "path": "app/display/gimpdisplayshell-tool-events.c",
+      "original_acceptance": "canvas \u3068 overlay \u304c\u540c\u3058\u89d2\u5ea6\u3092\u4f7f\u7528",
+      "current_route": "gimp_display_shell_canvas_tool_events; gimp_display_shell_painter_pan_begin/painter_pan_motion and gimp_display_shell_stop_scrolling; painter rotate/zoom default routes; gimp_display_shell_space_pressed",
+      "rationale": "Inherited middle-button Shift rotation, Ctrl radial zoom and ordinary inverse-before-gint pan are routed through the explicit default navigation policy. Old300-distance/15-degree operations, grab lifetime and origin are compared to unchanged pinned C source. Configured Space PAN uses old current-device inverse regardless modifiers (a165), not silently relabeled custom. Explicit custom bindings retain native policy. Duplicate declarations/includes and state glue are represented by these same live routes.",
+      "evidence_scope": "a165 old-space50+50 checkpoint includes prior pan/rotation/applied-zoom regressions, legacy source-only oracles and actual oncanvas render; no old app runtime",
+      "status": "SOURCE_REPLACEMENT_REVIEWED_PARENT_ACCEPTANCE_OPEN"
+    },
+    {
+      "work_id": "legacy-e85c70a36fdceb249dfc",
+      "source_id": "01.002/000686",
+      "path": "app/display/gimpdisplayshell-tool-events.c",
+      "original_acceptance": "canvas \u3068 overlay \u304c\u540c\u3058\u89d2\u5ea6\u3092\u4f7f\u7528",
+      "current_route": "gimp_display_shell_canvas_tool_events; gimp_display_shell_painter_pan_begin/painter_pan_motion and gimp_display_shell_stop_scrolling; painter rotate/zoom default routes; gimp_display_shell_space_pressed",
+      "rationale": "Inherited middle-button Shift rotation, Ctrl radial zoom and ordinary inverse-before-gint pan are routed through the explicit default navigation policy. Old300-distance/15-degree operations, grab lifetime and origin are compared to unchanged pinned C source. Configured Space PAN uses old current-device inverse regardless modifiers (a165), not silently relabeled custom. Explicit custom bindings retain native policy. Duplicate declarations/includes and state glue are represented by these same live routes.",
+      "evidence_scope": "a165 old-space50+50 checkpoint includes prior pan/rotation/applied-zoom regressions, legacy source-only oracles and actual oncanvas render; no old app runtime",
+      "status": "SOURCE_REPLACEMENT_REVIEWED_PARENT_ACCEPTANCE_OPEN"
+    },
+    {
+      "work_id": "legacy-0ee5eb8b2f5a5549958a",
+      "source_id": "01.002/000687",
+      "path": "app/display/gimpdisplayshell-tool-events.c",
+      "original_acceptance": "canvas \u3068 overlay \u304c\u540c\u3058\u89d2\u5ea6\u3092\u4f7f\u7528",
+      "current_route": "gimp_display_shell_canvas_tool_events; gimp_display_shell_painter_pan_begin/painter_pan_motion and gimp_display_shell_stop_scrolling; painter rotate/zoom default routes; gimp_display_shell_space_pressed",
+      "rationale": "Inherited middle-button Shift rotation, Ctrl radial zoom and ordinary inverse-before-gint pan are routed through the explicit default navigation policy. Old300-distance/15-degree operations, grab lifetime and origin are compared to unchanged pinned C source. Configured Space PAN uses old current-device inverse regardless modifiers (a165), not silently relabeled custom. Explicit custom bindings retain native policy. Duplicate declarations/includes and state glue are represented by these same live routes.",
+      "evidence_scope": "a165 old-space50+50 checkpoint includes prior pan/rotation/applied-zoom regressions, legacy source-only oracles and actual oncanvas render; no old app runtime",
+      "status": "SOURCE_REPLACEMENT_REVIEWED_PARENT_ACCEPTANCE_OPEN"
+    },
+    {
+      "work_id": "legacy-4a283b015d53f9db4df5",
+      "source_id": "01.002/000693",
+      "path": "app/display/gimpdisplayshell-transform.c",
+      "original_acceptance": "canvas \u3068 overlay \u304c\u540c\u3058\u89d2\u5ea6\u3092\u4f7f\u7528",
+      "current_route": "gimp_display_shell_transform_coords/untransform_coords; transform_xy[_f]/untransform_xy[_f]; zoom_xy[_f]/unzoom_xy_f; zoom_segments; rotate_bounds/unrotate_bounds",
+      "rationale": "Shared rotate_transform/rotate_untransform replace per-call window-backed Cairo contexts for point/vector conversion. Local zoom helpers deliberately omit display rotation; image rendering and image-space overlays add the same common matrix exactly once. Integer inverse conversion preserves the explicit integer API boundary; segment geometry is local and selection rendering applies the matrix. Header declarations use current compiled interfaces, not duplicate old declarations.",
+      "evidence_scope": "pan/rotation/zoom old-source fixtures plus independent viewport Cairo CTM and selection/primitive actual tests; final parent aggregate pending",
+      "status": "SOURCE_REPLACEMENT_REVIEWED_PARENT_ACCEPTANCE_OPEN"
+    },
+    {
+      "work_id": "legacy-6743c87ae6577fdab6a7",
+      "source_id": "01.002/000694",
+      "path": "app/display/gimpdisplayshell-transform.c",
+      "original_acceptance": "canvas \u3068 overlay \u304c\u540c\u3058\u89d2\u5ea6\u3092\u4f7f\u7528",
+      "current_route": "gimp_display_shell_transform_coords/untransform_coords; transform_xy[_f]/untransform_xy[_f]; zoom_xy[_f]/unzoom_xy_f; zoom_segments; rotate_bounds/unrotate_bounds",
+      "rationale": "Shared rotate_transform/rotate_untransform replace per-call window-backed Cairo contexts for point/vector conversion. Local zoom helpers deliberately omit display rotation; image rendering and image-space overlays add the same common matrix exactly once. Integer inverse conversion preserves the explicit integer API boundary; segment geometry is local and selection rendering applies the matrix. Header declarations use current compiled interfaces, not duplicate old declarations.",
+      "evidence_scope": "pan/rotation/zoom old-source fixtures plus independent viewport Cairo CTM and selection/primitive actual tests; final parent aggregate pending",
+      "status": "SOURCE_REPLACEMENT_REVIEWED_PARENT_ACCEPTANCE_OPEN"
+    },
+    {
+      "work_id": "legacy-1e59b99a66cb1940cfe0",
+      "source_id": "01.002/000695",
+      "path": "app/display/gimpdisplayshell-transform.c",
+      "original_acceptance": "canvas \u3068 overlay \u304c\u540c\u3058\u89d2\u5ea6\u3092\u4f7f\u7528",
+      "current_route": "gimp_display_shell_transform_coords/untransform_coords; transform_xy[_f]/untransform_xy[_f]; zoom_xy[_f]/unzoom_xy_f; zoom_segments; rotate_bounds/unrotate_bounds",
+      "rationale": "Shared rotate_transform/rotate_untransform replace per-call window-backed Cairo contexts for point/vector conversion. Local zoom helpers deliberately omit display rotation; image rendering and image-space overlays add the same common matrix exactly once. Integer inverse conversion preserves the explicit integer API boundary; segment geometry is local and selection rendering applies the matrix. Header declarations use current compiled interfaces, not duplicate old declarations.",
+      "evidence_scope": "pan/rotation/zoom old-source fixtures plus independent viewport Cairo CTM and selection/primitive actual tests; final parent aggregate pending",
+      "status": "SOURCE_REPLACEMENT_REVIEWED_PARENT_ACCEPTANCE_OPEN"
+    },
+    {
+      "work_id": "legacy-65f2573eaf901de80043",
+      "source_id": "01.002/000696",
+      "path": "app/display/gimpdisplayshell-transform.c",
+      "original_acceptance": "canvas \u3068 overlay \u304c\u540c\u3058\u89d2\u5ea6\u3092\u4f7f\u7528",
+      "current_route": "gimp_display_shell_transform_coords/untransform_coords; transform_xy[_f]/untransform_xy[_f]; zoom_xy[_f]/unzoom_xy_f; zoom_segments; rotate_bounds/unrotate_bounds",
+      "rationale": "Shared rotate_transform/rotate_untransform replace per-call window-backed Cairo contexts for point/vector conversion. Local zoom helpers deliberately omit display rotation; image rendering and image-space overlays add the same common matrix exactly once. Integer inverse conversion preserves the explicit integer API boundary; segment geometry is local and selection rendering applies the matrix. Header declarations use current compiled interfaces, not duplicate old declarations.",
+      "evidence_scope": "pan/rotation/zoom old-source fixtures plus independent viewport Cairo CTM and selection/primitive actual tests; final parent aggregate pending",
+      "status": "SOURCE_REPLACEMENT_REVIEWED_PARENT_ACCEPTANCE_OPEN"
+    },
+    {
+      "work_id": "legacy-46c3edecd18133694d72",
+      "source_id": "01.002/000697",
+      "path": "app/display/gimpdisplayshell-transform.c",
+      "original_acceptance": "canvas \u3068 overlay \u304c\u540c\u3058\u89d2\u5ea6\u3092\u4f7f\u7528",
+      "current_route": "gimp_display_shell_transform_coords/untransform_coords; transform_xy[_f]/untransform_xy[_f]; zoom_xy[_f]/unzoom_xy_f; zoom_segments; rotate_bounds/unrotate_bounds",
+      "rationale": "Shared rotate_transform/rotate_untransform replace per-call window-backed Cairo contexts for point/vector conversion. Local zoom helpers deliberately omit display rotation; image rendering and image-space overlays add the same common matrix exactly once. Integer inverse conversion preserves the explicit integer API boundary; segment geometry is local and selection rendering applies the matrix. Header declarations use current compiled interfaces, not duplicate old declarations.",
+      "evidence_scope": "pan/rotation/zoom old-source fixtures plus independent viewport Cairo CTM and selection/primitive actual tests; final parent aggregate pending",
+      "status": "SOURCE_REPLACEMENT_REVIEWED_PARENT_ACCEPTANCE_OPEN"
+    },
+    {
+      "work_id": "legacy-369c285e28527e5fdade",
+      "source_id": "01.002/000698",
+      "path": "app/display/gimpdisplayshell-transform.c",
+      "original_acceptance": "canvas \u3068 overlay \u304c\u540c\u3058\u89d2\u5ea6\u3092\u4f7f\u7528",
+      "current_route": "gimp_display_shell_transform_coords/untransform_coords; transform_xy[_f]/untransform_xy[_f]; zoom_xy[_f]/unzoom_xy_f; zoom_segments; rotate_bounds/unrotate_bounds",
+      "rationale": "Shared rotate_transform/rotate_untransform replace per-call window-backed Cairo contexts for point/vector conversion. Local zoom helpers deliberately omit display rotation; image rendering and image-space overlays add the same common matrix exactly once. Integer inverse conversion preserves the explicit integer API boundary; segment geometry is local and selection rendering applies the matrix. Header declarations use current compiled interfaces, not duplicate old declarations.",
+      "evidence_scope": "pan/rotation/zoom old-source fixtures plus independent viewport Cairo CTM and selection/primitive actual tests; final parent aggregate pending",
+      "status": "SOURCE_REPLACEMENT_REVIEWED_PARENT_ACCEPTANCE_OPEN"
+    },
+    {
+      "work_id": "legacy-bbc61945470eaca23df2",
+      "source_id": "01.002/000699",
+      "path": "app/display/gimpdisplayshell-transform.c",
+      "original_acceptance": "canvas \u3068 overlay \u304c\u540c\u3058\u89d2\u5ea6\u3092\u4f7f\u7528",
+      "current_route": "gimp_display_shell_transform_coords/untransform_coords; transform_xy[_f]/untransform_xy[_f]; zoom_xy[_f]/unzoom_xy_f; zoom_segments; rotate_bounds/unrotate_bounds",
+      "rationale": "Shared rotate_transform/rotate_untransform replace per-call window-backed Cairo contexts for point/vector conversion. Local zoom helpers deliberately omit display rotation; image rendering and image-space overlays add the same common matrix exactly once. Integer inverse conversion preserves the explicit integer API boundary; segment geometry is local and selection rendering applies the matrix. Header declarations use current compiled interfaces, not duplicate old declarations.",
+      "evidence_scope": "pan/rotation/zoom old-source fixtures plus independent viewport Cairo CTM and selection/primitive actual tests; final parent aggregate pending",
+      "status": "SOURCE_REPLACEMENT_REVIEWED_PARENT_ACCEPTANCE_OPEN"
+    },
+    {
+      "work_id": "legacy-a2c921df689049e42001",
+      "source_id": "01.002/000700",
+      "path": "app/display/gimpdisplayshell-transform.c",
+      "original_acceptance": "canvas \u3068 overlay \u304c\u540c\u3058\u89d2\u5ea6\u3092\u4f7f\u7528",
+      "current_route": "gimp_display_shell_transform_coords/untransform_coords; transform_xy[_f]/untransform_xy[_f]; zoom_xy[_f]/unzoom_xy_f; zoom_segments; rotate_bounds/unrotate_bounds",
+      "rationale": "Shared rotate_transform/rotate_untransform replace per-call window-backed Cairo contexts for point/vector conversion. Local zoom helpers deliberately omit display rotation; image rendering and image-space overlays add the same common matrix exactly once. Integer inverse conversion preserves the explicit integer API boundary; segment geometry is local and selection rendering applies the matrix. Header declarations use current compiled interfaces, not duplicate old declarations.",
+      "evidence_scope": "pan/rotation/zoom old-source fixtures plus independent viewport Cairo CTM and selection/primitive actual tests; final parent aggregate pending",
+      "status": "SOURCE_REPLACEMENT_REVIEWED_PARENT_ACCEPTANCE_OPEN"
+    },
+    {
+      "work_id": "legacy-7be7a4ad6d86b0282489",
+      "source_id": "01.002/000701",
+      "path": "app/display/gimpdisplayshell-transform.c",
+      "original_acceptance": "canvas \u3068 overlay \u304c\u540c\u3058\u89d2\u5ea6\u3092\u4f7f\u7528",
+      "current_route": "gimp_display_shell_transform_coords/untransform_coords; transform_xy[_f]/untransform_xy[_f]; zoom_xy[_f]/unzoom_xy_f; zoom_segments; rotate_bounds/unrotate_bounds",
+      "rationale": "Shared rotate_transform/rotate_untransform replace per-call window-backed Cairo contexts for point/vector conversion. Local zoom helpers deliberately omit display rotation; image rendering and image-space overlays add the same common matrix exactly once. Integer inverse conversion preserves the explicit integer API boundary; segment geometry is local and selection rendering applies the matrix. Header declarations use current compiled interfaces, not duplicate old declarations.",
+      "evidence_scope": "pan/rotation/zoom old-source fixtures plus independent viewport Cairo CTM and selection/primitive actual tests; final parent aggregate pending",
+      "status": "SOURCE_REPLACEMENT_REVIEWED_PARENT_ACCEPTANCE_OPEN"
+    },
+    {
+      "work_id": "legacy-e09e4efca9764072b60b",
+      "source_id": "01.002/000702",
+      "path": "app/display/gimpdisplayshell-transform.c",
+      "original_acceptance": "canvas \u3068 overlay \u304c\u540c\u3058\u89d2\u5ea6\u3092\u4f7f\u7528",
+      "current_route": "gimp_display_shell_transform_coords/untransform_coords; transform_xy[_f]/untransform_xy[_f]; zoom_xy[_f]/unzoom_xy_f; zoom_segments; rotate_bounds/unrotate_bounds",
+      "rationale": "Shared rotate_transform/rotate_untransform replace per-call window-backed Cairo contexts for point/vector conversion. Local zoom helpers deliberately omit display rotation; image rendering and image-space overlays add the same common matrix exactly once. Integer inverse conversion preserves the explicit integer API boundary; segment geometry is local and selection rendering applies the matrix. Header declarations use current compiled interfaces, not duplicate old declarations.",
+      "evidence_scope": "pan/rotation/zoom old-source fixtures plus independent viewport Cairo CTM and selection/primitive actual tests; final parent aggregate pending",
+      "status": "SOURCE_REPLACEMENT_REVIEWED_PARENT_ACCEPTANCE_OPEN"
+    },
+    {
+      "work_id": "legacy-576d2496ed0ae52468da",
+      "source_id": "01.002/000703",
+      "path": "app/display/gimpdisplayshell-transform.c",
+      "original_acceptance": "canvas \u3068 overlay \u304c\u540c\u3058\u89d2\u5ea6\u3092\u4f7f\u7528",
+      "current_route": "gimp_display_shell_transform_coords/untransform_coords; transform_xy[_f]/untransform_xy[_f]; zoom_xy[_f]/unzoom_xy_f; zoom_segments; rotate_bounds/unrotate_bounds",
+      "rationale": "Shared rotate_transform/rotate_untransform replace per-call window-backed Cairo contexts for point/vector conversion. Local zoom helpers deliberately omit display rotation; image rendering and image-space overlays add the same common matrix exactly once. Integer inverse conversion preserves the explicit integer API boundary; segment geometry is local and selection rendering applies the matrix. Header declarations use current compiled interfaces, not duplicate old declarations.",
+      "evidence_scope": "pan/rotation/zoom old-source fixtures plus independent viewport Cairo CTM and selection/primitive actual tests; final parent aggregate pending",
+      "status": "SOURCE_REPLACEMENT_REVIEWED_PARENT_ACCEPTANCE_OPEN"
+    },
+    {
+      "work_id": "legacy-44d8381b42242e8231f8",
+      "source_id": "01.002/000704",
+      "path": "app/display/gimpdisplayshell-transform.c",
+      "original_acceptance": "canvas \u3068 overlay \u304c\u540c\u3058\u89d2\u5ea6\u3092\u4f7f\u7528",
+      "current_route": "gimp_display_shell_transform_coords/untransform_coords; transform_xy[_f]/untransform_xy[_f]; zoom_xy[_f]/unzoom_xy_f; zoom_segments; rotate_bounds/unrotate_bounds",
+      "rationale": "Shared rotate_transform/rotate_untransform replace per-call window-backed Cairo contexts for point/vector conversion. Local zoom helpers deliberately omit display rotation; image rendering and image-space overlays add the same common matrix exactly once. Integer inverse conversion preserves the explicit integer API boundary; segment geometry is local and selection rendering applies the matrix. Header declarations use current compiled interfaces, not duplicate old declarations.",
+      "evidence_scope": "pan/rotation/zoom old-source fixtures plus independent viewport Cairo CTM and selection/primitive actual tests; final parent aggregate pending",
+      "status": "SOURCE_REPLACEMENT_REVIEWED_PARENT_ACCEPTANCE_OPEN"
+    },
+    {
+      "work_id": "legacy-a3bae7e58329927b5b97",
+      "source_id": "01.002/000705",
+      "path": "app/display/gimpdisplayshell-transform.c",
+      "original_acceptance": "canvas \u3068 overlay \u304c\u540c\u3058\u89d2\u5ea6\u3092\u4f7f\u7528",
+      "current_route": "gimp_display_shell_transform_coords/untransform_coords; transform_xy[_f]/untransform_xy[_f]; zoom_xy[_f]/unzoom_xy_f; zoom_segments; rotate_bounds/unrotate_bounds",
+      "rationale": "Shared rotate_transform/rotate_untransform replace per-call window-backed Cairo contexts for point/vector conversion. Local zoom helpers deliberately omit display rotation; image rendering and image-space overlays add the same common matrix exactly once. Integer inverse conversion preserves the explicit integer API boundary; segment geometry is local and selection rendering applies the matrix. Header declarations use current compiled interfaces, not duplicate old declarations.",
+      "evidence_scope": "pan/rotation/zoom old-source fixtures plus independent viewport Cairo CTM and selection/primitive actual tests; final parent aggregate pending",
+      "status": "SOURCE_REPLACEMENT_REVIEWED_PARENT_ACCEPTANCE_OPEN"
+    },
+    {
+      "work_id": "legacy-2b6fafdfcd405b1d724b",
+      "source_id": "01.002/000706",
+      "path": "app/display/gimpdisplayshell-transform.c",
+      "original_acceptance": "canvas \u3068 overlay \u304c\u540c\u3058\u89d2\u5ea6\u3092\u4f7f\u7528",
+      "current_route": "gimp_display_shell_transform_coords/untransform_coords; transform_xy[_f]/untransform_xy[_f]; zoom_xy[_f]/unzoom_xy_f; zoom_segments; rotate_bounds/unrotate_bounds",
+      "rationale": "Shared rotate_transform/rotate_untransform replace per-call window-backed Cairo contexts for point/vector conversion. Local zoom helpers deliberately omit display rotation; image rendering and image-space overlays add the same common matrix exactly once. Integer inverse conversion preserves the explicit integer API boundary; segment geometry is local and selection rendering applies the matrix. Header declarations use current compiled interfaces, not duplicate old declarations.",
+      "evidence_scope": "pan/rotation/zoom old-source fixtures plus independent viewport Cairo CTM and selection/primitive actual tests; final parent aggregate pending",
+      "status": "SOURCE_REPLACEMENT_REVIEWED_PARENT_ACCEPTANCE_OPEN"
+    },
+    {
+      "work_id": "legacy-510dfb9d768bf92378bf",
+      "source_id": "01.002/000707",
+      "path": "app/display/gimpdisplayshell-transform.c",
+      "original_acceptance": "canvas \u3068 overlay \u304c\u540c\u3058\u89d2\u5ea6\u3092\u4f7f\u7528",
+      "current_route": "gimp_display_shell_transform_coords/untransform_coords; transform_xy[_f]/untransform_xy[_f]; zoom_xy[_f]/unzoom_xy_f; zoom_segments; rotate_bounds/unrotate_bounds",
+      "rationale": "Shared rotate_transform/rotate_untransform replace per-call window-backed Cairo contexts for point/vector conversion. Local zoom helpers deliberately omit display rotation; image rendering and image-space overlays add the same common matrix exactly once. Integer inverse conversion preserves the explicit integer API boundary; segment geometry is local and selection rendering applies the matrix. Header declarations use current compiled interfaces, not duplicate old declarations.",
+      "evidence_scope": "pan/rotation/zoom old-source fixtures plus independent viewport Cairo CTM and selection/primitive actual tests; final parent aggregate pending",
+      "status": "SOURCE_REPLACEMENT_REVIEWED_PARENT_ACCEPTANCE_OPEN"
+    },
+    {
+      "work_id": "legacy-f497c74884be26161840",
+      "source_id": "01.002/000708",
+      "path": "app/display/gimpdisplayshell-transform.h",
+      "original_acceptance": "canvas \u3068 overlay \u304c\u540c\u3058\u89d2\u5ea6\u3092\u4f7f\u7528",
+      "current_route": "gimp_display_shell_transform_coords/untransform_coords; transform_xy[_f]/untransform_xy[_f]; zoom_xy[_f]/unzoom_xy_f; zoom_segments; rotate_bounds/unrotate_bounds",
+      "rationale": "Shared rotate_transform/rotate_untransform replace per-call window-backed Cairo contexts for point/vector conversion. Local zoom helpers deliberately omit display rotation; image rendering and image-space overlays add the same common matrix exactly once. Integer inverse conversion preserves the explicit integer API boundary; segment geometry is local and selection rendering applies the matrix. Header declarations use current compiled interfaces, not duplicate old declarations.",
+      "evidence_scope": "pan/rotation/zoom old-source fixtures plus independent viewport Cairo CTM and selection/primitive actual tests; final parent aggregate pending",
+      "status": "SOURCE_REPLACEMENT_REVIEWED_PARENT_ACCEPTANCE_OPEN"
+    },
+    {
+      "work_id": "legacy-e44792bc19e219c20516",
+      "source_id": "01.002/001659",
+      "path": "app/widgets/gimpnavigationview.c",
+      "original_acceptance": "canvas \u3068 overlay \u304c\u540c\u3058\u89d2\u5ea6\u3092\u4f7f\u7528",
+      "current_route": "gimp_navigation_view_button_press and current gdk_seat_grab pointer-motion event routing",
+      "rationale": "The only assigned old hunk removes GDK_EXTENSION_EVENTS_ALL from the pointer grab mask. GTK3 event/seat-grab handling replaces that removed GTK2 flag; no preview-rotation implementation exists in this hunk. Do not invent an additional preview geometry acceptance or use this row to close unrelated device/platform coverage.",
+      "evidence_scope": "source/API replacement review; native navigation event tests are scoped synthetic events, not physical device parity",
+      "status": "SOURCE_REPLACEMENT_REVIEWED_PARENT_ACCEPTANCE_OPEN"
+    }
+  ]
+}

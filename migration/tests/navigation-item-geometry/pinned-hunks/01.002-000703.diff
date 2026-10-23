@@ -1,0 +1,53 @@
++/**
++ * gimp_display_shell_zoom_xy_f:
++ * @shell: a #GimpDisplayShell
++ * @x:     image x coordinate of point
++ * @y:     image y coordinate of point
++ * @nx:    returned shell canvas x coordinate
++ * @ny:    returned shell canvas y coordinate
++ *
++ * Scale from image coordinates to display shell canvas
++ * coordinates. This function doesn't transform scaled coordinate into 
++ * rotated view coordinates.
++ **/
++void
++gimp_display_shell_zoom_xy_f  (const GimpDisplayShell *shell,
++                               gdouble                 x,
++                               gdouble                 y,
++                               gdouble                *nx,
++                               gdouble                *ny)
++{
++  g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
++  g_return_if_fail (nx != NULL);
++  g_return_if_fail (ny != NULL);
++
++  *nx = SCALEX (shell, x) - shell->offset_x;
++  *ny = SCALEY (shell, y) - shell->offset_y;
++}
++
++/**
++ * gimp_display_shell_unzoom_xy_f:
++ * @shell:       a #GimpDisplayShell
++ * @x:           x coordinate in display coordinates (not rotated)
++ * @y:           y coordinate in display coordinates (not rotated)
++ * @nx:          place to return x coordinate in image coordinates
++ * @ny:          place to return y coordinate in image coordinates
++ *
++ * This function is identical to gimp_display_shell_untransform_xy(),
++ * except that the input and output coordinates are doubles rather than
++ * ints, and consequently there is no option related to rounding.
++ **/
++void
++gimp_display_shell_unzoom_xy_f (const GimpDisplayShell *shell,
++                                gdouble                 x,
++                                gdouble                 y,
++                                gdouble                *nx,
++                                gdouble                *ny)
++{
++  g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
++  g_return_if_fail (nx != NULL);
++  g_return_if_fail (ny != NULL);
++
++  *nx = (x + shell->offset_x) / shell->scale_x;
++  *ny = (y + shell->offset_y) / shell->scale_y;
++}

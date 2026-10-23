@@ -1014,7 +1014,7 @@
 | 25.007 | [x] | 0/360度の境界を処理する | 25.006 | 角度飛びと方向反転がない |
 | 25.008 | [x] | 表示反転中の方向を移植する | 25.007 | 旧水平反転時の計算と一致 |
 | 25.008/mirrored-arrow-input | [x] | 表示反転中の左右キー入力を移植する | 25.007, 01.017 | mirrored時のLeft/Right変換と非反転時の不変を、押下・解除・toolへの転送・回転併用で試験する |
-| 25.009 | [ ] | 現行表示行列へ接続する | 25.008 | canvas と overlay が同じ角度を使用 |
+| 25.009 | [x] | 現行表示行列へ接続する | 25.008 | canvas と overlay が同じ角度を使用 |
 | 25.009/path-damage | [x] | pathのmiter strokeによる描画残像を除去する | 25.008, 01.017 | draw不変で3形状・3styles・filled/unfilled・0/37/90度・H/V反転の216boundsと216実window hide場面を通常10/ASan・UBSan10登録で検証、残像0。旧triangle9pixel red・初期layout失敗保持、認証1080x1920・oncanvas有効。原25.009の196dutiesは未完 |
 | 25.009/corner-center-safety | [x] | 未定義CENTER cornerをno-ink/no-extentsへ限定する | 25.008, 01.017 | enum/default/factory/callersを固定sourceで監査し8方向のproduction byteを維持。旧default extent red、3default/factory形態・192bounds・192実window遷移を通常5/ASan・UBSan5登録で検証、残像0、認証1080x1920・oncanvas有効。原25.009の196dutiesは未完 |
 | 25.009/handle-damage | [x] | handleのanchor・local angle・非正方寸法に対応するinvalidated領域を保証する | 25.008, 01.017 | draw/hit本体不変で156raster・8424bounds・156実window hide場面を通常18/ASan・UBSan18登録で検証し残存pixel0。129pixel旧redと回転square旧red保持、6 invalid-view extent拒否、認証1080x1920・oncanvas有効。原25.009の196dutiesは未完 |
@@ -1024,6 +1024,8 @@
 | 25.009/fractional-pan-difference | [x] | 小数部が変わるmiddle-panの現行整数device原点と旧source差分を限定検証する | 25.008, 01.017 | exact public A 8e92569d/tree 25bec9e5の限定native41 normal/31 focused・9 C unitsと、別source B fbe7efac/tree ef9ae384のstrict Clone226 normal/62 focusedを確認。1caseの整数offset・量子化anchor・非零raw driftを限定受入れ、31登録・6 primary pairs・旧16-drag証跡保持。最終documentary Cへnative/GUI合格は転用しない。現行source-backed differenceはexact旧互換の承認ではなく、旧runtime/raster/overlay・原25.009・drag-zoom-scrollは未完了 |
 | 25.009/drag-zoom-scroll | [x] | 修飾キー付きdrag zoomと変換座標panを維持する | 25.008, 01.017 | Shift回転・Ctrl scaling・通常scrollの開始/drag/終了、zoom距離300、device→image変換と原点を旧操作fixtureで比較する |
 | 25.009/radial-default | [x] | 旧Ctrl+middleの距離300 radial zoomを接続する | 25.001/start-relative-route | 開始scale最大値・整数中心・固定anchorを保持し2400不変旧関数演算に一致、6 pure通常/ASan/UBSan合格。明示custom zoomは現行設定を保持。実display clamp/pan/deviceは未完了 |
+2026-10-21 原25.009完了追記：196件の元source義務と削除265行を全件照合し、通常97件・ordinary ASan/UBSan97件、認証1080×1920のoncanvas実描画を検証した。上の子行に残る「原25.009未完」は各過去checkpoint時点の制限であり、証跡を遡って書換えない。全移植・実tablet・他OSの完了は意味しない（`migration/tests/navigation-item-geometry/`）。
+
 | 25.010 | [ ] | 回転 reset action を接続する | 25.009 | 状態と UI 表示が一致 |
 | 25.011 | [ ] | modifier を含む操作試験を実行する | 25.010 | 記録した全キー遷移の期待角に一致 |
 | 25.011/native-event-route | [x] | 実DisplayShellへ回転/zoom修飾キーeventを通して検証する | 25.001/start-relative-route, 25.009/radial-default | Native Xfce上の4通常/4 focused sanitizerで反転・Ctrl解除・任意button・radial zoom・picker grab回収を検証。synthetic GDKであり実tablet/全focus/panは別gate |

@@ -1,0 +1,10 @@
+-          *x = rx;
+-          *y = ry + left_and_right_handle_y_offset;
++          *x1 = rx1 + vec_yx * v_handle_y_offset;
++          *y1 = ry1 + vec_yy * v_handle_y_offset;
++          *x2 = *x1 + vec_xx * private->corner_width;
++          *y2 = *y1 + vec_xy * private->corner_width;
++          *x3 = *x1 + vec_yx * private->corner_height;
++          *y3 = *y1 + vec_yy * private->corner_height;
++          *x4 = *x1 + vec_xx * private->corner_width + vec_yx * private->corner_height;
++          *y4 = *y1 + vec_xy * private->corner_width + vec_yy * private->corner_height;

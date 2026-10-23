@@ -1,0 +1,2 @@
+-      for (j = x; j < x2; j += GIMP_DISPLAY_RENDER_BUF_WIDTH)
++      for (j = x; j < x2; j += GIMP_DISPLAY_RENDER_BUF_WIDTH - overlap)

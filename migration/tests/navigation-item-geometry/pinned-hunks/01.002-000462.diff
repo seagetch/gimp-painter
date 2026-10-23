@@ -1,0 +1,9 @@
+-  x1 = floor (x1);
+-  y1 = floor (y1);
+-  x2 = ceil (x2);
+-  y2 = ceil (y2);
+-
+-  *center_x = (x1 + x2) / 2.0;
+-  *center_y = (y1 + y2) / 2.0;
++  *center_x = (x1 + x4) / 2.0;
++  *center_y = (y1 + y4) / 2.0;
