@@ -109,6 +109,36 @@ profile('ruler-input', 'Perspective lazy snap and paint-event ordering', '23.012
 profile('view-gesture', 'Drag rotate/zoom and transformed pan gestures', '25.001 25.002 25.003 25.004 25.005 25.006 25.007 25.008 25.009 25.009/drag-zoom-scroll', '25.011 25.012 29.020', 'Keep shift/control entry conditions, drag zoom distance and transformed pan origins alongside rotation/snap state.')
 profile('mirror-key', 'Mirrored horizontal keyboard input', '25.008/mirrored-arrow-input', '25.011 29.020', 'Preserve Left/Right key remapping only in mirrored display state and verify press/release and tool event routing.')
 
+# Exact build-input review: migration/inventory/cpp-registration-review.json.
+# These inputs are not all C++ translation-unit registrations.
+profile('registration-3', 'Reviewed Makefile link-only', '04.008 04.009', '04.015 04.016', 'This hunk adds only a dummy C++ link-driver TU or an archive/HTTP LDADD entry. Final-link/runtime/archive checks belong to04.008/04.009; main.c stays C.')
+profile('registration-4', 'Reviewed Makefile link-only', '04.008 04.009', '04.015 04.016', 'This hunk adds only a dummy C++ link-driver TU or an archive/HTTP LDADD entry. Final-link/runtime/archive checks belong to04.008/04.009; main.c stays C.')
+profile('registration-5', 'Reviewed Makefile link-only', '04.008 04.009', '04.015 04.016', 'This hunk adds only a dummy C++ link-driver TU or an archive/HTTP LDADD entry. Final-link/runtime/archive checks belong to04.008/04.009; main.c stays C.')
+profile('registration-6', 'Reviewed Makefile link-only', '04.008 04.009', '04.015 04.016', 'This hunk adds only a dummy C++ link-driver TU or an archive/HTTP LDADD entry. Final-link/runtime/archive checks belong to04.008/04.009; main.c stays C.')
+profile('registration-7', 'Reviewed Makefile link-only', '04.008 04.009', '04.015 04.016', 'This hunk adds only a dummy C++ link-driver TU or an archive/HTTP LDADD entry. Final-link/runtime/archive checks belong to04.008/04.009; main.c stays C.')
+profile('registration-8', 'Reviewed Makefile link-only', '04.008 04.009', '04.015 04.016', 'This hunk adds only a dummy C++ link-driver TU or an archive/HTTP LDADD entry. Final-link/runtime/archive checks belong to04.008/04.009; main.c stays C.')
+profile('registration-9', 'Reviewed Makefile c-feature-registration', '30.001 24.007', '29.020', 'C brush-list action/header registration. This is feature integration, not a C++ compiler-registration prerequisite. The source-specific feature action remains TODO.')
+profile('registration-10', 'Reviewed Makefile c-feature-registration', '30.001 24.001', '29.020', 'C editor action/header registration; editor actions now share the native brush-action/editor route. This is feature integration, not a C++ compiler-registration prerequisite. The source-specific feature action remains TODO.')
+profile('registration-38', 'Reviewed Makefile private-headers', '04.005', '04.014 04.015', 'Only private .hpp headers are appended; no compiled translation unit is added. Header exposure and compile/dependency checks remain open, as do the headers own feature obligations.')
+profile('registration-129', 'Reviewed Makefile c-feature-registration', '08.009 26.001', '26.013 26.014', 'C image-owned perspective model/header registration. This is feature integration, not a C++ compiler-registration prerequisite. The source-specific feature action remains TODO.')
+profile('registration-131', 'Reviewed Makefile c-feature-registration', '30.004 30.008', '29.020 36.019', 'C tool grouping/header registration, now native upstream source names. This is feature integration, not a C++ compiler-registration prerequisite. The source-specific feature action remains TODO.')
+profile('registration-457', 'Reviewed Makefile c-feature-registration', '25.001', '25.011 25.012', 'C canvas rotation/header registration. This is feature integration, not a C++ compiler-registration prerequisite. The source-specific feature action remains TODO.')
+profile('registration-868', 'Reviewed Makefile private-headers', '04.005', '04.014 04.015', 'Only private .hpp headers are appended; no compiled translation unit is added. Header exposure and compile/dependency checks remain open, as do the headers own feature obligations.')
+profile('registration-887', 'Reviewed Makefile private-headers', '04.005', '04.014 04.015', 'Only private .hpp headers are appended; no compiled translation unit is added. Header exposure and compile/dependency checks remain open, as do the headers own feature obligations.')
+profile('registration-1009', 'Reviewed Makefile pdb-generated-registration', '04.013 30.012 30.013', '34.013', 'Registers old MyPaint-select PDB generator input or generated C/header output. Generated API coverage is still open; no C++ translation unit is introduced.')
+profile('registration-1081', 'Reviewed Makefile c-feature-registration', '29.010', '29.020', 'C brush options GUI/header registration; native Brush editor is consumed by the compact adapter. This is feature integration, not a C++ compiler-registration prerequisite. The source-specific feature action remains TODO.')
+profile('registration-1083', 'Reviewed Makefile c-feature-registration', '29.010', '29.020', 'C dynamics options GUI/header registration; native Dynamics editor is consumed by the compact adapter. This is feature integration, not a C++ compiler-registration prerequisite. The source-specific feature action remains TODO.')
+profile('registration-1084', 'Reviewed Makefile placeholder-registration', '31.011 31.012', '31.020', 'Registers the ImageGenerator placeholder. Its declared scope is dependency proof then removal, not forcing a nonfunctional C++ tool into the build; that proof/removal acceptance remains TODO.')
+profile('registration-1514', 'Reviewed Makefile c-feature-registration', '24.007 30.012', '29.020', 'C brush factory view/select registration; complete old selection PDB remains open. This is feature integration, not a C++ compiler-registration prerequisite. The source-specific feature action remains TODO.')
+profile('registration-1517', 'Reviewed Makefile c-feature-registration', '08.015 29.010', '29.020', 'C popup-button registration; GTK3 popovers are consumed by the current compact adapter. This is feature integration, not a C++ compiler-registration prerequisite. The source-specific feature action remains TODO.')
+profile('registration-1518', 'Reviewed Makefile asset-header', '30.003 30.017', '34.014', 'Adds only the generated titlebar pixbuf header, an icon/resource duty; no compiled source or link-runtime change occurs.')
+profile('registration-1519', 'Reviewed Makefile c-feature-registration', '29.010', '29.020', 'C toolbar registration; canonical native control tree is owned by the compact adapter. This is feature integration, not a C++ compiler-registration prerequisite. The source-specific feature action remains TODO.')
+profile('registration-1522', 'Reviewed Makefile newline-only', '38.001', '38.001', 'The complete hunk only adds the missing final newline after rm -f xgen-wec. It introduces no source, dependency, or enum-generation semantic change. Preserve this proven nonfunctional disposition for final hunk reconciliation under38.001; no implementation or file-removal work is required.')
+profile('registration-2293', 'Reviewed Makefile pdb-generated-registration', '04.013 30.012 30.013', '34.013', 'Registers old MyPaint-select PDB generator input or generated C/header output. Generated API coverage is still open; no C++ translation unit is introduced.')
+profile('registration-2294', 'Reviewed Makefile pdb-generated-registration', '04.013 30.012 30.013', '34.013', 'Registers old MyPaint-select PDB generator input or generated C/header output. Generated API coverage is still open; no C++ translation unit is introduced.')
+profile('registration-2365', 'Reviewed Makefile menu-manifest', '30.001 30.005 30.017', '29.020 34.014', 'Adds two installed menu XML assets; registration belongs to menu/action/resource distribution, not a C++ source or runtime link.')
+profile('registration-2484', 'Reviewed Makefile pdb-generated-registration', '04.013 30.012 30.013', '34.013', 'Registers old MyPaint-select PDB generator input or generated C/header output. Generated API coverage is still open; no C++ translation unit is introduced.')
+
 FILES = {}
 def files(key, *names):
     for name in names:
@@ -230,6 +260,7 @@ group('color-ui','modules','gimpcolorwheel.c gimpcolorwheel.h')
 def path_profile(path):
     p = PurePosixPath(path)
     if path in FILES: return FILES[path]
+    if path == 'menus/Makefile.am': return 'registration-2365'
     if p.name == '.gitignore': return 'cleanup'
     if path == 'data/mypaint-brushes/Makefile.am.skel': return 'manifest-generator'
     if path == 'plug-ins/script-fu/scheme-wrapper.c': return 'scheme-modes'
@@ -306,6 +337,21 @@ OVERRIDES = {
     },
 }
 
+
+# Exact hunk exceptions, reviewed against byte-verified pinned source/base blobs.
+OVERRIDES.setdefault('app/Makefile.am', {}).update({3: 'registration-3', 4: 'registration-4', 5: 'registration-5', 6: 'registration-6', 7: 'registration-7', 8: 'registration-8'})
+OVERRIDES.setdefault('app/actions/Makefile.am', {}).update({1: 'registration-9', 2: 'registration-10'})
+OVERRIDES.setdefault('app/base/Makefile.am', {}).update({1: 'registration-38'})
+OVERRIDES.setdefault('app/core/Makefile.am', {}).update({2: 'registration-129', 4: 'registration-131'})
+OVERRIDES.setdefault('app/display/Makefile.am', {}).update({3: 'registration-457'})
+OVERRIDES.setdefault('app/paint-funcs/Makefile.am', {}).update({1: 'registration-868'})
+OVERRIDES.setdefault('app/paint/Makefile.am', {}).update({3: 'registration-887'})
+OVERRIDES.setdefault('app/pdb/Makefile.am', {}).update({2: 'registration-1009'})
+OVERRIDES.setdefault('app/tools/Makefile.am', {}).update({1: 'registration-1081', 3: 'registration-1083', 4: 'registration-1084'})
+OVERRIDES.setdefault('app/widgets/Makefile.am', {}).update({1: 'registration-1514', 4: 'registration-1517', 5: 'registration-1518', 6: 'registration-1519', 9: 'registration-1522'})
+OVERRIDES.setdefault('libgimp/Makefile.am', {}).update({1: 'registration-2293', 2: 'registration-2294'})
+OVERRIDES.setdefault('menus/Makefile.am', {}).update({1: 'registration-2365'})
+OVERRIDES.setdefault('tools/pdbgen/Makefile.am', {}).update({1: 'registration-2484'})
 
 def route(row, added, removed):
     path = row['path']

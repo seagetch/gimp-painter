@@ -1,0 +1,1491 @@
+{
+  "scope": "Original04.002 registration review only; no feature acceptance",
+  "source_commit": "afa43fae3e920210146abed514f136fd49f671b5",
+  "base_commit": "a61915a8e62aad8855cd8c620bdb7195a25ffb90",
+  "registered_duties": 19,
+  "reassigned_todo_duties": 28,
+  "reviews": [
+    {
+      "original_work_id": "legacy-2e7718946dde6407bec8",
+      "source_kind": "hunk",
+      "source_id": "01.002/000001",
+      "path": "app/Makefile.am",
+      "source_blob": "01ecb1d4604460e385b36c7fdacf515a8ce95292",
+      "source_range": "-35,2 -> 35,8",
+      "source_sha256": "48e6d9d1fcd9e2b8eac3436a0fcab9013527570d41071dc3f66da0c716044e4d",
+      "original_wbs": "04.002",
+      "classification": "current-cpp-module-registration",
+      "implementation_tasks": "04.002,04.008,04.009",
+      "verification_tasks": "04.015,04.016",
+      "current_paths": [
+        "app/core/gimplayerpreset.c",
+        "app/core/gimplayerpreset-apply.cpp",
+        "app/httpd/httpd.cpp"
+      ],
+      "remaining_feature_tasks": [
+        "28.003",
+        "28.004",
+        "31.003"
+      ],
+      "registration_status": "VERIFIED_AFTER_CURRENT_BUILD",
+      "rationale": "Presets moved into core; optional HTTP retains its conditional subdir. Both owning libraries join the app link.",
+      "profile": "build",
+      "payload": "-\t.\t\t\\\n-\ttests\n+\tpresets\n+\n+if USE_HTTPD\n+SUBDIRS += httpd\n+endif\n+\n+SUBDIRS += .\t\t\\\n+\t   tests\n",
+      "corrected_source_work_ids": [
+        "legacy-2e7718946dde6407bec8",
+        "legacy-8a2ed6f80c4bbc9bd457",
+        "legacy-ac3114be669633f913f3",
+        "legacy-be87264371f09b6e79bb",
+        "legacy-341d7c15a4c3a5468a62"
+      ]
+    },
+    {
+      "original_work_id": "legacy-8e1f8430b9206e949fcf",
+      "source_kind": "hunk",
+      "source_id": "01.002/000002",
+      "path": "app/Makefile.am",
+      "source_blob": "01ecb1d4604460e385b36c7fdacf515a8ce95292",
+      "source_range": "-73,0 -> 80,2",
+      "source_sha256": "4940e6b96a8062fc155f0e7f60438b726ffce13be3fb5aa11282c89df0bbfd54",
+      "original_wbs": "04.002",
+      "classification": "current-cpp-module-registration",
+      "implementation_tasks": "04.002,04.008,04.009",
+      "verification_tasks": "04.015,04.016",
+      "current_paths": [
+        "app/app.c",
+        "app/core/gimp.c",
+        "app/core/gimp-data-factories.c",
+        "app/actions/actions.c",
+        "app/painter/gimp-painter-binding.cpp"
+      ],
+      "remaining_feature_tasks": [
+        "30.016"
+      ],
+      "registration_status": "VERIFIED_AFTER_CURRENT_BUILD",
+      "rationale": "Legacy feature dispatcher is replaced by explicit native C startup/teardown and owning module registration. The common C++ bridge is a real app dependency.",
+      "profile": "build",
+      "payload": "+\tgimp-features.cpp\t\\\n+\tgimp-features.hpp\t\\\n",
+      "corrected_source_work_ids": [
+        "legacy-8e1f8430b9206e949fcf",
+        "legacy-7f5d74ac6c597a845b2a",
+        "legacy-834df1e769cf7e53ba0d",
+        "legacy-51bab6b72edcf0ad9f74",
+        "legacy-2c51e391d0158d137b6d"
+      ]
+    },
+    {
+      "original_work_id": "legacy-be293da875ef9629f819",
+      "source_kind": "hunk",
+      "source_id": "01.002/000003",
+      "path": "app/Makefile.am",
+      "source_blob": "01ecb1d4604460e385b36c7fdacf515a8ce95292",
+      "source_range": "-89 -> 97",
+      "source_sha256": "d84cb10b6f5b05a2c6e8441962ca08087b9fdcebf5cf1c0231c749d5b9fff070",
+      "original_wbs": "04.002",
+      "classification": "link-only",
+      "implementation_tasks": "04.008,04.009",
+      "verification_tasks": "04.015,04.016",
+      "current_paths": [
+        "app/meson.build"
+      ],
+      "remaining_feature_tasks": [
+        "04.008",
+        "04.009"
+      ],
+      "registration_status": "REASSIGNED_TODO",
+      "rationale": "This hunk adds only a dummy C++ link-driver TU or an archive/HTTP LDADD entry. Final-link/runtime/archive checks belong to04.008/04.009; main.c stays C.",
+      "profile": "registration-3",
+      "payload": "-gimp_2_8_SOURCES = $(libapp_sources) main.c\n+gimp_2_8_SOURCES = $(libapp_sources) main.c dummy.cpp\n",
+      "corrected_source_work_ids": [
+        "legacy-a8485d2b085ad2100434",
+        "legacy-58d3b5181b3cdeace55c",
+        "legacy-09f964909809204eea91",
+        "legacy-b113803f3a12568e1581"
+      ]
+    },
+    {
+      "original_work_id": "legacy-f880173fa58ac438bba3",
+      "source_kind": "hunk",
+      "source_id": "01.002/000004",
+      "path": "app/Makefile.am",
+      "source_blob": "01ecb1d4604460e385b36c7fdacf515a8ce95292",
+      "source_range": "-171,0 -> 180",
+      "source_sha256": "093addb9d344488c662e702c07c5a65ac82e821e8094111e911f0c898dead1a3",
+      "original_wbs": "04.002",
+      "classification": "link-only",
+      "implementation_tasks": "04.008,04.009",
+      "verification_tasks": "04.015,04.016",
+      "current_paths": [
+        "app/meson.build"
+      ],
+      "remaining_feature_tasks": [
+        "04.008",
+        "04.009"
+      ],
+      "registration_status": "REASSIGNED_TODO",
+      "rationale": "This hunk adds only a dummy C++ link-driver TU or an archive/HTTP LDADD entry. Final-link/runtime/archive checks belong to04.008/04.009; main.c stays C.",
+      "profile": "registration-4",
+      "payload": "+\tpresets/libapppresets.a         \\\n",
+      "corrected_source_work_ids": [
+        "legacy-50154ee990cf230bf27b",
+        "legacy-21a8b9a72a5f5020ae88",
+        "legacy-d7335c2c749ed8615321",
+        "legacy-152f488efb42981d0fbb"
+      ]
+    },
+    {
+      "original_work_id": "legacy-e79a02382535c059a985",
+      "source_kind": "hunk",
+      "source_id": "01.002/000005",
+      "path": "app/Makefile.am",
+      "source_blob": "01ecb1d4604460e385b36c7fdacf515a8ce95292",
+      "source_range": "-188,0 -> 198,8",
+      "source_sha256": "c8b6fa63a2f18768cc082ff3fbed4589c9094a5ef43367edc3e7c55f5097271a",
+      "original_wbs": "04.002",
+      "classification": "link-only",
+      "implementation_tasks": "04.008,04.009",
+      "verification_tasks": "04.015,04.016",
+      "current_paths": [
+        "app/meson.build"
+      ],
+      "remaining_feature_tasks": [
+        "04.008",
+        "04.009"
+      ],
+      "registration_status": "REASSIGNED_TODO",
+      "rationale": "This hunk adds only a dummy C++ link-driver TU or an archive/HTTP LDADD entry. Final-link/runtime/archive checks belong to04.008/04.009; main.c stays C.",
+      "profile": "registration-5",
+      "payload": "+if USE_HTTPD\n+gimphttpdldadd = \\\n+\thttpd/libapphttpd.a\t\t\\\n+\t$(SOUP_LIBS)\n+else\n+gimphttpdldadd =\n+endif\n+\n",
+      "corrected_source_work_ids": [
+        "legacy-948967df613b5ebf4e3b",
+        "legacy-983203c9d3e8e62fa41d",
+        "legacy-d13eb9956e0f7075fb3a",
+        "legacy-04c80c0ed29237fa7995"
+      ]
+    },
+    {
+      "original_work_id": "legacy-1bf67dccc23d4907f31b",
+      "source_kind": "hunk",
+      "source_id": "01.002/000006",
+      "path": "app/Makefile.am",
+      "source_blob": "01ecb1d4604460e385b36c7fdacf515a8ce95292",
+      "source_range": "-206,0 -> 224",
+      "source_sha256": "63e5ebb77a3f2acbc803f133a8611e6d9dc851227c2e5b6a3d927c4107edf0e6",
+      "original_wbs": "04.002",
+      "classification": "link-only",
+      "implementation_tasks": "04.008,04.009",
+      "verification_tasks": "04.015,04.016",
+      "current_paths": [
+        "app/meson.build"
+      ],
+      "remaining_feature_tasks": [
+        "04.008",
+        "04.009"
+      ],
+      "registration_status": "REASSIGNED_TODO",
+      "rationale": "This hunk adds only a dummy C++ link-driver TU or an archive/HTTP LDADD entry. Final-link/runtime/archive checks belong to04.008/04.009; main.c stays C.",
+      "profile": "registration-6",
+      "payload": "+\t$(gimphttpdldadd)\t\t\\\n",
+      "corrected_source_work_ids": [
+        "legacy-1d5c10e83cc30334ae3f",
+        "legacy-3cd683841f88676d0304",
+        "legacy-4c8a4a358900746d81fd",
+        "legacy-800837c823d94387a1ee"
+      ]
+    },
+    {
+      "original_work_id": "legacy-f59617eead3a1fcca775",
+      "source_kind": "hunk",
+      "source_id": "01.002/000007",
+      "path": "app/Makefile.am",
+      "source_blob": "01ecb1d4604460e385b36c7fdacf515a8ce95292",
+      "source_range": "-212 -> 230",
+      "source_sha256": "9edef7090ee33f53503a1fe4cfbf010c15ad503048e98a515b62d3aabd5c060b",
+      "original_wbs": "04.002",
+      "classification": "link-only",
+      "implementation_tasks": "04.008,04.009",
+      "verification_tasks": "04.015,04.016",
+      "current_paths": [
+        "app/meson.build"
+      ],
+      "remaining_feature_tasks": [
+        "04.008",
+        "04.009"
+      ],
+      "registration_status": "REASSIGNED_TODO",
+      "rationale": "This hunk adds only a dummy C++ link-driver TU or an archive/HTTP LDADD entry. Final-link/runtime/archive checks belong to04.008/04.009; main.c stays C.",
+      "profile": "registration-7",
+      "payload": "-gimp_console_2_8_SOURCES = $(libapp_sources) main.c\n+gimp_console_2_8_SOURCES = $(libapp_sources) main.c dummy.cpp\n",
+      "corrected_source_work_ids": [
+        "legacy-f23f73db516a94d02f0b",
+        "legacy-c820ff5af0bf588558f2",
+        "legacy-0f0264db2cd529b1e80e",
+        "legacy-0c9b43651bc826c87c4a"
+      ]
+    },
+    {
+      "original_work_id": "legacy-6b907a45cca2a4fde662",
+      "source_kind": "hunk",
+      "source_id": "01.002/000008",
+      "path": "app/Makefile.am",
+      "source_blob": "01ecb1d4604460e385b36c7fdacf515a8ce95292",
+      "source_range": "-219,0 -> 238",
+      "source_sha256": "78766817876d0a3bd1c48dcae0e2be43935571878d338be2250ad0d28c50fd61",
+      "original_wbs": "04.002",
+      "classification": "link-only",
+      "implementation_tasks": "04.008,04.009",
+      "verification_tasks": "04.015,04.016",
+      "current_paths": [
+        "app/meson.build"
+      ],
+      "remaining_feature_tasks": [
+        "04.008",
+        "04.009"
+      ],
+      "registration_status": "REASSIGNED_TODO",
+      "rationale": "This hunk adds only a dummy C++ link-driver TU or an archive/HTTP LDADD entry. Final-link/runtime/archive checks belong to04.008/04.009; main.c stays C.",
+      "profile": "registration-8",
+      "payload": "+\t$(gimphttpdldadd)\n",
+      "corrected_source_work_ids": [
+        "legacy-7013b2bcff11f1ab1489",
+        "legacy-9ee5f6b056d86afff5ac",
+        "legacy-cfd04fa7bd8bf1bb0b7e",
+        "legacy-705b6c124337137461ed"
+      ]
+    },
+    {
+      "original_work_id": "legacy-278a419fbcb83c5a235b",
+      "source_kind": "hunk",
+      "source_id": "01.002/000009",
+      "path": "app/actions/Makefile.am",
+      "source_blob": "17f1de23b884d5d33d07ece936abfa2b0bdab7c7",
+      "source_range": "-25,0 -> 26,2",
+      "source_sha256": "d5d2221847bd606f4c174fb358c42f3cac903a43c28af97073368138f9752746",
+      "original_wbs": "04.002",
+      "classification": "c-feature-registration",
+      "implementation_tasks": "30.001,24.007",
+      "verification_tasks": "29.020",
+      "current_paths": [
+        "app/actions/mypaint-brushes-actions.c"
+      ],
+      "remaining_feature_tasks": [
+        "30.001",
+        "24.007"
+      ],
+      "registration_status": "REASSIGNED_TODO",
+      "rationale": "C brush-list action/header registration. This is feature integration, not a C++ compiler-registration prerequisite. The source-specific feature action remains TODO.",
+      "profile": "registration-9",
+      "payload": "+\tmypaint-brushes-actions.c\t\t\\\n+\tmypaint-brushes-actions.h\t\t\\\n",
+      "corrected_source_work_ids": [
+        "legacy-2e71d8430b1947454962",
+        "legacy-a8a1a83eb6bc53b29512",
+        "legacy-c9d7440f8d7c3debe2a1"
+      ]
+    },
+    {
+      "original_work_id": "legacy-cc40e939326f6a017d78",
+      "source_kind": "hunk",
+      "source_id": "01.002/000010",
+      "path": "app/actions/Makefile.am",
+      "source_blob": "17f1de23b884d5d33d07ece936abfa2b0bdab7c7",
+      "source_range": "-187 -> 189,3",
+      "source_sha256": "f044338b8af6e9279812aebf370eb8cb2d1dc5138b511eeca0e8951bdf00044d",
+      "original_wbs": "04.002",
+      "classification": "c-feature-registration",
+      "implementation_tasks": "30.001,24.001",
+      "verification_tasks": "29.020",
+      "current_paths": [
+        "app/actions/mypaint-brushes-actions.c",
+        "app/widgets/gimppaintermybrusheditor.cpp"
+      ],
+      "remaining_feature_tasks": [
+        "30.001",
+        "24.001"
+      ],
+      "registration_status": "REASSIGNED_TODO",
+      "rationale": "C editor action/header registration; editor actions now share the native brush-action/editor route. This is feature integration, not a C++ compiler-registration prerequisite. The source-specific feature action remains TODO.",
+      "profile": "registration-10",
+      "payload": "-\twindows-commands.h\n+\twindows-commands.h\t\t\\\n+\tmypaint-brush-editor-actions.c\t\t\\\n+\tmypaint-brush-editor-actions.h\n",
+      "corrected_source_work_ids": [
+        "legacy-6576d35d4e3d61c6e140",
+        "legacy-10bdf274e1dae8a79117",
+        "legacy-bd24c38b83faa3f73924"
+      ]
+    },
+    {
+      "original_work_id": "legacy-f4b56146e29be4742fa5",
+      "source_kind": "hunk",
+      "source_id": "01.002/000038",
+      "path": "app/base/Makefile.am",
+      "source_blob": "03b82578f3d4eaa0b37fb03d2bdda9ec0a1bf9df",
+      "source_range": "-74 -> 74,9",
+      "source_sha256": "4ec3c13c6c7b75adb94f01f6c31adc12fa141910cfb9dce42644ece8f1a880e7",
+      "original_wbs": "04.002",
+      "classification": "private-headers",
+      "implementation_tasks": "04.005",
+      "verification_tasks": "04.014,04.015",
+      "current_paths": [
+        "app/painter/meson.build",
+        "app/paint/painter-mypaint-surface/meson.build"
+      ],
+      "remaining_feature_tasks": [
+        "04.005"
+      ],
+      "registration_status": "REASSIGNED_TODO",
+      "rationale": "Only private .hpp headers are appended; no compiled translation unit is added. Header exposure and compile/dependency checks remain open, as do the headers own feature obligations.",
+      "profile": "registration-38",
+      "payload": "-\ttile-swap.h\n+\ttile-swap.h\t\t\\\n+\tpixel.hpp\t\t\\\n+\tdelegators.hpp\t\t\\\n+\tscopeguard.hpp\t\t\\\n+\tglib-cxx-types.hpp      \\\n+\tglib-cxx-impl.hpp       \\\n+\tglib-cxx-utils.hpp\t\\\n+\tjson-cxx-utils.hpp  \\\n+\tsoup-cxx-utils.hpp\n",
+      "corrected_source_work_ids": [
+        "legacy-a0021f7d80f5a41b6d6f",
+        "legacy-30e94f0fd5f51100fad0",
+        "legacy-4fec2016f0f36dfb18f6"
+      ]
+    },
+    {
+      "original_work_id": "legacy-ee72b736f33407c200be",
+      "source_kind": "hunk",
+      "source_id": "01.002/000128",
+      "path": "app/core/Makefile.am",
+      "source_blob": "3bcd9d2c0e3699fc4bb833093d572e6bfa6ee5ef",
+      "source_range": "-81,0 -> 82,8",
+      "source_sha256": "3547aa70b7ceeef9b528a46a32e6cdaf9bb928b456218c5697cbcf1e093f76ed",
+      "original_wbs": "04.002",
+      "classification": "current-cpp-module-registration",
+      "implementation_tasks": "04.002,04.008,04.009",
+      "verification_tasks": "04.015,04.016",
+      "current_paths": [
+        "app/core/gimppaintermybrush.cpp",
+        "app/paint/painter-mypaint/resource.cpp",
+        "app/paint/painter-brush-settings/meson.build"
+      ],
+      "remaining_feature_tasks": [
+        "08.005",
+        "19.001",
+        "19.011",
+        "19.013",
+        "20.001",
+        "04.013"
+      ],
+      "registration_status": "VERIFIED_AFTER_CURRENT_BUILD",
+      "rationale": "Extended brush resource/reader/writer now share resource.cpp and the core adapter; generated setting constants remain a separate generator obligation.",
+      "profile": "build",
+      "payload": "+  gimpmypaintbrush.h                      \\\n+\tgimpmypaintbrush.cpp\t\t\t\\\n+  gimpmypaintbrush-load.h\t\t\t\\\n+\tgimpmypaintbrush-load.cpp\t\t\t\\\n+\tmypaintbrush-enum-settings.h \\\n+\tmypaintbrush-brushsettings.h \\\n+\tmypaintbrush-brushsettings.c \\\n+\tmypaintbrush-mapping.hpp \\\n",
+      "corrected_source_work_ids": [
+        "legacy-ee72b736f33407c200be",
+        "legacy-7999af59c9a6c092662a",
+        "legacy-c03f7692d39abeb790d7",
+        "legacy-88523e1c23d19b826f20",
+        "legacy-f2c5dcfb8d1711459d4b"
+      ]
+    },
+    {
+      "original_work_id": "legacy-d79e755b322fe7cb1467",
+      "source_kind": "hunk",
+      "source_id": "01.002/000129",
+      "path": "app/core/Makefile.am",
+      "source_blob": "3bcd9d2c0e3699fc4bb833093d572e6bfa6ee5ef",
+      "source_range": "-246,0 -> 255,2",
+      "source_sha256": "265a31b386b99108c5ef493b877bfb1d7d52862d2c404f7588da0c9be6ee2937",
+      "original_wbs": "04.002",
+      "classification": "c-feature-registration",
+      "implementation_tasks": "08.009,26.001",
+      "verification_tasks": "26.013,26.014",
+      "current_paths": [
+        "app/core/gimpimage-perspective-guide.c"
+      ],
+      "remaining_feature_tasks": [
+        "08.009",
+        "26.001"
+      ],
+      "registration_status": "REASSIGNED_TODO",
+      "rationale": "C image-owned perspective model/header registration. This is feature integration, not a C++ compiler-registration prerequisite. The source-specific feature action remains TODO.",
+      "profile": "registration-129",
+      "payload": "+\tgimpimage-perspective-guide.c    \\\n+\tgimpimage-perspective-guide.h \t\t\\\n",
+      "corrected_source_work_ids": [
+        "legacy-6f6dcfeb2cdfdd7e4d03",
+        "legacy-d8ae5ff6ea08d0c2e2c0",
+        "legacy-2b42bf1efa900059baca",
+        "legacy-0fbd17e4e73a0e717a3e"
+      ]
+    },
+    {
+      "original_work_id": "legacy-5940afa965463961db3c",
+      "source_kind": "hunk",
+      "source_id": "01.002/000130",
+      "path": "app/core/Makefile.am",
+      "source_blob": "3bcd9d2c0e3699fc4bb833093d572e6bfa6ee5ef",
+      "source_range": "-342,0 -> 353,2",
+      "source_sha256": "fb18c77627e55984949fd55bd9cba649b89d95eed5d38ca291642212f1a64190",
+      "original_wbs": "04.002",
+      "classification": "current-cpp-module-registration",
+      "implementation_tasks": "04.002,04.008,04.009",
+      "verification_tasks": "04.015,04.016",
+      "current_paths": [
+        "app/core/gimpperspectiveguide.cpp"
+      ],
+      "remaining_feature_tasks": [
+        "08.009",
+        "26.001"
+      ],
+      "registration_status": "VERIFIED_AFTER_CURRENT_BUILD",
+      "rationale": "Perspective guide implementation is registered directly in appcore.",
+      "profile": "build",
+      "payload": "+\tgimpperspectiveguide.cpp    \\\n+\tgimpperspectiveguide.h \t\t\\\n",
+      "corrected_source_work_ids": [
+        "legacy-5940afa965463961db3c",
+        "legacy-96f4ab4f0d91cbfe052d",
+        "legacy-182be180ba23045aa586",
+        "legacy-b645edb7a9cd6e3c15e4",
+        "legacy-dde3bab20d4c8cc3af30"
+      ]
+    },
+    {
+      "original_work_id": "legacy-21f2602f394787bf12ec",
+      "source_kind": "hunk",
+      "source_id": "01.002/000131",
+      "path": "app/core/Makefile.am",
+      "source_blob": "3bcd9d2c0e3699fc4bb833093d572e6bfa6ee5ef",
+      "source_range": "-378,0 -> 391,4",
+      "source_sha256": "4848f89288edcdafd03369f3118697f4c62d1bd8acabb08c4364c4f9c8eca6d4",
+      "original_wbs": "04.002",
+      "classification": "c-feature-registration",
+      "implementation_tasks": "30.004,30.008",
+      "verification_tasks": "29.020,36.019",
+      "current_paths": [
+        "app/core/gimptoolitem.c",
+        "app/core/gimptoolgroup.c"
+      ],
+      "remaining_feature_tasks": [
+        "30.004",
+        "30.008"
+      ],
+      "registration_status": "REASSIGNED_TODO",
+      "rationale": "C tool grouping/header registration, now native upstream source names. This is feature integration, not a C++ compiler-registration prerequisite. The source-specific feature action remains TODO.",
+      "profile": "registration-131",
+      "payload": "+\tgimptoolitem.c\t\t\t\t\\\n+\tgimptoolitem.h\t\t\t\t\\\n+\tgimptoolgroup.c\t\t\t\t\\\n+\tgimptoolgroup.h\t\t\t\t\\\t\n",
+      "corrected_source_work_ids": [
+        "legacy-6b4457e1f27434683ffc",
+        "legacy-40904efd338d3ed3cdd7",
+        "legacy-cc704c42c6781a349a63",
+        "legacy-9b2df850bd834e3c0198"
+      ]
+    },
+    {
+      "original_work_id": "legacy-3e500ff254b03113c25b",
+      "source_kind": "hunk",
+      "source_id": "01.002/000132",
+      "path": "app/core/Makefile.am",
+      "source_blob": "3bcd9d2c0e3699fc4bb833093d572e6bfa6ee5ef",
+      "source_range": "-396 -> 412,11",
+      "source_sha256": "5df3a8d7025f85984a1c650c2f2e94349159d8ef5d6d76106abc5cf36b2d1483",
+      "original_wbs": "04.002",
+      "classification": "current-cpp-module-registration",
+      "implementation_tasks": "04.002,04.008,04.009",
+      "verification_tasks": "04.015,04.016",
+      "current_paths": [
+        "app/core/gimppaintermybrush.cpp",
+        "app/paint/painter-mypaint/resource.cpp",
+        "app/core/gimpfilterlayer.cpp",
+        "app/core/gimpclonelayer.cpp"
+      ],
+      "remaining_feature_tasks": [
+        "14.001",
+        "14.015",
+        "15.001",
+        "19.011"
+      ],
+      "registration_status": "VERIFIED_AFTER_CURRENT_BUILD",
+      "rationale": "Brush save shares resource.cpp; Clone reference Undo is in gimpclonelayer.cpp. Both independent layer types are registered in appcore.",
+      "profile": "build",
+      "payload": "-\tgimpviewable.h\n+\tgimpviewable.h\t\t\t\t\\\n+\tgimpmypaintbrush-private.hpp\t\t\\\n+\tgimpmypaintbrush-save.cpp\t\t\\\n+\tgimpmypaintbrush-save.h\t\t\t\\\n+\tgimpfilterlayer.h\t\t\t\\\n+\tgimpfilterlayer.cpp\t\t\t\\\n+\tgimpclonelayer.h\t\t\t\\\n+\tgimpclonelayer.cpp\t\t\t\\\n+\tgimpclonelayerundo.h\t\t\t\\\n+\tgimpclonelayerundo.cpp\n+\n",
+      "corrected_source_work_ids": [
+        "legacy-3e500ff254b03113c25b",
+        "legacy-ac1d65bb290fa8edbdd4",
+        "legacy-2f307500b9afd5c85a98",
+        "legacy-c587257ffc2b6279bbd0",
+        "legacy-436394305d695a64c194"
+      ]
+    },
+    {
+      "original_work_id": "legacy-5ee4d6b05eaafe32ff2e",
+      "source_kind": "hunk",
+      "source_id": "01.002/000455",
+      "path": "app/display/Makefile.am",
+      "source_blob": "58e7a1dd8e003489ede49e48793285a51ac83f64",
+      "source_range": "-56,0 -> 57,2",
+      "source_sha256": "76de1fcacc3a8b14fe08f21e99b1a6c74cce1ec83aab813cb94d5b8472d24578",
+      "original_wbs": "04.002",
+      "classification": "current-cpp-module-registration",
+      "implementation_tasks": "04.002,04.008,04.009",
+      "verification_tasks": "04.015,04.016",
+      "current_paths": [
+        "app/display/gimpcanvasperspectiveguide.cpp"
+      ],
+      "remaining_feature_tasks": [
+        "26.005",
+        "26.006"
+      ],
+      "registration_status": "VERIFIED_AFTER_CURRENT_BUILD",
+      "rationale": "Perspective canvas implementation is registered directly in appdisplay.",
+      "profile": "build",
+      "payload": "+\tgimpcanvasperspectiveguide.cpp\t\t\t\t\\\n+\tgimpcanvasperspectiveguide.h\t\t\t\t\\\n",
+      "corrected_source_work_ids": [
+        "legacy-5ee4d6b05eaafe32ff2e",
+        "legacy-cd5488c10e0f004f32f7",
+        "legacy-324b15011f7b0e05c215",
+        "legacy-ae849f922cc899aeb044",
+        "legacy-b4bfc9079f8132aebd4d"
+      ]
+    },
+    {
+      "original_work_id": "legacy-55cb3be6f802f147d9c5",
+      "source_kind": "hunk",
+      "source_id": "01.002/000456",
+      "path": "app/display/Makefile.am",
+      "source_blob": "58e7a1dd8e003489ede49e48793285a51ac83f64",
+      "source_range": "-114,0 -> 117,2",
+      "source_sha256": "b6fc3a2e05f9f9240696b8d307e3a779c2b63b5209b3bae71646eda6b56d9f5f",
+      "original_wbs": "04.002",
+      "classification": "current-cpp-module-registration",
+      "implementation_tasks": "04.002,04.008,04.009",
+      "verification_tasks": "04.015,04.016",
+      "current_paths": [
+        "app/display/gimppaintercanvasui.cpp"
+      ],
+      "remaining_feature_tasks": [
+        "29.001",
+        "29.019"
+      ],
+      "registration_status": "VERIFIED_AFTER_CURRENT_BUILD",
+      "rationale": "The current shell-owned canvas controller replaces the legacy overlays translation unit.",
+      "profile": "build",
+      "payload": "+\tgimpdisplayshell-overlays.cpp\t\\\n+\tgimpdisplayshell-overlays.h\t\t\\\n",
+      "corrected_source_work_ids": [
+        "legacy-55cb3be6f802f147d9c5",
+        "legacy-a2fe8791f420bb5922ff",
+        "legacy-906108cd4b068f50578f",
+        "legacy-c33b0fac97ccdd83b278",
+        "legacy-a7af4dbdc4404644e28a"
+      ]
+    },
+    {
+      "original_work_id": "legacy-3acd5a44d8d74cfbd4a6",
+      "source_kind": "hunk",
+      "source_id": "01.002/000457",
+      "path": "app/display/Makefile.am",
+      "source_blob": "58e7a1dd8e003489ede49e48793285a51ac83f64",
+      "source_range": "-150 -> 154,3",
+      "source_sha256": "fef4779c30ac5d1571d1b4cc7fe0d6f72772f2181ec1cfcb082d74d8198d089d",
+      "original_wbs": "04.002",
+      "classification": "c-feature-registration",
+      "implementation_tasks": "25.001",
+      "verification_tasks": "25.011,25.012",
+      "current_paths": [
+        "app/display/gimpdisplayshell-rotate.c"
+      ],
+      "remaining_feature_tasks": [
+        "25.001"
+      ],
+      "registration_status": "REASSIGNED_TODO",
+      "rationale": "C canvas rotation/header registration. This is feature integration, not a C++ compiler-registration prerequisite. The source-specific feature action remains TODO.",
+      "profile": "registration-457",
+      "payload": "-\tgimptooldialog.h\n+\tgimptooldialog.h\t\t\t\\\n+\tgimpdisplayshell-rotate.c\t\t\t\\\n+\tgimpdisplayshell-rotate.h\n",
+      "corrected_source_work_ids": [
+        "legacy-cfeb7afd7a9003e7ddfe",
+        "legacy-07ccf324a85bb8c53fb0",
+        "legacy-1ac4ab45e9f5e2aa9819"
+      ]
+    },
+    {
+      "original_work_id": "legacy-f2cf2980d9dedf49db66",
+      "source_kind": "hunk",
+      "source_id": "01.002/000852",
+      "path": "app/httpd/Makefile.am",
+      "source_blob": "90d9e83353cc27d314914b3e25b16ebc89c5083d",
+      "source_range": "-0,0 -> 1,65",
+      "source_sha256": "91513434dd2641e668600ef54f103c2db91a1bc919da0fcce0d948a8676a053e",
+      "original_wbs": "04.002",
+      "classification": "current-cpp-module-registration",
+      "implementation_tasks": "04.002,04.008,04.009",
+      "verification_tasks": "04.015,04.016",
+      "current_paths": [
+        "app/httpd/httpd.cpp",
+        "app/httpd/httpd-resource.cpp",
+        "app/httpd/httpd-images.cpp",
+        "app/httpd/httpd-pdb.cpp",
+        "app/httpd/httpd-navigation.cpp"
+      ],
+      "remaining_feature_tasks": [
+        "31.003",
+        "31.009",
+        "04.013"
+      ],
+      "registration_status": "VERIFIED_AFTER_CURRENT_BUILD",
+      "rationale": "Optional HTTP has explicit core and GUI C++ libraries; this configured build enables them. Disabled builds and old enum/platform behavior remain their own gates.",
+      "profile": "build",
+      "payload": "+## Process this file with automake to produce Makefile.in\n+\n+if PLATFORM_OSX\n+xobjective_c = \"-xobjective-c\"\n+endif\n+\n+AM_CPPFLAGS = \\\n+        -DISO_CODES_LOCATION=\\\"$(ISO_CODES_LOCATION)\\\"\t\t\\\n+        -DISO_CODES_LOCALEDIR=\\\"$(ISO_CODES_LOCALEDIR)\\\"\t\\\n+\t-DG_LOG_DOMAIN=\\\"Gimp-Presets\\\"\n+\n+INCLUDES = \\\n+\t-I$(top_builddir)\t\t\\\n+\t-I$(top_srcdir)\t\t\t\\\n+\t-I$(top_builddir)/app\t\\\n+\t-I$(top_srcdir)/app\t\t\\\n+\t$(GEGL_CFLAGS)\t\t\t\\\n+\t$(GTK_CFLAGS)\t\t\t\\\n+\t$(SOUP_CFLAGS)\t\t\t\\\n+\t-I$(includedir) \t\t\\\n+\t$(xobjective_c)\n+\n+noinst_LIBRARIES = libapphttpd.a\n+\n+libapphttpd_a_sources = \\\n+\thttpd-enums.h   \t\t\\\n+\thttpd.cpp\t\t\t\\\n+\thttpd.h\t\t\t\t\\\n+\trest-pdb.cpp\t\t\t\\\n+\trest-pdb.h\t\t\t\\\n+\trest-image-tree.cpp\t\t\\\n+\trest-image-tree.h\t\t\\\n+\thttpd-features.cpp\t\t\\\n+\thttpd-features.h        \\\n+\thttpd-features-gui.cpp\t\t\\\n+\thttpd-features-gui.h        \\\n+\tnavigation-guide.cpp    \\\n+\tnavigation-guide.h\n+\n+libapphttpd_a_built_sources = httpd-enums.c\n+\n+libapphttpd_a_SOURCES = \\\n+\t$(libapphttpd_a_built_sources) $(libapphttpd_a_sources)\n+\n+\n+#\n+# rules to generate built sources\n+#\n+# setup autogeneration dependencies\n+gen_sources = xgen-wec\n+CLEANFILES = $(gen_sources)\n+\n+httpd-enums.c: $(srcdir)/httpd-enums.h $(GIMP_MKENUMS)\n+\t$(GIMP_MKENUMS) \\\n+\t\t--fhead \"#include \\\"config.h\\\"\\n#include <gtk/gtk.h>\\n#include \\\"libgimpbase/gimpbase.h\\\"\\n#include \\\"httpd-enums.h\\\"\\n#include \\\"gimp-intl.h\\\"\" \\\n+\t\t--fprod \"\\n/* enumerations from \\\"@filename@\\\" */\" \\\n+\t\t--vhead \"GType\\n@enum_name@_get_type (void)\\n{\\n  static const G@Type@Value values[] =\\n  {\" \\\n+\t\t--vprod \"    { @VALUENAME@, \\\"@VALUENAME@\\\", \\\"@valuenick@\\\" },\" \\\n+\t\t--vtail \"    { 0, NULL, NULL }\\n  };\\n\" \\\n+\t\t--dhead \"  static const Gimp@Type@Desc descs[] =\\n  {\" \\\n+\t\t--dprod \"    { @VALUENAME@, @valuedesc@, @valuehelp@ },\" \\\n+\t\t--dtail \"    { 0, NULL, NULL }\\n  };\\n\\n  static GType type = 0;\\n\\n  if (G_UNLIKELY (! type))\\n    {\\n      type = g_@type@_register_static (\\\"@EnumName@\\\", values);\\n      gimp_type_set_translation_context (type, \\\"@enumnick@\\\");\\n      gimp_@type@_set_value_descriptions (type, descs);\\n    }\\n\\n  return type;\\n}\\n\" \\\n+\t\t$(srcdir)/httpd-enums.h > xgen-wec \\\n+\t&& cp xgen-wec $(@F) \\\n+\t&& rm -f xgen-wec\n",
+      "corrected_source_work_ids": [
+        "legacy-f2cf2980d9dedf49db66",
+        "legacy-d305ae54446fdb95f93d",
+        "legacy-597a49aa606f083fcf84",
+        "legacy-893f74b7fe8c8b661d99",
+        "legacy-38fe48cafea92c8e8601"
+      ]
+    },
+    {
+      "original_work_id": "legacy-998e78e3b0500070c80f",
+      "source_kind": "hunk",
+      "source_id": "01.002/000868",
+      "path": "app/paint-funcs/Makefile.am",
+      "source_blob": "3bef64dffd7481c46130642bad7455141878fa86",
+      "source_range": "-33 -> 33,2",
+      "source_sha256": "352be5bc5646ac0d3da085dff5f548eaaa54faa7ddc75bd5e49ce194f08f2927",
+      "original_wbs": "04.002",
+      "classification": "private-headers",
+      "implementation_tasks": "04.005",
+      "verification_tasks": "04.014,04.015",
+      "current_paths": [
+        "app/painter/meson.build",
+        "app/paint/painter-mypaint-surface/meson.build"
+      ],
+      "remaining_feature_tasks": [
+        "04.005"
+      ],
+      "registration_status": "REASSIGNED_TODO",
+      "rationale": "Only private .hpp headers are appended; no compiled translation unit is added. Header exposure and compile/dependency checks remain open, as do the headers own feature obligations.",
+      "profile": "registration-868",
+      "payload": "-\tsubsample-region.h\n+\tsubsample-region.h\t\\\n+\tmypaint-brushmodes.hpp\n",
+      "corrected_source_work_ids": [
+        "legacy-eae7340468d236c453b0",
+        "legacy-8cf825bd63edd90f1489",
+        "legacy-d536ccdd9a19a93731cb"
+      ]
+    },
+    {
+      "original_work_id": "legacy-41d4091a387f3a5a1a2f",
+      "source_kind": "hunk",
+      "source_id": "01.002/000885",
+      "path": "app/paint/Makefile.am",
+      "source_blob": "c70a724ef07f1070c7059b82392f31c8b0ce090f",
+      "source_range": "-57,0 -> 58,6",
+      "source_sha256": "21114d439bb76d5bbb48f010ce3f692499ac790e302f92c0147e121be8f13cfe",
+      "original_wbs": "04.002",
+      "classification": "current-cpp-module-registration",
+      "implementation_tasks": "04.002,04.008,04.009",
+      "verification_tasks": "04.015,04.016",
+      "current_paths": [
+        "app/paint/painter-mypaint-surface/paint-core.cpp",
+        "app/paint/painter-mypaint-surface/gegl-surface.cpp",
+        "app/paint/painter-mypaint-surface/gimp-painter-session.cpp"
+      ],
+      "remaining_feature_tasks": [
+        "08.006",
+        "09.011",
+        "21.001",
+        "21.014"
+      ],
+      "registration_status": "VERIFIED_AFTER_CURRENT_BUILD",
+      "rationale": "Native PaintCore/session and GEGL Surface replace the old core, surface and empty Undo TU; registration does not close Undo/behavior acceptance.",
+      "profile": "build",
+      "payload": "+\tgimpmypaintcore.cpp\t\t\\\n+\tgimpmypaintcore.hpp\t\t\\\n+\tgimpmypaintcoreundo.cpp\t\t\\\n+\tgimpmypaintcoreundo.h\t\t\\\n+\tgimpmypaintcore-surface.cpp\t\t\\\n+\tgimpmypaintcore-surface.hpp\t\t\\\n",
+      "corrected_source_work_ids": [
+        "legacy-41d4091a387f3a5a1a2f",
+        "legacy-8b03ff860b2853fce7fe",
+        "legacy-a7c63cd4c25d6065d334",
+        "legacy-e8de215053777ef8f562",
+        "legacy-94219c39be37e3e6a081"
+      ]
+    },
+    {
+      "original_work_id": "legacy-5bc8148ec481c177ff87",
+      "source_kind": "hunk",
+      "source_id": "01.002/000886",
+      "path": "app/paint/Makefile.am",
+      "source_blob": "c70a724ef07f1070c7059b82392f31c8b0ce090f",
+      "source_range": "-63,0 -> 70,8",
+      "source_sha256": "5b5d48c7bd9a6f949e01526807be10e37d3918d6d449e15dde10a3ac5ebd36c9",
+      "original_wbs": "04.002",
+      "classification": "current-cpp-module-registration",
+      "implementation_tasks": "04.002,04.008,04.009",
+      "verification_tasks": "04.015,04.016",
+      "current_paths": [
+        "app/paint/painter-mypaint-surface/gimp-painter-options.cpp",
+        "app/paint/painter-mypaint/engine.cpp"
+      ],
+      "remaining_feature_tasks": [
+        "08.007",
+        "20.001",
+        "24.010"
+      ],
+      "registration_status": "VERIFIED_AFTER_CURRENT_BUILD",
+      "rationale": "Options and application-owned history share the options TU; stroke/engine code is in engine.cpp.",
+      "profile": "build",
+      "payload": "+\tgimpmypaintoptions.cpp\t\t\\\n+\tgimpmypaintoptions.h\t\t\\\n+\tgimpmypaintoptions-history.cpp\t\\\n+\tgimpmypaintoptions-history.hpp\t\\\n+\tmypaintbrush-brush.hpp\t\t\\\n+\tmypaintbrush-surface.hpp\t\t\\\n+\tmypaintbrush-stroke.hpp\t\t\\\n+\tmypaintbrush-stroke.cpp\t\t\\\n",
+      "corrected_source_work_ids": [
+        "legacy-5bc8148ec481c177ff87",
+        "legacy-b9535d3f888dcad2ebc0",
+        "legacy-95d7bc373edc1babb307",
+        "legacy-da23b081a4dcd70efe0a",
+        "legacy-8ce4c06b26f47ee5226b"
+      ]
+    },
+    {
+      "original_work_id": "legacy-f8e8ff0631d338c4fb37",
+      "source_kind": "hunk",
+      "source_id": "01.002/000887",
+      "path": "app/paint/Makefile.am",
+      "source_blob": "c70a724ef07f1070c7059b82392f31c8b0ce090f",
+      "source_range": "-81 -> 95,3",
+      "source_sha256": "ccdacc8f82bbe29a56afb90d538c43c0e41ae089031fae840830f7cb32765630",
+      "original_wbs": "04.002",
+      "classification": "private-headers",
+      "implementation_tasks": "04.005",
+      "verification_tasks": "04.014,04.015",
+      "current_paths": [
+        "app/painter/meson.build",
+        "app/paint/painter-mypaint-surface/meson.build"
+      ],
+      "remaining_feature_tasks": [
+        "04.005"
+      ],
+      "registration_status": "REASSIGNED_TODO",
+      "rationale": "Only private .hpp headers are appended; no compiled translation unit is added. Header exposure and compile/dependency checks remain open, as do the headers own feature obligations.",
+      "profile": "registration-887",
+      "payload": "-\tgimpsourceoptions.h\n+\tgimpsourceoptions.h\t\t\\\n+\tgimpmypaintcore-brushfeature.hpp\t\t\\\n+\tgimpmypaintcore-drawablefeature.hpp\n",
+      "corrected_source_work_ids": [
+        "legacy-266f2a85bda5af747d6e",
+        "legacy-dbb674b0d6468c0f7a8f",
+        "legacy-47a54477b7ec00975f09"
+      ]
+    },
+    {
+      "original_work_id": "legacy-7fca5d55b42b9d3e1af3",
+      "source_kind": "hunk",
+      "source_id": "01.002/001008",
+      "path": "app/pdb/Makefile.am",
+      "source_blob": "12a94259835da77e2a77e97848b11619c61a7c5e",
+      "source_range": "-32,0 -> 33,2",
+      "source_sha256": "49d572fcfa22a73972a19bd5793957968b2bb40108adba3c4c097bc32a43eb8b",
+      "original_wbs": "04.002",
+      "classification": "current-cpp-module-registration",
+      "implementation_tasks": "04.002,04.008,04.009",
+      "verification_tasks": "04.015,04.016",
+      "current_paths": [
+        "app/core/gimpfilterprocedure.cpp",
+        "app/core/gimpfilterprocedure-arguments.cpp",
+        "app/painter/filter-process.cpp"
+      ],
+      "remaining_feature_tasks": [
+        "16.002",
+        "16.003",
+        "16.006"
+      ],
+      "registration_status": "VERIFIED_AFTER_CURRENT_BUILD",
+      "rationale": "PDB/executor C++ adapters moved into appcore and apppainter; no old pdb-cxx-utils.cpp needs a duplicate registration. Arbitrary saved procedure coverage remains open.",
+      "profile": "build",
+      "payload": "+\tpdb-cxx-utils.cpp\t\t\\\n+\tpdb-cxx-utils.hpp\t\t\\\n",
+      "corrected_source_work_ids": [
+        "legacy-7fca5d55b42b9d3e1af3",
+        "legacy-afdc456290b549495219",
+        "legacy-8479fd4c584ff4536fc8",
+        "legacy-7fea58afbe341f3c1e03",
+        "legacy-260e6f388de22b290132"
+      ]
+    },
+    {
+      "original_work_id": "legacy-761d20ab64cbb49c0a61",
+      "source_kind": "hunk",
+      "source_id": "01.002/001009",
+      "path": "app/pdb/Makefile.am",
+      "source_blob": "12a94259835da77e2a77e97848b11619c61a7c5e",
+      "source_range": "-40,0 -> 43",
+      "source_sha256": "97eea4f2b16120e7471f23a511f43a131e2aee6bec98e616e8d1752ea919c37e",
+      "original_wbs": "04.002",
+      "classification": "pdb-generated-registration",
+      "implementation_tasks": "04.013,30.012,30.013",
+      "verification_tasks": "34.013",
+      "current_paths": [
+        "pdb/meson.build",
+        "app/pdb/meson.build",
+        "libgimp/meson.build"
+      ],
+      "remaining_feature_tasks": [
+        "04.013",
+        "30.012",
+        "30.013"
+      ],
+      "registration_status": "REASSIGNED_TODO",
+      "rationale": "Registers old MyPaint-select PDB generator input or generated C/header output. Generated API coverage is still open; no C++ translation unit is introduced.",
+      "profile": "registration-1009",
+      "payload": "+\tmypaint-brush-select-cmds.c\t\\\n",
+      "corrected_source_work_ids": [
+        "legacy-3736759af816c17c67f7",
+        "legacy-90c17648589b785885ea",
+        "legacy-2ac2a41fd5b08de0c537",
+        "legacy-ec240a5a7eee072cd906"
+      ]
+    },
+    {
+      "original_work_id": "legacy-56a9ee83ca8912bd9e00",
+      "source_kind": "hunk",
+      "source_id": "01.002/001065",
+      "path": "app/presets/Makefile.am",
+      "source_blob": "d874add9c485d04b46255309c0228463e0062663",
+      "source_range": "-0,0 -> 1,62",
+      "source_sha256": "9cfe6a562755e05d4a7095bd4822099fa8fedce56bcad76a34fda4e691c212ab",
+      "original_wbs": "04.002",
+      "classification": "current-cpp-module-registration",
+      "implementation_tasks": "04.002,04.008,04.009",
+      "verification_tasks": "04.015,04.016",
+      "current_paths": [
+        "app/core/gimplayerpreset.c",
+        "app/core/gimplayerpreset-apply.cpp",
+        "app/core/gimp-data-factories.c",
+        "app/actions/layer-presets-actions.c",
+        "app/widgets/gimplayerpresetview.c"
+      ],
+      "remaining_feature_tasks": [
+        "28.001",
+        "28.003",
+        "28.004",
+        "28.014",
+        "04.013"
+      ],
+      "registration_status": "VERIFIED_AFTER_CURRENT_BUILD",
+      "rationale": "Presets are native C data/factory/view and a private C++ applier in existing modules, not a separately named legacy library. Generator/behavior obligations stay open.",
+      "profile": "build",
+      "payload": "+## Process this file with automake to produce Makefile.in\n+\n+if PLATFORM_OSX\n+xobjective_c = \"-xobjective-c\"\n+endif\n+\n+AM_CPPFLAGS = \\\n+        -DISO_CODES_LOCATION=\\\"$(ISO_CODES_LOCATION)\\\"\t\t\\\n+        -DISO_CODES_LOCALEDIR=\\\"$(ISO_CODES_LOCALEDIR)\\\"\t\\\n+\t-DG_LOG_DOMAIN=\\\"Gimp-Presets\\\"\n+\n+INCLUDES = \\\n+\t-I$(top_builddir)\t\t\\\n+\t-I$(top_srcdir)\t\t\t\\\n+\t-I$(top_builddir)/app\t\\\n+\t-I$(top_srcdir)/app\t\t\\\n+\t$(GEGL_CFLAGS)\t\t\t\\\n+\t$(GTK_CFLAGS)\t\t\t\\\n+\t-I$(includedir) \t\t\\\n+\t$(xobjective_c)\n+\n+noinst_LIBRARIES = libapppresets.a\n+\n+libapppresets_a_sources = \\\n+\tpresets-enums.h   \t\t\\\n+\tgimpjsonresource.cpp\t\t\\\n+\tgimpjsonresource.h\t\t\\\n+\tpreset-factory.cpp\t\t\\\n+\tpreset-factory.h\t\t\\\n+\tpreset-factory-gui.cpp\t\t\\\n+\tpreset-factory-gui.h\t\t\\\n+\tlayer-preset.cpp\t\t\\\n+\tlayer-preset.h\t\t\t\\\n+\tlayer-preset-gui.cpp\t\t\\\n+\tlayer-preset-gui.h\n+\n+libapppresets_a_built_sources = presets-enums.c\n+\n+libapppresets_a_SOURCES = \\\n+\t$(libapppresets_a_built_sources) $(libapppresets_a_sources)\n+\n+\n+#\n+# rules to generate built sources\n+#\n+# setup autogeneration dependencies\n+gen_sources = xgen-wec\n+CLEANFILES = $(gen_sources)\n+\n+presets-enums.c: $(srcdir)/presets-enums.h $(GIMP_MKENUMS)\n+\t$(GIMP_MKENUMS) \\\n+\t\t--fhead \"#include \\\"config.h\\\"\\n#include <gtk/gtk.h>\\n#include \\\"libgimpbase/gimpbase.h\\\"\\n#include \\\"presets-enums.h\\\"\\n#include \\\"gimp-intl.h\\\"\" \\\n+\t\t--fprod \"\\n/* enumerations from \\\"@filename@\\\" */\" \\\n+\t\t--vhead \"GType\\n@enum_name@_get_type (void)\\n{\\n  static const G@Type@Value values[] =\\n  {\" \\\n+\t\t--vprod \"    { @VALUENAME@, \\\"@VALUENAME@\\\", \\\"@valuenick@\\\" },\" \\\n+\t\t--vtail \"    { 0, NULL, NULL }\\n  };\\n\" \\\n+\t\t--dhead \"  static const Gimp@Type@Desc descs[] =\\n  {\" \\\n+\t\t--dprod \"    { @VALUENAME@, @valuedesc@, @valuehelp@ },\" \\\n+\t\t--dtail \"    { 0, NULL, NULL }\\n  };\\n\\n  static GType type = 0;\\n\\n  if (G_UNLIKELY (! type))\\n    {\\n      type = g_@type@_register_static (\\\"@EnumName@\\\", values);\\n      gimp_type_set_translation_context (type, \\\"@enumnick@\\\");\\n      gimp_@type@_set_value_descriptions (type, descs);\\n    }\\n\\n  return type;\\n}\\n\" \\\n+\t\t$(srcdir)/presets-enums.h > xgen-wec \\\n+\t&& cp xgen-wec $(@F) \\\n+\t&& rm -f xgen-wec\n",
+      "corrected_source_work_ids": [
+        "legacy-56a9ee83ca8912bd9e00",
+        "legacy-12f9ddce01489c95e05b",
+        "legacy-3f1979eb538d35e91a6e",
+        "legacy-bebf2272a903bdec48f1",
+        "legacy-a1a5446d088ff207d2b5"
+      ]
+    },
+    {
+      "original_work_id": "legacy-3873e58d6b6f27768a52",
+      "source_kind": "hunk",
+      "source_id": "01.002/001081",
+      "path": "app/tools/Makefile.am",
+      "source_blob": "1bcf07be0e3f7b5db0223172b33a6f70fcf1501c",
+      "source_range": "-26,0 -> 27,2",
+      "source_sha256": "b89a613d938bd4615ba5bb904520808d00e4d1b42c1123973d72b5d68e13cb89",
+      "original_wbs": "04.002",
+      "classification": "c-feature-registration",
+      "implementation_tasks": "29.010",
+      "verification_tasks": "29.020",
+      "current_paths": [
+        "app/widgets/gimppaintercompactoptions.cpp"
+      ],
+      "remaining_feature_tasks": [
+        "29.010"
+      ],
+      "registration_status": "REASSIGNED_TODO",
+      "rationale": "C brush options GUI/header registration; native Brush editor is consumed by the compact adapter. This is feature integration, not a C++ compiler-registration prerequisite. The source-specific feature action remains TODO.",
+      "profile": "registration-1081",
+      "payload": "+\tgimpbrushoptions-gui.c\t\t\\\n+\tgimpbrushoptions-gui.h\t\t\\\n",
+      "corrected_source_work_ids": [
+        "legacy-704670fc75a07cb813ac",
+        "legacy-ac5155a049fddaa2e051"
+      ]
+    },
+    {
+      "original_work_id": "legacy-9be3bdb6ac06d82b57ba",
+      "source_kind": "hunk",
+      "source_id": "01.002/001082",
+      "path": "app/tools/Makefile.am",
+      "source_blob": "1bcf07be0e3f7b5db0223172b33a6f70fcf1501c",
+      "source_range": "-42,0 -> 45,2",
+      "source_sha256": "7db8e963d67d2487de10b7b67b8fee0303b6b9200c43213b4f26fa67c29e28e9",
+      "original_wbs": "04.002",
+      "classification": "current-cpp-module-registration",
+      "implementation_tasks": "04.002,04.008,04.009",
+      "verification_tasks": "04.015,04.016",
+      "current_paths": [
+        "app/tools/gimpfillbrushtool.cpp",
+        "app/paint/gimpfillbrush.cpp"
+      ],
+      "remaining_feature_tasks": [
+        "08.012",
+        "27.001"
+      ],
+      "registration_status": "VERIFIED_AFTER_CURRENT_BUILD",
+      "rationale": "Bounded fill tool and paint-core implementations have explicit owning-module registrations.",
+      "profile": "build",
+      "payload": "+\tgimpbucketfillbrushtool.cpp\t\t\\\n+\tgimpbucketfillbrushtool.h\t\t\\\n",
+      "corrected_source_work_ids": [
+        "legacy-9be3bdb6ac06d82b57ba",
+        "legacy-f001c7fd162bd28c0238",
+        "legacy-bc98c584c5c203fe7561",
+        "legacy-bd24ac3baccafbc46f8f",
+        "legacy-2d35b0e09987c716678b"
+      ]
+    },
+    {
+      "original_work_id": "legacy-3ef91d3388222cd9ae1c",
+      "source_kind": "hunk",
+      "source_id": "01.002/001083",
+      "path": "app/tools/Makefile.am",
+      "source_blob": "1bcf07be0e3f7b5db0223172b33a6f70fcf1501c",
+      "source_range": "-76,0 -> 81,2",
+      "source_sha256": "bb8aa129b652de2197c3c1aeb40be4fcfeee96155a2965642deb85bc16fc6e92",
+      "original_wbs": "04.002",
+      "classification": "c-feature-registration",
+      "implementation_tasks": "29.010",
+      "verification_tasks": "29.020",
+      "current_paths": [
+        "app/widgets/gimppaintercompactoptions.cpp"
+      ],
+      "remaining_feature_tasks": [
+        "29.010"
+      ],
+      "registration_status": "REASSIGNED_TODO",
+      "rationale": "C dynamics options GUI/header registration; native Dynamics editor is consumed by the compact adapter. This is feature integration, not a C++ compiler-registration prerequisite. The source-specific feature action remains TODO.",
+      "profile": "registration-1083",
+      "payload": "+\tgimpdynamicsoptions-gui.c\t\\\n+\tgimpdynamicsoptions-gui.h\t\\\n",
+      "corrected_source_work_ids": [
+        "legacy-d4144ca7dcea529ab3a9",
+        "legacy-5b9cc56f53bf068a9ffa"
+      ]
+    },
+    {
+      "original_work_id": "legacy-0d4deb63ddf08fb2190d",
+      "source_kind": "hunk",
+      "source_id": "01.002/001084",
+      "path": "app/tools/Makefile.am",
+      "source_blob": "1bcf07be0e3f7b5db0223172b33a6f70fcf1501c",
+      "source_range": "-104,0 -> 111,2",
+      "source_sha256": "ec73c843446ca918e62a7eb7b340d4c5be4aa8517ddfd4c0729b39613ee81b85",
+      "original_wbs": "04.002",
+      "classification": "placeholder-registration",
+      "implementation_tasks": "31.011,31.012",
+      "verification_tasks": "31.020",
+      "current_paths": [
+        "app/tools/meson.build"
+      ],
+      "remaining_feature_tasks": [
+        "31.011",
+        "31.012"
+      ],
+      "registration_status": "REASSIGNED_TODO",
+      "rationale": "Registers the ImageGenerator placeholder. Its declared scope is dependency proof then removal, not forcing a nonfunctional C++ tool into the build; that proof/removal acceptance remains TODO.",
+      "profile": "registration-1084",
+      "payload": "+\tgimpimagegeneratortool.cpp\t\\\n+\tgimpimagegeneratortool.h\t\\\n",
+      "corrected_source_work_ids": [
+        "legacy-173fd0fe6acd39996b9b",
+        "legacy-c7c0e72579126f3dd687",
+        "legacy-976084824fd3414f209b"
+      ]
+    },
+    {
+      "original_work_id": "legacy-864934696e1ef8004375",
+      "source_kind": "hunk",
+      "source_id": "01.002/001085",
+      "path": "app/tools/Makefile.am",
+      "source_blob": "1bcf07be0e3f7b5db0223172b33a6f70fcf1501c",
+      "source_range": "-144,0 -> 153,2",
+      "source_sha256": "8aa19abbd32aa4e5a8a82cdb6daff85dba45307407b6a3fa5d2c3b910a9a0614",
+      "original_wbs": "04.002",
+      "classification": "current-cpp-module-registration",
+      "implementation_tasks": "04.002,04.008,04.009",
+      "verification_tasks": "04.015,04.016",
+      "current_paths": [
+        "app/tools/gimpperspectiveguidetool.cpp"
+      ],
+      "remaining_feature_tasks": [
+        "08.010",
+        "26.002"
+      ],
+      "registration_status": "VERIFIED_AFTER_CURRENT_BUILD",
+      "rationale": "Perspective editor tool is registered directly in apptools.",
+      "profile": "build",
+      "payload": "+\tgimpperspectiveguidetool.cpp\t\t\\\n+\tgimpperspectiveguidetool.h\t\t\\\n",
+      "corrected_source_work_ids": [
+        "legacy-864934696e1ef8004375",
+        "legacy-c85811f16a0b3ac51886",
+        "legacy-c80b5a74aac2ff4c4310",
+        "legacy-fa3dc17a8a8a96a90463",
+        "legacy-9fe8e07a5184358733e4"
+      ]
+    },
+    {
+      "original_work_id": "legacy-ca41f8c0922e9864bb51",
+      "source_kind": "hunk",
+      "source_id": "01.002/001086",
+      "path": "app/tools/Makefile.am",
+      "source_blob": "1bcf07be0e3f7b5db0223172b33a6f70fcf1501c",
+      "source_range": "-198 -> 208,13",
+      "source_sha256": "5cdffcdda5b82f01e63348ee4fed2f3e3bd71be3a4cd9602524d789a713f9755",
+      "original_wbs": "04.002",
+      "classification": "current-cpp-module-registration",
+      "implementation_tasks": "04.002,04.008,04.009",
+      "verification_tasks": "04.015,04.016",
+      "current_paths": [
+        "app/tools/gimppaintermybrushtool.cpp",
+        "app/widgets/gimppaintermybrusheditor.cpp",
+        "app/widgets/gimppaintercompactoptions.cpp"
+      ],
+      "remaining_feature_tasks": [
+        "08.008",
+        "24.001",
+        "29.010",
+        "31.013"
+      ],
+      "registration_status": "VERIFIED_AFTER_CURRENT_BUILD",
+      "rationale": "Tool, shared editor and reversible compact adapter replace duplicate legacy tool/editor/helper TUs. Full control/type equivalence remains under their existing feature tasks.",
+      "profile": "build",
+      "payload": "-\tgimpvectortool.h\n+\tgimpvectortool.h   \t\t\\\n+\tgimpmypainttool.cpp\t\t\\\n+\tgimpmypainttool.h\t\t\\\n+\tgimpmypaintoptions-gui.cpp\t\\\n+\tgimpmypaintoptions-gui.h  \t\\\n+\tgimpmypaintbrushoptions-gui.cpp\t\\\n+\tgimpmypaintbrushoptions-gui.h\t\\\n+\tgimptooloptions-gui-cxx.cpp\t\\\n+\tgimptooloptions-gui-cxx.hpp\t\t\\\n+\tgimpmypaintbrusheditor.cpp\t\t\\\n+\tgimpmypaintbrusheditor.hpp\t\t\\\n+\tgimpmypaint-gui-base.hpp\n+\n",
+      "corrected_source_work_ids": [
+        "legacy-ca41f8c0922e9864bb51",
+        "legacy-ce98a4a82d175dfd2b14",
+        "legacy-43d3f84ad83a1e505178",
+        "legacy-84cacfb724190a89909d",
+        "legacy-59c3f08f6040495948bd"
+      ]
+    },
+    {
+      "original_work_id": "legacy-4478211c6e025663bb86",
+      "source_kind": "hunk",
+      "source_id": "01.002/001514",
+      "path": "app/widgets/Makefile.am",
+      "source_blob": "943009bb3350e08938bda729500f73cc17a28522",
+      "source_range": "-44,0 -> 45,4",
+      "source_sha256": "657804ce880f3e78e0d926369510505380262122e9ab9ad5318f5cc1f0db6477",
+      "original_wbs": "04.002",
+      "classification": "c-feature-registration",
+      "implementation_tasks": "24.007,30.012",
+      "verification_tasks": "29.020",
+      "current_paths": [
+        "app/dialogs/dialogs-constructors.c",
+        "app/actions/mypaint-brushes-actions.c"
+      ],
+      "remaining_feature_tasks": [
+        "24.007",
+        "30.012"
+      ],
+      "registration_status": "REASSIGNED_TODO",
+      "rationale": "C brush factory view/select registration; complete old selection PDB remains open. This is feature integration, not a C++ compiler-registration prerequisite. The source-specific feature action remains TODO.",
+      "profile": "registration-1514",
+      "payload": "+\tgimpmypaintbrushfactoryview.c\t\\\n+\tgimpmypaintbrushfactoryview.h\t\\\n+\tgimpmypaintbrushselect.c\t\\\n+\tgimpmypaintbrushselect.h\t\\\n",
+      "corrected_source_work_ids": [
+        "legacy-ce3dee2e5ae50501a6d4",
+        "legacy-78df537a450b09dca616",
+        "legacy-53b653de249b5968766e"
+      ]
+    },
+    {
+      "original_work_id": "legacy-47e2a32ee5831707496b",
+      "source_kind": "hunk",
+      "source_id": "01.002/001515",
+      "path": "app/widgets/Makefile.am",
+      "source_blob": "943009bb3350e08938bda729500f73cc17a28522",
+      "source_range": "-52,0 -> 57,2",
+      "source_sha256": "b61b6e95e6382ad76978e633753bee1419ce46c5fe78f2b6dadb978b9907b629",
+      "original_wbs": "04.002",
+      "classification": "current-cpp-module-registration",
+      "implementation_tasks": "04.002,04.008,04.009",
+      "verification_tasks": "04.015,04.016",
+      "current_paths": [
+        "app/widgets/gimppainterlayertiles.cpp",
+        "app/widgets/gimppaintercompactoptions.cpp"
+      ],
+      "remaining_feature_tasks": [
+        "08.016",
+        "29.006"
+      ],
+      "registration_status": "VERIFIED_AFTER_CURRENT_BUILD",
+      "rationale": "Registered GTK3 popover consumers provide current UI routes; this does not prove that every old CellRendererPopup vfunc has been ported.",
+      "profile": "build",
+      "payload": "+\tgimpcellrendererpopup.cpp\t\\\n+\tgimpcellrendererpopup.h\t\\\n",
+      "corrected_source_work_ids": [
+        "legacy-47e2a32ee5831707496b",
+        "legacy-66ae3c3ac2b17f60b150",
+        "legacy-0a9b7e820da54930ea0d",
+        "legacy-1bddedd7c4978e0217d2",
+        "legacy-435619570257ccfa22de"
+      ]
+    },
+    {
+      "original_work_id": "legacy-934f813a0043048f5fcb",
+      "source_kind": "hunk",
+      "source_id": "01.002/001516",
+      "path": "app/widgets/Makefile.am",
+      "source_blob": "943009bb3350e08938bda729500f73cc17a28522",
+      "source_range": "-234,0 -> 241,4",
+      "source_sha256": "648de987d8ba08257f9f9c414dd482393a185b9e837938d8ee7807417f9f1eb1",
+      "original_wbs": "04.002",
+      "classification": "current-cpp-module-registration",
+      "implementation_tasks": "04.002,04.008,04.009",
+      "verification_tasks": "04.015,04.016",
+      "current_paths": [
+        "app/widgets/gimppainterlayertiles.cpp",
+        "app/dialogs/layer-options-dialog.c",
+        "app/core/gimpfilterparametereditor.cpp"
+      ],
+      "remaining_feature_tasks": [
+        "08.013",
+        "29.001",
+        "29.006"
+      ],
+      "registration_status": "VERIFIED_AFTER_CURRENT_BUILD",
+      "rationale": "Layer tiles use registered C++ and canonical custom-layer editors. Full legacy popup/type acceptance remains separate.",
+      "profile": "build",
+      "payload": "+\tgimplayerpopup.cpp\t\t\\\n+\tgimplayerpopup.h\t\t\\\n+\tgimplayertileview.cpp\t\\\n+\tgimplayertileview.h\t\t\\\n",
+      "corrected_source_work_ids": [
+        "legacy-934f813a0043048f5fcb",
+        "legacy-1617545390bf63120c4a",
+        "legacy-83a2a5de39e89a2772e0",
+        "legacy-280b1c9bbd59ba57b4b6",
+        "legacy-a74b1c51b6928e10716b"
+      ]
+    },
+    {
+      "original_work_id": "legacy-eb0801d9e1472bf916b5",
+      "source_kind": "hunk",
+      "source_id": "01.002/001517",
+      "path": "app/widgets/Makefile.am",
+      "source_blob": "943009bb3350e08938bda729500f73cc17a28522",
+      "source_range": "-272,0 -> 283,2",
+      "source_sha256": "c26c02b2cf169f89681e3f9898aa5f1c97bf229d8b7ad270d96b9d67039a9399",
+      "original_wbs": "04.002",
+      "classification": "c-feature-registration",
+      "implementation_tasks": "08.015,29.010",
+      "verification_tasks": "29.020",
+      "current_paths": [
+        "app/widgets/gimppaintercompactoptions.cpp"
+      ],
+      "remaining_feature_tasks": [
+        "08.015",
+        "29.010"
+      ],
+      "registration_status": "REASSIGNED_TODO",
+      "rationale": "C popup-button registration; GTK3 popovers are consumed by the current compact adapter. This is feature integration, not a C++ compiler-registration prerequisite. The source-specific feature action remains TODO.",
+      "profile": "registration-1517",
+      "payload": "+\tgimppopupbutton.c\t\t\\\n+\tgimppopupbutton.h\t\t\\\n",
+      "corrected_source_work_ids": [
+        "legacy-60104476857f8fd9c1c2",
+        "legacy-b337b19c7794fad87b1c",
+        "legacy-282e25ff89a03d3ff2e0"
+      ]
+    },
+    {
+      "original_work_id": "legacy-0ff4c733a6f9e20d1d32",
+      "source_kind": "hunk",
+      "source_id": "01.002/001518",
+      "path": "app/widgets/Makefile.am",
+      "source_blob": "943009bb3350e08938bda729500f73cc17a28522",
+      "source_range": "-339,0 -> 352",
+      "source_sha256": "cbe3d5f4fd5b85ea6c5ae36dab2b16d5ca7aff6c2dcbeb6859bc38601b8a367c",
+      "original_wbs": "04.002",
+      "classification": "asset-header",
+      "implementation_tasks": "30.003,30.017",
+      "verification_tasks": "34.014",
+      "current_paths": [
+        "app/widgets/meson.build"
+      ],
+      "remaining_feature_tasks": [
+        "30.003",
+        "30.017"
+      ],
+      "registration_status": "REASSIGNED_TODO",
+      "rationale": "Adds only the generated titlebar pixbuf header, an icon/resource duty; no compiled source or link-runtime change occurs.",
+      "profile": "registration-1518",
+      "payload": "+  gimptitlebaricon-pixbuf.h \\\n",
+      "corrected_source_work_ids": [
+        "legacy-0bf8bd8223d949053c4a",
+        "legacy-6493a40e8f8c24672267",
+        "legacy-73e66c33cb4784815527"
+      ]
+    },
+    {
+      "original_work_id": "legacy-608382490fb897fb89b7",
+      "source_kind": "hunk",
+      "source_id": "01.002/001519",
+      "path": "app/widgets/Makefile.am",
+      "source_blob": "943009bb3350e08938bda729500f73cc17a28522",
+      "source_range": "-357,0 -> 371,2",
+      "source_sha256": "76691b82a6923b9c9ad10562d82d56efc8cbff118522e073d90b6195d30f3495",
+      "original_wbs": "04.002",
+      "classification": "c-feature-registration",
+      "implementation_tasks": "29.010",
+      "verification_tasks": "29.020",
+      "current_paths": [
+        "app/widgets/gimppaintercompactoptions.cpp"
+      ],
+      "remaining_feature_tasks": [
+        "29.010"
+      ],
+      "registration_status": "REASSIGNED_TODO",
+      "rationale": "C toolbar registration; canonical native control tree is owned by the compact adapter. This is feature integration, not a C++ compiler-registration prerequisite. The source-specific feature action remains TODO.",
+      "profile": "registration-1519",
+      "payload": "+\tgimptooloptionstoolbar.c\t\\\n+\tgimptooloptionstoolbar.h\t\\\n",
+      "corrected_source_work_ids": [
+        "legacy-56cd5571d3133fa6f595",
+        "legacy-5aab432167cf6c823ea3"
+      ]
+    },
+    {
+      "original_work_id": "legacy-f7e16bbcd4d42cfcd424",
+      "source_kind": "hunk",
+      "source_id": "01.002/001520",
+      "path": "app/widgets/Makefile.am",
+      "source_blob": "943009bb3350e08938bda729500f73cc17a28522",
+      "source_range": "-361,0 -> 377,2",
+      "source_sha256": "6553f8a63f0472c67d7ed31ced59ac11ff92ed74d06d61049aeee2ff12037101",
+      "original_wbs": "04.002",
+      "classification": "current-cpp-module-registration",
+      "implementation_tasks": "04.002,04.008,04.009",
+      "verification_tasks": "04.015,04.016",
+      "current_paths": [
+        "app/display/gimppaintercanvasui.cpp"
+      ],
+      "remaining_feature_tasks": [
+        "08.014",
+        "29.008",
+        "29.009"
+      ],
+      "registration_status": "VERIFIED_AFTER_CURRENT_BUILD",
+      "rationale": "Current tool tile/group controller is registered in the shell canvas C++ TU; no duplicate legacy widget TU is added.",
+      "profile": "build",
+      "payload": "+\tgimptooltileview.cpp\t\\\n+\tgimptooltileview.h\t\t\\\n",
+      "corrected_source_work_ids": [
+        "legacy-f7e16bbcd4d42cfcd424",
+        "legacy-5db66c7f8c88373935e0",
+        "legacy-14b535f90304e5bd92a6",
+        "legacy-a5fe7d267d85600e8a7d",
+        "legacy-1f5113e667a1172aa45e"
+      ]
+    },
+    {
+      "original_work_id": "legacy-8084a8b7c77db91b1aeb",
+      "source_kind": "hunk",
+      "source_id": "01.002/001521",
+      "path": "app/widgets/Makefile.am",
+      "source_blob": "943009bb3350e08938bda729500f73cc17a28522",
+      "source_range": "-415 -> 432,8",
+      "source_sha256": "11031674dfd628315fe52689ffb3447a10ff511dd6d1ed9fc422d95afd644cdd",
+      "original_wbs": "04.002",
+      "classification": "current-cpp-module-registration",
+      "implementation_tasks": "04.002,04.008,04.009",
+      "verification_tasks": "04.015,04.016",
+      "current_paths": [
+        "app/widgets/gimppaintermybrusheditor.cpp",
+        "app/widgets/gimppaintercompactoptions.cpp",
+        "app/widgets/gimppainterlayertiles.cpp"
+      ],
+      "remaining_feature_tasks": [
+        "08.015",
+        "08.017",
+        "24.001",
+        "29.019",
+        "31.013"
+      ],
+      "registration_status": "VERIFIED_AFTER_CURRENT_BUILD",
+      "rationale": "Shared editor, native GTK3 popovers and compact controls are registered replacements; old helper/type contracts remain in their separate WBS/source obligations.",
+      "profile": "build",
+      "payload": "-\tgtkhwrapbox.h\n+\tgtkhwrapbox.h\t\t\t\\\n+\tgimpmypaintbrusheditor.cpp\t\\\n+\tgimpmypaintbrusheditor.h\t\\\n+\tpopupper.cpp\t\t\t\\\n+\tpopupper.h\t\t\t\\\n+\tgimpeditor-private.h\t\t\\\n+\tgimpeditor-cxx.cpp\t\t\\\n+\tgimpeditor-cxx.h\n",
+      "corrected_source_work_ids": [
+        "legacy-8084a8b7c77db91b1aeb",
+        "legacy-e5a563a61e459d9f123d",
+        "legacy-7dea72816fba11b7ebe6",
+        "legacy-bd93e5239b2cdaeca63b",
+        "legacy-ff15360bd75a5b9e3e99"
+      ]
+    },
+    {
+      "original_work_id": "legacy-e6826481d416af002480",
+      "source_kind": "hunk",
+      "source_id": "01.002/001522",
+      "path": "app/widgets/Makefile.am",
+      "source_blob": "943009bb3350e08938bda729500f73cc17a28522",
+      "source_range": "-442 -> 466",
+      "source_sha256": "64a1914edbe59ba1572689898cb75e60ade63bd2b1ffd0451f4e29a53b4da2f9",
+      "original_wbs": "04.002",
+      "classification": "newline-only",
+      "implementation_tasks": "38.001",
+      "verification_tasks": "38.001",
+      "current_paths": [
+        "app/widgets/meson.build"
+      ],
+      "remaining_feature_tasks": [
+        "38.001"
+      ],
+      "registration_status": "REASSIGNED_TODO",
+      "rationale": "The complete hunk only adds the missing final newline after rm -f xgen-wec. It introduces no source, dependency, or enum-generation semantic change. Preserve this proven nonfunctional disposition for final hunk reconciliation under38.001; no implementation or file-removal work is required.",
+      "profile": "registration-1522",
+      "payload": "-\t&& rm -f xgen-wec\n+\t&& rm -f xgen-wec\n",
+      "corrected_source_work_ids": [
+        "legacy-d9d843993818bc3ec38b",
+        "legacy-82e4a2aa301a692e3ff6"
+      ]
+    },
+    {
+      "original_work_id": "legacy-b86e335c5c0a75da22b4",
+      "source_kind": "hunk",
+      "source_id": "01.002/002293",
+      "path": "libgimp/Makefile.am",
+      "source_blob": "35a3bb4fd59e387655461b77e8289646a7835cad",
+      "source_range": "-127 -> 127,2",
+      "source_sha256": "f5c44ecf908f08e661b0f7b597ded0e829b425abfad13b5495eae9f30ac72f79",
+      "original_wbs": "04.002",
+      "classification": "pdb-generated-registration",
+      "implementation_tasks": "04.013,30.012,30.013",
+      "verification_tasks": "34.013",
+      "current_paths": [
+        "pdb/meson.build",
+        "app/pdb/meson.build",
+        "libgimp/meson.build"
+      ],
+      "remaining_feature_tasks": [
+        "04.013",
+        "30.012",
+        "30.013"
+      ],
+      "registration_status": "REASSIGNED_TODO",
+      "rationale": "Registers old MyPaint-select PDB generator input or generated C/header output. Generated API coverage is still open; no C++ translation unit is introduced.",
+      "profile": "registration-2293",
+      "payload": "-\tgimpvectors_pdb.c\n+\tgimpvectors_pdb.c\t\t\\\n+\tgimpmypaintbrushselect_pdb.c\t\n",
+      "corrected_source_work_ids": [
+        "legacy-471b55534a1a1ec060ac",
+        "legacy-fb789dbffee715be56f7",
+        "legacy-296fe686e0d461930927",
+        "legacy-461717015a883277c351"
+      ]
+    },
+    {
+      "original_work_id": "legacy-3f83f9429b7c110a4f17",
+      "source_kind": "hunk",
+      "source_id": "01.002/002294",
+      "path": "libgimp/Makefile.am",
+      "source_blob": "35a3bb4fd59e387655461b77e8289646a7835cad",
+      "source_range": "-180 -> 181,2",
+      "source_sha256": "4d91e18e53fd592b41a402347c6aa199c2410b2d9489d5373ed72c260633cce3",
+      "original_wbs": "04.002",
+      "classification": "pdb-generated-registration",
+      "implementation_tasks": "04.013,30.012,30.013",
+      "verification_tasks": "34.013",
+      "current_paths": [
+        "pdb/meson.build",
+        "app/pdb/meson.build",
+        "libgimp/meson.build"
+      ],
+      "remaining_feature_tasks": [
+        "04.013",
+        "30.012",
+        "30.013"
+      ],
+      "registration_status": "REASSIGNED_TODO",
+      "rationale": "Registers old MyPaint-select PDB generator input or generated C/header output. Generated API coverage is still open; no C++ translation unit is introduced.",
+      "profile": "registration-2294",
+      "payload": "-\tgimpvectors_pdb.h\n+\tgimpvectors_pdb.h\t\t\\\n+\tgimpmypaintbrushselect_pdb.h\n",
+      "corrected_source_work_ids": [
+        "legacy-789d0b998334d635df62",
+        "legacy-8fa1374db35a45b8f47b",
+        "legacy-0ab35695dd66debb48d2",
+        "legacy-728620a592695a3ccbdc"
+      ]
+    },
+    {
+      "original_work_id": "legacy-e5ce9226f788b638d72b",
+      "source_kind": "hunk",
+      "source_id": "01.002/002365",
+      "path": "menus/Makefile.am",
+      "source_blob": "fac920998c0c2e5ae46d4240894415b8a4124a0a",
+      "source_range": "-41 -> 41,3",
+      "source_sha256": "b18a06f31d2686be0aef5c92920521d8676276f003b674140d72300663cdddc2",
+      "original_wbs": "04.002",
+      "classification": "menu-manifest",
+      "implementation_tasks": "30.001,30.005,30.017",
+      "verification_tasks": "29.020,34.014",
+      "current_paths": [
+        "menus/meson.build",
+        "menus/mypaint-brushes-menu.ui",
+        "app/widgets/gimppaintermybrusheditor.cpp"
+      ],
+      "remaining_feature_tasks": [
+        "30.001",
+        "30.005",
+        "30.017"
+      ],
+      "registration_status": "REASSIGNED_TODO",
+      "rationale": "Adds two installed menu XML assets; registration belongs to menu/action/resource distribution, not a C++ source or runtime link.",
+      "profile": "registration-2365",
+      "payload": "-\tvectors-menu.xml\n+\tvectors-menu.xml\t\t\\\n+\tmypaint-brushes-menu.xml\t\\\n+\tmypaint-brush-editor-menu.xml\n",
+      "corrected_source_work_ids": [
+        "legacy-8b775652766751b04539",
+        "legacy-620276c766efc34caec7",
+        "legacy-464b4a84b9685b11ee36",
+        "legacy-15157be3b26a227fb813",
+        "legacy-bb76c5988aada9661b16"
+      ]
+    },
+    {
+      "original_work_id": "legacy-ff34e049212da9490252",
+      "source_kind": "hunk",
+      "source_id": "01.002/002484",
+      "path": "tools/pdbgen/Makefile.am",
+      "source_blob": "564d6030f4e1039cf8b8021127b2bbd932e69d17",
+      "source_range": "-54 -> 54,2",
+      "source_sha256": "87c99f75e185b053ecc4e7303a3e9970b58f45c1810300dc2204e8e5804aa7f0",
+      "original_wbs": "04.002",
+      "classification": "pdb-generated-registration",
+      "implementation_tasks": "04.013,30.012,30.013",
+      "verification_tasks": "34.013",
+      "current_paths": [
+        "pdb/meson.build",
+        "app/pdb/meson.build",
+        "libgimp/meson.build"
+      ],
+      "remaining_feature_tasks": [
+        "04.013",
+        "30.012",
+        "30.013"
+      ],
+      "registration_status": "REASSIGNED_TODO",
+      "rationale": "Registers old MyPaint-select PDB generator input or generated C/header output. Generated API coverage is still open; no C++ translation unit is introduced.",
+      "profile": "registration-2484",
+      "payload": "-\tpdb/vectors.pdb\n+\tpdb/vectors.pdb\t\t\t\\\n+\tpdb/mypaint_brush_select.pdb\n",
+      "corrected_source_work_ids": [
+        "legacy-fe764cc2f01c73f73726",
+        "legacy-eafb85d659eb18dc8a44",
+        "legacy-1fbf88a1bd1b22942966",
+        "legacy-18a1b1ba76759d8f0837"
+      ]
+    },
+    {
+      "original_work_id": "legacy-04e97ef3b8bda9e45f4d",
+      "source_kind": "asset",
+      "source_id": "01.013/asset-0390",
+      "path": "menus/Makefile.am",
+      "source_blob": "fac920998c0c2e5ae46d4240894415b8a4124a0a",
+      "source_range": "whole asset/manifest",
+      "source_sha256": "087757fde364716e85a5fe1f7d6077a5e52ff28e6d7a43cf71116f3574cb2ec6",
+      "original_wbs": "04.002",
+      "classification": "menu-manifest",
+      "implementation_tasks": "30.001,30.005,30.017",
+      "verification_tasks": "29.020,34.014",
+      "current_paths": [
+        "menus/meson.build",
+        "menus/mypaint-brushes-menu.ui",
+        "app/widgets/gimppaintermybrusheditor.cpp"
+      ],
+      "remaining_feature_tasks": [
+        "30.001",
+        "30.005",
+        "30.017"
+      ],
+      "registration_status": "REASSIGNED_TODO",
+      "rationale": "Adds two installed menu XML assets; registration belongs to menu/action/resource distribution, not a C++ source or runtime link.",
+      "profile": "registration-2365",
+      "payload": "",
+      "corrected_source_work_ids": [
+        "legacy-70e745cef276d8df3e68",
+        "legacy-d5eb22ddbe7e2b3a0966",
+        "legacy-cd46fe2ea9f4b5c6546e",
+        "legacy-4efce94fc62c55b7358d",
+        "legacy-6a726e5e1e35bb566c59"
+      ]
+    }
+  ]
+}
