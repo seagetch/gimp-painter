@@ -1,0 +1,6 @@
+1053:  if(!water){GimpImage *loaded=gimp_test_load_image(gimp,f);g_assert(loaded);im=loaded;group=GIMP_LAYER(gimp_container_get_child_by_index(gimp_image_get_layers(im),0));source=gimp_image_get_layer_by_name(im,"paint source");effect=gimp_image_get_layer_by_name(im,"shadow");g_assert(source&&effect);snapshot(im,"anime-initial-reopened");}g_free(f);
+1054:  g_print("ACTION %s recolor %s to rgba=51,153,204,255\n",prefix,water?"selected inset using original edit-fill":"whole source using original drawable fill");if(water)paint_inset(gimp,im,source,edit);else{gimp_drawable_fill(GIMP_DRAWABLE(source),&edit,NULL);gimp_drawable_update(GIMP_DRAWABLE(source),0,0,48,40);}
+1055:  stage=g_strdup_printf("%s-recolored",prefix);snapshot(im,stage);g_free(stage);
+1056:  gimp_image_undo_free(im);g_print("ACTION %s effect opacity set 0.6 with undo\n",prefix);gimp_layer_set_opacity(effect,.6,TRUE);stage=g_strdup_printf("%s-opacity",prefix);snapshot(im,stage);g_free(stage);
+1057:  g_assert(gimp_image_undo(im));stage=g_strdup_printf("%s-undo",prefix);snapshot(im,stage);g_free(stage);
+1058:  g_assert(gimp_image_redo(im));stage=g_strdup_printf("%s-redo",prefix);snapshot(im,stage);g_free(stage);

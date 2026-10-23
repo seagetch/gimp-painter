@@ -257,6 +257,7 @@ static void modern_group_strength_reduction (void)
 #include "test-painter-group-strength.inc"
 #include "test-painter-float-source-extent.inc"
 #include "test-painter-pass-through-strength.inc"
+#include "test-painter-anime-replay.inc"
 
 int main (int argc, char **argv)
 {
@@ -277,6 +278,7 @@ int main (int argc, char **argv)
   g_test_add_func ("/painter-layer-modes/group_reparent_mask_undo",group_reparent_mask_undo);
   g_test_add_func ("/painter-layer-modes/float_zero_opacity_source_extent",float_zero_opacity_source_extent);
   g_test_add_func ("/painter-layer-modes/pass_through_group_strength",pass_through_group_strength);
+  g_test_add_func ("/painter-layer-modes/anime_current_edit_replay",anime_current_edit_replay);
   result = g_test_run ();
   gimp_test_utils_set_gimp3_directory ("GIMP_TESTING_ABS_TOP_BUILDDIR","app/tests/gimpdir-output");
   gimp_exit (gimp,TRUE); return result;

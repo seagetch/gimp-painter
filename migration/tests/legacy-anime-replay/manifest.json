@@ -1,0 +1,31 @@
+{
+  "task": "13.014",
+  "scope": "clean baselinea19f05f9c8 plus parent XCF integration overlays and owned test overlays; selected model replay, not whole current HEAD or UI input",
+  "source_sha256": {
+    "app/tests/test-painter-layer-modes.c": "ad0bb08ebc1399dafd006bb8b7d63aebb7ebf0e4d5d5fd1e38851e198ce2be50",
+    "app/tests/test-painter-anime-replay.inc": "59244f4f1bc4f2dfa1a04764393a02d49543c69f592aff0f86d3aba9770923f0",
+    "app/core/gimpclonelayer.cpp": "22adedddcaeb6d70f4bf37e94cf92f3dbe4d1b84c7183097d3c24e49d02b081e",
+    "app/core/gimpgrouplayer.c": "147296ee6102a46601c826ea9dedda513f07df8bc72e5aa8ddfcf833c41dd0c5",
+    "app/operations/layer-modes-legacy/gimpoperationpainterlegacy.c": "813d3ae4f4eec7fd37bda4b6fbed085bf92689cd3f923d16bbc99bc79349dd28",
+    "app/core/gimpdrawable-fill.c": "af2d5222a88a3ee877b270587f9e9baf46216a98cb2feead159077804b332fa3"
+  },
+  "parent_xcf_build_source_sha256": {
+    "app/core/gimpimage.c": "5bc173d76bf5501bdbac896b9e3a50e1724568fd28e53352d88b37662bfa2ff1",
+    "app/xcf/painter-xcf-preserve.cpp": "208d652ec1a1242a95f27497d9feb2f7946b7c0f22b0544354802e19582a4d03"
+  },
+  "observed_states": 5,
+  "pixels_per_state": 7680,
+  "original_action_provenance": "action-provenance.json",
+  "normal": "OK",
+  "sanitizer_exit_code": 0,
+  "instrumented_sources": [
+    "app/core/gimpgrouplayer.c",
+    "app/operations/layer-modes/gimp-layer-modes.c",
+    "app/operations/layer-modes-legacy/gimpoperationpainterlegacy.c",
+    "app/operations/layer-modes-legacy/gimpoperationpainterfloat.c",
+    "app/operations/layer-modes-legacy/gimppainterfloatkernel.c",
+    "app/tests/test-painter-layer-modes.c"
+  ],
+  "uninstrumented": "CloneLayer C++/XCF/GEGL/Babl/dependencies; no whole-app sanitizer claim",
+  "old_runtime_executed": false
+}

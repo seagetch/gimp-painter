@@ -1,0 +1,30 @@
+{
+  "scope": "read-only retained original capture action and output provenance; not current execution proof",
+  "capture_source_sha256": "b32f3fe5baa69f78f9618874566e9ddd7e1f2f673bad420aba2ab2f4f866721a",
+  "source_lines": [
+    1053,
+    1058
+  ],
+  "actions": [
+    "load anime-initial.xcf",
+    "whole-source fill RGBA51,153,204,255 without undo; drawable update0,0,48,40",
+    "clear undo stack",
+    "shadow opacity0.6 with undo",
+    "ordinary undo",
+    "ordinary redo"
+  ],
+  "stage_sha256": {
+    "initial-reopened": "f483caa896a6289a9c59bc7a8d742736b4846f540540ebcb8a6b0ce347e91386",
+    "recolored": "4c4e9c74362e2f87deb1ce4b507da66bccf228f70afeecf619d3bbbaeeba5869",
+    "opacity": "c9457ed5beb07f96d66b76ec1fa601cba4a7501863c885fb91ca76a490b487fe",
+    "undo": "4c4e9c74362e2f87deb1ce4b507da66bccf228f70afeecf619d3bbbaeeba5869",
+    "redo": "c9457ed5beb07f96d66b76ec1fa601cba4a7501863c885fb91ca76a490b487fe"
+  },
+  "different_rgba_pixels": {
+    "source_recolor": 1920,
+    "opacity_change": 1920
+  },
+  "undo_equals_recolored": true,
+  "redo_equals_opacity": true,
+  "old_runtime_executed": false
+}
