@@ -1,0 +1,54 @@
+{
+  "results": [
+    {
+      "name": "asan-tool-standalone-lifecycle",
+      "status": "PASS",
+      "exit_code": 0,
+      "cases": [
+        "/painter-tool/standalone-lifecycle"
+      ],
+      "sanitizer_errors": [],
+      "binary_sha256": "596e72c7b0e21b8431e7c1042a3ecfd81320e87b3a97e4e28eaf8b2f93bf0fce",
+      "build_report_sha256": "59c90860687abc5a6f8f51cf6062d89451ea7d445ea1450455113c2bd78e28d1"
+    },
+    {
+      "name": "asan-tool-public-press-last-ref",
+      "status": "PASS",
+      "exit_code": 0,
+      "cases": [
+        "/painter-tool/public-press-last-ref"
+      ],
+      "sanitizer_errors": [],
+      "binary_sha256": "596e72c7b0e21b8431e7c1042a3ecfd81320e87b3a97e4e28eaf8b2f93bf0fce",
+      "build_report_sha256": "59c90860687abc5a6f8f51cf6062d89451ea7d445ea1450455113c2bd78e28d1"
+    },
+    {
+      "name": "asan-editor-13-owner-destruction-orders",
+      "status": "PASS",
+      "exit_code": 0,
+      "cases": [
+        "/painter-editor/13-owner-destruction-orders"
+      ],
+      "sanitizer_errors": [],
+      "binary_sha256": "521a61c8ac14bb34bd88fa1ffd6b6f8f2a69355229ad52b130d6f6c2e5c9f244",
+      "build_report_sha256": "fad569e93024520498c8a78af3081e95aaa51e321fe4c54de282cf113ce4b105"
+    },
+    {
+      "name": "asan-editor-09-close-during-refresh",
+      "status": "PASS",
+      "exit_code": 0,
+      "cases": [
+        "/painter-editor/09-close-during-refresh"
+      ],
+      "sanitizer_errors": [],
+      "binary_sha256": "521a61c8ac14bb34bd88fa1ffd6b6f8f2a69355229ad52b130d6f6c2e5c9f244",
+      "build_report_sha256": "fad569e93024520498c8a78af3081e95aaa51e321fe4c54de282cf113ce4b105"
+    }
+  ],
+  "build_reports": {
+    "tool": "59c90860687abc5a6f8f51cf6062d89451ea7d445ea1450455113c2bd78e28d1",
+    "editor": "fad569e93024520498c8a78af3081e95aaa51e321fe4c54de282cf113ce4b105"
+  },
+  "scope": "Four focused native GTK lifecycle cases only; source coverage in build reports. Remaining GIMP/dependencies uninstrumented; LeakSanitizer disabled.",
+  "changed_during_run": []
+}

@@ -1,0 +1,192 @@
+{
+  "task": "08.008",
+  "children": [
+    "08.008/tool-core-lifetime",
+    "08.008/weak-pointer-teardown"
+  ],
+  "parent": "a16a7d4841130fb67d983cbb5ce96038d89fccbf",
+  "source_duties": [
+    {
+      "work_id": "legacy-8f4f7282a03a1a2ae4cc",
+      "source_kind": "hunk",
+      "source_id": "01.002/001092",
+      "path": "app/tools/gimp-tools.c",
+      "source_blob": "018aa68742928631399a43506e7fdd047c6f4126",
+      "source_range": "-84,0 -> 90,2",
+      "source_sha256": "71ca111a7f70b846169991068a87b7c37c6122300084882230d6e1ed88e484a4",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "08.008",
+      "action": "MyPaint tool 型を移植する",
+      "acceptance": "tool manager に登録できる",
+      "legacy_role": "MyPaint public tool include; unrelated preset include retained separately",
+      "source_copy": "migration/tests/mybrush-tool-type/legacy-source/gimp-tools.c",
+      "source_copy_sha256": "5b537be7b82f9b7bc42efdc39c94c44ce1533c7589f1057b9216dc44a5ac81f3",
+      "current_contract": "Native GimpColorTool registered with distinct Painter options and PaintInfo; common store owns Session instead of raw qdata core; repeated disposal cancels pending pixels, finalized tool leaves committed Undo/Redo valid"
+    },
+    {
+      "work_id": "legacy-56cbf342f14e93ead950",
+      "source_kind": "hunk",
+      "source_id": "01.002/001092",
+      "path": "app/tools/gimp-tools.c",
+      "source_blob": "018aa68742928631399a43506e7fdd047c6f4126",
+      "source_range": "-84,0 -> 90,2",
+      "source_sha256": "71ca111a7f70b846169991068a87b7c37c6122300084882230d6e1ed88e484a4",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "08.008/tool-core-lifetime",
+      "action": "MyPaint tool と core の生成・破棄順を明示する",
+      "acceptance": "constructed で保持する core が finalize/停止時に二重解放や残存を起こさず、qdata と Undo の解除順が整合",
+      "legacy_role": "MyPaint public tool include; unrelated preset include retained separately",
+      "source_copy": "migration/tests/mybrush-tool-type/legacy-source/gimp-tools.c",
+      "source_copy_sha256": "5b537be7b82f9b7bc42efdc39c94c44ce1533c7589f1057b9216dc44a5ac81f3",
+      "current_contract": "Native GimpColorTool registered with distinct Painter options and PaintInfo; common store owns Session instead of raw qdata core; repeated disposal cancels pending pixels, finalized tool leaves committed Undo/Redo valid"
+    },
+    {
+      "work_id": "legacy-49e19d83585dd2bc42c1",
+      "source_kind": "hunk",
+      "source_id": "01.002/001097",
+      "path": "app/tools/gimp-tools.c",
+      "source_blob": "018aa68742928631399a43506e7fdd047c6f4126",
+      "source_range": "-147,0 -> 165,2",
+      "source_sha256": "8291cd2e1da412257c6d60f03da9a8797bc7dded7e0745d2cc57a1dd7715f018",
+      "source_scope": "gimp_tools_init (Gimp *gimp)",
+      "phase": "implementation",
+      "wbs_task": "08.008",
+      "action": "MyPaint tool 型を移植する",
+      "acceptance": "tool manager に登録できる",
+      "legacy_role": "MyPaint register callback in native tool initialization; adjacent Fill registration is not accepted here",
+      "source_copy": "migration/tests/mybrush-tool-type/legacy-source/gimp-tools.c",
+      "source_copy_sha256": "5b537be7b82f9b7bc42efdc39c94c44ce1533c7589f1057b9216dc44a5ac81f3",
+      "current_contract": "Native GimpColorTool registered with distinct Painter options and PaintInfo; common store owns Session instead of raw qdata core; repeated disposal cancels pending pixels, finalized tool leaves committed Undo/Redo valid"
+    },
+    {
+      "work_id": "legacy-18445e897ffcdfa09721",
+      "source_kind": "hunk",
+      "source_id": "01.002/001337",
+      "path": "app/tools/gimpmypainttool.cpp",
+      "source_blob": "08adf2e9b690fd4cbe620c3ab890844ad99e9517",
+      "source_range": "-0,0 -> 1,831",
+      "source_sha256": "bc5dab0db6cc8dc481c4238aad6ca280693bc191dae199af28db9fde21ce7323",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "08.008",
+      "action": "MyPaint tool 型を移植する",
+      "acceptance": "tool manager に登録できる",
+      "legacy_role": "GimpColorTool subclass registration/constructed/finalize and input lifecycle",
+      "source_copy": "migration/tests/mybrush-tool-type/legacy-source/gimpmypainttool.cpp",
+      "source_copy_sha256": "5eb3b12ea369bdc70a4729efa7e98ab131eca66349f83ec05ebe57c4b179bba1",
+      "current_contract": "Native GimpColorTool registered with distinct Painter options and PaintInfo; common store owns Session instead of raw qdata core; repeated disposal cancels pending pixels, finalized tool leaves committed Undo/Redo valid"
+    },
+    {
+      "work_id": "legacy-6dc5ba383a7c8b9f2e21",
+      "source_kind": "hunk",
+      "source_id": "01.002/001337",
+      "path": "app/tools/gimpmypainttool.cpp",
+      "source_blob": "08adf2e9b690fd4cbe620c3ab890844ad99e9517",
+      "source_range": "-0,0 -> 1,831",
+      "source_sha256": "bc5dab0db6cc8dc481c4238aad6ca280693bc191dae199af28db9fde21ce7323",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "08.008/tool-core-lifetime",
+      "action": "MyPaint tool と core の生成・破棄順を明示する",
+      "acceptance": "constructed で保持する core が finalize/停止時に二重解放や残存を起こさず、qdata と Undo の解除順が整合",
+      "legacy_role": "GimpColorTool subclass registration/constructed/finalize and input lifecycle",
+      "source_copy": "migration/tests/mybrush-tool-type/legacy-source/gimpmypainttool.cpp",
+      "source_copy_sha256": "5eb3b12ea369bdc70a4729efa7e98ab131eca66349f83ec05ebe57c4b179bba1",
+      "current_contract": "Native GimpColorTool registered with distinct Painter options and PaintInfo; common store owns Session instead of raw qdata core; repeated disposal cancels pending pixels, finalized tool leaves committed Undo/Redo valid"
+    },
+    {
+      "work_id": "legacy-22e853d7208a2d532cc3",
+      "source_kind": "hunk",
+      "source_id": "01.002/001338",
+      "path": "app/tools/gimpmypainttool.h",
+      "source_blob": "cc1e53eb815409ed71f960cd90d116df5738b200",
+      "source_range": "-0,0 -> 1,76",
+      "source_sha256": "8a47afb00f655195162469508ea6b07ff8585c1f892b9fb7e44a61293262aa6f",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "08.008",
+      "action": "MyPaint tool 型を移植する",
+      "acceptance": "tool manager に登録できる",
+      "legacy_role": "Native public instance/class/type interface",
+      "source_copy": "migration/tests/mybrush-tool-type/legacy-source/gimpmypainttool.h",
+      "source_copy_sha256": "7fa0128d50628f81c4373afae598783bc812fbdcf452ec20c12333193d68b87f",
+      "current_contract": "Native GimpColorTool registered with distinct Painter options and PaintInfo; common store owns Session instead of raw qdata core; repeated disposal cancels pending pixels, finalized tool leaves committed Undo/Redo valid"
+    },
+    {
+      "work_id": "legacy-ec7549b5744730bd8d5f",
+      "source_kind": "hunk",
+      "source_id": "01.002/001338",
+      "path": "app/tools/gimpmypainttool.h",
+      "source_blob": "cc1e53eb815409ed71f960cd90d116df5738b200",
+      "source_range": "-0,0 -> 1,76",
+      "source_sha256": "8a47afb00f655195162469508ea6b07ff8585c1f892b9fb7e44a61293262aa6f",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "08.008/tool-core-lifetime",
+      "action": "MyPaint tool と core の生成・破棄順を明示する",
+      "acceptance": "constructed で保持する core が finalize/停止時に二重解放や残存を起こさず、qdata と Undo の解除順が整合",
+      "legacy_role": "Native public instance/class/type interface",
+      "source_copy": "migration/tests/mybrush-tool-type/legacy-source/gimpmypainttool.h",
+      "source_copy_sha256": "7fa0128d50628f81c4373afae598783bc812fbdcf452ec20c12333193d68b87f",
+      "current_contract": "Native GimpColorTool registered with distinct Painter options and PaintInfo; common store owns Session instead of raw qdata core; repeated disposal cancels pending pixels, finalized tool leaves committed Undo/Redo valid"
+    }
+  ],
+  "source_duties_accepted": 7,
+  "routing_correction": {
+    "source_blob": "018aa68742928631399a43506e7fdd047c6f4126",
+    "source_id": "01.002/001098",
+    "source_payload_sha256": "67811ef8a624493c31e905e4013e4094c8a33bdccf7af95647ecab97b1345f46",
+    "exact_added_lines": [
+      "    /* gimp-painter 2.8: perspective guide */",
+      "",
+      "    gimp_perspective_guide_tool_register,",
+      ""
+    ],
+    "removed_erroneous_todo": [
+      "legacy-e7b1d4568db19b6bb330"
+    ],
+    "added_obligations": [],
+    "completion_gain": 0,
+    "other_rows_unchanged": 22762,
+    "retained_same_hunk_work_ids": [
+      "legacy-6842cddcd4c5b247159d",
+      "legacy-35c9adf579288e8144c6",
+      "legacy-34f0c881001d1796ea94",
+      "legacy-e1b94404addacbe53da4",
+      "legacy-b076b1dde8fd7f130a0f",
+      "legacy-3cde0737b12dbc24932f",
+      "legacy-f7165a32e8a542c081e6",
+      "legacy-93ae6a7a181cede803c5"
+    ],
+    "retained_perspective_type_duty": "legacy-6842cddcd4c5b247159d",
+    "scope": "Correct only08.008; other eight routes stay independently unresolved, no global acceptance",
+    "independent_review": "Read-only exact blob/payload hash and retained perspective obligations verified",
+    "full_historical_regeneration": "Unavailable pinned source/base trees in recovered local Git database; exact target route and unchanged-other-row checks performed; no new network fetch"
+  },
+  "weak_pointer_replacement": {
+    "task": "08.008/weak-pointer-teardown",
+    "legacy_path": "app/tools/gimpmypaint-gui-base.hpp",
+    "source_blob": "0ee264a00b248cb4c1168baf9993c06cf0127ebd",
+    "source_copy": "migration/tests/mybrush-tool-type/legacy-source/gimpmypaint-gui-base.hpp",
+    "legacy_members": "options and widget raw weak-pointer slots registered at lines53/94; helper destructor does not unregister",
+    "replacement": "Editor common-store strong context/options/control owners and Connection callbacks with GWeakRef; detach disconnects before model release, no writable weak slot in destroyed helper",
+    "test": "Direct editor/options caller-first and editor-first destruction, retained control emissions after both owners finalized; actual qdata-finalizer witnesses",
+    "ledger_rows": 0
+  },
+  "reports": [
+    {
+      "path": "migration/tests/mybrush-tool-type/native-summary.json",
+      "sha256": "a4764be058f36613e70fbad83be4694826be1074b88b2d9c4ae8730f48806b7f",
+      "native_cases": 10,
+      "source_seals": 29
+    },
+    {
+      "path": "migration/tests/mybrush-tool-type/sanitizer-summary.json",
+      "sha256": "8fbeca250ad42cd7f4b639b8eaed25ff5c7523290526abf8fb122a89458d1b3a",
+      "focused_cases": 4
+    }
+  ],
+  "limits": "Original type/manager/lifecycle acceptance and existing GUI weak-owner child; no full renderer/tablet/OS compatibility inferred. Focused sanitizer sources only; LeakSanitizer disabled. Historical reports unchanged."
+}

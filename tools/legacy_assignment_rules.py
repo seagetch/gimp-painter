@@ -438,6 +438,10 @@ def route(row, added, removed):
         result['tasks'] = [task for task in result['tasks'] if task != '08.005']
     if path == 'app/core/gimp.h' and int(row['index']) == 2:
         result['tasks'] = [*result['tasks'], '08.005']
+    # Hunk 12 registers only the perspective-guide tool. Its 08.010 duty
+    # remains; do not infer a MyPaint type obligation from the broad profile.
+    if path == 'app/tools/gimp-tools.c' and int(row['index']) == 12:
+        result['tasks'] = [task for task in result['tasks'] if task != '08.008']
     dsl = uses_gtk_dsl(path, added + removed)
     support = int(row['index']) in GTK_DSL_SUPPORT.get(path, set())
     result['tasks'] = [task for task in result['tasks']

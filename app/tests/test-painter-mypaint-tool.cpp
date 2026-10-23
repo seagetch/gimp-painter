@@ -81,7 +81,17 @@ struct Scene {
 };
 static void registration_and_gate()
 {
-  Scene s;g_assert_true(s.tool->want_full_motion_tracking);g_assert_false(s.tool->disable_lazy_snap);g_assert_false(GIMP_IS_MYBRUSH_TOOL(s.tool));
+  Scene s;
+  g_assert_cmpuint (g_type_parent (G_OBJECT_TYPE (s.tool)), ==, GIMP_TYPE_COLOR_TOOL);
+  auto *klass = GIMP_PAINTER_MYBRUSH_TOOL_GET_CLASS (s.tool);
+  g_assert_true (GIMP_IS_PAINTER_MYBRUSH_TOOL_CLASS (klass));
+  g_assert_true (GIMP_PAINTER_MYBRUSH_TOOL_CLASS (G_OBJECT_GET_CLASS (s.tool)) == klass);
+  GTypeQuery query = {}; g_type_query (G_OBJECT_TYPE (s.tool), &query);
+  g_assert_cmpuint (query.instance_size, ==, sizeof (GimpPainterMybrushTool));
+  g_assert_cmpuint (query.class_size, ==, sizeof (GimpPainterMybrushToolClass));
+  g_assert_cmpuint (s.tool->tool_info->tool_type, ==, GIMP_TYPE_PAINTER_MYBRUSH_TOOL);
+  g_assert_cmpuint (s.tool->tool_info->tool_options_type, ==, GIMP_TYPE_PAINTER_MYBRUSH_OPTIONS);
+  g_assert_true(s.tool->want_full_motion_tracking);g_assert_false(s.tool->disable_lazy_snap);g_assert_false(GIMP_IS_MYBRUSH_TOOL(s.tool));
   g_assert_cmpuint(s.tool->tool_info->paint_info->paint_type,==,GIMP_TYPE_PAINTER_PAINT_GATE);
   auto*standard=gimp_get_tool_info(gimp,"gimp-mypaint-brush-tool");g_assert_nonnull(standard);g_assert_cmpstr(standard->menu_accel,==,"Y");
   g_test_message("registration: image=%p drawable-image=%p before options GUI",s.image,gimp_item_get_image(GIMP_ITEM(s.drawable)));
@@ -139,6 +149,56 @@ static void halt_on_update(GimpDrawable*,gint,gint,gint,gint,gpointer data)
   else gimp_tool_control(s.scene->tool,GIMP_TOOL_ACTION_HALT,s.scene->display);
 }
 static void mark_finalized(gpointer data,GObject*){*static_cast<bool*>(data)=true;}
+static void standalone_lifecycle()
+{
+  for (int branch = 0; branch < 3; ++branch)
+    {
+      Scene s;
+      const auto before = s.pixels ();
+      auto *tool = GIMP_TOOL (g_object_new (GIMP_TYPE_PAINTER_MYBRUSH_TOOL,
+                                          "tool-info", s.tool->tool_info, nullptr));
+      bool finalized = false;
+      // Weak notifications can run during explicit dispose. Test qdata is
+      // released only when the final object ownership is actually gone.
+      g_object_set_data_full (G_OBJECT (tool), "test-08008-finalized", &finalized,
+                             +[](gpointer data) { *static_cast<bool*> (data) = true; });
+      if (branch != 0)
+        {
+          gimp_tool_button_press (tool, &s.coords, s.time, GdkModifierType (0),
+                                  GIMP_BUTTON_PRESS_NORMAL, s.display);
+          s.coords.x += 20;
+          gimp_tool_motion (tool, &s.coords, s.time + 75, GDK_BUTTON1_MASK, s.display);
+          g_assert_true (s.pixels () != before);
+          g_assert_true (gimp_painter_mybrush_tool_has_pending_stroke (
+            GIMP_PAINTER_MYBRUSH_TOOL (tool)));
+        }
+      if (branch == 2)
+        gimp_tool_control (tool, GIMP_TOOL_ACTION_COMMIT, s.display);
+      const auto painted = s.pixels ();
+      g_object_run_dispose (G_OBJECT (tool));
+      g_object_run_dispose (G_OBJECT (tool));
+      g_assert_false (gimp_tool_control_is_active (tool->control));
+      g_assert_false (gimp_viewable_preview_is_frozen (GIMP_VIEWABLE (s.drawable)));
+      g_assert_null (tool->display); g_assert_null (tool->drawables);
+      g_assert_false (finalized);
+      g_object_unref (tool);
+      g_assert_true (finalized);
+      if (branch == 2)
+        {
+          g_assert_cmpint (s.depth (), ==, 1);
+          g_assert_true (s.pixels () == painted);
+          g_assert_true (gimp_image_undo (s.image));
+          g_assert_true (s.pixels () == before);
+          g_assert_true (gimp_image_redo (s.image));
+          g_assert_true (s.pixels () == painted);
+        }
+      else
+        {
+          g_assert_cmpint (s.depth (), ==, 0);
+          g_assert_true (s.pixels () == before);
+        }
+    }
+}
 static void halt_and_last_ref_in_motion()
 {
   for(bool drop:{false,true}){Scene s;auto before=s.pixels();s.motion(false);s.press();During state{&s,false,drop};bool finalized=false;g_object_weak_ref(G_OBJECT(s.tool),mark_finalized,&finalized);auto id=g_signal_connect(s.drawable,"update",G_CALLBACK(halt_on_update),&state);
@@ -312,6 +372,7 @@ int main(int argc,char**argv)
 {
   g_test_init(&argc,&argv,nullptr);if(!gtk_init_check(&argc,&argv))return GIMP_EXIT_TEST_SKIPPED;gimp_test_utils_setup_menus_path();gimp=gimp_init_for_gui_testing(TRUE);
   g_test_add_func("/painter-tool/registration-gate",registration_and_gate);
+  g_test_add_func("/painter-tool/standalone-lifecycle",standalone_lifecycle);
   g_test_add_func("/painter-tool/hover-default-pressure",hover_default_pressure);
   g_test_add_func("/painter-tool/stationary-equal-time-undo",pressure_and_undo);
   g_test_add_func("/painter-tool/cancel",cancel_rolls_back);
