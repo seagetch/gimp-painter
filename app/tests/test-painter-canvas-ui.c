@@ -36,6 +36,8 @@
 #include "display/gimpdisplayshell.h"
 #include "display/gimppaintercanvasui.h"
 #include "painter/gimp-painter-binding.h"
+#include "actions/actions-types.h"
+#include "actions/actions.h"
 #include "gimp-app-test-utils.h"
 #include "tests.h"
 #include "gimpcoreapp.h"
@@ -197,6 +199,81 @@ static void popup_replacement_image_switch(gboolean creation) {
 }
 static void popup_properties_reentrant_image_switch(void) { popup_replacement_image_switch(FALSE); }
 static void popup_creation_reentrant_image_switch(void) { popup_replacement_image_switch(TRUE); }
+/* The C entry and inherited image-editor entry must share the same terminal
+ * lifecycle. Holding a reference after GtkWidget::destroy is legal. */
+static void destroyed_tiles_reject_image(void) {
+  GimpImage *a=new_image(),*b=new_image();layer(a,NULL,"Old");layer(b,NULL,"New");
+  GtkWidget *w=tiles(a);gpointer weak=w;
+  g_object_ref(w);g_object_add_weak_pointer(G_OBJECT(w),&weak);
+  g_assert_true(action_data_get_gimp(w)==gimp);
+  g_assert_true(action_data_get_context(w)==GIMP_IMAGE_EDITOR(w)->context);
+  g_assert_true(action_data_get_image(w)==a);
+  g_assert_null(action_data_get_display(w));
+  close_tiles(w);
+  g_assert_null(action_data_get_context(w));
+  g_assert_null(action_data_get_image(w));
+  g_assert_null(action_data_get_display(w));
+  g_assert_true(g_type_is_a(G_OBJECT_TYPE(w),GIMP_TYPE_IMAGE_EDITOR));
+  g_assert_true(GTK_IS_BOX(w));
+  g_assert_null(gimp_image_editor_get_image(GIMP_IMAGE_EDITOR(w)));
+  gimp_painter_layer_tiles_set_image(GIMP_PAINTER_LAYER_TILES(w),b);
+  g_assert_null(gimp_image_editor_get_image(GIMP_IMAGE_EDITOR(w)));
+  gimp_image_editor_set_image(GIMP_IMAGE_EDITOR(w),a);
+  g_assert_null(gimp_image_editor_get_image(GIMP_IMAGE_EDITOR(w)));
+  g_assert_null(gimp_painter_layer_tiles_popup(GIMP_PAINTER_LAYER_TILES(w),TRUE));
+  g_assert_false(gimp_painter_layer_tiles_long_press_pending(GIMP_PAINTER_LAYER_TILES(w)));
+  gtk_widget_destroy(w);g_object_unref(w);drain();g_assert_null(weak);
+  /* If the parent reconnected, this would invoke a callback on the freed owner. */
+  gimp_image_flush(a);gimp_image_flush(b);drain();
+  g_object_unref(a);g_object_unref(b);
+}
+static void image_switch_popup_owner_close(void) {
+  GimpImage *a=new_image(),*b=new_image();layer(a,NULL,"Old");layer(b,NULL,"New");
+  GtkWidget *w=tiles(a);gpointer weak=w;guint calls=0;
+  g_object_ref(w);g_object_add_weak_pointer(G_OBJECT(w),&weak);
+  g_assert_nonnull(gimp_painter_layer_tiles_popup(GIMP_PAINTER_LAYER_TILES(w),FALSE));
+  g_signal_connect(w,"popup-closed",G_CALLBACK(destroy_on_popup_closed),&calls);
+  gimp_painter_layer_tiles_set_image(GIMP_PAINTER_LAYER_TILES(w),b);
+  g_assert_cmpuint(calls,==,1);
+  g_assert_null(gimp_image_editor_get_image(GIMP_IMAGE_EDITOR(w)));
+  g_assert_null(gimp_painter_layer_tiles_popup(GIMP_PAINTER_LAYER_TILES(w),TRUE));
+  /* The interrupted bind must not retain its incoming image until finalization. */
+  gpointer weak_image=b;g_object_add_weak_pointer(G_OBJECT(b),&weak_image);
+  gimp_image_flush(b);drain();g_object_unref(b);drain();g_assert_null(weak_image);
+  g_object_unref(w);drain();g_assert_null(weak);
+  gimp_image_flush(a);drain();g_object_unref(a);
+}
+static void image_switch_popup_newer_image(void) {
+  GimpImage *a=new_image(),*b=new_image(),*c=new_image();
+  layer(a,NULL,"Original");GimpLayer *lb=layer(b,NULL,"Obsolete"),*lc=layer(c,NULL,"Latest");
+  GtkWidget *w=tiles(a);PopupImageSwitch switch_image={c,0};
+  g_assert_nonnull(gimp_painter_layer_tiles_popup(GIMP_PAINTER_LAYER_TILES(w),FALSE));
+  gulong handler=g_signal_connect(w,"popup-closed",G_CALLBACK(switch_on_popup_closed),&switch_image);
+  gimp_painter_layer_tiles_set_image(GIMP_PAINTER_LAYER_TILES(w),b);drain();
+  g_assert_cmpuint(switch_image.calls,==,1);
+  g_assert_true(gimp_image_editor_get_image(GIMP_IMAGE_EDITOR(w))==c);
+  GtkWidget *visible=find(w,"painter-layer-visible");g_assert_nonnull(visible);
+  gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(visible),FALSE);drain();
+  g_assert_false(gimp_item_get_visible(GIMP_ITEM(lc)));
+  g_assert_true(gimp_item_get_visible(GIMP_ITEM(lb)));
+  g_signal_handler_disconnect(w,handler);close_tiles(w);
+  g_object_unref(a);g_object_unref(b);g_object_unref(c);
+}
+static void destroy_on_sensitive(GObject *object,GParamSpec *pspec,gpointer data) {
+  guint *calls=data;(void)pspec;
+  ++*calls;gtk_widget_destroy(GTK_WIDGET(object));
+}
+static void parent_image_notify_owner_close(void) {
+  GimpImage *image=new_image();layer(image,NULL,"Layer");GtkWidget *w=tiles(NULL);
+  gpointer weak=w;guint calls=0;g_object_ref(w);g_object_add_weak_pointer(G_OBJECT(w),&weak);
+  g_signal_connect(w,"notify::sensitive",G_CALLBACK(destroy_on_sensitive),&calls);
+  gimp_painter_layer_tiles_set_image(GIMP_PAINTER_LAYER_TILES(w),image);
+  g_assert_cmpuint(calls,>=,1);
+  g_assert_null(gimp_image_editor_get_image(GIMP_IMAGE_EDITOR(w)));
+  g_assert_null(gimp_painter_layer_tiles_popup(GIMP_PAINTER_LAYER_TILES(w),FALSE));
+  g_object_unref(w);drain();g_assert_null(weak);
+  gimp_image_flush(image);drain();g_object_unref(image);
+}
 static void popup_controls_and_clone(void) {
   GimpImage *image=new_image();GimpLayer *a=layer(image,NULL,"A");GtkWidget *w=tiles(image);
   GtkWidget *p=gimp_painter_layer_tiles_popup(GIMP_PAINTER_LAYER_TILES(w),FALSE);
@@ -371,6 +448,15 @@ static void multiple_canvas_context_and_dock_transfer(void) {
   GtkWidget *ta=find(a->canvas,"painter-layer-tiles"),*tb=find(b->canvas,"painter-layer-tiles");
   g_assert_true(gimp_image_editor_get_image(GIMP_IMAGE_EDITOR(ta))==ia);
   g_assert_true(gimp_image_editor_get_image(GIMP_IMAGE_EDITOR(tb))==ib);
+  g_assert_true(action_data_get_gimp(ta)==gimp);
+  g_assert_true(action_data_get_gimp(tb)==gimp);
+  g_assert_true(action_data_get_context(ta)==GIMP_IMAGE_EDITOR(ta)->context);
+  g_assert_true(action_data_get_context(tb)==GIMP_IMAGE_EDITOR(tb)->context);
+  g_assert_true(action_data_get_context(ta)!=action_data_get_context(tb));
+  g_assert_true(action_data_get_image(ta)==ia);
+  g_assert_true(action_data_get_image(tb)==ib);
+  g_assert_true(action_data_get_display(ta)==a->display);
+  g_assert_true(action_data_get_display(tb)==b->display);
   gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(find(ta,"painter-layer-visible")),FALSE);drain();
   g_assert_false(gimp_item_get_visible(GIMP_ITEM(la)));
   g_assert_true(gimp_item_get_visible(GIMP_ITEM(lb)));
@@ -435,6 +521,7 @@ int main(int argc,char **argv) {
   if(g_getenv("PAINTER_CANVAS_DEMO")) { ADD(demo); } else {
   ADD(channel_preview_components);ADD(selection_and_visibility);ADD(group_move_and_undo);ADD(image_switch_disconnect);ADD(long_press_cancel_destroy);ADD(preview_pending_destroy);ADD(popup_repeat_and_owner_close);
   ADD(popup_properties_reentrant_owner_close);ADD(popup_creation_reentrant_owner_close);ADD(popup_properties_reentrant_image_switch);ADD(popup_creation_reentrant_image_switch);
+  ADD(destroyed_tiles_reject_image);ADD(image_switch_popup_owner_close);ADD(image_switch_popup_newer_image);ADD(parent_image_notify_owner_close);
   ADD(popup_controls_and_clone);ADD(mask_controls);ADD(long_press_once);ADD(reentrant_visibility_close);ADD(multiple_reorder_one_undo);ADD(hide_cancels_grab);
   ADD(overlay_input_and_restore);ADD(dock_restore_and_parent_close);ADD(overlay_tools_and_colors);ADD(overlay_tool_group);ADD(multiple_canvas_context_and_dock_transfer);ADD(overlay_owner_destroy_callbacks);
   }

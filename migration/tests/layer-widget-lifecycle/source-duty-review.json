@@ -1,0 +1,158 @@
+{
+  "task": "08.013",
+  "baseline_head": "0953d681650249739fdcb17394f3962f822fdb39",
+  "scope": "GTK3 parent, action data routing, deterministic binding teardown; no complete WBS29 gesture/visual parity claim",
+  "obligations": [
+    {
+      "work_id": "legacy-d2f38507fe3314479cbe",
+      "source_id": "01.002/000011",
+      "path": "app/actions/actions.c",
+      "source_blob": "25afec073efc6d253cc3630cb9d2f241e6f6d25e",
+      "source_range": "-42,0 -> 43",
+      "source_sha256": "5aedd99c4bd9d6988c14fe4f3ae1c9ecea3bb3b6b1263fea9402a3fac56c69a5",
+      "source_scope": "file-level declarations/content",
+      "replacement": "The legacy LayerTileView-specific include is replaced by the existing GimpImageEditor include: the new tile widget derives from GimpImageEditor and needs no action helper special case.",
+      "current_paths": [
+        "app/actions/actions.c",
+        "app/widgets/gimppainterlayertiles.h"
+      ],
+      "state": "VERIFIED",
+      "reports": [
+        "native.json",
+        "asan.json"
+      ]
+    },
+    {
+      "work_id": "legacy-f146b823378eab064645",
+      "source_id": "01.002/000014",
+      "path": "app/actions/actions.c",
+      "source_blob": "25afec073efc6d253cc3630cb9d2f241e6f6d25e",
+      "source_range": "-301,0 -> 311,2",
+      "source_sha256": "4bf20fd3e291570cb3c78d421e7160a8331d2715efef1633f6dda8192b4e6427",
+      "source_scope": "action_data_get_gimp (gpointer data)",
+      "replacement": "Legacy type-specific context lookup for action_data_get_gimp is replaced by native context/display routing. The new per-widget context retains the same owning Gimp.",
+      "current_paths": [
+        "app/actions/actions.c",
+        "app/widgets/gimppainterlayertiles.cpp"
+      ],
+      "state": "VERIFIED",
+      "reports": [
+        "native.json",
+        "asan.json"
+      ]
+    },
+    {
+      "work_id": "legacy-021868e089821b9f7f23",
+      "source_id": "01.002/000015",
+      "path": "app/actions/actions.c",
+      "source_blob": "25afec073efc6d253cc3630cb9d2f241e6f6d25e",
+      "source_range": "-335,0 -> 347,5",
+      "source_sha256": "b1786b2081021e327c7861aa1ffb0d29be5b8a0388e9e4dba5cdf6a2a8bd633d",
+      "source_scope": "action_data_get_context (gpointer data)",
+      "replacement": "The native GIMP_IS_IMAGE_EDITOR branch returns the per-widget context directly, without the extra property-get reference used by the legacy path. close() clears this parent context.",
+      "current_paths": [
+        "app/actions/actions.c",
+        "app/widgets/gimpimageeditor.c",
+        "app/widgets/gimppainterlayertiles.cpp"
+      ],
+      "state": "VERIFIED",
+      "reports": [
+        "native.json",
+        "asan.json"
+      ]
+    },
+    {
+      "work_id": "legacy-2c67be503255950f6dde",
+      "source_id": "01.002/000016",
+      "path": "app/actions/actions.c",
+      "source_blob": "25afec073efc6d253cc3630cb9d2f241e6f6d25e",
+      "source_range": "-367,0 -> 384,5",
+      "source_sha256": "fde7853a97959ea8bba2352e8358885c6fadf577e2525ebad81a7e4cdb27f677",
+      "source_scope": "action_data_get_image (gpointer data)",
+      "replacement": "The native image-editor branch returns the editor image, including NULL, avoiding fallback to an unrelated global active image. Binding generation guards keep rows and parent image consistent during reentry.",
+      "current_paths": [
+        "app/actions/actions.c",
+        "app/widgets/gimpimageeditor.c",
+        "app/widgets/gimppainterlayertiles.cpp"
+      ],
+      "state": "VERIFIED",
+      "reports": [
+        "native.json",
+        "asan.json"
+      ]
+    },
+    {
+      "work_id": "legacy-785d9e05ce7052026121",
+      "source_id": "01.002/000017",
+      "path": "app/actions/actions.c",
+      "source_blob": "25afec073efc6d253cc3630cb9d2f241e6f6d25e",
+      "source_range": "-399,0 -> 421,2",
+      "source_sha256": "4bf20fd3e291570cb3c78d421e7160a8331d2715efef1633f6dda8192b4e6427",
+      "source_scope": "action_data_get_display (gpointer data)",
+      "replacement": "Native action_data_get_display resolves the tile-local context. set_display binds a canvas display independently of the global context; multi-canvas assertions exercise both displays.",
+      "current_paths": [
+        "app/actions/actions.c",
+        "app/widgets/gimppainterlayertiles.cpp",
+        "app/display/gimppaintercanvasui.cpp"
+      ],
+      "state": "VERIFIED",
+      "reports": [
+        "native.json",
+        "asan.json"
+      ]
+    },
+    {
+      "work_id": "legacy-a91067f6975a9f661fcf",
+      "source_id": "01.002/001643",
+      "path": "app/widgets/gimplayertileview.cpp",
+      "source_blob": "1f78b0d6269b88aa78cfd9ce80b30f7cceb5ad24",
+      "source_range": "-0,0 -> 1,1595",
+      "source_sha256": "2b073cd653c7a2293ea77ef9378fbd98b1e91752a96fd657e2a7f73267ca09fa",
+      "source_scope": "file-level declarations/content",
+      "replacement": "Legacy NewGClass/global class instance/private LayerTileView implementation is replaced by G_DEFINE_TYPE plus BindingStore Slot<Tiles>. The native GtkBox-derived GimpImageEditor parent supplies image/action context. destroy closes sources/connections/context/image before chaining. New guards reject post-destroy image connection and stale nested image binding.",
+      "current_paths": [
+        "app/widgets/gimppainterlayertiles.cpp",
+        "app/widgets/gimpimageeditor.c"
+      ],
+      "state": "VERIFIED",
+      "reports": [
+        "native.json",
+        "asan.json"
+      ]
+    },
+    {
+      "work_id": "legacy-02d0f983749d61458398",
+      "source_id": "01.002/001644",
+      "path": "app/widgets/gimplayertileview.h",
+      "source_blob": "cb3b4bf03cdb77791cf72d80aa599e6523990bad",
+      "source_range": "-0,0 -> 1,66",
+      "source_sha256": "983a7a2096f14c5041e3f90144cc469e2705fcffd7515c85337faf073aab4300",
+      "source_scope": "file-level declarations/content",
+      "replacement": "Legacy GtkBox C instance/class layouts and C++ Interface::cast header are replaced by C-compatible GimpImageEditor instance/class layouts and a single current GType/C operation API. Internal TypeTraits maps to that GType. No compatibility promise for the removed C++ private interface is made.",
+      "current_paths": [
+        "app/widgets/gimppainterlayertiles.h",
+        "app/widgets/gimppainterlayertiles.cpp"
+      ],
+      "state": "VERIFIED",
+      "reports": [
+        "native.json",
+        "asan.json"
+      ]
+    }
+  ],
+  "runtime_required": [],
+  "dependency": "08.012 acceptance recorded in preceding task commit",
+  "source_sha256": {
+    "app/widgets/gimppainterlayertiles.cpp": "218033b3a7ad19a2347bc263268397dbae514529abb3ae4b282060cbb8597011",
+    "app/tests/test-painter-canvas-ui.c": "d0f0dd2756cc447b32fdc35d11cfc4e98b8bf2b6923e90143198613dd8f0bbb7"
+  },
+  "native_report": "native.json",
+  "sanitizer_report": "asan.json",
+  "verification_provenance": {
+    "reconstructed_at_utc": "2026-10-12T15:04:00Z",
+    "basis": "Recorded successful tool execution output from the 2026-10-12 normal and standard ASan/UBSan validation, accepted before workspace reset. This is not a fresh execution.",
+    "raw_log_status": "Final raw Meson logs and originally generated publication summaries were lost in workspace reset; not claimed recovered.",
+    "recovered_inputs": "Library checkpoint v15 preserved exact changed sources, source hashes and combined patch. Each recovered source hash and reconstructed unified diff matches the preserved record.",
+    "combined_patch_sha256": "9a057d579b9ba43024c50924de03a166c5317a020f437cf9b6145d7f58d81d49"
+  }
+}

@@ -400,7 +400,7 @@
 | 08.010 | [x] | パース定規 tool 型を移植する | 08.009 | draw tool と options に登録 |
 | 08.011 | [x] | 塗りつぶし brush core 型を移植する | 08.010 | paint core と親 vfunc を接続 |
 | 08.012 | [x] | 塗りつぶし tool/options 型を移植する | 08.011 | tool manager と設定に登録 |
-| 08.013 | [ ] | LayerTileView 型を移植する | 08.012 | GTK3 の親 widget と終了を接続 |
+| 08.013 | [x] | LayerTileView 型を移植する | 08.012 | GTK3 の親 widget と終了を接続 |
 | 08.014 | [ ] | ToolTileView 型を移植する | 08.013 | GTK3 の親 widget と終了を接続 |
 | 08.015 | [ ] | Popover 型を移植する | 08.014 | window のイベント・destroy を接続 |
 | 08.016 | [ ] | CellRendererPopup 型を移植する | 08.015 | cell renderer の vfunc と callback を接続 |
