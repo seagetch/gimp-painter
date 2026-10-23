@@ -1,0 +1,18 @@
+{
+  "task": "07.008/connection-name",
+  "status": "PASS",
+  "base_commit": "6e6f2568e7593089c4f3c93e4613354c1f915001",
+  "production_change": false,
+  "normal_cases": 71,
+  "asan_ubsan_cases": 71,
+  "leak_check": "not run; explicit closure and finalization counts are not LSan",
+  "legacy_source_commit": "afa43fae3e920210146abed514f136fd49f671b5",
+  "legacy_blob": "f615f41b4fdebbebc865e17888eadc38a0c45e58",
+  "legacy_sha256": "0184dfa3748b24a770ef00e59987da84164847244ba6ab62dcaf9aad3eaf03e0",
+  "work_id": "legacy-5202655054684d7390da",
+  "evidence_sha256": {
+    "normal.json": "95fd1a4a4da75e930eb2c659296e5c844d9becdf0073be5ab3bd49724c4c5181",
+    "sanitizer.json": "b8d4e053b66b57d99aafe25e9ccd7507f73629dc5e858e05ed67498396c4c347",
+    "legacy-delegators.hpp": "0184dfa3748b24a770ef00e59987da84164847244ba6ab62dcaf9aad3eaf03e0"
+  }
+}
