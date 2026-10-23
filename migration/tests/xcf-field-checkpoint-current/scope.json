@@ -1,0 +1,22 @@
+{
+  "task": "12.015/field-owner-checkpoint",
+  "status": "DOING",
+  "previous_progress": {
+    "id": "12.015/field-owner-checkpoint",
+    "status": "DOING",
+    "owner": "Codex",
+    "commit_or_artifact": "migration/inventory/xcf-field-acceptance.tsv; migration/tests/painter-xcf-fields-checkpoint-summary.json",
+    "test": "59 normal cases: upstream XCF4/Open14/roundtrip33/provenance8;72 precision/compression scenes;10 wrong owners;actual old editable text/unit/palette/path;RUNNING/IMPORTING save",
+    "result": "PASS normal checkpoint and185 owner/default rows; explicit unknown-effect and oversized-record refusal retains destination",
+    "added_children": "-",
+    "limitations": "Expanded focused sanitizers pending; malformed order/recursive graph/platform coverage remains; >256MiB capsule retained save refusal is explicit bound rather than complete chunk preservation"
+  },
+  "previous_task_row": "| 12.015/field-owner-checkpoint | [ ] | XCF\u5168\u4fdd\u5b58field\u3068owner\u30fb\u5b9f\u884c\u4e2d\u72b6\u614b\u3092\u7167\u5408\u3059\u308b | 12.015/semantic-envelope-validation, 31.016/typed-provenance-store | 185\u884c\u53f0\u5e33\u3068\u5b9f\u65e7text/unit/palette/path\u3001wrong owner10\u3001native precision72\u3001\u540c\u540dClone ID\u3001RUNNING/IMPORTING Save\u3092\u5b9f\u88c5\u3057\u901a\u5e3859case\u5408\u683c\u3002\u8ffd\u52a0sanitizer\u30fb\u5168\u4e0d\u6b63\u9806\u5e8f/graph/platform\u306f\u672a\u5b8c\u4e86\u3002\u5de8\u5927\u672a\u77e5record\u306e\u901a\u5e38Save chunk\u4fdd\u6301\u306f12.015/multipart-storage\u53c2\u7167\u3001GUI\u5fdc\u7b54/\u5168platform\u306f\u5225gate |",
+  "normal_cases": 96,
+  "sanitizer_cases": 96,
+  "field_rows": 185,
+  "current_checkout_drift_after_checkpoint": [
+    "app/widgets/gimppainterlayertiles.cpp"
+  ],
+  "interpretation": "Exact detached native source checkpoint; subsequent unrelated working-tree edits are not asserted tested. No full task completion."
+}
