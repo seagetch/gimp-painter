@@ -1,0 +1,22 @@
+{
+  "source_commit": "a84cd0b051e7b648ec9519ede82ae9541c44ea1c",
+  "targets": 17,
+  "passed": 15,
+  "failed": [
+    {
+      "name": "gimp:app / painter-mypaint-tool",
+      "returncode": -6
+    },
+    {
+      "name": "gimp:app / paired-stroke-ui",
+      "returncode": -6
+    }
+  ],
+  "source_changed": [],
+  "source_files": 15806,
+  "whole_port_complete": false,
+  "display": "authenticated Xvfb1080x1920x24",
+  "production_regression": "Controller reports finishable idle open stroke as save-blocking; unchanged native tool save-pending assertion fails before gimp_image_saving.",
+  "fixture_defect": "paired-stroke-ui requires output env absent from registered default Meson invocation.",
+  "held_scope": "Four candidate task paths excluded by eight exact committed provider files; later fifth Clone offset diagnostic failed outside this frozen tree. Clone provider in exact manifest unchanged."
+}
