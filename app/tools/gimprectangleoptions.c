@@ -51,7 +51,20 @@ enum
 };
 
 
+enum
+{
+  AUTO_SHRINK_REQUESTED,
+  AUTO_SHRINK_CHANGED,
+  LAST_SIGNAL
+};
+
+static guint rectangle_signals[LAST_SIGNAL];
+
 /*  local function prototypes  */
+
+static void gimp_rectangle_options_shrink_owner_gone (gpointer data,
+                                                      GObject *where_object_was);
+
 
 static void     gimp_rectangle_options_fixed_rule_changed     (GtkWidget                   *widget,
                                                                GimpRectangleOptionsPrivate *private);
@@ -78,6 +91,16 @@ G_DEFINE_INTERFACE (GimpRectangleOptions, gimp_rectangle_options, GIMP_TYPE_TOOL
 static void
 gimp_rectangle_options_default_init (GimpRectangleOptionsInterface *iface)
 {
+  /* Action availability belongs to the model, not any particular GUI. */
+  rectangle_signals[AUTO_SHRINK_REQUESTED] =
+    g_signal_new ("auto-shrink-requested", G_TYPE_FROM_INTERFACE (iface),
+                  G_SIGNAL_RUN_LAST, 0, NULL, NULL, NULL,
+                  G_TYPE_NONE, 0);
+  rectangle_signals[AUTO_SHRINK_CHANGED] =
+    g_signal_new ("auto-shrink-changed", G_TYPE_FROM_INTERFACE (iface),
+                  G_SIGNAL_RUN_LAST, 0, NULL, NULL, NULL,
+                  G_TYPE_NONE, 0);
+
   g_object_interface_install_property (iface,
                                        g_param_spec_boolean ("auto-shrink",
                                                              NULL,
@@ -303,6 +326,11 @@ gimp_rectangle_options_default_init (GimpRectangleOptionsInterface *iface)
 static void
 gimp_rectangle_options_private_finalize (GimpRectangleOptionsPrivate *private)
 {
+  if (private->shrink_object)
+    g_object_weak_unref (private->shrink_object,
+                         gimp_rectangle_options_shrink_owner_gone,
+                         private->action_options);
+
   g_clear_object (&private->aspect_history);
   g_clear_object (&private->size_history);
 
@@ -326,6 +354,7 @@ gimp_rectangle_options_get_private (GimpRectangleOptions *options)
   if (! private)
     {
       private = g_slice_new0 (GimpRectangleOptionsPrivate);
+      private->action_options = options;
 
       private->aspect_history = gtk_list_store_new (N_COLUMNS,
                                                     G_TYPE_DOUBLE,
@@ -1032,10 +1061,9 @@ gimp_rectangle_options_gui (GimpToolOptions *tool_options)
 
   /*  Auto Shrink  */
   g_set_weak_pointer (&private->auto_shrink_button,
-                      gtk_button_new_with_label (_("Auto Shrink")));
+                      gimp_rectangle_options_auto_shrink_button_new (GIMP_RECTANGLE_OPTIONS (config)));
   gtk_box_pack_start (GTK_BOX (vbox), private->auto_shrink_button,
                       FALSE, FALSE, 0);
-  gtk_widget_set_sensitive (private->auto_shrink_button, FALSE);
   gtk_widget_show (private->auto_shrink_button);
 
   button = gimp_prop_check_button_new (config, "shrink-merged", NULL);
@@ -1045,6 +1073,90 @@ gimp_rectangle_options_gui (GimpToolOptions *tool_options)
   gimp_rectangle_options_fixed_rule_changed (NULL, private);
 
   return vbox;
+}
+
+static void
+gimp_rectangle_options_shrink_owner_gone (gpointer data,
+                                          GObject *where_object_was)
+{
+  GimpRectangleOptions *options = data;
+  GimpRectangleOptionsPrivate *private =
+    GIMP_RECTANGLE_OPTIONS_GET_PRIVATE (options);
+
+  /* The object-bound request closure is invalidated by the same finalization. */
+  private->shrink_object = NULL;
+  private->shrink_callback = NULL;
+  private->shrink_handler = 0;
+  g_signal_emit (options, rectangle_signals[AUTO_SHRINK_CHANGED], 0);
+}
+
+static void
+gimp_rectangle_options_shrink_changed (GimpRectangleOptions *options,
+                                        GtkWidget            *button)
+{
+  gtk_widget_set_sensitive (button,
+                            GIMP_RECTANGLE_OPTIONS_GET_PRIVATE (options)->shrink_object != NULL);
+}
+
+static void
+gimp_rectangle_options_shrink_clicked (GtkWidget            *button,
+                                        GimpRectangleOptions *options)
+{
+  if (GIMP_RECTANGLE_OPTIONS_GET_PRIVATE (options)->shrink_object)
+    g_signal_emit (options, rectangle_signals[AUTO_SHRINK_REQUESTED], 0);
+}
+
+static void
+gimp_rectangle_options_shrink_button_destroy (GtkWidget            *button,
+                                               GimpRectangleOptions *options)
+{
+  /* GtkWidget::destroy can precede finalization while callers retain refs. */
+  g_signal_handlers_disconnect_by_func (button,
+                                        gimp_rectangle_options_shrink_clicked,
+                                        options);
+  g_signal_handlers_disconnect_by_func (options,
+                                        gimp_rectangle_options_shrink_changed,
+                                        button);
+  gtk_widget_set_sensitive (button, FALSE);
+}
+
+GtkWidget *
+gimp_rectangle_options_auto_shrink_button_new (GimpRectangleOptions *options)
+{
+  GtkWidget *button;
+
+  g_return_val_if_fail (GIMP_IS_RECTANGLE_OPTIONS (options), NULL);
+
+  button = gtk_button_new_with_label (_("Auto Shrink"));
+  g_signal_connect_object (button, "clicked",
+                           G_CALLBACK (gimp_rectangle_options_shrink_clicked),
+                           options, 0);
+  g_signal_connect_object (button, "destroy",
+                           G_CALLBACK (gimp_rectangle_options_shrink_button_destroy),
+                           options, 0);
+  g_signal_connect_object (options, "auto-shrink-changed",
+                           G_CALLBACK (gimp_rectangle_options_shrink_changed),
+                           button, 0);
+  gimp_rectangle_options_shrink_changed (options, button);
+
+  return button;
+}
+
+static void
+gimp_rectangle_options_shrink_detach (GimpRectangleOptions *options)
+{
+  GimpRectangleOptionsPrivate *private =
+    GIMP_RECTANGLE_OPTIONS_GET_PRIVATE (options);
+
+  if (private->shrink_object)
+    {
+      g_object_weak_unref (private->shrink_object,
+                          gimp_rectangle_options_shrink_owner_gone, options);
+      g_signal_handler_disconnect (options, private->shrink_handler);
+      private->shrink_handler = 0;
+      private->shrink_object = NULL;
+      private->shrink_callback = NULL;
+    }
 }
 
 void
@@ -1060,7 +1172,7 @@ gimp_rectangle_options_connect (GimpRectangleOptions *options,
   g_return_if_fail (GIMP_IS_RECTANGLE_OPTIONS (options));
   g_return_if_fail (GIMP_IS_IMAGE (image));
   g_return_if_fail (shrink_callback != NULL);
-  g_return_if_fail (shrink_object != NULL);
+  g_return_if_fail (G_IS_OBJECT (shrink_object));
 
   options_private = GIMP_RECTANGLE_OPTIONS_GET_PRIVATE (options);
 
@@ -1110,14 +1222,22 @@ gimp_rectangle_options_connect (GimpRectangleOptions *options,
                                 0, gimp_image_get_height (image));
     }
 
-  if (options_private->auto_shrink_button)
-    {
-      g_signal_connect_swapped (options_private->auto_shrink_button, "clicked",
-                                shrink_callback,
-                                shrink_object);
+  if (options_private->shrink_object == shrink_object &&
+      options_private->shrink_callback == shrink_callback)
+    return;
 
-      gtk_widget_set_sensitive (options_private->auto_shrink_button, TRUE);
-    }
+  /* Replace the endpoint atomically before notifying any view. */
+  gimp_rectangle_options_shrink_detach (options);
+
+  options_private->shrink_object = G_OBJECT (shrink_object);
+  options_private->shrink_callback = shrink_callback;
+  options_private->shrink_handler =
+    g_signal_connect_object (options, "auto-shrink-requested",
+                             shrink_callback, shrink_object,
+                             G_CONNECT_SWAPPED);
+  g_object_weak_ref (options_private->shrink_object,
+                    gimp_rectangle_options_shrink_owner_gone, options);
+  g_signal_emit (options, rectangle_signals[AUTO_SHRINK_CHANGED], 0);
 }
 
 void
@@ -1129,17 +1249,15 @@ gimp_rectangle_options_disconnect (GimpRectangleOptions *options,
 
   g_return_if_fail (GIMP_IS_RECTANGLE_OPTIONS (options));
   g_return_if_fail (shrink_callback != NULL);
-  g_return_if_fail (shrink_object != NULL);
+  g_return_if_fail (G_IS_OBJECT (shrink_object));
 
   options_private = GIMP_RECTANGLE_OPTIONS_GET_PRIVATE (options);
 
-  if (options_private->auto_shrink_button)
+  if (options_private->shrink_object == shrink_object &&
+      options_private->shrink_callback == shrink_callback)
     {
-      gtk_widget_set_sensitive (options_private->auto_shrink_button, FALSE);
-
-      g_signal_handlers_disconnect_by_func (options_private->auto_shrink_button,
-                                            shrink_callback,
-                                            shrink_object);
+      gimp_rectangle_options_shrink_detach (options);
+      g_signal_emit (options, rectangle_signals[AUTO_SHRINK_CHANGED], 0);
     }
 }
 
