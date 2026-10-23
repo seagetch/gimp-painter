@@ -1,0 +1,82 @@
+{
+  "task": "04.007",
+  "status": "PASS",
+  "source_parent": "f70f64b2fecb44bd2ccf35cb71ee90725b0cdf2f",
+  "scope": "Original minimum C GObject callbacks to C++ construction/callback/destruction order",
+  "observed_events": [
+    "construct",
+    "construct-property",
+    "activate",
+    "get",
+    "set",
+    "get",
+    "close",
+    "get",
+    "destroy"
+  ],
+  "stage_assertions": [
+    "construction and construct-property precede activation",
+    "C GObject property callbacks reach the C++ implementation and preserve values",
+    "two explicit dispose calls close the implementation once",
+    "closed-state property read remains valid while owner is alive",
+    "final owner reference release destroys the implementation once, after the final read"
+  ],
+  "meson_result": {
+    "name": "gimp:painter / painter-foundation",
+    "result": "OK",
+    "returncode": 0,
+    "duration": 0.006249666213989258,
+    "command": [
+      "/workspace/shared/gimp-cpp-boundary-04005/build-default/app/painter/painter-foundation"
+    ],
+    "stdout": "TAP version 14\n# random seed: R02S2317a1812f8d34af2e6b987dbd76e09d\n1..37\n# Start of painter tests\n# Start of interop tests\nok 1 /painter/interop/c-cpp-c-value\nok 2 /painter/interop/cpp-error-to-c\nok 3 /painter/interop/cpp-error-without-gerror\n# End of interop tests\n# Start of resources tests\nok 4 /painter/resources/value-assignment\nok 5 /painter/resources/array-assignment\nok 6 /painter/resources/mutex-exception\n# End of resources tests\n# Start of signal tests\nok 7 /painter/signal/lifetime-blocks\nok 8 /painter/signal/after-order\nok 9 /painter/signal/reentrant-disconnect\n# End of signal tests\n# Start of source tests\nok 10 /painter/source/cancel-repeat\nok 11 /painter/source/self-close\nok 12 /painter/source/exception\n# End of source tests\n# Start of gobject tests\n# fixture event 1: construct\n# fixture event 2: construct-property\n# fixture event 3: activate\n# fixture event 4: get\n# fixture event 5: set\n# fixture event 6: get\n# fixture event 7: close\n# fixture event 8: get\n# fixture event 9: destroy\nok 13 /painter/gobject/property-dispose-finalize\nok 14 /painter/gobject/type-rejection\n# End of gobject tests\n# Start of reentry tests\nok 15 /painter/reentry/ref-move\nok 16 /painter/reentry/value-reset-move\nok 17 /painter/reentry/array-move\nok 18 /painter/reentry/source-move\nok 19 /painter/reentry/connection-move\nok 20 /painter/reentry/receiver-deletion\nok 21 /painter/reentry/constructor-close\nok 22 /painter/reentry/constructor-duplicate\nok 23 /painter/reentry/constructor-owner-loss\nok 24 /painter/reentry/finalizing-close-read\n# End of reentry tests\n# Start of hierarchy tests\nok 25 /painter/hierarchy/properties-interface\nok 26 /painter/hierarchy/interface-exception\nok 27 /painter/hierarchy/parent-dispose-reentry\n# End of hierarchy tests\n# Start of ref tests\nok 28 /painter/ref/copy-move-adopt-retain\nok 29 /painter/ref/floating-sink\nok 30 /painter/ref/weak\n# End of ref tests\n# Start of store tests\nok 31 /painter/store/lifecycle\nok 32 /painter/store/multiple-slots\nok 33 /painter/store/reentrant-close\nok 34 /painter/store/construction-failure\nok 35 /painter/store/thread-rejection\n# End of store tests\n# Start of boundary tests\nok 36 /painter/boundary/c-close\nok 37 /painter/boundary/exception\n# End of boundary tests\n# End of painter tests\n",
+    "stderr": ""
+  },
+  "selected_callback_stdout": "TAP version 14\n# random seed: R02S5170ca9bedb540f97ac668d8a0ea0ebf\n# Start of painter tests\n# Start of gobject tests\n# fixture event 1: construct\n# fixture event 2: construct-property\n# fixture event 3: activate\n# fixture event 4: get\n# fixture event 5: set\n# fixture event 6: get\n# fixture event 7: close\n# fixture event 8: get\n# fixture event 9: destroy\nok 1 /painter/gobject/property-dispose-finalize\n# End of gobject tests\n# End of painter tests\n1..1\n",
+  "actual_compile_entries": [
+    {
+      "directory": "/workspace/shared/gimp-cpp-boundary-04005/build-default",
+      "command": "cc -Iapp/painter/painter-foundation.p -Iapp/painter -I../../../scratch/5b5281e79681/gimp-painter-port-active/app/painter -I/workspace/shared/gimp-build-deps-04005/root/usr/include/glib-2.0 -I/workspace/shared/gimp-build-deps-04005/root/usr/lib/x86_64-linux-gnu/glib-2.0/include -I/workspace/shared/gimp-build-deps-04005/root/usr/include/sysprof-6 -fvisibility=hidden -fdiagnostics-color=always -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -O2 -g -Wabsolute-value -Wdeclaration-after-statement -Wenum-conversion -Wno-strict-prototypes -Wold-style-definition -Wunused-function -Wunused-value -Werror=implicit-function-declaration -DGDK_PIXBUF_VERSION_MIN_REQUIRED=GDK_PIXBUF_VERSION_2_30 -DGDK_PIXBUF_VERSION_MAX_ALLOWED=GDK_PIXBUF_VERSION_2_30 -DGLIB_VERSION_MIN_REQUIRED=GLIB_VERSION_2_70 -DGLIB_VERSION_MAX_ALLOWED=GLIB_VERSION_2_76 -DGDK_VERSION_MIN_REQUIRED=GDK_VERSION_3_24 -DGDK_VERSION_MAX_ALLOWED=GDK_VERSION_3_24 -fdiagnostics-show-option -fno-common -Wformat -Wformat-security -Winit-self -Wlogical-op -Wmissing-declarations -Wmissing-format-attribute -Wpointer-arith -Wreturn-type -Wtype-limits -DHAVE_CONFIG_H -pthread -MD -MQ app/painter/painter-foundation.p/tests_test-fixture.c.o -MF app/painter/painter-foundation.p/tests_test-fixture.c.o.d -o app/painter/painter-foundation.p/tests_test-fixture.c.o -c ../../../scratch/5b5281e79681/gimp-painter-port-active/app/painter/tests/test-fixture.c",
+      "file": "../../../scratch/5b5281e79681/gimp-painter-port-active/app/painter/tests/test-fixture.c",
+      "output": "app/painter/painter-foundation.p/tests_test-fixture.c.o"
+    },
+    {
+      "directory": "/workspace/shared/gimp-cpp-boundary-04005/build-default",
+      "command": "c++ -Iapp/painter/painter-foundation.p -Iapp/painter -I../../../scratch/5b5281e79681/gimp-painter-port-active/app/painter -I/workspace/shared/gimp-build-deps-04005/root/usr/include/glib-2.0 -I/workspace/shared/gimp-build-deps-04005/root/usr/lib/x86_64-linux-gnu/glib-2.0/include -I/workspace/shared/gimp-build-deps-04005/root/usr/include/sysprof-6 -fvisibility=hidden -fdiagnostics-color=always -D_GLIBCXX_ASSERTIONS=1 -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -std=c++14 -O2 -g -DGLIB_VERSION_MIN_REQUIRED=GLIB_VERSION_2_70 -DGLIB_VERSION_MAX_ALLOWED=GLIB_VERSION_2_76 -fdiagnostics-show-option -fno-common -Wformat -Wformat-security -Winit-self -Wlogical-op -Wmissing-declarations -Wmissing-format-attribute -Wpointer-arith -Wreturn-type -Wtype-limits -DHAVE_CONFIG_H -pthread -fexceptions -fno-rtti -MD -MQ app/painter/painter-foundation.p/tests_test-gobject.cpp.o -MF app/painter/painter-foundation.p/tests_test-gobject.cpp.o.d -o app/painter/painter-foundation.p/tests_test-gobject.cpp.o -c ../../../scratch/5b5281e79681/gimp-painter-port-active/app/painter/tests/test-gobject.cpp",
+      "file": "../../../scratch/5b5281e79681/gimp-painter-port-active/app/painter/tests/test-gobject.cpp",
+      "output": "app/painter/painter-foundation.p/tests_test-gobject.cpp.o"
+    }
+  ],
+  "c_fixture_undefined_adapter_symbols": {
+    "painter_fixture_binding_init": "U",
+    "painter_fixture_binding_constructed": "U",
+    "painter_fixture_binding_set": "U",
+    "painter_fixture_binding_get": "U"
+  },
+  "cpp_fixture_defined_adapter_symbols": {
+    "painter_fixture_binding_init": "T",
+    "painter_fixture_binding_constructed": "T",
+    "painter_fixture_binding_set": "T",
+    "painter_fixture_binding_get": "T"
+  },
+  "executable_sha256": "897e6edbf1a3b3a9c926c8c1cb8201d226192b042709e58de52cadbcc4cbf640",
+  "source_sha256": {
+    "app/painter/tests/test-fixture.c": "50696abdf8d4598fa7e431ee628e43a89912ead7c10891fdac90462441dd41af",
+    "app/painter/tests/test-fixture.h": "5a26cdf5bc2ce9208e0666be126885e9ea4d9ba09cf9accded89ea673cab8946",
+    "app/painter/tests/test-gobject.cpp": "31cbeee515e94a8ead509fdd14c9e66588adc3ebac4a37308db600c365b15180",
+    "app/painter/tests/test-c-api.c": "9b1762ff2ea15b7c91850e4e97886d72866cf28a3fb4e0702f800e8eabb62353",
+    "app/painter/tests/test-foundation.cpp": "1850f9077b71bbaa94f70b2762a7419db1feb152ad20382ae1253c5348f92041",
+    "app/painter/binding-store.cpp": "c69d65c22f26e6be8f6df69765cd30f7bbbd32b46b0eb847e9f6524b41c2b557",
+    "app/painter/binding-store.hpp": "72ccd52c058c15d456517c8ed9a8cf9ec98ca14d08e277bf68f3e40febb7f1f9",
+    "app/painter/boundary.hpp": "3023d89825dc146aefd9f8451ba986f211f42fd9b677cc147b84ed71e2119ff4",
+    "app/painter/gimp-painter-binding.cpp": "22aca4f9e467e16b86f2cbeec431d7d069fc552c98fad985db770720fcf876fd",
+    "app/painter/gimp-painter-binding.h": "d0269c7b9dd84535d95f714e2227c280030cc922ba967823c00e98daa77d8c04",
+    "app/painter/meson.build": "cfe6183e70b7a9bdb12dc29e2659f287953ff286fd128472a5db605ae80f9cc3"
+  },
+  "build_stdout": "ninja: Entering directory `/workspace/shared/gimp-cpp-boundary-04005/build-default'\n[1/2] Compiling C++ object app/painter/painter-foundation.p/tests_test-gobject.cpp.o\n[2/2] Linking target app/painter/painter-foundation\n",
+  "limitations": [
+    "Native normal fixture only; full application type/vfunc coverage and platform acceptance remain separate.",
+    "Sanitizers were not rerun for this test-only trace change.",
+    "The 13 configure hunks previously routed to this minimum test are corrected separately and are not completed by this runtime result."
+  ]
+}

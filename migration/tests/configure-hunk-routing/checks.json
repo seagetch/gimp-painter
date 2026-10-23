@@ -1,0 +1,27 @@
+{
+  "bounded_check": "PASS",
+  "granularity_check": "PASS",
+  "wbs_and_ledger_check": "PASS",
+  "python_syntax": "PASS",
+  "negative_preservation_guard": "PASS: rejects modified execution evidence before any output write",
+  "historical_generator_checks": [
+    {
+      "command": "python tools/assign_legacy_hunks.py --check",
+      "returncode": 1,
+      "state": "BLOCKED_MISSING_PINNED_GIT_OBJECTS",
+      "error": "fatal: bad object a61915a8e62aad8855cd8c620bdb7195a25ffb90"
+    },
+    {
+      "command": "python tools/audit_legacy_candidates.py --check",
+      "returncode": 1,
+      "state": "BLOCKED_MISSING_PINNED_GIT_OBJECTS",
+      "error": "fatal: bad object 01ecb1d4604460e385b36c7fdacf515a8ce95292"
+    },
+    {
+      "command": "python tools/audit_auxiliary_scripts.py --check",
+      "returncode": 1,
+      "state": "BLOCKED_MISSING_PINNED_GIT_OBJECTS",
+      "error": "fatal: bad object 01ecb1d4604460e385b36c7fdacf515a8ce95292"
+    }
+  ]
+}

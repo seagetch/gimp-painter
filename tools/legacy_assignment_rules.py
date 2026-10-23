@@ -109,6 +109,22 @@ profile('ruler-input', 'Perspective lazy snap and paint-event ordering', '23.012
 profile('view-gesture', 'Drag rotate/zoom and transformed pan gestures', '25.001 25.002 25.003 25.004 25.005 25.006 25.007 25.008 25.009 25.009/drag-zoom-scroll', '25.011 25.012 29.020', 'Keep shift/control entry conditions, drag zoom distance and transformed pan origins alongside rotation/snap state.')
 profile('mirror-key', 'Mirrored horizontal keyboard input', '25.008/mirrored-arrow-input', '25.011 29.020', 'Preserve Left/Right key remapping only in mirrored display state and verify press/release and tool event routing.')
 
+# Exact configure.ac payload review: migration/inventory/configure-hunk-routing-review.json.
+# Diff headings are unchanged context, not the changed build contract.
+profile('configure-001888', 'Babl and GEGL minimum dependency versions', '03.002', '34.001 34.006', 'Changes only Babl 0.1.10 to 0.1.12 and GEGL 0.2.0 to 0.3.0. Retain the version requirement and prove its current dependency replacement; do not transplant the old versions into GIMP 3. The gimp_full_name source_scope is unchanged diff context, not a project-name change. Dependency configuration belongs to 03.002 and current release/cross-platform compile verification to 34.001/34.006.')
+profile('configure-001889', 'ALSA dependency macro defect and optional configuration', '03.006', '34.001 38.001', 'The complete payload changes m4_define to m5_define while keeping ALSA 1.0.0. Treat this as a suspicious source macro defect, not as a callback or a requested feature deletion. Keep the optional ALSA dependency contract in the current Meson options; verify current release configuration and retain final source disposition review. No claim that the legacy macro defect is harmless is made.')
+profile('configure-001890', 'Optional HTTP Soup dependency', '31.003 31.004', '31.009 31.010', 'Adds libsoup >=2.46 metadata for the HTTP subsystem. Preserve the optional feature boundary and adapt it to the adopted Soup API; verify both disabled core independence and enabled endpoint behavior. The old library version is provenance, not the required GIMP 3 ABI.')
+profile('configure-001891', 'Required JSON dependency for brush and preset persistence', '04.009', '19.015 28.015 31.009', 'Adds JSON-GLib >=1.0 metadata. JSON is shared by brush/preset persistence and must not become HTTP-only or rely on an accidental transitive archive dependency. Existing original 04.009 owns link dependency/order verification; its already-existing 04.009/json-dependency child contains the precise direct-link duty and remains unchanged. Verify brush/preset round trips and HTTP-disabled persistence.')
+profile('configure-001892', 'C++ compiler detection and C++14 standard', '03.001 03.007', '07.014 34.006', 'Adds only AC_PROG_CXX, AC_PROG_CXX_C_O and AX_CXX_COMPILE_STDCXX_14. The corresponding original duties are Meson C/C++ capability and C++ standard selection. It changes no GObject lifecycle callback, exception policy or visibility rule. Preserve independent mixed-executable and OS compile verification; no current platform pass is inferred.')
+profile('configure-001893', 'GEGL dependency ABI selection', '03.002', '34.001 34.006', 'Changes the pkg-config module from gegl-0.2 to gegl-0.3. Retain its dependency/ABI identity as provenance and verify the adopted GIMP 3 gegl-0.4 replacement in current builds, without copying a legacy incompatible ABI or inferring pixel equivalence.')
+profile('configure-001894', 'Required JSON pkg-config discovery', '04.009', '19.015 28.015 31.009', 'Adds the JSON-GLib pkg-config probe, paired with hunk 4 version metadata. Preserve explicit direct include/link dependencies for brush/preset persistence. The existing 04.009/json-dependency child specifies that work; this recommendation references its original parent and keeps all obligations TODO. Verify persistence with HTTP disabled as well as round trips.')
+profile('configure-001895', 'HTTP optional probe and build defines', '31.003 31.004', '31.009 31.010', 'Adds enable-httpd, Soup discovery, HAVE_LIBSOUP/USE_HTTPD defines and USE_HTTPD Automake conditional. Keep optional isolation and current dependency adaptation, including missing-dependency/disabled behavior. The old conditional tests enable_httpd even if Soup discovery failed; preserve the source evidence and verify the intended boundary instead of copying that inconsistency. Current secure/default-disabled policy is unchanged.')
+profile('configure-001896', 'Painter user profile and resource path identity', '30.010 30.011', '04.016 36.022', 'Changes the default user directory from .gimp-2.8 to .gimp-painter-2.8 via gimp_user_version substitution. Preserve old-profile discovery, user-edit protection and resource lookup when migrating to the current XDG/profile scheme. This is neither project-name metadata nor a GObject callback. Verify installed startup and missing-resource information retention.')
+profile('configure-001897', 'Optional HTTP module build registration', '31.003 31.004', '31.009 31.010', 'Registers app/httpd/Makefile generation, whose module remains an optional feature in Meson. Keep the HTTP build/dependency boundary and enabled/disabled verification. The current C++ source registration was separately reviewed under 04.002; this correction does not reopen or falsely complete that registration checkpoint.')
+profile('configure-001898', 'Preset module build integration', '28.002 28.003 28.014', '28.013 28.015', 'Registers app/presets/Makefile generation. Preserve the module purpose through the current JSON resource model, factory and selection UI, even though replacement sources no longer live in app/presets. Existing C++ registration evidence is separate; complete preset fixture and persistence obligations remain TODO.')
+profile('configure-001899', 'Preset and extended brush install manifests', '30.017', '34.002 34.014', 'Registers data/layer-presets and root plus six named MyPaint brush-directory Makefiles. Preserve every exact directory/asset identity and current install manifest coverage; this adds no callback, exception or visibility policy. Verify Linux installed assets and the independent resource-manifest check.')
+profile('configure-001900', 'Soup configuration summary output', '31.003 31.004', '31.009 31.010', 'Adds only the printed SOUP availability line. Preserve accurate optional dependency/feature reporting with the HTTP boundary and its current dependency adaptation; verify enabled/disabled configuration states without treating an informational line as lifecycle code.')
+
 # Exact build-input review: migration/inventory/cpp-registration-review.json.
 # These inputs are not all C++ translation-unit registrations.
 profile('registration-3', 'Reviewed Makefile link-only', '04.008 04.009', '04.015 04.016', 'This hunk adds only a dummy C++ link-driver TU or an archive/HTTP LDADD entry. Final-link/runtime/archive checks belong to04.008/04.009; main.c stays C.')
@@ -339,6 +355,22 @@ OVERRIDES = {
 
 
 # Exact hunk exceptions, reviewed against byte-verified pinned source/base blobs.
+OVERRIDES['configure.ac'] = {
+    1: 'configure-001888',
+    2: 'configure-001889',
+    3: 'configure-001890',
+    4: 'configure-001891',
+    5: 'configure-001892',
+    6: 'configure-001893',
+    7: 'configure-001894',
+    8: 'configure-001895',
+    9: 'configure-001896',
+    10: 'configure-001897',
+    11: 'configure-001898',
+    12: 'configure-001899',
+    13: 'configure-001900',
+}
+
 OVERRIDES.setdefault('app/Makefile.am', {}).update({3: 'registration-3', 4: 'registration-4', 5: 'registration-5', 6: 'registration-6', 7: 'registration-7', 8: 'registration-8'})
 OVERRIDES.setdefault('app/actions/Makefile.am', {}).update({1: 'registration-9', 2: 'registration-10'})
 OVERRIDES.setdefault('app/base/Makefile.am', {}).update({1: 'registration-38'})

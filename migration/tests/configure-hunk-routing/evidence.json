@@ -1,0 +1,40 @@
+{
+  "baseline_commit": "f70f64b2fecb44bd2ccf35cb71ee90725b0cdf2f",
+  "validation": "bounded configure.ac source-ledger correction",
+  "full_historical_generator_pass": false,
+  "limitation": "At correction time, original source/base commits and their complete trees were unavailable in the shallow checkout; unrelated inventory is preserved from the baseline, not regenerated from those trees.",
+  "configure_hunks": 13,
+  "prior_configure_work_items": 91,
+  "corrected_configure_work_items": 49,
+  "corrected_state": "TODO",
+  "unrelated_work_items_unchanged": 22899,
+  "unrelated_work_sha256": "554bdc512f0fd1269aaca085d926a626b441571d9b1fbaac3a6c01e02bbc0b0a",
+  "done_work_items_preserved": 204,
+  "unchanged_hunks": 2476,
+  "unchanged_assets": 402,
+  "changed_paths": 947,
+  "statuses": {
+    "DONE": 204,
+    "TODO": 22744
+  },
+  "historical_registration_files_unchanged": [
+    "tools/check_cpp_registration.py",
+    "migration/tests/cpp-registration/compile-commands.json.gz",
+    "migration/tests/cpp-registration/current-build.json",
+    "migration/tests/cpp-registration/legacy-build-inputs.tar.gz",
+    "migration/tests/cpp-registration/prior-work-items.json",
+    "migration/tests/cpp-registration/progress-consistency.json",
+    "migration/tests/cpp-registration/strict-gates.json"
+  ],
+  "output_sha256": {
+    "auxiliary-script-review.tsv": "4ca06719372b6f2bdd71798c76637754786d9326d91ed0f8aedcc67fd5ba371b",
+    "changed-hunks.json": "bcd28b0a723470ecd15754767611a1ff3b13c096ef4e558858ff4819bad4444f",
+    "changed-hunks.tsv": "9d21dae6f5fd2133cc54a733c9cd4e326e5c8887204fbef2018acb450c5f2801",
+    "cleanup-candidate-review.tsv": "232fdf87320a65d7bd612af007a3473811b7bf8aaa5ce6cff385699917441bde",
+    "granularity-review.tsv": "ecc46bb6011e902d2717e1ab6a5ffb95f4738148c253fe4443a630f9f5c6f9c9",
+    "granularity-summary.json": "66699d1512aec7a0be8e1f89618cae1a98bc9a786af4f8335de4b418ae49c92f",
+    "hunk-wbs.tsv": "0ca29c0cc3af2ee4b34a326b087caead091642519f64d9a0b10d50c1ad4e8ae1",
+    "legacy-port-work-items.tsv": "78cef457edef26de4973209692234f1523ef95e7b70bd27c6b43c000240a1000",
+    "wbs-assignment-summary.json": "f41ce5069b8ea52696749c36ae30a0e227951942eb367e137e0d58d9bb6c74bd"
+  }
+}

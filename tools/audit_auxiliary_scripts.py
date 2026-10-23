@@ -45,11 +45,15 @@ def render():
         elif p.endswith('.yml') or p.endswith('.patch'):
             kind='packaging-recipe-or-patch';contract='Retain pinned dependencies, build commands and patch applicability as reproducibility evidence';target='Current per-OS package recipe';tasks='32.001,33.001,34.005,34.005/license-manifest';tests='32.012,33.009,34.002'
         elif p=='configure.ac':
-            kind='autoconf-feature-input';contract='C++ compiler, standard, optional HTTP/web dependencies and source registration';target='Meson feature/compiler/dependency configuration';tasks='04.002,04.008,04.010,31.003';tests='04.015,31.009'
+            kind='autoconf-feature-input';target='Meson feature/compiler/dependency configuration'
         elif Path(p).name=='Makefile.am':
             kind='automake-build-or-install-input';contract='Each changed source/library/generated target and install-list entry';target='Corresponding current Meson module/install target';tasks=','.join(sorted({t for h in by[p] for t in h['implementation_tasks'].split(',')}));tests=','.join(sorted({t for h in by[p] for t in h['verification_tasks'].split(',')}))
         else:raise ValueError('Unclassified auxiliary executable/input '+p)
-        for h in by[p]:out.append(dict(child_id=h['hunk_id'].replace('01.002/','01.015/hunk-'),status='DONE',path=p,source_blob=f['source_git_blob'],hunk_id=h['hunk_id'],range=h['old_new_lines'],classification=kind,input_output_contract=contract,target=target,implementation_tasks=tasks,verification_tasks=tests,runtime_state='NOT_PORTED'))
+        for h in by[p]:
+            if p=='configure.ac':
+                contract=h['feature']+'. '+h['reason']
+                tasks=h['implementation_tasks'];tests=h['verification_tasks']
+            out.append(dict(child_id=h['hunk_id'].replace('01.002/','01.015/hunk-'),status='DONE',path=p,source_blob=f['source_git_blob'],hunk_id=h['hunk_id'],range=h['old_new_lines'],classification=kind,input_output_contract=contract,target=target,implementation_tasks=tasks,verification_tasks=tests,runtime_state='NOT_PORTED'))
     tree={}
     for e in git('ls-tree','-rz',source).split(b'\0'):
         if e:m,p=e.split(b'\t',1);tree[p.decode()]=m.split()[2].decode()

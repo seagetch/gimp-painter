@@ -160,3 +160,32 @@ bridge archive. There are no canonical source-duty rows assigned to 04.006.
 This closes its original minimum criterion; GObject lifecycle (04.007), full
 application linking (04.008), platform and feature acceptance remain separate.
 Earlier SHA-frozen reports describe their original snapshots and are preserved.
+
+## Minimal GObject callback order (original 04.007)
+
+The existing C `PainterFixture` installs ordinary GObject instance, constructed,
+property and dispose callbacks. Those C functions call the C++ typed-slot
+adapter, using the production BindingStore and its normal destruction path.
+`test-gobject.cpp` records a bounded, allocation-free event trace and checks
+order at construction, after property callbacks, after repeated dispose, and
+after releasing the last owner reference.
+
+The [native result](../tests/cpp-callback-order-native.json) observes:
+`construct → construct-property → activate → get → set → get → close → get → destroy`.
+Two explicit dispose calls close once; a closed-state read precedes destruction.
+The selected lifecycle case and all 37 native foundation cases pass. Actual C
+and C++ objects retain the four unmangled adapter references/definitions. This
+is the original minimum test, not completion of every migrated type or platform.
+The unrelated legacy configure hunks retain their own corrected source duties.
+
+The [configure source review](../inventory/configure-hunk-routing-review.json)
+proves that the thirteen previously assigned `configure.ac` hunks contain build
+and resource configuration, not GObject callbacks. Their ninety-one blanket
+source duties are replaced by forty-nine exact TODO duties; all 22,899 unrelated
+rows and 204 completed source records are preserved. The three routing consumers
+now agree on each hunk (and the file-level union). Run
+`python3 -B tools/check_configure_hunk_routing.py --check` to reproduce this
+bounded checkpoint from the two byte-verified archived blobs. Full historical
+generator execution was blocked by unavailable pinned source/base trees and is
+not claimed. Completed baseline WBS criteria are unchanged; the new source-level
+comparison duties do not reopen those original criteria or imply completion.
