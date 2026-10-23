@@ -634,6 +634,14 @@ test('painter-editor-page-memory', painter_editor_test,
         'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
         'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 120)
 
+# Direct name/save/delete ownership has a separate unchanged 120s budget.
+test('painter-editor-control-lifetimes', painter_editor_test,
+  depends: gimp_test_icon_dependencies,
+  env: ['GIMP_TEST_EDITOR_CONTROL_LIFETIMES=1','GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+        'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+        'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
+        'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 120)
+
 test('painter-mypaint-preview-fixture', painter_brush_settings_python,
   args: ['-B', meson.project_source_root() / 'migration/tests/test_mypaint_preview_fixture.py'],
   suite: 'painter', timeout: 30)

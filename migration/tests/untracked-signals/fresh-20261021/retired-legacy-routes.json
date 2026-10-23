@@ -1,0 +1,36 @@
+{
+  "legacy_commit": "afa43fae3e920210146abed514f136fd49f671b5",
+  "scope": "Three non-live-behavior dispositions; remaining57rows require native owner-route evidence",
+  "rows": [
+    {
+      "legacy_site": "app/tools/gimpmypaintbrushoptions-gui.cpp:292",
+      "source_sha256": "73b57f221c94f6fc45799009a893dae4dce825b0f6faa541a0856f87cfd499f5",
+      "range": [
+        194,
+        197
+      ],
+      "excerpt": "MypaintPopupPrivate::history_name_edited (GObject* renderer, \n                                          gchar* path, gchar* new_text)\n{\n}\n",
+      "disposition": "Empty callback has no live behavior to port; no owned modern edited handler"
+    },
+    {
+      "legacy_site": "app/tools/gimpmypaintoptions-gui.cpp:457",
+      "source_sha256": "4e91b22f60dfa80f4d8a87672aa5ff545c909f18eb3cc2926413c1cbc5abb020",
+      "range": [
+        523,
+        537
+      ],
+      "excerpt": "void\nMypaintOptionsGUIPrivate::reset_size (GObject* o)\n{\n/*\n GimpMypaintBrush *brush = gimp_context_get_brush (GIMP_CONTEXT (paint_options));\n\n if (brush)\n   {\n     g_object_set (paint_options,\n                   \"brush-size\", (gdouble) MAX (brush->mask->width,\n                                                brush->mask->height),\n                   NULL);\n   }\n*/\n}\n",
+      "disposition": "Callback body contains only a block comment; no resource-changing reset invented"
+    },
+    {
+      "legacy_site": "app/widgets/gimpmypaintbrusheditor.cpp:240",
+      "source_sha256": "d43f662dd3cb16f0de55e06be3061e43c18d3bd6d6cff2015632975aca72fe13",
+      "range": [
+        230,
+        244
+      ],
+      "excerpt": "#if 0\n  /*  mypaint_brush angle scale  */\n  editor->angle_data =\n    GTK_ADJUSTMENT (gtk_adjustment_new (0.0, 0.0, 180.0, 0.1, 1.0, 0.0));\n  scale = gimp_spin_scale_new (editor->angle_data, _(\"Angle\"), 1);\n  gtk_box_pack_start (GTK_BOX (editor->options_box), scale, FALSE, FALSE, 0);\n  gtk_widget_show (scale);\n\n  gimp_help_set_help_data (scale, _(\"Percentage of width of mypaint_brush\"), NULL);\n\n  g_signal_connect (editor->angle_data, \"value-changed\",\n                    G_CALLBACK (gimp_mypaint_brush_editor_update_mypaint_brush),\n                    editor);\n#endif\n  \n",
+      "disposition": "Registration within literal #if 0; unreachable in pinned build"
+    }
+  ]
+}

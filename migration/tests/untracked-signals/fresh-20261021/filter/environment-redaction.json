@@ -1,0 +1,17 @@
+{
+  "removed_fields": {
+    "dependency_walk_does_not_resolve_pending_names.json": [
+      "env"
+    ],
+    "changed_dependency_invalidation_can_close_owner.json": [
+      "env"
+    ],
+    "dependency_connections_close_during_reorder.json": [
+      "env"
+    ],
+    "dependency_connections_preserve_new_stack.json": [
+      "env"
+    ]
+  },
+  "reason": "Do not package inherited/runner environment maps; no outcome or diagnostic text changed."
+}

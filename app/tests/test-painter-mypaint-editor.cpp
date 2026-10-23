@@ -1784,10 +1784,16 @@ static void notebook_page_build_reentry ()
     }
 }
 
+#include "test-painter-editor-control-lifetimes.inc"
+
 int main(int argc,char**argv){
   g_test_init(&argc,&argv,nullptr);if(!gtk_init_check(&argc,&argv))return GIMP_EXIT_TEST_SKIPPED;
   gimp_test_utils_setup_menus_path();gimp=gimp_init_for_gui_testing(TRUE);
-  if (!g_getenv("GIMP_TEST_EDITOR_PAGE_MEMORY")) {
+  if (g_getenv("GIMP_TEST_EDITOR_CONTROL_LIFETIMES")) {
+  add_editor_case("/painter-editor/29-direct-control-retirement",direct_control_retirement);
+  add_editor_case("/painter-editor/30-direct-control-emitter-first",direct_control_emitter_first);
+  add_editor_case("/painter-editor/31-direct-control-callback-close",direct_control_callback_close);
+  } else if (!g_getenv("GIMP_TEST_EDITOR_PAGE_MEMORY")) {
   add_editor_case("/painter-editor/01-constructors-shared",constructors_and_shared_model);
   add_editor_case("/painter-editor/14-common-store-widget-behaviors",common_store_widget_behaviors);
   add_editor_case("/painter-editor/02-all-controls-curves",all_controls_and_curves);

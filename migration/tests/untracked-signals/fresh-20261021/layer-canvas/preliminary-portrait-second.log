@@ -1,0 +1,57 @@
+Xvfb verified: 127.0.0.1:91, 1080x1920x24, authenticated accepted, empty authority rejected
+painter-layer-ui dialog_all_control_connections 0 1.2
+# Disconnected retained control: painter-convmatrix-channel-2 / toggled
+# Disconnected retained control: painter-convmatrix-channel-3 / toggled
+# Disconnected retained control: painter-convmatrix-channel-4 / toggled
+ok 1 /painter-layer-ui/dialog_all_control_connections
+# End of painter-layer-ui tests
+1..1
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+painter-layer-ui dialog_control_emitter_first 0 1.43
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+ok 1 /painter-layer-ui/dialog_control_emitter_first
+# End of painter-layer-ui tests
+1..1
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+painter-canvas-ui layer_popup_signal_close 0 1.81
+# Closed tile control: layers-duplicate / clicked
+# Closed tile control: layers-new-clone / clicked
+# Closed tile control: layers-delete / clicked
+ok 1 /painter-canvas-ui/layer_popup_signal_close
+# End of painter-canvas-ui tests
+1..1
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+painter-canvas-ui layer_popup_emitter_first 0 2.12
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+ok 1 /painter-canvas-ui/layer_popup_emitter_first
+# End of painter-canvas-ui tests
+1..1
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+painter-canvas-ui layer_popup_signal_reentry -5 1.76
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# Property reentry: painter-layer-opacity, destroy=0
+not ok /painter-canvas-ui/layer_popup_signal_reentry - GLib-GObject-FATAL-CRITICAL: g_object_notify_by_pspec: assertion 'G_IS_OBJECT (object)' failed
+Bail out!
+painter-canvas-ui layer_permanent_signal_close 0 1.91
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+ok 1 /painter-canvas-ui/layer_permanent_signal_close
+# End of painter-canvas-ui tests
+1..1
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+painter-canvas-ui layer_preset_signal_owner 0 1.81
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+ok 1 /painter-canvas-ui/layer_preset_signal_owner
+# End of painter-canvas-ui tests
+1..1
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created

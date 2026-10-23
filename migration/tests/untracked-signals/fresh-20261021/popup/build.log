@@ -1,0 +1,63 @@
+In file included from [01m[K../source/app/paint/painter-mypaint/engine.cpp:3[m[K:
+[01m[K../source/app/paint/painter-mypaint/legacy-brush.hpp:[m[K In member function ‘[01m[Kvoid GimpPainter::MyPaint::Legacy::Brush::[01;32m[Kupdate_states_and_setting_values[m[K(float, float, float, float, float, float)[m[K’:
+[01m[K../source/app/paint/painter-mypaint/legacy-brush.hpp:398:13:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kdx_old[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  398 |       float [01;35m[Kdx_old[m[K = states[STATE_DIRECTION_DX];
+      |             [01;35m[K^~~~~~[m[K
+[01m[K../source/app/paint/painter-mypaint/legacy-brush.hpp:399:13:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kdy_old[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  399 |       float [01;35m[Kdy_old[m[K = states[STATE_DIRECTION_DY];
+      |             [01;35m[K^~~~~~[m[K
+[01m[K../source/app/paint/gimppainterbrushgeometry.cpp:[m[K In lambda function:
+[01m[K../source/app/paint/gimppainterbrushgeometry.cpp:88:54:[m[K [01;35m[Kwarning: [m[Kcomparison of integer expressions of different signedness: ‘[01m[Kconst std::size_t[m[K’ {aka ‘[01m[Kconst long unsigned int[m[K’} and ‘[01m[Kint[m[K’ [[01;35m[K-Wsign-compare[m[K]
+   88 |     if (mask.width <= 0 || mask.height <= 0 || [01;35m[Kcount > G_MAXINT / channels[m[K)
+      |                                                [01;35m[K~~~~~~^~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-editor-dropdown.cpp:1396:8:[m[K [01;35m[Kwarning: [m[K‘[01m[KHandleReentry[m[K’ declared with greater visibility than the type of its field ‘[01m[KHandleReentry::result[m[K’ [[01;35m[K-Wattributes[m[K]
+ 1396 | struct [01;35m[KHandleReentry[m[K { ObjectRef<GtkWidget> *result; GtkWidget *editor; guint normal = 0, extended = 0; };
+      |        [01;35m[K^~~~~~~~~~~~~[m[K
+In file included from [01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/gobject/gobject.h:26[m[K,
+                 from [01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/gobject/gbinding.h:31[m[K,
+                 from [01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/glib-object.h:24[m[K,
+                 from [01m[K/workspace/shared/gimp-deps-locked/root/usr/include/gegl-0.4/gegl.h:22[m[K,
+                 from [01m[K../source/app/tests/test-painter-popup-handles.cpp:3[m[K:
+[01m[K../source/app/tests/test-painter-popup-handles.cpp:49:31:[m[K [01;35m[Kwarning: [m[Kno previous declaration for ‘[01m[KGType[01;32m[K counting_popup_get_type[m[K()[m[K’ [[01;35m[K-Wmissing-declarations[m[K]
+   49 | G_DEFINE_TYPE (CountingPopup, [01;35m[Kcounting_popup[m[K, GIMP_TYPE_CELL_RENDERER_POPUP)
+      |                               [01;35m[K^~~~~~~~~~~~~~[m[K
+[01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/gobject/gtype.h:2305:1:[m[K [01;36m[Knote: [m[Kin definition of macro ‘[01m[K_G_DEFINE_TYPE_EXTENDED_BEGIN_PRE[m[K’
+ 2305 | [01;36m[Ktype_name[m[K##_get_type (void) \
+      | [01;36m[K^~~~~~~~~[m[K
+[01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/gobject/gtype.h:2053:61:[m[K [01;36m[Knote: [m[Kin expansion of macro ‘[01m[K_G_DEFINE_TYPE_EXTENDED_BEGIN[m[K’
+ 2053 | #define G_DEFINE_TYPE_EXTENDED(TN, t_n, T_P, _f_, _C_)      [01;36m[K_G_DEFINE_TYPE_EXTENDED_BEGIN[m[K (TN, t_n, T_P, _f_) {_C_;} _G_DEFINE_TYPE_EXTENDED_END()
+      |                                                             [01;36m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/gobject/gtype.h:1834:61:[m[K [01;36m[Knote: [m[Kin expansion of macro ‘[01m[KG_DEFINE_TYPE_EXTENDED[m[K’
+ 1834 | #define G_DEFINE_TYPE(TN, t_n, T_P)                         [01;36m[KG_DEFINE_TYPE_EXTENDED[m[K (TN, t_n, T_P, 0, {})
+      |                                                             [01;36m[K^~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-popup-handles.cpp:49:1:[m[K [01;36m[Knote: [m[Kin expansion of macro ‘[01m[KG_DEFINE_TYPE[m[K’
+   49 | [01;36m[KG_DEFINE_TYPE[m[K (CountingPopup, counting_popup, GIMP_TYPE_CELL_RENDERER_POPUP)
+      | [01;36m[K^~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-popup-handles.cpp:106:8:[m[K [01;35m[Kwarning: [m[K‘[01m[KWorkerCall[m[K’ declared with greater visibility than the type of its field ‘[01m[KWorkerCall::handle[m[K’ [[01;35m[K-Wattributes[m[K]
+  106 | struct [01;35m[KWorkerCall[m[K {
+      |        [01;35m[K^~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-popup-handles.cpp:202:8:[m[K [01;35m[Kwarning: [m[K‘[01m[KCloseProbeSlot[m[K’ declared with greater visibility than its base ‘[01m[KGimpPainter::SlotSpec<_GimpCellRendererPopup, CloseProbe>[m[K’ [[01;35m[K-Wattributes[m[K]
+  202 | struct [01;35m[KCloseProbeSlot[m[K : SlotSpec<GimpCellRendererPopup, CloseProbe> {};
+      |        [01;35m[K^~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-popup-handles.cpp:205:28:[m[K [01;35m[Kwarning: [m[Kno previous declaration for ‘[01m[KGType[01;32m[K phase_popup_get_type[m[K()[m[K’ [[01;35m[K-Wmissing-declarations[m[K]
+  205 | G_DEFINE_TYPE (PhasePopup, [01;35m[Kphase_popup[m[K, counting_popup_get_type ())
+      |                            [01;35m[K^~~~~~~~~~~[m[K
+[01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/gobject/gtype.h:2305:1:[m[K [01;36m[Knote: [m[Kin definition of macro ‘[01m[K_G_DEFINE_TYPE_EXTENDED_BEGIN_PRE[m[K’
+ 2305 | [01;36m[Ktype_name[m[K##_get_type (void) \
+      | [01;36m[K^~~~~~~~~[m[K
+[01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/gobject/gtype.h:2053:61:[m[K [01;36m[Knote: [m[Kin expansion of macro ‘[01m[K_G_DEFINE_TYPE_EXTENDED_BEGIN[m[K’
+ 2053 | #define G_DEFINE_TYPE_EXTENDED(TN, t_n, T_P, _f_, _C_)      [01;36m[K_G_DEFINE_TYPE_EXTENDED_BEGIN[m[K (TN, t_n, T_P, _f_) {_C_;} _G_DEFINE_TYPE_EXTENDED_END()
+      |                                                             [01;36m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/gobject/gtype.h:1834:61:[m[K [01;36m[Knote: [m[Kin expansion of macro ‘[01m[KG_DEFINE_TYPE_EXTENDED[m[K’
+ 1834 | #define G_DEFINE_TYPE(TN, t_n, T_P)                         [01;36m[KG_DEFINE_TYPE_EXTENDED[m[K (TN, t_n, T_P, 0, {})
+      |                                                             [01;36m[K^~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-popup-handles.cpp:205:1:[m[K [01;36m[Knote: [m[Kin expansion of macro ‘[01m[KG_DEFINE_TYPE[m[K’
+  205 | [01;36m[KG_DEFINE_TYPE[m[K (PhasePopup, phase_popup, counting_popup_get_type ())
+      | [01;36m[K^~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-popup-handles.cpp:381:8:[m[K [01;35m[Kwarning: [m[K‘[01m[KReentry[m[K’ declared with greater visibility than the type of its field ‘[01m[KReentry::handle[m[K’ [[01;35m[K-Wattributes[m[K]
+  381 | struct [01;35m[KReentry[m[K {
+      |        [01;35m[K^~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-popup-handles.cpp:415:8:[m[K [01;35m[Kwarning: [m[K‘[01m[KDropHandle[m[K’ declared with greater visibility than the type of its field ‘[01m[KDropHandle::handle[m[K’ [[01;35m[K-Wattributes[m[K]
+  415 | struct [01;35m[KDropHandle[m[K {
+      |        [01;35m[K^~~~~~~~~~[m[K
+/workspace/shared/gimp-native-baseline/build-port/app/tests/mypaint-selector-contracts-asan

@@ -1,0 +1,20 @@
+{
+  "normal_passed": 4,
+  "sanitizer_passed": 4,
+  "exact_paths_matched": [
+    "/gimp-filter-layer/changed_dependency_invalidation_can_close_owner",
+    "/gimp-filter-layer/dependency_connections_close_during_reorder",
+    "/gimp-filter-layer/dependency_connections_preserve_new_stack",
+    "/gimp-filter-layer/dependency_walk_does_not_resolve_pending_names"
+  ],
+  "normal_and_sanitizer_source_hashes_match": true,
+  "sanitizer_timeout_seconds": 180,
+  "normal_registered_timeout_seconds": 600,
+  "instrumented_sources": 20,
+  "rtti_only_sources": 50,
+  "sanitizer_executable_sha256": "b996ccbcaee273f57428d30d41c85018109d531abf7d98a6c7d6d3c27ad6e963",
+  "source_changes_during_sanitizer_build": [],
+  "display_geometry": "1080x1920x24",
+  "whole_application_instrumented": false,
+  "leak_detection": false
+}

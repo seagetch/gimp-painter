@@ -1214,8 +1214,16 @@ static void canvas_emitters_disconnected(CanvasEmitters *f) {
   g_object_unref(fg);g_object_unref(bg);g_object_unref(late);
 }
 static void canvas_emitters_end(CanvasEmitters *f) {
-  g_object_unref(f->frame);g_object_unref(f->selector);
-  g_object_unref(f->swatches);g_object_unref(f->button);g_object_unref(f->shell);drain();
+  /* Destroy is not finalization. Prove that the retired owner's connections
+   * and callback leases do not keep any of these actual emitters alive. */
+  gpointer emitters[]={f->frame,f->selector,f->swatches,f->button,f->shell};
+  gpointer weak[G_N_ELEMENTS(emitters)];
+  for(guint i=0;i<G_N_ELEMENTS(emitters);i++) {
+    weak[i]=emitters[i];g_object_add_weak_pointer(G_OBJECT(emitters[i]),&weak[i]);
+  }
+  for(guint i=0;i<G_N_ELEMENTS(emitters);i++)g_object_unref(emitters[i]);
+  drain();
+  for(guint i=0;i<G_N_ELEMENTS(emitters);i++)g_assert_null(weak[i]);
 }
 static void canvas_frame_close_reentry(GtkWidget *frame,gpointer data) {
   CanvasEmitters *f=data;(void)frame;f->destroy_calls++;
@@ -1259,6 +1267,66 @@ static void overlay_context_color_reentrant_close(void) {
   g_assert_cmpuint(calls,==,1);
   canvas_emitters_disconnected(&f);
   gimp_context_set_foreground(context,saved);drain();
+  g_assert_cmpuint(calls,==,1);
+  g_object_unref(saved);g_object_unref(color);
+  close_shell(f.shell);canvas_emitters_end(&f);
+}
+/* The reverse color route is independent of context -> selector sync:
+ * selector emission calls the context setter, whose subscribers can retire
+ * the owner before selector_color_changed resumes. Cover both target colors. */
+typedef struct {
+  CanvasEmitters *emitters;
+  guint calls;
+} CanvasColorReentry;
+static void canvas_context_close(GimpContext *context,GeglColor *color,gpointer data) {
+  CanvasColorReentry *f=data;(void)context;(void)color;
+  f->calls++;
+  gimp_painter_canvas_ui_close(f->emitters->shell);
+  gimp_painter_canvas_ui_close(f->emitters->shell);
+}
+static void overlay_selector_color_close(gboolean background) {
+  CanvasEmitters f={0};canvas_emitters_begin(&f);
+  GimpContext *context=gimp_get_user_context(gimp);
+  GeglColor *saved=gegl_color_duplicate(background?
+    gimp_context_get_background(context):gimp_context_get_foreground(context));
+  GeglColor *color=gegl_color_new("rgb(0.37,0.19,0.63)");
+  gimp_fg_bg_editor_set_active(GIMP_FG_BG_EDITOR(f.swatches),background?
+    GIMP_ACTIVE_COLOR_BACKGROUND:GIMP_ACTIVE_COLOR_FOREGROUND);
+  CanvasColorReentry reentry={&f,0};
+  gulong handler=g_signal_connect(context,background?"background-changed":"foreground-changed",
+                                 G_CALLBACK(canvas_context_close),&reentry);
+  g_signal_emit_by_name(f.selector,"color-changed",color);
+  g_assert_cmpuint(reentry.calls,==,1);
+  gdouble actual[4],expected[4];
+  gegl_color_get_pixel(color,babl_format("R'G'B'A double"),expected);
+  gegl_color_get_pixel(background?gimp_context_get_background(context):
+                      gimp_context_get_foreground(context),babl_format("R'G'B'A double"),actual);
+  for(guint i=0;i<4;i++)g_assert_cmpfloat_with_epsilon(actual[i],expected[i],1e-9);
+  canvas_emitters_disconnected(&f);
+  g_assert_cmpuint(reentry.calls,==,1);
+  g_signal_handler_disconnect(context,handler);
+  if(background)gimp_context_set_background(context,saved);
+  else gimp_context_set_foreground(context,saved);
+  g_object_unref(saved);g_object_unref(color);
+  close_shell(f.shell);canvas_emitters_end(&f);
+}
+static void overlay_selector_foreground_reentrant_close(void) { overlay_selector_color_close(FALSE); }
+static void overlay_selector_background_reentrant_close(void) { overlay_selector_color_close(TRUE); }
+static void overlay_active_color_reentrant_close(void) {
+  CanvasEmitters f={0};canvas_emitters_begin(&f);
+  GimpContext *context=gimp_get_user_context(gimp);guint calls=0;
+  GeglColor *saved=gegl_color_duplicate(gimp_context_get_background(context));
+  GeglColor *color=gegl_color_new("rgb(0.79,0.24,0.43)");
+  /* Ensure changing the active swatch produces a real selector color change,
+   * rather than accidentally passing with an unchanged default color. */
+  gimp_fg_bg_editor_set_active(GIMP_FG_BG_EDITOR(f.swatches),GIMP_ACTIVE_COLOR_FOREGROUND);
+  gimp_context_set_background(context,color);
+  g_object_set_data(G_OBJECT(f.selector),"canvas-close-calls",&calls);
+  g_signal_connect(f.selector,"color-changed",G_CALLBACK(canvas_color_close),f.shell);
+  gimp_fg_bg_editor_set_active(GIMP_FG_BG_EDITOR(f.swatches),GIMP_ACTIVE_COLOR_BACKGROUND);
+  g_assert_cmpuint(calls,==,1);
+  canvas_emitters_disconnected(&f);
+  gimp_context_set_background(context,saved);drain();
   g_assert_cmpuint(calls,==,1);
   g_object_unref(saved);g_object_unref(color);
   close_shell(f.shell);canvas_emitters_end(&f);
@@ -2122,6 +2190,7 @@ native_session_boolean_reader_writer (void)
 #include "test-painter-right-host-interactions.inc"
 
 #include "test-painter-legacy-layout.inc"
+#include "test-painter-layer-signal-lifetimes.inc"
 
 int main(int argc,char **argv) {
   const gchar *registration_group = g_getenv ("GIMP_TEST_PAINTER_CANVAS_GROUP");
@@ -2226,6 +2295,7 @@ ADD(w08017_dnd_relocate_later_on_cleanup);
   ADD(native_session_boolean_literals);
   ADD(native_session_boolean_reader_writer);
   ADD(renderer_native_size_draw);ADD(renderer_native_activation_routes);ADD(renderer_selection_reentry);ADD(renderer_escape_owner_close);ADD(renderer_stale_preview_disconnected);ADD(renderer_modifier_activation);ADD(renderer_selection_same_target);
+  ADD(layer_popup_signal_close);ADD(layer_popup_emitter_first);ADD(layer_popup_signal_reentry);ADD(layer_permanent_signal_close);ADD(layer_preset_signal_owner);
   ADD(channel_preview_components);ADD(selection_and_visibility);ADD(group_move_and_undo);ADD(image_switch_disconnect);ADD(long_press_cancel_destroy);ADD(preview_pending_destroy);ADD(popup_repeat_and_owner_close);
   ADD(popup_native_events_and_parent);ADD(popup_destroy_orders);
   ADD(popup_properties_newer_same_image);ADD(popup_creation_newer_same_image);
@@ -2233,7 +2303,7 @@ ADD(w08017_dnd_relocate_later_on_cleanup);
   ADD(popup_action_image_switch);ADD(popup_action_newer_same_image);ADD(popup_action_context_switch);ADD(popup_action_owner_close);ADD(popup_action_normal_group);ADD(popup_action_layer_menu_switch);
   ADD(destroyed_tiles_reject_image);ADD(image_switch_popup_owner_close);ADD(image_switch_popup_newer_image);ADD(parent_image_notify_owner_close);
   ADD(popup_controls_and_clone);ADD(mask_controls);ADD(long_press_once);ADD(reentrant_visibility_close);ADD(multiple_reorder_one_undo);ADD(hide_cancels_grab);
-  ADD(overlay_topmost_visible_input);ADD(overlay_input_and_restore);ADD(dock_restore_and_parent_close);ADD(overlay_tools_and_colors);ADD(overlay_tool_group);ADD(tool_click_active_owner_close);ADD(tool_click_expanded_owner_close);ADD(tool_expander_owner_close);ADD(tool_click_newer_selection);ADD(tool_pending_refresh_owner_destroy);ADD(tool_group_selection_restores_canvas_focus);ADD(multiple_canvas_context_and_dock_transfer);ADD(overlay_owner_destroy_callbacks);ADD(overlay_retained_emitters_shell_close);ADD(overlay_emitters_destroy_before_owner);ADD(overlay_context_color_reentrant_close);
+  ADD(overlay_topmost_visible_input);ADD(overlay_input_and_restore);ADD(dock_restore_and_parent_close);ADD(overlay_tools_and_colors);ADD(overlay_tool_group);ADD(tool_click_active_owner_close);ADD(tool_click_expanded_owner_close);ADD(tool_expander_owner_close);ADD(tool_click_newer_selection);ADD(tool_pending_refresh_owner_destroy);ADD(tool_group_selection_restores_canvas_focus);ADD(multiple_canvas_context_and_dock_transfer);ADD(overlay_owner_destroy_callbacks);ADD(overlay_retained_emitters_shell_close);ADD(overlay_emitters_destroy_before_owner);ADD(overlay_context_color_reentrant_close);ADD(overlay_selector_foreground_reentrant_close);ADD(overlay_selector_background_reentrant_close);ADD(overlay_active_color_reentrant_close);
   }
   }
   g_application_run(gimp->app,0,NULL);

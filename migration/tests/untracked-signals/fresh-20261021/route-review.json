@@ -1,0 +1,1216 @@
+{
+  "task": "07.008/untracked-signals",
+  "status": "ACCEPTED_BOUNDED_OWNER_ROUTES",
+  "criterion": "旧 connect_noret と未保存の接続を owner の終了時に解除し、emitter・owner の先行破棄と callback 中の close を試験する",
+  "original_rows": 60,
+  "pending": [],
+  "rows": [
+    {
+      "legacy_site": "app/core/gimpfilterlayer.cpp:943",
+      "original_mapping": {
+        "legacy_site": "app/core/gimpfilterlayer.cpp:943",
+        "current_owner": "FilterImpl::dependencies; weak owner and BindingStore generation Callback",
+        "registration_path": "app/core/gimpfilterlayer.cpp refresh_connections and watch_descendant_status; container add/remove/reorder and child update/status handlers",
+        "teardown_path": "FilterImpl::close clears dependencies; refresh revision and retained stack reject close/reparent continuation",
+        "status": "REGRESSION_TESTS_ADDED",
+        "remaining_acceptance": "Native and ASan suite results in report.json; covers modern dependency owner boundary, not old reader/XCF parity"
+      },
+      "review_status": "NATIVE_OWNER_ROUTE_VERIFIED",
+      "evidence_package": "filter",
+      "case_identifiers": [
+        "dependency_connections_close_during_reorder",
+        "dependency_connections_preserve_new_stack",
+        "changed_dependency_invalidation_can_close_owner",
+        "dependency_walk_does_not_resolve_pending_names"
+      ],
+      "disposition": "native replacement owner route; historical visual/API parity remains separate"
+    },
+    {
+      "legacy_site": "app/core/gimpfilterlayer.cpp:946",
+      "original_mapping": {
+        "legacy_site": "app/core/gimpfilterlayer.cpp:946",
+        "current_owner": "FilterImpl::dependencies; weak owner and BindingStore generation Callback",
+        "registration_path": "app/core/gimpfilterlayer.cpp refresh_connections and watch_descendant_status; container add/remove/reorder and child update/status handlers",
+        "teardown_path": "FilterImpl::close clears dependencies; refresh revision and retained stack reject close/reparent continuation",
+        "status": "REGRESSION_TESTS_ADDED",
+        "remaining_acceptance": "Native and ASan suite results in report.json; covers modern dependency owner boundary, not old reader/XCF parity"
+      },
+      "review_status": "NATIVE_OWNER_ROUTE_VERIFIED",
+      "evidence_package": "filter",
+      "case_identifiers": [
+        "dependency_connections_close_during_reorder",
+        "dependency_connections_preserve_new_stack",
+        "changed_dependency_invalidation_can_close_owner",
+        "dependency_walk_does_not_resolve_pending_names"
+      ],
+      "disposition": "native replacement owner route; historical visual/API parity remains separate"
+    },
+    {
+      "legacy_site": "app/core/gimpfilterlayer.cpp:952",
+      "original_mapping": {
+        "legacy_site": "app/core/gimpfilterlayer.cpp:952",
+        "current_owner": "FilterImpl::dependencies; weak owner and BindingStore generation Callback",
+        "registration_path": "app/core/gimpfilterlayer.cpp refresh_connections and watch_descendant_status; container add/remove/reorder and child update/status handlers",
+        "teardown_path": "FilterImpl::close clears dependencies; refresh revision and retained stack reject close/reparent continuation",
+        "status": "REGRESSION_TESTS_ADDED",
+        "remaining_acceptance": "Native and ASan suite results in report.json; covers modern dependency owner boundary, not old reader/XCF parity"
+      },
+      "review_status": "NATIVE_OWNER_ROUTE_VERIFIED",
+      "evidence_package": "filter",
+      "case_identifiers": [
+        "dependency_connections_close_during_reorder",
+        "dependency_connections_preserve_new_stack",
+        "changed_dependency_invalidation_can_close_owner",
+        "dependency_walk_does_not_resolve_pending_names"
+      ],
+      "disposition": "native replacement owner route; historical visual/API parity remains separate"
+    },
+    {
+      "legacy_site": "app/core/gimpfilterlayer.cpp:955",
+      "original_mapping": {
+        "legacy_site": "app/core/gimpfilterlayer.cpp:955",
+        "current_owner": "FilterImpl::dependencies; weak owner and BindingStore generation Callback",
+        "registration_path": "app/core/gimpfilterlayer.cpp refresh_connections and watch_descendant_status; container add/remove/reorder and child update/status handlers",
+        "teardown_path": "FilterImpl::close clears dependencies; refresh revision and retained stack reject close/reparent continuation",
+        "status": "REGRESSION_TESTS_ADDED",
+        "remaining_acceptance": "Native and ASan suite results in report.json; covers modern dependency owner boundary, not old reader/XCF parity"
+      },
+      "review_status": "NATIVE_OWNER_ROUTE_VERIFIED",
+      "evidence_package": "filter",
+      "case_identifiers": [
+        "dependency_connections_close_during_reorder",
+        "dependency_connections_preserve_new_stack",
+        "changed_dependency_invalidation_can_close_owner",
+        "dependency_walk_does_not_resolve_pending_names"
+      ],
+      "disposition": "native replacement owner route; historical visual/API parity remains separate"
+    },
+    {
+      "legacy_site": "app/display/gimpdisplayshell-overlays.cpp:129",
+      "original_mapping": {
+        "legacy_site": "app/display/gimpdisplayshell-overlays.cpp:129",
+        "current_owner": "GimpDisplayShell BindingStore Slot<Canvas>; Canvas::signals",
+        "registration_path": "app/display/gimppaintercanvasui.cpp:274 enter-notify-event; connect at 150-153; weak shell callback hook",
+        "teardown_path": "app/display/gimppaintercanvasui.cpp:335-346 Canvas::close clears signals before child destroy; app/display/gimpdisplayshell.c:842 closes shell binding; Connection::~Connection/close disconnects handler",
+        "status": "MAPPED_SOURCE_ONLY",
+        "remaining_acceptance": "Fresh final-source teardown test retaining emitting frame/selector/swatches past shell close; source mapping does not prove full overlay/layout parity"
+      },
+      "review_status": "NATIVE_OWNER_ROUTE_VERIFIED",
+      "evidence_package": "layer-canvas",
+      "case_identifiers": [
+        "overlay_retained_emitters_shell_close",
+        "overlay_emitters_destroy_before_owner",
+        "overlay_context_color_reentrant_close",
+        "overlay_selector_foreground_reentrant_close",
+        "overlay_selector_background_reentrant_close",
+        "overlay_active_color_reentrant_close"
+      ],
+      "disposition": "native replacement owner route; historical visual/API parity remains separate"
+    },
+    {
+      "legacy_site": "app/display/gimpdisplayshell-overlays.cpp:130",
+      "original_mapping": {
+        "legacy_site": "app/display/gimpdisplayshell-overlays.cpp:130",
+        "current_owner": "GimpDisplayShell BindingStore Slot<Canvas>; Canvas::signals",
+        "registration_path": "app/display/gimppaintercanvasui.cpp:275 leave-notify-event; connect at 150-153; weak shell callback hook",
+        "teardown_path": "app/display/gimppaintercanvasui.cpp:335-346 Canvas::close clears signals before child destroy; app/display/gimpdisplayshell.c:842 closes shell binding; Connection::~Connection/close disconnects handler",
+        "status": "MAPPED_SOURCE_ONLY",
+        "remaining_acceptance": "Fresh final-source teardown test retaining emitting frame/selector/swatches past shell close; source mapping does not prove full overlay/layout parity"
+      },
+      "review_status": "NATIVE_OWNER_ROUTE_VERIFIED",
+      "evidence_package": "layer-canvas",
+      "case_identifiers": [
+        "overlay_retained_emitters_shell_close",
+        "overlay_emitters_destroy_before_owner",
+        "overlay_context_color_reentrant_close",
+        "overlay_selector_foreground_reentrant_close",
+        "overlay_selector_background_reentrant_close",
+        "overlay_active_color_reentrant_close"
+      ],
+      "disposition": "native replacement owner route; historical visual/API parity remains separate"
+    },
+    {
+      "legacy_site": "app/display/gimpdisplayshell-overlays.cpp:259",
+      "original_mapping": {
+        "legacy_site": "app/display/gimpdisplayshell-overlays.cpp:259",
+        "current_owner": "GimpDisplayShell BindingStore Slot<Canvas>; Canvas::signals",
+        "registration_path": "app/display/gimppaintercanvasui.cpp:309 color-changed; connect at 150-153; weak shell callback hook",
+        "teardown_path": "app/display/gimppaintercanvasui.cpp:335-346 Canvas::close clears signals before child destroy; app/display/gimpdisplayshell.c:842 closes shell binding; Connection::~Connection/close disconnects handler",
+        "status": "MAPPED_SOURCE_ONLY",
+        "remaining_acceptance": "Fresh final-source teardown test retaining emitting frame/selector/swatches past shell close; source mapping does not prove full overlay/layout parity"
+      },
+      "review_status": "NATIVE_OWNER_ROUTE_VERIFIED",
+      "evidence_package": "layer-canvas",
+      "case_identifiers": [
+        "overlay_retained_emitters_shell_close",
+        "overlay_emitters_destroy_before_owner",
+        "overlay_context_color_reentrant_close",
+        "overlay_selector_foreground_reentrant_close",
+        "overlay_selector_background_reentrant_close",
+        "overlay_active_color_reentrant_close"
+      ],
+      "disposition": "native replacement owner route; historical visual/API parity remains separate"
+    },
+    {
+      "legacy_site": "app/display/gimpdisplayshell-overlays.cpp:349",
+      "original_mapping": {
+        "legacy_site": "app/display/gimpdisplayshell-overlays.cpp:349",
+        "current_owner": "GimpDisplayShell BindingStore Slot<Canvas>; Canvas::signals",
+        "registration_path": "app/display/gimppaintercanvasui.cpp:324 notify::active-color; connect at 150-153; weak shell callback hook",
+        "teardown_path": "app/display/gimppaintercanvasui.cpp:335-346 Canvas::close clears signals before child destroy; app/display/gimpdisplayshell.c:842 closes shell binding; Connection::~Connection/close disconnects handler",
+        "status": "MAPPED_SOURCE_ONLY",
+        "remaining_acceptance": "Fresh final-source teardown test retaining emitting frame/selector/swatches past shell close; source mapping does not prove full overlay/layout parity"
+      },
+      "review_status": "NATIVE_OWNER_ROUTE_VERIFIED",
+      "evidence_package": "layer-canvas",
+      "case_identifiers": [
+        "overlay_retained_emitters_shell_close",
+        "overlay_emitters_destroy_before_owner",
+        "overlay_context_color_reentrant_close",
+        "overlay_selector_foreground_reentrant_close",
+        "overlay_selector_background_reentrant_close",
+        "overlay_active_color_reentrant_close"
+      ],
+      "disposition": "native replacement owner route; historical visual/API parity remains separate"
+    },
+    {
+      "legacy_site": "app/gimp-features.cpp:89",
+      "original_mapping": {
+        "legacy_site": "app/gimp-features.cpp:89",
+        "current_owner": "Gimp owns native layer_preset_factory and painter_httpd; Feature singleton/delegator adapter retired",
+        "registration_path": "app/core/gimp.c:293 gimp_data_factories_init; app/core/gimp-data-factories.c:243-250 constructs layer_preset_factory; no Feature initialize delegation",
+        "teardown_path": "app/core/gimp.c:395-410 disposes HTTP and closes app binding before factories clear; app/core/gimp-data-factories.c:319-340 frees/clears preset factory; app/httpd/httpd.cpp:422-428 closes service BindingStore",
+        "status": "REPLACED_LIFECYCLE_SOURCE_ONLY",
+        "remaining_acceptance": "Fresh startup/restore/accepted-exit/repeated-dispose tests for actual preset and optional HTTP owners; no generic Feature/ApplicationRef adapter parity claimed"
+      },
+      "review_status": "NATIVE_OWNER_ROUTE_VERIFIED",
+      "evidence_package": "application-lifecycle-signals",
+      "case_identifiers": [
+        "cold-factory-owner-teardown",
+        "application_owned_service_teardown"
+      ],
+      "disposition": "native replacement owner route; historical visual/API parity remains separate"
+    },
+    {
+      "legacy_site": "app/gimp-features.cpp:92",
+      "original_mapping": {
+        "legacy_site": "app/gimp-features.cpp:92",
+        "current_owner": "Gimp owns native layer_preset_factory and painter_httpd; Feature singleton/delegator adapter retired",
+        "registration_path": "app/core/gimp.c:891 gimp_data_factories_load; app/core/gimp-data-factories.c:520 loads layer presets; app/app.c:404-413 starts optional HTTP after gimp_restore",
+        "teardown_path": "app/core/gimp.c:395-410 disposes HTTP and closes app binding before factories clear; app/core/gimp-data-factories.c:319-340 frees/clears preset factory; app/httpd/httpd.cpp:422-428 closes service BindingStore",
+        "status": "REPLACED_LIFECYCLE_SOURCE_ONLY",
+        "remaining_acceptance": "Fresh startup/restore/accepted-exit/repeated-dispose tests for actual preset and optional HTTP owners; no generic Feature/ApplicationRef adapter parity claimed"
+      },
+      "review_status": "NATIVE_OWNER_ROUTE_VERIFIED",
+      "evidence_package": "application-lifecycle-signals",
+      "case_identifiers": [
+        "cold-factory-owner-teardown",
+        "application_owned_service_teardown"
+      ],
+      "disposition": "native replacement owner route; historical visual/API parity remains separate"
+    },
+    {
+      "legacy_site": "app/gimp-features.cpp:93",
+      "original_mapping": {
+        "legacy_site": "app/gimp-features.cpp:93",
+        "current_owner": "Gimp owns native layer_preset_factory and painter_httpd; Feature singleton/delegator adapter retired",
+        "registration_path": "app/core/gimp.c:624 saves factories; app/core/gimp-data-factories.c:541 saves presets; app/app.c:588-590 disposes/clears HTTP on accepted exit",
+        "teardown_path": "app/core/gimp.c:395-410 disposes HTTP and closes app binding before factories clear; app/core/gimp-data-factories.c:319-340 frees/clears preset factory; app/httpd/httpd.cpp:422-428 closes service BindingStore",
+        "status": "REPLACED_LIFECYCLE_SOURCE_ONLY",
+        "remaining_acceptance": "Fresh startup/restore/accepted-exit/repeated-dispose tests for actual preset and optional HTTP owners; no generic Feature/ApplicationRef adapter parity claimed"
+      },
+      "review_status": "NATIVE_OWNER_ROUTE_VERIFIED",
+      "evidence_package": "application-lifecycle-signals",
+      "case_identifiers": [
+        "cold-factory-owner-teardown",
+        "application_owned_service_teardown"
+      ],
+      "disposition": "native replacement owner route; historical visual/API parity remains separate"
+    },
+    {
+      "legacy_site": "app/gimp-features.cpp:109",
+      "original_mapping": {
+        "legacy_site": "app/gimp-features.cpp:109",
+        "current_owner": "Gimp owns native layer_preset_factory and painter_httpd; Feature singleton/delegator adapter retired",
+        "registration_path": "app/core/gimp.c:891 gimp_data_factories_load; app/core/gimp-data-factories.c:520 loads layer presets; app/app.c:404-413 starts optional HTTP after gimp_restore",
+        "teardown_path": "app/core/gimp.c:395-410 disposes HTTP and closes app binding before factories clear; app/core/gimp-data-factories.c:319-340 frees/clears preset factory; app/httpd/httpd.cpp:422-428 closes service BindingStore",
+        "status": "REPLACED_LIFECYCLE_SOURCE_ONLY",
+        "remaining_acceptance": "Fresh startup/restore/accepted-exit/repeated-dispose tests for actual preset and optional HTTP owners; no generic Feature/ApplicationRef adapter parity claimed"
+      },
+      "review_status": "NATIVE_OWNER_ROUTE_VERIFIED",
+      "evidence_package": "application-lifecycle-signals",
+      "case_identifiers": [
+        "cold-factory-owner-teardown",
+        "application_owned_service_teardown"
+      ],
+      "disposition": "native replacement owner route; historical visual/API parity remains separate"
+    },
+    {
+      "legacy_site": "app/gimp-features.cpp:110",
+      "original_mapping": {
+        "legacy_site": "app/gimp-features.cpp:110",
+        "current_owner": "Gimp owns native layer_preset_factory and painter_httpd; Feature singleton/delegator adapter retired",
+        "registration_path": "app/core/gimp.c:624 saves factories; app/core/gimp-data-factories.c:541 saves presets; app/app.c:588-590 disposes/clears HTTP on accepted exit",
+        "teardown_path": "app/core/gimp.c:395-410 disposes HTTP and closes app binding before factories clear; app/core/gimp-data-factories.c:319-340 frees/clears preset factory; app/httpd/httpd.cpp:422-428 closes service BindingStore",
+        "status": "REPLACED_LIFECYCLE_SOURCE_ONLY",
+        "remaining_acceptance": "Fresh startup/restore/accepted-exit/repeated-dispose tests for actual preset and optional HTTP owners; no generic Feature/ApplicationRef adapter parity claimed"
+      },
+      "review_status": "NATIVE_OWNER_ROUTE_VERIFIED",
+      "evidence_package": "application-lifecycle-signals",
+      "case_identifiers": [
+        "cold-factory-owner-teardown",
+        "application_owned_service_teardown"
+      ],
+      "disposition": "native replacement owner route; historical visual/API parity remains separate"
+    },
+    {
+      "legacy_site": "app/tools/gimpmypaintbrusheditor.cpp:141",
+      "original_mapping": {
+        "legacy_site": "app/tools/gimpmypaintbrusheditor.cpp:141",
+        "current_owner": "GimpPainterMybrushEditor BindingStore EditorSlot; EditorImpl::connections",
+        "registration_path": "app/widgets/gimppaintermybrusheditor.cpp:524 setting/input changed -> update_curve replaces legacy input-tree selection; signal_connection/connect at 194-200 capture weak owner, generation and UI revision",
+        "teardown_path": "app/widgets/gimppaintermybrusheditor.cpp:141-148 detach/close clears connections and resource watchers; destroy/dispose at 578-582; set_context detaches before replacing widgets at 613-618",
+        "status": "MAPPED_SOURCE_ONLY",
+        "remaining_acceptance": "Fresh retained old input/toggle emissions after context replacement and owner destruction; existing editor owner-order/replacement tests are source evidence only"
+      },
+      "review_status": "NATIVE_OWNER_ROUTE_VERIFIED",
+      "evidence_package": "editor",
+      "case_identifiers": [
+        "21-curve-control-lifetimes",
+        "22-curve-emitter-first-teardown",
+        "09-close-during-refresh"
+      ],
+      "disposition": "native replacement owner route; historical visual/API parity remains separate"
+    },
+    {
+      "legacy_site": "app/tools/gimpmypaintbrusheditor.cpp:142",
+      "original_mapping": {
+        "legacy_site": "app/tools/gimpmypaintbrusheditor.cpp:142",
+        "current_owner": "GimpPainterMybrushEditor BindingStore EditorSlot; EditorImpl::connections",
+        "registration_path": "app/widgets/gimppaintermybrusheditor.cpp:526 curve_enabled toggled -> apply_curve; signal_connection/connect at 194-200 capture weak owner, generation and UI revision",
+        "teardown_path": "app/widgets/gimppaintermybrusheditor.cpp:141-148 detach/close clears connections and resource watchers; destroy/dispose at 578-582; set_context detaches before replacing widgets at 613-618",
+        "status": "MAPPED_SOURCE_ONLY",
+        "remaining_acceptance": "Fresh retained old input/toggle emissions after context replacement and owner destruction; existing editor owner-order/replacement tests are source evidence only"
+      },
+      "review_status": "NATIVE_OWNER_ROUTE_VERIFIED",
+      "evidence_package": "editor",
+      "case_identifiers": [
+        "21-curve-control-lifetimes",
+        "22-curve-emitter-first-teardown",
+        "09-close-during-refresh"
+      ],
+      "disposition": "native replacement owner route; historical visual/API parity remains separate"
+    },
+    {
+      "legacy_site": "app/tools/gimpmypaintbrushoptions-gui.cpp:292",
+      "original_mapping": {
+        "legacy_site": "app/tools/gimpmypaintbrushoptions-gui.cpp:292",
+        "current_owner": "No live equivalent required for empty legacy history_name_edited body",
+        "registration_path": "app/widgets/gimpmypaintbrushoptions-gui.cpp:444-445 history text renderer is noneditable; legacy afa43fae callback body is empty",
+        "teardown_path": "Legacy callback/delegator is absent; modern Selector has no edited connection",
+        "status": "LEGACY_NOOP_RETIRED_SOURCE_ONLY",
+        "remaining_acceptance": "Retain evidence of empty pinned callback; do not describe this as missing implemented rename behavior or a tested live connection"
+      },
+      "review_status": "PINNED_RETIRED_SOURCE_VERIFIED",
+      "evidence_package": "retired-legacy-routes.json",
+      "case_identifiers": [],
+      "disposition": "empty legacy callback retired, no invented behavior"
+    },
+    {
+      "legacy_site": "app/tools/gimpmypaintbrushoptions-gui.cpp:295",
+      "original_mapping": {
+        "legacy_site": "app/tools/gimpmypaintbrushoptions-gui.cpp:295",
+        "current_owner": "GtkMenuButton BindingStore SelectorSlot; Selector::connections",
+        "registration_path": "app/widgets/gimpmypaintbrushoptions-gui.cpp:467 row-activated -> choose_history replaces cursor-changed; retained weak/generation callback at 149-160",
+        "teardown_path": "app/widgets/gimpmypaintbrushoptions-gui.cpp:56-66 Selector::close increments epochs, clears connections, then destroys popup/releases model; destroy_button at 391-392; context disconnect at 389-390,460-464",
+        "status": "MAPPED_BEHAVIOR_CHANGED_SOURCE_ONLY",
+        "remaining_acceptance": "Fresh retained history-emitter teardown/reentry test; row activation intentionally differs from old cursor movement and does not prove identical keyboard-selection semantics"
+      },
+      "review_status": "NATIVE_OWNER_ROUTE_VERIFIED",
+      "evidence_package": "popup",
+      "case_identifiers": [
+        "13-retained-history-close-finalize",
+        "14-history-model-swap-close-reentry",
+        "15-source-context-button-destruction-orders"
+      ],
+      "disposition": "native replacement owner route; historical visual/API parity remains separate"
+    },
+    {
+      "legacy_site": "app/tools/gimpmypaintbrushoptions-gui.cpp:306",
+      "original_mapping": {
+        "legacy_site": "app/tools/gimpmypaintbrushoptions-gui.cpp:306",
+        "current_owner": "GtkMenuButton BindingStore SelectorSlot; Selector::connections",
+        "registration_path": "app/widgets/gimpmypaintbrushoptions-gui.cpp:454-465 canonical/source painter-mybrush-changed and history-changed; retained weak/generation callback",
+        "teardown_path": "app/widgets/gimpmypaintbrushoptions-gui.cpp:56-66 Selector::close increments epochs, clears connections, then destroys popup/releases model; destroy_button at 391-392; context disconnect at 389-390,460-464",
+        "status": "MAPPED_WITH_LEGACY_INVENTORY_CORRECTION",
+        "remaining_acceptance": "Pinned registration is assigned to brush_changed_handler on preceding line and deleted by legacy destroy; update incorrect discarded-handle description; fresh context-first/button-first disposal tests required"
+      },
+      "review_status": "NATIVE_OWNER_ROUTE_VERIFIED",
+      "evidence_package": "popup",
+      "case_identifiers": [
+        "13-retained-history-close-finalize",
+        "14-history-model-swap-close-reentry",
+        "15-source-context-button-destruction-orders"
+      ],
+      "disposition": "native replacement owner route; historical visual/API parity remains separate"
+    },
+    {
+      "legacy_site": "app/tools/gimpmypaintbrushoptions-gui.cpp:318",
+      "original_mapping": {
+        "legacy_site": "app/tools/gimpmypaintbrushoptions-gui.cpp:318",
+        "current_owner": "GtkMenuButton BindingStore SelectorSlot; owner-emitter destroy closure has null userdata",
+        "registration_path": "app/widgets/gimpmypaintbrushoptions-gui.cpp:513 destroy -> destroy_button; callback derives native owner from emitter rather than captured private pointer",
+        "teardown_path": "app/widgets/gimpmypaintbrushoptions-gui.cpp:56-66 Selector::close increments epochs, clears connections, then destroys popup/releases model; destroy_button at 391-392; context disconnect at 389-390,460-464",
+        "status": "MAPPED_SOURCE_ONLY",
+        "remaining_acceptance": "Fresh owner destruction during popup/history refresh and retained emitter late-signal test; destruction hook itself is emitter-bound and captures no controller"
+      },
+      "review_status": "NATIVE_OWNER_ROUTE_VERIFIED",
+      "evidence_package": "popup",
+      "case_identifiers": [
+        "13-retained-history-close-finalize",
+        "14-history-model-swap-close-reentry",
+        "15-source-context-button-destruction-orders"
+      ],
+      "disposition": "native replacement owner route; historical visual/API parity remains separate"
+    },
+    {
+      "legacy_site": "app/tools/gimpmypaintoptions-gui.cpp:296",
+      "original_mapping": {
+        "legacy_site": "app/tools/gimpmypaintoptions-gui.cpp:296",
+        "current_owner": "GimpPainterMybrushEditor BindingStore EditorSlot; EditorImpl::connections and owned shared prompts",
+        "registration_path": "app/widgets/gimppaintermybrusheditor.cpp: prompt response/destroy Connections; weak owner/generation/UI revision; active callback lease and one-shot response retirement",
+        "teardown_path": "detach/close retires owner prompt list before native destruction; callback lease retains resource across close/context replacement",
+        "status": "MAPPED_WORKFLOW_CHANGED_SOURCE_ONLY",
+        "remaining_acceptance": "Prompt-specific normal25/ASan25 full registration in ../editor-prompt-ownership/report.json; broader name/button control routes remain partial; changed draft-name workflow is not legacy activate parity"
+      },
+      "review_status": "NATIVE_OWNER_ROUTE_VERIFIED",
+      "evidence_package": "editor",
+      "case_identifiers": [
+        "06-replace-close",
+        "13-owner-destruction-orders",
+        "23-stale-prompt-responses",
+        "24-operation-context-reentry",
+        "25-prompt-emitter-first-cancel",
+        "29-direct-control-retirement",
+        "30-direct-control-emitter-first",
+        "31-direct-control-callback-close"
+      ],
+      "disposition": "native replacement owner route; historical visual/API parity remains separate",
+      "current_registration_review": "Direct name changed, Save clicked and Delete clicked use weak/generation/UI-revision owned Connections; prompt response/destroy alone did not cover these emitter edges. Explicit direct-control normal3 and bounded sanitizer3 now pass."
+    },
+    {
+      "legacy_site": "app/tools/gimpmypaintoptions-gui.cpp:304",
+      "original_mapping": {
+        "legacy_site": "app/tools/gimpmypaintoptions-gui.cpp:304",
+        "current_owner": "GimpPainterMybrushEditor BindingStore EditorSlot; EditorImpl::connections and owned shared prompts",
+        "registration_path": "app/widgets/gimppaintermybrusheditor.cpp: prompt response/destroy Connections; weak owner/generation/UI revision; active callback lease and one-shot response retirement",
+        "teardown_path": "detach/close retires owner prompt list before native destruction; callback lease retains resource across close/context replacement",
+        "status": "MAPPED_SOURCE_ONLY",
+        "remaining_acceptance": "Prompt-specific normal25/ASan25 full registration in ../editor-prompt-ownership/report.json; broader name/button control routes remain partial; changed draft-name workflow is not legacy activate parity"
+      },
+      "review_status": "NATIVE_OWNER_ROUTE_VERIFIED",
+      "evidence_package": "editor",
+      "case_identifiers": [
+        "06-replace-close",
+        "13-owner-destruction-orders",
+        "23-stale-prompt-responses",
+        "24-operation-context-reentry",
+        "25-prompt-emitter-first-cancel",
+        "29-direct-control-retirement",
+        "30-direct-control-emitter-first",
+        "31-direct-control-callback-close"
+      ],
+      "disposition": "native replacement owner route; historical visual/API parity remains separate",
+      "current_registration_review": "Direct name changed, Save clicked and Delete clicked use weak/generation/UI-revision owned Connections; prompt response/destroy alone did not cover these emitter edges. Explicit direct-control normal3 and bounded sanitizer3 now pass."
+    },
+    {
+      "legacy_site": "app/tools/gimpmypaintoptions-gui.cpp:312",
+      "original_mapping": {
+        "legacy_site": "app/tools/gimpmypaintoptions-gui.cpp:312",
+        "current_owner": "GimpPainterMybrushEditor BindingStore EditorSlot; EditorImpl::connections and owned shared prompts",
+        "registration_path": "app/widgets/gimppaintermybrusheditor.cpp: prompt response/destroy Connections; weak owner/generation/UI revision; active callback lease and one-shot response retirement",
+        "teardown_path": "detach/close retires owner prompt list before native destruction; callback lease retains resource across close/context replacement",
+        "status": "MAPPED_SOURCE_ONLY",
+        "remaining_acceptance": "Prompt-specific normal25/ASan25 full registration in ../editor-prompt-ownership/report.json; broader name/button control routes remain partial; changed draft-name workflow is not legacy activate parity"
+      },
+      "review_status": "NATIVE_OWNER_ROUTE_VERIFIED",
+      "evidence_package": "editor",
+      "case_identifiers": [
+        "06-replace-close",
+        "13-owner-destruction-orders",
+        "23-stale-prompt-responses",
+        "24-operation-context-reentry",
+        "25-prompt-emitter-first-cancel",
+        "29-direct-control-retirement",
+        "30-direct-control-emitter-first",
+        "31-direct-control-callback-close"
+      ],
+      "disposition": "native replacement owner route; historical visual/API parity remains separate",
+      "current_registration_review": "Direct name changed, Save clicked and Delete clicked use weak/generation/UI-revision owned Connections; prompt response/destroy alone did not cover these emitter edges. Explicit direct-control normal3 and bounded sanitizer3 now pass."
+    },
+    {
+      "legacy_site": "app/tools/gimpmypaintoptions-gui.cpp:342",
+      "original_mapping": {
+        "legacy_site": "app/tools/gimpmypaintoptions-gui.cpp:342",
+        "current_owner": "GimpPainterMybrushEditor BindingStore EditorSlot; EditorImpl::connections",
+        "registration_path": "app/widgets/gimppaintermybrusheditor.cpp:551-565 source/model notifications; legacy brush_changed body only prints, with registration assigned to brush_changed_handler",
+        "teardown_path": "app/widgets/gimppaintermybrusheditor.cpp:141-148 detach/close clears connections and resource watchers; destroy/dispose at 578-582; set_context detaches before replacing widgets at 613-618",
+        "status": "MAPPED_WITH_LEGACY_INVENTORY_CORRECTION",
+        "remaining_acceptance": "Pinned preceding-line assignment and destroy deletion correct discarded-handle description; fresh source/model replacement teardown test; no exact signal identity parity claimed"
+      },
+      "review_status": "NATIVE_OWNER_ROUTE_VERIFIED",
+      "evidence_package": "editor",
+      "case_identifiers": [
+        "06-replace-close",
+        "13-owner-destruction-orders",
+        "23-stale-prompt-responses",
+        "24-operation-context-reentry",
+        "25-prompt-emitter-first-cancel"
+      ],
+      "disposition": "native replacement owner route; historical visual/API parity remains separate"
+    },
+    {
+      "legacy_site": "app/tools/gimpmypaintoptions-gui.cpp:351",
+      "original_mapping": {
+        "legacy_site": "app/tools/gimpmypaintoptions-gui.cpp:351",
+        "current_owner": "GimpPainterMybrushEditor native destroy/dispose vfuncs; EditorSlot",
+        "registration_path": "app/widgets/gimppaintermybrusheditor.cpp:578-585 destroy/dispose -> gimp_painter_binding_close replaces captured popup-private destroy callback",
+        "teardown_path": "app/widgets/gimppaintermybrusheditor.cpp:141-148 detach/close clears connections and resource watchers; destroy/dispose at 578-582; set_context detaches before replacing widgets at 613-618",
+        "status": "MAPPED_SOURCE_ONLY",
+        "remaining_acceptance": "Fresh repeated destroy/dispose and retained child emission test; standalone editor window is workflow replacement for legacy detail popover"
+      },
+      "review_status": "NATIVE_OWNER_ROUTE_VERIFIED",
+      "evidence_package": "editor",
+      "case_identifiers": [
+        "06-replace-close",
+        "13-owner-destruction-orders",
+        "23-stale-prompt-responses",
+        "24-operation-context-reentry",
+        "25-prompt-emitter-first-cancel"
+      ],
+      "disposition": "native replacement owner route; historical visual/API parity remains separate"
+    },
+    {
+      "legacy_site": "app/tools/gimpmypaintoptions-gui.cpp:457",
+      "original_mapping": {
+        "legacy_site": "app/tools/gimpmypaintoptions-gui.cpp:457",
+        "current_owner": "No live equivalent required for empty legacy reset_size body",
+        "registration_path": "app/widgets/gimppaintercompactoptions.cpp:271-273 explicitly avoids inventing resource-changing reset; pinned legacy body at 524 onward is commented out",
+        "teardown_path": "Legacy empty callback/delegator is absent",
+        "status": "LEGACY_NOOP_RETIRED_SOURCE_ONLY",
+        "remaining_acceptance": "Retain pinned no-op evidence; visual presence of old reset button is separate UI parity scope"
+      },
+      "review_status": "PINNED_RETIRED_SOURCE_VERIFIED",
+      "evidence_package": "retired-legacy-routes.json",
+      "case_identifiers": [],
+      "disposition": "empty legacy callback retired, no invented behavior"
+    },
+    {
+      "legacy_site": "app/tools/gimptooloptions-gui-cxx.hpp:103",
+      "original_mapping": {
+        "legacy_site": "app/tools/gimptooloptions-gui-cxx.hpp:103",
+        "current_owner": "EditorImpl::page_memory shared only with popups invoked by that editor; owned notify::page connection",
+        "registration_path": "app/widgets/gimppaintermybrusheditor.cpp build_ui/new_editor/popup: restore after guarded visible-widget snapshot and register page notification",
+        "teardown_path": "EditorImpl::detach_context closes connections and clears notebook; detached emitter cannot change shared memory; independent owner has independent memory",
+        "status": "NATIVE_PAGE_MEMORY_VERIFIED",
+        "remaining_acceptance": "migration/tests/editor-page-memory/report.json:25 existing+3 new native cases and actual1080x1920 oncanvas popup select/close/reopen; ASan pending separately; not full generic decorator parity"
+      },
+      "review_status": "NATIVE_OWNER_ROUTE_VERIFIED",
+      "evidence_package": "editor",
+      "case_identifiers": [
+        "26-notebook-page-context-lifetime",
+        "27-notebook-page-popup-reopen",
+        "28-notebook-page-build-reentry"
+      ],
+      "disposition": "native replacement owner route; historical visual/API parity remains separate"
+    },
+    {
+      "legacy_site": "app/widgets/gimpmypaintbrusheditor.cpp:240",
+      "original_mapping": {
+        "legacy_site": "app/widgets/gimpmypaintbrusheditor.cpp:240",
+        "current_owner": "None: pinned legacy registration is inside #if 0",
+        "registration_path": "Pinned afa43fae app/widgets/gimpmypaintbrusheditor.cpp:230-244 disabled angle_data value-changed block",
+        "teardown_path": "No runtime registration or destruction contract in pinned source",
+        "status": "INACTIVE_LEGACY_INVENTORY_FALSE_POSITIVE",
+        "remaining_acceptance": "Exclude from reachable signal count; 60 exact TSV followup rows include this disabled row, yielding 59 candidate runtime rows before any additional reachability corrections"
+      },
+      "review_status": "PINNED_RETIRED_SOURCE_VERIFIED",
+      "evidence_package": "retired-legacy-routes.json",
+      "case_identifiers": [],
+      "disposition": "inactive pinned #if0 registration"
+    },
+    {
+      "legacy_site": "app/widgets/popupper.cpp:184",
+      "original_mapping": {
+        "legacy_site": "app/widgets/popupper.cpp:184",
+        "current_owner": "Native GtkPopover for Dropdown, cell-renderer popup, layer tiles, compact groups and MyPaint selector",
+        "registration_path": "app/widgets/gimpeditor-cxx.cpp:160-167 GtkMenuButton/GtkPopover owns modality; no ported grab-notify callback or repeated map-time connect",
+        "teardown_path": "app/widgets/gimpeditor-cxx.cpp:223-243 Dropdown::close cancels pending source and closes all connections before widgets; app/widgets/gimpcellrendererpopup.cpp:47-64 Popup::clear/close invalidates epoch and clears control/permanent connections",
+        "status": "REPLACED_NATIVE_ROUTE_SOURCE_ONLY",
+        "remaining_acceptance": "Fresh map/unmap/reopen/grab-loss/owner-destruction coverage per live caller; no generic GimpPopover2/PopoverRef implementation or full generic adapter parity claimed; old grab callback did not cancel"
+      },
+      "review_status": "NATIVE_OWNER_ROUTE_VERIFIED",
+      "evidence_package": "popup",
+      "case_identifiers": [
+        "native-activation-dismissal-reopen",
+        "generic-reentrant-close",
+        "signals/owner-first",
+        "signals/tree-first",
+        "signals/emitter-first",
+        "signals/model-refresh-close"
+      ],
+      "disposition": "native replacement owner route; historical visual/API parity remains separate"
+    },
+    {
+      "legacy_site": "app/widgets/popupper.cpp:186",
+      "original_mapping": {
+        "legacy_site": "app/widgets/popupper.cpp:186",
+        "current_owner": "Native GtkPopover for Dropdown, cell-renderer popup, layer tiles, compact groups and MyPaint selector",
+        "registration_path": "app/widgets/gimpeditor-cxx.cpp:160-167 GtkMenuButton/GtkPopover owns modality; no ported grab-broken-event callback or repeated map-time connect",
+        "teardown_path": "app/widgets/gimpeditor-cxx.cpp:223-243 Dropdown::close cancels pending source and closes all connections before widgets; app/widgets/gimpcellrendererpopup.cpp:47-64 Popup::clear/close invalidates epoch and clears control/permanent connections",
+        "status": "REPLACED_NATIVE_ROUTE_SOURCE_ONLY",
+        "remaining_acceptance": "Fresh map/unmap/reopen/grab-loss/owner-destruction coverage per live caller; no generic GimpPopover2/PopoverRef implementation or full generic adapter parity claimed; old grab callback did not cancel"
+      },
+      "review_status": "NATIVE_OWNER_ROUTE_VERIFIED",
+      "evidence_package": "popup",
+      "case_identifiers": [
+        "native-activation-dismissal-reopen",
+        "generic-reentrant-close",
+        "signals/owner-first",
+        "signals/tree-first",
+        "signals/emitter-first",
+        "signals/model-refresh-close"
+      ],
+      "disposition": "native replacement owner route; historical visual/API parity remains separate"
+    },
+    {
+      "legacy_site": "app/widgets/popupper.cpp:501",
+      "original_mapping": {
+        "legacy_site": "app/widgets/popupper.cpp:501",
+        "current_owner": "Dropdown::connections or Popup::controls per actual caller",
+        "registration_path": "app/widgets/gimpeditor-cxx.cpp:165 closed -> dismiss; app/widgets/gimpcellrendererpopup.cpp:281 closed -> popup_closed; GtkPopover replaces cancel",
+        "teardown_path": "app/widgets/gimpeditor-cxx.cpp:223-243 Dropdown::close cancels pending source and closes all connections before widgets; app/widgets/gimpcellrendererpopup.cpp:47-64 Popup::clear/close invalidates epoch and clears control/permanent connections",
+        "status": "MAPPED_WITH_LEGACY_INVENTORY_CORRECTION",
+        "remaining_acceptance": "Pinned handlers assigned to cancel_handler/confirm_handler on preceding lines and deleted/replaced; legacy on_popover_closed nulls them, so storage is not proof of sound lifetime; fresh nested dismissal/owner-close tests required"
+      },
+      "review_status": "NATIVE_OWNER_ROUTE_VERIFIED",
+      "evidence_package": "popup",
+      "case_identifiers": [
+        "native-activation-dismissal-reopen",
+        "generic-reentrant-close",
+        "signals/owner-first",
+        "signals/tree-first",
+        "signals/emitter-first",
+        "signals/model-refresh-close"
+      ],
+      "disposition": "native replacement owner route; historical visual/API parity remains separate"
+    },
+    {
+      "legacy_site": "app/widgets/popupper.cpp:503",
+      "original_mapping": {
+        "legacy_site": "app/widgets/popupper.cpp:503",
+        "current_owner": "Dropdown::connections or Popup::controls per actual caller",
+        "registration_path": "app/widgets/gimpeditor-cxx.cpp:165 closed -> dismiss; app/widgets/gimpcellrendererpopup.cpp:281 closed -> popup_closed; GtkPopover replaces confirm",
+        "teardown_path": "app/widgets/gimpeditor-cxx.cpp:223-243 Dropdown::close cancels pending source and closes all connections before widgets; app/widgets/gimpcellrendererpopup.cpp:47-64 Popup::clear/close invalidates epoch and clears control/permanent connections",
+        "status": "MAPPED_WITH_LEGACY_INVENTORY_CORRECTION",
+        "remaining_acceptance": "Pinned handlers assigned to cancel_handler/confirm_handler on preceding lines and deleted/replaced; legacy on_popover_closed nulls them, so storage is not proof of sound lifetime; fresh nested dismissal/owner-close tests required"
+      },
+      "review_status": "NATIVE_OWNER_ROUTE_VERIFIED",
+      "evidence_package": "popup",
+      "case_identifiers": [
+        "native-activation-dismissal-reopen",
+        "generic-reentrant-close",
+        "signals/owner-first",
+        "signals/tree-first",
+        "signals/emitter-first",
+        "signals/model-refresh-close"
+      ],
+      "disposition": "native replacement owner route; historical visual/API parity remains separate"
+    },
+    {
+      "legacy_site": "app/widgets/popupper.cpp:527",
+      "original_mapping": {
+        "legacy_site": "app/widgets/popupper.cpp:527",
+        "current_owner": "GtkMenuButton DropdownSlot; Dropdown::connections",
+        "registration_path": "app/widgets/gimpeditor-cxx.cpp:121-122 returns TRUE for scroll; registration at 159 retained through connect",
+        "teardown_path": "app/widgets/gimpeditor-cxx.cpp:223-243 Dropdown::close cancels pending source and closes all connections before widgets; app/widgets/gimpcellrendererpopup.cpp:47-64 Popup::clear/close invalidates epoch and clears control/permanent connections",
+        "status": "MAPPED_WITH_LEGACY_INVENTORY_CORRECTION",
+        "remaining_acceptance": "Pinned scroll_event_handler is assigned but omitted from destructor; modern direct owner is retained; fresh scroll-after-close and emitter-first tests required"
+      },
+      "review_status": "NATIVE_OWNER_ROUTE_VERIFIED",
+      "evidence_package": "popup",
+      "case_identifiers": [
+        "native-activation-dismissal-reopen",
+        "generic-reentrant-close",
+        "signals/owner-first",
+        "signals/tree-first",
+        "signals/emitter-first",
+        "signals/model-refresh-close"
+      ],
+      "disposition": "native replacement owner route; historical visual/API parity remains separate"
+    },
+    {
+      "legacy_site": "app/widgets/popupper.cpp:529",
+      "original_mapping": {
+        "legacy_site": "app/widgets/popupper.cpp:529",
+        "current_owner": "GtkMenuButton native activation plus DropdownSlot; other callers use explicit native popover routes",
+        "registration_path": "app/widgets/gimpeditor-cxx.cpp:160-167 native menu-button popover and retained toggled -> reopen; primary clicked at 157 is separate primary action",
+        "teardown_path": "app/widgets/gimpeditor-cxx.cpp:223-243 Dropdown::close cancels pending source and closes all connections before widgets; app/widgets/gimpcellrendererpopup.cpp:47-64 Popup::clear/close invalidates epoch and clears control/permanent connections",
+        "status": "REPLACED_NATIVE_ROUTE_SOURCE_ONLY",
+        "remaining_acceptance": "Pinned button_press_handler is assigned but omitted from destructor; fresh mouse/keyboard activation and rapid reentrant dismissal tests; native activation is not generic decorator parity"
+      },
+      "review_status": "NATIVE_OWNER_ROUTE_VERIFIED",
+      "evidence_package": "popup",
+      "case_identifiers": [
+        "native-activation-dismissal-reopen",
+        "generic-reentrant-close",
+        "signals/owner-first",
+        "signals/tree-first",
+        "signals/emitter-first",
+        "signals/model-refresh-close"
+      ],
+      "disposition": "native replacement owner route; historical visual/API parity remains separate"
+    },
+    {
+      "legacy_site": "app/widgets/popupper.cpp:532",
+      "original_mapping": {
+        "legacy_site": "app/widgets/popupper.cpp:532",
+        "current_owner": "GtkMenuButton native activation plus DropdownSlot; other callers use explicit native popover routes",
+        "registration_path": "app/widgets/gimpeditor-cxx.cpp:160-167 native menu-button popover and retained toggled -> reopen; primary clicked at 157 is separate primary action",
+        "teardown_path": "app/widgets/gimpeditor-cxx.cpp:223-243 Dropdown::close cancels pending source and closes all connections before widgets; app/widgets/gimpcellrendererpopup.cpp:47-64 Popup::clear/close invalidates epoch and clears control/permanent connections",
+        "status": "REPLACED_NATIVE_ROUTE_SOURCE_ONLY",
+        "remaining_acceptance": "Pinned button_press_handler is assigned but omitted from destructor; fresh mouse/keyboard activation and rapid reentrant dismissal tests; native activation is not generic decorator parity"
+      },
+      "review_status": "NATIVE_OWNER_ROUTE_VERIFIED",
+      "evidence_package": "popup",
+      "case_identifiers": [
+        "native-activation-dismissal-reopen",
+        "generic-reentrant-close",
+        "signals/owner-first",
+        "signals/tree-first",
+        "signals/emitter-first",
+        "signals/model-refresh-close"
+      ],
+      "disposition": "native replacement owner route; historical visual/API parity remains separate"
+    },
+    {
+      "legacy_site": "app/widgets/popupper.cpp:535",
+      "original_mapping": {
+        "legacy_site": "app/widgets/popupper.cpp:535",
+        "current_owner": "GimpCellRendererPopup BindingStore PopupSlot; native parent_clicked class closure",
+        "registration_path": "app/widgets/gimpcellrendererpopup.cpp:351-356 parent-clicked G_SIGNAL_RUN_FIRST class closure replaces captured decorator callback; controls/permanent hooks retained at 100-106 and 370-383",
+        "teardown_path": "app/widgets/gimpeditor-cxx.cpp:223-243 Dropdown::close cancels pending source and closes all connections before widgets; app/widgets/gimpcellrendererpopup.cpp:47-64 Popup::clear/close invalidates epoch and clears control/permanent connections",
+        "status": "MAPPED_WITH_LEGACY_INVENTORY_CORRECTION",
+        "remaining_acceptance": "Pinned fallback stored in button_press_handler, omitted from destructor; fresh renderer/tree-first teardown and close-during-emission tests required; existing test-painter-popup-handles.cpp source is not fresh acceptance"
+      },
+      "review_status": "NATIVE_OWNER_ROUTE_VERIFIED",
+      "evidence_package": "popup",
+      "case_identifiers": [
+        "native-activation-dismissal-reopen",
+        "generic-reentrant-close",
+        "signals/owner-first",
+        "signals/tree-first",
+        "signals/emitter-first",
+        "signals/model-refresh-close"
+      ],
+      "disposition": "native replacement owner route; historical visual/API parity remains separate"
+    },
+    {
+      "legacy_site": "app/widgets/gimplayerpopup.cpp:402",
+      "original_mapping": {
+        "legacy_site": "app/widgets/gimplayerpopup.cpp:402",
+        "current_owner": "PainterLayerDialog::connections",
+        "registration_path": "app/dialogs/painter-layer-dialog.cpp painter_dialog_connect; filter choice/number/flag/response callbacks",
+        "teardown_path": "PainterLayerDialog close clears connections before controls; DialogHook weak owner and generation dispatcher",
+        "status": "MAPPED_SOURCE_ONLY",
+        "remaining_acceptance": "Fresh final-source retained field/emitter and callback-close coverage for all mapped editor forms; modern forms do not establish original popup visual equivalence"
+      },
+      "review_status": "NATIVE_OWNER_ROUTE_VERIFIED",
+      "evidence_package": "layer-canvas",
+      "case_identifiers": [
+        "dialog_all_control_connections",
+        "dialog_control_emitter_first"
+      ],
+      "disposition": "native replacement owner route; historical visual/API parity remains separate"
+    },
+    {
+      "legacy_site": "app/widgets/gimplayerpopup.cpp:420",
+      "original_mapping": {
+        "legacy_site": "app/widgets/gimplayerpopup.cpp:420",
+        "current_owner": "PainterLayerDialog::connections",
+        "registration_path": "app/dialogs/painter-layer-dialog.cpp painter_dialog_connect; filter choice/number/flag/response callbacks",
+        "teardown_path": "PainterLayerDialog close clears connections before controls; DialogHook weak owner and generation dispatcher",
+        "status": "MAPPED_SOURCE_ONLY",
+        "remaining_acceptance": "Fresh final-source retained field/emitter and callback-close coverage for all mapped editor forms; modern forms do not establish original popup visual equivalence"
+      },
+      "review_status": "NATIVE_OWNER_ROUTE_VERIFIED",
+      "evidence_package": "layer-canvas",
+      "case_identifiers": [
+        "dialog_all_control_connections",
+        "dialog_control_emitter_first"
+      ],
+      "disposition": "native replacement owner route; historical visual/API parity remains separate"
+    },
+    {
+      "legacy_site": "app/widgets/gimplayerpopup.cpp:513",
+      "original_mapping": {
+        "legacy_site": "app/widgets/gimplayerpopup.cpp:513",
+        "current_owner": "PainterLayerDialog::connections",
+        "registration_path": "app/dialogs/painter-layer-dialog.cpp painter_dialog_connect; filter choice/number/flag/response callbacks",
+        "teardown_path": "PainterLayerDialog close clears connections before controls; DialogHook weak owner and generation dispatcher",
+        "status": "MAPPED_SOURCE_ONLY",
+        "remaining_acceptance": "Fresh final-source retained field/emitter and callback-close coverage for all mapped editor forms; modern forms do not establish original popup visual equivalence"
+      },
+      "review_status": "NATIVE_OWNER_ROUTE_VERIFIED",
+      "evidence_package": "layer-canvas",
+      "case_identifiers": [
+        "dialog_all_control_connections",
+        "dialog_control_emitter_first"
+      ],
+      "disposition": "native replacement owner route; historical visual/API parity remains separate"
+    },
+    {
+      "legacy_site": "app/widgets/gimplayerpopup.cpp:532",
+      "original_mapping": {
+        "legacy_site": "app/widgets/gimplayerpopup.cpp:532",
+        "current_owner": "PainterLayerDialog::connections",
+        "registration_path": "app/dialogs/painter-layer-dialog.cpp painter_dialog_connect; filter choice/number/flag/response callbacks",
+        "teardown_path": "PainterLayerDialog close clears connections before controls; DialogHook weak owner and generation dispatcher",
+        "status": "MAPPED_SOURCE_ONLY",
+        "remaining_acceptance": "Fresh final-source retained field/emitter and callback-close coverage for all mapped editor forms; modern forms do not establish original popup visual equivalence"
+      },
+      "review_status": "NATIVE_OWNER_ROUTE_VERIFIED",
+      "evidence_package": "layer-canvas",
+      "case_identifiers": [
+        "dialog_all_control_connections",
+        "dialog_control_emitter_first"
+      ],
+      "disposition": "native replacement owner route; historical visual/API parity remains separate"
+    },
+    {
+      "legacy_site": "app/widgets/gimplayerpopup.cpp:627",
+      "original_mapping": {
+        "legacy_site": "app/widgets/gimplayerpopup.cpp:627",
+        "current_owner": "PainterLayerDialog::connections",
+        "registration_path": "app/dialogs/painter-layer-dialog.cpp painter_dialog_connect; filter choice/number/flag/response callbacks",
+        "teardown_path": "PainterLayerDialog close clears connections before controls; DialogHook weak owner and generation dispatcher",
+        "status": "MAPPED_SOURCE_ONLY",
+        "remaining_acceptance": "Fresh final-source retained field/emitter and callback-close coverage for all mapped editor forms; modern forms do not establish original popup visual equivalence"
+      },
+      "review_status": "NATIVE_OWNER_ROUTE_VERIFIED",
+      "evidence_package": "layer-canvas",
+      "case_identifiers": [
+        "dialog_all_control_connections",
+        "dialog_control_emitter_first"
+      ],
+      "disposition": "native replacement owner route; historical visual/API parity remains separate"
+    },
+    {
+      "legacy_site": "app/widgets/gimplayerpopup.cpp:645",
+      "original_mapping": {
+        "legacy_site": "app/widgets/gimplayerpopup.cpp:645",
+        "current_owner": "PainterLayerDialog::connections",
+        "registration_path": "app/dialogs/painter-layer-dialog.cpp painter_dialog_connect; filter choice/number/flag/response callbacks",
+        "teardown_path": "PainterLayerDialog close clears connections before controls; DialogHook weak owner and generation dispatcher",
+        "status": "MAPPED_SOURCE_ONLY",
+        "remaining_acceptance": "Fresh final-source retained field/emitter and callback-close coverage for all mapped editor forms; modern forms do not establish original popup visual equivalence"
+      },
+      "review_status": "NATIVE_OWNER_ROUTE_VERIFIED",
+      "evidence_package": "layer-canvas",
+      "case_identifiers": [
+        "dialog_all_control_connections",
+        "dialog_control_emitter_first"
+      ],
+      "disposition": "native replacement owner route; historical visual/API parity remains separate"
+    },
+    {
+      "legacy_site": "app/widgets/gimplayerpopup.cpp:835",
+      "original_mapping": {
+        "legacy_site": "app/widgets/gimplayerpopup.cpp:835",
+        "current_owner": "Tiles::popup_connections",
+        "registration_path": "app/widgets/gimppainterlayertiles.cpp Tiles::show_popup opacity, alpha-lock and mode handlers",
+        "teardown_path": "Tiles::close_popup clears popup_connections before popup destroy; Tiles::close invokes close_popup",
+        "status": "MAPPED_SOURCE_ONLY",
+        "remaining_acceptance": "Fresh final-source retained controls and callback-close tests; old mode tree is replaced by native layer-mode box"
+      },
+      "review_status": "NATIVE_OWNER_ROUTE_VERIFIED",
+      "evidence_package": "layer-canvas",
+      "case_identifiers": [
+        "dialog_all_control_connections",
+        "dialog_control_emitter_first"
+      ],
+      "disposition": "native replacement owner route; historical visual/API parity remains separate"
+    },
+    {
+      "legacy_site": "app/widgets/gimplayerpopup.cpp:852",
+      "original_mapping": {
+        "legacy_site": "app/widgets/gimplayerpopup.cpp:852",
+        "current_owner": "Tiles::popup_connections",
+        "registration_path": "app/widgets/gimppainterlayertiles.cpp Tiles::show_popup opacity, alpha-lock and mode handlers",
+        "teardown_path": "Tiles::close_popup clears popup_connections before popup destroy; Tiles::close invokes close_popup",
+        "status": "MAPPED_SOURCE_ONLY",
+        "remaining_acceptance": "Fresh final-source retained controls and callback-close tests; old mode tree is replaced by native layer-mode box"
+      },
+      "review_status": "NATIVE_OWNER_ROUTE_VERIFIED",
+      "evidence_package": "layer-canvas",
+      "case_identifiers": [
+        "dialog_all_control_connections",
+        "dialog_control_emitter_first"
+      ],
+      "disposition": "native replacement owner route; historical visual/API parity remains separate"
+    },
+    {
+      "legacy_site": "app/widgets/gimplayerpopup.cpp:881",
+      "original_mapping": {
+        "legacy_site": "app/widgets/gimplayerpopup.cpp:881",
+        "current_owner": "Tiles::popup_connections",
+        "registration_path": "app/widgets/gimppainterlayertiles.cpp Tiles::show_popup opacity, alpha-lock and mode handlers",
+        "teardown_path": "Tiles::close_popup clears popup_connections before popup destroy; Tiles::close invokes close_popup",
+        "status": "MAPPED_SOURCE_ONLY",
+        "remaining_acceptance": "Fresh final-source retained controls and callback-close tests; old mode tree is replaced by native layer-mode box"
+      },
+      "review_status": "NATIVE_OWNER_ROUTE_VERIFIED",
+      "evidence_package": "layer-canvas",
+      "case_identifiers": [
+        "dialog_all_control_connections",
+        "dialog_control_emitter_first"
+      ],
+      "disposition": "native replacement owner route; historical visual/API parity remains separate"
+    },
+    {
+      "legacy_site": "app/widgets/gimplayerpopup.cpp:992",
+      "original_mapping": {
+        "legacy_site": "app/widgets/gimplayerpopup.cpp:992",
+        "current_owner": "Tiles::popup_connections; native GtkButton hover",
+        "registration_path": "app/widgets/gimppainterlayertiles.cpp button/clicked/Tiles::action replaces old action menu mouse hooks; GTK supplies hover",
+        "teardown_path": "Tiles::close_popup clears handlers; weak-owner Hook plus BindingStore active check",
+        "status": "MAPPED_SOURCE_ONLY",
+        "remaining_acceptance": "Fresh final-source action callback close and emitter/owner destruction tests; exact old menu hover presentation remains separate UI acceptance"
+      },
+      "review_status": "NATIVE_OWNER_ROUTE_VERIFIED",
+      "evidence_package": "layer-canvas",
+      "case_identifiers": [
+        "dialog_all_control_connections",
+        "dialog_control_emitter_first"
+      ],
+      "disposition": "native replacement owner route; historical visual/API parity remains separate"
+    },
+    {
+      "legacy_site": "app/widgets/gimplayerpopup.cpp:1000",
+      "original_mapping": {
+        "legacy_site": "app/widgets/gimplayerpopup.cpp:1000",
+        "current_owner": "Tiles::popup_connections; native GtkButton hover",
+        "registration_path": "app/widgets/gimppainterlayertiles.cpp button/clicked/Tiles::action replaces old action menu mouse hooks; GTK supplies hover",
+        "teardown_path": "Tiles::close_popup clears handlers; weak-owner Hook plus BindingStore active check",
+        "status": "MAPPED_SOURCE_ONLY",
+        "remaining_acceptance": "Fresh final-source action callback close and emitter/owner destruction tests; exact old menu hover presentation remains separate UI acceptance"
+      },
+      "review_status": "NATIVE_OWNER_ROUTE_VERIFIED",
+      "evidence_package": "layer-canvas",
+      "case_identifiers": [
+        "dialog_all_control_connections",
+        "dialog_control_emitter_first"
+      ],
+      "disposition": "native replacement owner route; historical visual/API parity remains separate"
+    },
+    {
+      "legacy_site": "app/widgets/gimplayerpopup.cpp:1008",
+      "original_mapping": {
+        "legacy_site": "app/widgets/gimplayerpopup.cpp:1008",
+        "current_owner": "Tiles::popup_connections; native GtkButton hover",
+        "registration_path": "app/widgets/gimppainterlayertiles.cpp button/clicked/Tiles::action replaces old action menu mouse hooks; GTK supplies hover",
+        "teardown_path": "Tiles::close_popup clears handlers; weak-owner Hook plus BindingStore active check",
+        "status": "MAPPED_SOURCE_ONLY",
+        "remaining_acceptance": "Fresh final-source action callback close and emitter/owner destruction tests; exact old menu hover presentation remains separate UI acceptance"
+      },
+      "review_status": "NATIVE_OWNER_ROUTE_VERIFIED",
+      "evidence_package": "layer-canvas",
+      "case_identifiers": [
+        "dialog_all_control_connections",
+        "dialog_control_emitter_first"
+      ],
+      "disposition": "native replacement owner route; historical visual/API parity remains separate"
+    },
+    {
+      "legacy_site": "app/widgets/gimplayerpopup.cpp:1049",
+      "original_mapping": {
+        "legacy_site": "app/widgets/gimplayerpopup.cpp:1049",
+        "current_owner": "PainterLayerDialog::connections",
+        "registration_path": "app/dialogs/painter-layer-dialog.cpp painter_dialog_connect; filter choice/number/flag/response callbacks",
+        "teardown_path": "PainterLayerDialog close clears connections before controls; DialogHook weak owner and generation dispatcher",
+        "status": "MAPPED_SOURCE_ONLY",
+        "remaining_acceptance": "Fresh final-source retained field/emitter and callback-close coverage for all mapped editor forms; modern forms do not establish original popup visual equivalence"
+      },
+      "review_status": "NATIVE_OWNER_ROUTE_VERIFIED",
+      "evidence_package": "layer-canvas",
+      "case_identifiers": [
+        "dialog_all_control_connections",
+        "dialog_control_emitter_first"
+      ],
+      "disposition": "native replacement owner route; historical visual/API parity remains separate"
+    },
+    {
+      "legacy_site": "app/widgets/gimplayerpopup.cpp:1096",
+      "original_mapping": {
+        "legacy_site": "app/widgets/gimplayerpopup.cpp:1096",
+        "current_owner": "PainterLayerDialog::connections",
+        "registration_path": "app/dialogs/painter-layer-dialog.cpp painter_dialog_connect; filter choice/number/flag/response callbacks",
+        "teardown_path": "PainterLayerDialog close clears connections before controls; DialogHook weak owner and generation dispatcher",
+        "status": "MAPPED_SOURCE_ONLY",
+        "remaining_acceptance": "Fresh final-source retained field/emitter and callback-close coverage for all mapped editor forms; modern forms do not establish original popup visual equivalence"
+      },
+      "review_status": "NATIVE_OWNER_ROUTE_VERIFIED",
+      "evidence_package": "layer-canvas",
+      "case_identifiers": [
+        "dialog_all_control_connections",
+        "dialog_control_emitter_first"
+      ],
+      "disposition": "native replacement owner route; historical visual/API parity remains separate"
+    },
+    {
+      "legacy_site": "app/widgets/gimplayertileview.cpp:420",
+      "original_mapping": {
+        "legacy_site": "app/widgets/gimplayertileview.cpp:420",
+        "current_owner": "Tiles::permanent and popup_connections",
+        "registration_path": "app/widgets/gimppainterlayertiles.cpp Tiles::build add-button press/motion/release and list draw/press; preset buttons via Tiles::show_popup",
+        "teardown_path": "Tiles::close clears permanent and popup connections before retained controls release; dispatch locks weak owner and BindingStore slot",
+        "status": "MAPPED_SOURCE_ONLY",
+        "remaining_acceptance": "Fresh final-source event/preset teardown and callback-close tests; no old gesture equivalence claim"
+      },
+      "review_status": "NATIVE_OWNER_ROUTE_VERIFIED",
+      "evidence_package": "layer-canvas",
+      "case_identifiers": [
+        "layer_popup_signal_close",
+        "layer_popup_emitter_first",
+        "layer_popup_signal_reentry",
+        "layer_permanent_signal_close",
+        "layer_preset_signal_owner"
+      ],
+      "disposition": "native replacement owner route; historical visual/API parity remains separate"
+    },
+    {
+      "legacy_site": "app/widgets/gimplayertileview.cpp:421",
+      "original_mapping": {
+        "legacy_site": "app/widgets/gimplayertileview.cpp:421",
+        "current_owner": "Tiles::permanent and popup_connections",
+        "registration_path": "app/widgets/gimppainterlayertiles.cpp Tiles::build add-button press/motion/release and list draw/press; preset buttons via Tiles::show_popup",
+        "teardown_path": "Tiles::close clears permanent and popup connections before retained controls release; dispatch locks weak owner and BindingStore slot",
+        "status": "MAPPED_SOURCE_ONLY",
+        "remaining_acceptance": "Fresh final-source event/preset teardown and callback-close tests; no old gesture equivalence claim"
+      },
+      "review_status": "NATIVE_OWNER_ROUTE_VERIFIED",
+      "evidence_package": "layer-canvas",
+      "case_identifiers": [
+        "layer_popup_signal_close",
+        "layer_popup_emitter_first",
+        "layer_popup_signal_reentry",
+        "layer_permanent_signal_close",
+        "layer_preset_signal_owner"
+      ],
+      "disposition": "native replacement owner route; historical visual/API parity remains separate"
+    },
+    {
+      "legacy_site": "app/widgets/gimplayertileview.cpp:422",
+      "original_mapping": {
+        "legacy_site": "app/widgets/gimplayertileview.cpp:422",
+        "current_owner": "Tiles::permanent and popup_connections",
+        "registration_path": "app/widgets/gimppainterlayertiles.cpp Tiles::build add-button press/motion/release and list draw/press; preset buttons via Tiles::show_popup",
+        "teardown_path": "Tiles::close clears permanent and popup connections before retained controls release; dispatch locks weak owner and BindingStore slot",
+        "status": "MAPPED_SOURCE_ONLY",
+        "remaining_acceptance": "Fresh final-source event/preset teardown and callback-close tests; no old gesture equivalence claim"
+      },
+      "review_status": "NATIVE_OWNER_ROUTE_VERIFIED",
+      "evidence_package": "layer-canvas",
+      "case_identifiers": [
+        "layer_popup_signal_close",
+        "layer_popup_emitter_first",
+        "layer_popup_signal_reentry",
+        "layer_permanent_signal_close",
+        "layer_preset_signal_owner"
+      ],
+      "disposition": "native replacement owner route; historical visual/API parity remains separate"
+    },
+    {
+      "legacy_site": "app/widgets/gimplayertileview.cpp:432",
+      "original_mapping": {
+        "legacy_site": "app/widgets/gimplayertileview.cpp:432",
+        "current_owner": "Tiles::permanent and popup_connections",
+        "registration_path": "app/widgets/gimppainterlayertiles.cpp Tiles::build add-button press/motion/release and list draw/press; preset buttons via Tiles::show_popup",
+        "teardown_path": "Tiles::close clears permanent and popup connections before retained controls release; dispatch locks weak owner and BindingStore slot",
+        "status": "MAPPED_SOURCE_ONLY",
+        "remaining_acceptance": "Fresh final-source event/preset teardown and callback-close tests; no old gesture equivalence claim"
+      },
+      "review_status": "NATIVE_OWNER_ROUTE_VERIFIED",
+      "evidence_package": "layer-canvas",
+      "case_identifiers": [
+        "layer_popup_signal_close",
+        "layer_popup_emitter_first",
+        "layer_popup_signal_reentry",
+        "layer_permanent_signal_close",
+        "layer_preset_signal_owner"
+      ],
+      "disposition": "native replacement owner route; historical visual/API parity remains separate"
+    },
+    {
+      "legacy_site": "app/widgets/gimplayertileview.cpp:433",
+      "original_mapping": {
+        "legacy_site": "app/widgets/gimplayertileview.cpp:433",
+        "current_owner": "Tiles::permanent and popup_connections",
+        "registration_path": "app/widgets/gimppainterlayertiles.cpp Tiles::build add-button press/motion/release and list draw/press; preset buttons via Tiles::show_popup",
+        "teardown_path": "Tiles::close clears permanent and popup connections before retained controls release; dispatch locks weak owner and BindingStore slot",
+        "status": "MAPPED_SOURCE_ONLY",
+        "remaining_acceptance": "Fresh final-source event/preset teardown and callback-close tests; no old gesture equivalence claim"
+      },
+      "review_status": "NATIVE_OWNER_ROUTE_VERIFIED",
+      "evidence_package": "layer-canvas",
+      "case_identifiers": [
+        "layer_popup_signal_close",
+        "layer_popup_emitter_first",
+        "layer_popup_signal_reentry",
+        "layer_permanent_signal_close",
+        "layer_preset_signal_owner"
+      ],
+      "disposition": "native replacement owner route; historical visual/API parity remains separate"
+    },
+    {
+      "legacy_site": "app/widgets/gimplayertileview.cpp:1281",
+      "original_mapping": {
+        "legacy_site": "app/widgets/gimplayertileview.cpp:1281",
+        "current_owner": "Tiles::permanent and popup_connections",
+        "registration_path": "app/widgets/gimppainterlayertiles.cpp Tiles::build add-button press/motion/release and list draw/press; preset buttons via Tiles::show_popup",
+        "teardown_path": "Tiles::close clears permanent and popup connections before retained controls release; dispatch locks weak owner and BindingStore slot",
+        "status": "MAPPED_SOURCE_ONLY",
+        "remaining_acceptance": "Fresh final-source event/preset teardown and callback-close tests; no old gesture equivalence claim"
+      },
+      "review_status": "NATIVE_OWNER_ROUTE_VERIFIED",
+      "evidence_package": "layer-canvas",
+      "case_identifiers": [
+        "layer_popup_signal_close",
+        "layer_popup_emitter_first",
+        "layer_popup_signal_reentry",
+        "layer_permanent_signal_close",
+        "layer_preset_signal_owner"
+      ],
+      "disposition": "native replacement owner route; historical visual/API parity remains separate"
+    },
+    {
+      "legacy_site": "app/widgets/gimptooltileview.cpp:262",
+      "original_mapping": {
+        "legacy_site": "app/widgets/gimptooltileview.cpp:262",
+        "current_owner": "Canvas::tool_signals/signals; native GtkButton events",
+        "registration_path": "app/display/gimppaintercanvasui.cpp Canvas::refresh_tools and connect; native tool buttons/expanders replace old custom expose/pointer dispatch",
+        "teardown_path": "Canvas::close clears tool/model/control connections before widgets; weak shell Hook and BindingStore active check",
+        "status": "MAPPED_SOURCE_ONLY",
+        "remaining_acceptance": "Fresh final-source tool/control emitter and shell destruction tests; missing old drawing/hover routes stay in UI WBS"
+      },
+      "review_status": "NATIVE_OWNER_ROUTE_VERIFIED",
+      "evidence_package": "layer-canvas",
+      "case_identifiers": [
+        "overlay_retained_emitters_shell_close",
+        "overlay_emitters_destroy_before_owner",
+        "tool_click_active_owner_close",
+        "tool_click_expanded_owner_close",
+        "tool_expander_owner_close"
+      ],
+      "disposition": "native replacement owner route; historical visual/API parity remains separate"
+    },
+    {
+      "legacy_site": "app/widgets/gimptooltileview.cpp:263",
+      "original_mapping": {
+        "legacy_site": "app/widgets/gimptooltileview.cpp:263",
+        "current_owner": "Canvas::tool_signals/signals; native GtkButton events",
+        "registration_path": "app/display/gimppaintercanvasui.cpp Canvas::refresh_tools and connect; native tool buttons/expanders replace old custom expose/pointer dispatch",
+        "teardown_path": "Canvas::close clears tool/model/control connections before widgets; weak shell Hook and BindingStore active check",
+        "status": "MAPPED_SOURCE_ONLY",
+        "remaining_acceptance": "Fresh final-source tool/control emitter and shell destruction tests; missing old drawing/hover routes stay in UI WBS"
+      },
+      "review_status": "NATIVE_OWNER_ROUTE_VERIFIED",
+      "evidence_package": "layer-canvas",
+      "case_identifiers": [
+        "overlay_retained_emitters_shell_close",
+        "overlay_emitters_destroy_before_owner",
+        "tool_click_active_owner_close",
+        "tool_click_expanded_owner_close",
+        "tool_expander_owner_close"
+      ],
+      "disposition": "native replacement owner route; historical visual/API parity remains separate"
+    },
+    {
+      "legacy_site": "app/widgets/gimptooltileview.cpp:264",
+      "original_mapping": {
+        "legacy_site": "app/widgets/gimptooltileview.cpp:264",
+        "current_owner": "Canvas::tool_signals/signals; native GtkButton events",
+        "registration_path": "app/display/gimppaintercanvasui.cpp Canvas::refresh_tools and connect; native tool buttons/expanders replace old custom expose/pointer dispatch",
+        "teardown_path": "Canvas::close clears tool/model/control connections before widgets; weak shell Hook and BindingStore active check",
+        "status": "MAPPED_SOURCE_ONLY",
+        "remaining_acceptance": "Fresh final-source tool/control emitter and shell destruction tests; missing old drawing/hover routes stay in UI WBS"
+      },
+      "review_status": "NATIVE_OWNER_ROUTE_VERIFIED",
+      "evidence_package": "layer-canvas",
+      "case_identifiers": [
+        "overlay_retained_emitters_shell_close",
+        "overlay_emitters_destroy_before_owner",
+        "tool_click_active_owner_close",
+        "tool_click_expanded_owner_close",
+        "tool_expander_owner_close"
+      ],
+      "disposition": "native replacement owner route; historical visual/API parity remains separate"
+    },
+    {
+      "legacy_site": "app/widgets/gimptooltileview.cpp:265",
+      "original_mapping": {
+        "legacy_site": "app/widgets/gimptooltileview.cpp:265",
+        "current_owner": "Canvas::tool_signals/signals; native GtkButton events",
+        "registration_path": "app/display/gimppaintercanvasui.cpp Canvas::refresh_tools and connect; native tool buttons/expanders replace old custom expose/pointer dispatch",
+        "teardown_path": "Canvas::close clears tool/model/control connections before widgets; weak shell Hook and BindingStore active check",
+        "status": "MAPPED_SOURCE_ONLY",
+        "remaining_acceptance": "Fresh final-source tool/control emitter and shell destruction tests; missing old drawing/hover routes stay in UI WBS"
+      },
+      "review_status": "NATIVE_OWNER_ROUTE_VERIFIED",
+      "evidence_package": "layer-canvas",
+      "case_identifiers": [
+        "overlay_retained_emitters_shell_close",
+        "overlay_emitters_destroy_before_owner",
+        "tool_click_active_owner_close",
+        "tool_click_expanded_owner_close",
+        "tool_expander_owner_close"
+      ],
+      "disposition": "native replacement owner route; historical visual/API parity remains separate"
+    },
+    {
+      "legacy_site": "app/widgets/gimptooltileview.cpp:266",
+      "original_mapping": {
+        "legacy_site": "app/widgets/gimptooltileview.cpp:266",
+        "current_owner": "Canvas::tool_signals/signals; native GtkButton events",
+        "registration_path": "app/display/gimppaintercanvasui.cpp Canvas::refresh_tools and connect; native tool buttons/expanders replace old custom expose/pointer dispatch",
+        "teardown_path": "Canvas::close clears tool/model/control connections before widgets; weak shell Hook and BindingStore active check",
+        "status": "MAPPED_SOURCE_ONLY",
+        "remaining_acceptance": "Fresh final-source tool/control emitter and shell destruction tests; missing old drawing/hover routes stay in UI WBS"
+      },
+      "review_status": "NATIVE_OWNER_ROUTE_VERIFIED",
+      "evidence_package": "layer-canvas",
+      "case_identifiers": [
+        "overlay_retained_emitters_shell_close",
+        "overlay_emitters_destroy_before_owner",
+        "tool_click_active_owner_close",
+        "tool_click_expanded_owner_close",
+        "tool_expander_owner_close"
+      ],
+      "disposition": "native replacement owner route; historical visual/API parity remains separate"
+    }
+  ],
+  "independent_review": "prepare_portrait_test_environment: all60 exact rows checked against native/ASan case bodies; only directeditor and actualapp HTTP exit gaps remain, layer/canvas post-initializer reseal pending.",
+  "completed_independent_review": {
+    "inventory_rows": 60,
+    "native_route_duties": 57,
+    "pinned_retired_routes": 3,
+    "distinct_native_case_identifiers": 45,
+    "finding": "Actual editor name/save/delete emitters and accepted app.c exit needed added evidence; application exit now independently exercised, editor controls still pending. No original criterion removed."
+  },
+  "post_initializer_receipt": "migration/tests/vfunc-exception-containment/layer-tiles-initializer/report.json",
+  "post_initializer_checkpoint": "91a4a58881c2575b960f9c232a7e1bc99204c253",
+  "actual_application_exit": "migration/tests/untracked-signals/fresh-20261021/application-exit/result.json",
+  "subsequent_dispatch_receipt": "migration/tests/vfunc-exception-containment/layer-signal-dispatch/report.json",
+  "subsequent_dispatch_checkpoint": "d8ac83c5a544e50100b880736f37865809bed014",
+  "acceptance_receipt": "migration/tests/untracked-signals/fresh-20261021/acceptance.json"
+}

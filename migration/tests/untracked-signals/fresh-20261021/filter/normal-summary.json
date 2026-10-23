@@ -1,0 +1,37 @@
+{
+  "scope": "Four exact FilterLayer dependency signal lifetime routes; not full FilterLayer suite",
+  "normal": [
+    {
+      "case": "dependency_connections_close_during_reorder",
+      "returncode": 0,
+      "result": "OK",
+      "duration_seconds": 67.13674998283386,
+      "tap_ok": 1
+    },
+    {
+      "case": "dependency_connections_preserve_new_stack",
+      "returncode": 0,
+      "result": "OK",
+      "duration_seconds": 67.37466168403625,
+      "tap_ok": 1
+    },
+    {
+      "case": "dependency_walk_does_not_resolve_pending_names",
+      "returncode": 0,
+      "result": "OK",
+      "duration_seconds": 65.22340130805969,
+      "tap_ok": 1
+    },
+    {
+      "case": "changed_dependency_invalidation_can_close_owner",
+      "returncode": 0,
+      "result": "OK",
+      "duration_seconds": 68.01969528198242,
+      "tap_ok": 1
+    }
+  ],
+  "source_sha256": {
+    "app/core/gimpfilterlayer.cpp": "33fae8e1a4c601e9577c8824d33d02d2294b0ff29253989378261d8b0e26963c",
+    "app/tests/test-gimp-filter-layer.c": "576bc8f2745327c4fa9db736b89823bb9049850cf82e6da32029fa8810486698"
+  }
+}

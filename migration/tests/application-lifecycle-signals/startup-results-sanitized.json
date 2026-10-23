@@ -1,0 +1,13 @@
+{
+  "redaction": "Inherited env and command fields entirely omitted; actual stdout/results retained",
+  "tests": [
+    {
+      "name": "gimp:app / painter-type-startup",
+      "stdout": "TAP version 14\n# random seed: R02S6fda45a742b150420df6e74538af592f\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n1..7\n# Start of painter-type-startup tests\nok 1 /painter-type-startup/cold-legacy-arguments\nok 2 /painter-type-startup/cold-snapshot-arguments\n# registered before data/config load: GimpToolItem\n# registered before data/config load: GimpPaintInfo\n# registered before data/config load: GimpPainterMybrush\n# registered before data/config load: GimpLayerPreset\n# registered before data/config load: GimpPainterPaintGate\n# registered before data/config load: GimpPainterMybrushOptions\n# registered before data/config load: GimpFillBrush\n# registered before data/config load: GimpFillBrushOptions\n# registered before data/config load: GimpPainterSmudge\n# registered before data/config load: GimpPainterSmudgeOptions\nok 3 /painter-type-startup/factory-and-paint-types\nok 4 /painter-type-startup/unknown-name-rejected\nok 5 /painter-type-startup/cold-tool-group-load\nok 6 /painter-type-startup/resource-config-properties\nok 7 /painter-type-startup/cold-factory-owner-teardown\n# End of painter-type-startup tests\n",
+      "result": "OK",
+      "starttime": 1792540684.2259002,
+      "duration": 0.17475485801696777,
+      "returncode": 0
+    }
+  ]
+}

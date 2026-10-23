@@ -374,7 +374,7 @@
 | 07.006 | [x] | dispose の再実行を試験する | 07.005 | 二度目以降でも状態が壊れない |
 | 07.007 | [x] | signal 中の close を試験する | 07.006 | 呼出し中 Impl が生存する |
 | 07.008 | [x] | 接続先先行破棄を試験する | 07.007 | Connection の destructor が解放済み object を触らない |
-| 07.008/untracked-signals | [ ] | 返却 Connection を捨てる接続を追跡可能にする | 07.008, 01.008 | 旧 connect_noret と未保存の接続を owner の終了時に解除し、emitter・owner の先行破棄と callback 中の close を試験する |
+| 07.008/untracked-signals | [x] | 返却 Connection を捨てる接続を追跡可能にする | 07.008, 01.008 | 旧 connect_noret と未保存の接続を owner の終了時に解除し、emitter・owner の先行破棄と callback 中の close を試験する |
 | 07.008/editor-page-memory | [x] | editor再構築と同一ownerのpopup再表示でpage選択を保持する | 07.008, 24.017/native-editor-workflow | 旧PageRemindのowner単位記憶を保持し、旧notebookの解除・context置換・popup再表示・独立editor分離をnative試験する |
 | 07.008/editor-prompt-ownership | [x] | MyPaint editor prompt の接続と再入寿命を所有する | 07.008, 24.017/native-editor-workflow | 9 stale・10再入・18 cancel/emitter-first経路、通常25/25・ASan/UBSan25/25。元失敗保持、120秒不変で117.06秒、LSanなし。親と他routeは未完了（migration/tests/editor-prompt-ownership/report.json） |
 | 07.008/connection-name | [x] | Connection の signal 名を解放する | 07.008, 01.007/connection-signal | 接続・切断・再切断で複製文字列を一回解放し、closure と target の寿命を検証する |

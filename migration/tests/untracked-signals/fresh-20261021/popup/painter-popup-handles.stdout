@@ -1,0 +1,91 @@
+TAP version 14
+# random seed: R02S7e7b42d273c4d88387f28d6a23940dfd
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ‘gio-vfs’
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+# GLib-DEBUG: unsetenv() is not thread-safe and should not be used after threads are created
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 64 x 64
+# GdkPixbuf-DEBUG: 	Rowstride: 256, Length: 16408
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation dconf (DConfSettingsBackend) for ‘gsettings-backend’
+# DEBUG: Error acquiring bus for cloud providers: Error spawning command line “dbus-launch --autolaunch=f09796fd086547da9ddf7488d4386bdf --binary-syntax --close-stderr”: Child process exited with code 1
+1..34
+# Start of painter-popup-handles tests
+# Start of admission tests
+# class closure=0, external observer=0
+ok 1 /painter-popup-handles/admission/closed-entry
+# class closure=0, external observer=0
+# class closure=1, external observer=1
+ok 2 /painter-popup-handles/admission/wrong-thread-entry
+# class closure=0, external observer=0
+ok 3 /painter-popup-handles/admission/invalid-arguments
+# class closure=0, external observer=0
+# class closure=1, external observer=1
+ok 4 /painter-popup-handles/admission/named-wrong-thread-entry
+# class closure=0, external observer=0
+# class closure=1, external observer=1
+ok 5 /painter-popup-handles/admission/constructing-c
+# class closure=0, external observer=0
+# class closure=1, external observer=1
+ok 6 /painter-popup-handles/admission/constructing-named
+# class closure=0, external observer=0
+# class closure=0, external observer=0
+ok 7 /painter-popup-handles/admission/closing-c
+# class closure=0, external observer=0
+# class closure=0, external observer=0
+ok 8 /painter-popup-handles/admission/closing-named
+# class closure=0, external observer=0
+ok 9 /painter-popup-handles/admission/named-closed
+# class closure=0, external observer=0
+ok 10 /painter-popup-handles/admission/named-disposed
+# class closure=0, external observer=0
+ok 11 /painter-popup-handles/admission/renderer-retain-closes
+# class closure=0, external observer=0
+ok 12 /painter-popup-handles/admission/tree-retain-closes
+# End of admission tests
+# Start of ownership tests
+ok 13 /painter-popup-handles/ownership/create-column-first
+ok 14 /painter-popup-handles/ownership/create-handle-first
+ok 15 /painter-popup-handles/ownership/retain-column-first
+ok 16 /painter-popup-handles/ownership/retain-handle-first
+ok 17 /painter-popup-handles/ownership/copy-move
+# End of ownership tests
+# Start of named tests
+ok 18 /painter-popup-handles/named/active-unbound-arguments
+# class closure=2, external observer=2
+ok 19 /painter-popup-handles/named/nested-emission
+# class closure=1, external observer=1
+ok 20 /painter-popup-handles/named/close-during-emission
+ok 21 /painter-popup-handles/named/last-reference-leases
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+ok 22 /painter-popup-handles/named/bound-controls-and-teardown
+# slow test /painter-popup-handles/named/bound-controls-and-teardown executed in 0.75 secs
+# End of named tests
+# Start of signals tests
+ok 23 /painter-popup-handles/signals/owner-first
+ok 24 /painter-popup-handles/signals/tree-first
+ok 25 /painter-popup-handles/signals/emitter-first
+ok 26 /painter-popup-handles/signals/model-refresh-close
+# End of signals tests
+# Start of pixbuf tests
+ok 27 /painter-popup-handles/pixbuf/initial-and-empty
+ok 28 /painter-popup-handles/pixbuf/replace-same-reset
+ok 29 /painter-popup-handles/pixbuf/recovery
+ok 30 /painter-popup-handles/pixbuf/failed-factory-result
+ok 31 /painter-popup-handles/pixbuf/caller-reference-survives-renderer
+ok 32 /painter-popup-handles/pixbuf/column-first
+ok 33 /painter-popup-handles/pixbuf/handle-first
+ok 34 /painter-popup-handles/pixbuf/retained-after-tree-close
+# End of pixbuf tests
+# End of painter-popup-handles tests
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created

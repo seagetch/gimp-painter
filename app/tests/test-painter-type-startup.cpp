@@ -17,6 +17,7 @@ extern "C" {
 #include "core/gimpfilterlayer.h"
 #include "core/gimpcontainer.h"
 #include "core/gimpdatafactory.h"
+#include "core/gimplayerpreset.h"
 #include "tools/gimp-tools.h"
 #include "gimp-log.h"
 #include "gimp-app-test-utils.h"
@@ -104,6 +105,46 @@ void factory_and_paint_types ()
                  application->layer_preset_factory);
 }
 
+/* Consume the cold application only in the final registered case. This is
+ * deliberately separate from full restore/accepted-exit acceptance. Retain the
+ * native factory/container while Gimp disposes, so merely dropping the factory
+ * pointer cannot make a leaked legacy owner look correct. */
+void cold_factory_owner_teardown ()
+{
+  auto *factory = application->layer_preset_factory;
+  auto *container = gimp_data_factory_get_container (factory);
+  g_object_ref (factory);
+  g_object_ref (container);
+  auto *preset = gimp_layer_preset_new (application->user_context,
+                                       "cold lifecycle fixture");
+  g_assert_nonnull (preset);
+  g_assert_true (gimp_container_add (container, GIMP_OBJECT (preset)));
+  GObject *weak_preset = G_OBJECT (preset);
+  g_object_add_weak_pointer (weak_preset, reinterpret_cast<gpointer *> (&weak_preset));
+  g_object_unref (preset);
+  g_assert_cmpint (gimp_container_get_n_children (container), ==, 1);
+
+  gimp_contexts_exit (application);
+  g_object_run_dispose (G_OBJECT (application));
+  g_assert_true (gimp_container_is_empty (container));
+  g_assert_null (weak_preset);
+  g_object_run_dispose (G_OBJECT (application));
+  g_assert_true (gimp_container_is_empty (container));
+  g_assert_null (application->painter_httpd);
+
+  GObject *weak_application = G_OBJECT (application);
+  GObject *weak_factory = G_OBJECT (factory);
+  g_object_add_weak_pointer (weak_application, reinterpret_cast<gpointer *> (&weak_application));
+  g_object_add_weak_pointer (weak_factory, reinterpret_cast<gpointer *> (&weak_factory));
+  g_clear_object (&application);
+  g_assert_null (weak_application);
+  g_assert_nonnull (weak_factory);
+  g_object_unref (factory);
+  g_assert_null (weak_factory);
+  g_assert_true (gimp_container_is_empty (container));
+  g_object_unref (container);
+}
+
 void unknown_name_rejected ()
 {
   const char *unknown = "PainterUnknownSavedType08001";
@@ -181,10 +222,11 @@ int main (int argc, char **argv)
   g_test_add_func ("/painter-type-startup/unknown-name-rejected", unknown_name_rejected);
   g_test_add_func ("/painter-type-startup/cold-tool-group-load", cold_tool_group_load);
   g_test_add_func ("/painter-type-startup/resource-config-properties", resource_config_properties);
+  g_test_add_func ("/painter-type-startup/cold-factory-owner-teardown", cold_factory_owner_teardown);
   const int result = g_test_run ();
   /* This fixture stops before config loading. Pair constructed's contexts
    * without running the normal exit handlers that save a loaded profile. */
-  gimp_contexts_exit (application);
-  g_object_unref (application);
+  if (application)
+    { gimp_contexts_exit (application); g_object_unref (application); }
   return result;
 }

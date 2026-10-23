@@ -1,0 +1,32 @@
+TAP version 14
+# random seed: R02S9af6e7f73ce315a739829553afc7d7b9
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ‘gio-vfs’
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+# GLib-DEBUG: unsetenv() is not thread-safe and should not be used after threads are created
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 64 x 64
+# GdkPixbuf-DEBUG: 	Rowstride: 256, Length: 16408
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation dconf (DConfSettingsBackend) for ‘gsettings-backend’
+# DEBUG: Error acquiring bus for cloud providers: Error spawning command line “dbus-launch --autolaunch=f09796fd086547da9ddf7488d4386bdf --binary-syntax --close-stderr”: Child process exited with code 1
+1..3
+# Start of painter-editor tests
+ok 1 /painter-editor/26-notebook-page-context-lifetime
+# slow test /painter-editor/26-notebook-page-context-lifetime executed in 2.74 secs
+ok 2 /painter-editor/27-notebook-page-popup-reopen
+# slow test /painter-editor/27-notebook-page-popup-reopen executed in 2.39 secs
+ok 3 /painter-editor/28-notebook-page-build-reentry
+# slow test /painter-editor/28-notebook-page-build-reentry executed in 2.77 secs
+# End of painter-editor tests
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false

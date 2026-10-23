@@ -1,0 +1,115 @@
+TAP version 14
+# random seed: R02Sd61bf924257a29709866d7ad0825557f
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ‘gio-vfs’
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+# GLib-DEBUG: unsetenv() is not thread-safe and should not be used after threads are created
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 64 x 64
+# GdkPixbuf-DEBUG: 	Rowstride: 256, Length: 16408
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation dconf (DConfSettingsBackend) for ‘gsettings-backend’
+# DEBUG: Error acquiring bus for cloud providers: Error spawning command line “dbus-launch --autolaunch=f09796fd086547da9ddf7488d4386bdf --binary-syntax --close-stderr”: Child process exited with code 1
+1..57
+# Start of editor-dropdown tests
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+ok 1 /editor-dropdown/generic-contract
+ok 2 /editor-dropdown/generic-reentrant-close
+ok 3 /editor-dropdown/native-activation-dismissal-reopen
+# slow test /editor-dropdown/native-activation-dismissal-reopen executed in 1.05 secs
+ok 4 /editor-dropdown/popup-cycles-context-retained-view
+ok 5 /editor-dropdown/selection-owner-loss
+ok 6 /editor-dropdown/retire-reopens-newer-context
+ok 7 /editor-dropdown/native-action-contract
+ok 8 /editor-dropdown/ordinary-action-control
+# Construction owner loss: kind=0 mode=0
+# Construction owner loss: kind=0 mode=1
+# Construction owner loss: kind=0 mode=2
+# Construction owner loss: kind=0 mode=3
+# Construction owner loss: kind=1 mode=0
+# Construction owner loss: kind=1 mode=1
+# Construction owner loss: kind=1 mode=2
+# Construction owner loss: kind=1 mode=3
+# Construction owner loss: kind=2 mode=0
+# Construction owner loss: kind=2 mode=1
+# Construction owner loss: kind=2 mode=3
+ok 9 /editor-dropdown/construction-owner-loss
+ok 10 /editor-dropdown/null-primary-tooltip-dropdown
+ok 11 /editor-dropdown/null-primary-tooltip-ordinary
+ok 12 /editor-dropdown/null-alternate-tooltip-dropdown
+ok 13 /editor-dropdown/null-alternate-tooltip-ordinary
+ok 14 /editor-dropdown/toggle-action-shape
+ok 15 /editor-dropdown/action-loss-during-construction
+ok 16 /editor-dropdown/missing-context-can-reopen
+ok 17 /editor-dropdown/completed-popup-cycles
+# slow test /editor-dropdown/completed-popup-cycles executed in 0.55 secs
+ok 18 /editor-dropdown/rapid-reopen-changes-context
+# slow test /editor-dropdown/rapid-reopen-changes-context executed in 0.52 secs
+ok 19 /editor-dropdown/interrupted-hide-preserves-newer-presentation
+ok 20 /editor-dropdown/interrupted-hide-owner-loss
+ok 21 /editor-dropdown/interrupted-hide-respects-cancel
+ok 22 /editor-dropdown/closed-retirement-reopens-newer-context
+ok 23 /editor-dropdown/closed-retirement-respects-cancel-and-owner-loss
+ok 24 /editor-dropdown/closed-retirement-newer-open-wins
+# Finalized alternate: kind=0
+# Finalization witness alternate_finalization_live_button:1 kind=0
+ok 25 /editor-dropdown/alternate-finalization-live-button-dropdown
+# Finalized alternate: kind=1
+# Finalization witness alternate_finalization_live_button:1 kind=1
+ok 26 /editor-dropdown/alternate-finalization-live-button-ordinary
+# Finalization witness alternate_replacement_preserves_identity:1 kind=0
+ok 27 /editor-dropdown/alternate-replacement-preserves-identity-dropdown
+# Finalization witness alternate_replacement_preserves_identity:1 kind=1
+ok 28 /editor-dropdown/alternate-replacement-preserves-identity-ordinary
+# Finalization witness alternate_loss_preserves_precedence:1 kind=0
+# Finalization witness alternate_loss_preserves_precedence:2 kind=0
+ok 29 /editor-dropdown/alternate-loss-preserves-precedence-dropdown
+# Finalization witness alternate_loss_preserves_precedence:1 kind=1
+# Finalization witness alternate_loss_preserves_precedence:2 kind=1
+ok 30 /editor-dropdown/alternate-loss-preserves-precedence-ordinary
+# Finalization witness alternate_self_removal_and_owner_loss:1 kind=0
+ok 31 /editor-dropdown/alternate-self-removal-and-owner-loss-dropdown-surviving-owner
+# Finalization witness alternate_self_removal_and_owner_loss:1 kind=0
+ok 32 /editor-dropdown/alternate-self-removal-and-owner-loss-dropdown-destroyed-owner
+# Finalization witness alternate_self_removal_and_owner_loss:1 kind=1
+ok 33 /editor-dropdown/alternate-self-removal-and-owner-loss-ordinary-surviving-owner
+# Finalization witness alternate_self_removal_and_owner_loss:1 kind=1
+ok 34 /editor-dropdown/alternate-self-removal-and-owner-loss-ordinary-destroyed-owner
+# Finalization witness alternate_manager_loss_live_button:1 kind=0
+ok 35 /editor-dropdown/alternate-manager-loss-live-button-dropdown
+# Finalization witness alternate_manager_loss_live_button:1 kind=1
+ok 36 /editor-dropdown/alternate-manager-loss-live-button-ordinary
+# Finalization witness alternate_retained_destroyed_button:1 kind=0
+ok 37 /editor-dropdown/alternate-retained-destroyed-button-dropdown
+# Finalization witness alternate_retained_destroyed_button:1 kind=1
+ok 38 /editor-dropdown/alternate-retained-destroyed-button-ordinary
+ok 39 /editor-dropdown/null-primary-tooltip-handle
+ok 40 /editor-dropdown/null-alternate-tooltip-handle
+ok 41 /editor-dropdown/handle-generic-parity
+ok 42 /editor-dropdown/handle-editor-ref-ownership
+ok 43 /editor-dropdown/handle-generic-ref-release-first
+ok 44 /editor-dropdown/handle-generic-ref-destroy-first
+ok 45 /editor-dropdown/handle-action-ref-release-first
+ok 46 /editor-dropdown/handle-action-ref-destroy-first
+ok 47 /editor-dropdown/handle-outlives-fixture-editor-first
+ok 48 /editor-dropdown/handle-outlives-fixture-primary-first
+ok 49 /editor-dropdown/handle-action-zero-alternates
+ok 50 /editor-dropdown/handle-action-one-alternate
+ok 51 /editor-dropdown/handle-action-multiple-alternates
+ok 52 /editor-dropdown/handle-toggle-action-parity
+ok 53 /editor-dropdown/handle-missing-lookup-parity
+ok 54 /editor-dropdown/handle-generic-reentry-parity
+ok 55 /editor-dropdown/handle-action-manager-reentry-parity
+ok 56 /editor-dropdown/handle-retained-destroyed-primary-parity
+ok 57 /editor-dropdown/handle-construction-owner-loss
+# End of editor-dropdown tests
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created

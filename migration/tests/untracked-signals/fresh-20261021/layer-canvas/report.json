@@ -1,0 +1,110 @@
+{
+  "task": "07.008/untracked-signals",
+  "scope": "Mapped modern layer-dialog and layer-tile signal ownership boundaries; not legacy visual parity or whole port completion",
+  "normal": [
+    {
+      "name": "gimp:app / painter-layer-ui",
+      "result": "OK",
+      "duration": 96.91798639297485,
+      "tap_passed": 70,
+      "tap_failed": []
+    },
+    {
+      "name": "gimp:app / painter-canvas-ui",
+      "result": "OK",
+      "duration": 28.49768304824829,
+      "tap_passed": 107,
+      "tap_failed": []
+    }
+  ],
+  "sanitizers": [
+    {
+      "name": "painter-layer-ui",
+      "returncode": 0,
+      "timeout": 180,
+      "duration_seconds": 145.925873616,
+      "tap_passed": 70,
+      "tap_failed": [],
+      "executable_sha256": "09a2bb3e1a51696377f7951b06d422b454d51fab42a556ffd2cf76862e50d18d",
+      "log_sha256": "d271da4d093fd31e9d61e46d825d0dbb2fdf6a532f7414a6bca661bcf3f9e572"
+    },
+    {
+      "name": "painter-canvas-ui",
+      "returncode": 0,
+      "timeout": 60,
+      "duration_seconds": 48.267915710000125,
+      "tap_passed": 107,
+      "tap_failed": [],
+      "executable_sha256": "9731d68ab985fd07ae2d1e403681b98136c1bd172ae92e6a2933288c142beeb5",
+      "log_sha256": "b12f1435b34dbed2e8dd9fb0dc9b3008f01f3c9a727a87e12999e228d603dd88"
+    }
+  ],
+  "source_sha256": {
+    "app/tests/test-painter-layer-ui.c": "609b34b82668a75d37de18b2c312e52d587bb93f02a91dc279f849bf6f2ed3ec",
+    "app/tests/test-painter-layer-signal-lifetimes.inc": "ae0cb5882159c7c91f9d496fcbc2b633dbdba9ae3d7a7846aaa8411461cc61b2",
+    "app/tests/test-painter-canvas-ui.c": "0af0bf202b59381d726740eadf8ad8f2fc2c01ebf03716a8c05c1fb38e5b872c",
+    "app/widgets/gimppainterlayertiles.cpp": "645283109a51948d67117219f520759db2d730e3101dba9b663688e39af19cff",
+    "app/dialogs/painter-layer-dialog.cpp": "572e96bbdbe28004c3445c8e0c8207d977bf15f821553e8aad3a9022505386db"
+  },
+  "source_unchanged_since_normal": {
+    "app/tests/test-painter-layer-ui.c": true,
+    "app/tests/test-painter-layer-signal-lifetimes.inc": true,
+    "app/tests/test-painter-canvas-ui.c": true,
+    "app/widgets/gimppainterlayertiles.cpp": true,
+    "app/dialogs/painter-layer-dialog.cpp": true
+  },
+  "development_matches_tested_sources": {
+    "app/tests/test-painter-layer-ui.c": true,
+    "app/tests/test-painter-layer-signal-lifetimes.inc": true,
+    "app/tests/test-painter-canvas-ui.c": true,
+    "app/widgets/gimppainterlayertiles.cpp": true,
+    "app/dialogs/painter-layer-dialog.cpp": true
+  },
+  "portrait": "1080x1920x24 authenticated loopback Xvfb; empty authority rejected",
+  "bounded_instrumentation": {
+    "layer": {
+      "instrumented": 15,
+      "rtti_only": 59,
+      "sanitizers": [
+        "address",
+        "undefined"
+      ],
+      "leak_detection": false
+    },
+    "canvas": {
+      "instrumented": 62,
+      "sanitizers": [
+        "address",
+        "undefined",
+        "float-cast-overflow"
+      ],
+      "leak_detection": false
+    }
+  },
+  "new_test_paths": [
+    "/painter-layer-ui/dialog_all_control_connections",
+    "/painter-layer-ui/dialog_control_emitter_first",
+    "/painter-canvas-ui/layer_popup_signal_close",
+    "/painter-canvas-ui/layer_popup_emitter_first",
+    "/painter-canvas-ui/layer_popup_signal_reentry",
+    "/painter-canvas-ui/layer_permanent_signal_close",
+    "/painter-canvas-ui/layer_preset_signal_owner"
+  ],
+  "fixture_corrections": [
+    "Initial synthetic preset lacked resource identifier required by real data factory; assign internal identifier before adding.",
+    "Initial direct gtk_range_set_value call retained range and owner but not its delegated GtkAdjustment emitter; retaining adjustment across synchronous popup close fixes trailing native notification without suppressing critical or retaining closed Impl. Mode-box and toggle paths retain actual control and need no extra fixture lease."
+  ],
+  "preliminary_limitations": [
+    "Earlier private/tmp layer-ui full run intentionally failed executable-relative filter worker lookup; proper registered binary later passed full70.",
+    "Earlier /tmp focused/canvas runs were preliminary only and superseded by proper registered normal and bounded sanitizer runs."
+  ],
+  "production_changes": false,
+  "test_changes": [
+    "app/tests/test-painter-layer-ui.c",
+    "app/tests/test-painter-layer-signal-lifetimes.inc"
+  ],
+  "full_scope_reports": [
+    "layer-sanitizer-build.json",
+    "canvas-sanitizer-build.json"
+  ]
+}

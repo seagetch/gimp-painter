@@ -1,0 +1,32 @@
+TAP version 14
+# random seed: R02S12ee243a637e8c467f28b8dc9876595d
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ‘gio-vfs’
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+# GLib-DEBUG: unsetenv() is not thread-safe and should not be used after threads are created
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 64 x 64
+# GdkPixbuf-DEBUG: 	Rowstride: 256, Length: 16408
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation dconf (DConfSettingsBackend) for ‘gsettings-backend’
+# DEBUG: Error acquiring bus for cloud providers: Error spawning command line “dbus-launch --autolaunch=f09796fd086547da9ddf7488d4386bdf --binary-syntax --close-stderr”: Child process exited with code 1
+1..3
+# Start of painter-editor tests
+ok 1 /painter-editor/29-direct-control-retirement
+# slow test /painter-editor/29-direct-control-retirement executed in 2.80 secs
+ok 2 /painter-editor/30-direct-control-emitter-first
+# slow test /painter-editor/30-direct-control-emitter-first executed in 1.35 secs
+ok 3 /painter-editor/31-direct-control-callback-close
+# slow test /painter-editor/31-direct-control-callback-close executed in 1.96 secs
+# End of painter-editor tests
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false

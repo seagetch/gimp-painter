@@ -1,0 +1,35 @@
+{
+  "task": "07.008/untracked-signals",
+  "status": "ACCEPTED_BOUNDED_OWNER_ROUTES",
+  "original_rows": 60,
+  "native_route_duties": 57,
+  "pinned_retired_routes": 3,
+  "distinct_native_case_identifiers": 45,
+  "normal_only": [
+    "startup7",
+    "actual installed HTTP-enabled app exit"
+  ],
+  "bounded_sanitizers": [
+    "filter4",
+    "popup34/dropdown57/selector29",
+    "editor25/page3/direct-controls3",
+    "layer70/canvas107 at initializer and dispatch checkpoints",
+    "HTTP18/HTTP-UI6"
+  ],
+  "validation": [
+    "validate-evidence.py",
+    "validate-routes.py",
+    "test-route-validator.py (7 controls)"
+  ],
+  "checkpoints": [
+    "91a4a58881c2575b960f9c232a7e1bc99204c253",
+    "d8ac83c5a544e50100b880736f37865809bed014"
+  ],
+  "limitations": [
+    "No whole-application sanitizer/LSan claim",
+    "Historical visual/API parity and unrelated feature duties stay separate",
+    "Screenshots attest actual recorded UI runs, not synthetic failure injection",
+    "New oncanvas tool-group reset/deserialization failure remains separately open; not hidden by this signal-owner acceptance"
+  ],
+  "redaction": "Four previously retained filter Meson env maps removed without changing result/stdout/stderr; environment-redaction.json records the transformation."
+}

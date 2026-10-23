@@ -1,0 +1,57 @@
+Xvfb verified: 127.0.0.1:91, 1080x1920x24, authenticated accepted, empty authority rejected
+painter-layer-ui dialog_all_control_connections 0 1.26
+# Disconnected retained control: painter-convmatrix-channel-2 / toggled
+# Disconnected retained control: painter-convmatrix-channel-3 / toggled
+# Disconnected retained control: painter-convmatrix-channel-4 / toggled
+ok 1 /painter-layer-ui/dialog_all_control_connections
+# End of painter-layer-ui tests
+1..1
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+painter-layer-ui dialog_control_emitter_first 0 1.58
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+ok 1 /painter-layer-ui/dialog_control_emitter_first
+# End of painter-layer-ui tests
+1..1
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+painter-canvas-ui layer_popup_signal_close 0 2.22
+# Closed tile control: layers-duplicate / clicked
+# Closed tile control: layers-new-clone / clicked
+# Closed tile control: layers-delete / clicked
+ok 1 /painter-canvas-ui/layer_popup_signal_close
+# End of painter-canvas-ui tests
+1..1
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+painter-canvas-ui layer_popup_emitter_first 0 2.5
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+ok 1 /painter-canvas-ui/layer_popup_emitter_first
+# slow test /painter-canvas-ui/layer_popup_emitter_first executed in 0.52 secs
+# End of painter-canvas-ui tests
+1..1
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+painter-canvas-ui layer_popup_signal_reentry 0 2.09
+# Property reentry: painter-layer-lock-alpha, destroy=0
+# Property reentry: painter-layer-lock-alpha, destroy=1
+ok 1 /painter-canvas-ui/layer_popup_signal_reentry
+# slow test /painter-canvas-ui/layer_popup_signal_reentry executed in 0.58 secs
+# End of painter-canvas-ui tests
+1..1
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+painter-canvas-ui layer_permanent_signal_close 0 1.98
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+ok 1 /painter-canvas-ui/layer_permanent_signal_close
+# End of painter-canvas-ui tests
+1..1
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+painter-canvas-ui layer_preset_signal_owner 0 2.21
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+ok 1 /painter-canvas-ui/layer_preset_signal_owner
+# End of painter-canvas-ui tests
+1..1
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created

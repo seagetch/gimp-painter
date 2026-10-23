@@ -553,6 +553,145 @@ static void named_bound_controls_and_teardown () {
   handle.clicked (native_tree.get (), delivery.path, nullptr);
   g_assert_cmpuint (delivery.calls, ==, 1);
 }
+/* 07.008/untracked-signals: a retained control must lose its actual closure,
+ * not merely dispatch into a closed owner. Detaching keeps the widgets alive
+ * and usable, so native widget disposal cannot make these assertions pass. */
+static gulong popup_handler (GObject *object, const char *signal) {
+  guint id = 0; GQuark detail = 0;
+  g_assert_true (g_signal_parse_name (signal, G_OBJECT_TYPE (object), &id, &detail, TRUE));
+  // Mode boxes have their own earlier notify handler. Popup::open installs
+  // its control connection after widget construction, so select the final
+  // matching handler, without confusing the native property's own observer.
+  std::vector<gulong> handlers;
+  while (auto handler = g_signal_handler_find (object,
+    GSignalMatchType (G_SIGNAL_MATCH_ID | G_SIGNAL_MATCH_DETAIL | G_SIGNAL_MATCH_UNBLOCKED),
+    id, detail, nullptr, nullptr, nullptr)) {
+    handlers.push_back (handler);
+    g_signal_handler_block (object, handler);
+  }
+  for (auto handler : handlers) g_signal_handler_unblock (object, handler);
+  g_assert_false (handlers.empty ());
+  return handlers.back ();
+}
+namespace {
+struct RetainedPopupControls {
+  ObjectRef<GObject> popup, opacity, mode, alpha;
+  gulong opacity_handler, mode_handler, alpha_handler;
+  unsigned destroy_calls = 0;
+  RetainedPopupControls (GimpCellRendererPopup *cell) {
+    auto *native = gimp_cell_renderer_popup_get_popup (cell);
+    g_assert_nonnull (native);
+    popup = ObjectRef<GObject>::retain (G_OBJECT (native));
+    opacity = ObjectRef<GObject>::retain (G_OBJECT (find_widget (native, "painter-tree-layer-opacity")));
+    mode = ObjectRef<GObject>::retain (G_OBJECT (find_widget (native, "painter-tree-layer-mode")));
+    alpha = ObjectRef<GObject>::retain (G_OBJECT (find_widget (native, "painter-tree-layer-lock-alpha")));
+    opacity_handler = popup_handler (opacity.get (), "value-changed");
+    mode_handler = popup_handler (mode.get (), "notify::layer-mode");
+    alpha_handler = popup_handler (alpha.get (), "toggled");
+    for (auto *object : {opacity.get (), mode.get (), alpha.get ()}) {
+      auto *widget = GTK_WIDGET (object);
+      gtk_container_remove (GTK_CONTAINER (gtk_widget_get_parent (widget)), widget);
+    }
+    g_signal_connect (native, "destroy", G_CALLBACK (+[](GtkWidget *, gpointer data) {
+      auto& controls = *static_cast<RetainedPopupControls *> (data);
+      ++controls.destroy_calls;
+      controls.assert_disconnected ();
+    }), this);
+  }
+  ~RetainedPopupControls () {
+    g_signal_handlers_disconnect_by_data (popup.get (), this);
+    for (auto *object : {opacity.get (), mode.get (), alpha.get ()})
+      if (object) gtk_widget_destroy (GTK_WIDGET (object));
+  }
+  void assert_disconnected () const {
+    if (opacity) g_assert_false (g_signal_handler_is_connected (opacity.get (), opacity_handler));
+    if (mode) g_assert_false (g_signal_handler_is_connected (mode.get (), mode_handler));
+    if (alpha) g_assert_false (g_signal_handler_is_connected (alpha.get (), alpha_handler));
+  }
+  void late_signals (GimpLayer *layer) const {
+    const auto before_opacity = gimp_layer_get_opacity (layer);
+    const auto before_mode = gimp_layer_get_mode (layer);
+    const auto before_alpha = gimp_layer_get_lock_alpha (layer);
+    /* Supply different live values: a stale closure would now mutate the
+     * model, rather than harmlessly writing its current value back. */
+    gtk_range_set_value (GTK_RANGE (opacity.get ()), before_opacity == .83 ? 17 : 83);
+    gimp_layer_mode_box_set_mode (GIMP_LAYER_MODE_BOX (mode.get ()),
+      before_mode == GIMP_LAYER_MODE_MULTIPLY_LEGACY ?
+      GIMP_LAYER_MODE_NORMAL_LEGACY : GIMP_LAYER_MODE_MULTIPLY_LEGACY);
+    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (alpha.get ()), !before_alpha);
+    g_signal_emit_by_name (opacity.get (), "value-changed");
+    g_object_notify (mode.get (), "layer-mode");
+    g_signal_emit_by_name (alpha.get (), "toggled");
+    g_assert_cmpfloat (gimp_layer_get_opacity (layer), ==, before_opacity);
+    g_assert_cmpint (gimp_layer_get_mode (layer), ==, before_mode);
+    g_assert_cmpint (gimp_layer_get_lock_alpha (layer), ==, before_alpha);
+  }
+};
+} // namespace
+static void retained_control_connections (unsigned retirement) {
+  NativeTree fixture;
+  auto handle = CellRendererPopupRef::retain (fixture.cell ());
+  gchar *path = fixture.path (fixture.a);
+  handle.clicked (G_OBJECT (fixture.view->view), path, nullptr); g_free (path);
+  RetainedPopupControls controls (handle.get ());
+  /* Positive control: detached native emitters still drive their live owner. */
+  gtk_range_set_value (GTK_RANGE (controls.opacity.get ()), 47);
+  g_assert_cmpfloat_with_epsilon (gimp_layer_get_opacity (fixture.a), .47, .000001);
+  gimp_layer_mode_box_set_mode (GIMP_LAYER_MODE_BOX (controls.mode.get ()), GIMP_LAYER_MODE_MULTIPLY_LEGACY);
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (controls.alpha.get ()), TRUE);
+  g_assert_cmpint (gimp_layer_get_mode (fixture.a), ==, GIMP_LAYER_MODE_MULTIPLY_LEGACY);
+  g_assert_true (gimp_layer_get_lock_alpha (fixture.a));
+  if (retirement == 0)
+    BindingStore::require (G_OBJECT (handle.get ())).close ();
+  else if (retirement == 1)
+    gtk_widget_destroy (fixture.tree);
+  else {
+    /* Finalize the emitters before their Connection owner is closed. */
+    for (auto *object : {controls.opacity.get (), controls.mode.get (), controls.alpha.get ()})
+      gtk_widget_destroy (GTK_WIDGET (object));
+    controls.assert_disconnected ();
+    for (auto *hold : {&controls.opacity, &controls.mode, &controls.alpha}) {
+      gpointer weak = hold->get ();
+      g_object_add_weak_pointer (hold->get (), &weak);
+      hold->reset ();
+      g_assert_null (weak);
+    }
+    BindingStore::require (G_OBJECT (handle.get ())).close ();
+  }
+  g_assert_true (BindingStore::require (G_OBJECT (handle.get ())).state () == BindingStore::State::closed);
+  g_assert_cmpuint (controls.destroy_calls, ==, 1);
+  controls.assert_disconnected ();
+  if (retirement != 2) controls.late_signals (fixture.a);
+  BindingStore::require (G_OBJECT (handle.get ())).close ();
+  g_assert_cmpuint (controls.destroy_calls, ==, 1);
+}
+static void model_refresh_closes_control_owner () {
+  NativeTree fixture;
+  auto handle = CellRendererPopupRef::retain (fixture.cell ());
+  gchar *path = fixture.path (fixture.a);
+  handle.clicked (G_OBJECT (fixture.view->view), path, nullptr); g_free (path);
+  RetainedPopupControls controls (handle.get ());
+  struct ReentrantClose { GObject *owner; unsigned calls = 0; } state {G_OBJECT (handle.get ())};
+  auto observer = g_signal_connect (controls.opacity.get (), "value-changed",
+    G_CALLBACK (+[](GtkRange *, gpointer data) {
+      auto& state = *static_cast<ReentrantClose *> (data);
+      ++state.calls;
+      BindingStore::require (state.owner).close ();
+    }), &state);
+  /* Native model -> Popup::refresh -> range notification -> close, while the
+   * original model callback and native adjustment emission are still active. */
+  gimp_layer_set_opacity (fixture.a, .31, FALSE);
+  g_assert_cmpuint (state.calls, ==, 1);
+  g_assert_cmpuint (controls.destroy_calls, ==, 1);
+  controls.assert_disconnected ();
+  g_assert_true (BindingStore::require (state.owner).state () == BindingStore::State::closed);
+  g_signal_handler_disconnect (controls.opacity.get (), observer);
+  g_assert_cmpfloat_with_epsilon (gtk_range_get_value (GTK_RANGE (controls.opacity.get ())), 31, .000001);
+  controls.late_signals (fixture.a);
+  gimp_layer_set_opacity (fixture.a, .62, FALSE);
+  g_assert_cmpfloat_with_epsilon (gtk_range_get_value (GTK_RANGE (controls.opacity.get ())), 83, .000001);
+}
+
 /* The popup delegates pixels, measurement and drawing to GtkCellRendererPixbuf.
  * These tests exercise that owner with actual parent rendering; closing the
  * application's PopupSlot is deliberately not the pixel-finalization oracle. */
@@ -845,6 +984,10 @@ int main (int argc, char **argv) {
   g_test_add_func ("/painter-popup-handles/named/close-during-emission", [] { named_nested_or_close (true); });
   g_test_add_func ("/painter-popup-handles/named/last-reference-leases", named_last_reference_leases);
   g_test_add_func ("/painter-popup-handles/named/bound-controls-and-teardown", named_bound_controls_and_teardown);
+  g_test_add_func ("/painter-popup-handles/signals/owner-first", [] { retained_control_connections (0); });
+  g_test_add_func ("/painter-popup-handles/signals/tree-first", [] { retained_control_connections (1); });
+  g_test_add_func ("/painter-popup-handles/signals/emitter-first", [] { retained_control_connections (2); });
+  g_test_add_func ("/painter-popup-handles/signals/model-refresh-close", model_refresh_closes_control_owner);
   g_test_add_func ("/painter-popup-handles/pixbuf/initial-and-empty", pixbuf_initial_and_empty);
   g_test_add_func ("/painter-popup-handles/pixbuf/replace-same-reset", pixbuf_replace_same_reset);
   g_test_add_func ("/painter-popup-handles/pixbuf/recovery", pixbuf_recovery);

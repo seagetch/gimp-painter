@@ -35,9 +35,11 @@ extern "C"
 #include "httpd/httpd-private.hpp"
 #include "httpd/httpd-resource.hpp"
 #include "painter/object-ref.hpp"
+#include "painter/binding-store.hpp"
 using namespace GimpPainter;
 using namespace GimpPainter::Http;
 static Gimp       *gimp;
+static bool        application_exited = false;
 static const char *token = "test-only-random-token-0123456789abcdef";
 static Response
 call (Router &r, const char *method, const std::string &path,
@@ -551,6 +553,53 @@ queued_service_dispose ()
   g_assert_cmpint (gimp_container_get_n_children (gimp->images), ==, before);
   g_assert_true (request.result.status == 503 || request.result.error != nullptr);
 }
+/* Run last: real core restore/exit/dispose ownership, not a synthetic call to
+ * Service::close. app.c's GApplication exit-after hook is a separate integration
+ * path; the core test initializer intentionally does not install that hook. */
+static void
+application_owned_service_teardown ()
+{
+  /* The test helper runs core initialize/restore, not app.c startup, which
+   * alone sets the external-input-ready initialized flag. */
+  g_assert_false (gimp->initialized);
+  g_assert_true (gimp->restored);
+  g_assert_nonnull (gimp->layer_preset_factory);
+  g_assert_null (gimp->painter_httpd);
+  auto service = start ();
+  gimp->painter_httpd = G_OBJECT (g_object_ref (service.get ()));
+  auto *binding = BindingStore::find (service.get ());
+  g_assert_nonnull (binding);
+  const auto generation = binding->generation ();
+  g_assert_true (binding->accepts (generation));
+  auto images = ObjectRef<GObject>::retain (G_OBJECT (gimp->images));
+  unsigned additions = 0;
+  const auto added = g_signal_connect (images.get (), "add",
+    G_CALLBACK (+[](GimpContainer *, GimpObject *, gpointer data) {
+      ++*static_cast<unsigned *> (data);
+    }), &additions);
+  Deferred request (gimp_painter_httpd_port (service.get ()), "PUT",
+                    "/api/v1/images/", R"({"boundary":[0,0,4,4]})");
+  request.queued (service.get ());
+
+  gimp_test_utils_set_gimp3_directory ("GIMP_TESTING_ABS_TOP_BUILDDIR",
+                                      "app/tests/gimpdir-output");
+  gimp_exit (gimp, TRUE);
+  application_exited = true;
+  g_object_run_dispose (G_OBJECT (gimp));
+  g_assert_null (gimp->painter_httpd);
+  g_assert_true (binding->state () == BindingStore::State::closed);
+  g_assert_false (binding->accepts (generation));
+  g_object_run_dispose (G_OBJECT (gimp));
+  g_object_run_dispose (service.get ());
+  request.finish ();
+  /* Existing images can be removed by normal exit; only new additions would
+   * demonstrate that the queued mutation escaped cancellation. */
+  g_assert_cmpuint (additions, ==, 0);
+  g_signal_handler_disconnect (images.get (), added);
+  g_assert_true (request.result.status == 503 || request.result.error != nullptr);
+  g_assert_cmpuint (gimp_painter_httpd_port (service.get ()), ==, 0);
+}
+
 static void
 headless_creation_delete ()
 {
@@ -730,9 +779,10 @@ main (int argc, char **argv)
   ADD (queued_service_dispose);
   ADD (headless_creation_delete);
   ADD (pdb_calling_error);
+  ADD (application_owned_service_teardown);
   int result = g_test_run ();
   gimp_test_utils_set_gimp3_directory ("GIMP_TESTING_ABS_TOP_BUILDDIR",
                                        "app/tests/gimpdir-output");
-  gimp_exit (gimp, TRUE);
+  if (! application_exited) gimp_exit (gimp, TRUE);
   return result;
 }

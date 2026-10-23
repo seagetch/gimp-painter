@@ -645,6 +645,123 @@ static void dialog_binding_close (void)
     }
 }
 
+/* 07.008: count actual connections, not just the absence of a crash when a
+ * stale child emits. Blocking and unblocking preserves any existing block
+ * depth and observes both ordinary and after handlers. */
+static guint layer_signal_handlers (gpointer object, const gchar *signal)
+{
+  guint id = 0;
+  GQuark detail = 0;
+  GSignalMatchType match = G_SIGNAL_MATCH_ID;
+  guint count;
+  g_assert_true (g_signal_parse_name (signal, G_OBJECT_TYPE (object), &id, &detail, TRUE));
+  if (detail) match |= G_SIGNAL_MATCH_DETAIL;
+  count = g_signal_handlers_block_matched (object, match, id, detail, NULL, NULL, NULL);
+  g_assert_cmpuint (g_signal_handlers_unblock_matched (object, match, id, detail, NULL, NULL, NULL), ==, count);
+  return count;
+}
+
+static const gchar *dialog_control_signal (GtkWidget *widget)
+{
+  if (GTK_IS_SPIN_BUTTON (widget)) return "value-changed";
+  if (GTK_IS_TOGGLE_BUTTON (widget)) return "toggled";
+  if (GTK_IS_BUTTON (widget)) return "clicked";
+  g_assert_true (GTK_IS_ENTRY (widget) || GTK_IS_COMBO_BOX (widget));
+  return "changed";
+}
+
+static void dialog_all_control_connections (void)
+{
+  const gchar *names[] = {
+    "painter-filter-choice", "painter-filter-cancel", "painter-edge-amount",
+    "painter-edge-wrap", "painter-edge-method", "painter-gauss-horizontal",
+    "painter-gauss-vertical", "painter-gauss-method", "painter-point-argument",
+    "painter-gauss-radius", "painter-gauss-horizontal-flag", "painter-gauss-vertical-flag",
+    "painter-blinds-angle", "painter-blinds-segments", "painter-blinds-orientation",
+    "painter-blinds-transparent", "painter-small-tiles-factor", "painter-retinex-scale",
+    "painter-retinex-nscales", "painter-retinex-mode", "painter-retinex-cvar",
+    "painter-convmatrix-divisor", "painter-convmatrix-offset", "painter-convmatrix-border"
+  };
+  GimpImage *image = new_image ();
+  GtkWidget *dialog = new_filter_dialog (image, NULL);
+  GPtrArray *controls = g_ptr_array_new_with_free_func (g_object_unref);
+  GArray *counts = g_array_new (FALSE, FALSE, sizeof (guint));
+  guint image_before = layer_signal_handlers (image, "disconnect");
+  guint pdb_before = layer_signal_handlers (gimp->pdb, "register-procedure");
+  gpointer weak_dialog = dialog;
+  gint layers = gimp_image_get_n_layers (image);
+  gint undo_depth = gimp_undo_stack_get_depth (gimp_image_get_undo_stack (image));
+  for (guint i = 0; i < G_N_ELEMENTS (names); i++)
+    g_ptr_array_add (controls, g_object_ref (field (dialog, names[i])));
+  for (guint i = 0; i < 30; i++)
+    {
+      gchar *name = i < 25 ? g_strdup_printf ("painter-convmatrix-%u", i) :
+                            g_strdup_printf ("painter-convmatrix-channel-%u", i - 25);
+      g_ptr_array_add (controls, g_object_ref (field (dialog, name)));
+      g_free (name);
+    }
+  g_assert_cmpuint (controls->len, ==, 54);
+  for (guint i = 0; i < controls->len; i++)
+    {
+      GtkWidget *control = g_ptr_array_index (controls, i);
+      guint count = layer_signal_handlers (control, dialog_control_signal (control));
+      g_assert_cmpuint (count, >, 0);
+      g_array_append_val (counts, count);
+    }
+  g_assert_true (gimp_painter_binding_close (G_OBJECT (dialog), NULL));
+  g_assert_true (gimp_painter_binding_close (G_OBJECT (dialog), NULL));
+  g_assert_cmpuint (layer_signal_handlers (image, "disconnect"), ==, image_before - 1);
+  g_assert_cmpuint (layer_signal_handlers (gimp->pdb, "register-procedure"), ==, pdb_before - 1);
+  for (guint i = 0; i < controls->len; i++)
+    {
+      GtkWidget *control = g_ptr_array_index (controls, i);
+      const gchar *signal = dialog_control_signal (control);
+      g_test_message ("Disconnected retained control: %s / %s", gtk_widget_get_name (control), signal);
+      g_assert_cmpuint (layer_signal_handlers (control, signal), ==, g_array_index (counts, guint, i) - 1);
+      g_signal_emit_by_name (control, signal);
+    }
+  gtk_dialog_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
+  g_assert_cmpint (gimp_image_get_n_layers (image), ==, layers);
+  g_assert_cmpint (gimp_undo_stack_get_depth (gimp_image_get_undo_stack (image)), ==, undo_depth);
+  g_object_add_weak_pointer (G_OBJECT (dialog), &weak_dialog);
+  gtk_widget_destroy (dialog);
+  g_object_unref (dialog);
+  g_assert_null (weak_dialog);
+  for (guint i = 0; i < controls->len; i++)
+    {
+      GtkWidget *control = g_ptr_array_index (controls, i);
+      g_signal_emit_by_name (control, dialog_control_signal (control));
+    }
+  g_ptr_array_unref (controls);
+  g_array_unref (counts);
+  g_object_unref (image);
+}
+
+static void dialog_control_emitter_first (void)
+{
+  const gchar *names[] = { "painter-filter-choice", "painter-edge-amount",
+    "painter-blinds-angle", "painter-blinds-transparent", "painter-retinex-mode",
+    "painter-convmatrix-channel-0", "painter-filter-cancel" };
+  for (guint i = 0; i < G_N_ELEMENTS (names); i++)
+    {
+      GimpImage *image = new_image ();
+      GtkWidget *dialog = new_filter_dialog (image, NULL);
+      GtkWidget *control = field (dialog, names[i]);
+      gpointer weak_control = control;
+      guint handlers = layer_signal_handlers (control, dialog_control_signal (control));
+      g_assert_cmpuint (handlers, >, 0);
+      g_object_add_weak_pointer (G_OBJECT (control), &weak_control);
+      gtk_widget_destroy (control);
+      g_assert_null (weak_control);
+      /* The owner still contains the Connection whose weak emitter expired. */
+      g_assert_true (gimp_painter_binding_close (G_OBJECT (dialog), NULL));
+      g_assert_true (gimp_painter_binding_close (G_OBJECT (dialog), NULL));
+      gtk_widget_destroy (dialog);
+      g_object_unref (dialog);
+      g_object_unref (image);
+    }
+}
+
 static void close_editor_on_notify (GObject *object, GParamSpec *pspec, gpointer data)
 {
   close_editor_on_choice (NULL, data);
@@ -811,6 +928,7 @@ int main (int argc, char **argv)
   ADD (filter_creation_close_reentry); ADD (filter_gaussian_alias_forms); ADD (filter_point_creation_and_edit); ADD (filter_choice_reentry_preserves_latest);
   ADD (clone_refresh_close_reentry); ADD (filter_non_utf8_preview);
   ADD (dialog_binding_close); ADD (filter_choice_last_owner_reentry);
+  ADD (dialog_all_control_connections); ADD (dialog_control_emitter_first);
   ADD (filter_status_last_owner_reentry); ADD (dialog_destroy_last_owner_reentry);
   ADD (dialog_factory_reentry);
   ADD (isolated_editor_create_reedit);

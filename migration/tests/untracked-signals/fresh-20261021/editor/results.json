@@ -1,0 +1,30 @@
+{
+  "scope": "Focused editor ASan/UBSan/float-cast-overflow; remaining libraries/app units uninstrumented or RTTI compatibility only; leak detection disabled",
+  "results": [
+    {
+      "mode": "existing-25",
+      "exit_code": 0,
+      "duration_seconds": 115.93749086700018,
+      "timeout_seconds": 120,
+      "command": [
+        "/workspace/shared/gimp-native-baseline/build-port/app/tests/painter-mypaint-editor-asan"
+      ],
+      "tap_ok": 25
+    },
+    {
+      "mode": "page-memory-3",
+      "exit_code": 0,
+      "duration_seconds": 11.407522786999834,
+      "timeout_seconds": 120,
+      "command": [
+        "/workspace/shared/gimp-native-baseline/build-port/app/tests/painter-mypaint-editor-asan"
+      ],
+      "tap_ok": 3
+    }
+  ],
+  "source_sha256": {
+    "app/widgets/gimppaintermybrusheditor.cpp": "fdb07580f0e2e3d4b26983c2937b044116ed185fc899a9269345355c35e468ad",
+    "app/tests/test-painter-mypaint-editor.cpp": "298379f1983076ac2fc287980f60bb562868f2cdacf00615f5559cffc4ad4e2f"
+  },
+  "source_hashes_unchanged": true
+}

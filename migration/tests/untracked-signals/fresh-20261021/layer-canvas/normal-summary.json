@@ -1,0 +1,42 @@
+{
+  "scope": "Layer dialog and tile connection lifecycle, normal registered targets",
+  "source_sha256": {
+    "app/tests/test-painter-layer-ui.c": "609b34b82668a75d37de18b2c312e52d587bb93f02a91dc279f849bf6f2ed3ec",
+    "app/tests/test-painter-layer-signal-lifetimes.inc": "ae0cb5882159c7c91f9d496fcbc2b633dbdba9ae3d7a7846aaa8411461cc61b2",
+    "app/tests/test-painter-canvas-ui.c": "0af0bf202b59381d726740eadf8ad8f2fc2c01ebf03716a8c05c1fb38e5b872c",
+    "app/widgets/gimppainterlayertiles.cpp": "645283109a51948d67117219f520759db2d730e3101dba9b663688e39af19cff",
+    "app/dialogs/painter-layer-dialog.cpp": "572e96bbdbe28004c3445c8e0c8207d977bf15f821553e8aad3a9022505386db"
+  },
+  "development_source_matches": {
+    "app/tests/test-painter-layer-ui.c": true,
+    "app/tests/test-painter-layer-signal-lifetimes.inc": true,
+    "app/tests/test-painter-canvas-ui.c": true,
+    "app/widgets/gimppainterlayertiles.cpp": true,
+    "app/dialogs/painter-layer-dialog.cpp": true
+  },
+  "display": "authenticated Xvfb 1080x1920x24",
+  "results": [
+    {
+      "name": "gimp:app / painter-layer-ui",
+      "result": "OK",
+      "duration": 96.91798639297485,
+      "tap_passed": 70,
+      "tap_failed": []
+    },
+    {
+      "name": "gimp:app / painter-canvas-ui",
+      "result": "OK",
+      "duration": 28.49768304824829,
+      "tap_passed": 107,
+      "tap_failed": []
+    }
+  ],
+  "binary_sha256": {
+    "painter-layer-ui": "3ac288f81b5eb95f3edf74e75aac0a296b111f9c5bd81bc493a7059e6d258133",
+    "painter-canvas-ui": "cd5d1649ef8357593dc8f2b7199e4bc717b654e74cc9c5fe092047180f5a7b3c"
+  },
+  "limitations": [
+    "Not a whole-port gate or full old UI parity claim.",
+    "Initial preliminary /tmp binaries and fixture failures are preserved separately."
+  ]
+}

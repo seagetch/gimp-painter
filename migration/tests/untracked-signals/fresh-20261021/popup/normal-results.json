@@ -1,0 +1,35 @@
+{
+  "scope": "Fresh ordinary registered popup/dropdown/selector suites",
+  "exit_status": 0,
+  "results": [
+    {
+      "name": "gimp:app / mypaint-selector-contracts",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 10.60968017578125,
+      "tap_ok": 29
+    },
+    {
+      "name": "gimp:app / editor-dropdown",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 5.706277370452881,
+      "tap_ok": 57
+    },
+    {
+      "name": "gimp:app / painter-popup-handles",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 2.374272584915161,
+      "tap_ok": 34
+    }
+  ],
+  "source_sha256": {
+    "app/tests/test-painter-popup-handles.cpp": "7aa9ca9e4589d714536591f31970b56eb04641aaae66c5b1f4f6b462747576de",
+    "app/widgets/gimpcellrendererpopup.cpp": "6ee7a2f3987c1c3106aab79188e40238e307159c7d6986c5cc2f3c47ed8c954d",
+    "app/widgets/gimpeditor-cxx.cpp": "daee8295e94acbfdfcdb08539691f628756fe18fc6257813c158961afe6a72ea",
+    "app/tests/test-editor-dropdown.cpp": "6b37d096d0ed0908fcd7cf3796a5a7ce886646b5e0a4200674c3b58a95cdf5fc",
+    "app/tests/test-mypaint-selector-contracts.cpp": "227687aaadabdf4c93d26a60184667efbf8c6c2595ec6d4365637857e5bc9938"
+  },
+  "matches_focused_asan_source_hashes": true
+}
