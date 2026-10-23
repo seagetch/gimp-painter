@@ -1,0 +1,326 @@
+diff --git a/app/base/glib-cxx-impl.hpp b/app/base/glib-cxx-impl.hpp
+index a2ad35e3..23d6faed 100644
+--- a/app/base/glib-cxx-impl.hpp
++++ b/app/base/glib-cxx-impl.hpp
+@@ -517,7 +517,7 @@ gint NewGClass<name, CStructs, Impl, IFaces...>::private_offset = 0;
+ 
+ template <char const* name, typename CStructs, typename Impl, typename... IFaces>
+ inline GType NewGClass<name, CStructs, Impl, IFaces...>::get_type (void) {
+-  static volatile gsize g_define_type_id__volatile = 0;
++  static gsize g_define_type_id__volatile = 0;
+   if (g_once_init_enter (&g_define_type_id__volatile)) {
+     GType g_define_type_id =
+         g_type_register_static_simple (CStructs::ParentTraits::get_type(),
+diff --git a/app/core/gimpdrawable-shadow.c b/app/core/gimpdrawable-shadow.c
+index d60af5c8..1d2d3f3e 100644
+--- a/app/core/gimpdrawable-shadow.c
++++ b/app/core/gimpdrawable-shadow.c
+@@ -25,6 +25,7 @@
+ #include "base/tile-manager.h"
+ 
+ #include "gimpdrawable.h"
++#include "legacy-timeline.h"
+ #include "gimpdrawable-private.h"
+ #include "gimpdrawable-shadow.h"
+ 
+@@ -80,6 +81,7 @@ gimp_drawable_merge_shadow_tiles (GimpDrawable *drawable,
+                                   gboolean      push_undo,
+                                   const gchar  *undo_desc)
+ {
++  legacy_timeline(G_OBJECT(drawable),"shadow-merge-enter");
+   gint x, y;
+   gint width, height;
+ 
+@@ -103,6 +105,7 @@ gimp_drawable_merge_shadow_tiles (GimpDrawable *drawable,
+                                   GIMP_OPACITY_OPAQUE, GIMP_REPLACE_MODE,
+                                   NULL, NULL, x, y);
+ 
++      legacy_timeline(G_OBJECT(drawable),"shadow-merge-applied");
+       tile_manager_unref (tiles);
+     }
+ }
+diff --git a/app/core/gimpfilterlayer.cpp b/app/core/gimpfilterlayer.cpp
+index 9141c8c7..d03319f8 100644
+--- a/app/core/gimpfilterlayer.cpp
++++ b/app/core/gimpfilterlayer.cpp
+@@ -597,7 +597,9 @@ void GLib::FilterLayer::project_region (gint          x,
+       pixel_region_init (&destPR,       tiles,
+                          dest_area.x, dest_area.y, dest_area.width, dest_area.height, TRUE);
+ 
++      legacy_timeline(g_object,"cache-input-copy-begin");
+       copy_region_nocow(&srcPR, &destPR);
++      legacy_timeline(g_object,"cache-input-copy-end");
+ 
+       if (runner) {
+ 
+@@ -624,6 +626,7 @@ void GLib::FilterLayer::project_region (gint          x,
+   }
+ //  g_print("--->%s: do parent process\n",self [gimp_object_get_name] () );
+ 
++  legacy_timeline(g_object,"composite-cache");
+   GIMP_DRAWABLE_CLASS(Class::parent_class)->project_region (self, x, y, width, height, projPR, combine);
+ }
+ 
+@@ -716,6 +719,7 @@ void GLib::FilterLayer::filter_reset () {
+ 
+ void GLib::FilterLayer::notify_filter_end()
+ {
++  legacy_timeline(g_object,"propagation-begin");
+   auto self   = ref(g_object);
+   gint width  = self [gimp_item_get_width] ();
+   gint height = self [gimp_item_get_height] ();
+@@ -731,6 +735,7 @@ void GLib::FilterLayer::notify_filter_end()
+     projection [gimp_projection_flush_now] ();
+     image [gimp_image_flush] ();
+   }
++  legacy_timeline(g_object,"propagation-end");
+ }
+ 
+ 
+@@ -759,10 +764,12 @@ GimpProgress* GLib::FilterLayer::start(const gchar* message,
+ 
+ void GLib::FilterLayer::end()
+ {
++  legacy_timeline(g_object,"progress-end-callback");
+ //  g_print("%s: FilterLayer::end\n", ref(g_object) [gimp_object_get_name] () );
+   runner->on_end();
+   if (new_runner) {
+ //    g_print("%s: New runner exists. run again.\n", ref(g_object) [gimp_object_get_name] () );
++    legacy_timeline(g_object,"new-runner-requeue");
+     runner      = std::move(new_runner);
+     filter_reset();
+     return;
+@@ -784,6 +791,8 @@ void GLib::FilterLayer::set_text(const gchar* message)
+ 
+ void GLib::FilterLayer::set_value(gdouble      percentage)
+ {
++  legacy_timeline(g_object,"progress-value");
++  g_object_set_data(g_object,"timeline-progress-seen",GINT_TO_POINTER(1));
+   filter_progress = percentage;
+ }
+ 
+@@ -1046,6 +1055,7 @@ void GLib::FilterLayer::on_stack_update (GimpDrawableStack *_stack,
+   if (prev_waiting_state && !waiting_process_stack) {
+ //    g_print("become !waiting_process_stack\n");
+     // wating_process_stac: 5-1 (assuming below layer flush its contents if they finished the filter process.)
++    legacy_timeline(g_object,"stack-unblocked-requeue");
+     filter_reset();
+     invalidate_layer();
+ 
+@@ -1207,3 +1217,8 @@ gimp_filter_layer_mark_as_loaded (GimpFilterLayer* layer)
+ {
+   FilterLayerInterface::cast(layer)->mark_as_loaded ();
+ }
++
++extern "C" gint gimp_filter_layer_capture_pending(GimpFilterLayer* layer) {
++ auto* impl=dynamic_cast<GLib::FilterLayer*>(FilterLayerInterface::cast(layer));
++ return (impl->is_waiting_to_be_processed()?1:0)|(impl->waiting_for_runner?2:0);
++}
+diff --git a/app/display/gimpdisplayshell-callbacks.c b/app/display/gimpdisplayshell-callbacks.c
+index 79ebbff0..b7626470 100644
+--- a/app/display/gimpdisplayshell-callbacks.c
++++ b/app/display/gimpdisplayshell-callbacks.c
+@@ -35,6 +35,7 @@
+ #include "gimpcanvasitem.h"
+ #include "gimpdisplay.h"
+ #include "gimpdisplayshell.h"
++#include "gimpdisplayshell-overlays.h"
+ #include "gimpdisplayshell-appearance.h"
+ #include "gimpdisplayshell-callbacks.h"
+ #include "gimpdisplayshell-draw.h"
+diff --git a/app/display/gimpimagewindow.c b/app/display/gimpimagewindow.c
+index 04ffaff8..af370bab 100644
+--- a/app/display/gimpimagewindow.c
++++ b/app/display/gimpimagewindow.c
+@@ -62,6 +62,8 @@
+ #include "gimpdisplay-foreach.h"
+ #include "gimpcanvas.h"
+ #include "gimpdisplayshell.h"
++#include "gimpdisplayshell-overlays.h"
++#include "gimpdisplayshell-rotate.h"
+ #include "gimpdisplayshell-appearance.h"
+ #include "gimpdisplayshell-close.h"
+ #include "gimpdisplayshell-scroll.h"
+diff --git a/app/pdb/pdb-cxx-utils.hpp b/app/pdb/pdb-cxx-utils.hpp
+index 7f588035..e95bdfdd 100644
+--- a/app/pdb/pdb-cxx-utils.hpp
++++ b/app/pdb/pdb-cxx-utils.hpp
+@@ -42,6 +42,7 @@ extern "C" {
+ #include "plug-in/gimppluginprocedure.h"
+ }
+ 
++#include "core/legacy-timeline.h"
+ #include "base/scopeguard.hpp"
+ #include "base/glib-cxx-utils.hpp"
+ 
+@@ -151,7 +152,7 @@ public:
+ 
+   ~ProcedureRunnerImpl() {
+     if (running)
+-      gimp_progress_cancel(progress);
++      { legacy_timeline(G_OBJECT(progress),"cancel-signal"); gimp_progress_cancel(progress); }
+     if (args) {
+       g_value_array_free(args);
+       args = NULL;
+@@ -203,6 +204,8 @@ public:
+ 
+   template<typename... ContextArgs>
+   bool run(ContextArgs... cargs) {
++    g_object_set_data(G_OBJECT(progress),"timeline-ordinal",GINT_TO_POINTER(GPOINTER_TO_INT(g_object_get_data(G_OBJECT(progress),"timeline-ordinal"))+1));
++    legacy_timeline(G_OBJECT(progress),"run-enter");
+     if (running || !procedure) {
+       cancel();
+       return false;
+@@ -235,6 +238,7 @@ public:
+     {
+       GLib::synchronized locker(&mutex);
+       running = true;
++      legacy_timeline(G_OBJECT(progress),"run-return-running");
+       if (preserved)
+         preserved = false;
+     }
+@@ -244,11 +248,13 @@ public:
+ 
+ 
+   void stop() {
++    legacy_timeline(G_OBJECT(progress),running ? "stop-request-running" : "stop-request-idle");
+     if (running)
+-      gimp_progress_cancel(progress);
++      { legacy_timeline(G_OBJECT(progress),"cancel-signal"); gimp_progress_cancel(progress); }
+   }
+ 
+   void on_end() {
++    legacy_timeline(G_OBJECT(progress),"runner-on-end");
+     running = false;
+   }
+ 
+diff --git a/app/presets/preset-factory-gui.cpp b/app/presets/preset-factory-gui.cpp
+index c2f8bae6..d3219c6f 100644
+--- a/app/presets/preset-factory-gui.cpp
++++ b/app/presets/preset-factory-gui.cpp
+@@ -206,7 +206,7 @@ PresetGuiFactory::restore (Gimp               *gimp,
+     g_print("PresetGuiFactory::on_restore::end\n");
+ 
+     // Action group entry initialization
+-    PresetGuiConfig::ActionGroupEntry* action_group_entry = gui_config->get_action_group_entry();
++    auto* action_group_entry = gui_config->get_action_group_entry();
+ 
+     if (action_group_entry)
+       gimp_action_factory_group_register (global_action_factory,
+diff --git a/app/signals.c b/app/signals.c
+index 57b3b27f..a04c5a6b 100644
+--- a/app/signals.c
++++ b/app/signals.c
+@@ -18,6 +18,9 @@
+ #include "config.h"
+ 
+ #include <signal.h>
++#ifdef HAVE_EXECINFO_H
++#include <execinfo.h>
++#endif
+ 
+ #include <glib-object.h>
+ 
+diff --git a/app/tests/test-xcf.c b/app/tests/test-xcf.c
+index dc071cb1..ffd89d35 100644
+--- a/app/tests/test-xcf.c
++++ b/app/tests/test-xcf.c
+@@ -977,40 +977,44 @@ gimp_assert_mainimage (GimpImage *image,
+  *  - Make sure that the information put into a #GimpImage is not lost
+  *    when the #GimpImage is written to a file and then read again
+  **/
+-int
+-main (int    argc,
+-      char **argv)
+-{
+-  Gimp *gimp;
+-  int   result;
+-
+-  g_thread_init (NULL);
+-  g_type_init ();
+-  g_test_init (&argc, &argv, NULL);
+-
+-  gimp_test_utils_set_gimp2_directory ("GIMP_TESTING_ABS_TOP_SRCDIR",
+-                                       "app/tests/gimpdir");
+-
+-  /* We share the same application instance across all tests. We need
+-   * the GUI variant for the file procs
+-   */
+-  gimp = gimp_init_for_testing ();
+-
+-  /* Add tests */
+-  ADD_TEST (write_and_read_gimp_2_6_format);
+-  ADD_TEST (write_and_read_gimp_2_6_format_unusual);
+-  ADD_TEST (load_gimp_2_6_file);
+-  ADD_TEST (write_and_read_gimp_2_8_format);
+-
+-  /* Don't write files to the source dir */
+-  gimp_test_utils_set_gimp2_directory ("GIMP_TESTING_ABS_TOP_BUILDDIR",
+-                                       "app/tests/gimpdir-output");
+ 
+-  /* Run the tests */
+-  result = g_test_run ();
+ 
+-  /* Exit so we don't break script-fu plug-in wire */
+-  gimp_exit (gimp, TRUE);
+ 
+-  return result;
++#include "core/gimpclonelayer.h"
++#include "core/gimpfilterlayer.h"
++#include "core/gimpcontainer.h"
++#include "core/gimppickable.h"
++#include "core/gimpprojection.h"
++#include "core/gimpimage-undo.h"
++#include "core/gimpundostack.h"
++#include "core/gimpitemundo.h"
++#include "core/gimpcontext.h"
++#include "core/gimp-edit.h"
++#include "pdb/gimppdb.h"
++#include "pdb/gimpprocedure.h"
++extern gint gimp_filter_layer_capture_pending(GimpFilterLayer*);
++#include "core/gimpprogress.h"
++#include "core/legacy-timeline.h"
++static void updated(GimpDrawable *d,gint x,gint y,gint w,gint h,gpointer unused) {legacy_timeline(G_OBJECT(d),"drawable-update-signal");}
++static GimpLayer *effect(Gimp *g,GimpImage *im,const char *name,gint position,gboolean builtin) {
++ const char *pn=builtin?"gimp-brightness-contrast":"plug-in-edge";GimpProcedure *p=gimp_pdb_lookup_procedure(g->pdb,pn);GValueArray *v;GArray *a;guint i;GimpLayer *l;
++ g_assert(p);v=gimp_procedure_get_arguments(p);a=g_array_sized_new(FALSE,TRUE,sizeof(GValue),v->n_values);g_array_set_clear_func(a,(GDestroyNotify)g_value_unset);g_array_set_size(a,v->n_values);
++ for(i=0;i<v->n_values;i++){GValue *dest=&g_array_index(a,GValue,i);g_value_init(dest,G_VALUE_TYPE(&v->values[i]));g_value_copy(&v->values[i],dest);}
++ if(builtin){g_value_set_int(&g_array_index(a,GValue,1),25);g_value_set_int(&g_array_index(a,GValue,2),-10);}else{g_value_set_int(&g_array_index(a,GValue,0),GIMP_RUN_NONINTERACTIVE);g_value_set_double(&g_array_index(a,GValue,3),2);g_value_set_int(&g_array_index(a,GValue,4),1);g_value_set_int(&g_array_index(a,GValue,5),0);}
++ l=gimp_filter_layer_new(im,256,256,name,1,GIMP_NORMAL_MODE);g_assert(gimp_image_add_layer(im,l,NULL,position,FALSE));g_signal_connect(l,"update",G_CALLBACK(updated),NULL);gimp_filter_layer_set_procedure(GIMP_FILTER_LAYER(l),pn,a);g_array_unref(a);g_value_array_free(v);return l;
+ }
++static void render(GimpImage *im){guchar px[4];gint x,y;gimp_pickable_flush(GIMP_PICKABLE(gimp_image_get_projection(im)));for(y=0;y<256;y+=64)for(x=0;x<256;x+=64)gimp_pickable_get_pixel_at(GIMP_PICKABLE(gimp_image_get_projection(im)),x,y,px);}
++static GimpLayer *late_cancel_target;
++static void pump(GimpImage *im,gint milliseconds){gint64 until=g_get_monotonic_time()+milliseconds*1000;while(g_get_monotonic_time()<until){while(g_main_context_iteration(NULL,FALSE));if(late_cancel_target && g_object_get_data(G_OBJECT(late_cancel_target),"timeline-progress-seen")){GimpLayer *l=late_cancel_target;late_cancel_target=NULL;legacy_timeline(G_OBJECT(l),"late-cancel-request");gimp_progress_cancel(GIMP_PROGRESS(l));}render(im);g_usleep(1000);}}
++static void cachehash(GimpLayer *l){GChecksum *sum=g_checksum_new(G_CHECKSUM_SHA256);gint x,y;guchar px[4];for(y=0;y<256;y++)for(x=0;x<256;x++){gimp_pickable_get_pixel_at(GIMP_PICKABLE(l),x,y,px);g_checksum_update(sum,px,4);}g_print("CACHE name=%s sha256=%s\n",gimp_object_get_name(l),g_checksum_get_string(sum));g_checksum_free(sum);}
++static void state(GimpLayer *l,const char *event){legacy_timeline(G_OBJECT(l),event);g_print("STATE time_us=%" G_GINT64_FORMAT " name=%s pending=%d active=%d attached=%d ordinal=%d\n",g_get_monotonic_time(),gimp_object_get_name(l),gimp_filter_layer_capture_pending(GIMP_FILTER_LAYER(l)),gimp_progress_is_active(GIMP_PROGRESS(l)),gimp_item_is_attached(GIMP_ITEM(l)),GPOINTER_TO_INT(g_object_get_data(G_OBJECT(l),"timeline-ordinal")));}
++int main(int argc,char **argv){Gimp *g;GimpImage *im;GimpLayer *src,*top,*bottom=NULL;GimpRGB red={.8,.2,.4,1},blue={.1,.2,.8,1};const char *scene=g_getenv("TIMELINE_SCENE");
++ g_thread_init(NULL);g_type_init();gtk_init(&argc,&argv);gimp_test_utils_setup_menus_dir();g=gimp_init_for_gui_testing(TRUE);im=gimp_create_image(g,256,256,GIMP_RGB,FALSE);src=gimp_layer_new(im,256,256,GIMP_RGBA_IMAGE,"source",1,GIMP_NORMAL_MODE);g_assert(gimp_image_add_layer(im,src,NULL,0,FALSE));gimp_drawable_fill(GIMP_DRAWABLE(src),&red,NULL);gimp_drawable_update(GIMP_DRAWABLE(src),0,0,256,256);
++ top=effect(g,im,"top",0,!strcmp(scene,"builtin"));g_object_ref(top);render(im);state(top,"after-initial-flush");
++ if(!strcmp(scene,"stack")){bottom=effect(g,im,"bottom",1,FALSE);g_object_ref(bottom);gimp_drawable_update(GIMP_DRAWABLE(src),0,0,256,256);state(top,"after-stack-insert");}
++ if(!strcmp(scene,"cancel")){legacy_timeline(G_OBJECT(top),"explicit-cancel-request");gimp_progress_cancel(GIMP_PROGRESS(top));state(top,"after-explicit-cancel");}
++ if(!strcmp(scene,"detach")){legacy_timeline(G_OBJECT(top),"detach-request");gimp_image_remove_layer(im,top,TRUE,NULL);state(top,"after-detach");}
++ if(!strcmp(scene,"latecancel"))late_cancel_target=top;
++ pump(im,1500);state(top,"first-window-end");if(bottom)state(bottom,"first-window-end");cachehash(top);
++ if(strcmp(scene,"builtin")&&strcmp(scene,"detach")){legacy_timeline(G_OBJECT(src),"edit-source-request");gimp_drawable_fill(GIMP_DRAWABLE(src),&blue,NULL);gimp_drawable_update(GIMP_DRAWABLE(src),0,0,256,256);pump(im,1500);state(top,"second-window-end");if(bottom)state(bottom,"second-window-end");cachehash(top);}
++ g_print("TIMELINE_COMPLETE scene=%s\n",scene);return 0;}
+diff --git a/configure.ac b/configure.ac
+index f47f24a1..fb1fdda8 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -1747,11 +1747,11 @@ AC_ARG_WITH(linux-input, [  --without-linux-input   don't build linux input even
+ 
+ have_linux_input="no (linux input support disabled)"
+ if test "x$with_linux_input" != "xno"; then
+-  AC_CHECK_HEADER(linux/input.h,
+-	AC_CHECK_DECL(KEY_OK,
+-		have_linux_input=yes,
+-		have_linux_input="no (needs Linux 2.6)",
+-		[#include <linux/input.h>]))
++  AC_CHECK_HEADER([linux/input.h],
++        [AC_CHECK_DECL([KEY_OK],
++                [have_linux_input=yes],
++                [have_linux_input="no (needs Linux 2.6)"],
++                [#include <linux/input.h>])])
+ fi
+ 
+ AM_CONDITIONAL(HAVE_LINUX_INPUT, test "x$have_linux_input" = xyes)

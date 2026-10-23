@@ -1,0 +1,65 @@
+
+(process:1188): GLib-GObject-CRITICAL **: 10:26:42.530: g_value_set_object: assertion 'G_VALUE_HOLDS_OBJECT (value)' failed
+
+(process:1188): GLib-GObject-CRITICAL **: 10:26:42.531: g_value_set_object: assertion 'G_VALUE_HOLDS_OBJECT (value)' failed
+Failed to parse tag cache: No such file or directory
+GIMP-Error: Plug-in "pagecurl"
+attempted to install procedure "plug-in-pagecurl" with invalid return-value name "Curl Layer".
+This is not allowed.
+
+GIMP-Error: Plug-in "pagecurl"
+(/workspace/scratch/5b5281e79681/legacy-filter-positive-20261015/build/prefix/lib/gimp/2.0/plug-ins/pagecurl)
+attempted to register the menu item "<Image>/Filters/Distorts" for the procedure "plug-in-pagecurl".
+It has however not installed that procedure.  This is not allowed.
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x55f0ac38c6c0:  set ignore_undos=0
+create instance type=55f0ac4cb8c0
+FilterLayer::class_init
+GimpFilterLayer: Set properties_base to 18
+FilterLayer::iface_init<GimpPickableInterface>
+FilterLayer::FilterLayer
+new_instance::group=0x55f0ac39a010
+FilterLayer::filter_reset
+TL time_us=9300109450 event=drawable-update-signal ptr=0x55f0ac39a010 id=3 ordinal=0 attached=1 name=top
+TL time_us=9300109523 event=cache-input-copy-begin ptr=0x55f0ac39a010 id=3 ordinal=0 attached=1 name=top
+TL time_us=9300109815 event=cache-input-copy-end ptr=0x55f0ac39a010 id=3 ordinal=0 attached=1 name=top
+TL time_us=9300109821 event=run-enter ptr=0x55f0ac39a010 id=3 ordinal=1 attached=1 name=top
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x55f0ac4875a0:  set ignore_undos=1
+TL time_us=9300111096 event=run-return-running ptr=0x55f0ac39a010 id=3 ordinal=1 attached=1 name=top
+--->top: start runner=1
+TL time_us=9300111125 event=after-initial-flush ptr=0x55f0ac39a010 id=3 ordinal=1 attached=1 name=top
+STATE time_us=9300111139 name=top pending=1 active=1 attached=1 ordinal=1
+TL time_us=9300111141 event=detach-request ptr=0x55f0ac39a010 id=3 ordinal=1 attached=1 name=top
+push_undo: GimpLayerUndo=56
+TL time_us=9300111209 event=after-detach ptr=0x55f0ac39a010 id=3 ordinal=1 attached=0 name=top
+STATE time_us=9300111212 name=top pending=1 active=1 attached=0 ordinal=1
+GIMP-Error: Calling error for procedure 'gimp-drawable-width':
+Procedure 'gimp-drawable-width' has been called with an invalid ID for argument 'drawable'. Most likely a plug-in is trying to work on a layer that doesn't exist any longer.
+
+GIMP-Error: Calling error for procedure 'gimp-drawable-height':
+Procedure 'gimp-drawable-height' has been called with an invalid ID for argument 'drawable'. Most likely a plug-in is trying to work on a layer that doesn't exist any longer.
+
+GIMP-Error: Calling error for procedure 'gimp-drawable-bpp':
+Procedure 'gimp-drawable-bpp' has been called with an invalid ID for argument 'drawable'. Most likely a plug-in is trying to work on a layer that doesn't exist any longer.
+
+
+(edge:1375): LibGimp-CRITICAL **: 10:26:43.623: gimp_drawable_get: assertion 'width > 0 && height > 0 && bpp > 0' failed
+/workspace/scratch/5b5281e79681/legacy-filter-positive-20261015/build/prefix/lib/gimp/2.0/plug-ins/edge: fatal error: Segmentation fault
+(process:1375): [E]xit, [H]alt, show [S]tack trace or [P]roceed: GIMP-Error: Plug-in crashed: "edge"
+(/workspace/scratch/5b5281e79681/legacy-filter-positive-20261015/build/prefix/lib/gimp/2.0/plug-ins/edge)
+
+The dying plug-in may have messed up GIMP's internal state. You may want to save your images and restart GIMP to be on the safe side.
+
+TL time_us=9300121335 event=progress-end-callback ptr=0x55f0ac39a010 id=3 ordinal=1 attached=0 name=top
+TL time_us=9300121338 event=runner-on-end ptr=0x55f0ac39a010 id=3 ordinal=1 attached=0 name=top
+TL time_us=9300121340 event=propagation-begin ptr=0x55f0ac39a010 id=3 ordinal=1 attached=0 name=top
+TL time_us=9300121346 event=drawable-update-signal ptr=0x55f0ac39a010 id=3 ordinal=1 attached=0 name=top
+TL time_us=9300121350 event=propagation-end ptr=0x55f0ac39a010 id=3 ordinal=1 attached=0 name=top
+TL time_us=9301612037 event=first-window-end ptr=0x55f0ac39a010 id=3 ordinal=1 attached=0 name=top
+STATE time_us=9301612142 name=top pending=0 active=0 attached=0 ordinal=1
+CACHE name=top sha256=6b13a2a1a821e751416687159ce40427566acf02c664f082fa1774f49105ebca
+TIMELINE_COMPLETE scene=detach
+
+(script-fu:1374): LibGimpBase-WARNING **: 10:26:45.121: script-fu: gimp_wire_read(): error
