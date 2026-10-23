@@ -1,0 +1,34 @@
+{
+  "baseline": "81bc24545d",
+  "committed_overlays": [
+    "aa12595aa6 preset metadata",
+    "1436f90961 pop guard",
+    "7f0333f86b Clone history policy"
+  ],
+  "candidate_overlays": [
+    "frozen explicit publication outcome c/h + prepared fixture",
+    "Clone connection test include/registration"
+  ],
+  "scope": "Selected clean checkpoint model proof, not latest whole HEAD. 5 Clone normal + 18 prepared normal + 5 Clone sanitizer. 10 instrumented units, 59 RTTI-only; dependencies uninstrumented; LSan disabled.",
+  "clean_source_sha256": {
+    "app/actions/dialogs-actions.c": "21e816cdc989c9701925a57bac0c7122888d17b0ba5b99927acf8e5ba5ac2969",
+    "app/core/gimpclonelayer.cpp": "22adedddcaeb6d70f4bf37e94cf92f3dbe4d1b84c7183097d3c24e49d02b081e",
+    "app/core/gimpdrawableundo.c": "405eaa3396158eceb32c27ca6e4361e55b46bd1eca2a23d2d26871687159635b",
+    "app/core/gimpimage-undo.c": "09aa5d077d321d521a2e1e893fa7d81d9064925109a0e03fb7ac221b0a6a8773",
+    "app/core/gimpimage-undo.h": "724a16246470959ba91419bcc39dc5dff137a00a99aa00f5da38b01df3923ce7",
+    "app/core/gimpundopopguard.c": "a5a03b87645cc79f0937e4b23f50d17c3de0a7178b09c4022146b99d13d1ad42",
+    "app/core/gimpundopopguard.h": "e262946fc05ccad1bceb9e8213874a03aed653b54593c2c259d468645afc8841",
+    "app/dialogs/preferences-dialog.c": "d200008963ff81a253e416b3005e3f2091deeeffa3c14402b6610caae0b5b06f",
+    "app/tests/test-gimp-clone-layer.c": "4e802283841ab97757312bb0a4cf9756424e3a3604dea883c80d6ec1b4e76d89",
+    "app/tests/test-layer-presets-ui.c": "e61c8264c7365d1348d22abb84a5401f45c1d95c477c8a0c1ec7d5b87e16a13e",
+    "app/tests/test-painter-clone-connection-contract.inc": "9e484012c431d4881edca176b58152fa9bd6dd4a32a01ae3dbbb2b81bf2d17ca",
+    "app/tests/test-painter-clone-editability-contract.inc": "555099af16f2c7acc4c577fe9c184becfe7bfdc2ad3fee29d9ecae3c53ec5316",
+    "app/tests/test-prepared-undo.c": "43b2fe4d90bdcc6eb754712d4d4ae2c742b72efa75166c9aca91de24258f933e",
+    "app/tests/test-prepared-undo.cpp": "78026ca81bbe3ededff3dd598424c017fb282d74d771d0d7f9256824abb8d31b",
+    "app/tests/test-preset-gui-entries.c": "c9e95a1a7da127d3f5c4af548774ec25ded4010874c4d98d7a6e8ba499f561e9",
+    "app/tests/test-undo-pop-guard.c": "6a1cf1194b81f4eed92f51f236f765a99e1e745e006cd3f268dd977716780de1",
+    "migration/tests/painter_sanitizer_scope.py": "a0d355e2b68b01fd058cf53cd2d9881009f844972c275476bcaf399c9e797537",
+    "migration/tests/run_clone_history_sanitizers.py": "065aad6ff34dc6a289bfc92442c171af216b48e97951bc2701249c3107f01c6e",
+    "migration/tests/run_clone_layer_sanitizers.py": "8d24c88388e790507bac6c5115a7fc9aee62eee80929f5f44a372f6f80a05fe1"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "name": "gimp:app / gimp-clone-layer",
+  "stdout": "TAP version 14\n# random seed: R02S6caceac6a0792ea72bd94bc249ec9b18\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# Start of gimp-clone-layer tests\n# 3 A-to-B/same-B/to-A cycles and detach:104 handler cardinality checks;3 single live updates and retired-source silence\nok 1 /gimp-clone-layer/clone_source_connections_exact_once\n# End of gimp-clone-layer tests\n1..1\n# Start of gimp-clone-layer tests\nok 2 /gimp-clone-layer/clone_current_editability_contract\n# End of gimp-clone-layer tests\n1..2\n# Start of gimp-clone-layer tests\n# 10 Clone pixel-history refusals preserve dirty/redo, consume prepared objects; locked ordinary layer remains supported\nok 3 /gimp-clone-layer/clone_drawable_history_policy\n# End of gimp-clone-layer tests\n1..3\n# Start of gimp-clone-layer tests\nok 4 /gimp-clone-layer/clone_history_preflight_image_lease\n# End of gimp-clone-layer tests\n1..4\n# Start of gimp-clone-layer tests\nok 5 /gimp-clone-layer/clone_history_ordinary_collect_once\n# End of gimp-clone-layer tests\n1..5\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n",
+  "result": "OK",
+  "starttime": 1792561181.5583048,
+  "duration": 1.1597495079040527,
+  "returncode": 0,
+  "command": [
+    "/workspace/shared/gimp-clean-aggregate/build/app/tests/gimp-clone-layer",
+    "-p",
+    "/gimp-clone-layer/clone_source_connections_exact_once",
+    "-p",
+    "/gimp-clone-layer/clone_current_editability_contract",
+    "-p",
+    "/gimp-clone-layer/clone_drawable_history_policy",
+    "-p",
+    "/gimp-clone-layer/clone_history_preflight_image_lease",
+    "-p",
+    "/gimp-clone-layer/clone_history_ordinary_collect_once"
+  ]
+}

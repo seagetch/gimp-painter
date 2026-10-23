@@ -1,0 +1,27 @@
+TAP version 14
+# random seed: R02S6caceac6a0792ea72bd94bc249ec9b18
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+# Start of gimp-clone-layer tests
+# 3 A-to-B/same-B/to-A cycles and detach:104 handler cardinality checks;3 single live updates and retired-source silence
+ok 1 /gimp-clone-layer/clone_source_connections_exact_once
+# End of gimp-clone-layer tests
+1..1
+# Start of gimp-clone-layer tests
+ok 2 /gimp-clone-layer/clone_current_editability_contract
+# End of gimp-clone-layer tests
+1..2
+# Start of gimp-clone-layer tests
+# 10 Clone pixel-history refusals preserve dirty/redo, consume prepared objects; locked ordinary layer remains supported
+ok 3 /gimp-clone-layer/clone_drawable_history_policy
+# End of gimp-clone-layer tests
+1..3
+# Start of gimp-clone-layer tests
+ok 4 /gimp-clone-layer/clone_history_preflight_image_lease
+# End of gimp-clone-layer tests
+1..4
+# Start of gimp-clone-layer tests
+ok 5 /gimp-clone-layer/clone_history_ordinary_collect_once
+# End of gimp-clone-layer tests
+1..5
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created

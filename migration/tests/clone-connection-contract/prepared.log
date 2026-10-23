@@ -1,0 +1,43 @@
+TAP version 14
+# random seed: R02S33bec162b85a86c6bc20f62aadd2f9f9
+1..18
+# Start of prepared-undo tests
+ok 1 /prepared-undo/success
+# slow test /prepared-undo/success executed in 1.07 secs
+ok 2 /prepared-undo/failure-preserves-redo
+# slow test /prepared-undo/failure-preserves-redo executed in 1.22 secs
+ok 3 /prepared-undo/frozen
+# slow test /prepared-undo/frozen executed in 1.26 secs
+ok 4 /prepared-undo/invalid-owner
+# slow test /prepared-undo/invalid-owner executed in 1.30 secs
+ok 5 /prepared-undo/duplicate
+# slow test /prepared-undo/duplicate executed in 1.27 secs
+ok 6 /prepared-undo/group
+# slow test /prepared-undo/group executed in 1.29 secs
+ok 7 /prepared-undo/reentry
+# slow test /prepared-undo/reentry executed in 1.21 secs
+ok 8 /prepared-undo/immediate-expiry
+# slow test /prepared-undo/immediate-expiry executed in 1.13 secs
+ok 9 /prepared-undo/last-image-owner
+# slow test /prepared-undo/last-image-owner executed in 1.10 secs
+ok 10 /prepared-undo/toggle-owner-reentry
+# slow test /prepared-undo/toggle-owner-reentry executed in 1.17 secs
+ok 11 /prepared-undo/legacy-constructor-reentry
+# slow test /prepared-undo/legacy-constructor-reentry executed in 1.25 secs
+ok 12 /prepared-undo/legacy-last-owner
+# slow test /prepared-undo/legacy-last-owner executed in 1.16 secs
+# End of prepared-undo tests
+# Start of prepared-outcome tests
+ok 13 /prepared-outcome/retained
+# slow test /prepared-outcome/retained executed in 1.09 secs
+ok 14 /prepared-outcome/expired
+# slow test /prepared-outcome/expired executed in 1.06 secs
+ok 15 /prepared-outcome/rejected
+# slow test /prepared-outcome/rejected executed in 1.11 secs
+ok 16 /prepared-outcome/frozen
+# slow test /prepared-outcome/frozen executed in 1.12 secs
+ok 17 /prepared-outcome/last-owner
+# slow test /prepared-outcome/last-owner executed in 1.11 secs
+ok 18 /prepared-outcome/dirty-last-owner
+# slow test /prepared-outcome/dirty-last-owner executed in 1.04 secs
+# End of prepared-outcome tests

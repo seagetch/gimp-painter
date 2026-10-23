@@ -1985,6 +1985,7 @@ static void original_factory_borrowed_ownership (void)
 #include "test-painter-clone-operation-corpus.inc"
 #include "test-painter-clone-pickable-contract.inc"
 #include "test-painter-clone-editability-contract.inc"
+#include "test-painter-clone-connection-contract.inc"
 
 int main (int argc, char **argv)
 {
@@ -1993,6 +1994,7 @@ int main (int argc, char **argv)
   gimp_test_utils_set_gimp3_directory ("GIMP_TESTING_ABS_TOP_SRCDIR", "app/tests/gimpdir");
   gimp = gimp_init_for_testing ();
 #define ADD(name) g_test_add_func ("/gimp-clone-layer/" #name, name)
+  ADD (clone_source_connections_exact_once);
   ADD (clone_current_editability_contract); ADD (clone_drawable_history_policy); ADD (clone_history_preflight_image_lease); ADD (clone_history_ordinary_collect_once);
   ADD (clone_pickable_projection_contract);
   ADD (clone_projection_roi_offset_detach); ADD (clone_original_operation_corpus);
