@@ -21,6 +21,8 @@
 
 #include "gimpeditor.h"
 
+G_BEGIN_DECLS
+
 
 #define GIMP_TYPE_IMAGE_EDITOR            (gimp_image_editor_get_type ())
 #define GIMP_IMAGE_EDITOR(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_IMAGE_EDITOR, GimpImageEditor))
@@ -56,5 +58,8 @@ void        gimp_image_editor_set_image (GimpImageEditor *editor,
                                          GimpImage       *image);
 GimpImage * gimp_image_editor_get_image (GimpImageEditor *editor);
 
+
+
+G_END_DECLS
 
 #endif /* __GIMP_IMAGE_EDITOR_H__ */

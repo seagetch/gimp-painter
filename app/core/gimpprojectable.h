@@ -21,6 +21,8 @@
 #ifndef __GIMP_PROJECTABLE_H__
 #define __GIMP_PROJECTABLE_H__
 
+G_BEGIN_DECLS
+
 
 #define GIMP_TYPE_PROJECTABLE (gimp_projectable_get_type ())
 G_DECLARE_INTERFACE (GimpProjectable, gimp_projectable, GIMP, PROJECTABLE, GObject)
@@ -80,5 +82,8 @@ void         gimp_projectable_begin_render       (GimpProjectable *projectable);
 void         gimp_projectable_end_render         (GimpProjectable *projectable);
 void         gimp_projectable_invalidate_preview (GimpProjectable *projectable);
 
+
+
+G_END_DECLS
 
 #endif  /* __GIMP_PROJECTABLE_H__ */

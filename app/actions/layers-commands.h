@@ -18,6 +18,8 @@
 #ifndef __LAYERS_COMMANDS_H__
 #define __LAYERS_COMMANDS_H__
 
+G_BEGIN_DECLS
+
 
 void   layers_edit_cmd_callback               (GimpAction *action,
                                                GVariant   *value,
@@ -178,5 +180,8 @@ void   layers_color_tag_cmd_callback          (GimpAction *action,
                                                GVariant   *value,
                                                gpointer    data);
 
+
+
+G_END_DECLS
 
 #endif /* __LAYERS_COMMANDS_H__ */

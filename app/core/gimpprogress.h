@@ -21,6 +21,8 @@
 #ifndef __GIMP_PROGRESS_H__
 #define __GIMP_PROGRESS_H__
 
+G_BEGIN_DECLS
+
 
 #define GIMP_TYPE_PROGRESS (gimp_progress_get_type ())
 G_DECLARE_INTERFACE (GimpProgress, gimp_progress, GIMP, PROGRESS, GObject)
@@ -89,5 +91,8 @@ void           gimp_progress_update_and_flush (gint                 min,
                                                gint                 current,
                                                gpointer             data);
 
+
+
+G_END_DECLS
 
 #endif /* __GIMP_PROGRESS_H__ */

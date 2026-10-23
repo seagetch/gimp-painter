@@ -23,6 +23,8 @@
 
 #include "gimpfilterstack.h"
 
+G_BEGIN_DECLS
+
 
 #define GIMP_TYPE_ITEM_STACK            (gimp_item_stack_get_type ())
 #define GIMP_ITEM_STACK(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_ITEM_STACK, GimpItemStack))
@@ -62,5 +64,8 @@ GimpItem      * gimp_item_stack_get_parent_by_path  (GimpItemStack *stack,
 void            gimp_item_stack_invalidate_previews (GimpItemStack *stack);
 void            gimp_item_stack_profile_changed     (GimpItemStack *stack);
 
+
+
+G_END_DECLS
 
 #endif  /*  __GIMP_ITEM_STACK_H__  */

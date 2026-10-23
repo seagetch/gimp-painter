@@ -21,6 +21,8 @@
 
 #include "gimpcontext.h"
 
+G_BEGIN_DECLS
+
 
 #define GIMP_TYPE_TOOL_OPTIONS            (gimp_tool_options_get_type ())
 #define GIMP_TOOL_OPTIONS(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_TOOL_OPTIONS, GimpToolOptions))
@@ -74,5 +76,8 @@ gboolean   gimp_tool_options_delete        (GimpToolOptions   *tool_options,
                                             GError           **error);
 void       gimp_tool_options_create_folder (void);
 
+
+
+G_END_DECLS
 
 #endif  /*  __GIMP_TOOL_OPTIONS_H__  */

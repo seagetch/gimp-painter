@@ -21,6 +21,8 @@
 #ifndef __GIMP_OVERLAY_CHILD_H__
 #define __GIMP_OVERLAY_CHILD_H__
 
+G_BEGIN_DECLS
+
 
 typedef struct _GimpOverlayChild GimpOverlayChild;
 
@@ -84,5 +86,8 @@ gboolean           gimp_overlay_child_pick                 (GimpOverlayBox   *bo
                                                             gdouble           box_x,
                                                             gdouble           box_y);
 
+
+
+G_END_DECLS
 
 #endif /* __GIMP_OVERLAY_CHILD_H__ */

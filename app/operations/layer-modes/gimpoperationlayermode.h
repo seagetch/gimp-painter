@@ -24,6 +24,8 @@
 
 #include <gegl-plugin.h>
 
+G_BEGIN_DECLS
+
 
 #define GIMP_TYPE_OPERATION_LAYER_MODE            (gimp_operation_layer_mode_get_type ())
 #define GIMP_OPERATION_LAYER_MODE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_OPERATION_LAYER_MODE, GimpOperationLayerMode))
@@ -88,5 +90,8 @@ GType                    gimp_operation_layer_mode_get_type            (void) G_
 
 GimpLayerCompositeRegion gimp_operation_layer_mode_get_affected_region (GimpOperationLayerMode *layer_mode);
 
+
+
+G_END_DECLS
 
 #endif /* __GIMP_OPERATION_LAYER_MODE_H__ */

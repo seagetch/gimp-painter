@@ -21,6 +21,8 @@
 
 #include "gimpobject.h"
 
+G_BEGIN_DECLS
+
 
 #define GIMP_TYPE_DYNAMICS_OUTPUT            (gimp_dynamics_output_get_type ())
 #define GIMP_DYNAMICS_OUTPUT(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_DYNAMICS_OUTPUT, GimpDynamicsOutput))
@@ -64,5 +66,8 @@ gdouble    gimp_dynamics_output_get_aspect_value   (GimpDynamicsOutput *output,
                                                     GimpPaintOptions   *options,
                                                     gdouble             fade_point);
 
+
+
+G_END_DECLS
 
 #endif  /*  __GIMP_DYNAMICS_OUTPUT_H__  */

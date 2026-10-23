@@ -20,6 +20,8 @@
 #ifndef __GIMP_GEGL_ENUMS_H__
 #define __GIMP_GEGL_ENUMS_H__
 
+G_BEGIN_DECLS
+
 
 #define GIMP_TYPE_CAGE_MODE (gimp_cage_mode_get_type ())
 
@@ -31,5 +33,8 @@ typedef enum
   GIMP_CAGE_MODE_DEFORM       /*< desc="Deform the cage\nto deform the image" >*/
 } GimpCageMode;
 
+
+
+G_END_DECLS
 
 #endif /* __GIMP_GEGL_ENUMS_H__ */

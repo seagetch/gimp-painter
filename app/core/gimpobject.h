@@ -18,6 +18,8 @@
 #ifndef __GIMP_OBJECT_H__
 #define __GIMP_OBJECT_H__
 
+G_BEGIN_DECLS
+
 
 #define GIMP_TYPE_OBJECT            (gimp_object_get_type ())
 #define GIMP_OBJECT(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_OBJECT, GimpObject))
@@ -71,5 +73,8 @@ gint64        gimp_object_get_memsize     (GimpObject       *object,
                                            gint64           *gui_size);
 
 G_DEFINE_AUTOPTR_CLEANUP_FUNC (GimpObject, g_object_unref);
+
+
+G_END_DECLS
 
 #endif  /* __GIMP_OBJECT_H__ */

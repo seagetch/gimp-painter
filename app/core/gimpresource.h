@@ -21,6 +21,8 @@
 
 #include "gimpviewable.h"
 
+G_BEGIN_DECLS
+
 
 #define GIMP_TYPE_RESOURCE (gimp_resource_get_type ())
 G_DECLARE_DERIVABLE_TYPE (GimpResource,
@@ -37,5 +39,8 @@ struct _GimpResourceClass
 
 GType   gimp_resource_get_type (void) G_GNUC_CONST;
 
+
+
+G_END_DECLS
 
 #endif /* __GIMP_RESOURCE_H__ */

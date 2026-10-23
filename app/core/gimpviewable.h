@@ -24,6 +24,8 @@
 
 #include "gimpobject.h"
 
+G_BEGIN_DECLS
+
 
 #define GIMP_VIEWABLE_MAX_PREVIEW_SIZE 2048
 #define GIMP_VIEWABLE_MAX_POPUP_SIZE    256
@@ -199,5 +201,8 @@ void            gimp_viewable_set_expanded       (GimpViewable  *viewable,
 gboolean        gimp_viewable_is_ancestor        (GimpViewable  *ancestor,
                                                   GimpViewable  *descendant);
 
+
+
+G_END_DECLS
 
 #endif  /* __GIMP_VIEWABLE_H__ */

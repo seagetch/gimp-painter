@@ -18,6 +18,8 @@
 #ifndef __TOOLS_ENUMS_H__
 #define __TOOLS_ENUMS_H__
 
+G_BEGIN_DECLS
+
 
 /*
  * these enums are registered with the type system
@@ -209,5 +211,8 @@ typedef enum /*< skip >*/
   GIMP_MOTION_MODE_COMPRESS
 } GimpMotionMode;
 
+
+
+G_END_DECLS
 
 #endif /* __TOOLS_ENUMS_H__ */

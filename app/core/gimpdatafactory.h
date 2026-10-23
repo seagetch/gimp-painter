@@ -24,6 +24,8 @@
 
 #include "gimpobject.h"
 
+G_BEGIN_DECLS
+
 
 typedef GimpData * (* GimpDataNewFunc)         (GimpContext     *context,
                                                 const gchar     *name);
@@ -127,5 +129,8 @@ GList         * gimp_data_factory_get_data_path_writable
 const GList   * gimp_data_factory_get_data_path_ext (GimpDataFactory  *factory);
 
 
+
+
+G_END_DECLS
 
 #endif  /*  __GIMP_DATA_FACTORY_H__  */

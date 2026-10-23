@@ -24,6 +24,8 @@
 
 #include "gimpviewable.h"
 
+G_BEGIN_DECLS
+
 
 #define GIMP_TEMPLATE_PARAM_COPY_FIRST (1 << (8 + G_PARAM_USER_SHIFT))
 
@@ -97,5 +99,8 @@ const gchar       * gimp_template_get_comment         (GimpTemplate *template_ob
 
 guint64             gimp_template_get_initial_size    (GimpTemplate *template_object);
 
+
+
+G_END_DECLS
 
 #endif /* __GIMP_TEMPLATE__ */

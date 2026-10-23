@@ -21,6 +21,8 @@
 
 #include "gimpdata.h"
 
+G_BEGIN_DECLS
+
 
 #define GIMP_TYPE_BRUSH            (gimp_brush_get_type ())
 #define GIMP_BRUSH(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_BRUSH, GimpBrush))
@@ -148,5 +150,8 @@ GimpVector2            gimp_brush_get_y_axis         (GimpBrush        *brush);
 
 void                   gimp_brush_flush_blur_caches  (GimpBrush        *brush);
 gdouble                gimp_brush_get_blur_hardness  (GimpBrush        *brush);
+
+
+G_END_DECLS
 
 #endif /* __GIMP_BRUSH_H__ */

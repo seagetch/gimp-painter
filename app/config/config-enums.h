@@ -18,6 +18,8 @@
 #ifndef __CONFIG_ENUMS_H__
 #define __CONFIG_ENUMS_H__
 
+G_BEGIN_DECLS
+
 
 #define GIMP_TYPE_CANVAS_PADDING_MODE (gimp_canvas_padding_mode_get_type ())
 
@@ -178,5 +180,8 @@ typedef enum
    */
 } GimpThemeScheme;
 
+
+
+G_END_DECLS
 
 #endif /* __CONFIG_ENUMS_H__ */

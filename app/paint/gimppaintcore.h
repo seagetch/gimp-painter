@@ -21,6 +21,8 @@
 
 #include "core/gimpobject.h"
 
+G_BEGIN_DECLS
+
 
 #define GIMP_TYPE_PAINT_CORE            (gimp_paint_core_get_type ())
 #define GIMP_PAINT_CORE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_PAINT_CORE, GimpPaintCore))
@@ -235,5 +237,8 @@ void      gimp_paint_core_smooth_coords             (GimpPaintCore    *core,
                                                      GimpPaintOptions *paint_options,
                                                      GimpCoords       *coords);
 
+
+
+G_END_DECLS
 
 #endif  /*  __GIMP_PAINT_CORE_H__  */

@@ -18,6 +18,8 @@
 #ifndef __CORE_ENUMS_H__
 #define __CORE_ENUMS_H__
 
+G_BEGIN_DECLS
+
 
 #if 0
    This file is parsed by two scripts, enumgen.pl in pdb,
@@ -797,5 +799,8 @@ typedef enum  /*< pdb-skip, skip >*/
                              GIMP_ITEM_TYPE_PATHS)
 } GimpItemTypeMask;
 
+
+
+G_END_DECLS
 
 #endif /* __CORE_ENUMS_H__ */

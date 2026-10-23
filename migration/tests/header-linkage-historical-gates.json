@@ -1,0 +1,23 @@
+[
+  {
+    "check": "registration_snapshot",
+    "returncode": 1,
+    "stdout": "",
+    "stderr": "Traceback (most recent call last):\n  File \"/workspace/scratch/5b5281e79681/header-linkage-recovery-20261008/tools/check_cpp_registration.py\", line 239, in <module>\n    main()\n  File \"/workspace/scratch/5b5281e79681/header-linkage-recovery-20261008/tools/check_cpp_registration.py\", line 228, in main\n    review=check_review()\n           ^^^^^^^^^^^^^^\n  File \"/workspace/scratch/5b5281e79681/header-linkage-recovery-20261008/tools/check_cpp_registration.py\", line 55, in check_review\n    assert digest(json.dumps(unreviewed, sort_keys=True, ensure_ascii=False).encode()) == prior['unreviewed_sha256']\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n",
+    "interpretation": "Historical04.002 all-unreviewed-row preservation assertion now fails because89 original04.004 statuses legitimately changed; old digest unchanged. Reproduce original snapshot at aa8e7fad108269e2c1dd5ebcbf78865fb37d1ee9."
+  },
+  {
+    "check": "painter",
+    "returncode": 1,
+    "stdout": "",
+    "stderr": "06.028: report/source mismatch app/painter/filter-scheduler.cpp\n06.028: report/source mismatch app/core/gimpfilterlayer.cpp\n06.028: report/source mismatch app/painter/filter-scheduler.cpp\n06.028: report/source mismatch app/core/gimpfilterlayer.cpp\n07.012: report/source mismatch app/painter/filter-scheduler.cpp\n07.012: report/source mismatch app/core/gimpfilterlayer.cpp\n07.012: report/source mismatch app/painter/filter-scheduler.cpp\n07.012: report/source mismatch app/core/gimpfilterlayer.cpp\n",
+    "interpretation": "Existing historical owner-close source hashes no longer match current source; not claimed as current acceptance."
+  },
+  {
+    "check": "clone",
+    "returncode": 1,
+    "stdout": "",
+    "stderr": "Core source/evidence mismatch: app/tests/test-gimp-clone-layer.c\n",
+    "interpretation": "Existing historical Clone source hashes no longer match current source; not claimed as current acceptance."
+  }
+]

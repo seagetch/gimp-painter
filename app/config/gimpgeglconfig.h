@@ -21,6 +21,8 @@
 #ifndef __GIMP_GEGL_CONFIG_H__
 #define __GIMP_GEGL_CONFIG_H__
 
+G_BEGIN_DECLS
+
 
 #define GIMP_TYPE_GEGL_CONFIG            (gimp_gegl_config_get_type ())
 #define GIMP_GEGL_CONFIG(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_GEGL_CONFIG, GimpGeglConfig))
@@ -51,5 +53,8 @@ struct _GimpGeglConfigClass
 
 GType  gimp_gegl_config_get_type (void) G_GNUC_CONST;
 
+
+
+G_END_DECLS
 
 #endif /* GIMP_GEGL_CONFIG_H__ */

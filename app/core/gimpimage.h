@@ -21,6 +21,8 @@
 
 #include "gimpviewable.h"
 
+G_BEGIN_DECLS
+
 
 #define GIMP_IMAGE_ACTIVE_PARENT ((gpointer) 1)
 
@@ -516,5 +518,8 @@ void            gimp_image_set_converting        (GimpImage          *image,
                                                   gboolean            converting);
 gboolean        gimp_image_get_converting        (GimpImage          *image);
 
+
+
+G_END_DECLS
 
 #endif /* __GIMP_IMAGE_H__ */

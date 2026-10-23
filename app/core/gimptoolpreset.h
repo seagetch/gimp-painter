@@ -21,6 +21,8 @@
 
 #include "gimpdata.h"
 
+G_BEGIN_DECLS
+
 
 #define GIMP_TYPE_TOOL_PRESET            (gimp_tool_preset_get_type ())
 #define GIMP_TOOL_PRESET(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_TOOL_PRESET, GimpToolPreset))
@@ -64,5 +66,8 @@ GimpData            * gimp_tool_preset_new           (GimpContext    *context,
 
 GimpContextPropMask   gimp_tool_preset_get_prop_mask (GimpToolPreset *preset);
 
+
+
+G_END_DECLS
 
 #endif  /*  __GIMP_TOOL_PRESET_H__  */

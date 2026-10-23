@@ -23,6 +23,8 @@
 
 #include "gimpitemstack.h"
 
+G_BEGIN_DECLS
+
 
 #define GIMP_TYPE_DRAWABLE_STACK            (gimp_drawable_stack_get_type ())
 #define GIMP_DRAWABLE_STACK(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_DRAWABLE_STACK, GimpDrawableStack))
@@ -62,5 +64,8 @@ void            gimp_drawable_stack_update    (GimpDrawableStack *stack,
                                                gint               width,
                                                gint               height);
 
+
+
+G_END_DECLS
 
 #endif  /*  __GIMP_DRAWABLE_STACK_H__  */

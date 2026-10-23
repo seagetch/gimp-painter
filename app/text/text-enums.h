@@ -18,6 +18,8 @@
 #ifndef __TEXT_ENUMS_H__
 #define __TEXT_ENUMS_H__
 
+G_BEGIN_DECLS
+
 
 #define GIMP_TYPE_TEXT_BOX_MODE (gimp_text_box_mode_get_type ())
 
@@ -41,5 +43,8 @@ typedef enum
   GIMP_TEXT_OUTLINE_STROKE_FILL  /*< desc="Outlined and filled" >*/
 } GimpTextOutline;
 
+
+
+G_END_DECLS
 
 #endif /* __TEXT_ENUMS_H__ */

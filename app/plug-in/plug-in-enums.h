@@ -18,6 +18,8 @@
 #ifndef __PLUG_IN_ENUMS_H__
 #define __PLUG_IN_ENUMS_H__
 
+G_BEGIN_DECLS
+
 
 #define GIMP_TYPE_PLUG_IN_IMAGE_TYPE (gimp_plug_in_image_type_get_type ())
 
@@ -60,5 +62,8 @@ typedef enum
   GIMP_FILE_PROCEDURE_GROUP_EXPORT
 } GimpFileProcedureGroup;
 
+
+
+G_END_DECLS
 
 #endif /* __PLUG_IN_ENUMS_H__ */

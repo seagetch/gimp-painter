@@ -21,6 +21,8 @@
 #ifndef __GIMP_EDITOR_H__
 #define __GIMP_EDITOR_H__
 
+G_BEGIN_DECLS
+
 
 #define GIMP_TYPE_EDITOR (gimp_editor_get_type ())
 G_DECLARE_DERIVABLE_TYPE (GimpEditor,
@@ -98,5 +100,8 @@ GimpMenuFactory *
 gpointer  * gimp_editor_get_popup_data    (GimpEditor          *editor);
 gchar     * gimp_editor_get_ui_path       (GimpEditor          *editor);
 
+
+
+G_END_DECLS
 
 #endif  /*  __GIMP_EDITOR_H__  */

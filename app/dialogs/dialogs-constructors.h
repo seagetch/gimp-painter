@@ -18,6 +18,8 @@
 #ifndef __DIALOGS_CONSTRUCTORS_H__
 #define __DIALOGS_CONSTRUCTORS_H__
 
+G_BEGIN_DECLS
+
 
 /*  toplevel dialogs  */
 
@@ -312,5 +314,8 @@ GtkWidget * dialogs_tool_preset_editor_get      (GimpDialogFactory *factory,
 GtkWidget *dialogs_layer_preset_list_view_new (GimpDialogFactory *, GimpContext *, GimpUIManager *, gint);
 
 GtkWidget *dialogs_painter_mypaint_editor_new (GimpDialogFactory *, GimpContext *, GimpUIManager *, gint);
+
+
+G_END_DECLS
 
 #endif /* __DIALOGS_CONSTRUCTORS_H__ */

@@ -18,6 +18,8 @@
 #ifndef __XCF_H__
 #define __XCF_H__
 
+G_BEGIN_DECLS
+
 
 void        xcf_init        (Gimp           *gimp);
 void        xcf_exit        (Gimp           *gimp);
@@ -50,5 +52,8 @@ gboolean xcf_save_stream_with_painter_transport (Gimp *, GimpImage *, GOutputStr
 gboolean xcf_save_file_with_painter_transport (Gimp *, GimpImage *, GFile *,
                                                GimpProgress *, gboolean,
                                                GCancellable *, GError **);
+
+
+G_END_DECLS
 
 #endif /* __XCF_H__ */

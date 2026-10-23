@@ -18,6 +18,8 @@
 #ifndef __VIEW_COMMANDS_H__
 #define __VIEW_COMMANDS_H__
 
+G_BEGIN_DECLS
+
 
 void   view_new_cmd_callback                        (GimpAction *action,
                                                      GVariant   *value,
@@ -180,5 +182,8 @@ void   view_fullscreen_cmd_callback                 (GimpAction *action,
                                                      GVariant   *value,
                                                      gpointer    data);
 
+
+
+G_END_DECLS
 
 #endif /* __VIEW_COMMANDS_H__ */

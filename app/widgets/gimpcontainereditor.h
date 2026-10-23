@@ -21,6 +21,8 @@
 #ifndef __GIMP_CONTAINER_EDITOR_H__
 #define __GIMP_CONTAINER_EDITOR_H__
 
+G_BEGIN_DECLS
+
 
 #define GIMP_TYPE_CONTAINER_EDITOR            (gimp_container_editor_get_type ())
 #define GIMP_CONTAINER_EDITOR(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_CONTAINER_EDITOR, GimpContainerEditor))
@@ -63,5 +65,8 @@ void             gimp_container_editor_bind_to_async_set  (GimpContainerEditor *
                                                            GimpAsyncSet        *async_set,
                                                            const gchar         *message);
 
+
+
+G_END_DECLS
 
 #endif  /*  __GIMP_CONTAINER_EDITOR_H__  */

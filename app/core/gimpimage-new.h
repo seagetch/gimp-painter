@@ -18,6 +18,8 @@
 #ifndef __GIMP_IMAGE_NEW_H__
 #define __GIMP_IMAGE_NEW_H__
 
+G_BEGIN_DECLS
+
 
 GimpTemplate * gimp_image_new_get_last_template (Gimp            *gimp,
                                                  GimpImage       *image);
@@ -42,5 +44,8 @@ GimpImage    * gimp_image_new_from_pixbuf       (Gimp            *gimp,
                                                  GdkPixbuf       *pixbuf,
                                                  const gchar     *layer_name);
 
+
+
+G_END_DECLS
 
 #endif /* __GIMP_IMAGE_NEW__ */

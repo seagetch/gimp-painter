@@ -22,6 +22,8 @@
 #include "gimpobject.h"
 #include "gimp-gui.h"
 
+G_BEGIN_DECLS
+
 
 #define GIMP_TYPE_GIMP            (gimp_get_type ())
 #define GIMP(obj)                 (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_GIMP, Gimp))
@@ -269,5 +271,8 @@ GimpDataFactory *
                gimp_get_data_factory       (Gimp                *gimp,
                                             GType                data_type);
 
+
+
+G_END_DECLS
 
 #endif  /* __GIMP_H__ */

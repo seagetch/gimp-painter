@@ -21,6 +21,8 @@
 
 #include "gimpviewable.h"
 
+G_BEGIN_DECLS
+
 
 struct _GimpUndoAccumulator
 {
@@ -95,5 +97,8 @@ gboolean      gimp_undo_is_weak         (GimpUndo            *undo);
 gint          gimp_undo_get_age         (GimpUndo            *undo);
 void          gimp_undo_reset_age       (GimpUndo            *undo);
 
+
+
+G_END_DECLS
 
 #endif /* __GIMP_UNDO_H__ */

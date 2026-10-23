@@ -18,6 +18,8 @@
 #ifndef __GIMP_DISPLAY_SHELL_TOOL_EVENTS_H__
 #define __GIMP_DISPLAY_SHELL_TOOL_EVENTS_H__
 
+G_BEGIN_DECLS
+
 
 void       gimp_display_shell_set_perspective_snap    (GimpDisplayShell *shell,
                                                        gboolean          enabled);
@@ -78,5 +80,8 @@ gboolean   gimp_display_shell_vruler_button_press     (GtkWidget        *widget,
                                                        GdkEventButton   *bevent,
                                                        GimpDisplayShell *shell);
 
+
+
+G_END_DECLS
 
 #endif /* __GIMP_DISPLAY_SHELL_TOOL_EVENT_H__ */

@@ -21,6 +21,8 @@
 
 #include "gimpfilter.h"
 
+G_BEGIN_DECLS
+
 
 #define GIMP_TYPE_ITEM (gimp_item_get_type ())
 G_DECLARE_DERIVABLE_TYPE (GimpItem,
@@ -401,5 +403,8 @@ gboolean        gimp_item_mask_intersect     (GimpItem           *item,
 gboolean        gimp_item_is_in_set          (GimpItem           *item,
                                               GimpItemSet         set);
 
+
+
+G_END_DECLS
 
 #endif /* __GIMP_ITEM_H__ */

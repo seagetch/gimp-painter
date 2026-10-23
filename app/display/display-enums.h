@@ -18,6 +18,8 @@
 #ifndef __DISPLAY_ENUMS_H__
 #define __DISPLAY_ENUMS_H__
 
+G_BEGIN_DECLS
+
 
 #define GIMP_TYPE_BUTTON_PRESS_TYPE (gimp_button_press_type_get_type ())
 
@@ -296,5 +298,8 @@ typedef enum  /*< pdb-skip, skip >*/
   GIMP_HIT_DIRECT
 } GimpHit;
 
+
+
+G_END_DECLS
 
 #endif /* __DISPLAY_ENUMS_H__ */

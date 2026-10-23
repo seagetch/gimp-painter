@@ -21,6 +21,8 @@
 
 #include "gimptool.h"
 
+G_BEGIN_DECLS
+
 
 #define GIMP_TOOL_HANDLE_SIZE_CIRCLE    13
 #define GIMP_TOOL_HANDLE_SIZE_CROSS     15
@@ -208,5 +210,8 @@ gboolean         gimp_draw_tool_on_handle            (GimpDrawTool     *draw_too
                                                       gint              height,
                                                       GimpHandleAnchor  anchor);
 
+
+
+G_END_DECLS
 
 #endif  /*  __GIMP_DRAW_TOOL_H__  */

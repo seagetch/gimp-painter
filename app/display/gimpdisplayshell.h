@@ -18,6 +18,8 @@
 #ifndef __GIMP_DISPLAY_SHELL_H__
 #define __GIMP_DISPLAY_SHELL_H__
 
+G_BEGIN_DECLS
+
 
 /* Apply to a float the same rounding mode used in the renderer */
 #define  PROJ_ROUND(coord)   ((gint) RINT (coord))
@@ -382,5 +384,8 @@ void              gimp_display_shell_set_mask      (GimpDisplayShell   *shell,
 
 gboolean          gimp_display_shell_is_drawn      (GimpDisplayShell   *shell);
 
+
+
+G_END_DECLS
 
 #endif /* __GIMP_DISPLAY_SHELL_H__ */

@@ -24,6 +24,8 @@
 
 #include "core/gimplayer.h"
 
+G_BEGIN_DECLS
+
 
 #define GIMP_TYPE_GROUP_LAYER            (gimp_group_layer_get_type ())
 #define GIMP_GROUP_LAYER(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_GROUP_LAYER, GimpGroupLayer))
@@ -74,5 +76,8 @@ void             _gimp_group_layer_start_transform    (GimpGroupLayer      *grou
 void             _gimp_group_layer_end_transform      (GimpGroupLayer      *group,
                                                        gboolean             push_undo);
 
+
+
+G_END_DECLS
 
 #endif /* __GIMP_GROUP_LAYER_H__ */
