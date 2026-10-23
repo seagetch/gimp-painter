@@ -362,7 +362,10 @@ static void registered_type_options (void)
   create_image ();
   info = gimp_get_tool_info (gimp, "gimp-perspective-guide-tool");
   g_assert_cmpuint (info->tool_type, ==, GIMP_TYPE_PERSPECTIVE_GUIDE_TOOL);
-  g_assert_cmpuint (info->tool_options_type, ==, GIMP_TYPE_TOOL_OPTIONS);
+  /* Original distinct empty options identity is restored; inherited behavior stays native. */
+  g_assert_cmpuint (info->tool_options_type, ==, GIMP_TYPE_PERSPECTIVE_GUIDE_OPTIONS);
+  g_assert_cmpuint (G_OBJECT_TYPE (info->tool_options), ==, GIMP_TYPE_PERSPECTIVE_GUIDE_OPTIONS);
+  g_assert_cmpuint (g_type_parent (info->tool_options_type), ==, GIMP_TYPE_TOOL_OPTIONS);
   g_assert_cmpuint (info->context_props, ==, 0);
   g_assert_false (info->hidden);
   g_object_get (info, "visible", &visible, NULL);
@@ -389,7 +392,7 @@ static void registered_type_options (void)
   g_assert_true (GIMP_TOOL (GIMP_PERSPECTIVE_GUIDE_TOOL (active)) == active);
   g_assert_true (active->tool_info == info);
   g_assert_true (gimp_tool_get_options (active) == info->tool_options);
-  g_assert_cmpuint (G_OBJECT_TYPE (info->tool_options), ==, GIMP_TYPE_TOOL_OPTIONS);
+  g_assert_cmpuint (G_OBJECT_TYPE (info->tool_options), ==, GIMP_TYPE_PERSPECTIVE_GUIDE_OPTIONS);
   g_assert_cmpuint (g_type_parent (G_OBJECT_TYPE (active)), ==, GIMP_TYPE_DRAW_TOOL);
   native_class = GIMP_PERSPECTIVE_GUIDE_TOOL_GET_CLASS (active);
   g_assert_true (GIMP_IS_PERSPECTIVE_GUIDE_TOOL_CLASS (native_class));

@@ -9,6 +9,7 @@
 #include "core/core-types.h"
 #include "display/display-types.h"
 #include "core/gimp.h"
+#include "gimpcoreapp.h"
 #include "core/gimpimage.h"
 #include "core/gimpimage-perspective-guide.h"
 #include "core/gimpimage-undo.h"
@@ -336,15 +337,22 @@ static void signal_lifetime(void)
 }
 
 #include "test-painter-guide-factory.inc"
+#include "test-painter-guide-options.inc"
 int main(int argc,char **argv)
 {
   gint result;g_test_init(&argc,&argv,NULL);
-  gimp_test_utils_set_gimp3_directory("GIMP_TESTING_ABS_TOP_SRCDIR","app/tests/gimpdir");gimp=gimp_init_for_testing();
+  if (!gtk_init_check (&argc, &argv)) return GIMP_EXIT_TEST_SKIPPED;
+  gimp_test_utils_setup_menus_path ();
+  gimp = gimp_init_for_gui_testing (TRUE);
+  g_object_set (gimp->config, "painter-canvas-ui", TRUE, NULL);
 #define ADD(name) g_test_add_func("/perspective/" #name,name)
   ADD(model_bounds);ADD(runtime_model_fixture);ADD(source_oracle);ADD(threshold_ties_and_constraint);ADD(image_ownership);
   ADD(reentrant_replacement);ADD(dispose_reentry);ADD(edit_undo);ADD(signal_lifetime);
   ADD(removed_class_slot);ADD(setter_owner_release);ADD(duplicate_ownership);
   gimp_test_perspective_handle_register ();
   register_guide_factory_faults ();
-  result=g_test_run();gimp_test_utils_set_gimp3_directory("GIMP_TESTING_ABS_TOP_BUILDDIR","app/tests/gimpdir-output");gimp_exit(gimp,TRUE);return result;
+  register_guide_options_tests ();
+  g_application_run (gimp->app, 0, NULL);
+  result = gimp_core_app_get_exit_status (GIMP_CORE_APP (gimp->app));
+  g_application_quit (G_APPLICATION (gimp->app)); g_clear_object (&gimp->app); return result;
 }

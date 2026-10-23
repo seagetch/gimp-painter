@@ -1,0 +1,44 @@
+ninja: Entering directory `/workspace/shared/gimp-native-baseline/build-port'
+[1/18] Generating git-version.h.in.1 with a custom command
+[2/18] Generating git-version.h.in.2 with a custom command
+[3/18] Generating git-version.h with a custom command
+[4/12] Generating app/tests/icon-theme-fixture/gimp-test-icon-theme-fixture with a custom command
+{"files": 1191, "manifest_sha256": "2f790ebf02244ef3c023f17f16ab614cbc315ee46d46abd87b7f73d4d5d9be41", "ownership_marker_sha256": "d3ebe76f57bdce73e82df17c3cd89f1a630f42f3c8d72dbfdacd4a000061b8bf", "plan_sha256": "0a16da7a76b5facf2d3d8084793b72e28d32d17c7ff6bf237d164075d4af4b95", "stamp_sha256": "c20e592420d8f1feb8e044c6114f8ed009473d411042806fd6e9aadd50c7ffc9", "status": "verified"}
+[5/12] Compiling C object app/tools/libapptools.a.p/gimp-tools.c.o
+[6/12] Compiling C object app/tests/painter-perspective.p/test-painter-perspective.c.o
+In file included from /workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/gobject/gobject.h:26,
+                 from /workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/gobject/gbinding.h:31,
+                 from /workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/glib-object.h:24,
+                 from /workspace/shared/gimp-deps-locked/root/usr/include/gegl-0.4/gegl.h:22,
+                 from ../source/app/tests/test-painter-perspective.c:6:
+../source/app/tests/test-painter-perspective.c:29:28: warning: no previous declaration for ‘probe_guide_get_type’ [-Wmissing-declarations]
+   29 | G_DEFINE_TYPE (ProbeGuide, probe_guide, GIMP_TYPE_PERSPECTIVE_GUIDE)
+      |                            ^~~~~~~~~~~
+/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/gobject/gtype.h:2305:1: note: in definition of macro ‘_G_DEFINE_TYPE_EXTENDED_BEGIN_PRE’
+ 2305 | type_name##_get_type (void) \
+      | ^~~~~~~~~
+/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/gobject/gtype.h:2053:61: note: in expansion of macro ‘_G_DEFINE_TYPE_EXTENDED_BEGIN’
+ 2053 | #define G_DEFINE_TYPE_EXTENDED(TN, t_n, T_P, _f_, _C_)      _G_DEFINE_TYPE_EXTENDED_BEGIN (TN, t_n, T_P, _f_) {_C_;} _G_DEFINE_TYPE_EXTENDED_END()
+      |                                                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/gobject/gtype.h:1834:61: note: in expansion of macro ‘G_DEFINE_TYPE_EXTENDED’
+ 1834 | #define G_DEFINE_TYPE(TN, t_n, T_P)                         G_DEFINE_TYPE_EXTENDED (TN, t_n, T_P, 0, {})
+      |                                                             ^~~~~~~~~~~~~~~~~~~~~~
+../source/app/tests/test-painter-perspective.c:29:1: note: in expansion of macro ‘G_DEFINE_TYPE’
+   29 | G_DEFINE_TYPE (ProbeGuide, probe_guide, GIMP_TYPE_PERSPECTIVE_GUIDE)
+      | ^~~~~~~~~~~~~
+In file included from ../source/app/tests/test-painter-perspective.c:340:
+../source/app/tests/test-painter-guide-options.inc: In function ‘guide_options_config_roundtrip’:
+../source/app/tests/test-painter-guide-options.inc:46:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   46 |   gchar *text = gimp_config_serialize_to_string (GIMP_CONFIG (one), NULL);
+      |   ^~~~~
+[7/12] Compiling C object app/tests/painter-perspective-ui.p/test-painter-perspective-ui.c.o
+In file included from ../source/app/tests/test-painter-perspective-ui.c:629:
+../source/app/tests/test-painter-tool-group-retirement.inc: In function ‘retained_groups_deserialize’:
+../source/app/tests/test-painter-tool-group-retirement.inc:51:7: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   51 |       GimpObject *first = gimp_container_get_child_by_index (gimp->tool_item_list, 0);
+      |       ^~~~~~~~~~
+[8/12] Compiling C++ object app/tests/painter-perspective.p/test-painter-perspective-handle.cpp.o
+[9/12] Compiling C++ object app/tools/libapptools.a.p/gimpperspectiveguidetool.cpp.o
+[10/12] Linking static target app/tools/libapptools.a
+[11/12] Linking target app/tests/painter-perspective
+[12/12] Linking target app/tests/painter-perspective-ui

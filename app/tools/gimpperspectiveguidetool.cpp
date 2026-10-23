@@ -17,15 +17,17 @@ extern "C" {
 #include "gimp-intl.h"
 }
 #include "core/gimpperspectiveguide.hpp"
+#include "gimpperspectiveguidetool.hpp"
 #include "painter/binding-store.hpp"
 #include "painter/gimp-painter-binding.h"
 #include <cmath>
 using namespace GimpPainter;
 G_DEFINE_TYPE (GimpPerspectiveGuideTool, gimp_perspective_guide_tool, GIMP_TYPE_DRAW_TOOL)
-namespace GimpPainter {
-template<> struct TypeTraits<GimpPerspectiveGuideTool>
-{ static GType type () noexcept { return GIMP_TYPE_PERSPECTIVE_GUIDE_TOOL; } };
-}
+/* No additional mutable state: all options/context ownership stays in the
+ * native base class, as in the original empty options subtype. */
+G_DEFINE_TYPE (GimpPerspectiveGuideOptions, gimp_perspective_guide_options, GIMP_TYPE_TOOL_OPTIONS)
+static void gimp_perspective_guide_options_class_init (GimpPerspectiveGuideOptionsClass *klass) { (void) klass; }
+static void gimp_perspective_guide_options_init (GimpPerspectiveGuideOptions *options) { (void) options; }
 namespace {
 enum class Operation { Move, Add, Remove };
 struct ToolImpl {
@@ -304,7 +306,8 @@ static void gimp_perspective_guide_tool_init (GimpPerspectiveGuideTool *guide)
 }
 void gimp_perspective_guide_tool_register (GimpToolRegisterCallback callback, gpointer data)
 {
-  callback (GIMP_TYPE_PERSPECTIVE_GUIDE_TOOL, GIMP_TYPE_TOOL_OPTIONS, gimp_tool_options_gui, GimpContextPropMask (0),
+  g_return_if_fail (callback != nullptr);
+  callback (GIMP_TYPE_PERSPECTIVE_GUIDE_TOOL, GIMP_TYPE_PERSPECTIVE_GUIDE_OPTIONS, gimp_tool_options_gui, GimpContextPropMask (0),
     "gimp-perspective-guide-tool", _("Perspective Guide"), _("Perspective Guide: Edit vanishing points"),
     N_("_Perspective Guide"), "g", nullptr, "gimp-perspective-guide", GIMP_ICON_TOOL_PERSPECTIVE, data);
 }

@@ -126,3 +126,5 @@ extern "C" void gimp_test_perspective_handle_register (void)
 }
 
 #include "test-painter-guide-factory-wrapper.inc"
+
+#include "test-painter-guide-options-wrapper.inc"
