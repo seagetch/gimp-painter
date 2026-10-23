@@ -1390,10 +1390,23 @@ void get_property (GObject *object, guint property_id, GValue *value, GParamSpec
   switch (property_id)
     {
     case 1: g_value_set_boolean (value, layer->binding_failed); break;
-    case 2: g_value_take_string (value, gimp_filter_layer_dup_procedure (layer)); break;
-    case 3: g_value_take_boxed (value, gimp_filter_layer_dup_args (layer)); break;
-    case 4: g_value_take_boxed (value, gimp_filter_layer_ref_definition (layer)); break;
-    case 5: g_value_take_boxed (value, gimp_filter_layer_ref_opaque_arguments (layer)); break;
+    case 2:
+    case 3:
+    case 4:
+    case 5:
+      property_boundary (object, spec, "get", [&] {
+        BindingStore::require (object).read<FilterSlot> ([&] (const FilterImpl& impl) {
+          if (property_id == 2)
+            g_value_take_string (value, g_strdup (impl.procedure.c_str ()));
+          else if (property_id == 3)
+            g_value_take_boxed (value, impl.args ? impl.args->copy_values () : nullptr);
+          else if (property_id == 4)
+            g_value_take_boxed (value, impl.raw ? g_bytes_ref (impl.raw.get ()) : nullptr);
+          else
+            g_value_take_boxed (value, impl.opaque_arguments ? g_bytes_ref (impl.opaque_arguments.get ()) : nullptr);
+        });
+      });
+      break;
     default: G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, spec);
     }
 }

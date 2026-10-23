@@ -30,7 +30,7 @@ void dispose (GObject *object)
 { gimp_painter_binding_close (object, nullptr); G_OBJECT_CLASS (gimp_perspective_guide_parent_class)->dispose (object); }
 void set_property (GObject *object, guint prop, const GValue *value, GParamSpec *pspec)
 {
-  boundary_void (nullptr, [&] {
+  property_boundary (object, pspec, "set", [&] {
     auto& binding = BindingStore::require (object);
     auto set = [&] (GuideImpl& impl) {
       if (prop == PROP_ID) impl.state.id = g_value_get_uint (value);
@@ -43,7 +43,7 @@ void set_property (GObject *object, guint prop, const GValue *value, GParamSpec 
 }
 void get_property (GObject *object, guint prop, GValue *value, GParamSpec *pspec)
 {
-  boundary_void (nullptr, [&] { BindingStore::require (object).read<GuideSlot> ([&] (const GuideImpl& impl) {
+  property_boundary (object, pspec, "get", [&] { BindingStore::require (object).read<GuideSlot> ([&] (const GuideImpl& impl) {
     if (prop == PROP_ID) g_value_set_uint (value, impl.state.id);
     else if (prop == PROP_ANGLE) g_value_set_double (value, impl.state.angle);
     else G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop, pspec);

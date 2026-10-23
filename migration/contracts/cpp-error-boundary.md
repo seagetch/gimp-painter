@@ -72,8 +72,8 @@ common boundary contract does not claim those requirements are already met by
 every current class initializer.
 
 `05.013/class-init-error`, `05.013/legacy-exit-removal` and
-`38.004/all-vfunc-exception-containment` use this contract as input and remain
-uncompleted implementation/verification obligations. Existing feature adapters
+`38.004/all-vfunc-exception-containment` use this contract as input; their current implementation/verification status is
+recorded in the corresponding tasks.md rows, independently of this contract. Existing feature adapters
 also retain their application work: for example PaintGate currently reports a
 wrong options type through std::invalid_argument/EXCEPTION, whereas the shared
 typed-owner path reports WRONG_TYPE. The contract's uniform classification must
