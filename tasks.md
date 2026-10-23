@@ -465,7 +465,7 @@
 | 09.010 | [x] | dirty 領域の集約を実装する | 09.009 | 重複・隣接・範囲外を処理 |
 | 09.011 | [x] | 現行 Undo への buffer 差分記録を実装する | 09.010 | 一操作単位で復元できる |
 | 09.011/mypaint-undo-stroke | [ ] | MyPaint stroke の pop/free と所有権を現行 Undo に接続する | 09.011, 01.005/gimp3-remaining-callbacks | 旧 pop の空処理を引き継がず Undo/Redo で画素と stroke 状態が往復し、pointer を一度だけ破棄 |
-| 09.012 | [ ] | 描画の確定と破棄を実装する | 09.011 | cancel と commit で正しい画素が残る |
+| 09.012 | [x] | 描画の確定と破棄を実装する | 09.011 | cancel と commit で正しい画素が残る |
 | 09.013 | [ ] | projection 更新通知を接続する | 09.012 | 変更領域が表示へ伝わる |
 | 09.013/gegl-graph-invalidation | [ ] | paint buffer 更新と GEGL 投影キャッシュの無効化を接続する | 09.013 | 変更 ROI と座標を source node・投影へ通知し画面更新と再評価範囲が一致 |
 | 09.014 | [ ] | 色変換の配置を実装する | 09.013 | 採色と合成で意図しない二重変換がない |

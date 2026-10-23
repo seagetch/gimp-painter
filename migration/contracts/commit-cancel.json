@@ -1,0 +1,87 @@
+{
+  "task": "09.012",
+  "criterion_status": "DONE",
+  "original_action": "描画の確定と破棄を実装する",
+  "original_acceptance": "cancel と commit で正しい画素が残る",
+  "dependencies": [
+    "09.011"
+  ],
+  "legacy_commit": "afa43fae3e920210146abed514f136fd49f671b5",
+  "whole_hunk_checkpoint_status": "TODO",
+  "duties": [
+    {
+      "work_id": "legacy-57c3028136186a37c184",
+      "source_id": "01.002/000933",
+      "path": "app/paint/gimpmypaintcore-drawablefeature.hpp",
+      "source_blob": "f822f8d4ede027ac9185d38669b66f7133d8a7d7",
+      "source_range": "-0,0 -> 1,429",
+      "source_sha256": "def3ec2441c48c2b64e440e216c4c10ecd8a8948600a19d97a4499defa1a3866",
+      "source_scope": "file-level declarations/content",
+      "source_blob_sha256": "6eb9434216b09585e6a45ed591ae5c2831cc032af5f1afca9c4c3e9f5dfcb283",
+      "whole_hunk_checkpoint_status": "TODO",
+      "historical_source_duty": "Entire429-line drawable/image/TempBuf feature header remains open. This checkpoint establishes native pixel commit/cancel and atomic abort semantics, not original engine/stroke-state restoration, all legacy consumers or displayed projection.",
+      "related_obligations": [
+        {
+          "criterion": "09.003",
+          "work_id": "legacy-59c591933e446abda966",
+          "inherited_09_012_obligation": "Verify commit/cancel behavior."
+        },
+        {
+          "criterion": "09.004",
+          "work_id": "legacy-788dfcfdaadf20a03891",
+          "inherited_09_012_obligation": "Verify full commit/cancel behavior."
+        },
+        {
+          "criterion": "09.006",
+          "work_id": "legacy-8b9eba3c883fca55282a",
+          "inherited_09_012_obligation": "Verify commit/cancel behavior. Verify full commit/cancel behavior."
+        },
+        {
+          "criterion": "09.007",
+          "work_id": "legacy-ba723da8d5ccf1596f6e",
+          "inherited_09_012_obligation": "Verify commit/cancel behavior. Verify full commit/cancel behavior. Verify commit/cancel behavior. Verify full commit/cancel behavior."
+        },
+        {
+          "criterion": "09.008",
+          "work_id": "legacy-4062154250000c4d3149",
+          "inherited_09_012_obligation": "Verify commit/cancel behavior. Verify full commit/cancel behavior. Verify commit/cancel behavior. Verify full commit/cancel behavior. Verify commit/cancel behavior. Verify full commit/cancel behavior."
+        },
+        {
+          "criterion": "09.009",
+          "work_id": "legacy-0a974c4d297be80e0662",
+          "inherited_09_012_obligation": "Verify commit/cancel behavior. Verify full commit/cancel behavior. Verify commit/cancel behavior. Verify full commit/cancel behavior. Verify commit/cancel behavior. Verify full commit/cancel behavior."
+        },
+        {
+          "criterion": "09.010",
+          "work_id": "legacy-d23cba59ba4bea94ec52",
+          "inherited_09_012_obligation": "Verify full commit/cancel behavior. Verify commit/cancel behavior. Verify full commit/cancel behavior. Verify commit/cancel behavior. Verify full commit/cancel behavior. Verify commit/cancel behavior. Verify full commit/cancel behavior. Verify complete stroke commit/cancel behavior."
+        },
+        {
+          "criterion": "09.011",
+          "work_id": "legacy-66802b0930b114f254d8",
+          "inherited_09_012_obligation": "Verify commit/cancel behavior. Verify full commit/cancel behavior. Verify commit/cancel behavior. Verify full commit/cancel behavior. Verify commit/cancel behavior. Verify full commit/cancel behavior. Verify full commit/cancel behavior. Verify commit/cancel behavior. Verify full commit/cancel behavior. Verify commit/cancel behavior. Verify full commit/cancel behavior. Verify commit/cancel behavior. Verify full commit/cancel behavior. Verify complete stroke commit/cancel behavior."
+        }
+      ],
+      "successor_obligations": {
+        "09.004": "Verify DrawableFeature write bounds, dirty results and floating composition.",
+        "09.005": "Verify TempBuf preview/conversion paths and storage ownership beyond bridge reads. Verify TempBuf preview/conversion paths. Verify TempBuf preview/conversion paths and storage ownership beyond bridge reads. Verify TempBuf preview/conversion paths. Verify TempBuf preview/conversion paths and storage ownership beyond bridge reads. Verify TempBuf preview/conversion paths. Verify TempBuf preview/conversion paths and storage ownership beyond bridge reads. Verify TempBuf preview/conversion paths. Verify TempBuf preview/conversion paths and storage ownership beyond bridge reads. Verify TempBuf preview/conversion paths. Verify TempBuf preview/conversion paths and storage ownership beyond bridge reads. Verify TempBuf preview/conversion paths. Verify TempBuf preview/conversion paths and storage ownership beyond bridge reads. Verify TempBuf preview/conversion paths. Verify TempBuf preview/conversion paths. Verify TempBuf preview/conversion paths and storage ownership beyond bridge reads. Verify TempBuf preview/conversion paths. Verify TempBuf preview/conversion paths and storage ownership beyond bridge reads. Verify TempBuf preview/conversion paths. Verify TempBuf preview/conversion paths and storage ownership beyond bridge reads. Verify TempBuf preview/conversion paths. Verify TempBuf preview/conversion paths and storage ownership beyond bridge reads. Verify TempBuf preview/conversion paths. Verify TempBuf preview/conversion paths and storage ownership beyond bridge reads. Verify TempBuf preview/conversion paths. Verify TempBuf preview/conversion paths and storage ownership beyond bridge reads. Verify TempBuf preview/conversion paths. Verify TempBuf preview/conversion paths. Verify TempBuf preview/conversion paths and storage ownership beyond bridge reads. Verify TempBuf preview/conversion paths. Verify TempBuf preview/conversion paths and storage ownership beyond bridge reads. Verify TempBuf preview/conversion paths. Verify TempBuf preview/conversion paths and storage ownership beyond bridge reads. Verify TempBuf preview/conversion paths.",
+        "09.006": "Verify selection-mask offset/coverage integration beyond the combined read fixture. Verify selection-mask integration. Verify selection-mask offset/coverage integration beyond the combined read fixture. Verify selection-mask integration. Verify selection-mask integration. Verify selection-mask offset/coverage integration beyond the combined read fixture. Verify selection-mask integration. Verify selection-mask offset/coverage integration beyond the combined read fixture. Verify selection-mask integration. Verify selection-mask integration. Verify selection-mask offset/coverage integration beyond the combined read fixture. Verify selection-mask integration.",
+        "09.007": "Verify layer-mask application distinction. Verify layer-mask apply distinction. Verify layer-mask application distinction. Verify layer-mask apply distinction. Verify layer-mask apply distinction. Verify layer-mask application distinction. Verify layer-mask apply distinction. Verify layer-mask application distinction. Verify layer-mask apply distinction. Verify layer-mask apply distinction. Verify layer-mask application distinction. Verify layer-mask apply distinction.",
+        "09.008": "Verify immutable stroke-start snapshot integration.",
+        "09.009": "Verify floating and work-buffer allocation limits. Verify work/floating buffer allocation limits. Verify floating and work-buffer allocation limits. Verify work/floating buffer allocation limits. Verify floating and work-buffer allocation limits. Verify work/floating buffer allocation limits. Verify floating and work-buffer allocation limits. Verify work/floating buffer allocation limits. Verify floating and work-buffer allocation limits. Verify work/floating buffer allocation limits. Verify floating and work-buffer allocation limits. Verify work/floating buffer allocation limits. Verify floating and work-buffer allocation limits. Verify work/floating buffer allocation limits. Verify work/floating buffer allocation limits. Verify floating and work-buffer allocation limits. Verify work/floating buffer allocation limits. Verify floating and work-buffer allocation limits. Verify work/floating buffer allocation limits. Verify floating and work-buffer allocation limits. Verify work/floating buffer allocation limits. Verify floating and work-buffer allocation limits. Verify work/floating buffer allocation limits. Verify floating and work-buffer allocation limits. Verify work/floating buffer allocation limits. Verify floating and work-buffer allocation limits. Verify work/floating buffer allocation limits. Verify work/floating buffer allocation limits. Verify floating and work-buffer allocation limits. Verify work/floating buffer allocation limits. Verify floating and work-buffer allocation limits. Verify work/floating buffer allocation limits. Verify floating and work-buffer allocation limits. Verify work/floating buffer allocation limits.",
+        "09.011": "Verify native Undo difference recording and restoration. Verify native Undo difference recording/restoration. Verify native Undo difference recording and restoration. Verify native Undo difference recording/restoration. Verify native Undo difference recording and restoration. Verify native Undo difference recording/restoration. Verify native Undo difference recording and restoration. Verify native Undo difference recording/restoration. Verify native Undo difference recording and restoration. Verify native Undo difference recording/restoration. Verify native Undo difference recording and restoration. Verify native Undo difference recording/restoration. Verify native Undo difference recording and restoration. Verify native Undo difference recording/restoration. Verify native Undo difference recording/restoration. Verify native Undo difference recording and restoration. Verify native Undo difference recording/restoration. Verify native Undo difference recording and restoration. Verify native Undo difference recording/restoration. Verify native Undo difference recording and restoration. Verify native Undo difference recording/restoration. Verify all native Undo difference recording and restoration beyond this damage-extent fixture.",
+        "09.003/region-lifetime": "Verify all draw_dab/get_color early-return, failure and callback lifecycle paths for read/write/snapshot/mask/texture ownership. Verify all callback/return/failure buffer lifetimes, not only successful writes. Verify all draw_dab/get_color early-return, failure and callback lifecycle paths for read/write/snapshot/mask/texture ownership. Verify all callback/return/failure buffer lifetimes, not only successful writes. Verify all draw_dab/get_color early-return, failure and callback lifecycle paths for read/write/snapshot/mask/texture ownership. Verify all callback/return/failure buffer lifetimes, not only successful writes. Verify all draw_dab/get_color early-return, failure and callback lifecycle paths for read/write/snapshot/mask/texture ownership. Verify all callback/return/failure buffer lifetimes, not only successful writes. Verify all draw_dab/get_color early-return, failure and callback lifecycle paths for read/write/snapshot/mask/texture ownership. Verify all callback/return/failure buffer lifetimes, not only successful writes. Verify all draw_dab/get_color early-return, failure and callback lifecycle paths for read/write/snapshot/mask/texture ownership. Verify all callback/return/failure buffer lifetimes, not only successful writes. Verify all draw_dab/get_color early-return, failure and callback lifecycle paths for read/write/snapshot/mask/texture ownership. Verify all callback/return/failure buffer lifetimes, not only successful writes. Verify all callback/return/failure buffer lifetimes, not only successful writes. Verify all draw_dab/get_color early-return, failure and callback lifecycle paths for read/write/snapshot/mask/texture ownership. Verify all callback/return/failure buffer lifetimes, not only successful writes. Verify all draw_dab/get_color early-return, failure and callback lifecycle paths for read/write/snapshot/mask/texture ownership. Verify all callback/return/failure buffer lifetimes, not only successful writes. Verify all draw_dab/get_color early-return, failure and callback lifecycle paths for read/write/snapshot/mask/texture ownership. Verify all callback/return/failure buffer lifetimes, not only successful writes. Verify all draw_dab/get_color early-return, failure and callback lifecycle paths for read/write/snapshot/mask/texture ownership. Verify all callback/return/failure buffer lifetimes, not only successful writes. Verify all draw_dab/get_color early-return, failure and callback lifecycle paths for read/write/snapshot/mask/texture ownership. Verify all callback/return/failure buffer lifetimes, not only successful writes. Verify all draw_dab/get_color early-return, failure and callback lifecycle paths for read/write/snapshot/mask/texture ownership. Verify all callback/return/failure buffer lifetimes, not only successful writes. Verify all callback/return/failure buffer lifetimes, not only successful writes. Verify all draw_dab/get_color early-return, failure and callback lifecycle paths for read/write/snapshot/mask/texture ownership. Verify all callback/return/failure buffer lifetimes, not only successful writes. Verify all draw_dab/get_color early-return, failure and callback lifecycle paths for read/write/snapshot/mask/texture ownership. Verify all callback/return/failure buffer lifetimes, not only successful writes. Verify all draw_dab/get_color early-return, failure and callback lifecycle paths for read/write/snapshot/mask/texture ownership. Verify all callback/return/failure buffer lifetimes, not only successful writes.",
+        "09.010": "Verify all application dirty-region aggregation consumers; this task tests Surface conservative ROI only.",
+        "09.013": "Connect projection update notifications so changed regions reach the display. Connect projection update notifications so changed regions reach the display. Verify actual displayed projection updates beyond model damage signals. Connect projection update notifications so changed regions reach the display. Connect projection update notifications so changed regions reach the display. Verify actual displayed projection updates beyond model damage signals.",
+        "21.010": "Switch sampling among stroke-start, working and composed buffers according to specification.",
+        "21.011": "Verify non-incremental working-buffer accumulation for coincident dabs against legacy semantics.",
+        "31.017": "Complete all remaining old TileManager/PixelRegion/TempBuf consumer replacement without dropping this entire header duty. Complete this exact legacy source duty across every remaining TileManager/PixelRegion/TempBuf consumer; bounded Surface scratch does not prove all consumers replaced. Complete all remaining old TileManager/PixelRegion/TempBuf consumers without dropping this entire429-line header duty. Complete all remaining old TileManager/PixelRegion/TempBuf consumer replacement without dropping this entire header duty. Complete this exact legacy source duty across every remaining TileManager/PixelRegion/TempBuf consumer; bounded Surface scratch does not prove all consumers replaced. Complete all remaining old TileManager/PixelRegion/TempBuf consumers without dropping this entire429-line header duty.",
+        "21.016": " Verify every tool/engine dirty and extent consumer. Verify every tool/engine dirty and extent consumer.",
+        "09.011/mypaint-undo-stroke": "Preserve original child duty: old Undo pop does not restore stroke; define engine/stroke-state ownership and verify independently of pixel buffer histories."
+      }
+    }
+  ],
+  "evidence": [
+    "migration/tests/commit-cancel/report.json"
+  ]
+}

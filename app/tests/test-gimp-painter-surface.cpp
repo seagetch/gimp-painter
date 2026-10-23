@@ -299,10 +299,12 @@ static void rgb_native_cancel_undo()
 #include "test-painter-surface-snapshot-handoff.inc"
 #include "test-painter-surface-dirty-handoff.inc"
 #include "test-painter-surface-undo-handoff.inc"
+#include "test-painter-surface-commit-cancel.inc"
 
 int main(int argc,char**argv)
 {
   g_test_init(&argc,&argv,nullptr);gimp_test_utils_set_gimp3_directory("GIMP_TESTING_ABS_TOP_SRCDIR","app/tests/gimpdir");gimp=gimp_init_for_testing();
+  g_test_add_func("/commit-cancel/native-pixels-and-history",CommitCancel::native_pixels_and_history);
   g_test_add_func("/painter-surface/session-undo-cancel",session_undo_and_cancel);
   g_test_add_func("/painter-surface/rgb-cancel-undo",rgb_native_cancel_undo);
   g_test_add_func("/painter-surface/stationary-selection",stationary_and_selection);
