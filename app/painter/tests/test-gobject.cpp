@@ -3,10 +3,15 @@
 #include "test-fixture-traits.hpp"
 #include "binding-store.hpp"
 #include "resources.hpp"
+#include "connection.hpp"
 #include <cstring>
 #include <initializer_list>
 
 using namespace GimpPainter;
+namespace GimpPainter {
+template<> struct TypeTraits<PainterConstructionFixture>
+{ static GType type () { return painter_construction_fixture_get_type (); } };
+}
 namespace {
 enum class Event { construct, construct_property, activate, get, set, close, destroy };
 struct Stats
@@ -32,6 +37,84 @@ struct FixtureImpl
   int value = -1;
 };
 struct FixtureSlot : SlotSpec<PainterFixture, FixtureImpl> {};
+
+struct ConstructionStats
+{
+  int setters = 0, attempts = 0, rejected = 0, runs = 0, connected = 0;
+  int closed = 0, destroyed = 0;
+  int observed[2] = {-1, -1};
+};
+ConstructionStats construction_stats;
+struct ConstructionImpl
+{
+  int values[2] = {-1, -1};
+  Connection early_probe, normal;
+  ~ConstructionImpl () { ++construction_stats.destroyed; }
+  void close () noexcept
+  {
+    ++construction_stats.closed;
+    early_probe.close ();
+    normal.close ();
+  }
+};
+struct ConstructionSlot : SlotSpec<PainterConstructionFixture, ConstructionImpl> {};
+void construction_probe (GObject *owner, gpointer)
+{
+  ++construction_stats.attempts;
+  GError *error = nullptr;
+  boundary_void (&error, [&] {
+    BindingStore::require (owner).with<ConstructionSlot> ([] (ConstructionImpl& impl) {
+      ++construction_stats.runs;
+      for (int i = 0; i != 2; ++i)
+        {
+          g_assert_cmpint (impl.values[i], >=, 0);
+          construction_stats.observed[i] = impl.values[i];
+        }
+    });
+  });
+  if (error)
+    {
+      g_assert_error (error, GIMP_PAINTER_ERROR, GIMP_PAINTER_ERROR_INVALID_STATE);
+      ++construction_stats.rejected;
+      g_clear_error (&error);
+    }
+}
+
+void construction_property_callbacks ()
+{
+  for (bool explicit_values : {false, true})
+    {
+      construction_stats = {};
+      auto owner = ObjectRef<GObject>::adopt (G_OBJECT (explicit_values ?
+        g_object_new (painter_construction_fixture_get_type (), "left", 17, "right", 23, nullptr) :
+        g_object_new (painter_construction_fixture_get_type (), nullptr)));
+      const int left = explicit_values ? 17 : 7, right = explicit_values ? 23 : 11;
+      g_assert_cmpint (construction_stats.setters, ==, 2);
+      g_assert_cmpint (construction_stats.attempts, ==, 3);
+      g_assert_cmpint (construction_stats.rejected, ==, 2);
+      g_assert_cmpint (construction_stats.connected, ==, 1);
+      g_assert_cmpint (construction_stats.runs, ==, 1);
+      g_assert_cmpint (construction_stats.observed[0], ==, left);
+      g_assert_cmpint (construction_stats.observed[1], ==, right);
+      gint actual_left = -1, actual_right = -1;
+      g_object_get (owner.get (), "left", &actual_left, "right", &actual_right, nullptr);
+      g_assert_cmpint (actual_left, ==, left);
+      g_assert_cmpint (actual_right, ==, right);
+      g_object_set (owner.get (), "left", 29, nullptr);
+      g_assert_cmpint (construction_stats.attempts, ==, 4);
+      g_assert_cmpint (construction_stats.runs, ==, 2);
+      g_assert_cmpint (construction_stats.observed[0], ==, 29);
+      g_assert_cmpint (construction_stats.observed[1], ==, right);
+      g_object_run_dispose (owner.get ());
+      g_object_run_dispose (owner.get ());
+      g_signal_emit_by_name (owner.get (), "construction-probe");
+      g_assert_cmpint (construction_stats.attempts, ==, 4);
+      g_assert_cmpint (construction_stats.closed, ==, 1);
+      g_assert_cmpint (construction_stats.destroyed, ==, 0);
+      owner.reset ();
+      g_assert_cmpint (construction_stats.destroyed, ==, 1);
+    }
+}
 
 int property_destroyed = 0;
 struct PropertyImpl
@@ -298,6 +381,73 @@ void painter_fixture_binding_init (GObject *owner)
   boundary_void (&error, [&] { BindingStore::ensure (owner).emplace<FixtureSlot> (); });
   g_assert_no_error (error);
 }
+
+void painter_construction_binding_init (GObject *owner)
+{
+  GError *error = nullptr;
+  boundary_void (&error, [&] {
+    auto& store = BindingStore::ensure (owner);
+    store.emplace<ConstructionSlot> ();
+    // Deliberately premature test observer proves the callback gate rejects
+    // real emissions. Normal owner callbacks are connected only after activate.
+    store.initialize<ConstructionSlot> ([&] (ConstructionImpl& impl) {
+      impl.early_probe = Connection::connect (ObjectRef<GObject>::retain (owner),
+        "construction-probe", G_CALLBACK (construction_probe), nullptr, nullptr);
+    });
+  });
+  g_assert_no_error (error);
+}
+void painter_construction_binding_constructed (GObject *owner)
+{
+  GError *error = nullptr;
+  boundary_void (&error, [&] {
+    auto& store = BindingStore::require (owner);
+    store.initialize<ConstructionSlot> ([] (ConstructionImpl& impl) {
+      g_assert_cmpint (construction_stats.setters, ==, 2);
+      g_assert_cmpint (construction_stats.rejected, ==, 2);
+      g_assert_cmpint (construction_stats.runs, ==, 0);
+      g_assert_false (impl.normal.connected ());
+      g_assert_cmpint (impl.values[0], >=, 0);
+      g_assert_cmpint (impl.values[1], >=, 0);
+      impl.early_probe.close ();
+    });
+    store.activate ();
+    store.with<ConstructionSlot> ([&] (ConstructionImpl& impl) {
+      impl.normal = Connection::connect (ObjectRef<GObject>::retain (owner),
+        "construction-probe", G_CALLBACK (construction_probe), nullptr, nullptr);
+      ++construction_stats.connected;
+    });
+    g_signal_emit_by_name (owner, "construction-probe");
+  });
+  g_assert_no_error (error);
+}
+void painter_construction_binding_set (GObject *owner, guint id, gint value)
+{
+  GError *error = nullptr;
+  boundary_void (&error, [&] {
+    auto& store = BindingStore::require (owner);
+    const bool constructing = store.state () == BindingStore::State::constructing;
+    auto set = [=] (ConstructionImpl& impl) {
+      if (constructing) g_assert_false (impl.normal.connected ());
+      impl.values[id - 1] = value;
+      ++construction_stats.setters;
+    };
+    if (constructing) store.initialize<ConstructionSlot> (set);
+    else store.with<ConstructionSlot> (set);
+    g_signal_emit_by_name (owner, "construction-probe");
+  });
+  g_assert_no_error (error);
+}
+gint painter_construction_binding_get (GObject *owner, guint id)
+{
+  GError *error = nullptr;
+  gint value = boundary<gint> (&error, -1, [&] {
+    return BindingStore::require (owner).read<ConstructionSlot> (
+      [id] (const ConstructionImpl& impl) { return impl.values[id - 1]; });
+  });
+  g_assert_no_error (error);
+  return value;
+}
 void painter_fixture_binding_constructed (GObject *owner)
 {
   GError *error = nullptr;
@@ -373,6 +523,7 @@ void painter_property_binding_get (GObject *owner, guint id, GValue *value, GPar
 void painter_test_register_gobject ()
 {
   g_test_add_func ("/painter/gobject/property-dispose-finalize", lifecycle);
+  g_test_add_func ("/painter/gobject/construction-property-callbacks", construction_property_callbacks);
   g_test_add_func ("/painter/gobject/type-rejection", wrong_type);
   g_test_add_func ("/painter/gobject/property-types-defaults-notify", property_contract);
   g_test_add_func ("/painter/gobject/property-notify-reentry", property_notify_reentry);

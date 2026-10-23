@@ -720,17 +720,21 @@
       "implementation_paths": [
         "app/painter/binding-store.hpp",
         "app/painter/binding-store.cpp",
+        "app/painter/boundary.hpp",
+        "app/painter/connection.hpp",
+        "app/painter/tests/test-fixture.h",
         "app/painter/tests/test-fixture.c",
         "app/painter/tests/test-gobject.cpp"
       ],
       "test_ids": [
-        "/painter/gobject/property-dispose-finalize"
+        "/painter/gobject/property-dispose-finalize",
+        "/painter/gobject/construction-property-callbacks"
       ],
       "reports": [
-        "migration/tests/painter-foundation-acceptance-native.json",
-        "migration/tests/painter-foundation-acceptance-sanitizers.json"
+        "migration/tests/construction-property/native.json",
+        "migration/tests/construction-property/sanitizers.json"
       ],
-      "scope_or_gap": "Exact-signature C callbacks and C++ slot dispatch; not proof of every legacy vfunc adapter."
+      "scope_or_gap": "Actual native C construction setters initialize two properties before the normal Connection exists. An intentionally premature test observer exercises with() rejection without entering the Impl; after constructed activation the normal callback observes both values. Defaults, explicit values, active update and repeated dispose are covered by current66-case native/ASanUBSan/Meson reports. No production defect/change, queued-notify timing, LSan or platform claim."
     },
     {
       "id": "07.006",

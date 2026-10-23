@@ -1,0 +1,56 @@
+{
+  "task": "07.005",
+  "status": "PASS",
+  "parent": "0c5a1361bc30d27e6356b973cec2ee959954b4ff",
+  "reports": [
+    {
+      "path": "migration/tests/construction-property/native.json",
+      "sha256": "d10b447a5ed8fb6e9182c1f930f1f143f5ee5c171c1feae805acb1b45642352c",
+      "all_recorded_source_seals_match": true,
+      "suite_cases": 66,
+      "new_execution": true
+    },
+    {
+      "path": "migration/tests/construction-property/sanitizers.json",
+      "sha256": "705c54da5a3bfa22b9c272bec4b7a384c72b6e6388b253184c60dbca478f32cf",
+      "all_recorded_source_seals_match": true,
+      "suite_cases": 66,
+      "new_execution": true
+    },
+    {
+      "path": "migration/tests/construction-property/meson.json",
+      "sha256": "96f911fb75b3d1d66470a33dc7c0c2efd9f5309a190ff0887a25d34ea710904e",
+      "all_recorded_source_seals_match": true,
+      "suite_cases": 66,
+      "new_execution": true
+    }
+  ],
+  "original_tasks": 661,
+  "original_done": 112,
+  "source_ledger_rows": 22868,
+  "source_ledger_done": 567,
+  "only_changed_source_duties": [
+    "legacy-ffd397217ccde9b8df7a"
+  ],
+  "immutable_contracts_preserved": true,
+  "current_acceptance_errors": [],
+  "whole_historical_foundation_status": "FAIL",
+  "unrelated_historical_errors": 118,
+  "historical_note": "Earlier report hashes are preserved. The new fixture/test sources supersede older common-suite test-source snapshots; historical failures do not negate the current task measurements.",
+  "checks": {
+    "python3 -B tools/check_tasks.py": "WBS dependencies, states, and completion evidence: OK\n",
+    "python3 -B tools/audit_legacy_granularity.py --check": "{\"assets\": 402, \"compound_action_rows\": 0, \"hunks\": 2489, \"implementation_actions\": 15999, \"source_checks\": 2891, \"statuses\": {\"DONE\": 567, \"TODO\": 22301}, \"unassigned_sources\": 0, \"verification_actions\": 6869}\n",
+    "git diff --check": ""
+  },
+  "source_duty": {
+    "work_id": "legacy-ffd397217ccde9b8df7a",
+    "path": "app/base/glib-cxx-impl.hpp",
+    "source_hunk": "01.002/000045",
+    "git_blob": "a2ad35e37a3e7a481698c1f8b78b71adb385f7d3",
+    "evidence_path": "migration/tests/inherited-properties/legacy-source/glib-cxx-impl.hpp",
+    "bytes": 18618,
+    "sha256": "5c50241a85ee4caaadb5c28cb4499c4348666281d24078c318cd31c643f04887",
+    "lines": "185-206; 407-410",
+    "mapping": "Old registered setter dispatch and native instance initialization retain construction-time property setting. Modern store state admits normal callbacks only after activation; no equivalent legacy activation gate is claimed."
+  }
+}

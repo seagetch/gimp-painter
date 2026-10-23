@@ -44,6 +44,52 @@ static void painter_fixture_init (PainterFixture *self)
   painter_fixture_binding_init (G_OBJECT (self));
 }
 
+/* A separate native fixture for construction-property/callback ordering. */
+typedef struct _PainterConstructionFixtureClass { GObjectClass parent_class; } PainterConstructionFixtureClass;
+struct _PainterConstructionFixture { GObject parent_instance; };
+G_DEFINE_TYPE (PainterConstructionFixture, painter_construction_fixture, G_TYPE_OBJECT)
+
+static void construction_constructed (GObject *owner)
+{
+  G_OBJECT_CLASS (painter_construction_fixture_parent_class)->constructed (owner);
+  painter_construction_binding_constructed (owner);
+}
+static void construction_dispose (GObject *owner)
+{
+  GError *error = NULL;
+  g_assert_true (gimp_painter_binding_close (owner, &error));
+  g_assert_no_error (error);
+  G_OBJECT_CLASS (painter_construction_fixture_parent_class)->dispose (owner);
+}
+static void construction_set (GObject *owner, guint id, const GValue *value, GParamSpec *spec)
+{
+  if (id == 1 || id == 2) painter_construction_binding_set (owner, id, g_value_get_int (value));
+  else G_OBJECT_WARN_INVALID_PROPERTY_ID (owner, id, spec);
+}
+static void construction_get (GObject *owner, guint id, GValue *value, GParamSpec *spec)
+{
+  if (id == 1 || id == 2) g_value_set_int (value, painter_construction_binding_get (owner, id));
+  else G_OBJECT_WARN_INVALID_PROPERTY_ID (owner, id, spec);
+}
+static void painter_construction_fixture_class_init (PainterConstructionFixtureClass *klass)
+{
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  object_class->constructed = construction_constructed;
+  object_class->dispose = construction_dispose;
+  object_class->set_property = construction_set;
+  object_class->get_property = construction_get;
+  g_object_class_install_property (object_class, 1,
+    g_param_spec_int ("left", "left", "left", 0, 99, 7, G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+  g_object_class_install_property (object_class, 2,
+    g_param_spec_int ("right", "right", "right", 0, 99, 11, G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+  g_signal_new ("construction-probe", G_TYPE_FROM_CLASS (klass), G_SIGNAL_RUN_LAST,
+                0, NULL, NULL, NULL, G_TYPE_NONE, 0);
+}
+static void painter_construction_fixture_init (PainterConstructionFixture *self)
+{
+  painter_construction_binding_init (G_OBJECT (self));
+}
+
 /* Native C registration and vfuncs; only implementation state lives in C++. */
 typedef struct _PainterPropertyFixtureClass { GObjectClass parent_class; } PainterPropertyFixtureClass;
 struct _PainterPropertyFixture { GObject parent_instance; };
