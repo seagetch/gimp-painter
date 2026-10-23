@@ -28,6 +28,7 @@ extern "C" {
 #include "gimp-intl.h"
 }
 #include "core/gimpfilterparametereditor.hpp"
+#include "core/gimpfilterlayer-handle.hpp"
 #include "painter/binding-store.hpp"
 #include "painter/connection.hpp"
 #include "painter/resources.hpp"
@@ -931,26 +932,27 @@ static void
 painter_filter_details (PainterLayerDialog *state,
                         GimpFilterLayer    *layer)
 {
+  const auto                   filter = FilterLayerRef::retain (layer);
   gboolean                     procedure_truncated = FALSE;
-  gchar                       *procedure = gimp_filter_layer_dup_procedure_prefix (layer, 4096, &procedure_truncated);
-  GBytes                      *raw = gimp_filter_layer_ref_definition (layer);
-  GimpFilterArgumentsSnapshot *snapshot = gimp_filter_layer_snapshot_arguments (layer);
+  auto                         procedure = filter.procedure_prefix (4096, &procedure_truncated);
+  auto                         raw = filter.definition ();
+  auto                         snapshot = filter.snapshot_arguments ();
   PainterFilterPreview         text;
   GtkWidget                   *expander;
   GtkWidget                   *scroll;
   GtkWidget                   *view;
   guint                        remaining = 512;
   text.append (_("Procedure: "));
-  text.string (procedure);
+  text.string (procedure.get ());
   if (procedure_truncated)
     { text.append (_(" (name truncated; remaining bytes retained)")); text.omitted (); }
-  text.format (_("\nOriginal metadata: %" G_GSIZE_FORMAT " bytes (preserved)\n"), raw ? g_bytes_get_size (raw) : 0);
-  if (snapshot) painter_filter_describe (text, snapshot, 0, &remaining);
+  text.format (_("\nOriginal metadata: %" G_GSIZE_FORMAT " bytes (preserved)\n"), raw ? g_bytes_get_size (raw.get ()) : 0);
+  if (snapshot) painter_filter_describe (text, snapshot.get (), 0, &remaining);
   else text.append (_("Arguments remain in the original metadata.\n"));
-  if (raw && g_bytes_get_size (raw) && !text.full ())
+  if (raw && g_bytes_get_size (raw.get ()) && !text.full ())
     {
       gsize size;
-      const guchar *bytes = static_cast<const guchar *> (g_bytes_get_data (raw, &size));
+      const guchar *bytes = static_cast<const guchar *> (g_bytes_get_data (raw.get (), &size));
       text.append (_("\nOriginal metadata (hex preview):\n"));
       for (gsize i = 0; i < MIN (size, gsize (4096)) && !text.full (); ++i)
         text.format ("%02x%s", bytes[i], i % 16 == 15 ? "\n" : " ");
@@ -968,9 +970,6 @@ painter_filter_details (PainterLayerDialog *state,
   gtk_container_add (GTK_CONTAINER (scroll), view);
   gtk_container_add (GTK_CONTAINER (expander), scroll);
   gtk_grid_attach (GTK_GRID (state->grid), expander, 0, state->row++, 2, 1);
-  g_free (procedure);
-  g_clear_pointer (&raw, g_bytes_unref);
-  gimp_filter_arguments_snapshot_free (snapshot);
 }
 
 static bool
@@ -1499,29 +1498,31 @@ static void
 painter_filter_load (PainterLayerDialog *state,
                      GimpFilterLayer    *layer)
 {
-  gchar          *procedure = gimp_filter_layer_dup_procedure_prefix (layer, 128, NULL);
+  const auto     filter = FilterLayerRef::retain (layer);
+  auto           procedure_owner = filter.procedure_prefix (128);
+  const gchar   *procedure = procedure_owner.get ();
+  FilterLayerRef::Arguments args_owner;
   GimpValueArray *args = NULL;
   guint          count;
   gdouble        first, second;
   const GValue  *a, *b, *c;
   gtk_combo_box_set_active_id (GTK_COMBO_BOX (state->choice), "keep");
-  state->loaded_revision = gimp_filter_layer_get_definition_revision (layer);
+  state->loaded_revision = filter.definition_revision ();
   if (procedure && g_str_has_prefix (procedure, "plug-in-") &&
       painter_filter_isolated (procedure + strlen ("plug-in-")))
     {
-      GimpFilterArgumentsSnapshot *snapshot = gimp_filter_layer_snapshot_arguments (layer);
-      if (painter_filter_isolated_shape (procedure + strlen ("plug-in-"), snapshot))
-        painter_filter_isolated_load (state, procedure + strlen ("plug-in-"), snapshot);
-      gimp_filter_arguments_snapshot_free (snapshot);
+      auto snapshot = filter.snapshot_arguments ();
+      if (painter_filter_isolated_shape (procedure + strlen ("plug-in-"), snapshot.get ()))
+        painter_filter_isolated_load (state, procedure + strlen ("plug-in-"), snapshot.get ());
       goto out;
     }
   {
-    GimpFilterArgumentsSnapshot *snapshot = gimp_filter_layer_snapshot_arguments (layer);
-    const bool bounded = painter_filter_materializable (snapshot);
-    gimp_filter_arguments_snapshot_free (snapshot);
+    auto snapshot = filter.snapshot_arguments ();
+    const bool bounded = painter_filter_materializable (snapshot.get ());
     if (!bounded) goto out;
   }
-  args = gimp_filter_layer_dup_args (layer);
+  args_owner = filter.arguments ();
+  args = args_owner.get ();
   count = args ? gimp_value_array_length (args) : 0;
   if ((!g_strcmp0 (procedure,"plug-in-vinvert") && count == 3) ||
       ((!g_strcmp0 (procedure,"plug-in-max-rgb") || !g_strcmp0 (procedure,"plug-in-threshold-alpha")) &&
@@ -1573,8 +1574,7 @@ painter_filter_load (PainterLayerDialog *state,
       gtk_combo_box_set_active_id (GTK_COMBO_BOX (state->choice),procedure + strlen ("plug-in-"));
     }
 out:
-  g_free (procedure);
-  g_clear_pointer (&args, gimp_value_array_unref);
+  return;
 }
 
 static void

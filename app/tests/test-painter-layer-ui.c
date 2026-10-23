@@ -771,6 +771,7 @@ static void dialog_factory_reentry (void)
 #include "test-filter-schema-persistence.inc"
 #include "test-filter-schema-persistence-failures.inc"
 #include "test-filter-progress-ui.inc"
+#include "test-filter-dialog-reads.inc"
 
 /* C entry points implemented by the native C++ metadata boundary fixtures. */
 void gimp_test_filter_editor_metadata (Gimp *application);
@@ -834,6 +835,11 @@ int main (int argc, char **argv)
   ADD (filter_schema_untouched_nonfinite);
   ADD (filter_schema_blinds_context_types);
   ADD (filter_schema_reference_tail_provenance);
+  ADD (filter_read_cancel_known);
+  ADD (filter_read_cancel_unknown);
+  ADD (filter_read_cancel_oversized);
+  ADD (filter_read_cancel_utf8);
+  ADD (filter_read_cancel_null_empty);
   ADD (filter_schema_metadata_snapshot);
   ADD (filter_schema_manager_lifetime);
   ADD (filter_schema_argument_patch);
