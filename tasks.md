@@ -602,7 +602,7 @@
 | 13.001 | [x] | 旧7モードの式を抽出する | 09.017, 10.018 | alpha・premultiplication・丸め・clamp の仕様を記録 |
 | 13.001/gegl-operation-route | [x] | 独自合成ごとに現行 GEGL operator との数値・ノード接続を決める | 13.001 | 7 モードの式、Babl 形式、mask、opacity、group 順序と operator の採用・追加を一件ずつ記録 |
 | 13.002 | [x] | Erase 演算を移植する | 13.001 | 旧代表画素と一致 |
-| 13.003 | [ ] | Replace 演算を移植する | 13.002 | 旧代表画素と一致 |
+| 13.003 | [x] | Replace 演算を移植する | 13.002 | 旧代表画素と一致 |
 | 13.004 | [ ] | Anti-Erase 演算を移植する | 13.003 | 旧代表画素と一致 |
 | 13.005 | [ ] | src-in 演算を移植する | 13.004 | source/destination の扱いが一致 |
 | 13.006 | [ ] | dst-in 演算を移植する | 13.005 | source/destination の扱いが一致 |
