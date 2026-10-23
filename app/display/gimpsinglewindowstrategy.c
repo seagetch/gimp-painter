@@ -28,13 +28,16 @@
 #include "display-types.h"
 
 #include "core/gimp.h"
+#include "config/gimpcoreconfig.h"
 
 #include "menus/menus.h"
 
 #include "widgets/gimpdialogfactory.h"
 #include "widgets/gimpdock.h"
+#include "widgets/gimpdockable.h"
 #include "widgets/gimpdockbook.h"
 #include "widgets/gimpdockcolumns.h"
+#include "widgets/gimpmenudock.h"
 #include "widgets/gimpwindowstrategy.h"
 
 #include "gimpimagewindow.h"
@@ -72,6 +75,13 @@ gimp_single_window_strategy_window_strategy_iface_init (GimpWindowStrategyInterf
   iface->show_dockable_dialog = gimp_single_window_strategy_show_dockable_dialog;
 }
 
+static void
+painter_open_target_destroyed (GtkWidget *widget, gpointer data)
+{
+  (void) widget;
+  *((gboolean *) data) = TRUE;
+}
+
 static GtkWidget *
 gimp_single_window_strategy_show_dockable_dialog (GimpWindowStrategy *strategy,
                                                   Gimp               *gimp,
@@ -82,11 +92,16 @@ gimp_single_window_strategy_show_dockable_dialog (GimpWindowStrategy *strategy,
   GList           *windows = gimp_get_image_windows (gimp);
   GtkWidget       *widget  = NULL;
   GimpImageWindow *window;
+  gboolean         window_destroyed = FALSE;
+  gulong           window_handler;
 
   g_return_val_if_fail (windows != NULL, NULL);
 
   /* In single-window mode, there should only be one window... */
-  window = GIMP_IMAGE_WINDOW (windows->data);
+  window = g_object_ref (GIMP_IMAGE_WINDOW (windows->data));
+  window_handler = g_signal_connect (window, "destroy",
+                                      G_CALLBACK (painter_open_target_destroyed),
+                                      &window_destroyed);
 
   if (strcmp ("gimp-toolbox", identifiers) == 0)
     {
@@ -116,16 +131,102 @@ gimp_single_window_strategy_show_dockable_dialog (GimpWindowStrategy *strategy,
     }
   else if (gimp_dialog_factory_find_widget (factory, identifiers))
     {
-      /* if the dialog is already open, simply raise it */
-      return gimp_dialog_factory_dialog_raise (factory, monitor,
-                                               GTK_WIDGET (window),
-                                               identifiers, -1);
+      /* Existing profiles can keep a book in the now-hidden left toolbox.
+       * An explicit Open action transfers that whole book (including siblings)
+       * to the on-canvas collection; detached floating docks are not touched. */
+      GtkWidget *existing = g_object_ref (gimp_dialog_factory_find_widget (factory, identifiers));
+      gboolean widget_destroyed = FALSE;
+      gulong widget_handler = g_signal_connect (existing, "destroy",
+                                                G_CALLBACK (painter_open_target_destroyed),
+                                                &widget_destroyed);
+      widget = existing;
+      if (gimp->config->painter_canvas_ui && GIMP_IS_DOCKABLE (widget) &&
+          gtk_widget_is_ancestor (widget, GTK_WIDGET (gimp_image_window_get_left_docks (window))))
+        {
+          GimpDockbook *book = gimp_dockable_get_dockbook (GIMP_DOCKABLE (widget));
+          GimpDock *old_dock = book ? gimp_dockbook_get_dock (book) : NULL;
+          GimpDockColumns *right = gimp_image_window_get_right_docks (window);
+          GList *docks = gimp_dock_columns_get_docks (right);
+          if (book && old_dock)
+            {
+              GimpDock *target = docks ? GIMP_DOCK (docks->data) :
+                                        GIMP_DOCK (gimp_menu_dock_new ());
+              gboolean new_target = docks == NULL;
+              gboolean book_destroyed = FALSE, target_destroyed = FALSE;
+              gboolean right_destroyed = FALSE;
+              gulong book_handler, target_handler, right_handler;
+              g_object_ref (right);
+              right_handler = g_signal_connect (right, "destroy",
+                                                 G_CALLBACK (painter_open_target_destroyed),
+                                                 &right_destroyed);
+              g_object_ref (book);
+              if (new_target)
+                g_object_ref_sink (target);
+              else
+                g_object_ref (target);
+              book_handler = g_signal_connect (book, "destroy", G_CALLBACK (painter_open_target_destroyed), &book_destroyed);
+              target_handler = g_signal_connect (target, "destroy", G_CALLBACK (painter_open_target_destroyed), &target_destroyed);
+              /* A restored profile may have no right-hand docks yet. Create
+               * a destination for the entire book, not another Tool Options
+               * instance or a second, empty placeholder book. */
+              if (new_target)
+                gimp_dock_columns_add_dock (right, target, -1);
+              if (! window_destroyed && ! right_destroyed &&
+                  ! book_destroyed && ! target_destroyed &&
+                  gtk_widget_is_ancestor (GTK_WIDGET (target), GTK_WIDGET (right)) &&
+                  gimp_dockbook_get_dock (book) == old_dock)
+                {
+                  gimp_dock_remove_book (old_dock, book);
+                  if (! window_destroyed && ! right_destroyed &&
+                      ! book_destroyed && ! target_destroyed &&
+                      gtk_widget_is_ancestor (GTK_WIDGET (target), GTK_WIDGET (right)) &&
+                      ! gtk_widget_get_parent (GTK_WIDGET (book)))
+                    {
+                      gimp_dock_add_book (target, book, -1);
+                      if (! window_destroyed && ! right_destroyed &&
+                          ! book_destroyed && ! target_destroyed &&
+                          gtk_widget_is_ancestor (GTK_WIDGET (target), GTK_WIDGET (right)) &&
+                          gimp_dockbook_get_dock (book) == target)
+                        gtk_widget_show (GTK_WIDGET (target));
+                    }
+                }
+              if (g_signal_handler_is_connected (book, book_handler))
+                g_signal_handler_disconnect (book, book_handler);
+              if (g_signal_handler_is_connected (target, target_handler))
+                g_signal_handler_disconnect (target, target_handler);
+              if (g_signal_handler_is_connected (right, right_handler))
+                g_signal_handler_disconnect (right, right_handler);
+              g_object_unref (target);
+              g_object_unref (book);
+              g_object_unref (right);
+            }
+        }
+      widget = NULL;
+      if (! window_destroyed && ! widget_destroyed)
+        widget = gimp_dialog_factory_dialog_raise (factory, monitor,
+                                                   GTK_WIDGET (window),
+                                                   identifiers, -1);
+      /* A reentrant receiver can detach without destroying the dockable.
+       * Do not return storage kept alive only by this temporary lease. */
+      if (widget_destroyed ||
+          (GIMP_IS_DOCKABLE (existing) &&
+           ! gimp_dockable_get_dockbook (GIMP_DOCKABLE (existing))))
+        widget = NULL;
+      if (g_signal_handler_is_connected (existing, widget_handler))
+        g_signal_handler_disconnect (existing, widget_handler);
+      g_object_unref (existing);
    }
   else
     {
       GtkWidget *dockbook;
 
       dockbook = gimp_image_window_get_default_dockbook (window);
+      /* The usual fallback is the left toolbox, which Painter mode hides.
+       * New dockables belong to the whole right-side collection instead. */
+      if (gimp->config->painter_canvas_ui && dockbook &&
+          ! gtk_widget_is_ancestor (dockbook,
+                                    GTK_WIDGET (gimp_image_window_get_right_docks (window))))
+        dockbook = NULL;
 
       if (! dockbook)
         {
@@ -143,6 +244,11 @@ gimp_single_window_strategy_show_dockable_dialog (GimpWindowStrategy *strategy,
     }
 
 
+  if (window_destroyed)
+    widget = NULL;
+  if (g_signal_handler_is_connected (window, window_handler))
+    g_signal_handler_disconnect (window, window_handler);
+  g_object_unref (window);
   g_list_free (windows);
 
   return widget;

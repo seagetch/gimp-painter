@@ -21,8 +21,7 @@ extern "C" {
 #include "core/gimpitem.h"
 #include "menus/menus.h"
 #include "gimpdocked.h"
-#include "gimpview.h"
-#include "gimpviewrenderer.h"
+#include "core/gimptempbuf.h"
 #include "gimpuimanager.h"
 #include "gimpmenufactory.h"
 #include "gimpaction.h"
@@ -45,15 +44,30 @@ extern "C" {
 #include <memory>
 #include <string>
 #include <vector>
+#include <unordered_map>
+#include <unordered_set>
 using namespace GimpPainter;
 G_DEFINE_TYPE (GimpPainterLayerTiles, gimp_painter_layer_tiles, GIMP_TYPE_IMAGE_EDITOR)
 namespace {
 enum { PROP_0, PROP_IMAGE, PROP_CONTEXT };
 struct Tiles;
 struct Slot : SlotSpec<GimpPainterLayerTiles, Tiles> {};
+/* Original painter tile geometry (gimplayertileview.cpp, 2016).  These
+ * are content coordinates, shared by painting, hit testing and drop feedback. */
+constexpr int tile_pitch = 64, preview_size = 56, indent_width = 8;
+constexpr int bar_width = 4, icon_size = 14, preview_inset = 4;
+using Surface = std::unique_ptr<cairo_surface_t, decltype (&cairo_surface_destroy)>;
+struct Preview {
+  ObjectRef<GObject> viewable;
+  Surface surface {nullptr, cairo_surface_destroy};
+  unsigned revision = 1;
+  bool dirty = true;
+  explicit Preview (GimpViewable *v) : viewable (ObjectRef<GObject>::retain (G_OBJECT (v))) {}
+};
 struct Row {
   ObjectRef<GObject> layer;
-  GtkWidget *widget = nullptr, *visible = nullptr, *expand = nullptr, *name = nullptr;
+  std::shared_ptr<Preview> preview, mask;
+  int depth = 0;
 };
 struct Hook {
   WeakRef<GObject> owner;
@@ -65,12 +79,16 @@ struct Hook {
 };
 struct Tiles {
   GimpPainterLayerTiles *owner;
-  ObjectRef<GObject> supplied_context, context, image, popup, drag_layer, press_widget, pending_single;
+  ObjectRef<GObject> supplied_context, context, image, popup, drag_layer, press_layer, press_widget, pending_single;
   GtkWidget *list = nullptr, *add = nullptr, *scroll = nullptr, *popup_content = nullptr;
   std::vector<ObjectRef<GObject>> widgets; // root children survive synchronous destroy reentry
   std::vector<Row> rows;
+  std::unordered_map<GObject *, std::shared_ptr<Preview>> previews;
+  std::unordered_map<std::string, Surface> icons;
+  int drop_row = -1;
+  bool drop_into = false, drop_after = false;
   std::vector<Connection> permanent, model, controls, popup_connections;
-  Source rebuild, long_press, autoscroll;
+  Source rebuild, preview_update, long_press, autoscroll;
   double scroll_step = 0;
   std::uint64_t image_generation = 0, popup_generation = 0, context_generation = 0, refresh_generation = 0;
   bool clearing_context = false;
@@ -80,7 +98,7 @@ struct Tiles {
   GimpImage *img () const { return image ? GIMP_IMAGE (image.get ()) : nullptr; }
   GimpContext *ctx () const { return context ? GIMP_CONTEXT (context.get ()) : nullptr; }
   void cancel_press () noexcept {
-    long_press.close (); pressed = false; pending_single.reset ();
+    long_press.close (); pressed = false; pending_single.reset (); press_layer.reset ();
     auto old = std::move (press_widget);
     if (old && gtk_widget_has_grab (GTK_WIDGET (old.get ()))) gtk_grab_remove (GTK_WIDGET (old.get ()));
   }
@@ -101,9 +119,9 @@ struct Tiles {
   }
   void close () noexcept {
     if (closed) return;
-    closed = true; cancel_press (); rebuild.close (); autoscroll.close ();
+    closed = true; cancel_press (); rebuild.close (); preview_update.close (); autoscroll.close ();
     close_popup (); permanent.clear (); model.clear (); controls.clear ();
-    rows.clear (); drag_layer.reset (); pending_single.reset ();
+    rows.clear (); previews.clear (); icons.clear (); drag_layer.reset (); pending_single.reset ();
     gimp_docked_set_context (GIMP_DOCKED (owner), nullptr);
     image.reset (); context.reset (); supplied_context.reset ();
   }
@@ -115,6 +133,14 @@ struct Tiles {
   void observe (GimpContainer *container);
   void append (GimpContainer *container, int depth);
   void sync_selection ();
+  int row_at (double x, double y, bool preview_only = true) const;
+  std::shared_ptr<Preview> cache (GimpViewable *viewable);
+  void invalidate (GimpViewable *viewable);
+  void schedule_previews ();
+  void update_previews ();
+  void draw (cairo_t *cr);
+  void draw_icon (cairo_t *cr, const char *name, int x, int y);
+  void clear_drop () { drop_row = -1; gtk_widget_queue_draw (list); }
   bool choose (GimpLayer *layer, GdkModifierType state);
   void action (const std::string& command, GObject *target);
   GtkWidget *show_popup (bool creation);
@@ -161,22 +187,54 @@ void reordered (GimpContainer *, GimpObject *, gint, gint, gpointer data) { chan
 void selected (GimpImage *, gpointer data) {
   dispatch (data, [] (Tiles& s, GObject *, const std::string&) { s.close_popup (); s.sync_selection (); });
 }
-void list_selected (GtkListBox *, gpointer data) {
+void preview_invalidated (GimpViewable *viewable, gpointer data) {
+  dispatch (data, [&] (Tiles& s, GObject *, const std::string&) { s.invalidate (viewable); });
+}
+void appearance_changed (GObject *, gpointer data) {
+  dispatch (data, [] (Tiles& s, GObject *, const std::string&) { gtk_widget_queue_draw (s.list); });
+}
+gboolean draw_tiles (GtkWidget *, cairo_t *cr, gpointer data) {
+  dispatch (data, [&] (Tiles& s, GObject *, const std::string&) { s.draw (cr); });
+  return FALSE;
+}
+void style_changed (GtkWidget *, gpointer data) {
   dispatch (data, [] (Tiles& s, GObject *, const std::string&) {
-    if (s.syncing || !s.img ()) return;
-    GList *layers = nullptr;
-    for (auto& row : s.rows)
-      if (gtk_list_box_row_is_selected (GTK_LIST_BOX_ROW (row.widget)))
-        layers = g_list_append (layers, row.layer.get ());
-    /* GIMP requires a non-empty selection while layers exist. */
-    if (layers) gimp_image_set_selected_layers (s.img (), layers);
-    g_list_free (layers);
+    s.icons.clear (); gtk_widget_queue_draw (s.list);
   });
+}
+gboolean query_tooltip (GtkWidget *, gint x, gint y, gboolean keyboard,
+                        GtkTooltip *tooltip, gpointer data) {
+  bool found = false;
+  dispatch (data, [&] (Tiles& s, GObject *, const std::string&) {
+    int index = keyboard ? -1 : s.row_at (x, y);
+    if (index < 0) return;
+    auto& row = s.rows[index];
+    gtk_tooltip_set_text (tooltip, gimp_object_get_name (row.layer.get ()));
+    GdkRectangle rect = {row.depth * indent_width, index * tile_pitch + preview_inset,
+                         preview_size, preview_size};
+    gtk_tooltip_set_tip_area (tooltip, &rect); found = true;
+  });
+  return found;
 }
 gboolean press (GtkWidget *widget, GdkEventButton *event, gpointer data) {
   if (event->button != 1 && event->button != 3) return FALSE;
   if (g_getenv ("PAINTER_CANVAS_TRACE")) g_printerr ("TILE_PRESS button=%u state=%u x=%.1f y=%.1f\n", event->button,event->state,event->x,event->y);
   dispatch (data, [&] (Tiles& s, GObject *target, const std::string&) {
+    ObjectRef<GObject> hit;
+    if (widget == s.list) {
+      int index = s.row_at (event->x, event->y);
+      if (index < 0) return;
+      hit = s.rows[index].layer;
+      target = hit.get ();
+      const int x = int (event->x) - s.rows[index].depth * indent_width;
+      const int y = int (event->y) - index * tile_pitch - preview_inset;
+      if (x < icon_size && y < icon_size) { s.action ("visibility", target); return; }
+      if (x >= preview_size - icon_size && y >= preview_size - icon_size &&
+          gimp_viewable_get_children (GIMP_VIEWABLE (target))) {
+        s.action ("expand", target); return;
+      }
+      gtk_widget_grab_focus (GTK_WIDGET (s.owner));
+    }
     if (target) {
       GList *selection = s.img () ? gimp_image_get_selected_layers (s.img ()) : nullptr;
       bool keep_multiple = !(event->state & (GDK_CONTROL_MASK | GDK_SHIFT_MASK)) &&
@@ -197,26 +255,32 @@ gboolean press (GtkWidget *widget, GdkEventButton *event, gpointer data) {
 gboolean motion (GtkWidget *widget, GdkEventMotion *event, gpointer data) {
   dispatch (data, [&] (Tiles& s, GObject *target, const std::string&) {
     if (!s.pressed || s.popup_opened) return;
+    auto held = s.press_layer;
+    if (widget == s.list) target = held.get ();
     if (g_getenv ("PAINTER_CANVAS_TRACE")) g_printerr ("TILE_MOTION state=%u x=%.1f y=%.1f\n",event->state,event->x,event->y);
     if (!target && event->y - s.press_y > 12) {
       s.cancel_press (); s.popup_opened = true; s.show_popup (true);
     } else if (std::abs (event->x - s.press_x) > 12 || std::abs (event->y - s.press_y) > 12) {
       s.cancel_press ();
-      if (target && (event->state & GDK_BUTTON1_MASK))
+      if (target && (event->state & GDK_BUTTON1_MASK)) {
+        if (target) s.drag_layer = ObjectRef<GObject>::retain (target);
         gtk_drag_begin_with_coordinates (widget, gtk_drag_source_get_target_list (widget),
                                          GDK_ACTION_MOVE, 1, reinterpret_cast<GdkEvent *> (event), -1, -1);
+      }
     }
   });
   return FALSE;
 }
-gboolean release (GtkWidget *, GdkEventButton *event, gpointer data) {
+gboolean release (GtkWidget *widget, GdkEventButton *event, gpointer data) {
   if (event->button != 1) return FALSE;
-  dispatch (data, [] (Tiles& s, GObject *target, const std::string&) {
+  dispatch (data, [&] (Tiles& s, GObject *target, const std::string&) {
+    auto held = s.press_layer;
+    if (widget == s.list) target = held.get ();
     const bool short_press = s.pressed && !s.popup_opened;
     auto pending = std::move (s.pending_single);
     s.cancel_press ();
     if (target && short_press && pending) s.choose (GIMP_LAYER (pending.get ()), GdkModifierType (0));
-    if (!target && short_press) s.action ("layers-new-last-values", nullptr);
+    if (widget == s.add && !target && short_press) s.action ("layers-new-last-values", nullptr);
   });
   return TRUE;
 }
@@ -241,11 +305,12 @@ const GtkTargetEntry drag_targets[] = {{const_cast<gchar *> ("application/x-gimp
 void drag_begin (GtkWidget *, GdkDragContext *, gpointer data) {
   dispatch (data, [] (Tiles& s, GObject *target, const std::string&) {
     s.cancel_press ();
-    s.drag_layer = ObjectRef<GObject>::retain (target);
+    if (target) s.drag_layer = ObjectRef<GObject>::retain (target);
   });
 }
 void drag_data (GtkWidget *, GdkDragContext *, GtkSelectionData *selection, guint, guint, gpointer data) {
   dispatch (data, [&] (Tiles& s, GObject *target, const std::string&) {
+    if (!target) target = s.drag_layer.get ();
     if (!target || !s.img ()) return;
     gint id = gimp_item_get_id (GIMP_ITEM (target));
     gtk_selection_data_set (selection, gtk_selection_data_get_target (selection), 8,
@@ -256,26 +321,43 @@ void drag_received (GtkWidget *widget, GdkDragContext *drag, gint x, gint y,
                     GtkSelectionData *selection, guint, guint time, gpointer data) {
   bool moved = false;
   dispatch (data, [&] (Tiles& s, GObject *target, const std::string&) {
-    s.autoscroll.close ();
-    if (gtk_selection_data_get_length (selection) != sizeof (gint) || !target || !s.ctx ()) return;
+    s.autoscroll.close (); s.clear_drop ();
+    int index = s.row_at (x, y, false);
+    if (index < 0 || gtk_selection_data_get_length (selection) != sizeof (gint) || !s.ctx ()) return;
+    auto target_lease = s.rows[index].layer;
+    target = target_lease.get ();
     gint id = 0; memcpy (&id, gtk_selection_data_get_data (selection), sizeof (id));
     GimpItem *item = gimp_item_get_by_id (s.ctx ()->gimp, id);
     if (!GIMP_IS_LAYER (item)) return;
-    const int height = gtk_widget_get_allocated_height (widget);
-    bool into = gimp_viewable_get_children (GIMP_VIEWABLE (target)) && y >= height/3 && y < 2*height/3;
-    moved = s.move (GIMP_LAYER (item), GIMP_LAYER (target), into, y >= height/2);
+    const int offset = y - index * tile_pitch;
+    bool into = gimp_viewable_get_children (GIMP_VIEWABLE (target)) &&
+                offset >= tile_pitch/3 && offset < 2*tile_pitch/3;
+    moved = s.move (GIMP_LAYER (item), GIMP_LAYER (target), into, offset >= tile_pitch/2);
   });
   gtk_drag_finish (drag, moved, FALSE, time);
 }
 void drag_end (GtkWidget *, GdkDragContext *, gpointer data) {
-  dispatch (data, [] (Tiles& s, GObject *, const std::string&) { s.autoscroll.close (); s.drag_layer.reset (); });
+  dispatch (data, [] (Tiles& s, GObject *, const std::string&) { s.autoscroll.close (); s.drag_layer.reset (); s.clear_drop (); });
 }
-gboolean drag_motion (GtkWidget *widget, GdkDragContext *, gint x, gint y, guint, gpointer data) {
-  dispatch (data, [&] (Tiles& s, GObject *, const std::string&) { s.scroll_drag (widget, x, y); });
-  return FALSE;
+gboolean drag_motion (GtkWidget *widget, GdkDragContext *drag, gint x, gint y, guint time, gpointer data) {
+  bool valid = false;
+  dispatch (data, [&] (Tiles& s, GObject *, const std::string&) {
+    s.scroll_drag (widget, x, y);
+    s.drop_row = s.row_at (x, y, false);
+    if (s.drop_row >= 0) {
+      const int offset = y - s.drop_row * tile_pitch;
+      s.drop_into = gimp_viewable_get_children (GIMP_VIEWABLE (s.rows[s.drop_row].layer.get ())) &&
+                    offset >= tile_pitch/3 && offset < 2*tile_pitch/3;
+      s.drop_after = offset >= tile_pitch/2;
+      valid = true;
+    }
+    gtk_widget_queue_draw (s.list);
+  });
+  gdk_drag_status (drag, valid ? GDK_ACTION_MOVE : GdkDragAction (0), time);
+  return TRUE;
 }
 void drag_leave (GtkWidget *, GdkDragContext *, guint, gpointer data) {
-  dispatch (data, [] (Tiles& s, GObject *, const std::string&) { s.autoscroll.close (); });
+  dispatch (data, [] (Tiles& s, GObject *, const std::string&) { s.autoscroll.close (); s.clear_drop (); });
 }
 std::vector<ObjectRef<GObject>> selection_refs (Tiles& s) {
   std::vector<ObjectRef<GObject>> result;
@@ -381,10 +463,29 @@ void Tiles::build () {
   scroll = gtk_scrolled_window_new (nullptr, nullptr);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scroll), GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
   gtk_box_pack_start (GTK_BOX (owner), scroll, TRUE, TRUE, 0);
-  list = gtk_list_box_new ();
-  gtk_list_box_set_selection_mode (GTK_LIST_BOX (list), GTK_SELECTION_MULTIPLE);
+  /* One custom Cairo canvas, as in the original painter.  There are no GTK
+   * row widgets or GimpView renderers: layout and hit testing share rows. */
+  list = gtk_drawing_area_new ();
+  gtk_widget_set_name (list, "painter-layer-canvas");
+  gtk_widget_set_size_request (list, tile_pitch, tile_pitch);
+  gtk_widget_set_has_tooltip (list, TRUE);
+  gtk_widget_add_events (list, GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK | GDK_POINTER_MOTION_MASK);
   gtk_container_add (GTK_CONTAINER (scroll), list);
-  connect (*this, permanent, G_OBJECT (list), "selected-rows-changed", G_CALLBACK (list_selected));
+  connect (*this, permanent, G_OBJECT (list), "draw", G_CALLBACK (draw_tiles));
+  connect (*this, permanent, G_OBJECT (list), "style-updated", G_CALLBACK (style_changed));
+  connect (*this, permanent, G_OBJECT (list), "query-tooltip", G_CALLBACK (query_tooltip));
+  connect (*this, permanent, G_OBJECT (list), "button-press-event", G_CALLBACK (press));
+  connect (*this, permanent, G_OBJECT (list), "button-release-event", G_CALLBACK (release));
+  connect (*this, permanent, G_OBJECT (list), "motion-notify-event", G_CALLBACK (motion));
+  connect (*this, permanent, G_OBJECT (list), "grab-broken-event", G_CALLBACK (grab_broken));
+  gtk_drag_source_set (list, GdkModifierType (0), drag_targets, 1, GDK_ACTION_MOVE);
+  gtk_drag_dest_set (list, GtkDestDefaults (GTK_DEST_DEFAULT_DROP), drag_targets, 1, GDK_ACTION_MOVE);
+  connect (*this, permanent, G_OBJECT (list), "drag-begin", G_CALLBACK (drag_begin));
+  connect (*this, permanent, G_OBJECT (list), "drag-data-get", G_CALLBACK (drag_data));
+  connect (*this, permanent, G_OBJECT (list), "drag-data-received", G_CALLBACK (drag_received));
+  connect (*this, permanent, G_OBJECT (list), "drag-end", G_CALLBACK (drag_end));
+  connect (*this, permanent, G_OBJECT (list), "drag-motion", G_CALLBACK (drag_motion));
+  connect (*this, permanent, G_OBJECT (list), "drag-leave", G_CALLBACK (drag_leave));
   connect (*this, permanent, G_OBJECT (owner), "key-press-event", G_CALLBACK (key));
   connect (*this, permanent, G_OBJECT (owner), "unmap", G_CALLBACK (unmapped));
   connect (*this, permanent, G_OBJECT (add), "grab-broken-event", G_CALLBACK (grab_broken));
@@ -417,6 +518,7 @@ void Tiles::bind_context (GimpContext *value) {
   }
   cancel_press (); autoscroll.close (); close_popup ();
   if (closed || context_generation != generation || image_generation != image_epoch) return;
+  preview_update.close (); previews.clear ();
   supplied_context = std::move (next_source);
   context = std::move (next_context);
   /* GimpImageEditor normally clears image when its context is removed. These
@@ -440,6 +542,7 @@ void Tiles::bind_image (GimpImage *value) {
   cancel_press (); rebuild.close (); autoscroll.close (); close_popup ();
   /* popup-closed may destroy us or synchronously bind a newer image. */
   if (closed || image_generation != generation) return;
+  preview_update.close (); previews.clear (); drop_row = -1;
   model.clear (); controls.clear (); rows.clear (); drag_layer.reset ();
   image = std::move (next_image);
   if (ctx ()) gimp_context_set_image (ctx (), value);
@@ -465,106 +568,212 @@ void Tiles::observe (GimpContainer *container) {
   connect (*this, model, G_OBJECT (container), "reorder", G_CALLBACK (reordered));
   for (GList *i = GIMP_LIST (container)->queue->head; i; i=i->next) {
     auto *layer = GIMP_LAYER (i->data);
-    for (const char *signal : {"name-changed", "visibility-changed", "mask-changed", "expanded-changed", "lock-content-changed"})
+    for (const char *signal : {"mask-changed", "expanded-changed"})
       connect (*this, model, G_OBJECT (layer), signal, G_CALLBACK (changed));
+    for (const char *signal : {"name-changed", "visibility-changed", "lock-content-changed",
+                              "apply-mask-changed", "edit-mask-changed", "show-mask-changed"})
+      connect (*this, model, G_OBJECT (layer), signal, G_CALLBACK (appearance_changed));
+    for (const char *signal : {"invalidate-preview", "size-changed"}) {
+      connect (*this, model, G_OBJECT (layer), signal, G_CALLBACK (preview_invalidated));
+      if (auto *mask = gimp_layer_get_mask (layer))
+        connect (*this, model, G_OBJECT (mask), signal, G_CALLBACK (preview_invalidated));
+    }
     if (auto *children = gimp_viewable_get_children (GIMP_VIEWABLE (layer))) observe (children);
   }
+}
+std::shared_ptr<Preview> Tiles::cache (GimpViewable *viewable) {
+  auto& result = previews[G_OBJECT (viewable)];
+  if (!result) result = std::make_shared<Preview> (viewable);
+  return result;
 }
 void Tiles::append (GimpContainer *container, int depth) {
   for (GList *i = GIMP_LIST (container)->queue->head; i; i=i->next) {
     auto *layer = GIMP_LAYER (i->data);
-    Row row; row.layer = ObjectRef<GObject>::retain (G_OBJECT (layer));
-    row.widget = gtk_list_box_row_new ();
-    gtk_widget_set_name (row.widget, "painter-layer-tile");
-    gtk_widget_set_tooltip_text (row.widget, gimp_object_get_name (layer));
-    gtk_widget_set_margin_start (row.widget, std::min (depth, 5) * 8);
-    GtkWidget *box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
-    gtk_container_add (GTK_CONTAINER (row.widget), box);
-    GtkWidget *top = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
-    gtk_box_pack_start (GTK_BOX (box), top, FALSE, FALSE, 0);
-    row.visible = gtk_toggle_button_new ();
-    gtk_button_set_image (GTK_BUTTON (row.visible), gtk_image_new_from_icon_name ("gimp-visible", GTK_ICON_SIZE_MENU));
-    gtk_widget_set_name (row.visible, "painter-layer-visible");
-    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (row.visible), gimp_item_get_visible (GIMP_ITEM (layer)));
-    gtk_widget_set_can_focus (row.visible, FALSE);
-    gtk_box_pack_start (GTK_BOX (top), row.visible, FALSE, FALSE, 0);
-    connect (*this, controls, G_OBJECT (row.visible), "toggled", G_CALLBACK (clicked), G_OBJECT (layer), "visibility");
-    auto *children = gimp_viewable_get_children (GIMP_VIEWABLE (layer));
-    if (children) row.expand = button (*this, top,
-      gimp_viewable_get_expanded (GIMP_VIEWABLE (layer)) ? "▾" : "▸", "expand", controls, G_OBJECT (layer));
-    GtkWidget *event = gtk_event_box_new ();
-    gtk_event_box_set_above_child (GTK_EVENT_BOX (event), TRUE);
-    gtk_widget_set_name (event, "painter-layer-preview");
-    GtkWidget *previews = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 1);
-    gtk_container_add (GTK_CONTAINER (event), previews);
-    /* Original construction allows image before context. Native renderers
-     * require a context when drawing; keep rows/layout without creating an
-     * unusable renderer until the shared context setter refreshes this view. */
-    if (ctx ()) {
-      GtkWidget *preview = gimp_view_new_full (ctx (), GIMP_VIEWABLE (layer), 56, 56, 1, FALSE, FALSE, FALSE);
-      GIMP_VIEW (preview)->eat_button_events = FALSE;
-      gtk_box_pack_start (GTK_BOX (previews), preview, TRUE, FALSE, 0);
-      if (auto *mask = gimp_layer_get_mask (layer)) {
-        GtkWidget *mask_view = gimp_view_new_full (ctx (), GIMP_VIEWABLE (mask), 24, 40, 1, FALSE, FALSE, FALSE);
-        GIMP_VIEW (mask_view)->eat_button_events = FALSE;
-        gtk_box_pack_start (GTK_BOX (previews), mask_view, FALSE, FALSE, 0);
-      }
-    } else gtk_widget_set_size_request (previews, 58, 58);
-    gtk_box_pack_start (GTK_BOX (box), event, FALSE, FALSE, 0);
-    row.name = gtk_label_new (gimp_object_get_name (layer));
-    gtk_label_set_ellipsize (GTK_LABEL (row.name), PANGO_ELLIPSIZE_END);
-    gtk_label_set_max_width_chars (GTK_LABEL (row.name), 11);
-    gtk_box_pack_start (GTK_BOX (box), row.name, FALSE, FALSE, 0);
-    gtk_widget_add_events (event, GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK | GDK_POINTER_MOTION_MASK);
-    connect (*this, controls, G_OBJECT (event), "button-press-event", G_CALLBACK (press), G_OBJECT (layer));
-    connect (*this, controls, G_OBJECT (event), "button-release-event", G_CALLBACK (release), G_OBJECT (layer));
-    connect (*this, controls, G_OBJECT (event), "motion-notify-event", G_CALLBACK (motion), G_OBJECT (layer));
-    connect (*this, controls, G_OBJECT (event), "grab-broken-event", G_CALLBACK (grab_broken));
-    /* Our press/long-press gesture starts the drag explicitly. A second GTK
-     * implicit gesture must not race the 500 ms popup timer. */
-    gtk_drag_source_set (event, GdkModifierType (0), drag_targets, 1, GDK_ACTION_MOVE);
-    gtk_drag_dest_set (event, GTK_DEST_DEFAULT_ALL, drag_targets, 1, GDK_ACTION_MOVE);
-    connect (*this, controls, G_OBJECT (event), "drag-begin", G_CALLBACK (drag_begin), G_OBJECT (layer));
-    connect (*this, controls, G_OBJECT (event), "drag-data-get", G_CALLBACK (drag_data), G_OBJECT (layer));
-    connect (*this, controls, G_OBJECT (event), "drag-data-received", G_CALLBACK (drag_received), G_OBJECT (layer));
-    connect (*this, controls, G_OBJECT (event), "drag-end", G_CALLBACK (drag_end));
-    connect (*this, controls, G_OBJECT (event), "drag-motion", G_CALLBACK (drag_motion));
-    connect (*this, controls, G_OBJECT (event), "drag-leave", G_CALLBACK (drag_leave));
-    gtk_container_add (GTK_CONTAINER (list), row.widget);
+    Row row; row.layer = ObjectRef<GObject>::retain (G_OBJECT (layer)); row.depth = depth;
+    row.preview = cache (GIMP_VIEWABLE (layer));
+    if (auto *mask = gimp_layer_get_mask (layer)) row.mask = cache (GIMP_VIEWABLE (mask));
     rows.emplace_back (std::move (row));
+    auto *children = gimp_viewable_get_children (GIMP_VIEWABLE (layer));
     if (children && gimp_viewable_get_expanded (GIMP_VIEWABLE (layer))) append (children, depth+1);
   }
 }
 void Tiles::refresh () {
   if (closed) return;
-  const auto generation = ++refresh_generation;
-  cancel_press (); autoscroll.close ();
+  ++refresh_generation;
+  cancel_press (); autoscroll.close (); preview_update.close (); drop_row = -1;
   rebuild.close (); model.clear (); controls.clear (); rows.clear ();
-  syncing = true;
-  GList *children = gtk_container_get_children (GTK_CONTAINER (list));
-  std::vector<ObjectRef<GObject>> old_children;
-  for (GList *i=children; i; i=i->next) old_children.push_back (ObjectRef<GObject>::retain (G_OBJECT (i->data)));
-  g_list_free (children);
-  for (auto& child : old_children) {
-    gtk_widget_destroy (GTK_WIDGET (child.get ()));
-    if (closed || refresh_generation != generation) return;
-  }
   if (img ()) {
     observe (gimp_image_get_layers (img ()));
     connect (*this, model, G_OBJECT (img ()), "selected-layers-changed", G_CALLBACK (selected));
     append (gimp_image_get_layers (img ()), 0);
   }
-  syncing = false; sync_selection (); gtk_widget_show_all (list);
+  /* Keep unchanged surfaces on reorder/expand, release removed layers/masks. */
+  std::unordered_set<GObject *> live;
+  int max_depth = 0;
+  for (auto& row : rows) {
+    live.insert (row.layer.get ());
+    if (row.mask) live.insert (row.mask->viewable.get ());
+    max_depth = std::max (max_depth, row.depth);
+  }
+  for (auto i = previews.begin (); i != previews.end (); )
+    if (!live.count (i->first)) i = previews.erase (i); else ++i;
+  gtk_widget_set_size_request (list, tile_pitch + max_depth * indent_width,
+                               std::max (tile_pitch, int (rows.size ()) * tile_pitch));
+  sync_selection (); schedule_previews ();
 }
 void Tiles::sync_selection () {
-  if (syncing || closed) return;
-  syncing = true;
-  GList *selected = img () ? gimp_image_get_selected_layers (img ()) : nullptr;
-  for (auto& row : rows) {
-    if (g_list_find (selected, row.layer.get ())) gtk_list_box_select_row (GTK_LIST_BOX (list), GTK_LIST_BOX_ROW (row.widget));
-    else gtk_list_box_unselect_row (GTK_LIST_BOX (list), GTK_LIST_BOX_ROW (row.widget));
+  if (!closed) gtk_widget_queue_draw (list);
+}
+int Tiles::row_at (double x, double y, bool preview_only) const {
+  if (y < 0 || x < 0 || y >= rows.size () * tile_pitch) return -1;
+  int index = int (y) / tile_pitch;
+  if (preview_only && (x < rows[index].depth * indent_width ||
+      x >= rows[index].depth * indent_width + preview_size ||
+      int (y) % tile_pitch < preview_inset || int (y) % tile_pitch >= preview_inset + preview_size)) return -1;
+  return index;
+}
+void Tiles::invalidate (GimpViewable *viewable) {
+  if (closed) return;
+  auto dirty = [&] (GimpViewable *v) {
+    auto i = previews.find (G_OBJECT (v));
+    if (i != previews.end ()) { i->second->dirty = true; ++i->second->revision; }
+  };
+  dirty (viewable);
+  /* A child's pixels and a mask can change a group's composite thumbnail. */
+  if (GIMP_IS_LAYER_MASK (viewable))
+    viewable = GIMP_VIEWABLE (gimp_layer_mask_get_layer (GIMP_LAYER_MASK (viewable)));
+  while (viewable) {
+    dirty (viewable);
+    viewable = gimp_viewable_get_parent (viewable);
   }
-  syncing = false;
+  schedule_previews ();
+}
+void Tiles::schedule_previews () {
+  if (closed || !ctx () || preview_update.active ()) return;
+  auto weak = std::make_shared<WeakRef<GObject>> (ObjectRef<GObject>::retain (G_OBJECT (owner)));
+  const auto generation = BindingStore::require (G_OBJECT (owner)).generation ();
+  preview_update = Source::idle (nullptr, G_PRIORITY_LOW, [weak, generation] () {
+    auto object = weak->lock ();
+    if (object) {
+      auto *store = BindingStore::find (object.get ());
+      if (store && store->accepts (generation)) store->with<Slot> ([] (Tiles& s) {
+        s.preview_update.close (); s.update_previews ();
+      });
+    }
+    return false;
+  });
+}
+void Tiles::update_previews () {
+  if (closed || !ctx ()) return;
+  const auto image_epoch = image_generation, context_epoch = context_generation;
+  auto context_lease = context;
+  std::vector<std::shared_ptr<Preview>> pending;
+  for (auto& entry : previews) if (entry.second->dirty) pending.push_back (entry.second);
+  for (auto& preview : pending) {
+    if (closed || image_generation != image_epoch || context_generation != context_epoch) return;
+    auto *viewable = GIMP_VIEWABLE (preview->viewable.get ());
+    int width = preview_size, height = preview_size;
+    gimp_viewable_get_preview_size (viewable, preview_size, TRUE, TRUE, &width, &height);
+    width = std::max (1, std::min (width, preview_size));
+    height = std::max (1, std::min (height, preview_size));
+    unsigned revision = preview->revision;
+    GdkPixbuf *pixbuf = gimp_viewable_get_pixbuf (viewable, GIMP_CONTEXT (context_lease.get ()), width, height, nullptr);
+    ObjectRef<GObject> fallback;
+    if (!pixbuf) {
+      if (auto *buffer = gimp_viewable_get_preview (viewable, GIMP_CONTEXT (context_lease.get ()), width, height, nullptr)) {
+        pixbuf = gimp_temp_buf_create_pixbuf (buffer);
+        fallback = ObjectRef<GObject>::adopt (G_OBJECT (pixbuf));
+      }
+    }
+    Surface surface (pixbuf ? gimp_cairo_surface_create_from_pixbuf (pixbuf) : nullptr, cairo_surface_destroy);
+    /* Preview generation may synchronously switch image/context or destroy us. */
+    if (closed || image_generation != image_epoch || context_generation != context_epoch) return;
+    auto current = previews.find (preview->viewable.get ());
+    if (current == previews.end () || current->second != preview) continue;
+    preview->surface = std::move (surface);
+    preview->dirty = preview->revision != revision;
+    if (preview->dirty) schedule_previews ();
+  }
+  gtk_widget_queue_draw (list);
+}
+void Tiles::draw_icon (cairo_t *cr, const char *name, int x, int y) {
+  if (!name) return;
+  auto entry = icons.find (name);
+  if (entry == icons.end ()) {
+    GError *error = nullptr;
+    GdkPixbuf *pixbuf = gtk_icon_theme_load_icon (gtk_icon_theme_get_for_screen (gtk_widget_get_screen (list)),
+                                                name, icon_size, GTK_ICON_LOOKUP_FORCE_SIZE, &error);
+    Surface surface (pixbuf ? gimp_cairo_surface_create_from_pixbuf (pixbuf) : nullptr, cairo_surface_destroy);
+    if (pixbuf) g_object_unref (pixbuf);
+    g_clear_error (&error);
+    entry = icons.emplace (name, std::move (surface)).first;
+  }
+  if (entry->second) { cairo_set_source_surface (cr, entry->second.get (), x, y); cairo_paint (cr); }
+}
+void Tiles::draw (cairo_t *cr) {
+  if (closed) return;
+  GtkStyleContext *style = gtk_widget_get_style_context (list);
+  GdkRGBA foreground, highlight;
+  gtk_style_context_get_color (style, GTK_STATE_FLAG_NORMAL, &foreground);
+  if (!gtk_style_context_lookup_color (style, "theme_selected_bg_color", &highlight))
+    highlight = GdkRGBA {0.20, 0.40, 0.65, 1.0};
+  gtk_render_background (style, cr, 0, 0, gtk_widget_get_allocated_width (list), gtk_widget_get_allocated_height (list));
+  GList *selection = img () ? gimp_image_get_selected_layers (img ()) : nullptr;
+  double clip_x1, clip_y1, clip_x2, clip_y2;
+  cairo_clip_extents (cr, &clip_x1, &clip_y1, &clip_x2, &clip_y2);
+  for (std::size_t index = 0; index < rows.size (); ++index) {
+    const auto& row = rows[index];
+    int x = row.depth * indent_width, top = int (index) * tile_pitch, y = top + preview_inset;
+    if (top + tile_pitch < clip_y1 || top > clip_y2) continue;
+    auto *layer = GIMP_LAYER (row.layer.get ());
+    if (g_list_find (selection, layer)) {
+      gdk_cairo_set_source_rgba (cr, &highlight);
+      cairo_rectangle (cr, x, top, tile_pitch, tile_pitch); cairo_fill (cr);
+    }
+    for (int depth = 0; depth < row.depth; ++depth) {
+      cairo_set_source_rgb (cr, .75, .75, .75);
+      cairo_rectangle (cr, depth * indent_width, top, bar_width, tile_pitch); cairo_fill (cr);
+    }
+    cairo_save (cr);
+    cairo_rectangle (cr, x, y, preview_size, preview_size); cairo_clip (cr);
+    for (int cy = 0; cy < preview_size; cy += 4) for (int cx = 0; cx < preview_size; cx += 4) {
+      double shade = ((cx / 4 + cy / 4) % 2) ? .9 : .8;
+      cairo_set_source_rgb (cr, shade, shade, shade);
+      cairo_rectangle (cr, x + cx, y + cy, 4, 4); cairo_fill (cr);
+    }
+    auto preview = row.mask && gimp_layer_get_edit_mask (layer) ? row.mask : row.preview;
+    if (preview->surface) {
+      int width = cairo_image_surface_get_width (preview->surface.get ());
+      int height = cairo_image_surface_get_height (preview->surface.get ());
+      cairo_set_source_surface (cr, preview->surface.get (), x + (preview_size-width)/2, y + (preview_size-height)/2);
+      cairo_paint (cr);
+    }
+    cairo_restore (cr);
+    draw_icon (cr, "gimp-visible", x, y);
+    if (!gimp_item_get_visible (GIMP_ITEM (layer))) {
+      gdk_cairo_set_source_rgba (cr, &foreground); cairo_set_line_width (cr, 1.5);
+      cairo_move_to (cr, x + icon_size, y); cairo_line_to (cr, x, y + icon_size); cairo_stroke (cr);
+    }
+    if (row.mask) draw_icon (cr, "gimp-layer-mask", x + preview_size - icon_size, y);
+    if (gimp_item_get_lock_content (GIMP_ITEM (layer))) draw_icon (cr, "gimp-lock", x, y + icon_size);
+    const char *icon = gimp_viewable_get_icon_name (GIMP_VIEWABLE (layer));
+    if (icon && strcmp (icon, "gimp-layer")) draw_icon (cr, icon, x, y + preview_size - icon_size);
+    if (gimp_viewable_get_children (GIMP_VIEWABLE (layer))) {
+      gdk_cairo_set_source_rgba (cr, &foreground);
+      int tx = x + preview_size - 10, ty = y + preview_size - 10;
+      if (gimp_viewable_get_expanded (GIMP_VIEWABLE (layer))) {
+        cairo_move_to (cr, tx, ty); cairo_line_to (cr, tx+8, ty); cairo_line_to (cr, tx+4, ty+6);
+      } else { cairo_move_to (cr, tx, ty); cairo_line_to (cr, tx+6, ty+4); cairo_line_to (cr, tx, ty+8); }
+      cairo_close_path (cr); cairo_fill (cr);
+    }
+    cairo_set_source_rgb (cr, .7, .7, .7); cairo_set_line_width (cr, 1);
+    cairo_rectangle (cr, x+.5, y+.5, preview_size-1, preview_size-1); cairo_stroke (cr);
+    if (int (index) == drop_row) {
+      gdk_cairo_set_source_rgba (cr, &highlight); cairo_set_line_width (cr, 3);
+      if (drop_into) { cairo_rectangle (cr, x+1.5, y+1.5, preview_size-3, preview_size-3); cairo_stroke (cr); }
+      else { cairo_rectangle (cr, x, top + (drop_after ? tile_pitch-4 : 0), tile_pitch, 4); cairo_fill (cr); }
+    }
+  }
 }
 bool Tiles::choose (GimpLayer *layer, GdkModifierType state) {
   if (!img () || gimp_item_get_image (GIMP_ITEM (layer)) != img ()) return false;
@@ -602,6 +811,7 @@ bool Tiles::choose (GimpLayer *layer, GdkModifierType state) {
 void Tiles::begin_press (GtkWidget *widget, GimpLayer *layer, double x, double y) {
   if (closed || !img ()) return;
   cancel_press (); press_widget = ObjectRef<GObject>::retain (G_OBJECT (widget));
+  press_layer = ObjectRef<GObject>::retain (layer ? G_OBJECT (layer) : nullptr);
   gtk_grab_add (widget); pressed = true; popup_opened = false; press_x=x; press_y=y;
   auto weak = std::make_shared<WeakRef<GObject>> (ObjectRef<GObject>::retain (G_OBJECT (owner)));
   const auto generation = BindingStore::require (G_OBJECT (owner)).generation ();

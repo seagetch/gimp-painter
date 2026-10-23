@@ -114,6 +114,10 @@ GtkWidget       * gimp_dock_with_window_new        (GimpDialogFactory    *factor
                                                     GdkMonitor           *monitor,
                                                     gboolean              toolbox);
 GtkWidget       * gimp_tools_get_tool_options_gui  (GimpToolOptions      *tool_options);
+/* Fresh floating horizontal GUI, independent of the ordinary cached dockable
+ * GUI, bound to the canonical options. NULL for unsupported tool families. */
+GtkWidget       * gimp_tools_create_painter_toolbar_gui
+                                                   (GimpToolOptions      *tool_options);
 void              gimp_tools_set_tool_options_gui  (GimpToolOptions      *tool_options,
                                                     GtkWidget            *widget);
 void              gimp_tools_set_tool_options_gui_func

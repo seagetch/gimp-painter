@@ -27,6 +27,7 @@
 #include "tools-types.h"
 
 #include "widgets/gimpwidgets-utils.h"
+#include "widgets/gimppaintercompactoptions.h"
 
 #include "core/gimp.h"
 #include "core/gimp-contexts.h"
@@ -43,6 +44,9 @@
 #include "gimp-tool-options-manager.h"
 #include "gimp-tools.h"
 #include "gimptooloptions-gui.h"
+#include "gimppainterpainttoolbar.h"
+#include "gimppaintertooltoolbar.h"
+#include "gimppaintertransformtoolbar.h"
 #include "tool_manager.h"
 
 #include "gimpairbrushtool.h"
@@ -125,6 +129,45 @@ static void   gimp_tools_copy_structure (Gimp                   *gimp,
                                          GimpContainer          *src_container,
                                          GimpContainer          *dest_container,
                                          GHashTable             *tools);
+
+/* The old horizontal-factory registration is independent of the ordinary
+ * dock GUI. The GTK3 builders retain that ownership and model contract. */
+static GtkWidget *
+gimp_tools_horizontal_options_gui (GimpToolOptions *options)
+{
+  GtkWidget *gui;
+
+  if (g_strcmp0 (gimp_object_get_name (options->tool_info),
+                 "gimp-painter-mypaint-tool") == 0)
+    {
+      GimpToolOptionsGUIFunc factory;
+      GError               *error = NULL;
+
+      factory = g_object_get_data (G_OBJECT (options->tool_info),
+                                    "gimp-tool-options-gui-func");
+      gui = factory ? factory (options) : NULL;
+      if (gui && ! gimp_painter_compact_options_set
+                     (gui, options, TRUE, GTK_ORIENTATION_HORIZONTAL, &error))
+        {
+          g_warning ("Cannot construct MyPaint toolbar: %s",
+                     error ? error->message : "unknown error");
+          g_clear_error (&error);
+          g_object_ref_sink (gui);
+          gtk_widget_destroy (gui);
+          g_object_unref (gui);
+          return NULL;
+        }
+      return gui;
+    }
+
+  gui = gimp_painter_paint_toolbar_new (options);
+  if (! gui)
+    gui = gimp_painter_tool_toolbar_new (options);
+  if (! gui)
+    gui = gimp_painter_transform_toolbar_new (options);
+
+  return gui;
+}
 
 /*  private variables  */
 
@@ -805,6 +848,10 @@ gimp_tools_register (GType                   tool_type,
 
   g_object_set_data (G_OBJECT (tool_info), "gimp-tool-options-gui-func",
                      options_gui_func);
+
+  g_object_set_data (G_OBJECT (tool_info),
+                     "gimp-tool-options-gui-horizontal-func",
+                     gimp_tools_horizontal_options_gui);
 
   gimp_container_add (gimp->tool_info_list, GIMP_OBJECT (tool_info));
   g_object_unref (tool_info);

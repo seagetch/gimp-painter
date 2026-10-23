@@ -146,10 +146,45 @@ gimp_paned_box_class_init (GimpPanedBoxClass *klass)
   widget_class->drag_data_received = gimp_paned_box_drag_data_received;
 }
 
+/* Follow only the internal GtkPaned spine. Dockable contents retain their
+ * own orientation, just as in the legacy paned-box implementation. */
+static void
+gimp_paned_box_orient_children (GtkWidget *widget, GtkOrientation orientation)
+{
+  GList *children = gtk_container_get_children (GTK_CONTAINER (widget));
+  for (GList *iter = children; iter; iter = iter->next)
+    g_object_ref (iter->data);
+  for (GList *iter = children; iter; iter = iter->next)
+    {
+      GtkWidget *child = iter->data;
+      if (GTK_IS_PANED (child) && ! gtk_widget_in_destruction (child) &&
+          gtk_widget_get_parent (child) == widget)
+        {
+          gtk_orientable_set_orientation (GTK_ORIENTABLE (child), orientation);
+          if (gtk_widget_get_parent (child) == widget &&
+              ! gtk_widget_in_destruction (child))
+            gimp_paned_box_orient_children (child, orientation);
+        }
+      g_object_unref (child);
+    }
+  g_list_free (children);
+}
+
+static void
+gimp_paned_box_orientation_notify (GimpPanedBox *box, GParamSpec *pspec,
+                                    gpointer data)
+{
+  (void) pspec; (void) data;
+  gimp_paned_box_orient_children (GTK_WIDGET (box),
+                                gtk_orientable_get_orientation (GTK_ORIENTABLE (box)));
+}
+
 static void
 gimp_paned_box_init (GimpPanedBox *paned_box)
 {
   paned_box->p = gimp_paned_box_get_instance_private (paned_box);
+  g_signal_connect (paned_box, "notify::orientation",
+                    G_CALLBACK (gimp_paned_box_orientation_notify), NULL);
 
   /* Setup DND */
   gtk_drag_dest_set (GTK_WIDGET (paned_box),

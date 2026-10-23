@@ -1,5 +1,25 @@
 # Canonical compact tool options
 
+## Completion-scope correction, recovery 2026-10-15
+
+The one-control-tree adapter below is a historical component, not proof of
+source-faithful legacy toolbar restoration. Preserving 50 tool GUIs / 2,868
+widgets establishes that checkpoint's retention and reversal properties only.
+The legacy tool-specific horizontal factory creates a separate toolbar GUI
+against the same options model; reshuffling the ordinary dock GUI is not that
+contract. In particular, portrait options remain at the bottom, and the
+ordinary dock GUI must coexist with independent controls for the active tool,
+including paint, non-paint and transform tools. The restored separate horizontal
+factory registration and multi-tool builders remain partial; the recovery
+compact native run now reports 34 factories and 27/27 passing cases, with
+remaining omissions and exact evidence in the correction contract.
+MyPaint-only support is insufficient. The current
+acceptance requirements and source correspondence are in
+[legacy-ui-completion-correction.md](legacy-ui-completion-correction.md), which
+takes precedence over historical presentation descriptions below. Per-tool
+horizontal factories and the full toolbar window/session model remain open.
+Historical normal / sanitizer counts are not recovered-code validation.
+
 Source baseline: `afa43fae3e920210146abed514f136fd49f671b5`, with
 `a61915a8e62aad8855cd8c620bdb7195a25ffb90` separating Painter presentation changes
 from ordinary GIMP 2.8 controls. This contract covers WBS 29.010,

@@ -1,5 +1,18 @@
 # Painter canvas and tile UI
 
+## Completion-scope correction, recovery 2026-10-15
+
+This document below records the historical canvas component and its frozen
+2026-10-02 evidence. It is not a statement that the recovered code has passed
+those tests or that legacy UI restoration is complete. The GtkListBox-based
+layer presentation, adaptive placement and added action bar described by that
+checkpoint did not establish the original Cairo LayerTileView and layout
+contract. The current acceptance requirements and source correspondence are
+in [legacy-ui-completion-correction.md](legacy-ui-completion-correction.md).
+That correction takes precedence over historical presentation descriptions;
+retained ownership, input and lifecycle safeguards still apply. WBS29 parents
+remain open. No recovered-code aggregate or sanitizer pass is asserted here.
+
 Source reference: seagetch/gimp-painter `afa43fae3e920210146abed514f136fd49f671b5`,
 `app/display/gimpdisplayshell-overlays.cpp`, `app/widgets/gimplayertileview.cpp`,
 `gimptooltileview.cpp`, `gimptooloptionstoolbar.c`, and the WBS29 hunk inventory.
