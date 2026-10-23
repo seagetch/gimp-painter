@@ -1,0 +1,129 @@
+{
+  "task": "04.005",
+  "status": "PASS",
+  "scope": "Native private C++ header containment; not a full build/runtime pass",
+  "completed_at_utc": "2026-10-08T09:24:30Z",
+  "source_base": "335c224953530c7a85fdc3144d69f031581ad27f",
+  "counts": {
+    "c": 2524,
+    "cpp": 309,
+    "private_headers": 69,
+    "private_headers_used_by_cpp": 68,
+    "syntax_failures_in_fixed_optional_test": 2
+  },
+  "syntax_passes": 2831,
+  "known_optional_syntax_failures": [
+    {
+      "source": "app/operations/tests/test-operations.c",
+      "configuration": "default",
+      "language": "c",
+      "command_sha256": "ea992433f1a81cefa2b6aa1b54d24d6052648ffbf86f81eec89d882e535eafd3",
+      "exit_code": 1,
+      "seconds": 0.102,
+      "dependency_count": 299,
+      "dependency_sha256": "06bb25f34c69d0d04943b86fffb652642a361fecc936cc34ebb50dcc83ea4191",
+      "private_headers": [],
+      "forbidden_c_dependencies": [],
+      "log_sha256": "f1b125672e66ca33ce28855812b95164e58e2515b43f9080b7f54e0b1ef94ce8",
+      "log_bytes": 5539,
+      "known_optional_syntax_failure": {
+        "baseline": "335c224953530c7a85fdc3144d69f031581ad27f",
+        "source_sha256": "04303b4a129e4b3c7878e6f2deecfca73330dd2069ee3df4d47b937fcfde2b0d",
+        "preprocess_exit_code": 0,
+        "cpp_tokens": [],
+        "preprocessed_sha256": "7f252b429b0423e2840a8b46c623f35056df5e108d8c29c292d15bbba516760d",
+        "reason": "Existing non-default test lacks Gimp/GEGL/C library declarations; syntax failure remains open."
+      }
+    },
+    {
+      "source": "app/operations/tests/test-operations.c",
+      "configuration": "http",
+      "language": "c",
+      "command_sha256": "9fd91590436ef8255897f5fdf9216a972373fe63b8d8ae63f7b82985117571f3",
+      "exit_code": 1,
+      "seconds": 0.092,
+      "dependency_count": 299,
+      "dependency_sha256": "06bb25f34c69d0d04943b86fffb652642a361fecc936cc34ebb50dcc83ea4191",
+      "private_headers": [],
+      "forbidden_c_dependencies": [],
+      "log_sha256": "f1b125672e66ca33ce28855812b95164e58e2515b43f9080b7f54e0b1ef94ce8",
+      "log_bytes": 5539,
+      "known_optional_syntax_failure": {
+        "baseline": "335c224953530c7a85fdc3144d69f031581ad27f",
+        "source_sha256": "04303b4a129e4b3c7878e6f2deecfca73330dd2069ee3df4d47b937fcfde2b0d",
+        "preprocess_exit_code": 0,
+        "cpp_tokens": [],
+        "preprocessed_sha256": "7f252b429b0423e2840a8b46c623f35056df5e108d8c29c292d15bbba516760d",
+        "reason": "Existing non-default test lacks Gimp/GEGL/C library declarations; syntax failure remains open."
+      }
+    }
+  ],
+  "private_headers_not_in_configured_closure": [
+    "app/paint/painter-brush-settings/tests/legacy/mypaintbrush-brush.hpp"
+  ],
+  "unconsumed_header_reason": "Archived legacy brush-settings oracle header; not a current production dependency or installed interface. All67 production headers are consumed by actual C++ units.",
+  "controls": [
+    {
+      "name": "transitive-private-header",
+      "compiler_exit": 0,
+      "boundary_rejected": true
+    },
+    {
+      "name": "template-through-public-header",
+      "compiler_exit": 1,
+      "compiler_rejected": true
+    },
+    {
+      "name": "same-template-probe-cpp-positive",
+      "compiler_exit": 0
+    },
+    {
+      "name": "cpp-driver-for-c-rejected",
+      "compiler_rejected": true
+    },
+    {
+      "name": "private-file-install",
+      "boundary_rejected": true
+    },
+    {
+      "name": "private-directory-install",
+      "boundary_rejected": true
+    }
+  ],
+  "wrong_http_config_control": {
+    "status": "EXPECTED_FAILURE",
+    "processed_units": 0,
+    "error": "Expected distinct default/HTTP configurations with matching config macro"
+  },
+  "installations": [
+    {
+      "build": "/workspace/shared/gimp-cpp-boundary-04005/build-default",
+      "painter_http_enabled": false,
+      "manifest_sha256": "737494a178d37bbc405177a5fae4efc47af2ea03e8e95648324095059502dbc1",
+      "entries": 2704,
+      "private_header_installations": []
+    },
+    {
+      "build": "/workspace/shared/gimp-cpp-boundary-04005/build-http",
+      "painter_http_enabled": true,
+      "manifest_sha256": "5b6ed786b3e79c0db813bac69f56abff7f2808c2d670e7b069eb8c1eec0c0af5",
+      "entries": 2704,
+      "private_header_installations": []
+    }
+  ],
+  "inputs_unchanged_at_end": true,
+  "tool_sha256": "27ca83284eb4cfec4d31d347a3ca773d17cb89e8fe647c53376cd1cf5e476681",
+  "scope_sha256": "bca3774f0ae0099a99a2508a6f8a6dcbf725a30b83dd7823ca06d8dc14886568",
+  "full_report_sha256": "c4ab14e0ef5458a03e44d3febca469f875c8f7ebd2d98e11c351b9e3b81c5bb1",
+  "evidence": "migration/tests/cpp-header-boundary-evidence.tar.gz",
+  "evidence_sha256": "16465e7ef70c2a620db1462ad6c329d81339d4084bc6431e4b328d588687d02c",
+  "evidence_members": 17,
+  "evidence_bytes": 853763,
+  "limitations": [
+    "Native configured targets only; platform and feature acceptance remain separate.",
+    "C++ syntax checks establish header usability, not runtime behavior.",
+    "SDK dependency identities are captured after compilation; package archive verification is recorded by the build preparation, not inferred from this check.",
+    "The optional operations test syntax failures remain unresolved; no syntax pass is claimed for either.",
+    "Windows/macOS configurations and runtime feature parity remain open."
+  ]
+}

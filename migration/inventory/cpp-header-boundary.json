@@ -1,0 +1,765 @@
+{
+  "format": 1,
+  "task": "04.005",
+  "baseline_commit": "335c224953530c7a85fdc3144d69f031581ad27f",
+  "scope": "Private C++ header exposure only; feature behavior and all platform verification remain separate obligations.",
+  "registration_review": "migration/inventory/cpp-registration-review.json",
+  "registration_review_sha256": "75bf025e4616ba08bd5da635d7991b11247d98fb60e2bdc0fb861c20286106ff",
+  "original_registration_duties": [
+    {
+      "original_work_id": "legacy-f4b56146e29be4742fa5",
+      "source_id": "01.002/000038",
+      "path": "app/base/Makefile.am",
+      "source_range": "-74 -> 74,9",
+      "source_sha256": "4ec3c13c6c7b75adb94f01f6c31adc12fa141910cfb9dce42644ece8f1a880e7",
+      "corrected_source_work_ids": [
+        "legacy-a0021f7d80f5a41b6d6f",
+        "legacy-30e94f0fd5f51100fad0",
+        "legacy-4fec2016f0f36dfb18f6"
+      ]
+    },
+    {
+      "original_work_id": "legacy-998e78e3b0500070c80f",
+      "source_id": "01.002/000868",
+      "path": "app/paint-funcs/Makefile.am",
+      "source_range": "-33 -> 33,2",
+      "source_sha256": "352be5bc5646ac0d3da085dff5f548eaaa54faa7ddc75bd5e49ce194f08f2927",
+      "corrected_source_work_ids": [
+        "legacy-eae7340468d236c453b0",
+        "legacy-8cf825bd63edd90f1489",
+        "legacy-d536ccdd9a19a93731cb"
+      ]
+    },
+    {
+      "original_work_id": "legacy-f8e8ff0631d338c4fb37",
+      "source_id": "01.002/000887",
+      "path": "app/paint/Makefile.am",
+      "source_range": "-81 -> 95,3",
+      "source_sha256": "ccdacc8f82bbe29a56afb90d538c43c0e41ae089031fae840830f7cb32765630",
+      "corrected_source_work_ids": [
+        "legacy-266f2a85bda5af747d6e",
+        "legacy-dbb674b0d6468c0f7a8f",
+        "legacy-47a54477b7ec00975f09"
+      ]
+    }
+  ],
+  "header_mappings": [
+    {
+      "legacy_header": "app/base/pixel.hpp",
+      "legacy_blob": "0b2920644eb36b391f0c03f021c0dd0a19348529",
+      "header_source_hunk": "01.002/000076",
+      "header_feature_duties": [
+        "09.001",
+        "09.002",
+        "09.003",
+        "09.004",
+        "09.005",
+        "09.009",
+        "31.017"
+      ],
+      "current_counterparts": [
+        "app/paint/painter-mypaint-surface/legacy-pixel.hpp"
+      ],
+      "symbols": [
+        "GimpPainter::MyPaint::LegacyPixel::Pixel"
+      ],
+      "boundary_interpretation": "Direct derived private header; current README names original. Pixel arithmetic/backend completion belongs to the original pixel source duties.",
+      "current_sha256": {
+        "app/paint/painter-mypaint-surface/legacy-pixel.hpp": "53b98a5f26f81a4869091b776ceeb9667e9caf16057da4a6e1eec368b5c81a42"
+      }
+    },
+    {
+      "legacy_header": "app/base/delegators.hpp",
+      "legacy_blob": "f615f41b4fdebbebc865e17888eadc38a0c45e58",
+      "header_source_hunk": "01.002/000042",
+      "header_feature_duties": [
+        "06.017",
+        "06.018",
+        "06.019",
+        "07.008/untracked-signals",
+        "07.008/connection-name"
+      ],
+      "current_counterparts": [
+        "app/painter/connection.hpp",
+        "app/painter/source.hpp",
+        "app/painter/boundary.hpp"
+      ],
+      "symbols": [
+        "GimpPainter::Connection::connect",
+        "GimpPainter::Source::idle",
+        "GimpPainter::Source::timeout",
+        "GimpPainter::boundary"
+      ],
+      "boundary_interpretation": "Role split into handler ownership, source ownership, and exception boundaries; no one-for-one Delegator API retention is claimed. Feature callbacks and signal lifetimes keep their own duties.",
+      "current_sha256": {
+        "app/painter/connection.hpp": "cf3fb4127a0726340492972c17c34d1bc3047a3c4d52bae44d15ba0741fb9708",
+        "app/painter/source.hpp": "627136e9747edbd589023d420767697f5fcd2b20feeb96fd1d9c524bb1490334",
+        "app/painter/boundary.hpp": "3023d89825dc146aefd9f8451ba986f211f42fd9b677cc147b84ed71e2119ff4"
+      }
+    },
+    {
+      "legacy_header": "app/base/scopeguard.hpp",
+      "legacy_blob": "9ddfb5976f4f0ccd3fef93cb3bc4fcd620f70649",
+      "header_source_hunk": "01.002/000078",
+      "header_feature_duties": [
+        "06.010",
+        "06.021",
+        "06.022",
+        "06.029"
+      ],
+      "current_counterparts": [
+        "app/painter/resources.hpp",
+        "app/painter/object-ref.hpp"
+      ],
+      "symbols": [
+        "GimpPainter::String",
+        "GimpPainter::ArrayRef",
+        "GimpPainter::MutexGuard",
+        "GimpPainter::ObjectRef"
+      ],
+      "boundary_interpretation": "RAII ownership roles use specialized private wrappers plus std::unique_ptr/std::shared_ptr inside C++ implementations. No generic ScopeGuard clone is required for header isolation.",
+      "current_sha256": {
+        "app/painter/resources.hpp": "8265ca64628465872ea815c578a59711e563708cb4041a251482d237a7ef8d13",
+        "app/painter/object-ref.hpp": "46006b8f2bc6216e6486fa473fe10ffbc9311c3550825b82798b0858165f8dac"
+      }
+    },
+    {
+      "legacy_header": "app/base/glib-cxx-types.hpp",
+      "legacy_blob": "19a9d47773fa06a1c654283a6d2e033a67b2428a",
+      "header_source_hunk": "01.002/000046",
+      "header_feature_duties": [
+        "06.005",
+        "06.025",
+        "08.019"
+      ],
+      "current_counterparts": [
+        "app/painter/object-ref.hpp",
+        "app/painter/gio-type-traits.hpp",
+        "app/core/gimp-painter-type-traits.hpp"
+      ],
+      "symbols": [
+        "GimpPainter::TypeTraits",
+        "GimpPainter::ObjectRef",
+        "GimpPainter::WeakRef"
+      ],
+      "boundary_interpretation": "Typed traits live in private C++ headers; owning feature modules add their own specializations. This boundary mapping does not establish every legacy type/trait adapter is complete.",
+      "current_sha256": {
+        "app/painter/object-ref.hpp": "46006b8f2bc6216e6486fa473fe10ffbc9311c3550825b82798b0858165f8dac",
+        "app/painter/gio-type-traits.hpp": "b9e6ce2a86ac5811783cac5c65cc3bd11bc512735b3b56442dcc49ab399a0af4",
+        "app/core/gimp-painter-type-traits.hpp": "6f2c004a013a35b1395e215604a30406c63c687c7e0136f5c537e5cfbb1b0958"
+      }
+    },
+    {
+      "legacy_header": "app/base/glib-cxx-impl.hpp",
+      "legacy_blob": "a2ad35e37a3e7a481698c1f8b78b71adb385f7d3",
+      "header_source_hunk": "01.002/000045",
+      "header_feature_duties": [
+        "06.007",
+        "06.008",
+        "06.009",
+        "06.010",
+        "06.011",
+        "06.012",
+        "06.013",
+        "06.014",
+        "06.015",
+        "06.016",
+        "06.026",
+        "06.027",
+        "06.029"
+      ],
+      "current_counterparts": [
+        "app/painter/binding-store.hpp",
+        "app/painter/binding-store.cpp",
+        "app/painter/boundary.hpp"
+      ],
+      "symbols": [
+        "GimpPainter::SlotSpec",
+        "GimpPainter::BindingStore",
+        "GimpPainter::boundary"
+      ],
+      "boundary_interpretation": "Legacy NewGClass/private-placement role is replaced by typed slot ownership and exact feature adapters. C GObject instance/class declarations stay in owning .h files; all registration/vfunc semantics remain separate duties.",
+      "current_sha256": {
+        "app/painter/binding-store.hpp": "72ccd52c058c15d456517c8ed9a8cf9ec98ca14d08e277bf68f3e40febb7f1f9",
+        "app/painter/binding-store.cpp": "c69d65c22f26e6be8f6df69765cd30f7bbbd32b46b0eb847e9f6524b41c2b557",
+        "app/painter/boundary.hpp": "3023d89825dc146aefd9f8451ba986f211f42fd9b677cc147b84ed71e2119ff4"
+      }
+    },
+    {
+      "legacy_header": "app/base/glib-cxx-utils.hpp",
+      "legacy_blob": "a1a77acd0ebcba4ad5f400bfe362628259788922",
+      "header_source_hunk": "01.002/000047",
+      "header_feature_duties": [
+        "06.001",
+        "06.002",
+        "06.003",
+        "06.004",
+        "06.005",
+        "06.006",
+        "06.020",
+        "06.020/value-assignment",
+        "06.021",
+        "06.021/array-reassignment",
+        "08.019"
+      ],
+      "current_counterparts": [
+        "app/painter/object-ref.hpp",
+        "app/painter/resources.hpp",
+        "app/core/gimpclonelayer-handle.hpp",
+        "app/core/gimpfilterlayer-handle.hpp"
+      ],
+      "symbols": [
+        "GimpPainter::ObjectRef",
+        "GimpPainter::Value",
+        "GimpPainter::ValueView",
+        "GimpPainter::ArrayRef",
+        "GimpPainter::CloneLayerRef",
+        "GimpPainter::FilterLayerRef"
+      ],
+      "boundary_interpretation": "Ownership/value helpers are private; named feature handles replace ref(obj)[function]. No all-feature named-operation or property-conversion completion is implied.",
+      "current_sha256": {
+        "app/painter/object-ref.hpp": "46006b8f2bc6216e6486fa473fe10ffbc9311c3550825b82798b0858165f8dac",
+        "app/painter/resources.hpp": "8265ca64628465872ea815c578a59711e563708cb4041a251482d237a7ef8d13",
+        "app/core/gimpclonelayer-handle.hpp": "7f600ac98917818b1e69cbf59ca386db14e7b8c5b313904a197dc0ee782d740b",
+        "app/core/gimpfilterlayer-handle.hpp": "a1c1d929d43033fb596bb2ade15cc5d1c9bfb9c1acfb4ab15847b0ec89749037"
+      }
+    },
+    {
+      "legacy_header": "app/base/json-cxx-utils.hpp",
+      "legacy_blob": "f1009af963457715908a4486a4cc4af171403f5c",
+      "header_source_hunk": "01.002/000048",
+      "header_feature_duties": [
+        "06.021",
+        "28.002"
+      ],
+      "current_counterparts": [
+        "app/paint/painter-mypaint/resource.cpp",
+        "app/paint/painter-mypaint/resource.hpp",
+        "app/httpd/httpd-resource.hpp",
+        "app/core/gimplayerpreset.c"
+      ],
+      "symbols": [
+        "GimpPainter::MyPaint::Resource",
+        "NodeFree",
+        "GimpPainter::Http::JsonFree",
+        "GimpPainter::Http::Json"
+      ],
+      "boundary_interpretation": "JSON wrapper roles are owned by feature modules: resource.cpp keeps Node/TypeTraits implementation private, HTTP has private Json RAII, preset code uses JSON-GLib C API directly. No shared JSON C++ header is exported; no universal JSON wrapper clone or JSON semantic acceptance is claimed.",
+      "current_sha256": {
+        "app/paint/painter-mypaint/resource.cpp": "128928c74ef99cbb754ba469e6df3946db1730588a1ddc5cb9daf21c3441f15b",
+        "app/paint/painter-mypaint/resource.hpp": "281565b674f2fa055ca954f4bc9c8b1a73fee36399c60daeee5fe2ecacf94e0c",
+        "app/httpd/httpd-resource.hpp": "54e854a08d78913d65851e11719d9bbda3ca94787677788f31d71da826eea2e1",
+        "app/core/gimplayerpreset.c": "ec6edcf6223f1cbc6d125f26c71644a77c6b7077db9a0b01e3cbf53eac9e7e8e"
+      }
+    },
+    {
+      "legacy_header": "app/base/soup-cxx-utils.hpp",
+      "legacy_blob": "c7218276e34818ee05c04e738d95f9e5f83503e6",
+      "header_source_hunk": "01.002/000080",
+      "header_feature_duties": [
+        "31.001",
+        "31.002",
+        "31.003",
+        "31.004",
+        "31.005",
+        "31.006",
+        "31.007",
+        "31.008",
+        "31.008/router-lifetime"
+      ],
+      "current_counterparts": [
+        "app/httpd/httpd.cpp",
+        "app/httpd/httpd-private.hpp",
+        "app/httpd/httpd-resource.hpp",
+        "app/httpd/meson.build"
+      ],
+      "symbols": [
+        "State",
+        "Pending",
+        "Hook",
+        "GimpPainter::Http::Router",
+        "GimpPainter::Http::Resource"
+      ],
+      "boundary_interpretation": "Soup transport/session/message ownership and callbacks are private to optional HTTP .cpp/.hpp implementation. Existing .h boundary remains C-compatible. Named SoupMessageRef/SoupServerRef registry duties are not closed by this mapping; mandatory core need not expose or depend on Soup wrappers.",
+      "current_sha256": {
+        "app/httpd/httpd.cpp": "22450de1872fe672f6f20ba1a220abba5e52f32a2d7cb1ccbecdd77e046682df",
+        "app/httpd/httpd-private.hpp": "b7f3c61fc051cba67ada742cc72ceefd882f9b8c341b50bad1744e02a3f79644",
+        "app/httpd/httpd-resource.hpp": "54e854a08d78913d65851e11719d9bbda3ca94787677788f31d71da826eea2e1",
+        "app/httpd/meson.build": "eb97d0699129977c1ae76985d25304b08b6f57e36216d972d74ba92474dbb66a"
+      }
+    },
+    {
+      "legacy_header": "app/paint-funcs/mypaint-brushmodes.hpp",
+      "legacy_blob": "3110ebebb7b236785ca27dd8ef196fb0f2fa80cb",
+      "header_source_hunk": "01.002/000869",
+      "header_feature_duties": [
+        "09.003/region-lifetime",
+        "21.001",
+        "21.002",
+        "21.002/resource-owner",
+        "21.003",
+        "21.004",
+        "21.005",
+        "21.006",
+        "21.007",
+        "21.008",
+        "21.009",
+        "21.010",
+        "21.011",
+        "21.012",
+        "21.013",
+        "21.014",
+        "21.015",
+        "21.016",
+        "21.017",
+        "22.007"
+      ],
+      "current_counterparts": [
+        "app/paint/painter-mypaint-surface/legacy-pixel-modes.hpp",
+        "app/paint/painter-mypaint-surface/gegl-surface.cpp"
+      ],
+      "symbols": [
+        "GimpPainter::MyPaint::LegacyPixel::BrushPixelIteratorForRunLength",
+        "GimpPainter::MyPaint::LegacyPixel::ColoredBrushmarkIterator",
+        "GimpPainter::MyPaint::GeglSurface"
+      ],
+      "boundary_interpretation": "Derived templated pixel modes remain private and are included by gegl-surface.cpp. Pixel equations, formats, sampling and dab behavior retain their source-specific acceptance duties.",
+      "current_sha256": {
+        "app/paint/painter-mypaint-surface/legacy-pixel-modes.hpp": "1e02871cd3e40227d492432bea98b6c36d5369a2d3eb63d3e111b6d432266af2",
+        "app/paint/painter-mypaint-surface/gegl-surface.cpp": "e7ac2ab7781f9a278c1b4296424d353ef30758a79fa2ddddc5ae70fa342b3c2c"
+      }
+    },
+    {
+      "legacy_header": "app/paint/gimpmypaintcore-brushfeature.hpp",
+      "legacy_blob": "bdf7750f9612b615e454b4633523f28353667a01",
+      "header_source_hunk": "01.002/000932",
+      "header_feature_duties": [
+        "21.002",
+        "21.002/resource-owner",
+        "21.003",
+        "21.004",
+        "21.005",
+        "21.006",
+        "22.003",
+        "22.005"
+      ],
+      "current_counterparts": [
+        "app/paint/painter-mypaint-surface/gimp-resources.hpp",
+        "app/paint/painter-mypaint-surface/gimp-resources.cpp",
+        "app/paint/painter-mypaint-surface/legacy-mask-transform.hpp",
+        "app/paint/painter-mypaint-surface/legacy-generated-mask.hpp",
+        "app/paint/painter-mypaint-surface/gegl-surface.hpp"
+      ],
+      "symbols": [
+        "GimpPainter::MyPaint::GimpResources",
+        "GimpPainter::MyPaint::ShapeMask",
+        "GimpPainter::MyPaint::GeglSurface::ShapeProvider",
+        "GimpPainter::MyPaint::transform_bitmap_mask",
+        "GimpPainter::MyPaint::generate_legacy_mask"
+      ],
+      "boundary_interpretation": "Brush/resource and shape-provider roles are split among private C++ types and implementation functions. Geometry, resource/pipe lifetimes, sampling and generated-mask parity remain separate duties.",
+      "current_sha256": {
+        "app/paint/painter-mypaint-surface/gimp-resources.hpp": "0d4a462f16f736cd65454b57c57c4fd4d0b54fe606ac1b8de900d2ef11c136a2",
+        "app/paint/painter-mypaint-surface/gimp-resources.cpp": "5ff2f3454005a1673c4bc3079884ae19972e09f6117512641258b00310b170da",
+        "app/paint/painter-mypaint-surface/legacy-mask-transform.hpp": "cceae37fc5d5df834197ad945630489cab73c3e1e33d6231e73d8424eea2b9d8",
+        "app/paint/painter-mypaint-surface/legacy-generated-mask.hpp": "ef2a621e5d6d9766859d329aef254337cd56d649b0c82dcd50f8a819c0e730d7",
+        "app/paint/painter-mypaint-surface/gegl-surface.hpp": "0ffb0f9071bc34bfdf9c4473da5e3279eadba4f3ae39ed99e74260aeb77a5666"
+      }
+    },
+    {
+      "legacy_header": "app/paint/gimpmypaintcore-drawablefeature.hpp",
+      "legacy_blob": "f822f8d4ede027ac9185d38669b66f7133d8a7d7",
+      "header_source_hunk": "01.002/000933",
+      "header_feature_duties": [
+        "09.003",
+        "09.003/region-lifetime",
+        "09.004",
+        "09.006",
+        "09.007",
+        "09.008",
+        "09.009",
+        "09.010",
+        "09.011",
+        "09.012",
+        "09.013",
+        "21.010",
+        "21.011"
+      ],
+      "current_counterparts": [
+        "app/paint/painter-mypaint-surface/gegl-surface.hpp",
+        "app/paint/painter-mypaint-surface/gegl-surface.cpp",
+        "app/paint/painter-mypaint-surface/paint-core.hpp",
+        "app/paint/painter-mypaint-surface/paint-core.cpp",
+        "app/paint/painter-mypaint-surface/gimp-painter-session.h",
+        "app/paint/painter-mypaint-surface/gimp-painter-session.hpp"
+      ],
+      "symbols": [
+        "GimpPainter::MyPaint::GeglSurface",
+        "GimpPainter::MyPaint::PaintCore",
+        "GimpPainter::PainterSessionRef",
+        "gimp_painter_session_stroke_to"
+      ],
+      "boundary_interpretation": "Drawable/snapshot/render transaction state is private C++; gimp-painter-session.h exposes the C-compatible GObject/operation boundary. Buffer storage, nonincremental behavior, cancel and Undo completion remain separate source duties.",
+      "current_sha256": {
+        "app/paint/painter-mypaint-surface/gegl-surface.hpp": "0ffb0f9071bc34bfdf9c4473da5e3279eadba4f3ae39ed99e74260aeb77a5666",
+        "app/paint/painter-mypaint-surface/gegl-surface.cpp": "e7ac2ab7781f9a278c1b4296424d353ef30758a79fa2ddddc5ae70fa342b3c2c",
+        "app/paint/painter-mypaint-surface/paint-core.hpp": "8f127f5d8905655e532a5c79000627d93347b7d7a4a4cfdcb1f1ec1b0451b8f3",
+        "app/paint/painter-mypaint-surface/paint-core.cpp": "f2acf89889fbb8c7ae57f700f1f455833c830ba38329c4f829a9bf4d9f00669a",
+        "app/paint/painter-mypaint-surface/gimp-painter-session.h": "4f53e90cf9902dd84b7b85f3417689d54c68b1ac8008c9eb181915e89f085345",
+        "app/paint/painter-mypaint-surface/gimp-painter-session.hpp": "bea0eb0341fecaa0f7bc66e95b02f3697b29a0d97450e3dfcdbe40e0e0e574b3"
+      }
+    }
+  ],
+  "private_headers": [
+    {
+      "path": "app/config/gimppainterfilterconfig.hpp",
+      "role": "production",
+      "sha256": "2a6f2bd8397f82dec5c8361756589941395e15c75b3782afad8e58125e75024d"
+    },
+    {
+      "path": "app/core/gimp-painter-type-traits.hpp",
+      "role": "production",
+      "sha256": "6f2c004a013a35b1395e215604a30406c63c687c7e0136f5c537e5cfbb1b0958"
+    },
+    {
+      "path": "app/core/gimpclonelayer-handle.hpp",
+      "role": "production",
+      "sha256": "7f600ac98917818b1e69cbf59ca386db14e7b8c5b313904a197dc0ee782d740b"
+    },
+    {
+      "path": "app/core/gimpfiltercontext.hpp",
+      "role": "production",
+      "sha256": "6eb9b62f5c4b339a2df9659844734517f5e45de8e94e199ca49233bdeb0d81df"
+    },
+    {
+      "path": "app/core/gimpfilterlayer-arguments.hpp",
+      "role": "production",
+      "sha256": "3fccf3c4fb94f081ff09f1530154429f928dc2a06cfcb78a051901f333b9aed2"
+    },
+    {
+      "path": "app/core/gimpfilterlayer-handle.hpp",
+      "role": "production",
+      "sha256": "a1c1d929d43033fb596bb2ade15cc5d1c9bfb9c1acfb4ab15847b0ec89749037"
+    },
+    {
+      "path": "app/core/gimpfilterparametereditor.hpp",
+      "role": "production",
+      "sha256": "5a82fa9bb4b55723e7f1386a8ca4090025901a2fa33f37a3680bbc62c49ff50c"
+    },
+    {
+      "path": "app/core/gimpfilterpaths.hpp",
+      "role": "production",
+      "sha256": "b9c2492ddb3447c188584c07de88157fe35f2728ff21f2762688103dc04f3334"
+    },
+    {
+      "path": "app/core/gimpfilterprocedure-arguments.hpp",
+      "role": "production",
+      "sha256": "da2cdb5b7deb7a65d50f77e1ee5b3c20380edf992a2c1a3c6d3ef4e38768b178"
+    },
+    {
+      "path": "app/core/gimpfilterprocedure.hpp",
+      "role": "production",
+      "sha256": "6916ec07978d479476d9787bcd9fe60c337f4d8466670f2c4603256f71077133"
+    },
+    {
+      "path": "app/core/gimppaintermybrush-handle.hpp",
+      "role": "production",
+      "sha256": "c833ec39f38570f189c4418f703a1c69a53a2ac11bec7232df62b1dc9cc8f2c9"
+    },
+    {
+      "path": "app/core/gimpperspectiveguide.hpp",
+      "role": "production",
+      "sha256": "bc224a0a0891ca5017acdd0587893eb8841590ca84a0eab326e72f5d73e601f4"
+    },
+    {
+      "path": "app/httpd/httpd-private.hpp",
+      "role": "production",
+      "sha256": "b7f3c61fc051cba67ada742cc72ceefd882f9b8c341b50bad1744e02a3f79644"
+    },
+    {
+      "path": "app/httpd/httpd-resource.hpp",
+      "role": "production",
+      "sha256": "54e854a08d78913d65851e11719d9bbda3ca94787677788f31d71da826eea2e1"
+    },
+    {
+      "path": "app/paint/gimppainterpaintgate.hpp",
+      "role": "production",
+      "sha256": "a894c3284cb4c39a5eafb0c3057156395577313e4c0d09899c38e96511cbd0df"
+    },
+    {
+      "path": "app/paint/painter-bounded-fill/search.hpp",
+      "role": "production",
+      "sha256": "08bc04598126fa34f96eb27022242ef92c6e1056f2f60ad5793dc0c5d8068a0e"
+    },
+    {
+      "path": "app/paint/painter-brush-settings/tests/legacy/mypaintbrush-brush.hpp",
+      "role": "test-only",
+      "sha256": "bc8b24293d8b85e9f956dab40b8c6bfaa2f43ca626715e08a3627f7043c6e8b4"
+    },
+    {
+      "path": "app/paint/painter-mypaint/engine.hpp",
+      "role": "production",
+      "sha256": "3c24a2d737d369b34aa6919445b371add80cf826a8e4c22bc18677b8edeed3a9"
+    },
+    {
+      "path": "app/paint/painter-mypaint/legacy-brush.hpp",
+      "role": "production",
+      "sha256": "1971ad70ff17ad0a2311cf3c4ec105f730c6a0ae87c96958e7b7ffdfa71ed4fc"
+    },
+    {
+      "path": "app/paint/painter-mypaint/legacy-color.hpp",
+      "role": "production",
+      "sha256": "bc8a5061e7cbe0c1a0584c8382a6fbf6e81c4d2a44c16f2b8a543315ff11b55b"
+    },
+    {
+      "path": "app/paint/painter-mypaint/mapping.hpp",
+      "role": "production",
+      "sha256": "a033ff9d7618afdb6127b6a4bd9237b88ca3e1b5374ad7ba456a59a97040e9f0"
+    },
+    {
+      "path": "app/paint/painter-mypaint/resource.hpp",
+      "role": "production",
+      "sha256": "281565b674f2fa055ca954f4bc9c8b1a73fee36399c60daeee5fe2ecacf94e0c"
+    },
+    {
+      "path": "app/paint/painter-mypaint/surface.hpp",
+      "role": "production",
+      "sha256": "7c6214b1dafee3eb3cc2643842c11e9b419eea02433d997f9903d64e12237595"
+    },
+    {
+      "path": "app/paint/painter-mypaint-surface/gegl-surface.hpp",
+      "role": "production",
+      "sha256": "0ffb0f9071bc34bfdf9c4473da5e3279eadba4f3ae39ed99e74260aeb77a5666"
+    },
+    {
+      "path": "app/paint/painter-mypaint-surface/gimp-painter-options.hpp",
+      "role": "production",
+      "sha256": "ae5c72c55d831d4e313da48fa7229a258a004d337a33c8242f205fda97aa22b7"
+    },
+    {
+      "path": "app/paint/painter-mypaint-surface/gimp-painter-session.hpp",
+      "role": "production",
+      "sha256": "bea0eb0341fecaa0f7bc66e95b02f3697b29a0d97450e3dfcdbe40e0e0e574b3"
+    },
+    {
+      "path": "app/paint/painter-mypaint-surface/gimp-resources.hpp",
+      "role": "production",
+      "sha256": "0d4a462f16f736cd65454b57c57c4fd4d0b54fe606ac1b8de900d2ef11c136a2"
+    },
+    {
+      "path": "app/paint/painter-mypaint-surface/gray-alpha-pixels.hpp",
+      "role": "production",
+      "sha256": "c10d67a6bc00d21f433e8f69ea83b58ca7327e5e7572176aeb533e2e47f04884"
+    },
+    {
+      "path": "app/paint/painter-mypaint-surface/legacy-generated-mask.hpp",
+      "role": "production",
+      "sha256": "ef2a621e5d6d9766859d329aef254337cd56d649b0c82dcd50f8a819c0e730d7"
+    },
+    {
+      "path": "app/paint/painter-mypaint-surface/legacy-mask-transform.hpp",
+      "role": "production",
+      "sha256": "cceae37fc5d5df834197ad945630489cab73c3e1e33d6231e73d8424eea2b9d8"
+    },
+    {
+      "path": "app/paint/painter-mypaint-surface/legacy-pixel-modes.hpp",
+      "role": "production",
+      "sha256": "1e02871cd3e40227d492432bea98b6c36d5369a2d3eb63d3e111b6d432266af2"
+    },
+    {
+      "path": "app/paint/painter-mypaint-surface/legacy-pixel.hpp",
+      "role": "production",
+      "sha256": "53b98a5f26f81a4869091b776ceeb9667e9caf16057da4a6e1eec368b5c81a42"
+    },
+    {
+      "path": "app/paint/painter-mypaint-surface/native-pixels.hpp",
+      "role": "production",
+      "sha256": "2b089246a097b55d1df0dd876b91d7f509c2d3f6eb8eca28ba9e2c4ad37f7b7b"
+    },
+    {
+      "path": "app/paint/painter-mypaint-surface/paint-core.hpp",
+      "role": "production",
+      "sha256": "8f127f5d8905655e532a5c79000627d93347b7d7a4a4cfdcb1f1ec1b0451b8f3"
+    },
+    {
+      "path": "app/paint/painter-native-stroking.hpp",
+      "role": "production",
+      "sha256": "5e744387b6b64c6e574ccf810b88353f530ee0006495e747eeb5d574fdb32331"
+    },
+    {
+      "path": "app/paint/painter-smudge/legacy-pixels.hpp",
+      "role": "production",
+      "sha256": "b36d1fb9ddfeb9619ed57ad407466b6566ae8ef22d59a6a4bd3269e4ad672097"
+    },
+    {
+      "path": "app/painter/binding-store.hpp",
+      "role": "production",
+      "sha256": "72ccd52c058c15d456517c8ed9a8cf9ec98ca14d08e277bf68f3e40febb7f1f9"
+    },
+    {
+      "path": "app/painter/boundary.hpp",
+      "role": "production",
+      "sha256": "3023d89825dc146aefd9f8451ba986f211f42fd9b677cc147b84ed71e2119ff4"
+    },
+    {
+      "path": "app/painter/bytes.hpp",
+      "role": "production",
+      "sha256": "fca7937dedc4b52a661cbaaa3ce5858074fba62ea2a9fbe70f3687882f9864a4"
+    },
+    {
+      "path": "app/painter/connection.hpp",
+      "role": "production",
+      "sha256": "cf3fb4127a0726340492972c17c34d1bc3047a3c4d52bae44d15ba0741fb9708"
+    },
+    {
+      "path": "app/painter/fair-dispatcher.hpp",
+      "role": "production",
+      "sha256": "c57d018d9b7d951d2b776164ba0ca1443a065c82045e431c3caf5992d16a9cef"
+    },
+    {
+      "path": "app/painter/filter-context.hpp",
+      "role": "production",
+      "sha256": "5ecde6228c5fc0143d44112b6bfe4d2a96abda1b2b9b6f276416231f7c17cce9"
+    },
+    {
+      "path": "app/painter/filter-edge-kernel-private.hpp",
+      "role": "production",
+      "sha256": "e48ac6f29c3af18bba60252b7b7676663e055d866ae6ddd2eee9faa41c6587bd"
+    },
+    {
+      "path": "app/painter/filter-edge.hpp",
+      "role": "production",
+      "sha256": "7e9b7427883ff6eff9a36629ae0315a10811eac3df98c13192026bf32660877f"
+    },
+    {
+      "path": "app/painter/filter-gauss-kernel-private.hpp",
+      "role": "production",
+      "sha256": "8f9a9e3cc7d336a0d021d8aee387ab96116a8b771acb8fc893693bc0f82c9f2f"
+    },
+    {
+      "path": "app/painter/filter-gauss.hpp",
+      "role": "production",
+      "sha256": "0f2678a5c3cfc242fd3d3fec7fd5cfc9ac46f1e1b6813c0fa39f140f11156189"
+    },
+    {
+      "path": "app/painter/filter-lifetime.hpp",
+      "role": "production",
+      "sha256": "653113d3c0ad98a7dfcebc5199c8069dec5b419aa2b74eb581f1961b9f402a81"
+    },
+    {
+      "path": "app/painter/filter-native-kernels.hpp",
+      "role": "production",
+      "sha256": "60c8ca7bbeba821d7205d29b27b598195fc082fc61b79a9057c3cdee7d32b88c"
+    },
+    {
+      "path": "app/painter/filter-procedure-policy.hpp",
+      "role": "production",
+      "sha256": "52759c7df1acf1acfe0ca4d06b629a571f368c2c2eebe79030c59c79ff0e0a98"
+    },
+    {
+      "path": "app/painter/filter-procedure.hpp",
+      "role": "production",
+      "sha256": "a78f664f14985701eca4db16f6405f78b8faf173d5c486268944558b13908d24"
+    },
+    {
+      "path": "app/painter/filter-process.hpp",
+      "role": "production",
+      "sha256": "564362dd115d1250dc4b9ba2bec7787cd8ff2848317a7b59505c90f10d5e72f2"
+    },
+    {
+      "path": "app/painter/filter-progress.hpp",
+      "role": "production",
+      "sha256": "a0786aaf22b2aa55d4af3c00833be4f47298ab5c879ae3f992d544452ee4a8f5"
+    },
+    {
+      "path": "app/painter/filter-raster-kernels.hpp",
+      "role": "production",
+      "sha256": "c1dbc539013bfd1bf9a0118f678cd4c5ef8f53f39c0cc64ddb3c6ccbbd57edfc"
+    },
+    {
+      "path": "app/painter/filter-raster.hpp",
+      "role": "production",
+      "sha256": "065083d88ddbcf21fed56f813c796b5ac933cc14b6da8457ed76104afdbfc50b"
+    },
+    {
+      "path": "app/painter/filter-scheduler.hpp",
+      "role": "production",
+      "sha256": "416e7e8b34adbd6ddfa2b2a82e87052dfe25e5785aef3599ddd035f6ccf4a53f"
+    },
+    {
+      "path": "app/painter/filter-spool.hpp",
+      "role": "production",
+      "sha256": "e6d2eae6eafd24bc28b7be0961a36dff1cdfd9def372879e474d261157c9356a"
+    },
+    {
+      "path": "app/painter/filter-wire.hpp",
+      "role": "production",
+      "sha256": "5d5cb1e87bf7e1b9c4e1367390c540596fefcb9af2df380b03aacecb6c6ab287"
+    },
+    {
+      "path": "app/painter/gio-type-traits.hpp",
+      "role": "production",
+      "sha256": "b9e6ce2a86ac5811783cac5c65cc3bd11bc512735b3b56442dcc49ab399a0af4"
+    },
+    {
+      "path": "app/painter/object-ref.hpp",
+      "role": "production",
+      "sha256": "46006b8f2bc6216e6486fa473fe10ffbc9311c3550825b82798b0858165f8dac"
+    },
+    {
+      "path": "app/painter/resources.hpp",
+      "role": "production",
+      "sha256": "8265ca64628465872ea815c578a59711e563708cb4041a251482d237a7ef8d13"
+    },
+    {
+      "path": "app/painter/source.hpp",
+      "role": "production",
+      "sha256": "627136e9747edbd589023d420767697f5fcd2b20feeb96fd1d9c524bb1490334"
+    },
+    {
+      "path": "app/painter/tests/test-registry.hpp",
+      "role": "test-only",
+      "sha256": "4bd2aff639d1cef2459e41c4039a44d728634fe38ef5d4653e4bb08938b3b0e4"
+    },
+    {
+      "path": "app/painter/work-admission.hpp",
+      "role": "production",
+      "sha256": "d483512981f42b90c68fc4f3e11ae4f03f4e8e74612a483b3f9d20394d96dfbf"
+    },
+    {
+      "path": "app/tools/gimppaintermybrushtool.hpp",
+      "role": "production",
+      "sha256": "e3122c4cdf41d64b6eb204c07fc5fdb830a10d7352de925e544caab168790cde"
+    },
+    {
+      "path": "app/widgets/gimppaintermybrusheditor.hpp",
+      "role": "production",
+      "sha256": "9f73fa5c5e6672f558b188b7d44b34db84e9f770e10a35645d0896af949bb442"
+    },
+    {
+      "path": "app/xcf/painter-xcf-arguments.hpp",
+      "role": "production",
+      "sha256": "fb87ddc0c4ca18c967689232698d45f8a0375557dd78e56e4a519df4d1ef54c9"
+    },
+    {
+      "path": "app/xcf/painter-xcf-compat.hpp",
+      "role": "production",
+      "sha256": "fbfd57d7424fcefc90d339d16934755fc7445aeb4e1311142bcd01a1cfe8686f"
+    },
+    {
+      "path": "app/xcf/painter-xcf-multipart.hpp",
+      "role": "production",
+      "sha256": "01e8d49c444b096a3b90598553b3dca2d2c043414418537b46f0f7fbf023ea69"
+    },
+    {
+      "path": "app/xcf/painter-xcf-storage.hpp",
+      "role": "production",
+      "sha256": "adf98bd69c3bbd7f23b4421d2cf3652d07f9aacef9f39079906be39789780114"
+    }
+  ],
+  "hybrid_c_headers": [
+    "app/core/gimp-parallel.h",
+    "app/paint/gimpbrushcore-kernels.h"
+  ],
+  "hybrid_rule": "Both unchanged against baseline ec2035a and both protect C++ declarations/includes with __cplusplus; their C consumers are legitimate."
+}
