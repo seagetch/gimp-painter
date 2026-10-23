@@ -47,7 +47,7 @@
 
 /*  local function prototypes  */
 
-static void   gimp_paint_register (Gimp        *gimp,
+static void   gimp_paint_register_internal (Gimp        *gimp,
                                    GType        paint_type,
                                    GType        paint_options_type,
                                    const gchar *identifier,
@@ -91,7 +91,7 @@ gimp_paint_init (Gimp *gimp)
 
   for (i = 0; i < G_N_ELEMENTS (register_funcs); i++)
     {
-      register_funcs[i] (gimp, gimp_paint_register);
+      register_funcs[i] (gimp, gimp_paint_register_internal);
     }
 
   gimp_container_thaw (gimp->paint_info_list);
@@ -113,10 +113,31 @@ gimp_paint_exit (Gimp *gimp)
 }
 
 
+/* Transfer-full after the public preconditions have been validated. Keep both
+ * registry and application alive across native container observers. */
+void
+gimp_paint_register (Gimp          *gimp,
+                     GimpPaintInfo *paint_info)
+{
+  GimpContainer *registry;
+
+  g_return_if_fail (GIMP_IS_GIMP (gimp));
+  g_return_if_fail (GIMP_IS_PAINT_INFO (paint_info));
+  g_return_if_fail (GIMP_IS_CONTAINER (gimp->paint_info_list));
+
+  g_object_ref (gimp);
+  registry = g_object_ref (gimp->paint_info_list);
+  gimp_container_add (registry, GIMP_OBJECT (paint_info));
+  g_object_unref (paint_info);
+  g_object_unref (registry);
+  g_object_unref (gimp);
+}
+
+
 /*  private functions  */
 
 static void
-gimp_paint_register (Gimp        *gimp,
+gimp_paint_register_internal (Gimp        *gimp,
                      GType        paint_type,
                      GType        paint_options_type,
                      const gchar *identifier,
@@ -124,13 +145,17 @@ gimp_paint_register (Gimp        *gimp,
                      const gchar *icon_name)
 {
   GimpPaintInfo *paint_info;
+  GimpContainer *registry;
 
   g_return_if_fail (GIMP_IS_GIMP (gimp));
   g_return_if_fail (g_type_is_a (paint_type, GIMP_TYPE_PAINT_CORE));
   g_return_if_fail (g_type_is_a (paint_options_type, GIMP_TYPE_PAINT_OPTIONS));
   g_return_if_fail (identifier != NULL);
   g_return_if_fail (blurb != NULL);
+  g_return_if_fail (icon_name != NULL);
 
+  g_object_ref (gimp);
+  registry = g_object_ref (gimp->paint_info_list);
   paint_info = gimp_paint_info_new (gimp,
                                     paint_type,
                                     paint_options_type,
@@ -138,9 +163,23 @@ gimp_paint_register (Gimp        *gimp,
                                     blurb,
                                     icon_name);
 
-  gimp_container_add (gimp->paint_info_list, GIMP_OBJECT (paint_info));
-  g_object_unref (paint_info);
+  if (!paint_info)
+    {
+      g_object_unref (registry);
+      g_object_unref (gimp);
+      return;
+    }
 
-  if (paint_type == GIMP_TYPE_PAINTBRUSH)
+  /* Retain one local lease: the public entry consumes the transferred one,
+   * and observers may remove the resource or replace the application registry. */
+  gimp_paint_register (gimp, g_object_ref (paint_info));
+
+  if (paint_type == GIMP_TYPE_PAINTBRUSH &&
+      gimp->paint_info_list == registry &&
+      gimp_container_have (registry, GIMP_OBJECT (paint_info)))
     gimp_paint_info_set_standard (gimp, paint_info);
+
+  g_object_unref (paint_info);
+  g_object_unref (registry);
+  g_object_unref (gimp);
 }

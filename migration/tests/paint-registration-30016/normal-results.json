@@ -1,0 +1,12 @@
+[
+  {
+    "name": "gimp:app / paint-registration",
+    "result": "OK",
+    "returncode": 0,
+    "stdout": "TAP version 14\n# random seed: R02S7c75d8c46b4ea9643a491b2b834107de\n1..9\n# Start of paint-registration tests\nok 1 /paint-registration/transfer\n# slow test /paint-registration/transfer executed in 1.02 secs\nok 2 /paint-registration/cpp-transfer\n# slow test /paint-registration/cpp-transfer executed in 0.98 secs\nok 3 /paint-registration/invalid\n# slow test /paint-registration/invalid executed in 0.94 secs\nok 4 /paint-registration/duplicate\n# slow test /paint-registration/duplicate executed in 1.06 secs\nok 5 /paint-registration/observer-removes\n# slow test /paint-registration/observer-removes executed in 1.04 secs\nok 6 /paint-registration/observer-registers\n# slow test /paint-registration/observer-registers executed in 0.94 secs\nok 7 /paint-registration/observer-detaches\n# slow test /paint-registration/observer-detaches executed in 1.02 secs\nok 8 /paint-registration/observer-last-owner\n# slow test /paint-registration/observer-last-owner executed in 1.01 secs\nok 9 /paint-registration/native-catalog\n# slow test /paint-registration/native-catalog executed in 0.98 secs\n# End of paint-registration tests\n",
+    "duration": 9.023821592330933,
+    "command": [
+      "/workspace/shared/gimp-native-preset-gui/build/app/tests/paint-registration"
+    ]
+  }
+]

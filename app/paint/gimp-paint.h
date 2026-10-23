@@ -18,9 +18,19 @@
 #ifndef __GIMP_PAINT_H__
 #define __GIMP_PAINT_H__
 
+#include <glib-object.h>
+typedef struct _Gimp Gimp;
+typedef struct _GimpPaintInfo GimpPaintInfo;
+G_BEGIN_DECLS
+
 
 void   gimp_paint_init (Gimp *gimp);
 void   gimp_paint_exit (Gimp *gimp);
+/* Consumes one paint_info reference after valid application/resource/live
+ * registry preconditions. Invalid arguments remain caller-owned. */
+void   gimp_paint_register (Gimp *gimp, GimpPaintInfo *paint_info);
 
+
+G_END_DECLS
 
 #endif  /* __GIMP_PAINT_H__ */

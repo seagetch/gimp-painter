@@ -1154,3 +1154,14 @@ if painter_http_enabled
           'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
           'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 120)
 endif
+
+# Original consuming public paint-info registration, shared with native startup.
+paint_registration_test = executable('paint-registration',
+  'test-paint-registration.c', 'test-paint-registration.cpp', 'tests.c',
+  dependencies: [libapp_dep, appstream], link_with: apptests_links,
+  cpp_args: painter_cpp_args, override_options: ['c_std=c11', 'cpp_std=c++14'])
+test('paint-registration', paint_registration_test,
+  env: ['GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+        'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+        'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
+        'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 120)

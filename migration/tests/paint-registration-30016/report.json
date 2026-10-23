@@ -1,0 +1,23 @@
+{
+  "scope": "30.016/paint-registration",
+  "normal_groups": 9,
+  "sanitizer_groups": 9,
+  "sanitizer_units": 7,
+  "header_probes": 423,
+  "regressions": {
+    "layer-presets-ui": 18,
+    "painter-perspective-ui": 24,
+    "feature-lifecycle": 11,
+    "preset-gui-entries": 6
+  },
+  "legacy_commit": "afa43fae3e920210146abed514f136fd49f671b5",
+  "baseline": "77bcdf2b7fb8da6e01492bf2522ef541c2ea05ab",
+  "limits": [
+    "Clean historical baseline plus committed owned overlays and this task, not whole current branch",
+    "Selected seven units instrumented; dependencies, vptr and LSan excluded",
+    "Native paint-info/options cycle uses ordinary explicit dispose teardown; invalid-argument references remain caller-owned",
+    "Observer removal test uses native items-changed after count bookkeeping; no claim that arbitrary container add observers can remove safely",
+    "UI screenshot is existing native preferences tree cursor navigation with oncanvas enabled; no new pointer interaction or paint drawing claim",
+    "Original 13-duty lifecycle parent remains open; no old C++ PaintInfo layout/ABI restoration"
+  ]
+}
