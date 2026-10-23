@@ -845,3 +845,139 @@ full aggregate, packaging and release remain open. Old Edge/string-reader
 runtime remains user-approved SKIPPED and compatibility unverified. This
 closure establishes only the original finite rotation-start criterion while
 preserving the current strict Clone acceptance route.
+
+
+## Original mid-drag Ctrl acceptance and retained Clone refresh (25.004, 2026-10-17)
+
+Original task `25.004` is now DONE only for its exact
+`drag 継続中に旧仕様の snap へ切替` criterion. Its title and prerequisite
+`25.003` are unchanged. Only the original `25.004` checkbox and progress row
+are closed; no other task or dependency status changes and no child WBS item
+is created. Ctrl-release evidence supports the adjacent timing obligation but
+original `25.005` remains open, as do `25.006` onward and section 25 as a whole.
+
+### Navigation component: tested source A
+
+The navigation component is bound only to source A `edf861423cd438f275332c0e7f3b899dc3126d51`,
+tree `cdb92379f0c983dbfe6c0473993e4c58ea43e9b9`. The unchanged
+`migration/tests/rotation-ctrl-component-receipt.json` and compact
+`rotation-ctrl-component-evidence.tar.xz` retain that identity and native receipt
+SHA-256 `43e1de63ef396f2c7a9547793dfb5791426843f8470b775648b51c3ebba92ad7`.
+No navigation test is relabeled as running on source B or the documentary
+closure commit. The navigation production/test sources, retained fixtures,
+procedure, published component and GUI receipts/archives, and
+`migration/contracts/painter-navigation.md` remain byte-identical to source B.
+
+The accepted full default incremental build and three registered normal targets
+passed 22 positive TAP cases: 12 events, four UI and six arithmetic. The same
+12 event registrations passed focused ASan/UBSan with exactly five C units
+instrumented, LSan disabled and no suppression files or options. Other GIMP,
+GTK and dependency units remain uninstrumented. All nine component seals pass;
+the retained source, normal ELF, default freshness, compile database, registry,
+focused artifacts/copies and 361 locale catalogs are unchanged across the run.
+
+The single new `/navigation-events/rotation/ctrl-mid-drag` registration replays
+immutable historical sequences 22–30 with real Paintbrush and Move tools.
+These are two real-tool replays of one registered case. All eleven preceding
+event cases and production code are unchanged. Literal old event types,
+pre-event modifier masks, key/button details, coordinates and angle/anchor/
+held-state expectations are checked before modern events, without deriving
+expected angles from the production arithmetic helper.
+
+The finite unmirrored sequence begins at +7.5 degrees with Shift+middle.
+Ctrl press alone leaves the entire navigation snapshot unchanged; the next
+stationary motion applies the 15-degree constraint. Shift release and Ctrl-only
+motion retain 15. Ctrl release alone likewise preserves that snapshot; the next
+stationary motion returns to +7.5. Every held step retains the initiating button,
+start anchors, inherited action, scroll coordinates, scales and actual grab.
+Ordinary middle release and accepted reentry exercise the existing cleanup
+helpers. The key-only versus motion transition establishes the original
+mid-drag Ctrl acceptance criterion without generalizing this one sequence to
+all angles, mirrored states, devices or interruption paths.
+
+Both retained old GUI captures still record teardown `command_exit=-11`.
+Modern real-tool-state expectations are source-derived; the retained old rows
+are not a fresh old-runtime execution. Previous failures and evidence archives
+remain unchanged. Logs keep missing-icon, dummy-plugin discovery, unavailable
+D-Bus and GLib environment-thread messages; empty warning-classifier arrays do
+not imply a warning-free application or clean-from-empty build.
+
+### Separate portrait GUI evidence: older exact source
+
+The unchanged `migration/tests/rotation-portrait-gui-receipt.json` and compact
+`rotation-portrait-gui-evidence.tar.xz` describe only older exact source
+`22708f41d368c6c7c2e425d30ea2765b9d29158b`, tree
+`0a48c7e042ae2f2b46e6cfe828926470e1ace9ab`. Its original receipt SHA-256 is
+`b8d9cd3af5518d14a74d9ee3c499dfd1e46cb0dcdc40b2c243fd43da1a35e52c`.
+The GUI was not rerun on source A, source B or this closure commit.
+
+Ordinary XTest input to the directly launched installed branch executable on an
+authenticated loopback-TCP 1080×1920 portrait display produced same-drag visible
+angles 28.43 → 30 → 30 → 28.43 → 28.43 degrees through free rotation, Ctrl snap,
+Shift release, Ctrl release and middle release. The actual default incremental
+build/install passed; all 19 requests succeeded without geometry retry or idle
+input release. Normal Save/Open dialogs preserved XCF SHA-256
+`01a1846108e57776bed5b132928f6524de81c7d936dfe2be4b7cb60616c5c931`.
+Reopening reset the view angle to zero and preserved all 379,010 compared
+same-geometry visible artwork pixels. This rendered-region comparison is not
+an internal GIMP-buffer proof or general XCF semantic acceptance. A short
+post-reopen rotation again showed 28.43 degrees.
+
+The application, driver, launcher and display exited 0 with held inputs cleared
+and source/runtime/binary seals matched. Unsupported-font, session-bus and dconf
+diagnostics remain recorded; no warning-free runtime claim is made. The compact
+archive binds omitted original screenshots, input PNG and XCF by hash/size;
+the separately retained full public archive contains their original bytes.
+
+### Retained strict Clone gate: distinct tested source B
+
+Receipt-integrated source B is `67f107eb0add92cbfee90ce344574e61fed97525`,
+tree `09261d1e3da663e45160fdc64791b64eecf56f29`. It differs from source A in exactly the five
+component/GUI publication files named above, including the navigation contract.
+The unchanged strict Clone gate ran on this exact frozen source B and passed
+all three default-build/normal-test/focused-sanitizer commands:
+
+- Run: `ctrl-timing-run-001`
+- Current strict archive: `migration/tests/rotation-ctrl-acceptance-evidence.tar.xz`
+- Archive SHA-256: `ee8e999bd8ba5764d190d77462d9b567333d267c66e1020a005d7136ab0161ab`
+- Receipt SHA-256: `3c66f4a4fe7648433ad1639a5f899717530a7bbc9db466cdc83b7e20b7919cf1`
+
+The seven exact normal Meson targets passed: `core` 4,
+`projection-update-bounds` 3, `gimp-clone-layer` 62, `painter-layer-ui` 68,
+`painter-layer-tree` 35, `painter-xcf-roundtrip` 49 and `update-geometry` 5,
+totaling 226 positive TAP cases. Focused Clone ASan/UBSan passed 62 cases.
+Both Clone executions contain the same 216 unique source-mode/type/mask scenes.
+Eight translation units are instrumented; 54 RTTI-only C++ rebuilds are not
+additional sanitizer coverage. LSan remains disabled and other GIMP/dependency
+units remain uninstrumented.
+
+Strict review verified unchanged source before build, before tests and after;
+all 2,879 normal build ELF inventory entries; full default-build freshness;
+compile database; all 164 registered target definitions; all
+361 locale catalogs; and private Clone sanitizer artifacts. Sealing retained
+navigation sanitizer outputs does not mean strict Clone reran them. Registry
+integrity is not full aggregate execution; the retained incremental build is
+not a clean-from-empty build. Historical aggregate claims keep their exact scope.
+
+The archive contains exactly the existing 17 public strict receipt members with
+unchanged bytes. The unchanged deterministic pack function and bounded XZ/flat-tar
+helpers are reused; a second pack is byte-identical. Original-directory,
+extracted-directory and archive validation produce identical strict results
+with execution source/build/private paths blocked and Git as the only permitted
+subprocess. Public environment-removal transformations remain intact. Earlier
+component, GUI and acceptance evidence archives remain unchanged.
+
+The existing 44 receipt controls, 17 archive controls and 11 acceptance controls
+pass, together with strict current Clone acceptance, task-ledger validation
+and `git diff --check`. These closure checks are Python/Git-only; they create
+no native execution or native claim for this later documentary commit. The
+four documentary files and one verified strict archive are the only closure
+changes. No production, test, fixture, validator, component/GUI receipt/archive
+or navigation-contract change is made after the freeze.
+
+Physical mouse/tablet equivalence, focus/device interruption, other platforms,
+original `25.005` onward, whole section 25, broader Clone/XCF/GUI acceptance,
+full aggregate, packaging and release remain open. Old Edge/string-reader
+runtime remains user-approved SKIPPED and compatibility unverified. This
+closure accepts only the original bounded mid-drag Ctrl criterion while
+preserving the current strict Clone acceptance route.
