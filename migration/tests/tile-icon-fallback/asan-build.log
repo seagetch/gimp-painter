@@ -1,0 +1,28 @@
+In file included from [01m[K../source/app/paint/painter-mypaint/engine.cpp:3[m[K:
+[01m[K../source/app/paint/painter-mypaint/legacy-brush.hpp:[m[K In member function ‘[01m[Kvoid GimpPainter::MyPaint::Legacy::Brush::[01;32m[Kupdate_states_and_setting_values[m[K(float, float, float, float, float, float)[m[K’:
+[01m[K../source/app/paint/painter-mypaint/legacy-brush.hpp:398:13:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kdx_old[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  398 |       float [01;35m[Kdx_old[m[K = states[STATE_DIRECTION_DX];
+      |             [01;35m[K^~~~~~[m[K
+[01m[K../source/app/paint/painter-mypaint/legacy-brush.hpp:399:13:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kdy_old[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  399 |       float [01;35m[Kdy_old[m[K = states[STATE_DIRECTION_DY];
+      |             [01;35m[K^~~~~~[m[K
+[01m[K../source/app/display/gimppaintercanvasui.cpp:635:6:[m[K [01;35m[Kwarning: [m[K‘[01m[Kvoid {anonymous}::Canvas::[01;32m[Kfinish_compact_restore[m[K(const std::shared_ptr<{anonymous}::Borrow>&)[m[K’ defined but not used [[01;35m[K-Wunused-function[m[K]
+  635 | void [01;35m[KCanvas[m[K::finish_compact_restore (const std::shared_ptr<Borrow>& borrowed) noexcept {
+      |      [01;35m[K^~~~~~[m[K
+[01m[K../source/app/display/gimppaintercanvasui.cpp:282:12:[m[K [01;35m[Kwarning: [m[K‘[01m[KGtkWidget* {anonymous}::[01;32m[Kaction_button[m[K(Canvas&, GtkWidget*, const char*, const char*)[m[K’ defined but not used [[01;35m[K-Wunused-function[m[K]
+  282 | GtkWidget *[01;35m[Kaction_button[m[K(Canvas&s,GtkWidget*box,const char*label,const char*name) {
+      |            [01;35m[K^~~~~~~~~~~~~[m[K
+[01m[K../source/app/paint/gimppainterbrushgeometry.cpp:[m[K In lambda function:
+[01m[K../source/app/paint/gimppainterbrushgeometry.cpp:88:54:[m[K [01;35m[Kwarning: [m[Kcomparison of integer expressions of different signedness: ‘[01m[Kconst std::size_t[m[K’ {aka ‘[01m[Kconst long unsigned int[m[K’} and ‘[01m[Kint[m[K’ [[01;35m[K-Wsign-compare[m[K]
+   88 |     if (mask.width <= 0 || mask.height <= 0 || [01;35m[Kcount > G_MAXINT / channels[m[K)
+      |                                                [01;35m[K~~~~~~^~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-icon-fallback.c:30:12:[m[K [01;35m[Kwarning: [m[Kno previous declaration for ‘[01m[K__wrap_gtk_icon_theme_load_icon[m[K’ [[01;35m[K-Wmissing-declarations[m[K]
+   30 | GdkPixbuf *[01;35m[K__wrap_gtk_icon_theme_load_icon[m[K (GtkIconTheme *theme, const gchar *name, gint size, GtkIconLookupFlags flags, GError **error)
+      |            [01;35m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-icon-fallback.c:49:18:[m[K [01;35m[Kwarning: [m[Kno previous declaration for ‘[01m[K__wrap_gimp_cairo_surface_create_from_pixbuf[m[K’ [[01;35m[K-Wmissing-declarations[m[K]
+   49 | cairo_surface_t *[01;35m[K__wrap_gimp_cairo_surface_create_from_pixbuf[m[K (GdkPixbuf *pixbuf)
+      |                  [01;35m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-icon-fallback.c:55:14:[m[K [01;35m[Kwarning: [m[Kno previous declaration for ‘[01m[K__wrap_gimp_viewable_get_icon_name[m[K’ [[01;35m[K-Wmissing-declarations[m[K]
+   55 | const gchar *[01;35m[K__wrap_gimp_viewable_get_icon_name[m[K (GimpViewable *viewable)
+      |              [01;35m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+{"painter-icon-fallback": {"path": "/workspace/shared/gimp-native-baseline/build-port/app/tests/painter-icon-fallback-asan", "sha256": "b4232c689bfaca3f43b44c57e2133e8c70310005b3d51e6d297bd4a4d059bd6a"}}

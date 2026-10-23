@@ -1109,7 +1109,7 @@
 | 29.007 | [ ] | color UI を移植する | 29.006 | 前景・背景色が context と同期 |
 | 29.007/palette-popup-teardown | [ ] | 色パレット popup の借用 editor を終了時に切り離す | 29.007, 01.008 | popup を保持したまま editor を破棄する経路を閉じ、context 解除前に通知を外す。選択・確定・editor 先行破棄を反復試験する |
 | 29.008 | [ ] | tool tile の表示を移植する | 29.007 | tool manager の現在選択と同期 |
-| 29.008/icon-null | [ ] | tile icon 生成失敗時の NULL 経路を処理する | 29.002, 29.008, 01.007/cpp-ownership | layer/tool 両 tile の icon 未登録・render 失敗時に NULL を unref せず、代替表示を確認 |
+| 29.008/icon-null | [x] | tile icon 生成失敗時の NULL 経路を処理する | 29.001/native-canvas-tiles, 01.007/cpp-ownership, 07.008/untracked-signals | layer/tool 両 tile の icon 未登録・render 失敗時に NULL を unref せず、代替表示を確認 |
 | 29.009 | [ ] | tool group を接続する | 29.008 | 旧分類と現行 action の対応が明確 |
 | 29.009/retained-group-reset | [x] | oncanvasが保持する旧tool groupをreset・読込前に退役する | 29.001/native-canvas-tiles, 07.008/untracked-signals | 実parent-link失敗を再現し、保持group・caller先行clear・3回reset/deserializeを修正。元22+追加2の通常24/ASan24、60秒不変、縦型oncanvas画像を検証。9 C単位限定、全UI親は未完了（migration/tests/tool-group-retirement/validate.py） |
 | 29.010/toolbar-ref-balance | [ ] | toolbar の再表示と終了時の参照数を修正する | 29.010, 01.007/toolbar-ref | hide 時の余剰参照をなくし、移動・反復表示・破棄を検証する |
@@ -1387,6 +1387,8 @@
 | 38.015 | [ ] | clean install の最終試験を行う | 38.014 | 起動・旧作品・描画・保存・終了が成功 |
 | 38.016 | [ ] | 配布判定レポートを作る | 38.015 | 対応版・合格 gate・未対応範囲を明示 |
 | 38.017 | [ ] | release tag と変更一覧を準備する | 38.016 | 配布物からソース commit を追跡可能 |
+
+29.002 / 29.008 の icon 失敗経路の逆参照: 29.008/icon-null。元の全受入条件と親依存は未完了のまま保持する。有限な native 入力への依存整理の根拠と元依存: `migration/contracts/tile-icon-fallback.md`。
 
 ## 5. 機能36項目の追跡表
 

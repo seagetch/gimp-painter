@@ -710,6 +710,24 @@ void Tiles::draw_icon (cairo_t *cr, const char *name, int x, int y) {
     entry = icons.emplace (name, std::move (surface)).first;
   }
   if (entry->second) { cairo_set_source_surface (cr, entry->second.get (), x, y); cairo_paint (cr); }
+  else {
+    /* A missing theme asset or failed pixbuf conversion must not silently erase
+     * the affordance. Keep this fallback independent of theme/raster allocation;
+     * the null cache entry still prevents repeated failed loads on every draw. */
+    cairo_save (cr);
+    cairo_set_source_rgba (cr, 1., 1., 1., .9);
+    cairo_rectangle (cr, x + 1., y + 1., icon_size - 2., icon_size - 2.);
+    cairo_fill (cr);
+    cairo_set_source_rgb (cr, 0., 0., 0.);
+    cairo_set_line_width (cr, 1.5);
+    cairo_rectangle (cr, x + 1.5, y + 1.5, icon_size - 3., icon_size - 3.);
+    cairo_move_to (cr, x + 3., y + 3.);
+    cairo_line_to (cr, x + icon_size - 3., y + icon_size - 3.);
+    cairo_move_to (cr, x + icon_size - 3., y + 3.);
+    cairo_line_to (cr, x + 3., y + icon_size - 3.);
+    cairo_stroke (cr);
+    cairo_restore (cr);
+  }
 }
 void Tiles::draw (cairo_t *cr) {
   if (closed) return;

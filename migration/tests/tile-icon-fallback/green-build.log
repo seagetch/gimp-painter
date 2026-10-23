@@ -1,0 +1,21 @@
+ninja: Entering directory `/workspace/shared/gimp-native-baseline/build-port'
+[1/16] Generating git-version.h.in.1 with a custom command
+[2/16] Generating git-version.h.in.2 with a custom command
+[3/16] Generating git-version.h with a custom command
+[4/10] Compiling C object app/tests/painter-icon-fallback.p/test-painter-icon-fallback.c.o
+../source/app/tests/test-painter-icon-fallback.c:30:12: warning: no previous declaration for ‘__wrap_gtk_icon_theme_load_icon’ [-Wmissing-declarations]
+   30 | GdkPixbuf *__wrap_gtk_icon_theme_load_icon (GtkIconTheme *theme, const gchar *name, gint size, GtkIconLookupFlags flags, GError **error)
+      |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../source/app/tests/test-painter-icon-fallback.c:49:18: warning: no previous declaration for ‘__wrap_gimp_cairo_surface_create_from_pixbuf’ [-Wmissing-declarations]
+   49 | cairo_surface_t *__wrap_gimp_cairo_surface_create_from_pixbuf (GdkPixbuf *pixbuf)
+      |                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../source/app/tests/test-painter-icon-fallback.c:55:14: warning: no previous declaration for ‘__wrap_gimp_viewable_get_icon_name’ [-Wmissing-declarations]
+   55 | const gchar *__wrap_gimp_viewable_get_icon_name (GimpViewable *viewable)
+      |              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[5/10] Generating app/tests/icon-theme-fixture/gimp-test-icon-theme-fixture with a custom command
+{"files": 1191, "manifest_sha256": "2f790ebf02244ef3c023f17f16ab614cbc315ee46d46abd87b7f73d4d5d9be41", "ownership_marker_sha256": "d3ebe76f57bdce73e82df17c3cd89f1a630f42f3c8d72dbfdacd4a000061b8bf", "plan_sha256": "0a16da7a76b5facf2d3d8084793b72e28d32d17c7ff6bf237d164075d4af4b95", "stamp_sha256": "c20e592420d8f1feb8e044c6114f8ed009473d411042806fd6e9aadd50c7ffc9", "status": "verified"}
+[6/10] Compiling C++ object app/widgets/libappwidgets.a.p/gimppainterlayertiles.cpp.o
+[7/10] Linking static target app/widgets/libappwidgets.a
+[8/10] Linking target app/tests/painter-canvas-ui
+[9/10] Linking target app/tests/painter-icon-fallback
+[10/10] Linking target app/tests/painter-layer-ui

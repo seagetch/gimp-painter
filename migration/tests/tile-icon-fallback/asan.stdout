@@ -1,0 +1,131 @@
+TAP version 14
+# random seed: R02S1566e6af1e792250ec7b5ff26a666003
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ‘gio-vfs’
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+# GLib-DEBUG: unsetenv() is not thread-safe and should not be used after threads are created
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 64 x 64
+# GdkPixbuf-DEBUG: 	Rowstride: 256, Length: 16408
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation dconf (DConfSettingsBackend) for ‘gsettings-backend’
+# DEBUG: Error acquiring bus for cloud providers: Error spawning command line “dbus-launch --autolaunch=f09796fd086547da9ddf7488d4386bdf --binary-syntax --close-stderr”: Child process exited with code 1
+1..5
+# Start of painter-icons tests
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+ok 1 /painter-icons/layer-missing-name
+# slow test /painter-icons/layer-missing-name executed in 1.19 secs
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+ok 2 /painter-icons/layer-loader-null
+# slow test /painter-icons/layer-loader-null executed in 1.01 secs
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+ok 3 /painter-icons/layer-render-null
+# slow test /painter-icons/layer-render-null executed in 0.96 secs
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+ok 4 /painter-icons/tool-missing-name
+# slow test /painter-icons/tool-missing-name executed in 1.02 secs
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+ok 5 /painter-icons/tool-null-name
+# slow test /painter-icons/tool-null-name executed in 1.15 secs
+# End of painter-icons tests
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created

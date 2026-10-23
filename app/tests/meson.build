@@ -1085,3 +1085,20 @@ if host_machine.system() == 'linux' and cxx.get_id() in ['gcc', 'clang'] and cxx
       'UI_TEST=yes',
     ], suite: 'app', is_parallel: false, timeout: 60)
 endif
+
+# Native missing-icon paths; wrappers are confined to this test executable.
+painter_icon_fallback_wrap = ['-Wl,--wrap=gtk_icon_theme_load_icon',
+  '-Wl,--wrap=gimp_cairo_surface_create_from_pixbuf',
+  '-Wl,--wrap=gimp_viewable_get_icon_name']
+if host_machine.system() == 'linux' and cxx.get_id() in ['gcc', 'clang'] and cxx.has_multi_link_arguments(painter_icon_fallback_wrap)
+  painter_icon_fallback_test = executable('painter-icon-fallback',
+    'test-painter-icon-fallback.c', 'tests.c',
+    dependencies: [libapp_dep, appstream], link_with: apptests_links,
+    link_args: painter_icon_fallback_wrap, override_options: ['c_std=c11'])
+  test('painter-icon-fallback', painter_icon_fallback_test,
+    depends: gimp_test_icon_dependencies,
+    env: ['GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+          'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+          'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
+          'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 60)
+endif
