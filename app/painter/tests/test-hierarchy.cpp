@@ -3,6 +3,10 @@
 #include "test-registry.hpp"
 #include "binding-store.hpp"
 #include <array>
+#include <type_traits>
+static_assert (std::is_same<decltype (PainterReadableInterface::read),
+                           decltype (&painter_hierarchy_read)>::value,
+               "C++ trampoline must match the native interface slot exactly");
 namespace GimpPainter {
 template<> struct TypeTraits<PainterHierarchyBase> { static GType type () { return painter_hierarchy_base_get_type (); } };
 template<> struct TypeTraits<PainterHierarchyChild> { static GType type () { return painter_hierarchy_child_get_type (); } };
@@ -34,6 +38,8 @@ void hierarchy_properties_interface ()
   stats={};
   auto owner=child (); auto base=ObjectRef<PainterHierarchyBase>::retain (reinterpret_cast<PainterHierarchyBase*>(owner.get ()));
   auto readable=ObjectRef<PainterReadable>::retain (reinterpret_cast<PainterReadable*>(owner.get ()));
+  auto *iface = G_TYPE_INSTANCE_GET_INTERFACE (owner.get (), painter_readable_get_type (), PainterReadableInterface);
+  g_assert_true (iface->read == &painter_hierarchy_read);
   g_assert_cmpint (stats.constructed,==,2);
   auto& store=BindingStore::require (G_OBJECT (owner.get ()));
   g_assert_cmpint (store.read<BaseSlot> ([] (const Impl& s){return s.value;}),==,17);
