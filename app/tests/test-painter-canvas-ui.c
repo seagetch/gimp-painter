@@ -953,6 +953,8 @@ static void demo(void) {
   if(g_main_context_find_source_by_id(NULL,timeout))g_source_remove(timeout);
   g_signal_handlers_disconnect_by_data(finish,loop);g_main_loop_unref(loop);close_shell(shell);
 }
+#include "test-widget-store-native-dnd.inc"
+
 int main(int argc,char **argv) {
   g_test_init(&argc,&argv,NULL);if(!gtk_init_check(&argc,&argv))return GIMP_EXIT_TEST_SKIPPED;
   gimp_test_utils_setup_menus_path();gimp=gimp_init_for_gui_testing(TRUE);
@@ -960,6 +962,12 @@ int main(int argc,char **argv) {
 #define ADD(f) do { static const CanvasTestCase test_case = { f }; \
   g_test_add_data_func("/painter-canvas-ui/" #f, &test_case, run_canvas_case); } while (0)
   if(g_getenv("PAINTER_CANVAS_DEMO")) { ADD(demo); } else {
+/* Inside the existing non-demo branch in test-painter-canvas-ui.c main(). */
+ADD(w08017_dnd_same_parent_order);
+ADD(w08017_dnd_cross_parent_last_owner);
+ADD(w08017_dnd_reject_self_ancestor);
+ADD(w08017_dnd_layer_group_move_undo);
+ADD(w08017_dnd_cross_image_copy);
   ADD(renderer_native_size_draw);ADD(renderer_native_activation_routes);ADD(renderer_selection_reentry);ADD(renderer_escape_owner_close);ADD(renderer_stale_preview_disconnected);ADD(renderer_modifier_activation);ADD(renderer_selection_same_target);
   ADD(channel_preview_components);ADD(selection_and_visibility);ADD(group_move_and_undo);ADD(image_switch_disconnect);ADD(long_press_cancel_destroy);ADD(preview_pending_destroy);ADD(popup_repeat_and_owner_close);
   ADD(popup_native_events_and_parent);ADD(popup_destroy_orders);

@@ -1,0 +1,403 @@
+{
+  "base": "6bad61c635370a5649227a9623caf310628fb1bb",
+  "status": "EXPECTED_BASELINE_FAILURE_REPRODUCED",
+  "intended_regression": {
+    "case": "/painter-compact-options/native-preview-factory-failure",
+    "native": {
+      "status": "EXPECTED_BASELINE_FAILURE",
+      "base": "6bad61c635370a5649227a9623caf310628fb1bb",
+      "observed_at_utc": "2026-10-13T01:10:13.865154+00:00",
+      "mode": "native",
+      "source_stable_during_execution": true,
+      "source_sha256": {
+        "app/widgets/gimpcontainerbox.c": "401d69bb7054e8f96de768c62610a39beb8e7454c484b7ada28a8c7ada6e1fef",
+        "app/tests/test-widget-store-native-controls.inc": "3b6a2b8e9edc7e1f03ea04ca833c395088a2c395a68a4512bd2d7d14284b84d4",
+        "app/tests/test-widget-store-native-dnd.inc": "2e176a4459e58a9dd8e32f458d19c978479b159dc8f42c9e10bf985aa42267a4",
+        "libgimp/gimpprocedure.c": "5d22ee3ba7af2d4d6d9b1d403f13fc426dbbecd487d6942bd3ce964cd1cdcd5c",
+        "libgimpconfig/gimpconfig-register.c": "c59929b3a17f2adb5223b7866b2f5daaa5543cb7ad1e7d078ac34cc38d4699e7",
+        "app/widgets/gimpeditor.c": "f9fe1658bbf051ede51b6824319d1d6118d279aa2f57a55cad991e50f5291932",
+        "app/widgets/gimppaintermybrusheditor.cpp": "09cbfacf9e51c00a3ce903354194b249ea66a1de43c4b8eddfed8de444aa3143",
+        "app/tests/test-painter-mypaint-editor.cpp": "e4d1d9edb5ddc2606b81837a87b71f5acd9a7a9465c8fe97541b14aa118064ee",
+        "app/painter/binding-store.cpp": "c69d65c22f26e6be8f6df69765cd30f7bbbd32b46b0eb847e9f6524b41c2b557",
+        "app/painter/binding-store.hpp": "c67deb0ccf33a13a5ba3ab3f50bdbb2ef8931f481acf62a9315d778388c90262",
+        "app/dialogs/painter-layer-dialog.cpp": "70a5333cd50da3e680997d808baf8a10d31754a0de78158d528581fe091feea3",
+        "app/display/gimppaintercanvasui.cpp": "d04a48fcf83e3716827ee2adad4752d38f84835ea0b5880b11a9d221bee032f5",
+        "app/widgets/gimppainterlayertiles.cpp": "293f5ff0006cff85a276ed9211df7e4f2215d102bad385b001b2974e9b69d613",
+        "app/tests/test-painter-canvas-ui.c": "0cf0e6cb233d7ed74932a3568116ef6af86f4d1444ee9cb672ef7ae063dc42b9",
+        "app/tests/test-painter-compact-options.c": "db86f10e49af5f452b052bd921f11c17e32b00c0e93861e3dc164fa0609b469d",
+        "app/widgets/gimppaintercompactoptions.cpp": "e5e35c593554587b3dfb931aca2d9bd5fc228332c157a79fb83d0bbedac38fa0"
+      },
+      "executables_sha256": {
+        "painter-compact-options": "087c4bf0b482e2a70178a898da5d9d7b0fbbfaf30499a5613bc8275068368cf0"
+      },
+      "gdk_scale": "1",
+      "raw_record_sha256": "4d21111aea943c7f23b5ccf183b4738bacfa9124fea2dd1fd511731193aa3f48",
+      "case": "/painter-compact-options/native-preview-factory-failure",
+      "registration": {
+        "registration": "painter-compact-options",
+        "result": "FAIL",
+        "exit_code": -11,
+        "duration_seconds": 3.3017234802246094,
+        "cases_passed": 0,
+        "tap": "TAP version 14\n"
+      }
+    },
+    "asan": {
+      "status": "EXPECTED_BASELINE_FAILURE",
+      "base": "6bad61c635370a5649227a9623caf310628fb1bb",
+      "observed_at_utc": "2026-10-13T01:12:36.918094+00:00",
+      "mode": "asan",
+      "source_stable_during_execution": true,
+      "source_sha256": {
+        "app/widgets/gimpcontainerbox.c": "401d69bb7054e8f96de768c62610a39beb8e7454c484b7ada28a8c7ada6e1fef",
+        "app/tests/test-widget-store-native-controls.inc": "3b6a2b8e9edc7e1f03ea04ca833c395088a2c395a68a4512bd2d7d14284b84d4",
+        "app/tests/test-widget-store-native-dnd.inc": "2e176a4459e58a9dd8e32f458d19c978479b159dc8f42c9e10bf985aa42267a4",
+        "libgimp/gimpprocedure.c": "5d22ee3ba7af2d4d6d9b1d403f13fc426dbbecd487d6942bd3ce964cd1cdcd5c",
+        "libgimpconfig/gimpconfig-register.c": "c59929b3a17f2adb5223b7866b2f5daaa5543cb7ad1e7d078ac34cc38d4699e7",
+        "app/widgets/gimpeditor.c": "f9fe1658bbf051ede51b6824319d1d6118d279aa2f57a55cad991e50f5291932",
+        "app/widgets/gimppaintermybrusheditor.cpp": "09cbfacf9e51c00a3ce903354194b249ea66a1de43c4b8eddfed8de444aa3143",
+        "app/tests/test-painter-mypaint-editor.cpp": "e4d1d9edb5ddc2606b81837a87b71f5acd9a7a9465c8fe97541b14aa118064ee",
+        "app/painter/binding-store.cpp": "c69d65c22f26e6be8f6df69765cd30f7bbbd32b46b0eb847e9f6524b41c2b557",
+        "app/painter/binding-store.hpp": "c67deb0ccf33a13a5ba3ab3f50bdbb2ef8931f481acf62a9315d778388c90262",
+        "app/dialogs/painter-layer-dialog.cpp": "70a5333cd50da3e680997d808baf8a10d31754a0de78158d528581fe091feea3",
+        "app/display/gimppaintercanvasui.cpp": "d04a48fcf83e3716827ee2adad4752d38f84835ea0b5880b11a9d221bee032f5",
+        "app/widgets/gimppainterlayertiles.cpp": "293f5ff0006cff85a276ed9211df7e4f2215d102bad385b001b2974e9b69d613",
+        "app/tests/test-painter-canvas-ui.c": "0cf0e6cb233d7ed74932a3568116ef6af86f4d1444ee9cb672ef7ae063dc42b9",
+        "app/tests/test-painter-compact-options.c": "db86f10e49af5f452b052bd921f11c17e32b00c0e93861e3dc164fa0609b469d",
+        "app/widgets/gimppaintercompactoptions.cpp": "e5e35c593554587b3dfb931aca2d9bd5fc228332c157a79fb83d0bbedac38fa0"
+      },
+      "executables_sha256": {
+        "painter-compact-options": "6c46bbeeeb093ba6d1b05a7beb04b68104eb0c2c3a580687446b068c24c1ce98"
+      },
+      "gdk_scale": "1",
+      "raw_record_sha256": "b573ba28091e064c0750585d9ce321f21aac20fefeb99554c9f7f3f0915d8b2f",
+      "case": "/painter-compact-options/native-preview-factory-failure",
+      "registration": {
+        "registration": "painter-compact-options",
+        "result": "FAIL",
+        "exit_code": -6,
+        "duration_seconds": 5.366111516952515,
+        "cases_passed": 0,
+        "tap": "TAP version 14\n"
+      },
+      "exact_diagnostic": "app/widgets/gimpcontainerbox.c:268:22: runtime error: member access within null pointer of type 'struct GimpView'"
+    }
+  },
+  "positive_native_controls_passed": 8,
+  "positive_native_controls": [
+    {
+      "status": "PASS",
+      "base": "6bad61c635370a5649227a9623caf310628fb1bb",
+      "observed_at_utc": "2026-10-13T01:10:16.929056+00:00",
+      "mode": "native",
+      "source_stable_during_execution": true,
+      "source_sha256": {
+        "app/widgets/gimpcontainerbox.c": "401d69bb7054e8f96de768c62610a39beb8e7454c484b7ada28a8c7ada6e1fef",
+        "app/tests/test-widget-store-native-controls.inc": "3b6a2b8e9edc7e1f03ea04ca833c395088a2c395a68a4512bd2d7d14284b84d4",
+        "app/tests/test-widget-store-native-dnd.inc": "2e176a4459e58a9dd8e32f458d19c978479b159dc8f42c9e10bf985aa42267a4",
+        "libgimp/gimpprocedure.c": "5d22ee3ba7af2d4d6d9b1d403f13fc426dbbecd487d6942bd3ce964cd1cdcd5c",
+        "libgimpconfig/gimpconfig-register.c": "c59929b3a17f2adb5223b7866b2f5daaa5543cb7ad1e7d078ac34cc38d4699e7",
+        "app/widgets/gimpeditor.c": "f9fe1658bbf051ede51b6824319d1d6118d279aa2f57a55cad991e50f5291932",
+        "app/widgets/gimppaintermybrusheditor.cpp": "09cbfacf9e51c00a3ce903354194b249ea66a1de43c4b8eddfed8de444aa3143",
+        "app/tests/test-painter-mypaint-editor.cpp": "e4d1d9edb5ddc2606b81837a87b71f5acd9a7a9465c8fe97541b14aa118064ee",
+        "app/painter/binding-store.cpp": "c69d65c22f26e6be8f6df69765cd30f7bbbd32b46b0eb847e9f6524b41c2b557",
+        "app/painter/binding-store.hpp": "c67deb0ccf33a13a5ba3ab3f50bdbb2ef8931f481acf62a9315d778388c90262",
+        "app/dialogs/painter-layer-dialog.cpp": "70a5333cd50da3e680997d808baf8a10d31754a0de78158d528581fe091feea3",
+        "app/display/gimppaintercanvasui.cpp": "d04a48fcf83e3716827ee2adad4752d38f84835ea0b5880b11a9d221bee032f5",
+        "app/widgets/gimppainterlayertiles.cpp": "293f5ff0006cff85a276ed9211df7e4f2215d102bad385b001b2974e9b69d613",
+        "app/tests/test-painter-canvas-ui.c": "0cf0e6cb233d7ed74932a3568116ef6af86f4d1444ee9cb672ef7ae063dc42b9",
+        "app/tests/test-painter-compact-options.c": "db86f10e49af5f452b052bd921f11c17e32b00c0e93861e3dc164fa0609b469d",
+        "app/widgets/gimppaintercompactoptions.cpp": "e5e35c593554587b3dfb931aca2d9bd5fc228332c157a79fb83d0bbedac38fa0"
+      },
+      "executables_sha256": {
+        "painter-compact-options": "087c4bf0b482e2a70178a898da5d9d7b0fbbfaf30499a5613bc8275068368cf0"
+      },
+      "gdk_scale": "1",
+      "raw_record_sha256": "bb1150f443c6dd34a3b028a8b0234b1959b95f0a16daf760c006de77cb27893c",
+      "case": "/painter-compact-options/native-preview-factory-success",
+      "registration": {
+        "registration": "painter-compact-options",
+        "result": "OK",
+        "exit_code": 0,
+        "duration_seconds": 2.051342248916626,
+        "cases_passed": 1,
+        "tap": "TAP version 14\nok 1 /painter-compact-options/native-preview-factory-success\n1..1\n"
+      }
+    },
+    {
+      "status": "PASS",
+      "base": "6bad61c635370a5649227a9623caf310628fb1bb",
+      "observed_at_utc": "2026-10-13T01:10:19.828062+00:00",
+      "mode": "native",
+      "source_stable_during_execution": true,
+      "source_sha256": {
+        "app/widgets/gimpcontainerbox.c": "401d69bb7054e8f96de768c62610a39beb8e7454c484b7ada28a8c7ada6e1fef",
+        "app/tests/test-widget-store-native-controls.inc": "3b6a2b8e9edc7e1f03ea04ca833c395088a2c395a68a4512bd2d7d14284b84d4",
+        "app/tests/test-widget-store-native-dnd.inc": "2e176a4459e58a9dd8e32f458d19c978479b159dc8f42c9e10bf985aa42267a4",
+        "libgimp/gimpprocedure.c": "5d22ee3ba7af2d4d6d9b1d403f13fc426dbbecd487d6942bd3ce964cd1cdcd5c",
+        "libgimpconfig/gimpconfig-register.c": "c59929b3a17f2adb5223b7866b2f5daaa5543cb7ad1e7d078ac34cc38d4699e7",
+        "app/widgets/gimpeditor.c": "f9fe1658bbf051ede51b6824319d1d6118d279aa2f57a55cad991e50f5291932",
+        "app/widgets/gimppaintermybrusheditor.cpp": "09cbfacf9e51c00a3ce903354194b249ea66a1de43c4b8eddfed8de444aa3143",
+        "app/tests/test-painter-mypaint-editor.cpp": "e4d1d9edb5ddc2606b81837a87b71f5acd9a7a9465c8fe97541b14aa118064ee",
+        "app/painter/binding-store.cpp": "c69d65c22f26e6be8f6df69765cd30f7bbbd32b46b0eb847e9f6524b41c2b557",
+        "app/painter/binding-store.hpp": "c67deb0ccf33a13a5ba3ab3f50bdbb2ef8931f481acf62a9315d778388c90262",
+        "app/dialogs/painter-layer-dialog.cpp": "70a5333cd50da3e680997d808baf8a10d31754a0de78158d528581fe091feea3",
+        "app/display/gimppaintercanvasui.cpp": "d04a48fcf83e3716827ee2adad4752d38f84835ea0b5880b11a9d221bee032f5",
+        "app/widgets/gimppainterlayertiles.cpp": "293f5ff0006cff85a276ed9211df7e4f2215d102bad385b001b2974e9b69d613",
+        "app/tests/test-painter-canvas-ui.c": "0cf0e6cb233d7ed74932a3568116ef6af86f4d1444ee9cb672ef7ae063dc42b9",
+        "app/tests/test-painter-compact-options.c": "db86f10e49af5f452b052bd921f11c17e32b00c0e93861e3dc164fa0609b469d",
+        "app/widgets/gimppaintercompactoptions.cpp": "e5e35c593554587b3dfb931aca2d9bd5fc228332c157a79fb83d0bbedac38fa0"
+      },
+      "executables_sha256": {
+        "painter-compact-options": "087c4bf0b482e2a70178a898da5d9d7b0fbbfaf30499a5613bc8275068368cf0"
+      },
+      "gdk_scale": "1",
+      "raw_record_sha256": "29aa89310494eda6f5dbeb1a38d4f06a3cce7bf42d6a9db36b0cb54893d297cd",
+      "case": "/painter-compact-options/native-property-controls",
+      "registration": {
+        "registration": "painter-compact-options",
+        "result": "OK",
+        "exit_code": 0,
+        "duration_seconds": 1.9996542930603027,
+        "cases_passed": 1,
+        "tap": "TAP version 14\nok 1 /painter-compact-options/native-property-controls\n1..1\n"
+      }
+    },
+    {
+      "status": "PASS",
+      "base": "6bad61c635370a5649227a9623caf310628fb1bb",
+      "observed_at_utc": "2026-10-13T01:10:22.678000+00:00",
+      "mode": "native",
+      "source_stable_during_execution": true,
+      "source_sha256": {
+        "app/widgets/gimpcontainerbox.c": "401d69bb7054e8f96de768c62610a39beb8e7454c484b7ada28a8c7ada6e1fef",
+        "app/tests/test-widget-store-native-controls.inc": "3b6a2b8e9edc7e1f03ea04ca833c395088a2c395a68a4512bd2d7d14284b84d4",
+        "app/tests/test-widget-store-native-dnd.inc": "2e176a4459e58a9dd8e32f458d19c978479b159dc8f42c9e10bf985aa42267a4",
+        "libgimp/gimpprocedure.c": "5d22ee3ba7af2d4d6d9b1d403f13fc426dbbecd487d6942bd3ce964cd1cdcd5c",
+        "libgimpconfig/gimpconfig-register.c": "c59929b3a17f2adb5223b7866b2f5daaa5543cb7ad1e7d078ac34cc38d4699e7",
+        "app/widgets/gimpeditor.c": "f9fe1658bbf051ede51b6824319d1d6118d279aa2f57a55cad991e50f5291932",
+        "app/widgets/gimppaintermybrusheditor.cpp": "09cbfacf9e51c00a3ce903354194b249ea66a1de43c4b8eddfed8de444aa3143",
+        "app/tests/test-painter-mypaint-editor.cpp": "e4d1d9edb5ddc2606b81837a87b71f5acd9a7a9465c8fe97541b14aa118064ee",
+        "app/painter/binding-store.cpp": "c69d65c22f26e6be8f6df69765cd30f7bbbd32b46b0eb847e9f6524b41c2b557",
+        "app/painter/binding-store.hpp": "c67deb0ccf33a13a5ba3ab3f50bdbb2ef8931f481acf62a9315d778388c90262",
+        "app/dialogs/painter-layer-dialog.cpp": "70a5333cd50da3e680997d808baf8a10d31754a0de78158d528581fe091feea3",
+        "app/display/gimppaintercanvasui.cpp": "d04a48fcf83e3716827ee2adad4752d38f84835ea0b5880b11a9d221bee032f5",
+        "app/widgets/gimppainterlayertiles.cpp": "293f5ff0006cff85a276ed9211df7e4f2215d102bad385b001b2974e9b69d613",
+        "app/tests/test-painter-canvas-ui.c": "0cf0e6cb233d7ed74932a3568116ef6af86f4d1444ee9cb672ef7ae063dc42b9",
+        "app/tests/test-painter-compact-options.c": "db86f10e49af5f452b052bd921f11c17e32b00c0e93861e3dc164fa0609b469d",
+        "app/widgets/gimppaintercompactoptions.cpp": "e5e35c593554587b3dfb931aca2d9bd5fc228332c157a79fb83d0bbedac38fa0"
+      },
+      "executables_sha256": {
+        "painter-compact-options": "087c4bf0b482e2a70178a898da5d9d7b0fbbfaf30499a5613bc8275068368cf0"
+      },
+      "gdk_scale": "1",
+      "raw_record_sha256": "562b9894315e3b0cea85d478b95fb094a07e00092a48ba408cbbd8ccfa389cc1",
+      "case": "/painter-compact-options/native-enum-integer-helpers",
+      "registration": {
+        "registration": "painter-compact-options",
+        "result": "OK",
+        "exit_code": 0,
+        "duration_seconds": 1.9432497024536133,
+        "cases_passed": 1,
+        "tap": "TAP version 14\nok 1 /painter-compact-options/native-enum-integer-helpers\n1..1\n"
+      }
+    },
+    {
+      "status": "PASS",
+      "base": "6bad61c635370a5649227a9623caf310628fb1bb",
+      "observed_at_utc": "2026-10-13T01:10:25.804178+00:00",
+      "mode": "native",
+      "source_stable_during_execution": true,
+      "source_sha256": {
+        "app/widgets/gimpcontainerbox.c": "401d69bb7054e8f96de768c62610a39beb8e7454c484b7ada28a8c7ada6e1fef",
+        "app/tests/test-widget-store-native-controls.inc": "3b6a2b8e9edc7e1f03ea04ca833c395088a2c395a68a4512bd2d7d14284b84d4",
+        "app/tests/test-widget-store-native-dnd.inc": "2e176a4459e58a9dd8e32f458d19c978479b159dc8f42c9e10bf985aa42267a4",
+        "libgimp/gimpprocedure.c": "5d22ee3ba7af2d4d6d9b1d403f13fc426dbbecd487d6942bd3ce964cd1cdcd5c",
+        "libgimpconfig/gimpconfig-register.c": "c59929b3a17f2adb5223b7866b2f5daaa5543cb7ad1e7d078ac34cc38d4699e7",
+        "app/widgets/gimpeditor.c": "f9fe1658bbf051ede51b6824319d1d6118d279aa2f57a55cad991e50f5291932",
+        "app/widgets/gimppaintermybrusheditor.cpp": "09cbfacf9e51c00a3ce903354194b249ea66a1de43c4b8eddfed8de444aa3143",
+        "app/tests/test-painter-mypaint-editor.cpp": "e4d1d9edb5ddc2606b81837a87b71f5acd9a7a9465c8fe97541b14aa118064ee",
+        "app/painter/binding-store.cpp": "c69d65c22f26e6be8f6df69765cd30f7bbbd32b46b0eb847e9f6524b41c2b557",
+        "app/painter/binding-store.hpp": "c67deb0ccf33a13a5ba3ab3f50bdbb2ef8931f481acf62a9315d778388c90262",
+        "app/dialogs/painter-layer-dialog.cpp": "70a5333cd50da3e680997d808baf8a10d31754a0de78158d528581fe091feea3",
+        "app/display/gimppaintercanvasui.cpp": "d04a48fcf83e3716827ee2adad4752d38f84835ea0b5880b11a9d221bee032f5",
+        "app/widgets/gimppainterlayertiles.cpp": "293f5ff0006cff85a276ed9211df7e4f2215d102bad385b001b2974e9b69d613",
+        "app/tests/test-painter-canvas-ui.c": "0cf0e6cb233d7ed74932a3568116ef6af86f4d1444ee9cb672ef7ae063dc42b9",
+        "app/tests/test-painter-compact-options.c": "db86f10e49af5f452b052bd921f11c17e32b00c0e93861e3dc164fa0609b469d",
+        "app/widgets/gimppaintercompactoptions.cpp": "e5e35c593554587b3dfb931aca2d9bd5fc228332c157a79fb83d0bbedac38fa0"
+      },
+      "executables_sha256": {
+        "painter-canvas-ui": "ac81195ef4ab9105f3a05948f46fcf4529668fbbf868a7ef4ff3f2270d8b58b1"
+      },
+      "gdk_scale": "1",
+      "raw_record_sha256": "686583588271dcb41474effe2eb33e67c69c4bda04a7f6e4913daebee1b30539",
+      "case": "/painter-canvas-ui/w08017_dnd_same_parent_order",
+      "registration": {
+        "registration": "painter-canvas-ui",
+        "result": "OK",
+        "exit_code": 0,
+        "duration_seconds": 2.162712812423706,
+        "cases_passed": 1,
+        "tap": "TAP version 14\nok 1 /painter-canvas-ui/w08017_dnd_same_parent_order\n1..1\n"
+      }
+    },
+    {
+      "status": "PASS",
+      "base": "6bad61c635370a5649227a9623caf310628fb1bb",
+      "observed_at_utc": "2026-10-13T01:10:28.862855+00:00",
+      "mode": "native",
+      "source_stable_during_execution": true,
+      "source_sha256": {
+        "app/widgets/gimpcontainerbox.c": "401d69bb7054e8f96de768c62610a39beb8e7454c484b7ada28a8c7ada6e1fef",
+        "app/tests/test-widget-store-native-controls.inc": "3b6a2b8e9edc7e1f03ea04ca833c395088a2c395a68a4512bd2d7d14284b84d4",
+        "app/tests/test-widget-store-native-dnd.inc": "2e176a4459e58a9dd8e32f458d19c978479b159dc8f42c9e10bf985aa42267a4",
+        "libgimp/gimpprocedure.c": "5d22ee3ba7af2d4d6d9b1d403f13fc426dbbecd487d6942bd3ce964cd1cdcd5c",
+        "libgimpconfig/gimpconfig-register.c": "c59929b3a17f2adb5223b7866b2f5daaa5543cb7ad1e7d078ac34cc38d4699e7",
+        "app/widgets/gimpeditor.c": "f9fe1658bbf051ede51b6824319d1d6118d279aa2f57a55cad991e50f5291932",
+        "app/widgets/gimppaintermybrusheditor.cpp": "09cbfacf9e51c00a3ce903354194b249ea66a1de43c4b8eddfed8de444aa3143",
+        "app/tests/test-painter-mypaint-editor.cpp": "e4d1d9edb5ddc2606b81837a87b71f5acd9a7a9465c8fe97541b14aa118064ee",
+        "app/painter/binding-store.cpp": "c69d65c22f26e6be8f6df69765cd30f7bbbd32b46b0eb847e9f6524b41c2b557",
+        "app/painter/binding-store.hpp": "c67deb0ccf33a13a5ba3ab3f50bdbb2ef8931f481acf62a9315d778388c90262",
+        "app/dialogs/painter-layer-dialog.cpp": "70a5333cd50da3e680997d808baf8a10d31754a0de78158d528581fe091feea3",
+        "app/display/gimppaintercanvasui.cpp": "d04a48fcf83e3716827ee2adad4752d38f84835ea0b5880b11a9d221bee032f5",
+        "app/widgets/gimppainterlayertiles.cpp": "293f5ff0006cff85a276ed9211df7e4f2215d102bad385b001b2974e9b69d613",
+        "app/tests/test-painter-canvas-ui.c": "0cf0e6cb233d7ed74932a3568116ef6af86f4d1444ee9cb672ef7ae063dc42b9",
+        "app/tests/test-painter-compact-options.c": "db86f10e49af5f452b052bd921f11c17e32b00c0e93861e3dc164fa0609b469d",
+        "app/widgets/gimppaintercompactoptions.cpp": "e5e35c593554587b3dfb931aca2d9bd5fc228332c157a79fb83d0bbedac38fa0"
+      },
+      "executables_sha256": {
+        "painter-canvas-ui": "ac81195ef4ab9105f3a05948f46fcf4529668fbbf868a7ef4ff3f2270d8b58b1"
+      },
+      "gdk_scale": "1",
+      "raw_record_sha256": "34426ac42e3e2113851c3b8ff5426ef93f68b33def333f8207fd3b3f31f1efed",
+      "case": "/painter-canvas-ui/w08017_dnd_cross_parent_last_owner",
+      "registration": {
+        "registration": "painter-canvas-ui",
+        "result": "OK",
+        "exit_code": 0,
+        "duration_seconds": 2.0949509143829346,
+        "cases_passed": 1,
+        "tap": "TAP version 14\nok 1 /painter-canvas-ui/w08017_dnd_cross_parent_last_owner\n1..1\n"
+      }
+    },
+    {
+      "status": "PASS",
+      "base": "6bad61c635370a5649227a9623caf310628fb1bb",
+      "observed_at_utc": "2026-10-13T01:10:31.876222+00:00",
+      "mode": "native",
+      "source_stable_during_execution": true,
+      "source_sha256": {
+        "app/widgets/gimpcontainerbox.c": "401d69bb7054e8f96de768c62610a39beb8e7454c484b7ada28a8c7ada6e1fef",
+        "app/tests/test-widget-store-native-controls.inc": "3b6a2b8e9edc7e1f03ea04ca833c395088a2c395a68a4512bd2d7d14284b84d4",
+        "app/tests/test-widget-store-native-dnd.inc": "2e176a4459e58a9dd8e32f458d19c978479b159dc8f42c9e10bf985aa42267a4",
+        "libgimp/gimpprocedure.c": "5d22ee3ba7af2d4d6d9b1d403f13fc426dbbecd487d6942bd3ce964cd1cdcd5c",
+        "libgimpconfig/gimpconfig-register.c": "c59929b3a17f2adb5223b7866b2f5daaa5543cb7ad1e7d078ac34cc38d4699e7",
+        "app/widgets/gimpeditor.c": "f9fe1658bbf051ede51b6824319d1d6118d279aa2f57a55cad991e50f5291932",
+        "app/widgets/gimppaintermybrusheditor.cpp": "09cbfacf9e51c00a3ce903354194b249ea66a1de43c4b8eddfed8de444aa3143",
+        "app/tests/test-painter-mypaint-editor.cpp": "e4d1d9edb5ddc2606b81837a87b71f5acd9a7a9465c8fe97541b14aa118064ee",
+        "app/painter/binding-store.cpp": "c69d65c22f26e6be8f6df69765cd30f7bbbd32b46b0eb847e9f6524b41c2b557",
+        "app/painter/binding-store.hpp": "c67deb0ccf33a13a5ba3ab3f50bdbb2ef8931f481acf62a9315d778388c90262",
+        "app/dialogs/painter-layer-dialog.cpp": "70a5333cd50da3e680997d808baf8a10d31754a0de78158d528581fe091feea3",
+        "app/display/gimppaintercanvasui.cpp": "d04a48fcf83e3716827ee2adad4752d38f84835ea0b5880b11a9d221bee032f5",
+        "app/widgets/gimppainterlayertiles.cpp": "293f5ff0006cff85a276ed9211df7e4f2215d102bad385b001b2974e9b69d613",
+        "app/tests/test-painter-canvas-ui.c": "0cf0e6cb233d7ed74932a3568116ef6af86f4d1444ee9cb672ef7ae063dc42b9",
+        "app/tests/test-painter-compact-options.c": "db86f10e49af5f452b052bd921f11c17e32b00c0e93861e3dc164fa0609b469d",
+        "app/widgets/gimppaintercompactoptions.cpp": "e5e35c593554587b3dfb931aca2d9bd5fc228332c157a79fb83d0bbedac38fa0"
+      },
+      "executables_sha256": {
+        "painter-canvas-ui": "ac81195ef4ab9105f3a05948f46fcf4529668fbbf868a7ef4ff3f2270d8b58b1"
+      },
+      "gdk_scale": "1",
+      "raw_record_sha256": "ed8f629b0d405e41927cfc5549fbdaf7a3ad96c18f8dca58a093655532f8e64d",
+      "case": "/painter-canvas-ui/w08017_dnd_reject_self_ancestor",
+      "registration": {
+        "registration": "painter-canvas-ui",
+        "result": "OK",
+        "exit_code": 0,
+        "duration_seconds": 2.057081460952759,
+        "cases_passed": 1,
+        "tap": "TAP version 14\nok 1 /painter-canvas-ui/w08017_dnd_reject_self_ancestor\n1..1\n"
+      }
+    },
+    {
+      "status": "PASS",
+      "base": "6bad61c635370a5649227a9623caf310628fb1bb",
+      "observed_at_utc": "2026-10-13T01:10:34.977471+00:00",
+      "mode": "native",
+      "source_stable_during_execution": true,
+      "source_sha256": {
+        "app/widgets/gimpcontainerbox.c": "401d69bb7054e8f96de768c62610a39beb8e7454c484b7ada28a8c7ada6e1fef",
+        "app/tests/test-widget-store-native-controls.inc": "3b6a2b8e9edc7e1f03ea04ca833c395088a2c395a68a4512bd2d7d14284b84d4",
+        "app/tests/test-widget-store-native-dnd.inc": "2e176a4459e58a9dd8e32f458d19c978479b159dc8f42c9e10bf985aa42267a4",
+        "libgimp/gimpprocedure.c": "5d22ee3ba7af2d4d6d9b1d403f13fc426dbbecd487d6942bd3ce964cd1cdcd5c",
+        "libgimpconfig/gimpconfig-register.c": "c59929b3a17f2adb5223b7866b2f5daaa5543cb7ad1e7d078ac34cc38d4699e7",
+        "app/widgets/gimpeditor.c": "f9fe1658bbf051ede51b6824319d1d6118d279aa2f57a55cad991e50f5291932",
+        "app/widgets/gimppaintermybrusheditor.cpp": "09cbfacf9e51c00a3ce903354194b249ea66a1de43c4b8eddfed8de444aa3143",
+        "app/tests/test-painter-mypaint-editor.cpp": "e4d1d9edb5ddc2606b81837a87b71f5acd9a7a9465c8fe97541b14aa118064ee",
+        "app/painter/binding-store.cpp": "c69d65c22f26e6be8f6df69765cd30f7bbbd32b46b0eb847e9f6524b41c2b557",
+        "app/painter/binding-store.hpp": "c67deb0ccf33a13a5ba3ab3f50bdbb2ef8931f481acf62a9315d778388c90262",
+        "app/dialogs/painter-layer-dialog.cpp": "70a5333cd50da3e680997d808baf8a10d31754a0de78158d528581fe091feea3",
+        "app/display/gimppaintercanvasui.cpp": "d04a48fcf83e3716827ee2adad4752d38f84835ea0b5880b11a9d221bee032f5",
+        "app/widgets/gimppainterlayertiles.cpp": "293f5ff0006cff85a276ed9211df7e4f2215d102bad385b001b2974e9b69d613",
+        "app/tests/test-painter-canvas-ui.c": "0cf0e6cb233d7ed74932a3568116ef6af86f4d1444ee9cb672ef7ae063dc42b9",
+        "app/tests/test-painter-compact-options.c": "db86f10e49af5f452b052bd921f11c17e32b00c0e93861e3dc164fa0609b469d",
+        "app/widgets/gimppaintercompactoptions.cpp": "e5e35c593554587b3dfb931aca2d9bd5fc228332c157a79fb83d0bbedac38fa0"
+      },
+      "executables_sha256": {
+        "painter-canvas-ui": "ac81195ef4ab9105f3a05948f46fcf4529668fbbf868a7ef4ff3f2270d8b58b1"
+      },
+      "gdk_scale": "1",
+      "raw_record_sha256": "88299edf5c60800ece1c9e2f9b3f249ea5cfc8fb1ab440b84ff2d1afaefe20c7",
+      "case": "/painter-canvas-ui/w08017_dnd_layer_group_move_undo",
+      "registration": {
+        "registration": "painter-canvas-ui",
+        "result": "OK",
+        "exit_code": 0,
+        "duration_seconds": 2.194993257522583,
+        "cases_passed": 1,
+        "tap": "TAP version 14\nok 1 /painter-canvas-ui/w08017_dnd_layer_group_move_undo\n1..1\n"
+      }
+    },
+    {
+      "status": "PASS",
+      "base": "6bad61c635370a5649227a9623caf310628fb1bb",
+      "observed_at_utc": "2026-10-13T01:10:38.133925+00:00",
+      "mode": "native",
+      "source_stable_during_execution": true,
+      "source_sha256": {
+        "app/widgets/gimpcontainerbox.c": "401d69bb7054e8f96de768c62610a39beb8e7454c484b7ada28a8c7ada6e1fef",
+        "app/tests/test-widget-store-native-controls.inc": "3b6a2b8e9edc7e1f03ea04ca833c395088a2c395a68a4512bd2d7d14284b84d4",
+        "app/tests/test-widget-store-native-dnd.inc": "2e176a4459e58a9dd8e32f458d19c978479b159dc8f42c9e10bf985aa42267a4",
+        "libgimp/gimpprocedure.c": "5d22ee3ba7af2d4d6d9b1d403f13fc426dbbecd487d6942bd3ce964cd1cdcd5c",
+        "libgimpconfig/gimpconfig-register.c": "c59929b3a17f2adb5223b7866b2f5daaa5543cb7ad1e7d078ac34cc38d4699e7",
+        "app/widgets/gimpeditor.c": "f9fe1658bbf051ede51b6824319d1d6118d279aa2f57a55cad991e50f5291932",
+        "app/widgets/gimppaintermybrusheditor.cpp": "09cbfacf9e51c00a3ce903354194b249ea66a1de43c4b8eddfed8de444aa3143",
+        "app/tests/test-painter-mypaint-editor.cpp": "e4d1d9edb5ddc2606b81837a87b71f5acd9a7a9465c8fe97541b14aa118064ee",
+        "app/painter/binding-store.cpp": "c69d65c22f26e6be8f6df69765cd30f7bbbd32b46b0eb847e9f6524b41c2b557",
+        "app/painter/binding-store.hpp": "c67deb0ccf33a13a5ba3ab3f50bdbb2ef8931f481acf62a9315d778388c90262",
+        "app/dialogs/painter-layer-dialog.cpp": "70a5333cd50da3e680997d808baf8a10d31754a0de78158d528581fe091feea3",
+        "app/display/gimppaintercanvasui.cpp": "d04a48fcf83e3716827ee2adad4752d38f84835ea0b5880b11a9d221bee032f5",
+        "app/widgets/gimppainterlayertiles.cpp": "293f5ff0006cff85a276ed9211df7e4f2215d102bad385b001b2974e9b69d613",
+        "app/tests/test-painter-canvas-ui.c": "0cf0e6cb233d7ed74932a3568116ef6af86f4d1444ee9cb672ef7ae063dc42b9",
+        "app/tests/test-painter-compact-options.c": "db86f10e49af5f452b052bd921f11c17e32b00c0e93861e3dc164fa0609b469d",
+        "app/widgets/gimppaintercompactoptions.cpp": "e5e35c593554587b3dfb931aca2d9bd5fc228332c157a79fb83d0bbedac38fa0"
+      },
+      "executables_sha256": {
+        "painter-canvas-ui": "ac81195ef4ab9105f3a05948f46fcf4529668fbbf868a7ef4ff3f2270d8b58b1"
+      },
+      "gdk_scale": "1",
+      "raw_record_sha256": "f186c116ec1735e444e6ce13d98f04b3681dd7e478bbab0c299f9cc590775834",
+      "case": "/painter-canvas-ui/w08017_dnd_cross_image_copy",
+      "registration": {
+        "registration": "painter-canvas-ui",
+        "result": "OK",
+        "exit_code": 0,
+        "duration_seconds": 2.209857702255249,
+        "cases_passed": 1,
+        "tap": "TAP version 14\nok 1 /painter-canvas-ui/w08017_dnd_cross_image_copy\n1..1\n"
+      }
+    }
+  ],
+  "classification": "Only factory-failure is the intended red. The other eight pass on unchanged production; no product defect is inferred from adding them.",
+  "fixture": "The same final test overlay is used for baseline and green. Real GimpDocked dispatch and preview factory; no mock or interposition. Exact expected precondition messages are confined to the deliberate failure case."
+}
