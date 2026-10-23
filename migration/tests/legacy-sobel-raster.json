@@ -1,0 +1,810 @@
+{
+  "format": 1,
+  "status": "passed",
+  "date_utc": "2026-10-16",
+  "scope": "Bounded legacy Sobel raw-raster foundation; no live owner route, XCF activation or old-runtime capture",
+  "source_base": "e26f4cb520bc49b246fee0c685176bf3f2cc4572",
+  "acceptance_inputs": [
+    "final-normal.json",
+    "final-sanitizers.json",
+    "final-native-acceptance.json",
+    "sobel-final.json"
+  ],
+  "legacy_source": {
+    "commit": "afa43fae3e920210146abed514f136fd49f671b5",
+    "path": "plug-ins/common/edge-sobel.c",
+    "sha256": "f37f08e206559a1948977b3a2e688fc5ed19fa3c442b1766634ac5b6ed7d5402",
+    "round_header": {
+      "path": "libgimpmath/gimpmath.h",
+      "sha256": "5be55b44288b5d3bac28e9fc51e5003af07734dc41b098f137e35ef6188f3ffe"
+    },
+    "verified_blocks": {
+      "ROW PREPARATION AND SOBEL": "6b0b7216579d8f3a286acb378f7018e19e76e1019e014850d21b9ff337a33406",
+      "ROUND": "5261dd9417e02254d1ecf7e6d1ea380749fa3e3d5f078970bcfa044fec393442"
+    }
+  },
+  "tested_sources": {
+    "app/painter/filter-context.hpp": "68971d1845cf91ed98aa8dc938a211023b37b7c963a764fec6b56657be8f7d30",
+    "app/painter/filter-edge-kernel-private.hpp": "dbb9852b334b3279a3c9a904eef9db99efe4c1e4f8cd8beeb540ad51a65584b7",
+    "app/painter/filter-edge.hpp": "7e7aa1053ea366f7d0991c718fcee553e2e90b41b06b553a2ef97267bc62afd2",
+    "app/painter/filter-gauss-kernel-private.hpp": "e0cf85d418cd0cf6767bba3350fa6e0770c40731589298927ffd83a6b72e94d4",
+    "app/painter/filter-gauss.hpp": "6942b7e5ec8b181b96cff94d6f38f9a20a7feb34f07c19b03b60d6a4f1c6d675",
+    "app/painter/filter-native-kernels.cpp": "7603a0a5a1c9ed5fa86a01ea24a38a14699e8b5c22baf47a27312e60f004e6b4",
+    "app/painter/filter-native-kernels.hpp": "848a0d458281ab3494a78eac3030a8cddddd3af55ea64082d1b4d7c1b3f94ffb",
+    "app/painter/filter-progress.hpp": "a6c13320a7c76a7f3bd9d80be2ad91fe8324c9b36a04bf2589b7b42a91229ca2",
+    "app/painter/filter-raster-kernels.hpp": "02e55a238cc5d9805376a7d623c2eac3643a4344fe18ca3597bfd61ff3cd0ee7",
+    "app/painter/filter-raster.cpp": "3a110ef1be1dd8fcddf19268bbd1dd1ef39a5f982eadc31a3b654e7368334374",
+    "app/painter/filter-raster.hpp": "3da85d78912475d9e23c3dff5f1ae32aafa46ccd2d7f8be34d6eb03429175a29",
+    "app/painter/filter-sobel.cpp": "9856ff199ee91070d36655ef8426dc3e744c6e07c889846de8923a664e5bcfc7",
+    "app/painter/filter-sobel.hpp": "177bbc6e2e1c98bab0f5104a63c042f4ff8b14867e261337d867227b63491f7e",
+    "app/painter/gimp-painter-visibility.h": "d832e5442d969ff8439292a61d0143532d85c1b7eaab0b29689c6dc04e9c4532",
+    "app/painter/meson.build": "44128349c998b40e3df466866cbd944f76317815dd8e8b4e6f69014cd37abaad",
+    "app/painter/tests/legacy-sobel-oracle.c": "3d5f73a5f89ddf3eccdab6a31362385645bbc8507734534c31f33bb26698b67c",
+    "app/painter/tests/legacy-sobel-oracle.h": "339d585633258955ec4ab1314a9afd96e2e5d3df0a63772053f56853de2406b3",
+    "app/painter/tests/run_filter_sobel_tests.py": "0489aba7d44a6b2be4e39e9fdf6ba3197573de789c9ae2b1358f8c4631865a01",
+    "app/painter/tests/test-filter-sobel-header.cpp": "c3268faab02ca532387d2497cbf68fd90004eb7992335ae7db272c9f4aff921a",
+    "app/painter/tests/test-filter-sobel.cpp": "3d7e870f3c219e543862b21fa300fcc4199875fa958ee76ca0dec22b19f82cdd"
+  },
+  "standalone": [
+    {
+      "all_passed": true,
+      "elapsed_seconds": 6.414265642000828,
+      "sanitizers": [],
+      "leak_detection": null,
+      "commands": [
+        {
+          "kind": "compile-c",
+          "command": [
+            "cc",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-g",
+            "-O2",
+            "-pthread",
+            "-std=c11",
+            "-I<SOURCE_ROOT>/app/painter",
+            "-c",
+            "<SOURCE_ROOT>/app/painter/tests/legacy-sobel-oracle.c",
+            "-o",
+            "<EVIDENCE_ROOT>/final-normal/filter-sobel-normal/legacy-sobel-oracle.c.o"
+          ],
+          "exit_code": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        {
+          "kind": "compile-c++",
+          "command": [
+            "c++",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-g",
+            "-O2",
+            "-pthread",
+            "-std=c++14",
+            "-fexceptions",
+            "-fno-rtti",
+            "-I<SOURCE_ROOT>/app/painter",
+            "-I<DEPENDENCY_ROOT>/usr/include/glib-2.0",
+            "-I<DEPENDENCY_ROOT>/usr/lib/x86_64-linux-gnu/glib-2.0/include",
+            "-I<DEPENDENCY_ROOT>/usr/include/sysprof-6",
+            "-pthread",
+            "-c",
+            "<SOURCE_ROOT>/app/painter/filter-raster.cpp",
+            "-o",
+            "<EVIDENCE_ROOT>/final-normal/filter-sobel-normal/filter-raster.cpp.o"
+          ],
+          "exit_code": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        {
+          "kind": "compile-c++",
+          "command": [
+            "c++",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-g",
+            "-O2",
+            "-pthread",
+            "-std=c++14",
+            "-fexceptions",
+            "-fno-rtti",
+            "-I<SOURCE_ROOT>/app/painter",
+            "-I<DEPENDENCY_ROOT>/usr/include/glib-2.0",
+            "-I<DEPENDENCY_ROOT>/usr/lib/x86_64-linux-gnu/glib-2.0/include",
+            "-I<DEPENDENCY_ROOT>/usr/include/sysprof-6",
+            "-pthread",
+            "-c",
+            "<SOURCE_ROOT>/app/painter/filter-native-kernels.cpp",
+            "-o",
+            "<EVIDENCE_ROOT>/final-normal/filter-sobel-normal/filter-native-kernels.cpp.o"
+          ],
+          "exit_code": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        {
+          "kind": "compile-c++",
+          "command": [
+            "c++",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-g",
+            "-O2",
+            "-pthread",
+            "-std=c++14",
+            "-fexceptions",
+            "-fno-rtti",
+            "-I<SOURCE_ROOT>/app/painter",
+            "-I<DEPENDENCY_ROOT>/usr/include/glib-2.0",
+            "-I<DEPENDENCY_ROOT>/usr/lib/x86_64-linux-gnu/glib-2.0/include",
+            "-I<DEPENDENCY_ROOT>/usr/include/sysprof-6",
+            "-pthread",
+            "-c",
+            "<SOURCE_ROOT>/app/painter/filter-sobel.cpp",
+            "-o",
+            "<EVIDENCE_ROOT>/final-normal/filter-sobel-normal/filter-sobel.cpp.o"
+          ],
+          "exit_code": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        {
+          "kind": "compile-c++",
+          "command": [
+            "c++",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-g",
+            "-O2",
+            "-pthread",
+            "-std=c++14",
+            "-fexceptions",
+            "-fno-rtti",
+            "-I<SOURCE_ROOT>/app/painter",
+            "-I<DEPENDENCY_ROOT>/usr/include/glib-2.0",
+            "-I<DEPENDENCY_ROOT>/usr/lib/x86_64-linux-gnu/glib-2.0/include",
+            "-I<DEPENDENCY_ROOT>/usr/include/sysprof-6",
+            "-pthread",
+            "-c",
+            "<SOURCE_ROOT>/app/painter/tests/test-filter-sobel.cpp",
+            "-o",
+            "<EVIDENCE_ROOT>/final-normal/filter-sobel-normal/test-filter-sobel.cpp.o"
+          ],
+          "exit_code": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        {
+          "kind": "compile-c++",
+          "command": [
+            "c++",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-g",
+            "-O2",
+            "-pthread",
+            "-std=c++14",
+            "-fexceptions",
+            "-fno-rtti",
+            "-I<SOURCE_ROOT>/app/painter",
+            "-I<DEPENDENCY_ROOT>/usr/include/glib-2.0",
+            "-I<DEPENDENCY_ROOT>/usr/lib/x86_64-linux-gnu/glib-2.0/include",
+            "-I<DEPENDENCY_ROOT>/usr/include/sysprof-6",
+            "-pthread",
+            "-c",
+            "<SOURCE_ROOT>/app/painter/tests/test-filter-sobel-header.cpp",
+            "-o",
+            "<EVIDENCE_ROOT>/final-normal/filter-sobel-normal/test-filter-sobel-header.cpp.o"
+          ],
+          "exit_code": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        {
+          "kind": "link",
+          "command": [
+            "c++",
+            "<EVIDENCE_ROOT>/final-normal/filter-sobel-normal/legacy-sobel-oracle.c.o",
+            "<EVIDENCE_ROOT>/final-normal/filter-sobel-normal/filter-raster.cpp.o",
+            "<EVIDENCE_ROOT>/final-normal/filter-sobel-normal/filter-native-kernels.cpp.o",
+            "<EVIDENCE_ROOT>/final-normal/filter-sobel-normal/filter-sobel.cpp.o",
+            "<EVIDENCE_ROOT>/final-normal/filter-sobel-normal/test-filter-sobel.cpp.o",
+            "<EVIDENCE_ROOT>/final-normal/filter-sobel-normal/test-filter-sobel-header.cpp.o",
+            "-pthread",
+            "-lglib-2.0",
+            "-lm",
+            "-o",
+            "<EVIDENCE_ROOT>/final-normal/filter-sobel-normal/painter-filter-sobel"
+          ],
+          "exit_code": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        {
+          "kind": "test",
+          "command": [
+            "<EVIDENCE_ROOT>/final-normal/filter-sobel-normal/painter-filter-sobel"
+          ],
+          "exit_code": 0,
+          "stdout": "Source-C Gray/Gray-alpha/RGB/RGBA transport, flags, ROI, tiny/tile/strip boundaries, vector/spill: 2880 cases passed\nNegative/absolute ROUND: 512; RMS order, alpha threshold, hidden colors, flags, mixed halo and no-merge checks passed\nTiny-defined versus signed-overflow geometry, exact storage, aliases, flags, pre-cancelled 64-bit extents passed\nEvery read/write/flush cancellation and failure ordinal: 264 vector/spill cases; no-merge, source immutability, transactional aliases and progress passed\n",
+          "stderr": ""
+        }
+      ],
+      "changed_after_compile": [],
+      "changed_after_run": [],
+      "executable_sha256": "5c7b15f534ac4c14c014c58ebd669cda882eb24fe7e2b38a940dab13d43b4750",
+      "executable_sha256_after_run": "5c7b15f534ac4c14c014c58ebd669cda882eb24fe7e2b38a940dab13d43b4750",
+      "mode": "normal",
+      "receipt_name": "final-normal.json",
+      "raw_receipt_sha256": "5e5b392381dafcd4772b12c2e0fb5dab6b0aa9600bc7eee526cef8d1c6f42e3f",
+      "elapsed_scope": "Compilation, linking and focused execution together",
+      "source_sha256_at_execution": {
+        "app/painter/filter-context.hpp": "68971d1845cf91ed98aa8dc938a211023b37b7c963a764fec6b56657be8f7d30",
+        "app/painter/filter-edge-kernel-private.hpp": "dbb9852b334b3279a3c9a904eef9db99efe4c1e4f8cd8beeb540ad51a65584b7",
+        "app/painter/filter-edge.hpp": "7e7aa1053ea366f7d0991c718fcee553e2e90b41b06b553a2ef97267bc62afd2",
+        "app/painter/filter-gauss-kernel-private.hpp": "e0cf85d418cd0cf6767bba3350fa6e0770c40731589298927ffd83a6b72e94d4",
+        "app/painter/filter-gauss.hpp": "6942b7e5ec8b181b96cff94d6f38f9a20a7feb34f07c19b03b60d6a4f1c6d675",
+        "app/painter/filter-native-kernels.cpp": "7603a0a5a1c9ed5fa86a01ea24a38a14699e8b5c22baf47a27312e60f004e6b4",
+        "app/painter/filter-native-kernels.hpp": "848a0d458281ab3494a78eac3030a8cddddd3af55ea64082d1b4d7c1b3f94ffb",
+        "app/painter/filter-progress.hpp": "a6c13320a7c76a7f3bd9d80be2ad91fe8324c9b36a04bf2589b7b42a91229ca2",
+        "app/painter/filter-raster-kernels.hpp": "02e55a238cc5d9805376a7d623c2eac3643a4344fe18ca3597bfd61ff3cd0ee7",
+        "app/painter/filter-raster.cpp": "3a110ef1be1dd8fcddf19268bbd1dd1ef39a5f982eadc31a3b654e7368334374",
+        "app/painter/filter-raster.hpp": "3da85d78912475d9e23c3dff5f1ae32aafa46ccd2d7f8be34d6eb03429175a29",
+        "app/painter/filter-sobel.cpp": "9856ff199ee91070d36655ef8426dc3e744c6e07c889846de8923a664e5bcfc7",
+        "app/painter/filter-sobel.hpp": "177bbc6e2e1c98bab0f5104a63c042f4ff8b14867e261337d867227b63491f7e",
+        "app/painter/gimp-painter-visibility.h": "d832e5442d969ff8439292a61d0143532d85c1b7eaab0b29689c6dc04e9c4532",
+        "app/painter/meson.build": "44128349c998b40e3df466866cbd944f76317815dd8e8b4e6f69014cd37abaad",
+        "app/painter/tests/legacy-sobel-oracle.c": "3d5f73a5f89ddf3eccdab6a31362385645bbc8507734534c31f33bb26698b67c",
+        "app/painter/tests/legacy-sobel-oracle.h": "339d585633258955ec4ab1314a9afd96e2e5d3df0a63772053f56853de2406b3",
+        "app/painter/tests/run_filter_sobel_tests.py": "0489aba7d44a6b2be4e39e9fdf6ba3197573de789c9ae2b1358f8c4631865a01",
+        "app/painter/tests/test-filter-sobel-header.cpp": "c3268faab02ca532387d2497cbf68fd90004eb7992335ae7db272c9f4aff921a",
+        "app/painter/tests/test-filter-sobel.cpp": "3d7e870f3c219e543862b21fa300fcc4199875fa958ee76ca0dec22b19f82cdd",
+        "migration/contracts/legacy-sobel-raster.md": "98be503264feba83d8f69562329b982f314af3622d38827ea28a5709540dec4f"
+      },
+      "subsequent_executable_seal_verified": true
+    },
+    {
+      "all_passed": true,
+      "elapsed_seconds": 13.789943335003045,
+      "sanitizers": [
+        "address",
+        "undefined"
+      ],
+      "leak_detection": false,
+      "commands": [
+        {
+          "kind": "compile-c",
+          "command": [
+            "cc",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-g",
+            "-O1",
+            "-pthread",
+            "-std=c11",
+            "-fsanitize=address,undefined",
+            "-fno-omit-frame-pointer",
+            "-I<SOURCE_ROOT>/app/painter",
+            "-c",
+            "<SOURCE_ROOT>/app/painter/tests/legacy-sobel-oracle.c",
+            "-o",
+            "<EVIDENCE_ROOT>/final-sanitize/filter-sobel-sanitize/legacy-sobel-oracle.c.o"
+          ],
+          "exit_code": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        {
+          "kind": "compile-c++",
+          "command": [
+            "c++",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-g",
+            "-O1",
+            "-pthread",
+            "-std=c++14",
+            "-fexceptions",
+            "-frtti",
+            "-fsanitize=address,undefined",
+            "-fno-omit-frame-pointer",
+            "-I<SOURCE_ROOT>/app/painter",
+            "-I<DEPENDENCY_ROOT>/usr/include/glib-2.0",
+            "-I<DEPENDENCY_ROOT>/usr/lib/x86_64-linux-gnu/glib-2.0/include",
+            "-I<DEPENDENCY_ROOT>/usr/include/sysprof-6",
+            "-pthread",
+            "-c",
+            "<SOURCE_ROOT>/app/painter/filter-raster.cpp",
+            "-o",
+            "<EVIDENCE_ROOT>/final-sanitize/filter-sobel-sanitize/filter-raster.cpp.o"
+          ],
+          "exit_code": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        {
+          "kind": "compile-c++",
+          "command": [
+            "c++",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-g",
+            "-O1",
+            "-pthread",
+            "-std=c++14",
+            "-fexceptions",
+            "-frtti",
+            "-fsanitize=address,undefined",
+            "-fno-omit-frame-pointer",
+            "-I<SOURCE_ROOT>/app/painter",
+            "-I<DEPENDENCY_ROOT>/usr/include/glib-2.0",
+            "-I<DEPENDENCY_ROOT>/usr/lib/x86_64-linux-gnu/glib-2.0/include",
+            "-I<DEPENDENCY_ROOT>/usr/include/sysprof-6",
+            "-pthread",
+            "-c",
+            "<SOURCE_ROOT>/app/painter/filter-native-kernels.cpp",
+            "-o",
+            "<EVIDENCE_ROOT>/final-sanitize/filter-sobel-sanitize/filter-native-kernels.cpp.o"
+          ],
+          "exit_code": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        {
+          "kind": "compile-c++",
+          "command": [
+            "c++",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-g",
+            "-O1",
+            "-pthread",
+            "-std=c++14",
+            "-fexceptions",
+            "-frtti",
+            "-fsanitize=address,undefined",
+            "-fno-omit-frame-pointer",
+            "-I<SOURCE_ROOT>/app/painter",
+            "-I<DEPENDENCY_ROOT>/usr/include/glib-2.0",
+            "-I<DEPENDENCY_ROOT>/usr/lib/x86_64-linux-gnu/glib-2.0/include",
+            "-I<DEPENDENCY_ROOT>/usr/include/sysprof-6",
+            "-pthread",
+            "-c",
+            "<SOURCE_ROOT>/app/painter/filter-sobel.cpp",
+            "-o",
+            "<EVIDENCE_ROOT>/final-sanitize/filter-sobel-sanitize/filter-sobel.cpp.o"
+          ],
+          "exit_code": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        {
+          "kind": "compile-c++",
+          "command": [
+            "c++",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-g",
+            "-O1",
+            "-pthread",
+            "-std=c++14",
+            "-fexceptions",
+            "-frtti",
+            "-fsanitize=address,undefined",
+            "-fno-omit-frame-pointer",
+            "-I<SOURCE_ROOT>/app/painter",
+            "-I<DEPENDENCY_ROOT>/usr/include/glib-2.0",
+            "-I<DEPENDENCY_ROOT>/usr/lib/x86_64-linux-gnu/glib-2.0/include",
+            "-I<DEPENDENCY_ROOT>/usr/include/sysprof-6",
+            "-pthread",
+            "-c",
+            "<SOURCE_ROOT>/app/painter/tests/test-filter-sobel.cpp",
+            "-o",
+            "<EVIDENCE_ROOT>/final-sanitize/filter-sobel-sanitize/test-filter-sobel.cpp.o"
+          ],
+          "exit_code": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        {
+          "kind": "compile-c++",
+          "command": [
+            "c++",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-g",
+            "-O1",
+            "-pthread",
+            "-std=c++14",
+            "-fexceptions",
+            "-frtti",
+            "-fsanitize=address,undefined",
+            "-fno-omit-frame-pointer",
+            "-I<SOURCE_ROOT>/app/painter",
+            "-I<DEPENDENCY_ROOT>/usr/include/glib-2.0",
+            "-I<DEPENDENCY_ROOT>/usr/lib/x86_64-linux-gnu/glib-2.0/include",
+            "-I<DEPENDENCY_ROOT>/usr/include/sysprof-6",
+            "-pthread",
+            "-c",
+            "<SOURCE_ROOT>/app/painter/tests/test-filter-sobel-header.cpp",
+            "-o",
+            "<EVIDENCE_ROOT>/final-sanitize/filter-sobel-sanitize/test-filter-sobel-header.cpp.o"
+          ],
+          "exit_code": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        {
+          "kind": "link",
+          "command": [
+            "c++",
+            "<EVIDENCE_ROOT>/final-sanitize/filter-sobel-sanitize/legacy-sobel-oracle.c.o",
+            "<EVIDENCE_ROOT>/final-sanitize/filter-sobel-sanitize/filter-raster.cpp.o",
+            "<EVIDENCE_ROOT>/final-sanitize/filter-sobel-sanitize/filter-native-kernels.cpp.o",
+            "<EVIDENCE_ROOT>/final-sanitize/filter-sobel-sanitize/filter-sobel.cpp.o",
+            "<EVIDENCE_ROOT>/final-sanitize/filter-sobel-sanitize/test-filter-sobel.cpp.o",
+            "<EVIDENCE_ROOT>/final-sanitize/filter-sobel-sanitize/test-filter-sobel-header.cpp.o",
+            "-fsanitize=address,undefined",
+            "-fno-omit-frame-pointer",
+            "-pthread",
+            "-lglib-2.0",
+            "-lm",
+            "-o",
+            "<EVIDENCE_ROOT>/final-sanitize/filter-sobel-sanitize/painter-filter-sobel"
+          ],
+          "exit_code": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        {
+          "kind": "test",
+          "command": [
+            "<EVIDENCE_ROOT>/final-sanitize/filter-sobel-sanitize/painter-filter-sobel"
+          ],
+          "exit_code": 0,
+          "stdout": "Source-C Gray/Gray-alpha/RGB/RGBA transport, flags, ROI, tiny/tile/strip boundaries, vector/spill: 2880 cases passed\nNegative/absolute ROUND: 512; RMS order, alpha threshold, hidden colors, flags, mixed halo and no-merge checks passed\nTiny-defined versus signed-overflow geometry, exact storage, aliases, flags, pre-cancelled 64-bit extents passed\nEvery read/write/flush cancellation and failure ordinal: 264 vector/spill cases; no-merge, source immutability, transactional aliases and progress passed\n",
+          "stderr": ""
+        }
+      ],
+      "changed_after_compile": [],
+      "changed_after_run": [],
+      "executable_sha256": "ef247ca0166204bc495bcc7ee3a4ad8f2380cce49f1d604beebbd86ce466a023",
+      "executable_sha256_after_run": "ef247ca0166204bc495bcc7ee3a4ad8f2380cce49f1d604beebbd86ce466a023",
+      "mode": "asan-ubsan",
+      "receipt_name": "final-sanitizers.json",
+      "raw_receipt_sha256": "f881261acc720a2cc8b730b32352eaca4ee808c1c2bb43c14b4fc951abd2b408",
+      "elapsed_scope": "Compilation, linking and focused execution together",
+      "source_sha256_at_execution": {
+        "app/painter/filter-context.hpp": "68971d1845cf91ed98aa8dc938a211023b37b7c963a764fec6b56657be8f7d30",
+        "app/painter/filter-edge-kernel-private.hpp": "dbb9852b334b3279a3c9a904eef9db99efe4c1e4f8cd8beeb540ad51a65584b7",
+        "app/painter/filter-edge.hpp": "7e7aa1053ea366f7d0991c718fcee553e2e90b41b06b553a2ef97267bc62afd2",
+        "app/painter/filter-gauss-kernel-private.hpp": "e0cf85d418cd0cf6767bba3350fa6e0770c40731589298927ffd83a6b72e94d4",
+        "app/painter/filter-gauss.hpp": "6942b7e5ec8b181b96cff94d6f38f9a20a7feb34f07c19b03b60d6a4f1c6d675",
+        "app/painter/filter-native-kernels.cpp": "7603a0a5a1c9ed5fa86a01ea24a38a14699e8b5c22baf47a27312e60f004e6b4",
+        "app/painter/filter-native-kernels.hpp": "848a0d458281ab3494a78eac3030a8cddddd3af55ea64082d1b4d7c1b3f94ffb",
+        "app/painter/filter-progress.hpp": "a6c13320a7c76a7f3bd9d80be2ad91fe8324c9b36a04bf2589b7b42a91229ca2",
+        "app/painter/filter-raster-kernels.hpp": "02e55a238cc5d9805376a7d623c2eac3643a4344fe18ca3597bfd61ff3cd0ee7",
+        "app/painter/filter-raster.cpp": "3a110ef1be1dd8fcddf19268bbd1dd1ef39a5f982eadc31a3b654e7368334374",
+        "app/painter/filter-raster.hpp": "3da85d78912475d9e23c3dff5f1ae32aafa46ccd2d7f8be34d6eb03429175a29",
+        "app/painter/filter-sobel.cpp": "9856ff199ee91070d36655ef8426dc3e744c6e07c889846de8923a664e5bcfc7",
+        "app/painter/filter-sobel.hpp": "177bbc6e2e1c98bab0f5104a63c042f4ff8b14867e261337d867227b63491f7e",
+        "app/painter/gimp-painter-visibility.h": "d832e5442d969ff8439292a61d0143532d85c1b7eaab0b29689c6dc04e9c4532",
+        "app/painter/meson.build": "44128349c998b40e3df466866cbd944f76317815dd8e8b4e6f69014cd37abaad",
+        "app/painter/tests/legacy-sobel-oracle.c": "3d5f73a5f89ddf3eccdab6a31362385645bbc8507734534c31f33bb26698b67c",
+        "app/painter/tests/legacy-sobel-oracle.h": "339d585633258955ec4ab1314a9afd96e2e5d3df0a63772053f56853de2406b3",
+        "app/painter/tests/run_filter_sobel_tests.py": "0489aba7d44a6b2be4e39e9fdf6ba3197573de789c9ae2b1358f8c4631865a01",
+        "app/painter/tests/test-filter-sobel-header.cpp": "c3268faab02ca532387d2497cbf68fd90004eb7992335ae7db272c9f4aff921a",
+        "app/painter/tests/test-filter-sobel.cpp": "3d7e870f3c219e543862b21fa300fcc4199875fa958ee76ca0dec22b19f82cdd",
+        "migration/contracts/legacy-sobel-raster.md": "98be503264feba83d8f69562329b982f314af3622d38827ea28a5709540dec4f"
+      },
+      "subsequent_executable_seal_verified": true
+    }
+  ],
+  "default_native_build": {
+    "result": "passed",
+    "native_log_sha256": "c5643eb3eac5131ce2eb1170b456791ce37ff0a25fc5cc34e23595abfbe3e96d",
+    "note": "Final default build completed; configuration warnings retained, no warning-free build claim",
+    "configuration_warnings": [
+      "../source/meson.build:134: WARNING: Module SIMD has no backwards or forwards compatibility and might not exist in future releases.",
+      "WARNING: You should add the boolean check kwarg to the run_command call.",
+      "../source/libgimp/tests/meson.build:24: WARNING: Project targets '>=0.61.0' but uses feature introduced in '1.4.0': environment.unset.",
+      "WARNING: Project specifies a minimum meson_version '>=0.61.0' but uses features which were added in newer versions:"
+    ]
+  },
+  "native_tests": [
+    {
+      "name": "gimp:painter / painter-filter-scheduler",
+      "result": "OK",
+      "duration": 3.416957378387451,
+      "skips": [],
+      "crashes": [],
+      "unexpected_diagnostics": [],
+      "expected_diagnostics": [],
+      "stderr": "",
+      "returncode": 0,
+      "stdout": "TAP version 14\n# random seed: R02S545a236166b21fa5d79c18aa56d21a1a\n1..39\n# Start of painter-filter-scheduler tests\nok 1 /painter-filter-scheduler/independent_state_after_owner_destruction\nok 2 /painter-filter-scheduler/recursive_step_does_not_consume_another_chunk\nok 3 /painter-filter-scheduler/spool_completed_cache_and_chunk_geometry\n# slow test /painter-filter-scheduler/spool_completed_cache_and_chunk_geometry executed in 2.31 secs\nok 4 /painter-filter-scheduler/spool_reentrant_read_cancellation\nok 5 /painter-filter-scheduler/spool_cancel_request_is_not_completion\nok 6 /painter-filter-scheduler/spool_change_during_import\nok 7 /painter-filter-scheduler/spool_read_failure_cancels_unsealed_worker\nok 8 /painter-filter-scheduler/spool_result_failure_never_commits\nok 9 /painter-filter-scheduler/spool_large_metadata_is_bounded_preparation\nok 10 /painter-filter-scheduler/spool_close_during_import_keeps_callback_bytes\nok 11 /painter-filter-scheduler/vector_close_during_import_keeps_callback_bytes\nok 12 /painter-filter-scheduler/admission_waits_without_reading_and_resumes_fifo\nok 13 /painter-filter-scheduler/admission_cancel_retains_worker_reservation\nok 14 /painter-filter-scheduler/admission_edit_and_dependency_wait_release_preparation\nok 15 /painter-filter-scheduler/admission_failure_and_loaded_cache_release\nok 16 /painter-filter-scheduler/saved_generation_boundaries\nok 17 /painter-filter-scheduler/commit_failure_does_not_certify_cache\nok 18 /painter-filter-scheduler/obsolete_read_failure_preserves_new_edit\nok 19 /painter-filter-scheduler/saved_cache_generations\nok 20 /painter-filter-scheduler/restored_cache_rejects_colliding_old_job\nok 21 /painter-filter-scheduler/rejected_worker_is_not_settled_until_done\nok 22 /painter-filter-scheduler/reject_during_read\nok 23 /painter-filter-scheduler/reject_during_import\nok 24 /painter-filter-scheduler/closed_request_is_inert\nok 25 /painter-filter-scheduler/adjustable_chunk_budget\n# slow test /painter-filter-scheduler/adjustable_chunk_budget executed in 0.51 secs\nok 26 /painter-filter-scheduler/completed_cache\nok 27 /painter-filter-scheduler/bounded_chunks\nok 28 /painter-filter-scheduler/dependency_priority\nok 29 /painter-filter-scheduler/cancel_request_is_not_completion\nok 30 /painter-filter-scheduler/changes_during_preparation\nok 31 /painter-filter-scheduler/changes_during_import\nok 32 /painter-filter-scheduler/failures_do_not_retry\nok 33 /painter-filter-scheduler/close_does_not_wait\nok 34 /painter-filter-scheduler/loaded_cache_not_reexecuted\nok 35 /painter-filter-scheduler/invalid_request_and_result\nok 36 /painter-filter-scheduler/reentry_at_commit\nok 37 /painter-filter-scheduler/admission_switch_keeps_restored_cache\nok 38 /painter-filter-scheduler/native_stride_vector_and_spool\nok 39 /painter-filter-scheduler/invalid_stride_never_reads\n# End of painter-filter-scheduler tests\n"
+    },
+    {
+      "name": "gimp:painter / painter-filter-raster",
+      "result": "OK",
+      "duration": 1.3119184970855713,
+      "skips": [],
+      "crashes": [],
+      "unexpected_diagnostics": [],
+      "expected_diagnostics": [],
+      "stderr": "",
+      "returncode": 0,
+      "stdout": "TAP version 14\n# random seed: R02Sc49892ee53fc00b30518f8433a2e7ad6\n1..7\n# Start of filter-raster tests\nok 1 /filter-raster/available_capacity_is_advisory\nok 2 /filter-raster/native_bytes_and_cleanup\nok 3 /filter-raster/large_sparse_offset\nok 4 /filter-raster/invalid_access_and_unwritten_read\nok 5 /filter-raster/worker_affinity\nok 6 /filter-raster/tiled_transpose_and_roundtrip\n# slow test /filter-raster/tiled_transpose_and_roundtrip executed in 1.30 secs\nok 7 /filter-raster/cancelled_or_failed_output_stays_private\n# End of filter-raster tests\n"
+    },
+    {
+      "name": "gimp:painter / painter-filter-native-kernels",
+      "result": "OK",
+      "duration": 0.013402700424194336,
+      "skips": [],
+      "crashes": [],
+      "unexpected_diagnostics": [],
+      "expected_diagnostics": [],
+      "stderr": "",
+      "returncode": 0,
+      "stdout": "TAP version 14\n# random seed: R02Sd2e8ce1d124f856df284d270dc8e75c6\n1..6\n# Start of filter-native tests\n# 40 real original PDB point outputs matched byte-for-byte\nok 1 /filter-native/genuine_point_corpus\nok 2 /filter-native/real_point_equations\nok 3 /filter-native/real_edge_ramp_and_hidden\nok 4 /filter-native/real_gauss_constant_and_impulse\nok 5 /filter-native/native_rejection_and_cancel\nok 6 /filter-native/native_transpose\n# End of filter-native tests\n"
+    },
+    {
+      "name": "gimp:painter / painter-filter-context-native",
+      "result": "OK",
+      "duration": 0.0045626163482666016,
+      "skips": [],
+      "crashes": [],
+      "unexpected_diagnostics": [],
+      "expected_diagnostics": [],
+      "stderr": "",
+      "returncode": 0,
+      "stdout": "Native Filter context tests passed\n"
+    },
+    {
+      "name": "gimp:painter / painter-filter-sharpen",
+      "result": "OK",
+      "duration": 0.587557315826416,
+      "skips": [],
+      "crashes": [],
+      "unexpected_diagnostics": [],
+      "expected_diagnostics": [],
+      "stderr": "",
+      "returncode": 0,
+      "stdout": "source-extracted C / native Gray, Gray-alpha, RGB, RGBA / vector / spill: 1232 cases passed\nLUT entries, negative rounding, clamp, alpha and raw cropped shadow checks passed\nUnsupported tiny/overflow/storage cases and pre-cancelled 64-bit extents passed\nEvery read/write/flush cancellation and failure ordinal: 292 vector/spill cases; alias publication and progress checks passed\n"
+    },
+    {
+      "name": "gimp:painter / painter-filter-sharpen-shadow",
+      "result": "OK",
+      "duration": 0.5642974376678467,
+      "skips": [],
+      "crashes": [],
+      "unexpected_diagnostics": [],
+      "expected_diagnostics": [],
+      "stderr": "",
+      "returncode": 0,
+      "stdout": "Full/partial/all-edge native Y/YA/RGB/RGBA source-C/vector/spill shadow cases: 648\nDrawable offsets, extreme coordinates, no-selection/outside distinction and independent raw components passed\nMalformed/overflow/tiny/alias/exact backing validation and declared 64-bit full extents passed\nEvery read/write/flush cancellation and storage-error ordinal: 344 vector/spill cases; zero/kernel progress and transactional aliases passed\n"
+    },
+    {
+      "name": "gimp:painter / painter-filter-sobel",
+      "result": "OK",
+      "duration": 1.5939693450927734,
+      "skips": [],
+      "crashes": [],
+      "unexpected_diagnostics": [],
+      "expected_diagnostics": [],
+      "stderr": "",
+      "returncode": 0,
+      "stdout": "Source-C Gray/Gray-alpha/RGB/RGBA transport, flags, ROI, tiny/tile/strip boundaries, vector/spill: 2880 cases passed\nNegative/absolute ROUND: 512; RMS order, alpha threshold, hidden colors, flags, mixed halo and no-merge checks passed\nTiny-defined versus signed-overflow geometry, exact storage, aliases, flags, pre-cancelled 64-bit extents passed\nEvery read/write/flush cancellation and failure ordinal: 264 vector/spill cases; no-merge, source immutability, transactional aliases and progress passed\n"
+    },
+    {
+      "name": "gimp:painter / painter-filter-context",
+      "result": "OK",
+      "duration": 0.32238268852233887,
+      "skips": [],
+      "crashes": [],
+      "unexpected_diagnostics": [],
+      "expected_diagnostics": [],
+      "stderr": "",
+      "returncode": 0,
+      "stdout": "Exact old native shadow merges: 304\nExact old native selection bounds: 304\nFilter context scalar tests passed\n"
+    },
+    {
+      "name": "gimp:painter / painter-public-header-compilation",
+      "result": "OK",
+      "duration": 0.10669350624084473,
+      "skips": [],
+      "crashes": [],
+      "unexpected_diagnostics": [],
+      "expected_diagnostics": [],
+      "stderr": "",
+      "returncode": 0,
+      "stdout": "PASS: 191 C and 210 C++ header compile probes\n"
+    },
+    {
+      "name": "gimp:painter / painter-additional-header-routes",
+      "result": "OK",
+      "duration": 4.0878119468688965,
+      "skips": [],
+      "crashes": [],
+      "unexpected_diagnostics": [],
+      "expected_diagnostics": [],
+      "stderr": "test_baseline_identity_and_category_are_required (__main__.AdditionalRoutes.test_baseline_identity_and_category_are_required) ... ok\ntest_changed_baseline_header_still_needs_historical_closure (__main__.AdditionalRoutes.test_changed_baseline_header_still_needs_historical_closure) ... ok\ntest_deleted_route_is_rejected (__main__.AdditionalRoutes.test_deleted_route_is_rejected) ... ok\ntest_duplicate_route_is_rejected (__main__.AdditionalRoutes.test_duplicate_route_is_rejected) ... ok\ntest_historical_headers_cannot_be_laundered_as_additions (__main__.AdditionalRoutes.test_historical_headers_cannot_be_laundered_as_additions) ... ok\ntest_historical_inventory_and_probe_names_are_preserved (__main__.AdditionalRoutes.test_historical_inventory_and_probe_names_are_preserved) ... ok\ntest_invalid_paths_contexts_and_fields_are_rejected (__main__.AdditionalRoutes.test_invalid_paths_contexts_and_fields_are_rejected) ... ok\ntest_invalid_prerequisites_are_rejected (__main__.AdditionalRoutes.test_invalid_prerequisites_are_rejected) ... ok\ntest_missing_header_is_rejected (__main__.AdditionalRoutes.test_missing_header_is_rejected) ... ok\ntest_missing_inventory_is_rejected (__main__.AdditionalRoutes.test_missing_inventory_is_rejected) ... ok\ntest_missing_route_is_rejected_even_with_other_reviewed_routes (__main__.AdditionalRoutes.test_missing_route_is_rejected_even_with_other_reviewed_routes) ... ok\ntest_removed_baseline_extension_is_rejected (__main__.AdditionalRoutes.test_removed_baseline_extension_is_rejected) ... ok\ntest_reviewed_core_extension_gets_both_probes_and_source_hash (__main__.AdditionalRoutes.test_reviewed_core_extension_gets_both_probes_and_source_hash) ... ok\ntest_schema_and_unreviewed_rows_are_rejected (__main__.AdditionalRoutes.test_schema_and_unreviewed_rows_are_rejected) ... ok\ntest_scope_argument_must_point_to_reviewed_inventory (__main__.AdditionalRoutes.test_scope_argument_must_point_to_reviewed_inventory) ... ok\ntest_symlink_outside_source_is_rejected (__main__.AdditionalRoutes.test_symlink_outside_source_is_rejected) ... ok\ntest_tool_options_changed_baseline_routes_remain_required (__main__.AdditionalRoutes.test_tool_options_changed_baseline_routes_remain_required) ... ok\n\n----------------------------------------------------------------------\nRan 17 tests in 4.021s\n\nOK\n",
+      "returncode": 0,
+      "stdout": "",
+      "stderr_note": "Normal successful Python unittest report retained verbatim; not an empty-stderr assertion"
+    }
+  ],
+  "native_summary": {
+    "registered_targets": 10,
+    "passed": 10,
+    "failed": 0,
+    "skipped": 0,
+    "timeouts": 0,
+    "strict_classifier": "No skips, crashes or unexpected diagnostics in final-native-acceptance.json",
+    "normal_stderr_report": "painter-additional-header-routes emits its successful 17-test unittest report; retained verbatim",
+    "raw_acceptance_sha256": "fe3359720797e7d3a26c260f094052c6e1bbb6d300a7af525ac9c49fc6096f77",
+    "meson_json_sha256": "cdd2b3126e757368664ea7e047717849a82c5cd987fca1ea9a74a4d75cd4b5cc",
+    "meson_text_sha256": "ad8477b17b78eaf62e0f3129c438976982566721d19ca92f01ea7990baf8ce4a",
+    "source_seal_receipt_sha256": "2663f1d9e085272c47aacccebd40be79cb98c57e8f89a3f7a4a82456690e17b7",
+    "source_sha256_at_execution": {
+      "app/painter/meson.build": "44128349c998b40e3df466866cbd944f76317815dd8e8b4e6f69014cd37abaad",
+      "app/painter/filter-sobel.cpp": "9856ff199ee91070d36655ef8426dc3e744c6e07c889846de8923a664e5bcfc7",
+      "app/painter/filter-sobel.hpp": "177bbc6e2e1c98bab0f5104a63c042f4ff8b14867e261337d867227b63491f7e",
+      "app/painter/tests/legacy-sobel-oracle.c": "3d5f73a5f89ddf3eccdab6a31362385645bbc8507734534c31f33bb26698b67c",
+      "app/painter/tests/legacy-sobel-oracle.h": "339d585633258955ec4ab1314a9afd96e2e5d3df0a63772053f56853de2406b3",
+      "app/painter/tests/run_filter_sobel_tests.py": "0489aba7d44a6b2be4e39e9fdf6ba3197573de789c9ae2b1358f8c4631865a01",
+      "app/painter/tests/test-filter-sobel.cpp": "3d7e870f3c219e543862b21fa300fcc4199875fa958ee76ca0dec22b19f82cdd",
+      "app/painter/tests/test-filter-sobel-header.cpp": "c3268faab02ca532387d2497cbf68fd90004eb7992335ae7db272c9f4aff921a",
+      "migration/contracts/legacy-sobel-raster.md": "98be503264feba83d8f69562329b982f314af3622d38827ea28a5709540dec4f",
+      "migration/tests/legacy-sobel-raster.json": "024102fc8ad35aa90be9e8e209ea9efc729e8cffcc5b074e0bc774bc5239c4b5",
+      "tasks.md": "da4be0bf1068a35ae3bf1b3a8e07ae9dd358bf28363297e383a6ce588eb6023b"
+    },
+    "changed_after_run": [],
+    "source_copy_and_core_seals_reverified_before_documentation_update": true,
+    "sobel_executable_sha256_after_run": "e8c34b193ff5b55e660a6af25310c2f2e17e33743545ef17dedb492e8aa97bf4"
+  },
+  "standalone_header_acceptance": {
+    "result": "passed",
+    "path": "app/painter/tests/test-filter-sobel-header.cpp",
+    "sha256": "c3268faab02ca532387d2497cbf68fd90004eb7992335ae7db272c9f4aff921a",
+    "scope": "Header first and twice with no preceding project headers; INT32 option and outcome declarations",
+    "normal_mode": "C++14 -Wall -Wextra -Werror -fexceptions -fno-rtti",
+    "also_compiled_in": [
+      "Final ASan/UBSan standalone build",
+      "Final native Meson build"
+    ],
+    "other_native_probes": {
+      "public_header_C": 191,
+      "public_header_CXX": 210,
+      "additional_header_route_unittests": 17
+    }
+  },
+  "run_log_sha256": "4a94194ba42bc8abd62195c5d850abee43d281507ed6c16cf15069230de5cfb1",
+  "receipt_path_sanitization": "Local source/build/dependency prefixes replaced with placeholders; raw receipt hashes retained; environment variables omitted",
+  "post_run_documentation_updates": {
+    "scope": "Acceptance prose and this bounded WBS/progress completion only; all 20 executable/header/test/runner/Meson inputs still match execution seals",
+    "files": {
+      "migration/contracts/legacy-sobel-raster.md": {
+        "sha256_before": "98be503264feba83d8f69562329b982f314af3622d38827ea28a5709540dec4f",
+        "sha256_after": "200018fb433eaeda35f416d398c2d8d2bdc3cea7aedc6b3f9e2170ce1e83c06c"
+      },
+      "tasks.md": {
+        "sha256_before": "da4be0bf1068a35ae3bf1b3a8e07ae9dd358bf28363297e383a6ce588eb6023b",
+        "sha256_after": "bf61f16d183b6cac27a11792a245e55b0d0cc417b7280eb2e083475cae1badc1"
+      },
+      "migration/progress.tsv": {
+        "sha256_before": "2c7c4941d995a9126643ce50559c398c8c1c7f7f3c5f5358e31018535883e199",
+        "sha256_after": "ea70de874bcb7a7787a7e5c7ac8f6c056bfc8529b77801dba98e2ca26d2f0935"
+      }
+    },
+    "prior_publication_receipt_sha256": "024102fc8ad35aa90be9e8e209ea9efc729e8cffcc5b074e0bc774bc5239c4b5"
+  },
+  "superseded_records": [
+    {
+      "receipt_name": "normal.json",
+      "raw_receipt_sha256": "5f70908eb185b2286f69085f7840d64f316522e2ccec59cf8727e601c5a6fe69",
+      "recorded_sanitizers": [],
+      "recorded_all_passed": true,
+      "status": "superseded",
+      "reason": "Pre-integration normal run, superseded by final-normal.json"
+    },
+    {
+      "receipt_name": "sanitizers.json",
+      "raw_receipt_sha256": "dc6e21f9fb03b5cd3393905e2912787df5c7c09c479a11982de9b32a2bfdb3f3",
+      "recorded_sanitizers": [
+        "address",
+        "undefined"
+      ],
+      "recorded_all_passed": true,
+      "status": "superseded",
+      "reason": "Pre-integration sanitizer run, superseded by final-sanitizers.json"
+    },
+    {
+      "receipt_name": "integrated-normal.json",
+      "raw_receipt_sha256": "6b2013ce572a9437a8ed813a098c39ccd5a82f729288d8f4e7c34e3c3a1a303b",
+      "recorded_sanitizers": [],
+      "recorded_all_passed": true,
+      "status": "superseded",
+      "reason": "Integrated run before dedicated header probe, superseded by final-normal.json"
+    },
+    {
+      "receipt_name": "integrated-sanitizers.json",
+      "raw_receipt_sha256": "78ca6d649b160cc0075b8d175f8c68d8f40e11c204ee88ee85eb1fef133c533f",
+      "recorded_sanitizers": [],
+      "recorded_all_passed": true,
+      "status": "superseded",
+      "reason": "Mislabeled report: sanitizer list is empty and this was a second normal run; never accepted as sanitizer evidence"
+    },
+    {
+      "receipt_name": "integrated-sanitizers-corrected.json",
+      "raw_receipt_sha256": "4cf0a405621eac9f4758509ac200cfe3dea5b379100e44d4dbfd11784a9cd5b3",
+      "recorded_sanitizers": [
+        "address",
+        "undefined"
+      ],
+      "recorded_all_passed": true,
+      "status": "superseded",
+      "reason": "Actual corrected integrated ASan/UBSan run before final header probe; superseded by final-sanitizers.json"
+    },
+    {
+      "receipt_name": "integrated-native.log",
+      "raw_receipt_sha256": "9ff14e0895a6bcce16d85d8b04cdcdd397f7a155fcc656f37161b9102121bcbb",
+      "status": "superseded",
+      "reason": "Initial integrated native build/test run before final header probe; final sobel-final results are authoritative"
+    },
+    {
+      "receipt_name": "previous migration/tests/legacy-sobel-raster.json",
+      "raw_receipt_sha256": "024102fc8ad35aa90be9e8e209ea9efc729e8cffcc5b074e0bc774bc5239c4b5",
+      "status": "superseded",
+      "recorded_status": "standalone-passed-native-acceptance-pending",
+      "reason": "Intermediate standalone-only publication receipt; native acceptance was explicitly pending"
+    }
+  ],
+  "coverage_per_final_standalone_run": {
+    "source_C_native_format_vector_spill_cases": 2880,
+    "negative_absolute_round_checks": 512,
+    "every_read_write_flush_cancel_and_storage_error_cases": 264,
+    "additional_assertions": [
+      "RMS rounding order",
+      "alpha gradient 10/11 boundary",
+      "input-alpha independence",
+      "hidden colors",
+      "both disabled and noncanonical truthy flags",
+      "1x1/1xN/Nx1/tile/strip edges",
+      "full-image vertical and ROI-local horizontal halos",
+      "source-C no-intersection early return",
+      "zero outside ROI",
+      "bounded transfers",
+      "no-merge cancellation/failure",
+      "source immutability",
+      "direct alias rejection and transactional vector aliasing",
+      "monotonic progress after successful flush",
+      "invalid geometry/storage rejection",
+      "pre-cancelled declared 64-bit extents without I/O"
+    ]
+  },
+  "leak_detection_note": "LeakSanitizer disabled; focused ASan/UBSan only, no leak-check claim",
+  "limitations": [
+    "Source-extracted C oracle, not actual original GIMP runtime capture",
+    "No live FilterLayer/owner route, final selection/component/alpha merge, scheduler-owner lifecycle or XCF activation acceptance",
+    "Native no-alpha oracle uses a conservative defined-area bound; preview/native drawable tile-overflow domains are not certified",
+    "Workspace zero initialization and monotonic progress are independent adapter policies, not runtime observations",
+    "No actual Sobel I/O beyond 4 GiB; declared large extents are tested with cancellation before storage access",
+    "Focused sanitizer scope excludes LeakSanitizer and is not a whole-application sanitizer result",
+    "No installed-runtime, UI, cross-platform, full aggregate or whole-port acceptance"
+  ]
+}
