@@ -81,3 +81,12 @@ if not meson.is_cross_build()
       painter_selection_trace],
     suite: 'painter', timeout: 60)
 endif
+
+# Stroke-start isolation, including target writes before first tile touch.
+painter_snapshot_isolation = executable('painter-mypaint-snapshot-isolation',
+  'tests/snapshot-isolation.cpp', dependencies: painter_mypaint_surface_dep,
+  cpp_args: painter_cpp_args, override_options: ['cpp_std=c++14'])
+if not meson.is_cross_build()
+  test('painter-mypaint-snapshot-isolation', painter_snapshot_isolation,
+    suite: 'painter', timeout: 60)
+endif
