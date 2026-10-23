@@ -1,0 +1,15 @@
+Xvfb verified: 127.0.0.1:93, 1080x1920x24, authenticated accepted, empty authority rejected
+1/5 gimp:app / painter-perspective-ui                OK               4.68s
+2/5 gimp:painter / painter-public-header-compilation OK               0.17s
+3/5 gimp:painter / painter-additional-header-routes  OK               3.10s
+4/5 gimp:app / gimp-painter-surface                  OK               3.63s
+5/5 gimp:app / layer-presets-ui                      OK              14.51s
+
+Ok:                 5   
+Expected Fail:      0   
+Fail:               0   
+Unexpected Pass:    0   
+Skipped:            0   
+Timeout:            0   
+
+Full log written to /workspace/shared/gimp-native-preset-gui/build/meson-logs/pop-guard-regressions.txt

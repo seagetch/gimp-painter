@@ -298,6 +298,13 @@
       "context": "standalone",
       "prerequisites": [],
       "review": "08.018/tool-registration: restore original consuming Gimp/GimpToolInfo C entry while renaming native private callback; explicit GLib prerequisite and opaque forwards, owned C linkage, first/double C11/C++14 without outer adapter. Original registry consumption, not Bucket options or old callback compatibility."
+    },
+    {
+      "path": "app/core/gimpundopopguard.h",
+      "kind": "new",
+      "context": "core",
+      "prerequisites": [],
+      "review": "09.011/pop-guard: optional native Undo interface with exact C callbacks; no GimpUndoClass layout change. Header-owned C linkage, core prelude, first/double C11/C++14 compile. Paired state preparation must finish exactly once."
     }
   ]
 }

@@ -481,6 +481,7 @@
 | 09.011/engine-checkpoint | [x] | stroke Undo前提の不変evaluator snapshotを実装する | 09.011 | 全state/settings/cache/GRand/timingをdeep copyし9normal/ASan9、2変異、C++14/noRTTI境界、元engine5637911bytes/decoder1125707bytes完全一致を検証。paired pixel/controller Undoは未実装で親stroke行は未完。migration/tests/engine-checkpoint-09011/ |
 | 09.011/prepared-undo | [x] | fallible Undo payloadのnative公開前検証を分離する | 09.011 | 同一stack公開経路、12 normal/ASan12、再入/最終owner破棄、redo/dirty保持、2変異、portrait UI18+24/paint9を検証。paired pixel/stroke原契約は未完。migration/tests/prepared-undo-09011/ |
 | 09.011/engine-prepared | [x] | historical evaluator/resource交換を公開前に準備する | 09.011/engine-checkpoint | move-only deep prepared clone、sample中/empty拒否、4 normal/ASan4、2変異、元checkpoint9/engine/decoder完全一致。new evaluator/resource交換のみnoalloc、native pixel allocationは通常契約、paired stroke親は未完。migration/tests/engine-prepared-09011/ |
+| 09.011/pop-guard | [x] | opt-in Undo state preflightをstack移動前に行う | 09.011/prepared-undo | optional native interfaceでclass ABI維持、nested group逆順unwind、callback再入拒否、通知までowner lease、11 normal/ASan11、3変異、prepared12/Surface24/UI18+24/header431。paired stroke親は未完。migration/tests/undo-pop-guard-09011/ |
 | 09.012 | [x] | 描画の確定と破棄を実装する | 09.011 | cancel と commit で正しい画素が残る |
 | 09.013 | [x] | projection 更新通知を接続する | 09.012 | 変更領域が表示へ伝わる |
 | 09.013/gegl-graph-invalidation | [ ] | paint buffer 更新と GEGL 投影キャッシュの無効化を接続する | 09.013 | 変更 ROI と座標を source node・投影へ通知し画面更新と再評価範囲が一致 |

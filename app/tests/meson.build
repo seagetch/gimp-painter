@@ -1220,3 +1220,14 @@ test('tool-registration', tool_registration_test,
         'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
         'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
         'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 120)
+
+# Optional guarded native Undo preflight before stack movement.
+undo_pop_guard = executable('undo-pop-guard',
+  ['test-undo-pop-guard.c', 'tests.c'],
+  include_directories: [ rootInclude, rootAppInclude ],
+  dependencies: [ libapp_dep, appstream ],
+  link_with: apptests_links,
+  c_args: ['-DG_LOG_DOMAIN="Gimp-App-Test"'],
+  override_options: ['c_std=c11'],
+)
+test('undo-pop-guard', undo_pop_guard, suite: 'app', timeout: 120)

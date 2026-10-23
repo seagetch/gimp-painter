@@ -34,11 +34,12 @@
 #include "gimpcontainer.h"
 #include "gimplist.h"
 #include "gimpundostack.h"
+#include "gimpundopopguard.h"
 
 
 /*  local function prototypes  */
 
-static void          gimp_image_undo_pop_stack       (GimpImage     *image,
+static gboolean      gimp_image_undo_pop_stack       (GimpImage     *image,
                                                       GimpUndoStack *undo_stack,
                                                       GimpUndoStack *redo_stack,
                                                       GimpUndoMode   undo_mode);
@@ -127,12 +128,10 @@ gimp_image_undo (GimpImage *image)
   g_return_val_if_fail (private->pushing_undo_group == GIMP_UNDO_GROUP_NONE,
                         FALSE);
 
-  gimp_image_undo_pop_stack (image,
-                             private->undo_stack,
-                             private->redo_stack,
-                             GIMP_UNDO_MODE_UNDO);
-
-  return TRUE;
+  return gimp_image_undo_pop_stack (image,
+                                    private->undo_stack,
+                                    private->redo_stack,
+                                    GIMP_UNDO_MODE_UNDO);
 }
 
 gboolean
@@ -147,12 +146,10 @@ gimp_image_redo (GimpImage *image)
   g_return_val_if_fail (private->pushing_undo_group == GIMP_UNDO_GROUP_NONE,
                         FALSE);
 
-  gimp_image_undo_pop_stack (image,
-                             private->redo_stack,
-                             private->undo_stack,
-                             GIMP_UNDO_MODE_REDO);
-
-  return TRUE;
+  return gimp_image_undo_pop_stack (image,
+                                    private->redo_stack,
+                                    private->undo_stack,
+                                    GIMP_UNDO_MODE_REDO);
 }
 
 /*
@@ -176,15 +173,16 @@ gimp_image_strong_undo (GimpImage *image)
   g_object_ref (image);
   weak = gimp_undo_is_weak (gimp_undo_stack_peek (private->undo_stack));
 
-  gimp_image_undo (image);
+  if (! gimp_image_undo (image))
+    { g_object_unref (image); return FALSE; }
 
   while (weak)
     {
       /* A callback may clear history. Do not dereference a borrowed Undo
        * from the previous pop after control has returned from that callback. */
       weak = gimp_undo_is_weak (gimp_undo_stack_peek (private->undo_stack));
-      if (weak)
-        gimp_image_undo (image);
+      if (weak && ! gimp_image_undo (image))
+        { g_object_unref (image); return FALSE; }
     }
 
   g_object_unref (image);
@@ -215,15 +213,16 @@ gimp_image_strong_redo (GimpImage *image)
   g_object_ref (image);
   weak = gimp_undo_is_weak (gimp_undo_stack_peek (private->redo_stack));
 
-  gimp_image_redo (image);
+  if (! gimp_image_redo (image))
+    { g_object_unref (image); return FALSE; }
 
   while (weak)
     {
       /* A callback may clear history. Do not dereference a borrowed Undo
        * from the previous pop after control has returned from that callback. */
       weak = gimp_undo_is_weak (gimp_undo_stack_peek (private->redo_stack));
-      if (weak)
-        gimp_image_redo (image);
+      if (weak && ! gimp_image_redo (image))
+        { g_object_unref (image); return FALSE; }
     }
 
   g_object_unref (image);
@@ -567,7 +566,74 @@ gimp_image_undo_can_compress (GimpImage    *image,
 
 /*  private functions  */
 
+typedef struct
+{
+  GimpUndo *undo;
+  GimpUndoStack *parent;
+  gint index;
+  gint children;
+  gboolean prepared;
+} GimpUndoPopNode;
+
 static void
+gimp_undo_pop_node_free (gpointer data)
+{
+  GimpUndoPopNode *node = data;
+  g_object_unref (node->undo);
+  g_free (node);
+}
+
+/* Fetch each child afresh after taking a lease: toggle-ref callbacks may
+ * invalidate container iterators. Identity is checked again before commit. */
+static gboolean
+gimp_undo_pop_plan_add (GPtrArray *plan, GimpUndo *undo,
+                        GimpUndoStack *parent, gint index)
+{
+  GimpUndoPopNode *node;
+  guint n;
+  for (n = 0; n < plan->len; n++)
+    if (((GimpUndoPopNode *) g_ptr_array_index (plan, n))->undo == undo)
+      return FALSE;
+  node = g_new0 (GimpUndoPopNode, 1);
+  node->undo = g_object_ref (undo);
+  node->parent = parent;
+  node->index = index;
+  node->children = -1;
+  g_ptr_array_add (plan, node);
+  if (gimp_container_get_child_by_index (parent->undos, index) != GIMP_OBJECT (undo))
+    return FALSE;
+  if (GIMP_IS_UNDO_STACK (undo))
+    {
+      GimpUndoStack *group = GIMP_UNDO_STACK (undo);
+      gint i;
+      node->children = gimp_container_get_n_children (group->undos);
+      for (i = 0; i < node->children; i++)
+        {
+          GimpUndo *child = GIMP_UNDO (gimp_container_get_child_by_index (group->undos, i));
+          if (! child || ! gimp_undo_pop_plan_add (plan, child, group, i))
+            return FALSE;
+        }
+    }
+  return TRUE;
+}
+
+static gboolean
+gimp_undo_pop_plan_matches (GPtrArray *plan)
+{
+  guint n;
+  for (n = 0; n < plan->len; n++)
+    {
+      GimpUndoPopNode *node = g_ptr_array_index (plan, n);
+      if (gimp_container_get_child_by_index (node->parent->undos, node->index) != GIMP_OBJECT (node->undo))
+        return FALSE;
+      if (node->children >= 0 &&
+          gimp_container_get_n_children (GIMP_UNDO_STACK (node->undo)->undos) != node->children)
+        return FALSE;
+    }
+  return TRUE;
+}
+
+static gboolean
 gimp_image_undo_pop_stack (GimpImage     *image,
                            GimpUndoStack *undo_stack,
                            GimpUndoStack *redo_stack,
@@ -575,11 +641,36 @@ gimp_image_undo_pop_stack (GimpImage     *image,
 {
   GimpUndo            *undo;
   GimpUndoAccumulator  accum = { 0, };
+  GPtrArray *plan;
+  gboolean committed = FALSE;
+  guint n;
+
+  if (g_object_get_data (G_OBJECT (image), "gimp-undo-pop-active"))
+    return FALSE;
+  g_object_set_data (G_OBJECT (image), "gimp-undo-pop-active", GINT_TO_POINTER (1));
+  g_object_ref (image);
+  plan = g_ptr_array_new_with_free_func (gimp_undo_pop_node_free);
+  if (gimp_image_has_pending_paint (image))
+    goto finish;
+  undo = gimp_undo_stack_peek (undo_stack);
+  if (undo && ! gimp_undo_pop_plan_add (plan, undo, undo_stack, 0))
+    goto finish;
+  for (n = 0; n < plan->len; n++)
+    {
+      GimpUndoPopNode *node = g_ptr_array_index (plan, n);
+      if (GIMP_IS_UNDO_POP_GUARD (node->undo))
+        {
+          if (! gimp_undo_pop_guard_prepare (node->undo, undo_mode))
+            goto finish;
+          node->prepared = TRUE;
+        }
+    }
+  if (! gimp_undo_pop_plan_matches (plan))
+    goto finish;
 
   /* clean/dirty, undo-event and deferred notify handlers may release the
    * caller's last image reference. Its stacks must survive the entire pop,
    * including the final notification thaw. This lease is operation-local. */
-  g_object_ref (image);
   g_object_freeze_notify (G_OBJECT (image));
 
   undo = gimp_undo_stack_pop_undo (undo_stack, undo_mode, &accum);
@@ -618,7 +709,18 @@ gimp_image_undo_pop_stack (GimpImage     *image,
     }
 
   g_object_thaw_notify (G_OBJECT (image));
+  committed = TRUE;
+finish:
+  for (n = plan->len; n > 0; n--)
+    {
+      GimpUndoPopNode *node = g_ptr_array_index (plan, n - 1);
+      if (node->prepared)
+        gimp_undo_pop_guard_finish (node->undo, undo_mode);
+    }
+  g_ptr_array_unref (plan);
+  g_object_set_data (G_OBJECT (image), "gimp-undo-pop-active", NULL);
   g_object_unref (image);
+  return committed;
 }
 
 static void

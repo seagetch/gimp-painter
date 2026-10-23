@@ -1,0 +1,70 @@
+ninja: Entering directory `/workspace/shared/gimp-native-preset-gui/build'
+[1/16] Generating git-version.h.in.1 with a custom command
+fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+[2/16] Generating git-version.h.in.2 with a custom command
+fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+[3/16] Generating git-version.h with a custom command
+fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+[4/10] Compiling C object app/core/libappcore.a.p/gimpimage-undo.c.o
+[5/10] Generating app/tests/icon-theme-fixture/gimp-test-icon-theme-fixture with a custom command
+{"files": 1191, "manifest_sha256": "2f790ebf02244ef3c023f17f16ab614cbc315ee46d46abd87b7f73d4d5d9be41", "ownership_marker_sha256": "d3ebe76f57bdce73e82df17c3cd89f1a630f42f3c8d72dbfdacd4a000061b8bf", "plan_sha256": "0a16da7a76b5facf2d3d8084793b72e28d32d17c7ff6bf237d164075d4af4b95", "stamp_sha256": "c20e592420d8f1feb8e044c6114f8ed009473d411042806fd6e9aadd50c7ffc9", "status": "verified"}
+[6/10] Compiling C object app/core/libappcore.a.p/gimpundopopguard.c.o
+[7/10] Linking static target app/core/libappcore.a
+[8/10] Compiling C object app/tests/undo-pop-guard.p/test-undo-pop-guard.c.o
+../source/app/tests/test-undo-pop-guard.c: In function ‘rejected’:
+../source/app/tests/test-undo-pop-guard.c:35:47: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   35 | static void rejected(void){if(!begin())return;TestGuardUndo*t=push(1);t->reject=TRUE;gint dirty=gimp_image_is_dirty(image);g_assert_false(gimp_image_undo(image));g_assert_true(gimp_undo_stack_peek(gimp_image_get_undo_stack(image))==GIMP_UNDO(t));g_assert_cmpint(gimp_image_is_dirty(image),==,dirty);g_assert_cmpuint(finished,==,0);g_assert_cmpuint(popped,==,0);t->reject=FALSE;g_assert_true(gimp_image_undo(image));t->reject=TRUE;g_assert_false(gimp_image_redo(image));g_assert_true(gimp_undo_stack_peek(gimp_image_get_redo_stack(image))==GIMP_UNDO(t));end();}
+      |                                               ^~~~~~~~~~~~~
+../source/app/tests/test-undo-pop-guard.c:35:86: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   35 | static void rejected(void){if(!begin())return;TestGuardUndo*t=push(1);t->reject=TRUE;gint dirty=gimp_image_is_dirty(image);g_assert_false(gimp_image_undo(image));g_assert_true(gimp_undo_stack_peek(gimp_image_get_undo_stack(image))==GIMP_UNDO(t));g_assert_cmpint(gimp_image_is_dirty(image),==,dirty);g_assert_cmpuint(finished,==,0);g_assert_cmpuint(popped,==,0);t->reject=FALSE;g_assert_true(gimp_image_undo(image));t->reject=TRUE;g_assert_false(gimp_image_redo(image));g_assert_true(gimp_undo_stack_peek(gimp_image_get_redo_stack(image))==GIMP_UNDO(t));end();}
+      |                                                                                      ^~~~
+../source/app/tests/test-undo-pop-guard.c: In function ‘group_reject’:
+../source/app/tests/test-undo-pop-guard.c:36:131: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   36 | static void group_reject(void){if(!begin())return;g_assert_true(gimp_image_undo_group_start(image,GIMP_UNDO_GROUP_PAINT,"Group"));TestGuardUndo*a=push(1);push(2);push(3);gimp_image_undo_group_end(image);a->reject=TRUE;GimpUndo*top=gimp_undo_stack_peek(gimp_image_get_undo_stack(image));g_assert_false(gimp_image_undo(image));g_assert_true(gimp_undo_stack_peek(gimp_image_get_undo_stack(image))==top);g_assert_cmpuint(prepared,==,2);g_assert_cmpuint(finished,==,2);g_assert_cmpuint(finish_order[0],==,2);g_assert_cmpuint(finish_order[1],==,3);g_assert_cmpuint(popped,==,0);a->reject=FALSE;prepared=finished=0;g_assert_true(gimp_image_undo(image));g_assert_cmpuint(popped,==,3);g_assert_true(gimp_image_redo(image));g_assert_cmpuint(popped,==,6);end();}
+      |                                                                                                                                   ^~~~~~~~~~~~~
+../source/app/tests/test-undo-pop-guard.c:36:219: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   36 | static void group_reject(void){if(!begin())return;g_assert_true(gimp_image_undo_group_start(image,GIMP_UNDO_GROUP_PAINT,"Group"));TestGuardUndo*a=push(1);push(2);push(3);gimp_image_undo_group_end(image);a->reject=TRUE;GimpUndo*top=gimp_undo_stack_peek(gimp_image_get_undo_stack(image));g_assert_false(gimp_image_undo(image));g_assert_true(gimp_undo_stack_peek(gimp_image_get_undo_stack(image))==top);g_assert_cmpuint(prepared,==,2);g_assert_cmpuint(finished,==,2);g_assert_cmpuint(finish_order[0],==,2);g_assert_cmpuint(finish_order[1],==,3);g_assert_cmpuint(popped,==,0);a->reject=FALSE;prepared=finished=0;g_assert_true(gimp_image_undo(image));g_assert_cmpuint(popped,==,3);g_assert_true(gimp_image_redo(image));g_assert_cmpuint(popped,==,6);end();}
+      |                                                                                                                                                                                                                           ^~~~~~~~
+../source/app/tests/test-undo-pop-guard.c: In function ‘pending_reject’:
+../source/app/tests/test-undo-pop-guard.c:38:61: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   38 | static void pending_reject(void){if(!begin())return;push(1);gulong id=g_signal_connect(image,"query-pending-paint",G_CALLBACK(pending),NULL);g_assert_false(gimp_image_undo(image));g_assert_false(gimp_image_strong_undo(image));g_assert_cmpuint(prepared,==,0);g_signal_handler_disconnect(image,id);g_assert_true(gimp_image_undo(image));end();}
+      |                                                             ^~~~~~
+../source/app/tests/test-undo-pop-guard.c: In function ‘removed’:
+../source/app/tests/test-undo-pop-guard.c:39:78: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   39 | static void removed(GimpContainer*c,GimpObject*o,gpointer d){(void)c;(void)o;TestGuardUndo*t=d;g_assert_true(t->locked);g_assert_false(gimp_image_undo(image));g_assert_false(gimp_image_redo(image));g_assert_false(gimp_image_strong_undo(image));++nested;}
+      |                                                                              ^~~~~~~~~~~~~
+../source/app/tests/test-undo-pop-guard.c: In function ‘reentrant_remove’:
+../source/app/tests/test-undo-pop-guard.c:40:55: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   40 | static void reentrant_remove(void){if(!begin())return;TestGuardUndo*t=push(1);gulong id=g_signal_connect(gimp_image_get_undo_stack(image)->undos,"remove",G_CALLBACK(removed),t);g_assert_true(gimp_image_undo(image));g_assert_cmpuint(nested,==,1);g_assert_cmpuint(popped,==,1);g_signal_handler_disconnect(gimp_image_get_undo_stack(image)->undos,id);end();}
+      |                                                       ^~~~~~~~~~~~~
+../source/app/tests/test-undo-pop-guard.c: In function ‘event’:
+../source/app/tests/test-undo-pop-guard.c:41:86: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   41 | static void event(GimpImage*i,GimpUndoEvent e,GimpUndo*u,gpointer d){(void)i;(void)u;TestGuardUndo*t=d;if(e==GIMP_UNDO_EVENT_UNDO||e==GIMP_UNDO_EVENT_REDO){g_assert_true(t->locked);g_assert_false(gimp_image_redo(image));++nested;}}
+      |                                                                                      ^~~~~~~~~~~~~
+../source/app/tests/test-undo-pop-guard.c: In function ‘notification_lease’:
+../source/app/tests/test-undo-pop-guard.c:42:57: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   42 | static void notification_lease(void){if(!begin())return;TestGuardUndo*t=push(1);gulong id=g_signal_connect(image,"undo-event",G_CALLBACK(event),t);g_assert_true(gimp_image_undo(image));g_assert_true(gimp_image_redo(image));g_assert_cmpuint(nested,==,2);g_signal_handler_disconnect(image,id);end();}
+      |                                                         ^~~~~~~~~~~~~
+../source/app/tests/test-undo-pop-guard.c: In function ‘last_owner’:
+../source/app/tests/test-undo-pop-guard.c:44:57: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   44 | static void last_owner(void){if(!begin())return;push(1);gpointer weak=image;g_object_add_weak_pointer(G_OBJECT(image),&weak);release_image=TRUE;g_assert_true(gimp_image_undo(image));g_assert_null(weak);g_assert_cmpuint(finished,==,1);image=NULL;end();}
+      |                                                         ^~~~~~~~
+../source/app/tests/test-undo-pop-guard.c: In function ‘nested_group’:
+../source/app/tests/test-undo-pop-guard.c:48:2: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   48 |  GimpUndoStack*outer=GIMP_UNDO_STACK(gimp_undo_stack_peek(gimp_image_get_undo_stack(image)));
+      |  ^~~~~~~~~~~~~
+../source/app/tests/test-undo-pop-guard.c:50:2: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   50 |  TestGuardUndo*a=g_object_new(test_guard_undo_get_type(),"image",image,"undo-type",GIMP_UNDO_PAINT,NULL);a->id=1;
+      |  ^~~~~~~~~~~~~
+../source/app/tests/test-undo-pop-guard.c:51:2: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   51 |  TestGuardUndo*b=g_object_new(test_guard_undo_get_type(),"image",image,"undo-type",GIMP_UNDO_PAINT,NULL);b->id=2;
+      |  ^~~~~~~~~~~~~
+../source/app/tests/test-undo-pop-guard.c: In function ‘strong_reject’:
+../source/app/tests/test-undo-pop-guard.c:56:52: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   56 | static void strong_reject(void){if(!begin())return;TestGuardUndo*t=push(1);GIMP_UNDO(t)->undo_type=GIMP_UNDO_ITEM_VISIBILITY;t->reject=TRUE;g_assert_false(gimp_image_strong_undo(image));g_assert_cmpuint(popped,==,0);t->reject=FALSE;g_assert_true(gimp_image_undo(image));t->reject=TRUE;g_assert_false(gimp_image_strong_redo(image));g_assert_cmpuint(popped,==,1);end();}
+      |                                                    ^~~~~~~~~~~~~
+[9/10] Linking target app/tests/prepared-undo
+[10/10] Linking target app/tests/undo-pop-guard

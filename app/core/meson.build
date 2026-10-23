@@ -270,6 +270,7 @@ libappcore_sources = [
   'gimptriviallycancelablewaitable.c',
   'gimpuncancelablewaitable.c',
   'gimpundo.c',
+  'gimpundopopguard.c',
   'gimpundostack.c',
   'gimpunit.c',
   'gimpviewable.c',
