@@ -1279,3 +1279,28 @@ test('mypaint-options-construction-reentry', mypaint_options_construction_reentr
         'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
         'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
         'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 120)
+
+# Paired historical evaluator/resource and native pixel Undo integration.
+paired_stroke_undo = executable('paired-stroke-undo',
+  ['test-paired-stroke-undo.cpp', 'tests.c'],
+  dependencies: [libapp_dep, painter_mypaint_surface_dep, appstream],
+  link_with: apptests_links, cpp_args: painter_cpp_args,
+  link_args: ['-Wl,--wrap=_Znwm'], override_options: ['cpp_std=c++14'],
+)
+test('paired-stroke-undo', paired_stroke_undo,
+  env: ['GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+        'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+        'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
+        'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 120)
+
+# Actual rendered paired Undo/Redo evidence, using direct controller API.
+paired_stroke_ui = executable('paired-stroke-ui',
+  ['test-paired-stroke-ui.cpp', 'tests.c'],
+  dependencies: [libapp_dep, painter_mypaint_surface_dep, appstream],
+  link_with: apptests_links, cpp_args: painter_cpp_args,
+  link_args: ['-Wl,--wrap=_Znwm'], override_options: ['cpp_std=c++14'])
+test('paired-stroke-ui', paired_stroke_ui,
+  env: ['GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+        'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+        'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
+        'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 120)

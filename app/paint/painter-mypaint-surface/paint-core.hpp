@@ -3,6 +3,7 @@
 #define GIMP_PAINTER_MYPAINT_PAINT_CORE_HPP
 #include "../../painter/gimp-painter-visibility.h"
 #include "gimp-resources.hpp"
+#include "../painter-mypaint/engine.hpp"
 typedef struct _GimpPaintOptions GimpPaintOptions;
 typedef struct _GimpDrawable GimpDrawable;
 namespace GimpPainter GIMP_PAINTER_PRIVATE { namespace MyPaint {
@@ -30,6 +31,10 @@ public:
   void next_segment ();
   void end_batch (bool commit);
   bool active () const;
+  // Read-only history/continuation observability; no native owner escapes.
+  GimpCoords continuation_coords () const;
+  Resource resource_snapshot () const;
+  Engine::Checkpoint evaluator_checkpoint () const;
   ResourceResolution resolution () const;
   std::size_t bytes_read () const;
   std::size_t bytes_written () const;

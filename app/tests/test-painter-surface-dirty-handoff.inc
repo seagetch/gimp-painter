@@ -7,7 +7,7 @@ static void collect_undo(gpointer object,gpointer data)
 {
  auto*rows=static_cast<std::vector<GObject*>*>(data);
  if(GIMP_IS_UNDO_STACK(object))gimp_container_foreach(GIMP_UNDO_STACK(object)->undos,collect_undo,data);
- else if(!std::strcmp(G_OBJECT_TYPE_NAME(object),"GimpDrawableUndo"))rows->push_back(G_OBJECT(object));
+ else if(g_type_is_a(G_OBJECT_TYPE(object),g_type_from_name("GimpDrawableUndo")))rows->push_back(G_OBJECT(object));
 }
 static void native_dirty_undo_extent()
 {

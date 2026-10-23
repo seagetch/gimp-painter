@@ -1,0 +1,132 @@
+
+/workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu/libglib-2.0.so:     file format elf64-x86-64
+
+
+Disassembly of section .init:
+
+Disassembly of section .plt:
+
+Disassembly of section .plt.got:
+
+Disassembly of section .text:
+
+0000000000073910 <g_rand_copy@@Base>:
+   73910:	f3 0f 1e fa          	endbr64
+   73914:	53                   	push   %rbx
+   73915:	48 85 ff             	test   %rdi,%rdi
+   73918:	74 46                	je     73960 <g_rand_copy@@Base+0x50>
+   7391a:	48 89 fb             	mov    %rdi,%rbx
+   7391d:	bf c4 09 00 00       	mov    $0x9c4,%edi
+   73922:	e8 39 1f ff ff       	call   65860 <g_malloc0@@Base>
+   73927:	48 8b 13             	mov    (%rbx),%rdx
+   7392a:	48 89 de             	mov    %rbx,%rsi
+   7392d:	48 8d 78 08          	lea    0x8(%rax),%rdi
+   73931:	48 89 c1             	mov    %rax,%rcx
+   73934:	48 83 e7 f8          	and    $0xfffffffffffffff8,%rdi
+   73938:	48 89 10             	mov    %rdx,(%rax)
+   7393b:	48 8b 93 bc 09 00 00 	mov    0x9bc(%rbx),%rdx
+   73942:	48 29 f9             	sub    %rdi,%rcx
+   73945:	48 29 ce             	sub    %rcx,%rsi
+   73948:	81 c1 c4 09 00 00    	add    $0x9c4,%ecx
+   7394e:	48 89 90 bc 09 00 00 	mov    %rdx,0x9bc(%rax)
+   73955:	c1 e9 03             	shr    $0x3,%ecx
+   73958:	f3 48 a5             	rep movsq %ds:(%rsi),%es:(%rdi)
+   7395b:	5b                   	pop    %rbx
+   7395c:	c3                   	ret
+   7395d:	0f 1f 00             	nopl   (%rax)
+   73960:	48 8d 15 9a ef 04 00 	lea    0x4ef9a(%rip),%rdx        # c2901 <g_io_channel_unix_get_fd@@Base+0x5201>
+   73967:	48 8d 35 32 1a 06 00 	lea    0x61a32(%rip),%rsi        # d53a0 <g_io_channel_unix_get_fd@@Base+0x17ca0>
+   7396e:	48 8d 3d 99 c6 04 00 	lea    0x4c699(%rip),%rdi        # c000e <g_io_channel_unix_get_fd@@Base+0x290e>
+   73975:	e8 06 4d ff ff       	call   68680 <g_return_if_fail_warning@@Base>
+   7397a:	31 c0                	xor    %eax,%eax
+   7397c:	5b                   	pop    %rbx
+   7397d:	c3                   	ret
+
+Disassembly of section .fini:
+
+/workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu/libjson-glib-1.0.so:     file format elf64-x86-64
+
+
+Disassembly of section .init:
+
+Disassembly of section .plt:
+
+Disassembly of section .plt.got:
+
+Disassembly of section .text:
+
+0000000000012b20 <json_node_alloc@@libjson-glib-1.0.so.0>:
+   12b20:	f3 0f 1e fa          	endbr64
+   12b24:	53                   	push   %rbx
+   12b25:	bf 20 00 00 00       	mov    $0x20,%edi
+   12b2a:	e8 f1 70 ff ff       	call   9c20 <g_malloc0@plt>
+   12b2f:	48 89 c3             	mov    %rax,%rbx
+   12b32:	48 8d 78 04          	lea    0x4(%rax),%rdi
+   12b36:	e8 b5 6d ff ff       	call   98f0 <g_atomic_ref_count_init@plt>
+   12b3b:	48 89 d8             	mov    %rbx,%rax
+   12b3e:	c7 43 0c 01 00 00 00 	movl   $0x1,0xc(%rbx)
+   12b45:	5b                   	pop    %rbx
+   12b46:	c3                   	ret
+
+Disassembly of section .fini:
+
+/workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu/libjson-glib-1.0.so:     file format elf64-x86-64
+
+
+Disassembly of section .init:
+
+Disassembly of section .plt:
+
+Disassembly of section .plt.got:
+
+Disassembly of section .text:
+
+0000000000014670 <json_object_new@@libjson-glib-1.0.so.0>:
+   14670:	f3 0f 1e fa          	endbr64
+   14674:	53                   	push   %rbx
+   14675:	bf 38 00 00 00       	mov    $0x38,%edi
+   1467a:	e8 a1 55 ff ff       	call   9c20 <g_malloc0@plt>
+   1467f:	48 89 c3             	mov    %rax,%rbx
+   14682:	48 8d 78 08          	lea    0x8(%rax),%rdi
+   14686:	e8 95 4c ff ff       	call   9320 <g_ref_count_init@plt>
+   1468b:	c7 43 28 00 00 00 00 	movl   $0x0,0x28(%rbx)
+   14692:	48 8d 0d 17 e3 ff ff 	lea    -0x1ce9(%rip),%rcx        # 129b0 <json_node_unref@@libjson-glib-1.0.so.0>
+   14699:	48 8b 15 08 59 01 00 	mov    0x15908(%rip),%rdx        # 29fa8 <json_to_string@@libjson-glib-1.0.so.0+0xc4e8>
+   146a0:	48 8b 35 51 59 01 00 	mov    0x15951(%rip),%rsi        # 29ff8 <json_to_string@@libjson-glib-1.0.so.0+0xc538>
+   146a7:	48 8b 3d 0a 59 01 00 	mov    0x1590a(%rip),%rdi        # 29fb8 <json_to_string@@libjson-glib-1.0.so.0+0xc4f8>
+   146ae:	e8 3d 50 ff ff       	call   96f0 <g_hash_table_new_full@plt>
+   146b3:	48 8d 7b 10          	lea    0x10(%rbx),%rdi
+   146b7:	48 89 03             	mov    %rax,(%rbx)
+   146ba:	e8 f1 50 ff ff       	call   97b0 <g_queue_init@plt>
+   146bf:	48 89 d8             	mov    %rbx,%rax
+   146c2:	5b                   	pop    %rbx
+   146c3:	c3                   	ret
+
+Disassembly of section .fini:
+
+/workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu/libjson-glib-1.0.so:     file format elf64-x86-64
+
+
+Disassembly of section .init:
+
+Disassembly of section .plt:
+
+Disassembly of section .plt.got:
+
+Disassembly of section .text:
+
+000000000000a470 <json_array_new@@libjson-glib-1.0.so.0>:
+    a470:	f3 0f 1e fa          	endbr64
+    a474:	53                   	push   %rbx
+    a475:	bf 18 00 00 00       	mov    $0x18,%edi
+    a47a:	e8 a1 f7 ff ff       	call   9c20 <g_malloc0@plt>
+    a47f:	48 8d 78 08          	lea    0x8(%rax),%rdi
+    a483:	48 89 c3             	mov    %rax,%rbx
+    a486:	e8 95 ee ff ff       	call   9320 <g_ref_count_init@plt>
+    a48b:	e8 70 f9 ff ff       	call   9e00 <g_ptr_array_new@plt>
+    a490:	48 89 03             	mov    %rax,(%rbx)
+    a493:	48 89 d8             	mov    %rbx,%rax
+    a496:	5b                   	pop    %rbx
+    a497:	c3                   	ret
+
+Disassembly of section .fini:

@@ -1,0 +1,48 @@
+ninja: Entering directory `/workspace/shared/gimp-native-preset-gui/build'
+[1/12] Compiling C++ object app/paint/painter-mypaint/painter-mypaint-resource-trace.p/tests_resource-trace.cpp.o
+[2/12] Compiling C++ object app/paint/painter-mypaint/painter-mypaint-resource.p/tests_test-resource.cpp.o
+[3/12] Compiling C++ object app/paint/painter-mypaint/painter-mypaint-engine-trace.p/tests_engine-trace.cpp.o
+../source/app/paint/painter-mypaint/tests/engine-trace.cpp:26:8: warning: ‘TraceSurface’ declared with greater visibility than its base ‘GimpPainter::MyPaint::Surface’ [-Wattributes]
+   26 | struct TraceSurface : TraceSurfaceBase {
+      |        ^~~~~~~~~~~~
+[4/12] Compiling C++ object app/paint/painter-mypaint/painter-mypaint-checkpoint.p/tests_test-checkpoint.cpp.o
+../source/app/paint/painter-mypaint/tests/test-checkpoint.cpp:12:18: warning: no previous declaration for ‘void* __wrap__Znwm(std::size_t)’ [-Wmissing-declarations]
+   12 | extern "C" void *__wrap__Znwm(std::size_t size)
+      |                  ^~~~~~~~~~~~
+../source/app/paint/painter-mypaint/tests/test-checkpoint.cpp:17:8: warning: ‘Trace’ declared with greater visibility than its base ‘GimpPainter::MyPaint::Surface’ [-Wattributes]
+   17 | struct Trace : Surface {
+      |        ^~~~~
+[5/12] Compiling C++ object app/paint/painter-mypaint/painter-mypaint-prepared-state.p/tests_test-prepared-state.cpp.o
+In file included from ../source/app/paint/painter-mypaint/tests/test-prepared-state.cpp:3:
+../source/app/paint/painter-mypaint/tests/test-checkpoint.cpp:12:18: warning: no previous declaration for ‘void* __wrap__Znwm(std::size_t)’ [-Wmissing-declarations]
+   12 | extern "C" void *__wrap__Znwm(std::size_t size)
+      |                  ^~~~~~~~~~~~
+../source/app/paint/painter-mypaint/tests/test-checkpoint.cpp:17:8: warning: ‘Trace’ declared with greater visibility than its base ‘GimpPainter::MyPaint::Surface’ [-Wattributes]
+   17 | struct Trace : Surface {
+      |        ^~~~~
+../source/app/paint/painter-mypaint/tests/test-prepared-state.cpp:2:14: warning: no previous declaration for ‘int checkpoint_fixture_main(int, char**)’ [-Wmissing-declarations]
+    2 | #define main checkpoint_fixture_main
+      |              ^~~~~~~~~~~~~~~~~~~~~~~
+../source/app/paint/painter-mypaint/tests/test-checkpoint.cpp:80:5: note: in expansion of macro ‘main’
+   80 | int main(int argc,char**argv){g_test_init(&argc,&argv,nullptr);g_test_add_func("/checkpoint/initial",initial);g_test_add_func("/checkpoint/midstroke-random",midstroke);g_test_add_func("/checkpoint/changed-settings",changed_settings);g_test_add_func("/checkpoint/reset-pending",reset_pending);g_test_add_func("/checkpoint/owner-gone",owner_gone);g_test_add_func("/checkpoint/independent",independent);g_test_add_func("/checkpoint/empty-rejected",empty);g_test_add_func("/checkpoint/reentrant-boundary",reentry);g_test_add_func("/checkpoint/allocation-failure",allocation_failure);return g_test_run();}
+      |     ^~~~
+[6/12] Linking target app/paint/painter-mypaint/painter-mypaint-resource
+[7/12] Linking target app/paint/painter-mypaint/painter-mypaint-resource-trace
+[8/12] Compiling C++ object app/paint/painter-mypaint/painter-mypaint-historical-install.p/tests_test-historical-install.cpp.o
+In file included from ../source/app/paint/painter-mypaint/tests/test-historical-install.cpp:3:
+../source/app/paint/painter-mypaint/tests/test-checkpoint.cpp:12:18: warning: no previous declaration for ‘void* __wrap__Znwm(std::size_t)’ [-Wmissing-declarations]
+   12 | extern "C" void *__wrap__Znwm(std::size_t size)
+      |                  ^~~~~~~~~~~~
+../source/app/paint/painter-mypaint/tests/test-checkpoint.cpp:17:8: warning: ‘Trace’ declared with greater visibility than its base ‘GimpPainter::MyPaint::Surface’ [-Wattributes]
+   17 | struct Trace : Surface {
+      |        ^~~~~
+../source/app/paint/painter-mypaint/tests/test-historical-install.cpp:2:14: warning: no previous declaration for ‘int checkpoint_fixture_main(int, char**)’ [-Wmissing-declarations]
+    2 | #define main checkpoint_fixture_main
+      |              ^~~~~~~~~~~~~~~~~~~~~~~
+../source/app/paint/painter-mypaint/tests/test-checkpoint.cpp:80:5: note: in expansion of macro ‘main’
+   80 | int main(int argc,char**argv){g_test_init(&argc,&argv,nullptr);g_test_add_func("/checkpoint/initial",initial);g_test_add_func("/checkpoint/midstroke-random",midstroke);g_test_add_func("/checkpoint/changed-settings",changed_settings);g_test_add_func("/checkpoint/reset-pending",reset_pending);g_test_add_func("/checkpoint/owner-gone",owner_gone);g_test_add_func("/checkpoint/independent",independent);g_test_add_func("/checkpoint/empty-rejected",empty);g_test_add_func("/checkpoint/reentrant-boundary",reentry);g_test_add_func("/checkpoint/allocation-failure",allocation_failure);return g_test_run();}
+      |     ^~~~
+[9/12] Linking target app/paint/painter-mypaint/painter-mypaint-engine-trace
+[10/12] Linking target app/paint/painter-mypaint/painter-mypaint-checkpoint
+[11/12] Linking target app/paint/painter-mypaint/painter-mypaint-prepared-state
+[12/12] Linking target app/paint/painter-mypaint/painter-mypaint-historical-install

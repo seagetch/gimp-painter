@@ -186,6 +186,27 @@ struct Resource::Impl {
   Impl () { json_object_set_int_member (json_node_get_object (root.get ()), "version", 3); }
   JsonObject *object () const { return json_node_get_object (root.get ()); }
 };
+namespace {
+std::size_t add_storage(std::size_t a,std::size_t b) noexcept
+{const auto cap=std::numeric_limits<std::size_t>::max();return b>cap-a?cap:a+b;}
+std::size_t node_storage(JsonNode*n) noexcept {
+  if(!n)return 0;
+  // 512 bytes per node conservatively covers JsonNode/GValue, object/hash-table
+  // or array headers, table/array capacity slack, and per-entry/list overhead
+  // of the pinned JSON-GLib backend (32-byte node, 56-byte object,
+  // hash headers/minimum buckets, <=2x capacity slack, and allocation slack).
+  // Empty nested objects also receive the full allowance. UTF-8 strings
+  // and keys are additional.
+  std::size_t bytes=512;
+  if(JSON_NODE_HOLDS_OBJECT(n))json_object_foreach_member(json_node_get_object(n),
+    [](JsonObject*,const gchar*key,JsonNode*child,gpointer data){auto&sum=*static_cast<std::size_t*>(data);sum=add_storage(sum,strlen(key)+1);sum=add_storage(sum,node_storage(child));},&bytes);
+  else if(JSON_NODE_HOLDS_ARRAY(n)){auto*a=json_node_get_array(n);for(guint i=0;i<json_array_get_length(a);++i)bytes=add_storage(bytes,node_storage(json_array_get_element(a,i)));}
+  else if(JSON_NODE_HOLDS_VALUE(n)&&json_node_get_value_type(n)==G_TYPE_STRING){const char*t=json_node_get_string(n);if(t)bytes=add_storage(bytes,strlen(t)+1);}
+  return bytes;
+}
+}
+std::size_t Resource::storage_bytes() const noexcept
+{return add_storage(sizeof(*this)+sizeof(Impl)+64,node_storage(impl_->root.get()));}
 Resource::Resource () : impl_ (new Impl) {}
 Resource::~Resource () = default;
 Resource::Resource (const Resource& other) : impl_ (new Impl)

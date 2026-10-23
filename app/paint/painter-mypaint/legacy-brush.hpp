@@ -167,6 +167,14 @@ private:
   bool reset_requested;
 
 public:
+  // Fixed arrays are in sizeof(Brush); each Mapping separately owns its
+  // vector capacity. GLib GRand is opaque: 4096 covers MT19937's 624 uint32
+  // words plus index/control/allocation overhead for the pinned GLib backend.
+  std::size_t storage_bytes() const noexcept {
+    std::size_t bytes=sizeof(*this)+4096;
+    for(const auto&mapping:settings)bytes+=mapping.storage_bytes()-sizeof(Mapping);
+    return bytes;
+  }
   Brush() {
     rng.reset (g_rand_new());
     print_inputs = false;

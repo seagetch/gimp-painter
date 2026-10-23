@@ -1,0 +1,20 @@
+{
+  "glib_version": "2.84.4",
+  "json_glib_version": "1.10.6",
+  "architecture": "x86_64",
+  "opaque_allocations": {
+    "GRand": 2500,
+    "JsonNode": 32,
+    "JsonObject": 56,
+    "JsonArray": 24
+  },
+  "allowances": {
+    "GRand": 4096,
+    "JSON_per_node_including_container_capacity_slack": 512,
+    "shared_control_block": 64
+  },
+  "libraries": {
+    "/workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.8400.4": "980ab64e995225de1543779e3bafafac9d705904d42ca3b5eb76e7a336cc5e1d",
+    "/workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu/libjson-glib-1.0.so.0.1000.6": "2c3a94650245b1cd0e3cfc3d17eefd3bf924d4366fe2a6875a51f0187f9e69fe"
+  }
+}

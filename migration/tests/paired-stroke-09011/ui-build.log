@@ -1,0 +1,94 @@
+ninja: Entering directory `/workspace/shared/gimp-native-preset-gui/build'
+[1/25] Generating git-version.h.in.1 with a custom command
+fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+[2/25] Generating symbol file libgimpbase/libgimpbase-3.0.so.0.8.1.p/libgimpbase-3.0.so.0.8.1.symbols
+[3/18] Generating git-version.h.in.2 with a custom command
+fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+[4/18] Generating symbol file libgimpconfig/libgimpconfig-3.0.so.0.8.1.p/libgimpconfig-3.0.so.0.8.1.symbols
+[5/14] Generating git-version.h with a custom command
+fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+[6/8] Generating app/tests/icon-theme-fixture/gimp-test-icon-theme-fixture with a custom command
+{"files": 1191, "manifest_sha256": "2f790ebf02244ef3c023f17f16ab614cbc315ee46d46abd87b7f73d4d5d9be41", "ownership_marker_sha256": "d3ebe76f57bdce73e82df17c3cd89f1a630f42f3c8d72dbfdacd4a000061b8bf", "plan_sha256": "0a16da7a76b5facf2d3d8084793b72e28d32d17c7ff6bf237d164075d4af4b95", "stamp_sha256": "c20e592420d8f1feb8e044c6114f8ed009473d411042806fd6e9aadd50c7ffc9", "status": "verified"}
+[7/8] Compiling C++ object app/tests/paired-stroke-ui.p/test-paired-stroke-ui.cpp.o
+In file included from ../source/app/tests/test-paired-stroke-undo.cpp:3,
+                 from ../source/app/tests/test-paired-stroke-ui.cpp:3:
+../source/app/tests/test-gimp-painter-surface.cpp:191:8: warning: ‘StartReentry’ declared with greater visibility than the type of its field ‘StartReentry::core’ [-Wattributes]
+  191 | struct StartReentry {
+      |        ^~~~~~~~~~~~
+../source/app/tests/test-paired-stroke-undo.cpp:2:14: warning: no previous declaration for ‘int surface_fixture_main(int, char**)’ [-Wmissing-declarations]
+    2 | #define main surface_fixture_main
+      |              ^~~~~~~~~~~~~~~~~~~~
+../source/app/tests/test-gimp-painter-surface.cpp:306:5: note: in expansion of macro ‘main’
+  306 | int main(int argc,char**argv)
+      |     ^~~~
+In file included from ../source/app/tests/test-paired-stroke-undo.cpp:6:
+../source/app/paint/painter-mypaint/tests/test-checkpoint.cpp:12:18: warning: no previous declaration for ‘void* __wrap__Znwm(std::size_t)’ [-Wmissing-declarations]
+   12 | extern "C" void *__wrap__Znwm(std::size_t size)
+      |                  ^~~~~~~~~~~~
+../source/app/paint/painter-mypaint/tests/test-checkpoint.cpp:17:8: warning: ‘Trace’ declared with greater visibility than its base ‘GimpPainter::MyPaint::Surface’ [-Wattributes]
+   17 | struct Trace : Surface {
+      |        ^~~~~
+../source/app/tests/test-paired-stroke-undo.cpp:5:14: warning: no previous declaration for ‘int checkpoint_fixture_main(int, char**)’ [-Wmissing-declarations]
+    5 | #define main checkpoint_fixture_main
+      |              ^~~~~~~~~~~~~~~~~~~~~~~
+../source/app/paint/painter-mypaint/tests/test-checkpoint.cpp:80:5: note: in expansion of macro ‘main’
+   80 | int main(int argc,char**argv){g_test_init(&argc,&argv,nullptr);g_test_add_func("/checkpoint/initial",initial);g_test_add_func("/checkpoint/midstroke-random",midstroke);g_test_add_func("/checkpoint/changed-settings",changed_settings);g_test_add_func("/checkpoint/reset-pending",reset_pending);g_test_add_func("/checkpoint/owner-gone",owner_gone);g_test_add_func("/checkpoint/independent",independent);g_test_add_func("/checkpoint/empty-rejected",empty);g_test_add_func("/checkpoint/reentrant-boundary",reentry);g_test_add_func("/checkpoint/allocation-failure",allocation_failure);return g_test_run();}
+      |     ^~~~
+../source/app/tests/test-paired-stroke-undo.cpp:15:8: warning: ‘PairFixture’ declared with greater visibility than the type of its field ‘PairFixture::core’ [-Wattributes]
+   15 | struct PairFixture {
+      |        ^~~~~~~~~~~
+../source/app/tests/test-paired-stroke-undo.cpp:42:13: warning: ‘void native_coordinates()’ defined but not used [-Wunused-function]
+   42 | static void native_coordinates(){PairFixture f;auto original=f.core->continuation_coords();batch_stroke(*f.core,f.d);auto after=f.core->continuation_coords();g_assert_cmpfloat(after.x,==,32);g_assert_cmpfloat(after.y,==,24);g_assert_cmpfloat(after.pressure,==,.85);for(int i=0;i<3;++i){g_assert_true(gimp_image_undo(f.image));auto before=f.core->continuation_coords();g_assert_true(std::memcmp(&before,&original,sizeof before)==0);g_assert_true(gimp_image_redo(f.image));auto restored=f.core->continuation_coords();g_assert_true(std::memcmp(&after,&restored,sizeof after)==0);}}
+      |             ^~~~~~~~~~~~~~~~~~
+../source/app/tests/test-paired-stroke-undo.cpp:41:13: warning: ‘void begin_failure()’ defined but not used [-Wunused-function]
+   41 | static void begin_failure(){PairFixture f;auto before=pixels(f.d);auto state=identity(*f.core);bool rejected=false;fail_allocation=1;try{f.core->begin_batch(true);}catch(const std::bad_alloc&){rejected=true;}fail_allocation=0;g_assert_true(rejected);g_assert_true(identity(*f.core)==state);g_assert_true(pixels(f.d)==before);batch_stroke(*f.core,f.d);g_assert_true(gimp_image_undo(f.image));g_assert_true(pixels(f.d)==before);}
+      |             ^~~~~~~~~~~~~
+../source/app/tests/test-paired-stroke-undo.cpp:40:13: warning: ‘void no_undo_commit()’ defined but not used [-Wunused-function]
+   40 | static void no_undo_commit(){PairFixture f;auto before=pixels(f.d);f.core->begin_batch(false);stroke(*f.core,f.d);f.core->end_batch(true);g_assert_true(pixels(f.d)!=before);g_assert_null(gimp_undo_stack_peek(gimp_image_get_undo_stack(f.image)));g_assert_false(f.core->active());}
+      |             ^~~~~~~~~~~~~~
+../source/app/tests/test-paired-stroke-undo.cpp:39:13: warning: ‘void empty_cancel()’ defined but not used [-Wunused-function]
+   39 | static void empty_cancel(){PairFixture f;auto before=pixels(f.d);auto state=identity(*f.core);f.core->begin_batch(true);f.core->end_batch(false);g_assert_true(pixels(f.d)==before);g_assert_true(identity(*f.core)==state);g_assert_null(gimp_undo_stack_peek(gimp_image_get_undo_stack(f.image)));f.core->begin_batch(true);f.core->end_batch(true);g_assert_true(pixels(f.d)==before);g_assert_null(gimp_undo_stack_peek(gimp_image_get_undo_stack(f.image)));}
+      |             ^~~~~~~~~~~~
+../source/app/tests/test-paired-stroke-undo.cpp:38:13: warning: ‘void active_rejection()’ defined but not used [-Wunused-function]
+   38 | static void active_rejection(){PairFixture f;gimp_image_undo_push(f.image,GIMP_TYPE_UNDO,GIMP_UNDO_PAINT,"Ordinary",GIMP_DIRTY_NONE,nullptr);auto*top=gimp_undo_stack_peek(gimp_image_get_undo_stack(f.image));f.core->begin_batch(true);auto id=g_signal_connect(f.d,"update",G_CALLBACK(active_update),&f);stroke(*f.core,f.d);g_signal_handler_disconnect(f.d,id);g_assert_true(gimp_undo_stack_peek(gimp_image_get_undo_stack(f.image))==top);f.core->end_batch(false);}
+      |             ^~~~~~~~~~~~~~~~
+../source/app/tests/test-paired-stroke-undo.cpp:36:13: warning: ‘void grouped_history()’ defined but not used [-Wunused-function]
+   36 | static void grouped_history(){PairFixture f;auto before=pixels(f.d);auto sb=identity(*f.core);g_assert_true(gimp_image_undo_group_start(f.image,GIMP_UNDO_GROUP_PAINT,"Two strokes"));batch_stroke(*f.core,f.d);Resource r=settings(true);r.set_group("second entry");f.core->configure(r);batch_stroke(*f.core,f.d);gimp_image_undo_group_end(f.image);auto after=pixels(f.d);auto sa=identity(*f.core);for(int i=0;i<3;++i){g_assert_true(gimp_image_undo(f.image));g_assert_true(pixels(f.d)==before);g_assert_true(identity(*f.core)==sb);g_assert_true(gimp_image_redo(f.image));g_assert_true(pixels(f.d)==after);g_assert_true(identity(*f.core)==sa);}}
+      |             ^~~~~~~~~~~~~~~
+../source/app/tests/test-paired-stroke-undo.cpp:35:13: warning: ‘void replaced_owner()’ defined but not used [-Wunused-function]
+   35 | static void replaced_owner(){PairFixture f;auto before=pixels(f.d);batch_stroke(*f.core,f.d);auto after=pixels(f.d);auto original=std::move(f.core);f.core.reset(new PaintCore(f.options,settings(true)));auto replacement=identity(*f.core);g_assert_true(gimp_image_undo(f.image));g_assert_true(pixels(f.d)==before);g_assert_true(identity(*f.core)==replacement);g_assert_true(gimp_image_redo(f.image));g_assert_true(pixels(f.d)==after);g_assert_true(identity(*f.core)==replacement);original.reset();g_assert_true(gimp_image_undo(f.image));g_assert_true(identity(*f.core)==replacement);}
+      |             ^~~~~~~~~~~~~~
+../source/app/tests/test-paired-stroke-undo.cpp:34:13: warning: ‘void destroyed_owner()’ defined but not used [-Wunused-function]
+   34 | static void destroyed_owner(){PairFixture f;auto before=pixels(f.d);batch_stroke(*f.core,f.d);auto after=pixels(f.d);f.core.reset();g_assert_true(gimp_image_undo(f.image));g_assert_true(pixels(f.d)==before);g_assert_true(gimp_image_redo(f.image));g_assert_true(pixels(f.d)==after);}
+      |             ^~~~~~~~~~~~~~~
+../source/app/tests/test-paired-stroke-undo.cpp:33:13: warning: ‘void paired_allocation_failure()’ defined but not used [-Wunused-function]
+   33 | static void paired_allocation_failure(){for(unsigned nth:{1u,2u,4u}){PairFixture f;batch_stroke(*f.core,f.d);g_assert_true(gimp_image_undo(f.image));auto*redo=gimp_undo_stack_peek(gimp_image_get_redo_stack(f.image));auto before=pixels(f.d);auto state=identity(*f.core);f.core->begin_batch(true);stroke(*f.core,f.d);bool rejected=false;fail_allocation=nth;try{f.core->end_batch(true);}catch(const std::exception&){rejected=true;}g_assert_cmpuint(fail_allocation,==,0);fail_allocation=0;g_assert_true(rejected);g_assert_true(pixels(f.d)==before);g_assert_true(identity(*f.core)==state);g_assert_true(gimp_undo_stack_peek(gimp_image_get_redo_stack(f.image))==redo);g_assert_false(f.core->active());}}
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~
+../source/app/tests/test-paired-stroke-undo.cpp:32:13: warning: ‘void frozen_failure()’ defined but not used [-Wunused-function]
+   32 | static void frozen_failure(){PairFixture f;batch_stroke(*f.core,f.d);g_assert_true(gimp_image_undo(f.image));auto*redo=gimp_undo_stack_peek(gimp_image_get_redo_stack(f.image));auto before=pixels(f.d);auto state=identity(*f.core);f.core->begin_batch(true);stroke(*f.core,f.d);gimp_image_undo_freeze(f.image);bool rejected=false;try{f.core->end_batch(true);}catch(const std::runtime_error&){rejected=true;}g_assert_true(rejected);gimp_image_undo_thaw(f.image);g_assert_true(pixels(f.d)==before);g_assert_true(identity(*f.core)==state);g_assert_true(gimp_undo_stack_peek(gimp_image_get_redo_stack(f.image))==redo);g_assert_false(f.core->active());}
+      |             ^~~~~~~~~~~~~~
+../source/app/tests/test-paired-stroke-undo.cpp:31:13: warning: ‘void cancel_redo()’ defined but not used [-Wunused-function]
+   31 | static void cancel_redo(){PairFixture f;batch_stroke(*f.core,f.d);g_assert_true(gimp_image_undo(f.image));auto*redo=gimp_undo_stack_peek(gimp_image_get_redo_stack(f.image));auto before=pixels(f.d);auto state=identity(*f.core);auto coords=f.core->continuation_coords();f.core->begin_batch(true);stroke(*f.core,f.d);f.core->end_batch(false);auto restored=f.core->continuation_coords();g_assert_true(std::memcmp(&coords,&restored,sizeof coords)==0);g_assert_true(pixels(f.d)==before);g_assert_true(identity(*f.core)==state);g_assert_true(gimp_undo_stack_peek(gimp_image_get_redo_stack(f.image))==redo);}
+      |             ^~~~~~~~~~~
+../source/app/tests/test-paired-stroke-undo.cpp:30:13: warning: ‘void retained_memory()’ defined but not used [-Wunused-function]
+   30 | static void retained_memory(){Mapping mapping(1000);g_assert_cmpuint(mapping.storage_bytes(),>=,sizeof(Mapping)+1000*(16*sizeof(float)+sizeof(int)));std::string text="{\"version\":3,\"opaque\":[";for(int i=0;i<1024;++i){if(i)text+=",";text+="0";}text+="]}";auto resource=Resource::decode(text);g_assert_cmpuint(resource.storage_bytes(),>=,1024*512);Engine evaluator(resource);auto checkpoint=evaluator.checkpoint();g_assert_cmpuint(checkpoint.storage_bytes(),>,4096);PairFixture f;f.core->configure(resource);batch_stroke(*f.core,f.d);auto*entry=gimp_undo_stack_peek(gimp_image_get_undo_stack(f.image));fail_allocation=1;auto bytes=gimp_object_get_memsize(GIMP_OBJECT(entry),nullptr);g_assert_cmpuint(fail_allocation,==,1);fail_allocation=0;g_assert_cmpuint(bytes,>=,2*resource.storage_bytes()+2*checkpoint.storage_bytes());g_test_message("retained bytes: checkpoint=%zu Resource=%zu nativeUndo=%" G_GINT64_FORMAT,checkpoint.storage_bytes(),resource.storage_bytes(),bytes);}
+      |             ^~~~~~~~~~~~~~~
+../source/app/tests/test-paired-stroke-undo.cpp:29:13: warning: ‘void failure_observers()’ defined but not used [-Wunused-function]
+   29 | static void failure_observers(){rollback_observers(true);}
+      |             ^~~~~~~~~~~~~~~~~
+../source/app/tests/test-paired-stroke-undo.cpp:28:13: warning: ‘void cancel_observers()’ defined but not used [-Wunused-function]
+   28 | static void cancel_observers(){rollback_observers(false);}
+      |             ^~~~~~~~~~~~~~~~
+../source/app/tests/test-paired-stroke-undo.cpp:26:13: warning: ‘void buffer_coherence()’ defined but not used [-Wunused-function]
+   26 | static void buffer_coherence(){PairFixture f;auto before=pixels(f.d);auto sb=identity(*f.core);batch_stroke(*f.core,f.d);auto after=pixels(f.d);auto sa=identity(*f.core);auto*entry=gimp_undo_stack_peek(gimp_image_get_undo_stack(f.image));auto*payload=GIMP_DRAWABLE_UNDO(entry)->buffer;auto*live=gimp_drawable_get_buffer(f.d);ObservePair po{&f,&before,&sb},lo{&f,&before,&sb};auto p=gegl_buffer_signal_connect(payload,"changed",G_CALLBACK(coherent_buffer),&po);auto l=gegl_buffer_signal_connect(live,"changed",G_CALLBACK(coherent_buffer),&lo);g_assert_true(gimp_image_undo(f.image));g_assert_cmpuint(po.updates,>,0);g_assert_cmpuint(lo.updates,>,0);unsigned pc=po.updates,lc=lo.updates;po.pixels_expected=lo.pixels_expected=&after;po.state_expected=lo.state_expected=&sa;g_assert_true(gimp_image_redo(f.image));g_assert_cmpuint(po.updates,>,pc);g_assert_cmpuint(lo.updates,>,lc);g_signal_handler_disconnect(payload,p);g_signal_handler_disconnect(live,l);}
+      |             ^~~~~~~~~~~~~~~~
+../source/app/tests/test-paired-stroke-undo.cpp:24:13: warning: ‘void observer_coherence()’ defined but not used [-Wunused-function]
+   24 | static void observer_coherence(){PairFixture f;auto before=pixels(f.d);auto sb=identity(*f.core);batch_stroke(*f.core,f.d);auto after=pixels(f.d);auto sa=identity(*f.core);ObservePair o{&f,&before,&sb};auto id=g_signal_connect(f.d,"update",G_CALLBACK(coherent_update),&o);g_assert_true(gimp_image_undo(f.image));g_assert_cmpuint(o.updates,>,0);o.pixels_expected=&after;o.state_expected=&sa;unsigned old=o.updates;g_assert_true(gimp_image_redo(f.image));g_assert_cmpuint(o.updates,>,old);g_signal_handler_disconnect(f.d,id);}
+      |             ^~~~~~~~~~~~~~~~~~
+../source/app/tests/test-paired-stroke-undo.cpp:20:13: warning: ‘void repeated_history()’ defined but not used [-Wunused-function]
+   20 | static void repeated_history(){PairFixture f;auto before=pixels(f.d);auto state_before=identity(*f.core);batch_stroke(*f.core,f.d);auto after=pixels(f.d);auto state_after=identity(*f.core);g_assert_true(before!=after);g_assert_true(state_before!=state_after);auto*entry=gimp_undo_stack_peek(gimp_image_get_undo_stack(f.image));g_assert_true(GIMP_IS_MYPAINT_CORE_UNDO(entry));
+      |             ^~~~~~~~~~~~~~~~
+[8/8] Linking target app/tests/paired-stroke-ui

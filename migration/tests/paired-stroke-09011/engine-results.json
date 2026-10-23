@@ -1,0 +1,83 @@
+[
+  {
+    "name": "gimp:painter / painter-mypaint-checkpoint",
+    "stdout": "TAP version 14\n# random seed: R02S036d3471315b8354175e954e31dce72c\n1..9\n# Start of checkpoint tests\nok 1 /checkpoint/initial\nok 2 /checkpoint/midstroke-random\nok 3 /checkpoint/changed-settings\nok 4 /checkpoint/reset-pending\nok 5 /checkpoint/owner-gone\nok 6 /checkpoint/independent\nok 7 /checkpoint/empty-rejected\nok 8 /checkpoint/reentrant-boundary\nok 9 /checkpoint/allocation-failure\n# End of checkpoint tests\n",
+    "result": "OK",
+    "starttime": 1792563895.5288649,
+    "duration": 0.010842323303222656,
+    "returncode": 0,
+    
+    "command": [
+      "/workspace/shared/gimp-native-preset-gui/build/app/paint/painter-mypaint/painter-mypaint-checkpoint"
+    ]
+  },
+  {
+    "name": "gimp:painter / painter-mypaint-prepared-state",
+    "stdout": "TAP version 14\n# random seed: R02Se4777391738305011057e338330a5cf6\n1..4\n# Start of prepared-state tests\nok 1 /prepared-state/historical-resource-pair\nok 2 /prepared-state/empty-rejected\nok 3 /prepared-state/preparation-failure-move\nok 4 /prepared-state/busy-exchange\n# End of prepared-state tests\n",
+    "result": "OK",
+    "starttime": 1792563895.5317783,
+    "duration": 0.00899052619934082,
+    "returncode": 0,
+    
+    "command": [
+      "/workspace/shared/gimp-native-preset-gui/build/app/paint/painter-mypaint/painter-mypaint-prepared-state"
+    ]
+  },
+  {
+    "name": "gimp:painter / painter-mypaint-historical-install",
+    "stdout": "TAP version 14\n# random seed: R02S479fa359336c28891d2b2c8eaefe6b28\n1..6\n# Start of historical tests\nok 1 /historical/repeated-reconfigure\nok 2 /historical/all-mutators-detach\nok 3 /historical/detach-failure-before-callback\nok 4 /historical/empty\nok 5 /historical/busy\nok 6 /historical/dead-source\n# End of historical tests\n",
+    "result": "OK",
+    "starttime": 1792563895.535347,
+    "duration": 0.013653039932250977,
+    "returncode": 0,
+    
+    "command": [
+      "/workspace/shared/gimp-native-preset-gui/build/app/paint/painter-mypaint/painter-mypaint-historical-install"
+    ]
+  },
+  {
+    "name": "gimp:painter / painter-mypaint-legacy-decoder",
+    "stdout": "Exact pinned-runtime trace match: 1125707 bytes, 81420 records\n",
+    "result": "OK",
+    "starttime": 1792563895.5230618,
+    "duration": 0.1190481185913086,
+    "returncode": 0,
+    
+    "command": [
+      "/usr/bin/python3",
+      "/workspace/shared/gimp-native-preset-gui/build/../source/app/paint/painter-mypaint/tests/compare-trace.py",
+      "/workspace/shared/gimp-native-preset-gui/source/migration/fixtures/legacy-mypaint/resource-values.tsv.gz",
+      "app/paint/painter-mypaint/painter-mypaint-resource-trace",
+      "/workspace/shared/gimp-native-preset-gui/source/data/painter-mypaint-brushes"
+    ]
+  },
+  {
+    "name": "gimp:painter / painter-mypaint-resource",
+    "stdout": "TAP version 14\n# random seed: R02S7ebaf6df7787af55074a507b0a740982\n1..9\n# Start of painter tests\n# Start of myb tests\n# 177 pinned brushes loaded/configured/round-tripped; 221 legacy-ignored fields retained\nok 1 /painter/myb/corpus\nok 2 /painter/myb/defaults\nok 3 /painter/myb/unknown\nok 4 /painter/myb/legacy-curves\nok 5 /painter/myb/legacy-unknown-input\nok 6 /painter/myb/static-lookup-recreation\nok 7 /painter/myb/mapping\nok 8 /painter/myb/stream\nok 9 /painter/myb/malformed\n# End of myb tests\n# End of painter tests\n",
+    "result": "OK",
+    "starttime": 1792563895.5201771,
+    "duration": 0.19230175018310547,
+    "returncode": 0,
+    
+    "command": [
+      "/workspace/shared/gimp-native-preset-gui/build/app/paint/painter-mypaint/painter-mypaint-resource",
+      "/workspace/shared/gimp-native-preset-gui/source/data/painter-mypaint-brushes"
+    ]
+  },
+  {
+    "name": "gimp:painter / painter-mypaint-legacy-engine",
+    "stdout": "Exact pinned-runtime trace match: 5637911 bytes, 33768 records\n177 brushes + 1 synthetic; 27392 dabs, 3172 samples\n\n",
+    "result": "OK",
+    "starttime": 1792563895.5251582,
+    "duration": 0.21192049980163574,
+    "returncode": 0,
+    
+    "command": [
+      "/usr/bin/python3",
+      "/workspace/shared/gimp-native-preset-gui/build/../source/app/paint/painter-mypaint/tests/compare-trace.py",
+      "/workspace/shared/gimp-native-preset-gui/source/migration/fixtures/legacy-mypaint/engine.trace.gz",
+      "app/paint/painter-mypaint/painter-mypaint-engine-trace",
+      "/workspace/shared/gimp-native-preset-gui/source/data/painter-mypaint-brushes"
+    ]
+  }
+]

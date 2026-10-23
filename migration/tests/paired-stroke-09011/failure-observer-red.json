@@ -1,0 +1,9 @@
+{
+  "returncode": -6,
+  "stdout": "TAP version 14\n# random seed: R02Sbfc77403564d43fa6e297a91bb084474\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# Start of paired tests\nTime is running backwards!\nTime is running backwards!\nnot ok /paired/failure-observer-coherent - ERROR:../source/app/tests/test-paired-stroke-undo.cpp:23:void coherent_update(GimpDrawable*, gint, gint, gint, gint, gpointer): 'identity(*o.f->core)==*o.state_expected' should be TRUE\nBail out!\n",
+  "stderr": "**\nERROR:../source/app/tests/test-paired-stroke-undo.cpp:23:void coherent_update(GimpDrawable*, gint, gint, gint, gint, gpointer): 'identity(*o.f->core)==*o.state_expected' should be TRUE\n",
+  "source_sha256": {
+    "app/paint/painter-mypaint-surface/paint-core.cpp": "8063b98e9b7e9f8dabc734640b97420952aea4325d40ef9b3440a68b012e26a9",
+    "app/tests/test-paired-stroke-undo.cpp": "796538425ba66cc184f072ab7f8e9a4e01e3ac04d4671fe28606397c2869c217"
+  }
+}

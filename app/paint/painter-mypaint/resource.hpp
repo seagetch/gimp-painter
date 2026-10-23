@@ -32,6 +32,8 @@ public:
   static Resource decode (const std::string& text, const std::string& source_basename = {});
   static Resource load (GInputStream *input, GCancellable *cancel = nullptr, const std::string& source_basename = {});
   std::string encode () const;
+  // Conservative retained JSON node/string capacity estimate; no serialization.
+  std::size_t storage_bytes () const noexcept;
   bool save (GOutputStream *output, GCancellable *cancel, GError **error) const noexcept;
   int source_version () const noexcept;
   bool has_member (const std::string& section, const std::string& name) const;

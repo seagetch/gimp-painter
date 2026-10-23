@@ -22,6 +22,7 @@ public:
   public:
     Checkpoint () = default;
     bool empty () const noexcept { return !value_; }
+    std::size_t storage_bytes () const noexcept;
   };
   // Mutable deep copy prepared before history publication. No live Engine or
   // Resource owner is retained; exchange itself never allocates.

@@ -34,6 +34,7 @@ class Mapping
   std::vector<Points> points_;
   int inputs_used_ = 0;
 public:
+  std::size_t storage_bytes () const noexcept { return sizeof(*this) + points_.capacity()*sizeof(Points); }
   float base_value = 0;
   explicit Mapping (int inputs = 9) : points_ (inputs) {}
   void set_n (int input, int n)

@@ -8,6 +8,12 @@ struct Engine::Impl {
   bool non_incremental = false;
   bool processing = false;
 };
+std::size_t Engine::Checkpoint::storage_bytes() const noexcept
+{
+  // Count the entire frozen allocation even when shared with another history
+  // entry; conservative overcount is preferable to hidden native Undo memory.
+  return value_ ? sizeof(Impl)-sizeof(Legacy::Brush)+value_->brush.storage_bytes()+64 : 0;
+}
 Engine::Prepared::Prepared () noexcept = default;
 Engine::Prepared::Prepared (std::shared_ptr<Impl> value) : value_(std::move(value)) {}
 Engine::Prepared::~Prepared () = default;
