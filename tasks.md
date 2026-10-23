@@ -416,7 +416,7 @@
 | 08.016/pixbuf-owner | [x] | popup renderer の pixbuf 寿命を修正する | 08.016, 01.007/cpp-ownership | 初期値・生成失敗・再生成・破棄時の参照を一回だけ解放し、NULL pixbuf を描画しない |
 | 08.017 | [x] | 既存 widget behavior を store に移す | 08.016 | 全登録箇所が共通 slot を利用 |
 | 08.018 | [ ] | C 公開操作を新 Impl へ接続する | 08.017 | C 入口から旧 Interface::cast を排除 |
-| 08.018/blinds-procedure-preparation | [ ] | Blinds の旧引数準備を checked C entry と共通 FilterSlot へ接続する | 08.017, 16.010/parameter-semantic-policy | 型付きゼロ7枠・独立所有・変換・登録provider・再入を C/C++ と標準 Meson normal/ASan/UBSan で検証。旧void ABI・他procedure・親08.018は別 |
+| 08.018/blinds-procedure-preparation | [x] | Blinds の旧引数準備を checked C entry と共通 FilterSlot へ接続する | 08.017, 16.010/parameter-semantic-policy | 型付きゼロ7枠・独立所有・変換・登録provider・再入を C/C++ と標準 Meson normal/ASan/UBSan で検証。旧void ABI・他procedure・親08.018は別 |
 | 08.018/core-extension-hooks | [ ] | 標準coreの独自操作hookを現行APIへ接続する | 08.018, 01.013 | hunk台帳のcore補助関数・公開宣言ごとの子チェックを処理し、同名APIの所有・座標・更新・失敗時の意味を検証する |
 | 08.019 | [ ] | C++ 利用箇所をハンドルへ移す | 08.018 | ref 関数添字と公開 interface cast を排除 |
 | 08.020 | [ ] | 旧 registration helper の残用途を整理する | 08.019 | 必要な型登録だけ adapter に残り、旧 Impl 配置がない |

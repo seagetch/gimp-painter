@@ -4,7 +4,7 @@ This is a bounded replacement for the procedure-preparation part of original
 C-entry-map row 26 and task `08.018`. It does not restore the historical void
 `gimp_filter_layer_set_procedure` ABI or complete that row for arbitrary
 procedures. The original parent and separate core-extension hooks remain open.
-Native validation is pending for this implementation checkpoint.
+Bounded component acceptance passed on `53884c05`: ordinary Meson normal 437 TAP cases plus two metadata controls and the full procedure registration; fresh ordinary ASan/UBSan 388 TAP cases, with both final seals. See `../tests/filter-legacy-procedure-entry/README.md` and its exact receipts. The parent task remains open.
 
 ## Why this is a separate operation
 
