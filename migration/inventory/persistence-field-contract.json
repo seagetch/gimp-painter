@@ -18,7 +18,7 @@
     {
       "name": "xcf",
       "path": "migration/inventory/persistence-xcf-fields.json",
-      "sha256": "4e90847d6bb4f15d911e9fcec722032b2369bfd31e0bbbad46a44e6ed806199a",
+      "sha256": "5de6c58324d47733340f39ab862ed5d232e61545c4bd295996ab15aaa1e86ecb",
       "test": "migration/tests/test_persistence_xcf_contract.py",
       "field_ids": [
         "xcf.arguments.compatibility.payload",
@@ -73,6 +73,7 @@
         "xcf.capsule.dialect",
         "xcf.capsule.dictionary-key",
         "xcf.capsule.external-reference-origins",
+        "xcf.capsule.float-mode",
         "xcf.capsule.generation",
         "xcf.capsule.has-arguments",
         "xcf.capsule.has-definition",
@@ -1772,6 +1773,7 @@
         "risk_or_contract": "old23-29 are custom modes; no direct numeric reuse"
       },
       "field_ids": [
+        "xcf.capsule.float-mode",
         "xcf.capsule.legacy-mode",
         "xcf.effect.PROP_MODE",
         "xcf.layer.PROP_MODE"
@@ -3964,7 +3966,7 @@
     {
       "revision": "native",
       "path": "app/core/gimp.c",
-      "sha256": "808493c0cd70dbb9a24e6d0568cb36c1882618b004807ec294646a07625ce20c"
+      "sha256": "9350a870603358469c592ded1b42ae8b860a5d1b6e0d26fa4942411acbfb8e77"
     },
     {
       "revision": "native",
@@ -4024,7 +4026,7 @@
     {
       "revision": "native",
       "path": "app/core/gimpimage.c",
-      "sha256": "88cf26998cf9b591d1e13301f3422606ada64c58e9be31a20b4fe9593adb6f73"
+      "sha256": "5bc173d76bf5501bdbac896b9e3a50e1724568fd28e53352d88b37662bfa2ff1"
     },
     {
       "revision": "native",
@@ -4424,7 +4426,7 @@
     {
       "revision": "native",
       "path": "app/xcf/painter-xcf-preserve.cpp",
-      "sha256": "9d79e3ba4657e0e4a15bf89f10a08555cfee935b362086991c59ad656df7af7a"
+      "sha256": "208d652ec1a1242a95f27497d9feb2f7946b7c0f22b0544354802e19582a4d03"
     },
     {
       "revision": "native",
@@ -4474,11 +4476,11 @@
     },
     {
       "path": "migration/tests/test_persistence_field_contract.py",
-      "sha256": "ee75a2c4f52258996e76b3298e91fd08d0a9582c58424da1861eb498b1c0c77b"
+      "sha256": "35f8df0e7268ef580123c7b7ff19cf06bc542ad0e1c032ac6482981d2ecb9969"
     },
     {
       "path": "migration/tests/test_persistence_xcf_contract.py",
-      "sha256": "a4f8547cc32209e5e4ae94ccd02894d602a89ea25207411ef36ad6cd66931931"
+      "sha256": "ebaf4cf8263fbbb79f9ccbcbf6c18486108605d2eec2dd124acb0e22f207b4ba"
     },
     {
       "path": "migration/tests/test_persistence_mypaint_contract.py",
@@ -4486,16 +4488,16 @@
     },
     {
       "path": "migration/tests/test_persistence_config_contract.py",
-      "sha256": "7e6607f3a7d2aa7c569fcedabdd8629a2387d5a01a8268bc4e7aaa5bfcef7dda"
+      "sha256": "52b83536b8f0af91a2449aaf0fc90f3f61eeb4b343deb40e6bbeab80fd53a792"
     }
   ],
   "counts": {
-    "contract_records": 1378,
+    "contract_records": 1379,
     "syntax_candidates": 873,
     "routes": 16,
     "by_disposition": {
       "dynamic-schema": 164,
-      "saved-field": 904,
+      "saved-field": 905,
       "unchanged-standard": 310
     },
     "candidate_dispositions": {

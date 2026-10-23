@@ -56,16 +56,28 @@ No difference in graph/direct quantization exists for these new modes.
 - group single-child reduction must be disabled for these nine too: even without
   byte rounding, Replace/IN role/order and opacity semantics are not generally
   algebraically movable. Ordinary modern reduction remains enabled.
-- XCF native PROP_MODE stores new typed enum ID; old raw conversion rejects it.
-  Current item_record removes legacy-mode for noncompatibility modes. Parent
-  XCF owner to review whether existing typed native mode record suffices;
-  preferred bounded design is no redundant capsule field/schema version, with
-  explicit tests that legacy-mode is ABSENT after legacy->float save and that
-  modern IDs survive two roundtrips (including Clone/group). Unknown enum fails
-  through current validation, never maps to old raw IDs. If native-mode scalar
-  validation is range-limited update its allowlist, not historical raw parser.
-  Old GIMP unsupported-mode fallback is not promised; do not advertise backward
-  compatibility. Do not write redundant new capsule policy without necessity.
+- XCF storage boundary (supersedes the preliminary native-ID proposal): never
+  persist runtime73–81 as standard PROP_MODE. Write NORMAL_LEGACY as the standard
+  fallback and carry semantics in the existing `gimp-painter-item` GPXCF capsule.
+  Item dictionary version2 requires `float-mode` of type `(uss)`:
+  policy version1, `nonlinear-rgb`, and a stable textual mode identifier
+  (`erase`, `replace`, `anti-erase`, `src-in`, `dst-in`, `src-out`, `dst-out`,
+  `normal`, `multiply`). Runtime enum values are not storage identifiers.
+  Existing legacy64–72 behavior, raw IDs, and item dictionary version1 remain
+  unchanged. Float records cannot simultaneously contain `legacy-mode`.
+- Known version2 records preserve unknown independent dictionary fields.
+  Unknown versions, policies, spaces, mode names, malformed/conflicting records
+  remain inert opaque capsules. Ordinary fallback load/save retains their bytes;
+  attempting to overwrite unknown semantics with edited custom semantics fails
+  explicitly rather than discarding the extension. Switching a known float item
+  back to an ordinary/legacy mode removes float-mode and writes version1.
+- Older readers can render only the standard fallback, not equivalent float
+  semantics. Preservation through an unedited prior-port load/save must be tested
+  separately; it does not promise safe backward editing, old GIMP2.8 execution,
+  or preservation by arbitrary upstream versions. UI/version diagnostics must
+  identify the compatible Painter requirement rather than invent an upstream
+  minimum version. Current round-trip proof must check actual PROP_MODE bytes,
+  capsule identity, Clone/group behavior, precision, masks and pixels.
 - no oncanvas lifetime, renderer, popup, MyPaint or FilterLayer executor changes.
 
 ## Required proof before closure
@@ -79,7 +91,7 @@ changes must survive and differ from unchanged legacy output in float storage.
 Storage u8/u16/u32/half/float/double tests account only for format conversion;
 not all storage formats can represent HDR. Signed offsets/source boundaries,
 bottom layers, masks/opacity, isolated/pass-through/nested groups, reorder Undo.
-Native public enum/PDB identity, XCF mode IDs and absent legacy raw tag, UI selector
+Native public enum/PDB identity, XCF capsule identity and absent legacy raw tag, UI selector
 normal signal path with actual portrait oncanvas screenshot. Focused sanitizer
 includes new op/dispatch/group/harness; separate XCF owner evidence for C++ paths.
 Rerun all existing old formula/native fixtures unchanged as compatibility gate.

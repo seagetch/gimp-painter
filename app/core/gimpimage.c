@@ -2955,6 +2955,29 @@ gimp_image_get_xcf_version (GimpImage    *image,
           version = MAX (10, version);
           break;
 
+          /* Painter semantics live in project capsules; PROP_MODE is a
+           * standard Normal fallback, never a fork-specific enum value. */
+        case GIMP_LAYER_MODE_PAINTER_ERASE:
+        case GIMP_LAYER_MODE_PAINTER_REPLACE:
+        case GIMP_LAYER_MODE_PAINTER_ANTI_ERASE:
+        case GIMP_LAYER_MODE_PAINTER_SRC_IN:
+        case GIMP_LAYER_MODE_PAINTER_DST_IN:
+        case GIMP_LAYER_MODE_PAINTER_SRC_OUT:
+        case GIMP_LAYER_MODE_PAINTER_DST_OUT:
+        case GIMP_LAYER_MODE_PAINTER_NORMAL:
+        case GIMP_LAYER_MODE_PAINTER_MULTIPLY:
+        case GIMP_LAYER_MODE_PAINTER_FLOAT_ERASE:
+        case GIMP_LAYER_MODE_PAINTER_FLOAT_REPLACE:
+        case GIMP_LAYER_MODE_PAINTER_FLOAT_ANTI_ERASE:
+        case GIMP_LAYER_MODE_PAINTER_FLOAT_SRC_IN:
+        case GIMP_LAYER_MODE_PAINTER_FLOAT_DST_IN:
+        case GIMP_LAYER_MODE_PAINTER_FLOAT_SRC_OUT:
+        case GIMP_LAYER_MODE_PAINTER_FLOAT_DST_OUT:
+        case GIMP_LAYER_MODE_PAINTER_FLOAT_NORMAL:
+        case GIMP_LAYER_MODE_PAINTER_FLOAT_MULTIPLY:
+          ADD_REASON (g_strdup (_("Painter layer modes require a compatible gimp-painter reader; standard readers use fallback rendering.")));
+          break;
+
           /*  Just here instead of default so we get compiler warnings  */
         case GIMP_LAYER_MODE_REPLACE:
         case GIMP_LAYER_MODE_ANTI_ERASE:

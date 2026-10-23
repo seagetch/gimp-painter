@@ -1,0 +1,12 @@
+1/1 gimp:app / painter-xcf-roundtrip FAIL             1.28s   killed by signal 6 SIGABRT
+>>> LD_LIBRARY_PATH=/workspace/shared/gimp-clean-aggregate/build/libgimpcolor:/workspace/shared/gimp-clean-aggregate/build/libgimpbase:/workspace/shared/gimp-clean-aggregate/build/libgimpconfig:/workspace/shared/gimp-clean-aggregate/build/libgimpmodule:/workspace/shared/gimp-clean-aggregate/build/libgimpwidgets:/workspace/shared/gimp-clean-aggregate/build/libgimpmath:/workspace/shared/gimp-clean-aggregate/build/libgimpthumb:/workspace/shared/gimp-clean-aggregate/prefix/lib/x86_64-linux-gnu:/workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 GIMP_TESTING_ABS_TOP_BUILDDIR=/workspace/shared/gimp-clean-aggregate/build ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 GIMP_TESTING_PLUGINDIRS=/workspace/shared/gimp-clean-aggregate/build/plug-ins/common GIMP_TESTING_ABS_TOP_SRCDIR=/workspace/shared/gimp-clean-aggregate/source MESON_TEST_ITERATION=1 UI_TEST=yes MALLOC_PERTURB_=222 /workspace/shared/gimp-clean-aggregate/build/app/tests/painter-xcf-roundtrip -m slow -p /painter-xcf-fields/float_mode_schema
+
+
+Ok:                 0   
+Expected Fail:      0   
+Fail:               1   
+Unexpected Pass:    0   
+Skipped:            0   
+Timeout:            0   
+
+Full log written to /workspace/shared/gimp-clean-aggregate/build/meson-logs/accept-unknown-policy.txt

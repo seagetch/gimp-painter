@@ -26330,7 +26330,7 @@
       "route": "03",
       "disposition": "saved-field",
       "storage": "XCF",
-      "version": "GPXCF logical capsule v1; canonical little-endian a{sv}",
+      "version": "GPXCF framing v1; image/origin dictionary1; item dictionary1 or float-only2; canonical little-endian a{sv}",
       "saved_name": "gimp-painter-v1/allow-name-lookup",
       "native_type": "GVariant b",
       "legacy_type": "no legacy capsule; custom source records archived separately",
@@ -26380,7 +26380,7 @@
       "route": "02",
       "disposition": "dynamic-schema",
       "storage": "XCF",
-      "version": "GPXCF logical capsule v1; canonical little-endian a{sv}",
+      "version": "GPXCF framing v1; image/origin dictionary1; item dictionary1 or float-only2; canonical little-endian a{sv}",
       "saved_name": "gimp-painter-v1/arguments",
       "native_type": "GVariant a(sbv) or preserved opaque v",
       "legacy_type": "no legacy capsule; custom source records archived separately",
@@ -26431,7 +26431,7 @@
       "route": "02",
       "disposition": "saved-field",
       "storage": "XCF",
-      "version": "GPXCF logical capsule v1; canonical little-endian a{sv}",
+      "version": "GPXCF framing v1; image/origin dictionary1; item dictionary1 or float-only2; canonical little-endian a{sv}",
       "saved_name": "gimp-painter-v1/cache-complete",
       "native_type": "GVariant b",
       "legacy_type": "no legacy capsule; custom source records archived separately",
@@ -26481,7 +26481,7 @@
       "route": "02",
       "disposition": "saved-field",
       "storage": "XCF",
-      "version": "GPXCF logical capsule v1; canonical little-endian a{sv}",
+      "version": "GPXCF framing v1; image/origin dictionary1; item dictionary1 or float-only2; canonical little-endian a{sv}",
       "saved_name": "gimp-painter-v1/cache-generation",
       "native_type": "GVariant t",
       "legacy_type": "no legacy capsule; custom source records archived separately",
@@ -26538,7 +26538,7 @@
       "route": "02",
       "disposition": "saved-field",
       "storage": "XCF",
-      "version": "GPXCF logical capsule v1; canonical little-endian a{sv}",
+      "version": "GPXCF framing v1; image/origin dictionary1; item dictionary1 or float-only2; canonical little-endian a{sv}",
       "saved_name": "gimp-painter-v1/definition",
       "native_type": "GVariant ay",
       "legacy_type": "no legacy capsule; custom source records archived separately",
@@ -26588,7 +26588,7 @@
       "route": "05",
       "disposition": "saved-field",
       "storage": "XCF",
-      "version": "GPXCF logical capsule v1; canonical little-endian a{sv}",
+      "version": "GPXCF framing v1; image/origin dictionary1; item dictionary1 or float-only2; canonical little-endian a{sv}",
       "saved_name": "gimp-painter-v1/dialect",
       "native_type": "GVariant s",
       "legacy_type": "no legacy capsule; custom source records archived separately",
@@ -26624,7 +26624,7 @@
       "route": "05",
       "disposition": "dynamic-schema",
       "storage": "XCF",
-      "version": "GPXCF logical capsule v1; canonical little-endian a{sv}",
+      "version": "GPXCF framing v1; image/origin dictionary1; item dictionary1 or float-only2; canonical little-endian a{sv}",
       "saved_name": "gimp-painter-v1/external-reference-origins",
       "native_type": "GVariant aa{sv}",
       "legacy_type": "no legacy capsule; custom source records archived separately",
@@ -26656,11 +26656,68 @@
       ]
     },
     {
+      "id": "xcf.capsule.float-mode",
+      "route": "04",
+      "disposition": "saved-field",
+      "storage": "XCF",
+      "version": "GPXCF framing v1; image/origin dictionary1; item dictionary1 or float-only2; canonical little-endian a{sv}",
+      "saved_name": "gimp-painter-v1/float-mode",
+      "native_type": "GVariant (uss)",
+      "legacy_type": "no legacy capsule; custom source records archived separately",
+      "owner": "layer",
+      "default": "item-v2 only: policy1/nonlinear-rgb/stable mode name",
+      "absence": "absent for version1; invalid/missing in version2 or conflict with legacy-mode keeps capsule opaque",
+      "flags": "GIMP_PARASITE_PERSISTENT; namespace/owner validation; optional keys omitted explicitly",
+      "reader": [
+        "app/xcf/painter-xcf-preserve.cpp#item_float_mode"
+      ],
+      "writer": [
+        "app/xcf/painter-xcf-preserve.cpp#item_record"
+      ],
+      "legacy_reader": [],
+      "legacy_writer": [],
+      "evidence": [
+        {
+          "path": "app/xcf/painter-xcf-preserve.cpp",
+          "revision": "native",
+          "anchor": "item_record",
+          "expected": "put (\"float-mode\", g_variant_new (\"(uss)\", 1u, \"nonlinear-rgb\", float_name))",
+          "scope": "function"
+        },
+        {
+          "path": "app/xcf/painter-xcf-preserve.cpp",
+          "revision": "native",
+          "anchor": "item_float_mode",
+          "expected": "G_VARIANT_TYPE (\"(uss)\")",
+          "scope": "function"
+        },
+        {
+          "path": "app/xcf/painter-xcf-preserve.cpp",
+          "revision": "native",
+          "anchor": "item_float_mode",
+          "expected": "policy != 1 || std::strcmp (space, \"nonlinear-rgb\")",
+          "scope": "function"
+        },
+        {
+          "path": "app/xcf/painter-xcf-preserve.cpp",
+          "revision": "native",
+          "anchor": "item_float_mode",
+          "expected": "if (legacy) fail",
+          "scope": "function"
+        }
+      ],
+      "assertion": "/persistence/xcf/capsule.float-mode",
+      "test_file": "migration/tests/test_persistence_xcf_contract.py",
+      "writer_expressions": [
+        "g_variant_new (\"(uss)\", 1u, \"nonlinear-rgb\", float_name)"
+      ]
+    },
+    {
       "id": "xcf.capsule.generation",
       "route": "02",
       "disposition": "saved-field",
       "storage": "XCF",
-      "version": "GPXCF logical capsule v1; canonical little-endian a{sv}",
+      "version": "GPXCF framing v1; image/origin dictionary1; item dictionary1 or float-only2; canonical little-endian a{sv}",
       "saved_name": "gimp-painter-v1/generation",
       "native_type": "GVariant t",
       "legacy_type": "no legacy capsule; custom source records archived separately",
@@ -26717,7 +26774,7 @@
       "route": "02",
       "disposition": "saved-field",
       "storage": "XCF",
-      "version": "GPXCF logical capsule v1; canonical little-endian a{sv}",
+      "version": "GPXCF framing v1; image/origin dictionary1; item dictionary1 or float-only2; canonical little-endian a{sv}",
       "saved_name": "gimp-painter-v1/has-arguments",
       "native_type": "GVariant b",
       "legacy_type": "no legacy capsule; custom source records archived separately",
@@ -26775,7 +26832,7 @@
       "route": "02",
       "disposition": "saved-field",
       "storage": "XCF",
-      "version": "GPXCF logical capsule v1; canonical little-endian a{sv}",
+      "version": "GPXCF framing v1; image/origin dictionary1; item dictionary1 or float-only2; canonical little-endian a{sv}",
       "saved_name": "gimp-painter-v1/has-definition",
       "native_type": "GVariant b",
       "legacy_type": "no legacy capsule; custom source records archived separately",
@@ -26825,7 +26882,7 @@
       "route": "05",
       "disposition": "saved-field",
       "storage": "XCF",
-      "version": "GPXCF logical capsule v1; canonical little-endian a{sv}",
+      "version": "GPXCF framing v1; image/origin dictionary1; item dictionary1 or float-only2; canonical little-endian a{sv}",
       "saved_name": "gimp-painter-v1/id",
       "native_type": "GVariant u",
       "legacy_type": "no legacy capsule; custom source records archived separately",
@@ -26861,7 +26918,7 @@
       "route": "05",
       "disposition": "saved-field",
       "storage": "XCF",
-      "version": "GPXCF logical capsule v1; canonical little-endian a{sv}",
+      "version": "GPXCF framing v1; image/origin dictionary1; item dictionary1 or float-only2; canonical little-endian a{sv}",
       "saved_name": "gimp-painter-v1/kind",
       "native_type": "GVariant s",
       "legacy_type": "no legacy capsule; custom source records archived separately",
@@ -26920,7 +26977,7 @@
       "route": "04",
       "disposition": "saved-field",
       "storage": "XCF",
-      "version": "GPXCF logical capsule v1; canonical little-endian a{sv}",
+      "version": "GPXCF framing v1; image/origin dictionary1; item dictionary1 or float-only2; canonical little-endian a{sv}",
       "saved_name": "gimp-painter-v1/legacy-mode",
       "native_type": "GVariant u",
       "legacy_type": "no legacy capsule; custom source records archived separately",
@@ -26956,7 +27013,7 @@
       "route": "05",
       "disposition": "dynamic-schema",
       "storage": "XCF",
-      "version": "GPXCF logical capsule v1; canonical little-endian a{sv}",
+      "version": "GPXCF framing v1; image/origin dictionary1; item dictionary1 or float-only2; canonical little-endian a{sv}",
       "saved_name": "gimp-painter-v1/opaque-record-sequences",
       "native_type": "GVariant aay",
       "legacy_type": "no legacy capsule; custom source records archived separately",
@@ -26992,7 +27049,7 @@
       "route": "02",
       "disposition": "dynamic-schema",
       "storage": "XCF",
-      "version": "GPXCF logical capsule v1; canonical little-endian a{sv}",
+      "version": "GPXCF framing v1; image/origin dictionary1; item dictionary1 or float-only2; canonical little-endian a{sv}",
       "saved_name": "gimp-painter-v1/original-argument-model",
       "native_type": "GVariant v",
       "legacy_type": "no legacy capsule; custom source records archived separately",
@@ -27028,7 +27085,7 @@
       "route": "02",
       "disposition": "dynamic-schema",
       "storage": "XCF",
-      "version": "GPXCF logical capsule v1; canonical little-endian a{sv}",
+      "version": "GPXCF framing v1; image/origin dictionary1; item dictionary1 or float-only2; canonical little-endian a{sv}",
       "saved_name": "gimp-painter-v1/original-argument-procedure",
       "native_type": "GVariant v",
       "legacy_type": "no legacy capsule; custom source records archived separately",
@@ -27064,7 +27121,7 @@
       "route": "05",
       "disposition": "saved-field",
       "storage": "XCF",
-      "version": "GPXCF logical capsule v1; canonical little-endian a{sv}",
+      "version": "GPXCF framing v1; image/origin dictionary1; item dictionary1 or float-only2; canonical little-endian a{sv}",
       "saved_name": "gimp-painter-v1/original-extension",
       "native_type": "GVariant ay",
       "legacy_type": "no legacy capsule; custom source records archived separately",
@@ -27108,7 +27165,7 @@
       "route": "05",
       "disposition": "saved-field",
       "storage": "XCF",
-      "version": "GPXCF logical capsule v1; canonical little-endian a{sv}",
+      "version": "GPXCF framing v1; image/origin dictionary1; item dictionary1 or float-only2; canonical little-endian a{sv}",
       "saved_name": "gimp-painter-v1/original-header",
       "native_type": "GVariant ay",
       "legacy_type": "no legacy capsule; custom source records archived separately",
@@ -27144,7 +27201,7 @@
       "route": "05",
       "disposition": "saved-field",
       "storage": "XCF",
-      "version": "GPXCF logical capsule v1; canonical little-endian a{sv}",
+      "version": "GPXCF framing v1; image/origin dictionary1; item dictionary1 or float-only2; canonical little-endian a{sv}",
       "saved_name": "gimp-painter-v1/original-owner",
       "native_type": "GVariant s",
       "legacy_type": "no legacy capsule; custom source records archived separately",
@@ -27180,7 +27237,7 @@
       "route": "05",
       "disposition": "saved-field",
       "storage": "XCF",
-      "version": "GPXCF logical capsule v1; canonical little-endian a{sv}",
+      "version": "GPXCF framing v1; image/origin dictionary1; item dictionary1 or float-only2; canonical little-endian a{sv}",
       "saved_name": "gimp-painter-v1/original-properties",
       "native_type": "GVariant ay",
       "legacy_type": "no legacy capsule; custom source records archived separately",
@@ -27216,7 +27273,7 @@
       "route": "05",
       "disposition": "saved-field",
       "storage": "XCF",
-      "version": "GPXCF logical capsule v1; canonical little-endian a{sv}",
+      "version": "GPXCF framing v1; image/origin dictionary1; item dictionary1 or float-only2; canonical little-endian a{sv}",
       "saved_name": "gimp-painter-v1/original-source-name",
       "native_type": "GVariant ay",
       "legacy_type": "no legacy capsule; custom source records archived separately",
@@ -27266,7 +27323,7 @@
       "route": "03",
       "disposition": "saved-field",
       "storage": "XCF",
-      "version": "GPXCF logical capsule v1; canonical little-endian a{sv}",
+      "version": "GPXCF framing v1; image/origin dictionary1; item dictionary1 or float-only2; canonical little-endian a{sv}",
       "saved_name": "gimp-painter-v1/pending-name",
       "native_type": "GVariant ay",
       "legacy_type": "no legacy capsule; custom source records archived separately",
@@ -27316,7 +27373,7 @@
       "route": "02",
       "disposition": "saved-field",
       "storage": "XCF",
-      "version": "GPXCF logical capsule v1; canonical little-endian a{sv}",
+      "version": "GPXCF framing v1; image/origin dictionary1; item dictionary1 or float-only2; canonical little-endian a{sv}",
       "saved_name": "gimp-painter-v1/procedure",
       "native_type": "GVariant ay",
       "legacy_type": "no legacy capsule; custom source records archived separately",
@@ -27366,7 +27423,7 @@
       "route": "02",
       "disposition": "saved-field",
       "storage": "XCF",
-      "version": "GPXCF logical capsule v1; canonical little-endian a{sv}",
+      "version": "GPXCF framing v1; image/origin dictionary1; item dictionary1 or float-only2; canonical little-endian a{sv}",
       "saved_name": "gimp-painter-v1/saved-state",
       "native_type": "GVariant u",
       "legacy_type": "no legacy capsule; custom source records archived separately",
@@ -27416,7 +27473,7 @@
       "route": "03",
       "disposition": "saved-field",
       "storage": "XCF",
-      "version": "GPXCF logical capsule v1; canonical little-endian a{sv}",
+      "version": "GPXCF framing v1; image/origin dictionary1; item dictionary1 or float-only2; canonical little-endian a{sv}",
       "saved_name": "gimp-painter-v1/source-expired",
       "native_type": "GVariant b",
       "legacy_type": "no legacy capsule; custom source records archived separately",
@@ -27466,7 +27523,7 @@
       "route": "03",
       "disposition": "saved-field",
       "storage": "XCF",
-      "version": "GPXCF logical capsule v1; canonical little-endian a{sv}",
+      "version": "GPXCF framing v1; image/origin dictionary1; item dictionary1 or float-only2; canonical little-endian a{sv}",
       "saved_name": "gimp-painter-v1/source-id",
       "native_type": "GVariant u",
       "legacy_type": "no legacy capsule; custom source records archived separately",
@@ -27523,7 +27580,7 @@
       "route": "03",
       "disposition": "saved-field",
       "storage": "XCF",
-      "version": "GPXCF logical capsule v1; canonical little-endian a{sv}",
+      "version": "GPXCF framing v1; image/origin dictionary1; item dictionary1 or float-only2; canonical little-endian a{sv}",
       "saved_name": "gimp-painter-v1/source-name",
       "native_type": "GVariant ay",
       "legacy_type": "no legacy capsule; custom source records archived separately",
@@ -27573,7 +27630,7 @@
       "route": "03",
       "disposition": "saved-field",
       "storage": "XCF",
-      "version": "GPXCF logical capsule v1; canonical little-endian a{sv}",
+      "version": "GPXCF framing v1; image/origin dictionary1; item dictionary1 or float-only2; canonical little-endian a{sv}",
       "saved_name": "gimp-painter-v1/source-state",
       "native_type": "GVariant u",
       "legacy_type": "no legacy capsule; custom source records archived separately",
@@ -27623,7 +27680,7 @@
       "route": "03",
       "disposition": "saved-field",
       "storage": "XCF",
-      "version": "GPXCF logical capsule v1; canonical little-endian a{sv}",
+      "version": "GPXCF framing v1; image/origin dictionary1; item dictionary1 or float-only2; canonical little-endian a{sv}",
       "saved_name": "gimp-painter-v1/unresolved-source-id",
       "native_type": "GVariant u",
       "legacy_type": "no legacy capsule; custom source records archived separately",
@@ -27659,18 +27716,19 @@
       "route": "05",
       "disposition": "saved-field",
       "storage": "XCF",
-      "version": "GPXCF logical capsule v1; canonical little-endian a{sv}",
+      "version": "GPXCF framing v1; image/origin dictionary1; item dictionary1 or float-only2; canonical little-endian a{sv}",
       "saved_name": "gimp-painter-v1/version",
       "native_type": "GVariant u",
       "legacy_type": "no legacy capsule; custom source records archived separately",
       "owner": "image/item/origin",
-      "default": "1",
-      "absence": "required uint32=1; unknown/missing version keeps namespace opaque",
+      "default": "1 except opt-in float item dictionary2",
+      "absence": "required uint32=1, or item-only2 with valid float policy; unknown/missing version keeps namespace opaque",
       "flags": "GIMP_PARASITE_PERSISTENT; namespace/owner validation; optional keys omitted explicitly",
       "reader": [
         "app/xcf/painter-xcf-preserve.cpp#decode"
       ],
       "writer": [
+        "app/xcf/painter-xcf-preserve.cpp#image_record",
         "app/xcf/painter-xcf-preserve.cpp#item_record"
       ],
       "legacy_reader": [],
@@ -27679,7 +27737,14 @@
         {
           "path": "app/xcf/painter-xcf-preserve.cpp",
           "revision": "native",
-          "anchor": "item_record",
+          "anchor": "image_record",
+          "expected": "put (\"version\", g_variant_new_uint32 (1))",
+          "scope": "function"
+        },
+        {
+          "path": "app/xcf/painter-xcf-preserve.cpp",
+          "revision": "native",
+          "anchor": "image_record",
           "expected": "put (\"version\", g_variant_new_uint32 (1))",
           "scope": "function"
         },
@@ -27687,21 +27752,14 @@
           "path": "app/xcf/painter-xcf-preserve.cpp",
           "revision": "native",
           "anchor": "item_record",
-          "expected": "put (\"version\", g_variant_new_uint32 (1))",
-          "scope": "function"
-        },
-        {
-          "path": "app/xcf/painter-xcf-preserve.cpp",
-          "revision": "native",
-          "anchor": "item_record",
-          "expected": "put (\"version\", g_variant_new_uint32 (1))",
+          "expected": "put (\"version\", g_variant_new_uint32 (float_name ? 2 : 1))",
           "scope": "function"
         },
         {
           "path": "app/xcf/painter-xcf-preserve.cpp",
           "revision": "native",
           "anchor": "decode",
-          "expected": "if (!g_variant_lookup (value.get (), \"version\", \"u\", &version) || version != 1) return {};",
+          "expected": "(version != 1 && !(item_v2 && version == 2))) return {};",
           "scope": "function"
         }
       ],
@@ -27710,7 +27768,7 @@
       "writer_expressions": [
         "g_variant_new_uint32 (1)",
         "g_variant_new_uint32 (1)",
-        "g_variant_new_uint32 (1)"
+        "g_variant_new_uint32 (float_name ? 2 : 1)"
       ]
     },
     {
@@ -42382,7 +42440,7 @@
     {
       "path": "app/core/gimp.c",
       "revision": "native",
-      "sha256": "808493c0cd70dbb9a24e6d0568cb36c1882618b004807ec294646a07625ce20c"
+      "sha256": "9350a870603358469c592ded1b42ae8b860a5d1b6e0d26fa4942411acbfb8e77"
     },
     {
       "path": "app/core/gimpchannel.c",
@@ -42402,7 +42460,7 @@
     {
       "path": "app/core/gimpimage.c",
       "revision": "native",
-      "sha256": "88cf26998cf9b591d1e13301f3422606ada64c58e9be31a20b4fe9593adb6f73"
+      "sha256": "5bc173d76bf5501bdbac896b9e3a50e1724568fd28e53352d88b37662bfa2ff1"
     },
     {
       "path": "app/core/gimpitem.c",
@@ -42482,7 +42540,7 @@
     {
       "path": "app/xcf/painter-xcf-preserve.cpp",
       "revision": "native",
-      "sha256": "9d79e3ba4657e0e4a15bf89f10a08555cfee935b362086991c59ad656df7af7a"
+      "sha256": "208d652ec1a1242a95f27497d9feb2f7946b7c0f22b0544354802e19582a4d03"
     },
     {
       "path": "app/xcf/xcf-load.c",

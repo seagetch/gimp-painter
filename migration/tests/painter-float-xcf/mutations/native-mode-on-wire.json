@@ -1,0 +1,15 @@
+{
+  "name": "gimp:app / painter-xcf-roundtrip",
+  "result": "FAIL",
+  "returncode": -6,
+  "duration": 1.2248263359069824,
+  "stdout": "TAP version 14\n# random seed: R02S5e0f95fb6d87a7d6028dbbd45da1cfeb\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# Start of painter-xcf-fields tests\nnot ok /painter-xcf-fields/float_mode_transport - ERROR:../source/app/tests/test-painter-xcf-float-modes.inc:120:fields_float_mode_transport: assertion failed (xcf_painter_standard_mode (modes[k]) == GIMP_LAYER_MODE_NORMAL_LEGACY): (73 == 0)\nBail out!\n",
+  "stderr": "**\nERROR:../source/app/tests/test-painter-xcf-float-modes.inc:120:fields_float_mode_transport: assertion failed (xcf_painter_standard_mode (modes[k]) == GIMP_LAYER_MODE_NORMAL_LEGACY): (73 == 0)\n",
+  "command": [
+    "/workspace/shared/gimp-clean-aggregate/build/app/tests/painter-xcf-roundtrip",
+    "-m",
+    "slow",
+    "-p",
+    "/painter-xcf-fields/float_mode_transport"
+  ]
+}

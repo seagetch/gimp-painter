@@ -1,0 +1,68 @@
+{
+  "task": "13.012",
+  "status": "verified clean committed baseline plus explicit owned overlay",
+  "original_185_field_checkpoint_changed": false,
+  "extension_fields": [
+    {
+      "field": "item.version",
+      "rule": "dictionary2 only for opt-in float semantics; image/origin stay1",
+      "cases": [
+        "float_mode_transport",
+        "float_mode_schema"
+      ]
+    },
+    {
+      "field": "item.float-mode.policy",
+      "rule": "uint32=1; unknown retained opaque",
+      "cases": [
+        "float_mode_schema"
+      ]
+    },
+    {
+      "field": "item.float-mode.space",
+      "rule": "nonlinear-rgb; unknown retained opaque",
+      "cases": [
+        "float_mode_schema"
+      ]
+    },
+    {
+      "field": "item.float-mode.name",
+      "rule": "nine stable strings independent of runtime73–81; unknown retained opaque",
+      "cases": [
+        "float_mode_transport",
+        "float_mode_schema"
+      ]
+    },
+    {
+      "field": "layer.PROP_MODE",
+      "rule": "standard NORMAL_LEGACY fallback, never custom runtime73–81",
+      "cases": [
+        "float_mode_transport",
+        "prior_float_capsule"
+      ]
+    },
+    {
+      "field": "item.legacy-mode",
+      "rule": "absent forfloat; conflict inert; restored only when explicit legacy mode selected",
+      "cases": [
+        "float_mode_transport",
+        "float_mode_schema"
+      ]
+    },
+    {
+      "field": "item.unknown-key[*]",
+      "rule": "known-envelope unknown fields retained; invalid-envelope exact bytes retained; custom edit refuses atomically",
+      "cases": [
+        "float_mode_schema",
+        "prior_float_capsule"
+      ]
+    }
+  ],
+  "non_claims": [
+    "not all original185 field combinations",
+    "not upstream or GIMP2.8 runtime compatibility",
+    "not semantic equality in older reader",
+    "not safe older-reader editing",
+    "not full13.012 closure"
+  ]
+}

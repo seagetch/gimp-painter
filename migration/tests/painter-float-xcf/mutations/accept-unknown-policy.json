@@ -1,0 +1,15 @@
+{
+  "name": "gimp:app / painter-xcf-roundtrip",
+  "result": "FAIL",
+  "returncode": -6,
+  "duration": 1.2755756378173828,
+  "stdout": "TAP version 14\n# random seed: R02S8868eec8de2ee99e75eb8839ee4b3b82\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# Start of painter-xcf-fields tests\n# float schema scene0: known identity and unknown field survives native resave\n# float schema scene1: opaque exact bytes survives native resave\nnot ok /painter-xcf-fields/float_mode_schema - ERROR:../source/app/tests/test-painter-xcf-float-modes.inc:222:fields_float_mode_schema: assertion failed (gimp_layer_get_mode (item) == GIMP_LAYER_MODE_NORMAL): (80 == 28)\nBail out!\n",
+  "stderr": "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: unknown extension version\n\nGIMP-Warning: Painter XCF metadata was retained but could not be fully restored: unknown extension version\n\nGIMP-Warning: Painter XCF metadata was retained but could not be fully restored: unknown extension version\n\n**\nERROR:../source/app/tests/test-painter-xcf-float-modes.inc:222:fields_float_mode_schema: assertion failed (gimp_layer_get_mode (item) == GIMP_LAYER_MODE_NORMAL): (80 == 28)\n",
+  "command": [
+    "/workspace/shared/gimp-clean-aggregate/build/app/tests/painter-xcf-roundtrip",
+    "-m",
+    "slow",
+    "-p",
+    "/painter-xcf-fields/float_mode_schema"
+  ]
+}

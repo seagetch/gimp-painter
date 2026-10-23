@@ -111,7 +111,7 @@ GBytes *variant_bytes (GVariant *value)
   if (!value || !g_variant_is_of_type (value, G_VARIANT_TYPE_BYTESTRING)) fail ("Invalid Painter byte field");
   return g_variant_get_data_as_bytes (value);
 }
-Variant decode (GBytes *capsule)
+Variant decode (GBytes *capsule, bool item_v2 = false)
 {
   if (!capsule) return {};
   gsize length = 0;
@@ -137,7 +137,8 @@ Variant decode (GBytes *capsule)
         fail ("Duplicate Painter metadata key; original capsule is retained and cannot be safely rewritten");
     }
   guint32 version;
-  if (!g_variant_lookup (value.get (), "version", "u", &version) || version != 1) return {};
+  if (!g_variant_lookup (value.get (), "version", "u", &version) ||
+      (version != 1 && !(item_v2 && version == 2))) return {};
   GimpPainterXcf::discard_snapshot_pages (data, length);
   return value;
 }
@@ -382,10 +383,48 @@ bool item_legacy_mode (GVariant *dict, GimpLayerMode *mode)
     fail ("Invalid Painter legacy mode; original capsule remains inert");
   return true;
 }
+/* Stable capsule semantics are independent of public runtime enum numbers. */
+const char *float_mode_name (GimpLayerMode mode)
+{
+  switch (mode)
+    {
+#define FLOAT_NAME(symbol, name) case GIMP_LAYER_MODE_PAINTER_FLOAT_##symbol: return name
+      FLOAT_NAME (ERASE, "erase"); FLOAT_NAME (REPLACE, "replace");
+      FLOAT_NAME (ANTI_ERASE, "anti-erase"); FLOAT_NAME (SRC_IN, "src-in");
+      FLOAT_NAME (DST_IN, "dst-in"); FLOAT_NAME (SRC_OUT, "src-out");
+      FLOAT_NAME (DST_OUT, "dst-out"); FLOAT_NAME (NORMAL, "normal");
+      FLOAT_NAME (MULTIPLY, "multiply");
+#undef FLOAT_NAME
+      default: return nullptr;
+    }
+}
+bool item_float_mode (GVariant *dict, GimpLayerMode *mode)
+{
+  guint32 version = 0;
+  g_variant_lookup (dict, "version", "u", &version);
+  Variant value (g_variant_lookup_value (dict, "float-mode", nullptr));
+  if (version == 1 && !value) return false;
+  if (version != 2 || !value || !g_variant_is_of_type (value.get (), G_VARIANT_TYPE ("(uss)")))
+    fail ("Invalid Painter float mode envelope; original capsule remains inert");
+  guint32 policy;
+  const gchar *space, *name;
+  g_variant_get (value.get (), "(u&s&s)", &policy, &space, &name);
+  if (policy != 1 || std::strcmp (space, "nonlinear-rgb"))
+    fail ("Unknown Painter float mode policy; original capsule remains inert");
+  Variant legacy (g_variant_lookup_value (dict, "legacy-mode", nullptr));
+  if (legacy) fail ("Conflicting Painter float and legacy mode identities; original capsule remains inert");
+  for (gint candidate = GIMP_LAYER_MODE_PAINTER_FLOAT_ERASE;
+       candidate <= GIMP_LAYER_MODE_PAINTER_FLOAT_MULTIPLY; candidate++)
+    if (!std::strcmp (name, float_mode_name (static_cast<GimpLayerMode> (candidate))))
+      { *mode = static_cast<GimpLayerMode> (candidate); return true; }
+  fail ("Unknown Painter float mode identifier; original capsule remains inert");
+  return false;
+}
 void validate_common_item_record (GVariant *dict)
 {
   GimpLayerMode mode;
   item_legacy_mode (dict, &mode);
+  item_float_mode (dict, &mode);
   validate_optional_name (dict, "original-source-name");
 }
 GimpFilterLayerSnapshot filter_cache_state (GVariant *dict)
@@ -454,7 +493,8 @@ bool supported_item_record (GVariant *value, GimpItem *owner)
                      gimp_item_parasite_find (owner, "plug-in-gdyntext/data")))
         return false;
       Variant mode (g_variant_lookup_value (value, "legacy-mode", nullptr));
-      if (mode && !GIMP_IS_LAYER (owner)) return false;
+      Variant float_mode (g_variant_lookup_value (value, "float-mode", nullptr));
+      if ((mode || float_mode) && !GIMP_IS_LAYER (owner)) return false;
       if (!std::strcmp (kind, "filter")) validate_filter_record (value);
       if (!std::strcmp (kind, "clone")) validate_clone_record (value);
     }
@@ -465,7 +505,7 @@ Capsule fallback_origin (GObject *object, GCancellable *cancel)
 {
   auto semantic = owner_capsule (object, GIMP_IS_IMAGE (object) ? GIMP_PAINTER_PROVENANCE_NAMESPACE_IMAGE : GIMP_PAINTER_PROVENANCE_NAMESPACE_ITEM);
   if (!semantic) return {};
-  Variant semantic_value = decode (semantic.get ());
+  Variant semantic_value = decode (semantic.get (), !GIMP_IS_IMAGE (object));
   if (semantic_value && (GIMP_IS_IMAGE (object) || supported_item_record (semantic_value.get (), GIMP_ITEM (object)))) return {};
   auto existing = owner_capsule (object, GIMP_PAINTER_PROVENANCE_NAMESPACE_ORIGIN);
   Variant base = decode (existing.get ());
@@ -488,16 +528,20 @@ Capsule image_record (GimpImage *image, GCancellable *cancel)
 Capsule item_record (GimpImage *image, GimpItem *item, GHashTable *ids, GCancellable *cancel)
 {
   auto existing = owner_capsule (G_OBJECT (item), GIMP_PAINTER_PROVENANCE_NAMESPACE_ITEM);
-  Variant base = decode (existing.get ());
+  Variant base = decode (existing.get (), true);
   if (existing && (!base || !supported_item_record (base.get (), item)))
     {
       if (GIMP_IS_CLONE_LAYER (item) || GIMP_IS_FILTER_LAYER (item) ||
-          (GIMP_IS_LAYER (item) && gimp_painter_layer_mode_is_compatibility (gimp_layer_get_mode (GIMP_LAYER (item)))))
+          (GIMP_IS_LAYER (item) && (gimp_painter_layer_mode_is_compatibility (gimp_layer_get_mode (GIMP_LAYER (item))) ||
+                                  float_mode_name (gimp_layer_get_mode (GIMP_LAYER (item))))))
         fail ("Unknown Painter extension version, kind or invalid semantic state cannot be overwritten with edited custom semantics");
       return existing;
     }
   Dictionary dict (base.get ());
-  dict.put ("version", g_variant_new_uint32 (1));
+  const char *float_name = GIMP_IS_LAYER (item) ? float_mode_name (gimp_layer_get_mode (GIMP_LAYER (item))) : nullptr;
+  dict.put ("version", g_variant_new_uint32 (float_name ? 2 : 1));
+  if (float_name) dict.put ("float-mode", g_variant_new ("(uss)", 1u, "nonlinear-rgb", float_name));
+  else g_variant_dict_remove (&dict.dict, "float-mode");
   dict.put ("id", g_variant_new_uint32 (GPOINTER_TO_UINT (g_hash_table_lookup (ids, item))));
   preserve_records (dict, G_OBJECT (item), cancel);
   if (auto origin = Bytes (gimp_painter_provenance_ref_bytes (G_OBJECT (item), GIMP_PAINTER_PROVENANCE_EXTENSION)))
@@ -786,7 +830,7 @@ extern "C" XcfPainterSave *xcf_painter_prepare_save_full (GimpImage *image, GCan
             fail (refusal.get ());
           result->items.emplace (item, item_record (image, item, result->ids, cancel));
           {
-            Variant record = decode (result->items.at (item).get ());
+            Variant record = decode (result->items.at (item).get (), true);
             if (record)
               {
                 Variant external (g_variant_lookup_value (record.get (), external_field, G_VARIANT_TYPE ("aa{sv}")));
@@ -1030,7 +1074,7 @@ extern "C" GeglBuffer *xcf_painter_saved_buffer (XcfPainterSave *save, GimpDrawa
   return gimp_drawable_get_buffer (drawable);
 }
 extern "C" GimpLayerMode xcf_painter_standard_mode (GimpLayerMode mode)
-{ return gimp_painter_layer_mode_is_compatibility (mode) ? GIMP_LAYER_MODE_NORMAL_LEGACY : mode; }
+{ return gimp_painter_layer_mode_is_compatibility (mode) || float_mode_name (mode) ? GIMP_LAYER_MODE_NORMAL_LEGACY : mode; }
 extern "C" void xcf_painter_capture_unknown (XcfInfo *info, GPtrArray *records, goffset begin, goffset end)
 {
   if (info->painter_source && begin >= 0 && end >= begin && static_cast<guint64> (end) <= g_bytes_get_size (info->painter_source))
@@ -1122,7 +1166,7 @@ extern "C" gboolean xcf_painter_restore_layer (XcfInfo *info, GimpImage *image, 
     {
       auto capsule = owner_capsule (G_OBJECT (*layer), GIMP_PAINTER_PROVENANCE_NAMESPACE_ITEM);
       if (info->painter_legacy || !capsule) return TRUE;
-      Variant dict = decode (capsule.get ());
+      Variant dict = decode (capsule.get (), true);
       if (!dict) { load_warning (info, "unknown extension version"); return TRUE; }
       const gchar *kind = nullptr;
       if (!g_variant_lookup (dict.get (), "kind", "&s", &kind)) fail ("Missing layer kind");
@@ -1139,7 +1183,7 @@ extern "C" gboolean xcf_painter_restore_layer (XcfInfo *info, GimpImage *image, 
       if (filter) validate_filter_record (dict.get ());
       if (clone) validate_clone_record (dict.get ());
       GimpLayerMode mapped;
-      const bool has_mode = item_legacy_mode (dict.get (), &mapped);
+      const bool has_mode = item_legacy_mode (dict.get (), &mapped) || item_float_mode (dict.get (), &mapped);
       std::unique_ptr<gchar, decltype (&g_free)> original (read_string (dict.get (), "original-source-name"), g_free);
       if (clone || filter)
         {

@@ -697,7 +697,8 @@ def capsule_fields(root):
     puts['external-reference-origins']=[('aa{sv}','dict.put (external_field, g_variant_builder_end (&array))')]
     proof(root,PRESERVE,'external_field','"external-reference-origins"')
     rules={
-      'version':('image/item/origin','u','1','required uint32=1; unknown/missing version keeps namespace opaque'),
+      'version':('image/item/origin','u','1 except opt-in float item dictionary2','required uint32=1, or item-only2 with valid float policy; unknown/missing version keeps namespace opaque'),
+      'float-mode':('layer','(uss)','item-v2 only: policy1/nonlinear-rgb/stable mode name','absent for version1; invalid/missing in version2 or conflict with legacy-mode keeps capsule opaque'),
       'dialect':('image','s','gimp-painter-standard-v1','absent marker does not select standard Painter dialect; ordinary XCF still opens'),
       'id':('item','u','chosen unique nonzero file-local item identity (prior save ID, tattoo, or collision repair)','optional redundant identity; native tattoo remains file-local reference authority'),
       'kind':('item','s','ordinary|clone|filter according to current native owner','missing/unknown kind leaves capsule inert; no inferred custom owner'),
@@ -758,7 +759,9 @@ def capsule_fields(root):
             check,format_,destination=required[key]
             ev.append(proof(root,PRESERVE,check,f'!g_variant_lookup (dict, "{key}", "{format_}", {destination})'))
             ev.append(proof(root,PRESERVE,check,'fail ("Invalid'))
-        if key=='version': ev.append(proof(root,PRESERVE,'decode','if (!g_variant_lookup (value.get (), "version", "u", &version) || version != 1) return {};'))
+        if key=='version': ev.append(proof(root,PRESERVE,'decode','(version != 1 && !(item_v2 && version == 2))) return {};'))
+        if key=='float-mode':
+            ev += [proof(root,PRESERVE,'item_float_mode','G_VARIANT_TYPE ("(uss)")'), proof(root,PRESERVE,'item_float_mode','policy != 1 || std::strcmp (space, "nonlinear-rgb")'), proof(root,PRESERVE,'item_float_mode','if (legacy) fail')]
         if key=='source-id': ev.append(proof(root,PRESERVE,'item_record','const guint32 source_id = ref->source && !external ? GPOINTER_TO_UINT (g_hash_table_lookup (ids, ref->source)) : 0;'))
         if key in ('pending-name','source-name','original-source-name','procedure'):
             ev += [proof(root,PRESERVE,'validate_optional_name','if (!name) return;'),
@@ -770,11 +773,11 @@ def capsule_fields(root):
         if key in ('generation','cache-generation'):
             ev.append(proof(root,PRESERVE,'filter_cache_state','state.generation > G_MAXINT64 || state.cache_generation > state.generation'))
         if key=='kind': ev.append(proof(root,PRESERVE,'known_item_kind','g_variant_lookup (value, "kind", "&s", &kind)'))
-        reader='validate_filter_record' if owner=='FilterLayer' else 'validate_clone_record' if owner=='CloneLayer' else 'decode'
-        route='02' if 'FilterLayer' in owner else '03' if 'CloneLayer' in owner else '04' if key=='legacy-mode' else '05'
+        reader='item_float_mode' if key=='float-mode' else 'validate_filter_record' if owner=='FilterLayer' else 'validate_clone_record' if owner=='CloneLayer' else 'decode'
+        route='02' if 'FilterLayer' in owner else '03' if 'CloneLayer' in owner else '04' if key in ('legacy-mode','float-mode') else '05'
         result.append(row('capsule.'+key,route,owner,'gimp-painter-v1/'+key,'GVariant '+typ,'no legacy capsule; custom source records archived separately',default,absence,
                           [PRESERVE+'#'+reader],sorted(set(producer_anchors)),ev,
-                          version='GPXCF logical capsule v1; canonical little-endian a{sv}',flags='GIMP_PARASITE_PERSISTENT; namespace/owner validation; optional keys omitted explicitly',
+                          version='GPXCF framing v1; image/origin dictionary1; item dictionary1 or float-only2; canonical little-endian a{sv}',flags='GIMP_PARASITE_PERSISTENT; namespace/owner validation; optional keys omitted explicitly',
                           writer_expressions=[x[0] for x in expressions],disposition='dynamic-schema' if typ.startswith('a(') or typ in ('v','aa{sv}','aay') or 'opaque' in typ else 'saved-field'))
     for name,typ,default,expr in [
       ('magic','12 bytes','GPXCF\\0\\0\\0 + uint32le1',"const guint8 magic[12] = {'G','P','X','C','F',0,0,0, 1,0,0,0};"),

@@ -1,0 +1,17 @@
+{
+  "cases": [
+    {
+      "mutation": "native-mode-on-wire",
+      "sha256": "410d11c5ee8e2e92466ccd74e0a7aec64f52bdffaf4d74f79e5add75664f2029",
+      "expected_path": "float_mode_transport",
+      "rejected": true
+    },
+    {
+      "mutation": "accept-unknown-policy",
+      "sha256": "723fb65d2d27aa5597ff71e271ed153c2b475dccee15279a246ba15616cbe094",
+      "expected_path": "float_mode_schema",
+      "rejected": true
+    }
+  ],
+  "restored_sha256": "208d652ec1a1242a95f27497d9feb2f7946b7c0f22b0544354802e19582a4d03"
+}
