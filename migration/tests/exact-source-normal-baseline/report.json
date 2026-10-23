@@ -1,0 +1,1566 @@
+{
+  "schema_version": 1,
+  "scope": "Exact-commit normal Linux registered aggregate; not packaging frozen gate",
+  "source_commit": "65536379b9db5ad91edd3ad3a6a9933572770b8b",
+  "source_tree": "5b476aebb5207a00b634a9fd77e7fa22348f50c1",
+  "exit_code": 0,
+  "source_log_sha256": "d81455c7145389ed320634937f9028471411c3906a7bb144154a77c426a68021",
+  "counts": {
+    "OK": 154
+  },
+  "tap_skipped_subtests": 1,
+  "byte_seal": {
+    "commit_before": "65536379b9db5ad91edd3ad3a6a9933572770b8b",
+    "commit_after": "65536379b9db5ad91edd3ad3a6a9933572770b8b",
+    "before_count": 31834,
+    "after_count": 31834,
+    "changed": [],
+    "unchanged": true
+  },
+  "byte_seal_sha256": "4e29d98477aa05f4f1493a210c6b697749f54927643a3db22d8e21e55089b665",
+  "command": [
+    "python3",
+    "tools/run-painter-xvfb.py",
+    "flock",
+    "$GIMP_PAINTER_BUILD_LOCK",
+    "meson",
+    "test",
+    "-C",
+    "BUILD",
+    "--num-processes",
+    "1",
+    "--print-errorlogs",
+    "--logbase",
+    "aggregate-655"
+  ],
+  "tests": [
+    {
+      "name": "gimp:app / core",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 2.8353993892669678,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:app / gimp-test-config-fixture",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 1.5218238830566406,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:app / painter-type-startup",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 0.38256382942199707,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:app / file-load-pipeline",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 1.506230354309082,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:app / gimp-clone-layer",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 3.9956424236297607,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:app / gimp-filter-layer",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 387.1063735485077,
+      "tap_skips": [],
+      "diagnostics": [
+        {
+          "text": "(gimp-painter-filter-worker:885): GEGL-WARNING **: 00:41:04.288: tile-backend-swap writer queue wasn't empty before freeing",
+          "count": 1
+        },
+        {
+          "text": "(gimp-painter-filter-worker:885): GEGL-WARNING **: 00:41:04.288: (../gegl/buffer/gegl-tile-backend-swap.c:1546):gegl_tile_backend_swap_cleanup: runtime check failed: (gap_list->start == 0 && gap_list->end == file_size)",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "gimp:app / painter-layer-ui",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 129.9297125339508,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:app / painter-layer-tree",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 4.566349029541016,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:app / painter-dock-layout-ui",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 33.885388135910034,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:app / painter-dock-input-ui",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 10.68515419960022,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:app / painter-dock-session-ui",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 15.179691553115845,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:app / painter-right-docks-ui",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 15.714390277862549,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:app / painter-canvas-ui",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 26.53930687904358,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:app / painter-compact-options",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 103.16343474388123,
+      "tap_skips": [],
+      "diagnostics": [
+        {
+          "text": "GIMP-Warning: There are no selected layers or channels to fill.",
+          "count": 1
+        },
+        {
+          "text": "GIMP-Warning: There are no selected layers or channels to stroke to.",
+          "count": 1
+        },
+        {
+          "text": "GIMP-Warning: A selected layer's pixels are locked.",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "name": "gimp:app / gimp-painter-mybrush",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 2.0599045753479004,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:app / gimp-painter-mybrush-factory",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 2.019584894180298,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:app / gimpidtable",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 0.04602789878845215,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:app / gimp-container-deserialize",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 0.04419398307800293,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:app / gimp-tool-owner",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 1.21089768409729,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:app / xcf",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 1.9006240367889404,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:app / painter-xcf-open",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 1.6398680210113525,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:app / painter-xcf-adversarial",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 2.1706745624542236,
+      "tap_skips": [],
+      "diagnostics": [
+        {
+          "text": "GIMP-Warning: This XCF drawable is incomplete. Complete tiles and the original source have been retained; Save is disabled to avoid data loss.",
+          "count": 37
+        },
+        {
+          "text": "GIMP-Warning: This XCF file is corrupt!  I have loaded as much of it as I can, but it is incomplete.",
+          "count": 1
+        },
+        {
+          "text": "xcf: decompressed tile bigger than the expected size.xcf: decompressed tile bigger than the expected size.GIMP-Warning: This XCF drawable is incomplete. Complete tiles and the original source have been retained; Save is disabled to avoid data loss.",
+          "count": 2
+        },
+        {
+          "text": "xcf: decompressed tile bigger than the expected size.GIMP-Warning: This XCF drawable is incomplete. Complete tiles and the original source have been retained; Save is disabled to avoid data loss.",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "gimp:app / painter-xcf-roundtrip",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 55.78220820426941,
+      "tap_skips": [
+        "ok 35 /painter-xcf-multipart/native-large # SKIP Run explicitly with -m slow for >256 MiB Save/Open resource evidence"
+      ],
+      "diagnostics": [
+        {
+          "text": "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: unknown extension version",
+          "count": 44
+        },
+        {
+          "text": "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Unsupported or malformed saved Filter argument; original definition is retained",
+          "count": 13
+        },
+        {
+          "text": "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Invalid arguments",
+          "count": 2
+        },
+        {
+          "text": "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Duplicate Painter metadata key; original capsule is retained and cannot be safely rewritten",
+          "count": 3
+        },
+        {
+          "text": "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: unknown layer kind",
+          "count": 6
+        },
+        {
+          "text": "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Missing layer kind",
+          "count": 2
+        },
+        {
+          "text": "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Painter metadata conflicts with its native owner or semantic schema; original capsule remains inert",
+          "count": 218
+        },
+        {
+          "text": "GIMP-Warning: XCF Warning: version 0:0 of filter \"gegl:brightness-contrast\" does not have the future-value property. The property was ignored and the filter may not render properly.",
+          "count": 3
+        },
+        {
+          "text": "GIMP-Warning: XCF Warning: the \"unavailable effect\" (xxxxxxxxxxxxxxxxxxxxxxxx) filter is not installed. It was discarded.",
+          "count": 1
+        },
+        {
+          "text": "GIMP-Warning: XCF Warning: argument \"format\" of filter gegl:color has unsupported type gpointer. It was discarded.",
+          "count": 1
+        },
+        {
+          "text": "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Saved Filter arguments exceed the mutable materialization limit; original definition is retained",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "name": "gimp:app / painter-provenance",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 0.047817230224609375,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:app / painter-layer-modes",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 3.644974946975708,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:app / painter-dynamics",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 0.33623337745666504,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:app / painter-core-metadata",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 1.4369630813598633,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:app / painter-ancestry-contract",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 0.04280805587768555,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:app / painter-navigation-ui",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 0.05628180503845215,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:app / painter-navigation-events",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 2.64673113822937,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:app / device-dialog-events",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 2.4568052291870117,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:app / painter-perspective",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 1.3708436489105225,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:app / painter-perspective-ui",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 4.341693878173828,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:app / painter-perspective-events",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 3.519956588745117,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:app / gimp-painter-context",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 1.4236598014831543,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:app / mypaint-selector-contracts",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 11.153576612472534,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:libgimpwidgets / gimp-ruler",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 0.07761192321777344,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:painter / painter-foundation",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 0.012190580368041992,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:painter / painter-qdata-operations",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 0.005823850631713867,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:painter / painter-filter-wire",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 0.010571002960205078,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:painter / painter-filter-process",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 5.171004056930542,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:painter / painter-filter-scheduler",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 3.546415328979492,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:painter / painter-filter-owner-gates",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 0.1902174949645996,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:painter / painter-filter-edge",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 0.025799036026000977,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:painter / painter-filter-gauss",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 0.060209035873413086,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:painter / painter-filter-gray",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 0.02692699432373047,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:painter / painter-filter-gauss-alias",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 0.12326574325561523,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:painter / painter-fair-dispatcher",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 0.0076923370361328125,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:painter / painter-work-admission",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 0.010153532028198242,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:painter / painter-filter-raster",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 1.2396626472473145,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:painter / painter-filter-spool",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 0.07997941970825195,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:painter / painter-filter-raster-kernels",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 2.2339208126068115,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:painter / painter-filter-native-kernels",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 0.010216236114501953,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:painter / painter-filter-kernel-progress",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 0.09305024147033691,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:painter / painter-filter-context-native",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 0.014097929000854492,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:painter / painter-filter-context",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 0.22714757919311523,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:painter / painter-filter-import-completion",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 0.007206916809082031,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:painter / painter-public-mode-abi",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 0.04300069808959961,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:painter / painter-brush-metadata-c",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 0.008250713348388672,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:painter / painter-brush-metadata-cpp",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 0.002924203872680664,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:painter / painter-brush-generator",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 0.5718250274658203,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:painter / painter-mypaint-resource",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 0.22611069679260254,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:painter / painter-mypaint-legacy-decoder",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 0.13236045837402344,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:painter / painter-mypaint-legacy-engine",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 0.23597025871276855,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:painter / painter-navigation",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 0.014072418212890625,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:painter / painter-bounded-fill-legacy",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 0.7125637531280518,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:painter / painter-bounded-fill",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 0.27744102478027344,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:painter / painter-mypaint-legacy-surface",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 0.33321285247802734,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:painter / painter-mypaint-legacy-generated",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 0.043523550033569336,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:painter / painter-gray-alpha-equations",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 0.005076169967651367,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:painter / painter-mypaint-native-precision",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 0.4275021553039551,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:painter / painter-mypaint-coordinate-boundaries",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 0.285541296005249,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:painter / painter-mypaint-region-lifetime",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 0.3012385368347168,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:painter / painter-mypaint-legacy-selection",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 2.9986720085144043,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:painter / painter-mypaint-snapshot-isolation",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 0.2940549850463867,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:painter / painter-mypaint-buffer-read",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 0.31059765815734863,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:painter / painter-smudge-legacy-pixels",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 0.0708310604095459,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:painter / painter-xcf-compat",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 0.015043973922729492,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:painter / painter-public-header-compilation",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 0.1254284381866455,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:painter / painter-additional-header-routes",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 4.976982116699219,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:app / app-config",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 0.27214765548706055,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:painter / painter-filter-procedure",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 814.2729740142822,
+      "tap_skips": [],
+      "diagnostics": [
+        {
+          "text": "(gimp-painter-filter-worker:13062): GEGL-WARNING **: 00:57:42.825: tile-backend-swap writer queue wasn't empty before freeing",
+          "count": 1
+        },
+        {
+          "text": "(gimp-painter-filter-worker:13062): GEGL-WARNING **: 00:57:42.825: (../gegl/buffer/gegl-tile-backend-swap.c:1546):gegl_tile_backend_swap_cleanup: runtime check failed: (gap_list->start == 0 && gap_list->end == file_size)",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "gimp:painter / painter-filter-convolution",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 288.21313643455505,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:desktop / validate-desktop",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 0.007334709167480469,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:app+test-fixtures / gimp-test-icon-theme-generator",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 0.1095573902130127,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:app / save-and-export",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 29.91507863998413,
+      "tap_skips": [],
+      "diagnostics": [
+        {
+          "text": "GIMP-Warning: Welcome to GIMP 3.0.9!",
+          "count": 1
+        },
+        {
+          "text": "GIMP-Error: Failed to save data:",
+          "count": 1
+        },
+        {
+          "text": "You have a writable data folder configured, but this folder is not part of your data search path. You probably edited the gimprc file manually, please fix it in the Preferences dialog's 'Folders' section.",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "gimp:app / in-build-gimp-wrapper",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 1.0874004364013672,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:app / script-fu-startup",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 197.68153023719788,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:app / gimp-painter-surface",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 1.4166059494018555,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:painter / painter-mypaint-legacy-session",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 1.7561652660369873,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:app / painter-widget-exceptions",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 3.693955421447754,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:app / gimp-painter-options",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 2.1631102561950684,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:app / gimp-painter-session",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 1.3350954055786133,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:app / painter-options-session-c",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 1.337249755859375,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:app / gimp-painter-qdata-operations",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 1.3750815391540527,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:app / gimp-painter-hover",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 1.3351213932037354,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:app / gimp-fill-brush",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 2.752556800842285,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:painter / painter-fill-brush-legacy",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 1.9096815586090088,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:painter / painter-fill-brush-legacyqueued",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 1.8840916156768799,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:painter / painter-fill-brush-legacyasync",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 1.8457708358764648,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:app / painter-fill-brush-ui",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 7.873253345489502,
+      "tap_skips": [],
+      "diagnostics": [
+        {
+          "text": "GIMP-Warning: Pending Fill Brush strokes were canceled because their target changed.",
+          "count": 13
+        },
+        {
+          "text": "GIMP-Warning: Invalid Fill Brush coordinates.",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "gimp:app / gimp-layer-presets",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 1.8712983131408691,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:app / layer-presets-ui",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 13.615901947021484,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:app / painter-mypaint-tool",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 43.48602342605591,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:painter / painter-native-interpolation",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 9.4220871925354,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:app / gimp-painter-preview",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 1.3687255382537842,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:painter / painter-mypaint-legacy-rgb-session",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 3.2774670124053955,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:painter / painter-mypaint-rgb-session-fixtures",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 0.2131812572479248,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:painter / painter-smudge-legacy-strokes",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 1.5683083534240723,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:app / gimp-painter-smudge",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 1.4847466945648193,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:painter / painter-smudge-owned-strokes",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 1.4301941394805908,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:app / painter-mypaint-editor",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 39.157389402389526,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:painter / painter-mypaint-preview-fixture",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 0.10708999633789062,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:app / painter-smudge-ui",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 4.783649921417236,
+      "tap_skips": [],
+      "diagnostics": [
+        {
+          "text": "GIMP-Warning: Pending Painter Smudge strokes were canceled because their target changed.",
+          "count": 11
+        },
+        {
+          "text": "GIMP-Warning: Invalid Painter Smudge coordinates.",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "gimp:app / painter-save-continuation",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 5.695494651794434,
+      "tap_skips": [],
+      "diagnostics": [
+        {
+          "text": "GIMP-Warning: Pending Fill Brush strokes were canceled because their target changed.",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "gimp:app / gimp-painter-batch",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 1.470416784286499,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:painter / painter-mypaint-legacy-gray-session",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 1.5179383754730225,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:painter / painter-mypaint-gray-session-fixtures",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 0.0544126033782959,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:app / gimp-painter-gray",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 1.3017818927764893,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:app / gimp-painter-gray-extension",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 3.481799840927124,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:painter / painter-profile-parser",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 0.022789478302001953,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:painter / painter-profile-native",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 1.9970431327819824,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:painter / painter-paper",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 1.3651666641235352,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:painter / painter-paper-ui",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 2.8905251026153564,
+      "tap_skips": [],
+      "diagnostics": [
+        {
+          "text": "GIMP-Warning: Pending Painter Smudge strokes were canceled because their target changed.",
+          "count": 1
+        },
+        {
+          "text": "GIMP-Warning: Pending Fill Brush strokes were canceled because their target changed.",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "gimp:painter / painter-legacy-paper",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 1.5381338596343994,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:painter / painter-legacy-paper-modes",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 4.996252775192261,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:painter / painter-mypaint-legacy-pipe",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 1.9196226596832275,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:painter / painter-brush-geometry",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 1.230816125869751,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:painter / painter-brush-geometry-strokes",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 7.675317764282227,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:painter / painter-brush-geometry-pixmap",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 1.500002145767212,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:painter / painter-brush-geometry-fixtures",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 0.10767698287963867,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:app / painter-mypaint-precision",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 7.3252222537994385,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:app / editor-dropdown",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 6.03534197807312,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:app / editor-dropdown-preset-control",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 2.3249526023864746,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:app / painter-popup-handles",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 2.04789400100708,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:app / filter-entry-contracts",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 1.9676058292388916,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:app / layer-tile-entry-contracts",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 5.328247785568237,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:app / device-save-lifecycle",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 1.61871337890625,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:app / welcome-shutdown",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 141.67314648628235,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:app / painter-roi-transfers",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 2.0878357887268066,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:libgimp+C / plug-in-protocol",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 2.6400904655456543,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:libgimp+C / procedure-config",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 0.1953139305114746,
+      "tap_skips": [],
+      "diagnostics": []
+    },
+    {
+      "name": "gimp:libgimp+python3 / color-parser",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 28.851348876953125,
+      "tap_skips": [],
+      "diagnostics": [
+        {
+          "text": "GIMP-Warning: Welcome to GIMP 3.0.9!",
+          "count": 1
+        },
+        {
+          "text": "GIMP-Error: Failed to save data:",
+          "count": 1
+        },
+        {
+          "text": "You have a writable data folder configured, but this folder is not part of your data search path. You probably edited the gimprc file manually, please fix it in the Preferences dialog's 'Folders' section.",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "gimp:libgimp+C / color-parser",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 28.872562885284424,
+      "tap_skips": [],
+      "diagnostics": [
+        {
+          "text": "GIMP-Warning: Welcome to GIMP 3.0.9!",
+          "count": 1
+        },
+        {
+          "text": "GIMP-Error: Failed to save data:",
+          "count": 1
+        },
+        {
+          "text": "You have a writable data folder configured, but this folder is not part of your data search path. You probably edited the gimprc file manually, please fix it in the Preferences dialog's 'Folders' section.",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "gimp:libgimp+python3 / export-options",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 28.560483694076538,
+      "tap_skips": [],
+      "diagnostics": [
+        {
+          "text": "GIMP-Warning: Welcome to GIMP 3.0.9!",
+          "count": 1
+        },
+        {
+          "text": "GIMP-Error: Failed to save data:",
+          "count": 1
+        },
+        {
+          "text": "You have a writable data folder configured, but this folder is not part of your data search path. You probably edited the gimprc file manually, please fix it in the Preferences dialog's 'Folders' section.",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "gimp:libgimp+C / export-options",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 29.125861406326294,
+      "tap_skips": [],
+      "diagnostics": [
+        {
+          "text": "GIMP-Warning: Welcome to GIMP 3.0.9!",
+          "count": 1
+        },
+        {
+          "text": "GIMP-Error: Failed to save data:",
+          "count": 1
+        },
+        {
+          "text": "You have a writable data folder configured, but this folder is not part of your data search path. You probably edited the gimprc file manually, please fix it in the Preferences dialog's 'Folders' section.",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "gimp:libgimp+python3 / image",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 30.062363386154175,
+      "tap_skips": [],
+      "diagnostics": [
+        {
+          "text": "GIMP-Warning: Welcome to GIMP 3.0.9!",
+          "count": 1
+        },
+        {
+          "text": "GIMP-Error: Failed to save data:",
+          "count": 1
+        },
+        {
+          "text": "You have a writable data folder configured, but this folder is not part of your data search path. You probably edited the gimprc file manually, please fix it in the Preferences dialog's 'Folders' section.",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "gimp:libgimp+C / image",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 29.847006797790527,
+      "tap_skips": [],
+      "diagnostics": [
+        {
+          "text": "GIMP-Warning: Welcome to GIMP 3.0.9!",
+          "count": 1
+        },
+        {
+          "text": "GIMP-Error: Failed to save data:",
+          "count": 1
+        },
+        {
+          "text": "You have a writable data folder configured, but this folder is not part of your data search path. You probably edited the gimprc file manually, please fix it in the Preferences dialog's 'Folders' section.",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "gimp:libgimp+python3 / palette",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 28.361982107162476,
+      "tap_skips": [],
+      "diagnostics": [
+        {
+          "text": "GIMP-Warning: Welcome to GIMP 3.0.9!",
+          "count": 1
+        },
+        {
+          "text": "GIMP-Error: Failed to save data:",
+          "count": 1
+        },
+        {
+          "text": "You have a writable data folder configured, but this folder is not part of your data search path. You probably edited the gimprc file manually, please fix it in the Preferences dialog's 'Folders' section.",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "gimp:libgimp+C / palette",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 27.76637291908264,
+      "tap_skips": [],
+      "diagnostics": [
+        {
+          "text": "GIMP-Warning: Welcome to GIMP 3.0.9!",
+          "count": 1
+        },
+        {
+          "text": "GIMP-Error: Failed to save data:",
+          "count": 1
+        },
+        {
+          "text": "You have a writable data folder configured, but this folder is not part of your data search path. You probably edited the gimprc file manually, please fix it in the Preferences dialog's 'Folders' section.",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "gimp:libgimp+python3 / selection-float",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 28.830658674240112,
+      "tap_skips": [],
+      "diagnostics": [
+        {
+          "text": "GIMP-Warning: Welcome to GIMP 3.0.9!",
+          "count": 1
+        },
+        {
+          "text": "GIMP-Error: Failed to save data:",
+          "count": 1
+        },
+        {
+          "text": "You have a writable data folder configured, but this folder is not part of your data search path. You probably edited the gimprc file manually, please fix it in the Preferences dialog's 'Folders' section.",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "gimp:libgimp+C / selection-float",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 28.165812015533447,
+      "tap_skips": [],
+      "diagnostics": [
+        {
+          "text": "GIMP-Warning: Welcome to GIMP 3.0.9!",
+          "count": 1
+        },
+        {
+          "text": "GIMP-Error: Failed to save data:",
+          "count": 1
+        },
+        {
+          "text": "You have a writable data folder configured, but this folder is not part of your data search path. You probably edited the gimprc file manually, please fix it in the Preferences dialog's 'Folders' section.",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "gimp:libgimp+python3 / unit",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 28.653058290481567,
+      "tap_skips": [],
+      "diagnostics": [
+        {
+          "text": "GIMP-Warning: Welcome to GIMP 3.0.9!",
+          "count": 1
+        },
+        {
+          "text": "GIMP-Error: Failed to save data:",
+          "count": 1
+        },
+        {
+          "text": "You have a writable data folder configured, but this folder is not part of your data search path. You probably edited the gimprc file manually, please fix it in the Preferences dialog's 'Folders' section.",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "gimp:libgimp+C / unit",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 28.0471510887146,
+      "tap_skips": [],
+      "diagnostics": [
+        {
+          "text": "GIMP-Warning: Welcome to GIMP 3.0.9!",
+          "count": 1
+        },
+        {
+          "text": "GIMP-Error: Failed to save data:",
+          "count": 1
+        },
+        {
+          "text": "You have a writable data folder configured, but this folder is not part of your data search path. You probably edited the gimprc file manually, please fix it in the Preferences dialog's 'Folders' section.",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}
