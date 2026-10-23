@@ -111,3 +111,13 @@ if host_machine.system() == 'linux' and cxx.has_multi_link_arguments(painter_reg
   test('painter-mypaint-region-internals', painter_region_internal,
     env: ['GEGL_USE_OPENCL=no'], suite: 'painter', timeout: 60)
 endif
+
+# Bounded per-operation scratch, sparse floating storage, rejection and retry.
+painter_work_buffer = executable('painter-mypaint-work-buffer',
+  'tests/work-buffer.cpp', dependencies: painter_mypaint_surface_dep,
+  cpp_args: painter_cpp_args, override_options: ['cpp_std=c++14'])
+if not meson.is_cross_build()
+  test('painter-mypaint-work-buffer', painter_work_buffer,
+    env: ['GEGL_USE_OPENCL=no', 'GEGL_SWAP=RAM', 'GEGL_THREADS=1'],
+    suite: 'painter', timeout: 60)
+endif

@@ -1,0 +1,32 @@
+ninja: Entering directory `<native>/build-port'
+[1/37] Generating symbol file libgimpbase/libgimpbase-3.0.so.0.8.1.p/libgimpbase-3.0.so.0.8.1.symbols
+[2/34] Generating symbol file libgimpcolor/libgimpcolor-3.0.so.0.8.1.p/libgimpcolor-3.0.so.0.8.1.symbols
+[3/34] Compiling C object app/core/libappcore.a.p/gimpjsonresource.c.o
+FAILED: app/core/libappcore.a.p/gimpjsonresource.c.o 
+cc -Iapp/core/libappcore.a.p -Iapp/core -I../source/app/core -I. -I../source -Iapp -I../source/app -Iapp/paint/painter-mypaint -I../source/app/paint/painter-mypaint -Iapp/painter -I../source/app/painter -Iapp/paint/painter-brush-settings -I../source/app/paint/painter-brush-settings -Igimp-data/cursors -Igimp-data/icons/Default -I<dependencies>/root/usr/include/glib-2.0 -I<dependencies>/root/usr/lib/x86_64-linux-gnu/glib-2.0/include -I<dependencies>/root/usr/include/sysprof-6 -I<dependencies>/root/usr/include/json-glib-1.0 -I<dependencies>/root/usr/include/libmount -I<dependencies>/root/usr/include/blkid -I<dependencies>/root/usr/include/cairo -I<dependencies>/root/usr/include/libpng16 -I<dependencies>/root/usr/include/freetype2 -I<dependencies>/root/usr/include/pixman-1 -I<dependencies>/root/usr/include/gegl-0.4 -I<dependencies>/root/usr/include/gio-unix-2.0 -I<dependencies>/root/usr/include/babl-0.1 -I<dependencies>/root/usr/include/gdk-pixbuf-2.0 -I<dependencies>/root/usr/include/webp -I<dependencies>/root/usr/include/libmypaint -I<dependencies>/root/usr/include/json-c -I<dependencies>/root/usr/include/appstream -I<dependencies>/root/usr/include/pango-1.0 -I<dependencies>/root/usr/include/harfbuzz -I<dependencies>/root/usr/include/fribidi -fdiagnostics-color=always -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -O2 -g -Wabsolute-value -Wdeclaration-after-statement -Wenum-conversion -Wno-strict-prototypes -Wold-style-definition -Wunused-function -Wunused-value -Werror=implicit-function-declaration -DGDK_PIXBUF_VERSION_MIN_REQUIRED=GDK_PIXBUF_VERSION_2_30 -DGDK_PIXBUF_VERSION_MAX_ALLOWED=GDK_PIXBUF_VERSION_2_30 -DGLIB_VERSION_MIN_REQUIRED=GLIB_VERSION_2_70 -DGLIB_VERSION_MAX_ALLOWED=GLIB_VERSION_2_76 -DGDK_VERSION_MIN_REQUIRED=GDK_VERSION_3_24 -DGDK_VERSION_MAX_ALLOWED=GDK_VERSION_3_24 -fdiagnostics-show-option -fno-common -Wformat -Wformat-security -Winit-self -Wlogical-op -Wmissing-declarations -Wmissing-format-attribute -Wpointer-arith -Wreturn-type -Wtype-limits -DHAVE_CONFIG_H -fPIC -pthread '-DG_LOG_DOMAIN="Gimp-Core"' -MD -MQ app/core/libappcore.a.p/gimpjsonresource.c.o -MF app/core/libappcore.a.p/gimpjsonresource.c.o.d -o app/core/libappcore.a.p/gimpjsonresource.c.o -c ../source/app/core/gimpjsonresource.c
+In file included from ../source/app/core/gimpresource.h:22,
+                 from ../source/app/core/gimpdata.h:25,
+                 from ../source/app/core/gimpjsonresource.h:4,
+                 from ../source/app/core/gimpjsonresource.c:8:
+../source/app/core/gimpviewable.h:84:3: error: unknown type name ‘GdkPixbuf’
+   84 |   GdkPixbuf     * (* get_pixbuf)         (GimpViewable  *viewable,
+      |   ^~~~~~~~~
+../source/app/core/gimpviewable.h:89:3: error: unknown type name ‘GdkPixbuf’
+   89 |   GdkPixbuf     * (* get_new_pixbuf)     (GimpViewable  *viewable,
+      |   ^~~~~~~~~
+../source/app/core/gimpviewable.h:160:1: error: unknown type name ‘GdkPixbuf’
+  160 | GdkPixbuf     * gimp_viewable_get_pixbuf         (GimpViewable  *viewable,
+      | ^~~~~~~~~
+../source/app/core/gimpviewable.h:165:1: error: unknown type name ‘GdkPixbuf’
+  165 | GdkPixbuf     * gimp_viewable_get_new_pixbuf     (GimpViewable  *viewable,
+      | ^~~~~~~~~
+../source/app/core/gimpviewable.h:171:1: error: unknown type name ‘GdkPixbuf’
+  171 | GdkPixbuf     * gimp_viewable_get_dummy_pixbuf   (GimpViewable  *viewable,
+      | ^~~~~~~~~
+[4/34] Generating symbol file libgimpmath/libgimpmath-3.0.so.0.8.1.p/libgimpmath-3.0.so.0.8.1.symbols
+[5/33] Generating git-version.h.in.1 with a custom command
+[6/33] Generating app/tests/icon-theme-fixture/gimp-test-icon-theme-fixture with a custom command
+{"files": 1191, "manifest_sha256": "2f790ebf02244ef3c023f17f16ab614cbc315ee46d46abd87b7f73d4d5d9be41", "ownership_marker_sha256": "d3ebe76f57bdce73e82df17c3cd89f1a630f42f3c8d72dbfdacd4a000061b8bf", "plan_sha256": "0a16da7a76b5facf2d3d8084793b72e28d32d17c7ff6bf237d164075d4af4b95", "stamp_sha256": "c20e592420d8f1feb8e044c6114f8ed009473d411042806fd6e9aadd50c7ffc9", "status": "verified"}
+ninja: build stopped: subcommand failed.
+INFO: autodetecting backend as ninja
+INFO: calculating backend command to run: <dependencies>/root/usr/bin/ninja -C <native>/build-port -j 4 app/paint/painter-mypaint-surface/painter-mypaint-work-buffer app/paint/painter-mypaint-surface/painter-mypaint-coordinate-boundaries app/paint/painter-mypaint-surface/painter-mypaint-snapshot-isolation app/tests/gimp-painter-surface

@@ -1,0 +1,20 @@
+[
+  {
+    "name": "removed-admission",
+    "production_file": "app/paint/painter-mypaint-surface/work-budget.hpp",
+    "mutation_from": "if (provider_bytes > budget ||",
+    "mutation_to": "if (false && (provider_bytes > budget ||",
+    "exit_code": -6,
+    "stderr": "probe: <temporary>/probe.cpp:3: int main(): Assertion `caught' failed.\n",
+    "scope": "Actual production budget helper in private copy; arithmetic assertions only, no giant allocation or simulated OOM"
+  },
+  {
+    "name": "off-by-one",
+    "production_file": "app/paint/painter-mypaint-surface/work-budget.hpp",
+    "mutation_from": "width > (budget - provider_bytes)",
+    "mutation_to": "width >= (budget - provider_bytes)",
+    "exit_code": -6,
+    "stderr": "terminate called after throwing an instance of 'std::length_error'\n  what():  Painter operation exceeds 1 GiB scratch budget; reduce brush footprint\n",
+    "scope": "Actual production budget helper in private copy; arithmetic assertions only, no giant allocation or simulated OOM"
+  }
+]

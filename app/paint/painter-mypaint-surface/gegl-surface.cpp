@@ -3,6 +3,7 @@
  */
 #include "gegl-surface.hpp"
 #include "buffer-read.hpp"
+#include "work-budget.hpp"
 #include "legacy-pixel-modes.hpp"
 #include "gray-alpha-pixels.hpp"
 #include "native-pixels.hpp"
@@ -84,7 +85,7 @@ struct GeglSurface::Impl {
       }
     }
     if (result.shaped) {
-      bx = std::floor (x-(bw+1)/2); by = std::floor (y-(bh+1)/2);
+      bx = std::floor (x-(gint64(bw)+1)/2); by = std::floor (y-(gint64(bh)+1)/2);
     } else {
       const float fringe = radius+1;
       bx = std::floor (x-fringe); by = std::floor (y-fringe);
@@ -96,6 +97,9 @@ struct GeglSurface::Impl {
                                             *gegl_buffer_get_extent (selection.get ()),
                                             offset_x, offset_y)) return result;
     const int w = result.rect.width, h = result.rect.height;
+    // Reject before any ROI reads, writes or scratch allocations. Provider
+    // storage was allocated by the provider, but counts while retained here.
+    WorkBudget::require (w, h, transformed.pixels.size ());
     result.mask.resize (std::size_t (w)*h);
     if(!native.legacy)result.wide_mask.resize(std::size_t(w)*h);
     std::vector<guchar> selected;

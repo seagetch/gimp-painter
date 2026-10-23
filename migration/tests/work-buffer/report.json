@@ -1,0 +1,31 @@
+{
+  "task": "09.009",
+  "criterion": "必要領域へ制限し上限を扱う",
+  "source_sha256": {
+    "app/paint/painter-mypaint-surface/gegl-surface.cpp": "12c27f207cb704f0a0a94c0d9871de5a77345b2fe96c104f42349f123ffe4245",
+    "app/paint/painter-mypaint-surface/work-budget.hpp": "799dd63f7f34973bfc3f07378b33278f3d633a1206c75baff867038fa725e7da",
+    "app/paint/painter-mypaint-surface/tests/work-buffer.cpp": "0e999febdf48c67ac1a33526aa3a51e819ff21b56c5941abb0456bf228b72c81",
+    "app/paint/painter-mypaint-surface/tests/coordinate-boundaries.cpp": "886e3526a14e8cfbcbcca1e05200a89b3085850cf6d8b2dcab2b29d6fd4d9cf3",
+    "app/paint/painter-mypaint-surface/tests/snapshot-isolation.cpp": "f09e1cd1f51783d03331c3fe154509c8ea7dd947b49134d6dd0e0b2418778934",
+    "app/tests/test-gimp-painter-surface.cpp": "c71edb536bdad83fd67bac2dcf0f082a3e63fa796744bf830eeafe65332ac8df",
+    "app/tests/test-painter-selection-mask.inc": "3729139eb4c3d00f0a1a17bd4c2bf6b5597efabd615f379a052f34afab809abf",
+    "app/tests/test-painter-surface-layer-mask.inc": "f6bab76310055dd1f7f0749253504ab38b0552fafb3f17740ced5071ae55b8d3",
+    "app/tests/test-painter-surface-snapshot-handoff.inc": "10cec0375ac21c477eb1a9aebc11771c3bfc63929c5c59f1cf082c3b09c03b02"
+  },
+  "native_tree_hashes_match": true,
+  "native_tap_count": 33,
+  "scope": "5 work-buffer normal + focused sanitizer groups; registered native Surface19/coordinate7/snapshot2/work-buffer5 =33 TAP; two private-copy actual production-helper mutations; no full-app sanitizer, no rendered UI claim; dependencies uninstrumented and LSan off",
+  "evidence_sha256": {
+    "build.log": "ec80070ab31a6f275eabf570a8846dfeaaab052ee6b8bc36edc2aa91063e8584",
+    "initial-target-discovery-failure.log": "0939e63f414041ca07948db2f2277da79dc56f2c4b25865e24de79d26d5e92c8",
+    "mutation-results.json": "95a3a32bbe9e9c7fc2dfe932cad08696752dda9661d02fd2156963089181f240",
+    "registered-native.json": "0503488724c047a53461ad8f6e2b3647578b79b8640041f1e41e33f8e4ea11ea",
+    "run-mutations.py": "c292d0cf78ac8b86cd5c9179330740d39d1e53c81401f87ae28e45c4f55c4555",
+    "run-native.sh": "be6a892803a589319a5b08b799189203e405e2278cd2ce94408970b618b1f4c9",
+    "run-standalone.py": "081b1a3a1fc64a9d7359ebfac7e7ccfadf1db67d4bedda4706d55cb425014828",
+    "run.log": "be40f2e745f3454236f184d2c7fb66f4adcfa167cd9d15ccbfd82f9aa39c7177",
+    "standalone.json": "3b75a75efa3422f68c04f0fe1b63f979e14392ae8627b5393ee63ed1449c3061",
+    "unrelated-json-include-failure.log": "4cdcebcb4287cd270d496b7925dc16e72530a54be570ec7c169d8306f317f49f",
+    "verify.py": "6caf39bebf041fbef67f1ba316870beb8daef0fad56876673f0f555afc881f48"
+  }
+}
