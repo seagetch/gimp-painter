@@ -104,7 +104,7 @@ foreach test_name : app_tests
     dependencies: [ libapp_dep, appstream ] +
       (test_name == 'gimp-painter-mybrush' ? [painter_brush_settings_dep] : []),
     link_with: apptests_links,
-    override_options: ['painter-compact-options', 'gimp-painter-mybrush'].contains(test_name) ? ['c_std=c11', 'cpp_std=c++14'] : [],
+    override_options: ['painter-compact-options', 'gimp-painter-mybrush', 'painter-layer-tree'].contains(test_name) ? ['c_std=c11', 'cpp_std=c++14'] : [],
   )
 
   # Filter tests include real 8193x8193 spill and hundreds of old Gauss buffers.
@@ -772,6 +772,18 @@ editor_dropdown_preset_control = executable('editor-dropdown-preset-control',
   dependencies: [libapp_dep, appstream], link_with: apptests_links,
   override_options: ['c_std=c11'])
 test('editor-dropdown-preset-control', editor_dropdown_preset_control,
+  depends: gimp_test_icon_dependencies,
+  env: ['GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+        'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+        'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
+        'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 120)
+
+# Focused owning-route and C-entry admission controls for popup renderers.
+painter_popup_handles_test = executable('painter-popup-handles',
+  'test-painter-popup-handles.cpp', 'tests.c',
+  dependencies: [libapp_dep, appstream], link_with: apptests_links,
+  cpp_args: painter_cpp_args, override_options: ['c_std=c11', 'cpp_std=c++14'])
+test('painter-popup-handles', painter_popup_handles_test,
   depends: gimp_test_icon_dependencies,
   env: ['GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
         'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),

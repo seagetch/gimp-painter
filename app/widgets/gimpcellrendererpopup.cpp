@@ -22,6 +22,7 @@ extern "C" {
 #include "gimpcellrendererpopup.h"
 #include "gimp-intl.h"
 }
+#include "gimpcellrendererpopup-handle.hpp"
 #include "painter/binding-store.hpp"
 #include "painter/connection.hpp"
 #include "painter/source.hpp"
@@ -29,11 +30,6 @@ extern "C" {
 #include <vector>
 using namespace GimpPainter;
 G_DEFINE_TYPE (GimpCellRendererPopup, gimp_cell_renderer_popup, GTK_TYPE_CELL_RENDERER_PIXBUF)
-namespace GimpPainter {
-template<> struct TypeTraits<GimpCellRendererPopup> {
-  static GType type () noexcept { return GIMP_TYPE_CELL_RENDERER_POPUP; }
-};
-}
 namespace {
 struct Popup;
 struct PopupSlot : SlotSpec<GimpCellRendererPopup, Popup> {};
@@ -391,10 +387,20 @@ void gimp_cell_renderer_popup_clicked (GimpCellRendererPopup *cell, GObject *wid
   g_return_if_fail (GIMP_IS_CELL_RENDERER_POPUP (cell));
   g_return_if_fail (GTK_IS_TREE_VIEW (widget));
   g_return_if_fail (path != nullptr);
-  /* Keep signal arguments valid if a parent-clicked handler destroys the tree. */
-  auto owner = ObjectRef<GObject>::retain (G_OBJECT (cell));
-  auto tree = ObjectRef<GObject>::retain (widget);
-  g_signal_emit_by_name (cell, "parent-clicked", widget, path, area);
+  boundary_void (nullptr, [&] {
+    /* Reject inactive or foreign-thread calls before acquiring callback-capable
+     * leases. Lookup never creates a store or reopens a closed renderer. */
+    auto& store = BindingStore::require (G_OBJECT (cell));
+    if (store.state () != BindingStore::State::active) return;
+    auto owner = ObjectRef<GObject>::retain (G_OBJECT (cell));
+    auto tree = ObjectRef<GObject>::retain (widget);
+    /* Either retain can invoke a toggle callback that closes the binding.
+     * Admit through the original typed slot only after both leases exist. */
+    if (!store.with<PopupSlot> ([] (Popup& p) { return !p.closed; })) return;
+    /* No Impl borrow spans emission: keep RUN_FIRST class closure, observers,
+     * overrides and nested emissions in their normal GLib ordering. */
+    g_signal_emit_by_name (cell, "parent-clicked", widget, path, area);
+  });
 }
 GtkWidget *gimp_cell_renderer_popup_get_popup (GimpCellRendererPopup *cell) {
   g_return_val_if_fail (GIMP_IS_CELL_RENDERER_POPUP (cell), nullptr);
