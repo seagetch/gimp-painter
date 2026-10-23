@@ -74,7 +74,7 @@ struct Tiles {
   std::vector<Connection> permanent, model, controls, popup_connections;
   Source rebuild, long_press, autoscroll;
   double scroll_step = 0;
-  std::uint64_t image_generation = 0;
+  std::uint64_t image_generation = 0, popup_generation = 0;
   bool syncing = false, closed = false, pressed = false, popup_opened = false, popup_active = false;
   double press_x = 0, press_y = 0;
   explicit Tiles (GimpPainterLayerTiles *o) : owner (o) {}
@@ -675,9 +675,12 @@ void Tiles::action (const std::string& command, GObject *target) {
 GtkWidget *Tiles::show_popup (bool creation) {
   if (closed || !img () || !ctx ()) return nullptr;
   const auto image_epoch = image_generation;
+  const auto popup_epoch = ++popup_generation;
   close_popup ();
-  /* popup-closed handlers may destroy the owner or bind a different image. */
-  if (closed || !img () || !ctx () || image_generation != image_epoch) return nullptr;
+  /* Closing may synchronously open a newer popup even on the same image.
+   * A live owner and unchanged image do not keep this request current. */
+  if (closed || !img () || !ctx () || image_generation != image_epoch ||
+      popup_generation != popup_epoch) return nullptr;
   popup = ObjectRef<GObject>::sink (G_OBJECT (gtk_popover_new (creation ? add : GTK_WIDGET (owner))));
   auto *widget=GTK_WIDGET (popup.get ());
   gtk_widget_set_name (widget, creation ? "painter-layer-create-popup" : "painter-layer-properties-popup");
