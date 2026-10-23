@@ -1,0 +1,167 @@
+{
+  "task": "08.001",
+  "parent": "199c3c46b9dc9ccedb097524f13e2b46a15c7414",
+  "source_duties": [
+    {
+      "work_id": "legacy-dd5c4fe36ca06171869f",
+      "source_kind": "hunk",
+      "source_id": "01.002/000149",
+      "path": "app/core/core-types.h",
+      "source_blob": "f5864341d797759bae2e054882e827d1be9cbabe",
+      "source_range": "-94,0 -> 95",
+      "source_sha256": "101ff2aa7925a5f9033da7f32805008542954d989a44f10c38bb5515e5bab4ac",
+      "source_scope": "typedef struct _GimpPaintInfo       GimpPaintInfo;",
+      "phase": "implementation",
+      "wbs_task": "08.001",
+      "action": "独自型登録の初期化順を接続する",
+      "acceptance": "読込み前に必要 GType が登録済み",
+      "added_declarations": "GimpToolGroup",
+      "current_registration": "Upstream gimp_tools_deserialize registers ToolGroup and ToolInfo before container deserialization. The new cold tool-group test proves literal-name loading without a prior ToolGroup getter call.",
+      "test_ids": [
+        "/painter-type-startup/cold-tool-group-load"
+      ],
+      "source_copy": "migration/tests/type-startup/legacy-source/core-types.h",
+      "source_copy_sha256": "763c09f9eede48f40f90bc20452b9bab40ea5586e87ea0e57b2673a8b6fa938f"
+    },
+    {
+      "work_id": "legacy-31beb7cf3fc911499a60",
+      "source_kind": "hunk",
+      "source_id": "01.002/000150",
+      "path": "app/core/core-types.h",
+      "source_blob": "f5864341d797759bae2e054882e827d1be9cbabe",
+      "source_range": "-95,0 -> 97,2",
+      "source_sha256": "95bcec2e8a87478861727ff1eb97973351a3c806ab1ded5ec59e083bde8dd26c",
+      "source_scope": "typedef struct _GimpToolInfo        GimpToolInfo;",
+      "phase": "implementation",
+      "wbs_task": "08.001",
+      "action": "独自型登録の初期化順を接続する",
+      "acceptance": "読込み前に必要 GType が登録済み",
+      "added_declarations": "GimpToolItem; GimpMypaintInfo forward declaration",
+      "current_registration": "ToolItem is registered by native typed containers during gimp_init. Painter paint registration uses GimpPaintInfo in constructed. The old MypaintInfo appears as a forward declaration/commented option prototype, not a registered runtime GType; no invented dead GType is introduced.",
+      "test_ids": [
+        "/painter-type-startup/factory-and-paint-types"
+      ],
+      "source_copy": "migration/tests/type-startup/legacy-source/core-types.h",
+      "source_copy_sha256": "763c09f9eede48f40f90bc20452b9bab40ea5586e87ea0e57b2673a8b6fa938f"
+    },
+    {
+      "work_id": "legacy-bd20763ce85916eba903",
+      "source_kind": "hunk",
+      "source_id": "01.002/000151",
+      "path": "app/core/core-types.h",
+      "source_blob": "f5864341d797759bae2e054882e827d1be9cbabe",
+      "source_range": "-116 -> 119,2",
+      "source_sha256": "fd202ad82cf23d60db5c98b13399c03c43f6f477fb0f722f1f57e9a1cdf07538",
+      "source_scope": "typedef struct _GimpTagCache         GimpTagCache;",
+      "phase": "implementation",
+      "wbs_task": "08.001",
+      "action": "独自型登録の初期化順を接続する",
+      "acceptance": "読込み前に必要 GType が登録済み",
+      "added_declarations": "GimpMypaintBrush; GimpJsonResource",
+      "current_registration": "Native GimpPainterMybrush and GimpLayerPreset data factories register their child GTypes during gimp_init before data restoration. Their registered container types and type-based factory dispatch are checked.",
+      "test_ids": [
+        "/painter-type-startup/factory-and-paint-types"
+      ],
+      "source_copy": "migration/tests/type-startup/legacy-source/core-types.h",
+      "source_copy_sha256": "763c09f9eede48f40f90bc20452b9bab40ea5586e87ea0e57b2673a8b6fa938f"
+    },
+    {
+      "work_id": "legacy-9845975d7a29e0fab373",
+      "source_kind": "hunk",
+      "source_id": "01.002/000152",
+      "path": "app/core/core-types.h",
+      "source_blob": "f5864341d797759bae2e054882e827d1be9cbabe",
+      "source_range": "-125,0 -> 130,2",
+      "source_sha256": "9d41ac95d6ee3802161f4535a4f1f9729a097a5900d589f949fe1ec0f7fc462e",
+      "source_scope": "typedef struct _GimpGroupLayer      GimpGroupLayer;",
+      "phase": "implementation",
+      "wbs_task": "08.001",
+      "action": "独自型登録の初期化順を接続する",
+      "acceptance": "読込み前に必要 GType が登録済み",
+      "added_declarations": "GimpFilterLayer; GimpCloneLayer",
+      "current_registration": "Explicit native get_type registration in gimp_init precedes any config/data/XCF loading. Legacy and snapshot typed-null arguments resolve literal saved names before any feature instance is constructed.",
+      "test_ids": [
+        "/painter-type-startup/cold-legacy-arguments",
+        "/painter-type-startup/cold-snapshot-arguments"
+      ],
+      "source_copy": "migration/tests/type-startup/legacy-source/core-types.h",
+      "source_copy_sha256": "763c09f9eede48f40f90bc20452b9bab40ea5586e87ea0e57b2673a8b6fa938f"
+    },
+    {
+      "work_id": "legacy-22e4d144183f49ec85db",
+      "source_kind": "hunk",
+      "source_id": "01.002/000153",
+      "path": "app/core/core-types.h",
+      "source_blob": "f5864341d797759bae2e054882e827d1be9cbabe",
+      "source_range": "-162,0 -> 169",
+      "source_sha256": "473488db651f9cd32946037c142c2551b77e640b420d2f6a44bc2b171ee23352",
+      "source_scope": "typedef struct _GimpPdbProgress     GimpPdbProgress;",
+      "phase": "implementation",
+      "wbs_task": "08.001",
+      "action": "独自型登録の初期化順を接続する",
+      "acceptance": "読込み前に必要 GType が登録済み",
+      "added_declarations": "GimpPerspectiveGuide",
+      "current_registration": "Explicit native get_type registration in gimp_init makes the saved guide type name available to both argument decoders without constructing a guide.",
+      "test_ids": [
+        "/painter-type-startup/cold-legacy-arguments",
+        "/painter-type-startup/cold-snapshot-arguments"
+      ],
+      "source_copy": "migration/tests/type-startup/legacy-source/core-types.h",
+      "source_copy_sha256": "763c09f9eede48f40f90bc20452b9bab40ea5586e87ea0e57b2673a8b6fa938f"
+    },
+    {
+      "work_id": "legacy-e7726fccbd8918b9bdee",
+      "source_kind": "hunk",
+      "source_id": "01.002/000167",
+      "path": "app/core/gimp.h",
+      "source_blob": "66119d6aed8e0ecbf28459a5b83f1821c219c567",
+      "source_range": "-98,0 -> 100,2",
+      "source_sha256": "470926f30e7ee0a8f8e42c3201792c89a1013d79cfac3b0a42ed02f3c65bd03c",
+      "source_scope": "struct _Gimp",
+      "phase": "implementation",
+      "wbs_task": "08.001",
+      "action": "独自型登録の初期化順を接続する",
+      "acceptance": "読込み前に必要 GType が登録済み",
+      "added_declarations": "mypaint_brush_factory; factory_table",
+      "current_registration": "Current owned painter_mybrush_factory/layer_preset_factory and gimp_get_data_factory replace the old registry. Their types exist before load and the four native GimpRc resource path properties deserialize before any resource I/O.",
+      "test_ids": [
+        "/painter-type-startup/factory-and-paint-types",
+        "/painter-type-startup/resource-config-properties"
+      ],
+      "source_copy": "migration/tests/type-startup/legacy-source/gimp.h",
+      "source_copy_sha256": "fb4d6aebd920840b9554e9ef0eb864bee856a89e2c9081dfdde817bf96375578"
+    }
+  ],
+  "source_duties_accepted": 6,
+  "routing_changes": 0,
+  "reports": [
+    {
+      "path": "migration/tests/type-startup/startup.json",
+      "sha256": "491fa651e5b00014ce49c4bcb404ec3e0bc808e88a5ad3a6c994c6a9a53a1b09",
+      "passed_cases": 6
+    },
+    {
+      "path": "migration/tests/type-startup/clone.json",
+      "sha256": "58af6ab12b03776f1532dabd28b5d5ce0908e7659781afc736c2968c1b0429a3",
+      "passed_cases": 37
+    },
+    {
+      "path": "migration/tests/type-startup/perspective.json",
+      "sha256": "095f49d8bd6489237b4e7e1566c7bd144ae72f067755d3a4913794d5bfd38df2",
+      "passed_cases": 9
+    },
+    {
+      "path": "migration/tests/type-startup/filter.json",
+      "sha256": "5d6e5beee534eb799cbccde2d34d266aa287f1910936aacc97ea345dd76dbdc0",
+      "passed_cases": 8
+    }
+  ],
+  "static_context_sha256": {
+    "app/config/gimprc.c": "bd91619e0aafa1ff77e8117a9d9f1aad13d152efc82ac38bf0d74bacf1d0e369",
+    "app/core/gimptoolpreset.c": "7af2edc99b0a59dca3a4ce81584ae7c9c19694a2063b70e9493d1749c52dbfc0",
+    "app/gui/gui.c": "d36616193363c78c4df86c5e73af5704a4afd3bd9cd8d0ec20887b7ba4a66e1f",
+    "app/core/gimpdatafactory.c": "d1a7a033197db51b7162ba5a81474d51771e2d7bbbe6b3e43edb47644a2759bf",
+    "app/core/gimptoolitem.c": "523e3af7bb799e5fad120d02abbd1ed26d965a72a76ce9f4272ddd8bebdb4fcf"
+  },
+  "limits": "Cold registration and native configuration/resource ordering; no all-XCF-load failure claim, eager GUI type creation, feature lifecycle acceptance or new cross-platform execution"
+}
