@@ -1,0 +1,16 @@
+{
+  "name": "gimp:app / gimp-filter-layer",
+  "stdout": "TAP version 14\n# random seed: R02Saf196276d17bc1b37567634cf27fd71a\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# Start of gimp-filter-layer tests\nnot ok /gimp-filter-layer/filter_pickable_projection_contract - FATAL-ERROR: Filter failed: Saved filter procedure or argument mapping is unsupported\nBail out!\n",
+  "result": "FAIL",
+  "starttime": 1792562041.4533873,
+  "duration": 66.38497829437256,
+  "returncode": 251,
+  "command": [
+    "/usr/bin/python3",
+    "/workspace/shared/gimp-clean-aggregate/source/migration/tests/run_filter_owner_context_fixture_test.py",
+    "--",
+    "app/tests/gimp-filter-layer",
+    "-p",
+    "/gimp-filter-layer/filter_pickable_projection_contract"
+  ]
+}

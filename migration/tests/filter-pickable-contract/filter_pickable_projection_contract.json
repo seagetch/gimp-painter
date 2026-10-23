@@ -1,0 +1,12 @@
+{
+  "command": [
+    "/workspace/shared/gimp-clean-aggregate/build/app/tests/gimp-filter-layer",
+    "-p",
+    "/gimp-filter-layer/filter_pickable_projection_contract"
+  ],
+  "exit_code": 0,
+  "duration": 1.1883964538574219,
+  "stdout": "TAP version 14\n# random seed: R02Saee22b642e696076b32249587a43433c\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# Start of gimp-filter-layer tests\n# 325 zero queries;3 projection pixels;3 picking controls;loaded cache plus native Gaussian uniform-color refresh, no Edge\nok 1 /gimp-filter-layer/filter_pickable_projection_contract\n# End of gimp-filter-layer tests\n1..1\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n",
+  "stderr": "",
+  "scope": "Direct selected native cases requiring no external fixture corpus; registered wrapper evidence retained separately. No environment dump."
+}

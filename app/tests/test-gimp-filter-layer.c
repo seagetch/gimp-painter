@@ -2634,6 +2634,7 @@ static void image_close_during_redo_callbacks (void) { undo_owner_lifetime (TRUE
 static void image_close_during_strong_undo_callbacks (void) { undo_owner_lifetime (FALSE,TRUE); }
 static void image_close_during_strong_redo_callbacks (void) { undo_owner_lifetime (TRUE,TRUE); }
 
+#include "test-filter-pickable-contract.inc"
 #include "test-filter-cancel.inc"
 #include "test-filter-blinds.inc"
 #include "test-filter-blinds-context.inc"
@@ -2878,6 +2879,7 @@ int main (int argc, char **argv)
   ADD (gaussian_legacy_fixture); ADD (duplicate_failure_releases_partial); ADD (definition_undo_redo); ADD (hidden_filter_and_offset); ADD (cpp_header_layout); ADD (clone_filter_dependency_cycle); ADD (main_context_remains_responsive);
   ADD (object_arguments_do_not_cycle); ADD (expired_object_records_and_reassignment);
   ADD (object_array_arguments_do_not_dangle); ADD (removal_and_undo); ADD (lower_group_failure_and_recovery);
+  ADD (filter_pickable_projection_contract);
   ADD (independent_type_and_edge); ADD (automatic_updates_and_self_exclusion);
   ADD (saved_definition_is_separate); ADD (loaded_cache); ADD (dependency_order);
   ADD (group_scope); ADD (completed_buffer_only); ADD (close_during_preparation); ADD (duplicate_keeps_definition);
