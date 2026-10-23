@@ -226,6 +226,29 @@ painter_fixed_rule_row (GObject                *config,
   painter_fixed_rule_notify (config, NULL, row);
 }
 
+static GtkWidget *
+painter_rectangle_size (GtkWidget      *box,
+                         GObject        *config,
+                         const gchar    *property,
+                         const gchar    *unit_property,
+                         const gchar    *label,
+                         GtkOrientation  axis,
+                         gboolean        show_unit)
+{
+  GtkWidget *row = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 4);
+  GtkWidget *entry;
+
+  painter_pack (box, row);
+  painter_pack (row, gtk_label_new (label));
+  entry = gimp_prop_size_entry_new (config, property, TRUE, unit_property, "%a",
+                                   GIMP_SIZE_ENTRY_UPDATE_SIZE, 300);
+  gimp_size_entry_show_unit_menu (GIMP_SIZE_ENTRY (entry), show_unit);
+  gimp_rectangle_options_bind_size_entry (GIMP_RECTANGLE_OPTIONS (config),
+                                          GIMP_SIZE_ENTRY (entry), 0, axis);
+  painter_pack (row, entry);
+  return row;
+}
+
 static void
 painter_rectangle (GtkWidget *box,
                    GObject   *config)
@@ -261,9 +284,11 @@ painter_rectangle (GtkWidget *box,
                                             0.001, GIMP_MAX_IMAGE_SIZE);
   painter_pack (row, entry);
   painter_fixed_rule_row (config, row, GIMP_RECTANGLE_FIXED_ASPECT);
-  row = painter_number (rules, config, "desired-fixed-width", _("Fixed width (px)"), 1.0, 1);
+  row = painter_rectangle_size (rules, config, "desired-fixed-width", "fixed-unit",
+                                 _("Fixed width"), GTK_ORIENTATION_HORIZONTAL, TRUE);
   painter_fixed_rule_row (config, row, GIMP_RECTANGLE_FIXED_WIDTH);
-  row = painter_number (rules, config, "desired-fixed-height", _("Fixed height (px)"), 1.0, 1);
+  row = painter_rectangle_size (rules, config, "desired-fixed-height", "fixed-unit",
+                                 _("Fixed height"), GTK_ORIENTATION_VERTICAL, TRUE);
   painter_fixed_rule_row (config, row, GIMP_RECTANGLE_FIXED_HEIGHT);
   row = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 4);
   painter_pack (rules, row);
@@ -279,10 +304,16 @@ painter_rectangle (GtkWidget *box,
   painter_pack (row, entry);
   painter_fixed_rule_row (config, row, GIMP_RECTANGLE_FIXED_SIZE);
 
-  painter_number (details, config, "x", _("X (px)"), 1.0, 1);
-  painter_number (details, config, "y", _("Y (px)"), 1.0, 1);
-  painter_number (details, config, "width", _("Width (px)"), 1.0, 1);
-  painter_number (details, config, "height", _("Height (px)"), 1.0, 1);
+  painter_rectangle_size (details, config, "x", "position-unit", _("X"),
+                           GTK_ORIENTATION_HORIZONTAL, FALSE);
+  row = painter_rectangle_size (details, config, "y", "position-unit", _("Y"),
+                                 GTK_ORIENTATION_VERTICAL, FALSE);
+  painter_pack (row, gimp_prop_unit_combo_box_new (config, "position-unit"));
+  painter_rectangle_size (details, config, "width", "size-unit", _("Width"),
+                           GTK_ORIENTATION_HORIZONTAL, FALSE);
+  row = painter_rectangle_size (details, config, "height", "size-unit", _("Height"),
+                                 GTK_ORIENTATION_VERTICAL, FALSE);
+  painter_pack (row, gimp_prop_unit_combo_box_new (config, "size-unit"));
   painter_check (details, config, "highlight", _("Highlight"));
   opacity = gimp_prop_spin_scale_new (config, "highlight-opacity", 0.01, 0.1, 0);
   gimp_prop_widget_set_factor (opacity, 100.0, 1.0, 10.0, 1);
@@ -295,7 +326,7 @@ painter_rectangle (GtkWidget *box,
                 gimp_rectangle_options_auto_shrink_button_new (GIMP_RECTANGLE_OPTIONS (config)));
   painter_check (details, config, "shrink-merged", _("Shrink merged"));
 
-  /* Unit selectors and ratio/size history remain in the ordinary dock. */
+  /* Ratio/size history remains in the ordinary dock. */
 }
 
 static void
