@@ -1,0 +1,66 @@
+
+(process:462): GLib-GObject-CRITICAL **: 09:43:26.386: g_value_set_object: assertion 'G_VALUE_HOLDS_OBJECT (value)' failed
+
+(process:462): GLib-GObject-CRITICAL **: 09:43:26.386: g_value_set_object: assertion 'G_VALUE_HOLDS_OBJECT (value)' failed
+Failed to parse tag cache: No such file or directory
+GIMP-Error: Plug-in "pagecurl"
+attempted to install procedure "plug-in-pagecurl" with invalid return-value name "Curl Layer".
+This is not allowed.
+
+GIMP-Error: Plug-in "pagecurl"
+(/workspace/scratch/5b5281e79681/legacy-filter-positive-20261015/build/prefix/lib/gimp/2.0/plug-ins/pagecurl)
+attempted to register the menu item "<Image>/Filters/Distorts" for the procedure "plug-in-pagecurl".
+It has however not installed that procedure.  This is not allowed.
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x5608b94c16b0:  set ignore_undos=0
+CAPTURE_RUNTIME utc=2026-10-15T00:43:26Z glib=2.84.4 processors=9
+unknown key 'colorize'
+push_undo: GimpDrawableUndo=47
+xcf_save[239]: layer_props: PROP_END
+xcf_save_layer[241]: done: save_layer_props
+xcf_save_layer[241]: done: save_offset=249
+xcf_save_layer[245]: done: save_layer_mask_offset
+xcf_save_layer[249]: xcf_save_hierarchy
+xcf_save[249] hierarchy:: write width=96
+xcf_save[24d] hierarchy:: write height=80
+xcf_save[251] hierarchy:: write bpp=4
+xcf_save[255] hierarchy:: write nlevels=3
+xcf_save[261] hierarchy::level=0
+xcf_save[665] hierarchy::level=1
+xcf_save_layer[671]: done: xcf_save_hierarchy
+GIMP-Error: Failed to create thumbnail folder '/home/agent/.thumbnails/normal'.
+
+MypaintCore(0x5608b956aee0)::Create brush object
+MypaintCore(0x5608b956aee0)::create new surface...
+Stroke::start_undo_group...
+Stroke::begin_session:: do begining of session...
+Stroke::stop_undo_group...
+Stroke::end_session::push_undo(0,0)-(96,80)
+
+(process:462): GLib-GObject-CRITICAL **: 09:43:26.616: g_param_spec_object: assertion 'g_type_is_a (object_type, G_TYPE_OBJECT)' failed
+
+(process:462): GLib-GObject-CRITICAL **: 09:43:26.616: validate_pspec_to_install: assertion 'G_IS_PARAM_SPEC (pspec)' failed
+
+(process:462): GLib-GObject-CRITICAL **: 09:43:26.616: g_param_spec_ref_sink: assertion 'G_IS_PARAM_SPEC (pspec)' failed
+
+(process:462): GLib-GObject-CRITICAL **: 09:43:26.616: g_param_spec_unref: assertion 'G_IS_PARAM_SPEC (pspec)' failed
+push_undo: GimpMypaintCoreUndo=77
+push_undo: GimpDrawableUndo=47
+xcf_save[239]: layer_props: PROP_END
+xcf_save_layer[241]: done: save_layer_props
+xcf_save_layer[241]: done: save_offset=249
+xcf_save_layer[245]: done: save_layer_mask_offset
+xcf_save_layer[249]: xcf_save_hierarchy
+xcf_save[249] hierarchy:: write width=96
+xcf_save[24d] hierarchy:: write height=80
+xcf_save[251] hierarchy:: write bpp=4
+xcf_save[255] hierarchy:: write nlevels=3
+xcf_save[261] hierarchy::level=0
+xcf_save[5822] hierarchy::level=1
+xcf_save_layer[582e]: done: xcf_save_hierarchy
+GIMP-Error: Failed to create thumbnail folder '/home/agent/.thumbnails/normal'.
+
+STROKE_CAPTURE_COMPLETE events=18 input=synthetic-engine-boundary no-physical-tablet no-UI-path
+
+(script-fu:486): LibGimpBase-WARNING **: 09:43:26.619: script-fu: gimp_wire_read(): error

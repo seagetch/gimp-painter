@@ -1,0 +1,24 @@
+cc1plus: warning: command-line option ‘-Wdeclaration-after-statement’ is valid for C/ObjC but not for C++
+cc1plus: warning: command-line option ‘-Wmissing-prototypes’ is valid for C/ObjC but not for C++
+cc1plus: warning: command-line option ‘-Wstrict-prototypes’ is valid for C/ObjC but not for C++
+cc1plus: warning: command-line option ‘-Wold-style-definition’ is valid for C/ObjC but not for C++
+In file included from stroke-capture.cpp:7:
+../../app/base/glib-cxx-impl.hpp:422:13: warning: Deprecated pre-processor symbol: replace with "G_ADD_PRIVATE"
+  422 |     return G_TYPE_INSTANCE_GET_PRIVATE(obj, Traits::get_type(), Impl);
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~       
+In file included from ../../app/paint/gimpmypaintcore.hpp:29,
+                 from stroke-capture.cpp:32:
+../../app/paint/mypaintbrush-brush.hpp: In member function ‘void Brush::update_states_and_setting_values(float, float, float, float, float, float)’:
+../../app/paint/mypaintbrush-brush.hpp:402:13: warning: unused variable ‘dx_old’ [-Wunused-variable]
+  402 |       float dx_old = states[STATE_DIRECTION_DX];
+      |             ^~~~~~
+../../app/paint/mypaintbrush-brush.hpp:403:13: warning: unused variable ‘dy_old’ [-Wunused-variable]
+  403 |       float dy_old = states[STATE_DIRECTION_DY];
+      |             ^~~~~~
+stroke-capture.cpp: At global scope:
+stroke-capture.cpp:37:17: warning: no previous declaration for ‘void stroke_capture_run(Gimp*)’ [-Wmissing-declarations]
+   37 | extern "C" void stroke_capture_run(Gimp *g){
+      |                 ^~~~~~~~~~~~~~~~~~
+stroke-capture.cpp:63:17: warning: no previous declaration for ‘void stroke_capture_verify(GimpImage*)’ [-Wmissing-declarations]
+   63 | extern "C" void stroke_capture_verify(GimpImage *im){
+      |                 ^~~~~~~~~~~~~~~~~~~~~
