@@ -863,3 +863,18 @@ test('layer-tile-entry-contracts', layer_tile_entry_contracts_test,
         'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
         'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
         'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 120)
+if painter_http_enabled
+  application_owned_lifecycle = executable('application-owned-lifecycle',
+    'test-application-owned-lifecycle.cpp',
+    'test-application-owned-lifecycle-glue.c',
+    dependencies: [libapp_dep, appstream, json_glib, painter_http_soup],
+    link_with: [apptests_links, libapphttpdgui], cpp_args: painter_cpp_args,
+    override_options: ['c_std=c11', 'cpp_std=c++14'])
+  test('application-owned-lifecycle', application_owned_lifecycle,
+    depends: gimp_test_icon_dependencies,
+    env: ['GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+          'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+          'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
+          'UI_TEST=yes', 'GSETTINGS_BACKEND=memory'],
+    suite: 'painter', is_parallel: false, timeout: 180)
+endif
