@@ -61,6 +61,61 @@ void parent_dispose_reentry ()
   g_assert_true ((stats.closed==std::array<int,2>({{2,1}})));g_assert_cmpint (stats.parent_calls,>=,3);
   g_assert_cmpint (stats.destroyed,==,0);owner.reset ();g_assert_cmpint (stats.destroyed,==,2);
 }
+
+template<class T> void accepted_type (GObject *object)
+{
+  using Ref = ObjectRef<T>;
+  for (auto factory : {&Ref::retain, &Ref::adopt, &Ref::sink})
+    {
+      // adopt receives a distinct native producer-owned reference.
+      if (factory == &Ref::adopt) g_object_ref (object);
+      auto accepted = factory (reinterpret_cast<T *> (object));
+      g_assert_true (reinterpret_cast<GObject *> (accepted.get ()) == object);
+      g_assert_cmpuint (object->ref_count, ==, 2);
+      accepted.reset ();
+      g_assert_cmpuint (object->ref_count, ==, 1);
+    }
+}
+
+template<class T> void rejected_type (GObject *object)
+{
+  using Ref = ObjectRef<T>;
+  for (auto factory : {&Ref::retain, &Ref::adopt, &Ref::sink})
+    {
+      bool rejected = false;
+      try { auto bad = factory (reinterpret_cast<T *> (object)); }
+      catch (const Error& error)
+        { rejected = error.code () == GIMP_PAINTER_ERROR_WRONG_TYPE; }
+      g_assert_true (rejected);
+      g_assert_cmpuint (object->ref_count, ==, 1);
+    }
+}
+
+void type_ancestry ()
+{
+  stats = {};
+  {
+    auto owner = child ();
+    auto *object = G_OBJECT (owner.get ());
+    accepted_type<PainterHierarchyChild> (object);
+    accepted_type<PainterHierarchyBase> (object);
+    accepted_type<PainterReadable> (object);
+    accepted_type<GObject> (object);
+    g_assert_cmpint (stats.destroyed, ==, 0);
+  }
+  g_assert_cmpint (stats.destroyed, ==, 2);
+  stats = {};
+  {
+    auto owner = ObjectRef<PainterHierarchyBase>::adopt (
+      static_cast<PainterHierarchyBase *> (g_object_new (painter_hierarchy_base_get_type (), nullptr)));
+    auto *object = G_OBJECT (owner.get ());
+    accepted_type<PainterHierarchyBase> (object);
+    rejected_type<PainterHierarchyChild> (object);
+    rejected_type<PainterReadable> (object);
+    g_assert_cmpint (stats.destroyed, ==, 0);
+  }
+  g_assert_cmpint (stats.destroyed, ==, 1);
+}
 }
 void painter_hierarchy_init_binding (GObject *owner,gboolean is_child)
 {
@@ -91,4 +146,5 @@ void painter_test_register_hierarchy ()
   g_test_add_func("/painter/hierarchy/properties-interface",hierarchy_properties_interface);
   g_test_add_func("/painter/hierarchy/interface-exception",interface_exception_boundary);
   g_test_add_func("/painter/hierarchy/parent-dispose-reentry",parent_dispose_reentry);
+  g_test_add_func("/painter/hierarchy/type-ancestry",type_ancestry);
 }

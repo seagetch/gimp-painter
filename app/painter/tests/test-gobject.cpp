@@ -81,15 +81,46 @@ void lifecycle ()
 
 void wrong_type ()
 {
+  using Ref = ObjectRef<PainterFixture>;
+  for (auto factory : {&Ref::retain, &Ref::adopt, &Ref::sink})
+    {
+      auto empty = factory (nullptr);
+      g_assert_null (empty.get ());
+      for (GType type : {G_TYPE_OBJECT, G_TYPE_INITIALLY_UNOWNED})
+        {
+          int finalized = 0;
+          auto *object = G_OBJECT (g_object_new (type, nullptr));
+          const bool floating = g_object_is_floating (object);
+          g_object_weak_ref (object, [] (gpointer count, GObject *) {
+            ++*static_cast<int *> (count);
+          }, &finalized);
+          bool rejected = false;
+          try { auto bad = factory (reinterpret_cast<PainterFixture *> (object)); }
+          catch (const Error& error)
+            { rejected = error.code () == GIMP_PAINTER_ERROR_WRONG_TYPE; }
+          g_assert_true (rejected);
+          g_assert_cmpuint (object->ref_count, ==, 1);
+          g_assert_cmpint (g_object_is_floating (object), ==, floating);
+          g_assert_cmpint (finalized, ==, 0);
+
+          GError *error = nullptr;
+          const bool accepted = boundary<bool> (&error, false, [&] {
+            auto bad = factory (reinterpret_cast<PainterFixture *> (object));
+            return true;
+          });
+          g_assert_false (accepted);
+          g_assert_error (error, GIMP_PAINTER_ERROR, GIMP_PAINTER_ERROR_WRONG_TYPE);
+          g_clear_error (&error);
+          g_assert_cmpuint (object->ref_count, ==, 1);
+          g_assert_cmpint (g_object_is_floating (object), ==, floating);
+          if (floating) g_object_ref_sink (object);
+          g_object_unref (object);
+          g_assert_cmpint (finalized, ==, 1);
+        }
+    }
   auto *object = G_OBJECT (g_object_new (G_TYPE_OBJECT, nullptr));
-  bool rejected = false;
-  try { auto bad = ObjectRef<PainterFixture>::adopt (reinterpret_cast<PainterFixture *> (object)); }
-  catch (const Error& error) { rejected = error.code () == GIMP_PAINTER_ERROR_WRONG_TYPE; }
-  g_assert_true (rejected);
-  // adopt failure left the original reference untouched
-  g_assert_true (G_IS_OBJECT (object));
   auto& store = BindingStore::ensure (object);
-  rejected = false;
+  bool rejected = false;
   try { store.emplace<FixtureSlot> (); }
   catch (const Error& error) { rejected = error.code () == GIMP_PAINTER_ERROR_WRONG_TYPE; }
   g_assert_true (rejected);
