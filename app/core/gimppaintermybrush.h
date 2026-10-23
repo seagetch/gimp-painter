@@ -6,6 +6,9 @@ G_BEGIN_DECLS
 #define GIMP_TYPE_PAINTER_MYBRUSH (gimp_painter_mybrush_get_type ())
 #define GIMP_PAINTER_MYBRUSH(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIMP_TYPE_PAINTER_MYBRUSH, GimpPainterMybrush))
 #define GIMP_IS_PAINTER_MYBRUSH(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIMP_TYPE_PAINTER_MYBRUSH))
+#define GIMP_PAINTER_MYBRUSH_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), GIMP_TYPE_PAINTER_MYBRUSH, GimpPainterMybrushClass))
+#define GIMP_IS_PAINTER_MYBRUSH_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GIMP_TYPE_PAINTER_MYBRUSH))
+#define GIMP_PAINTER_MYBRUSH_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), GIMP_TYPE_PAINTER_MYBRUSH, GimpPainterMybrushClass))
 typedef struct _GimpPainterMybrush GimpPainterMybrush;
 typedef struct _GimpPainterMybrushClass GimpPainterMybrushClass;
 struct _GimpPainterMybrush { GimpData parent_instance; gboolean binding_failed; };

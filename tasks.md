@@ -386,7 +386,7 @@
 | 08.002 | [x] | CloneLayer の GType 骨格を移植する | 08.001 | GimpLayer 派生型として生成・終了できる |
 | 08.003 | [x] | FilterLayer の GType 骨格を移植する | 08.002 | 同じ BindingStore 規約で生成・終了できる |
 | 08.004 | [x] | CloneLayerUndo の型を移植する | 08.003 | 現行 GimpItemUndo と親処理を接続 |
-| 08.005 | [ ] | MyPaint 資源型を移植する | 08.004 | data factory から生成できる |
+| 08.005 | [x] | MyPaint 資源型を移植する | 08.004 | data factory から生成できる |
 | 08.006 | [ ] | MyPaint paint core 型を移植する | 08.005 | 現行 GimpPaintCore に登録できる |
 | 08.006/core-options-init | [ ] | MyPaint core の options 借用参照を初期化する | 08.006, 01.007/mypaint-core-raw | 初回 stroke_to の比較前に NULL 初期化し、signal 接続・切断と options 先行破棄を検証する |
 | 08.007 | [ ] | MyPaint options 型を移植する | 08.006 | 現行 property と設定機構に接続 |

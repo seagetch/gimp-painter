@@ -1,0 +1,39 @@
+{
+  "task": "08.005",
+  "status": "PASS",
+  "original_done": 129,
+  "original_total": 661,
+  "source_done": 609,
+  "source_total": 22763,
+  "source_duties_accepted": [
+    "legacy-1daa5109a591ecbff817",
+    "legacy-262d9e8bb80c30f00252",
+    "legacy-31663c35761aef927488",
+    "legacy-3e97ab6e8d2d439e43dd",
+    "legacy-414b1a9c81e8fcfb92ef",
+    "legacy-5df12be2c060a5e7c0d7",
+    "legacy-76ee8fb075d390f52011",
+    "legacy-863f85975051fb44509a",
+    "legacy-e139232cc62be96474a2"
+  ],
+  "routing_correction": {
+    "removed_unaccepted_obligation": [
+      "legacy-4148de64c9053334d044"
+    ],
+    "added_actual_factory_obligation": [
+      "legacy-5df12be2c060a5e7c0d7"
+    ],
+    "task": "08.005",
+    "other_obligations_unchanged_before_acceptance": 22762,
+    "remaining_source166_routes": "All eight other routes retained as unresolved; they are not reviewed or accepted here",
+    "old_line": "GimpMypaintInfo *standard_mypaint_info",
+    "actual_lines": "GimpDataFactory *mypaint_brush_factory; GHashTable *factory_table",
+    "no_global_unused_member_claim": true
+  },
+  "other_source_rows_unchanged": 22754,
+  "native_cases": 6,
+  "current_source_seals": 22,
+  "tasks_progress_errors": [],
+  "independent_review": "Read-only factory ownership/type review found no runtime defect; reviewed narrow08.005 routing correction; did not execute tests",
+  "limits": "Native resource type/factory creation gate; not full brush engine/preview parity or resource path migration; no new sanitizer/platform result"
+}

@@ -430,6 +430,14 @@ def route(row, added, removed):
     if lines and any('__DECLARE_GTK_' in l for l in lines) and all(allowed.match(l) for l in lines):
         key = 'cpp-header'
     result = dict(PROFILES[key]); result['profile'] = key
+    # The first gimp.h hunk adds only a GimpMypaintInfo pointer. The second
+    # adds the actual MyPaint GimpDataFactory pointer and factory lookup table.
+    # Correct only the resource-type gate here; other assigned obligations
+    # retain their independent, still-unresolved acceptance requirements.
+    if path == 'app/core/gimp.h' and int(row['index']) == 1:
+        result['tasks'] = [task for task in result['tasks'] if task != '08.005']
+    if path == 'app/core/gimp.h' and int(row['index']) == 2:
+        result['tasks'] = [*result['tasks'], '08.005']
     dsl = uses_gtk_dsl(path, added + removed)
     support = int(row['index']) in GTK_DSL_SUPPORT.get(path, set())
     result['tasks'] = [task for task in result['tasks']
