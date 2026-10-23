@@ -482,7 +482,7 @@
 | 09.014 | [x] | 色変換の配置を実装する | 09.013 | 採色と合成で意図しない二重変換がない |
 | 09.015 | [x] | 高精度・色空間変換の扱いを実装する | 09.014 | unsupported 時も情報を黙って欠落させない |
 | 09.016 | [x] | buffer 基盤の境界試験を作る | 09.015 | 小画像・負座標・端・alpha・stride を検証 |
-| 09.017 | [ ] | buffer 基盤の Undo 試験を作る | 09.016 | 描画前後の差分と復元が一致 |
+| 09.017 | [x] | buffer 基盤の Undo 試験を作る | 09.016 | 描画前後の差分と復元が一致 |
 
 09.004は原文の範囲内writeとdirty ROI返却を実Surface producerで検証済み。14 whole-hunk dutyはTODOのまま既存09.005以降・31.017へ明示継承する（`migration/contracts/drawable-buffer-write.json`）。144形式×2mode×16caseとGEGL通知を検証し、保守的dirty矩形を最小変更画素集合と誤認しない。
 

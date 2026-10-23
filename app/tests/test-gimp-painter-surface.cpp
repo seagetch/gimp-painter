@@ -302,9 +302,11 @@ static void rgb_native_cancel_undo()
 #include "test-painter-surface-commit-cancel.inc"
 
 #include "test-painter-surface-small-boundaries.inc"
+#include "test-painter-surface-undo-payload.inc"
 int main(int argc,char**argv)
 {
   g_test_init(&argc,&argv,nullptr);gimp_test_utils_set_gimp3_directory("GIMP_TESTING_ABS_TOP_SRCDIR","app/tests/gimpdir");gimp=gimp_init_for_testing();
+  g_test_add_func("/undo-payload/native-snapshot-bytes",UndoPayload::native_snapshot_payload);
   g_test_add_func("/small-boundaries/native-tiny-edges",SmallBoundaries::native_small_edges);
   g_test_add_func("/commit-cancel/native-pixels-and-history",CommitCancel::native_pixels_and_history);
   g_test_add_func("/painter-surface/session-undo-cancel",session_undo_and_cancel);

@@ -1,0 +1,16 @@
+[
+  {
+    "name": "narrow-native-undo-payload",
+    "exit_code": 1,
+    "rejected": true,
+    "old": "buffer = gegl_buffer_new (GEGL_RECTANGLE (0, 0, rect.width, rect.height),\n                                        gimp_drawable_get_format (iter->data));",
+    "new": "buffer = gegl_buffer_new (GEGL_RECTANGLE (0, 0, rect.width, rect.height),\n                                        babl_format (\"RGB float\"));"
+  },
+  {
+    "name": "save-painted-instead-of-initial",
+    "exit_code": 1,
+    "rejected": true,
+    "old": "gimp_gegl_buffer_copy (undo_buffer,\n                                     &rect,\n                                     GEGL_ABYSS_NONE,\n                                     buffer,\n                                     GEGL_RECTANGLE (0, 0, 0, 0));",
+    "new": "gimp_gegl_buffer_copy (gimp_drawable_get_buffer (iter->data),\n                                     &rect,\n                                     GEGL_ABYSS_NONE,\n                                     buffer,\n                                     GEGL_RECTANGLE (0, 0, 0, 0));"
+  }
+]
