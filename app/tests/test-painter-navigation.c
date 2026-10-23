@@ -98,6 +98,7 @@ static void mirrored_keys (void)
   for(guint i=0;i<G_N_ELEMENTS(keys);++i)
     {
       g_assert_cmpuint(gimp_painter_navigation_key(keys[i],FALSE,TRUE),==,keys[i]);
+      g_assert_cmpuint(gimp_painter_navigation_key(keys[i],FALSE,FALSE),==,keys[i]);
       g_assert_cmpuint(gimp_painter_navigation_key(keys[i],TRUE,FALSE),==,keys[i]);
       g_assert_cmpuint(gimp_painter_navigation_key(keys[i],TRUE,TRUE),==,
                       keys[i]==GDK_KEY_Left ? GDK_KEY_Right : keys[i]==GDK_KEY_Right ? GDK_KEY_Left : keys[i]);

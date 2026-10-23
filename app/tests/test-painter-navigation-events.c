@@ -1064,7 +1064,28 @@ paintbrush_primary_drag (void)
   close_image ();
 }
 
-typedef struct { GimpTool parent; } StartRecordingTool;
+typedef enum
+{
+  KEY_NORMAL,
+  KEY_ALL_CONSUME,
+  KEY_ALL_FALLTHROUGH
+} KeyRecordingMode;
+
+typedef struct
+{
+  GdkEventType  callback_type;
+  GdkEventKey   event;
+  GimpTool     *tool;
+  GimpDisplay  *display;
+} RecordedKey;
+
+typedef struct
+{
+  GimpTool         parent;
+  KeyRecordingMode key_mode;
+  guint            n_keys;
+  RecordedKey      keys[2];
+} StartRecordingTool;
 typedef struct { GimpToolClass parent; } StartRecordingToolClass;
 GType start_recording_tool_get_type (void);
 G_DEFINE_TYPE (StartRecordingTool, start_recording_tool, GIMP_TYPE_TOOL)
@@ -1095,12 +1116,52 @@ start_recording_release (GimpTool *tool, const GimpCoords *coords, guint32 time,
 }
 
 static void
+record_key (GimpTool     *tool,
+            GdkEventKey  *event,
+            GimpDisplay *display,
+            GdkEventType callback_type)
+{
+  StartRecordingTool *recording = (StartRecordingTool *) tool;
+
+  g_assert_cmpuint (recording->n_keys, <, G_N_ELEMENTS (recording->keys));
+  /* The normal press route passes a stack copy.  Only copy public key fields;
+   * do not query GDK's allocation-private device metadata through this pointer.
+   * The borrowed window/string are inspected before the sender frees input. */
+  recording->keys[recording->n_keys++] =
+    (RecordedKey) { callback_type, *event, tool, display };
+}
+
+static gboolean
+start_recording_key_press (GimpTool     *tool,
+                           GdkEventKey  *event,
+                           GimpDisplay *display)
+{
+  StartRecordingTool *recording = (StartRecordingTool *) tool;
+
+  record_key (tool, event, display, GDK_KEY_PRESS);
+  return recording->key_mode != KEY_ALL_FALLTHROUGH || recording->n_keys == 2;
+}
+
+static gboolean
+start_recording_key_release (GimpTool     *tool,
+                             GdkEventKey  *event,
+                             GimpDisplay *display)
+{
+  StartRecordingTool *recording = (StartRecordingTool *) tool;
+
+  record_key (tool, event, display, GDK_KEY_RELEASE);
+  return recording->key_mode == KEY_ALL_CONSUME;
+}
+
+static void
 start_recording_tool_class_init (StartRecordingToolClass *klass)
 {
   GimpToolClass *tool = GIMP_TOOL_CLASS (klass);
   tool->initialize = start_recording_initialize;
   tool->button_press = start_recording_press;
   tool->button_release = start_recording_release;
+  tool->key_press = start_recording_key_press;
+  tool->key_release = start_recording_key_release;
 }
 
 static void
@@ -1110,12 +1171,13 @@ start_recording_tool_init (StartRecordingTool *recording)
 }
 
 static void
-recording_tool_starts (void)
+ensure_start_recording_tool (void)
 {
   GimpToolInfo *info;
-  GimpTool *tool;
 
-  create_image ();
+  if (gimp_get_tool_info (gimp, "painter-start-recording-test"))
+    return;
+
   info = gimp_tool_info_new (gimp, start_recording_tool_get_type (), GIMP_TYPE_TOOL_OPTIONS, 0,
                              "painter-start-recording-test", "Record starts", "Record starts",
                              NULL, NULL, NULL, "gimp-tool-paintbrush", "gimp-paintbrush",
@@ -1123,6 +1185,16 @@ recording_tool_starts (void)
   gimp_tools_set_tool_options_gui_func (info->tool_options, gimp_tool_options_gui);
   gimp_container_add (gimp->tool_info_list, GIMP_OBJECT (info));
   gimp_container_add (gimp->tool_item_list, GIMP_OBJECT (info));
+  g_object_unref (info);
+}
+
+static void
+recording_tool_starts (void)
+{
+  GimpTool *tool;
+
+  create_image ();
+  ensure_start_recording_tool ();
   tool = select_start_tool ("painter-start-recording-test");
   start_tool_presses = start_tool_releases = 0;
   start_matrix_for_tool (tool);
@@ -1133,7 +1205,258 @@ recording_tool_starts (void)
   g_assert_cmpuint (start_tool_releases, ==, 1);
   select_start_tool (real_tool_names[0]);
   close_image ();
-  g_object_unref (info);
+}
+
+/* 25.008/mirrored-arrow-input: pinned old handler lines 1363-1422 and
+ * 1493-1542 define this asymmetric routing.  These literal callback sequences
+ * are independent of gimp_painter_navigation_key(), including the unchanged
+ * first callback when a wants-all tool declines a press.  The second callback
+ * consumes that press so configurable keyboard-controller actions stay out of
+ * this bounded test.  Releases never enter the ordinary arrow callback route.
+ */
+typedef struct
+{
+  const gchar      *name;
+  KeyRecordingMode  mode;
+  gboolean          mirrored;
+  guint             n_press;
+  guint             press_keys[2][2]; /* Left/Right, in callback order */
+  guint             n_release;
+  gboolean          release_handled;
+} KeyRouteCase;
+
+static const KeyRouteCase key_routes[] =
+{
+  { "normal", KEY_NORMAL, FALSE, 1,
+    { { GDK_KEY_Left, 0 }, { GDK_KEY_Right, 0 } }, 0, FALSE },
+  { "normal", KEY_NORMAL, TRUE, 1,
+    { { GDK_KEY_Right, 0 }, { GDK_KEY_Left, 0 } }, 0, FALSE },
+  { "all-consume", KEY_ALL_CONSUME, FALSE, 1,
+    { { GDK_KEY_Left, 0 }, { GDK_KEY_Right, 0 } }, 1, TRUE },
+  { "all-consume", KEY_ALL_CONSUME, TRUE, 1,
+    { { GDK_KEY_Left, 0 }, { GDK_KEY_Right, 0 } }, 1, TRUE },
+  { "all-fallthrough", KEY_ALL_FALLTHROUGH, FALSE, 2,
+    { { GDK_KEY_Left, GDK_KEY_Left }, { GDK_KEY_Right, GDK_KEY_Right } }, 1, FALSE },
+  { "all-fallthrough", KEY_ALL_FALLTHROUGH, TRUE, 2,
+    { { GDK_KEY_Left, GDK_KEY_Right }, { GDK_KEY_Right, GDK_KEY_Left } }, 1, FALSE }
+};
+
+typedef struct
+{
+  const gchar        *name;
+  gdouble             initial_angle;
+  guint               state;
+  GimpModifierAction  action;
+  gdouble             key_angle, continued_angle;
+} KeyContext;
+
+static const KeyContext key_contexts[] =
+{
+  { "idle-zero", 0.0, 0, GIMP_MODIFIER_ACTION_NONE, 0.0, 0.0 },
+  { "idle-rotated", 37.0, 0, GIMP_MODIFIER_ACTION_NONE, 37.0, 37.0 },
+  { "rotation-free", 37.0, GDK_BUTTON2_MASK | GDK_SHIFT_MASK,
+    GIMP_MODIFIER_ACTION_ROTATING, 127.0, 217.0 },
+  { "rotation-snapped", 37.0, GDK_BUTTON2_MASK | GDK_SHIFT_MASK | GDK_CONTROL_MASK,
+    GIMP_MODIFIER_ACTION_STEP_ROTATING, 120.0, 210.0 }
+};
+
+static const gchar key_event_string[] = "arrow-input";
+
+static void
+assert_key_fields (const GdkEventKey *actual,
+                   const GdkEventKey *supplied,
+                   guint              expected_key)
+{
+  g_assert_cmpint (actual->type, ==, supplied->type);
+  g_assert_true (actual->window == supplied->window);
+  g_assert_cmpint (actual->send_event, ==, supplied->send_event);
+  g_assert_cmpuint (actual->time, ==, supplied->time);
+  g_assert_cmpuint (actual->state, ==, supplied->state);
+  g_assert_cmpuint (actual->keyval, ==, expected_key);
+  g_assert_cmpint (actual->length, ==, supplied->length);
+  g_assert_true (actual->string == supplied->string);
+  g_assert_cmpstr (actual->string, ==, key_event_string);
+  g_assert_cmpuint (actual->hardware_keycode, ==, supplied->hardware_keycode);
+  g_assert_cmpuint (actual->group, ==, supplied->group);
+  g_assert_cmpuint (actual->is_modifier, ==, supplied->is_modifier);
+}
+
+static gboolean
+send_recorded_key (StartRecordingTool *recording,
+                   GdkEventType        type,
+                   guint               state,
+                   guint               key,
+                   const guint        *expected_keys,
+                   guint               expected_count)
+{
+  GimpTool    *tool = GIMP_TOOL (recording);
+  GdkEvent    *event = gdk_event_new (type);
+  GdkEventKey  supplied;
+  gboolean    handled;
+
+  gdk_event_set_device (event, device);
+  gdk_event_set_source_device (event, device);
+  event->key.window = g_object_ref (gtk_widget_get_window (shell->canvas));
+  event->key.send_event = TRUE;
+  event->key.time = 123456789;
+  event->key.state = state;
+  event->key.keyval = key;
+  event->key.length = sizeof (key_event_string) - 1;
+  event->key.string = g_strdup (key_event_string);
+  event->key.hardware_keycode = key == GDK_KEY_Left ? 113 : 114;
+  event->key.group = 1;
+  event->key.is_modifier = FALSE;
+  supplied = event->key;
+  g_assert_true (gdk_event_get_device (event) == device);
+  g_assert_true (gdk_event_get_source_device (event) == device);
+
+  recording->n_keys = 0;
+  handled = gimp_display_shell_canvas_tool_events (shell->canvas, event, shell);
+
+  g_assert_cmpuint (recording->n_keys, ==, expected_count);
+  for (guint i = 0; i < recording->n_keys; ++i)
+    {
+      const RecordedKey *observed = &recording->keys[i];
+
+      g_assert_cmpint (observed->callback_type, ==, type);
+      g_assert_true (observed->tool == tool);
+      g_assert_true (observed->display == shell->display);
+      assert_key_fields (&observed->event, &supplied, expected_keys[i]);
+    }
+  /* Unlike the retained old in-place swap, modern dispatch must preserve the
+   * original allocated event for other handlers.  Compare fields, not padding. */
+  assert_key_fields (&event->key, &supplied, key);
+  g_assert_true (gdk_event_get_device (event) == device);
+  g_assert_true (gdk_event_get_source_device (event) == device);
+  g_assert_true (tool_manager_get_active (gimp) == tool);
+  g_assert_true (tool->focus_display == shell->display);
+  g_assert_false (gimp_tool_control_is_active (tool->control));
+  gdk_event_free (event);
+  return handled;
+}
+
+static void
+mirrored_arrow_keys (gconstpointer data)
+{
+  const KeyContext   *context = data;
+  const guint         keys[] = { GDK_KEY_Left, GDK_KEY_Right };
+  StartRecordingTool *recording;
+  GimpTool           *tool;
+  guint               events = 0, press_callbacks = 0, release_callbacks = 0;
+  gboolean            rotating = context->action != GIMP_MODIFIER_ACTION_NONE;
+
+  create_image ();
+  ensure_start_recording_tool ();
+  tool = select_start_tool ("painter-start-recording-test");
+  g_assert_cmpuint (G_OBJECT_TYPE (tool), ==, start_recording_tool_get_type ());
+  recording = (StartRecordingTool *) tool;
+  tool_manager_focus_display_active (gimp, shell->display);
+  g_assert_true (gtk_widget_has_focus (shell->canvas));
+  g_assert_true (tool->focus_display == shell->display);
+  start_tool_presses = start_tool_releases = 0;
+
+  for (guint mirror = 0; mirror < 2; ++mirror)
+    {
+      NavigationState held;
+      gboolean        exact;
+      gint            cx = shell->disp_width / 2, cy = shell->disp_height / 2;
+
+      assert_navigation_idle ();
+      gimp_display_shell_flip (shell, mirror, FALSE);
+      gimp_display_shell_rotate_to (shell, context->initial_angle);
+      g_assert_cmpfloat (shell->rotate_angle, ==, context->initial_angle);
+      g_assert_false (shell->rotate_angle_exact);
+      if (rotating)
+        {
+          send_event (GDK_BUTTON_PRESS, 2, context->state & ~GDK_BUTTON2_MASK,
+                      cx + 80, cy, 0);
+          g_assert_cmpint (shell->mod_action, ==, context->action);
+          g_assert_cmpuint (shell->mod_action_button, ==, 2);
+          g_assert_true (shell->painter_navigation_inherited);
+          /* Pinned old 1827-1869: old initial angles 37/323 plus the
+           * right-hand bearing 90/270 give anchors 127/593. */
+          g_assert_cmpfloat (shell->rotate_drag_angle, ==, mirror ? 593.0 : 127.0);
+          g_assert_cmpfloat (shell->rotate_angle, ==, 37.0);
+          g_assert_false (shell->rotate_angle_exact);
+          g_assert_cmpint (shell->scroll_start_x, ==, cx + 80);
+          g_assert_cmpint (shell->scroll_start_y, ==, cy);
+          assert_grab ();
+          send_event (GDK_MOTION_NOTIFY, 0, context->state, cx, cy + 80, 0);
+          g_assert_cmpint (shell->mod_action, ==, context->action);
+          g_assert_true (shell->rotate_angle_exact);
+          assert_grab ();
+        }
+      g_assert_cmpfloat (shell->rotate_angle, ==, context->key_angle);
+      held = navigation_state ();
+      exact = shell->rotate_angle_exact;
+
+      for (guint row = 0; row < G_N_ELEMENTS (key_routes); ++row)
+        {
+          const KeyRouteCase *route = &key_routes[row];
+
+          if (route->mirrored != mirror)
+            continue;
+          recording->key_mode = route->mode;
+          gimp_tool_control_set_wants_all_key_events (tool->control,
+                                                     route->mode != KEY_NORMAL);
+          for (guint direction = 0; direction < G_N_ELEMENTS (keys); ++direction)
+            for (guint phase = 0; phase < 2; ++phase)
+              {
+                GdkEventType type = phase ? GDK_KEY_RELEASE : GDK_KEY_PRESS;
+                const guint *expected_keys = phase ? &keys[direction] :
+                                                     route->press_keys[direction];
+                guint        count = phase ? route->n_release : route->n_press;
+                gboolean     expected_handled = phase ? route->release_handled : TRUE;
+                gboolean     handled;
+
+                g_test_message ("mirrored arrows: context=%s mirror=%u mode=%s "
+                                "key=%u phase=%s callbacks=%u handled=%d",
+                                context->name, mirror, route->name, keys[direction],
+                                phase ? "release" : "press", count, expected_handled);
+                handled = send_recorded_key (recording, type, context->state,
+                                             keys[direction], expected_keys, count);
+                g_assert_cmpint (handled, ==, expected_handled);
+                assert_navigation_unchanged (&held);
+                g_assert_cmpint (shell->rotate_angle_exact, ==, exact);
+                g_assert_cmpint (shell->flip_horizontally, ==, mirror);
+                g_assert_false (shell->flip_vertically);
+                events++;
+                if (phase)
+                  release_callbacks += recording->n_keys;
+                else
+                  press_callbacks += recording->n_keys;
+              }
+        }
+
+      if (rotating)
+        {
+          /* The same start reference must still drive motion after all keys.
+           * Old left-ray angles 217/143 (snapped 210/150), with mirrored
+           * boundary negation, independently give modern 217 or 210. */
+          send_event (GDK_MOTION_NOTIFY, 0, context->state, cx - 80, cy, 0);
+          held.angle = context->continued_angle;
+          held.last_x = cx - 80;
+          held.last_y = cy;
+          assert_navigation_unchanged (&held);
+          g_assert_true (shell->rotate_angle_exact);
+          assert_grab ();
+          send_event (GDK_BUTTON_RELEASE, 2, context->state, cx - 80, cy, 0);
+          g_assert_cmpfloat (shell->rotate_angle, ==, context->continued_angle);
+          g_assert_true (shell->rotate_angle_exact);
+        }
+      assert_navigation_idle ();
+    }
+
+  g_assert_cmpuint (events, ==, 24);
+  g_assert_cmpuint (press_callbacks, ==, 16);
+  g_assert_cmpuint (release_callbacks, ==, 8);
+  g_assert_cmpuint (start_tool_presses, ==, 0);
+  g_assert_cmpuint (start_tool_releases, ==, 0);
+  recording->key_mode = KEY_NORMAL;
+  recording->n_keys = 0;
+  gimp_tool_control_set_wants_all_key_events (tool->control, FALSE);
+  select_start_tool (real_tool_names[0]);
+  close_image ();
 }
 
 int main(int argc,char **argv)
@@ -1159,6 +1482,10 @@ int main(int argc,char **argv)
   g_test_add_func ("/navigation-events/rotation/boundary/snapped-decreasing", snapped_boundary_decreasing);
   g_test_add_func ("/navigation-events/rotation/boundary/persistence", boundary_angle_persistence);
   g_test_add_func ("/navigation-events/rotation/boundary/policy-isolation", boundary_policy_isolation);
+  g_test_add_data_func ("/navigation-events/keys/idle-zero", &key_contexts[0], mirrored_arrow_keys);
+  g_test_add_data_func ("/navigation-events/keys/idle-rotated", &key_contexts[1], mirrored_arrow_keys);
+  g_test_add_data_func ("/navigation-events/keys/rotation-free", &key_contexts[2], mirrored_arrow_keys);
+  g_test_add_data_func ("/navigation-events/keys/rotation-snapped", &key_contexts[3], mirrored_arrow_keys);
   g_application_run(gimp->app,0,NULL);
   result=gimp_core_app_get_exit_status(GIMP_CORE_APP(gimp->app));
   g_application_quit(G_APPLICATION(gimp->app));g_clear_object(&gimp->app);return result;
