@@ -13,7 +13,8 @@
  * gimprectangleselectoptions, gimprectangleoptions, gimpflipoptions,
  * gimpmagnifyoptions, gimpcoloroptions, gimpcolorpickeroptions,
  * gimpbucketfilloptions, gimpblendoptions, gimpcageoptions,
- * gimpiscissorsoptions, gimpcropoptions and gimpmeasureoptions.
+ * gimpiscissorsoptions, gimpcropoptions, gimpmeasureoptions,
+ * and gimphistogramoptions.
  *
  * The old inline/details split is retained, with GTK3 popovers replacing the
  * legacy popup window helpers. All controls bind directly to the current
@@ -44,6 +45,7 @@
 #include "gimpcropoptions.h"
 #include "gimpflipoptions.h"
 #include "gimpgradientoptions.h"
+#include "gimphistogramoptions.h"
 #include "gimpiscissorsoptions.h"
 #include "gimpmagnifyoptions.h"
 #include "gimpmeasureoptions.h"
@@ -421,6 +423,41 @@ painter_color_picker (GtkWidget *box,
   painter_check (box, config, "use-info-window", _("Use info window"));
 }
 
+/* The legacy Threshold factory has only the histogram scale. Levels and
+ * Curves use the color-options factory, which adds the average toggle and
+ * radius popup. Filter-dialog controls remain owned by the active tool. */
+static void
+painter_histogram (GtkWidget       *box,
+                   GimpToolOptions *options)
+{
+  GObject   *config = G_OBJECT (options);
+  GtkWidget *frame;
+  GtkWidget *details;
+
+  frame = gimp_prop_enum_radio_frame_new_with_orientation
+    (config, "histogram-scale", _("Histogram Scale"), 0, 0,
+     GTK_ORIENTATION_HORIZONTAL);
+  gtk_widget_set_name (frame, "gimp-painter-histogram-scale");
+  painter_pack (box, frame);
+
+  if (options->tool_info &&
+      g_strcmp0 (gimp_object_get_name (options->tool_info),
+                 "gimp-threshold-tool") != 0)
+    {
+      GtkWidget *button;
+
+      details = painter_toggle_details (box, config, "sample-average", _("Average"),
+                                         "gimp-painter-histogram-average");
+      button = gtk_popover_get_relative_to
+        (GTK_POPOVER (gtk_widget_get_ancestor (details, GTK_TYPE_POPOVER)));
+      gtk_widget_set_tooltip_text (button, _("Sample Average"));
+      /* The legacy horizontal helper disables the popup arrow itself. */
+      painter_sensitive (config, "sample-average", button);
+      painter_pack (details, gimp_prop_spin_scale_new (config, "average-radius",
+                                                       1.0, 10.0, 0));
+    }
+}
+
 static void
 painter_cage (GtkWidget *box,
               GObject   *config)
@@ -594,6 +631,7 @@ gimp_painter_tool_toolbar_new (GimpToolOptions *options)
       ! GIMP_IS_FLIP_OPTIONS (options) &&
       ! GIMP_IS_MAGNIFY_OPTIONS (options) &&
       ! GIMP_IS_COLOR_PICKER_OPTIONS (options) &&
+      ! GIMP_IS_HISTOGRAM_OPTIONS (options) &&
       ! GIMP_IS_BUCKET_FILL_OPTIONS (options) &&
       ! GIMP_IS_GRADIENT_OPTIONS (options))
     return NULL;
@@ -614,6 +652,8 @@ gimp_painter_tool_toolbar_new (GimpToolOptions *options)
     painter_magnify (box, config);
   else if (GIMP_IS_COLOR_PICKER_OPTIONS (options))
     painter_color_picker (box, config);
+  else if (GIMP_IS_HISTOGRAM_OPTIONS (options))
+    painter_histogram (box, options);
   else if (GIMP_IS_CAGE_OPTIONS (options))
     painter_cage (box, config);
   else if (GIMP_IS_CROP_OPTIONS (options))

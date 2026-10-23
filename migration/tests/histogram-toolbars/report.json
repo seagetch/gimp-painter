@@ -1,0 +1,638 @@
+{
+  "schema": 1,
+  "task": "29.010/histogram-toolbars",
+  "parent_task": "29.010/standard-tool-options",
+  "scope": "Restore legacy Threshold/Levels/Curves independent horizontal options factories; shared canonical model, separate controls, unchanged ordinary dock tree.",
+  "observed_date_utc": "2026-10-15",
+  "legacy_revision": "afa43fae3e920210146abed514f136fd49f671b5",
+  "source_base_commit": "000527cc3931dff4df3347a375104ee90da23816",
+  "source_files": [
+    {
+      "path": "app/tools/gimppaintertooltoolbar.c",
+      "sha256": "36f57fad7c6409deee52d1dfff38a129aebb3016877b44d8688e0180365f9278",
+      "matches_native_source": true
+    },
+    {
+      "path": "app/tests/test-painter-compact-options.c",
+      "sha256": "2f5e0b13441f92c9f90f74a4579f8c9975e1bc6604e36f33a7b468738f77eb5e",
+      "matches_native_source": true
+    },
+    {
+      "path": "app/tests/test-painter-histogram-toolbar.inc",
+      "sha256": "91627bd4ecf4209592234a132688acca67c1b61ee20ded4f63c8b85f2108816f",
+      "matches_native_source": true
+    }
+  ],
+  "test_binary": {
+    "path": "build/app/tests/painter-compact-options",
+    "sha256": "d3d551e6cdb80eec7b455299b2a24b679719ea7a57bb211c846af7f8fedd7fd1",
+    "bytes": 77614704
+  },
+  "native_application_binary": {
+    "path": "build/app/gimp-3.0",
+    "sha256": "e8844089e16220c1fb71305b4e12667a31cae2544cb9ac47899e8c6f845197ea",
+    "bytes": 77383568
+  },
+  "installed_application_binary": {
+    "path": "prefix/bin/gimp-3.0",
+    "sha256": "4e4725e69c38049265b59a87ffd14eea5705e79f982d19046b3b71a0e6d80966",
+    "bytes": 77383568
+  },
+  "native_build_and_install_logs": [
+    {
+      "path": "histogram-toolbar-build.log",
+      "sha256": "151c60d6c8cc1cc82f2e72d11589f18a7d36014191a99e875cf73655359348d0",
+      "bytes": 37210
+    },
+    {
+      "path": "histogram-popup-reveal-build.log",
+      "sha256": "355b4a77996e568461f76098b0d0989b73c91ee7d402cf1ef8d20c29a844bcde",
+      "bytes": 37454
+    },
+    {
+      "path": "histogram-app-build-corrected.log",
+      "sha256": "339e3c97f46438c93b1a9eb98cc2190be5b1ac169dd8b97b0f5f7a02039feea5",
+      "bytes": 476
+    },
+    {
+      "path": "histogram-install.log",
+      "sha256": "902182709ce9b0a3fcf3607fe05bd23cedd8a770684d0b2501613dc4449aee1e",
+      "bytes": 644596
+    }
+  ],
+  "tests": [
+    {
+      "name": "histogram-toolbar-full",
+      "target": "gimp:app / painter-compact-options",
+      "result": "FAIL",
+      "returncode": -6,
+      "duration_seconds": 93.20386815071106,
+      "gdk_scale": 1,
+      "passed_cases": [
+        "ok 1 /painter-compact-options/rectangle-units-real-popup-events",
+        "ok 2 /painter-compact-options/rectangle-units-popup-model-reentry",
+        "ok 3 /painter-compact-options/rectangle-units-native-baseline",
+        "ok 4 /painter-compact-options/rectangle-units-numeric-and-sync",
+        "ok 5 /painter-compact-options/rectangle-units-metadata-and-lifetimes",
+        "ok 6 /painter-compact-options/rectangle-units-options-lifetime-and-reentry",
+        "ok 7 /painter-compact-options/rectangle-units-weak-helper-lifetime",
+        "ok 8 /painter-compact-options/rectangle-units-native-canvas-baseline",
+        "ok 9 /painter-compact-options/independent-rectangle-toolbar",
+        "ok 10 /painter-compact-options/rectangle-native-shrink-bounds",
+        "ok 11 /painter-compact-options/rectangle-shrink-lifecycle",
+        "ok 12 /painter-compact-options/rectangle-shrink-owner-lifetime-and-reentry",
+        "ok 13 /painter-compact-options/independent-histogram-toolbar",
+        "ok 14 /painter-compact-options/histogram-toolbar-native-dialogs"
+      ],
+      "failed_cases": [
+        "not ok /painter-compact-options/histogram-toolbar-canvas-popup-lifetime - ERROR:../source/app/tests/test-painter-histogram-toolbar.inc:300:histogram_toolbar_canvas_popup_lifetime: 'gtk_widget_get_mapped (popup)' should be TRUE"
+      ],
+      "skip_lines": [],
+      "selected_stdout": [
+        "1..50",
+        "ok 1 /painter-compact-options/rectangle-units-real-popup-events",
+        "ok 2 /painter-compact-options/rectangle-units-popup-model-reentry",
+        "ok 3 /painter-compact-options/rectangle-units-native-baseline",
+        "ok 4 /painter-compact-options/rectangle-units-numeric-and-sync",
+        "ok 5 /painter-compact-options/rectangle-units-metadata-and-lifetimes",
+        "ok 6 /painter-compact-options/rectangle-units-options-lifetime-and-reentry",
+        "ok 7 /painter-compact-options/rectangle-units-weak-helper-lifetime",
+        "ok 8 /painter-compact-options/rectangle-units-native-canvas-baseline",
+        "ok 9 /painter-compact-options/independent-rectangle-toolbar",
+        "ok 10 /painter-compact-options/rectangle-native-shrink-bounds",
+        "ok 11 /painter-compact-options/rectangle-shrink-lifecycle",
+        "ok 12 /painter-compact-options/rectangle-shrink-owner-lifetime-and-reentry",
+        "ok 13 /painter-compact-options/independent-histogram-toolbar",
+        "ok 14 /painter-compact-options/histogram-toolbar-native-dialogs",
+        "not ok /painter-compact-options/histogram-toolbar-canvas-popup-lifetime - ERROR:../source/app/tests/test-painter-histogram-toolbar.inc:300:histogram_toolbar_canvas_popup_lifetime: 'gtk_widget_get_mapped (popup)' should be TRUE"
+      ],
+      "raw_json": {
+        "path": "build/meson-logs/histogram-toolbar-full.json",
+        "sha256": "f77c1064a2aea0c956fe47088a519870fcd3ffd53ac7b6b81a020709a7992dc6",
+        "bytes": 69931
+      },
+      "raw_text": {
+        "path": "build/meson-logs/histogram-toolbar-full.txt",
+        "sha256": "984ef5d0ba71bed1339f683ae054220db48266092ddb5da29c4b99df9159d120",
+        "bytes": 68447
+      }
+    },
+    {
+      "name": "histogram-popup-focused",
+      "target": "gimp:app / painter-compact-options",
+      "result": "FAIL",
+      "returncode": -6,
+      "duration_seconds": 2.294283390045166,
+      "gdk_scale": 1,
+      "passed_cases": [],
+      "failed_cases": [
+        "not ok /painter-compact-options/histogram-toolbar-canvas-popup-lifetime - ERROR:../source/app/tests/test-painter-histogram-toolbar.inc:300:histogram_toolbar_canvas_popup_lifetime: 'gtk_widget_get_mapped (popup)' should be TRUE"
+      ],
+      "skip_lines": [],
+      "selected_stdout": [
+        "not ok /painter-compact-options/histogram-toolbar-canvas-popup-lifetime - ERROR:../source/app/tests/test-painter-histogram-toolbar.inc:300:histogram_toolbar_canvas_popup_lifetime: 'gtk_widget_get_mapped (popup)' should be TRUE"
+      ],
+      "raw_json": {
+        "path": "build/meson-logs/histogram-popup-focused.json",
+        "sha256": "3bcdc8394aec8b5a10308629c0302451fd35492063cfca741ca5582dc8c806dc",
+        "bytes": 24847
+      },
+      "raw_text": {
+        "path": "build/meson-logs/histogram-popup-focused.txt",
+        "sha256": "2626785cf2c42be56121d7eff92fd4de9b862971963b5c1478ace46cf39dc030",
+        "bytes": 24516
+      }
+    },
+    {
+      "name": "histogram-popup-diagnostic",
+      "target": "gimp:app / painter-compact-options",
+      "result": "FAIL",
+      "returncode": -6,
+      "duration_seconds": 2.2447681427001953,
+      "gdk_scale": 1,
+      "passed_cases": [],
+      "failed_cases": [
+        "not ok /painter-compact-options/histogram-toolbar-canvas-popup-lifetime - ERROR:../source/app/tests/test-painter-histogram-toolbar.inc:316:histogram_toolbar_canvas_popup_lifetime: 'gtk_widget_get_mapped (popup)' should be TRUE"
+      ],
+      "skip_lines": [],
+      "selected_stdout": [
+        "# Histogram popup active=1 visible=1 mapped=0 realized=1 grab=1",
+        "not ok /painter-compact-options/histogram-toolbar-canvas-popup-lifetime - ERROR:../source/app/tests/test-painter-histogram-toolbar.inc:316:histogram_toolbar_canvas_popup_lifetime: 'gtk_widget_get_mapped (popup)' should be TRUE"
+      ],
+      "raw_json": {
+        "path": "build/meson-logs/histogram-popup-diagnostic.json",
+        "sha256": "83b2f1d118001109aa0989b1908d4a7a9884fe0ffc21554e4d5c733cb46d5dfd",
+        "bytes": 26308
+      },
+      "raw_text": {
+        "path": "build/meson-logs/histogram-popup-diagnostic.txt",
+        "sha256": "ff55377c334575ecbdedf32f49278889b48334e9aa181ea6ba1a6f4d14063347",
+        "bytes": 25959
+      }
+    },
+    {
+      "name": "histogram-popup-frame",
+      "target": "gimp:app / painter-compact-options",
+      "result": "FAIL",
+      "returncode": -6,
+      "duration_seconds": 4.176607847213745,
+      "gdk_scale": 1,
+      "passed_cases": [],
+      "failed_cases": [
+        "not ok /painter-compact-options/histogram-toolbar-canvas-popup-lifetime - ERROR:../source/app/tests/test-painter-histogram-toolbar.inc:329:histogram_toolbar_canvas_popup_lifetime: 'gtk_widget_get_mapped (popup)' should be TRUE"
+      ],
+      "skip_lines": [],
+      "selected_stdout": [
+        "# Histogram popup active=1 visible=1 mapped=0 realized=1 grab=1",
+        "not ok /painter-compact-options/histogram-toolbar-canvas-popup-lifetime - ERROR:../source/app/tests/test-painter-histogram-toolbar.inc:329:histogram_toolbar_canvas_popup_lifetime: 'gtk_widget_get_mapped (popup)' should be TRUE"
+      ],
+      "raw_json": {
+        "path": "build/meson-logs/histogram-popup-frame.json",
+        "sha256": "c57b6dc748f89556aaa30e09bca023240917a9722b2a829eacd5bfd3f4713552",
+        "bytes": 26676
+      },
+      "raw_text": {
+        "path": "build/meson-logs/histogram-popup-frame.txt",
+        "sha256": "bc77e493b7c14620f647b7a50f47e08d66f1b55ec526c14fa7732d9d845fef17",
+        "bytes": 26328
+      }
+    },
+    {
+      "name": "histogram-popup-reveal",
+      "target": "gimp:app / painter-compact-options",
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 3.718430995941162,
+      "gdk_scale": 1,
+      "passed_cases": [
+        "ok 1 /painter-compact-options/histogram-toolbar-canvas-popup-lifetime"
+      ],
+      "failed_cases": [],
+      "skip_lines": [],
+      "selected_stdout": [
+        "# Histogram popup anchor before scroll x=411 width=36 viewport=398 offset=0",
+        "# Histogram popup anchor after scroll x=362 width=36 viewport=398 offset=49",
+        "# Histogram popup active=1 visible=1 mapped=1 realized=1 grab=1",
+        "# Histogram popup anchor before scroll x=411 width=36 viewport=398 offset=0",
+        "# Histogram popup anchor after scroll x=362 width=36 viewport=398 offset=49",
+        "# Histogram popup active=1 visible=1 mapped=1 realized=1 grab=1",
+        "# Histogram popup anchor before scroll x=411 width=36 viewport=398 offset=0",
+        "# Histogram popup anchor after scroll x=362 width=36 viewport=398 offset=49",
+        "# Histogram popup active=1 visible=1 mapped=1 realized=1 grab=1",
+        "# Histogram popup anchor before scroll x=411 width=36 viewport=398 offset=0",
+        "# Histogram popup anchor after scroll x=362 width=36 viewport=398 offset=49",
+        "# Histogram popup active=1 visible=1 mapped=1 realized=1 grab=1",
+        "# Histogram popup anchor before scroll x=411 width=36 viewport=398 offset=0",
+        "# Histogram popup anchor after scroll x=362 width=36 viewport=398 offset=49",
+        "# Histogram popup active=1 visible=1 mapped=1 realized=1 grab=1",
+        "# Histogram popup anchor before scroll x=411 width=36 viewport=398 offset=0",
+        "# Histogram popup anchor after scroll x=362 width=36 viewport=398 offset=49",
+        "# Histogram popup active=1 visible=1 mapped=1 realized=1 grab=1",
+        "ok 1 /painter-compact-options/histogram-toolbar-canvas-popup-lifetime",
+        "1..1"
+      ],
+      "raw_json": {
+        "path": "build/meson-logs/histogram-popup-reveal.json",
+        "sha256": "8b22b784fb927aba0246660f27726b903d5541560726c79b4854779c331031d7",
+        "bytes": 40545
+      },
+      "raw_text": {
+        "path": "build/meson-logs/histogram-popup-reveal.txt",
+        "sha256": "68ea6506a629ae2e46ada9cbf28fcad4077d5ea21f36da104dca77b27357177a",
+        "bytes": 39495
+      }
+    },
+    {
+      "name": "histogram-toolbar-final",
+      "target": "gimp:app / painter-compact-options",
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 106.17965936660767,
+      "gdk_scale": 1,
+      "passed_cases": [
+        "ok 1 /painter-compact-options/rectangle-units-real-popup-events",
+        "ok 2 /painter-compact-options/rectangle-units-popup-model-reentry",
+        "ok 3 /painter-compact-options/rectangle-units-native-baseline",
+        "ok 4 /painter-compact-options/rectangle-units-numeric-and-sync",
+        "ok 5 /painter-compact-options/rectangle-units-metadata-and-lifetimes",
+        "ok 6 /painter-compact-options/rectangle-units-options-lifetime-and-reentry",
+        "ok 7 /painter-compact-options/rectangle-units-weak-helper-lifetime",
+        "ok 8 /painter-compact-options/rectangle-units-native-canvas-baseline",
+        "ok 9 /painter-compact-options/independent-rectangle-toolbar",
+        "ok 10 /painter-compact-options/rectangle-native-shrink-bounds",
+        "ok 11 /painter-compact-options/rectangle-shrink-lifecycle",
+        "ok 12 /painter-compact-options/rectangle-shrink-owner-lifetime-and-reentry",
+        "ok 13 /painter-compact-options/independent-histogram-toolbar",
+        "ok 14 /painter-compact-options/histogram-toolbar-native-dialogs",
+        "ok 15 /painter-compact-options/histogram-toolbar-canvas-popup-lifetime",
+        "ok 16 /painter-compact-options/independent-vector-toolbar",
+        "ok 17 /painter-compact-options/vector-selection-actions",
+        "ok 18 /painter-compact-options/vector-native-dialog-actions",
+        "ok 19 /painter-compact-options/vector-model-before-view",
+        "ok 20 /painter-compact-options/vector-path-lifecycle-and-reentry",
+        "ok 21 /painter-compact-options/independent-align-toolbar",
+        "ok 22 /painter-compact-options/align-model-before-view",
+        "ok 23 /painter-compact-options/align-actions-and-reentry",
+        "ok 24 /painter-compact-options/independent-mypaint-toolbar",
+        "ok 25 /painter-compact-options/independent-horizontal-inventory",
+        "ok 26 /painter-compact-options/independent-horizontal-binding",
+        "ok 27 /painter-compact-options/independent-horizontal-native-handles",
+        "ok 28 /painter-compact-options/orientation-enum-contract",
+        "ok 29 /painter-compact-options/orientation-integer-contract",
+        "ok 30 /painter-compact-options/orientation-property-contract",
+        "ok 31 /painter-compact-options/orientation-active-callers",
+        "ok 32 /painter-compact-options/orientation-histogram-current-controls",
+        "ok 33 /painter-compact-options/native-preview-factory-failure",
+        "ok 34 /painter-compact-options/native-preview-factory-success",
+        "ok 35 /painter-compact-options/native-property-controls",
+        "ok 36 /painter-compact-options/native-enum-integer-helpers",
+        "ok 37 /painter-compact-options/inventory-all-registered",
+        "ok 38 /painter-compact-options/common-store-registration-close",
+        "ok 39 /painter-compact-options/mypaint-store-page-retention",
+        "ok 40 /painter-compact-options/native-editor-mixed-width",
+        "ok 41 /painter-compact-options/paint-bidirectional-resource",
+        "ok 42 /painter-compact-options/popup-repeat",
+        "ok 43 /painter-compact-options/popup-native-events-window-destroy",
+        "ok 44 /painter-compact-options/fresh-owner-lifecycle",
+        "ok 45 /painter-compact-options/mixed-packing-owned-destruction",
+        "ok 46 /painter-compact-options/native-viewport-composition",
+        "ok 47 /painter-compact-options/registered-popup-contracts",
+        "ok 48 /painter-compact-options/reentrant-destruction",
+        "ok 49 /painter-compact-options/native-visibility-preference",
+        "ok 50 /painter-compact-options/canvas-dock-tool-transfer-preference"
+      ],
+      "failed_cases": [],
+      "skip_lines": [],
+      "selected_stdout": [
+        "1..50",
+        "ok 1 /painter-compact-options/rectangle-units-real-popup-events",
+        "ok 2 /painter-compact-options/rectangle-units-popup-model-reentry",
+        "ok 3 /painter-compact-options/rectangle-units-native-baseline",
+        "ok 4 /painter-compact-options/rectangle-units-numeric-and-sync",
+        "ok 5 /painter-compact-options/rectangle-units-metadata-and-lifetimes",
+        "ok 6 /painter-compact-options/rectangle-units-options-lifetime-and-reentry",
+        "ok 7 /painter-compact-options/rectangle-units-weak-helper-lifetime",
+        "ok 8 /painter-compact-options/rectangle-units-native-canvas-baseline",
+        "ok 9 /painter-compact-options/independent-rectangle-toolbar",
+        "ok 10 /painter-compact-options/rectangle-native-shrink-bounds",
+        "ok 11 /painter-compact-options/rectangle-shrink-lifecycle",
+        "ok 12 /painter-compact-options/rectangle-shrink-owner-lifetime-and-reentry",
+        "ok 13 /painter-compact-options/independent-histogram-toolbar",
+        "ok 14 /painter-compact-options/histogram-toolbar-native-dialogs",
+        "# Histogram popup anchor before scroll x=411 width=36 viewport=398 offset=0",
+        "# Histogram popup anchor after scroll x=362 width=36 viewport=398 offset=49",
+        "# Histogram popup active=1 visible=1 mapped=1 realized=1 grab=1",
+        "# Histogram popup anchor before scroll x=411 width=36 viewport=398 offset=0",
+        "# Histogram popup anchor after scroll x=362 width=36 viewport=398 offset=49",
+        "# Histogram popup active=1 visible=1 mapped=1 realized=1 grab=1",
+        "# Histogram popup anchor before scroll x=411 width=36 viewport=398 offset=0",
+        "# Histogram popup anchor after scroll x=362 width=36 viewport=398 offset=49",
+        "# Histogram popup active=1 visible=1 mapped=1 realized=1 grab=1",
+        "# Histogram popup anchor before scroll x=411 width=36 viewport=398 offset=0",
+        "# Histogram popup anchor after scroll x=362 width=36 viewport=398 offset=49",
+        "# Histogram popup active=1 visible=1 mapped=1 realized=1 grab=1",
+        "# Histogram popup anchor before scroll x=411 width=36 viewport=398 offset=0",
+        "# Histogram popup anchor after scroll x=362 width=36 viewport=398 offset=49",
+        "# Histogram popup active=1 visible=1 mapped=1 realized=1 grab=1",
+        "# Histogram popup anchor before scroll x=411 width=36 viewport=398 offset=0",
+        "# Histogram popup anchor after scroll x=362 width=36 viewport=398 offset=49",
+        "# Histogram popup active=1 visible=1 mapped=1 realized=1 grab=1",
+        "ok 15 /painter-compact-options/histogram-toolbar-canvas-popup-lifetime",
+        "ok 16 /painter-compact-options/independent-vector-toolbar",
+        "ok 17 /painter-compact-options/vector-selection-actions",
+        "ok 18 /painter-compact-options/vector-native-dialog-actions",
+        "ok 19 /painter-compact-options/vector-model-before-view",
+        "ok 20 /painter-compact-options/vector-path-lifecycle-and-reentry",
+        "ok 21 /painter-compact-options/independent-align-toolbar",
+        "ok 22 /painter-compact-options/align-model-before-view",
+        "ok 23 /painter-compact-options/align-actions-and-reentry",
+        "ok 24 /painter-compact-options/independent-mypaint-toolbar",
+        "# Independent horizontal factory: gimp-rect-select-tool",
+        "# Independent horizontal factory: gimp-ellipse-select-tool",
+        "# Independent horizontal factory: gimp-free-select-tool",
+        "# Independent horizontal factory: gimp-fuzzy-select-tool",
+        "# Independent horizontal factory: gimp-by-color-select-tool",
+        "# Independent horizontal factory: gimp-iscissors-tool",
+        "# Horizontal factory not yet ported: gimp-foreground-select-tool",
+        "# Independent horizontal factory: gimp-vector-tool",
+        "# Independent horizontal factory: gimp-color-picker-tool",
+        "# Independent horizontal factory: gimp-zoom-tool",
+        "# Independent horizontal factory: gimp-measure-tool",
+        "# Independent horizontal factory: gimp-move-tool",
+        "# Independent horizontal factory: gimp-align-tool",
+        "# Independent horizontal factory: gimp-crop-tool",
+        "# Horizontal factory not yet ported: gimp-unified-transform-tool",
+        "# Independent horizontal factory: gimp-rotate-tool",
+        "# Independent horizontal factory: gimp-scale-tool",
+        "# Independent horizontal factory: gimp-shear-tool",
+        "# Horizontal factory not yet ported: gimp-handle-transform-tool",
+        "# Independent horizontal factory: gimp-perspective-tool",
+        "# Horizontal factory not yet ported: gimp-perspective-guide-tool",
+        "# Horizontal factory not yet ported: gimp-transform-3d-tool",
+        "# Independent horizontal factory: gimp-flip-tool",
+        "# Independent horizontal factory: gimp-cage-tool",
+        "# Horizontal factory not yet ported: gimp-warp-tool",
+        "# Horizontal factory not yet ported: gimp-text-tool",
+        "# Independent horizontal factory: gimp-bucket-fill-tool",
+        "# Independent horizontal factory: gimp-bucket-fill-brush-tool",
+        "# Independent horizontal factory: gimp-painter-smudge-tool",
+        "# Independent horizontal factory: gimp-gradient-tool",
+        "# Independent horizontal factory: gimp-pencil-tool",
+        "# Independent horizontal factory: gimp-paintbrush-tool",
+        "# Independent horizontal factory: gimp-eraser-tool",
+        "# Independent horizontal factory: gimp-airbrush-tool",
+        "# Independent horizontal factory: gimp-ink-tool",
+        "# Independent horizontal factory: gimp-mypaint-brush-tool",
+        "# Independent horizontal factory: gimp-painter-mypaint-tool",
+        "# Independent horizontal factory: gimp-clone-tool",
+        "# Independent horizontal factory: gimp-heal-tool",
+        "# Independent horizontal factory: gimp-perspective-clone-tool",
+        "# Independent horizontal factory: gimp-convolve-tool",
+        "# Independent horizontal factory: gimp-smudge-tool",
+        "# Independent horizontal factory: gimp-dodge-burn-tool",
+        "# Horizontal factory not yet ported: gimp-brightness-contrast-tool",
+        "# Independent horizontal factory: gimp-threshold-tool",
+        "# Independent horizontal factory: gimp-levels-tool",
+        "# Independent horizontal factory: gimp-curves-tool",
+        "# Horizontal factory not yet ported: gimp-offset-tool",
+        "# Horizontal factory not yet ported: gimp-gegl-tool",
+        "# Horizontal factory not yet ported: gimp-operation-tool",
+        "# Independent source-based toolbar families: 39",
+        "ok 25 /painter-compact-options/independent-horizontal-inventory",
+        "ok 26 /painter-compact-options/independent-horizontal-binding",
+        "ok 27 /painter-compact-options/independent-horizontal-native-handles",
+        "ok 28 /painter-compact-options/orientation-enum-contract",
+        "ok 29 /painter-compact-options/orientation-integer-contract",
+        "ok 30 /painter-compact-options/orientation-property-contract",
+        "ok 31 /painter-compact-options/orientation-active-callers",
+        "ok 32 /painter-compact-options/orientation-histogram-current-controls",
+        "ok 33 /painter-compact-options/native-preview-factory-failure",
+        "ok 34 /painter-compact-options/native-preview-factory-success",
+        "ok 35 /painter-compact-options/native-property-controls",
+        "ok 36 /painter-compact-options/native-enum-integer-helpers",
+        "ok 37 /painter-compact-options/inventory-all-registered",
+        "ok 38 /painter-compact-options/common-store-registration-close",
+        "ok 39 /painter-compact-options/mypaint-store-page-retention",
+        "ok 40 /painter-compact-options/native-editor-mixed-width",
+        "ok 41 /painter-compact-options/paint-bidirectional-resource",
+        "ok 42 /painter-compact-options/popup-repeat",
+        "ok 43 /painter-compact-options/popup-native-events-window-destroy",
+        "ok 44 /painter-compact-options/fresh-owner-lifecycle",
+        "ok 45 /painter-compact-options/mixed-packing-owned-destruction",
+        "ok 46 /painter-compact-options/native-viewport-composition",
+        "ok 47 /painter-compact-options/registered-popup-contracts",
+        "ok 48 /painter-compact-options/reentrant-destruction",
+        "ok 49 /painter-compact-options/native-visibility-preference",
+        "ok 50 /painter-compact-options/canvas-dock-tool-transfer-preference"
+      ],
+      "raw_json": {
+        "path": "build/meson-logs/histogram-toolbar-final.json",
+        "sha256": "d2e7b9397e4d8cf6bfc111ed5d29a27059d54d5506654800581428005fc904c7",
+        "bytes": 132364
+      },
+      "raw_text": {
+        "path": "build/meson-logs/histogram-toolbar-final.txt",
+        "sha256": "a52e368bf2e2ca70cde7ee55d49adbc5ff9f68af4637f0ebbe53ccac2fa09f55",
+        "bytes": 128579
+      }
+    },
+    {
+      "name": "histogram-toolbar-scale2",
+      "target": "gimp:app / painter-compact-options",
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 4.420775413513184,
+      "gdk_scale": 2,
+      "passed_cases": [
+        "ok 1 /painter-compact-options/independent-histogram-toolbar",
+        "ok 2 /painter-compact-options/histogram-toolbar-native-dialogs",
+        "ok 3 /painter-compact-options/histogram-toolbar-canvas-popup-lifetime"
+      ],
+      "failed_cases": [],
+      "skip_lines": [],
+      "selected_stdout": [
+        "ok 1 /painter-compact-options/independent-histogram-toolbar",
+        "1..1",
+        "ok 2 /painter-compact-options/histogram-toolbar-native-dialogs",
+        "1..2",
+        "# Histogram popup anchor before scroll x=411 width=36 viewport=398 offset=0",
+        "# Histogram popup anchor after scroll x=362 width=36 viewport=398 offset=49",
+        "# Histogram popup active=1 visible=1 mapped=1 realized=1 grab=1",
+        "# Histogram popup anchor before scroll x=411 width=36 viewport=398 offset=0",
+        "# Histogram popup anchor after scroll x=362 width=36 viewport=398 offset=49",
+        "# Histogram popup active=1 visible=1 mapped=1 realized=1 grab=1",
+        "# Histogram popup anchor before scroll x=411 width=36 viewport=398 offset=0",
+        "# Histogram popup anchor after scroll x=362 width=36 viewport=398 offset=49",
+        "# Histogram popup active=1 visible=1 mapped=1 realized=1 grab=1",
+        "# Histogram popup anchor before scroll x=411 width=36 viewport=398 offset=0",
+        "# Histogram popup anchor after scroll x=362 width=36 viewport=398 offset=49",
+        "# Histogram popup active=1 visible=1 mapped=1 realized=1 grab=1",
+        "# Histogram popup anchor before scroll x=411 width=36 viewport=398 offset=0",
+        "# Histogram popup anchor after scroll x=362 width=36 viewport=398 offset=49",
+        "# Histogram popup active=1 visible=1 mapped=1 realized=1 grab=1",
+        "# Histogram popup anchor before scroll x=411 width=36 viewport=398 offset=0",
+        "# Histogram popup anchor after scroll x=362 width=36 viewport=398 offset=49",
+        "# Histogram popup active=1 visible=1 mapped=1 realized=1 grab=1",
+        "ok 3 /painter-compact-options/histogram-toolbar-canvas-popup-lifetime",
+        "1..3"
+      ],
+      "raw_json": {
+        "path": "build/meson-logs/histogram-toolbar-scale2.json",
+        "sha256": "3b5dec38d55cbfcf37fbe9bf5a56278578aac68066c52b434479cb6af6069a9b",
+        "bytes": 46299
+      },
+      "raw_text": {
+        "path": "build/meson-logs/histogram-toolbar-scale2.txt",
+        "sha256": "afd8cd4802c3dc06e725434baefc6892e05eaedb512872b82cf7572d95ee23c4",
+        "bytes": 45015
+      }
+    }
+  ],
+  "failure_resolution": {
+    "original_assertion": "gtk_widget_get_mapped (popup) should be TRUE",
+    "initial_full_target_passed_before_failure": 14,
+    "independent_reproduction": true,
+    "two_second_frame_wait_did_not_resolve": true,
+    "observed_button_ancestors": "All visible, mapped and sensitive",
+    "observed_popup_before_fix": "active=1 visible=1 mapped=0 realized=1 grab=1",
+    "cause": "The fixture activated a GtkMenuButton outside the horizontally scrollable toolbar viewport.",
+    "before": {
+      "button_x": 411,
+      "button_width": 36,
+      "viewport_width": 398,
+      "contents_width": 447,
+      "horizontal_adjustment": 0
+    },
+    "after": {
+      "button_x": 362,
+      "button_width": 36,
+      "viewport_width": 398,
+      "horizontal_adjustment": 49
+    },
+    "fix": "Reveal the actual arrow through its native GtkScrolledWindow horizontal adjustment before activating it; verify it fits completely inside the viewport.",
+    "assertions_retained": [
+      "entire anchor reachable",
+      "popup mapped",
+      "popup has grab",
+      "Escape closes",
+      "popup remaps after reopen",
+      "active-tool switch finalizes popup and toolbar",
+      "no remaining GTK grab",
+      "ordinary dock GUI identity retained"
+    ],
+    "production_layout_changed": false,
+    "successful_popup_openings_per_focused_case": 6
+  },
+  "runtime_factory_inventory": {
+    "supported_count": 39,
+    "unsupported_count": 11,
+    "supported": [
+      "gimp-rect-select-tool",
+      "gimp-ellipse-select-tool",
+      "gimp-free-select-tool",
+      "gimp-fuzzy-select-tool",
+      "gimp-by-color-select-tool",
+      "gimp-iscissors-tool",
+      "gimp-vector-tool",
+      "gimp-color-picker-tool",
+      "gimp-zoom-tool",
+      "gimp-measure-tool",
+      "gimp-move-tool",
+      "gimp-align-tool",
+      "gimp-crop-tool",
+      "gimp-rotate-tool",
+      "gimp-scale-tool",
+      "gimp-shear-tool",
+      "gimp-perspective-tool",
+      "gimp-flip-tool",
+      "gimp-cage-tool",
+      "gimp-bucket-fill-tool",
+      "gimp-bucket-fill-brush-tool",
+      "gimp-painter-smudge-tool",
+      "gimp-gradient-tool",
+      "gimp-pencil-tool",
+      "gimp-paintbrush-tool",
+      "gimp-eraser-tool",
+      "gimp-airbrush-tool",
+      "gimp-ink-tool",
+      "gimp-mypaint-brush-tool",
+      "gimp-painter-mypaint-tool",
+      "gimp-clone-tool",
+      "gimp-heal-tool",
+      "gimp-perspective-clone-tool",
+      "gimp-convolve-tool",
+      "gimp-smudge-tool",
+      "gimp-dodge-burn-tool",
+      "gimp-threshold-tool",
+      "gimp-levels-tool",
+      "gimp-curves-tool"
+    ],
+    "unsupported": [
+      "gimp-foreground-select-tool",
+      "gimp-unified-transform-tool",
+      "gimp-handle-transform-tool",
+      "gimp-perspective-guide-tool",
+      "gimp-transform-3d-tool",
+      "gimp-warp-tool",
+      "gimp-text-tool",
+      "gimp-brightness-contrast-tool",
+      "gimp-offset-tool",
+      "gimp-gegl-tool",
+      "gimp-operation-tool"
+    ],
+    "newly_supported": [
+      "gimp-threshold-tool",
+      "gimp-levels-tool",
+      "gimp-curves-tool"
+    ],
+    "historical_34_16_inventory_is_not_current": true
+  },
+  "portrait": {
+    "repository_artifact": "migration/tests/histogram-toolbars/portrait.png",
+    "source_artifact": {
+      "path": "gimp-histogram-portrait.png",
+      "sha256": "029f46fed5e68446acdb110b0d549de3ddae862f6fede1032fdb52992941b30e",
+      "bytes": 176922
+    },
+    "capture_script": {
+      "path": "capture-histogram-portrait.py",
+      "sha256": "150754c463194f8872fdc2a16ed86b37da3a56adbb0cba849932f650ee5c54dc",
+      "bytes": 5642
+    },
+    "capture_log": {
+      "path": "histogram-colors-capture.log",
+      "sha256": "ddcd98aca920e2ae538848079ed3e26f5416352bc3e1a72552022f23cf58a8ce",
+      "bytes": 160
+    },
+    "launch_log": {
+      "path": "histogram-portrait-launch.log",
+      "sha256": "f36796c7be6306529c0fe6a741653b70143a04eba6954576135f3c96d39c6765",
+      "bytes": 192
+    },
+    "display": "Authenticated loopback-only TCP Xvfb, 1080x1920x24",
+    "application": "Installed native GIMP application with actual image canvas and Painter UI enabled",
+    "activation": "Colors > Threshold; app.filters-threshold maps gimp:threshold to gimp-threshold-tool",
+    "visually_verified": [
+      "Real image canvas",
+      "Native Apply Threshold dialog",
+      "Lower Histogram Scale bar",
+      "Horizontal Linear histogram and Logarithmic histogram choices",
+      "Painter wheel, FG/BG, tool tiles and layer tiles coexist"
+    ],
+    "normal_gui_quit_exit": 0,
+    "launch_diagnostics": [
+      "gimp_font_factory_load_names: 112 unsupported fonts were ignored. Set the GIMP_DEBUG_FONTS environment variable for a listing.",
+      "gui_dbus_name_lost: connection to the bus cannot be established."
+    ],
+    "critical_or_error_in_final_launch_log": false,
+    "earlier_wrong_tool_captures_excluded_from_acceptance": true
+  },
+  "limits": [
+    "Parent task remains open; this is one legacy factory family.",
+    "No ASan/UBSan instrumentation claimed for these new tests.",
+    "GDK_SCALE=2 is synthetic HiDPI coverage, not hardware-tablet validation.",
+    "No full legacy UI, toolbar/session persistence or cross-platform acceptance claim.",
+    "Ordinary test fixtures report missing source icons/plugin dummy files; installed application launch has the explicitly recorded font and D-Bus diagnostics."
+  ],
+  "sanitization": "Only test results, selected TAP and factory/geometry evidence are copied. Raw inherited environment, command environment and credentials are not copied."
+}
