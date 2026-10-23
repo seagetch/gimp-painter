@@ -12,6 +12,7 @@ extern "C" {
 #include "gimpdisplayshell.h"
 }
 #include "core/gimpperspectiveguide.hpp"
+#include "gimpcanvasperspectiveguide.hpp"
 #include "painter/binding-store.hpp"
 #include "painter/connection.hpp"
 #include "painter/gimp-painter-binding.h"
@@ -19,10 +20,6 @@ extern "C" {
 #include <limits>
 using namespace GimpPainter;
 G_DEFINE_TYPE (GimpCanvasPerspectiveGuide, gimp_canvas_perspective_guide, GIMP_TYPE_CANVAS_ITEM)
-namespace GimpPainter {
-template<> struct TypeTraits<GimpCanvasPerspectiveGuide>
-{ static GType type () noexcept { return GIMP_TYPE_CANVAS_PERSPECTIVE_GUIDE; } };
-}
 namespace {
 struct OverlayImpl;
 struct OverlaySlot : SlotSpec<GimpCanvasPerspectiveGuide, OverlayImpl> {};
@@ -100,15 +97,22 @@ void guide_changed (GObject *, gpointer data) { visit (data, [] (OverlayImpl& im
 void constructed (GObject *object)
 {
   G_OBJECT_CLASS (gimp_canvas_perspective_guide_parent_class)->constructed (object);
-  boundary_void (nullptr, [&] {
-    auto& binding = BindingStore::require (object); binding.activate ();
-    binding.with<OverlaySlot> ([] (OverlayImpl& impl) {
-      auto *shell = gimp_canvas_item_get_shell (impl.item);
-      /* items_init runs before the shell's construct-only display property. */
-      impl.shell_connection = impl.connect (G_OBJECT (shell), "notify::display", G_CALLBACK (shell_changed));
-      impl.refresh_display ();
+  auto *guide = reinterpret_cast<GimpCanvasPerspectiveGuide *> (object);
+  if (!guide->binding_failed)
+    guide->binding_failed = !boundary<bool> (nullptr, false, [&] {
+      auto& binding = BindingStore::require (object);
+      binding.initialize<OverlaySlot> ([] (OverlayImpl& impl) {
+        auto *shell = gimp_canvas_item_get_shell (impl.item);
+        /* items_init precedes the shell's construct-only display property.
+         * Callbacks remain gated until every initial connection is installed. */
+        impl.shell_connection = impl.connect (G_OBJECT (shell), "notify::display", G_CALLBACK (shell_changed));
+        impl.refresh_display ();
+      });
+      binding.activate ();
+      return true;
     });
-  });
+  if (guide->binding_failed)
+    gimp_painter_binding_close (object, nullptr);
 }
 void dispose (GObject *object)
 { gimp_painter_binding_close (object, nullptr); G_OBJECT_CLASS (gimp_canvas_perspective_guide_parent_class)->dispose (object); }
@@ -167,5 +171,13 @@ static void gimp_canvas_perspective_guide_init (GimpCanvasPerspectiveGuide *guid
 }
 GimpCanvasItem *gimp_canvas_perspective_guide_new (GimpDisplayShell *shell)
 {
-  return GIMP_CANVAS_ITEM (g_object_new (GIMP_TYPE_CANVAS_PERSPECTIVE_GUIDE, "shell", shell, nullptr));
+  g_return_val_if_fail (GIMP_IS_DISPLAY_SHELL (shell), nullptr);
+  auto *guide = static_cast<GimpCanvasPerspectiveGuide *> (
+    g_object_new (GIMP_TYPE_CANVAS_PERSPECTIVE_GUIDE, "shell", shell, nullptr));
+  if (guide->binding_failed)
+    {
+      g_object_unref (guide); // GimpCanvasItem is nonfloating: consume exactly one ref.
+      return nullptr;
+    }
+  return GIMP_CANVAS_ITEM (guide);
 }

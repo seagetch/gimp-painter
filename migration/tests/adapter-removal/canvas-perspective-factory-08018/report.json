@@ -1,0 +1,33 @@
+{
+  "task": "08.018/canvas-perspective-factory",
+  "status": "PASS_NATIVE_FACTORY_AND_REPAIRED_UI",
+  "normal": {
+    "painter-canvas-factory": 27,
+    "painter-perspective-ui": 24,
+    "duration_seconds": [
+      2.8570125102996826,
+      5.362020015716553
+    ]
+  },
+  "sanitizer": {
+    "painter-canvas-factory": 27,
+    "painter-perspective-ui": 24,
+    "duration_seconds": [
+      4.894514366000294,
+      8.872460806998788
+    ],
+    "timeout": 60,
+    "instrumented_units": 47,
+    "rtti_only_units": 41,
+    "leak_detection": false
+  },
+  "portrait": "authenticated Xvfb1080x1920x24; application screenshot1040x1800; oncanvas visibility asserted",
+  "full_perspective_ui": "Final full24 normal+union ASan passed after separate production tool-group retirement fix; original first7-then-failure artifact preserved",
+  "canonical_original_factory": "PARTIAL: old two-argument explicit guide source API not restored",
+  "limits": [
+    "Checked native factory/owning facade and full current24-case UI regression accepted",
+    "Canonical old2-argument explicit-guide API remains PARTIAL",
+    "Historical GObject class/layout binary ABI not claimed",
+    "Whole application/dependency sanitizers not claimed"
+  ]
+}

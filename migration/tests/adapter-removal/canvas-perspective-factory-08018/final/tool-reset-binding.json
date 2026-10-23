@@ -1,0 +1,16 @@
+{
+  "receipt_directory": "migration/tests/tool-group-retirement",
+  "receipt_sha256": {
+    "green.json": "36345a2c52d4029ecf9ede82193b50f88c6588c45ea4deb5f872d02e508f7cfa",
+    "asan-results.json": "4f795cae9684f94b8d488a724cb1b59d9d05490f1b9df167ae4677abe331690b",
+    "source-sha256.json": "3bbc42f975369e606b18ba587a29184ab8a4b3e88dade12d7794c4e5044054ee",
+    "portrait-oncanvas-after-reset.png": "32ed47aeb94db3c8f8c9145e369154eaf1c3f527dde9fc0e59aaeafc0cfc44ea"
+  },
+  "source_sha256": {
+    "app/tools/gimp-tools.c": "ee1a445f0a626b90119008aab0a9fa29e56b8c1811bcc094f742886f3a44ccf3",
+    "app/core/gimptoolgroup.c": "e121154e6b76aaf750386a367dd24e2c82d9a534199e10771638727a9b8c9a46",
+    "app/tests/test-painter-perspective-ui.c": "a61b5bf417a3c5b1bb15b4f678313b80905d34e5deaebdf4c2ea7043424820d5",
+    "app/tests/test-painter-tool-group-retirement.inc": "87def2ba949928a73f98efcc384adb9b573aa8575acee6ac8c280fde7acfa6d6"
+  },
+  "role": "independently repaired original full UI regression; final union normal/ASan receipt here verifies factory and repaired UI together"
+}

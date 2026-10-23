@@ -1,0 +1,32 @@
+{
+  "task": "08.018/canvas-perspective-factory",
+  "parent_complete": false,
+  "canonical_entry_disposition": "PARTIAL: current native checked factory and typed facade only; original explicit-guide source API not restored",
+  "legacy_commit": "afa43fae3e920210146abed514f136fd49f671b5",
+  "legacy_source_sha256": {
+    "app/display/gimpcanvasperspectiveguide.cpp": "af33aeaaf85b401af219ac658c5abfe3eef14a7ecde1b632c08c873b199b6a2c",
+    "app/display/gimpcanvasperspectiveguide.h": "e8870f3eb04d5f5e3819a5df0c5ac39f308657e31f058025111fabefe6eb554b"
+  },
+  "original_c_signature": "GimpCanvasPerspectiveGuide *gimp_canvas_perspective_guide_new (GimpDisplayShell *shell, GimpPerspectiveGuide *guide)",
+  "current_c_signature": "GimpCanvasItem *gimp_canvas_perspective_guide_new (GimpDisplayShell *shell)",
+  "original_semantics": "READWRITE|CONSTRUCT guide property retains explicitly supplied model; getter identity; draw/extents query it directly",
+  "current_semantics": "Overlay follows shell current image guide through native lifecycle signals",
+  "remaining_obligation": "Separate explicit-guide provider/property and original C signature, with named native auto-follow provider and model identity/replacement/lifetime/render tests. No historical GObject binary layout claim.",
+  "original_rows": [
+    {
+      "c_entry": "gimp_canvas_perspective_guide_get_type",
+      "legacy_site": "app/display/gimpcanvasperspectiveguide.cpp:295",
+      "cpp_operation": "TypeTraits<GimpCanvasPerspectiveGuide>::type",
+      "rule": "Lazy TypeTraits delegates to C GType registration; no C++ global class singleton or implementation placement",
+      "implementation": "TODO"
+    },
+    {
+      "c_entry": "gimp_canvas_perspective_guide_new",
+      "legacy_site": "app/display/gimpcanvasperspectiveguide.cpp:300",
+      "cpp_operation": "CanvasPerspectiveGuideRef::create",
+      "rule": "Named handle method delegates directly to this sole C entry; C entry and exact vfunc adapter resolve the same typed slot; no duplicate implementation",
+      "implementation": "TODO"
+    }
+  ],
+  "type_handle_catalog": "unchanged contractual TODO; no broad completion claim"
+}

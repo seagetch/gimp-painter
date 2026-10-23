@@ -1055,3 +1055,26 @@ if host_machine.system() == 'linux' and cxx.get_id() in ['gcc', 'clang'] and cxx
       'UI_TEST=yes',
     ], suite: 'app', is_parallel: false, timeout: 60)
 endif
+
+# Checked nonfloating canvas factory, real C callers and C++ fault seams.
+painter_canvas_factory_wrap = [
+  '-Wl,--wrap=_ZN11GimpPainter12BindingStore6ensureEP8_GObject',
+  '-Wl,--wrap=_ZN11GimpPainter12BindingStore8activateEv',
+  '-Wl,--wrap=g_signal_parse_name',
+  '-Wl,--wrap=g_signal_connect_data',
+]
+if host_machine.system() == 'linux' and cxx.get_id() in ['gcc', 'clang'] and cxx.has_multi_link_arguments(painter_canvas_factory_wrap)
+  painter_canvas_factory_test = executable('painter-canvas-factory',
+    'test-painter-canvas-factory.c', 'test-painter-canvas-factory.cpp', 'tests.c',
+    dependencies: [libapp_dep, appstream], link_with: apptests_links,
+    cpp_args: painter_cpp_args, link_args: painter_canvas_factory_wrap,
+    override_options: ['c_std=c11', 'cpp_std=c++14'])
+  test('painter-canvas-factory', painter_canvas_factory_test,
+    depends: gimp_test_icon_dependencies,
+    env: [
+      'GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+      'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+      'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
+      'UI_TEST=yes',
+    ], suite: 'app', is_parallel: false, timeout: 60)
+endif
