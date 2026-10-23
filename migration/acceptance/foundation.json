@@ -603,19 +603,23 @@
       "state": "COMPONENT_VERIFIED",
       "implementation_paths": [
         "app/painter/binding-store.hpp",
-        "app/painter/binding-store.cpp"
+        "app/painter/binding-store.cpp",
+        "app/painter/resources.hpp",
+        "app/painter/tests/test-foundation.cpp"
       ],
       "test_ids": [
         "/painter/store/construction-failure",
+        "/painter/store/acquired-construction-failure",
+        "/painter/store/slot-registration",
         "/painter/reentry/constructor-close",
         "/painter/reentry/constructor-duplicate",
         "/painter/reentry/constructor-owner-loss"
       ],
       "reports": [
-        "migration/tests/painter-foundation-acceptance-native.json",
-        "migration/tests/painter-foundation-acceptance-sanitizers.json"
+        "migration/tests/construction-failure/native.json",
+        "migration/tests/construction-failure/sanitizers.json"
       ],
-      "scope_or_gap": "Slot construction and prohibited constructor callback failures are injected; feature-specific GType class initialization audit remains separate."
+      "scope_or_gap": "Original construction cleanup verified: 65 native, ASan/UBSan and Meson common cases; separate sealed allocation-native/sanitizers reports each cover 5 real new/delete and String/g_free fault cases. Partial owned resources unwind, failed candidates remain unpublished, prior slots survive, same-slot retry works, completed rejected candidates close/destroy once. All three exact old duties mapped; no production leak reproduced. LSan, fatal GLib OOM, feature class initialization and non-Linux toolchains are not claimed."
     },
     {
       "id": "07.001",
