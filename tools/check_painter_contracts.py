@@ -1,12 +1,78 @@
 #!/usr/bin/env python3
 """Check exhaustive common C++ type/entry contracts without claiming a port."""
 import csv
+import hashlib
+import sys
 import json
 import re
 import subprocess
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+# Reviewed bounded native claims, not completion of legacy feature/layout duties.
+# Updating a claim requires reviewing its exact row, receipts and source proof.
+BOUNDED_HANDLE_PROOFS = {'GimpActionGroup': {'row_sha256': '9cefd8d72905c39348344fc6a0d7bf255be1b7aeec985f82e7ffbb881a58b37c',
+                     'directory': 'migration/tests/adapter-removal/preset-action-group-entry-08018',
+                     'files': {'validate.py': '59946db2032b3e211397584ae84ba4a6b1e452d78be5ce051239a2f4966c8bcd',
+                               'source-manifest.json': '98bdb9b04aa7d4e030226265d28fb2713bd041669dae906758299681064087b6',
+                               'tested-owner-sources.tar.gz': 'eec41d504c59326a0222da5a1a07175a4dafe5a315cffffd5bb19c38e5a06e8f',
+                               'normal-results.json': 'b644b49e000d181655ca342df0f177bc5687c6deaf0340c5d50067c823f7bd8f',
+                               'asan-results.json': 'cf01c6cd495130ea763c2e74799fdb82ff084884726f8dbe5c8ef457b776f17a',
+                               'asan-build.json': '68cf29576b131848d82cf6158c83f2dd76030e1db62ed25bff5fc0094f9d0245',
+                               'header-compile-result.json': 'f3dafc14f883074ca908c52d8759027298200baafeb3e230a227fa35aa54ecee',
+                               'red-status.txt': '4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865',
+                               'expected-red.log': '6ca100c3e30875c8b7531c185c7ab2141ef5e6a7d60ac9d7292be43349027267',
+                               'native-mutation.json': '6fa8284e75cb132de91f7c90e60b30934d8d9a5044725d67451283b189bbbc52'}},
+ 'GimpJsonResource': {'row_sha256': '88077bf418398c57fb76263381d4ce962977c4c4c39c486256b05061af70748f',
+                      'directory': 'migration/tests/adapter-removal/json-resource-entries-08018',
+                      'files': {'validate.py': '36919260ead5d843581e0fea8f4b167fc877c4d744c16140965cb0ee437a682a',
+                                'source-manifest.json': '8b72de54ff7ccba9dd7955d864efa15ac1561829781e73c9f1182eef74556eea',
+                                'tested-owner-sources.tar.gz': 'f13c1e63d57b6d6d6c72ef2da0fdc91ef60f4f906c283d575dd33086b4382a77',
+                                'normal-results.json': 'efdd6d112164459926a8d45761994d93f0c44f00beca9bf3fd2c54d9cda41c76',
+                                'asan-results.json': '23b0be7cbd3d608b21d8604de3a737f057b1486c88b450fd85568acc73343895',
+                                'asan-build.json': '6c472228eae28b7372fccbf24e1df7fc8802b0d6105af27d81f430046ad895cd',
+                                'header-compile-result.json': 'da6d9a648233cbe0650865f3d8b790f52dfdd3fb915770bba374e9078fcf443f',
+                                'facade-header.json': 'c213b5bc73511f65836d24025383d4bfb864c96e3d538fa831895e541be995e9',
+                                'source-contract.json': '90998f9c3dab503f57278653a1b60c60aab57a2060fbbb2cd9e7119f4eb3a22a'}}}
+
+
+def verify_handle_implementations(handles, root=None):
+    root = ROOT if root is None else Path(root)
+    errors = []
+    for row in handles:
+        name = row['legacy_type']
+        if not row['declared_at'] or not row['contract']:
+            errors.append('incomplete handle contract: ' + name)
+        if row['implementation'] == 'TODO':
+            if name in BOUNDED_HANDLE_PROOFS:
+                errors.append('reviewed bounded handle claim was rolled back: ' + name)
+            continue
+        proof = BOUNDED_HANDLE_PROOFS.get(name)
+        if not proof:
+            errors.append('unreviewed handle implementation claim: ' + name)
+            continue
+        digest = hashlib.sha256(json.dumps(row, sort_keys=True).encode()).hexdigest()
+        if digest != proof['row_sha256']:
+            errors.append('bounded handle claim differs from reviewed scope: ' + name)
+            continue
+        evidence = root / proof['directory']
+        try:
+            for filename, expected in proof['files'].items():
+                if hashlib.sha256((evidence / filename).read_bytes()).hexdigest() != expected:
+                    raise ValueError('changed receipt: ' + filename)
+            # The pinned validator verifies its archive, native/sanitizer results,
+            # exclusions, and all current production/test owner source identities.
+            result = subprocess.run([sys.executable, '-I', str(evidence / 'validate.py'),
+                                     '--check-source'], cwd=root,
+                                    capture_output=True, text=True)
+            if result.returncode:
+                raise ValueError('source-bound evidence validation failed: ' +
+                                 result.stderr.strip().splitlines()[-1])
+        except (OSError, ValueError) as error:
+            errors.append('invalid bounded handle proof: ' + name + ': ' + str(error))
+    return errors
 
 
 def read(path):
@@ -47,8 +113,7 @@ def verify():
             errors.append('missing type contracts: ' + str(expected - types))
     if len(types) != len(handles) or len({r['handle'] for r in handles}) != len(handles):
         errors.append('duplicate type or handle contract')
-    if any(not r['declared_at'] or not r['contract'] or r['implementation'] != 'TODO' for r in handles):
-        errors.append('incomplete contract or overclaimed feature implementation')
+    errors.extend(verify_handle_implementations(handles))
     entries = read('migration/contracts/cpp-c-entry-map.tsv')
     expected_entries = entry_sources()
     if len(entries) != len(expected_entries) or {r['c_entry'] for r in entries} != expected_entries.keys():
@@ -77,7 +142,7 @@ def main():
     errors, handles, entries = verify()
     if errors:
         raise SystemExit('\n'.join(errors))
-    print(f'{handles} unique typed-handle contracts; {entries} C entries map to a single C++ route; feature implementation not claimed')
+    print(f'{handles} unique typed-handle contracts; {entries} C entries map to a single C++ route; reviewed bounded native handle proofs verified; full legacy feature/layout implementation not claimed')
 
 
 if __name__ == '__main__':
