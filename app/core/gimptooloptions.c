@@ -26,6 +26,7 @@
 #include "core-types.h"
 
 #include "gimp.h"
+#include "gimpcontainer.h"
 #include "gimperror.h"
 #include "gimpbrush.h"
 #include "gimpbrushgenerated.h"
@@ -310,6 +311,53 @@ gimp_tool_options_tool_notify (GimpToolOptions *options,
 {
   GimpToolInfo *tool_info = gimp_context_get_tool (GIMP_CONTEXT (options));
   GimpToolInfo *new_info;
+
+  /* A removed tool may remain alive through an options panel or caller lease.
+   * GimpContext's thaw fallback must not retarget those uniquely typed options
+   * to an unrelated live tool.  tool_info below is borrowed from the context;
+   * options->tool_info is our owning reference and remains the identity until
+   * dispose.  Keep the context detached, including across repeated thaws.
+   * Live objects still go through the strict type/deserialization diagnostics. */
+  if (G_OBJECT_TYPE (options) != GIMP_TYPE_PAINTER_DEVICE_OPTIONS &&
+      options->tool_info && tool_info != options->tool_info &&
+      (! GIMP_CONTEXT (options)->gimp->tool_info_list ||
+       ! gimp_container_have (GIMP_CONTEXT (options)->gimp->tool_info_list,
+                              GIMP_OBJECT (options->tool_info))))
+    {
+      if (tool_info)
+        gimp_context_set_tool (GIMP_CONTEXT (options), NULL);
+      return;
+    }
+
+  /* Paint-core/global options exist independently of a registered tool-info.
+   * A list thaw can occur before their matching tool is registered, or after
+   * its removal.  Do not invent a binding to a different options type.  This
+   * applies only to context notifications; property setters still reject
+   * malformed serialized tool references through check_tool_info(). */
+  if (G_OBJECT_TYPE (options) != GIMP_TYPE_PAINTER_DEVICE_OPTIONS &&
+      ! options->tool_info &&
+      (! tool_info || G_OBJECT_TYPE (options) != tool_info->tool_options_type))
+    {
+      GList *iter;
+      gboolean matching_type = FALSE;
+
+      for (iter = GIMP_CONTEXT (options)->gimp->tool_info_list ?
+                    gimp_get_tool_info_iter (GIMP_CONTEXT (options)->gimp) : NULL;
+           iter; iter = g_list_next (iter))
+        if (G_OBJECT_TYPE (options) ==
+            GIMP_TOOL_INFO (iter->data)->tool_options_type)
+          {
+            matching_type = TRUE;
+            break;
+          }
+
+      if (! matching_type)
+        {
+          if (tool_info)
+            gimp_context_set_tool (GIMP_CONTEXT (options), NULL);
+          return;
+        }
+    }
 
   new_info = gimp_tool_options_check_tool_info (options, tool_info, FALSE);
 

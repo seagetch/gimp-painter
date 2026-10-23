@@ -1,0 +1,32 @@
+Xvfb verified: 127.0.0.1:92, 1080x1920x24, authenticated accepted, empty authority rejected
+1/1 gimp:app / tool-options-retirement FAIL             1.06s   killed by signal 6 SIGABRT
+>>> MESON_TEST_ITERATION=1 MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 GIMP_TESTING_PLUGINDIRS=/workspace/shared/gimp-native-preset-gui/build/plug-ins/common GIMP_TESTING_ABS_TOP_BUILDDIR=/workspace/shared/gimp-native-preset-gui/build UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 GIMP_TESTING_ABS_TOP_SRCDIR=/workspace/shared/gimp-native-preset-gui/source UI_TEST=yes ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 MALLOC_PERTURB_=245 LD_LIBRARY_PATH=/workspace/shared/gimp-native-preset-gui/build/libgimpwidgets:/workspace/shared/gimp-native-preset-gui/build/libgimpmodule:/workspace/shared/gimp-native-preset-gui/build/libgimpcolor:/workspace/shared/gimp-native-preset-gui/build/libgimpmath:/workspace/shared/gimp-native-preset-gui/build/libgimpbase:/workspace/shared/gimp-native-preset-gui/build/libgimpconfig:/workspace/shared/gimp-native-preset-gui/build/libgimpthumb:/workspace/shared/gimp-native-preset-gui/prefix/lib/x86_64-linux-gnu:/workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu /workspace/shared/gimp-native-preset-gui/build/app/tests/tool-options-retirement
+――――――――――――――――――――――――――――――――――――― ✀  ―――――――――――――――――――――――――――――――――――――
+stdout:
+TAP version 14
+# random seed: R02S440d78c437ae21bac67b6d859bdfbd58
+1..4
+# Start of tool-options-retirement tests
+# child process (/tool-options-retirement/remove [249]) exit status: 1 (error)
+# child process (/tool-options-retirement/remove [249]) stdout: ""
+# child process (/tool-options-retirement/remove [249]) stderr: "\n(/workspace/shared/gimp-native-preset-gui/build/app/tests/tool-options-retirement:249): Gimp-Core-CRITICAL **: 14:02:47.682: file ../source/app/core/gimptooloptions.c: line 187 (gimp_tool_options_check_tool_info): should not be reached\n"
+not ok /tool-options-retirement/remove - ERROR:../source/app/tests/test-tool-options-retirement.c:24:run_case: child process (/tool-options-retirement/remove [249]) failed unexpectedly
+Bail out!
+stderr:
+**
+ERROR:../source/app/tests/test-tool-options-retirement.c:24:run_case: child process (/tool-options-retirement/remove [249]) failed unexpectedly
+――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+
+
+Summary of Failures:
+
+1/1 gimp:app / tool-options-retirement FAIL             1.06s   killed by signal 6 SIGABRT
+
+Ok:                 0   
+Expected Fail:      0   
+Fail:               1   
+Unexpected Pass:    0   
+Skipped:            0   
+Timeout:            0   
+
+Full log written to /workspace/shared/gimp-native-preset-gui/build/meson-logs/testlog.txt

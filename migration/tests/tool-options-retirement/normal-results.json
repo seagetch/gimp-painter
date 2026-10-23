@@ -1,0 +1,13 @@
+[
+  {
+    "name": "gimp:app / tool-options-retirement",
+    "stdout": "TAP version 14\n# random seed: R02S46c35e31d447f18104d52ff578e3584e\n1..6\n# Start of tool-options-retirement tests\nok 1 /tool-options-retirement/remove\n# slow test /tool-options-retirement/remove executed in 1.02 secs\nok 2 /tool-options-retirement/thaw\n# slow test /tool-options-retirement/thaw executed in 1.08 secs\nok 3 /tool-options-retirement/readd\n# slow test /tool-options-retirement/readd executed in 1.06 secs\nok 4 /tool-options-retirement/live-bogus-rejected\n# slow test /tool-options-retirement/live-bogus-rejected executed in 1.22 secs\nok 5 /tool-options-retirement/retired-deserialization-rejected\n# slow test /tool-options-retirement/retired-deserialization-rejected executed in 1.00 secs\nok 6 /tool-options-retirement/device-snapshot-any-tool\n# slow test /tool-options-retirement/device-snapshot-any-tool executed in 1.04 secs\n# End of tool-options-retirement tests\n",
+    "result": "OK",
+    "starttime": 1792559333.5010586,
+    "duration": 6.5165956020355225,
+    "returncode": 0,
+    "command": [
+      "/workspace/shared/gimp-native-preset-gui/build/app/tests/tool-options-retirement"
+    ]
+  }
+]

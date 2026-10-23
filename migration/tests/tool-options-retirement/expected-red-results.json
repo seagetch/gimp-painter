@@ -1,0 +1,14 @@
+[
+  {
+    "name": "gimp:app / tool-options-retirement",
+    "stdout": "TAP version 14\n# random seed: R02S440d78c437ae21bac67b6d859bdfbd58\n1..4\n# Start of tool-options-retirement tests\n# child process (/tool-options-retirement/remove [249]) exit status: 1 (error)\n# child process (/tool-options-retirement/remove [249]) stdout: \"\"\n# child process (/tool-options-retirement/remove [249]) stderr: \"\\n(/workspace/shared/gimp-native-preset-gui/build/app/tests/tool-options-retirement:249): Gimp-Core-CRITICAL **: 14:02:47.682: file ../source/app/core/gimptooloptions.c: line 187 (gimp_tool_options_check_tool_info): should not be reached\\n\"\nnot ok /tool-options-retirement/remove - ERROR:../source/app/tests/test-tool-options-retirement.c:24:run_case: child process (/tool-options-retirement/remove [249]) failed unexpectedly\nBail out!\n",
+    "result": "FAIL",
+    "starttime": 1792558966.6331813,
+    "duration": 1.0551862716674805,
+    "returncode": -6,
+    "command": [
+      "/workspace/shared/gimp-native-preset-gui/build/app/tests/tool-options-retirement"
+    ],
+    "stderr": "**\nERROR:../source/app/tests/test-tool-options-retirement.c:24:run_case: child process (/tool-options-retirement/remove [249]) failed unexpectedly\n"
+  }
+]
