@@ -296,6 +296,7 @@ static void rgb_native_cancel_undo()
 #include "test-painter-buffer-read-domains.inc"
 #include "test-painter-selection-mask.inc"
 #include "test-painter-surface-layer-mask.inc"
+#include "test-painter-surface-snapshot-handoff.inc"
 
 int main(int argc,char**argv)
 {
@@ -318,5 +319,6 @@ int main(int argc,char**argv)
   g_test_add_func("/layer-mask/native-sampler-precision",layer_mask_native_sampler_precision);
   g_test_add_func("/layer-mask/apply-read-raw-paint",layer_mask_apply_read_and_raw_paint);
   g_test_add_func("/layer-mask/independent-paint-target",layer_mask_is_independent_paint_target);
+  g_test_add_func("/snapshot/native-start-handoff",snapshot_native_start_handoff);
   int result=g_test_run();gimp_test_utils_set_gimp3_directory("GIMP_TESTING_ABS_TOP_BUILDDIR","app/tests/gimpdir-output");gimp_exit(gimp,TRUE);return result;
 }
