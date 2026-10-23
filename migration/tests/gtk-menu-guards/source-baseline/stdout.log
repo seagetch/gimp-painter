@@ -1,0 +1,12 @@
+GTK runtime=3.24.49 mode=--expect-known-defect
+MENU toplevel=GtkWindow has_window=0 mapped=0
+ANCESTOR type=GtkMenuItemAccessible is_gtk_accessible=1
+ANCESTOR type=GtkMenuItemAccessible is_gtk_accessible=1
+ANCESTOR type=GtkMenuShellAccessible is_gtk_accessible=1
+ANCESTOR type=GtkWindowAccessible is_gtk_accessible=1
+ANCESTOR type=GtkToplevelAccessible is_gtk_accessible=0
+PHASE hidden ATK action
+RESULT hidden-atk action=1 dialogs=1 gdk=1 gtk=1 other=0
+PHASE direct GTK activation control
+RESULT direct-gtk dialogs=2 added_gdk=0 added_gtk=0 added_other=0
+FINAL dialogs=2 gdk=1 gtk=1 other=0 passed=1

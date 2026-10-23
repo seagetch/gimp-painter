@@ -1,0 +1,333 @@
+WARNING: Recommend using either -Dbuildtype or -Doptimization + -Ddebug. Using both is redundant since they override each other. See: https://mesonbuild.com/Builtin-options.html#build-type-options
+The Meson build system
+Version: 1.7.0
+Source dir: /workspace/shared/gtk-menu-guards/gtk+3.0-3.24.49
+Build dir: /workspace/shared/gtk-menu-guards/build
+Build type: native build
+Project name: gtk
+Project version: 3.24.49
+C compiler for the host machine: cc (gcc 14.2.0 "cc (Debian 14.2.0-19) 14.2.0")
+C linker for the host machine: cc ld.bfd 2.44
+Host machine cpu family: x86_64
+Host machine cpu: x86_64
+Has header "crt/externs.h" : NO 
+Has header "dlfcn.h" : YES 
+Has header "ftw.h" : YES 
+Has header "inttypes.h" : YES 
+Has header "linux/memfd.h" : YES 
+Has header "linux/input.h" : YES 
+Has header "dev/evdev/input.h" : NO 
+Has header "locale.h" : YES 
+Has header "memory.h" : YES 
+Has header "stdint.h" : YES 
+Has header "stdlib.h" : YES 
+Has header "string.h" : YES 
+Has header "strings.h" : YES 
+Has header "sys/mman.h" : YES 
+Has header "sys/param.h" : YES 
+Has header "sys/stat.h" : YES 
+Has header "sys/sysinfo.h" : YES 
+Has header "sys/systeminfo.h" : NO 
+Has header "sys/time.h" : YES 
+Has header "sys/types.h" : YES 
+Has header "unistd.h" : YES 
+Library m found: YES
+Checking for function "dcgettext" with dependency -lm: YES 
+Checking for function "getpagesize" with dependency -lm: YES 
+Checking for function "getresuid" with dependency -lm: YES 
+Checking for function "lstat" with dependency -lm: YES 
+Checking for function "mmap" with dependency -lm: YES 
+Checking for function "nearbyint" with dependency -lm: YES 
+Checking for function "posix_fallocate" with dependency -lm: YES 
+Checking for function "_lock_file" with dependency -lm: NO 
+Checking for function "flockfile" with dependency -lm: YES 
+Checking for function "mkstemp" with dependency -lm: YES 
+Checking for function "mallinfo" with dependency -lm: YES 
+Checking for function "round" with dependency -lm: YES 
+Checking for function "rint" with dependency -lm: YES 
+Checking for function "log2" with dependency -lm: YES 
+Checking for function "exp2" with dependency -lm: YES 
+Checking for function "sincos" with dependency -lm: YES 
+Checking for function "trunc" with dependency -lm: YES 
+Checking for function "localtime_r" with dependency -lm: YES 
+Checking for function "fmin" with dependency -lm: YES 
+Header "math.h" has symbol "isinf" : YES 
+Header "math.h" has symbol "isnan" : YES 
+Compiler for C supports arguments -fno-strict-aliasing: YES 
+Compiler for C supports arguments -Wpointer-arith: YES 
+Compiler for C supports arguments -Wimplicit-function-declaration: YES 
+Compiler for C supports arguments -Wformat=2: YES 
+Compiler for C supports arguments -Wformat-security: YES 
+Compiler for C supports arguments -Wnested-externs: YES 
+Compiler for C supports arguments -Wold-style-definition: YES 
+Compiler for C supports arguments -Wundef: YES 
+Compiler for C supports arguments -Wunused: YES 
+Compiler for C supports arguments -Wcast-align: YES 
+Compiler for C supports arguments -Wmissing-noreturn: YES 
+Compiler for C supports arguments -Wmissing-format-attribute: YES 
+Compiler for C supports arguments -Wmissing-include-dirs: YES 
+Compiler for C supports arguments -Wlogical-op: YES 
+Compiler for C supports arguments -Wignored-qualifiers: YES 
+Compiler for C supports arguments -Wno-discarded-qualifiers: YES 
+Compiler for C supports arguments -Werror=implicit: YES 
+Compiler for C supports arguments -Werror=nonnull: YES 
+Compiler for C supports arguments -Werror=init-self: YES 
+Compiler for C supports arguments -Werror=main: YES 
+Compiler for C supports arguments -Werror=missing-braces: YES 
+Compiler for C supports arguments -Werror=sequence-point: YES 
+Compiler for C supports arguments -Werror=return-type: YES 
+Compiler for C supports arguments -Werror=trigraphs: YES 
+Compiler for C supports arguments -Werror=array-bounds: YES 
+Compiler for C supports arguments -Werror=write-strings: YES 
+Compiler for C supports arguments -Werror=address: YES 
+Compiler for C supports arguments -Werror=int-to-pointer-cast: YES 
+Compiler for C supports arguments -Werror=pointer-to-int-cast: YES 
+Compiler for C supports arguments -Werror=empty-body: YES 
+Compiler for C supports arguments -Werror=write-strings: YES (cached)
+Checking if "-Wl,-Bsymbolic" links: YES 
+Checking if "-Wl,-z,relro" links: YES 
+Checking if "-Wl,-z,now" links: YES 
+Found pkg-config: YES (/workspace/shared/gimp-deps-locked/bin/pkg-config) 1.8.1
+Run-time dependency glib-2.0 found: YES 2.84.4
+Run-time dependency gobject-2.0 found: YES 2.84.4
+Run-time dependency gio-unix-2.0 found: YES 2.84.4
+Run-time dependency gmodule-2.0 found: YES 2.84.4
+Run-time dependency cairo found: YES 1.18.4
+Run-time dependency cairo-gobject found: YES 1.18.4
+Run-time dependency pango found: YES 1.56.3
+Run-time dependency fribidi found: YES 1.0.16
+Run-time dependency pangoft2 found: YES 1.56.3
+Run-time dependency freetype2 found: YES 26.2.20
+Run-time dependency pangocairo found: YES 1.56.3
+Run-time dependency gdk-pixbuf-2.0 found: YES 2.42.12
+Run-time dependency epoxy found: YES 1.5.10
+Run-time dependency atk found: YES 2.56.2
+Run-time dependency harfbuzz found: YES 10.2.0
+Run-time dependency xkbcommon found: YES 1.7.0
+Run-time dependency iso-codes found: YES 4.18.0
+Run-time dependency cairo-xlib found: YES 1.18.4
+Dependency cairo found: YES 1.18.4 (cached)
+Run-time dependency wayland-client found: YES 1.23.1
+Run-time dependency wayland-protocols found: YES 1.44
+Run-time dependency wayland-cursor found: YES 1.23.1
+Run-time dependency wayland-egl found: YES 18.1.0
+Run-time dependency xrandr found: YES 1.5.4
+Dependency xrandr found: YES 1.5.4 (cached)
+Run-time dependency x11 found: YES 1.8.12
+Run-time dependency xrender found: YES 0.9.12
+Run-time dependency xi found: YES 1.8.2
+Run-time dependency xext found: YES 1.3.4
+Run-time dependency xcursor found: YES 1.2.3
+Run-time dependency xdamage found: YES 1.1.6
+Run-time dependency xfixes found: YES 6.0.0
+Run-time dependency xcomposite found: YES 0.4.6
+Run-time dependency fontconfig found: YES 2.15.0
+Run-time dependency atk-bridge-2.0 found: YES 2.56.2
+Checking for function "XkbQueryExtension" with dependency x11: YES 
+Checking for function "XSyncQueryExtension" with dependency xext: YES 
+Checking for function "XGetEventData" with dependency x11: YES 
+Has header "X11/extensions/XInput2.h" with dependency xi: YES 
+Checking for function "XIAllowTouchEvents" with dependency xi: YES 
+Checking whether type "XIScrollClassInfo" has member "number" with dependency xi: YES 
+Checking whether type "XIGesturePinchEvent" has member "type" with dependency xi: YES 
+Run-time dependency xinerama found: YES 1.1.4
+Header "X11/extensions/Xinerama.h" has symbol "XineramaQueryExtension" with dependency xinerama: YES 
+Program wayland-scanner found: YES (/workspace/shared/gimp-deps-locked/root/usr/bin/wayland-scanner)
+Checking for function "ngettext" : YES 
+Run-time dependency cloudproviders found: YES 0.3.6
+Did not find CMake 'cmake'
+Found CMake: NO
+Run-time dependency sysprof-capture-3 found: NO (tried pkgconfig and cmake)
+Run-time dependency sysprof-capture-4 found: YES 48.0
+Program g-ir-scanner found: YES (/workspace/shared/gimp-deps-locked/root/usr/bin/g-ir-scanner)
+Program gen-gdk-gresources-xml.py found: YES (/usr/bin/python3 /workspace/shared/gtk-menu-guards/gtk+3.0-3.24.49/gdk/gen-gdk-gresources-xml.py)
+Configuring gdk.gresource.xml with command
+Build-time dependency gio-2.0 found: YES 2.84.4
+Program /workspace/shared/gimp-deps-locked/root/usr/bin/glib-compile-resources found: YES (/workspace/shared/gimp-deps-locked/root/usr/bin/glib-compile-resources)
+Dependency glib-2.0 found: YES 2.84.4 (cached)
+Program /workspace/shared/gimp-deps-locked/root/usr/bin/glib-mkenums found: YES (/workspace/shared/gimp-deps-locked/root/usr/bin/glib-mkenums)
+Dependency glib-2.0 found: YES 2.84.4 (cached)
+Program /workspace/shared/gimp-deps-locked/root/usr/bin/glib-mkenums found: YES (/workspace/shared/gimp-deps-locked/root/usr/bin/glib-mkenums)
+Dependency glib-2.0 found: YES 2.84.4 (cached)
+Program /workspace/shared/gimp-deps-locked/root/usr/bin/glib-genmarshal found: YES (/workspace/shared/gimp-deps-locked/root/usr/bin/glib-genmarshal)
+Configuring gdkconfig.h using configuration
+Configuring gdkversionmacros.h using configuration
+Checking for function "shm_open" : YES 
+Program gen-c-array.py found: YES (/usr/bin/python3 /workspace/shared/gtk-menu-guards/gtk+3.0-3.24.49/gdk/broadway/gen-c-array.py)
+Dependency wayland-protocols found: YES 1.44 (cached)
+Program wayland-scanner found: YES (/workspace/shared/gimp-deps-locked/root/usr/bin/wayland-scanner)
+Run-time dependency gobject-introspection-1.0 found: YES 1.84.0
+Dependency gobject-introspection-1.0 found: YES 1.84.0 (cached)
+Program /workspace/shared/gimp-deps-locked/root/usr/bin/x86_64-linux-gnu-g-ir-scanner found: YES (/workspace/shared/gimp-deps-locked/root/usr/bin/x86_64-linux-gnu-g-ir-scanner)
+Dependency gobject-introspection-1.0 found: YES 1.84.0 (cached)
+Program /workspace/shared/gimp-deps-locked/root/usr/bin/x86_64-linux-gnu-g-ir-compiler found: YES (/workspace/shared/gimp-deps-locked/root/usr/bin/x86_64-linux-gnu-g-ir-compiler)
+Program gen-gtk-gresources-xml.py found: YES (/usr/bin/python3 /workspace/shared/gtk-menu-guards/gtk+3.0-3.24.49/gtk/gen-gtk-gresources-xml.py)
+Configuring gtk.gresources.xml with command
+Program sassc found: YES (/workspace/shared/gtk-menu-guards/extra-root/usr/bin/sassc)
+Dependency gio-2.0 found: YES 2.84.4 (cached)
+Program /workspace/shared/gimp-deps-locked/root/usr/bin/glib-compile-resources found: YES (/workspace/shared/gimp-deps-locked/root/usr/bin/glib-compile-resources)
+Dependency gio-2.0 found: YES 2.84.4 (cached)
+Program /workspace/shared/gimp-deps-locked/root/usr/bin/gdbus-codegen found: YES (/workspace/shared/gimp-deps-locked/root/usr/bin/gdbus-codegen)
+Dependency glib-2.0 found: YES 2.84.4 (cached)
+Program /workspace/shared/gimp-deps-locked/root/usr/bin/glib-genmarshal found: YES (/workspace/shared/gimp-deps-locked/root/usr/bin/glib-genmarshal)
+Dependency glib-2.0 found: YES 2.84.4 (cached)
+Program /workspace/shared/gimp-deps-locked/root/usr/bin/glib-mkenums found: YES (/workspace/shared/gimp-deps-locked/root/usr/bin/glib-mkenums)
+Dependency glib-2.0 found: YES 2.84.4 (cached)
+Program /workspace/shared/gimp-deps-locked/root/usr/bin/glib-mkenums found: YES (/workspace/shared/gimp-deps-locked/root/usr/bin/glib-mkenums)
+Dependency glib-2.0 found: YES 2.84.4 (cached)
+Program /workspace/shared/gimp-deps-locked/root/usr/bin/glib-mkenums found: YES (/workspace/shared/gimp-deps-locked/root/usr/bin/glib-mkenums)
+Dependency glib-2.0 found: YES 2.84.4 (cached)
+Program /workspace/shared/gimp-deps-locked/root/usr/bin/glib-mkenums found: YES (/workspace/shared/gimp-deps-locked/root/usr/bin/glib-mkenums)
+Program gentypefuncs.py found: YES (/usr/bin/python3 /workspace/shared/gtk-menu-guards/gtk+3.0-3.24.49/gtk/gentypefuncs.py)
+Configuring gtkversion.h using configuration
+Dependency x11 found: YES 1.8.12 (cached)
+Dependency gio-2.0 found: YES 2.84.4 (cached)
+Program /workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu/glib-2.0/glib-compile-schemas found: YES (/workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu/glib-2.0/glib-compile-schemas)
+Has header "langinfo.h" : YES 
+Header "langinfo.h" has symbol "_NL_MEASUREMENT_MEASUREMENT" : YES 
+Header "langinfo.h" has symbol "_NL_PAPER_HEIGHT" : YES 
+Header "langinfo.h" has symbol "_NL_PAPER_WIDTH" : YES 
+Header "langinfo.h" has symbol "_NL_TIME_FIRST_WEEKDAY" : YES 
+Configuring bn.gresource.xml using configuration
+Dependency gio-2.0 found: YES 2.84.4 (cached)
+Program /workspace/shared/gimp-deps-locked/root/usr/bin/glib-compile-resources found: YES (/workspace/shared/gimp-deps-locked/root/usr/bin/glib-compile-resources)
+Configuring de.gresource.xml using configuration
+Dependency gio-2.0 found: YES 2.84.4 (cached)
+Program /workspace/shared/gimp-deps-locked/root/usr/bin/glib-compile-resources found: YES (/workspace/shared/gimp-deps-locked/root/usr/bin/glib-compile-resources)
+Configuring da.gresource.xml using configuration
+Dependency gio-2.0 found: YES 2.84.4 (cached)
+Program /workspace/shared/gimp-deps-locked/root/usr/bin/glib-compile-resources found: YES (/workspace/shared/gimp-deps-locked/root/usr/bin/glib-compile-resources)
+Configuring fr.gresource.xml using configuration
+Dependency gio-2.0 found: YES 2.84.4 (cached)
+Program /workspace/shared/gimp-deps-locked/root/usr/bin/glib-compile-resources found: YES (/workspace/shared/gimp-deps-locked/root/usr/bin/glib-compile-resources)
+Configuring es.gresource.xml using configuration
+Dependency gio-2.0 found: YES 2.84.4 (cached)
+Program /workspace/shared/gimp-deps-locked/root/usr/bin/glib-compile-resources found: YES (/workspace/shared/gimp-deps-locked/root/usr/bin/glib-compile-resources)
+Configuring et.gresource.xml using configuration
+Dependency gio-2.0 found: YES 2.84.4 (cached)
+Program /workspace/shared/gimp-deps-locked/root/usr/bin/glib-compile-resources found: YES (/workspace/shared/gimp-deps-locked/root/usr/bin/glib-compile-resources)
+Configuring fi.gresource.xml using configuration
+Dependency gio-2.0 found: YES 2.84.4 (cached)
+Program /workspace/shared/gimp-deps-locked/root/usr/bin/glib-compile-resources found: YES (/workspace/shared/gimp-deps-locked/root/usr/bin/glib-compile-resources)
+Configuring hi.gresource.xml using configuration
+Dependency gio-2.0 found: YES 2.84.4 (cached)
+Program /workspace/shared/gimp-deps-locked/root/usr/bin/glib-compile-resources found: YES (/workspace/shared/gimp-deps-locked/root/usr/bin/glib-compile-resources)
+Configuring hu.gresource.xml using configuration
+Dependency gio-2.0 found: YES 2.84.4 (cached)
+Program /workspace/shared/gimp-deps-locked/root/usr/bin/glib-compile-resources found: YES (/workspace/shared/gimp-deps-locked/root/usr/bin/glib-compile-resources)
+Configuring it.gresource.xml using configuration
+Dependency gio-2.0 found: YES 2.84.4 (cached)
+Program /workspace/shared/gimp-deps-locked/root/usr/bin/glib-compile-resources found: YES (/workspace/shared/gimp-deps-locked/root/usr/bin/glib-compile-resources)
+Configuring ja.gresource.xml using configuration
+Dependency gio-2.0 found: YES 2.84.4 (cached)
+Program /workspace/shared/gimp-deps-locked/root/usr/bin/glib-compile-resources found: YES (/workspace/shared/gimp-deps-locked/root/usr/bin/glib-compile-resources)
+Configuring ko.gresource.xml using configuration
+Dependency gio-2.0 found: YES 2.84.4 (cached)
+Program /workspace/shared/gimp-deps-locked/root/usr/bin/glib-compile-resources found: YES (/workspace/shared/gimp-deps-locked/root/usr/bin/glib-compile-resources)
+Configuring lt.gresource.xml using configuration
+Dependency gio-2.0 found: YES 2.84.4 (cached)
+Program /workspace/shared/gimp-deps-locked/root/usr/bin/glib-compile-resources found: YES (/workspace/shared/gimp-deps-locked/root/usr/bin/glib-compile-resources)
+Configuring ms.gresource.xml using configuration
+Dependency gio-2.0 found: YES 2.84.4 (cached)
+Program /workspace/shared/gimp-deps-locked/root/usr/bin/glib-compile-resources found: YES (/workspace/shared/gimp-deps-locked/root/usr/bin/glib-compile-resources)
+Configuring nb.gresource.xml using configuration
+Dependency gio-2.0 found: YES 2.84.4 (cached)
+Program /workspace/shared/gimp-deps-locked/root/usr/bin/glib-compile-resources found: YES (/workspace/shared/gimp-deps-locked/root/usr/bin/glib-compile-resources)
+Configuring nl.gresource.xml using configuration
+Dependency gio-2.0 found: YES 2.84.4 (cached)
+Program /workspace/shared/gimp-deps-locked/root/usr/bin/glib-compile-resources found: YES (/workspace/shared/gimp-deps-locked/root/usr/bin/glib-compile-resources)
+Configuring pl.gresource.xml using configuration
+Dependency gio-2.0 found: YES 2.84.4 (cached)
+Program /workspace/shared/gimp-deps-locked/root/usr/bin/glib-compile-resources found: YES (/workspace/shared/gimp-deps-locked/root/usr/bin/glib-compile-resources)
+Configuring pt.gresource.xml using configuration
+Dependency gio-2.0 found: YES 2.84.4 (cached)
+Program /workspace/shared/gimp-deps-locked/root/usr/bin/glib-compile-resources found: YES (/workspace/shared/gimp-deps-locked/root/usr/bin/glib-compile-resources)
+Configuring ru.gresource.xml using configuration
+Dependency gio-2.0 found: YES 2.84.4 (cached)
+Program /workspace/shared/gimp-deps-locked/root/usr/bin/glib-compile-resources found: YES (/workspace/shared/gimp-deps-locked/root/usr/bin/glib-compile-resources)
+Configuring sv.gresource.xml using configuration
+Dependency gio-2.0 found: YES 2.84.4 (cached)
+Program /workspace/shared/gimp-deps-locked/root/usr/bin/glib-compile-resources found: YES (/workspace/shared/gimp-deps-locked/root/usr/bin/glib-compile-resources)
+Configuring th.gresource.xml using configuration
+Dependency gio-2.0 found: YES 2.84.4 (cached)
+Program /workspace/shared/gimp-deps-locked/root/usr/bin/glib-compile-resources found: YES (/workspace/shared/gimp-deps-locked/root/usr/bin/glib-compile-resources)
+Configuring uk.gresource.xml using configuration
+Dependency gio-2.0 found: YES 2.84.4 (cached)
+Program /workspace/shared/gimp-deps-locked/root/usr/bin/glib-compile-resources found: YES (/workspace/shared/gimp-deps-locked/root/usr/bin/glib-compile-resources)
+Configuring zh.gresource.xml using configuration
+Dependency gio-2.0 found: YES 2.84.4 (cached)
+Program /workspace/shared/gimp-deps-locked/root/usr/bin/glib-compile-resources found: YES (/workspace/shared/gimp-deps-locked/root/usr/bin/glib-compile-resources)
+Run-time dependency cups found: YES 2.4.10
+Run-time dependency colord found: YES 1.4.7
+Configuring config.h using configuration
+Configuring gail-3.0.pc using configuration
+Configuring gdk-3.0.pc using configuration
+Configuring gdk-broadway-3.0.pc using configuration
+Configuring gdk-wayland-3.0.pc using configuration
+Configuring gdk-x11-3.0.pc using configuration
+Configuring gtk+-3.0.pc using configuration
+Configuring gtk+-broadway-3.0.pc using configuration
+Configuring gtk+-wayland-3.0.pc using configuration
+Configuring gtk+-x11-3.0.pc using configuration
+Configuring gtk+-unix-print-3.0.pc using configuration
+Program msgfmt found: YES (/workspace/shared/gimp-deps-locked/root/usr/bin/msgfmt)
+Program msginit found: YES (/workspace/shared/gimp-deps-locked/root/usr/bin/msginit)
+Program msgmerge found: YES (/workspace/shared/gimp-deps-locked/root/usr/bin/msgmerge)
+Program xgettext found: YES (/workspace/shared/gimp-deps-locked/root/usr/bin/xgettext)
+Program xsltproc found: YES (/workspace/shared/gimp-deps-locked/root/usr/bin/xsltproc)
+Dependency gio-2.0 found: YES 2.84.4 (cached)
+Program /workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu/glib-2.0/glib-compile-schemas found: YES (/workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu/glib-2.0/glib-compile-schemas)
+Dependency gio-2.0 found: YES 2.84.4 (cached)
+Program /workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu/glib-2.0/gio-querymodules found: YES (/workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu/glib-2.0/gio-querymodules)
+Dependency gio-2.0 found: YES 2.84.4 (cached)
+Program /workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu/glib-2.0/gio-querymodules found: YES (/workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu/glib-2.0/gio-querymodules)
+Message: 
+------
+GTK+ 3.24.49 (3.0)
+
+  Display backends: broadway wayland x11 [disabled: quartz win32]
+    Print backends: file cups [disabled: lpr papi test]
+     Cloud support: true
+    Colord support: yes
+          Profiler: true
+     Introspection: true
+     Documentation: false
+         Man pages: false
+       Build tests: false
+   Installed tests: false
+             Demos: false
+          Examples: false
+Directories:
+            prefix: /workspace/shared/gtk-menu-guards/prefix
+        includedir: /workspace/shared/gtk-menu-guards/prefix/include
+            libdir: /workspace/shared/gtk-menu-guards/prefix/lib/x86_64-linux-gnu
+           datadir: /workspace/shared/gtk-menu-guards/prefix/share
+------
+
+Build targets in project: 356
+NOTICE: Future-deprecated features used:
+ * 1.1.0: {'"boolean option" keyword argument "value" of type str'}
+
+gtk 3.24.49
+
+  User defined options
+    b_ndebug        : false
+    broadway_backend: true
+    buildtype       : debugoptimized
+    cloudproviders  : true
+    colord          : yes
+    debug           : false
+    demos           : false
+    examples        : false
+    gtk_doc         : false
+    introspection   : true
+    libdir          : lib/x86_64-linux-gnu
+    man             : false
+    prefix          : /workspace/shared/gtk-menu-guards/prefix
+    print_backends  : cups,file
+    profiler        : true
+    tests           : false
+    wayland_backend : true
+    x11_backend     : true
+
+Found ninja-1.12.1 at /workspace/shared/gimp-deps-locked/root/usr/bin/ninja

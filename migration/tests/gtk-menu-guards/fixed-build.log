@@ -1,0 +1,30 @@
+ninja: Entering directory `../build'
+[1/29] Compiling C object gtk/libgtk-3.so.0.2417.32.p/gtkmain.c.o
+../gtk+3.0-3.24.49/gtk/gtkmain.c: In function ‘check_setugid’:
+../gtk+3.0-3.24.49/gtk/gtkmain.c:365:7: warning: nested extern declaration of ‘getresuid’ [-Wnested-externs]
+  365 |   int getresuid(uid_t *ruid, uid_t *euid, uid_t *suid);
+      |       ^~~~~~~~~
+../gtk+3.0-3.24.49/gtk/gtkmain.c:366:7: warning: nested extern declaration of ‘getresgid’ [-Wnested-externs]
+  366 |   int getresgid(gid_t *rgid, gid_t *egid, gid_t *sgid);
+      |       ^~~~~~~~~
+[2/29] Compiling C object gtk/libgtk-3.so.0.2417.32.p/a11y_gtkmenuitemaccessible.c.o
+[3/29] Linking target gtk/libgtk-3.so.0.2417.32
+[4/29] Generating symbol file gtk/libgtk-3.so.0.2417.32.p/libgtk-3.so.0.2417.32.symbols
+[5/6] Generating gtk/Gtk-3.0.gir with a custom command (wrapped by meson to set env)
+../gtk+3.0-3.24.49/gtk/gtkentry.c:2116: Warning: Gtk: multiple comment blocks documenting 'GtkEntry:inner-border:' identifier (already seen at gtkentry.c:889).
+../gtk+3.0-3.24.49/gtk/a11y/gtkcellaccessibleparent.c:45: Warning: Gtk: multiple comment blocks documenting 'gtk_cell_accessible_parent_get_cell_extents:' identifier (already seen at gtkcellaccessibleparent.c:45).
+../gtk+3.0-3.24.49/gtk/a11y/gtkcellaccessibleparent.c:71: Warning: Gtk: multiple comment blocks documenting 'gtk_cell_accessible_parent_get_cell_area:' identifier (already seen at gtkcellaccessibleparent.c:71).
+../gtk+3.0-3.24.49/gtk/a11y/gtkcellaccessibleparent.c:202: Warning: Gtk: multiple comment blocks documenting 'gtk_cell_accessible_parent_get_cell_position:' identifier (already seen at gtkcellaccessibleparent.c:202).
+../gtk+3.0-3.24.49/gtk/a11y/gtkcellaccessibleparent.c:231: Warning: Gtk: multiple comment blocks documenting 'gtk_cell_accessible_parent_get_column_header_cells:' identifier (already seen at gtkcellaccessibleparent.c:231).
+../gtk+3.0-3.24.49/gtk/a11y/gtkcellaccessibleparent.c:252: Warning: Gtk: multiple comment blocks documenting 'gtk_cell_accessible_parent_get_row_header_cells:' identifier (already seen at gtkcellaccessibleparent.c:252).
+../gtk+3.0-3.24.49/gtk/a11y/gtkcontainercellaccessible.c:174: Warning: Gtk: multiple comment blocks documenting 'gtk_container_cell_accessible_get_children:' identifier (already seen at gtkcontainercellaccessible.c:174).
+../gtk+3.0-3.24.49/gtk/a11y/gtktoplevelaccessible.c:302: Warning: Gtk: multiple comment blocks documenting 'gtk_toplevel_accessible_get_children:' identifier (already seen at gtktoplevelaccessible.c:302).
+../gtk+3.0-3.24.49/gtk/gtktreeviewcolumn.c:1775: Warning: Gtk: invalid "closure" annotation: only valid on callback parameters
+../gtk+3.0-3.24.49/gtk/gtkcelllayout.c:504: Warning: Gtk: invalid "closure" annotation: only valid on callback parameters
+../gtk+3.0-3.24.49/gtk/gtkicontheme.c:4195: Warning: Gtk: invalid "closure" annotation: only valid on callback parameters
+../gtk+3.0-3.24.49/gtk/gtkicontheme.c:4923: Warning: Gtk: invalid "closure" annotation: only valid on callback parameters
+../gtk+3.0-3.24.49/gtk/gtkicontheme.c:5076: Warning: Gtk: invalid "closure" annotation: only valid on callback parameters
+../gtk+3.0-3.24.49/gtk/gtkmain.c:2381: Warning: Gtk: invalid "closure" annotation: only valid on callback parameters
+../gtk+3.0-3.24.49/gtk/gtkdnd.h:80: Warning: Gtk: gtk_drag_cancel: Methods must belong to the same namespace as the class they belong to
+../gtk+3.0-3.24.49/gtk/gtkcelllayout.c:504: Warning: Gtk: invalid "closure" annotation: only valid on callback parameters
+[6/6] Generating gtk/Gtk-3.0.typelib with a custom command

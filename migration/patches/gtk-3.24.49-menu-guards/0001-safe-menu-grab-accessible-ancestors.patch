@@ -1,0 +1,24 @@
+--- a/gtk/gtkmain.c
++++ b/gtk/gtkmain.c
+@@ -2239,7 +2239,8 @@
+   g_return_if_fail (widget != NULL);
+ 
+   toplevel = gtk_widget_get_toplevel (widget);
+-  if (toplevel && gdk_window_get_window_type (gtk_widget_get_window (toplevel)) == GDK_WINDOW_OFFSCREEN)
++  if (toplevel && gtk_widget_get_window (toplevel) &&
++      gdk_window_get_window_type (gtk_widget_get_window (toplevel)) == GDK_WINDOW_OFFSCREEN)
+     return;
+ 
+   if (!gtk_widget_has_grab (widget) && gtk_widget_is_sensitive (widget))
+--- a/gtk/a11y/gtkmenuitemaccessible.c
++++ b/gtk/a11y/gtkmenuitemaccessible.c
+@@ -358,7 +358,8 @@
+   parent = atk_object_get_parent (ATK_OBJECT (menu_item));
+   while (parent)
+     {
+-      widget = gtk_accessible_get_widget (GTK_ACCESSIBLE (parent));
++      widget = GTK_IS_ACCESSIBLE (parent)
++             ? gtk_accessible_get_widget (GTK_ACCESSIBLE (parent)) : NULL;
+       if (GTK_IS_MENU (widget))
+         {
+           if (gtk_widget_get_mapped (widget))

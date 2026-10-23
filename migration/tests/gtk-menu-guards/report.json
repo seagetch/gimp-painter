@@ -1,0 +1,45 @@
+{
+  "task": "34.003/gtk-atk-menu-guards",
+  "source_version": "3.24.49-3",
+  "scope": "Two dependency guards; explicit private GTK prefix; release aggregate remains open",
+  "original_criterion_preserved": true,
+  "baseline_strict_exit": 1,
+  "fixed_strict_exit": 0,
+  "external_atspi": {
+    "registry_package": "at-spi2-core 2.56.2-1+deb13u2",
+    "registry_sha256": "428c3a6d074b50748f2a74ec61ef6b0ae0816c450c9447577d610ef903137694",
+    "transport": "private nonce-tcp loopback, DBUS_COOKIE_SHA1, ATSPI_DISABLE_P2P=1; bridge remains enabled",
+    "menu_action_count": 1,
+    "native_pointer_button_count": 1,
+    "physical_input_tested": false
+  },
+  "grab_cases": 3,
+  "screen": [
+    1080,
+    1920,
+    24
+  ],
+  "gimp_oncanvas": true,
+  "gimp_capture_inspected": true,
+  "gimp_binary_unchanged": true,
+  "patched_source_sha256": {
+    "gtk/gtkmain.c": "4440938f42a68bcd74742332e40488dea0fa35005290bbf4a7a0222c453b539d",
+    "gtk/a11y/gtkmenuitemaccessible.c": "1f98f801c0790ee7e495388c911ba9d5f36821ef8f3248700d026f806b33f19d"
+  },
+  "runtime_gtk_sha256": "f2d935922517a4e003e87597b6039afd567511135538181bc2ac3917e3afbdc2",
+  "upstream_gtk_suite_run": false,
+  "asan_run": false,
+  "wayland_runtime_tested": false,
+  "global_dependency_root_modified": false,
+  "release_bundle_rebuilt": false,
+  "setup_failures": [
+    "Missing cups/raster.h corrected with exact libcupsimage2-dev before baseline source build",
+    "Default Unix D-Bus transport forbidden by sandbox; escalation launcher failed before execution; no denied filesystem path accessed",
+    "First nonce TCP run still attempted AT-SPI P2P Unix endpoint; supported ATSPI_DISABLE_P2P transports all accessibility traffic over authenticated bus",
+    "Standalone strict compiler flagged misleading indentation; braces added before final controls build"
+  ],
+  "build_script_completed": true,
+  "reproduction_source_verified": true,
+  "reproduced_runtime_gtk_sha256": "ed601e526dae3f1fd599d1e5f47717d156bbdd3b218f5d6d9ad7b9b23ecb40b5",
+  "bit_identical_build_claim": false
+}

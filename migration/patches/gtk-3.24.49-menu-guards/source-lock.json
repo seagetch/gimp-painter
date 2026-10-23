@@ -1,0 +1,23 @@
+{
+  "source_package": "gtk+3.0",
+  "source_version": "3.24.49-3",
+  "snapshot": "20260925T181338Z",
+  "upstream_commit": "198aeace1e9e119c77f4d669bd8efdf337828ad1",
+  "debian_patches_applied": true,
+  "source_archives": {
+    "gtk+3.0_3.24.49-3.dsc": "513599dc090f48106d1e2fc4d570c4d6e682e52e0ce6c059ea0218f624d48e22",
+    "gtk+3.0_3.24.49.orig.tar.xz": "5ea52c6a28f0e5ecf2e9a3c2facbb30d040b73871fcd5f33cd1317e9018a146e",
+    "gtk+3.0_3.24.49-3.debian.tar.xz": "0d20b6ef612ca462929f0f27ad0e359881938a7e44088687f2ce632a4bc0fcd7"
+  },
+  "patch_inputs": {
+    "gtk/gtkmain.c": {
+      "before_sha256": "89a74ef25332d10d420d0c98c6d93a9f224af203bc830fe6af4683d09794305e",
+      "after_sha256": "4440938f42a68bcd74742332e40488dea0fa35005290bbf4a7a0222c453b539d"
+    },
+    "gtk/a11y/gtkmenuitemaccessible.c": {
+      "before_sha256": "48790b88dc8adf573752b9fd0131894f1fe14f95e2853136296837da0c90e17e",
+      "after_sha256": "1f98f801c0790ee7e495388c911ba9d5f36821ef8f3248700d026f806b33f19d"
+    }
+  },
+  "patch_sha256": "408c690f04e27143122adbd12c072e76f2451bc6f28d8ea91c643a2a8fb07e5e"
+}
