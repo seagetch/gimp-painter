@@ -6,6 +6,7 @@
 extern "C" {
 #include "core-types.h"
 #include "gimppaintermybrush.h"
+#include "gimpmypaintbrush.h"
 #include "gimptempbuf.h"
 #include "gimptagged.h"
 }
@@ -61,25 +62,42 @@ gboolean save (GimpData *data, GOutputStream *output, GError **error)
   });
 }
 const gchar *extension (GimpData *) { return ".myb"; }
+struct BrushCopy {
+  MyPaint::Resource resource;
+  ObjectRef<GdkPixbuf> icon;
+};
+BrushCopy prepare_copy (GimpPainterMybrush *source)
+{
+  auto snapshot = store (source).read<BrushSlot> ([] (const BrushImpl& impl) {
+    return BrushCopy { impl.resource, impl.icon };
+  });
+  if (snapshot.icon) {
+    // Copy current pixels, which can differ from the last serialized PNG.
+    // Complete allocation before publishing either part of the target state.
+    auto icon = ObjectRef<GdkPixbuf>::adopt (gdk_pixbuf_copy (snapshot.icon.get ()));
+    if (!icon) throw std::bad_alloc ();
+    snapshot.icon = std::move (icon);
+  }
+  return snapshot;
+}
+void apply_copy (GimpPainterMybrush *target, BrushCopy snapshot)
+{
+  store (target).with<BrushSlot> ([&] (BrushImpl& impl) {
+    impl.resource = std::move (snapshot.resource);
+    impl.icon = std::move (snapshot.icon);
+  });
+  gimp_data_dirty (GIMP_DATA (target));
+}
 void copy (GimpData *data, GimpData *source)
 {
   boundary_void (nullptr, [&] {
     auto *from = GIMP_PAINTER_MYBRUSH (source), *to = GIMP_PAINTER_MYBRUSH (data);
     auto destination_lease = ObjectRef<GimpPainterMybrush>::retain (to);
     auto source_lease = ObjectRef<GimpPainterMybrush>::retain (from);
-    auto snapshot = store (from).read<BrushSlot> ([] (const BrushImpl& impl) { return impl.resource; });
-    auto source_icon = store (from).read<BrushSlot> ([] (const BrushImpl& impl) { return impl.icon; });
-    ObjectRef<GdkPixbuf> icon;
-    if (source_icon) {
-      // Copy current pixels, which can differ from the last serialized PNG.
-      // Finish allocation before replacing either part of the target state.
-      icon = ObjectRef<GdkPixbuf>::adopt (gdk_pixbuf_copy (source_icon.get ()));
-      if (!icon) throw std::bad_alloc ();
-    }
-    store (to).with<BrushSlot> ([&] (BrushImpl& impl) { impl.resource = std::move (snapshot); impl.icon = std::move (icon); });
-    gimp_data_dirty (data);
+    apply_copy (to, prepare_copy (from));
   });
 }
+
 gboolean get_size (GimpViewable *viewable, gint *width, gint *height)
 {
   if (!width || !height) return FALSE;
@@ -148,6 +166,28 @@ GimpData *gimp_painter_mybrush_new (GimpContext *, const gchar *name)
       "name", name, "mime-type", "application/x-mypaint-brush", nullptr)));
     if (owner.get ()->binding_failed) return static_cast<GimpData *> (nullptr);
     return GIMP_DATA (owner.release ());
+  });
+}
+/* The legacy named operation is intentionally distinct from the native data
+ * duplicate operation, which clears name and file. It uses the same staged
+ * copy implementation, but can return failure instead of a default object. */
+GimpData *gimp_mypaint_brush_duplicate (GimpMypaintBrush *brush)
+{
+  return boundary<GimpData *> (nullptr, nullptr, [&] {
+    auto& binding = store (brush);
+    if (binding.state () != BindingStore::State::active)
+      throw Error (GIMP_PAINTER_ERROR_CLOSED, "Brush resource is not active");
+    auto source_lease = ObjectRef<GimpPainterMybrush>::retain (brush);
+    const char *borrowed_name = gimp_object_get_name (brush);
+    if (!borrowed_name || !*borrowed_name)
+      throw std::invalid_argument ("Expected a named brush resource");
+    const std::string name (borrowed_name);
+    auto snapshot = prepare_copy (brush);
+    auto result = ObjectRef<GimpPainterMybrush>::adopt (GIMP_PAINTER_MYBRUSH (
+      gimp_painter_mybrush_new (nullptr, name.c_str ())));
+    if (!result) throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, "Brush construction failed");
+    apply_copy (result.get (), std::move (snapshot));
+    return GIMP_DATA (result.release ());
   });
 }
 GimpData *gimp_painter_mybrush_get_standard (GimpContext *context)

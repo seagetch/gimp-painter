@@ -4,6 +4,7 @@
 #include "../painter/gimp-painter-visibility.h"
 extern "C" {
 #include "gimppaintermybrush.h"
+#include "gimpmypaintbrush.h"
 }
 #include "gimp-painter-type-traits.hpp"
 #include "painter/resources.hpp"
@@ -19,6 +20,12 @@ public:
   static PainterMybrushRef create (const char *name)
   { return adopt (GIMP_PAINTER_MYBRUSH (gimp_painter_mybrush_new (nullptr, name))); }
   GimpPainterMybrush *get () const noexcept { return owner_.get (); }
+  PainterMybrushRef duplicate () const
+  {
+    auto *result = gimp_mypaint_brush_duplicate (get ());
+    if (!result) throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, "Brush resource duplication failed");
+    return adopt (GIMP_PAINTER_MYBRUSH (result));
+  }
   MyPaint::Resource snapshot () const
   {
     GError *error = nullptr; String json (gimp_painter_mybrush_dup_json (get (), &error));
@@ -40,5 +47,7 @@ private:
   }
   ObjectRef<GimpPainterMybrush> owner_;
 };
+/* Original operation spelling for rebuilt callers; one handle implementation. */
+using MypaintBrushRef = PainterMybrushRef;
 }
 #endif

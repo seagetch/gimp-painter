@@ -9,6 +9,7 @@
 #include "core/core-types.h"
 #include "widgets/widgets-types.h"
 #include "core/gimppaintermybrush.h"
+#include "core/gimpmypaintbrush.h"
 #include "core/gimp.h"
 #include "core/gimpcontext.h"
 #include "tests.h"
@@ -424,6 +425,379 @@ static void copy_icon_finalizer_reentry (void)
   g_assert_null (weak_target); /* finalizes safely after the complete callback */
   g_object_unref (source);
 }
+/* This translation unit must remain C: assigning and checking the exact legacy
+ * function pointer also exercises the exported C ABI, not a C++ substitute. */
+typedef GimpData *(*NamedBrushDuplicate) (GimpMypaintBrush *);
+_Static_assert (_Generic (&gimp_mypaint_brush_duplicate,
+                         NamedBrushDuplicate: 1, default: 0),
+                "The named duplicate must retain its exact legacy C signature");
+static NamedBrushDuplicate const named_duplicate = gimp_mypaint_brush_duplicate;
+
+static void
+count_named_source_signal (GObject  *object,
+                           gpointer  data)
+{
+  (void) object;
+  ++*(guint *) data;
+}
+
+static void
+named_duplicate_c_signature_and_payload (void)
+{
+  GimpMypaintBrush *source = GIMP_MYPAINT_BRUSH (
+    gimp_painter_mybrush_new (NULL, "Native name \316\261 differs from parent"));
+  GimpData *copy;
+  GimpData *generic;
+  GFile *file = g_file_new_for_path ("/tmp/named-duplicate-source-only.myb");
+  GError *error = NULL;
+  gchar *json;
+  guint signals = 0;
+
+  g_assert_true (GIMP_IS_MYPAINT_BRUSH (source));
+  g_assert_true (GIMP_IS_PAINTER_MYBRUSH (source));
+  g_assert_true (gimp_painter_mybrush_set_json (source, copy_fixture_json, &error));
+  g_assert_no_error (error);
+  gimp_data_set_file (GIMP_DATA (source), file, FALSE, FALSE);
+  gimp_data_clean (GIMP_DATA (source));
+  json = brush_json (source);
+  g_signal_connect (source, "dirty", G_CALLBACK (count_named_source_signal), &signals);
+  g_signal_connect (source, "name-changed", G_CALLBACK (count_named_source_signal), &signals);
+  g_signal_connect (source, "settings-changed", G_CALLBACK (count_named_source_signal), &signals);
+
+  copy = named_duplicate (source);
+  g_assert_nonnull (copy);
+  g_assert_true (GIMP_IS_MYPAINT_BRUSH (copy));
+  g_assert_true (copy != GIMP_DATA (source));
+  g_assert_false (g_object_is_floating (copy));
+  g_assert_cmpstr (gimp_object_get_name (copy), ==, "Native name \316\261 differs from parent");
+  assert_fixture_payload (GIMP_MYPAINT_BRUSH (copy));
+  assert_brush_json (GIMP_MYPAINT_BRUSH (copy), json);
+  g_assert_null (gimp_data_get_file (copy));
+  g_assert_null (gimp_painter_mybrush_ref_icon (GIMP_MYPAINT_BRUSH (copy)));
+  g_assert_true (gimp_data_get_file (GIMP_DATA (source)) == file);
+  g_assert_cmpstr (gimp_object_get_name (source), ==, "Native name \316\261 differs from parent");
+  assert_brush_json (source, json);
+  g_assert_false (gimp_data_is_dirty (GIMP_DATA (source)));
+  g_assert_cmpuint (signals, ==, 0);
+
+  /* The legacy named entry point must not change generic GimpData behavior. */
+  generic = gimp_data_duplicate (GIMP_DATA (source));
+  g_assert_nonnull (generic);
+  g_assert_null (gimp_object_get_name (generic));
+  assert_fixture_payload (GIMP_MYPAINT_BRUSH (generic));
+  g_assert_cmpuint (signals, ==, 0);
+  g_object_unref (generic);
+  g_object_unref (copy);
+  g_object_unref (source);
+  g_object_unref (file);
+  g_free (json);
+}
+
+static void
+named_duplicate_live_icon (gconstpointer user_data)
+{
+  gboolean alpha = GPOINTER_TO_INT (user_data);
+  GimpMypaintBrush *source = new_icon_copy_fixture ("Named live icon", alpha);
+  GdkPixbuf *source_icon = gimp_painter_mybrush_ref_icon (source);
+  GdkPixbuf *expected;
+  GdkPixbuf *first_icon;
+  GdkPixbuf *second_icon;
+  GimpMypaintBrush *first;
+  GimpMypaintBrush *second;
+  gchar *json = brush_json (source);
+
+  if (!alpha)
+    g_assert_cmpint (gdk_pixbuf_get_rowstride (source_icon), >,
+                     3 * gdk_pixbuf_get_n_channels (source_icon));
+  /* A serialized round-trip would silently revert this live pixel edit. */
+  icon_pixel (source_icon, 2, 4)[1] ^= 0x5a;
+  expected = gdk_pixbuf_copy (source_icon);
+  first = GIMP_MYPAINT_BRUSH (named_duplicate (source));
+  g_assert_nonnull (first);
+  second = GIMP_MYPAINT_BRUSH (named_duplicate (first));
+  g_assert_nonnull (second);
+  g_assert_true (first != source && second != source && second != first);
+  first_icon = gimp_painter_mybrush_ref_icon (first);
+  second_icon = gimp_painter_mybrush_ref_icon (second);
+  g_assert_true (first_icon != source_icon && second_icon != source_icon &&
+                 second_icon != first_icon);
+  assert_icon_pixels (first_icon, expected);
+  assert_icon_pixels (second_icon, expected);
+  assert_brush_json (source, json);
+  assert_brush_json (first, json);
+  assert_brush_json (second, json);
+  assert_fixture_payload (first);
+  assert_fixture_payload (second);
+  g_assert_cmpstr (gimp_object_get_name (first), ==, "Named live icon");
+  g_assert_cmpstr (gimp_object_get_name (second), ==, "Named live icon");
+  g_assert_false (gimp_data_is_dirty (GIMP_DATA (source)));
+
+  icon_pixel (first_icon, 0, 0)[0] ^= 0x3c;
+  assert_icon_pixels (source_icon, expected);
+  assert_icon_pixels (second_icon, expected);
+  icon_pixel (source_icon, 1, 1)[2] ^= 0x6d;
+  assert_icon_pixels (second_icon, expected);
+  g_object_unref (source_icon);
+  g_object_unref (source);
+  g_object_unref (first_icon);
+  g_object_unref (first);
+  assert_icon_pixels (second_icon, expected);
+  assert_brush_json (second, json);
+  g_assert_cmpstr (gimp_object_get_name (second), ==, "Named live icon");
+  g_object_unref (second_icon);
+  g_object_unref (second);
+  g_object_unref (expected);
+  g_free (json);
+}
+
+static void
+named_duplicate_release_orders (void)
+{
+  for (guint source_first = 0; source_first < 2; ++source_first)
+    {
+      GimpMypaintBrush *source = new_icon_copy_fixture ("Independent lifetime", TRUE);
+      gchar *json = brush_json (source);
+      gpointer weak_source = source;
+      g_object_add_weak_pointer (G_OBJECT (source), &weak_source);
+      for (guint iteration = 0; iteration < 8; ++iteration)
+        {
+          GimpData *copy = named_duplicate (source);
+          gpointer weak_copy = copy;
+          g_assert_nonnull (copy);
+          g_object_add_weak_pointer (G_OBJECT (copy), &weak_copy);
+          if (source_first && iteration == 7)
+            {
+              g_object_unref (source);
+              g_assert_null (weak_source);
+              assert_brush_json (GIMP_MYPAINT_BRUSH (copy), json);
+              g_assert_cmpstr (gimp_object_get_name (copy), ==, "Independent lifetime");
+            }
+          g_object_unref (copy);
+          g_assert_null (weak_copy); /* transfer-full: no hidden extra reference */
+          if (weak_source)
+            {
+              assert_brush_json (source, json);
+              g_assert_false (gimp_data_is_dirty (GIMP_DATA (source)));
+            }
+        }
+      if (weak_source)
+        g_object_unref (source);
+      g_assert_null (weak_source);
+      g_free (json);
+    }
+}
+
+static void
+named_duplicate_invalid_inputs (void)
+{
+  GObject *wrong_type = g_object_new (G_TYPE_OBJECT, NULL);
+  GimpMypaintBrush *source = new_icon_copy_fixture ("Temporarily nameless", TRUE);
+  gchar *json = brush_json (source);
+  GdkPixbuf *icon = gimp_painter_mybrush_ref_icon (source);
+  GdkPixbuf *expected = gdk_pixbuf_copy (icon);
+
+  g_assert_null (named_duplicate (NULL));
+  /* Deliberate wrong-type input must not go through a warning-producing cast. */
+  g_assert_null (named_duplicate ((GimpMypaintBrush *) wrong_type));
+  gimp_object_set_name (GIMP_OBJECT (source), "");
+  gimp_data_clean (GIMP_DATA (source));
+  g_assert_null (named_duplicate (source));
+  g_assert_cmpstr (gimp_object_get_name (source), ==, "");
+  assert_brush_json (source, json);
+  assert_icon_pixels (icon, expected);
+  g_assert_false (gimp_data_is_dirty (GIMP_DATA (source)));
+  gimp_object_set_name (GIMP_OBJECT (source), NULL);
+  gimp_data_clean (GIMP_DATA (source));
+  g_assert_null (named_duplicate (source));
+  g_assert_null (gimp_object_get_name (source));
+  assert_brush_json (source, json);
+  assert_icon_pixels (icon, expected);
+  g_assert_false (gimp_data_is_dirty (GIMP_DATA (source)));
+  g_object_unref (expected);
+  g_object_unref (icon);
+  g_object_unref (source);
+  g_object_unref (wrong_type);
+  g_free (json);
+}
+
+static void
+named_duplicate_closed_owner (void)
+{
+  GimpMypaintBrush *source = new_icon_copy_fixture ("Closed named source", TRUE);
+  gchar *json = brush_json (source);
+  GError *error = NULL;
+
+  g_assert_true (gimp_painter_binding_close (G_OBJECT (source), &error));
+  g_assert_no_error (error);
+  g_assert_null (named_duplicate (source));
+  g_assert_null (named_duplicate (source));
+  assert_brush_json (source, json); /* Closed reads remain available. */
+  g_assert_cmpstr (gimp_object_get_name (source), ==, "Closed named source");
+  g_assert_false (gimp_data_is_dirty (GIMP_DATA (source)));
+  g_object_run_dispose (G_OBJECT (source));
+  g_assert_null (named_duplicate (source));
+  g_object_run_dispose (G_OBJECT (source));
+  g_object_unref (source);
+  g_free (json);
+}
+
+static gpointer
+named_duplicate_on_wrong_thread (gpointer source)
+{
+  return named_duplicate (source);
+}
+
+static void
+named_duplicate_wrong_thread (void)
+{
+  GimpMypaintBrush *source = new_icon_copy_fixture ("Thread-bound named source", FALSE);
+  gchar *json = brush_json (source);
+  GdkPixbuf *icon = gimp_painter_mybrush_ref_icon (source);
+  GdkPixbuf *expected = gdk_pixbuf_copy (icon);
+  GimpData *copy;
+  guint signals = 0;
+
+  g_signal_connect (source, "dirty", G_CALLBACK (count_named_source_signal), &signals);
+  g_signal_connect (source, "name-changed", G_CALLBACK (count_named_source_signal), &signals);
+  g_signal_connect (source, "settings-changed", G_CALLBACK (count_named_source_signal), &signals);
+  for (guint i = 0; i < 4; ++i)
+    {
+      GThread *worker = g_thread_new ("named-duplicate-wrong-thread",
+                                     named_duplicate_on_wrong_thread, source);
+      g_assert_null (g_thread_join (worker));
+    }
+  assert_brush_json (source, json);
+  assert_icon_pixels (icon, expected);
+  g_assert_cmpstr (gimp_object_get_name (source), ==, "Thread-bound named source");
+  g_assert_false (gimp_data_is_dirty (GIMP_DATA (source)));
+  g_assert_cmpuint (signals, ==, 0);
+  copy = named_duplicate (source); /* A rejection does not close the owner. */
+  g_assert_nonnull (copy);
+  assert_fixture_payload (GIMP_MYPAINT_BRUSH (copy));
+  g_object_unref (copy);
+  g_object_unref (expected);
+  g_object_unref (icon);
+  g_object_unref (source);
+  g_free (json);
+}
+
+typedef struct
+{
+  GimpMypaintBrush *source;
+  GimpData        *copy;
+  guint            calls;
+} DuplicateOnIconFinalize;
+
+static void
+named_duplicate_on_icon_finalize (gpointer data,
+                                 GObject *where_icon_was)
+{
+  DuplicateOnIconFinalize *state = data;
+  (void) where_icon_was;
+  ++state->calls;
+  state->copy = named_duplicate (state->source);
+}
+
+static void
+named_duplicate_finalizer_reentry (void)
+{
+  GimpMypaintBrush *source = new_icon_copy_fixture ("Reentrant named source", TRUE);
+  GimpData *copy = named_duplicate (source);
+  GdkPixbuf *icon;
+  DuplicateOnIconFinalize state = { source, NULL, 0 };
+  gchar *json = brush_json (source);
+  GError *error = NULL;
+
+  g_assert_nonnull (copy);
+  icon = gimp_painter_mybrush_ref_icon (GIMP_MYPAINT_BRUSH (copy));
+  g_object_weak_ref (G_OBJECT (icon), named_duplicate_on_icon_finalize, &state);
+  g_object_unref (icon);
+  g_object_unref (copy);
+  g_assert_cmpuint (state.calls, ==, 1);
+  g_assert_nonnull (state.copy);
+  assert_brush_json (GIMP_MYPAINT_BRUSH (state.copy), json);
+  g_assert_cmpstr (gimp_object_get_name (state.copy), ==, "Reentrant named source");
+  g_object_unref (state.copy);
+  state.copy = NULL;
+
+  /* Closing an icon reenters the exact public entry point with its owner still
+   * alive but already closing. It must reject instead of resurrecting it. */
+  icon = gimp_painter_mybrush_ref_icon (source);
+  g_object_weak_ref (G_OBJECT (icon), named_duplicate_on_icon_finalize, &state);
+  g_object_unref (icon);
+  g_assert_true (gimp_painter_binding_close (G_OBJECT (source), &error));
+  g_assert_no_error (error);
+  g_assert_cmpuint (state.calls, ==, 2);
+  g_assert_null (state.copy);
+  assert_brush_json (source, json);
+  g_object_unref (source);
+  g_free (json);
+}
+
+#ifdef GIMP_TEST_MYBRUSH_WRAP_PIXBUF_COPY
+void     gimp_test_mybrush_copy_fault_arm      (const GdkPixbuf *icon);
+gboolean gimp_test_mybrush_copy_fault_consumed (void);
+
+static void
+named_duplicate_copy_failure_atomic (void)
+{
+  GimpMypaintBrush *source = new_icon_copy_fixture ("Allocation failure source", FALSE);
+  GdkPixbuf *icon = gimp_painter_mybrush_ref_icon (source);
+  GdkPixbuf *expected = gdk_pixbuf_copy (icon);
+  GdkPixbuf *unrelated;
+  GdkPixbuf *copied_icon;
+  GimpData *copy;
+  GimpData *generic;
+  GFile *file = g_file_new_for_path ("/tmp/failed-named-duplicate-source-only.myb");
+  gchar *json = brush_json (source);
+  guint signals = 0;
+
+  gimp_data_set_file (GIMP_DATA (source), file, FALSE, FALSE);
+  gimp_data_clean (GIMP_DATA (source));
+  g_signal_connect (source, "dirty", G_CALLBACK (count_named_source_signal), &signals);
+  g_signal_connect (source, "name-changed", G_CALLBACK (count_named_source_signal), &signals);
+  g_signal_connect (source, "settings-changed", G_CALLBACK (count_named_source_signal), &signals);
+  gimp_test_mybrush_copy_fault_arm (icon);
+  unrelated = gdk_pixbuf_copy (expected);
+  g_assert_nonnull (unrelated);
+  g_assert_false (gimp_test_mybrush_copy_fault_consumed ());
+  g_object_unref (unrelated);
+  copy = named_duplicate (source); /* Actual C call contains C++ bad_alloc. */
+  g_assert_null (copy);
+  g_assert_true (gimp_test_mybrush_copy_fault_consumed ());
+  assert_brush_json (source, json);
+  assert_icon_pixels (icon, expected);
+  g_assert_cmpstr (gimp_object_get_name (source), ==, "Allocation failure source");
+  g_assert_true (gimp_data_get_file (GIMP_DATA (source)) == file);
+  g_assert_false (gimp_data_is_dirty (GIMP_DATA (source)));
+  g_assert_cmpuint (signals, ==, 0);
+
+  copy = named_duplicate (source);
+  g_assert_nonnull (copy);
+  g_assert_true (gimp_test_mybrush_copy_fault_consumed ());
+  g_assert_cmpstr (gimp_object_get_name (copy), ==, "Allocation failure source");
+  g_assert_null (gimp_data_get_file (copy));
+  assert_brush_json (GIMP_MYPAINT_BRUSH (copy), json);
+  copied_icon = gimp_painter_mybrush_ref_icon (GIMP_MYPAINT_BRUSH (copy));
+  assert_icon_pixels (copied_icon, expected);
+  g_object_unref (copied_icon);
+  generic = gimp_data_duplicate (GIMP_DATA (source));
+  g_assert_nonnull (generic);
+  g_assert_null (gimp_object_get_name (generic));
+  assert_brush_json (GIMP_MYPAINT_BRUSH (generic), json);
+  g_assert_cmpuint (signals, ==, 0);
+  g_object_unref (generic);
+  g_object_unref (copy);
+  g_object_unref (file);
+  g_object_unref (expected);
+  g_object_unref (icon);
+  g_object_unref (source);
+  g_free (json);
+}
+#endif
+
+void gimp_test_painter_mybrush_duplicate_handle_register (void);
+
 int main (int argc, char **argv)
 {
   int result;
@@ -438,6 +812,18 @@ int main (int argc, char **argv)
   g_test_add_func ("/painter-mybrush/copy-without-icon-clears-target", copy_without_icon_clears_target);
   g_test_add_func ("/painter-mybrush/self-copy-coherent", self_copy_coherent);
   g_test_add_func ("/painter-mybrush/copy-icon-finalizer-reentry", copy_icon_finalizer_reentry);
+  g_test_add_func ("/painter-mybrush/named-duplicate/c-signature-and-payload", named_duplicate_c_signature_and_payload);
+  g_test_add_data_func ("/painter-mybrush/named-duplicate/live-icon-rgb-padded", GINT_TO_POINTER (FALSE), named_duplicate_live_icon);
+  g_test_add_data_func ("/painter-mybrush/named-duplicate/live-icon-rgba", GINT_TO_POINTER (TRUE), named_duplicate_live_icon);
+  g_test_add_func ("/painter-mybrush/named-duplicate/release-orders", named_duplicate_release_orders);
+  g_test_add_func ("/painter-mybrush/named-duplicate/invalid-inputs", named_duplicate_invalid_inputs);
+  g_test_add_func ("/painter-mybrush/named-duplicate/closed-owner", named_duplicate_closed_owner);
+  g_test_add_func ("/painter-mybrush/named-duplicate/wrong-thread", named_duplicate_wrong_thread);
+  g_test_add_func ("/painter-mybrush/named-duplicate/finalizer-reentry", named_duplicate_finalizer_reentry);
+#ifdef GIMP_TEST_MYBRUSH_WRAP_PIXBUF_COPY
+  g_test_add_func ("/painter-mybrush/named-duplicate/copy-failure-atomic", named_duplicate_copy_failure_atomic);
+#endif
+  gimp_test_painter_mybrush_duplicate_handle_register ();
   result = g_test_run ();
   gimp_test_utils_set_gimp3_directory ("GIMP_TESTING_ABS_TOP_BUILDDIR", "app/tests/gimpdir-output");
   gimp_exit (gimp, TRUE); return result;
