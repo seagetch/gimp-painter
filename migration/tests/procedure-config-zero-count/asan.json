@@ -1,0 +1,28 @@
+{
+  "base": "8f7cf21b5246e8261f3675d29f9034bb3eafb5fc",
+  "status": "PASS",
+  "cases_passed": 5,
+  "mode": "asan",
+  "source_sha256_at_freeze": {
+    "libgimp/gimpprocedure.c": "5d22ee3ba7af2d4d6d9b1d403f13fc426dbbecd487d6942bd3ce964cd1cdcd5c",
+    "libgimp/tests/meson.build": "960b5dc494d0453cee5b9ceeed86b39ed3d25d3c90d5c62dbc566017d62c4465",
+    "libgimp/tests/test-procedure-config.c": "1c024002e36f3df67d782a3887083b53784fac1e38cb69c36c96152fff750a47",
+    "libgimpconfig/gimpconfig-register.c": "c59929b3a17f2adb5223b7866b2f5daaa5543cb7ad1e7d078ac34cc38d4699e7"
+  },
+  "registration": {
+    "registration": "procedure-config",
+    "result": "OK",
+    "exit_code": 0,
+    "duration_seconds": 0.026658058166503906,
+    "cases_passed": 5,
+    "tap": "TAP version 14\n1..5\nok 1 /libgimp/procedure-config/test-config-empty\nok 2 /libgimp/procedure-config/test-config-args\nok 3 /libgimp/procedure-config/test-config-aux\nok 4 /libgimp/procedure-config/test-config-args-aux\nok 5 /libgimp/config-type/empty\n",
+    "raw_record_sha256": "66ef22af01f3b2cfb792199c7da3e0b3cf58a94ec0a033b65215a07585e9f0c2"
+  },
+  "limitations": [
+    "Five focused API cases and five selected UI registrations, not the full aggregate",
+    "UI reruns include the parent-owned pending 08.017 editor/store subset; they are not tests of an isolated prerequisite-only checkout",
+    "Virtual GTK display; no physical tablet, native OS event delivery or cross-platform claim",
+    "Third-party libraries are not sanitizer-instrumented; leak detection is disabled",
+    "No WBS closure: 08.017 and all 93 duties remain TODO, original tasks remain 140/661"
+  ]
+}

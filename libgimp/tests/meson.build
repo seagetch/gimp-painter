@@ -6,6 +6,16 @@ if not meson.can_run_host_binaries()
   subdir_done()
 endif
 
+# Config creation only needs libgimp; no GIMP process or display is required.
+procedure_config_test = executable('test-procedure-config',
+  'test-procedure-config.c',
+  dependencies: [ libgimp_dep, pango ],
+  install: false)
+test('procedure-config', procedure_config_test,
+  env: gimp_run_env,
+  suite: ['libgimp', 'C'],
+  timeout: 30)
+
 tests = [
   'color-parser',
   'export-options',

@@ -1,0 +1,94 @@
+{
+  "base": "8f7cf21b5246e8261f3675d29f9034bb3eafb5fc",
+  "status": "EXPECTED_BASELINE_FAILURES_REPRODUCED",
+  "production_source_sha256": {
+    "libgimp/gimpprocedure.c": "c339ff70711d1445a72766599ad39b8b24f920bdb5c3b3392aa2897974e65e73",
+    "libgimpconfig/gimpconfig-register.c": "7e7b5c9734d06ead4539fb275674381ef75e793b8e2ba9bf80c35897b9be956a"
+  },
+  "regression_source_sha256": "1c024002e36f3df67d782a3887083b53784fac1e38cb69c36c96152fff750a47",
+  "failures": [
+    {
+      "registration": "procedure-config",
+      "result": "FAIL",
+      "exit_code": -6,
+      "duration_seconds": 0.06742000579833984,
+      "cases_passed": 0,
+      "tap": "TAP version 14\n",
+      "raw_record_sha256": "e0f8e9cad6f166b8e879635d9361993850dcd178983c3b0adc1efa26991ad753",
+      "case": "/libgimp/procedure-config/test-config-empty",
+      "diagnostic": "libgimp/gimpprocedure.c:581:7: runtime error: null pointer passed as argument 1, which is declared to never be null",
+      "source_path": "libgimp/gimpprocedure.c",
+      "source_line": 581,
+      "null_argument": 1
+    },
+    {
+      "registration": "procedure-config",
+      "result": "FAIL",
+      "exit_code": -6,
+      "duration_seconds": 0.06336760520935059,
+      "cases_passed": 0,
+      "tap": "TAP version 14\n",
+      "raw_record_sha256": "3909009dee6cc3bcb1ff6aa1c65c0230d24c20cf867d2da338d287bcac1bfcb9",
+      "case": "/libgimp/procedure-config/test-config-args",
+      "diagnostic": "libgimp/gimpprocedure.c:584:7: runtime error: null pointer passed as argument 2, which is declared to never be null",
+      "source_path": "libgimp/gimpprocedure.c",
+      "source_line": 584,
+      "null_argument": 2
+    },
+    {
+      "registration": "procedure-config",
+      "result": "FAIL",
+      "exit_code": -6,
+      "duration_seconds": 0.05417609214782715,
+      "cases_passed": 0,
+      "tap": "TAP version 14\n",
+      "raw_record_sha256": "606dcd7017be8a99e6221c2be16bcc4e4b3323a0afb8ef7d63a183367f1190a1",
+      "case": "/libgimp/procedure-config/test-config-aux",
+      "diagnostic": "libgimp/gimpprocedure.c:581:7: runtime error: null pointer passed as argument 2, which is declared to never be null",
+      "source_path": "libgimp/gimpprocedure.c",
+      "source_line": 581,
+      "null_argument": 2
+    },
+    {
+      "registration": "procedure-config",
+      "result": "FAIL",
+      "exit_code": -6,
+      "duration_seconds": 0.04496312141418457,
+      "cases_passed": 0,
+      "tap": "TAP version 14\n",
+      "raw_record_sha256": "6f1967709f080f6277bb52b0eb6765dfb3f5daa0766a93361b38a7cfd92c74cb",
+      "case": "/libgimp/config-type/empty",
+      "diagnostic": "libgimpconfig/gimpconfig-register.c:87:3: runtime error: null pointer passed as argument 2, which is declared to never be null",
+      "source_path": "libgimpconfig/gimpconfig-register.c",
+      "source_line": 87,
+      "null_argument": 2
+    }
+  ],
+  "native_control": {
+    "registration": "procedure-config",
+    "result": "OK",
+    "exit_code": 0,
+    "duration_seconds": 0.021634817123413086,
+    "cases_passed": 5,
+    "tap": "TAP version 14\n1..5\nok 1 /libgimp/procedure-config/test-config-empty\nok 2 /libgimp/procedure-config/test-config-args\nok 3 /libgimp/procedure-config/test-config-aux\nok 4 /libgimp/procedure-config/test-config-args-aux\nok 5 /libgimp/config-type/empty\n",
+    "raw_record_sha256": "cbffd7d74abfb1d47337e7b1837454b2071a1355aaf1cf1254a27dcea82acd26"
+  },
+  "sanitizer_nonempty_control": {
+    "registration": "procedure-config",
+    "result": "OK",
+    "exit_code": 0,
+    "duration_seconds": 0.02451038360595703,
+    "cases_passed": 1,
+    "tap": "TAP version 14\nok 1 /libgimp/procedure-config/test-config-args-aux\n1..1\n",
+    "raw_record_sha256": "729b110b62bfa699fd99ea1bc124698a4245c4b879fc3be03b43a52138550803"
+  },
+  "discovery": {
+    "registration": "painter-layer-ui",
+    "case": "/painter-layer-ui/isolated_editor_create_reedit",
+    "result": "FAIL",
+    "exit_code": -6,
+    "plugin": "plug-in-blinds",
+    "diagnostic": "libgimp/gimpprocedure.c:584:7: runtime error: null pointer passed as argument 2, which is declared to never be null",
+    "consequence": "The sanitizer aborts the plug-in; the private filter receives no return values and the layer stays FAILED instead of CLEAN."
+  }
+}
