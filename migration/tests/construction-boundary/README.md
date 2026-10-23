@@ -33,5 +33,7 @@ LeakSanitizer is disabled. These results cover recoverable C++ failures, not fat
 GLib allocator termination, system-library instrumentation, every feature's GType
 initialization or full application/platform releases. Earlier reports keep their
 original bytes and source seals. The new common test changes three sealed test
-files; the previous four-OS snapshot is therefore historical until the automatic
-native CI run for this commit is collected and verified.
+files; the previous four-OS snapshot is therefore historical. Fresh CI run
+38029643264 on the published test commit passes all 70 cases and ABI/export/runtime
+controls on Linux x86_64, Windows UCRT64 x86_64, macOS arm64 and macOS x86_64.
+The platform index points to new raw snapshots; the earlier files are unchanged.

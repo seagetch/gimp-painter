@@ -1011,6 +1011,7 @@
         "/painter/interop/cpp-error-without-gerror",
         "/painter/interop/result-boundary-policy",
         "/painter/interop/void-boundary-policy",
+        "/painter/interop/construction-failure",
         "/painter/resources/value-assignment",
         "/painter/resources/value-owned-borrow-copy",
         "/painter/resources/array-assignment",
@@ -1077,10 +1078,10 @@
         "/painter/boundary/exception"
       ],
       "reports": [
-        "migration/tests/platform-link/native-linux-x86_64.json.gz",
-        "migration/tests/platform-link/native-windows-x86_64.json.gz",
-        "migration/tests/platform-link/native-macos-arm64.json.gz",
-        "migration/tests/platform-link/native-macos-x86_64.json.gz"
+        "migration/tests/platform-link/construction-70-linux-x86_64.json.gz",
+        "migration/tests/platform-link/construction-70-windows-x86_64.json.gz",
+        "migration/tests/platform-link/construction-70-macos-arm64.json.gz",
+        "migration/tests/platform-link/construction-70-macos-x86_64.json.gz"
       ],
       "scope_or_gap": "Native minimal common bridge on Linux x86_64, Windows UCRT64 x86_64 and macOS arm64/x86_64. No full-GIMP release, MSVC, sanitizer or tablet claim. Native four-report validator checks explicit Windows LF-to-CRLF checkout conversion and unchanged source seals."
     },
