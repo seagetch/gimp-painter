@@ -1,0 +1,82 @@
+{
+  "task": "10.009",
+  "status": "PASS original criterion only; ledger not changed",
+  "source_commit": "afa43fae3e920210146abed514f136fd49f671b5",
+  "installed_pristine_binary_sha256": "703f634807aa3b0011f030c484c083ca80d1c0b8a8cd445990c3c83af9a64592",
+  "scope": "Actual original writer omission and reader slot/type/following-record alignment. Not full-file Open, runner or drawable resolution.",
+  "cases": [
+    {
+      "kind": "int8array",
+      "tag": 6,
+      "inputs": [
+        [
+          3,
+          17,
+          255
+        ],
+        [
+          17,
+          255
+        ],
+        []
+      ],
+      "fixture_sha256": "e7e8198a435b19237dbdb52d7bfb9f7db87d11f1c8ec2cb9c8fce3b124645deb"
+    },
+    {
+      "kind": "floatarray",
+      "tag": 7,
+      "inputs": [
+        [
+          0.25,
+          -2.5,
+          128.0
+        ],
+        [
+          -2.5,
+          128.0
+        ],
+        []
+      ],
+      "fixture_sha256": "86a9c48f510791c7798f19290e25157d1366660b82504fb98e9e29ab9206756a"
+    },
+    {
+      "kind": "drawable",
+      "tag": 10,
+      "inputs": [
+        42,
+        1234,
+        -1
+      ],
+      "fixture_sha256": "9edd62c4bbec6f4dc0d8fe5e89826695d26ce5d87d22fe36b31912ca373d4a9a"
+    }
+  ],
+  "result": {
+    "each_kind_distinct_inputs_produce_identical_bytes": true,
+    "file_bytes": 28,
+    "omitted_slot_payload_size": 0,
+    "reader_success": true,
+    "argument_count": 2,
+    "first_argument_type": "INVALID",
+    "next_argument_type": "gint",
+    "next_argument_value": 305419896,
+    "cursor": 28,
+    "ftell": 28
+  },
+  "recoverable": [
+    "Original wire tag and argument position",
+    "Omitted-data/reference fact",
+    "Subsequent scalar value/type and record alignment"
+  ],
+  "unrecoverable": [
+    "Array length and contents (including empty versus nonempty)",
+    "Drawable ID and whether the input was -1,42,1234",
+    "Original floatarray versus NULL string for tag7 size0"
+  ],
+  "ambiguity": "FLOATARRAY tag7 size0 bytes exactly match original NULL string writer bytes from 10.008; never infer an array or string value.",
+  "failures_preserved": "Initial empty-array observer setup incorrectly used nonnull pointer with zero length; old public API correctly aborted. Fixed capture-only setup to NULL/0; original reader/writer unchanged. Prior six-case successful capture and failed nine-case attempt retained in archive.",
+  "limitations": [
+    "The original parser allocates temporary GValues; capture does not repair or certify leak-free old code.",
+    "Known tag1 unsupported pointer-copy bug is not invoked. Other unsupported array GTypes have no typed writer branch; cannot recover their type or content from unsupported tag1.",
+    "No claim that omitted INVALID values are runnable procedure arguments."
+  ]
+}

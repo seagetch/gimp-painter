@@ -1,0 +1,129 @@
+--- a/app/xcf/xcf-save.c
++++ b/app/xcf/xcf-save.c
+@@ -2204,3 +2204,35 @@
+ 
+   return TRUE;
+ }
++
++/* Observation wrapper only; all original writer bytes above are unchanged. */
++gboolean migration_capture_omission_write (FILE *, guint, guint, guint *, GError **);
++gboolean
++migration_capture_omission_write (FILE *fp, guint kind, guint variant,
++                                 guint *cursor, GError **error)
++{
++  XcfInfo info = { 0 };
++  GValue input = G_VALUE_INIT, sentinel = G_VALUE_INIT;
++  const guint8 bytes[] = { 3, 17, 255 };
++  const gdouble floats[] = { 0.25, -2.5, 128.0 };
++  gboolean ok;
++  info.fp = fp;
++  if (kind == 0) {
++    g_value_init (&input, GIMP_TYPE_INT8_ARRAY);
++    gimp_value_set_int8array (&input, variant == 2 ? NULL : bytes + variant, variant == 2 ? 0 : 3 - variant);
++  } else if (kind == 1) {
++    g_value_init (&input, GIMP_TYPE_FLOAT_ARRAY);
++    gimp_value_set_floatarray (&input, variant == 2 ? NULL : floats + variant, variant == 2 ? 0 : 3 - variant);
++  } else {
++    g_value_init (&input, GIMP_TYPE_DRAWABLE_ID);
++    g_value_set_int (&input, variant == 2 ? -1 : (variant ? 1234 : 42));
++  }
++  g_value_init (&sentinel, GIMP_TYPE_INT32);
++  g_value_set_int (&sentinel, 0x12345678);
++  ok = xcf_save_filter_spec_value (&info, NULL, error, &input) &&
++       xcf_save_filter_spec_value (&info, NULL, error, &sentinel);
++  if (ok) info.cp += xcf_write_zero_int32 (fp, 2, error);
++  g_value_unset (&input); g_value_unset (&sentinel);
++  *cursor = info.cp;
++  return ok && (!error || !*error);
++}
+--- a/app/xcf/xcf-load.c
++++ b/app/xcf/xcf-load.c
+@@ -2531,3 +2531,16 @@
+   if (container)
+     xcf_post_check_layers_recur (info, container);
+ }
++
++/* Observation wrapper only; all original reader bytes above are unchanged. */
++gboolean migration_capture_omission_read (FILE *, GArray *, guint *);
++gboolean
++migration_capture_omission_read (FILE *fp, GArray *args, guint *cursor)
++{
++  XcfInfo info = { 0 };
++  gboolean ok;
++  info.fp = fp;
++  ok = xcf_load_filter_specs (&info, args);
++  *cursor = info.cp;
++  return ok;
++}
+--- a/app/tests/test-xcf.c
++++ b/app/tests/test-xcf.c
+@@ -977,6 +977,60 @@
+  *  - Make sure that the information put into a #GimpImage is not lost
+  *    when the #GimpImage is written to a file and then read again
+  **/
++
++/* Direct original reader/writer observation; no full-file Open assertion. */
++#include <stdio.h>
++extern gboolean migration_capture_omission_write (FILE *, guint, guint, guint *, GError **);
++extern gboolean migration_capture_omission_read (FILE *, GArray *, guint *);
++static int
++migration_capture_omissions (const gchar *directory)
++{
++  const gchar *names[] = { "int8array", "floatarray", "drawable" };
++  const guint tags[] = { 6, 7, 10 };
++  guint kind, variant;
++  for (kind = 0; kind < 3; ++kind)
++    for (variant = 0; variant < 3; ++variant)
++      {
++        gchar *name = g_strdup_printf ("%s-input%u.bin", names[kind], variant);
++        gchar *path = g_build_filename (directory, name, NULL);
++        FILE *fp = g_fopen (path, "wb");
++        GError *error = NULL;
++        GArray *args = g_array_new (FALSE, TRUE, sizeof (GValue));
++        guint cursor = 0;
++        gchar *bytes = NULL;
++        gsize length = 0;
++        gboolean ok;
++        g_assert (fp != NULL);
++        g_assert (migration_capture_omission_write (fp, kind, variant, &cursor, &error));
++        g_assert_no_error (error);
++        g_assert_cmpint (fclose (fp), ==, 0);
++        g_assert (g_file_get_contents (path, &bytes, &length, &error));
++        g_assert_no_error (error);
++        g_assert_cmpuint (length, ==, 28);
++        g_assert_cmpuint (cursor, ==, length);
++        g_assert (bytes[0] == 0 && bytes[1] == 0 && bytes[2] == 0 && bytes[3] == tags[kind]);
++        g_assert (bytes[4] == 0 && bytes[5] == 0 && bytes[6] == 0 && bytes[7] == 0);
++        g_free (bytes);
++        fp = g_fopen (path, "rb");
++        g_assert (fp != NULL);
++        ok = migration_capture_omission_read (fp, args, &cursor);
++        g_print ("OBSERVE case=%s input=%u tag=%u size=0 ok=%d argc=%u cp=%u ftell=%ld bytes=%lu\n",
++                 names[kind], variant, tags[kind], ok, args->len, cursor, ftell(fp), (gulong)length);
++        g_assert (ok);
++        g_assert_cmpuint (args->len, ==, 2);
++        g_assert_cmpuint (G_VALUE_TYPE (&g_array_index (args, GValue, 0)), ==, 0);
++        g_assert (G_VALUE_HOLDS_INT (&g_array_index (args, GValue, 1)));
++        g_assert_cmpint (g_value_get_int (&g_array_index (args, GValue, 1)), ==, 0x12345678);
++        g_assert_cmpuint (cursor, ==, length);
++        g_assert_cmpint (ftell (fp), ==, length);
++        g_print ("ARG index=0 type=INVALID omitted=1\nARG index=1 type=gint int=305419896\n");
++        g_value_unset (&g_array_index (args, GValue, 1));
++        g_array_free (args, TRUE); fclose (fp); g_free (name); g_free (path);
++      }
++  g_print ("ORIGINAL_OMITTED_ARGUMENT_READER_ALIGNMENT_PASS cases=9\n");
++  return 0;
++}
++
+ int
+ main (int    argc,
+       char **argv)
+@@ -987,6 +1041,8 @@
+   g_thread_init (NULL);
+   g_type_init ();
+   g_test_init (&argc, &argv, NULL);
++  if (g_getenv ("GIMP_PAINTER_OMISSION_CAPTURE"))
++    return migration_capture_omissions (g_getenv ("GIMP_PAINTER_OMISSION_CAPTURE"));
+ 
+   gimp_test_utils_set_gimp2_directory ("GIMP_TESTING_ABS_TOP_SRCDIR",
+                                        "app/tests/gimpdir");

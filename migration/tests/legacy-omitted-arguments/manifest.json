@@ -1,0 +1,50 @@
+{
+  "source_commit": "afa43fae3e920210146abed514f136fd49f671b5",
+  "original_source_sha256": {
+    "app/xcf/xcf-save.c": "4fa9155d28054d62baa5b7c77bd17e27fbea254df1f68c85c2ac4708de1653ce",
+    "app/xcf/xcf-load.c": "9a0aeebda8471f78237b67df7418f56f92790fb1a5ac0504eaf14c02ac6e3168",
+    "app/tests/test-xcf.c": "732615003c2a9d33be4d2b556f85e2a4953a907bae799258cf2b3d5e32c6e70b"
+  },
+  "observer_source_sha256": {
+    "app/xcf/xcf-save.c": "bdd5815af1a5a8dddce6981a1dd89db48728d5af6957311243aebf526aa09a15",
+    "app/xcf/xcf-load.c": "c1d232f8f16fc99503383e396e71caab51e3ff2819096d0efde576237160ef17",
+    "app/tests/test-xcf.c": "7b004dacf78d5d99d9f5ecb5e3d579b20aa3012f72be39076c32b9e9fe592af2"
+  },
+  "patch_sha256": "6f1a21eb2bd7d6046c44b9dbe2ecf2b6ffe63d2b2cd336bc95a1ad518df93a11",
+  "installed_pristine_binary_sha256": "703f634807aa3b0011f030c484c083ca80d1c0b8a8cd445990c3c83af9a64592",
+  "observer_binary_sha256": "9cf86158a4a06cc1bb467724cd35c75f725066a0092390005c033251726fe45e",
+  "runs": [
+    {
+      "name": "build-xcf",
+      "exit": 0
+    },
+    {
+      "name": "build-observer",
+      "exit": 0
+    },
+    {
+      "name": "capture",
+      "exit": 0
+    }
+  ],
+  "files": {
+    "build-observer.command": "0b177a0876e94236bc1668d06da2c9f34806e950dd7316440f59b6395573c7b2",
+    "build-observer.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "build-observer.log": "d362abb745e6d3868fd8c722d85e166a1956890caf442b64d8af269b9414b8cb",
+    "build-xcf.command": "9eaea2a65ef66fcc007b6498c113cabdca10b7d01e115f115c46be29aeeecd01",
+    "build-xcf.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "build-xcf.log": "ae67a6da17d4d761f0cda3793de4010884e368046c0642618fbdb8142e4a63cf",
+    "capture.command": "7306c970cddb5c98101347b0b5a445a3f199372229923a1c15b3e72d3174aac3",
+    "capture.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "capture.log": "72a6ae7c5841dc5e1c84d27d0b8efebd5feb5cb7e0522cd8e175759da10b2cc4",
+    "fixtures/drawable-input0.bin": "9edd62c4bbec6f4dc0d8fe5e89826695d26ce5d87d22fe36b31912ca373d4a9a",
+    "fixtures/drawable-input1.bin": "9edd62c4bbec6f4dc0d8fe5e89826695d26ce5d87d22fe36b31912ca373d4a9a",
+    "fixtures/drawable-input2.bin": "9edd62c4bbec6f4dc0d8fe5e89826695d26ce5d87d22fe36b31912ca373d4a9a",
+    "fixtures/floatarray-input0.bin": "86a9c48f510791c7798f19290e25157d1366660b82504fb98e9e29ab9206756a",
+    "fixtures/floatarray-input1.bin": "86a9c48f510791c7798f19290e25157d1366660b82504fb98e9e29ab9206756a",
+    "fixtures/floatarray-input2.bin": "86a9c48f510791c7798f19290e25157d1366660b82504fb98e9e29ab9206756a",
+    "fixtures/int8array-input0.bin": "e7e8198a435b19237dbdb52d7bfb9f7db87d11f1c8ec2cb9c8fce3b124645deb",
+    "fixtures/int8array-input1.bin": "e7e8198a435b19237dbdb52d7bfb9f7db87d11f1c8ec2cb9c8fce3b124645deb",
+    "fixtures/int8array-input2.bin": "e7e8198a435b19237dbdb52d7bfb9f7db87d11f1c8ec2cb9c8fce3b124645deb"
+  }
+}
