@@ -33,7 +33,9 @@ extern "C" {
 #include "mypaintbrush-settings-data.h"
 #include <algorithm>
 #include <cmath>
+#include <cstring>
 #include <limits>
+#include <type_traits>
 using namespace GimpPainter;
 namespace GimpPainter {
 template<> struct TypeTraits<GimpDrawable>{static GType type(){return GIMP_TYPE_DRAWABLE;}};
@@ -206,7 +208,12 @@ void control(GimpTool*tool,GimpToolAction action,GimpDisplay*display)
 void press(GimpTool*tool,const GimpCoords*coords,guint32 time,GdkModifierType state,GimpButtonPressType type,GimpDisplay*display)
 {
   if(!usable(tool))return;
-  if(gimp_color_tool_is_enabled(GIMP_COLOR_TOOL(tool))){GIMP_TOOL_CLASS(gimp_painter_mybrush_tool_parent_class)->button_press(tool,coords,time,state,type,display);return;}
+  if(gimp_color_tool_is_enabled(GIMP_COLOR_TOOL(tool))){
+    // GimpTool synthesizes a release on HALT using this borrowed display.
+    // ColorTool's press activates control but does not register the display.
+    tool->display=display;
+    GIMP_TOOL_CLASS(gimp_painter_mybrush_tool_parent_class)->button_press(tool,coords,time,state,type,display);return;
+  }
   if(type!=GIMP_BUTTON_PRESS_NORMAL)return;
   boundary_void(nullptr,[&]{auto owner=PainterMybrushToolRef::retain(GIMP_PAINTER_MYBRUSH_TOOL(tool));
     const bool accepted=store(tool).with<ToolSlot>([&](ToolImpl&i){if(i.busy)return false;i.pressed=true;i.last_press=*coords;return true;});
@@ -293,6 +300,34 @@ void gimp_painter_mybrush_tool_register(GimpToolRegisterCallback callback,gpoint
   callback(GIMP_TYPE_PAINTER_MYBRUSH_TOOL,GIMP_TYPE_PAINTER_MYBRUSH_OPTIONS,options_gui,
     GimpContextPropMask(GIMP_CONTEXT_PROP_MASK_FOREGROUND|GIMP_CONTEXT_PROP_MASK_BACKGROUND|GIMP_CONTEXT_PROP_MASK_BRUSH|GIMP_CONTEXT_PROP_MASK_PATTERN|GIMP_CONTEXT_PROP_MASK_PAINTER_MYBRUSH),
     "gimp-painter-mypaint-tool",_("Painter MyPaint"),_("Paint with extended legacy MyPaint brushes"),N_("Painter MyPaint"),nullptr,nullptr,GIMP_HELP_TOOL_MYPAINT_BRUSH,GIMP_ICON_TOOL_MYPAINT_BRUSH,data);
+}
+void gimp_mypaint_tool_enable_color_picker(GimpMypaintTool*self,GimpColorPickTarget target)
+{
+  // C callers can supply an out-of-range enum representation. Inspect its
+  // actual underlying type without a C++ enum lvalue-to-rvalue conversion.
+  using TargetRepresentation=std::underlying_type<GimpColorPickTarget>::type;
+  static_assert(sizeof(TargetRepresentation)==sizeof(target),"Enum representation mismatch");
+  TargetRepresentation representation;
+  std::memcpy(&representation,&target,sizeof(representation));
+  boundary_void(nullptr,[&]{
+    GimpColorPickTarget destination;
+    switch(representation){
+      case GIMP_COLOR_PICK_TARGET_NONE:destination=GIMP_COLOR_PICK_TARGET_NONE;break;
+      case GIMP_COLOR_PICK_TARGET_FOREGROUND:destination=GIMP_COLOR_PICK_TARGET_FOREGROUND;break;
+      case GIMP_COLOR_PICK_TARGET_BACKGROUND:destination=GIMP_COLOR_PICK_TARGET_BACKGROUND;break;
+      case GIMP_COLOR_PICK_TARGET_PALETTE:destination=GIMP_COLOR_PICK_TARGET_PALETTE;break;
+      default:throw std::invalid_argument("Invalid color picking destination");
+    }
+    auto owner=PainterMybrushToolRef::retain(self);
+    auto&binding=store(GIMP_TOOL(owner.get()));
+    // The legacy convenience operation is valid from a subclass instance init.
+    // Resolve the same typed slot without creating a store or reviving one.
+    const auto configure=[&](ToolImpl&){GIMP_COLOR_TOOL(owner.get())->pick_target=destination;};
+    if(binding.state()==BindingStore::State::constructing)
+      binding.initialize<ToolSlot>(configure);
+    else
+      binding.with<ToolSlot>(configure);
+  });
 }
 gboolean gimp_painter_mybrush_tool_has_pending_stroke(GimpPainterMybrushTool*self)
 {return boundary<gboolean>(nullptr,FALSE,[&]() -> gboolean{auto current=session(GIMP_TOOL(self));return gimp_painter_session_is_active(current.get());});}

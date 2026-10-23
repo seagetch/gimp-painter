@@ -3,7 +3,7 @@
 #define GIMP_PAINTER_MYBRUSH_TOOL_HPP
 #include "../painter/gimp-painter-visibility.h"
 extern "C" {
-#include "gimppaintermybrushtool.h"
+#include "gimpmypainttool.h"
 }
 #include "painter/object-ref.hpp"
 namespace GimpPainter GIMP_PAINTER_PRIVATE {
@@ -16,10 +16,13 @@ public:
   static PainterMybrushToolRef adopt(GimpPainterMybrushTool*tool)
   {return PainterMybrushToolRef(ObjectRef<GimpPainterMybrushTool>::adopt(tool));}
   GimpPainterMybrushTool*get() const noexcept{return owner_.get();}
+  void enable_color_picker(GimpColorPickTarget target) const
+  {gimp_mypaint_tool_enable_color_picker(owner_.get(),target);}
 private:
   explicit PainterMybrushToolRef(ObjectRef<GimpPainterMybrushTool> owner):owner_(std::move(owner))
   {if(!owner_)throw Error(GIMP_PAINTER_ERROR_WRONG_TYPE,"Expected extended MyPaint tool");}
   ObjectRef<GimpPainterMybrushTool> owner_;
 };
+using MypaintToolRef = PainterMybrushToolRef;
 }
 #endif

@@ -432,9 +432,11 @@ test('layer-presets-ui', layer_presets_ui_test,
         'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
         'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 120)
 
-painter_tool_test = executable('painter-mypaint-tool', 'test-painter-mypaint-tool.cpp', 'tests.c',
+painter_tool_test = executable('painter-mypaint-tool', 'test-painter-mypaint-tool.cpp',
+  'test-mypaint-colorpicker-c.c', 'tests.c',
   dependencies: [libapp_dep, painter_mypaint_surface_dep, appstream],
-  link_with: apptests_links, cpp_args: painter_cpp_args, override_options: ['cpp_std=c++14'])
+  link_with: apptests_links, cpp_args: painter_cpp_args,
+  override_options: ['c_std=c11', 'cpp_std=c++14'])
 test('painter-mypaint-tool', painter_tool_test,
   env: ['GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
         'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),

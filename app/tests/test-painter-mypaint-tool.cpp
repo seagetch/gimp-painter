@@ -4,6 +4,9 @@
 #include <gtk/gtk.h>
 #include <vector>
 #include <cstring>
+#include <array>
+#include <cstdio>
+#include <type_traits>
 extern "C" {
 #include "libgimpbase/gimpbase.h"
 #include "libgimpmath/gimpmath.h"
@@ -14,6 +17,7 @@ extern "C" {
 #include "tools/tools-types.h"
 #include "config/gimpdisplayconfig.h"
 #include "core/gimp.h"
+#include "core/gimp-gui.h"
 #include "core/gimpcontainer.h"
 #include "core/gimpbrush.h"
 #include "core/gimpbrushpipe.h"
@@ -46,17 +50,24 @@ extern "C" {
 #include "display/gimpdisplayshell-rotate.h"
 #include "display/gimpdisplayshell-scale.h"
 #include "tools/gimppaintermybrushtool.h"
+#include "tools/gimpmypainttool.h"
+#include "tools/gimpcolorpickeroptions.h"
 #include "tools/gimpmybrushtool.h"
 #include "tools/gimptoolcontrol.h"
 #include "tools/tool_manager.h"
 #include "paint/gimppainterpaintgate.h"
+#include "widgets/gimpdialogfactory.h"
+#include "widgets/gimpfgbgeditor.h"
+#include "widgets/gimpwindowstrategy.h"
 #include "widgets/gimpwidgets-utils.h"
 #include "gimpcoreapp.h"
 #include "gimp-app-test-utils.h"
 #include "tests.h"
+void gimp_test_mypaint_colorpicker_c (GimpMypaintTool *tool);
 }
 #include "paint/painter-mypaint-surface/gimp-painter-options.hpp"
 #include "core/gimppaintermybrush-handle.hpp"
+#include "tools/gimppaintermybrushtool.hpp"
 using namespace GimpPainter;
 static Gimp*gimp;
 struct Scene {
@@ -368,6 +379,567 @@ static void pipe_release_save_roundtrip()
   g_assert_true(g_file_delete(file,nullptr,&error));g_assert_no_error(error);g_object_unref(file);g_object_unref(pipe);
 }
 
+using PickerColor = std::array<gdouble, 4>;
+
+static PickerColor picker_color (GeglColor *color)
+{
+  PickerColor result;
+  gegl_color_get_pixel (color, babl_format ("R'G'B'A double"), result.data ());
+  return result;
+}
+
+static void assert_picker_color (GeglColor *color, const PickerColor& expected)
+{
+  const auto actual = picker_color (color);
+  for (unsigned i = 0; i < actual.size (); ++i)
+    g_assert_cmpfloat_with_epsilon (actual[i], expected[i], 1e-6);
+}
+
+static void assert_picker_color (GeglColor *color, const gchar *expected)
+{
+  auto *reference = gegl_color_new (expected);
+  const auto actual = picker_color (color);
+  const auto wanted = picker_color (reference);
+  for (unsigned i = 0; i < actual.size (); ++i)
+    g_assert_cmpfloat_with_epsilon (actual[i], wanted[i], 1. / 255.);
+  g_object_unref (reference);
+}
+
+static void colorpicker_c_boundary ()
+{
+  Scene s;
+  const auto before = s.pixels ();
+  auto *context = GIMP_CONTEXT (s.options);
+  const auto foreground = picker_color (gimp_context_get_foreground (context));
+  const auto background = picker_color (gimp_context_get_background (context));
+  gimp_test_mypaint_colorpicker_c (GIMP_MYPAINT_TOOL (s.tool));
+  assert_picker_color (gimp_context_get_foreground (context), foreground);
+  assert_picker_color (gimp_context_get_background (context), background);
+  g_assert_true (s.pixels () == before);
+  g_assert_cmpint (s.depth (), ==, 0);
+  g_assert_false (gimp_painter_mybrush_tool_has_pending_stroke (
+    GIMP_PAINTER_MYBRUSH_TOOL (s.tool)));
+}
+
+static void colorpicker_named_handle ()
+{
+  static_assert (std::is_same<MypaintToolRef, PainterMybrushToolRef>::value,
+                 "The named handle must retain the existing native owner");
+  Scene s;
+  auto handle = MypaintToolRef::retain (GIMP_MYPAINT_TOOL (s.tool));
+  const auto before = s.pixels ();
+  auto *context = GIMP_CONTEXT (s.options);
+  const auto foreground = picker_color (gimp_context_get_foreground (context));
+  const auto background = picker_color (gimp_context_get_background (context));
+  for (auto target : { GIMP_COLOR_PICK_TARGET_NONE,
+                       GIMP_COLOR_PICK_TARGET_FOREGROUND,
+                       GIMP_COLOR_PICK_TARGET_BACKGROUND,
+                       GIMP_COLOR_PICK_TARGET_PALETTE })
+    {
+      handle.enable_color_picker (target);
+      g_assert_true (handle.get () == GIMP_PAINTER_MYBRUSH_TOOL (s.tool));
+      g_assert_cmpint (GIMP_COLOR_TOOL (s.tool)->pick_target, ==, target);
+      g_assert_false (gimp_color_tool_is_enabled (GIMP_COLOR_TOOL (s.tool)));
+      g_assert_false (gimp_tool_control_is_active (s.tool->control));
+      assert_picker_color (gimp_context_get_foreground (context), foreground);
+      assert_picker_color (gimp_context_get_background (context), background);
+    }
+  // Invalid enum representations are exercised by the actual C consumer.
+  // Constructing an out-of-range enum in C++ would itself be undefined.
+  handle.enable_color_picker (GIMP_COLOR_PICK_TARGET_PALETTE);
+  g_assert_cmpint (GIMP_COLOR_TOOL (s.tool)->pick_target, ==,
+                   GIMP_COLOR_PICK_TARGET_PALETTE);
+  g_assert_true (s.pixels () == before);
+  g_assert_cmpint (s.depth (), ==, 0);
+  g_assert_false (gimp_painter_mybrush_tool_has_pending_stroke (handle.get ()));
+
+  auto closed = MypaintToolRef::adopt (GIMP_MYPAINT_TOOL (g_object_new (
+    GIMP_TYPE_PAINTER_MYBRUSH_TOOL, "tool-info", s.tool->tool_info, nullptr)));
+  closed.enable_color_picker (GIMP_COLOR_PICK_TARGET_BACKGROUND);
+  g_object_run_dispose (G_OBJECT (closed.get ()));
+  closed.enable_color_picker (GIMP_COLOR_PICK_TARGET_FOREGROUND);
+  g_assert_cmpint (GIMP_COLOR_TOOL (closed.get ())->pick_target, ==,
+                   GIMP_COLOR_PICK_TARGET_BACKGROUND);
+}
+
+/* An opaque, genuinely colored native drawable. All interaction below goes
+ * through GimpTool's public dispatch, with the ordinary modifier lifecycle. */
+struct PickerScene : Scene
+{
+  GimpColorPickerOptions *picker;
+  GimpColorPickTarget saved_target;
+  gboolean saved_merged, saved_average;
+  GimpCursorMode saved_cursor_mode;
+  GeglColor *saved_foreground, *saved_background;
+  std::vector<GimpColorPickState> picked;
+  std::vector<GimpColorPickTarget> picked_targets;
+  gulong picked_handler;
+
+  PickerScene ()
+  {
+    auto *info = gimp_get_tool_info (gimp, "gimp-color-picker-tool");
+    g_assert_nonnull (info);
+    picker = GIMP_COLOR_PICKER_OPTIONS (info->tool_options);
+    saved_target = picker->pick_target;
+    saved_merged = GIMP_COLOR_OPTIONS (picker)->sample_merged;
+    saved_average = GIMP_COLOR_OPTIONS (picker)->sample_average;
+    saved_cursor_mode = display->config->cursor_mode;
+    auto *context = GIMP_CONTEXT (options);
+    saved_foreground = gegl_color_duplicate (gimp_context_get_foreground (context));
+    saved_background = gegl_color_duplicate (gimp_context_get_background (context));
+    g_object_set (picker, "sample-merged", FALSE, "sample-average", FALSE, nullptr);
+    g_object_set (display->config, "cursor-mode", GIMP_CURSOR_MODE_TOOL_ICON, nullptr);
+    reset_colors ();
+    const GeglRectangle regions[] = {{0, 0, 42, 128}, {42, 0, 43, 128},
+                                     {85, 0, 43, 128}};
+    const gchar *colors[] = {"blue", "rgb(0.0,1.0,0.0)", "yellow"};
+    for (unsigned i = 0; i < G_N_ELEMENTS (regions); ++i)
+      {
+        auto *color = gegl_color_new (colors[i]);
+        gegl_buffer_set_color (gimp_drawable_get_buffer (drawable), &regions[i], color);
+        g_object_unref (color);
+      }
+    gimp_drawable_update (drawable, 0, 0, 128, 128);
+    gimp_projection_finish_draw (gimp_image_get_projection (image));
+    gimp_projection_flush (gimp_image_get_projection (image));
+    gimp_display_flush_now (display);
+    gimp_test_run_mainloop_until_idle ();
+    gimp_image_undo_free (image);
+    gimp_tool_set_focus_display (tool, display);
+    picked_handler = g_signal_connect (tool, "picked", G_CALLBACK (+[] (
+      GimpColorTool *color_tool, const GimpCoords *, GimpDisplay *,
+      GimpColorPickState state, const Babl *format, gpointer, GeglColor *color,
+      gpointer data) {
+        auto& scene = *static_cast<PickerScene *> (data);
+        g_assert_nonnull (format);
+        g_assert_true (GEGL_IS_COLOR (color));
+        scene.picked.push_back (state);
+        scene.picked_targets.push_back (color_tool->pick_target);
+      }), this);
+  }
+
+  ~PickerScene ()
+  {
+    g_signal_handler_disconnect (tool, picked_handler);
+    if (gimp_tool_control_is_active (tool->control))
+      gimp_tool_control (tool, GIMP_TOOL_ACTION_HALT, display);
+    gimp_tool_set_modifier_state (tool, GdkModifierType (0), display);
+    gimp_tool_set_focus_display (tool, nullptr);
+    g_object_set (picker, "pick-target", saved_target,
+                  "sample-merged", saved_merged,
+                  "sample-average", saved_average, nullptr);
+    g_object_set (display->config, "cursor-mode", saved_cursor_mode, nullptr);
+    gimp_context_set_foreground (GIMP_CONTEXT (options), saved_foreground);
+    gimp_context_set_background (GIMP_CONTEXT (options), saved_background);
+    g_object_unref (saved_foreground);
+    g_object_unref (saved_background);
+  }
+
+  void reset_colors ()
+  {
+    auto *foreground = gegl_color_new ("red");
+    auto *background = gegl_color_new ("rgb(1.0,0.0,1.0)");
+    gimp_context_set_foreground (GIMP_CONTEXT (options), foreground);
+    gimp_context_set_background (GIMP_CONTEXT (options), background);
+    g_object_unref (foreground);
+    g_object_unref (background);
+  }
+
+  void modifier (bool down)
+  {
+    gimp_tool_set_modifier_state (tool, down ? gimp_get_constrain_behavior_mask () :
+                                              GdkModifierType (0), display);
+    g_assert_cmpint (gimp_color_tool_is_enabled (GIMP_COLOR_TOOL (tool)), ==, down);
+  }
+
+  void cursor (GimpCursorModifier expected)
+  {
+    gimp_tool_oper_update (tool, &coords, gimp_get_constrain_behavior_mask (),
+                           TRUE, display);
+    gimp_tool_cursor_update (tool, &coords, gimp_get_constrain_behavior_mask (), display);
+    auto *shell = gimp_display_get_shell (display);
+    g_assert_cmpint (shell->current_cursor, ==, GIMP_CURSOR_COLOR_PICKER);
+    g_assert_cmpint (shell->tool_cursor, ==, GIMP_TOOL_CURSOR_COLOR_PICKER);
+    g_assert_cmpint (shell->cursor_modifier, ==, expected);
+  }
+
+  void pick_press ()
+  {
+    time += 20;
+    gimp_tool_button_press (tool, &coords, time, gimp_get_constrain_behavior_mask (),
+                            GIMP_BUTTON_PRESS_NORMAL, display);
+    g_assert_true (gimp_tool_control_is_active (tool->control));
+    g_assert_true (tool->display == display);
+  }
+
+  void pick_motion ()
+  {
+    time += 20;
+    gimp_tool_motion (tool, &coords, time,
+                     GdkModifierType (gimp_get_constrain_behavior_mask () | GDK_BUTTON1_MASK),
+                     display);
+  }
+
+  void pick_release ()
+  {
+    time += 20;
+    gimp_tool_button_release (tool, &coords, time,
+                              gimp_get_constrain_behavior_mask (), display);
+    g_assert_false (gimp_tool_control_is_active (tool->control));
+    g_assert_true (tool->display == display);
+  }
+
+  void assert_unpainted (const std::vector<guchar>& before)
+  {
+    g_assert_true (pixels () == before);
+    g_assert_cmpint (depth (), ==, 0);
+    g_assert_false (gimp_painter_mybrush_tool_has_pending_stroke (
+      GIMP_PAINTER_MYBRUSH_TOOL (tool)));
+  }
+};
+
+static void colorpicker_native_targets ()
+{
+  PickerScene s;
+  const auto before = s.pixels ();
+  auto *context = GIMP_CONTEXT (s.options);
+  g_assert_cmpint (GIMP_COLOR_TOOL (s.tool)->pick_target, ==,
+                   GIMP_COLOR_PICK_TARGET_FOREGROUND);
+  for (unsigned cycle = 0; cycle < 3; ++cycle)
+    {
+      const auto target = cycle == 1 ? GIMP_COLOR_PICK_TARGET_BACKGROUND :
+                                      GIMP_COLOR_PICK_TARGET_FOREGROUND;
+      const auto opposite = cycle == 1 ? GIMP_COLOR_PICK_TARGET_FOREGROUND :
+                                        GIMP_COLOR_PICK_TARGET_BACKGROUND;
+      s.reset_colors ();
+      g_object_set (s.picker, "pick-target", opposite, nullptr);
+      /* First cycle deliberately exercises the unchanged default. */
+      if (cycle != 0)
+        gimp_mypaint_tool_enable_color_picker (GIMP_MYPAINT_TOOL (s.tool), target);
+      g_assert_false (gimp_color_tool_is_enabled (GIMP_COLOR_TOOL (s.tool)));
+      g_assert_false (gimp_tool_control_is_active (s.tool->control));
+      assert_picker_color (gimp_context_get_foreground (context), "red");
+      assert_picker_color (gimp_context_get_background (context), "rgb(1.0,0.0,1.0)");
+      s.assert_unpainted (before);
+      s.coords.x = 16;
+      s.modifier (true);
+      s.modifier (true); // Repeated modifier state must not reset configuration.
+      g_assert_true (GIMP_COLOR_TOOL (s.tool)->options == GIMP_COLOR_OPTIONS (s.picker));
+      s.cursor (cycle == 1 ? GIMP_CURSOR_MODIFIER_BACKGROUND :
+                            GIMP_CURSOR_MODIFIER_FOREGROUND);
+      const auto count = s.picked.size ();
+      const auto check_colors = [&] (const gchar *sample) {
+        assert_picker_color (gimp_context_get_foreground (context),
+                             cycle == 1 ? "red" : sample);
+        assert_picker_color (gimp_context_get_background (context),
+                             cycle == 1 ? sample : "rgb(1.0,0.0,1.0)");
+        s.assert_unpainted (before);
+      };
+      s.pick_press ();
+      check_colors ("blue");
+      s.coords.x = 64;
+      s.pick_motion ();
+      check_colors ("rgb(0.0,1.0,0.0)");
+      s.coords.x = 112;
+      s.pick_release ();
+      check_colors ("yellow");
+      g_assert_cmpuint (s.picked.size (), ==, count + 3);
+      for (unsigned i = 0; i < 3; ++i)
+        g_assert_cmpint (s.picked_targets[count + i], ==, target);
+      g_assert_cmpint (s.picked[count], ==, GIMP_COLOR_PICK_STATE_START);
+      g_assert_cmpint (s.picked[count + 1], ==, GIMP_COLOR_PICK_STATE_UPDATE);
+      g_assert_cmpint (s.picked[count + 2], ==, GIMP_COLOR_PICK_STATE_END);
+      s.modifier (false);
+      s.modifier (false);
+      g_assert_null (GIMP_COLOR_TOOL (s.tool)->options);
+      g_assert_cmpint (GIMP_COLOR_TOOL (s.tool)->pick_target, ==, target);
+
+      // Exercise synthesized release with the default FG, configured BG, and
+      // repeated FG target. GimpTool HALT obtains its display from the tool.
+      s.coords.x = 16;
+      s.modifier (true);
+      s.pick_press ();
+      const auto before_halt = s.picked.size ();
+      gimp_tool_control (s.tool, GIMP_TOOL_ACTION_HALT, s.display);
+      g_assert_false (gimp_tool_control_is_active (s.tool->control));
+      g_assert_null (s.tool->display);
+      g_assert_cmpuint (s.picked.size (), ==, before_halt + 1);
+      g_assert_cmpint (s.picked.back (), ==, GIMP_COLOR_PICK_STATE_END);
+      g_assert_cmpint (s.picked_targets.back (), ==, target);
+      check_colors ("blue");
+      s.modifier (false);
+      g_assert_null (GIMP_COLOR_TOOL (s.tool)->options);
+      s.modifier (true);
+      s.cursor (cycle == 1 ? GIMP_CURSOR_MODIFIER_BACKGROUND :
+                            GIMP_CURSOR_MODIFIER_FOREGROUND);
+      s.pick_press ();
+      s.pick_release ();
+      s.modifier (false);
+      s.assert_unpainted (before);
+    }
+}
+
+static void colorpicker_display_interruptions (PickerScene& s,
+                                               const std::vector<guchar>& before)
+{
+  auto handle = MypaintToolRef::retain (GIMP_MYPAINT_TOOL (s.tool));
+  handle.enable_color_picker (GIMP_COLOR_PICK_TARGET_BACKGROUND);
+  s.coords.x = 16;
+  s.modifier (true);
+  s.pick_press ();
+  const auto before_retarget = s.picked.size ();
+  auto *other = gimp_image_new (gimp, 128, 128, GIMP_RGB,
+                                GIMP_PRECISION_U8_NON_LINEAR);
+  // Native retargeting must synthesize END against the old, still-live image.
+  gimp_display_set_image (s.display, other);
+  g_assert_false (gimp_tool_control_is_active (s.tool->control));
+  g_assert_null (s.tool->display);
+  g_assert_cmpuint (s.picked.size (), ==, before_retarget + 1);
+  g_assert_cmpint (s.picked.back (), ==, GIMP_COLOR_PICK_STATE_END);
+  g_assert_cmpint (s.picked_targets.back (), ==, GIMP_COLOR_PICK_TARGET_BACKGROUND);
+  assert_picker_color (gimp_context_get_background (GIMP_CONTEXT (s.options)), "blue");
+  s.assert_unpainted (before);
+  // Repeated HALT must not retain a release against the replaced image.
+  gimp_tool_control (s.tool, GIMP_TOOL_ACTION_HALT, s.display);
+  g_assert_cmpuint (s.picked.size (), ==, before_retarget + 1);
+  gimp_display_set_image (s.display, s.image);
+  g_object_unref (other);
+  gimp_tool_set_focus_display (s.tool, s.display);
+  s.modifier (false);
+
+  // Use a second real display so closing it destroys its shell rather than
+  // merely emptying the application's last display. Retain the GObject to
+  // distinguish a closed native display from an invalid pointer.
+  auto *closed = gimp_create_display (gimp, s.image, gimp_unit_pixel (), 1., nullptr);
+  g_assert_nonnull (closed);
+  g_object_ref (closed);
+  gimp_test_run_mainloop_until_idle ();
+  g_assert_true (tool_manager_get_active (gimp) == s.tool);
+  gimp_tool_set_focus_display (s.tool, closed);
+  gimp_tool_set_modifier_state (s.tool, gimp_get_constrain_behavior_mask (), closed);
+  s.time += 20;
+  gimp_tool_button_press (s.tool, &s.coords, s.time,
+                          gimp_get_constrain_behavior_mask (),
+                          GIMP_BUTTON_PRESS_NORMAL, closed);
+  g_assert_true (gimp_tool_control_is_active (s.tool->control));
+  g_assert_true (s.tool->display == closed);
+  const auto before_close = s.picked.size ();
+  gimp_display_close (closed);
+  g_assert_false (gimp_tool_control_is_active (s.tool->control));
+  g_assert_null (s.tool->display);
+  g_assert_true (s.tool->focus_display != closed);
+  g_assert_null (gimp_display_get_image (closed));
+  g_assert_null (gimp_display_get_shell (closed));
+  g_assert_cmpuint (s.picked.size (), ==, before_close + 1);
+  g_assert_cmpint (s.picked.back (), ==, GIMP_COLOR_PICK_STATE_END);
+  g_assert_false (gimp_color_tool_is_enabled (GIMP_COLOR_TOOL (s.tool)));
+  g_assert_null (GIMP_COLOR_TOOL (s.tool)->options);
+  handle.enable_color_picker (GIMP_COLOR_PICK_TARGET_BACKGROUND);
+  gimp_tool_control (s.tool, GIMP_TOOL_ACTION_HALT, closed);
+  g_assert_cmpuint (s.picked.size (), ==, before_close + 1);
+  g_object_unref (closed);
+  gimp_tool_set_focus_display (s.tool, s.display);
+  s.modifier (true);
+  s.cursor (GIMP_CURSOR_MODIFIER_BACKGROUND);
+  s.pick_press ();
+  s.pick_release ();
+  s.modifier (false);
+  s.assert_unpainted (before);
+}
+
+static void colorpicker_pick_only_and_interruptions ()
+{
+  PickerScene s;
+  auto handle = MypaintToolRef::retain (GIMP_MYPAINT_TOOL (s.tool));
+  const auto before = s.pixels ();
+  auto *context = GIMP_CONTEXT (s.options);
+  handle.enable_color_picker (GIMP_COLOR_PICK_TARGET_NONE);
+  s.coords.x = 16;
+  s.modifier (true);
+  s.cursor (GIMP_CURSOR_MODIFIER_NONE);
+  s.pick_press ();
+  s.coords.x = 64;
+  s.pick_motion ();
+  s.coords.x = 112;
+  s.pick_release ();
+  g_assert_cmpuint (s.picked.size (), ==, 3); // NONE still samples normally.
+  for (auto target : s.picked_targets)
+    g_assert_cmpint (target, ==, GIMP_COLOR_PICK_TARGET_NONE);
+  assert_picker_color (gimp_context_get_foreground (context), "red");
+  assert_picker_color (gimp_context_get_background (context), "rgb(1.0,0.0,1.0)");
+  s.modifier (false);
+
+  /* Palette is forwarded to the native cursor as well as the stored target;
+   * no palette dock or persistent palette needs to be created by this test. */
+  handle.enable_color_picker (GIMP_COLOR_PICK_TARGET_PALETTE);
+  s.modifier (true);
+  s.cursor (GIMP_CURSOR_MODIFIER_PLUS);
+  s.modifier (false);
+
+  handle.enable_color_picker (GIMP_COLOR_PICK_TARGET_BACKGROUND);
+  s.modifier (true);
+  gimp_tool_set_focus_display (s.tool, nullptr); // Modifier held when focus is lost.
+  g_assert_false (gimp_color_tool_is_enabled (GIMP_COLOR_TOOL (s.tool)));
+  g_assert_cmpint (s.tool->modifier_state, ==, 0);
+  gimp_tool_set_focus_display (s.tool, s.display);
+  s.modifier (true);
+  s.coords.x = 16;
+  s.pick_press ();
+  const auto foreground = picker_color (gimp_context_get_foreground (context));
+  const auto background = picker_color (gimp_context_get_background (context));
+  handle.enable_color_picker (GIMP_COLOR_PICK_TARGET_FOREGROUND);
+  g_assert_true (gimp_tool_control_is_active (s.tool->control));
+  g_assert_true (gimp_color_tool_is_enabled (GIMP_COLOR_TOOL (s.tool)));
+  assert_picker_color (gimp_context_get_foreground (context), foreground);
+  assert_picker_color (gimp_context_get_background (context), background);
+  s.assert_unpainted (before);
+  handle.enable_color_picker (GIMP_COLOR_PICK_TARGET_BACKGROUND);
+  gimp_tool_control (s.tool, GIMP_TOOL_ACTION_HALT, s.display);
+  g_assert_false (gimp_tool_control_is_active (s.tool->control));
+  g_assert_null (s.tool->display);
+  s.modifier (false);
+  s.modifier (true);
+  s.pick_press ();
+  s.pick_release ();
+  s.modifier (false);
+  g_assert_cmpint (GIMP_COLOR_TOOL (s.tool)->pick_target, ==,
+                   GIMP_COLOR_PICK_TARGET_BACKGROUND);
+  s.assert_unpainted (before);
+  colorpicker_display_interruptions (s, before);
+
+  // The same native tool still paints and creates exactly one undo afterwards.
+  s.reset_colors ();
+  s.coords.x = 55;
+  s.coords.y = 80;
+  s.motion (false);
+  s.press ();
+  s.coords.x = 75;
+  s.motion (true, 75);
+  s.release ();
+  gimp_tool_control (s.tool, GIMP_TOOL_ACTION_COMMIT, s.display);
+  const auto painted = s.pixels ();
+  g_assert_true (painted != before);
+  g_assert_cmpint (s.depth (), ==, 1);
+  g_assert_true (gimp_image_undo (s.image));
+  g_assert_true (s.pixels () == before);
+  g_assert_true (gimp_image_redo (s.image));
+  g_assert_true (s.pixels () == painted);
+}
+
+/* Opt-in raw-window capture aid, separate from the unconditional assertions.
+ * Each stage is bounded; screenshots must show the actual integrated test
+ * application, not a generated rendering of these fixture colors. */
+static void colorpicker_visual_stage (PickerScene& scene, const gchar *name)
+{
+  gimp_drawable_update (scene.drawable, 0, 0, 128, 128);
+  gimp_projection_finish_draw (gimp_image_get_projection (scene.image));
+  gimp_projection_flush (gimp_image_get_projection (scene.image));
+  gimp_display_flush_now (scene.display);
+  gimp_test_run_mainloop_until_idle ();
+  g_print ("COLORPICKER_VISUAL_STAGE=%s\n", name);
+  std::fflush (stdout);
+  const auto deadline = g_get_monotonic_time () + 8 * G_TIME_SPAN_SECOND;
+  while (g_get_monotonic_time () < deadline)
+    {
+      g_main_context_iteration (nullptr, FALSE);
+      g_usleep (10000);
+    }
+}
+
+static GtkWidget *colorpicker_find_native_swatches (GtkWidget *widget)
+{
+  if (GIMP_IS_FG_BG_EDITOR (widget))
+    return widget;
+  if (! GTK_IS_CONTAINER (widget))
+    return nullptr;
+  auto *children = gtk_container_get_children (GTK_CONTAINER (widget));
+  GtkWidget *result = nullptr;
+  for (auto *child = children; child && ! result; child = child->next)
+    result = colorpicker_find_native_swatches (GTK_WIDGET (child->data));
+  g_list_free (children);
+  return result;
+}
+
+static void colorpicker_visual_demo ()
+{
+  PickerScene s;
+  auto *shell = gimp_display_get_shell (s.display);
+  gboolean saved_hide_docks, saved_color_area;
+  g_object_get (gimp->config, "hide-docks", &saved_hide_docks,
+                "toolbox-color-area", &saved_color_area, nullptr);
+  g_object_set (gimp->config, "hide-docks", FALSE,
+                "toolbox-color-area", TRUE, nullptr);
+  // Raise the existing native toolbox through the application's ordinary
+  // window strategy. Its own FG/BG editor observes the real user context.
+  auto *toolbox = gimp_window_strategy_show_dockable_dialog (
+    GIMP_WINDOW_STRATEGY (gimp_get_window_strategy (gimp)), gimp,
+    gimp_dialog_factory_get_singleton (), gimp_widget_get_monitor (GTK_WIDGET (shell)),
+    "gimp-toolbox");
+  g_assert_nonnull (toolbox);
+  gtk_widget_show (toolbox);
+  auto *toolbox_window = gtk_widget_get_toplevel (toolbox);
+  g_assert_true (GTK_IS_WINDOW (toolbox_window));
+  gtk_window_present (GTK_WINDOW (toolbox_window));
+  auto *swatches = colorpicker_find_native_swatches (toolbox);
+  g_assert_nonnull (swatches);
+  // One idle iteration need not include GTK's next allocation/frame tick.
+  const auto mapping_deadline = g_get_monotonic_time () + 2 * G_TIME_SPAN_SECOND;
+  while (! gtk_widget_get_mapped (swatches) &&
+         g_get_monotonic_time () < mapping_deadline)
+    {
+      g_main_context_iteration (nullptr, FALSE);
+      g_usleep (10000);
+    }
+  if (! gtk_widget_get_mapped (swatches))
+    for (auto *ancestor = swatches; ancestor; ancestor = gtk_widget_get_parent (ancestor))
+      g_test_message ("native swatch ancestor %s: visible=%d mapped=%d child-visible=%d",
+                       G_OBJECT_TYPE_NAME (ancestor), gtk_widget_get_visible (ancestor),
+                       gtk_widget_get_mapped (ancestor), gtk_widget_get_child_visible (ancestor));
+  g_assert_true (gtk_widget_get_mapped (swatches));
+  auto *swatch_context = GIMP_FG_BG_EDITOR (swatches)->context;
+  assert_picker_color (gimp_context_get_foreground (swatch_context), "red");
+  assert_picker_color (gimp_context_get_background (swatch_context), "rgb(1.0,0.0,1.0)");
+  gimp_display_shell_scale (shell, GIMP_ZOOM_TO, 3., GIMP_ZOOM_FOCUS_IMAGE_CENTER);
+  gtk_widget_grab_focus (shell->canvas);
+  const auto before = s.pixels ();
+  colorpicker_visual_stage (s, "before");
+  gimp_mypaint_tool_enable_color_picker (GIMP_MYPAINT_TOOL (s.tool),
+                                        GIMP_COLOR_PICK_TARGET_BACKGROUND);
+  g_assert_false (gimp_color_tool_is_enabled (GIMP_COLOR_TOOL (s.tool)));
+  colorpicker_visual_stage (s, "configured-background");
+  s.coords.x = 16;
+  s.modifier (true);
+  s.cursor (GIMP_CURSOR_MODIFIER_BACKGROUND);
+  s.pick_press ();
+  s.pick_release ();
+  s.modifier (false);
+  assert_picker_color (gimp_context_get_foreground (GIMP_CONTEXT (s.options)), "red");
+  assert_picker_color (gimp_context_get_background (GIMP_CONTEXT (s.options)), "blue");
+  assert_picker_color (gimp_context_get_foreground (swatch_context), "red");
+  assert_picker_color (gimp_context_get_background (swatch_context), "blue");
+  s.assert_unpainted (before);
+  colorpicker_visual_stage (s, "after-background-pick");
+  s.coords.x = 48;
+  s.coords.y = 80;
+  s.motion (false);
+  s.press ();
+  for (unsigned i = 0; i < 6; ++i)
+    {
+      s.coords.x += 6;
+      s.motion (true, 75);
+    }
+  s.release ();
+  gimp_tool_control (s.tool, GIMP_TOOL_ACTION_COMMIT, s.display);
+  g_assert_true (s.pixels () != before);
+  g_assert_cmpint (s.depth (), ==, 1);
+  colorpicker_visual_stage (s, "after-paint");
+  g_assert_true (gimp_image_undo (s.image));
+  g_assert_true (s.pixels () == before);
+  colorpicker_visual_stage (s, "after-undo");
+  g_object_set (gimp->config, "hide-docks", saved_hide_docks,
+                "toolbox-color-area", saved_color_area, nullptr);
+}
+
 int main(int argc,char**argv)
 {
   g_test_init(&argc,&argv,nullptr);if(!gtk_init_check(&argc,&argv))return GIMP_EXIT_TEST_SKIPPED;gimp_test_utils_setup_menus_path();gimp=gimp_init_for_gui_testing(TRUE);
@@ -388,5 +960,11 @@ int main(int argc,char**argv)
   g_test_add_func("/painter-tool/gray-native-save-roundtrip",gray_tool_save_roundtrip);
   g_test_add_func("/painter-tool/pipe-release-save-roundtrip",pipe_release_save_roundtrip);
   g_test_add_func("/painter-tool/precision-native-save-roundtrip",precision_tool_save_roundtrip);
+  g_test_add_func("/painter-tool/colorpicker/c-boundary",colorpicker_c_boundary);
+  g_test_add_func("/painter-tool/colorpicker/named-handle",colorpicker_named_handle);
+  g_test_add_func("/painter-tool/colorpicker/native-targets",colorpicker_native_targets);
+  g_test_add_func("/painter-tool/colorpicker/pick-only-interruptions",colorpicker_pick_only_and_interruptions);
+  if (g_getenv ("GIMP_TEST_COLORPICKER_VISUAL_DEMO"))
+    g_test_add_func("/painter-tool/colorpicker/visual-demo",colorpicker_visual_demo);
   g_application_run(gimp->app,0,nullptr);int result=gimp_core_app_get_exit_status(GIMP_CORE_APP(gimp->app));g_application_quit(G_APPLICATION(gimp->app));g_clear_object(&gimp->app);return result;
 }
