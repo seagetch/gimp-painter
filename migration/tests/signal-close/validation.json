@@ -1,0 +1,57 @@
+{
+  "task": "07.007",
+  "status": "PASS",
+  "parent": "371fc0f9c277aafb82774e6aa0d0db674d15f4cb",
+  "reports": [
+    {
+      "path": "migration/tests/signal-close/native.json",
+      "sha256": "0d60f28ff3e5f1de965ab518de4e5dba6b044747d83568a79b32a8a30aec884f",
+      "all_recorded_source_seals_match": true,
+      "suite_cases": 67,
+      "new_execution": true
+    },
+    {
+      "path": "migration/tests/signal-close/sanitizers.json",
+      "sha256": "218aa54abf846bd98f83db8b3081575279367da73507b73c67a1932a251e5529",
+      "all_recorded_source_seals_match": true,
+      "suite_cases": 67,
+      "new_execution": true
+    },
+    {
+      "path": "migration/tests/signal-close/meson.json",
+      "sha256": "faaeae998472c87f7e8924a55ed153bdb2cae5a5e4f497f8d6a0878c05ab2c5c",
+      "all_recorded_source_seals_match": true,
+      "suite_cases": 67,
+      "new_execution": true
+    }
+  ],
+  "original_tasks": 661,
+  "original_done": 114,
+  "source_ledger_rows": 22868,
+  "source_ledger_done": 569,
+  "only_changed_source_duties": [
+    "legacy-5cad10c6f8c018a73309"
+  ],
+  "immutable_contracts_preserved": true,
+  "current_acceptance_errors": [],
+  "whole_historical_foundation_status": "FAIL",
+  "unrelated_historical_errors": 116,
+  "historical_note": "Earlier report hashes are preserved. The new fixture/test sources supersede older common-suite test-source snapshots; historical failures do not negate the current task measurements.",
+  "checks": {
+    "python3 -B tools/check_tasks.py": "WBS dependencies, states, and completion evidence: OK\n",
+    "python3 -B tools/audit_legacy_granularity.py --check": "{\"assets\": 402, \"compound_action_rows\": 0, \"hunks\": 2489, \"implementation_actions\": 15999, \"source_checks\": 2891, \"statuses\": {\"DONE\": 569, \"TODO\": 22299}, \"unassigned_sources\": 0, \"verification_actions\": 6869}\n",
+    "git diff --check": ""
+  },
+  "source_duty": {
+    "work_id": "legacy-5cad10c6f8c018a73309",
+    "path": "app/base/delegators.hpp",
+    "source_hunk": "01.002/000042",
+    "git_blob": "f615f41b4fdebbebc865e17888eadc38a0c45e58",
+    "evidence_path": "migration/tests/gtk-binding/caller-census.tar.gz",
+    "archive_member": "source/app/base/delegators.hpp",
+    "bytes": 6703,
+    "sha256": "0184dfa3748b24a770ef00e59987da84164847244ba6ab62dcaf9aad3eaf03e0",
+    "lines": "32-35; 46-48; 65-74; 128-142; 159-177",
+    "mapping": "Old raw receiver delegator dispatch and native closure disconnect/cleanup map to owned Connection and common store receiver lease across Impl invocation; no equivalent legacy lease is claimed."
+  }
+}
