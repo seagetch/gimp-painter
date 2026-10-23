@@ -1,0 +1,28 @@
+{
+  "name": "gimp:painter / painter-filter-procedure",
+  "result": "FAIL",
+  "returncode": 1,
+  "starttime": 1792173629.0930104,
+  "duration": 756.2198572158813,
+  "command": [
+    "/usr/bin/python3",
+    "/workspace/shared/gimp-painter/migration/tests/run_filter_owner_context_fixture_test.py",
+    "--",
+    "app/painter-filter-procedure",
+    "/workspace/shared/gimp-native-build/app/gimp-painter-filter-worker",
+    "/workspace/shared/gimp-painter/migration/fixtures/legacy-blinds/fixtures.tsv"
+  ],
+  "source_commit": "24eaefc68070d6ba7deb6f9ae9cdf375e5ae345d",
+  "all_passed": false,
+  "aggregate_status": "88 OK + 1 FAIL, interrupted; no final after-seal or full aggregate acceptance",
+  "logs": {
+    "failed-procedure.stdout.gz": {
+      "sha256": "2b2eb72856f664ee0d7f92a04e029668b6d4833c1eda62d0ce1fe10c169c1a58",
+      "uncompressed_sha256": "b9f5ebe6bb492420b69499f1c87697d629c6731335573e5a8d2cc33eaf0f9534"
+    },
+    "failed-procedure.stderr.gz": {
+      "sha256": "c9982f13f533ad37976d5b65b4f403bbfa24f5d486b67fb9b990125b2ccbcca7",
+      "uncompressed_sha256": "6c9905d56d318a3efa4315d714984fd2ce19b96be1180937fec56d376e7bae38"
+    }
+  }
+}
