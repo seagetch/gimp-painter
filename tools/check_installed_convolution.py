@@ -258,7 +258,7 @@ def run_case(bundle, fixture_root, case, output):
     plugins = [v for v in observed.values() if v['parent'] in helper_ids and '-run' in v['argv']]
     if acknowledged != {'READY','REOPENED_READY'} or any(not identities for phase in phases.values() for identities in phase.values()):
         errors.append('Missing two actual installed helper/plugin executions or readiness handshakes')
-    if any(v['exe'] != expected['helper'] or len(v['argv']) != 3 or v['argv'][1] != '--filter-worker-v5' for v in helpers):
+    if any(v['exe'] != expected['helper'] or len(v['argv']) != 3 or v['argv'][1] != '--filter-worker-v6' for v in helpers):
         errors.append('Unexpected helper path or protocol')
     if any(v['exe'] != expected['plugin'] for v in plugins): errors.append('Wrong installed plugin path')
     survivors = [v for v in observed.values() if observer.still_same(v)]

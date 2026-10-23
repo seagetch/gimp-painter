@@ -9,6 +9,7 @@
  */
 #include "filter-edge.hpp"
 #include "filter-edge-kernel-private.hpp"
+#include "filter-progress.hpp"
 
 #include <algorithm>
 #include <cmath>
@@ -26,7 +27,8 @@ bool filter_edge (const std::vector<std::uint8_t>& input,
                   std::size_t height,
                   const EdgeOptions& options,
                   std::atomic<bool>& cancel,
-                  std::vector<std::uint8_t>& output)
+                  std::vector<std::uint8_t>& output,
+                  const std::shared_ptr<FilterProgress>& progress)
 {
   const auto maximum = std::numeric_limits<std::size_t>::max ();
   if (width == 0 || height == 0 || width > maximum / 4 ||
@@ -49,8 +51,13 @@ bool filter_edge (const std::vector<std::uint8_t>& input,
         {
           /* Check within wide rows as well; no cancellation publication
            * depends on acquire/release because the flag carries no payload. */
-          if ((x & 255) == 0 && cancel.load (std::memory_order_relaxed))
-            return false;
+          if ((x & 255) == 0)
+            {
+              if (cancel.load (std::memory_order_relaxed)) return false;
+              if (progress)
+                progress->set_value (0.99 * (double (y) * width + x) /
+                                     (double (width) * height));
+            }
 
           const auto destination = (y * width + x) * 4;
           if (input[destination + 3] == 0)
@@ -95,6 +102,7 @@ bool filter_edge (const std::vector<std::uint8_t>& input,
   if (cancel.load (std::memory_order_relaxed))
     return false;
   output.swap (result);
+  if (progress) progress->set_value (1.0);
   return true;
 }
 

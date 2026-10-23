@@ -99,7 +99,8 @@ struct Profile {
 #endif
 bool filter_process (const FilterProcedureRequest& request, FilterRaster& input,
                      FilterRaster& output, std::atomic<bool>& cancel, const FilterProcessOptions& options,
-                     std::shared_ptr<FilterProcedureResult> outcome)
+                     std::shared_ptr<FilterProcedureResult> outcome,
+                     std::shared_ptr<FilterProgress> progress)
 {
   if (outcome) outcome->reset ();
   const auto total = request.bytes ();
@@ -119,7 +120,7 @@ bool filter_process (const FilterProcedureRequest& request, FilterRaster& input,
   Fd life_read; life_read.value = life[0]; child.lifeline.value = life[1];
   fcntl (life_read.value, F_SETFD, FD_CLOEXEC); fcntl (child.lifeline.value, F_SETFD, FD_CLOEXEC);
   const int source_fds[] = {life_read.value}, target_fds[] = {3};
-  const gchar *argv[] = {options.executable.c_str (), "--filter-worker-v5", profile.path.c_str (), nullptr};
+  const gchar *argv[] = {options.executable.c_str (), "--filter-worker-v6", profile.path.c_str (), nullptr};
   GError *error = nullptr;
   if (!g_spawn_async_with_pipes_and_fds (nullptr, argv, nullptr,
       GSpawnFlags (G_SPAWN_DO_NOT_REAP_CHILD | G_SPAWN_CLOEXEC_PIPES), group_setup, nullptr,
@@ -180,8 +181,12 @@ bool filter_process (const FilterProcedureRequest& request, FilterRaster& input,
         if (incoming.size () == FilterWire::header_size) wanted = FilterWire::header_size + FilterWire::payload_size (incoming.data ());
         if (incoming.size () == wanted) {
           const auto frame = FilterWire::decode (incoming.data (), incoming.size ());
+          /* One bounded frame per loop keeps cancellation responsive under a
+           * flood. Do not reject by arrival rate: a paused consumer can drain
+           * many legitimately rate-limited child reports in a short burst. */
           result.accept (frame);
           if (frame.type == FilterWire::Type::output) output.write (frame.offset, frame.payload.size (), frame.payload.data ());
+          else if (progress && FilterWire::is_progress (frame.type)) FilterWire::publish_progress (frame, *progress);
           incoming.clear (); wanted = FilterWire::header_size;
         }
       } else if (count == 0) { eof = true; child.output.reset (); }

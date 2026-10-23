@@ -5,6 +5,7 @@
 #include <cstring>
 #include <utility>
 #include <iostream>
+#include <thread>
 using namespace GimpPainter;
 using Disposition = FilterProcedureDisposition;
 static void rejects (const std::function<void ()>& call) {
@@ -13,7 +14,102 @@ static void rejects (const std::function<void ()>& call) {
 static void put32 (FilterWire::Frame& frame, std::size_t at, std::uint32_t value) {
   for (unsigned i = 0; i < 4; ++i) frame.payload[at + i] = std::uint8_t (value >> (8 * i));
 }
+static void progress_cases () {
+  using Event = FilterProgress::Event;
+  using Type = FilterWire::Type;
+  FilterProgress channel; FilterProgress::Snapshot s;
+  g_assert (channel.try_snapshot (s) && !s.revision && !s.active);
+  std::array<char,512> unterminated; unterminated.fill ('x');
+  channel.start (true, unterminated.data ());
+  g_assert (channel.try_snapshot (s) && s.active && s.cancellable && s.text[511] == 'x' && !s.text[512]);
+  std::array<char,513> utf; utf.fill ('x'); utf[511] = char (0xe2); utf[512] = 0;
+  channel.set_text (utf.data ());
+  g_assert (channel.try_snapshot (s) && !s.text[511]);
+  channel.set_text ("ok\xc0\xaf"); channel.set_value (2);
+  g_assert (channel.try_snapshot (s) && s.value == 1 && !std::strcmp (s.text.data (), "ok??"));
+  const auto revision = s.revision;
+  channel.set_value (std::numeric_limits<double>::quiet_NaN ());
+  channel.set_value (std::numeric_limits<double>::infinity ());
+  g_assert (channel.try_snapshot (s) && s.revision == revision && s.value == 1);
+  channel.set_value (-1); channel.pulse (7); channel.message (4, "domain", "message"); channel.end ();
+  g_assert (channel.try_snapshot (s) && !s.active && !s.cancellable && s.value == 0 && s.pulses == 7 &&
+    s.message_revision == 1 && s.message_severity == 4 && !std::strcmp (s.message_domain.data (), "domain"));
+  channel.reset (); g_assert (channel.try_snapshot (s) && !s.revision && !s.message_revision && !s.pulses);
+  std::atomic<bool> running {true};
+  std::thread worker ([&] { for (unsigned i = 0; i < 10000; ++i) channel.set_value (i / 10000.0); running = false; });
+  while (running) if (channel.try_snapshot (s)) g_assert (std::isfinite (s.value) && s.value >= 0 && s.value <= 1);
+  worker.join ();
+
+  std::vector<FilterWire::Frame> frames;
+  FilterWire::ProgressWriter writer ([&] (const FilterWire::Frame& f) { frames.push_back (f); });
+  const auto now = FilterWire::ProgressWriter::Clock::now ();
+  s = {}; s.cancellable = true; FilterProgress::copy_text (s.text, "native start");
+  writer.update (Event::start, s, now);
+  for (unsigned i = 1; i <= 10000; ++i) {
+    s.value = double (i) / 10000; s.pulses = i;
+    writer.update (Event::value, s, now); writer.update (Event::pulse, s, now);
+  }
+  FilterProgress::copy_text (s.text, "native text"); writer.update (Event::text, s, now);
+  s.message_severity = 2; FilterProgress::copy_text (s.message_domain, "plug-in");
+  FilterProgress::copy_text (s.message_text, "native message"); writer.update (Event::message, s, now);
+  g_assert (frames.size () == 1); // bounded coalescing, with final updates retained
+  writer.update (Event::end, s, now); writer.finish ();
+  g_assert (frames.size () == 6);
+  channel.reset (); FilterWire::Result result (4);
+  for (const auto& f : frames) {
+    auto bytes = FilterWire::encode (f); const auto decoded = FilterWire::decode (bytes.data (), bytes.size ());
+    result.accept (decoded); FilterWire::publish_progress (decoded, channel);
+  }
+  g_assert (channel.try_snapshot (s) && !s.active && s.value == 1 && s.pulses == 10000 &&
+    s.message_revision == 1 && !std::strcmp (s.text.data (), "native text"));
+  result.accept ({Type::output,0,{1,2,3,4}}); result.accept (FilterWire::success (4,Disposition::merged)); result.finish ();
+  rejects ([&] { result.accept (frames.front ()); });
+  {
+    FilterWire::Result r (4);
+    rejects ([&] { r.accept (frames[1]); }); // text without a start
+    r.accept (frames.front ());
+    auto duplicate = frames.front (); duplicate.offset = 2;
+    rejects ([&] { r.accept (duplicate); });
+    auto gap = frames[1]; gap.offset = 3; rejects ([&] { r.accept (gap); });
+    r.accept ({Type::output,0,{1,2,3,4}});
+    rejects ([&] { r.accept (FilterWire::success (4,Disposition::merged)); }); // active at terminal
+  }
+  for (const auto& malformed : std::vector<FilterWire::Frame> {
+      {Type::progress_start,1,{2}}, {Type::progress_start,1,{}}, {Type::progress_end,1,{0}},
+      {Type::progress_text,1,{0}}, {Type::progress_text,1,{0xc0,0xaf}},
+      {Type::progress_text,1,{0xed,0xa0,0x80}}, {Type::progress_text,1,{0xf4,0x90,0x80,0x80}},
+      {Type::progress_text,1,std::vector<std::uint8_t> (513,'x')},
+      {Type::progress_pulse,1,std::vector<std::uint8_t> (8)},
+      {Type::progress_message,1,{5,0,0,0,0,0}}, {Type::progress_message,1,{0,0,0,0,129,0}},
+      {Type::progress_message,1,{0,0,0,0,1,0}}, {Type::progress_message,1,{0,0,0,0,0,0,0xff}} })
+    rejects ([&] { FilterWire::encode (malformed); });
+  for (double value : {-0.1,1.1,std::numeric_limits<double>::infinity (),std::numeric_limits<double>::quiet_NaN ()}) {
+    auto f = frames[2]; std::uint64_t bits; std::memcpy (&bits, &value, 8);
+    for (unsigned i = 0; i < 8; ++i) f.payload[i] = std::uint8_t (bits >> (8*i));
+    rejects ([&] { FilterWire::encode (f); });
+  }
+  { // Decoder checks content even if an untrusted sender bypasses encode().
+    auto raw = FilterWire::encode (frames.front ()); raw[FilterWire::header_size] = 3;
+    rejects ([&] { FilterWire::decode (raw.data (), raw.size ()); });
+  }
+  { FilterWire::Result r (4); r.accept (frames.front ());
+    FilterWire::Frame pulses {Type::progress_pulse,2,std::vector<std::uint8_t> (8,255)}; r.accept (pulses);
+    pulses.offset = 3; rejects ([&] { r.accept (pulses); }); }
+  { FilterWire::ProgressBudget budget (now);
+    for (unsigned i = 0; i < FilterWire::ProgressBudget::burst; ++i) g_assert (budget.admit (now));
+    g_assert (!budget.admit (now));
+    for (unsigned day = 1; day <= 10000; ++day) g_assert (budget.admit (now + std::chrono::hours (24*day)));
+  }
+  { // Valid accumulated reports must survive a delayed consumer draining fast.
+    FilterWire::Result r (4); r.accept (frames.front ());
+    auto value = frames[2];
+    for (unsigned i = 2; i <= 4096; ++i) { value.offset = i; r.accept (value); }
+    r.accept ({Type::progress_end,4097,{}});
+    r.accept ({Type::output,0,{1,2,3,4}}); r.accept (FilterWire::success (4,Disposition::merged)); r.finish ();
+  }
+}
 int main () {
+  progress_cases ();
   FilterProcedureRequest req; req.width = 13; req.height = 7; req.angle = 90; req.segments = 100;
   req.orientation = -17; req.transparent = -1; req.gray = true; req.background = {{17,17,17,255}};
   const auto bytes = FilterWire::encode (FilterWire::request (req));
@@ -63,7 +159,7 @@ int main () {
   { auto f = FilterWire::request (req); put32 (f,28,2); rejects ([&] { FilterWire::request (f); }); }
   { auto f = FilterWire::request (req); put32 (f,36,7); put32 (f,40,0xffffffffu);
     rejects ([&] { FilterWire::request (f); }); }
-  for (unsigned version : {1u,2u,3u,4u}) { auto old = bytes; old[3] = '0' + version; old[4] = version; rejects ([&] { FilterWire::decode (old.data (), old.size ()); }); }
+  for (unsigned version : {1u,2u,3u,4u,5u}) { auto old = bytes; old[3] = '0' + version; old[4] = version; rejects ([&] { FilterWire::decode (old.data (), old.size ()); }); }
   for (unsigned old_size : {36u,60u,64u,88u})
     rejects ([&] { FilterWire::encode ({FilterWire::Type::request, 0, std::vector<std::uint8_t> (old_size)}); });
   FilterProcedureRequest tile; tile.procedure = FilterProcedure::small_tiles; tile.width = 67; tile.height = 66;

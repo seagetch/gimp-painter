@@ -3,6 +3,7 @@
 #define GIMP_PAINTER_FILTER_SCHEDULER_HPP
 #include "work-admission.hpp"
 #include "filter-spool.hpp"
+#include "filter-progress.hpp"
 #include <atomic>
 #include <cstddef>
 #include <cstdint>
@@ -35,6 +36,9 @@ public:
     /* Owned packed bytes, not a Babl/GEGL object. RGBA8 defaults to four;
      * normalized-double RGBA uses32. The scheduler never interprets samples. */
     std::size_t bytes_per_pixel = 4;
+    /* Owned data only. Reset after the previous worker has finished, before
+     * admission starts this generation. Callables capture the same channel. */
+    std::shared_ptr<FilterProgress> progress;
   };
   struct Snapshot
   {
@@ -86,6 +90,8 @@ public:
   std::uint64_t cache_generation () const noexcept { return cache_generation_; }
   std::uint64_t starts () const noexcept { return starts_; }
   const std::string& error () const noexcept { return error_; }
+  bool progress_snapshot (FilterProgress::Snapshot&) const noexcept;
+  double phase_fraction () const noexcept;
 private:
   struct Job;
   std::size_t next_count (std::size_t offset) const noexcept;

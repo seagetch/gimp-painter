@@ -2340,6 +2340,7 @@ static void image_close_during_strong_redo_callbacks (void) { undo_owner_lifetim
 #include "test-filter-small-tiles.inc"
 #include "test-filter-retinex.inc"
 #include "test-filter-convolution.inc"
+#include "test-filter-progress.inc"
 static void convolution_native_context (void) { gimp_test_filter_owner_context_native (gimp); }
 
 int main (int argc, char **argv)
@@ -2354,6 +2355,7 @@ int main (int argc, char **argv)
   }
   gimp = gimp_init_for_testing ();
 #define ADD(name) g_test_add_func ("/gimp-filter-layer/" #name,name)
+  ADD(progress_native_abi); ADD(progress_start_reentry); ADD(progress_real_workers); ADD(progress_worker_cancel_replace_close); ADD(progress_independent_owners);
   ADD (blinds_owner_context); ADD (blinds_owner_context_phases);
   ADD (blinds_owner_context_expansion); ADD (blinds_owner_context_retry);
   ADD (blinds_actual_old_context); ADD (blinds_actual_old_expansion);

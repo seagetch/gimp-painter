@@ -9,11 +9,14 @@ enum class FilterPoint { value_invert, max_rgb, threshold_alpha };
  * real samples are the normalized-double modern extension, never byte-oracle
  * claims. A real pixel is four native-TRC, straight doubles packed by memcpy. */
 bool filter_point_raster (FilterRaster&, FilterRaster&, std::size_t, std::size_t,
-                           FilterPoint, int argument, bool real, std::atomic<bool>&);
+                           FilterPoint, int argument, bool real, std::atomic<bool>&,
+                           const std::shared_ptr<FilterProgress>& progress = {});
 bool filter_edge_real_raster (FilterRaster&, FilterRaster&, std::size_t, std::size_t,
-                               const EdgeOptions&, std::atomic<bool>&);
+                               const EdgeOptions&, std::atomic<bool>&,
+                               const std::shared_ptr<FilterProgress>& progress = {});
 bool filter_gauss_real_raster (FilterRaster&, FilterRaster&, std::size_t, std::size_t,
-                                const GaussOptions&, std::atomic<bool>&, const FilterRasterFactory&);
+                                const GaussOptions&, std::atomic<bool>&, const FilterRasterFactory&,
+                                const std::shared_ptr<FilterProgress>& progress = {});
 /* Reuse the exact raster kernels for small vectors without file I/O. The
  * callback owns no GObject. Input cannot be written; scratch is independent. */
 using FilterNativeProcess = std::function<bool (FilterRaster&, FilterRaster&,

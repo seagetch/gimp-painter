@@ -70,7 +70,40 @@ void child () {
   if (mode == 5) { send ({FilterWire::Type::output, 4, {1,2,3,4}}); _exit (0); }
   if (mode == 6) { send (FilterWire::success (r.bytes (),disposition)); _exit (0); }
   if (mode == 7) { send ({FilterWire::Type::failure, 0, {}}); _exit (1); }
-  for (std::size_t at = 0; at < data.size (); at += FilterWire::pixel_limit) {
+  if (mode == 26) {
+    send ({FilterWire::Type::output,0,{data.data (),data.data () + FilterWire::pixel_limit}});
+    send ({FilterWire::Type::progress_start,1,{1}});
+    FilterProgress::Snapshot s; s.value = 0.5;
+    auto value = FilterWire::progress (FilterProgress::Event::value,s);
+    for (unsigned i = 2; i <= 4096; ++i) { value.offset = i; send (value); }
+    send ({FilterWire::Type::progress_end,4097,{}});
+  }
+  if (mode >= 18 && mode <= 25) {
+    FilterProgress::Snapshot snapshot; snapshot.cancellable = true;
+    FilterProgress::copy_text (snapshot.text, "Actual child progress");
+    auto start = FilterWire::progress (FilterProgress::Event::start, snapshot); start.offset = 1;
+    snapshot.value = 0.25;
+    auto value = FilterWire::progress (FilterProgress::Event::value, snapshot); value.offset = 2;
+    if (mode == 19) { send (value); _exit (0); }
+    if (mode == 20) {
+      auto bytes = FilterWire::encode (start); bytes[FilterWire::header_size+1] = 0xff;
+      write_all (1,bytes.data (),bytes.size ()); _exit (0);
+    }
+    send (start); send (value);
+    if (mode == 21) {
+      for (std::uint64_t i = 3;; ++i) { value.offset = i; send (value); }
+    }
+    if (mode == 18) {
+      snapshot.pulses = 7; auto pulse = FilterWire::progress (FilterProgress::Event::pulse, snapshot); pulse.offset = 3; send (pulse);
+      snapshot.message_severity = 1; FilterProgress::copy_text (snapshot.message_domain,"native");
+      FilterProgress::copy_text (snapshot.message_text,"reported message");
+      auto message = FilterWire::progress (FilterProgress::Event::message, snapshot); message.offset = 4; send (message);
+      std::this_thread::sleep_for (std::chrono::milliseconds (150));
+      snapshot.value = 1; value = FilterWire::progress (FilterProgress::Event::value,snapshot); value.offset = 5; send (value);
+    }
+    if (mode != 22) send ({FilterWire::Type::progress_end,mode == 18 ? 6u : 3u,{}});
+  }
+  for (std::size_t at = mode == 26 ? FilterWire::pixel_limit : 0; at < data.size (); at += FilterWire::pixel_limit) {
     const auto n = std::min (FilterWire::pixel_limit, data.size () - at);
     send ({FilterWire::Type::output, at, {data.data () + at, data.data () + at + n}});
   }
@@ -83,7 +116,9 @@ void child () {
     send (terminal); _exit (0);
   }
   if (mode == 17) { send (FilterWire::success (r.bytes (),Disposition::merged)); _exit (0); }
-  if (mode != 8) send (FilterWire::success (r.bytes (),disposition));
+  if (mode != 8 && mode != 25) send (FilterWire::success (r.bytes (),disposition));
+  if (mode == 23) send ({FilterWire::Type::progress_start,4,{1}});
+  if (mode == 24) _exit (2);
   if (mode == 9) send (FilterWire::success (r.bytes (),disposition));
   if (mode == 10) write_all (1, reinterpret_cast<const std::uint8_t*> ("x"), 1);
   if (mode == 11) _exit (2);
@@ -94,17 +129,21 @@ void child () {
 struct Raster : FilterRaster {
   std::vector<std::uint8_t> bytes;
   bool fail_flush = false;
+  bool delay_write = false;
   explicit Raster (std::size_t n) : bytes (n) {}
   std::uint64_t size () const noexcept override { return bytes.size (); }
   void read (std::uint64_t at, std::size_t n, std::uint8_t *p) override { g_assert (at+n <= size ()); std::copy_n (bytes.data () + at,n,p); }
-  void write (std::uint64_t at, std::size_t n, const std::uint8_t *p) override { g_assert (at+n <= size ()); std::copy_n (p,n,bytes.data () + at); }
+  void write (std::uint64_t at, std::size_t n, const std::uint8_t *p) override {
+    if (delay_write && !at) std::this_thread::sleep_for (std::chrono::milliseconds (250));
+    g_assert (at+n <= size ()); std::copy_n (p,n,bytes.data () + at);
+  }
   void flush () override { if (fail_flush) throw std::runtime_error ("Injected output flush failure"); }
 };
 }
 #endif
 int main (int argc, char **argv) {
 #ifndef G_OS_WIN32
-  if (argc == 3 && !std::strcmp (argv[1], "--filter-worker-v5")) child ();
+  if (argc == 3 && !std::strcmp (argv[1], "--filter-worker-v6")) child ();
   gchar *absolute = g_canonicalize_filename (argv[0], nullptr);
   gchar *directory = g_dir_make_tmp ("filter-process-test-XXXXXX", nullptr);
   g_assert (directory);
@@ -143,6 +182,41 @@ int main (int argc, char **argv) {
     request.angle = 17; bool threw = false;
     try { filter_process (request,input,output,cancel,options,outcome); } catch (const std::exception&) { threw = true; }
     g_assert (threw && outcome->disposition () == Disposition::pending); ++passed;
+  }
+  for (int mode = 18; mode <= 26; ++mode) {
+    request.angle = mode; request.raw_shadow = false; request.start_region = {};
+    auto progress = std::make_shared<FilterProgress> ();
+    std::atomic<bool> cancel {false}, observing {true}, saw_intermediate {false};
+    std::thread cancellation;
+    if (mode == 21) cancellation = std::thread ([&] {
+      std::this_thread::sleep_for (std::chrono::milliseconds (150)); cancel = true;
+    });
+    output.delay_write = mode == 26;
+    std::thread observer ([&] {
+      while (observing) {
+        FilterProgress::Snapshot s;
+        if (progress->try_snapshot (s) && s.active && s.value == 0.25) saw_intermediate = true;
+        std::this_thread::yield ();
+      }
+    });
+    bool success = false, threw = false;
+    try { success = filter_process (request,input,output,cancel,options,outcome,progress); }
+    catch (const std::exception&) { threw = true; }
+    observing = false; observer.join ();
+    if (cancellation.joinable ()) cancellation.join ();
+    output.delay_write = false;
+    if (mode == 18) {
+      FilterProgress::Snapshot s;
+      g_assert (success && !threw && saw_intermediate && output.bytes == input.bytes);
+      g_assert (progress->try_snapshot (s) && !s.active && s.value == 1 && s.pulses == 7 &&
+        s.message_revision == 1 && s.message_severity == 1 && !std::strcmp (s.message_domain.data (),"native") &&
+        !std::strcmp (s.message_text.data (),"reported message"));
+      g_assert (outcome->disposition () == Disposition::merged);
+    } else if (mode == 21) g_assert (!success && !threw && cancel && outcome->disposition () == Disposition::pending);
+    else if (mode == 26) g_assert (success && !threw && output.bytes == input.bytes);
+    else g_assert (!success && threw && outcome->disposition () == Disposition::pending);
+    GDir *dir = g_dir_open (directory,0,nullptr); g_assert (dir && !g_dir_read_name (dir)); g_dir_close (dir);
+    ++passed;
   }
   request.angle = 0; request.start_region = {}; request.raw_shadow = true;
   { std::atomic<bool> cancel {false}; bool threw = false;

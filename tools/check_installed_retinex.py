@@ -348,8 +348,8 @@ def run(command, environment, executables, fixture, evidence, output, variant):
         errors.append('Missing both initial and reopened readiness handshakes')
     if len(helpers_after_update) < 2 or len(plugins_after_update) < 2:
         errors.append('Missing two actual installed helper/native contrast-retinex -run observations after invalidation')
-    if any(len(item['argv']) != 3 or item['argv'][1] != '--filter-worker-v5' for item in helpers):
-        errors.append('Installed helper did not use the GPF5 worker entry point')
+    if any(len(item['argv']) != 3 or item['argv'][1] != '--filter-worker-v6' for item in helpers):
+        errors.append('Installed helper did not use the GPF6 worker entry point')
     all_helper_ids = {item['pid'] for item in observed.values() if Path(item['exe']).name == 'gimp-painter-filter-worker'}
     wrong = [item for item in observed.values()
              if (Path(item['exe']).name == 'gimp-painter-filter-worker' and item['exe'] != expected['helper']) or

@@ -63,7 +63,9 @@ Analytic permutations and shared-context checks are not counted as old fixtures.
 
 This is a bounded U8 nonlinear RGB/Gray route. The existing conservative 1 GiB
 memory admission, configurable spill with an 8 GiB default, disabled-swap failure, logical rather
-than physical space reservation, global latency, owner progress forwarding and
+than physical space reservation, global latency and
 Windows/macOS process gates remain explicit. A normal native suite pass is not
 a whole-application release pass. Retinex, XCF multipart, remaining procedures
 and unrelated migration gates are outside this task.
+
+Generation-scoped owner/editor progress is now covered by `filter-progress.md`.

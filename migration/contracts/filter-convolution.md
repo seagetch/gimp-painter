@@ -90,8 +90,8 @@ claims; undefined reads are not reproduced.
 
 ## Transport, storage and lifetime
 
-GPF5 / --filter-worker-v5 retains the24-byte frame header and expands the fixed
-request to344 bytes. Metadata integers and binary64 parameters are little endian.
+The Convolution checkpoint introduced GPF5 with a 344-byte request. Current
+GPF6 / --filter-worker-v6 retains that request and the 24-byte frame header. Metadata integers and binary64 parameters are little endian.
 The first88 bytes preserve prior route fields. sample_mode is at88 (0=U8,
 1/2/3=double linear/nonlinear/perceptual), alpha-alg at92, border at96, native
 pixel byte-order marker at100, divisor/offset at104/112,25 doubles at120,
@@ -127,5 +127,7 @@ malformed definitions, cancellation/replacement/close, Save/reopen/reedit/Undo,
 wire, selectors, focused sanitizers and relocated runtime results are recorded
 in `../tests/filter-convolution/acceptance.json`. Each result distinguishes
 normal, instrumented and actually installed execution. Tests run on Linux;
-Windows/macOS, owner progress forwarding, no-swap
+Windows/macOS, no-swap
 execution, arbitrary-size/global-latency and other procedures remain open.
+
+Generation-scoped owner/editor progress is now covered by `filter-progress.md`.

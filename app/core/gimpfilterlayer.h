@@ -103,6 +103,21 @@ gboolean gimp_filter_arguments_snapshot_reference (const GimpFilterArgumentsSnap
                                                    guint element, GimpFilterArgumentReference *);
 GimpFilterArgumentsSnapshot *gimp_filter_arguments_snapshot_nested (const GimpFilterArgumentsSnapshot *, guint argument);
 
+/* Transient owner-thread progress. Fixed strings and one coalesced message;
+ * neither this state nor its session token is persisted in XCF. */
+typedef struct
+{
+  guint64 generation;
+  gboolean active, cancellable;
+  gdouble value;
+  guint64 pulses, message_revision;
+  gint message_severity;
+  gchar text[513], message_text[513], message_domain[129];
+} GimpFilterLayerProgress;
+gboolean gimp_filter_layer_get_progress (GimpFilterLayer *, GimpFilterLayerProgress *);
+/* Reject an obsolete UI cancel rather than cancelling a replacement. */
+gboolean gimp_filter_layer_cancel_generation (GimpFilterLayer *, guint64 generation);
+
 void        gimp_filter_layer_mark_as_loaded (GimpFilterLayer *);
 void        gimp_filter_layer_invalidate     (GimpFilterLayer *);
 /* Stop the current generation without discarding its definition or completed

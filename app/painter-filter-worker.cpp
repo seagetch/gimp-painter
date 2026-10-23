@@ -65,7 +65,7 @@ int main (int argc, char **argv)
 #ifdef G_OS_WIN32
   return 125;
 #else
-  if (argc != 3 || std::strcmp (argv[1], "--filter-worker-v5")) return 125;
+  if (argc != 3 || std::strcmp (argv[1], "--filter-worker-v6")) return 125;
   /* Duplicate before GIMP/GEGL/plugin initialization. All ordinary diagnostics
    * (including library writes to stdout) go to stderr; descendants cannot keep
    * this protocol descriptor alive across exec. */
@@ -108,8 +108,11 @@ int main (int argc, char **argv)
       std::uint8_t trailing; ssize_t n; do { n = read (STDIN_FILENO, &trailing, 1); } while (n < 0 && errno == EINTR);
       if (n != 0) throw std::invalid_argument ("Trailing private Filter input bytes");
       input.flush (); Output output (protocol, total, request.bytes_per_pixel ()); std::atomic<bool> cancel {false};
-      disposition = run_filter_procedure (request, input, output, cancel);
+      FilterWire::ProgressWriter progress ([&] (const FilterWire::Frame& frame) { write_frame (protocol, frame); });
+      disposition = run_filter_procedure (request, input, output, cancel,
+        [&] (FilterProgress::Event event, const FilterProgress::Snapshot& state) { progress.update (event, state); });
       if (disposition == FilterProcedureDisposition::pending) throw std::runtime_error ("Private Filter procedure cancelled");
+      progress.finish ();
       output.finish ();
     }
     /* run_filter_procedure and input destruction must finish before terminal.

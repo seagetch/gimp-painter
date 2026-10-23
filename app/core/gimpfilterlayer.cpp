@@ -20,6 +20,7 @@ extern "C" {
 #include "gimpimage-undo.h"
 #include "gimpitemundo.h"
 #include "gimppickable.h"
+#include "gimpprogress.h"
 #include "gimpprojectable.h"
 #include "gegl/gimp-babl.h"
 }
@@ -50,8 +51,10 @@ extern "C" {
 #include <vector>
 using namespace GimpPainter;
 static void gimp_filter_layer_pickable_init (GimpPickableInterface *iface);
+static void gimp_filter_layer_progress_init (GimpProgressInterface *iface);
 G_DEFINE_TYPE_WITH_CODE (GimpFilterLayer, gimp_filter_layer, GIMP_TYPE_LAYER,
-                        G_IMPLEMENT_INTERFACE (GIMP_TYPE_PICKABLE, gimp_filter_layer_pickable_init))
+                        G_IMPLEMENT_INTERFACE (GIMP_TYPE_PICKABLE, gimp_filter_layer_pickable_init)
+                        G_IMPLEMENT_INTERFACE (GIMP_TYPE_PROGRESS, gimp_filter_layer_progress_init))
 struct GimpFilterLayerUndo { GimpItemUndo parent_instance; gboolean binding_failed; };
 struct GimpFilterLayerUndoClass { GimpItemUndoClass parent_class; };
 static GType gimp_filter_layer_undo_get_type ();
@@ -116,6 +119,7 @@ struct FilterImpl
   {
     native_context.reset ();
     scheduler.close ();
+    progress.active = progress.cancellable = FALSE;
     pending.close ();
     dependencies.clear ();
     graph_connections.clear ();
@@ -322,6 +326,8 @@ struct FilterImpl
     native_outcome.reset ();
     native_context.reset ();
     FilterScheduler::Request request;
+    const auto channel = std::make_shared<FilterProgress> ();
+    request.progress = channel;
     request.width = gimp_item_get_width (GIMP_ITEM (owner));
     request.height = gimp_item_get_height (GIMP_ITEM (owner));
     const bool real = real_samples ();
@@ -361,21 +367,21 @@ struct FilterImpl
                 options.edgemode >= 0 && options.edgemode <= 5)
               {
                 auto width = request.width, height = request.height;
-                request.process = [width, height, options] (const FilterScheduler::Bytes& input,
+                request.process = [width, height, options, channel] (const FilterScheduler::Bytes& input,
                                                             std::atomic<bool>& cancel,
                                                             FilterScheduler::Bytes& output) {
-                  return filter_edge (input, width, height, options, cancel, output);
+                  return filter_edge (input, width, height, options, cancel, output, channel);
                 };
                 if (spill)
-                  request.raster_process = [width, height, options] (FilterRaster& input, FilterRaster& output,
+                  request.raster_process = [width, height, options, channel] (FilterRaster& input, FilterRaster& output,
                     std::atomic<bool>& cancel, const FilterRasterFactory&) {
-                    return filter_edge_raster (input, width, height, options, cancel, output);
+                    return filter_edge_raster (input, width, height, options, cancel, output, channel);
                   };
                 if (real)
                   {
-                    FilterNativeProcess process = [width,height,options] (FilterRaster& input, FilterRaster& output,
+                    FilterNativeProcess process = [width,height,options,channel] (FilterRaster& input, FilterRaster& output,
                       std::atomic<bool>& cancel, const FilterRasterFactory&) {
-                      return filter_edge_real_raster (input,output,width,height,options,cancel);
+                      return filter_edge_real_raster (input,output,width,height,options,cancel,channel);
                     };
                     request.process = [process] (const FilterScheduler::Bytes& input, std::atomic<bool>& cancel,
                                                   FilterScheduler::Bytes& output) {
@@ -436,33 +442,34 @@ struct FilterImpl
                   request.peak_spill_bytes = std::uint64_t (request.width) * request.height * multiplier;
                 }
                 const auto width = request.width, height = request.height;
-                request.process = [width, height, options, identity] (const FilterScheduler::Bytes& input,
+                request.process = [width, height, options, identity, channel] (const FilterScheduler::Bytes& input,
                                                                       std::atomic<bool>& cancel,
                                                                       FilterScheduler::Bytes& output) {
-                  if (!identity) return filter_gauss (input, width, height, options, cancel, output);
+                  if (!identity) return filter_gauss (input, width, height, options, cancel, output, channel);
                   if (cancel.load (std::memory_order_relaxed)) return false;
                   FilterScheduler::Bytes copy (input);
                   if (cancel.load (std::memory_order_relaxed)) return false;
-                  output.swap (copy); return true;
+                  output.swap (copy); channel->set_value (1.0); return true;
                 };
                 if (spill)
-                  request.raster_process = [width, height, options, identity] (FilterRaster& input, FilterRaster& output,
+                  request.raster_process = [width, height, options, identity, channel] (FilterRaster& input, FilterRaster& output,
                     std::atomic<bool>& cancel, const FilterRasterFactory& scratch) {
-                    if (!identity) return filter_gauss_raster (input, width, height, options, cancel, output, scratch);
+                    if (!identity) return filter_gauss_raster (input, width, height, options, cancel, output, scratch, channel);
                     FilterScheduler::Bytes chunk (FilterScheduler::pixel_budget * 4);
                     for (std::uint64_t offset = 0; offset < input.size ();)
                       {
                         if (cancel.load (std::memory_order_relaxed)) return false;
                         const auto count = std::size_t (std::min (std::uint64_t (chunk.size ()),input.size () - offset));
                         input.read (offset,count,chunk.data ()); output.write (offset,count,chunk.data ()); offset += count;
+                        channel->set_value (double (offset) / double (input.size ()));
                       }
                     output.flush (); return !cancel.load (std::memory_order_relaxed);
                   };
                 if (real && !identity)
                   {
-                    FilterNativeProcess process = [width,height,options] (FilterRaster& input, FilterRaster& output,
+                    FilterNativeProcess process = [width,height,options,channel] (FilterRaster& input, FilterRaster& output,
                       std::atomic<bool>& cancel, const FilterRasterFactory& scratch) {
-                      return filter_gauss_real_raster (input,output,width,height,options,cancel,scratch);
+                      return filter_gauss_real_raster (input,output,width,height,options,cancel,scratch,channel);
                     };
                     request.process = [process] (const FilterScheduler::Bytes& input, std::atomic<bool>& cancel,
                                                   FilterScheduler::Bytes& output) {
@@ -482,9 +489,9 @@ struct FilterImpl
           procedure == "plug-in-max-rgb" ? FilterPoint::max_rgb : FilterPoint::threshold_alpha;
         const auto argument = args->size () == 4 ? g_value_get_int (args->at (3)) : 0;
         const auto width = request.width, height = request.height;
-        FilterNativeProcess process = [width,height,operation,argument,real] (FilterRaster& input, FilterRaster& output,
+        FilterNativeProcess process = [width,height,operation,argument,real,channel] (FilterRaster& input, FilterRaster& output,
           std::atomic<bool>& cancel, const FilterRasterFactory&) {
-          return filter_point_raster (input,output,width,height,operation,argument,real,cancel);
+          return filter_point_raster (input,output,width,height,operation,argument,real,cancel,channel);
         };
         request.process = [process] (const FilterScheduler::Bytes& input, std::atomic<bool>& cancel,
                                       FilterScheduler::Bytes& output) {
@@ -593,11 +600,12 @@ struct FilterImpl
     request.peak_spill_bytes = raster * 5 + owner_context_bytes + child_mask_bytes;
     const auto peak = owner_context_bytes + std::uint64_t (256) * 1024 * 1024 + descriptor->scratch_bytes ();
     request.peak_bytes = std::size_t (std::min (peak, std::uint64_t (std::numeric_limits<std::size_t>::max ())));
-    request.raster_process = [descriptor,options,outcome] (FilterRaster& input, FilterRaster& output,
+    const auto channel = request.progress;
+    request.raster_process = [descriptor,options,outcome,channel] (FilterRaster& input, FilterRaster& output,
       std::atomic<bool>& cancel, const FilterRasterFactory&) {
         auto resolved = *options;
         resolved.executable = filter_worker_path ();
-        return filter_process (*descriptor, input, output, cancel, resolved, outcome);
+        return filter_process (*descriptor, input, output, cancel, resolved, outcome, channel);
       };
     native_procedure = std::move (descriptor); native_process_options = std::move (options);
     native_outcome = std::move (outcome);
@@ -883,7 +891,75 @@ struct FilterImpl
         if (image) gimp_image_flush (GIMP_IMAGE (image.get ()));
       }
   }
+  bool progress_current () const noexcept
+  {
+    return progress.active && progress_generation == scheduler.generation () &&
+           scheduler.state () != FilterScheduler::State::closed;
+  }
+  void progress_changed ()
+  { g_signal_emit_by_name (owner, "filter-progress-changed"); }
+  void sync_progress ()
+  {
+    const auto token = scheduler.generation ();
+    const auto phase = scheduler.state ();
+    const bool active = phase == FilterScheduler::State::preparing ||
+                        phase == FilterScheduler::State::running ||
+                        phase == FilterScheduler::State::importing;
+    if (!active)
+      {
+        if (progress.active)
+          {
+            progress.active = progress.cancellable = false;
+            if (progress_generation == token && phase == FilterScheduler::State::clean)
+              progress.value = 1.0;
+            progress_changed ();
+          }
+        return;
+      }
+    const bool starting = !progress_current ();
+    const auto now = g_get_monotonic_time ();
+    if (!starting && phase == progress_phase && now < progress_next_update) return;
+    if (starting)
+      {
+        progress = {};
+        progress_generation = token;
+        progress.active = progress.cancellable = true;
+        FilterProgress::copy_text (progress.text, procedure.c_str ());
+      }
+    progress_phase = phase;
+    progress_next_update = now + 100 * G_TIME_SPAN_MILLISECOND;
+    FilterProgress::Snapshot worker;
+    const bool sampled = scheduler.progress_snapshot (worker);
+    if (sampled)
+      {
+        if (worker.text[0]) progress.text = worker.text;
+        progress.pulses = worker.pulses;
+        progress.message_revision = worker.message_revision;
+        progress.message_text = worker.message_text;
+        progress.message_domain = worker.message_domain;
+        progress.message_severity = worker.message_severity;
+      }
+    // Preparation/import are real bounded copy work. The middle interval is
+    // the native kernel or isolated PDB's own fraction, never elapsed time.
+    const double fraction = phase == FilterScheduler::State::preparing ? 0.15 * scheduler.phase_fraction () :
+      phase == FilterScheduler::State::importing ? 0.85 + 0.15 * scheduler.phase_fraction () :
+      sampled ? 0.15 + 0.70 * worker.value : progress.value;
+    progress.value = std::max (progress.value, fraction);
+    progress_changed (); // one bounded snapshot notification; observers may reenter
+  }
   bool step ()
+  {
+    if (dispatching) return scheduler.state () != FilterScheduler::State::closed;
+    struct Guard { bool& flag; Guard (bool& flag) : flag (flag) { flag = true; } ~Guard () { flag = false; } } guard (dispatching);
+    const auto token = scheduler.generation ();
+    const auto started = g_get_monotonic_time ();
+    bool again = step_work ();
+    if (scheduler.state () != FilterScheduler::State::closed) sync_progress ();
+    maximum_quantum_us = std::max (maximum_quantum_us, g_get_monotonic_time () - started);
+    if (scheduler.state () == FilterScheduler::State::closed) return false;
+    return again || token != scheduler.generation ();
+  }
+  bool step_work ()
   {
     /* Include every early return, callback and local destructor. Recording
      * before state-change emission hid synchronous observer/teardown cost. The
@@ -1104,6 +1180,11 @@ struct FilterImpl
   std::shared_ptr<const FilterArguments> args;
   std::uint64_t definition_revision = 0;
   FilterScheduler scheduler;
+  FilterProgress::Snapshot progress;
+  std::uint64_t progress_generation = 0;
+  FilterScheduler::State progress_phase = FilterScheduler::State::clean;
+  gint64 progress_next_update = 0;
+  bool dispatching = false;
   std::shared_ptr<FilterProcedureRequest> native_procedure;
   std::shared_ptr<FilterProcessOptions> native_process_options;
   std::shared_ptr<FilterProcedureResult> native_outcome;
@@ -1359,6 +1440,8 @@ static void gimp_filter_layer_class_init (GimpFilterLayerClass *klass)
   GIMP_ITEM_CLASS (klass)->is_content_locked = content_locked;
   GIMP_VIEWABLE_CLASS (klass)->default_icon_name = "gimp-gegl";
   GIMP_VIEWABLE_CLASS (klass)->default_name = "Filter Layer";
+  g_signal_new ("filter-progress-changed", G_TYPE_FROM_CLASS (klass), G_SIGNAL_RUN_LAST,
+                0, nullptr, nullptr, nullptr, G_TYPE_NONE, 0);
   g_signal_new ("filter-state-changed", G_TYPE_FROM_CLASS (klass), G_SIGNAL_RUN_LAST,
                 0, nullptr, nullptr, nullptr, G_TYPE_NONE, 0);
 }
@@ -1369,6 +1452,136 @@ static void gimp_filter_layer_init (GimpFilterLayer *layer)
   });
 }
 static void gimp_filter_layer_pickable_init (GimpPickableInterface *iface) { iface->get_opacity_at = opacity_at; }
+namespace {
+template<class Result, class F>
+Result filter_progress_call (GimpProgress *value, Result fallback, F function) noexcept
+{
+  return boundary<Result> (nullptr, fallback, [&] {
+    return BindingStore::require (G_OBJECT (value)).with<FilterSlot> (function);
+  });
+}
+template<class F> void filter_progress_call (GimpProgress *value, F function) noexcept
+{
+  boundary_void (nullptr, [&] {
+    BindingStore::require (G_OBJECT (value)).with<FilterSlot> (function);
+  });
+}
+GimpProgress *filter_progress_start (GimpProgress *value, gboolean cancellable, const gchar *message) noexcept
+{
+  return filter_progress_call<GimpProgress *> (value, nullptr, [=] (FilterImpl& impl) -> GimpProgress * {
+    if (impl.progress_current ()) return nullptr;
+    const auto token = impl.scheduler.generation ();
+    impl.progress = {};
+    impl.progress_generation = token;
+    impl.progress.active = true;
+    impl.progress.cancellable = cancellable;
+    FilterProgress::copy_text (impl.progress.text, message);
+    impl.progress_changed ();
+    return impl.progress_current () && impl.progress_generation == token ? value : nullptr;
+  });
+}
+void filter_progress_end (GimpProgress *value) noexcept
+{
+  filter_progress_call (value, [] (FilterImpl& impl) {
+    if (!impl.progress_current ()) return;
+    impl.progress.active = impl.progress.cancellable = false;
+    impl.progress_changed ();
+  });
+}
+gboolean filter_progress_active (GimpProgress *value) noexcept
+{
+  return boundary<gboolean> (nullptr, FALSE, [&] {
+    return BindingStore::require (G_OBJECT (value)).read<FilterSlot> ([] (const FilterImpl& impl) -> gboolean {
+      return impl.progress_current ();
+    });
+  });
+}
+void filter_progress_text (GimpProgress *value, const gchar *text) noexcept
+{
+  filter_progress_call (value, [=] (FilterImpl& impl) {
+    if (!impl.progress_current ()) return;
+    FilterProgress::copy_text (impl.progress.text, text);
+    impl.progress_changed ();
+  });
+}
+void filter_progress_value (GimpProgress *value, gdouble fraction) noexcept
+{
+  if (!std::isfinite (fraction)) return;
+  filter_progress_call (value, [=] (FilterImpl& impl) {
+    if (!impl.progress_current ()) return;
+    impl.progress.value = std::max (0.0, std::min (1.0, fraction));
+    impl.progress_changed ();
+  });
+}
+gdouble filter_progress_get_value (GimpProgress *value) noexcept
+{
+  return boundary<gdouble> (nullptr, 0.0, [&] {
+    return BindingStore::require (G_OBJECT (value)).read<FilterSlot> ([] (const FilterImpl& impl) {
+      return impl.progress_current () ? impl.progress.value : 0.0;
+    });
+  });
+}
+void filter_progress_pulse (GimpProgress *value) noexcept
+{
+  filter_progress_call (value, [] (FilterImpl& impl) {
+    if (!impl.progress_current ()) return;
+    if (impl.progress.pulses != G_MAXUINT64) ++impl.progress.pulses;
+    impl.progress_changed ();
+  });
+}
+gboolean filter_progress_message (GimpProgress *value, Gimp *, GimpMessageSeverity severity,
+                                   const gchar *domain, const gchar *message) noexcept
+{
+  return filter_progress_call<gboolean> (value, FALSE, [=] (FilterImpl& impl) -> gboolean {
+    if (!impl.progress_current () || severity < 0 || severity > GIMP_MESSAGE_BUG_CRITICAL) return FALSE;
+    impl.progress.message_severity = severity;
+    FilterProgress::copy_text (impl.progress.message_domain, domain);
+    FilterProgress::copy_text (impl.progress.message_text, message);
+    if (impl.progress.message_revision != G_MAXUINT64) ++impl.progress.message_revision;
+    impl.progress_changed ();
+    return TRUE;
+  });
+}
+void filter_progress_cancel (GimpProgress *value) noexcept
+{
+  filter_progress_call (value, [] (FilterImpl& impl) {
+    if (impl.progress_current () && impl.progress.cancellable)
+      gimp_filter_layer_cancel_generation (impl.owner, impl.progress_generation);
+  });
+}
+}
+static void gimp_filter_layer_progress_init (GimpProgressInterface *iface)
+{
+  iface->start = filter_progress_start;
+  iface->end = filter_progress_end;
+  iface->is_active = filter_progress_active;
+  iface->set_text = filter_progress_text;
+  iface->set_value = filter_progress_value;
+  iface->get_value = filter_progress_get_value;
+  iface->pulse = filter_progress_pulse;
+  iface->message = filter_progress_message;
+  iface->cancel = filter_progress_cancel;
+}
+gboolean gimp_filter_layer_get_progress (GimpFilterLayer *layer, GimpFilterLayerProgress *result)
+{
+  if (!result) return FALSE;
+  *result = {};
+  return boundary<gboolean> (nullptr, FALSE, [&] {
+    return BindingStore::require (G_OBJECT (layer)).read<FilterSlot> ([&] (const FilterImpl& impl) -> gboolean {
+      result->generation = impl.progress_generation;
+      result->active = impl.progress_current ();
+      result->cancellable = result->active && impl.progress.cancellable;
+      result->value = impl.progress.value;
+      result->pulses = impl.progress.pulses;
+      result->message_revision = impl.progress.message_revision;
+      result->message_severity = impl.progress.message_severity;
+      std::memcpy (result->text, impl.progress.text.data (), sizeof (result->text));
+      std::memcpy (result->message_text, impl.progress.message_text.data (), sizeof (result->message_text));
+      std::memcpy (result->message_domain, impl.progress.message_domain.data (), sizeof (result->message_domain));
+      return TRUE;
+    });
+  });
+}
 GimpLayer *gimp_filter_layer_new (GimpImage *image, gint width, gint height, const gchar *name,
                                  gdouble opacity, GimpLayerMode mode)
 {
@@ -1476,23 +1689,24 @@ void gimp_filter_layer_mark_as_loaded (GimpFilterLayer *layer)
     impl.native_context.reset (); impl.scheduler.mark_loaded (); impl.staged.reset (); }); }); }
 void gimp_filter_layer_invalidate (GimpFilterLayer *layer)
 { boundary_void (nullptr, [&] { BindingStore::require (G_OBJECT (layer)).with<FilterSlot> ([] (FilterImpl& impl) { impl.invalidate (); }); }); }
-void gimp_filter_layer_cancel (GimpFilterLayer *layer)
+gboolean gimp_filter_layer_cancel_generation (GimpFilterLayer *layer, guint64 generation)
 {
-  boundary_void (nullptr, [&] {
-    if (!GIMP_IS_FILTER_LAYER (layer)) return;
-    BindingStore::require (G_OBJECT (layer)).with<FilterSlot> ([] (FilterImpl& impl) {
-      /* Detach before callbacks can replace or close this generation. The
-       * completed drawable buffer is independent from the staged import. */
+  return boundary<gboolean> (nullptr, FALSE, [&] () -> gboolean {
+    if (!GIMP_IS_FILTER_LAYER (layer)) return FALSE;
+    return BindingStore::require (G_OBJECT (layer)).with<FilterSlot> ([&] (FilterImpl& impl) -> gboolean {
+      if (generation != impl.scheduler.generation ()) return FALSE;
       auto retired = std::move (impl.staged);
       impl.native_context.reset ();
       impl.scheduler.reject ("Filter execution cancelled");
       impl.schedule ();
       g_signal_emit_by_name (impl.owner, "filter-state-changed");
-      /* No further Impl access: signal or retired-buffer destruction may
-       * synchronously close the owner or install a replacement definition. */
+      // No further Impl access: notification/destruction may replace or close.
+      return TRUE;
     });
   });
 }
+void gimp_filter_layer_cancel (GimpFilterLayer *layer)
+{ gimp_filter_layer_cancel_generation (layer, gimp_filter_layer_get_generation (layer)); }
 
 gboolean gimp_filter_layer_get_argument_reference (GimpFilterLayer *layer, guint argument, guint element,
                                                   GType *type, gint64 *id, gboolean *expired)

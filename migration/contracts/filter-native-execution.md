@@ -1,8 +1,11 @@
 # Filter execution inventory, point mappings and native precision
 
 This checkpoint extends the independent FilterLayer. It does not complete the
-108-row general procedure inventory, external plug-in isolation, GimpProgress,
+108-row general procedure inventory, external plug-in isolation
 or the latency acceptance gates in tasks 15–18.
+
+Generation-scoped native/isolated progress and the GTK owner surface are covered
+by the separate `filter-progress.md` checkpoint.
 
 ## What the original selector actually offered
 

@@ -16,6 +16,7 @@ extern "C" {
 #include "core/gimpclonelayer.h"
 #include "core/gimpcontext.h"
 #include "core/gimpfilterlayer.h"
+#include "core/gimpprogress.h"
 #include "core/gimpimage.h"
 #include "core/gimpimage-undo.h"
 #include "operations/layer-modes-legacy/gimpoperationpainterlegacy.h"
@@ -89,6 +90,10 @@ struct PainterLayerDialog
   GtkWidget *horizontal_flag = nullptr;
   GtkWidget *vertical_flag = nullptr;
   GtkWidget *status = nullptr;
+  GtkWidget *progress = nullptr;
+  GtkWidget *cancel_filter = nullptr;
+  guint64 progress_generation = 0;
+  guint64 status_revision = 0;
   GtkWidget *error = nullptr;
   gint       row = 0;
   std::vector<Connection> connections;
@@ -516,6 +521,13 @@ painter_filter_status (PainterLayerDialog *state,
   gchar             *valid;
   const gchar       *text;
   if (state->closed) return;
+  const auto revision = ++state->status_revision;
+  const auto generation = gimp_filter_layer_get_generation (layer);
+  const auto current_render = [&] {
+    return !state->closed && revision == state->status_revision &&
+           generation == gimp_filter_layer_get_generation (layer);
+  };
+  state->progress_generation = 0;
   error = gimp_filter_layer_dup_error (layer);
   switch (gimp_filter_layer_get_state (layer))
     {
@@ -529,6 +541,24 @@ painter_filter_status (PainterLayerDialog *state,
   gtk_label_set_text (GTK_LABEL (status.get ()), valid);
   g_free (valid);
   g_free (error);
+  if (!current_render () || !state->progress) return;
+  GimpFilterLayerProgress current {};
+  gimp_filter_layer_get_progress (layer, &current);
+  auto progress = ObjectRef<GObject>::retain (G_OBJECT (state->progress));
+  auto cancel = ObjectRef<GObject>::retain (G_OBJECT (state->cancel_filter));
+  gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (progress.get ()), current.value);
+  if (!current_render ()) return;
+  gtk_progress_bar_set_text (GTK_PROGRESS_BAR (progress.get ()), current.text);
+  if (!current_render ()) return;
+  gtk_widget_set_visible (GTK_WIDGET (progress.get ()), current.active);
+  if (!current_render ()) return;
+  gtk_widget_set_sensitive (GTK_WIDGET (cancel.get ()), current.active && current.cancellable);
+  if (!current_render ()) return;
+  gtk_widget_set_visible (GTK_WIDGET (cancel.get ()), current.active);
+  if (!current_render ()) return;
+  if (current.active && current.message_revision)
+    gtk_label_set_text (GTK_LABEL (status.get ()), current.message_text);
+  if (current_render ()) state->progress_generation = current.active ? current.generation : 0;
 }
 
 static void
@@ -1283,6 +1313,16 @@ painter_filter_status_received (GimpFilterLayer *layer, gpointer data)
 }
 
 static void
+painter_filter_cancel_received (GtkButton *, gpointer data)
+{
+  painter_dialog_dispatch (data, [] (PainterLayerDialog& state) {
+    auto layer = ObjectRef<GObject>::adopt (static_cast<GObject *> (g_weak_ref_get (&state.layer)));
+    if (layer && state.progress_generation == gimp_filter_layer_get_generation (GIMP_FILTER_LAYER (layer.get ())))
+      gimp_progress_cancel (GIMP_PROGRESS (layer.get ()));
+  });
+}
+
+static void
 painter_filter_response_received (GtkDialog *, gint response, gpointer data)
 {
   painter_dialog_dispatch (data, [&] (PainterLayerDialog& state) {
@@ -1386,12 +1426,20 @@ painter_filter_layer_dialog_new (GimpImage   *image,
       gtk_label_set_line_wrap (GTK_LABEL (state->status), TRUE);
       gtk_label_set_max_width_chars (GTK_LABEL (state->status), 60);
       gtk_label_set_xalign (GTK_LABEL (state->status), 0);
+      state->progress = painter_dialog_field (state, NULL, gtk_progress_bar_new (), "painter-filter-progress");
+      gtk_progress_bar_set_show_text (GTK_PROGRESS_BAR (state->progress), TRUE);
+      gtk_widget_set_no_show_all (state->progress, TRUE);
+      state->cancel_filter = painter_dialog_field (state, NULL,
+        gtk_button_new_with_mnemonic (_("_Cancel Update")), "painter-filter-cancel");
+      gtk_widget_set_no_show_all (state->cancel_filter, TRUE);
+      painter_dialog_connect (state, state->cancel_filter, "clicked", G_CALLBACK (painter_filter_cancel_received));
       gtk_widget_show_all (state->grid);
       if (layer)
         {
           painter_filter_load (state, GIMP_FILTER_LAYER (layer));
           painter_filter_details (state, GIMP_FILTER_LAYER (layer));
           painter_dialog_connect (state, layer, "filter-state-changed", G_CALLBACK (painter_filter_status_received));
+          painter_dialog_connect (state, layer, "filter-progress-changed", G_CALLBACK (painter_filter_status_received));
         }
       else
         gtk_combo_box_set_active_id (GTK_COMBO_BOX (state->choice), "keep");

@@ -767,6 +767,7 @@ static void dialog_factory_reentry (void)
 }
 
 #include "test-isolated-filter-editors.inc"
+#include "test-filter-progress-ui.inc"
 
 int main (int argc, char **argv)
 {
@@ -777,6 +778,7 @@ int main (int argc, char **argv)
   gimp = gimp_init_for_testing ();
   parent = gtk_window_new (GTK_WINDOW_TOPLEVEL); g_object_ref_sink (parent);
 #define ADD(name) g_test_add_func ("/painter-layer-ui/" #name, name)
+  ADD (filter_progress_widgets); ADD (filter_progress_running_cancel); ADD (filter_progress_render_reentry);
   ADD (clone_creation_source_reentry); ADD (clone_creation_and_parent); ADD (clone_edit_cancel_undo_live); ADD (clone_deleted_source_and_cycle);
   ADD (filter_create_cancel_and_validate); ADD (filter_preserve_unknown_and_undo); ADD (filter_preserve_float_shape);
   ADD (dialog_lifetimes); ADD (action_enablement);
