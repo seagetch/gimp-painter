@@ -69,6 +69,43 @@ void references ()
   g_assert_false (static_cast<bool> (empty_copy));
 }
 
+void retain_factory ()
+{
+  auto empty = ObjectRef<GObject>::retain (nullptr);
+  g_assert_null (empty.get ());
+  g_assert_false (static_cast<bool> (empty));
+  empty.reset ();
+
+  for (GType type : {G_TYPE_OBJECT, G_TYPE_INITIALLY_UNOWNED})
+    {
+      int destroyed = 0;
+      auto *raw = G_OBJECT (g_object_new (type, nullptr));
+      const bool was_floating = g_object_is_floating (raw);
+      g_object_weak_ref (raw, weak_notify, &destroyed);
+      g_assert_cmpuint (raw->ref_count, ==, 1);
+
+      auto retained = ObjectRef<GObject>::retain (raw);
+      g_assert_true (retained.get () == raw);
+      g_assert_cmpuint (raw->ref_count, ==, 2);
+      g_assert_cmpint (g_object_is_floating (raw), ==, was_floating);
+      // Retain never consumes a floating reference. The original caller can
+      // sink its own reference afterward without acquiring a third one.
+      if (was_floating)
+        {
+          g_object_ref_sink (raw);
+          g_assert_false (g_object_is_floating (raw));
+          g_assert_cmpuint (raw->ref_count, ==, 2);
+        }
+      g_object_unref (raw);
+      g_assert_cmpint (destroyed, ==, 0);
+      g_assert_cmpuint (retained.get ()->ref_count, ==, 1);
+      retained.reset ();
+      g_assert_cmpint (destroyed, ==, 1);
+      retained.reset ();
+      g_assert_cmpint (destroyed, ==, 1);
+    }
+}
+
 void floating ()
 {
   int destroyed = 0;
@@ -272,6 +309,7 @@ void painter_test_register ()
   painter_test_register_reentry ();
   painter_test_register_hierarchy ();
   g_test_add_func ("/painter/ref/copy-move-adopt-retain", references);
+  g_test_add_func ("/painter/ref/retain-factory", retain_factory);
   g_test_add_func ("/painter/ref/floating-sink", floating);
   g_test_add_func ("/painter/ref/weak", weak_handles);
   g_test_add_func ("/painter/store/lifecycle", store_lifetime);
