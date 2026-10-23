@@ -1,0 +1,20 @@
+{
+  "scope": "new float subclass only; shared generic and historical byte code unchanged; primary build not whole-HEAD clean",
+  "before_fix_revision": "cb28d7efcf193e7ccc5fb32a2227c2ecd133b274",
+  "before_fix_float_source_sha256": "104ada47ea008d0282e9de29df9ea5945042c213366c988918ef6175bc7d8551",
+  "before_fix_test_sha256": "22b4a7ace8d33c0005d7e1115ba650f2e2b249476d99a8847a35055ffea3da94",
+  "before_fix_result": "DST IN source-only opacity0 red: expected0.234567001 got0",
+  "endpoint_graphs": 162,
+  "normal_tests": 12,
+  "normal_exit": 0,
+  "focused_sanitizer_exit": 0,
+  "owned_source_sha256": {
+    "app/operations/layer-modes-legacy/gimpoperationpainterfloat.c": "d5e8d19b84d1671f7898be135340d9b9549b91fb6a91372f4b6239e1c8fe8781",
+    "app/tests/test-painter-layer-modes.c": "f789a7003f959c12a73f5323b0957e65d921e04e13df9b4617a633ab1bb3a695",
+    "app/tests/test-painter-float-source-extent.inc": "f219b66321ee328e8b11f84e17ee992939423ee33b831b26169e5f7b87df9945"
+  },
+  "unchanged_generic_and_byte_sha256": {
+    "app/operations/layer-modes/gimpoperationlayermode.c": "d264b13dbf3192325e292a6ad7435879a390129422b05732acf4ac3a0e354bf1",
+    "app/operations/layer-modes-legacy/gimpoperationpainterlegacy.c": "813d3ae4f4eec7fd37bda4b6fbed085bf92689cd3f923d16bbc99bc79349dd28"
+  }
+}

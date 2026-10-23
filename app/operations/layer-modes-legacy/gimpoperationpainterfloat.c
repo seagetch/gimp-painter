@@ -7,6 +7,11 @@
 #include "gimpoperationpainterfloat.h"
 #include "gimppainterfloatkernel.h"
 static void prepare (GeglOperation *operation);
+static GeglRectangle bounding_box (GeglOperation *operation);
+static gboolean parent_process (GeglOperation *operation,
+                                GeglOperationContext *context,
+                                const gchar *output_property,
+                                const GeglRectangle *result, gint level);
 static gboolean process (GeglOperation *operation, void *input, void *aux,
                          void *mask, void *output, glong samples,
                          const GeglRectangle *roi, gint level);
@@ -31,6 +36,8 @@ static void gimp_operation_painter_float_class_init (GimpOperationPainterFloatCl
   gegl_operation_class_set_keys (operation, "name", "gimp:painter-float-mode",
       "description", "Explicit Painter continuous nonlinear float modes", NULL);
   operation->prepare = prepare;
+  operation->get_bounding_box = bounding_box;
+  layer->parent_process = parent_process;
   layer->process = process;
   layer->get_affected_region = affected;
 }
@@ -45,6 +52,44 @@ static void prepare (GeglOperation *operation)
   GEGL_OPERATION_CLASS (gimp_operation_painter_float_parent_class)->prepare (operation);
   extent = gegl_operation_source_get_bounding_box (operation, "aux");
   self->source_extent = extent ? *extent : *GEGL_RECTANGLE (0, 0, 0, 0);
+}
+/* Opacity/mask do not remove source coverage for these explicit semantics:
+ * swapped DST modes return source at zero weight, and bottom initialization
+ * retains source RGB even when alpha is zero.  Generic layer-mode bounding-box
+ * and empty-input shortcuts assume otherwise.  Keep this exception local to
+ * the opt-in float operation; historical byte and ordinary modes are untouched. */
+static GeglRectangle bounding_box (GeglOperation *operation)
+{
+  const GeglRectangle *input = gegl_operation_source_get_bounding_box (operation, "input");
+  const GeglRectangle *source = gegl_operation_source_get_bounding_box (operation, "aux");
+  GeglRectangle result = { 0, 0, 0, 0 };
+  if (input) result = *input;
+  if (source) gegl_rectangle_bounding_box (&result, &result, source);
+  return result;
+}
+static gboolean parent_process (GeglOperation *operation,
+                                GeglOperationContext *context,
+                                const gchar *output_property,
+                                const GeglRectangle *result, gint level)
+{
+  GObject *input = gegl_operation_context_get_object (context, "input");
+  GObject *aux = gegl_operation_context_get_object (context, "aux");
+
+  /* The inherited outer wrapper already applies effective opacity and the
+   * out-of-ROI mask rule.  Go to the actual point composer without the generic
+   * layer-mode's invalid empty-input/zero-opacity early return.  Supply empty
+   * buffers exactly as the generic path does before its point-composer call. */
+  if (!input || !aux)
+    {
+      GObject *empty = G_OBJECT (gegl_buffer_new (NULL, NULL));
+      if (!input) gegl_operation_context_set_object (context, "input", empty);
+      if (!aux) gegl_operation_context_set_object (context, "aux", empty);
+      if (!input && !aux) gegl_object_set_has_forked (empty);
+      g_object_unref (empty);
+    }
+  return GEGL_OPERATION_CLASS (g_type_class_peek_parent (
+      gimp_operation_painter_float_parent_class))->process (
+          operation, context, output_property, result, level);
 }
 static float coverage (float x)
 { return !isfinite (x) || x <= 0 ? 0 : x >= 1 ? 1 : x; }
