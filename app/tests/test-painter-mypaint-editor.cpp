@@ -23,6 +23,7 @@ extern "C" {
 #include "core/gimptagged.h"
 #include "core/gimptoolinfo.h"
 #include "config/gimpcoreconfig.h"
+#include "config/gimprc.h"
 #include "widgets/gimpaction.h"
 #include "widgets/gimpactiongroup.h"
 #include "widgets/gimpactionfactory.h"
@@ -417,6 +418,7 @@ struct BoundaryBrushes
   ObjectRef<GimpPainterMybrushOptions> shared_options;
   ObjectRef<GimpPainterMybrush> saved_selection;
   gchar *saved_json = nullptr;
+  gchar *saved_name = nullptr;
 
   BoundaryBrushes ()
     : container (gimp_data_factory_get_container (gimp->painter_mybrush_factory))
@@ -435,6 +437,8 @@ struct BoundaryBrushes
     GError *error = nullptr;
     saved_json = gimp_painter_mybrush_options_dup_json (shared_options.get (), &error);
     g_assert_no_error (error); g_assert_nonnull (saved_json);
+    saved_name = gimp_painter_mybrush_options_dup_draft_name (shared_options.get (), &error);
+    g_assert_no_error (error); g_assert_nonnull (saved_name);
     auto a = first.snapshot (); a.set_base_value (BRUSH_OPAQUE, .217); first.replace (a);
     auto b = second.snapshot (); b.set_base_value (BRUSH_OPAQUE, .683); second.replace (b);
     // The real factory's tag cache requests an identifier on insertion. Give
@@ -457,7 +461,11 @@ struct BoundaryBrushes
     g_assert_true (gimp_painter_mybrush_options_set_json (shared_options.get (),
                                                        saved_json, &error));
     g_assert_no_error (error);
+    g_assert_true (gimp_painter_mybrush_options_set_draft_name (
+      shared_options.get (), saved_name, &error));
+    g_assert_no_error (error);
     g_free (saved_json);
+    g_free (saved_name);
     for (auto *brush : {added.get (), second.get (), first.get ()})
       if (gimp_container_have (container, GIMP_OBJECT (brush)))
         gimp_container_remove (container, GIMP_OBJECT (brush));
@@ -617,6 +625,313 @@ static void factory_membership_context_lifetime_boundary ()
   g_assert_false (gimp_painter_mybrush_editor_preview_pending (editor.widget));
 }
 
+static void draft_name_history_save_workflow ()
+{
+  /* Configure the isolated save location before creating test resources or
+   * editors: path changes refresh the entire native factory synchronously. */
+  GError *error = nullptr;
+  String directory (g_dir_make_tmp ("painter-draft-name-XXXXXX", &error));
+  g_assert_no_error (error); g_assert_nonnull (directory.get ());
+  gchar *old_search = nullptr, *old_writable = nullptr;
+  g_object_get (gimp->config, "painter-mypaint-brush-path", &old_search,
+                "painter-mypaint-brush-path-writable", &old_writable, nullptr);
+  String search (g_strconcat (directory.get (), G_SEARCHPATH_SEPARATOR_S, old_search, nullptr));
+  g_object_set (gimp->config, "painter-mypaint-brush-path", search.get (),
+                "painter-mypaint-brush-path-writable", directory.get (), nullptr);
+  BoundaryBrushes resources;
+  auto context = ObjectRef<GObject>::adopt (
+    G_OBJECT (gimp_context_new (gimp, "Draft name workflow", nullptr)));
+  gimp_context_set_painter_mybrush (GIMP_CONTEXT (context.get ()), resources.first.get ());
+  Editor editor (false, GIMP_CONTEXT (context.get ()));
+  Editor peer (true, GIMP_CONTEXT (editor.model.get ()));
+  const std::string source_name = gimp_object_get_name (resources.first.get ());
+  const auto source_json = resources.first.snapshot ().encode ();
+  const auto second_json = resources.second.snapshot ().encode ();
+  const int count = gimp_container_get_n_children (resources.container);
+  const char *pending_name = "Painter Pending Name \316\261";
+  auto *name = GTK_ENTRY (editor.get ("painter-brush-name"));
+  g_assert_true (gtk_editable_get_editable (GTK_EDITABLE (name)));
+  editor.preview (); peer.preview ();
+  const auto preview_revision = gimp_painter_mybrush_editor_preview_revision (editor.widget);
+  const auto peer_revision = gimp_painter_mybrush_editor_preview_revision (peer.widget);
+  guint settings_changed = 0;
+  auto handler = g_signal_connect (editor.model.get (), "settings-changed",
+    G_CALLBACK (+[](GimpPainterMybrushOptions *, gpointer p) { ++*static_cast<guint *> (p); }),
+    &settings_changed);
+  gtk_entry_set_text (name, pending_name);
+  g_assert_cmpuint (settings_changed, ==, 0);
+  g_assert_false (gimp_painter_mybrush_editor_preview_pending (editor.widget));
+  g_assert_false (gimp_painter_mybrush_editor_preview_pending (peer.widget));
+  g_assert_cmpuint (gimp_painter_mybrush_editor_preview_revision (editor.widget), ==, preview_revision);
+  g_assert_cmpuint (gimp_painter_mybrush_editor_preview_revision (peer.widget), ==, peer_revision);
+  g_signal_handler_disconnect (editor.model.get (), handler);
+  gboolean dirty = TRUE, name_dirty = FALSE;
+  g_object_get (editor.model.get (), "painter-dirty", &dirty,
+                "painter-name-dirty", &name_dirty, nullptr);
+  g_assert_false (dirty); g_assert_true (name_dirty);
+  g_assert_true (editor.snapshot ().encode () == source_json);
+  g_assert_cmpstr (gtk_entry_get_text (GTK_ENTRY (peer.get ("painter-brush-name"))), ==, pending_name);
+
+  /* Restoring only a name on this same source must not send an unchanged
+   * conflict notification through the full settings/preview refresh path. */
+  const guint name_history = gimp_painter_mybrush_options_history_size (editor.model.get ());
+  boundary_select_resource (editor.get ("painter-brush-list"), resources.second.get ());
+  boundary_select_resource (editor.get ("painter-brush-list"), resources.first.get ());
+  editor.preview (); peer.preview ();
+  const auto restore_revision = gimp_painter_mybrush_editor_preview_revision (editor.widget);
+  const auto peer_restore_revision = gimp_painter_mybrush_editor_preview_revision (peer.widget);
+  settings_changed = 0;
+  handler = g_signal_connect (editor.model.get (), "settings-changed",
+    G_CALLBACK (+[](GimpPainterMybrushOptions *, gpointer p) { ++*static_cast<guint *> (p); }),
+    &settings_changed);
+  gtk_combo_box_set_active (GTK_COMBO_BOX (editor.get ("painter-brush-history")), name_history);
+  g_assert_cmpuint (settings_changed, ==, 0);
+  g_signal_handler_disconnect (editor.model.get (), handler);
+  g_assert_false (gimp_painter_mybrush_editor_preview_pending (editor.widget));
+  g_assert_false (gimp_painter_mybrush_editor_preview_pending (peer.widget));
+  g_assert_cmpuint (gimp_painter_mybrush_editor_preview_revision (editor.widget), ==, restore_revision);
+  g_assert_cmpuint (gimp_painter_mybrush_editor_preview_revision (peer.widget), ==, peer_restore_revision);
+  g_assert_cmpstr (gtk_entry_get_text (name), ==, pending_name);
+  g_assert_cmpstr (gtk_entry_get_text (GTK_ENTRY (peer.get ("painter-brush-name"))), ==, pending_name);
+  g_assert_true (editor.snapshot ().encode () == source_json);
+
+  gtk_spin_button_set_value (GTK_SPIN_BUTTON (editor.get ("opaque")), .413);
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (editor.get ("non-incremental")), TRUE);
+  const auto draft = editor.snapshot ();
+  const auto draft_json = draft.encode ();
+  const guint history = gimp_painter_mybrush_options_history_size (editor.model.get ());
+  boundary_select_resource (editor.get ("painter-brush-list"), resources.second.get ());
+  g_assert_cmpstr (gtk_entry_get_text (name), ==, gimp_object_get_name (resources.second.get ()));
+  g_assert_cmpuint (gimp_painter_mybrush_options_history_size (editor.model.get ()), ==, history + 1);
+  gtk_combo_box_set_active (GTK_COMBO_BOX (editor.get ("painter-brush-history")), history);
+
+  const auto assert_source_stable = [&] {
+    g_assert_cmpstr (gimp_object_get_name (resources.first.get ()), ==, source_name.c_str ());
+    g_assert_true (resources.first.snapshot ().encode () == source_json);
+    g_assert_true (resources.second.snapshot ().encode () == second_json);
+  };
+  const auto assert_pending = [&] (const char *expected) {
+    g_assert_true (gimp_context_get_painter_mybrush (GIMP_CONTEXT (editor.model.get ())) == resources.first.get ());
+    boundary_assert_selected (peer.get ("painter-brush-list"), resources.first.get ());
+    g_assert_cmpstr (gtk_entry_get_text (name), ==, expected);
+    g_assert_cmpstr (gtk_entry_get_text (GTK_ENTRY (peer.get ("painter-brush-name"))), ==, expected);
+    g_assert_true (editor.snapshot ().encode () == draft_json);
+    g_assert_true (peer.snapshot ().encode () == draft_json);
+    g_object_get (editor.model.get (), "painter-dirty", &dirty,
+                  "painter-name-dirty", &name_dirty, nullptr);
+    g_assert_true (dirty); g_assert_true (name_dirty);
+    g_assert_cmpint (gimp_container_get_n_children (resources.container), ==, count);
+    assert_source_stable ();
+  };
+  assert_pending (pending_name);
+
+  /* Save As begins with the working name. Canceling edited dialog text must
+   * not apply it to the shared draft or mutate either source resource. */
+  gtk_button_clicked (GTK_BUTTON (editor.get ("painter-brush-save-as")));
+  GtkDialog *dialog = nullptr;
+  GList *windows = gtk_window_list_toplevels ();
+  for (auto *item = windows; item; item = item->next)
+    if (GTK_IS_DIALOG (item->data) &&
+        gtk_window_get_transient_for (GTK_WINDOW (item->data)) == GTK_WINDOW (editor.window))
+      { g_assert_null (dialog); dialog = GTK_DIALOG (item->data); }
+  g_list_free (windows);
+  g_assert_nonnull (dialog);
+  GtkEntry *dialog_name = nullptr;
+  GList *children = gtk_container_get_children (
+    GTK_CONTAINER (gtk_dialog_get_content_area (dialog)));
+  for (auto *item = children; item; item = item->next)
+    if (GTK_IS_ENTRY (item->data)) dialog_name = GTK_ENTRY (item->data);
+  g_list_free (children);
+  g_assert_nonnull (dialog_name);
+  g_assert_cmpstr (gtk_entry_get_text (dialog_name), ==, pending_name);
+  gtk_entry_set_text (dialog_name, "Canceled dialog name");
+  gtk_dialog_response (dialog, GTK_RESPONSE_CANCEL);
+  assert_pending (pending_name);
+
+  for (const char *rejected : {"", gimp_object_get_name (resources.second.get ())})
+    {
+      gtk_entry_set_text (name, rejected);
+      g_assert_false (gimp_painter_mybrush_editor_save (editor.widget, nullptr, &error));
+      g_assert_nonnull (error); g_clear_error (&error);
+      assert_pending (rejected);
+    }
+  gtk_entry_set_text (name, pending_name);
+  const char invalid_utf8[] = {char (0xff), 0};
+  g_assert_false (gimp_painter_mybrush_editor_save (editor.widget, invalid_utf8, &error));
+  g_assert_nonnull (error); g_clear_error (&error);
+  assert_pending (pending_name);
+
+  /* A regular file in place of our temporary writable directory makes the
+   * named-copy save fail on every user ID, including root. No chmod oracle. */
+  g_assert_cmpint (g_rmdir (directory.get ()), ==, 0);
+  g_assert_true (g_file_set_contents (directory.get (), "not a directory", -1, &error));
+  g_assert_no_error (error);
+  g_assert_false (gimp_painter_mybrush_editor_save (editor.widget, nullptr, &error));
+  g_assert_nonnull (error); g_clear_error (&error);
+  assert_pending (pending_name);
+  g_assert_cmpint (g_unlink (directory.get ()), ==, 0);
+  g_assert_cmpint (g_mkdir (directory.get (), 0700), ==, 0);
+
+  /* The actual Save button must use the restored pending name and create a
+   * new persisted resource, even though the selected source is read-only. */
+  g_assert_true (gtk_widget_get_sensitive (editor.get ("painter-brush-save")));
+  gtk_button_clicked (GTK_BUTTON (editor.get ("painter-brush-save")));
+  auto saved = ObjectRef<GimpPainterMybrush>::retain (
+    gimp_context_get_painter_mybrush (GIMP_CONTEXT (editor.model.get ())));
+  g_assert_true (saved.get () != resources.first.get ());
+  g_assert_cmpstr (gimp_object_get_name (saved.get ()), ==, pending_name);
+  g_assert_true (PainterMybrushRef::retain (saved.get ()).snapshot ().encode () == draft_json);
+  g_assert_cmpint (gimp_container_get_n_children (resources.container), ==, count + 1);
+  boundary_assert_selected (peer.get ("painter-brush-list"), saved.get ());
+  assert_source_stable ();
+  g_object_get (editor.model.get (), "painter-dirty", &dirty,
+                "painter-name-dirty", &name_dirty, nullptr);
+  g_assert_false (dirty); g_assert_false (name_dirty);
+  auto *file = gimp_data_get_file (GIMP_DATA (saved.get ()));
+  g_assert_nonnull (file);
+  auto stream = ObjectRef<GObject>::adopt (G_OBJECT (g_file_read (file, nullptr, &error)));
+  g_assert_no_error (error);
+  auto expected_disk = draft; expected_disk.set_parent_brush_name (pending_name);
+  g_assert_true (MyPaint::Resource::load (G_INPUT_STREAM (stream.get ())).encode () == expected_disk.encode ());
+
+  /* Explicit Rename still acts on the selected persisted object. It must
+   * not route through pending-name Save and accidentally create a third one. */
+  const char *later_name = "Still unsaved after Rename";
+  gtk_entry_set_text (name, later_name);
+  gtk_spin_button_set_value (GTK_SPIN_BUTTON (editor.get ("opaque")), .625);
+  const auto renamed_settings = editor.snapshot ().encode ();
+  g_assert_true (gimp_painter_mybrush_editor_rename (
+    editor.widget, "Painter Explicit Source Rename", &error));
+  g_assert_no_error (error);
+  g_assert_true (gimp_context_get_painter_mybrush (GIMP_CONTEXT (editor.model.get ())) == saved.get ());
+  g_assert_cmpstr (gimp_object_get_name (saved.get ()), ==, "Painter Explicit Source Rename");
+  g_assert_cmpstr (gtk_entry_get_text (name), ==, later_name);
+  g_assert_cmpstr (gtk_entry_get_text (GTK_ENTRY (peer.get ("painter-brush-name"))), ==, later_name);
+  g_assert_true (editor.snapshot ().encode () == renamed_settings);
+  g_assert_true (PainterMybrushRef::retain (saved.get ()).snapshot ().encode () == renamed_settings);
+  g_assert_cmpint (gimp_container_get_n_children (resources.container), ==, count + 1);
+  assert_source_stable ();
+
+  /* The initial selected-settings save succeeds. Only the subsequent save
+   * of the tentative resource name fails, exercising actual Rename rollback.
+   * In the second pass a callback supplies a still newer pending name. */
+  auto rename_file = ObjectRef<GObject>::retain (G_OBJECT (gimp_data_get_file (GIMP_DATA (saved.get ()))));
+  auto blocked_file = ObjectRef<GObject>::adopt (G_OBJECT (g_file_new_for_path (directory.get ())));
+  for (bool newer_name : {false, true})
+    {
+      const char *requested = "Painter Failed Rename";
+      const char *newer = "Newer draft during failed Rename";
+      gtk_entry_set_text (name, requested);
+      gtk_spin_button_set_value (GTK_SPIN_BUTTON (editor.get ("opaque")), newer_name ? .657 : .656);
+      const auto retained_settings = editor.snapshot ().encode ();
+      struct RenameFailure {
+        GimpPainterMybrushOptions *options; GFile *blocked;
+        const char *requested; const char *newer; bool fired = false;
+      } failure {editor.model.get (), G_FILE (blocked_file.get ()), requested,
+                 newer_name ? newer : nullptr};
+      handler = g_signal_connect (saved.get (), "name-changed",
+        G_CALLBACK (+[](GimpObject *resource, gpointer data) {
+          auto &state = *static_cast<RenameFailure *> (data);
+          if (state.fired || g_strcmp0 (gimp_object_get_name (resource), state.requested)) return;
+          state.fired = true;
+          gimp_data_set_file (GIMP_DATA (resource), state.blocked, TRUE, TRUE);
+          if (state.newer)
+            {
+              GError *error = nullptr;
+              g_assert_true (gimp_painter_mybrush_options_set_draft_name (state.options, state.newer, &error));
+              g_assert_no_error (error);
+            }
+        }), &failure);
+      g_assert_false (gimp_painter_mybrush_editor_rename (editor.widget, requested, &error));
+      g_assert_nonnull (error); g_clear_error (&error);
+      g_signal_handler_disconnect (saved.get (), handler);
+      g_assert_true (failure.fired);
+      gimp_data_set_file (GIMP_DATA (saved.get ()), G_FILE (rename_file.get ()), TRUE, TRUE);
+      g_assert_true (gimp_context_get_painter_mybrush (GIMP_CONTEXT (editor.model.get ())) == saved.get ());
+      g_assert_cmpstr (gimp_object_get_name (saved.get ()), ==, "Painter Explicit Source Rename");
+      g_assert_cmpstr (gtk_entry_get_text (name), ==, newer_name ? newer : requested);
+      g_assert_cmpstr (gtk_entry_get_text (GTK_ENTRY (peer.get ("painter-brush-name"))), ==,
+                       newer_name ? newer : requested);
+      g_object_get (editor.model.get (), "painter-name-dirty", &name_dirty, nullptr);
+      g_assert_true (name_dirty);
+      g_assert_true (editor.snapshot ().encode () == retained_settings);
+      g_assert_true (PainterMybrushRef::retain (saved.get ()).snapshot ().encode () == retained_settings);
+      auto retained_stream = ObjectRef<GObject>::adopt (G_OBJECT (g_file_read (
+        G_FILE (rename_file.get ()), nullptr, &error)));
+      g_assert_no_error (error);
+      auto retained_disk = editor.snapshot ();
+      retained_disk.set_parent_brush_name ("Painter Explicit Source Rename");
+      g_assert_true (MyPaint::Resource::load (G_INPUT_STREAM (retained_stream.get ())).encode () == retained_disk.encode ());
+      g_assert_cmpint (gimp_container_get_n_children (resources.container), ==, count + 1);
+      assert_source_stable ();
+    }
+  g_assert_true (gimp_painter_mybrush_editor_delete (editor.widget, &error));
+  g_assert_no_error (error);
+  g_assert_cmpint (gimp_container_get_n_children (resources.container), ==, count);
+
+  /* Factory add is a real callback boundary. A newer active draft created
+   * there must survive completion of a save of the older snapshot. */
+  boundary_select_resource (editor.get ("painter-brush-list"), resources.first.get ());
+  gtk_entry_set_text (name, "Painter Reentry Saved Snapshot");
+  gtk_spin_button_set_value (GTK_SPIN_BUTTON (editor.get ("opaque")), .714);
+  const auto reentry_snapshot = editor.snapshot ();
+  struct SaveReentry { GimpPainterMybrushOptions *options; bool fired = false; };
+  SaveReentry reentry {editor.model.get ()};
+  handler = g_signal_connect (resources.container, "add",
+    G_CALLBACK (+[](GimpContainer *, GimpObject *added, gpointer data) {
+      auto &state = *static_cast<SaveReentry *> (data);
+      g_assert_false (state.fired); state.fired = true;
+      g_assert_cmpstr (gimp_object_get_name (added), ==, "Painter Reentry Saved Snapshot");
+      GError *failure = nullptr;
+      g_assert_true (gimp_painter_mybrush_options_set_draft_name (
+        state.options, "Newer pending draft from factory callback", &failure));
+      g_assert_no_error (failure);
+      g_object_set (state.options, "opaque", .842, nullptr);
+    }), &reentry);
+  g_assert_true (gimp_painter_mybrush_editor_save (editor.widget, nullptr, &error));
+  g_assert_no_error (error);
+  g_signal_handler_disconnect (resources.container, handler);
+  g_assert_true (reentry.fired);
+  g_assert_true (gimp_context_get_painter_mybrush (GIMP_CONTEXT (editor.model.get ())) == resources.first.get ());
+  g_assert_true (gimp_context_get_painter_mybrush (GIMP_CONTEXT (context.get ())) == resources.first.get ());
+  g_assert_cmpstr (gtk_entry_get_text (name), ==, "Newer pending draft from factory callback");
+  g_assert_cmpstr (gtk_entry_get_text (GTK_ENTRY (peer.get ("painter-brush-name"))), ==,
+                   "Newer pending draft from factory callback");
+  auto newer_draft = reentry_snapshot; newer_draft.set_base_value (BRUSH_OPAQUE, .842);
+  g_assert_true (editor.snapshot ().encode () == newer_draft.encode ());
+  g_assert_cmpint (gimp_container_get_n_children (resources.container), ==, count + 1);
+  auto *saved_snapshot = GIMP_PAINTER_MYBRUSH (gimp_container_get_child_by_name (
+    resources.container, "Painter Reentry Saved Snapshot"));
+  g_assert_nonnull (saved_snapshot);
+  g_assert_true (PainterMybrushRef::retain (saved_snapshot).snapshot ().encode () == reentry_snapshot.encode ());
+  auto reentry_stream = ObjectRef<GObject>::adopt (G_OBJECT (g_file_read (
+    gimp_data_get_file (GIMP_DATA (saved_snapshot)), nullptr, &error)));
+  g_assert_no_error (error);
+  auto reentry_disk = reentry_snapshot;
+  reentry_disk.set_parent_brush_name ("Painter Reentry Saved Snapshot");
+  g_assert_true (MyPaint::Resource::load (G_INPUT_STREAM (reentry_stream.get ())).encode () == reentry_disk.encode ());
+  assert_source_stable ();
+  boundary_select_resource (editor.get ("painter-brush-list"), saved_snapshot);
+  g_assert_true (gimp_painter_mybrush_editor_delete (editor.widget, &error));
+  g_assert_no_error (error);
+  g_assert_cmpint (gimp_container_get_n_children (resources.container), ==, count);
+  for (auto *view : {&peer, &editor})
+    {
+      gtk_widget_destroy (view->window);
+      g_object_unref (view->window);
+      view->window = nullptr;
+    }
+  g_object_set (gimp->config, "painter-mypaint-brush-path", old_search,
+                "painter-mypaint-brush-path-writable", old_writable, nullptr);
+  g_free (old_search); g_free (old_writable);
+  g_assert_cmpint (g_rmdir (directory.get ()), ==, 0);
+  /* Restoring preferences queues normal RC autosave. Complete it while the
+   * user context is alive; gimp_exit() clears that context before disposal. */
+  gimp_test_run_mainloop_until_idle ();
+  g_assert_cmpuint (GIMP_RC (gimp->config)->save_idle_id, ==, 0);
+  g_assert_cmpuint (GIMP_RC (gimp->edit_config)->save_idle_id, ==, 0);
+}
+
 int main(int argc,char**argv){
   g_test_init(&argc,&argv,nullptr);if(!gtk_init_check(&argc,&argv))return GIMP_EXIT_TEST_SKIPPED;
   gimp_test_utils_setup_menus_path();gimp=gimp_init_for_gui_testing(TRUE);
@@ -636,6 +951,7 @@ int main(int argc,char**argv){
   add_editor_case("/painter-editor/12-delete-failure",delete_failure_retains_draft);
   add_editor_case("/painter-editor/15-registered-dock-selection-context",registered_dock_selection_context_boundary);
   add_editor_case("/painter-editor/16-factory-membership-context-lifetime",factory_membership_context_lifetime_boundary);
+  add_editor_case("/painter-editor/17-draft-name-history-save",draft_name_history_save_workflow);
   if(g_getenv("PAINTER_EDITOR_DEMO"))add_editor_case("/painter-editor/visual-demo",visual_demo);
   g_application_run(gimp->app,0,nullptr);int result=gimp_core_app_get_exit_status(GIMP_CORE_APP(gimp->app));g_application_quit(gimp->app);g_clear_object(&gimp->app);g_free(original_search);return result;
 }

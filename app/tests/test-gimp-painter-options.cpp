@@ -32,6 +32,11 @@ static void generated_properties()
   for(const auto&s:painter_mypaint_settings){auto*p=g_object_class_find_property(klass,name(s.internal_name).c_str());g_assert_true(G_IS_PARAM_SPEC_DOUBLE(p));g_assert_cmpfloat(G_PARAM_SPEC_DOUBLE(p)->minimum,==,s.minimum);g_assert_cmpfloat(G_PARAM_SPEC_DOUBLE(p)->maximum,==,s.maximum);}
   for(const auto&s:painter_mypaint_switches)g_assert_true(G_IS_PARAM_SPEC_BOOLEAN(g_object_class_find_property(klass,name(s.internal_name).c_str())));
   for(const auto&s:painter_mypaint_texts)g_assert_true(G_IS_PARAM_SPEC_STRING(g_object_class_find_property(klass,name(s.internal_name).c_str())));
+  for(const char*key:{"painter-draft-name","painter-name-dirty"}) {
+    auto*spec=g_object_class_find_property(klass,key);g_assert_nonnull(spec);
+    g_assert_true((spec->flags&G_PARAM_READABLE)!=0);
+    g_assert_true((spec->flags&(G_PARAM_WRITABLE|GIMP_CONFIG_PARAM_SERIALIZE))==0);
+  }
   auto*again=gimp_painter_mybrush_options_ref_for_context(GIMP_CONTEXT(options),nullptr);g_assert_true(again==options);g_object_unref(again);
   GError*error=nullptr;g_assert_null(gimp_painter_mybrush_options_ref_for_context(nullptr,&error));g_assert_nonnull(error);g_clear_error(&error);g_object_unref(options);
 }
@@ -183,6 +188,128 @@ static void history_and_config_roundtrip()
   g_assert_true(gimp_config_copy(GIMP_CONFIG(options),GIMP_CONFIG(copy),GParamFlags(0)));g_assert_true(PainterOptionsRef::retain(copy).snapshot().encode()==before);
   g_object_unref(duplicate);g_object_unref(copy);g_object_unref(options);
 }
+static void assert_draft_name(GimpPainterMybrushOptions*options,const char*expected,gboolean name_dirty)
+{
+  GError*error=nullptr;
+  String actual(gimp_painter_mybrush_options_dup_draft_name(options,&error));
+  g_assert_no_error(error);g_assert_cmpstr(actual.get(),==,expected);
+  gchar*property=nullptr;gboolean dirty=FALSE;
+  g_object_get(options,"painter-draft-name",&property,"painter-name-dirty",&dirty,nullptr);
+  g_assert_cmpstr(property,==,expected);g_assert_cmpint(dirty,==,name_dirty);g_free(property);
+}
+static void draft_name_identity_and_commit()
+{
+  auto*options=options_new();auto source=PainterMybrushRef::create("name-source");
+  gimp_context_set_painter_mybrush(GIMP_CONTEXT(options),source.get());
+  const auto source_before=source.snapshot().encode();
+  assert_draft_name(options,"name-source",FALSE);
+  guint settings_notifications=0,name_notifications=0;
+  auto count=+[](GimpPainterMybrushOptions*,gpointer data){++*static_cast<guint*>(data);};
+  g_signal_connect(options,"settings-changed",G_CALLBACK(count),&settings_notifications);
+  g_signal_connect(options,"notify::painter-draft-name",G_CALLBACK(+[](GObject*,GParamSpec*,gpointer data){++*static_cast<guint*>(data);}),&name_notifications);
+  GError*error=nullptr;
+  g_assert_true(gimp_painter_mybrush_options_set_draft_name(options,"Pending \xcf\x80 brush",&error));
+  g_assert_no_error(error);assert_draft_name(options,"Pending \xcf\x80 brush",TRUE);
+  g_assert_cmpuint(settings_notifications,==,0);g_assert_cmpuint(name_notifications,==,1);
+  gboolean dirty=TRUE;g_object_get(options,"painter-dirty",&dirty,nullptr);g_assert_false(dirty);
+  g_assert_true(gimp_context_get_painter_mybrush(GIMP_CONTEXT(options))==source.get());
+  g_assert_cmpstr(gimp_object_get_name(source.get()),==,"name-source");
+  g_assert_true(source.snapshot().encode()==source_before);
+  g_assert_true(gimp_painter_mybrush_options_set_draft_name(options,"Pending \xcf\x80 brush",&error));
+  g_assert_no_error(error);g_assert_cmpuint(name_notifications,==,1);
+  g_object_set(options,"opaque",.341,nullptr);
+  const auto edited=PainterOptionsRef::retain(options).snapshot().encode();
+  assert_draft_name(options,"Pending \xcf\x80 brush",TRUE);
+  g_assert_true(source.snapshot().encode()==source_before);
+  g_assert_true(gimp_painter_mybrush_options_commit(options,&error));g_assert_no_error(error);
+  g_assert_true(source.snapshot().encode()==edited);assert_draft_name(options,"Pending \xcf\x80 brush",TRUE);
+  g_object_get(options,"painter-dirty",&dirty,nullptr);g_assert_false(dirty);
+  g_assert_cmpstr(gimp_object_get_name(source.get()),==,"name-source");
+  const guint notified=settings_notifications;
+  gimp_object_set_name(GIMP_OBJECT(source.get()),"explicit-resource-rename");
+  assert_draft_name(options,"Pending \xcf\x80 brush",TRUE);
+  g_assert_cmpuint(settings_notifications,==,notified);
+  g_assert_true(gimp_painter_mybrush_options_set_draft_name(options,"explicit-resource-rename",&error));
+  g_assert_no_error(error);assert_draft_name(options,"explicit-resource-rename",FALSE);
+  gimp_object_set_name(GIMP_OBJECT(source.get()),"clean-name-follows-source");
+  assert_draft_name(options,"clean-name-follows-source",FALSE);
+  g_assert_cmpuint(settings_notifications,==,notified);g_object_unref(options);
+}
+static void draft_name_history_and_copy()
+{
+  auto*options=options_new();auto*other=options_new();
+  auto a=PainterMybrushRef::create("named-history-source"),b=PainterMybrushRef::create("named-history-next");
+  gimp_context_set_painter_mybrush(GIMP_CONTEXT(options),a.get());
+  const auto source_before=a.snapshot().encode();
+  const auto original=Resource::decode("{\"version\":3,\"unknown\":{\"named_history\":true},\"settings\":{\"opaque\":{\"base_value\":0.27,\"inputs\":{\"pressure\":[[0,0.1],[1,0.7]]}}}}");
+  GError*error=nullptr;
+  g_assert_true(gimp_painter_mybrush_options_set_json(options,original.encode().c_str(),&error));
+  g_assert_true(gimp_painter_mybrush_options_set_draft_name(options,"History draft name",&error));g_assert_no_error(error);
+  const guint index=gimp_painter_mybrush_options_history_size(options);
+  gimp_context_set_painter_mybrush(GIMP_CONTEXT(options),b.get());
+  String label(gimp_painter_mybrush_options_history_name(options,index));g_assert_cmpstr(label.get(),==,"History draft name");
+  assert_draft_name(options,"named-history-next",FALSE);
+  g_assert_true(gimp_painter_mybrush_options_restore_history(other,index,&error));g_assert_no_error(error);
+  assert_draft_name(other,"History draft name",TRUE);
+  g_assert_true(gimp_context_get_painter_mybrush(GIMP_CONTEXT(other))==a.get());
+  g_assert_true(PainterOptionsRef::retain(other).snapshot().encode()==original.encode());
+  g_assert_cmpstr(gimp_object_get_name(a.get()),==,"named-history-source");g_assert_true(a.snapshot().encode()==source_before);
+  String serialized(gimp_config_serialize_to_string(GIMP_CONFIG(other),nullptr));
+  g_assert_null(strstr(serialized.get(),"painter-draft-name"));g_assert_null(strstr(serialized.get(),"History draft name"));
+  auto*duplicate=GIMP_PAINTER_MYBRUSH_OPTIONS(gimp_config_duplicate(GIMP_CONFIG(other)));g_assert_nonnull(duplicate);
+  assert_draft_name(duplicate,"History draft name",TRUE);
+  g_assert_true(gimp_config_copy(GIMP_CONFIG(other),GIMP_CONFIG(options),GParamFlags(GIMP_CONFIG_PARAM_SERIALIZE)));
+  assert_draft_name(options,"History draft name",TRUE);
+  g_assert_true(gimp_painter_mybrush_options_set_draft_name(options,"Independent copied name",&error));
+  g_assert_true(gimp_painter_mybrush_options_set_draft_name(duplicate,"Independent duplicate name",&error));g_assert_no_error(error);
+  assert_draft_name(other,"History draft name",TRUE);
+  g_assert_true(PainterOptionsRef::retain(options).snapshot().encode()==original.encode());
+  g_object_unref(duplicate);g_object_unref(other);g_object_unref(options);
+
+  options=options_new();gimp_context_set_painter_mybrush(GIMP_CONTEXT(options),a.get());
+  g_assert_true(gimp_painter_mybrush_options_set_draft_name(options,"Name-only history",&error));g_assert_no_error(error);
+  const guint name_index=gimp_painter_mybrush_options_history_size(options);
+  gimp_context_set_painter_mybrush(GIMP_CONTEXT(options),b.get());
+  g_assert_cmpuint(gimp_painter_mybrush_options_history_size(options),==,name_index+1);
+  g_assert_true(gimp_painter_mybrush_options_restore_history(options,name_index,&error));g_assert_no_error(error);
+  assert_draft_name(options,"Name-only history",TRUE);
+  gboolean dirty=TRUE;g_object_get(options,"painter-dirty",&dirty,nullptr);g_assert_false(dirty);
+  g_assert_true(PainterOptionsRef::retain(options).snapshot().encode()==source_before);
+  guint settings_notifications=0;
+  g_signal_connect(options,"settings-changed",G_CALLBACK(+[](GimpPainterMybrushOptions*,gpointer p){++*static_cast<guint*>(p);}),&settings_notifications);
+  g_assert_true(gimp_painter_mybrush_options_set_draft_name(options,"Another pending name",&error));g_assert_no_error(error);
+  g_assert_true(gimp_painter_mybrush_options_restore_history(options,name_index,&error));g_assert_no_error(error);
+  assert_draft_name(options,"Name-only history",TRUE);g_assert_cmpuint(settings_notifications,==,0);
+  g_object_unref(options);
+}
+static void draft_name_external_settings_and_errors()
+{
+  auto*options=options_new();auto source=PainterMybrushRef::create("name-error-source");
+  gimp_context_set_painter_mybrush(GIMP_CONTEXT(options),source.get());GError*error=nullptr;
+  g_assert_true(gimp_painter_mybrush_options_set_draft_name(options,"Preserved pending name",&error));g_assert_no_error(error);
+  auto external=source.snapshot();external.set_base_value(BRUSH_OPAQUE,.173);source.replace(external);
+  assert_draft_name(options,"Preserved pending name",TRUE);
+  g_assert_true(PainterOptionsRef::retain(options).snapshot().encode()==external.encode());
+  gboolean dirty=TRUE;g_object_get(options,"painter-dirty",&dirty,nullptr);g_assert_false(dirty);
+  g_object_set(options,"opaque",.319,nullptr);
+  const auto retained=PainterOptionsRef::retain(options).snapshot().encode();
+  external.set_base_value(BRUSH_OPAQUE,.613);source.replace(external);
+  g_assert_false(gimp_painter_mybrush_options_commit(options,&error));g_assert_nonnull(error);g_clear_error(&error);
+  assert_draft_name(options,"Preserved pending name",TRUE);
+  g_assert_true(PainterOptionsRef::retain(options).snapshot().encode()==retained);
+  g_assert_true(source.snapshot().encode()==external.encode());
+  for(const char*invalid:{static_cast<const char*>(nullptr),"\xff"}) {
+    g_assert_false(gimp_painter_mybrush_options_set_draft_name(options,invalid,&error));g_assert_nonnull(error);g_clear_error(&error);
+    assert_draft_name(options,"Preserved pending name",TRUE);
+  }
+  String owned(gimp_painter_mybrush_options_dup_draft_name(options,&error));g_assert_no_error(error);
+  g_assert_true(gimp_painter_mybrush_options_set_draft_name(options,"",&error));g_assert_no_error(error);assert_draft_name(options,"",TRUE);
+  g_assert_cmpstr(owned.get(),==,"Preserved pending name");
+  g_assert_true(gimp_painter_binding_close(G_OBJECT(options),&error));g_assert_no_error(error);
+  g_assert_null(gimp_painter_mybrush_options_dup_draft_name(options,&error));g_assert_error(error,GIMP_PAINTER_ERROR,GIMP_PAINTER_ERROR_CLOSED);g_clear_error(&error);
+  g_assert_false(gimp_painter_mybrush_options_set_draft_name(options,"Closed",&error));g_assert_error(error,GIMP_PAINTER_ERROR,GIMP_PAINTER_ERROR_CLOSED);g_clear_error(&error);
+  g_assert_cmpstr(owned.get(),==,"Preserved pending name");g_object_unref(options);
+}
 static void native_config_reset_defaults()
 {
   auto *options=options_new();auto brush=PainterMybrushRef::create("reset-source");
@@ -191,8 +318,10 @@ static void native_config_reset_defaults()
   const char *edited="{\"version\":3,\"settings\":{\"opaque\":{\"base_value\":0.17,\"inputs\":{\"pressure\":[[0,0],[1,0.4]]}}},\"switches\":{\"non_incremental\":true},\"unknown\":{\"reset_me\":23}}";
   GError *error=nullptr;
   g_assert_true(gimp_painter_mybrush_options_set_json(options,edited,&error));g_assert_no_error(error);
+  g_assert_true(gimp_painter_mybrush_options_set_draft_name(options,"Reset keeps this draft name",&error));g_assert_no_error(error);
   // The native Reset and GUI tool-registration path applies each pspec default.
   gimp_config_reset(GIMP_CONFIG(options));
+  assert_draft_name(options,"Reset keeps this draft name",TRUE);
   const Resource defaults;
   g_assert_true(PainterOptionsRef::retain(options).snapshot().encode()==defaults.encode());
   g_assert_true(brush.snapshot().encode()==source_before);
@@ -200,6 +329,7 @@ static void native_config_reset_defaults()
   const char *text=g_value_get_string(g_param_spec_get_default_value(pspec));
   g_assert_nonnull(text);g_assert_true(Resource::decode(text).encode()==defaults.encode());
   gimp_config_reset(GIMP_CONFIG(options));
+  assert_draft_name(options,"Reset keeps this draft name",TRUE);
   g_assert_true(PainterOptionsRef::retain(options).snapshot().encode()==defaults.encode());
   // Invalid C API input remains rejected without replacing the draft.
   g_assert_false(gimp_painter_mybrush_options_set_json(options,nullptr,&error));
@@ -214,6 +344,64 @@ static void notification_releases_caller()
   auto*options=options_new();bool finalized=false;g_object_weak_ref(G_OBJECT(options),gone,&finalized);
   g_signal_connect(options,"notify::opaque",G_CALLBACK(drop_options),&options);GError*error=nullptr;
   g_assert_true(gimp_painter_mybrush_options_set_json(options,"{\"version\":3,\"settings\":{}}",&error));g_assert_no_error(error);g_assert_null(options);g_assert_true(finalized);
+}
+static void draft_name_notification_lifetime()
+{
+  auto*options=options_new();bool finalized=false;g_object_weak_ref(G_OBJECT(options),gone,&finalized);
+  g_signal_connect(options,"notify::painter-draft-name",G_CALLBACK(drop_options),&options);GError*error=nullptr;
+  g_assert_true(gimp_painter_mybrush_options_set_draft_name(options,"Release the caller",&error));
+  g_assert_no_error(error);g_assert_null(options);g_assert_true(finalized);
+
+  options=options_new();auto source=PainterMybrushRef::create("rename-release-source");
+  gimp_context_set_painter_mybrush(GIMP_CONTEXT(options),source.get());finalized=false;
+  g_object_weak_ref(G_OBJECT(options),gone,&finalized);
+  g_signal_connect(options,"notify::painter-draft-name",G_CALLBACK(drop_options),&options);
+  gimp_object_set_name(GIMP_OBJECT(source.get()),"Rename releases the caller");
+  g_assert_null(options);g_assert_true(finalized);
+
+  options=options_new();guint dirty_notifications=0;
+  g_signal_connect(options,"notify::painter-draft-name",G_CALLBACK(+[](GObject*object,GParamSpec*,gpointer){gimp_painter_binding_close(object,nullptr);}),nullptr);
+  g_signal_connect(options,"notify::painter-name-dirty",G_CALLBACK(+[](GObject*,GParamSpec*,gpointer p){++*static_cast<guint*>(p);}),&dirty_notifications);
+  g_assert_true(gimp_painter_mybrush_options_set_draft_name(options,"Close during name notification",&error));g_assert_no_error(error);
+  g_assert_cmpuint(dirty_notifications,==,0);
+  g_assert_null(gimp_painter_mybrush_options_dup_draft_name(options,&error));g_assert_error(error,GIMP_PAINTER_ERROR,GIMP_PAINTER_ERROR_CLOSED);g_clear_error(&error);
+  g_object_unref(options);
+}
+static void draft_name_reentry()
+{
+  auto*options=options_new();auto a=PainterMybrushRef::create("name-reentry-a"),b=PainterMybrushRef::create("name-reentry-b");
+  gimp_context_set_painter_mybrush(GIMP_CONTEXT(options),a.get());
+  struct Select {GimpPainterMybrush*next;bool fired=false;} state{b.get()};
+  auto id=g_signal_connect(options,"notify::painter-draft-name",G_CALLBACK(+[](GObject*object,GParamSpec*,gpointer p){
+    auto&s=*static_cast<Select*>(p);if(s.fired)return;s.fired=true;
+    gimp_context_set_painter_mybrush(GIMP_CONTEXT(object),s.next);
+  }),&state);
+  const guint index=gimp_painter_mybrush_options_history_size(options);GError*error=nullptr;
+  g_assert_true(gimp_painter_mybrush_options_set_draft_name(options,"Saved before nested selection",&error));g_assert_no_error(error);
+  g_assert_true(state.fired);assert_draft_name(options,"name-reentry-b",FALSE);
+  g_assert_true(gimp_context_get_painter_mybrush(GIMP_CONTEXT(options))==b.get());
+  String label(gimp_painter_mybrush_options_history_name(options,index));g_assert_cmpstr(label.get(),==,"Saved before nested selection");
+  g_signal_handler_disconnect(options,id);
+  gimp_object_set_name(GIMP_OBJECT(a.get()),"Detached source rename");assert_draft_name(options,"name-reentry-b",FALSE);
+
+  guint settings_notifications=0;bool name_edited=false;
+  g_signal_connect(options,"settings-changed",G_CALLBACK(+[](GimpPainterMybrushOptions*,gpointer p){++*static_cast<guint*>(p);}),&settings_notifications);
+  id=g_signal_connect(options,"notify::opaque",G_CALLBACK(+[](GObject*object,GParamSpec*,gpointer p){
+    auto&edited=*static_cast<bool*>(p);if(edited)return;edited=true;
+    g_assert_true(gimp_painter_mybrush_options_set_draft_name(GIMP_PAINTER_MYBRUSH_OPTIONS(object),"Name edited inside settings notification",nullptr));
+  }),&name_edited);
+  g_assert_true(gimp_painter_mybrush_options_set_json(options,"{\"version\":3,\"settings\":{\"opaque\":{\"base_value\":0.248}}}",&error));g_assert_no_error(error);
+  g_assert_true(name_edited);g_assert_cmpuint(settings_notifications,==,1);
+  assert_draft_name(options,"Name edited inside settings notification",TRUE);g_signal_handler_disconnect(options,id);
+  const auto expected=PainterOptionsRef::retain(options).snapshot().encode();
+  id=g_signal_connect(b.get(),"settings-changed",G_CALLBACK(+[](GimpPainterMybrush*,gpointer p){
+    g_assert_true(gimp_painter_mybrush_options_set_draft_name(static_cast<GimpPainterMybrushOptions*>(p),"Name edited during commit",nullptr));
+  }),options);
+  g_assert_true(gimp_painter_mybrush_options_commit(options,&error));g_assert_no_error(error);g_signal_handler_disconnect(b.get(),id);
+  assert_draft_name(options,"Name edited during commit",TRUE);
+  gboolean dirty=TRUE;g_object_get(options,"painter-dirty",&dirty,nullptr);g_assert_false(dirty);
+  g_assert_true(b.snapshot().encode()==expected);g_assert_cmpstr(gimp_object_get_name(b.get()),==,"name-reentry-b");
+  g_assert_cmpuint(settings_notifications,==,1);g_object_unref(options);
 }
 static void closed_and_invalid_curves()
 {
@@ -316,6 +504,11 @@ int main(int argc,char**argv)
   g_test_add_func("/painter-options/legacy-brush-mode-config",legacy_brush_mode_config);
   g_test_add_func("/painter-options/edit-curve-commit-conflict",edit_curve_commit_and_conflict);
   g_test_add_func("/painter-options/history-config",history_and_config_roundtrip);
+  g_test_add_func("/painter-options/draft-name-identity-commit",draft_name_identity_and_commit);
+  g_test_add_func("/painter-options/draft-name-history-copy",draft_name_history_and_copy);
+  g_test_add_func("/painter-options/draft-name-external-errors",draft_name_external_settings_and_errors);
+  g_test_add_func("/painter-options/draft-name-notification-lifetime",draft_name_notification_lifetime);
+  g_test_add_func("/painter-options/draft-name-reentry",draft_name_reentry);
   g_test_add_func("/painter-options/native-config-reset-defaults",native_config_reset_defaults);
   g_test_add_func("/painter-options/notification-last-ref",notification_releases_caller);
   g_test_add_func("/painter-options/closed-invalid-curve",closed_and_invalid_curves);

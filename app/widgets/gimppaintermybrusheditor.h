@@ -19,8 +19,10 @@ GType gimp_painter_mybrush_editor_get_type (void) G_GNUC_CONST;
 GtkWidget *gimp_painter_mybrush_editor_new (GimpContext *context, gboolean horizontal, GError **error);
 GtkWidget *gimp_painter_mybrush_editor_popup (GimpContext *context, GtkWidget *parent, GError **error);
 gboolean gimp_painter_mybrush_editor_set_context (GimpPainterMybrushEditor *editor, GimpContext *context, GError **error);
-/* A NULL name saves the selected writable resource; a name saves the entire
- * draft as a new native-factory resource. Save As also preserves conflicts. */
+/* A NULL name uses the pending draft name: an unchanged name saves the selected
+ * writable resource; a changed name saves a separate native-factory resource.
+ * An explicit name always requests Save As. Collisions are rejected without
+ * replacing a resource. Save As also preserves conflicts. */
 gboolean gimp_painter_mybrush_editor_save (GimpPainterMybrushEditor *editor, const gchar *name, GError **error);
 gboolean gimp_painter_mybrush_editor_rename (GimpPainterMybrushEditor *editor, const gchar *name, GError **error);
 gboolean gimp_painter_mybrush_editor_delete (GimpPainterMybrushEditor *editor, GError **error);

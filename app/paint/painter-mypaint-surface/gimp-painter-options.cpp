@@ -33,8 +33,9 @@ G_DEFINE_TYPE_WITH_CODE (GimpPainterMybrushOptions, gimp_painter_mybrush_options
                         G_IMPLEMENT_INTERFACE(GIMP_TYPE_CONFIG,config_iface_init))
 static GimpConfigInterface*parent_config_iface=nullptr;
 namespace {
-enum { PROP_JSON=BRUSH_SETTINGS_COUNT+1, PROP_DIRTY, PROP_CONFLICT, PROP_BRUSH_MODE };
-GParamSpec *properties[PROP_BRUSH_MODE+1]{};
+enum { PROP_JSON=BRUSH_SETTINGS_COUNT+1, PROP_DIRTY, PROP_CONFLICT, PROP_BRUSH_MODE,
+       PROP_DRAFT_NAME, PROP_NAME_DIRTY };
+GParamSpec *properties[PROP_NAME_DIRTY+1]{};
 GType legacy_brush_mode_type ()
 {
   // Preserve the old serialized enum. Its rendering helper always returned
@@ -55,6 +56,7 @@ struct History {
   ObjectRef<GimpPainterMybrush> source;
   Resource resource;
   std::string name;
+  bool settings_dirty;
 };
 /* Legacy history was a process singleton. Share it across every Options in
  * one application while keeping test/application instances and teardown apart.
@@ -119,15 +121,18 @@ struct OptionsImpl {
   Resource draft;
   ObjectRef<GimpPainterMybrush> selected;
   std::string baseline;
+  std::string draft_name, source_name;
   Connection changed;
+  Connection renamed;
   std::shared_ptr<HistoryState> history = std::make_shared<HistoryState> ();
   std::uint64_t revision=0;
+  std::uint64_t name_revision=0;
   gint legacy_brush_mode=0;
-  bool dirty=false,conflict=false,committing=false;
+  bool dirty=false,name_dirty=false,conflict=false,committing=false;
   void remember () {
-    if(dirty && history)history->push({selected,draft,selected&&gimp_object_get_name(selected.get())?gimp_object_get_name(selected.get()):"Unsaved painter brush"});
+    if((dirty||name_dirty) && history)history->push({selected,draft,draft_name,dirty});
   }
-  void close () noexcept {changed.close();selected.reset();history.reset();}
+  void close () noexcept {changed.close();renamed.close();selected.reset();history.reset();}
 };
 struct OptionsSlot : SlotSpec<GimpPainterMybrushOptions,OptionsImpl> {};
 BindingStore& store(GimpPainterMybrushOptions*o)
@@ -136,12 +141,25 @@ BindingStore& store(GimpPainterMybrushOptions*o)
   return BindingStore::require(G_OBJECT(o));
 }
 void sync_resources(GimpPainterMybrushOptions*options,std::uint64_t revision);
-void notify_changed(GimpPainterMybrushOptions*options,std::uint64_t revision,bool all=true,bool settings_changed=true)
+void notify_name_changed(GimpPainterMybrushOptions*options,std::uint64_t revision)
+{
+  auto owner=ObjectRef<GimpPainterMybrushOptions>::retain(options);
+  auto*binding=BindingStore::find(G_OBJECT(options));if(!binding)return;
+  const auto generation=binding->generation();
+  for(unsigned id:{PROP_DRAFT_NAME,PROP_NAME_DIRTY}) {
+    if(!binding->accepts(generation)||
+       !binding->read<OptionsSlot>([&](const OptionsImpl&i){return i.name_revision==revision;}))return;
+    g_object_notify_by_pspec(G_OBJECT(options),properties[id]);
+  }
+}
+void notify_changed(GimpPainterMybrushOptions*options,std::uint64_t revision,bool all=true,bool settings_changed=true,bool name_changed=false)
 {
   auto owner=ObjectRef<GimpPainterMybrushOptions>::retain(options);
   auto*binding=BindingStore::find(G_OBJECT(options));if(!binding)return;
   const auto generation=binding->generation();
   const auto current=[&](){return binding->accepts(generation)&&binding->read<OptionsSlot>([&](const OptionsImpl&i){return i.revision==revision;});};
+  if(name_changed&&current())
+    notify_name_changed(options,binding->read<OptionsSlot>([](const OptionsImpl&i){return i.name_revision;}));
   if(settings_changed&&current())sync_resources(options,revision);
   for(unsigned id=1;id<=PROP_CONFLICT;++id) {
     if(!all&&id<PROP_JSON)continue;
@@ -222,6 +240,25 @@ void pattern_changed(GimpContext*context,GimpPattern*pattern) noexcept
 }
 struct WeakOptions {WeakRef<GObject> owner;std::uint64_t generation;};
 void weak_destroy(gpointer data,GClosure*){delete static_cast<WeakOptions*>(data);}
+void source_renamed(GObject*source,GParamSpec*,gpointer data) noexcept
+{
+  boundary_void(nullptr,[&]{
+    auto&weak=*static_cast<WeakOptions*>(data);auto object=weak.owner.lock();if(!object)return;
+    auto*binding=BindingStore::find(object.get());if(!binding||!binding->accepts(weak.generation))return;
+    const char*name=gimp_object_get_name(source);
+    std::string next_name=name?name:"Unsaved painter brush";
+    const auto revision=binding->with<OptionsSlot>([&](OptionsImpl&i){
+      if(G_OBJECT(i.selected.get())!=source||i.source_name==next_name)return std::uint64_t(0);
+      // A resource Rename follows through only while the draft name is clean.
+      // Stage the allocation before publishing either half of the name state.
+      std::string next_draft=i.name_dirty?i.draft_name:next_name;
+      i.source_name=std::move(next_name);i.draft_name=std::move(next_draft);
+      i.name_dirty=i.draft_name!=i.source_name;
+      return ++i.name_revision;
+    });
+    if(revision)notify_name_changed(GIMP_PAINTER_MYBRUSH_OPTIONS(object.get()),revision);
+  });
+}
 void source_changed(GimpPainterMybrush*source,gpointer data) noexcept
 {
   boundary_void(nullptr,[&]{
@@ -243,24 +280,32 @@ void select_source(GimpPainterMybrushOptions*options,GimpPainterMybrush*brush)
   auto owner=ObjectRef<GimpPainterMybrushOptions>::retain(options);
   auto source=ObjectRef<GimpPainterMybrush>::retain(brush);
   Resource next=source?PainterMybrushRef::retain(source.get()).snapshot():Resource();
+  std::string next_baseline=next.encode();
+  const char*name=source?gimp_object_get_name(source.get()):nullptr;
+  std::string next_name=name?name:"Unsaved painter brush",next_source_name=next_name;
   auto&binding=store(options);
   const bool constructing=binding.state()==BindingStore::State::constructing;
-  Connection connection;
+  Connection connection,rename_connection;
   if(source) {
     std::unique_ptr<WeakOptions> weak(new WeakOptions{WeakRef<GObject>(ObjectRef<GObject>::retain(G_OBJECT(options))),binding.generation()});
     connection=Connection::connect(ObjectRef<GObject>::retain(G_OBJECT(source.get())),"settings-changed",G_CALLBACK(source_changed),weak.get(),weak_destroy);weak.release();
+    weak.reset(new WeakOptions{WeakRef<GObject>(ObjectRef<GObject>::retain(G_OBJECT(options))),binding.generation()});
+    rename_connection=Connection::connect(ObjectRef<GObject>::retain(G_OBJECT(source.get())),"notify::name",G_CALLBACK(source_renamed),weak.get(),weak_destroy);weak.release();
   }
-  struct SelectionChange {std::uint64_t revision;ObjectRef<GimpPainterMybrush> old_source;Connection old_connection;};
+  struct SelectionChange {std::uint64_t revision;ObjectRef<GimpPainterMybrush> old_source;Connection old_connection,old_rename_connection;};
   const auto update=[&](OptionsImpl&i){
-    i.remember();auto old_source=std::move(i.selected);auto old_connection=std::move(i.changed);
-    i.selected=source;i.changed=std::move(connection);i.draft=std::move(next);i.baseline=i.draft.encode();i.dirty=false;i.conflict=false;i.committing=false;
-    return SelectionChange{++i.revision,std::move(old_source),std::move(old_connection)};
+    i.remember();auto old_source=std::move(i.selected);auto old_connection=std::move(i.changed);auto old_rename_connection=std::move(i.renamed);
+    i.selected=source;i.changed=std::move(connection);i.renamed=std::move(rename_connection);
+    i.draft=std::move(next);i.baseline=std::move(next_baseline);
+    i.draft_name=std::move(next_name);i.source_name=std::move(next_source_name);
+    i.dirty=false;i.name_dirty=false;i.conflict=false;i.committing=false;++i.name_revision;
+    return SelectionChange{++i.revision,std::move(old_source),std::move(old_connection),std::move(old_rename_connection)};
   };
   auto change=constructing?binding.initialize<OptionsSlot>(update):binding.with<OptionsSlot>(update);
   // Finalizers may select another brush. Release them only after publishing the
   // complete replacement and leaving the implementation borrow.
-  change.old_connection.close();change.old_source.reset();
-  if(!constructing)notify_changed(options,change.revision);
+  change.old_connection.close();change.old_rename_connection.close();change.old_source.reset();
+  if(!constructing)notify_changed(options,change.revision,true,true,true);
 }
 void selected_changed(GimpContext*context,GimpPainterMybrush*brush) noexcept
 {boundary_void(nullptr,[&]{select_source(GIMP_PAINTER_MYBRUSH_OPTIONS(context),brush);});}
@@ -287,6 +332,19 @@ void constructed(GObject*object)
 }
 void dispose(GObject*object)
 {gimp_painter_binding_close(object,nullptr);G_OBJECT_CLASS(gimp_painter_mybrush_options_parent_class)->dispose(object);}
+void set_draft_name(GimpPainterMybrushOptions*options,const gchar*name)
+{
+  auto&binding=store(options);
+  if(!g_utf8_validate(name,-1,nullptr))throw std::invalid_argument("Expected a UTF-8 painter draft name");
+  const auto update=[&](OptionsImpl&i){
+    std::string next=name;
+    if(i.draft_name==next)return std::uint64_t(0);
+    i.draft_name=std::move(next);i.name_dirty=i.draft_name!=i.source_name;
+    return ++i.name_revision;
+  };
+  auto revision=binding.with<OptionsSlot>(update);
+  if(revision)notify_name_changed(options,revision);
+}
 void set_property(GObject*object,guint id,const GValue*value,GParamSpec*pspec)
 {
   property_boundary(object,pspec,"set",[&]{
@@ -321,6 +379,8 @@ void get_property(GObject*object,guint id,GValue*value,GParamSpec*pspec)
       else if(id==PROP_DIRTY)g_value_set_boolean(value,i.dirty);
       else if(id==PROP_CONFLICT)g_value_set_boolean(value,i.conflict);
       else if(id==PROP_BRUSH_MODE)g_value_set_enum(value,i.legacy_brush_mode);
+      else if(id==PROP_DRAFT_NAME)g_value_set_string(value,i.draft_name.c_str());
+      else if(id==PROP_NAME_DIRTY)g_value_set_boolean(value,i.name_dirty);
       else if(id>=1&&id<=BRUSH_MAPPING_END)g_value_set_double(value,i.draft.base_value(id-1));
       else if(id<=BRUSH_BOOL_END&&id>BRUSH_MAPPING_END)g_value_set_boolean(value,i.draft.switch_value(id-1));
       else if(id<=BRUSH_TEXT_END&&id>BRUSH_BOOL_END)g_value_set_string(value,i.draft.text_is_null(id-1)?nullptr:i.draft.text_value(id-1).c_str());
@@ -329,16 +389,19 @@ void get_property(GObject*object,guint id,GValue*value,GParamSpec*pspec)
     if(binding.state()==BindingStore::State::constructing)binding.initialize<OptionsSlot>(read);else binding.read<OptionsSlot>(read);
   });
 }
-struct ModelCopy {Resource draft;std::string baseline;ObjectRef<GimpPainterMybrush> selected;bool dirty,conflict;};
+struct ModelCopy {Resource draft;std::string baseline,draft_name;ObjectRef<GimpPainterMybrush> selected;bool dirty,name_dirty,conflict;};
 ModelCopy model_copy(GimpPainterMybrushOptions*o)
-{return store(o).read<OptionsSlot>([](const OptionsImpl&i){return ModelCopy{i.draft,i.baseline,i.selected,i.dirty,i.conflict};});}
+{return store(o).read<OptionsSlot>([](const OptionsImpl&i){return ModelCopy{i.draft,i.baseline,i.draft_name,i.selected,i.dirty,i.name_dirty,i.conflict};});}
 void restore_copy(GimpPainterMybrushOptions*dest,const ModelCopy&copy)
 {
   auto revision=store(dest).with<OptionsSlot>([&](OptionsImpl&i){
     if(i.selected.get()!=copy.selected.get())throw std::runtime_error("Selection changed while copying painter options");
-    i.draft=copy.draft;i.baseline=copy.baseline;i.dirty=copy.dirty;i.conflict=copy.conflict;return ++i.revision;
+    Resource next=copy.draft;std::string next_baseline=copy.baseline;
+    std::string next_name=copy.name_dirty?copy.draft_name:i.source_name;
+    i.draft=std::move(next);i.baseline=std::move(next_baseline);i.draft_name=std::move(next_name);
+    i.dirty=copy.dirty;i.name_dirty=i.draft_name!=i.source_name;i.conflict=copy.conflict;++i.name_revision;return ++i.revision;
   });
-  notify_changed(dest,revision);
+  notify_changed(dest,revision,true,true,true);
 }
 gboolean config_copy(GimpConfig*src,GimpConfig*dest,GParamFlags flags)
 {
@@ -388,7 +451,10 @@ static void gimp_painter_mybrush_options_class_init(GimpPainterMybrushOptionsCla
   properties[PROP_CONFLICT]=g_param_spec_boolean("painter-conflict","Saved brush changed",nullptr,FALSE,G_PARAM_READABLE);
   properties[PROP_BRUSH_MODE]=g_param_spec_enum("brush-mode","Legacy brush mode",
     "Preserved legacy option; does not select a rendering mode",legacy_brush_mode_type(),0,flags);
-  for(unsigned i=1;i<=PROP_BRUSH_MODE;++i)g_object_class_install_property(object,i,properties[i]);
+  properties[PROP_DRAFT_NAME]=g_param_spec_string("painter-draft-name","Unsaved painter brush name",
+    "Name for the draft; does not rename the selected resource",nullptr,G_PARAM_READABLE);
+  properties[PROP_NAME_DIRTY]=g_param_spec_boolean("painter-name-dirty","Edited painter brush name",nullptr,FALSE,G_PARAM_READABLE);
+  for(unsigned i=1;i<=PROP_NAME_DIRTY;++i)g_object_class_install_property(object,i,properties[i]);
   g_signal_new("history-changed",G_TYPE_FROM_CLASS(klass),G_SIGNAL_RUN_LAST,0,nullptr,nullptr,nullptr,G_TYPE_NONE,0);
   g_signal_new("settings-changed",G_TYPE_FROM_CLASS(klass),G_SIGNAL_RUN_LAST,0,nullptr,nullptr,nullptr,G_TYPE_NONE,0);
 }
@@ -396,6 +462,16 @@ static void gimp_painter_mybrush_options_init(GimpPainterMybrushOptions*options)
 {options->binding_failed=!boundary<bool>(nullptr,false,[&]{BindingStore::ensure(G_OBJECT(options)).emplace<OptionsSlot>();return true;});}
 gchar*gimp_painter_mybrush_options_dup_json(GimpPainterMybrushOptions*options,GError**error)
 {return boundary<gchar*>(error,nullptr,[&]{return store(options).with<OptionsSlot>([](const OptionsImpl&i){return g_strdup(i.draft.encode().c_str());});});}
+gchar*gimp_painter_mybrush_options_dup_draft_name(GimpPainterMybrushOptions*options,GError**error)
+{return boundary<gchar*>(error,nullptr,[&]{return store(options).with<OptionsSlot>([](const OptionsImpl&i){return g_strdup(i.draft_name.c_str());});});}
+gboolean gimp_painter_mybrush_options_set_draft_name(GimpPainterMybrushOptions*options,const gchar*name,GError**error)
+{
+  return boundary<gboolean>(error,FALSE,[&]() -> gboolean{
+    auto owner=ObjectRef<GimpPainterMybrushOptions>::retain(options);
+    if(!name)throw std::invalid_argument("Expected a painter draft name");
+    set_draft_name(options,name);return TRUE;
+  });
+}
 gboolean gimp_painter_mybrush_options_set_json(GimpPainterMybrushOptions*options,const gchar*json,GError**error)
 {
   return boundary<gboolean>(error,FALSE,[&]() -> gboolean{
@@ -452,7 +528,17 @@ gboolean gimp_painter_mybrush_options_restore_history(GimpPainterMybrushOptions*
     if(gimp_context_get_painter_mybrush(GIMP_CONTEXT(options))==saved.source.get())store(options).with<OptionsSlot>([](OptionsImpl&i){i.remember();});
     else gimp_context_set_painter_mybrush(GIMP_CONTEXT(options),saved.source.get());
     if(gimp_context_get_painter_mybrush(GIMP_CONTEXT(options))!=saved.source.get())throw std::runtime_error("Brush selection changed while restoring history");
-    return gimp_painter_mybrush_options_set_json(options,saved.resource.encode().c_str(),error);
+    const auto encoded=saved.resource.encode();
+    struct Restored {std::uint64_t revision;bool settings_changed;};
+    const auto restored=store(options).with<OptionsSlot>([&](OptionsImpl&i){
+      if(i.selected.get()!=saved.source.get())throw std::runtime_error("Brush selection changed while restoring history");
+      const bool settings_changed=saved.settings_dirty||encoded!=i.draft.encode();
+      i.draft=std::move(saved.resource);i.draft_name=std::move(saved.name);
+      i.dirty=saved.settings_dirty||encoded!=i.baseline;i.name_dirty=i.draft_name!=i.source_name;
+      ++i.name_revision;if(settings_changed)++i.revision;
+      return Restored{i.revision,settings_changed};
+    });
+    notify_changed(options,restored.revision,restored.settings_changed,restored.settings_changed,true);return TRUE;
   });
 }
 GimpPainterMybrushOptions*gimp_painter_mybrush_options_ref_for_context(GimpContext*context,GError**error)

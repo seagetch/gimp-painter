@@ -352,6 +352,34 @@ void refresh_history(EditorImpl&i) {
     if(!sync.current())return;
   }
 }
+/* Name-only changes must not restart the preview or emit settings changes. */
+void refresh_identity(EditorImpl&i) {
+  if(!i.options||i.closed)return;
+  auto model=i.options;
+  auto selected=ObjectRef<GimpPainterMybrush>::retain(gimp_context_get_painter_mybrush(GIMP_CONTEXT(model.get())));
+  auto*b=selected.get();bool writable=b&&gimp_data_is_writable(GIMP_DATA(b));
+  GError*error=nullptr;String draft_name(gimp_painter_mybrush_options_dup_draft_name(model.get(),&error));checked(bool(draft_name),error);
+  gboolean conflict=FALSE,dirty=FALSE,name_dirty=FALSE;
+  g_object_get(model.get(),"painter-conflict",&conflict,"painter-dirty",&dirty,"painter-name-dirty",&name_dirty,nullptr);
+  dirty=dirty||name_dirty||(b&&gimp_data_is_dirty(GIMP_DATA(b)));
+  const auto resource=i.snapshot();SyncScope sync(i);
+  auto current=[&] {
+    if(!sync.current()||i.options.get()!=model.get()||gimp_context_get_painter_mybrush(GIMP_CONTEXT(model.get()))!=b)return false;
+    String latest(gimp_painter_mybrush_options_dup_draft_name(model.get(),nullptr));
+    return latest&&g_strcmp0(latest.get(),draft_name.get())==0;
+  };
+  gtk_widget_set_sensitive(i.save,*draft_name.get()&&(name_dirty||(writable&&!conflict)));if(!current())return;
+  gtk_widget_set_sensitive(i.rename,writable&&!conflict);if(!current())return;
+  gtk_widget_set_sensitive(i.remove,b&&gimp_data_is_deletable(GIMP_DATA(b)));if(!current())return;
+  if(g_strcmp0(gtk_entry_get_text(GTK_ENTRY(i.name)),draft_name.get())!=0)
+    gtk_entry_set_text(GTK_ENTRY(i.name),draft_name.get());
+  if(!current())return;
+  gimp_editor_set_name(GIMP_EDITOR(i.owner),b?gimp_object_get_name(b):_("Painter MyPaint Brushes"));if(!current())return;
+  std::string text=conflict?_("The source changed externally. Save with a new name preserves this draft."):dirty?_("Unsaved draft"):_("Saved brush");
+  if(!writable)text+=name_dirty?_(" · Read-only source: Save creates a new brush"):_(" · Read-only source: edit the draft name or use Save As");
+  for(auto d:resource.diagnostics())text+="\n"+d.path+": "+d.message;
+  status(i,text.c_str());
+}
 void refresh(EditorImpl&i) {
   if(!i.options||i.closed)return;
   auto model=i.options;auto context=i.context;auto*ctx=GIMP_CONTEXT(model.get());
@@ -364,20 +392,10 @@ void refresh(EditorImpl&i) {
   }
   for(int n=0;n<BRUSH_BOOL_COUNT;++n){gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(i.switches[n]),resource.switch_value(painter_mypaint_switches[n].index));if(!sync.current())return;}
   for(int n=0;n<BRUSH_TEXT_COUNT;++n){gtk_entry_set_text(GTK_ENTRY(i.texts[n]),resource.text_value(painter_mypaint_texts[n].index).c_str());if(!sync.current())return;}
-  auto selected=ObjectRef<GimpPainterMybrush>::retain(gimp_context_get_painter_mybrush(ctx));auto*b=selected.get();bool writable=b&&gimp_data_is_writable(GIMP_DATA(b));gboolean conflict=FALSE,dirty=FALSE;
-  g_object_get(model.get(),"painter-conflict",&conflict,"painter-dirty",&dirty,nullptr);
-  dirty=dirty||(b&&gimp_data_is_dirty(GIMP_DATA(b)));
-  gtk_widget_set_sensitive(i.save,writable&&!conflict);if(!sync.current())return;
-  gtk_widget_set_sensitive(i.rename,writable&&!conflict);if(!sync.current())return;
-  gtk_widget_set_sensitive(i.remove,b&&gimp_data_is_deletable(GIMP_DATA(b)));if(!sync.current())return;
-  gtk_entry_set_text(GTK_ENTRY(i.name),b?gimp_object_get_name(b):"");if(!sync.current())return;
-  gimp_editor_set_name(GIMP_EDITOR(i.owner),b?gimp_object_get_name(b):_("Painter MyPaint Brushes"));if(!sync.current())return;
+  auto selected=ObjectRef<GimpPainterMybrush>::retain(gimp_context_get_painter_mybrush(ctx));auto*b=selected.get();
+  refresh_identity(i);if(!sync.current())return;
   gtk_entry_set_text(GTK_ENTRY(i.tags),b?resource_tags(b).c_str():"");if(!sync.current())return;
   refresh_history(i);if(!sync.current())return;
-  std::string text=conflict?_("The source changed externally. Save As preserves this draft."):dirty?_("Unsaved draft"):_("Saved brush");
-  if(!writable)text+=_(" · Read-only source: use Save As");
-  for(auto d:resource.diagnostics())text+="\n"+d.path+": "+d.message;
-  status(i,text.c_str());if(!sync.current())return;
   update_curve(i);if(!sync.current())return;
   if(context&&GIMP_CONTEXT(context.get())!=ctx&&gimp_context_get_painter_mybrush(GIMP_CONTEXT(context.get()))!=b)
     gimp_context_set_painter_mybrush(GIMP_CONTEXT(context.get()),b);
@@ -436,8 +454,10 @@ void prompt(EditorImpl&i,int operation) {
     GTK_IS_WINDOW(gtk_widget_get_toplevel(GTK_WIDGET(i.owner)))?GTK_WINDOW(gtk_widget_get_toplevel(GTK_WIDGET(i.owner))):nullptr,
     GtkDialogFlags(GTK_DIALOG_DESTROY_WITH_PARENT),_("Cancel"),GTK_RESPONSE_CANCEL,
     operation==2?_("Delete"):_("Save"),GTK_RESPONSE_OK,nullptr);
-  auto*entry=gtk_entry_new();gtk_entry_set_text(GTK_ENTRY(entry),gtk_entry_get_text(GTK_ENTRY(i.name)));
-  if(operation==0){std::string n=gtk_entry_get_text(GTK_ENTRY(entry));n+=_(" copy");gtk_entry_set_text(GTK_ENTRY(entry),n.c_str());}
+  auto*entry=gtk_entry_new();
+  auto*source=gimp_context_get_painter_mybrush(i.ctx());const char*source_name=source?gimp_object_get_name(source):"";
+  gtk_entry_set_text(GTK_ENTRY(entry),operation==1?source_name:gtk_entry_get_text(GTK_ENTRY(i.name)));
+  if(operation==0&&g_strcmp0(gtk_entry_get_text(GTK_ENTRY(entry)),source_name)==0){std::string n=gtk_entry_get_text(GTK_ENTRY(entry));n+=_(" copy");gtk_entry_set_text(GTK_ENTRY(entry),n.c_str());}
   gtk_container_add(GTK_CONTAINER(gtk_dialog_get_content_area(GTK_DIALOG(dialog))),operation==2?gtk_label_new(_("Delete the selected brush from disk?")):entry);
   struct Prompt {WeakRef<GimpPainterMybrushEditor> editor;std::uint64_t generation,ui;int operation;GtkWidget*entry;ObjectRef<GimpPainterMybrush> resource;};
   auto*payload=new Prompt{WeakRef<GimpPainterMybrushEditor>(ObjectRef<GimpPainterMybrushEditor>::retain(i.owner)),store(i.owner).generation(),i.ui_revision,operation,entry,ObjectRef<GimpPainterMybrush>::retain(gimp_context_get_painter_mybrush(i.ctx()))};
@@ -468,7 +488,13 @@ void build(EditorImpl&i) {
   gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(i.tree),-1,_("Tags"),gtk_cell_renderer_text_new(),"text",COL_TAGS,nullptr);
   auto*scroll=gtk_scrolled_window_new(nullptr,nullptr);gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scroll),GTK_POLICY_AUTOMATIC,GTK_POLICY_AUTOMATIC);gtk_widget_set_size_request(scroll,240,155);gtk_container_add(GTK_CONTAINER(scroll),i.tree);pack(left,scroll,true);
   connect(i,i.search,"changed",G_CALLBACK(simple_cb),rebuild_list);connect(i,gtk_tree_view_get_selection(GTK_TREE_VIEW(i.tree)),"changed",G_CALLBACK(simple_cb),select_list);
-  i.name=named(gtk_entry_new(),"painter-brush-name");gtk_editable_set_editable(GTK_EDITABLE(i.name),FALSE);row(left,_("Brush"),i.name);
+  i.name=named(gtk_entry_new(),"painter-brush-name");row(left,_("Draft name"),i.name);
+  gtk_widget_set_tooltip_text(i.name,_("Name for the unsaved draft. Save with a new name creates a separate brush."));
+  connect(i,i.name,"changed",G_CALLBACK(simple_cb),[](EditorImpl&i){
+    if(!i.options)return;
+    GError*error=nullptr;
+    auto ok=gimp_painter_mybrush_options_set_draft_name(i.options.get(),gtk_entry_get_text(GTK_ENTRY(i.name)),&error);checked(ok,error);
+  });
   i.tags=named(gtk_entry_new(),"painter-brush-tags");row(left,_("Tags (comma separated)"),i.tags);
   connect(i,i.tags,"activate",G_CALLBACK(simple_cb),[](EditorImpl&i){auto*b=gimp_context_get_painter_mybrush(i.ctx());if(!b)return;gchar**names=g_strsplit(gtk_entry_get_text(GTK_ENTRY(i.tags)),",",-1);GList*tags=nullptr;for(int n=0;names[n];++n){g_strstrip(names[n]);if(*names[n]){auto*t=gimp_tag_new(names[n]);if(t)tags=g_list_prepend(tags,t);}}gimp_tagged_set_tags(GIMP_TAGGED(b),tags);g_list_free_full(tags,g_object_unref);g_strfreev(names);rebuild_list(i);});
   auto*actions=gtk_box_new(GTK_ORIENTATION_HORIZONTAL,2);pack(left,actions);
@@ -529,8 +555,10 @@ void build(EditorImpl&i) {
     });
   connect(i,i.options.get(),"settings-changed",G_CALLBACK(simple_cb),refresh);
   connect(i,i.options.get(),"history-changed",G_CALLBACK(simple_cb),refresh_history);
-  connect(i,i.options.get(),"prop-name-changed",G_CALLBACK(context_name_cb),[](EditorImpl&i){rebuild_list(i);refresh(i);});
-  connect(i,i.options.get(),"notify::painter-conflict",G_CALLBACK(notify_cb),refresh);
+  connect(i,i.options.get(),"prop-name-changed",G_CALLBACK(context_name_cb),[](EditorImpl&i){rebuild_list(i);refresh_identity(i);});
+  connect(i,i.options.get(),"notify::painter-conflict",G_CALLBACK(notify_cb),refresh_identity);
+  connect(i,i.options.get(),"notify::painter-draft-name",G_CALLBACK(notify_cb),refresh_identity);
+  connect(i,i.options.get(),"notify::painter-name-dirty",G_CALLBACK(notify_cb),refresh_identity);
   connect(i,i.options.get(),"foreground-changed",G_CALLBACK(object_cb),request_preview);
   connect(i,i.options.get(),"background-changed",G_CALLBACK(object_cb),request_preview);
   connect(i,i.options.get(),"brush-changed",G_CALLBACK(object_cb),request_preview);
@@ -606,21 +634,44 @@ GtkWidget*gimp_painter_mybrush_editor_popup(GimpContext*context,GtkWidget*parent
   if(parent&&GTK_IS_WINDOW(gtk_widget_get_toplevel(parent)))gtk_window_set_transient_for(GTK_WINDOW(window),GTK_WINDOW(gtk_widget_get_toplevel(parent)));
   gtk_window_set_destroy_with_parent(GTK_WINDOW(window),TRUE);gtk_container_add(GTK_CONTAINER(window),editor);gtk_widget_show_all(window);return window;
 }
-gboolean gimp_painter_mybrush_editor_save(GimpPainterMybrushEditor*editor,const gchar*name,GError**error) {
+static gboolean save_editor(GimpPainterMybrushEditor*editor,const gchar*name,bool use_draft_name,GError**error) {
   return boundary<gboolean>(error,FALSE,[&]()->gboolean {return store(editor).with<EditorSlot>([&](EditorImpl&i)->gboolean {
     if(!i.options)throw Error(GIMP_PAINTER_ERROR_INVALID_STATE,"The editor has no context");
     auto model=i.options;auto context=ObjectRef<GObject>::retain(G_OBJECT(i.ctx()));auto*ctx=GIMP_CONTEXT(context.get());auto*factory=ctx->gimp->painter_mybrush_factory;
     auto selected=ObjectRef<GimpPainterMybrush>::retain(gimp_context_get_painter_mybrush(ctx));if(!selected)throw Error(GIMP_PAINTER_ERROR_INVALID_STATE,"No painter brush is selected");
     GError*failure=nullptr;
+    /* Own the requested text before native saves/signals can replace controls. */
+    std::string requested_name;
+    if(name)requested_name=name;
+    else if(use_draft_name){
+      String pending(gimp_painter_mybrush_options_dup_draft_name(model.get(),&failure));checked(bool(pending),failure);
+      if(g_strcmp0(pending.get(),gimp_object_get_name(selected.get()))!=0)requested_name=pending.get();
+      else requested_name=gimp_object_get_name(selected.get());
+      if(requested_name.empty())throw Error(GIMP_PAINTER_ERROR_INVALID_STATE,"A valid brush name is required");
+      if(g_strcmp0(requested_name.c_str(),gimp_object_get_name(selected.get()))!=0)name=requested_name.c_str();
+    }
     if(name){
+      name=requested_name.c_str();
       if(!*name||!g_utf8_validate(name,-1,nullptr))throw Error(GIMP_PAINTER_ERROR_INVALID_STATE,"A valid brush name is required");
-      auto draft=PainterOptionsRef::retain(model.get()).snapshot();auto copy=PainterMybrushRef::create(name);copy.replace(draft);
+      auto draft=PainterOptionsRef::retain(model.get()).snapshot();const auto saved_draft=draft.encode();
+      String saved_name(gimp_painter_mybrush_options_dup_draft_name(model.get(),&failure));checked(bool(saved_name),failure);
+      auto copy=PainterMybrushRef::create(name);copy.replace(draft);
       gimp_tagged_set_tags(GIMP_TAGGED(copy.get()),gimp_tagged_get_tags(GIMP_TAGGED(selected.get())));
       auto*container=gimp_data_factory_get_container(factory);
       if(gimp_container_get_child_by_name(container,name))throw Error(GIMP_PAINTER_ERROR_INVALID_STATE,"A painter brush with that name already exists");
       auto ok=gimp_data_factory_data_save_single(factory,GIMP_DATA(copy.get()),&failure);checked(ok,failure);
       gimp_container_add(container,GIMP_OBJECT(copy.get()));
-      if(!i.closed&&i.options.get()==model.get()&&gimp_context_get_painter_mybrush(ctx)==selected.get()){gimp_context_set_painter_mybrush(ctx,copy.get());if(i.context&&GIMP_CONTEXT(i.context.get())!=ctx)gimp_context_set_painter_mybrush(GIMP_CONTEXT(i.context.get()),copy.get());}
+      auto*binding=BindingStore::find(G_OBJECT(model.get()));
+      if(!i.closed&&i.options.get()==model.get()&&gimp_context_get_painter_mybrush(ctx)==selected.get()&&binding&&binding->state()==BindingStore::State::active){
+        String current_name(gimp_painter_mybrush_options_dup_draft_name(model.get(),nullptr));
+        /* Factory signals may have edited a newer draft. Saving this snapshot
+         * must not select over those newer settings or the pending name. */
+        if(current_name&&g_strcmp0(current_name.get(),saved_name.get())==0&&PainterOptionsRef::retain(model.get()).snapshot().encode()==saved_draft){
+          gimp_context_set_painter_mybrush(ctx,copy.get());
+          if(!i.closed&&i.options.get()==model.get()&&i.context&&GIMP_CONTEXT(i.context.get())!=ctx&&gimp_context_get_painter_mybrush(ctx)==copy.get())
+            gimp_context_set_painter_mybrush(GIMP_CONTEXT(i.context.get()),copy.get());
+        }
+      }
     }else{
       if(!gimp_data_is_writable(GIMP_DATA(selected.get())))throw Error(GIMP_PAINTER_ERROR_INVALID_STATE,"This brush is read-only; use Save As");
       const auto draft=PainterOptionsRef::retain(model.get()).snapshot().encode();
@@ -639,16 +690,35 @@ gboolean gimp_painter_mybrush_editor_save(GimpPainterMybrushEditor*editor,const 
     return TRUE;
   });});
 }
+gboolean gimp_painter_mybrush_editor_save(GimpPainterMybrushEditor*editor,const gchar*name,GError**error) {
+  return save_editor(editor,name,true,error);
+}
 gboolean gimp_painter_mybrush_editor_rename(GimpPainterMybrushEditor*editor,const gchar*name,GError**error) {
   return boundary<gboolean>(error,FALSE,[&]()->gboolean {return store(editor).with<EditorSlot>([&](EditorImpl&i)->gboolean {
     if(!i.options)throw Error(GIMP_PAINTER_ERROR_INVALID_STATE,"The editor has no context");
     if(!name||!*name||!g_utf8_validate(name,-1,nullptr))throw Error(GIMP_PAINTER_ERROR_INVALID_STATE,"A valid brush name is required");
+    const std::string requested_name=name;name=requested_name.c_str();
     auto selected=ObjectRef<GimpPainterMybrush>::retain(gimp_context_get_painter_mybrush(i.ctx()));if(!selected||!gimp_data_is_writable(GIMP_DATA(selected.get())))throw Error(GIMP_PAINTER_ERROR_INVALID_STATE,"This brush cannot be renamed");
     auto*factory=i.ctx()->gimp->painter_mybrush_factory;auto*other=gimp_container_get_child_by_name(gimp_data_factory_get_container(factory),name);
     if(other&&other!=GIMP_OBJECT(selected.get()))throw Error(GIMP_PAINTER_ERROR_INVALID_STATE,"A painter brush with that name already exists");
-    if(!gimp_painter_mybrush_editor_save(editor,nullptr,error))return FALSE;
-    std::string old=gimp_object_get_name(selected.get());gimp_object_set_name(GIMP_OBJECT(selected.get()),name);
-    if(!gimp_data_factory_data_save_single(factory,GIMP_DATA(selected.get()),error)){gimp_object_set_name(GIMP_OBJECT(selected.get()),old.c_str());return FALSE;}
+    /* Rename is explicitly about the selected saved resource. A separately
+     * named draft remains pending; it must not redirect this action to a copy. */
+    if(!save_editor(editor,nullptr,false,error))return FALSE;
+    std::string old=gimp_object_get_name(selected.get());
+    {
+      /* The model observes notify::name. Publish only the final persisted name,
+       * not a tentative name that could falsely clear pending-name ownership
+       * before a failed save rolls the resource name back. */
+      struct NameNotify {
+        GObject* object;
+        explicit NameNotify(GObject* value):object(value){g_object_freeze_notify(object);}
+        ~NameNotify(){g_object_thaw_notify(object);}
+      } notify(G_OBJECT(selected.get()));
+      gimp_object_set_name(GIMP_OBJECT(selected.get()),name);
+      if(!gimp_data_factory_data_save_single(factory,GIMP_DATA(selected.get()),error)){
+        gimp_object_set_name(GIMP_OBJECT(selected.get()),old.c_str());return FALSE;
+      }
+    }
     if(!i.closed){rebuild_list(i);refresh(i);}
     return TRUE;
   });});
