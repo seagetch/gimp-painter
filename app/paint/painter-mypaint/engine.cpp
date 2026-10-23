@@ -8,6 +8,24 @@ struct Engine::Impl {
   bool non_incremental = false;
   bool processing = false;
 };
+Engine::Prepared::Prepared () noexcept = default;
+Engine::Prepared::Prepared (std::unique_ptr<Impl> value) : value_(std::move(value)) {}
+Engine::Prepared::~Prepared () = default;
+Engine::Prepared::Prepared (Prepared&&) noexcept = default;
+Engine::Prepared& Engine::Prepared::operator= (Prepared&&) noexcept = default;
+bool Engine::Prepared::empty () const noexcept { return !value_; }
+Engine::Prepared Engine::prepare (const Checkpoint& checkpoint)
+{
+  if (checkpoint.empty()) throw std::invalid_argument("Empty evaluator checkpoint");
+  return Prepared(std::unique_ptr<Impl>(new Impl(*checkpoint.value_)));
+}
+bool Engine::try_exchange (Prepared& prepared) noexcept
+{
+  if (!prepared.value_ || impl_->processing || prepared.value_->processing)
+    return false;
+  impl_.swap(prepared.value_);
+  return true;
+}
 Engine::Engine (const Resource& r) : impl_ (new Impl) { configure (r); }
 Engine::~Engine () = default;
 Engine::Checkpoint Engine::checkpoint () const

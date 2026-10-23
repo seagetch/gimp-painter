@@ -58,3 +58,14 @@ painter_mypaint_checkpoint_test = executable('painter-mypaint-checkpoint',
   cpp_args: painter_cpp_args, override_options: ['cpp_std=c++14'])
 test('painter-mypaint-checkpoint', painter_mypaint_checkpoint_test,
   suite: 'painter', timeout: 60)
+
+# Allocation-free evaluator exchange for paired historical native Undo.
+painter_mypaint_prepared_test = executable('painter-mypaint-prepared-state',
+  'tests/test-prepared-state.cpp',
+  dependencies: painter_mypaint_dep,
+  cpp_args: painter_cpp_args,
+  link_args: ['-Wl,--wrap=_Znwm'],
+  override_options: ['cpp_std=c++14'],
+)
+test('painter-mypaint-prepared-state', painter_mypaint_prepared_test,
+  suite: 'painter', timeout: 60)

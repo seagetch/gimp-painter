@@ -23,6 +23,26 @@ public:
     Checkpoint () = default;
     bool empty () const noexcept { return !value_; }
   };
+  // Mutable deep copy prepared before history publication. No live Engine or
+  // Resource owner is retained; exchange itself never allocates.
+  class Prepared
+  {
+    friend class Engine;
+    std::unique_ptr<Impl> value_;
+    explicit Prepared (std::unique_ptr<Impl> value);
+  public:
+    Prepared () noexcept;
+    ~Prepared ();
+    Prepared (Prepared&&) noexcept;
+    Prepared& operator= (Prepared&&) noexcept;
+    Prepared (const Prepared&) = delete;
+    Prepared& operator= (const Prepared&) = delete;
+    bool empty () const noexcept;
+  };
+  static Prepared prepare (const Checkpoint& checkpoint);
+  // Rejects empty or an active sample without modifying either side. Successful
+  // exchange leaves the former live evaluator in prepared for later Redo.
+  bool try_exchange (Prepared& prepared) noexcept;
   // Only complete input-sample boundaries; reentrant capture/restore during a
   // Surface callback is rejected instead of exposing a half-evaluated state.
   Checkpoint checkpoint () const;

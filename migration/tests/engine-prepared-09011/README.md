@@ -1,0 +1,11 @@
+# 09.011/engine-prepared
+
+`Engine::Prepared` is a move-only independent mutable deep evaluator copy, prepared from the immutable Checkpoint before native history publication. Preparation may allocate and throw; immutable identity and live evaluator remain unchanged on failure. `try_exchange` is noexcept, swaps only unique_ptr ownership, rejects empty/active-sample state without modification, and leaves the former live state in Prepared for a subsequent exchange.
+
+Four normal and selected-three-unit ASan/UBSan groups prove historical before/after Resource+evaluator restoration after unrelated live reconfiguration, repeated exchange, move ownership, injected first/second/fourth C++ allocation failure during preparation, empty rejection and actual Surface callback busy rejection. The test arms the next C++ allocation failure across successful and rejected exchange plus Resource swap and verifies it remains armed. Static assertions preserve noexcept Resource/Prepared move. This is a bounded new-state-path guarantee, **not whole-application/native pixel allocator instrumentation**.
+
+Two actual replacement-object mutants fail: omitted exchange loses historical state; omitted processing guard permits reentrant sample exchange. Existing checkpoint9, resource9, complete legacy evaluator trace (5,637,911 bytes/33,768 records) and decoder trace (1,125,707 bytes/81,420 records) remain exact. Earlier checkpoint evidence is replayed immutable, not resealed. Production evaluator/resource and fixture translation units use existing C++14/noRTTI flags.
+
+This package is a prerequisite, not controller integration: the test explicitly composes historical Resource swaps with evaluator exchange. The future controller must store those as one guarded historical bundle, retain original before/after identity, and never use live reconfiguration as historical Redo. Original `09.011/mypaint-undo-stroke` remains open. Standard native pixel Undo may allocate through GEGL; no global OOM-atomicity or whole-pop no-allocation claim. No visible UI changed or screenshot claimed.
+
+`python3 migration/tests/engine-prepared-09011/validate.py --check-source` checks current selected sources plus archive. Omit source checking only when replaying this immutable historical checkpoint.
