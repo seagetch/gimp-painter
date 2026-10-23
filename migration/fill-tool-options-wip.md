@@ -61,3 +61,12 @@ The separate standard sanitizer run still fails on signed integer overflow in
 `app/core/gimpbrush-transform.cc:380`. Leak detection remains unavailable under
 ptrace. Neither failure is changed into a passing result. 08.012 remains DOING
 and the original completed-task count remains 135/661.
+
+## Final original-task acceptance (2026-10-12)
+
+Earlier statuses above are historical. Standard Meson normal and ASan/UBSan
+each passed ruler6, Fill core40 and GTK32 (78/78), independently counted before
+a later workspace reset. Final sanitizer raw logs were lost; the final acceptance
+was reconstructed from recorded verified results and pinned public source,
+without a new runtime run. Original08.012 closes at136/661; all independent
+gates remain. See [final acceptance](tests/fill-tool-options-type/README.md).

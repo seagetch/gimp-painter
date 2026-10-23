@@ -461,6 +461,10 @@ def route(row, added, removed):
     # The actual BrushCore adapter and native registration remain001169.
     if (path, int(row['index'])) in [('app/core/gimpimage-contiguous-region.h', 1), ('app/tools/gimp-tools.c', 3), ('app/tools/gimpbucketfillbrushtool.h', 1)]:
         result['tasks'] = [task for task in result['tasks'] if task != '08.011']
+    # Search declarations and perspective-only registration are not Fill tool/options.
+    # Keep their search, renderer, perspective and other registration duties.
+    if (path, int(row['index'])) in {('app/core/gimpimage-contiguous-region.h', 1), ('app/tools/gimp-tools.c', 12)}:
+        result['tasks'] = [task for task in result['tasks'] if task != '08.012']
     dsl = uses_gtk_dsl(path, added + removed)
     support = int(row['index']) in GTK_DSL_SUPPORT.get(path, set())
     result['tasks'] = [task for task in result['tasks']
