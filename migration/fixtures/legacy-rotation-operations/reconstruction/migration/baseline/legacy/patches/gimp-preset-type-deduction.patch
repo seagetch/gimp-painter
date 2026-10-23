@@ -1,0 +1,13 @@
+diff --git a/app/presets/preset-factory-gui.cpp b/app/presets/preset-factory-gui.cpp
+index c2f8bae620..d3219c6f8e 100644
+--- a/app/presets/preset-factory-gui.cpp
++++ b/app/presets/preset-factory-gui.cpp
+@@ -206,7 +206,7 @@ PresetGuiFactory::restore (Gimp               *gimp,
+     g_print("PresetGuiFactory::on_restore::end\n");
+ 
+     // Action group entry initialization
+-    PresetGuiConfig::ActionGroupEntry* action_group_entry = gui_config->get_action_group_entry();
++    auto* action_group_entry = gui_config->get_action_group_entry();
+ 
+     if (action_group_entry)
+       gimp_action_factory_group_register (global_action_factory,

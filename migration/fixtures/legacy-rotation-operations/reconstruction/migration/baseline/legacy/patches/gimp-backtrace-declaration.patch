@@ -1,0 +1,14 @@
+diff --git a/app/signals.c b/app/signals.c
+index 57b3b27fd4..a04c5a6b9b 100644
+--- a/app/signals.c
++++ b/app/signals.c
+@@ -18,6 +18,9 @@
+ #include "config.h"
+ 
+ #include <signal.h>
++#ifdef HAVE_EXECINFO_H
++#include <execinfo.h>
++#endif
+ 
+ #include <glib-object.h>
+ 

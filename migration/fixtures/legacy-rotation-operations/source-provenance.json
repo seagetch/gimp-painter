@@ -1,0 +1,59 @@
+{
+  "pin": "afa43fae3e920210146abed514f136fd49f671b5",
+  "sources": {
+    "app/display/gimpdisplayshell-tool-events.c": "7b81d99ab288247d1452ee47053731a4c71eb8c40fa54c734f87023d31757c84",
+    "app/display/gimpstatusbar.c": "f5614bb76258ad30e0cfa46727e08cf6514f5c14d3e8f754ba159a916b221667",
+    "app/display/gimpdisplayshell-rotate.c": "59374624ee30bd800d61677c6a120bcbe96ed9383be50431d70f32d506ab89e8"
+  },
+  "functions": {
+    "gimp_display_shell_start_rotating": {
+      "path": "app/display/gimpdisplayshell-tool-events.c",
+      "start_line": 1813,
+      "end_line": 1839,
+      "sha256": "96f5aabf9a6d3fc52d654cb54a6f64f486287b2ad9b33201b89905be10976a5e"
+    },
+    "gimp_display_shell_rotate": {
+      "path": "app/display/gimpdisplayshell-tool-events.c",
+      "start_line": 1842,
+      "end_line": 1871,
+      "sha256": "f9096d265deba723ddbe1ffc2d72e5cff40f102864e39fad85c0c79f32ee662f"
+    },
+    "gimp_display_shell_stop_rotating": {
+      "path": "app/display/gimpdisplayshell-tool-events.c",
+      "start_line": 1873,
+      "end_line": 1885,
+      "sha256": "ee2223e00082b98087167eaf556d42da61a273dadae5e837776e5affd61d3519"
+    },
+    "gimp_statusbar_rotate_left_clicked": {
+      "path": "app/display/gimpstatusbar.c",
+      "start_line": 1594,
+      "end_line": 1605,
+      "sha256": "efe34febba00fa0bf653bf850717453ccc4317d147e95fe46c5159c414363d65"
+    },
+    "gimp_statusbar_rotate_right_clicked": {
+      "path": "app/display/gimpstatusbar.c",
+      "start_line": 1607,
+      "end_line": 1618,
+      "sha256": "ca0f7e7724bacebff24538bf19fed78850a058be95501b5a064f5465b95a7c91"
+    },
+    "gimp_statusbar_flip_side_clicked": {
+      "path": "app/display/gimpstatusbar.c",
+      "start_line": 1620,
+      "end_line": 1629,
+      "sha256": "f1483e7f8616dbb46660dbd6366ad7322bc6941c4c54d409d7005d7d639d1cf8"
+    },
+    "gimp_statusbar_reset_view_clicked": {
+      "path": "app/display/gimpstatusbar.c",
+      "start_line": 1631,
+      "end_line": 1642,
+      "sha256": "a019ce5d974932f3b2a5e1a3533eaebdb6651538a087c414a52f75a697865988"
+    },
+    "gimp_display_shell_set_cairo_rotate": {
+      "path": "app/display/gimpdisplayshell-rotate.c",
+      "start_line": 45,
+      "end_line": 62,
+      "sha256": "e8fd8cf6515496a2d8c0a51e514e738054652ebb51b866f5362c037313c1eac4"
+    }
+  },
+  "scope": "Original function bodies, synthetic structs and GUI side-effect adapters; real Cairo transforms. Not a GUI/event/device capture."
+}

@@ -1,0 +1,38 @@
+{
+  "task": "02.012",
+  "pin": "afa43fae3e920210146abed514f136fd49f671b5",
+  "capture_date": "2026-10-15",
+  "gui_rows": 370,
+  "source_rows": 1232,
+  "gui_runs": {
+    "gui-captures": {
+      "rows": 370,
+      "completion_markers": [
+        370
+      ],
+      "completion_marker_matches_rows": true,
+      "command_exit": -11
+    },
+    "repeat-gui-captures": {
+      "rows": 370,
+      "completion_markers": [
+        370
+      ],
+      "completion_marker_matches_rows": true,
+      "command_exit": -11
+    }
+  },
+  "gui_fresh_profile_exact_replay": true,
+  "source_O0_O2_exact_replay": true,
+  "gui_process_exit_primary": -11,
+  "gui_process_exit_repeat": -11,
+  "gui_capture_complete_before_shutdown_crash": true,
+  "clean_shutdown": false,
+  "synthetic_inputs": true,
+  "physical_input_claim": false,
+  "gimp3_parity_claim": false,
+  "binary_sha256": "fa158d0538031099e08a6b91a7d4ba174fef14fbdc01a5c4ff755426e225a936",
+  "source_binary_sha256": "23b4931b2698289a781b600c7f3c2787157d13d839f8bc74c188d071284ea1b8",
+  "original_binary_unchanged": true,
+  "scope": "Original GUI event handler and statusbar callback execution with synthetic inputs; separate unchanged-source+Cairo capture. Original teardown segfault retained."
+}

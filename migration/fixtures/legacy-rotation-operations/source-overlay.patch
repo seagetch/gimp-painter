@@ -1,0 +1,1358 @@
+diff --git a/app/base/glib-cxx-impl.hpp b/app/base/glib-cxx-impl.hpp
+index a2ad35e3..23d6faed 100644
+--- a/app/base/glib-cxx-impl.hpp
++++ b/app/base/glib-cxx-impl.hpp
+@@ -517,7 +517,7 @@ gint NewGClass<name, CStructs, Impl, IFaces...>::private_offset = 0;
+ 
+ template <char const* name, typename CStructs, typename Impl, typename... IFaces>
+ inline GType NewGClass<name, CStructs, Impl, IFaces...>::get_type (void) {
+-  static volatile gsize g_define_type_id__volatile = 0;
++  static gsize g_define_type_id__volatile = 0;
+   if (g_once_init_enter (&g_define_type_id__volatile)) {
+     GType g_define_type_id =
+         g_type_register_static_simple (CStructs::ParentTraits::get_type(),
+diff --git a/app/core/gimpfilterlayer.cpp b/app/core/gimpfilterlayer.cpp
+index 9141c8c7..7be38b6e 100644
+--- a/app/core/gimpfilterlayer.cpp
++++ b/app/core/gimpfilterlayer.cpp
+@@ -769,6 +769,11 @@ void GLib::FilterLayer::end()
+   }
+ 
+   notify_filter_end();
++  if (g_getenv("GIMP_PAINTER_CAPTURE_FILTER")) {
++    gint n = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(g_object), "migration-capture-completions"));
++    g_object_set_data(G_OBJECT(g_object), "migration-capture-completions", GINT_TO_POINTER(n + 1));
++    g_print("FILTER_COMPLETE time_us=%" G_GINT64_FORMAT " name=%s\n", g_get_monotonic_time(), gimp_object_get_name(g_object));
++  }
+ }
+ 
+ gboolean GLib::FilterLayer::is_active()
+@@ -1207,3 +1212,11 @@ gimp_filter_layer_mark_as_loaded (GimpFilterLayer* layer)
+ {
+   FilterLayerInterface::cast(layer)->mark_as_loaded ();
+ }
++
++/* Read-only capture instrumentation, excluded from the reference app binary. */
++extern "C" gint gimp_filter_layer_capture_pending(GimpFilterLayer* layer)
++{
++  auto* impl = dynamic_cast<GLib::FilterLayer*>(FilterLayerInterface::cast(layer));
++  return (impl->is_waiting_to_be_processed() ? 1 : 0) |
++         (impl->waiting_for_runner ? 2 : 0);
++}
+diff --git a/app/display/gimpdisplayshell-callbacks.c b/app/display/gimpdisplayshell-callbacks.c
+index 79ebbff0..b7626470 100644
+--- a/app/display/gimpdisplayshell-callbacks.c
++++ b/app/display/gimpdisplayshell-callbacks.c
+@@ -35,6 +35,7 @@
+ #include "gimpcanvasitem.h"
+ #include "gimpdisplay.h"
+ #include "gimpdisplayshell.h"
++#include "gimpdisplayshell-overlays.h"
+ #include "gimpdisplayshell-appearance.h"
+ #include "gimpdisplayshell-callbacks.h"
+ #include "gimpdisplayshell-draw.h"
+diff --git a/app/display/gimpimagewindow.c b/app/display/gimpimagewindow.c
+index 04ffaff8..af370bab 100644
+--- a/app/display/gimpimagewindow.c
++++ b/app/display/gimpimagewindow.c
+@@ -62,6 +62,8 @@
+ #include "gimpdisplay-foreach.h"
+ #include "gimpcanvas.h"
+ #include "gimpdisplayshell.h"
++#include "gimpdisplayshell-overlays.h"
++#include "gimpdisplayshell-rotate.h"
+ #include "gimpdisplayshell-appearance.h"
+ #include "gimpdisplayshell-close.h"
+ #include "gimpdisplayshell-scroll.h"
+diff --git a/app/presets/preset-factory-gui.cpp b/app/presets/preset-factory-gui.cpp
+index c2f8bae6..d3219c6f 100644
+--- a/app/presets/preset-factory-gui.cpp
++++ b/app/presets/preset-factory-gui.cpp
+@@ -206,7 +206,7 @@ PresetGuiFactory::restore (Gimp               *gimp,
+     g_print("PresetGuiFactory::on_restore::end\n");
+ 
+     // Action group entry initialization
+-    PresetGuiConfig::ActionGroupEntry* action_group_entry = gui_config->get_action_group_entry();
++    auto* action_group_entry = gui_config->get_action_group_entry();
+ 
+     if (action_group_entry)
+       gimp_action_factory_group_register (global_action_factory,
+diff --git a/app/signals.c b/app/signals.c
+index 57b3b27f..a04c5a6b 100644
+--- a/app/signals.c
++++ b/app/signals.c
+@@ -18,6 +18,9 @@
+ #include "config.h"
+ 
+ #include <signal.h>
++#ifdef HAVE_EXECINFO_H
++#include <execinfo.h>
++#endif
+ 
+ #include <glib-object.h>
+ 
+diff --git a/app/tests/test-ui.c b/app/tests/test-ui.c
+index 986fca73..af44cd48 100644
+--- a/app/tests/test-ui.c
++++ b/app/tests/test-ui.c
+@@ -1,959 +1,87 @@
+-/* GIMP - The GNU Image Manipulation Program
+- * Copyright (C) 2009 Martin Nordholts <martinn@src.gnome.org>
+- *
+- * This program is free software: you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 3 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+- */
+-
+-#include <stdlib.h>
+-#include <string.h>
+-
++/* Synthetic GDK inputs to unchanged original GUI event handler. */
++#include "config.h"
++#include <stdio.h>
++#include <math.h>
+ #include <gegl.h>
+ #include <gtk/gtk.h>
+ #include <gdk/gdkkeysyms.h>
+-
+ #include "libgimpbase/gimpbase.h"
+-#include "libgimpmath/gimpmath.h"
+ #include "libgimpwidgets/gimpwidgets.h"
+-
+-#include "dialogs/dialogs-types.h"
+-
++#include "display/display-types.h"
++#include "core/gimp.h"
++#include "core/gimpcontext.h"
+ #include "display/gimpdisplay.h"
+ #include "display/gimpdisplayshell.h"
+-#include "display/gimpdisplayshell-scale.h"
++#include "display/gimpdisplayshell-tool-events.h"
++#include "display/gimpdisplayshell-rotate.h"
+ #include "display/gimpdisplayshell-transform.h"
+-#include "display/gimpimagewindow.h"
+-
+-#include "widgets/gimpdialogfactory.h"
+-#include "widgets/gimpdock.h"
+-#include "widgets/gimpdockable.h"
+-#include "widgets/gimpdockbook.h"
+-#include "widgets/gimpdockcontainer.h"
+-#include "widgets/gimpdocked.h"
+-#include "widgets/gimpdockwindow.h"
+-#include "widgets/gimphelp-ids.h"
+-#include "widgets/gimpsessioninfo.h"
+-#include "widgets/gimpsessioninfo-aux.h"
+-#include "widgets/gimpsessionmanaged.h"
+-#include "widgets/gimptoolbox.h"
+-#include "widgets/gimptooloptionseditor.h"
+-#include "widgets/gimpuimanager.h"
+-#include "widgets/gimpwidgets-utils.h"
+-
+-#include "core/gimp.h"
+-#include "core/gimpchannel.h"
+-#include "core/gimpcontext.h"
+-#include "core/gimpimage.h"
+-#include "core/gimplayer.h"
+-#include "core/gimptoolinfo.h"
+-#include "core/gimptooloptions.h"
+-
+ #include "tests.h"
+-
+ #include "gimp-app-test-utils.h"
+-
+-
+-#define GIMP_UI_WINDOW_POSITION_EPSILON 25
+-#define GIMP_UI_POSITION_EPSILON        1
+-#define GIMP_UI_ZOOM_EPSILON            0.01
+-
+-#define ADD_TEST(function) \
+-  g_test_add_data_func ("/gimp-ui/" #function, gimp, function);
+-
+-
+-/* Put this in the code below when you want the test to pause so you
+- * can do measurements of widgets on the screen for example
+- */
+-#define GIMP_PAUSE (g_usleep (20 * 1000 * 1000))
+-
+-
+-typedef gboolean (*GimpUiTestFunc) (GObject *object);
+-
+-
+-static void            gimp_ui_synthesize_delete_event          (GtkWidget         *widget);
+-static gboolean        gimp_ui_synthesize_click                 (GtkWidget         *widget,
+-                                                                 gint               x,
+-                                                                 gint               y,
+-                                                                 gint               button,
+-                                                                 GdkModifierType    modifiers);
+-static GtkWidget     * gimp_ui_find_window                      (GimpDialogFactory *dialog_factory,
+-                                                                 GimpUiTestFunc     predicate);
+-static gboolean        gimp_ui_not_toolbox_window               (GObject           *object);
+-static gboolean        gimp_ui_multicolumn_not_toolbox_window   (GObject           *object);
+-static gboolean        gimp_ui_is_gimp_layer_list               (GObject           *object);
+-static int             gimp_ui_aux_data_eqiuvalent              (gconstpointer      _a,
+-                                                                 gconstpointer      _b);
+-static void            gimp_ui_switch_window_mode               (Gimp              *gimp);
+-
+-
+-/**
+- * tool_options_editor_updates:
+- * @data:
+- *
+- * Makes sure that the tool options editor is updated when the tool
+- * changes.
+- **/
+-static void
+-tool_options_editor_updates (gconstpointer data)
+-{
+-  Gimp                  *gimp         = GIMP (data);
+-  GimpDisplay           *display      = GIMP_DISPLAY (gimp_get_empty_display (gimp));
+-  GimpDisplayShell      *shell        = gimp_display_get_shell (display);
+-  GtkWidget             *toplevel     = gtk_widget_get_toplevel (GTK_WIDGET (shell));
+-  GimpImageWindow       *image_window = GIMP_IMAGE_WINDOW (toplevel);
+-  GimpUIManager         *ui_manager   = gimp_image_window_get_ui_manager (image_window);
+-  GtkWidget             *dockable     = gimp_dialog_factory_dialog_new (gimp_dialog_factory_get_singleton (),
+-                                                                        gtk_widget_get_screen (toplevel),
+-                                                                        NULL /*ui_manager*/,
+-                                                                        "gimp-tool-options",
+-                                                                        -1 /*view_size*/,
+-                                                                        FALSE /*present*/);
+-  GimpToolOptionsEditor *editor       = GIMP_TOOL_OPTIONS_EDITOR (gtk_bin_get_child (GTK_BIN (dockable)));
+-
+-  /* First select the rect select tool */
+-  gimp_ui_manager_activate_action (ui_manager,
+-                                   "tools",
+-                                   "tools-rect-select");
+-  g_assert_cmpstr (GIMP_HELP_TOOL_RECT_SELECT,
+-                   ==,
+-                   gimp_tool_options_editor_get_tool_options (editor)->
+-                   tool_info->
+-                   help_id);
+-
+-  /* Change tool and make sure the change is taken into account by the
+-   * tool options editor
+-   */
+-  gimp_ui_manager_activate_action (ui_manager,
+-                                   "tools",
+-                                   "tools-ellipse-select");
+-  g_assert_cmpstr (GIMP_HELP_TOOL_ELLIPSE_SELECT,
+-                   ==,
+-                   gimp_tool_options_editor_get_tool_options (editor)->
+-                   tool_info->
+-                   help_id);
+-}
+-
+-static GtkWidget *
+-gimp_ui_get_dialog (const gchar *identifier)
+-{
+-  GtkWidget *result = NULL;
+-  GList     *iter;
+-
+-  for (iter = gimp_dialog_factory_get_open_dialogs (gimp_dialog_factory_get_singleton ());
+-       iter;
+-       iter = g_list_next (iter))
+-    {
+-      GtkWidget *dialog = GTK_WIDGET (iter->data);
+-      GimpDialogFactoryEntry *entry = NULL;
+-
+-      gimp_dialog_factory_from_widget (dialog, &entry);
+-
+-      if (strcmp (entry->identifier, identifier) == 0)
+-        {
+-          result = dialog;
+-          break;
+-        }
+-    }
+-
+-  return result;
+-}
+-
+-static void
+-automatic_tab_style (gconstpointer data)
+-{
+-  GtkWidget    *channel_dockable = gimp_ui_get_dialog ("gimp-channel-list");
+-  GimpDockable *dockable;
+-  GimpUIManager *ui_manager;
+-  g_assert (channel_dockable != NULL);
+-
+-  dockable = GIMP_DOCKABLE (channel_dockable);
+-
+-  gimp_test_run_mainloop_until_idle ();
+-
+-  /* The channel dockable is the only dockable, it has enough space
+-   * for the icon-blurb
+-   */
+-  g_assert_cmpint (GIMP_TAB_STYLE_ICON_BLURB,
+-                   ==,
+-                   gimp_dockable_get_actual_tab_style (dockable));
+-
+-  /* Add some dockables to the channel dockable dockbook */
+-  ui_manager =
+-    gimp_dockbook_get_ui_manager (gimp_dockable_get_dockbook (dockable));
+-  gimp_ui_manager_activate_action (ui_manager,
+-                                   "dockable",
+-                                   "dialogs-sample-points");
+-  gimp_ui_manager_activate_action (ui_manager,
+-                                   "dockable",
+-                                   "dialogs-vectors");
+-  gimp_test_run_mainloop_until_idle ();
+-
+-  /* Now there is not enough space to have icon-blurb for channel
+-   * dockable, make sure it's just an icon now
+-   */
+-  g_assert_cmpint (GIMP_TAB_STYLE_ICON,
+-                   ==,
+-                   gimp_dockable_get_actual_tab_style (dockable));
+-
+-  /* Close the two dockables we added */
+-  gimp_ui_manager_activate_action (ui_manager,
+-                                   "dockable",
+-                                   "dockable-close-tab");
+-  gimp_ui_manager_activate_action (ui_manager,
+-                                   "dockable",
+-                                   "dockable-close-tab");
+-  gimp_test_run_mainloop_until_idle ();
+-
+-  /* We should now be back on icon-blurb */
+-  g_assert_cmpint (GIMP_TAB_STYLE_ICON_BLURB,
+-                   ==,
+-                   gimp_dockable_get_actual_tab_style (dockable));
+-}
+-
+-static void
+-create_new_image_via_dialog (gconstpointer data)
+-{
+-  Gimp      *gimp = GIMP (data);
+-  GimpImage *image;
+-  GimpLayer *layer;
+-
+-  image = gimp_test_utils_create_image_from_dalog (gimp);
+-
+-  /* Add a layer to the image to make it more useful in later tests */
+-  layer = gimp_layer_new (image,
+-                          gimp_image_get_width (image),
+-                          gimp_image_get_height (image),
+-                          gimp_image_base_type_with_alpha (image),
+-                          "Layer for testing",
+-                          GIMP_OPACITY_OPAQUE, GIMP_NORMAL_MODE);
+-
+-  gimp_image_add_layer (image, layer,
+-                        GIMP_IMAGE_ACTIVE_PARENT, -1, TRUE);
+-  gimp_test_run_mainloop_until_idle ();
+-}
+-
+-static void
+-keyboard_zoom_focus (gconstpointer data)
+-{
+-  Gimp              *gimp    = GIMP (data);
+-  GimpDisplay       *display = GIMP_DISPLAY (gimp_get_display_iter (gimp)->data);
+-  GimpDisplayShell  *shell   = gimp_display_get_shell (display);
+-  GimpImageWindow   *window  = gimp_display_shell_get_window (shell);
+-  gint               image_x;
+-  gint               image_y;
+-  gint               shell_x_before_zoom;
+-  gint               shell_y_before_zoom;
+-  gdouble            factor_before_zoom;
+-  gint               shell_x_after_zoom;
+-  gint               shell_y_after_zoom;
+-  gdouble            factor_after_zoom;
+-
+-  /* We need to use a point that is within the visible (exposed) part
+-   * of the canvas
+-   */
+-  image_x = 400;
+-  image_y = 50;
+-
+-  /* Setup zoom focus on the bottom right part of the image. We avoid
+-   * 0,0 because that's essentially a particularly easy special case.
+-   */
+-  gimp_display_shell_transform_xy (shell,
+-                                   image_x,
+-                                   image_y,
+-                                   &shell_x_before_zoom,
+-                                   &shell_y_before_zoom);
+-  gimp_display_shell_push_zoom_focus_pointer_pos (shell,
+-                                                  shell_x_before_zoom,
+-                                                  shell_y_before_zoom);
+-  factor_before_zoom = gimp_zoom_model_get_factor (shell->zoom);
+-
+-  /* Do the zoom */
+-  gimp_test_utils_synthesize_key_event (GTK_WIDGET (window), GDK_KEY_plus);
+-  gimp_test_run_mainloop_until_idle ();
+-
+-  /* Make sure the zoom focus point remained fixed */
+-  gimp_display_shell_transform_xy (shell,
+-                                   image_x,
+-                                   image_y,
+-                                   &shell_x_after_zoom,
+-                                   &shell_y_after_zoom);
+-  factor_after_zoom = gimp_zoom_model_get_factor (shell->zoom);
+-
+-  /* First of all make sure a zoom happend at all. If this assert
+-   * fails, it means that the zoom didn't happen. Possible causes:
+-   *
+-   *  * gdk_test_simulate_key() failed to map 'GDK_KEY_plus' to the proper
+-   *    'plus' X keysym, probably because it is mapped to a keycode
+-   *    with modifiers like 'shift'. Run "xmodmap -pk | grep plus" to
+-   *    find out. Make sure 'plus' is the first keysym for the given
+-   *    keycode. If not, use "xmodmap <keycode> = plus" to correct it.
+-   */
+-  g_assert_cmpfloat (fabs (factor_before_zoom - factor_after_zoom),
+-                     >=,
+-                     GIMP_UI_ZOOM_EPSILON);
+-  g_assert_cmpint (ABS (shell_x_after_zoom - shell_x_before_zoom),
+-                   <=,
+-                   GIMP_UI_POSITION_EPSILON);
+-  g_assert_cmpint (ABS (shell_y_after_zoom - shell_y_before_zoom),
+-                   <=,
+-                   GIMP_UI_POSITION_EPSILON);
+-}
+-
+-/**
+- * alt_click_is_layer_to_selection:
+- * @data:
+- *
+- * Makes sure that we can alt-click on a layer to do
+- * layer-to-selection. Also makes sure that the layer clicked on is
+- * not set as the active layer.
+- **/
+-static void
+-alt_click_is_layer_to_selection (gconstpointer data)
+-{
+-  Gimp        *gimp      = GIMP (data);
+-  GimpImage   *image     = GIMP_IMAGE (gimp_get_image_iter (gimp)->data);
+-  GimpChannel *selection = gimp_image_get_mask (image);
+-  GimpLayer   *active_layer;
+-  GtkWidget   *dockable;
+-  GtkWidget   *gtk_tree_view;
+-  gint         assumed_layer_x;
+-  gint         assumed_empty_layer_y;
+-  gint         assumed_background_layer_y;
+-
+-  /* Hardcode assumptions of where the layers are in the
+-   * GtkTreeView. Doesn't feel worth adding proper API for this. One
+-   * can just use GIMP_PAUSE and re-measure new coordinates if we
+-   * start to layout layers in the GtkTreeView differently
+-   */
+-  assumed_layer_x            = 96;
+-  assumed_empty_layer_y      = 16;
+-  assumed_background_layer_y = 42;
+-
+-  /* Store the active layer, it shall not change during the execution
+-   * of this test
+-   */
+-  active_layer = gimp_image_get_active_layer (image);
+-
+-  /* Find the layer tree view to click in. Note that there is a
+-   * potential problem with gtk_test_find_widget and GtkNotebook: it
+-   * will return e.g. a GtkTreeView from another page if that page is
+-   * "on top" of the reference label.
+-   */
+-  dockable = gimp_ui_find_window (gimp_dialog_factory_get_singleton (),
+-                                  gimp_ui_is_gimp_layer_list);
+-  gtk_tree_view = gtk_test_find_widget (dockable,
+-                                        "Lock:",
+-                                        GTK_TYPE_TREE_VIEW);
+-  
+-  /* First make sure there is no selection */
+-  g_assert (! gimp_channel_bounds (selection,
+-                                   NULL, NULL, /*x1, y1*/
+-                                   NULL, NULL  /*x2, y2*/));
+-
+-  /* Now simulate alt-click on the background layer */
+-  g_assert (gimp_ui_synthesize_click (gtk_tree_view,
+-                                      assumed_layer_x,
+-                                      assumed_background_layer_y,
+-                                      1 /*button*/,
+-                                      GDK_MOD1_MASK));
+-  gimp_test_run_mainloop_until_idle ();
+-
+-  /* Make sure we got a selection and that the active layer didn't
+-   * change
+-   */
+-  g_assert (gimp_channel_bounds (selection,
+-                                 NULL, NULL, /*x1, y1*/
+-                                 NULL, NULL  /*x2, y2*/));
+-  g_assert (gimp_image_get_active_layer (image) == active_layer);
+-
+-  /* Now simulate alt-click on the empty layer */
+-  g_assert (gimp_ui_synthesize_click (gtk_tree_view,
+-                                      assumed_layer_x,
+-                                      assumed_empty_layer_y,
+-                                      1 /*button*/,
+-                                      GDK_MOD1_MASK));
+-  gimp_test_run_mainloop_until_idle ();
+-
+-  /* Make sure that emptied the selection and that the active layer
+-   * still didn't change
+-   */
+-  g_assert (! gimp_channel_bounds (selection,
+-                                   NULL, NULL, /*x1, y1*/
+-                                   NULL, NULL  /*x2, y2*/));
+-  g_assert (gimp_image_get_active_layer (image) == active_layer);
+-}
+-
+-static void
+-restore_recently_closed_multi_column_dock (gconstpointer data)
+-{
+-  Gimp      *gimp                          = GIMP (data);
+-  GtkWidget *dock_window                   = NULL;
+-  gint       n_session_infos_before_close  = -1;
+-  gint       n_session_infos_after_close   = -1;
+-  gint       n_session_infos_after_restore = -1;
+-  GList     *session_infos                 = NULL;
+-
+-  /* Find a non-toolbox dock window */
+-  dock_window = gimp_ui_find_window (gimp_dialog_factory_get_singleton (),
+-                                     gimp_ui_multicolumn_not_toolbox_window);
+-  g_assert (dock_window != NULL);
+-
+-  /* Count number of docks */
+-  session_infos = gimp_dialog_factory_get_session_infos (gimp_dialog_factory_get_singleton ());
+-  n_session_infos_before_close = g_list_length (session_infos);
+-
+-  /* Close one of the dock windows */
+-  gimp_ui_synthesize_delete_event (GTK_WIDGET (dock_window));
+-  gimp_test_run_mainloop_until_idle ();
+-
+-  /* Make sure the number of session infos went down */
+-  session_infos = gimp_dialog_factory_get_session_infos (gimp_dialog_factory_get_singleton ());
+-  n_session_infos_after_close = g_list_length (session_infos);
+-  g_assert_cmpint (n_session_infos_before_close,
+-                   >,
+-                   n_session_infos_after_close);
+-
+-  /* Restore the (only avaiable) closed dock and make sure the session
+-   * infos in the global dock factory are increased again
+-   */
+-  gimp_ui_manager_activate_action (gimp_test_utils_get_ui_manager (gimp),
+-                                   "windows",
+-                                   /* FIXME: This is severly hardcoded */
+-                                   "windows-recent-0003");
+-  gimp_test_run_mainloop_until_idle ();
+-  session_infos = gimp_dialog_factory_get_session_infos (gimp_dialog_factory_get_singleton ());
+-  n_session_infos_after_restore = g_list_length (session_infos);
+-  g_assert_cmpint (n_session_infos_after_close,
+-                   <,
+-                   n_session_infos_after_restore);
+-}
+-
+-/**
+- * tab_toggle_dont_change_dock_window_position:
+- * @data:
+- *
+- * Makes sure that when dock windows are hidden with Tab and shown
+- * again, their positions and sizes are not changed. We don't really
+- * use Tab though, we only simulate its effect.
+- **/
+-static void
+-tab_toggle_dont_change_dock_window_position (gconstpointer data)
+-{
+-  Gimp      *gimp          = GIMP (data);
+-  GtkWidget *dock_window   = NULL;
+-  gint       x_before_hide = -1;
+-  gint       y_before_hide = -1;
+-  gint       w_before_hide = -1;
+-  gint       h_before_hide = -1;
+-  gint       x_after_show  = -1;
+-  gint       y_after_show  = -1;
+-  gint       w_after_show  = -1;
+-  gint       h_after_show  = -1;
+-
+-  /* Find a non-toolbox dock window */
+-  dock_window = gimp_ui_find_window (gimp_dialog_factory_get_singleton (),
+-                                     gimp_ui_not_toolbox_window);
+-  g_assert (dock_window != NULL);
+-  g_assert (gtk_widget_get_visible (dock_window));
+-
+-  /* Get the position and size */
+-  gimp_test_run_mainloop_until_idle ();
+-  gtk_window_get_position (GTK_WINDOW (dock_window),
+-                           &x_before_hide,
+-                           &y_before_hide);
+-  gtk_window_get_size (GTK_WINDOW (dock_window),
+-                       &w_before_hide,
+-                       &h_before_hide);
+-
+-  /* Hide all dock windows */
+-  gimp_ui_manager_activate_action (gimp_test_utils_get_ui_manager (gimp),
+-                                   "windows",
+-                                   "windows-hide-docks");
+-  gimp_test_run_mainloop_until_idle ();
+-  g_assert (! gtk_widget_get_visible (dock_window));
+-
+-  /* Show them again */
+-  gimp_ui_manager_activate_action (gimp_test_utils_get_ui_manager (gimp),
+-                                   "windows",
+-                                   "windows-hide-docks");
+-  gimp_test_run_mainloop_until_idle ();
+-  g_assert (gtk_widget_get_visible (dock_window));
+-
+-  /* Get the position and size again and make sure it's the same as
+-   * before
+-   */
+-  gtk_window_get_position (GTK_WINDOW (dock_window),
+-                           &x_after_show,
+-                           &y_after_show);
+-  gtk_window_get_size (GTK_WINDOW (dock_window),
+-                       &w_after_show,
+-                       &h_after_show);
+-  g_assert_cmpint ((int)abs (x_before_hide - x_after_show), <=, GIMP_UI_WINDOW_POSITION_EPSILON);
+-  g_assert_cmpint ((int)abs (y_before_hide - y_after_show), <=, GIMP_UI_WINDOW_POSITION_EPSILON);
+-  g_assert_cmpint ((int)abs (w_before_hide - w_after_show), <=, GIMP_UI_WINDOW_POSITION_EPSILON);
+-  g_assert_cmpint ((int)abs (h_before_hide - h_after_show), <=, GIMP_UI_WINDOW_POSITION_EPSILON);
+-}
+-
+-static void
+-switch_to_single_window_mode (gconstpointer data)
+-{
+-  Gimp *gimp = GIMP (data);
+-
+-  /* Switch to single-window mode. We consider this test as passed if
+-   * we don't get any GLib warnings/errors
+-   */
+-  gimp_ui_switch_window_mode (gimp);
+-}
+-
+-static void
+-gimp_ui_toggle_docks_in_single_window_mode (Gimp *gimp)
+-{
+-  GimpDisplay      *display       = GIMP_DISPLAY (gimp_get_display_iter (gimp)->data);
+-  GimpDisplayShell *shell         = gimp_display_get_shell (display);
+-  GtkWidget        *toplevel      = GTK_WIDGET (gimp_display_shell_get_window (shell));
+-  gint              x_temp        = -1;
+-  gint              y_temp        = -1;
+-  gint              x_before_hide = -1;
+-  gint              y_before_hide = -1;
+-  gint              x_after_hide  = -1;
+-  gint              y_after_hide  = -1;
+-  g_assert (shell);
+-  g_assert (toplevel);
+-
+-  /* Get toplevel coordinate of image origin */
+-  gimp_test_run_mainloop_until_idle ();
+-  gimp_display_shell_transform_xy (shell,
+-                                   0.0, 0.0,
+-                                   &x_temp, &y_temp);
+-  gtk_widget_translate_coordinates (GTK_WIDGET (shell),
+-                                    toplevel,
+-                                    x_temp, y_temp,
+-                                    &x_before_hide, &y_before_hide);
+-
+-  /* Hide all dock windows */
+-  gimp_ui_manager_activate_action (gimp_test_utils_get_ui_manager (gimp),
+-                                   "windows",
+-                                   "windows-hide-docks");
+-  gimp_test_run_mainloop_until_idle ();
+-
+-  /* Get toplevel coordinate of image origin */
+-  gimp_test_run_mainloop_until_idle ();
+-  gimp_display_shell_transform_xy (shell,
+-                                   0.0, 0.0,
+-                                   &x_temp, &y_temp);
+-  gtk_widget_translate_coordinates (GTK_WIDGET (shell),
+-                                    toplevel,
+-                                    x_temp, y_temp,
+-                                    &x_after_hide, &y_after_hide);
+-
+-  g_assert_cmpint ((int)abs (x_after_hide - x_before_hide), <=, GIMP_UI_POSITION_EPSILON);
+-  g_assert_cmpint ((int)abs (y_after_hide - y_before_hide), <=, GIMP_UI_POSITION_EPSILON);
+-}
+-
+-static void
+-hide_docks_in_single_window_mode (gconstpointer data)
+-{
+-  Gimp *gimp = GIMP (data);
+-  gimp_ui_toggle_docks_in_single_window_mode (gimp);
+-}
+-
+-static void
+-show_docks_in_single_window_mode (gconstpointer data)
+-{
+-  Gimp *gimp = GIMP (data);
+-  gimp_ui_toggle_docks_in_single_window_mode (gimp);
+-}
+-
+-static void
+-maximize_state_in_aux_data (gconstpointer data)
+-{
+-  Gimp               *gimp    = GIMP (data);
+-  GimpDisplay        *display = GIMP_DISPLAY (gimp_get_display_iter (gimp)->data);
+-  GimpDisplayShell   *shell   = gimp_display_get_shell (display);
+-  GimpImageWindow    *window  = gimp_display_shell_get_window (shell);
+-  gint                i;
+-
+-  for (i = 0; i < 2; i++)
+-    {
+-      GList              *aux_info = NULL;
+-      GimpSessionInfoAux *target_info;
+-      gboolean            target_max_state;
+-
+-      if (i == 0)
+-        {
+-          target_info = gimp_session_info_aux_new ("maximized" , "yes");
+-          target_max_state = TRUE;
+-        }
+-      else
+-        {
+-          target_info = gimp_session_info_aux_new ("maximized", "no");
+-          target_max_state = FALSE;
+-        }
+-
+-      /* Set the aux info to out target data */
+-      aux_info = g_list_append (aux_info, target_info);
+-      gimp_session_managed_set_aux_info (GIMP_SESSION_MANAGED (window), aux_info);
+-      g_list_free (aux_info);
+-
+-      /* Give the WM a chance to maximize/unmaximize us */
+-      gimp_test_run_mainloop_until_idle ();
+-      g_usleep (500 * 1000);
+-      gimp_test_run_mainloop_until_idle ();
+-
+-      /* Make sure the maximize/unmaximize happened */
+-      g_assert (gimp_image_window_is_maximized (window) == target_max_state);
+-
+-      /* Make sure we can read out the window state again */
+-      aux_info = gimp_session_managed_get_aux_info (GIMP_SESSION_MANAGED (window));
+-      g_assert (g_list_find_custom (aux_info, target_info, gimp_ui_aux_data_eqiuvalent));
+-      g_list_free_full (aux_info,
+-                        (GDestroyNotify) gimp_session_info_aux_free);
+-
+-      gimp_session_info_aux_free (target_info);
+-    }
+-}
+-
+-static void
+-switch_back_to_multi_window_mode (gconstpointer data)
+-{
+-  Gimp *gimp = GIMP (data);
+-
+-  /* Switch back to multi-window mode. We consider this test as passed
+-   * if we don't get any GLib warnings/errors
+-   */
+-  gimp_ui_switch_window_mode (gimp);
+-}
+-
+-static void
+-close_image (gconstpointer data)
+-{
+-  Gimp *gimp       = GIMP (data);
+-  int   undo_count = 4;
+-
+-  /* Undo all changes so we don't need to find the 'Do you want to
+-   * save?'-dialog and its 'No' button
+-   */
+-  while (undo_count--)
+-    {
+-      gimp_ui_manager_activate_action (gimp_test_utils_get_ui_manager (gimp),
+-                                       "edit",
+-                                       "edit-undo");
+-      gimp_test_run_mainloop_until_idle ();
+-    }
+-
+-  /* Close the image */
+-  gimp_ui_manager_activate_action (gimp_test_utils_get_ui_manager (gimp),
+-                                   "view",
+-                                   "view-close");
+-  gimp_test_run_mainloop_until_idle ();
+-
+-  /* Did it really disappear? */
+-  g_assert_cmpint (g_list_length (gimp_get_image_iter (gimp)), ==, 0);
+-}
+-
+-/**
+- * repeatedly_switch_window_mode:
+- * @data:
+- *
+- * Makes sure that the size of the image window is properly handled
+- * when repeatedly switching between window modes.
+- **/
+-static void
+-repeatedly_switch_window_mode (gconstpointer data)
+-{
+-  Gimp             *gimp     = GIMP (data);
+-  GimpDisplay      *display  = GIMP_DISPLAY (gimp_get_empty_display (gimp));
+-  GimpDisplayShell *shell    = gimp_display_get_shell (display);
+-  GtkWidget        *toplevel = gtk_widget_get_toplevel (GTK_WIDGET (shell));
+-
+-  gint expected_initial_height;
+-  gint expected_initial_width;
+-  gint expected_second_height;
+-  gint expected_second_width;
+-  gint initial_width;
+-  gint initial_height;
+-  gint second_width;
+-  gint second_height;
+-
+-  /* We need this for some reason */
+-  gimp_test_run_mainloop_until_idle ();
+-
+-  /* Remember the multi-window mode size */
+-  gtk_window_get_size (GTK_WINDOW (toplevel),
+-                       &expected_initial_width,
+-                       &expected_initial_height);
+-
+-  /* Switch to single-window mode */
+-  gimp_ui_switch_window_mode (gimp);
+-
+-  /* Rememeber the single-window mode size */
+-  gtk_window_get_size (GTK_WINDOW (toplevel),
+-                       &expected_second_width,
+-                       &expected_second_height);
+-
+-  /* Make sure they differ, otherwise the test is pointless */
+-  g_assert_cmpint (expected_initial_width,  !=, expected_second_width);
+-  g_assert_cmpint (expected_initial_height, !=, expected_second_height);
+-
+-  /* Switch back to multi-window mode */
+-  gimp_ui_switch_window_mode (gimp);
+-
+-  /* Make sure the size is the same as before */
+-  gtk_window_get_size (GTK_WINDOW (toplevel), &initial_width, &initial_height);
+-  g_assert_cmpint (expected_initial_width,  ==, initial_width);
+-  g_assert_cmpint (expected_initial_height, ==, initial_height);
+-
+-  /* Switch to single-window mode again... */
+-  gimp_ui_switch_window_mode (gimp);
+-
+-  /* Make sure the size is the same as before */
+-  gtk_window_get_size (GTK_WINDOW (toplevel), &second_width, &second_height);
+-  g_assert_cmpint (expected_second_width,  ==, second_width);
+-  g_assert_cmpint (expected_second_height, ==, second_height);
+-
+-  /* Finally switch back to multi-window mode since that was the mode
+-   * when we started
+-   */
+-  gimp_ui_switch_window_mode (gimp);
+-}
+-
+-/**
+- * window_roles:
+- * @data:
+- *
+- * Makes sure that different windows have the right roles specified.
+- **/
+-static void
+-window_roles (gconstpointer data)
+-{
+-  GtkWidget      *dock           = NULL;
+-  GtkWidget      *toolbox        = NULL;
+-  GimpDockWindow *dock_window    = NULL;
+-  GimpDockWindow *toolbox_window = NULL;
+-
+-  dock           = gimp_dock_with_window_new (gimp_dialog_factory_get_singleton (),
+-                                              gdk_screen_get_default (),
+-                                              FALSE /*toolbox*/);
+-  toolbox        = gimp_dock_with_window_new (gimp_dialog_factory_get_singleton (),
+-                                              gdk_screen_get_default (),
+-                                              TRUE /*toolbox*/);
+-  dock_window    = gimp_dock_window_from_dock (GIMP_DOCK (dock));
+-  toolbox_window = gimp_dock_window_from_dock (GIMP_DOCK (toolbox));
+-
+-  g_assert_cmpstr (gtk_window_get_role (GTK_WINDOW (dock_window)), ==,
+-                   "gimp-dock");
+-  g_assert_cmpstr (gtk_window_get_role (GTK_WINDOW (toolbox_window)), ==,
+-                   "gimp-toolbox");
+-
+-  /* When we get here we have a ref count of one, but the signals we
+-   * emit cause the reference count to become less than zero for some
+-   * reason. So we're lazy and simply ignore to unref these
+-  g_object_unref (toolbox);
+-  g_object_unref (dock);
+-   */
+-}
+-
+-static void
+-paintbrush_is_standard_tool (gconstpointer data)
+-{
+-  Gimp         *gimp         = GIMP (data);
+-  GimpContext  *user_context = gimp_get_user_context (gimp);
+-  GimpToolInfo *tool_info    = gimp_context_get_tool (user_context);
+-
+-  g_assert_cmpstr (tool_info->help_id,
+-                   ==,
+-                   "gimp-tool-paintbrush");
+-}
+-
+-/**
+- * gimp_ui_synthesize_delete_event:
+- * @widget:
+- *
+- * Synthesize a delete event to @widget.
+- **/
+-static void
+-gimp_ui_synthesize_delete_event (GtkWidget *widget)
+-{
+-  GdkWindow *window = NULL;
+-  GdkEvent *event = NULL;
+-
+-  window = gtk_widget_get_window (widget);
+-  g_assert (window);
+-
+-  event = gdk_event_new (GDK_DELETE);
+-  event->any.window     = g_object_ref (window);
+-  event->any.send_event = TRUE;
+-  gtk_main_do_event (event);
+-  gdk_event_free (event);
+-}
+-
+-static gboolean
+-gimp_ui_synthesize_click (GtkWidget       *widget,
+-                          gint             x,
+-                          gint             y,
+-                          gint             button, /*1..3*/
+-                          GdkModifierType  modifiers)
+-{
+-  return (gdk_test_simulate_button (gtk_widget_get_window (widget),
+-                                    x, y,
+-                                    button,
+-                                    modifiers,
+-                                    GDK_BUTTON_PRESS) &&
+-          gdk_test_simulate_button (gtk_widget_get_window (widget),
+-                                    x, y,
+-                                    button,
+-                                    modifiers,
+-                                    GDK_BUTTON_RELEASE));
+-}
+-
+-static GtkWidget *
+-gimp_ui_find_window (GimpDialogFactory *dialog_factory,
+-                     GimpUiTestFunc     predicate)
+-{
+-  GList     *iter        = NULL;
+-  GtkWidget *dock_window = NULL;
+-
+-  g_return_val_if_fail (predicate != NULL, NULL);
+-
+-  for (iter = gimp_dialog_factory_get_session_infos (dialog_factory);
+-       iter;
+-       iter = g_list_next (iter))
+-    {
+-      GtkWidget *widget = gimp_session_info_get_widget (iter->data);
+-
+-      if (predicate (G_OBJECT (widget)))
+-        {
+-          dock_window = widget;
+-          break;
+-        }
+-    }
+-
+-  return dock_window;
+-}
+-
+-static gboolean
+-gimp_ui_not_toolbox_window (GObject *object)
+-{
+-  return (GIMP_IS_DOCK_WINDOW (object) &&
+-          ! gimp_dock_window_has_toolbox (GIMP_DOCK_WINDOW (object)));
+-}
+-
+-static gboolean
+-gimp_ui_multicolumn_not_toolbox_window (GObject *object)
+-{
+-  gboolean           not_toolbox_window;
+-  GimpDockWindow    *dock_window;
+-  GimpDockContainer *dock_container;
+-  GList             *docks;
+-
+-  if (! GIMP_IS_DOCK_WINDOW (object))
+-    return FALSE;
+-
+-  dock_window    = GIMP_DOCK_WINDOW (object);
+-  dock_container = GIMP_DOCK_CONTAINER (object);
+-  docks          = gimp_dock_container_get_docks (dock_container);
+-
+-  not_toolbox_window = (! gimp_dock_window_has_toolbox (dock_window) &&
+-                        g_list_length (docks) > 1);
+-
+-  g_list_free (docks);
+-
+-  return not_toolbox_window;
+-}
+-
+-static gboolean
+-gimp_ui_is_gimp_layer_list (GObject *object)
+-{
+-  GimpDialogFactoryEntry *entry = NULL;
+-
+-  if (! GTK_IS_WIDGET (object))
+-    return FALSE;
+-
+-  gimp_dialog_factory_from_widget (GTK_WIDGET (object), &entry);
+-
+-  return strcmp (entry->identifier, "gimp-layer-list") == 0;
+-}
+-
+-static int
+-gimp_ui_aux_data_eqiuvalent (gconstpointer _a, gconstpointer _b)
+-{
+-  GimpSessionInfoAux *a = (GimpSessionInfoAux*) _a;
+-  GimpSessionInfoAux *b = (GimpSessionInfoAux*) _b;
+-  return (strcmp (a->name, b->name) || strcmp (a->value, b->value));
+-}
+-
+-static void
+-gimp_ui_switch_window_mode (Gimp *gimp)
+-{
+-  gimp_ui_manager_activate_action (gimp_test_utils_get_ui_manager (gimp),
+-                                   "windows",
+-                                   "windows-use-single-window-mode");
+-  gimp_test_run_mainloop_until_idle ();
+-
+-  /* Add a small sleep to let things stabilize */
+-  g_usleep (500 * 1000);
+-  gimp_test_run_mainloop_until_idle ();
+-}
+-
+-int main(int argc, char **argv)
+-{
+-  Gimp *gimp   = NULL;
+-  gint  result = -1;
+-
+-  gimp_test_bail_if_no_display ();
+-  gtk_test_init (&argc, &argv, NULL);
+-
+-  gimp_test_utils_set_gimp2_directory ("GIMP_TESTING_ABS_TOP_SRCDIR",
+-                                       "app/tests/gimpdir");
+-  gimp_test_utils_setup_menus_dir ();
+-
+-  /* Start up GIMP */
+-  gimp = gimp_init_for_gui_testing (TRUE /*show_gui*/);
+-  gimp_test_run_mainloop_until_idle ();
+-
+-  /* Add tests. Note that the order matters. For example,
+-   * 'paintbrush_is_standard_tool' can't be after
+-   * 'tool_options_editor_updates'
+-   */
+-  ADD_TEST (paintbrush_is_standard_tool);
+-  ADD_TEST (tool_options_editor_updates);
+-  ADD_TEST (automatic_tab_style);
+-  ADD_TEST (create_new_image_via_dialog);
+-  ADD_TEST (keyboard_zoom_focus);
+-  ADD_TEST (alt_click_is_layer_to_selection);
+-  ADD_TEST (restore_recently_closed_multi_column_dock);
+-  ADD_TEST (tab_toggle_dont_change_dock_window_position);
+-  ADD_TEST (switch_to_single_window_mode);
+-  ADD_TEST (hide_docks_in_single_window_mode);
+-  ADD_TEST (show_docks_in_single_window_mode);
+-#warning FIXME: maximize_state_in_aux_data doesn't work without WM
+-#if 0
+-  ADD_TEST (maximize_state_in_aux_data);
+-#endif
+-  ADD_TEST (switch_back_to_multi_window_mode);
+-  ADD_TEST (close_image);
+-  ADD_TEST (repeatedly_switch_window_mode);
+-  ADD_TEST (window_roles);
+-
+-  /* Run the tests and return status */
+-  result = g_test_run ();
+-
+-  /* Don't write files to the source dir */
+-  gimp_test_utils_set_gimp2_directory ("GIMP_TESTING_ABS_TOP_BUILDDIR",
+-                                       "app/tests/gimpdir-output");
+-
+-  /* Exit properly so we don't break script-fu plug-in wire */
+-  gimp_exit (gimp, TRUE);
+-
+-  return result;
++static FILE *out;
++static unsigned seq;
++static void record(GimpDisplayShell *s,const char *scene,const char *step,int type,unsigned state,double x,double y,unsigned detail,int handled) {
++ double dx=s->disp_width/2+40,dy=s->disp_height/2+20,ix=dx,iy=dy,bx,by;
++ gimp_display_shell_device_to_image_coords(s,&ix,&iy); bx=ix;by=iy;
++ gimp_display_shell_image_to_device_coords(s,&bx,&by);
++ fprintf(out,"%u\t%s\t%s\t%d\t%u\t%.17g\t%.17g\t%u\t%d\t%d\t%d\t%d\t%.17g\t%.17g\t%d\t%d\t%d\t%d\t%.17g\t%.17g\t%.17g\t%.17g\t%.17g\t%.17g\n",++seq,scene,step,type,state,x,y,detail,handled,s->disp_width,s->disp_height,s->mirrored,s->rotate_angle,s->rotate_start_angle,s->rotating,s->scrolling,s->scaling,s->pointer_grabbed,dx,dy,ix,iy,bx,by); fflush(out);
++}
++static void event(GimpDisplayShell *s,const char *scene,const char *step,GdkEventType type,unsigned state,double x,double y,unsigned detail) {
++ GdkEvent *e=gdk_event_new(type); e->any.window=g_object_ref(gtk_widget_get_window(s->canvas));e->any.send_event=TRUE;
++ if(type==GDK_MOTION_NOTIFY){e->motion.time=GDK_CURRENT_TIME;e->motion.x=x;e->motion.y=y;e->motion.state=state;e->motion.device=gdk_display_get_core_pointer(gtk_widget_get_display(s->canvas));}
++ else if(type==GDK_BUTTON_PRESS||type==GDK_BUTTON_RELEASE){e->button.time=GDK_CURRENT_TIME;e->button.x=x;e->button.y=y;e->button.state=state;e->button.button=detail;e->button.device=gdk_display_get_core_pointer(gtk_widget_get_display(s->canvas));}
++ else {e->key.time=GDK_CURRENT_TIME;e->key.state=state;e->key.keyval=detail;}
++ int handled=gimp_display_shell_canvas_tool_events(s->canvas,e,s);gdk_event_free(e);record(s,scene,step,type,state,x,y,detail,handled);
++}
++static GtkWidget *find_button(GtkWidget *w,const char *stock) {
++ if(GTK_IS_BUTTON(w)) {GtkWidget *im=gtk_button_get_image(GTK_BUTTON(w));
++  if(im && GTK_IS_IMAGE(im) && gtk_image_get_storage_type(GTK_IMAGE(im))==GTK_IMAGE_STOCK){gchar *id=NULL;GtkIconSize size;gtk_image_get_stock(GTK_IMAGE(im),&id,&size);if(id && !strcmp(id,stock))return w;}}
++ if(GTK_IS_CONTAINER(w)){GList *children=gtk_container_get_children(GTK_CONTAINER(w));GtkWidget *found=NULL;for(GList *p=children;p&&!found;p=p->next)found=find_button(p->data,stock);g_list_free(children);return found;}return NULL;
++}
++int main(int argc,char **argv){
++ Gimp *g;GimpDisplayShell *s;char *path;int mirror,i;double initial[]={0,7.499999,7.5,7.500001,-7.499999,-7.5,-7.500001,22.5,-22.5,352.5,359.9};
++ gtk_init(&argc,&argv);gimp_test_utils_setup_menus_dir();g=gimp_init_for_gui_testing(TRUE);gimp_test_run_temp_mainloop(500);gimp_test_utils_create_image(g,640,480);gimp_test_run_temp_mainloop(500);
++ s=gimp_display_get_shell(GIMP_DISPLAY(gimp_get_display_iter(g)->data));gtk_widget_grab_focus(s->canvas);gimp_context_set_display(gimp_get_user_context(g),s->display);gimp_test_run_temp_mainloop(100);
++ path=g_build_filename(g_getenv("CAPTURE_DIR"),"rotation.tsv",NULL);out=fopen(path,"w");g_assert(out);g_free(path);
++ fprintf(out,"seq\tscene\tstep\ttype\tstate\tx\ty\tdetail\thandled\twidth\theight\tmirror\tangle\tanchor\trotating\tscrolling\tscaling\tgrabbed\tdevice_x\tdevice_y\tunrotated_x\tunrotated_y\tback_x\tback_y\n");
++ for(mirror=0;mirror<2;mirror++)for(i=0;i<11;i++){
++ char scene[80];int cx=s->disp_width/2,cy=s->disp_height/2;snprintf(scene,sizeof(scene),"stationary-m%d-i%d",mirror,i);s->mirrored=mirror;s->rotate_angle=initial[i];record(s,scene,"setup",-1,0,0,0,0,0);
++ event(s,scene,"shift-middle",GDK_BUTTON_PRESS,GDK_SHIFT_MASK,cx,cy+100,2);
++ event(s,scene,"free",GDK_MOTION_NOTIFY,GDK_SHIFT_MASK|GDK_BUTTON2_MASK,cx,cy+100,0);
++ event(s,scene,"ctrl-press",GDK_KEY_PRESS,GDK_SHIFT_MASK|GDK_BUTTON2_MASK,cx,cy+100,GDK_Control_L);
++ event(s,scene,"snap",GDK_MOTION_NOTIFY,GDK_SHIFT_MASK|GDK_CONTROL_MASK|GDK_BUTTON2_MASK,cx,cy+100,0);
++ event(s,scene,"shift-release",GDK_KEY_RELEASE,GDK_SHIFT_MASK|GDK_CONTROL_MASK|GDK_BUTTON2_MASK,cx,cy+100,GDK_Shift_L);
++ event(s,scene,"snap-without-shift",GDK_MOTION_NOTIFY,GDK_CONTROL_MASK|GDK_BUTTON2_MASK,cx,cy+100,0);
++ event(s,scene,"ctrl-release",GDK_KEY_RELEASE,GDK_CONTROL_MASK|GDK_BUTTON2_MASK,cx,cy+100,GDK_Control_L);
++ event(s,scene,"restored",GDK_MOTION_NOTIFY,GDK_BUTTON2_MASK,cx,cy+100,0);
++ event(s,scene,"middle-release",GDK_BUTTON_RELEASE,GDK_BUTTON2_MASK,cx,cy+100,2);
++ }
++ for(mirror=0;mirror<2;mirror++){
++ char scene[80];int cx=s->disp_width/2,cy=s->disp_height/2;snprintf(scene,sizeof(scene),"quadrants-m%d",mirror);s->mirrored=mirror;s->rotate_angle=0;record(s,scene,"setup",-1,0,0,0,0,0);
++ event(s,scene,"shift-ctrl-alt-middle",GDK_BUTTON_PRESS,GDK_SHIFT_MASK|GDK_CONTROL_MASK|GDK_MOD1_MASK,cx,cy+100,2);
++ event(s,scene,"right",GDK_MOTION_NOTIFY,GDK_BUTTON2_MASK,cx+100,cy,0);
++ event(s,scene,"top",GDK_MOTION_NOTIFY,GDK_BUTTON2_MASK,cx,cy-100,0);
++ event(s,scene,"left",GDK_MOTION_NOTIFY,GDK_BUTTON2_MASK,cx-100,cy,0);
++ event(s,scene,"fractional",GDK_MOTION_NOTIFY,GDK_BUTTON2_MASK,cx+26.9,cy+100.9,0);
++ event(s,scene,"fractional-snap",GDK_MOTION_NOTIFY,GDK_BUTTON2_MASK|GDK_CONTROL_MASK,cx+26.9,cy+100.9,0);
++ event(s,scene,"center",GDK_MOTION_NOTIFY,GDK_BUTTON2_MASK,cx,cy,0);
++ event(s,scene,"middle-release",GDK_BUTTON_RELEASE,GDK_BUTTON2_MASK,cx,cy,2);
++ }
++ {
++ GtkWidget *left=find_button(s->statusbar,GIMP_STOCK_ROTATE_270),*right=find_button(s->statusbar,GIMP_STOCK_ROTATE_90),*flip=find_button(s->statusbar,GIMP_STOCK_FLIP_HORIZONTAL),*reset=find_button(s->statusbar,GTK_STOCK_ZOOM_100);
++ double values[]={0,7.5,-7.5,15,-15,14.999999,15.000001,-14.999999,-15.000001,345,359.9};
++ g_assert(left && right && flip && reset);
++ for(mirror=0;mirror<2;mirror++)for(i=0;i<11;i++) {
++  char scene[80];snprintf(scene,sizeof(scene),"buttons-m%d-i%d",mirror,i);gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(flip),mirror);s->mirrored=mirror;s->rotate_angle=values[i];record(s,scene,"setup",-1,0,0,0,0,0);
++  gtk_button_clicked(GTK_BUTTON(left));record(s,scene,"left",-2,0,0,0,0,1);
++  s->rotate_angle=values[i];gtk_button_clicked(GTK_BUTTON(right));record(s,scene,"right",-2,0,0,0,0,1);
++  s->rotate_angle=values[i];gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(flip),!mirror);record(s,scene,"flip",-2,0,0,0,0,1);
++  gtk_button_clicked(GTK_BUTTON(right));record(s,scene,"right-after-flip",-2,0,0,0,0,1);
++  gtk_button_clicked(GTK_BUTTON(reset));record(s,scene,"reset",-2,0,0,0,0,1);
++ }
++}
++{
++ GdkWindow *window=gtk_widget_get_window(s->canvas);gint w=gdk_window_get_width(window),h=gdk_window_get_height(window);GdkPixbuf *pix=gdk_pixbuf_get_from_drawable(NULL,window,NULL,0,0,0,0,w,h);
++ char *filename=g_build_filename(g_getenv("CAPTURE_DIR"),"canvas.png",NULL);if(pix){gdk_pixbuf_save(pix,filename,"png",NULL,NULL);g_object_unref(pix);}g_free(filename);
++}
++fclose(out);g_print("ROTATION_CAPTURE_COMPLETE rows=%u\n",seq);gimp_exit(g,TRUE);return 0;
+ }
+diff --git a/app/tests/test-xcf.c b/app/tests/test-xcf.c
+index dc071cb1..9df56811 100644
+--- a/app/tests/test-xcf.c
++++ b/app/tests/test-xcf.c
+@@ -977,6 +977,183 @@ gimp_assert_mainimage (GimpImage *image,
+  *  - Make sure that the information put into a #GimpImage is not lost
+  *    when the #GimpImage is written to a file and then read again
+  **/
++/* Controlled inputs, executed against the pinned legacy application core.
++ * Instrumentation only: no reader, writer, or scheduler changes. */
++#include "core/gimpclonelayer.h"
++#include "core/gimpcontainer.h"
++#include "core/gimppickable.h"
++#include "core/gimpprojection.h"
++
++#include "core/gimpfilterlayer.h"
++#include "pdb/gimppdb.h"
++#include "pdb/gimpprocedure.h"
++#include "core/gimpparamspecs.h"
++extern gint gimp_filter_layer_capture_pending (GimpFilterLayer *layer);
++
++static gchar *
++capture_pixels_sha256 (GimpLayer *layer)
++{
++  GChecksum *sum=g_checksum_new(G_CHECKSUM_SHA256);
++  gint x,y;
++  guchar pixel[4];
++  gchar *result;
++  for(y=0;y<gimp_item_get_height(GIMP_ITEM(layer));y++)
++    for(x=0;x<gimp_item_get_width(GIMP_ITEM(layer));x++)
++      {
++        g_assert(gimp_pickable_get_pixel_at(GIMP_PICKABLE(layer),x,y,pixel));
++        g_checksum_update(sum,pixel,4);
++      }
++  result=g_strdup(g_checksum_get_string(sum));
++  g_checksum_free(sum);
++  return result;
++}
++
++static void
++capture_filter_fixture (Gimp *gimp)
++{
++  const gchar *directory = g_getenv ("GIMP_PAINTER_FIXTURE_DIR");
++  GimpImage *image = gimp_create_image (gimp,64,64,GIMP_RGB,FALSE);
++  GimpLayer *source = gimp_layer_new (image,24,20,GIMP_RGBA_IMAGE,"brightness source",1.0,GIMP_NORMAL_MODE);
++  GimpLayer *filter = gimp_filter_layer_new (image,64,64,"brightness filter",0.2,GIMP_DIFFERENCE_MODE);
++  GimpRGB color = {0.8,0.2,0.4,1.0};
++  GimpProcedure *procedure = gimp_pdb_lookup_procedure (gimp->pdb,"gimp-brightness-contrast");
++  GValueArray *defaults;
++  GArray *args;
++  GArray *read_args;
++  guint i;
++  gint64 deadline;
++  gint previous = -1;
++  gchar *filename;
++  GimpPlugInProcedure *save_proc;
++  GError *error = NULL;
++  GimpImage *loaded;
++  GimpLayer *loaded_filter;
++  guchar pixel[4] = {0};
++  gchar *cache_hash, *loaded_hash;
++  GimpLayer *loaded_source;
++  GimpImage *control_image;
++  GimpLayer *control_layer;
++  GValueArray *control_args, *control_result;
++  gchar *control_hash, *source_hash, *loaded_source_hash;
++
++  g_assert (procedure != NULL);
++  defaults = gimp_procedure_get_arguments (procedure);
++  g_assert_cmpuint (defaults->n_values, ==, 3);
++  args = g_array_sized_new(FALSE,TRUE,sizeof(GValue),defaults->n_values);
++  g_array_set_clear_func(args,(GDestroyNotify)g_value_unset);
++  g_array_set_size(args,defaults->n_values);
++  for(i=0;i<defaults->n_values;i++)
++    {
++      GValue *value = &g_array_index(args,GValue,i);
++      g_value_init(value,G_VALUE_TYPE(&defaults->values[i]));
++      g_value_copy(&defaults->values[i],value);
++    }
++  g_value_set_int(&g_array_index(args,GValue,1),25);
++  g_value_set_int(&g_array_index(args,GValue,2),-10);
++  g_value_array_free(defaults);
++  g_assert(gimp_image_add_layer(image,source,NULL,0,FALSE));
++  gimp_item_set_offset(GIMP_ITEM(source),8,7);
++  gimp_drawable_fill(GIMP_DRAWABLE(source),&color,NULL);
++  gimp_drawable_update(GIMP_DRAWABLE(source),0,0,24,20);
++  gimp_pickable_flush(GIMP_PICKABLE(gimp_image_get_projection(image)));
++  source_hash=capture_pixels_sha256(source);
++  g_print("LOWER_LAYER_SHA256 %s\n",source_hash);
++  control_image=gimp_create_image(gimp,64,64,GIMP_RGB,FALSE);
++  control_layer=gimp_layer_new_from_tiles(gimp_pickable_get_tiles(GIMP_PICKABLE(gimp_image_get_projection(image))),control_image,GIMP_RGBA_IMAGE,"control normal layer",1.0,GIMP_NORMAL_MODE);
++  g_assert(gimp_image_add_layer(control_image,control_layer,NULL,0,FALSE));
++  control_args=gimp_procedure_get_arguments(procedure);
++  gimp_value_set_drawable(&control_args->values[0],GIMP_DRAWABLE(control_layer));
++  g_value_set_int(&control_args->values[1],25);
++  g_value_set_int(&control_args->values[2],-10);
++  control_result=gimp_procedure_execute(procedure,gimp,gimp_get_user_context(gimp),NULL,control_args,&error);
++  g_assert_no_error(error);
++  g_assert(control_result != NULL);
++  g_assert_cmpint(g_value_get_enum(&control_result->values[0]),==,GIMP_PDB_SUCCESS);
++  g_value_array_free(control_args); g_value_array_free(control_result);
++  control_hash=capture_pixels_sha256(control_layer);
++  g_print("CONTROL_ORIGINAL_PDB_CACHE_SHA256 %s\n",control_hash);
++  g_assert(gimp_image_add_layer(image,filter,NULL,0,FALSE));
++  gimp_filter_layer_set_procedure(GIMP_FILTER_LAYER(filter),"gimp-brightness-contrast",args);
++  g_array_unref(args);
++  gimp_drawable_update(GIMP_DRAWABLE(source),0,0,24,20);
++  gimp_pickable_flush(GIMP_PICKABLE(gimp_image_get_projection(image)));
++  deadline = g_get_monotonic_time() + 2 * G_USEC_PER_SEC;
++  while (g_get_monotonic_time() < deadline)
++    {
++      gint pending;
++      while (g_main_context_iteration(NULL,FALSE)) {}
++      gimp_pickable_flush(GIMP_PICKABLE(gimp_image_get_projection(image)));
++      g_assert(gimp_pickable_get_pixel_at(GIMP_PICKABLE(gimp_image_get_projection(image)),12,12,pixel));
++      pending = gimp_filter_layer_capture_pending(GIMP_FILTER_LAYER(filter));
++      if (pending != previous)
++        {
++          g_print("FILTER_STATE time_us=%" G_GINT64_FORMAT " pending=%d completions=%d\n",
++                   g_get_monotonic_time(),pending,
++                   GPOINTER_TO_INT(g_object_get_data(G_OBJECT(filter),"migration-capture-completions")));
++          previous=pending;
++        }
++      if (!pending && g_object_get_data(G_OBJECT(filter),"migration-capture-completions"))
++        break;
++      g_usleep(1000);
++    }
++  g_print("FILTER_SAVE_STATE pending=%d completions=%d (not an idle assertion)\n",
++          gimp_filter_layer_capture_pending(GIMP_FILTER_LAYER(filter)),
++          GPOINTER_TO_INT(g_object_get_data(G_OBJECT(filter),"migration-capture-completions")));
++  /* The original built-in LUT path has no progress-end callback. */
++  g_assert(gimp_pickable_get_pixel_at(GIMP_PICKABLE(filter),12,12,pixel));
++  g_print("FILTER_CACHE_PIXEL x=12 y=12 rgba=%u,%u,%u,%u\n",pixel[0],pixel[1],pixel[2],pixel[3]);
++  cache_hash = capture_pixels_sha256(filter);
++  g_assert_cmpstr(cache_hash,==,control_hash);
++  g_free(control_hash);
++  g_print("FILTER_CACHE_SHA256 %s\n",cache_hash);
++  filename=g_build_filename(directory,"filter-brightness-contrast.xcf",NULL);
++  save_proc=file_procedure_find(gimp->plug_in_manager->save_procs,filename,&error);
++  g_assert_no_error(error);
++  g_assert_cmpint(file_save(gimp,image,NULL,filename,save_proc,GIMP_RUN_NONINTERACTIVE,FALSE,FALSE,FALSE,&error),==,GIMP_PDB_SUCCESS);
++  g_assert_no_error(error);
++  loaded=gimp_test_load_image(gimp,filename);
++  g_assert(loaded != NULL);
++  loaded_filter=GIMP_LAYER(gimp_container_get_child_by_index(gimp_image_get_layers(loaded),0));
++  g_assert(GIMP_IS_FILTER_LAYER(loaded_filter));
++  g_assert_cmpstr(gimp_filter_layer_get_procedure(GIMP_FILTER_LAYER(loaded_filter)),==,"gimp-brightness-contrast");
++  read_args=gimp_filter_layer_get_procedure_args(GIMP_FILTER_LAYER(loaded_filter));
++  g_assert_cmpuint(read_args->len,==,3);
++  g_assert_cmpint(g_value_get_int(&g_array_index(read_args,GValue,1)),==,25);
++  g_assert_cmpint(g_value_get_int(&g_array_index(read_args,GValue,2)),==,-10);
++  g_assert_cmpint(gimp_image_get_width(loaded),==,64);
++  g_assert_cmpint(gimp_image_get_height(loaded),==,64);
++  g_assert_cmpint(gimp_item_get_offset_x(GIMP_ITEM(loaded_filter)),==,0);
++  g_assert_cmpint(gimp_item_get_offset_y(GIMP_ITEM(loaded_filter)),==,0);
++  g_assert_cmpint(gimp_item_get_width(GIMP_ITEM(loaded_filter)),==,64);
++  g_assert_cmpint(gimp_item_get_height(GIMP_ITEM(loaded_filter)),==,64);
++  g_assert_cmpstr(gimp_object_get_name(loaded_filter),==,"brightness filter");
++  g_assert_cmpint(gimp_layer_get_mode(loaded_filter),==,GIMP_DIFFERENCE_MODE);
++  g_assert_cmpfloat(gimp_layer_get_opacity(loaded_filter),==,51.0/255.0);
++  loaded_source=GIMP_LAYER(gimp_container_get_child_by_index(gimp_image_get_layers(loaded),1));
++  g_assert(loaded_source != NULL);
++  g_assert_cmpint(gimp_container_get_n_children(gimp_image_get_layers(loaded)),==,2);
++  g_assert_cmpstr(gimp_object_get_name(loaded_source),==,"brightness source");
++  g_assert_cmpint(gimp_item_get_width(GIMP_ITEM(loaded_source)),==,24);
++  g_assert_cmpint(gimp_item_get_height(GIMP_ITEM(loaded_source)),==,20);
++  g_assert_cmpint(gimp_item_get_offset_x(GIMP_ITEM(loaded_source)),==,8);
++  g_assert_cmpint(gimp_item_get_offset_y(GIMP_ITEM(loaded_source)),==,7);
++  g_assert(gimp_pickable_get_pixel_at(GIMP_PICKABLE(loaded_source),0,0,pixel));
++  g_assert_cmpint(pixel[0],==,204); g_assert_cmpint(pixel[1],==,51);
++  g_assert_cmpint(pixel[2],==,102); g_assert_cmpint(pixel[3],==,255);
++  loaded_source_hash=capture_pixels_sha256(loaded_source);
++  g_assert_cmpstr(source_hash,==,loaded_source_hash);
++  g_print("REOPEN_LOWER_LAYER_SHA256 %s\n",loaded_source_hash);
++  g_free(source_hash); g_free(loaded_source_hash);
++  loaded_hash=capture_pixels_sha256(loaded_filter);
++  g_print("FILTER_REOPEN_CACHE_SHA256 %s\n",loaded_hash);
++  g_assert_cmpstr(cache_hash,==,loaded_hash);
++  g_free(cache_hash); g_free(loaded_hash);
++  g_print("LEGACY_FILTER_CAPTURE_COMPLETE procedure=gimp-brightness-contrast args=3 brightness=25 contrast=-10 cache=identical source=verified\n");
++  /* read_args is a legacy shallow value copy; these three values are scalar. */
++  g_array_unref(read_args);
++  g_free(filename);
++}
++
+ int
+ main (int    argc,
+       char **argv)
+@@ -986,6 +1163,15 @@ main (int    argc,
+ 
+   g_thread_init (NULL);
+   g_type_init ();
++  if (g_getenv ("GIMP_PAINTER_FIXTURE_DIR"))
++    {
++      g_mkdir_with_parents (g_getenv ("GIMP_PAINTER_FIXTURE_DIR"), 0700);
++      gimp = gimp_init_for_testing ();
++      if (g_getenv ("GIMP_PAINTER_CAPTURE_FILTER"))
++        capture_filter_fixture (gimp);
++      g_print ("LEGACY_BUILTIN_FILTER_CAPTURE_COMPLETE\n");
++      return 0;
++    }
+   g_test_init (&argc, &argv, NULL);
+ 
+   gimp_test_utils_set_gimp2_directory ("GIMP_TESTING_ABS_TOP_SRCDIR",
+diff --git a/configure.ac b/configure.ac
+index f47f24a1..fb1fdda8 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -1747,11 +1747,11 @@ AC_ARG_WITH(linux-input, [  --without-linux-input   don't build linux input even
+ 
+ have_linux_input="no (linux input support disabled)"
+ if test "x$with_linux_input" != "xno"; then
+-  AC_CHECK_HEADER(linux/input.h,
+-	AC_CHECK_DECL(KEY_OK,
+-		have_linux_input=yes,
+-		have_linux_input="no (needs Linux 2.6)",
+-		[#include <linux/input.h>]))
++  AC_CHECK_HEADER([linux/input.h],
++        [AC_CHECK_DECL([KEY_OK],
++                [have_linux_input=yes],
++                [have_linux_input="no (needs Linux 2.6)"],
++                [#include <linux/input.h>])])
+ fi
+ 
+ AM_CONDITIONAL(HAVE_LINUX_INPUT, test "x$have_linux_input" = xyes)
