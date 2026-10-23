@@ -1231,3 +1231,15 @@ undo_pop_guard = executable('undo-pop-guard',
   override_options: ['c_std=c11'],
 )
 test('undo-pop-guard', undo_pop_guard, suite: 'app', timeout: 120)
+
+# Prepare-only native pixel rollback payload; no history publication.
+prepared_pixels_test = executable('painter-prepared-pixels',
+  'test-painter-prepared-pixels.cpp', 'tests.c',
+  dependencies: [libapp_dep, appstream], link_with: apptests_links,
+  cpp_args: painter_cpp_args, link_args: ['-Wl,--wrap=gegl_buffer_new', '-Wl,--wrap=_Znwm'],
+  override_options: ['c_std=c11', 'cpp_std=c++14'])
+test('painter-prepared-pixels', prepared_pixels_test,
+  env: ['GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+        'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+        'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
+        'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 120)

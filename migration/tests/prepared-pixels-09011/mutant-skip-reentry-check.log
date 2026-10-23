@@ -1,0 +1,41 @@
+Xvfb verified: 127.0.0.1:94, 1080x1920x24, authenticated accepted, empty authority rejected
+TAP version 14
+# random seed: R02Sbdb00b28db3c7781c8eb8bd48b7d6e9d
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+1..15
+# Start of prepared-pixels tests
+# prepared native precision=150 model=0 alpha=0
+# prepared native precision=150 model=0 alpha=1
+# prepared native precision=150 model=1 alpha=0
+# prepared native precision=150 model=1 alpha=1
+# prepared native precision=250 model=0 alpha=0
+# prepared native precision=250 model=0 alpha=1
+# prepared native precision=250 model=1 alpha=0
+# prepared native precision=250 model=1 alpha=1
+# prepared native precision=350 model=0 alpha=0
+# prepared native precision=350 model=0 alpha=1
+# prepared native precision=350 model=1 alpha=0
+# prepared native precision=350 model=1 alpha=1
+# prepared native precision=500 model=0 alpha=0
+# prepared native precision=500 model=0 alpha=1
+# prepared native precision=500 model=1 alpha=0
+# prepared native precision=500 model=1 alpha=1
+# prepared native precision=600 model=0 alpha=0
+# prepared native precision=600 model=0 alpha=1
+# prepared native precision=600 model=1 alpha=0
+# prepared native precision=600 model=1 alpha=1
+# prepared native precision=700 model=0 alpha=0
+# prepared native precision=700 model=0 alpha=1
+# prepared native precision=700 model=1 alpha=0
+# prepared native precision=700 model=1 alpha=1
+ok 1 /prepared-pixels/native24
+ok 2 /prepared-pixels/clean-allocation-failure
+ok 3 /prepared-pixels/stale-transaction
+ok 4 /prepared-pixels/redo-rollback
+ok 5 /prepared-pixels/replaced-buffer
+ok 6 /prepared-pixels/retained-lifetime
+**
+ERROR:../source/app/tests/test-painter-prepared-pixels.cpp:82:void allocation_reentry_rejected(): 'rejected' should be TRUE
+not ok /prepared-pixels/allocation-reentry - ERROR:../source/app/tests/test-painter-prepared-pixels.cpp:82:void allocation_reentry_rejected(): 'rejected' should be TRUE
+Bail out!

@@ -1,0 +1,48 @@
+Xvfb verified: 127.0.0.1:92, 1080x1920x24, authenticated accepted, empty authority rejected
+TAP version 14
+# random seed: R02Sba9e056912f750076682bbf24abe54de
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+1..15
+# Start of prepared-pixels tests
+# prepared native precision=150 model=0 alpha=0
+# prepared native precision=150 model=0 alpha=1
+# prepared native precision=150 model=1 alpha=0
+# prepared native precision=150 model=1 alpha=1
+# prepared native precision=250 model=0 alpha=0
+# prepared native precision=250 model=0 alpha=1
+# prepared native precision=250 model=1 alpha=0
+# prepared native precision=250 model=1 alpha=1
+# prepared native precision=350 model=0 alpha=0
+# prepared native precision=350 model=0 alpha=1
+# prepared native precision=350 model=1 alpha=0
+# prepared native precision=350 model=1 alpha=1
+# prepared native precision=500 model=0 alpha=0
+# prepared native precision=500 model=0 alpha=1
+# prepared native precision=500 model=1 alpha=0
+# prepared native precision=500 model=1 alpha=1
+# prepared native precision=600 model=0 alpha=0
+# prepared native precision=600 model=0 alpha=1
+# prepared native precision=600 model=1 alpha=0
+# prepared native precision=600 model=1 alpha=1
+# prepared native precision=700 model=0 alpha=0
+# prepared native precision=700 model=0 alpha=1
+# prepared native precision=700 model=1 alpha=0
+# prepared native precision=700 model=1 alpha=1
+ok 1 /prepared-pixels/native24
+ok 2 /prepared-pixels/clean-allocation-failure
+ok 3 /prepared-pixels/stale-transaction
+ok 4 /prepared-pixels/redo-rollback
+ok 5 /prepared-pixels/replaced-buffer
+ok 6 /prepared-pixels/retained-lifetime
+ok 7 /prepared-pixels/allocation-reentry
+ok 8 /prepared-pixels/detached
+ok 9 /prepared-pixels/same-buffer-extent
+ok 10 /prepared-pixels/wrapper-allocation-reentry
+ok 11 /prepared-pixels/dispose-reentry
+ok 12 /prepared-pixels/detach-reentry
+ok 13 /prepared-pixels/null-tables
+ok 14 /prepared-pixels/endpoint-toggle-detach
+ok 15 /prepared-pixels/endpoint-toggle-destroy-image
+# End of prepared-pixels tests
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created

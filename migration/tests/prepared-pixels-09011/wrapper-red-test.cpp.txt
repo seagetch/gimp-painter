@@ -1,0 +1,85 @@
+/* SPDX-License-Identifier: GPL-3.0-or-later */
+#include "config.h"
+#include <gegl.h>
+#include <gtk/gtk.h>
+#include <vector>
+#include <stdexcept>
+#include <cstring>
+extern "C" {
+#include "libgimpbase/gimpbase.h"
+#include "libgimpmath/gimpmath.h"
+#include "core/core-types.h"
+#include "widgets/widgets-types.h"
+#include "core/gimp.h"
+#include "core/gimpimage.h"
+#include "core/gimpimage-undo.h"
+#include "core/gimpundostack.h"
+#include "core/gimplayer.h"
+#include "core/gimplayer-new.h"
+#include "core/gimpdrawable.h"
+#include "paint/gimppaintcore.h"
+#include "paint/gimppaintoptions.h"
+#include "tests.h"
+#include "gimp-app-test-utils.h"
+}
+#include "paint/painter-mypaint-surface/paint-core-pixels.hpp"
+using namespace GimpPainter::MyPaint;
+static Gimp *app;
+static bool fail_buffer;
+static GimpPaintCore *allocation_reentry;
+static GimpPaintCore *wrapper_reentry;
+static unsigned wrapper_callbacks;
+extern "C" void *__real__Znwm(std::size_t);
+extern "C" void *__wrap__Znwm(std::size_t);
+extern "C" void *__wrap__Znwm(std::size_t n) {auto*p=__real__Znwm(n);if(wrapper_reentry && n==sizeof(PreparedPixels)){auto*c=wrapper_reentry;wrapper_reentry=nullptr;++wrapper_callbacks;c->x2++;}return p;}
+extern "C" GeglBuffer *__real_gegl_buffer_new(const GeglRectangle*,const Babl*);
+extern "C" GeglBuffer *__wrap_gegl_buffer_new(const GeglRectangle*,const Babl*);
+extern "C" GeglBuffer *__wrap_gegl_buffer_new(const GeglRectangle*r,const Babl*f)
+{if(fail_buffer){fail_buffer=false;return nullptr;}auto*result=__real_gegl_buffer_new(r,f);if(allocation_reentry){auto*c=allocation_reentry;allocation_reentry=nullptr;c->x2++;}return result;}
+struct Fixture {
+ GimpImage*image;GimpLayer*layer;GimpDrawable*drawable;GimpPaintCore*core;GimpPaintOptions*options;GList list;
+ const Babl*format;std::vector<guchar> before,painted;GeglBuffer*baseline;
+ Fixture(GimpPrecision precision=GIMP_PRECISION_U8_NON_LINEAR,GimpImageBaseType type=GIMP_RGB,bool alpha=true,bool redo=false) {
+  image=gimp_image_new(app,73,39,type,precision);format=gimp_image_get_format(image,type,precision,alpha,nullptr);
+  layer=gimp_layer_new(image,73,39,format,"Prepared pixel target",1,GIMP_LAYER_MODE_NORMAL);
+  g_assert_true(gimp_image_add_layer(image,layer,nullptr,0,FALSE));drawable=GIMP_DRAWABLE(layer);
+  options=GIMP_PAINT_OPTIONS(g_object_new(GIMP_TYPE_PAINT_OPTIONS,"gimp",app,nullptr));
+  core=GIMP_PAINT_CORE(g_object_new(GIMP_TYPE_PAINT_CORE,"undo-desc","Prepared pixels",nullptr));list={drawable,nullptr,nullptr};
+  const int bpp=babl_format_get_bytes_per_pixel(format);before.resize(73*39*bpp);
+  // Use native scalar pattern with nontrivial low bits, generated through Babl.
+  std::vector<double> linear(73*39*4);for(unsigned i=0;i<linear.size();i+=4){linear[i]=.123456789;linear[i+1]=.341234567;linear[i+2]=.678912345;linear[i+3]=.812345678;}
+  gegl_buffer_set(gimp_drawable_get_buffer(drawable),GEGL_RECTANGLE(0,0,73,39),0,babl_format("RGBA double"),linear.data(),GEGL_AUTO_ROWSTRIDE);
+  before=read();gimp_image_undo_free(image);
+  if(redo){gimp_drawable_push_undo(drawable,"Prior operation",nullptr,0,0,73,39);auto*red=gegl_color_new("red");gegl_buffer_set_color(gimp_drawable_get_buffer(drawable),nullptr,red);g_object_unref(red);g_assert_true(gimp_image_undo(image));g_assert_true(read()==before);g_assert_cmpint(gimp_undo_stack_get_depth(gimp_image_get_redo_stack(image)),==,1);}
+  GimpCoords coords=GIMP_COORDS_DEFAULT_VALUES;coords.x=8;coords.y=9;core->last_coords=coords;GError*error=nullptr;
+  g_assert_true(gimp_paint_core_start(core,&list,options,&coords,&error));g_assert_no_error(error);
+  baseline=GEGL_BUFFER(g_hash_table_lookup(core->undo_buffers,drawable));
+  auto*color=gegl_color_new("rgba(0.85,0.1,0.3,0.5)");gegl_buffer_set_color(gimp_drawable_get_buffer(drawable),GEGL_RECTANGLE(3,4,66,31),color);g_object_unref(color);
+  core->x1=3;core->y1=4;core->x2=69;core->y2=35;painted=read();g_assert_true(before!=painted);
+ }
+ std::vector<guchar> read(){std::vector<guchar> p(73*39*babl_format_get_bytes_per_pixel(format));gegl_buffer_get(gimp_drawable_get_buffer(drawable),GEGL_RECTANGLE(0,0,73,39),1,format,p.data(),GEGL_AUTO_ROWSTRIDE,GEGL_ABYSS_NONE);return p;}
+ ~Fixture(){gimp_paint_core_cancel(core,&list);gimp_paint_core_cleanup(core);g_object_unref(core);g_object_unref(options);g_object_unref(image);}
+};
+static void native_matrix(){
+ const GimpPrecision precisions[]={GIMP_PRECISION_U8_NON_LINEAR,GIMP_PRECISION_U16_NON_LINEAR,GIMP_PRECISION_U32_NON_LINEAR,GIMP_PRECISION_HALF_LINEAR,GIMP_PRECISION_FLOAT_LINEAR,GIMP_PRECISION_DOUBLE_LINEAR};
+ for(auto precision:precisions)for(auto type:{GIMP_RGB,GIMP_GRAY})for(bool alpha:{false,true}){
+  Fixture f(precision,type,alpha);auto p=prepare_pixels(f.core,f.drawable);g_assert_nonnull(p.get());g_assert_true(p->matches(f.core,f.drawable));
+  g_assert_true(p->drawable()==f.drawable);g_assert_true(p->image()==f.image);g_assert_true(gegl_buffer_get_format(p->buffer())==f.format);
+  auto r=p->rectangle();const auto size=std::size_t(r.width)*r.height*babl_format_get_bytes_per_pixel(f.format);std::vector<guchar> expected(size),actual(size);
+  gegl_buffer_get(f.baseline,&r,1,f.format,expected.data(),GEGL_AUTO_ROWSTRIDE,GEGL_ABYSS_NONE);
+  gegl_buffer_get(p->buffer(),GEGL_RECTANGLE(0,0,r.width,r.height),1,f.format,actual.data(),GEGL_AUTO_ROWSTRIDE,GEGL_ABYSS_NONE);
+  g_assert_true(expected==actual);g_assert_true(f.read()==f.painted);g_assert_true(g_hash_table_lookup(f.core->undo_buffers,f.drawable)==f.baseline);
+  g_assert_cmpint(gimp_undo_stack_get_depth(gimp_image_get_undo_stack(f.image)),==,0);g_assert_true(gimp_viewable_preview_is_frozen(GIMP_VIEWABLE(f.drawable)));
+  g_test_message("prepared native precision=%d model=%d alpha=%d",precision,type,alpha);
+ }
+}
+static void clean_and_failure(){Fixture f;auto before=f.read();fail_buffer=true;bool failed=false;try{auto p=prepare_pixels(f.core,f.drawable);}catch(const std::bad_alloc&){failed=true;}g_assert_true(failed);g_assert_false(fail_buffer);g_assert_true(f.read()==before);g_assert_true(g_hash_table_lookup(f.core->undo_buffers,f.drawable)==f.baseline);f.core->x2=f.core->x1;g_assert_null(prepare_pixels(f.core,f.drawable).get());f.core->x2=69;}
+static void stale(){Fixture f;auto p=prepare_pixels(f.core,f.drawable);auto old=f.core->start_coords;f.core->start_coords.pressure+=.5;g_assert_false(p->matches(f.core,f.drawable));f.core->start_coords=old;g_assert_true(p->matches(f.core,f.drawable));f.core->x2++;g_assert_false(p->matches(f.core,f.drawable));f.core->x2--;auto*rect=static_cast<GeglRectangle*>(g_hash_table_lookup(f.core->original_bounds,f.drawable));rect->width++;g_assert_false(p->matches(f.core,f.drawable));bool failed=false;try{auto q=prepare_pixels(f.core,f.drawable);}catch(const std::invalid_argument&){failed=true;}g_assert_true(failed);rect->width--;g_assert_true(p->matches(f.core,f.drawable));}
+static void redo_and_rollback(){Fixture f(GIMP_PRECISION_U16_NON_LINEAR,GIMP_RGB,true,true);auto*redo=gimp_undo_stack_peek(gimp_image_get_redo_stack(f.image));auto p=prepare_pixels(f.core,f.drawable);g_assert_true(redo==gimp_undo_stack_peek(gimp_image_get_redo_stack(f.image)));fail_buffer=true;try{auto q=prepare_pixels(f.core,f.drawable);g_assert_not_reached();}catch(const std::bad_alloc&){}g_assert_true(redo==gimp_undo_stack_peek(gimp_image_get_redo_stack(f.image)));g_assert_true(f.read()==f.painted);gimp_paint_core_cancel(f.core,&f.list);f.core->x2=f.core->x1;g_assert_true(f.read()==f.before);g_assert_true(redo==gimp_undo_stack_peek(gimp_image_get_redo_stack(f.image)));g_assert_false(p->matches(f.core,f.drawable));}
+static void replaced_buffer(){Fixture f;auto p=prepare_pixels(f.core,f.drawable);auto*old=GIMP_DRAWABLE(f.drawable);auto*buffer=gimp_drawable_get_buffer(old);g_object_ref(buffer);auto*replacement=gegl_buffer_dup(buffer);gimp_drawable_set_buffer(old,FALSE,nullptr,replacement);g_assert_false(p->matches(f.core,f.drawable));gimp_drawable_set_buffer(old,FALSE,nullptr,buffer);g_assert_true(p->matches(f.core,f.drawable));g_object_unref(replacement);g_object_unref(buffer);}
+static void retained_lifetime(){auto f=std::unique_ptr<Fixture>(new Fixture);auto p=prepare_pixels(f->core,f->drawable);gpointer image=f->image,core=f->core,baseline=f->baseline;g_object_add_weak_pointer(G_OBJECT(image),&image);g_object_add_weak_pointer(G_OBJECT(core),&core);g_object_add_weak_pointer(G_OBJECT(baseline),&baseline);f.reset();g_assert_nonnull(image);g_assert_nonnull(core);g_assert_nonnull(baseline);g_assert_false(p->matches(GIMP_PAINT_CORE(core),p->drawable()));g_assert_nonnull(p->buffer());p.reset();g_assert_null(image);g_assert_null(core);g_assert_null(baseline);}
+static void allocation_reentry_rejected(){Fixture f;allocation_reentry=f.core;bool rejected=false;try{auto p=prepare_pixels(f.core,f.drawable);}catch(const std::runtime_error&){rejected=true;}g_assert_true(rejected);g_assert_null(allocation_reentry);g_assert_true(f.read()==f.painted);g_assert_true(g_hash_table_lookup(f.core->undo_buffers,f.drawable)==f.baseline);f.core->x2--;g_assert_nonnull(prepare_pixels(f.core,f.drawable).get());}
+static void detached(){Fixture f;auto p=prepare_pixels(f.core,f.drawable);g_object_ref(f.layer);gimp_image_remove_layer(f.image,f.layer,FALSE,nullptr);g_assert_false(p->matches(f.core,f.drawable));bool rejected=false;try{auto q=prepare_pixels(f.core,f.drawable);}catch(const std::invalid_argument&){rejected=true;}g_assert_true(rejected);g_assert_true(gimp_image_add_layer(f.image,f.layer,nullptr,0,FALSE));g_object_unref(f.layer);g_assert_true(p->matches(f.core,f.drawable));}
+static void same_buffer_extent(){Fixture f;auto p=prepare_pixels(f.core,f.drawable);auto original=*gegl_buffer_get_extent(f.baseline),expanded=original;expanded.width++;g_assert_true(gegl_buffer_set_extent(f.baseline,&expanded));g_assert_false(p->matches(f.core,f.drawable));bool rejected=false;try{auto q=prepare_pixels(f.core,f.drawable);}catch(const std::invalid_argument&){rejected=true;}g_assert_true(rejected);g_assert_true(gegl_buffer_set_extent(f.baseline,&original));g_assert_true(p->matches(f.core,f.drawable));auto*target=gimp_drawable_get_buffer(f.drawable);g_assert_true(gegl_buffer_set_extent(target,&expanded));g_assert_false(p->matches(f.core,f.drawable));g_assert_true(gegl_buffer_set_extent(target,&original));g_assert_true(p->matches(f.core,f.drawable));}
+static void wrapper_allocation_reentry(){Fixture f;wrapper_reentry=f.core;wrapper_callbacks=0;bool rejected=false;try{auto p=prepare_pixels(f.core,f.drawable);}catch(const std::runtime_error&){rejected=true;}g_assert_cmpuint(wrapper_callbacks,==,1);g_assert_null(wrapper_reentry);g_assert_true(rejected);f.core->x2--;g_assert_true(f.read()==f.painted);g_assert_true(g_hash_table_lookup(f.core->undo_buffers,f.drawable)==f.baseline);}
+int main(int argc,char**argv){g_test_init(&argc,&argv,nullptr);gimp_test_utils_set_gimp3_directory("GIMP_TESTING_ABS_TOP_SRCDIR","app/tests/gimpdir");app=gimp_init_for_testing();g_object_set(app->config,"painter-canvas-ui",TRUE,nullptr);gboolean enabled=FALSE;g_object_get(app->config,"painter-canvas-ui",&enabled,nullptr);g_assert_true(enabled);g_test_add_func("/prepared-pixels/native24",native_matrix);g_test_add_func("/prepared-pixels/clean-allocation-failure",clean_and_failure);g_test_add_func("/prepared-pixels/stale-transaction",stale);g_test_add_func("/prepared-pixels/redo-rollback",redo_and_rollback);g_test_add_func("/prepared-pixels/replaced-buffer",replaced_buffer);g_test_add_func("/prepared-pixels/retained-lifetime",retained_lifetime);g_test_add_func("/prepared-pixels/allocation-reentry",allocation_reentry_rejected);g_test_add_func("/prepared-pixels/detached",detached);g_test_add_func("/prepared-pixels/same-buffer-extent",same_buffer_extent);g_test_add_func("/prepared-pixels/wrapper-allocation-reentry",wrapper_allocation_reentry);int r=g_test_run();gimp_test_utils_set_gimp3_directory("GIMP_TESTING_ABS_TOP_BUILDDIR","app/tests/gimpdir-output");gimp_exit(app,TRUE);return r;}

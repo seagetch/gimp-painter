@@ -1,6 +1,6 @@
 # Legacy painter raster semantics on current GEGL buffers and owned resources.
 painter_mypaint_surface = static_library('painter-mypaint-surface',
-  'gegl-surface.cpp', 'gimp-resources.cpp', 'paint-core.cpp',
+  'gegl-surface.cpp', 'gimp-resources.cpp', 'paint-core.cpp', 'paint-core-pixels.cpp',
   '../gimppainterpaper.cpp',
   'gimp-painter-options.cpp', 'gimp-painter-session.cpp',
   'legacy-mask-transform.cpp', 'legacy-generated-mask.cpp',

@@ -1,0 +1,11 @@
+Xvfb verified: 127.0.0.1:95, 1080x1920x24, authenticated accepted, empty authority rejected
+TAP version 14
+# random seed: R02Sd29c0adaef5c6ead593fb1c7e8bc3117
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+1..15
+# Start of prepared-pixels tests
+**
+ERROR:../source/app/tests/test-painter-prepared-pixels.cpp:67:void native_matrix(): 'p->matches(f.core,f.drawable)' should be TRUE
+not ok /prepared-pixels/native24 - ERROR:../source/app/tests/test-painter-prepared-pixels.cpp:67:void native_matrix(): 'p->matches(f.core,f.drawable)' should be TRUE
+Bail out!

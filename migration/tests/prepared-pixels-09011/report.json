@@ -1,0 +1,49 @@
+{
+  "task": "09.011/native-pixel-preparation",
+  "status": "DONE",
+  "native_tap": 15,
+  "native_precision_cells": 24,
+  "sanitizer_tap": 15,
+  "selected_units": 6,
+  "mutants": [
+    {
+      "name": "copy-painted",
+      "exit_code": 250
+    },
+    {
+      "name": "skip-reentry-check",
+      "exit_code": 250
+    },
+    {
+      "name": "steal-baseline",
+      "exit_code": 250
+    }
+  ],
+  "source_sha256": {
+    "app/paint/painter-mypaint-surface/paint-core-pixels.cpp": "6a8a3f86e98c9fa9c200bf23373d7a9c5fa60b7382da7b46fff3c19e9495d04a",
+    "app/gegl/gimp-gegl-loops.h": "6b228a485ed99d3c0d3b19f19dfa3856eb5c8c1fcb5ed01496e56105be8ff0f0",
+    "app/core/gimpimage-undo.c": "1e89d788773980f381eaba256a99328357be743127cec2bbe998412fbc4b35c7",
+    "app/core/gimpimage-undo.h": "01b6533a424a671397f5beeadbcb82aec04c1c115fdca41e13b5d01fd7ecf928",
+    "app/core/gimpundopopguard.c": "a5a03b87645cc79f0937e4b23f50d17c3de0a7178b09c4022146b99d13d1ad42",
+    "app/gegl/gimp-gegl-loops.cc": "40c7705400b9f77ad8c9079700e1bc68e6802cb47b96898044e35b51b8a34876",
+    "app/core/gimpundopopguard.h": "e262946fc05ccad1bceb9e8213874a03aed653b54593c2c259d468645afc8841",
+    "app/core/gimpdrawable.h": "c1de298fee095660cf998da214615fa97d88c6c85ded194c04d3dee033cd27b6",
+    "migration/tests/build_prepared_pixels_sanitizers.py": "f9872f6bddc8d9b466395f234681a98b4c8ec7cacbeff7780896c46a721bd8ce",
+    "app/painter/boundary.hpp": "d97a8b6e27a09fe69c7c1d6620361c3daaa1e5cf1bad8d2eb2d4b9a9faed6d2e",
+    "app/gegl/gimp-gegl-utils.h": "98306e5557878ba1875e6cd0a59bf6f5a405c6d92d3a1bf95ece1309d11bb1df",
+    "app/paint/gimppaintcore.h": "c4daffd4560445fe4796bd902006efadb91762781102f83d3745a0f2ba99967a",
+    "app/paint/painter-mypaint-surface/paint-core-pixels.hpp": "68b3f9dbee1331fd78db554ebe6053c7f82cde06a77ba7f804a34ae63190a45b",
+    "app/core/gimpdrawable.c": "b7ecbd0ceb9bb3eff0689d978758ed5feead9afa4683a8b6d64521e7eebd506a",
+    "app/core/core-types.h": "6843c4d1a5962cc458f5cc8331e7de7e09165cde98ba76966f35b270f79817d7",
+    "app/tests/test-painter-prepared-pixels.cpp": "05ac255c0017ac972f22b49c7e3f556e174db1c79e1885834c78b20f27a47832",
+    "app/paint/gimppaintcore.c": "306710d7b6ae412e7e12bcedaf85b5f9bd4b43de2a7f424dca2bb82a9c6a16be",
+    "tools/run-painter-xvfb.py": "6481502846d9f896cb906c8b1cde26f59d6899d1d5f889e1ffbf8e106e743fde",
+    "app/core/gimpdrawableundo.h": "8b8a111f9731f6365e04c23cf45f3edae8a1e8da81adc6730b4cfc4634a0753f",
+    "app/painter/object-ref.hpp": "5a8cc92afc56f652fd47c727269d71d9d97c4358015f13fe9c4764371fcb7c3a"
+  },
+  "publishes_history": false,
+  "paired_stroke_undo_complete": false,
+  "rendered_ui_evidence": false,
+  "oncanvas_enabled": true,
+  "whole_application_instrumented": false
+}
