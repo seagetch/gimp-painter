@@ -35,6 +35,123 @@ static void generated_properties()
   auto*again=gimp_painter_mybrush_options_ref_for_context(GIMP_CONTEXT(options),nullptr);g_assert_true(again==options);g_object_unref(again);
   GError*error=nullptr;g_assert_null(gimp_painter_mybrush_options_ref_for_context(nullptr,&error));g_assert_nonnull(error);g_clear_error(&error);g_object_unref(options);
 }
+static void all_native_properties_config()
+{
+  auto *options = options_new ();
+  g_assert_cmpuint (g_type_parent (GIMP_TYPE_PAINTER_MYBRUSH_OPTIONS), ==, GIMP_TYPE_PAINT_OPTIONS);
+  g_assert_true (GIMP_IS_CONFIG (options));
+  g_assert_true (GIMP_IS_PAINTER_MYBRUSH_OPTIONS_CLASS (G_OBJECT_GET_CLASS (options)));
+  g_assert_true (GIMP_PAINTER_MYBRUSH_OPTIONS_GET_CLASS (options) ==
+    GIMP_PAINTER_MYBRUSH_OPTIONS_CLASS (G_OBJECT_GET_CLASS (options)));
+  GTypeQuery query;
+  g_type_query (GIMP_TYPE_PAINTER_MYBRUSH_OPTIONS, &query);
+  g_assert_cmpuint (query.instance_size, ==, sizeof (GimpPainterMybrushOptions));
+  g_assert_cmpuint (query.class_size, ==, sizeof (GimpPainterMybrushOptionsClass));
+  g_object_set (options, "brush-view-type", GIMP_VIEW_TYPE_LIST,
+                "brush-view-size", 48, nullptr);
+  for (const auto *key : {"brush-view-type", "brush-view-size"})
+    {
+      auto *spec = g_object_class_find_property (G_OBJECT_GET_CLASS (options), key);
+      g_assert_nonnull (spec);
+      g_assert_cmpuint (spec->owner_type, ==, GIMP_TYPE_PAINT_OPTIONS);
+    }
+  for (const auto &s : painter_mypaint_settings)
+    {
+      const auto key = name (s.internal_name);
+      const double wanted = double (s.minimum) + (double (s.maximum) - s.minimum) * .25;
+      double actual = 0;
+      g_object_set (options, key.c_str (), wanted, nullptr);
+      g_object_get (options, key.c_str (), &actual, nullptr);
+      g_assert_cmpfloat (actual, ==, wanted);
+      auto *spec = g_object_class_find_property (G_OBJECT_GET_CLASS (options), key.c_str ());
+      g_assert_true ((spec->flags & GIMP_CONFIG_PARAM_SERIALIZE) != 0);
+      g_assert_cmpuint (spec->owner_type, ==, GIMP_TYPE_PAINTER_MYBRUSH_OPTIONS);
+    }
+  for (const auto &s : painter_mypaint_switches)
+    {
+      const auto key = name (s.internal_name);
+      gboolean actual = FALSE;
+      g_object_set (options, key.c_str (), TRUE, nullptr);
+      g_object_get (options, key.c_str (), &actual, nullptr); g_assert_true (actual);
+    }
+  for (const auto &s : painter_mypaint_texts)
+    {
+      const auto key = name (s.internal_name), wanted = "missing-type-test-" + key;
+      gchar *actual = nullptr;
+      g_object_set (options, key.c_str (), wanted.c_str (), nullptr);
+      g_object_get (options, key.c_str (), &actual, nullptr);
+      g_assert_cmpstr (actual, ==, wanted.c_str ()); g_free (actual);
+    }
+  const auto before = PainterOptionsRef::retain (options).snapshot ().encode ();
+  String config (gimp_config_serialize_to_string (GIMP_CONFIG (options), nullptr));
+  g_assert_nonnull (config.get ());
+  auto *copy = options_new ();
+  GError *error = nullptr;
+  g_assert_true (gimp_config_deserialize_string (GIMP_CONFIG (copy), config.get (), -1, nullptr, &error));
+  g_assert_no_error (error);
+  g_assert_true (PainterOptionsRef::retain (copy).snapshot ().encode () == before);
+  gint view_type = -1, view_size = 0;
+  g_object_get (copy, "brush-view-type", &view_type, "brush-view-size", &view_size, nullptr);
+  g_assert_cmpint (view_type, ==, GIMP_VIEW_TYPE_LIST);
+  g_assert_cmpint (view_size, ==, 48);
+  gimp_config_reset (GIMP_CONFIG (copy));
+  const Resource defaults;
+  g_assert_true (PainterOptionsRef::retain (copy).snapshot ().encode () == defaults.encode ());
+  g_assert_true (PainterOptionsRef::retain (options).snapshot ().encode () == before);
+  g_object_unref (copy); g_object_unref (options);
+}
+static void legacy_brush_mode_config()
+{
+  static const char *nicks[] = {"normal", "normal-and-erase", "lock-alpha", "colorize"};
+  static const char *names[] = {"GIMP_MYPAINT_NORMAL", "GIMP_MYPAINT_NORMAL_AND_ERASE",
+                                "GIMP_MYPAINT_LOCK_ALPHA", "GIMP_MYPAINT_COLORIZE"};
+  auto *options = options_new ();
+  auto *spec = g_object_class_find_property (G_OBJECT_GET_CLASS (options), "brush-mode");
+  g_assert_nonnull (spec); g_assert_true (G_IS_PARAM_SPEC_ENUM (spec));
+  g_assert_cmpstr (g_type_name (G_PARAM_SPEC_VALUE_TYPE (spec)), ==, "GimpMypaintBrushMode");
+  auto *values = G_PARAM_SPEC_ENUM (spec)->enum_class;
+  g_assert_cmpuint (values->n_values, ==, 4);
+  const auto draft = PainterOptionsRef::retain (options).snapshot ().encode ();
+  for (int mode = 0; mode < 4; ++mode)
+    {
+      auto *value = g_enum_get_value (values, mode);
+      g_assert_nonnull (value); g_assert_cmpstr (value->value_nick, ==, nicks[mode]);
+      g_assert_cmpstr (value->value_name, ==, names[mode]);
+      String input (g_strdup_printf ("(brush-mode %s)", nicks[mode]));
+      GError *error = nullptr;
+      g_assert_true (gimp_config_deserialize_string (GIMP_CONFIG (options), input.get (), -1, nullptr, &error));
+      g_assert_no_error (error);
+      gint actual = -1; g_object_get (options, "brush-mode", &actual, nullptr);
+      g_assert_cmpint (actual, ==, mode);
+      g_assert_true (PainterOptionsRef::retain (options).snapshot ().encode () == draft);
+      String saved (gimp_config_serialize_to_string (GIMP_CONFIG (options), nullptr));
+      if (mode == 0)
+        g_assert_null (strstr (saved.get (), "(brush-mode "));
+      else
+        g_assert_nonnull (strstr (saved.get (), input.get ()));
+      auto *copy = options_new ();
+      g_assert_true (gimp_config_deserialize_string (GIMP_CONFIG (copy), saved.get (), -1, nullptr, &error));
+      g_assert_no_error (error);
+      g_object_get (copy, "brush-mode", &actual, nullptr); g_assert_cmpint (actual, ==, mode);
+      auto *duplicate = GIMP_PAINTER_MYBRUSH_OPTIONS (gimp_config_duplicate (GIMP_CONFIG (options)));
+      g_assert_nonnull (duplicate);
+      g_object_get (duplicate, "brush-mode", &actual, nullptr); g_assert_cmpint (actual, ==, mode);
+      gimp_config_reset (GIMP_CONFIG (copy));
+      g_object_set (copy, "brush-mode", (mode + 1) % 4, nullptr);
+      g_assert_true (gimp_config_copy (GIMP_CONFIG (options), GIMP_CONFIG (copy), GParamFlags (0)));
+      g_object_get (copy, "brush-mode", &actual, nullptr); g_assert_cmpint (actual, ==, mode);
+      gimp_config_reset (GIMP_CONFIG (copy));
+      g_object_get (copy, "brush-mode", &actual, nullptr); g_assert_cmpint (actual, ==, 0);
+      g_object_unref (copy); g_object_unref (duplicate);
+    }
+  GError *error = nullptr;
+  g_assert_false (gimp_config_deserialize_string (GIMP_CONFIG (options),
+    "(brush-mode future-mode)", -1, nullptr, &error));
+  g_assert_nonnull (error); g_clear_error (&error);
+  gint actual = -1; g_object_get (options, "brush-mode", &actual, nullptr);
+  g_assert_cmpint (actual, ==, 3);
+  g_object_unref (options);
+}
 static void edit_curve_commit_and_conflict()
 {
   auto*options=options_new();auto brush=PainterMybrushRef::create("draft-source");
@@ -195,6 +312,8 @@ int main(int argc,char**argv)
 {
   g_test_init(&argc,&argv,nullptr);gimp_test_utils_set_gimp3_directory("GIMP_TESTING_ABS_TOP_SRCDIR","app/tests/gimpdir");gimp=gimp_init_for_testing();
   g_test_add_func("/painter-options/generated-properties",generated_properties);
+  g_test_add_func("/painter-options/all-native-properties-config",all_native_properties_config);
+  g_test_add_func("/painter-options/legacy-brush-mode-config",legacy_brush_mode_config);
   g_test_add_func("/painter-options/edit-curve-commit-conflict",edit_curve_commit_and_conflict);
   g_test_add_func("/painter-options/history-config",history_and_config_roundtrip);
   g_test_add_func("/painter-options/native-config-reset-defaults",native_config_reset_defaults);

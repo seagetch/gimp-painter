@@ -1,0 +1,29 @@
+{
+  "task": "08.007",
+  "child": "08.007/dict-owner",
+  "status": "PASS",
+  "original_done": 131,
+  "original_total": 661,
+  "source_done": 621,
+  "source_total": 22763,
+  "source_duties_accepted": [
+    "legacy-685d1f55033b860a4751",
+    "legacy-78371c43198c6d648614",
+    "legacy-8fff8de6d1e31b83197c",
+    "legacy-990b4e3531caa7cee602",
+    "legacy-b349378c1a7b735a18cb",
+    "legacy-d4bb5c081bc7cdc15584",
+    "legacy-d65f97438464e5a13e7f",
+    "legacy-fe56ae8742da170e5360"
+  ],
+  "other_source_rows_unchanged": 22755,
+  "routing_changes": 0,
+  "native_cases": 22,
+  "metadata_programs": 2,
+  "current_source_seals": 26,
+  "tasks_progress_errors": [],
+  "production_change": "Restore missing legacy brush-mode option state and public native class macros; no renderer mode change",
+  "baseline_reproduction": "Native brush-mode pspec absent before fix; exit -6 with sealed production and fixture",
+  "independent_review": "Read-only option ownership/config review found no production blocker; fixture corrections adopted; reviewer did not execute tests",
+  "limits": "Native type/property/config and metadata ownership acceptance only; four brush-mode values preserved as option state, not newly implemented rendering modes. No new legacy Reset oracle, grouped GUI, sanitizer or platform acceptance."
+}

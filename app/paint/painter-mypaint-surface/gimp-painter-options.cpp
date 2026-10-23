@@ -33,8 +33,24 @@ G_DEFINE_TYPE_WITH_CODE (GimpPainterMybrushOptions, gimp_painter_mybrush_options
                         G_IMPLEMENT_INTERFACE(GIMP_TYPE_CONFIG,config_iface_init))
 static GimpConfigInterface*parent_config_iface=nullptr;
 namespace {
-enum { PROP_JSON=BRUSH_SETTINGS_COUNT+1, PROP_DIRTY, PROP_CONFLICT };
-GParamSpec *properties[PROP_CONFLICT+1]{};
+enum { PROP_JSON=BRUSH_SETTINGS_COUNT+1, PROP_DIRTY, PROP_CONFLICT, PROP_BRUSH_MODE };
+GParamSpec *properties[PROP_BRUSH_MODE+1]{};
+GType legacy_brush_mode_type ()
+{
+  // Preserve the old serialized enum. Its rendering helper always returned
+  // Normal, independently of this stored GObject property value.
+  static const GEnumValue values[] = {
+    {0, "GIMP_MYPAINT_NORMAL", "normal"},
+    {1, "GIMP_MYPAINT_NORMAL_AND_ERASE", "normal-and-erase"},
+    {2, "GIMP_MYPAINT_LOCK_ALPHA", "lock-alpha"},
+    {3, "GIMP_MYPAINT_COLORIZE", "colorize"},
+    {0, nullptr, nullptr}
+  };
+  static gsize type = 0;
+  if (g_once_init_enter (&type))
+    g_once_init_leave (&type, g_enum_register_static ("GimpMypaintBrushMode", values));
+  return type;
+}
 struct History {
   ObjectRef<GimpPainterMybrush> source;
   Resource resource;
@@ -106,6 +122,7 @@ struct OptionsImpl {
   Connection changed;
   std::shared_ptr<HistoryState> history = std::make_shared<HistoryState> ();
   std::uint64_t revision=0;
+  gint legacy_brush_mode=0;
   bool dirty=false,conflict=false,committing=false;
   void remember () {
     if(dirty && history)history->push({selected,draft,selected&&gimp_object_get_name(selected.get())?gimp_object_get_name(selected.get()):"Unsaved painter brush"});
@@ -274,6 +291,13 @@ void set_property(GObject*object,guint id,const GValue*value,GParamSpec*pspec)
 {
   property_boundary(object,pspec,"set",[&]{
     auto owner=ObjectRef<GimpPainterMybrushOptions>::retain(GIMP_PAINTER_MYBRUSH_OPTIONS(object));
+    if(id==PROP_BRUSH_MODE){
+      auto&binding=store(owner.get());
+      const auto update=[&](OptionsImpl&i){i.legacy_brush_mode=g_value_get_enum(value);};
+      if(binding.state()==BindingStore::State::constructing)binding.initialize<OptionsSlot>(update);
+      else binding.with<OptionsSlot>(update);
+      return;
+    }
     if(id==PROP_JSON){GError*error=nullptr;if(!gimp_painter_mybrush_options_set_json(owner.get(),g_value_get_string(value),&error)){std::string why = GimpPainter::take_error_message (error, "Invalid draft");throw std::runtime_error(why);}return;}
     if(id<1||id>BRUSH_SETTINGS_COUNT){G_OBJECT_WARN_INVALID_PROPERTY_ID(object,id,pspec);return;}
     auto&binding=store(owner.get());const bool constructing=binding.state()==BindingStore::State::constructing;
@@ -296,6 +320,7 @@ void get_property(GObject*object,guint id,GValue*value,GParamSpec*pspec)
       if(id==PROP_JSON)g_value_set_string(value,i.draft.encode().c_str());
       else if(id==PROP_DIRTY)g_value_set_boolean(value,i.dirty);
       else if(id==PROP_CONFLICT)g_value_set_boolean(value,i.conflict);
+      else if(id==PROP_BRUSH_MODE)g_value_set_enum(value,i.legacy_brush_mode);
       else if(id>=1&&id<=BRUSH_MAPPING_END)g_value_set_double(value,i.draft.base_value(id-1));
       else if(id<=BRUSH_BOOL_END&&id>BRUSH_MAPPING_END)g_value_set_boolean(value,i.draft.switch_value(id-1));
       else if(id<=BRUSH_TEXT_END&&id>BRUSH_BOOL_END)g_value_set_string(value,i.draft.text_is_null(id-1)?nullptr:i.draft.text_value(id-1).c_str());
@@ -361,7 +386,9 @@ static void gimp_painter_mybrush_options_class_init(GimpPainterMybrushOptionsCla
   properties[PROP_JSON]=g_param_spec_string("painter-settings","Full painter brush","Lossless settings, curves and unknown data","{\"version\":3}",flags);
   properties[PROP_DIRTY]=g_param_spec_boolean("painter-dirty","Edited painter brush",nullptr,FALSE,G_PARAM_READABLE);
   properties[PROP_CONFLICT]=g_param_spec_boolean("painter-conflict","Saved brush changed",nullptr,FALSE,G_PARAM_READABLE);
-  for(unsigned i=1;i<=PROP_CONFLICT;++i)g_object_class_install_property(object,i,properties[i]);
+  properties[PROP_BRUSH_MODE]=g_param_spec_enum("brush-mode","Legacy brush mode",
+    "Preserved legacy option; does not select a rendering mode",legacy_brush_mode_type(),0,flags);
+  for(unsigned i=1;i<=PROP_BRUSH_MODE;++i)g_object_class_install_property(object,i,properties[i]);
   g_signal_new("history-changed",G_TYPE_FROM_CLASS(klass),G_SIGNAL_RUN_LAST,0,nullptr,nullptr,nullptr,G_TYPE_NONE,0);
   g_signal_new("settings-changed",G_TYPE_FROM_CLASS(klass),G_SIGNAL_RUN_LAST,0,nullptr,nullptr,nullptr,G_TYPE_NONE,0);
 }

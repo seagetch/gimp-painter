@@ -11,6 +11,9 @@ G_BEGIN_DECLS
 #define GIMP_TYPE_PAINTER_MYBRUSH_OPTIONS (gimp_painter_mybrush_options_get_type ())
 #define GIMP_PAINTER_MYBRUSH_OPTIONS(o) (G_TYPE_CHECK_INSTANCE_CAST ((o), GIMP_TYPE_PAINTER_MYBRUSH_OPTIONS, GimpPainterMybrushOptions))
 #define GIMP_IS_PAINTER_MYBRUSH_OPTIONS(o) (G_TYPE_CHECK_INSTANCE_TYPE ((o), GIMP_TYPE_PAINTER_MYBRUSH_OPTIONS))
+#define GIMP_PAINTER_MYBRUSH_OPTIONS_CLASS(k) (G_TYPE_CHECK_CLASS_CAST ((k), GIMP_TYPE_PAINTER_MYBRUSH_OPTIONS, GimpPainterMybrushOptionsClass))
+#define GIMP_IS_PAINTER_MYBRUSH_OPTIONS_CLASS(k) (G_TYPE_CHECK_CLASS_TYPE ((k), GIMP_TYPE_PAINTER_MYBRUSH_OPTIONS))
+#define GIMP_PAINTER_MYBRUSH_OPTIONS_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), GIMP_TYPE_PAINTER_MYBRUSH_OPTIONS, GimpPainterMybrushOptionsClass))
 typedef struct _GimpPainterMybrushOptions GimpPainterMybrushOptions;
 typedef struct _GimpPainterMybrushOptionsClass GimpPainterMybrushOptionsClass;
 struct _GimpPainterMybrushOptions { GimpPaintOptions parent_instance; gboolean binding_failed; };
