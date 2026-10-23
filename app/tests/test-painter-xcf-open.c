@@ -35,6 +35,12 @@
 static Gimp *gimp;
 static gchar *fixture_path (const gchar *name)
 {
+  if (g_str_has_prefix (name, "legacy-value-invert-context/"))
+    {
+      const gchar *root = g_getenv ("GIMP_TEST_VALUE_INVERT_FIXTURE_DIR");
+      g_assert_nonnull (root); /* Genuine corpus materialization is mandatory. */
+      return g_build_filename (root, name + strlen ("legacy-value-invert-context/"), NULL);
+    }
   if (g_str_has_prefix (name, "legacy-max-rgb-context/"))
     {
       const gchar *root = g_getenv ("GIMP_TEST_MAX_RGB_FIXTURE_DIR");
@@ -489,6 +495,7 @@ static void unknown_extension_preserves_destination (void)
 #include "test-painter-xcf-threshold.inc"
 #include "test-painter-xcf-sobel.inc"
 #include "test-painter-xcf-max-rgb.inc"
+#include "test-painter-xcf-value-invert.inc"
 
 int main (int argc, char **argv)
 {
@@ -506,6 +513,9 @@ int main (int argc, char **argv)
   ADD (sobel_active_save_close_reopen);
   ADD (max_rgb_synthetic_capsule_roundtrip); ADD (max_rgb_malformed_capsules);
   ADD (max_rgb_active_save_close_reopen); ADD (max_rgb_old_writer_roundtrip);
+  ADD (value_invert_synthetic_capsule_roundtrip); ADD (value_invert_malformed_capsules);
+  ADD (value_invert_rejected_types_roundtrip); ADD (value_invert_active_save_close_reopen);
+  ADD (value_invert_old_writer_roundtrip);
   result = g_test_run ();
   gimp_test_utils_set_gimp3_directory ("GIMP_TESTING_ABS_TOP_BUILDDIR", "app/tests/gimpdir-output");
   gimp_exit (gimp, TRUE); return result;

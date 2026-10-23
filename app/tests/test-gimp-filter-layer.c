@@ -2646,6 +2646,8 @@ static void image_close_during_strong_redo_callbacks (void) { undo_owner_lifetim
 #include "test-filter-threshold-context.inc"
 #include "test-filter-sobel-context.inc"
 #include "test-filter-max-rgb-context.inc"
+#include "test-filter-value-invert-context.inc"
+#include "test-filter-value-invert-capture.inc"
 #include "test-filter-max-rgb-capture.inc"
 
 static void
@@ -2797,6 +2799,14 @@ int main (int argc, char **argv)
   ADD (max_rgb_cancel_replace_lower_close); ADD (max_rgb_partial_import_lifecycle);
   ADD (max_rgb_native_profile_bytes); ADD (max_rgb_admission_preserves_cache);
   ADD (max_rgb_real_routes_unchanged); ADD (max_rgb_projection_input_bounds);
+  ADD (value_invert_integer_native_route); ADD (value_invert_invalid_definitions_keep_cache);
+  ADD (value_invert_gray_unsupported); ADD (value_invert_tiny_selection_routes);
+  ADD (value_invert_late_context_routes); ADD (value_invert_component_masks);
+  ADD (value_invert_sealed_context_routes); ADD (value_invert_outside_selection_no_merge);
+  ADD (value_invert_cancel_replace_lower_close); ADD (value_invert_partial_import_lifecycle);
+  ADD (value_invert_native_profile_bytes); ADD (value_invert_admission_preserves_cache);
+  ADD (value_invert_real_routes_unchanged); ADD (value_invert_projection_input_bounds);
+  ADD (value_invert_actual_old_live); ADD (value_invert_actual_old_projection_history);
   ADD (max_rgb_actual_old_live); ADD (max_rgb_actual_old_projection_history);
   ADD (sobel_integer_native_route); ADD (sobel_invalid_definitions_keep_cache);
   ADD (sobel_tiny_selection_routes); ADD (sobel_unsupported_precision);

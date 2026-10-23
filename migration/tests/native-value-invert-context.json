@@ -1,0 +1,894 @@
+{
+  "status": "passed",
+  "scope": "Bounded nonlinear-U8 RGB/RGBA Value Invert owner context, strict three-slot legacy XCF execution and lifecycle persistence",
+  "accepted_raw_foundation": "f71581787e7c465de7865ba7690df2e1715f052e",
+  "tested_sources": {
+    "app/core/gimpfilterlayer.cpp": "9a38f5eefac7d33b3189e1766f8cbbecbd485bd7f57b09250ff4814ec6e3b202",
+    "app/tests/test-filter-value-invert-capture.inc": "47f6b9b50d25bd2ccbf9a40a03e73fdec64a665621531da0e9530c12829b03a1",
+    "app/tests/test-filter-value-invert-context.inc": "88fb5ff9a0f449081eb7929a84808992ddb8bf32c5514d3ee21bdec865cadfc7",
+    "app/tests/test-gimp-filter-layer.c": "576bc8f2745327c4fa9db736b89823bb9049850cf82e6da32029fa8810486698",
+    "app/tests/test-painter-xcf-open.c": "b2136bc4cb43f040290ad084eeae2a0d8dcd946ca19dc2c1f764d13a34a43a2b",
+    "app/tests/test-painter-xcf-value-invert.inc": "11c5ed15eefe4d6da3b797349b4263298f544809321405e82b9e4337141dbc5b",
+    "app/xcf/painter-xcf-load.cpp": "1fdf2bc2292101e2a455beacdb980c89618b3cb02c4db63f47225c598a37218a",
+    "migration/tests/legacy-value-invert-capture.c": "128d544b96085ded6dfdcc13ca61cefe0c613491de819c9b0801c1b77f030722",
+    "migration/tests/legacy-value-invert-projection-capture.c": "0aed1212a5652704a176ae78f4fea3f662a7f7f0bebbb16deaf8659f6f009131",
+    "migration/tests/run_filter_owner_context_fixture_test.py": "3fa514105f8c00b2298a9dc9a1ff4395f7302b248dd73ce02a954558b53f9d36",
+    "migration/tests/run_sharpen_context_sanitizers.py": "93177ad9205a2904d424ea80e648d9f34c06a60f793b4acd74f176769193054b",
+    "migration/tests/run_value_invert_focused_normal.py": "042fbd791558d9d3a23b158c4730f64975faec006b5aaeb46808044db02f6daa",
+    "migration/tests/test_sharpen_context_sanitizers.py": "ff2dc8824f29000ff7e7f144f7fd21a2395d1685c1c7b75d3e86787335e41d59",
+    "migration/tests/test_value_invert_focused_normal.py": "2348a53baf48ca227924404e2b8f39d04ee5a36c27874ab0df707fe6732ce3b0",
+    "tools/capture_legacy_value_invert.py": "1096a5ca4bb5fdc1b82ee5fa4bbacfab7cbeaea0eaabf085306998e6fba22b6d",
+    "tools/capture_legacy_value_invert_projection.py": "a3e10f12a3f2c26500323367a65f9f6eecf71b5baef5de90995a59091be09f93",
+    "tools/check_value_invert_evidence.py": "3d092786c54ef0b0e2b7f179c999adf09a85bdce9cf7e35e72d4c0faa0ccfe32",
+    "tools/check_value_invert_projection_evidence.py": "39b729ff819980c6b6f25de837d9ce8393ac9e9408a686fe732f096ca08309b4",
+    "tools/seal_legacy_value_invert_capture.py": "dd88013987e439aa976b40f0a615d3244d7234fcb1a4fdf8674bfbcf199c56c0",
+    "tools/tests/test_value_invert_capture.py": "aaf30c2fe3623f18e43f3de52b8ee1d7d67eb298cfa29ae958121d26067c7cab"
+  },
+  "unchanged_raw_foundation_sources": {
+    "app/painter/filter-native-kernels.cpp": "960667b9b738acb5613bf4a893a7ccc16fdcbdf56e9d84100d983516b0e273d7",
+    "app/painter/filter-point-shadow.cpp": "ec2bccab4f3d994552d1415e3db8a8716d2476098bcb1afba7664a86fdb66345",
+    "app/painter/filter-point-shadow.hpp": "90c41d85f7e4e50d6242169cab843c1fc16ff1b774eddcaa4f3c4f33edbfafdc"
+  },
+  "tested_identities": {
+    "normal": {
+      "commit": "7b80f7990d573dcc0aa2e50f0e35f31c45173826",
+      "tree": "f511830bd8503b169abaa023b8ed2462170f6ba1"
+    },
+    "scoped_sanitizer": {
+      "commit": "a585034aeeb0040930c4e96e0af917af4392df20",
+      "tree": "814f49de724f4c6f344ba75e03f6d14199be0e60"
+    },
+    "registered_regressions": {
+      "commit": "7018d00e35b4c7ed1f1954df31c1a1e3878006d8",
+      "tree": "8b6a462f76830ab602dc10e7a80090fbb7564b08"
+    }
+  },
+  "post_normal_provenance_only_deltas": [
+    {
+      "from": "7b80f7990d573dcc0aa2e50f0e35f31c45173826",
+      "to": "a585034aeeb0040930c4e96e0af917af4392df20",
+      "paths": [
+        "migration/fixtures/legacy-value-invert-README.md",
+        "migration/fixtures/legacy-value-invert-runtime-provenance.tar.gz",
+        "migration/fixtures/legacy-value-invert-runtime-provenance.tar.manifest.json",
+        "migration/tests/value-invert-capture-evidence.json"
+      ]
+    },
+    {
+      "from": "a585034aeeb0040930c4e96e0af917af4392df20",
+      "to": "7018d00e35b4c7ed1f1954df31c1a1e3878006d8",
+      "paths": [
+        "migration/fixtures/legacy-value-invert-README.md",
+        "migration/tests/value-invert-capture-evidence.json"
+      ]
+    }
+  ],
+  "final_publication_delta": "Provenance, contract, ledger and retained execution receipts after exact tested snapshots, plus removal of one redundant EOF blank line from the capture consumer. Earlier all-file seals remain tied to their tested snapshots. final_source_sha256 records final file bytes separately from tested_sources.",
+  "normal": {
+    "passed_paths": 21,
+    "test_paths": [
+      "/gimp-filter-layer/value_invert_integer_native_route",
+      "/gimp-filter-layer/value_invert_invalid_definitions_keep_cache",
+      "/gimp-filter-layer/value_invert_gray_unsupported",
+      "/gimp-filter-layer/value_invert_tiny_selection_routes",
+      "/gimp-filter-layer/value_invert_late_context_routes",
+      "/gimp-filter-layer/value_invert_component_masks",
+      "/gimp-filter-layer/value_invert_sealed_context_routes",
+      "/gimp-filter-layer/value_invert_outside_selection_no_merge",
+      "/gimp-filter-layer/value_invert_cancel_replace_lower_close",
+      "/gimp-filter-layer/value_invert_partial_import_lifecycle",
+      "/gimp-filter-layer/value_invert_native_profile_bytes",
+      "/gimp-filter-layer/value_invert_admission_preserves_cache",
+      "/gimp-filter-layer/value_invert_real_routes_unchanged",
+      "/gimp-filter-layer/value_invert_projection_input_bounds",
+      "/gimp-filter-layer/value_invert_actual_old_live",
+      "/gimp-filter-layer/value_invert_actual_old_projection_history",
+      "/painter-xcf-open/value_invert_synthetic_capsule_roundtrip",
+      "/painter-xcf-open/value_invert_malformed_capsules",
+      "/painter-xcf-open/value_invert_rejected_types_roundtrip",
+      "/painter-xcf-open/value_invert_active_save_close_reopen",
+      "/painter-xcf-open/value_invert_old_writer_roundtrip"
+    ],
+    "native_process_seconds": 46.3063736749973,
+    "genuine_acceptance": true,
+    "fixture_verification": {
+      "GIMP_TEST_VALUE_INVERT_FIXTURE_DIR": {
+        "source_commit": "afa43fae3e920210146abed514f136fd49f671b5",
+        "case_count": 142,
+        "pdb_cases": 50,
+        "live_cases": 92,
+        "old_writer_files": 2,
+        "large_live_cases": 2,
+        "base_report_sha256": "633084992c2b06038466c2b7ef4c740f932ad9baecb6134c3cfe4991d8ad8c88",
+        "large_archive_sha256": "f0d6629c0c1a06266f6ff664c17ec727d1675d04a132dc85224379eee16dd9bb"
+      },
+      "GIMP_TEST_VALUE_INVERT_PROJECTION_FIXTURE_DIR": {
+        "source_commit": "afa43fae3e920210146abed514f136fd49f671b5",
+        "case_count": 16,
+        "live_runs": 48,
+        "source_layouts": [
+          3,
+          4
+        ],
+        "output_layouts": [
+          4
+        ],
+        "report_sha256": "053a0c99fe7f1a5360dbf4565f297cfea44ff19b05b4254f22e7ea338ddd75e2",
+        "preserved_after_first_run_pixels": 888,
+        "nonzero_preserved_pixels": 444,
+        "retained_pixels_changed_from_seed": 390,
+        "group_outside_image_pixels": 2664,
+        "raw_pixels_checked": 10608,
+        "zero_alpha_hidden_color_channels": 8940
+      }
+    },
+    "seals": {
+      "source": {
+        "before": 11997,
+        "after": 11997,
+        "changed": [],
+        "read_errors": {}
+      },
+      "build": {
+        "before": 19,
+        "after": 19,
+        "changed": [],
+        "read_errors": {}
+      },
+      "fixtures": {
+        "before": 2371,
+        "after": 2371,
+        "changed": [],
+        "read_errors": {}
+      }
+    }
+  },
+  "scoped_sanitizer": {
+    "passed_paths": 21,
+    "instrumented_translation_units": 40,
+    "rtti_only_translation_units": 36,
+    "elapsed_seconds": 227.986,
+    "scope": "value-invert kernels and owner-context capture/merge, FilterLayer, scheduler/raster/spool storage, bindings, Undo/duplication, XCF load/save/typed metadata/compatibility and both C harnesses. Listed RTTI-only units are not sanitizer-instrumented; remaining GIMP/dependencies are uninstrumented. Leak detection is disabled.",
+    "leak_detection": false,
+    "fixture_verification": "Outer verified-fixture wrapper owns provenance; this runner seals every selected operation's consumer files",
+    "seals": {
+      "source_seals": {
+        "before": 3067,
+        "after": 3067,
+        "changed": [],
+        "read_errors": {}
+      },
+      "ordinary_build_seals": {
+        "before": 118,
+        "after": 118,
+        "changed": [],
+        "read_errors": {}
+      },
+      "executable_seals": {
+        "before": 2,
+        "after": 2,
+        "changed": [],
+        "read_errors": {}
+      },
+      "fixture_seals": {
+        "before": 4631,
+        "after": 4631,
+        "changed": [],
+        "read_errors": {}
+      }
+    }
+  },
+  "default_build": {
+    "exit_code": 0,
+    "remaining_steps": 1964,
+    "scope": "Complete default Ninja build of the separate owner tree before the final registered run; configure and all build logs retained"
+  },
+  "registered_regressions": {
+    "seal_scope": "Tracked/current source file bytes and exact source path sets; 18 selected test/helper/fixed-allowlist executables, build-local shared libraries and registry/build metadata. Other default-build plug-in executables and system dependency binaries are not individually sealed; exclusive build lock held.",
+    "runtime_preflight": {
+      "fixed_plugin_allowlist": [
+        "blinds",
+        "contrast-retinex",
+        "convolution-matrix",
+        "tile-small"
+      ],
+      "resolver_source_sha256": {
+        "/workspace/shared/gimp-painter-value-invert-owner/app/core/gimpfilterpaths.cpp": "91c45a032f7b6caace7968f9e94494aa310d4097e9df3e41a9360e1b8975d8e9"
+      },
+      "executables": {
+        "/workspace/shared/gimp-value-invert-owner-build/app/gimp-painter-filter-worker": {
+          "sha256": "04045b2c140149af8276bd8556eaf4c16fecff9755355ad4d2820eedbdf15208",
+          "resolved_libraries": "\tlinux-vdso.so.1 (0x00007fb469ca0000)\n\tlibgimpbase-3.0.so.0 => /workspace/shared/gimp-value-invert-owner-build/libgimpbase/libgimpbase-3.0.so.0 (0x00007fb4697a3000)\n\tlibgimpcolor-3.0.so.0 => /workspace/shared/gimp-value-invert-owner-build/libgimpcolor/libgimpcolor-3.0.so.0 (0x00007fb46978a000)\n\tlibgimpconfig-3.0.so.0 => /workspace/shared/gimp-value-invert-owner-build/libgimpconfig/libgimpconfig-3.0.so.0 (0x00007fb46976c000)\n\tlibgimpmath-3.0.so.0 => /workspace/shared/gimp-value-invert-owner-build/libgimpmath/libgimpmath-3.0.so.0 (0x00007fb469764000)\n\tlibgimpmodule-3.0.so.0 => /workspace/shared/gimp-value-invert-owner-build/libgimpmodule/libgimpmodule-3.0.so.0 (0x00007fb46975d000)\n\tlibgimpthumb-3.0.so.0 => /workspace/shared/gimp-value-invert-owner-build/libgimpthumb/libgimpthumb-3.0.so.0 (0x00007fb469752000)\n\tlibcairo.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libcairo.so.2 (0x00007fb469602000)\n\tlibgdk_pixbuf-2.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgdk_pixbuf-2.0.so.0 (0x00007fb4695d4000)\n\tlibgobject-2.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0 (0x00007fb469571000)\n\tlibglib-2.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libglib-2.0.so.0 (0x00007fb469418000)\n\tlibgegl-0.4.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgegl-0.4.so.0 (0x00007fb469333000)\n\tlibjson-glib-1.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libjson-glib-1.0.so.0 (0x00007fb469306000)\n\tlibgio-2.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgio-2.0.so.0 (0x00007fb46910e000)\n\tlibbabl-0.1.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libbabl-0.1.so.0 (0x00007fb468fc4000)\n\tlibgexiv2.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgexiv2.so.2 (0x00007fb468f87000)\n\tlibpangocairo-1.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libpangocairo-1.0.so.0 (0x00007fb468f76000)\n\tlibpango-1.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libpango-1.0.so.0 (0x00007fb468f03000)\n\tlibharfbuzz.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libharfbuzz.so.0 (0x00007fb468dc2000)\n\tlibpangoft2-1.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libpangoft2-1.0.so.0 (0x00007fb468da5000)\n\tlibfontconfig.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libfontconfig.so.1 (0x00007fb468d57000)\n\tlibfreetype.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libfreetype.so.6 (0x00007fb468c87000)\n\tlibz.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libz.so.1 (0x00007fb468c65000)\n\tlibarchive.so.13 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libarchive.so.13 (0x00007fb468b99000)\n\tlibmypaint-1.5.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libmypaint-1.5.so.1 (0x00007fb468b78000)\n\tlibappstream.so.5 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libappstream.so.5 (0x00007fb468ac1000)\n\tlibstdc++.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libstdc++.so.6 (0x00007fb46885b000)\n\tlibm.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libm.so.6 (0x00007fb468769000)\n\tlibgcc_s.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgcc_s.so.1 (0x00007fb46873c000)\n\tlibc.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libc.so.6 (0x00007fb468548000)\n\tliblcms2.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/liblcms2.so.2 (0x00007fb4684e0000)\n\tlibgmodule-2.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgmodule-2.0.so.0 (0x00007fb4684d9000)\n\tlibpng16.so.16 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libpng16.so.16 (0x00007fb46849e000)\n\tlibX11.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libX11.so.6 (0x00007fb468356000)\n\tlibXext.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXext.so.6 (0x00007fb468341000)\n\tlibXrender.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXrender.so.1 (0x00007fb468334000)\n\tlibxcb.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libxcb.so.1 (0x00007fb468309000)\n\tlibxcb-render.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libxcb-render.so.0 (0x00007fb4682f8000)\n\tlibxcb-shm.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libxcb-shm.so.0 (0x00007fb4682f3000)\n\tlibpixman-1.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libpixman-1.so.0 (0x00007fb468246000)\n\tlibjpeg.so.62 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libjpeg.so.62 (0x00007fb4681af000)\n\tlibffi.so.8 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libffi.so.8 (0x00007fb4681a2000)\n\tlibatomic.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libatomic.so.1 (0x00007fb468196000)\n\tlibpcre2-8.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libpcre2-8.so.0 (0x00007fb4680e7000)\n\tlibmount.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libmount.so.1 (0x00007fb46806b000)\n\tlibselinux.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libselinux.so.1 (0x00007fb468037000)\n\t/lib64/ld-linux-x86-64.so.2 (0x00007fb469ca2000)\n\tlibexiv2.so.28 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libexiv2.so.28 (0x00007fb467cbc000)\n\tlibfribidi.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libfribidi.so.0 (0x00007fb467c9b000)\n\tlibthai.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libthai.so.0 (0x00007fb467c90000)\n\tlibgraphite2.so.3 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgraphite2.so.3 (0x00007fb467c66000)\n\tlibexpat.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libexpat.so.1 (0x00007fb467c38000)\n\tlibbz2.so.1.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libbz2.so.1.0 (0x00007fb467c25000)\n\tlibbrotlidec.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libbrotlidec.so.1 (0x00007fb467c15000)\n\tlibnettle.so.8 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libnettle.so.8 (0x00007fb467bbf000)\n\tlibacl.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libacl.so.1 (0x00007fb467bb4000)\n\tliblzma.so.5 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/liblzma.so.5 (0x00007fb467b83000)\n\tlibzstd.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libzstd.so.1 (0x00007fb467ab9000)\n\tliblz4.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/liblz4.so.1 (0x00007fb467a90000)\n\tlibxml2.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libxml2.so.2 (0x00007fb4678d8000)\n\tlibjson-c.so.5 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libjson-c.so.5 (0x00007fb4678c4000)\n\tlibgomp.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgomp.so.1 (0x00007fb46786f000)\n\tlibcurl-gnutls.so.4 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libcurl-gnutls.so.4 (0x00007fb467783000)\n\tlibxmlb.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libxmlb.so.2 (0x00007fb467757000)\n\tlibyaml-0.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libyaml-0.so.2 (0x00007fb467736000)\n\tlibsystemd.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libsystemd.so.0 (0x00007fb467620000)\n\tlibstemmer.so.0d => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libstemmer.so.0d (0x00007fb46755a000)\n\tlibXau.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXau.so.6 (0x00007fb467555000)\n\tlibXdmcp.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXdmcp.so.6 (0x00007fb46754b000)\n\tlibblkid.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libblkid.so.1 (0x00007fb4674ea000)\n\tlibINIReader.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libINIReader.so.0 (0x00007fb4674e1000)\n\tlibdatrie.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libdatrie.so.1 (0x00007fb4674d7000)\n\tlibbrotlicommon.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libbrotlicommon.so.1 (0x00007fb4674b2000)\n\tlibxxhash.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libxxhash.so.0 (0x00007fb46749f000)\n\tlibnghttp3.so.9 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libnghttp3.so.9 (0x00007fb467475000)\n\tlibngtcp2_crypto_gnutls.so.8 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libngtcp2_crypto_gnutls.so.8 (0x00007fb467469000)\n\tlibngtcp2.so.16 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libngtcp2.so.16 (0x00007fb46741e000)\n\tlibnghttp2.so.14 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libnghttp2.so.14 (0x00007fb4673ec000)\n\tlibidn2.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libidn2.so.0 (0x00007fb4673b7000)\n\tlibrtmp.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/librtmp.so.1 (0x00007fb467399000)\n\tlibssh2.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libssh2.so.1 (0x00007fb467350000)\n\tlibpsl.so.5 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libpsl.so.5 (0x00007fb46733c000)\n\tlibgnutls.so.30 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgnutls.so.30 (0x00007fb467113000)\n\tlibgssapi_krb5.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgssapi_krb5.so.2 (0x00007fb4670bb000)\n\tlibldap.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libldap.so.2 (0x00007fb467057000)\n\tliblber.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/liblber.so.2 (0x00007fb467046000)\n\tlibcap.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libcap.so.2 (0x00007fb46703a000)\n\tlibinih.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libinih.so.1 (0x00007fb467035000)\n\tlibunistring.so.5 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libunistring.so.5 (0x00007fb466e4b000)\n\tlibhogweed.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libhogweed.so.6 (0x00007fb466e00000)\n\tlibgmp.so.10 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgmp.so.10 (0x00007fb466d76000)\n\tlibcrypto.so.3 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libcrypto.so.3 (0x00007fb46673c000)\n\tlibp11-kit.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libp11-kit.so.0 (0x00007fb46659b000)\n\tlibtasn1.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libtasn1.so.6 (0x00007fb466583000)\n\tlibkrb5.so.3 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libkrb5.so.3 (0x00007fb4664ab000)\n\tlibk5crypto.so.3 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libk5crypto.so.3 (0x00007fb46647d000)\n\tlibcom_err.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libcom_err.so.2 (0x00007fb466477000)\n\tlibkrb5support.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libkrb5support.so.0 (0x00007fb466469000)\n\tlibsasl2.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libsasl2.so.2 (0x00007fb46644b000)\n\tlibssl.so.3 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libssl.so.3 (0x00007fb46633d000)\n\tlibkeyutils.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libkeyutils.so.1 (0x00007fb466336000)\n\tlibresolv.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libresolv.so.2 (0x00007fb466324000)\n",
+          "stderr": "",
+          "exit_code": 0
+        },
+        "/workspace/shared/gimp-value-invert-owner-build/app/painter/painter-filter-context": {
+          "sha256": "ad41d9c04397e0d74126a87d42ec557ee9b60a79543228fb2e482668007eb410",
+          "resolved_libraries": "\tlinux-vdso.so.1 (0x00007f54e8186000)\n\tlibstdc++.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libstdc++.so.6 (0x00007f54e7f0c000)\n\tlibgcc_s.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgcc_s.so.1 (0x00007f54e7edf000)\n\tlibc.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libc.so.6 (0x00007f54e7ceb000)\n\tlibm.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libm.so.6 (0x00007f54e7bf9000)\n\t/lib64/ld-linux-x86-64.so.2 (0x00007f54e8188000)\n",
+          "stderr": "",
+          "exit_code": 0
+        },
+        "/workspace/shared/gimp-value-invert-owner-build/app/painter/painter-filter-context-native": {
+          "sha256": "18acc87b17781f1e0ee3cfb5fa64da1d0f7d8050375657d84f5dcf0d3b03a288",
+          "resolved_libraries": "\tlinux-vdso.so.1 (0x00007f2a5f1ee000)\n\tlibstdc++.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libstdc++.so.6 (0x00007f2a5ef78000)\n\tlibgcc_s.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgcc_s.so.1 (0x00007f2a5ef4b000)\n\tlibc.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libc.so.6 (0x00007f2a5ed57000)\n\tlibm.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libm.so.6 (0x00007f2a5ec65000)\n\t/lib64/ld-linux-x86-64.so.2 (0x00007f2a5f1f0000)\n",
+          "stderr": "",
+          "exit_code": 0
+        },
+        "/workspace/shared/gimp-value-invert-owner-build/app/painter/painter-filter-import-completion": {
+          "sha256": "563bfe929070db6a50c01c4feb419612c9c7864f8b50ecde8d6022551c018dc2",
+          "resolved_libraries": "\tlinux-vdso.so.1 (0x00007f11f1436000)\n\tlibglib-2.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libglib-2.0.so.0 (0x00007f11f12c0000)\n\tlibstdc++.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libstdc++.so.6 (0x00007f11f105a000)\n\tlibgcc_s.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgcc_s.so.1 (0x00007f11f102d000)\n\tlibc.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libc.so.6 (0x00007f11f0e37000)\n\tlibatomic.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libatomic.so.1 (0x00007f11f0e2d000)\n\tlibm.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libm.so.6 (0x00007f11f0d3d000)\n\tlibpcre2-8.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libpcre2-8.so.0 (0x00007f11f0c8e000)\n\t/lib64/ld-linux-x86-64.so.2 (0x00007f11f1438000)\n",
+          "stderr": "",
+          "exit_code": 0
+        },
+        "/workspace/shared/gimp-value-invert-owner-build/app/painter/painter-filter-native-kernels": {
+          "sha256": "9e22882a262e18d6135fdaa6be0ac2aea5a7ee1db52abd923b05bf1812e8a239",
+          "resolved_libraries": "\tlinux-vdso.so.1 (0x00007f3b19c98000)\n\tlibglib-2.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libglib-2.0.so.0 (0x00007f3b19b20000)\n\tlibstdc++.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libstdc++.so.6 (0x00007f3b198ba000)\n\tlibm.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libm.so.6 (0x00007f3b197ca000)\n\tlibgcc_s.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgcc_s.so.1 (0x00007f3b1979b000)\n\tlibc.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libc.so.6 (0x00007f3b195a7000)\n\tlibatomic.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libatomic.so.1 (0x00007f3b1959d000)\n\tlibpcre2-8.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libpcre2-8.so.0 (0x00007f3b194ee000)\n\t/lib64/ld-linux-x86-64.so.2 (0x00007f3b19c9a000)\n",
+          "stderr": "",
+          "exit_code": 0
+        },
+        "/workspace/shared/gimp-value-invert-owner-build/app/painter/painter-filter-owner-gates": {
+          "sha256": "634f3bf22758d9ac144b8d740eb204ca7826678ed13abf53878bb23523145a76",
+          "resolved_libraries": "\tlinux-vdso.so.1 (0x00007f54bafd4000)\n\tlibglib-2.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libglib-2.0.so.0 (0x00007f54bae5c000)\n\tlibstdc++.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libstdc++.so.6 (0x00007f54babf6000)\n\tlibgcc_s.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgcc_s.so.1 (0x00007f54babc9000)\n\tlibc.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libc.so.6 (0x00007f54ba9d3000)\n\tlibatomic.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libatomic.so.1 (0x00007f54ba9c9000)\n\tlibm.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libm.so.6 (0x00007f54ba8d9000)\n\tlibpcre2-8.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libpcre2-8.so.0 (0x00007f54ba82a000)\n\t/lib64/ld-linux-x86-64.so.2 (0x00007f54bafd6000)\n",
+          "stderr": "",
+          "exit_code": 0
+        },
+        "/workspace/shared/gimp-value-invert-owner-build/app/painter/painter-filter-point-shadow": {
+          "sha256": "20f6a28c2355bf4e83869280ca5a91bab32bbadb161200463eebc8fc60aa97e7",
+          "resolved_libraries": "\tlinux-vdso.so.1 (0x00007f6ec8052000)\n\tlibglib-2.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libglib-2.0.so.0 (0x00007f6ec7ec5000)\n\tlibstdc++.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libstdc++.so.6 (0x00007f6ec7c5f000)\n\tlibm.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libm.so.6 (0x00007f6ec7b6f000)\n\tlibgcc_s.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgcc_s.so.1 (0x00007f6ec7b40000)\n\tlibc.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libc.so.6 (0x00007f6ec794c000)\n\tlibatomic.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libatomic.so.1 (0x00007f6ec7942000)\n\tlibpcre2-8.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libpcre2-8.so.0 (0x00007f6ec7893000)\n\t/lib64/ld-linux-x86-64.so.2 (0x00007f6ec8054000)\n",
+          "stderr": "",
+          "exit_code": 0
+        },
+        "/workspace/shared/gimp-value-invert-owner-build/app/painter/painter-filter-scheduler": {
+          "sha256": "500714f14e341c79d7dc60701203a570846b88bf9948ea07afe92d7f4602b65d",
+          "resolved_libraries": "\tlinux-vdso.so.1 (0x00007f52fdc0d000)\n\tlibglib-2.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libglib-2.0.so.0 (0x00007f52fda80000)\n\tlibstdc++.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libstdc++.so.6 (0x00007f52fd81a000)\n\tlibgcc_s.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgcc_s.so.1 (0x00007f52fd7ed000)\n\tlibc.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libc.so.6 (0x00007f52fd5f7000)\n\tlibatomic.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libatomic.so.1 (0x00007f52fd5ed000)\n\tlibm.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libm.so.6 (0x00007f52fd4fd000)\n\tlibpcre2-8.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libpcre2-8.so.0 (0x00007f52fd44e000)\n\t/lib64/ld-linux-x86-64.so.2 (0x00007f52fdc0f000)\n",
+          "stderr": "",
+          "exit_code": 0
+        },
+        "/workspace/shared/gimp-value-invert-owner-build/app/painter/painter-filter-sharpen": {
+          "sha256": "5bca01d1116107517740a033c409003cbe1373ded737fdd85c579cb493b0ce16",
+          "resolved_libraries": "\tlinux-vdso.so.1 (0x00007ff88c33c000)\n\tlibglib-2.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libglib-2.0.so.0 (0x00007ff88c1bf000)\n\tlibstdc++.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libstdc++.so.6 (0x00007ff88bf59000)\n\tlibm.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libm.so.6 (0x00007ff88be69000)\n\tlibgcc_s.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgcc_s.so.1 (0x00007ff88be3a000)\n\tlibc.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libc.so.6 (0x00007ff88bc46000)\n\tlibatomic.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libatomic.so.1 (0x00007ff88bc3c000)\n\tlibpcre2-8.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libpcre2-8.so.0 (0x00007ff88bb8d000)\n\t/lib64/ld-linux-x86-64.so.2 (0x00007ff88c33e000)\n",
+          "stderr": "",
+          "exit_code": 0
+        },
+        "/workspace/shared/gimp-value-invert-owner-build/app/painter/painter-filter-sharpen-shadow": {
+          "sha256": "8d228ee98f2c38c6bfdff36b72548bed97739b7272db6ed621b1d21b78c1c133",
+          "resolved_libraries": "\tlinux-vdso.so.1 (0x00007fc6c7716000)\n\tlibglib-2.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libglib-2.0.so.0 (0x00007fc6c7595000)\n\tlibstdc++.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libstdc++.so.6 (0x00007fc6c732f000)\n\tlibm.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libm.so.6 (0x00007fc6c723f000)\n\tlibgcc_s.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgcc_s.so.1 (0x00007fc6c7210000)\n\tlibc.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libc.so.6 (0x00007fc6c701c000)\n\tlibatomic.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libatomic.so.1 (0x00007fc6c7012000)\n\tlibpcre2-8.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libpcre2-8.so.0 (0x00007fc6c6f63000)\n\t/lib64/ld-linux-x86-64.so.2 (0x00007fc6c7718000)\n",
+          "stderr": "",
+          "exit_code": 0
+        },
+        "/workspace/shared/gimp-value-invert-owner-build/app/painter/painter-filter-sobel": {
+          "sha256": "88f438128a5b3d21308e58ce37c66ab53b71bcf910323101596040d579f09d27",
+          "resolved_libraries": "\tlinux-vdso.so.1 (0x00007f8f1f1ac000)\n\tlibglib-2.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libglib-2.0.so.0 (0x00007f8f1f02a000)\n\tlibstdc++.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libstdc++.so.6 (0x00007f8f1edc4000)\n\tlibm.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libm.so.6 (0x00007f8f1ecd4000)\n\tlibgcc_s.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgcc_s.so.1 (0x00007f8f1eca5000)\n\tlibc.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libc.so.6 (0x00007f8f1eab1000)\n\tlibatomic.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libatomic.so.1 (0x00007f8f1eaa7000)\n\tlibpcre2-8.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libpcre2-8.so.0 (0x00007f8f1e9f8000)\n\t/lib64/ld-linux-x86-64.so.2 (0x00007f8f1f1ae000)\n",
+          "stderr": "",
+          "exit_code": 0
+        },
+        "/workspace/shared/gimp-value-invert-owner-build/app/tests/gimp-filter-layer": {
+          "sha256": "c6e173803b43c70b79b4849871ee81c67428ed47e6fd70798806b981c62a923e",
+          "resolved_libraries": "\tlinux-vdso.so.1 (0x00007f84ca0a1000)\n\tlibgimpmath-3.0.so.0 => /workspace/shared/gimp-value-invert-owner-build/libgimpmath/libgimpmath-3.0.so.0 (0x00007f84c9691000)\n\tlibgimpbase-3.0.so.0 => /workspace/shared/gimp-value-invert-owner-build/libgimpbase/libgimpbase-3.0.so.0 (0x00007f84c9658000)\n\tlibgimpcolor-3.0.so.0 => /workspace/shared/gimp-value-invert-owner-build/libgimpcolor/libgimpcolor-3.0.so.0 (0x00007f84c9641000)\n\tlibgimpconfig-3.0.so.0 => /workspace/shared/gimp-value-invert-owner-build/libgimpconfig/libgimpconfig-3.0.so.0 (0x00007f84c9623000)\n\tlibgimpmodule-3.0.so.0 => /workspace/shared/gimp-value-invert-owner-build/libgimpmodule/libgimpmodule-3.0.so.0 (0x00007f84c961c000)\n\tlibgimpthumb-3.0.so.0 => /workspace/shared/gimp-value-invert-owner-build/libgimpthumb/libgimpthumb-3.0.so.0 (0x00007f84c9611000)\n\tlibgimpwidgets-3.0.so.0 => /workspace/shared/gimp-value-invert-owner-build/libgimpwidgets/libgimpwidgets-3.0.so.0 (0x00007f84c9385000)\n\tlibcairo.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libcairo.so.2 (0x00007f84c9237000)\n\tlibgdk_pixbuf-2.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgdk_pixbuf-2.0.so.0 (0x00007f84c9209000)\n\tlibgobject-2.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0 (0x00007f84c91a6000)\n\tlibglib-2.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libglib-2.0.so.0 (0x00007f84c904d000)\n\tlibgegl-0.4.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgegl-0.4.so.0 (0x00007f84c8f66000)\n\tlibgegl-npd-0.4.so => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgegl-npd-0.4.so (0x00007f84c8f5d000)\n\tlibjson-glib-1.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libjson-glib-1.0.so.0 (0x00007f84c8f32000)\n\tlibgio-2.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgio-2.0.so.0 (0x00007f84c8d3a000)\n\tlibbabl-0.1.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libbabl-0.1.so.0 (0x00007f84c8bf0000)\n\tlibgexiv2.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgexiv2.so.2 (0x00007f84c8bb1000)\n\tlibpangocairo-1.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libpangocairo-1.0.so.0 (0x00007f84c8ba0000)\n\tlibpango-1.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libpango-1.0.so.0 (0x00007f84c8b2f000)\n\tlibharfbuzz.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libharfbuzz.so.0 (0x00007f84c89ee000)\n\tlibpangoft2-1.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libpangoft2-1.0.so.0 (0x00007f84c89d1000)\n\tlibfontconfig.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libfontconfig.so.1 (0x00007f84c8981000)\n\tlibfreetype.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libfreetype.so.6 (0x00007f84c88b1000)\n\tlibgtk-3.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0 (0x00007f84c80b3000)\n\tlibgdk-3.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgdk-3.so.0 (0x00007f84c7fa3000)\n\tlibz.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libz.so.1 (0x00007f84c7f83000)\n\tlibatk-1.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libatk-1.0.so.0 (0x00007f84c7f57000)\n\tlibappstream.so.5 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libappstream.so.5 (0x00007f84c7ea0000)\n\tlibmypaint-1.5.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libmypaint-1.5.so.1 (0x00007f84c7e7f000)\n\tlibarchive.so.13 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libarchive.so.13 (0x00007f84c7db3000)\n\tlibstdc++.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libstdc++.so.6 (0x00007f84c7b4d000)\n\tlibm.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libm.so.6 (0x00007f84c7a5b000)\n\tlibgcc_s.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgcc_s.so.1 (0x00007f84c7a2e000)\n\tlibc.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libc.so.6 (0x00007f84c783a000)\n\tliblcms2.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/liblcms2.so.2 (0x00007f84c77d2000)\n\tlibgmodule-2.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgmodule-2.0.so.0 (0x00007f84c77cb000)\n\tlibpng16.so.16 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libpng16.so.16 (0x00007f84c7790000)\n\tlibX11.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libX11.so.6 (0x00007f84c7648000)\n\tlibXext.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXext.so.6 (0x00007f84c7633000)\n\tlibXrender.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXrender.so.1 (0x00007f84c7626000)\n\tlibxcb.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libxcb.so.1 (0x00007f84c75fb000)\n\tlibxcb-render.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libxcb-render.so.0 (0x00007f84c75ea000)\n\tlibxcb-shm.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libxcb-shm.so.0 (0x00007f84c75e5000)\n\tlibpixman-1.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libpixman-1.so.0 (0x00007f84c7538000)\n\tlibjpeg.so.62 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libjpeg.so.62 (0x00007f84c74a1000)\n\tlibffi.so.8 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libffi.so.8 (0x00007f84c7494000)\n\tlibatomic.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libatomic.so.1 (0x00007f84c7488000)\n\tlibpcre2-8.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libpcre2-8.so.0 (0x00007f84c73d9000)\n\tlibmount.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libmount.so.1 (0x00007f84c735d000)\n\tlibselinux.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libselinux.so.1 (0x00007f84c7329000)\n\t/lib64/ld-linux-x86-64.so.2 (0x00007f84ca0a3000)\n\tlibexiv2.so.28 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libexiv2.so.28 (0x00007f84c6fae000)\n\tlibfribidi.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libfribidi.so.0 (0x00007f84c6f8d000)\n\tlibthai.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libthai.so.0 (0x00007f84c6f82000)\n\tlibgraphite2.so.3 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgraphite2.so.3 (0x00007f84c6f58000)\n\tlibexpat.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libexpat.so.1 (0x00007f84c6f2a000)\n\tlibbz2.so.1.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libbz2.so.1.0 (0x00007f84c6f17000)\n\tlibbrotlidec.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libbrotlidec.so.1 (0x00007f84c6f07000)\n\tlibcairo-gobject.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libcairo-gobject.so.2 (0x00007f84c6efc000)\n\tlibepoxy.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libepoxy.so.0 (0x00007f84c6dcc000)\n\tlibXi.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXi.so.6 (0x00007f84c6db8000)\n\tlibatk-bridge-2.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libatk-bridge-2.0.so.0 (0x00007f84c6d7a000)\n\tlibcloudproviders.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libcloudproviders.so.0 (0x00007f84c6d60000)\n\tlibXfixes.so.3 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXfixes.so.3 (0x00007f84c6d58000)\n\tlibxkbcommon.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libxkbcommon.so.0 (0x00007f84c6d0d000)\n\tlibwayland-client.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libwayland-client.so.0 (0x00007f84c6cfa000)\n\tlibwayland-cursor.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libwayland-cursor.so.0 (0x00007f84c6cf0000)\n\tlibwayland-egl.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libwayland-egl.so.1 (0x00007f84c6ce9000)\n\tlibXcursor.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXcursor.so.1 (0x00007f84c6cdc000)\n\tlibXdamage.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXdamage.so.1 (0x00007f84c6cd7000)\n\tlibXcomposite.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXcomposite.so.1 (0x00007f84c6cd2000)\n\tlibXrandr.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXrandr.so.2 (0x00007f84c6cc5000)\n\tlibXinerama.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXinerama.so.1 (0x00007f84c6cbe000)\n\tlibcurl-gnutls.so.4 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libcurl-gnutls.so.4 (0x00007f84c6bd2000)\n\tlibxmlb.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libxmlb.so.2 (0x00007f84c6ba8000)\n\tlibxml2.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libxml2.so.2 (0x00007f84c69f0000)\n\tlibyaml-0.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libyaml-0.so.2 (0x00007f84c69cf000)\n\tlibsystemd.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libsystemd.so.0 (0x00007f84c68b7000)\n\tlibzstd.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libzstd.so.1 (0x00007f84c67ed000)\n\tlibstemmer.so.0d => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libstemmer.so.0d (0x00007f84c6727000)\n\tlibjson-c.so.5 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libjson-c.so.5 (0x00007f84c6713000)\n\tlibgomp.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgomp.so.1 (0x00007f84c66be000)\n\tlibnettle.so.8 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libnettle.so.8 (0x00007f84c6666000)\n\tlibacl.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libacl.so.1 (0x00007f84c665b000)\n\tliblzma.so.5 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/liblzma.so.5 (0x00007f84c662a000)\n\tliblz4.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/liblz4.so.1 (0x00007f84c6603000)\n\tlibXau.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXau.so.6 (0x00007f84c65fe000)\n\tlibXdmcp.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXdmcp.so.6 (0x00007f84c65f4000)\n\tlibblkid.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libblkid.so.1 (0x00007f84c6593000)\n\tlibINIReader.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libINIReader.so.0 (0x00007f84c658a000)\n\tlibdatrie.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libdatrie.so.1 (0x00007f84c6580000)\n\tlibbrotlicommon.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libbrotlicommon.so.1 (0x00007f84c655b000)\n\tlibatspi.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libatspi.so.0 (0x00007f84c651d000)\n\tlibdbus-1.so.3 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libdbus-1.so.3 (0x00007f84c64c6000)\n\tlibnghttp3.so.9 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libnghttp3.so.9 (0x00007f84c649c000)\n\tlibngtcp2_crypto_gnutls.so.8 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libngtcp2_crypto_gnutls.so.8 (0x00007f84c6490000)\n\tlibngtcp2.so.16 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libngtcp2.so.16 (0x00007f84c6443000)\n\tlibnghttp2.so.14 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libnghttp2.so.14 (0x00007f84c6411000)\n\tlibidn2.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libidn2.so.0 (0x00007f84c63de000)\n\tlibrtmp.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/librtmp.so.1 (0x00007f84c63c0000)\n\tlibssh2.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libssh2.so.1 (0x00007f84c6377000)\n\tlibpsl.so.5 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libpsl.so.5 (0x00007f84c6361000)\n\tlibgnutls.so.30 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgnutls.so.30 (0x00007f84c6138000)\n\tlibgssapi_krb5.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgssapi_krb5.so.2 (0x00007f84c60e2000)\n\tlibldap.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libldap.so.2 (0x00007f84c607e000)\n\tliblber.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/liblber.so.2 (0x00007f84c606d000)\n\tlibcap.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libcap.so.2 (0x00007f84c605f000)\n\tlibxxhash.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libxxhash.so.0 (0x00007f84c604c000)\n\tlibinih.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libinih.so.1 (0x00007f84c6047000)\n\tlibunistring.so.5 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libunistring.so.5 (0x00007f84c5e5f000)\n\tlibhogweed.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libhogweed.so.6 (0x00007f84c5e12000)\n\tlibgmp.so.10 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgmp.so.10 (0x00007f84c5d88000)\n\tlibcrypto.so.3 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libcrypto.so.3 (0x00007f84c574e000)\n\tlibp11-kit.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libp11-kit.so.0 (0x00007f84c55ad000)\n\tlibtasn1.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libtasn1.so.6 (0x00007f84c5597000)\n\tlibkrb5.so.3 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libkrb5.so.3 (0x00007f84c54bd000)\n\tlibk5crypto.so.3 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libk5crypto.so.3 (0x00007f84c548f000)\n\tlibcom_err.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libcom_err.so.2 (0x00007f84c5489000)\n\tlibkrb5support.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libkrb5support.so.0 (0x00007f84c547b000)\n\tlibsasl2.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libsasl2.so.2 (0x00007f84c545f000)\n\tlibssl.so.3 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libssl.so.3 (0x00007f84c534f000)\n\tlibkeyutils.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libkeyutils.so.1 (0x00007f84c5348000)\n\tlibresolv.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libresolv.so.2 (0x00007f84c5336000)\n",
+          "stderr": "",
+          "exit_code": 0
+        },
+        "/workspace/shared/gimp-value-invert-owner-build/app/tests/painter-xcf-open": {
+          "sha256": "5f362d94305792a57398dcf642e10e672d0a761632d47d54be25b2b6eb420b0c",
+          "resolved_libraries": "\tlinux-vdso.so.1 (0x00007fb9d4542000)\n\tlibgimpmath-3.0.so.0 => /workspace/shared/gimp-value-invert-owner-build/libgimpmath/libgimpmath-3.0.so.0 (0x00007fb9d3ba4000)\n\tlibgimpbase-3.0.so.0 => /workspace/shared/gimp-value-invert-owner-build/libgimpbase/libgimpbase-3.0.so.0 (0x00007fb9d3b6b000)\n\tlibgimpcolor-3.0.so.0 => /workspace/shared/gimp-value-invert-owner-build/libgimpcolor/libgimpcolor-3.0.so.0 (0x00007fb9d3b54000)\n\tlibgimpconfig-3.0.so.0 => /workspace/shared/gimp-value-invert-owner-build/libgimpconfig/libgimpconfig-3.0.so.0 (0x00007fb9d3b36000)\n\tlibgimpmodule-3.0.so.0 => /workspace/shared/gimp-value-invert-owner-build/libgimpmodule/libgimpmodule-3.0.so.0 (0x00007fb9d3b2f000)\n\tlibgimpthumb-3.0.so.0 => /workspace/shared/gimp-value-invert-owner-build/libgimpthumb/libgimpthumb-3.0.so.0 (0x00007fb9d3b24000)\n\tlibgimpwidgets-3.0.so.0 => /workspace/shared/gimp-value-invert-owner-build/libgimpwidgets/libgimpwidgets-3.0.so.0 (0x00007fb9d3898000)\n\tlibcairo.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libcairo.so.2 (0x00007fb9d374a000)\n\tlibgdk_pixbuf-2.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgdk_pixbuf-2.0.so.0 (0x00007fb9d371c000)\n\tlibgobject-2.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0 (0x00007fb9d36b9000)\n\tlibglib-2.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libglib-2.0.so.0 (0x00007fb9d3560000)\n\tlibgegl-0.4.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgegl-0.4.so.0 (0x00007fb9d3479000)\n\tlibgegl-npd-0.4.so => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgegl-npd-0.4.so (0x00007fb9d3470000)\n\tlibjson-glib-1.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libjson-glib-1.0.so.0 (0x00007fb9d3445000)\n\tlibgio-2.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgio-2.0.so.0 (0x00007fb9d324d000)\n\tlibbabl-0.1.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libbabl-0.1.so.0 (0x00007fb9d3103000)\n\tlibgexiv2.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgexiv2.so.2 (0x00007fb9d30c4000)\n\tlibpangocairo-1.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libpangocairo-1.0.so.0 (0x00007fb9d30b3000)\n\tlibpango-1.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libpango-1.0.so.0 (0x00007fb9d3042000)\n\tlibharfbuzz.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libharfbuzz.so.0 (0x00007fb9d2f01000)\n\tlibpangoft2-1.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libpangoft2-1.0.so.0 (0x00007fb9d2ee4000)\n\tlibfontconfig.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libfontconfig.so.1 (0x00007fb9d2e94000)\n\tlibfreetype.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libfreetype.so.6 (0x00007fb9d2dc4000)\n\tlibgtk-3.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0 (0x00007fb9d25c6000)\n\tlibgdk-3.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgdk-3.so.0 (0x00007fb9d24b6000)\n\tlibz.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libz.so.1 (0x00007fb9d2496000)\n\tlibatk-1.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libatk-1.0.so.0 (0x00007fb9d246a000)\n\tlibappstream.so.5 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libappstream.so.5 (0x00007fb9d23b3000)\n\tlibmypaint-1.5.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libmypaint-1.5.so.1 (0x00007fb9d2392000)\n\tlibarchive.so.13 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libarchive.so.13 (0x00007fb9d22c6000)\n\tlibstdc++.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libstdc++.so.6 (0x00007fb9d2060000)\n\tlibm.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libm.so.6 (0x00007fb9d1f6e000)\n\tlibgcc_s.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgcc_s.so.1 (0x00007fb9d1f41000)\n\tlibc.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libc.so.6 (0x00007fb9d1d4d000)\n\tliblcms2.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/liblcms2.so.2 (0x00007fb9d1ce5000)\n\tlibgmodule-2.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgmodule-2.0.so.0 (0x00007fb9d1cde000)\n\tlibpng16.so.16 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libpng16.so.16 (0x00007fb9d1ca3000)\n\tlibX11.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libX11.so.6 (0x00007fb9d1b5b000)\n\tlibXext.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXext.so.6 (0x00007fb9d1b46000)\n\tlibXrender.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXrender.so.1 (0x00007fb9d1b39000)\n\tlibxcb.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libxcb.so.1 (0x00007fb9d1b0e000)\n\tlibxcb-render.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libxcb-render.so.0 (0x00007fb9d1afd000)\n\tlibxcb-shm.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libxcb-shm.so.0 (0x00007fb9d1af8000)\n\tlibpixman-1.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libpixman-1.so.0 (0x00007fb9d1a4b000)\n\tlibjpeg.so.62 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libjpeg.so.62 (0x00007fb9d19b4000)\n\tlibffi.so.8 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libffi.so.8 (0x00007fb9d19a7000)\n\tlibatomic.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libatomic.so.1 (0x00007fb9d199b000)\n\tlibpcre2-8.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libpcre2-8.so.0 (0x00007fb9d18ec000)\n\tlibmount.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libmount.so.1 (0x00007fb9d1870000)\n\tlibselinux.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libselinux.so.1 (0x00007fb9d183c000)\n\t/lib64/ld-linux-x86-64.so.2 (0x00007fb9d4544000)\n\tlibexiv2.so.28 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libexiv2.so.28 (0x00007fb9d14c1000)\n\tlibfribidi.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libfribidi.so.0 (0x00007fb9d14a0000)\n\tlibthai.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libthai.so.0 (0x00007fb9d1495000)\n\tlibgraphite2.so.3 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgraphite2.so.3 (0x00007fb9d146b000)\n\tlibexpat.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libexpat.so.1 (0x00007fb9d143d000)\n\tlibbz2.so.1.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libbz2.so.1.0 (0x00007fb9d142a000)\n\tlibbrotlidec.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libbrotlidec.so.1 (0x00007fb9d141a000)\n\tlibcairo-gobject.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libcairo-gobject.so.2 (0x00007fb9d140f000)\n\tlibepoxy.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libepoxy.so.0 (0x00007fb9d12df000)\n\tlibXi.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXi.so.6 (0x00007fb9d12cb000)\n\tlibatk-bridge-2.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libatk-bridge-2.0.so.0 (0x00007fb9d128d000)\n\tlibcloudproviders.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libcloudproviders.so.0 (0x00007fb9d1273000)\n\tlibXfixes.so.3 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXfixes.so.3 (0x00007fb9d126b000)\n\tlibxkbcommon.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libxkbcommon.so.0 (0x00007fb9d1220000)\n\tlibwayland-client.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libwayland-client.so.0 (0x00007fb9d120d000)\n\tlibwayland-cursor.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libwayland-cursor.so.0 (0x00007fb9d1203000)\n\tlibwayland-egl.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libwayland-egl.so.1 (0x00007fb9d11fc000)\n\tlibXcursor.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXcursor.so.1 (0x00007fb9d11ef000)\n\tlibXdamage.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXdamage.so.1 (0x00007fb9d11ea000)\n\tlibXcomposite.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXcomposite.so.1 (0x00007fb9d11e5000)\n\tlibXrandr.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXrandr.so.2 (0x00007fb9d11d8000)\n\tlibXinerama.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXinerama.so.1 (0x00007fb9d11d1000)\n\tlibcurl-gnutls.so.4 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libcurl-gnutls.so.4 (0x00007fb9d10e5000)\n\tlibxmlb.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libxmlb.so.2 (0x00007fb9d10bb000)\n\tlibxml2.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libxml2.so.2 (0x00007fb9d0f03000)\n\tlibyaml-0.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libyaml-0.so.2 (0x00007fb9d0ee2000)\n\tlibsystemd.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libsystemd.so.0 (0x00007fb9d0dca000)\n\tlibzstd.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libzstd.so.1 (0x00007fb9d0d00000)\n\tlibstemmer.so.0d => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libstemmer.so.0d (0x00007fb9d0c3a000)\n\tlibjson-c.so.5 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libjson-c.so.5 (0x00007fb9d0c26000)\n\tlibgomp.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgomp.so.1 (0x00007fb9d0bd1000)\n\tlibnettle.so.8 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libnettle.so.8 (0x00007fb9d0b79000)\n\tlibacl.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libacl.so.1 (0x00007fb9d0b6e000)\n\tliblzma.so.5 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/liblzma.so.5 (0x00007fb9d0b3d000)\n\tliblz4.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/liblz4.so.1 (0x00007fb9d0b16000)\n\tlibXau.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXau.so.6 (0x00007fb9d0b11000)\n\tlibXdmcp.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXdmcp.so.6 (0x00007fb9d0b07000)\n\tlibblkid.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libblkid.so.1 (0x00007fb9d0aa6000)\n\tlibINIReader.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libINIReader.so.0 (0x00007fb9d0a9d000)\n\tlibdatrie.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libdatrie.so.1 (0x00007fb9d0a93000)\n\tlibbrotlicommon.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libbrotlicommon.so.1 (0x00007fb9d0a6e000)\n\tlibatspi.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libatspi.so.0 (0x00007fb9d0a30000)\n\tlibdbus-1.so.3 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libdbus-1.so.3 (0x00007fb9d09d9000)\n\tlibnghttp3.so.9 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libnghttp3.so.9 (0x00007fb9d09af000)\n\tlibngtcp2_crypto_gnutls.so.8 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libngtcp2_crypto_gnutls.so.8 (0x00007fb9d09a3000)\n\tlibngtcp2.so.16 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libngtcp2.so.16 (0x00007fb9d0956000)\n\tlibnghttp2.so.14 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libnghttp2.so.14 (0x00007fb9d0924000)\n\tlibidn2.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libidn2.so.0 (0x00007fb9d08f1000)\n\tlibrtmp.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/librtmp.so.1 (0x00007fb9d08d3000)\n\tlibssh2.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libssh2.so.1 (0x00007fb9d088a000)\n\tlibpsl.so.5 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libpsl.so.5 (0x00007fb9d0874000)\n\tlibgnutls.so.30 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgnutls.so.30 (0x00007fb9d064b000)\n\tlibgssapi_krb5.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgssapi_krb5.so.2 (0x00007fb9d05f5000)\n\tlibldap.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libldap.so.2 (0x00007fb9d0591000)\n\tliblber.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/liblber.so.2 (0x00007fb9d0580000)\n\tlibcap.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libcap.so.2 (0x00007fb9d0572000)\n\tlibxxhash.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libxxhash.so.0 (0x00007fb9d055f000)\n\tlibinih.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libinih.so.1 (0x00007fb9d055a000)\n\tlibunistring.so.5 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libunistring.so.5 (0x00007fb9d0372000)\n\tlibhogweed.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libhogweed.so.6 (0x00007fb9d0325000)\n\tlibgmp.so.10 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgmp.so.10 (0x00007fb9d029b000)\n\tlibcrypto.so.3 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libcrypto.so.3 (0x00007fb9cfc61000)\n\tlibp11-kit.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libp11-kit.so.0 (0x00007fb9cfac0000)\n\tlibtasn1.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libtasn1.so.6 (0x00007fb9cfaaa000)\n\tlibkrb5.so.3 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libkrb5.so.3 (0x00007fb9cf9d0000)\n\tlibk5crypto.so.3 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libk5crypto.so.3 (0x00007fb9cf9a2000)\n\tlibcom_err.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libcom_err.so.2 (0x00007fb9cf99c000)\n\tlibkrb5support.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libkrb5support.so.0 (0x00007fb9cf98e000)\n\tlibsasl2.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libsasl2.so.2 (0x00007fb9cf972000)\n\tlibssl.so.3 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libssl.so.3 (0x00007fb9cf862000)\n\tlibkeyutils.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libkeyutils.so.1 (0x00007fb9cf85b000)\n\tlibresolv.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libresolv.so.2 (0x00007fb9cf849000)\n",
+          "stderr": "",
+          "exit_code": 0
+        },
+        "/workspace/shared/gimp-value-invert-owner-build/app/tests/painter-xcf-roundtrip": {
+          "sha256": "113f53984b039e6736b50946b3a332cf74fd1eccb98424296bfe9084ced6323b",
+          "resolved_libraries": "\tlinux-vdso.so.1 (0x00007fe37f52a000)\n\tlibgimpmath-3.0.so.0 => /workspace/shared/gimp-value-invert-owner-build/libgimpmath/libgimpmath-3.0.so.0 (0x00007fe37eb79000)\n\tlibgimpbase-3.0.so.0 => /workspace/shared/gimp-value-invert-owner-build/libgimpbase/libgimpbase-3.0.so.0 (0x00007fe37eb40000)\n\tlibgimpcolor-3.0.so.0 => /workspace/shared/gimp-value-invert-owner-build/libgimpcolor/libgimpcolor-3.0.so.0 (0x00007fe37eb29000)\n\tlibgimpconfig-3.0.so.0 => /workspace/shared/gimp-value-invert-owner-build/libgimpconfig/libgimpconfig-3.0.so.0 (0x00007fe37eb0b000)\n\tlibgimpmodule-3.0.so.0 => /workspace/shared/gimp-value-invert-owner-build/libgimpmodule/libgimpmodule-3.0.so.0 (0x00007fe37eb04000)\n\tlibgimpthumb-3.0.so.0 => /workspace/shared/gimp-value-invert-owner-build/libgimpthumb/libgimpthumb-3.0.so.0 (0x00007fe37eaf9000)\n\tlibgimpwidgets-3.0.so.0 => /workspace/shared/gimp-value-invert-owner-build/libgimpwidgets/libgimpwidgets-3.0.so.0 (0x00007fe37e86d000)\n\tlibcairo.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libcairo.so.2 (0x00007fe37e71f000)\n\tlibgdk_pixbuf-2.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgdk_pixbuf-2.0.so.0 (0x00007fe37e6f1000)\n\tlibgobject-2.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0 (0x00007fe37e68e000)\n\tlibglib-2.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libglib-2.0.so.0 (0x00007fe37e535000)\n\tlibgegl-0.4.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgegl-0.4.so.0 (0x00007fe37e44e000)\n\tlibgegl-npd-0.4.so => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgegl-npd-0.4.so (0x00007fe37e445000)\n\tlibjson-glib-1.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libjson-glib-1.0.so.0 (0x00007fe37e41a000)\n\tlibgio-2.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgio-2.0.so.0 (0x00007fe37e222000)\n\tlibbabl-0.1.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libbabl-0.1.so.0 (0x00007fe37e0d8000)\n\tlibgexiv2.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgexiv2.so.2 (0x00007fe37e099000)\n\tlibpangocairo-1.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libpangocairo-1.0.so.0 (0x00007fe37e088000)\n\tlibpango-1.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libpango-1.0.so.0 (0x00007fe37e017000)\n\tlibharfbuzz.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libharfbuzz.so.0 (0x00007fe37ded6000)\n\tlibpangoft2-1.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libpangoft2-1.0.so.0 (0x00007fe37deb9000)\n\tlibfontconfig.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libfontconfig.so.1 (0x00007fe37de69000)\n\tlibfreetype.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libfreetype.so.6 (0x00007fe37dd99000)\n\tlibgtk-3.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0 (0x00007fe37d59b000)\n\tlibgdk-3.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgdk-3.so.0 (0x00007fe37d48b000)\n\tlibz.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libz.so.1 (0x00007fe37d46b000)\n\tlibatk-1.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libatk-1.0.so.0 (0x00007fe37d43f000)\n\tlibappstream.so.5 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libappstream.so.5 (0x00007fe37d388000)\n\tlibmypaint-1.5.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libmypaint-1.5.so.1 (0x00007fe37d367000)\n\tlibarchive.so.13 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libarchive.so.13 (0x00007fe37d29b000)\n\tlibstdc++.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libstdc++.so.6 (0x00007fe37d035000)\n\tlibm.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libm.so.6 (0x00007fe37cf43000)\n\tlibgcc_s.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgcc_s.so.1 (0x00007fe37cf16000)\n\tlibc.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libc.so.6 (0x00007fe37cd22000)\n\tliblcms2.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/liblcms2.so.2 (0x00007fe37ccba000)\n\tlibgmodule-2.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgmodule-2.0.so.0 (0x00007fe37ccb3000)\n\tlibpng16.so.16 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libpng16.so.16 (0x00007fe37cc78000)\n\tlibX11.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libX11.so.6 (0x00007fe37cb30000)\n\tlibXext.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXext.so.6 (0x00007fe37cb1b000)\n\tlibXrender.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXrender.so.1 (0x00007fe37cb0e000)\n\tlibxcb.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libxcb.so.1 (0x00007fe37cae3000)\n\tlibxcb-render.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libxcb-render.so.0 (0x00007fe37cad2000)\n\tlibxcb-shm.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libxcb-shm.so.0 (0x00007fe37cacd000)\n\tlibpixman-1.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libpixman-1.so.0 (0x00007fe37ca20000)\n\tlibjpeg.so.62 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libjpeg.so.62 (0x00007fe37c989000)\n\tlibffi.so.8 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libffi.so.8 (0x00007fe37c97c000)\n\tlibatomic.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libatomic.so.1 (0x00007fe37c970000)\n\tlibpcre2-8.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libpcre2-8.so.0 (0x00007fe37c8c1000)\n\tlibmount.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libmount.so.1 (0x00007fe37c845000)\n\tlibselinux.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libselinux.so.1 (0x00007fe37c811000)\n\t/lib64/ld-linux-x86-64.so.2 (0x00007fe37f52c000)\n\tlibexiv2.so.28 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libexiv2.so.28 (0x00007fe37c496000)\n\tlibfribidi.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libfribidi.so.0 (0x00007fe37c475000)\n\tlibthai.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libthai.so.0 (0x00007fe37c46a000)\n\tlibgraphite2.so.3 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgraphite2.so.3 (0x00007fe37c440000)\n\tlibexpat.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libexpat.so.1 (0x00007fe37c412000)\n\tlibbz2.so.1.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libbz2.so.1.0 (0x00007fe37c3ff000)\n\tlibbrotlidec.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libbrotlidec.so.1 (0x00007fe37c3ef000)\n\tlibcairo-gobject.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libcairo-gobject.so.2 (0x00007fe37c3e4000)\n\tlibepoxy.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libepoxy.so.0 (0x00007fe37c2b4000)\n\tlibXi.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXi.so.6 (0x00007fe37c2a0000)\n\tlibatk-bridge-2.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libatk-bridge-2.0.so.0 (0x00007fe37c262000)\n\tlibcloudproviders.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libcloudproviders.so.0 (0x00007fe37c248000)\n\tlibXfixes.so.3 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXfixes.so.3 (0x00007fe37c240000)\n\tlibxkbcommon.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libxkbcommon.so.0 (0x00007fe37c1f5000)\n\tlibwayland-client.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libwayland-client.so.0 (0x00007fe37c1e2000)\n\tlibwayland-cursor.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libwayland-cursor.so.0 (0x00007fe37c1d8000)\n\tlibwayland-egl.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libwayland-egl.so.1 (0x00007fe37c1d1000)\n\tlibXcursor.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXcursor.so.1 (0x00007fe37c1c4000)\n\tlibXdamage.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXdamage.so.1 (0x00007fe37c1bf000)\n\tlibXcomposite.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXcomposite.so.1 (0x00007fe37c1ba000)\n\tlibXrandr.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXrandr.so.2 (0x00007fe37c1ad000)\n\tlibXinerama.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXinerama.so.1 (0x00007fe37c1a6000)\n\tlibcurl-gnutls.so.4 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libcurl-gnutls.so.4 (0x00007fe37c0ba000)\n\tlibxmlb.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libxmlb.so.2 (0x00007fe37c090000)\n\tlibxml2.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libxml2.so.2 (0x00007fe37bed8000)\n\tlibyaml-0.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libyaml-0.so.2 (0x00007fe37beb7000)\n\tlibsystemd.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libsystemd.so.0 (0x00007fe37bd9f000)\n\tlibzstd.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libzstd.so.1 (0x00007fe37bcd5000)\n\tlibstemmer.so.0d => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libstemmer.so.0d (0x00007fe37bc0f000)\n\tlibjson-c.so.5 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libjson-c.so.5 (0x00007fe37bbfb000)\n\tlibgomp.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgomp.so.1 (0x00007fe37bba6000)\n\tlibnettle.so.8 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libnettle.so.8 (0x00007fe37bb4e000)\n\tlibacl.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libacl.so.1 (0x00007fe37bb43000)\n\tliblzma.so.5 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/liblzma.so.5 (0x00007fe37bb12000)\n\tliblz4.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/liblz4.so.1 (0x00007fe37baeb000)\n\tlibXau.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXau.so.6 (0x00007fe37bae6000)\n\tlibXdmcp.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXdmcp.so.6 (0x00007fe37badc000)\n\tlibblkid.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libblkid.so.1 (0x00007fe37ba7b000)\n\tlibINIReader.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libINIReader.so.0 (0x00007fe37ba72000)\n\tlibdatrie.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libdatrie.so.1 (0x00007fe37ba68000)\n\tlibbrotlicommon.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libbrotlicommon.so.1 (0x00007fe37ba43000)\n\tlibatspi.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libatspi.so.0 (0x00007fe37ba05000)\n\tlibdbus-1.so.3 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libdbus-1.so.3 (0x00007fe37b9ae000)\n\tlibnghttp3.so.9 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libnghttp3.so.9 (0x00007fe37b984000)\n\tlibngtcp2_crypto_gnutls.so.8 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libngtcp2_crypto_gnutls.so.8 (0x00007fe37b978000)\n\tlibngtcp2.so.16 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libngtcp2.so.16 (0x00007fe37b92b000)\n\tlibnghttp2.so.14 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libnghttp2.so.14 (0x00007fe37b8f9000)\n\tlibidn2.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libidn2.so.0 (0x00007fe37b8c6000)\n\tlibrtmp.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/librtmp.so.1 (0x00007fe37b8a8000)\n\tlibssh2.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libssh2.so.1 (0x00007fe37b85f000)\n\tlibpsl.so.5 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libpsl.so.5 (0x00007fe37b849000)\n\tlibgnutls.so.30 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgnutls.so.30 (0x00007fe37b620000)\n\tlibgssapi_krb5.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgssapi_krb5.so.2 (0x00007fe37b5ca000)\n\tlibldap.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libldap.so.2 (0x00007fe37b566000)\n\tliblber.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/liblber.so.2 (0x00007fe37b555000)\n\tlibcap.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libcap.so.2 (0x00007fe37b547000)\n\tlibxxhash.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libxxhash.so.0 (0x00007fe37b534000)\n\tlibinih.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libinih.so.1 (0x00007fe37b52f000)\n\tlibunistring.so.5 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libunistring.so.5 (0x00007fe37b347000)\n\tlibhogweed.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libhogweed.so.6 (0x00007fe37b2fa000)\n\tlibgmp.so.10 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgmp.so.10 (0x00007fe37b270000)\n\tlibcrypto.so.3 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libcrypto.so.3 (0x00007fe37ac36000)\n\tlibp11-kit.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libp11-kit.so.0 (0x00007fe37aa95000)\n\tlibtasn1.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libtasn1.so.6 (0x00007fe37aa7f000)\n\tlibkrb5.so.3 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libkrb5.so.3 (0x00007fe37a9a5000)\n\tlibk5crypto.so.3 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libk5crypto.so.3 (0x00007fe37a977000)\n\tlibcom_err.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libcom_err.so.2 (0x00007fe37a971000)\n\tlibkrb5support.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libkrb5support.so.0 (0x00007fe37a963000)\n\tlibsasl2.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libsasl2.so.2 (0x00007fe37a947000)\n\tlibssl.so.3 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libssl.so.3 (0x00007fe37a837000)\n\tlibkeyutils.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libkeyutils.so.1 (0x00007fe37a830000)\n\tlibresolv.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libresolv.so.2 (0x00007fe37a81e000)\n",
+          "stderr": "",
+          "exit_code": 0
+        },
+        "/workspace/shared/gimp-value-invert-owner-build/plug-ins/common/blinds": {
+          "sha256": "66c6cbd5ba9f93668e70fdb099e4cde433bb688df136b138a7152e754719e5bf",
+          "resolved_libraries": "\tlinux-vdso.so.1 (0x00007ff6e2d0f000)\n\tlibgimp-3.0.so.0 => /workspace/shared/gimp-value-invert-owner-build/plug-ins/common/../../libgimp/libgimp-3.0.so.0 (0x00007ff6e2c77000)\n\tlibgimpbase-3.0.so.0 => /workspace/shared/gimp-value-invert-owner-build/libgimpbase/libgimpbase-3.0.so.0 (0x00007ff6e2c3e000)\n\tlibgimpcolor-3.0.so.0 => /workspace/shared/gimp-value-invert-owner-build/libgimpcolor/libgimpcolor-3.0.so.0 (0x00007ff6e2c27000)\n\tlibgimpui-3.0.so.0 => /workspace/shared/gimp-value-invert-owner-build/plug-ins/common/../../libgimp/libgimpui-3.0.so.0 (0x00007ff6e2bf8000)\n\tlibgimpwidgets-3.0.so.0 => /workspace/shared/gimp-value-invert-owner-build/libgimpwidgets/libgimpwidgets-3.0.so.0 (0x00007ff6e296e000)\n\tlibm.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libm.so.6 (0x00007ff6e287e000)\n\tlibgobject-2.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0 (0x00007ff6e2819000)\n\tlibglib-2.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libglib-2.0.so.0 (0x00007ff6e26c0000)\n\tlibgegl-0.4.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgegl-0.4.so.0 (0x00007ff6e25db000)\n\tlibbabl-0.1.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libbabl-0.1.so.0 (0x00007ff6e2491000)\n\tlibgtk-3.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0 (0x00007ff6e1c93000)\n\tlibc.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libc.so.6 (0x00007ff6e1a9d000)\n\tlibgimpconfig-3.0.so.0 => /workspace/shared/gimp-value-invert-owner-build/libgimpconfig/libgimpconfig-3.0.so.0 (0x00007ff6e1a7f000)\n\tlibcairo.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libcairo.so.2 (0x00007ff6e1931000)\n\tlibgdk_pixbuf-2.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgdk_pixbuf-2.0.so.0 (0x00007ff6e1903000)\n\tlibgio-2.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgio-2.0.so.0 (0x00007ff6e170b000)\n\tlibgexiv2.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgexiv2.so.2 (0x00007ff6e16cc000)\n\tlibpango-1.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libpango-1.0.so.0 (0x00007ff6e165b000)\n\tlibfontconfig.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libfontconfig.so.1 (0x00007ff6e160d000)\n\tliblcms2.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/liblcms2.so.2 (0x00007ff6e15a5000)\n\tlibgimpmodule-3.0.so.0 => /workspace/shared/gimp-value-invert-owner-build/libgimpmodule/libgimpmodule-3.0.so.0 (0x00007ff6e159e000)\n\tlibgdk-3.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgdk-3.so.0 (0x00007ff6e148c000)\n\tlibpangocairo-1.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libpangocairo-1.0.so.0 (0x00007ff6e147b000)\n\t/lib64/ld-linux-x86-64.so.2 (0x00007ff6e2d11000)\n\tlibffi.so.8 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libffi.so.8 (0x00007ff6e146e000)\n\tlibatomic.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libatomic.so.1 (0x00007ff6e1464000)\n\tlibpcre2-8.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libpcre2-8.so.0 (0x00007ff6e13b5000)\n\tlibgmodule-2.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgmodule-2.0.so.0 (0x00007ff6e13ac000)\n\tlibharfbuzz.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libharfbuzz.so.0 (0x00007ff6e126b000)\n\tlibpangoft2-1.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libpangoft2-1.0.so.0 (0x00007ff6e124e000)\n\tlibfribidi.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libfribidi.so.0 (0x00007ff6e122f000)\n\tlibcairo-gobject.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libcairo-gobject.so.2 (0x00007ff6e1224000)\n\tlibatk-1.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libatk-1.0.so.0 (0x00007ff6e11f8000)\n\tlibepoxy.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libepoxy.so.0 (0x00007ff6e10c8000)\n\tlibXi.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXi.so.6 (0x00007ff6e10b4000)\n\tlibX11.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libX11.so.6 (0x00007ff6e0f6c000)\n\tlibatk-bridge-2.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libatk-bridge-2.0.so.0 (0x00007ff6e0f2e000)\n\tlibcloudproviders.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libcloudproviders.so.0 (0x00007ff6e0f14000)\n\tlibXfixes.so.3 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXfixes.so.3 (0x00007ff6e0f0c000)\n\tlibgimpmath-3.0.so.0 => /workspace/shared/gimp-value-invert-owner-build/libgimpmath/libgimpmath-3.0.so.0 (0x00007ff6e0f04000)\n\tlibz.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libz.so.1 (0x00007ff6e0ee4000)\n\tlibpng16.so.16 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libpng16.so.16 (0x00007ff6e0eab000)\n\tlibfreetype.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libfreetype.so.6 (0x00007ff6e0dd9000)\n\tlibXext.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXext.so.6 (0x00007ff6e0dc4000)\n\tlibXrender.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXrender.so.1 (0x00007ff6e0db7000)\n\tlibxcb.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libxcb.so.1 (0x00007ff6e0d8c000)\n\tlibxcb-render.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libxcb-render.so.0 (0x00007ff6e0d7d000)\n\tlibxcb-shm.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libxcb-shm.so.0 (0x00007ff6e0d76000)\n\tlibpixman-1.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libpixman-1.so.0 (0x00007ff6e0cc9000)\n\tlibjpeg.so.62 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libjpeg.so.62 (0x00007ff6e0c32000)\n\tlibmount.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libmount.so.1 (0x00007ff6e0bb6000)\n\tlibselinux.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libselinux.so.1 (0x00007ff6e0b82000)\n\tlibexiv2.so.28 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libexiv2.so.28 (0x00007ff6e0805000)\n\tlibstdc++.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libstdc++.so.6 (0x00007ff6e059f000)\n\tlibgcc_s.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgcc_s.so.1 (0x00007ff6e0572000)\n\tlibthai.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libthai.so.0 (0x00007ff6e0567000)\n\tlibexpat.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libexpat.so.1 (0x00007ff6e0539000)\n\tlibxkbcommon.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libxkbcommon.so.0 (0x00007ff6e04ec000)\n\tlibwayland-client.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libwayland-client.so.0 (0x00007ff6e04d9000)\n\tlibwayland-cursor.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libwayland-cursor.so.0 (0x00007ff6e04cf000)\n\tlibwayland-egl.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libwayland-egl.so.1 (0x00007ff6e04ca000)\n\tlibXcursor.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXcursor.so.1 (0x00007ff6e04bd000)\n\tlibXdamage.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXdamage.so.1 (0x00007ff6e04b6000)\n\tlibXcomposite.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXcomposite.so.1 (0x00007ff6e04b1000)\n\tlibXrandr.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXrandr.so.2 (0x00007ff6e04a4000)\n\tlibXinerama.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXinerama.so.1 (0x00007ff6e049f000)\n\tlibgraphite2.so.3 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgraphite2.so.3 (0x00007ff6e0475000)\n\tlibatspi.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libatspi.so.0 (0x00007ff6e0435000)\n\tlibdbus-1.so.3 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libdbus-1.so.3 (0x00007ff6e03de000)\n\tlibbz2.so.1.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libbz2.so.1.0 (0x00007ff6e03cb000)\n\tlibbrotlidec.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libbrotlidec.so.1 (0x00007ff6e03bd000)\n\tlibXau.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXau.so.6 (0x00007ff6e03b6000)\n\tlibXdmcp.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXdmcp.so.6 (0x00007ff6e03ae000)\n\tlibblkid.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libblkid.so.1 (0x00007ff6e034d000)\n\tlibINIReader.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libINIReader.so.0 (0x00007ff6e0344000)\n\tlibdatrie.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libdatrie.so.1 (0x00007ff6e033a000)\n\tlibsystemd.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libsystemd.so.0 (0x00007ff6e0222000)\n\tlibbrotlicommon.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libbrotlicommon.so.1 (0x00007ff6e01ff000)\n\tlibinih.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libinih.so.1 (0x00007ff6e01fa000)\n\tlibcap.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libcap.so.2 (0x00007ff6e01ee000)\n",
+          "stderr": "",
+          "exit_code": 0
+        },
+        "/workspace/shared/gimp-value-invert-owner-build/plug-ins/common/contrast-retinex": {
+          "sha256": "d45b702247998f5ca71d80d4be396f158564cd542453e94151f1b1230682cde1",
+          "resolved_libraries": "\tlinux-vdso.so.1 (0x00007fc01ae35000)\n\tlibgimp-3.0.so.0 => /workspace/shared/gimp-value-invert-owner-build/plug-ins/common/../../libgimp/libgimp-3.0.so.0 (0x00007fc01ad9e000)\n\tlibgimpbase-3.0.so.0 => /workspace/shared/gimp-value-invert-owner-build/libgimpbase/libgimpbase-3.0.so.0 (0x00007fc01ad65000)\n\tlibgimpui-3.0.so.0 => /workspace/shared/gimp-value-invert-owner-build/plug-ins/common/../../libgimp/libgimpui-3.0.so.0 (0x00007fc01ad36000)\n\tlibgimpwidgets-3.0.so.0 => /workspace/shared/gimp-value-invert-owner-build/libgimpwidgets/libgimpwidgets-3.0.so.0 (0x00007fc01aaac000)\n\tlibm.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libm.so.6 (0x00007fc01a9bc000)\n\tlibgobject-2.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0 (0x00007fc01a959000)\n\tlibglib-2.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libglib-2.0.so.0 (0x00007fc01a7fe000)\n\tlibgegl-0.4.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgegl-0.4.so.0 (0x00007fc01a719000)\n\tlibbabl-0.1.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libbabl-0.1.so.0 (0x00007fc01a5cf000)\n\tlibgtk-3.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0 (0x00007fc019dd1000)\n\tlibc.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libc.so.6 (0x00007fc019bdd000)\n\tlibgimpcolor-3.0.so.0 => /workspace/shared/gimp-value-invert-owner-build/libgimpcolor/libgimpcolor-3.0.so.0 (0x00007fc019bc4000)\n\tlibgimpconfig-3.0.so.0 => /workspace/shared/gimp-value-invert-owner-build/libgimpconfig/libgimpconfig-3.0.so.0 (0x00007fc019ba6000)\n\tlibcairo.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libcairo.so.2 (0x00007fc019a58000)\n\tlibgdk_pixbuf-2.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgdk_pixbuf-2.0.so.0 (0x00007fc019a2a000)\n\tlibgio-2.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgio-2.0.so.0 (0x00007fc019832000)\n\tlibgexiv2.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgexiv2.so.2 (0x00007fc0197f3000)\n\tlibpango-1.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libpango-1.0.so.0 (0x00007fc019782000)\n\tlibfontconfig.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libfontconfig.so.1 (0x00007fc019734000)\n\tlibgimpmodule-3.0.so.0 => /workspace/shared/gimp-value-invert-owner-build/libgimpmodule/libgimpmodule-3.0.so.0 (0x00007fc01972d000)\n\tlibgdk-3.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgdk-3.so.0 (0x00007fc01961d000)\n\tlibpangocairo-1.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libpangocairo-1.0.so.0 (0x00007fc01960a000)\n\tliblcms2.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/liblcms2.so.2 (0x00007fc0195a2000)\n\t/lib64/ld-linux-x86-64.so.2 (0x00007fc01ae37000)\n\tlibffi.so.8 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libffi.so.8 (0x00007fc019595000)\n\tlibatomic.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libatomic.so.1 (0x00007fc01958b000)\n\tlibpcre2-8.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libpcre2-8.so.0 (0x00007fc0194dc000)\n\tlibgmodule-2.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgmodule-2.0.so.0 (0x00007fc0194d3000)\n\tlibharfbuzz.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libharfbuzz.so.0 (0x00007fc019392000)\n\tlibpangoft2-1.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libpangoft2-1.0.so.0 (0x00007fc019375000)\n\tlibfribidi.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libfribidi.so.0 (0x00007fc019356000)\n\tlibcairo-gobject.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libcairo-gobject.so.2 (0x00007fc01934b000)\n\tlibatk-1.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libatk-1.0.so.0 (0x00007fc01931f000)\n\tlibepoxy.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libepoxy.so.0 (0x00007fc0191ef000)\n\tlibXi.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXi.so.6 (0x00007fc0191db000)\n\tlibX11.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libX11.so.6 (0x00007fc019093000)\n\tlibatk-bridge-2.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libatk-bridge-2.0.so.0 (0x00007fc019055000)\n\tlibcloudproviders.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libcloudproviders.so.0 (0x00007fc01903b000)\n\tlibXfixes.so.3 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXfixes.so.3 (0x00007fc019033000)\n\tlibgimpmath-3.0.so.0 => /workspace/shared/gimp-value-invert-owner-build/libgimpmath/libgimpmath-3.0.so.0 (0x00007fc01902b000)\n\tlibz.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libz.so.1 (0x00007fc01900b000)\n\tlibpng16.so.16 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libpng16.so.16 (0x00007fc018fd2000)\n\tlibfreetype.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libfreetype.so.6 (0x00007fc018f00000)\n\tlibXext.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXext.so.6 (0x00007fc018eeb000)\n\tlibXrender.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXrender.so.1 (0x00007fc018ede000)\n\tlibxcb.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libxcb.so.1 (0x00007fc018eb3000)\n\tlibxcb-render.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libxcb-render.so.0 (0x00007fc018ea4000)\n\tlibxcb-shm.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libxcb-shm.so.0 (0x00007fc018e9d000)\n\tlibpixman-1.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libpixman-1.so.0 (0x00007fc018df0000)\n\tlibjpeg.so.62 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libjpeg.so.62 (0x00007fc018d59000)\n\tlibmount.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libmount.so.1 (0x00007fc018cdd000)\n\tlibselinux.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libselinux.so.1 (0x00007fc018ca9000)\n\tlibexiv2.so.28 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libexiv2.so.28 (0x00007fc01892c000)\n\tlibstdc++.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libstdc++.so.6 (0x00007fc0186c6000)\n\tlibgcc_s.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgcc_s.so.1 (0x00007fc018699000)\n\tlibthai.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libthai.so.0 (0x00007fc01868e000)\n\tlibexpat.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libexpat.so.1 (0x00007fc018660000)\n\tlibxkbcommon.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libxkbcommon.so.0 (0x00007fc018613000)\n\tlibwayland-client.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libwayland-client.so.0 (0x00007fc018600000)\n\tlibwayland-cursor.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libwayland-cursor.so.0 (0x00007fc0185f6000)\n\tlibwayland-egl.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libwayland-egl.so.1 (0x00007fc0185f1000)\n\tlibXcursor.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXcursor.so.1 (0x00007fc0185e4000)\n\tlibXdamage.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXdamage.so.1 (0x00007fc0185dd000)\n\tlibXcomposite.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXcomposite.so.1 (0x00007fc0185d8000)\n\tlibXrandr.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXrandr.so.2 (0x00007fc0185cb000)\n\tlibXinerama.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXinerama.so.1 (0x00007fc0185c6000)\n\tlibgraphite2.so.3 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgraphite2.so.3 (0x00007fc01859c000)\n\tlibatspi.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libatspi.so.0 (0x00007fc01855c000)\n\tlibdbus-1.so.3 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libdbus-1.so.3 (0x00007fc018505000)\n\tlibbz2.so.1.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libbz2.so.1.0 (0x00007fc0184f2000)\n\tlibbrotlidec.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libbrotlidec.so.1 (0x00007fc0184e4000)\n\tlibXau.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXau.so.6 (0x00007fc0184dd000)\n\tlibXdmcp.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXdmcp.so.6 (0x00007fc0184d5000)\n\tlibblkid.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libblkid.so.1 (0x00007fc018474000)\n\tlibINIReader.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libINIReader.so.0 (0x00007fc01846b000)\n\tlibdatrie.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libdatrie.so.1 (0x00007fc018461000)\n\tlibsystemd.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libsystemd.so.0 (0x00007fc018349000)\n\tlibbrotlicommon.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libbrotlicommon.so.1 (0x00007fc018326000)\n\tlibinih.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libinih.so.1 (0x00007fc018321000)\n\tlibcap.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libcap.so.2 (0x00007fc018315000)\n",
+          "stderr": "",
+          "exit_code": 0
+        },
+        "/workspace/shared/gimp-value-invert-owner-build/plug-ins/common/convolution-matrix": {
+          "sha256": "5bfee36a9e60ee607515fac847d9daf2721fef37914a36b73f8ec16727bd041f",
+          "resolved_libraries": "\tlinux-vdso.so.1 (0x00007f87dfe7b000)\n\tlibgimp-3.0.so.0 => /workspace/shared/gimp-value-invert-owner-build/plug-ins/common/../../libgimp/libgimp-3.0.so.0 (0x00007f87dfde5000)\n\tlibgimpbase-3.0.so.0 => /workspace/shared/gimp-value-invert-owner-build/libgimpbase/libgimpbase-3.0.so.0 (0x00007f87dfdac000)\n\tlibgobject-2.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0 (0x00007f87dfd49000)\n\tlibglib-2.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libglib-2.0.so.0 (0x00007f87dfbf0000)\n\tlibgegl-0.4.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgegl-0.4.so.0 (0x00007f87dfb0b000)\n\tlibbabl-0.1.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libbabl-0.1.so.0 (0x00007f87df9c1000)\n\tlibc.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libc.so.6 (0x00007f87df7cb000)\n\tlibgimpcolor-3.0.so.0 => /workspace/shared/gimp-value-invert-owner-build/libgimpcolor/libgimpcolor-3.0.so.0 (0x00007f87df7b4000)\n\tlibgimpconfig-3.0.so.0 => /workspace/shared/gimp-value-invert-owner-build/libgimpconfig/libgimpconfig-3.0.so.0 (0x00007f87df796000)\n\tlibcairo.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libcairo.so.2 (0x00007f87df648000)\n\tlibgdk_pixbuf-2.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgdk_pixbuf-2.0.so.0 (0x00007f87df61a000)\n\tlibgio-2.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgio-2.0.so.0 (0x00007f87df420000)\n\tlibgexiv2.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgexiv2.so.2 (0x00007f87df3e3000)\n\tlibpango-1.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libpango-1.0.so.0 (0x00007f87df372000)\n\tlibfontconfig.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libfontconfig.so.1 (0x00007f87df324000)\n\tlibm.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libm.so.6 (0x00007f87df234000)\n\tlibffi.so.8 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libffi.so.8 (0x00007f87df225000)\n\tlibatomic.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libatomic.so.1 (0x00007f87df21b000)\n\tlibpcre2-8.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libpcre2-8.so.0 (0x00007f87df16c000)\n\tlibgmodule-2.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgmodule-2.0.so.0 (0x00007f87df165000)\n\tliblcms2.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/liblcms2.so.2 (0x00007f87df0fd000)\n\t/lib64/ld-linux-x86-64.so.2 (0x00007f87dfe7d000)\n\tlibgimpmath-3.0.so.0 => /workspace/shared/gimp-value-invert-owner-build/libgimpmath/libgimpmath-3.0.so.0 (0x00007f87df0f3000)\n\tlibz.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libz.so.1 (0x00007f87df0d3000)\n\tlibpng16.so.16 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libpng16.so.16 (0x00007f87df09a000)\n\tlibfreetype.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libfreetype.so.6 (0x00007f87defca000)\n\tlibX11.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libX11.so.6 (0x00007f87dee82000)\n\tlibXext.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXext.so.6 (0x00007f87dee6b000)\n\tlibXrender.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXrender.so.1 (0x00007f87dee5e000)\n\tlibxcb.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libxcb.so.1 (0x00007f87dee33000)\n\tlibxcb-render.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libxcb-render.so.0 (0x00007f87dee24000)\n\tlibxcb-shm.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libxcb-shm.so.0 (0x00007f87dee1f000)\n\tlibpixman-1.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libpixman-1.so.0 (0x00007f87ded70000)\n\tlibjpeg.so.62 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libjpeg.so.62 (0x00007f87decd9000)\n\tlibmount.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libmount.so.1 (0x00007f87dec5d000)\n\tlibselinux.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libselinux.so.1 (0x00007f87dec29000)\n\tlibexiv2.so.28 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libexiv2.so.28 (0x00007f87de8ae000)\n\tlibstdc++.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libstdc++.so.6 (0x00007f87de646000)\n\tlibgcc_s.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgcc_s.so.1 (0x00007f87de619000)\n\tlibfribidi.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libfribidi.so.0 (0x00007f87de5fa000)\n\tlibthai.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libthai.so.0 (0x00007f87de5ef000)\n\tlibharfbuzz.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libharfbuzz.so.0 (0x00007f87de4ae000)\n\tlibexpat.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libexpat.so.1 (0x00007f87de47e000)\n\tlibbz2.so.1.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libbz2.so.1.0 (0x00007f87de46b000)\n\tlibbrotlidec.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libbrotlidec.so.1 (0x00007f87de45d000)\n\tlibXau.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXau.so.6 (0x00007f87de458000)\n\tlibXdmcp.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXdmcp.so.6 (0x00007f87de450000)\n\tlibblkid.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libblkid.so.1 (0x00007f87de3ed000)\n\tlibINIReader.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libINIReader.so.0 (0x00007f87de3e4000)\n\tlibdatrie.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libdatrie.so.1 (0x00007f87de3da000)\n\tlibgraphite2.so.3 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgraphite2.so.3 (0x00007f87de3b0000)\n\tlibbrotlicommon.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libbrotlicommon.so.1 (0x00007f87de38b000)\n\tlibinih.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libinih.so.1 (0x00007f87de386000)\n",
+          "stderr": "",
+          "exit_code": 0
+        },
+        "/workspace/shared/gimp-value-invert-owner-build/plug-ins/common/tile-small": {
+          "sha256": "07fb0fb50e4baa7a47b1778c5c17e229c5599d27d690e5dfc31a90e6985e75fa",
+          "resolved_libraries": "\tlinux-vdso.so.1 (0x00007fce46370000)\n\tlibgimp-3.0.so.0 => /workspace/shared/gimp-value-invert-owner-build/plug-ins/common/../../libgimp/libgimp-3.0.so.0 (0x00007fce462d8000)\n\tlibgimpbase-3.0.so.0 => /workspace/shared/gimp-value-invert-owner-build/libgimpbase/libgimpbase-3.0.so.0 (0x00007fce4629f000)\n\tlibgimpui-3.0.so.0 => /workspace/shared/gimp-value-invert-owner-build/plug-ins/common/../../libgimp/libgimpui-3.0.so.0 (0x00007fce46270000)\n\tlibgimpwidgets-3.0.so.0 => /workspace/shared/gimp-value-invert-owner-build/libgimpwidgets/libgimpwidgets-3.0.so.0 (0x00007fce45fe6000)\n\tlibcairo.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libcairo.so.2 (0x00007fce45e98000)\n\tlibgobject-2.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0 (0x00007fce45e35000)\n\tlibglib-2.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libglib-2.0.so.0 (0x00007fce45cda000)\n\tlibgegl-0.4.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgegl-0.4.so.0 (0x00007fce45bf5000)\n\tlibbabl-0.1.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libbabl-0.1.so.0 (0x00007fce45aab000)\n\tlibgtk-3.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgtk-3.so.0 (0x00007fce452ad000)\n\tlibc.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libc.so.6 (0x00007fce450b9000)\n\tlibgimpcolor-3.0.so.0 => /workspace/shared/gimp-value-invert-owner-build/libgimpcolor/libgimpcolor-3.0.so.0 (0x00007fce450a0000)\n\tlibgimpconfig-3.0.so.0 => /workspace/shared/gimp-value-invert-owner-build/libgimpconfig/libgimpconfig-3.0.so.0 (0x00007fce45082000)\n\tlibgdk_pixbuf-2.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgdk_pixbuf-2.0.so.0 (0x00007fce45054000)\n\tlibgio-2.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgio-2.0.so.0 (0x00007fce44e5c000)\n\tlibgexiv2.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgexiv2.so.2 (0x00007fce44e1f000)\n\tlibpango-1.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libpango-1.0.so.0 (0x00007fce44dac000)\n\tlibfontconfig.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libfontconfig.so.1 (0x00007fce44d5e000)\n\tlibm.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libm.so.6 (0x00007fce44c6e000)\n\tlibgimpmodule-3.0.so.0 => /workspace/shared/gimp-value-invert-owner-build/libgimpmodule/libgimpmodule-3.0.so.0 (0x00007fce44c67000)\n\tlibgdk-3.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgdk-3.so.0 (0x00007fce44b57000)\n\tlibpangocairo-1.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libpangocairo-1.0.so.0 (0x00007fce44b44000)\n\tliblcms2.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/liblcms2.so.2 (0x00007fce44adc000)\n\tlibz.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libz.so.1 (0x00007fce44abc000)\n\tlibpng16.so.16 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libpng16.so.16 (0x00007fce44a83000)\n\tlibfreetype.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libfreetype.so.6 (0x00007fce449b3000)\n\tlibX11.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libX11.so.6 (0x00007fce44869000)\n\tlibXext.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXext.so.6 (0x00007fce44854000)\n\tlibXrender.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXrender.so.1 (0x00007fce44847000)\n\tlibxcb.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libxcb.so.1 (0x00007fce4481c000)\n\tlibxcb-render.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libxcb-render.so.0 (0x00007fce4480d000)\n\tlibxcb-shm.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libxcb-shm.so.0 (0x00007fce44806000)\n\tlibpixman-1.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libpixman-1.so.0 (0x00007fce44759000)\n\tlibffi.so.8 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libffi.so.8 (0x00007fce4474c000)\n\tlibatomic.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libatomic.so.1 (0x00007fce44742000)\n\tlibpcre2-8.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libpcre2-8.so.0 (0x00007fce44693000)\n\tlibgmodule-2.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgmodule-2.0.so.0 (0x00007fce4468a000)\n\t/lib64/ld-linux-x86-64.so.2 (0x00007fce46372000)\n\tlibharfbuzz.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libharfbuzz.so.0 (0x00007fce44549000)\n\tlibpangoft2-1.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libpangoft2-1.0.so.0 (0x00007fce4452c000)\n\tlibfribidi.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libfribidi.so.0 (0x00007fce4450d000)\n\tlibcairo-gobject.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libcairo-gobject.so.2 (0x00007fce44502000)\n\tlibatk-1.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libatk-1.0.so.0 (0x00007fce444d6000)\n\tlibepoxy.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libepoxy.so.0 (0x00007fce443a6000)\n\tlibXi.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXi.so.6 (0x00007fce44392000)\n\tlibatk-bridge-2.0.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libatk-bridge-2.0.so.0 (0x00007fce44354000)\n\tlibcloudproviders.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libcloudproviders.so.0 (0x00007fce4433c000)\n\tlibXfixes.so.3 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXfixes.so.3 (0x00007fce44332000)\n\tlibgimpmath-3.0.so.0 => /workspace/shared/gimp-value-invert-owner-build/libgimpmath/libgimpmath-3.0.so.0 (0x00007fce4432a000)\n\tlibjpeg.so.62 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libjpeg.so.62 (0x00007fce44293000)\n\tlibmount.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libmount.so.1 (0x00007fce44217000)\n\tlibselinux.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libselinux.so.1 (0x00007fce441e3000)\n\tlibexiv2.so.28 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libexiv2.so.28 (0x00007fce43e66000)\n\tlibstdc++.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libstdc++.so.6 (0x00007fce43c00000)\n\tlibgcc_s.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgcc_s.so.1 (0x00007fce43bd3000)\n\tlibthai.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libthai.so.0 (0x00007fce43bc8000)\n\tlibexpat.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libexpat.so.1 (0x00007fce43b9a000)\n\tlibxkbcommon.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libxkbcommon.so.0 (0x00007fce43b4d000)\n\tlibwayland-client.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libwayland-client.so.0 (0x00007fce43b3a000)\n\tlibwayland-cursor.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libwayland-cursor.so.0 (0x00007fce43b30000)\n\tlibwayland-egl.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libwayland-egl.so.1 (0x00007fce43b2b000)\n\tlibXcursor.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXcursor.so.1 (0x00007fce43b1e000)\n\tlibXdamage.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXdamage.so.1 (0x00007fce43b17000)\n\tlibXcomposite.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXcomposite.so.1 (0x00007fce43b12000)\n\tlibXrandr.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXrandr.so.2 (0x00007fce43b05000)\n\tlibXinerama.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXinerama.so.1 (0x00007fce43b00000)\n\tlibbz2.so.1.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libbz2.so.1.0 (0x00007fce43aed000)\n\tlibbrotlidec.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libbrotlidec.so.1 (0x00007fce43add000)\n\tlibXau.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXau.so.6 (0x00007fce43ad8000)\n\tlibXdmcp.so.6 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libXdmcp.so.6 (0x00007fce43ad0000)\n\tlibgraphite2.so.3 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libgraphite2.so.3 (0x00007fce43aa6000)\n\tlibatspi.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libatspi.so.0 (0x00007fce43a66000)\n\tlibdbus-1.so.3 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libdbus-1.so.3 (0x00007fce43a0f000)\n\tlibblkid.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libblkid.so.1 (0x00007fce439ae000)\n\tlibINIReader.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libINIReader.so.0 (0x00007fce439a5000)\n\tlibdatrie.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libdatrie.so.1 (0x00007fce4399b000)\n\tlibbrotlicommon.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libbrotlicommon.so.1 (0x00007fce43976000)\n\tlibsystemd.so.0 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libsystemd.so.0 (0x00007fce43860000)\n\tlibinih.so.1 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libinih.so.1 (0x00007fce4385b000)\n\tlibcap.so.2 => /workspace/shared/gimp-deps-debian13/root/usr/lib/x86_64-linux-gnu/libcap.so.2 (0x00007fce4384f000)\n",
+          "stderr": "",
+          "exit_code": 0
+        }
+      }
+    },
+    "passed_targets": 13,
+    "scope": "Thirteen exact registered affected regression targets, unfiltered, clean retry after full default build; both failed prerequisite attempts retained; not full aggregate",
+    "native_process_seconds": 573.3308845939973,
+    "tests": [
+      {
+        "name": "gimp-filter-layer",
+        "command": [
+          "/usr/bin/python3",
+          "/workspace/shared/gimp-painter-value-invert-owner/migration/tests/run_filter_owner_context_fixture_test.py",
+          "--",
+          "app/tests/gimp-filter-layer"
+        ],
+        "timeout": 600,
+        "exit_code": 0,
+        "seconds": 400.108730093998,
+        "tap_count": 223,
+        "passed": true,
+        "skipped": [],
+        "crashes": [],
+        "failures": [],
+        "expected_negative_diagnostic_count": 0
+      },
+      {
+        "name": "painter-xcf-open",
+        "command": [
+          "/usr/bin/python3",
+          "/workspace/shared/gimp-painter-value-invert-owner/migration/tests/run_filter_owner_context_fixture_test.py",
+          "--",
+          "app/tests/painter-xcf-open"
+        ],
+        "timeout": 180,
+        "exit_code": 0,
+        "seconds": 83.2946007540013,
+        "tap_count": 31,
+        "passed": true,
+        "skipped": [],
+        "crashes": [],
+        "failures": [],
+        "expected_negative_diagnostic_count": 0
+      },
+      {
+        "name": "painter-xcf-roundtrip",
+        "command": [
+          "/workspace/shared/gimp-value-invert-owner-build/app/tests/painter-xcf-roundtrip",
+          "-m",
+          "slow"
+        ],
+        "timeout": 180,
+        "exit_code": 0,
+        "seconds": 84.00015839799744,
+        "tap_count": 49,
+        "passed": true,
+        "skipped": [],
+        "crashes": [],
+        "failures": [],
+        "expected_negative_diagnostic_count": 295
+      },
+      {
+        "name": "painter-filter-scheduler",
+        "command": [
+          "/workspace/shared/gimp-value-invert-owner-build/app/painter/painter-filter-scheduler"
+        ],
+        "timeout": 60,
+        "exit_code": 0,
+        "seconds": 3.383210425003199,
+        "tap_count": 39,
+        "passed": true,
+        "skipped": [],
+        "crashes": [],
+        "failures": [],
+        "expected_negative_diagnostic_count": 0
+      },
+      {
+        "name": "painter-filter-owner-gates",
+        "command": [
+          "/workspace/shared/gimp-value-invert-owner-build/app/painter/painter-filter-owner-gates"
+        ],
+        "timeout": 60,
+        "exit_code": 0,
+        "seconds": 0.18548015000123996,
+        "tap_count": 5,
+        "passed": true,
+        "skipped": [],
+        "crashes": [],
+        "failures": [],
+        "expected_negative_diagnostic_count": 0
+      },
+      {
+        "name": "painter-filter-native-kernels",
+        "command": [
+          "/workspace/shared/gimp-value-invert-owner-build/app/painter/painter-filter-native-kernels",
+          "/workspace/shared/gimp-painter-value-invert-owner/migration/fixtures/legacy-filter-points/fixtures.tsv"
+        ],
+        "timeout": 60,
+        "exit_code": 0,
+        "seconds": 0.006605937996937428,
+        "tap_count": 6,
+        "passed": true,
+        "skipped": [],
+        "crashes": [],
+        "failures": [],
+        "expected_negative_diagnostic_count": 0
+      },
+      {
+        "name": "painter-filter-context-native",
+        "command": [
+          "/workspace/shared/gimp-value-invert-owner-build/app/painter/painter-filter-context-native"
+        ],
+        "timeout": 60,
+        "exit_code": 0,
+        "seconds": 0.0024032850051298738,
+        "tap_count": 0,
+        "passed": true,
+        "skipped": [],
+        "crashes": [],
+        "failures": [],
+        "expected_negative_diagnostic_count": 0
+      },
+      {
+        "name": "painter-filter-point-shadow",
+        "command": [
+          "/workspace/shared/gimp-value-invert-owner-build/app/painter/painter-filter-point-shadow",
+          "/workspace/shared/gimp-painter-value-invert-owner/migration/fixtures/legacy-filter-points/fixtures.tsv"
+        ],
+        "timeout": 60,
+        "exit_code": 0,
+        "seconds": 0.8122143619984854,
+        "tap_count": 0,
+        "passed": true,
+        "skipped": [],
+        "crashes": [],
+        "failures": [],
+        "expected_negative_diagnostic_count": 0
+      },
+      {
+        "name": "painter-filter-sharpen",
+        "command": [
+          "/workspace/shared/gimp-value-invert-owner-build/app/painter/painter-filter-sharpen"
+        ],
+        "timeout": 60,
+        "exit_code": 0,
+        "seconds": 0.2428705370039097,
+        "tap_count": 0,
+        "passed": true,
+        "skipped": [],
+        "crashes": [],
+        "failures": [],
+        "expected_negative_diagnostic_count": 0
+      },
+      {
+        "name": "painter-filter-sharpen-shadow",
+        "command": [
+          "/workspace/shared/gimp-value-invert-owner-build/app/painter/painter-filter-sharpen-shadow"
+        ],
+        "timeout": 60,
+        "exit_code": 0,
+        "seconds": 0.34512135299883084,
+        "tap_count": 0,
+        "passed": true,
+        "skipped": [],
+        "crashes": [],
+        "failures": [],
+        "expected_negative_diagnostic_count": 0
+      },
+      {
+        "name": "painter-filter-sobel",
+        "command": [
+          "/workspace/shared/gimp-value-invert-owner-build/app/painter/painter-filter-sobel"
+        ],
+        "timeout": 120,
+        "exit_code": 0,
+        "seconds": 0.7195783639981528,
+        "tap_count": 0,
+        "passed": true,
+        "skipped": [],
+        "crashes": [],
+        "failures": [],
+        "expected_negative_diagnostic_count": 0
+      },
+      {
+        "name": "painter-filter-context",
+        "command": [
+          "/usr/bin/python3",
+          "/workspace/shared/gimp-painter-value-invert-owner/migration/tests/run_filter_context_fixture_test.py",
+          "app/painter/painter-filter-context",
+          "/workspace/shared/gimp-painter-value-invert-owner/migration/fixtures/legacy-filter-context.tar.gz",
+          "/workspace/shared/gimp-painter-value-invert-owner/migration/fixtures/legacy-filter-context.tar.manifest.json"
+        ],
+        "timeout": 60,
+        "exit_code": 0,
+        "seconds": 0.22575483199761948,
+        "tap_count": 0,
+        "passed": true,
+        "skipped": [],
+        "crashes": [],
+        "failures": [],
+        "expected_negative_diagnostic_count": 0
+      },
+      {
+        "name": "painter-filter-import-completion",
+        "command": [
+          "/workspace/shared/gimp-value-invert-owner-build/app/painter/painter-filter-import-completion"
+        ],
+        "timeout": 30,
+        "exit_code": 0,
+        "seconds": 0.0041561019970686175,
+        "tap_count": 0,
+        "passed": true,
+        "skipped": [],
+        "crashes": [],
+        "failures": [],
+        "expected_negative_diagnostic_count": 0
+      }
+    ],
+    "seals": {
+      "source": {
+        "before": 11999,
+        "after": 11999,
+        "changed": [],
+        "read_errors": {}
+      },
+      "build": {
+        "before": 51,
+        "after": 51,
+        "changed": [],
+        "read_errors": {}
+      }
+    },
+    "source_path_set": {
+      "added": [],
+      "removed": []
+    }
+  },
+  "genuine_legacy": {
+    "receipt": "migration/tests/value-invert-capture-evidence.json",
+    "base_cases": 140,
+    "pdb_cases": 50,
+    "large_live_cases": 2,
+    "live_scenes": 92,
+    "live_final_outputs": 126,
+    "projection_scenes": 16,
+    "projection_runs": 48,
+    "actual_old_writer_files": 2,
+    "capsule_bytes": 56,
+    "stored_typed_context_slots": 3,
+    "operation_specific_arguments": 0,
+    "runtime_provenance": "Fresh rebuilt pinned reference; per-capture before/after source/executable seals. Recovery manifest is post-build and after capture, not a pre-capture static-archive seal. Retained GEGL dependency-test limits apply."
+  },
+  "synthetic_persistence": {
+    "run_mode_alpha_scenes": 12,
+    "malformed_capsules": 18,
+    "malformed_native_typed_models": 5,
+    "active_save_cases": 4
+  },
+  "buffer_visibility": "Independent raw output and private native staging; owner-thread complete-current-generation replacement only. Prior whole buffer and identity retained during cancellation, replacement, lower invalidation, close, actual partial import, and active Save; no whole-screen/vsync guarantee.",
+  "lifecycle_limits": "WAITING, PREPARING, vector RUNNING entry and IMPORTING observed. Spill RUNNING is skipped because it may finish between owner polling quanta; no deterministic native mid-kernel cancellation assertion. Raw foundation separately proves every bounded I/O cancellation ordinal.",
+  "controls": {
+    "pure_python": 64,
+    "capture": 36,
+    "sanitizer_runner": 20,
+    "normal_runner": 8,
+    "scope": "Pure Python controls, including synthetic rejection examples and mocked native subprocesses; not native or genuine runtime acceptance",
+    "retained_incomplete_attempt": "Imported sanitizer test module executed its own 20-test top-level runner and exited before other modules; retained controls-incomplete.log does not establish 64 controls.",
+    "logs": [
+      "controls-capture.log",
+      "controls-sanitizer-runner.log",
+      "controls-normal-runner.log"
+    ]
+  },
+  "retained_failed_attempt": {
+    "receipt": "native-value-invert-context/registered-failed.json.gz",
+    "source_integrity": "native-value-invert-context/registered-failed-integrity.json",
+    "status": "failed",
+    "failed_target": "gimp-filter-layer",
+    "exit_code": 251,
+    "reason": "Separate build lacked bundled filter-worker executable; exact registered fixture wrapper also created 19 Python bytecode cache files after pre-seal.",
+    "second_failure": {
+      "receipt": "native-value-invert-context/registered-second-failed.json.gz",
+      "exit_code": 251,
+      "reason": "After building helper, nested Blinds executable was still absent; source/build seals and path sets remained equal."
+    },
+    "resolution": "Both terminal failures retained. Removed only first-run generated bytecode at boundary and disabled bytecode generation. Completed full default Ninja build, preflighted all eighteen runtime executables including the four fixed allowlisted plug-ins and their shared-library resolution, and reran all thirteen exact registered targets with source path-set equality. No source-code or diagnostic waiver."
+  },
+  "artifacts": {
+    "normal.json.gz": {
+      "sha256": "a79cf2851d929ce4f2be7d4cd304b45c9dbe23aab1795cc71afdc595b913c4bf",
+      "uncompressed_sha256": "2a65aec101250c886da3620dbb03f7caa465e28112db16aeb43ac7979f904b18",
+      "uncompressed_bytes": 7918565
+    },
+    "normal.log.gz": {
+      "sha256": "cf6973a9d17fcae1cc98c76cb2e4c0fb7c16368b09dfb5cb2a032bdc856582f6",
+      "uncompressed_sha256": "59fdc200822e6f60c5a429c4d091118cac5e680b7ad9c0c7ad29b5df4b906ddd",
+      "uncompressed_bytes": 1349
+    },
+    "normal-command.sh": {
+      "sha256": "7c93d5f3693460b680d2076958073e207aff0b6d870db28f668e13f763202985",
+      "uncompressed_sha256": "7c93d5f3693460b680d2076958073e207aff0b6d870db28f668e13f763202985",
+      "uncompressed_bytes": 561
+    },
+    "sanitizer.json.gz": {
+      "sha256": "429806a5af3bef8488917c42d650d612c73a87a8805acb3011738808e52596dc",
+      "uncompressed_sha256": "229cebd44ceab767858b520e18b5c3e2dc416033fc290dd55b31455eecfe9484",
+      "uncompressed_bytes": 16529392
+    },
+    "sanitizer.log.gz": {
+      "sha256": "41a597f31ace84d3e0eaadf95864e4a8af2e12c8c842a4f929310baeedb77f3f",
+      "uncompressed_sha256": "5a5b40feccf5bfa565ede7275809e46a5cd1567476309827564e92e3b7fca8c9",
+      "uncompressed_bytes": 1416
+    },
+    "sanitizer-command.sh": {
+      "sha256": "cfc0627cdee4847ba09cee2c93e1e5d21fc79717ec2c64fe797b4d3537306ca2",
+      "uncompressed_sha256": "cfc0627cdee4847ba09cee2c93e1e5d21fc79717ec2c64fe797b4d3537306ca2",
+      "uncompressed_bytes": 2357
+    },
+    "base-verified.json": {
+      "sha256": "c8e59e780d7235e587e6bbbfad8efd89da49e5f6b5a34cb9c15fdbff33b5716a",
+      "uncompressed_sha256": "c8e59e780d7235e587e6bbbfad8efd89da49e5f6b5a34cb9c15fdbff33b5716a",
+      "uncompressed_bytes": 344
+    },
+    "projection-verified.json": {
+      "sha256": "4b8981f96228bc07b7155c4e32b98f615d3bc833477ecb10d1a1a8cd1ec526d7",
+      "uncompressed_sha256": "4b8981f96228bc07b7155c4e32b98f615d3bc833477ecb10d1a1a8cd1ec526d7",
+      "uncompressed_bytes": 454
+    },
+    "registered-failed.json.gz": {
+      "sha256": "476636fb2fe4233ea3f7b3b847766d205d8d8273bd78fc6dd5e5a0dbc438c0ab",
+      "uncompressed_sha256": "55ca484087b56649bdf987273e73a2e69b617bb30a6e5eea6abdc89d3558acc8",
+      "uncompressed_bytes": 6462652
+    },
+    "registered-failed.log.gz": {
+      "sha256": "d8967420d345691f87e02a815cffd9608321dc0dc5b37ef42ed86b90198176b7",
+      "uncompressed_sha256": "0312695209da3b5d8ca5b5f973fe249a071c378abdb4061b68ee937429d987cb",
+      "uncompressed_bytes": 1313
+    },
+    "registered-failed-command.sh": {
+      "sha256": "91740e34c0cadffdb4dc49bcc2bb3e99c07fb90453baa71d571a3304a1674f79",
+      "uncompressed_sha256": "91740e34c0cadffdb4dc49bcc2bb3e99c07fb90453baa71d571a3304a1674f79",
+      "uncompressed_bytes": 956
+    },
+    "registered-failed-runner.py": {
+      "sha256": "b5df0c954ac3db03008fa90a05b7480f01fbbad5c16b231d03e4de57f388756a",
+      "uncompressed_sha256": "b5df0c954ac3db03008fa90a05b7480f01fbbad5c16b231d03e4de57f388756a",
+      "uncompressed_bytes": 4592
+    },
+    "registered-failed-integrity.json": {
+      "sha256": "ee64f103621da51bcade5c54272bd5a8c9f5ad6e289c1a41bffa75bcea8eb068",
+      "uncompressed_sha256": "ee64f103621da51bcade5c54272bd5a8c9f5ad6e289c1a41bffa75bcea8eb068",
+      "uncompressed_bytes": 4207
+    },
+    "registered-second-failed.json.gz": {
+      "sha256": "636eb12bd2c9cf1a4fdb84d6ce290cb4455d712e393dd7202c30b69501243428",
+      "uncompressed_sha256": "389e526c04fc3884227ee1e8a64444a611786fabb654e096bc49531876b29bbd",
+      "uncompressed_bytes": 6463232
+    },
+    "registered-second-failed.log.gz": {
+      "sha256": "64ca054150f0e445bec1030f6b9bbaab64633f4a0a7225b818a921c3811cf142",
+      "uncompressed_sha256": "c4dc04fba701bdd1bf8635dcd4a30cd9e61fe202b03c1ef23224cbdf5fa3b8e3",
+      "uncompressed_bytes": 872
+    },
+    "registered-second-failed-command.sh": {
+      "sha256": "aadfadf1f59d20dbe71b16f22c90398620b150a0fe39dba5e79d3b696c1569a6",
+      "uncompressed_sha256": "aadfadf1f59d20dbe71b16f22c90398620b150a0fe39dba5e79d3b696c1569a6",
+      "uncompressed_bytes": 549
+    },
+    "registered-second-failed-runner.py": {
+      "sha256": "80aa3097a39abc4cff7e4be2557fe423cb9dbca5bd99b02e9e2893bd66b4e750",
+      "uncompressed_sha256": "80aa3097a39abc4cff7e4be2557fe423cb9dbca5bd99b02e9e2893bd66b4e750",
+      "uncompressed_bytes": 5169
+    },
+    "registered.json.gz": {
+      "sha256": "b833a37ed6b63684e6ca51429b5f1f4eaee2ae96487b3506aec361cee2efa666",
+      "uncompressed_sha256": "65de1829648e78d24204b0cc45d366c82cafd135f7d410cc9352c7ea29c00c70",
+      "uncompressed_bytes": 7163410
+    },
+    "registered.log.gz": {
+      "sha256": "38d4bed58bb7dbb7e72ae843850e012ad59bf1dbf61a5f4f8b1488a8776c648a",
+      "uncompressed_sha256": "ec6d0dd201f9d8c3ed0fbd293ba93b8283deb919d9c4a625e90bb31395c23341",
+      "uncompressed_bytes": 484
+    },
+    "registered-command.sh": {
+      "sha256": "b0767b3a239e0fa4c4e100b1075f62ee35cf9f44253012ef602d09cb9ba132b1",
+      "uncompressed_sha256": "b0767b3a239e0fa4c4e100b1075f62ee35cf9f44253012ef602d09cb9ba132b1",
+      "uncompressed_bytes": 414
+    },
+    "registered-runner.py": {
+      "sha256": "53c83f9dc49baf80494d296c8d1963a79a7cb688401a9f0f90c732f89a3dd627",
+      "uncompressed_sha256": "53c83f9dc49baf80494d296c8d1963a79a7cb688401a9f0f90c732f89a3dd627",
+      "uncompressed_bytes": 6745
+    },
+    "default-build.json": {
+      "sha256": "422f677f7adba22b7aa87e26df3aa61c812d38fa768a4dfe72db6c5951607a14",
+      "uncompressed_sha256": "422f677f7adba22b7aa87e26df3aa61c812d38fa768a4dfe72db6c5951607a14",
+      "uncompressed_bytes": 461
+    },
+    "default-build.log.gz": {
+      "sha256": "0a62be450dfef18b81110ebcd51f12b30edfff99c142031836a8502e7ee68a4d",
+      "uncompressed_sha256": "f04e0c8a682eff88a9a33324a70bfb3066c70b72310fb17b6be6dadbf8a37919",
+      "uncompressed_bytes": 462456
+    },
+    "default-build-command.sh": {
+      "sha256": "e4a8d37ec7d3b193a6b671336362249ea8236745b13d8c8bada2cf04e3f582a6",
+      "uncompressed_sha256": "e4a8d37ec7d3b193a6b671336362249ea8236745b13d8c8bada2cf04e3f582a6",
+      "uncompressed_bytes": 276
+    },
+    "controls-incomplete.log.gz": {
+      "sha256": "86fbeb75a2b984c35eb2d251e469f8d9beb9d08fcd6d952a2371458dcd0fbfef",
+      "uncompressed_sha256": "c39067e26aafc9f9e2f074ac38ea76192aaeaa4854427fb61a0a47142d1aa6b0",
+      "uncompressed_bytes": 3021
+    },
+    "controls.json": {
+      "sha256": "f4880e6f5cdf0ed04620b72a6f50b56ec2c672721eeeefd6c85e3667142db90e",
+      "uncompressed_sha256": "f4880e6f5cdf0ed04620b72a6f50b56ec2c672721eeeefd6c85e3667142db90e",
+      "uncompressed_bytes": 5836
+    },
+    "controls.log.gz": {
+      "sha256": "6c2e71371223829a81e7e9d5c9e454fc7b3ecabdfa5bf478530e0b8baab29b13",
+      "uncompressed_sha256": "17468275b584faac0280ffdd3a8e4fbcc46337bbd98e4256b1e71233716e6869",
+      "uncompressed_bytes": 3634
+    },
+    "controls-command.sh": {
+      "sha256": "868a9c6b53db08815829ca7bf5739c1202d460b40f1f085e0621c60399a8510b",
+      "uncompressed_sha256": "868a9c6b53db08815829ca7bf5739c1202d460b40f1f085e0621c60399a8510b",
+      "uncompressed_bytes": 229
+    },
+    "controls-runner.py": {
+      "sha256": "59db61ecfb0df3e78caade8feeb74976ed65c03eaef841f597d5b65551aa7619",
+      "uncompressed_sha256": "59db61ecfb0df3e78caade8feeb74976ed65c03eaef841f597d5b65551aa7619",
+      "uncompressed_bytes": 1811
+    },
+    "configure.log.gz": {
+      "sha256": "258bfdf2290621d110fc399a1a821729ad423515cb142f24db60f5d3a2a2975b",
+      "uncompressed_sha256": "1ca9c67c295a91567104e1af91033c8352e1dc03870de3d39f4678719671892f",
+      "uncompressed_bytes": 18504
+    },
+    "build-prerequisites.log.gz": {
+      "sha256": "5081e1907629eae99c2238979b95c1752d52f885f832b682e86cbfff385e2034",
+      "uncompressed_sha256": "90cc14fd47ab0e711ce122600d83025a82c5cdea49c50b45038525aa78a2a451",
+      "uncompressed_bytes": 22678
+    },
+    "build-app-tests.log.gz": {
+      "sha256": "3cf293cb3e717f5204fb44dd10c057785a4311e8b5f8be19abc565e465066a9b",
+      "uncompressed_sha256": "ab22c678754d9c43ddf31cd70341a7da098005fe37d9326fb805f14b25e54637",
+      "uncompressed_bytes": 118106
+    },
+    "build-registered.log.gz": {
+      "sha256": "02073c0fade138ea1ed8baab1aca5e69ff0a788c96956123130a02bca1ba4186",
+      "uncompressed_sha256": "0a2467d8be38b538c6072350f052a5146e4fbe99b1a27680c19f287a823866da",
+      "uncompressed_bytes": 6149
+    },
+    "README.md": {
+      "sha256": "8305f5f859443d2b5ba302de8e6e6868a5992e08d560272a9d3248a750bd1513",
+      "uncompressed_sha256": "8305f5f859443d2b5ba302de8e6e6868a5992e08d560272a9d3248a750bd1513",
+      "uncompressed_bytes": 2447
+    },
+    "wbs-validation.log": {
+      "sha256": "1c4b2c049610693d4cae3f93580ac8f43d77dff8406ae9af6a536728ca7b4ad0",
+      "uncompressed_sha256": "1c4b2c049610693d4cae3f93580ac8f43d77dff8406ae9af6a536728ca7b4ad0",
+      "uncompressed_bytes": 54
+    },
+    "controls-capture.log": {
+      "sha256": "1b08c1e84f235e36e4da8a5ae5b4d7f75be2cac1c29d6a05088fba8317fba456",
+      "uncompressed_sha256": "1b08c1e84f235e36e4da8a5ae5b4d7f75be2cac1c29d6a05088fba8317fba456",
+      "uncompressed_bytes": 135
+    },
+    "controls-sanitizer-runner.log": {
+      "sha256": "fd4c62cc7a27dd3d3737d0abf00413bc7787897ecaf81b34eed261f8b8ae38c9",
+      "uncompressed_sha256": "fd4c62cc7a27dd3d3737d0abf00413bc7787897ecaf81b34eed261f8b8ae38c9",
+      "uncompressed_bytes": 2561
+    },
+    "controls-normal-runner.log": {
+      "sha256": "913e2f1cfc6eee1b40d074c06d22f1c2603fd5dcff5fedd54d29766c2e1ef9d8",
+      "uncompressed_sha256": "913e2f1cfc6eee1b40d074c06d22f1c2603fd5dcff5fedd54d29766c2e1ef9d8",
+      "uncompressed_bytes": 938
+    },
+    "controls-whitespace.log": {
+      "sha256": "54d2a3b665ac77de056af5f9f98b9fb2ceb3bbf40bee25c70202ac3b2c696e07",
+      "uncompressed_sha256": "54d2a3b665ac77de056af5f9f98b9fb2ceb3bbf40bee25c70202ac3b2c696e07",
+      "uncompressed_bytes": 3634
+    },
+    "wbs-whitespace.log": {
+      "sha256": "1c4b2c049610693d4cae3f93580ac8f43d77dff8406ae9af6a536728ca7b4ad0",
+      "uncompressed_sha256": "1c4b2c049610693d4cae3f93580ac8f43d77dff8406ae9af6a536728ca7b4ad0",
+      "uncompressed_bytes": 54
+    },
+    "controls-whitespace-sanitizer-runner.log": {
+      "sha256": "a6ec824e32420309be9fed60de1ac6903795abbe8cff7c250dedc4f13c91b4f2",
+      "uncompressed_sha256": "a6ec824e32420309be9fed60de1ac6903795abbe8cff7c250dedc4f13c91b4f2",
+      "uncompressed_bytes": 2561
+    },
+    "controls-whitespace.json": {
+      "sha256": "6191762c271a2fcaa2e194ccf2ed7bd7be0dc11f5162d74d1954802169338a31",
+      "uncompressed_sha256": "6191762c271a2fcaa2e194ccf2ed7bd7be0dc11f5162d74d1954802169338a31",
+      "uncompressed_bytes": 5979
+    },
+    "controls-whitespace-normal-runner.log": {
+      "sha256": "913e2f1cfc6eee1b40d074c06d22f1c2603fd5dcff5fedd54d29766c2e1ef9d8",
+      "uncompressed_sha256": "913e2f1cfc6eee1b40d074c06d22f1c2603fd5dcff5fedd54d29766c2e1ef9d8",
+      "uncompressed_bytes": 938
+    },
+    "controls-whitespace-capture.log": {
+      "sha256": "7be5d6b12da98da5756cc9dbdeb9d3cb6760dd0ae880a66caab87ab3c74823e2",
+      "uncompressed_sha256": "7be5d6b12da98da5756cc9dbdeb9d3cb6760dd0ae880a66caab87ab3c74823e2",
+      "uncompressed_bytes": 135
+    },
+    "whitespace-only-delta.json": {
+      "sha256": "6ee9e098365ee8bf1b038f8d157ab625a03f1d9c3e56c3ce5b449c549bb73351",
+      "uncompressed_sha256": "6ee9e098365ee8bf1b038f8d157ab625a03f1d9c3e56c3ce5b449c549bb73351",
+      "uncompressed_bytes": 1286
+    },
+    "controls-whitespace-runner.py": {
+      "sha256": "834d32d98d8317295fe205fef455588ca74adef35be3e052e6eaaae69f4573c4",
+      "uncompressed_sha256": "834d32d98d8317295fe205fef455588ca74adef35be3e052e6eaaae69f4573c4",
+      "uncompressed_bytes": 1960
+    }
+  },
+  "not_covered": [
+    "Full registered aggregate for final public tree",
+    "Installed UI parity or meaningful new screenshot",
+    "Other operating systems",
+    "General direct PDB/helper activation",
+    "Gray/indexed raw owner route",
+    "General precision parity or normalized-real owner-context expansion",
+    "Deterministic native mid-kernel cancellation timing",
+    "Enormous actual I/O and all memory/latency limits",
+    "LeakSanitizer or whole-program sanitizers",
+    "Whole old reference/dependency suite acceptance",
+    "Parent task 16.003 or whole-port completion"
+  ],
+  "wbs_validation": "WBS dependencies, states, and completion evidence: OK",
+  "final_source_sha256": {
+    "app/core/gimpfilterlayer.cpp": "9a38f5eefac7d33b3189e1766f8cbbecbd485bd7f57b09250ff4814ec6e3b202",
+    "app/tests/test-filter-value-invert-capture.inc": "c7613fff8d215d83ded1a7e152062bd8edc509899f0b9da9dcf7d1da75828d75",
+    "app/tests/test-filter-value-invert-context.inc": "88fb5ff9a0f449081eb7929a84808992ddb8bf32c5514d3ee21bdec865cadfc7",
+    "app/tests/test-gimp-filter-layer.c": "576bc8f2745327c4fa9db736b89823bb9049850cf82e6da32029fa8810486698",
+    "app/tests/test-painter-xcf-open.c": "b2136bc4cb43f040290ad084eeae2a0d8dcd946ca19dc2c1f764d13a34a43a2b",
+    "app/tests/test-painter-xcf-value-invert.inc": "11c5ed15eefe4d6da3b797349b4263298f544809321405e82b9e4337141dbc5b",
+    "app/xcf/painter-xcf-load.cpp": "1fdf2bc2292101e2a455beacdb980c89618b3cb02c4db63f47225c598a37218a",
+    "migration/tests/legacy-value-invert-capture.c": "128d544b96085ded6dfdcc13ca61cefe0c613491de819c9b0801c1b77f030722",
+    "migration/tests/legacy-value-invert-projection-capture.c": "0aed1212a5652704a176ae78f4fea3f662a7f7f0bebbb16deaf8659f6f009131",
+    "migration/tests/run_filter_owner_context_fixture_test.py": "3fa514105f8c00b2298a9dc9a1ff4395f7302b248dd73ce02a954558b53f9d36",
+    "migration/tests/run_sharpen_context_sanitizers.py": "93177ad9205a2904d424ea80e648d9f34c06a60f793b4acd74f176769193054b",
+    "migration/tests/run_value_invert_focused_normal.py": "042fbd791558d9d3a23b158c4730f64975faec006b5aaeb46808044db02f6daa",
+    "migration/tests/test_sharpen_context_sanitizers.py": "ff2dc8824f29000ff7e7f144f7fd21a2395d1685c1c7b75d3e86787335e41d59",
+    "migration/tests/test_value_invert_focused_normal.py": "2348a53baf48ca227924404e2b8f39d04ee5a36c27874ab0df707fe6732ce3b0",
+    "tools/capture_legacy_value_invert.py": "1096a5ca4bb5fdc1b82ee5fa4bbacfab7cbeaea0eaabf085306998e6fba22b6d",
+    "tools/capture_legacy_value_invert_projection.py": "a3e10f12a3f2c26500323367a65f9f6eecf71b5baef5de90995a59091be09f93",
+    "tools/check_value_invert_evidence.py": "3d092786c54ef0b0e2b7f179c999adf09a85bdce9cf7e35e72d4c0faa0ccfe32",
+    "tools/check_value_invert_projection_evidence.py": "39b729ff819980c6b6f25de837d9ce8393ac9e9408a686fe732f096ca08309b4",
+    "tools/seal_legacy_value_invert_capture.py": "dd88013987e439aa976b40f0a615d3244d7234fcb1a4fdf8674bfbcf199c56c0",
+    "tools/tests/test_value_invert_capture.py": "aaf30c2fe3623f18e43f3de52b8ee1d7d67eb298cfa29ae958121d26067c7cab"
+  },
+  "post_acceptance_nonsemantic_changes": [
+    {
+      "status": "passed",
+      "base_acceptance_commit": "1bf84e12b040804e833ce67f3b73bf8d62dead5a",
+      "path": "app/tests/test-filter-value-invert-capture.inc",
+      "before_sha256": "47f6b9b50d25bd2ccbf9a40a03e73fdec64a665621531da0e9530c12829b03a1",
+      "after_sha256": "c7613fff8d215d83ded1a7e152062bd8edc509899f0b9da9dcf7d1da75828d75",
+      "change": "Remove exactly one trailing newline byte, eliminating the redundant final blank line; no semantic production/test assertion change",
+      "ignore_blank_lines_command": [
+        "git",
+        "diff",
+        "--ignore-blank-lines",
+        "1bf84e12",
+        "--",
+        "app/tests/test-filter-value-invert-capture.inc"
+      ],
+      "ignore_blank_lines_exit_code": 0,
+      "ignore_blank_lines_stdout": "",
+      "ignore_blank_lines_stderr": "",
+      "full_base_diff_check_command": [
+        "git",
+        "diff",
+        "--check",
+        "f71581787e7c465de7865ba7690df2e1715f052e"
+      ],
+      "full_base_diff_check_exit_code": 0,
+      "full_base_diff_check_stdout": "",
+      "full_base_diff_check_stderr": "",
+      "native_rerun": false,
+      "native_evidence_scope": "Earlier reports retain the exact tested file hash and tested commit/tree; they are not rewritten to claim execution of the whitespace-adjusted file.",
+      "python_controls": 64,
+      "wbs": "WBS dependencies, states, and completion evidence: OK"
+    }
+  ]
+}

@@ -105,6 +105,23 @@ class Checks(unittest.TestCase):
         self.assertEqual(max_rgb['report_format'], 'max-rgb-context-sanitizers-v1')
         max_rgb['instrumented'].clear()
         self.assertIn('app/painter/filter-point-shadow.cpp', m.operation_config('max-rgb')['instrumented'])
+    def test_value_invert_scope_is_separate_and_complete(self):
+        sharpen = m.operation_config('sharpen')
+        value_invert = m.operation_config('value-invert')
+        self.assertEqual(value_invert['instrumented'] - sharpen['instrumented'],
+                         {'app/painter/filter-point-shadow.cpp',
+                          'app/core/gimpdrawablestack.c',
+                          'app/core/gimplayerstack.c',
+                          'app/core/gimpprojection.c'})
+        self.assertNotIn('app/painter/filter-sobel.cpp', value_invert['instrumented'])
+        self.assertEqual(value_invert['fixtures'], ['GIMP_PAINTER_SHARPEN_FIXTURES',
+                                              'GIMP_TEST_VALUE_INVERT_FIXTURE_DIR',
+                                              'GIMP_TEST_VALUE_INVERT_PROJECTION_FIXTURE_DIR'])
+        self.assertIn('tools/check_value_invert_evidence.py', value_invert['scripts'])
+        self.assertIn('tools/check_value_invert_projection_evidence.py', value_invert['scripts'])
+        self.assertEqual(value_invert['report_format'], 'value-invert-context-sanitizers-v1')
+        value_invert['instrumented'].clear()
+        self.assertIn('app/painter/filter-point-shadow.cpp', m.operation_config('value-invert')['instrumented'])
 
     def test_private_harness_uses_registered_build_libraries_first(self):
         info = self.root / 'meson-info'
@@ -264,7 +281,7 @@ receipt = {
     'check_script_sha256': hashlib.sha256(pathlib.Path(__file__).read_bytes()).hexdigest(),
     'scope': 'Pure-Python syntax/helper/report checks with mocked subprocesses; no compiler, linker, display or GIMP/native harness execution',
     'instrumented_translation_units_by_operation': {name: len(m.operation_config(name)['instrumented'])
-                                                   for name in ('sharpen', 'threshold-alpha')},
+                                                   for name in ('sharpen', 'threshold-alpha', 'sobel', 'max-rgb', 'value-invert')},
 }
 if args.receipt is not None:
     args.receipt.parent.mkdir(parents=True, exist_ok=True)

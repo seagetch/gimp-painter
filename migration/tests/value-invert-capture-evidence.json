@@ -1,0 +1,284 @@
+{
+  "schema_version": 1,
+  "status": "passed-bounded-old-runtime-capture-only",
+  "date": "2026-10-16",
+  "source_commit": "afa43fae3e920210146abed514f136fd49f671b5",
+  "accepted_baseline": "f71581787e7c465de7865ba7690df2e1715f052e",
+  "capture_source_checkpoint": "0b36bcee63",
+  "coverage": {
+    "base_scenes": 140,
+    "large_scenes": 2,
+    "pdb_scenes": 50,
+    "live_scenes": 92,
+    "live_final_comparisons": 126,
+    "changed_source_reruns": 2,
+    "unchanged_source_reruns": 32,
+    "actual_merge_entry_mutations": 14,
+    "observed_strict_mid_work_mutations": 16,
+    "old_writer_files": 2,
+    "source_layouts": [
+      3,
+      4
+    ],
+    "live_output_layouts": [
+      4
+    ],
+    "projection_scenes": 16,
+    "projection_runs": 48,
+    "loaded_idle_controls": 8
+  },
+  "archives": {
+    "base": {
+      "archive": "migration/fixtures/legacy-value-invert-context.tar.xz",
+      "archive_sha256": "b0120ccda509f522c5fc04e92b459999d4248cec4157ed1b7d3d0cf473e18c6f",
+      "manifest_sha256": "2db4a438e6b1cbbcdd7c6e71f532b7df131cb564424607fb91c73b6c094c5a81",
+      "report_sha256": "633084992c2b06038466c2b7ef4c740f932ad9baecb6134c3cfe4991d8ad8c88",
+      "member_count": 1700,
+      "dictionary_bytes": 8388608,
+      "compressed_bytes": 236280,
+      "uncompressed_bytes": 15494564,
+      "expected_cases": 140,
+      "observed_cases": 140,
+      "source_sha256": {
+        "app/core/gimpfilterlayer.cpp": "b65c569e13123fd9e89ab74c6178e75b20beaa3bd7072892314d905aa5781708",
+        "app/core/gimpdrawable-shadow.c": "4f7492e158f793c18144bb0f55df0ca8b70a5f6eac7048a2d3d1589c1268fa97",
+        "app/core/gimpdrawable-combine.c": "b6766935ce9a53b043d1bb631fa3bcd297c75f78aa27c809b2f80b76b82970a9",
+        "app/core/gimpitem.c": "ab94cf266e03ebbd5d7802b6bc6cddd1d8070a54cddbe822dbcd78a1618c60b0",
+        "app/core/gimplayer.c": "3da1fffe7178ae3434aeaa06da5e09919ed033fb9cb73f3122f9cc2c00dc1b54",
+        "app/core/gimpimage.c": "3ad0220951737f6a737457337a93772d32137afdf284808b1137fc49c22d48b1",
+        "app/paint-funcs/paint-funcs.c": "41a5b121529718048b8cf3d6a9edd5bf67fb7e0734664393ea3c2a497d6d1cb5",
+        "app/paint-funcs/paint-funcs-utils.h": "12917e95afa5dabb2ce961d2978878cd72c12632e5ff90426aa6eba14f04cc14",
+        "app/pdb/progress-cmds.c": "b46c25f5c2687217cda44d00b3eb501e78abc0d25c53dc69585789315a187845",
+        "app/pdb/pdb-cxx-utils.hpp": "d3d086928b1fa2104fb257f190f6e4032c6b45a6de8e3c8392d5e160f26d064e",
+        "plug-ins/common/value-invert.c": "bf7c46cac7f62c13ec73590d53c12ba3dd85fd28def5f74451aaf43b969fef20",
+        "libgimp/gimpprogress.c": "d1a26e9008ff6d94d54feff49071586d7a742818fa648aa0c22b5eba00ef0098",
+        "app/core/gimpchannel.c": "749f7cd7f008495cedd59f381b91a940b30868b4477e369fb91ee5139e411f02",
+        "app/pdb/drawable-cmds.c": "0d952b31ff9c096bd82432aa1dfd158855f64a708613e47faef807cab8e086b6",
+        "libgimp/gimpdrawable_pdb.c": "d9aa1cf0f77fd62560c2be0dbe8378605e533845611ba263ca48c43884dfe11f",
+        "app/base/tile-manager.c": "c0f56f68295c900a6be2e5177e433a4f2767cc56a60164e1b8e107d484624b22",
+        "app/plug-in/gimpplugin-cleanup.c": "7e2e838ff205aa83b08f48cce0341146655e30df4e92bdfd478258a49c3f824b",
+        "app/xcf/xcf-save.c": "4fa9155d28054d62baa5b7c77bd17e27fbea254df1f68c85c2ac4708de1653ce",
+        "app/xcf/xcf-write.c": "ec8bce3cf10d36a99842e391723da968eaf1a3aa96e798e7bca9612c4303d09d",
+        "app/core/gimpparamspecs.c": "884a7dfe9e1a38a91ed2b5907a0b08cf1fec3f5c74af57f07455e5cb984cbfab",
+        "app/plug-in/gimppluginprocedure.c": "3427261876ccff141fbfa1cc2a5a9507442e8193665f2dc3f24d7f9629749b6d",
+        "app/plug-in/gimppluginmanager-call.c": "45f5130f4fbc21ee7d371d2cccdd88456edbc2878a451d8d719f3207be12001a",
+        "libgimp/gimppixelrgn.c": "46bb7842319e6eb9de56dcb58ed92853611a126793f2bd28309be0d571a7b7e1",
+        "libgimp/gimpdrawable.c": "b1254b63e66f72adde49d53aa6f846ba937e245b1a07b6ec9846c11ae7ad22e0"
+      },
+      "executable_sha256": {
+        "/workspace/shared/value-invert-capture-checkpoint/base-work/.libs/legacy-value-invert": "94186c4a4b96c1a281cdea57e4e95d6ebccc5a430e8c96e1d1fb77a415d1467e",
+        "/workspace/shared/gimp-legacy-value-invert/build/prefix/bin/gimp-2.8": "db16a2262c4c797204523c96023fc88262909d65645814081ce4bf401347436a",
+        "/workspace/shared/gimp-legacy-value-invert/build/prefix/lib/gimp/2.0/plug-ins/value-invert": "a1e7309e4e317d51fc91dc120705a34e89b38e9e9852b4718499467c57812b5f"
+      },
+      "original_source_seal_unchanged": true,
+      "original_executable_seal_unchanged": true,
+      "runtime_diagnostics": [
+        "(process:436): GLib-GObject-CRITICAL **: 05:39:39.895: g_value_set_object: assertion 'G_VALUE_HOLDS_OBJECT (value)' failed",
+        "(process:436): GLib-GObject-CRITICAL **: 05:39:39.895: g_value_set_object: assertion 'G_VALUE_HOLDS_OBJECT (value)' failed",
+        "Failed to parse tag cache: No such file or directory"
+      ],
+      "started_utc": "2026-10-16T20:39:36.951201+00:00",
+      "finished_utc": "2026-10-16T20:39:46.785401+00:00",
+      "raw_proof": {
+        "raw_pixels_checked": 312162,
+        "maximum_channel_tie_pixels": 98628,
+        "hidden_rgb_raw_changed_pixels": 19862
+      },
+      "zero_alpha_hidden_color_channels": 200566
+    },
+    "large": {
+      "archive": "migration/fixtures/legacy-value-invert-large.tar.xz",
+      "archive_sha256": "f0d6629c0c1a06266f6ff664c17ec727d1675d04a132dc85224379eee16dd9bb",
+      "manifest_sha256": "f846d2f8d340a11ae3908742618987b27933ef3ecf825fea32efd3605c11212f",
+      "report_sha256": "83e41030943157dfbda32a6fa692c8ad0dffc4d69eceaefd42040efe2e8db2d4",
+      "member_count": 58,
+      "dictionary_bytes": 33554432,
+      "compressed_bytes": 310680,
+      "uncompressed_bytes": 120285910,
+      "expected_cases": 2,
+      "observed_cases": 2,
+      "source_sha256": {
+        "app/core/gimpfilterlayer.cpp": "b65c569e13123fd9e89ab74c6178e75b20beaa3bd7072892314d905aa5781708",
+        "app/core/gimpdrawable-shadow.c": "4f7492e158f793c18144bb0f55df0ca8b70a5f6eac7048a2d3d1589c1268fa97",
+        "app/core/gimpdrawable-combine.c": "b6766935ce9a53b043d1bb631fa3bcd297c75f78aa27c809b2f80b76b82970a9",
+        "app/core/gimpitem.c": "ab94cf266e03ebbd5d7802b6bc6cddd1d8070a54cddbe822dbcd78a1618c60b0",
+        "app/core/gimplayer.c": "3da1fffe7178ae3434aeaa06da5e09919ed033fb9cb73f3122f9cc2c00dc1b54",
+        "app/core/gimpimage.c": "3ad0220951737f6a737457337a93772d32137afdf284808b1137fc49c22d48b1",
+        "app/paint-funcs/paint-funcs.c": "41a5b121529718048b8cf3d6a9edd5bf67fb7e0734664393ea3c2a497d6d1cb5",
+        "app/paint-funcs/paint-funcs-utils.h": "12917e95afa5dabb2ce961d2978878cd72c12632e5ff90426aa6eba14f04cc14",
+        "app/pdb/progress-cmds.c": "b46c25f5c2687217cda44d00b3eb501e78abc0d25c53dc69585789315a187845",
+        "app/pdb/pdb-cxx-utils.hpp": "d3d086928b1fa2104fb257f190f6e4032c6b45a6de8e3c8392d5e160f26d064e",
+        "plug-ins/common/value-invert.c": "bf7c46cac7f62c13ec73590d53c12ba3dd85fd28def5f74451aaf43b969fef20",
+        "libgimp/gimpprogress.c": "d1a26e9008ff6d94d54feff49071586d7a742818fa648aa0c22b5eba00ef0098",
+        "app/core/gimpchannel.c": "749f7cd7f008495cedd59f381b91a940b30868b4477e369fb91ee5139e411f02",
+        "app/pdb/drawable-cmds.c": "0d952b31ff9c096bd82432aa1dfd158855f64a708613e47faef807cab8e086b6",
+        "libgimp/gimpdrawable_pdb.c": "d9aa1cf0f77fd62560c2be0dbe8378605e533845611ba263ca48c43884dfe11f",
+        "app/base/tile-manager.c": "c0f56f68295c900a6be2e5177e433a4f2767cc56a60164e1b8e107d484624b22",
+        "app/plug-in/gimpplugin-cleanup.c": "7e2e838ff205aa83b08f48cce0341146655e30df4e92bdfd478258a49c3f824b",
+        "app/xcf/xcf-save.c": "4fa9155d28054d62baa5b7c77bd17e27fbea254df1f68c85c2ac4708de1653ce",
+        "app/xcf/xcf-write.c": "ec8bce3cf10d36a99842e391723da968eaf1a3aa96e798e7bca9612c4303d09d",
+        "app/core/gimpparamspecs.c": "884a7dfe9e1a38a91ed2b5907a0b08cf1fec3f5c74af57f07455e5cb984cbfab",
+        "app/plug-in/gimppluginprocedure.c": "3427261876ccff141fbfa1cc2a5a9507442e8193665f2dc3f24d7f9629749b6d",
+        "app/plug-in/gimppluginmanager-call.c": "45f5130f4fbc21ee7d371d2cccdd88456edbc2878a451d8d719f3207be12001a",
+        "libgimp/gimppixelrgn.c": "46bb7842319e6eb9de56dcb58ed92853611a126793f2bd28309be0d571a7b7e1",
+        "libgimp/gimpdrawable.c": "b1254b63e66f72adde49d53aa6f846ba937e245b1a07b6ec9846c11ae7ad22e0"
+      },
+      "executable_sha256": {
+        "/workspace/shared/value-invert-capture-checkpoint/large-work/.libs/legacy-value-invert": "fd6b4bc52a57310825ecd46ec53eeb20199e8ff707f52af50170bd0f87620bc2",
+        "/workspace/shared/gimp-legacy-value-invert/build/prefix/bin/gimp-2.8": "db16a2262c4c797204523c96023fc88262909d65645814081ce4bf401347436a",
+        "/workspace/shared/gimp-legacy-value-invert/build/prefix/lib/gimp/2.0/plug-ins/value-invert": "a1e7309e4e317d51fc91dc120705a34e89b38e9e9852b4718499467c57812b5f"
+      },
+      "original_source_seal_unchanged": true,
+      "original_executable_seal_unchanged": true,
+      "runtime_diagnostics": [
+        "(process:435): GLib-GObject-CRITICAL **: 05:40:03.447: g_value_set_object: assertion 'G_VALUE_HOLDS_OBJECT (value)' failed",
+        "(process:435): GLib-GObject-CRITICAL **: 05:40:03.447: g_value_set_object: assertion 'G_VALUE_HOLDS_OBJECT (value)' failed",
+        "Failed to parse tag cache: No such file or directory"
+      ],
+      "started_utc": "2026-10-16T20:40:00.465989+00:00",
+      "finished_utc": "2026-10-16T20:40:22.050546+00:00",
+      "raw_proof": {
+        "raw_pixels_checked": 2639862,
+        "maximum_channel_tie_pixels": 832696,
+        "hidden_rgb_raw_changed_pixels": 164991
+      },
+      "zero_alpha_hidden_color_channels": 2947348
+    },
+    "projection": {
+      "archive": "migration/fixtures/legacy-value-invert-projection.tar.xz",
+      "archive_sha256": "25e8e96d012a2d291d6bf42413072e9f9eef80a9ba202e731cd6e21ddbb15b04",
+      "manifest_sha256": "c1783b225c7bb026e36ed49dcf1e64707d9f863d20bdec20534bf67de153371b",
+      "report_sha256": "053a0c99fe7f1a5360dbf4565f297cfea44ff19b05b4254f22e7ea338ddd75e2",
+      "member_count": 574,
+      "dictionary_bytes": 8388608,
+      "compressed_bytes": 52864,
+      "uncompressed_bytes": 822364,
+      "expected_cases": 16,
+      "observed_cases": 16,
+      "source_sha256": {
+        "app/core/gimpfilterlayer.cpp": "b65c569e13123fd9e89ab74c6178e75b20beaa3bd7072892314d905aa5781708",
+        "app/core/gimpdrawable-shadow.c": "4f7492e158f793c18144bb0f55df0ca8b70a5f6eac7048a2d3d1589c1268fa97",
+        "app/core/gimpdrawable-combine.c": "b6766935ce9a53b043d1bb631fa3bcd297c75f78aa27c809b2f80b76b82970a9",
+        "app/core/gimpitem.c": "ab94cf266e03ebbd5d7802b6bc6cddd1d8070a54cddbe822dbcd78a1618c60b0",
+        "app/core/gimplayer.c": "3da1fffe7178ae3434aeaa06da5e09919ed033fb9cb73f3122f9cc2c00dc1b54",
+        "app/core/gimpimage.c": "3ad0220951737f6a737457337a93772d32137afdf284808b1137fc49c22d48b1",
+        "app/paint-funcs/paint-funcs.c": "41a5b121529718048b8cf3d6a9edd5bf67fb7e0734664393ea3c2a497d6d1cb5",
+        "app/paint-funcs/paint-funcs-utils.h": "12917e95afa5dabb2ce961d2978878cd72c12632e5ff90426aa6eba14f04cc14",
+        "app/pdb/progress-cmds.c": "b46c25f5c2687217cda44d00b3eb501e78abc0d25c53dc69585789315a187845",
+        "app/pdb/pdb-cxx-utils.hpp": "d3d086928b1fa2104fb257f190f6e4032c6b45a6de8e3c8392d5e160f26d064e",
+        "plug-ins/common/value-invert.c": "bf7c46cac7f62c13ec73590d53c12ba3dd85fd28def5f74451aaf43b969fef20",
+        "libgimp/gimpprogress.c": "d1a26e9008ff6d94d54feff49071586d7a742818fa648aa0c22b5eba00ef0098",
+        "app/core/gimpgrouplayer.c": "66dbca9480720c4bad1983e4bb2ede63dcc6f89f2be479a2f097e4d44553bfea",
+        "app/core/gimpchannel.c": "749f7cd7f008495cedd59f381b91a940b30868b4477e369fb91ee5139e411f02",
+        "app/core/gimpprojection.c": "53da0effbdd0cd6a2f8fa7be16f2cac6d2e432c43874be936d1786b518cc1c2c",
+        "app/base/tile-manager.c": "c0f56f68295c900a6be2e5177e433a4f2767cc56a60164e1b8e107d484624b22",
+        "app/plug-in/gimpplugin-cleanup.c": "7e2e838ff205aa83b08f48cce0341146655e30df4e92bdfd478258a49c3f824b",
+        "app/xcf/xcf-save.c": "4fa9155d28054d62baa5b7c77bd17e27fbea254df1f68c85c2ac4708de1653ce",
+        "app/xcf/xcf-write.c": "ec8bce3cf10d36a99842e391723da968eaf1a3aa96e798e7bca9612c4303d09d",
+        "app/core/gimpparamspecs.c": "884a7dfe9e1a38a91ed2b5907a0b08cf1fec3f5c74af57f07455e5cb984cbfab",
+        "app/plug-in/gimppluginprocedure.c": "3427261876ccff141fbfa1cc2a5a9507442e8193665f2dc3f24d7f9629749b6d",
+        "app/plug-in/gimppluginmanager-call.c": "45f5130f4fbc21ee7d371d2cccdd88456edbc2878a451d8d719f3207be12001a",
+        "libgimp/gimppixelrgn.c": "46bb7842319e6eb9de56dcb58ed92853611a126793f2bd28309be0d571a7b7e1",
+        "libgimp/gimpdrawable.c": "b1254b63e66f72adde49d53aa6f846ba937e245b1a07b6ec9846c11ae7ad22e0"
+      },
+      "executable_sha256": {
+        "/workspace/shared/value-invert-capture-checkpoint/projection-work/.libs/legacy-value-invert-projection": "e0f0d5c0fcd9458b814b0452cea53beb49335845e0e9f474925013a52a3eeed2",
+        "/workspace/shared/gimp-legacy-value-invert/build/prefix/bin/gimp-2.8": "db16a2262c4c797204523c96023fc88262909d65645814081ce4bf401347436a",
+        "/workspace/shared/gimp-legacy-value-invert/build/prefix/lib/gimp/2.0/plug-ins/value-invert": "a1e7309e4e317d51fc91dc120705a34e89b38e9e9852b4718499467c57812b5f"
+      },
+      "original_source_seal_unchanged": true,
+      "original_executable_seal_unchanged": true,
+      "runtime_diagnostics": [
+        "(process:894): GLib-GObject-CRITICAL **: 05:40:25.624: g_value_set_object: assertion 'G_VALUE_HOLDS_OBJECT (value)' failed",
+        "(process:894): GLib-GObject-CRITICAL **: 05:40:25.624: g_value_set_object: assertion 'G_VALUE_HOLDS_OBJECT (value)' failed",
+        "Failed to parse tag cache: No such file or directory"
+      ],
+      "started_utc": "2026-10-16T20:40:22.572270+00:00",
+      "finished_utc": "2026-10-16T20:40:27.761718+00:00",
+      "projection_proof": {
+        "preserved_after_first_run_pixels": 888,
+        "nonzero_preserved_pixels": 444,
+        "retained_pixels_changed_from_seed": 390,
+        "group_outside_image_pixels": 2664,
+        "raw_pixels_checked": 10608,
+        "zero_alpha_hidden_color_channels": 8940
+      }
+    }
+  },
+  "validation": {
+    "pure_python_controls": 36,
+    "controls_log": "migration/tests/value-invert-capture-controls.log.gz",
+    "controls_log_sha256": "78bba4be0118790aadca2388bcbc8b9ff99c20c5ff7f4cf2aae213b2f04d3935",
+    "sealed_context_validator": {
+      "base_report_sha256": "633084992c2b06038466c2b7ef4c740f932ad9baecb6134c3cfe4991d8ad8c88",
+      "case_count": 142,
+      "large_archive_sha256": "f0d6629c0c1a06266f6ff664c17ec727d1675d04a132dc85224379eee16dd9bb",
+      "large_live_cases": 2,
+      "live_cases": 92,
+      "old_writer_files": 2,
+      "pdb_cases": 50,
+      "source_commit": "afa43fae3e920210146abed514f136fd49f671b5"
+    },
+    "sealed_projection_validator": {
+      "case_count": 16,
+      "group_outside_image_pixels": 2664,
+      "live_runs": 48,
+      "nonzero_preserved_pixels": 444,
+      "output_layouts": [
+        4
+      ],
+      "preserved_after_first_run_pixels": 888,
+      "raw_pixels_checked": 10608,
+      "report_sha256": "053a0c99fe7f1a5360dbf4565f297cfea44ff19b05b4254f22e7ea338ddd75e2",
+      "retained_pixels_changed_from_seed": 390,
+      "source_commit": "afa43fae3e920210146abed514f136fd49f671b5",
+      "source_layouts": [
+        3,
+        4
+      ],
+      "zero_alpha_hidden_color_channels": 8940
+    },
+    "xvfb_log": "migration/tests/value-invert-capture-xvfb.log.gz",
+    "xvfb_log_sha256": "3873a24c9249ee2069e6dbff53719a746dcc1c0d19ebf755821c6470be9f2e3b"
+  },
+  "artifact_audit": {
+    "regular_members_only": true,
+    "symlinks": 0,
+    "hardlinks": 0,
+    "unexpected_nested_members": 0,
+    "secret_pattern_matches": 0
+  },
+  "final_tooling_sha256": {
+    "tools/capture_legacy_value_invert.py": "1096a5ca4bb5fdc1b82ee5fa4bbacfab7cbeaea0eaabf085306998e6fba22b6d",
+    "tools/capture_legacy_value_invert_projection.py": "a3e10f12a3f2c26500323367a65f9f6eecf71b5baef5de90995a59091be09f93",
+    "tools/check_value_invert_evidence.py": "3d092786c54ef0b0e2b7f179c999adf09a85bdce9cf7e35e72d4c0faa0ccfe32",
+    "tools/check_value_invert_projection_evidence.py": "39b729ff819980c6b6f25de837d9ce8393ac9e9408a686fe732f096ca08309b4",
+    "tools/seal_legacy_value_invert_capture.py": "dd88013987e439aa976b40f0a615d3244d7234fcb1a4fdf8674bfbcf199c56c0",
+    "tools/tests/test_value_invert_capture.py": "aaf30c2fe3623f18e43f3de52b8ee1d7d67eb298cfa29ae958121d26067c7cab",
+    "migration/tests/legacy-value-invert-capture.c": "128d544b96085ded6dfdcc13ca61cefe0c613491de819c9b0801c1b77f030722",
+    "migration/tests/legacy-value-invert-projection-capture.c": "0aed1212a5652704a176ae78f4fea3f662a7f7f0bebbb16deaf8659f6f009131",
+    "migration/fixtures/legacy-value-invert-README.md": "99fbf1acc9e4bbd143db95132ae06fe1fa9ff424c353c5745998ae98f44fc568"
+  },
+  "limits": [
+    "Native owner and XCF consumer acceptance is separate.",
+    "General precision, huge actual I/O, installed UI, other operating systems, and whole-project/whole-port acceptance are not established.",
+    "Seeded projection scenes exercise actual mark-as-loaded API, not actual XCF reopening.",
+    "Known old startup diagnostics are retained, not asserted warning-free.",
+    "Harnesses are headless; authenticated portrait Xvfb does not imply a meaningful visible GUI screenshot.",
+    "Reference binary is freshly rebuilt with explicit toolchain adaptations, not historical binary-identical bytes.",
+    "Known GEGL test-gegl-tile failure remains in dependency acceptance; no fully green dependency suite is claimed."
+  ],
+  "reference_runtime_recovery": {
+    "archive": "migration/fixtures/legacy-value-invert-runtime-provenance.tar.gz",
+    "archive_sha256": "e72d2c8c98f3e66548b9b6dccb5e67c86ee8fa847e7e60d35fee7d83d00b5c3f",
+    "manifest": "migration/fixtures/legacy-value-invert-runtime-provenance.tar.manifest.json",
+    "manifest_sha256": "e72df1db8a8c229216ce7cbc5191c0d9fbd26d2879cfd119996cc21f08ed6ae8",
+    "capture_link_receipt_sha256": "c61804c4ef12a9d7109e638b349550d0455b0d50b955fa0726eb662122b010bb",
+    "build_result_sha256": "0d04252d42105f9aaf23dbdd81be8cf35786126e328c46d793ea04682b751c90",
+    "linked_static_archives": 24,
+    "source_policy": "Fresh source-rebuilt pinned reference with explicit modern-toolchain adaptations; not historically binary-identical.",
+    "dependency_test_limit": "GEGL simple suite exit 2 with known test-gegl-tile failure; recipe exit 0 is build success, not a fully green dependency suite.",
+    "post_build_runtime_file_manifest_sha256": "0f0919cf9e52d34df371db9b53ca439278f126b728813a9b49978290151f8c9b",
+    "runtime_manifest_timing": "Completed at 2026-10-16T20:40:40.909022+00:00, after the capture batches; it is not a pre-capture static-library seal. Capture executable before/after seals remain independently recorded."
+  }
+}
