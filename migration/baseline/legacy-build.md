@@ -15,7 +15,8 @@ modules were not found. No configure/build/run/painting success is claimed.
 A later dependency restoration requires a new probe; this dated observation
 must not be rewritten to suggest it succeeded.
 
-Reproduce the check (outputs only the caller-selected report; installs nothing):
+Reproduce the historical check in a disposable clean checkout (installs nothing;
+bootstrap can generate or modify files inside that checkout):
 
 ```sh
 git worktree add --detach ../gimp-painter-legacy afa43fae3e920210146abed514f136fd49f671b5
@@ -83,7 +84,7 @@ close 02.001. A modern GEGL0.4 development package cannot satisfy `gegl-0.3`.
    labels. Runtime compatibility tests remain incomplete and their dependent
    completion gates remain closed.
 
-## Completion gates and current limits
+## Historical gates before recovery (2026-10-01 initial probe)
 
 - 02.001: still needs a verified complete isolated build/dependency lock
 - 02.002: still needs a legacy executable and successful reproducible build log
@@ -97,7 +98,7 @@ close 02.001. A modern GEGL0.4 development package cannot satisfy `gegl-0.3`.
 - 02.015: this recovery procedure is available; the aggregate section gate
   stays open until the required runtime and provenance work is completed
 
-## Recovery update
+## First recovery update (2026-10-01)
 
 The later 2026-10-01 recovery successfully built and installed the old source,
 then ran headless drawing and normal/CloneLayer save/reopen captures. See
@@ -107,3 +108,142 @@ probe above is historical; it is no longer the current dependency availability
 status. FilterLayer execution/save succeeded, but the reference reader crashes
 on its output, so successful FilterLayer roundtrip and later runtime gates
 remain unverified.
+
+
+## Current recovery acceptance review (2026-10-15)
+
+The historical limits above and in `legacy/README.md` describe earlier attempts.
+The current `legacy/replay-20261015/report.json` and its sealed build logs supersede
+“no second pristine replay”: the unchanged recipe completed end-to-end with new
+pinned GIMP/babl/GEGL checkouts and a new dependency extraction. All 560 cached
+archives matched the signed snapshot package lock. babl passed 23 tests. GEGL's
+simple suite passed 28, skipped two, and failed `test-gegl-tile` (exit 2). The
+recipe intentionally retained that failure and continued; overall recipe exit 0
+is build success, not a green dependency suite. Installed GIMP 2.8.23 has SHA-256
+`85bc4733504509eb7b5a215cd0d19f6b6af5c4a23cd6112987de92acf3d230a1`.
+
+The separate positive builtin FilterLayer capture exercised original writer and
+reader and compared every cache byte with the original PDB control. The installed
+uninstrumented app independently reopened it (exit 0 and explicit pass marker).
+The direct plug-in-edge XCF still crashes the same original reader (exit 139).
+The builtin capture retains pending=1 and zero completion callbacks. Neither
+result is a universal scheduler or XCF compatibility pass.
+
+Later rotation and timeline packages contain genuine GUI-initialized observations
+on authenticated loopback Xvfb; the initial failed UNIX-socket attempt remains
+historical evidence. Rotation's two GUI captures both end in teardown segfaults
+(command_exit=-11) after the measured rows are written. A captured GUI callback
+is not physical device testing or a clean GUI lifecycle. Consult each package's
+README, reconstruction instructions and sealed raw logs for its exact scope.
+
+### Dependency repair: executable procedure
+
+Run from the migration repository root on the recorded Debian 13 amd64 toolchain.
+Use a new absolute, shell-safe directory without whitespace, outside the migration
+checkout and all active modern prefixes. Never run the recipe against the active
+migration source, an observer-patched tree, or the only copy of an old work.
+
+```sh
+set -e
+ROOT="$PWD"
+WORK=/absolute/path/to/new-legacy-recovery
+test ! -e "$WORK" || exit 1
+mkdir -p "$WORK"
+python3 "$ROOT/tools/prepare-linux-build-deps.py" --directory "$WORK/deps" \
+  --lock "$ROOT/migration/baseline/legacy/debian13-package-lock.json"
+git clone https://github.com/seagetch/gimp-painter.git "$WORK/gimp"
+git -C "$WORK/gimp" checkout --detach afa43fae3e920210146abed514f136fd49f671b5
+git clone https://github.com/GNOME/babl.git "$WORK/babl"
+git -C "$WORK/babl" checkout --detach e92ced2c54250af1dddb58f76ff1678d74a30dcf
+git clone https://github.com/GNOME/gegl.git "$WORK/gegl"
+git -C "$WORK/gegl" checkout --detach 29254dcd875d271043aba57d0e6ebc48ec63c013
+python3 "$ROOT/tools/probe_legacy_build.py" --source "$WORK/gimp" \
+  --output "$WORK/pre-build-probe.json"
+JOBS=4 bash "$ROOT/tools/build_legacy_reference.sh" "$WORK/deps" "$WORK/build" \
+  "$WORK/gimp" "$WORK/babl" "$WORK/gegl" > "$WORK/rebuild.log" 2>&1
+```
+
+Check every exit status; do not continue after a failed acquisition, checkout or
+build. The probe here deliberately omits --bootstrap so it leaves the build input
+clean. For a bootstrap probe, use another disposable checkout. The wrapper checks
+pinned HEAD and tracked cleanliness before applying its recorded patches. Use
+fresh clones, since that check does not reject unrelated untracked files. After a
+failed build, preserve the directory and logs; start another fresh directory for
+a clean replay rather than reapplying patches over the changed tree. The script
+has no per-stage resume contract and uses /usr/bin/gcc and /usr/bin/g++; record
+and verify those host compiler versions/bytes against the existing build report.
+The package lock does not make an arbitrary host or historical Flatpak runtime
+bit-identical. Network acquisition may require an available authorized upstream
+or verified cache; a blocked download is not a successful dependency repair.
+
+The exact measured invocation and all stage command lines are in the replay
+report and build-log archive. New paths produce a new run: keep its own source
+pins, package verification, relocated-tool manifest, build logs and binary hash.
+Do not replace failed historical logs with the new successful result.
+
+### Existing environment: verify before reuse
+
+An available environment can avoid another rebuild. Source its generated
+build/env.sh with Bash (temporarily disable nounset if enabled), then verify the
+installed binary hash, --version, package lock, dependency resolution, recorded
+source patches and required plugins. Missing provenance makes it exploratory.
+Keep installed original binaries separate from any later capture instrumentation.
+Use fresh GIMP2_DIRECTORY profiles and copies of controlled inputs; never load
+private original work in a destructive capture. A version string alone is not
+source identity, and a matching executable hash alone does not verify its shared
+libraries, plugins or user profile.
+
+For an independent original-reader smoke check, adapt only the file path in
+`../fixtures/legacy-filter-positive/independent-reopen.scm` into a new local copy.
+Use the checked fixture from that package, not a user file. Record the adapted
+script hash. With BUILD pointing at the verified build and SCRIPT at this copy:
+
+```sh
+set +u
+source "$BUILD/env.sh"
+PROFILE=$(mktemp -d)
+GIMP2_DIRECTORY="$PROFILE" timeout 60 "$BUILD/prefix/bin/gimp-2.8" \
+  --no-interface --no-shm --batch-interpreter=plug-in-script-fu-eval \
+  -b "(load \"$SCRIPT\")" > "$PROFILE/reopen.log" 2>&1
+status=$?
+printf '%s\n' "$status" > "$PROFILE/exit-code"
+```
+
+Run that diagnostic block without errexit, so failure status is recorded, and
+restore the caller's shell options afterward. Require exit 0 AND the explicit
+INDEPENDENT_ORIGINAL_READER_REOPEN_PASS marker, with no batch execution error.
+Retain the complete log and profile path. Version/startup alone does not test
+painting or editable save/reopen. Reproduce the separate normal/CloneLayer,
+positive FilterLayer, stroke, layer, rotation and timeline captures only by their
+own recorded build/run contracts. Local `*-record.sh` scripts are execution
+records with absolute paths, not universally relocatable entry points.
+
+### Static fallback and unresolved gates
+
+If dependencies, display, provenance or runtime behavior block a measurement,
+retain the failure and continue source extraction from the pinned commit only.
+`tools/freeze_legacy_assets.py` and `../fixtures/strokes/FORMAT.md` provide the
+source-asset and input contracts. Label extracted formulas and Cairo/source-only
+observations static; they never replace original writer/reader, GUI event or
+asynchronous execution observations.
+
+Available bounded evidence now covers 02.001–02.013; the task ledger and each
+package define acceptance, not this recovery procedure. Rights and source notices
+are reviewed under 02.014. 02.015 may be accepted for its written dependency-repair,
+existing-environment and static-fallback procedure only after both 02.014 and
+02.015/recovery-procedure dependencies are accepted. This review does not set task
+status or grant redistribution rights. It does not require repairing every old
+bug as a precondition for documenting recovery.
+
+Unclosed runtime/port gates remain explicit: no pristine historical binary identity;
+no green original GIMP test suite (the historical test-xcf startup critical abort
+remains, and the second replay did not rerun it); no passing direct edge-reader
+roundtrip; no clean rotation GUI shutdown; no physical mouse/tablet equivalence;
+no universal cancellation, responsiveness/p95/p99 or all-feature scheduler pass;
+no modern-port pixel/behavior parity from old-reference evidence alone. Startup
+GValue criticals, obsolete GEGL cache warnings, plugin registration, font cache
+and Script-Fu shutdown diagnostics remain retained in the corresponding logs.
+
+The offline `test_legacy_recovery_procedure.py` checks the recorded recipe/lock,
+archived commands and outcomes, and the positive/negative separation. It does not
+execute GIMP or close any acceptance dependency.
