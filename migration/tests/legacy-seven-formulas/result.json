@@ -1,0 +1,22 @@
+{
+  "old_commit": "afa43fae3e920210146abed514f136fd49f671b5",
+  "scope": "source-extracted unchanged old RGBA functions versus source-extracted production kernel; not GUI/full-app proof",
+  "sanitizers": false,
+  "function_sha256": {
+    "replace_inten_pixels": "d676a6cc5eae03ad8453e968afac57fbafb6af1a91d26928832280b38af654e3",
+    "erase_inten_pixels": "e4bd149461ce4457d60ae60d7e4455d93f21ba59d7f3a363d9419a930815dcba",
+    "anti_erase_inten_pixels": "810453ebc96d3603191638532b62faf5d081ba839ee7171cf18d7d35a880886f",
+    "gimp_composite_src_in_any_any_any_generic": "4355d910003a414bd90fff9ebe623082c2d1f7c05b82ac8944f138d38bd32292",
+    "gimp_composite_src_out_any_any_any_generic": "54a899fe18a66b07d396d89eeb0573cef4b1512647be3b415f36c73129e57231"
+  },
+  "legacy_source_sha256": {
+    "app/paint-funcs/paint-funcs.c": "41a5b121529718048b8cf3d6a9edd5bf67fb7e0734664393ea3c2a497d6d1cb5",
+    "app/composite/gimp-composite-generic.c": "d8453437bb8c72b3669016ee71678666788840ab3ae1a4b2142328734b4739dd",
+    "app/paint-funcs/paint-funcs-utils.h": "12917e95afa5dabb2ce961d2978878cd72c12632e5ff90426aa6eba14f04cc14"
+  },
+  "production_sha256": "813d3ae4f4eec7fd37bda4b6fbed085bf92689cd3f923d16bbc99bc79349dd28",
+  "test_sha256": "af35e69f43cf22d010095a1bede0e16c30b959a5600155f25e461d88b9ebb5fc",
+  "exit_code": 0,
+  "stdout": "mode 23: 4228768 comparisons passed (100000 include both output aliases)\nmode 24: 4228768 comparisons passed (100000 include both output aliases)\nmode 25: 4228768 comparisons passed (100000 include both output aliases)\nmode 26: 4228768 comparisons passed (100000 include both output aliases)\nmode 27: 4228768 comparisons passed (100000 include both output aliases)\nmode 28: 4228768 comparisons passed (100000 include both output aliases)\nmode 29: 4228768 comparisons passed (100000 include both output aliases)\ntotal: 29601376 exact RGBA comparisons\n",
+  "stderr": ""
+}
