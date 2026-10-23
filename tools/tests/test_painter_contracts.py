@@ -26,7 +26,7 @@ class HandleProofTests(unittest.TestCase):
                       for q in p.get('predecessors', []) + [p]]:
             source = ROOT / proof['directory']
             dest = self.root / proof['directory']
-            dest.mkdir(parents=True)
+            dest.mkdir(parents=True, exist_ok=True)
             for name in proof['files']:
                 shutil.copyfile(source / name, dest / name)
             # Immutable tested checkpoint: current source evolution is checked
@@ -85,7 +85,7 @@ class HandleProofTests(unittest.TestCase):
         for row in self.rows:
             if row['legacy_type'] in c.BOUNDED_HANDLE_PROOFS:
                 row['implementation'] = 'TODO'
-        self.assertEqual(2, len(self.check()))
+        self.assertEqual(len(c.BOUNDED_HANDLE_PROOFS), len(self.check()))
 
     def test_incomplete_todo_contract_rejected(self):
         next(r for r in self.rows if r['implementation'] == 'TODO')['contract'] = ''
