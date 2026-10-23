@@ -27,7 +27,9 @@ extern "C" {
 }
 #include "painter/binding-store.hpp"
 #include "widgets/gimpcellrendererpopup-handle.hpp"
+#include <algorithm>
 #include <atomic>
+#include <vector>
 #include <memory>
 #include <string>
 
@@ -551,6 +553,210 @@ static void named_bound_controls_and_teardown () {
   handle.clicked (native_tree.get (), delivery.path, nullptr);
   g_assert_cmpuint (delivery.calls, ==, 1);
 }
+/* The popup delegates pixels, measurement and drawing to GtkCellRendererPixbuf.
+ * These tests exercise that owner with actual parent rendering; closing the
+ * application's PopupSlot is deliberately not the pixel-finalization oracle. */
+static void count_finalized (gpointer data, GObject *) {
+  ++*static_cast<unsigned *> (data);
+}
+static GdkPixbuf *counted_pixbuf (unsigned& finalized, guint32 color) {
+  auto *pixels = gdk_pixbuf_new (GDK_COLORSPACE_RGB, TRUE, 8, 9, 7);
+  g_assert_nonnull (pixels);
+  gdk_pixbuf_fill (pixels, color);
+  g_object_weak_ref (G_OBJECT (pixels), count_finalized, &finalized);
+  return pixels;
+}
+static void assert_pixbuf (GimpCellRendererPopup *cell, GdkPixbuf *expected) {
+  GdkPixbuf *actual = nullptr;
+  g_object_get (cell, "pixbuf", &actual, nullptr);
+  g_assert_true (actual == expected);
+  /* The getter transfers a reference, including for the same-value test. */
+  g_clear_object (&actual);
+}
+struct PixelDraw {
+  GtkWidget *window, *widget;
+  PixelDraw () {
+    window = gtk_window_new (GTK_WINDOW_TOPLEVEL); g_object_ref_sink (window);
+    widget = gtk_tree_view_new ();
+    gtk_container_add (GTK_CONTAINER (window), widget);
+    gtk_widget_show_all (window); gimp_test_run_mainloop_until_idle ();
+    g_assert_true (gtk_widget_get_realized (widget));
+  }
+  ~PixelDraw () {
+    gtk_widget_destroy (window); g_object_unref (window);
+    gimp_test_run_mainloop_until_idle ();
+  }
+  void check (GimpCellRendererPopup *popup, bool empty) {
+    auto *cell = GTK_CELL_RENDERER (popup);
+    for (auto direction : {GTK_TEXT_DIR_LTR, GTK_TEXT_DIR_RTL}) {
+      gtk_widget_set_direction (widget, direction);
+      for (bool sensitive : {true, false}) {
+        gtk_widget_set_sensitive (widget, sensitive);
+        g_object_set (cell, "sensitive", sensitive, nullptr);
+        GtkRequisition minimum {}, natural {};
+        gtk_cell_renderer_get_preferred_size (cell, widget, &minimum, &natural);
+        g_assert_cmpint (minimum.width, >=, 0);
+        g_assert_cmpint (minimum.height, >=, 0);
+        g_assert_cmpint (natural.width, >=, minimum.width);
+        g_assert_cmpint (natural.height, >=, minimum.height);
+        if (empty) {
+          g_assert_cmpint (natural.width, ==, 0);
+          g_assert_cmpint (natural.height, ==, 0);
+        }
+        auto *surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, 64, 64);
+        auto *cr = cairo_create (surface);
+        cairo_set_source_rgb (cr, .125, .25, .375); cairo_paint (cr);
+        cairo_surface_flush (surface);
+        const auto bytes = cairo_image_surface_get_stride (surface) * 64;
+        auto *data = cairo_image_surface_get_data (surface);
+        std::vector<unsigned char> before (data, data + bytes);
+        GdkRectangle area {0, 0, 64, 64};
+        gtk_cell_renderer_render (cell, cr, widget, &area, &area,
+          sensitive ? static_cast<GtkCellRendererState> (0) : GTK_CELL_RENDERER_INSENSITIVE);
+        g_assert_cmpint (cairo_status (cr), ==, CAIRO_STATUS_SUCCESS);
+        cairo_surface_flush (surface);
+        g_assert_cmpint (cairo_surface_status (surface), ==, CAIRO_STATUS_SUCCESS);
+        const bool unchanged = std::equal (before.begin (), before.end (), data);
+        if (empty) g_assert_true (unchanged);
+        else g_assert_false (unchanged);
+        cairo_destroy (cr); cairo_surface_destroy (surface);
+      }
+    }
+    g_object_set (cell, "sensitive", TRUE, nullptr);
+  }
+};
+static void pixbuf_initial_and_empty () {
+  unsigned finalized = 0;
+  {
+    auto cell = CellRendererPopupRef::create ();
+    g_object_weak_ref (G_OBJECT (cell.get ()), count_finalized, &finalized);
+    assert_pixbuf (cell.get (), nullptr);
+    gchar *icon = nullptr; g_object_get (cell.get (), "icon-name", &icon, nullptr);
+    g_assert_cmpstr (icon, ==, GIMP_ICON_MENU_RIGHT); g_free (icon);
+    auto *klass = GTK_CELL_RENDERER_GET_CLASS (cell.get ());
+    auto *parent = static_cast<GtkCellRendererClass *> (g_type_class_peek (GTK_TYPE_CELL_RENDERER_PIXBUF));
+    g_assert_true (klass->render == parent->render);
+    g_assert_true (klass->get_size == parent->get_size);
+    g_assert_true (klass->get_preferred_width == parent->get_preferred_width);
+    g_assert_true (klass->get_preferred_height == parent->get_preferred_height);
+    /* No measurement or draw before this fresh renderer's destruction. */
+  }
+  g_assert_cmpuint (finalized, ==, 1);
+  PixelDraw draw;
+  auto cell = CellRendererPopupRef::create ();
+  assert_pixbuf (cell.get (), nullptr);
+  draw.check (cell.get (), false); // Initial named icon, not an empty image.
+  for (unsigned i = 0; i != 2; ++i) {
+    g_object_set (cell.get (), "pixbuf", nullptr, nullptr);
+    assert_pixbuf (cell.get (), nullptr);
+    draw.check (cell.get (), true);
+  }
+}
+static void pixbuf_replace_same_reset () {
+  PixelDraw draw;
+  unsigned a_final = 0, b_final = 0, cell_final = 0;
+  {
+    auto cell = CellRendererPopupRef::create ();
+    g_object_weak_ref (G_OBJECT (cell.get ()), count_finalized, &cell_final);
+    auto *a = counted_pixbuf (a_final, 0xff3300ff);
+    g_object_set (cell.get (), "pixbuf", a, nullptr); g_object_unref (a);
+    assert_pixbuf (cell.get (), a); draw.check (cell.get (), false);
+    g_assert_cmpuint (a_final, ==, 0);
+    /* Borrowed same-value assignment while the renderer is the sole owner. */
+    g_object_set (cell.get (), "pixbuf", a, nullptr);
+    g_assert_cmpuint (a_final, ==, 0); assert_pixbuf (cell.get (), a);
+    GdkPixbuf *held = nullptr; g_object_get (cell.get (), "pixbuf", &held, nullptr);
+    g_object_set (cell.get (), "pixbuf", held, nullptr); g_object_unref (held);
+    g_assert_cmpuint (a_final, ==, 0); draw.check (cell.get (), false);
+    auto *b = counted_pixbuf (b_final, 0x22ff44ff);
+    g_object_set (cell.get (), "pixbuf", b, nullptr);
+    g_assert_cmpuint (a_final, ==, 1);
+    g_object_unref (b); assert_pixbuf (cell.get (), b);
+    draw.check (cell.get (), false); g_assert_cmpuint (b_final, ==, 0);
+    for (unsigned i = 0; i != 2; ++i) {
+      g_object_set (cell.get (), "pixbuf", nullptr, nullptr);
+      g_assert_cmpuint (b_final, ==, 1); assert_pixbuf (cell.get (), nullptr);
+      draw.check (cell.get (), true);
+    }
+  }
+  g_assert_cmpuint (a_final, ==, 1); g_assert_cmpuint (b_final, ==, 1);
+  g_assert_cmpuint (cell_final, ==, 1);
+}
+static void pixbuf_recovery () {
+  PixelDraw draw;
+  unsigned a_final = 0, b_final = 0, c_final = 0;
+  {
+    auto cell = CellRendererPopupRef::create ();
+    auto *a = counted_pixbuf (a_final, 0xff2200ff);
+    g_object_set (cell.get (), "pixbuf", a, nullptr); g_object_unref (a);
+    draw.check (cell.get (), false);
+    g_object_set (cell.get (), "pixbuf", nullptr, nullptr);
+    g_assert_cmpuint (a_final, ==, 1); draw.check (cell.get (), true);
+    auto *b = counted_pixbuf (b_final, 0x22ff00ff);
+    g_object_set (cell.get (), "pixbuf", b, nullptr); g_object_unref (b);
+    draw.check (cell.get (), false);
+    /* GTK 3.24 uses image-missing fallback for lookup failure. This is NOT
+     * allocator-failure/OOM simulation and does not claim such resilience. */
+    const gchar *missing = "gimp-painter-pixbuf-owner-nonexistent-08-016-9fcecab9";
+    g_assert_false (gtk_icon_theme_has_icon (gtk_icon_theme_get_for_screen (
+      gtk_widget_get_screen (draw.widget)), missing));
+    g_object_set (cell.get (), "icon-name", missing, nullptr);
+    g_assert_cmpuint (b_final, ==, 1); assert_pixbuf (cell.get (), nullptr);
+    draw.check (cell.get (), false);
+    g_object_set (cell.get (), "icon-name", GIMP_ICON_MENU_RIGHT, nullptr);
+    draw.check (cell.get (), false);
+    g_object_set (cell.get (), "pixbuf", nullptr, nullptr); draw.check (cell.get (), true);
+    auto *c = counted_pixbuf (c_final, 0x2255ffff);
+    g_object_set (cell.get (), "pixbuf", c, nullptr); g_object_unref (c);
+    draw.check (cell.get (), false); g_assert_cmpuint (c_final, ==, 0);
+  }
+  g_assert_cmpuint (a_final, ==, 1); g_assert_cmpuint (b_final, ==, 1);
+  g_assert_cmpuint (c_final, ==, 1);
+}
+static void pixbuf_column_finalization (bool column_first) {
+  PixelDraw draw;
+  unsigned pixels_final = 0, cell_final = 0;
+  auto handle = std::make_unique<CellRendererPopupRef> (CellRendererPopupRef::create ());
+  auto *cell = handle->get ();
+  g_object_weak_ref (G_OBJECT (cell), count_finalized, &cell_final);
+  auto *column = gtk_tree_view_column_new (); g_object_ref_sink (column);
+  gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (column), GTK_CELL_RENDERER (cell), FALSE);
+  auto *pixels = counted_pixbuf (pixels_final, 0xff55aaff);
+  g_object_set (cell, "pixbuf", pixels, nullptr); g_object_unref (pixels);
+  draw.check (cell, false);
+  if (column_first) g_object_unref (column);
+  else handle.reset ();
+  g_assert_cmpuint (pixels_final, ==, 0); g_assert_cmpuint (cell_final, ==, 0);
+  assert_pixbuf (cell, pixels); draw.check (cell, false);
+  if (column_first) handle.reset ();
+  else g_object_unref (column);
+  g_assert_cmpuint (pixels_final, ==, 1); g_assert_cmpuint (cell_final, ==, 1);
+}
+static void pixbuf_retained_after_tree_close () {
+  PixelDraw draw;
+  unsigned pixels_final = 0, cell_final = 0;
+  std::unique_ptr<CellRendererPopupRef> handle;
+  {
+    NativeTree tree;
+    handle = std::make_unique<CellRendererPopupRef> (CellRendererPopupRef::retain (tree.cell ()));
+    auto *cell = handle->get ();
+    g_object_weak_ref (G_OBJECT (cell), count_finalized, &cell_final);
+    auto *pixels = counted_pixbuf (pixels_final, 0xff55aaff);
+    g_object_set (cell, "pixbuf", pixels, nullptr); g_object_unref (pixels);
+    gchar *path = tree.path (tree.a);
+    handle->clicked (G_OBJECT (tree.view->view), path, nullptr); g_free (path);
+    g_assert_nonnull (gimp_cell_renderer_popup_get_popup (cell));
+    gtk_widget_destroy (tree.tree);
+    g_assert_true (BindingStore::require (G_OBJECT (cell)).state () == BindingStore::State::closed);
+    g_assert_null (gimp_cell_renderer_popup_get_popup (cell));
+    g_assert_cmpuint (pixels_final, ==, 0); assert_pixbuf (cell, pixels);
+  }
+  g_assert_cmpuint (pixels_final, ==, 0); g_assert_cmpuint (cell_final, ==, 0);
+  draw.check (handle->get (), false);
+  handle.reset ();
+  g_assert_cmpuint (pixels_final, ==, 1); g_assert_cmpuint (cell_final, ==, 1);
+}
+
 int main (int argc, char **argv) {
   g_test_init (&argc, &argv, nullptr);
   if (!gtk_init_check (&argc, &argv)) return GIMP_EXIT_TEST_SKIPPED;
@@ -577,6 +783,12 @@ int main (int argc, char **argv) {
   g_test_add_func ("/painter-popup-handles/named/close-during-emission", [] { named_nested_or_close (true); });
   g_test_add_func ("/painter-popup-handles/named/last-reference-leases", named_last_reference_leases);
   g_test_add_func ("/painter-popup-handles/named/bound-controls-and-teardown", named_bound_controls_and_teardown);
+  g_test_add_func ("/painter-popup-handles/pixbuf/initial-and-empty", pixbuf_initial_and_empty);
+  g_test_add_func ("/painter-popup-handles/pixbuf/replace-same-reset", pixbuf_replace_same_reset);
+  g_test_add_func ("/painter-popup-handles/pixbuf/recovery", pixbuf_recovery);
+  g_test_add_func ("/painter-popup-handles/pixbuf/column-first", [] { pixbuf_column_finalization (true); });
+  g_test_add_func ("/painter-popup-handles/pixbuf/handle-first", [] { pixbuf_column_finalization (false); });
+  g_test_add_func ("/painter-popup-handles/pixbuf/retained-after-tree-close", pixbuf_retained_after_tree_close);
   g_application_run (gimp->app, 0, nullptr);
   const gint result = gimp_core_app_get_exit_status (GIMP_CORE_APP (gimp->app));
   g_application_quit (G_APPLICATION (gimp->app)); g_clear_object (&gimp->app);
