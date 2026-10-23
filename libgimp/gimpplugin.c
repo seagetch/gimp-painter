@@ -138,6 +138,8 @@ typedef struct _GimpPlugInPrivate
   gchar       write_buffer[WRITE_BUFFER_SIZE];
   gulong      write_buffer_index;
 
+  gboolean    main_proc_returned;
+
   guint       persistent_source_id;
 
   gchar      *translation_domain_name;
@@ -965,7 +967,12 @@ _gimp_plug_in_quit (GimpPlugIn *plug_in)
 
   _gimp_shm_close ();
 
-  gp_quit_write (priv->write_channel, plug_in);
+  /* A successfully flushed main return already ends the protocol session.
+   * The core closes its pipes when handling it, so a subsequent GP_QUIT
+   * can race that close. Query, init and early exits still need GP_QUIT.
+   */
+  if (! priv->main_proc_returned)
+    gp_quit_write (priv->write_channel, plug_in);
 }
 
 GIOChannel *
@@ -1501,6 +1508,8 @@ gimp_plug_in_main_proc_run (GimpPlugIn *plug_in,
   if (! gp_proc_return_write (priv->write_channel,
                               &proc_return, plug_in))
     gimp_quit ();
+
+  priv->main_proc_returned = TRUE;
 
   _gimp_gp_params_free (proc_return.params, proc_return.n_params, TRUE);
 }

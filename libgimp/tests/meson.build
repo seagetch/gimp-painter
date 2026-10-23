@@ -6,6 +6,29 @@ if not meson.can_run_host_binaries()
   subdir_done()
 endif
 
+# The fixture uses the native GimpPlugIn lifecycle and real wire protocol.
+# POSIX auxiliary pipes make the close-after-return race deterministic without
+# changing the normal GIMP host, library timing, or shutdown behavior.
+if host_machine.system() != 'windows'
+  plug_in_protocol_fixture = executable('plug-in-protocol-fixture',
+    'plug-in-protocol-fixture.c',
+    dependencies: [ libgimp_dep, pango ],
+    install: false)
+  plug_in_protocol_test = executable('test-plug-in-protocol',
+    'test-plug-in-protocol.c',
+    dependencies: [ libgimp_dep, pango ],
+    install: false)
+  plug_in_protocol_env = gimp_run_env
+  plug_in_protocol_env.set('GIMP_TEST_PROTOCOL_FIXTURE',
+                          plug_in_protocol_fixture.full_path())
+  plug_in_protocol_env.unset('GIMP_TEST_EXPECT_REDUNDANT_QUIT')
+  test('plug-in-protocol', plug_in_protocol_test,
+    env: plug_in_protocol_env,
+    depends: plug_in_protocol_fixture,
+    suite: ['libgimp', 'C'],
+    timeout: 180)
+endif
+
 # Config creation only needs libgimp; no GIMP process or display is required.
 procedure_config_test = executable('test-procedure-config',
   'test-procedure-config.c',

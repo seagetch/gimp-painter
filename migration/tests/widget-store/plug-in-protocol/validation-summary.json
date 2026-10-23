@@ -1,0 +1,853 @@
+{
+  "base_commit": "4d7fc9f73311f6c35480a9ddfeabfac3a4108184",
+  "base_tree": "16951f08bf31fd40f6c9a083961e477af5123a5c",
+  "builds": [
+    {
+      "actual_compile_and_link_verified": true,
+      "binary_sha256": {
+        "gimp-3.0": "1455f824ee1707a5852ac76afae1ef3cf6d659f19891258c736541d8ad494be9",
+        "plug-in-protocol-fixture": "a3284dc06254e3c9a240cccd5a9224d52f79e9297807a0a71fafabe9fc6b2a67",
+        "test-plug-in-protocol": "b3eca56859b58837888111af3fc4da51a89fc90a53916fa660ecbc4ff3ece2f6"
+      },
+      "capture_sha256": "6723b9c594d2478023b7bc719a098594ce8f910612b5e30ffa73d60a35707c3b",
+      "mode": "native",
+      "object_sha256": {
+        "libgimp/gimpplugin.c": "dbef1320d7066c9dde9efa12f3b0de2b71639c36e51d711544a87a6afd04f0db",
+        "libgimp/tests/plug-in-protocol-fixture.c": "0f5a92baffd8ca7b43f7061020beae43ebefcba0da460c65e60d3c0d910e31e3",
+        "libgimp/tests/test-plug-in-protocol.c": "0a2fc638f3d4062b49a3fc11453a222b5fc713590e32dd56e209e3e2326f8c44"
+      },
+      "stage": "baseline"
+    },
+    {
+      "actual_compile_and_link_verified": true,
+      "binary_sha256": {
+        "gimp-3.0": "e8dfd1b5ccdce1756d3b40759d1c85e1e927ed7456d9ce81a9b0f5b29389ae85",
+        "plug-in-protocol-fixture": "a3284dc06254e3c9a240cccd5a9224d52f79e9297807a0a71fafabe9fc6b2a67",
+        "test-plug-in-protocol": "b3eca56859b58837888111af3fc4da51a89fc90a53916fa660ecbc4ff3ece2f6"
+      },
+      "capture_sha256": "afb52c1f56fc6d264cf2cbb60bff9ad983899fb0403c8ec133be7e9599a142a7",
+      "mode": "native",
+      "object_sha256": {
+        "libgimp/gimpplugin.c": "367b47a003cedea5bb938cb3ea1630cdbe926b6a79503d8c8c3b40ee3041a83f",
+        "libgimp/tests/plug-in-protocol-fixture.c": "0f5a92baffd8ca7b43f7061020beae43ebefcba0da460c65e60d3c0d910e31e3",
+        "libgimp/tests/test-plug-in-protocol.c": "0a2fc638f3d4062b49a3fc11453a222b5fc713590e32dd56e209e3e2326f8c44"
+      },
+      "stage": "candidate"
+    },
+    {
+      "actual_compile_and_link_verified": true,
+      "binary_sha256": {
+        "gimp-3.0": "a2693bf54b56b219ebb5b5c16a8532517cc68f47f2f243a631d55e38dbb5ee96",
+        "plug-in-protocol-fixture": "e94cb76dca169ec76b28b1c68151b479c8c9dcf4558f020aabe8ae0f4309f888",
+        "test-plug-in-protocol": "57d6d478672e7ba4f2d1817361e545cebbe68f044747e357a5d2d37321058dba"
+      },
+      "capture_sha256": "db9ab35c57eaff25a442a0848d95dc1a7dce3d65a766e2b2648d8fb41ee6e723",
+      "mode": "asan",
+      "object_sha256": {
+        "libgimp/gimpplugin.c": "d4d1413734f6ea4774887ab8c42ab55132343e6d00d66d1d57c1aaf32b5f2eaf",
+        "libgimp/tests/plug-in-protocol-fixture.c": "6f0dadc7a39528a5b87c7784a36d22a4e673a83899dcec2b1216e4eec087cd30",
+        "libgimp/tests/test-plug-in-protocol.c": "30b4117c5f2557df637e76278f8a2bde0f3f46364019d6acc371498335232b39"
+      },
+      "stage": "baseline"
+    },
+    {
+      "actual_compile_and_link_verified": true,
+      "binary_sha256": {
+        "gimp-3.0": "9d92fc17c172fc0b38355e4c70c943992bc3e2b781e72505fa8570f63387167c",
+        "plug-in-protocol-fixture": "e94cb76dca169ec76b28b1c68151b479c8c9dcf4558f020aabe8ae0f4309f888",
+        "test-plug-in-protocol": "57d6d478672e7ba4f2d1817361e545cebbe68f044747e357a5d2d37321058dba"
+      },
+      "capture_sha256": "26f923fac535a2b8f131de3987c5febaddbdbb5fa88238e852fbdac2e769b04f",
+      "mode": "asan",
+      "object_sha256": {
+        "libgimp/gimpplugin.c": "8daefea6cbd2d52fc58dc738b28356a56e3292fcf53267187d143a901c270865",
+        "libgimp/tests/plug-in-protocol-fixture.c": "6f0dadc7a39528a5b87c7784a36d22a4e673a83899dcec2b1216e4eec087cd30",
+        "libgimp/tests/test-plug-in-protocol.c": "30b4117c5f2557df637e76278f8a2bde0f3f46364019d6acc371498335232b39"
+      },
+      "stage": "candidate"
+    }
+  ],
+  "diagnostic_checker_includes_LibGimp": true,
+  "earlier_attempts_preserved": true,
+  "limits": [
+    "Bounded libgimp main-return lifecycle prerequisite; no full DnD clean claim.",
+    "All 93 original 08.017 source duties remain TODO; original completion remains 140/661 and all three ledgers remain unchanged.",
+    "The earlier orientation checker omitted the LibGimp warning domain. Historical orientation receipts remain preserved; their warning-clean interpretation is explicitly corrected.",
+    "Older orientation acceptance also omitted inherited GIMP-Error gradient-save diagnostics in 11 of 12 orientation rows in each mode. Those gradient/XCF fixture issues are a separate prerequisite and are not fixed or accepted by this protocol repair.",
+    "Native Linux and address,undefined builds only; leak detection is disabled and third-party libraries are not instrumented.",
+    "Successful GP_PROC_RETURN is terminal. Query, init, early exit, genuine failed writes, and temporary returns retain their prior behavior.",
+    "The one explicitly named recoverable failed-write control uses fatal-criticals to inspect two existing warnings. Ordinary successful paths keep fatal-warnings.",
+    "No Windows, GIR, physical drag transport, full migration acceptance, or unchanged historical DnD acceptance is inferred.",
+    "Root alone verifies remote preimages, new-path absence, final authorization, preservation and publication. This package makes no network calls."
+  ],
+  "pending_gates": [],
+  "protocol_runs": [
+    {
+      "binary_sha256": {
+        "gimp-3.0": "1455f824ee1707a5852ac76afae1ef3cf6d659f19891258c736541d8ad494be9",
+        "gimpbase-3.0": "110fdb14a3f7ca4a6d6fcb697e287f5bd22f1e2a8de2e7161cbc110fcc404a5a",
+        "gimpcolor-3.0": "751cb472820cd025ad77072159e34fe733642bd2b8fba0178ed70438778337ec",
+        "gimpconfig-3.0": "f155dd26da85937b8d3ce94356e673c13c38a8332e96ff41044397d33ee4d88d",
+        "plug-in-protocol-fixture": "a3284dc06254e3c9a240cccd5a9224d52f79e9297807a0a71fafabe9fc6b2a67",
+        "test-plug-in-protocol": "b3eca56859b58837888111af3fc4da51a89fc90a53916fa660ecbc4ff3ece2f6"
+      },
+      "cases_passed": 0,
+      "child_evidence_files": 5,
+      "classification": "PRECISE_BASELINE_RED",
+      "end_utc": "2026-10-13T08:29:37.371024+00:00",
+      "kind": "close",
+      "meson_exit": 1,
+      "mode": "native",
+      "ordinary_no_wrapper": false,
+      "process_exit": -6,
+      "record_sha256": "2279d0e62376c1f31e9747c05937883698e715605344e6db5e7c117978268dba",
+      "result_sha256": "5450e3ccc0eddc049d4a0f7d26aa5cd2a2b9ea1088734232f9a846067cd71ee3",
+      "run": "protocol-native-baseline-close-v2",
+      "skip_count": 0,
+      "source64_sha256": "2161d57980aabcc23cada42d32ab0b69b41297e60edeb0b6bb679eb7ff86c00c",
+      "stage": "baseline",
+      "start_utc": "2026-10-13T08:29:37.018690+00:00",
+      "unexpected_diagnostics": 0
+    },
+    {
+      "binary_sha256": {
+        "gimp-3.0": "1455f824ee1707a5852ac76afae1ef3cf6d659f19891258c736541d8ad494be9",
+        "gimpbase-3.0": "110fdb14a3f7ca4a6d6fcb697e287f5bd22f1e2a8de2e7161cbc110fcc404a5a",
+        "gimpcolor-3.0": "751cb472820cd025ad77072159e34fe733642bd2b8fba0178ed70438778337ec",
+        "gimpconfig-3.0": "f155dd26da85937b8d3ce94356e673c13c38a8332e96ff41044397d33ee4d88d",
+        "plug-in-protocol-fixture": "a3284dc06254e3c9a240cccd5a9224d52f79e9297807a0a71fafabe9fc6b2a67",
+        "test-plug-in-protocol": "b3eca56859b58837888111af3fc4da51a89fc90a53916fa660ecbc4ff3ece2f6"
+      },
+      "cases_passed": 0,
+      "child_evidence_files": 5,
+      "classification": "PRECISE_BASELINE_RED",
+      "end_utc": "2026-10-13T08:29:37.792037+00:00",
+      "kind": "open",
+      "meson_exit": 1,
+      "mode": "native",
+      "ordinary_no_wrapper": false,
+      "process_exit": -6,
+      "record_sha256": "ede1be2be026570ceea6d23d1f52743c4e55f6bb536d79fb5b5a14a95c1a9649",
+      "result_sha256": "828357e65099aba2ec297580f47263fb9855bb56b2cf8016a9c9c9d12def80c9",
+      "run": "protocol-native-baseline-open-v2",
+      "skip_count": 0,
+      "source64_sha256": "2161d57980aabcc23cada42d32ab0b69b41297e60edeb0b6bb679eb7ff86c00c",
+      "stage": "baseline",
+      "start_utc": "2026-10-13T08:29:37.440901+00:00",
+      "unexpected_diagnostics": 0
+    },
+    {
+      "binary_sha256": {
+        "gimp-3.0": "1455f824ee1707a5852ac76afae1ef3cf6d659f19891258c736541d8ad494be9",
+        "gimpbase-3.0": "110fdb14a3f7ca4a6d6fcb697e287f5bd22f1e2a8de2e7161cbc110fcc404a5a",
+        "gimpcolor-3.0": "751cb472820cd025ad77072159e34fe733642bd2b8fba0178ed70438778337ec",
+        "gimpconfig-3.0": "f155dd26da85937b8d3ce94356e673c13c38a8332e96ff41044397d33ee4d88d",
+        "plug-in-protocol-fixture": "a3284dc06254e3c9a240cccd5a9224d52f79e9297807a0a71fafabe9fc6b2a67",
+        "test-plug-in-protocol": "b3eca56859b58837888111af3fc4da51a89fc90a53916fa660ecbc4ff3ece2f6"
+      },
+      "cases_passed": 12,
+      "child_evidence_files": 60,
+      "classification": "BASELINE_CHARACTERIZATION_PASS",
+      "end_utc": "2026-10-13T08:29:38.363238+00:00",
+      "kind": "all",
+      "meson_exit": 0,
+      "mode": "native",
+      "ordinary_no_wrapper": false,
+      "process_exit": 0,
+      "record_sha256": "5e125fcd0daaa26da995fbb5a431f3c87a323dc7d3c4b2d4eb0a22895ff99f52",
+      "result_sha256": "f9eaff71c51775b7e6ebb3c8e793c0999dc73daa340fe0c40562dfa56f7b9546",
+      "run": "protocol-native-baseline-all-v2",
+      "skip_count": 0,
+      "source64_sha256": "2161d57980aabcc23cada42d32ab0b69b41297e60edeb0b6bb679eb7ff86c00c",
+      "stage": "baseline",
+      "start_utc": "2026-10-13T08:29:37.852419+00:00",
+      "unexpected_diagnostics": 0
+    },
+    {
+      "binary_sha256": {
+        "gimp-3.0": "e8dfd1b5ccdce1756d3b40759d1c85e1e927ed7456d9ce81a9b0f5b29389ae85",
+        "gimpbase-3.0": "110fdb14a3f7ca4a6d6fcb697e287f5bd22f1e2a8de2e7161cbc110fcc404a5a",
+        "gimpcolor-3.0": "751cb472820cd025ad77072159e34fe733642bd2b8fba0178ed70438778337ec",
+        "gimpconfig-3.0": "f155dd26da85937b8d3ce94356e673c13c38a8332e96ff41044397d33ee4d88d",
+        "plug-in-protocol-fixture": "a3284dc06254e3c9a240cccd5a9224d52f79e9297807a0a71fafabe9fc6b2a67",
+        "test-plug-in-protocol": "b3eca56859b58837888111af3fc4da51a89fc90a53916fa660ecbc4ff3ece2f6"
+      },
+      "cases_passed": 12,
+      "child_evidence_files": 60,
+      "classification": "PASS",
+      "end_utc": "2026-10-13T08:34:10.698421+00:00",
+      "kind": "all",
+      "meson_exit": 0,
+      "mode": "native",
+      "ordinary_no_wrapper": false,
+      "process_exit": 0,
+      "record_sha256": "098f353c9fe21c3da52bba4625d7c9828322f1127f30940fdb108ab2fe8c6053",
+      "result_sha256": "1884b3646ddd0687316711840d1cac04456338205e99eb1458d7f36140689630",
+      "run": "protocol-native-candidate-all-v2",
+      "skip_count": 0,
+      "source64_sha256": "89426403394710e7756443f22a4bde36f301e7da16ce8461b902dac6f858f6d8",
+      "stage": "candidate",
+      "start_utc": "2026-10-13T08:34:10.169044+00:00",
+      "unexpected_diagnostics": 0
+    },
+    {
+      "binary_sha256": {
+        "gimp-3.0": "e8dfd1b5ccdce1756d3b40759d1c85e1e927ed7456d9ce81a9b0f5b29389ae85",
+        "gimpbase-3.0": "110fdb14a3f7ca4a6d6fcb697e287f5bd22f1e2a8de2e7161cbc110fcc404a5a",
+        "gimpcolor-3.0": "751cb472820cd025ad77072159e34fe733642bd2b8fba0178ed70438778337ec",
+        "gimpconfig-3.0": "f155dd26da85937b8d3ce94356e673c13c38a8332e96ff41044397d33ee4d88d",
+        "plug-in-protocol-fixture": "a3284dc06254e3c9a240cccd5a9224d52f79e9297807a0a71fafabe9fc6b2a67",
+        "test-plug-in-protocol": "b3eca56859b58837888111af3fc4da51a89fc90a53916fa660ecbc4ff3ece2f6"
+      },
+      "cases_passed": 12,
+      "child_evidence_files": 0,
+      "classification": "PASS",
+      "end_utc": "2026-10-13T08:36:17.861087+00:00",
+      "kind": "all",
+      "meson_exit": 0,
+      "mode": "native",
+      "ordinary_no_wrapper": true,
+      "process_exit": 0,
+      "record_sha256": "9dc27471d2a5cce614b9a3e503c37f2f7141e5d4e709e4bd54c061d6978045cc",
+      "result_sha256": "46fa30baf0341f5c363de1d3a3308545a077288e473d6b5e99d37a888f9fec6e",
+      "run": "protocol-native-ordinary",
+      "skip_count": 0,
+      "source64_sha256": "89426403394710e7756443f22a4bde36f301e7da16ce8461b902dac6f858f6d8",
+      "stage": "candidate",
+      "start_utc": "2026-10-13T08:36:17.317505+00:00",
+      "unexpected_diagnostics": 0
+    },
+    {
+      "binary_sha256": {
+        "gimp-3.0": "a2693bf54b56b219ebb5b5c16a8532517cc68f47f2f243a631d55e38dbb5ee96",
+        "gimpbase-3.0": "35fdfaa9e6039af01826222f12513c466b39fd9c86fb5ce6fa49550defa0455e",
+        "gimpcolor-3.0": "6a43831dd7931de32e7fa0f7733f90490103bd3b0e153bb266343a8465d15bea",
+        "gimpconfig-3.0": "05a22a34cded5271d401a5a92603b8c7a08b815ec2fe7c3d924b4ed21783818e",
+        "plug-in-protocol-fixture": "e94cb76dca169ec76b28b1c68151b479c8c9dcf4558f020aabe8ae0f4309f888",
+        "test-plug-in-protocol": "57d6d478672e7ba4f2d1817361e545cebbe68f044747e357a5d2d37321058dba"
+      },
+      "cases_passed": 0,
+      "child_evidence_files": 5,
+      "classification": "PRECISE_BASELINE_RED",
+      "end_utc": "2026-10-13T08:30:10.011848+00:00",
+      "kind": "close",
+      "meson_exit": 1,
+      "mode": "asan",
+      "ordinary_no_wrapper": false,
+      "process_exit": -6,
+      "record_sha256": "acc80560635cd2c24d7bd83e5fe65dd53fb9fa48a8dba09e123721c14386600f",
+      "result_sha256": "7ca3cf6713fde91135e3a7697583b9d3566dcb5aa436b70bee29d6ee0570c444",
+      "run": "protocol-asan-baseline-close-v2",
+      "skip_count": 0,
+      "source64_sha256": "2161d57980aabcc23cada42d32ab0b69b41297e60edeb0b6bb679eb7ff86c00c",
+      "stage": "baseline",
+      "start_utc": "2026-10-13T08:30:09.589272+00:00",
+      "unexpected_diagnostics": 0
+    },
+    {
+      "binary_sha256": {
+        "gimp-3.0": "a2693bf54b56b219ebb5b5c16a8532517cc68f47f2f243a631d55e38dbb5ee96",
+        "gimpbase-3.0": "35fdfaa9e6039af01826222f12513c466b39fd9c86fb5ce6fa49550defa0455e",
+        "gimpcolor-3.0": "6a43831dd7931de32e7fa0f7733f90490103bd3b0e153bb266343a8465d15bea",
+        "gimpconfig-3.0": "05a22a34cded5271d401a5a92603b8c7a08b815ec2fe7c3d924b4ed21783818e",
+        "plug-in-protocol-fixture": "e94cb76dca169ec76b28b1c68151b479c8c9dcf4558f020aabe8ae0f4309f888",
+        "test-plug-in-protocol": "57d6d478672e7ba4f2d1817361e545cebbe68f044747e357a5d2d37321058dba"
+      },
+      "cases_passed": 0,
+      "child_evidence_files": 5,
+      "classification": "PRECISE_BASELINE_RED",
+      "end_utc": "2026-10-13T08:30:10.457810+00:00",
+      "kind": "open",
+      "meson_exit": 1,
+      "mode": "asan",
+      "ordinary_no_wrapper": false,
+      "process_exit": -6,
+      "record_sha256": "1932e5c1aa0df4b82159753f52435e10943df1f1f3d08c0b6ad66d40341fb12b",
+      "result_sha256": "b6081f93007caa9ce466fa1f780847f18194dfe36192c64e6c89187000f11647",
+      "run": "protocol-asan-baseline-open-v2",
+      "skip_count": 0,
+      "source64_sha256": "2161d57980aabcc23cada42d32ab0b69b41297e60edeb0b6bb679eb7ff86c00c",
+      "stage": "baseline",
+      "start_utc": "2026-10-13T08:30:10.080295+00:00",
+      "unexpected_diagnostics": 0
+    },
+    {
+      "binary_sha256": {
+        "gimp-3.0": "a2693bf54b56b219ebb5b5c16a8532517cc68f47f2f243a631d55e38dbb5ee96",
+        "gimpbase-3.0": "35fdfaa9e6039af01826222f12513c466b39fd9c86fb5ce6fa49550defa0455e",
+        "gimpcolor-3.0": "6a43831dd7931de32e7fa0f7733f90490103bd3b0e153bb266343a8465d15bea",
+        "gimpconfig-3.0": "05a22a34cded5271d401a5a92603b8c7a08b815ec2fe7c3d924b4ed21783818e",
+        "plug-in-protocol-fixture": "e94cb76dca169ec76b28b1c68151b479c8c9dcf4558f020aabe8ae0f4309f888",
+        "test-plug-in-protocol": "57d6d478672e7ba4f2d1817361e545cebbe68f044747e357a5d2d37321058dba"
+      },
+      "cases_passed": 12,
+      "child_evidence_files": 60,
+      "classification": "BASELINE_CHARACTERIZATION_PASS",
+      "end_utc": "2026-10-13T08:30:11.238101+00:00",
+      "kind": "all",
+      "meson_exit": 0,
+      "mode": "asan",
+      "ordinary_no_wrapper": false,
+      "process_exit": 0,
+      "record_sha256": "d9bd4d88d4a3c7e2468c780e4e08ca0287ec6d5a21599c19898f0bfebea341dc",
+      "result_sha256": "936f324e7aad2b374112f54cc4de1be35a4e5b9d36730e3b0c64eb446e566f76",
+      "run": "protocol-asan-baseline-all-v2",
+      "skip_count": 0,
+      "source64_sha256": "2161d57980aabcc23cada42d32ab0b69b41297e60edeb0b6bb679eb7ff86c00c",
+      "stage": "baseline",
+      "start_utc": "2026-10-13T08:30:10.526933+00:00",
+      "unexpected_diagnostics": 0
+    },
+    {
+      "binary_sha256": {
+        "gimp-3.0": "9d92fc17c172fc0b38355e4c70c943992bc3e2b781e72505fa8570f63387167c",
+        "gimpbase-3.0": "35fdfaa9e6039af01826222f12513c466b39fd9c86fb5ce6fa49550defa0455e",
+        "gimpcolor-3.0": "6a43831dd7931de32e7fa0f7733f90490103bd3b0e153bb266343a8465d15bea",
+        "gimpconfig-3.0": "05a22a34cded5271d401a5a92603b8c7a08b815ec2fe7c3d924b4ed21783818e",
+        "plug-in-protocol-fixture": "e94cb76dca169ec76b28b1c68151b479c8c9dcf4558f020aabe8ae0f4309f888",
+        "test-plug-in-protocol": "57d6d478672e7ba4f2d1817361e545cebbe68f044747e357a5d2d37321058dba"
+      },
+      "cases_passed": 12,
+      "child_evidence_files": 60,
+      "classification": "PASS",
+      "end_utc": "2026-10-13T08:34:11.435120+00:00",
+      "kind": "all",
+      "meson_exit": 0,
+      "mode": "asan",
+      "ordinary_no_wrapper": false,
+      "process_exit": 0,
+      "record_sha256": "d95d3db284236fc512ac330fd0b98ec2878a9f4c45c49e97af47782d140c34b6",
+      "result_sha256": "1e458d24185c0478b5cd5846109678fe263af918f7a780b74b233fa00ab346e2",
+      "run": "protocol-asan-candidate-all-v2",
+      "skip_count": 0,
+      "source64_sha256": "89426403394710e7756443f22a4bde36f301e7da16ce8461b902dac6f858f6d8",
+      "stage": "candidate",
+      "start_utc": "2026-10-13T08:34:10.765110+00:00",
+      "unexpected_diagnostics": 0
+    },
+    {
+      "binary_sha256": {
+        "gimp-3.0": "9d92fc17c172fc0b38355e4c70c943992bc3e2b781e72505fa8570f63387167c",
+        "gimpbase-3.0": "35fdfaa9e6039af01826222f12513c466b39fd9c86fb5ce6fa49550defa0455e",
+        "gimpcolor-3.0": "6a43831dd7931de32e7fa0f7733f90490103bd3b0e153bb266343a8465d15bea",
+        "gimpconfig-3.0": "05a22a34cded5271d401a5a92603b8c7a08b815ec2fe7c3d924b4ed21783818e",
+        "plug-in-protocol-fixture": "e94cb76dca169ec76b28b1c68151b479c8c9dcf4558f020aabe8ae0f4309f888",
+        "test-plug-in-protocol": "57d6d478672e7ba4f2d1817361e545cebbe68f044747e357a5d2d37321058dba"
+      },
+      "cases_passed": 12,
+      "child_evidence_files": 0,
+      "classification": "PASS",
+      "end_utc": "2026-10-13T08:36:18.670349+00:00",
+      "kind": "all",
+      "meson_exit": 0,
+      "mode": "asan",
+      "ordinary_no_wrapper": true,
+      "process_exit": 0,
+      "record_sha256": "5950e9ee15f94fed1e3890d0b6ee34d32bc580b14a63aecd8847d17cd1471d33",
+      "result_sha256": "a732eacaca289fa9ece5f5156c732fdbeaf5596b3e34243e00c0c6918892cde2",
+      "run": "protocol-asan-ordinary",
+      "skip_count": 0,
+      "source64_sha256": "89426403394710e7756443f22a4bde36f301e7da16ce8461b902dac6f858f6d8",
+      "stage": "candidate",
+      "start_utc": "2026-10-13T08:36:17.940677+00:00",
+      "unexpected_diagnostics": 0
+    }
+  ],
+  "publication_authorized": true,
+  "published": false,
+  "raw_logs_excluded": true,
+  "real_application_controls": {
+    "cases_per_mode": 3,
+    "limits": "Focused real-application lifecycle controls only; neither a full app suite nor full DnD acceptance. TAP has no skips; benign plug-in discovery/localization notices are enumerated separately.",
+    "modes": [
+      "native",
+      "asan"
+    ],
+    "runs": [
+      {
+        "G_DEBUG": null,
+        "actual_link_resolution": {
+          "blinds": {
+            "binary_sha256": "9c2abb684961aad67a605a81c1dbe0575ed72365b32f1215e289e4402c26e573",
+            "environment_sha256": "5c0e77b3ac8f4bb54889f23a6f96249f89ad3b1fff3cf21a85acfc38b1c63008",
+            "exact_row_environment_verified": true,
+            "ldd_exit": 0,
+            "library_sha256": "e8dfd1b5ccdce1756d3b40759d1c85e1e927ed7456d9ce81a9b0f5b29389ae85",
+            "raw_resolution_sha256": "87e809e9cbf6c439678f540035951416b330d05516197b3eaff7081c08e8484e",
+            "resolution": "build-native/libgimp/libgimp-3.0.so.0.8.1",
+            "row_record_sha256": "47601234081029f13e218ab492a47aca53c35bd30441d6c6d48d317931a4f3f9"
+          },
+          "contrast-retinex": {
+            "binary_sha256": "fdfbf23594eda59085bd68a0144ae1f9712ea723fa4a9c8404eb438da84e88b9",
+            "environment_sha256": "5c0e77b3ac8f4bb54889f23a6f96249f89ad3b1fff3cf21a85acfc38b1c63008",
+            "exact_row_environment_verified": true,
+            "ldd_exit": 0,
+            "library_sha256": "e8dfd1b5ccdce1756d3b40759d1c85e1e927ed7456d9ce81a9b0f5b29389ae85",
+            "raw_resolution_sha256": "e9eeb9ffbfa2f7028a5502e45d05045082176b2705fa1e6fd59a641167c37211",
+            "resolution": "build-native/libgimp/libgimp-3.0.so.0.8.1",
+            "row_record_sha256": "47601234081029f13e218ab492a47aca53c35bd30441d6c6d48d317931a4f3f9"
+          },
+          "convolution-matrix": {
+            "binary_sha256": "629188ba470b1714d2a74c761735b59442527006041fc4e17c87046d35a5faf4",
+            "environment_sha256": "5c0e77b3ac8f4bb54889f23a6f96249f89ad3b1fff3cf21a85acfc38b1c63008",
+            "exact_row_environment_verified": true,
+            "ldd_exit": 0,
+            "library_sha256": "e8dfd1b5ccdce1756d3b40759d1c85e1e927ed7456d9ce81a9b0f5b29389ae85",
+            "raw_resolution_sha256": "3e7515fb6e8630713e657e52846f10977432ff486c667cd900c9cb05db04be95",
+            "resolution": "build-native/libgimp/libgimp-3.0.so.0.8.1",
+            "row_record_sha256": "47601234081029f13e218ab492a47aca53c35bd30441d6c6d48d317931a4f3f9"
+          },
+          "tile-small": {
+            "binary_sha256": "f0952124d5fa208a6ce19c279d2f867d86b4f715754cfb7156ea3e6d04dfebdd",
+            "environment_sha256": "5c0e77b3ac8f4bb54889f23a6f96249f89ad3b1fff3cf21a85acfc38b1c63008",
+            "exact_row_environment_verified": true,
+            "ldd_exit": 0,
+            "library_sha256": "e8dfd1b5ccdce1756d3b40759d1c85e1e927ed7456d9ce81a9b0f5b29389ae85",
+            "raw_resolution_sha256": "4202a585ad17dac98e74625e1ded0fa89ff2a6741bc41cade7851e83676a4033",
+            "resolution": "build-native/libgimp/libgimp-3.0.so.0.8.1",
+            "row_record_sha256": "47601234081029f13e218ab492a47aca53c35bd30441d6c6d48d317931a4f3f9"
+          }
+        },
+        "authenticated_display_verified": true,
+        "benign_stderr_notice_lines": 809,
+        "case": "/gimp-filter-layer/blinds_actual_old_context",
+        "end_utc": "2026-10-13T08:44:49.620682+00:00",
+        "executable_sha256": {
+          "gimp-filter-layer": "d7e8c77e11ff1e37a10d72b7b7c430c35bf30cc7382ff56be09a0af05995055f"
+        },
+        "launcher_exit": 0,
+        "meson_exit": 0,
+        "mode": "native",
+        "normal_program_fatal_policy_not_overridden": true,
+        "notice_policy": "Exact .dummy plug-in-directory and missing localization catalog notices only; no warning domain is excluded.",
+        "ordinary_registration_timeout": 600,
+        "pipeline_sha256": {
+          "app/gimp-painter-filter-worker": "c4264bd44c5b16c637968af76ee67130e34e0f72190d4b7ea821d47797148fc8",
+          "libgimp/libgimp-3.0.so.0.8.1": "e8dfd1b5ccdce1756d3b40759d1c85e1e927ed7456d9ce81a9b0f5b29389ae85",
+          "libgimpbase/libgimpbase-3.0.so.0.8.1": "110fdb14a3f7ca4a6d6fcb697e287f5bd22f1e2a8de2e7161cbc110fcc404a5a",
+          "libgimpcolor/libgimpcolor-3.0.so.0.8.1": "751cb472820cd025ad77072159e34fe733642bd2b8fba0178ed70438778337ec",
+          "libgimpconfig/libgimpconfig-3.0.so.0.8.1": "f155dd26da85937b8d3ce94356e673c13c38a8332e96ff41044397d33ee4d88d",
+          "plug-ins/common/blinds": "9c2abb684961aad67a605a81c1dbe0575ed72365b32f1215e289e4402c26e573",
+          "plug-ins/common/contrast-retinex": "fdfbf23594eda59085bd68a0144ae1f9712ea723fa4a9c8404eb438da84e88b9",
+          "plug-ins/common/convolution-matrix": "629188ba470b1714d2a74c761735b59442527006041fc4e17c87046d35a5faf4",
+          "plug-ins/common/tile-small": "f0952124d5fa208a6ce19c279d2f867d86b4f715754cfb7156ea3e6d04dfebdd"
+        },
+        "record_sha256": "47601234081029f13e218ab492a47aca53c35bd30441d6c6d48d317931a4f3f9",
+        "result_sha256": "301d9d7b781e79a7c39eab3f686b96cd15ddfd20585fd3d9e7abaa1c73e01dde",
+        "run": "protocol-real-native-blinds_actual_old_context",
+        "shipped_icon_files": 1191,
+        "skips": 0,
+        "source69_sha256": "1a4a83d7dde7bbaf2fd0fe5ac8967b31bcf5a3b82f50ff37cd9cc62fa70664cc",
+        "spawned_plugins_forced_fatal_warnings": false,
+        "start_utc": "2026-10-13T08:44:13.442676+00:00",
+        "status": "PASS",
+        "unexpected_diagnostics": 0
+      },
+      {
+        "G_DEBUG": null,
+        "actual_link_resolution": {
+          "blinds": {
+            "binary_sha256": "9c2abb684961aad67a605a81c1dbe0575ed72365b32f1215e289e4402c26e573",
+            "environment_sha256": "5c0e77b3ac8f4bb54889f23a6f96249f89ad3b1fff3cf21a85acfc38b1c63008",
+            "exact_row_environment_verified": true,
+            "ldd_exit": 0,
+            "library_sha256": "e8dfd1b5ccdce1756d3b40759d1c85e1e927ed7456d9ce81a9b0f5b29389ae85",
+            "raw_resolution_sha256": "87e809e9cbf6c439678f540035951416b330d05516197b3eaff7081c08e8484e",
+            "resolution": "build-native/libgimp/libgimp-3.0.so.0.8.1",
+            "row_record_sha256": "47601234081029f13e218ab492a47aca53c35bd30441d6c6d48d317931a4f3f9"
+          },
+          "contrast-retinex": {
+            "binary_sha256": "fdfbf23594eda59085bd68a0144ae1f9712ea723fa4a9c8404eb438da84e88b9",
+            "environment_sha256": "5c0e77b3ac8f4bb54889f23a6f96249f89ad3b1fff3cf21a85acfc38b1c63008",
+            "exact_row_environment_verified": true,
+            "ldd_exit": 0,
+            "library_sha256": "e8dfd1b5ccdce1756d3b40759d1c85e1e927ed7456d9ce81a9b0f5b29389ae85",
+            "raw_resolution_sha256": "e9eeb9ffbfa2f7028a5502e45d05045082176b2705fa1e6fd59a641167c37211",
+            "resolution": "build-native/libgimp/libgimp-3.0.so.0.8.1",
+            "row_record_sha256": "47601234081029f13e218ab492a47aca53c35bd30441d6c6d48d317931a4f3f9"
+          },
+          "convolution-matrix": {
+            "binary_sha256": "629188ba470b1714d2a74c761735b59442527006041fc4e17c87046d35a5faf4",
+            "environment_sha256": "5c0e77b3ac8f4bb54889f23a6f96249f89ad3b1fff3cf21a85acfc38b1c63008",
+            "exact_row_environment_verified": true,
+            "ldd_exit": 0,
+            "library_sha256": "e8dfd1b5ccdce1756d3b40759d1c85e1e927ed7456d9ce81a9b0f5b29389ae85",
+            "raw_resolution_sha256": "3e7515fb6e8630713e657e52846f10977432ff486c667cd900c9cb05db04be95",
+            "resolution": "build-native/libgimp/libgimp-3.0.so.0.8.1",
+            "row_record_sha256": "47601234081029f13e218ab492a47aca53c35bd30441d6c6d48d317931a4f3f9"
+          },
+          "tile-small": {
+            "binary_sha256": "f0952124d5fa208a6ce19c279d2f867d86b4f715754cfb7156ea3e6d04dfebdd",
+            "environment_sha256": "5c0e77b3ac8f4bb54889f23a6f96249f89ad3b1fff3cf21a85acfc38b1c63008",
+            "exact_row_environment_verified": true,
+            "ldd_exit": 0,
+            "library_sha256": "e8dfd1b5ccdce1756d3b40759d1c85e1e927ed7456d9ce81a9b0f5b29389ae85",
+            "raw_resolution_sha256": "4202a585ad17dac98e74625e1ded0fa89ff2a6741bc41cade7851e83676a4033",
+            "resolution": "build-native/libgimp/libgimp-3.0.so.0.8.1",
+            "row_record_sha256": "47601234081029f13e218ab492a47aca53c35bd30441d6c6d48d317931a4f3f9"
+          }
+        },
+        "authenticated_display_verified": true,
+        "benign_stderr_notice_lines": 98,
+        "case": "/gimp-filter-layer/convolution_cancel_replace_close",
+        "end_utc": "2026-10-13T08:44:54.439582+00:00",
+        "executable_sha256": {
+          "gimp-filter-layer": "d7e8c77e11ff1e37a10d72b7b7c430c35bf30cc7382ff56be09a0af05995055f"
+        },
+        "launcher_exit": 0,
+        "meson_exit": 0,
+        "mode": "native",
+        "normal_program_fatal_policy_not_overridden": true,
+        "notice_policy": "Exact .dummy plug-in-directory and missing localization catalog notices only; no warning domain is excluded.",
+        "ordinary_registration_timeout": 600,
+        "pipeline_sha256": {
+          "app/gimp-painter-filter-worker": "c4264bd44c5b16c637968af76ee67130e34e0f72190d4b7ea821d47797148fc8",
+          "libgimp/libgimp-3.0.so.0.8.1": "e8dfd1b5ccdce1756d3b40759d1c85e1e927ed7456d9ce81a9b0f5b29389ae85",
+          "libgimpbase/libgimpbase-3.0.so.0.8.1": "110fdb14a3f7ca4a6d6fcb697e287f5bd22f1e2a8de2e7161cbc110fcc404a5a",
+          "libgimpcolor/libgimpcolor-3.0.so.0.8.1": "751cb472820cd025ad77072159e34fe733642bd2b8fba0178ed70438778337ec",
+          "libgimpconfig/libgimpconfig-3.0.so.0.8.1": "f155dd26da85937b8d3ce94356e673c13c38a8332e96ff41044397d33ee4d88d",
+          "plug-ins/common/blinds": "9c2abb684961aad67a605a81c1dbe0575ed72365b32f1215e289e4402c26e573",
+          "plug-ins/common/contrast-retinex": "fdfbf23594eda59085bd68a0144ae1f9712ea723fa4a9c8404eb438da84e88b9",
+          "plug-ins/common/convolution-matrix": "629188ba470b1714d2a74c761735b59442527006041fc4e17c87046d35a5faf4",
+          "plug-ins/common/tile-small": "f0952124d5fa208a6ce19c279d2f867d86b4f715754cfb7156ea3e6d04dfebdd"
+        },
+        "record_sha256": "1fe6b286e95719a4908119ebcae2190707613e889f26c0cb22646845cc38713f",
+        "result_sha256": "7e053b6738f0464014eecf1dc6d4aa375ad3773048b19eaef435de6bd179acc6",
+        "run": "protocol-real-native-convolution_cancel_replace_close",
+        "shipped_icon_files": 1191,
+        "skips": 0,
+        "source69_sha256": "1a4a83d7dde7bbaf2fd0fe5ac8967b31bcf5a3b82f50ff37cd9cc62fa70664cc",
+        "spawned_plugins_forced_fatal_warnings": false,
+        "start_utc": "2026-10-13T08:44:50.113375+00:00",
+        "status": "PASS",
+        "unexpected_diagnostics": 0
+      },
+      {
+        "G_DEBUG": null,
+        "actual_link_resolution": {
+          "blinds": {
+            "binary_sha256": "9c2abb684961aad67a605a81c1dbe0575ed72365b32f1215e289e4402c26e573",
+            "environment_sha256": "5c0e77b3ac8f4bb54889f23a6f96249f89ad3b1fff3cf21a85acfc38b1c63008",
+            "exact_row_environment_verified": true,
+            "ldd_exit": 0,
+            "library_sha256": "e8dfd1b5ccdce1756d3b40759d1c85e1e927ed7456d9ce81a9b0f5b29389ae85",
+            "raw_resolution_sha256": "87e809e9cbf6c439678f540035951416b330d05516197b3eaff7081c08e8484e",
+            "resolution": "build-native/libgimp/libgimp-3.0.so.0.8.1",
+            "row_record_sha256": "47601234081029f13e218ab492a47aca53c35bd30441d6c6d48d317931a4f3f9"
+          },
+          "contrast-retinex": {
+            "binary_sha256": "fdfbf23594eda59085bd68a0144ae1f9712ea723fa4a9c8404eb438da84e88b9",
+            "environment_sha256": "5c0e77b3ac8f4bb54889f23a6f96249f89ad3b1fff3cf21a85acfc38b1c63008",
+            "exact_row_environment_verified": true,
+            "ldd_exit": 0,
+            "library_sha256": "e8dfd1b5ccdce1756d3b40759d1c85e1e927ed7456d9ce81a9b0f5b29389ae85",
+            "raw_resolution_sha256": "e9eeb9ffbfa2f7028a5502e45d05045082176b2705fa1e6fd59a641167c37211",
+            "resolution": "build-native/libgimp/libgimp-3.0.so.0.8.1",
+            "row_record_sha256": "47601234081029f13e218ab492a47aca53c35bd30441d6c6d48d317931a4f3f9"
+          },
+          "convolution-matrix": {
+            "binary_sha256": "629188ba470b1714d2a74c761735b59442527006041fc4e17c87046d35a5faf4",
+            "environment_sha256": "5c0e77b3ac8f4bb54889f23a6f96249f89ad3b1fff3cf21a85acfc38b1c63008",
+            "exact_row_environment_verified": true,
+            "ldd_exit": 0,
+            "library_sha256": "e8dfd1b5ccdce1756d3b40759d1c85e1e927ed7456d9ce81a9b0f5b29389ae85",
+            "raw_resolution_sha256": "3e7515fb6e8630713e657e52846f10977432ff486c667cd900c9cb05db04be95",
+            "resolution": "build-native/libgimp/libgimp-3.0.so.0.8.1",
+            "row_record_sha256": "47601234081029f13e218ab492a47aca53c35bd30441d6c6d48d317931a4f3f9"
+          },
+          "tile-small": {
+            "binary_sha256": "f0952124d5fa208a6ce19c279d2f867d86b4f715754cfb7156ea3e6d04dfebdd",
+            "environment_sha256": "5c0e77b3ac8f4bb54889f23a6f96249f89ad3b1fff3cf21a85acfc38b1c63008",
+            "exact_row_environment_verified": true,
+            "ldd_exit": 0,
+            "library_sha256": "e8dfd1b5ccdce1756d3b40759d1c85e1e927ed7456d9ce81a9b0f5b29389ae85",
+            "raw_resolution_sha256": "4202a585ad17dac98e74625e1ded0fa89ff2a6741bc41cade7851e83676a4033",
+            "resolution": "build-native/libgimp/libgimp-3.0.so.0.8.1",
+            "row_record_sha256": "47601234081029f13e218ab492a47aca53c35bd30441d6c6d48d317931a4f3f9"
+          }
+        },
+        "authenticated_display_verified": true,
+        "benign_stderr_notice_lines": 71,
+        "case": "/gimp-filter-layer/progress_worker_cancel_replace_close",
+        "end_utc": "2026-10-13T08:44:59.383868+00:00",
+        "executable_sha256": {
+          "gimp-filter-layer": "d7e8c77e11ff1e37a10d72b7b7c430c35bf30cc7382ff56be09a0af05995055f"
+        },
+        "launcher_exit": 0,
+        "meson_exit": 0,
+        "mode": "native",
+        "normal_program_fatal_policy_not_overridden": true,
+        "notice_policy": "Exact .dummy plug-in-directory and missing localization catalog notices only; no warning domain is excluded.",
+        "ordinary_registration_timeout": 600,
+        "pipeline_sha256": {
+          "app/gimp-painter-filter-worker": "c4264bd44c5b16c637968af76ee67130e34e0f72190d4b7ea821d47797148fc8",
+          "libgimp/libgimp-3.0.so.0.8.1": "e8dfd1b5ccdce1756d3b40759d1c85e1e927ed7456d9ce81a9b0f5b29389ae85",
+          "libgimpbase/libgimpbase-3.0.so.0.8.1": "110fdb14a3f7ca4a6d6fcb697e287f5bd22f1e2a8de2e7161cbc110fcc404a5a",
+          "libgimpcolor/libgimpcolor-3.0.so.0.8.1": "751cb472820cd025ad77072159e34fe733642bd2b8fba0178ed70438778337ec",
+          "libgimpconfig/libgimpconfig-3.0.so.0.8.1": "f155dd26da85937b8d3ce94356e673c13c38a8332e96ff41044397d33ee4d88d",
+          "plug-ins/common/blinds": "9c2abb684961aad67a605a81c1dbe0575ed72365b32f1215e289e4402c26e573",
+          "plug-ins/common/contrast-retinex": "fdfbf23594eda59085bd68a0144ae1f9712ea723fa4a9c8404eb438da84e88b9",
+          "plug-ins/common/convolution-matrix": "629188ba470b1714d2a74c761735b59442527006041fc4e17c87046d35a5faf4",
+          "plug-ins/common/tile-small": "f0952124d5fa208a6ce19c279d2f867d86b4f715754cfb7156ea3e6d04dfebdd"
+        },
+        "record_sha256": "292957b27914a9cb51a8832f5eb330eea3af163ce4e2ca1614044ba80cce0160",
+        "result_sha256": "1143160ebf1c007656787f0a2cc1539db7a41f0233170af640b7d0292e499a28",
+        "run": "protocol-real-native-progress_worker_cancel_replace_close",
+        "shipped_icon_files": 1191,
+        "skips": 0,
+        "source69_sha256": "1a4a83d7dde7bbaf2fd0fe5ac8967b31bcf5a3b82f50ff37cd9cc62fa70664cc",
+        "spawned_plugins_forced_fatal_warnings": false,
+        "start_utc": "2026-10-13T08:44:54.864810+00:00",
+        "status": "PASS",
+        "unexpected_diagnostics": 0
+      },
+      {
+        "G_DEBUG": null,
+        "actual_link_resolution": {
+          "blinds": {
+            "binary_sha256": "8020c6d7db2a6adde2879870898a406c6b025a141aff40ddb4660dc66bfc20df",
+            "environment_sha256": "df68d235c2789f36568c9c12ffc8bff9ac9edc7b11488737dcc207ca4f9fd9da",
+            "exact_row_environment_verified": true,
+            "ldd_exit": 0,
+            "library_sha256": "9d92fc17c172fc0b38355e4c70c943992bc3e2b781e72505fa8570f63387167c",
+            "raw_resolution_sha256": "92ccd07c7196b73e5eec6e4f204c28250d099821df8c81b3f37dd348ccf5c43f",
+            "resolution": "build-asan/libgimp/libgimp-3.0.so.0.8.1",
+            "row_record_sha256": "8bab653995e8596f9ba2addacf4cd02c887e44ff428cf5faeea6e006cb2c2453"
+          },
+          "contrast-retinex": {
+            "binary_sha256": "b954114b8f08a217e580a10de917b7a2f59a5e3c3fa1daa5f90da372fb3cd61a",
+            "environment_sha256": "df68d235c2789f36568c9c12ffc8bff9ac9edc7b11488737dcc207ca4f9fd9da",
+            "exact_row_environment_verified": true,
+            "ldd_exit": 0,
+            "library_sha256": "9d92fc17c172fc0b38355e4c70c943992bc3e2b781e72505fa8570f63387167c",
+            "raw_resolution_sha256": "b6629d1b950fe15acf6fbec87f2fb4d21de250f3b3eed2b54f856d679ce846ed",
+            "resolution": "build-asan/libgimp/libgimp-3.0.so.0.8.1",
+            "row_record_sha256": "8bab653995e8596f9ba2addacf4cd02c887e44ff428cf5faeea6e006cb2c2453"
+          },
+          "convolution-matrix": {
+            "binary_sha256": "234a829356a9a0dc1b2b6463f67ded58f8d6cb24bbfdd4d9317dbb720b65ab2e",
+            "environment_sha256": "df68d235c2789f36568c9c12ffc8bff9ac9edc7b11488737dcc207ca4f9fd9da",
+            "exact_row_environment_verified": true,
+            "ldd_exit": 0,
+            "library_sha256": "9d92fc17c172fc0b38355e4c70c943992bc3e2b781e72505fa8570f63387167c",
+            "raw_resolution_sha256": "f5acc18436671c815d0958c21a0c3f5178f9b7a97e4dc554a6dba175defa12e7",
+            "resolution": "build-asan/libgimp/libgimp-3.0.so.0.8.1",
+            "row_record_sha256": "8bab653995e8596f9ba2addacf4cd02c887e44ff428cf5faeea6e006cb2c2453"
+          },
+          "tile-small": {
+            "binary_sha256": "de8469a265dd0bc668fecf7f43f3a03d64fe44a2e033dc696440650d754c5261",
+            "environment_sha256": "df68d235c2789f36568c9c12ffc8bff9ac9edc7b11488737dcc207ca4f9fd9da",
+            "exact_row_environment_verified": true,
+            "ldd_exit": 0,
+            "library_sha256": "9d92fc17c172fc0b38355e4c70c943992bc3e2b781e72505fa8570f63387167c",
+            "raw_resolution_sha256": "a004d961a587ed9a50d5c2507fcf399d53589a6ffd0eb052f8b8592289918d81",
+            "resolution": "build-asan/libgimp/libgimp-3.0.so.0.8.1",
+            "row_record_sha256": "8bab653995e8596f9ba2addacf4cd02c887e44ff428cf5faeea6e006cb2c2453"
+          }
+        },
+        "authenticated_display_verified": true,
+        "benign_stderr_notice_lines": 809,
+        "case": "/gimp-filter-layer/blinds_actual_old_context",
+        "end_utc": "2026-10-13T08:45:46.513327+00:00",
+        "executable_sha256": {
+          "gimp-filter-layer": "80b4c09a72579f7ee1268a87865f8df4699d11d00801e3184cc1edca28733c53"
+        },
+        "launcher_exit": 0,
+        "meson_exit": 0,
+        "mode": "asan",
+        "normal_program_fatal_policy_not_overridden": true,
+        "notice_policy": "Exact .dummy plug-in-directory and missing localization catalog notices only; no warning domain is excluded.",
+        "ordinary_registration_timeout": 600,
+        "pipeline_sha256": {
+          "app/gimp-painter-filter-worker": "ded2a67facbb1a4f8773e12000cd5f25f23e0950fc508bebd338ef1458fbed76",
+          "libgimp/libgimp-3.0.so.0.8.1": "9d92fc17c172fc0b38355e4c70c943992bc3e2b781e72505fa8570f63387167c",
+          "libgimpbase/libgimpbase-3.0.so.0.8.1": "35fdfaa9e6039af01826222f12513c466b39fd9c86fb5ce6fa49550defa0455e",
+          "libgimpcolor/libgimpcolor-3.0.so.0.8.1": "6a43831dd7931de32e7fa0f7733f90490103bd3b0e153bb266343a8465d15bea",
+          "libgimpconfig/libgimpconfig-3.0.so.0.8.1": "05a22a34cded5271d401a5a92603b8c7a08b815ec2fe7c3d924b4ed21783818e",
+          "plug-ins/common/blinds": "8020c6d7db2a6adde2879870898a406c6b025a141aff40ddb4660dc66bfc20df",
+          "plug-ins/common/contrast-retinex": "b954114b8f08a217e580a10de917b7a2f59a5e3c3fa1daa5f90da372fb3cd61a",
+          "plug-ins/common/convolution-matrix": "234a829356a9a0dc1b2b6463f67ded58f8d6cb24bbfdd4d9317dbb720b65ab2e",
+          "plug-ins/common/tile-small": "de8469a265dd0bc668fecf7f43f3a03d64fe44a2e033dc696440650d754c5261"
+        },
+        "record_sha256": "8bab653995e8596f9ba2addacf4cd02c887e44ff428cf5faeea6e006cb2c2453",
+        "result_sha256": "71c72e04dba6432e0d581078f3565b3c62272cb798bf15bf50aa3bcc806fa114",
+        "run": "protocol-real-asan-blinds_actual_old_context",
+        "shipped_icon_files": 1191,
+        "skips": 0,
+        "source69_sha256": "1a4a83d7dde7bbaf2fd0fe5ac8967b31bcf5a3b82f50ff37cd9cc62fa70664cc",
+        "spawned_plugins_forced_fatal_warnings": false,
+        "start_utc": "2026-10-13T08:44:59.809523+00:00",
+        "status": "PASS",
+        "unexpected_diagnostics": 0
+      },
+      {
+        "G_DEBUG": null,
+        "actual_link_resolution": {
+          "blinds": {
+            "binary_sha256": "8020c6d7db2a6adde2879870898a406c6b025a141aff40ddb4660dc66bfc20df",
+            "environment_sha256": "df68d235c2789f36568c9c12ffc8bff9ac9edc7b11488737dcc207ca4f9fd9da",
+            "exact_row_environment_verified": true,
+            "ldd_exit": 0,
+            "library_sha256": "9d92fc17c172fc0b38355e4c70c943992bc3e2b781e72505fa8570f63387167c",
+            "raw_resolution_sha256": "92ccd07c7196b73e5eec6e4f204c28250d099821df8c81b3f37dd348ccf5c43f",
+            "resolution": "build-asan/libgimp/libgimp-3.0.so.0.8.1",
+            "row_record_sha256": "8bab653995e8596f9ba2addacf4cd02c887e44ff428cf5faeea6e006cb2c2453"
+          },
+          "contrast-retinex": {
+            "binary_sha256": "b954114b8f08a217e580a10de917b7a2f59a5e3c3fa1daa5f90da372fb3cd61a",
+            "environment_sha256": "df68d235c2789f36568c9c12ffc8bff9ac9edc7b11488737dcc207ca4f9fd9da",
+            "exact_row_environment_verified": true,
+            "ldd_exit": 0,
+            "library_sha256": "9d92fc17c172fc0b38355e4c70c943992bc3e2b781e72505fa8570f63387167c",
+            "raw_resolution_sha256": "b6629d1b950fe15acf6fbec87f2fb4d21de250f3b3eed2b54f856d679ce846ed",
+            "resolution": "build-asan/libgimp/libgimp-3.0.so.0.8.1",
+            "row_record_sha256": "8bab653995e8596f9ba2addacf4cd02c887e44ff428cf5faeea6e006cb2c2453"
+          },
+          "convolution-matrix": {
+            "binary_sha256": "234a829356a9a0dc1b2b6463f67ded58f8d6cb24bbfdd4d9317dbb720b65ab2e",
+            "environment_sha256": "df68d235c2789f36568c9c12ffc8bff9ac9edc7b11488737dcc207ca4f9fd9da",
+            "exact_row_environment_verified": true,
+            "ldd_exit": 0,
+            "library_sha256": "9d92fc17c172fc0b38355e4c70c943992bc3e2b781e72505fa8570f63387167c",
+            "raw_resolution_sha256": "f5acc18436671c815d0958c21a0c3f5178f9b7a97e4dc554a6dba175defa12e7",
+            "resolution": "build-asan/libgimp/libgimp-3.0.so.0.8.1",
+            "row_record_sha256": "8bab653995e8596f9ba2addacf4cd02c887e44ff428cf5faeea6e006cb2c2453"
+          },
+          "tile-small": {
+            "binary_sha256": "de8469a265dd0bc668fecf7f43f3a03d64fe44a2e033dc696440650d754c5261",
+            "environment_sha256": "df68d235c2789f36568c9c12ffc8bff9ac9edc7b11488737dcc207ca4f9fd9da",
+            "exact_row_environment_verified": true,
+            "ldd_exit": 0,
+            "library_sha256": "9d92fc17c172fc0b38355e4c70c943992bc3e2b781e72505fa8570f63387167c",
+            "raw_resolution_sha256": "a004d961a587ed9a50d5c2507fcf399d53589a6ffd0eb052f8b8592289918d81",
+            "resolution": "build-asan/libgimp/libgimp-3.0.so.0.8.1",
+            "row_record_sha256": "8bab653995e8596f9ba2addacf4cd02c887e44ff428cf5faeea6e006cb2c2453"
+          }
+        },
+        "authenticated_display_verified": true,
+        "benign_stderr_notice_lines": 98,
+        "case": "/gimp-filter-layer/convolution_cancel_replace_close",
+        "end_utc": "2026-10-13T08:45:52.589694+00:00",
+        "executable_sha256": {
+          "gimp-filter-layer": "80b4c09a72579f7ee1268a87865f8df4699d11d00801e3184cc1edca28733c53"
+        },
+        "launcher_exit": 0,
+        "meson_exit": 0,
+        "mode": "asan",
+        "normal_program_fatal_policy_not_overridden": true,
+        "notice_policy": "Exact .dummy plug-in-directory and missing localization catalog notices only; no warning domain is excluded.",
+        "ordinary_registration_timeout": 600,
+        "pipeline_sha256": {
+          "app/gimp-painter-filter-worker": "ded2a67facbb1a4f8773e12000cd5f25f23e0950fc508bebd338ef1458fbed76",
+          "libgimp/libgimp-3.0.so.0.8.1": "9d92fc17c172fc0b38355e4c70c943992bc3e2b781e72505fa8570f63387167c",
+          "libgimpbase/libgimpbase-3.0.so.0.8.1": "35fdfaa9e6039af01826222f12513c466b39fd9c86fb5ce6fa49550defa0455e",
+          "libgimpcolor/libgimpcolor-3.0.so.0.8.1": "6a43831dd7931de32e7fa0f7733f90490103bd3b0e153bb266343a8465d15bea",
+          "libgimpconfig/libgimpconfig-3.0.so.0.8.1": "05a22a34cded5271d401a5a92603b8c7a08b815ec2fe7c3d924b4ed21783818e",
+          "plug-ins/common/blinds": "8020c6d7db2a6adde2879870898a406c6b025a141aff40ddb4660dc66bfc20df",
+          "plug-ins/common/contrast-retinex": "b954114b8f08a217e580a10de917b7a2f59a5e3c3fa1daa5f90da372fb3cd61a",
+          "plug-ins/common/convolution-matrix": "234a829356a9a0dc1b2b6463f67ded58f8d6cb24bbfdd4d9317dbb720b65ab2e",
+          "plug-ins/common/tile-small": "de8469a265dd0bc668fecf7f43f3a03d64fe44a2e033dc696440650d754c5261"
+        },
+        "record_sha256": "0ea2f06bfe285e71281e93b686048e0e39c9c37f224879a54f477e195c596869",
+        "result_sha256": "1db08617c5fff0ae165d87ed9d46c264570636041b8ff8fd6e93e6b0c730c020",
+        "run": "protocol-real-asan-convolution_cancel_replace_close",
+        "shipped_icon_files": 1191,
+        "skips": 0,
+        "source69_sha256": "1a4a83d7dde7bbaf2fd0fe5ac8967b31bcf5a3b82f50ff37cd9cc62fa70664cc",
+        "spawned_plugins_forced_fatal_warnings": false,
+        "start_utc": "2026-10-13T08:45:47.269015+00:00",
+        "status": "PASS",
+        "unexpected_diagnostics": 0
+      },
+      {
+        "G_DEBUG": null,
+        "actual_link_resolution": {
+          "blinds": {
+            "binary_sha256": "8020c6d7db2a6adde2879870898a406c6b025a141aff40ddb4660dc66bfc20df",
+            "environment_sha256": "df68d235c2789f36568c9c12ffc8bff9ac9edc7b11488737dcc207ca4f9fd9da",
+            "exact_row_environment_verified": true,
+            "ldd_exit": 0,
+            "library_sha256": "9d92fc17c172fc0b38355e4c70c943992bc3e2b781e72505fa8570f63387167c",
+            "raw_resolution_sha256": "92ccd07c7196b73e5eec6e4f204c28250d099821df8c81b3f37dd348ccf5c43f",
+            "resolution": "build-asan/libgimp/libgimp-3.0.so.0.8.1",
+            "row_record_sha256": "8bab653995e8596f9ba2addacf4cd02c887e44ff428cf5faeea6e006cb2c2453"
+          },
+          "contrast-retinex": {
+            "binary_sha256": "b954114b8f08a217e580a10de917b7a2f59a5e3c3fa1daa5f90da372fb3cd61a",
+            "environment_sha256": "df68d235c2789f36568c9c12ffc8bff9ac9edc7b11488737dcc207ca4f9fd9da",
+            "exact_row_environment_verified": true,
+            "ldd_exit": 0,
+            "library_sha256": "9d92fc17c172fc0b38355e4c70c943992bc3e2b781e72505fa8570f63387167c",
+            "raw_resolution_sha256": "b6629d1b950fe15acf6fbec87f2fb4d21de250f3b3eed2b54f856d679ce846ed",
+            "resolution": "build-asan/libgimp/libgimp-3.0.so.0.8.1",
+            "row_record_sha256": "8bab653995e8596f9ba2addacf4cd02c887e44ff428cf5faeea6e006cb2c2453"
+          },
+          "convolution-matrix": {
+            "binary_sha256": "234a829356a9a0dc1b2b6463f67ded58f8d6cb24bbfdd4d9317dbb720b65ab2e",
+            "environment_sha256": "df68d235c2789f36568c9c12ffc8bff9ac9edc7b11488737dcc207ca4f9fd9da",
+            "exact_row_environment_verified": true,
+            "ldd_exit": 0,
+            "library_sha256": "9d92fc17c172fc0b38355e4c70c943992bc3e2b781e72505fa8570f63387167c",
+            "raw_resolution_sha256": "f5acc18436671c815d0958c21a0c3f5178f9b7a97e4dc554a6dba175defa12e7",
+            "resolution": "build-asan/libgimp/libgimp-3.0.so.0.8.1",
+            "row_record_sha256": "8bab653995e8596f9ba2addacf4cd02c887e44ff428cf5faeea6e006cb2c2453"
+          },
+          "tile-small": {
+            "binary_sha256": "de8469a265dd0bc668fecf7f43f3a03d64fe44a2e033dc696440650d754c5261",
+            "environment_sha256": "df68d235c2789f36568c9c12ffc8bff9ac9edc7b11488737dcc207ca4f9fd9da",
+            "exact_row_environment_verified": true,
+            "ldd_exit": 0,
+            "library_sha256": "9d92fc17c172fc0b38355e4c70c943992bc3e2b781e72505fa8570f63387167c",
+            "raw_resolution_sha256": "a004d961a587ed9a50d5c2507fcf399d53589a6ffd0eb052f8b8592289918d81",
+            "resolution": "build-asan/libgimp/libgimp-3.0.so.0.8.1",
+            "row_record_sha256": "8bab653995e8596f9ba2addacf4cd02c887e44ff428cf5faeea6e006cb2c2453"
+          }
+        },
+        "authenticated_display_verified": true,
+        "benign_stderr_notice_lines": 71,
+        "case": "/gimp-filter-layer/progress_worker_cancel_replace_close",
+        "end_utc": "2026-10-13T08:45:58.755771+00:00",
+        "executable_sha256": {
+          "gimp-filter-layer": "80b4c09a72579f7ee1268a87865f8df4699d11d00801e3184cc1edca28733c53"
+        },
+        "launcher_exit": 0,
+        "meson_exit": 0,
+        "mode": "asan",
+        "normal_program_fatal_policy_not_overridden": true,
+        "notice_policy": "Exact .dummy plug-in-directory and missing localization catalog notices only; no warning domain is excluded.",
+        "ordinary_registration_timeout": 600,
+        "pipeline_sha256": {
+          "app/gimp-painter-filter-worker": "ded2a67facbb1a4f8773e12000cd5f25f23e0950fc508bebd338ef1458fbed76",
+          "libgimp/libgimp-3.0.so.0.8.1": "9d92fc17c172fc0b38355e4c70c943992bc3e2b781e72505fa8570f63387167c",
+          "libgimpbase/libgimpbase-3.0.so.0.8.1": "35fdfaa9e6039af01826222f12513c466b39fd9c86fb5ce6fa49550defa0455e",
+          "libgimpcolor/libgimpcolor-3.0.so.0.8.1": "6a43831dd7931de32e7fa0f7733f90490103bd3b0e153bb266343a8465d15bea",
+          "libgimpconfig/libgimpconfig-3.0.so.0.8.1": "05a22a34cded5271d401a5a92603b8c7a08b815ec2fe7c3d924b4ed21783818e",
+          "plug-ins/common/blinds": "8020c6d7db2a6adde2879870898a406c6b025a141aff40ddb4660dc66bfc20df",
+          "plug-ins/common/contrast-retinex": "b954114b8f08a217e580a10de917b7a2f59a5e3c3fa1daa5f90da372fb3cd61a",
+          "plug-ins/common/convolution-matrix": "234a829356a9a0dc1b2b6463f67ded58f8d6cb24bbfdd4d9317dbb720b65ab2e",
+          "plug-ins/common/tile-small": "de8469a265dd0bc668fecf7f43f3a03d64fe44a2e033dc696440650d754c5261"
+        },
+        "record_sha256": "df03dcb304e3581f104e9dc12efd973c84bc9d4115b2b5136117c6b4b870048c",
+        "result_sha256": "2687612523143b116bdbc89953f43b1b1d44d73d5d00f56fefd501d9e0852186",
+        "run": "protocol-real-asan-progress_worker_cancel_replace_close",
+        "shipped_icon_files": 1191,
+        "skips": 0,
+        "source69_sha256": "1a4a83d7dde7bbaf2fd0fe5ac8967b31bcf5a3b82f50ff37cd9cc62fa70664cc",
+        "spawned_plugins_forced_fatal_warnings": false,
+        "start_utc": "2026-10-13T08:45:53.323417+00:00",
+        "status": "PASS",
+        "unexpected_diagnostics": 0
+      }
+    ],
+    "skips": 0,
+    "status": "PASS",
+    "unexpected_diagnostics": 0
+  },
+  "source_paths": [
+    "libgimp/gimpplugin.c",
+    "libgimp/tests/meson.build",
+    "libgimp/tests/plug-in-protocol-fixture.c",
+    "libgimp/tests/test-plug-in-protocol.c"
+  ],
+  "status": "FINAL_VERIFIED_NOT_PUBLISHED"
+}
