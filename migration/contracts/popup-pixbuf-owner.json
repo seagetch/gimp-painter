@@ -1,0 +1,103 @@
+{
+  "task": "08.016/pixbuf-owner",
+  "legacy_commit": "afa43fae3e920210146abed514f136fd49f671b5",
+  "replacement": "GtkCellRendererPixbuf inherited object property; no duplicate C++ pixel owner",
+  "duties": [
+    {
+      "work_id": "legacy-2dda5b21e1ec6c0132c8",
+      "source_id": "01.002/001523",
+      "path": "app/widgets/gimpcellrendererpopup.cpp",
+      "source_blob": "9fcecab914869bd18ca3085bbbe64003b6eac195",
+      "source_range": "-0,0 -> 1,347",
+      "source_sha256": "86b5a6668c525aa05255e87c761629f6c2722fe091ae83ca31c7ca3b257b875a",
+      "source_scope": "file-level declarations/content",
+      "blob_sha256": "83b88a8b3d0802b516eba48291b13675bd505629180c9994b74f69d9c9e3ef52",
+      "legacy_url": "https://github.com/seagetch/gimp-painter/blob/afa43fae3e920210146abed514f136fd49f671b5/app/widgets/gimpcellrendererpopup.cpp",
+      "role": "direct-owner",
+      "mapping": "Legacy CellRendererPopup::pixbuf is uninitialized; get_size dereferences a failed creation result; create_pixbuf replaces a manually unreferenced pointer and render uses it. The native GimpCellRendererPopup inherits GtkCellRendererPixbuf and does not declare a pixbuf pointer, custom pixbuf factory, sizing override, or render override. GTK owns the inherited image property and its replacement/finalization. The native dispose closes PopupSlot, then chains to the GTK parent."
+    },
+    {
+      "work_id": "legacy-9a42103d5b60ef5079fd",
+      "source_id": "01.002/001524",
+      "path": "app/widgets/gimpcellrendererpopup.h",
+      "source_blob": "ba74530b87d8b783cab934d4c00dd3a451065bfd",
+      "source_range": "-0,0 -> 1,72",
+      "source_sha256": "9142d3313321a43ae0b148e9d94f94d44ded5228576c2d802639245ba62ca90c",
+      "source_scope": "file-level declarations/content",
+      "blob_sha256": "432ba3e4c43b1e5c6625108ea19f4ada451aab999f558d12044665e65431ffea",
+      "legacy_url": "https://github.com/seagetch/gimp-painter/blob/afa43fae3e920210146abed514f136fd49f671b5/app/widgets/gimpcellrendererpopup.h",
+      "role": "owner-interface",
+      "mapping": "The legacy interface exposes the renderer factory and click operation without an independent pixbuf owner. The native instance embeds GtkCellRendererPixbuf and the class embeds GtkCellRendererPixbufClass. CellRendererPopupRef sinks/retains the renderer itself; it does not own a second image reference."
+    },
+    {
+      "work_id": "legacy-7aaea35981ade8152090",
+      "source_id": "01.002/001679",
+      "path": "app/widgets/gimppopupbutton.c",
+      "source_blob": "ed6fe2c206913f8106f03097d407369ecd7a7c8c",
+      "source_range": "-0,0 -> 1,662",
+      "source_sha256": "0eb5bc2497b97be4fa1d2461e2a5eede271eda429ee97da3641784b012017861",
+      "source_scope": "file-level declarations/content",
+      "blob_sha256": "692e25467242c47fd8b07ec4ad79c7deb20af480de9f7955675a54300216a020",
+      "legacy_url": "https://github.com/seagetch/gimp-painter/blob/afa43fae3e920210146abed514f136fd49f671b5/app/widgets/gimppopupbutton.c",
+      "role": "support-no-pixbuf-owner",
+      "mapping": "Reviewed all 662 legacy lines: GimpPopup/GimpPopupButton manage popup/view widgets, signals, placement and closure; no GdkPixbuf field, creation, get-size or drawing operation exists. Retired support is replaced by native GtkPopover and PopupSlot widget ownership; renderer image storage remains with GtkCellRendererPixbuf even while a popup/tree closes."
+    },
+    {
+      "work_id": "legacy-11ae49e428ad69220313",
+      "source_id": "01.002/001680",
+      "path": "app/widgets/gimppopupbutton.h",
+      "source_blob": "260f814f35329d21b91149df73adc7da7ee40e52",
+      "source_range": "-0,0 -> 1,139",
+      "source_sha256": "6ceb9392ee8270f377ea0500b53f6d1a5ea894f13ea34b1baaf63ab328952cad",
+      "source_scope": "file-level declarations/content",
+      "blob_sha256": "967623e3f59231829aa59fb7b2fcac5c77c349b4d6bbca97e4299f3c96850f00",
+      "legacy_url": "https://github.com/seagetch/gimp-painter/blob/afa43fae3e920210146abed514f136fd49f671b5/app/widgets/gimppopupbutton.h",
+      "role": "support-no-pixbuf-owner",
+      "mapping": "Reviewed all 139 legacy lines: widget/window structs and popup/view declarations carry no GdkPixbuf. dialog_stock_id is an icon identifier, not a pixbuf allocation or owning reference. The retired header adds no independent image lifetime to the native GtkPopover/renderer relationship."
+    },
+    {
+      "work_id": "legacy-ccff2633c310106b91e3",
+      "source_id": "01.002/001815",
+      "path": "app/widgets/popupper.cpp",
+      "source_blob": "6aa874674b3773478e9b29e5e287746d3879d1ac",
+      "source_range": "-0,0 -> 1,592",
+      "source_sha256": "b8d09c5eb194a3c1c9041a42549edec5e50318a1f91cd7997dff28ace429c190",
+      "source_scope": "file-level declarations/content",
+      "blob_sha256": "34b581213a0fc24470c9afbccf7f48bce7ca5f7e88acd5d4d543c286e33029f8",
+      "legacy_url": "https://github.com/seagetch/gimp-painter/blob/afa43fae3e920210146abed514f136fd49f671b5/app/widgets/popupper.cpp",
+      "role": "support-no-pixbuf-owner",
+      "mapping": "Reviewed all 592 legacy lines: Popover/PopoverDecorator create and close views and dispatch parent-clicked. The tree model lookup temporarily references GimpViewRenderer, then unreferences that renderer; this is not the CellRendererPopup pixbuf owner. Native Popup::open/clear use typed retained layer/image/widget handles. Retained-renderer-after-tree-close verifies popup closure and image-storage ownership are independent."
+    },
+    {
+      "work_id": "legacy-75bb06e3d04a262e9389",
+      "source_id": "01.002/001816",
+      "path": "app/widgets/popupper.h",
+      "source_blob": "dc77ab8cc739b28628726a186e139a47fda85353",
+      "source_range": "-0,0 -> 1,61",
+      "source_sha256": "67b07b60211dacdbe47f5c2310aa5f907cf7a7ed167174c1cc436513028b8777",
+      "source_scope": "file-level declarations/content",
+      "blob_sha256": "9f56da08a2347176488e5c68a20ad1caa95c408e62e3f7289f4519e5fd11f241",
+      "legacy_url": "https://github.com/seagetch/gimp-painter/blob/afa43fae3e920210146abed514f136fd49f671b5/app/widgets/popupper.h",
+      "role": "support-no-pixbuf-owner",
+      "mapping": "Reviewed all 61 legacy lines: popover/window/decorator interfaces and CreateViewDelegator do not allocate, expose or release pixbuf storage. Their native GtkPopover replacement creates no second renderer image owner. All independent lifecycle, signal, ABI and visual duties retain their separate scope."
+    }
+  ],
+  "native_test": "painter-popup-handles",
+  "focused_cases": [
+    "/painter-popup-handles/pixbuf/initial-and-empty",
+    "/painter-popup-handles/pixbuf/replace-same-reset",
+    "/painter-popup-handles/pixbuf/recovery",
+    "/painter-popup-handles/pixbuf/failed-factory-result",
+    "/painter-popup-handles/pixbuf/caller-reference-survives-renderer",
+    "/painter-popup-handles/pixbuf/column-first",
+    "/painter-popup-handles/pixbuf/handle-first",
+    "/painter-popup-handles/pixbuf/retained-after-tree-close"
+  ],
+  "runtime_required": true,
+  "limits": [
+    "No allocator failure or OOM injection.",
+    "No exact old stock-icon artwork, shadow or size parity.",
+    "No full-application leak, LSan, OS input or platform claim.",
+    "Tests observe pixel storage deallocation via GdkPixbufDestroyNotify, separately from renderer weak notification."
+  ]
+}
