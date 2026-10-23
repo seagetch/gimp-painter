@@ -95,7 +95,12 @@ if changed:
  for source in invalid:(out/(Path(source).name+'.o')).with_suffix('.key').unlink(missing_ok=True)
  raise RuntimeError('Source changed during build: '+', '.join(changed))
 if a.run:
- env=dict(os.environ);env.update({'GIMP_TESTING_ABS_TOP_SRCDIR':str(root),'GIMP_TESTING_ABS_TOP_BUILDDIR':str(build),'GIMP_TESTING_PLUGINDIRS':str(build/'plug-ins/common'),'UI_TEST':'yes','GSETTINGS_BACKEND':'memory','ASAN_OPTIONS':'detect_leaks=0:halt_on_error=1:abort_on_error=1','UBSAN_OPTIONS':'halt_on_error=1:print_stacktrace=1'})
+ # Relocated sanitizer executables cannot use the normal test's relative
+ # RUNPATH. Prefer this exact build's libgimp DSOs, never a host installation.
+ runtime_dirs = sorted({str(path.parent) for path in build.glob('libgimp*/*.so')})
+ if not runtime_dirs: raise RuntimeError('Missing built libgimp shared libraries')
+ runtime_path = os.pathsep.join(runtime_dirs + ([os.environ['LD_LIBRARY_PATH']] if os.environ.get('LD_LIBRARY_PATH') else []))
+ env=dict(os.environ);env['LD_LIBRARY_PATH']=runtime_path;env.update({'GIMP_TESTING_ABS_TOP_SRCDIR':str(root),'GIMP_TESTING_ABS_TOP_BUILDDIR':str(build),'GIMP_TESTING_PLUGINDIRS':str(build/'plug-ins/common'),'UI_TEST':'yes','GSETTINGS_BACKEND':'memory','ASAN_OPTIONS':'detect_leaks=0:halt_on_error=1:abort_on_error=1','UBSAN_OPTIONS':'halt_on_error=1:print_stacktrace=1'})
  for target,item in executables.items():
   command=[item['path']]
   if target=='painter-xcf-open':command=[sys.executable,str(root/'migration/tests/run_filter_owner_context_fixture_test.py'),'--',*command]

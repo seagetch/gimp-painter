@@ -1,0 +1,32 @@
+{
+  "base_commit": "a19f05f9c8c3219cb31e5effbd0290791280c189",
+  "scope": "relocated XCF sanitizer executable runtime lookup, not full branch aggregate or capsule feature completion",
+  "before": "host libgimpconfig missing gimp_config_set_xcf_version after14 open cases",
+  "after": "same selected41 instrumented/41 RTTI source snapshot; provenance12 and open31 pass with builtDSOs",
+  "resolved_libgimpconfig": "libgimpconfig-3.0.so.0 => /workspace/shared/gimp-clean-aggregate/build/libgimpconfig/libgimpconfig-3.0.so.0 (0x00007f2370715000)",
+  "runtime_dirs": [
+    "/workspace/shared/gimp-clean-aggregate/build/libgimp",
+    "/workspace/shared/gimp-clean-aggregate/build/libgimpbase",
+    "/workspace/shared/gimp-clean-aggregate/build/libgimpcolor",
+    "/workspace/shared/gimp-clean-aggregate/build/libgimpconfig",
+    "/workspace/shared/gimp-clean-aggregate/build/libgimpmath",
+    "/workspace/shared/gimp-clean-aggregate/build/libgimpmodule",
+    "/workspace/shared/gimp-clean-aggregate/build/libgimpthumb",
+    "/workspace/shared/gimp-clean-aggregate/build/libgimpwidgets"
+  ],
+  "unit_tests": 3,
+  "paused_source_exclusion": {
+    "app/widgets/gimpcellrendererpopup.cpp": "6ee7a2f3987c1c3106aab79188e40238e307159c7d6986c5cc2f3c47ed8c954d",
+    "app/display/gimppaintercanvasui.cpp": "3c5077f0ba87982a90fb90f2c0286c3c986cffe0faec3dc8aade7552ef1f9886",
+    "app/core/gimppaintermybrush.cpp": "380d658a72554156704380c28000a9f54bc424789383f6e774916f3818773b20",
+    "app/core/gimpviewable.c": "979cf4b6a561393f9332331a6242836edd85224ab47b3be873e35e65d97b31b3",
+    "app/widgets/gimpviewrenderer.c": "290da717b78aee26c0ba2a548aa696f0f56852fa321e9267f5286a123868fdf2"
+  },
+  "candidate_xcf_overlay_sha256": {
+    "app/core/gimpimage.c": "5bc173d76bf5501bdbac896b9e3a50e1724568fd28e53352d88b37662bfa2ff1",
+    "app/tests/test-painter-xcf-float-modes.inc": "ed90378527fad6204e9831647ae72b1b8c362aba648176610fc2f1c8f9aae936",
+    "app/tests/test-painter-xcf-roundtrip.c": "87c186b32b3573eb9a9ce59c46c982d19b170447674569b2a3b0362b16045c93",
+    "app/xcf/painter-xcf-preserve.cpp": "208d652ec1a1242a95f27497d9feb2f7946b7c0f22b0544354802e19582a4d03"
+  },
+  "runner_sha256": "f53580e119f33d02b61048835b104d99522b98aa27efd9c5997b5cab324813a7"
+}
