@@ -319,7 +319,7 @@
 | ID | 完了 | 作業 | 依存ID | 完了条件・証跡 |
 |---|:---:|---|---|---|
 | 06.001 | [x] | ObjectRef の retain factory を実装する | 05.014 | 受取時に一参照を取得する |
-| 06.002 | [ ] | ObjectRef の adopt factory を実装する | 06.001 | 受取済み所有参照を重複取得しない |
+| 06.002 | [x] | ObjectRef の adopt factory を実装する | 06.001 | 受取済み所有参照を重複取得しない |
 | 06.003 | [ ] | ObjectRef の sink factory を実装する | 06.002 | floating ref の扱いが GTK の所有規約と一致 |
 | 06.004 | [ ] | ObjectRef の copy/move を実装する | 06.003 | copy と移動の参照数が契約どおり |
 | 06.005 | [ ] | ObjectRef の型検査を実装する | 06.004 | 誤った GType を拒否する |
