@@ -1,0 +1,308 @@
+{
+  "schema": 1,
+  "title": "GIMP Painter native Value Invert installed portrait GUI verification",
+  "observation_date_utc": "2026-10-17",
+  "scope": "Bounded installed-app GUI evidence for native Painter Value Invert; separate from historical native/ASan/registered semantic acceptance and from whole-port completion.",
+  "source": {
+    "repository": "https://github.com/seagetch/gimp-painter",
+    "branch": "gimp-3-0-port",
+    "commit": "8cade86785af938a254216448a2a5aab3a464cd6",
+    "tree": "4b224b5437f60a6014f8825214598facfdd92e2e",
+    "gimp_data_commit": "a31e5dea4f572fb5f33b06f5c4b86db5f30643dc",
+    "tracked_file_count_including_submodule": 13760,
+    "manifest_before_sha256": "20739033653a5294eb9a9d914dbe32ee42f3a96a04f9628285c058b7747337f3",
+    "manifest_after_sha256": "20739033653a5294eb9a9d914dbe32ee42f3a96a04f9628285c058b7747337f3",
+    "byte_identical_manifests": true,
+    "tracked_or_untracked_worktree_changes": [],
+    "original_checkpoint_clean": true
+  },
+  "build": {
+    "host": "Debian 13 amd64",
+    "dependencies": "560 exact SHA-256-verified packages from signed Debian snapshot 20260925T181338Z, locally extracted; no host installation or maintainer scripts",
+    "dependency_lock_sha256": "553f4051b91626bc2f5470373fd3e8d67c8d61ec62103b2addcab7a16492129f",
+    "configuration_options": [
+      "-Dauto_features=disabled",
+      "-Dlibunwind=false",
+      "-Dheadless-tests=disabled",
+      "-Dpainter-http=disabled"
+    ],
+    "fresh_external_build": true,
+    "full_default_build_steps": 3460,
+    "full_default_build_exit": 0,
+    "install_exit": 0,
+    "completed_at_utc": "2026-10-17T03:47:30+00:00",
+    "default_executable_audit": {
+      "checked_elf_executables": 250,
+      "unbuilt_targets": [],
+      "invalid_executables": [],
+      "repaired_executable_permissions": [],
+      "optional_unbuilt_targets": [
+        "libgimpwidgets/test-preview-area",
+        "app/operations/tests/test-operations"
+      ]
+    },
+    "compiler_warning_lines": 832,
+    "clean_warning_free_claim": false
+  },
+  "binaries": {
+    "application_version": "3.0.9",
+    "build_executable_sha256_before_gui": "68dd83c3bc94452f2c18865bb82172475e2d84fba897584d093fee651e9f3e16",
+    "build_executable_sha256_after_gui": "68dd83c3bc94452f2c18865bb82172475e2d84fba897584d093fee651e9f3e16",
+    "installed_executable_sha256_before_gui": "6af5b5df2114e621bbd7dc8e38457825a7ed2d31cef01f5c6ea305ef633a5de8",
+    "installed_executable_sha256_after_gui": "6af5b5df2114e621bbd7dc8e38457825a7ed2d31cef01f5c6ea305ef633a5de8",
+    "elf_build_id_both": "9b279491282f4b62744df23708bf3ffca9a85530",
+    "text_section_sha256_both": "8c75760abad52725a465a91681d82b960592763d64e94ded36365e382739fde7",
+    "whole_file_difference": "Install removes build RUNPATH; identical ELF Build ID and .text verified.",
+    "sealed_installed_bin_lib_files": 276,
+    "runtime_manifest_before_sha256": "f49f38abf20b4fcccfb6ed117f454022ce0a4422f74f8140556df09adbc91497",
+    "runtime_manifest_after_sha256": "f49f38abf20b4fcccfb6ed117f454022ce0a4422f74f8140556df09adbc91497",
+    "runtime_drift": []
+  },
+  "display": {
+    "runner": "tools/run-painter-xvfb.py",
+    "runner_sha256": "6481502846d9f896cb906c8b1cde26f59d6899d1d5f889e1ffbf8e106e743fde",
+    "size": [
+      1080,
+      1920
+    ],
+    "depth": 24,
+    "display": "127.0.0.1:91",
+    "listener": [
+      "127.0.0.1",
+      6091
+    ],
+    "inherited_systemd_activation_socket": true,
+    "automatic_tcp_unix_local_listeners_disabled": true,
+    "authenticated_client_accepted": true,
+    "empty_authority_client_rejected": true,
+    "no_authentication_bypass": true,
+    "shutdown_connect_errno": 111,
+    "shared_lock_released": true
+  },
+  "gui": {
+    "method": "Actual installed GIMP process, fresh writable profile, ordinary XTest keyboard/mouse input, raw full-screen XGetImage PNG captures. No injected widgets, no screenshots edited or composited.",
+    "input": "synthetic-u8-rgb-study.png",
+    "input_mode": "U8 RGB, synthetic test artwork",
+    "input_pixels": [
+      720,
+      1080
+    ],
+    "input_sha256": "877e76def58edd44a7c7cfb4f441f69c463062c6fd05a53910f9ed8cf5ff55cb",
+    "started_at_utc": "2026-10-17T03:47:41.659061+00:00",
+    "exited_at_utc": "2026-10-17T03:53:35.669614+00:00",
+    "view_painter_canvas_controls": true,
+    "custom_tool_column_layer_tiles_color_controls_bottom_tool_options_visible": true,
+    "layer_popup_new_filter_layer": true,
+    "selected": "Value Invert (Painter compatibility)",
+    "independent_layer_name": "Value Invert - native Painter",
+    "layer_mode": "Replace (Painter legacy)",
+    "source_layer_retained": true,
+    "create_and_visible_transform": true,
+    "visibility_toggle_restores_original": true,
+    "ordinary_save": true,
+    "ordinary_close": true,
+    "ordinary_open_saved_xcf": true,
+    "filter_settings_reopened": true,
+    "reopened_status": "Up to date. Changes below this layer update it automatically.",
+    "saved_definition": {
+      "procedure": "plug-in-vinvert",
+      "original_metadata_bytes": 0,
+      "gint_values": [
+        1,
+        1,
+        0
+      ]
+    },
+    "editor_selector_changed_then_cancelled": {
+      "temporary_choice": "Maximum/Minimum RGB (Painter compatibility)",
+      "committed": false,
+      "reopened_choice_after_cancel": "Value Invert (Painter compatibility)",
+      "xcf_bytes_unchanged": true
+    },
+    "additional_numeric_argument": "None for Value Invert; disabled shared integer field is intentional.",
+    "visible_reopen_comparison": {
+      "before": "008-value-invert-result.png",
+      "reopened": "015-reopened-centered.png",
+      "box_xyxy": [
+        302,
+        625,
+        778,
+        1340
+      ],
+      "differing_pixels": 0,
+      "total_pixels": 340340,
+      "note": "Visible canvas rectangle only; excludes outer boundary and UI, not semantic full-buffer proof."
+    },
+    "normal_ctrl_q_exit": 0
+  },
+  "xcf": {
+    "name": "portrait-value-invert.xcf",
+    "bytes": 245961,
+    "sha256": "5179ade729930cf3c5f2639a433b1ecd51e357625a4c8ac8e26653a3a85eb129",
+    "sha256_at_first_save": "5179ade729930cf3c5f2639a433b1ecd51e357625a4c8ac8e26653a3a85eb129",
+    "preserved_after_open_editor_cancel_and_quit": true
+  },
+  "screenshots": {
+    "001-initial-portrait.png": {
+      "sha256": "37732e1fa55763106ae141d2f96d3a03e5e40e774898c7d27942300c0e908f9a",
+      "width": 1080,
+      "height": 1920,
+      "bytes": 138194
+    },
+    "002-view-menu.png": {
+      "sha256": "e375e494e61ff7169aa124a5fb9ff494013bebd745ddf7e31e24f82fe7b614d4",
+      "width": 1080,
+      "height": 1920,
+      "bytes": 183298
+    },
+    "003-painter-controls-before-filter.png": {
+      "sha256": "d5f8f649a4cb4019bd6858af9bd3b79044010b8b458e6c69444361b3c4eab30e",
+      "width": 1080,
+      "height": 1920,
+      "bytes": 222321
+    },
+    "004-painter-controls-centered.png": {
+      "sha256": "0574e3626f31340abd5637d149a822a06b78cd1b2a1f842a36057ae4b37cb1d4",
+      "width": 1080,
+      "height": 1920,
+      "bytes": 219178
+    },
+    "005-layer-popup.png": {
+      "sha256": "f86e7e8cda1282ac31ad6603b2e07cbf9bd1ea23dc27823423d6f4e439cc0f13",
+      "width": 1080,
+      "height": 1920,
+      "bytes": 239166
+    },
+    "006-new-filter-dialog.png": {
+      "sha256": "83a57de929fb9dcbf14a724e4297eef617e0853638fda0f79e0ad0990b48ca69",
+      "width": 1080,
+      "height": 1920,
+      "bytes": 243159
+    },
+    "007-value-invert-selected.png": {
+      "sha256": "2500ff2be5fba10891c9c11ff4addad17fad7ad234eec115b0f082f444adc421",
+      "width": 1080,
+      "height": 1920,
+      "bytes": 248446
+    },
+    "008-value-invert-result.png": {
+      "sha256": "8e02709c471baf30fae8fa17b2f8197db298833356e2f518de5cc25e5978e7c6",
+      "width": 1080,
+      "height": 1920,
+      "bytes": 238996
+    },
+    "009-filter-hidden-source-study.png": {
+      "sha256": "cf770a134b9344347d9c2740945770465587657586117e9f3d4876093df18763",
+      "width": 1080,
+      "height": 1920,
+      "bytes": 237866
+    },
+    "010-save-dialog.png": {
+      "sha256": "234af38b4095098a2d10e01fc3be3fa09c557f92017aa9d46b51a3a9d9f4ea07",
+      "width": 1080,
+      "height": 1920,
+      "bytes": 85402
+    },
+    "011-saved-value-invert.png": {
+      "sha256": "c045ab6d669a68c91c702c60898575272db0b051520232358460dbe74b27e100",
+      "width": 1080,
+      "height": 1920,
+      "bytes": 240139
+    },
+    "012-closed-xcf.png": {
+      "sha256": "1521ffbcdd74902c43feb4e18e56df3b15e37e5b1562ac9f54f47649f9225cb9",
+      "width": 1080,
+      "height": 1920,
+      "bytes": 104150
+    },
+    "013-open-dialog.png": {
+      "sha256": "b8f3722465a95f8033478228605e5aaae754da903e7ed40a2dbba7658208e5e3",
+      "width": 1080,
+      "height": 1920,
+      "bytes": 130465
+    },
+    "014-reopened-xcf.png": {
+      "sha256": "b9ccc8d9229b0923dd4290efd633b4e0df642d05b2080dd222992ca5f814fe4b",
+      "width": 1080,
+      "height": 1920,
+      "bytes": 235226
+    },
+    "015-reopened-centered.png": {
+      "sha256": "7a97863f47188a55096e3a1d11cf87189fe28fa3018c8e611ec07b4508c8d7f7",
+      "width": 1080,
+      "height": 1920,
+      "bytes": 236003
+    },
+    "016-painter-filter-popup.png": {
+      "sha256": "905b403d16ed33284f136f3655da44b206a4707b220be4408a19281f0e8ce8ff",
+      "width": 1080,
+      "height": 1920,
+      "bytes": 207522
+    },
+    "017-reopened-editable-filter-settings.png": {
+      "sha256": "adb7b20c1dba6cfd3581f30644aa506faf29b604662bd5efd534d216f2c545f9",
+      "width": 1080,
+      "height": 1920,
+      "bytes": 246429
+    },
+    "018-reopened-saved-definition.png": {
+      "sha256": "aef18cca4c8be3eb8ec9d7bc291c2bae9b225208360db30a82489abd571969a6",
+      "width": 1080,
+      "height": 1920,
+      "bytes": 247264
+    },
+    "019-editable-selector-uncommitted.png": {
+      "sha256": "35c4ab7747a0bd2b4798989830305abbad3b59704222bb7377c4b83bb45693cc",
+      "width": 1080,
+      "height": 1920,
+      "bytes": 247892
+    },
+    "020-reopened-after-cancel.png": {
+      "sha256": "adb7b20c1dba6cfd3581f30644aa506faf29b604662bd5efd534d216f2c545f9",
+      "width": 1080,
+      "height": 1920,
+      "bytes": 246429
+    }
+  },
+  "known_diagnostics": {
+    "startup_unsupported_fonts": 112,
+    "dbus_connection_unavailable": true,
+    "dconf_warning_count": 44,
+    "cause_reported": "dbus-launch child exited 1 in this isolated environment",
+    "critical_count": 0,
+    "segmentation_fault_mentions": 0,
+    "raw_log_preserved": "logs/gimp-gui-01.log",
+    "warning_free_claim": false
+  },
+  "retained_inspection_attempt": {
+    "note": "Initial objcopy --dump-section omitted output file; installed input rewrite was refused as Text file busy. Extracted .text matched; pre/post build and installed whole-file hashes unchanged.",
+    "log": "logs/binary-section-inspection-attempt.txt"
+  },
+  "limits": [
+    "Synthetic artwork, not additional genuine old-writer corpus evidence.",
+    "Visible 340,340-pixel rectangle equality is not full-buffer numerical acceptance.",
+    "Editor selection and Cancel were checked; no new filter parameter value was committed.",
+    "No fresh full aggregate, sanitizer suite, LeakSanitizer, other operating system, tablet, legacy UI equivalence, exhaustive shutdown or whole-port acceptance.",
+    "Known font, D-Bus/dconf and compiler warnings remain."
+  ],
+  "local_evidence_paths": {
+    "source": "/workspace/shared/gimp-portrait-public-source",
+    "build": "/workspace/shared/gimp-portrait-verification/build",
+    "install_prefix": "/workspace/shared/gimp-portrait-verification/prefix",
+    "dependency_env": "/workspace/shared/gimp-portrait-deps/env.sh",
+    "run_env": "/workspace/shared/gimp-portrait-verification/env.sh",
+    "lock": "/workspace/shared/gimp-painter-build.lock",
+    "before_visible_filter": "/workspace/shared/gimp-portrait-verification/screenshots/008-value-invert-result.png",
+    "before_filter_hidden_source": "/workspace/shared/gimp-portrait-verification/screenshots/009-filter-hidden-source-study.png",
+    "after_reopen": "/workspace/shared/gimp-portrait-verification/screenshots/015-reopened-centered.png",
+    "after_reopen_settings": "/workspace/shared/gimp-portrait-verification/screenshots/018-reopened-saved-definition.png",
+    "after_cancel_reopened_settings": "/workspace/shared/gimp-portrait-verification/screenshots/020-reopened-after-cancel.png",
+    "xcf": "/workspace/shared/gimp-portrait-verification/portrait-value-invert.xcf"
+  },
+  "bounded_task_id": "34.005/value-invert-portrait-smoke",
+  "required_dependencies": [
+    "03.009/tcp-portrait-environment",
+    "16.003/native-value-invert-context",
+    "29.001/native-canvas-tiles"
+  ]
+}
