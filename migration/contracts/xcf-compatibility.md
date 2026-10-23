@@ -52,10 +52,66 @@ nonlinear, u32 linear, half linear, float linear. Standard v5/6 values are
 precision constants (including 500/550/575 half and 600/650/675 float).
 No current enum is used to interpret a legacy field.
 
-Old writer version selection forces v4 for FilterLayer, CloneLayer and modes
-26–29. It does **not** force v4 merely for modes 23–25. Therefore low version
+Old writer version selection forces v4 for FilterLayer and CloneLayer, including
+nested custom layers. The top-level mode switch forces v4 for **23–29**
+(`xcf-save.c:293–301`), whereas the recursive helper checks only **26–29**
+(`xcf-save.c:216–239`). Thus a group containing only nested modes23–25 can
+remain v3 when no other feature forces v4 (`xcf-save.c:308–324`). Low version
 numbers cannot establish a standard semantic dialect. Old v0–3 can be ordinary
-shared-format data or carry colliding semantics.
+shared-format data or carry colliding semantics. This is a source observation,
+not a newly executed old-writer test or a dialect-selection rule.
+
+### Genuine old v4 header bytes (original task 10.002)
+
+The pinned old writer emits exactly fourteen signature bytes and three u32BE
+words, then image properties with **no precision word**
+(`xcf-save.c:359–398`). The old reader consumes width, height and image type,
+then reads image properties (`xcf-load.c:184–199`). Its u32 helpers use
+`g_htonl`/`g_ntohl` (`xcf-write.c:49–64`, `xcf-read.c:60–74`). Offset-table
+entries and their zero terminators are four bytes
+(`xcf-save.c:402–449`); this does not change for old v4.
+
+Both preserved genuine Clone captures in `migration/fixtures/legacy-runtime/`
+have this exact 35-byte prefix:
+
+```text
+67696d7020786366207630303400 00000040 00000040 00000000 00000011 00000001 01
+```
+
+| Byte offset (inclusive) | Bytes | Meaning in these old captures |
+|---|---|---|
+| 0–13 | `67696d7020786366207630303400` | `gimp xcf v004` plus NUL |
+| 14–17 | `00000040` | Width64, u32BE |
+| 18–21 | `00000040` | Height64, u32BE |
+| 22–25 | `00000000` | RGB base type0, u32BE |
+| 26–29 | `00000011` | First image property: PROP_COMPRESSION17 |
+| 30–33 | `00000001` | Property payload length1, u32BE |
+| 34 | `01` | RLE compression1 |
+
+The pinned files are:
+
+- `clone-normal-in-group.xcf`: 1,148 bytes, SHA-256
+  `0fb12d0345bf6c6685562944dae91fb3cc79e84122bb2e67080164d79846d038`
+- `clone-group.xcf`: 1,164 bytes, SHA-256
+  `6953b26108bb89196c96c2d1a5d38ddd73883c43ba4918a8693d48f867add11e`
+
+Their existing manifest, README and capture log retain the historical execution
+provenance. The 2026-10-17 acceptance only reads those preserved bytes and pinned
+source objects; it does not rerun the old executable or produce new captures.
+`migration/tests/test_legacy_runtime_fixtures.py` checks both exact prefixes,
+field offsets, sizes and hashes. Twenty in-memory controls (ten per file) move
+the property offset, insert a precision word, or alter each asserted metadata
+field; they must fail the same offset assertions independently of hash checking.
+The existing pure C++ decoder already implements this layout in
+`app/xcf/painter-xcf-compat.cpp:107–158`; no decoder or fixture change is needed.
+
+Source/fixture acceptance is recorded in
+`migration/acceptance/xcf-v4-header-source.json`. It addresses only original
+10.002's byte-layout criterion. Original10.003 dialect discrimination,10.004
+collisions,11.002 old-header decoder acceptance, normal Open integration and
+whole compatibility remain separate. A valid `v004` signature alone never
+identifies the dialect. Source-only acceptance does not close original10.002;
+the parent-owned strict native receipt refresh and ledger closure are separate.
 
 `probe()` tries both eligible candidates with separate budgets and no mutations.
 It classifies:
