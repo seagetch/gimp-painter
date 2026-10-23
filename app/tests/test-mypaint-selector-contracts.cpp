@@ -114,7 +114,11 @@ GtkWidget *find (GtkWidget *root, const char *name, GType type = G_TYPE_INVALID)
 
 GtkWidget *control (GtkWidget *root, const char *name)
 {
-  auto *result = find (root, name); g_assert_nonnull (result); return result;
+  auto *result = find (root, name);
+  if (!result)
+    g_test_message ("Missing control '%s' under '%s' (%s)", name,
+                    gtk_widget_get_name (root), G_OBJECT_TYPE_NAME (root));
+  g_assert_nonnull (result); return result;
 }
 
 guint count_type (GtkWidget *root, GType type)
@@ -662,6 +666,244 @@ void reentrant_destroy_and_model_close ()
     }
 }
 
+/* These retain actual native emitters, independently of the selector's
+ * binding slot. Saved row paths must remain meaningful after teardown so the
+ * late-emission assertions cannot pass merely because a row disappeared. */
+struct RetainedHistory {
+  ObjectRef<GObject> view, model, column;
+  std::unique_ptr<GtkTreePath, decltype (&gtk_tree_path_free)> path;
+  gulong activation;
+  RetainedHistory (GtkWidget *button, guint index, bool detach = false)
+    : path (history_path (button, index), gtk_tree_path_free), activation (0)
+  {
+    auto *tree = GTK_TREE_VIEW (control (popup (button), "painter-mypaint-custom-list"));
+    view = ObjectRef<GObject>::retain (G_OBJECT (tree));
+    model = ObjectRef<GObject>::retain (G_OBJECT (gtk_tree_view_get_model (tree)));
+    column = ObjectRef<GObject>::retain (G_OBJECT (gtk_tree_view_get_column (tree, 0)));
+    g_assert_nonnull (path.get ());
+    GtkTreeIter row;
+    g_assert_true (gtk_tree_model_get_iter (GTK_TREE_MODEL (model.get ()), &row, path.get ()));
+    guint saved_index = G_MAXUINT;
+    gtk_tree_model_get (GTK_TREE_MODEL (model.get ()), &row, 0, &saved_index, -1);
+    g_assert_cmpuint (saved_index, ==, index);
+    activation = g_signal_handler_find (tree, G_SIGNAL_MATCH_ID,
+      g_signal_lookup ("row-activated", GTK_TYPE_TREE_VIEW), 0, nullptr, nullptr, nullptr);
+    g_assert_cmpuint (activation, >, 0);
+    if (detach)
+      gtk_container_remove (GTK_CONTAINER (gtk_widget_get_parent (GTK_WIDGET (tree))), GTK_WIDGET (tree));
+  }
+  void assert_disconnected () const
+  { g_assert_false (g_signal_handler_is_connected (view.get (), activation)); }
+  void activate () const
+  {
+    GtkTreeIter row;
+    g_assert_true (gtk_tree_model_get_iter (GTK_TREE_MODEL (model.get ()), &row, path.get ()));
+    gtk_tree_view_row_activated (GTK_TREE_VIEW (view.get ()), path.get (),
+                                 GTK_TREE_VIEW_COLUMN (column.get ()));
+    drain ();
+  }
+};
+
+guint prepare_lifetime_history (Selector& selector, Resources& brushes)
+{
+  gimp_context_set_painter_mybrush (GIMP_CONTEXT (selector.model.get ()), brushes.a.get ());
+  auto saved = selector.snapshot (); saved.set_base_value (BRUSH_OPAQUE, .193);
+  set_draft (selector.model.get (), saved); set_name (selector.model.get (), "Retained history lifetime draft");
+  const guint index = gimp_painter_mybrush_options_history_size (selector.model.get ());
+  gimp_context_set_painter_mybrush (GIMP_CONTEXT (selector.model.get ()), brushes.b.get ());
+  drain ();
+  /* A stale restore must change both the snapshot and history length. */
+  auto current = selector.snapshot (); current.set_base_value (BRUSH_OPAQUE, .731);
+  set_draft (selector.model.get (), current); set_name (selector.model.get (), "Current lifetime draft");
+  return index;
+}
+
+void assert_history_unchanged (GimpPainterMybrushOptions *options,
+                               const std::string& snapshot, guint count)
+{
+  g_assert_true (PainterOptionsRef::retain (options).snapshot ().encode () == snapshot);
+  g_assert_cmpuint (gimp_painter_mybrush_options_history_size (options), ==, count);
+  g_assert_true (BindingStore::require (G_OBJECT (options)).state () == BindingStore::State::active);
+}
+
+void assert_selector_closed (GtkWidget *button, GtkWidget *retained_popup)
+{
+  g_assert_true (BindingStore::require (G_OBJECT (button)).state () == BindingStore::State::closed);
+  g_assert_false (gtk_widget_get_visible (retained_popup));
+  auto *remaining = gtk_menu_button_get_popover (GTK_MENU_BUTTON (button));
+  g_assert_true (!remaining || !gtk_widget_get_visible (GTK_WIDGET (remaining)));
+}
+
+void retained_history_after_close_and_finalize ()
+{
+  Resources brushes;
+  for (bool detach : {false, true})
+    for (bool explicit_close : {false, true})
+      {
+        bool finalized = false;
+        ObjectRef<GimpPainterMybrushOptions> canonical;
+        std::unique_ptr<RetainedHistory> history;
+        std::string snapshot; guint count = 0;
+        {
+          Selector selector;
+          const guint index = prepare_lifetime_history (selector, brushes);
+          canonical = selector.model;
+          history.reset (new RetainedHistory (selector.button, index, detach));
+          auto retained_popup = ObjectRef<GObject>::retain (G_OBJECT (popup (selector.button)));
+          g_object_set_data_full (G_OBJECT (selector.button), "selector-lifetime-finalized", &finalized,
+            +[](gpointer data) { *static_cast<bool *> (data) = true; });
+          snapshot = selector.snapshot ().encode ();
+          count = gimp_painter_mybrush_options_history_size (canonical.get ());
+          if (explicit_close)
+            g_assert_true (gimp_painter_binding_close (G_OBJECT (selector.button), nullptr));
+          else gtk_widget_destroy (selector.button);
+          history->assert_disconnected ();
+          if (detach)
+            g_assert_true (gtk_tree_view_get_model (GTK_TREE_VIEW (history->view.get ())) ==
+                           GTK_TREE_MODEL (history->model.get ()));
+          history->activate ();
+          assert_history_unchanged (canonical.get (), snapshot, count);
+          /* Reopening and model notifications cannot recreate the closed UI. */
+          gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (selector.button), TRUE);
+          g_signal_emit_by_name (canonical.get (), "history-changed"); drain ();
+          assert_selector_closed (selector.button, GTK_WIDGET (retained_popup.get ()));
+          g_assert_false (finalized);
+        }
+        g_assert_true (finalized);
+        history->assert_disconnected ();
+        if (detach)
+          g_assert_true (gtk_tree_view_get_model (GTK_TREE_VIEW (history->view.get ())) ==
+                         GTK_TREE_MODEL (history->model.get ()));
+        history->activate ();
+        g_signal_emit_by_name (canonical.get (), "history-changed"); drain ();
+        history->activate ();
+        assert_history_unchanged (canonical.get (), snapshot, count);
+      }
+}
+
+void history_model_swap_close_reentry ()
+{
+  Resources brushes;
+  for (bool explicit_close : {false, true})
+    {
+      Selector selector;
+      const guint index = prepare_lifetime_history (selector, brushes);
+      RetainedHistory history (selector.button, index);
+      auto retained_popup = ObjectRef<GObject>::retain (G_OBJECT (popup (selector.button)));
+      struct CloseModelSwap {
+        GtkWidget *button;
+        bool explicit_close;
+        guint calls = 0;
+        ObjectRef<GObject> installed;
+      } request{selector.button, explicit_close, 0, {}};
+      auto connection = g_signal_connect (history.view.get (), "notify::model",
+        G_CALLBACK (+[](GObject *object, GParamSpec *, gpointer data) {
+          auto& request = *static_cast<CloseModelSwap *> (data);
+          if (request.calls) return;
+          ++request.calls;
+          request.installed = ObjectRef<GObject>::retain (G_OBJECT (
+            gtk_tree_view_get_model (GTK_TREE_VIEW (object))));
+          g_assert_true (bool (request.installed));
+          if (request.explicit_close)
+            g_assert_true (gimp_painter_binding_close (G_OBJECT (request.button), nullptr));
+          else gtk_widget_destroy (request.button);
+        }), &request);
+      /* A real deferred history notification enters refresh_history(), whose
+       * model swap synchronously closes the owner while its callback runs. */
+      gimp_context_set_painter_mybrush (GIMP_CONTEXT (selector.model.get ()), brushes.c.get ());
+      const auto snapshot = selector.snapshot ().encode ();
+      const guint count = gimp_painter_mybrush_options_history_size (selector.model.get ());
+      drain ();
+      g_assert_cmpuint (request.calls, ==, 1);
+      g_assert_true (request.installed.get () != history.model.get ());
+      g_assert_cmpint (gtk_tree_model_iter_n_children (GTK_TREE_MODEL (request.installed.get ()), nullptr), ==, count);
+      GtkTreeIter row;
+      g_assert_true (gtk_tree_model_get_iter (GTK_TREE_MODEL (request.installed.get ()), &row, history.path.get ()));
+      history.assert_disconnected ();
+      history.activate ();
+      assert_selector_closed (selector.button, GTK_WIDGET (retained_popup.get ()));
+      assert_history_unchanged (selector.model.get (), snapshot, count);
+      if (g_signal_handler_is_connected (history.view.get (), connection))
+        g_signal_handler_disconnect (history.view.get (), connection);
+      auto *after = gtk_tree_view_get_model (GTK_TREE_VIEW (history.view.get ()));
+      g_signal_emit_by_name (selector.model.get (), "history-changed"); drain ();
+      g_assert_true (gtk_tree_view_get_model (GTK_TREE_VIEW (history.view.get ())) == after);
+      history.activate ();
+      assert_history_unchanged (selector.model.get (), snapshot, count);
+    }
+}
+
+void source_context_and_button_destruction_orders ()
+{
+  Resources brushes;
+  for (bool source_first : {false, true})
+    {
+      bool source_finalized = false, button_finalized = false;
+      const auto finalized = +[](gpointer data) { *static_cast<bool *> (data) = true; };
+      auto context = ContextOwner (gimp_context_new (application, "selector lifetime ordinary source", nullptr));
+      gimp_context_set_painter_mybrush (context.get (), brushes.a.get ());
+      g_object_set_data_full (G_OBJECT (context.get ()), "selector-lifetime-finalized", &source_finalized, finalized);
+      ObjectRef<GimpPainterMybrushOptions> canonical;
+      std::unique_ptr<RetainedHistory> history;
+      std::string snapshot; guint count = 0;
+      {
+        Selector selector (context.get ());
+        g_assert_true (G_OBJECT (selector.model.get ()) != G_OBJECT (context.get ()));
+        g_assert_true (selector.model.get () == GIMP_PAINTER_MYBRUSH_OPTIONS (tool_info ()->tool_options));
+        canonical = selector.model;
+        const guint index = prepare_lifetime_history (selector, brushes);
+        history.reset (new RetainedHistory (selector.button, index, true));
+        auto retained_popup = ObjectRef<GObject>::retain (G_OBJECT (popup (selector.button)));
+        g_object_set_data_full (G_OBJECT (selector.button), "selector-lifetime-finalized", &button_finalized, finalized);
+        const auto source_connection = g_signal_handler_find (context.get (), G_SIGNAL_MATCH_ID,
+          g_signal_lookup ("painter-mybrush-changed", GIMP_TYPE_CONTEXT), 0, nullptr, nullptr, nullptr);
+        g_assert_cmpuint (source_connection, >, 0);
+        snapshot = selector.snapshot ().encode ();
+        count = gimp_painter_mybrush_options_history_size (canonical.get ());
+        if (source_first)
+          {
+            /* Releasing the caller's source handle must not invalidate the
+             * active selector; explicit disposal then closes only its UI. */
+            auto *source = context.get ();
+            context.reset ();
+            g_assert_false (source_finalized);
+            g_assert_true (source->gimp == application);
+            context.reset (GIMP_CONTEXT (g_object_ref (source)));
+            g_object_run_dispose (G_OBJECT (source));
+            g_assert_null (source->gimp);
+            g_assert_false (g_signal_handler_is_connected (source, source_connection));
+            context.reset ();
+            g_assert_true (source_finalized);
+          }
+        else
+          {
+            gtk_widget_destroy (selector.button);
+            g_assert_false (source_finalized);
+            g_assert_true (context->gimp == application);
+            g_assert_false (g_signal_handler_is_connected (context.get (), source_connection));
+            /* The independent source can still change, without driving the
+             * retained canonical options through a dead selector route. */
+            gimp_context_set_painter_mybrush (context.get (), brushes.c.get ());
+          }
+        history->assert_disconnected ();
+        history->activate ();
+        assert_selector_closed (selector.button, GTK_WIDGET (retained_popup.get ()));
+        assert_history_unchanged (canonical.get (), snapshot, count);
+        g_assert_false (button_finalized);
+      }
+      g_assert_true (button_finalized);
+      if (!source_first)
+        {
+          g_assert_false (source_finalized);
+          g_object_run_dispose (G_OBJECT (context.get ())); context.reset ();
+          g_assert_true (source_finalized);
+        }
+      history->activate ();
+      g_signal_emit_by_name (canonical.get (), "history-changed"); drain ();
+      assert_history_unchanged (canonical.get (), snapshot, count);
+    }
+}
+
 void resource_rename_icon_and_remove ()
 {
   Resources brushes; Selector selector;
@@ -921,47 +1163,103 @@ struct Scene {
   }
 };
 
-void actual_canvas_transfer_and_tool_switch ()
+void actual_canvas_independent_toolbars_and_tool_switch ()
 {
+  Resources brushes;
   gboolean previous = application->config->painter_canvas_ui;
   g_object_set (application->config, "painter-canvas-ui", FALSE, nullptr);
   {
     Scene scene;
     auto *gui = gimp_tools_get_tool_options_gui (GIMP_TOOL_OPTIONS (scene.options));
+    auto *parent = gtk_widget_get_parent (gui);
     auto *button = control (gui, selector_name);
     auto *editor = find (gui, nullptr, GIMP_TYPE_PAINTER_MYBRUSH_EDITOR); g_assert_nonnull (editor);
     auto *opaque = control (editor, "opaque");
+    auto assert_dock_identity = [&] {
+      g_assert_true (gimp_tools_get_tool_options_gui (GIMP_TOOL_OPTIONS (scene.options)) == gui);
+      g_assert_true (gtk_widget_get_parent (gui) == parent);
+      g_assert_false (gimp_painter_compact_options_get (gui));
+      g_assert_true (control (gui, selector_name) == button);
+      g_assert_true (find (gui, nullptr, GIMP_TYPE_PAINTER_MYBRUSH_EDITOR) == editor);
+      g_assert_true (control (editor, "opaque") == opaque);
+      g_assert_cmpuint (count_type (gui, GIMP_TYPE_PAINTER_MYBRUSH_EDITOR), ==, 1);
+    };
+    gimp_context_set_painter_mybrush (GIMP_CONTEXT (scene.options), brushes.a.get ()); drain ();
     gimp_painter_canvas_ui_set_visible (scene.shell (), TRUE); drain ();
-    g_assert_true (gimp_painter_compact_options_get (gui));
-    g_assert_true (gtk_widget_get_ancestor (gui, GIMP_TYPE_DISPLAY_SHELL) == GTK_WIDGET (scene.shell ()));
-    g_assert_true (control (scene.shell ()->canvas, selector_name) == button);
-    open_popup (button);
-    gtk_button_clicked (GTK_BUTTON (control (scene.shell ()->canvas, "painter-canvas-options"))); drain ();
-    g_assert_false (gimp_painter_compact_options_get (gui));
-    g_assert_false (gtk_widget_get_visible (popup (button)));
-    g_assert_true (find (gui, nullptr, GIMP_TYPE_PAINTER_MYBRUSH_EDITOR) == editor);
-    gtk_button_clicked (GTK_BUTTON (control (scene.shell ()->canvas, "painter-canvas-compact"))); drain ();
-    g_assert_true (gimp_painter_compact_options_get (gui));
+    g_test_message ("Inspecting first independent canvas toolbar");
+    auto *first_button = control (scene.shell ()->canvas, selector_name);
+    auto *first_gui = gtk_widget_get_parent (first_button);
+    auto *first_editor = find (first_gui, nullptr, GIMP_TYPE_PAINTER_MYBRUSH_EDITOR);
+    g_assert_nonnull (first_editor);
+    auto *first_opaque = control (first_gui, "opaque");
+    g_assert_true (first_gui != gui && first_button != button && first_editor != editor);
+    g_assert_true (gimp_painter_compact_options_get (first_gui));
+    g_assert_true (gtk_widget_get_ancestor (first_gui, GIMP_TYPE_DISPLAY_SHELL) == GTK_WIDGET (scene.shell ()));
+    assert_dock_identity ();
+    /* Independent native controls must share the canonical options, without
+     * borrowing either the dock's selector or its embedded editor. */
+    open_popup (first_button); choose_preset (first_button, brushes.b.get ()); close_popup (first_button);
+    assert_selected (first_button, scene.options, brushes.b.get ());
+    assert_selected (button, scene.options, brushes.b.get ());
+    g_assert_cmpfloat_with_epsilon (gtk_spin_button_get_value (GTK_SPIN_BUTTON (opaque)), .15, 1e-6);
+    gtk_spin_button_set_value (GTK_SPIN_BUTTON (opaque), .582); drain ();
+    g_assert_cmpfloat_with_epsilon (gtk_spin_button_get_value (GTK_SPIN_BUTTON (first_opaque)), .582, 1e-6);
+    g_assert_cmpfloat_with_epsilon (PainterOptionsRef::retain (scene.options).snapshot ().base_value (BRUSH_OPAQUE), .582, 1e-6);
+    open_popup (first_button);
+    gimp_painter_canvas_ui_set_visible (scene.shell (), FALSE); drain ();
+    g_assert_false (gtk_widget_get_visible (popup (first_button)));
+    gimp_painter_canvas_ui_set_visible (scene.shell (), TRUE); drain ();
+    g_assert_true (control (scene.shell ()->canvas, selector_name) == first_button);
+    g_assert_true (find (first_gui, nullptr, GIMP_TYPE_PAINTER_MYBRUSH_EDITOR) == first_editor);
+    assert_dock_identity ();
+
     gimp_test_utils_create_image (application, 96, 96); drain ();
     auto *other = gimp_context_get_display (gimp_get_user_context (application));
     auto *other_image = gimp_display_get_image (other);
     g_assert_true (other != scene.display);
     auto *other_shell = gimp_display_get_shell (other);
     gimp_painter_canvas_ui_set_visible (other_shell, TRUE); drain ();
-    g_assert_true (gtk_widget_get_ancestor (gui, GIMP_TYPE_DISPLAY_SHELL) == GTK_WIDGET (other_shell));
-    g_assert_true (control (gui, selector_name) == button);
-    g_assert_true (control (gui, "opaque") == opaque);
-    g_assert_true (find (gui, nullptr, GIMP_TYPE_PAINTER_MYBRUSH_EDITOR) == editor);
-    g_assert_cmpuint (count_type (gui, GIMP_TYPE_PAINTER_MYBRUSH_EDITOR), ==, 1);
-    open_popup (button);
+    g_test_message ("Inspecting second independent canvas toolbar");
+    auto *second_button = control (other_shell->canvas, selector_name);
+    auto *second_gui = gtk_widget_get_parent (second_button);
+    auto *second_editor = find (second_gui, nullptr, GIMP_TYPE_PAINTER_MYBRUSH_EDITOR);
+    g_assert_nonnull (second_editor);
+    g_assert_true (second_gui != first_gui && second_gui != gui);
+    g_assert_true (second_button != first_button && second_button != button);
+    g_assert_true (second_editor != first_editor && second_editor != editor);
+    g_assert_true (gimp_painter_compact_options_get (second_gui));
+    g_assert_true (gtk_widget_get_ancestor (second_gui, GIMP_TYPE_DISPLAY_SHELL) == GTK_WIDGET (other_shell));
+    assert_dock_identity ();
+    choose_preset (second_button, brushes.c.get ());
+    assert_selected (second_button, scene.options, brushes.c.get ());
+    assert_selected (first_button, scene.options, brushes.c.get ());
+    assert_selected (button, scene.options, brushes.c.get ());
+
+    auto retired_button = ObjectRef<GObject>::retain (G_OBJECT (second_button));
+    auto retired_editor = ObjectRef<GObject>::retain (G_OBJECT (second_editor));
+    auto retired_popup = ObjectRef<GObject>::retain (G_OBJECT (popup (second_button)));
+    open_popup (second_button);
     gimp_context_set_tool (gimp_get_user_context (application), gimp_get_tool_info (application, "gimp-rect-select-tool")); drain ();
-    g_assert_false (gtk_widget_get_visible (popup (button)));
-    g_assert_false (gimp_painter_compact_options_get (gui));
+    assert_selector_closed (second_button, GTK_WIDGET (retired_popup.get ()));
+    g_assert_true (BindingStore::require (retired_editor.get ()).state () == BindingStore::State::closed);
+    g_assert_null (find (other_shell->canvas, selector_name));
+    assert_dock_identity ();
     gimp_context_set_tool (gimp_get_user_context (application), tool_info ()); drain ();
-    g_assert_true (control (gui, selector_name) == button);
-    g_assert_true (find (gui, nullptr, GIMP_TYPE_PAINTER_MYBRUSH_EDITOR) == editor);
+    g_test_message ("Inspecting recreated canvas toolbar after tool switch");
+    auto *replacement_button = control (other_shell->canvas, selector_name);
+    auto *replacement_gui = gtk_widget_get_parent (replacement_button);
+    auto *replacement_editor = find (replacement_gui, nullptr, GIMP_TYPE_PAINTER_MYBRUSH_EDITOR);
+    g_assert_nonnull (replacement_editor);
+    g_assert_true (replacement_button != second_button && replacement_button != button);
+    g_assert_true (replacement_editor != second_editor && replacement_editor != editor);
+    assert_dock_identity ();
+    choose_preset (replacement_button, brushes.b.get ());
+    assert_selected (replacement_button, scene.options, brushes.b.get ());
+    assert_selected (button, scene.options, brushes.b.get ());
+    g_assert_cmpfloat_with_epsilon (gtk_spin_button_get_value (GTK_SPIN_BUTTON (opaque)), .15, 1e-6);
     gimp_painter_canvas_ui_set_visible (other_shell, FALSE); drain ();
     gimp_display_delete (other); g_object_unref (other_image); drain ();
+    assert_dock_identity ();
   }
   g_object_set (application->config, "painter-canvas-ui", previous, nullptr);
 }
@@ -973,8 +1271,7 @@ void preset_custom_real_stroke_undo_cancel ()
   {
     Scene scene;
     gimp_painter_canvas_ui_set_visible (scene.shell (), TRUE); drain ();
-    auto *gui = gimp_tools_get_tool_options_gui (GIMP_TOOL_OPTIONS (scene.options));
-    auto *button = control (gui, selector_name);
+    auto *button = control (scene.shell ()->canvas, selector_name);
     const auto baseline = scene.pixels ();
     std::vector<std::vector<guchar>> painted;
     for (auto *brush : {brushes.a.get (), brushes.b.get ()})
@@ -1025,7 +1322,10 @@ gimp_test_mypaint_selector_cpp_register (Gimp *gimp)
   g_test_add_func ("/mypaint-selector/cpp/08-resource-rename-icon-remove", resource_rename_icon_and_remove);
   g_test_add_func ("/mypaint-selector/cpp/09-source-less-missing-preview", source_less_draft_and_missing_preview);
   g_test_add_func ("/mypaint-selector/cpp/10-registered-editor-identity", registered_tool_gui_and_editor_identity);
-  g_test_add_func ("/mypaint-selector/cpp/11-canvas-transfer-tool-switch", actual_canvas_transfer_and_tool_switch);
+  g_test_add_func ("/mypaint-selector/cpp/11-canvas-independent-toolbars-tool-switch", actual_canvas_independent_toolbars_and_tool_switch);
   g_test_add_func ("/mypaint-selector/cpp/12-preset-custom-stroke-undo-cancel", preset_custom_real_stroke_undo_cancel);
+  g_test_add_func ("/mypaint-selector/cpp/13-retained-history-close-finalize", retained_history_after_close_and_finalize);
+  g_test_add_func ("/mypaint-selector/cpp/14-history-model-swap-close-reentry", history_model_swap_close_reentry);
+  g_test_add_func ("/mypaint-selector/cpp/15-source-context-button-destruction-orders", source_context_and_button_destruction_orders);
   register_selector_history_tests (application);
 }
