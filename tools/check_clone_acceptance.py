@@ -5,6 +5,8 @@ import json
 from pathlib import Path
 import re
 import tarfile
+import argparse
+from clone_evidence import validate_receipt
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -13,11 +15,24 @@ def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def validate(root=ROOT, matrix=None):
+def validate(root=ROOT, matrix=None, current_evidence=None):
     root = Path(root)
     m = matrix if matrix is not None else json.loads(
         (root / 'migration/acceptance/clone.json').read_text())
     errors = []
+    current = None
+    route = m.get('current_core_receipt')
+    if current_evidence is not None:
+        current = validate_receipt(current_evidence, root)
+    elif route is not None:
+        if not isinstance(route, dict) or set(route) != {'directory', 'receipt_sha256'}:
+            errors.append('Invalid current core receipt route')
+        else:
+            current = validate_receipt(root / route['directory'], root, route['receipt_sha256'])
+    if current is not None:
+        errors.extend(current['errors'])
+        if current['errors']:
+            current = None
     tasks = {}
     for line in (root / 'tasks.md').read_text().splitlines():
         columns = [part.strip() for part in line.split('|')]
@@ -36,7 +51,7 @@ def validate(root=ROOT, matrix=None):
     if core['exit_code'] != 0 or normal['result'] != 'OK':
         errors.append('Clone core execution failed')
     for path, digest in m['current_core_sources_sha256'].items():
-        if core['verified_input_sha256'].get(path) != digest or sha(root / path) != digest:
+        if core['verified_input_sha256'].get(path) != digest or (current is None and sha(root / path) != digest):
             errors.append('Core source/evidence mismatch: ' + path)
 
     snapshots = {}
@@ -71,6 +86,9 @@ def validate(root=ROOT, matrix=None):
             errors.append(context + ': test not passed ' + test)
 
     test_source = (root / 'app/tests/test-gimp-clone-layer.c').read_text()
+    core_normal = current['normal_stdout'] if current else normal['stdout']
+    core_sanitizers = current['sanitizer_stdout'] if current else core['stdout']
+    sealed_sources = current['sources_sha256'] if current else m['current_core_sources_sha256']
     for row in rows:
         name = row['id']
         task = tasks.get(name)
@@ -85,11 +103,11 @@ def validate(root=ROOT, matrix=None):
         if not row['named_tests']:
             errors.append(name + ': no named core evidence')
         for source in row['source']:
-            if source not in m['current_core_sources_sha256']:
+            if source not in sealed_sources:
                 errors.append(name + ': unsealed claimed core source ' + source)
         for test in row['named_tests']:
-            passed(test, normal['stdout'], name + ' normal')
-            passed(test, core['stdout'], name + ' sanitizers')
+            passed(test, core_normal, name + ' normal')
+            passed(test, core_sanitizers, name + ' sanitizers')
             if test.rsplit('/', 1)[1] not in test_source:
                 errors.append(name + ': missing core test registration')
         for test in row['additional_roundtrip_tests']:
@@ -109,7 +127,10 @@ def validate(root=ROOT, matrix=None):
 
 
 if __name__ == '__main__':
-    errors = validate()
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--current-evidence', type=Path, help='Explicit fresh sealed receipt directory; never an old report')
+    args = parser.parse_args()
+    errors = validate(current_evidence=args.current_evidence)
     if errors:
         raise SystemExit('\n'.join(errors))
-    print('WBS14: all 26 component rows reconciled; core source and historical XCF/GUI evidence verified. Dependency, remaining fixture and current aggregate gates stay open.')
+    print('WBS14 component rows reconciled; source-bound core and immutable historical XCF/GUI evidence verified. Dependency, broader fixtures and aggregate/release gates stay open.')

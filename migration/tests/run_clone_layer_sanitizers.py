@@ -1,47 +1,31 @@
 #!/usr/bin/env python3
-"""Instrument CloneLayer and its BindingStore in the existing full GIMP harness.
+"""Instrument the focused Clone sources without replacing normal build objects.
 
-Run after building app/tests/gimp-clone-layer, with the build environment loaded.
-Does not claim to instrument all upstream GIMP/dependencies. Original build
-objects are never replaced. Hold /tmp/gimp-painter-build.lock when sharing it.
+The optional --output-dir puts both objects and executable in a fresh separate
+folder. Default output locations remain compatible with earlier invocations.
+Hold the shared build lock throughout the enclosing build/test evidence run.
 """
 import argparse
+import hashlib
 import json
 import os
+import re
 from pathlib import Path
 import shlex
 import subprocess
 import sys
 
-parser = argparse.ArgumentParser()
-parser.add_argument("build", type=Path)
-parser.add_argument("--report", type=Path, required=True)
-args = parser.parse_args()
-build = args.build.resolve()
-root = Path(__file__).resolve().parents[2]
-output = build / "clone-sanitizers"
-output.mkdir(exist_ok=True)
-report = {"scope": "CloneLayer, GimpItem lifetime, group duplication, C/C++ test adapters, and shared BindingStore; remaining GIMP/dependencies uninstrumented",
-          "sanitizers": ["address", "undefined"], "leak_detection": False,
-          "sources": [], "commands": []}
-flags = ["-fsanitize=address,undefined", "-fno-omit-frame-pointer", "-O1"]
-wanted = {"app/core/gimpitem.c", "app/core/gimpclonelayer.cpp", "app/core/gimpgrouplayer.c", "app/tests/test-gimp-clone-layer.c",
-          "app/tests/test-gimp-clone-layout.cpp", "app/painter/binding-store.cpp",
-          "app/painter/gimp-painter-binding.cpp", "app/painter/gimp-painter-error.cpp"}
-replacements = {}
-extra = []
-commands = json.loads((build / "compile_commands.json").read_text())
-for entry in commands:
-    source = (Path(entry["directory"]) / entry["file"]).resolve()
-    try:
-        relative = source.relative_to(root).as_posix()
-    except ValueError:
-        continue
-    if relative not in wanted:
-        continue
-    cmd = shlex.split(entry["command"])
-    cleaned = []
-    skip = False
+SOURCES = frozenset({
+    "app/core/gimpitem.c", "app/core/gimpclonelayer.cpp", "app/core/gimpgrouplayer.c",
+    "app/tests/test-gimp-clone-layer.c", "app/tests/test-gimp-clone-layout.cpp",
+    "app/painter/binding-store.cpp", "app/painter/gimp-painter-binding.cpp",
+    "app/painter/gimp-painter-error.cpp"})
+FLAGS = ["-fsanitize=address,undefined", "-fno-omit-frame-pointer", "-O1"]
+
+
+def compile_command(entry, obj):
+    cmd = list(entry.get("arguments") or shlex.split(entry["command"]))
+    cleaned, skip = [], False
     for arg in cmd:
         if skip:
             skip = False
@@ -49,39 +33,158 @@ for entry in commands:
         if arg in ("-MF", "-MQ", "-MT"):
             skip = True
             continue
-        if arg in ("-MD", "-MMD"):
+        if arg in ("-MD", "-MMD", "-MP", "-MG") or any(
+                arg.startswith(flag) and arg != flag for flag in ("-MF", "-MQ", "-MT")):
             continue
         cleaned.append(arg)
-    obj = output / (source.name + ".o")
     cleaned[cleaned.index("-o") + 1] = str(obj)
-    cleaned += flags
-    report["sources"].append(relative)
-    report["commands"].append(cleaned)
-    subprocess.run(cleaned, cwd=build, check=True)
-    if relative.startswith("app/tests/"):
-        replacements[entry["output"]] = str(obj)
-    else:
-        extra.append(str(obj))
-if set(report["sources"]) != wanted:
-    raise RuntimeError("Compile database lacks required source(s)")
-link_text = subprocess.check_output(["ninja", "-t", "commands", "app/tests/gimp-clone-layer"], cwd=build, text=True)
-link = shlex.split(link_text.strip().splitlines()[-1])
-exe = build / "app/tests/gimp-clone-layer-asan"
-link[link.index("-o") + 1] = str(exe)
-link = [replacements.get(arg, arg) for arg in link]
-link[1:1] = flags + extra
-report["commands"].append(link)
-subprocess.run(link, cwd=build, check=True)
-env = dict(os.environ)
-env.update({"GIMP_TESTING_ABS_TOP_SRCDIR": str(root),
-            "GIMP_TESTING_ABS_TOP_BUILDDIR": str(build),
-            "GIMP_TESTING_PLUGINDIRS": str(build / "plug-ins/common"),
-            "UI_TEST": "yes", "ASAN_OPTIONS": "detect_leaks=0:halt_on_error=1:abort_on_error=1",
-            "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1"})
-result = subprocess.run([str(exe)], cwd=build, env=env, capture_output=True, text=True)
-report.update({"exit_code": result.returncode, "stdout": result.stdout, "stderr": result.stderr})
-args.report.write_text(json.dumps(report, indent=2) + "\n")
-print(result.stdout)
-if result.returncode:
-    print(result.stderr, file=sys.stderr)
-sys.exit(result.returncode)
+    return cleaned + FLAGS
+
+
+def output_paths(build, explicit):
+    output = explicit.resolve() if explicit else build / "clone-sanitizers"
+    exe = output / "gimp-clone-layer-asan" if explicit else build / "app/tests/gimp-clone-layer-asan"
+    return output, exe
+
+
+
+def link_command(link_text, build, exe, replacements, extra, relocate_origin):
+    link = shlex.split(link_text.strip().splitlines()[-1])
+    original_exe = (build / link[link.index("-o") + 1]).resolve()
+    if relocate_origin:
+        # Preserve the normal executable's loader resolution after relocation.
+        # Expand ORIGIN only; other dynamic loader tokens keep their semantics.
+        origin = str(original_exe.parent)
+        link = [arg.replace("${ORIGIN}", origin).replace("$ORIGIN", origin) for arg in link]
+    link[link.index("-o") + 1] = str(exe)
+    link = [replacements.get(arg, arg) for arg in link]
+    link[1:1] = FLAGS + extra
+    return link
+
+
+
+def gimp_library_paths(output):
+    if "not found" in output:
+        raise RuntimeError("Dynamic loader reports an unresolved library")
+    libraries = {}
+    for line in output.splitlines():
+        match = re.match(r"\s*(libgimp[^\s]+)\s+=>\s+(/.*?)\s+\(0x[0-9a-fA-F]+\)\s*$", line)
+        if match:
+            if match[1] in libraries:
+                raise RuntimeError("Duplicate dynamic library resolution")
+            libraries[match[1]] = str(Path(match[2]).resolve())
+    if not libraries:
+        raise RuntimeError("No current-build libgimp loader resolutions found")
+    return libraries
+
+
+def library_resolution(normal_output, sanitizer_output, build):
+    normal, sanitizer = gimp_library_paths(normal_output), gimp_library_paths(sanitizer_output)
+    if normal != sanitizer:
+        raise RuntimeError("Normal and sanitizer resolve different libgimp libraries")
+    result = {}
+    for name, location in normal.items():
+        path = Path(location)
+        if not path.is_relative_to(build) or not path.is_file():
+            raise RuntimeError("libgimp dependency does not resolve to the sealed current build")
+        result[name] = {"path": location, "sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
+    return result
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("build", type=Path)
+    parser.add_argument("--report", type=Path, required=True)
+    parser.add_argument("--output-dir", type=Path)
+    args = parser.parse_args(argv)
+    build = args.build.resolve()
+    root = Path(__file__).resolve().parents[2]
+    output, exe = output_paths(build, args.output_dir)
+    report = {"scope": "CloneLayer, GimpItem lifetime, group duplication, C/C++ test adapters, and shared BindingStore; remaining GIMP/dependencies uninstrumented",
+              "sanitizers": ["address", "undefined"], "leak_detection": False,
+              "sources": [], "commands": [], "executions": [], "exit_code": None,
+              "stdout": "", "stderr": "", "executable": str(exe)}
+
+    def save():
+        args.report.write_text(json.dumps(report, indent=2) + "\n")
+
+    def run(command, environment=None):
+        record = {"command": command, "cwd": str(build), "exit_code": None,
+                  "stdout": "", "stderr": ""}
+        report["commands"].append(command)
+        report["executions"].append(record)
+        save()
+        result = subprocess.run(command, cwd=build, env=environment, capture_output=True, text=True)
+        record.update(exit_code=result.returncode, stdout=result.stdout, stderr=result.stderr)
+        save()
+        if result.returncode:
+            raise RuntimeError("Command failed with exit " + str(result.returncode))
+        return result
+
+    try:
+        if args.output_dir and (output.is_relative_to(build) or output.is_relative_to(root)):
+            raise RuntimeError("Explicit sanitizer output must be outside normal build and source")
+        output.mkdir(exist_ok=not bool(args.output_dir), mode=0o700)
+        replacements, extra = {}, []
+        commands = json.loads((build / "compile_commands.json").read_text())
+        for entry in commands:
+            source = (Path(entry["directory"]) / entry["file"]).resolve()
+            if not source.is_relative_to(root):
+                continue
+            relative = source.relative_to(root).as_posix()
+            if relative not in SOURCES:
+                continue
+            if relative in report["sources"]:
+                raise RuntimeError("Duplicate instrumented compilation input: " + relative)
+            obj = output / (source.name + ".o")
+            report["sources"].append(relative)
+            run(compile_command(entry, obj))
+            original = list(entry.get("arguments") or shlex.split(entry["command"]))
+            if relative.startswith("app/tests/"):
+                replacements[entry.get("output") or original[original.index("-o") + 1]] = str(obj)
+            else:
+                extra.append(str(obj))
+        if set(report["sources"]) != SOURCES:
+            raise RuntimeError("Compile database lacks required source(s)")
+        # Preserve this read-only discovery command and its actual exit/diagnostics.
+        link_text = run(["ninja", "-t", "commands", "app/tests/gimp-clone-layer"]).stdout
+        link = link_command(link_text, build, exe, replacements, extra, bool(args.output_dir))
+        report["origin_relocation"] = "expand-against-original-executable-directory" if args.output_dir else "unchanged"
+        run(link)
+        normal_loader = run(["ldd", str(build / "app/tests/gimp-clone-layer")])
+        sanitizer_loader = run(["ldd", str(exe)])
+        report["library_resolution"] = library_resolution(normal_loader.stdout, sanitizer_loader.stdout, build)
+        save()
+        env = dict(os.environ)
+        env.update({"GIMP_TESTING_ABS_TOP_SRCDIR": str(root),
+                    "GIMP_TESTING_ABS_TOP_BUILDDIR": str(build),
+                    "GIMP_TESTING_PLUGINDIRS": str(build / "plug-ins/common"),
+                    "UI_TEST": "yes", "ASAN_OPTIONS": "detect_leaks=0:halt_on_error=1:abort_on_error=1",
+                    "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1"})
+        def artifacts():
+            paths = sorted(output.glob("*.o")) + [exe]
+            return {path.name: {"sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+                                "bytes": path.stat().st_size,
+                                "mode": oct(path.stat().st_mode & 0o777)} for path in paths}
+        report["artifacts_before_run"] = artifacts()
+        save()
+        try:
+            result = run([str(exe)], env)
+        finally:
+            report["artifacts_after_run"] = artifacts()
+            save()
+        report.update(exit_code=0, stdout=result.stdout, stderr=result.stderr)
+    except (Exception, KeyboardInterrupt) as error:
+        last = report["executions"][-1] if report["executions"] else {}
+        report.update(exit_code=last.get("exit_code") or 1,
+                      stdout=last.get("stdout", ""), stderr=last.get("stderr", ""),
+                      error=f"{type(error).__name__}: {error}")
+    finally:
+        save()
+    print(report["stdout"], end="")
+    print(report["stderr"], end="", file=sys.stderr)
+    return report["exit_code"]
+
+
+if __name__ == "__main__":
+    sys.exit(main())

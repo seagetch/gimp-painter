@@ -1,0 +1,62 @@
+{
+  "receipt": {
+    "source_commit": "44c1c98d93edf5345bb3a07c91337c4d1a47c172",
+    "scope": "Pre-existing baseline source/evidence drift before Clone component test edits",
+    "commands": [
+      {
+        "name": "clone-acceptance",
+        "argv": [
+          "python3",
+          "-B",
+          "tools/check_clone_acceptance.py"
+        ],
+        "exit_code": 1
+      },
+      {
+        "name": "clone-acceptance-controls",
+        "argv": [
+          "python3",
+          "-B",
+          "tools/test_clone_acceptance.py"
+        ],
+        "exit_code": 1
+      },
+      {
+        "name": "tasks",
+        "argv": [
+          "python3",
+          "-B",
+          "tools/check_tasks.py"
+        ],
+        "exit_code": 0
+      }
+    ]
+  },
+  "receipt_sha256": "970e7229b509c7e3b9cb8ca56985e07b8356349907aa772027c69b50971cb390",
+  "logs": {
+    "clone-acceptance-controls.stderr": {
+      "sha256": "fb1c950a1a683a1e07658124974270c3f663beacdf11c3f9fceb5dcbda8d1dfd",
+      "text": "F.......\n======================================================================\nFAIL: test_current (__main__.CloneAcceptance.test_current)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/shared/gimp-painter-current/tools/test_clone_acceptance.py\", line 14, in test_current\n    self.assertEqual(validate(matrix=self.matrix), [])\nAssertionError: Lists differ: ['Core source/evidence mismatch: app/tests[225 chars]o.h'] != []\n\nFirst list contains 4 additional elements.\nFirst extra element 0:\n'Core source/evidence mismatch: app/tests/test-gimp-clone-layer.c'\n\n+ []\n- ['Core source/evidence mismatch: app/tests/test-gimp-clone-layer.c',\n-  'Core source/evidence mismatch: app/tests/test-gimp-clone-layout.cpp',\n-  'Core source/evidence mismatch: app/core/gimpclonelayer-handle.hpp',\n-  'Core source/evidence mismatch: app/core/gimpclonelayerundo.h']\n\n----------------------------------------------------------------------\nRan 8 tests in 0.403s\n\nFAILED (failures=1)\n"
+    },
+    "clone-acceptance-controls.stdout": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "text": ""
+    },
+    "clone-acceptance.stderr": {
+      "sha256": "8049a82b6b88b732c8445254e0ba767dc427817d4412e12807643b6add0133ca",
+      "text": "Core source/evidence mismatch: app/tests/test-gimp-clone-layer.c\nCore source/evidence mismatch: app/tests/test-gimp-clone-layout.cpp\nCore source/evidence mismatch: app/core/gimpclonelayer-handle.hpp\nCore source/evidence mismatch: app/core/gimpclonelayerundo.h\n"
+    },
+    "clone-acceptance.stdout": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "text": ""
+    },
+    "tasks.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "text": ""
+    },
+    "tasks.stdout": {
+      "sha256": "1c4b2c049610693d4cae3f93580ac8f43d77dff8406ae9af6a536728ca7b4ad0",
+      "text": "WBS dependencies, states, and completion evidence: OK\n"
+    }
+  }
+}

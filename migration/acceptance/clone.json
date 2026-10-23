@@ -1,7 +1,7 @@
 {
   "kind": "WBS14 component acceptance with immutable historical integration evidence",
   "prepared_utc": "2026-10-02T13:37:00Z",
-  "scope": "All 26 WBS14 rows. Core source freshness checked; historical XCF/GUI reports join exact source archives. This reconciliation does not rerun applications or close dependency/release gates.",
+  "scope": "All WBS14 component rows. Historical core/XCF/GUI inputs remain immutable; current core claims require either their matching sources or an explicitly sealed fresh normal/focused-sanitizer receipt. Broader dependency and aggregate/release gates remain open.",
   "global_gates": [
     "Required predecessor WBS gates remain authoritative",
     "Verify matching source hashes: Clone sanitizer uses verified_input_sha256; provenance has own snapshot mapping",
@@ -315,6 +315,37 @@
       "component_scope": "The named core tests establish only this Clone component obligation; dependency and full-fixture acceptance remain separate.",
       "qualifications": [],
       "additional_dialog_tests": []
+    },
+    {
+      "id": "14.007/component-visibility-regression",
+      "title": "Cloneのcomponent可視性と遅延ROI更新を検証する",
+      "existing_checkbox": false,
+      "dependencies": "14.001/core-implementation, 02.005, 09.002",
+      "acceptance_condition": "旧source由来のRGB/RGBA/Gray/Gray-alpha全component組合せ・toggle時cache保持・1x1更新通知・source-node・opacity/mask丸め・show-maskを通常/focused sanitizerで検証。親14.007/14.006とgenuine runtime/合成/UI/release gateは別途保持",
+      "source": [
+        "app/core/gimpclonelayer.cpp",
+        "app/core/gimpclonelayer-handle.hpp",
+        "app/tests/test-gimp-clone-layer.c"
+      ],
+      "named_tests": [
+        "/gimp-clone-layer/component_visibility_rgb",
+        "/gimp-clone-layer/component_visibility_rgba",
+        "/gimp-clone-layer/component_visibility_gray",
+        "/gimp-clone-layer/component_visibility_gray_alpha",
+        "/gimp-clone-layer/component_visibility_show_mask",
+        "/gimp-clone-layer/component_visibility_projection_boundary"
+      ],
+      "additional_roundtrip_tests": [],
+      "additional_dialog_tests": [],
+      "reports": [],
+      "gaps": [
+        "Fresh sealed normal/focused ASan/UBSan and affected-regression receipt is pending; source-derived arithmetic is not a genuine runtime capture."
+      ],
+      "state": "OPEN",
+      "component_scope": "Source-derived component visibility matrix and delayed ROI invalidation, with separate projection-boundary checks. Parent 14.007 and composition/UI/release gates remain open.",
+      "qualifications": [
+        "Focused sanitizer instruments eight named translation units; LSan disabled and remaining GIMP/dependencies uninstrumented."
+      ]
     },
     {
       "id": "14.008",
@@ -776,5 +807,6 @@
       "test_source_sha256": "c0349815c8ebf87741d127ea93ee6fabe10f6aec232d7da6a4fb633da7aee7eb",
       "source_report": "migration/tests/layer-dialog-store-sanitizer-build.json"
     }
-  }
+  },
+  "current_core_receipt": null
 }
