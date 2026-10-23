@@ -106,6 +106,110 @@ static void stream_icon_and_copy (void)
   g_assert_true (gimp_painter_mybrush_set_icon (brush, NULL, &error)); g_assert_null (gimp_painter_mybrush_ref_icon (brush));
   g_object_unref (output); g_object_unref (file); g_object_unref (brush);
 }
+/* Native conversion and the actual Mybrush preview consumer share packed
+ * TempBuf output. Custom strides cover padding for RGBA too; the final row has
+ * no trailing allocation, so sanitizer runs also catch whole-stride copying. */
+static void
+preview_pixels_free (guchar   *pixels,
+                     gpointer  data)
+{
+  ++*(guint *) data;
+  g_free (pixels);
+}
+
+static void
+assert_packed_preview (GimpTempBuf  *preview,
+                       gboolean      alpha,
+                       const guchar *expected)
+{
+  const gint channels = alpha ? 4 : 3;
+  const gint row_bytes = 5 * channels;
+  const Babl *format = babl_format (alpha ? "R'G'B'A u8" : "R'G'B' u8");
+
+  g_assert_nonnull (preview);
+  g_assert_cmpint (gimp_temp_buf_get_width (preview), ==, 5);
+  g_assert_cmpint (gimp_temp_buf_get_height (preview), ==, 3);
+  g_assert_true (gimp_temp_buf_get_format (preview) == format);
+  g_assert_cmpint (babl_format_get_n_components (format), ==, channels);
+  g_assert_cmpint (babl_format_get_bytes_per_pixel (format), ==, channels);
+  g_assert_cmpuint (gimp_temp_buf_get_data_size (preview), ==, 3 * row_bytes);
+  for (gint y = 0; y < 3; ++y)
+    g_assert_cmpmem (gimp_temp_buf_get_data (preview) + y * row_bytes, row_bytes,
+                     expected + y * row_bytes, row_bytes);
+}
+
+static void
+padded_tempbuf_preview (gconstpointer user_data)
+{
+  const gint mode = GPOINTER_TO_INT (user_data);
+  const gboolean alpha = (mode & 1) != 0;
+  const gboolean consumer = (mode & 2) != 0;
+  const gint channels = alpha ? 4 : 3;
+  const gint row_bytes = 5 * channels;
+  const gint stride = alpha ? 28 : 20;
+  const gsize size = 2 * stride + row_bytes;
+  guint finalized = 0;
+  guchar *pixels = g_malloc (size);
+  guchar expected[5 * 3 * 4];
+  guchar original[2 * 28 + 20];
+  GdkPixbuf *icon;
+  GimpPainterMybrush *brush = NULL;
+  GimpTempBuf *preview, *retained;
+  GError *error = NULL;
+
+  memset (pixels, 0xed, size); /* A value absent from the fixture's pixels. */
+  for (gint y = 0; y < 3; ++y)
+    for (gint x = 0; x < 5; ++x)
+      for (gint c = 0; c < channels; ++c)
+        expected[y * row_bytes + x * channels + c] =
+          pixels[y * stride + x * channels + c] = 11 + 41 * y + 7 * x + 29 * c;
+  memcpy (original, pixels, size);
+  icon = gdk_pixbuf_new_from_data (pixels, GDK_COLORSPACE_RGB, alpha, 8,
+                                  5, 3, stride, preview_pixels_free, &finalized);
+  g_assert_nonnull (icon);
+  g_assert_cmpint (gdk_pixbuf_get_n_channels (icon), ==, channels);
+  g_assert_cmpint (gdk_pixbuf_get_rowstride (icon), ==, stride);
+  g_assert_cmpint (stride, >, row_bytes);
+
+  if (consumer)
+    {
+      brush = GIMP_PAINTER_MYBRUSH (gimp_painter_mybrush_new (NULL, "padded-preview"));
+      g_assert_nonnull (brush);
+      g_assert_true (gimp_painter_mybrush_set_icon (brush, icon, &error));
+      g_assert_no_error (error);
+      /* The same-size request isolates conversion from resampling parity. */
+      preview = gimp_viewable_get_new_preview (GIMP_VIEWABLE (brush),
+                                              gimp_get_user_context (gimp), 5, 3, NULL);
+    }
+  else
+    preview = gimp_temp_buf_new_from_pixbuf (icon, NULL);
+
+  assert_packed_preview (preview, alpha, expected);
+  g_assert_true (gimp_temp_buf_get_data (preview) != pixels);
+  g_assert_cmpmem (pixels, size, original, size);
+  g_assert_cmpuint (finalized, ==, 0);
+
+  /* Neither output writes nor later source writes can alias the other. */
+  gimp_temp_buf_get_data (preview)[0] ^= 0x5a;
+  g_assert_cmpmem (pixels, size, original, size);
+  gimp_temp_buf_get_data (preview)[0] = expected[0];
+  memset (pixels, 0x37, size);
+  assert_packed_preview (preview, alpha, expected);
+  g_object_unref (icon);
+  g_assert_cmpuint (finalized, ==, consumer ? 0 : 1);
+  if (brush)
+    g_object_unref (brush);
+  g_assert_cmpuint (finalized, ==, 1);
+  assert_packed_preview (preview, alpha, expected);
+
+  retained = gimp_temp_buf_ref (preview);
+  g_assert_true (retained == preview);
+  gimp_temp_buf_unref (preview);
+  assert_packed_preview (retained, alpha, expected);
+  gimp_temp_buf_unref (retained);
+  g_assert_cmpuint (finalized, ==, 1);
+}
+
 static void closed_owner (void)
 {
   GimpPainterMybrush *brush = GIMP_PAINTER_MYBRUSH (gimp_painter_mybrush_new (NULL, "closed"));
@@ -807,6 +911,10 @@ int main (int argc, char **argv)
   g_test_add_func ("/painter-mybrush/177-native-load-copy", load_all);
   g_test_add_func ("/painter-mybrush/stream-icon-copy", stream_icon_and_copy);
   g_test_add_func ("/painter-mybrush/closed-owner", closed_owner);
+  g_test_add_data_func ("/painter-mybrush/tempbuf/direct-rgb-padded", GINT_TO_POINTER (0), padded_tempbuf_preview);
+  g_test_add_data_func ("/painter-mybrush/tempbuf/direct-rgba-padded", GINT_TO_POINTER (1), padded_tempbuf_preview);
+  g_test_add_data_func ("/painter-mybrush/tempbuf/consumer-rgb-padded", GINT_TO_POINTER (2), padded_tempbuf_preview);
+  g_test_add_data_func ("/painter-mybrush/tempbuf/consumer-rgba-padded", GINT_TO_POINTER (3), padded_tempbuf_preview);
   g_test_add_data_func ("/painter-mybrush/duplicate-icon-pixel-independence", GINT_TO_POINTER (TRUE), copy_icon_pixel_independence);
   g_test_add_data_func ("/painter-mybrush/copy-icon-pixel-independence", GINT_TO_POINTER (FALSE), copy_icon_pixel_independence);
   g_test_add_func ("/painter-mybrush/copy-without-icon-clears-target", copy_without_icon_clears_target);
