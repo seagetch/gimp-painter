@@ -93,7 +93,7 @@ template<> struct TypeTraits<GimpPainterProcedureProgress>
 namespace {
 using namespace GimpPainter;
 constexpr std::size_t transfer_bytes = 128 * 1024;
-constexpr const char *blinds_name = "plug-in-blinds";
+constexpr const char *blinds_name = FilterLegacy::blinds.execution;
 
 struct ProgressState
 {
@@ -396,7 +396,7 @@ ObjectRef<GimpProcedure> query_blinds (Gimp *gimp, GimpContext *context)
  * executable or a public plug-in registration. */
 void validate_small_tiles (GimpProcedure *procedure, GFile *file, bool hidden)
 {
-  const char *name = hidden ? "plug-in-painter-small-tiles" : "plug-in-small-tiles";
+  const char *name = hidden ? FilterLegacy::small_tiles.execution : FilterLegacy::small_tiles.public_name;
   if (!procedure || !GIMP_IS_PLUG_IN_PROCEDURE (procedure) ||
       procedure->proc_type != GIMP_PDB_PROC_TYPE_PLUGIN ||
       g_strcmp0 (gimp_object_get_name (procedure), name) ||
@@ -425,12 +425,12 @@ ObjectRef<GimpProcedure> query_small_tiles (Gimp *gimp, GimpContext *context)
   for (GSList *iter = definition.get ()->procedures; iter; iter = iter->next)
     {
       auto *candidate = GIMP_PROCEDURE (iter->data);
-      if (!g_strcmp0 (gimp_object_get_name (candidate), "plug-in-painter-small-tiles") && !selected)
+      if (!g_strcmp0 (gimp_object_get_name (candidate), FilterLegacy::small_tiles.execution) && !selected)
         {
           validate_small_tiles (candidate, file.get (), true);
           selected = candidate;
         }
-      else if (!g_strcmp0 (gimp_object_get_name (candidate), "plug-in-small-tiles") && !public_found)
+      else if (!g_strcmp0 (gimp_object_get_name (candidate), FilterLegacy::small_tiles.public_name) && !public_found)
         {
           validate_small_tiles (candidate, file.get (), false);
           public_found = true;
@@ -442,14 +442,14 @@ ObjectRef<GimpProcedure> query_small_tiles (Gimp *gimp, GimpContext *context)
   auto procedure = ObjectRef<GimpProcedure>::retain (selected);
   gimp_plug_in_manager_add_procedure (gimp->plug_in_manager, GIMP_PLUG_IN_PROCEDURE (selected));
   gimp_pdb_register_procedure (gimp->pdb, selected);
-  if (gimp_pdb_lookup_procedure (gimp->pdb, "plug-in-painter-small-tiles") != selected)
+  if (gimp_pdb_lookup_procedure (gimp->pdb, FilterLegacy::small_tiles.execution) != selected)
     throw std::runtime_error ("Cannot register bundled Small Tiles in private PDB");
   return procedure;
 }
 
 void validate_retinex (GimpProcedure *procedure, GFile *file, bool hidden)
 {
-  const char *name = hidden ? "plug-in-painter-retinex" : "plug-in-retinex";
+  const char *name = hidden ? FilterLegacy::retinex.execution : FilterLegacy::retinex.public_name;
   if (!procedure || !GIMP_IS_PLUG_IN_PROCEDURE (procedure) ||
       procedure->proc_type != GIMP_PDB_PROC_TYPE_PLUGIN ||
       g_strcmp0 (gimp_object_get_name (procedure), name) ||
@@ -478,12 +478,12 @@ ObjectRef<GimpProcedure> query_retinex (Gimp *gimp, GimpContext *context)
   for (GSList *iter = definition.get ()->procedures; iter; iter = iter->next)
     {
       auto *candidate = GIMP_PROCEDURE (iter->data);
-      if (!g_strcmp0 (gimp_object_get_name (candidate), "plug-in-painter-retinex") && !selected)
+      if (!g_strcmp0 (gimp_object_get_name (candidate), FilterLegacy::retinex.execution) && !selected)
         {
           validate_retinex (candidate, file.get (), true);
           selected = candidate;
         }
-      else if (!g_strcmp0 (gimp_object_get_name (candidate), "plug-in-retinex") && !public_found)
+      else if (!g_strcmp0 (gimp_object_get_name (candidate), FilterLegacy::retinex.public_name) && !public_found)
         {
           validate_retinex (candidate, file.get (), false);
           public_found = true;
@@ -495,12 +495,12 @@ ObjectRef<GimpProcedure> query_retinex (Gimp *gimp, GimpContext *context)
   auto procedure = ObjectRef<GimpProcedure>::retain (selected);
   gimp_plug_in_manager_add_procedure (gimp->plug_in_manager, GIMP_PLUG_IN_PROCEDURE (selected));
   gimp_pdb_register_procedure (gimp->pdb, selected);
-  if (gimp_pdb_lookup_procedure (gimp->pdb, "plug-in-painter-retinex") != selected)
+  if (gimp_pdb_lookup_procedure (gimp->pdb, FilterLegacy::retinex.execution) != selected)
     throw std::runtime_error ("Cannot register bundled Retinex in private PDB");
   return procedure;
 }
 
-constexpr const char *convolution_name = "plug-in-painter-convmatrix";
+constexpr const char *convolution_name = FilterLegacy::convolution.execution;
 void validate_convolution (GimpProcedure *procedure, GFile *file)
 {
   if (!procedure || !GIMP_IS_PLUG_IN_PROCEDURE (procedure) ||
@@ -753,11 +753,11 @@ FilterProcedureDisposition run_convolution (const FilterProcedureRequest& reques
   arguments.set_enum ("run-mode", GIMP_TYPE_RUN_MODE, GIMP_RUN_NONINTERACTIVE);
   arguments.set_image ("image", image.get ());
   arguments.set_drawables ("drawables", drawables, 1);
-  arguments.set_double_array ("matrix", request.matrix.data (), 25);
+  arguments.set_double_array ("matrix", request.matrix.data (), FilterLegacy::matrix_count);
   arguments.set_int ("alpha-alg", request.alpha_alg);
   arguments.set_double ("divisor", request.divisor);
   arguments.set_double ("offset", request.offset);
-  arguments.set_int32_array ("channels", request.channels.data (), 5);
+  arguments.set_int32_array ("channels", request.channels.data (), FilterLegacy::channel_count);
   arguments.set_int ("border-mode", request.border);
   ProcedureProgress progress (progress_sink); ShadowCapture capture;
   if (request.raw_shadow) capture.install (gimp,layer.get ());
@@ -946,16 +946,15 @@ run_filter_procedure (const FilterProcedureRequest& request,
     {
       arguments.set_int ("scale", request.scale);
       arguments.set_int ("nscales", request.nscales);
-      constexpr const char *modes[] = {"uniform", "low", "high"};
-      arguments.set_string ("scales-mode", modes[request.scales_mode]);
+      arguments.set_string ("scales-mode", FilterLegacy::retinex_distribution (request.scales_mode));
       arguments.set_double ("cvar", request.cvar);
     }
   else
     {
       arguments.set_int ("angle-displacement", request.angle);
       arguments.set_int ("num-segments", request.segments);
-      arguments.set_string ("orientation", request.orientation == 1 ? "vertical" : "horizontal");
-      arguments.set_boolean ("bg-transparent", request.transparent != 0);
+      arguments.set_string ("orientation", FilterLegacy::blinds_orientation (request.orientation));
+      arguments.set_boolean ("bg-transparent", FilterLegacy::enabled (request.transparent));
     }
   ProcedureProgress progress (progress_sink);
   ShadowCapture capture;

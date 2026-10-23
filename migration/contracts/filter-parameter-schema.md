@@ -1,7 +1,7 @@
 # FilterLayer 引数取得・検証・編集・互換仕様
 
 採用日: 2026-10-04。`16.002/parameter-schema-contract` の設計契約。
-**設計採用時は文書と WBS のみだった。現在は §9-A の helper 名前 binder だけを実装・受入済み。B〜E、schema editor、取得/cache の新動作は TODO のまま。** [A の限定受入証跡](../tests/filter-parameter-binder/acceptance.json)と今後満たす要件を区別する。
+**設計採用時は文書と WBS のみだった。現在は §9-A/B の helper 名前 binder と旧意味 policy 分離を実装・受入済み。C〜E、schema editor、取得/cache の新動作は TODO のまま。** [A の限定受入証跡](../tests/filter-parameter-binder/acceptance.json)、[B の受入証跡](../tests/filter-parameter-policy/acceptance.json)と今後満たす要件を区別する。
 
 ソース照合基準は `seagetch/gimp-painter` の `gimp-3-0-port`、commit `5d12add0ecf46ea78c588714dc7dbb9e5efe66e2`、tree `d25e04e59ae6d6d2a535d12fb11420e3f629120d`。§12 の現行ソース・既存契約を照合した。実行試験、GLib 2.70 での build、新しい資源上限の実測はこの設計採用には含まない。
 
@@ -29,7 +29,7 @@
 
 公開資料の `/api/3.0/` は API series の表示で、現在のページには Library Version 3.2.x も含まれる。`gimp_gegl_operation_get_pspecs()` のような 3.2 追加 API は、固定した GIMP 3.0.9 development base では使用しない。3.2 対応は別の baseline 更新・build・意味比較 gate とし、本作業の前提にしない。
 
-また、この base の GLib 最小要求は **2.70.0**。`g_param_value_is_valid()` は 2.74 追加なので必須依存にしない。以下の作業コピー検証は 2.70 で成立させ、実装段階で最低版 build を検証する。現環境の GLib 2.84.4 での既存結果を最低版の試験済み証拠とはしない。
+また、この base の GLib 最小要求は **2.70.0**。`g_param_value_is_valid()` は 2.74 追加なので必須依存にしない。以下の作業コピー検証は 2.70 で成立させる。B で実 GLib 2.70.0 headers/library を用いた別 prefix の GIMP 3.0.9 default-target build と native binder を検証した（[詳細・構成制限](filter-parameter-policy.md)）。現環境の GLib 2.84.4 の結果や API 上限 probe と区別する。
 
 ## 3. 最小データモデル
 
@@ -90,7 +90,7 @@ Phase A で route input の順序変更を受け入れるため、setter だけ�
 
 `g_param_value_validate()` は値を変更し得るため、保存値や editor の保持値には直接適用しない。exact type、長さ・割当予算、型ごとのコピー/寿命規則を確認して作業コピーを作り、検証前後を**許可済み型に限定した exact comparator**で比較する。戻り値が `TRUE`、または戻り値にかかわらずコピーに変更があれば **入力不正として拒否**する。`FALSE` と前後不変の両方を満たしても、下記の意味・参照・資源検査は省略しない。丸め値/置換 default は採用しない。
 
-戻り値だけの判定は不可。固定ソースの class callback `gimp_param_core_object_array_validate()` は、non-NULL の空配列を NULL に書き換えた後に `FALSE` を返す。ただし GLib 2.70.0 / 2.84.4 の公開 `g_param_value_validate()` は callback の返値と外側の `GValue.data` の byte 比較を OR するため、この pointer 置換は公開 wrapper では `TRUE` になる。2.84.4 では実行確認し、2.70.0 はソース照合のみで runtime 試験ではない。class callback の `FALSE` を公開 wrapper の返値と同一視しない。boxed 配列の後続要素だけを in-place 変更する場合は外側の `GValue.data` が不変のままになり得るため、型付き内容比較を引き続き必須とする。実 class callback の空配列変化と、test-only callback による公開 wrapper の `FALSE`＋後続要素変化を別々に検証する。比較では型、NULL/empty、整数、float/double bits、文字列の null/内容、数値配列の長さと全要素bits、object の identity、object配列の全要素identityと順序を検査する。`g_param_values_cmp()` は代用不可であり、固定ソースの数値配列 comparator は長さだけ、core-object-array comparator は loop 内で先頭要素だけを比較する。Phase A は既知4経路の型だけを対象とし、未知 boxed の汎用deep-copyや任意GObject内部の比較へ広げない。
+戻り値だけの判定は不可。固定ソースの class callback `gimp_param_core_object_array_validate()` は、non-NULL の空配列を NULL に書き換えた後に `FALSE` を返す。ただし GLib 2.70.0 / 2.84.4 の公開 `g_param_value_validate()` は callback の返値と外側の `GValue.data` の byte 比較を OR するため、この pointer 置換は公開 wrapper では `TRUE` になる。Phase A では 2.84.4 の実行確認と 2.70.0 のソース照合のみだった。Phase B では実 2.70.0 の native binder 試験でも確認し、loader trace で実際に読み込んだ GLib/GObject/GIO の path/hash を検証した。class callback の `FALSE` を公開 wrapper の返値と同一視しない。boxed 配列の後続要素だけを in-place 変更する場合は外側の `GValue.data` が不変のままになり得るため、型付き内容比較を引き続き必須とする。実 class callback の空配列変化と、test-only callback による公開 wrapper の `FALSE`＋後続要素変化を別々に検証する。比較では型、NULL/empty、整数、float/double bits、文字列の null/内容、数値配列の長さと全要素bits、object の identity、object配列の全要素identityと順序を検査する。`g_param_values_cmp()` は代用不可であり、固定ソースの数値配列 comparator は長さだけ、core-object-array comparator は loop 内で先頭要素だけを比較する。Phase A は既知4経路の型だけを対象とし、未知 boxed の汎用deep-copyや任意GObject内部の比較へ広げない。
 
 さらに明示的に次を検査する。
 
@@ -199,17 +199,17 @@ UI の runtime metadata 取得方法は Phase C で次の順に比較して決�
 
 ## 9. 段階別 WBS
 
-[WBS](../../tasks.md) の設計採用 `16.002/parameter-schema-contract` は DONE。以下の A は helper 4経路の限定受入を終え DONE、B〜E は TODO。設計子の完了と各実装子の受入を分け、既存 parent、全移植、統合受入の完了とはしない。
+[WBS](../../tasks.md) の設計採用 `16.002/parameter-schema-contract` は DONE。以下の A/B は helper 4経路と旧意味 policy の限定受入を終え DONE、C〜E は TODO。設計子の完了と各実装子の受入を分け、既存 parent、全移植、統合受入の完了とはしない。
 
 | 段階 / ID | 変更対象 | 完了条件 | 必須先行 ID |
 |---|---|---|---|
 | A `16.002/parameter-name-binder` **DONE** ([証跡](../tests/filter-parameter-binder/acceptance.json)) | helper 内の4経路だけ。name→slot / type / assigned と型付き setter を小さな共通部品へ移し、既存署名・制約検査を name で照合 | context prefix 0/1/2 を固定した input reorder、missing/duplicate/type/constraint 不正拒否、コピー検証の FALSE mutation 検知、既存 object 強参照寿命、4経路 pixel/status/progress/cancel regression。GUI・wire・保存・scheduler 無変更 | `16.002/parameter-schema-contract`, `16.003/isolated-blinds-route`, `16.003/isolated-small-tiles-route`, `16.003/isolated-retinex-route`, `16.003/isolated-convolution-route`, `15.006/native-owner-progress` |
-| B `16.010/parameter-semantic-policy` | runtime schema と旧意味 adapter を分離。現在の range/default/alias/count/flag policy の重複を整理 | コピー validation、型別 exact 比較、境界/配列/float/error tests。旧 corpus 不変。GLib 2.70 / GIMP 3.0 build | `16.002/parameter-name-binder` |
+| B `16.010/parameter-semantic-policy` **DONE** ([証跡](../tests/filter-parameter-policy/acceptance.json)) | runtime schema と旧意味 adapter を分離。現在の range/default/alias/count/flag policy の重複を整理 | コピー validation、型別 exact 比較、境界/配列/float/error tests。旧 corpus 不変。GLib 2.70 / GIMP 3.0 build | `16.002/parameter-name-binder` |
 | C `30.001/parameter-schema-editor` | 既存 field を schema keys に接続。共通 scalar entry・専用 matrix・bounded preview。trusted 既登録 metadata の bounded 借用を先に比較し、必要な場合だけ describe IPC/cache | no-op 完全一致、stale 拒否、取得寿命/取消し、64bit 精度、未知保持、native GTK 操作。通信/cache を加える場合だけ版・不正入力・失効試験。追加予算を実測確定 | `16.010/parameter-semantic-policy`, `30.001/isolated-filter-editors`, `15.006/native-owner-progress` |
 | D `12.015/parameter-schema-roundtrip` | 保存仕様を変えず統合の保持試験を追加。拡張の必要性が判明した場合だけ別の versioned 設計 | ordinary Save/Open/再編集、Duplicate/Undo、巨大 opaque、実行中 Save、失敗時元 file 保持 | `30.001/parameter-schema-editor`, `12.015/multipart-storage` |
 | E `16.023/parameter-schema-acceptance` | focused sanitizer、実アプリ、再配置 runtime、source/binary hash 付き証跡 | 新旧 pixel corpus、4経路 native 実行、実 editor/取消/終了/再読込、OOM/malformed/schema drift。未検証 platform・全 port 残課題を明記 | `12.015/parameter-schema-roundtrip` |
 
-今回の実装・受入は **A のみ**。通常版4経路の旧 corpus、16 native group、focused sanitizer の56 native group と境界検査を受入済み。GLib 2.70 API 上限 compile と wrapper の source 照合は最低版 runtime 試験ではない。既知種類の Broken-pipe 警告・test-profile 診断と初期fixture失敗も証跡に残す。B 以降は別タスクとして進める。新しい汎用 plugin framework、全アルゴリズム再実装、baseline 3.2 化、新しい動的 GObject 型生成、永続 schema DB、汎用巨大配列 editor はこの段階化には含めない。未対応フィルターを含む移植全体の要件と既存の未完了 gate は維持する。
+A の受入は helper 名前 binder のみで、通常版4経路の旧 corpus、16 native group、focused sanitizer の56 native group と境界検査を記録した。当時の GLib 2.70 API 上限 compile と wrapper の source 照合は最低版 runtime 試験ではない。B は [明示的な旧意味 policy](filter-parameter-policy.md) を分離し、11,506 request比較を通常/sanitizerで検証、旧 corpus 不変、16 native group と10 focused sanitizer group、最小API修正後の再確認、実 GLib 2.70.0 の GIMP 3.0.9 default build と5 native groupの loader 証跡を追加した。既知種類の Broken-pipe 警告・test-profile 診断と fixture/検証手段の失敗・修正も証跡に残す。C 以降は別タスクとして進める。新しい汎用 plugin framework、全アルゴリズム再実装、baseline 3.2 化、新しい動的 GObject 型生成、永続 schema DB、汎用巨大配列 editor はこの段階化には含めない。未対応フィルターを含む移植全体の要件と既存の未完了 gate は維持する。
 
 独立した GTK AT-SPI の依存欠陥 `34.003/gtk-atk-menu-guards` は未完了のまま。A〜E の合格で修正済みにしない。[原因と残作業](../tests/gtk-dialog-diagnostics/README.md) に従い、通常入力の結果と accessibility 経路の未解決事項を分けて報告する。
 
@@ -265,10 +265,10 @@ UI の runtime metadata 取得方法は Phase C で次の順に比較して決�
 | [`gimp_image_procedure_run()`](../../libgimp/gimpimageprocedure.c#L143)、[`gimp_image_procedure_create_config()`](../../libgimp/gimpimageprocedure.c#L202)、[`gimp_plug_in_procedure_add_menu_path()`](../../app/plug-in/gimppluginprocedure.c#L631) | context prefix は位置 ABI。image run は 0/1/2 を読み、Config は先頭3個を除く。menu の種類別検査にも位置条件がある |
 | [`gimp_param_array_values_cmp()`](../../libgimpbase/gimpparamspecs.c#L614)、[`gimp_param_core_object_array_values_cmp()`](../../libgimpbase/gimpparamspecs.c#L1433) | 数値 array 比較は長さだけ、object array は loop 中も先頭だけ。exact equality に流用不可 |
 | [`gimp_core_object_array_copy()`](../../libgimpbase/gimpparamspecs.c#L1312)、[`gimp_param_core_object_array_validate()`](../../libgimpbase/gimpparamspecs.c#L1402) | container-only copy。validator が空配列を NULL に変更して FALSE を返す場合がある |
-| [helper `validate_blinds()` / `query_*` / `validate_*`](../../app/core/gimpfilterprocedure.cpp#L355)、[`run_convolution()`](../../app/core/gimpfilterprocedure.cpp#L778)、[`run_filter_procedure()`](../../app/core/gimpfilterprocedure.cpp#L929) | 現在は固定 index の署名/制約/setter。image/layer の独立した `ObjectRef` は execute、plugin 終了確認、出力回収まで保持 |
+| [helper `validate_blinds()` / `query_*` / `validate_*`](../../app/core/gimpfilterprocedure.cpp#L355)、[`run_convolution()`](../../app/core/gimpfilterprocedure.cpp#L778)、[`run_filter_procedure()`](../../app/core/gimpfilterprocedure.cpp#L929) | 設計採用時は固定 index の署名/制約/setter。Phase A で名前 binder へ移行済み。image/layer の独立した `ObjectRef` は execute、plugin 終了確認、出力回収まで保持 |
 | [FilterLayer adapter](../../app/core/gimpfilterlayer.cpp#L502)、[FilterArguments](../../app/core/gimpfilterlayer-arguments.hpp#L89)、[lossless editor](../../app/dialogs/painter-layer-dialog.cpp#L872) | 型付き旧形、11/12 slots、weak 参照、depth/aggregate 制限、lossless entry、signed flags、no-op/stale 検査 |
 | [Blinds](../../plug-ins/common/blinds.c#L152)、[Small Tiles](../../plug-ins/common/tile-small.c#L289)、[Retinex](../../plug-ins/common/contrast-retinex.c#L209)、[Convolution](../../plug-ins/common/convolution-matrix.c#L104) | public/hidden metadata と旧互換 adapter の範囲・意味を区別 |
-| [GLib 最小版](../../meson.build#L473) | 宣言は 2.70.0。新実装の最低版 build は未実施 |
+| [GLib 最小版](../../meson.build#L473) | 宣言は 2.70.0。設計採用時は最低版 build 未実施だったが、[Phase B](../tests/filter-parameter-policy/acceptance.json) で実 2.70.0 の GIMP build と loader 確認付き native 試験を受入済み |
 
 保存・実行・editor の authority は [移植方針](../design.md) §5/§7.1/§8.4.1 と以下の既存契約にある。
 

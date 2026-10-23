@@ -1279,21 +1279,14 @@ static void retained_item_gimp_lifetime (void)
       gimp_exit (gimp, TRUE);
       while (g_main_context_pending (NULL)) g_main_context_iteration (NULL, FALSE);
       g_object_add_weak_pointer (G_OBJECT (gimp), (gpointer *) &weak_gimp);
-      /* Existing upstream no-font test setup leaves pango_context NULL;
-       * gimp_font_factory_finalize() unconditionally unrefs it. This one known
-       * guard warning is unrelated to retained items and is not repaired here. */
-      g_test_message ("Expect upstream no-font finalizer NULL pango_context guard");
-      g_test_expect_message ("GLib-GObject", G_LOG_LEVEL_CRITICAL,
-                             "g_object_unref: assertion 'G_IS_OBJECT (object)' failed");
       g_object_unref (gimp);
-      g_test_assert_expected_messages ();
       g_assert_null (weak_gimp); /* no strong item-to-Gimp cycle */
       g_assert_null (gimp_clone_layer_get_source (clone));
       g_object_unref (clone); g_object_unref (source);
       gimp = NULL;
       return;
     }
-  g_test_trap_subprocess (NULL, 30 * G_USEC_PER_SEC, G_TEST_SUBPROCESS_DEFAULT);
+  g_test_trap_subprocess (NULL, 30 * G_USEC_PER_SEC, (GTestSubprocessFlags) 0);
   g_test_trap_assert_passed ();
 }
 int main (int argc, char **argv)

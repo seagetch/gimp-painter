@@ -2345,6 +2345,113 @@ static void image_close_during_strong_redo_callbacks (void) { undo_owner_lifetim
 #include "test-filter-retinex.inc"
 #include "test-filter-convolution.inc"
 #include "test-filter-progress.inc"
+
+static void
+blinds_assert_saved_arguments (GimpFilterLayer *filter,
+                              GBytes          *raw,
+                              GimpValueArray  *expected)
+{
+  GimpValueArray *actual = gimp_filter_layer_dup_args (filter);
+  GBytes *saved = gimp_filter_layer_ref_definition (filter);
+  gchar *name = gimp_filter_layer_dup_procedure (filter);
+
+  g_assert_cmpstr (name, ==, "plug-in-blinds");
+  g_assert_nonnull (saved); g_assert_true (g_bytes_equal (saved, raw));
+  g_assert_nonnull (actual);
+  g_assert_cmpuint (gimp_value_array_length (actual), ==, gimp_value_array_length (expected));
+  for (guint i = 0; i < gimp_value_array_length (expected); ++i)
+    {
+      const GValue *a = gimp_value_array_index (actual, i);
+      const GValue *b = gimp_value_array_index (expected, i);
+      g_assert_true (G_VALUE_TYPE (a) == G_VALUE_TYPE (b));
+      if (G_VALUE_HOLDS_INT (a))
+        g_assert_cmpint (g_value_get_int (a), ==, g_value_get_int (b));
+      else if (G_VALUE_HOLDS_DOUBLE (a))
+        {
+          const gdouble x = g_value_get_double (a), y = g_value_get_double (b);
+          g_assert_cmpmem (&x, sizeof x, &y, sizeof y);
+        }
+      else if (G_VALUE_HOLDS_STRING (a))
+        g_assert_cmpstr (g_value_get_string (a), ==, g_value_get_string (b));
+      else
+        {
+          const GimpArray *x, *y;
+          g_assert_true (G_VALUE_HOLDS (a, GIMP_TYPE_INT32_ARRAY));
+          x = g_value_get_boxed (a); y = g_value_get_boxed (b);
+          g_assert_nonnull (x); g_assert_nonnull (y);
+          g_assert_cmpmem (x->data, x->length, y->data, y->length);
+        }
+    }
+  g_free (name); g_bytes_unref (saved); gimp_value_array_unref (actual);
+}
+
+static void
+blinds_saved_argument_policy (void)
+{
+  const guchar record[] = {0, 0xff, 7, 0, 0x80};
+  const gint32 prefix[] = {-7, 0, 3};
+  GBytes *raw = g_bytes_new_static (record, sizeof record);
+  /* Three even-width fans make angle zero an identity in the old kernel. */
+  GimpImage *image = image_new (48, 48);
+  GimpLayer *source = source_new (image, NULL, 48, 48);
+  GimpFilterLayer *filter = filter_new (image, NULL, 48, 48);
+  GimpValueArray *args = gimp_value_array_new_from_types (NULL,
+    G_TYPE_DOUBLE, 42.5, G_TYPE_STRING, "ignored Blinds context",
+    GIMP_TYPE_INT32_ARRAY, NULL, G_TYPE_INT, 0, G_TYPE_INT, 3,
+    G_TYPE_INT, 2, G_TYPE_INT, -7, G_TYPE_NONE);
+  guint64 cache, runs;
+
+  /* Unlike Small Tiles, Retinex and Convolution, Blinds never consumed the
+   * saved context slots. Runtime image-procedure types must not leak here. */
+  gimp_value_set_int32_array (gimp_value_array_index (args, 2), prefix, G_N_ELEMENTS (prefix));
+  fill (source, 31, 121, 217, 255);
+  g_assert_true (gimp_filter_layer_set_definition (filter, "plug-in-blinds", raw, args, NULL));
+  settle (filter); pixel (GIMP_LAYER (filter), 31, 121, 217, 255);
+  blinds_assert_saved_arguments (filter, raw, args);
+  cache = gimp_filter_layer_get_cache_generation (filter);
+  runs = gimp_filter_layer_get_run_count (filter);
+  g_assert_cmpuint (runs, ==, 1);
+  g_assert_cmpuint (cache, ==, gimp_filter_layer_get_generation (filter));
+
+  for (guint kind = 0; kind < 7; ++kind)
+    {
+      GimpValueArray *invalid = gimp_value_array_copy (args);
+      if (kind < 4)
+        {
+          GValue *value = gimp_value_array_index (invalid, 3 + kind);
+          const gint original = g_value_get_int (value);
+          g_value_unset (value); g_value_init (value, G_TYPE_DOUBLE);
+          g_value_set_double (value, original);
+        }
+      else if (kind == 4) gimp_value_array_truncate (invalid, 6);
+      else if (kind == 5)
+        {
+          GValue extra = G_VALUE_INIT;
+          g_value_init (&extra, G_TYPE_INT); g_value_set_int (&extra, 99);
+          gimp_value_array_append (invalid, &extra); g_value_unset (&extra);
+        }
+      else g_value_set_int (gimp_value_array_index (invalid, 4), 101);
+
+      /* A malformed payload stays saveable, but cannot run, adopt the wider
+       * public segments range, or mark the previous cache as current. */
+      g_assert_true (gimp_filter_layer_set_definition (filter, "plug-in-blinds", raw, invalid, NULL));
+      blinds_wait (filter, GIMP_FILTER_LAYER_FAILED);
+      g_assert_cmpuint (gimp_filter_layer_get_run_count (filter), ==, runs);
+      g_assert_cmpuint (gimp_filter_layer_get_cache_generation (filter), ==, cache);
+      g_assert_cmpuint (gimp_filter_layer_get_generation (filter), >, cache);
+      pixel (GIMP_LAYER (filter), 31, 121, 217, 255);
+      blinds_assert_saved_arguments (filter, raw, invalid);
+      gimp_value_array_unref (invalid);
+    }
+
+  g_assert_true (gimp_filter_layer_set_definition (filter, "plug-in-blinds", raw, args, NULL));
+  settle (filter); pixel (GIMP_LAYER (filter), 31, 121, 217, 255);
+  g_assert_cmpuint (gimp_filter_layer_get_run_count (filter), ==, runs + 1);
+  g_assert_cmpuint (gimp_filter_layer_get_cache_generation (filter), ==, gimp_filter_layer_get_generation (filter));
+  blinds_assert_saved_arguments (filter, raw, args);
+  gimp_value_array_unref (args); g_bytes_unref (raw); g_object_unref (image);
+}
+
 static void convolution_native_context (void) { gimp_test_filter_owner_context_native (gimp); }
 static void parameter_suffix_reordering (void) { gimp_test_filter_parameter_reordering (gimp); }
 static void parameter_metadata_rejections (void) { gimp_test_filter_parameter_metadata (gimp); }
@@ -2365,6 +2472,7 @@ int main (int argc, char **argv)
 #define ADD(name) g_test_add_func ("/gimp-filter-layer/" #name,name)
   ADD (parameter_suffix_reordering); ADD (parameter_metadata_rejections);
   ADD (parameter_assignment_validation); ADD (parameter_object_lifetime);
+  ADD (blinds_saved_argument_policy);
   ADD(progress_native_abi); ADD(progress_start_reentry); ADD(progress_real_workers); ADD(progress_worker_cancel_replace_close); ADD(progress_independent_owners);
   ADD (blinds_owner_context); ADD (blinds_owner_context_phases);
   ADD (blinds_owner_context_expansion); ADD (blinds_owner_context_retry);

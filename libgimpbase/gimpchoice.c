@@ -417,8 +417,10 @@ static void       gimp_param_choice_init              (GParamSpec      *pspec);
 static void       gimp_param_choice_finalize          (GParamSpec      *pspec);
 static gboolean   gimp_param_choice_validate          (GParamSpec      *pspec,
                                                        GValue          *value);
+#if GLIB_CHECK_VERSION (2, 74, 0)
 static gboolean   gimp_param_choice_value_is_valid    (GParamSpec      *pspec,
                                                        const GValue    *value);
+#endif
 static gint       gimp_param_choice_values_cmp        (GParamSpec      *pspec,
                                                       const GValue    *value1,
                                                       const GValue    *value2);
@@ -454,7 +456,9 @@ gimp_param_choice_class_init (GParamSpecClass *klass)
   klass->value_type     = G_TYPE_STRING;
   klass->finalize       = gimp_param_choice_finalize;
   klass->value_validate = gimp_param_choice_validate;
+#if GLIB_CHECK_VERSION (2, 74, 0)
   klass->value_is_valid = gimp_param_choice_value_is_valid;
+#endif
   klass->values_cmp     = gimp_param_choice_values_cmp;
 }
 
@@ -513,6 +517,8 @@ gimp_param_choice_validate (GParamSpec *pspec,
   return FALSE;
 }
 
+#if GLIB_CHECK_VERSION (2, 74, 0)
+/* GLib 2.70 only has value_validate; keep that callback on every version. */
 static gboolean
 gimp_param_choice_value_is_valid (GParamSpec   *pspec,
                                   const GValue *value)
@@ -523,6 +529,7 @@ gimp_param_choice_value_is_valid (GParamSpec   *pspec,
 
   return gimp_choice_is_valid (choice, strval);
 }
+#endif
 
 static gint
 gimp_param_choice_values_cmp (GParamSpec   *pspec,
