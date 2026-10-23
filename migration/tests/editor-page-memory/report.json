@@ -1,0 +1,72 @@
+{
+  "task": "07.008/editor-page-memory",
+  "status": "normal native scope verified; sanitizer pending separately",
+  "baseline_commit": "4a83db492ffe90db2372866675d56a45b7355f3f",
+  "source_state": "Candidate edits on baseline, not an exact-commit aggregate claim",
+  "source_sha256": {
+    "app/widgets/gimppaintermybrusheditor.cpp": "fdb07580f0e2e3d4b26983c2937b044116ed185fc899a9269345355c35e468ad",
+    "app/tests/test-painter-mypaint-editor.cpp": "298379f1983076ac2fc287980f60bb562868f2cdacf00615f5559cffc4ad4e2f",
+    "app/tests/meson.build": "76b8c23567d5ab4e27f41d6e3429b207068c0471d6c1fb1b413ad499b0edad36"
+  },
+  "accepted": [
+    {
+      "name": "gimp:app / painter-mypaint-editor",
+      "result": "OK",
+      "tap_passed": 25,
+      "duration_seconds": 32.070024490356445,
+      "returncode": 0
+    },
+    {
+      "name": "gimp:app / painter-editor-page-memory",
+      "result": "OK",
+      "tap_passed": 3,
+      "duration_seconds": 5.246164560317993,
+      "returncode": 0
+    }
+  ],
+  "display": {
+    "size": [
+      1080,
+      1920
+    ],
+    "depth": 24,
+    "server": "Xvfb authenticated loopback",
+    "oncanvas_ui": true
+  },
+  "expected_red": {
+    "page-memory-expected-red.json": "Context rebuild returns page0 rather than2",
+    "page-popup-expected-red.json": "Popup reopen returns page0 rather than1"
+  },
+  "excluded_attempts": {
+    "page-memory-reentry.json": "Destructive pre-default GTK emission-hook fixture; invalid-widget diagnostic. Not accepted as a repaired production regression.",
+    "page-memory-postorder.json": "Same destructive pre-default fixture; SIGSEGV. Not accepted.",
+    "page-memory-tree-lease.json": "Whole-tree-lease experiment with destructive fixture; SIGSEGV. Not accepted.",
+    "page-memory-observer.json": "Replacement discovery fixture did not fire; assertion failure. Not accepted."
+  },
+  "limits": [
+    "No sanitizer or leak-check claim in this normal evidence package.",
+    "No all-route signal ownership completion or whole-port completion.",
+    "Missing source desktop icons, ignored .dummy plugin files, unavailable D-Bus and disabled virtual input-device diagnostics retained.",
+    "Visual evidence demonstrates page persistence and enabled oncanvas UI, not complete UI parity."
+  ],
+  "evidence_sha256": {
+    "04-input-curves-selected.png": "fc49b467af0d612f02f109623e386f92f9cb3ba0969fbc52524a2a9ce735da06",
+    "05-popup-closed.png": "bef27cf7bd43e7a65e3710fdb4404098f6ee1a41ed969ab2bd677400f48d4e76",
+    "06-reopened-input-curves.png": "d8490b8b3704fae27f1c50cbbcd1c03f044220cce9c96a12724c8e7c362386b0",
+    "capture-editor-memory.py": "d5cb8b36ea084be9d3eabc1be04779687b26218e62d8ee77ab7450d69e389c20",
+    "commands/010-popup.json": "19a831de4668c8e22e2fcd7fb8e3c0953ab612143221efa6fcc2dc17a8e0c4cc",
+    "commands/020-curves.json": "7097194b61ab461e8b7d6b409bc4b43b91c82b35b7c5206f1f35572e1e8f2f12",
+    "commands/030-close.json": "d2210e449633c7b1988b42b492ca8d8a059b6215c121f71b4ef06ab5b9f95c83",
+    "commands/040-reopen.json": "8020b1aabb4a9bfc7857c8ea65e01ff13776ce9de7f340caa204bb496f50d803",
+    "commands/999-finish.json": "95978fa444c8fb0aed4a11adb218f84cb60a67259017f6058db1624214dec7a0",
+    "editor-memory-app.log": "177d7ee30ee774c63cf24b64c88931501ca07dbd2743b65da1e3f5b1ad4e6a03",
+    "excluded-fixture-attempts/page-memory-observer.json": "be2d7cebaac795da03e8506c0d08e604e0b5204c401c15baefd40a5737461fa8",
+    "excluded-fixture-attempts/page-memory-postorder.json": "adc11312c076041d658f9d719ccc2690c6d6cc3df8b15d60433176c120b1c744",
+    "excluded-fixture-attempts/page-memory-reentry.json": "b52e2e21556e65be99df3e76fef97b51dffa629ad8cc625883139ea461e9ea0b",
+    "excluded-fixture-attempts/page-memory-tree-lease.json": "4b49446c346c15f843f18b9a4f17b3be91d6ad0194bba50a27fcb8fa5187397e",
+    "page-memory-expected-red.json": "3c7424d6bcfde518fd452a46322b2decb824e665ee4f507d59e3f79348c5d246",
+    "page-memory-final.json": "34b323d0637940875288b5266af31490ca847ac8a072ca4c90b19b37f3976d78",
+    "page-popup-expected-red.json": "5c32201ad63ebbe5e8d34f5cd30dcc99e4acc2e55d021d5d5540003c41985091",
+    "result.json": "3574daacd8587e4e1c371ce85f37b8a6b3b6a29900063bd81364910055dcffc0"
+  }
+}

@@ -1656,9 +1656,138 @@ static void operation_context_reentry ()
       }
 }
 
+/* Page memory belongs to the invoking editor, never to a process-global tab.
+ * Rebuilt notebooks must release their signal closure even if retained. */
+static GtkWidget *editor_notebook (GtkWidget *editor)
+{
+  auto *page = control (editor, "painter-curve-graph");
+  while (page && !GTK_IS_NOTEBOOK (page)) page = gtk_widget_get_parent (page);
+  g_assert_nonnull (page); return page;
+}
+static void notebook_page_context_lifetime ()
+{
+  prepare ();
+  Editor editor;
+  auto notebook = ObjectRef<GObject>::retain (G_OBJECT (editor_notebook (GTK_WIDGET (editor.widget))));
+  gtk_notebook_set_current_page (GTK_NOTEBOOK (notebook.get ()), 2);
+  const auto handler = g_signal_handler_find (notebook.get (),
+    GSignalMatchType (G_SIGNAL_MATCH_ID | G_SIGNAL_MATCH_DETAIL),
+    g_signal_lookup ("notify", G_TYPE_OBJECT), g_quark_from_static_string ("page"),
+    nullptr, nullptr, nullptr);
+  // Detach the live emitter, so GTK child destruction cannot masquerade as
+  // owner-side disconnection during context replacement.
+  gtk_container_remove (GTK_CONTAINER (gtk_widget_get_parent (GTK_WIDGET (notebook.get ()))), GTK_WIDGET (notebook.get ()));
+  auto replacement = ObjectRef<GObject>::adopt (G_OBJECT (gimp_context_new (gimp, "page-memory-replacement", nullptr)));
+  GError *error = nullptr;
+  g_assert_true (gimp_painter_mybrush_editor_set_context (editor.widget, GIMP_CONTEXT (replacement.get ()), &error));
+  g_assert_no_error (error);
+  auto *current = editor_notebook (GTK_WIDGET (editor.widget));
+  g_assert_true (current != GTK_WIDGET (notebook.get ()));
+  g_assert_cmpint (gtk_notebook_get_current_page (GTK_NOTEBOOK (current)), ==, 2);
+  g_assert_cmpuint (handler, >, 0);
+  g_assert_false (g_signal_handler_is_connected (notebook.get (), handler));
+  // A retired emitter cannot change the next rebuild's remembered page.
+  gtk_notebook_set_current_page (GTK_NOTEBOOK (notebook.get ()), 0);
+  g_object_notify (notebook.get (), "page");
+  gimp_docked_set_context (GIMP_DOCKED (editor.widget), nullptr);
+  gimp_docked_set_context (GIMP_DOCKED (editor.widget), gimp->user_context);
+  current = editor_notebook (GTK_WIDGET (editor.widget));
+  g_assert_cmpint (gtk_notebook_get_current_page (GTK_NOTEBOOK (current)), ==, 2);
+  Editor independent;
+  g_assert_cmpint (gtk_notebook_get_current_page (GTK_NOTEBOOK (editor_notebook (GTK_WIDGET (independent.widget)))), ==, 0);
+  auto *independent_notebook = editor_notebook (GTK_WIDGET (independent.widget));
+  GObject *weak_notebook = G_OBJECT (independent_notebook);
+  g_object_add_weak_pointer (weak_notebook, reinterpret_cast<gpointer *> (&weak_notebook));
+  gtk_widget_destroy (independent_notebook);
+  g_assert_null (weak_notebook);
+  g_assert_true (gimp_painter_binding_close (G_OBJECT (independent.widget), &error));
+  g_assert_no_error (error);
+  g_assert_true (gimp_painter_binding_close (G_OBJECT (editor.widget), &error));
+  g_assert_no_error (error);
+  g_object_notify (notebook.get (), "page");
+  gtk_widget_destroy (GTK_WIDGET (notebook.get ()));
+}
+static void notebook_page_popup_reopen ()
+{
+  prepare ();
+  Editor editor;
+  auto popup = [&] {
+    GError *error = nullptr;
+    auto *window = gimp_painter_mybrush_editor_popup (GIMP_CONTEXT (editor.model.get ()), GTK_WIDGET (editor.widget), &error);
+    g_assert_no_error (error); g_assert_nonnull (window);
+    return ObjectRef<GObject>::sink (G_OBJECT (window));
+  };
+  auto first = popup ();
+  auto *notebook = editor_notebook (GTK_WIDGET (first.get ()));
+  gtk_notebook_set_current_page (GTK_NOTEBOOK (notebook), 1);
+  gtk_widget_destroy (GTK_WIDGET (first.get ()));
+  auto second = popup ();
+  g_assert_cmpint (gtk_notebook_get_current_page (GTK_NOTEBOOK (editor_notebook (GTK_WIDGET (second.get ())))), ==, 1);
+  gtk_widget_destroy (GTK_WIDGET (second.get ()));
+  auto third = popup ();
+  auto *third_notebook = editor_notebook (GTK_WIDGET (third.get ()));
+  gtk_notebook_set_current_page (GTK_NOTEBOOK (third_notebook), 2);
+  gtk_widget_destroy (GTK_WIDGET (third.get ()));
+  auto fourth = popup ();
+  g_assert_cmpint (gtk_notebook_get_current_page (GTK_NOTEBOOK (editor_notebook (GTK_WIDGET (fourth.get ())))), ==, 2);
+  gtk_widget_destroy (GTK_WIDGET (fourth.get ()));
+}
+
+static void notebook_page_build_reentry ()
+{
+  prepare ();
+  for (bool during_switch : {false, true})
+    {
+      Editor editor;
+      gtk_notebook_set_current_page (GTK_NOTEBOOK (editor_notebook (GTK_WIDGET (editor.widget))), 2);
+      struct Reentry { GimpPainterMybrushEditor *editor; bool switching, armed, fired; } state {editor.widget, during_switch, false, false};
+      const auto signal = g_signal_lookup ("parent-set", GTK_TYPE_WIDGET);
+      auto hook = g_signal_add_emission_hook (signal, 0,
+        +[](GSignalInvocationHint *, guint, const GValue *values, gpointer data)->gboolean {
+          auto &state = *static_cast<Reentry *> (data);
+          auto *widget = GTK_WIDGET (g_value_get_object (&values[0]));
+          if (state.armed || g_strcmp0 (gtk_widget_get_name (widget), "painter-editor-notebook")) return TRUE;
+          auto *ancestor = gtk_widget_get_parent (widget);
+          while (ancestor && ancestor != GTK_WIDGET (state.editor)) ancestor = gtk_widget_get_parent (ancestor);
+          if (!ancestor) return TRUE;
+          state.armed = true;
+          // The emission hook only discovers the newly built control. Retire
+          // it from an ordinary observer, not before GTK's class handler.
+          if (state.switching)
+            g_signal_connect_after (widget, "notify::page", G_CALLBACK (+[](GObject *object, GParamSpec *, gpointer data) {
+              auto &state = *static_cast<Reentry *> (data);
+              if (state.fired || gtk_notebook_get_current_page (GTK_NOTEBOOK (object)) != 2) return;
+              state.fired = true;
+              gimp_docked_set_context (GIMP_DOCKED (state.editor), nullptr);
+            }), data);
+          else
+            g_signal_connect_after (widget, "show", G_CALLBACK (+[](GtkWidget *, gpointer data) {
+              auto &state = *static_cast<Reentry *> (data);
+              if (state.fired) return;
+              state.fired = true;
+              gimp_docked_set_context (GIMP_DOCKED (state.editor), nullptr);
+            }), data);
+          return TRUE;
+        }, &state, nullptr);
+      g_assert_cmpuint (hook, >, 0);
+      auto replacement = ObjectRef<GObject>::adopt (G_OBJECT (gimp_context_new (gimp, "page-build-reentry", nullptr)));
+      GError *error = nullptr;
+      gimp_painter_mybrush_editor_set_context (editor.widget, GIMP_CONTEXT (replacement.get ()), &error);
+      g_signal_remove_emission_hook (signal, hook);
+      g_assert_no_error (error); g_assert_true (state.armed); g_assert_true (state.fired);
+      g_assert_null (find (GTK_WIDGET (editor.widget), "painter-editor-notebook"));
+      g_assert_false (gimp_painter_mybrush_editor_preview_pending (editor.widget));
+      // The one-shot detach must not permanently prevent a later rebuild.
+      g_assert_true (gimp_painter_mybrush_editor_set_context (editor.widget, gimp->user_context, &error));
+      g_assert_no_error (error);
+      g_assert_cmpint (gtk_notebook_get_current_page (GTK_NOTEBOOK (editor_notebook (GTK_WIDGET (editor.widget)))), ==, 2);
+    }
+}
+
 int main(int argc,char**argv){
   g_test_init(&argc,&argv,nullptr);if(!gtk_init_check(&argc,&argv))return GIMP_EXIT_TEST_SKIPPED;
   gimp_test_utils_setup_menus_path();gimp=gimp_init_for_gui_testing(TRUE);
+  if (!g_getenv("GIMP_TEST_EDITOR_PAGE_MEMORY")) {
   add_editor_case("/painter-editor/01-constructors-shared",constructors_and_shared_model);
   add_editor_case("/painter-editor/14-common-store-widget-behaviors",common_store_widget_behaviors);
   add_editor_case("/painter-editor/02-all-controls-curves",all_controls_and_curves);
@@ -1684,6 +1813,11 @@ int main(int argc,char**argv){
   add_editor_case("/painter-editor/23-stale-prompt-responses",stale_prompt_responses);
   add_editor_case("/painter-editor/24-operation-context-reentry",operation_context_reentry);
   add_editor_case("/painter-editor/25-prompt-emitter-first-cancel",prompt_emitter_first_and_cancel);
+  } else {
+  add_editor_case("/painter-editor/26-notebook-page-context-lifetime",notebook_page_context_lifetime);
+  add_editor_case("/painter-editor/27-notebook-page-popup-reopen",notebook_page_popup_reopen);
+  add_editor_case("/painter-editor/28-notebook-page-build-reentry",notebook_page_build_reentry);
+  }
   if(g_getenv("PAINTER_EDITOR_DEMO"))add_editor_case("/painter-editor/visual-demo",visual_demo);
   if(g_getenv("GIMP_TEST_MAPPING_SETTER_VISUAL_DEMO"))add_editor_case("/painter-editor/mapping-setter/visual-demo",mapping_setter_visual_demo);
   g_application_run(gimp->app,0,nullptr);int result=gimp_core_app_get_exit_status(GIMP_CORE_APP(gimp->app));g_application_quit(gimp->app);g_clear_object(&gimp->app);g_free(original_search);return result;

@@ -129,11 +129,16 @@ struct EditorPrompt : std::enable_shared_from_this<EditorPrompt> {
   }
   ~EditorPrompt () noexcept { close (); }
 };
+// Shared only by one invoking editor and its transient editor windows.
+// It contains no widget pointer and cannot keep an emitter or owner alive.
+struct EditorPageMemory { int page = 0; };
 struct EditorImpl {
   GimpPainterMybrushEditor *owner; // owner contains the single slot
   ObjectRef<GObject> context;
   ObjectRef<GimpPainterMybrushOptions> options;
   std::vector<Connection> connections;
+  std::shared_ptr<EditorPageMemory> page_memory = std::make_shared<EditorPageMemory> ();
+  GtkWidget *notebook = nullptr;
   std::vector<std::shared_ptr<EditorPrompt>> prompts;
   Connection resource_changed[2];
   ObjectRef<GObject> watched_resource[2];
@@ -162,7 +167,7 @@ struct EditorImpl {
     // Remove owner-side records before dialog destruction can reenter us.
     auto old_prompts = std::move (prompts);
     for (auto& prompt : old_prompts) prompt->close ();
-    connections.clear ();
+    connections.clear (); notebook = nullptr;
     for (auto& connection : resource_changed) connection.close ();
     for (auto& resource : watched_resource) resource.reset ();
     listed.reset (); options.reset (); context.reset ();
@@ -535,7 +540,21 @@ void prompt(EditorImpl&i,int operation) {
   if (payload->closed || i.closed || i.ui_revision != revision) return;
   gtk_widget_show_all(dialog);
 }
+// Snapshot before showing anything: a show observer can synchronously detach
+// the entire hierarchy. Do not leave GTK's recursive child-list traversal on
+// the stack while that happens. Prune no-show-all subtrees just as GTK does.
+void collect_visible_widgets(GtkWidget*widget,std::vector<ObjectRef<GObject>>&lease) {
+  if(gtk_widget_get_no_show_all(widget))return;
+  auto hold=ObjectRef<GObject>::retain(G_OBJECT(widget));
+  if(GTK_IS_CONTAINER(widget))gtk_container_forall(GTK_CONTAINER(widget),
+    +[](GtkWidget*child,gpointer data){
+      collect_visible_widgets(child,*static_cast<std::vector<ObjectRef<GObject>>*>(data));
+    },&lease);
+  lease.push_back(std::move(hold));
+}
 void build(EditorImpl&i) {
+  const auto revision=i.ui_revision;
+  auto current=[&]{return !i.closed&&i.ui_revision==revision;};
   i.syncing=true;
   auto*root=gtk_box_new(i.horizontal?GTK_ORIENTATION_HORIZONTAL:GTK_ORIENTATION_VERTICAL,6);
   auto*viewport=gtk_scrolled_window_new(nullptr,nullptr);
@@ -573,7 +592,8 @@ void build(EditorImpl&i) {
   connect(i,i.history,"changed",G_CALLBACK(simple_cb),[](EditorImpl&i){int n=gtk_combo_box_get_active(GTK_COMBO_BOX(i.history));if(n>=0){GError*e=nullptr;auto ok=gimp_painter_mybrush_options_restore_history(i.options.get(),n,&e);checked(ok,e);}});
   i.preview_image=named(gtk_image_new(),"painter-brush-preview");pack(left,i.preview_image);
   i.status=named(gtk_label_new(""),"painter-brush-status");gtk_label_set_line_wrap(GTK_LABEL(i.status),TRUE);gtk_label_set_xalign(GTK_LABEL(i.status),0);pack(left,i.status);
-  auto*notebook=gtk_notebook_new();pack(right,notebook,true);
+  auto*notebook=named(gtk_notebook_new(),"painter-editor-notebook");i.notebook=notebook;pack(right,notebook,true);
+  auto notebook_lease=ObjectRef<GObject>::retain(G_OBJECT(notebook));
   auto*settings=gtk_box_new(GTK_ORIENTATION_VERTICAL,3);auto*ss=gtk_scrolled_window_new(nullptr,nullptr);gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(ss),GTK_POLICY_NEVER,GTK_POLICY_AUTOMATIC);gtk_widget_set_size_request(ss,270,250);gtk_container_add(GTK_CONTAINER(ss),settings);gtk_notebook_append_page(GTK_NOTEBOOK(notebook),ss,gtk_label_new(_("Settings")));
   for(int n=0;n<BRUSH_MAPPING_COUNT;++n){auto&m=painter_mypaint_settings[n];auto key=property(m.internal_name);auto*w=named(gtk_spin_button_new_with_range(m.minimum,m.maximum,.01),key.c_str());gtk_spin_button_set_digits(GTK_SPIN_BUTTON(w),6);gtk_widget_set_tooltip_text(w,m.tooltip);row(settings,m.displayed_name,w);i.numeric.push_back(w);
     connect(i,w,"value-changed",G_CALLBACK(simple_cb),[n,key](EditorImpl&i){g_object_set(i.options.get(),key.c_str(),gtk_spin_button_get_value(GTK_SPIN_BUTTON(i.numeric[n])),nullptr);});}
@@ -632,7 +652,25 @@ void build(EditorImpl&i) {
     i.widgets.push_back(ObjectRef<GObject>::retain(G_OBJECT(w)));
   for (const auto& controls : {i.numeric, i.switches, i.texts})
     for (auto *w : controls) i.widgets.push_back(ObjectRef<GObject>::retain(G_OBJECT(w)));
-  i.syncing=false;refresh(i);if (!i.closed) gtk_widget_show_all(i.root);
+  // Restore after pages become visible, before installing the owned observer.
+  // Initial GTK page selection must not overwrite the remembered page.
+  i.syncing=false;refresh(i);
+  if (current()) {
+    std::vector<ObjectRef<GObject>> visible_tree;
+    collect_visible_widgets(i.root,visible_tree);
+    for(const auto&widget:visible_tree) {
+      if (!current()) return;
+      gtk_widget_show(GTK_WIDGET(widget.get()));
+      if (!current()) return;
+    }
+    gtk_notebook_set_current_page(GTK_NOTEBOOK(notebook),
+      std::min(i.page_memory->page,gtk_notebook_get_n_pages(GTK_NOTEBOOK(notebook))-1));
+    if (!current()) return;
+    connect(i,notebook,"notify::page",G_CALLBACK(notify_cb),[](EditorImpl&i){
+      const int page=gtk_notebook_get_current_page(GTK_NOTEBOOK(i.notebook));
+      if(page>=0)i.page_memory->page=page;
+    });
+  }
 }
 void constructed(GObject*object) {
   G_OBJECT_CLASS(gimp_painter_mybrush_editor_parent_class)->constructed(object);
@@ -683,19 +721,31 @@ gboolean gimp_painter_mybrush_editor_set_context(GimpPainterMybrushEditor*editor
     });
   });
 }
-GtkWidget*gimp_painter_mybrush_editor_new(GimpContext*context,gboolean horizontal,GError**error) {
+static GtkWidget*new_editor(GimpContext*context,gboolean horizontal,
+  std::shared_ptr<EditorPageMemory> page_memory,GError**error) {
   return boundary<GtkWidget*>(error,nullptr,[&]()->GtkWidget* {
     auto*e=GIMP_PAINTER_MYBRUSH_EDITOR(g_object_new(GIMP_TYPE_PAINTER_MYBRUSH_EDITOR,nullptr));
-    auto hold=ObjectRef<GimpPainterMybrushEditor>::sink(e);store(e).with<EditorSlot>([&](EditorImpl&i){i.horizontal=horizontal;});
+    auto hold=ObjectRef<GimpPainterMybrushEditor>::sink(e);store(e).with<EditorSlot>([&](EditorImpl&i){i.horizontal=horizontal;if(page_memory)i.page_memory=std::move(page_memory);});
     if(!gimp_painter_mybrush_editor_set_context(e,context,error))return nullptr;
     g_object_force_floating(G_OBJECT(e));return GTK_WIDGET(hold.release());
   });
 }
+GtkWidget*gimp_painter_mybrush_editor_new(GimpContext*context,gboolean horizontal,GError**error) {
+  return new_editor(context,horizontal,nullptr,error);
+}
 GtkWidget*gimp_painter_mybrush_editor_popup(GimpContext*context,GtkWidget*parent,GError**error) {
-  auto*editor=gimp_painter_mybrush_editor_new(context,TRUE,error);if(!editor)return nullptr;
+  return boundary<GtkWidget*>(error,nullptr,[&]()->GtkWidget* {
+  std::shared_ptr<EditorPageMemory> page_memory;
+  for(auto*w=parent;w;w=gtk_widget_get_parent(w))
+    if(GIMP_IS_PAINTER_MYBRUSH_EDITOR(w)) {
+      store(GIMP_PAINTER_MYBRUSH_EDITOR(w)).with<EditorSlot>([&](EditorImpl&i){page_memory=i.page_memory;});
+      break;
+    }
+  auto*editor=new_editor(context,TRUE,std::move(page_memory),error);if(!editor)return nullptr;
   auto*window=gtk_window_new(GTK_WINDOW_TOPLEVEL);gtk_window_set_title(GTK_WINDOW(window),_("Painter MyPaint Brush Editor"));gtk_window_set_default_size(GTK_WINDOW(window),860,630);
   if(parent&&GTK_IS_WINDOW(gtk_widget_get_toplevel(parent)))gtk_window_set_transient_for(GTK_WINDOW(window),GTK_WINDOW(gtk_widget_get_toplevel(parent)));
   gtk_window_set_destroy_with_parent(GTK_WINDOW(window),TRUE);gtk_container_add(GTK_CONTAINER(window),editor);gtk_widget_show_all(window);return window;
+  });
 }
 static gboolean save_editor(GimpPainterMybrushEditor*editor,const gchar*name,bool use_draft_name,GError**error) {
   return boundary<gboolean>(error,FALSE,[&]()->gboolean {return store(editor).with<EditorSlot>([&](EditorImpl&i)->gboolean {
