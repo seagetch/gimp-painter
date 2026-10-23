@@ -43,6 +43,13 @@ GArray *gimp_painter_mybrush_options_get_curve (GimpPainterMybrushOptions *optio
 gboolean gimp_painter_mybrush_options_commit (GimpPainterMybrushOptions *options, GError **error);
 guint gimp_painter_mybrush_options_history_size (GimpPainterMybrushOptions *options);
 gchar *gimp_painter_mybrush_options_history_name (GimpPainterMybrushOptions *options, guint index);
+/* Transfer-full, independently owned pixbuf decoded from the saved immutable
+ * history snapshot, never from its mutable source resource. NULL with no error
+ * means no embedded preview. Invalid/closed options or history, an invalid
+ * index, a wrong-thread call or malformed preview sets error when supplied.
+ * A query never selects a brush, restores a draft, changes history or emits
+ * notifications. The caller must unref a non-NULL result. */
+GdkPixbuf *gimp_painter_mybrush_options_history_preview (GimpPainterMybrushOptions *options, guint index, GError **error);
 gboolean gimp_painter_mybrush_options_restore_history (GimpPainterMybrushOptions *options, guint index, GError **error);
 /* Borrow no options through an untyped cast. Returns a new reference or an
  * explicit diagnostic for NULL/wrong/closed context or an unavailable tool.
