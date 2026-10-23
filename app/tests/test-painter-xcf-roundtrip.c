@@ -1376,6 +1376,7 @@ malformed_clone_reference_stays_opaque (void)
 #include "test-painter-xcf-fields.inc"
 #include "test-painter-xcf-property-order.inc"
 #include "test-painter-xcf-known-property-boundaries.inc"
+#include "test-painter-xcf-channel-absence.inc"
 #include "test-painter-xcf-active.inc"
 #include "test-painter-xcf-multipart.inc"
 #include "test-painter-xcf-multipart-adversarial.inc"
@@ -1418,6 +1419,7 @@ int main (int argc, char **argv)
   g_test_add_func ("/painter-xcf-fields/modern_effect_argument_families", fields_modern_effect_argument_families);
   g_test_add_func ("/painter-xcf-fields/clone_duplicate_name_identity", fields_clone_duplicate_name_identity);
   g_test_add_func ("/painter-xcf-fields/channel_property_lengths", fields_channel_property_lengths);
+  g_test_add_func ("/painter-xcf-fields/channel_property_absence", fields_channel_property_absence);
   g_test_add_func ("/painter-xcf-fields/channel_property_order", fields_channel_property_order);
   g_test_add_func ("/painter-xcf-fields/absent_native_properties", fields_absent_native_properties);
   g_test_add_func ("/painter-xcf-fields/native_precision_and_compression", fields_native_precision_and_compression);

@@ -2427,8 +2427,15 @@ xcf_load_channel_props (XcfInfo      *info,
             guchar  col[3];
             gdouble opacity;
 
-            /* Load existing opacity */
-            opacity = gimp_channel_get_opacity (*channel);
+            /* Preserve independent alpha in the loaded double format.
+             * The generic RGBA getter may round byte-opacity fractions
+             * through float even though RGB is the only changed field. */
+            {
+              gdouble current[4];
+              gegl_color_get_pixel ((*channel)->color,
+                                    babl_format ("R'G'B'A double"), current);
+              opacity = current[3];
+            }
 
             xcf_read_int8 (info, (guint8 *) col, 3);
 
@@ -2444,8 +2451,15 @@ xcf_load_channel_props (XcfInfo      *info,
             gfloat  col[3];
             gdouble opacity;
 
-            /* Load existing opacity */
-            opacity = gimp_channel_get_opacity (*channel);
+            /* Preserve independent alpha in the loaded double format.
+             * The generic RGBA getter may round byte-opacity fractions
+             * through float even though RGB is the only changed field. */
+            {
+              gdouble current[4];
+              gegl_color_get_pixel ((*channel)->color,
+                                    babl_format ("R'G'B'A double"), current);
+              opacity = current[3];
+            }
 
             xcf_read_float (info, col, 3);
 
