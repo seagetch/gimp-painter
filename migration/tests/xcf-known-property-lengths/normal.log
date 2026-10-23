@@ -1,0 +1,14 @@
+Xvfb verified: 127.0.0.1:93, 1080x1920x24, authenticated accepted, empty authority rejected
+1/4 gimp:app / xcf                   OK               1.90s
+2/4 gimp:app / painter-xcf-open      OK              98.26s
+3/4 gimp:app / painter-xcf-roundtrip OK              89.65s
+4/4 gimp:app / painter-provenance    OK               0.04s
+
+Ok:                 4   
+Expected Fail:      0   
+Fail:               0   
+Unexpected Pass:    0   
+Skipped:            0   
+Timeout:            0   
+
+Full log written to /workspace/shared/gimp-native-baseline/build-port/meson-logs/testlog.txt

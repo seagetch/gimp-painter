@@ -1,0 +1,86 @@
+ninja: Entering directory `/workspace/shared/gimp-native-baseline/build-port'
+[1/17] Generating git-version.h.in.1 with a custom command
+[2/17] Generating git-version.h.in.2 with a custom command
+[3/17] Generating git-version.h with a custom command
+[4/11] Generating app/tests/icon-theme-fixture/gimp-test-icon-theme-fixture with a custom command
+{"files": 1191, "manifest_sha256": "2f790ebf02244ef3c023f17f16ab614cbc315ee46d46abd87b7f73d4d5d9be41", "ownership_marker_sha256": "d3ebe76f57bdce73e82df17c3cd89f1a630f42f3c8d72dbfdacd4a000061b8bf", "plan_sha256": "0a16da7a76b5facf2d3d8084793b72e28d32d17c7ff6bf237d164075d4af4b95", "stamp_sha256": "c20e592420d8f1feb8e044c6114f8ed009473d411042806fd6e9aadd50c7ffc9", "status": "verified"}
+[5/11] Compiling C object app/xcf/libappxcf.a.p/xcf-load.c.o
+[6/11] Linking static target app/xcf/libappxcf.a
+[7/11] Linking target app/tests/xcf
+[8/11] Linking target app/tests/painter-provenance
+[9/11] Linking target app/tests/painter-xcf-open
+[10/11] Compiling C object app/tests/painter-xcf-roundtrip.p/test-painter-xcf-roundtrip.c.o
+In file included from ../source/app/tests/test-painter-xcf-roundtrip.c:1377:
+../source/app/tests/test-painter-xcf-property-order.inc: In function ‘order_offset’:
+../source/app/tests/test-painter-xcf-property-order.inc:7:35: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+    7 | { if(bytes==4)return order_u32(p);guint64 v;memcpy(&v,p,8);return GUINT64_FROM_BE(v); }
+      |                                   ^~~~~~~
+../source/app/tests/test-painter-xcf-property-order.inc: In function ‘order_after_props’:
+../source/app/tests/test-painter-xcf-property-order.inc:10:51: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   10 |   while(TRUE){g_assert_cmpuint(start+8,<=,length);guint32 type=order_u32(p+start),n=order_u32(p+start+4);g_assert_cmpuint(n,<=,length-start-8);start+=8+n;if(!type)return start;}
+      |                                                   ^~~~~~~
+../source/app/tests/test-painter-xcf-property-order.inc: In function ‘fields_channel_property_order’:
+../source/app/tests/test-painter-xcf-property-order.inc:22:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   22 |   GimpChannel *channel=gimp_channel_new(seed,96,80,"order channel",color);g_object_unref(color);
+      |   ^~~~~~~~~~~
+../source/app/tests/test-painter-xcf-property-order.inc:25:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   25 |   gchar *contents=NULL;gsize length=0;GError *error=NULL;
+      |   ^~~~~
+../source/app/tests/test-painter-xcf-property-order.inc:27:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   27 |   const guint8 *raw=(const guint8*)contents;g_assert_cmpuint(length,>,30);
+      |   ^~~~~
+../source/app/tests/test-painter-xcf-property-order.inc:29:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   29 |   guint version=(raw[10]-'0')*100+(raw[11]-'0')*10+raw[12]-'0';guint offset_bytes=version>=11?8:4;
+      |   ^~~~~
+../source/app/tests/test-painter-xcf-property-order.inc:32:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   32 |   gsize channel_pos=order_offset(raw+pos,offset_bytes);g_assert_cmpuint(channel_pos+12,<=,length);
+      |   ^~~~~
+../source/app/tests/test-painter-xcf-property-order.inc:34:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   34 |   gsize begin=channel_pos+12+order_u32(raw+channel_pos+8),end=order_after_props(raw,length,begin);
+      |   ^~~~~
+../source/app/tests/test-painter-xcf-property-order.inc:44:5: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   44 |     GimpImage *image=load(file);
+      |     ^~~~~~~~~
+../source/app/tests/test-painter-xcf-property-order.inc:46:105: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   46 |       GList *channels=gimp_image_get_channel_list(image);g_assert_cmpuint(g_list_length(channels),==,1);GimpChannel *actual=channels->data;gdouble rgba[4];
+      |                                                                                                         ^~~~~~~~~~~
+../source/app/tests/test-painter-xcf-property-order.inc:50:58: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   50 |       g_list_free(channels);if(!repeat){save(image,file);GimpImage *copy=load(file);g_object_unref(image);image=copy;}
+      |                                                          ^~~~~~~~~
+In file included from ../source/app/tests/test-painter-xcf-roundtrip.c:1378:
+../source/app/tests/test-painter-xcf-known-property-boundaries.inc: In function ‘fields_channel_property_lengths’:
+../source/app/tests/test-painter-xcf-known-property-boundaries.inc:15:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   15 |   GimpLayer *base = gimp_layer_new (seed, 96, 80,
+      |   ^~~~~~~~~
+../source/app/tests/test-painter-xcf-known-property-boundaries.inc:57:11: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   57 |           GList *channels=image?gimp_image_get_channel_list(image):NULL;
+      |           ^~~~~
+../source/app/tests/test-painter-xcf-known-property-boundaries.inc:63:11: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   63 |           GimpChannel *actual = channels->data;
+      |           ^~~~~~~~~~~
+../source/app/tests/test-painter-xcf-known-property-boundaries.inc:75:11: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   75 |           gchar *canonical = NULL;
+      |           ^~~~~
+../source/app/tests/test-painter-xcf-known-property-boundaries.inc:80:11: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   80 |           const guint8 *saved = (const guint8 *) canonical;
+      |           ^~~~~
+../source/app/tests/test-painter-xcf-known-property-boundaries.inc:86:11: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   86 |           gsize saved_begin = order_offset (saved + saved_table, offset_bytes);
+      |           ^~~~~
+../source/app/tests/test-painter-xcf-known-property-boundaries.inc:88:11: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   88 |           gsize saved_end = order_after_props (saved, canonical_length, saved_begin);
+      |           ^~~~~
+In file included from ../source/app/tests/test-painter-xcf-roundtrip.c:1380:
+../source/app/tests/test-painter-xcf-multipart.inc: In function ‘multipart_roundtrip_size’:
+../source/app/tests/test-painter-xcf-multipart.inc:77:11: warning: unused variable ‘error’ [-Wunused-variable]
+   77 |   GError *error = NULL;
+      |           ^~~~~
+../source/app/tests/test-painter-xcf-multipart.inc: In function ‘multipart_native_large’:
+../source/app/tests/test-painter-xcf-multipart.inc:135:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  135 |   const gchar *requested = g_getenv ("GIMP_TEST_XCF_MULTIPART_MIB");
+      |   ^~~~~
+../source/app/tests/test-painter-xcf-multipart.inc: In function ‘multipart_native_owner_duplicate_edit’:
+../source/app/tests/test-painter-xcf-multipart.inc:286:11: warning: unused variable ‘error’ [-Wunused-variable]
+  286 |   GError *error = NULL;
+      |           ^~~~~
+[11/11] Linking target app/tests/painter-xcf-roundtrip

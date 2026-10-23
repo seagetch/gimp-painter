@@ -1,0 +1,174 @@
+Xvfb verified: 127.0.0.1:93, 1080x1920x24, authenticated accepted, empty authority rejected
+compile app/config/gimppainterfilterconfig.cpp
+compile app/core/gimp-painter-provenance.cpp
+compile app/core/gimpclonelayer.cpp
+compile app/core/gimpdrawablefilter.c
+compile app/core/gimpfilterlayer.cpp
+compile app/core/gimpimage-duplicate.c
+compile app/core/gimpitem.c
+compile app/core/gimpobject.c
+compile app/dialogs/file-save-deferred.cpp
+compile app/dialogs/painter-layer-dialog.cpp
+compile app/httpd/httpd-images.cpp
+compile app/httpd/httpd-navigation.cpp
+compile app/httpd/httpd-pdb.cpp
+compile app/httpd/httpd-resource.cpp
+compile app/httpd/httpd.cpp
+compile app/paint/gimpbrushcore-loops.cc
+compile app/paint/gimpfillbrush.cpp
+compile app/paint/gimppaintcore-loops.cc
+compile app/paint/gimppainterbrushgeometry.cpp
+[01m[K../source/app/paint/gimppainterbrushgeometry.cpp:[m[K In lambda function:
+[01m[K../source/app/paint/gimppainterbrushgeometry.cpp:88:54:[m[K [01;35m[Kwarning: [m[Kcomparison of integer expressions of different signedness: ‘[01m[Kconst std::size_t[m[K’ {aka ‘[01m[Kconst long unsigned int[m[K’} and ‘[01m[Kint[m[K’ [[01;35m[K-Wsign-compare[m[K]
+   88 |     if (mask.width <= 0 || mask.height <= 0 || [01;35m[Kcount > G_MAXINT / channels[m[K)
+      |                                                [01;35m[K~~~~~~^~~~~~~~~~~~~~~~~~~~~[m[K
+compile app/paint/gimppainterpaintgate.cpp
+compile app/paint/gimppainterpaper-paste.cpp
+compile app/paint/gimppainterpaper.cpp
+compile app/paint/gimppaintersmudge.cpp
+compile app/paint/painter-bounded-fill/search.cpp
+compile app/paint/painter-mypaint-surface/gegl-surface.cpp
+compile app/paint/painter-mypaint-surface/gimp-painter-options.cpp
+compile app/paint/painter-mypaint-surface/gimp-painter-session.cpp
+compile app/paint/painter-mypaint-surface/gimp-resources.cpp
+compile app/paint/painter-mypaint-surface/legacy-generated-mask.cpp
+compile app/paint/painter-mypaint-surface/legacy-mask-transform.cpp
+compile app/paint/painter-mypaint-surface/paint-core.cpp
+compile app/paint/painter-mypaint/engine.cpp
+In file included from [01m[K../source/app/paint/painter-mypaint/engine.cpp:3[m[K:
+[01m[K../source/app/paint/painter-mypaint/legacy-brush.hpp:[m[K In member function ‘[01m[Kvoid GimpPainter::MyPaint::Legacy::Brush::[01;32m[Kupdate_states_and_setting_values[m[K(float, float, float, float, float, float)[m[K’:
+[01m[K../source/app/paint/painter-mypaint/legacy-brush.hpp:398:13:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kdx_old[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  398 |       float [01;35m[Kdx_old[m[K = states[STATE_DIRECTION_DX];
+      |             [01;35m[K^~~~~~[m[K
+[01m[K../source/app/paint/painter-mypaint/legacy-brush.hpp:399:13:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kdy_old[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  399 |       float [01;35m[Kdy_old[m[K = states[STATE_DIRECTION_DY];
+      |             [01;35m[K^~~~~~[m[K
+compile app/paint/painter-mypaint/resource.cpp
+compile app/painter-filter-worker.cpp
+compile app/painter/binding-store.cpp
+compile app/painter/filter-context.cpp
+compile app/painter/filter-edge-shadow.cpp
+compile app/painter/filter-edge.cpp
+compile app/painter/filter-gauss.cpp
+compile app/painter/filter-lifetime.cpp
+compile app/painter/filter-native-kernels.cpp
+compile app/painter/filter-point-shadow.cpp
+compile app/painter/filter-process.cpp
+compile app/painter/filter-raster-kernels.cpp
+compile app/painter/filter-raster.cpp
+compile app/painter/filter-scheduler.cpp
+compile app/painter/filter-sharpen-shadow.cpp
+compile app/painter/filter-sharpen.cpp
+compile app/painter/filter-sobel.cpp
+compile app/painter/filter-spool.cpp
+compile app/painter/filter-wire.cpp
+compile app/painter/gimp-painter-binding.cpp
+compile app/painter/gimp-painter-error.cpp
+compile app/tests/test-painter-provenance.c
+compile app/tests/test-painter-xcf-argument-resources.cpp
+[01m[K../source/app/tests/test-painter-xcf-argument-resources.cpp:42:17:[m[K [01;35m[Kwarning: [m[Kno previous declaration for ‘[01m[Kvoid[01;32m[K painter_xcf_test_argument_resource_file[m[K(GimpImage*, GVariant*, GBytes*, GFile*)[m[K’ [[01;35m[K-Wmissing-declarations[m[K]
+   42 | extern "C" void [01;35m[Kpainter_xcf_test_argument_resource_file[m[K (GimpImage *image, GVariant *base,
+      |                 [01;35m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+compile app/tests/test-painter-xcf-open.c
+compile app/tests/test-painter-xcf-roundtrip.c
+In file included from [01m[K../source/app/tests/test-painter-xcf-roundtrip.c:1377[m[K:
+[01m[K../source/app/tests/test-painter-xcf-property-order.inc:[m[K In function ‘[01m[Korder_offset[m[K’:
+[01m[K../source/app/tests/test-painter-xcf-property-order.inc:7:35:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+    7 | { if(bytes==4)return order_u32(p);[01;35m[Kguint64[m[K v;memcpy(&v,p,8);return GUINT64_FROM_BE(v); }
+      |                                   [01;35m[K^~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-xcf-property-order.inc:[m[K In function ‘[01m[Korder_after_props[m[K’:
+[01m[K../source/app/tests/test-painter-xcf-property-order.inc:10:51:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   10 |   while(TRUE){g_assert_cmpuint(start+8,<=,length);[01;35m[Kguint32[m[K type=order_u32(p+start),n=order_u32(p+start+4);g_assert_cmpuint(n,<=,length-start-8);start+=8+n;if(!type)return start;}
+      |                                                   [01;35m[K^~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-xcf-property-order.inc:[m[K In function ‘[01m[Kfields_channel_property_order[m[K’:
+[01m[K../source/app/tests/test-painter-xcf-property-order.inc:22:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   22 |   [01;35m[KGimpChannel[m[K *channel=gimp_channel_new(seed,96,80,"order channel",color);g_object_unref(color);
+      |   [01;35m[K^~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-xcf-property-order.inc:25:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   25 |   [01;35m[Kgchar[m[K *contents=NULL;gsize length=0;GError *error=NULL;
+      |   [01;35m[K^~~~~[m[K
+[01m[K../source/app/tests/test-painter-xcf-property-order.inc:27:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   27 |   [01;35m[Kconst[m[K guint8 *raw=(const guint8*)contents;g_assert_cmpuint(length,>,30);
+      |   [01;35m[K^~~~~[m[K
+[01m[K../source/app/tests/test-painter-xcf-property-order.inc:29:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   29 |   [01;35m[Kguint[m[K version=(raw[10]-'0')*100+(raw[11]-'0')*10+raw[12]-'0';guint offset_bytes=version>=11?8:4;
+      |   [01;35m[K^~~~~[m[K
+[01m[K../source/app/tests/test-painter-xcf-property-order.inc:32:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   32 |   [01;35m[Kgsize[m[K channel_pos=order_offset(raw+pos,offset_bytes);g_assert_cmpuint(channel_pos+12,<=,length);
+      |   [01;35m[K^~~~~[m[K
+[01m[K../source/app/tests/test-painter-xcf-property-order.inc:34:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   34 |   [01;35m[Kgsize[m[K begin=channel_pos+12+order_u32(raw+channel_pos+8),end=order_after_props(raw,length,begin);
+      |   [01;35m[K^~~~~[m[K
+[01m[K../source/app/tests/test-painter-xcf-property-order.inc:44:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   44 |     [01;35m[KGimpImage[m[K *image=load(file);
+      |     [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-xcf-property-order.inc:46:105:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   46 |       GList *channels=gimp_image_get_channel_list(image);g_assert_cmpuint(g_list_length(channels),==,1);[01;35m[KGimpChannel[m[K *actual=channels->data;gdouble rgba[4];
+      |                                                                                                         [01;35m[K^~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-xcf-property-order.inc:50:58:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   50 |       g_list_free(channels);if(!repeat){save(image,file);[01;35m[KGimpImage[m[K *copy=load(file);g_object_unref(image);image=copy;}
+      |                                                          [01;35m[K^~~~~~~~~[m[K
+In file included from [01m[K../source/app/tests/test-painter-xcf-roundtrip.c:1378[m[K:
+[01m[K../source/app/tests/test-painter-xcf-known-property-boundaries.inc:[m[K In function ‘[01m[Kfields_channel_property_lengths[m[K’:
+[01m[K../source/app/tests/test-painter-xcf-known-property-boundaries.inc:15:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   15 |   [01;35m[KGimpLayer[m[K *base = gimp_layer_new (seed, 96, 80,
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-xcf-known-property-boundaries.inc:57:11:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   57 |           [01;35m[KGList[m[K *channels=image?gimp_image_get_channel_list(image):NULL;
+      |           [01;35m[K^~~~~[m[K
+[01m[K../source/app/tests/test-painter-xcf-known-property-boundaries.inc:63:11:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   63 |           [01;35m[KGimpChannel[m[K *actual = channels->data;
+      |           [01;35m[K^~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-xcf-known-property-boundaries.inc:75:11:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   75 |           [01;35m[Kgchar[m[K *canonical = NULL;
+      |           [01;35m[K^~~~~[m[K
+[01m[K../source/app/tests/test-painter-xcf-known-property-boundaries.inc:80:11:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   80 |           [01;35m[Kconst[m[K guint8 *saved = (const guint8 *) canonical;
+      |           [01;35m[K^~~~~[m[K
+[01m[K../source/app/tests/test-painter-xcf-known-property-boundaries.inc:86:11:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   86 |           [01;35m[Kgsize[m[K saved_begin = order_offset (saved + saved_table, offset_bytes);
+      |           [01;35m[K^~~~~[m[K
+[01m[K../source/app/tests/test-painter-xcf-known-property-boundaries.inc:88:11:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   88 |           [01;35m[Kgsize[m[K saved_end = order_after_props (saved, canonical_length, saved_begin);
+      |           [01;35m[K^~~~~[m[K
+In file included from [01m[K../source/app/tests/test-painter-xcf-roundtrip.c:1380[m[K:
+[01m[K../source/app/tests/test-painter-xcf-multipart.inc:[m[K In function ‘[01m[Kmultipart_roundtrip_size[m[K’:
+[01m[K../source/app/tests/test-painter-xcf-multipart.inc:77:11:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kerror[m[K’ [[01;35m[K-Wunused-variable[m[K]
+   77 |   GError *[01;35m[Kerror[m[K = NULL;
+      |           [01;35m[K^~~~~[m[K
+[01m[K../source/app/tests/test-painter-xcf-multipart.inc:[m[K In function ‘[01m[Kmultipart_native_large[m[K’:
+[01m[K../source/app/tests/test-painter-xcf-multipart.inc:135:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  135 |   [01;35m[Kconst[m[K gchar *requested = g_getenv ("GIMP_TEST_XCF_MULTIPART_MIB");
+      |   [01;35m[K^~~~~[m[K
+[01m[K../source/app/tests/test-painter-xcf-multipart.inc:[m[K In function ‘[01m[Kmultipart_native_owner_duplicate_edit[m[K’:
+[01m[K../source/app/tests/test-painter-xcf-multipart.inc:286:11:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kerror[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  286 |   GError *[01;35m[Kerror[m[K = NULL;
+      |           [01;35m[K^~~~~[m[K
+compile app/tests/test-xcf.c
+compile app/tools/gimpfillbrushtool.cpp
+compile app/tools/gimppaintermybrushtool.cpp
+compile app/tools/gimppaintersmudgetool.cpp
+compile app/tools/gimpperspectiveguidetool.cpp
+compile app/widgets/gimpcellrendererpopup.cpp
+compile app/widgets/gimpeditor-cxx.cpp
+compile app/widgets/gimpmypaintbrushoptions-gui.cpp
+compile app/widgets/gimppaintercompactoptions.cpp
+compile app/widgets/gimppainterlayertiles.cpp
+compile app/widgets/gimppaintermybrusheditor.cpp
+compile app/xcf/painter-xcf-arguments.cpp
+compile app/xcf/painter-xcf-compat.cpp
+compile app/xcf/painter-xcf-load.cpp
+compile app/xcf/painter-xcf-multipart.cpp
+compile app/xcf/painter-xcf-preserve.cpp
+compile app/xcf/painter-xcf-storage.cpp
+compile app/xcf/painter-xcf-transport.cpp
+compile app/xcf/xcf-load.c
+compile app/xcf/xcf-read.c
+compile app/xcf/xcf-save.c
+compile app/xcf/xcf-seek.c
+compile app/xcf/xcf-write.c
+compile app/xcf/xcf.c
+painter-provenance 0
+painter-xcf-open 0
+painter-xcf-roundtrip 0
+xcf 0
