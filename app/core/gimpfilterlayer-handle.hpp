@@ -22,7 +22,9 @@ public:
   {
     auto *layer = gimp_filter_layer_new (image, width, height, name, opacity, mode);
     if (!layer) throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, "FilterLayer construction failed");
-    return adopt (GIMP_FILTER_LAYER (layer));
+    /* GimpItem factories return a floating reference. Own it before a later
+     * image insertion can sink it on behalf of the container. */
+    return sink (GIMP_FILTER_LAYER (layer));
   }
   GimpFilterLayer *get () const noexcept { return owner_.get (); }
   void set_definition (const char *procedure, GBytes *raw, const GimpValueArray *args) const
