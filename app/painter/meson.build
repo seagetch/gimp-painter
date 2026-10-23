@@ -80,6 +80,18 @@ test('painter-foundation', painter_foundation_test,
   timeout: 60,
 )
 
+# Observe actual lookup sites in test executables only. Production keeps the
+# same implementation, public ABI and zero instrumentation overhead.
+observed_binding_store = custom_target('observed-binding-store',
+  input: 'binding-store.cpp', output: 'observed-binding-store.cpp',
+  command: [python, files('tests/observe-binding-store.py'), '@INPUT@', '@OUTPUT@'])
+binding_store_observation = files('tests/binding-store-observation.cpp')
+qdata_operations_test = executable('painter-qdata-operations',
+  'tests/test-qdata-operations.cpp', observed_binding_store, binding_store_observation,
+  dependencies: [painter_dep, painter_threads], cpp_args: painter_cpp_args,
+  override_options: ['cpp_std=c++14'])
+test('painter-qdata-operations', qdata_operations_test, suite: 'painter', timeout: 30)
+
 # The feature scheduler and exact legacy-edge executor own no GIMP objects.
 foreach feature : ['filter-wire', 'filter-process', 'filter-scheduler', 'filter-owner-gates', 'filter-edge', 'filter-gauss', 'filter-gray', 'filter-gauss-alias', 'fair-dispatcher', 'work-admission', 'filter-raster', 'filter-spool', 'filter-raster-kernels', 'filter-native-kernels', 'filter-kernel-progress', 'filter-context-native']
   feature_cpp_args = painter_cpp_args

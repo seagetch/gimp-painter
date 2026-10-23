@@ -216,6 +216,20 @@ test('gimp-painter-session', painter_session_test,
     'UI_TEST=yes',
   ], suite: 'app', is_parallel: false, timeout: 60)
 
+painter_qdata_test = executable('gimp-painter-qdata-operations',
+  'test-gimp-painter-qdata-operations.cpp', 'tests.c',
+  observed_binding_store, binding_store_observation,
+  dependencies: [libapp_dep, painter_mypaint_surface_dep, appstream],
+  link_with: apptests_links, cpp_args: painter_cpp_args,
+  override_options: ['cpp_std=c++14'])
+test('gimp-painter-qdata-operations', painter_qdata_test,
+  env: [
+    'GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+    'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+    'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
+    'UI_TEST=yes',
+  ], suite: 'app', is_parallel: false, timeout: 60)
+
 painter_hover_test = executable('gimp-painter-hover',
   'test-gimp-painter-hover.cpp', 'tests.c',
   dependencies: [libapp_dep, painter_mypaint_surface_dep, appstream],

@@ -1,0 +1,73 @@
+{
+  "status": "PASS",
+  "scope": "actual resolution counters with synthetic operation admission",
+  "sanitizers": [],
+  "leak_check": "not run",
+  "commands": [
+    [
+      "python3",
+      "/workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/app/painter/tests/observe-binding-store.py",
+      "/workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/app/painter/binding-store.cpp",
+      "/workspace/scratch/5b5281e79681/qdata-06024-run/common/observed-binding-store.cpp"
+    ],
+    [
+      "pkg-config",
+      "--cflags",
+      "gobject-2.0"
+    ],
+    [
+      "pkg-config",
+      "--libs",
+      "gobject-2.0"
+    ],
+    [
+      "/usr/bin/g++",
+      "-std=c++14",
+      "-fno-rtti",
+      "-fvisibility=hidden",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-g",
+      "-I/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/deps/root/usr/include/glib-2.0",
+      "-I/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/deps/root/usr/lib/x86_64-linux-gnu/glib-2.0/include",
+      "-I/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/deps/root/usr/include/sysprof-6",
+      "-pthread",
+      "-I/workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/app/painter",
+      "-I/workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/app/painter/tests",
+      "/workspace/scratch/5b5281e79681/qdata-06024-run/common/observed-binding-store.cpp",
+      "/workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/app/painter/gimp-painter-error.cpp",
+      "/workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/app/painter/tests/binding-store-observation.cpp",
+      "/workspace/scratch/5b5281e79681/gtk-binding-recovery-20261010/worktree/app/painter/tests/test-qdata-operations.cpp",
+      "-lgobject-2.0",
+      "-lglib-2.0",
+      "-pthread",
+      "-o",
+      "/workspace/scratch/5b5281e79681/qdata-06024-run/common/painter-qdata-operations"
+    ],
+    [
+      "/workspace/scratch/5b5281e79681/qdata-06024-run/common/painter-qdata-operations"
+    ]
+  ],
+  "output": [
+    "",
+    "-I/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/deps/root/usr/include/glib-2.0 -I/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/deps/root/usr/lib/x86_64-linux-gnu/glib-2.0/include -I/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/deps/root/usr/include/sysprof-6 -pthread \n",
+    "-lgobject-2.0 -lglib-2.0 \n",
+    "",
+    "TAP version 14\n# random seed: R02S82fec93f6467be7fd5c4aec7a0184ddf\n1..6\n# Start of qdata tests\n# pixels=1 regions=1 stores=1 slots=1\n# pixels=1 regions=7 stores=7 slots=7\n# pixels=257 regions=1 stores=1 slots=1\n# pixels=257 regions=7 stores=7 slots=7\n# pixels=1048576 regions=1 stores=1 slots=1\n# pixels=1048576 regions=7 stores=7 slots=7\nok 1 /qdata/scoped-regions\nok 2 /qdata/nested-operation\nok 3 /qdata/owner-lease\nok 4 /qdata/close-generation\nok 5 /qdata/counter-sensitivity\nok 6 /qdata/wrong-thread\n# End of qdata tests\n"
+  ],
+  "source_sha256": {
+    "app/painter/binding-store.cpp": "c69d65c22f26e6be8f6df69765cd30f7bbbd32b46b0eb847e9f6524b41c2b557",
+    "app/painter/binding-store.hpp": "c67deb0ccf33a13a5ba3ab3f50bdbb2ef8931f481acf62a9315d778388c90262",
+    "app/painter/boundary.hpp": "d97a8b6e27a09fe69c7c1d6620361c3daaa1e5cf1bad8d2eb2d4b9a9faed6d2e",
+    "app/painter/gimp-painter-error.cpp": "14bc510a2c3721894854b871402c7c95caa94d6559ab79731c7eb4ee76d83cf3",
+    "app/painter/gimp-painter-error.h": "b3c1e3550f83abd54726e752d069f0a591b105bcea249239277d2005ccf61465",
+    "app/painter/gimp-painter-visibility.h": "d832e5442d969ff8439292a61d0143532d85c1b7eaab0b29689c6dc04e9c4532",
+    "app/painter/object-ref.hpp": "5a8cc92afc56f652fd47c727269d71d9d97c4358015f13fe9c4764371fcb7c3a",
+    "app/painter/tests/binding-store-observation.cpp": "08833b2ebac74e9123fed9399f9f3377de5bb09b3ed0d554466c6a46d74a1649",
+    "app/painter/tests/binding-store-observation.hpp": "8e751756676958d9643601024da1f02cf72e657d5398052e5d119bc73ece337c",
+    "app/painter/tests/observe-binding-store.py": "e3b71b46c1264b71ddfde685bc175a0ae7fbc74ec41b9f198d028efa0d1a7501",
+    "app/painter/tests/test-qdata-operations.cpp": "8605bd81f60d610bb4e7f9acf727b7c7381eb10dc12daf19208ab8d32befc549",
+    "tools/test_painter_qdata.py": "f5d44dab3d24dd5635d5ed443939aedc7c56c1abae8be82db78cc1a2c6e350a5"
+  }
+}
