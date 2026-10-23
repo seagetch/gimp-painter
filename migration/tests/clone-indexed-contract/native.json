@@ -1,0 +1,13 @@
+{
+  "name": "gimp:app / gimp-clone-layer",
+  "stdout": "TAP version 14\n# random seed: R02S4a3b79be7238a1a57d5ed5dca97f738a\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# Start of gimp-clone-layer tests\n# 24 indexed/alpha opacity/mask scenes;144 exact palette/binary-alpha pixels\nok 1 /gimp-clone-layer/clone_indexed_projection_contract\n# slow test /gimp-clone-layer/clone_indexed_projection_contract executed in 1.08 secs\n# End of gimp-clone-layer tests\n1..1\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n",
+  "result": "OK",
+  "starttime": 1792561782.6832247,
+  "duration": 2.0166003704071045,
+  "returncode": 0,
+  "command": [
+    "/workspace/shared/gimp-clean-aggregate/build/app/tests/gimp-clone-layer",
+    "-p",
+    "/gimp-clone-layer/clone_indexed_projection_contract"
+  ]
+}

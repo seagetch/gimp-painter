@@ -1,0 +1,16 @@
+      pixel_region_init (&srcPR,  src_tiles,  x, y, width, height, FALSE);
+      copy_region_nocow(&srcPR, &destPR);
+    }
+
+  } else {
+    source [gimp_drawable_project_region] (x, y, width, height, &destPR, FALSE);
+  }
+*/
+  source [gimp_drawable_project_region] (x, y, width, height, &destPR, FALSE);
+
+  self [gimp_drawable_update] (x, y, width, height);
+}
+
+void GLib::CloneLayer::on_source_frozen(GObject* object, GParamSpec* spec)
+{
+  auto self     = ref(g_object);

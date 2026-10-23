@@ -1,0 +1,54 @@
+initial_indexed_pixels (const guchar *src,
+                        guchar       *dest,
+                        const guchar *cmap,
+                        guint         length)
+{
+  /*  This function assumes always that we're mapping from
+   *  an RGB colormap to an RGBA image...
+   */
+  while (length--)
+    {
+      gint col_index = *src++ * 3;
+
+      *dest++ = cmap[col_index++];
+      *dest++ = cmap[col_index++];
+      *dest++ = cmap[col_index++];
+      *dest++ = OPAQUE_OPACITY;
+    }
+}
+
+
+inline void
+initial_indexed_a_pixels (const guchar *src,
+                          guchar       *dest,
+                          const guchar *mask,
+                          const guchar *no_mask,
+                          const guchar *cmap,
+                          guint         opacity,
+                          guint         length)
+{
+  const guchar *m = mask ? mask : no_mask;
+
+  while (length --)
+    {
+      gint   col_index = *src++ * 3;
+      glong  tmp;
+      guchar new_alpha = INT_MULT3(*src, *m, opacity, tmp);
+
+      src++;
+
+      *dest++ = cmap[col_index++];
+      *dest++ = cmap[col_index++];
+      *dest++ = cmap[col_index++];
+      /*  Set the alpha channel  */
+      *dest++ = (new_alpha > 127) ? OPAQUE_OPACITY : TRANSPARENT_OPACITY;
+
+      if (mask)
+        m++;
+    }
+}
+
+
+inline void
+initial_inten_pixels (const guchar   *src,
+                      guchar         *dest,
