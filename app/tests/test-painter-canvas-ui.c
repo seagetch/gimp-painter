@@ -41,6 +41,18 @@
 #include "gimp-app-test-utils.h"
 #include "tests.h"
 #include "gimpcoreapp.h"
+#include <string.h>
+#include "widgets/gimpdnd.h"
+#include "widgets/gimpselectiondata.h"
+#include "core/gimpdrawable.h"
+#include "core/gimp-utils.h"
+#include "widgets/gimpviewrendererdrawable.h"
+#include "libgimpconfig/gimpconfig.h"
+#include "gui/session.h"
+#include "core/gimplist.h"
+#include "dialogs/dialogs.h"
+#include "widgets/gimpsessioninfo.h"
+
 static Gimp *gimp;
 static GtkWidget *window;
 typedef struct { void (*run) (void); } CanvasTestCase;
@@ -955,9 +967,757 @@ static void demo(void) {
 }
 #include "test-widget-store-native-dnd.inc"
 
+/* 08.017 native edge fragments. Insert after the canvas test helpers, before
+ * main(). Extra includes are in native-edge-includes.h; ADD calls are separate.
+ * These use production entry points and signal registrations, not copied DnD
+ * dispatch or a synthetic ownership store. Runtime execution is parent-owned. */
+
+typedef struct
+{
+  GtkWidget *source;
+  GtkWidget *dest;
+  GdkDragContext *drag;
+  GimpViewable *item;
+  GimpViewable *received;
+  guint gets;
+  guint drops;
+  gint x;
+  gint y;
+} NativeToolDnd;
+
+static GimpViewable *
+native_tool_dnd_get (GtkWidget *widget, GimpContext **context, gpointer data)
+{
+  NativeToolDnd *f = data;
+  g_assert_true (widget == f->source);
+  *context = gimp_get_user_context (gimp);
+  f->gets++;
+  return f->item;
+}
+
+static void
+native_tool_dnd_drop (GtkWidget *widget, gint x, gint y,
+                      GimpViewable *viewable, gpointer data)
+{
+  NativeToolDnd *f = data;
+  g_assert_true (widget == f->dest);
+  f->received = viewable;
+  f->x = x;
+  f->y = y;
+  f->drops++;
+}
+
+static void
+native_tool_dnd_clipboard_get (GtkClipboard *clipboard,
+                               GtkSelectionData *selection,
+                               guint info, gpointer data)
+{
+  NativeToolDnd *f = data;
+  (void) clipboard;
+  g_signal_emit_by_name (f->source, "drag-data-get", f->drag, selection,
+                         info, GDK_CURRENT_TIME);
+}
+
+static void
+native_tool_dnd_clipboard_clear (GtkClipboard *clipboard, gpointer data)
+{
+  (void) clipboard;
+  (void) data;
+}
+
+static GtkSelectionData *
+native_tool_dnd_payload (NativeToolDnd *f)
+{
+  GtkTargetEntry target = GIMP_TARGET_TOOL_ITEM;
+  GtkClipboard *clipboard = gtk_clipboard_get
+    (gdk_atom_intern_static_string ("_GIMP_PAINTER_NATIVE_EDGE_SELECTION"));
+  GtkSelectionData *selection;
+
+  /* GTK owns/allocates the real GtkSelectionData. The callback reaches the
+   * production registered drag-data-get handler with its numeric info value. */
+  g_assert_true (gtk_clipboard_set_with_data (clipboard, &target, 1,
+                                             native_tool_dnd_clipboard_get,
+                                             native_tool_dnd_clipboard_clear, f));
+  selection = gtk_clipboard_wait_for_contents
+    (clipboard, gdk_atom_intern_static_string (target.target));
+  gtk_clipboard_clear (clipboard);
+  g_assert_nonnull (selection);
+  return selection;
+}
+
+static void
+native_tool_dnd_deliver (NativeToolDnd *f, GtkSelectionData *selection,
+                         guint info)
+{
+  /* The registered production receiver dispatches TOOL_ITEM, resolves the
+   * same-process object, and decides whether to invoke the client callback.
+   * This checks signal-boundary delivery, not physical pointer transport. */
+  g_signal_emit_by_name (f->dest, "drag-data-received", f->drag,
+                         17, 29, selection, info, GDK_CURRENT_TIME);
+}
+
+static void
+native_tool_dnd_assert_target (GtkTargetList *list)
+{
+  GtkTargetEntry *entries;
+  gint count;
+  guint info = 0;
+  GdkAtom atom = gdk_atom_intern_static_string
+    ("application/x-gimp-tool-item-name");
+
+  g_assert_nonnull (list);
+  g_assert_true (gtk_target_list_find (list, atom, &info));
+  g_assert_cmpuint (info, ==, 23);
+  entries = gtk_target_table_new_from_list (list, &count);
+  g_assert_cmpint (count, ==, 1);
+  g_assert_cmpstr (entries[0].target, ==, "application/x-gimp-tool-item-name");
+  g_assert_cmpuint (entries[0].flags, ==, GTK_TARGET_SAME_APP);
+  g_assert_cmpuint (entries[0].info, ==, 23);
+  gtk_target_table_free (entries, count);
+}
+
+static void
+native_tool_dnd_wire_payload (void)
+{
+  NativeToolDnd f = { 0 };
+  GtkWidget *box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+  GimpToolGroup *group = gimp_tool_group_new ();
+  GimpToolInfo *tool = gimp_tool_info_get_standard (gimp);
+  GimpToolInfo *saved_tool = gimp_context_get_tool (gimp_get_user_context (gimp));
+  GimpViewable *objects[2] = { GIMP_VIEWABLE (tool), GIMP_VIEWABLE (group) };
+  GList *targets = NULL;
+  GtkSelectionData *selection;
+  GdkAtom target = gdk_atom_intern_static_string
+    ("application/x-gimp-tool-item-name");
+
+  g_assert_cmpint (GIMP_DND_TYPE_TOOL_ITEM, ==, 23);
+  g_assert_nonnull (tool);
+  if (saved_tool)
+    g_object_ref (saved_tool);
+  gimp_object_set_name (GIMP_OBJECT (group), "native-edge-tool-group");
+  gimp_container_add (gimp->tool_item_list, GIMP_OBJECT (group));
+  f.source = gtk_event_box_new ();
+  f.dest = gtk_event_box_new ();
+  gtk_widget_set_size_request (f.source, 30, 30);
+  gtk_widget_set_size_request (f.dest, 30, 30);
+  gtk_box_pack_start (GTK_BOX (box), f.source, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (box), f.dest, TRUE, TRUE, 0);
+  gtk_container_add (GTK_CONTAINER (window), box);
+  gtk_widget_show_all (window);
+  drain ();
+  g_assert_true (gimp_dnd_viewable_source_add
+    (f.source, GIMP_TYPE_TOOL_ITEM, native_tool_dnd_get, &f));
+  g_assert_true (gimp_dnd_viewable_dest_add
+    (f.dest, GIMP_TYPE_TOOL_ITEM, native_tool_dnd_drop, &f));
+  /* Re-registration must replace native callback metadata without duplicate
+   * signal delivery or duplicate target registration. */
+  g_assert_true (gimp_dnd_viewable_source_add
+    (f.source, GIMP_TYPE_TOOL_INFO, native_tool_dnd_get, &f));
+  g_assert_true (gimp_dnd_viewable_dest_add
+    (f.dest, GIMP_TYPE_TOOL_GROUP, native_tool_dnd_drop, &f));
+  native_tool_dnd_assert_target (gtk_drag_source_get_target_list (f.source));
+  native_tool_dnd_assert_target (gtk_drag_dest_get_target_list (f.dest));
+  targets = g_list_append (targets, target);
+  f.drag = gdk_drag_begin_for_device
+    (gtk_widget_get_window (f.source),
+     gdk_seat_get_pointer (gdk_display_get_default_seat
+       (gtk_widget_get_display (f.source))), targets);
+  g_list_free (targets);
+  g_assert_nonnull (f.drag);
+
+  for (guint i = 0; i < G_N_ELEMENTS (objects); i++)
+    {
+      gchar *expected;
+      guint gets = f.gets;
+      guint drops = f.drops;
+      f.item = objects[i];
+      selection = native_tool_dnd_payload (&f);
+      expected = g_strdup_printf ("%d:%p:%s", gimp_get_pid (), f.item,
+                                  gimp_object_get_name (f.item));
+      g_assert_cmpuint (f.gets, ==, gets + 1);
+      g_assert_cmpint (gtk_selection_data_get_format (selection), ==, 8);
+      g_assert_cmpint (gtk_selection_data_get_length (selection), ==,
+                       strlen (expected));
+      g_assert_cmpstr ((const gchar *) gtk_selection_data_get_data (selection),
+                       ==, expected);
+      g_assert_true (gimp_selection_data_get_tool_item (selection, gimp) ==
+                     GIMP_TOOL_ITEM (f.item));
+      native_tool_dnd_deliver (&f, selection, 23);
+      g_assert_cmpuint (f.drops, ==, drops + 1);
+      g_assert_true (f.received == f.item);
+      g_assert_cmpint (f.x, ==, 17);
+      g_assert_cmpint (f.y, ==, 29);
+      gtk_selection_data_free (selection);
+      g_free (expected);
+    }
+
+  /* The drag context's captured viewable must win over a later source value. */
+  f.item = GIMP_VIEWABLE (group);
+  g_object_set_data (G_OBJECT (f.drag), "gimp-dnd-viewable", tool);
+  {
+    guint gets = f.gets;
+    selection = native_tool_dnd_payload (&f);
+    g_assert_cmpuint (f.gets, ==, gets);
+    g_assert_true (gimp_selection_data_get_tool_item (selection, gimp) ==
+                   GIMP_TOOL_ITEM (tool));
+    gtk_selection_data_free (selection);
+  }
+  g_object_set_data (G_OBJECT (f.drag), "gimp-dnd-viewable", NULL);
+
+  selection = native_tool_dnd_payload (&f);
+  {
+    guint drops = f.drops;
+    gchar *wrong_pid = g_strdup_printf ("%d:%p:%s", gimp_get_pid () + 1,
+                                        group, gimp_object_get_name (group));
+    gchar *wrong_addr = g_strdup_printf ("%d:0x1:%s", gimp_get_pid (),
+                                         gimp_object_get_name (group));
+    gchar *wrong_name = g_strdup_printf ("%d:%p:missing-native-tool", gimp_get_pid (),
+                                         group);
+    const gchar *bad[] = { "not-a-payload", "1:0x1:missing", wrong_pid,
+                           wrong_addr, wrong_name, "0:0x0:missing" };
+    for (guint i = 0; i < G_N_ELEMENTS (bad); i++)
+      {
+        gtk_selection_data_set (selection, target, 8,
+                                 (const guchar *) bad[i], strlen (bad[i]));
+        native_tool_dnd_deliver (&f, selection, 23);
+        g_assert_cmpuint (f.drops, ==, drops);
+      }
+    g_free (wrong_pid);
+    g_free (wrong_addr);
+    g_free (wrong_name);
+    /* Invalid format/UTF-8 reaches both real container lookup attempts. */
+    for (guint i = 0; i < 2; i++)
+      {
+        const guchar bytes[] = { 0xff, 0xff };
+        gtk_selection_data_set (selection, target, i ? 8 : 16, bytes, 2);
+        g_test_expect_message ("Gimp-Widgets", G_LOG_LEVEL_WARNING,
+                               "*received invalid selection data*");
+        g_test_expect_message ("Gimp-Widgets", G_LOG_LEVEL_WARNING,
+                               "*received invalid selection data*");
+        native_tool_dnd_deliver (&f, selection, 23);
+        g_test_assert_expected_messages ();
+        g_assert_cmpuint (f.drops, ==, drops);
+      }
+    gtk_selection_data_set (selection, target, 8, NULL, 0);
+    native_tool_dnd_deliver (&f, selection, 23);
+    g_assert_cmpuint (f.drops, ==, drops);
+  }
+  gtk_selection_data_free (selection);
+  selection = native_tool_dnd_payload (&f);
+  {
+    guint drops = f.drops;
+    native_tool_dnd_deliver (&f, selection, 987);
+    g_assert_cmpuint (f.drops, ==, drops);
+    gimp_object_set_name (GIMP_OBJECT (group), "renamed-native-edge-tool-group");
+    native_tool_dnd_deliver (&f, selection, 23);
+    g_assert_cmpuint (f.drops, ==, drops);
+    gimp_object_set_name (GIMP_OBJECT (group), "native-edge-tool-group");
+  }
+  /* Retaining the object itself must not make a payload for a removed model
+   * entry valid. Removal is checked by the production receiver. */
+  gimp_container_remove (gimp->tool_item_list, GIMP_OBJECT (group));
+  {
+    guint drops = f.drops;
+    native_tool_dnd_deliver (&f, selection, 23);
+    g_assert_cmpuint (f.drops, ==, drops);
+  }
+  gtk_selection_data_free (selection);
+  f.item = GIMP_VIEWABLE (tool);
+  selection = native_tool_dnd_payload (&f);
+  g_assert_true (gimp_dnd_viewable_dest_remove (f.dest, GIMP_TYPE_TOOL_ITEM));
+  {
+    guint drops = f.drops;
+    native_tool_dnd_deliver (&f, selection, 23);
+    g_assert_cmpuint (f.drops, ==, drops);
+  }
+  g_assert_true (gimp_dnd_viewable_source_remove (f.source, GIMP_TYPE_TOOL_ITEM));
+  g_assert_null (gimp_dnd_get_drag_viewable (f.source));
+  {
+    guint gets = f.gets;
+    gtk_selection_data_set (selection, target, 8, NULL, 0);
+    g_signal_emit_by_name (f.source, "drag-data-get", f.drag, selection,
+                           23, GDK_CURRENT_TIME);
+    g_assert_cmpuint (f.gets, ==, gets);
+    g_assert_cmpint (gtk_selection_data_get_length (selection), ==, 0);
+  }
+  gtk_selection_data_free (selection);
+  gdk_drag_abort (f.drag, GDK_CURRENT_TIME);
+  g_object_unref (f.drag);
+  gtk_widget_destroy (box);
+  g_object_unref (group);
+  if (gimp_context_get_tool (gimp_get_user_context (gimp)) != saved_tool)
+    gimp_context_set_tool (gimp_get_user_context (gimp), saved_tool);
+  g_clear_object (&saved_tool);
+  drain ();
+}
+
+static guint32
+native_surface_pixel (cairo_surface_t *surface, gint x, gint y)
+{
+  cairo_surface_flush (surface);
+  return ((guint32 *) (cairo_image_surface_get_data (surface) +
+                        y * cairo_image_surface_get_stride (surface)))[x];
+}
+
+static void
+native_renderer_background_lifetime (void)
+{
+  GimpTempBuf *buffer = gimp_temp_buf_new (2, 1, babl_format ("R~G~B~A u8"));
+  const guchar pixels[] = { 255, 0, 0, 255, 0, 255, 0, 0 };
+  GimpViewRenderer *renderer = gimp_view_renderer_new_full
+    (gimp_get_user_context (gimp), GIMP_TYPE_LAYER, 5, 3, 0, FALSE);
+  cairo_surface_t *first;
+  memcpy (gimp_temp_buf_get_data (buffer), pixels, sizeof (pixels));
+  gimp_view_renderer_render_temp_buf (renderer, window, buffer, 1, 1, -1,
+                                       GIMP_VIEW_BG_CHECKS, GIMP_VIEW_BG_WHITE);
+  g_assert_cmpint (cairo_image_surface_get_width (renderer->surface), ==, 5);
+  g_assert_cmpint (cairo_image_surface_get_height (renderer->surface), ==, 3);
+  g_assert_cmphex (native_surface_pixel (renderer->surface, 0, 0), ==, 0xffffffff);
+  g_assert_cmphex (native_surface_pixel (renderer->surface, 1, 1), ==, 0xffff0000);
+  g_assert_cmphex (native_surface_pixel (renderer->surface, 2, 1) >> 24, ==, 0xff);
+  first = cairo_surface_reference (renderer->surface);
+  gimp_view_renderer_render_temp_buf (renderer, window, buffer, -1, 0, -1,
+                                       GIMP_VIEW_BG_WHITE, GIMP_VIEW_BG_WHITE);
+  /* Negative offset clips the red pixel and leaves the transparent one over
+   * white. Re-rendering replaces the renderer's surface, not retained output. */
+  g_assert_cmphex (native_surface_pixel (renderer->surface, 0, 0), ==, 0xffffffff);
+  gimp_temp_buf_unref (buffer);
+  g_object_unref (renderer);
+  g_assert_cmphex (native_surface_pixel (first, 1, 1), ==, 0xffff0000);
+  g_assert_cmpint (cairo_surface_status (first), ==, CAIRO_STATUS_SUCCESS);
+  cairo_surface_destroy (first);
+}
+
+static GimpView *
+native_layer_preview (GtkWidget *widget, GimpLayer *target)
+{
+  if (GIMP_IS_VIEW (widget) &&
+      GIMP_VIEW (widget)->renderer->viewable == GIMP_VIEWABLE (target))
+    return GIMP_VIEW (widget);
+  if (GTK_IS_CONTAINER (widget))
+    {
+      GList *children = gtk_container_get_children (GTK_CONTAINER (widget));
+      GimpView *result = NULL;
+      for (GList *iter = children; iter && ! result; iter = iter->next)
+        result = native_layer_preview (iter->data, target);
+      g_list_free (children);
+      return result;
+    }
+  return NULL;
+}
+
+static void
+native_layer_preview_render (GimpView *view, gboolean want_red)
+{
+  cairo_surface_t *surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, 96, 96);
+  cairo_t *cr = cairo_create (surface);
+  gint64 deadline = g_get_monotonic_time () + 5 * G_TIME_SPAN_SECOND;
+  gboolean matched = FALSE;
+
+  g_assert_true (GIMP_IS_VIEW_RENDERER_DRAWABLE (view->renderer));
+  /* The real drawable renderer renders asynchronously and may first paint a
+   * placeholder or retain the old surface. Wait for the required pixels, not
+   * merely for one non-NULL surface or one idle pass. */
+  do
+    {
+      guint32 pixel;
+      gimp_view_renderer_draw (view->renderer, GTK_WIDGET (view), cr, 96, 96);
+      drain ();
+      if (view->renderer->surface)
+        {
+          pixel = native_surface_pixel (view->renderer->surface,
+                                          view->renderer->width / 2,
+                                          view->renderer->height / 2);
+          matched = want_red ? (((pixel >> 16) & 255) > (pixel & 255)) :
+                               ((pixel & 255) > ((pixel >> 16) & 255));
+        }
+      if (! matched)
+        g_usleep (1000);
+    }
+  while (! matched && g_get_monotonic_time () < deadline);
+  g_assert_true (matched);
+  g_assert_cmpint (cairo_status (cr), ==, CAIRO_STATUS_SUCCESS);
+  cairo_destroy (cr);
+  cairo_surface_destroy (surface);
+}
+
+static void
+native_edge_count_finalized (gpointer data)
+{
+  /* Unlike weak-pointer notification on dispose, qdata destruction observes
+   * release of the object's final native storage. Production never touches
+   * this test-only key. The counter remains live until the assertion below. */
+  guint *count = data;
+  (*count)++;
+}
+
+static void
+native_layer_preview_pixels_lifetime (void)
+{
+  GimpImage *image = new_image ();
+  GimpLayer *target = layer (image, NULL, "Native preview pixels");
+  GeglColor *red = gegl_color_new ("red");
+  GeglColor *blue = gegl_color_new ("blue");
+  GtkWidget *widget;
+  GimpView *view;
+  guint renderer_finalized = 0;
+  cairo_surface_t *red_surface;
+  guint32 pixel;
+
+  gegl_buffer_set_color (gimp_drawable_get_buffer (GIMP_DRAWABLE (target)), NULL, red);
+  gimp_drawable_update (GIMP_DRAWABLE (target), 0, 0, -1, -1);
+  widget = tiles (image);
+  view = native_layer_preview (widget, target);
+  g_assert_nonnull (view);
+  native_layer_preview_render (view, TRUE);
+  pixel = native_surface_pixel (view->renderer->surface,
+                                view->renderer->width / 2,
+                                view->renderer->height / 2);
+  g_assert_cmpuint ((pixel >> 16) & 255, >, pixel & 255);
+  red_surface = cairo_surface_reference (view->renderer->surface);
+  gegl_buffer_set_color (gimp_drawable_get_buffer (GIMP_DRAWABLE (target)), NULL, blue);
+  gimp_drawable_update (GIMP_DRAWABLE (target), 0, 0, -1, -1);
+  gimp_viewable_invalidate_preview (GIMP_VIEWABLE (target));
+  drain ();
+  native_layer_preview_render (view, FALSE);
+  pixel = native_surface_pixel (view->renderer->surface,
+                                view->renderer->width / 2,
+                                view->renderer->height / 2);
+  g_assert_cmpuint (pixel & 255, >, (pixel >> 16) & 255);
+  g_object_set_data_full (G_OBJECT (view->renderer),
+                          "native-edge-renderer-finalization",
+                          &renderer_finalized, native_edge_count_finalized);
+  /* A pending native preview invalidation cannot retain the disposed view. */
+  gimp_viewable_invalidate_preview (GIMP_VIEWABLE (target));
+  close_tiles (widget);
+  g_assert_cmpuint (renderer_finalized, ==, 1);
+  gimp_viewable_invalidate_preview (GIMP_VIEWABLE (target));
+  drain ();
+  pixel = native_surface_pixel (red_surface,
+                                cairo_image_surface_get_width (red_surface) / 2,
+                                cairo_image_surface_get_height (red_surface) / 2);
+  g_assert_cmpuint ((pixel >> 16) & 255, >, pixel & 255);
+  cairo_surface_destroy (red_surface);
+  g_object_unref (red);
+  g_object_unref (blue);
+  g_object_unref (image);
+}
+
+static void
+native_tool_icon_preview_lifetime (void)
+{
+  GimpDisplayShell *shell = new_shell ();
+  GimpToolInfo *tool = gimp_context_get_tool (gimp_get_user_context (gimp));
+  GtkWidget *button;
+  GtkWidget *icon;
+  guint icon_finalized = 0;
+  const gchar *name;
+  GtkIconSize size;
+  GtkAllocation allocation;
+  cairo_surface_t *surface;
+  cairo_t *cr;
+  gboolean visible = FALSE;
+  gboolean saved_visible = gimp_painter_canvas_ui_get_visible (shell);
+  gboolean saved_config_visible;
+  gboolean config_visible;
+
+  g_object_get (gimp->config, "painter-canvas-ui", &saved_config_visible, NULL);
+  g_assert_nonnull (tool);
+  gimp_painter_canvas_ui_set_visible (shell, TRUE);
+  drain ();
+  button = find (shell->canvas, gimp_object_get_name (tool));
+  g_assert_true (GTK_IS_BUTTON (button));
+  icon = gtk_button_get_image (GTK_BUTTON (button));
+  g_assert_true (GTK_IS_IMAGE (icon));
+  g_assert_cmpint (gtk_image_get_storage_type (GTK_IMAGE (icon)), ==, GTK_IMAGE_ICON_NAME);
+  gtk_image_get_icon_name (GTK_IMAGE (icon), &name, &size);
+  g_assert_cmpstr (name, ==, gimp_viewable_get_icon_name (GIMP_VIEWABLE (tool)));
+  /* Reject the generic missing-image fallback. This proves that the named
+   * production icon is available and draws nonempty pixels; it does not
+   * compare theme-specific raster fidelity to a golden image. */
+  g_assert_true (gtk_icon_theme_has_icon (gtk_icon_theme_get_for_screen
+    (gtk_widget_get_screen (icon)), name));
+  g_assert_cmpint (size, ==, GTK_ICON_SIZE_SMALL_TOOLBAR);
+  g_assert_true (gtk_widget_get_mapped (icon));
+  gtk_widget_get_allocation (icon, &allocation);
+  surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
+                                        allocation.width, allocation.height);
+  cr = cairo_create (surface);
+  gtk_widget_draw (icon, cr);
+  g_assert_cmpint (cairo_status (cr), ==, CAIRO_STATUS_SUCCESS);
+  for (gint y = 0; y < allocation.height; y++)
+    for (gint x = 0; x < allocation.width; x++)
+      visible |= (native_surface_pixel (surface, x, y) >> 24) != 0;
+  g_assert_true (visible);
+  cairo_destroy (cr);
+  cairo_surface_destroy (surface);
+  g_object_set_data_full (G_OBJECT (icon), "native-edge-icon-finalization",
+                          &icon_finalized, native_edge_count_finalized);
+  /* Visibility synchronizes the native action, whose callback also changes
+   * the default for later shells. Restore this fixture's state before close. */
+  gimp_painter_canvas_ui_set_visible (shell, saved_visible);
+  drain ();
+  g_assert_cmpint (gimp_painter_canvas_ui_get_visible (shell), ==, saved_visible);
+  g_object_get (gimp->config, "painter-canvas-ui", &config_visible, NULL);
+  g_assert_cmpint (config_visible, ==, saved_config_visible);
+  /* Hiding the panels must retain the icon; final storage releases on close. */
+  g_assert_cmpuint (icon_finalized, ==, 0);
+  close_shell (shell);
+  g_assert_cmpuint (icon_finalized, ==, 1);
+}
+
+/* Optional helper restoration tests. Requires session-helper.patch. */
+static void
+native_session_boolean_literals (void)
+{
+  for (guint i = 0; i < 32; i++)
+    {
+      GString *text = g_string_new (NULL);
+      GimpConfigWriter *writer = gimp_config_writer_new_from_string (text);
+      GimpScanner *scanner;
+      gboolean value;
+      GError *error = NULL;
+      gimp_session_write_boolean (writer, "edge-enabled", TRUE);
+      gimp_session_write_boolean (writer, "edge-disabled", FALSE);
+      g_assert_true (gimp_config_writer_finish (writer, NULL, &error));
+      g_assert_no_error (error);
+      g_assert_cmpstr (text->str, ==,
+                       "(edge-enabled true)\n(edge-disabled false)\n");
+      scanner = gimp_scanner_new_string (text->str, text->len, &error);
+      g_assert_nonnull (scanner);
+      g_assert_no_error (error);
+      g_assert_true (gimp_scanner_parse_token (scanner, G_TOKEN_LEFT_PAREN));
+      g_assert_true (gimp_scanner_parse_identifier (scanner, "edge-enabled"));
+      g_assert_true (gimp_scanner_parse_boolean (scanner, &value));
+      g_assert_true (value);
+      g_assert_true (gimp_scanner_parse_token (scanner, G_TOKEN_RIGHT_PAREN));
+      g_assert_true (gimp_scanner_parse_token (scanner, G_TOKEN_LEFT_PAREN));
+      g_assert_true (gimp_scanner_parse_identifier (scanner, "edge-disabled"));
+      g_assert_true (gimp_scanner_parse_boolean (scanner, &value));
+      g_assert_false (value);
+      g_assert_true (gimp_scanner_parse_token (scanner, G_TOKEN_RIGHT_PAREN));
+      g_assert_true (gimp_scanner_parse_token (scanner, G_TOKEN_EOF));
+      gimp_scanner_unref (scanner);
+      g_string_free (text, TRUE);
+    }
+}
+
+#define NATIVE_SESSION_DIRECTORY "GIMP_TESTING_PAINTER_SESSION_DIRECTORY"
+#define NATIVE_SESSION_PAIR      "GIMP_TESTING_PAINTER_SESSION_PAIR"
+#define NATIVE_SESSIONRC         "sessionrc-native-edge"
+#define NATIVE_DOCKRC            "dockrc-native-edge"
+
+static gboolean
+native_session_expected_hide (void)
+{
+  const gchar *pair = g_getenv (NATIVE_SESSION_PAIR);
+
+  g_assert_nonnull (pair);
+  g_assert_true (strcmp (pair, "0") == 0 || strcmp (pair, "1") == 0);
+  return strcmp (pair, "1") == 0;
+}
+
+static gboolean
+native_session_exit_profile (Gimp *instance, gboolean force, gpointer data)
+{
+  /* tests.c redirects exit writes to gimpdir-output. This handler is connected
+   * before gui_init() installs its exit handler, so all child exit writes stay
+   * in the same owned profile. Returning FALSE preserves normal shutdown. */
+  g_setenv ("GIMP3_DIRECTORY", g_getenv (NATIVE_SESSION_DIRECTORY), TRUE);
+  return FALSE;
+}
+
+static void
+native_session_prepare_startup (void)
+{
+  gboolean expected_hide, actual_hide, actual_single;
+  const gchar *directory = g_getenv (NATIVE_SESSION_DIRECTORY);
+
+  if (! g_test_subprocess () || ! directory)
+    return;
+
+  expected_hide = native_session_expected_hide ();
+  g_assert_null (gimp->session_name);
+  g_setenv ("GIMP3_DIRECTORY", directory, TRUE);
+  g_setenv ("GIMP_TESTING_SESSIONRC_NAME", NATIVE_SESSIONRC, TRUE);
+  g_setenv ("GIMP_TESTING_DOCKRC_NAME", NATIVE_DOCKRC, TRUE);
+  g_assert_cmpstr (gimp_directory (), ==, directory);
+
+  /* gimp_init_for_gui_testing() has loaded config, but has not run gui_init()
+   * or gimp_restore() yet. Set opposite values before production startup calls
+   * session_init(), before any live window-mode observer or window exists. */
+  g_object_set (gimp->config, "hide-docks", ! expected_hide,
+                "single-window-mode", expected_hide, NULL);
+  g_object_get (gimp->config, "hide-docks", &actual_hide,
+                "single-window-mode", &actual_single, NULL);
+  g_assert_cmpint (actual_hide, ==, ! expected_hide);
+  g_assert_cmpint (actual_single, ==, expected_hide);
+  g_signal_connect (gimp, "exit", G_CALLBACK (native_session_exit_profile), NULL);
+}
+
+static void
+native_session_check_saved (GFile *file, GFile *dock_file,
+                            gboolean expected_hide)
+{
+  gchar *saved = NULL;
+  gsize saved_length;
+  GError *error = NULL;
+  const gchar *hide_line = expected_hide ? "(hide-docks yes)" : "(hide-docks no)";
+  const gchar *single_line = expected_hide ?
+    "(single-window-mode no)" : "(single-window-mode yes)";
+
+  g_assert_true (g_file_load_contents (file, NULL, &saved, &saved_length,
+                                       NULL, &error));
+  g_assert_no_error (error);
+  g_assert_nonnull (strstr (saved, hide_line));
+  g_assert_nonnull (strstr (saved, single_line));
+  g_assert_true (g_file_query_exists (dock_file, NULL));
+  g_free (saved);
+}
+
+static void
+native_session_remove_profile (GFile *file)
+{
+  GError *error = NULL;
+
+  /* Normal child shutdown may also create controllerrc, modifiersrc and other
+   * profile files. Remove only the newly created owned directory, never follow
+   * symlinks when recursively removing its children. */
+  if (g_file_query_file_type (file, G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS, NULL) ==
+      G_FILE_TYPE_DIRECTORY)
+    {
+      GFileEnumerator *children;
+      GFileInfo *info;
+
+      children = g_file_enumerate_children (file, G_FILE_ATTRIBUTE_STANDARD_NAME,
+                                            G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS,
+                                            NULL, &error);
+      g_assert_no_error (error);
+      g_assert_nonnull (children);
+      while ((info = g_file_enumerator_next_file (children, NULL, &error)))
+        {
+          GFile *child = g_file_get_child (file, g_file_info_get_name (info));
+          native_session_remove_profile (child);
+          g_object_unref (child);
+          g_object_unref (info);
+        }
+      g_assert_no_error (error);
+      g_assert_true (g_file_enumerator_close (children, NULL, &error));
+      g_assert_no_error (error);
+      g_object_unref (children);
+    }
+  g_assert_true (g_file_delete (file, NULL, &error));
+  g_assert_no_error (error);
+}
+
+static void
+native_session_boolean_reader_writer (void)
+{
+  if (g_test_subprocess ())
+    {
+      gboolean expected_hide = native_session_expected_hide ();
+      gboolean expected_single = ! expected_hide;
+      gboolean actual_hide, actual_single;
+      GFile *file = gimp_directory_file (NATIVE_SESSIONRC, NULL);
+      GFile *dock_file = gimp_directory_file (NATIVE_DOCKRC, NULL);
+
+      /* Production startup already called the real session_init() once. Let
+       * its deferred dock restoration finish before observing/saving the GUI.
+       * Do not invoke the startup parser again on a populated dialog factory. */
+      gimp_test_run_mainloop_until_idle ();
+      g_object_get (gimp->config, "hide-docks", &actual_hide,
+                    "single-window-mode", &actual_single, NULL);
+      g_assert_cmpint (actual_hide, ==, expected_hide);
+      g_assert_cmpint (actual_single, ==, expected_single);
+      session_save (gimp, TRUE);
+      native_session_check_saved (file, dock_file, expected_hide);
+      g_assert_cmpint (gimp_container_get_n_children (global_recent_docks), ==, 0);
+      g_object_unref (file);
+      g_object_unref (dock_file);
+      return;
+    }
+
+  {
+    gchar *saved_directory = g_strdup (g_getenv (NATIVE_SESSION_DIRECTORY));
+    gchar *saved_pair = g_strdup (g_getenv (NATIVE_SESSION_PAIR));
+    gboolean saved_hide, saved_single, actual_hide, actual_single;
+    GError *error = NULL;
+
+    g_object_get (gimp->config, "hide-docks", &saved_hide,
+                  "single-window-mode", &saved_single, NULL);
+    for (guint i = 0; i < 2; i++)
+      {
+        gboolean expected_hide = i != 0;
+        gboolean expected_single = i == 0;
+        gchar *directory = g_dir_make_tmp ("gimp-painter-session-edge-XXXXXX", &error);
+        GFile *directory_file;
+        GFile *file;
+        GFile *dock_file;
+        GString *text = g_string_new (NULL);
+        GimpConfigWriter *writer = gimp_config_writer_new_from_string (text);
+
+        g_assert_no_error (error);
+        g_assert_nonnull (directory);
+        directory_file = g_file_new_for_path (directory);
+        file = g_file_get_child (directory_file, NATIVE_SESSIONRC);
+        dock_file = g_file_get_child (directory_file, NATIVE_DOCKRC);
+        g_assert_false (g_file_query_exists (file, NULL));
+        g_assert_false (g_file_query_exists (dock_file, NULL));
+        gimp_session_write_boolean (writer, "hide-docks", expected_hide);
+        gimp_session_write_boolean (writer, "single-window-mode", expected_single);
+        g_assert_true (gimp_config_writer_finish (writer, NULL, &error));
+        g_assert_no_error (error);
+        g_assert_true (g_file_replace_contents (file, text->str, text->len,
+                                                NULL, FALSE, G_FILE_CREATE_NONE,
+                                                NULL, NULL, &error));
+        g_assert_no_error (error);
+        g_string_free (text, TRUE);
+
+        g_setenv (NATIVE_SESSION_DIRECTORY, directory, TRUE);
+        g_setenv (NATIVE_SESSION_PAIR, expected_hide ? "1" : "0", TRUE);
+        /* Fresh process one reads helper true/false and saves real yes/no.
+         * Fresh process two starts from that actual saved session/dock pair.
+         * Re-exec avoids initializing multiple Gimp instances in one process. */
+        for (guint pass = 0; pass < 2; pass++)
+          {
+            g_test_trap_subprocess (NULL, 30 * G_USEC_PER_SEC,
+                                    (GTestSubprocessFlags) 0);
+            g_test_trap_assert_passed ();
+            native_session_check_saved (file, dock_file, expected_hide);
+          }
+
+        g_assert_true (g_file_delete (file, NULL, &error));
+        g_assert_no_error (error);
+        g_assert_true (g_file_delete (dock_file, NULL, &error));
+        g_assert_no_error (error);
+        native_session_remove_profile (directory_file);
+        g_object_unref (file);
+        g_object_unref (dock_file);
+        g_object_unref (directory_file);
+        g_free (directory);
+      }
+    if (saved_directory)
+      g_setenv (NATIVE_SESSION_DIRECTORY, saved_directory, TRUE);
+    else
+      g_unsetenv (NATIVE_SESSION_DIRECTORY);
+    if (saved_pair)
+      g_setenv (NATIVE_SESSION_PAIR, saved_pair, TRUE);
+    else
+      g_unsetenv (NATIVE_SESSION_PAIR);
+    g_free (saved_directory);
+    g_free (saved_pair);
+    /* All real parser/config mutations belonged to the fresh children. */
+    g_object_get (gimp->config, "hide-docks", &actual_hide,
+                  "single-window-mode", &actual_single, NULL);
+    g_assert_cmpint (actual_hide, ==, saved_hide);
+    g_assert_cmpint (actual_single, ==, saved_single);
+  }
+}
+
 int main(int argc,char **argv) {
   g_test_init(&argc,&argv,NULL);if(!gtk_init_check(&argc,&argv))return GIMP_EXIT_TEST_SKIPPED;
   gimp_test_utils_setup_menus_path();gimp=gimp_init_for_gui_testing(TRUE);
+  native_session_prepare_startup ();
   window=gtk_window_new(GTK_WINDOW_TOPLEVEL);g_object_ref_sink(window);gtk_window_set_default_size(GTK_WINDOW(window),220,700);
 #define ADD(f) do { static const CanvasTestCase test_case = { f }; \
   g_test_add_data_func("/painter-canvas-ui/" #f, &test_case, run_canvas_case); } while (0)
@@ -968,6 +1728,12 @@ ADD(w08017_dnd_cross_parent_last_owner);
 ADD(w08017_dnd_reject_self_ancestor);
 ADD(w08017_dnd_layer_group_move_undo);
 ADD(w08017_dnd_cross_image_copy);
+  ADD(native_tool_dnd_wire_payload);
+  ADD(native_renderer_background_lifetime);
+  ADD(native_layer_preview_pixels_lifetime);
+  ADD(native_tool_icon_preview_lifetime);
+  ADD(native_session_boolean_literals);
+  ADD(native_session_boolean_reader_writer);
   ADD(renderer_native_size_draw);ADD(renderer_native_activation_routes);ADD(renderer_selection_reentry);ADD(renderer_escape_owner_close);ADD(renderer_stale_preview_disconnected);ADD(renderer_modifier_activation);ADD(renderer_selection_same_target);
   ADD(channel_preview_components);ADD(selection_and_visibility);ADD(group_move_and_undo);ADD(image_switch_disconnect);ADD(long_press_cancel_destroy);ADD(preview_pending_destroy);ADD(popup_repeat_and_owner_close);
   ADD(popup_native_events_and_parent);ADD(popup_destroy_orders);

@@ -401,6 +401,222 @@ static void common_store_widget_behaviors ()
   g_assert_cmpuint (first_store->generation (), ==, closed_generation);
 }
 
+/* WBS 08.017 source-specific preparation: insert before main() in the existing
+ * test-painter-mypaint-editor.cpp. These tests use the actual registered dock
+ * constructor, GtkTreeSelection callback, container add/remove notifications,
+ * and production context/close APIs. No new production seam is required.
+ * This does not establish the legacy PDB selector interface or feature parity.
+ */
+namespace {
+struct BoundaryBrushes
+{
+  GimpContainer *container;
+  PainterMybrushRef first = PainterMybrushRef::create ("08017 boundary first");
+  PainterMybrushRef second = PainterMybrushRef::create ("08017 boundary second");
+  PainterMybrushRef added = PainterMybrushRef::create ("08017 boundary added");
+  ObjectRef<GimpPainterMybrushOptions> shared_options;
+  ObjectRef<GimpPainterMybrush> saved_selection;
+  gchar *saved_json = nullptr;
+
+  BoundaryBrushes ()
+    : container (gimp_data_factory_get_container (gimp->painter_mybrush_factory))
+  {
+    // Ordinary contexts intentionally share the real registered tool options.
+    // Keep their previous selection/draft alive so fixture cleanup cannot
+    // leave a transient removed resource selected in that persistent model.
+    auto *info = GIMP_TOOL_INFO (gimp_container_get_child_by_name (
+      gimp->tool_info_list, "gimp-painter-mypaint-tool"));
+    g_assert_nonnull (info);
+    g_assert_true (GIMP_IS_PAINTER_MYBRUSH_OPTIONS (info->tool_options));
+    shared_options = ObjectRef<GimpPainterMybrushOptions>::retain (
+      GIMP_PAINTER_MYBRUSH_OPTIONS (info->tool_options));
+    saved_selection = ObjectRef<GimpPainterMybrush>::retain (
+      gimp_context_get_painter_mybrush (GIMP_CONTEXT (shared_options.get ())));
+    GError *error = nullptr;
+    saved_json = gimp_painter_mybrush_options_dup_json (shared_options.get (), &error);
+    g_assert_no_error (error); g_assert_nonnull (saved_json);
+    auto a = first.snapshot (); a.set_base_value (BRUSH_OPAQUE, .217); first.replace (a);
+    auto b = second.snapshot (); b.set_base_value (BRUSH_OPAQUE, .683); second.replace (b);
+    // The real factory's tag cache requests an identifier on insertion. Give
+    // these transient resources a native internal collection before any add;
+    // their distinct names make each identifier unique without disk fixtures.
+    for (auto *brush : {first.get (), second.get (), added.get ()})
+      gimp_data_make_internal (GIMP_DATA (brush),
+                               "gimp-painter-mypaint-editor-boundary-tests");
+    g_assert_true (gimp_container_add (container, GIMP_OBJECT (first.get ())));
+    g_assert_true (gimp_container_add (container, GIMP_OBJECT (second.get ())));
+  }
+  ~BoundaryBrushes ()
+  {
+    // Editors and temporary contexts are declared after this fixture and are
+    // already closed here. Native selection history remains genuine history;
+    // these tests neither clear it nor claim to reset the whole tool model.
+    gimp_context_set_painter_mybrush (GIMP_CONTEXT (shared_options.get ()),
+                                    saved_selection.get ());
+    GError *error = nullptr;
+    g_assert_true (gimp_painter_mybrush_options_set_json (shared_options.get (),
+                                                       saved_json, &error));
+    g_assert_no_error (error);
+    g_free (saved_json);
+    for (auto *brush : {added.get (), second.get (), first.get ()})
+      if (gimp_container_have (container, GIMP_OBJECT (brush)))
+        gimp_container_remove (container, GIMP_OBJECT (brush));
+  }
+};
+
+bool boundary_find_resource (GtkTreeModel *model, GimpPainterMybrush *brush,
+                             GtkTreeIter *result)
+{
+  // This is the canonical editor's published GTK list, with resource column 0.
+  g_assert_cmpuint (gtk_tree_model_get_column_type (model, 0), ==,
+                    GIMP_TYPE_PAINTER_MYBRUSH);
+  GtkTreeIter iter;
+  for (gboolean valid = gtk_tree_model_get_iter_first (model, &iter); valid;
+       valid = gtk_tree_model_iter_next (model, &iter))
+    {
+      GimpPainterMybrush *row = nullptr;
+      gtk_tree_model_get (model, &iter, 0, &row, -1);
+      const bool matches = row == brush;
+      if (row) g_object_unref (row);
+      if (matches) { if (result) *result = iter; return true; }
+    }
+  return false;
+}
+
+void boundary_select_resource (GtkWidget *tree, GimpPainterMybrush *brush)
+{
+  GtkTreeIter iter;
+  auto *model = gtk_tree_view_get_model (GTK_TREE_VIEW (tree));
+  g_assert_true (boundary_find_resource (model, brush, &iter));
+  // Use GTK's user-selection path, not the context setter under test.
+  gtk_tree_selection_select_iter (gtk_tree_view_get_selection (GTK_TREE_VIEW (tree)), &iter);
+}
+
+void boundary_assert_selected (GtkWidget *tree, GimpPainterMybrush *brush)
+{
+  GtkTreeModel *model = nullptr; GtkTreeIter iter;
+  g_assert_true (gtk_tree_selection_get_selected (
+    gtk_tree_view_get_selection (GTK_TREE_VIEW (tree)), &model, &iter));
+  GimpPainterMybrush *row = nullptr;
+  gtk_tree_model_get (model, &iter, 0, &row, -1);
+  g_assert_true (row == brush);
+  g_object_unref (row);
+}
+}
+
+static void registered_dock_selection_context_boundary ()
+{
+  BoundaryBrushes resources;
+  auto first_context = ObjectRef<GObject>::adopt (
+    G_OBJECT (gimp_context_new (gimp, "08017 first context", nullptr)));
+  auto next_context = ObjectRef<GObject>::adopt (
+    G_OBJECT (gimp_context_new (gimp, "08017 next context", nullptr)));
+  auto *first = GIMP_CONTEXT (first_context.get ());
+  auto *next = GIMP_CONTEXT (next_context.get ());
+  gimp_context_set_painter_mybrush (first, resources.first.get ());
+  gimp_context_set_painter_mybrush (next, resources.first.get ());
+
+  auto *factory = gimp_dialog_factory_get_singleton ();
+  auto *entry = gimp_dialog_factory_find_entry (factory, "gimp-painter-mypaint-editor");
+  g_assert_nonnull (entry); g_assert_nonnull (entry->new_func);
+  auto *widget = entry->new_func (factory, first, nullptr, entry->view_size);
+  g_assert_true (GIMP_IS_PAINTER_MYBRUSH_EDITOR (widget));
+  auto owner = ObjectRef<GObject>::sink (G_OBJECT (widget));
+  auto *editor = GIMP_PAINTER_MYBRUSH_EDITOR (widget);
+  auto *binding = BindingStore::find (owner.get ());
+  g_assert_nonnull (binding);
+  g_assert_true (binding->state () == BindingStore::State::active);
+  const auto generation = binding->generation ();
+  GError *error = nullptr;
+  auto options = ObjectRef<GimpPainterMybrushOptions>::adopt (
+    gimp_painter_mybrush_options_ref_for_context (first, &error));
+  g_assert_no_error (error);
+  Editor peer (true, GIMP_CONTEXT (options.get ()));
+
+  boundary_select_resource (control (widget, "painter-brush-list"), resources.second.get ());
+  g_assert_true (gimp_context_get_painter_mybrush (first) == resources.second.get ());
+  g_assert_true (gimp_context_get_painter_mybrush (GIMP_CONTEXT (options.get ())) == resources.second.get ());
+  boundary_assert_selected (peer.get ("painter-brush-list"), resources.second.get ());
+  g_assert_cmpfloat_with_epsilon (gtk_spin_button_get_value (
+    GTK_SPIN_BUTTON (peer.get ("opaque"))), .683, 1e-6);
+
+  g_assert_true (gimp_painter_mybrush_editor_set_context (editor, next, &error));
+  g_assert_no_error (error);
+  g_assert_true (BindingStore::find (owner.get ()) == binding);
+  g_assert_cmpuint (binding->generation (), ==, generation);
+  boundary_assert_selected (control (widget, "painter-brush-list"), resources.first.get ());
+  boundary_select_resource (control (widget, "painter-brush-list"), resources.second.get ());
+  g_assert_true (gimp_context_get_painter_mybrush (next) == resources.second.get ());
+
+  // Detached ordinary contexts must no longer retarget this shared Options.
+  gimp_context_set_painter_mybrush (first, resources.first.get ());
+  g_assert_true (gimp_context_get_painter_mybrush (GIMP_CONTEXT (options.get ())) == resources.second.get ());
+  boundary_assert_selected (control (widget, "painter-brush-list"), resources.second.get ());
+  gimp_context_set_painter_mybrush (next, resources.first.get ());
+  boundary_assert_selected (control (widget, "painter-brush-list"), resources.first.get ());
+  boundary_assert_selected (peer.get ("painter-brush-list"), resources.first.get ());
+  g_assert_cmpfloat_with_epsilon (gtk_spin_button_get_value (
+    GTK_SPIN_BUTTON (peer.get ("opaque"))), .217, 1e-6);
+
+  gtk_widget_destroy (widget);
+  gimp_context_set_painter_mybrush (next, resources.second.get ());
+  g_assert_true (gimp_context_get_painter_mybrush (GIMP_CONTEXT (options.get ())) == resources.first.get ());
+  g_assert_true (binding->state () == BindingStore::State::closed);
+  g_assert_false (binding->accepts (generation));
+}
+
+static void factory_membership_context_lifetime_boundary ()
+{
+  BoundaryBrushes resources;
+  auto context = ObjectRef<GObject>::adopt (
+    G_OBJECT (gimp_context_new (gimp, "08017 membership context", nullptr)));
+  auto next_context = ObjectRef<GObject>::adopt (
+    G_OBJECT (gimp_context_new (gimp, "08017 membership replacement", nullptr)));
+  gimp_context_set_painter_mybrush (GIMP_CONTEXT (context.get ()), resources.first.get ());
+  gimp_context_set_painter_mybrush (GIMP_CONTEXT (next_context.get ()), resources.second.get ());
+  Editor editor (false, GIMP_CONTEXT (context.get ()));
+  auto old_model = ObjectRef<GObject>::retain (G_OBJECT (
+    gtk_tree_view_get_model (GTK_TREE_VIEW (editor.get ("painter-brush-list")))));
+  auto *old_list = GTK_TREE_MODEL (old_model.get ());
+  const int initial = gtk_tree_model_iter_n_children (old_list, nullptr);
+  g_assert_false (boundary_find_resource (old_list, resources.added.get (), nullptr));
+  g_assert_true (gimp_container_add (resources.container, GIMP_OBJECT (resources.added.get ())));
+  g_assert_true (boundary_find_resource (old_list, resources.added.get (), nullptr));
+  g_assert_cmpint (gtk_tree_model_iter_n_children (old_list, nullptr), ==, initial + 1);
+  g_assert_true (gimp_container_remove (resources.container, GIMP_OBJECT (resources.added.get ())));
+  g_assert_false (boundary_find_resource (old_list, resources.added.get (), nullptr));
+  g_assert_cmpint (gtk_tree_model_iter_n_children (old_list, nullptr), ==, initial);
+
+  GError *error = nullptr;
+  g_assert_true (gimp_painter_mybrush_editor_set_context (
+    editor.widget, GIMP_CONTEXT (next_context.get ()), &error));
+  g_assert_no_error (error);
+  auto new_model = ObjectRef<GObject>::retain (G_OBJECT (
+    gtk_tree_view_get_model (GTK_TREE_VIEW (editor.get ("painter-brush-list")))));
+  auto *new_list = GTK_TREE_MODEL (new_model.get ());
+  g_assert_true (old_list != new_list);
+  const int old_after_detach = gtk_tree_model_iter_n_children (old_list, nullptr);
+  g_assert_true (gimp_container_add (resources.container, GIMP_OBJECT (resources.added.get ())));
+  g_assert_true (boundary_find_resource (new_list, resources.added.get (), nullptr));
+  g_assert_false (boundary_find_resource (old_list, resources.added.get (), nullptr));
+  g_assert_cmpint (gtk_tree_model_iter_n_children (old_list, nullptr), ==, old_after_detach);
+  g_assert_true (gimp_container_remove (resources.container, GIMP_OBJECT (resources.added.get ())));
+  g_assert_false (boundary_find_resource (new_list, resources.added.get (), nullptr));
+
+  // A closed controller can still have retained native model storage. Factory
+  // notifications must not rebuild either the detached or closed list.
+  g_assert_true (gimp_painter_binding_close (G_OBJECT (editor.widget), &error));
+  g_assert_no_error (error);
+  const int closed_count = gtk_tree_model_iter_n_children (new_list, nullptr);
+  g_assert_true (gimp_container_add (resources.container, GIMP_OBJECT (resources.added.get ())));
+  g_assert_false (boundary_find_resource (new_list, resources.added.get (), nullptr));
+  g_assert_cmpint (gtk_tree_model_iter_n_children (new_list, nullptr), ==, closed_count);
+  g_assert_cmpint (gtk_tree_model_iter_n_children (old_list, nullptr), ==, old_after_detach);
+  g_assert_true (gimp_container_remove (resources.container, GIMP_OBJECT (resources.added.get ())));
+  g_assert_cmpint (gtk_tree_model_iter_n_children (new_list, nullptr), ==, closed_count);
+  g_assert_false (gimp_painter_mybrush_editor_preview_pending (editor.widget));
+}
+
 int main(int argc,char**argv){
   g_test_init(&argc,&argv,nullptr);if(!gtk_init_check(&argc,&argv))return GIMP_EXIT_TEST_SKIPPED;
   gimp_test_utils_setup_menus_path();gimp=gimp_init_for_gui_testing(TRUE);
@@ -418,6 +634,8 @@ int main(int argc,char**argv){
   add_editor_case("/painter-editor/10-graph-gestures",graph_gestures);
   add_editor_case("/painter-editor/11-resource-notifications",replaced_resource_notifications);
   add_editor_case("/painter-editor/12-delete-failure",delete_failure_retains_draft);
+  add_editor_case("/painter-editor/15-registered-dock-selection-context",registered_dock_selection_context_boundary);
+  add_editor_case("/painter-editor/16-factory-membership-context-lifetime",factory_membership_context_lifetime_boundary);
   if(g_getenv("PAINTER_EDITOR_DEMO"))add_editor_case("/painter-editor/visual-demo",visual_demo);
   g_application_run(gimp->app,0,nullptr);int result=gimp_core_app_get_exit_status(GIMP_CORE_APP(gimp->app));g_application_quit(gimp->app);g_clear_object(&gimp->app);g_free(original_search);return result;
 }

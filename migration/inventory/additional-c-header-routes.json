@@ -23,6 +23,14 @@
       "context": "core",
       "prerequisites": ["app/widgets/gimpcontainertreeview.h"],
       "review": "08.017 original001536: the native owning misc_cells list extends the identified private tree layout. Probe after its public tree header and core/widget types, twice in both C and C++; no outer linkage wrapper."
+    },
+    {
+      "path": "app/widgets/gimpwidgets-utils.h",
+      "kind": "changed-baseline",
+      "baseline_blob": "9edb8a90af15dbc21250526146e63cb353e09210",
+      "context": "core",
+      "prerequisites": [],
+      "review": "08.017 original001813/001814: retain the callable native gimp_session_write_boolean true/false token helper and its original signature. Extends the identified historical header with C linkage for this declaration. Double-include with the normal core/config/widget type prelude in C11 and C++14; no outer linkage wrapper and no change to historical duties."
     }
   ]
 }

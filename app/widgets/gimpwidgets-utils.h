@@ -168,4 +168,12 @@ void              gimp_window_set_title_bar_theme      (Gimp              *gimp,
                                                         GtkWidget         *dialog);
 #endif
 
+G_BEGIN_DECLS
+
+void              gimp_session_write_boolean       (GimpConfigWriter     *writer,
+                                                    gchar                *name,
+                                                    gboolean              value);
+
+G_END_DECLS
+
 #endif /* __APP_GIMP_WIDGETS_UTILS_H__ */

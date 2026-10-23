@@ -18,13 +18,17 @@ apptests_links = [
 ]
 
 
+# tests.c already prepends this supported build-tree icon search root.
+gimp_test_icon_output_dir = meson.current_build_dir() / 'gimp-test-icon-theme'
+subdir('icon-theme-fixture')
+
 libapptestutils_sources = [
   'gimp-app-test-utils.c',
   'gimp-test-session-utils.c',
 ]
 
 libapptestutils = static_library('apptestutils',
-  libapptestutils_sources,
+  libapptestutils_sources + gimp_test_icon_dependencies,
   dependencies: libapp_dep,
   link_with: apptests_links,
 )
@@ -103,6 +107,7 @@ foreach test_name : app_tests
       'UI_TEST=yes',
     ],
     suite: 'app',
+    depends: gimp_test_icon_dependencies,
     timeout: test_timeout,
     is_parallel : false,
     priority: prio,
@@ -400,6 +405,7 @@ painter_editor_test = executable('painter-mypaint-editor', 'test-painter-mypaint
   dependencies: [libapp_dep, painter_mypaint_surface_dep, appstream],
   link_with: apptests_links, cpp_args: painter_cpp_args, override_options: ['cpp_std=c++14'])
 test('painter-mypaint-editor', painter_editor_test,
+  depends: gimp_test_icon_dependencies,
   env: ['GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
         'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
         'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',

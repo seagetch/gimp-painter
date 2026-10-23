@@ -1,0 +1,60 @@
+{
+  "native": {
+    "status": "PASS",
+    "registration": "gimp-test-icon-theme-generator",
+    "controls_passed": 18,
+    "source_extracted_control_names": [
+      "test_copies_exact_bytes",
+      "test_repeated_build_preserves_stamp_and_manifest",
+      "test_source_change_invalidates_manifest_and_stamp",
+      "test_recipe_change_invalidates",
+      "test_recovers_deleted_asset",
+      "test_alias_preserves_actual_source_bytes",
+      "test_membership_change_removes_only_owned_old_file",
+      "test_rejects_output_traversal",
+      "test_rejects_reserved_manifest_destination",
+      "test_same_source_duplicate_destination_is_deduplicated",
+      "test_rejects_source_escape",
+      "test_rejects_conflicting_destination",
+      "test_rejects_unowned_output",
+      "test_interrupted_first_generation_recovers_owned_directory",
+      "test_partial_manifest_recovers_only_owned_fixture",
+      "test_rejects_unexpected_copied_file",
+      "test_rejects_missing_source",
+      "test_does_not_claim_bitmap_recipe"
+    ],
+    "terminal_unittest_success_dots": 18,
+    "raw_record_sha256": "a2531653362c941508da04a8ebc9ac632006c802fc930d7709d95c813f6d8381",
+    "generator_sha256": "42b3d179b24aba69366b3a1554f4f32833f9c48006cae4a47954a2785cc524fe",
+    "test_sha256": "cd636846a76b94083c7b8e706992ab24732785b036867fa96b155dd60b8d80e2"
+  },
+  "asan": {
+    "status": "PASS",
+    "registration": "gimp-test-icon-theme-generator",
+    "controls_passed": 18,
+    "source_extracted_control_names": [
+      "test_copies_exact_bytes",
+      "test_repeated_build_preserves_stamp_and_manifest",
+      "test_source_change_invalidates_manifest_and_stamp",
+      "test_recipe_change_invalidates",
+      "test_recovers_deleted_asset",
+      "test_alias_preserves_actual_source_bytes",
+      "test_membership_change_removes_only_owned_old_file",
+      "test_rejects_output_traversal",
+      "test_rejects_reserved_manifest_destination",
+      "test_same_source_duplicate_destination_is_deduplicated",
+      "test_rejects_source_escape",
+      "test_rejects_conflicting_destination",
+      "test_rejects_unowned_output",
+      "test_interrupted_first_generation_recovers_owned_directory",
+      "test_partial_manifest_recovers_only_owned_fixture",
+      "test_rejects_unexpected_copied_file",
+      "test_rejects_missing_source",
+      "test_does_not_claim_bitmap_recipe"
+    ],
+    "terminal_unittest_success_dots": 18,
+    "raw_record_sha256": "8245cba74e7dac19e971b14d793d0a62cb669344cb897fbbcd35b49f55c6a1b2",
+    "generator_sha256": "42b3d179b24aba69366b3a1554f4f32833f9c48006cae4a47954a2785cc524fe",
+    "test_sha256": "cd636846a76b94083c7b8e706992ab24732785b036867fa96b155dd60b8d80e2"
+  }
+}

@@ -2712,3 +2712,21 @@ gimp_window_set_title_bar_theme (Gimp      *gimp,
     }
 }
 #endif
+
+/* Keep the native painter session token API: its literal spelling is part of
+ * the old helper contract, independently of session_save's yes/no tokens. */
+void
+gimp_session_write_boolean (GimpConfigWriter *writer,
+                            gchar            *name,
+                            gboolean          value)
+{
+  GimpSessionInfoClass *klass;
+
+  klass = g_type_class_ref (GIMP_TYPE_SESSION_INFO);
+
+  gimp_config_writer_open (writer, name);
+  gimp_config_writer_printf (writer, "%s", value ? "true" : "false");
+  gimp_config_writer_close (writer);
+
+  g_type_class_unref (klass);
+}

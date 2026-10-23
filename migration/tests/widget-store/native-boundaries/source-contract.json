@@ -1,0 +1,1663 @@
+{
+  "task": "08.017",
+  "state": "TODO",
+  "source_duties_advanced": 0,
+  "evidence_status": "BOUNDED_NATIVE_AND_ASAN_UBSAN_PASS",
+  "authoritative_contract": {
+    "path": "migration/design.md",
+    "section": "8.4.1",
+    "requirements": [
+      "GObject owns one reserved-key BindingStore; typed slots uniquely own C++ implementation/behavior state.",
+      "Ordinary widget identity remains unchanged; destroy/controller close reaches common idempotent close.",
+      "Typed C++ handles call C entry points, which reach the same implementation; vfunc/callback adapters use that implementation.",
+      "Preserve C APIs, observable values/model/notifications and ownership; removal/renaming or wrapper-name matching does not establish replacement.",
+      "Native scalar object data, C structures and model references are not by themselves C++ Impl allocations. Their separate lifetimes and callers still require evidence."
+    ]
+  },
+  "mapped_original_duties": [
+    {
+      "original_row": {
+        "work_id": "legacy-8675c9796adc5b5bc8fe",
+        "source_kind": "hunk",
+        "source_id": "01.002/001804",
+        "path": "app/widgets/gimpviewrenderer.c",
+        "source_blob": "67b0ff4ab5e4a34434f72c594ad712362de4be7c",
+        "source_range": "-75 -> 75",
+        "source_sha256": "d3a2ceda366f94490a38682b0e31c56c4331a2743f2690f2f9b52f378406d59d",
+        "source_scope": "static cairo_pattern_t *",
+        "phase": "implementation",
+        "wbs_task": "08.017",
+        "action": "既存 widget behavior を store に移す",
+        "acceptance": "全登録箇所が共通 slot を利用",
+        "status": "TODO",
+        "owner": "",
+        "artifact": "",
+        "test": "",
+        "result": "",
+        "limitations": "Assigned only; requires this source-specific action and evidence"
+      },
+      "raw_original_tsv_row": "legacy-8675c9796adc5b5bc8fe\thunk\t01.002/001804\tapp/widgets/gimpviewrenderer.c\t67b0ff4ab5e4a34434f72c594ad712362de4be7c\t-75 -> 75\td3a2ceda366f94490a38682b0e31c56c4331a2743f2690f2f9b52f378406d59d\tstatic cairo_pattern_t *\timplementation\t08.017\t既存 widget behavior を store に移す\t全登録箇所が共通 slot を利用\tTODO\t\t\t\t\tAssigned only; requires this source-specific action and evidence",
+      "verified_payload": "-\n+#if 0\n",
+      "role": "native-cpp-abi-linkage",
+      "source_specific_duty": "Begins #if 0 around the old local static preview-rendering helper declaration, paired with 001805 and public header 001807.",
+      "acceptance_dependencies": [
+        "Trace tile previews to current native helper with channel/background/size semantics and failure handling; test widget/model lifetime and preview output."
+      ],
+      "retained_owners": [
+        "29.010/standard-tool-options",
+        "29.020"
+      ],
+      "sibling_obligations_unchanged": [
+        {
+          "work_id": "legacy-15ccfe7dc9bb3840aca9",
+          "source_kind": "hunk",
+          "source_id": "01.002/001804",
+          "path": "app/widgets/gimpviewrenderer.c",
+          "source_blob": "67b0ff4ab5e4a34434f72c594ad712362de4be7c",
+          "source_range": "-75 -> 75",
+          "source_sha256": "d3a2ceda366f94490a38682b0e31c56c4331a2743f2690f2f9b52f378406d59d",
+          "source_scope": "static cairo_pattern_t *",
+          "phase": "implementation",
+          "wbs_task": "29.010/standard-tool-options",
+          "action": "標準ツールの横型・コンパクト操作部品を保持して共有化する",
+          "acceptance": "hunk台帳の各tool/optionsごとに旧control・値・通知・popupを対応し、縦横配置・再表示・ツール切替を試験する",
+          "status": "TODO",
+          "owner": "",
+          "artifact": "",
+          "test": "",
+          "result": "",
+          "limitations": "Assigned only; requires this source-specific action and evidence"
+        },
+        {
+          "work_id": "legacy-773cecb63b872f8cd97a",
+          "source_kind": "hunk",
+          "source_id": "01.002/001804",
+          "path": "app/widgets/gimpviewrenderer.c",
+          "source_blob": "67b0ff4ab5e4a34434f72c594ad712362de4be7c",
+          "source_range": "-75 -> 75",
+          "source_sha256": "d3a2ceda366f94490a38682b0e31c56c4331a2743f2690f2f9b52f378406d59d",
+          "source_scope": "static cairo_pattern_t *",
+          "phase": "verification",
+          "wbs_task": "29.020",
+          "action": "UI の操作試験を実行する",
+          "acceptance": "ペン・マウス・複数画像・popup の状態復帰を確認",
+          "status": "TODO",
+          "owner": "",
+          "artifact": "",
+          "test": "",
+          "result": "",
+          "limitations": "Assigned only; requires this source-specific action and evidence"
+        }
+      ],
+      "state": "TODO",
+      "duty_advanced": false
+    },
+    {
+      "original_row": {
+        "work_id": "legacy-7a317cd6423adb55e421",
+        "source_kind": "hunk",
+        "source_id": "01.002/001805",
+        "path": "app/widgets/gimpviewrenderer.c",
+        "source_blob": "67b0ff4ab5e4a34434f72c594ad712362de4be7c",
+        "source_range": "-83 -> 83",
+        "source_sha256": "e310fa8bd33a798fdd61ec5f949603edc9ce4eb0cfbc924f50df97b99ef36908",
+        "source_scope": "static void      gimp_view_render_temp_buf_to_surface (TempBuf            *temp_",
+        "phase": "implementation",
+        "wbs_task": "08.017",
+        "action": "既存 widget behavior を store に移す",
+        "acceptance": "全登録箇所が共通 slot を利用",
+        "status": "TODO",
+        "owner": "",
+        "artifact": "",
+        "test": "",
+        "result": "",
+        "limitations": "Assigned only; requires this source-specific action and evidence"
+      },
+      "raw_original_tsv_row": "legacy-7a317cd6423adb55e421\thunk\t01.002/001805\tapp/widgets/gimpviewrenderer.c\t67b0ff4ab5e4a34434f72c594ad712362de4be7c\t-83 -> 83\te310fa8bd33a798fdd61ec5f949603edc9ce4eb0cfbc924f50df97b99ef36908\tstatic void      gimp_view_render_temp_buf_to_surface (TempBuf            *temp_\timplementation\t08.017\t既存 widget behavior を store に移す\t全登録箇所が共通 slot を利用\tTODO\t\t\t\t\tAssigned only; requires this source-specific action and evidence",
+      "verified_payload": "-\n+#endif\n",
+      "role": "native-cpp-abi-linkage",
+      "source_specific_duty": "Closes the #if 0 suppressing the static preview-rendering declaration; this is public-helper linkage preparation.",
+      "acceptance_dependencies": [
+        "Trace tile previews to current native helper with channel/background/size semantics and failure handling; test widget/model lifetime and preview output."
+      ],
+      "retained_owners": [
+        "29.010/standard-tool-options",
+        "29.020"
+      ],
+      "sibling_obligations_unchanged": [
+        {
+          "work_id": "legacy-79d90e2bc1722645c667",
+          "source_kind": "hunk",
+          "source_id": "01.002/001805",
+          "path": "app/widgets/gimpviewrenderer.c",
+          "source_blob": "67b0ff4ab5e4a34434f72c594ad712362de4be7c",
+          "source_range": "-83 -> 83",
+          "source_sha256": "e310fa8bd33a798fdd61ec5f949603edc9ce4eb0cfbc924f50df97b99ef36908",
+          "source_scope": "static void      gimp_view_render_temp_buf_to_surface (TempBuf            *temp_",
+          "phase": "implementation",
+          "wbs_task": "29.010/standard-tool-options",
+          "action": "標準ツールの横型・コンパクト操作部品を保持して共有化する",
+          "acceptance": "hunk台帳の各tool/optionsごとに旧control・値・通知・popupを対応し、縦横配置・再表示・ツール切替を試験する",
+          "status": "TODO",
+          "owner": "",
+          "artifact": "",
+          "test": "",
+          "result": "",
+          "limitations": "Assigned only; requires this source-specific action and evidence"
+        },
+        {
+          "work_id": "legacy-819943a4405052ab3bcb",
+          "source_kind": "hunk",
+          "source_id": "01.002/001805",
+          "path": "app/widgets/gimpviewrenderer.c",
+          "source_blob": "67b0ff4ab5e4a34434f72c594ad712362de4be7c",
+          "source_range": "-83 -> 83",
+          "source_sha256": "e310fa8bd33a798fdd61ec5f949603edc9ce4eb0cfbc924f50df97b99ef36908",
+          "source_scope": "static void      gimp_view_render_temp_buf_to_surface (TempBuf            *temp_",
+          "phase": "verification",
+          "wbs_task": "29.020",
+          "action": "UI の操作試験を実行する",
+          "acceptance": "ペン・マウス・複数画像・popup の状態復帰を確認",
+          "status": "TODO",
+          "owner": "",
+          "artifact": "",
+          "test": "",
+          "result": "",
+          "limitations": "Assigned only; requires this source-specific action and evidence"
+        }
+      ],
+      "state": "TODO",
+      "duty_advanced": false
+    },
+    {
+      "original_row": {
+        "work_id": "legacy-3c737935db70950f2ef6",
+        "source_kind": "hunk",
+        "source_id": "01.002/001806",
+        "path": "app/widgets/gimpviewrenderer.c",
+        "source_blob": "67b0ff4ab5e4a34434f72c594ad712362de4be7c",
+        "source_range": "-918 -> 918",
+        "source_sha256": "55fc0d436186d34ecdb877aa3383d9dacb83c2aac0ccfe853b517210c1d254fc",
+        "source_scope": "gimp_view_renderer_render_stock (GimpViewRenderer *renderer,",
+        "phase": "implementation",
+        "wbs_task": "08.017",
+        "action": "既存 widget behavior を store に移す",
+        "acceptance": "全登録箇所が共通 slot を利用",
+        "status": "TODO",
+        "owner": "",
+        "artifact": "",
+        "test": "",
+        "result": "",
+        "limitations": "Assigned only; requires this source-specific action and evidence"
+      },
+      "raw_original_tsv_row": "legacy-3c737935db70950f2ef6\thunk\t01.002/001806\tapp/widgets/gimpviewrenderer.c\t67b0ff4ab5e4a34434f72c594ad712362de4be7c\t-918 -> 918\t55fc0d436186d34ecdb877aa3383d9dacb83c2aac0ccfe853b517210c1d254fc\tgimp_view_renderer_render_stock (GimpViewRenderer *renderer,\timplementation\t08.017\t既存 widget behavior を store に移す\t全登録箇所が共通 slot を利用\tTODO\t\t\t\t\tAssigned only; requires this source-specific action and evidence",
+      "verified_payload": "-static void\n+void\n",
+      "role": "native-cpp-abi-linkage",
+      "source_specific_duty": "Changes preview temp-buffer rendering helper from static to externally visible, permitting C++ layer/tool tile callers.",
+      "acceptance_dependencies": [
+        "Trace tile previews to current native helper with channel/background/size semantics and failure handling; test widget/model lifetime and preview output."
+      ],
+      "retained_owners": [
+        "29.010/standard-tool-options",
+        "29.020"
+      ],
+      "sibling_obligations_unchanged": [
+        {
+          "work_id": "legacy-58428deb1617c31c33be",
+          "source_kind": "hunk",
+          "source_id": "01.002/001806",
+          "path": "app/widgets/gimpviewrenderer.c",
+          "source_blob": "67b0ff4ab5e4a34434f72c594ad712362de4be7c",
+          "source_range": "-918 -> 918",
+          "source_sha256": "55fc0d436186d34ecdb877aa3383d9dacb83c2aac0ccfe853b517210c1d254fc",
+          "source_scope": "gimp_view_renderer_render_stock (GimpViewRenderer *renderer,",
+          "phase": "implementation",
+          "wbs_task": "29.010/standard-tool-options",
+          "action": "標準ツールの横型・コンパクト操作部品を保持して共有化する",
+          "acceptance": "hunk台帳の各tool/optionsごとに旧control・値・通知・popupを対応し、縦横配置・再表示・ツール切替を試験する",
+          "status": "TODO",
+          "owner": "",
+          "artifact": "",
+          "test": "",
+          "result": "",
+          "limitations": "Assigned only; requires this source-specific action and evidence"
+        },
+        {
+          "work_id": "legacy-0bf5fb5d29e758176436",
+          "source_kind": "hunk",
+          "source_id": "01.002/001806",
+          "path": "app/widgets/gimpviewrenderer.c",
+          "source_blob": "67b0ff4ab5e4a34434f72c594ad712362de4be7c",
+          "source_range": "-918 -> 918",
+          "source_sha256": "55fc0d436186d34ecdb877aa3383d9dacb83c2aac0ccfe853b517210c1d254fc",
+          "source_scope": "gimp_view_renderer_render_stock (GimpViewRenderer *renderer,",
+          "phase": "verification",
+          "wbs_task": "29.020",
+          "action": "UI の操作試験を実行する",
+          "acceptance": "ペン・マウス・複数画像・popup の状態復帰を確認",
+          "status": "TODO",
+          "owner": "",
+          "artifact": "",
+          "test": "",
+          "result": "",
+          "limitations": "Assigned only; requires this source-specific action and evidence"
+        }
+      ],
+      "state": "TODO",
+      "duty_advanced": false
+    },
+    {
+      "original_row": {
+        "work_id": "legacy-f74b30a22ac4ae8c9e88",
+        "source_kind": "hunk",
+        "source_id": "01.002/001807",
+        "path": "app/widgets/gimpviewrenderer.h",
+        "source_blob": "731346e05adda29c4c4796371a6fe39df37c7185",
+        "source_range": "-140,0 -> 141,8",
+        "source_sha256": "938692de18ee2dcad88a26c79ade35c8981e7cc0f944ed6fa2b625fc91136059",
+        "source_scope": "void   gimp_view_renderer_draw             (GimpViewRenderer   *renderer,",
+        "phase": "implementation",
+        "wbs_task": "08.017",
+        "action": "既存 widget behavior を store に移す",
+        "acceptance": "全登録箇所が共通 slot を利用",
+        "status": "TODO",
+        "owner": "",
+        "artifact": "",
+        "test": "",
+        "result": "",
+        "limitations": "Assigned only; requires this source-specific action and evidence"
+      },
+      "raw_original_tsv_row": "legacy-f74b30a22ac4ae8c9e88\thunk\t01.002/001807\tapp/widgets/gimpviewrenderer.h\t731346e05adda29c4c4796371a6fe39df37c7185\t-140,0 -> 141,8\t938692de18ee2dcad88a26c79ade35c8981e7cc0f944ed6fa2b625fc91136059\tvoid   gimp_view_renderer_draw             (GimpViewRenderer   *renderer,\timplementation\t08.017\t既存 widget behavior を store に移す\t全登録箇所が共通 slot を利用\tTODO\t\t\t\t\tAssigned only; requires this source-specific action and evidence",
+      "verified_payload": "+void   gimp_view_render_temp_buf_to_surface(TempBuf            *temp_buf,\n+                                            gint                channel,\n+                                            GimpViewBG          inside_bg,\n+                                            GimpViewBG          outside_bg,\n+                                            cairo_surface_t    *surface,\n+                                            gint                dest_width,\n+                                            gint                dest_height);\n+\n",
+      "role": "native-cpp-abi-declaration",
+      "source_specific_duty": "Publishes the complete TempBuf/channel/background/cairo-surface/size API consumed by C++ tile previews.",
+      "acceptance_dependencies": [
+        "Trace tile previews to current native helper with channel/background/size semantics and failure handling; test widget/model lifetime and preview output."
+      ],
+      "retained_owners": [
+        "29.010/standard-tool-options",
+        "29.020"
+      ],
+      "sibling_obligations_unchanged": [
+        {
+          "work_id": "legacy-a6fc9e4da4026e1ad458",
+          "source_kind": "hunk",
+          "source_id": "01.002/001807",
+          "path": "app/widgets/gimpviewrenderer.h",
+          "source_blob": "731346e05adda29c4c4796371a6fe39df37c7185",
+          "source_range": "-140,0 -> 141,8",
+          "source_sha256": "938692de18ee2dcad88a26c79ade35c8981e7cc0f944ed6fa2b625fc91136059",
+          "source_scope": "void   gimp_view_renderer_draw             (GimpViewRenderer   *renderer,",
+          "phase": "implementation",
+          "wbs_task": "29.010/standard-tool-options",
+          "action": "標準ツールの横型・コンパクト操作部品を保持して共有化する",
+          "acceptance": "hunk台帳の各tool/optionsごとに旧control・値・通知・popupを対応し、縦横配置・再表示・ツール切替を試験する",
+          "status": "TODO",
+          "owner": "",
+          "artifact": "",
+          "test": "",
+          "result": "",
+          "limitations": "Assigned only; requires this source-specific action and evidence"
+        },
+        {
+          "work_id": "legacy-33599bc50e97a7ad672b",
+          "source_kind": "hunk",
+          "source_id": "01.002/001807",
+          "path": "app/widgets/gimpviewrenderer.h",
+          "source_blob": "731346e05adda29c4c4796371a6fe39df37c7185",
+          "source_range": "-140,0 -> 141,8",
+          "source_sha256": "938692de18ee2dcad88a26c79ade35c8981e7cc0f944ed6fa2b625fc91136059",
+          "source_scope": "void   gimp_view_renderer_draw             (GimpViewRenderer   *renderer,",
+          "phase": "verification",
+          "wbs_task": "29.020",
+          "action": "UI の操作試験を実行する",
+          "acceptance": "ペン・マウス・複数画像・popup の状態復帰を確認",
+          "status": "TODO",
+          "owner": "",
+          "artifact": "",
+          "test": "",
+          "result": "",
+          "limitations": "Assigned only; requires this source-specific action and evidence"
+        }
+      ],
+      "state": "TODO",
+      "duty_advanced": false
+    },
+    {
+      "original_row": {
+        "work_id": "legacy-f6261b0aa13f59c27a0b",
+        "source_kind": "hunk",
+        "source_id": "01.002/001813",
+        "path": "app/widgets/gimpwidgets-utils.c",
+        "source_blob": "efeec486e5fde3a5864a99d4a65e1dbcfd159830",
+        "source_range": "-1329,0 -> 1330,16",
+        "source_sha256": "d6b3ab997e14c786a6b25231cfd4d7e92db93dbcb236a9c3f3454297615335bb",
+        "source_scope": "gimp_session_write_position (GimpConfigWriter *writer,",
+        "phase": "implementation",
+        "wbs_task": "08.017",
+        "action": "既存 widget behavior を store に移す",
+        "acceptance": "全登録箇所が共通 slot を利用",
+        "status": "TODO",
+        "owner": "",
+        "artifact": "",
+        "test": "",
+        "result": "",
+        "limitations": "Assigned only; requires this source-specific action and evidence"
+      },
+      "raw_original_tsv_row": "legacy-f6261b0aa13f59c27a0b\thunk\t01.002/001813\tapp/widgets/gimpwidgets-utils.c\tefeec486e5fde3a5864a99d4a65e1dbcfd159830\t-1329,0 -> 1330,16\td6b3ab997e14c786a6b25231cfd4d7e92db93dbcb236a9c3f3454297615335bb\tgimp_session_write_position (GimpConfigWriter *writer,\timplementation\t08.017\t既存 widget behavior を store に移す\t全登録箇所が共通 slot を利用\tTODO\t\t\t\t\tAssigned only; requires this source-specific action and evidence",
+      "verified_payload": "+\n+void\n+gimp_session_write_boolean (GimpConfigWriter *writer,\n+                            gchar            *name,\n+                            gboolean          value)\n+{\n+  GimpSessionInfoClass *klass;\n+\n+  klass = g_type_class_ref (GIMP_TYPE_SESSION_INFO);\n+\n+  gimp_config_writer_open (writer, name);\n+  gimp_config_writer_printf (writer, \"%s\", value ? \"true\":\"false\");\n+  gimp_config_writer_close (writer);\n+\n+  g_type_class_unref (klass);\n+}\n",
+      "role": "native-serialization-provider",
+      "source_specific_duty": "Adds gimp_session_write_boolean: acquires the session class, writes named config token with literal true/false and balances the class ref. It is a native serialization helper, not a C++ registration.",
+      "acceptance_dependencies": [
+        "Trace every affected session writer/caller, preserve token name and true/false syntax and verify write/read round-trip and reference balance."
+      ],
+      "retained_owners": [
+        "29.010/standard-tool-options",
+        "29.020"
+      ],
+      "sibling_obligations_unchanged": [
+        {
+          "work_id": "legacy-91596242df796078c5a7",
+          "source_kind": "hunk",
+          "source_id": "01.002/001813",
+          "path": "app/widgets/gimpwidgets-utils.c",
+          "source_blob": "efeec486e5fde3a5864a99d4a65e1dbcfd159830",
+          "source_range": "-1329,0 -> 1330,16",
+          "source_sha256": "d6b3ab997e14c786a6b25231cfd4d7e92db93dbcb236a9c3f3454297615335bb",
+          "source_scope": "gimp_session_write_position (GimpConfigWriter *writer,",
+          "phase": "implementation",
+          "wbs_task": "29.010/standard-tool-options",
+          "action": "標準ツールの横型・コンパクト操作部品を保持して共有化する",
+          "acceptance": "hunk台帳の各tool/optionsごとに旧control・値・通知・popupを対応し、縦横配置・再表示・ツール切替を試験する",
+          "status": "TODO",
+          "owner": "",
+          "artifact": "",
+          "test": "",
+          "result": "",
+          "limitations": "Assigned only; requires this source-specific action and evidence"
+        },
+        {
+          "work_id": "legacy-c2d3af3982a0a6e70697",
+          "source_kind": "hunk",
+          "source_id": "01.002/001813",
+          "path": "app/widgets/gimpwidgets-utils.c",
+          "source_blob": "efeec486e5fde3a5864a99d4a65e1dbcfd159830",
+          "source_range": "-1329,0 -> 1330,16",
+          "source_sha256": "d6b3ab997e14c786a6b25231cfd4d7e92db93dbcb236a9c3f3454297615335bb",
+          "source_scope": "gimp_session_write_position (GimpConfigWriter *writer,",
+          "phase": "verification",
+          "wbs_task": "29.020",
+          "action": "UI の操作試験を実行する",
+          "acceptance": "ペン・マウス・複数画像・popup の状態復帰を確認",
+          "status": "TODO",
+          "owner": "",
+          "artifact": "",
+          "test": "",
+          "result": "",
+          "limitations": "Assigned only; requires this source-specific action and evidence"
+        }
+      ],
+      "state": "TODO",
+      "duty_advanced": false
+    },
+    {
+      "original_row": {
+        "work_id": "legacy-8502e7afd16e0e159c30",
+        "source_kind": "hunk",
+        "source_id": "01.002/001814",
+        "path": "app/widgets/gimpwidgets-utils.h",
+        "source_blob": "48504c29b9f90195fe940ed2c458aea39a472063",
+        "source_range": "-102,0 -> 103,4",
+        "source_sha256": "817fe5f1ece0b69fab8b8a40685dba347602f0691fcedd770eaf1634316d73cb",
+        "source_scope": "void              gimp_session_write_position      (GimpConfigWriter     *writer",
+        "phase": "implementation",
+        "wbs_task": "08.017",
+        "action": "既存 widget behavior を store に移す",
+        "acceptance": "全登録箇所が共通 slot を利用",
+        "status": "TODO",
+        "owner": "",
+        "artifact": "",
+        "test": "",
+        "result": "",
+        "limitations": "Assigned only; requires this source-specific action and evidence"
+      },
+      "raw_original_tsv_row": "legacy-8502e7afd16e0e159c30\thunk\t01.002/001814\tapp/widgets/gimpwidgets-utils.h\t48504c29b9f90195fe940ed2c458aea39a472063\t-102,0 -> 103,4\t817fe5f1ece0b69fab8b8a40685dba347602f0691fcedd770eaf1634316d73cb\tvoid              gimp_session_write_position      (GimpConfigWriter     *writer\timplementation\t08.017\t既存 widget behavior を store に移す\t全登録箇所が共通 slot を利用\tTODO\t\t\t\t\tAssigned only; requires this source-specific action and evidence",
+      "verified_payload": "+void              gimp_session_write_boolean       (GimpConfigWriter     *writer,\n+                                                    gchar                *name,\n+                                                    gboolean              value);\n+\n",
+      "role": "native-serialization-declaration",
+      "source_specific_duty": "Declares the named boolean session writer for callers; source-specific serialized spelling and ref balance remain obligations.",
+      "acceptance_dependencies": [
+        "Trace every affected session writer/caller, preserve token name and true/false syntax and verify write/read round-trip and reference balance."
+      ],
+      "retained_owners": [
+        "29.010/standard-tool-options",
+        "29.020"
+      ],
+      "sibling_obligations_unchanged": [
+        {
+          "work_id": "legacy-d3f8a9cd771b61855f2e",
+          "source_kind": "hunk",
+          "source_id": "01.002/001814",
+          "path": "app/widgets/gimpwidgets-utils.h",
+          "source_blob": "48504c29b9f90195fe940ed2c458aea39a472063",
+          "source_range": "-102,0 -> 103,4",
+          "source_sha256": "817fe5f1ece0b69fab8b8a40685dba347602f0691fcedd770eaf1634316d73cb",
+          "source_scope": "void              gimp_session_write_position      (GimpConfigWriter     *writer",
+          "phase": "implementation",
+          "wbs_task": "29.010/standard-tool-options",
+          "action": "標準ツールの横型・コンパクト操作部品を保持して共有化する",
+          "acceptance": "hunk台帳の各tool/optionsごとに旧control・値・通知・popupを対応し、縦横配置・再表示・ツール切替を試験する",
+          "status": "TODO",
+          "owner": "",
+          "artifact": "",
+          "test": "",
+          "result": "",
+          "limitations": "Assigned only; requires this source-specific action and evidence"
+        },
+        {
+          "work_id": "legacy-eb861c4e15cd6a4496bb",
+          "source_kind": "hunk",
+          "source_id": "01.002/001814",
+          "path": "app/widgets/gimpwidgets-utils.h",
+          "source_blob": "48504c29b9f90195fe940ed2c458aea39a472063",
+          "source_range": "-102,0 -> 103,4",
+          "source_sha256": "817fe5f1ece0b69fab8b8a40685dba347602f0691fcedd770eaf1634316d73cb",
+          "source_scope": "void              gimp_session_write_position      (GimpConfigWriter     *writer",
+          "phase": "verification",
+          "wbs_task": "29.020",
+          "action": "UI の操作試験を実行する",
+          "acceptance": "ペン・マウス・複数画像・popup の状態復帰を確認",
+          "status": "TODO",
+          "owner": "",
+          "artifact": "",
+          "test": "",
+          "result": "",
+          "limitations": "Assigned only; requires this source-specific action and evidence"
+        }
+      ],
+      "state": "TODO",
+      "duty_advanced": false
+    },
+    {
+      "original_row": {
+        "work_id": "legacy-90a931a18a6ee5cda156",
+        "source_kind": "hunk",
+        "source_id": "01.002/001817",
+        "path": "app/widgets/widgets-enums.h",
+        "source_blob": "d81781718efb6f9a450f8b26334b2a48d839b252",
+        "source_range": "-170 -> 170",
+        "source_sha256": "6b01d18d6576dcc7df4ca0f2242ea0fd5b7cc1862019260ab5d21b7304e21541",
+        "source_scope": "typedef enum  /*< skip >*/",
+        "phase": "implementation",
+        "wbs_task": "08.017",
+        "action": "既存 widget behavior を store に移す",
+        "acceptance": "全登録箇所が共通 slot を利用",
+        "status": "TODO",
+        "owner": "",
+        "artifact": "",
+        "test": "",
+        "result": "",
+        "limitations": "Assigned only; requires this source-specific action and evidence"
+      },
+      "raw_original_tsv_row": "legacy-90a931a18a6ee5cda156\thunk\t01.002/001817\tapp/widgets/widgets-enums.h\td81781718efb6f9a450f8b26334b2a48d839b252\t-170 -> 170\t6b01d18d6576dcc7df4ca0f2242ea0fd5b7cc1862019260ab5d21b7304e21541\ttypedef enum  /*< skip >*/\timplementation\t08.017\t既存 widget behavior を store に移す\t全登録箇所が共通 slot を利用\tTODO\t\t\t\t\tAssigned only; requires this source-specific action and evidence",
+      "verified_payload": "-  GIMP_DND_TYPE_TOOL_INFO    = 23,\n+  GIMP_DND_TYPE_TOOL_ITEM    = 23,\n",
+      "role": "native-model-type-dependency",
+      "source_specific_duty": "Renames DnD discriminator value 23 from TOOL_INFO to TOOL_ITEM. The numeric wire discriminator is preserved while the type vocabulary changes.",
+      "acceptance_dependencies": [
+        "Verify actual tool-item drag payload and receiver/type handling; no C++ state needs to be fabricated for this native enum."
+      ],
+      "retained_owners": [
+        "29.010/standard-tool-options",
+        "29.020"
+      ],
+      "sibling_obligations_unchanged": [
+        {
+          "work_id": "legacy-3053bd1713b73d157783",
+          "source_kind": "hunk",
+          "source_id": "01.002/001817",
+          "path": "app/widgets/widgets-enums.h",
+          "source_blob": "d81781718efb6f9a450f8b26334b2a48d839b252",
+          "source_range": "-170 -> 170",
+          "source_sha256": "6b01d18d6576dcc7df4ca0f2242ea0fd5b7cc1862019260ab5d21b7304e21541",
+          "source_scope": "typedef enum  /*< skip >*/",
+          "phase": "implementation",
+          "wbs_task": "29.010/standard-tool-options",
+          "action": "標準ツールの横型・コンパクト操作部品を保持して共有化する",
+          "acceptance": "hunk台帳の各tool/optionsごとに旧control・値・通知・popupを対応し、縦横配置・再表示・ツール切替を試験する",
+          "status": "TODO",
+          "owner": "",
+          "artifact": "",
+          "test": "",
+          "result": "",
+          "limitations": "Assigned only; requires this source-specific action and evidence"
+        },
+        {
+          "work_id": "legacy-cff333bcfc233ccdd5b6",
+          "source_kind": "hunk",
+          "source_id": "01.002/001817",
+          "path": "app/widgets/widgets-enums.h",
+          "source_blob": "d81781718efb6f9a450f8b26334b2a48d839b252",
+          "source_range": "-170 -> 170",
+          "source_sha256": "6b01d18d6576dcc7df4ca0f2242ea0fd5b7cc1862019260ab5d21b7304e21541",
+          "source_scope": "typedef enum  /*< skip >*/",
+          "phase": "verification",
+          "wbs_task": "29.020",
+          "action": "UI の操作試験を実行する",
+          "acceptance": "ペン・マウス・複数画像・popup の状態復帰を確認",
+          "status": "TODO",
+          "owner": "",
+          "artifact": "",
+          "test": "",
+          "result": "",
+          "limitations": "Assigned only; requires this source-specific action and evidence"
+        }
+      ],
+      "state": "TODO",
+      "duty_advanced": false
+    },
+    {
+      "original_row": {
+        "work_id": "legacy-5c32ed58585ae48d8bbc",
+        "source_kind": "hunk",
+        "source_id": "01.002/000044",
+        "path": "app/base/glib-cxx-def-utils.hpp",
+        "source_blob": "b8db98b39de4e436b74b348a4a4fe2e0a4af1dbc",
+        "source_range": "-0,0 -> 1,169",
+        "source_sha256": "48e0e60dbc62fe4ca624e9ce04d7cd766881db652b61393d688e148da71377a2",
+        "source_scope": "file-level declarations/content",
+        "phase": "implementation",
+        "wbs_task": "08.017",
+        "action": "既存 widget behavior を store に移す",
+        "acceptance": "全登録箇所が共通 slot を利用",
+        "status": "TODO",
+        "owner": "",
+        "artifact": "",
+        "test": "",
+        "result": "",
+        "limitations": "Assigned only; requires this source-specific action and evidence"
+      },
+      "raw_original_tsv_row": "legacy-5c32ed58585ae48d8bbc\thunk\t01.002/000044\tapp/base/glib-cxx-def-utils.hpp\tb8db98b39de4e436b74b348a4a4fe2e0a4af1dbc\t-0,0 -> 1,169\t48e0e60dbc62fe4ca624e9ce04d7cd766881db652b61393d688e148da71377a2\tfile-level declarations/content\timplementation\t08.017\t既存 widget behavior を store に移す\t全登録箇所が共通 slot を利用\tTODO\t\t\t\t\tAssigned only; requires this source-specific action and evidence",
+      "verified_payload": "+/*\n+ * glib-cxx-def-utils.hpp\n+ *\n+ *  Created on: 2017/06/25\n+ *      Author: seagetch\n+ */\n+\n+#ifndef APP_BASE_GLIB_CXX_DEF_UTILS_HPP_\n+#define APP_BASE_GLIB_CXX_DEF_UTILS_HPP_\n+\n+extern \"C\" {\n+#include <gtk/gtk.h>\n+#include <gtk/gtkbox.h>\n+#include <gtk/gtkcontainer.h>\n+#include <gtk/gtkscrolledwindow.h>\n+}\n+#include \"base/glib-cxx-bridge.hpp\"\n+#include \"base/glib-cxx-utils.hpp\"\n+#include <functional>\n+\n+namespace GLib {\n+\n+template<typename T>\n+class Definer : public IObject<T>\n+{\n+  typedef IObject<T> super;\n+public:\n+  Definer() : super(NULL) { };\n+  Definer(T* object) : super(object) { };\n+  Definer(const IObject<T>& src) : super (src.ptr()) { }\n+  Definer(const Definer& src) : super (src.obj) { }\n+\n+  operator T* () { return (T*)(*(super*)this); };\n+  template<typename G> operator G* () { return (G*)(*(super*)this); };\n+  T* operator ->() { return (T*)(*(super*)this); };\n+  operator bool() { return bool(*(super*)this); };\n+\n+  void operator = (T* src) { (*(super*)this) = src; }\n+  template<typename Ret, typename C, typename... Args>\n+  auto operator []( Ret f(C*, Args...) ) { return (*(super*)this)[f]; };\n+  template<typename Ret, typename C, typename... Args>\n+  auto operator []( Ret f(const C*, Args...) ) { return (*(super*)this)[f]; };\n+  CopyValue operator[](const gchar* name) { return (*(super*)this)[name]; }\n+\n+  // Helpers for easy GUI definition.\n+  struct Packer {\n+    Definer& wrapper;\n+    bool start, expand, fill;\n+    unsigned int padding;\n+    Packer(Definer& w, bool s, bool e, bool f, unsigned int p) :\n+      wrapper(w), start(s), expand(e), fill(f), padding(p) {};\n+    template<typename T2, typename F>\n+    Packer& operator ()(T2* child, F init) {\n+      if (start)\n+        wrapper [gtk_box_pack_start] (GTK_WIDGET(child), expand, fill, padding);\n+      else\n+        wrapper [gtk_box_pack_end] (GTK_WIDGET(child), expand, fill, padding);\n+      init(Definer<T2>(child));\n+      return *this;\n+    };\n+    Packer& pack_start(bool expand, bool fill, unsigned int padding) {\n+      this->start   = true;\n+      this->expand  = expand;\n+      this->fill    = fill;\n+      this->padding = padding;\n+      return *this;\n+    }\n+    Packer& pack_end(bool expand, bool fill, unsigned int padding) {\n+      this->start   = false;\n+      this->expand  = expand;\n+      this->fill    = fill;\n+      this->padding = padding;\n+      return *this;\n+    }\n+    template<typename T2>\n+    Definer& pack_start(T2* child, gboolean expand, gboolean fill, guint padding) {\n+      return wrapper.pack_start(child, expand, fill, padding);\n+    }\n+    template<typename T2, typename F>\n+    Definer& pack_start(T2* child, gboolean expand, gboolean fill, guint padding, F f) {\n+      return wrapper.pack_start(child, expand, fill, padding, f);\n+    }\n+    template<typename T2>\n+    Definer& pack_end(T2* child, gboolean expand, gboolean fill, guint padding) {\n+      return wrapper.pack_end(child, expand, fill, padding);\n+    }\n+    template<typename T2, typename F>\n+    Definer& pack_end(T2* child, gboolean expand, gboolean fill, guint padding, F f) {\n+      return wrapper.pack_end(child, expand, fill, padding, f);\n+    }\n+  };\n+\n+  template<typename T2>\n+  Definer& pack_start(T2* child, gboolean expand, gboolean fill, guint padding) {\n+    (*this)[gtk_box_pack_start](GTK_WIDGET(child), expand, fill, padding);\n+    return *this;\n+  }\n+  template<typename T2, typename F>\n+  Definer& pack_start(T2* child, gboolean expand, gboolean fill, guint padding, F init) {\n+    pack_start<T2>(child, expand, fill, padding);\n+    init(Definer<T2>(child));\n+    return *this;\n+  }\n+  auto pack_start(bool expand, bool fill, unsigned int padding) {\n+    return Packer(*this, true, expand, fill, padding);\n+  }\n+\n+  template<typename T2>\n+  Definer& pack_end(T2* child, gboolean expand, gboolean fill, guint padding) {\n+    (*this)[gtk_box_pack_end](GTK_WIDGET(child), expand, fill, padding);\n+    return *this;\n+  }\n+  template<typename T2, typename F>\n+  Definer& pack_end(T2* child, gboolean expand, gboolean fill, guint padding, F init) {\n+    pack_end<T2>(child, expand, fill, padding);\n+    init(Definer<T2>(child));\n+    return *this;\n+  }\n+  auto pack_end(bool expand, bool fill, unsigned int padding) {\n+    return Packer(*this, false, expand, fill, padding);\n+  }\n+\n+  template<typename T2>\n+  void add(T2* child) {\n+    (*this)[gtk_container_add](GTK_WIDGET(child));\n+  }\n+  template<typename T2, typename F>\n+  Definer<T2> add(T2* child, F init) {\n+    add<T2>(child);\n+    auto i_child = Definer<T2>(child);\n+    init(i_child);\n+    return i_child;\n+  }\n+\n+  template<typename T2>\n+  void add_with_viewport(T2* child) {\n+    (*this)[gtk_scrolled_window_add_with_viewport](GTK_WIDGET(child));\n+  }\n+  template<typename T2, typename F>\n+  Definer<T2> add_with_viewport(T2* child, F init) {\n+    add_with_viewport<T2>(child);\n+    auto i_child = Definer<T2>(child);\n+    init(i_child);\n+    return i_child;\n+  }\n+};\n+\n+template<class T, typename F>\n+inline Definer<T> with(T* obj, F init) {\n+  auto result = Definer<T>(obj);\n+  init(result);\n+  return result;\n+}\n+\n+template<class T, typename F>\n+inline Definer<T> with(IObject<T> obj, F init) {\n+  auto result = Definer<T>(obj.ptr());\n+  init(result);\n+  return result;\n+}\n+\n+template<class T, typename F>\n+inline Definer<T> with(Definer<T> obj, F init) {\n+  init(obj);\n+  return obj;\n+}\n+\n+};\n+#endif /* APP_BASE_GLIB_CXX_DEF_UTILS_HPP_ */\n",
+      "role": "cpp-construction-provider",
+      "source_specific_duty": "Definer inherits IObject, Packer holds Definer&, constructs child Definer temporaries, and three with overloads return retained wrappers. This is the ownership/construction provider consumed by widget behaviors, not itself a behavior-registration site.",
+      "acceptance_dependencies": [
+        "Trace every provider consumer to explicit ObjectRef ownership and actual owning slots; construction-provider replacement alone does not close native integration rows."
+      ],
+      "retained_owners": [
+        "06.023",
+        "29.019",
+        "29.020"
+      ],
+      "sibling_obligations_unchanged": [
+        {
+          "work_id": "legacy-22f812c42f35e6fef633",
+          "source_kind": "hunk",
+          "source_id": "01.002/000044",
+          "path": "app/base/glib-cxx-def-utils.hpp",
+          "source_blob": "b8db98b39de4e436b74b348a4a4fe2e0a4af1dbc",
+          "source_range": "-0,0 -> 1,169",
+          "source_sha256": "48e0e60dbc62fe4ca624e9ce04d7cd766881db652b61393d688e148da71377a2",
+          "source_scope": "file-level declarations/content",
+          "phase": "implementation",
+          "wbs_task": "06.023",
+          "action": "GTK DSL を新ハンドルへ接続する",
+          "acceptance": "Definer/Packer の旧二重所有を排除",
+          "status": "DONE",
+          "owner": "Codex",
+          "artifact": "migration/tests/gtk-binding/README.md;migration/tests/gtk-binding/native-ownership-map.json",
+          "test": "native GTK21;focused ASan/UBSan10;options11;bounded source routing12",
+          "result": "PASS:Definer/Packer ownership replaced by explicit common handles and native GTK;caller/support identity verified",
+          "limitations": "Ownership construction gate only;exact feature behavior and other source duties unchanged;Linux GTK3;focused sanitizer excludes LSan/vptr"
+        },
+        {
+          "work_id": "legacy-c51566304587f9d9d651",
+          "source_kind": "hunk",
+          "source_id": "01.002/000044",
+          "path": "app/base/glib-cxx-def-utils.hpp",
+          "source_blob": "b8db98b39de4e436b74b348a4a4fe2e0a4af1dbc",
+          "source_range": "-0,0 -> 1,169",
+          "source_sha256": "48e0e60dbc62fe4ca624e9ce04d7cd766881db652b61393d688e148da71377a2",
+          "source_scope": "file-level declarations/content",
+          "phase": "implementation",
+          "wbs_task": "29.019",
+          "action": "widget destroy を close へ接続する",
+          "acceptance": "behavior の遅延通知が残らない",
+          "status": "TODO",
+          "owner": "",
+          "artifact": "",
+          "test": "",
+          "result": "",
+          "limitations": "Assigned only; requires this source-specific action and evidence"
+        },
+        {
+          "work_id": "legacy-4e988ab952609f12325b",
+          "source_kind": "hunk",
+          "source_id": "01.002/000044",
+          "path": "app/base/glib-cxx-def-utils.hpp",
+          "source_blob": "b8db98b39de4e436b74b348a4a4fe2e0a4af1dbc",
+          "source_range": "-0,0 -> 1,169",
+          "source_sha256": "48e0e60dbc62fe4ca624e9ce04d7cd766881db652b61393d688e148da71377a2",
+          "source_scope": "file-level declarations/content",
+          "phase": "verification",
+          "wbs_task": "29.020",
+          "action": "UI の操作試験を実行する",
+          "acceptance": "ペン・マウス・複数画像・popup の状態復帰を確認",
+          "status": "TODO",
+          "owner": "",
+          "artifact": "",
+          "test": "",
+          "result": "",
+          "limitations": "Assigned only; requires this source-specific action and evidence"
+        }
+      ],
+      "state": "TODO",
+      "duty_advanced": false
+    },
+    {
+      "original_row": {
+        "work_id": "legacy-d3fbe3aa110d69e63e80",
+        "source_kind": "hunk",
+        "source_id": "01.002/001819",
+        "path": "app/widgets/widgets-types.h",
+        "source_blob": "4077d5123fdaa5546361610094e1a09b76e95e7b",
+        "source_range": "-69,0 -> 69",
+        "source_sha256": "b8194f2a5fb9a0017fdc43671c327e18e91425392ab8b24f569fc6725b602bb9",
+        "source_scope": "typedef struct _GimpToolPresetEditor         GimpToolPresetEditor;",
+        "phase": "implementation",
+        "wbs_task": "08.017",
+        "action": "既存 widget behavior を store に移す",
+        "acceptance": "全登録箇所が共通 slot を利用",
+        "status": "TODO",
+        "owner": "",
+        "artifact": "",
+        "test": "",
+        "result": "",
+        "limitations": "Assigned only; requires this source-specific action and evidence"
+      },
+      "raw_original_tsv_row": "legacy-d3fbe3aa110d69e63e80\thunk\t01.002/001819\tapp/widgets/widgets-types.h\t4077d5123fdaa5546361610094e1a09b76e95e7b\t-69,0 -> 69\tb8194f2a5fb9a0017fdc43671c327e18e91425392ab8b24f569fc6725b602bb9\ttypedef struct _GimpToolPresetEditor         GimpToolPresetEditor;\timplementation\t08.017\t既存 widget behavior を store に移す\t全登録箇所が共通 slot を利用\tTODO\t\t\t\t\tAssigned only; requires this source-specific action and evidence",
+      "verified_payload": "+typedef struct _GimpMypaintBrushEditor       GimpMypaintBrushEditor;\n",
+      "role": "native-type-declaration",
+      "source_specific_duty": "Adds the GimpMypaintBrushEditor forward declaration needed by the native/C++ editor boundary; the declaration does not register its implementation.",
+      "acceptance_dependencies": [
+        "Maintain ABI/type declarations required by real registered providers and their C callers; root reviews any non-executable assignment correction."
+      ],
+      "retained_owners": [
+        "29.010/standard-tool-options",
+        "29.020"
+      ],
+      "sibling_obligations_unchanged": [
+        {
+          "work_id": "legacy-453986400851ca6fc42d",
+          "source_kind": "hunk",
+          "source_id": "01.002/001819",
+          "path": "app/widgets/widgets-types.h",
+          "source_blob": "4077d5123fdaa5546361610094e1a09b76e95e7b",
+          "source_range": "-69,0 -> 69",
+          "source_sha256": "b8194f2a5fb9a0017fdc43671c327e18e91425392ab8b24f569fc6725b602bb9",
+          "source_scope": "typedef struct _GimpToolPresetEditor         GimpToolPresetEditor;",
+          "phase": "implementation",
+          "wbs_task": "29.010/standard-tool-options",
+          "action": "標準ツールの横型・コンパクト操作部品を保持して共有化する",
+          "acceptance": "hunk台帳の各tool/optionsごとに旧control・値・通知・popupを対応し、縦横配置・再表示・ツール切替を試験する",
+          "status": "TODO",
+          "owner": "",
+          "artifact": "",
+          "test": "",
+          "result": "",
+          "limitations": "Assigned only; requires this source-specific action and evidence"
+        },
+        {
+          "work_id": "legacy-ae6c1a40c6f6ea4a23ad",
+          "source_kind": "hunk",
+          "source_id": "01.002/001819",
+          "path": "app/widgets/widgets-types.h",
+          "source_blob": "4077d5123fdaa5546361610094e1a09b76e95e7b",
+          "source_range": "-69,0 -> 69",
+          "source_sha256": "b8194f2a5fb9a0017fdc43671c327e18e91425392ab8b24f569fc6725b602bb9",
+          "source_scope": "typedef struct _GimpToolPresetEditor         GimpToolPresetEditor;",
+          "phase": "verification",
+          "wbs_task": "29.020",
+          "action": "UI の操作試験を実行する",
+          "acceptance": "ペン・マウス・複数画像・popup の状態復帰を確認",
+          "status": "TODO",
+          "owner": "",
+          "artifact": "",
+          "test": "",
+          "result": "",
+          "limitations": "Assigned only; requires this source-specific action and evidence"
+        }
+      ],
+      "state": "TODO",
+      "duty_advanced": false
+    },
+    {
+      "original_row": {
+        "work_id": "legacy-f3eac1d15d85527c3b84",
+        "source_kind": "hunk",
+        "source_id": "01.002/001820",
+        "path": "app/widgets/widgets-types.h",
+        "source_blob": "4077d5123fdaa5546361610094e1a09b76e95e7b",
+        "source_range": "-119,0 -> 120",
+        "source_sha256": "2336c191f96f56ca9c7f826153f068ebfcda1b8de0603ec91d6661e65d5f641f",
+        "source_scope": "typedef struct _GimpToolPresetFactoryView    GimpToolPresetFactoryView;",
+        "phase": "implementation",
+        "wbs_task": "08.017",
+        "action": "既存 widget behavior を store に移す",
+        "acceptance": "全登録箇所が共通 slot を利用",
+        "status": "TODO",
+        "owner": "",
+        "artifact": "",
+        "test": "",
+        "result": "",
+        "limitations": "Assigned only; requires this source-specific action and evidence"
+      },
+      "raw_original_tsv_row": "legacy-f3eac1d15d85527c3b84\thunk\t01.002/001820\tapp/widgets/widgets-types.h\t4077d5123fdaa5546361610094e1a09b76e95e7b\t-119,0 -> 120\t2336c191f96f56ca9c7f826153f068ebfcda1b8de0603ec91d6661e65d5f641f\ttypedef struct _GimpToolPresetFactoryView    GimpToolPresetFactoryView;\timplementation\t08.017\t既存 widget behavior を store に移す\t全登録箇所が共通 slot を利用\tTODO\t\t\t\t\tAssigned only; requires this source-specific action and evidence",
+      "verified_payload": "+typedef struct _GimpMypaintBrushFactoryView  GimpMypaintBrushFactoryView;\n",
+      "role": "native-type-declaration",
+      "source_specific_duty": "Adds the GimpMypaintBrushFactoryView forward declaration used at the brush factory-view boundary.",
+      "acceptance_dependencies": [
+        "Maintain ABI/type declarations required by real registered providers and their C callers; root reviews any non-executable assignment correction."
+      ],
+      "retained_owners": [
+        "29.010/standard-tool-options",
+        "29.020"
+      ],
+      "sibling_obligations_unchanged": [
+        {
+          "work_id": "legacy-4ba483bd8d29d39b2b96",
+          "source_kind": "hunk",
+          "source_id": "01.002/001820",
+          "path": "app/widgets/widgets-types.h",
+          "source_blob": "4077d5123fdaa5546361610094e1a09b76e95e7b",
+          "source_range": "-119,0 -> 120",
+          "source_sha256": "2336c191f96f56ca9c7f826153f068ebfcda1b8de0603ec91d6661e65d5f641f",
+          "source_scope": "typedef struct _GimpToolPresetFactoryView    GimpToolPresetFactoryView;",
+          "phase": "implementation",
+          "wbs_task": "29.010/standard-tool-options",
+          "action": "標準ツールの横型・コンパクト操作部品を保持して共有化する",
+          "acceptance": "hunk台帳の各tool/optionsごとに旧control・値・通知・popupを対応し、縦横配置・再表示・ツール切替を試験する",
+          "status": "TODO",
+          "owner": "",
+          "artifact": "",
+          "test": "",
+          "result": "",
+          "limitations": "Assigned only; requires this source-specific action and evidence"
+        },
+        {
+          "work_id": "legacy-43d549722a6fa728fbb7",
+          "source_kind": "hunk",
+          "source_id": "01.002/001820",
+          "path": "app/widgets/widgets-types.h",
+          "source_blob": "4077d5123fdaa5546361610094e1a09b76e95e7b",
+          "source_range": "-119,0 -> 120",
+          "source_sha256": "2336c191f96f56ca9c7f826153f068ebfcda1b8de0603ec91d6661e65d5f641f",
+          "source_scope": "typedef struct _GimpToolPresetFactoryView    GimpToolPresetFactoryView;",
+          "phase": "verification",
+          "wbs_task": "29.020",
+          "action": "UI の操作試験を実行する",
+          "acceptance": "ペン・マウス・複数画像・popup の状態復帰を確認",
+          "status": "TODO",
+          "owner": "",
+          "artifact": "",
+          "test": "",
+          "result": "",
+          "limitations": "Assigned only; requires this source-specific action and evidence"
+        }
+      ],
+      "state": "TODO",
+      "duty_advanced": false
+    },
+    {
+      "original_row": {
+        "work_id": "legacy-9660df39e0b55a0ccee5",
+        "source_kind": "hunk",
+        "source_id": "01.002/001821",
+        "path": "app/widgets/widgets-types.h",
+        "source_blob": "4077d5123fdaa5546361610094e1a09b76e95e7b",
+        "source_range": "-152,0 -> 154",
+        "source_sha256": "81d6ab6bef8e732bed20f24418f427d7fd37b12711abcc6ca0f0d84453c8da93",
+        "source_scope": "typedef struct _GimpPdbDialog                GimpPdbDialog;",
+        "phase": "implementation",
+        "wbs_task": "08.017",
+        "action": "既存 widget behavior を store に移す",
+        "acceptance": "全登録箇所が共通 slot を利用",
+        "status": "TODO",
+        "owner": "",
+        "artifact": "",
+        "test": "",
+        "result": "",
+        "limitations": "Assigned only; requires this source-specific action and evidence"
+      },
+      "raw_original_tsv_row": "legacy-9660df39e0b55a0ccee5\thunk\t01.002/001821\tapp/widgets/widgets-types.h\t4077d5123fdaa5546361610094e1a09b76e95e7b\t-152,0 -> 154\t81d6ab6bef8e732bed20f24418f427d7fd37b12711abcc6ca0f0d84453c8da93\ttypedef struct _GimpPdbDialog                GimpPdbDialog;\timplementation\t08.017\t既存 widget behavior を store に移す\t全登録箇所が共通 slot を利用\tTODO\t\t\t\t\tAssigned only; requires this source-specific action and evidence",
+      "verified_payload": "+typedef struct _GimpMypaintBrushSelect       GimpMypaintBrushSelect;\n",
+      "role": "native-type-declaration",
+      "source_specific_duty": "Adds the GimpMypaintBrushSelect forward declaration at the brush selection boundary.",
+      "acceptance_dependencies": [
+        "Maintain ABI/type declarations required by real registered providers and their C callers; root reviews any non-executable assignment correction."
+      ],
+      "retained_owners": [
+        "29.010/standard-tool-options",
+        "29.020"
+      ],
+      "sibling_obligations_unchanged": [
+        {
+          "work_id": "legacy-53fdcab766014365e78c",
+          "source_kind": "hunk",
+          "source_id": "01.002/001821",
+          "path": "app/widgets/widgets-types.h",
+          "source_blob": "4077d5123fdaa5546361610094e1a09b76e95e7b",
+          "source_range": "-152,0 -> 154",
+          "source_sha256": "81d6ab6bef8e732bed20f24418f427d7fd37b12711abcc6ca0f0d84453c8da93",
+          "source_scope": "typedef struct _GimpPdbDialog                GimpPdbDialog;",
+          "phase": "implementation",
+          "wbs_task": "29.010/standard-tool-options",
+          "action": "標準ツールの横型・コンパクト操作部品を保持して共有化する",
+          "acceptance": "hunk台帳の各tool/optionsごとに旧control・値・通知・popupを対応し、縦横配置・再表示・ツール切替を試験する",
+          "status": "TODO",
+          "owner": "",
+          "artifact": "",
+          "test": "",
+          "result": "",
+          "limitations": "Assigned only; requires this source-specific action and evidence"
+        },
+        {
+          "work_id": "legacy-8032395f109cbaee7f34",
+          "source_kind": "hunk",
+          "source_id": "01.002/001821",
+          "path": "app/widgets/widgets-types.h",
+          "source_blob": "4077d5123fdaa5546361610094e1a09b76e95e7b",
+          "source_range": "-152,0 -> 154",
+          "source_sha256": "81d6ab6bef8e732bed20f24418f427d7fd37b12711abcc6ca0f0d84453c8da93",
+          "source_scope": "typedef struct _GimpPdbDialog                GimpPdbDialog;",
+          "phase": "verification",
+          "wbs_task": "29.020",
+          "action": "UI の操作試験を実行する",
+          "acceptance": "ペン・マウス・複数画像・popup の状態復帰を確認",
+          "status": "TODO",
+          "owner": "",
+          "artifact": "",
+          "test": "",
+          "result": "",
+          "limitations": "Assigned only; requires this source-specific action and evidence"
+        }
+      ],
+      "state": "TODO",
+      "duty_advanced": false
+    }
+  ],
+  "original_source_identities": [
+    {
+      "source_id": "01.002/001804",
+      "version": "source",
+      "path": "app/widgets/gimpviewrenderer.c",
+      "git_blob": "67b0ff4ab5e4a34434f72c594ad712362de4be7c",
+      "sha256": "c8d9c30e9af9ca697243a32c1a49565fab501611513c3a028242367017088788"
+    },
+    {
+      "source_id": "01.002/001804",
+      "version": "base",
+      "path": "app/widgets/gimpviewrenderer.c",
+      "git_blob": "1852e955a57c212210fa8b6c43fa8962b8b5a42e",
+      "sha256": "1daf2bf8909690a8fa7eded8b7a980e9c1f5923784822d059c7ee8f991b9e8e3"
+    },
+    {
+      "source_id": "01.002/001805",
+      "version": "source",
+      "path": "app/widgets/gimpviewrenderer.c",
+      "git_blob": "67b0ff4ab5e4a34434f72c594ad712362de4be7c",
+      "sha256": "c8d9c30e9af9ca697243a32c1a49565fab501611513c3a028242367017088788"
+    },
+    {
+      "source_id": "01.002/001805",
+      "version": "base",
+      "path": "app/widgets/gimpviewrenderer.c",
+      "git_blob": "1852e955a57c212210fa8b6c43fa8962b8b5a42e",
+      "sha256": "1daf2bf8909690a8fa7eded8b7a980e9c1f5923784822d059c7ee8f991b9e8e3"
+    },
+    {
+      "source_id": "01.002/001806",
+      "version": "source",
+      "path": "app/widgets/gimpviewrenderer.c",
+      "git_blob": "67b0ff4ab5e4a34434f72c594ad712362de4be7c",
+      "sha256": "c8d9c30e9af9ca697243a32c1a49565fab501611513c3a028242367017088788"
+    },
+    {
+      "source_id": "01.002/001806",
+      "version": "base",
+      "path": "app/widgets/gimpviewrenderer.c",
+      "git_blob": "1852e955a57c212210fa8b6c43fa8962b8b5a42e",
+      "sha256": "1daf2bf8909690a8fa7eded8b7a980e9c1f5923784822d059c7ee8f991b9e8e3"
+    },
+    {
+      "source_id": "01.002/001807",
+      "version": "source",
+      "path": "app/widgets/gimpviewrenderer.h",
+      "git_blob": "731346e05adda29c4c4796371a6fe39df37c7185",
+      "sha256": "ff7b1a27adaa1e8b5330426e89dedbef886146a17e77369b5744c0847b0d09ee"
+    },
+    {
+      "source_id": "01.002/001807",
+      "version": "base",
+      "path": "app/widgets/gimpviewrenderer.h",
+      "git_blob": "ac451ebdd79d286f5940414355350e4309cb6ac4",
+      "sha256": "57fafdf4952717b59b87da6b7d9405c7d5f7cb054cf15f26f9ab85ba7e909602"
+    },
+    {
+      "source_id": "01.002/001813",
+      "version": "source",
+      "path": "app/widgets/gimpwidgets-utils.c",
+      "git_blob": "efeec486e5fde3a5864a99d4a65e1dbcfd159830",
+      "sha256": "b3327ba62bdbd7d0e5d3f5f1496bdd0e8ba825e15fac54d5f3fba8206abda510"
+    },
+    {
+      "source_id": "01.002/001813",
+      "version": "base",
+      "path": "app/widgets/gimpwidgets-utils.c",
+      "git_blob": "af3c1f48b0fb197fdcb7b9fc86bb5031b8477c45",
+      "sha256": "d908910eab072a6a7ea26f35dc7d38c2a9c36429f4adebd88c17c01e61762bcd"
+    },
+    {
+      "source_id": "01.002/001814",
+      "version": "source",
+      "path": "app/widgets/gimpwidgets-utils.h",
+      "git_blob": "48504c29b9f90195fe940ed2c458aea39a472063",
+      "sha256": "4235e93efccfc6996463954bb769218421f5fd64b6882665a19d4f98cc7d821c"
+    },
+    {
+      "source_id": "01.002/001814",
+      "version": "base",
+      "path": "app/widgets/gimpwidgets-utils.h",
+      "git_blob": "1929dd513c1e8c255deb771f6fa63c378b879e2b",
+      "sha256": "5b629588498afd95530f5f44afc38e4cce8ac26b55b42bf48db04107d78b3638"
+    },
+    {
+      "source_id": "01.002/001817",
+      "version": "source",
+      "path": "app/widgets/widgets-enums.h",
+      "git_blob": "d81781718efb6f9a450f8b26334b2a48d839b252",
+      "sha256": "e607aab5d7d1c231b8991ee504165a8a2b24c71421b039eca60439a2e084c4cc"
+    },
+    {
+      "source_id": "01.002/001817",
+      "version": "base",
+      "path": "app/widgets/widgets-enums.h",
+      "git_blob": "ae8f5ae1ed1a0bd2d51dbadfa65cb97f2c2993bd",
+      "sha256": "7f2c616befbaa42d1a4eb3e5f71e583a9012d5343881cf9d91e093e05b804fd9"
+    }
+  ],
+  "mypaint_provider_routes": {
+    "legacy_native_editor": [
+      {
+        "version": "legacy",
+        "path": "app/widgets/gimpmypaintbrusheditor.h",
+        "lines": [
+          36,
+          48
+        ],
+        "claim": "Native GimpDataEditor instance with GtkWidget pointer fields; no C++ private Impl.",
+        "sha256": "97e9cc7f95a43fe455f527b3ac60337f37984ade0c35af5b022a50dbaa20cae8",
+        "excerpt": "36: typedef struct _GimpMypaintBrushEditorClass GimpMypaintBrushEditorClass;\n37: \n38: struct _GimpMypaintBrushEditor\n39: {\n40:   GimpDataEditor  parent_instance;\n41: \n42:   GtkWidget      *options_box;\n43:   GtkWidget      *options_sliders[BRUSH_SETTINGS_COUNT];\n44: };\n45: \n46: struct _GimpMypaintBrushEditorClass\n47: {\n48:   GimpDataEditorClass  parent_class;"
+      },
+      {
+        "version": "legacy",
+        "path": "app/widgets/gimpmypaintbrusheditor.cpp",
+        "lines": [
+          84,
+          104
+        ],
+        "claim": "Native G_DEFINE_TYPE_WITH_CODE; constructed/set_data vfuncs.",
+        "sha256": "d43f662dd3cb16f0de55e06be3061e43c18d3bd6d6cff2015632975aca72fe13",
+        "excerpt": "84: G_DEFINE_TYPE_WITH_CODE (GimpMypaintBrushEditor, gimp_mypaint_brush_editor,\n85:                          GIMP_TYPE_DATA_EDITOR,\n86:                          G_IMPLEMENT_INTERFACE (GIMP_TYPE_DOCKED,\n87:                                                 gimp_mypaint_brush_editor_docked_iface_init))\n88: \n89: #define parent_class gimp_mypaint_brush_editor_parent_class\n90: \n91: static GimpDockedInterface *parent_docked_iface = NULL;\n92: \n93: \n94: static void\n95: gimp_mypaint_brush_editor_class_init (GimpMypaintBrushEditorClass *klass)\n96: {\n97:   GObjectClass        *object_class = G_OBJECT_CLASS (klass);\n98:   GimpDataEditorClass *editor_class = GIMP_DATA_EDITOR_CLASS (klass);\n99: \n100:   object_class->constructed = gimp_mypaint_brush_editor_constructed;\n101: \n102:   editor_class->set_data    = gimp_mypaint_brush_editor_set_data;\n103:   editor_class->title       = _(\"Mypaint Brush Editor\");\n104: }"
+      },
+      {
+        "version": "legacy",
+        "path": "app/widgets/gimpmypaintbrusheditor.cpp",
+        "lines": [
+          248,
+          303
+        ],
+        "claim": "set_data/context/C constructor; constructor requires Options and leaves local options NULL. This is source activation, not a claim that historical construction succeeded.",
+        "sha256": "d43f662dd3cb16f0de55e06be3061e43c18d3bd6d6cff2015632975aca72fe13",
+        "excerpt": "248: static void\n249: gimp_mypaint_brush_editor_set_data (GimpDataEditor *editor,\n250:                             GimpData       *data)\n251: {\n252:   GimpMypaintBrushEditor         *mypaint_brush_editor = GIMP_MYPAINT_BRUSH_EDITOR (editor);\n253: \n254:   GimpContext* context;\n255:   g_object_get(G_OBJECT(editor), \"context\", &context, NULL);\n256: \n257:   GimpMypaintBrush* brush;\n258:   brush = gimp_mypaint_options_get_current_brush (GIMP_MYPAINT_OPTIONS(context));\n259: \n260:   GIMP_DATA_EDITOR_CLASS (parent_class)->set_data (editor, GIMP_DATA(brush));\n261: \n262:   gimp_view_set_viewable (GIMP_VIEW (editor->view), GIMP_VIEWABLE (brush));\n263: \n264:   gtk_widget_set_sensitive (mypaint_brush_editor->options_box,\n265:                             editor->data_editable);\n266: }\n267: \n268: static void\n269: gimp_mypaint_brush_editor_set_context (GimpDocked  *docked,\n270:                                GimpContext *context)\n271: {\n272:   GimpDataEditor *data_editor = GIMP_DATA_EDITOR (docked);\n273: \n274:   parent_docked_iface->set_context (docked, context);\n275: \n276:   gimp_view_renderer_set_context (GIMP_VIEW (data_editor->view)->renderer,\n277:                                   context);\n278: }\n279: \n280: \n281: /*  public functions  */\n282: \n283: GtkWidget *\n284: gimp_mypaint_brush_editor_new (GimpContext     *context,\n285:                        GimpMenuFactory *menu_factory)\n286: {\n287:   g_return_val_if_fail (GIMP_IS_CONTEXT (context), NULL);\n288:   g_return_val_if_fail (GIMP_IS_MYPAINT_OPTIONS(context), NULL);\n289: \n290:   GimpMypaintOptions* options = NULL;\n291:   GIMP_MYPAINT_OPTIONS(context);\n292: \n293:   gpointer result = g_object_new (GIMP_TYPE_MYPAINT_BRUSH_EDITOR,\n294:                        \"menu-factory\",    menu_factory,\n295:                        \"menu-identifier\", \"<MypaintBrushEditor>\",\n296:                        \"ui-path\",         \"/mypaint_brush-editor-popup\",\n297:                        \"data-factory\",    context->gimp->mypaint_brush_factory,\n298:                        \"context\",         context,\n299:                        \"data\",            gimp_mypaint_options_get_current_brush (options),\n300:                        NULL);\n301:   return GTK_WIDGET(result);\n302: }\n303: "
+      },
+      {
+        "version": "legacy",
+        "path": "app/dialogs/dialogs.c",
+        "lines": [
+          409,
+          412
+        ],
+        "claim": "Old editor is registered as an actual dock factory entry.",
+        "sha256": "29a71e4d409e6ca1008bcdc126a8746257b25f98b49ad078684838abf36739ae",
+        "excerpt": "409:   DOCKABLE (\"gimp-mypaint-brush-editor\",\n410:             N_(\"Mypaint Brush Editor\"), NULL, GIMP_STOCK_MYPAINT_BRUSH,\n411:             GIMP_HELP_MYPAINT_BRUSH_EDITOR_DIALOG,\n412:             dialogs_mypaint_brush_editor_get, 0, TRUE),"
+      },
+      {
+        "version": "legacy",
+        "path": "app/dialogs/dialogs-constructors.c",
+        "lines": [
+          807,
+          815
+        ],
+        "claim": "Registered provider calls gimp_mypaint_brush_editor_new.",
+        "sha256": "2ae84f4739a431cc19e6b4da048125e56200c2262a99d42626a4e95bb0f840cc",
+        "excerpt": "807: GtkWidget *\n808: dialogs_mypaint_brush_editor_get (GimpDialogFactory *factory,\n809:                           GimpContext       *context,\n810:                           GimpUIManager     *ui_manager,\n811:                           gint               view_size)\n812: {\n813:   return gimp_mypaint_brush_editor_new (context,\n814:                                          gimp_dialog_factory_get_menu_factory (factory));\n815: }"
+      }
+    ],
+    "legacy_native_factory": [
+      {
+        "version": "legacy",
+        "path": "app/widgets/gimpmypaintbrushfactoryview.h",
+        "lines": [
+          39,
+          55
+        ],
+        "claim": "Only active instance state is native parent. All spacing fields are #if 0.",
+        "sha256": "2acd4201f25b0be47978d857dd80beda171adae333449f1c91f37d4f600ef68a",
+        "excerpt": "39:   GimpDataFactoryView  parent_instance;\n40: #if 0\n41:   GtkWidget           *spacing_scale;\n42:   GtkAdjustment       *spacing_adjustment;\n43: \n44:   gboolean             change_mypaint_brush_spacing;\n45:   GQuark               spacing_changed_handler_id;\n46: #endif\n47: };\n48: \n49: struct _GimpMypaintBrushFactoryViewClass\n50: {\n51:   GimpDataFactoryViewClass  parent_class;\n52: };\n53: \n54: \n55: GType       gimp_mypaint_brush_factory_view_get_type (void) G_GNUC_CONST;"
+      },
+      {
+        "version": "legacy",
+        "path": "app/widgets/gimpmypaintbrushfactoryview.c",
+        "lines": [
+          55,
+          113
+        ],
+        "claim": "Native G_DEFINE_TYPE; spacing creation/connections/removal all preprocessor-disabled.",
+        "sha256": "4eddc571281597847e98e0653042829e5551f32834f67289cc96b9e6e21d5218",
+        "excerpt": "55: G_DEFINE_TYPE (GimpMypaintBrushFactoryView, gimp_mypaint_brush_factory_view,\n56:                GIMP_TYPE_DATA_FACTORY_VIEW)\n57: \n58: #define parent_class gimp_mypaint_brush_factory_view_parent_class\n59: \n60: \n61: static void\n62: gimp_mypaint_brush_factory_view_class_init (GimpMypaintBrushFactoryViewClass *klass)\n63: {\n64:   GObjectClass             *object_class = G_OBJECT_CLASS (klass);\n65:   GimpContainerEditorClass *editor_class = GIMP_CONTAINER_EDITOR_CLASS (klass);\n66: \n67:   object_class->dispose     = gimp_mypaint_brush_factory_view_dispose;\n68: \n69:   editor_class->select_item = gimp_mypaint_brush_factory_view_select_item;\n70: }\n71: \n72: static void\n73: gimp_mypaint_brush_factory_view_init (GimpMypaintBrushFactoryView *view)\n74: {\n75: #if 0\n76:   view->spacing_adjustment =\n77:     GTK_ADJUSTMENT (gtk_adjustment_new (0.0, 1.0, 5000.0,\n78:                                         1.0, 10.0, 0.0));\n79: \n80:   view->spacing_scale = gimp_spin_scale_new (view->spacing_adjustment,\n81:                                              _(\"Spacing\"), 1);\n82:   gimp_spin_scale_set_scale_limits (GIMP_SPIN_SCALE (view->spacing_scale),\n83:                                    1.0, 200.0);\n84:   gimp_help_set_help_data (view->spacing_scale,\n85:                            _(\"Percentage of width of mypaint_brush\"),\n86:                            NULL);\n87: \n88:   g_signal_connect (view->spacing_adjustment, \"value-changed\",\n89:                     G_CALLBACK (gimp_mypaint_brush_factory_view_spacing_update),\n90:                     view);\n91: #endif\n92: }\n93: \n94: static void\n95: gimp_mypaint_brush_factory_view_dispose (GObject *object)\n96: {\n97:   GimpMypaintBrushFactoryView *view   = GIMP_MYPAINT_BRUSH_FACTORY_VIEW (object);\n98:   GimpContainerEditor  *editor = GIMP_CONTAINER_EDITOR (object);\n99: #if 0\n100:   if (view->spacing_changed_handler_id)\n101:     {\n102:       GimpDataFactory *factory;\n103:       GimpContainer   *container;\n104: \n105:       factory   = gimp_data_factory_view_get_data_factory (GIMP_DATA_FACTORY_VIEW (editor));\n106:       container = gimp_data_factory_get_container (factory);\n107:       gimp_container_remove_handler (container,\n108:                                      view->spacing_changed_handler_id);\n109: \n110:       view->spacing_changed_handler_id = 0;\n111:     }\n112: #endif\n113: "
+      },
+      {
+        "version": "legacy",
+        "path": "app/widgets/gimpmypaintbrushfactoryview.c",
+        "lines": [
+          137,
+          181
+        ],
+        "claim": "Factory constructor creates real native view; child spacing registration disabled; selection delegates to parent then has no active custom mutation.",
+        "sha256": "4eddc571281597847e98e0653042829e5551f32834f67289cc96b9e6e21d5218",
+        "excerpt": "137: \n138:   factory_view = g_object_new (GIMP_TYPE_MYPAINT_BRUSH_FACTORY_VIEW,\n139:                                \"view-type\",         view_type,\n140:                                \"data-factory\",      factory,\n141:                                \"context\",           context,\n142:                                \"view-size\",         view_size,\n143:                                \"view-border-width\", view_border_width,\n144:                                \"menu-factory\",      menu_factory,\n145:                                \"menu-identifier\",   \"<MypaintBrushes>\",\n146:                                \"ui-path\",           \"/mypaint-brushes-popup\",\n147:                                \"action-group\",      \"mypaint-brushes\",\n148:                                NULL);\n149: \n150: \n151:   editor = GIMP_CONTAINER_EDITOR (factory_view);\n152: #if 0\n153: \n154:   gtk_box_pack_end (GTK_BOX (editor->view), factory_view->spacing_scale,\n155:                     FALSE, FALSE, 0);\n156:   factory_view->spacing_changed_handler_id =\n157:     gimp_container_add_handler (gimp_data_factory_get_container (factory), \"spacing-changed\",\n158:                                 G_CALLBACK (gimp_mypaint_brush_factory_view_spacing_changed),\n159:                                 factory_view);\n160: #endif\n161:   return GTK_WIDGET (factory_view);\n162: }\n163: \n164: static void\n165: gimp_mypaint_brush_factory_view_select_item (GimpContainerEditor *editor,\n166:                                      GimpViewable        *viewable)\n167: {\n168:   GimpMypaintBrushFactoryView *view = GIMP_MYPAINT_BRUSH_FACTORY_VIEW (editor);\n169:   GimpContainer        *container;\n170: \n171:   if (GIMP_CONTAINER_EDITOR_CLASS (parent_class)->select_item)\n172:     GIMP_CONTAINER_EDITOR_CLASS (parent_class)->select_item (editor, viewable);\n173: \n174:   container = gimp_container_view_get_container (editor->view);\n175: \n176:   if (viewable && gimp_container_have (container, GIMP_OBJECT (viewable)))\n177:     {\n178:       GimpMypaintBrush *mypaint_brush = GIMP_MYPAINT_BRUSH (viewable);\n179: \n180: \n181:     }"
+      },
+      {
+        "version": "legacy",
+        "path": "app/dialogs/dialogs.c",
+        "lines": [
+          333,
+          334
+        ],
+        "claim": "List/grid family is registered.",
+        "sha256": "29a71e4d409e6ca1008bcdc126a8746257b25f98b49ad078684838abf36739ae",
+        "excerpt": "333:   LISTGRID (mypaint_brush, N_(\"Mypaint Brushes\"), NULL, GIMP_STOCK_BRUSH,\n334:             GIMP_HELP_MYPAINT_BRUSH_DIALOG, GIMP_VIEW_SIZE_MEDIUM),"
+      },
+      {
+        "version": "legacy",
+        "path": "app/dialogs/dialogs-constructors.c",
+        "lines": [
+          423,
+          434
+        ],
+        "claim": "Actual list constructor uses old mypaint_brush_factory.",
+        "sha256": "2ae84f4739a431cc19e6b4da048125e56200c2262a99d42626a4e95bb0f840cc",
+        "excerpt": "423: GtkWidget *\n424: dialogs_mypaint_brush_list_view_new (GimpDialogFactory *factory,\n425:                              GimpContext       *context,\n426:                              GimpUIManager     *ui_manager,\n427:                              gint               view_size)\n428: {\n429:   return gimp_mypaint_brush_factory_view_new (GIMP_VIEW_TYPE_LIST,\n430:                                       context->gimp->mypaint_brush_factory,\n431:                                       context,\n432:                                       view_size, 1,\n433:                                       gimp_dialog_factory_get_menu_factory (factory));\n434: }"
+      },
+      {
+        "version": "legacy",
+        "path": "app/dialogs/dialogs-constructors.c",
+        "lines": [
+          576,
+          587
+        ],
+        "claim": "Actual grid constructor uses same factory.",
+        "sha256": "2ae84f4739a431cc19e6b4da048125e56200c2262a99d42626a4e95bb0f840cc",
+        "excerpt": "576: GtkWidget *\n577: dialogs_mypaint_brush_grid_view_new (GimpDialogFactory *factory,\n578:                              GimpContext       *context,\n579:                              GimpUIManager     *ui_manager,\n580:                              gint               view_size)\n581: {\n582:   return gimp_mypaint_brush_factory_view_new (GIMP_VIEW_TYPE_GRID,\n583:                                       context->gimp->mypaint_brush_factory,\n584:                                       context,\n585:                                       view_size, 1,\n586:                                       gimp_dialog_factory_get_menu_factory (factory));\n587: }"
+      }
+    ],
+    "legacy_native_select": [
+      {
+        "version": "legacy",
+        "path": "app/widgets/gimpmypaintbrushselect.h",
+        "lines": [
+          39,
+          52
+        ],
+        "claim": "Native GimpPdbDialog instance only; extra properties are commented.",
+        "sha256": "6d531554f095e00bdf1851c56665a3bbd74617798f3f79fbaa67c8f9de489de7",
+        "excerpt": "39: struct _GimpMypaintBrushSelect\n40: {\n41:   GimpPdbDialog         parent_instance;\n42: \n43: /*  gdouble               initial_opacity; */\n44: /*  GimpLayerModeEffects  initial_mode; */\n45: \n46: /*  GtkWidget            *paint_mode_menu; */\n47: };\n48: \n49: struct _GimpMypaintBrushSelectClass\n50: {\n51:   GimpPdbDialogClass  parent_class;\n52: };"
+      },
+      {
+        "version": "legacy",
+        "path": "app/widgets/gimpmypaintbrushselect.c",
+        "lines": [
+          68,
+          115
+        ],
+        "claim": "Native GType and constructed method make grid FactoryView using the old MyPaint factory.",
+        "sha256": "b1cc0f775685ccfa29b4f95182eeda82dc44d6915847533523512ab3ddcbd095",
+        "excerpt": "68: G_DEFINE_TYPE (GimpMypaintBrushSelect, gimp_mypaint_brush_select, GIMP_TYPE_PDB_DIALOG)\n69: \n70: #define parent_class gimp_mypaint_brush_select_parent_class\n71: \n72: \n73: static void\n74: gimp_mypaint_brush_select_class_init (GimpMypaintBrushSelectClass *klass)\n75: {\n76:   GObjectClass       *object_class = G_OBJECT_CLASS (klass);\n77:   GimpPdbDialogClass *pdb_class    = GIMP_PDB_DIALOG_CLASS (klass);\n78: \n79:   object_class->constructed  = gimp_mypaint_brush_select_constructed;\n80:   object_class->set_property = gimp_mypaint_brush_select_set_property;\n81: \n82:   pdb_class->run_callback    = gimp_mypaint_brush_select_run_callback;\n83: }\n84: \n85: static void\n86: gimp_mypaint_brush_select_init (GimpMypaintBrushSelect *select)\n87: {\n88: }\n89: \n90: static void\n91: gimp_mypaint_brush_select_constructed (GObject *object)\n92: {\n93:   GimpPdbDialog   *dialog = GIMP_PDB_DIALOG (object);\n94:   GtkWidget       *content_area;\n95: \n96:   if (G_OBJECT_CLASS (parent_class)->constructed)\n97:     G_OBJECT_CLASS (parent_class)->constructed (object);\n98: \n99:   dialog->view =\n100:     gimp_mypaint_brush_factory_view_new (GIMP_VIEW_TYPE_GRID,\n101:                                  dialog->context->gimp->mypaint_brush_factory,\n102:                                  dialog->context,\n103:                                  GIMP_VIEW_SIZE_MEDIUM, 1,\n104:                                  dialog->menu_factory);\n105: \n106:   gimp_container_box_set_size_request (GIMP_CONTAINER_BOX (GIMP_CONTAINER_EDITOR (dialog->view)->view),\n107:                                        5 * (GIMP_VIEW_SIZE_MEDIUM + 2),\n108:                                        5 * (GIMP_VIEW_SIZE_MEDIUM + 2));\n109: \n110:   gtk_container_set_border_width (GTK_CONTAINER (dialog->view), 12);\n111: \n112:   content_area = gtk_dialog_get_content_area (GTK_DIALOG (dialog));\n113:   gtk_box_pack_start (GTK_BOX (content_area), dialog->view, TRUE, TRUE, 0);\n114:   gtk_widget_show (dialog->view);\n115: }"
+      },
+      {
+        "version": "legacy",
+        "path": "app/widgets/gimpmypaintbrushselect.c",
+        "lines": [
+          133,
+          168
+        ],
+        "claim": "run_callback exists but its PDB payload is #if 0 and active branch returns NULL; no functional payload is inferred.",
+        "sha256": "b1cc0f775685ccfa29b4f95182eeda82dc44d6915847533523512ab3ddcbd095",
+        "excerpt": "133:                                 GimpObject     *object,\n134:                                 gboolean        closing,\n135:                                 GError        **error)\n136: {\n137:   GimpMypaintBrush   *mypaint_brush = GIMP_MYPAINT_BRUSH (object);\n138:   GimpArray   *array;\n139:   GValueArray *return_vals;\n140:   g_print(\"gimp_mypaint_brush_select_run_callback\\n\");\n141: #if 0\n142:   array = gimp_array_new (temp_buf_get_data (mypaint_brush->mask),\n143:                           temp_buf_get_data_size (mypaint_brush->mask),\n144:                           TRUE);\n145: \n146:   return_vals =\n147:     gimp_pdb_execute_procedure_by_name (dialog->pdb,\n148:                                         dialog->caller_context,\n149:                                         NULL, error,\n150:                                         dialog->callback_name,\n151:                                         G_TYPE_STRING,        gimp_object_get_name (object),\n152:                                         G_TYPE_DOUBLE,        100,//gimp_context_get_opacity (dialog->context) * 100.0,\n153:                                         GIMP_TYPE_INT32,      1,//GIMP_MYPAINT_BRUSH_SELECT (dialog)->spacing,\n154:                                         GIMP_TYPE_INT32,      gimp_context_get_paint_mode (dialog->context),\n155:                                         GIMP_TYPE_INT32,      1,//mypaint_brush->mask->width,\n156:                                         GIMP_TYPE_INT32,      1,//mypaint_brush->mask->height,\n157:                                         GIMP_TYPE_INT32,      array->length,\n158:                                         GIMP_TYPE_INT8_ARRAY, array,\n159:                                         GIMP_TYPE_INT32,      closing,\n160:                                         G_TYPE_NONE);\n161: \n162:   gimp_array_free (array);\n163: #else\n164:   return_vals = NULL;\n165: #endif\n166: \n167:   return return_vals;\n168: }"
+      },
+      {
+        "version": "legacy",
+        "path": "app/gui/gui-vtable.c",
+        "lines": [
+          478,
+          502
+        ],
+        "claim": "Actual GIMP_TYPE_MYPAINT_BRUSH route chooses GIMP_TYPE_MYPAINT_BRUSH_SELECT and enters native dialog construction.",
+        "sha256": "89241d6851a7104883efe709afe9955efa9d6222f441b5a1e780f27a4a368085",
+        "excerpt": "478:   else if (gimp_container_get_children_type (container) == GIMP_TYPE_MYPAINT_BRUSH)\n479:     {\n480:       dialog_type = GIMP_TYPE_MYPAINT_BRUSH_SELECT;\n481:       dialog_role = \"gimp-mypaint-brush-selection\";\n482:       help_id     = GIMP_HELP_MYPAINT_BRUSH_DIALOG;\n483:     }\n484: \n485:   if (dialog_type != G_TYPE_NONE)\n486:     {\n487:       GimpObject *object = NULL;\n488: \n489:       if (object_name && strlen (object_name))\n490:         object = gimp_container_get_child_by_name (container, object_name);\n491: \n492:       if (! object)\n493:         object = gimp_context_get_by_type (context,\n494:                                            gimp_container_get_children_type (container));\n495: \n496:       if (object)\n497:         {\n498:           GParameter *params   = NULL;\n499:           gint        n_params = 0;\n500:           GtkWidget  *dialog;\n501:           GtkWidget  *view;\n502: "
+      },
+      {
+        "version": "legacy",
+        "path": "app/pdb/internal-procs.c",
+        "lines": [
+          84,
+          89
+        ],
+        "claim": "Application procedure initialization actually registers the MyPaint selector procedures.",
+        "sha256": "5e09ed4a2df064162feee5c956ffc538b1d25fa009c91b63861515b7e06d45a6",
+        "excerpt": "84:   register_transform_tools_procs (pdb);\n85:   register_undo_procs (pdb);\n86:   register_unit_procs (pdb);\n87:   register_vectors_procs (pdb);\n88:   register_mypaint_brush_select_procs (pdb);\n89: }"
+      },
+      {
+        "version": "legacy",
+        "path": "app/pdb/mypaint-brush-select-cmds.c",
+        "lines": [
+          38,
+          64
+        ],
+        "claim": "Registered PDB popup invoker calls native gimp_pdb_dialog_new with MyPaint factory container.",
+        "sha256": "f7003fbe221a55d5fe9438aab8f03cdd71a60a632ac9e4d5f1f8e79f40b2c320",
+        "excerpt": "38:                                GimpContext        *context,\n39:                                GimpProgress       *progress,\n40:                                const GValueArray  *args,\n41:                                GError            **error)\n42: {\n43:   gboolean success = TRUE;\n44:   const gchar *mypaint_brush_callback;\n45:   const gchar *popup_title;\n46:   const gchar *initial_brush;\n47: \n48:   mypaint_brush_callback = g_value_get_string (&args->values[0]);\n49:   popup_title = g_value_get_string (&args->values[1]);\n50:   initial_brush = g_value_get_string (&args->values[2]);\n51: \n52:   if (success)\n53:     {\n54:       if (gimp->no_interface ||\n55:           ! gimp_pdb_lookup_procedure (gimp->pdb, mypaint_brush_callback) ||\n56:           ! gimp_pdb_dialog_new (gimp, context, progress,\n57:                                  gimp_data_factory_get_container (gimp->mypaint_brush_factory),\n58:                                  popup_title, mypaint_brush_callback, initial_brush,\n59:                                  NULL))\n60:         success = FALSE;\n61:     }\n62: \n63:   return gimp_procedure_get_return_values (procedure, success,\n64:                                            error ? *error : NULL);"
+      }
+    ],
+    "legacy_cpp_owner_outside_forward_types": [
+      {
+        "version": "legacy",
+        "path": "app/tools/gimpmypaintoptions-gui.cpp",
+        "lines": [
+          353,
+          363
+        ],
+        "claim": "Detail popup actually allocates MypaintBrushEditorPrivate in TAB presentation.",
+        "sha256": "4e91b22f60dfa80f4d8a87672aa5ff545c909f18eb3cc2926413c1cbc5abb020",
+        "excerpt": "353: \n354:   //\n355:   // Dynamics Editor\n356:   // \n357:   MypaintBrushEditorPrivate* editor_priv = new MypaintBrushEditorPrivate(GIMP_TOOL_OPTIONS(context), MypaintBrushEditorPrivate::TAB);\n358:   editor_priv->set_page_reminder(&page_reminder);\n359:   GtkWidget* dynamics_editor = editor_priv->create();\n360:   gtk_widget_show(dynamics_editor);\n361:   \n362:   gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (dynamics_editor), TRUE, TRUE, 0);      \n363: }"
+      },
+      {
+        "version": "legacy",
+        "path": "app/tools/gimpmypaintoptions-gui.cpp",
+        "lines": [
+          541,
+          551
+        ],
+        "claim": "Tool-options entry actually allocates GUI and EditorPrivate instances.",
+        "sha256": "4e91b22f60dfa80f4d8a87672aa5ff545c909f18eb3cc2926413c1cbc5abb020",
+        "excerpt": "541: \n542: GtkWidget *\n543: gimp_mypaint_options_gui (GimpToolOptions *tool_options)\n544: {\n545:   g_print(\"MYPAINTOPTIONSGUI::create...\\n\");\n546:   MypaintOptionsGUIPrivate* priv = new MypaintOptionsGUIPrivate(tool_options, false);\n547:   MypaintBrushEditorPrivate* editor_priv = new MypaintBrushEditorPrivate(tool_options);\n548:   GtkWidget* priv_widget = priv->create();\n549:   GtkWidget* editor_widget = editor_priv->create();\n550: \n551:   GtkWidget* options_box = gtk_notebook_new();"
+      },
+      {
+        "version": "legacy",
+        "path": "app/tools/gimpmypaintoptions-gui.cpp",
+        "lines": [
+          516,
+          520
+        ],
+        "claim": "Options root owns behavior-options-private through free-key g_object_set_cxx_object.",
+        "sha256": "4e91b22f60dfa80f4d8a87672aa5ff545c909f18eb3cc2926413c1cbc5abb020",
+        "excerpt": "516:    }\n517: \n518:   g_object_set_cxx_object(G_OBJECT(vbox), \"behavior-options-private\", this);\n519:   gtk_widget_show(vbox);\n520:   return vbox;"
+      },
+      {
+        "version": "legacy",
+        "path": "app/tools/gimpmypaintbrusheditor.cpp",
+        "lines": [
+          135,
+          150
+        ],
+        "claim": "Curve tree owns CurveViewActions via behavior and connects selection/options/range notifications.",
+        "sha256": "79cffbb15ceda0d96ccb6b2e81dd7c7ac16a362a7b65b96c7eaad7192bc9c040",
+        "excerpt": "135:     y_max_adj     = y_max_adj_; \n136:     GtkTreeSelection* tree_sel = gtk_tree_view_get_selection(GTK_TREE_VIEW (tree_view));\n137:     input_setting = NULL;\n138: \n139:     g_object_set_cxx_object(G_OBJECT(tree_view), \"behavior\", this);\n140: \n141:     g_signal_connect_delegator (G_OBJECT(tree_sel), \"changed\", Delegators::delegator(this, &CurveViewActions::selected));\n142:     g_signal_connect_delegator (G_OBJECT(toggle), \"toggled\", Delegators::delegator(this, &CurveViewActions::toggled));\n143: \n144:     options_notify_handler      = g_signal_connect_delegator (G_OBJECT(options), \"notify\", Delegators::delegator(this, &CurveViewActions::notify_options));\n145:     x_min_adj_changed_handler   = g_signal_connect_delegator (G_OBJECT(x_min_adj), \"value-changed\", Delegators::delegator(this, &CurveViewActions::value_changed));\n146:     x_max_adj_changed_handler   = g_signal_connect_delegator (G_OBJECT(x_max_adj), \"value-changed\", Delegators::delegator(this, &CurveViewActions::value_changed));\n147:     y_min_adj_changed_handler   = g_signal_connect_delegator (G_OBJECT(y_min_adj), \"value-changed\", Delegators::delegator(this, &CurveViewActions::value_changed));\n148:     y_max_adj_changed_handler   = g_signal_connect_delegator (G_OBJECT(y_max_adj), \"value-changed\", Delegators::delegator(this, &CurveViewActions::value_changed));\n149:     curve_notify_handler        = NULL;\n150:   };"
+      },
+      {
+        "version": "legacy",
+        "path": "app/tools/gimpmypaintbrusheditor.cpp",
+        "lines": [
+          816,
+          823
+        ],
+        "claim": "Editor root owns behavior-editor-private.",
+        "sha256": "79cffbb15ceda0d96ccb6b2e81dd7c7ac16a362a7b65b96c7eaad7192bc9c040",
+        "excerpt": "816: \n817:   if (type == TAB && page_reminder) {\n818:     page_reminder->bind_to(GTK_NOTEBOOK(brushsetting_vbox));\n819:   }\n820:   \n821:   g_object_set_cxx_object(G_OBJECT(brushsetting_vbox), \"behavior-editor-private\", this);\n822:   return brushsetting_vbox;\n823: }"
+      },
+      {
+        "version": "legacy",
+        "path": "app/tools/gimpmypaint-gui-base.hpp",
+        "lines": [
+          87,
+          109
+        ],
+        "claim": "Numeric widget owns property behavior; explicit C++ state exists here, unlike the three native forward types.",
+        "sha256": "3bdbdfcf086f61621c3a8ea3ffe32cdc7d70d04f0534b3683b27fb20456aaea8",
+        "excerpt": "87:       \n88:     GtkWidget* create() {\n89:       gdouble range = setting->maximum - setting->minimum;\n90:       widget  = gimp_prop_spin_scale_new (G_OBJECT(options), \n91:                                           internal_name,\n92:                                           _(setting->displayed_name),\n93:                                           range / 1000.0, range / 100.0, 2);\n94:       g_object_add_weak_pointer(G_OBJECT(widget), (void**)&widget);\n95:       gimp_spin_scale_set_scale_limits (GIMP_SPIN_SCALE (widget), \n96:                                         setting->minimum, \n97:                                         setting->maximum);\n98: \n99: /*      value_changed_closure = \n100:         g_signal_connect_delegator(G_OBJECT(widget),\n101: \t\t\t\t   \"value-changed\",\n102: \t\t\t\t   Delegator::delegator(this, &Class::value_changed));\n103:       notify_closure = \n104:         g_signal_connect_delegator(G_OBJECT(options),\n105: \t\t\t\t   property_name,\n106: \t\t\t\t   Delegator::delegator(this, &Class::notify));*/\n107:       g_object_set_cxx_object (G_OBJECT(widget), \"behavior\", this);\n108: //      gtk_widget_set_size_request (widget, 200, -1);\n109:       return widget;"
+      }
+    ],
+    "canonical_painter_editor": [
+      {
+        "version": "current",
+        "path": "app/widgets/gimppaintermybrusheditor.cpp",
+        "lines": [
+          42,
+          47
+        ],
+        "claim": "Native GimpEditor/GimpDocked GType is preserved as the current canonical widget.",
+        "sha256": "09cbfacf9e51c00a3ce903354194b249ea66a1de43c4b8eddfed8de444aa3143",
+        "excerpt": "42: namespace MP = GimpPainter::MyPaint;\n43: static void docked_init (GimpDockedInterface *iface);\n44: G_DEFINE_TYPE_WITH_CODE (GimpPainterMybrushEditor, gimp_painter_mybrush_editor, GIMP_TYPE_EDITOR,\n45:                         G_IMPLEMENT_INTERFACE (GIMP_TYPE_DOCKED, docked_init))\n46: namespace {\n47: constexpr int preview_width = 256, preview_height = 256, preview_samples = 257;"
+      },
+      {
+        "version": "current",
+        "path": "app/widgets/gimppaintermybrusheditor.cpp",
+        "lines": [
+          115,
+          166
+        ],
+        "claim": "EditorImpl owns context/options, Connections, resource watches, preview and GTK lifetimes; EditorSlot names the unique C++ owner.",
+        "sha256": "09cbfacf9e51c00a3ce903354194b249ea66a1de43c4b8eddfed8de444aa3143",
+        "excerpt": "115:   GimpPainterMybrushEditor *owner; // owner contains the single slot\n116:   ObjectRef<GObject> context;\n117:   ObjectRef<GimpPainterMybrushOptions> options;\n118:   std::vector<Connection> connections;\n119:   Connection resource_changed[2];\n120:   ObjectRef<GObject> watched_resource[2];\n121:   std::vector<ObjectRef<GObject>> widgets; // keep destroyed controls alive across synchronous reentry\n122:   Source preview_source;\n123:   std::shared_ptr<PreviewJob> job;\n124:   ObjectRef<GObject> preview;\n125:   ObjectRef<GimpPainterMybrush> listed;\n126:   GtkWidget *root = nullptr, *status = nullptr, *preview_image = nullptr, *search = nullptr,\n127:     *tree = nullptr, *history = nullptr, *setting = nullptr, *input = nullptr, *graph = nullptr,\n128:     *point = nullptr, *px = nullptr, *py = nullptr, *name = nullptr, *tags = nullptr,\n129:     *save = nullptr, *rename = nullptr, *remove = nullptr;\n130:   std::vector<GtkWidget *> numeric, switches, texts;\n131:   GtkWidget *curve_enabled=nullptr;\n132:   GtkWidget *ranges[4]{};\n133:   int curve_setting=-1, curve_input=-1;\n134:   bool custom_range=false;\n135:   std::vector<MP::Point> curve;\n136:   std::uint64_t ui_revision = 0, requested = 0, published = 0;\n137:   bool horizontal = false, syncing = false, closed = false, replacing = false;\n138:   int dragged = -1;\n139:   double xmin = 0, xmax = 1, ymin = -1, ymax = 1;\n140:   explicit EditorImpl (GimpPainterMybrushEditor *o) : owner (o) {}\n141:   void detach () noexcept {\n142:     ++ui_revision; ++requested; preview_source.close (); job.reset (); preview.reset ();\n143:     connections.clear ();\n144:     for (auto& connection : resource_changed) connection.close ();\n145:     for (auto& resource : watched_resource) resource.reset ();\n146:     listed.reset (); options.reset (); context.reset ();\n147:   }\n148:   void close () noexcept { if (!closed) { closed = true; detach (); } }\n149:   GimpContext *ctx () const { return options ? GIMP_CONTEXT (options.get ()) : nullptr; }\n150:   MP::Resource snapshot () const { return PainterOptionsRef::retain (options.get ()).snapshot (); }\n151: };\n152: struct SyncScope {\n153:   EditorImpl& impl; std::uint64_t revision; bool previous;\n154:   explicit SyncScope(EditorImpl& i):impl(i),revision(i.ui_revision),previous(i.syncing){i.syncing=true;}\n155:   bool current() const noexcept {return !impl.closed&&impl.ui_revision==revision;}\n156:   ~SyncScope(){if(current())impl.syncing=previous;}\n157: };\n158: struct EditorSlot : SlotSpec<GimpPainterMybrushEditor, EditorImpl> {};\n159: BindingStore& store (GimpPainterMybrushEditor *editor) {\n160:   if (!GIMP_IS_PAINTER_MYBRUSH_EDITOR (editor)) throw Error (GIMP_PAINTER_ERROR_WRONG_TYPE, \"Expected painter brush editor\");\n161:   return BindingStore::require (G_OBJECT (editor));\n162: }\n163: struct Callback {\n164:   WeakRef<GimpPainterMybrushEditor> owner;\n165:   std::uint64_t generation, ui;\n166:   std::function<void (EditorImpl&)> run;"
+      },
+      {
+        "version": "current",
+        "path": "app/widgets/gimppaintermybrusheditor.cpp",
+        "lines": [
+          174,
+          185
+        ],
+        "claim": "Callback dispatch retains weak owner, verifies store generation and UI revision, and borrows the same EditorSlot.",
+        "sha256": "09cbfacf9e51c00a3ce903354194b249ea66a1de43c4b8eddfed8de444aa3143",
+        "excerpt": "174: }\n175: void dispatch (gpointer data) noexcept {\n176:   auto *cb = static_cast<Callback *> (data);\n177:   auto owner = cb->owner.lock ();\n178:   if (!owner) return;\n179:   auto *binding = BindingStore::find (G_OBJECT (owner.get ()));\n180:   if (!binding || !binding->accepts (cb->generation)) return;\n181:   /* Copy the callable before it can disconnect its own signal. */\n182:   const auto revision = cb->ui, generation = cb->generation; auto function = cb->run;\n183:   try { binding->with<EditorSlot> ([&] (EditorImpl& i) { if (!i.closed && i.ui_revision == revision && !i.syncing) function (i); }); }\n184:   catch (const std::exception& e) { if (binding->accepts(generation)) binding->with<EditorSlot> ([&](EditorImpl& i) { status (i,e.what()); }); }\n185:   catch (...) { if (binding->accepts(generation)) binding->with<EditorSlot> ([&](EditorImpl& i) { status (i,\"Unexpected painter editor error\"); }); }"
+      },
+      {
+        "version": "current",
+        "path": "app/widgets/gimppaintermybrusheditor.cpp",
+        "lines": [
+          311,
+          343
+        ],
+        "claim": "List uses painter_mybrush_factory and strong resource snapshots; user selection passes through canonical Context APIs.",
+        "sha256": "09cbfacf9e51c00a3ce903354194b249ea66a1de43c4b8eddfed8de444aa3143",
+        "excerpt": "311:   for(auto*l=gimp_tagged_get_tags(GIMP_TAGGED(b));l;l=l->next){if(!result.empty())result+=\", \";result+=gimp_tag_get_name(GIMP_TAG(l->data));}return result;\n312: }\n313: void rebuild_list(EditorImpl&i) {\n314:   if(!i.tree||!i.options||i.closed)return;\n315:   auto options=i.options;auto*ctx=GIMP_CONTEXT(options.get());\n316:   auto model_owner=ObjectRef<GObject>::retain(G_OBJECT(gtk_tree_view_get_model(GTK_TREE_VIEW(i.tree))));\n317:   auto*model=GTK_LIST_STORE(model_owner.get());\n318:   String needle(g_utf8_casefold(gtk_entry_get_text(GTK_ENTRY(i.search)),-1));\n319:   auto*container=gimp_data_factory_get_container(ctx->gimp->painter_mybrush_factory);\n320:   std::vector<ObjectRef<GimpPainterMybrush>> resources;\n321:   for(int n=0;n<gimp_container_get_n_children(container);++n)\n322:     resources.push_back(ObjectRef<GimpPainterMybrush>::retain(GIMP_PAINTER_MYBRUSH(gimp_container_get_child_by_index(container,n))));\n323:   SyncScope sync(i);gtk_list_store_clear(model);if(!sync.current())return;\n324:   for(const auto&owner:resources){\n325:     auto*b=owner.get();const char*name=gimp_object_get_name(b);auto tags=resource_tags(b);\n326:     String haystack(g_utf8_casefold((std::string(name?name:\"\")+\" \"+tags).c_str(),-1));\n327:     if(*needle.get()&&!strstr(haystack.get(),needle.get()))continue;\n328:     auto icon=ObjectRef<GObject>::adopt(G_OBJECT(gimp_painter_mybrush_ref_icon(b)));\n329:     ObjectRef<GObject> small;if(icon)small=ObjectRef<GObject>::adopt(G_OBJECT(gdk_pixbuf_scale_simple(GDK_PIXBUF(icon.get()),32,32,GDK_INTERP_BILINEAR)));\n330:     GtkTreeIter iter;gtk_list_store_append(model,&iter);if(!sync.current())return;\n331:     gtk_list_store_set(model,&iter,COL_RESOURCE,b,COL_ICON,small.get(),COL_NAME,name,COL_TAGS,tags.c_str(),-1);if(!sync.current())return;\n332:     if(b==gimp_context_get_painter_mybrush(ctx))gtk_tree_selection_select_iter(gtk_tree_view_get_selection(GTK_TREE_VIEW(i.tree)),&iter);\n333:     if(!sync.current())return;\n334:   }\n335:   i.listed=ObjectRef<GimpPainterMybrush>::retain(gimp_context_get_painter_mybrush(ctx));\n336: }\n337: void select_list(EditorImpl&i) {\n338:   GtkTreeModel*model;GtkTreeIter iter;\n339:   if(!gtk_tree_selection_get_selected(gtk_tree_view_get_selection(GTK_TREE_VIEW(i.tree)),&model,&iter))return;\n340:   GimpPainterMybrush*b=nullptr;gtk_tree_model_get(model,&iter,COL_RESOURCE,&b,-1);auto hold=ObjectRef<GimpPainterMybrush>::adopt(b);\n341:   gimp_context_set_painter_mybrush(i.ctx(),b);\n342:   if(!i.closed&&i.context&&GIMP_CONTEXT(i.context.get())!=i.ctx())gimp_context_set_painter_mybrush(GIMP_CONTEXT(i.context.get()),b);\n343: }"
+      },
+      {
+        "version": "current",
+        "path": "app/widgets/gimppaintermybrusheditor.cpp",
+        "lines": [
+          457,
+          474
+        ],
+        "claim": "Actual native tree/model constructed; selection changed connects to select_list in the same EditorImpl.",
+        "sha256": "09cbfacf9e51c00a3ce903354194b249ea66a1de43c4b8eddfed8de444aa3143",
+        "excerpt": "457:   auto*root=gtk_box_new(i.horizontal?GTK_ORIENTATION_HORIZONTAL:GTK_ORIENTATION_VERTICAL,6);\n458:   auto*viewport=gtk_scrolled_window_new(nullptr,nullptr);\n459:   gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(viewport),GTK_POLICY_AUTOMATIC,GTK_POLICY_AUTOMATIC);\n460:   gtk_scrolled_window_set_min_content_height(GTK_SCROLLED_WINDOW(viewport),360);\n461:   gtk_container_add(GTK_CONTAINER(viewport),root);i.root=viewport;pack(GTK_WIDGET(i.owner),viewport,true);\n462:   auto*left=gtk_box_new(GTK_ORIENTATION_VERTICAL,4),*right=gtk_box_new(GTK_ORIENTATION_VERTICAL,4);pack(root,left,true);pack(root,right,true);\n463:   i.search=named(gtk_search_entry_new(),\"painter-brush-search\");gtk_entry_set_placeholder_text(GTK_ENTRY(i.search),_(\"Search brushes, groups and tags\"));pack(left,i.search);\n464:   auto*list=gtk_list_store_new(N_COLUMNS,GIMP_TYPE_PAINTER_MYBRUSH,GDK_TYPE_PIXBUF,G_TYPE_STRING,G_TYPE_STRING);\n465:   i.tree=named(gtk_tree_view_new_with_model(GTK_TREE_MODEL(list)),\"painter-brush-list\");g_object_unref(list);\n466:   gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(i.tree),-1,\"\",gtk_cell_renderer_pixbuf_new(),\"pixbuf\",COL_ICON,nullptr);\n467:   gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(i.tree),-1,_(\"Brush\"),gtk_cell_renderer_text_new(),\"text\",COL_NAME,nullptr);\n468:   gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(i.tree),-1,_(\"Tags\"),gtk_cell_renderer_text_new(),\"text\",COL_TAGS,nullptr);\n469:   auto*scroll=gtk_scrolled_window_new(nullptr,nullptr);gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scroll),GTK_POLICY_AUTOMATIC,GTK_POLICY_AUTOMATIC);gtk_widget_set_size_request(scroll,240,155);gtk_container_add(GTK_CONTAINER(scroll),i.tree);pack(left,scroll,true);\n470:   connect(i,i.search,\"changed\",G_CALLBACK(simple_cb),rebuild_list);connect(i,gtk_tree_view_get_selection(GTK_TREE_VIEW(i.tree)),\"changed\",G_CALLBACK(simple_cb),select_list);\n471:   i.name=named(gtk_entry_new(),\"painter-brush-name\");gtk_editable_set_editable(GTK_EDITABLE(i.name),FALSE);row(left,_(\"Brush\"),i.name);\n472:   i.tags=named(gtk_entry_new(),\"painter-brush-tags\");row(left,_(\"Tags (comma separated)\"),i.tags);\n473:   connect(i,i.tags,\"activate\",G_CALLBACK(simple_cb),[](EditorImpl&i){auto*b=gimp_context_get_painter_mybrush(i.ctx());if(!b)return;gchar**names=g_strsplit(gtk_entry_get_text(GTK_ENTRY(i.tags)),\",\",-1);GList*tags=nullptr;for(int n=0;names[n];++n){g_strstrip(names[n]);if(*names[n]){auto*t=gimp_tag_new(names[n]);if(t)tags=g_list_prepend(tags,t);}}gimp_tagged_set_tags(GIMP_TAGGED(b),tags);g_list_free_full(tags,g_object_unref);g_strfreev(names);rebuild_list(i);});\n474:   auto*actions=gtk_box_new(GTK_ORIENTATION_HORIZONTAL,2);pack(left,actions);"
+      },
+      {
+        "version": "current",
+        "path": "app/widgets/gimppaintermybrusheditor.cpp",
+        "lines": [
+          525,
+          543
+        ],
+        "claim": "Ordinary context, options and factory notifications all route to the owned slot connections.",
+        "sha256": "09cbfacf9e51c00a3ce903354194b249ea66a1de43c4b8eddfed8de444aa3143",
+        "excerpt": "525:     connect(i,i.context.get(),\"painter-mybrush-changed\",G_CALLBACK(object_cb),[](EditorImpl&i){\n526:       GError*error=nullptr;\n527:       auto model=ObjectRef<GimpPainterMybrushOptions>::adopt(gimp_painter_mybrush_options_ref_for_context(GIMP_CONTEXT(i.context.get()),&error));\n528:       checked(bool(model),error);\n529:     });\n530:   connect(i,i.options.get(),\"settings-changed\",G_CALLBACK(simple_cb),refresh);\n531:   connect(i,i.options.get(),\"history-changed\",G_CALLBACK(simple_cb),refresh_history);\n532:   connect(i,i.options.get(),\"prop-name-changed\",G_CALLBACK(context_name_cb),[](EditorImpl&i){rebuild_list(i);refresh(i);});\n533:   connect(i,i.options.get(),\"notify::painter-conflict\",G_CALLBACK(notify_cb),refresh);\n534:   connect(i,i.options.get(),\"foreground-changed\",G_CALLBACK(object_cb),request_preview);\n535:   connect(i,i.options.get(),\"background-changed\",G_CALLBACK(object_cb),request_preview);\n536:   connect(i,i.options.get(),\"brush-changed\",G_CALLBACK(object_cb),request_preview);\n537:   connect(i,i.options.get(),\"pattern-changed\",G_CALLBACK(object_cb),request_preview);\n538:   auto*container=gimp_data_factory_get_container(i.ctx()->gimp->painter_mybrush_factory);\n539:   connect(i,container,\"add\",G_CALLBACK(object_cb),rebuild_list);connect(i,container,\"remove\",G_CALLBACK(object_cb),rebuild_list);\n540:   for (auto *w : {i.root, root, i.curve_enabled, i.ranges[0], i.ranges[1], i.ranges[2], i.ranges[3], i.status, i.preview_image, i.search, i.tree, i.history, i.setting, i.input, i.graph, i.point, i.px, i.py, i.name, i.tags, i.save, i.rename, i.remove})\n541:     i.widgets.push_back(ObjectRef<GObject>::retain(G_OBJECT(w)));\n542:   for (const auto& controls : {i.numeric, i.switches, i.texts})\n543:     for (auto *w : controls) i.widgets.push_back(ObjectRef<GObject>::retain(G_OBJECT(w)));"
+      },
+      {
+        "version": "current",
+        "path": "app/widgets/gimppaintermybrusheditor.cpp",
+        "lines": [
+          545,
+          606
+        ],
+        "claim": "constructed activates; destroy/dispose close; init emplaces EditorSlot; C context API and popup use same implementation.",
+        "sha256": "09cbfacf9e51c00a3ce903354194b249ea66a1de43c4b8eddfed8de444aa3143",
+        "excerpt": "545: }\n546: void constructed(GObject*object) {\n547:   G_OBJECT_CLASS(gimp_painter_mybrush_editor_parent_class)->constructed(object);\n548:   auto*e=GIMP_PAINTER_MYBRUSH_EDITOR(object);if(!e->binding_failed)e->binding_failed=!boundary<bool>(nullptr,false,[&]{store(e).activate();return true;});\n549: }\n550: void destroy(GtkWidget*widget) {\n551:   gimp_painter_binding_close(G_OBJECT(widget),nullptr);\n552:   GTK_WIDGET_CLASS(gimp_painter_mybrush_editor_parent_class)->destroy(widget);\n553: }\n554: void dispose(GObject*object) {gimp_painter_binding_close(object,nullptr);G_OBJECT_CLASS(gimp_painter_mybrush_editor_parent_class)->dispose(object);}\n555: }\n556: static void gimp_painter_mybrush_editor_class_init(GimpPainterMybrushEditorClass*klass) {\n557:   G_OBJECT_CLASS(klass)->constructed=constructed;G_OBJECT_CLASS(klass)->dispose=dispose;GTK_WIDGET_CLASS(klass)->destroy=destroy;\n558:   g_signal_new(\"preview-ready\",G_TYPE_FROM_CLASS(klass),G_SIGNAL_RUN_LAST,0,nullptr,nullptr,nullptr,G_TYPE_NONE,1,G_TYPE_UINT64);\n559: }\n560: static void gimp_painter_mybrush_editor_init(GimpPainterMybrushEditor*editor) {\n561:   editor->binding_failed=!boundary<bool>(nullptr,false,[&]{BindingStore::ensure(G_OBJECT(editor)).emplace<EditorSlot>(editor);return true;});\n562: }\n563: static void docked_init(GimpDockedInterface*iface) {\n564:   iface->set_context=+[](GimpDocked*d,GimpContext*c){\n565:     auto*editor=GIMP_PAINTER_MYBRUSH_EDITOR(d);\n566:     if(c)gimp_painter_mybrush_editor_set_context(editor,c,nullptr);\n567:     else boundary_void(nullptr,[&]{store(editor).with<EditorSlot>([](EditorImpl&i){\n568:       i.detach();if(i.root)gtk_widget_destroy(i.root);i.root=nullptr;\n569:       i.widgets.clear();i.numeric.clear();i.switches.clear();i.texts.clear();\n570:     });});\n571:   };\n572:   iface->get_title=+[](GimpDocked*)->gchar*{return g_strdup(_(\"Painter MyPaint Brush Editor\"));};\n573: }\n574: gboolean gimp_painter_mybrush_editor_set_context(GimpPainterMybrushEditor*editor,GimpContext*context,GError**error) {\n575:   return boundary<gboolean>(error,FALSE,[&]()->gboolean {\n576:     auto lease=PainterEditorRef::retain(editor);\n577:     return store(editor).with<EditorSlot>([&](EditorImpl&i)->gboolean {\n578:       if(i.replacing)throw Error(GIMP_PAINTER_ERROR_INVALID_STATE,\"Editor context replacement is already in progress\");\n579:       struct Replacing { bool& value; explicit Replacing(bool& v):value(v){value=true;} ~Replacing(){value=false;} } replacing(i.replacing);\n580:       GError*failure=nullptr;\n581:       auto options=ObjectRef<GimpPainterMybrushOptions>::adopt(gimp_painter_mybrush_options_ref_for_context(context,&failure));checked(bool(options),failure);\n582:       auto owned=ObjectRef<GObject>::retain(G_OBJECT(context));\n583:       if(i.closed)throw Error(GIMP_PAINTER_ERROR_CLOSED,\"Editor closed while acquiring context\");\n584:       if(i.context.get()==G_OBJECT(context)&&i.options.get()==options.get())return TRUE;\n585:       i.detach();\n586:       auto old_widgets=std::move(i.widgets);\n587:       if(i.root)gtk_widget_destroy(i.root);\n588:       i.root=nullptr;i.numeric.clear();i.switches.clear();i.texts.clear();i.custom_range=false;i.curve_setting=i.curve_input=-1;\n589:       if(i.closed)throw Error(GIMP_PAINTER_ERROR_CLOSED,\"Editor closed during context replacement\");\n590:       i.context=std::move(owned);i.options=std::move(options);build(i);\n591:       return i.closed?FALSE:TRUE;\n592:     });\n593:   });\n594: }\n595: GtkWidget*gimp_painter_mybrush_editor_new(GimpContext*context,gboolean horizontal,GError**error) {\n596:   return boundary<GtkWidget*>(error,nullptr,[&]()->GtkWidget* {\n597:     auto*e=GIMP_PAINTER_MYBRUSH_EDITOR(g_object_new(GIMP_TYPE_PAINTER_MYBRUSH_EDITOR,nullptr));\n598:     auto hold=ObjectRef<GimpPainterMybrushEditor>::sink(e);store(e).with<EditorSlot>([&](EditorImpl&i){i.horizontal=horizontal;});\n599:     if(!gimp_painter_mybrush_editor_set_context(e,context,error))return nullptr;\n600:     g_object_force_floating(G_OBJECT(e));return GTK_WIDGET(hold.release());\n601:   });\n602: }\n603: GtkWidget*gimp_painter_mybrush_editor_popup(GimpContext*context,GtkWidget*parent,GError**error) {\n604:   auto*editor=gimp_painter_mybrush_editor_new(context,TRUE,error);if(!editor)return nullptr;\n605:   auto*window=gtk_window_new(GTK_WINDOW_TOPLEVEL);gtk_window_set_title(GTK_WINDOW(window),_(\"Painter MyPaint Brush Editor\"));gtk_window_set_default_size(GTK_WINDOW(window),860,630);\n606:   if(parent&&GTK_IS_WINDOW(gtk_widget_get_toplevel(parent)))gtk_window_set_transient_for(GTK_WINDOW(window),GTK_WINDOW(gtk_widget_get_toplevel(parent)));"
+      },
+      {
+        "version": "current",
+        "path": "app/paint/painter-mypaint-surface/gimp-painter-options.cpp",
+        "lines": [
+          458,
+          483
+        ],
+        "claim": "Ordinary contexts acquire the registered shared Options; only a real Options GType is directly used.",
+        "sha256": "ca6cd5749e6c36a689051ab45824db222597a5635ea1da74ac84ed3fb490b66c",
+        "excerpt": "458: GimpPainterMybrushOptions*gimp_painter_mybrush_options_ref_for_context(GimpContext*context,GError**error)\n459: {\n460:   return boundary<GimpPainterMybrushOptions*>(error,nullptr,[&]{\n461:     if(!GIMP_IS_CONTEXT(context))throw Error(GIMP_PAINTER_ERROR_WRONG_TYPE,\"Expected a valid GimpContext\");\n462:     if(!context->gimp)throw Error(GIMP_PAINTER_ERROR_CLOSED,\"Painter editor context is disposed\");\n463:     auto context_owner=ObjectRef<GObject>::retain(G_OBJECT(context));\n464:     if(GIMP_IS_PAINTER_MYBRUSH_OPTIONS(context)) {\n465:       auto*options=GIMP_PAINTER_MYBRUSH_OPTIONS(context);store(options).with<OptionsSlot>([](const OptionsImpl&){});\n466:       return GIMP_PAINTER_MYBRUSH_OPTIONS(g_object_ref(options));\n467:     }\n468:     auto*info=gimp_context_get_tool(context);\n469:     if(!info||!GIMP_IS_PAINTER_MYBRUSH_OPTIONS(info->tool_options))info=GIMP_TOOL_INFO(gimp_container_get_child_by_name(context->gimp->tool_info_list,\"gimp-painter-mypaint-tool\"));\n470:     if(!info||!GIMP_IS_PAINTER_MYBRUSH_OPTIONS(info->tool_options))throw std::runtime_error(\"Painter brush options are not registered in this context\");\n471:     auto target=ObjectRef<GimpPainterMybrushOptions>::retain(GIMP_PAINTER_MYBRUSH_OPTIONS(info->tool_options));\n472:     store(target.get()).with<OptionsSlot>([](const OptionsImpl&){});\n473:     auto*selected=gimp_context_get_painter_mybrush(context);\n474:     if(!selected)selected=GIMP_PAINTER_MYBRUSH(gimp_painter_mybrush_get_standard(context));\n475:     auto resource=ObjectRef<GimpPainterMybrush>::retain(selected);\n476:     if(gimp_context_get_painter_mybrush(GIMP_CONTEXT(target.get()))!=selected)\n477:       gimp_context_set_painter_mybrush(GIMP_CONTEXT(target.get()),selected);\n478:     if(gimp_context_get_painter_mybrush(GIMP_CONTEXT(target.get()))!=selected)\n479:       throw std::runtime_error(\"Brush selection changed while opening the shared painter editor\");\n480:     store(target.get()).with<OptionsSlot>([](const OptionsImpl&){});\n481:     return target.release();\n482:   });\n483: }"
+      },
+      {
+        "version": "current",
+        "path": "app/dialogs/dialogs.c",
+        "lines": [
+          364,
+          366
+        ],
+        "claim": "Current Painter dock registration.",
+        "sha256": "1ac5082fa888ca45039266ed7e187d1ee2a0e7baea47c766619a497d616d093c",
+        "excerpt": "364:   DOCKABLE (\"gimp-painter-mypaint-editor\", N_(\"Painter MyPaint Brush Editor\"),\n365:             N_(\"Painter MyPaint Brushes\"), GIMP_ICON_MYPAINT_BRUSH, NULL,\n366:             dialogs_painter_mypaint_editor_new, GIMP_VIEW_SIZE_LARGE, FALSE),"
+      },
+      {
+        "version": "current",
+        "path": "app/dialogs/dialogs-constructors.c",
+        "lines": [
+          928,
+          937
+        ],
+        "claim": "Current registered Painter dock constructor calls canonical C API.",
+        "sha256": "b206cf1c0fc5df5bb9fca661cb6601dd11234e8e742522cf7f8061022c152a50",
+        "excerpt": "928: GtkWidget *dialogs_painter_mypaint_editor_new (GimpDialogFactory *factory,\n929:                                              GimpContext *context,\n930:                                              GimpUIManager *manager, gint size)\n931: {\n932:   GError *error = NULL;\n933:   GtkWidget *editor = gimp_painter_mybrush_editor_new (context, FALSE, &error);\n934:   if (error)\n935:     { gimp_message_literal (context->gimp, NULL, GIMP_MESSAGE_ERROR, error->message); g_clear_error (&error); }\n936:   return editor;\n937: }"
+      },
+      {
+        "version": "current",
+        "path": "app/tools/gimppaintermybrushtool.cpp",
+        "lines": [
+          267,
+          274
+        ],
+        "claim": "Actual Painter tool-options GUI creates the same canonical editor.",
+        "sha256": "255f679a0ce50c13106fe72f0dcc45b07db7ac568dfbfb6224e5ccb8bc4c8353",
+        "excerpt": "267: GtkWidget*options_gui(GimpToolOptions*options)\n268: {\n269:   auto*box=gimp_tool_options_gui(options);GError*error=nullptr;\n270:   auto*editor=gimp_painter_mybrush_editor_new(GIMP_CONTEXT(options),FALSE,&error);\n271:   if(editor){gtk_box_pack_start(GTK_BOX(box),editor,FALSE,FALSE,0);gtk_widget_show(editor);}\n272:   else{auto*label=gtk_label_new(error?error->message:_(\"Unable to open the painter brush editor\"));gtk_box_pack_start(GTK_BOX(box),label,FALSE,FALSE,0);gtk_widget_show(label);g_clear_error(&error);}\n273:   return box;\n274: }"
+      }
+    ],
+    "modern_standard_native_factory": [
+      {
+        "version": "current",
+        "path": "app/dialogs/dialogs.c",
+        "lines": [
+          346,
+          348
+        ],
+        "claim": "Standard MyPaint list/grid remains a distinct registered family.",
+        "sha256": "1ac5082fa888ca45039266ed7e187d1ee2a0e7baea47c766619a497d616d093c",
+        "excerpt": "346:   LISTGRID (mypaint-brush, mypaint_brush,\n347:             N_(\"MyPaint Brushes\"), NULL, GIMP_ICON_MYPAINT_BRUSH,\n348:             GIMP_HELP_MYPAINT_BRUSH_DIALOG, GIMP_VIEW_SIZE_LARGE),"
+      },
+      {
+        "version": "current",
+        "path": "app/dialogs/dialogs-constructors.c",
+        "lines": [
+          438,
+          452
+        ],
+        "claim": "Standard list uses native GimpDataFactoryView and mybrush_factory, not painter_mybrush_factory.",
+        "sha256": "b206cf1c0fc5df5bb9fca661cb6601dd11234e8e742522cf7f8061022c152a50",
+        "excerpt": "438: GtkWidget *\n439: dialogs_mypaint_brush_list_view_new (GimpDialogFactory *factory,\n440:                                      GimpContext       *context,\n441:                                      GimpUIManager     *ui_manager,\n442:                                      gint               view_size)\n443: {\n444:   return gimp_data_factory_view_new (GIMP_VIEW_TYPE_LIST,\n445:                                      context->gimp->mybrush_factory,\n446:                                      context,\n447:                                      view_size, 1,\n448:                                      menus_get_global_menu_factory (context->gimp),\n449:                                      \"<MyPaintBrushes>\",\n450:                                      \"/mypaint-brushes-popup\",\n451:                                      \"mypaint-brushes\");\n452: }"
+      },
+      {
+        "version": "current",
+        "path": "app/dialogs/dialogs-constructors.c",
+        "lines": [
+          607,
+          621
+        ],
+        "claim": "Standard grid uses same native provider.",
+        "sha256": "b206cf1c0fc5df5bb9fca661cb6601dd11234e8e742522cf7f8061022c152a50",
+        "excerpt": "607: GtkWidget *\n608: dialogs_mypaint_brush_grid_view_new (GimpDialogFactory *factory,\n609:                                      GimpContext       *context,\n610:                                      GimpUIManager     *ui_manager,\n611:                                      gint               view_size)\n612: {\n613:   return gimp_data_factory_view_new (GIMP_VIEW_TYPE_GRID,\n614:                                      context->gimp->mybrush_factory,\n615:                                      context,\n616:                                      view_size, 1,\n617:                                      menus_get_global_menu_factory (context->gimp),\n618:                                      \"<MyPaintBrushes>\",\n619:                                      \"/mypaint-brushes-popup\",\n620:                                      \"mypaint-brushes\");\n621: }"
+      },
+      {
+        "version": "current",
+        "path": "app/widgets/gimpviewablebox.c",
+        "lines": [
+          214,
+          232
+        ],
+        "claim": "Standard MyPaint selection box opens the standard list/grid dock family.",
+        "sha256": "fe87f0728ffe5fd348a14ccdfbc432d372fc7addd93730829723044b244b36ab",
+        "excerpt": "214: static GtkWidget *\n215: mybrush_box_new (GimpContainer *container,\n216:                  GimpContext   *context,\n217:                  const gchar   *label,\n218:                  gint           spacing,\n219:                  GimpViewType   view_type,\n220:                  GimpViewSize   view_size)\n221: {\n222:   if (! container)\n223:     container = gimp_data_factory_get_container (context->gimp->mybrush_factory);\n224: \n225:   return gimp_viewable_box_new (container, context, label, spacing,\n226:                                 view_type, GIMP_VIEW_SIZE_LARGE, view_size,\n227:                                 \"gimp-mypaint-brush-grid|gimp-mypaint-brush-list\",\n228:                                 GIMP_ICON_BRUSH,\n229:                                 _(\"Open the MyPaint brush selection dialog\"),\n230:                                 NULL, NULL);\n231: }\n232: "
+      },
+      {
+        "version": "current",
+        "path": "app/tools/gimpmybrushoptions-gui.c",
+        "lines": [
+          45,
+          69
+        ],
+        "claim": "Standard tool-options GUI actually creates the standard MyPaint box.",
+        "sha256": "360a23dc116ceb260c4975fb5811ece0d8c50dc0049efb58169199b9aaa9e3b3",
+        "excerpt": "45: gimp_mybrush_options_gui (GimpToolOptions *tool_options)\n46: {\n47:   GObject   *config = G_OBJECT (tool_options);\n48:   GtkWidget *vbox   = gimp_paint_options_gui (tool_options);\n49:   GtkWidget *vbox2;\n50:   GtkWidget *button;\n51:   GtkWidget *scale;\n52:   GtkWidget *combo_box;\n53:   GtkWidget *frame;\n54: \n55:   /* Since MyPaint Brushes have their own custom sliders for brush options,\n56:    * we'll need to shift them up to match the layout of other brushes */\n57:   vbox2 = gtk_box_new (GTK_ORIENTATION_VERTICAL, 4);\n58:   gtk_box_pack_start (GTK_BOX (vbox), vbox2, FALSE, FALSE, 0);\n59:   gtk_widget_set_visible (vbox2, TRUE);\n60:   gtk_box_reorder_child (GTK_BOX (vbox), vbox2, 2);\n61: \n62:   /* the brush */\n63:   button = gimp_prop_mybrush_box_new (NULL, GIMP_CONTEXT (tool_options),\n64:                                       _(\"Brush\"), 2,\n65:                                       NULL, NULL);\n66:   gtk_box_pack_start (GTK_BOX (vbox2), button, FALSE, FALSE, 0);\n67: \n68:   /* radius */\n69:   scale = gimp_prop_spin_scale_new (config, \"radius\","
+      },
+      {
+        "version": "current",
+        "path": "app/widgets/gimpdatafactoryview.c",
+        "lines": [
+          357,
+          367
+        ],
+        "claim": "Native C private data owns and releases tagged container, factory, action-group string.",
+        "sha256": "7daa4d8fe1105f21b66bfc012a21bff758081cbd1e223321aac4e8cf7df2621f",
+        "excerpt": "357: gimp_data_factory_view_dispose (GObject *object)\n358: {\n359:   GimpDataFactoryView *factory_view = GIMP_DATA_FACTORY_VIEW (object);\n360: \n361:   g_clear_object (&factory_view->priv->tagged_container);\n362:   g_clear_object (&factory_view->priv->factory);\n363: \n364:   g_clear_pointer (&factory_view->priv->action_group, g_free);\n365: \n366:   G_OBJECT_CLASS (parent_class)->dispose (object);\n367: }"
+      },
+      {
+        "version": "current",
+        "path": "app/widgets/gimpcontainereditor.c",
+        "lines": [
+          294,
+          307
+        ],
+        "claim": "Native parent releases context/container/menu refs in dispose.",
+        "sha256": "bd3e8aac9a5bace162784a2b53aa75fa2ca4b5d634a38423f699bb129f45c9a0",
+        "excerpt": "294: gimp_container_editor_dispose (GObject *object)\n295: {\n296:   GimpContainerEditor *editor = GIMP_CONTAINER_EDITOR (object);\n297: \n298:   gimp_container_editor_bind_to_async_set (editor, NULL, NULL);\n299: \n300:   g_clear_object (&editor->priv->container);\n301:   g_clear_object (&editor->priv->context);\n302:   g_clear_object (&editor->priv->menu_factory);\n303: \n304:   g_clear_pointer (&editor->priv->menu_identifier, g_free);\n305:   g_clear_pointer (&editor->priv->ui_path,         g_free);\n306: \n307:   G_OBJECT_CLASS (parent_class)->dispose (object);"
+      },
+      {
+        "version": "current",
+        "path": "app/widgets/gimpcontainerview.c",
+        "lines": [
+          643,
+          688
+        ],
+        "claim": "Actual selection route retains context across context setter and reentrant callbacks.",
+        "sha256": "010837fadd682d0daf16f49f6c25d6a92999e329862dcd84030c9d31bc323d93",
+        "excerpt": "643: /*  Private functions  */\n644: \n645: static void\n646: gimp_container_view_real_selection_changed (GimpContainerView *view)\n647: {\n648:   GimpContainerViewPrivate *private = GIMP_CONTAINER_VIEW_GET_PRIVATE (view);\n649: \n650:   if (private->container && private->context)\n651:     {\n652:       GType child_type = gimp_container_get_child_type (private->container);\n653: \n654:       if (gimp_context_type_to_signal_name (child_type))\n655:         {\n656:           GList *items = NULL;\n657:           gint   n_items;\n658: \n659:           n_items = gimp_container_view_get_selected (view, &items);\n660: \n661:           if (n_items == 1 &&\n662:               gimp_context_get_by_type (private->context, child_type) !=\n663:               GIMP_OBJECT (items->data))\n664:             {\n665:               GimpContext *context;\n666: \n667:               /*  ref and remember the context because\n668:                *  private->context may become NULL by calling\n669:                *  gimp_context_set_by_type()\n670:                */\n671:               context = g_object_ref (private->context);\n672: \n673:               g_signal_handlers_block_by_func (context,\n674:                                                gimp_container_view_context_changed,\n675:                                                view);\n676: \n677:               gimp_context_set_by_type (context, child_type, items->data);\n678: \n679:               g_signal_handlers_unblock_by_func (context,\n680:                                                  gimp_container_view_context_changed,\n681:                                                  view);\n682: \n683:               g_object_unref (context);\n684:             }\n685: \n686:           g_list_free (items);\n687:         }\n688:     }"
+      },
+      {
+        "version": "current",
+        "path": "app/widgets/gimpcontainerview.c",
+        "lines": [
+          849,
+          879
+        ],
+        "claim": "Old context signal disconnected on replacement; new context drives view selection.",
+        "sha256": "010837fadd682d0daf16f49f6c25d6a92999e329862dcd84030c9d31bc323d93",
+        "excerpt": "849: static void\n850: gimp_container_view_disconnect_context (GimpContainerView *view)\n851: {\n852:   GimpContainerViewPrivate *private = GIMP_CONTAINER_VIEW_GET_PRIVATE (view);\n853:   GType                     child_type;\n854:   const gchar              *signal_name;\n855: \n856:   child_type  = gimp_container_get_child_type (private->container);\n857:   signal_name = gimp_context_type_to_signal_name (child_type);\n858: \n859:   if (signal_name)\n860:     {\n861:       g_signal_handlers_disconnect_by_func (private->context,\n862:                                             gimp_container_view_context_changed,\n863:                                             view);\n864: \n865:       if (private->dnd_widget)\n866:         {\n867:           gtk_drag_dest_unset (private->dnd_widget);\n868:           gimp_dnd_viewable_dest_remove (private->dnd_widget,\n869:                                          child_type);\n870:         }\n871:     }\n872: }\n873: \n874: static void\n875: gimp_container_view_context_changed (GimpContext       *context,\n876:                                      GimpViewable      *viewable,\n877:                                      GimpContainerView *view)\n878: {\n879:   gimp_container_view_set_1_selected (view, viewable);"
+      }
+    ],
+    "unresolved_pdb_boundary": [
+      {
+        "version": "current",
+        "path": "app/gui/gui-vtable.c",
+        "lines": [
+          612,
+          675
+        ],
+        "claim": "Current PDB factory routes brush/font/gradient/palette/pattern/drawable only; no MyPaint or Painter type branch. This inspected implementation is positive bounded evidence, not whole-tree missing-name proof.",
+        "sha256": "fe1dfccfd745d3f8bc1a448098e5d4d4042fd3746b9eb57998c95bb1add66b5a",
+        "excerpt": "612: \n613:   return FALSE;\n614: }\n615: \n616: static gboolean\n617: gui_pdb_dialog_new (Gimp          *gimp,\n618:                     GimpContext   *context,\n619:                     GimpProgress  *progress,\n620:                     GType          contents_type,\n621:                     GBytes        *parent_handle,\n622:                     const gchar   *title,\n623:                     const gchar   *callback_name,\n624:                     GimpObject    *object,\n625:                     va_list        args)\n626: {\n627:   GType        dialog_type = G_TYPE_NONE;\n628:   const gchar *dialog_role = NULL;\n629:   const gchar *help_id     = NULL;\n630: \n631:   if (contents_type == GIMP_TYPE_BRUSH)\n632:     {\n633:       dialog_type = GIMP_TYPE_BRUSH_SELECT;\n634:       dialog_role = \"gimp-brush-selection\";\n635:       help_id     = GIMP_HELP_BRUSH_DIALOG;\n636:     }\n637:   else if (contents_type == GIMP_TYPE_FONT)\n638:     {\n639:       dialog_type = GIMP_TYPE_FONT_SELECT;\n640:       dialog_role = \"gimp-font-selection\";\n641:       help_id     = GIMP_HELP_FONT_DIALOG;\n642:     }\n643:   else if (contents_type == GIMP_TYPE_GRADIENT)\n644:     {\n645:       dialog_type = GIMP_TYPE_GRADIENT_SELECT;\n646:       dialog_role = \"gimp-gradient-selection\";\n647:       help_id     = GIMP_HELP_GRADIENT_DIALOG;\n648:     }\n649:   else if (contents_type == GIMP_TYPE_PALETTE)\n650:     {\n651:       dialog_type = GIMP_TYPE_PALETTE_SELECT;\n652:       dialog_role = \"gimp-palette-selection\";\n653:       help_id     = GIMP_HELP_PALETTE_DIALOG;\n654:     }\n655:   else if (contents_type == GIMP_TYPE_PATTERN)\n656:     {\n657:       dialog_type = GIMP_TYPE_PATTERN_SELECT;\n658:       dialog_role = \"gimp-pattern-selection\";\n659:       help_id     = GIMP_HELP_PATTERN_DIALOG;\n660:     }\n661:   else if (g_type_is_a (contents_type, GIMP_TYPE_DRAWABLE))\n662:     {\n663:       dialog_type = GIMP_TYPE_PICKABLE_SELECT;\n664:       dialog_role = \"gimp-pickable-selection\";\n665:     }\n666:   else\n667:     {\n668:       g_return_val_if_reached (FALSE);\n669:     }\n670: \n671:   if (dialog_type != G_TYPE_NONE)\n672:     {\n673:       if (! object && ! g_type_is_a (contents_type, GIMP_TYPE_DRAWABLE))\n674:         object = gimp_context_get_by_type (context, contents_type);\n675: "
+      }
+    ],
+    "definer_provider": [
+      {
+        "version": "legacy",
+        "path": "app/base/glib-cxx-def-utils.hpp",
+        "lines": [
+          23,
+          58
+        ],
+        "claim": "Definer inherits owning IObject; Packer stores Definer& and creates temporary child wrappers; not itself a persistent behavior registration.",
+        "sha256": "5ed1e4c6792d44ce36c26898be61f776085e622a1071f94b53e1d0c4115b397e",
+        "excerpt": "23: template<typename T>\n24: class Definer : public IObject<T>\n25: {\n26:   typedef IObject<T> super;\n27: public:\n28:   Definer() : super(NULL) { };\n29:   Definer(T* object) : super(object) { };\n30:   Definer(const IObject<T>& src) : super (src.ptr()) { }\n31:   Definer(const Definer& src) : super (src.obj) { }\n32: \n33:   operator T* () { return (T*)(*(super*)this); };\n34:   template<typename G> operator G* () { return (G*)(*(super*)this); };\n35:   T* operator ->() { return (T*)(*(super*)this); };\n36:   operator bool() { return bool(*(super*)this); };\n37: \n38:   void operator = (T* src) { (*(super*)this) = src; }\n39:   template<typename Ret, typename C, typename... Args>\n40:   auto operator []( Ret f(C*, Args...) ) { return (*(super*)this)[f]; };\n41:   template<typename Ret, typename C, typename... Args>\n42:   auto operator []( Ret f(const C*, Args...) ) { return (*(super*)this)[f]; };\n43:   CopyValue operator[](const gchar* name) { return (*(super*)this)[name]; }\n44: \n45:   // Helpers for easy GUI definition.\n46:   struct Packer {\n47:     Definer& wrapper;\n48:     bool start, expand, fill;\n49:     unsigned int padding;\n50:     Packer(Definer& w, bool s, bool e, bool f, unsigned int p) :\n51:       wrapper(w), start(s), expand(e), fill(f), padding(p) {};\n52:     template<typename T2, typename F>\n53:     Packer& operator ()(T2* child, F init) {\n54:       if (start)\n55:         wrapper [gtk_box_pack_start] (GTK_WIDGET(child), expand, fill, padding);\n56:       else\n57:         wrapper [gtk_box_pack_end] (GTK_WIDGET(child), expand, fill, padding);\n58:       init(Definer<T2>(child));"
+      },
+      {
+        "version": "current",
+        "path": "app/painter/object-ref.hpp",
+        "lines": [
+          17,
+          46
+        ],
+        "claim": "Current explicit retain/adopt/sink/copy/move/reset ownership.",
+        "sha256": "5a8cc92afc56f652fd47c727269d71d9d97c4358015f13fe9c4764371fcb7c3a",
+        "excerpt": "17: class ObjectRef\n18: {\n19: public:\n20:   ObjectRef () noexcept = default;\n21:   ObjectRef (std::nullptr_t) noexcept {}\n22:   ~ObjectRef () { reset (); }\n23:   ObjectRef (const ObjectRef& other) noexcept : object_ (other.object_)\n24:   { if (object_) g_object_ref (object_); }\n25:   ObjectRef (ObjectRef&& other) noexcept : object_ (other.release ()) {}\n26:   ObjectRef& operator= (const ObjectRef& other) noexcept\n27:   { ObjectRef copy (other); swap (copy); return *this; }\n28:   ObjectRef& operator= (ObjectRef&& other) noexcept\n29:   { if (this != &other) { ObjectRef moved (std::move (other)); swap (moved); } return *this; }\n30: \n31:   static ObjectRef retain (T *object)\n32:   { check (object); if (object) g_object_ref (object); return ObjectRef (object, Owned{}); }\n33:   static ObjectRef adopt (T *object)\n34:   { check (object); return ObjectRef (object, Owned{}); }\n35:   static ObjectRef sink (T *object)\n36:   { check (object); if (object) g_object_ref_sink (object); return ObjectRef (object, Owned{}); }\n37: \n38:   T *get () const noexcept { return object_; }\n39:   explicit operator bool () const noexcept { return object_ != nullptr; }\n40:   T *release () noexcept { T *result = object_; object_ = nullptr; return result; }\n41:   void reset () noexcept\n42:   { T *old = release (); if (old) g_object_unref (old); }\n43:   void swap (ObjectRef& other) noexcept { std::swap (object_, other.object_); }\n44: \n45: private:\n46:   struct Owned {};"
+      },
+      {
+        "version": "current",
+        "path": "migration/contracts/cpp-foundation.md",
+        "lines": [
+          368,
+          381
+        ],
+        "claim": "Existing original 06.023 construction ownership proof, limited to that condition.",
+        "sha256": "5fdbf91afbd26b916d12cf3cfc2c23fc0083b11eafc4e9bb30ff3c14331a8e89",
+        "excerpt": "368: ## Native GTK construction ownership (original 06.023)\n369: \n370: [The GTK ownership acceptance](../tests/gtk-binding/README.md) connects the old\n371: Definer/Packer construction sites to native GTK3 and common ObjectRef ownership.\n372: Sink a new floating widget, retain a borrowed child before reparenting, and keep\n373: its saved packing properties until restoration. Parent references and explicit\n374: strong references may coexist; do not add another implicit DSL owner. Scoped\n375: BindingStore borrowing is not the old GLib::with construction API.\n376: \n377: Close connections and delayed callbacks before destroying native roots. A strong\n378: reference preserves storage, not permission to use a logically destroyed widget.\n379: GtkScrolledWindow's automatic viewport can unparent a separately retained child\n380: before destroying its viewport; that child's explicit owner retains its own\n381: cleanup responsibility. Current tests distinguish destroy from final unref."
+      }
+    ]
+  },
+  "runtime_cases": {
+    "painter-canvas-ui": [
+      "/painter-canvas-ui/w08017_dnd_same_parent_order",
+      "/painter-canvas-ui/w08017_dnd_cross_parent_last_owner",
+      "/painter-canvas-ui/w08017_dnd_reject_self_ancestor",
+      "/painter-canvas-ui/w08017_dnd_layer_group_move_undo",
+      "/painter-canvas-ui/w08017_dnd_cross_image_copy",
+      "/painter-canvas-ui/native_tool_dnd_wire_payload",
+      "/painter-canvas-ui/native_renderer_background_lifetime",
+      "/painter-canvas-ui/native_layer_preview_pixels_lifetime",
+      "/painter-canvas-ui/native_tool_icon_preview_lifetime",
+      "/painter-canvas-ui/native_session_boolean_literals",
+      "/painter-canvas-ui/native_session_boolean_reader_writer",
+      "/painter-canvas-ui/renderer_native_size_draw",
+      "/painter-canvas-ui/renderer_native_activation_routes",
+      "/painter-canvas-ui/renderer_selection_reentry",
+      "/painter-canvas-ui/renderer_escape_owner_close",
+      "/painter-canvas-ui/renderer_stale_preview_disconnected",
+      "/painter-canvas-ui/renderer_modifier_activation",
+      "/painter-canvas-ui/renderer_selection_same_target",
+      "/painter-canvas-ui/channel_preview_components",
+      "/painter-canvas-ui/selection_and_visibility",
+      "/painter-canvas-ui/group_move_and_undo",
+      "/painter-canvas-ui/image_switch_disconnect",
+      "/painter-canvas-ui/long_press_cancel_destroy",
+      "/painter-canvas-ui/preview_pending_destroy",
+      "/painter-canvas-ui/popup_repeat_and_owner_close",
+      "/painter-canvas-ui/popup_native_events_and_parent",
+      "/painter-canvas-ui/popup_destroy_orders",
+      "/painter-canvas-ui/popup_properties_newer_same_image",
+      "/painter-canvas-ui/popup_creation_newer_same_image",
+      "/painter-canvas-ui/popup_properties_reentrant_owner_close",
+      "/painter-canvas-ui/popup_creation_reentrant_owner_close",
+      "/painter-canvas-ui/popup_properties_reentrant_image_switch",
+      "/painter-canvas-ui/popup_creation_reentrant_image_switch",
+      "/painter-canvas-ui/destroyed_tiles_reject_image",
+      "/painter-canvas-ui/image_switch_popup_owner_close",
+      "/painter-canvas-ui/image_switch_popup_newer_image",
+      "/painter-canvas-ui/parent_image_notify_owner_close",
+      "/painter-canvas-ui/popup_controls_and_clone",
+      "/painter-canvas-ui/mask_controls",
+      "/painter-canvas-ui/long_press_once",
+      "/painter-canvas-ui/reentrant_visibility_close",
+      "/painter-canvas-ui/multiple_reorder_one_undo",
+      "/painter-canvas-ui/hide_cancels_grab",
+      "/painter-canvas-ui/overlay_input_and_restore",
+      "/painter-canvas-ui/dock_restore_and_parent_close",
+      "/painter-canvas-ui/overlay_tools_and_colors",
+      "/painter-canvas-ui/overlay_tool_group",
+      "/painter-canvas-ui/tool_click_active_owner_close",
+      "/painter-canvas-ui/tool_click_expanded_owner_close",
+      "/painter-canvas-ui/tool_expander_owner_close",
+      "/painter-canvas-ui/tool_click_newer_selection",
+      "/painter-canvas-ui/tool_pending_refresh_owner_destroy",
+      "/painter-canvas-ui/tool_group_selection_restores_canvas_focus",
+      "/painter-canvas-ui/multiple_canvas_context_and_dock_transfer",
+      "/painter-canvas-ui/overlay_owner_destroy_callbacks"
+    ],
+    "painter-mypaint-editor": [
+      "/painter-editor/01-constructors-shared",
+      "/painter-editor/14-common-store-widget-behaviors",
+      "/painter-editor/02-all-controls-curves",
+      "/painter-editor/03-list-search-history",
+      "/painter-editor/04-save-conflict-default-path",
+      "/painter-editor/05-preview-extended",
+      "/painter-editor/06-replace-close",
+      "/painter-editor/07-registration",
+      "/painter-editor/08-legacy-preview-oracle",
+      "/painter-editor/09-close-during-refresh",
+      "/painter-editor/13-owner-destruction-orders",
+      "/painter-editor/10-graph-gestures",
+      "/painter-editor/11-resource-notifications",
+      "/painter-editor/12-delete-failure",
+      "/painter-editor/15-registered-dock-selection-context",
+      "/painter-editor/16-factory-membership-context-lifetime"
+    ]
+  },
+  "helper": {
+    "callable": "void gimp_session_write_boolean(GimpConfigWriter *, gchar *, gboolean)",
+    "original_ref": "afa43fae3e920210146abed514f136fd49f671b5",
+    "original_sources": [
+      {
+        "source_id": "01.002/001813",
+        "git_blob": "efeec486e5fde3a5864a99d4a65e1dbcfd159830",
+        "sha256": "b3327ba62bdbd7d0e5d3f5f1496bdd0e8ba825e15fac54d5f3fba8206abda510",
+        "hunk_sha256": "d6b3ab997e14c786a6b25231cfd4d7e92db93dbcb236a9c3f3454297615335bb",
+        "restored_body_or_signature_matches_original_ignoring_whitespace": true,
+        "source_url": "https://github.com/seagetch/gimp-painter/blob/afa43fae3e920210146abed514f136fd49f671b5/app/widgets/gimpwidgets-utils.c"
+      },
+      {
+        "source_id": "01.002/001814",
+        "git_blob": "48504c29b9f90195fe940ed2c458aea39a472063",
+        "sha256": "4235e93efccfc6996463954bb769218421f5fd64b6882665a19d4f98cc7d821c",
+        "hunk_sha256": "817fe5f1ece0b69fab8b8a40685dba347602f0691fcedd770eaf1634316d73cb",
+        "restored_body_or_signature_matches_original_ignoring_whitespace": true,
+        "source_url": "https://github.com/seagetch/gimp-painter/blob/afa43fae3e920210146abed514f136fd49f671b5/app/widgets/gimpwidgets-utils.h"
+      }
+    ],
+    "gimp3_baseline_header": {
+      "path": "app/widgets/gimpwidgets-utils.h",
+      "baseline_blob": "9edb8a90af15dbc21250526146e63cb353e09210",
+      "upstream_blob": "9edb8a90af15dbc21250526146e63cb353e09210",
+      "status": "unchanged-upstream"
+    },
+    "baseline": {
+      "declaration_absent": true,
+      "definition_absent": true,
+      "runtime_red_claimed": false,
+      "bounded_app_source_files_scanned": 2605,
+      "path_list_sha256": "0a56beeac9aa5f4e1943e1d0eac7da8d6a0cfe6a0ab14ee87d75f6b43e0b7111",
+      "reason": "A dependent test cannot compile/link on the undeclared and undefined helper baseline."
+    },
+    "original_session_blob": "e3f1655a3974f557dcac455b2faf6d9316aeb704",
+    "original_session_source_has_no_helper_call": true,
+    "class_reference_balance": "Source-proven paired class ref/unref; runtime loops do not measure class refcounts",
+    "old_caller_census": {
+      "files": 30,
+      "scope": "26 exact-hunk source files + 3 independently verified external provider files + complete pinned app/gui/session.c. Not a full-tree caller census."
+    }
+  },
+  "tested_boundaries": {
+    "session": "32 actual helper true/false literal and scanner round trips. Two boolean pairs each use two fresh GLib subprocesses: production startup session_init first loads helper tokens, then reloads the actual session_save yes/no output. Opposite values are asserted before GUI initialization; parsed values and saved sessionrc/dockrc are checked. Parent config remains unchanged, test-control environment is restored, and only newly owned profile trees are removed without following symlinks. No populated-GUI parser reload is claimed.",
+    "preview": "Real native TempBuf background/offset/clipping rendering, retained old Cairo surface, real asynchronous red-to-blue drawable preview pixels, pending invalidation owner-close and renderer qdata finalization counters. Named shipped tool icon availability and nonempty rendering are separate from pixel-oracle fidelity.",
+    "dnd": "Real backend GDK drag context, GTK-allocated selection data, native source/destination registration and signal-bound dispatch with numeric info 23. Valid tool/group resolution and malformed format/UTF-8 controls; clipboard, metadata, drag context and transient membership cleanup. No physical gesture or inter-process transport claim.",
+    "mypaint": "Actual registered dock constructor, real GtkTreeSelection, shared canonical options, replacement/detached contexts, factory add/remove notifications, retained old/current model storage and explicit close. Native internal identity fixtures restore selection/draft and membership while leaving real selection history intact."
+  },
+  "mapping_boundary": "The eleven related source rows retain individual acceptance requirements. Passing these boundaries does not close any original row or sibling feature duty.",
+  "limitations": [
+    "Bounded native Linux GTK3 session, preview, tool wire and MyPaint selection/factory boundaries only",
+    "All 93 original 08.017 source duties remain individually TODO; original tasks 140/661 and ledgers byte-identical",
+    "Eight selected runtime registrations, not the full aggregate, all-provider or full-platform acceptance",
+    "Virtual display and direct native signals/selection data, not physical pointer/tablet/keyboard or inter-process drag transport",
+    "Named shipped vector-theme availability, rendering and lifetime, not historical/golden-raster or bitmap-icon-build parity",
+    "Standard ASan/UBSan with RTTI/vptr retained and ordinary timeouts; leak detection disabled and third-party dependencies uninstrumented",
+    "Helper baseline is source/API absence; no invented runtime red for undeclared or unlinked helper",
+    "Session class-reference balance is source-proven, not runtime class-reference counting",
+    "MyPaint boundaries use internal transient resources; factory membership removal is not disk deletion; real selection history is retained",
+    "No new close-during-selection reentry or legacy MyPaint PDB selector acceptance",
+    "No production GTK live-window-switch repair or complete root-cause claim; final session coverage follows the existing startup lifecycle",
+    "Header probes are C11/C++14 compilation, not linked ABI or whole-duty acceptance"
+  ]
+}
