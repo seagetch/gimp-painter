@@ -1,0 +1,664 @@
+{
+  "task": "09.001",
+  "legacy_commit": "afa43fae3e920210146abed514f136fd49f671b5",
+  "duties": [
+    {
+      "work_id": "legacy-4b617fdc08f3ab670775",
+      "source_id": "01.002/000049",
+      "path": "app/base/pixel-processor.c",
+      "source_blob": "7f0049bd0285366eeb128c9e085f1ed222d27452",
+      "source_range": "-60,0 -> 61,6",
+      "source_sha256": "22b0fb45e1a9734d3bb06f2573bb1a3163a004b2d364a000ab6fae096fa752bf",
+      "blob_sha256": "7652e6ab170b343feac703f9000341c0831c0294bde67a144bbce1511031deb8",
+      "mapping": "Five-region callback typedef carries independent PixelRegion pointers; region count is not channel count.",
+      "check": "dispatch-shape"
+    },
+    {
+      "work_id": "legacy-30832ff38a3d244e3be0",
+      "source_id": "01.002/000050",
+      "path": "app/base/pixel-processor.c",
+      "source_blob": "7f0049bd0285366eeb128c9e085f1ed222d27452",
+      "source_range": "-78 -> 84",
+      "source_sha256": "5eb666c56e0f6b70bcc5f648166ee4947de2e0cc23a83ebc4ddaab0058cece2d",
+      "blob_sha256": "7652e6ab170b343feac703f9000341c0831c0294bde67a144bbce1511031deb8",
+      "mapping": "Processor stores five region pointers; each region retains its own bytes and rowstride.",
+      "check": "dispatch-shape"
+    },
+    {
+      "work_id": "legacy-bba630a191d649d3a72f",
+      "source_id": "01.002/000051",
+      "path": "app/base/pixel-processor.c",
+      "source_blob": "7f0049bd0285366eeb128c9e085f1ed222d27452",
+      "source_range": "-88 -> 94",
+      "source_sha256": "a8999843b77003ffca7f984f2bdc758fb3c5e5007b11c4f627e06a4d83519934",
+      "blob_sha256": "7652e6ab170b343feac703f9000341c0831c0294bde67a144bbce1511031deb8",
+      "mapping": "Parallel loop copies PixelRegion descriptors before dispatch; no format conversion.",
+      "check": "dispatch-shape"
+    },
+    {
+      "work_id": "legacy-a1230bce8c282c1b4679",
+      "source_id": "01.002/000052",
+      "path": "app/base/pixel-processor.c",
+      "source_blob": "7f0049bd0285366eeb128c9e085f1ed222d27452",
+      "source_range": "-143,0 -> 150,8",
+      "source_sha256": "545f78cae36ad14bd1d7bda5c5a3ae63c33efe3ffb0029554cd685baacdae380",
+      "blob_sha256": "7652e6ab170b343feac703f9000341c0831c0294bde67a144bbce1511031deb8",
+      "mapping": "Parallel five-region dispatch forwards descriptors unchanged; no inferred RGBA layout.",
+      "check": "dispatch-shape"
+    },
+    {
+      "work_id": "legacy-88833b0c6452ac5f9f2a",
+      "source_id": "01.002/000053",
+      "path": "app/base/pixel-processor.c",
+      "source_blob": "7f0049bd0285366eeb128c9e085f1ed222d27452",
+      "source_range": "-233,0 -> 248,9",
+      "source_sha256": "a066146a27bf8e373e714609f98a6c0b8ebe1bc5d49b0d5214cdee20acff7d1e",
+      "blob_sha256": "7652e6ab170b343feac703f9000341c0831c0294bde67a144bbce1511031deb8",
+      "mapping": "Serial five-region dispatch has same descriptor contract as parallel path.",
+      "check": "dispatch-shape"
+    },
+    {
+      "work_id": "legacy-25879fbfc0dbe2a00580",
+      "source_id": "01.002/000054",
+      "path": "app/base/pixel-processor.c",
+      "source_blob": "7f0049bd0285366eeb128c9e085f1ed222d27452",
+      "source_range": "-386,0 -> 410,9",
+      "source_sha256": "7ab4c7c2492e6cb8890873a1c45223c9fb91799e53006504c3e65830ae8dacc9",
+      "blob_sha256": "7652e6ab170b343feac703f9000341c0831c0294bde67a144bbce1511031deb8",
+      "mapping": "Registration accepts five independent regions; conversion belongs to caller/buffer format.",
+      "check": "dispatch-shape"
+    },
+    {
+      "work_id": "legacy-4aef5b32553ef578625d",
+      "source_id": "01.002/000076",
+      "path": "app/base/pixel.hpp",
+      "source_blob": "0b2920644eb36b391f0c03f021c0dd0a19348529",
+      "source_range": "-0,0 -> 1,358",
+      "source_sha256": "27e6b82a44193d668e2a8b3783e0c15dcf14f5f1d48b9fed7891f915315fd397",
+      "blob_sha256": "1917b7267eb1253fbf14b5ce06bbfc6e77838d5d3b7bfc041eb35ba262bafa1c",
+      "mapping": "Pixel data_t is unsigned byte, internal_t uint32, real float; normalized conversion clamps and rounds, not a native high-precision format.",
+      "check": "legacy-pixel"
+    },
+    {
+      "work_id": "legacy-0a60091b054b9fa66c25",
+      "source_id": "01.002/000081",
+      "path": "app/base/temp-buf.c",
+      "source_blob": "efa555b2a43b1609e9c73441ad4c2e5b94b34936",
+      "source_range": "-67,0 -> 68",
+      "source_sha256": "2e726669ca470ef24ade1ed01aed0f92b54a846a13999b81c22f7d22b98f4b82",
+      "blob_sha256": "ed5dda2ade828ef62460ded3085bbd3bf2bfedf3faf91f196a3d53646c953956",
+      "mapping": "Added parent = NULL identifies root ownership; root TempBuf allocates tightly packed width*height*bytes unsigned bytes without a color-space tag.",
+      "check": "legacy-temp"
+    },
+    {
+      "work_id": "legacy-6fa6bfde365c67e72ee7",
+      "source_id": "01.002/000082",
+      "path": "app/base/temp-buf.c",
+      "source_blob": "efa555b2a43b1609e9c73441ad4c2e5b94b34936",
+      "source_range": "-149,0 -> 151,43",
+      "source_sha256": "e8433ef033793e56674a8df7d327fc22122fcf1e6d419563990eff34c04d1ccb",
+      "blob_sha256": "ed5dda2ade828ef62460ded3085bbd3bf2bfedf3faf91f196a3d53646c953956",
+      "mapping": "Subwindow borrows parent storage and parent stride; do not equate child width*bytes with rowstride.",
+      "check": "legacy-temp"
+    },
+    {
+      "work_id": "legacy-1a0b673d60143f2bc58c",
+      "source_id": "01.002/000083",
+      "path": "app/base/temp-buf.c",
+      "source_blob": "efa555b2a43b1609e9c73441ad4c2e5b94b34936",
+      "source_range": "-348,0 -> 393,3",
+      "source_sha256": "ecd11421d80dd69f8de37c586386cae9456a5c931678543aa5f93cbd111ea25b",
+      "blob_sha256": "ed5dda2ade828ef62460ded3085bbd3bf2bfedf3faf91f196a3d53646c953956",
+      "mapping": "Subwindow free returns without freeing parent pixels or wrapper; ownership defect is recorded, not adopted.",
+      "check": "legacy-temp"
+    },
+    {
+      "work_id": "legacy-68e8a9a7e7afcf3779ab",
+      "source_id": "01.002/000084",
+      "path": "app/base/temp-buf.c",
+      "source_blob": "efa555b2a43b1609e9c73441ad4c2e5b94b34936",
+      "source_range": "-502,0 -> 550,10",
+      "source_sha256": "dd3bd20a85f768aa0b5137104106c635263abf742fd3c7c4996c5001f7bb16bf",
+      "blob_sha256": "ed5dda2ade828ef62460ded3085bbd3bf2bfedf3faf91f196a3d53646c953956",
+      "mapping": "Added temp_buf_get_rowstride recursively follows parent storage; root fallback is width*bytes, not the subwindow width.",
+      "check": "legacy-temp"
+    },
+    {
+      "work_id": "legacy-8172a7fff55d4d2663c3",
+      "source_id": "01.002/000085",
+      "path": "app/base/temp-buf.h",
+      "source_blob": "6094354a057238e104ed0baa734e41d3346ff91d",
+      "source_range": "-29,0 -> 30,4",
+      "source_sha256": "6195a468f4586941c8182ebb7a93058d2d6b21e7803ff5ccb5290d3905ea75f7",
+      "blob_sha256": "baf2dae7c0d9467af1d958c63f90ecb8acb944ffceeabf6c993082384996346c",
+      "mapping": "TempBuf parent records aliasing storage; bytes alone cannot distinguish Gray from palette index.",
+      "check": "legacy-temp"
+    },
+    {
+      "work_id": "legacy-6b42480afd7c998bce7c",
+      "source_id": "01.002/000086",
+      "path": "app/base/temp-buf.h",
+      "source_blob": "6094354a057238e104ed0baa734e41d3346ff91d",
+      "source_range": "-71,0 -> 76,7",
+      "source_sha256": "a89f18c48f787ed74c13c3c9d38f0a21b34e7b6ed2667feaa1d5af0892381777",
+      "blob_sha256": "baf2dae7c0d9467af1d958c63f90ecb8acb944ffceeabf6c993082384996346c",
+      "mapping": "Added subwindow and rowstride declarations expose aliasing storage and parent stride; surrounding packed dump API is not a row-aware export contract.",
+      "check": "legacy-temp"
+    }
+  ],
+  "formats": [
+    {
+      "base": "RGB",
+      "precision": "U8_LINEAR",
+      "alpha": false,
+      "encoding": "RGB u8",
+      "bytes": 3
+    },
+    {
+      "base": "RGB",
+      "precision": "U8_LINEAR",
+      "alpha": true,
+      "encoding": "RGBA u8",
+      "bytes": 4
+    },
+    {
+      "base": "RGB",
+      "precision": "U8_NON_LINEAR",
+      "alpha": false,
+      "encoding": "R'G'B' u8",
+      "bytes": 3
+    },
+    {
+      "base": "RGB",
+      "precision": "U8_NON_LINEAR",
+      "alpha": true,
+      "encoding": "R'G'B'A u8",
+      "bytes": 4
+    },
+    {
+      "base": "RGB",
+      "precision": "U8_PERCEPTUAL",
+      "alpha": false,
+      "encoding": "R~G~B~ u8",
+      "bytes": 3
+    },
+    {
+      "base": "RGB",
+      "precision": "U8_PERCEPTUAL",
+      "alpha": true,
+      "encoding": "R~G~B~A u8",
+      "bytes": 4
+    },
+    {
+      "base": "RGB",
+      "precision": "U16_LINEAR",
+      "alpha": false,
+      "encoding": "RGB u16",
+      "bytes": 6
+    },
+    {
+      "base": "RGB",
+      "precision": "U16_LINEAR",
+      "alpha": true,
+      "encoding": "RGBA u16",
+      "bytes": 8
+    },
+    {
+      "base": "RGB",
+      "precision": "U16_NON_LINEAR",
+      "alpha": false,
+      "encoding": "R'G'B' u16",
+      "bytes": 6
+    },
+    {
+      "base": "RGB",
+      "precision": "U16_NON_LINEAR",
+      "alpha": true,
+      "encoding": "R'G'B'A u16",
+      "bytes": 8
+    },
+    {
+      "base": "RGB",
+      "precision": "U16_PERCEPTUAL",
+      "alpha": false,
+      "encoding": "R~G~B~ u16",
+      "bytes": 6
+    },
+    {
+      "base": "RGB",
+      "precision": "U16_PERCEPTUAL",
+      "alpha": true,
+      "encoding": "R~G~B~A u16",
+      "bytes": 8
+    },
+    {
+      "base": "RGB",
+      "precision": "U32_LINEAR",
+      "alpha": false,
+      "encoding": "RGB u32",
+      "bytes": 12
+    },
+    {
+      "base": "RGB",
+      "precision": "U32_LINEAR",
+      "alpha": true,
+      "encoding": "RGBA u32",
+      "bytes": 16
+    },
+    {
+      "base": "RGB",
+      "precision": "U32_NON_LINEAR",
+      "alpha": false,
+      "encoding": "R'G'B' u32",
+      "bytes": 12
+    },
+    {
+      "base": "RGB",
+      "precision": "U32_NON_LINEAR",
+      "alpha": true,
+      "encoding": "R'G'B'A u32",
+      "bytes": 16
+    },
+    {
+      "base": "RGB",
+      "precision": "U32_PERCEPTUAL",
+      "alpha": false,
+      "encoding": "R~G~B~ u32",
+      "bytes": 12
+    },
+    {
+      "base": "RGB",
+      "precision": "U32_PERCEPTUAL",
+      "alpha": true,
+      "encoding": "R~G~B~A u32",
+      "bytes": 16
+    },
+    {
+      "base": "RGB",
+      "precision": "HALF_LINEAR",
+      "alpha": false,
+      "encoding": "RGB half",
+      "bytes": 6
+    },
+    {
+      "base": "RGB",
+      "precision": "HALF_LINEAR",
+      "alpha": true,
+      "encoding": "RGBA half",
+      "bytes": 8
+    },
+    {
+      "base": "RGB",
+      "precision": "HALF_NON_LINEAR",
+      "alpha": false,
+      "encoding": "R'G'B' half",
+      "bytes": 6
+    },
+    {
+      "base": "RGB",
+      "precision": "HALF_NON_LINEAR",
+      "alpha": true,
+      "encoding": "R'G'B'A half",
+      "bytes": 8
+    },
+    {
+      "base": "RGB",
+      "precision": "HALF_PERCEPTUAL",
+      "alpha": false,
+      "encoding": "R~G~B~ half",
+      "bytes": 6
+    },
+    {
+      "base": "RGB",
+      "precision": "HALF_PERCEPTUAL",
+      "alpha": true,
+      "encoding": "R~G~B~A half",
+      "bytes": 8
+    },
+    {
+      "base": "RGB",
+      "precision": "FLOAT_LINEAR",
+      "alpha": false,
+      "encoding": "RGB float",
+      "bytes": 12
+    },
+    {
+      "base": "RGB",
+      "precision": "FLOAT_LINEAR",
+      "alpha": true,
+      "encoding": "RGBA float",
+      "bytes": 16
+    },
+    {
+      "base": "RGB",
+      "precision": "FLOAT_NON_LINEAR",
+      "alpha": false,
+      "encoding": "R'G'B' float",
+      "bytes": 12
+    },
+    {
+      "base": "RGB",
+      "precision": "FLOAT_NON_LINEAR",
+      "alpha": true,
+      "encoding": "R'G'B'A float",
+      "bytes": 16
+    },
+    {
+      "base": "RGB",
+      "precision": "FLOAT_PERCEPTUAL",
+      "alpha": false,
+      "encoding": "R~G~B~ float",
+      "bytes": 12
+    },
+    {
+      "base": "RGB",
+      "precision": "FLOAT_PERCEPTUAL",
+      "alpha": true,
+      "encoding": "R~G~B~A float",
+      "bytes": 16
+    },
+    {
+      "base": "RGB",
+      "precision": "DOUBLE_LINEAR",
+      "alpha": false,
+      "encoding": "RGB double",
+      "bytes": 24
+    },
+    {
+      "base": "RGB",
+      "precision": "DOUBLE_LINEAR",
+      "alpha": true,
+      "encoding": "RGBA double",
+      "bytes": 32
+    },
+    {
+      "base": "RGB",
+      "precision": "DOUBLE_NON_LINEAR",
+      "alpha": false,
+      "encoding": "R'G'B' double",
+      "bytes": 24
+    },
+    {
+      "base": "RGB",
+      "precision": "DOUBLE_NON_LINEAR",
+      "alpha": true,
+      "encoding": "R'G'B'A double",
+      "bytes": 32
+    },
+    {
+      "base": "RGB",
+      "precision": "DOUBLE_PERCEPTUAL",
+      "alpha": false,
+      "encoding": "R~G~B~ double",
+      "bytes": 24
+    },
+    {
+      "base": "RGB",
+      "precision": "DOUBLE_PERCEPTUAL",
+      "alpha": true,
+      "encoding": "R~G~B~A double",
+      "bytes": 32
+    },
+    {
+      "base": "GRAY",
+      "precision": "U8_LINEAR",
+      "alpha": false,
+      "encoding": "Y u8",
+      "bytes": 1
+    },
+    {
+      "base": "GRAY",
+      "precision": "U8_LINEAR",
+      "alpha": true,
+      "encoding": "YA u8",
+      "bytes": 2
+    },
+    {
+      "base": "GRAY",
+      "precision": "U8_NON_LINEAR",
+      "alpha": false,
+      "encoding": "Y' u8",
+      "bytes": 1
+    },
+    {
+      "base": "GRAY",
+      "precision": "U8_NON_LINEAR",
+      "alpha": true,
+      "encoding": "Y'A u8",
+      "bytes": 2
+    },
+    {
+      "base": "GRAY",
+      "precision": "U8_PERCEPTUAL",
+      "alpha": false,
+      "encoding": "Y~ u8",
+      "bytes": 1
+    },
+    {
+      "base": "GRAY",
+      "precision": "U8_PERCEPTUAL",
+      "alpha": true,
+      "encoding": "Y~A u8",
+      "bytes": 2
+    },
+    {
+      "base": "GRAY",
+      "precision": "U16_LINEAR",
+      "alpha": false,
+      "encoding": "Y u16",
+      "bytes": 2
+    },
+    {
+      "base": "GRAY",
+      "precision": "U16_LINEAR",
+      "alpha": true,
+      "encoding": "YA u16",
+      "bytes": 4
+    },
+    {
+      "base": "GRAY",
+      "precision": "U16_NON_LINEAR",
+      "alpha": false,
+      "encoding": "Y' u16",
+      "bytes": 2
+    },
+    {
+      "base": "GRAY",
+      "precision": "U16_NON_LINEAR",
+      "alpha": true,
+      "encoding": "Y'A u16",
+      "bytes": 4
+    },
+    {
+      "base": "GRAY",
+      "precision": "U16_PERCEPTUAL",
+      "alpha": false,
+      "encoding": "Y~ u16",
+      "bytes": 2
+    },
+    {
+      "base": "GRAY",
+      "precision": "U16_PERCEPTUAL",
+      "alpha": true,
+      "encoding": "Y~A u16",
+      "bytes": 4
+    },
+    {
+      "base": "GRAY",
+      "precision": "U32_LINEAR",
+      "alpha": false,
+      "encoding": "Y u32",
+      "bytes": 4
+    },
+    {
+      "base": "GRAY",
+      "precision": "U32_LINEAR",
+      "alpha": true,
+      "encoding": "YA u32",
+      "bytes": 8
+    },
+    {
+      "base": "GRAY",
+      "precision": "U32_NON_LINEAR",
+      "alpha": false,
+      "encoding": "Y' u32",
+      "bytes": 4
+    },
+    {
+      "base": "GRAY",
+      "precision": "U32_NON_LINEAR",
+      "alpha": true,
+      "encoding": "Y'A u32",
+      "bytes": 8
+    },
+    {
+      "base": "GRAY",
+      "precision": "U32_PERCEPTUAL",
+      "alpha": false,
+      "encoding": "Y~ u32",
+      "bytes": 4
+    },
+    {
+      "base": "GRAY",
+      "precision": "U32_PERCEPTUAL",
+      "alpha": true,
+      "encoding": "Y~A u32",
+      "bytes": 8
+    },
+    {
+      "base": "GRAY",
+      "precision": "HALF_LINEAR",
+      "alpha": false,
+      "encoding": "Y half",
+      "bytes": 2
+    },
+    {
+      "base": "GRAY",
+      "precision": "HALF_LINEAR",
+      "alpha": true,
+      "encoding": "YA half",
+      "bytes": 4
+    },
+    {
+      "base": "GRAY",
+      "precision": "HALF_NON_LINEAR",
+      "alpha": false,
+      "encoding": "Y' half",
+      "bytes": 2
+    },
+    {
+      "base": "GRAY",
+      "precision": "HALF_NON_LINEAR",
+      "alpha": true,
+      "encoding": "Y'A half",
+      "bytes": 4
+    },
+    {
+      "base": "GRAY",
+      "precision": "HALF_PERCEPTUAL",
+      "alpha": false,
+      "encoding": "Y~ half",
+      "bytes": 2
+    },
+    {
+      "base": "GRAY",
+      "precision": "HALF_PERCEPTUAL",
+      "alpha": true,
+      "encoding": "Y~A half",
+      "bytes": 4
+    },
+    {
+      "base": "GRAY",
+      "precision": "FLOAT_LINEAR",
+      "alpha": false,
+      "encoding": "Y float",
+      "bytes": 4
+    },
+    {
+      "base": "GRAY",
+      "precision": "FLOAT_LINEAR",
+      "alpha": true,
+      "encoding": "YA float",
+      "bytes": 8
+    },
+    {
+      "base": "GRAY",
+      "precision": "FLOAT_NON_LINEAR",
+      "alpha": false,
+      "encoding": "Y' float",
+      "bytes": 4
+    },
+    {
+      "base": "GRAY",
+      "precision": "FLOAT_NON_LINEAR",
+      "alpha": true,
+      "encoding": "Y'A float",
+      "bytes": 8
+    },
+    {
+      "base": "GRAY",
+      "precision": "FLOAT_PERCEPTUAL",
+      "alpha": false,
+      "encoding": "Y~ float",
+      "bytes": 4
+    },
+    {
+      "base": "GRAY",
+      "precision": "FLOAT_PERCEPTUAL",
+      "alpha": true,
+      "encoding": "Y~A float",
+      "bytes": 8
+    },
+    {
+      "base": "GRAY",
+      "precision": "DOUBLE_LINEAR",
+      "alpha": false,
+      "encoding": "Y double",
+      "bytes": 8
+    },
+    {
+      "base": "GRAY",
+      "precision": "DOUBLE_LINEAR",
+      "alpha": true,
+      "encoding": "YA double",
+      "bytes": 16
+    },
+    {
+      "base": "GRAY",
+      "precision": "DOUBLE_NON_LINEAR",
+      "alpha": false,
+      "encoding": "Y' double",
+      "bytes": 8
+    },
+    {
+      "base": "GRAY",
+      "precision": "DOUBLE_NON_LINEAR",
+      "alpha": true,
+      "encoding": "Y'A double",
+      "bytes": 16
+    },
+    {
+      "base": "GRAY",
+      "precision": "DOUBLE_PERCEPTUAL",
+      "alpha": false,
+      "encoding": "Y~ double",
+      "bytes": 8
+    },
+    {
+      "base": "GRAY",
+      "precision": "DOUBLE_PERCEPTUAL",
+      "alpha": true,
+      "encoding": "Y~A double",
+      "bytes": 16
+    }
+  ],
+  "indexed": {
+    "precision": "U8_NON_LINEAR",
+    "bytes": [
+      1,
+      2
+    ],
+    "route": "gimp_image_colormap_update_formats: babl_new_palette_with_space",
+    "space": "image layer space; palette required"
+  }
+}

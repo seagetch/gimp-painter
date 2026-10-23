@@ -1,0 +1,24 @@
+{
+  "status": "PASS",
+  "task": "09.001",
+  "duties": 13,
+  "outputs": [
+    "native-format-cases=144 indexed-palettes=4 indexed-precision-checks=18",
+    "legacy-byte-roundtrips=256 packed-and-subwindow-layouts=4 gray-conversion-directions=4"
+  ],
+  "sanitizers": [
+    "address",
+    "undefined"
+  ],
+  "limits": "Extracted source and format mapping only; no whole-GIMP, conversion parity, threading, LSan or platform claim",
+  "source_sha256": {
+    "migration/contracts/pixel-format-mapping.json": "ffbbd1dc160f310bb5a120e7c16ddc204e94b2f6b186e78fdf0115bcb705d18b",
+    "tools/check_pixel_format_mapping.py": "840d0dc94b41e05d25b0cd3a11c4e619aa7e79b387edd5f9d0d22ef962091c5e",
+    "app/gegl/gimp-babl.c": "3ebf35c75f958f161702cb2af4a0c62274adc4ef7e817842fcde0c42485544da",
+    "libgimpbase/gimpbaseenums.h": "97d16393e9646c5954b33e931fe921523ea8e079a4e9b400aaf6c5b1ea868978",
+    "app/core/core-enums.h": "8b273ca25672d29707d14a017ae414a9dd05ed40e875d758c5480d179fb96534",
+    "app/core/gimpimage-colormap.c": "11f22076dfc0be46d2fe086066b34fea508dd325d97459c88fd9c74f721b7361",
+    "tools/tests/test_pixel_format_mapping.py": "b456d2e9f6c72cba12587b6aad7e0d6a0f63db6d98f68cb7e06db04d42376b7d",
+    "migration/contracts/pixel-format-mapping.md": "c8819d40e2e73d5b39ee1bf2578cbb7c538a561fee76591969a6aeb97d732c90"
+  }
+}
