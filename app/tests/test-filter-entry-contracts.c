@@ -1028,7 +1028,7 @@ static void
 c_legacy_unsupported_names_preserve (void)
 {
   const gchar *names[] = { NULL, "", "unknown checked route", "plug-in-edge",
-                           "plug-in-small-tiles", "plug-in-convmatrix", "Plug-in-blinds" };
+                           "plug-in-retinex", "plug-in-convmatrix", "Plug-in-blinds" };
   Fixture fixture = fixture_new ();
   legacy_preserved_definition (&fixture);
   for (guint i = 0; i < G_N_ELEMENTS (names); ++i)
@@ -1148,6 +1148,8 @@ c_legacy_render_no_undo (void)
   fixture_clear (&fixture);
 }
 
+#include "test-filter-small-tiles-entry.inc"
+
 int
 main (int argc, char **argv)
 {
@@ -1175,6 +1177,7 @@ main (int argc, char **argv)
   g_test_add_func ("/filter-entry-contracts/c/c_legacy_owner_boundaries", c_legacy_owner_boundaries);
   g_test_add_func ("/filter-entry-contracts/c/c_legacy_render_no_undo", c_legacy_render_no_undo);
   gimp_test_filter_entry_cpp_register (gimp);
+  register_small_tiles_entry_tests ();
   result = g_test_run ();
   gimp_test_utils_set_gimp3_directory ("GIMP_TESTING_ABS_TOP_BUILDDIR", "app/tests/gimpdir-output");
   gimp_exit (gimp, TRUE);

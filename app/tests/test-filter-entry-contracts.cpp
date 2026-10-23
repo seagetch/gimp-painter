@@ -1237,11 +1237,15 @@ void checked_model_api_separation ()
   g_assert_cmpstr (g_value_get_string (&g_array_index (saved.get (), GValue, 1)), ==, "model context");
 }
 
+#include "test-filter-small-tiles-entry-wrapper.inc"
+
 }
 
 extern "C" void gimp_test_filter_entry_cpp_register (Gimp *gimp)
 {
   application = gimp;
+  g_test_add_func ("/filter-entry/cpp/small-tiles-handles", tiles_checked_handles);
+  g_test_add_func ("/filter-entry/cpp/small-tiles-reentry", tiles_checked_reentry);
   g_test_add_func ("/filter-entry/cpp/checked_entry_routes", checked_entry_routes);
   g_test_add_func ("/filter-entry/cpp/checked_transform_reentry", checked_transform_reentry);
   g_test_add_func ("/filter-entry/cpp/checked_notify_close", checked_notify_close);

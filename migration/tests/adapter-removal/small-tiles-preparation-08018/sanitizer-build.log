@@ -1,0 +1,34 @@
+In file included from [01m[K../source/app/paint/painter-mypaint/engine.cpp:3[m[K:
+[01m[K../source/app/paint/painter-mypaint/legacy-brush.hpp:[m[K In member function ‘[01m[Kvoid GimpPainter::MyPaint::Legacy::Brush::[01;32m[Kupdate_states_and_setting_values[m[K(float, float, float, float, float, float)[m[K’:
+[01m[K../source/app/paint/painter-mypaint/legacy-brush.hpp:398:13:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kdx_old[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  398 |       float [01;35m[Kdx_old[m[K = states[STATE_DIRECTION_DX];
+      |             [01;35m[K^~~~~~[m[K
+[01m[K../source/app/paint/painter-mypaint/legacy-brush.hpp:399:13:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kdy_old[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  399 |       float [01;35m[Kdy_old[m[K = states[STATE_DIRECTION_DY];
+      |             [01;35m[K^~~~~~[m[K
+[01m[K../source/app/display/gimppaintercanvasui.cpp:645:6:[m[K [01;35m[Kwarning: [m[K‘[01m[Kvoid {anonymous}::Canvas::[01;32m[Kfinish_compact_restore[m[K(const std::shared_ptr<{anonymous}::Borrow>&)[m[K’ defined but not used [[01;35m[K-Wunused-function[m[K]
+  645 | void [01;35m[KCanvas[m[K::finish_compact_restore (const std::shared_ptr<Borrow>& borrowed) noexcept {
+      |      [01;35m[K^~~~~~[m[K
+[01m[K../source/app/display/gimppaintercanvasui.cpp:288:12:[m[K [01;35m[Kwarning: [m[K‘[01m[KGtkWidget* {anonymous}::[01;32m[Kaction_button[m[K(Canvas&, GtkWidget*, const char*, const char*)[m[K’ defined but not used [[01;35m[K-Wunused-function[m[K]
+  288 | GtkWidget *[01;35m[Kaction_button[m[K(Canvas&s,GtkWidget*box,const char*label,const char*name) {
+      |            [01;35m[K^~~~~~~~~~~~~[m[K
+[01m[K../source/app/paint/gimppainterbrushgeometry.cpp:[m[K In lambda function:
+[01m[K../source/app/paint/gimppainterbrushgeometry.cpp:88:54:[m[K [01;35m[Kwarning: [m[Kcomparison of integer expressions of different signedness: ‘[01m[Kconst std::size_t[m[K’ {aka ‘[01m[Kconst long unsigned int[m[K’} and ‘[01m[Kint[m[K’ [[01;35m[K-Wsign-compare[m[K]
+   88 |     if (mask.width <= 0 || mask.height <= 0 || [01;35m[Kcount > G_MAXINT / channels[m[K)
+      |                                                [01;35m[K~~~~~~^~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-filter-entry-contracts.cpp:98:21:[m[K [01;35m[Kwarning: [m[Kno previous declaration for ‘[01m[Kgboolean[01;32m[K __wrap_gimp_filter_layer_set_legacy_procedure[m[K(GimpFilterLayer*, const gchar*, const GArray*, GError**)[m[K’ [[01;35m[K-Wmissing-declarations[m[K]
+   98 | extern "C" gboolean [01;35m[K__wrap_gimp_filter_layer_set_legacy_procedure[m[K (GimpFilterLayer *filter,
+      |                     [01;35m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-filter-entry-contracts.cpp:104:23:[m[K [01;35m[Kwarning: [m[Kno previous declaration for ‘[01m[KGimpLayer*[01;32m[K __wrap_gimp_filter_layer_new[m[K(GimpImage*, gint, gint, const gchar*, gdouble, GimpLayerMode)[m[K’ [[01;35m[K-Wmissing-declarations[m[K]
+  104 | extern "C" GimpLayer *[01;35m[K__wrap_gimp_filter_layer_new[m[K (GimpImage *image, gint width, gint height,
+      |                       [01;35m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-filter-entry-contracts.cpp:110:25:[m[K [01;35m[Kwarning: [m[Kno previous declaration for ‘[01m[Kconst gchar*[01;32m[K __wrap_gimp_filter_layer_get_procedure[m[K(GimpFilterLayer*)[m[K’ [[01;35m[K-Wmissing-declarations[m[K]
+  110 | extern "C" const gchar *[01;35m[K__wrap_gimp_filter_layer_get_procedure[m[K (GimpFilterLayer *filter)
+      |                         [01;35m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-filter-entry-contracts.cpp:115:20:[m[K [01;35m[Kwarning: [m[Kno previous declaration for ‘[01m[KGArray*[01;32m[K __wrap_gimp_filter_layer_get_procedure_args[m[K(GimpFilterLayer*)[m[K’ [[01;35m[K-Wmissing-declarations[m[K]
+  115 | extern "C" GArray *[01;35m[K__wrap_gimp_filter_layer_get_procedure_args[m[K (GimpFilterLayer *filter)
+      |                    [01;35m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-filter-entry-contracts.cpp:120:17:[m[K [01;35m[Kwarning: [m[Kno previous declaration for ‘[01m[Kvoid[01;32m[K __wrap_gimp_filter_layer_mark_as_loaded[m[K(GimpFilterLayer*)[m[K’ [[01;35m[K-Wmissing-declarations[m[K]
+  120 | extern "C" void [01;35m[K__wrap_gimp_filter_layer_mark_as_loaded[m[K (GimpFilterLayer *filter)
+      |                 [01;35m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+{"filter-entry-contracts": {"path": "/workspace/shared/gimp-native-baseline/build-port/app/tests/filter-entry-contracts-asan", "sha256": "dc969732ec52b6e0917a9549deb07deb67f38bcd9c8c6496ad97d32705295451"}}

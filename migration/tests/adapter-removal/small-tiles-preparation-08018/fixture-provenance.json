@@ -1,0 +1,1963 @@
+{
+  "archive": "migration/fixtures/small-tiles-evidence.tar.gz",
+  "archive_sha256": "d28e4b74436f980a9e263225748b056df2228ed6b5d8b815f4b6e1c1d67f8695",
+  "manifest_sha256": "40b16e69a8e10bf4ed3b5bab74b8f86d85120ef333d3d04fd37cbc0cddb437b2",
+  "verified_member_count": 1107,
+  "live_inputs": {
+    "small-tiles-evidence/live/cases.tsv": {
+      "size": 1325,
+      "sha256": "04a481f460a208799f4512ded16afc81a46d2ca1f899e2a13ae49a5dbda06d62",
+      "derived_from": {
+        "source_archive": "legacy-filter-additional-live.tar.gz",
+        "source_member": "legacy-filter-additional-live/cases.tsv",
+        "source_sha256": "d25253f7b3e0059b4b1ad9bb0c82a25d63276f6bf39ad214d59a19aa5ebb300a",
+        "rule": "Retain unchanged SmallTiles rows beginning tiles-"
+      }
+    },
+    "small-tiles-evidence/live/merges.tsv": {
+      "size": 1656,
+      "sha256": "54119cfcba5350bdd9798d618dad969131ea9da8e91e0576db358031c50ff9f3",
+      "derived_from": {
+        "source_archive": "legacy-filter-additional-live.tar.gz",
+        "source_member": "legacy-filter-additional-live/merges.tsv",
+        "source_sha256": "106b5a113d31868d99580c166fb12a45bda64a1829381433bf7962c6ecc0f3ef",
+        "rule": "Retain unchanged SmallTiles rows beginning tiles-"
+      }
+    },
+    "small-tiles-evidence/live/bounds.tsv": {
+      "size": 2752,
+      "sha256": "33ad7b8bed1c3cc158cadbce580666f7445509c38e310abb80811a856ebcdf52",
+      "derived_from": {
+        "source_archive": "legacy-filter-additional-live.tar.gz",
+        "source_member": "legacy-filter-additional-live/bounds.tsv",
+        "source_sha256": "074e375b343c92dfcc1b6b13f5bddaddfc81932bf7291f5cba3f9ed90c875c78",
+        "rule": "Retain unchanged SmallTiles rows beginning tiles-"
+      }
+    },
+    "small-tiles-evidence/live/events.tsv": {
+      "size": 3350,
+      "sha256": "e3ab60a65782627b643ab5efaacc1ad0f54241310371cd7a3b7ca7714febdaa1",
+      "derived_from": {
+        "source_archive": "legacy-filter-additional-live.tar.gz",
+        "source_member": "legacy-filter-additional-live/events.tsv",
+        "source_sha256": "c038f813c4221d916c8ff8125499d6684a8ac09c39a50e57f7d013c325d4514e",
+        "rule": "Retain unchanged SmallTiles rows beginning tiles-"
+      }
+    },
+    "small-tiles-evidence/live/tiles-g0-s0-v0-merge1-input.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s0-v0-merge1-input.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s0-v0-merge1-mask.raw": {
+      "size": 2173,
+      "sha256": "596fb7acd70a78651f11b990848018b7fd5c7df675e9a9cc427c4b2c4657b9c5",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s0-v0-merge1-mask.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s0-v0-merge1-output.raw": {
+      "size": 8692,
+      "sha256": "58d61784c27955fc6cbb53b50d5c3a4337db30e456f046700bfa02bd3324c8e0",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s0-v0-merge1-output.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s0-v0-merge1-shadow.raw": {
+      "size": 8692,
+      "sha256": "5a20a74b3bb23eb6f9e4622e4fbb464d1ff68c7d0bf151158baa60a89078cba2",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s0-v0-merge1-shadow.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s0-v0-merge2-input.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s0-v0-merge2-input.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s0-v0-merge2-mask.raw": {
+      "size": 2173,
+      "sha256": "596fb7acd70a78651f11b990848018b7fd5c7df675e9a9cc427c4b2c4657b9c5",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s0-v0-merge2-mask.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s0-v0-merge2-output.raw": {
+      "size": 8692,
+      "sha256": "58d61784c27955fc6cbb53b50d5c3a4337db30e456f046700bfa02bd3324c8e0",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s0-v0-merge2-output.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s0-v0-merge2-shadow.raw": {
+      "size": 8692,
+      "sha256": "5a20a74b3bb23eb6f9e4622e4fbb464d1ff68c7d0bf151158baa60a89078cba2",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s0-v0-merge2-shadow.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s0-v0-rerun.raw": {
+      "size": 8692,
+      "sha256": "58d61784c27955fc6cbb53b50d5c3a4337db30e456f046700bfa02bd3324c8e0",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s0-v0-rerun.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s0-v0-settled.raw": {
+      "size": 8692,
+      "sha256": "58d61784c27955fc6cbb53b50d5c3a4337db30e456f046700bfa02bd3324c8e0",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s0-v0-settled.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s0-v0-source.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s0-v0-source.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s0-v0-start1.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s0-v0-start1.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s0-v0-start2.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s0-v0-start2.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s0-v1-merge1-input.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s0-v1-merge1-input.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s0-v1-merge1-mask.raw": {
+      "size": 2173,
+      "sha256": "596fb7acd70a78651f11b990848018b7fd5c7df675e9a9cc427c4b2c4657b9c5",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s0-v1-merge1-mask.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s0-v1-merge1-output.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s0-v1-merge1-output.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s0-v1-merge1-shadow.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s0-v1-merge1-shadow.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s0-v1-merge2-input.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s0-v1-merge2-input.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s0-v1-merge2-mask.raw": {
+      "size": 2173,
+      "sha256": "596fb7acd70a78651f11b990848018b7fd5c7df675e9a9cc427c4b2c4657b9c5",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s0-v1-merge2-mask.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s0-v1-merge2-output.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s0-v1-merge2-output.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s0-v1-merge2-shadow.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s0-v1-merge2-shadow.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s0-v1-rerun.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s0-v1-rerun.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s0-v1-settled.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s0-v1-settled.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s0-v1-source.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s0-v1-source.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s0-v1-start1.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s0-v1-start1.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s0-v1-start2.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s0-v1-start2.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s0-v2-merge1-input.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s0-v2-merge1-input.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s0-v2-merge1-mask.raw": {
+      "size": 2173,
+      "sha256": "596fb7acd70a78651f11b990848018b7fd5c7df675e9a9cc427c4b2c4657b9c5",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s0-v2-merge1-mask.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s0-v2-merge1-output.raw": {
+      "size": 8692,
+      "sha256": "bfe0f850a327fa79cee613c77fbed57f030afaf55e11cb18ea14f693b3fc9eec",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s0-v2-merge1-output.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s0-v2-merge1-shadow.raw": {
+      "size": 8692,
+      "sha256": "b8580837432706b91ece747c1e9bd01f41269764c3b444c33399a6a80809d68d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s0-v2-merge1-shadow.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s0-v2-merge2-input.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s0-v2-merge2-input.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s0-v2-merge2-mask.raw": {
+      "size": 2173,
+      "sha256": "596fb7acd70a78651f11b990848018b7fd5c7df675e9a9cc427c4b2c4657b9c5",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s0-v2-merge2-mask.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s0-v2-merge2-output.raw": {
+      "size": 8692,
+      "sha256": "bfe0f850a327fa79cee613c77fbed57f030afaf55e11cb18ea14f693b3fc9eec",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s0-v2-merge2-output.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s0-v2-merge2-shadow.raw": {
+      "size": 8692,
+      "sha256": "b8580837432706b91ece747c1e9bd01f41269764c3b444c33399a6a80809d68d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s0-v2-merge2-shadow.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s0-v2-rerun.raw": {
+      "size": 8692,
+      "sha256": "bfe0f850a327fa79cee613c77fbed57f030afaf55e11cb18ea14f693b3fc9eec",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s0-v2-rerun.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s0-v2-settled.raw": {
+      "size": 8692,
+      "sha256": "bfe0f850a327fa79cee613c77fbed57f030afaf55e11cb18ea14f693b3fc9eec",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s0-v2-settled.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s0-v2-source.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s0-v2-source.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s0-v2-start1.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s0-v2-start1.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s0-v2-start2.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s0-v2-start2.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s0-v3-merge1-input.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s0-v3-merge1-input.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s0-v3-merge1-mask.raw": {
+      "size": 2173,
+      "sha256": "596fb7acd70a78651f11b990848018b7fd5c7df675e9a9cc427c4b2c4657b9c5",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s0-v3-merge1-mask.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s0-v3-merge1-output.raw": {
+      "size": 8692,
+      "sha256": "da9a0354b1f433fc7f45f468c5df6b072b84873327b921cf0c45df2f12035ff4",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s0-v3-merge1-output.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s0-v3-merge1-shadow.raw": {
+      "size": 8692,
+      "sha256": "4560539e06460e9f55790ee8ef3477f41b9f7968b709715b2f3684ab1e42691c",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s0-v3-merge1-shadow.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s0-v3-merge2-input.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s0-v3-merge2-input.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s0-v3-merge2-mask.raw": {
+      "size": 2173,
+      "sha256": "596fb7acd70a78651f11b990848018b7fd5c7df675e9a9cc427c4b2c4657b9c5",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s0-v3-merge2-mask.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s0-v3-merge2-output.raw": {
+      "size": 8692,
+      "sha256": "da9a0354b1f433fc7f45f468c5df6b072b84873327b921cf0c45df2f12035ff4",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s0-v3-merge2-output.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s0-v3-merge2-shadow.raw": {
+      "size": 8692,
+      "sha256": "4560539e06460e9f55790ee8ef3477f41b9f7968b709715b2f3684ab1e42691c",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s0-v3-merge2-shadow.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s0-v3-rerun.raw": {
+      "size": 8692,
+      "sha256": "da9a0354b1f433fc7f45f468c5df6b072b84873327b921cf0c45df2f12035ff4",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s0-v3-rerun.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s0-v3-settled.raw": {
+      "size": 8692,
+      "sha256": "da9a0354b1f433fc7f45f468c5df6b072b84873327b921cf0c45df2f12035ff4",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s0-v3-settled.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s0-v3-source.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s0-v3-source.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s0-v3-start1.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s0-v3-start1.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s0-v3-start2.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s0-v3-start2.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s1-v0-merge1-input.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s1-v0-merge1-input.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s1-v0-merge1-mask.raw": {
+      "size": 2173,
+      "sha256": "e678b9a95ccaf904a7c54e83a9054344a331c18817b2bab345ef13315144d4c1",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s1-v0-merge1-mask.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s1-v0-merge1-output.raw": {
+      "size": 8692,
+      "sha256": "2c17fa4ea2119eee6b162c83841bbaeb065949a722ea6534179d3267db33173f",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s1-v0-merge1-output.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s1-v0-merge1-shadow.raw": {
+      "size": 8692,
+      "sha256": "e340272c93b1476d5d5d81fb0372ff48ed0496da0d97844210ece9d5fbc20772",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s1-v0-merge1-shadow.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s1-v0-merge2-input.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s1-v0-merge2-input.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s1-v0-merge2-mask.raw": {
+      "size": 2173,
+      "sha256": "e678b9a95ccaf904a7c54e83a9054344a331c18817b2bab345ef13315144d4c1",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s1-v0-merge2-mask.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s1-v0-merge2-output.raw": {
+      "size": 8692,
+      "sha256": "2c17fa4ea2119eee6b162c83841bbaeb065949a722ea6534179d3267db33173f",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s1-v0-merge2-output.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s1-v0-merge2-shadow.raw": {
+      "size": 8692,
+      "sha256": "e340272c93b1476d5d5d81fb0372ff48ed0496da0d97844210ece9d5fbc20772",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s1-v0-merge2-shadow.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s1-v0-rerun.raw": {
+      "size": 8692,
+      "sha256": "2c17fa4ea2119eee6b162c83841bbaeb065949a722ea6534179d3267db33173f",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s1-v0-rerun.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s1-v0-settled.raw": {
+      "size": 8692,
+      "sha256": "2c17fa4ea2119eee6b162c83841bbaeb065949a722ea6534179d3267db33173f",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s1-v0-settled.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s1-v0-source.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s1-v0-source.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s1-v0-start1.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s1-v0-start1.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s1-v0-start2.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s1-v0-start2.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s1-v1-merge1-input.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s1-v1-merge1-input.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s1-v1-merge1-mask.raw": {
+      "size": 2173,
+      "sha256": "e678b9a95ccaf904a7c54e83a9054344a331c18817b2bab345ef13315144d4c1",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s1-v1-merge1-mask.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s1-v1-merge1-output.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s1-v1-merge1-output.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s1-v1-merge1-shadow.raw": {
+      "size": 8692,
+      "sha256": "7f0bae17d3d33b0e2bd4d6676bf7042f36ff0d74f73647217742f19a7715bc0a",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s1-v1-merge1-shadow.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s1-v1-merge2-input.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s1-v1-merge2-input.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s1-v1-merge2-mask.raw": {
+      "size": 2173,
+      "sha256": "e678b9a95ccaf904a7c54e83a9054344a331c18817b2bab345ef13315144d4c1",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s1-v1-merge2-mask.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s1-v1-merge2-output.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s1-v1-merge2-output.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s1-v1-merge2-shadow.raw": {
+      "size": 8692,
+      "sha256": "7f0bae17d3d33b0e2bd4d6676bf7042f36ff0d74f73647217742f19a7715bc0a",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s1-v1-merge2-shadow.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s1-v1-rerun.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s1-v1-rerun.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s1-v1-settled.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s1-v1-settled.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s1-v1-source.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s1-v1-source.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s1-v1-start1.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s1-v1-start1.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s1-v1-start2.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s1-v1-start2.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s1-v2-merge1-input.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s1-v2-merge1-input.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s1-v2-merge1-mask.raw": {
+      "size": 2173,
+      "sha256": "e678b9a95ccaf904a7c54e83a9054344a331c18817b2bab345ef13315144d4c1",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s1-v2-merge1-mask.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s1-v2-merge1-output.raw": {
+      "size": 8692,
+      "sha256": "58deccbbd4317cdd59afc6107d108bf75c81cdb3ef6e5bbd0310c3e4f7cbbdcb",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s1-v2-merge1-output.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s1-v2-merge1-shadow.raw": {
+      "size": 8692,
+      "sha256": "c8a6cf71952943792fa99faa8e768385f56b20898699e9048ef1ed19e8ed47b3",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s1-v2-merge1-shadow.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s1-v2-merge2-input.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s1-v2-merge2-input.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s1-v2-merge2-mask.raw": {
+      "size": 2173,
+      "sha256": "e678b9a95ccaf904a7c54e83a9054344a331c18817b2bab345ef13315144d4c1",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s1-v2-merge2-mask.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s1-v2-merge2-output.raw": {
+      "size": 8692,
+      "sha256": "58deccbbd4317cdd59afc6107d108bf75c81cdb3ef6e5bbd0310c3e4f7cbbdcb",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s1-v2-merge2-output.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s1-v2-merge2-shadow.raw": {
+      "size": 8692,
+      "sha256": "c8a6cf71952943792fa99faa8e768385f56b20898699e9048ef1ed19e8ed47b3",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s1-v2-merge2-shadow.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s1-v2-rerun.raw": {
+      "size": 8692,
+      "sha256": "58deccbbd4317cdd59afc6107d108bf75c81cdb3ef6e5bbd0310c3e4f7cbbdcb",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s1-v2-rerun.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s1-v2-settled.raw": {
+      "size": 8692,
+      "sha256": "58deccbbd4317cdd59afc6107d108bf75c81cdb3ef6e5bbd0310c3e4f7cbbdcb",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s1-v2-settled.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s1-v2-source.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s1-v2-source.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s1-v2-start1.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s1-v2-start1.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s1-v2-start2.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s1-v2-start2.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s1-v3-merge1-input.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s1-v3-merge1-input.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s1-v3-merge1-mask.raw": {
+      "size": 2173,
+      "sha256": "e678b9a95ccaf904a7c54e83a9054344a331c18817b2bab345ef13315144d4c1",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s1-v3-merge1-mask.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s1-v3-merge1-output.raw": {
+      "size": 8692,
+      "sha256": "b5524eedc785fe27502d90c900b28c6e2112fb9f0e6b84c77dcaef8b100bc12f",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s1-v3-merge1-output.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s1-v3-merge1-shadow.raw": {
+      "size": 8692,
+      "sha256": "99d21f68906b425d5babb3674ef2d0c1a26cd28dd7a642c544ffd3ff70c5e96c",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s1-v3-merge1-shadow.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s1-v3-merge2-input.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s1-v3-merge2-input.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s1-v3-merge2-mask.raw": {
+      "size": 2173,
+      "sha256": "e678b9a95ccaf904a7c54e83a9054344a331c18817b2bab345ef13315144d4c1",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s1-v3-merge2-mask.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s1-v3-merge2-output.raw": {
+      "size": 8692,
+      "sha256": "b5524eedc785fe27502d90c900b28c6e2112fb9f0e6b84c77dcaef8b100bc12f",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s1-v3-merge2-output.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s1-v3-merge2-shadow.raw": {
+      "size": 8692,
+      "sha256": "99d21f68906b425d5babb3674ef2d0c1a26cd28dd7a642c544ffd3ff70c5e96c",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s1-v3-merge2-shadow.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s1-v3-rerun.raw": {
+      "size": 8692,
+      "sha256": "b5524eedc785fe27502d90c900b28c6e2112fb9f0e6b84c77dcaef8b100bc12f",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s1-v3-rerun.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s1-v3-settled.raw": {
+      "size": 8692,
+      "sha256": "b5524eedc785fe27502d90c900b28c6e2112fb9f0e6b84c77dcaef8b100bc12f",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s1-v3-settled.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s1-v3-source.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s1-v3-source.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s1-v3-start1.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s1-v3-start1.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s1-v3-start2.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s1-v3-start2.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s2-v0-merge1-input.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s2-v0-merge1-input.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s2-v0-merge1-mask.raw": {
+      "size": 2173,
+      "sha256": "074673ddcc745533b060e4615cde7fe5308c1f2fe6e79bb8afc48ce1523cc378",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s2-v0-merge1-mask.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s2-v0-merge1-output.raw": {
+      "size": 8692,
+      "sha256": "dae2ecfbc463b488f5f75bada9cb51aa1313270301640e5154f5cef13ede1f6e",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s2-v0-merge1-output.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s2-v0-merge1-shadow.raw": {
+      "size": 8692,
+      "sha256": "4771a0b227c3d8f4515d9faffad3c612475bb0690c680f8c6e38989f1347ff54",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s2-v0-merge1-shadow.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s2-v0-merge2-input.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s2-v0-merge2-input.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s2-v0-merge2-mask.raw": {
+      "size": 2173,
+      "sha256": "074673ddcc745533b060e4615cde7fe5308c1f2fe6e79bb8afc48ce1523cc378",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s2-v0-merge2-mask.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s2-v0-merge2-output.raw": {
+      "size": 8692,
+      "sha256": "dae2ecfbc463b488f5f75bada9cb51aa1313270301640e5154f5cef13ede1f6e",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s2-v0-merge2-output.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s2-v0-merge2-shadow.raw": {
+      "size": 8692,
+      "sha256": "4771a0b227c3d8f4515d9faffad3c612475bb0690c680f8c6e38989f1347ff54",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s2-v0-merge2-shadow.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s2-v0-rerun.raw": {
+      "size": 8692,
+      "sha256": "dae2ecfbc463b488f5f75bada9cb51aa1313270301640e5154f5cef13ede1f6e",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s2-v0-rerun.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s2-v0-settled.raw": {
+      "size": 8692,
+      "sha256": "dae2ecfbc463b488f5f75bada9cb51aa1313270301640e5154f5cef13ede1f6e",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s2-v0-settled.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s2-v0-source.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s2-v0-source.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s2-v0-start1.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s2-v0-start1.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s2-v0-start2.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s2-v0-start2.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s2-v1-merge1-input.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s2-v1-merge1-input.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s2-v1-merge1-mask.raw": {
+      "size": 2173,
+      "sha256": "074673ddcc745533b060e4615cde7fe5308c1f2fe6e79bb8afc48ce1523cc378",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s2-v1-merge1-mask.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s2-v1-merge1-output.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s2-v1-merge1-output.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s2-v1-merge1-shadow.raw": {
+      "size": 8692,
+      "sha256": "68acc4002ec3abf058eb24f2104a41138f79c917996c25f149306b112c46b3e3",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s2-v1-merge1-shadow.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s2-v1-merge2-input.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s2-v1-merge2-input.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s2-v1-merge2-mask.raw": {
+      "size": 2173,
+      "sha256": "074673ddcc745533b060e4615cde7fe5308c1f2fe6e79bb8afc48ce1523cc378",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s2-v1-merge2-mask.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s2-v1-merge2-output.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s2-v1-merge2-output.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s2-v1-merge2-shadow.raw": {
+      "size": 8692,
+      "sha256": "68acc4002ec3abf058eb24f2104a41138f79c917996c25f149306b112c46b3e3",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s2-v1-merge2-shadow.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s2-v1-rerun.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s2-v1-rerun.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s2-v1-settled.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s2-v1-settled.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s2-v1-source.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s2-v1-source.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s2-v1-start1.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s2-v1-start1.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s2-v1-start2.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s2-v1-start2.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s2-v2-merge1-input.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s2-v2-merge1-input.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s2-v2-merge1-mask.raw": {
+      "size": 2173,
+      "sha256": "074673ddcc745533b060e4615cde7fe5308c1f2fe6e79bb8afc48ce1523cc378",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s2-v2-merge1-mask.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s2-v2-merge1-output.raw": {
+      "size": 8692,
+      "sha256": "01c600d4a5ad0eef662548a043b53ef222d940dadd7bd678be417e282303a4c1",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s2-v2-merge1-output.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s2-v2-merge1-shadow.raw": {
+      "size": 8692,
+      "sha256": "4a10fd0d193d8308503641fbebfb5663782ef2c7034b7dffbfcaab25fd75f164",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s2-v2-merge1-shadow.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s2-v2-merge2-input.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s2-v2-merge2-input.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s2-v2-merge2-mask.raw": {
+      "size": 2173,
+      "sha256": "074673ddcc745533b060e4615cde7fe5308c1f2fe6e79bb8afc48ce1523cc378",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s2-v2-merge2-mask.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s2-v2-merge2-output.raw": {
+      "size": 8692,
+      "sha256": "01c600d4a5ad0eef662548a043b53ef222d940dadd7bd678be417e282303a4c1",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s2-v2-merge2-output.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s2-v2-merge2-shadow.raw": {
+      "size": 8692,
+      "sha256": "4a10fd0d193d8308503641fbebfb5663782ef2c7034b7dffbfcaab25fd75f164",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s2-v2-merge2-shadow.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s2-v2-rerun.raw": {
+      "size": 8692,
+      "sha256": "01c600d4a5ad0eef662548a043b53ef222d940dadd7bd678be417e282303a4c1",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s2-v2-rerun.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s2-v2-settled.raw": {
+      "size": 8692,
+      "sha256": "01c600d4a5ad0eef662548a043b53ef222d940dadd7bd678be417e282303a4c1",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s2-v2-settled.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s2-v2-source.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s2-v2-source.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s2-v2-start1.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s2-v2-start1.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s2-v2-start2.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s2-v2-start2.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s2-v3-merge1-input.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s2-v3-merge1-input.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s2-v3-merge1-mask.raw": {
+      "size": 2173,
+      "sha256": "074673ddcc745533b060e4615cde7fe5308c1f2fe6e79bb8afc48ce1523cc378",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s2-v3-merge1-mask.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s2-v3-merge1-output.raw": {
+      "size": 8692,
+      "sha256": "10bb6ced18190b56f5f339c16a5be18c8cb401aaf8a9613e95a8828a396bcf1b",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s2-v3-merge1-output.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s2-v3-merge1-shadow.raw": {
+      "size": 8692,
+      "sha256": "032720052fb70b071c8cbd152ddaf0c70ba29b4051fa0c7a45c721cc16b22795",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s2-v3-merge1-shadow.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s2-v3-merge2-input.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s2-v3-merge2-input.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s2-v3-merge2-mask.raw": {
+      "size": 2173,
+      "sha256": "074673ddcc745533b060e4615cde7fe5308c1f2fe6e79bb8afc48ce1523cc378",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s2-v3-merge2-mask.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s2-v3-merge2-output.raw": {
+      "size": 8692,
+      "sha256": "10bb6ced18190b56f5f339c16a5be18c8cb401aaf8a9613e95a8828a396bcf1b",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s2-v3-merge2-output.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s2-v3-merge2-shadow.raw": {
+      "size": 8692,
+      "sha256": "032720052fb70b071c8cbd152ddaf0c70ba29b4051fa0c7a45c721cc16b22795",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s2-v3-merge2-shadow.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s2-v3-rerun.raw": {
+      "size": 8692,
+      "sha256": "10bb6ced18190b56f5f339c16a5be18c8cb401aaf8a9613e95a8828a396bcf1b",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s2-v3-rerun.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s2-v3-settled.raw": {
+      "size": 8692,
+      "sha256": "10bb6ced18190b56f5f339c16a5be18c8cb401aaf8a9613e95a8828a396bcf1b",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s2-v3-settled.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s2-v3-source.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s2-v3-source.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s2-v3-start1.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s2-v3-start1.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s2-v3-start2.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s2-v3-start2.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s3-v1-initial-cache.raw": {
+      "size": 8692,
+      "sha256": "201383a5b0ceaeec1b25ef49a8aea3c05f30c9a6cef420a778b5e19e9d885e8c",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s3-v1-initial-cache.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s3-v1-rerun.raw": {
+      "size": 8692,
+      "sha256": "5519759a19977abc0d567be709f63b81fc0575446cc8f81f13c37e529508b6a1",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s3-v1-rerun.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s3-v1-settled.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s3-v1-settled.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s3-v1-source.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s3-v1-source.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s3-v1-source2.raw": {
+      "size": 8692,
+      "sha256": "5519759a19977abc0d567be709f63b81fc0575446cc8f81f13c37e529508b6a1",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s3-v1-source2.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s3-v1-start1.raw": {
+      "size": 8692,
+      "sha256": "9fe2ecdecf9eac33364f23ce02beb708220e37633c7548fbca75b1d0d8a0670d",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s3-v1-start1.raw"
+    },
+    "small-tiles-evidence/live/tiles-g0-s3-v1-start2.raw": {
+      "size": 8692,
+      "sha256": "5519759a19977abc0d567be709f63b81fc0575446cc8f81f13c37e529508b6a1",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g0-s3-v1-start2.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s0-v0-merge1-input.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s0-v0-merge1-input.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s0-v0-merge1-mask.raw": {
+      "size": 2173,
+      "sha256": "596fb7acd70a78651f11b990848018b7fd5c7df675e9a9cc427c4b2c4657b9c5",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s0-v0-merge1-mask.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s0-v0-merge1-output.raw": {
+      "size": 4346,
+      "sha256": "b2544dd5ffe0a51dd0c5273eb3a3afc6b12ae397dc3a8660d341b6ab4bdaef99",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s0-v0-merge1-output.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s0-v0-merge1-shadow.raw": {
+      "size": 4346,
+      "sha256": "e09a59997f33690714ac76d2b27bcc1fa4fd5de1df66c76364f3ff9a69bd0920",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s0-v0-merge1-shadow.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s0-v0-merge2-input.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s0-v0-merge2-input.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s0-v0-merge2-mask.raw": {
+      "size": 2173,
+      "sha256": "596fb7acd70a78651f11b990848018b7fd5c7df675e9a9cc427c4b2c4657b9c5",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s0-v0-merge2-mask.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s0-v0-merge2-output.raw": {
+      "size": 4346,
+      "sha256": "b2544dd5ffe0a51dd0c5273eb3a3afc6b12ae397dc3a8660d341b6ab4bdaef99",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s0-v0-merge2-output.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s0-v0-merge2-shadow.raw": {
+      "size": 4346,
+      "sha256": "e09a59997f33690714ac76d2b27bcc1fa4fd5de1df66c76364f3ff9a69bd0920",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s0-v0-merge2-shadow.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s0-v0-rerun.raw": {
+      "size": 4346,
+      "sha256": "b2544dd5ffe0a51dd0c5273eb3a3afc6b12ae397dc3a8660d341b6ab4bdaef99",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s0-v0-rerun.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s0-v0-settled.raw": {
+      "size": 4346,
+      "sha256": "b2544dd5ffe0a51dd0c5273eb3a3afc6b12ae397dc3a8660d341b6ab4bdaef99",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s0-v0-settled.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s0-v0-source.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s0-v0-source.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s0-v0-start1.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s0-v0-start1.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s0-v0-start2.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s0-v0-start2.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s0-v1-merge1-input.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s0-v1-merge1-input.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s0-v1-merge1-mask.raw": {
+      "size": 2173,
+      "sha256": "596fb7acd70a78651f11b990848018b7fd5c7df675e9a9cc427c4b2c4657b9c5",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s0-v1-merge1-mask.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s0-v1-merge1-output.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s0-v1-merge1-output.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s0-v1-merge1-shadow.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s0-v1-merge1-shadow.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s0-v1-merge2-input.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s0-v1-merge2-input.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s0-v1-merge2-mask.raw": {
+      "size": 2173,
+      "sha256": "596fb7acd70a78651f11b990848018b7fd5c7df675e9a9cc427c4b2c4657b9c5",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s0-v1-merge2-mask.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s0-v1-merge2-output.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s0-v1-merge2-output.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s0-v1-merge2-shadow.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s0-v1-merge2-shadow.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s0-v1-rerun.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s0-v1-rerun.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s0-v1-settled.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s0-v1-settled.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s0-v1-source.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s0-v1-source.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s0-v1-start1.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s0-v1-start1.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s0-v1-start2.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s0-v1-start2.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s0-v2-merge1-input.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s0-v2-merge1-input.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s0-v2-merge1-mask.raw": {
+      "size": 2173,
+      "sha256": "596fb7acd70a78651f11b990848018b7fd5c7df675e9a9cc427c4b2c4657b9c5",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s0-v2-merge1-mask.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s0-v2-merge1-output.raw": {
+      "size": 4346,
+      "sha256": "3d61b1345b5ff98b37b34865c236d060030e9e5e3a35bb4d0e3be74e249d9a89",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s0-v2-merge1-output.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s0-v2-merge1-shadow.raw": {
+      "size": 4346,
+      "sha256": "2b2838ad74e00c247cef165fc6bb590178d24980d7db2e26397899ef6f64126f",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s0-v2-merge1-shadow.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s0-v2-merge2-input.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s0-v2-merge2-input.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s0-v2-merge2-mask.raw": {
+      "size": 2173,
+      "sha256": "596fb7acd70a78651f11b990848018b7fd5c7df675e9a9cc427c4b2c4657b9c5",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s0-v2-merge2-mask.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s0-v2-merge2-output.raw": {
+      "size": 4346,
+      "sha256": "3d61b1345b5ff98b37b34865c236d060030e9e5e3a35bb4d0e3be74e249d9a89",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s0-v2-merge2-output.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s0-v2-merge2-shadow.raw": {
+      "size": 4346,
+      "sha256": "2b2838ad74e00c247cef165fc6bb590178d24980d7db2e26397899ef6f64126f",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s0-v2-merge2-shadow.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s0-v2-rerun.raw": {
+      "size": 4346,
+      "sha256": "3d61b1345b5ff98b37b34865c236d060030e9e5e3a35bb4d0e3be74e249d9a89",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s0-v2-rerun.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s0-v2-settled.raw": {
+      "size": 4346,
+      "sha256": "3d61b1345b5ff98b37b34865c236d060030e9e5e3a35bb4d0e3be74e249d9a89",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s0-v2-settled.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s0-v2-source.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s0-v2-source.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s0-v2-start1.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s0-v2-start1.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s0-v2-start2.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s0-v2-start2.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s0-v3-merge1-input.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s0-v3-merge1-input.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s0-v3-merge1-mask.raw": {
+      "size": 2173,
+      "sha256": "596fb7acd70a78651f11b990848018b7fd5c7df675e9a9cc427c4b2c4657b9c5",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s0-v3-merge1-mask.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s0-v3-merge1-output.raw": {
+      "size": 4346,
+      "sha256": "64381e099ae3f81078517fa5003649a3d024177357636fff54ed2008022fc81a",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s0-v3-merge1-output.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s0-v3-merge1-shadow.raw": {
+      "size": 4346,
+      "sha256": "20d0321be149f0c8ced1812cbbfe16bfcceaf852cd7a32ad4501642cc2070b19",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s0-v3-merge1-shadow.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s0-v3-merge2-input.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s0-v3-merge2-input.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s0-v3-merge2-mask.raw": {
+      "size": 2173,
+      "sha256": "596fb7acd70a78651f11b990848018b7fd5c7df675e9a9cc427c4b2c4657b9c5",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s0-v3-merge2-mask.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s0-v3-merge2-output.raw": {
+      "size": 4346,
+      "sha256": "64381e099ae3f81078517fa5003649a3d024177357636fff54ed2008022fc81a",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s0-v3-merge2-output.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s0-v3-merge2-shadow.raw": {
+      "size": 4346,
+      "sha256": "20d0321be149f0c8ced1812cbbfe16bfcceaf852cd7a32ad4501642cc2070b19",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s0-v3-merge2-shadow.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s0-v3-rerun.raw": {
+      "size": 4346,
+      "sha256": "64381e099ae3f81078517fa5003649a3d024177357636fff54ed2008022fc81a",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s0-v3-rerun.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s0-v3-settled.raw": {
+      "size": 4346,
+      "sha256": "64381e099ae3f81078517fa5003649a3d024177357636fff54ed2008022fc81a",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s0-v3-settled.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s0-v3-source.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s0-v3-source.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s0-v3-start1.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s0-v3-start1.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s0-v3-start2.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s0-v3-start2.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s1-v0-merge1-input.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s1-v0-merge1-input.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s1-v0-merge1-mask.raw": {
+      "size": 2173,
+      "sha256": "e678b9a95ccaf904a7c54e83a9054344a331c18817b2bab345ef13315144d4c1",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s1-v0-merge1-mask.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s1-v0-merge1-output.raw": {
+      "size": 4346,
+      "sha256": "4978a633d2bd2c5be364843d4bb6228cf3c911d1bde783c52ad6a096bec4c272",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s1-v0-merge1-output.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s1-v0-merge1-shadow.raw": {
+      "size": 4346,
+      "sha256": "39bb162488e20940a4b93e63faa81e49d79b4345dd77490499a1d6333f41624e",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s1-v0-merge1-shadow.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s1-v0-merge2-input.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s1-v0-merge2-input.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s1-v0-merge2-mask.raw": {
+      "size": 2173,
+      "sha256": "e678b9a95ccaf904a7c54e83a9054344a331c18817b2bab345ef13315144d4c1",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s1-v0-merge2-mask.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s1-v0-merge2-output.raw": {
+      "size": 4346,
+      "sha256": "4978a633d2bd2c5be364843d4bb6228cf3c911d1bde783c52ad6a096bec4c272",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s1-v0-merge2-output.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s1-v0-merge2-shadow.raw": {
+      "size": 4346,
+      "sha256": "39bb162488e20940a4b93e63faa81e49d79b4345dd77490499a1d6333f41624e",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s1-v0-merge2-shadow.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s1-v0-rerun.raw": {
+      "size": 4346,
+      "sha256": "4978a633d2bd2c5be364843d4bb6228cf3c911d1bde783c52ad6a096bec4c272",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s1-v0-rerun.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s1-v0-settled.raw": {
+      "size": 4346,
+      "sha256": "4978a633d2bd2c5be364843d4bb6228cf3c911d1bde783c52ad6a096bec4c272",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s1-v0-settled.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s1-v0-source.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s1-v0-source.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s1-v0-start1.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s1-v0-start1.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s1-v0-start2.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s1-v0-start2.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s1-v1-merge1-input.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s1-v1-merge1-input.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s1-v1-merge1-mask.raw": {
+      "size": 2173,
+      "sha256": "e678b9a95ccaf904a7c54e83a9054344a331c18817b2bab345ef13315144d4c1",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s1-v1-merge1-mask.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s1-v1-merge1-output.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s1-v1-merge1-output.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s1-v1-merge1-shadow.raw": {
+      "size": 4346,
+      "sha256": "0a7901604e6b11337d3fceb333650d6a802fe8a09abe22fa95c2c21d7308d7ed",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s1-v1-merge1-shadow.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s1-v1-merge2-input.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s1-v1-merge2-input.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s1-v1-merge2-mask.raw": {
+      "size": 2173,
+      "sha256": "e678b9a95ccaf904a7c54e83a9054344a331c18817b2bab345ef13315144d4c1",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s1-v1-merge2-mask.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s1-v1-merge2-output.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s1-v1-merge2-output.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s1-v1-merge2-shadow.raw": {
+      "size": 4346,
+      "sha256": "0a7901604e6b11337d3fceb333650d6a802fe8a09abe22fa95c2c21d7308d7ed",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s1-v1-merge2-shadow.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s1-v1-rerun.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s1-v1-rerun.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s1-v1-settled.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s1-v1-settled.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s1-v1-source.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s1-v1-source.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s1-v1-start1.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s1-v1-start1.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s1-v1-start2.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s1-v1-start2.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s1-v2-merge1-input.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s1-v2-merge1-input.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s1-v2-merge1-mask.raw": {
+      "size": 2173,
+      "sha256": "e678b9a95ccaf904a7c54e83a9054344a331c18817b2bab345ef13315144d4c1",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s1-v2-merge1-mask.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s1-v2-merge1-output.raw": {
+      "size": 4346,
+      "sha256": "3d50e1ff813a6d365ab28a485ea1e093be65cd456c6009fbf6161f5f09ea75e8",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s1-v2-merge1-output.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s1-v2-merge1-shadow.raw": {
+      "size": 4346,
+      "sha256": "280b6d87cd5b4af6b9094c34fc4bdfde9b71a4b49d779e766400b83f3b3ae068",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s1-v2-merge1-shadow.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s1-v2-merge2-input.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s1-v2-merge2-input.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s1-v2-merge2-mask.raw": {
+      "size": 2173,
+      "sha256": "e678b9a95ccaf904a7c54e83a9054344a331c18817b2bab345ef13315144d4c1",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s1-v2-merge2-mask.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s1-v2-merge2-output.raw": {
+      "size": 4346,
+      "sha256": "3d50e1ff813a6d365ab28a485ea1e093be65cd456c6009fbf6161f5f09ea75e8",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s1-v2-merge2-output.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s1-v2-merge2-shadow.raw": {
+      "size": 4346,
+      "sha256": "280b6d87cd5b4af6b9094c34fc4bdfde9b71a4b49d779e766400b83f3b3ae068",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s1-v2-merge2-shadow.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s1-v2-rerun.raw": {
+      "size": 4346,
+      "sha256": "3d50e1ff813a6d365ab28a485ea1e093be65cd456c6009fbf6161f5f09ea75e8",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s1-v2-rerun.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s1-v2-settled.raw": {
+      "size": 4346,
+      "sha256": "3d50e1ff813a6d365ab28a485ea1e093be65cd456c6009fbf6161f5f09ea75e8",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s1-v2-settled.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s1-v2-source.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s1-v2-source.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s1-v2-start1.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s1-v2-start1.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s1-v2-start2.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s1-v2-start2.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s1-v3-merge1-input.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s1-v3-merge1-input.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s1-v3-merge1-mask.raw": {
+      "size": 2173,
+      "sha256": "e678b9a95ccaf904a7c54e83a9054344a331c18817b2bab345ef13315144d4c1",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s1-v3-merge1-mask.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s1-v3-merge1-output.raw": {
+      "size": 4346,
+      "sha256": "6a6803912584d24a7d7e4326ed5eeb710749a53068ac7e1766756a6bdd49cde1",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s1-v3-merge1-output.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s1-v3-merge1-shadow.raw": {
+      "size": 4346,
+      "sha256": "bd771e4ea0e3641156b3a37820640c7d8bd762213797da6c86c5d13138c3610e",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s1-v3-merge1-shadow.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s1-v3-merge2-input.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s1-v3-merge2-input.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s1-v3-merge2-mask.raw": {
+      "size": 2173,
+      "sha256": "e678b9a95ccaf904a7c54e83a9054344a331c18817b2bab345ef13315144d4c1",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s1-v3-merge2-mask.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s1-v3-merge2-output.raw": {
+      "size": 4346,
+      "sha256": "6a6803912584d24a7d7e4326ed5eeb710749a53068ac7e1766756a6bdd49cde1",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s1-v3-merge2-output.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s1-v3-merge2-shadow.raw": {
+      "size": 4346,
+      "sha256": "bd771e4ea0e3641156b3a37820640c7d8bd762213797da6c86c5d13138c3610e",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s1-v3-merge2-shadow.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s1-v3-rerun.raw": {
+      "size": 4346,
+      "sha256": "6a6803912584d24a7d7e4326ed5eeb710749a53068ac7e1766756a6bdd49cde1",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s1-v3-rerun.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s1-v3-settled.raw": {
+      "size": 4346,
+      "sha256": "6a6803912584d24a7d7e4326ed5eeb710749a53068ac7e1766756a6bdd49cde1",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s1-v3-settled.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s1-v3-source.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s1-v3-source.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s1-v3-start1.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s1-v3-start1.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s1-v3-start2.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s1-v3-start2.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s2-v0-merge1-input.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s2-v0-merge1-input.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s2-v0-merge1-mask.raw": {
+      "size": 2173,
+      "sha256": "074673ddcc745533b060e4615cde7fe5308c1f2fe6e79bb8afc48ce1523cc378",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s2-v0-merge1-mask.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s2-v0-merge1-output.raw": {
+      "size": 4346,
+      "sha256": "a836efc8a1659198a1cca3047c6a1f1a057922beaa914c83e9327f1f14a22812",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s2-v0-merge1-output.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s2-v0-merge1-shadow.raw": {
+      "size": 4346,
+      "sha256": "72605d35ef23aab658a8e4ecc989bcacbfa3d2f7262a65d7b0cf6aa69c2aa1ff",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s2-v0-merge1-shadow.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s2-v0-merge2-input.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s2-v0-merge2-input.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s2-v0-merge2-mask.raw": {
+      "size": 2173,
+      "sha256": "074673ddcc745533b060e4615cde7fe5308c1f2fe6e79bb8afc48ce1523cc378",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s2-v0-merge2-mask.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s2-v0-merge2-output.raw": {
+      "size": 4346,
+      "sha256": "a836efc8a1659198a1cca3047c6a1f1a057922beaa914c83e9327f1f14a22812",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s2-v0-merge2-output.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s2-v0-merge2-shadow.raw": {
+      "size": 4346,
+      "sha256": "72605d35ef23aab658a8e4ecc989bcacbfa3d2f7262a65d7b0cf6aa69c2aa1ff",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s2-v0-merge2-shadow.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s2-v0-rerun.raw": {
+      "size": 4346,
+      "sha256": "a836efc8a1659198a1cca3047c6a1f1a057922beaa914c83e9327f1f14a22812",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s2-v0-rerun.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s2-v0-settled.raw": {
+      "size": 4346,
+      "sha256": "a836efc8a1659198a1cca3047c6a1f1a057922beaa914c83e9327f1f14a22812",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s2-v0-settled.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s2-v0-source.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s2-v0-source.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s2-v0-start1.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s2-v0-start1.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s2-v0-start2.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s2-v0-start2.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s2-v1-merge1-input.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s2-v1-merge1-input.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s2-v1-merge1-mask.raw": {
+      "size": 2173,
+      "sha256": "074673ddcc745533b060e4615cde7fe5308c1f2fe6e79bb8afc48ce1523cc378",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s2-v1-merge1-mask.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s2-v1-merge1-output.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s2-v1-merge1-output.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s2-v1-merge1-shadow.raw": {
+      "size": 4346,
+      "sha256": "ce8908bc6102128e9bff51bf58bc15d38d2cd178d0c08c345245b9c360e5bc9f",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s2-v1-merge1-shadow.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s2-v1-merge2-input.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s2-v1-merge2-input.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s2-v1-merge2-mask.raw": {
+      "size": 2173,
+      "sha256": "074673ddcc745533b060e4615cde7fe5308c1f2fe6e79bb8afc48ce1523cc378",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s2-v1-merge2-mask.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s2-v1-merge2-output.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s2-v1-merge2-output.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s2-v1-merge2-shadow.raw": {
+      "size": 4346,
+      "sha256": "ce8908bc6102128e9bff51bf58bc15d38d2cd178d0c08c345245b9c360e5bc9f",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s2-v1-merge2-shadow.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s2-v1-rerun.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s2-v1-rerun.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s2-v1-settled.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s2-v1-settled.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s2-v1-source.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s2-v1-source.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s2-v1-start1.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s2-v1-start1.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s2-v1-start2.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s2-v1-start2.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s2-v2-merge1-input.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s2-v2-merge1-input.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s2-v2-merge1-mask.raw": {
+      "size": 2173,
+      "sha256": "074673ddcc745533b060e4615cde7fe5308c1f2fe6e79bb8afc48ce1523cc378",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s2-v2-merge1-mask.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s2-v2-merge1-output.raw": {
+      "size": 4346,
+      "sha256": "d311e06b641b36c8ee808cb0dea32c795d452c12ffdb469bb000f73b7da97c90",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s2-v2-merge1-output.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s2-v2-merge1-shadow.raw": {
+      "size": 4346,
+      "sha256": "33b0fc8f900490ff96ed06418b7636b41bf21d7acc4680017c764a5a9f4f9419",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s2-v2-merge1-shadow.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s2-v2-merge2-input.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s2-v2-merge2-input.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s2-v2-merge2-mask.raw": {
+      "size": 2173,
+      "sha256": "074673ddcc745533b060e4615cde7fe5308c1f2fe6e79bb8afc48ce1523cc378",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s2-v2-merge2-mask.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s2-v2-merge2-output.raw": {
+      "size": 4346,
+      "sha256": "d311e06b641b36c8ee808cb0dea32c795d452c12ffdb469bb000f73b7da97c90",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s2-v2-merge2-output.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s2-v2-merge2-shadow.raw": {
+      "size": 4346,
+      "sha256": "33b0fc8f900490ff96ed06418b7636b41bf21d7acc4680017c764a5a9f4f9419",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s2-v2-merge2-shadow.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s2-v2-rerun.raw": {
+      "size": 4346,
+      "sha256": "d311e06b641b36c8ee808cb0dea32c795d452c12ffdb469bb000f73b7da97c90",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s2-v2-rerun.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s2-v2-settled.raw": {
+      "size": 4346,
+      "sha256": "d311e06b641b36c8ee808cb0dea32c795d452c12ffdb469bb000f73b7da97c90",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s2-v2-settled.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s2-v2-source.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s2-v2-source.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s2-v2-start1.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s2-v2-start1.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s2-v2-start2.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s2-v2-start2.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s2-v3-merge1-input.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s2-v3-merge1-input.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s2-v3-merge1-mask.raw": {
+      "size": 2173,
+      "sha256": "074673ddcc745533b060e4615cde7fe5308c1f2fe6e79bb8afc48ce1523cc378",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s2-v3-merge1-mask.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s2-v3-merge1-output.raw": {
+      "size": 4346,
+      "sha256": "1c136aaf449871e3d34ef107574ce2f0459f68b4696ff9508be19c1049be9c43",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s2-v3-merge1-output.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s2-v3-merge1-shadow.raw": {
+      "size": 4346,
+      "sha256": "b9ccec1031dd867840ebf0c68b038ef44ecd53bde6e8579b9c2b8f21c2c151f3",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s2-v3-merge1-shadow.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s2-v3-merge2-input.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s2-v3-merge2-input.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s2-v3-merge2-mask.raw": {
+      "size": 2173,
+      "sha256": "074673ddcc745533b060e4615cde7fe5308c1f2fe6e79bb8afc48ce1523cc378",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s2-v3-merge2-mask.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s2-v3-merge2-output.raw": {
+      "size": 4346,
+      "sha256": "1c136aaf449871e3d34ef107574ce2f0459f68b4696ff9508be19c1049be9c43",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s2-v3-merge2-output.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s2-v3-merge2-shadow.raw": {
+      "size": 4346,
+      "sha256": "b9ccec1031dd867840ebf0c68b038ef44ecd53bde6e8579b9c2b8f21c2c151f3",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s2-v3-merge2-shadow.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s2-v3-rerun.raw": {
+      "size": 4346,
+      "sha256": "1c136aaf449871e3d34ef107574ce2f0459f68b4696ff9508be19c1049be9c43",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s2-v3-rerun.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s2-v3-settled.raw": {
+      "size": 4346,
+      "sha256": "1c136aaf449871e3d34ef107574ce2f0459f68b4696ff9508be19c1049be9c43",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s2-v3-settled.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s2-v3-source.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s2-v3-source.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s2-v3-start1.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s2-v3-start1.raw"
+    },
+    "small-tiles-evidence/live/tiles-g1-s2-v3-start2.raw": {
+      "size": 4346,
+      "sha256": "eb86143ebbf9449ead368d7c35ee1ea757f0ec478604b00bbca9acfbd71f13b6",
+      "source_archive": "legacy-filter-additional-live.tar.gz",
+      "source_member": "legacy-filter-additional-live/tiles-g1-s2-v3-start2.raw"
+    }
+  },
+  "new_legacy_capture": false
+}

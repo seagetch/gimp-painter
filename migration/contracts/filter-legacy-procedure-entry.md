@@ -1,5 +1,10 @@
 # Checked legacy Blinds preparation entry
 
+This document records the original bounded Blinds checkpoint below. The additive
+checked Small Tiles route is specified separately in
+[filter-small-tiles-preparation.md](filter-small-tiles-preparation.md); its new
+four-slot admission does not retroactively change this historical acceptance.
+
 This is a bounded replacement for the procedure-preparation part of original
 C-entry-map row 26 and task `08.018`. It does not restore the historical void
 `gimp_filter_layer_set_procedure` ABI or complete that row for arbitrary

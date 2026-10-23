@@ -435,6 +435,7 @@
 | 08.018/brush-preview-use-integration | [ ] | 元get_new_previewのbegin/end呼出をnative preview vfuncへ接続する | 08.018/brush-nested-use | 元previewの描画前begin/描画後endを維持し、入れ子・失敗・callback再入/disposeでcounter/hook/lifetimeを実native callerから検証。旧描画内容との意味差を隠さず、必要なUI結果をportrait Xvfb/oncanvas有効画像で示す。 |
 | 08.018/blinds-procedure-preparation | [x] | Blinds の旧引数準備を checked C entry と共通 FilterSlot へ接続する | 08.017, 16.010/parameter-semantic-policy | 型付きゼロ7枠・独立所有・変換・登録provider・再入を C/C++ と標準 Meson normal/ASan/UBSan で検証。旧void ABI・他procedure・親08.018は別 |
 | 08.018/blinds-entry-fixture-quiescence | [x] | entry寿命試験の起動plug-in参照を有界に退役させる | 08.018/blinds-procedure-preparation | cedf6968の通常全171/171とASan/UBSan全35caseが元の120秒予算で合格。実復元provider、起動context/options退役観測、3破壊再入と元の寿命assertionを保持。最終source/runtime seal合格。旧170/171失敗は履歴保持、親08.018と漏洩全般の保証は対象外 |
+| 08.018/small-tiles-procedure-preparation | [x] | Small Tilesの旧4引数準備をchecked C入口と共通FilterSlotへ接続する | 08.018/blinds-entry-fixture-quiescence, 16.003/isolated-small-tiles-route, 16.010/parameter-semantic-policy | 型付きゼロ4枠・context無視・独立所有/有限変換・providerと再入・C++委譲、実旧25scene/50出力を標準登録通常44/限定ASan・UBSan44で確認（58.53s/54.85s、元120秒）。元35path維持、fixture検証wrapper3controls。旧void ABI/他procedureと親08.018はPARTIAL/未完。small-tiles-preparation-08018参照 |
 | 08.018/core-extension-hooks | [ ] | 標準coreの独自操作hookを現行APIへ接続する | 08.018, 01.013 | hunk台帳のcore補助関数・公開宣言ごとの子チェックを処理し、同名APIの所有・座標・更新・失敗時の意味を検証する |
 | 08.019 | [ ] | C++ 利用箇所をハンドルへ移す | 08.018 | ref 関数添字と公開 interface cast を排除 |
 | 08.020 | [ ] | 旧 registration helper の残用途を整理する | 08.019 | 必要な型登録だけ adapter に残り、旧 Impl 配置がない |
