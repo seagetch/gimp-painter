@@ -3,6 +3,7 @@
 #include "config.h"
 #include <gtk/gtk.h>
 #include <string.h>
+#include <math.h>
 #include "libgimpconfig/gimpconfig.h"
 #include "core/core-types.h"
 #include "widgets/widgets-types.h"
@@ -15,6 +16,7 @@
 #include "core/gimplayer.h"
 #include "core/gimplayer-new.h"
 #include "paint/painter-mypaint-surface/gimp-painter-options.h"
+#include "paint/gimpmypaintoptions.h"
 #include "paint/painter-mypaint-surface/gimp-painter-session.h"
 #include "painter/gimp-painter-binding.h"
 #include "mypaintbrush-enum-settings.h"
@@ -200,6 +202,237 @@ options_draft_name_history_copy (void)
   g_free (owned_name);
   g_free (draft_json);
   g_free (source_json);
+}
+
+static void
+assert_mapping_empty (GimpMypaintOptions *options,
+                      const gchar        *name,
+                      guint               input)
+{
+  guint count = 999;
+  GimpVector2 sentinel = {-23., -51.};
+  GimpVector2 *points = &sentinel;
+  gchar *key = g_strdup (name);
+  gimp_mypaint_options_get_mapping_point (options, key, input, &count, &points);
+  g_assert_cmpuint (count, ==, 0);
+  g_assert_null (points);
+  g_assert_cmpfloat (sentinel.x, ==, -23.);
+  g_assert_cmpfloat (sentinel.y, ==, -51.);
+  g_assert_cmpstr (key, ==, name);
+  g_free (key);
+}
+
+/* Read before chaining the native constructed hook: the existing options slot
+ * is still constructing and must not be activated by a query. */
+typedef struct { GimpPainterMybrushOptions parent_instance; gboolean queried; }
+  MappingConstructProbe;
+typedef struct { GimpPainterMybrushOptionsClass parent_class; }
+  MappingConstructProbeClass;
+GType mapping_construct_probe_get_type (void);
+G_DEFINE_TYPE (MappingConstructProbe, mapping_construct_probe,
+               GIMP_TYPE_PAINTER_MYBRUSH_OPTIONS)
+
+static void
+mapping_construct_probe_constructed (GObject *object)
+{
+  assert_mapping_empty ((GimpMypaintOptions *) object, "opaque_multiply", INPUT_PRESSURE);
+  ((MappingConstructProbe *) object)->queried = TRUE;
+  G_OBJECT_CLASS (mapping_construct_probe_parent_class)->constructed (object);
+}
+
+static void
+mapping_construct_probe_class_init (MappingConstructProbeClass *klass)
+{
+  G_OBJECT_CLASS (klass)->constructed = mapping_construct_probe_constructed;
+}
+
+static void
+mapping_construct_probe_init (MappingConstructProbe *self)
+{
+  self->queried = FALSE;
+}
+
+static gpointer
+mapping_query_wrong_thread (gpointer data)
+{
+  assert_mapping_empty (data, "opaque", INPUT_PRESSURE);
+  return NULL;
+}
+
+static void
+options_mapping_point_owned_draft (void)
+{
+  GimpMypaintOptions *options = options_new ();
+  GimpPainterMybrush *source = GIMP_PAINTER_MYBRUSH (
+    gimp_painter_mybrush_new (NULL, "Actual C mapping source"));
+  const GimpVector2 draft[] = {{.1000000000003, .2000000000009},
+                              {.9000000000007, .7000000000011}};
+  const GimpVector2 replacement[] = {{0., .3}, {1., .6}};
+  GError *error = NULL;
+  GimpVector2 *owned, *again;
+  GArray *modern;
+  gchar *before, *source_before, *actual;
+  gchar key[] = "opaque-multiply";
+  guint count = 999, again_count = 999, history, changed = 0, i;
+  gpointer weak = options;
+  gboolean dirty = FALSE, name_dirty = FALSE;
+
+  gimp_context_set_painter_mybrush (GIMP_CONTEXT (options), source);
+  source_before = gimp_painter_mybrush_dup_json (source, &error);
+  g_assert_no_error (error);
+  g_assert_true (gimp_painter_mybrush_options_set_curve (
+    options, BRUSH_OPAQUE_MULTIPLY, INPUT_PRESSURE, draft, G_N_ELEMENTS (draft), &error));
+  g_assert_true (gimp_painter_mybrush_options_set_draft_name (
+    options, "Mapping read keeps pending name", &error));
+  g_assert_no_error (error);
+  before = gimp_painter_mybrush_options_dup_json (options, &error);
+  g_assert_no_error (error);
+  history = gimp_painter_mybrush_options_history_size (options);
+  g_signal_connect (options, "settings-changed", G_CALLBACK (count_settings_changed), &changed);
+  gimp_mypaint_options_get_mapping_point (options, key, INPUT_PRESSURE, &count, &owned);
+  g_assert_cmpstr (key, ==, "opaque-multiply");
+  g_assert_cmpuint (count, ==, G_N_ELEMENTS (draft));
+  g_assert_nonnull (owned);
+  modern = gimp_painter_mybrush_options_get_curve (
+    options, BRUSH_OPAQUE_MULTIPLY, INPUT_PRESSURE, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (modern);
+  for (i = 0; i < count; ++i)
+    {
+      g_assert_cmpfloat (owned[i].x, ==, (gdouble) (gfloat) draft[i].x);
+      g_assert_cmpfloat (owned[i].y, ==, (gdouble) (gfloat) draft[i].y);
+      g_assert_cmpfloat (g_array_index (modern, GimpVector2, i).x, ==, draft[i].x);
+      g_assert_cmpfloat (g_array_index (modern, GimpVector2, i).y, ==, draft[i].y);
+    }
+  g_assert_cmpfloat (owned[0].x, !=, draft[0].x);
+  g_array_unref (modern);
+  gimp_mypaint_options_get_mapping_point (options, key, INPUT_PRESSURE, &again_count, &again);
+  g_assert_cmpuint (again_count, ==, count);
+  g_assert_true (again != owned);
+  again[0].x = -51.;
+  g_assert_cmpfloat (owned[0].x, ==, (gdouble) (gfloat) draft[0].x);
+  g_free (again);
+  assert_mapping_empty (options, "opaque-multiply", INPUT_RANDOM);
+  g_assert_cmpuint (changed, ==, 0);
+  g_assert_cmpuint (gimp_painter_mybrush_options_history_size (options), ==, history);
+  g_assert_true (gimp_context_get_painter_mybrush (GIMP_CONTEXT (options)) == source);
+  assert_draft_name (options, "Mapping read keeps pending name");
+  g_object_get (options, "painter-dirty", &dirty, "painter-name-dirty", &name_dirty, NULL);
+  g_assert_true (dirty);
+  g_assert_true (name_dirty);
+  actual = gimp_painter_mybrush_options_dup_json (options, &error);
+  g_assert_no_error (error);
+  g_assert_cmpstr (actual, ==, before);
+  g_free (actual);
+  actual = gimp_painter_mybrush_dup_json (source, &error);
+  g_assert_no_error (error);
+  g_assert_cmpstr (actual, ==, source_before);
+  g_assert_cmpstr (gimp_object_get_name (source), ==, "Actual C mapping source");
+  g_free (actual);
+  /* Subsequent edits and final destruction cannot invalidate transfer-full C data. */
+  g_assert_true (gimp_painter_mybrush_options_set_curve (
+    options, BRUSH_OPAQUE_MULTIPLY, INPUT_PRESSURE, replacement, G_N_ELEMENTS (replacement), &error));
+  g_assert_no_error (error);
+  g_object_add_weak_pointer (G_OBJECT (options), &weak);
+  g_object_unref (options);
+  g_assert_null (weak);
+  g_object_unref (source);
+  for (i = 0; i < count; ++i)
+    {
+      g_assert_cmpfloat (owned[i].x, ==, (gdouble) (gfloat) draft[i].x);
+      g_assert_cmpfloat (owned[i].y, ==, (gdouble) (gfloat) draft[i].y);
+    }
+  g_free (owned);
+  g_free (before);
+  g_free (source_before);
+}
+
+static void
+options_mapping_point_fail_closed (void)
+{
+  GimpMypaintOptions *options = options_new ();
+  GObject *wrong = g_object_new (G_TYPE_OBJECT, NULL);
+  MappingConstructProbe *constructing = g_object_new (
+    mapping_construct_probe_get_type (), "gimp", gimp, NULL);
+  const gchar *invalid_names[] = {NULL, "", "no-such-setting", "Opaque", "OPAQUE",
+                                  "opaqueMultiply", "non-incremental", "brushmark-name"};
+  const gchar *bad_coordinates[] = {"1e39", "-1e39", "1e9999", "-1e9999"};
+  const gdouble bad_values[] = {NAN, INFINITY, -INFINITY, 1e39, -1e39};
+  const GimpVector2 valid[] = {{.1, .2}, {.9, .7}};
+  GError *error = NULL;
+  GimpVector2 sentinel = {-23., -51.};
+  GimpVector2 *points = &sentinel;
+  guint count = 999, i, coordinate;
+  gchar key[] = "opaque";
+  gchar *before, *after;
+  GThread *thread;
+
+  g_assert_true (constructing->queried);
+  g_assert_false (constructing->parent_instance.binding_failed);
+  g_object_unref (constructing);
+  g_assert_true (gimp_painter_mybrush_options_set_curve (
+    options, BRUSH_OPAQUE, INPUT_PRESSURE, valid, G_N_ELEMENTS (valid), &error));
+  g_assert_no_error (error);
+  before = gimp_painter_mybrush_options_dup_json (options, &error);
+  g_assert_no_error (error);
+  for (i = 0; i < G_N_ELEMENTS (invalid_names); ++i)
+    assert_mapping_empty (options, invalid_names[i], INPUT_PRESSURE);
+  assert_mapping_empty (NULL, "opaque", INPUT_PRESSURE);
+  assert_mapping_empty ((GimpMypaintOptions *) wrong, "opaque", INPUT_PRESSURE);
+  assert_mapping_empty (options, "opaque", INPUT_COUNT);
+  assert_mapping_empty (options, "opaque", G_MAXUINT);
+  gimp_mypaint_options_get_mapping_point (options, key, INPUT_PRESSURE, NULL, &points);
+  g_assert_null (points);
+  gimp_mypaint_options_get_mapping_point (options, key, INPUT_PRESSURE, &count, NULL);
+  g_assert_cmpuint (count, ==, 0);
+  gimp_mypaint_options_get_mapping_point (options, key, INPUT_PRESSURE, NULL, NULL);
+  thread = g_thread_new ("mapping-c-read", mapping_query_wrong_thread, options);
+  g_thread_join (thread);
+  /* Resource validation rejects these before publication, so invalid coordinates
+   * cannot be injected into a live draft through either supported setter. */
+  for (i = 0; i < G_N_ELEMENTS (bad_values); ++i)
+    for (coordinate = 0; coordinate < 2; ++coordinate)
+      {
+        GimpVector2 bad[] = {{.1, .2}, {.9, .7}};
+        if (coordinate) bad[1].y = bad_values[i];
+        else bad[1].x = bad_values[i];
+        g_assert_false (gimp_painter_mybrush_options_set_curve (
+          options, BRUSH_OPAQUE, INPUT_PRESSURE, bad, G_N_ELEMENTS (bad), &error));
+        g_assert_nonnull (error);
+        g_clear_error (&error);
+      }
+  for (i = 0; i < G_N_ELEMENTS (bad_coordinates); ++i)
+    for (coordinate = 0; coordinate < 2; ++coordinate)
+      {
+        gchar *json = g_strdup_printf (
+          "{\"version\":3,\"settings\":{\"opaque\":{\"inputs\":{"
+          "\"pressure\":[[0.1,0.2],[%s,%s]]}}}}",
+          coordinate ? "0.9" : bad_coordinates[i],
+          coordinate ? bad_coordinates[i] : "0.7");
+        g_assert_false (gimp_painter_mybrush_options_set_json (options, json, &error));
+        g_assert_nonnull (error);
+        g_clear_error (&error);
+        g_free (json);
+      }
+  after = gimp_painter_mybrush_options_dup_json (options, &error);
+  g_assert_no_error (error);
+  g_assert_cmpstr (after, ==, before);
+  g_free (after);
+  g_free (before);
+  gimp_mypaint_options_get_mapping_point (options, key, INPUT_PRESSURE, &count, &points);
+  g_assert_cmpuint (count, ==, G_N_ELEMENTS (valid));
+  g_assert_nonnull (points);
+  for (i = 0; i < count; ++i)
+    {
+      g_assert_cmpfloat (points[i].x, ==, (gdouble) (gfloat) valid[i].x);
+      g_assert_cmpfloat (points[i].y, ==, (gdouble) (gfloat) valid[i].y);
+    }
+  g_free (points);
+  g_assert_true (gimp_painter_binding_close (G_OBJECT (options), &error));
+  g_assert_no_error (error);
+  assert_mapping_empty (options, "opaque", INPUT_PRESSURE);
+  g_object_unref (options);
+  g_object_unref (wrong);
 }
 
 static void
@@ -512,6 +745,21 @@ session_native_transaction (void)
           /* A spurious settings-changed would finish/split this live stroke. */
           g_assert_true (gimp_painter_session_is_active (session));
           g_assert_cmpint (gimp_undo_stack_get_depth (gimp_image_get_undo_stack (image)), ==, 0);
+          {
+            GimpVector2 *mapping = NULL;
+            guint count = 0;
+            gchar key[] = "opaque-multiply";
+            guchar query_pixels[sizeof actual];
+            read_pixels (drawable, actual);
+            gimp_mypaint_options_get_mapping_point (options, key, INPUT_PRESSURE, &count, &mapping);
+            g_assert_cmpuint (count, ==, 2);
+            g_assert_nonnull (mapping);
+            g_free (mapping);
+            read_pixels (drawable, query_pixels);
+            g_assert_cmpmem (actual, sizeof actual, query_pixels, sizeof query_pixels);
+            g_assert_true (gimp_painter_session_is_active (session));
+            g_assert_cmpint (gimp_undo_stack_get_depth (gimp_image_get_undo_stack (image)), ==, 0);
+          }
           g_assert_cmpstr (gimp_object_get_name (source), ==, "Actual C transparent source");
         }
     }
@@ -575,6 +823,8 @@ main (int argc, char **argv)
   gimp_test_utils_set_gimp3_directory ("GIMP_TESTING_ABS_TOP_SRCDIR", "app/tests/gimpdir");
   gimp = gimp_init_for_testing ();
   g_test_add_func ("/painter-c/options-owned-roundtrip", options_owned_roundtrip);
+  g_test_add_func ("/painter-c/options-mapping-point-owned-draft", options_mapping_point_owned_draft);
+  g_test_add_func ("/painter-c/options-mapping-point-fail-closed", options_mapping_point_fail_closed);
   g_test_add_func ("/painter-c/options-draft-name-history-copy", options_draft_name_history_copy);
   g_test_add_func ("/painter-c/options-prepare-restore-saved-json", options_prepare_restore_and_saved_json);
   g_test_add_func ("/painter-c/options-reject-close", options_reject_and_close);

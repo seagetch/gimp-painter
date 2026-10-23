@@ -12,14 +12,17 @@ extern "C" {
 #include "core/gimpbrushgenerated.h"
 #include "core/gimppattern.h"
 #include "core/gimppaintermybrush.h"
+#include "paint/gimpmypaintoptions.h"
 #include "tests.h"
 #include "gimp-app-test-utils.h"
 }
 #include "paint/painter-mypaint-surface/gimp-painter-options.hpp"
 #include "core/gimppaintermybrush-handle.hpp"
 #include "painter/gimp-painter-binding.h"
+#include "painter/binding-store.hpp"
 #include "mypaintbrush-settings-data.h"
 #include <algorithm>
+#include <type_traits>
 using namespace GimpPainter;
 using MyPaint::Resource;
 static Gimp*gimp;
@@ -566,6 +569,141 @@ static void shared_application_history()
   g_assert_true(PainterOptionsRef::retain(third).snapshot().encode()==draft.encode());
   g_object_unref(third);g_object_unref(ordinary);g_object_unref(second);
 }
+static void mapping_point_generated_matrix()
+{
+  static_assert(std::is_same<GimpMypaintOptions,GimpPainterMybrushOptions>::value,
+                "Legacy mapping lookup uses the native options object");
+  static_assert(std::is_same<MypaintOptionsRef,PainterOptionsRef>::value,
+                "Legacy handle is the same native options owner");
+  auto *options=options_new();
+  auto source=PainterMybrushRef::create("mapping-matrix-source");
+  gimp_context_set_painter_mybrush(GIMP_CONTEXT(options),source.get());
+  const auto source_before=source.snapshot().encode();
+  auto draft=Resource::decode("{\"version\":3,\"unknown\":{\"mapping_query\":51},\"settings\":{}}");
+  for(const auto &setting:painter_mypaint_settings)
+    for(const auto &input:painter_mypaint_inputs)
+      draft.set_curve(setting.index,input.index,
+        {{.1000000000003+input.index*.001,.2000000000009+setting.index*.001},
+         {.9000000000007+setting.index*.001,.7000000000011+input.index*.001}});
+  GError *error=nullptr;
+  g_assert_true(gimp_painter_mybrush_options_set_json(options,draft.encode().c_str(),&error));
+  g_assert_true(gimp_painter_mybrush_options_set_draft_name(options,"Mapping query pending name",&error));
+  g_assert_no_error(error);
+  const auto before=PainterOptionsRef::retain(options).snapshot().encode();
+  const guint history=gimp_painter_mybrush_options_history_size(options);
+  auto *binding=BindingStore::find(G_OBJECT(options));g_assert_nonnull(binding);
+  const auto generation=binding->generation();
+  guint settings_changed=0,notifications=0;
+  g_signal_connect(options,"settings-changed",G_CALLBACK(+[](GimpPainterMybrushOptions*,gpointer p){++*static_cast<guint*>(p);}),&settings_changed);
+  g_signal_connect(options,"notify",G_CALLBACK(+[](GObject*,GParamSpec*,gpointer p){++*static_cast<guint*>(p);}),&notifications);
+  {
+    auto handle=MypaintOptionsRef::retain(options);
+    auto check=[&](const char *key,int setting,int input) {
+      const auto expected=draft.curve(setting,input);
+      auto actual=handle.get_mapping_point(key,guint(input));
+      g_assert_cmpuint(actual.size(),==,expected.size());
+      for(std::size_t i=0;i<expected.size();++i) {
+        g_assert_cmpfloat(actual[i].x,==,double(float(expected[i].x)));
+        g_assert_cmpfloat(actual[i].y,==,double(float(expected[i].y)));
+      }
+      gchar *mutable_key=g_strdup(key);guint count=999;GimpVector2 sentinel={-23,-51};
+      GimpVector2 *owned=&sentinel;
+      gimp_mypaint_options_get_mapping_point(options,mutable_key,guint(input),&count,&owned);
+      g_assert_cmpstr(mutable_key,==,key);g_free(mutable_key);
+      g_assert_cmpuint(count,==,actual.size());g_assert_nonnull(owned);
+      for(guint i=0;i<count;++i) {
+        g_assert_cmpfloat(owned[i].x,==,actual[i].x);
+        g_assert_cmpfloat(owned[i].y,==,actual[i].y);
+      }
+      /* Neither returned container aliases the model or the other result. */
+      owned[0].x=-51;g_assert_cmpfloat(actual[0].x,==,double(float(expected[0].x)));
+      actual[0].y=-23;g_free(owned);
+      const auto again=handle.get_mapping_point(key,guint(input));
+      g_assert_cmpfloat(again[0].x,==,double(float(expected[0].x)));
+      g_assert_cmpfloat(again[0].y,==,double(float(expected[0].y)));
+    };
+    for(const auto &setting:painter_mypaint_settings) {
+      for(const auto &input:painter_mypaint_inputs)
+        check(setting.internal_name,setting.index,input.index);
+      /* Legacy g_strcanon replaces every non-alphanumeric/non-underscore byte,
+       * including punctuation; it does not perform ASCII case folding. */
+      for(char separator:{'-','.','/',' ','\t',char(0x80)}) {
+        std::string key(setting.internal_name);
+        std::replace(key.begin(),key.end(),'_',separator);
+        check(key.c_str(),setting.index,INPUT_PRESSURE);
+      }
+      std::string uppercase(setting.internal_name);
+      std::transform(uppercase.begin(),uppercase.end(),uppercase.begin(),
+                     [](char c){return char(g_ascii_toupper(c));});
+      g_assert_true(handle.get_mapping_point(uppercase.c_str(),INPUT_PRESSURE).empty());
+    }
+    /* The modern endpoint must keep the original double precision. */
+    GArray *modern=gimp_painter_mybrush_options_get_curve(options,BRUSH_OPAQUE,INPUT_PRESSURE,&error);
+    g_assert_no_error(error);g_assert_nonnull(modern);
+    const auto expected=draft.curve(BRUSH_OPAQUE,INPUT_PRESSURE);
+    g_assert_cmpfloat(g_array_index(modern,GimpVector2,0).x,==,expected[0].x);
+    g_assert_cmpfloat(g_array_index(modern,GimpVector2,0).x,!=,double(float(expected[0].x)));
+    g_array_unref(modern);
+  }
+  g_assert_cmpuint(settings_changed,==,0);g_assert_cmpuint(notifications,==,0);
+  g_assert_cmpuint(gimp_painter_mybrush_options_history_size(options),==,history);
+  g_assert_true(gimp_context_get_painter_mybrush(GIMP_CONTEXT(options))==source.get());
+  g_assert_true(PainterOptionsRef::retain(options).snapshot().encode()==before);
+  g_assert_true(source.snapshot().encode()==source_before);
+  assert_draft_name(options,"Mapping query pending name",TRUE);
+  gboolean dirty=FALSE;g_object_get(options,"painter-dirty",&dirty,nullptr);g_assert_true(dirty);
+  g_assert_true(BindingStore::find(G_OBJECT(options))==binding);
+  g_assert_cmpuint(binding->generation(),==,generation);
+  g_object_unref(options);
+}
+static void mapping_point_handle_lifetime_and_failures()
+{
+  auto *options=options_new();GError *error=nullptr;
+  /* An unselected options object still owns a valid unsaved current draft. */
+  gimp_context_set_painter_mybrush(GIMP_CONTEXT(options),nullptr);
+  g_assert_null(gimp_context_get_painter_mybrush(GIMP_CONTEXT(options)));
+  const GimpVector2 points[]={{.1000000000003,.2000000000009},{.9000000000007,.7000000000011}};
+  g_assert_true(gimp_painter_mybrush_options_set_curve(options,BRUSH_OPAQUE,INPUT_PRESSURE,points,2,&error));
+  g_assert_no_error(error);
+  std::vector<GimpVector2> survivor;
+  bool finalized=false;g_object_weak_ref(G_OBJECT(options),gone,&finalized);
+  {
+    auto handle=PainterOptionsRef::retain(options);
+    survivor=handle.get_mapping_point("opaque",INPUT_PRESSURE);
+    g_assert_cmpuint(survivor.size(),==,2);
+    g_assert_true(handle.get_mapping_point("opaque",INPUT_RANDOM).empty());
+    const char *invalid_names[]={nullptr,"","does-not-exist","Opaque","OPAQUE","non-incremental","brushmark-name"};
+    for(const char *key:invalid_names)
+      g_assert_true(handle.get_mapping_point(key,INPUT_PRESSURE).empty());
+    g_assert_true(handle.get_mapping_point("opaque",INPUT_COUNT).empty());
+    g_assert_true(handle.get_mapping_point("opaque",G_MAXUINT).empty());
+    auto *thread=g_thread_new("mapping-handle-read",+[](gpointer p)->gpointer {
+      const auto *handle=static_cast<PainterOptionsRef*>(p);
+      g_assert_true(handle->get_mapping_point("opaque",INPUT_PRESSURE).empty());
+      return nullptr;
+    },&handle);
+    g_thread_join(thread);
+    g_assert_cmpuint(handle.get_mapping_point("opaque",INPUT_PRESSURE).size(),==,2);
+    g_object_unref(options);g_assert_false(finalized);
+    g_assert_true(gimp_painter_binding_close(G_OBJECT(handle.get()),&error));g_assert_no_error(error);
+    auto *binding=BindingStore::find(G_OBJECT(handle.get()));
+    const auto generation=binding->generation();
+    g_assert_true(handle.get_mapping_point("opaque",INPUT_PRESSURE).empty());
+    g_assert_true(BindingStore::find(G_OBJECT(handle.get()))==binding);
+    g_assert_true(binding->state()==BindingStore::State::closed);
+    g_assert_cmpuint(binding->generation(),==,generation);
+  }
+  g_assert_true(finalized);
+  g_assert_cmpfloat(survivor[0].x,==,double(float(points[0].x)));
+  g_assert_cmpfloat(survivor[1].y,==,double(float(points[1].y)));
+  auto *wrong=G_OBJECT(g_object_new(G_TYPE_OBJECT,nullptr));
+  g_assert_null(BindingStore::find(wrong));
+  guint count=999;GimpVector2 sentinel={-23,-51};GimpVector2 *owned=&sentinel;
+  gchar key[]="opaque";
+  gimp_mypaint_options_get_mapping_point(reinterpret_cast<GimpMypaintOptions*>(wrong),key,INPUT_PRESSURE,&count,&owned);
+  g_assert_cmpuint(count,==,0);g_assert_null(owned);
+  g_assert_null(BindingStore::find(wrong));g_object_unref(wrong);
+}
 static void shared_history_application_close()
 {
   auto*first=options_new();auto*second=options_new();
@@ -603,6 +741,8 @@ int main(int argc,char**argv)
   g_test_add_func("/painter-options/selection-reentry",selection_reentry);
   g_test_add_func("/painter-options/commit-close",commit_closes_options);
   g_test_add_func("/painter-options/cross-options-history",shared_application_history);
+  g_test_add_func("/painter-options/mapping-point-generated-matrix",mapping_point_generated_matrix);
+  g_test_add_func("/painter-options/mapping-point-handle-lifetime-failures",mapping_point_handle_lifetime_and_failures);
   g_test_add_func("/painter-options/application-history-close",shared_history_application_close);
   int result=g_test_run();gimp_test_utils_set_gimp3_directory("GIMP_TESTING_ABS_TOP_BUILDDIR","app/tests/gimpdir-output");gimp_exit(gimp,TRUE);return result;
 }
