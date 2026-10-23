@@ -1,0 +1,24 @@
+{
+  "scope": "selected primary native model only; no whole-build clean claim",
+  "base_commit": "151507743e5ddd63f9fa15eaa899768901c797e0",
+  "source_sha256": {
+    "app/tests/test-gimp-clone-layer.c": "c57ad56d732d72e4e3c50757b88d7f0c799c2ec557a058ffdb9f50761dec5624",
+    "app/tests/test-painter-clone-pickable-contract.inc": "af5de40a124340aa433864b0bd82b973ef6247499ed1e6e7341d4e1050bb4181",
+    "app/tests/test-painter-clone-projection-contract.inc": "2e667af883fd0fe7520df28c2f6a1a3a6d9df951df3e503db5226b3386851194",
+    "app/core/gimpclonelayer.cpp": "22adedddcaeb6d70f4bf37e94cf92f3dbe4d1b84c7183097d3c24e49d02b081e",
+    "app/core/gimpimage-pick-item.c": "38b709bea1ad7d46ec50ac3f74be3e194e23c7104d4d10948e2f4ca72d3e5e35",
+    "app/core/gimpgrouplayer.c": "147296ee6102a46601c826ea9dedda513f07df8bc72e5aa8ddfcf833c41dd0c5"
+  },
+  "matches_worktree": {
+    "app/tests/test-gimp-clone-layer.c": true,
+    "app/tests/test-painter-clone-pickable-contract.inc": true,
+    "app/tests/test-painter-clone-projection-contract.inc": true,
+    "app/core/gimpclonelayer.cpp": true,
+    "app/core/gimpimage-pick-item.c": true,
+    "app/core/gimpgrouplayer.c": true
+  },
+  "case_count": 1,
+  "opacity_queries": 648,
+  "projection_pixels": 6,
+  "pick_assertions": 6
+}

@@ -1,0 +1,10 @@
+TAP version 14
+# random seed: R02Seafe663567c56f3923c1cb3a44458f09
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+# Start of gimp-clone-layer tests
+# ordinary/group source:648 zero-opacity queries; referenced child remains rendered/updated; pixel-pick excludes clone, bounds pick includes it
+ok 1 /gimp-clone-layer/clone_pickable_projection_contract
+# End of gimp-clone-layer tests
+1..1
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created

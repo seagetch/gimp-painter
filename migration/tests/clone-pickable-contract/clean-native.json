@@ -1,0 +1,15 @@
+[
+  {
+    "name": "gimp:app / gimp-clone-layer",
+    "stdout": "TAP version 14\n# random seed: R02Seafe663567c56f3923c1cb3a44458f09\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# Start of gimp-clone-layer tests\n# ordinary/group source:648 zero-opacity queries; referenced child remains rendered/updated; pixel-pick excludes clone, bounds pick includes it\nok 1 /gimp-clone-layer/clone_pickable_projection_contract\n# End of gimp-clone-layer tests\n1..1\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n",
+    "result": "OK",
+    "starttime": 1792559876.098006,
+    "duration": 1.1549956798553467,
+    "returncode": 0,
+    "command": [
+      "/workspace/shared/gimp-clean-aggregate/build/app/tests/gimp-clone-layer",
+      "-p",
+      "/gimp-clone-layer/clone_pickable_projection_contract"
+    ]
+  }
+]

@@ -1,0 +1,50 @@
+{
+  "baseline": "81bc24545d",
+  "scope": "Parent-prepared clean checkpoint plus four parent metadata files, owned Clone main/include and sanitizer runner; not latest whole HEAD",
+  "sources": {
+    "app/tests/test-gimp-clone-layer.c": "c57ad56d732d72e4e3c50757b88d7f0c799c2ec557a058ffdb9f50761dec5624",
+    "app/tests/test-painter-clone-pickable-contract.inc": "af5de40a124340aa433864b0bd82b973ef6247499ed1e6e7341d4e1050bb4181",
+    "app/tests/test-painter-clone-projection-contract.inc": "2e667af883fd0fe7520df28c2f6a1a3a6d9df951df3e503db5226b3386851194",
+    "app/core/gimpclonelayer.cpp": "22adedddcaeb6d70f4bf37e94cf92f3dbe4d1b84c7183097d3c24e49d02b081e",
+    "app/core/gimpimage-pick-item.c": "38b709bea1ad7d46ec50ac3f74be3e194e23c7104d4d10948e2f4ca72d3e5e35",
+    "app/core/gimpgrouplayer.c": "147296ee6102a46601c826ea9dedda513f07df8bc72e5aa8ddfcf833c41dd0c5",
+    "migration/tests/run_clone_layer_sanitizers.py": "8345e7fc8b9adf6eed189c6ee5ab591127ca031bc0d79c0efe9e730d13cd27af",
+    "migration/tests/painter_sanitizer_scope.py": "a0d355e2b68b01fd058cf53cd2d9881009f844972c275476bcaf399c9e797537"
+  },
+  "case_count": {
+    "normal": 1,
+    "sanitizer": 1
+  },
+  "instrumented": 8,
+  "rtti_only": 59,
+  "library_resolution": {
+    "libgimpmath-3.0.so.0": {
+      "path": "/workspace/shared/gimp-clean-aggregate/build/libgimpmath/libgimpmath-3.0.so.0.8.1",
+      "sha256": "056bf1085423bce7276d38832a5c67d0380901c61bc37f49cf5a9450e6f5e02d"
+    },
+    "libgimpbase-3.0.so.0": {
+      "path": "/workspace/shared/gimp-clean-aggregate/build/libgimpbase/libgimpbase-3.0.so.0.8.1",
+      "sha256": "c42d6d0950dd21f7b42dd0426b1a0704b006864f17c556c4d25541852b0fe946"
+    },
+    "libgimpcolor-3.0.so.0": {
+      "path": "/workspace/shared/gimp-clean-aggregate/build/libgimpcolor/libgimpcolor-3.0.so.0.8.1",
+      "sha256": "eeabd99877536c06f303d6c3f4dd4f9a466b4716e3a0eac4ae77f65613f819a1"
+    },
+    "libgimpconfig-3.0.so.0": {
+      "path": "/workspace/shared/gimp-clean-aggregate/build/libgimpconfig/libgimpconfig-3.0.so.0.8.1",
+      "sha256": "8ab188dd04917fe215c609cd20ac7eb61f4634d32b25f00709549501313c95f8"
+    },
+    "libgimpmodule-3.0.so.0": {
+      "path": "/workspace/shared/gimp-clean-aggregate/build/libgimpmodule/libgimpmodule-3.0.so.0.8.1",
+      "sha256": "af04e866ee87e8f5941d0b1ee3fde87aad4158b47a15dce26e40b48ad1627b4f"
+    },
+    "libgimpthumb-3.0.so.0": {
+      "path": "/workspace/shared/gimp-clean-aggregate/build/libgimpthumb/libgimpthumb-3.0.so.0.8.1",
+      "sha256": "463fe08a4915a848ee5ac91cbc6fcbca69e7603c50ac85f60fd6273da4e467b8"
+    },
+    "libgimpwidgets-3.0.so.0": {
+      "path": "/workspace/shared/gimp-clean-aggregate/build/libgimpwidgets/libgimpwidgets-3.0.so.0.8.1",
+      "sha256": "edc6a854bb501a374c685e47f43c4df40ed61d385dfccc64f3b0e3318ab7f466"
+    }
+  }
+}
