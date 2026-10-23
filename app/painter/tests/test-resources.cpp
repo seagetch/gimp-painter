@@ -3,6 +3,7 @@
 #include "connection.hpp"
 #include "resources.hpp"
 #include "source.hpp"
+#include <initializer_list>
 #include <vector>
 
 using namespace GimpPainter;
@@ -246,6 +247,72 @@ void signal_order ()
   g_assert_cmpuint (order.size (), ==, 2);
 }
 
+struct PhaseTrace
+{
+  int phases[8] = {};
+  guint size = 0;
+  void add (int phase)
+  { g_assert_cmpuint (size, <, G_N_ELEMENTS (phases)); phases[size++] = phase; }
+  void expect (std::initializer_list<int> expected)
+  {
+    g_assert_cmpuint (size, ==, expected.size ());
+    guint i = 0;
+    for (int phase : expected) g_assert_cmpint (phases[i++], ==, phase);
+    size = 0;
+  }
+};
+void default_phase (GObject *, gpointer trace, gpointer)
+{ static_cast<PhaseTrace *> (trace)->add (2); }
+void handler_phase (GObject *, gpointer trace, gpointer phase)
+{ static_cast<PhaseTrace *> (trace)->add (GPOINTER_TO_INT (phase)); }
+void signal_block_order ()
+{
+  const guint signal = g_signal_new_class_handler ("painter-foundation-phase-order", G_TYPE_OBJECT,
+    G_SIGNAL_RUN_LAST, G_CALLBACK (default_phase), nullptr, nullptr,
+    g_cclosure_marshal_VOID__POINTER, G_TYPE_NONE, 1, G_TYPE_POINTER);
+  g_assert_cmpuint (signal, !=, 0);
+  auto owner = new_object ();
+  PhaseTrace trace;
+  auto emit = [&] { g_signal_emit (owner.get (), signal, 0, &trace); };
+  // Register AFTER first: phase semantics must still override registration order.
+  auto after = Connection::connect (owner, "painter-foundation-phase-order",
+    G_CALLBACK (handler_phase), GINT_TO_POINTER (3), nullptr, G_CONNECT_AFTER);
+  auto before = Connection::connect (owner, "painter-foundation-phase-order",
+    G_CALLBACK (handler_phase), GINT_TO_POINTER (1), nullptr);
+  emit (); trace.expect ({1, 2, 3});
+  before.block (); before.block ();
+  emit (); trace.expect ({2, 3});
+  before.unblock ();
+  emit (); trace.expect ({2, 3});
+  auto moved = std::move (before);
+  before.unblock (); // moved-from wrapper cannot consume the remaining block
+  emit (); trace.expect ({2, 3});
+  moved.unblock (); moved.unblock ();
+  emit (); trace.expect ({1, 2, 3});
+  after.block ();
+  emit (); trace.expect ({1, 2});
+  after.unblock ();
+  emit (); trace.expect ({1, 2, 3});
+  // An unmatched wrapper unblock must not consume an external native block.
+  g_assert_cmpuint (g_signal_handlers_block_matched (owner.get (), G_SIGNAL_MATCH_DATA,
+    0, 0, nullptr, nullptr, GINT_TO_POINTER (1)), ==, 1);
+  moved.unblock ();
+  emit (); trace.expect ({2, 3});
+  moved.block (); moved.unblock ();
+  emit (); trace.expect ({2, 3});
+  g_assert_cmpuint (g_signal_handlers_unblock_matched (owner.get (), G_SIGNAL_MATCH_DATA,
+    0, 0, nullptr, nullptr, GINT_TO_POINTER (1)), ==, 1);
+  emit (); trace.expect ({1, 2, 3});
+  moved.block ();
+  moved = Connection::connect (owner, "painter-foundation-phase-order",
+    G_CALLBACK (handler_phase), GINT_TO_POINTER (1), nullptr);
+  emit (); trace.expect ({1, 2, 3});
+  moved.unblock (); // replaced handler starts with no wrapper-owned block
+  emit (); trace.expect ({1, 2, 3});
+  moved.close (); after.close ();
+  emit (); trace.expect ({2});
+}
+
 void sources ()
 {
   auto *context = g_main_context_new ();
@@ -309,6 +376,7 @@ void painter_test_register_resources ()
   g_test_add_func ("/painter/signal/lifetime-blocks", connections);
   g_test_add_func ("/painter/signal/owned-lifetime", connection_ownership);
   g_test_add_func ("/painter/signal/after-order", signal_order);
+  g_test_add_func ("/painter/signal/block-phase-order", signal_block_order);
   g_test_add_func ("/painter/signal/reentrant-disconnect", reentrant_disconnect);
   g_test_add_func ("/painter/source/cancel-repeat", sources);
   g_test_add_func ("/painter/source/self-close", source_self_close);
