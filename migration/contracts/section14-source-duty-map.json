@@ -1,0 +1,4094 @@
+{
+  "scope": "Original106 section14 source duties /38 source hunks retained. Source mapping only; no closure or criterion/dependency modification. Committed providers only, never paused working candidates.",
+  "baseline_commit": "7f0333f86bd7b283ab2d9e3e0c7e623466f99333",
+  "work_items": [
+    {
+      "work_id": "legacy-ed6aa7738c650a1a5bfd",
+      "source_kind": "hunk",
+      "source_id": "01.002/000173",
+      "path": "app/core/gimpclonelayer.cpp",
+      "source_blob": "548c8ecca63e57ba77913abdf8f71e979aff386b",
+      "source_range": "-0,0 -> 1,700",
+      "source_sha256": "e6ed3fa1bd60e30c0861a7d7a0a926b10b214aa8ef07ff9b29a3384d0b5141ea",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "14.001",
+      "action": "source の所有と監視を実装する",
+      "acceptance": "旧仕様に沿う参照が close で解除される",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-6aaf55a49d108298fcf5",
+      "source_kind": "hunk",
+      "source_id": "01.002/000173",
+      "path": "app/core/gimpclonelayer.cpp",
+      "source_blob": "548c8ecca63e57ba77913abdf8f71e979aff386b",
+      "source_range": "-0,0 -> 1,700",
+      "source_sha256": "e6ed3fa1bd60e30c0861a7d7a0a926b10b214aa8ef07ff9b29a3384d0b5141ea",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "14.002",
+      "action": "名前による旧 source 解決を実装する",
+      "acceptance": "探索順と同名の解決が fixture と一致",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-2a4e529d5ad77689d951",
+      "source_kind": "hunk",
+      "source_id": "01.002/000173",
+      "path": "app/core/gimpclonelayer.cpp",
+      "source_blob": "548c8ecca63e57ba77913abdf8f71e979aff386b",
+      "source_range": "-0,0 -> 1,700",
+      "source_sha256": "e6ed3fa1bd60e30c0861a7d7a0a926b10b214aa8ef07ff9b29a3384d0b5141ea",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "14.003",
+      "action": "source レイヤーの画素追従を実装する",
+      "acceptance": "編集領域が clone に更新される",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-98b5520b5d0c8fbecdc7",
+      "source_kind": "hunk",
+      "source_id": "01.002/000173",
+      "path": "app/core/gimpclonelayer.cpp",
+      "source_blob": "548c8ecca63e57ba77913abdf8f71e979aff386b",
+      "source_range": "-0,0 -> 1,700",
+      "source_sha256": "e6ed3fa1bd60e30c0861a7d7a0a926b10b214aa8ef07ff9b29a3384d0b5141ea",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "14.003/gegl-source-node",
+      "action": "CloneLayer の参照画素を GEGL source node に接続する",
+      "acceptance": "source の変更 ROI、offset、参照解除が projection の再評価へ届く",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-b08aae8f32adcf7180b1",
+      "source_kind": "hunk",
+      "source_id": "01.002/000173",
+      "path": "app/core/gimpclonelayer.cpp",
+      "source_blob": "548c8ecca63e57ba77913abdf8f71e979aff386b",
+      "source_range": "-0,0 -> 1,700",
+      "source_sha256": "e6ed3fa1bd60e30c0861a7d7a0a926b10b214aa8ef07ff9b29a3384d0b5141ea",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "14.003/clone-pickable-opacity",
+      "action": "CloneLayer の不透明度照会を現行型へ接続する",
+      "acceptance": "旧 gint 返却のゼロ透明を現行 gdouble 契約で保ち、参照画素・子レイヤー表示への影響を試験",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-1d5d33191468f7fefd32",
+      "source_kind": "hunk",
+      "source_id": "01.002/000173",
+      "path": "app/core/gimpclonelayer.cpp",
+      "source_blob": "548c8ecca63e57ba77913abdf8f71e979aff386b",
+      "source_range": "-0,0 -> 1,700",
+      "source_sha256": "e6ed3fa1bd60e30c0861a7d7a0a926b10b214aa8ef07ff9b29a3384d0b5141ea",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "14.004",
+      "action": "source グループの追従を実装する",
+      "acceptance": "子の変更と合成が更新される",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-2f9a1418ed8a37bb5345",
+      "source_kind": "hunk",
+      "source_id": "01.002/000173",
+      "path": "app/core/gimpclonelayer.cpp",
+      "source_blob": "548c8ecca63e57ba77913abdf8f71e979aff386b",
+      "source_range": "-0,0 -> 1,700",
+      "source_sha256": "e6ed3fa1bd60e30c0861a7d7a0a926b10b214aa8ef07ff9b29a3384d0b5141ea",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "14.005",
+      "action": "source の座標・サイズ追従を実装する",
+      "acceptance": "移動と resize の見え方が一致",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-b4570304c921bce324ad",
+      "source_kind": "hunk",
+      "source_id": "01.002/000173",
+      "path": "app/core/gimpclonelayer.cpp",
+      "source_blob": "548c8ecca63e57ba77913abdf8f71e979aff386b",
+      "source_range": "-0,0 -> 1,700",
+      "source_sha256": "e6ed3fa1bd60e30c0861a7d7a0a926b10b214aa8ef07ff9b29a3384d0b5141ea",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "14.006",
+      "action": "clone 自身の座標処理を実装する",
+      "acceptance": "source 座標との合成が一致",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-08f3f0ca5eb571c85dcf",
+      "source_kind": "hunk",
+      "source_id": "01.002/000173",
+      "path": "app/core/gimpclonelayer.cpp",
+      "source_blob": "548c8ecca63e57ba77913abdf8f71e979aff386b",
+      "source_range": "-0,0 -> 1,700",
+      "source_sha256": "e6ed3fa1bd60e30c0861a7d7a0a926b10b214aa8ef07ff9b29a3384d0b5141ea",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "14.006/editability-contract",
+      "action": "CloneLayer の編集可否を現行ロック規約へ対応付ける",
+      "acceptance": "廃止された GimpItemClass.is_editable を仮定せず、許可操作と選択・移動の可否を確認",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-43deea336799d3bcaa4d",
+      "source_kind": "hunk",
+      "source_id": "01.002/000173",
+      "path": "app/core/gimpclonelayer.cpp",
+      "source_blob": "548c8ecca63e57ba77913abdf8f71e979aff386b",
+      "source_range": "-0,0 -> 1,700",
+      "source_sha256": "e6ed3fa1bd60e30c0861a7d7a0a926b10b214aa8ef07ff9b29a3384d0b5141ea",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "14.007",
+      "action": "source の可視性・合成変更を処理する",
+      "acceptance": "旧版の更新範囲と表示が一致",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-eb7bca18206cd8a61429",
+      "source_kind": "hunk",
+      "source_id": "01.002/000173",
+      "path": "app/core/gimpclonelayer.cpp",
+      "source_blob": "548c8ecca63e57ba77913abdf8f71e979aff386b",
+      "source_range": "-0,0 -> 1,700",
+      "source_sha256": "e6ed3fa1bd60e30c0861a7d7a0a926b10b214aa8ef07ff9b29a3384d0b5141ea",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "14.008",
+      "action": "source 改名を処理する",
+      "acceptance": "既存参照を旧仕様に沿って維持",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-8dcde859fea65a7e90f5",
+      "source_kind": "hunk",
+      "source_id": "01.002/000173",
+      "path": "app/core/gimpclonelayer.cpp",
+      "source_blob": "548c8ecca63e57ba77913abdf8f71e979aff386b",
+      "source_range": "-0,0 -> 1,700",
+      "source_sha256": "e6ed3fa1bd60e30c0861a7d7a0a926b10b214aa8ef07ff9b29a3384d0b5141ea",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "14.009",
+      "action": "同名 source を処理する",
+      "acceptance": "保存前後で別レイヤーへ変わらない",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-f613eaf6b2cdf278f7b5",
+      "source_kind": "hunk",
+      "source_id": "01.002/000173",
+      "path": "app/core/gimpclonelayer.cpp",
+      "source_blob": "548c8ecca63e57ba77913abdf8f71e979aff386b",
+      "source_range": "-0,0 -> 1,700",
+      "source_sha256": "e6ed3fa1bd60e30c0861a7d7a0a926b10b214aa8ef07ff9b29a3384d0b5141ea",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "14.010",
+      "action": "clone の複製を実装する",
+      "acceptance": "複製先の source が旧仕様と一致",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-d0ab6c7acf5a90ca85f5",
+      "source_kind": "hunk",
+      "source_id": "01.002/000173",
+      "path": "app/core/gimpclonelayer.cpp",
+      "source_blob": "548c8ecca63e57ba77913abdf8f71e979aff386b",
+      "source_range": "-0,0 -> 1,700",
+      "source_sha256": "e6ed3fa1bd60e30c0861a7d7a0a926b10b214aa8ef07ff9b29a3384d0b5141ea",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "14.012",
+      "action": "source の削除を処理する",
+      "acceptance": "旧挙動を保持し stale pointer を残さない",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-08cfdbc202a97479463d",
+      "source_kind": "hunk",
+      "source_id": "01.002/000173",
+      "path": "app/core/gimpclonelayer.cpp",
+      "source_blob": "548c8ecca63e57ba77913abdf8f71e979aff386b",
+      "source_range": "-0,0 -> 1,700",
+      "source_sha256": "e6ed3fa1bd60e30c0861a7d7a0a926b10b214aa8ef07ff9b29a3384d0b5141ea",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "14.013",
+      "action": "source の差替えを実装する",
+      "acceptance": "旧接続解除と新接続が一度ずつ行われる",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-7f4eef3d1ac4dae590f0",
+      "source_kind": "hunk",
+      "source_id": "01.002/000173",
+      "path": "app/core/gimpclonelayer.cpp",
+      "source_blob": "548c8ecca63e57ba77913abdf8f71e979aff386b",
+      "source_range": "-0,0 -> 1,700",
+      "source_sha256": "e6ed3fa1bd60e30c0861a7d7a0a926b10b214aa8ef07ff9b29a3384d0b5141ea",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "14.014",
+      "action": "参照循環の旧挙動を照合して処理する",
+      "acceptance": "旧版で有効な参照を壊さず無限更新を防ぐ",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-b6e4c25ffed05269c202",
+      "source_kind": "hunk",
+      "source_id": "01.002/000173",
+      "path": "app/core/gimpclonelayer.cpp",
+      "source_blob": "548c8ecca63e57ba77913abdf8f71e979aff386b",
+      "source_range": "-0,0 -> 1,700",
+      "source_sha256": "e6ed3fa1bd60e30c0861a7d7a0a926b10b214aa8ef07ff9b29a3384d0b5141ea",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "14.017",
+      "action": "画像終了時の解除を実装する",
+      "acceptance": "遅延通知が clone を触らない",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-0b90ccd8d44c4ee75671",
+      "source_kind": "hunk",
+      "source_id": "01.002/000173",
+      "path": "app/core/gimpclonelayer.cpp",
+      "source_blob": "548c8ecca63e57ba77913abdf8f71e979aff386b",
+      "source_range": "-0,0 -> 1,700",
+      "source_sha256": "e6ed3fa1bd60e30c0861a7d7a0a926b10b214aa8ef07ff9b29a3384d0b5141ea",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "14.018",
+      "action": "参照が別画像へ移る操作を処理する",
+      "acceptance": "コピー・移動の旧意味と矛盾しない",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-660dbe1205b827b748f0",
+      "source_kind": "hunk",
+      "source_id": "01.002/000173",
+      "path": "app/core/gimpclonelayer.cpp",
+      "source_blob": "548c8ecca63e57ba77913abdf8f71e979aff386b",
+      "source_range": "-0,0 -> 1,700",
+      "source_sha256": "e6ed3fa1bd60e30c0861a7d7a0a926b10b214aa8ef07ff9b29a3384d0b5141ea",
+      "source_scope": "file-level declarations/content",
+      "phase": "verification",
+      "wbs_task": "14.019",
+      "action": "CloneLayer の機能試験を実行する",
+      "acceptance": "位置・階層・参照・複製・削除の全 fixture に一致",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-289e0475f67a1fc0e345",
+      "source_kind": "hunk",
+      "source_id": "01.002/000173",
+      "path": "app/core/gimpclonelayer.cpp",
+      "source_blob": "548c8ecca63e57ba77913abdf8f71e979aff386b",
+      "source_range": "-0,0 -> 1,700",
+      "source_sha256": "e6ed3fa1bd60e30c0861a7d7a0a926b10b214aa8ef07ff9b29a3384d0b5141ea",
+      "source_scope": "file-level declarations/content",
+      "phase": "verification",
+      "wbs_task": "14.020",
+      "action": "CloneLayer の保存後再編集を試験する",
+      "acceptance": "再読込後の source 編集が反映される",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-6e269894b2b8d972ab21",
+      "source_kind": "hunk",
+      "source_id": "01.002/000174",
+      "path": "app/core/gimpclonelayer.h",
+      "source_blob": "58d9353c34c937ca42a6fe6d211f6adb614a0e76",
+      "source_range": "-0,0 -> 1,88",
+      "source_sha256": "722b2e79d8bd7fd7a5e6e4c762cae235e154fa97d1ec6f36c3994f2b782b234a",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "14.001",
+      "action": "source の所有と監視を実装する",
+      "acceptance": "旧仕様に沿う参照が close で解除される",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-abee2360e73469add9b5",
+      "source_kind": "hunk",
+      "source_id": "01.002/000174",
+      "path": "app/core/gimpclonelayer.h",
+      "source_blob": "58d9353c34c937ca42a6fe6d211f6adb614a0e76",
+      "source_range": "-0,0 -> 1,88",
+      "source_sha256": "722b2e79d8bd7fd7a5e6e4c762cae235e154fa97d1ec6f36c3994f2b782b234a",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "14.002",
+      "action": "名前による旧 source 解決を実装する",
+      "acceptance": "探索順と同名の解決が fixture と一致",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-5c79b685da73f2ca833e",
+      "source_kind": "hunk",
+      "source_id": "01.002/000174",
+      "path": "app/core/gimpclonelayer.h",
+      "source_blob": "58d9353c34c937ca42a6fe6d211f6adb614a0e76",
+      "source_range": "-0,0 -> 1,88",
+      "source_sha256": "722b2e79d8bd7fd7a5e6e4c762cae235e154fa97d1ec6f36c3994f2b782b234a",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "14.003",
+      "action": "source レイヤーの画素追従を実装する",
+      "acceptance": "編集領域が clone に更新される",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-160afcc96553dc182308",
+      "source_kind": "hunk",
+      "source_id": "01.002/000174",
+      "path": "app/core/gimpclonelayer.h",
+      "source_blob": "58d9353c34c937ca42a6fe6d211f6adb614a0e76",
+      "source_range": "-0,0 -> 1,88",
+      "source_sha256": "722b2e79d8bd7fd7a5e6e4c762cae235e154fa97d1ec6f36c3994f2b782b234a",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "14.003/gegl-source-node",
+      "action": "CloneLayer の参照画素を GEGL source node に接続する",
+      "acceptance": "source の変更 ROI、offset、参照解除が projection の再評価へ届く",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-2cb5d52b0409e17e1fc6",
+      "source_kind": "hunk",
+      "source_id": "01.002/000174",
+      "path": "app/core/gimpclonelayer.h",
+      "source_blob": "58d9353c34c937ca42a6fe6d211f6adb614a0e76",
+      "source_range": "-0,0 -> 1,88",
+      "source_sha256": "722b2e79d8bd7fd7a5e6e4c762cae235e154fa97d1ec6f36c3994f2b782b234a",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "14.003/clone-pickable-opacity",
+      "action": "CloneLayer の不透明度照会を現行型へ接続する",
+      "acceptance": "旧 gint 返却のゼロ透明を現行 gdouble 契約で保ち、参照画素・子レイヤー表示への影響を試験",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-9847be257cf93d4b6e0d",
+      "source_kind": "hunk",
+      "source_id": "01.002/000174",
+      "path": "app/core/gimpclonelayer.h",
+      "source_blob": "58d9353c34c937ca42a6fe6d211f6adb614a0e76",
+      "source_range": "-0,0 -> 1,88",
+      "source_sha256": "722b2e79d8bd7fd7a5e6e4c762cae235e154fa97d1ec6f36c3994f2b782b234a",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "14.004",
+      "action": "source グループの追従を実装する",
+      "acceptance": "子の変更と合成が更新される",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-c9050c63b617678309d1",
+      "source_kind": "hunk",
+      "source_id": "01.002/000174",
+      "path": "app/core/gimpclonelayer.h",
+      "source_blob": "58d9353c34c937ca42a6fe6d211f6adb614a0e76",
+      "source_range": "-0,0 -> 1,88",
+      "source_sha256": "722b2e79d8bd7fd7a5e6e4c762cae235e154fa97d1ec6f36c3994f2b782b234a",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "14.005",
+      "action": "source の座標・サイズ追従を実装する",
+      "acceptance": "移動と resize の見え方が一致",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-ec58a7bab1b878b07553",
+      "source_kind": "hunk",
+      "source_id": "01.002/000174",
+      "path": "app/core/gimpclonelayer.h",
+      "source_blob": "58d9353c34c937ca42a6fe6d211f6adb614a0e76",
+      "source_range": "-0,0 -> 1,88",
+      "source_sha256": "722b2e79d8bd7fd7a5e6e4c762cae235e154fa97d1ec6f36c3994f2b782b234a",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "14.006",
+      "action": "clone 自身の座標処理を実装する",
+      "acceptance": "source 座標との合成が一致",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-469533143dfa0bb06ca6",
+      "source_kind": "hunk",
+      "source_id": "01.002/000174",
+      "path": "app/core/gimpclonelayer.h",
+      "source_blob": "58d9353c34c937ca42a6fe6d211f6adb614a0e76",
+      "source_range": "-0,0 -> 1,88",
+      "source_sha256": "722b2e79d8bd7fd7a5e6e4c762cae235e154fa97d1ec6f36c3994f2b782b234a",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "14.006/editability-contract",
+      "action": "CloneLayer の編集可否を現行ロック規約へ対応付ける",
+      "acceptance": "廃止された GimpItemClass.is_editable を仮定せず、許可操作と選択・移動の可否を確認",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-6a59c6dbe66633618804",
+      "source_kind": "hunk",
+      "source_id": "01.002/000174",
+      "path": "app/core/gimpclonelayer.h",
+      "source_blob": "58d9353c34c937ca42a6fe6d211f6adb614a0e76",
+      "source_range": "-0,0 -> 1,88",
+      "source_sha256": "722b2e79d8bd7fd7a5e6e4c762cae235e154fa97d1ec6f36c3994f2b782b234a",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "14.007",
+      "action": "source の可視性・合成変更を処理する",
+      "acceptance": "旧版の更新範囲と表示が一致",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-3d42e079cea7a75360eb",
+      "source_kind": "hunk",
+      "source_id": "01.002/000174",
+      "path": "app/core/gimpclonelayer.h",
+      "source_blob": "58d9353c34c937ca42a6fe6d211f6adb614a0e76",
+      "source_range": "-0,0 -> 1,88",
+      "source_sha256": "722b2e79d8bd7fd7a5e6e4c762cae235e154fa97d1ec6f36c3994f2b782b234a",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "14.008",
+      "action": "source 改名を処理する",
+      "acceptance": "既存参照を旧仕様に沿って維持",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-8b9172fd089c67b81a94",
+      "source_kind": "hunk",
+      "source_id": "01.002/000174",
+      "path": "app/core/gimpclonelayer.h",
+      "source_blob": "58d9353c34c937ca42a6fe6d211f6adb614a0e76",
+      "source_range": "-0,0 -> 1,88",
+      "source_sha256": "722b2e79d8bd7fd7a5e6e4c762cae235e154fa97d1ec6f36c3994f2b782b234a",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "14.009",
+      "action": "同名 source を処理する",
+      "acceptance": "保存前後で別レイヤーへ変わらない",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-523429bae600b7aa7faf",
+      "source_kind": "hunk",
+      "source_id": "01.002/000174",
+      "path": "app/core/gimpclonelayer.h",
+      "source_blob": "58d9353c34c937ca42a6fe6d211f6adb614a0e76",
+      "source_range": "-0,0 -> 1,88",
+      "source_sha256": "722b2e79d8bd7fd7a5e6e4c762cae235e154fa97d1ec6f36c3994f2b782b234a",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "14.010",
+      "action": "clone の複製を実装する",
+      "acceptance": "複製先の source が旧仕様と一致",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-49928cfc993609f72fb0",
+      "source_kind": "hunk",
+      "source_id": "01.002/000174",
+      "path": "app/core/gimpclonelayer.h",
+      "source_blob": "58d9353c34c937ca42a6fe6d211f6adb614a0e76",
+      "source_range": "-0,0 -> 1,88",
+      "source_sha256": "722b2e79d8bd7fd7a5e6e4c762cae235e154fa97d1ec6f36c3994f2b782b234a",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "14.012",
+      "action": "source の削除を処理する",
+      "acceptance": "旧挙動を保持し stale pointer を残さない",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-b236956c833db5a2df78",
+      "source_kind": "hunk",
+      "source_id": "01.002/000174",
+      "path": "app/core/gimpclonelayer.h",
+      "source_blob": "58d9353c34c937ca42a6fe6d211f6adb614a0e76",
+      "source_range": "-0,0 -> 1,88",
+      "source_sha256": "722b2e79d8bd7fd7a5e6e4c762cae235e154fa97d1ec6f36c3994f2b782b234a",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "14.013",
+      "action": "source の差替えを実装する",
+      "acceptance": "旧接続解除と新接続が一度ずつ行われる",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-ff42283240db1371ff43",
+      "source_kind": "hunk",
+      "source_id": "01.002/000174",
+      "path": "app/core/gimpclonelayer.h",
+      "source_blob": "58d9353c34c937ca42a6fe6d211f6adb614a0e76",
+      "source_range": "-0,0 -> 1,88",
+      "source_sha256": "722b2e79d8bd7fd7a5e6e4c762cae235e154fa97d1ec6f36c3994f2b782b234a",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "14.014",
+      "action": "参照循環の旧挙動を照合して処理する",
+      "acceptance": "旧版で有効な参照を壊さず無限更新を防ぐ",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-57e82040ab72e481fd9b",
+      "source_kind": "hunk",
+      "source_id": "01.002/000174",
+      "path": "app/core/gimpclonelayer.h",
+      "source_blob": "58d9353c34c937ca42a6fe6d211f6adb614a0e76",
+      "source_range": "-0,0 -> 1,88",
+      "source_sha256": "722b2e79d8bd7fd7a5e6e4c762cae235e154fa97d1ec6f36c3994f2b782b234a",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "14.017",
+      "action": "画像終了時の解除を実装する",
+      "acceptance": "遅延通知が clone を触らない",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-5b6115cf82b4c166f807",
+      "source_kind": "hunk",
+      "source_id": "01.002/000174",
+      "path": "app/core/gimpclonelayer.h",
+      "source_blob": "58d9353c34c937ca42a6fe6d211f6adb614a0e76",
+      "source_range": "-0,0 -> 1,88",
+      "source_sha256": "722b2e79d8bd7fd7a5e6e4c762cae235e154fa97d1ec6f36c3994f2b782b234a",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "14.018",
+      "action": "参照が別画像へ移る操作を処理する",
+      "acceptance": "コピー・移動の旧意味と矛盾しない",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-76b54586b2405c958d2a",
+      "source_kind": "hunk",
+      "source_id": "01.002/000174",
+      "path": "app/core/gimpclonelayer.h",
+      "source_blob": "58d9353c34c937ca42a6fe6d211f6adb614a0e76",
+      "source_range": "-0,0 -> 1,88",
+      "source_sha256": "722b2e79d8bd7fd7a5e6e4c762cae235e154fa97d1ec6f36c3994f2b782b234a",
+      "source_scope": "file-level declarations/content",
+      "phase": "verification",
+      "wbs_task": "14.019",
+      "action": "CloneLayer の機能試験を実行する",
+      "acceptance": "位置・階層・参照・複製・削除の全 fixture に一致",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-1c6d47209380467fb8b6",
+      "source_kind": "hunk",
+      "source_id": "01.002/000174",
+      "path": "app/core/gimpclonelayer.h",
+      "source_blob": "58d9353c34c937ca42a6fe6d211f6adb614a0e76",
+      "source_range": "-0,0 -> 1,88",
+      "source_sha256": "722b2e79d8bd7fd7a5e6e4c762cae235e154fa97d1ec6f36c3994f2b782b234a",
+      "source_scope": "file-level declarations/content",
+      "phase": "verification",
+      "wbs_task": "14.020",
+      "action": "CloneLayer の保存後再編集を試験する",
+      "acceptance": "再読込後の source 編集が反映される",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-586e166234bd100d470b",
+      "source_kind": "hunk",
+      "source_id": "01.002/000175",
+      "path": "app/core/gimpclonelayerundo.cpp",
+      "source_blob": "b3ad8a75f6a65884e4b3f4472cd517c58e104500",
+      "source_range": "-0,0 -> 1,122",
+      "source_sha256": "dc011589728abe75318381882d60451ffcf8ccf853f45a2fd30952e01edfa86d",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "14.015",
+      "action": "clone の変更 Undo を実装する",
+      "acceptance": "source と参照状態を復元",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-90f028e88d78751845d5",
+      "source_kind": "hunk",
+      "source_id": "01.002/000175",
+      "path": "app/core/gimpclonelayerundo.cpp",
+      "source_blob": "b3ad8a75f6a65884e4b3f4472cd517c58e104500",
+      "source_range": "-0,0 -> 1,122",
+      "source_sha256": "dc011589728abe75318381882d60451ffcf8ccf853f45a2fd30952e01edfa86d",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "14.016",
+      "action": "source 削除の Undo を接続する",
+      "acceptance": "復元後に追従が再開",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-b999b39f0a2d07361b49",
+      "source_kind": "hunk",
+      "source_id": "01.002/000175",
+      "path": "app/core/gimpclonelayerundo.cpp",
+      "source_blob": "b3ad8a75f6a65884e4b3f4472cd517c58e104500",
+      "source_range": "-0,0 -> 1,122",
+      "source_sha256": "dc011589728abe75318381882d60451ffcf8ccf853f45a2fd30952e01edfa86d",
+      "source_scope": "file-level declarations/content",
+      "phase": "verification",
+      "wbs_task": "14.019",
+      "action": "CloneLayer の機能試験を実行する",
+      "acceptance": "位置・階層・参照・複製・削除の全 fixture に一致",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-c48f74173ca5b502fd3c",
+      "source_kind": "hunk",
+      "source_id": "01.002/000175",
+      "path": "app/core/gimpclonelayerundo.cpp",
+      "source_blob": "b3ad8a75f6a65884e4b3f4472cd517c58e104500",
+      "source_range": "-0,0 -> 1,122",
+      "source_sha256": "dc011589728abe75318381882d60451ffcf8ccf853f45a2fd30952e01edfa86d",
+      "source_scope": "file-level declarations/content",
+      "phase": "verification",
+      "wbs_task": "14.020",
+      "action": "CloneLayer の保存後再編集を試験する",
+      "acceptance": "再読込後の source 編集が反映される",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-b977ff8ea6a67a86f02c",
+      "source_kind": "hunk",
+      "source_id": "01.002/000176",
+      "path": "app/core/gimpclonelayerundo.h",
+      "source_blob": "1195989e9a1d942d61e888c8d2611ed344565890",
+      "source_range": "-0,0 -> 1,54",
+      "source_sha256": "785acdbfd0cc4e125966e91a900c8d42bb9ea949b2c3e78f352e0caef9ddbb07",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "14.015",
+      "action": "clone の変更 Undo を実装する",
+      "acceptance": "source と参照状態を復元",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-d72d349f27ee7c1064c2",
+      "source_kind": "hunk",
+      "source_id": "01.002/000176",
+      "path": "app/core/gimpclonelayerundo.h",
+      "source_blob": "1195989e9a1d942d61e888c8d2611ed344565890",
+      "source_range": "-0,0 -> 1,54",
+      "source_sha256": "785acdbfd0cc4e125966e91a900c8d42bb9ea949b2c3e78f352e0caef9ddbb07",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "14.016",
+      "action": "source 削除の Undo を接続する",
+      "acceptance": "復元後に追従が再開",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-6150b3bbc24d0a59622f",
+      "source_kind": "hunk",
+      "source_id": "01.002/000176",
+      "path": "app/core/gimpclonelayerundo.h",
+      "source_blob": "1195989e9a1d942d61e888c8d2611ed344565890",
+      "source_range": "-0,0 -> 1,54",
+      "source_sha256": "785acdbfd0cc4e125966e91a900c8d42bb9ea949b2c3e78f352e0caef9ddbb07",
+      "source_scope": "file-level declarations/content",
+      "phase": "verification",
+      "wbs_task": "14.019",
+      "action": "CloneLayer の機能試験を実行する",
+      "acceptance": "位置・階層・参照・複製・削除の全 fixture に一致",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-8e8099efc3a8d3e4cafa",
+      "source_kind": "hunk",
+      "source_id": "01.002/000176",
+      "path": "app/core/gimpclonelayerundo.h",
+      "source_blob": "1195989e9a1d942d61e888c8d2611ed344565890",
+      "source_range": "-0,0 -> 1,54",
+      "source_sha256": "785acdbfd0cc4e125966e91a900c8d42bb9ea949b2c3e78f352e0caef9ddbb07",
+      "source_scope": "file-level declarations/content",
+      "phase": "verification",
+      "wbs_task": "14.020",
+      "action": "CloneLayer の保存後再編集を試験する",
+      "acceptance": "再読込後の source 編集が反映される",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-62e1291df21a8aa9e112",
+      "source_kind": "hunk",
+      "source_id": "01.002/000177",
+      "path": "app/core/gimpcontainer.c",
+      "source_blob": "6ded139f5df39b9d055e2486e90f8969dfec8d30",
+      "source_range": "-195,0 -> 196",
+      "source_sha256": "2950bb6fdf91d980ef7e78d18d1aa06769b0e3cf84a0c161a48857c40f269d3b",
+      "source_scope": "gimp_container_class_init (GimpContainerClass *klass)",
+      "phase": "verification",
+      "wbs_task": "14.019",
+      "action": "CloneLayer の機能試験を実行する",
+      "acceptance": "位置・階層・参照・複製・削除の全 fixture に一致",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-34c7c16c373dcbe9833f",
+      "source_kind": "hunk",
+      "source_id": "01.002/000178",
+      "path": "app/core/gimpcontainer.c",
+      "source_blob": "6ded139f5df39b9d055e2486e90f8969dfec8d30",
+      "source_range": "-421 -> 422",
+      "source_sha256": "5604a06005fa906b52577229fcba0de90419c28ce1acc429f19ca7930a6915ee",
+      "source_scope": "gimp_container_deserialize (GimpConfig *config,",
+      "phase": "verification",
+      "wbs_task": "14.019",
+      "action": "CloneLayer の機能試験を実行する",
+      "acceptance": "位置・階層・参照・複製・削除の全 fixture に一致",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-d7e690f81bdda51ac654",
+      "source_kind": "hunk",
+      "source_id": "01.002/000179",
+      "path": "app/core/gimpcontainer.c",
+      "source_blob": "6ded139f5df39b9d055e2486e90f8969dfec8d30",
+      "source_range": "-462 -> 463,2",
+      "source_sha256": "c0b488655d1d9e623c50119d942035f3e20f48cc6c319d4cd70972fe2b3f1540",
+      "source_scope": "gimp_container_deserialize (GimpConfig *config,",
+      "phase": "verification",
+      "wbs_task": "14.019",
+      "action": "CloneLayer の機能試験を実行する",
+      "acceptance": "位置・階層・参照・複製・削除の全 fixture に一致",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-399bb8f2e1bddf62267e",
+      "source_kind": "hunk",
+      "source_id": "01.002/000180",
+      "path": "app/core/gimpcontainer.c",
+      "source_blob": "6ded139f5df39b9d055e2486e90f8969dfec8d30",
+      "source_range": "-823,0 -> 826,11",
+      "source_sha256": "cd655f367b53d97acb7b9ca031e16128a42240c44731fad74e6ce88e3cb99c49",
+      "source_scope": "gimp_container_get_child_by_name (const GimpContainer *container,",
+      "phase": "verification",
+      "wbs_task": "14.019",
+      "action": "CloneLayer の機能試験を実行する",
+      "acceptance": "位置・階層・参照・複製・削除の全 fixture に一致",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-ee59c0bab25ce546f742",
+      "source_kind": "hunk",
+      "source_id": "01.002/000181",
+      "path": "app/core/gimpcontainer.h",
+      "source_blob": "51a19af8ab7d9c5dff262bb9fba4365034b327c8",
+      "source_range": "-67,0 -> 68",
+      "source_sha256": "3518a79037aa98675684e169b378120ff11f6cd7fc135b945bc5e65d055bd4e6",
+      "source_scope": "struct _GimpContainerClass",
+      "phase": "verification",
+      "wbs_task": "14.019",
+      "action": "CloneLayer の機能試験を実行する",
+      "acceptance": "位置・階層・参照・複製・削除の全 fixture に一致",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-c7aa7c927c29b152be3a",
+      "source_kind": "hunk",
+      "source_id": "01.002/000182",
+      "path": "app/core/gimpcontainer.h",
+      "source_blob": "51a19af8ab7d9c5dff262bb9fba4365034b327c8",
+      "source_range": "-105,0 -> 107,2",
+      "source_sha256": "14162a7503b3abcd10f88e18768cb24b6db1df366893744de2afeb0bd1b1e7d4",
+      "source_scope": "void         gimp_container_foreach            (const GimpContainer *container,",
+      "phase": "verification",
+      "wbs_task": "14.019",
+      "action": "CloneLayer の機能試験を実行する",
+      "acceptance": "位置・階層・参照・複製・削除の全 fixture に一致",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-2a36fd07eec47bcf2a61",
+      "source_kind": "hunk",
+      "source_id": "01.002/000183",
+      "path": "app/core/gimpcontainer.h",
+      "source_blob": "51a19af8ab7d9c5dff262bb9fba4365034b327c8",
+      "source_range": "-127,0 -> 131,30",
+      "source_sha256": "0e2123b85b2f010ee2fa335978d3244674f67c4a773cbc92b74e383444137a7e",
+      "source_scope": "void         gimp_container_remove_handler     (GimpContainer       *container,",
+      "phase": "verification",
+      "wbs_task": "14.019",
+      "action": "CloneLayer の機能試験を実行する",
+      "acceptance": "位置・階層・参照・複製・削除の全 fixture に一致",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-9349e811d6e980d3feb8",
+      "source_kind": "hunk",
+      "source_id": "01.002/000257",
+      "path": "app/core/gimpgrouplayer.c",
+      "source_blob": "7f889bb059798d14dfb698eb5138e1c2aa9a41db",
+      "source_range": "-41,0 -> 42",
+      "source_sha256": "57506c08e23366d4950c1927d18007b7bded8e912d18ab3f4388b01274ac37bc",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "14.011",
+      "action": "group の複製を実装する",
+      "acceptance": "内部・外部参照の扱いが旧版と一致",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-96d150eb68cc80697e5a",
+      "source_kind": "hunk",
+      "source_id": "01.002/000257",
+      "path": "app/core/gimpgrouplayer.c",
+      "source_blob": "7f889bb059798d14dfb698eb5138e1c2aa9a41db",
+      "source_range": "-41,0 -> 42",
+      "source_sha256": "57506c08e23366d4950c1927d18007b7bded8e912d18ab3f4388b01274ac37bc",
+      "source_scope": "file-level declarations/content",
+      "phase": "verification",
+      "wbs_task": "14.019",
+      "action": "CloneLayer の機能試験を実行する",
+      "acceptance": "位置・階層・参照・複製・削除の全 fixture に一致",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-1832d4f6930e83f4f6c1",
+      "source_kind": "hunk",
+      "source_id": "01.002/000257",
+      "path": "app/core/gimpgrouplayer.c",
+      "source_blob": "7f889bb059798d14dfb698eb5138e1c2aa9a41db",
+      "source_range": "-41,0 -> 42",
+      "source_sha256": "57506c08e23366d4950c1927d18007b7bded8e912d18ab3f4388b01274ac37bc",
+      "source_scope": "file-level declarations/content",
+      "phase": "verification",
+      "wbs_task": "14.020",
+      "action": "CloneLayer の保存後再編集を試験する",
+      "acceptance": "再読込後の source 編集が反映される",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-f93a80fdd0c25e944fe9",
+      "source_kind": "hunk",
+      "source_id": "01.002/000258",
+      "path": "app/core/gimpgrouplayer.c",
+      "source_blob": "7f889bb059798d14dfb698eb5138e1c2aa9a41db",
+      "source_range": "-91 -> 92,3",
+      "source_sha256": "37d9f255d7494f4cf82d9028acf0d9a2dffb96a7b20232935edd6dd2cc6fb2d5",
+      "source_scope": "static void            gimp_group_layer_set_expanded (GimpViewable    *viewable,",
+      "phase": "implementation",
+      "wbs_task": "14.011",
+      "action": "group の複製を実装する",
+      "acceptance": "内部・外部参照の扱いが旧版と一致",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-341bbd5b7bbda46bd3fb",
+      "source_kind": "hunk",
+      "source_id": "01.002/000258",
+      "path": "app/core/gimpgrouplayer.c",
+      "source_blob": "7f889bb059798d14dfb698eb5138e1c2aa9a41db",
+      "source_range": "-91 -> 92,3",
+      "source_sha256": "37d9f255d7494f4cf82d9028acf0d9a2dffb96a7b20232935edd6dd2cc6fb2d5",
+      "source_scope": "static void            gimp_group_layer_set_expanded (GimpViewable    *viewable,",
+      "phase": "verification",
+      "wbs_task": "14.019",
+      "action": "CloneLayer の機能試験を実行する",
+      "acceptance": "位置・階層・参照・複製・削除の全 fixture に一致",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-299c0fb2ea701b40a62c",
+      "source_kind": "hunk",
+      "source_id": "01.002/000258",
+      "path": "app/core/gimpgrouplayer.c",
+      "source_blob": "7f889bb059798d14dfb698eb5138e1c2aa9a41db",
+      "source_range": "-91 -> 92,3",
+      "source_sha256": "37d9f255d7494f4cf82d9028acf0d9a2dffb96a7b20232935edd6dd2cc6fb2d5",
+      "source_scope": "static void            gimp_group_layer_set_expanded (GimpViewable    *viewable,",
+      "phase": "verification",
+      "wbs_task": "14.020",
+      "action": "CloneLayer の保存後再編集を試験する",
+      "acceptance": "再読込後の source 編集が反映される",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-60d164e2d009f1f59206",
+      "source_kind": "hunk",
+      "source_id": "01.002/000260",
+      "path": "app/core/gimpgrouplayer.c",
+      "source_blob": "7f889bb059798d14dfb698eb5138e1c2aa9a41db",
+      "source_range": "-410,2 -> 414,3",
+      "source_sha256": "342b3796c997fe44a25fbe24868eae39115ff053dd917290701be91823c32976",
+      "source_scope": "static GimpItem *",
+      "phase": "implementation",
+      "wbs_task": "14.011",
+      "action": "group の複製を実装する",
+      "acceptance": "内部・外部参照の扱いが旧版と一致",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-c9d897328c671a29d3e6",
+      "source_kind": "hunk",
+      "source_id": "01.002/000260",
+      "path": "app/core/gimpgrouplayer.c",
+      "source_blob": "7f889bb059798d14dfb698eb5138e1c2aa9a41db",
+      "source_range": "-410,2 -> 414,3",
+      "source_sha256": "342b3796c997fe44a25fbe24868eae39115ff053dd917290701be91823c32976",
+      "source_scope": "static GimpItem *",
+      "phase": "verification",
+      "wbs_task": "14.019",
+      "action": "CloneLayer の機能試験を実行する",
+      "acceptance": "位置・階層・参照・複製・削除の全 fixture に一致",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-bbecfb944527975b5038",
+      "source_kind": "hunk",
+      "source_id": "01.002/000260",
+      "path": "app/core/gimpgrouplayer.c",
+      "source_blob": "7f889bb059798d14dfb698eb5138e1c2aa9a41db",
+      "source_range": "-410,2 -> 414,3",
+      "source_sha256": "342b3796c997fe44a25fbe24868eae39115ff053dd917290701be91823c32976",
+      "source_scope": "static GimpItem *",
+      "phase": "verification",
+      "wbs_task": "14.020",
+      "action": "CloneLayer の保存後再編集を試験する",
+      "acceptance": "再読込後の source 編集が反映される",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-310e80e436f3d3ad3ffb",
+      "source_kind": "hunk",
+      "source_id": "01.002/000261",
+      "path": "app/core/gimpgrouplayer.c",
+      "source_blob": "7f889bb059798d14dfb698eb5138e1c2aa9a41db",
+      "source_range": "-427,0 -> 433",
+      "source_sha256": "174252291fc4032515817211587f534e1b6b997279526c95e79463bc3557dcce",
+      "source_scope": "gimp_group_layer_duplicate (GimpItem *item,",
+      "phase": "implementation",
+      "wbs_task": "14.011",
+      "action": "group の複製を実装する",
+      "acceptance": "内部・外部参照の扱いが旧版と一致",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-d7fb7b035e1e199fe888",
+      "source_kind": "hunk",
+      "source_id": "01.002/000261",
+      "path": "app/core/gimpgrouplayer.c",
+      "source_blob": "7f889bb059798d14dfb698eb5138e1c2aa9a41db",
+      "source_range": "-427,0 -> 433",
+      "source_sha256": "174252291fc4032515817211587f534e1b6b997279526c95e79463bc3557dcce",
+      "source_scope": "gimp_group_layer_duplicate (GimpItem *item,",
+      "phase": "verification",
+      "wbs_task": "14.019",
+      "action": "CloneLayer の機能試験を実行する",
+      "acceptance": "位置・階層・参照・複製・削除の全 fixture に一致",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-a9942904b7eb35ec8a71",
+      "source_kind": "hunk",
+      "source_id": "01.002/000261",
+      "path": "app/core/gimpgrouplayer.c",
+      "source_blob": "7f889bb059798d14dfb698eb5138e1c2aa9a41db",
+      "source_range": "-427,0 -> 433",
+      "source_sha256": "174252291fc4032515817211587f534e1b6b997279526c95e79463bc3557dcce",
+      "source_scope": "gimp_group_layer_duplicate (GimpItem *item,",
+      "phase": "verification",
+      "wbs_task": "14.020",
+      "action": "CloneLayer の保存後再編集を試験する",
+      "acceptance": "再読込後の source 編集が反映される",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-5290644b7844aa79ac0b",
+      "source_kind": "hunk",
+      "source_id": "01.002/000262",
+      "path": "app/core/gimpgrouplayer.c",
+      "source_blob": "7f889bb059798d14dfb698eb5138e1c2aa9a41db",
+      "source_range": "-437 -> 443,7",
+      "source_sha256": "fce4aabaf9bcc10552ac848f3652be4e8a8b551e07143b4c67193f4dada48e99",
+      "source_scope": "gimp_group_layer_duplicate (GimpItem *item,",
+      "phase": "implementation",
+      "wbs_task": "14.011",
+      "action": "group の複製を実装する",
+      "acceptance": "内部・外部参照の扱いが旧版と一致",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-64713739997097c97cb7",
+      "source_kind": "hunk",
+      "source_id": "01.002/000262",
+      "path": "app/core/gimpgrouplayer.c",
+      "source_blob": "7f889bb059798d14dfb698eb5138e1c2aa9a41db",
+      "source_range": "-437 -> 443,7",
+      "source_sha256": "fce4aabaf9bcc10552ac848f3652be4e8a8b551e07143b4c67193f4dada48e99",
+      "source_scope": "gimp_group_layer_duplicate (GimpItem *item,",
+      "phase": "verification",
+      "wbs_task": "14.019",
+      "action": "CloneLayer の機能試験を実行する",
+      "acceptance": "位置・階層・参照・複製・削除の全 fixture に一致",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-e0bcb13c90d5ab1c29fd",
+      "source_kind": "hunk",
+      "source_id": "01.002/000262",
+      "path": "app/core/gimpgrouplayer.c",
+      "source_blob": "7f889bb059798d14dfb698eb5138e1c2aa9a41db",
+      "source_range": "-437 -> 443,7",
+      "source_sha256": "fce4aabaf9bcc10552ac848f3652be4e8a8b551e07143b4c67193f4dada48e99",
+      "source_scope": "gimp_group_layer_duplicate (GimpItem *item,",
+      "phase": "verification",
+      "wbs_task": "14.020",
+      "action": "CloneLayer の保存後再編集を試験する",
+      "acceptance": "再読込後の source 編集が反映される",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-4755e6400e066346c2f6",
+      "source_kind": "hunk",
+      "source_id": "01.002/000263",
+      "path": "app/core/gimpgrouplayer.c",
+      "source_blob": "7f889bb059798d14dfb698eb5138e1c2aa9a41db",
+      "source_range": "-470,0 -> 483,46",
+      "source_sha256": "4b664b3ba045bd2442a616441fe7cde2f5ff12e5eeb54853a834ba8ae65e4ee1",
+      "source_scope": "gimp_group_layer_duplicate (GimpItem *item,",
+      "phase": "implementation",
+      "wbs_task": "14.011",
+      "action": "group の複製を実装する",
+      "acceptance": "内部・外部参照の扱いが旧版と一致",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-51296789638c59507363",
+      "source_kind": "hunk",
+      "source_id": "01.002/000263",
+      "path": "app/core/gimpgrouplayer.c",
+      "source_blob": "7f889bb059798d14dfb698eb5138e1c2aa9a41db",
+      "source_range": "-470,0 -> 483,46",
+      "source_sha256": "4b664b3ba045bd2442a616441fe7cde2f5ff12e5eeb54853a834ba8ae65e4ee1",
+      "source_scope": "gimp_group_layer_duplicate (GimpItem *item,",
+      "phase": "verification",
+      "wbs_task": "14.019",
+      "action": "CloneLayer の機能試験を実行する",
+      "acceptance": "位置・階層・参照・複製・削除の全 fixture に一致",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-f9d57bfd3ee46253a653",
+      "source_kind": "hunk",
+      "source_id": "01.002/000263",
+      "path": "app/core/gimpgrouplayer.c",
+      "source_blob": "7f889bb059798d14dfb698eb5138e1c2aa9a41db",
+      "source_range": "-470,0 -> 483,46",
+      "source_sha256": "4b664b3ba045bd2442a616441fe7cde2f5ff12e5eeb54853a834ba8ae65e4ee1",
+      "source_scope": "gimp_group_layer_duplicate (GimpItem *item,",
+      "phase": "verification",
+      "wbs_task": "14.020",
+      "action": "CloneLayer の保存後再編集を試験する",
+      "acceptance": "再読込後の source 編集が反映される",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-88089112d292a23a03e4",
+      "source_kind": "hunk",
+      "source_id": "01.002/000338",
+      "path": "app/core/gimpimage-undo.c",
+      "source_blob": "db9dbeaf21b107e54c47bb6ce4a38e88cf51ff81",
+      "source_range": "-374,5 -> 374,8",
+      "source_sha256": "401bce8e1c213bfd85189683aaa272fcdc704cc23e1c5d7baa9f722e9463cad8",
+      "source_scope": "gimp_image_undo_push (GimpImage     *image,",
+      "phase": "implementation",
+      "wbs_task": "14.006/editability-contract",
+      "action": "CloneLayer の編集可否を現行ロック規約へ対応付ける",
+      "acceptance": "廃止された GimpItemClass.is_editable を仮定せず、許可操作と選択・移動の可否を確認",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-363b3d92aa224f3e3d23",
+      "source_kind": "hunk",
+      "source_id": "01.002/000338",
+      "path": "app/core/gimpimage-undo.c",
+      "source_blob": "db9dbeaf21b107e54c47bb6ce4a38e88cf51ff81",
+      "source_range": "-374,5 -> 374,8",
+      "source_sha256": "401bce8e1c213bfd85189683aaa272fcdc704cc23e1c5d7baa9f722e9463cad8",
+      "source_scope": "gimp_image_undo_push (GimpImage     *image,",
+      "phase": "verification",
+      "wbs_task": "14.019",
+      "action": "CloneLayer の機能試験を実行する",
+      "acceptance": "位置・階層・参照・複製・削除の全 fixture に一致",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-ef70417012f00dcfd6f3",
+      "source_kind": "hunk",
+      "source_id": "01.002/000339",
+      "path": "app/core/gimpimage-undo.c",
+      "source_blob": "db9dbeaf21b107e54c47bb6ce4a38e88cf51ff81",
+      "source_range": "-380 -> 382,0",
+      "source_sha256": "310f32cb1efa70de154145a26eda87e37b1dc81afd6a89ee712e6d9302304229",
+      "source_scope": "gimp_image_undo_push (GimpImage     *image,",
+      "phase": "implementation",
+      "wbs_task": "14.006/editability-contract",
+      "action": "CloneLayer の編集可否を現行ロック規約へ対応付ける",
+      "acceptance": "廃止された GimpItemClass.is_editable を仮定せず、許可操作と選択・移動の可否を確認",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-e9ce5989f2acce98025b",
+      "source_kind": "hunk",
+      "source_id": "01.002/000339",
+      "path": "app/core/gimpimage-undo.c",
+      "source_blob": "db9dbeaf21b107e54c47bb6ce4a38e88cf51ff81",
+      "source_range": "-380 -> 382,0",
+      "source_sha256": "310f32cb1efa70de154145a26eda87e37b1dc81afd6a89ee712e6d9302304229",
+      "source_scope": "gimp_image_undo_push (GimpImage     *image,",
+      "phase": "verification",
+      "wbs_task": "14.019",
+      "action": "CloneLayer の機能試験を実行する",
+      "acceptance": "位置・階層・参照・複製・削除の全 fixture に一致",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-195c50f5bff4424064f1",
+      "source_kind": "hunk",
+      "source_id": "01.002/000340",
+      "path": "app/core/gimpimage-undo.c",
+      "source_blob": "db9dbeaf21b107e54c47bb6ce4a38e88cf51ff81",
+      "source_range": "-381,0 -> 384",
+      "source_sha256": "44715b14d3a3f24e6edd94a6ecef759cde76089de7c3bb134349ccdcdd3d53b5",
+      "source_scope": "gimp_image_undo_push (GimpImage     *image,",
+      "phase": "implementation",
+      "wbs_task": "14.006/editability-contract",
+      "action": "CloneLayer の編集可否を現行ロック規約へ対応付ける",
+      "acceptance": "廃止された GimpItemClass.is_editable を仮定せず、許可操作と選択・移動の可否を確認",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-1bfd77ec15ed3d716396",
+      "source_kind": "hunk",
+      "source_id": "01.002/000340",
+      "path": "app/core/gimpimage-undo.c",
+      "source_blob": "db9dbeaf21b107e54c47bb6ce4a38e88cf51ff81",
+      "source_range": "-381,0 -> 384",
+      "source_sha256": "44715b14d3a3f24e6edd94a6ecef759cde76089de7c3bb134349ccdcdd3d53b5",
+      "source_scope": "gimp_image_undo_push (GimpImage     *image,",
+      "phase": "verification",
+      "wbs_task": "14.019",
+      "action": "CloneLayer の機能試験を実行する",
+      "acceptance": "位置・階層・参照・複製・削除の全 fixture に一致",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-7b80aab7782bd573d5e0",
+      "source_kind": "hunk",
+      "source_id": "01.002/000341",
+      "path": "app/core/gimpimage-undo.c",
+      "source_blob": "db9dbeaf21b107e54c47bb6ce4a38e88cf51ff81",
+      "source_range": "-400,0 -> 404,12",
+      "source_sha256": "96d659193611d48d9735329115fc907004265274f27d82bd809deb061e640ba9",
+      "source_scope": "gimp_image_undo_push (GimpImage     *image,",
+      "phase": "implementation",
+      "wbs_task": "14.006/editability-contract",
+      "action": "CloneLayer の編集可否を現行ロック規約へ対応付ける",
+      "acceptance": "廃止された GimpItemClass.is_editable を仮定せず、許可操作と選択・移動の可否を確認",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-c00bc943a4dea8da8ad2",
+      "source_kind": "hunk",
+      "source_id": "01.002/000341",
+      "path": "app/core/gimpimage-undo.c",
+      "source_blob": "db9dbeaf21b107e54c47bb6ce4a38e88cf51ff81",
+      "source_range": "-400,0 -> 404,12",
+      "source_sha256": "96d659193611d48d9735329115fc907004265274f27d82bd809deb061e640ba9",
+      "source_scope": "gimp_image_undo_push (GimpImage     *image,",
+      "phase": "verification",
+      "wbs_task": "14.019",
+      "action": "CloneLayer の機能試験を実行する",
+      "acceptance": "位置・階層・参照・複製・削除の全 fixture に一致",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-a6ce3cea2155cbfc7592",
+      "source_kind": "hunk",
+      "source_id": "01.002/000354",
+      "path": "app/core/gimpitem.c",
+      "source_blob": "1b2af588f403e0d865e49fc40d9773d8f4bb7019",
+      "source_range": "-150,0 -> 151",
+      "source_sha256": "966c28347b15e6f1356174af53d88e56cfded66278b4487e7a93c7e168d7df33",
+      "source_scope": "static void       gimp_item_sync_offset_node        (GimpItem       *item);",
+      "phase": "implementation",
+      "wbs_task": "14.006/editability-contract",
+      "action": "CloneLayer の編集可否を現行ロック規約へ対応付ける",
+      "acceptance": "廃止された GimpItemClass.is_editable を仮定せず、許可操作と選択・移動の可否を確認",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-c0a28c53e3db0a49b875",
+      "source_kind": "hunk",
+      "source_id": "01.002/000354",
+      "path": "app/core/gimpitem.c",
+      "source_blob": "1b2af588f403e0d865e49fc40d9773d8f4bb7019",
+      "source_range": "-150,0 -> 151",
+      "source_sha256": "966c28347b15e6f1356174af53d88e56cfded66278b4487e7a93c7e168d7df33",
+      "source_scope": "static void       gimp_item_sync_offset_node        (GimpItem       *item);",
+      "phase": "verification",
+      "wbs_task": "14.019",
+      "action": "CloneLayer の機能試験を実行する",
+      "acceptance": "位置・階層・参照・複製・削除の全 fixture に一致",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-80822a981d46088b6580",
+      "source_kind": "hunk",
+      "source_id": "01.002/000355",
+      "path": "app/core/gimpitem.c",
+      "source_blob": "1b2af588f403e0d865e49fc40d9773d8f4bb7019",
+      "source_range": "-242,0 -> 244",
+      "source_sha256": "b7aec831ffb146d3a20fb894894252a3916425fa4d8a84d706862d9184c2eb26",
+      "source_scope": "gimp_item_class_init (GimpItemClass *klass)",
+      "phase": "implementation",
+      "wbs_task": "14.006/editability-contract",
+      "action": "CloneLayer の編集可否を現行ロック規約へ対応付ける",
+      "acceptance": "廃止された GimpItemClass.is_editable を仮定せず、許可操作と選択・移動の可否を確認",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-d5fda5a4b90db08a76ee",
+      "source_kind": "hunk",
+      "source_id": "01.002/000355",
+      "path": "app/core/gimpitem.c",
+      "source_blob": "1b2af588f403e0d865e49fc40d9773d8f4bb7019",
+      "source_range": "-242,0 -> 244",
+      "source_sha256": "b7aec831ffb146d3a20fb894894252a3916425fa4d8a84d706862d9184c2eb26",
+      "source_scope": "gimp_item_class_init (GimpItemClass *klass)",
+      "phase": "verification",
+      "wbs_task": "14.019",
+      "action": "CloneLayer の機能試験を実行する",
+      "acceptance": "位置・階層・参照・複製・削除の全 fixture に一致",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-b3f132e4584b027a860c",
+      "source_kind": "hunk",
+      "source_id": "01.002/000356",
+      "path": "app/core/gimpitem.c",
+      "source_blob": "1b2af588f403e0d865e49fc40d9773d8f4bb7019",
+      "source_range": "-641,0 -> 644,6",
+      "source_sha256": "5a99f34e5e1efebfa84fa721d4c324443cb4c1d25e544c6ab50c850627f6eb96",
+      "source_scope": "gimp_item_sync_offset_node (GimpItem *item)",
+      "phase": "implementation",
+      "wbs_task": "14.006/editability-contract",
+      "action": "CloneLayer の編集可否を現行ロック規約へ対応付ける",
+      "acceptance": "廃止された GimpItemClass.is_editable を仮定せず、許可操作と選択・移動の可否を確認",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-13aaa8b80bbbc7fe5fe9",
+      "source_kind": "hunk",
+      "source_id": "01.002/000356",
+      "path": "app/core/gimpitem.c",
+      "source_blob": "1b2af588f403e0d865e49fc40d9773d8f4bb7019",
+      "source_range": "-641,0 -> 644,6",
+      "source_sha256": "5a99f34e5e1efebfa84fa721d4c324443cb4c1d25e544c6ab50c850627f6eb96",
+      "source_scope": "gimp_item_sync_offset_node (GimpItem *item)",
+      "phase": "verification",
+      "wbs_task": "14.019",
+      "action": "CloneLayer の機能試験を実行する",
+      "acceptance": "位置・階層・参照・複製・削除の全 fixture に一致",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-67497308ba6025da0b22",
+      "source_kind": "hunk",
+      "source_id": "01.002/000357",
+      "path": "app/core/gimpitem.c",
+      "source_blob": "1b2af588f403e0d865e49fc40d9773d8f4bb7019",
+      "source_range": "-2213,0 -> 2222,12",
+      "source_sha256": "987041932df869604eb6c427941950b913eb3627e8cd16499a25c5b95ae70ab5",
+      "source_scope": "gimp_item_is_in_set (GimpItem    *item,",
+      "phase": "implementation",
+      "wbs_task": "14.006/editability-contract",
+      "action": "CloneLayer の編集可否を現行ロック規約へ対応付ける",
+      "acceptance": "廃止された GimpItemClass.is_editable を仮定せず、許可操作と選択・移動の可否を確認",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-760e403093e61b911b2b",
+      "source_kind": "hunk",
+      "source_id": "01.002/000357",
+      "path": "app/core/gimpitem.c",
+      "source_blob": "1b2af588f403e0d865e49fc40d9773d8f4bb7019",
+      "source_range": "-2213,0 -> 2222,12",
+      "source_sha256": "987041932df869604eb6c427941950b913eb3627e8cd16499a25c5b95ae70ab5",
+      "source_scope": "gimp_item_is_in_set (GimpItem    *item,",
+      "phase": "verification",
+      "wbs_task": "14.019",
+      "action": "CloneLayer の機能試験を実行する",
+      "acceptance": "位置・階層・参照・複製・削除の全 fixture に一致",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-8782c7502c33cbeccf73",
+      "source_kind": "hunk",
+      "source_id": "01.002/000358",
+      "path": "app/core/gimpitem.h",
+      "source_blob": "d500addc99f699091a8604410d8f7a7b77ed1853",
+      "source_range": "-111,0 -> 112",
+      "source_sha256": "c08238aa65afbaec91bd966974a4882bc2a0fd534070d7ecd2442ce5c807dcf6",
+      "source_scope": "struct _GimpItemClass",
+      "phase": "implementation",
+      "wbs_task": "14.006/editability-contract",
+      "action": "CloneLayer の編集可否を現行ロック規約へ対応付ける",
+      "acceptance": "廃止された GimpItemClass.is_editable を仮定せず、許可操作と選択・移動の可否を確認",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-71e31d4b71ff0fe2a374",
+      "source_kind": "hunk",
+      "source_id": "01.002/000358",
+      "path": "app/core/gimpitem.h",
+      "source_blob": "d500addc99f699091a8604410d8f7a7b77ed1853",
+      "source_range": "-111,0 -> 112",
+      "source_sha256": "c08238aa65afbaec91bd966974a4882bc2a0fd534070d7ecd2442ce5c807dcf6",
+      "source_scope": "struct _GimpItemClass",
+      "phase": "verification",
+      "wbs_task": "14.019",
+      "action": "CloneLayer の機能試験を実行する",
+      "acceptance": "位置・階層・参照・複製・削除の全 fixture に一致",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-c915f784039431be115f",
+      "source_kind": "hunk",
+      "source_id": "01.002/000359",
+      "path": "app/core/gimpitem.h",
+      "source_blob": "d500addc99f699091a8604410d8f7a7b77ed1853",
+      "source_range": "-321,0 -> 323,8",
+      "source_sha256": "b98723e0185a10c3b4e5d876700b0e83c9209d2f566daa464d7856ca35454d83",
+      "source_scope": "gboolean        gimp_item_is_in_set          (GimpItem           *item,",
+      "phase": "implementation",
+      "wbs_task": "14.006/editability-contract",
+      "action": "CloneLayer の編集可否を現行ロック規約へ対応付ける",
+      "acceptance": "廃止された GimpItemClass.is_editable を仮定せず、許可操作と選択・移動の可否を確認",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-6a9d6feb5a7ad789eafd",
+      "source_kind": "hunk",
+      "source_id": "01.002/000359",
+      "path": "app/core/gimpitem.h",
+      "source_blob": "d500addc99f699091a8604410d8f7a7b77ed1853",
+      "source_range": "-321,0 -> 323,8",
+      "source_sha256": "b98723e0185a10c3b4e5d876700b0e83c9209d2f566daa464d7856ca35454d83",
+      "source_scope": "gboolean        gimp_item_is_in_set          (GimpItem           *item,",
+      "phase": "verification",
+      "wbs_task": "14.019",
+      "action": "CloneLayer の機能試験を実行する",
+      "acceptance": "位置・階層・参照・複製・削除の全 fixture に一致",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-a73d031dfa52a3008547",
+      "source_kind": "hunk",
+      "source_id": "01.002/000363",
+      "path": "app/core/gimplist.c",
+      "source_blob": "cad88bf5b8df823eba89d9091de3627ef06ac4d8",
+      "source_range": "-66,0 -> 67",
+      "source_sha256": "11466ba786801da5990b99195bc05095199d7af206cb247a6db6b65f90e1e939",
+      "source_scope": "static void         gimp_list_foreach            (const GimpContainer *container",
+      "phase": "verification",
+      "wbs_task": "14.019",
+      "action": "CloneLayer の機能試験を実行する",
+      "acceptance": "位置・階層・参照・複製・削除の全 fixture に一致",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-1314bb4f9cdf20386eea",
+      "source_kind": "hunk",
+      "source_id": "01.002/000364",
+      "path": "app/core/gimplist.c",
+      "source_blob": "cad88bf5b8df823eba89d9091de3627ef06ac4d8",
+      "source_range": "-102,0 -> 104",
+      "source_sha256": "3accf7223882376d9a03702cd42cac1b871a5942331055fb8db1fd7a08bf96d1",
+      "source_scope": "gimp_list_class_init (GimpListClass *klass)",
+      "phase": "verification",
+      "wbs_task": "14.019",
+      "action": "CloneLayer の機能試験を実行する",
+      "acceptance": "位置・階層・参照・複製・削除の全 fixture に一致",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-4a5ba50cf1edc355922b",
+      "source_kind": "hunk",
+      "source_id": "01.002/000365",
+      "path": "app/core/gimplist.c",
+      "source_blob": "cad88bf5b8df823eba89d9091de3627ef06ac4d8",
+      "source_range": "-313,0 -> 316,8",
+      "source_sha256": "fd019107761124a615c13373d1ac35c7a06df0db62747457ec50911926b7502c",
+      "source_scope": "gimp_list_get_child_by_name (const GimpContainer *container,",
+      "phase": "verification",
+      "wbs_task": "14.019",
+      "action": "CloneLayer の機能試験を実行する",
+      "acceptance": "位置・階層・参照・複製・削除の全 fixture に一致",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-1edca792eb77d6bd28ba",
+      "source_kind": "hunk",
+      "source_id": "01.002/000430",
+      "path": "app/core/gimpviewable.c",
+      "source_blob": "48f056842c38ed3c0dd9f381a2be75a9a99cd331",
+      "source_range": "-52,0 -> 53",
+      "source_sha256": "f6a84c38eb02d9ab1359f7d46f8f7669f8bae7ab01a0e10cd5cba3122d357f80",
+      "source_scope": "enum",
+      "phase": "verification",
+      "wbs_task": "14.019",
+      "action": "CloneLayer の機能試験を実行する",
+      "acceptance": "位置・階層・参照・複製・削除の全 fixture に一致",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-ed25a6dfe2bba7cbaed8",
+      "source_kind": "hunk",
+      "source_id": "01.002/000431",
+      "path": "app/core/gimpviewable.c",
+      "source_blob": "48f056842c38ed3c0dd9f381a2be75a9a99cd331",
+      "source_range": "-115,0 -> 117,2",
+      "source_sha256": "5a06b8ff69bc6b9908099360b5b32c4ec2c181ef2895a364b974488ac26c732b",
+      "source_scope": "static gboolean gimp_viewable_serialize_property     (GimpConfig    *config,",
+      "phase": "verification",
+      "wbs_task": "14.019",
+      "action": "CloneLayer の機能試験を実行する",
+      "acceptance": "位置・階層・参照・複製・削除の全 fixture に一致",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-6190a9a0877769169ddf",
+      "source_kind": "hunk",
+      "source_id": "01.002/000432",
+      "path": "app/core/gimpviewable.c",
+      "source_blob": "48f056842c38ed3c0dd9f381a2be75a9a99cd331",
+      "source_range": "-150,0 -> 154,9",
+      "source_sha256": "8da1279b7148d3b1d6e70221adb597733efca467fb40d14e9e55c9bc3c6bbb17",
+      "source_scope": "gimp_viewable_class_init (GimpViewableClass *klass)",
+      "phase": "verification",
+      "wbs_task": "14.019",
+      "action": "CloneLayer の機能試験を実行する",
+      "acceptance": "位置・階層・参照・複製・削除の全 fixture に一致",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-2cd588f4a91092357b7f",
+      "source_kind": "hunk",
+      "source_id": "01.002/000433",
+      "path": "app/core/gimpviewable.c",
+      "source_blob": "48f056842c38ed3c0dd9f381a2be75a9a99cd331",
+      "source_range": "-1171 -> 1183,4",
+      "source_sha256": "16423d33a9dac8f7b9a8da7bf5eb96565a4eda5a4afe95fc4db3b4fb9f0a3e73",
+      "source_scope": "gimp_viewable_set_parent (GimpViewable *viewable,",
+      "phase": "verification",
+      "wbs_task": "14.019",
+      "action": "CloneLayer の機能試験を実行する",
+      "acceptance": "位置・階層・参照・複製・削除の全 fixture に一致",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-a0ac1f9b8d2408fdcd58",
+      "source_kind": "hunk",
+      "source_id": "01.002/000434",
+      "path": "app/core/gimpviewable.c",
+      "source_blob": "48f056842c38ed3c0dd9f381a2be75a9a99cd331",
+      "source_range": "-1221,0 -> 1237,6",
+      "source_sha256": "cd62039e2ab3fce5dcdb332d3b1742257eb61876365a1214e487c73693706afa",
+      "source_scope": "gimp_viewable_is_ancestor (GimpViewable *ancestor,",
+      "phase": "verification",
+      "wbs_task": "14.019",
+      "action": "CloneLayer の機能試験を実行する",
+      "acceptance": "位置・階層・参照・複製・削除の全 fixture に一致",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-20e0d6ca56147740c249",
+      "source_kind": "hunk",
+      "source_id": "01.002/000435",
+      "path": "app/core/gimpviewable.h",
+      "source_blob": "a36f697f8bcfe65e9e9e93d755ec27d5e3511b30",
+      "source_range": "-62,0 -> 63",
+      "source_sha256": "ee62e018478ae174b6d884da9c5fa963f78f77e37b45880a16f6ea8e56000287",
+      "source_scope": "struct _GimpViewableClass",
+      "phase": "verification",
+      "wbs_task": "14.019",
+      "action": "CloneLayer の機能試験を実行する",
+      "acceptance": "位置・階層・参照・複製・削除の全 fixture に一致",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-d36b31583dcc6b2d571e",
+      "source_kind": "hunk",
+      "source_id": "01.002/001394",
+      "path": "app/tools/gimppainttool.c",
+      "source_blob": "e8a79052efe0fc0fb9306c4f226ee4f43ccf58d7",
+      "source_range": "-256 -> 256",
+      "source_sha256": "54c8bdd7db9c261e386387ba9e53560b618617a37c0f7a67756f46098f8edb13",
+      "source_scope": "gimp_paint_tool_button_press (GimpTool            *tool,",
+      "phase": "implementation",
+      "wbs_task": "14.006/editability-contract",
+      "action": "CloneLayer の編集可否を現行ロック規約へ対応付ける",
+      "acceptance": "廃止された GimpItemClass.is_editable を仮定せず、許可操作と選択・移動の可否を確認",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-f423a8c810a09f938351",
+      "source_kind": "hunk",
+      "source_id": "01.002/001394",
+      "path": "app/tools/gimppainttool.c",
+      "source_blob": "e8a79052efe0fc0fb9306c4f226ee4f43ccf58d7",
+      "source_range": "-256 -> 256",
+      "source_sha256": "54c8bdd7db9c261e386387ba9e53560b618617a37c0f7a67756f46098f8edb13",
+      "source_scope": "gimp_paint_tool_button_press (GimpTool            *tool,",
+      "phase": "verification",
+      "wbs_task": "14.019",
+      "action": "CloneLayer の機能試験を実行する",
+      "acceptance": "位置・階層・参照・複製・削除の全 fixture に一致",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-3192de973eff624361c7",
+      "source_kind": "hunk",
+      "source_id": "01.002/001395",
+      "path": "app/tools/gimppainttool.c",
+      "source_blob": "e8a79052efe0fc0fb9306c4f226ee4f43ccf58d7",
+      "source_range": "-527 -> 527",
+      "source_sha256": "f818c9858cfaf8d9215fbd7e10d0849ecb6cc1e5932abb075d35dac8e8cced5b",
+      "source_scope": "gimp_paint_tool_cursor_update (GimpTool         *tool,",
+      "phase": "implementation",
+      "wbs_task": "14.006/editability-contract",
+      "action": "CloneLayer の編集可否を現行ロック規約へ対応付ける",
+      "acceptance": "廃止された GimpItemClass.is_editable を仮定せず、許可操作と選択・移動の可否を確認",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    },
+    {
+      "work_id": "legacy-e267c8d3cf796a179c9a",
+      "source_kind": "hunk",
+      "source_id": "01.002/001395",
+      "path": "app/tools/gimppainttool.c",
+      "source_blob": "e8a79052efe0fc0fb9306c4f226ee4f43ccf58d7",
+      "source_range": "-527 -> 527",
+      "source_sha256": "f818c9858cfaf8d9215fbd7e10d0849ecb6cc1e5932abb075d35dac8e8cced5b",
+      "source_scope": "gimp_paint_tool_cursor_update (GimpTool         *tool,",
+      "phase": "verification",
+      "wbs_task": "14.019",
+      "action": "CloneLayer の機能試験を実行する",
+      "acceptance": "位置・階層・参照・複製・削除の全 fixture に一致",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence"
+    }
+  ],
+  "source_resolutions": [
+    {
+      "source_id": "01.002/000173",
+      "path": "app/core/gimpclonelayer.cpp",
+      "source_blob": "548c8ecca63e57ba77913abdf8f71e979aff386b",
+      "source_range": "-0,0 -> 1,700",
+      "source_sha256": "e6ed3fa1bd60e30c0861a7d7a0a926b10b214aa8ef07ff9b29a3384d0b5141ea",
+      "source_scope": "file-level declarations/content",
+      "owners": [
+        "14.001",
+        "14.002",
+        "14.003",
+        "14.003/clone-pickable-opacity",
+        "14.003/gegl-source-node",
+        "14.004",
+        "14.005",
+        "14.006",
+        "14.006/editability-contract",
+        "14.007",
+        "14.008",
+        "14.009",
+        "14.010",
+        "14.012",
+        "14.013",
+        "14.014",
+        "14.017",
+        "14.018",
+        "14.019",
+        "14.020"
+      ],
+      "current_mapping": [
+        {
+          "path": "app/core/gimpclonelayer.cpp",
+          "anchor": "CloneSlot/find_name/update/source callbacks; native GimpCloneLayer type and C entries; fixed content lock and no-op transforms",
+          "committed_sha256": "22adedddcaeb6d70f4bf37e94cf92f3dbe4d1b84c7183097d3c24e49d02b081e"
+        },
+        {
+          "path": "app/core/gimpclonelayer.h",
+          "anchor": "native C instance/class layout and borrowed-source APIs",
+          "committed_sha256": "988baaa69210d5171eb29920146abb78d77cbc1d505f8b0aae45d06500aad73e"
+        }
+      ],
+      "evidence": [
+        "migration/contracts/clone-layer-port.md",
+        "migration/tests/clone-operation-corpus/",
+        "migration/tests/clone-pickable-contract/",
+        "migration/tests/clone-editability-contract/"
+      ],
+      "status": "source-mapped; original task prerequisites remain",
+      "rationale": "Full old class/source hunk is shared across20 original duties; no single test claims its entire scope. Source ownership, name/ROI/components/duplicate/close/Undo and operation corpus are separate indexed tasks."
+    },
+    {
+      "source_id": "01.002/000174",
+      "path": "app/core/gimpclonelayer.h",
+      "source_blob": "58d9353c34c937ca42a6fe6d211f6adb614a0e76",
+      "source_range": "-0,0 -> 1,88",
+      "source_sha256": "722b2e79d8bd7fd7a5e6e4c762cae235e154fa97d1ec6f36c3994f2b782b234a",
+      "source_scope": "file-level declarations/content",
+      "owners": [
+        "14.001",
+        "14.002",
+        "14.003",
+        "14.003/clone-pickable-opacity",
+        "14.003/gegl-source-node",
+        "14.004",
+        "14.005",
+        "14.006",
+        "14.006/editability-contract",
+        "14.007",
+        "14.008",
+        "14.009",
+        "14.010",
+        "14.012",
+        "14.013",
+        "14.014",
+        "14.017",
+        "14.018",
+        "14.019",
+        "14.020"
+      ],
+      "current_mapping": [
+        {
+          "path": "app/core/gimpclonelayer.cpp",
+          "anchor": "CloneSlot/find_name/update/source callbacks; native GimpCloneLayer type and C entries; fixed content lock and no-op transforms",
+          "committed_sha256": "22adedddcaeb6d70f4bf37e94cf92f3dbe4d1b84c7183097d3c24e49d02b081e"
+        },
+        {
+          "path": "app/core/gimpclonelayer.h",
+          "anchor": "native C instance/class layout and borrowed-source APIs",
+          "committed_sha256": "988baaa69210d5171eb29920146abb78d77cbc1d505f8b0aae45d06500aad73e"
+        }
+      ],
+      "evidence": [
+        "migration/contracts/clone-layer-port.md",
+        "migration/tests/clone-operation-corpus/",
+        "migration/tests/clone-pickable-contract/",
+        "migration/tests/clone-editability-contract/"
+      ],
+      "status": "source-mapped; original task prerequisites remain",
+      "rationale": "Full old class/source hunk is shared across20 original duties; no single test claims its entire scope. Source ownership, name/ROI/components/duplicate/close/Undo and operation corpus are separate indexed tasks."
+    },
+    {
+      "source_id": "01.002/000175",
+      "path": "app/core/gimpclonelayerundo.cpp",
+      "source_blob": "b3ad8a75f6a65884e4b3f4472cd517c58e104500",
+      "source_range": "-0,0 -> 1,122",
+      "source_sha256": "dc011589728abe75318381882d60451ffcf8ccf853f45a2fd30952e01edfa86d",
+      "source_scope": "file-level declarations/content",
+      "owners": [
+        "14.015",
+        "14.016",
+        "14.019",
+        "14.020"
+      ],
+      "current_mapping": [
+        {
+          "path": "app/core/gimpclonelayer.cpp",
+          "anchor": "native GimpCloneLayerUndo reference_undo_constructed/dispose/free/pop/memsize; ReferenceUndoSlot",
+          "committed_sha256": "22adedddcaeb6d70f4bf37e94cf92f3dbe4d1b84c7183097d3c24e49d02b081e"
+        },
+        {
+          "path": "app/core/gimpclonelayerundo.h",
+          "anchor": "native GimpItemUndo-derived C layout",
+          "committed_sha256": "08952a62d26ecae1ebd11c01fe36b28082e598535a04921ae4278dee91a998b7"
+        }
+      ],
+      "evidence": [
+        "migration/contracts/clone-layer-port.md",
+        "migration/tests/clone-editability-contract/combined-native.json"
+      ],
+      "status": "source-mapped; original task prerequisites remain",
+      "rationale": "Old separate implementation is integrated into current gimpclonelayer.cpp; source/name/state snapshots are distinct from rejected derived-cache pixel Undo. Existing reference history and native parent/layout tests remain separate."
+    },
+    {
+      "source_id": "01.002/000176",
+      "path": "app/core/gimpclonelayerundo.h",
+      "source_blob": "1195989e9a1d942d61e888c8d2611ed344565890",
+      "source_range": "-0,0 -> 1,54",
+      "source_sha256": "785acdbfd0cc4e125966e91a900c8d42bb9ea949b2c3e78f352e0caef9ddbb07",
+      "source_scope": "file-level declarations/content",
+      "owners": [
+        "14.015",
+        "14.016",
+        "14.019",
+        "14.020"
+      ],
+      "current_mapping": [
+        {
+          "path": "app/core/gimpclonelayer.cpp",
+          "anchor": "native GimpCloneLayerUndo reference_undo_constructed/dispose/free/pop/memsize; ReferenceUndoSlot",
+          "committed_sha256": "22adedddcaeb6d70f4bf37e94cf92f3dbe4d1b84c7183097d3c24e49d02b081e"
+        },
+        {
+          "path": "app/core/gimpclonelayerundo.h",
+          "anchor": "native GimpItemUndo-derived C layout",
+          "committed_sha256": "08952a62d26ecae1ebd11c01fe36b28082e598535a04921ae4278dee91a998b7"
+        }
+      ],
+      "evidence": [
+        "migration/contracts/clone-layer-port.md",
+        "migration/tests/clone-editability-contract/combined-native.json"
+      ],
+      "status": "source-mapped; original task prerequisites remain",
+      "rationale": "Old separate implementation is integrated into current gimpclonelayer.cpp; source/name/state snapshots are distinct from rejected derived-cache pixel Undo. Existing reference history and native parent/layout tests remain separate."
+    },
+    {
+      "source_id": "01.002/000177",
+      "path": "app/core/gimpcontainer.c",
+      "source_blob": "6ded139f5df39b9d055e2486e90f8969dfec8d30",
+      "source_range": "-195,0 -> 196",
+      "source_sha256": "2950bb6fdf91d980ef7e78d18d1aa06769b0e3cf84a0c161a48857c40f269d3b",
+      "source_scope": "gimp_container_class_init (GimpContainerClass *klass)",
+      "owners": [
+        "14.019"
+      ],
+      "current_mapping": [
+        {
+          "path": "app/core/gimpcontainer.c",
+          "anchor": "gimp_container_get_unique_names; deserialize distinguishes nonunique names",
+          "committed_sha256": "c07884ce2dcec663431d4256f4b3b80190208d473ec64b739dc5c5195ea5c422"
+        },
+        {
+          "path": "app/core/gimplist.c",
+          "anchor": "gimp_list_get_unique_names virtual; existing list unique-names policy",
+          "committed_sha256": "70897bce9b3be7c76ccdf6c86c30c9ea66173f9ac0f6ee7c897f8636f3d90e76"
+        },
+        {
+          "path": "app/core/gimpclonelayer.cpp",
+          "anchor": "find_name depth-first first-match independent of unique-name policy",
+          "committed_sha256": "22adedddcaeb6d70f4bf37e94cf92f3dbe4d1b84c7183097d3c24e49d02b081e"
+        }
+      ],
+      "evidence": [
+        "migration/contracts/clone-layer-port.md",
+        "migration/tests/clone-editability-contract/combined-native.json",
+        "app/tests/test-gimp-clone-layer.c"
+      ],
+      "status": "source-mapped; original task prerequisites remain",
+      "rationale": "Shared container/list unique-name behavior is present in current native implementation. Do not confuse first-match lazy-name resolution with persisted live stable identity."
+    },
+    {
+      "source_id": "01.002/000178",
+      "path": "app/core/gimpcontainer.c",
+      "source_blob": "6ded139f5df39b9d055e2486e90f8969dfec8d30",
+      "source_range": "-421 -> 422",
+      "source_sha256": "5604a06005fa906b52577229fcba0de90419c28ce1acc429f19ca7930a6915ee",
+      "source_scope": "gimp_container_deserialize (GimpConfig *config,",
+      "owners": [
+        "14.019"
+      ],
+      "current_mapping": [
+        {
+          "path": "app/core/gimpcontainer.c",
+          "anchor": "gimp_container_get_unique_names; deserialize distinguishes nonunique names",
+          "committed_sha256": "c07884ce2dcec663431d4256f4b3b80190208d473ec64b739dc5c5195ea5c422"
+        },
+        {
+          "path": "app/core/gimplist.c",
+          "anchor": "gimp_list_get_unique_names virtual; existing list unique-names policy",
+          "committed_sha256": "70897bce9b3be7c76ccdf6c86c30c9ea66173f9ac0f6ee7c897f8636f3d90e76"
+        },
+        {
+          "path": "app/core/gimpclonelayer.cpp",
+          "anchor": "find_name depth-first first-match independent of unique-name policy",
+          "committed_sha256": "22adedddcaeb6d70f4bf37e94cf92f3dbe4d1b84c7183097d3c24e49d02b081e"
+        }
+      ],
+      "evidence": [
+        "migration/contracts/clone-layer-port.md",
+        "migration/tests/clone-editability-contract/combined-native.json",
+        "app/tests/test-gimp-clone-layer.c"
+      ],
+      "status": "source-mapped; original task prerequisites remain",
+      "rationale": "Shared container/list unique-name behavior is present in current native implementation. Do not confuse first-match lazy-name resolution with persisted live stable identity."
+    },
+    {
+      "source_id": "01.002/000179",
+      "path": "app/core/gimpcontainer.c",
+      "source_blob": "6ded139f5df39b9d055e2486e90f8969dfec8d30",
+      "source_range": "-462 -> 463,2",
+      "source_sha256": "c0b488655d1d9e623c50119d942035f3e20f48cc6c319d4cd70972fe2b3f1540",
+      "source_scope": "gimp_container_deserialize (GimpConfig *config,",
+      "owners": [
+        "14.019"
+      ],
+      "current_mapping": [
+        {
+          "path": "app/core/gimpcontainer.c",
+          "anchor": "gimp_container_get_unique_names; deserialize distinguishes nonunique names",
+          "committed_sha256": "c07884ce2dcec663431d4256f4b3b80190208d473ec64b739dc5c5195ea5c422"
+        },
+        {
+          "path": "app/core/gimplist.c",
+          "anchor": "gimp_list_get_unique_names virtual; existing list unique-names policy",
+          "committed_sha256": "70897bce9b3be7c76ccdf6c86c30c9ea66173f9ac0f6ee7c897f8636f3d90e76"
+        },
+        {
+          "path": "app/core/gimpclonelayer.cpp",
+          "anchor": "find_name depth-first first-match independent of unique-name policy",
+          "committed_sha256": "22adedddcaeb6d70f4bf37e94cf92f3dbe4d1b84c7183097d3c24e49d02b081e"
+        }
+      ],
+      "evidence": [
+        "migration/contracts/clone-layer-port.md",
+        "migration/tests/clone-editability-contract/combined-native.json",
+        "app/tests/test-gimp-clone-layer.c"
+      ],
+      "status": "source-mapped; original task prerequisites remain",
+      "rationale": "Shared container/list unique-name behavior is present in current native implementation. Do not confuse first-match lazy-name resolution with persisted live stable identity."
+    },
+    {
+      "source_id": "01.002/000180",
+      "path": "app/core/gimpcontainer.c",
+      "source_blob": "6ded139f5df39b9d055e2486e90f8969dfec8d30",
+      "source_range": "-823,0 -> 826,11",
+      "source_sha256": "cd655f367b53d97acb7b9ca031e16128a42240c44731fad74e6ce88e3cb99c49",
+      "source_scope": "gimp_container_get_child_by_name (const GimpContainer *container,",
+      "owners": [
+        "14.019"
+      ],
+      "current_mapping": [
+        {
+          "path": "app/core/gimpcontainer.c",
+          "anchor": "gimp_container_get_unique_names; deserialize distinguishes nonunique names",
+          "committed_sha256": "c07884ce2dcec663431d4256f4b3b80190208d473ec64b739dc5c5195ea5c422"
+        },
+        {
+          "path": "app/core/gimplist.c",
+          "anchor": "gimp_list_get_unique_names virtual; existing list unique-names policy",
+          "committed_sha256": "70897bce9b3be7c76ccdf6c86c30c9ea66173f9ac0f6ee7c897f8636f3d90e76"
+        },
+        {
+          "path": "app/core/gimpclonelayer.cpp",
+          "anchor": "find_name depth-first first-match independent of unique-name policy",
+          "committed_sha256": "22adedddcaeb6d70f4bf37e94cf92f3dbe4d1b84c7183097d3c24e49d02b081e"
+        }
+      ],
+      "evidence": [
+        "migration/contracts/clone-layer-port.md",
+        "migration/tests/clone-editability-contract/combined-native.json",
+        "app/tests/test-gimp-clone-layer.c"
+      ],
+      "status": "source-mapped; original task prerequisites remain",
+      "rationale": "Shared container/list unique-name behavior is present in current native implementation. Do not confuse first-match lazy-name resolution with persisted live stable identity."
+    },
+    {
+      "source_id": "01.002/000181",
+      "path": "app/core/gimpcontainer.h",
+      "source_blob": "51a19af8ab7d9c5dff262bb9fba4365034b327c8",
+      "source_range": "-67,0 -> 68",
+      "source_sha256": "3518a79037aa98675684e169b378120ff11f6cd7fc135b945bc5e65d055bd4e6",
+      "source_scope": "struct _GimpContainerClass",
+      "owners": [
+        "14.019"
+      ],
+      "current_mapping": [
+        {
+          "path": "app/core/gimpcontainer.c",
+          "anchor": "gimp_container_get_unique_names; deserialize distinguishes nonunique names",
+          "committed_sha256": "c07884ce2dcec663431d4256f4b3b80190208d473ec64b739dc5c5195ea5c422"
+        },
+        {
+          "path": "app/core/gimplist.c",
+          "anchor": "gimp_list_get_unique_names virtual; existing list unique-names policy",
+          "committed_sha256": "70897bce9b3be7c76ccdf6c86c30c9ea66173f9ac0f6ee7c897f8636f3d90e76"
+        },
+        {
+          "path": "app/core/gimpclonelayer.cpp",
+          "anchor": "find_name depth-first first-match independent of unique-name policy",
+          "committed_sha256": "22adedddcaeb6d70f4bf37e94cf92f3dbe4d1b84c7183097d3c24e49d02b081e"
+        }
+      ],
+      "evidence": [
+        "migration/contracts/clone-layer-port.md",
+        "migration/tests/clone-editability-contract/combined-native.json",
+        "app/tests/test-gimp-clone-layer.c"
+      ],
+      "status": "source-mapped; original task prerequisites remain",
+      "rationale": "Shared container/list unique-name behavior is present in current native implementation. Do not confuse first-match lazy-name resolution with persisted live stable identity."
+    },
+    {
+      "source_id": "01.002/000182",
+      "path": "app/core/gimpcontainer.h",
+      "source_blob": "51a19af8ab7d9c5dff262bb9fba4365034b327c8",
+      "source_range": "-105,0 -> 107,2",
+      "source_sha256": "14162a7503b3abcd10f88e18768cb24b6db1df366893744de2afeb0bd1b1e7d4",
+      "source_scope": "void         gimp_container_foreach            (const GimpContainer *container,",
+      "owners": [
+        "14.019"
+      ],
+      "current_mapping": [
+        {
+          "path": "app/core/gimpcontainer.c",
+          "anchor": "gimp_container_get_unique_names; deserialize distinguishes nonunique names",
+          "committed_sha256": "c07884ce2dcec663431d4256f4b3b80190208d473ec64b739dc5c5195ea5c422"
+        },
+        {
+          "path": "app/core/gimplist.c",
+          "anchor": "gimp_list_get_unique_names virtual; existing list unique-names policy",
+          "committed_sha256": "70897bce9b3be7c76ccdf6c86c30c9ea66173f9ac0f6ee7c897f8636f3d90e76"
+        },
+        {
+          "path": "app/core/gimpclonelayer.cpp",
+          "anchor": "find_name depth-first first-match independent of unique-name policy",
+          "committed_sha256": "22adedddcaeb6d70f4bf37e94cf92f3dbe4d1b84c7183097d3c24e49d02b081e"
+        }
+      ],
+      "evidence": [
+        "migration/contracts/clone-layer-port.md",
+        "migration/tests/clone-editability-contract/combined-native.json",
+        "app/tests/test-gimp-clone-layer.c"
+      ],
+      "status": "source-mapped; original task prerequisites remain",
+      "rationale": "Shared container/list unique-name behavior is present in current native implementation. Do not confuse first-match lazy-name resolution with persisted live stable identity."
+    },
+    {
+      "source_id": "01.002/000183",
+      "path": "app/core/gimpcontainer.h",
+      "source_blob": "51a19af8ab7d9c5dff262bb9fba4365034b327c8",
+      "source_range": "-127,0 -> 131,30",
+      "source_sha256": "0e2123b85b2f010ee2fa335978d3244674f67c4a773cbc92b74e383444137a7e",
+      "source_scope": "void         gimp_container_remove_handler     (GimpContainer       *container,",
+      "owners": [
+        "14.019"
+      ],
+      "current_mapping": [
+        {
+          "path": "app/core/gimpclonelayer.cpp",
+          "anchor": "find_name explicit indexed preorder traversal; typed ObjectRef/WeakRef boundary",
+          "committed_sha256": "22adedddcaeb6d70f4bf37e94cf92f3dbe4d1b84c7183097d3c24e49d02b081e"
+        }
+      ],
+      "evidence": [
+        "migration/contracts/clone-layer-port.md",
+        "migration/tests/clone-editability-contract/combined-native.json",
+        "app/tests/test-gimp-clone-layer.c"
+      ],
+      "status": "source-mapped; original task prerequisites remain",
+      "rationale": "Old C++ IGimpContainer::each wrapper is not ported as a public shadow wrapper; explicit current traversal retains parent-first then child/sibling ordering. C++ boundary ownership remains shared migration work."
+    },
+    {
+      "source_id": "01.002/000257",
+      "path": "app/core/gimpgrouplayer.c",
+      "source_blob": "7f889bb059798d14dfb698eb5138e1c2aa9a41db",
+      "source_range": "-41,0 -> 42",
+      "source_sha256": "57506c08e23366d4950c1927d18007b7bded8e912d18ab3f4388b01274ac37bc",
+      "source_scope": "file-level declarations/content",
+      "owners": [
+        "14.011",
+        "14.019",
+        "14.020"
+      ],
+      "current_mapping": [
+        {
+          "path": "app/core/gimpgrouplayer.c",
+          "anchor": "gimp_group_layer_duplicate_aux; gimp_group_layer_remap_clone_layers; gimp_group_layer_duplicate",
+          "committed_sha256": "147296ee6102a46601c826ea9dedda513f07df8bc72e5aa8ddfcf833c41dd0c5"
+        }
+      ],
+      "evidence": [
+        "migration/tests/clone-operation-corpus/",
+        "migration/tests/clone-cross-image-comparison.json",
+        "migration/tests/clone-editability-contract/combined-native.json"
+      ],
+      "status": "source-mapped; original task prerequisites remain",
+      "rationale": "One complete hierarchy copy_refs map remaps only internal source identities; external references stay external.30-stage corpus and genuine cross-image19-record comparison cover distinct scopes."
+    },
+    {
+      "source_id": "01.002/000258",
+      "path": "app/core/gimpgrouplayer.c",
+      "source_blob": "7f889bb059798d14dfb698eb5138e1c2aa9a41db",
+      "source_range": "-91 -> 92,3",
+      "source_sha256": "37d9f255d7494f4cf82d9028acf0d9a2dffb96a7b20232935edd6dd2cc6fb2d5",
+      "source_scope": "static void            gimp_group_layer_set_expanded (GimpViewable    *viewable,",
+      "owners": [
+        "14.011",
+        "14.019",
+        "14.020"
+      ],
+      "current_mapping": [
+        {
+          "path": "app/core/gimpgrouplayer.c",
+          "anchor": "gimp_group_layer_duplicate_aux; gimp_group_layer_remap_clone_layers; gimp_group_layer_duplicate",
+          "committed_sha256": "147296ee6102a46601c826ea9dedda513f07df8bc72e5aa8ddfcf833c41dd0c5"
+        }
+      ],
+      "evidence": [
+        "migration/tests/clone-operation-corpus/",
+        "migration/tests/clone-cross-image-comparison.json",
+        "migration/tests/clone-editability-contract/combined-native.json"
+      ],
+      "status": "source-mapped; original task prerequisites remain",
+      "rationale": "One complete hierarchy copy_refs map remaps only internal source identities; external references stay external.30-stage corpus and genuine cross-image19-record comparison cover distinct scopes."
+    },
+    {
+      "source_id": "01.002/000260",
+      "path": "app/core/gimpgrouplayer.c",
+      "source_blob": "7f889bb059798d14dfb698eb5138e1c2aa9a41db",
+      "source_range": "-410,2 -> 414,3",
+      "source_sha256": "342b3796c997fe44a25fbe24868eae39115ff053dd917290701be91823c32976",
+      "source_scope": "static GimpItem *",
+      "owners": [
+        "14.011",
+        "14.019",
+        "14.020"
+      ],
+      "current_mapping": [
+        {
+          "path": "app/core/gimpgrouplayer.c",
+          "anchor": "gimp_group_layer_duplicate_aux; gimp_group_layer_remap_clone_layers; gimp_group_layer_duplicate",
+          "committed_sha256": "147296ee6102a46601c826ea9dedda513f07df8bc72e5aa8ddfcf833c41dd0c5"
+        }
+      ],
+      "evidence": [
+        "migration/tests/clone-operation-corpus/",
+        "migration/tests/clone-cross-image-comparison.json",
+        "migration/tests/clone-editability-contract/combined-native.json"
+      ],
+      "status": "source-mapped; original task prerequisites remain",
+      "rationale": "One complete hierarchy copy_refs map remaps only internal source identities; external references stay external.30-stage corpus and genuine cross-image19-record comparison cover distinct scopes."
+    },
+    {
+      "source_id": "01.002/000261",
+      "path": "app/core/gimpgrouplayer.c",
+      "source_blob": "7f889bb059798d14dfb698eb5138e1c2aa9a41db",
+      "source_range": "-427,0 -> 433",
+      "source_sha256": "174252291fc4032515817211587f534e1b6b997279526c95e79463bc3557dcce",
+      "source_scope": "gimp_group_layer_duplicate (GimpItem *item,",
+      "owners": [
+        "14.011",
+        "14.019",
+        "14.020"
+      ],
+      "current_mapping": [
+        {
+          "path": "app/core/gimpgrouplayer.c",
+          "anchor": "gimp_group_layer_duplicate_aux; gimp_group_layer_remap_clone_layers; gimp_group_layer_duplicate",
+          "committed_sha256": "147296ee6102a46601c826ea9dedda513f07df8bc72e5aa8ddfcf833c41dd0c5"
+        }
+      ],
+      "evidence": [
+        "migration/tests/clone-operation-corpus/",
+        "migration/tests/clone-cross-image-comparison.json",
+        "migration/tests/clone-editability-contract/combined-native.json"
+      ],
+      "status": "source-mapped; original task prerequisites remain",
+      "rationale": "One complete hierarchy copy_refs map remaps only internal source identities; external references stay external.30-stage corpus and genuine cross-image19-record comparison cover distinct scopes."
+    },
+    {
+      "source_id": "01.002/000262",
+      "path": "app/core/gimpgrouplayer.c",
+      "source_blob": "7f889bb059798d14dfb698eb5138e1c2aa9a41db",
+      "source_range": "-437 -> 443,7",
+      "source_sha256": "fce4aabaf9bcc10552ac848f3652be4e8a8b551e07143b4c67193f4dada48e99",
+      "source_scope": "gimp_group_layer_duplicate (GimpItem *item,",
+      "owners": [
+        "14.011",
+        "14.019",
+        "14.020"
+      ],
+      "current_mapping": [
+        {
+          "path": "app/core/gimpgrouplayer.c",
+          "anchor": "gimp_group_layer_duplicate_aux; gimp_group_layer_remap_clone_layers; gimp_group_layer_duplicate",
+          "committed_sha256": "147296ee6102a46601c826ea9dedda513f07df8bc72e5aa8ddfcf833c41dd0c5"
+        }
+      ],
+      "evidence": [
+        "migration/tests/clone-operation-corpus/",
+        "migration/tests/clone-cross-image-comparison.json",
+        "migration/tests/clone-editability-contract/combined-native.json"
+      ],
+      "status": "source-mapped; original task prerequisites remain",
+      "rationale": "One complete hierarchy copy_refs map remaps only internal source identities; external references stay external.30-stage corpus and genuine cross-image19-record comparison cover distinct scopes."
+    },
+    {
+      "source_id": "01.002/000263",
+      "path": "app/core/gimpgrouplayer.c",
+      "source_blob": "7f889bb059798d14dfb698eb5138e1c2aa9a41db",
+      "source_range": "-470,0 -> 483,46",
+      "source_sha256": "4b664b3ba045bd2442a616441fe7cde2f5ff12e5eeb54853a834ba8ae65e4ee1",
+      "source_scope": "gimp_group_layer_duplicate (GimpItem *item,",
+      "owners": [
+        "14.011",
+        "14.019",
+        "14.020"
+      ],
+      "current_mapping": [
+        {
+          "path": "app/core/gimpgrouplayer.c",
+          "anchor": "gimp_group_layer_duplicate_aux; gimp_group_layer_remap_clone_layers; gimp_group_layer_duplicate",
+          "committed_sha256": "147296ee6102a46601c826ea9dedda513f07df8bc72e5aa8ddfcf833c41dd0c5"
+        }
+      ],
+      "evidence": [
+        "migration/tests/clone-operation-corpus/",
+        "migration/tests/clone-cross-image-comparison.json",
+        "migration/tests/clone-editability-contract/combined-native.json"
+      ],
+      "status": "source-mapped; original task prerequisites remain",
+      "rationale": "One complete hierarchy copy_refs map remaps only internal source identities; external references stay external.30-stage corpus and genuine cross-image19-record comparison cover distinct scopes."
+    },
+    {
+      "source_id": "01.002/000338",
+      "path": "app/core/gimpimage-undo.c",
+      "source_blob": "db9dbeaf21b107e54c47bb6ce4a38e88cf51ff81",
+      "source_range": "-374,5 -> 374,8",
+      "source_sha256": "401bce8e1c213bfd85189683aaa272fcdc704cc23e1c5d7baa9f722e9463cad8",
+      "source_scope": "gimp_image_undo_push (GimpImage     *image,",
+      "owners": [
+        "14.006/editability-contract",
+        "14.019"
+      ],
+      "current_mapping": [
+        {
+          "path": "app/core/gimpimage-undo.c",
+          "anchor": "gimp_image_undo_push retained-property preflight and gimp_image_undo_push_prepared Clone cache policy",
+          "committed_sha256": "7b1b102906895502ade7e10d7a85607f9daccc0c78b2419b17040cd0e4d553cf"
+        }
+      ],
+      "evidence": [
+        "migration/tests/clone-editability-contract/"
+      ],
+      "status": "source-mapped; original task prerequisites remain",
+      "rationale": "Old drawable-Undo rejection restored specifically for Clone types before dirty/redo publication; prepared ownership explicit. Old frozen uninitialized undo read intentionally not reproduced; ordinary user locks are not the old noneditable type contract."
+    },
+    {
+      "source_id": "01.002/000339",
+      "path": "app/core/gimpimage-undo.c",
+      "source_blob": "db9dbeaf21b107e54c47bb6ce4a38e88cf51ff81",
+      "source_range": "-380 -> 382,0",
+      "source_sha256": "310f32cb1efa70de154145a26eda87e37b1dc81afd6a89ee712e6d9302304229",
+      "source_scope": "gimp_image_undo_push (GimpImage     *image,",
+      "owners": [
+        "14.006/editability-contract",
+        "14.019"
+      ],
+      "current_mapping": [
+        {
+          "path": "app/core/gimpimage-undo.c",
+          "anchor": "gimp_image_undo_push retained-property preflight and gimp_image_undo_push_prepared Clone cache policy",
+          "committed_sha256": "7b1b102906895502ade7e10d7a85607f9daccc0c78b2419b17040cd0e4d553cf"
+        }
+      ],
+      "evidence": [
+        "migration/tests/clone-editability-contract/"
+      ],
+      "status": "source-mapped; original task prerequisites remain",
+      "rationale": "Old drawable-Undo rejection restored specifically for Clone types before dirty/redo publication; prepared ownership explicit. Old frozen uninitialized undo read intentionally not reproduced; ordinary user locks are not the old noneditable type contract."
+    },
+    {
+      "source_id": "01.002/000340",
+      "path": "app/core/gimpimage-undo.c",
+      "source_blob": "db9dbeaf21b107e54c47bb6ce4a38e88cf51ff81",
+      "source_range": "-381,0 -> 384",
+      "source_sha256": "44715b14d3a3f24e6edd94a6ecef759cde76089de7c3bb134349ccdcdd3d53b5",
+      "source_scope": "gimp_image_undo_push (GimpImage     *image,",
+      "owners": [
+        "14.006/editability-contract",
+        "14.019"
+      ],
+      "current_mapping": [
+        {
+          "path": "app/core/gimpimage-undo.c",
+          "anchor": "gimp_image_undo_push retained-property preflight and gimp_image_undo_push_prepared Clone cache policy",
+          "committed_sha256": "7b1b102906895502ade7e10d7a85607f9daccc0c78b2419b17040cd0e4d553cf"
+        }
+      ],
+      "evidence": [
+        "migration/tests/clone-editability-contract/"
+      ],
+      "status": "source-mapped; original task prerequisites remain",
+      "rationale": "Old drawable-Undo rejection restored specifically for Clone types before dirty/redo publication; prepared ownership explicit. Old frozen uninitialized undo read intentionally not reproduced; ordinary user locks are not the old noneditable type contract."
+    },
+    {
+      "source_id": "01.002/000341",
+      "path": "app/core/gimpimage-undo.c",
+      "source_blob": "db9dbeaf21b107e54c47bb6ce4a38e88cf51ff81",
+      "source_range": "-400,0 -> 404,12",
+      "source_sha256": "96d659193611d48d9735329115fc907004265274f27d82bd809deb061e640ba9",
+      "source_scope": "gimp_image_undo_push (GimpImage     *image,",
+      "owners": [
+        "14.006/editability-contract",
+        "14.019"
+      ],
+      "current_mapping": [
+        {
+          "path": "app/core/gimpimage-undo.c",
+          "anchor": "gimp_image_undo_push retained-property preflight and gimp_image_undo_push_prepared Clone cache policy",
+          "committed_sha256": "7b1b102906895502ade7e10d7a85607f9daccc0c78b2419b17040cd0e4d553cf"
+        }
+      ],
+      "evidence": [
+        "migration/tests/clone-editability-contract/"
+      ],
+      "status": "source-mapped; original task prerequisites remain",
+      "rationale": "Old drawable-Undo rejection restored specifically for Clone types before dirty/redo publication; prepared ownership explicit. Old frozen uninitialized undo read intentionally not reproduced; ordinary user locks are not the old noneditable type contract."
+    },
+    {
+      "source_id": "01.002/000354",
+      "path": "app/core/gimpitem.c",
+      "source_blob": "1b2af588f403e0d865e49fc40d9773d8f4bb7019",
+      "source_range": "-150,0 -> 151",
+      "source_sha256": "966c28347b15e6f1356174af53d88e56cfded66278b4487e7a93c7e168d7df33",
+      "source_scope": "static void       gimp_item_sync_offset_node        (GimpItem       *item);",
+      "owners": [
+        "14.006/editability-contract",
+        "14.019"
+      ],
+      "current_mapping": [
+        {
+          "path": "app/core/gimpitem.c",
+          "anchor": "gimp_item_is_content_locked / gimp_item_real_is_content_locked; position locks independent",
+          "committed_sha256": "e8c047589f9aa8b201d12b72678e528082034126d0becadd5b5a4180172c924e"
+        },
+        {
+          "path": "app/core/gimpitem.h",
+          "anchor": "GimpItemClass.is_content_locked and current public lock APIs",
+          "committed_sha256": "378ba81dc8f38e3a02ffd6bd4cdf9b380bb0d6f81916d32847b9cc6677383144"
+        },
+        {
+          "path": "app/core/gimpclonelayer.cpp",
+          "anchor": "content_locked; item class callback registration",
+          "committed_sha256": "22adedddcaeb6d70f4bf37e94cf92f3dbe4d1b84c7183097d3c24e49d02b081e"
+        }
+      ],
+      "evidence": [
+        "migration/tests/clone-editability-contract/",
+        "migration/inventory/gimp3-layer-vfunc-review.tsv"
+      ],
+      "status": "source-mapped; original task prerequisites remain",
+      "rationale": "Removed old is_editable virtual is not reintroduced; native content permissions plus explicit Clone history policy replace it. Selection/movement remain permitted unless position-locked."
+    },
+    {
+      "source_id": "01.002/000355",
+      "path": "app/core/gimpitem.c",
+      "source_blob": "1b2af588f403e0d865e49fc40d9773d8f4bb7019",
+      "source_range": "-242,0 -> 244",
+      "source_sha256": "b7aec831ffb146d3a20fb894894252a3916425fa4d8a84d706862d9184c2eb26",
+      "source_scope": "gimp_item_class_init (GimpItemClass *klass)",
+      "owners": [
+        "14.006/editability-contract",
+        "14.019"
+      ],
+      "current_mapping": [
+        {
+          "path": "app/core/gimpitem.c",
+          "anchor": "gimp_item_is_content_locked / gimp_item_real_is_content_locked; position locks independent",
+          "committed_sha256": "e8c047589f9aa8b201d12b72678e528082034126d0becadd5b5a4180172c924e"
+        },
+        {
+          "path": "app/core/gimpitem.h",
+          "anchor": "GimpItemClass.is_content_locked and current public lock APIs",
+          "committed_sha256": "378ba81dc8f38e3a02ffd6bd4cdf9b380bb0d6f81916d32847b9cc6677383144"
+        },
+        {
+          "path": "app/core/gimpclonelayer.cpp",
+          "anchor": "content_locked; item class callback registration",
+          "committed_sha256": "22adedddcaeb6d70f4bf37e94cf92f3dbe4d1b84c7183097d3c24e49d02b081e"
+        }
+      ],
+      "evidence": [
+        "migration/tests/clone-editability-contract/",
+        "migration/inventory/gimp3-layer-vfunc-review.tsv"
+      ],
+      "status": "source-mapped; original task prerequisites remain",
+      "rationale": "Removed old is_editable virtual is not reintroduced; native content permissions plus explicit Clone history policy replace it. Selection/movement remain permitted unless position-locked."
+    },
+    {
+      "source_id": "01.002/000356",
+      "path": "app/core/gimpitem.c",
+      "source_blob": "1b2af588f403e0d865e49fc40d9773d8f4bb7019",
+      "source_range": "-641,0 -> 644,6",
+      "source_sha256": "5a99f34e5e1efebfa84fa721d4c324443cb4c1d25e544c6ab50c850627f6eb96",
+      "source_scope": "gimp_item_sync_offset_node (GimpItem *item)",
+      "owners": [
+        "14.006/editability-contract",
+        "14.019"
+      ],
+      "current_mapping": [
+        {
+          "path": "app/core/gimpitem.c",
+          "anchor": "gimp_item_is_content_locked / gimp_item_real_is_content_locked; position locks independent",
+          "committed_sha256": "e8c047589f9aa8b201d12b72678e528082034126d0becadd5b5a4180172c924e"
+        },
+        {
+          "path": "app/core/gimpitem.h",
+          "anchor": "GimpItemClass.is_content_locked and current public lock APIs",
+          "committed_sha256": "378ba81dc8f38e3a02ffd6bd4cdf9b380bb0d6f81916d32847b9cc6677383144"
+        },
+        {
+          "path": "app/core/gimpclonelayer.cpp",
+          "anchor": "content_locked; item class callback registration",
+          "committed_sha256": "22adedddcaeb6d70f4bf37e94cf92f3dbe4d1b84c7183097d3c24e49d02b081e"
+        }
+      ],
+      "evidence": [
+        "migration/tests/clone-editability-contract/",
+        "migration/inventory/gimp3-layer-vfunc-review.tsv"
+      ],
+      "status": "source-mapped; original task prerequisites remain",
+      "rationale": "Removed old is_editable virtual is not reintroduced; native content permissions plus explicit Clone history policy replace it. Selection/movement remain permitted unless position-locked."
+    },
+    {
+      "source_id": "01.002/000357",
+      "path": "app/core/gimpitem.c",
+      "source_blob": "1b2af588f403e0d865e49fc40d9773d8f4bb7019",
+      "source_range": "-2213,0 -> 2222,12",
+      "source_sha256": "987041932df869604eb6c427941950b913eb3627e8cd16499a25c5b95ae70ab5",
+      "source_scope": "gimp_item_is_in_set (GimpItem    *item,",
+      "owners": [
+        "14.006/editability-contract",
+        "14.019"
+      ],
+      "current_mapping": [
+        {
+          "path": "app/core/gimpitem.c",
+          "anchor": "gimp_item_is_content_locked / gimp_item_real_is_content_locked; position locks independent",
+          "committed_sha256": "e8c047589f9aa8b201d12b72678e528082034126d0becadd5b5a4180172c924e"
+        },
+        {
+          "path": "app/core/gimpitem.h",
+          "anchor": "GimpItemClass.is_content_locked and current public lock APIs",
+          "committed_sha256": "378ba81dc8f38e3a02ffd6bd4cdf9b380bb0d6f81916d32847b9cc6677383144"
+        },
+        {
+          "path": "app/core/gimpclonelayer.cpp",
+          "anchor": "content_locked; item class callback registration",
+          "committed_sha256": "22adedddcaeb6d70f4bf37e94cf92f3dbe4d1b84c7183097d3c24e49d02b081e"
+        }
+      ],
+      "evidence": [
+        "migration/tests/clone-editability-contract/",
+        "migration/inventory/gimp3-layer-vfunc-review.tsv"
+      ],
+      "status": "source-mapped; original task prerequisites remain",
+      "rationale": "Removed old is_editable virtual is not reintroduced; native content permissions plus explicit Clone history policy replace it. Selection/movement remain permitted unless position-locked."
+    },
+    {
+      "source_id": "01.002/000358",
+      "path": "app/core/gimpitem.h",
+      "source_blob": "d500addc99f699091a8604410d8f7a7b77ed1853",
+      "source_range": "-111,0 -> 112",
+      "source_sha256": "c08238aa65afbaec91bd966974a4882bc2a0fd534070d7ecd2442ce5c807dcf6",
+      "source_scope": "struct _GimpItemClass",
+      "owners": [
+        "14.006/editability-contract",
+        "14.019"
+      ],
+      "current_mapping": [
+        {
+          "path": "app/core/gimpitem.c",
+          "anchor": "gimp_item_is_content_locked / gimp_item_real_is_content_locked; position locks independent",
+          "committed_sha256": "e8c047589f9aa8b201d12b72678e528082034126d0becadd5b5a4180172c924e"
+        },
+        {
+          "path": "app/core/gimpitem.h",
+          "anchor": "GimpItemClass.is_content_locked and current public lock APIs",
+          "committed_sha256": "378ba81dc8f38e3a02ffd6bd4cdf9b380bb0d6f81916d32847b9cc6677383144"
+        },
+        {
+          "path": "app/core/gimpclonelayer.cpp",
+          "anchor": "content_locked; item class callback registration",
+          "committed_sha256": "22adedddcaeb6d70f4bf37e94cf92f3dbe4d1b84c7183097d3c24e49d02b081e"
+        }
+      ],
+      "evidence": [
+        "migration/tests/clone-editability-contract/",
+        "migration/inventory/gimp3-layer-vfunc-review.tsv"
+      ],
+      "status": "source-mapped; original task prerequisites remain",
+      "rationale": "Removed old is_editable virtual is not reintroduced; native content permissions plus explicit Clone history policy replace it. Selection/movement remain permitted unless position-locked."
+    },
+    {
+      "source_id": "01.002/000359",
+      "path": "app/core/gimpitem.h",
+      "source_blob": "d500addc99f699091a8604410d8f7a7b77ed1853",
+      "source_range": "-321,0 -> 323,8",
+      "source_sha256": "b98723e0185a10c3b4e5d876700b0e83c9209d2f566daa464d7856ca35454d83",
+      "source_scope": "gboolean        gimp_item_is_in_set          (GimpItem           *item,",
+      "owners": [
+        "14.006/editability-contract",
+        "14.019"
+      ],
+      "current_mapping": [
+        {
+          "path": "app/core/gimpitem.c",
+          "anchor": "gimp_item_is_content_locked / gimp_item_real_is_content_locked; position locks independent",
+          "committed_sha256": "e8c047589f9aa8b201d12b72678e528082034126d0becadd5b5a4180172c924e"
+        },
+        {
+          "path": "app/core/gimpitem.h",
+          "anchor": "GimpItemClass.is_content_locked and current public lock APIs",
+          "committed_sha256": "378ba81dc8f38e3a02ffd6bd4cdf9b380bb0d6f81916d32847b9cc6677383144"
+        },
+        {
+          "path": "app/core/gimpclonelayer.cpp",
+          "anchor": "content_locked; item class callback registration",
+          "committed_sha256": "22adedddcaeb6d70f4bf37e94cf92f3dbe4d1b84c7183097d3c24e49d02b081e"
+        }
+      ],
+      "evidence": [
+        "migration/tests/clone-editability-contract/",
+        "migration/inventory/gimp3-layer-vfunc-review.tsv"
+      ],
+      "status": "source-mapped; original task prerequisites remain",
+      "rationale": "Removed old is_editable virtual is not reintroduced; native content permissions plus explicit Clone history policy replace it. Selection/movement remain permitted unless position-locked."
+    },
+    {
+      "source_id": "01.002/000363",
+      "path": "app/core/gimplist.c",
+      "source_blob": "cad88bf5b8df823eba89d9091de3627ef06ac4d8",
+      "source_range": "-66,0 -> 67",
+      "source_sha256": "11466ba786801da5990b99195bc05095199d7af206cb247a6db6b65f90e1e939",
+      "source_scope": "static void         gimp_list_foreach            (const GimpContainer *container",
+      "owners": [
+        "14.019"
+      ],
+      "current_mapping": [
+        {
+          "path": "app/core/gimpcontainer.c",
+          "anchor": "gimp_container_get_unique_names; deserialize distinguishes nonunique names",
+          "committed_sha256": "c07884ce2dcec663431d4256f4b3b80190208d473ec64b739dc5c5195ea5c422"
+        },
+        {
+          "path": "app/core/gimplist.c",
+          "anchor": "gimp_list_get_unique_names virtual; existing list unique-names policy",
+          "committed_sha256": "70897bce9b3be7c76ccdf6c86c30c9ea66173f9ac0f6ee7c897f8636f3d90e76"
+        },
+        {
+          "path": "app/core/gimpclonelayer.cpp",
+          "anchor": "find_name depth-first first-match independent of unique-name policy",
+          "committed_sha256": "22adedddcaeb6d70f4bf37e94cf92f3dbe4d1b84c7183097d3c24e49d02b081e"
+        }
+      ],
+      "evidence": [
+        "migration/contracts/clone-layer-port.md",
+        "migration/tests/clone-editability-contract/combined-native.json",
+        "app/tests/test-gimp-clone-layer.c"
+      ],
+      "status": "source-mapped; original task prerequisites remain",
+      "rationale": "Shared container/list unique-name behavior is present in current native implementation. Do not confuse first-match lazy-name resolution with persisted live stable identity."
+    },
+    {
+      "source_id": "01.002/000364",
+      "path": "app/core/gimplist.c",
+      "source_blob": "cad88bf5b8df823eba89d9091de3627ef06ac4d8",
+      "source_range": "-102,0 -> 104",
+      "source_sha256": "3accf7223882376d9a03702cd42cac1b871a5942331055fb8db1fd7a08bf96d1",
+      "source_scope": "gimp_list_class_init (GimpListClass *klass)",
+      "owners": [
+        "14.019"
+      ],
+      "current_mapping": [
+        {
+          "path": "app/core/gimpcontainer.c",
+          "anchor": "gimp_container_get_unique_names; deserialize distinguishes nonunique names",
+          "committed_sha256": "c07884ce2dcec663431d4256f4b3b80190208d473ec64b739dc5c5195ea5c422"
+        },
+        {
+          "path": "app/core/gimplist.c",
+          "anchor": "gimp_list_get_unique_names virtual; existing list unique-names policy",
+          "committed_sha256": "70897bce9b3be7c76ccdf6c86c30c9ea66173f9ac0f6ee7c897f8636f3d90e76"
+        },
+        {
+          "path": "app/core/gimpclonelayer.cpp",
+          "anchor": "find_name depth-first first-match independent of unique-name policy",
+          "committed_sha256": "22adedddcaeb6d70f4bf37e94cf92f3dbe4d1b84c7183097d3c24e49d02b081e"
+        }
+      ],
+      "evidence": [
+        "migration/contracts/clone-layer-port.md",
+        "migration/tests/clone-editability-contract/combined-native.json",
+        "app/tests/test-gimp-clone-layer.c"
+      ],
+      "status": "source-mapped; original task prerequisites remain",
+      "rationale": "Shared container/list unique-name behavior is present in current native implementation. Do not confuse first-match lazy-name resolution with persisted live stable identity."
+    },
+    {
+      "source_id": "01.002/000365",
+      "path": "app/core/gimplist.c",
+      "source_blob": "cad88bf5b8df823eba89d9091de3627ef06ac4d8",
+      "source_range": "-313,0 -> 316,8",
+      "source_sha256": "fd019107761124a615c13373d1ac35c7a06df0db62747457ec50911926b7502c",
+      "source_scope": "gimp_list_get_child_by_name (const GimpContainer *container,",
+      "owners": [
+        "14.019"
+      ],
+      "current_mapping": [
+        {
+          "path": "app/core/gimpcontainer.c",
+          "anchor": "gimp_container_get_unique_names; deserialize distinguishes nonunique names",
+          "committed_sha256": "c07884ce2dcec663431d4256f4b3b80190208d473ec64b739dc5c5195ea5c422"
+        },
+        {
+          "path": "app/core/gimplist.c",
+          "anchor": "gimp_list_get_unique_names virtual; existing list unique-names policy",
+          "committed_sha256": "70897bce9b3be7c76ccdf6c86c30c9ea66173f9ac0f6ee7c897f8636f3d90e76"
+        },
+        {
+          "path": "app/core/gimpclonelayer.cpp",
+          "anchor": "find_name depth-first first-match independent of unique-name policy",
+          "committed_sha256": "22adedddcaeb6d70f4bf37e94cf92f3dbe4d1b84c7183097d3c24e49d02b081e"
+        }
+      ],
+      "evidence": [
+        "migration/contracts/clone-layer-port.md",
+        "migration/tests/clone-editability-contract/combined-native.json",
+        "app/tests/test-gimp-clone-layer.c"
+      ],
+      "status": "source-mapped; original task prerequisites remain",
+      "rationale": "Shared container/list unique-name behavior is present in current native implementation. Do not confuse first-match lazy-name resolution with persisted live stable identity."
+    },
+    {
+      "source_id": "01.002/000430",
+      "path": "app/core/gimpviewable.c",
+      "source_blob": "48f056842c38ed3c0dd9f381a2be75a9a99cd331",
+      "source_range": "-52,0 -> 53",
+      "source_sha256": "f6a84c38eb02d9ab1359f7d46f8f7669f8bae7ab01a0e10cd5cba3122d357f80",
+      "source_scope": "enum",
+      "owners": [
+        "14.019",
+        "15.001/core-scheduler-edge",
+        "15.004",
+        "15.009"
+      ],
+      "current_mapping": [
+        {
+          "path": "app/core/gimpviewable.c",
+          "anchor": "committed native ancestry-changed emission in gimp_viewable_set_parent",
+          "committed_sha256": "979cf4b6a561393f9332331a6242836edd85224ab47b3be873e35e65d97b31b3"
+        },
+        {
+          "path": "app/core/gimpfilterlayer.cpp",
+          "anchor": "FilterImpl::attach ancestry-changed connection; owner_ancestry->structure_changed->refresh_connections",
+          "committed_sha256": "1b9bc8dd7dcc92473d7ce2db046ba0da705325e1f6cb7a163ea0e68a0e5e6d75"
+        }
+      ],
+      "evidence": [
+        "app/tests/test-gimp-filter-layer.c",
+        "migration/contracts/filter-layer-port.md"
+      ],
+      "status": "cross-owner Filter verification retained; not closed by Clone corpus",
+      "rationale": "Old Clone parent-changed connection is commented atafa43fae:261; active consumer is old FilterLayer:320. Current Filter uses ancestry-changed with topology refresh. These6 old shared signal/default-vfunc hunks remain explicit Filter-owned duties; no paused coreviewable lifetime edit/test, no new dependency invented, and no old Edge runtime executed."
+    },
+    {
+      "source_id": "01.002/000431",
+      "path": "app/core/gimpviewable.c",
+      "source_blob": "48f056842c38ed3c0dd9f381a2be75a9a99cd331",
+      "source_range": "-115,0 -> 117,2",
+      "source_sha256": "5a06b8ff69bc6b9908099360b5b32c4ec2c181ef2895a364b974488ac26c732b",
+      "source_scope": "static gboolean gimp_viewable_serialize_property     (GimpConfig    *config,",
+      "owners": [
+        "14.019",
+        "15.001/core-scheduler-edge",
+        "15.004",
+        "15.009"
+      ],
+      "current_mapping": [
+        {
+          "path": "app/core/gimpviewable.c",
+          "anchor": "committed native ancestry-changed emission in gimp_viewable_set_parent",
+          "committed_sha256": "979cf4b6a561393f9332331a6242836edd85224ab47b3be873e35e65d97b31b3"
+        },
+        {
+          "path": "app/core/gimpfilterlayer.cpp",
+          "anchor": "FilterImpl::attach ancestry-changed connection; owner_ancestry->structure_changed->refresh_connections",
+          "committed_sha256": "1b9bc8dd7dcc92473d7ce2db046ba0da705325e1f6cb7a163ea0e68a0e5e6d75"
+        }
+      ],
+      "evidence": [
+        "app/tests/test-gimp-filter-layer.c",
+        "migration/contracts/filter-layer-port.md"
+      ],
+      "status": "cross-owner Filter verification retained; not closed by Clone corpus",
+      "rationale": "Old Clone parent-changed connection is commented atafa43fae:261; active consumer is old FilterLayer:320. Current Filter uses ancestry-changed with topology refresh. These6 old shared signal/default-vfunc hunks remain explicit Filter-owned duties; no paused coreviewable lifetime edit/test, no new dependency invented, and no old Edge runtime executed."
+    },
+    {
+      "source_id": "01.002/000432",
+      "path": "app/core/gimpviewable.c",
+      "source_blob": "48f056842c38ed3c0dd9f381a2be75a9a99cd331",
+      "source_range": "-150,0 -> 154,9",
+      "source_sha256": "8da1279b7148d3b1d6e70221adb597733efca467fb40d14e9e55c9bc3c6bbb17",
+      "source_scope": "gimp_viewable_class_init (GimpViewableClass *klass)",
+      "owners": [
+        "14.019",
+        "15.001/core-scheduler-edge",
+        "15.004",
+        "15.009"
+      ],
+      "current_mapping": [
+        {
+          "path": "app/core/gimpviewable.c",
+          "anchor": "committed native ancestry-changed emission in gimp_viewable_set_parent",
+          "committed_sha256": "979cf4b6a561393f9332331a6242836edd85224ab47b3be873e35e65d97b31b3"
+        },
+        {
+          "path": "app/core/gimpfilterlayer.cpp",
+          "anchor": "FilterImpl::attach ancestry-changed connection; owner_ancestry->structure_changed->refresh_connections",
+          "committed_sha256": "1b9bc8dd7dcc92473d7ce2db046ba0da705325e1f6cb7a163ea0e68a0e5e6d75"
+        }
+      ],
+      "evidence": [
+        "app/tests/test-gimp-filter-layer.c",
+        "migration/contracts/filter-layer-port.md"
+      ],
+      "status": "cross-owner Filter verification retained; not closed by Clone corpus",
+      "rationale": "Old Clone parent-changed connection is commented atafa43fae:261; active consumer is old FilterLayer:320. Current Filter uses ancestry-changed with topology refresh. These6 old shared signal/default-vfunc hunks remain explicit Filter-owned duties; no paused coreviewable lifetime edit/test, no new dependency invented, and no old Edge runtime executed."
+    },
+    {
+      "source_id": "01.002/000433",
+      "path": "app/core/gimpviewable.c",
+      "source_blob": "48f056842c38ed3c0dd9f381a2be75a9a99cd331",
+      "source_range": "-1171 -> 1183,4",
+      "source_sha256": "16423d33a9dac8f7b9a8da7bf5eb96565a4eda5a4afe95fc4db3b4fb9f0a3e73",
+      "source_scope": "gimp_viewable_set_parent (GimpViewable *viewable,",
+      "owners": [
+        "14.019",
+        "15.001/core-scheduler-edge",
+        "15.004",
+        "15.009"
+      ],
+      "current_mapping": [
+        {
+          "path": "app/core/gimpviewable.c",
+          "anchor": "committed native ancestry-changed emission in gimp_viewable_set_parent",
+          "committed_sha256": "979cf4b6a561393f9332331a6242836edd85224ab47b3be873e35e65d97b31b3"
+        },
+        {
+          "path": "app/core/gimpfilterlayer.cpp",
+          "anchor": "FilterImpl::attach ancestry-changed connection; owner_ancestry->structure_changed->refresh_connections",
+          "committed_sha256": "1b9bc8dd7dcc92473d7ce2db046ba0da705325e1f6cb7a163ea0e68a0e5e6d75"
+        }
+      ],
+      "evidence": [
+        "app/tests/test-gimp-filter-layer.c",
+        "migration/contracts/filter-layer-port.md"
+      ],
+      "status": "cross-owner Filter verification retained; not closed by Clone corpus",
+      "rationale": "Old Clone parent-changed connection is commented atafa43fae:261; active consumer is old FilterLayer:320. Current Filter uses ancestry-changed with topology refresh. These6 old shared signal/default-vfunc hunks remain explicit Filter-owned duties; no paused coreviewable lifetime edit/test, no new dependency invented, and no old Edge runtime executed."
+    },
+    {
+      "source_id": "01.002/000434",
+      "path": "app/core/gimpviewable.c",
+      "source_blob": "48f056842c38ed3c0dd9f381a2be75a9a99cd331",
+      "source_range": "-1221,0 -> 1237,6",
+      "source_sha256": "cd62039e2ab3fce5dcdb332d3b1742257eb61876365a1214e487c73693706afa",
+      "source_scope": "gimp_viewable_is_ancestor (GimpViewable *ancestor,",
+      "owners": [
+        "14.019",
+        "15.001/core-scheduler-edge",
+        "15.004",
+        "15.009"
+      ],
+      "current_mapping": [
+        {
+          "path": "app/core/gimpviewable.c",
+          "anchor": "committed native ancestry-changed emission in gimp_viewable_set_parent",
+          "committed_sha256": "979cf4b6a561393f9332331a6242836edd85224ab47b3be873e35e65d97b31b3"
+        },
+        {
+          "path": "app/core/gimpfilterlayer.cpp",
+          "anchor": "FilterImpl::attach ancestry-changed connection; owner_ancestry->structure_changed->refresh_connections",
+          "committed_sha256": "1b9bc8dd7dcc92473d7ce2db046ba0da705325e1f6cb7a163ea0e68a0e5e6d75"
+        }
+      ],
+      "evidence": [
+        "app/tests/test-gimp-filter-layer.c",
+        "migration/contracts/filter-layer-port.md"
+      ],
+      "status": "cross-owner Filter verification retained; not closed by Clone corpus",
+      "rationale": "Old Clone parent-changed connection is commented atafa43fae:261; active consumer is old FilterLayer:320. Current Filter uses ancestry-changed with topology refresh. These6 old shared signal/default-vfunc hunks remain explicit Filter-owned duties; no paused coreviewable lifetime edit/test, no new dependency invented, and no old Edge runtime executed."
+    },
+    {
+      "source_id": "01.002/000435",
+      "path": "app/core/gimpviewable.h",
+      "source_blob": "a36f697f8bcfe65e9e9e93d755ec27d5e3511b30",
+      "source_range": "-62,0 -> 63",
+      "source_sha256": "ee62e018478ae174b6d884da9c5fa963f78f77e37b45880a16f6ea8e56000287",
+      "source_scope": "struct _GimpViewableClass",
+      "owners": [
+        "14.019",
+        "15.001/core-scheduler-edge",
+        "15.004",
+        "15.009"
+      ],
+      "current_mapping": [
+        {
+          "path": "app/core/gimpviewable.c",
+          "anchor": "committed native ancestry-changed emission in gimp_viewable_set_parent",
+          "committed_sha256": "979cf4b6a561393f9332331a6242836edd85224ab47b3be873e35e65d97b31b3"
+        },
+        {
+          "path": "app/core/gimpfilterlayer.cpp",
+          "anchor": "FilterImpl::attach ancestry-changed connection; owner_ancestry->structure_changed->refresh_connections",
+          "committed_sha256": "1b9bc8dd7dcc92473d7ce2db046ba0da705325e1f6cb7a163ea0e68a0e5e6d75"
+        }
+      ],
+      "evidence": [
+        "app/tests/test-gimp-filter-layer.c",
+        "migration/contracts/filter-layer-port.md"
+      ],
+      "status": "cross-owner Filter verification retained; not closed by Clone corpus",
+      "rationale": "Old Clone parent-changed connection is commented atafa43fae:261; active consumer is old FilterLayer:320. Current Filter uses ancestry-changed with topology refresh. These6 old shared signal/default-vfunc hunks remain explicit Filter-owned duties; no paused coreviewable lifetime edit/test, no new dependency invented, and no old Edge runtime executed."
+    },
+    {
+      "source_id": "01.002/001394",
+      "path": "app/tools/gimppainttool.c",
+      "source_blob": "e8a79052efe0fc0fb9306c4f226ee4f43ccf58d7",
+      "source_range": "-256 -> 256",
+      "source_sha256": "54c8bdd7db9c261e386387ba9e53560b618617a37c0f7a67756f46098f8edb13",
+      "source_scope": "gimp_paint_tool_button_press (GimpTool            *tool,",
+      "owners": [
+        "14.006/editability-contract",
+        "14.019"
+      ],
+      "current_mapping": [
+        {
+          "path": "app/tools/gimppainttool.c",
+          "anchor": "gimp_paint_tool_button_press / gimp_paint_tool_cursor_update use gimp_item_is_content_locked",
+          "committed_sha256": "718529f24de3816e14170ef202ad87e08cca915f1f4463e428ab4e6a14f62089"
+        }
+      ],
+      "evidence": [
+        "migration/tests/clone-editability-contract/",
+        "migration/inventory/gimp3-layer-vfunc-review.tsv"
+      ],
+      "status": "source-mapped; original task prerequisites remain",
+      "rationale": "Source verification of frontend content-lock preflight; native PDB/model permission probes are not pointer paint-event replay or GUI screenshot proof."
+    },
+    {
+      "source_id": "01.002/001395",
+      "path": "app/tools/gimppainttool.c",
+      "source_blob": "e8a79052efe0fc0fb9306c4f226ee4f43ccf58d7",
+      "source_range": "-527 -> 527",
+      "source_sha256": "f818c9858cfaf8d9215fbd7e10d0849ecb6cc1e5932abb075d35dac8e8cced5b",
+      "source_scope": "gimp_paint_tool_cursor_update (GimpTool         *tool,",
+      "owners": [
+        "14.006/editability-contract",
+        "14.019"
+      ],
+      "current_mapping": [
+        {
+          "path": "app/tools/gimppainttool.c",
+          "anchor": "gimp_paint_tool_button_press / gimp_paint_tool_cursor_update use gimp_item_is_content_locked",
+          "committed_sha256": "718529f24de3816e14170ef202ad87e08cca915f1f4463e428ab4e6a14f62089"
+        }
+      ],
+      "evidence": [
+        "migration/tests/clone-editability-contract/",
+        "migration/inventory/gimp3-layer-vfunc-review.tsv"
+      ],
+      "status": "source-mapped; original task prerequisites remain",
+      "rationale": "Source verification of frontend content-lock preflight; native PDB/model permission probes are not pointer paint-event replay or GUI screenshot proof."
+    }
+  ],
+  "acceptance_evidence_by_task": {
+    "14.003/gegl-source-node": {
+      "id": "14.003/gegl-source-node",
+      "status": "DOING",
+      "owner": "Codex",
+      "commit_or_artifact": "app/tests/test-painter-clone-projection-contract.inc; migration/tests/clone-current-contracts/; migration/tests/clone-operation-corpus/clean-native.json; migration/tests/clone-operation-corpus/clean-sanitizer.json",
+      "test": "Selected native image projection ROI/offset/translation/detach model test",
+      "result": "Seven exact image-pixel assertions pass; existing source node implementation already present; subsequent clean selected normal/8-unit ASan/UBSan also pass",
+      "added_children": "-",
+      "limitations": "Original criterion/dependencies unchanged; initial primary receipt remains historical; subsequent clean baseline+explicit overlays proof scoped,59 RTTI-only units/dependencies uninstrumented; detach preserves old cache deliberately"
+    },
+    "14.003/clone-pickable-opacity": {
+      "id": "14.003/clone-pickable-opacity",
+      "status": "DOING",
+      "owner": "Codex",
+      "commit_or_artifact": "app/tests/test-painter-clone-pickable-contract.inc; migration/tests/clone-pickable-contract/",
+      "test": "Selected native clone_pickable_projection_contract, ordinary and grouped sources",
+      "result": "PASS native+clean normal+focused sanitizer selected1case each:648exact0.0 point queries,6 final projection pixels,6 pixel/cycle/bounds picking assertions",
+      "added_children": "-",
+      "limitations": "Original criterion unchanged; checkpoint-scoped model proof, no latest-whole-HEAD or GUI claim; clean selected normal1/1 and focused8-unit ASan/UBSan1/1 passed;59RTTI-only units; original14.002 prerequisite remains"
+    },
+    "14.006/editability-contract": {
+      "id": "14.006/editability-contract",
+      "status": "DOING",
+      "owner": "Codex",
+      "commit_or_artifact": "app/core/gimpimage-undo.c; app/tests/test-painter-clone-editability-contract.inc; migration/tests/clone-editability-contract/",
+      "test": "Causal missing Clone drawable-history guard red;4native permission/history/ownership probes; combined clean69Clone+12prepared+11pop-guard; selected10-unit ASan/UBSan",
+      "result": "PASS92normal+4selected sanitizer;10base/derived helper/generic/prepared open/frozen rejection contexts preserve dirty/redo; caller-last-image and single property-collection controls; ordinary userlocked layers remain supported",
+      "added_children": "-",
+      "limitations": "Original criterion/dependencies unchanged;14.005 remains prerequisite. Clone-specific derived pixel-cache suppression only, not Filter/shared lifetime/GUI or latest-whole-HEAD claim. Old uninitialized frozen-pointer defect not reproduced."
+    },
+    "14.001": {
+      "id": "14.001",
+      "status": "DOING",
+      "owner": "Codex",
+      "commit_or_artifact": "app/core/gimpclonelayer.cpp; migration/contracts/clone-layer-port.md; migration/acceptance/clone.json",
+      "test": "21 real GIMP core cases normal and focused ASan/UBSan",
+      "result": "Core reference/update/close, cross-image, reference Undo, persistence and UI have implementations and component checkpoints; whole original Clone coverage remains open",
+      "added_children": "14.001/core-implementation",
+      "limitations": "Current strict check_clone_acceptance.py PASS via exact source 8e45e61fc7 retained receipt: 226 normal TAP/62 Clone and 62 focused ASan+UBSan; historical evidence unchanged. Parent dependencies, full original Clone/source obligations and 10.018 remain open; 8 instrumented/54 RTTI-only, LSan off, no full aggregate or whole-port claim."
+    },
+    "14.001/core-implementation": {
+      "id": "14.001/core-implementation",
+      "status": "DONE",
+      "owner": "Codex",
+      "commit_or_artifact": "app/core/gimpclonelayer.cpp; migration/contracts/clone-layer-port.md; migration/tests/clone-layer-testlog.json; migration/tests/clone-layer-sanitizers.json",
+      "test": "Meson gimp-clone-layer; run_clone_layer_sanitizers.py; real legacy runtime and resize-undo captures",
+      "result": "PASS21 normal+21 focused ASan/UBSan, including group-wide remapping, high precision/TRC, dissolve exact bytes, reentrant teardown and measured resize/Undo/mask parity",
+      "added_children": "-",
+      "limitations": "XCF/UI, reference-change Undo, indexed reference capture, arbitrary cross-image and aggregate Clone compatibility remain; upstream/dependency libraries uninstrumented and LSan off"
+    },
+    "14.015": {
+      "id": "14.015",
+      "status": "DOING",
+      "owner": "Codex",
+      "commit_or_artifact": "app/core/gimpclonelayer.cpp; app/core/gimpclonelayerundo.h; app/core/gimpitem.c; migration/acceptance/clone.json",
+      "test": "33 Clone integration cases normal and focused ASan/UBSan",
+      "result": "Opt-in reference Undo and persistence snapshot exist; later cross-image/retained-item lifetime work is implemented; the legacy setter still intentionally creates no Undo entry",
+      "added_children": "14.015/reference-undo-snapshot",
+      "limitations": "Original dependencies and full Clone acceptance stay open; check_clone_acceptance.py currently fails source/evidence drift; no new Clone runtime claim"
+    },
+    "14.015/reference-undo-snapshot": {
+      "id": "14.015/reference-undo-snapshot",
+      "status": "DONE",
+      "owner": "Codex",
+      "commit_or_artifact": "migration/contracts/clone-layer-port.md; migration/tests/clone-layer-testlog.json; migration/tests/clone-layer-sanitizers.json",
+      "test": "33 normal+33 focused ASan/UBSan cases; unique logbase and source-hash evidence",
+      "result": "PASS reference states/cache/offset restoration, weak foreign sources, callback-safe image relocation, nonresolving snapshot and protected stable-ID state, inherited conversion Undo",
+      "added_children": "-",
+      "limitations": "Old setter unchanged; new opt-in API; actual RGB cross-image reference capture, common GimpItem finalization lifetime and whole persistence/UI remain open"
+    },
+    "14.018/genuine-rgb-comparison": {
+      "id": "14.018/genuine-rgb-comparison",
+      "status": "DONE",
+      "owner": "Codex",
+      "commit_or_artifact": "migration/fixtures/legacy-clone-cross-image; migration/tests/clone-cross-image-comparison.json; migration/tests/clone-layer-sanitizers.json",
+      "test": "3 fixture integrity tests; exact comparison of 19 genuine old-runtime reference/pixel/geometry records; 37 normal+focused ASan/UBSan app cases",
+      "result": "PASS direct/group RGB copy, independent internal edits, live source relocation, original image closure and subsequent updates",
+      "added_children": "-",
+      "limitations": "Broader image types/GUI and arbitrary compound cross-image workflows unverified; original legacy warnings retained; LSanoff"
+    },
+    "14.019": {
+      "id": "14.019",
+      "status": "DOING",
+      "owner": "Codex",
+      "commit_or_artifact": "app/tests/test-painter-clone-operation-corpus.inc; migration/tests/clone-operation-corpus/",
+      "test": "Current-core replay of pinned Clone-only original30-stage operation sequence, immutable raw/model oracle; clean selected normal and focused8-unit ASan/UBSan",
+      "result": "PASS30 stages/238 object models/268 raw pixel records incl30x7680 projection pixels; source/clone moves, reorder, duplicate, independent edits, delete/restore and UndoRedo; clean2+2 selected tests also cover projection ROI/detach",
+      "added_children": "-",
+      "limitations": "Original14.018/13.014 dependencies unchanged; baselinea19 plus explicit XCF/owned overlays,59 RTTI-only units and dependencies uninstrumented; no whole-current-HEAD/UI/XCF roundtrip equivalence; other fixture families retain separate receipts"
+    },
+    "14.002": {
+      "id": "14.002",
+      "status": "TODO",
+      "owner": "-",
+      "commit_or_artifact": "tasks.md",
+      "test": "WBS/progress ID reconciliation",
+      "result": "Existing unchecked task recorded explicitly as TODO",
+      "added_children": "-",
+      "limitations": "Code may exist; original acceptance and dependencies remain open"
+    },
+    "14.003": {
+      "id": "14.003",
+      "status": "TODO",
+      "owner": "-",
+      "commit_or_artifact": "tasks.md",
+      "test": "WBS/progress ID reconciliation",
+      "result": "Existing unchecked task recorded explicitly as TODO",
+      "added_children": "-",
+      "limitations": "Code may exist; original acceptance and dependencies remain open"
+    },
+    "14.004": {
+      "id": "14.004",
+      "status": "TODO",
+      "owner": "-",
+      "commit_or_artifact": "tasks.md",
+      "test": "WBS/progress ID reconciliation",
+      "result": "Existing unchecked task recorded explicitly as TODO",
+      "added_children": "-",
+      "limitations": "Code may exist; original acceptance and dependencies remain open"
+    },
+    "14.005": {
+      "id": "14.005",
+      "status": "TODO",
+      "owner": "-",
+      "commit_or_artifact": "tasks.md",
+      "test": "WBS/progress ID reconciliation",
+      "result": "Existing unchecked task recorded explicitly as TODO",
+      "added_children": "-",
+      "limitations": "Code may exist; original acceptance and dependencies remain open"
+    },
+    "14.006": {
+      "id": "14.006",
+      "status": "TODO",
+      "owner": "-",
+      "commit_or_artifact": "tasks.md",
+      "test": "WBS/progress ID reconciliation",
+      "result": "Existing unchecked task recorded explicitly as TODO",
+      "added_children": "-",
+      "limitations": "Code may exist; original acceptance and dependencies remain open"
+    },
+    "14.007": {
+      "id": "14.007",
+      "status": "TODO",
+      "owner": "-",
+      "commit_or_artifact": "tasks.md",
+      "test": "WBS/progress ID reconciliation",
+      "result": "Existing unchecked task recorded explicitly as TODO",
+      "added_children": "-",
+      "limitations": "Code may exist; original acceptance and dependencies remain open"
+    },
+    "14.008": {
+      "id": "14.008",
+      "status": "TODO",
+      "owner": "-",
+      "commit_or_artifact": "tasks.md",
+      "test": "WBS/progress ID reconciliation",
+      "result": "Existing unchecked task recorded explicitly as TODO",
+      "added_children": "-",
+      "limitations": "Code may exist; original acceptance and dependencies remain open"
+    },
+    "14.009": {
+      "id": "14.009",
+      "status": "TODO",
+      "owner": "-",
+      "commit_or_artifact": "tasks.md",
+      "test": "WBS/progress ID reconciliation",
+      "result": "Existing unchecked task recorded explicitly as TODO",
+      "added_children": "-",
+      "limitations": "Code may exist; original acceptance and dependencies remain open"
+    },
+    "14.010": {
+      "id": "14.010",
+      "status": "TODO",
+      "owner": "-",
+      "commit_or_artifact": "tasks.md",
+      "test": "WBS/progress ID reconciliation",
+      "result": "Existing unchecked task recorded explicitly as TODO",
+      "added_children": "-",
+      "limitations": "Code may exist; original acceptance and dependencies remain open"
+    },
+    "14.011": {
+      "id": "14.011",
+      "status": "TODO",
+      "owner": "-",
+      "commit_or_artifact": "tasks.md",
+      "test": "WBS/progress ID reconciliation",
+      "result": "Existing unchecked task recorded explicitly as TODO",
+      "added_children": "-",
+      "limitations": "Code may exist; original acceptance and dependencies remain open"
+    },
+    "14.012": {
+      "id": "14.012",
+      "status": "TODO",
+      "owner": "-",
+      "commit_or_artifact": "tasks.md",
+      "test": "WBS/progress ID reconciliation",
+      "result": "Existing unchecked task recorded explicitly as TODO",
+      "added_children": "-",
+      "limitations": "Code may exist; original acceptance and dependencies remain open"
+    },
+    "14.013": {
+      "id": "14.013",
+      "status": "TODO",
+      "owner": "-",
+      "commit_or_artifact": "tasks.md",
+      "test": "WBS/progress ID reconciliation",
+      "result": "Existing unchecked task recorded explicitly as TODO",
+      "added_children": "-",
+      "limitations": "Code may exist; original acceptance and dependencies remain open"
+    },
+    "14.014": {
+      "id": "14.014",
+      "status": "TODO",
+      "owner": "-",
+      "commit_or_artifact": "tasks.md",
+      "test": "WBS/progress ID reconciliation",
+      "result": "Existing unchecked task recorded explicitly as TODO",
+      "added_children": "-",
+      "limitations": "Code may exist; original acceptance and dependencies remain open"
+    },
+    "14.016": {
+      "id": "14.016",
+      "status": "TODO",
+      "owner": "-",
+      "commit_or_artifact": "tasks.md",
+      "test": "WBS/progress ID reconciliation",
+      "result": "Existing unchecked task recorded explicitly as TODO",
+      "added_children": "-",
+      "limitations": "Code may exist; original acceptance and dependencies remain open"
+    },
+    "14.017": {
+      "id": "14.017",
+      "status": "TODO",
+      "owner": "-",
+      "commit_or_artifact": "tasks.md",
+      "test": "WBS/progress ID reconciliation",
+      "result": "Existing unchecked task recorded explicitly as TODO",
+      "added_children": "-",
+      "limitations": "Code may exist; original acceptance and dependencies remain open"
+    },
+    "14.018": {
+      "id": "14.018",
+      "status": "TODO",
+      "owner": "-",
+      "commit_or_artifact": "tasks.md",
+      "test": "WBS/progress ID reconciliation",
+      "result": "Existing unchecked task recorded explicitly as TODO",
+      "added_children": "-",
+      "limitations": "Code may exist; original acceptance and dependencies remain open"
+    },
+    "14.020": {
+      "id": "14.020",
+      "status": "TODO",
+      "owner": "-",
+      "commit_or_artifact": "tasks.md",
+      "test": "WBS/progress ID reconciliation",
+      "result": "Existing unchecked task recorded explicitly as TODO",
+      "added_children": "-",
+      "limitations": "Code may exist; original acceptance and dependencies remain open"
+    },
+    "14.007/component-visibility-regression": {
+      "id": "14.007/component-visibility-regression",
+      "status": "DONE",
+      "owner": "Codex",
+      "commit_or_artifact": "migration/tests/clone-component-visibility-evidence.tar.xz; migration/contracts/clone-layer-port.md; migration/contracts/clone-layer-port.md#ordinary-meson-sanitizer-workflow-correction-2026-10-17; migration/tests/ordinary-meson-clone-navigation-evidence.tar.xz; migration/contracts/clone-layer-port.md#ordinary-meson-acceptance-restored-2026-10-17",
+      "test": "Full default build; seven exact registered targets; focused ASan/UBSan; strict evidence/task controls and independent review; frozen47202852 ordinary Meson ASan/UBSan four targets103 cases, ten normal targets267 cases; full compile/link/source/ELF/resource seals; authoritative ordinary gate and one-time closure audit",
+      "result": "Ordinary-Meson sanitizer acceptance pending; prior focused execution remains valid scoped evidence. PASS 222 positive normal TAP cases including all 58 Clone cases and six new component regressions; 58 focused sanitizer cases; exact tested 63be6dcf0a with unchanged source/build/ELF/registry/361-locale seals; 2026-10-17 ordinary workflow supplement accepted:267 normal and103 ordinary sanitizer cases passed; original run004 policy-redaction validation failure retained and independently reviewed allowlisted disclosure validates unchanged evidence",
+      "added_children": "-",
+      "limitations": "Eight instrumented plus 54 RTTI-only units; LSan disabled; both failed attempts and run-003 native PASS retained; no production Clone change or new genuine old runtime capture; parent14.007/predecessor14.006 and blend/UI/release gates remain open; 2026-10-17 correction: general Oct11 ordinary-Meson policy controls absent waiver; per-object substitution does not satisfy it. No historical result erased.; Scope remains the covered component; external dependencies uninstrumented and LSan unavailable. Existing GUI observations are dependency-restored, not rerun. No whole-port, whole-registration aggregate or historical pan-parity completion."
+    },
+    "14.007/source-mode-projection-regression": {
+      "id": "14.007/source-mode-projection-regression",
+      "status": "DONE",
+      "owner": "Codex",
+      "commit_or_artifact": "migration/tests/clone-source-mode-projection-evidence.tar.xz; migration/contracts/clone-layer-port.md; migration/contracts/clone-layer-port.md#ordinary-meson-sanitizer-workflow-correction-2026-10-17; migration/tests/ordinary-meson-clone-navigation-evidence.tar.xz; migration/contracts/clone-layer-port.md#ordinary-meson-acceptance-restored-2026-10-17",
+      "test": "Full default incremental build; seven exact registered targets; focused ASan/UBSan; independent source/receipt/archive review and strict controls; frozen47202852 ordinary Meson ASan/UBSan four targets103 cases, ten normal targets267 cases; full compile/link/source/ELF/resource seals; authoritative ordinary gate and one-time closure audit",
+      "result": "Ordinary-Meson sanitizer acceptance pending; prior focused execution remains valid scoped evidence. PASS 226 positive normal TAP including all 62 Clone cases; 62 focused sanitizer cases; 216 distinct source-derived mode/type/mask scenes in each run; exact tested 7ab1230c1e with unchanged source/build/ELF/registry/361-locale seals; 2026-10-17 ordinary workflow supplement accepted:267 normal and103 ordinary sanitizer cases passed; original run004 policy-redaction validation failure retained and independently reviewed allowlisted disclosure validates unchanged evidence",
+      "added_children": "-",
+      "limitations": "Eight instrumented plus 54 RTTI-only units; LSan disabled; no production change or genuine old-runtime oracle; prior component/GUI receipts preserved; raw 2/22, show-mask transitions, groups/indexed/high precision/Dissolve expansion, final composition/XCF/GUI/platform/full aggregate and parents 14.007/14.006 remain open; 2026-10-17 correction: general Oct11 ordinary-Meson policy controls absent waiver; per-object substitution does not satisfy it. No historical result erased.; Scope remains the covered component; external dependencies uninstrumented and LSan unavailable. Existing GUI observations are dependency-restored, not rerun. No whole-port, whole-registration aggregate or historical pan-parity completion."
+    }
+  },
+  "cross_owner_open": "Shared parent-changed duties explicitly map to Filter native ancestry/topology ownership; Clone corpus is not their runtime proof.",
+  "counts": {
+    "work_items": 106,
+    "source_hunks": 38
+  },
+  "per_task_artifact_index": {
+    "14.001": {
+      "original_action": "source の所有と監視を実装する",
+      "original_criterion": "旧仕様に沿う参照が close で解除される",
+      "dependencies": "08.020, 09.017, 10.018",
+      "native_tests": [
+        "/gimp-clone-layer/source_lifetime_and_detach",
+        "/gimp-clone-layer/freeze_and_close",
+        "/gimp-clone-layer/frozen_source_disposal",
+        "/gimp-clone-layer/inert_construction"
+      ],
+      "native_receipt": "migration/tests/clone-editability-contract/combined-native.json",
+      "historical_acceptance_record": "migration/acceptance/clone.json",
+      "historical_limits_retained": [],
+      "additional_current_evidence": [],
+      "closure": "Not changed by this audit; original prerequisite chain remains authoritative."
+    },
+    "14.001/core-implementation": {
+      "original_action": "CloneLayerの実core型・参照追従を統合する",
+      "original_criterion": "単一store/typed handle・GEGL完成画素・source/name・group duplicate再対応付け・resize Undo/maskを実装し21通常/ASan/UBSan試験合格。XCF/UI/参照変更Undo等は親区分に残す",
+      "dependencies": "04.003, 05.010, 02.005/resize-undo-capture",
+      "native_tests": [
+        "/gimp-clone-layer/cpp_header_layout",
+        "/gimp-clone-layer/projected_pixels",
+        "/gimp-clone-layer/group_duplicate_complete_hierarchy",
+        "/gimp-clone-layer/source_resize_undo_legacy_fixture"
+      ],
+      "native_receipt": "migration/tests/clone-editability-contract/combined-native.json",
+      "historical_acceptance_record": "migration/acceptance/clone.json",
+      "historical_limits_retained": [],
+      "additional_current_evidence": [],
+      "closure": "Not changed by this audit; original prerequisite chain remains authoritative."
+    },
+    "14.002": {
+      "original_action": "名前による旧 source 解決を実装する",
+      "original_criterion": "探索順と同名の解決が fixture と一致",
+      "dependencies": "14.001",
+      "native_tests": [
+        "/gimp-clone-layer/recursive_first_match",
+        "/gimp-clone-layer/deferred_name"
+      ],
+      "native_receipt": "migration/tests/clone-editability-contract/combined-native.json",
+      "historical_acceptance_record": "migration/acceptance/clone.json",
+      "historical_limits_retained": [],
+      "additional_current_evidence": [],
+      "closure": "Not changed by this audit; original prerequisite chain remains authoritative."
+    },
+    "14.003": {
+      "original_action": "source レイヤーの画素追従を実装する",
+      "original_criterion": "編集領域が clone に更新される",
+      "dependencies": "14.002",
+      "native_tests": [
+        "/gimp-clone-layer/partial_update_and_graph",
+        "/gimp-clone-layer/projected_pixels",
+        "/gimp-clone-layer/reentrant_source_replace"
+      ],
+      "native_receipt": "migration/tests/clone-editability-contract/combined-native.json",
+      "historical_acceptance_record": "migration/acceptance/clone.json",
+      "historical_limits_retained": [],
+      "additional_current_evidence": [
+        "migration/tests/clone-current-contracts/",
+        "migration/tests/clone-operation-corpus/clean-native.json",
+        "migration/tests/clone-operation-corpus/clean-sanitizer.json"
+      ],
+      "closure": "Not changed by this audit; original prerequisite chain remains authoritative."
+    },
+    "14.003/gegl-source-node": {
+      "original_action": "CloneLayer の参照画素を GEGL source node に接続する",
+      "original_criterion": "source の変更 ROI、offset、参照解除が projection の再評価へ届く",
+      "dependencies": "14.003, 09.013/gegl-graph-invalidation",
+      "native_tests": [
+        "/gimp-clone-layer/partial_update_and_graph",
+        "/gimp-clone-layer/offset_size_and_noop_transforms",
+        "/gimp-clone-layer/source_lifetime_and_detach"
+      ],
+      "native_receipt": "migration/tests/clone-editability-contract/combined-native.json",
+      "historical_acceptance_record": "migration/acceptance/clone.json",
+      "historical_limits_retained": [],
+      "additional_current_evidence": [],
+      "closure": "Not changed by this audit; original prerequisite chain remains authoritative."
+    },
+    "14.003/clone-pickable-opacity": {
+      "original_action": "CloneLayer の不透明度照会を現行型へ接続する",
+      "original_criterion": "旧 gint 返却のゼロ透明を現行 gdouble 契約で保ち、参照画素・子レイヤー表示への影響を試験",
+      "dependencies": "14.002, 01.005/gimp3-layer-slots",
+      "native_tests": [
+        "/gimp-clone-layer/projected_pixels"
+      ],
+      "native_receipt": "migration/tests/clone-editability-contract/combined-native.json",
+      "historical_acceptance_record": "migration/acceptance/clone.json",
+      "historical_limits_retained": [],
+      "additional_current_evidence": [],
+      "closure": "Not changed by this audit; original prerequisite chain remains authoritative."
+    },
+    "14.004": {
+      "original_action": "source グループの追従を実装する",
+      "original_criterion": "子の変更と合成が更新される",
+      "dependencies": "14.003",
+      "native_tests": [
+        "/gimp-clone-layer/duplicate_and_group_update",
+        "/gimp-clone-layer/group_duplicate_complete_hierarchy"
+      ],
+      "native_receipt": "migration/tests/clone-editability-contract/combined-native.json",
+      "historical_acceptance_record": "migration/acceptance/clone.json",
+      "historical_limits_retained": [],
+      "additional_current_evidence": [
+        "migration/tests/clone-operation-corpus/"
+      ],
+      "closure": "Not changed by this audit; original prerequisite chain remains authoritative."
+    },
+    "14.005": {
+      "original_action": "source の座標・サイズ追従を実装する",
+      "original_criterion": "移動と resize の見え方が一致",
+      "dependencies": "14.004",
+      "native_tests": [
+        "/gimp-clone-layer/offset_size_and_noop_transforms",
+        "/gimp-clone-layer/source_resize_undo_legacy_fixture"
+      ],
+      "native_receipt": "migration/tests/clone-editability-contract/combined-native.json",
+      "historical_acceptance_record": "migration/acceptance/clone.json",
+      "historical_limits_retained": [],
+      "additional_current_evidence": [],
+      "closure": "Not changed by this audit; original prerequisite chain remains authoritative."
+    },
+    "14.006": {
+      "original_action": "clone 自身の座標処理を実装する",
+      "original_criterion": "source 座標との合成が一致",
+      "dependencies": "14.005",
+      "native_tests": [
+        "/gimp-clone-layer/offset_size_and_noop_transforms"
+      ],
+      "native_receipt": "migration/tests/clone-editability-contract/combined-native.json",
+      "historical_acceptance_record": "migration/acceptance/clone.json",
+      "historical_limits_retained": [],
+      "additional_current_evidence": [
+        "migration/tests/clone-current-contracts/",
+        "migration/tests/clone-editability-contract/"
+      ],
+      "closure": "Not changed by this audit; original prerequisite chain remains authoritative."
+    },
+    "14.006/editability-contract": {
+      "original_action": "CloneLayer の編集可否を現行ロック規約へ対応付ける",
+      "original_criterion": "廃止された GimpItemClass.is_editable を仮定せず、許可操作と選択・移動の可否を確認",
+      "dependencies": "14.005, 01.005/gimp3-layer-slots",
+      "native_tests": [
+        "/gimp-clone-layer/offset_size_and_noop_transforms"
+      ],
+      "native_receipt": "migration/tests/clone-editability-contract/combined-native.json",
+      "historical_acceptance_record": "migration/acceptance/clone.json",
+      "historical_limits_retained": [],
+      "additional_current_evidence": [],
+      "closure": "Not changed by this audit; original prerequisite chain remains authoritative."
+    },
+    "14.007": {
+      "original_action": "source の可視性・合成変更を処理する",
+      "original_criterion": "旧版の更新範囲と表示が一致",
+      "dependencies": "14.006",
+      "native_tests": [
+        "/gimp-clone-layer/projected_pixels",
+        "/gimp-clone-layer/dissolve_legacy_fixture"
+      ],
+      "native_receipt": "migration/tests/clone-editability-contract/combined-native.json",
+      "historical_acceptance_record": "migration/acceptance/clone.json",
+      "historical_limits_retained": [
+        "Component-visibility-change fixtures and wider source modes remain explicit in historical contract."
+      ],
+      "additional_current_evidence": [],
+      "closure": "Not changed by this audit; original prerequisite chain remains authoritative."
+    },
+    "14.007/component-visibility-regression": {
+      "original_action": "Cloneのcomponent可視性と遅延ROI更新を検証する",
+      "original_criterion": "旧source由来のRGB/RGBA/Gray/Gray-alpha全component組合せ・toggle時cache保持・1x1更新通知・source-node・opacity/mask丸め・show-maskを通常/focused sanitizerで検証。親14.007/14.006とgenuine runtime/合成/UI/release gateは別途保持",
+      "dependencies": "14.001/core-implementation, 02.005, 09.002",
+      "native_tests": [
+        "/gimp-clone-layer/component_visibility_rgb",
+        "/gimp-clone-layer/component_visibility_rgba",
+        "/gimp-clone-layer/component_visibility_gray",
+        "/gimp-clone-layer/component_visibility_gray_alpha",
+        "/gimp-clone-layer/component_visibility_show_mask",
+        "/gimp-clone-layer/component_visibility_projection_boundary"
+      ],
+      "native_receipt": "migration/tests/clone-editability-contract/combined-native.json",
+      "historical_acceptance_record": "migration/acceptance/clone.json",
+      "historical_limits_retained": [
+        "Run-004 completed a full default build, seven exact registered normal targets (222 positive TAP cases), and all 58 Clone cases under focused ASan/UBSan.",
+        "Focused sanitizer instruments eight named translation units; 54 linked production units receive RTTI-only compatibility rebuilding. LSan is disabled and remaining GIMP/dependencies are uninstrumented.",
+        "The arithmetic oracle is source-derived, not a genuine historical runtime capture. Parent 14.007, predecessor 14.006, composition/UI and aggregate/release gates remain open."
+      ],
+      "additional_current_evidence": [],
+      "closure": "Not changed by this audit; original prerequisite chain remains authoritative."
+    },
+    "14.007/source-mode-projection-regression": {
+      "original_action": "Cloneの非Dissolve source modeとinitial-region更新を検証する",
+      "original_criterion": "通常layerで有効な旧27 modeの明示mapping・RGB/RGBA/Gray/Gray-alpha×mask有無216場面でsource由来cache/source-node・mode変更/復帰の全領域通知・同mode無通知・後続1x1更新と周囲保持を通常62 Clone/focused ASan/UBSan62・七登録target計226 TAPで検証。親14.007/14.006とgenuine runtime/合成/UI/release gateは保持",
+      "dependencies": "14.001/core-implementation, 14.007/component-visibility-regression, 10.005/normal-multiply-parity, 02.005, 09.002",
+      "native_tests": [
+        "/gimp-clone-layer/source_mode_projection_rgb",
+        "/gimp-clone-layer/source_mode_projection_rgba",
+        "/gimp-clone-layer/source_mode_projection_gray",
+        "/gimp-clone-layer/source_mode_projection_gray_alpha"
+      ],
+      "native_receipt": "migration/tests/clone-editability-contract/combined-native.json",
+      "historical_acceptance_record": "migration/acceptance/clone.json",
+      "historical_limits_retained": [
+        "Source-modes-run-001 completed a full default build, seven exact registered normal targets (226 positive TAP cases), and all 62 Clone cases under focused ASan/UBSan at source commit 7ab1230c1e1d77cc143f93f71e44a16aea021009, tree c2785ea8a438ab6ac0c9284da6c4604520099172.",
+        "Focused sanitizer instruments eight named translation units; 54 linked production units receive RTTI-only compatibility rebuilding. LSan is disabled and remaining GIMP/dependencies are uninstrumented.",
+        "The unchanged receipt contract derives all current Clone registrations and requires exact normal and focused-sanitizer TAP coverage; its existing scope identifier is retained without broadening any native claim.",
+        "The accepted 58-case component-visibility archive and all historical source/report hashes, including the original clone-component-baseline.json, remain unchanged. This fresh receipt is stored separately in clone-source-mode-projection-evidence.tar.xz.",
+        "Expected bytes are derived from the pinned legacy source, not a new genuine historical runtime capture. Raw modes 2/22, show-mask mode transitions, groups, indexed/high-precision sources, Dissolve expansion, full-image composition, XCF mode admission, GUI/platforms and aggregate/release gates remain outside this child. Parent 14.007 and predecessor 14.006 remain open."
+      ],
+      "additional_current_evidence": [],
+      "closure": "Not changed by this audit; original prerequisite chain remains authoritative."
+    },
+    "14.008": {
+      "original_action": "source 改名を処理する",
+      "original_criterion": "既存参照を旧仕様に沿って維持",
+      "dependencies": "14.007",
+      "native_tests": [
+        "/gimp-clone-layer/deferred_name",
+        "/gimp-clone-layer/source_reference_undo_renamed_then_expired"
+      ],
+      "native_receipt": "migration/tests/clone-editability-contract/combined-native.json",
+      "historical_acceptance_record": "migration/acceptance/clone.json",
+      "historical_limits_retained": [],
+      "additional_current_evidence": [],
+      "closure": "Not changed by this audit; original prerequisite chain remains authoritative."
+    },
+    "14.009": {
+      "original_action": "同名 source を処理する",
+      "original_criterion": "保存前後で別レイヤーへ変わらない",
+      "dependencies": "14.008",
+      "native_tests": [
+        "/gimp-clone-layer/recursive_first_match",
+        "/gimp-clone-layer/serialization_reference_snapshot_and_restore"
+      ],
+      "native_receipt": "migration/tests/clone-editability-contract/combined-native.json",
+      "historical_acceptance_record": "migration/acceptance/clone.json",
+      "historical_limits_retained": [
+        "The positive same-name stable-ID roundtrip fixture is implemented in the current field-matrix work but has not yet been sealed into this acceptance checkpoint; earlier tests prove lookup ordering and missing-ID non-retargeting only."
+      ],
+      "additional_current_evidence": [
+        "migration/tests/painter-float-xcf/normal.json",
+        "migration/tests/painter-float-xcf/sanitizer-build.json"
+      ],
+      "closure": "Not changed by this audit; original prerequisite chain remains authoritative.",
+      "specific_claim": "clone_duplicate_name_identity: two same-name sources, stable chosen identity, source edits after two save/reopen rounds; not just lazy name lookup."
+    },
+    "14.010": {
+      "original_action": "clone の複製を実装する",
+      "original_criterion": "複製先の source が旧仕様と一致",
+      "dependencies": "14.009",
+      "native_tests": [
+        "/gimp-clone-layer/duplicate_and_group_update",
+        "/gimp-clone-layer/serialization_reference_snapshot_and_restore"
+      ],
+      "native_receipt": "migration/tests/clone-editability-contract/combined-native.json",
+      "historical_acceptance_record": "migration/acceptance/clone.json",
+      "historical_limits_retained": [],
+      "additional_current_evidence": [
+        "migration/tests/clone-cross-image-comparison.json",
+        "migration/tests/clone-operation-corpus/"
+      ],
+      "closure": "Not changed by this audit; original prerequisite chain remains authoritative."
+    },
+    "14.011": {
+      "original_action": "group の複製を実装する",
+      "original_criterion": "内部・外部参照の扱いが旧版と一致",
+      "dependencies": "14.010",
+      "native_tests": [
+        "/gimp-clone-layer/group_duplicate_internal_reference",
+        "/gimp-clone-layer/group_duplicate_complete_hierarchy"
+      ],
+      "native_receipt": "migration/tests/clone-editability-contract/combined-native.json",
+      "historical_acceptance_record": "migration/acceptance/clone.json",
+      "historical_limits_retained": [],
+      "additional_current_evidence": [
+        "migration/tests/clone-operation-corpus/"
+      ],
+      "closure": "Not changed by this audit; original prerequisite chain remains authoritative."
+    },
+    "14.012": {
+      "original_action": "source の削除を処理する",
+      "original_criterion": "旧挙動を保持し stale pointer を残さない",
+      "dependencies": "14.011",
+      "native_tests": [
+        "/gimp-clone-layer/source_lifetime_and_detach",
+        "/gimp-clone-layer/frozen_source_disposal"
+      ],
+      "native_receipt": "migration/tests/clone-editability-contract/combined-native.json",
+      "historical_acceptance_record": "migration/acceptance/clone.json",
+      "historical_limits_retained": [],
+      "additional_current_evidence": [],
+      "closure": "Not changed by this audit; original prerequisite chain remains authoritative."
+    },
+    "14.013": {
+      "original_action": "source の差替えを実装する",
+      "original_criterion": "旧接続解除と新接続が一度ずつ行われる",
+      "dependencies": "14.012",
+      "native_tests": [
+        "/gimp-clone-layer/reentrant_source_replace",
+        "/gimp-clone-layer/thaw_reentry_close_and_replace"
+      ],
+      "native_receipt": "migration/tests/clone-editability-contract/combined-native.json",
+      "historical_acceptance_record": "migration/acceptance/clone.json",
+      "historical_limits_retained": [],
+      "additional_current_evidence": [
+        "migration/tests/clone-connection-contract/"
+      ],
+      "closure": "Not changed by this audit; original prerequisite chain remains authoritative.",
+      "specific_claim": "104 actual handler cardinalities, three replacement cycles and detach, selected normal/sanitizer; source-diff scope excludes paused renderer/canvas lifetime work."
+    },
+    "14.014": {
+      "original_action": "参照循環の旧挙動を照合して処理する",
+      "original_criterion": "旧版で有効な参照を壊さず無限更新を防ぐ",
+      "dependencies": "14.013",
+      "native_tests": [
+        "/gimp-clone-layer/cycles"
+      ],
+      "native_receipt": "migration/tests/clone-editability-contract/combined-native.json",
+      "historical_acceptance_record": "migration/acceptance/clone.json",
+      "historical_limits_retained": [
+        "Current cycle suppression is intentional safety repair; no claim historical infinite callback had defined pixel semantics."
+      ],
+      "additional_current_evidence": [],
+      "closure": "Not changed by this audit; original prerequisite chain remains authoritative."
+    },
+    "14.015": {
+      "original_action": "clone の変更 Undo を実装する",
+      "original_criterion": "source と参照状態を復元",
+      "dependencies": "14.014",
+      "native_tests": [
+        "/gimp-clone-layer/source_reference_undo_live",
+        "/gimp-clone-layer/source_reference_undo_all_states",
+        "/gimp-clone-layer/source_reference_undo_preserves_pending_live",
+        "/gimp-clone-layer/source_reference_undo_dependent_clone",
+        "/gimp-clone-layer/source_reference_undo_close_reentry"
+      ],
+      "native_receipt": "migration/tests/clone-editability-contract/combined-native.json",
+      "historical_acceptance_record": "migration/acceptance/clone.json",
+      "historical_limits_retained": [
+        "Legacy setters intentionally do not add Undo; opt-in APIs and GUI integration supply editable references. Compound histories remain separate."
+      ],
+      "additional_current_evidence": [],
+      "closure": "Not changed by this audit; original prerequisite chain remains authoritative."
+    },
+    "14.015/reference-undo-snapshot": {
+      "original_action": "opt-in参照Undoと非変更snapshotを実装する",
+      "original_criterion": "旧setterの履歴なしを保ち、live/pending/expired/none・cache/位置・stable ID未解決を別APIで復元。33通常/focused sanitizer。別画像操作/保存の全gateと共通Item寿命fixは未完了",
+      "dependencies": "14.001/core-implementation, 05.010",
+      "native_tests": [
+        "/gimp-clone-layer/serialization_reference_snapshot_and_restore",
+        "/gimp-clone-layer/source_reference_undo_all_states"
+      ],
+      "native_receipt": "migration/tests/clone-editability-contract/combined-native.json",
+      "historical_acceptance_record": "migration/acceptance/clone.json",
+      "historical_limits_retained": [],
+      "additional_current_evidence": [],
+      "closure": "Not changed by this audit; original prerequisite chain remains authoritative."
+    },
+    "14.016": {
+      "original_action": "source 削除の Undo を接続する",
+      "original_criterion": "復元後に追従が再開",
+      "dependencies": "14.015",
+      "native_tests": [
+        "/gimp-clone-layer/source_delete_undo"
+      ],
+      "native_receipt": "migration/tests/clone-editability-contract/combined-native.json",
+      "historical_acceptance_record": "migration/acceptance/clone.json",
+      "historical_limits_retained": [],
+      "additional_current_evidence": [
+        "migration/tests/clone-operation-corpus/"
+      ],
+      "closure": "Not changed by this audit; original prerequisite chain remains authoritative."
+    },
+    "14.017": {
+      "original_action": "画像終了時の解除を実装する",
+      "original_criterion": "遅延通知が clone を触らない",
+      "dependencies": "14.016",
+      "native_tests": [
+        "/gimp-clone-layer/retained_items_image_destroy",
+        "/gimp-clone-layer/retained_item_gimp_lifetime",
+        "/gimp-clone-layer/freeze_and_close",
+        "/gimp-clone-layer/source_reference_undo_expired_cross_image"
+      ],
+      "native_receipt": "migration/tests/clone-editability-contract/combined-native.json",
+      "historical_acceptance_record": "migration/acceptance/clone.json",
+      "historical_limits_retained": [],
+      "additional_current_evidence": [],
+      "closure": "Not changed by this audit; original prerequisite chain remains authoritative."
+    },
+    "14.018": {
+      "original_action": "参照が別画像へ移る操作を処理する",
+      "original_criterion": "コピー・移動の旧意味と矛盾しない",
+      "dependencies": "14.017",
+      "native_tests": [
+        "/gimp-clone-layer/cross_image_copy_and_move",
+        "/gimp-clone-layer/undo_source_image_relocation",
+        "/gimp-clone-layer/clone_owner_image_relocation",
+        "/gimp-clone-layer/inherited_precision_conversion_undo"
+      ],
+      "native_receipt": "migration/tests/clone-editability-contract/combined-native.json",
+      "historical_acceptance_record": "migration/acceptance/clone.json",
+      "historical_limits_retained": [
+        "Exact old cross-image comparison measured ordinary RGB only; other image bases/precision/GUI operations not blanket accepted."
+      ],
+      "additional_current_evidence": [
+        "migration/tests/clone-cross-image-comparison.json"
+      ],
+      "closure": "Not changed by this audit; original prerequisite chain remains authoritative."
+    },
+    "14.018/genuine-rgb-comparison": {
+      "original_action": "実旧版の画像間Clone複製・参照移動を比較する",
+      "original_criterion": "RGB direct/group複製・内部/外部参照・移動・元画像終了後更新の19記録が実旧版と完全一致、37 app通常/focused sanitizer合格。未測定画像型/GUI等は別gate",
+      "dependencies": "14.001/core-implementation, 14.015/reference-undo-snapshot, 05.003/retained-item-lifetime",
+      "native_tests": [
+        "/gimp-clone-layer/cross_image_copy_and_move"
+      ],
+      "native_receipt": "migration/tests/clone-editability-contract/combined-native.json",
+      "historical_acceptance_record": "migration/acceptance/clone.json",
+      "historical_limits_retained": [],
+      "additional_current_evidence": [],
+      "closure": "Not changed by this audit; original prerequisite chain remains authoritative."
+    },
+    "14.019": {
+      "original_action": "CloneLayer の機能試験を実行する",
+      "original_criterion": "位置・階層・参照・複製・削除の全 fixture に一致",
+      "dependencies": "14.018, 13.014",
+      "native_tests": [
+        "/gimp-clone-layer/projected_pixels",
+        "/gimp-clone-layer/partial_update_and_graph",
+        "/gimp-clone-layer/double_precision_and_trc",
+        "/gimp-clone-layer/gray_and_high_precision",
+        "/gimp-clone-layer/cycles"
+      ],
+      "native_receipt": "migration/tests/clone-editability-contract/combined-native.json",
+      "historical_acceptance_record": "migration/acceptance/clone.json",
+      "historical_limits_retained": [
+        "Indexed fixtures, compound transform/resize histories, cross-image non-RGB and prerequisite13.014 complete compositor gate remain open."
+      ],
+      "additional_current_evidence": [
+        "migration/tests/clone-operation-corpus/"
+      ],
+      "closure": "Not changed by this audit; original prerequisite chain remains authoritative.",
+      "specific_claim": "All 30 retained Clone-operation stages, 238 object-model and 268 pixel records compared to independently captured old live-stage output. Not all old saved-file reopen pixels."
+    },
+    "14.020": {
+      "original_action": "CloneLayer の保存後再編集を試験する",
+      "original_criterion": "再読込後の source 編集が反映される",
+      "dependencies": "14.019, 12.016",
+      "native_tests": [
+        "/gimp-clone-layer/serialization_reference_snapshot_and_restore"
+      ],
+      "native_receipt": "migration/tests/clone-editability-contract/combined-native.json",
+      "historical_acceptance_record": "migration/acceptance/clone.json",
+      "historical_limits_retained": [
+        "Full saved artwork matrix and prerequisite12.016 remain open; representative roundtrip tests do not close every field/platform."
+      ],
+      "additional_current_evidence": [
+        "migration/tests/painter-float-xcf/normal.json",
+        "migration/tests/painter-float-xcf/sanitizer-build.json"
+      ],
+      "closure": "Not changed by this audit; original prerequisite chain remains authoritative.",
+      "specific_claim": "clones_edit_save_reopen on two genuine old Clone files: source edit updates reopened Clone, renamed identity/offset/opacity/pixel survive second reopen. Original12.016 dependency retained."
+    }
+  }
+}
