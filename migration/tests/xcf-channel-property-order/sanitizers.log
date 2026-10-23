@@ -1,0 +1,66 @@
+Xvfb verified: 127.0.0.1:92, 1080x1920x24, authenticated accepted, empty authority rejected
+compile app/core/gimpfilterlayer.cpp
+compile app/dialogs/file-save-deferred.cpp
+compile app/paint/painter-mypaint-surface/gimp-painter-options.cpp
+compile app/tests/test-painter-xcf-roundtrip.c
+In file included from [01m[K../source/app/tests/test-painter-xcf-roundtrip.c:1377[m[K:
+[01m[K../source/app/tests/test-painter-xcf-property-order.inc:[m[K In function ‘[01m[Korder_offset[m[K’:
+[01m[K../source/app/tests/test-painter-xcf-property-order.inc:7:35:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+    7 | { if(bytes==4)return order_u32(p);[01;35m[Kguint64[m[K v;memcpy(&v,p,8);return GUINT64_FROM_BE(v); }
+      |                                   [01;35m[K^~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-xcf-property-order.inc:[m[K In function ‘[01m[Korder_after_props[m[K’:
+[01m[K../source/app/tests/test-painter-xcf-property-order.inc:10:51:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   10 |   while(TRUE){g_assert_cmpuint(start+8,<=,length);[01;35m[Kguint32[m[K type=order_u32(p+start),n=order_u32(p+start+4);g_assert_cmpuint(n,<=,length-start-8);start+=8+n;if(!type)return start;}
+      |                                                   [01;35m[K^~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-xcf-property-order.inc:[m[K In function ‘[01m[Kfields_channel_property_order[m[K’:
+[01m[K../source/app/tests/test-painter-xcf-property-order.inc:22:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   22 |   [01;35m[KGimpChannel[m[K *channel=gimp_channel_new(seed,96,80,"order channel",color);g_object_unref(color);
+      |   [01;35m[K^~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-xcf-property-order.inc:25:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   25 |   [01;35m[Kgchar[m[K *contents=NULL;gsize length=0;GError *error=NULL;
+      |   [01;35m[K^~~~~[m[K
+[01m[K../source/app/tests/test-painter-xcf-property-order.inc:27:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   27 |   [01;35m[Kconst[m[K guint8 *raw=(const guint8*)contents;g_assert_cmpuint(length,>,30);
+      |   [01;35m[K^~~~~[m[K
+[01m[K../source/app/tests/test-painter-xcf-property-order.inc:29:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   29 |   [01;35m[Kguint[m[K version=(raw[10]-'0')*100+(raw[11]-'0')*10+raw[12]-'0';guint offset_bytes=version>=11?8:4;
+      |   [01;35m[K^~~~~[m[K
+[01m[K../source/app/tests/test-painter-xcf-property-order.inc:32:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   32 |   [01;35m[Kgsize[m[K channel_pos=order_offset(raw+pos,offset_bytes);g_assert_cmpuint(channel_pos+12,<=,length);
+      |   [01;35m[K^~~~~[m[K
+[01m[K../source/app/tests/test-painter-xcf-property-order.inc:34:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   34 |   [01;35m[Kgsize[m[K begin=channel_pos+12+order_u32(raw+channel_pos+8),end=order_after_props(raw,length,begin);
+      |   [01;35m[K^~~~~[m[K
+[01m[K../source/app/tests/test-painter-xcf-property-order.inc:44:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   44 |     [01;35m[KGimpImage[m[K *image=load(file);
+      |     [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-xcf-property-order.inc:46:105:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   46 |       GList *channels=gimp_image_get_channel_list(image);g_assert_cmpuint(g_list_length(channels),==,1);[01;35m[KGimpChannel[m[K *actual=channels->data;gdouble rgba[4];
+      |                                                                                                         [01;35m[K^~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-xcf-property-order.inc:50:58:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   50 |       g_list_free(channels);if(!repeat){save(image,file);[01;35m[KGimpImage[m[K *copy=load(file);g_object_unref(image);image=copy;}
+      |                                                          [01;35m[K^~~~~~~~~[m[K
+In file included from [01m[K../source/app/tests/test-painter-xcf-roundtrip.c:1379[m[K:
+[01m[K../source/app/tests/test-painter-xcf-multipart.inc:[m[K In function ‘[01m[Kmultipart_roundtrip_size[m[K’:
+[01m[K../source/app/tests/test-painter-xcf-multipart.inc:77:11:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kerror[m[K’ [[01;35m[K-Wunused-variable[m[K]
+   77 |   GError *[01;35m[Kerror[m[K = NULL;
+      |           [01;35m[K^~~~~[m[K
+[01m[K../source/app/tests/test-painter-xcf-multipart.inc:[m[K In function ‘[01m[Kmultipart_native_large[m[K’:
+[01m[K../source/app/tests/test-painter-xcf-multipart.inc:135:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  135 |   [01;35m[Kconst[m[K gchar *requested = g_getenv ("GIMP_TEST_XCF_MULTIPART_MIB");
+      |   [01;35m[K^~~~~[m[K
+[01m[K../source/app/tests/test-painter-xcf-multipart.inc:[m[K In function ‘[01m[Kmultipart_native_owner_duplicate_edit[m[K’:
+[01m[K../source/app/tests/test-painter-xcf-multipart.inc:286:11:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kerror[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  286 |   GError *[01;35m[Kerror[m[K = NULL;
+      |           [01;35m[K^~~~~[m[K
+compile app/tools/gimpfillbrushtool.cpp
+compile app/tools/gimppaintersmudgetool.cpp
+compile app/widgets/gimpmypaintbrushoptions-gui.cpp
+compile app/widgets/gimppaintercompactoptions.cpp
+compile app/widgets/gimppainterlayertiles.cpp
+compile app/widgets/gimppaintermybrusheditor.cpp
+compile app/xcf/xcf-load.c
+painter-provenance 0
+painter-xcf-open 0
+painter-xcf-roundtrip 0
+xcf 0

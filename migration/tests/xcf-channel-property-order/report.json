@@ -1,0 +1,29 @@
+{
+  "task": "12.015/field-owner-checkpoint",
+  "status": "DOING",
+  "change": "Channel byte-opacity load preserves already loaded float RGB instead of color-space round-trip",
+  "cases": {
+    "normal": 97,
+    "sanitizer": 97
+  },
+  "valid_property_permutations": 6,
+  "load_and_resave_per_permutation": 2,
+  "field_rows": [
+    "XCF-F042",
+    "XCF-F046",
+    "XCF-F074",
+    "XCF-F078"
+  ],
+  "original185_row_ledger_unchanged": true,
+  "remaining": "All malformed known properties, recursive graphs, platform behavior and full owner permutations remain open",
+  "alpha_epsilon": 1e-12,
+  "rgb_epsilon": 2e-07,
+  "instrumented_units": 41,
+  "rtti_only_units": 40,
+  "whole_app_instrumented": false,
+  "lsan": false,
+  "native_and_focused_budgets_unchanged": true,
+  "source_seal": "Selected compile-time source/header archive from existing helper plus owned new include snapshot captured after completion; owned files unchanged throughout compile/run and equal detached source at capture. Not a complete dependency-header seal.",
+  "source_contract": "Isolated committed eba681e646 checkpoint plus this xcf-load.c overlay; sibling pending preview/JSON edits excluded;1378/873/16/46 source rules pass.",
+  "ui": "File/model test, not new UI interaction claim"
+}

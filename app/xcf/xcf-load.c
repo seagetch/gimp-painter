@@ -2313,7 +2313,17 @@ xcf_load_channel_props (XcfInfo      *info,
 
             xcf_read_int32 (info, &opacity, 1);
 
-            gimp_channel_set_opacity (*channel, opacity / 255.0, FALSE);
+            /* Changing wire alpha must not round-trip an already loaded
+             * FLOAT_COLOR through linear float RGB. Preserve independent
+             * color components regardless of valid property ordering. */
+            {
+              gdouble rgba[4];
+              gegl_color_get_pixel ((*channel)->color,
+                                    babl_format ("R'G'B'A double"), rgba);
+              rgba[3] = CLAMP (opacity / 255.0, 0.0, 1.0);
+              gegl_color_set_pixel ((*channel)->color,
+                                    babl_format ("R'G'B'A double"), rgba);
+            }
           }
           break;
 
