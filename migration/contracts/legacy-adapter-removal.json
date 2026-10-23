@@ -585,6 +585,18 @@
         "app/tools/gimppainterpainttoolbar.c"
       ],
       "reason": "Borrowed mode widget is packed into its toolbar before publication. The only current accessor consumer in gimppainttool.c obtains the canonical dock GUI via gimp_tools_get_tool_options_gui, never this independent toolbar. Canvas update/close destroys independent roots without reading child metadata. A retained destroyed toolbar may have stale metadata; this review does not authorize reading it after child destruction."
+    },
+    "native-session-continuation": {
+      "paths": [
+        "app/gui/session.c"
+      ],
+      "reason": "Native C SessionContinuation allocated with g_new0, owned by Gimp qdata with session_continuation_free. Destructor removes idle source, disconnects weak factory/configurer observers, clears weak refs and frees storage. Idle callback retains Gimp from weak ref; no C++ Impl, legacy adapter, alternative BindingStore or strong cycle. Review and95 native cases: migration/tests/native-data-site-review/"
+    },
+    "native-text-metrics": {
+      "paths": [
+        "app/tools/gimppaintertexttoolbar.inc"
+      ],
+      "reason": "Native C GimpSizeEntry metadata: borrowed options retained by containing toolbar until native child destruction; destroy disconnects bidirectional size/unit handlers and weak context/image observers. PainterTextMetrics is g_new0/g_free native C bookkeeping, weak image/context, qdata destroy notifier clears GWeakRef. Not feature C++ Impl storage; retained destroyed controls must not use former options. Review and95 native cases: migration/tests/native-data-site-review/"
     }
   },
   "syntax_exceptions": [
@@ -5286,6 +5298,54 @@
       "count": 1,
       "reason": "Native XcfEffectsData list transfers through g_steal_pointer to the unchanged xcf_load_free_effects destructor. No C++ implementation state.",
       "provenance": "native-xcf-effects"
+    },
+    {
+      "path": "app/gui/session.c",
+      "operation": "g_object_get_data",
+      "sha256": "b7dc828d91763f728932afdd63630c5b935e8d4b0e58fafb60f155c40cf74516",
+      "count": 1,
+      "reason": "Native C SessionContinuation allocated with g_new0, owned by Gimp qdata with session_continuation_free. Destructor removes idle source, disconnects weak factory/configurer observers, clears weak refs and frees storage. Idle callback retains Gimp from weak ref; no C++ Impl, legacy adapter, alternative BindingStore or strong cycle.",
+      "provenance": "native-session-continuation"
+    },
+    {
+      "path": "app/gui/session.c",
+      "operation": "g_object_set_data_full",
+      "sha256": "c8e4712336ee4dda6b08f2f2f7e73fe11125240e516ebe6115b271c351e6dbd2",
+      "count": 1,
+      "reason": "Native C SessionContinuation allocated with g_new0, owned by Gimp qdata with session_continuation_free. Destructor removes idle source, disconnects weak factory/configurer observers, clears weak refs and frees storage. Idle callback retains Gimp from weak ref; no C++ Impl, legacy adapter, alternative BindingStore or strong cycle.",
+      "provenance": "native-session-continuation"
+    },
+    {
+      "path": "app/tools/gimppaintertexttoolbar.inc",
+      "operation": "g_object_get_data",
+      "sha256": "277844a5876acbdaf968b02f569983584302402a210af1dffe1f9f14db9cd039",
+      "count": 2,
+      "reason": "Native C GimpSizeEntry metadata: borrowed options retained by containing toolbar until native child destruction; destroy disconnects bidirectional size/unit handlers and weak context/image observers. PainterTextMetrics is g_new0/g_free native C bookkeeping, weak image/context, qdata destroy notifier clears GWeakRef. Not feature C++ Impl storage; retained destroyed controls must not use former options.",
+      "provenance": "native-text-metrics"
+    },
+    {
+      "path": "app/tools/gimppaintertexttoolbar.inc",
+      "operation": "g_object_get_data",
+      "sha256": "4be6bc187a8ceb32264734e14feaf96f19a2a1b131c2ad0769e8536e145a56c6",
+      "count": 1,
+      "reason": "Native C GimpSizeEntry metadata: borrowed options retained by containing toolbar until native child destruction; destroy disconnects bidirectional size/unit handlers and weak context/image observers. PainterTextMetrics is g_new0/g_free native C bookkeeping, weak image/context, qdata destroy notifier clears GWeakRef. Not feature C++ Impl storage; retained destroyed controls must not use former options.",
+      "provenance": "native-text-metrics"
+    },
+    {
+      "path": "app/tools/gimppaintertexttoolbar.inc",
+      "operation": "g_object_set_data",
+      "sha256": "c8929c5fe8774374097ebd8a70c88d0fa2663ed5e09f7a863bf967728064659a",
+      "count": 1,
+      "reason": "Native C GimpSizeEntry metadata: borrowed options retained by containing toolbar until native child destruction; destroy disconnects bidirectional size/unit handlers and weak context/image observers. PainterTextMetrics is g_new0/g_free native C bookkeeping, weak image/context, qdata destroy notifier clears GWeakRef. Not feature C++ Impl storage; retained destroyed controls must not use former options.",
+      "provenance": "native-text-metrics"
+    },
+    {
+      "path": "app/tools/gimppaintertexttoolbar.inc",
+      "operation": "g_object_set_data_full",
+      "sha256": "dff18e62f1451db9d866a71b98f479dbbfce2813cd53d42f4e769189ebd19655",
+      "count": 1,
+      "reason": "Native C GimpSizeEntry metadata: borrowed options retained by containing toolbar until native child destruction; destroy disconnects bidirectional size/unit handlers and weak context/image observers. PainterTextMetrics is g_new0/g_free native C bookkeeping, weak image/context, qdata destroy notifier clears GWeakRef. Not feature C++ Impl storage; retained destroyed controls must not use former options.",
+      "provenance": "native-text-metrics"
     }
   ],
   "dormant_exceptions": [

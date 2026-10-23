@@ -119,3 +119,13 @@ destroy/transfer behavior and caller lifetime. Changing policy solely to make
 the count pass is not a removal proof. The pinned inventories retain their
 unfulfilled runtime obligations, and original 05.014 has no direct source-work
 ledger rows to reassign or mark complete.
+
+## 2026-10-21 native C data-site review
+
+The original counts above describe the contract checkpoint, not current source
+population. Six newly audited fingerprints at seven native C calls in session
+continuation and text metrics now have exact ownership reviews. The unchanged
+gate passes2491sources/705data calls;69 positive/negative controls and95 native
+GUI cases pass. No blanket C-file exception or feature-completion claim is added.
+See `migration/tests/native-data-site-review/` for preserved failing scan, complete
+native stdout/stderr, source hashes and review limits.
