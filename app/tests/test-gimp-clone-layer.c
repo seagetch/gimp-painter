@@ -38,6 +38,19 @@ G_DEFINE_TYPE (TestBrokenClone, test_broken_clone, GIMP_TYPE_CLONE_LAYER)
 static void test_broken_clone_class_init (TestBrokenCloneClass *klass) {}
 static void test_broken_clone_init (TestBrokenClone *clone)
 { gimp_painter_binding_close (G_OBJECT (clone), NULL); }
+typedef struct { GimpCloneLayer parent; } TestLifecycleClone;
+typedef struct { GimpCloneLayerClass parent; } TestLifecycleCloneClass;
+static guint lifecycle_finalizes;
+GType test_lifecycle_clone_get_type (void);
+G_DEFINE_TYPE (TestLifecycleClone, test_lifecycle_clone, GIMP_TYPE_CLONE_LAYER)
+static void test_lifecycle_clone_finalize (GObject *object)
+{
+  lifecycle_finalizes++;
+  G_OBJECT_CLASS (test_lifecycle_clone_parent_class)->finalize (object);
+}
+static void test_lifecycle_clone_class_init (TestLifecycleCloneClass *klass)
+{ G_OBJECT_CLASS (klass)->finalize = test_lifecycle_clone_finalize; }
+static void test_lifecycle_clone_init (TestLifecycleClone *clone) {}
 static Gimp *gimp;
 static void cpp_header_layout (void);
 static GimpImage *new_image (void)
@@ -1108,6 +1121,66 @@ static void inert_construction (void)
   g_object_unref (clone);
   g_object_unref (image);
 }
+static void native_type_lifecycle (void)
+{
+  GTypeQuery query;
+  GimpImage *image = new_image ();
+  GimpLayer *layer = gimp_clone_layer_new (image, NULL, 7, 9, "native clone", 0.75,
+                                           GIMP_LAYER_MODE_NORMAL);
+  GimpLayer *weak_layer = layer;
+  gboolean failed = TRUE;
+  gint item_id;
+  g_type_query (GIMP_TYPE_CLONE_LAYER, &query);
+  g_assert_cmpuint (g_type_parent (GIMP_TYPE_CLONE_LAYER), ==, GIMP_TYPE_LAYER);
+  g_assert_cmpuint (query.instance_size, ==, sizeof (GimpCloneLayer));
+  g_assert_cmpuint (query.class_size, ==, sizeof (GimpCloneLayerClass));
+  g_assert_true (g_type_is_a (GIMP_TYPE_CLONE_LAYER, GIMP_TYPE_PICKABLE));
+  g_assert_nonnull (layer);
+  g_object_ref_sink (layer);
+  g_object_get (layer, "binding-failed", &failed, NULL);
+  g_assert_false (failed);
+  g_assert_cmpuint (G_OBJECT_TYPE (layer), ==, GIMP_TYPE_CLONE_LAYER);
+  g_assert_cmpstr (gimp_object_get_name (layer), ==, "native clone");
+  g_assert_cmpint (gimp_item_get_width (GIMP_ITEM (layer)), ==, 7);
+  g_assert_cmpint (gimp_item_get_height (GIMP_ITEM (layer)), ==, 9);
+  g_assert_cmpfloat (gimp_layer_get_opacity (layer), ==, 0.75);
+  g_assert_nonnull (gimp_drawable_get_buffer (GIMP_DRAWABLE (layer)));
+  g_assert_cmpint (gimp_clone_layer_get_source_state (GIMP_CLONE_LAYER (layer)), ==,
+                    GIMP_CLONE_SOURCE_NONE);
+  item_id = gimp_item_get_id (GIMP_ITEM (layer));
+  g_object_add_weak_pointer (G_OBJECT (layer), (gpointer *) &weak_layer);
+  g_object_unref (layer);
+  g_assert_null (weak_layer);
+  g_assert_null (gimp_item_get_by_id (gimp, item_id));
+
+  /* A separately defined native C descendant observes the real finalize chain,
+   * rather than confusing weak notification during dispose with finalization. */
+  for (gint explicit_dispose = 0; explicit_dispose < 2; explicit_dispose++)
+    {
+      GError *error = NULL;
+      lifecycle_finalizes = 0;
+      layer = g_object_new (test_lifecycle_clone_get_type (), "image", image, NULL);
+      g_object_ref_sink (layer);
+      item_id = gimp_item_get_id (GIMP_ITEM (layer));
+      g_object_get (layer, "binding-failed", &failed, NULL);
+      g_assert_false (failed);
+      g_assert_true (gimp_clone_layer_set_source_full (GIMP_CLONE_LAYER (layer), NULL, &error));
+      g_assert_no_error (error);
+      if (explicit_dispose)
+        {
+          g_object_run_dispose (G_OBJECT (layer));
+          g_object_run_dispose (G_OBJECT (layer));
+          g_assert_cmpuint (lifecycle_finalizes, ==, 0);
+          g_assert_false (gimp_clone_layer_set_source_full (GIMP_CLONE_LAYER (layer), NULL, &error));
+          g_assert_error (error, GIMP_PAINTER_ERROR, GIMP_PAINTER_ERROR_CLOSED);
+          g_clear_error (&error);
+        }
+      g_object_unref (layer);
+      g_assert_cmpuint (lifecycle_finalizes, ==, 1);
+      g_assert_null (gimp_item_get_by_id (gimp, item_id));
+    }
+  g_object_unref (image);
+}
 static void replace_on_update (GimpDrawable *drawable, gint x, gint y, gint w, gint h, gpointer data)
 {
   GimpLayer **replacement = data;
@@ -1310,6 +1383,7 @@ int main (int argc, char **argv)
   ADD (dissolve_legacy_fixture); ADD (gray_and_high_precision);
   ADD (frozen_source_disposal); ADD (group_duplicate_internal_reference);
   ADD (inert_construction); ADD (reentrant_source_replace); ADD (cpp_header_layout); ADD (projected_pixels); ADD (partial_update_and_graph); ADD (deferred_name);
+  ADD (native_type_lifecycle);
   ADD (recursive_first_match); ADD (offset_size_and_noop_transforms);
   ADD (source_delete_undo); ADD (source_lifetime_and_detach); ADD (freeze_and_close); ADD (cycles);
   ADD (duplicate_and_group_update);
