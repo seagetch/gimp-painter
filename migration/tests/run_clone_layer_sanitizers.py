@@ -17,6 +17,7 @@ import sys
 import runpy
 
 RTTI_SCOPE = runpy.run_path(str(Path(__file__).with_name("painter_sanitizer_scope.py")))
+lexical_path = RTTI_SCOPE["lexical_path"]
 
 SOURCES = frozenset({
     "app/core/gimpitem.c", "app/core/gimpclonelayer.cpp", "app/core/gimpgrouplayer.c",
@@ -55,29 +56,29 @@ def object_name(source):
 def archive_arguments(link_text, build):
     argv = shlex.split(link_text.strip().splitlines()[-1])
     return sorted({arg for arg in argv if arg.endswith(".a") and
-                   (build / arg).resolve().is_relative_to(build)})
+                   lexical_path(build / arg).is_relative_to(build)})
 
 
 def build_plan(root, build, output, entries, link_text, archive_members):
     """Select exact linked production members, never standalone test aliases."""
-    root, build, output = Path(root), Path(build), Path(output)
+    root, build, output = map(lexical_path, (root, build, output))
     argv = shlex.split(link_text.strip().splitlines()[-1])
     if set(archive_members) != set(archive_arguments(link_text, build)):
         raise RuntimeError("Missing or extra linked archive member inventory")
-    linked = {(build / arg).resolve() for arg in argv if arg.endswith(".o")}
-    linked.update(Path(member) for members in archive_members.values() for member in members)
-    rtti = RTTI_SCOPE["bridge_rtti_sources"](root, build, entries=entries)
+    linked = {lexical_path(build / arg) for arg in argv if arg.endswith(".o")}
+    linked.update(lexical_path(member) for members in archive_members.values() for member in members)
+    rtti = RTTI_SCOPE["bridge_rtti_sources"](root, build, entries=entries, resolve_paths=False)
     selected = {}
     for index, entry in enumerate(entries):
-        source = (Path(entry["directory"]) / entry["file"]).resolve()
+        source = lexical_path(Path(entry["directory"]) / entry["file"])
         if not source.is_relative_to(root):
             continue
         relative = source.relative_to(root).as_posix()
         if relative not in SOURCES | rtti:
             continue
         original = list(entry.get("arguments") or shlex.split(entry["command"]))
-        original_object = (Path(entry["directory"]) /
-                           (entry.get("output") or original[original.index("-o") + 1])).resolve()
+        original_object = lexical_path(Path(entry["directory"]) /
+                           (entry.get("output") or original[original.index("-o") + 1]))
         if original_object not in linked:
             continue
         if relative in selected:
@@ -102,13 +103,13 @@ def build_plan(root, build, output, entries, link_text, archive_members):
         changed = any(member in absolute for member in members)
         replacement = str(output / ("archive-" + arg.replace("/", "_"))) if changed else None
         mapped = [absolute.get(member, member) for member in members if member not in anchored_originals]
-        archives.append({"argument": arg, "original_path": str((build / arg).resolve()),
+        archives.append({"argument": arg, "original_path": str(lexical_path(build / arg)),
             "members": members, "replacement": replacement, "replacement_members": mapped,
             "command": ["ar", "crsT", replacement, *mapped] if changed else None})
         if changed:
             replacements[arg] = replacement
     for arg in argv:
-        absolute_arg = str((build / arg).resolve())
+        absolute_arg = str(lexical_path(build / arg))
         if absolute_arg in absolute:
             replacements[arg] = None if absolute_arg in anchored_originals else absolute[absolute_arg]
     linked_rtti = set(selected) - SOURCES
@@ -128,7 +129,7 @@ def output_paths(build, explicit):
 
 def link_command(link_text, build, exe, replacements, extra, relocate_origin):
     link = shlex.split(link_text.strip().splitlines()[-1])
-    original_exe = (build / link[link.index("-o") + 1]).resolve()
+    original_exe = lexical_path(build / link[link.index("-o") + 1])
     if relocate_origin:
         # Preserve the normal executable's loader resolution after relocation.
         # Expand ORIGIN only; other dynamic loader tokens keep their semantics.
@@ -150,14 +151,23 @@ def gimp_library_paths(output):
         if match:
             if match[1] in libraries:
                 raise RuntimeError("Duplicate dynamic library resolution")
-            libraries[match[1]] = str(Path(match[2]).resolve())
+            # Keep the loader's spelling for live resolution (symlink/.. matters).
+            # Offline validation normalizes only against its sealed inventory.
+            libraries[match[1]] = match[2]
     if not libraries:
         raise RuntimeError("No current-build libgimp loader resolutions found")
     return libraries
 
 
 def library_resolution(normal_output, sanitizer_output, build):
-    normal, sanitizer = gimp_library_paths(normal_output), gimp_library_paths(sanitizer_output)
+    # Native execution still resolves actual aliases and hashes their real ELF.
+    def live_paths(text):
+        try:
+            return {name: str(Path(path).resolve(strict=True))
+                    for name, path in gimp_library_paths(text).items()}
+        except OSError as error:
+            raise RuntimeError("Dynamic loader path is absent from the live build") from error
+    normal, sanitizer = live_paths(normal_output), live_paths(sanitizer_output)
     if normal != sanitizer:
         raise RuntimeError("Normal and sanitizer resolve different libgimp libraries")
     result = {}
@@ -207,10 +217,10 @@ def main(argv=None):
         link_text = run(["ninja", "-t", "commands", "app/tests/gimp-clone-layer"]).stdout
         archive_members, original_archives = {}, {}
         for archive in archive_arguments(link_text, build):
-            original = (build / archive).resolve()
+            original = lexical_path(build / archive)
             original_archives[archive] = hashlib.sha256(original.read_bytes()).hexdigest()
             listing = run(["ar", "t", archive]).stdout
-            archive_members[archive] = [str((build / member).resolve()) for member in listing.splitlines()]
+            archive_members[archive] = [str(lexical_path(build / member)) for member in listing.splitlines()]
         plan = build_plan(root, build, output, entries, link_text, archive_members)
         report["build_plan"] = plan
         report["sources"] = plan["instrumented_sources"]

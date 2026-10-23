@@ -10,7 +10,7 @@ import unittest
 from unittest.mock import patch
 from clone_evidence import (ROOT, TARGETS, INSTRUMENTED, NEW_TESTS, PUBLIC_FILES, SCOPE,
     aggregate, canonical, digest, exact_tap, selected_gate, public_json,
-    public_meson_text, validate_receipt, load_module, filtered_environment)
+    public_meson_text, validate_receipt, load_module, filtered_environment, sealed_library_paths)
 
 sanrunner = load_module(ROOT / 'migration/tests/run_clone_layer_sanitizers.py', 'clone_san_controls')
 
@@ -139,6 +139,58 @@ class PrimitiveControls(unittest.TestCase):
                 with self.assertRaises(RuntimeError):
                     sanrunner.library_resolution(line, wrong, build)
 
+    def test_loader_alias_chain_uses_only_sealed_inventory(self):
+        terminal = {'sha256': 'a' * 64, 'bytes': 32, 'mode': '0o755'}
+        aliases = {'lib/libgimp.so': {'symlink': 'libgimp.so.0', 'content': terminal},
+                   'lib/libgimp.so.0': {'symlink': 'libgimp.so.0.8.1', 'content': terminal},
+                   'lib/libgimp.so.0.8.1': terminal}
+        with patch.object(Path, 'resolve', side_effect=AssertionError('Archived path consulted live filesystem')):
+            parsed = sanrunner.gimp_library_paths('libgimp.so => /absent-build/lib/../lib/libgimp.so (0x1234)')
+            self.assertEqual(sealed_library_paths(parsed, Path('/absent-build'), aliases),
+                             {'libgimp.so': '/absent-build/lib/libgimp.so.0.8.1'})
+
+    def test_loader_alias_missing_cycle_escape_and_content_tamper_rejected(self):
+        terminal = {'sha256': 'a' * 64, 'bytes': 32, 'mode': '0o755'}
+        good = {'lib/alias': {'symlink': 'target', 'content': terminal}, 'lib/target': terminal}
+        variants = []
+        missing = deepcopy(good); del missing['lib/target']; variants.append(missing)
+        missing_alias = deepcopy(good); del missing_alias['lib/alias']; variants.append(missing_alias)
+        cycle = deepcopy(good); cycle['lib/alias']['symlink'] = 'alias'; variants.append(cycle)
+        for target in ('../../outside', '/outside/target'):
+            escape = deepcopy(good); escape['lib/alias']['symlink'] = target; variants.append(escape)
+        wrong = deepcopy(good); wrong['lib/alias']['content'] = dict(terminal, sha256='b' * 64); variants.append(wrong)
+        wrong = deepcopy(good); wrong['lib/target'] = dict(terminal, sha256='b' * 64); variants.append(wrong)
+        for inventory in variants:
+            with self.subTest(inventory=inventory), self.assertRaises(ValueError):
+                sealed_library_paths({'libgimp.so': '/absent-build/lib/alias'}, Path('/absent-build'), inventory)
+        chain = {str(i): {'symlink': str(i + 1), 'content': terminal} for i in range(41)}
+        chain['41'] = terminal
+        with self.assertRaisesRegex(ValueError, 'exceeds 40'):
+            sealed_library_paths({'libgimp.so': '/absent-build/0'}, Path('/absent-build'), chain)
+
+    def test_native_loader_resolves_and_hashes_actual_symlinks(self):
+        with tempfile.TemporaryDirectory() as directory:
+            build = Path(directory)
+            target = build / 'libgimp.so.0.8.1'; target.write_bytes(b'mocked ELF')
+            alias = build / 'libgimp.so.0'; alias.symlink_to(target.name)
+            line = 'libgimp.so.0 => ' + str(alias) + ' (0x1234)\n'
+            self.assertEqual(sanrunner.library_resolution(line, line, build),
+                             {'libgimp.so.0': {'path': str(target), 'sha256': digest(target.read_bytes())}})
+            alias.unlink(); alias.symlink_to('/absent-outside/libgimp.so')
+            with self.assertRaises(RuntimeError):
+                sanrunner.library_resolution(line, line, build)
+
+    def test_native_loader_preserves_symlink_directory_dotdot_semantics(self):
+        with tempfile.TemporaryDirectory() as directory:
+            build = Path(directory)
+            target = build / 'target'; (target / 'subdir').mkdir(parents=True)
+            (build / 'alias').symlink_to(target / 'subdir', target_is_directory=True)
+            real = target / 'libgimp.so'; real.write_bytes(b'actual loader target')
+            (build / 'libgimp.so').write_bytes(b'lexical decoy')
+            line = 'libgimp.so => ' + str(build / 'alias/../libgimp.so') + ' (0x1234)\n'
+            self.assertEqual(sanrunner.library_resolution(line, line, build),
+                             {'libgimp.so': {'path': str(real), 'sha256': digest(real.read_bytes())}})
+
     def test_failed_compile_preserves_exit_diagnostics_and_normal_object(self):
         with tempfile.TemporaryDirectory() as directory:
             base = Path(directory)
@@ -195,7 +247,8 @@ class ReceiptControls(unittest.TestCase):
         self.transforms = {}
         self.write('source-integrity.json', {'before_build': source, 'before_tests': source, 'after': source})
         elf = {name: {'sha256': 'a' * 64, 'bytes': 32, 'mode': '0o755'} for name in aggregate.EXECUTABLES}
-        elf['libgimpbase/libgimpbase-3.0.so.0'] = {'sha256': 'a' * 64, 'bytes': 32, 'mode': '0o755'}
+        elf['libgimpbase/libgimpbase-3.0.so.0.8.1'] = {'sha256': 'a' * 64, 'bytes': 32, 'mode': '0o755'}
+        elf['libgimpbase/libgimpbase-3.0.so.0'] = {'symlink': 'libgimpbase-3.0.so.0.8.1', 'content': elf['libgimpbase/libgimpbase-3.0.so.0.8.1']}
         self.write('elf-integrity.json', {'before': elf, 'after': elf})
         raw_registry = canonical(self.rows)
         self.transformed('registered-tests.json', raw_registry)
@@ -240,7 +293,7 @@ class ReceiptControls(unittest.TestCase):
         san = {'sanitizers': ['address', 'undefined'], 'leak_detection': False, 'sources': sorted(INSTRUMENTED),
                'exit_code': 0, 'stdout': tap(NEW_TESTS), 'stderr': '', 'commands': [r['command'] for r in executions],
                'executions': executions, 'executable': exe, 'origin_relocation': 'expand-against-original-executable-directory',
-               'library_resolution': {'libgimpbase-3.0.so.0': {'path': library, 'sha256': 'a' * 64}}}
+               'library_resolution': {'libgimpbase-3.0.so.0': {'path': library + '.8.1', 'sha256': 'a' * 64}}}
         san.update(build_plan=plan, rtti_compatibility_only_sources=plan['rtti_compatibility_only_sources'],
                    original_archive_sha256_before={'libnormal.a': 'c' * 64}, original_archive_sha256_after={'libnormal.a': 'c' * 64})
         self.transformed('sanitizers.json', canonical(san))
@@ -293,6 +346,28 @@ class ReceiptControls(unittest.TestCase):
         self.assertFalse(original.exists())
         self.assertEqual(self.receipt['source_directory'], str(original))
         self.assertEqual(self.validate(), [])
+
+    def test_absent_source_and_build_validate_with_sealed_loader_aliases(self):
+        original = self.root
+        self.root = self.base / 'relocated-checkout'
+        shutil.move(str(original), str(self.root))
+        build = Path(self.receipt['build_directory'])
+        self.assertFalse(original.exists())
+        self.assertFalse(build.exists())
+        original_resolve = Path.resolve
+        def reject_historical(path, *args, **kwargs):
+            if path.is_relative_to(original) or path.is_relative_to(build):
+                raise AssertionError('Historical source/build filesystem consulted: ' + str(path))
+            return original_resolve(path, *args, **kwargs)
+        with patch.object(Path, 'resolve', reject_historical):
+            self.assertEqual(self.validate(), [])
+
+    def test_resealed_loader_alias_tamper_rejected(self):
+        data = json.loads((self.output / 'elf-integrity.json').read_text())
+        for state in data.values():
+            state['libgimpbase/libgimpbase-3.0.so.0']['content']['sha256'] = 'b' * 64
+        self.write('elf-integrity.json', data); self.seal()
+        self.assertTrue(any('alias content differs' in error for error in self.validate()))
 
     def test_tampered_execution_source_directory_rejected(self):
         self.receipt['source_directory'] = str(self.base / 'invented-execution-root')
