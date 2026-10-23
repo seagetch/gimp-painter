@@ -942,10 +942,12 @@ static void colorpicker_visual_demo ()
 
 #include "test-painter-layer-mask.inc"
 #include "test-painter-layer-mask-visual.inc"
+#include "test-painter-projection-notify.inc"
 
 int main(int argc,char**argv)
 {
   g_test_init(&argc,&argv,nullptr);if(!gtk_init_check(&argc,&argv))return GIMP_EXIT_TEST_SKIPPED;gimp_test_utils_setup_menus_path();gimp=gimp_init_for_gui_testing(TRUE);
+  g_test_add_func("/painter-tool/projection/visible-update",ProjectionNotify::visible_update);
   if (g_getenv("GIMP_TEST_LAYER_MASK_VISUAL_DIR"))
     g_test_add_func("/painter-tool/layer-mask/visual-capture",layer_mask_visual_capture);
   g_test_add_func("/painter-tool/layer-mask/raw-apply-parity",layer_mask_raw_paint_apply_parity);

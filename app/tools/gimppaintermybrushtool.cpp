@@ -232,7 +232,19 @@ void release(GimpTool*tool,const GimpCoords*coords,guint32 time,GdkModifierType 
       return i.busy;
     });
     if(gimp_tool_control_is_active(tool->control))gimp_tool_control_halt(tool->control);
-    if(type==GIMP_BUTTON_RELEASE_CANCEL){auto current=session(tool);gimp_painter_session_cancel(current.get(),nullptr);}
+    if(type==GIMP_BUTTON_RELEASE_CANCEL){
+      auto display_owner=ObjectRef<GimpDisplay>::retain(display);
+      auto image=ObjectRef<GimpImage>::retain(gimp_display_get_image(display));
+      auto current=session(tool);gimp_painter_session_cancel(current.get(),nullptr);
+      // Native cancel restores pixels and invalidates the projection, but unlike
+      // a motion it does not schedule display evaluation. Publish the rollback
+      // now; a reentrant cancellation during input is flushed by that input.
+      if(!busy&&image&&gimp_display_get_image(display_owner.get())==image.get()){
+        gimp_projection_finish_draw(gimp_image_get_projection(image.get()));
+        gimp_projection_flush(gimp_image_get_projection(image.get()));
+        gimp_display_flush_now(display_owner.get());
+      }
+    }
     else if(!busy)input(tool,coords,time,display,false); // engine decides the idle split
     g_clear_pointer(&tool->drawables,g_list_free);
   });

@@ -1,0 +1,47 @@
+{
+  "task": "09.013",
+  "criterion": "変更領域が表示へ伝わる",
+  "native_tap_count": 47,
+  "sanitizer_tap_count": 1,
+  "visual_captures": 4,
+  "monitor": [
+    1080,
+    1920,
+    24
+  ],
+  "oncanvas": true,
+  "actual_native_mutants_rejected": 3,
+  "instrumented_units": 15,
+  "vptr": false,
+  "lsan": false,
+  "whole_application": false,
+  "whole_graph_consumer_coverage": false,
+  "source_sha256": {
+    "app/display/gimpdisplay.c": "59dbb5a4431fb61e17c563f056d37910838229e09c8cd46a1f0525ba563d59be",
+    "app/tests/test-painter-layer-mask.inc": "7b29bb5edb0ef2cda83ef92cf831964287db832919e21388e14f2099942b84f6",
+    "app/core/gimpimage-undo.c": "38d66dbc67000da9ae6a8641a67638ba627c2b15ea8da05e04dbd1d8a8e289d5",
+    "app/core/gimpdrawableundo.c": "405eaa3396158eceb32c27ca6e4361e55b46bd1eca2a23d2d26871687159635b",
+    "app/tests/test-painter-layer-mask-visual.inc": "13505981e783f5de1e18d8c57bff502eada5c0bf5cc0ec3ebf29b79317850cc3",
+    "app/core/gimpprojection.c": "b64a76fcaf8912a9164f258390dc5ec50551c4ae6ccae5f34d513ee101a4be60",
+    "app/paint/painter-mypaint-surface/gegl-surface.hpp": "884084cf46a02639014ab8e777f55155cdd4571807f196874b6f7c68f7fe324d",
+    "app/core/gimpundostack.c": "5786a794927f6f0df7a523d575f456c03ae20983cda55434f91884cc5a85a74e",
+    "app/tests/test-painter-mypaint-tool.cpp": "76ca85e2c3ee09b2e08d812a97fc11bbcadfecb0fb2f046e21918bf06dfccce0",
+    "app/tools/gimppaintermybrushtool.cpp": "5da4fc3eb23dbd062c0c7f61bd8880ad5daa61a6cdbaa1393b66411e31837c2c",
+    "app/display/gimpdisplay-handlers.c": "fb0c932e26583ab4effebe19179fd16164637bc8ec7b1e929d07b816b0d81a2e",
+    "app/paint/painter-mypaint/engine.cpp": "dafdaf2a791d51e3f1ce39642bc2ef7f06d09e8af66de07ba89848adba3aa94a",
+    "app/paint/painter-mypaint-surface/gegl-surface.cpp": "12c27f207cb704f0a0a94c0d9871de5a77345b2fe96c104f42349f123ffe4245",
+    "app/tests/test-painter-projection-notify.inc": "2ff44fd0419e2f575ff50b37796fb6b3a754cdc58ffbd6b8ed0ec02c89d18f52",
+    "app/painter/object-ref.hpp": "5a8cc92afc56f652fd47c727269d71d9d97c4358015f13fe9c4764371fcb7c3a",
+    "app/paint/gimppaintcore.c": "306710d7b6ae412e7e12bcedaf85b5f9bd4b43de2a7f424dca2bb82a9c6a16be",
+    "app/paint/painter-mypaint-surface/paint-core.cpp": "b76d784b6173aba483cc88524db66d1d13a3f22c56c96de871c16f73772863d5",
+    "app/paint/painter-mypaint/resource.cpp": "ea2006b960d8e03de5c9ef77299f336d51430b4d30865bf3f37bbe2dc874f14f",
+    "app/paint/painter-mypaint-surface/paint-core.hpp": "7b7ee841d0ffbf7cf6f77f3f0fc38d6e0f4009878a346bef310fd11a329775cc",
+    "app/core/gimpundo.c": "006eaa9507c6f9e22d6e3c9b43e71b988e4fe89079f0bad1732deddfbeccded0",
+    "app/core/gimpdrawable.c": "b7ecbd0ceb9bb3eff0689d978758ed5feead9afa4683a8b6d64521e7eebd506a"
+  },
+  "causal_red_source_sha256": {
+    "app/tests/test-painter-projection-notify.inc": "cd49623dc9b3c1ae6f841361236679b8a10419590ec457d6d477ca8dc18aa1bf",
+    "app/tools/gimppaintermybrushtool.cpp": "5d8f5122d20b38be69669b8a0a47f700aa12242ac9c6fe8113bd06ba7c4aedaf"
+  },
+  "fixture_evolution": "Final fixture adds setup-only projection readiness and a fault-injection phase tag. It never flushes between input/cancel and capture. Exact final fixture rejects removal of the cancellation flush, preserving causal regression after readiness refinement."
+}
