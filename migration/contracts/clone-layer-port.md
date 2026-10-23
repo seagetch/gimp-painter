@@ -339,3 +339,116 @@ receipt's baseline evidence, rather than hidden by replacing expected hashes.
 The current receipt supports only these actual current reruns. It does not
 refresh older broad integration checkpoints, claim a new genuine legacy capture,
 or close the parent, blend-mode, GUI, full aggregate, platform or release gates.
+
+## Installed component-visibility portrait GUI smoke (2026-10-17)
+
+Task `34.005/clone-components-portrait-smoke` is accepted only for this bounded
+modern installed-application workflow. It is separate from the native component
+matrix above. The original `14.007`, `14.006`, `34.005`, legacy UI-equivalence,
+aggregate, platform, release and whole-port gates remain open. The historical
+Edge runtime pilot remains **SKIPPED**; it was not resumed.
+
+The exact tested public commit is
+`1d2b621a15801601af95fd5e44cfc46f4a6ee750`, tree
+`8addde80f58b198d1be02b5341cc6bcb34618cc0`. The existing official Debian dependency
+environment was used for the complete incremental default target (96 steps,
+exit 0), followed by Meson install `--no-rebuild` (exit 0). This was not a new
+clean build or native aggregate rerun. The installed GIMP 3.0.9 process used a
+fresh writable profile and authenticated loopback-only TCP Xvfb at
+1080 by 1920, depth 24. A valid client connected and an empty-authority client
+was rejected. Ordinary XTest mouse/keyboard input drove the actual application;
+all 32 full-screen PNGs are unedited raw XGetImage captures.
+
+### Observed bounded workflow
+
+1. Open the 720 by 1080 synthetic u8 RGB study, enable View > Painter Canvas
+   Controls, and name the ordinary visible source layer `Synthetic Source`.
+   Actual Painter tile popup > New Clone Layer immediately creates the separate
+   above-source `Clone Layer`, in Normal (Painter legacy) mode. Clone Source
+   reports `Keep current reference: Synthetic Source (live)`. Choosing No source
+   and then Cancel leaves that live reference unchanged on reopening.
+2. Open Windows > Dockable Dialogs > Channels and click **only the Red eye**,
+   without clicking a component row or thumbnail. On the original source, use
+   Pencil (N), the solid `2. Hardness 100` brush at 140 image pixels, 100% opacity,
+   dynamics disabled, and white foreground. A single local dab A is made while
+   Red is hidden. Restoring Red leaves A cyan in the visible Clone; hiding only
+   Clone reveals white A in the source. This also confirms that Red remained
+   editable while its display eye was off.
+3. The actual refreshed cache contains a **rectangular** component-masked area
+   around the dab: the sun is green there and orange outside it. The local
+   paint-update rectangle is wider than the round brush footprint; no
+   brush-footprint-only update claim is made. Showing Clone and toggling Red
+   off/on again without a source edit produces byte-identical full screenshots
+   (`017-red-restored-cyan-clone-a.png` and `019-no-eager-toggle-rewrite.png`).
+4. Save `clone-components-mixed.xcf`, close the view, and reopen through ordinary
+   Open. Restore the same centered 66.7% view. Cyan Clone A, white source A and
+   the live source reference survive. The visible rectangle `[302,625,778,1340)`
+   is identical before/reopen: zero differing pixels out of 340,340. This is
+   explicitly a screenshot rectangle comparison, **not full-buffer numerical
+   acceptance**.
+5. After reopening, with every component visible, a second white source dab B
+   becomes white in Clone while A stays cyan. The fixed visible A rectangle
+   `[510,705,646,841)` has zero differing pixels before/after B. Painting source A
+   black and then white updates Clone correspondingly and repairs its local
+   rectangular surroundings. Save to the separate `clone-components-repaired.xcf`.
+   The original mixed XCF remains byte-identical. Optional reference detachment
+   and reattachment were intentionally omitted.
+6. Ctrl+Q exits normally with status 0. The display shuts down and the shared
+   lock is available. All 13,803 tracked source/submodule inputs have identical
+   pre-build, post-build and post-GUI manifests. The 278 installed bin/lib/libexec
+   file-or-symlink entries and both executable hashes are unchanged across GUI
+   execution; installed data assets outside that inventory are not all sealed.
+
+### Compact receipt and external evidence
+
+The full JSON receipt, original screenshots, synthetic input, both XCF files,
+ordered actions, sanitized diagnostics and source/runtime manifests are retained
+in the external archive below. Archive readback verified every package-manifest
+digest. Profile, authentication files and raw environment are excluded; text
+roots and the D-Bus machine ID are replaced with placeholders, with raw/published
+hash mappings recorded. Screenshot and XCF bytes are unmodified. The hashes of
+source/runtime manifests below identify the original local seals; the package
+also records the hashes of their sanitized copies.
+
+```json
+{
+  "task": "34.005/clone-components-portrait-smoke",
+  "result": "PASS: bounded synthetic modern Clone GUI workflow",
+  "tested_commit": "1d2b621a15801601af95fd5e44cfc46f4a6ee750",
+  "tested_tree": "8addde80f58b198d1be02b5341cc6bcb34618cc0",
+  "archive": "clone-portrait-gui-run-001-evidence.tar.xz",
+  "archive_bytes": 4950916,
+  "archive_sha256": "98d43d5dac93c867b95647c8a4c62a43e867beac2672fb75b2e78fbe19ba2d0f",
+  "archive_member_files": 133,
+  "full_receipt": "clone-portrait-gui-run-001/clone-portrait-gui-receipt.json",
+  "full_receipt_sha256": "02d0b4903d981934c9ac4210194cc942b5030bee5ede05c5071edffe24bf831f",
+  "source_manifest_before_after_sha256": "c84df0c13c5311b0bfca3cf5153ba893688ac56218b6e13d64abaa6fef61f31d",
+  "runtime_manifest_before_after_sha256": "f169a1122d79436356cf2a51e53e815407d55e30d42c7ad0d029c25c3a5654d6",
+  "build_executable_sha256": "b00ae9ca9293850f870aa406a9dfe8e7945366d574127c3526407ca9c6cbd54d",
+  "installed_executable_sha256": "5846acf20af9fc700bd04423ce9959d30ffcba95ca9390b868acd24492a86701",
+  "both_elf_build_id": "b885006f1f815a905b18d1754af974c01539a3c6",
+  "both_text_section_sha256": "2208ecb22ccf65fb89adfa273d6ff39e2917fa976c1624048761b6571b3d5ed1",
+  "mixed_xcf_bytes": 253740,
+  "mixed_xcf_sha256": "293a1205979b967f2a87c7a47fba69c9427e57e6fca1b14494bfe585adf957f7",
+  "mixed_xcf_preserved": true,
+  "repaired_xcf_bytes": 263282,
+  "repaired_xcf_sha256": "b63192d94f8499e593de3963659413197f765c2c224cae57ac1b7cb6e6060cd5",
+  "normal_quit_exit": 0,
+  "full_buffer_numerical_claim": false,
+  "whole_port_or_parent_gate_acceptance": false
+}
+```
+
+Install removes build RUNPATH; matching ELF Build ID and `.text` hashes were
+verified without modifying either binary. The incremental build logged zero
+compiler-warning lines, which does not establish a clean warning-free build.
+The GUI retained 112 ignored unsupported fonts, unavailable D-Bus and 67 dconf
+warnings (`dbus-launch` child exit 1); CRITICAL and segmentation-fault mentions
+were zero. No warning-free application claim is made.
+
+This evidence covers one synthetic u8 RGB modern GUI workflow, not the full
+RGB/Gray/alpha/show-mask matrix, historical runtime equivalence, compound works,
+other operating systems or input devices, full sanitizer/LeakSanitizer coverage,
+exhaustive shutdown, or release acceptance. This later documentary publication
+is not the exact executable source tested above. Native run-004 evidence and
+all its input/receipt bytes remain unchanged.
