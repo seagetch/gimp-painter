@@ -1,0 +1,71 @@
+Xvfb verified: 127.0.0.1:93, 1080x1920x24, authenticated accepted, empty authority rejected
+ninja: Entering directory `/workspace/shared/gimp-native-baseline/build-port'
+[1/12] Generating git-version.h.in.1 with a custom command
+[2/12] Generating git-version.h.in.2 with a custom command
+[3/12] Generating git-version.h with a custom command
+[4/6] Generating app/tests/icon-theme-fixture/gimp-test-icon-theme-fixture with a custom command
+{"files": 1191, "manifest_sha256": "2f790ebf02244ef3c023f17f16ab614cbc315ee46d46abd87b7f73d4d5d9be41", "ownership_marker_sha256": "d3ebe76f57bdce73e82df17c3cd89f1a630f42f3c8d72dbfdacd4a000061b8bf", "plan_sha256": "0a16da7a76b5facf2d3d8084793b72e28d32d17c7ff6bf237d164075d4af4b95", "stamp_sha256": "c20e592420d8f1feb8e044c6114f8ed009473d411042806fd6e9aadd50c7ffc9", "status": "verified"}
+[5/6] Compiling C object app/tests/painter-layer-modes.p/test-painter-layer-modes.c.o
+../source/app/tests/test-painter-layer-modes.c: In function ‘direct_paint_operation’:
+../source/app/tests/test-painter-layer-modes.c:124:11: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  124 |           GimpOperationLayerMode *operation = GIMP_OPERATION_LAYER_MODE(gimp_layer_mode_get_operation(mode));
+      |           ^~~~~~~~~~~~~~~~~~~~~~
+In file included from ../source/app/tests/test-painter-layer-modes.c:255:
+../source/app/tests/test-painter-float-modes.inc: In function ‘float_native_routes’:
+../source/app/tests/test-painter-float-modes.inc:16:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   16 |   float opacity=values[0],*aa=values+1,*bb=values+257,*mm=values+513,*expected=values+577;
+      |   ^~~~~
+../source/app/tests/test-painter-float-modes.inc:18:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   18 |   guint32 old_id=999;g_assert_false(gimp_painter_layer_mode_to_legacy(mode,&old_id));g_assert_false(gimp_painter_layer_mode_is_compatibility(mode));
+      |   ^~~~~~~
+../source/app/tests/test-painter-float-modes.inc:23:3: warning: ‘gegl_node_connect_to’ is deprecated: Use 'gegl_node_connect or gegl_node_link if pads are "output" and "input"' instead [-Wdeprecated-declarations]
+   23 |   gegl_node_connect_to(na,"output",blend,"input");gegl_node_connect_to(nb,"output",blend,"aux");gegl_node_connect_to(nm,"output",blend,"aux2");
+      |   ^~~~~~~~~~~~~~~~~~~~
+In file included from /workspace/shared/gimp-deps-locked/root/usr/include/gegl-0.4/gegl.h:41,
+                 from ../source/app/tests/test-painter-layer-modes.c:3:
+/workspace/shared/gimp-deps-locked/root/usr/include/gegl-0.4/gegl-node.h:132:15: note: declared here
+  132 | gboolean      gegl_node_connect_to       (GeglNode      *source,
+      |               ^~~~~~~~~~~~~~~~~~~~
+../source/app/tests/test-painter-float-modes.inc:23:3: warning: ‘gegl_node_connect_to’ is deprecated: Use 'gegl_node_connect or gegl_node_link if pads are "output" and "input"' instead [-Wdeprecated-declarations]
+   23 |   gegl_node_connect_to(na,"output",blend,"input");gegl_node_connect_to(nb,"output",blend,"aux");gegl_node_connect_to(nm,"output",blend,"aux2");
+      |   ^~~~~~~~~~~~~~~~~~~~
+/workspace/shared/gimp-deps-locked/root/usr/include/gegl-0.4/gegl-node.h:132:15: note: declared here
+  132 | gboolean      gegl_node_connect_to       (GeglNode      *source,
+      |               ^~~~~~~~~~~~~~~~~~~~
+../source/app/tests/test-painter-float-modes.inc:23:3: warning: ‘gegl_node_connect_to’ is deprecated: Use 'gegl_node_connect or gegl_node_link if pads are "output" and "input"' instead [-Wdeprecated-declarations]
+   23 |   gegl_node_connect_to(na,"output",blend,"input");gegl_node_connect_to(nb,"output",blend,"aux");gegl_node_connect_to(nm,"output",blend,"aux2");
+      |   ^~~~~~~~~~~~~~~~~~~~
+/workspace/shared/gimp-deps-locked/root/usr/include/gegl-0.4/gegl-node.h:132:15: note: declared here
+  132 | gboolean      gegl_node_connect_to       (GeglNode      *source,
+      |               ^~~~~~~~~~~~~~~~~~~~
+../source/app/tests/test-painter-float-modes.inc:25:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   25 |   GimpOperationLayerMode*direct=(gpointer)gimp_layer_mode_get_operation(mode);direct->opacity=opacity;
+      |   ^~~~~~~~~~~~~~~~~~~~~~
+../source/app/tests/test-painter-float-modes.inc:31:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   31 |   GimpLayer*base=gimp_layer_new(image,8,8,format,"float backdrop",1,GIMP_LAYER_MODE_PAINTER_FLOAT_NORMAL),*source=gimp_layer_new(image,8,8,format,"float source",opacity,mode);
+      |   ^~~~~~~~~
+../source/app/tests/test-painter-float-modes.inc:34:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   34 |   GimpLayerMask*mask=gimp_layer_create_mask(source,GIMP_ADD_MASK_WHITE,NULL);gegl_buffer_set(gimp_drawable_get_buffer(GIMP_DRAWABLE(mask)),&rect,0,babl_format("Y float"),mm,GEGL_AUTO_ROWSTRIDE);g_assert_nonnull(gimp_layer_add_mask(source,mask,FALSE,&error));g_assert_no_error(error);
+      |   ^~~~~~~~~~~~~
+In file included from ../source/app/tests/test-painter-layer-modes.c:256:
+../source/app/tests/test-painter-float-storage.inc: In function ‘float_storage_routes’:
+../source/app/tests/test-painter-float-storage.inc:11:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   11 |   guint fi=words[0],mode=words[1];g_assert_cmpuint(fi,<,6);g_assert_cmpuint(mode,<,9);
+      |   ^~~~~
+../source/app/tests/test-painter-float-storage.inc:12:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   12 |   const Babl*storage=babl_format(formats[fi]);float *a=v+1,*b=v+65,*mask=v+129,*expected=v+145;
+      |   ^~~~~
+../source/app/tests/test-painter-float-storage.inc:18:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   18 |   GeglNode*graph=gegl_node_new(),*na=gegl_node_new_child(graph,"operation","gegl:buffer-source","buffer",ab,NULL),*nb=gegl_node_new_child(graph,"operation","gegl:buffer-source","buffer",bb,NULL),*nm=gegl_node_new_child(graph,"operation","gegl:buffer-source","buffer",mb,NULL);
+      |   ^~~~~~~~
+[6/6] Linking target app/tests/painter-layer-modes
+1/1 gimp:app / painter-layer-modes OK             15.86s
+
+Ok:                 1   
+Expected Fail:      0   
+Fail:               0   
+Unexpected Pass:    0   
+Skipped:            0   
+Timeout:            0   
+
+Full log written to /workspace/shared/gimp-native-baseline/build-port/meson-logs/testlog.txt

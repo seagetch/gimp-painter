@@ -254,6 +254,7 @@ static void modern_group_strength_reduction (void)
 #include "test-painter-mode-group-undo.inc"
 #include "test-painter-float-modes.inc"
 #include "test-painter-float-storage.inc"
+#include "test-painter-group-strength.inc"
 
 int main (int argc, char **argv)
 {
@@ -270,6 +271,8 @@ int main (int argc, char **argv)
   g_test_add_func ("/painter-layer-modes/group_reorder_undo_projection",group_reorder_undo_projection);
   g_test_add_func ("/painter-layer-modes/float_native_routes",float_native_routes);
   g_test_add_func ("/painter-layer-modes/float_storage_routes",float_storage_routes);
+  g_test_add_func ("/painter-layer-modes/group_mask_opacity_order",group_mask_opacity_order);
+  g_test_add_func ("/painter-layer-modes/group_reparent_mask_undo",group_reparent_mask_undo);
   result = g_test_run ();
   gimp_test_utils_set_gimp3_directory ("GIMP_TESTING_ABS_TOP_BUILDDIR","app/tests/gimpdir-output");
   gimp_exit (gimp,TRUE); return result;
