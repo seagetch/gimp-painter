@@ -1,0 +1,286 @@
+{
+  "scope": "Current-model independent Foreground Select toolbar; legacy SIOX and whole UI parity remain open",
+  "native_source_base": "4e12f80e30dcbe5e05c17d56d86c3a4f53ae8f47",
+  "source_sha256": {
+    "app/tools/gimppaintertooltoolbar.c": "acb8e46313eb606588a82a8c0212080a2a8d96e8c616a7daa3c6fee5c56a024e",
+    "app/tests/test-painter-compact-options.c": "24c8f413eac174fbca871f26da1c73e3d1d56c07499bccf1675ec7d1dbef3343",
+    "app/tests/test-painter-foreground-toolbar.inc": "17f939cf9f5fdb25395a980e2b7f6c66f9867eb76693ea84892acf916874651c",
+    "app/tests/meson.build": "d5b3588c94b1363f729d06a855471fbd07bc826585f3a605962522042281bc38"
+  },
+  "test_binary_sha256": "88ec5ecec07071ebd7641dee6a22f16dfa1f7c0d903ee22b37491af95fb309c8",
+  "transport": "Authenticated loopback TCP Xvfb1080x1920x24",
+  "scale2_verified": true,
+  "runtime_inventory": {
+    "supported": 40,
+    "unsupported": 10
+  },
+  "runs": [
+    {
+      "run": "foreground-focused",
+      "log_sha256": "848e65c7b7d0701c1331fa25b5b166429b85fcf4381b4d10c2a755af789060be",
+      "results": [
+        {
+          "name": "gimp:app / painter-compact-options",
+          "result": "FAIL",
+          "returncode": -6,
+          "duration": 1.5905327796936035,
+          "tap": [
+            "not ok /painter-compact-options/independent-foreground-toolbar - ERROR:../source/app/tests/test-painter-foreground-toolbar.inc:268:independent_foreground_toolbar: 'g_object_class_find_property (G_OBJECT_GET_CLASS (options), absent_siox[i])' should be NULL"
+          ],
+          "assertion_diagnostics": [
+            "not ok /painter-compact-options/independent-foreground-toolbar - ERROR:../source/app/tests/test-painter-foreground-toolbar.inc:268:independent_foreground_toolbar: 'g_object_class_find_property (G_OBJECT_GET_CLASS (options), absent_siox[i])' should be NULL",
+            "ERROR:../source/app/tests/test-painter-foreground-toolbar.inc:268:independent_foreground_toolbar: 'g_object_class_find_property (G_OBJECT_GET_CLASS (options), absent_siox[i])' should be NULL"
+          ]
+        }
+      ]
+    },
+    {
+      "run": "foreground-focused-retry",
+      "log_sha256": "fa312cc857ecc2efed5441e0f9b664f3fb1e4ef98451af3f9154c0a9a300df83",
+      "results": [
+        {
+          "name": "gimp:app / painter-compact-options",
+          "result": "FAIL",
+          "returncode": -6,
+          "duration": 1.8171839714050293,
+          "tap": [
+            "ok 1 /painter-compact-options/independent-foreground-toolbar",
+            "1..1",
+            "not ok /painter-compact-options/foreground-toolbar-model-before-view - ERROR:../source/app/tests/test-painter-foreground-toolbar.inc:332:foreground_toolbar_model_before_view: 'first' should not be NULL"
+          ],
+          "assertion_diagnostics": [
+            "not ok /painter-compact-options/foreground-toolbar-model-before-view - ERROR:../source/app/tests/test-painter-foreground-toolbar.inc:332:foreground_toolbar_model_before_view: 'first' should not be NULL",
+            "ERROR:../source/app/tests/test-painter-foreground-toolbar.inc:332:foreground_toolbar_model_before_view: 'first' should not be NULL"
+          ]
+        }
+      ]
+    },
+    {
+      "run": "foreground-popup",
+      "log_sha256": "6f51ec12faf912d6269cc629f4d5a3ceac0573b2d55aa5fe8588eb9763dcd8b5",
+      "results": [
+        {
+          "name": "gimp:app / painter-compact-options",
+          "result": "FAIL",
+          "returncode": -6,
+          "duration": 2.6154818534851074,
+          "tap": [
+            "not ok /painter-compact-options/foreground-toolbar-canvas-popup-lifetime - ERROR:../source/app/tests/test-painter-foreground-toolbar.inc:393:foreground_toolbar_canvas_popup_lifetime: assertion failed (gtk_popover_get_position (GTK_POPOVER (popup)) == GTK_POS_TOP): (3 == 2)"
+          ],
+          "assertion_diagnostics": [
+            "not ok /painter-compact-options/foreground-toolbar-canvas-popup-lifetime - ERROR:../source/app/tests/test-painter-foreground-toolbar.inc:393:foreground_toolbar_canvas_popup_lifetime: assertion failed (gtk_popover_get_position (GTK_POPOVER (popup)) == GTK_POS_TOP): (3 == 2)",
+            "ERROR:../source/app/tests/test-painter-foreground-toolbar.inc:393:foreground_toolbar_canvas_popup_lifetime: assertion failed (gtk_popover_get_position (GTK_POPOVER (popup)) == GTK_POS_TOP): (3 == 2)"
+          ]
+        }
+      ]
+    },
+    {
+      "run": "foreground-focused-final",
+      "log_sha256": "477ca7d3be6a8ec53c9029b268c258a439440f9a9f8e283ada361c8a9ed6b29b",
+      "results": [
+        {
+          "name": "gimp:app / painter-compact-options",
+          "result": "FAIL",
+          "returncode": -6,
+          "duration": 2.770498752593994,
+          "tap": [
+            "ok 1 /painter-compact-options/independent-foreground-toolbar",
+            "1..1",
+            "ok 2 /painter-compact-options/foreground-toolbar-model-before-view",
+            "1..2",
+            "not ok /painter-compact-options/foreground-toolbar-canvas-popup-lifetime - ERROR:../source/app/tests/test-painter-foreground-toolbar.inc:473:foreground_toolbar_canvas_popup_lifetime: 'gtk_widget_get_parent (native) == native_parent' should be TRUE"
+          ],
+          "assertion_diagnostics": [
+            "not ok /painter-compact-options/foreground-toolbar-canvas-popup-lifetime - ERROR:../source/app/tests/test-painter-foreground-toolbar.inc:473:foreground_toolbar_canvas_popup_lifetime: 'gtk_widget_get_parent (native) == native_parent' should be TRUE",
+            "ERROR:../source/app/tests/test-painter-foreground-toolbar.inc:473:foreground_toolbar_canvas_popup_lifetime: 'gtk_widget_get_parent (native) == native_parent' should be TRUE"
+          ]
+        }
+      ]
+    },
+    {
+      "run": "foreground-focused-final3",
+      "log_sha256": "4845620020db880ccb9f5749aad45422222c643f5e53ccf81690c77829c84b84",
+      "results": [
+        {
+          "name": "gimp:app / painter-compact-options",
+          "result": "FAIL",
+          "returncode": -6,
+          "duration": 2.3467938899993896,
+          "tap": [
+            "ok 1 /painter-compact-options/independent-foreground-toolbar",
+            "1..1",
+            "ok 2 /painter-compact-options/foreground-toolbar-model-before-view",
+            "1..2",
+            "not ok /painter-compact-options/foreground-toolbar-canvas-popup-lifetime - ERROR:../source/app/tests/test-painter-foreground-toolbar.inc:401:foreground_toolbar_canvas_popup_lifetime: 'native_parent' should not be NULL"
+          ],
+          "assertion_diagnostics": [
+            "not ok /painter-compact-options/foreground-toolbar-canvas-popup-lifetime - ERROR:../source/app/tests/test-painter-foreground-toolbar.inc:401:foreground_toolbar_canvas_popup_lifetime: 'native_parent' should not be NULL",
+            "ERROR:../source/app/tests/test-painter-foreground-toolbar.inc:401:foreground_toolbar_canvas_popup_lifetime: 'native_parent' should not be NULL"
+          ]
+        }
+      ]
+    },
+    {
+      "run": "foreground-focused-final4",
+      "log_sha256": "5614b9769f505c1967c80e2814b354f90a4b921be9dfc20de8476bba19260afb",
+      "results": [
+        {
+          "name": "gimp:app / painter-compact-options",
+          "result": "FAIL",
+          "returncode": -6,
+          "duration": 2.257209300994873,
+          "tap": [
+            "ok 1 /painter-compact-options/independent-foreground-toolbar",
+            "1..1",
+            "ok 2 /painter-compact-options/foreground-toolbar-model-before-view",
+            "1..2",
+            "not ok /painter-compact-options/foreground-toolbar-canvas-popup-lifetime - ERROR:../source/app/tests/test-painter-foreground-toolbar.inc:415:foreground_toolbar_canvas_popup_lifetime: 'native_parent' should not be NULL"
+          ],
+          "assertion_diagnostics": [
+            "not ok /painter-compact-options/foreground-toolbar-canvas-popup-lifetime - ERROR:../source/app/tests/test-painter-foreground-toolbar.inc:415:foreground_toolbar_canvas_popup_lifetime: 'native_parent' should not be NULL",
+            "ERROR:../source/app/tests/test-painter-foreground-toolbar.inc:415:foreground_toolbar_canvas_popup_lifetime: 'native_parent' should not be NULL"
+          ]
+        }
+      ]
+    },
+    {
+      "run": "foreground-dock-diagnostic",
+      "log_sha256": "e3b88851ad80531ef846eb3ff4fc10c99d103bdfbe86106ea375f0a3fa36758c",
+      "results": [
+        {
+          "name": "gimp:app / painter-compact-options",
+          "result": "FAIL",
+          "returncode": -6,
+          "duration": 2.4204719066619873,
+          "tap": [
+            "not ok /painter-compact-options/foreground-toolbar-canvas-popup-lifetime - ERROR:../source/app/tests/test-painter-foreground-toolbar.inc:440:foreground_toolbar_canvas_popup_lifetime: 'native_parent' should not be NULL"
+          ],
+          "assertion_diagnostics": [
+            "not ok /painter-compact-options/foreground-toolbar-canvas-popup-lifetime - ERROR:../source/app/tests/test-painter-foreground-toolbar.inc:440:foreground_toolbar_canvas_popup_lifetime: 'native_parent' should not be NULL",
+            "ERROR:../source/app/tests/test-painter-foreground-toolbar.inc:440:foreground_toolbar_canvas_popup_lifetime: 'native_parent' should not be NULL"
+          ]
+        }
+      ]
+    },
+    {
+      "run": "foreground-dock-sequence",
+      "log_sha256": "fef3f2ba122de3adb5920f7ff971571d3a6a68181492f0daa6559f3265142f41",
+      "results": [
+        {
+          "name": "gimp:app / painter-compact-options",
+          "result": "OK",
+          "returncode": 0,
+          "duration": 4.249534368515015,
+          "tap": [
+            "ok 1 /painter-compact-options/independent-foreground-toolbar",
+            "1..1",
+            "ok 2 /painter-compact-options/foreground-toolbar-model-before-view",
+            "1..2",
+            "ok 3 /painter-compact-options/foreground-toolbar-canvas-popup-lifetime",
+            "1..3"
+          ],
+          "assertion_diagnostics": []
+        }
+      ]
+    },
+    {
+      "run": "foreground-compact53-final",
+      "log_sha256": "1d7e5a64bd9655f37c4ef90b5ac3068d6caed1c2b468ecb6d742b36d1e8a642b",
+      "results": [
+        {
+          "name": "gimp:app / painter-compact-options",
+          "result": "OK",
+          "returncode": 0,
+          "duration": 105.2980146408081,
+          "tap": [
+            "1..53",
+            "ok 1 /painter-compact-options/rectangle-units-real-popup-events",
+            "ok 2 /painter-compact-options/rectangle-units-popup-model-reentry",
+            "ok 3 /painter-compact-options/rectangle-units-native-baseline",
+            "ok 4 /painter-compact-options/rectangle-units-numeric-and-sync",
+            "ok 5 /painter-compact-options/rectangle-units-metadata-and-lifetimes",
+            "ok 6 /painter-compact-options/rectangle-units-options-lifetime-and-reentry",
+            "ok 7 /painter-compact-options/rectangle-units-weak-helper-lifetime",
+            "ok 8 /painter-compact-options/rectangle-units-native-canvas-baseline",
+            "ok 9 /painter-compact-options/independent-rectangle-toolbar",
+            "ok 10 /painter-compact-options/rectangle-native-shrink-bounds",
+            "ok 11 /painter-compact-options/rectangle-shrink-lifecycle",
+            "ok 12 /painter-compact-options/rectangle-shrink-owner-lifetime-and-reentry",
+            "ok 13 /painter-compact-options/independent-foreground-toolbar",
+            "ok 14 /painter-compact-options/foreground-toolbar-model-before-view",
+            "ok 15 /painter-compact-options/foreground-toolbar-canvas-popup-lifetime",
+            "ok 16 /painter-compact-options/independent-histogram-toolbar",
+            "ok 17 /painter-compact-options/histogram-toolbar-native-dialogs",
+            "ok 18 /painter-compact-options/histogram-toolbar-canvas-popup-lifetime",
+            "ok 19 /painter-compact-options/independent-vector-toolbar",
+            "ok 20 /painter-compact-options/vector-selection-actions",
+            "ok 21 /painter-compact-options/vector-native-dialog-actions",
+            "ok 22 /painter-compact-options/vector-model-before-view",
+            "ok 23 /painter-compact-options/vector-path-lifecycle-and-reentry",
+            "ok 24 /painter-compact-options/independent-align-toolbar",
+            "ok 25 /painter-compact-options/align-model-before-view",
+            "ok 26 /painter-compact-options/align-actions-and-reentry",
+            "ok 27 /painter-compact-options/independent-mypaint-toolbar",
+            "ok 28 /painter-compact-options/independent-horizontal-inventory",
+            "ok 29 /painter-compact-options/independent-horizontal-binding",
+            "ok 30 /painter-compact-options/independent-horizontal-native-handles",
+            "ok 31 /painter-compact-options/orientation-enum-contract",
+            "ok 32 /painter-compact-options/orientation-integer-contract",
+            "ok 33 /painter-compact-options/orientation-property-contract",
+            "ok 34 /painter-compact-options/orientation-active-callers",
+            "ok 35 /painter-compact-options/orientation-histogram-current-controls",
+            "ok 36 /painter-compact-options/native-preview-factory-failure",
+            "ok 37 /painter-compact-options/native-preview-factory-success",
+            "ok 38 /painter-compact-options/native-property-controls",
+            "ok 39 /painter-compact-options/native-enum-integer-helpers",
+            "ok 40 /painter-compact-options/inventory-all-registered",
+            "ok 41 /painter-compact-options/common-store-registration-close",
+            "ok 42 /painter-compact-options/mypaint-store-page-retention",
+            "ok 43 /painter-compact-options/native-editor-mixed-width",
+            "ok 44 /painter-compact-options/paint-bidirectional-resource",
+            "ok 45 /painter-compact-options/popup-repeat",
+            "ok 46 /painter-compact-options/popup-native-events-window-destroy",
+            "ok 47 /painter-compact-options/fresh-owner-lifecycle",
+            "ok 48 /painter-compact-options/mixed-packing-owned-destruction",
+            "ok 49 /painter-compact-options/native-viewport-composition",
+            "ok 50 /painter-compact-options/registered-popup-contracts",
+            "ok 51 /painter-compact-options/reentrant-destruction",
+            "ok 52 /painter-compact-options/native-visibility-preference",
+            "ok 53 /painter-compact-options/canvas-dock-tool-transfer-preference"
+          ],
+          "assertion_diagnostics": []
+        }
+      ]
+    },
+    {
+      "run": "foreground-scale2-final",
+      "log_sha256": "b99911ea9225f1cdf99995b51059bf676dc3d985a370d70c7452d09663341c1a",
+      "results": [
+        {
+          "name": "gimp:app / painter-compact-options",
+          "result": "OK",
+          "returncode": 0,
+          "duration": 4.285861492156982,
+          "tap": [
+            "ok 1 /painter-compact-options/independent-foreground-toolbar",
+            "1..1",
+            "ok 2 /painter-compact-options/foreground-toolbar-model-before-view",
+            "1..2",
+            "ok 3 /painter-compact-options/foreground-toolbar-canvas-popup-lifetime",
+            "1..3"
+          ],
+          "assertion_diagnostics": []
+        }
+      ]
+    }
+  ],
+  "gui": {
+    "screenshot": "portrait.png",
+    "screenshot_sha256": "49345033b48cbb37302ff79a929cb6b85e86c6d898477c2b6051f8fdf507a865",
+    "installed_binary_sha256": "bb223a830e845991e9113660c6cb31a13e4d4072d801cab5f38ffa5a5aa10f80",
+    "build_binary_sha256": "9f4f5a79cad6d7b2b6557d35f78b9c9343ba589eead4bde5d19a6f7d84dd8543",
+    "normal_quit_exit": 0,
+    "critical_error_warning_lines": [],
+    "source": "Same native source hashes above after final relink/install, before later swap/profile patches"
+  }
+}

@@ -1078,6 +1078,7 @@
 | 29.010 | [ ] | 操作バーを移植する | 29.009 | 旧 action を呼び UI 状態を反映 |
 | 29.010/standard-tool-options | [ ] | 標準ツールの横型・コンパクト操作部品を保持して共有化する | 29.009, 01.013 | hunk台帳の各tool/optionsごとに旧control・値・通知・popupを対応し、縦横配置・再表示・ツール切替を試験する |
 | 29.010/histogram-toolbars | [x] | Threshold・Levels・Curvesの独立横型操作バーを復元する | 29.010/native-compact-runtime, 01.013 | 旧Histogram ScaleとAverage/Radiusを共有modelへ接続し独立2tree、native dialog、popup寿命、通常50/scale2 3case、縦長実app画像を検証 |
+| 29.010/foreground-toolbar | [x] | Foreground Selectの現行model用独立横型barを追加する | 29.010/native-compact-runtime, 01.013 | 11表示propertyと隠しantialias、共有値・native dock・color dialog・popup寿命を通常53/scale2 3caseと縦長実appで検証。旧SIOX欠落はstandard-tool-optionsで未完了 |
 | 29.011 | [ ] | 縦長配置を移植する | 29.010 | 部品の機能を削らず再配置 |
 | 29.012 | [ ] | UI 退避を実装する | 29.011 | 描画時の表示切替が一致 |
 | 29.013 | [ ] | 入力透過を実装する | 29.012 | 透明表示と hit test を分ける |
