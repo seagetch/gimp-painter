@@ -1,0 +1,60 @@
+{
+  "scope": "Criterion, provenance, retained-duty and evidence validation",
+  "results": [
+    {
+      "command": [
+        "python3",
+        "tools/check_drawable_buffer_write.py"
+      ],
+      "exit_code": 0,
+      "stdout": "14 unchanged source-duty identities; original write criterion and surviving owners verified\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "tools/tests/test_drawable_buffer_write.py"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ".............\n----------------------------------------------------------------------\nRan 13 tests in 2.115s\n\nOK\n"
+    },
+    {
+      "command": [
+        "python3",
+        "tools/tests/test_drawable_buffer_read.py"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ".........\n----------------------------------------------------------------------\nRan 9 tests in 1.797s\n\nOK\n"
+    },
+    {
+      "command": [
+        "python3",
+        "tools/check_drawable_buffer_read_resolution.py"
+      ],
+      "exit_code": 0,
+      "stdout": "48 unchanged source-duty identities; read checkpoint and current successor completion rules verified\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "tools/check_tasks.py"
+      ],
+      "exit_code": 0,
+      "stdout": "WBS dependencies, states, and completion evidence: OK\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "migration/tests/drawable-buffer-write/validate.py",
+        "--check-source"
+      ],
+      "exit_code": 0,
+      "stdout": "Native30TAP and standalone coordinate7+7 verified; raw Meson environments absent\n",
+      "stderr": ""
+    }
+  ]
+}

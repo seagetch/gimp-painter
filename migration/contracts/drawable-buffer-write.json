@@ -1,0 +1,351 @@
+{
+  "task": "09.004",
+  "criterion_status": "DONE",
+  "original_action": "DrawableFeature の buffer write を実装する",
+  "original_acceptance": "範囲外に書かず dirty 領域を返す",
+  "dependencies": [
+    "09.003"
+  ],
+  "legacy_commit": "afa43fae3e920210146abed514f136fd49f671b5",
+  "whole_hunk_checkpoint_status": "TODO",
+  "related_read_resolution": "migration/contracts/drawable-buffer-read-resolution.json",
+  "rationale": "Bounds and returned dirty-region acceptance concerns the actual Surface write producer. It does not imply whole-file arithmetic, generic parallel scheduling, all TempBuf conversions, Undo or resource lifetime. Preserve every14source identity and unfinished inventory assignment with explicit successor ownership.",
+  "duties": [
+    {
+      "work_id": "legacy-7dfc95788fb38179b213",
+      "source_id": "01.002/000049",
+      "path": "app/base/pixel-processor.c",
+      "source_blob": "7f0049bd0285366eeb128c9e085f1ed222d27452",
+      "source_range": "-60,0 -> 61,6",
+      "source_sha256": "22b0fb45e1a9734d3bb06f2573bb1a3163a004b2d364a000ab6fae096fa752bf",
+      "source_scope": "typedef void  (* p4_func) (gpointer      data,",
+      "whole_hunk_checkpoint_status": "TODO",
+      "related_read_work_id": "legacy-b88ebdbc813c1a81681c",
+      "historical_source_duty": "The fifth callback argument is a distinct region, not a shared read coordinate; this single-region reader does not replace parallel dispatch.",
+      "inherited_09_004_obligation": "Preserve independent source/destination regions and serial five-input composition semantics when implementing writes.",
+      "write_criterion_evidence": [
+        "/write-domains/144-formats",
+        "/write-domains/coalesced-dirty-publication",
+        "/coordinates/selection-edges",
+        "/coordinates/empty-touch-intersections",
+        "/coordinates/overlapping-adjacent-dirty-union"
+      ],
+      "successor_obligations": {
+        "31.017": "Complete independent five-region serial composition and serial/parallel registration, descriptor-copy, scheduling and lifetime disposition. Write tests verify actual current Surface output domains, not generalized legacy dispatcher equivalence."
+      }
+    },
+    {
+      "work_id": "legacy-5c4641b5a9a771ef42f9",
+      "source_id": "01.002/000050",
+      "path": "app/base/pixel-processor.c",
+      "source_blob": "7f0049bd0285366eeb128c9e085f1ed222d27452",
+      "source_range": "-78 -> 84",
+      "source_sha256": "5eb666c56e0f6b70bcc5f648166ee4947de2e0cc23a83ebc4ddaab0058cece2d",
+      "source_scope": "struct _PixelProcessor",
+      "whole_hunk_checkpoint_status": "TODO",
+      "related_read_work_id": "legacy-389e65c37241aad27f12",
+      "historical_source_duty": "All five region slots retain their independent origin and stride; this helper has no global region state.",
+      "inherited_09_004_obligation": "Preserve independent source/destination regions and serial five-input composition semantics when implementing writes.",
+      "write_criterion_evidence": [
+        "/write-domains/144-formats",
+        "/write-domains/coalesced-dirty-publication",
+        "/coordinates/selection-edges",
+        "/coordinates/empty-touch-intersections",
+        "/coordinates/overlapping-adjacent-dirty-union"
+      ],
+      "successor_obligations": {
+        "31.017": "Complete independent five-region serial composition and serial/parallel registration, descriptor-copy, scheduling and lifetime disposition. Write tests verify actual current Surface output domains, not generalized legacy dispatcher equivalence."
+      }
+    },
+    {
+      "work_id": "legacy-73848da136582e1bf142",
+      "source_id": "01.002/000051",
+      "path": "app/base/pixel-processor.c",
+      "source_blob": "7f0049bd0285366eeb128c9e085f1ed222d27452",
+      "source_range": "-88 -> 94",
+      "source_sha256": "a8999843b77003ffca7f984f2bdc758fb3c5e5007b11c4f627e06a4d83519934",
+      "source_scope": "do_parallel_regions (PixelProcessor *processor)",
+      "whole_hunk_checkpoint_status": "TODO",
+      "related_read_work_id": "legacy-c0bd1e91bd03c5c6a374",
+      "historical_source_duty": "Parallel descriptor copying is not a snapshot or ownership transfer; synchronous owned output here does not prove old dispatch lifetime.",
+      "inherited_09_004_obligation": "Preserve independent source/destination regions and serial five-input composition semantics when implementing writes.",
+      "write_criterion_evidence": [
+        "/write-domains/144-formats",
+        "/write-domains/coalesced-dirty-publication",
+        "/coordinates/selection-edges",
+        "/coordinates/empty-touch-intersections",
+        "/coordinates/overlapping-adjacent-dirty-union"
+      ],
+      "successor_obligations": {
+        "31.017": "Complete independent five-region serial composition and serial/parallel registration, descriptor-copy, scheduling and lifetime disposition. Write tests verify actual current Surface output domains, not generalized legacy dispatcher equivalence."
+      }
+    },
+    {
+      "work_id": "legacy-7f48468cb838a4009c5a",
+      "source_id": "01.002/000052",
+      "path": "app/base/pixel-processor.c",
+      "source_blob": "7f0049bd0285366eeb128c9e085f1ed222d27452",
+      "source_range": "-143,0 -> 150,8",
+      "source_sha256": "545f78cae36ad14bd1d7bda5c5a3ae63c33efe3ffb0029554cd685baacdae380",
+      "source_scope": "do_parallel_regions (PixelProcessor *processor)",
+      "whole_hunk_checkpoint_status": "TODO",
+      "related_read_work_id": "legacy-fafda9f0fe26654cb9b4",
+      "historical_source_duty": "Parallel five-region invocation remains a dispatch duty; this implementation only bounds each Surface read.",
+      "inherited_09_004_obligation": "Preserve independent source/destination regions and serial five-input composition semantics when implementing writes.",
+      "write_criterion_evidence": [
+        "/write-domains/144-formats",
+        "/write-domains/coalesced-dirty-publication",
+        "/coordinates/selection-edges",
+        "/coordinates/empty-touch-intersections",
+        "/coordinates/overlapping-adjacent-dirty-union"
+      ],
+      "successor_obligations": {
+        "31.017": "Complete independent five-region serial composition and serial/parallel registration, descriptor-copy, scheduling and lifetime disposition. Write tests verify actual current Surface output domains, not generalized legacy dispatcher equivalence."
+      }
+    },
+    {
+      "work_id": "legacy-0122669e9532669cb4a5",
+      "source_id": "01.002/000053",
+      "path": "app/base/pixel-processor.c",
+      "source_blob": "7f0049bd0285366eeb128c9e085f1ed222d27452",
+      "source_range": "-233,0 -> 248,9",
+      "source_sha256": "a066146a27bf8e373e714609f98a6c0b8ebe1bc5d49b0d5214cdee20acff7d1e",
+      "source_scope": "do_parallel_regions_single (PixelProcessor             *processor,",
+      "whole_hunk_checkpoint_status": "TODO",
+      "related_read_work_id": "legacy-18579eaf2ef909b31a6c",
+      "historical_source_duty": "Serial five-region invocation remains a dispatch duty; no conversion or shared-origin assumption is added.",
+      "inherited_09_004_obligation": "Preserve independent source/destination regions and serial five-input composition semantics when implementing writes.",
+      "write_criterion_evidence": [
+        "/write-domains/144-formats",
+        "/write-domains/coalesced-dirty-publication",
+        "/coordinates/selection-edges",
+        "/coordinates/empty-touch-intersections",
+        "/coordinates/overlapping-adjacent-dirty-union"
+      ],
+      "successor_obligations": {
+        "31.017": "Complete independent five-region serial composition and serial/parallel registration, descriptor-copy, scheduling and lifetime disposition. Write tests verify actual current Surface output domains, not generalized legacy dispatcher equivalence."
+      }
+    },
+    {
+      "work_id": "legacy-eae7e82a79f6db10bd23",
+      "source_id": "01.002/000054",
+      "path": "app/base/pixel-processor.c",
+      "source_blob": "7f0049bd0285366eeb128c9e085f1ed222d27452",
+      "source_range": "-386,0 -> 410,9",
+      "source_sha256": "7ab4c7c2492e6cb8890873a1c45223c9fb91799e53006504c3e65830ae8dacc9",
+      "source_scope": "pixel_regions_process_parallel_valist (PixelProcessorFunc         func,",
+      "whole_hunk_checkpoint_status": "TODO",
+      "related_read_work_id": "legacy-5cde6456f7ed2a777a74",
+      "historical_source_duty": "Five-region registration remains outside this helper; selection and target requests still have independent coordinates.",
+      "inherited_09_004_obligation": "Preserve independent source/destination regions and serial five-input composition semantics when implementing writes.",
+      "write_criterion_evidence": [
+        "/write-domains/144-formats",
+        "/write-domains/coalesced-dirty-publication",
+        "/coordinates/selection-edges",
+        "/coordinates/empty-touch-intersections",
+        "/coordinates/overlapping-adjacent-dirty-union"
+      ],
+      "successor_obligations": {
+        "31.017": "Complete independent five-region serial composition and serial/parallel registration, descriptor-copy, scheduling and lifetime disposition. Write tests verify actual current Surface output domains, not generalized legacy dispatcher equivalence."
+      }
+    },
+    {
+      "work_id": "legacy-17eee03d887a058b7c5b",
+      "source_id": "01.002/000076",
+      "path": "app/base/pixel.hpp",
+      "source_blob": "0b2920644eb36b391f0c03f021c0dd0a19348529",
+      "source_range": "-0,0 -> 1,358",
+      "source_sha256": "27e6b82a44193d668e2a8b3783e0c15dcf14f5f1d48b9fed7891f915315fd397",
+      "source_scope": "file-level declarations/content",
+      "whole_hunk_checkpoint_status": "TODO",
+      "related_read_work_id": "legacy-2f53a694d7cd644819de",
+      "historical_source_duty": "Pixel scalar arithmetic has no spatial state. Native reads preserve bit patterns without byte-to-float or palette reinterpretation; blend arithmetic is unchanged.",
+      "inherited_09_004_obligation": "Verify scalar pixel arithmetic used by byte composition, not just copied component bytes.",
+      "write_criterion_evidence": [
+        "/write-domains/144-formats",
+        "/write-domains/coalesced-dirty-publication",
+        "/coordinates/selection-edges",
+        "/coordinates/empty-touch-intersections",
+        "/coordinates/overlapping-adjacent-dirty-union"
+      ],
+      "successor_obligations": {
+        "31.017": "Complete scalar arithmetic and old representation replacement beyond write-boundary checks.",
+        "09.015": "Verify all high-precision/color-space behavior and explicit unsupported handling; passing storage-boundary grid is not full colorimetric parity."
+      }
+    },
+    {
+      "work_id": "legacy-0ecfe363426f9ec577cd",
+      "source_id": "01.002/000081",
+      "path": "app/base/temp-buf.c",
+      "source_blob": "efa555b2a43b1609e9c73441ad4c2e5b94b34936",
+      "source_range": "-67,0 -> 68",
+      "source_sha256": "2e726669ca470ef24ade1ed01aed0f92b54a846a13999b81c22f7d22b98f4b82",
+      "source_scope": "temp_buf_new (gint          width,",
+      "whole_hunk_checkpoint_status": "TODO",
+      "related_read_work_id": "legacy-e3325d39b7ceab27d426",
+      "historical_source_duty": "TempBuf root parent initialization distinguishes owned storage. This reader borrows GEGL during a call and returns independently owned bytes; TempBuf migration is not implemented.",
+      "inherited_09_004_obligation": "Verify writes through shared storage do not escape the child domain.",
+      "write_criterion_evidence": [
+        "/write-domains/144-formats",
+        "/write-domains/coalesced-dirty-publication",
+        "/coordinates/selection-edges",
+        "/coordinates/empty-touch-intersections",
+        "/coordinates/overlapping-adjacent-dirty-union"
+      ],
+      "successor_obligations": {
+        "09.005": "Verify real TempBuf conversion/subwindow writes, logical origin, ancestor stride, aliasing, independent copies, export layout and wrapper ownership. Surface GEGL child write tests do not certify every old TempBuf consumer."
+      }
+    },
+    {
+      "work_id": "legacy-5d5ae6044b3e38535cca",
+      "source_id": "01.002/000082",
+      "path": "app/base/temp-buf.c",
+      "source_blob": "efa555b2a43b1609e9c73441ad4c2e5b94b34936",
+      "source_range": "-149,0 -> 151,43",
+      "source_sha256": "e8433ef033793e56674a8df7d327fc22122fcf1e6d419563990eff34c04d1ccb",
+      "source_scope": "temp_buf_copy (TempBuf *src,",
+      "whole_hunk_checkpoint_status": "TODO",
+      "related_read_work_id": "legacy-a9084a76d3013dde424e",
+      "historical_source_duty": "The added TempBuf subwindow clips logical coordinates and retains parent rowstride. GEGL sub-buffer reads now respect the child extent and explicit output stride, but TempBuf conversion/preview is unverified.",
+      "inherited_09_004_obligation": "Verify writes through shared storage do not escape the child domain.",
+      "write_criterion_evidence": [
+        "/write-domains/144-formats",
+        "/write-domains/coalesced-dirty-publication",
+        "/coordinates/selection-edges",
+        "/coordinates/empty-touch-intersections",
+        "/coordinates/overlapping-adjacent-dirty-union"
+      ],
+      "successor_obligations": {
+        "09.005": "Verify real TempBuf conversion/subwindow writes, logical origin, ancestor stride, aliasing, independent copies, export layout and wrapper ownership. Surface GEGL child write tests do not certify every old TempBuf consumer."
+      }
+    },
+    {
+      "work_id": "legacy-016486194167e8295baa",
+      "source_id": "01.002/000083",
+      "path": "app/base/temp-buf.c",
+      "source_blob": "efa555b2a43b1609e9c73441ad4c2e5b94b34936",
+      "source_range": "-348,0 -> 393,3",
+      "source_sha256": "ecd11421d80dd69f8de37c586386cae9456a5c931678543aa5f93cbd111ea25b",
+      "source_scope": "temp_buf_free (TempBuf *buf)",
+      "whole_hunk_checkpoint_status": "TODO",
+      "related_read_work_id": "legacy-69327a727628540a2d8b",
+      "historical_source_duty": "Old TempBuf child free returns early and leaks its wrapper. No wrapper is introduced here; copied output remains valid after source finalization. General TempBuf lifetime remains open.",
+      "inherited_09_004_obligation": "Verify writes through shared storage do not escape the child domain.",
+      "write_criterion_evidence": [
+        "/write-domains/144-formats",
+        "/write-domains/coalesced-dirty-publication",
+        "/coordinates/selection-edges",
+        "/coordinates/empty-touch-intersections",
+        "/coordinates/overlapping-adjacent-dirty-union"
+      ],
+      "successor_obligations": {
+        "09.005": "Verify real TempBuf conversion/subwindow writes, logical origin, ancestor stride, aliasing, independent copies, export layout and wrapper ownership. Surface GEGL child write tests do not certify every old TempBuf consumer."
+      }
+    },
+    {
+      "work_id": "legacy-eef522de1e118ee61adc",
+      "source_id": "01.002/000084",
+      "path": "app/base/temp-buf.c",
+      "source_blob": "efa555b2a43b1609e9c73441ad4c2e5b94b34936",
+      "source_range": "-502,0 -> 550,10",
+      "source_sha256": "dd3bd20a85f768aa0b5137104106c635263abf742fd3c7c4996c5001f7bb16bf",
+      "source_scope": "temp_buf_to_gray (TempBuf *src_buf,",
+      "whole_hunk_checkpoint_status": "TODO",
+      "related_read_work_id": "legacy-52c1420506b3e40e8607",
+      "historical_source_duty": "The added rowstride getter follows ancestors. This reader preserves caller output stride and reads a negative-origin sub-buffer without inferring packed parent storage.",
+      "inherited_09_004_obligation": "Verify writes through shared storage do not escape the child domain.",
+      "write_criterion_evidence": [
+        "/write-domains/144-formats",
+        "/write-domains/coalesced-dirty-publication",
+        "/coordinates/selection-edges",
+        "/coordinates/empty-touch-intersections",
+        "/coordinates/overlapping-adjacent-dirty-union"
+      ],
+      "successor_obligations": {
+        "09.005": "Verify real TempBuf conversion/subwindow writes, logical origin, ancestor stride, aliasing, independent copies, export layout and wrapper ownership. Surface GEGL child write tests do not certify every old TempBuf consumer."
+      }
+    },
+    {
+      "work_id": "legacy-bcd04d9ff7ffec3c415b",
+      "source_id": "01.002/000085",
+      "path": "app/base/temp-buf.h",
+      "source_blob": "6094354a057238e104ed0baa734e41d3346ff91d",
+      "source_range": "-29,0 -> 30,4",
+      "source_sha256": "6195a468f4586941c8182ebb7a93058d2d6b21e7803ff5ccb5290d3905ea75f7",
+      "source_scope": "struct _TempBuf",
+      "whole_hunk_checkpoint_status": "TODO",
+      "related_read_work_id": "legacy-38c31780fc8a03d7fc8f",
+      "historical_source_duty": "The parent field represents aliasing storage. Tests retain a GEGL parent/child and confirm only child-domain pixels are exposed; old TempBuf consumers remain separate.",
+      "inherited_09_004_obligation": "Verify writes through shared storage do not escape the child domain.",
+      "write_criterion_evidence": [
+        "/write-domains/144-formats",
+        "/write-domains/coalesced-dirty-publication",
+        "/coordinates/selection-edges",
+        "/coordinates/empty-touch-intersections",
+        "/coordinates/overlapping-adjacent-dirty-union"
+      ],
+      "successor_obligations": {
+        "09.005": "Verify real TempBuf conversion/subwindow writes, logical origin, ancestor stride, aliasing, independent copies, export layout and wrapper ownership. Surface GEGL child write tests do not certify every old TempBuf consumer."
+      }
+    },
+    {
+      "work_id": "legacy-6a9c96d87a30431e7551",
+      "source_id": "01.002/000086",
+      "path": "app/base/temp-buf.h",
+      "source_blob": "6094354a057238e104ed0baa734e41d3346ff91d",
+      "source_range": "-71,0 -> 76,7",
+      "source_sha256": "a89f18c48f787ed74c13c3c9d38f0a21b34e7b6ed2667feaa1d5af0892381777",
+      "source_scope": "void      temp_buf_dump          (TempBuf       *buf,",
+      "whole_hunk_checkpoint_status": "TODO",
+      "related_read_work_id": "legacy-23d55e687f3e4bd4fc40",
+      "historical_source_duty": "The new subwindow/rowstride declarations are replaced only for this Surface read path; no compatibility TempBuf API is claimed.",
+      "inherited_09_004_obligation": "Verify writes through shared storage do not escape the child domain.",
+      "write_criterion_evidence": [
+        "/write-domains/144-formats",
+        "/write-domains/coalesced-dirty-publication",
+        "/coordinates/selection-edges",
+        "/coordinates/empty-touch-intersections",
+        "/coordinates/overlapping-adjacent-dirty-union"
+      ],
+      "successor_obligations": {
+        "09.005": "Verify real TempBuf conversion/subwindow writes, logical origin, ancestor stride, aliasing, independent copies, export layout and wrapper ownership. Surface GEGL child write tests do not certify every old TempBuf consumer."
+      }
+    },
+    {
+      "work_id": "legacy-788dfcfdaadf20a03891",
+      "source_id": "01.002/000933",
+      "path": "app/paint/gimpmypaintcore-drawablefeature.hpp",
+      "source_blob": "f822f8d4ede027ac9185d38669b66f7133d8a7d7",
+      "source_range": "-0,0 -> 1,429",
+      "source_sha256": "def3ec2441c48c2b64e440e216c4c10ecd8a8948600a19d97a4499defa1a3866",
+      "source_scope": "file-level declarations/content",
+      "whole_hunk_checkpoint_status": "TODO",
+      "related_read_work_id": "legacy-59c591933e446abda966",
+      "historical_source_duty": "GeneralDrawableFeature/GimpImageFeature/TempBufFeature contain read, write, masks, undo and floating storage. Existing GeglSurface is the actual current image-buffer reader, now with bounded byte and selection access. This does not certify TempBuf preview, Undo snapshots, writes or all feature paths.",
+      "inherited_09_004_obligation": "Verify DrawableFeature write bounds, dirty results and floating composition.",
+      "write_criterion_evidence": [
+        "/write-domains/144-formats",
+        "/write-domains/coalesced-dirty-publication",
+        "/coordinates/selection-edges",
+        "/coordinates/empty-touch-intersections",
+        "/coordinates/overlapping-adjacent-dirty-union"
+      ],
+      "successor_obligations": {
+        "09.005": "Verify TempBuf preview/conversion paths.",
+        "09.006": "Verify selection-mask integration.",
+        "09.007": "Verify layer-mask apply distinction.",
+        "09.008": "Verify immutable stroke-start snapshot integration.",
+        "09.009": "Verify work/floating buffer allocation limits.",
+        "09.010": "Verify all application dirty-region aggregation consumers; this task tests Surface conservative ROI only.",
+        "09.011": "Verify native Undo difference recording/restoration.",
+        "09.012": "Verify full commit/cancel behavior.",
+        "09.003/region-lifetime": "Verify all callback/return/failure buffer lifetimes, not only successful writes."
+      }
+    }
+  ],
+  "write_evidence": [
+    "migration/tests/drawable-buffer-write/registered-native.json",
+    "migration/tests/drawable-buffer-write/standalone.json",
+    "migration/tests/drawable-buffer-write/report.json"
+  ]
+}

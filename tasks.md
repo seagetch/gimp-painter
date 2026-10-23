@@ -441,7 +441,7 @@
 | 09.003 | [x] | DrawableFeature の buffer read を実装する | 09.002 | 負の offset と部分領域を読める |
 | 09.003/bounded-surface-read | [x] | Surfaceの部分buffer読取りと極端offsetを安全化する | 09.002 | stride・容量・半開領域を検査しINT_MIN選択offsetの実overflowを修正。通常7targetとproduction-source sanitizerを検証し親48義務は維持 |
 | 09.003/region-lifetime | [ ] | MyPaint Surface の一時領域を GEGL buffer 寿命へ移す | 09.003, 01.007/surface-regions | draw_dab と get_color の全 return・失敗経路で read/write/snapshot/mask/texture の buffer を一度だけ解放する |
-| 09.004 | [ ] | DrawableFeature の buffer write を実装する | 09.003 | 範囲外に書かず dirty 領域を返す |
+| 09.004 | [x] | DrawableFeature の buffer write を実装する | 09.003 | 範囲外に書かず dirty 領域を返す |
 | 09.005 | [ ] | TempBuf の変換を実装する | 09.004 | stride・format・所有権を保持 |
 | 09.006 | [ ] | 選択マスクの読取りを接続する | 09.005 | オフセットと coverage が一致 |
 | 09.007 | [ ] | レイヤーマスクの読取りを接続する | 09.006 | 適用・非適用を区別 |
@@ -457,6 +457,9 @@
 | 09.015 | [ ] | 高精度・色空間変換の扱いを実装する | 09.014 | unsupported 時も情報を黙って欠落させない |
 | 09.016 | [ ] | buffer 基盤の境界試験を作る | 09.015 | 小画像・負座標・端・alpha・stride を検証 |
 | 09.017 | [ ] | buffer 基盤の Undo 試験を作る | 09.016 | 描画前後の差分と復元が一致 |
+
+09.004は原文の範囲内writeとdirty ROI返却を実Surface producerで検証済み。14 whole-hunk dutyはTODOのまま既存09.005以降・31.017へ明示継承する（`migration/contracts/drawable-buffer-write.json`）。144形式×2mode×16caseとGEGL通知を検証し、保守的dirty矩形を最小変更画素集合と誤認しない。
+
 
 09.003の完了は上記原文のread条件に限定する。割当済み48 source dutyのwhole-hunkは全件TODOのまま、write・TempBuf変換・mask・snapshot・Undo・並行dispatch・fillの既存ownerへ明示的に継承する。原文・source ID・inventory statusを変更しない。対応表と逆参照は `migration/contracts/drawable-buffer-read-resolution.json`、通常19TAPと限定sanitizerの証拠は `migration/tests/drawable-buffer-read-parent/`。
 

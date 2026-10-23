@@ -1,0 +1,23 @@
+TAP version 14
+# random seed: R02Sdf0bfc40298a10a830327e12a65bcee5
+1..6
+# Start of coordinates tests
+# selection edges: legacy-u8 offset=(-9,-7)
+# selection edges: legacy-u8 offset=(9,7)
+# selection edges: double offset=(-9,-7)
+# selection edges: double offset=(9,7)
+ok 1 /coordinates/selection-edges
+ok 2 /coordinates/empty-touch-intersections
+ok 3 /coordinates/target-sampling-domain
+# dirty overlap/adjacency: legacy-u8 incremental
+# dirty overlap/adjacency: legacy-u8 nonincremental
+# dirty overlap/adjacency: double incremental
+# dirty overlap/adjacency: double nonincremental
+ok 4 /coordinates/overlapping-adjacent-dirty-union
+ok 5 /coordinates/nonincremental-cancel-dirty-union
+# End of coordinates tests
+# Start of write-domains tests
+**
+ERROR:app/paint/painter-mypaint-surface/tests/write-domains.inc:65:void WriteDomains::format_grid(): 'signals.empty()' should be FALSE
+not ok /write-domains/144-formats - ERROR:app/paint/painter-mypaint-surface/tests/write-domains.inc:65:void WriteDomains::format_grid(): 'signals.empty()' should be FALSE
+Bail out!

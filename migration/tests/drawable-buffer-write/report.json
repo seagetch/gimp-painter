@@ -1,0 +1,40 @@
+{
+  "task": "09.004",
+  "criterion": "範囲外に書かず dirty 領域を返す",
+  "production_changes": false,
+  "source_sha256": {
+    "app/paint/painter-mypaint-surface/gegl-surface.cpp": "24921337d94409ac87460dfaa9a54d045bc8f8670af44b001bc63637da7c81dc",
+    "app/paint/painter-mypaint-surface/tests/coordinate-boundaries.cpp": "886e3526a14e8cfbcbcca1e05200a89b3085850cf6d8b2dcab2b29d6fd4d9cf3",
+    "app/paint/painter-mypaint-surface/tests/write-domains.inc": "d3769dcc39630840d82961d1fa9acc1b6bcdcd9af984c7a408dda9bc255e1ef2",
+    "app/paint/painter-mypaint-surface/gegl-surface.hpp": "884084cf46a02639014ab8e777f55155cdd4571807f196874b6f7c68f7fe324d",
+    "app/paint/painter-mypaint-surface/buffer-read.hpp": "fe4ad4518f6223505f65d7b2173b30608b8c4e049ea5af9f7ec0cdeaf7d3b02d",
+    "app/paint/painter-mypaint-surface/native-pixels.hpp": "2a3e657e97fea07fd8b16f14ecbda1bb28a477324f9fe1c4b29ea7514a5f8d97",
+    "app/paint/painter-mypaint-surface/legacy-pixel-modes.hpp": "afa0a00ffa5a99766ffce48e448f04b862659b6a52eaf3652998116b6cf90f15",
+    "app/paint/painter-mypaint-surface/gray-alpha-pixels.hpp": "8e8f51e9ad81e7098599849713395e50908a0e259587f3cd31d150a5c60455f6",
+    "app/tests/test-gimp-painter-surface.cpp": "79f0a80dc12678d0ef88060add99b4a7374fae97c02f2e534b643c5d72f736be",
+    "app/tests/test-painter-buffer-read-domains.inc": "44263930557d8e37ad9620a133e495a78209491fdd8e09379f0e87506b8e552c",
+    "app/tests/test-painter-roi-transfers.cpp": "8831d041ed7351e996ed1eed0a1170bf548ed27bd00faed5af65bd3fbe046470",
+    "app/paint/painter-mypaint-surface/tests/native-precision.cpp": "b362b6c1e9f508522d7344de94f69cbc57584e6684d5d8a64073d35deb2c9d4d"
+  },
+  "native_tree_hashes_match": true,
+  "display": {
+    "width": 1080,
+    "height": 1920,
+    "depth": 24,
+    "runner": "tools/run-painter-xvfb.py",
+    "authenticated": true
+  },
+  "evidence_sha256": {
+    "registered-native.json": "de061d51163e10fb05b7a944f42d8c1199b835fb116cfa0f8b7209b83ab2ca15",
+    "build.log": "7466dce8cbf1c1334be893c831179f378b137d6f9dff3bba386b9174e58cce2c",
+    "run-native.sh": "019dca0cb567c8a1975c1d3052483c1a980bd9693b30d6bff3dbe76a5c1347cf",
+    "run.log": "120abd29b8aff0023f77fdbee7f5d8ff93e3a49ae53182d6b73766584ddfced3",
+    "run-standalone.py": "1824f80789d3f6dec8a2c215f1f7b9d6aa376e104f4c9f90859675757757c909",
+    "standalone.json": "fa08809c336562df6bcec9786900a204dfbe170630479b233e61445a0724790f",
+    "excluded-fixture-attempts/regular-g-signal-connect.log": "3fc3b056ad2bb7389d0195e1bcffc213db015b268445f7ad8cee4cb396c45340",
+    "README.md": "41a0fb28df3e677374c2985254f0d63025ccefe7f8d14cd6fb1c4dfaf0bf9c03",
+    "validate.py": "a6ddf04d9630140c55939499820dfe112e1f0481b32e84829a59410322758b21",
+    "neighbor-read-native.json": "b2df17720f65f5000217b170fafa470bb04389694483c8ac3a890233c4948315"
+  },
+  "excluded_fixture_failure": "Plain g_signal_connect does not enable GEGL changed notifications; fixed test to documented gegl_buffer_signal_connect. No production regression/fix claim."
+}

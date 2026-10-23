@@ -22,6 +22,7 @@ TEST = 'app/paint/painter-mypaint-surface/tests/buffer-read.cpp'
 HEADER = 'app/paint/painter-mypaint-surface/buffer-read.hpp'
 INPUTS = [HEADER, SURFACE, TEST,
           'app/paint/painter-mypaint-surface/tests/coordinate-boundaries.cpp',
+          'app/paint/painter-mypaint-surface/tests/write-domains.inc',
           'app/paint/painter-mypaint-surface/gegl-surface.hpp',
           'app/paint/painter-mypaint-surface/legacy-pixel-modes.hpp',
           'app/paint/painter-mypaint-surface/gray-alpha-pixels.hpp',
@@ -97,7 +98,7 @@ def main():
             result = subprocess.run([str(executable)], capture_output=True, text=True, env=env)
             require(result.returncode == 0, result.stdout + result.stderr)
             passed = len(re.findall(r'^ok [0-9]+ /', result.stdout, re.M))
-            require(passed == (8 if name == 'buffer-read' else 5), 'Incomplete executable test groups')
+            require(passed == (8 if name == 'buffer-read' else 7), 'Incomplete executable test groups')
             report['runs'].append({'name': name, 'passed_groups': passed, 'exit': result.returncode, 'stdout': result.stdout, 'stderr': result.stderr})
         if args.prove_baseline:
             require(args.sanitize, 'Baseline UB proof requires --sanitize')

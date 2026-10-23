@@ -1,0 +1,14 @@
+Xvfb verified: 127.0.0.1:91, 1080x1920x24, authenticated accepted, empty authority rejected
+1/4 gimp:painter / painter-mypaint-native-precision      OK              0.15s
+2/4 gimp:painter / painter-mypaint-coordinate-boundaries OK              1.78s
+3/4 gimp:app / gimp-painter-surface                      OK              1.05s
+4/4 gimp:app / painter-roi-transfers                     OK              1.96s
+
+Ok:                 4   
+Expected Fail:      0   
+Fail:               0   
+Unexpected Pass:    0   
+Skipped:            0   
+Timeout:            0   
+
+Full log written to /workspace/shared/gimp-native-baseline/build-port/meson-logs/testlog.txt
