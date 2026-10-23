@@ -22,6 +22,7 @@ extern "C"
 #include "core/gimpfilterlayer.h"
 }
 #include "painter/object-ref.hpp"
+#include "painter/resources.hpp"
 namespace GimpPainter GIMP_PAINTER_PRIVATE {
 namespace Http
 {
@@ -188,16 +189,16 @@ class Images final : public Resource
     GError *e     = nullptr;
     bool    ok    = gdk_pixbuf_save_to_buffer (p, &bytes, &size,
                                          preview ? "jpeg" : "png", &e, nullptr);
+    String encoded (bytes);
+    std::unique_ptr<GError, decltype (&g_error_free)> error (e, g_error_free);
     if (! ok)
       {
-        std::string m = e ? e->message : "Cannot encode pixels";
-        g_clear_error (&e);
+        std::string m = error ? error->message : "Cannot encode pixels";
         throw Failure (500, m);
       }
     Response out;
     out.content_type = preview ? "image/jpeg" : "image/png";
-    out.body.assign (bytes, size);
-    g_free (bytes);
+    out.body.assign (encoded.get (), size);
     return out;
   }
   Response

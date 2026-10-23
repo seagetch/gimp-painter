@@ -1,5 +1,6 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 #include "config.h"
+#include "../../painter/resources.hpp"
 #include <gtk/gtk.h>
 #include "gimp-resources.hpp"
 extern "C" {
@@ -85,8 +86,7 @@ struct PaperCache {
     if(!cached) {
       GimpPainterPaperView paper {}; GError *error = nullptr;
       if (!gimp_painter_paper_get_view (pattern.get (), &paper, &error)) {
-        std::string message (error ? error->message : "Invalid painter paper");
-        g_clear_error (&error); throw std::invalid_argument (message);
+        std::string message = GimpPainter::take_error_message (error, "Invalid painter paper"); throw std::invalid_argument (message);
       }
       auto fresh=std::make_shared<Texture>();fresh->width=paper.width;fresh->height=paper.height;
       fresh->values.resize(std::size_t(fresh->width)*fresh->height);

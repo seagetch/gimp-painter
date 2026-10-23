@@ -1,5 +1,6 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 #include "config.h"
+#include "../painter/resources.hpp"
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gio/gio.h>
 #include <gegl.h>
@@ -283,7 +284,7 @@ gboolean gimp_fill_brush_step(GimpFillBrush*self,gsize budget,GError**error){ret
   if(!gimp_painter_paper_paste(core,mask.get(),0,0,d,dab->opacity,dab->image_opacity,dab->mode,GIMP_PAINT_CONSTANT,&paper_error))
     gimp_paint_core_paste(core,mask.get(),0,0,d,dab->opacity,dab->image_opacity,dab->mode,GIMP_PAINT_CONSTANT);
   watch->owned_write.store(false,std::memory_order_release);
-  if(paper_error){std::string message(paper_error->message);g_clear_error(&paper_error);throw std::runtime_error(message);}
+  if(paper_error){std::string message = GimpPainter::take_error_message (paper_error, "Unknown error");throw std::runtime_error(message);}
   if(impl.cancel_requested||impl.closed){finish_frame(impl,false);return TRUE;}
   if(revision!=impl.revision)throw std::runtime_error("Fill invalidated during publication");
   return (!impl.segment&&(!impl.pending||impl.pending->empty()));
@@ -303,7 +304,7 @@ gboolean gimp_fill_brush_begin(GimpFillBrush*self,GimpDrawable*d,GimpPaintOption
   auto*core=GIMP_PAINT_CORE(self);GList list={d,nullptr,nullptr};GError*native_error=nullptr;
   impl.start_permit=true;
   bool ok=gimp_paint_core_start(core,&list,options,coords,&native_error);impl.start_permit=false;impl.native_start_armed=false;impl.starting=false;
-  if(!ok){std::string message=native_error?native_error->message:"Fill native start failed";g_clear_error(&native_error);release_native_scratch(core);impl.release_frame();throw std::runtime_error(message);}
+  if(!ok){std::string message = GimpPainter::take_error_message (native_error, "Fill native start failed");release_native_scratch(core);impl.release_frame();throw std::runtime_error(message);}
   impl.started=true;
   if(impl.closed||impl.cancel_requested||!target_current(impl)){finish_frame(impl,false);throw std::runtime_error("Fill start was cancelled");}
   gimp_paint_core_paint(core,&list,options,GIMP_PAINT_STATE_INIT,0);

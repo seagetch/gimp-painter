@@ -30,10 +30,8 @@ public:
     GError *error = nullptr;
     if (!gimp_filter_layer_set_definition (get (), procedure, raw, args, &error))
       {
-        Error failure (error ? static_cast<GimpPainterError> (error->code) : GIMP_PAINTER_ERROR_INVALID_STATE,
-                       error ? error->message : "FilterLayer definition failed");
-        g_clear_error (&error);
-        throw failure;
+        const auto code = error ? static_cast<GimpPainterError> (error->code) : GIMP_PAINTER_ERROR_INVALID_STATE;
+        throw Error (code, take_error_message (error, "FilterLayer definition failed").c_str ());
       }
   }
   String procedure () const { return String (gimp_filter_layer_dup_procedure (get ())); }

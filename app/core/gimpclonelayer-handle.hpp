@@ -74,10 +74,8 @@ private:
   }
   [[noreturn]] static void fail (GError *error)
   {
-    Error failure (error ? static_cast<GimpPainterError> (error->code) : GIMP_PAINTER_ERROR_INVALID_STATE,
-                   error ? error->message : "CloneLayer operation failed");
-    g_clear_error (&error);
-    throw failure;
+    const auto code = error ? static_cast<GimpPainterError> (error->code) : GIMP_PAINTER_ERROR_INVALID_STATE;
+    throw Error (code, take_error_message (error, "CloneLayer operation failed").c_str ());
   }
   ObjectRef<GimpCloneLayer> owner_;
 };

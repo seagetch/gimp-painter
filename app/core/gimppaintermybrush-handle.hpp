@@ -35,8 +35,8 @@ private:
   { if (!owner_) throw Error (GIMP_PAINTER_ERROR_WRONG_TYPE, "Expected painter MyPaint resource"); }
   [[noreturn]] static void fail (GError *error)
   {
-    Error failure (GIMP_PAINTER_ERROR_INVALID_STATE, error ? error->message : "Brush resource operation failed");
-    g_clear_error (&error); throw failure;
+    throw Error (GIMP_PAINTER_ERROR_INVALID_STATE,
+                 take_error_message (error, "Brush resource operation failed").c_str ());
   }
   ObjectRef<GimpPainterMybrush> owner_;
 };

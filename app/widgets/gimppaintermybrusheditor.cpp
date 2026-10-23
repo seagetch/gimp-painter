@@ -1,5 +1,6 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 #include "config.h"
+#include "../painter/resources.hpp"
 #include <gegl.h>
 #include <gtk/gtk.h>
 extern "C" {
@@ -168,7 +169,7 @@ void status (EditorImpl& i, const char *message) {
   if (!i.closed && i.root && i.status) gtk_label_set_text (GTK_LABEL (i.status), message ? message : "");
 }
 void checked (gboolean success, GError *error) {
-  if (!success) { std::string message = error ? error->message : "Painter brush operation failed"; g_clear_error (&error); throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, message.c_str ()); }
+  if (!success) { std::string message = GimpPainter::take_error_message (error, "Painter brush operation failed"); throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, message.c_str ()); }
   g_clear_error (&error);
 }
 void dispatch (gpointer data) noexcept {

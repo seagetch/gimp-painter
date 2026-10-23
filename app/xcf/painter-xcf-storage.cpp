@@ -3,6 +3,7 @@
  * https://docs.gtk.org/glib/struct.Variant.html#serialized-data-memory
  * This streams the same little-endian format; it introduces no value schema.
  */
+#include "../painter/resources.hpp"
 #include "painter-xcf-storage.hpp"
 #include <algorithm>
 #include <atomic>
@@ -32,10 +33,10 @@ using Variant = std::unique_ptr<GVariant, VariantFree>;
 [[noreturn]] void fail (const char *message) { throw std::runtime_error (message); }
 [[noreturn]] void io_failure (GError *error)
 {
-  StorageError exception (error ? error->domain : G_IO_ERROR,
-                          error ? error->code : G_IO_ERROR_FAILED,
-                          error ? error->message : "Painter metadata I/O failure");
-  g_clear_error (&error); throw exception;
+  const auto domain = error ? error->domain : G_IO_ERROR;
+  const auto code = error ? error->code : G_IO_ERROR_FAILED;
+  throw StorageError (domain, code,
+                      GimpPainter::take_error_message (error, "Painter metadata I/O failure").c_str ());
 }
 void cancelled (GCancellable *cancel)
 {

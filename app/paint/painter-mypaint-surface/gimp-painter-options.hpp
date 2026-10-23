@@ -19,7 +19,7 @@ public:
   MyPaint::Resource snapshot () const
   {
     GError *error=nullptr;String json(gimp_painter_mybrush_options_dup_json(get(),&error));
-    if(!json){Error fail(GIMP_PAINTER_ERROR_INVALID_STATE,error?error->message:"Unavailable brush draft");g_clear_error(&error);throw fail;}
+    if(!json){throw Error(GIMP_PAINTER_ERROR_INVALID_STATE,take_error_message(error,"Unavailable brush draft").c_str());}
     return MyPaint::Resource::decode(json.get());
   }
 private:

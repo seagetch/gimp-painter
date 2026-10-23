@@ -4,11 +4,21 @@
 #include "gimp-painter-visibility.h"
 #include "boundary.hpp"
 #include <memory>
+#include <string>
 #include <utility>
 
 namespace GimpPainter GIMP_PAINTER_PRIVATE {
 struct Free { void operator() (gpointer value) const noexcept { g_free (value); } };
 using String = std::unique_ptr<gchar, Free>;
+
+/* Consume the C-owned error before the returned string can allocate/throw. */
+inline std::string take_error_message (GError *&error, const char *fallback)
+{
+  auto *old = error;
+  error = nullptr;
+  std::unique_ptr<GError, decltype (&g_error_free)> owner (old, g_error_free);
+  return owner ? owner->message : fallback;
+}
 
 class Value
 {

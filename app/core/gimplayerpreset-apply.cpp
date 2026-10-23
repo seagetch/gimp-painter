@@ -176,7 +176,7 @@ void install_filter (GimpLayer *layer, JsonNode *filter)
   std::unique_ptr<GBytes, decltype (&g_bytes_unref)> raw (g_bytes_new_take (json, std::strlen (json)), g_bytes_unref);
   GError *error = nullptr;
   if (!gimp_filter_layer_set_definition (GIMP_FILTER_LAYER (layer), procedure, raw.get (), values.get (), &error))
-    { std::string message = error ? error->message : "Unable to install filter definition"; g_clear_error (&error); throw std::runtime_error (message); }
+    { std::string message = GimpPainter::take_error_message (error, "Unable to install filter definition"); throw std::runtime_error (message); }
 }
 struct Planner {
   GimpImage *image; GimpLayer *source;

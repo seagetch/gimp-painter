@@ -1,5 +1,6 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 #include "config.h"
+#include "../painter/resources.hpp"
 #include <gtk/gtk.h>
 #include <gegl.h>
 extern "C" {
@@ -27,7 +28,7 @@ namespace {
 template<class F>void checked(F call)
 {
   GError*error=nullptr;const gboolean result=call(&error);
-  if(!result){std::string why=error?error->message:"Extended paint operation failed";g_clear_error(&error);throw std::runtime_error(why);}
+  if(!result){std::string why = GimpPainter::take_error_message (error, "Extended paint operation failed");throw std::runtime_error(why);}
   g_clear_error(&error);
 }
 struct Operation {
@@ -106,7 +107,7 @@ gboolean gimp_painter_paint_gate_stroke(GimpPaintCore*core,GimpDrawable*drawable
     std::unique_ptr<WeakOperation>weak(new WeakOperation(operation));
     operation->pending=Connection::connect(ObjectRef<GObject>::retain(G_OBJECT(operation->image.get())),"query-pending-paint",G_CALLBACK(query_pending),weak.get(),weak_destroy);weak.release();operation->active=true;
     GError*create_error=nullptr;operation->session=ObjectRef<GimpPainterSession>::adopt(gimp_painter_session_new(model.get(),&create_error));
-    if(!operation->session){std::string why=create_error?create_error->message:"Cannot create extended stroke session";g_clear_error(&create_error);throw std::runtime_error(why);}
+    if(!operation->session){std::string why = GimpPainter::take_error_message (create_error, "Cannot create extended stroke session");throw std::runtime_error(why);}
     admission.validate();checked([&](GError**e){return gimp_painter_session_begin_named_batch(operation->session.get(),push_undo,core->undo_desc,e);});operation->batch=true;
     core->start_coords=core->last_coords;
     gint off_x,off_y;gimp_item_get_offset(GIMP_ITEM(drawable),&off_x,&off_y);

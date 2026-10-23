@@ -1,5 +1,6 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 #include "config.h"
+#include "../painter/resources.hpp"
 #include <gegl.h>
 #include <gtk/gtk.h>
 #include <cmath>
@@ -620,8 +621,7 @@ public:
         GError *e     = nullptr;
         if (! gimp_pdb_query (g->pdb, ".*", ".*", ".*", ".*", ".*", ".*", ".*", &names, &e))
           {
-            std::string m = e ? e->message : "PDB query failed";
-            g_clear_error (&e);
+            std::string m = GimpPainter::take_error_message (e, "PDB query failed");
             throw Failure (500, m);
           }
         try
@@ -660,15 +660,14 @@ public:
     std::set<std::string> known;
     for (int i = 0; i < p->num_args; ++i)
       known.insert (key (p->args[i], i, names));
-    auto *members = json_object_get_members (json_node_get_object (a));
-    for (auto *l = members; l; l = l->next)
+    std::unique_ptr<GList, decltype (&g_list_free)> members (
+        json_object_get_members (json_node_get_object (a)), g_list_free);
+    for (auto *l = members.get (); l; l = l->next)
       if (! known.count (static_cast<const char *> (l->data)))
         {
           std::string bad = static_cast<const char *> (l->data);
-          g_list_free (members);
           throw Failure (400, "Unknown argument: " + bad);
         }
-    g_list_free (members);
     for (int i = 0; i < p->num_args; ++i)
       {
         auto *spec = p->args[i];
@@ -701,8 +700,7 @@ public:
     GError     *e = nullptr;
     Values      output (gimp_procedure_execute (p, g, gimp_get_user_context (g),
                                                 nullptr, args.get (), &e));
-    std::string execution_error = e ? e->message : "";
-    g_clear_error (&e);
+    std::string execution_error = GimpPainter::take_error_message (e, "");
     if (! output || gimp_value_array_length (output.get ()) < 1)
       throw Failure (500, execution_error.empty () ?
                               "Procedure returned no status" :

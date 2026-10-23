@@ -2,6 +2,7 @@
  * Ordinary painter paper. Arithmetic from pinned gimp-painter BrushCore and
  * paint-funcs, under GPL-3.0-or-later. Native owners remain GimpBrushCore fields. */
 #include "config.h"
+#include "../painter/resources.hpp"
 #include <gegl.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 extern "C" {
@@ -52,8 +53,7 @@ gimp_painter_paper_texturize (GimpPattern *pattern, const GimpTempBuf *mask,
     GimpPainterPaperView paper {};
     GError *local = nullptr;
     if (!gimp_painter_paper_get_view (pattern, &paper, &local)) {
-      std::string message (local ? local->message : "Invalid painter paper");
-      g_clear_error (&local);
+      std::string message = GimpPainter::take_error_message (local, "Invalid painter paper");
       throw std::invalid_argument (message);
     }
     const int width = gimp_temp_buf_get_width (mask);

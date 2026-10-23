@@ -1,5 +1,6 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 #include "config.h"
+#include "../../painter/resources.hpp"
 #include <gtk/gtk.h>
 #include "paint-core.hpp"
 #include "paint/painter-mypaint/engine.hpp"
@@ -183,7 +184,7 @@ struct PaintCore::Impl : std::enable_shared_from_this<Impl> {
         throw std::invalid_argument("Drawable changed during resource setup");
       GList drawables={d,nullptr,nullptr};GError*error=nullptr;
       if(fresh&&!gimp_paint_core_start(native.get(),&drawables,options.get(),&coords,&error)) {
-        const std::string message=error?error->message:"Unable to start paint transaction";g_clear_error(&error);throw std::runtime_error(message);
+        const std::string message = GimpPainter::take_error_message (error, "Unable to start paint transaction");throw std::runtime_error(message);
       }
       started=true;surface=raster;resources=owners;
       // notify::frozen may request cancellation or remove the drawable. Do not

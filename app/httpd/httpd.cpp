@@ -310,7 +310,10 @@ struct State : std::enable_shared_from_this<State>
     if (! hook.empty ())
       {
         GError *e       = nullptr;
-        auto   *u       = g_uri_parse (hook.c_str (), G_URI_FLAGS_NONE, &e);
+        std::unique_ptr<GUri, decltype (&g_uri_unref)> uri (
+            g_uri_parse (hook.c_str (), G_URI_FLAGS_NONE, &e), g_uri_unref);
+        std::unique_ptr<GError, decltype (&g_error_free)> error (e, g_error_free);
+        auto   *u       = uri.get ();
         bool    allowed = u && g_strcmp0 (g_uri_get_scheme (u), "http") == 0 &&
                        g_strcmp0 (g_uri_get_host (u), "127.0.0.1") == 0 &&
                        ! g_uri_get_userinfo (u) && ! g_uri_get_fragment (u);
@@ -319,9 +322,6 @@ struct State : std::enable_shared_from_this<State>
                                                          g_uri_get_port (u) :
                                                          80) :
                                  "";
-        if (u)
-          g_uri_unref (u);
-        g_clear_error (&e);
         if (! allowed || webhook_origin.empty () || origin != webhook_origin)
           throw Failure (403, "Webhook origin is not explicitly allowed");
       }
@@ -339,12 +339,12 @@ struct State : std::enable_shared_from_this<State>
       auto *m = soup_message_new ("POST", hook.c_str ());
       if (! m)
         return;
+      auto message = ObjectRef<GObject>::adopt (G_OBJECT (m));
       soup_message_set_flags (m, SOUP_MESSAGE_NO_REDIRECT);
       auto *bytes = g_bytes_new (body.data (), body.size ());
       soup_message_set_request_body_from_bytes (m, "application/json", bytes);
       g_bytes_unref (bytes);
       auto hook = std::make_shared<Hook> ();
-      s->hooks.push_back (hook);
       std::weak_ptr<Hook> weak_hook = hook;
       hook->deadline = Source::timeout (s->main_context, 10000, G_PRIORITY_DEFAULT, [weak_hook] {
         if (auto h = weak_hook.lock ())
@@ -352,6 +352,9 @@ struct State : std::enable_shared_from_this<State>
         return false;
       });
       using Callback = std::pair<std::weak_ptr<State>, std::shared_ptr<Hook> >;
+      std::unique_ptr<Callback> callback (new Callback (s, hook));
+      // Publish only after every throwing preparation step has an owner.
+      s->hooks.push_back (hook);
       soup_session_send_async (
           SOUP_SESSION (s->session.get ()), m, G_PRIORITY_DEFAULT,
           G_CANCELLABLE (hook->cancel.get ()),
@@ -373,8 +376,7 @@ struct State : std::enable_shared_from_this<State>
                             list.end ());
               }
           },
-          new Callback (s, hook));
-      g_object_unref (m);
+          callback.release ());
     });
     for (auto it = guides.begin (); it != guides.end ();)
       {

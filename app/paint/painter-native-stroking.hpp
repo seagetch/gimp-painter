@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 #ifndef GIMP_PAINTER_NATIVE_STROKING_HPP
 #define GIMP_PAINTER_NATIVE_STROKING_HPP
+#include "../painter/resources.hpp"
 #include "../painter/gimp-painter-visibility.h"
 #include "painter/connection.hpp"
 #include <atomic>
@@ -104,8 +105,7 @@ template<class Function>
 void native_stroke_checked (Function function) {
   GError *error = nullptr;
   if (!function (&error)) {
-    const std::string message = error ? error->message : "Owned stroke operation failed";
-    g_clear_error (&error); throw std::runtime_error (message);
+    const std::string message = GimpPainter::take_error_message (error, "Owned stroke operation failed"); throw std::runtime_error (message);
   }
   g_clear_error (&error);
 }
@@ -125,7 +125,7 @@ void native_stroke_segments (const GimpPaintStrokeSegment *segments, gsize count
       for (;;) {
         GError *error = nullptr;
         const bool done = step (&error);
-        if (error) { std::string message = error->message;g_clear_error (&error);throw std::runtime_error (message); }
+        if (error) { std::string message = GimpPainter::take_error_message (error, "Unknown error");throw std::runtime_error (message); }
         watch->check ();
         if (done) break;
       }

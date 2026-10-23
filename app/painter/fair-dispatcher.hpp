@@ -77,12 +77,13 @@ class FairDispatcher
         }
       return !queue.empty ();
     }
+    // The deque can allocate: construct it before retaining the C-owned refs.
+    std::deque<std::shared_ptr<Entry>> queue;
     GMainContext *context;
     GThread *thread;
     guint interval;
     int priority;
     Source source;
-    std::deque<std::shared_ptr<Entry>> queue;
   };
 public:
   class Ticket
