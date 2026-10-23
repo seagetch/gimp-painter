@@ -670,17 +670,23 @@
       "implementation_paths": [
         "app/painter/object-ref.hpp",
         "app/painter/binding-store.hpp",
-        "app/painter/binding-store.cpp"
+        "app/painter/binding-store.cpp",
+        "app/painter/tests/test-gobject.cpp",
+        "app/painter/tests/test-foundation.cpp",
+        "app/painter/tests/test-hierarchy.cpp"
       ],
       "test_ids": [
         "/painter/gobject/type-rejection",
-        "/painter/store/lifecycle"
+        "/painter/hierarchy/type-ancestry",
+        "/painter/store/slot-registration",
+        "/painter/store/slot-lookup",
+        "/painter/hierarchy/base-missing-derived"
       ],
       "reports": [
-        "migration/tests/painter-foundation-acceptance-native.json",
-        "migration/tests/painter-foundation-acceptance-sanitizers.json"
+        "migration/tests/construction-failure/native.json",
+        "migration/tests/construction-failure/sanitizers.json"
       ],
-      "scope_or_gap": "Common implementation only; all-feature registration and platform acceptance are separate."
+      "scope_or_gap": "Original wrong-type/missing-slot verification complete from unchanged current65-case native/ASanUBSan and Meson evidence. Live incompatible GObjects reject with unchanged counts/floating state; wrong owner creates no Impl; absent typed lookup invokes no callback or implicit constructor and preserves valid slots. Exact three old duties mapped. Arbitrary corrupt/freed pointers, all feature catalogs, LSan and non-Linux platforms are outside this result."
     },
     {
       "id": "07.004",
