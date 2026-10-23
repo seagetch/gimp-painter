@@ -319,7 +319,7 @@
     {
       "id": "14.007/component-visibility-regression",
       "title": "Cloneのcomponent可視性と遅延ROI更新を検証する",
-      "existing_checkbox": false,
+      "existing_checkbox": true,
       "dependencies": "14.001/core-implementation, 02.005, 09.002",
       "acceptance_condition": "旧source由来のRGB/RGBA/Gray/Gray-alpha全component組合せ・toggle時cache保持・1x1更新通知・source-node・opacity/mask丸め・show-maskを通常/focused sanitizerで検証。親14.007/14.006とgenuine runtime/合成/UI/release gateは別途保持",
       "source": [
@@ -337,14 +337,16 @@
       ],
       "additional_roundtrip_tests": [],
       "additional_dialog_tests": [],
-      "reports": [],
-      "gaps": [
-        "Fresh sealed normal/focused ASan/UBSan and affected-regression receipt is pending; source-derived arithmetic is not a genuine runtime capture."
+      "reports": [
+        "migration/tests/clone-component-visibility-evidence.tar.xz"
       ],
-      "state": "OPEN",
+      "gaps": [],
+      "state": "COMPONENT_VERIFIED",
       "component_scope": "Source-derived component visibility matrix and delayed ROI invalidation, with separate projection-boundary checks. Parent 14.007 and composition/UI/release gates remain open.",
       "qualifications": [
-        "Focused sanitizer instruments eight named translation units; LSan disabled and remaining GIMP/dependencies uninstrumented."
+        "Run-004 completed a full default build, seven exact registered normal targets (222 positive TAP cases), and all 58 Clone cases under focused ASan/UBSan.",
+        "Focused sanitizer instruments eight named translation units; 54 linked production units receive RTTI-only compatibility rebuilding. LSan is disabled and remaining GIMP/dependencies are uninstrumented.",
+        "The arithmetic oracle is source-derived, not a genuine historical runtime capture. Parent 14.007, predecessor 14.006, composition/UI and aggregate/release gates remain open."
       ]
     },
     {
@@ -808,5 +810,9 @@
       "source_report": "migration/tests/layer-dialog-store-sanitizer-build.json"
     }
   },
-  "current_core_receipt": null
+  "current_core_receipt": {
+    "archive": "migration/tests/clone-component-visibility-evidence.tar.xz",
+    "archive_sha256": "421e89882a0edc1dd16864f2380854b7326d44b973ed81a4699313252528a20e",
+    "receipt_sha256": "c0f5de165fff330f541037420b586eab3d5906264d85134115029adb17f5057a"
+  }
 }

@@ -593,7 +593,7 @@
 | 14.006 | [ ] | clone 自身の座標処理を実装する | 14.005 | source 座標との合成が一致 |
 | 14.006/editability-contract | [ ] | CloneLayer の編集可否を現行ロック規約へ対応付ける | 14.005, 01.005/gimp3-layer-slots | 廃止された GimpItemClass.is_editable を仮定せず、許可操作と選択・移動の可否を確認 |
 | 14.007 | [ ] | source の可視性・合成変更を処理する | 14.006 | 旧版の更新範囲と表示が一致 |
-| 14.007/component-visibility-regression | [ ] | Cloneのcomponent可視性と遅延ROI更新を検証する | 14.001/core-implementation, 02.005, 09.002 | 旧source由来のRGB/RGBA/Gray/Gray-alpha全component組合せ・toggle時cache保持・1x1更新通知・source-node・opacity/mask丸め・show-maskを通常/focused sanitizerで検証。親14.007/14.006とgenuine runtime/合成/UI/release gateは別途保持 |
+| 14.007/component-visibility-regression | [x] | Cloneのcomponent可視性と遅延ROI更新を検証する | 14.001/core-implementation, 02.005, 09.002 | 旧source由来のRGB/RGBA/Gray/Gray-alpha全component組合せ・toggle時cache保持・1x1更新通知・source-node・opacity/mask丸め・show-maskを通常/focused sanitizerで検証。親14.007/14.006とgenuine runtime/合成/UI/release gateは別途保持 |
 | 14.008 | [ ] | source 改名を処理する | 14.007 | 既存参照を旧仕様に沿って維持 |
 | 14.009 | [ ] | 同名 source を処理する | 14.008 | 保存前後で別レイヤーへ変わらない |
 | 14.010 | [ ] | clone の複製を実装する | 14.009 | 複製先の source が旧仕様と一致 |
