@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "task": "10.001",
+  "review_date_utc": "2026-10-17",
+  "verdict": "PASS_SOURCE_CONTRACT",
+  "criterion": "Every in-scope saved item has a type, default, owning type, reader/writer and executable source assertion ID.",
+  "scope": "Original saved-field metadata/schema criterion across the fixed16 persistence routes; source-only independent review.",
+  "base_public_commit": "ade58551ffc6326b8feecadaa3351ba14cd0aa0a",
+  "legacy_source_commit": "afa43fae3e920210146abed514f136fd49f671b5",
+  "reviewed_manifest": {
+    "path": "migration/inventory/persistence-field-contract.json",
+    "sha256": "423993d1b2b0ef20bb85248d9abb58fc30150c6125e9e56be7c59a6d9f2a9d10",
+    "source_file_revision_pairs": 215,
+    "source_hashes_location": "sources[] in this exact manifest; each revision/path/SHA256 was verified by the ordinary unified gate",
+    "source_hash_list_canonical_json_sha256": "6f59ca1d807e2136afb1ce6126a7181de61c2bffd18506344a748283d77b7fca"
+  },
+  "reviewed_hashes": {
+    "migration/tests/persistence_source.py": "1de10aa55a6e48a5417d7f25ecff456f75287e201d9601ae96ec3b1d3899b978",
+    "migration/tests/test_persistence_config_contract.py": "b3b602141a698b306ea24924def1ea5cf8db12dbe5b5a3bcb8e2af17f08b85d7",
+    "migration/tests/test_persistence_field_contract.py": "d7a84771c06ff89c0c89a75d96b5177228cf605a15315d9ad1c7c63a79e20757",
+    "migration/tests/test_persistence_mypaint_contract.py": "a2856ef7411a8594ee9ed1e9a541024b552ac35e8f622b1bccb04964c2309d17",
+    "migration/tests/test_persistence_xcf_contract.py": "a4f8547cc32209e5e4ae94ccd02894d602a89ea25207411ef36ad6cd66931931",
+    "migration/inventory/persistence-xcf-fields.json": "3efb70638d46168175420a6cffd2302c731f4d332c49aeb48b4b6e35a0534439",
+    "migration/inventory/persistence-mypaint-fields.json": "4ac907a74b1da959fac99d236cd9c725c675fa04c1367a6d28a08c01ddb87914",
+    "migration/inventory/persistence-config-fields.json": "601de2bf456cfa450e500fa86fb8c2a49966312953acf791da5c96e31d071484",
+    "migration/inventory/persistence-field-contract.json": "423993d1b2b0ef20bb85248d9abb58fc30150c6125e9e56be7c59a6d9f2a9d10",
+    "migration/inventory/persistence-fields.tsv": "fa23a7e187ea02f38893435a0c187ed7587a5e99ab53a141d9030dc7aba843fc",
+    "migration/inventory/persistence-site-dispositions.tsv": "02625cab41e7a64f64457ec7734f0191e976faea741bf025ea25d4b8512bdc86",
+    "migration/inventory/persistence-routes.tsv": "1e173bd4167abe3df5fff544b8c26e52169f2f4f3b9ed7e287d2c70e20c005b0",
+    "migration/inventory/persistence-sites.tsv": "87d989e8924a8d827bcccfa9e3469fec4bd0ee6cb700a5c4926242cd61016e8d",
+    "migration/contracts/persistence-field-contract.md": "0be3c791cd95d26aaf35d30b6c99ca2ccbff5d45849b0d51c72cd32c395ddbe9",
+    "migration/acceptance/persistence-field-contract-source.json": "7f36426ab13a8fec32cd191797c9b06353322ffd1e6fbecfeae854a7a95070f3"
+  },
+  "positive_results": {
+    "unified": "PASS: 1378 source-checked contract records; 873 exact candidate dispositions;16 routes; 0 rejected controls",
+    "family_assertions": {
+      "xcf": 437,
+      "mypaint": 201,
+      "config": 740
+    },
+    "syntax_candidates": 873,
+    "routes": 16,
+    "source_seals_verified": true,
+    "derived_views_verified": true,
+    "unique_executed_assertion_ids": 1378
+  },
+  "independent_direct_controls": [
+    {
+      "family": "mypaint",
+      "rejected": 510,
+      "unexpected_passes": 0,
+      "actual_acceptance_path": "test_persistence_mypaint_contract.validate_family",
+      "coverage": "All201 defaults and all201 omissions;108 representative metadata mutations. No source or native executable mutation.",
+      "report_sha256": "08db21ba9619be20ed39fe78683a25cd6eb96cfe26136bd31bcf7fb72b0d487f"
+    },
+    {
+      "family": "config",
+      "rejected": 173,
+      "unexpected_passes": 0,
+      "actual_acceptance_path": "test_persistence_config_contract.validate_family",
+      "coverage": "21 representative fields:default/owner/type/flags/assertion/reader/writer and omission; duplicate/domain omission;3 read-only source overlays. Only source byte/file-list reads were cached; expected fields/assertions were unchanged.",
+      "report_sha256": "e0396a0d1e2b633135f9dd7b84fa14505be27e0883259e21115178b8e39712f9",
+      "runner_sha256": "0c27be784c8259670abbc40b277f1fddc98d02cad3aed54d4f30af98efa7eed2"
+    },
+    {
+      "family": "xcf_and_unified",
+      "rejected": 37,
+      "unexpected_passes": 0,
+      "actual_acceptance_path": "test_persistence_xcf_contract.validate_family, unified.validate_schema and ordinary unified.main",
+      "coverage": "14 XCF defaults/writers;3 finite omissions despite adjusted counts; real-but-wrong and unresolved candidate references;2 source overlays;2 ordinary CLI manifest corruptions including missing cross-family MyPaint members.",
+      "report_sha256": "7c4fb2c4e931f17e9ea06274b219f058c63a0670bfb6c040c0591d362f506349",
+      "runner_sha256": "e1f540e20bace247471e7bafd5fe4afde7cbf18527fd72cf951f34873c311303"
+    }
+  ],
+  "lead_direct_controls": {
+    "rejected": 32,
+    "unexpected_passes": 0,
+    "evidence": "migration/acceptance/persistence-field-contract-source.json",
+    "review": "Verified32 controls use actual public family validators and the same schema/manifest functions as ordinary acceptance. The earlier unused snapshot-comparator approach was removed."
+  },
+  "resolved_review_findings": [
+    "Concrete finite field coverage supplements syntax-candidate classification and historical185-row XCF input.",
+    "Effective native/legacy macro flags, constructed curve arrays, conditional defaults and inherited context/resource defaults are explicit.",
+    "PATHS/VECTORS nested fields, old/current owners and version admission, concrete writer relationships and omitted-coordinate defaults are explicit.",
+    "Text/font/grid/symmetry/metadata custom schemas, GEGL parameterized operation/config domains, capsule members, typed arguments, origins and multipart members are explicit.",
+    "Capsule writer anchors match actual producer functions; diagnostic origin readers identify opaque preservation rather than active argument decoding.",
+    "Cross-family preset domain keeps DeviceOptions and MybrushOptions owners distinct and includes custom option members."
+  ],
+  "unresolved_source_contract_blockers": [],
+  "preservation_checks": {
+    "native_production_source_changed_by_contract_work": false,
+    "tracked_diff_from_base_is_migration_artifacts_only": true,
+    "historical_acceptance_receipts_and185_row_matrix_unchanged": true,
+    "reviewer_edited_accepted_source": false,
+    "native_or_legacy_runtime_executed_by_reviewer": false
+  },
+  "closure_recommendation": "The source metadata/schema criterion for original10.001 is satisfied. Parent owns taskwise publication, retained strict native-gate refresh and final task-ledger closure; this review does not certify those remaining actions.",
+  "separate_gates": [
+    "10.002\u201310.018",
+    "14.001 and wider port gates",
+    "runtime roundtrip",
+    "property ordering/duplicates",
+    "rendering/UI",
+    "platform equivalence",
+    "broad malformed-input behavior"
+  ],
+  "old_edge_runtime": "SKIPPED; not built or run"
+}
