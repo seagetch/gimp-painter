@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later
  * Legacy fixture expectations measured with afa43fae; the component-visibility
- * cases below explicitly use source-derived expectations from the pinned source.
+ * and source-mode cases explicitly use source-derived expectations from the
+ * pinned source.
  */
 #include "config.h"
 #include <gegl.h>
@@ -26,6 +27,9 @@
 #include "core/gimplayer-new.h"
 #include "core/gimplayermask.h"
 #include "core/gimppickable.h"
+#include "operations/operations-types.h"
+#include "operations/layer-modes/gimp-layer-modes.h"
+#include "operations/layer-modes-legacy/gimpoperationpainterlegacy.h"
 #include "painter/gimp-painter-binding.h"
 #include "tests.h"
 #include "gimp-app-test-utils.h"
@@ -299,6 +303,186 @@ component_assert_cache_and_node (GimpLayer    *clone,
                   GEGL_AUTO_ROWSTRIDE, GEGL_BLIT_DEFAULT);
   g_assert_cmpmem (actual, size, expected, size);
 }
+
+/* Source-derived initial-region contract, not final image compositing or a
+ * new old-runtime oracle. Pinned afa43fae gimpclonelayer.cpp:511-585 projects
+ * with combine=FALSE; gimplayer-project.c:95-144 selects initial_region;
+ * paint-funcs.c:3947-4016 special-cases only Dissolve for these image types.
+ * The literal mapping below is independent of the mapper under test. Raw 2
+ * (Behind) and 22 (Color erase) have no ordinary-layer context in this port.
+ */
+static const struct
+{
+  guint32       raw;
+  GimpLayerMode mode;
+} source_modes[] =
+{
+  {  0, GIMP_LAYER_MODE_PAINTER_NORMAL        },
+  {  3, GIMP_LAYER_MODE_PAINTER_MULTIPLY      },
+  {  4, GIMP_LAYER_MODE_SCREEN_LEGACY         },
+  {  5, GIMP_LAYER_MODE_OVERLAY_LEGACY        },
+  {  6, GIMP_LAYER_MODE_DIFFERENCE_LEGACY     },
+  {  7, GIMP_LAYER_MODE_ADDITION_LEGACY       },
+  {  8, GIMP_LAYER_MODE_SUBTRACT_LEGACY       },
+  {  9, GIMP_LAYER_MODE_DARKEN_ONLY_LEGACY    },
+  { 10, GIMP_LAYER_MODE_LIGHTEN_ONLY_LEGACY   },
+  { 11, GIMP_LAYER_MODE_HSV_HUE_LEGACY        },
+  { 12, GIMP_LAYER_MODE_HSV_SATURATION_LEGACY },
+  { 13, GIMP_LAYER_MODE_HSL_COLOR_LEGACY      },
+  { 14, GIMP_LAYER_MODE_HSV_VALUE_LEGACY      },
+  { 15, GIMP_LAYER_MODE_DIVIDE_LEGACY         },
+  { 16, GIMP_LAYER_MODE_DODGE_LEGACY          },
+  { 17, GIMP_LAYER_MODE_BURN_LEGACY           },
+  { 18, GIMP_LAYER_MODE_HARDLIGHT_LEGACY      },
+  { 19, GIMP_LAYER_MODE_SOFTLIGHT_LEGACY      },
+  { 20, GIMP_LAYER_MODE_GRAIN_EXTRACT_LEGACY  },
+  { 21, GIMP_LAYER_MODE_GRAIN_MERGE_LEGACY    },
+  { 23, GIMP_LAYER_MODE_PAINTER_ERASE         },
+  { 24, GIMP_LAYER_MODE_PAINTER_REPLACE       },
+  { 25, GIMP_LAYER_MODE_PAINTER_ANTI_ERASE    },
+  { 26, GIMP_LAYER_MODE_PAINTER_SRC_IN        },
+  { 27, GIMP_LAYER_MODE_PAINTER_DST_IN        },
+  { 28, GIMP_LAYER_MODE_PAINTER_SRC_OUT       },
+  { 29, GIMP_LAYER_MODE_PAINTER_DST_OUT       }
+};
+
+static void
+source_mode_assert_full_update (ComponentUpdate *update)
+{
+  g_assert_cmpuint (update->count, ==, 1);
+  g_assert_cmpint (update->rect.x, ==, 0);
+  g_assert_cmpint (update->rect.y, ==, 0);
+  g_assert_cmpint (update->rect.width, ==, 3);
+  g_assert_cmpint (update->rect.height, ==, 2);
+  update->count = 0;
+}
+
+static void
+source_mode_projection_case (gboolean gray,
+                             gboolean alpha)
+{
+  const Babl *format = babl_format (gray ? "Y'A u8" : "R'G'B'A u8");
+  const Babl *source_format = babl_format (gray ? (alpha ? "Y'A u8" : "Y' u8") :
+                                                 (alpha ? "R'G'B'A u8" : "R'G'B' u8"));
+  const guint channels = gray ? 2 : 4;
+  const gsize size = 3 * 2 * channels;
+  const guchar source_alpha[] = { 0, 1, 101, 128, 254, 255 };
+  /* Literal results of pinned paint-funcs-utils.h:22-28, with opacity byte
+   * floor(0.37 * 255.999)=94. INT_MULT3 uses one rounding step, not chained
+   * INT_MULT: source alpha 101 and mask 93 yield 14 rather than 13. */
+  const guchar expected_alpha[2][6] = { { 0, 0, 37, 47, 94, 94 },
+                                       { 0, 0, 14, 17, 34, 34 } };
+
+  G_STATIC_ASSERT (G_N_ELEMENTS (source_modes) == 27);
+  for (guint m = 0; m < G_N_ELEMENTS (source_modes); m++)
+    for (guint apply = 0; apply < 2; apply++)
+      {
+        GimpLayerMode mapped;
+        const GimpLayerMode mode = source_modes[m].mode;
+        const GimpLayerMode other = mode == GIMP_LAYER_MODE_PAINTER_NORMAL ?
+          GIMP_LAYER_MODE_PAINTER_MULTIPLY : GIMP_LAYER_MODE_PAINTER_NORMAL;
+        GimpImage *image;
+        GimpLayer *source;
+        GimpLayer *clone;
+        guchar input[3 * 2 * 4], expected[3 * 2 * 4];
+        guchar replacement[4];
+        ComponentUpdate update = { 0 };
+        gulong handler;
+
+        g_test_message ("source-derived mode raw=%u modern=%d %s%s apply-mask=%u",
+                        source_modes[m].raw, mode, gray ? "Gray" : "RGB",
+                        alpha ? "-alpha" : "", apply);
+        g_assert_true (gimp_painter_layer_mode_from_legacy (source_modes[m].raw, &mapped));
+        g_assert_cmpint (mapped, ==, mode);
+        g_assert_true ((gimp_layer_mode_get_context (mapped) &
+                        GIMP_LAYER_MODE_CONTEXT_LAYER) != 0);
+        g_assert_cmpint (other, !=, mode);
+        image = gimp_image_new (gimp, 3, 2, gray ? GIMP_GRAY : GIMP_RGB,
+                                GIMP_PRECISION_U8_NON_LINEAR);
+        source = gimp_layer_new (image, 3, 2, source_format, "source-mode", 0.37, mode);
+        g_assert_true (gimp_image_add_layer (image, source, NULL, 0, FALSE));
+        g_assert_cmpint (gimp_drawable_has_alpha (GIMP_DRAWABLE (source)), ==, alpha);
+        g_assert_cmpint (gimp_layer_get_mode (source), ==, mode);
+        for (guint p = 0; p < 6; p++)
+          {
+            input[p * channels] = gray ? 129 + p : 204 + p;
+            if (!gray)
+              { input[p * channels + 1] = 51 + p; input[p * channels + 2] = 102 + p; }
+            input[p * channels + channels - 1] = source_alpha[p];
+          }
+        gegl_buffer_set (gimp_drawable_get_buffer (GIMP_DRAWABLE (source)),
+                         GEGL_RECTANGLE (0, 0, 3, 2), 0, format, input, GEGL_AUTO_ROWSTRIDE);
+        if (apply)
+          {
+            GimpLayerMask *mask = gimp_layer_create_mask (source, GIMP_ADD_MASK_WHITE, NULL);
+            guchar mask_pixels[6];
+            GError *error = NULL;
+            memset (mask_pixels, 93, sizeof mask_pixels);
+            gegl_buffer_set (gimp_drawable_get_buffer (GIMP_DRAWABLE (mask)),
+                             GEGL_RECTANGLE (0, 0, 3, 2), 0, babl_format ("Y u8"),
+                             mask_pixels, GEGL_AUTO_ROWSTRIDE);
+            g_assert_nonnull (gimp_layer_add_mask (source, mask, FALSE, &error));
+            g_assert_no_error (error);
+            g_assert_true (gimp_layer_get_apply_mask (source));
+            g_assert_false (gimp_layer_get_show_mask (source));
+          }
+        clone = gimp_clone_layer_new (image, source, 3, 2, "clone", 1.0,
+                                      GIMP_LAYER_MODE_NORMAL_LEGACY);
+        g_assert_true (gimp_image_add_layer (image, clone, NULL, 0, FALSE));
+        memcpy (expected, input, size);
+        for (guint p = 0; p < 6; p++)
+          expected[p * channels + channels - 1] =
+            alpha ? expected_alpha[apply][p] : (apply ? 34 : 94);
+        component_assert_cache_and_node (clone, format, expected, size);
+        handler = g_signal_connect (clone, "update", G_CALLBACK (component_update), &update);
+
+        /* Every scene makes two real stored-mode changes, including raw 0.
+         * Pinned gimplayer.c:2052-2077 invalidates the full source layer;
+         * its initial-region bytes remain independent of either mode. */
+        gimp_layer_set_mode (source, other, FALSE);
+        g_assert_cmpint (gimp_layer_get_mode (source), ==, other);
+        while (g_main_context_iteration (NULL, FALSE));
+        component_assert_cache_and_node (clone, format, expected, size);
+        source_mode_assert_full_update (&update);
+        gimp_layer_set_mode (source, other, FALSE);
+        while (g_main_context_iteration (NULL, FALSE));
+        component_assert_cache_and_node (clone, format, expected, size);
+        g_assert_cmpuint (update.count, ==, 0);
+        gimp_layer_set_mode (source, mode, FALSE);
+        g_assert_cmpint (gimp_layer_get_mode (source), ==, mode);
+        while (g_main_context_iteration (NULL, FALSE));
+        component_assert_cache_and_node (clone, format, expected, size);
+        source_mode_assert_full_update (&update);
+        gimp_layer_set_mode (source, mode, FALSE);
+        while (g_main_context_iteration (NULL, FALSE));
+        component_assert_cache_and_node (clone, format, expected, size);
+        g_assert_cmpuint (update.count, ==, 0);
+
+        /* Mutate the lower-middle source pixel while the requested mode is
+         * restored. Exact full-buffer comparisons retain all five neighbors.
+         * Pinned INT_MULT(94,203)=75 and INT_MULT3(94,203,93)=27. */
+        replacement[0] = gray ? 63 : 17;
+        if (!gray) { replacement[1] = 89; replacement[2] = 231; }
+        replacement[channels - 1] = 203;
+        gegl_buffer_set (gimp_drawable_get_buffer (GIMP_DRAWABLE (source)),
+                         GEGL_RECTANGLE (1, 1, 1, 1), 0, format,
+                         replacement, GEGL_AUTO_ROWSTRIDE);
+        memcpy (expected + 4 * channels, replacement, channels);
+        expected[5 * channels - 1] = alpha ? (apply ? 27 : 75) : (apply ? 34 : 94);
+        gimp_drawable_update (GIMP_DRAWABLE (source), 1, 1, 1, 1);
+        while (g_main_context_iteration (NULL, FALSE));
+        component_assert_cache_and_node (clone, format, expected, size);
+        component_assert_update (&update, 1, 1);
+        g_assert_cmpuint (update.count, ==, 0);
+        g_signal_handler_disconnect (clone, handler);
+        g_object_unref (image);
+      }
+}
+
+static void source_mode_projection_rgb (void) { source_mode_projection_case (FALSE, FALSE); }
+static void source_mode_projection_rgba (void) { source_mode_projection_case (FALSE, TRUE); }
+static void source_mode_projection_gray (void) { source_mode_projection_case (TRUE, FALSE); }
+static void source_mode_projection_gray_alpha (void) { source_mode_projection_case (TRUE, TRUE); }
 
 static void
 component_set_visible (GimpImage *image,
@@ -1817,6 +2001,8 @@ int main (int argc, char **argv)
   ADD (dissolve_legacy_fixture); ADD (gray_and_high_precision);
   ADD (frozen_source_disposal); ADD (group_duplicate_internal_reference);
   ADD (inert_construction); ADD (reentrant_source_replace); ADD (cpp_header_layout); ADD (projected_pixels); ADD (partial_update_and_graph); ADD (deferred_name);
+  ADD (source_mode_projection_rgb); ADD (source_mode_projection_rgba);
+  ADD (source_mode_projection_gray); ADD (source_mode_projection_gray_alpha);
   ADD (component_visibility_rgb); ADD (component_visibility_rgba);
   ADD (component_visibility_gray); ADD (component_visibility_gray_alpha);
   ADD (component_visibility_show_mask); ADD (component_visibility_projection_boundary);
