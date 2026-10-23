@@ -457,6 +457,10 @@ def route(row, added, removed):
     # define the perspective editing-tool type; its actual callers stay08.010.
     if (path, int(row['index'])) in {('app/tools/gimp-tools.c', 11), ('app/core/gimpimage-private.h', 1), ('app/core/gimpperspectiveguide.cpp', 1), ('app/core/gimpimage-snap.h', 1), ('app/core/gimpperspectiveguide.h', 1), ('app/core/gimpimage.c', 1), ('app/core/gimpimage-snap.c', 1), ('app/core/gimpimage-perspective-guide.c', 1), ('app/core/gimpimage.c', 4), ('app/core/gimpimage.c', 3), ('app/core/gimpimage-perspective-guide.h', 1), ('app/core/gimpimage.c', 2)}:
         result['tasks'] = [task for task in result['tasks'] if task != '08.010']
+    # Search API and tool-only declarations do not define the Fill paint core.
+    # The actual BrushCore adapter and native registration remain001169.
+    if (path, int(row['index'])) in [('app/core/gimpimage-contiguous-region.h', 1), ('app/tools/gimp-tools.c', 3), ('app/tools/gimpbucketfillbrushtool.h', 1)]:
+        result['tasks'] = [task for task in result['tasks'] if task != '08.011']
     dsl = uses_gtk_dsl(path, added + removed)
     support = int(row['index']) in GTK_DSL_SUPPORT.get(path, set())
     result['tasks'] = [task for task in result['tasks']

@@ -1,0 +1,85 @@
+{
+  "status": "PASS",
+  "results": [
+    {
+      "case": "/fill-core/registered-type-parent-contract",
+      "exit_code": 0,
+      "stdout": "TAP version 14\n# random seed: R02Sbf04eead2e6effe742648e20f6d45bb6\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# Start of fill-core tests\nok 1 /fill-core/registered-type-parent-contract\n# End of fill-core tests\n1..1\n"
+    },
+    {
+      "case": "/fill-core/parent-start-failure-retry",
+      "exit_code": 0,
+      "stdout": "TAP version 14\n# random seed: R02S2fbf70ccfb562d06ae8c75798bcb75fd\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# Start of fill-core tests\nok 1 /fill-core/parent-start-failure-retry\n# End of fill-core tests\n1..1\n"
+    },
+    {
+      "case": "/fill-core/standalone-parent-lifetime",
+      "exit_code": 0,
+      "stdout": "TAP version 14\n# random seed: R02S7dc64d86bfc264b52f7ec4a69207142e\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# Start of fill-core tests\nok 1 /fill-core/standalone-parent-lifetime\n# End of fill-core tests\n1..1\n"
+    },
+    {
+      "case": "/fill-core/parent-start-notification-lifetime",
+      "exit_code": 0,
+      "stdout": "TAP version 14\n# random seed: R02S7b665a6008fffe422474f49357bcae07\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# Start of fill-core tests\nok 1 /fill-core/parent-start-notification-lifetime\n# End of fill-core tests\n1..1\n"
+    },
+    {
+      "case": "/fill-core/generic-start-gate",
+      "exit_code": 0,
+      "stdout": "TAP version 14\n# random seed: R02S84cbc158fee70f97e6f9a9aec8d7667a\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# Start of fill-core tests\nok 1 /fill-core/generic-start-gate\n# End of fill-core tests\n1..1\n"
+    },
+    {
+      "case": "/fill-core/dispose-rollback",
+      "exit_code": 0,
+      "stdout": "TAP version 14\n# random seed: R02Sfa26ae7c18a5dbdf6da6c3db127144f6\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# Start of fill-core tests\nok 1 /fill-core/dispose-rollback\n# End of fill-core tests\n1..1\n"
+    },
+    {
+      "case": "/fill-core/caller-core-loss",
+      "exit_code": 0,
+      "stdout": "TAP version 14\n# random seed: R02S4a89a88df8002a7111b141f3b2c32c99\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# Start of fill-core tests\nok 1 /fill-core/caller-core-loss\n# End of fill-core tests\n1..1\n"
+    },
+    {
+      "case": "/fill-core/pending-query-lifetime",
+      "exit_code": 0,
+      "stdout": "TAP version 14\n# random seed: R02Sd38d5b27692b0c990eed6bb70a3e247b\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# Start of fill-core tests\nok 1 /fill-core/pending-query-lifetime\n# End of fill-core tests\n1..1\n"
+    },
+    {
+      "case": "/owned-generic/reentry-abort-loss",
+      "exit_code": 0,
+      "stdout": "TAP version 14\n# random seed: R02Sd9ad26b111f85c7886d22b397166e194\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# Start of owned-generic tests\nok 1 /owned-generic/reentry-abort-loss\n# End of owned-generic tests\n1..1\n"
+    },
+    {
+      "case": "/owned-generic/finish-boundary",
+      "exit_code": 0,
+      "stdout": "TAP version 14\n# random seed: R02S747f95ad6da268d5f0d648c8dbc0b531\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# Start of owned-generic tests\nok 1 /owned-generic/finish-boundary\n# End of owned-generic tests\n1..1\n"
+    }
+  ],
+  "binary_sha256": "1fd119244f32ae955ee8be6b485734097bcd20cf6dd49315ea01cbe0da340ef1",
+  "source_sha256": {
+    "app/paint/gimpfillbrush.cpp": "077bff742f79ea6c4df585d3bdc1d3865b2895ffbd3f179b88e68fcbc3c52319",
+    "app/paint/gimpfillbrush.h": "17480b2edcca44a8ecc0e4d463461f57463db7dad841da49bd37af6d65ba6997",
+    "app/paint/gimp-paint.c": "fa4b70c01f6c8c73d6a546902facd7cdd6fcc6c98ce4b275a40d79a6a9f3dbbe",
+    "app/paint/gimppaintcore.c": "306710d7b6ae412e7e12bcedaf85b5f9bd4b43de2a7f424dca2bb82a9c6a16be",
+    "app/paint/gimppaintcore.h": "c4daffd4560445fe4796bd902006efadb91762781102f83d3745a0f2ba99967a",
+    "app/paint/gimpbrushcore.c": "dae7f51e023039a29c211ee66b047e02d2a0add045ae94821660ab3568346048",
+    "app/paint/gimpbrushcore.h": "b95d16c3202d79d7ca9bca340eea60718d2b82c445c3ffe88de83690cd4a168e",
+    "app/paint/gimppaintcore-stroke.c": "cb64290d8747e33e6833384a3be245915a24f9a90c57785de9c2d4c62b05adbf",
+    "app/paint/gimppaintcore-stroke.h": "5de48598705e0c9f3cf12d7e397e7b8ad23d48194f7229c397a55c2c70f5a60b",
+    "app/paint/painter-native-stroking.hpp": "b1224ea6a84a32c6590a219e3026fd4353cc1005c0d6a626ea2f8b91ccc40a33",
+    "app/paint/gimppaintoptions.c": "a434f30fcdcde309405aab0b121e19019b541b847203cdeeb1921ffd7edf98a8",
+    "app/core/gimppaintinfo.c": "cf3dc58a8881f2f658353c41ca8cd7b220eeddfbf1b2de0176103de05cb8653a",
+    "app/core/gimppaintinfo.h": "58c46ff0698f77f044ccef826ae33e68064fcef1dfda7b6b582fa4eb86b1cab8",
+    "app/core/gimpimage-undo.c": "38d66dbc67000da9ae6a8641a67638ba627c2b15ea8da05e04dbd1d8a8e289d5",
+    "app/painter/binding-store.cpp": "c69d65c22f26e6be8f6df69765cd30f7bbbd32b46b0eb847e9f6524b41c2b557",
+    "app/painter/binding-store.hpp": "c67deb0ccf33a13a5ba3ab3f50bdbb2ef8931f481acf62a9315d778388c90262",
+    "app/painter/object-ref.hpp": "5a8cc92afc56f652fd47c727269d71d9d97c4358015f13fe9c4764371fcb7c3a",
+    "app/painter/boundary.hpp": "d97a8b6e27a09fe69c7c1d6620361c3daaa1e5cf1bad8d2eb2d4b9a9faed6d2e",
+    "app/painter/connection.hpp": "3f81d5889f046a12beae6f2c8975be2007742e4d8f99e8fc44877fc809d6e898",
+    "app/tests/test-gimp-fill-brush.cpp": "9fb33eb01ce502fdd1f5096fd320522eea04f228c4caa2ab7afd9f60b4ed549e",
+    "app/tests/test-painter-owned-strokes.inc": "7305559c5799f4bcf4ff45afbb7c0bcfc4d6cb1d96cdeba7644d61e013eb0cdc",
+    "app/tests/meson.build": "c0ca2ba436e782c8672cfd903c9bc71700438c29303ffa3f0ccbb58471fce1b5"
+  },
+  "changed_during_run": [],
+  "build_report_sha256": "fae0e1fb60d2f09bb9a58a1fe3b9cc694839ccc6a0ec6d13c32920d5b23f9f04",
+  "ASAN_OPTIONS": "detect_leaks=0:halt_on_error=1:abort_on_error=1",
+  "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1",
+  "scope": "Focused original08.011 core type/parent lifetime; no LeakSanitizer or full-dependency coverage"
+}

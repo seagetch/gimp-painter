@@ -398,7 +398,7 @@
 | 08.009/removed-signal | [x] | パース定規型の削除通知 slot を復元する | 08.009, 01.005/gimp3-external-binders | 独自 `GimpPerspectiveGuideClass.removed` を新しい型に再定義し、削除時に一度だけ発火・接続解除する |
 | 08.009/guide-owner | [x] | パース定規の image setter の参照移譲契約を確定する | 08.009, 01.007/c-state | setter の旧値解放と新値代入を対称にし、呼出し元・画像終了時の二重解放と残存を防ぐ |
 | 08.010 | [x] | パース定規 tool 型を移植する | 08.009 | draw tool と options に登録 |
-| 08.011 | [ ] | 塗りつぶし brush core 型を移植する | 08.010 | paint core と親 vfunc を接続 |
+| 08.011 | [x] | 塗りつぶし brush core 型を移植する | 08.010 | paint core と親 vfunc を接続 |
 | 08.012 | [ ] | 塗りつぶし tool/options 型を移植する | 08.011 | tool manager と設定に登録 |
 | 08.013 | [ ] | LayerTileView 型を移植する | 08.012 | GTK3 の親 widget と終了を接続 |
 | 08.014 | [ ] | ToolTileView 型を移植する | 08.013 | GTK3 の親 widget と終了を接続 |
