@@ -66,6 +66,7 @@ libapppainter = static_library('apppainter',
   'filter-spool.cpp',
   'filter-raster-kernels.cpp',
   'filter-edge.cpp',
+  'filter-edge-shadow.cpp',
   'filter-gauss.cpp',
   'filter-sharpen.cpp',
   'filter-sharpen-shadow.cpp',
@@ -195,6 +196,21 @@ filter_sobel_test = executable('painter-filter-sobel',
   override_options: ['c_std=c11', 'cpp_std=c++14'],
   link_language: 'cpp')
 test('painter-filter-sobel', filter_sobel_test,
+  suite: 'painter', timeout: 120)
+
+# Independent Edge raw shadow: pinned native-format C oracle, full-drawable
+# halos and explicit empty write outcome; no live owner route is enabled.
+filter_edge_shadow_test = executable('painter-filter-edge-shadow',
+  'tests/test-filter-edge-shadow.cpp',
+  'tests/test-filter-edge-shadow-header.cpp',
+  'tests/legacy-edge-shadow-oracle.c',
+  dependencies: [painter_dep, painter_threads, math],
+  cpp_args: painter_cpp_args,
+  override_options: ['c_std=c11', 'cpp_std=c++14'],
+  link_language: 'cpp')
+test('painter-filter-edge-shadow', filter_edge_shadow_test,
+  args: [meson.project_source_root() / 'migration/fixtures/legacy-edge',
+         meson.project_source_root() / 'migration/fixtures/legacy-gray-filter'],
   suite: 'painter', timeout: 120)
 
 filter_context_test = executable('painter-filter-context',

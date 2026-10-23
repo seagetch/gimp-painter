@@ -1,0 +1,41 @@
+{
+  "scope": "Post-native documentation/evidence reconciliation only; no native execution repeated",
+  "tested_commit": "87c03ed868f2bc7a0c98350bdd93be7afd38b7e4",
+  "tested_tree": "d12095be05ceaaadac2d4ccfba60cfdc891ee3c9",
+  "gui_public_receipt_commit": "098f2fdb3d3c0f1c6dae4a43c9ba7ac334200fd3",
+  "gui_local_cherry_pick": "2b7c88bfa2",
+  "gui_receipt_bytes_unchanged": true,
+  "implementation_oracle_runner_build_input_sha256_unchanged": {
+    "app/painter/filter-context.hpp": "68971d1845cf91ed98aa8dc938a211023b37b7c963a764fec6b56657be8f7d30",
+    "app/painter/filter-edge-kernel-private.hpp": "dbb9852b334b3279a3c9a904eef9db99efe4c1e4f8cd8beeb540ad51a65584b7",
+    "app/painter/filter-edge-shadow.cpp": "dc7a3693063d73e33ce274b07fe632ed5121a4bc51b8d238a9e6b6601c9f8abe",
+    "app/painter/filter-edge-shadow.hpp": "9041d2bc8bfc194a14c95b5ee0fba8669d4d3f7efbb96c8188d9fcbee0662861",
+    "app/painter/filter-edge.cpp": "ff9d6c77932043585c8e914ee98cbfb2278eabbc8928d3ea821e6a7c955b7d67",
+    "app/painter/filter-edge.hpp": "7e7aa1053ea366f7d0991c718fcee553e2e90b41b06b553a2ef97267bc62afd2",
+    "app/painter/filter-gauss-kernel-private.hpp": "e0cf85d418cd0cf6767bba3350fa6e0770c40731589298927ffd83a6b72e94d4",
+    "app/painter/filter-gauss.hpp": "6942b7e5ec8b181b96cff94d6f38f9a20a7feb34f07c19b03b60d6a4f1c6d675",
+    "app/painter/filter-native-kernels.cpp": "960667b9b738acb5613bf4a893a7ccc16fdcbdf56e9d84100d983516b0e273d7",
+    "app/painter/filter-native-kernels.hpp": "eb9d70146c661c2c63b3d7c908d4a0a656fcabd3af0f879b1f53ecb4257ebb6a",
+    "app/painter/filter-progress.hpp": "a6c13320a7c76a7f3bd9d80be2ad91fe8324c9b36a04bf2589b7b42a91229ca2",
+    "app/painter/filter-raster-kernels.cpp": "70b6551e5bb4b800b3fc4145f9f07f25fe7400e52ca9543bd9bddf343bba6b06",
+    "app/painter/filter-raster-kernels.hpp": "02e55a238cc5d9805376a7d623c2eac3643a4344fe18ca3597bfd61ff3cd0ee7",
+    "app/painter/filter-raster.cpp": "3a110ef1be1dd8fcddf19268bbd1dd1ef39a5f982eadc31a3b654e7368334374",
+    "app/painter/filter-raster.hpp": "3da85d78912475d9e23c3dff5f1ae32aafa46ccd2d7f8be34d6eb03429175a29",
+    "app/painter/gimp-painter-visibility.h": "d832e5442d969ff8439292a61d0143532d85c1b7eaab0b29689c6dc04e9c4532",
+    "app/painter/meson.build": "abf70266c806e2549310a3881dd0eaf4c21375cf2fccb658eb216b76464037c1",
+    "app/painter/tests/legacy-edge-shadow-oracle.c": "aa159258dab62dec0f3dd5d0c43d222d4e4441e8682b8712825e6cf1def63d23",
+    "app/painter/tests/legacy-edge-shadow-oracle.h": "ee5ae411e5eca8f809ea431a469956b30b12eaa30e9b8ec01f642d9b94e97c85",
+    "app/painter/tests/run_filter_edge_shadow_tests.py": "79b1ea726e6a1b6299958c26cfd7bb997fe6f887cf2bd5780a93448c9737538b",
+    "app/painter/tests/test-filter-edge-shadow-header.cpp": "f2f066cd9149aa4aaf5755cda92506f39fad0d5177cdfd90a7e0b51bf8122dc0",
+    "app/painter/tests/test-filter-edge-shadow.cpp": "2710e8e337f45c12bb174b2a375942e3f282bb1616939f39ccb4ee50081f4590",
+    "app/painter/tests/test_filter_edge_shadow_runner.py": "a60cf0acf6b1207b4c45b788ec4efb878376ab4a38420889a3bde88d0d8a578c"
+  },
+  "documentation_only_input_changes": {
+    "migration/contracts/edge-raw-shadow-foundation.md": {
+      "tested_sha256": "288735532bfef1c0363b5354ef7ee99ac18154e4ed38a023a3a839473ff9ed0c",
+      "final_sha256": "5aeeab5477e4d2cb15930a8f83ece239f2443d159195b85bd09cc9d14eb5a6ff"
+    }
+  },
+  "runner_controls": 30,
+  "source_only_preflight_not_native_acceptance": true
+}
