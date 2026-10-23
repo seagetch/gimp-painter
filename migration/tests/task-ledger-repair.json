@@ -1,0 +1,143 @@
+{
+  "format": 1,
+  "status": "passed",
+  "scope": "Documentation-only ledger reconstruction; historical native results not rerun",
+  "base_commit": "642c006a8fb2196bf8d6e7524e964d6e9bc3672f",
+  "base_tree": "2d7a9cb8313fcba3670ecc639364759b310b15df",
+  "historical_evidence": [
+    {
+      "receipt": "migration/tests/filter-swap-teardown.json",
+      "receipt_sha256": "c04f7cdd9307a03580a4652842e0febdc4849c83aad193a5295158be163406ee",
+      "historical_commit": "daf4aa8d22298d728c459418fb2fe41d57097776",
+      "tested_sources_verified": {
+        "app/core/gimpfilterprocedure.cpp": "9b6b68607ef62edf42abf39ee810c05eeec316f1c0f073701c30420c7f7de349",
+        "app/painter/tests/test-filter-procedure.cpp": "05da8fa8156d4f14510c4222c949c73c08ff1786299c3928820bdf0dc98606ce",
+        "migration/tests/run_filter_acceptance_runtime.py": "a7bc40f296c88d1f30e8b630c68a5e0569e02c4b82deaacab71716a6407f0c52"
+      },
+      "scope": "Normal Debian 13 x86_64 private Filter GEGL teardown and corpus regression; not full aggregate, sanitizer, installed-runtime acceptance or release",
+      "historical_only": true
+    },
+    {
+      "receipt": "migration/tests/text-toolbar.json",
+      "receipt_sha256": "1455acaf1ec066f1f362f3ef4e13e7e392c295fb69458fbdc67cb4836f132ebc",
+      "historical_commit": "b170d6f424d82dd2f46d59ebdb97eb3a389eb7c3",
+      "tested_sources_verified": {
+        "app/tools/gimppaintertexttoolbar.inc": "17186982608846d1189720cd0dc9bd35bc233b1aa12cdf5d5f7f8f117dde2bf9",
+        "app/tools/gimppaintertooltoolbar.c": "4d012e722bf3660f77dcccdf969b542fff1e34704083644d42ab4722b6a9d5ac",
+        "app/tests/test-painter-text-toolbar.inc": "48b9b8b5f13d397daa7efb2d296a543c6e186391fc022de876dca737deb3e7c7",
+        "app/tests/test-painter-compact-options.c": "10efc2d674c55b220b0475a4ecf0fd9bd7175b9a49bfe5498c0132520a5d3112"
+      },
+      "scope": "Independent Text toolbar, normal native and HiDPI; not entire legacy UI or text rendering acceptance",
+      "historical_only": true
+    },
+    {
+      "receipt": "migration/tests/perspective-guide-toolbar.json",
+      "receipt_sha256": "82dc683039da892d1065e02e53ab9b87cac964423b104127fbbdd9808e094555",
+      "historical_commit": "49afe40bad5e29ba9a7466da2684e8906682c630",
+      "tested_sources_verified": {
+        "app/tools/gimp-tools.c": "3818f3711edadfdfbf5a10a8cf21bb6b68c417fa1161f87f0cd5a5913a2a8b3f",
+        "app/tests/test-painter-independent-toolbar.inc": "03df2c0e90c92d69d5c05bec6bea060642d6e5f18bbb9d7f923a31039b5c3e30",
+        "app/tests/test-painter-compact-options.c": "24e518c2b610c1d9aec2990a1000c80dd009032a98018444baec5410226f455d"
+      },
+      "scope": "Bounded Perspective Guide legacy empty horizontal factory",
+      "historical_only": true
+    },
+    {
+      "receipt": "migration/tests/native-test-profile-isolation.json",
+      "receipt_sha256": "1ae9c11696399bfe45e181fc446ad51ea5dedfeb2a1df7426f60c02655ed3eaf",
+      "historical_commit": "fc5e77ad72c3a4a6382f823dc155a517048bc6e3",
+      "tested_sources_verified": {
+        "app/tests/tests.c": "e0dabd0c925f97bd5e23ed9d1134c319c856fc504a454d7fd12689fd596dd598",
+        "app/tests/test-gimp-test-config-fixture.c": "2914086d421969407a16f54d81947d6c063a3da1fce3a48afab44c8594a41cc4"
+      },
+      "scope": "Normal Linux native test-profile isolation; not final aggregate or full-port acceptance",
+      "historical_only": true
+    },
+    {
+      "receipt": "migration/tests/header-default-build.json",
+      "receipt_sha256": "8627eac65bac8d99a89c1613610ad63529e59edc6e25cbd5cd27afa8b1895f01",
+      "historical_commit": "b6f0a033011492c42204a4fddb9b2ca8f691d426",
+      "tested_sources_verified": {
+        "app/painter/tests/headers/meson.build": "5cf32e9c1d6567971a5f11f91744e24aa517a35c33fcbb078a625ef8b973b8a4",
+        "migration/tests/test_header_default_build.py": "01a48104e83124f1dcebce32474f7a3810ab543112293520744d151ce4b98cd8"
+      },
+      "scope": "Default build dependency graph for registered public-header compilation; not aggregate acceptance",
+      "historical_only": true
+    },
+    {
+      "receipt": "migration/tests/toolbar-reference-lifetime.json",
+      "receipt_sha256": "8b26c07c49b2c540bef6f49ea496e9d31fa4769f1ccfda506b6f5c6ae604289b",
+      "historical_commit": "c499f3acb4c9eeaafb3b075e646c9aafffc9b970",
+      "tested_sources_verified": {
+        "app/tests/test-painter-toolbar-lifetime.inc": "6581f1e571f9009b8dda235a9d47a9979e3fa88cf67dc4f75d62fef5abc080c5",
+        "app/tests/test-painter-compact-options.c": "60f75e37e5be97daea6f3e882fa4443aa325eb10a44d7643a4ad5cf3a41e782a"
+      },
+      "scope": "Actual Canvas toolbar reference-lifetime acceptance, no production changes",
+      "historical_only": true
+    },
+    {
+      "receipt": "migration/tests/native-threshold-alpha-context.json",
+      "receipt_sha256": "32eff719081cf655bf3227160be21276694a809c8b3247081ff7582eb3922e51",
+      "historical_commit": "e26f4cb520bc49b246fee0c685176bf3f2cc4572",
+      "tested_sources_verified": {
+        "app/core/gimpfilterlayer.cpp": "eacf71ed699b200c4ea3541186920609f50100df923d09ea7e775308933660b5",
+        "app/painter/filter-point-shadow.cpp": "67da05c6229b8804e6b95f3e0c64b1b46e1ab9fadbb116f6821d0ce22e982363",
+        "app/painter/filter-point-shadow.hpp": "24bd74477a4a2bc975823ed05f78b92f31d3d006bca5867f2a0afa27c9c784db",
+        "app/painter/meson.build": "c60fa9e827a3f4614802afc5bcb8db7f43da40a78eb64f527e113d67e9e1b42a",
+        "app/painter/tests/run_filter_point_shadow_tests.py": "3cf3820a8b8461d28cde47d5a22c280f44c71316250580069cd74731517d19ba",
+        "app/painter/tests/test-filter-point-shadow.cpp": "7b962a9c17bdac01e087983ca35c022f2335811ebf76ba8815b1dc3110e6c535",
+        "app/tests/meson.build": "ce30cf4d6f9f99013a9fff231a438501a73d385f7b36448fee00393c795747bb",
+        "app/tests/test-filter-threshold-context.inc": "0521d3037533cd48253e2d22a07d6ff59cae8124f461e1ead3586de376bdb837",
+        "app/tests/test-gimp-filter-layer.c": "904eddd8d2792f6a815b1ee4aeac01a0f16311948067ab5c4da903f030a5b829",
+        "app/tests/test-painter-xcf-open.c": "6a27a55c6a20cff8aece9667d1521dcb038b4880fef0fc96898030ab9623f140",
+        "app/tests/test-painter-xcf-threshold.inc": "fec047586dbf99ed9f47a85138ce2ca1cfefa008851aee66e9fce30e627da21d",
+        "app/xcf/painter-xcf-load.cpp": "3b8baff701c545089ecca0fc2c7415ff87b34cc7f4e6e99f6666332ee28296b3",
+        "migration/fixtures/legacy-threshold-alpha-README.md": "5252e69991d3429c2843fdae93821f638158dd53288798839d5f5b35d5dd3f66",
+        "migration/fixtures/legacy-threshold-alpha-context.tar.manifest.json": "0e49a3ef3cfbc2003b7b8a47dd0b1af1a086673b76a72afd2b8fcaae7ab93961",
+        "migration/fixtures/legacy-threshold-alpha-context.tar.xz": "2900b8082f0175123c49f02e940a23a32cbd7c4d7e803e88a4e1e06b6b64c0bf",
+        "migration/fixtures/legacy-threshold-alpha-large.tar.manifest.json": "3095578ca402ade08e220e5ea0056062069c6f933b2369162fc4c5ebc6d55876",
+        "migration/fixtures/legacy-threshold-alpha-large.tar.xz": "218e75c0bb6f333afc49e4ab26a5a6bda614770a67a675e46ff7395b955c2e73",
+        "migration/fixtures/legacy-threshold-alpha-projection-README.md": "7c35dd73dd15f95ca787595e212e9e158b16f06b47079cb0ea99d23e2b163293",
+        "migration/fixtures/legacy-threshold-alpha-projection.tar.manifest.json": "f78f235429eb87bd4b6d2499340768d8a0f464201641ae632043a3481d4e4b8c",
+        "migration/fixtures/legacy-threshold-alpha-projection.tar.xz": "0f860fb6aa0fc80a60113cd564a0bc8b00b4689743e857a6397afe9ed31e763f",
+        "migration/tests/legacy-threshold-alpha-capture.c": "670ed6c5f1c8ed6c84bfaa54baa264c20f48e1793cbdaa0091aefa076cb17699",
+        "migration/tests/legacy-threshold-projection-capture.c": "b6d6bf1695b8483601b9e19b800ca6a9e5c52459c84dbade2034857bba2926bf",
+        "migration/tests/run_filter_owner_context_fixture_test.py": "94eaad0a7a038ee014ed0c17c4573bdd6a5d68a8b1c832389ea9fc25dda0bf79",
+        "migration/tests/run_sharpen_context_sanitizers.py": "dbfa6625e9d2a3ca1fe0eff11b734d025cffe5ee3cd2eb2c8e4ed6247946a93b",
+        "migration/tests/test_sharpen_context_sanitizers.py": "4a06a8abb41fe7e1cb331fc2973b2fa739920aff67a0da13ea451e77393ad3f2",
+        "tools/capture_legacy_threshold_alpha.py": "9358f50776a2fbac8046e3547d27d11af36d88490231be439d7531d7dea85c8a",
+        "tools/capture_legacy_threshold_projection.py": "6f33b5e782faa725766f4c90b2d3d4e4fcddf3e714273efe307427113b58af5c",
+        "tools/check_threshold_alpha_evidence.py": "36dc5b672f2222c9075d28e4cc5847b2470d10ab1f048a92c12def856e9f72d1",
+        "tools/check_threshold_projection_evidence.py": "1a519664137fe4d401e23ff9c8f6ba3fd7d23cf62efd50386adc21a853784b23"
+      },
+      "scope": "Native nonlinear U8 RGB/Gray Threshold Alpha owner-context and strict original-XCF execution",
+      "historical_only": true
+    }
+  ],
+  "restored_29_012": "| 29.012 | [ ] | UI 退避を実装する | 29.011 | 描画時の表示切替が一致 |",
+  "original_row_commit": "49afe40bad5e29ba9a7466da2684e8906682c630^",
+  "paused_transaction": "TODO",
+  "broad_native_point_precision": "unfinished",
+  "runtime_tests_executed": false,
+  "validation": {
+    "command": [
+      "python3",
+      "-B",
+      "tools/check_tasks.py"
+    ],
+    "exit_code": 0,
+    "before_diagnostics": 67,
+    "after_diagnostics": 0,
+    "tools_and_inventory_unchanged": {
+      "migration/inventory/": 151,
+      "tools/": 213
+    },
+    "existing_progress_prefix_preserved": true,
+    "native_execution": false,
+    "logs": {
+      "before.stderr": "7ffb906b182da838144ff654102a9c99ecfb16df067aee6e37b32e8dc4ecad37",
+      "after.stdout": "1c4b2c049610693d4cae3f93580ac8f43d77dff8406ae9af6a536728ca7b4ad0",
+      "after.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  }
+}

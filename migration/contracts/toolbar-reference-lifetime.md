@@ -1,6 +1,6 @@
 # Canvas toolbar reference lifetime
 
-This is the bounded child `29.010/toolbar-ref-balance/canvas-lifetime`.
+This is the bounded child `29.010/toolbar-ref-balance-canvas-lifetime`.
 The broader move/reparent and separate toolbar-window obligation remains open.
 Legacy `afa43fae3e920210146abed514f136fd49f671b5`,
 `app/widgets/gimptooloptionstoolbar.c:328–335`, retained an extra reference on
