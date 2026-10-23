@@ -3,8 +3,11 @@
 """Build and run focused native owner-context / XCF ASan+UBSan acceptance.
 
 The historical default is Sharpen. --operation threshold-alpha adds the point
-shadow wrapper and requires both verified Threshold Alpha and Sharpen corpora;
-selected paths still run exactly as requested, with no implicit extra tests.
+shadow wrapper and requires verified Threshold Alpha, projection-history and
+Sharpen corpora. --operation sobel instruments the independent Sobel raster
+plus its changed host invalidation geometry, and requires verified Sobel,
+projection-history and Sharpen corpora. Selected
+paths still run exactly as requested, with no implicit extra tests.
 
 First build both ordinary app/tests targets in the configured build environment.
 Invocation order is secure-Xvfb -> verified fixture wrapper -> locking shell ->
@@ -88,7 +91,7 @@ SCRIPTS = {
 
 
 def operation_config(name):
-    if name not in ("sharpen", "threshold-alpha"):
+    if name not in ("sharpen", "threshold-alpha", "sobel"):
         raise ValueError("Unknown native operation: " + str(name))
     instrumented, scripts = set(INSTRUMENTED), set(SCRIPTS)
     fixtures = ["GIMP_PAINTER_SHARPEN_FIXTURES"]
@@ -98,6 +101,15 @@ def operation_config(name):
                         "tools/check_threshold_projection_evidence.py"})
         fixtures.extend(["GIMP_PAINTER_THRESHOLD_ALPHA_FIXTURES",
                          "GIMP_PAINTER_THRESHOLD_PROJECTION_FIXTURES"])
+    if name == "sobel":
+        instrumented.update({"app/painter/filter-sobel.cpp",
+                             "app/core/gimpdrawablestack.c",
+                             "app/core/gimplayerstack.c",
+                             "app/core/gimpprojection.c"})
+        scripts.update({"tools/check_sobel_evidence.py",
+                        "tools/check_sobel_projection_evidence.py"})
+        fixtures.extend(["GIMP_PAINTER_SOBEL_FIXTURES",
+                         "GIMP_PAINTER_SOBEL_PROJECTION_FIXTURES"])
     return {"name": name, "instrumented": instrumented, "scripts": scripts,
             "fixtures": fixtures,
             "report_format": name + "-context-sanitizers-v1"}
@@ -542,7 +554,7 @@ def positive_seconds(value):
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("build", type=Path)
-    parser.add_argument("--operation", choices=("sharpen", "threshold-alpha"), default="sharpen")
+    parser.add_argument("--operation", choices=("sharpen", "threshold-alpha", "sobel"), default="sharpen")
     parser.add_argument("--report", type=Path, required=True)
     parser.add_argument("--lock-fd", type=int, required=True)
     parser.add_argument("--lock-file", type=Path, default=Path("/workspace/shared/gimp-painter-build.lock"))

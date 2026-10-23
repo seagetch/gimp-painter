@@ -35,6 +35,12 @@
 static Gimp *gimp;
 static gchar *fixture_path (const gchar *name)
 {
+  if (g_str_has_prefix (name, "legacy-sobel-context/"))
+    {
+      const gchar *root = g_getenv ("GIMP_PAINTER_SOBEL_FIXTURES");
+      g_assert_nonnull (root); /* Verified genuine observations are mandatory. */
+      return g_build_filename (root, name + strlen ("legacy-sobel-context/"), NULL);
+    }
   if (g_str_has_prefix (name, "legacy-threshold-alpha-context/"))
     {
       const gchar *root = g_getenv ("GIMP_PAINTER_THRESHOLD_ALPHA_FIXTURES");
@@ -475,6 +481,7 @@ static void unknown_extension_preserves_destination (void)
 }
 #include "test-painter-xcf-sharpen.inc"
 #include "test-painter-xcf-threshold.inc"
+#include "test-painter-xcf-sobel.inc"
 
 int main (int argc, char **argv)
 {
@@ -488,6 +495,8 @@ int main (int argc, char **argv)
   ADD (sharpen_old_writer_roundtrip); ADD (sharpen_malformed_writer_capsules);
   ADD (threshold_old_writer_roundtrip); ADD (threshold_malformed_writer_capsules);
   ADD (threshold_active_save_close_reopen);
+  ADD (sobel_old_writer_roundtrip); ADD (sobel_malformed_writer_capsules);
+  ADD (sobel_active_save_close_reopen);
   result = g_test_run ();
   gimp_test_utils_set_gimp3_directory ("GIMP_TESTING_ABS_TOP_BUILDDIR", "app/tests/gimpdir-output");
   gimp_exit (gimp, TRUE); return result;

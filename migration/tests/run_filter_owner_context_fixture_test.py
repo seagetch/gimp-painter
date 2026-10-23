@@ -23,6 +23,8 @@ from check_convolution_evidence import verify as verify_convolution
 from check_sharpen_evidence import verify as verify_sharpen
 from check_threshold_alpha_evidence import verify as verify_threshold_alpha
 from check_threshold_projection_evidence import verify as verify_threshold_projection
+from check_sobel_evidence import verify as verify_sobel
+from check_sobel_projection_evidence import verify as verify_sobel_projection
 COMMIT = "afa43fae3e920210146abed514f136fd49f671b5"
 BUNDLES = (
     ("legacy-filter-context", "GIMP_PAINTER_CONTEXT_FIXTURES", 280, 24,
@@ -100,6 +102,12 @@ def main(argv=None):
         threshold_projection = Path(temporary) / "threshold-projection"
         verify_threshold_projection(extract=threshold_projection)
         environment["GIMP_PAINTER_THRESHOLD_PROJECTION_FIXTURES"] = str(threshold_projection)
+        sobel = Path(temporary) / "sobel"
+        verify_sobel(extract=sobel)
+        environment["GIMP_PAINTER_SOBEL_FIXTURES"] = str(sobel)
+        sobel_projection = Path(temporary) / "sobel-projection"
+        verify_sobel_projection(extract=sobel_projection)
+        environment["GIMP_PAINTER_SOBEL_PROJECTION_FIXTURES"] = str(sobel_projection)
         return subprocess.run(command, env=environment).returncode
 
 
