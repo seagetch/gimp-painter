@@ -13,13 +13,33 @@ static float selection_coverage(int x,int y)
   static const float levels[]={0,.25f,.5f,.75f,1};
   return levels[((x/3)+(y/4))%5];
 }
+// Selection coverage is scalar storage, not a color-space conversion fixture.
+template<class T> static void selection_store_native(GeglBuffer*buffer,const std::vector<T>&values)
+{
+  const auto*format=gegl_buffer_get_format(buffer);
+  gegl_buffer_set(buffer,GEGL_RECTANGLE(0,0,64,48),0,format,values.data(),GEGL_AUTO_ROWSTRIDE);
+  std::vector<T> stored(values.size());
+  gegl_buffer_get(buffer,GEGL_RECTANGLE(0,0,64,48),1,format,stored.data(),GEGL_AUTO_ROWSTRIDE,GEGL_ABYSS_NONE);
+  g_assert_true(stored==values); // Verify the independent fixture before Surface reads it.
+}
 static void selection_install(GimpImage*image,int ox,int oy,int kind)
 {
   std::vector<float> mask(64*48);
   for(int y=0;y<48;++y)for(int x=0;x<64;++x)
     mask[y*64+x]=kind==0?0:kind==1?1:selection_coverage(x-ox,y-oy);
-  gegl_buffer_set(gimp_drawable_get_buffer(GIMP_DRAWABLE(gimp_image_get_mask(image))),
-    GEGL_RECTANGLE(0,0,64,48),0,babl_format("Y float"),mask.data(),GEGL_AUTO_ROWSTRIDE);
+  auto*buffer=gimp_drawable_get_buffer(GIMP_DRAWABLE(gimp_image_get_mask(image)));
+  const auto*format=gegl_buffer_get_format(buffer);
+  g_assert_cmpint(babl_format_get_n_components(format),==,1);
+  g_assert_cmpstr(babl_get_name(babl_format_get_model(format)),==,"Y");
+  const auto*type=babl_get_name(babl_format_get_type(format,0));
+  if(!std::strcmp(type,"u8")) {
+    std::vector<guchar> native(mask.size());
+    for(std::size_t i=0;i<mask.size();++i)native[i]=std::lround(mask[i]*255.);
+    selection_store_native(buffer,native);
+  } else if(!std::strcmp(type,"float")) selection_store_native(buffer,mask);
+  else if(!std::strcmp(type,"double")) {
+    std::vector<double> native(mask.begin(),mask.end());selection_store_native(buffer,native);
+  } else g_assert_not_reached();
   g_assert_cmpint(gimp_channel_is_empty(gimp_image_get_mask(image)),==,kind==0);
 }
 static void selection_core_signed_offsets()
