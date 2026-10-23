@@ -1,0 +1,42 @@
+{
+  "task": "13.011",
+  "scope": "owned-source primary snapshot; one selected group-strength test, no UI or crossdomain aggregate",
+  "contexts": 108,
+  "pixels_per_context": 64,
+  "oracle": "genuine-old child bytes + independent double linear premultiplied interpolation and Babl encoding; exact byte equality",
+  "old_group_capture": false,
+  "source_sha256": {
+    "app/tests/test-painter-layer-modes.c": "17cf61ac17e99f318b8fa8bb07a27f2a0e4d058d9e9a57f1402e43ccbee06c6b",
+    "app/tests/test-painter-pass-through-strength.inc": "fb0e397810e49d9719aa05a3fa4ed984a37eb573f1d1732a6941a45213ba6ddd",
+    "app/tests/test-painter-mode-group-undo.inc": "3a7061b804b74d74b223a0525dc5e0b07c600e8593577934a53ea6a6ec435c7f",
+    "app/core/gimpgrouplayer.c": "147296ee6102a46601c826ea9dedda513f07df8bc72e5aa8ddfcf833c41dd0c5",
+    "app/operations/layer-modes/gimpoperationreplace.c": "bb40305d78087c78ff33bb619498c8748ad7b06db585b192b9a857fb2a435565",
+    "app/operations/layer-modes/gimpoperationpassthrough.c": "679b10e285030d55c2d86ca822e4439c703fb4259f8363dea8ba8526c8cfc8f0",
+    "app/operations/layer-modes/gimp-layer-modes.c": "3c6a6585cfaa03edb13de20acaeae262f486bbd13a0270e858f3aa83ac20ec0f",
+    "app/operations/layer-modes-legacy/gimpoperationpainterlegacy.c": "813d3ae4f4eec7fd37bda4b6fbed085bf92689cd3f923d16bbc99bc79349dd28"
+  },
+  "fixture_sha256": {
+    "migration/fixtures/legacy-modes/mode-23-o50-m128-projection.rgba": "288292cf99e144acd6c028edc47464450f92a6048657a8eb999dc38e6790cc08",
+    "migration/fixtures/legacy-modes/mode-26-o50-m128-projection.rgba": "bf3a3cff8d298472303475f4e6624d8a3b37fc12cbf60010f64934430a39d5c2",
+    "migration/fixtures/legacy-modes/mode-25-o50-m128-projection.rgba": "6517ec7e925b1ca379602d5fae9d98fe1f2a47c2f559b50ef2adf43ac4493e2e",
+    "migration/fixtures/legacy-modes/mode-27-o50-m128-projection.rgba": "5c645262ec17ac3a3716ce67f00bfb1f7bfe22afde606dc42ce1bfc9f473e406",
+    "migration/fixtures/legacy-modes/mode-24-o50-m128-projection.rgba": "7ac8635b48b68692abb91708b8eda8b1894539cd614b74decdfd36e6f6cb7bc8",
+    "migration/fixtures/legacy-modes/mode-28-o50-m128-projection.rgba": "ab10806b0c1cfe80ee19414cb4e2e93bdd6cc1dfb6318378d4da1f5fb33d3020",
+    "migration/fixtures/legacy-modes/mode-29-o50-m128-projection.rgba": "0055608014cc328e5cd07d0f6ebf4882ad0a952aebc041ff1e0c5c2783582352",
+    "migration/fixtures/legacy-normal-multiply/mode-0-o50-m128-projection.rgba": "6f8b8b753c3be6f91558833a9d100a55ccd3142414a47afec7fda2d67b37a343",
+    "migration/fixtures/legacy-normal-multiply/mode-3-o50-m128-projection.rgba": "9dc01766d5688a140da724108db8fc33cdb6639c0c504231576870d49eeb530f",
+    "migration/fixtures/legacy-modes/backdrop.rgba": "5b287bf764228a2fdf4bef1f83a27b1dc263e992093739a8e03ce6658dba367a",
+    "migration/fixtures/legacy-normal-multiply/backdrop.rgba": "5b287bf764228a2fdf4bef1f83a27b1dc263e992093739a8e03ce6658dba367a"
+  },
+  "instrumented_sources": [
+    "app/core/gimpgrouplayer.c",
+    "app/operations/layer-modes/gimp-layer-modes.c",
+    "app/operations/layer-modes-legacy/gimpoperationpainterlegacy.c",
+    "app/operations/layer-modes-legacy/gimpoperationpainterfloat.c",
+    "app/operations/layer-modes-legacy/gimppainterfloatkernel.c",
+    "app/tests/test-painter-layer-modes.c"
+  ],
+  "test_path": "/painter-layer-modes/pass_through_group_strength",
+  "native_result": "OK",
+  "sanitizer_exit_code": 0
+}
