@@ -1,0 +1,38 @@
+{
+  "scope": "Actual native FilterLayer foundation",
+  "source_sha256": {
+    "app/core/gimpfilterlayer.cpp": "093b237a078d26678241837f26d77d92fc508e14951159539a4d6b86298f471d",
+    "app/core/gimpfilterlayer.h": "f569c09b0e0fc21245adf01be3b3de575c3619bcd64030243795cfb944183250",
+    "app/core/gimpfilterlayer-arguments.hpp": "940a0296d1adb1f063b323a0fb092c2abf749bda4db81e02f84f7d9291f48ecc",
+    "app/painter/filter-scheduler.cpp": "3e3031de93f04f5694bb00946cf270d4accdb27ae3afc1d7e57579d4b647b031",
+    "app/painter/filter-scheduler.hpp": "4939ca47e3afb0a7fc7774df18c2d9d27e333c9669d936ccf843a67216d032e1",
+    "app/painter/filter-spool.cpp": "ac44597a80a2246b99393bf81731ec060c64f7be8b401491a5b94f256bbff91f",
+    "app/painter/filter-spool.hpp": "856966b186ce70a233b7fc8b41d652f2c58345bc187035365dfddb263c3d0651",
+    "app/painter/filter-raster.cpp": "3a110ef1be1dd8fcddf19268bbd1dd1ef39a5f982eadc31a3b654e7368334374",
+    "app/painter/filter-raster.hpp": "3da85d78912475d9e23c3dff5f1ae32aafa46ccd2d7f8be34d6eb03429175a29",
+    "app/painter/filter-native-kernels.cpp": "7603a0a5a1c9ed5fa86a01ea24a38a14699e8b5c22baf47a27312e60f004e6b4",
+    "app/painter/filter-native-kernels.hpp": "848a0d458281ab3494a78eac3030a8cddddd3af55ea64082d1b4d7c1b3f94ffb",
+    "app/painter/filter-edge-kernel-private.hpp": "dbb9852b334b3279a3c9a904eef9db99efe4c1e4f8cd8beeb540ad51a65584b7",
+    "app/painter/filter-gauss-kernel-private.hpp": "e0cf85d418cd0cf6767bba3350fa6e0770c40731589298927ffd83a6b72e94d4",
+    "app/painter/binding-store.cpp": "c69d65c22f26e6be8f6df69765cd30f7bbbd32b46b0eb847e9f6524b41c2b557",
+    "app/painter/binding-store.hpp": "c67deb0ccf33a13a5ba3ab3f50bdbb2ef8931f481acf62a9315d778388c90262",
+    "app/tests/test-gimp-filter-layer.c": "287cfe3e30cdce9552dabb26e32baa2964cae35fb05c6b7bd54fccdc69572b16",
+    "app/tests/test-gimp-filter-layout.cpp": "7595022deb888ef428ffc815e3d8e7f3e39cbe58a3cfa9014c5d42869adbe26f"
+  },
+  "command": [
+    "/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/build-http/app/tests/gimp-filter-layer",
+    "-p",
+    "/gimp-filter-layer/image_close_during_worker",
+    "-p",
+    "/gimp-filter-layer/retained_handle_after_image_close"
+  ],
+  "executable_sha256": "f7e70aab40ade02b4f9c4d8be64f96bc74d1dae3a628d78f00139cae300fe2e4",
+  "exit_code": 0,
+  "stdout": "TAP version 14\n# random seed: R02S6f41e98efffe8d4d28774d61a800c273\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# Start of gimp-filter-layer tests\nok 1 /gimp-filter-layer/image_close_during_worker\n# End of gimp-filter-layer tests\n1..1\n# Start of gimp-filter-layer tests\nok 2 /gimp-filter-layer/retained_handle_after_image_close\n# End of gimp-filter-layer tests\n1..2\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n",
+  "stderr": "GIMP-Error: Failed to save data:\n\nYou have a writable data folder configured, but this folder is not part of your data search path. You probably edited the gimprc file manually, please fix it in the Preferences dialog's 'Folders' section.\n\n",
+  "elapsed_seconds": 2.056985823001014,
+  "changed_after_run": [],
+  "skipped": [],
+  "sanitizers": [],
+  "leak_detection": false
+}

@@ -39,7 +39,7 @@ public:
     std::size_t bytes_per_pixel = 4;
     /* Owned data only. Reset after the previous worker has finished, before
      * admission starts this generation. Callables capture the same channel. */
-    std::shared_ptr<FilterProgress> progress;
+    std::shared_ptr<FilterProgress> progress {};
   };
   struct Snapshot
   {

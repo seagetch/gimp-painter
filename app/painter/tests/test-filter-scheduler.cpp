@@ -1,5 +1,6 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 #include "filter-scheduler.hpp"
+#include "filter-lifetime.hpp"
 #include <glib.h>
 #include <glib/gstdio.h>
 #include <algorithm>
@@ -198,6 +199,78 @@ static void close_does_not_wait ()
   g_assert_cmpint (g_get_monotonic_time () - start, <, 100000);
   release->store (true);
   while (!ended->load ()) std::this_thread::yield ();
+}
+static void independent_state_after_owner_destruction ()
+{
+  struct Gate {
+    std::atomic<bool> started {false}, release {false}, observed {false}, raster_observed {false};
+    std::atomic<unsigned> destroyed {0};
+  };
+  struct Processor {
+    explicit Processor (std::shared_ptr<Gate> gate) : gate (std::move (gate)) {}
+    ~Processor () { ++gate->destroyed; }
+    std::shared_ptr<Gate> gate;
+  };
+  auto wait = [] (const std::function<bool ()>& ready) {
+    const auto deadline = g_get_monotonic_time () + 10 * G_TIME_SPAN_SECOND;
+    while (!ready () && g_get_monotonic_time () < deadline) g_usleep (100);
+    g_assert_true (ready ());
+  };
+  wait ([] { return FilterLifetime::pending () == 0; });
+  for (bool spill : {false,true}) {
+    auto pool = std::make_shared<WorkAdmission> (WorkAdmission::Limits {1,1024*1024});
+    auto gate = std::make_shared<Gate> ();
+    auto processor = std::make_shared<Processor> (gate);
+    std::weak_ptr<Processor> weak = processor;
+    const auto owner_thread = std::this_thread::get_id ();
+    auto h = std::unique_ptr<Harness> (new Harness (pool));
+    FilterScheduler::Process inspect = [processor,owner_thread] (const FilterScheduler::Bytes& input,
+                                           std::atomic<bool>& cancel, FilterScheduler::Bytes& output) {
+      g_assert_true (std::this_thread::get_id () != owner_thread);
+      processor->gate->started.store (true);
+      while (!processor->gate->release.load ()) std::this_thread::yield ();
+      // The entire scheduler owner and its source value have already gone.
+      g_assert_true (cancel.load ());
+      g_assert_cmpuint (input.size (), ==, 17*5*4);
+      for (auto byte : input) g_assert_cmpuint (byte, ==, 17);
+      output.assign (input.size (), 93);
+      for (auto byte : output) g_assert_cmpuint (byte, ==, 93);
+      processor->gate->observed.store (true);
+      return true; // Even a late success cannot publish into the destroyed owner.
+    };
+    if (spill)
+      h->configure_spool (17,5,[inspect,gate] (FilterRaster& input,FilterRaster& output,
+                                        std::atomic<bool>& cancel,const FilterRasterFactory&) {
+        FilterScheduler::Bytes bytes (input.size ()), result;
+        // Wait inside inspect, then read the owned raster again after owner loss.
+        input.read (0,bytes.size (),bytes.data ());
+        inspect (bytes,cancel,result);
+        input.read (0,bytes.size (),bytes.data ());
+        for (auto byte : bytes) g_assert_cmpuint (byte, ==, 17);
+        output.write (0,result.size (),result.data ());output.flush ();
+        output.read (0,bytes.size (),bytes.data ());
+        for (auto byte : bytes) g_assert_cmpuint (byte, ==, 93);
+        gate->raster_observed.store (true);
+        return true;
+      });
+    else h->configure (17,5,inspect);
+    processor.reset ();inspect = {};
+    const auto deadline = g_get_monotonic_time () + 10 * G_TIME_SPAN_SECOND;
+    while (!gate->started.load () && g_get_monotonic_time () < deadline) { h->step ();g_usleep (100); }
+    g_assert_true (gate->started.load ());
+    g_assert_cmpuint (h->imports, ==, 0);g_assert_cmpuint (h->commits, ==, 0);
+    h->value = 201; // The previously captured input is independent.
+    h.reset (); // Must return while the worker remains behind its gate.
+    g_assert_false (weak.expired ());g_assert_cmpuint (gate->destroyed.load (), ==, 0);
+    g_assert_cmpuint (pool->active_jobs (), ==, 1);g_assert_cmpuint (FilterLifetime::pending (), ==, 1);
+    gate->release.store (true);
+    wait ([] { return FilterLifetime::pending () == 0; });
+    g_assert_true (gate->observed.load ());g_assert_true (weak.expired ());
+    if (spill) g_assert_true (gate->raster_observed.load ());
+    g_assert_cmpuint (gate->destroyed.load (), ==, 1);
+    g_assert_cmpuint (pool->active_jobs (), ==, 0);g_assert_cmpuint (pool->active_bytes (), ==, 0);
+    g_assert_cmpuint (pool->active_spill_bytes (), ==, 0);
+  }
 }
 static void loaded_cache_not_reexecuted ()
 {
@@ -556,9 +629,10 @@ static void spool_large_metadata_is_bounded_preparation ()
   g_assert_cmpuint (h.scheduler.starts (), ==, 0);
   h.scheduler.close (); g_assert_true (h.scheduler.state () == State::closed);
 }
-static void spool_close_during_import_keeps_callback_bytes ()
+static void close_during_import_keeps_callback_bytes (bool spill)
 {
-  Harness h; h.configure_spool (32,32);
+  Harness h;
+  if (spill) h.configure_spool (32,32); else h.configure (32,32);
   const auto deadline = g_get_monotonic_time () + 10 * G_TIME_SPAN_SECOND;
   bool closed = false;
   while (!closed && g_get_monotonic_time () < deadline)
@@ -567,11 +641,15 @@ static void spool_close_during_import_keeps_callback_bytes ()
         [&] (std::size_t,std::size_t count,const std::uint8_t *bytes) {
           h.scheduler.close (); closed = true;
           for (std::size_t i = 0; i < count*4; ++i) g_assert_cmpuint (bytes[i], ==, 93);
-        },[] (std::uint64_t) { g_error ("closed spool published"); });
+        },[] (std::uint64_t) { g_error ("closed scheduler published"); });
       g_usleep (100);
     }
   g_assert_true (closed);
 }
+static void spool_close_during_import_keeps_callback_bytes ()
+{ close_during_import_keeps_callback_bytes (true); }
+static void vector_close_during_import_keeps_callback_bytes ()
+{ close_during_import_keeps_callback_bytes (false); }
 
 static void recursive_step_does_not_consume_another_chunk ()
 {
@@ -657,10 +735,12 @@ int main (int argc, char **argv)
   gchar *directory = g_dir_make_tmp ("painter-scheduler-spool-XXXXXX",nullptr);
   g_assert_nonnull (directory); spool_directory = directory; g_free (directory);
 #define ADD(name) g_test_add_func ("/painter-filter-scheduler/" #name, name)
+  ADD (independent_state_after_owner_destruction);
   ADD (recursive_step_does_not_consume_another_chunk); ADD (spool_completed_cache_and_chunk_geometry); ADD (spool_reentrant_read_cancellation);
   ADD (spool_cancel_request_is_not_completion); ADD (spool_change_during_import);
   ADD (spool_read_failure_cancels_unsealed_worker); ADD (spool_result_failure_never_commits);
   ADD (spool_large_metadata_is_bounded_preparation); ADD (spool_close_during_import_keeps_callback_bytes);
+  ADD (vector_close_during_import_keeps_callback_bytes);
   ADD (admission_waits_without_reading_and_resumes_fifo); ADD (admission_cancel_retains_worker_reservation);
   ADD (admission_edit_and_dependency_wait_release_preparation); ADD (admission_failure_and_loaded_cache_release);
   ADD (saved_generation_boundaries); ADD (commit_failure_does_not_certify_cache); ADD (obsolete_read_failure_preserves_new_edit);

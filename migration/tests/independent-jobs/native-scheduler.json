@@ -1,0 +1,27 @@
+{
+  "status": "PASS",
+  "exit_code": 0,
+  "stdout": "TAP version 14\n# random seed: R02S74ec5eee9a1a9262194a02684d5b55e5\n1..39\n# Start of painter-filter-scheduler tests\nok 1 /painter-filter-scheduler/independent_state_after_owner_destruction\nok 2 /painter-filter-scheduler/recursive_step_does_not_consume_another_chunk\nok 3 /painter-filter-scheduler/spool_completed_cache_and_chunk_geometry\n# slow test /painter-filter-scheduler/spool_completed_cache_and_chunk_geometry executed in 3.41 secs\nok 4 /painter-filter-scheduler/spool_reentrant_read_cancellation\nok 5 /painter-filter-scheduler/spool_cancel_request_is_not_completion\nok 6 /painter-filter-scheduler/spool_change_during_import\nok 7 /painter-filter-scheduler/spool_read_failure_cancels_unsealed_worker\nok 8 /painter-filter-scheduler/spool_result_failure_never_commits\nok 9 /painter-filter-scheduler/spool_large_metadata_is_bounded_preparation\nok 10 /painter-filter-scheduler/spool_close_during_import_keeps_callback_bytes\nok 11 /painter-filter-scheduler/vector_close_during_import_keeps_callback_bytes\nok 12 /painter-filter-scheduler/admission_waits_without_reading_and_resumes_fifo\nok 13 /painter-filter-scheduler/admission_cancel_retains_worker_reservation\nok 14 /painter-filter-scheduler/admission_edit_and_dependency_wait_release_preparation\nok 15 /painter-filter-scheduler/admission_failure_and_loaded_cache_release\nok 16 /painter-filter-scheduler/saved_generation_boundaries\nok 17 /painter-filter-scheduler/commit_failure_does_not_certify_cache\nok 18 /painter-filter-scheduler/obsolete_read_failure_preserves_new_edit\nok 19 /painter-filter-scheduler/saved_cache_generations\nok 20 /painter-filter-scheduler/restored_cache_rejects_colliding_old_job\nok 21 /painter-filter-scheduler/rejected_worker_is_not_settled_until_done\nok 22 /painter-filter-scheduler/reject_during_read\nok 23 /painter-filter-scheduler/reject_during_import\nok 24 /painter-filter-scheduler/closed_request_is_inert\nok 25 /painter-filter-scheduler/adjustable_chunk_budget\n# slow test /painter-filter-scheduler/adjustable_chunk_budget executed in 0.63 secs\nok 26 /painter-filter-scheduler/completed_cache\nok 27 /painter-filter-scheduler/bounded_chunks\nok 28 /painter-filter-scheduler/dependency_priority\nok 29 /painter-filter-scheduler/cancel_request_is_not_completion\nok 30 /painter-filter-scheduler/changes_during_preparation\nok 31 /painter-filter-scheduler/changes_during_import\nok 32 /painter-filter-scheduler/failures_do_not_retry\nok 33 /painter-filter-scheduler/close_does_not_wait\nok 34 /painter-filter-scheduler/loaded_cache_not_reexecuted\nok 35 /painter-filter-scheduler/invalid_request_and_result\nok 36 /painter-filter-scheduler/reentry_at_commit\nok 37 /painter-filter-scheduler/admission_switch_keeps_restored_cache\nok 38 /painter-filter-scheduler/native_stride_vector_and_spool\nok 39 /painter-filter-scheduler/invalid_stride_never_reads\n# End of painter-filter-scheduler tests\n",
+  "stderr": "",
+  "command": [
+    "/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/build-http/app/painter/painter-filter-scheduler"
+  ],
+  "source_sha256": {
+    "app/painter/filter-raster.cpp": "3a110ef1be1dd8fcddf19268bbd1dd1ef39a5f982eadc31a3b654e7368334374",
+    "app/painter/filter-spool.cpp": "ac44597a80a2246b99393bf81731ec060c64f7be8b401491a5b94f256bbff91f",
+    "app/painter/filter-scheduler.cpp": "3e3031de93f04f5694bb00946cf270d4accdb27ae3afc1d7e57579d4b647b031",
+    "app/painter/filter-lifetime.cpp": "8e63ba43031919c1c058016838b86eb4aa2bdf77466ea4a95d3dbe0979cdf28b",
+    "app/painter/tests/test-filter-scheduler.cpp": "3cfac1199c04e23304ebf520b597e6997505d81399bfbdb6ca75d08ecc6cfa36",
+    "app/painter/filter-raster.hpp": "3da85d78912475d9e23c3dff5f1ae32aafa46ccd2d7f8be34d6eb03429175a29",
+    "app/painter/filter-spool.hpp": "856966b186ce70a233b7fc8b41d652f2c58345bc187035365dfddb263c3d0651",
+    "app/painter/filter-scheduler.hpp": "4939ca47e3afb0a7fc7774df18c2d9d27e333c9669d936ccf843a67216d032e1",
+    "app/painter/filter-lifetime.hpp": "c311fbafc333449a169e5722b8179c42366df701016b90af14a233cd7822155b",
+    "app/painter/filter-progress.hpp": "a6c13320a7c76a7f3bd9d80be2ad91fe8324c9b36a04bf2589b7b42a91229ca2",
+    "app/painter/work-admission.hpp": "a9167b3a1a8b1a729d12029bc3d2a6baa284e4096a91fcb98fa70e4ca73cc98d",
+    "app/painter/gimp-painter-visibility.h": "d832e5442d969ff8439292a61d0143532d85c1b7eaab0b29689c6dc04e9c4532"
+  },
+  "changed_after_run": [],
+  "executable_sha256": "0ca8c4aeb64c9cae88bb7836c3b4de9b63b31a4a507313204727bd737e436eaa",
+  "build_output": "ninja: Entering directory `/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/build-http'\n[1/2] Compiling C++ object app/painter/painter-filter-scheduler.p/tests_test-filter-scheduler.cpp.o\n../../gtk-binding-recovery-20261010/worktree/app/painter/tests/test-filter-scheduler.cpp:16:8: warning: \u2018Harness\u2019 declared with greater visibility than the type of its field \u2018Harness::scheduler\u2019 [-Wattributes]\n   16 | struct Harness\n      |        ^~~~~~~\n[2/2] Linking target app/painter/painter-filter-scheduler\n",
+  "sanitizers": []
+}

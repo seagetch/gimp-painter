@@ -15,15 +15,19 @@ extern "C" {
 #include "core/gimpfilterlayer.h"
 #include "core/gimpimage.h"
 void gimp_test_filter_cpp_config (Gimp *application);
+gsize gimp_test_filter_pending_jobs (void);
 void gimp_test_filter_cpp_layout (gsize size, gsize offset, GimpFilterLayer *layer);
 GBytes *gimp_test_filter_cpp_gauss_reference (const guint8 *native, gsize width, gsize height, guint channels, gint method);
 }
 #include "core/gimpfilterlayer-handle.hpp"
 #include "painter/filter-gauss.hpp"
+#include "painter/filter-lifetime.hpp"
 #include "config/gimppainterfilterconfig.hpp"
 #include <atomic>
 #include <algorithm>
 #include <vector>
+extern "C" gsize gimp_test_filter_pending_jobs (void)
+{ return GimpPainter::FilterLifetime::pending (); }
 extern "C" void gimp_test_filter_cpp_layout (gsize size, gsize offset, GimpFilterLayer *layer)
 {
   g_assert_cmpuint (size, ==, sizeof (GimpDrawable));
