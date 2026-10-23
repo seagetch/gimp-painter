@@ -1,0 +1,50 @@
+Xvfb verified: 127.0.0.1:92, 1080x1920x24, authenticated accepted, empty authority rejected
+1/1 gimp:app / tool-registration FAIL            10.16s   killed by signal 6 SIGABRT
+>>> MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 MESON_TEST_ITERATION=1 MALLOC_PERTURB_=29 GIMP_TESTING_ABS_TOP_BUILDDIR=/workspace/shared/gimp-native-preset-gui/build GIMP_TESTING_ABS_TOP_SRCDIR=/workspace/shared/gimp-native-preset-gui/source LD_LIBRARY_PATH=/workspace/shared/gimp-native-preset-gui/build/libgimpmath:/workspace/shared/gimp-native-preset-gui/build/libgimpbase:/workspace/shared/gimp-native-preset-gui/build/libgimpwidgets:/workspace/shared/gimp-native-preset-gui/build/libgimpthumb:/workspace/shared/gimp-native-preset-gui/build/libgimpcolor:/workspace/shared/gimp-native-preset-gui/build/libgimpconfig:/workspace/shared/gimp-native-preset-gui/build/libgimpmodule:/workspace/shared/gimp-native-preset-gui/prefix/lib/x86_64-linux-gnu:/workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu UI_TEST=yes UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 GIMP_TESTING_PLUGINDIRS=/workspace/shared/gimp-native-preset-gui/build/plug-ins/common ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 /workspace/shared/gimp-native-preset-gui/build/app/tests/tool-registration
+――――――――――――――――――――――――――――――――――――― ✀  ―――――――――――――――――――――――――――――――――――――
+stdout:
+TAP version 14
+# random seed: R02S778075badd53bddc432e2ff64ed1fb3a
+1..10
+# Start of tool-registration tests
+ok 1 /tool-registration/transfer
+# slow test /tool-registration/transfer executed in 0.98 secs
+ok 2 /tool-registration/cpp-transfer
+# slow test /tool-registration/cpp-transfer executed in 0.97 secs
+ok 3 /tool-registration/invalid
+# slow test /tool-registration/invalid executed in 1.01 secs
+ok 4 /tool-registration/duplicate
+# slow test /tool-registration/duplicate executed in 1.12 secs
+ok 5 /tool-registration/observer-removes
+# slow test /tool-registration/observer-removes executed in 1.01 secs
+ok 6 /tool-registration/observer-registers
+# slow test /tool-registration/observer-registers executed in 1.01 secs
+ok 7 /tool-registration/observer-detaches
+# slow test /tool-registration/observer-detaches executed in 0.98 secs
+ok 8 /tool-registration/observer-last-owner
+# slow test /tool-registration/observer-last-owner executed in 0.98 secs
+ok 9 /tool-registration/native-catalog
+# slow test /tool-registration/native-catalog executed in 1.01 secs
+# child process (/tool-registration/native-standard-removed [428]) exit status: 1 (error)
+# child process (/tool-registration/native-standard-removed [428]) stdout: ""
+# child process (/tool-registration/native-standard-removed [428]) stderr: "\n(/workspace/shared/gimp-native-preset-gui/build/app/tests/tool-registration:428): Gimp-Core-CRITICAL **: 13:57:57.132: file ../source/app/core/gimptooloptions.c: line 187 (gimp_tool_options_check_tool_info): should not be reached\n"
+not ok /tool-registration/native-standard-removed - ERROR:../source/app/tests/test-tool-registration.c:33:begin_case: child process (/tool-registration/native-standard-removed [428]) failed unexpectedly
+Bail out!
+stderr:
+**
+ERROR:../source/app/tests/test-tool-registration.c:33:begin_case: child process (/tool-registration/native-standard-removed [428]) failed unexpectedly
+――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+
+
+Summary of Failures:
+
+1/1 gimp:app / tool-registration FAIL            10.16s   killed by signal 6 SIGABRT
+
+Ok:                 0   
+Expected Fail:      0   
+Fail:               1   
+Unexpected Pass:    0   
+Skipped:            0   
+Timeout:            0   
+
+Full log written to /workspace/shared/gimp-native-preset-gui/build/meson-logs/testlog.txt

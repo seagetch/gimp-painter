@@ -1,0 +1,14 @@
+[
+  {
+    "name": "gimp:app / tool-registration",
+    "stdout": "TAP version 14\n# random seed: R02Sb2034c47babdcbcb2622120ecfd14c99\n1..1\n# Start of tool-registration tests\nnot ok /tool-registration/original-symbol - ERROR:../source/app/tests/test-tool-registration.c:7:original_symbol: 'gimp_tools_register' should not be NULL\nBail out!\n",
+    "result": "FAIL",
+    "starttime": 1792557632.7810588,
+    "duration": 0.03621959686279297,
+    "returncode": -6,
+    "command": [
+      "/workspace/shared/gimp-native-preset-gui/build/app/tests/tool-registration"
+    ],
+    "stderr": "**\nERROR:../source/app/tests/test-tool-registration.c:7:original_symbol: 'gimp_tools_register' should not be NULL\n"
+  }
+]

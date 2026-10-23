@@ -1,0 +1,10 @@
+[
+  {
+    "name": "tool-registration",
+    "returncode": -6,
+    "stdout": "TAP version 14\n# random seed: R02Sb89234484d288a62c7c13e7a906e6123\n1..10\n# Start of tool-registration tests\nok 1 /tool-registration/transfer\n# slow test /tool-registration/transfer executed in 1.27 secs\nok 2 /tool-registration/cpp-transfer\n# slow test /tool-registration/cpp-transfer executed in 1.24 secs\nok 3 /tool-registration/invalid\n# slow test /tool-registration/invalid executed in 1.24 secs\nok 4 /tool-registration/duplicate\n# slow test /tool-registration/duplicate executed in 1.18 secs\nok 5 /tool-registration/observer-removes\n# slow test /tool-registration/observer-removes executed in 1.13 secs\nok 6 /tool-registration/observer-registers\n# slow test /tool-registration/observer-registers executed in 1.12 secs\nok 7 /tool-registration/observer-detaches\n# slow test /tool-registration/observer-detaches executed in 1.22 secs\nok 8 /tool-registration/observer-last-owner\n# slow test /tool-registration/observer-last-owner executed in 1.31 secs\nok 9 /tool-registration/native-catalog\n# slow test /tool-registration/native-catalog executed in 1.26 secs\n# child process (/tool-registration/native-standard-removed [239]) exit status: 1 (error)\n# child process (/tool-registration/native-standard-removed [239]) stdout: \"\"\n# child process (/tool-registration/native-standard-removed [239]) stderr: \"\\n(/workspace/shared/gimp-native-preset-gui/build/tool-registration-sanitizers/tool-registration:239): Gimp-Core-WARNING **: 13:44:54.427: gimp_container_add: GimpContainer::add() implementation did not chain up. Please report this at https://www.gimp.org/bugs/\\n\"\nnot ok /tool-registration/native-standard-removed - ERROR:../source/app/tests/test-tool-registration.c:33:begin_case: child process (/tool-registration/native-standard-removed [239]) failed unexpectedly\nBail out!\n",
+    "stderr": "**\nERROR:../source/app/tests/test-tool-registration.c:33:begin_case: child process (/tool-registration/native-standard-removed [239]) failed unexpectedly\n",
+    "duration": 12.259580175999872,
+    "timeout": 120
+  }
+]

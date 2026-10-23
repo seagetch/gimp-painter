@@ -1,0 +1,12 @@
+{
+  "name": "gimp:app / tool-registration",
+  "stdout": "TAP version 14\n# random seed: R02S778075badd53bddc432e2ff64ed1fb3a\n1..10\n# Start of tool-registration tests\nok 1 /tool-registration/transfer\n# slow test /tool-registration/transfer executed in 0.98 secs\nok 2 /tool-registration/cpp-transfer\n# slow test /tool-registration/cpp-transfer executed in 0.97 secs\nok 3 /tool-registration/invalid\n# slow test /tool-registration/invalid executed in 1.01 secs\nok 4 /tool-registration/duplicate\n# slow test /tool-registration/duplicate executed in 1.12 secs\nok 5 /tool-registration/observer-removes\n# slow test /tool-registration/observer-removes executed in 1.01 secs\nok 6 /tool-registration/observer-registers\n# slow test /tool-registration/observer-registers executed in 1.01 secs\nok 7 /tool-registration/observer-detaches\n# slow test /tool-registration/observer-detaches executed in 0.98 secs\nok 8 /tool-registration/observer-last-owner\n# slow test /tool-registration/observer-last-owner executed in 0.98 secs\nok 9 /tool-registration/native-catalog\n# slow test /tool-registration/native-catalog executed in 1.01 secs\n# child process (/tool-registration/native-standard-removed [428]) exit status: 1 (error)\n# child process (/tool-registration/native-standard-removed [428]) stdout: \"\"\n# child process (/tool-registration/native-standard-removed [428]) stderr: \"\\n(/workspace/shared/gimp-native-preset-gui/build/app/tests/tool-registration:428): Gimp-Core-CRITICAL **: 13:57:57.132: file ../source/app/core/gimptooloptions.c: line 187 (gimp_tool_options_check_tool_info): should not be reached\\n\"\nnot ok /tool-registration/native-standard-removed - ERROR:../source/app/tests/test-tool-registration.c:33:begin_case: child process (/tool-registration/native-standard-removed [428]) failed unexpectedly\nBail out!\n",
+  "result": "FAIL",
+  "starttime": 1792558666.9817877,
+  "duration": 10.157702207565308,
+  "returncode": -6,
+  "command": [
+    "/workspace/shared/gimp-native-preset-gui/build/app/tests/tool-registration"
+  ],
+  "stderr": "**\nERROR:../source/app/tests/test-tool-registration.c:33:begin_case: child process (/tool-registration/native-standard-removed [428]) failed unexpectedly\n"
+}

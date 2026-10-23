@@ -1,0 +1,6 @@
+Xvfb verified: 127.0.0.1:93, 1080x1920x24, authenticated accepted, empty authority rejected
+Traceback (most recent call last):
+  File "/workspace/shared/gimp-native-preset-gui/run-tool-registration-mutations.py", line 21, in <module>
+    assert p.returncode!=0 and text and path in out and reason in out,(name,p.returncode,out)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ('omit-native-registration', -6, 'TAP version 14\n# random seed: R02Sc451a0dc2da362374998e6556ac792de\n# Start of tool-registration tests\n# child process (/tool-registration/native-catalog [1410]) exit status: 1 (error)\n# child process (/tool-registration/native-catalog [1410]) stdout: ""\n# child process (/tool-registration/native-catalog [1410]) stderr: "**\\nERROR:../source/app/tests/test-tool-registration.c:244:native_catalog: assertion failed (count == 50): (0 == 50)\\n"\nnot ok /tool-registration/native-catalog - ERROR:../source/app/tests/test-tool-registration.c:33:begin_case: child process (/tool-registration/native-catalog [1410]) failed unexpectedly\nBail out!\n**\nERROR:../source/app/tests/test-tool-registration.c:33:begin_case: child process (/tool-registration/native-catalog [1410]) failed unexpectedly\n')

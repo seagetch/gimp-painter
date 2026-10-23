@@ -113,7 +113,7 @@
 
 /*  local function prototypes  */
 
-static void   gimp_tools_register       (GType                   tool_type,
+static void   gimp_tools_register_internal (GType                   tool_type,
                                          GType                   tool_options_type,
                                          GimpToolOptionsGUIFunc  options_gui_func,
                                          GimpContextPropMask     context_props,
@@ -288,7 +288,7 @@ gimp_tools_init (Gimp *gimp)
 
   for (i = 0; i < G_N_ELEMENTS (register_funcs); i++)
     {
-      register_funcs[i] (gimp_tools_register, gimp);
+      register_funcs[i] (gimp_tools_register_internal, gimp);
     }
 
   gimp_container_thaw (gimp->tool_info_list);
@@ -745,10 +745,33 @@ gimp_tools_reset (Gimp          *gimp,
 }
 
 
+/* Original public transfer-full entry. Validation failures leave the caller's
+ * reference untouched; successful validation consumes it even if the native
+ * container rejects a duplicate. Observers may detach the registry or release
+ * the caller's last application reference synchronously. */
+void
+gimp_tools_register (Gimp         *gimp,
+                     GimpToolInfo *tool_info)
+{
+  GimpContainer *registry;
+
+  g_return_if_fail (GIMP_IS_GIMP (gimp));
+  g_return_if_fail (GIMP_IS_TOOL_INFO (tool_info));
+  g_return_if_fail (GIMP_IS_CONTAINER (gimp->tool_info_list));
+
+  g_object_ref (gimp);
+  registry = g_object_ref (gimp->tool_info_list);
+  gimp_container_add (registry, GIMP_OBJECT (tool_info));
+  g_object_unref (tool_info);
+  g_object_unref (registry);
+  g_object_unref (gimp);
+}
+
+
 /*  private functions  */
 
 static void
-gimp_tools_register (GType                   tool_type,
+gimp_tools_register_internal (GType                   tool_type,
                      GType                   tool_options_type,
                      GimpToolOptionsGUIFunc  options_gui_func,
                      GimpContextPropMask     context_props,
@@ -764,6 +787,7 @@ gimp_tools_register (GType                   tool_type,
 {
   Gimp         *gimp = (Gimp *) data;
   GimpToolInfo *tool_info;
+  GimpContainer *registry;
   const gchar  *paint_core_name;
   gboolean      visible;
 
@@ -771,6 +795,8 @@ gimp_tools_register (GType                   tool_type,
   g_return_if_fail (g_type_is_a (tool_type, GIMP_TYPE_TOOL));
   g_return_if_fail (tool_options_type == G_TYPE_NONE ||
                     g_type_is_a (tool_options_type, GIMP_TYPE_TOOL_OPTIONS));
+
+  g_return_if_fail (GIMP_IS_CONTAINER (gimp->tool_info_list));
 
   if (tool_options_type == G_TYPE_NONE)
     tool_options_type = GIMP_TYPE_TOOL_OPTIONS;
@@ -840,6 +866,9 @@ gimp_tools_register (GType                   tool_type,
       paint_core_name = "gimp-paintbrush";
     }
 
+  g_object_ref (gimp);
+  registry = g_object_ref (gimp->tool_info_list);
+
   tool_info = gimp_tool_info_new (gimp,
                                   tool_type,
                                   tool_options_type,
@@ -853,6 +882,13 @@ gimp_tools_register (GType                   tool_type,
                                   help_data,
                                   paint_core_name,
                                   icon_name);
+
+  if (! tool_info)
+    {
+      g_object_unref (registry);
+      g_object_unref (gimp);
+      return;
+    }
 
   visible = (! g_type_is_a (tool_type, GIMP_TYPE_FILTER_TOOL));
 
@@ -877,11 +913,19 @@ gimp_tools_register (GType                   tool_type,
                      "gimp-tool-options-gui-horizontal-func",
                      gimp_tools_horizontal_options_gui);
 
-  gimp_container_add (gimp->tool_info_list, GIMP_OBJECT (tool_info));
-  g_object_unref (tool_info);
+  /* Keep a local lease across public consumption and synchronous observers.
+   * Only a still-published resource may become the standard tool. */
+  if (gimp->tool_info_list == registry)
+    gimp_tools_register (gimp, g_object_ref (tool_info));
 
-  if (tool_type == GIMP_TYPE_PAINTBRUSH_TOOL)
+  if (tool_type == GIMP_TYPE_PAINTBRUSH_TOOL &&
+      gimp->tool_info_list == registry &&
+      gimp_container_have (registry, GIMP_OBJECT (tool_info)))
     gimp_tool_info_set_standard (gimp, tool_info);
+
+  g_object_unref (tool_info);
+  g_object_unref (registry);
+  g_object_unref (gimp);
 }
 
 /* Tool infos are shared runtime objects.  Removing the root list does not

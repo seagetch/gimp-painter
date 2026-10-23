@@ -18,6 +18,18 @@
 #ifndef __GIMP_TOOLS_H__
 #define __GIMP_TOOLS_H__
 
+#include <glib-object.h>
+typedef struct _Gimp Gimp;
+typedef struct _GimpToolInfo GimpToolInfo;
+typedef struct _GimpContainer GimpContainer;
+typedef struct _GimpConfigWriter GimpConfigWriter;
+G_BEGIN_DECLS
+
+
+/* Consumes one tool_info reference after valid application/resource/live
+ * registry preconditions. Invalid arguments remain caller-owned. */
+void       gimp_tools_register    (Gimp              *gimp,
+                                   GimpToolInfo       *tool_info);
 
 void       gimp_tools_init        (Gimp              *gimp);
 void       gimp_tools_exit        (Gimp              *gimp);
@@ -41,5 +53,7 @@ void       gimp_tools_reset       (Gimp              *gimp,
                                    GimpContainer     *container,
                                    gboolean           user_toolrc);
 
+
+G_END_DECLS
 
 #endif  /* __GIMP_TOOLS_H__ */

@@ -290,6 +290,14 @@
       "context": "core",
       "prerequisites": [],
       "review": "09.011/prepared-undo: native prepared-object publication entry shares existing stack backend; core type prelude, header-owned C linkage, double include C11/C++14. Typed construction preflight is not original raw Stroke pointer compatibility."
+    },
+    {
+      "path": "app/tools/gimp-tools.h",
+      "kind": "changed-baseline",
+      "baseline_blob": "5be61c3e12400743ca9b734bee2b7b379e5d9227",
+      "context": "standalone",
+      "prerequisites": [],
+      "review": "08.018/tool-registration: restore original consuming Gimp/GimpToolInfo C entry while renaming native private callback; explicit GLib prerequisite and opaque forwards, owned C linkage, first/double C11/C++14 without outer adapter. Original registry consumption, not Bucket options or old callback compatibility."
     }
   ]
 }
