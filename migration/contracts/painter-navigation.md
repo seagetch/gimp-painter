@@ -846,3 +846,139 @@ old-runtime **SKIPPED/unverified** status remains. The physical-input,
 every-tool, controller-fallback, focus/device, vertical-reflection, pan/zoom,
 whole-display/overlay, other-platform and broader acceptance limits above
 remain, including all section 25, full-port, full-aggregate and release gates.
+
+## 25.009 common-angle draw path: bounded source-only checkpoint
+
+This is a **source-only, not-yet-run checkpoint** based on public
+`05009fa529970b491b960ef4ee91d758f9202b38`, tree
+`47e120b9d73d62fb0942ec444711ae61733efd37`. It adds five native registrations to
+`app/tests/test-painter-navigation-events.c`, preserving the preceding 22 event
+registrations and their assertions. Planned totals are **27 event cases and 37
+normal navigation cases** (27 event + 4 UI + 6 arithmetic), not claimed results.
+No production implementation or legacy fixture changes are part of this source
+checkpoint. Original **25.009 and 25.009/drag-zoom-scroll remain open**; the
+196 jointly assigned historical hunks and full section 25 are not accepted.
+
+### Genuine draw boundary and finite matrix
+
+The existing real-display, real-Paintbrush, first-focus-initialized fixture now
+contains a 256x256 opaque gray image with three non-collinear colored rectangles.
+Every observation calls `gtk_widget_draw(shell->canvas, cr)` with a fresh,
+identity Cairo image surface after ordinary frame-clock processing. The test
+never applies the production rotation matrix to that context and never draws
+the raster or image-space items itself. The normal GTK draw signal reaches
+`gimp_display_shell_canvas_draw`, the production image renderer/cache, the
+rotated canvas group, the unrotated group, and the separate selection path.
+Test-only items record the actual parent CTMs; real `GimpCanvasLine` and
+`GimpCanvasRectangle` objects supply the measured image-space overlay pixels.
+Observer counts are reset immediately before GTK drawing and must each become
+exactly one, so an earlier window paint cannot satisfy an offscreen check.
+
+| Registration under `/navigation-events/draw/` | Frozen observations | GTK snapshots |
+| --- | --- | --- |
+| `common-angle` | Two horizontal-reflection values, each at zero, free 127, Ctrl-snap 120, Ctrl-release plus stationary-motion unsnap 127, button release 127, unchanged second redraw 127. Each observation captures raster-only then real items visible. | 12 pairs = 24 |
+| `fixed-view` | Pre-established horizontally mirrored 37-degree view at 1.5x zoom with offsets `(192 - floor(viewport_width/2) + 13, 192 - floor(viewport_height/2) - 9)`, then the same public right-to-down navigation drag reaches 127 degrees. Center preservation independently requires final offsets `(192 - floor(viewport_width/2) + 9, 192 - floor(viewport_height/2) + 13)`. Both exact scales and initial/final offsets are asserted. This is setup, not drag-zoom or pan acceptance. | 1 pair = 2 |
+| `tiny-ctm` | Three unmirrored public inherited motions on `(cx+100000,cy+k)`, k=-1,0,+1, using the accepted boundary fixture's geometry. Each has raster-only and items-visible draws. | 3 pairs = 6 |
+| `selection-boundary` | One mirrored 127-degree rectangular selection `(48,54,120,96)`, initially hidden, then visible and a second visible redraw, with marching-ants phase paused. No representative canvas items are visible. | 3 |
+| `widget-anchor` | One image-anchored 19x11 GTK event-box container at `(184,92)`, north-west anchor, zero spacing, centered unit-scale view: zero, 37 degrees, unchanged second redraw. Both scroll offsets must remain unchanged. | 3 |
+| **Total** | Five added registrations, 16 raster/item pairs and six separate-branch snapshots | **38** |
+
+The common-angle event sequence starts at 37 degrees with Shift+middle on the
+right ray, moves to the down ray, presses Ctrl and repeats stationary motion,
+releases Ctrl and repeats stationary motion, then releases the initiating
+button. The accepted 25.008 source-derived constants are 127/120/127 degrees
+under both horizontal-reflection values. The input uses the public canvas tool
+event handler; production navigation helpers never calculate expected angles.
+Actual grabs are checked while held and ordinary idle cleanup after release.
+The image's exact RGBA checksum must remain unchanged through each case.
+
+### Independent geometry and tolerances frozen before native execution
+
+The image markers are red `(61,71,14,10)`, green `(179,83,10,18)`, and blue
+`(99,178,18,12)`. Their centers are `(68,76)`, `(184,92)`, `(108,184)`; these
+non-collinear centers establish two independent directions. The real overlay
+has lines from the first center to each other center and an unfilled rectangle
+`(99,178,18,12)`, giving six checked segments. The four separate selection
+edges are independently specified by the selection rectangle above.
+
+Expected positions use literal sine/cosine constants and Euclidean geometry:
+scale image coordinates, subtract the observed scroll offsets, reflect about
+the scaled image center if requested, rotate, and translate back. The center
+is `(-offset_x + ((int)(256*scale_x))/2, -offset_y + ((int)(256*scale_y))/2)`;
+integer division is deliberate, matching the defined scaled-image coordinate
+center. The test does not read `shell->rotate_transform` or call a production
+transform helper to calculate expected positions. Observed scale/offset values
+are view inputs, not an orientation oracle; the fixed-view case also asserts
+the requested exact values.
+
+| Quantity | Frozen expectation / tolerance |
+| --- | --- |
+| Free angle | 127 degrees; cosine -0.6018150231520483, sine 0.7986355100472928 |
+| Snap angle | 120 degrees; cosine -0.5, sine 0.8660254037844386 |
+| Widget angle | 37 degrees; cosine 0.7986355100472928, sine 0.6018150231520483 |
+| Tiny negative / zero / positive | 359.9994270422049 / 0 / 0.0005729577951117246 degrees; cosine 0.99999999995 / 1 / 0.99999999995; sine -0.0000099999999995 / 0 / 0.0000099999999995 |
+| Displayed angle and both CTM basis vectors | Absolute error at most 1e-10; includes both mirror signs, distinguishable tiny nonzero terms and exact zero control |
+| CTM translation | Absolute error at most 1e-7 display pixels against independent origin geometry |
+| Raster marker classification | Dominant RGB channel >130, both others <110; source dominant=232, others=24, background RGB=128 |
+| Marker centroid | Each x/y within 1 display pixel of independent transformed center; 45–150% of scaled source marker area must be classified |
+| Stale colored pixels | Every classified marker pixel anywhere in the canvas lies within half its scaled diagonal plus 2 pixels of the expected center |
+| Real item and selection pixel difference | Any RGB difference >16 counts; more than 40 pixels must differ, every changed pixel must be within 3 pixels of one expected segment, and all quarter/mid/three-quarter samples of each segment must have a differing pixel within 3 pixels |
+| Unrotated control | Identity basis within 1e-10, zero translation within 1e-7; solid magenta interior at display pixel `(28,33)` remains exact |
+| GTK widget anchor | Stored x/y within 1e-7 of independently transformed anchor; displayed child matrix translation within 1 pixel for integer placement; unchanged size, zero child angle and identity basis within 1e-10 |
+
+The 3-pixel band is fixed for half-pixel item rounding, double stroke,
+selection closing-edge adjustment and antialiasing. It is separate from the
+strict CTM tolerance. Raster-only and items-visible captures occur at the same
+view. Navigation itself must invalidate the raster cache: the test does not
+force cache invalidation between the free/snap/unsnap stages. Global marker
+checks reject stale cached raster orientation, and overlay differences reject
+painting in an old orientation. These full-surface snapshots and repeated
+redraws do **not** establish screen damage/clipping/extents correctness.
+
+### Overlay taxonomy and anchor risk
+
+Image-space canvas items follow the image rotation/reflection. The test's
+magenta screen-space control lives in the actual unrotated item group and must
+remain stationary. Selection drawing is checked separately because its
+boundary-mask route bypasses the rotated item group; this finite rectangle
+does not claim every inner/outer segment topology. Image-anchored GTK widgets
+stay upright while their anchor follows the image transform.
+
+The GTK child test explicitly exercises the source-derived rotate-refresh risk:
+`rotated()` rebuilds the transform but does not itself move those children,
+and `scroll_set_offset()` returns early when offsets are unchanged. The test
+uses only ordinary rotation and GTK processing, with no explicit child move,
+scrolled signal, forced size allocation, or test-side repair. Immediate stored
+position is logged, but only the ordinary post-draw position is required: a
+legitimate deferred GTK refresh is allowed. It checks
+`GimpOverlayChild`'s stored position and actual embedding matrix; local widget
+allocation x/y are not screen coordinates. This is a candidate regression,
+**not an observed native failure** at the source-only checkpoint. Any failure
+must be retained and reviewed before a narrowly justified production repair.
+
+### Execution, evidence and remaining boundaries
+
+Set `GIMP_TEST_NAVIGATION_DRAW_DIR` to a fresh external evidence directory for
+PNG capture. Names distinguish mirror/state and raster-only vs composite.
+PNG output is written before geometry assertions so failing snapshots remain
+available; matrix, marker and changed-pixel diagnostics appear in the test log.
+Use the shared build lock, authenticated display and isolated writable native
+profile described by the build/test coordination and profile contracts.
+
+The existing focused event ASan/UBSan builder still instruments **five C
+translation units only**: navigation arithmetic, modifier manager, rotate,
+tool-events, and this event fixture. The newly exercised callbacks, image
+renderer, canvas group/item/line/rectangle, selection, shell and GTK overlay
+container/child are **uninstrumented**, as are the rest of core, GTK and other
+dependencies. Running the new registrations with that executable is focused
+instrumentation coverage, not full render-path or full-application sanitizing.
+
+Parent-owned gates remain: exact frozen-source default build, the complete
+registered navigation suite, focused event sanitizer run, evidence integration,
+strict Clone acceptance on its separately identified source and an actual
+branch portrait Xvfb GUI smoke. No final-revision run claim is made here. The
+prior 32-normal/22-event and strict 226-test/62-row receipts remain historical
+exact-A/B evidence and are not transferred to this new source. Physical input,
+clipping/extents/hit-testing, other platforms, drag zoom/pan, all 196 historical
+hunks, whole section 25, release acceptance and the user-approved skipped old
+Edge/string-reader runtime stay outside this checkpoint.
