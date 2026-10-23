@@ -9,6 +9,7 @@
 #include "core/gimp.h"
 #include "core/gimpimage.h"
 #include "core/gimplayer.h"
+#include "core/gimpgrouplayer.h"
 #include "core/gimplayer-new.h"
 #include "core/gimplayermask.h"
 #include "core/gimppickable.h"
@@ -182,6 +183,72 @@ static void precision_and_offset_projection (void)
   g_free(a);g_free(b);
 }
 
+/* The old pixel references are child-composite references, not historical
+ * group captures. This checks current isolated/pass-through connection order. */
+static void group_projection_routes (void)
+{
+  const guint raw_modes[]={0,3,23,24,25,26,27,28,29};
+  const Babl *format=babl_format("R'G'B'A u8");
+  const GeglRectangle rect={0,0,8,8};
+  guchar *a=read_fixture("backdrop.rgba"),*b=read_fixture("source.rgba"),actual[256],mask[64];
+  memset(mask,128,sizeof mask);
+  for(guint depth=0;depth<3;++depth)
+    for(guint pass=0;pass<2;++pass) for(guint index=0;index<G_N_ELEMENTS(raw_modes);++index) {
+    guint raw=raw_modes[index];
+    GimpLayerMode mode;GError *error=NULL;
+    GimpImage *image=gimp_image_new(gimp,8,8,GIMP_RGB,GIMP_PRECISION_U8_NON_LINEAR);
+    GimpLayer *group=gimp_group_layer_new(image);
+    GimpLayer *base=gimp_layer_new(image,8,8,format,"backdrop",1,GIMP_LAYER_MODE_NORMAL_LEGACY);
+    GimpLayer *source;
+    GimpLayerMask *lm;
+    gchar *name=g_strdup_printf("mode-%u-o50-m128-projection.rgba",raw);
+    guchar *expected=read_fixture(name);
+    gimp_painter_layer_mode_from_legacy(raw,&mode);
+    source=gimp_layer_new(image,8,8,format,"source",.5,mode);
+    gimp_layer_set_mode(group,pass?GIMP_LAYER_MODE_PASS_THROUGH:GIMP_LAYER_MODE_NORMAL_LEGACY,FALSE);
+    g_assert_true(gimp_image_add_layer(image,group,NULL,0,FALSE));
+    for(guint nested=0;nested<depth;++nested) {
+      GimpLayer *inner=gimp_group_layer_new(image);
+      gimp_layer_set_mode(inner,pass?GIMP_LAYER_MODE_PASS_THROUGH:GIMP_LAYER_MODE_NORMAL_LEGACY,FALSE);
+      g_assert_true(gimp_image_add_layer(image,inner,group,0,FALSE));group=inner;
+    }
+    g_assert_true(gimp_image_add_layer(image,base,pass?NULL:group,pass?1:0,FALSE));
+    g_assert_true(gimp_image_add_layer(image,source,group,0,FALSE));
+    gegl_buffer_set(gimp_drawable_get_buffer(GIMP_DRAWABLE(base)),&rect,0,format,a,GEGL_AUTO_ROWSTRIDE);
+    gegl_buffer_set(gimp_drawable_get_buffer(GIMP_DRAWABLE(source)),&rect,0,format,b,GEGL_AUTO_ROWSTRIDE);
+    lm=gimp_layer_create_mask(source,GIMP_ADD_MASK_WHITE,NULL);
+    gegl_buffer_set(gimp_drawable_get_buffer(GIMP_DRAWABLE(lm)),&rect,0,babl_format("Y u8"),mask,GEGL_AUTO_ROWSTRIDE);
+    g_assert_nonnull(gimp_layer_add_mask(source,lm,FALSE,&error));g_assert_no_error(error);
+    gimp_drawable_update(GIMP_DRAWABLE(base),0,0,8,8);
+    gimp_drawable_update(GIMP_DRAWABLE(source),0,0,8,8);
+    gimp_pickable_flush(GIMP_PICKABLE(image));
+    gegl_buffer_get(gimp_pickable_get_buffer(GIMP_PICKABLE(image)),&rect,1,format,actual,GEGL_AUTO_ROWSTRIDE,GEGL_ABYSS_NONE);
+    for(guint p=0;p<sizeof actual;++p)
+      if(actual[p]!=expected[p])g_error("group depth=%u pass=%u mode=%u byte=%u expected=%u got=%u",depth,pass,raw,p,expected[p],actual[p]);
+    g_test_message("group depth %u %s mode %u: 64 pixels match old child-composite reference",depth,pass?"pass-through":"isolated",raw);
+    g_free(name);g_free(expected);g_object_unref(image);
+  }
+  g_free(a);g_free(b);
+}
+
+static void modern_group_strength_reduction (void)
+{
+  const GimpLayerMode modes[]={GIMP_LAYER_MODE_NORMAL,GIMP_LAYER_MODE_MULTIPLY,
+                               GIMP_LAYER_MODE_ERASE,GIMP_LAYER_MODE_SCREEN};
+  for(guint m=0;m<G_N_ELEMENTS(modes);++m) {
+    GimpImage *image=gimp_image_new(gimp,8,8,GIMP_RGB,GIMP_PRECISION_U8_NON_LINEAR);
+    GimpLayer *group=gimp_group_layer_new(image);
+    GimpLayer *child=gimp_layer_new(image,8,8,babl_format("R'G'B'A u8"),"modern child",.5,modes[m]);
+    GimpLayerMode effective;GimpLayerColorSpace blend,composite;GimpLayerCompositeMode region;
+    gimp_layer_set_mode(group,GIMP_LAYER_MODE_PASS_THROUGH,FALSE);
+    g_assert_true(gimp_image_add_layer(image,group,NULL,0,FALSE));
+    g_assert_true(gimp_image_add_layer(image,child,group,0,FALSE));
+    gimp_layer_get_effective_mode(group,&effective,&blend,&composite,&region);
+    g_assert_cmpint(effective,==,modes[m]);
+    g_test_message("modern mode %d retains single-child strength reduction",modes[m]);
+    g_object_unref(image);
+  }
+}
 int main (int argc, char **argv)
 {
   int result;
@@ -191,6 +258,8 @@ int main (int argc, char **argv)
   g_test_add_func ("/painter-layer-modes/genuine_projection_and_kernel",genuine_projection_and_kernel);
   g_test_add_func ("/painter-layer-modes/direct_paint_operation",direct_paint_operation);
   g_test_add_func ("/painter-layer-modes/precision_and_offset_projection",precision_and_offset_projection);
+  g_test_add_func ("/painter-layer-modes/group_projection_routes",group_projection_routes);
+  g_test_add_func ("/painter-layer-modes/modern_group_strength_reduction",modern_group_strength_reduction);
   result = g_test_run ();
   gimp_test_utils_set_gimp3_directory ("GIMP_TESTING_ABS_TOP_BUILDDIR","app/tests/gimpdir-output");
   gimp_exit (gimp,TRUE); return result;

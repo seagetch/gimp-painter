@@ -32,6 +32,7 @@
 
 #include "gegl/gimp-babl.h"
 #include "gegl/gimp-gegl-loops.h"
+#include "operations/layer-modes-legacy/gimpoperationpainterlegacy.h"
 
 #include "gimpdrawable-filters.h"
 #include "gimpgrouplayer.h"
@@ -1366,6 +1367,17 @@ gimp_group_layer_get_effective_mode (GimpLayer              *layer,
                                              blend_space,
                                              composite_space,
                                              composite_mode);
+
+              /* Painter byte modes round opacity and mask at the blend,
+               * not into a standalone source projection.  Lifting a single
+               * child's mode onto its group changes that order (e.g. Replace
+               * at opacity .5/mask 128 turns backdrop alpha 1 into 0).
+               * Keep the real pass-through graph for these explicit modes. */
+              if (gimp_painter_layer_mode_is_compatibility (*mode))
+                {
+                  reduce = FALSE;
+                  break;
+                }
 
               if (*mode == GIMP_LAYER_MODE_NORMAL_LEGACY)
                 *mode = GIMP_LAYER_MODE_NORMAL;

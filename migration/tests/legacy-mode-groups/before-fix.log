@@ -1,0 +1,132 @@
+Xvfb verified: 127.0.0.1:92, 1080x1920x24, authenticated accepted, empty authority rejected
+ninja: Entering directory `/workspace/shared/gimp-native-baseline/build-port'
+[1/12] Generating git-version.h.in.1 with a custom command
+[2/12] Generating git-version.h.in.2 with a custom command
+[3/12] Generating git-version.h with a custom command
+[4/6] Compiling C object app/tests/painter-layer-modes.p/test-painter-layer-modes.c.o
+../source/app/tests/test-painter-layer-modes.c: In function ‘direct_paint_operation’:
+../source/app/tests/test-painter-layer-modes.c:123:11: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  123 |           GimpOperationLayerMode *operation = GIMP_OPERATION_LAYER_MODE(gimp_layer_mode_get_operation(mode));
+      |           ^~~~~~~~~~~~~~~~~~~~~~
+[5/6] Generating app/tests/icon-theme-fixture/gimp-test-icon-theme-fixture with a custom command
+{"files": 1191, "manifest_sha256": "2f790ebf02244ef3c023f17f16ab614cbc315ee46d46abd87b7f73d4d5d9be41", "ownership_marker_sha256": "d3ebe76f57bdce73e82df17c3cd89f1a630f42f3c8d72dbfdacd4a000061b8bf", "plan_sha256": "0a16da7a76b5facf2d3d8084793b72e28d32d17c7ff6bf237d164075d4af4b95", "stamp_sha256": "c20e592420d8f1feb8e044c6114f8ed009473d411042806fd6e9aadd50c7ffc9", "status": "verified"}
+[6/6] Linking target app/tests/painter-layer-modes
+1/1 gimp:app / painter-layer-modes FAIL            3.56s   killed by signal 5 SIGTRAP
+>>> MESON_TEST_ITERATION=1 UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 GIMP_TESTING_PLUGINDIRS=/workspace/shared/gimp-native-baseline/build-port/plug-ins/common LD_LIBRARY_PATH=/workspace/shared/gimp-native-baseline/build-port/libgimpthumb:/workspace/shared/gimp-native-baseline/build-port/libgimpbase:/workspace/shared/gimp-native-baseline/build-port/libgimpwidgets:/workspace/shared/gimp-native-baseline/build-port/libgimpmodule:/workspace/shared/gimp-native-baseline/build-port/libgimpmath:/workspace/shared/gimp-native-baseline/build-port/libgimpcolor:/workspace/shared/gimp-native-baseline/build-port/libgimpconfig:/workspace/shared/gimp-native-baseline/prefix/lib/x86_64-linux-gnu:/workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 MALLOC_PERTURB_=26 UI_TEST=yes GIMP_TESTING_ABS_TOP_BUILDDIR=/workspace/shared/gimp-native-baseline/build-port GIMP_TESTING_ABS_TOP_SRCDIR=/workspace/shared/gimp-native-baseline/source /workspace/shared/gimp-native-baseline/build-port/app/tests/painter-layer-modes
+――――――――――――――――――――――――――――――――――――― ✀  ―――――――――――――――――――――――――――――――――――――
+Listing only the last 100 lines from a long log.
+# mode 25 format R'G'B'A half: 64 old pixels + 118 outside-source pixels
+# mode 26 format R'G'B'A half: 64 old pixels + 118 outside-source pixels
+# mode 27 format R'G'B'A half: 64 old pixels + 118 outside-source pixels
+# mode 28 format R'G'B'A half: 64 old pixels + 118 outside-source pixels
+# mode 29 format R'G'B'A half: 64 old pixels + 118 outside-source pixels
+# mode 23 format R'G'B'A float: 64 old pixels + 118 outside-source pixels
+# mode 24 format R'G'B'A float: 64 old pixels + 118 outside-source pixels
+# mode 25 format R'G'B'A float: 64 old pixels + 118 outside-source pixels
+# mode 26 format R'G'B'A float: 64 old pixels + 118 outside-source pixels
+# mode 27 format R'G'B'A float: 64 old pixels + 118 outside-source pixels
+# mode 28 format R'G'B'A float: 64 old pixels + 118 outside-source pixels
+# mode 29 format R'G'B'A float: 64 old pixels + 118 outside-source pixels
+# mode 23 format R'G'B'A double: 64 old pixels + 118 outside-source pixels
+# mode 24 format R'G'B'A double: 64 old pixels + 118 outside-source pixels
+# mode 25 format R'G'B'A double: 64 old pixels + 118 outside-source pixels
+# mode 26 format R'G'B'A double: 64 old pixels + 118 outside-source pixels
+# mode 27 format R'G'B'A double: 64 old pixels + 118 outside-source pixels
+# mode 28 format R'G'B'A double: 64 old pixels + 118 outside-source pixels
+# mode 29 format R'G'B'A double: 64 old pixels + 118 outside-source pixels
+ok 3 /painter-layer-modes/precision_and_offset_projection
+# slow test /painter-layer-modes/precision_and_offset_projection executed in 0.59 secs
+# group isolated mode 23: 64 pixels match old child-composite reference
+# group isolated mode 24: 64 pixels match old child-composite reference
+# group isolated mode 25: 64 pixels match old child-composite reference
+# group isolated mode 26: 64 pixels match old child-composite reference
+# group isolated mode 27: 64 pixels match old child-composite reference
+# group isolated mode 28: 64 pixels match old child-composite reference
+# group isolated mode 29: 64 pixels match old child-composite reference
+# group pass-through mode 23: 64 pixels match old child-composite reference
+not ok /painter-layer-modes/group_projection_routes - FATAL-ERROR: group pass=1 mode=24 byte=7 expected=1 got=0
+Bail out!
+stderr:
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/contrast-retinex.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/align-layers.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/convolution-matrix.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/animation-optimize.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/animation-play.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/blinds.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/border-average.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/busy-dialog.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/checkerboard.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/cml-explorer.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/compose.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/colormap-remap.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/crop-zealous.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/curve-bend.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/decompose.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/depth-merge.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/despeckle.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/destripe.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/file-cel.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/file-compressor.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/file-dicom.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/file-farbfeld.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/file-csource.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/file-gbr.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/file-gegl.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/file-gif-export.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/file-gif-load.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/file-gih.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/file-glob.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/file-header.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/file-html-table.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/file-pat.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/file-pcx.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/file-pdf-load.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/file-pix.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/file-png.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/file-pnm.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/file-psp.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/file-raw-data.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/file-sunras.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/file-svg.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/file-tga.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/file-wbmp.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/file-xwd.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/file-xbm.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/film.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/gradient-map.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/grid.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/guillotine.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/hot.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/nl-filter.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/jigsaw.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/plugin-browser.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/procedure-browser.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/qbist.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/sample-colorize.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/smooth-palette.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/sparkle.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/tile-small.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/sphere-designer.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/tile.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/unit-editor.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/van-gogh-lic.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/warp.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/wavelet-decompose.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/web-browser.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/file-desktop-link.dummy' in plug-in directory.
+Skipping unknown file '/workspace/shared/gimp-native-baseline/build-port/plug-ins/common/mail.dummy' in plug-in directory.
+――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+
+
+Summary of Failures:
+
+1/1 gimp:app / painter-layer-modes FAIL            3.56s   killed by signal 5 SIGTRAP
+
+Ok:                 0   
+Expected Fail:      0   
+Fail:               1   
+Unexpected Pass:    0   
+Skipped:            0   
+Timeout:            0   
+
+Full log written to /workspace/shared/gimp-native-baseline/build-port/meson-logs/testlog.txt
