@@ -1,0 +1,25 @@
+gboolean
+gimp_display_shell_scale_image_is_within_viewport (GimpDisplayShell *shell,
+                                                   gboolean         *horizontally,
+                                                   gboolean         *vertically)
+{
+  gint     sw, sh;
+  gboolean horizontally_dummy, vertically_dummy;
+
+  g_return_val_if_fail (GIMP_IS_DISPLAY_SHELL (shell), FALSE);
+
+  if (! horizontally) horizontally = &horizontally_dummy;
+  if (! vertically)   vertically   = &vertically_dummy;
+
+  gimp_display_shell_draw_get_scaled_image_size (shell, &sw, &sh);
+
+  *horizontally = sw              <= shell->disp_width       &&
+                  shell->offset_x <= 0                       &&
+                  shell->offset_x >= sw - shell->disp_width;
+
+  *vertically   = sh              <= shell->disp_height      &&
+                  shell->offset_y <= 0                       &&
+                  shell->offset_y >= sh - shell->disp_height;
+
+  return *vertically && *horizontally;
+}

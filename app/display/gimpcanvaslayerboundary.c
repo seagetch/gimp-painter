@@ -228,6 +228,40 @@ gimp_canvas_layer_boundary_stroke (GimpCanvasItem *item,
     {
       gimp_canvas_set_layer_style (gimp_canvas_item_get_canvas (item), cr,
                                    iter->data, shell->offset_x, shell->offset_y);
+      /* A repeated stipple has the same phase after translation by whole
+       * tile periods. Keep its sampling coordinates near the visible clip:
+       * at extreme rotated zoom origins the unreduced translation can exceed
+       * the raster backend's fixed-point range and fail an otherwise small
+       * clipped stroke. The style creates a private image pattern here. */
+      {
+        cairo_pattern_t *pattern = cairo_get_source (cr);
+        cairo_surface_t *surface = NULL;
+
+        if (cairo_pattern_get_type (pattern) == CAIRO_PATTERN_TYPE_SURFACE &&
+            cairo_pattern_get_extend (pattern) == CAIRO_EXTEND_REPEAT &&
+            cairo_pattern_get_surface (pattern, &surface) == CAIRO_STATUS_SUCCESS &&
+            cairo_surface_get_type (surface) == CAIRO_SURFACE_TYPE_IMAGE)
+          {
+            cairo_matrix_t matrix;
+            gdouble        x1, y1, x2, y2, x, y;
+            gint           width  = cairo_image_surface_get_width (surface);
+            gint           height = cairo_image_surface_get_height (surface);
+
+            cairo_clip_extents (cr, &x1, &y1, &x2, &y2);
+            x = x1 / 2.0 + x2 / 2.0;
+            y = y1 / 2.0 + y2 / 2.0;
+            cairo_pattern_get_matrix (pattern, &matrix);
+            cairo_matrix_transform_point (&matrix, &x, &y);
+
+            if (width > 0 && height > 0 && isfinite (x) && isfinite (y) &&
+                (fabs (x) > 16384.0 || fabs (y) > 16384.0))
+              {
+                matrix.x0 -= floor (x / width) * width;
+                matrix.y0 -= floor (y / height) * height;
+                cairo_pattern_set_matrix (pattern, &matrix);
+              }
+          }
+      }
       cairo_stroke (cr);
     }
 }

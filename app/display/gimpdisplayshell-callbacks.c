@@ -286,6 +286,7 @@ gimp_display_shell_canvas_size_allocate (GtkWidget        *widget,
   if (shell->disp_width  != allocation->width ||
       shell->disp_height != allocation->height)
     {
+      shell->painter_origin_valid = FALSE;
       g_clear_pointer (&shell->render_cache, cairo_surface_destroy);
       gimp_display_shell_render_invalidate_full (shell);
 

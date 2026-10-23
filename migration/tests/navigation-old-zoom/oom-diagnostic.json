@@ -1,0 +1,31 @@
+{
+  "scope": "Diagnostic localization, not final production acceptance. Raw environment excluded.",
+  "first_error": [
+    "Xvfb verified: 127.0.0.1:92, 1080x1920x24, authenticated accepted, empty authority rejected",
+    "1/1 gimp:app / painter-navigation-events FAIL            2.13s   killed by signal 5 SIGTRAP",
+    "# extreme before draw: requested=522.5333333333333 applied=256 nativeoffset=-13531,39009 residual=0.036928123990946915,0.41371458337380318 oldoffset=65127,65328",
+    "STROKE_DETAIL target=3 clip=78615.180551575031,26114.741469440971,79518.819448424969,26939.258530559022 path=78611.18043402108,26042.48098155397,79266.326446161125,26745.339816335552 matrix=-0.79863551004729283,-0.60181502315204827,-0.60181502315204827,0.79863551004729283,79560.060992063693,26722.304260538462 pattern=1,0,0,1,-3,1",
+    "CAIRO_FIRST_ERROR operation=cairo_stroke status=out of memory",
+    "1/1 gimp:app / painter-navigation-events FAIL            2.13s   killed by signal 5 SIGTRAP"
+  ],
+  "diagnostic_period_rebase_clipped": [
+    "Xvfb verified: 127.0.0.1:92, 1080x1920x24, authenticated accepted, empty authority rejected",
+    "1/1 gimp:app / painter-navigation-events OK              2.43s"
+  ],
+  "diagnostic_period_rebase_original_unclipped": [
+    "Xvfb verified: 127.0.0.1:92, 1080x1920x24, authenticated accepted, empty authority rejected",
+    "1/1 gimp:app / painter-navigation-events OK              2.64s"
+  ],
+  "isolated_production_layer_only": [
+    "Xvfb verified: 127.0.0.1:92, 1080x1920x24, authenticated accepted, empty authority rejected",
+    "1/1 gimp:app / painter-navigation-events OK              2.42s"
+  ],
+  "subsequent_group_layer_only_failure": [
+    "Xvfb verified: 127.0.0.1:92, 1080x1920x24, authenticated accepted, empty authority rejected",
+    "1/1 gimp:app / painter-navigation-events FAIL           14.81s   killed by signal 5 SIGTRAP",
+    "# extreme before draw: requested=522.5333333333333 applied=256 nativeoffset=-13601,38409 residual=0.036928123990946915,0.41371458337380318 oldoffset=65057,64728",
+    "1/1 gimp:app / painter-navigation-events FAIL           14.81s   killed by signal 5 SIGTRAP"
+  ],
+  "discarded_change": "Rectangle clipping alone failed; reverted byte-exact HEAD. Final admission relies on normal/sanitizer source-bound receipts, not interposer.",
+  "sampling_phase": "Only whole image tile periods subtracted; final production reduction only at large >16384 sampling origins, ordinary48 byte-exact comparisons."
+}

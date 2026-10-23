@@ -1,0 +1,34 @@
+void
+gimp_display_shell_scroll_center_image (GimpDisplayShell *shell,
+                                        gboolean          horizontally,
+                                        gboolean          vertically)
+{
+  gint sw, sh;
+  gint target_offset_x, target_offset_y;
+
+  g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
+
+  if (! shell->display                          ||
+      ! gimp_display_get_image (shell->display) ||
+      (! vertically && ! horizontally))
+    return;
+
+  target_offset_x = shell->offset_x;
+  target_offset_y = shell->offset_y;
+
+  gimp_display_shell_draw_get_scaled_image_size (shell, &sw, &sh);
+
+  if (horizontally)
+    {
+      target_offset_x = (sw - shell->disp_width) / 2;
+    }
+
+  if (vertically)
+    {
+      target_offset_y = (sh - shell->disp_height) / 2;
+    }
+
+  gimp_display_shell_scroll_set_offset (shell,
+                                        target_offset_x,
+                                        target_offset_y);
+}

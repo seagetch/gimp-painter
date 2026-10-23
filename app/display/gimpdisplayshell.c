@@ -1524,6 +1524,8 @@ void
 gimp_display_shell_reconnect (GimpDisplayShell *shell)
 {
   g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
+  shell->painter_origin_valid = FALSE;
+  shell->painter_origin_image = NULL;
   g_return_if_fail (GIMP_IS_DISPLAY (shell->display));
   g_return_if_fail (gimp_display_get_image (shell->display) != NULL);
 
@@ -1615,6 +1617,8 @@ gimp_display_shell_empty (GimpDisplayShell *shell)
   shell->painter_pan_start_y = 0.0;
   shell->painter_rotate_origin_x = 0.0;
   shell->painter_rotate_origin_y = 0.0;
+  shell->painter_origin_valid = FALSE;
+  shell->painter_origin_image = NULL;
   gimp_display_shell_rotate_update_transform (shell);
 
   gimp_display_shell_expose_full (shell);
@@ -1659,6 +1663,8 @@ gimp_display_shell_fill (GimpDisplayShell *shell,
   GimpImageWindow   *window;
 
   g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
+  shell->painter_origin_valid = FALSE;
+  shell->painter_origin_image = NULL;
   g_return_if_fail (GIMP_IS_DISPLAY (shell->display));
   g_return_if_fail (GIMP_IS_IMAGE (image));
 

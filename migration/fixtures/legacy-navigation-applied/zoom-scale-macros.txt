@@ -1,0 +1,6 @@
+#define  PROJ_ROUND(coord)   ((gint) RINT (coord))
+#define  PROJ_ROUND64(coord) ((gint64) RINT (coord))
+
+/* scale values */
+#define  SCALEX(s,x)      PROJ_ROUND ((x) * (s)->scale_x)
+#define  SCALEY(s,y)      PROJ_ROUND ((y) * (s)->scale_y)

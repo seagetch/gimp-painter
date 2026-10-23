@@ -1,0 +1,28 @@
+void
+gimp_display_shell_scale_resize (GimpDisplayShell *shell,
+                                 gboolean          resize_window,
+                                 gboolean          grow_only)
+{
+  g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
+
+  /* freeze the active tool */
+  gimp_display_shell_pause (shell);
+
+  if (resize_window)
+    {
+      GimpImageWindow *window = gimp_display_shell_get_window (shell);
+
+      if (window && gimp_image_window_get_active_shell (window) == shell)
+        {
+          gimp_image_window_shrink_wrap (window, grow_only);
+        }
+    }
+
+  gimp_display_shell_scroll_clamp_and_update (shell);
+  gimp_display_shell_scaled (shell);
+
+  gimp_display_shell_expose_full (shell);
+
+  /* re-enable the active tool */
+  gimp_display_shell_resume (shell);
+}

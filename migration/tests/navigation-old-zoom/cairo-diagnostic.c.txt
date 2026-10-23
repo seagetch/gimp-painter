@@ -1,0 +1,20 @@
+#define _GNU_SOURCE
+#include <dlfcn.h>
+#include <stdio.h>
+#include <math.h>
+#include <stdlib.h>
+#include <execinfo.h>
+#include <cairo.h>
+static int reported;
+static void check(cairo_t*c,const char*op){cairo_status_t s=cairo_status(c);if(s&&!reported++){void*b[32];int n=backtrace(b,32);fprintf(stderr,"CAIRO_FIRST_ERROR operation=%s status=%s\n",op,cairo_status_to_string(s));backtrace_symbols_fd(b,n,2);}}
+#define WRAP0(fn) void fn(cairo_t*c){static void(*real)(cairo_t*);if(!real)real=dlsym(RTLD_NEXT,#fn);real(c);check(c,#fn);}
+WRAP0(cairo_paint)
+WRAP0(cairo_fill)
+WRAP0(cairo_fill_preserve)
+void cairo_stroke(cairo_t*c){static void(*real)(cairo_t*);if(!real)real=dlsym(RTLD_NEXT,"cairo_stroke");double x,y,w,h,px,py,pw,ph;cairo_matrix_t m,p;cairo_get_matrix(c,&m);cairo_pattern_get_matrix(cairo_get_source(c),&p);cairo_clip_extents(c,&x,&y,&w,&h);cairo_path_extents(c,&px,&py,&pw,&ph);int type=cairo_surface_get_type(cairo_get_target(c));if(getenv("CAIRO_DIAGNOSTIC_REBASE")){cairo_surface_t*surf=NULL;cairo_pattern_t*pat=cairo_get_source(c);if(cairo_pattern_get_type(pat)==CAIRO_PATTERN_TYPE_SURFACE&&cairo_pattern_get_extend(pat)==CAIRO_EXTEND_REPEAT&&cairo_pattern_get_surface(pat,&surf)==CAIRO_STATUS_SUCCESS&&cairo_surface_get_type(surf)==CAIRO_SURFACE_TYPE_IMAGE){double iw=cairo_image_surface_get_width(surf),ih=cairo_image_surface_get_height(surf);cairo_matrix_t q=p;double cx=(x+w)/2,cy=(y+h)/2;q.x0-=floor((p.xx*cx+p.xy*cy)/iw)*iw;q.y0-=floor((p.yx*cx+p.yy*cy)/ih)*ih;cairo_pattern_set_matrix(pat,&q);}}real(c);if(cairo_status(c)&&!reported)fprintf(stderr,"STROKE_DETAIL target=%d clip=%.17g,%.17g,%.17g,%.17g path=%.17g,%.17g,%.17g,%.17g matrix=%.17g,%.17g,%.17g,%.17g,%.17g,%.17g pattern=%.17g,%.17g,%.17g,%.17g,%.17g,%.17g\n",type,x,y,w,h,px,py,pw,ph,m.xx,m.yx,m.xy,m.yy,m.x0,m.y0,p.xx,p.yx,p.xy,p.yy,p.x0,p.y0);check(c,"cairo_stroke");}
+WRAP0(cairo_stroke_preserve)
+WRAP0(cairo_push_group)
+WRAP0(cairo_pop_group_to_source)
+void cairo_push_group_with_content(cairo_t*c,cairo_content_t content){static void(*real)(cairo_t*,cairo_content_t);if(!real)real=dlsym(RTLD_NEXT,"cairo_push_group_with_content");double x,y,w,h;cairo_clip_extents(c,&x,&y,&w,&h);real(c,content);if(cairo_status(c))fprintf(stderr,"GROUP_CLIP %.17g %.17g %.17g %.17g\n",x,y,w,h);check(c,"cairo_push_group_with_content");}
+cairo_surface_t*cairo_image_surface_create(cairo_format_t f,int w,int h){static cairo_surface_t*(*real)(cairo_format_t,int,int);if(!real)real=dlsym(RTLD_NEXT,"cairo_image_surface_create");cairo_surface_t*s=real(f,w,h);if(cairo_surface_status(s))fprintf(stderr,"IMAGE_ERROR %d %d %s\n",w,h,cairo_status_to_string(cairo_surface_status(s)));return s;}
+cairo_surface_t*cairo_surface_create_similar_image(cairo_surface_t*o,cairo_format_t f,int w,int h){static cairo_surface_t*(*real)(cairo_surface_t*,cairo_format_t,int,int);if(!real)real=dlsym(RTLD_NEXT,"cairo_surface_create_similar_image");cairo_surface_t*s=real(o,f,w,h);if(cairo_surface_status(s))fprintf(stderr,"SIMILAR_IMAGE_ERROR %d %d %s\n",w,h,cairo_status_to_string(cairo_surface_status(s)));return s;}

@@ -2489,6 +2489,11 @@ radial_transformed (void)
             drag_assert_held (&scene, &held, p, motions[n].scale);
             center = drag_forward (scene.angle, mirror, motions[n].scale,
                                     shell->offset_x, shell->offset_y, (DragPoint) { 128, 128 });
+            /* Retain the original geometric center bound and frozen-angle
+             * model, now including the explicitly represented device residual.
+             * This remains distinct from the exact old-source zoom oracle. */
+            center.x -= shell->painter_pan_fraction_x;
+            center.y -= shell->painter_pan_fraction_y;
             g_test_message ("radial angle=%.17g mirror=%u motion=%u factor=%.17g offsets=%d,%d center=%.17g,%.17g",
                             scene.angle->angle, mirror, n, motions[n].scale,
                             shell->offset_x, shell->offset_y, center.x, center.y);
@@ -2797,6 +2802,7 @@ device_image_origin (void)
 
 #include "test-painter-navigation-legacy-pan.inc"
 #include "test-painter-navigation-old-operations.inc"
+#include "test-painter-navigation-old-zoom.inc"
 
 int main(int argc,char **argv)
 {
@@ -2809,6 +2815,16 @@ int main(int argc,char **argv)
   g_test_add_func("/navigation-events/legacy/invalid-and-space",inherited_pan_invalid_and_space);
   g_test_add_func("/navigation-events/old-operations/rotation-origin",old_applied_rotation_origin);
   g_test_add_func("/navigation-events/old-operations/rotation-render",old_applied_rotation_render);
+  g_test_add_func("/navigation-events/old-zoom/origin",old_applied_zoom_origin);
+  g_test_add_func("/navigation-events/old-zoom/limits",old_applied_zoom_limits);
+  g_test_add_func("/navigation-events/old-zoom/oncanvas-render",old_applied_zoom_render);
+  g_test_add_func("/navigation-events/old-zoom/extreme-pointer",old_applied_zoom_extreme_pointer);
+  g_test_add_func("/navigation-events/old-zoom/invalidation",old_applied_zoom_invalidation);
+  g_test_add_func("/navigation-events/old-zoom/invalid-inputs",old_applied_zoom_invalid_inputs);
+  g_test_add_func("/navigation-events/old-zoom/boundary-pattern",old_applied_zoom_boundary_pattern);
+  g_test_add_func("/navigation-events/old-zoom/mixed-chain",old_applied_zoom_mixed_chain);
+  g_test_add_func("/navigation-events/old-zoom/focus-fallback",old_applied_zoom_focus_fallback);
+  g_test_add_func("/navigation-events/old-zoom/resize-preference",old_applied_zoom_resize_preference);
   g_test_add_func("/navigation-events/default-rotation",rotate_defaults);
   g_test_add_func("/navigation-events/arbitrary-buttons",arbitrary_button_constraints);
   g_test_add_func("/navigation-events/radial-zoom",radial_zoom_event);

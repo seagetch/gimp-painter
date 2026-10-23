@@ -65,6 +65,13 @@ void   gimp_display_shell_scroll_get_viewport        (GimpDisplayShell *shell,
                                                       gdouble          *h);
 
 
+gboolean gimp_display_shell_painter_origin_get      (GimpDisplayShell *shell,
+                                                      gdouble *x, gdouble *y);
+void     gimp_display_shell_painter_origin_remember (GimpDisplayShell *shell,
+                                                      gdouble x, gdouble y);
+gboolean gimp_display_shell_painter_unrotate        (GimpDisplayShell *shell,
+                                                      gdouble *x, gdouble *y);
+
 G_END_DECLS
 
 #endif  /*  __GIMP_DISPLAY_SHELL_SCROLL_H__  */

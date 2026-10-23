@@ -1,0 +1,14 @@
+static void
+gimp_display_shell_scale_get_image_center_viewport (GimpDisplayShell *shell,
+                                                    gint             *image_center_x,
+                                                    gint             *image_center_y)
+{
+  gint sw, sh;
+
+  gimp_display_shell_draw_get_scaled_image_size (shell,
+                                                 &sw,
+                                                 &sh);
+
+  if (image_center_x) *image_center_x = -shell->offset_x + sw / 2;
+  if (image_center_y) *image_center_y = -shell->offset_y + sh / 2;
+}

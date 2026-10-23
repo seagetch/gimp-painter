@@ -48,35 +48,141 @@
 #define OVERPAN_FACTOR 0.5
 
 
-/* Old viewport-centered Flip*Rotate is represented by modern Rotate*Flip
- * with the already converted public angle. No current render matrix is used
- * for the old inverse-before-gint quantization. */
+/* Match the old viewport-centered H*Rotate operation order, including its
+ * normalized old angle. Algebraically equivalent native R*H/V matrices do not
+ * preserve low bits observed by the old inverse-before-gint conversion. */
 static void
 painter_pan_matrix (GimpDisplayShell *shell, cairo_matrix_t *matrix)
 {
   const gdouble cx = shell->disp_width / 2;
   const gdouble cy = shell->disp_height / 2;
+  const gboolean mirrored = shell->flip_horizontally != shell->flip_vertically;
+  gdouble angle = (mirrored ? -1.0 : 1.0) *
+                  (shell->rotate_angle + (shell->flip_vertically ? 180.0 : 0.0));
+  angle = fmod (angle, 360.0);
+  if (angle < 0.0) angle += 360.0;
   cairo_matrix_init_translate (matrix, cx, cy);
-  cairo_matrix_rotate (matrix, shell->rotate_angle * G_PI / 180.0);
-  cairo_matrix_scale (matrix, shell->flip_horizontally ? -1.0 : 1.0,
-                              shell->flip_vertically ? -1.0 : 1.0);
+  if (mirrored) cairo_matrix_scale (matrix, -1.0, 1.0);
+  cairo_matrix_rotate (matrix, angle / 180.0 * G_PI);
   cairo_matrix_translate (matrix, -cx, -cy);
 }
+
+/* Preserve the exact old double origin while a native view is unchanged.
+ * Re-inverting a rendered matrix loses low bits that old gint focus truncation
+ * can observe. This is per-shell provenance, not an epsilon snapping policy. */
+static void
+painter_origin_key (GimpDisplayShell *shell, gdouble key[20])
+{
+  GimpImage *image = gimp_display_get_image (shell->display);
+  gdouble factor = 0.0, xres = 0.0, yres = 0.0;
+  if (shell->zoom) g_object_get (shell->zoom, "value", &factor, NULL);
+  if (image) gimp_image_get_resolution (image, &xres, &yres);
+  const gdouble current[] = {
+    shell->offset_x, shell->offset_y,
+    shell->painter_pan_fraction_x, shell->painter_pan_fraction_y,
+    shell->scale_x, shell->scale_y, shell->rotate_angle,
+    shell->disp_width, shell->disp_height,
+    shell->flip_horizontally, shell->flip_vertically,
+    image ? gimp_image_get_width (image) : 0,
+    image ? gimp_image_get_height (image) : 0,
+    factor, shell->dot_for_dot, shell->rotate_angle_exact,
+    xres, yres, shell->monitor_xres, shell->monitor_yres
+  };
+  memcpy (key, current, sizeof (current));
+}
+
+void
+gimp_display_shell_painter_origin_remember (GimpDisplayShell *shell,
+                                            gdouble x, gdouble y)
+{
+  g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
+  shell->painter_origin_valid = isfinite (x) && isfinite (y);
+  shell->painter_origin_x = x;
+  shell->painter_origin_y = y;
+  painter_origin_key (shell, shell->painter_origin_key);
+  shell->painter_origin_image = gimp_display_get_image (shell->display);
+}
+
+gboolean
+gimp_display_shell_painter_unrotate (GimpDisplayShell *shell,
+                                     gdouble *x, gdouble *y)
+{
+  cairo_surface_t *surface;
+  cairo_t *cr;
+  gboolean success;
+  gboolean mirrored;
+  gdouble angle;
+  g_return_val_if_fail (GIMP_IS_DISPLAY_SHELL (shell), FALSE);
+  g_return_val_if_fail (x != NULL && y != NULL, FALSE);
+  if (! isfinite (*x) || ! isfinite (*y) || ! isfinite (shell->rotate_angle))
+    return FALSE;
+  mirrored = shell->flip_horizontally != shell->flip_vertically;
+  angle = (mirrored ? -1.0 : 1.0) *
+          (shell->rotate_angle + (shell->flip_vertically ? 180.0 : 0.0));
+  angle = fmod (angle, 360.0);
+  if (angle < 0.0) angle += 360.0;
+  if (angle == 0.0 && ! mirrored) return TRUE;
+  /* cairo_device_to_user observes the context's incrementally maintained
+   * inverse. Inverting its final CTM is NOT bit-equivalent near old gint
+   * boundaries (e.g. 270 degrees). Reproduce the old context operation order
+   * without acquiring a window draw context or rendering any pixels. */
+  surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, 1, 1);
+  cr = cairo_create (surface);
+  cairo_surface_destroy (surface);
+  cairo_translate (cr, shell->disp_width / 2, shell->disp_height / 2);
+  if (mirrored) cairo_scale (cr, -1.0, 1.0);
+  cairo_rotate (cr, angle / 180.0 * G_PI);
+  cairo_translate (cr, -shell->disp_width / 2, -shell->disp_height / 2);
+  cairo_device_to_user (cr, x, y);
+  success = cairo_status (cr) == CAIRO_STATUS_SUCCESS && isfinite (*x) && isfinite (*y);
+  cairo_destroy (cr);
+  return success;
+}
+
+gboolean
+gimp_display_shell_painter_origin_get (GimpDisplayShell *shell,
+                                       gdouble *x, gdouble *y)
+{
+  gdouble key[20];
+  g_return_val_if_fail (GIMP_IS_DISPLAY_SHELL (shell), FALSE);
+  g_return_val_if_fail (x != NULL && y != NULL, FALSE);
+  if (! gimp_display_get_image (shell->display)) return FALSE;
+  painter_origin_key (shell, key);
+  for (guint n = 0; n < G_N_ELEMENTS (key); n++)
+    if (! isfinite (key[n]))
+      {
+        shell->painter_origin_valid = FALSE;
+        return FALSE;
+      }
+  if (shell->painter_origin_valid &&
+      shell->painter_origin_image == gimp_display_get_image (shell->display) &&
+      memcmp (key, shell->painter_origin_key, sizeof (key)) == 0)
+    {
+      *x = shell->painter_origin_x;
+      *y = shell->painter_origin_y;
+      return TRUE;
+    }
+  shell->painter_origin_valid = FALSE;
+  gimp_display_shell_transform_xy_f (shell, 0, 0, x, y);
+  if (! gimp_display_shell_painter_unrotate (shell, x, y))
+    return FALSE;
+  *x = -*x; *y = -*y;
+  return TRUE;
+}
+
 
 gboolean
 gimp_display_shell_painter_pan_begin (GimpDisplayShell *shell, gdouble x, gdouble y)
 {
-  cairo_matrix_t inverse;
   gdouble zero_x, zero_y;
   g_return_val_if_fail (GIMP_IS_DISPLAY_SHELL (shell), FALSE);
   if (! isfinite (x) || ! isfinite (y))
     return FALSE;
-  painter_pan_matrix (shell, &inverse);
-  if (cairo_matrix_invert (&inverse) != CAIRO_STATUS_SUCCESS)
+  if (! gimp_display_shell_painter_unrotate (shell, &x, &y))
     return FALSE;
-  gimp_display_shell_transform_xy_f (shell, 0, 0, &zero_x, &zero_y);
-  cairo_matrix_transform_point (&inverse, &zero_x, &zero_y);
-  cairo_matrix_transform_point (&inverse, &x, &y);
+  if (! gimp_display_shell_painter_origin_get (shell, &zero_x, &zero_y))
+    return FALSE;
+  zero_x = -zero_x; zero_y = -zero_y;
   if (! isfinite (x) || ! isfinite (y) ||
       ! isfinite (zero_x) || ! isfinite (zero_y) ||
       x < G_MININT || x > G_MAXINT || y < G_MININT || y > G_MAXINT)
@@ -109,7 +215,7 @@ painter_pan_clamp (gdouble offset, gint viewport, gint image_extent)
 void
 gimp_display_shell_painter_pan_motion (GimpDisplayShell *shell, gdouble x, gdouble y)
 {
-  cairo_matrix_t matrix, inverse;
+  cairo_matrix_t matrix;
   GimpImage *image;
   gint width, height, ix, iy;
   gdouble old_x, old_y, native_zero_x, native_zero_y, cx, cy;
@@ -117,9 +223,8 @@ gimp_display_shell_painter_pan_motion (GimpDisplayShell *shell, gdouble x, gdoub
   g_return_if_fail (isfinite (x) && isfinite (y));
   image = gimp_display_get_image (shell->display);
   if (! image) return;
-  painter_pan_matrix (shell, &matrix); inverse = matrix;
-  cairo_matrix_invert (&inverse);
-  cairo_matrix_transform_point (&inverse, &x, &y);
+  painter_pan_matrix (shell, &matrix);
+  if (! gimp_display_shell_painter_unrotate (shell, &x, &y)) return;
   /* Exact old pre-rotation axes and rounded scaled extent; do not substitute
    * today's rotated bounding-box clamp. Old offsets remain double. */
   old_x = painter_pan_clamp (shell->painter_pan_start_x - x, shell->disp_width,
@@ -140,7 +245,10 @@ gimp_display_shell_painter_pan_motion (GimpDisplayShell *shell, gdouble x, gdoub
   ix = floor (x); iy = floor (y);
   if (shell->offset_x == ix && shell->offset_y == iy &&
       shell->painter_pan_fraction_x == x - ix && shell->painter_pan_fraction_y == y - iy)
-    return;
+    {
+      gimp_display_shell_painter_origin_remember (shell, old_x, old_y);
+      return;
+    }
   gimp_display_shell_pause (shell);
   shell->offset_x = ix; shell->offset_y = iy;
   shell->painter_pan_fraction_x = x - ix; shell->painter_pan_fraction_y = y - iy;
@@ -152,6 +260,7 @@ gimp_display_shell_painter_pan_motion (GimpDisplayShell *shell, gdouble x, gdoub
   gimp_display_shell_scrolled (shell);
   gimp_display_shell_expose_full (shell);
   gimp_display_shell_render_invalidate_full (shell);
+  gimp_display_shell_painter_origin_remember (shell, old_x, old_y);
   gimp_display_shell_resume (shell);
 }
 
@@ -177,6 +286,7 @@ gimp_display_shell_scroll (GimpDisplayShell *shell,
   gdouble old_fraction_x, old_fraction_y;
 
   g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
+  shell->painter_origin_valid = FALSE;
 
   if (x_offset == 0 && y_offset == 0)
     return;
@@ -281,6 +391,7 @@ gimp_display_shell_scroll_set_offset (GimpDisplayShell *shell,
                                       gint              offset_y)
 {
   g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
+  shell->painter_origin_valid = FALSE;
 
   if (shell->offset_x == offset_x &&
       shell->offset_y == offset_y &&

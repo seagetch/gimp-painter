@@ -288,6 +288,12 @@ struct _GimpDisplayShell
   /* Fixed old viewport-centered origin for one inherited rotation gesture. */
   gdouble painter_rotate_origin_x;
   gdouble painter_rotate_origin_y;
+  /* Exact old origin provenance, valid only for the full native view key. */
+  gboolean painter_origin_valid;
+  gdouble painter_origin_x;
+  gdouble painter_origin_y;
+  gdouble painter_origin_key[20];
+  GimpImage *painter_origin_image; /* weak identity, cleared on empty/reconnect */
 };
 
 struct _GimpDisplayShellClass

@@ -1,0 +1,4 @@
+#include <stdio.h>
+#include <math.h>
+#include <cairo.h>
+int main(){double x=230,y=409,a=x,b=y;cairo_surface_t*s=cairo_image_surface_create(CAIRO_FORMAT_ARGB32,1,1);cairo_t*c=cairo_create(s);cairo_translate(c,409,208);cairo_rotate(c,270.0/180.0*M_PI);cairo_translate(c,-409,-208);cairo_matrix_t m;cairo_get_matrix(c,&m);cairo_matrix_invert(&m);cairo_matrix_transform_point(&m,&a,&b);cairo_device_to_user(c,&x,&y);printf("context %.17g %.17g\nmatrix  %.17g %.17g\n",x,y,a,b);cairo_destroy(c);cairo_surface_destroy(s);}

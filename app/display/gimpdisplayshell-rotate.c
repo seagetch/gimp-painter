@@ -63,6 +63,7 @@ gimp_display_shell_flip (GimpDisplayShell *shell,
                          gboolean          flip_vertically)
 {
   g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
+  shell->painter_origin_valid = FALSE;
 
   flip_horizontally = flip_horizontally ? TRUE : FALSE;
   flip_vertically   = flip_vertically   ? TRUE : FALSE;
@@ -117,6 +118,8 @@ void
 gimp_display_shell_rotate_to (GimpDisplayShell *shell,
                               gdouble           value)
 {
+  g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
+  shell->painter_origin_valid = FALSE;
   gimp_display_shell_rotate_to_internal (shell, value, FALSE);
 }
 
@@ -129,6 +132,7 @@ gimp_display_shell_rotate_drag (GimpDisplayShell *shell,
                                 gboolean          constrain)
 {
   g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
+  shell->painter_origin_valid = FALSE;
 
   /* Start-relative arithmetic is independent of skipped/compressed motion and
    * keeps the unsnapped reference when Ctrl is pressed or released mid-drag. */
@@ -230,7 +234,7 @@ gimp_display_shell_rotate_to_internal (GimpDisplayShell *shell,
       gimp_display_shell_scale_get_image_size (shell, &width, &height);
       precise_x = shell->disp_width / 2 + shell->painter_rotate_origin_x - width / 2;
       precise_y = shell->disp_height / 2 + shell->painter_rotate_origin_y - height / 2;
-      cairo_matrix_init_rotate (&linear, value * G_PI / 180.0);
+      cairo_matrix_init_rotate (&linear, value / 180.0 * G_PI);
       cairo_matrix_scale (&linear, shell->flip_horizontally ? -1.0 : 1.0,
                                    shell->flip_vertically ? -1.0 : 1.0);
       cairo_matrix_transform_distance (&linear, &precise_x, &precise_y);
@@ -257,6 +261,8 @@ gimp_display_shell_rotate_to_internal (GimpDisplayShell *shell,
       gimp_display_shell_rotated (shell);
       gimp_display_shell_scrollbars_update (shell);
       gimp_display_shell_rulers_update (shell);
+      gimp_display_shell_painter_origin_remember (shell,
+        shell->painter_rotate_origin_x, shell->painter_rotate_origin_y);
     }
   else
     {

@@ -1,0 +1,23 @@
+static gboolean
+gimp_display_shell_scale_viewport_coord_almost_centered (GimpDisplayShell *shell,
+                                                         gint              x,
+                                                         gint              y,
+                                                         gboolean         *horizontally,
+                                                         gboolean         *vertically)
+{
+  gboolean local_horizontally;
+  gboolean local_vertically;
+  gint     center_x = shell->disp_width  / 2;
+  gint     center_y = shell->disp_height / 2;
+
+  local_horizontally = (x > center_x - ALMOST_CENTERED_THRESHOLD &&
+                        x < center_x + ALMOST_CENTERED_THRESHOLD);
+
+  local_vertically   = (y > center_y - ALMOST_CENTERED_THRESHOLD &&
+                        y < center_y + ALMOST_CENTERED_THRESHOLD);
+
+  if (horizontally) *horizontally = local_horizontally;
+  if (vertically)   *vertically   = local_vertically;
+
+  return local_horizontally && local_vertically;
+}

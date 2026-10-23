@@ -1,0 +1,96 @@
+void
+gimp_display_shell_scale (GimpDisplayShell *shell,
+                          GimpZoomType      zoom_type,
+                          gdouble           new_scale,
+                          GimpZoomFocus     zoom_focus)
+{
+  gint    x, y;
+  gdouble current_scale;
+  gdouble real_new_scale;
+
+  g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
+  g_return_if_fail (shell->canvas != NULL);
+
+  current_scale = gimp_zoom_model_get_factor (shell->zoom);
+
+  if (zoom_type != GIMP_ZOOM_TO)
+    {
+      real_new_scale = gimp_zoom_model_zoom_step (zoom_type, current_scale);
+    }
+  else
+    {
+      real_new_scale = new_scale;
+    }
+
+  if (! SCALE_EQUALS (real_new_scale, current_scale))
+    {
+      if (shell->display->config->resize_windows_on_zoom)
+        {
+          GimpImageWindow *window = gimp_display_shell_get_window (shell);
+
+          /* If the window is resized on zoom, simply do the zoom and
+           * get things rolling
+           */
+          gimp_zoom_model_zoom (shell->zoom, GIMP_ZOOM_TO, real_new_scale);
+          gimp_display_shell_scaled (shell);
+
+          if (window && gimp_image_window_get_active_shell (window) == shell)
+            {
+              gimp_image_window_shrink_wrap (window, FALSE);
+            }
+        }
+      else
+        {
+          gboolean starts_fitting_horiz;
+          gboolean starts_fitting_vert;
+          gboolean zoom_focus_almost_centered_horiz;
+          gboolean zoom_focus_almost_centered_vert;
+          gboolean image_center_almost_centered_horiz;
+          gboolean image_center_almost_centered_vert;
+          gint     image_center_x;
+          gint     image_center_y;
+
+          gimp_display_shell_scale_get_zoom_focus (shell,
+                                                   real_new_scale,
+                                                   current_scale,
+                                                   &x,
+                                                   &y,
+                                                   zoom_focus);
+          gimp_display_shell_scale_get_image_center_viewport (shell,
+                                                              &image_center_x,
+                                                              &image_center_y);
+
+          gimp_display_shell_scale_to (shell, real_new_scale, x, y);
+
+
+          /* If an image axis started to fit due to zooming out or if
+           * the focus point is as good as in the center, center on
+           * that axis
+           */
+          gimp_display_shell_scale_image_starts_to_fit (shell,
+                                                        real_new_scale,
+                                                        current_scale,
+                                                        &starts_fitting_horiz,
+                                                        &starts_fitting_vert);
+
+          gimp_display_shell_scale_viewport_coord_almost_centered (shell,
+                                                                   x,
+                                                                   y,
+                                                                   &zoom_focus_almost_centered_horiz,
+                                                                   &zoom_focus_almost_centered_vert);
+          gimp_display_shell_scale_viewport_coord_almost_centered (shell,
+                                                                   image_center_x,
+                                                                   image_center_y,
+                                                                   &image_center_almost_centered_horiz,
+                                                                   &image_center_almost_centered_vert);
+            
+          gimp_display_shell_scroll_center_image (shell,
+                                                  starts_fitting_horiz ||
+                                                  (zoom_focus_almost_centered_horiz &&
+                                                   image_center_almost_centered_horiz),
+                                                  starts_fitting_vert ||
+                                                  (zoom_focus_almost_centered_vert &&
+                                                   image_center_almost_centered_vert));
+        }
+    }
+}

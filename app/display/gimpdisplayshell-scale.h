@@ -18,6 +18,8 @@
 #ifndef __GIMP_DISPLAY_SHELL_SCALE_H__
 #define __GIMP_DISPLAY_SHELL_SCALE_H__
 
+G_BEGIN_DECLS
+
 
 gboolean gimp_display_shell_scale_revert             (GimpDisplayShell *shell);
 gboolean gimp_display_shell_scale_can_revert         (GimpDisplayShell *shell);
@@ -63,6 +65,8 @@ void     gimp_display_shell_scale                    (GimpDisplayShell *shell,
                                                       GimpZoomType      zoom_type,
                                                       gdouble           scale,
                                                       GimpZoomFocus     zoom_focus);
+void     gimp_display_shell_scale_painter            (GimpDisplayShell *shell,
+                                                      gdouble           requested);
 void     gimp_display_shell_scale_to_rectangle       (GimpDisplayShell *shell,
                                                       GimpZoomType      zoom_type,
                                                       gdouble           x,
@@ -104,5 +108,7 @@ void  gimp_display_shell_push_zoom_focus_pointer_pos (GimpDisplayShell *shell,
                                                       gint              x,
                                                       gint              y);
 
+
+G_END_DECLS
 
 #endif  /*  __GIMP_DISPLAY_SHELL_SCALE_H__  */

@@ -1904,14 +1904,9 @@ gimp_display_shell_start_scrolling (GimpDisplayShell *shell,
       (mod_action == GIMP_MODIFIER_ACTION_ROTATING ||
        mod_action == GIMP_MODIFIER_ACTION_STEP_ROTATING))
     {
-      gimp_display_shell_unrotate_xy_f (shell,
-        shell->disp_width / 2, shell->disp_height / 2,
-        &shell->painter_rotate_origin_x, &shell->painter_rotate_origin_y);
-      /* A viewport-centered old matrix fixes its center. Subtracting that
-       * center from the corresponding scaled image point gives the old
-       * double origin, fixed for the gesture rather than re-inverted each frame. */
-      shell->painter_rotate_origin_x += shell->offset_x - shell->disp_width / 2;
-      shell->painter_rotate_origin_y += shell->offset_y - shell->disp_height / 2;
+      if (! gimp_display_shell_painter_origin_get (shell,
+            &shell->painter_rotate_origin_x, &shell->painter_rotate_origin_y))
+        return;
     }
 
   gimp_display_shell_pointer_grab (shell, event,
@@ -2102,10 +2097,9 @@ gimp_display_shell_handle_scrolling (GimpDisplayShell *shell,
       break;
     case GIMP_MODIFIER_ACTION_ZOOMING:
       if (shell->painter_navigation_inherited)
-        gimp_display_shell_scale (shell, GIMP_ZOOM_TO,
+        gimp_display_shell_scale_painter (shell,
           gimp_painter_navigation_zoom (shell->disp_width, shell->disp_height,
-                                        x, y, shell->painter_zoom_anchor),
-          GIMP_ZOOM_FOCUS_RETAIN_CENTERING_ELSE_BEST_GUESS);
+                                        x, y, shell->painter_zoom_anchor));
       else
         gimp_display_shell_scale_drag (shell,
                                        shell->scroll_start_x,

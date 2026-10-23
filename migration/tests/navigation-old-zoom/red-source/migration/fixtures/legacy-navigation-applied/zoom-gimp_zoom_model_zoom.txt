@@ -1,0 +1,14 @@
+void
+gimp_zoom_model_zoom (GimpZoomModel *model,
+                      GimpZoomType   zoom_type,
+                      gdouble        scale)
+{
+  g_return_if_fail (GIMP_IS_ZOOM_MODEL (model));
+
+  if (zoom_type != GIMP_ZOOM_TO)
+    scale = gimp_zoom_model_get_factor (model);
+
+  g_object_set (model,
+                "value", gimp_zoom_model_zoom_step (zoom_type, scale),
+                NULL);
+}

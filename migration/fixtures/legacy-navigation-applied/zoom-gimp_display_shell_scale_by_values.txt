@@ -1,0 +1,32 @@
+void
+gimp_display_shell_scale_by_values (GimpDisplayShell *shell,
+                                    gdouble           scale,
+                                    gint              offset_x,
+                                    gint              offset_y,
+                                    gboolean          resize_window)
+{
+  g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
+
+  /*  Abort early if the values are all setup already. We don't
+   *  want to inadvertently resize the window (bug #164281).
+   */
+  if (SCALE_EQUALS (gimp_zoom_model_get_factor (shell->zoom), scale) &&
+      shell->offset_x == offset_x &&
+      shell->offset_y == offset_y)
+    return;
+
+  gimp_display_shell_scale_handle_zoom_revert (shell);
+
+  /* freeze the active tool */
+  gimp_display_shell_pause (shell);
+
+  gimp_zoom_model_zoom (shell->zoom, GIMP_ZOOM_TO, scale);
+
+  shell->offset_x = offset_x;
+  shell->offset_y = offset_y;
+
+  gimp_display_shell_scale_resize (shell, resize_window, FALSE);
+
+  /* re-enable the active tool */
+  gimp_display_shell_resume (shell);
+}

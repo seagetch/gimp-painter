@@ -40,6 +40,8 @@
 #include "gimpdisplayshell-rotate.h"
 #include "gimpdisplayshell-scale.h"
 #include "gimpdisplayshell-scroll.h"
+#include "gimpdisplayshell-scrollbars.h"
+#include "gimpdisplayshell-rulers.h"
 #include "gimpdisplayshell-transform.h"
 #include "gimpimagewindow.h"
 
@@ -478,6 +480,7 @@ gimp_display_shell_scale_update (GimpDisplayShell *shell)
   gdouble old_scale_x, old_scale_y;
 
   g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
+  shell->painter_origin_valid = FALSE;
 
   old_scale_x = shell->scale_x;
   old_scale_y = shell->scale_y;
@@ -527,6 +530,7 @@ gimp_display_shell_scale (GimpDisplayShell *shell,
   gboolean           resize_window;
 
   g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
+  shell->painter_origin_valid = FALSE;
   g_return_if_fail (shell->canvas != NULL);
 
   current_scale = gimp_zoom_model_get_factor (shell->zoom);
@@ -620,6 +624,175 @@ gimp_display_shell_scale (GimpDisplayShell *shell,
                                                    image_center_almost_centered_vert));
         }
     }
+}
+
+/* Old painter zoom uses pre-rotation image axes for focus, fitting and bounds.
+ * Keep this separate from public/custom native zoom (rotated bounding boxes). */
+static gint
+painter_zoom_clamp (gint offset, gint viewport, gint extent)
+{
+  gint minimum, maximum;
+  if (viewport < extent)
+    {
+      minimum = -viewport * 0.5;
+      maximum = extent - viewport * 0.5;
+    }
+  else
+    {
+      gint overpan = viewport - extent * 0.5;
+      minimum = -overpan;
+      maximum = extent + overpan - viewport;
+    }
+  return CLAMP (offset, minimum, maximum);
+}
+
+void
+gimp_display_shell_scale_painter (GimpDisplayShell *shell,
+                                  gdouble           requested)
+{
+  GimpImage *image;
+  GdkEvent *event;
+  GtkWidget *window;
+  cairo_matrix_t linear;
+  gdouble current, minimum, maximum, applied;
+  gdouble old_x, old_y, sx, sy, ax, ay, image_x, image_y, nx, ny;
+  gint width, height, cw, ch, rw, rh, aw, ah, ix, iy;
+  gint center_x, center_y, focus_x, focus_y, pointer_x, pointer_y;
+  gboolean sane, within_x, within_y, stops_x, stops_y;
+  gboolean center_h, center_v;
+
+  g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
+  if (! isfinite (requested) || ! shell->canvas ||
+      ! gtk_widget_get_realized (shell->canvas) ||
+      ! (image = gimp_display_get_image (shell->display)))
+    return;
+  current = gimp_zoom_model_get_factor (shell->zoom);
+  if (SCALE_EQUALS (requested, current))
+    return;
+
+  /* The old resize preference takes its own path before focus consumption. */
+  if (shell->display->config->resize_windows_on_zoom)
+    {
+      GimpImageWindow *image_window = gimp_display_shell_get_window (shell);
+      gimp_zoom_model_zoom (shell->zoom, GIMP_ZOOM_TO, requested);
+      gimp_display_shell_scaled (shell);
+      if (image_window && gimp_image_window_get_active_shell (image_window) == shell)
+        gimp_image_window_shrink_wrap (image_window, FALSE);
+      return;
+    }
+
+  width = gimp_image_get_width (image);
+  height = gimp_image_get_height (image);
+  gimp_display_shell_calculate_scale_x_and_y (shell, requested, &sx, &sy);
+  g_object_get (shell->zoom, "minimum", &minimum, "maximum", &maximum, NULL);
+  applied = CLAMP (CLAMP (requested, 1.0 / 256.0, 256.0), minimum, maximum);
+  gimp_display_shell_calculate_scale_x_and_y (shell, applied, &ax, &ay);
+  /* Reject unrepresentable arithmetic before every narrowing conversion. Old
+   * finite, representable inputs retain their exact truncation/rounding order. */
+  if (! isfinite (sx) || ! isfinite (sy) || ! isfinite (ax) || ! isfinite (ay) ||
+      fabs (sx * width) >= G_MAXINT / 2 || fabs (sy * height) >= G_MAXINT / 2 ||
+      ax <= 0.0 || ay <= 0.0 ||
+      ax * width >= G_MAXINT / 2 || ay * height >= G_MAXINT / 2 ||
+      ! isfinite (shell->scale_x) || ! isfinite (shell->scale_y) ||
+      shell->scale_x <= 0.0 || shell->scale_y <= 0.0 ||
+      shell->scale_x * width >= G_MAXINT / 2 ||
+      shell->scale_y * height >= G_MAXINT / 2)
+    return;
+  cw = shell->scale_x * width; ch = shell->scale_y * height;
+  rw = sx * width; rh = sy * height;
+  aw = ax * width; ah = ay * height;
+  if (! gimp_display_shell_painter_origin_get (shell, &old_x, &old_y))
+    return;
+  nx = -old_x + cw / 2; ny = -old_y + ch / 2;
+  if (! isfinite (nx) || ! isfinite (ny) ||
+      nx <= G_MININT || nx >= G_MAXINT || ny <= G_MININT || ny >= G_MAXINT)
+    return;
+  center_x = nx; center_y = ny;
+  within_x = cw <= shell->disp_width && old_x <= 0 && old_x >= cw - shell->disp_width;
+  within_y = ch <= shell->disp_height && old_y <= 0 && old_y >= ch - shell->disp_height;
+  stops_x = requested >= current && rw > shell->disp_width && cw <= shell->disp_width;
+  stops_y = requested >= current && rh > shell->disp_height && ch <= shell->disp_height;
+
+  event = gtk_get_current_event ();
+  window = GTK_WIDGET (gimp_display_shell_get_window (shell));
+  sane = ! event || gtk_get_event_widget (event) == shell->canvas ||
+                    gtk_get_event_widget (event) == window;
+  if (shell->zoom_focus_point)
+    {
+      pointer_x = shell->zoom_focus_point->x;
+      pointer_y = shell->zoom_focus_point->y;
+      g_slice_free (GdkPoint, shell->zoom_focus_point);
+      shell->zoom_focus_point = NULL;
+    }
+  else
+    {
+      GdkDisplay *display = gtk_widget_get_display (shell->canvas);
+      GdkSeat *seat = gdk_display_get_default_seat (display);
+      GdkWindow *canvas_window = gtk_widget_get_window (shell->canvas);
+      GdkDevice *pointer = seat ? gdk_seat_get_pointer (seat) : NULL;
+      pointer_x = shell->disp_width / 2;
+      pointer_y = shell->disp_height / 2;
+      if (canvas_window && pointer)
+        gdk_window_get_device_position (canvas_window, pointer,
+                                        &pointer_x, &pointer_y, NULL);
+    }
+  if (event) gdk_event_free (event);
+  if (! sane || pointer_x < 0 || pointer_y < 0 ||
+      pointer_x >= shell->disp_width || pointer_y >= shell->disp_height)
+    {
+      pointer_x = shell->disp_width / 2;
+      pointer_y = shell->disp_height / 2;
+    }
+  center_h = fabs ((gdouble) center_x - shell->disp_width / 2) < ALMOST_CENTERED_THRESHOLD;
+  center_v = fabs ((gdouble) center_y - shell->disp_height / 2) < ALMOST_CENTERED_THRESHOLD;
+  focus_x = (center_h && center_v) || (within_x && ! stops_x) ? center_x : pointer_x;
+  focus_y = (center_h && center_v) || (within_y && ! stops_y) ? center_y : pointer_y;
+  image_x = focus_x; image_y = focus_y;
+  if (! gimp_display_shell_painter_unrotate (shell, &image_x, &image_y))
+    return;
+  image_x = (image_x + old_x) / shell->scale_x;
+  image_y = (image_y + old_y) / shell->scale_y;
+  nx = sx * image_x - focus_x; ny = sy * image_y - focus_y;
+  if (! isfinite (nx) || ! isfinite (ny) ||
+      nx <= G_MININT || nx >= G_MAXINT || ny <= G_MININT || ny >= G_MAXINT)
+    return;
+  ix = nx; iy = ny;
+  ix = painter_zoom_clamp (ix, shell->disp_width, (gint) RINT (ax * width));
+  iy = painter_zoom_clamp (iy, shell->disp_height, (gint) RINT (ay * height));
+  if ((requested <= current && cw > shell->disp_width && rw <= shell->disp_width) ||
+      (fabs ((gdouble) focus_x - shell->disp_width / 2) < ALMOST_CENTERED_THRESHOLD && center_h))
+    ix = (aw - shell->disp_width) / 2;
+  if ((requested <= current && ch > shell->disp_height && rh <= shell->disp_height) ||
+      (fabs ((gdouble) focus_y - shell->disp_height / 2) < ALMOST_CENTERED_THRESHOLD && center_v))
+    iy = (ah - shell->disp_height) / 2;
+  ix = painter_zoom_clamp (ix, shell->disp_width, (gint) RINT (ax * width));
+  iy = painter_zoom_clamp (iy, shell->disp_height, (gint) RINT (ay * height));
+
+  nx = shell->disp_width / 2 + (gdouble) ix - aw / 2;
+  ny = shell->disp_height / 2 + (gdouble) iy - ah / 2;
+  cairo_matrix_init_rotate (&linear, shell->rotate_angle / 180.0 * G_PI);
+  cairo_matrix_scale (&linear, shell->flip_horizontally ? -1.0 : 1.0,
+                               shell->flip_vertically ? -1.0 : 1.0);
+  cairo_matrix_transform_distance (&linear, &nx, &ny);
+  nx += aw / 2 - shell->disp_width / 2;
+  ny += ah / 2 - shell->disp_height / 2;
+  if (! isfinite (nx) || ! isfinite (ny) ||
+      nx <= G_MININT || nx >= G_MAXINT || ny <= G_MININT || ny >= G_MAXINT)
+    return;
+
+  gimp_display_shell_pause (shell);
+  gimp_display_shell_scale_by_values (shell, requested, shell->offset_x, shell->offset_y, FALSE);
+  shell->offset_x = floor (nx); shell->offset_y = floor (ny);
+  shell->painter_pan_fraction_x = nx - shell->offset_x;
+  shell->painter_pan_fraction_y = ny - shell->offset_y;
+  gimp_display_shell_rotate_update_transform (shell);
+  gimp_display_shell_scrollbars_update (shell);
+  gimp_display_shell_rulers_update (shell);
+  gimp_display_shell_scrolled (shell);
+  gimp_display_shell_expose_full (shell);
+  gimp_display_shell_render_invalidate_full (shell);
+  gimp_display_shell_painter_origin_remember (shell, ix, iy);
+  gimp_display_shell_resume (shell);
 }
 
 /**
@@ -787,6 +960,7 @@ gimp_display_shell_scale_by_values (GimpDisplayShell *shell,
                                     gboolean          resize_window)
 {
   g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
+  shell->painter_origin_valid = FALSE;
 
   /*  Abort early if the values are all setup already. We don't
    *  want to inadvertently resize the window (bug #164281).

@@ -1,0 +1,7 @@
+gdouble
+gimp_zoom_model_get_factor (GimpZoomModel *model)
+{
+  g_return_val_if_fail (GIMP_IS_ZOOM_MODEL (model), 1.0);
+
+  return GIMP_ZOOM_MODEL_GET_PRIVATE (model)->value;
+}

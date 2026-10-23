@@ -1,0 +1,71 @@
+{
+  "negative": [
+    {
+      "name": "weaken criterion",
+      "rejected": true,
+      "reason": "unchanged criterion"
+    },
+    {
+      "name": "erase dependency",
+      "rejected": true,
+      "reason": "dependencies"
+    },
+    {
+      "name": "old runtime false claim",
+      "rejected": true,
+      "reason": "scope"
+    },
+    {
+      "name": "wrong source",
+      "rejected": true,
+      "reason": "source app/display/gimpdisplayshell-scale.c"
+    },
+    {
+      "name": "timeout resealed",
+      "rejected": true,
+      "reason": "outcome/budget sanitizer-zoom.json"
+    },
+    {
+      "name": "missing extreme case resealed",
+      "rejected": true,
+      "reason": "case extreme-pointer"
+    },
+    {
+      "name": "receipt source mismatch resealed",
+      "rejected": true,
+      "reason": "same tested source normal-original.json"
+    },
+    {
+      "name": "raw environment injection resealed",
+      "rejected": true,
+      "reason": "receipt fields"
+    },
+    {
+      "name": "failure relabelled resealed",
+      "rejected": true,
+      "reason": "retained OOM"
+    },
+    {
+      "name": "wrong screenshot resealed",
+      "rejected": true,
+      "reason": "portrait image"
+    },
+    {
+      "name": "ordinary stipple comparison removed",
+      "rejected": true,
+      "reason": "ordinary stipple pixels"
+    },
+    {
+      "name": "header failure resealed",
+      "rejected": true,
+      "reason": "header test"
+    }
+  ],
+  "positive": {
+    "status": "PASS",
+    "normal_cases": 47,
+    "sanitizer_cases": 47,
+    "task": "25.009/drag-zoom-scroll",
+    "parent_task_closed": false
+  }
+}
