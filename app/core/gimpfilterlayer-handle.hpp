@@ -37,6 +37,20 @@ public:
     return sink (GIMP_FILTER_LAYER (layer));
   }
   GimpFilterLayer *get () const noexcept { return owner_.get (); }
+  /* Checked Blinds preparation, with the C entry's finite scalar/provider and
+   * post-publication reentry contract. These are not old void-setter aliases. */
+  gboolean try_set_legacy_procedure (const char *procedure, const GArray *arguments,
+                                      GError **error) const noexcept
+  { return gimp_filter_layer_set_legacy_procedure (get (), procedure, arguments, error); }
+  void set_legacy_procedure (const char *procedure, const GArray *arguments) const
+  {
+    GError *error = nullptr;
+    if (!gimp_filter_layer_set_legacy_procedure (get (), procedure, arguments, &error))
+      {
+        const auto code = error ? static_cast<GimpPainterError> (error->code) : GIMP_PAINTER_ERROR_INVALID_STATE;
+        throw Error (code, take_error_message (error, "FilterLayer legacy preparation failed").c_str ());
+      }
+  }
   void set_definition (const char *procedure, GBytes *raw, const GimpValueArray *args) const
   {
     GError *error = nullptr;

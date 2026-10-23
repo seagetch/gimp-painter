@@ -27,6 +27,7 @@ extern "C" {
 }
 #include "gimp-painter-type-traits.hpp"
 #include "gimpfilterlayer-arguments.hpp"
+#include "gimpfilterparametereditor.hpp"
 #include "gimpfilterpaths.hpp"
 #include "gimpfiltercontext.hpp"
 #include "painter/binding-store.hpp"
@@ -45,6 +46,7 @@ extern "C" {
 #include "painter/gimp-painter-binding.h"
 #include "painter/source.hpp"
 #include <algorithm>
+#include <array>
 #include <cmath>
 #include <cstring>
 #include <functional>
@@ -2137,6 +2139,150 @@ gboolean gimp_filter_layer_set_definition (GimpFilterLayer *layer, const gchar *
 gboolean gimp_filter_layer_edit_definition (GimpFilterLayer *layer, const gchar *procedure,
                                            GBytes *raw, const GimpValueArray *args, GError **error)
 { return set_definition (layer, procedure, raw, args, true, error); }
+namespace {
+/* This is intentionally a fixed legacy Blinds adapter, not a PDB argument
+ * binder. Never copy/reference the caller's ignored image/drawable values. */
+ArgsRef prepare_legacy_blinds (const GArray *arguments)
+{
+  constexpr guint count = 7;
+  constexpr std::array<guint, 5> consumed {{0, 3, 4, 5, 6}};
+  std::array<Value, consumed.size ()> staged;
+  const bool supplied = arguments != nullptr;
+  if (supplied)
+    {
+      if (g_array_get_element_size (const_cast<GArray *> (arguments)) != sizeof (GValue) ||
+          arguments->len != count || !arguments->data)
+        throw Error (GIMP_PAINTER_ERROR_INVALID_STATE,
+                     "Legacy Blinds preparation requires exactly seven GValue arguments");
+      const auto *source = reinterpret_cast<const GValue *> (arguments->data);
+      /* Exact scalar getters/setters cannot invoke a caller-defined boxed copy
+       * or transform. Finish staging ALL consumed slots before the first
+       * g_value_transform: its registered callback can reenter and change the
+       * definition, provider, name or the caller's original argument values. */
+      for (std::size_t i = 0; i < consumed.size (); ++i)
+        {
+          const auto *value = &source[consumed[i]];
+          const auto type = G_VALUE_TYPE (value);
+          if (type != G_TYPE_INT && type != G_TYPE_BOOLEAN &&
+              type != G_TYPE_FLOAT && type != G_TYPE_DOUBLE &&
+              !(consumed[i] == 0 && type == GIMP_TYPE_RUN_MODE))
+            throw Error (GIMP_PAINTER_ERROR_INVALID_STATE,
+                         "Legacy Blinds preparation requires initialized supported scalar arguments");
+          if (type == G_TYPE_FLOAT || type == G_TYPE_DOUBLE)
+            {
+              const double number = type == G_TYPE_FLOAT ? g_value_get_float (value) : g_value_get_double (value);
+              if (!std::isfinite (number) || number < double (std::numeric_limits<gint>::min ()) ||
+                  number > double (std::numeric_limits<gint>::max ()))
+                throw Error (GIMP_PAINTER_ERROR_INVALID_STATE,
+                             "Legacy Blinds preparation requires finite scalars within the native integer range");
+            }
+          staged[i] = Value (type);
+          if (type == G_TYPE_INT) g_value_set_int (staged[i].get (), g_value_get_int (value));
+          else if (type == G_TYPE_BOOLEAN) g_value_set_boolean (staged[i].get (), g_value_get_boolean (value));
+          else if (type == G_TYPE_FLOAT) g_value_set_float (staged[i].get (), g_value_get_float (value));
+          else if (type == G_TYPE_DOUBLE) g_value_set_double (staged[i].get (), g_value_get_double (value));
+          else g_value_set_enum (staged[i].get (), g_value_get_enum (value));
+        }
+    }
+  ArgsRef result (gimp_value_array_new (count));
+  std::size_t next = 0;
+  for (guint slot = 0; slot < count; ++slot)
+    {
+      Value value (G_TYPE_INT); // Typed zero, never a modern/legacy pspec default.
+      if (supplied && slot != 1 && slot != 2)
+        {
+          if (!g_value_transform (staged[next++].get (), value.get ()) ||
+              G_VALUE_TYPE (value.get ()) != G_TYPE_INT)
+            throw Error (GIMP_PAINTER_ERROR_INVALID_STATE,
+                         "Legacy Blinds scalar transformation did not produce a native integer");
+        }
+      gimp_value_array_append (result.get (), value.get ());
+    }
+  return result;
+}
+
+/* All pointers below are leased by the synchronous C entry. No Impl borrow or
+ * caller-array address survives a transformation or provider check. */
+struct LegacyBlindsGuard
+{
+  GimpFilterLayer *layer;
+  GimpImage *image;
+  Gimp *gimp;
+  const FilterEditorSchema *schema;
+  const std::shared_ptr<const FilterArguments> *arguments;
+  guint64 binding_token, revision;
+
+  bool owner_current () const
+  {
+    auto *store = BindingStore::find (G_OBJECT (layer));
+    if (!store || !store->accepts (binding_token) ||
+        gimp_item_get_image (GIMP_ITEM (layer)) != image || image->gimp != gimp)
+      return false;
+    return store->with<FilterSlot> ([&] (FilterImpl& impl) {
+      return impl.args == *arguments && impl.definition_current (binding_token, revision);
+    });
+  }
+  static gboolean current (gpointer data) noexcept
+  {
+    return boundary<gboolean> (nullptr, FALSE, [&] () -> gboolean {
+      const auto& guard = *static_cast<const LegacyBlindsGuard *> (data);
+      return guard.owner_current () && guard.schema->current (guard.gimp) && guard.owner_current ();
+    });
+  }
+};
+}
+gboolean gimp_filter_layer_set_legacy_procedure (GimpFilterLayer *layer, const gchar *procedure,
+                                               const GArray *arguments, GError **error)
+{
+  return boundary<gboolean> (error, FALSE, [&] () -> gboolean {
+    if (!GIMP_IS_FILTER_LAYER (layer))
+      throw Error (GIMP_PAINTER_ERROR_WRONG_TYPE, "Expected FilterLayer");
+    /* Retire the captured old model before dropping any owner lease. Release
+     * the layer before its image, and the image before its owning Gimp. */
+    ObjectRef<GObject> gimp_pin, image_pin, owner_pin;
+    std::shared_ptr<const FilterArguments> original;
+    guint64 revision = 0, binding_token = 0;
+    /* Reject wrong-thread/closed/missing bindings before examining the image,
+     * provider, procedure or supplied arguments. Read-only access is not enough. */
+    BindingStore::require (G_OBJECT (layer)).with<FilterSlot> ([&] (FilterImpl& impl) {
+      original = impl.args;
+      revision = impl.definition_revision;
+      binding_token = BindingStore::require (G_OBJECT (layer)).generation ();
+    });
+    owner_pin = ObjectRef<GObject>::retain (G_OBJECT (layer));
+    if (!procedure || std::strcmp (procedure, FilterLegacy::blinds.saved))
+      throw Error (GIMP_PAINTER_ERROR_INVALID_STATE,
+                   "Unsupported legacy preparation route; only plug-in-blinds is accepted");
+    const std::string name (procedure);
+    auto *image = gimp_item_get_image (GIMP_ITEM (layer));
+    if (!GIMP_IS_IMAGE (image) || !GIMP_IS_GIMP (image->gimp))
+      throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, "Legacy Blinds preparation requires a live image and Gimp owner");
+    image_pin = ObjectRef<GObject>::retain (G_OBJECT (image));
+    auto *gimp = image->gimp;
+    gimp_pin = ObjectRef<GObject>::retain (G_OBJECT (gimp));
+    try
+      {
+        FilterEditorSchema schema (gimp, FilterProcedure::blinds);
+        LegacyBlindsGuard guard {layer, image, gimp, &schema, &original, binding_token, revision};
+        ArgsRef prepared = prepare_legacy_blinds (arguments);
+        if (!LegacyBlindsGuard::current (&guard))
+          throw Error (GIMP_PAINTER_ERROR_INVALID_STATE,
+                       "Legacy Blinds owner, definition or trusted provider changed during preparation");
+        /* Carry the ORIGINAL model/revision into the final publication path;
+         * capturing a new revision after conversion would overwrite reentry.
+         * The final synchronous guard also rechecks owner/provider identity.
+         * A later notification failure is intentionally not rolled back. */
+        return set_definition (layer, name.c_str (), nullptr, prepared.get (), false, error,
+                               nullptr, nullptr, &original, revision, LegacyBlindsGuard::current, &guard);
+      }
+    catch (const FilterEditorSchemaError& failure)
+      {
+        const std::string message = std::string (failure.status () == FilterEditorSchemaStatus::unavailable ?
+          "Legacy Blinds trusted provider is unavailable: " : "Legacy Blinds trusted provider is incompatible: ") + failure.what ();
+        throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, message.c_str ());
+      }
+  });
+}
 gboolean gimp_filter_layer_set_definition_checked (GimpFilterLayer *layer, const gchar *procedure,
                                                    GBytes *raw, const GimpValueArray *args, gboolean push_undo,
                                                    gboolean (*check) (gpointer), gpointer check_data,

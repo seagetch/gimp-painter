@@ -864,13 +864,14 @@ test('painter-popup-handles', painter_popup_handles_test,
         'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
         'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 120)
 
-# Original FilterLayer query names and native loaded-cache owning routes.
+# Original FilterLayer queries, loaded-cache routes and checked Blinds preparation.
 filter_entry_args = []
 filter_entry_link_args = []
 filter_entry_wraps = ['-Wl,--wrap=gimp_filter_layer_new',
                       '-Wl,--wrap=gimp_filter_layer_get_procedure',
                       '-Wl,--wrap=gimp_filter_layer_get_procedure_args',
-                      '-Wl,--wrap=gimp_filter_layer_mark_as_loaded']
+                      '-Wl,--wrap=gimp_filter_layer_mark_as_loaded',
+                      '-Wl,--wrap=gimp_filter_layer_set_legacy_procedure']
 if host_machine.system() == 'linux' and cxx.get_id() in ['gcc', 'clang'] and cxx.has_multi_link_arguments(filter_entry_wraps)
   filter_entry_args = ['-DGIMP_TEST_FILTER_WRAP_ENTRIES']
   filter_entry_link_args = filter_entry_wraps

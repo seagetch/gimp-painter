@@ -32,6 +32,41 @@ GIMP_PAINTER_C_ENTRY gboolean gimp_filter_layer_get_snapshot_state (GimpFilterLa
 GIMP_PAINTER_C_ENTRY gboolean gimp_filter_layer_restore_snapshot_state (GimpFilterLayer *, const GimpFilterLayerSnapshot *, GError **);
 GType       gimp_filter_layer_get_type       (void) G_GNUC_CONST;
 GimpLayer * gimp_filter_layer_new            (GimpImage *, gint, gint, const gchar *, gdouble, GimpLayerMode);
+/* Checked legacy preparation replacement, not the old void setter ABI. Only
+ * "plug-in-blinds" from this owner's already restored trusted provider is
+ * accepted. No plug-in query, restore, launch or main-loop dispatch occurs here.
+ * NULL arguments install seven independently initialized G_TYPE_INT zeros.
+ * Otherwise arguments must be a live GArray of exactly seven GValues with
+ * element size sizeof (GValue): run-mode, image-ID, drawable-ID, angle, segments,
+ * direction, transparency. Image/drawable slots 1/2 are ignored without reading
+ * their GValues and become typed zero. The five consumed slots must have exact
+ * type G_TYPE_INT, G_TYPE_BOOLEAN, G_TYPE_FLOAT or G_TYPE_DOUBLE; slot 0 also
+ * accepts exact GIMP_TYPE_RUN_MODE. Floating inputs must be finite and within
+ * gint range; checked scalar transforms retain fractional truncation. Arbitrary
+ * enums, derived/custom types and reference-bearing values are unsupported.
+ * These native integer roles do not recreate historical GimpInt32/ID GTypes.
+ *
+ * The caller retains the array and its values. All consumed scalars and the
+ * name are staged before transform callbacks; no caller storage is retained.
+ * Inputs must be valid for this synchronous owner-thread call; concurrent
+ * mutation/unset/free or malformed storage is unsupported. They may be changed
+ * or freed immediately upon return. Execution supplies its own mode/image/
+ * drawable context and never writes it back into these saved preparation values.
+ *
+ * This installs through the native no-Undo definition path, clearing prior raw
+ * and opaque bytes on replacement. It applies no pspec defaults or executable
+ * range validation: even zero segments can be saved and later fail execution.
+ * Unsupported names/shape/scalars, failed transforms, unavailable/incompatible
+ * providers and stale preparation return GIMP_PAINTER_ERROR_INVALID_STATE.
+ * Invalid owners/bindings retain the native wrong-type/thread/missing/closed
+ * errors. Pre-publication rejection makes no definition/cache change of its
+ * own; mutations made by reentrant callbacks are preserved.
+ * FALSE is not always a no-op: synchronous notifications after publication can
+ * close or replace the target, producing an error without rolling back newer
+ * work. Successful installation likewise does not certify successful rendering.
+ * Existing saved-model setters retain their separate preservation semantics. */
+GIMP_PAINTER_C_ENTRY gboolean gimp_filter_layer_set_legacy_procedure (GimpFilterLayer *, const gchar *procedure,
+                                                                   const GArray *arguments, GError **);
 /* Serialized definition is the complete original PROP_FILTER_SPEC payload.
  * It is never normalized from execution_args, which are a separate optional
  * conversion. Callers retain their arguments; this function copies them. */

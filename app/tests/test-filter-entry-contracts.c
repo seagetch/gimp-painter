@@ -1,12 +1,13 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
-/* Actual-C11 coverage of the original FilterLayer read-entry signatures.
- * These are native saved-model contracts, not historical runner/default or
+/* Actual-C11 coverage of original FilterLayer reads and checked Blinds preparation.
+ * These are bounded native contracts, not historical runner/default or
  * procedure-resolution parity. In particular, object-array boxes own their
  * containers only; scalar object GValues retain their referenced objects. */
 #include "config.h"
 #include <gegl.h>
 #include <gtk/gtk.h>
 #include <string.h>
+#include <math.h>
 #include "libgimpbase/gimpbase.h"
 #include "libgimpmath/gimpmath.h"
 #include "libgimpcolor/gimpcolor.h"
@@ -16,12 +17,16 @@
 #include "core/gimpfilterlayer.h"
 #include "core/gimpimage.h"
 #include "core/gimpimage-undo.h"
+#include "core/gimplayer-new.h"
 #include "core/gimpundostack.h"
 #include "painter/gimp-painter-binding.h"
 #include "tests.h"
 #include "gimp-app-test-utils.h"
 
 void gimp_test_filter_entry_cpp_register (Gimp *application);
+void gimp_test_filter_entry_assert_blinds_provider (Gimp *application);
+void gimp_test_filter_entry_provider_rejections (Gimp *application, GimpFilterLayer *filter);
+void gimp_test_filter_entry_assert_legacy_rejected (GimpFilterLayer *filter);
 
 static Gimp *gimp;
 
@@ -36,23 +41,29 @@ typedef struct
   guint64              revision, generation, cache, runs;
   GimpFilterLayerState  state;
   gint                 undo_depth, redo_depth, dirty;
-  GBytes              *raw, *opaque;
+  GBytes              *raw, *opaque, *pixels;
+  gchar               *procedure;
+  GimpFilterArgumentsSnapshot *arguments;
   gpointer             binding;
 } ReadCheckpoint;
 
 static Fixture
-fixture_new (void)
+fixture_new_size (gint width, gint height)
 {
   Fixture result;
-  result.image = gimp_image_new (gimp, 7, 9, GIMP_RGB,
+  result.image = gimp_image_new (gimp, width, height, GIMP_RGB,
                                 GIMP_PRECISION_U8_NON_LINEAR);
   result.filter = GIMP_FILTER_LAYER (gimp_filter_layer_new (
-    result.image, 7, 9, "entry contract", 0.75, GIMP_LAYER_MODE_NORMAL));
+    result.image, width, height, "entry contract", 0.75, GIMP_LAYER_MODE_NORMAL));
   g_assert_nonnull (result.filter);
   g_object_ref_sink (result.filter);
   gimp_image_add_layer (result.image, GIMP_LAYER (result.filter), NULL, 0, FALSE);
   return result;
 }
+
+static Fixture
+fixture_new (void)
+{ return fixture_new_size (7, 9); }
 
 static void
 fixture_clear (Fixture *fixture)
@@ -92,6 +103,19 @@ checkpoint_new (Fixture *fixture)
   result.dirty = gimp_image_is_dirty (fixture->image);
   result.raw = gimp_filter_layer_ref_definition (fixture->filter);
   result.opaque = gimp_filter_layer_ref_opaque_arguments (fixture->filter);
+  result.procedure = gimp_filter_layer_dup_procedure (fixture->filter);
+  result.arguments = gimp_filter_layer_snapshot_arguments (fixture->filter);
+  {
+    const gint width = gimp_item_get_width (GIMP_ITEM (fixture->filter));
+    const gint height = gimp_item_get_height (GIMP_ITEM (fixture->filter));
+    const gsize size = (gsize) width * height * 4;
+    guchar *pixels = g_malloc (size);
+    GeglRectangle rect = { 0, 0, width, height };
+    gegl_buffer_get (gimp_drawable_get_buffer (GIMP_DRAWABLE (fixture->filter)),
+                     &rect, 1.0, babl_format ("R'G'B'A u8"), pixels,
+                     GEGL_AUTO_ROWSTRIDE, GEGL_ABYSS_NONE);
+    result.pixels = g_bytes_new_take (pixels, size);
+  }
   result.binding = g_object_get_qdata (G_OBJECT (fixture->filter),
                                      g_quark_from_static_string ("gimp-painter-binding-store-v1"));
   g_assert_nonnull (result.binding);
@@ -126,6 +150,27 @@ checkpoint_assert_clear (Fixture        *fixture,
   g_assert_true (after.binding == before->binding);
   assert_same_bytes (before->raw, after.raw);
   assert_same_bytes (before->opaque, after.opaque);
+  g_assert_cmpstr (after.procedure, ==, before->procedure);
+  g_assert_true (g_bytes_equal (after.pixels, before->pixels));
+  g_assert_true ((after.arguments == NULL) == (before->arguments == NULL));
+  if (before->arguments)
+    {
+      guint count = gimp_filter_arguments_snapshot_count (before->arguments);
+      g_assert_cmpuint (gimp_filter_arguments_snapshot_count (after.arguments), ==, count);
+      for (guint i = 0; i < count; ++i)
+        {
+          g_assert_true (gimp_filter_arguments_snapshot_type (after.arguments, i) ==
+                         gimp_filter_arguments_snapshot_type (before->arguments, i));
+          g_assert_true (gimp_filter_arguments_snapshot_peek_value (after.arguments, i) ==
+                         gimp_filter_arguments_snapshot_peek_value (before->arguments, i));
+        }
+    }
+  g_clear_pointer (&after.arguments, gimp_filter_arguments_snapshot_free);
+  g_clear_pointer (&before->arguments, gimp_filter_arguments_snapshot_free);
+  g_clear_pointer (&after.procedure, g_free);
+  g_clear_pointer (&before->procedure, g_free);
+  g_clear_pointer (&after.pixels, g_bytes_unref);
+  g_clear_pointer (&before->pixels, g_bytes_unref);
   g_clear_pointer (&after.raw, g_bytes_unref);
   g_clear_pointer (&after.opaque, g_bytes_unref);
   g_clear_pointer (&before->raw, g_bytes_unref);
@@ -683,6 +728,426 @@ c_opaque_model_stays_opaque (void)
   fixture_clear (&fixture);
 }
 
+/* The checked preparation is deliberately narrower than set_definition(). */
+static void
+legacy_value_clear (gpointer data)
+{
+  GValue *value = data;
+  if (G_IS_VALUE (value)) g_value_unset (value);
+}
+
+static GArray *
+legacy_args (void)
+{
+  GArray *args = g_array_sized_new (FALSE, TRUE, sizeof (GValue), 7);
+  g_array_set_clear_func (args, legacy_value_clear);
+  g_array_set_size (args, 7);
+  for (guint i = 0; i < 7; ++i) g_value_init (argument (args, i), G_TYPE_INT);
+  g_value_set_int (argument (args, 0), 42);
+  g_value_set_int (argument (args, 1), 123);
+  g_value_set_int (argument (args, 2), 456);
+  g_value_set_int (argument (args, 4), 3);
+  g_value_set_int (argument (args, 5), 2);
+  g_value_set_int (argument (args, 6), -7);
+  return args;
+}
+
+static GValue *
+legacy_retype (GArray *args, guint index, GType type)
+{
+  GValue *value = argument (args, index);
+  g_value_unset (value);
+  if (type) g_value_init (value, type);
+  return value;
+}
+
+static void
+legacy_assert_values (GArray *args, const gint expected[7])
+{
+  g_assert_nonnull (args);
+  g_assert_cmpuint (g_array_get_element_size (args), ==, sizeof (GValue));
+  g_assert_cmpuint (args->len, ==, 7);
+  for (guint i = 0; i < 7; ++i)
+    {
+      g_assert_true (G_VALUE_TYPE (argument (args, i)) == G_TYPE_INT);
+      g_assert_cmpint (g_value_get_int (argument (args, i)), ==, expected[i]);
+    }
+}
+
+static void
+legacy_preserved_definition (Fixture *fixture)
+{
+  static const guint8 payload[] = { 0, 0xff, 0x80, 7, 0 };
+  GBytes *raw = g_bytes_new_static (payload, sizeof payload);
+  GBytes *opaque = g_bytes_new_static ("\0opaque\xff", 8);
+  g_assert_true (gimp_filter_layer_set_definition_with_opaque_arguments (
+    fixture->filter, "unsupported saved definition", raw, opaque, NULL));
+  gimp_filter_layer_mark_as_loaded (fixture->filter);
+  g_bytes_unref (raw);
+  g_bytes_unref (opaque);
+}
+
+static void
+legacy_assert_rejected (Fixture *fixture, const gchar *name, const GArray *args)
+{
+  ReadCheckpoint before = checkpoint_new (fixture);
+  GError *error = NULL;
+  g_assert_false (gimp_filter_layer_set_legacy_procedure (fixture->filter, name, args, &error));
+  g_assert_error (error, GIMP_PAINTER_ERROR, GIMP_PAINTER_ERROR_INVALID_STATE);
+  g_assert_nonnull (error->message);
+  g_assert_cmpuint (strlen (error->message), >, 0);
+  g_assert_nonnull (strstr (error->message,
+    name && !strcmp (name, "plug-in-blinds") ? "Legacy Blinds" : "Unsupported legacy preparation route"));
+  g_clear_error (&error);
+  checkpoint_assert_clear (fixture, &before);
+}
+
+/* The C++ registry fixture invokes the actual C11 rejection/checkpoint path. */
+void
+gimp_test_filter_entry_assert_legacy_rejected (GimpFilterLayer *filter)
+{
+  Fixture fixture = { gimp_item_get_image (GIMP_ITEM (filter)), filter };
+  legacy_assert_rejected (&fixture, "plug-in-blinds", NULL);
+}
+
+static void
+legacy_wait (GimpFilterLayer *filter, GimpFilterLayerState state)
+{
+  const gint64 deadline = g_get_monotonic_time () + 20 * G_TIME_SPAN_SECOND;
+  while (gimp_filter_layer_get_state (filter) != state && g_get_monotonic_time () < deadline)
+    { g_main_context_iteration (NULL, FALSE); g_usleep (100); }
+  g_assert_cmpint (gimp_filter_layer_get_state (filter), ==, state);
+}
+
+static GimpLayer *
+legacy_source (Fixture *fixture)
+{
+  GimpLayer *source = gimp_layer_new (fixture->image,
+    gimp_image_get_width (fixture->image), gimp_image_get_height (fixture->image),
+    babl_format ("R'G'B'A u8"), "checked Blinds source", 1.0, GIMP_LAYER_MODE_NORMAL_LEGACY);
+  const guchar rgba[] = { 31, 121, 217, 255 };
+  GeglColor *color = gegl_color_new (NULL);
+  g_assert_true (gimp_image_add_layer (fixture->image, source, NULL, 1, FALSE));
+  gegl_color_set_pixel (color, babl_format ("R'G'B'A u8"), rgba);
+  gegl_buffer_set_color (gimp_drawable_get_buffer (GIMP_DRAWABLE (source)), NULL, color);
+  g_object_unref (color);
+  gimp_drawable_update (GIMP_DRAWABLE (source), 0, 0,
+                        gimp_image_get_width (fixture->image), gimp_image_get_height (fixture->image));
+  return source;
+}
+
+static void
+c_legacy_null_typed_zero (void)
+{
+  const gint zero[7] = { 0 };
+  Fixture fixture = fixture_new ();
+  GArray *saved;
+  GError *error = NULL;
+  gimp_test_filter_entry_assert_blinds_provider (gimp);
+  legacy_source (&fixture);
+  g_assert_true (gimp_filter_layer_set_legacy_procedure (fixture.filter, "plug-in-blinds", NULL, &error));
+  g_assert_no_error (error);
+  g_assert_cmpstr (gimp_filter_layer_get_procedure (fixture.filter), ==, "plug-in-blinds");
+  saved = gimp_filter_layer_get_procedure_args (fixture.filter);
+  legacy_assert_values (saved, zero);
+  g_array_unref (saved);
+  legacy_wait (fixture.filter, GIMP_FILTER_LAYER_FAILED);
+  g_assert_cmpuint (gimp_filter_layer_get_run_count (fixture.filter), ==, 0);
+  saved = gimp_filter_layer_get_procedure_args (fixture.filter);
+  legacy_assert_values (saved, zero);
+  g_array_unref (saved);
+  fixture_clear (&fixture);
+}
+
+static void
+c_legacy_array_shapes (void)
+{
+  Fixture fixture = fixture_new ();
+  const guint lengths[] = { 0, 6, 8 };
+  legacy_preserved_definition (&fixture);
+  for (guint i = 0; i < G_N_ELEMENTS (lengths); ++i)
+    {
+      GArray *args = g_array_sized_new (FALSE, TRUE, sizeof (GValue), lengths[i]);
+      g_array_set_size (args, lengths[i]);
+      legacy_assert_rejected (&fixture, "plug-in-blinds", args);
+      g_array_unref (args);
+    }
+  {
+    GArray *args = g_array_sized_new (FALSE, TRUE, sizeof (gint), 7);
+    g_array_set_size (args, 7);
+    legacy_assert_rejected (&fixture, "plug-in-blinds", args);
+    g_array_unref (args);
+  }
+  fixture_clear (&fixture);
+}
+
+static void
+c_legacy_owned_exact_arguments (void)
+{
+  const gint expected[7] = { 42, 0, 0, 0, 3, 2, -7 };
+  Fixture fixture = fixture_new ();
+  GArray *args = legacy_args (), *first, *second;
+  g_assert_true (gimp_filter_layer_set_legacy_procedure (fixture.filter, "plug-in-blinds", args, NULL));
+  for (guint i = 0; i < 7; ++i) g_value_set_int (argument (args, i), 999);
+  g_array_unref (args);
+  first = gimp_filter_layer_get_procedure_args (fixture.filter);
+  second = gimp_filter_layer_get_procedure_args (fixture.filter);
+  legacy_assert_values (first, expected);
+  legacy_assert_values (second, expected);
+  g_assert_true (first != second);
+  g_assert_true (first->data != second->data);
+  g_value_set_int (argument (first, 3), -42);
+  fixture_clear (&fixture);
+  legacy_assert_values (second, expected);
+  g_assert_cmpint (g_value_get_int (argument (first, 3)), ==, -42);
+  g_array_unref (first);
+  g_array_unref (second);
+}
+
+static void
+c_legacy_scalar_conversions (void)
+{
+  Fixture fixture = fixture_new ();
+  GArray *args = legacy_args (), *saved;
+  const gint mixed[7] = { GIMP_RUN_WITH_LAST_VALS, 0, 0, -12, 101, 1, -7 };
+  g_value_set_enum (legacy_retype (args, 0, GIMP_TYPE_RUN_MODE), GIMP_RUN_WITH_LAST_VALS);
+  g_value_set_float (legacy_retype (args, 3, G_TYPE_FLOAT), -12.75f);
+  g_value_set_double (legacy_retype (args, 4, G_TYPE_DOUBLE), 101.75);
+  g_value_set_boolean (legacy_retype (args, 5, G_TYPE_BOOLEAN), TRUE);
+  g_assert_true (gimp_filter_layer_set_legacy_procedure (fixture.filter, "plug-in-blinds", args, NULL));
+  saved = gimp_filter_layer_get_procedure_args (fixture.filter);
+  legacy_assert_values (saved, mixed);
+  g_array_unref (saved);
+  {
+    const gdouble inputs[] = { G_MININT, G_MAXINT, -0.75, 0.0, 12.75 };
+    const gint expected[] = { G_MININT, G_MAXINT, 0, 0, 12 };
+    for (guint i = 0; i < G_N_ELEMENTS (inputs); ++i)
+      {
+        g_value_set_double (legacy_retype (args, 3, G_TYPE_DOUBLE), inputs[i]);
+        g_assert_true (gimp_filter_layer_set_legacy_procedure (fixture.filter, "plug-in-blinds", args, NULL));
+        saved = gimp_filter_layer_get_procedure_args (fixture.filter);
+        g_assert_cmpint (g_value_get_int (argument (saved, 3)), ==, expected[i]);
+        g_array_unref (saved);
+      }
+  }
+  g_value_set_boolean (legacy_retype (args, 3, G_TYPE_BOOLEAN), FALSE);
+  g_value_set_int (legacy_retype (args, 4, G_TYPE_INT), 0);
+  g_value_set_int (legacy_retype (args, 5, G_TYPE_INT), -19);
+  g_assert_true (gimp_filter_layer_set_legacy_procedure (fixture.filter, "plug-in-blinds", args, NULL));
+  saved = gimp_filter_layer_get_procedure_args (fixture.filter);
+  g_assert_cmpint (g_value_get_int (argument (saved, 3)), ==, 0);
+  g_assert_cmpint (g_value_get_int (argument (saved, 4)), ==, 0);
+  g_assert_cmpint (g_value_get_int (argument (saved, 5)), ==, -19);
+  g_array_unref (saved);
+  g_array_unref (args);
+  fixture_clear (&fixture);
+}
+
+static void
+c_legacy_rejected_scalar_types (void)
+{
+  Fixture fixture = fixture_new ();
+  const GType types[] = { G_TYPE_STRING, G_TYPE_OBJECT, G_TYPE_BYTES, G_TYPE_INVALID,
+                         GIMP_TYPE_ORIENTATION_TYPE, G_TYPE_POINTER, G_TYPE_UINT };
+  legacy_preserved_definition (&fixture);
+  for (guint i = 0; i < G_N_ELEMENTS (types); ++i)
+    {
+      GArray *args = legacy_args ();
+      GValue *value = legacy_retype (args, 3, types[i]);
+      guint finalized = 0;
+      if (types[i] == G_TYPE_STRING) g_value_set_string (value, "12");
+      if (types[i] == G_TYPE_OBJECT)
+        {
+          GObject *object = g_object_new (G_TYPE_OBJECT, NULL);
+          g_object_weak_ref (object, weak_finalized, &finalized);
+          g_value_take_object (value, object);
+        }
+      if (types[i] == G_TYPE_BYTES) g_value_take_boxed (value, g_bytes_new_static ("12", 2));
+      legacy_assert_rejected (&fixture, "plug-in-blinds", args);
+      g_array_unref (args);
+      if (types[i] == G_TYPE_OBJECT) g_assert_cmpuint (finalized, ==, 1);
+    }
+  {
+    const gdouble numbers[] = { NAN, INFINITY, -INFINITY, (gdouble) G_MAXINT + 1, (gdouble) G_MININT - 1 };
+    for (guint i = 0; i < G_N_ELEMENTS (numbers); ++i)
+      {
+        GArray *args = legacy_args ();
+        g_value_set_double (legacy_retype (args, 6, G_TYPE_DOUBLE), numbers[i]);
+        legacy_assert_rejected (&fixture, "plug-in-blinds", args);
+        g_value_set_float (legacy_retype (args, 6, G_TYPE_FLOAT), (gfloat) numbers[i]);
+        /* G_MININT-1 rounds back into range as float; use a finite lower overflow. */
+        if (i == 4) g_value_set_float (argument (args, 6), (gfloat) G_MININT * 2.0f);
+        legacy_assert_rejected (&fixture, "plug-in-blinds", args);
+        g_array_unref (args);
+      }
+  }
+  {
+    GArray *args = legacy_args ();
+    g_value_set_enum (legacy_retype (args, 3, GIMP_TYPE_RUN_MODE), GIMP_RUN_NONINTERACTIVE);
+    legacy_assert_rejected (&fixture, "plug-in-blinds", args);
+    g_array_unref (args);
+  }
+  fixture_clear (&fixture);
+}
+
+static void
+legacy_bytes_finalized (gpointer data)
+{ ++*(guint *) data; }
+
+static void
+c_legacy_ignored_context (void)
+{
+  const gint expected[7] = { 42, 0, 0, 0, 3, 2, -7 };
+  for (guint empty = 0; empty < 2; ++empty)
+    {
+      Fixture fixture = fixture_new ();
+      GArray *args = legacy_args (), *saved;
+      guint finalized = 0, bytes_finalized = 0;
+      if (empty)
+        { legacy_retype (args, 1, G_TYPE_INVALID); legacy_retype (args, 2, G_TYPE_INVALID); }
+      else
+        {
+          GObject *object = g_object_new (G_TYPE_OBJECT, NULL);
+          g_object_weak_ref (object, weak_finalized, &finalized);
+          g_value_take_object (legacy_retype (args, 1, G_TYPE_OBJECT), object);
+          g_value_take_boxed (legacy_retype (args, 2, G_TYPE_BYTES),
+            g_bytes_new_with_free_func ("context", 7, legacy_bytes_finalized, &bytes_finalized));
+        }
+      g_assert_true (gimp_filter_layer_set_legacy_procedure (fixture.filter, "plug-in-blinds", args, NULL));
+      g_array_unref (args);
+      if (!empty)
+        { g_assert_cmpuint (finalized, ==, 1); g_assert_cmpuint (bytes_finalized, ==, 1); }
+      saved = gimp_filter_layer_get_procedure_args (fixture.filter);
+      legacy_assert_values (saved, expected);
+      g_array_unref (saved);
+      fixture_clear (&fixture);
+    }
+}
+
+static void
+c_legacy_unsupported_names_preserve (void)
+{
+  const gchar *names[] = { NULL, "", "unknown checked route", "plug-in-edge",
+                           "plug-in-small-tiles", "plug-in-convmatrix", "Plug-in-blinds" };
+  Fixture fixture = fixture_new ();
+  legacy_preserved_definition (&fixture);
+  for (guint i = 0; i < G_N_ELEMENTS (names); ++i)
+    legacy_assert_rejected (&fixture, names[i], NULL);
+  fixture_clear (&fixture);
+}
+
+static void
+c_legacy_provider_rejections (void)
+{
+  Fixture fixture = fixture_new ();
+  legacy_preserved_definition (&fixture);
+  gimp_test_filter_entry_provider_rejections (gimp, fixture.filter);
+  fixture_clear (&fixture);
+}
+
+static gpointer
+legacy_wrong_thread (gpointer data)
+{
+  GError *error = NULL;
+  g_assert_false (gimp_filter_layer_set_legacy_procedure (data, "plug-in-blinds", NULL, &error));
+  g_assert_error (error, GIMP_PAINTER_ERROR, GIMP_PAINTER_ERROR_WRONG_THREAD);
+  g_clear_error (&error);
+  return NULL;
+}
+
+static void
+c_legacy_owner_boundaries (void)
+{
+  Fixture fixture = fixture_new ();
+  GObject *wrong = g_object_new (G_TYPE_OBJECT, NULL);
+  GError *error = NULL;
+  GQuark key = g_quark_from_static_string ("gimp-painter-binding-store-v1");
+  ReadCheckpoint before;
+  GThread *thread;
+  GArray *invalid_shape = g_array_new (FALSE, FALSE, sizeof (gint));
+  g_assert_false (gimp_filter_layer_set_legacy_procedure (NULL, "plug-in-blinds", invalid_shape, &error));
+  g_assert_error (error, GIMP_PAINTER_ERROR, GIMP_PAINTER_ERROR_WRONG_TYPE);
+  g_clear_error (&error);
+  g_assert_null (g_object_get_qdata (wrong, key));
+  g_assert_false (gimp_filter_layer_set_legacy_procedure ((GimpFilterLayer *) wrong, "plug-in-blinds", invalid_shape, &error));
+  g_assert_error (error, GIMP_PAINTER_ERROR, GIMP_PAINTER_ERROR_WRONG_TYPE);
+  g_clear_error (&error);
+  g_assert_null (g_object_get_qdata (wrong, key));
+  g_object_unref (wrong);
+  legacy_preserved_definition (&fixture);
+  before = checkpoint_new (&fixture);
+  thread = g_thread_new ("checked-Blinds-thread", legacy_wrong_thread, fixture.filter);
+  g_thread_join (thread);
+  checkpoint_assert_clear (&fixture, &before);
+  g_assert_true (gimp_painter_binding_close (G_OBJECT (fixture.filter), NULL));
+  before = checkpoint_new (&fixture);
+  g_assert_false (gimp_filter_layer_set_legacy_procedure (fixture.filter, "plug-in-blinds", invalid_shape, &error));
+  g_assert_error (error, GIMP_PAINTER_ERROR, GIMP_PAINTER_ERROR_CLOSED);
+  g_clear_error (&error);
+  checkpoint_assert_clear (&fixture, &before);
+  g_array_unref (invalid_shape);
+  fixture_clear (&fixture);
+}
+
+static void
+legacy_count_notify (GObject *object, GParamSpec *spec, gpointer data)
+{
+  (void) object; (void) spec;
+  ++*(guint *) data;
+}
+
+static void
+c_legacy_render_no_undo (void)
+{
+  const gint expected[7] = { 42, 0, 0, 0, 3, 2, -7 };
+  const gchar *properties[] = { "notify::filter-procedure", "notify::filter-arguments",
+                                "notify::filter-original-definition", "notify::filter-opaque-arguments" };
+  Fixture fixture = fixture_new_size (12, 12);
+  GArray *args = legacy_args ();
+  gint undo, redo;
+  guint notifications = 0;
+  legacy_source (&fixture);
+  legacy_preserved_definition (&fixture);
+  undo = gimp_undo_stack_get_depth (gimp_image_get_undo_stack (fixture.image));
+  redo = gimp_undo_stack_get_depth (gimp_image_get_redo_stack (fixture.image));
+  for (guint i = 0; i < G_N_ELEMENTS (properties); ++i)
+    g_signal_connect (fixture.filter, properties[i], G_CALLBACK (legacy_count_notify), &notifications);
+  for (guint repeat = 0; repeat < 2; ++repeat)
+    {
+      const guint64 revision = gimp_filter_layer_get_definition_revision (fixture.filter);
+      const guint64 generation = gimp_filter_layer_get_generation (fixture.filter);
+      const guint64 runs = gimp_filter_layer_get_run_count (fixture.filter);
+      GArray *saved;
+      guchar pixels[12 * 12 * 4];
+      GeglRectangle rect = { 0, 0, 12, 12 };
+      g_assert_true (gimp_filter_layer_set_legacy_procedure (fixture.filter, "plug-in-blinds", args, NULL));
+      g_assert_cmpuint (gimp_filter_layer_get_definition_revision (fixture.filter), ==, revision + 1);
+      g_assert_cmpuint (gimp_filter_layer_get_generation (fixture.filter), ==, generation + 1);
+      g_assert_cmpuint (notifications, ==, (repeat + 1) * 4);
+      g_assert_null (gimp_filter_layer_ref_definition (fixture.filter));
+      g_assert_null (gimp_filter_layer_ref_opaque_arguments (fixture.filter));
+      legacy_wait (fixture.filter, GIMP_FILTER_LAYER_CLEAN);
+      g_assert_cmpuint (gimp_filter_layer_get_run_count (fixture.filter), ==, runs + 1);
+      g_assert_cmpuint (gimp_filter_layer_get_cache_generation (fixture.filter), ==,
+                        gimp_filter_layer_get_generation (fixture.filter));
+      gegl_buffer_get (gimp_drawable_get_buffer (GIMP_DRAWABLE (fixture.filter)), &rect,
+                       1.0, babl_format ("R'G'B'A u8"), pixels, GEGL_AUTO_ROWSTRIDE, GEGL_ABYSS_NONE);
+      for (guint i = 0; i < G_N_ELEMENTS (pixels); i += 4)
+        {
+          g_assert_cmpuint (pixels[i], ==, 31); g_assert_cmpuint (pixels[i + 1], ==, 121);
+          g_assert_cmpuint (pixels[i + 2], ==, 217); g_assert_cmpuint (pixels[i + 3], ==, 255);
+        }
+      saved = gimp_filter_layer_get_procedure_args (fixture.filter);
+      legacy_assert_values (saved, expected);
+      g_array_unref (saved);
+      g_assert_cmpint (gimp_undo_stack_get_depth (gimp_image_get_undo_stack (fixture.image)), ==, undo);
+      g_assert_cmpint (gimp_undo_stack_get_depth (gimp_image_get_redo_stack (fixture.image)), ==, redo);
+    }
+  g_signal_handlers_disconnect_by_data (fixture.filter, &notifications);
+  g_array_unref (args);
+  fixture_clear (&fixture);
+}
+
 int
 main (int argc, char **argv)
 {
@@ -699,6 +1164,16 @@ main (int argc, char **argv)
   g_test_add_func ("/filter-entry-contracts/c/c_expired_arrays_reject_atomically", c_expired_arrays_reject_atomically);
   g_test_add_func ("/filter-entry-contracts/c/c_boundary_checks_and_closed_metadata", c_boundary_checks_and_closed_metadata);
   g_test_add_func ("/filter-entry-contracts/c/c_opaque_model_stays_opaque", c_opaque_model_stays_opaque);
+  g_test_add_func ("/filter-entry-contracts/c/c_legacy_null_typed_zero", c_legacy_null_typed_zero);
+  g_test_add_func ("/filter-entry-contracts/c/c_legacy_array_shapes", c_legacy_array_shapes);
+  g_test_add_func ("/filter-entry-contracts/c/c_legacy_owned_exact_arguments", c_legacy_owned_exact_arguments);
+  g_test_add_func ("/filter-entry-contracts/c/c_legacy_scalar_conversions", c_legacy_scalar_conversions);
+  g_test_add_func ("/filter-entry-contracts/c/c_legacy_rejected_scalar_types", c_legacy_rejected_scalar_types);
+  g_test_add_func ("/filter-entry-contracts/c/c_legacy_ignored_context", c_legacy_ignored_context);
+  g_test_add_func ("/filter-entry-contracts/c/c_legacy_unsupported_names_preserve", c_legacy_unsupported_names_preserve);
+  g_test_add_func ("/filter-entry-contracts/c/c_legacy_provider_rejections", c_legacy_provider_rejections);
+  g_test_add_func ("/filter-entry-contracts/c/c_legacy_owner_boundaries", c_legacy_owner_boundaries);
+  g_test_add_func ("/filter-entry-contracts/c/c_legacy_render_no_undo", c_legacy_render_no_undo);
   gimp_test_filter_entry_cpp_register (gimp);
   result = g_test_run ();
   gimp_test_utils_set_gimp3_directory ("GIMP_TESTING_ABS_TOP_BUILDDIR", "app/tests/gimpdir-output");
