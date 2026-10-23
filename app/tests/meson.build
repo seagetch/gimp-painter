@@ -1165,3 +1165,16 @@ test('paint-registration', paint_registration_test,
         'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
         'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
         'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 120)
+
+# Independent original popup-window C factory; no cell-renderer/decorator path.
+native_popover_entry_test = executable('native-popover-entry',
+  'test-native-popover-entry.c', 'test-native-popover-entry.cpp', 'tests.c',
+  dependencies: [libapp_dep, appstream], link_with: apptests_links,
+  link_args: ['-Wl,--wrap=_ZN11GimpPainter12BindingStore6ensureEP8_GObject',
+              '-Wl,--wrap=_ZN11GimpPainter12BindingStore8activateEv'],
+  cpp_args: painter_cpp_args, override_options: ['cpp_std=c++14'])
+test('native-popover-entry', native_popover_entry_test,
+  env: ['GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+        'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+        'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
+        'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 60)

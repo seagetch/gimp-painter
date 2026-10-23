@@ -1,0 +1,25 @@
+{
+  "cmd": [
+    "/workspace/shared/gimp-clean-aggregate/build/app/tests/native-popover-entry"
+  ],
+  "env": {
+    "GIMP_TESTING_ABS_TOP_SRCDIR": "/workspace/shared/gimp-clean-aggregate/source",
+    "GIMP_TESTING_ABS_TOP_BUILDDIR": "/workspace/shared/gimp-clean-aggregate/build",
+    "GIMP_TESTING_PLUGINDIRS": "/workspace/shared/gimp-clean-aggregate/build/plug-ins/common",
+    "UI_TEST": "yes",
+    "LD_LIBRARY_PATH": "/workspace/shared/gimp-clean-aggregate/build/libgimpbase:/workspace/shared/gimp-clean-aggregate/build/libgimpmodule:/workspace/shared/gimp-clean-aggregate/build/libgimpconfig:/workspace/shared/gimp-clean-aggregate/build/libgimpwidgets:/workspace/shared/gimp-clean-aggregate/build/libgimpthumb:/workspace/shared/gimp-clean-aggregate/build/libgimpcolor:/workspace/shared/gimp-clean-aggregate/build/libgimpmath"
+  },
+  "name": "native-popover-entry",
+  "workdir": null,
+  "timeout": 60,
+  "suite": [
+    "gimp:app"
+  ],
+  "is_parallel": false,
+  "priority": 0,
+  "protocol": "exitcode",
+  "depends": [
+    "b2e8cd9@@native-popover-entry@exe"
+  ],
+  "extra_paths": []
+}

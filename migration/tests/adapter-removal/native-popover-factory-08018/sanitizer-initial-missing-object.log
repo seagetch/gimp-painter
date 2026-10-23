@@ -1,0 +1,29 @@
+In file included from [01m[K../source/app/paint/painter-mypaint/engine.cpp:3[m[K:
+[01m[K../source/app/paint/painter-mypaint/legacy-brush.hpp:[m[K In member function ‘[01m[Kvoid GimpPainter::MyPaint::Legacy::Brush::[01;32m[Kupdate_states_and_setting_values[m[K(float, float, float, float, float, float)[m[K’:
+[01m[K../source/app/paint/painter-mypaint/legacy-brush.hpp:398:13:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kdx_old[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  398 |       float [01;35m[Kdx_old[m[K = states[STATE_DIRECTION_DX];
+      |             [01;35m[K^~~~~~[m[K
+[01m[K../source/app/paint/painter-mypaint/legacy-brush.hpp:399:13:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kdy_old[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  399 |       float [01;35m[Kdy_old[m[K = states[STATE_DIRECTION_DY];
+      |             [01;35m[K^~~~~~[m[K
+[01m[K../source/app/display/gimppaintercanvasui.cpp:635:6:[m[K [01;35m[Kwarning: [m[K‘[01m[Kvoid {anonymous}::Canvas::[01;32m[Kfinish_compact_restore[m[K(const std::shared_ptr<{anonymous}::Borrow>&)[m[K’ defined but not used [[01;35m[K-Wunused-function[m[K]
+  635 | void [01;35m[KCanvas[m[K::finish_compact_restore (const std::shared_ptr<Borrow>& borrowed) noexcept {
+      |      [01;35m[K^~~~~~[m[K
+[01m[K../source/app/display/gimppaintercanvasui.cpp:282:12:[m[K [01;35m[Kwarning: [m[K‘[01m[KGtkWidget* {anonymous}::[01;32m[Kaction_button[m[K(Canvas&, GtkWidget*, const char*, const char*)[m[K’ defined but not used [[01;35m[K-Wunused-function[m[K]
+  282 | GtkWidget *[01;35m[Kaction_button[m[K(Canvas&s,GtkWidget*box,const char*label,const char*name) {
+      |            [01;35m[K^~~~~~~~~~~~~[m[K
+[01m[K../source/app/paint/gimppainterbrushgeometry.cpp:[m[K In lambda function:
+[01m[K../source/app/paint/gimppainterbrushgeometry.cpp:88:54:[m[K [01;35m[Kwarning: [m[Kcomparison of integer expressions of different signedness: ‘[01m[Kconst std::size_t[m[K’ {aka ‘[01m[Kconst long unsigned int[m[K’} and ‘[01m[Kint[m[K’ [[01;35m[K-Wsign-compare[m[K]
+   88 |     if (mask.width <= 0 || mask.height <= 0 || [01;35m[Kcount > G_MAXINT / channels[m[K)
+      |                                                [01;35m[K~~~~~~^~~~~~~~~~~~~~~~~~~~~[m[K
+Traceback (most recent call last):
+  File "/workspace/shared/gimp-clean-aggregate/source/migration/tests/build_native_popover_entry_sanitizers.py", line 84, in <module>
+    "ordinary": hashlib.sha256(ordinary.read_bytes()).hexdigest()}, sort_keys=True).encode()).hexdigest()
+                               ~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/lib/python3.13/pathlib/_abc.py", line 625, in read_bytes
+    with self.open(mode='rb') as f:
+         ~~~~~~~~~^^^^^^^^^^^
+  File "/usr/lib/python3.13/pathlib/_local.py", line 539, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/workspace/shared/gimp-clean-aggregate/build/app/xcf/painter-xcf-compat-test.p/painter-xcf-compat.cpp.o'

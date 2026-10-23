@@ -243,6 +243,7 @@ libappwidgets_sources = [
   'gimptoolpresetfactoryview.c',
   'gimplayerpresetview.c',
   'gimpeditor-cxx.cpp',
+  'popupper.cpp',
   'gimppaintermybrusheditor.cpp',
   'gimpmypaintbrushoptions-gui.cpp',
   'gimppainterlayertiles.cpp',

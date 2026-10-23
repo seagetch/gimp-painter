@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "/workspace/shared/gimp-clean-aggregate/source/migration/tests/build_native_popover_entry_sanitizers.py", line 84, in <module>
+    "ordinary": hashlib.sha256(ordinary.read_bytes()).hexdigest()}, sort_keys=True).encode()).hexdigest()
+                               ~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/lib/python3.13/pathlib/_abc.py", line 625, in read_bytes
+    with self.open(mode='rb') as f:
+         ~~~~~~~~~^^^^^^^^^^^
+  File "/usr/lib/python3.13/pathlib/_local.py", line 539, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/workspace/shared/gimp-clean-aggregate/build/app/httpd/libapphttpdgui.a.p/httpd-navigation.cpp.o'
