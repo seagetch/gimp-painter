@@ -437,7 +437,7 @@
 | 09.002 | [x] | 座標契約を固定する | 09.001 | 画像・レイヤー・buffer・画面の原点と境界を記録 |
 | 09.002/drawable-y-invalidation | [x] | drawable buffer置換の旧領域Y原点を修正する | 09.001 | X/Y非対称offsetで過剰更新と旧領域更新欠落を実再現し、Y offset修正後の6 native回帰と周辺5targetを検証 |
 | 09.002/projection-update-bounds | [x] | drawable/stackとprojection更新座標の整数overflowを防ぐ | 09.002 | default native buildと通常12target（313TAP・27Python・403header）、5C unit限定ASan/UBSan8path合格。通常grid範囲と空領域の通知を保持し極端offset・負座標・cleanupを検証。295既知XCF警告を保持し予期外診断ゼロ。入力座標側Sobel変更・group/show-all・全aggregateは別gate（migration/tests/projection-update-bounds.json） |
-| 09.003 | [ ] | DrawableFeature の buffer read を実装する | 09.002 | 負の offset と部分領域を読める |
+| 09.003 | [x] | DrawableFeature の buffer read を実装する | 09.002 | 負の offset と部分領域を読める |
 | 09.003/bounded-surface-read | [x] | Surfaceの部分buffer読取りと極端offsetを安全化する | 09.002 | stride・容量・半開領域を検査しINT_MIN選択offsetの実overflowを修正。通常7targetとproduction-source sanitizerを検証し親48義務は維持 |
 | 09.003/region-lifetime | [ ] | MyPaint Surface の一時領域を GEGL buffer 寿命へ移す | 09.003, 01.007/surface-regions | draw_dab と get_color の全 return・失敗経路で read/write/snapshot/mask/texture の buffer を一度だけ解放する |
 | 09.004 | [ ] | DrawableFeature の buffer write を実装する | 09.003 | 範囲外に書かず dirty 領域を返す |
@@ -456,6 +456,9 @@
 | 09.015 | [ ] | 高精度・色空間変換の扱いを実装する | 09.014 | unsupported 時も情報を黙って欠落させない |
 | 09.016 | [ ] | buffer 基盤の境界試験を作る | 09.015 | 小画像・負座標・端・alpha・stride を検証 |
 | 09.017 | [ ] | buffer 基盤の Undo 試験を作る | 09.016 | 描画前後の差分と復元が一致 |
+
+09.003の完了は上記原文のread条件に限定する。割当済み48 source dutyのwhole-hunkは全件TODOのまま、write・TempBuf変換・mask・snapshot・Undo・並行dispatch・fillの既存ownerへ明示的に継承する。原文・source ID・inventory statusを変更しない。対応表と逆参照は `migration/contracts/drawable-buffer-read-resolution.json`、通常19TAPと限定sanitizerの証拠は `migration/tests/drawable-buffer-read-parent/`。
+
 
 2026-10-02の並行化：旧XCF wire framingのsource監査と純粋byte decoderは、02.005までの実fixtureと確定sourceを入力に行う。全旧fixture合格やFilter/UI/新writerの完了を前提としない。10/11親作業とG2のapp互換性ゲートは未完了のまま保持する。
 

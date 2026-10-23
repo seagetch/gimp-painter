@@ -1,0 +1,1110 @@
+{
+  "task": "09.003",
+  "parent_complete": false,
+  "legacy_commit": "afa43fae3e920210146abed514f136fd49f671b5",
+  "original_acceptance": "負の offset と部分領域を読める",
+  "scope_note": "Read acceptance is not equivalent to closure of all 48 indivisible source duties. No inventory or task status changed by this audit. Test execution results belong to report.json; listed existing tests are coverage references, not claims of a new rerun.",
+  "duties": [
+    {
+      "work_id": "legacy-b88ebdbc813c1a81681c",
+      "source_id": "01.002/000049",
+      "path": "app/base/pixel-processor.c",
+      "source_blob": "7f0049bd0285366eeb128c9e085f1ed222d27452",
+      "source_range": "-60,0 -> 61,6",
+      "source_sha256": "22b0fb45e1a9734d3bb06f2573bb1a3163a004b2d364a000ab6fae096fa752bf",
+      "source_duty": "The fifth callback argument is a distinct region, not a shared read coordinate; this single-region reader does not replace parallel dispatch.",
+      "remaining_tasks": [
+        "09.003",
+        "09.004",
+        "31.017"
+      ],
+      "read_scope": "Independent target, baseline, floating, selection, brush shape and texture domains in actual serial Surface replacement; no historical five-argument scheduler is reintroduced.",
+      "verification": [
+        "existing bounded-surface-read and coordinate-boundaries",
+        "new /painter-surface/combined-read-domains"
+      ],
+      "remaining_semantics": "General parallel descriptor scheduling, invocation and lifetime equivalence remain unproven; 31.017 and write-side 09.004 must retain them.",
+      "status": "verification-added-not-parent-closure"
+    },
+    {
+      "work_id": "legacy-389e65c37241aad27f12",
+      "source_id": "01.002/000050",
+      "path": "app/base/pixel-processor.c",
+      "source_blob": "7f0049bd0285366eeb128c9e085f1ed222d27452",
+      "source_range": "-78 -> 84",
+      "source_sha256": "5eb666c56e0f6b70bcc5f648166ee4947de2e0cc23a83ebc4ddaab0058cece2d",
+      "source_duty": "All five region slots retain their independent origin and stride; this helper has no global region state.",
+      "remaining_tasks": [
+        "09.003",
+        "09.004",
+        "31.017"
+      ],
+      "read_scope": "Independent target, baseline, floating, selection, brush shape and texture domains in actual serial Surface replacement; no historical five-argument scheduler is reintroduced.",
+      "verification": [
+        "existing bounded-surface-read and coordinate-boundaries",
+        "new /painter-surface/combined-read-domains"
+      ],
+      "remaining_semantics": "General parallel descriptor scheduling, invocation and lifetime equivalence remain unproven; 31.017 and write-side 09.004 must retain them.",
+      "status": "verification-added-not-parent-closure"
+    },
+    {
+      "work_id": "legacy-c0bd1e91bd03c5c6a374",
+      "source_id": "01.002/000051",
+      "path": "app/base/pixel-processor.c",
+      "source_blob": "7f0049bd0285366eeb128c9e085f1ed222d27452",
+      "source_range": "-88 -> 94",
+      "source_sha256": "a8999843b77003ffca7f984f2bdc758fb3c5e5007b11c4f627e06a4d83519934",
+      "source_duty": "Parallel descriptor copying is not a snapshot or ownership transfer; synchronous owned output here does not prove old dispatch lifetime.",
+      "remaining_tasks": [
+        "09.003",
+        "09.004",
+        "31.017"
+      ],
+      "read_scope": "Independent target, baseline, floating, selection, brush shape and texture domains in actual serial Surface replacement; no historical five-argument scheduler is reintroduced.",
+      "verification": [
+        "existing bounded-surface-read and coordinate-boundaries",
+        "new /painter-surface/combined-read-domains"
+      ],
+      "remaining_semantics": "General parallel descriptor scheduling, invocation and lifetime equivalence remain unproven; 31.017 and write-side 09.004 must retain them.",
+      "status": "verification-added-not-parent-closure"
+    },
+    {
+      "work_id": "legacy-fafda9f0fe26654cb9b4",
+      "source_id": "01.002/000052",
+      "path": "app/base/pixel-processor.c",
+      "source_blob": "7f0049bd0285366eeb128c9e085f1ed222d27452",
+      "source_range": "-143,0 -> 150,8",
+      "source_sha256": "545f78cae36ad14bd1d7bda5c5a3ae63c33efe3ffb0029554cd685baacdae380",
+      "source_duty": "Parallel five-region invocation remains a dispatch duty; this implementation only bounds each Surface read.",
+      "remaining_tasks": [
+        "09.003",
+        "09.004",
+        "31.017"
+      ],
+      "read_scope": "Independent target, baseline, floating, selection, brush shape and texture domains in actual serial Surface replacement; no historical five-argument scheduler is reintroduced.",
+      "verification": [
+        "existing bounded-surface-read and coordinate-boundaries",
+        "new /painter-surface/combined-read-domains"
+      ],
+      "remaining_semantics": "General parallel descriptor scheduling, invocation and lifetime equivalence remain unproven; 31.017 and write-side 09.004 must retain them.",
+      "status": "verification-added-not-parent-closure"
+    },
+    {
+      "work_id": "legacy-18579eaf2ef909b31a6c",
+      "source_id": "01.002/000053",
+      "path": "app/base/pixel-processor.c",
+      "source_blob": "7f0049bd0285366eeb128c9e085f1ed222d27452",
+      "source_range": "-233,0 -> 248,9",
+      "source_sha256": "a066146a27bf8e373e714609f98a6c0b8ebe1bc5d49b0d5214cdee20acff7d1e",
+      "source_duty": "Serial five-region invocation remains a dispatch duty; no conversion or shared-origin assumption is added.",
+      "remaining_tasks": [
+        "09.003",
+        "09.004",
+        "31.017"
+      ],
+      "read_scope": "Independent target, baseline, floating, selection, brush shape and texture domains in actual serial Surface replacement; no historical five-argument scheduler is reintroduced.",
+      "verification": [
+        "existing bounded-surface-read and coordinate-boundaries",
+        "new /painter-surface/combined-read-domains"
+      ],
+      "remaining_semantics": "General parallel descriptor scheduling, invocation and lifetime equivalence remain unproven; 31.017 and write-side 09.004 must retain them.",
+      "status": "verification-added-not-parent-closure"
+    },
+    {
+      "work_id": "legacy-5cde6456f7ed2a777a74",
+      "source_id": "01.002/000054",
+      "path": "app/base/pixel-processor.c",
+      "source_blob": "7f0049bd0285366eeb128c9e085f1ed222d27452",
+      "source_range": "-386,0 -> 410,9",
+      "source_sha256": "7ab4c7c2492e6cb8890873a1c45223c9fb91799e53006504c3e65830ae8dacc9",
+      "source_duty": "Five-region registration remains outside this helper; selection and target requests still have independent coordinates.",
+      "remaining_tasks": [
+        "09.003",
+        "09.004",
+        "31.017"
+      ],
+      "read_scope": "Independent target, baseline, floating, selection, brush shape and texture domains in actual serial Surface replacement; no historical five-argument scheduler is reintroduced.",
+      "verification": [
+        "existing bounded-surface-read and coordinate-boundaries",
+        "new /painter-surface/combined-read-domains"
+      ],
+      "remaining_semantics": "General parallel descriptor scheduling, invocation and lifetime equivalence remain unproven; 31.017 and write-side 09.004 must retain them.",
+      "status": "verification-added-not-parent-closure"
+    },
+    {
+      "work_id": "legacy-2f53a694d7cd644819de",
+      "source_id": "01.002/000076",
+      "path": "app/base/pixel.hpp",
+      "source_blob": "0b2920644eb36b391f0c03f021c0dd0a19348529",
+      "source_range": "-0,0 -> 1,358",
+      "source_sha256": "27e6b82a44193d668e2a8b3783e0c15dcf14f5f1d48b9fed7891f915315fd397",
+      "source_duty": "Pixel scalar arithmetic has no spatial state. Native reads preserve bit patterns without byte-to-float or palette reinterpretation; blend arithmetic is unchanged.",
+      "remaining_tasks": [
+        "09.003",
+        "09.004",
+        "31.017"
+      ],
+      "read_scope": "Exact native component and palette storage, no reinterpretation in buffer reads.",
+      "verification": [
+        "existing bounded-surface-read native format, indexed and conversion groups"
+      ],
+      "remaining_semantics": "The entire 358-line scalar arithmetic API is not certified by read tests; blend and dispatch obligations remain.",
+      "status": "verification-added-not-parent-closure"
+    },
+    {
+      "work_id": "legacy-e3325d39b7ceab27d426",
+      "source_id": "01.002/000081",
+      "path": "app/base/temp-buf.c",
+      "source_blob": "efa555b2a43b1609e9c73441ad4c2e5b94b34936",
+      "source_range": "-67,0 -> 68",
+      "source_sha256": "2e726669ca470ef24ade1ed01aed0f92b54a846a13999b81c22f7d22b98f4b82",
+      "source_duty": "TempBuf root parent initialization distinguishes owned storage. This reader borrows GEGL during a call and returns independently owned bytes; TempBuf migration is not implemented.",
+      "remaining_tasks": [
+        "09.003",
+        "09.005"
+      ],
+      "read_scope": "Actual modern GimpTempBuf linear-buffer bridge, nested child clipping, ancestor rowstride, borrowed ancestor release and independently owned output.",
+      "verification": [
+        "new /painter-surface/temp-buf-read-domains"
+      ],
+      "remaining_semantics": "Preview conversion, generalized subwindow copy/export and write semantics remain 09.005/09.004 duties. Existing editor preview now renders directly to GEGL/GdkPixbuf, not the old TempBufFeature.",
+      "status": "verification-added-not-parent-closure"
+    },
+    {
+      "work_id": "legacy-a9084a76d3013dde424e",
+      "source_id": "01.002/000082",
+      "path": "app/base/temp-buf.c",
+      "source_blob": "efa555b2a43b1609e9c73441ad4c2e5b94b34936",
+      "source_range": "-149,0 -> 151,43",
+      "source_sha256": "e8433ef033793e56674a8df7d327fc22122fcf1e6d419563990eff34c04d1ccb",
+      "source_duty": "The added TempBuf subwindow clips logical coordinates and retains parent rowstride. GEGL sub-buffer reads now respect the child extent and explicit output stride, but TempBuf conversion/preview is unverified.",
+      "remaining_tasks": [
+        "09.003",
+        "09.005"
+      ],
+      "read_scope": "Actual modern GimpTempBuf linear-buffer bridge, nested child clipping, ancestor rowstride, borrowed ancestor release and independently owned output.",
+      "verification": [
+        "new /painter-surface/temp-buf-read-domains"
+      ],
+      "remaining_semantics": "Preview conversion, generalized subwindow copy/export and write semantics remain 09.005/09.004 duties. Existing editor preview now renders directly to GEGL/GdkPixbuf, not the old TempBufFeature.",
+      "status": "verification-added-not-parent-closure"
+    },
+    {
+      "work_id": "legacy-69327a727628540a2d8b",
+      "source_id": "01.002/000083",
+      "path": "app/base/temp-buf.c",
+      "source_blob": "efa555b2a43b1609e9c73441ad4c2e5b94b34936",
+      "source_range": "-348,0 -> 393,3",
+      "source_sha256": "ecd11421d80dd69f8de37c586386cae9456a5c931678543aa5f93cbd111ea25b",
+      "source_duty": "Old TempBuf child free returns early and leaks its wrapper. No wrapper is introduced here; copied output remains valid after source finalization. General TempBuf lifetime remains open.",
+      "remaining_tasks": [
+        "09.003",
+        "09.005"
+      ],
+      "read_scope": "Actual modern GimpTempBuf linear-buffer bridge, nested child clipping, ancestor rowstride, borrowed ancestor release and independently owned output.",
+      "verification": [
+        "new /painter-surface/temp-buf-read-domains"
+      ],
+      "remaining_semantics": "Preview conversion, generalized subwindow copy/export and write semantics remain 09.005/09.004 duties. Existing editor preview now renders directly to GEGL/GdkPixbuf, not the old TempBufFeature.",
+      "status": "verification-added-not-parent-closure"
+    },
+    {
+      "work_id": "legacy-52c1420506b3e40e8607",
+      "source_id": "01.002/000084",
+      "path": "app/base/temp-buf.c",
+      "source_blob": "efa555b2a43b1609e9c73441ad4c2e5b94b34936",
+      "source_range": "-502,0 -> 550,10",
+      "source_sha256": "dd3bd20a85f768aa0b5137104106c635263abf742fd3c7c4996c5001f7bb16bf",
+      "source_duty": "The added rowstride getter follows ancestors. This reader preserves caller output stride and reads a negative-origin sub-buffer without inferring packed parent storage.",
+      "remaining_tasks": [
+        "09.003",
+        "09.005"
+      ],
+      "read_scope": "Actual modern GimpTempBuf linear-buffer bridge, nested child clipping, ancestor rowstride, borrowed ancestor release and independently owned output.",
+      "verification": [
+        "new /painter-surface/temp-buf-read-domains"
+      ],
+      "remaining_semantics": "Preview conversion, generalized subwindow copy/export and write semantics remain 09.005/09.004 duties. Existing editor preview now renders directly to GEGL/GdkPixbuf, not the old TempBufFeature.",
+      "status": "verification-added-not-parent-closure"
+    },
+    {
+      "work_id": "legacy-38c31780fc8a03d7fc8f",
+      "source_id": "01.002/000085",
+      "path": "app/base/temp-buf.h",
+      "source_blob": "6094354a057238e104ed0baa734e41d3346ff91d",
+      "source_range": "-29,0 -> 30,4",
+      "source_sha256": "6195a468f4586941c8182ebb7a93058d2d6b21e7803ff5ccb5290d3905ea75f7",
+      "source_duty": "The parent field represents aliasing storage. Tests retain a GEGL parent/child and confirm only child-domain pixels are exposed; old TempBuf consumers remain separate.",
+      "remaining_tasks": [
+        "09.003",
+        "09.005"
+      ],
+      "read_scope": "Actual modern GimpTempBuf linear-buffer bridge, nested child clipping, ancestor rowstride, borrowed ancestor release and independently owned output.",
+      "verification": [
+        "new /painter-surface/temp-buf-read-domains"
+      ],
+      "remaining_semantics": "Preview conversion, generalized subwindow copy/export and write semantics remain 09.005/09.004 duties. Existing editor preview now renders directly to GEGL/GdkPixbuf, not the old TempBufFeature.",
+      "status": "verification-added-not-parent-closure"
+    },
+    {
+      "work_id": "legacy-23d55e687f3e4bd4fc40",
+      "source_id": "01.002/000086",
+      "path": "app/base/temp-buf.h",
+      "source_blob": "6094354a057238e104ed0baa734e41d3346ff91d",
+      "source_range": "-71,0 -> 76,7",
+      "source_sha256": "a89f18c48f787ed74c13c3c9d38f0a21b34e7b6ed2667feaa1d5af0892381777",
+      "source_duty": "The new subwindow/rowstride declarations are replaced only for this Surface read path; no compatibility TempBuf API is claimed.",
+      "remaining_tasks": [
+        "09.003",
+        "09.005"
+      ],
+      "read_scope": "Actual modern GimpTempBuf linear-buffer bridge, nested child clipping, ancestor rowstride, borrowed ancestor release and independently owned output.",
+      "verification": [
+        "new /painter-surface/temp-buf-read-domains"
+      ],
+      "remaining_semantics": "Preview conversion, generalized subwindow copy/export and write semantics remain 09.005/09.004 duties. Existing editor preview now renders directly to GEGL/GdkPixbuf, not the old TempBufFeature.",
+      "status": "verification-added-not-parent-closure"
+    },
+    {
+      "work_id": "legacy-1eaabc26f18a29e8abd3",
+      "source_id": "01.002/000266",
+      "path": "app/core/gimpimage-contiguous-region.c",
+      "source_blob": "b4b8a2ffc03313981dab2f51b85ab1a4cd22a969",
+      "source_range": "-53,0 -> 54,18",
+      "source_sha256": "5f41bfc325f2c2728ec984c8954dc1a126c2a46c0506f3930c8fd0aa5de5afd4",
+      "source_duty": "Three-region iterator retains independent origins, bounds and writability.",
+      "remaining_tasks": [
+        "09.003",
+        "27.004/gegl-bounded-search",
+        "27.006",
+        "27.010"
+      ],
+      "read_scope": "Actual bounded-fill source and coverage reads with independent negative domains, child mask abyss, snapshot ownership, cache replacement and forward/backward scan boundaries.",
+      "verification": [
+        "new /fill/independent-read-domains",
+        "new /fill/read-domain-owner-orders",
+        "existing five bounded-fill invariant groups",
+        "existing pinned-runtime bounded-fill trace"
+      ],
+      "remaining_semantics": "Full bounded-fill behavioral acceptance, connectivity/grow/output writable policy and large-region responsiveness remain tracked by 27.004/gegl-bounded-search, 27.006 and 27.010; these read tests do not close all 34 historical iterator duties.",
+      "status": "verification-added-not-parent-closure"
+    },
+    {
+      "work_id": "legacy-42be7fe01cdef3935139",
+      "source_id": "01.002/000268",
+      "path": "app/core/gimpimage-contiguous-region.c",
+      "source_blob": "b4b8a2ffc03313981dab2f51b85ab1a4cd22a969",
+      "source_range": "-68,8 -> 86,0",
+      "source_sha256": "3175129246cd46a0e0298eccfeb5206d543befbe94d6aee556f0a7674938ecab",
+      "source_duty": "The old two-tile ref helper declaration is removed in favor of iterator ownership.",
+      "remaining_tasks": [
+        "09.003",
+        "27.004/gegl-bounded-search",
+        "27.006",
+        "27.010"
+      ],
+      "read_scope": "Actual bounded-fill source and coverage reads with independent negative domains, child mask abyss, snapshot ownership, cache replacement and forward/backward scan boundaries.",
+      "verification": [
+        "new /fill/independent-read-domains",
+        "new /fill/read-domain-owner-orders",
+        "existing five bounded-fill invariant groups",
+        "existing pinned-runtime bounded-fill trace"
+      ],
+      "remaining_semantics": "Full bounded-fill behavioral acceptance, connectivity/grow/output writable policy and large-region responsiveness remain tracked by 27.004/gegl-bounded-search, 27.006 and 27.010; these read tests do not close all 34 historical iterator duties.",
+      "status": "verification-added-not-parent-closure"
+    },
+    {
+      "work_id": "legacy-f74c43bd9da9661c1aad",
+      "source_id": "01.002/000269",
+      "path": "app/core/gimpimage-contiguous-region.c",
+      "source_blob": "b4b8a2ffc03313981dab2f51b85ab1a4cd22a969",
+      "source_range": "-78,4 -> 89",
+      "source_sha256": "05372032ed13f32b242b10df407ab2be8650bdbce4b5cad436e135a8ae1d7795",
+      "source_duty": "Segment declaration accepts the bounded three-region iterator.",
+      "remaining_tasks": [
+        "09.003",
+        "27.004/gegl-bounded-search",
+        "27.006",
+        "27.010"
+      ],
+      "read_scope": "Actual bounded-fill source and coverage reads with independent negative domains, child mask abyss, snapshot ownership, cache replacement and forward/backward scan boundaries.",
+      "verification": [
+        "new /fill/independent-read-domains",
+        "new /fill/read-domain-owner-orders",
+        "existing five bounded-fill invariant groups",
+        "existing pinned-runtime bounded-fill trace"
+      ],
+      "remaining_semantics": "Full bounded-fill behavioral acceptance, connectivity/grow/output writable policy and large-region responsiveness remain tracked by 27.004/gegl-bounded-search, 27.006 and 27.010; these read tests do not close all 34 historical iterator duties.",
+      "status": "verification-added-not-parent-closure"
+    },
+    {
+      "work_id": "legacy-bb276c1c6f019e6628d1",
+      "source_id": "01.002/000271",
+      "path": "app/core/gimpimage-contiguous-region.c",
+      "source_blob": "b4b8a2ffc03313981dab2f51b85ab1a4cd22a969",
+      "source_range": "-103,0 -> 113,145",
+      "source_sha256": "c920740030b9fa4fdc3a6a1032fb313f9a23603bc53525f87d7edf13ec8a699d",
+      "source_duty": "Iterator init/copy/release/update/next/prev couples source, destination and optional source-mask tiles.",
+      "remaining_tasks": [
+        "09.003",
+        "27.004/gegl-bounded-search",
+        "27.006",
+        "27.010"
+      ],
+      "read_scope": "Actual bounded-fill source and coverage reads with independent negative domains, child mask abyss, snapshot ownership, cache replacement and forward/backward scan boundaries.",
+      "verification": [
+        "new /fill/independent-read-domains",
+        "new /fill/read-domain-owner-orders",
+        "existing five bounded-fill invariant groups",
+        "existing pinned-runtime bounded-fill trace"
+      ],
+      "remaining_semantics": "Full bounded-fill behavioral acceptance, connectivity/grow/output writable policy and large-region responsiveness remain tracked by 27.004/gegl-bounded-search, 27.006 and 27.010; these read tests do not close all 34 historical iterator duties.",
+      "status": "verification-added-not-parent-closure"
+    },
+    {
+      "work_id": "legacy-21669908145e332606ef",
+      "source_id": "01.002/000290",
+      "path": "app/core/gimpimage-contiguous-region.c",
+      "source_blob": "b4b8a2ffc03313981dab2f51b85ab1a4cd22a969",
+      "source_range": "-447,22 -> 683",
+      "source_sha256": "6a2133a60cd172e21b20fa576e0b076d1b78bf82a3b8a897b5c375735b669839",
+      "source_duty": "Old ref_tiles implementation is removed; iterator now owns tile references.",
+      "remaining_tasks": [
+        "09.003",
+        "27.004/gegl-bounded-search",
+        "27.006",
+        "27.010"
+      ],
+      "read_scope": "Actual bounded-fill source and coverage reads with independent negative domains, child mask abyss, snapshot ownership, cache replacement and forward/backward scan boundaries.",
+      "verification": [
+        "new /fill/independent-read-domains",
+        "new /fill/read-domain-owner-orders",
+        "existing five bounded-fill invariant groups",
+        "existing pinned-runtime bounded-fill trace"
+      ],
+      "remaining_semantics": "Full bounded-fill behavioral acceptance, connectivity/grow/output writable policy and large-region responsiveness remain tracked by 27.004/gegl-bounded-search, 27.006 and 27.010; these read tests do not close all 34 historical iterator duties.",
+      "status": "verification-added-not-parent-closure"
+    },
+    {
+      "work_id": "legacy-b63dba2b7e217d4d8ea4",
+      "source_id": "01.002/000291",
+      "path": "app/core/gimpimage-contiguous-region.c",
+      "source_blob": "b4b8a2ffc03313981dab2f51b85ab1a4cd22a969",
+      "source_range": "-472,4 -> 687",
+      "source_sha256": "627ca4027f49106bc3e00871956387bbdb5536c17ce970238fb710a1044797dc",
+      "source_duty": "Segment implementation consumes iterator instead of separate source and output regions.",
+      "remaining_tasks": [
+        "09.003",
+        "27.004/gegl-bounded-search",
+        "27.006",
+        "27.010"
+      ],
+      "read_scope": "Actual bounded-fill source and coverage reads with independent negative domains, child mask abyss, snapshot ownership, cache replacement and forward/backward scan boundaries.",
+      "verification": [
+        "new /fill/independent-read-domains",
+        "new /fill/read-domain-owner-orders",
+        "existing five bounded-fill invariant groups",
+        "existing pinned-runtime bounded-fill trace"
+      ],
+      "remaining_semantics": "Full bounded-fill behavioral acceptance, connectivity/grow/output writable policy and large-region responsiveness remain tracked by 27.004/gegl-bounded-search, 27.006 and 27.010; these read tests do not close all 34 historical iterator duties.",
+      "status": "verification-added-not-parent-closure"
+    },
+    {
+      "work_id": "legacy-33dc86d5304effa1336a",
+      "source_id": "01.002/000292",
+      "path": "app/core/gimpimage-contiguous-region.c",
+      "source_blob": "b4b8a2ffc03313981dab2f51b85ab1a4cd22a969",
+      "source_range": "-486,2 -> 697,0",
+      "source_sha256": "b1aad449699a0be577c3072457fa4429e64df3eb39d4f263b9866b3a966c5e7e",
+      "source_duty": "Direct source/output data pointers are removed in favor of iterator descriptors.",
+      "remaining_tasks": [
+        "09.003",
+        "27.004/gegl-bounded-search",
+        "27.006",
+        "27.010"
+      ],
+      "read_scope": "Actual bounded-fill source and coverage reads with independent negative domains, child mask abyss, snapshot ownership, cache replacement and forward/backward scan boundaries.",
+      "verification": [
+        "new /fill/independent-read-domains",
+        "new /fill/read-domain-owner-orders",
+        "existing five bounded-fill invariant groups",
+        "existing pinned-runtime bounded-fill trace"
+      ],
+      "remaining_semantics": "Full bounded-fill behavioral acceptance, connectivity/grow/output writable policy and large-region responsiveness remain tracked by 27.004/gegl-bounded-search, 27.006 and 27.010; these read tests do not close all 34 historical iterator duties.",
+      "status": "verification-added-not-parent-closure"
+    },
+    {
+      "work_id": "legacy-f27276d258ada13fc375",
+      "source_id": "01.002/000293",
+      "path": "app/core/gimpimage-contiguous-region.c",
+      "source_blob": "b4b8a2ffc03313981dab2f51b85ab1a4cd22a969",
+      "source_range": "-490,6 -> 700,2",
+      "source_sha256": "c3f20993684860957491f326af63cdccd46ca02001e92ea9cd99b2a19f1cd612",
+      "source_duty": "Pixel byte width and tile state come from the active source descriptor.",
+      "remaining_tasks": [
+        "09.003",
+        "27.004/gegl-bounded-search",
+        "27.006",
+        "27.010"
+      ],
+      "read_scope": "Actual bounded-fill source and coverage reads with independent negative domains, child mask abyss, snapshot ownership, cache replacement and forward/backward scan boundaries.",
+      "verification": [
+        "new /fill/independent-read-domains",
+        "new /fill/read-domain-owner-orders",
+        "existing five bounded-fill invariant groups",
+        "existing pinned-runtime bounded-fill trace"
+      ],
+      "remaining_semantics": "Full bounded-fill behavioral acceptance, connectivity/grow/output writable policy and large-region responsiveness remain tracked by 27.004/gegl-bounded-search, 27.006 and 27.010; these read tests do not close all 34 historical iterator duties.",
+      "status": "verification-added-not-parent-closure"
+    },
+    {
+      "work_id": "legacy-a9f07c0bff32118bd032",
+      "source_id": "01.002/000294",
+      "path": "app/core/gimpimage-contiguous-region.c",
+      "source_blob": "b4b8a2ffc03313981dab2f51b85ab1a4cd22a969",
+      "source_range": "-496,0 -> 703",
+      "source_sha256": "4df86a07eee7e151f29e29a17c45ce05533341d5274eaac7223b0e89d3a41902",
+      "source_duty": "Seed tile access is positioned through iterator update.",
+      "remaining_tasks": [
+        "09.003",
+        "27.004/gegl-bounded-search",
+        "27.006",
+        "27.010"
+      ],
+      "read_scope": "Actual bounded-fill source and coverage reads with independent negative domains, child mask abyss, snapshot ownership, cache replacement and forward/backward scan boundaries.",
+      "verification": [
+        "new /fill/independent-read-domains",
+        "new /fill/read-domain-owner-orders",
+        "existing five bounded-fill invariant groups",
+        "existing pinned-runtime bounded-fill trace"
+      ],
+      "remaining_semantics": "Full bounded-fill behavioral acceptance, connectivity/grow/output writable policy and large-region responsiveness remain tracked by 27.004/gegl-bounded-search, 27.006 and 27.010; these read tests do not close all 34 historical iterator duties.",
+      "status": "verification-added-not-parent-closure"
+    },
+    {
+      "work_id": "legacy-9dfb265a13d38d5d4f58",
+      "source_id": "01.002/000295",
+      "path": "app/core/gimpimage-contiguous-region.c",
+      "source_blob": "b4b8a2ffc03313981dab2f51b85ab1a4cd22a969",
+      "source_range": "-501 -> 708",
+      "source_sha256": "7c82a176ebf76efbf8d49a2f744462c14e5d9244b90b32d2f948d2c6b92bc0e8",
+      "source_duty": "Seed color reads the first region current data pointer.",
+      "remaining_tasks": [
+        "09.003",
+        "27.004/gegl-bounded-search",
+        "27.006",
+        "27.010"
+      ],
+      "read_scope": "Actual bounded-fill source and coverage reads with independent negative domains, child mask abyss, snapshot ownership, cache replacement and forward/backward scan boundaries.",
+      "verification": [
+        "new /fill/independent-read-domains",
+        "new /fill/read-domain-owner-orders",
+        "existing five bounded-fill invariant groups",
+        "existing pinned-runtime bounded-fill trace"
+      ],
+      "remaining_semantics": "Full bounded-fill behavioral acceptance, connectivity/grow/output writable policy and large-region responsiveness remain tracked by 27.004/gegl-bounded-search, 27.006 and 27.010; these read tests do not close all 34 historical iterator duties.",
+      "status": "verification-added-not-parent-closure"
+    },
+    {
+      "work_id": "legacy-99df90dda832493b6f7c",
+      "source_id": "01.002/000299",
+      "path": "app/core/gimpimage-contiguous-region.c",
+      "source_blob": "b4b8a2ffc03313981dab2f51b85ab1a4cd22a969",
+      "source_range": "-517,2 -> 725,6",
+      "source_sha256": "ca1e41df42ee4b6140b8aa29db11150731abc1c4b17597a930a4ab3fcdd42089",
+      "source_duty": "Early segment rejection releases all three present tiles.",
+      "remaining_tasks": [
+        "09.003",
+        "27.004/gegl-bounded-search",
+        "27.006",
+        "27.010"
+      ],
+      "read_scope": "Actual bounded-fill source and coverage reads with independent negative domains, child mask abyss, snapshot ownership, cache replacement and forward/backward scan boundaries.",
+      "verification": [
+        "new /fill/independent-read-domains",
+        "new /fill/read-domain-owner-orders",
+        "existing five bounded-fill invariant groups",
+        "existing pinned-runtime bounded-fill trace"
+      ],
+      "remaining_semantics": "Full bounded-fill behavioral acceptance, connectivity/grow/output writable policy and large-region responsiveness remain tracked by 27.004/gegl-bounded-search, 27.006 and 27.010; these read tests do not close all 34 historical iterator duties.",
+      "status": "verification-added-not-parent-closure"
+    },
+    {
+      "work_id": "legacy-254f8ad782f23590943f",
+      "source_id": "01.002/000300",
+      "path": "app/core/gimpimage-contiguous-region.c",
+      "source_blob": "b4b8a2ffc03313981dab2f51b85ab1a4cd22a969",
+      "source_range": "-522,2 -> 734,3",
+      "source_sha256": "bf8c6a3a1a519d4a42c180081939e9b67b7b021faa3808edad2d056ff46e0eb9",
+      "source_duty": "Seed output marks region dirty and backs up source/output pointers.",
+      "remaining_tasks": [
+        "09.003",
+        "27.004/gegl-bounded-search",
+        "27.006",
+        "27.010"
+      ],
+      "read_scope": "Actual bounded-fill source and coverage reads with independent negative domains, child mask abyss, snapshot ownership, cache replacement and forward/backward scan boundaries.",
+      "verification": [
+        "new /fill/independent-read-domains",
+        "new /fill/read-domain-owner-orders",
+        "existing five bounded-fill invariant groups",
+        "existing pinned-runtime bounded-fill trace"
+      ],
+      "remaining_semantics": "Full bounded-fill behavioral acceptance, connectivity/grow/output writable policy and large-region responsiveness remain tracked by 27.004/gegl-bounded-search, 27.006 and 27.010; these read tests do not close all 34 historical iterator duties.",
+      "status": "verification-added-not-parent-closure"
+    },
+    {
+      "work_id": "legacy-9266289fb975b5033854",
+      "source_id": "01.002/000301",
+      "path": "app/core/gimpimage-contiguous-region.c",
+      "source_blob": "b4b8a2ffc03313981dab2f51b85ab1a4cd22a969",
+      "source_range": "-526 -> 739,4",
+      "source_sha256": "c4206d9a067daa9680214920f2d97be23e79e3193c5efe2b48a1f911dcd7e21d",
+      "source_duty": "Backward scan uses min_x rather than a zero-origin boundary.",
+      "remaining_tasks": [
+        "09.003",
+        "27.004/gegl-bounded-search",
+        "27.006",
+        "27.010"
+      ],
+      "read_scope": "Actual bounded-fill source and coverage reads with independent negative domains, child mask abyss, snapshot ownership, cache replacement and forward/backward scan boundaries.",
+      "verification": [
+        "new /fill/independent-read-domains",
+        "new /fill/read-domain-owner-orders",
+        "existing five bounded-fill invariant groups",
+        "existing pinned-runtime bounded-fill trace"
+      ],
+      "remaining_semantics": "Full bounded-fill behavioral acceptance, connectivity/grow/output writable policy and large-region responsiveness remain tracked by 27.004/gegl-bounded-search, 27.006 and 27.010; these read tests do not close all 34 historical iterator duties.",
+      "status": "verification-added-not-parent-closure"
+    },
+    {
+      "work_id": "legacy-a69f2b4a0dadfc9c1831",
+      "source_id": "01.002/000302",
+      "path": "app/core/gimpimage-contiguous-region.c",
+      "source_blob": "b4b8a2ffc03313981dab2f51b85ab1a4cd22a969",
+      "source_range": "-528,3 -> 744,8",
+      "source_sha256": "f81606c7918ae6842c528f74f5088dcd5b285927f934ec4cab42d0fcee0fadf5",
+      "source_duty": "Backward traversal refreshes tiles and aligns all three per-region data pointers.",
+      "remaining_tasks": [
+        "09.003",
+        "27.004/gegl-bounded-search",
+        "27.006",
+        "27.010"
+      ],
+      "read_scope": "Actual bounded-fill source and coverage reads with independent negative domains, child mask abyss, snapshot ownership, cache replacement and forward/backward scan boundaries.",
+      "verification": [
+        "new /fill/independent-read-domains",
+        "new /fill/read-domain-owner-orders",
+        "existing five bounded-fill invariant groups",
+        "existing pinned-runtime bounded-fill trace"
+      ],
+      "remaining_semantics": "Full bounded-fill behavioral acceptance, connectivity/grow/output writable policy and large-region responsiveness remain tracked by 27.004/gegl-bounded-search, 27.006 and 27.010; these read tests do not close all 34 historical iterator duties.",
+      "status": "verification-added-not-parent-closure"
+    },
+    {
+      "work_id": "legacy-bf43a899e67acb528c7f",
+      "source_id": "01.002/000303",
+      "path": "app/core/gimpimage-contiguous-region.c",
+      "source_blob": "b4b8a2ffc03313981dab2f51b85ab1a4cd22a969",
+      "source_range": "-534 -> 755",
+      "source_sha256": "3b7b1af67e3dae5fe825e0bc78586b2bf123879a7948621fddd5a63b816241b3",
+      "source_duty": "Backward source color reads use the active first-region pointer.",
+      "remaining_tasks": [
+        "09.003",
+        "27.004/gegl-bounded-search",
+        "27.006",
+        "27.010"
+      ],
+      "read_scope": "Actual bounded-fill source and coverage reads with independent negative domains, child mask abyss, snapshot ownership, cache replacement and forward/backward scan boundaries.",
+      "verification": [
+        "new /fill/independent-read-domains",
+        "new /fill/read-domain-owner-orders",
+        "existing five bounded-fill invariant groups",
+        "existing pinned-runtime bounded-fill trace"
+      ],
+      "remaining_semantics": "Full bounded-fill behavioral acceptance, connectivity/grow/output writable policy and large-region responsiveness remain tracked by 27.004/gegl-bounded-search, 27.006 and 27.010; these read tests do not close all 34 historical iterator duties.",
+      "status": "verification-added-not-parent-closure"
+    },
+    {
+      "work_id": "legacy-73c812172ee5eadaae0f",
+      "source_id": "01.002/000306",
+      "path": "app/core/gimpimage-contiguous-region.c",
+      "source_blob": "b4b8a2ffc03313981dab2f51b85ab1a4cd22a969",
+      "source_range": "-547 -> 768,2",
+      "source_sha256": "b1ef1d62ab69b1bbdcf99a798470fc1c09fc70f570a22b8f33694806db24ccf0",
+      "source_duty": "Backward mask writes mark the output region dirty.",
+      "remaining_tasks": [
+        "09.003",
+        "27.004/gegl-bounded-search",
+        "27.006",
+        "27.010"
+      ],
+      "read_scope": "Actual bounded-fill source and coverage reads with independent negative domains, child mask abyss, snapshot ownership, cache replacement and forward/backward scan boundaries.",
+      "verification": [
+        "new /fill/independent-read-domains",
+        "new /fill/read-domain-owner-orders",
+        "existing five bounded-fill invariant groups",
+        "existing pinned-runtime bounded-fill trace"
+      ],
+      "remaining_semantics": "Full bounded-fill behavioral acceptance, connectivity/grow/output writable policy and large-region responsiveness remain tracked by 27.004/gegl-bounded-search, 27.006 and 27.010; these read tests do not close all 34 historical iterator duties.",
+      "status": "verification-added-not-parent-closure"
+    },
+    {
+      "work_id": "legacy-04bf3b0b179a8d15dcc4",
+      "source_id": "01.002/000307",
+      "path": "app/core/gimpimage-contiguous-region.c",
+      "source_blob": "b4b8a2ffc03313981dab2f51b85ab1a4cd22a969",
+      "source_range": "-549 -> 771,3",
+      "source_sha256": "4067ee584741c96ff078cb1e8d7c993f7ad41d8f4e42c2086e2c67dfe1d0c1e3",
+      "source_duty": "Backward movement advances source and optional source-mask together.",
+      "remaining_tasks": [
+        "09.003",
+        "27.004/gegl-bounded-search",
+        "27.006",
+        "27.010"
+      ],
+      "read_scope": "Actual bounded-fill source and coverage reads with independent negative domains, child mask abyss, snapshot ownership, cache replacement and forward/backward scan boundaries.",
+      "verification": [
+        "new /fill/independent-read-domains",
+        "new /fill/read-domain-owner-orders",
+        "existing five bounded-fill invariant groups",
+        "existing pinned-runtime bounded-fill trace"
+      ],
+      "remaining_semantics": "Full bounded-fill behavioral acceptance, connectivity/grow/output writable policy and large-region responsiveness remain tracked by 27.004/gegl-bounded-search, 27.006 and 27.010; these read tests do not close all 34 historical iterator duties.",
+      "status": "verification-added-not-parent-closure"
+    },
+    {
+      "work_id": "legacy-9eae2c748bf93d6c3e18",
+      "source_id": "01.002/000308",
+      "path": "app/core/gimpimage-contiguous-region.c",
+      "source_blob": "b4b8a2ffc03313981dab2f51b85ab1a4cd22a969",
+      "source_range": "-550,0 -> 775",
+      "source_sha256": "31ffcd2684882e93511e84888817a6bdc71fe4f0f78a676168419e1816c239d6",
+      "source_duty": "Backward movement decrements remaining tile-span count.",
+      "remaining_tasks": [
+        "09.003",
+        "27.004/gegl-bounded-search",
+        "27.006",
+        "27.010"
+      ],
+      "read_scope": "Actual bounded-fill source and coverage reads with independent negative domains, child mask abyss, snapshot ownership, cache replacement and forward/backward scan boundaries.",
+      "verification": [
+        "new /fill/independent-read-domains",
+        "new /fill/read-domain-owner-orders",
+        "existing five bounded-fill invariant groups",
+        "existing pinned-runtime bounded-fill trace"
+      ],
+      "remaining_semantics": "Full bounded-fill behavioral acceptance, connectivity/grow/output writable policy and large-region responsiveness remain tracked by 27.004/gegl-bounded-search, 27.006 and 27.010; these read tests do not close all 34 historical iterator duties.",
+      "status": "verification-added-not-parent-closure"
+    },
+    {
+      "work_id": "legacy-f7b78cafd12b9afbb685",
+      "source_id": "01.002/000309",
+      "path": "app/core/gimpimage-contiguous-region.c",
+      "source_blob": "b4b8a2ffc03313981dab2f51b85ab1a4cd22a969",
+      "source_range": "-555,0 -> 781,2",
+      "source_sha256": "30a7656f21e7eceb687d9afdd7af8eb71eceb284f9879bb371f2f5cf1b0d4f19",
+      "source_duty": "Forward traversal reinitializes its cursor and tile span.",
+      "remaining_tasks": [
+        "09.003",
+        "27.004/gegl-bounded-search",
+        "27.006",
+        "27.010"
+      ],
+      "read_scope": "Actual bounded-fill source and coverage reads with independent negative domains, child mask abyss, snapshot ownership, cache replacement and forward/backward scan boundaries.",
+      "verification": [
+        "new /fill/independent-read-domains",
+        "new /fill/read-domain-owner-orders",
+        "existing five bounded-fill invariant groups",
+        "existing pinned-runtime bounded-fill trace"
+      ],
+      "remaining_semantics": "Full bounded-fill behavioral acceptance, connectivity/grow/output writable policy and large-region responsiveness remain tracked by 27.004/gegl-bounded-search, 27.006 and 27.010; these read tests do not close all 34 historical iterator duties.",
+      "status": "verification-added-not-parent-closure"
+    },
+    {
+      "work_id": "legacy-7dc3f9b151703e6460d8",
+      "source_id": "01.002/000310",
+      "path": "app/core/gimpimage-contiguous-region.c",
+      "source_blob": "b4b8a2ffc03313981dab2f51b85ab1a4cd22a969",
+      "source_range": "-557,3 -> 784,2",
+      "source_sha256": "ac33915460f2350533f6ec167e1ef2f80d55127182d736bf2e4bcec46d12cd0b",
+      "source_duty": "Forward tile refresh is bounded by max_x.",
+      "remaining_tasks": [
+        "09.003",
+        "27.004/gegl-bounded-search",
+        "27.006",
+        "27.010"
+      ],
+      "read_scope": "Actual bounded-fill source and coverage reads with independent negative domains, child mask abyss, snapshot ownership, cache replacement and forward/backward scan boundaries.",
+      "verification": [
+        "new /fill/independent-read-domains",
+        "new /fill/read-domain-owner-orders",
+        "existing five bounded-fill invariant groups",
+        "existing pinned-runtime bounded-fill trace"
+      ],
+      "remaining_semantics": "Full bounded-fill behavioral acceptance, connectivity/grow/output writable policy and large-region responsiveness remain tracked by 27.004/gegl-bounded-search, 27.006 and 27.010; these read tests do not close all 34 historical iterator duties.",
+      "status": "verification-added-not-parent-closure"
+    },
+    {
+      "work_id": "legacy-e3e5668ff6b847e74fa2",
+      "source_id": "01.002/000311",
+      "path": "app/core/gimpimage-contiguous-region.c",
+      "source_blob": "b4b8a2ffc03313981dab2f51b85ab1a4cd22a969",
+      "source_range": "-561 -> 787",
+      "source_sha256": "3eb7d3946c2397b4e035ca126de9b29571d0db59941715484f0ecf7ffcd1af58",
+      "source_duty": "Forward segment scan stops at exclusive max_x.",
+      "remaining_tasks": [
+        "09.003",
+        "27.004/gegl-bounded-search",
+        "27.006",
+        "27.010"
+      ],
+      "read_scope": "Actual bounded-fill source and coverage reads with independent negative domains, child mask abyss, snapshot ownership, cache replacement and forward/backward scan boundaries.",
+      "verification": [
+        "new /fill/independent-read-domains",
+        "new /fill/read-domain-owner-orders",
+        "existing five bounded-fill invariant groups",
+        "existing pinned-runtime bounded-fill trace"
+      ],
+      "remaining_semantics": "Full bounded-fill behavioral acceptance, connectivity/grow/output writable policy and large-region responsiveness remain tracked by 27.004/gegl-bounded-search, 27.006 and 27.010; these read tests do not close all 34 historical iterator duties.",
+      "status": "verification-added-not-parent-closure"
+    },
+    {
+      "work_id": "legacy-674b4ec632952f3c8b41",
+      "source_id": "01.002/000312",
+      "path": "app/core/gimpimage-contiguous-region.c",
+      "source_blob": "b4b8a2ffc03313981dab2f51b85ab1a4cd22a969",
+      "source_range": "-563,3 -> 789,9",
+      "source_sha256": "70ef3f47444e83f82d79386bf41055587702fae690b7197cf238e108c4266897",
+      "source_duty": "Forward tile traversal aligns all three per-region pointers.",
+      "remaining_tasks": [
+        "09.003",
+        "27.004/gegl-bounded-search",
+        "27.006",
+        "27.010"
+      ],
+      "read_scope": "Actual bounded-fill source and coverage reads with independent negative domains, child mask abyss, snapshot ownership, cache replacement and forward/backward scan boundaries.",
+      "verification": [
+        "new /fill/independent-read-domains",
+        "new /fill/read-domain-owner-orders",
+        "existing five bounded-fill invariant groups",
+        "existing pinned-runtime bounded-fill trace"
+      ],
+      "remaining_semantics": "Full bounded-fill behavioral acceptance, connectivity/grow/output writable policy and large-region responsiveness remain tracked by 27.004/gegl-bounded-search, 27.006 and 27.010; these read tests do not close all 34 historical iterator duties.",
+      "status": "verification-added-not-parent-closure"
+    },
+    {
+      "work_id": "legacy-9bc41f82c2d20a80af42",
+      "source_id": "01.002/000313",
+      "path": "app/core/gimpimage-contiguous-region.c",
+      "source_blob": "b4b8a2ffc03313981dab2f51b85ab1a4cd22a969",
+      "source_range": "-569 -> 801",
+      "source_sha256": "3b7b1af67e3dae5fe825e0bc78586b2bf123879a7948621fddd5a63b816241b3",
+      "source_duty": "Forward source color reads use the active first-region pointer.",
+      "remaining_tasks": [
+        "09.003",
+        "27.004/gegl-bounded-search",
+        "27.006",
+        "27.010"
+      ],
+      "read_scope": "Actual bounded-fill source and coverage reads with independent negative domains, child mask abyss, snapshot ownership, cache replacement and forward/backward scan boundaries.",
+      "verification": [
+        "new /fill/independent-read-domains",
+        "new /fill/read-domain-owner-orders",
+        "existing five bounded-fill invariant groups",
+        "existing pinned-runtime bounded-fill trace"
+      ],
+      "remaining_semantics": "Full bounded-fill behavioral acceptance, connectivity/grow/output writable policy and large-region responsiveness remain tracked by 27.004/gegl-bounded-search, 27.006 and 27.010; these read tests do not close all 34 historical iterator duties.",
+      "status": "verification-added-not-parent-closure"
+    },
+    {
+      "work_id": "legacy-8295676e7c8c8020c1c1",
+      "source_id": "01.002/000316",
+      "path": "app/core/gimpimage-contiguous-region.c",
+      "source_blob": "b4b8a2ffc03313981dab2f51b85ab1a4cd22a969",
+      "source_range": "-582 -> 814,2",
+      "source_sha256": "ce10df059e1a7c734944debcf427049d39d190158c83b0ef8f1cc38985ca9cc5",
+      "source_duty": "Forward output writes mark the region dirty.",
+      "remaining_tasks": [
+        "09.003",
+        "27.004/gegl-bounded-search",
+        "27.006",
+        "27.010"
+      ],
+      "read_scope": "Actual bounded-fill source and coverage reads with independent negative domains, child mask abyss, snapshot ownership, cache replacement and forward/backward scan boundaries.",
+      "verification": [
+        "new /fill/independent-read-domains",
+        "new /fill/read-domain-owner-orders",
+        "existing five bounded-fill invariant groups",
+        "existing pinned-runtime bounded-fill trace"
+      ],
+      "remaining_semantics": "Full bounded-fill behavioral acceptance, connectivity/grow/output writable policy and large-region responsiveness remain tracked by 27.004/gegl-bounded-search, 27.006 and 27.010; these read tests do not close all 34 historical iterator duties.",
+      "status": "verification-added-not-parent-closure"
+    },
+    {
+      "work_id": "legacy-b021e5f9fdea521b1682",
+      "source_id": "01.002/000317",
+      "path": "app/core/gimpimage-contiguous-region.c",
+      "source_blob": "b4b8a2ffc03313981dab2f51b85ab1a4cd22a969",
+      "source_range": "-584 -> 817,3",
+      "source_sha256": "968af5a4b92bba93d38c16e68fa5d9950fed0c5573a93afcd63e091cbc9e26c6",
+      "source_duty": "Forward movement advances source and optional source-mask together.",
+      "remaining_tasks": [
+        "09.003",
+        "27.004/gegl-bounded-search",
+        "27.006",
+        "27.010"
+      ],
+      "read_scope": "Actual bounded-fill source and coverage reads with independent negative domains, child mask abyss, snapshot ownership, cache replacement and forward/backward scan boundaries.",
+      "verification": [
+        "new /fill/independent-read-domains",
+        "new /fill/read-domain-owner-orders",
+        "existing five bounded-fill invariant groups",
+        "existing pinned-runtime bounded-fill trace"
+      ],
+      "remaining_semantics": "Full bounded-fill behavioral acceptance, connectivity/grow/output writable policy and large-region responsiveness remain tracked by 27.004/gegl-bounded-search, 27.006 and 27.010; these read tests do not close all 34 historical iterator duties.",
+      "status": "verification-added-not-parent-closure"
+    },
+    {
+      "work_id": "legacy-91e015ac8c20696cfaed",
+      "source_id": "01.002/000318",
+      "path": "app/core/gimpimage-contiguous-region.c",
+      "source_blob": "b4b8a2ffc03313981dab2f51b85ab1a4cd22a969",
+      "source_range": "-585,0 -> 821",
+      "source_sha256": "31ffcd2684882e93511e84888817a6bdc71fe4f0f78a676168419e1816c239d6",
+      "source_duty": "Forward movement decrements remaining tile-span count.",
+      "remaining_tasks": [
+        "09.003",
+        "27.004/gegl-bounded-search",
+        "27.006",
+        "27.010"
+      ],
+      "read_scope": "Actual bounded-fill source and coverage reads with independent negative domains, child mask abyss, snapshot ownership, cache replacement and forward/backward scan boundaries.",
+      "verification": [
+        "new /fill/independent-read-domains",
+        "new /fill/read-domain-owner-orders",
+        "existing five bounded-fill invariant groups",
+        "existing pinned-runtime bounded-fill trace"
+      ],
+      "remaining_semantics": "Full bounded-fill behavioral acceptance, connectivity/grow/output writable policy and large-region responsiveness remain tracked by 27.004/gegl-bounded-search, 27.006 and 27.010; these read tests do not close all 34 historical iterator duties.",
+      "status": "verification-added-not-parent-closure"
+    },
+    {
+      "work_id": "legacy-19464ff95e716dcabf47",
+      "source_id": "01.002/000319",
+      "path": "app/core/gimpimage-contiguous-region.c",
+      "source_blob": "b4b8a2ffc03313981dab2f51b85ab1a4cd22a969",
+      "source_range": "-589,2 -> 825,6",
+      "source_sha256": "b8db28a6d6089e92cd81823e0f02bb7f92cc4e72e2a607a9cb1d7ced2996df51",
+      "source_duty": "Final tile releases use each region writable policy.",
+      "remaining_tasks": [
+        "09.003",
+        "27.004/gegl-bounded-search",
+        "27.006",
+        "27.010"
+      ],
+      "read_scope": "Actual bounded-fill source and coverage reads with independent negative domains, child mask abyss, snapshot ownership, cache replacement and forward/backward scan boundaries.",
+      "verification": [
+        "new /fill/independent-read-domains",
+        "new /fill/read-domain-owner-orders",
+        "existing five bounded-fill invariant groups",
+        "existing pinned-runtime bounded-fill trace"
+      ],
+      "remaining_semantics": "Full bounded-fill behavioral acceptance, connectivity/grow/output writable policy and large-region responsiveness remain tracked by 27.004/gegl-bounded-search, 27.006 and 27.010; these read tests do not close all 34 historical iterator duties.",
+      "status": "verification-added-not-parent-closure"
+    },
+    {
+      "work_id": "legacy-252c919fead2c6355240",
+      "source_id": "01.002/000322",
+      "path": "app/core/gimpimage-contiguous-region.c",
+      "source_blob": "b4b8a2ffc03313981dab2f51b85ab1a4cd22a969",
+      "source_range": "-633,0 -> 876",
+      "source_sha256": "931ffdf70dec26a689ce2b98944920b1d1c1c346117920fa3d274147e74b94f7",
+      "source_duty": "Each scanline helper owns an iterator value.",
+      "remaining_tasks": [
+        "09.003",
+        "27.004/gegl-bounded-search",
+        "27.006",
+        "27.010"
+      ],
+      "read_scope": "Actual bounded-fill source and coverage reads with independent negative domains, child mask abyss, snapshot ownership, cache replacement and forward/backward scan boundaries.",
+      "verification": [
+        "new /fill/independent-read-domains",
+        "new /fill/read-domain-owner-orders",
+        "existing five bounded-fill invariant groups",
+        "existing pinned-runtime bounded-fill trace"
+      ],
+      "remaining_semantics": "Full bounded-fill behavioral acceptance, connectivity/grow/output writable policy and large-region responsiveness remain tracked by 27.004/gegl-bounded-search, 27.006 and 27.010; these read tests do not close all 34 historical iterator duties.",
+      "status": "verification-added-not-parent-closure"
+    },
+    {
+      "work_id": "legacy-7e231c365f1d0c3fcdc7",
+      "source_id": "01.002/000323",
+      "path": "app/core/gimpimage-contiguous-region.c",
+      "source_blob": "b4b8a2ffc03313981dab2f51b85ab1a4cd22a969",
+      "source_range": "-640,2 -> 883",
+      "source_sha256": "f49fad600dbcfbba139493188da417ab0834f3fb4bd42dea0e5294a31236d44e",
+      "source_duty": "Iterator bounds use the source region origin and exclusive endpoints.",
+      "remaining_tasks": [
+        "09.003",
+        "27.004/gegl-bounded-search",
+        "27.006",
+        "27.010"
+      ],
+      "read_scope": "Actual bounded-fill source and coverage reads with independent negative domains, child mask abyss, snapshot ownership, cache replacement and forward/backward scan boundaries.",
+      "verification": [
+        "new /fill/independent-read-domains",
+        "new /fill/read-domain-owner-orders",
+        "existing five bounded-fill invariant groups",
+        "existing pinned-runtime bounded-fill trace"
+      ],
+      "remaining_semantics": "Full bounded-fill behavioral acceptance, connectivity/grow/output writable policy and large-region responsiveness remain tracked by 27.004/gegl-bounded-search, 27.006 and 27.010; these read tests do not close all 34 historical iterator duties.",
+      "status": "verification-added-not-parent-closure"
+    },
+    {
+      "work_id": "legacy-cc879a11295dd386f529",
+      "source_id": "01.002/000324",
+      "path": "app/core/gimpimage-contiguous-region.c",
+      "source_blob": "b4b8a2ffc03313981dab2f51b85ab1a4cd22a969",
+      "source_range": "-643,2 -> 885",
+      "source_sha256": "43bc5a17d1754ba63a2f70b2e0bc51f3434fc0072fbee55108715e25354fd2a2",
+      "source_duty": "Seed/segment invocation forwards the iterator and color/alpha settings.",
+      "remaining_tasks": [
+        "09.003",
+        "27.004/gegl-bounded-search",
+        "27.006",
+        "27.010"
+      ],
+      "read_scope": "Actual bounded-fill source and coverage reads with independent negative domains, child mask abyss, snapshot ownership, cache replacement and forward/backward scan boundaries.",
+      "verification": [
+        "new /fill/independent-read-domains",
+        "new /fill/read-domain-owner-orders",
+        "existing five bounded-fill invariant groups",
+        "existing pinned-runtime bounded-fill trace"
+      ],
+      "remaining_semantics": "Full bounded-fill behavioral acceptance, connectivity/grow/output writable policy and large-region responsiveness remain tracked by 27.004/gegl-bounded-search, 27.006 and 27.010; these read tests do not close all 34 historical iterator duties.",
+      "status": "verification-added-not-parent-closure"
+    },
+    {
+      "work_id": "legacy-3b97a401a23741623db8",
+      "source_id": "01.002/000325",
+      "path": "app/core/gimpimage-contiguous-region.c",
+      "source_blob": "b4b8a2ffc03313981dab2f51b85ab1a4cd22a969",
+      "source_range": "-647 -> 888,2",
+      "source_sha256": "2161a8d927fabf58ca413012b3989321d2e8861879ca6db0cae86ab904f9d5a7",
+      "source_duty": "Failed segment early return cleans up iterator descriptors.",
+      "remaining_tasks": [
+        "09.003",
+        "27.004/gegl-bounded-search",
+        "27.006",
+        "27.010"
+      ],
+      "read_scope": "Actual bounded-fill source and coverage reads with independent negative domains, child mask abyss, snapshot ownership, cache replacement and forward/backward scan boundaries.",
+      "verification": [
+        "new /fill/independent-read-domains",
+        "new /fill/read-domain-owner-orders",
+        "existing five bounded-fill invariant groups",
+        "existing pinned-runtime bounded-fill trace"
+      ],
+      "remaining_semantics": "Full bounded-fill behavioral acceptance, connectivity/grow/output writable policy and large-region responsiveness remain tracked by 27.004/gegl-bounded-search, 27.006 and 27.010; these read tests do not close all 34 historical iterator duties.",
+      "status": "verification-added-not-parent-closure"
+    },
+    {
+      "work_id": "legacy-39d6426880753eb3f28b",
+      "source_id": "01.002/000326",
+      "path": "app/core/gimpimage-contiguous-region.c",
+      "source_blob": "b4b8a2ffc03313981dab2f51b85ab1a4cd22a969",
+      "source_range": "-648,0 -> 891,3",
+      "source_sha256": "b664a68611d8fc4f6e8cfbe772a2cac8cc2deb7077be7c4507fdcbac11eca616",
+      "source_duty": "Successful segment cleanup also releases iterator descriptors.",
+      "remaining_tasks": [
+        "09.003",
+        "27.004/gegl-bounded-search",
+        "27.006",
+        "27.010"
+      ],
+      "read_scope": "Actual bounded-fill source and coverage reads with independent negative domains, child mask abyss, snapshot ownership, cache replacement and forward/backward scan boundaries.",
+      "verification": [
+        "new /fill/independent-read-domains",
+        "new /fill/read-domain-owner-orders",
+        "existing five bounded-fill invariant groups",
+        "existing pinned-runtime bounded-fill trace"
+      ],
+      "remaining_semantics": "Full bounded-fill behavioral acceptance, connectivity/grow/output writable policy and large-region responsiveness remain tracked by 27.004/gegl-bounded-search, 27.006 and 27.010; these read tests do not close all 34 historical iterator duties.",
+      "status": "verification-added-not-parent-closure"
+    },
+    {
+      "work_id": "legacy-52a7b4ddf718671ee722",
+      "source_id": "01.002/000327",
+      "path": "app/core/gimpimage-contiguous-region.c",
+      "source_blob": "b4b8a2ffc03313981dab2f51b85ab1a4cd22a969",
+      "source_range": "-650 -> 895",
+      "source_sha256": "b51412bb7a22b35b253215cd7bf1311135c19f414ce6ca75872e005820b2b486",
+      "source_duty": "Downward traversal includes source Y origin in its exclusive bound.",
+      "remaining_tasks": [
+        "09.003",
+        "27.004/gegl-bounded-search",
+        "27.006",
+        "27.010"
+      ],
+      "read_scope": "Actual bounded-fill source and coverage reads with independent negative domains, child mask abyss, snapshot ownership, cache replacement and forward/backward scan boundaries.",
+      "verification": [
+        "new /fill/independent-read-domains",
+        "new /fill/read-domain-owner-orders",
+        "existing five bounded-fill invariant groups",
+        "existing pinned-runtime bounded-fill trace"
+      ],
+      "remaining_semantics": "Full bounded-fill behavioral acceptance, connectivity/grow/output writable policy and large-region responsiveness remain tracked by 27.004/gegl-bounded-search, 27.006 and 27.010; these read tests do not close all 34 historical iterator duties.",
+      "status": "verification-added-not-parent-closure"
+    },
+    {
+      "work_id": "legacy-01fbcd4019271c4bd859",
+      "source_id": "01.002/000328",
+      "path": "app/core/gimpimage-contiguous-region.c",
+      "source_blob": "b4b8a2ffc03313981dab2f51b85ab1a4cd22a969",
+      "source_range": "-657 -> 902",
+      "source_sha256": "31819f28ead341ebd15cf3523cbcf4f8d111dd23fbd78b2623313fe43ed4c113",
+      "source_duty": "Upward traversal includes source Y origin in its inclusive lower bound.",
+      "remaining_tasks": [
+        "09.003",
+        "27.004/gegl-bounded-search",
+        "27.006",
+        "27.010"
+      ],
+      "read_scope": "Actual bounded-fill source and coverage reads with independent negative domains, child mask abyss, snapshot ownership, cache replacement and forward/backward scan boundaries.",
+      "verification": [
+        "new /fill/independent-read-domains",
+        "new /fill/read-domain-owner-orders",
+        "existing five bounded-fill invariant groups",
+        "existing pinned-runtime bounded-fill trace"
+      ],
+      "remaining_semantics": "Full bounded-fill behavioral acceptance, connectivity/grow/output writable policy and large-region responsiveness remain tracked by 27.004/gegl-bounded-search, 27.006 and 27.010; these read tests do not close all 34 historical iterator duties.",
+      "status": "verification-added-not-parent-closure"
+    },
+    {
+      "work_id": "legacy-59c591933e446abda966",
+      "source_id": "01.002/000933",
+      "path": "app/paint/gimpmypaintcore-drawablefeature.hpp",
+      "source_blob": "f822f8d4ede027ac9185d38669b66f7133d8a7d7",
+      "source_range": "-0,0 -> 1,429",
+      "source_sha256": "def3ec2441c48c2b64e440e216c4c10ecd8a8948600a19d97a4499defa1a3866",
+      "source_duty": "GeneralDrawableFeature/GimpImageFeature/TempBufFeature contain read, write, masks, undo and floating storage. Existing GeglSurface is the actual current image-buffer reader, now with bounded byte and selection access. This does not certify TempBuf preview, Undo snapshots, writes or all feature paths.",
+      "remaining_tasks": [
+        "09.003",
+        "09.003/region-lifetime",
+        "09.004",
+        "09.005",
+        "09.006",
+        "09.008",
+        "09.011"
+      ],
+      "read_scope": "Actual image Surface read and modern TempBuf bridge, target child bounds, supplied baseline/floating/translated mask/texture interactions.",
+      "verification": [
+        "new native Surface read-domain groups",
+        "existing snapshot-isolation, coordinate-boundaries, region-lifetime and buffer-read groups"
+      ],
+      "remaining_semantics": "Whole DrawableFeature includes write, undo, floating and preview semantics beyond read acceptance; downstream tasks must preserve those obligations.",
+      "status": "verification-added-not-parent-closure"
+    }
+  ]
+}

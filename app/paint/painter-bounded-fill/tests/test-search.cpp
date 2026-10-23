@@ -37,5 +37,68 @@ void validation(){
   GeglRectangle overflow={G_MAXINT,0,2,2};caught=false;try{Search bad(s,nullptr,overflow,0,0,o);}catch(const std::invalid_argument&){caught=true;}g_assert_true(caught);
   auto*linear=buffer(r,"Y u8",p);caught=false;try{Snapshot bad(linear,1,false,0,0);}catch(const std::invalid_argument&){caught=true;}g_assert_true(caught);g_object_unref(linear);g_object_unref(b);
 }
+void independent_read_domains()
+{
+  // More than eight horizontal cache tiles, across negative tile boundaries.
+  // A child mask must not expose its populated parent's halo.
+  for (int channels : {1, 2, 3, 4})
+    for (std::size_t budget : {std::size_t(1), std::size_t(37), std::size_t(4096)})
+      {
+        const char *formats[] = {"Y' u8", "Y'A u8", "R'G'B' u8", "R'G'B'A u8"};
+        const bool alpha = channels == 2 || channels == 4;
+        const GeglRectangle extent = {-131, -66, 580, 5};
+        const GeglRectangle mask_extent = {-125, -65, 570, 3};
+        const GeglRectangle roi = {-129, -66, 576, 5};
+        std::vector<guchar> pixels(580 * 5 * channels, 73);
+        if (alpha)
+          for (std::size_t i = channels - 1; i < pixels.size(); i += channels)
+            pixels[i] = 255;
+        auto *source = buffer(extent, formats[channels-1], pixels);
+        auto *mask_parent = buffer(extent, "Y u8", std::vector<guchar>(580 * 5, 255));
+        auto *mask = gegl_buffer_create_sub_buffer(mask_parent, &mask_extent);
+        // A source mismatch cuts the reachable domain even with full coverage.
+        for (int y = 0; y < 5; ++y) pixels[(y * 580 + 561) * channels] = 190;
+        gegl_buffer_set(source, &extent, 0, babl_format(formats[channels-1]), pixels.data(), GEGL_AUTO_ROWSTRIDE);
+        auto snapshot = std::make_shared<Snapshot>(source, channels, alpha, -120, -64);
+        Search::Options options; options.grow = false; options.antialias = false; options.threshold = 0;
+        Search job(snapshot, mask, roi, -120, -64, options);
+        // Production owns immutable copies, not these caller references.
+        gegl_buffer_clear(source, &extent); gegl_buffer_clear(mask_parent, &extent);
+        g_object_unref(source); g_object_unref(mask); g_object_unref(mask_parent);
+        finish(job, budget);
+        const auto actual = read(job.result());
+        for (int y = 0; y < extent.height; ++y)
+          for (int x = 0; x < extent.width; ++x)
+            {
+              const int xx = x + extent.x, yy = y + extent.y;
+              const bool reachable = xx >= -125 && xx < 430 && yy >= -65 && yy < -62;
+              g_assert_cmpuint(actual[y * extent.width + x], ==, reachable ? 255 : 0);
+            }
+      }
 }
-int main(int argc,char**argv){gegl_init(&argc,&argv);g_test_init(&argc,&argv,nullptr);g_test_add_func("/fill/barriers",barriers);g_test_add_func("/fill/immutable",immutable);g_test_add_func("/fill/connectivity-grow",connectivity_grow);g_test_add_func("/fill/cancellation",cancellation);g_test_add_func("/fill/validation",validation);return g_test_run();}
+void read_domain_owner_orders()
+{
+  const GeglRectangle extent = {-70, -2, 140, 4};
+  for (bool cancel : {false, true})
+    {
+      auto *source = buffer(extent, "Y' u8", std::vector<guchar>(560, 40));
+      auto snapshot = std::make_shared<Snapshot>(source, 1, false, -1, 0);
+      std::weak_ptr<const Snapshot> weak = snapshot;
+      GeglBuffer *retained = nullptr;
+      {
+        Search::Options options; options.grow = false;
+        Search job(snapshot, nullptr, extent, -1, 0, options);
+        snapshot.reset(); g_object_unref(source);
+        g_assert_false(weak.expired());
+        job.step(17); g_assert_null(job.result());
+        if (cancel) { job.cancel(); job.step(1000); g_assert_null(job.result()); }
+        else { finish(job, 31); retained = GEGL_BUFFER(g_object_ref(job.result())); }
+      }
+      g_assert_true(weak.expired());
+      if (retained)
+        { for (auto value : read(retained)) g_assert_cmpuint(value, ==, 255); g_object_unref(retained); }
+    }
+}
+
+}
+int main(int argc,char**argv){gegl_init(&argc,&argv);g_test_init(&argc,&argv,nullptr);g_test_add_func("/fill/barriers",barriers);g_test_add_func("/fill/immutable",immutable);g_test_add_func("/fill/connectivity-grow",connectivity_grow);g_test_add_func("/fill/cancellation",cancellation);g_test_add_func("/fill/validation",validation);g_test_add_func("/fill/independent-read-domains",independent_read_domains);g_test_add_func("/fill/read-domain-owner-orders",read_domain_owner_orders);return g_test_run();}

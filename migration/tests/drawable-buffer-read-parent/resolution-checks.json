@@ -1,0 +1,56 @@
+{
+  "scope": "Criterion/source-duty separation checks, not additional rendering or sanitizer execution",
+  "results": [
+    {
+      "command": [
+        "python3",
+        "tools/check_drawable_buffer_read_resolution.py"
+      ],
+      "exit_code": 0,
+      "stdout": "48 unchanged source-duty identities; read checkpoint and current successor completion rules verified\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "tools/tests/test_drawable_buffer_read_resolution.py"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "...............\n----------------------------------------------------------------------\nRan 15 tests in 3.589s\n\nOK\n"
+    },
+    {
+      "command": [
+        "python3",
+        "tools/tests/test_drawable_buffer_read.py"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ".........\n----------------------------------------------------------------------\nRan 9 tests in 1.873s\n\nOK\n"
+    },
+    {
+      "command": [
+        "python3",
+        "tools/check_tasks.py"
+      ],
+      "exit_code": 0,
+      "stdout": "WBS dependencies, states, and completion evidence: OK\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "migration/tests/drawable-buffer-read-parent/validate.py",
+        "--check-source"
+      ],
+      "exit_code": 0,
+      "stdout": "48 retained obligations; native 12+7 and standalone normal/sanitized 7+7 verified\n",
+      "stderr": ""
+    }
+  ],
+  "source_sha256": {
+    "migration/contracts/drawable-buffer-read-resolution.json": "e32c470a53edae0aab76fb5bbcc8519c2e84b7bbbc476395c74c1636b685326c",
+    "tools/check_drawable_buffer_read_resolution.py": "c02434535d991f601f00bf23343f36e135fb43f81cf3ffdef29cf18752af0082",
+    "tools/tests/test_drawable_buffer_read_resolution.py": "59d5ee5f58a68d7d4613bbd1cbce2b57ece884fd67f962224ba72f350137541b"
+  }
+}

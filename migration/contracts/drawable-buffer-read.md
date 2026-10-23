@@ -1,6 +1,10 @@
 # Bounded Surface buffer reads (09.003/bounded-surface-read)
 
-This is an implemented and tested child of 09.003, not completion of the parent.
+This document records the bounded child at the time it was implemented; that
+child alone did not complete 09.003. The current criterion-level resolution is
+recorded below and in `drawable-buffer-read-resolution.json`. Historical child
+reports/manifests retain their original `parent_complete: false`; they do not
+assert completion of the 48 broader whole-hunk duties.
 The actual existing replacement for the MyPaint image-buffer read path was
 `GeglSurface::Impl::read`; adding a parallel DrawableFeature class would duplicate
 that path. It now calls the small `BufferRead` helper. Target, initial-snapshot,
@@ -93,4 +97,51 @@ Registered neighbors: coordinate-boundaries, region-lifetime, native-precision,
 legacy-surface, legacy-selection and snapshot-isolation (each with the
 `painter-mypaint-` prefix). These are normal native tests. The separate standalone
 report supplies sanitizer evidence; no full-app sanitizer, full native aggregate,
-LeakSanitizer or cross-platform pass is implied. Parent 09.003 stays open.
+LeakSanitizer or cross-platform pass is implied. At that child-only checkpoint, parent 09.003 stayed open.
+
+
+## Current 09.003 criterion resolution
+
+The original action **DrawableFeature の buffer read を実装する** and original
+acceptance **負の offset と部分領域を読める** are unchanged. Dependency 09.002 is
+DONE. The bounded reader proof is now supplemented by actual native
+GimpTempBuf-to-GEGL nested-child reads, independently owned padded results,
+combined negative-domain Surface target/snapshot/floating/selection/texture
+reads, and bounded-fill source/mask-domain and lifetime tests. Normal native
+Surface12 + fill7 pass; fill7 also pass in standalone normal and instrumented
+production-source builds. See `../tests/drawable-buffer-read-parent/`.
+
+That establishes the original **read criterion**, not whole-file migration.
+Historical 48 source IDs, pinned identities, inventory assignments and TODO
+statuses are unchanged. `drawable-buffer-read-resolution.json` provides one
+entry per source duty with the original duty text and explicit surviving
+obligations, while each owner progress row links back to this contract:
+
+| Historical duties | Surviving existing owners | What remains unproven by reads |
+|---|---|---|
+| Six five-region dispatcher hunks | 09.004, 31.017 | Write-side independent domains; registration, descriptor copying, serial/parallel replacement, scheduling and lifetime |
+| One complete pixel.hpp | 09.004, 31.017 | Scalar arithmetic and elimination of the old representation, not just bit-preserving reads |
+| Six TempBuf/subwindow hunks | 09.004, 09.005 | Child write bounds, conversion, alias/copy/export/stride and full lifecycle |
+| 34 contiguous-fill iterator hunks | 27.004/gegl-bounded-search, 27.006, 27.010 | Full legacy coverage/grow/output writable policy and cleanup, connectivity, cancellation and UI responsiveness |
+| One complete DrawableFeature header | 09.004–09.009, 09.011, 09.012, 09.003/region-lifetime | Writes, TempBuf conversion, masks, snapshot, floating/work allocation, Undo, commit/cancel and every failure/early-return lifetime path |
+
+This prevents a dependency cycle: read09.003 need not wait for write09.004 or
+conversion09.005, which already depend on read. It does not weaken those future
+tasks or mark their behavior done. No artificial child substitutes for the
+original criterion. `tools/check_drawable_buffer_read_resolution.py` checks all
+48 identities, unchanged historical duty text, unfinished inventory statuses,
+retention of every previous non-read successor, additional DrawableFeature
+owners, dependency completion, original WBS wording and reverse cross-links.
+Its negative controls reject missing/duplicate duties, changed identities,
+dropped dispatch/Undo owners, changed acceptance, whole-hunk completion,
+self-dependency and nonexistent owners. The old bounded-child checker continues
+to validate the unchanged historical child independently.
+
+
+The resolution manifest is the immutable read-completion checkpoint: its 48
+whole-hunk statuses stay TODO. Current inventory may subsequently advance a
+hunk to DONE only after **all** its explicit successor owners are DONE/checked
+and have non-placeholder artifact, test and result evidence. The completeness
+validator allows this legitimate future advancement, but rejects premature
+completion or absent completion evidence. Source identity and ownership
+cross-links remain mandatory; this is not permission to drop an obligation.

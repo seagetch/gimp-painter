@@ -293,6 +293,8 @@ static void rgb_native_cancel_undo()
     g_object_unref(options);g_object_unref(image);
   }
 }
+#include "test-painter-buffer-read-domains.inc"
+
 int main(int argc,char**argv)
 {
   g_test_init(&argc,&argv,nullptr);gimp_test_utils_set_gimp3_directory("GIMP_TESTING_ABS_TOP_SRCDIR","app/tests/gimpdir");gimp=gimp_init_for_testing();
@@ -306,5 +308,7 @@ int main(int argc,char**argv)
   g_test_add_func("/painter-surface/starting-reentry-deferred-cancel",starting_reentry_and_deferred_cancel);
   g_test_add_func("/painter-surface/image-lifetime-native-callbacks",image_lifetime_across_native_callbacks);
   g_test_add_func("/painter-surface/drawable-removal-native-callbacks",drawable_removal_during_native_callbacks);
+  g_test_add_func("/painter-surface/temp-buf-read-domains",temp_buf_read_domains);
+  g_test_add_func("/painter-surface/combined-read-domains",surface_combined_read_domains);
   int result=g_test_run();gimp_test_utils_set_gimp3_directory("GIMP_TESTING_ABS_TOP_BUILDDIR","app/tests/gimpdir-output");gimp_exit(gimp,TRUE);return result;
 }

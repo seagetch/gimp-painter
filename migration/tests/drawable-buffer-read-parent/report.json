@@ -1,0 +1,50 @@
+{
+  "task": "09.003",
+  "parent_complete": false,
+  "scope": "Read-domain behavioral verification, not closure of all 48 source duties",
+  "source_state": "working candidate, not exact clean aggregate commit",
+  "source_sha256": {
+    "app/tests/test-gimp-painter-surface.cpp": "79f0a80dc12678d0ef88060add99b4a7374fae97c02f2e534b643c5d72f736be",
+    "app/tests/test-painter-buffer-read-domains.inc": "44263930557d8e37ad9620a133e495a78209491fdd8e09379f0e87506b8e552c",
+    "app/paint/painter-bounded-fill/tests/test-search.cpp": "c0a2c9bb4b5767ddb3f7f49fc66c8ef28caf7ed8fc9b6b64ffebf1f96351f473",
+    "app/paint/painter-bounded-fill/search.cpp": "9aefd9e47b15b8dd9eecc531df1be0bc8ac6c2c511bd6a488256b15d47ece254",
+    "app/paint/painter-bounded-fill/search.hpp": "64c5aba5634fc97d78a8642b5849409fe435fba4e069f922eac587c20bf15c16",
+    "app/paint/painter-mypaint-surface/gegl-surface.cpp": "24921337d94409ac87460dfaa9a54d045bc8f8670af44b001bc63637da7c81dc",
+    "app/paint/painter-mypaint-surface/gegl-surface.hpp": "884084cf46a02639014ab8e777f55155cdd4571807f196874b6f7c68f7fe324d",
+    "app/paint/painter-mypaint-surface/buffer-read.hpp": "fe4ad4518f6223505f65d7b2173b30608b8c4e049ea5af9f7ec0cdeaf7d3b02d",
+    "app/core/gimptempbuf.c": "271eda001c7d27d87b0c26ab8779f14021462bc7a968f1fcd4c9b931e59557ce",
+    "app/core/gimptempbuf.h": "be15f49b53a6ac57232274d2441259f4abd137a1173c549da2e4490edd6166ff"
+  },
+  "native_tree_hashes_match": true,
+  "registered_results": [
+    {
+      "name": "gimp:painter / painter-bounded-fill",
+      "result": "OK",
+      "duration": 0.0986337661743164,
+      "passed": 7
+    },
+    {
+      "name": "gimp:app / gimp-painter-surface",
+      "result": "OK",
+      "duration": 1.148406744003296,
+      "passed": 12
+    }
+  ],
+  "display": {
+    "runner": "tools/run-painter-xvfb.py",
+    "width": 1080,
+    "height": 1920,
+    "depth": 24,
+    "authenticated": true
+  },
+  "evidence_sha256": {
+    "registered-native.json": "06e4190f8190d062276d9e3953b039e4946e08731bf4c4091c0e39bf50c23f37",
+    "fill-normal-sanitizers.json": "ef6298420bdf63967cfcdc727c1620f71f68ffe2f45247514db32bc373df89f3",
+    "run-fill.py": "2bc771dd123b957dacd8c3dfedf7a79e1a382d1831d5dd38f42e2c5cdccd283f",
+    "README.md": "4bd942897ca41f7d926f262cab03c6e41726664f6ecba74d423397a05180f633",
+    "build.log": "b9fa2b6a811523a97539f58176426871e91335f8027c836aff718fc33c7a2780",
+    "run.log": "3d6a04680131187bf9a64dbf026b3730df8bf716ccb04407e6e89aaf9bdaad31",
+    "run.sh": "e9e8f8ff6ea408a2751cce440ebad5f7be667d861450eef5b58aca00271ffb54",
+    "duty-audit.json": "82a53bc22bd9cf9367c92f63f4e451202c9c33b98e9d529f44b191e98bcf366a"
+  }
+}
