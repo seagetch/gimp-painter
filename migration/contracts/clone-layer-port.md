@@ -459,10 +459,10 @@ all its input/receipt bytes remain unchanged.
 This bounded independent verification child uses completed
 `14.001/core-implementation`, `14.007/component-visibility-regression`,
 `10.005/normal-multiply-parity`, `02.005`, and `09.002` under the existing WBS
-parallelization rule. Parent `14.007` and predecessor `14.006` remain open. The
-implementation checkpoint adds tests only; native execution and acceptance are
-pending. The accepted component-visibility receipt above and every historical
-source hash remain unchanged.
+parallelization rule. Parent `14.007` and predecessor `14.006` remain open. This
+tests-only child is accepted by the source-bound native receipt below. The
+accepted component-visibility and installed portrait GUI receipts above, and
+every historical source hash, remain unchanged.
 
 Expected bytes are independently derived from pinned legacy source
 `afa43fae3e920210146abed514f136fd49f671b5`; this is not a new genuine old-runtime
@@ -521,3 +521,60 @@ here, together with groups, indexed/high-precision images, full image
 composition, XCF admission, GUI, platforms, full aggregate and whole-port gates.
 The broader source-mode gap remains open outside this exact initial-region
 slice. No old Edge/runtime build or execution is part of this work.
+
+
+### Accepted source-mode receipt (2026-10-17)
+
+`migration/tests/clone-source-mode-projection-evidence.tar.xz` preserves the
+complete public strict receipt for `source-modes-run-001`:
+
+- Tested source commit: `7ab1230c1e1d77cc143f93f71e44a16aea021009`
+- Tested tree: `c2785ea8a438ab6ac0c9284da6c4604520099172`
+- Archive SHA-256: `65ed9e7b9343e3a745220350cda057e681c7e025a25eafb60d71e86497ff015d`
+- Receipt SHA-256: `c341014c3892ed7400cbae3bcf9bebcd884eb25a32e32cab42b37dc3ebd2fa6a`
+- Test C source SHA-256: `8da47900b3fac3e8c33cd94fad458ac06852800bfa64bc409a1a123c428508ae`
+
+The unchanged reviewed harness completed the full default incremental Ninja
+build, then all seven exact, unfiltered registered Meson targets: `core` 4,
+`projection-update-bounds` 3, `gimp-clone-layer` 62, `painter-layer-ui` 68,
+`painter-layer-tree` 35, `painter-xcf-roundtrip` 49 and `update-geometry` 5.
+All 226 positive TAP cases passed without skipped cases or timeouts. The
+retained configured build was revalidated; this is not a from-empty build.
+
+Focused ASan/UBSan passed all 62 Clone cases. Both normal and sanitizer output
+contain exactly 216 distinct mode/type/mask scene records for the four new
+source-mode cases. Exactly eight source units are instrumented, while 54 linked
+C++ units are rebuilt with RTTI only for compatibility. Those 54 units are not
+sanitizer coverage. UBSan vptr checks remain enabled and LSan remains disabled;
+upstream/dependency code outside the eight-unit scope is uninstrumented. No
+production Clone code or evidence-tooling change was required. The full default
+build and sanitizer console logs contain no compiler warning lines.
+
+The strict receipt verifies unchanged source, default-build freshness, compile
+database, full 164-target registry, ELF/shared-library loader provenance and all
+361 configured locale catalogs before and after testing. Sanitizer artifacts
+are isolated from normal build objects. An authenticated 1080×1920 Xvfb supports
+the tests; this is not another installed GUI smoke test. The archive is distinct
+from the accepted component-visibility archive, retains every public receipt
+member unchanged, and independently validates against the original receipt
+directory. Explicit logged transformations remove inherited-environment headers
+from raw Meson output; no test or diagnostic evidence is dropped.
+
+The independent source review verified the literal mapping, pinned-source
+rounding, mask getter preconditions, mode notifications/no-ops and actual pixel
+mutation checks before native execution. The unchanged strict evidence and
+archive controls pass 44 and 17 cases. Source-only preflight acceptance checks
+intentionally rejected the older 58-case component receipt after four test
+registrations were added. Those stale-receipt and initially uninitialized
+submodule checks are retained in external checkpoint records; they are not
+failed native runs and do not replace the older accepted receipt. The first
+native source-mode attempt passed. Historical core reports and their four
+known historical source-hash mismatches remain unchanged; the new source-bound
+receipt supports only its actual rerun and the bounded child described here.
+
+The original GUI receipt still records its exact tested `1d2b621a` source and
+the earlier component receipt still records `63be6dcf0a`; neither is relabeled
+as a run of this source. Genuine old-runtime comparison, raw 2/22 admission,
+show-mask mode transitions and the wider group/indexed/precision/compositing,
+XCF, GUI/platform/full aggregate and whole-port gates remain open. The skipped
+legacy Edge/runtime work is not resumed or counted as accepted.
