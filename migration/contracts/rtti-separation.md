@@ -144,8 +144,24 @@ compile/link/runtime. Final reports record the correction, source hashes and
 identity checks for retained object-compilation and foundation results. No
 production defect or product-policy change is attributed to that fixture fix.
 
-Focused UBSan vptr harnesses are a separate test policy. They deliberately
-recompile instrumented C++ with RTTI and obtain the production no-RTTI
+Standard Meson builds with `-Db_sanitize=undefined` or
+`-Db_sanitize=address,undefined` explicitly enable RTTI for Painter targets and
+the core/display bridge consumers. The required compiler switch and a configure
+probe check RTTI availability. This preserves UBSan's vptr checks and consistent
+metadata for shared polymorphic classes, including `TemporaryFilterRaster`,
+BindingStore, Surface and shared-pointer implementations. The normal build
+retains its no-RTTI Painter flags and unchanged core/display defaults; enabling
+compiler RTTI for instrumentation does not add an RTTI-based API dependency.
+Sanitizer builds use the ordinary Meson configure/compile/test workflow without
+rewriting build metadata or substituting individually rebuilt objects. Actual
+test results must state the configured sanitizer set and any unavailable
+diagnostics, such as leak detection in an environment that cannot run LSan.
+The sanitizer-only `painter-filter-raster` typeinfo-linkage case requires RTTI
+in its consumer and references the real library's `TemporaryFilterRaster`
+metadata; it cannot silently skip itself when the compiler has disabled RTTI.
+
+Historical focused UBSan vptr harnesses used a separate test policy. They deliberately
+recompiled instrumented C++ with RTTI and obtained the production no-RTTI
 compatibility closure from the actual compile database using
 `migration/tests/painter_sanitizer_scope.py`. Extra compatibility units receive
 RTTI only and must be listed separately from sanitizer-instrumented units.

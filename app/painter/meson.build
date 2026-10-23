@@ -27,10 +27,31 @@ if cxx.get_argument_syntax() == 'gcc'
   painter_inline_visibility_args = cxx.get_supported_arguments(
     ['-fvisibility-inlines-hidden'], checked: 'require')
 endif
-painter_cpp_args = painter_exception_args + painter_inline_visibility_args + cxx.get_supported_arguments(['-fno-rtti'])
-if cxx.get_id() == 'msvc'
-  painter_cpp_args += ['/GR-']
+# UBSan's vptr checks need consistent type information in the owning libraries
+# and their consumers. Keep the normal no-RTTI API proof, but enable RTTI for
+# the complete Painter bridge when using Meson's standard undefined sanitizer.
+painter_sanitizer_rtti_args = []
+if get_option('b_sanitize').split(',').contains('undefined')
+  painter_rtti_switch = cxx.get_argument_syntax() == 'msvc' ? '/GR' : '-frtti'
+  painter_sanitizer_rtti_args = cxx.get_supported_arguments(
+    [painter_rtti_switch], checked: 'require')
+  if not cxx.compiles('''
+    #if !defined(__GXX_RTTI) && !defined(_CPPRTTI)
+    #error Painter undefined sanitizer requires C++ RTTI
+    #endif
+    int main () { return 0; }
+  ''', args: painter_sanitizer_rtti_args,
+       name: 'Painter undefined sanitizer RTTI support')
+    error('Painter undefined sanitizer requires RTTI for vptr checks')
+  endif
+  painter_rtti_args = painter_sanitizer_rtti_args
+else
+  painter_rtti_args = cxx.get_supported_arguments(['-fno-rtti'])
+  if cxx.get_id() == 'msvc'
+    painter_rtti_args += ['/GR-']
+  endif
 endif
+painter_cpp_args = painter_exception_args + painter_inline_visibility_args + painter_rtti_args
 
 libapppainter = static_library('apppainter',
   'gimp-painter-error.cpp',
@@ -99,6 +120,9 @@ foreach feature : ['filter-wire', 'filter-process', 'filter-scheduler', 'filter-
   if feature == 'filter-process' and host_machine.system() == 'linux'
     feature_cpp_args += ['-DFILTER_PROCESS_WRAP_REAPER']
     feature_link_args += ['-Wl,--wrap=waitid', '-Wl,--wrap=kill']
+  endif
+  if feature == 'filter-raster' and get_option('b_sanitize').split(',').contains('undefined')
+    feature_cpp_args += ['-DPAINTER_TEST_SANITIZER_RTTI']
   endif
   feature_test = executable('painter-' + feature,
     'tests/test-' + feature + '.cpp',
