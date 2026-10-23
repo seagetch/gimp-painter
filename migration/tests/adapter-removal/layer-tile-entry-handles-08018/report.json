@@ -1,0 +1,3319 @@
+{
+  "scope": "08.018 original LayerTileView construction/property rows 32\u201333",
+  "public_base": "32df9950bc6eb72283bb3038d8b02eebba4fb6ea",
+  "public_tree": "55856fa63adc1e1e4f1dc9b61a4d81ba05f62eb6",
+  "source_manifest": [
+    {
+      "path": "app/widgets/gimppainterlayertiles.cpp",
+      "before_blob": "ab74550831814c3d62260c72604a1bbf9fba0f67",
+      "after_blob": "51f9108e1120c1a588f1ce403e3071d19f94ef28",
+      "sha256": "379673fae5ee805058614cac651bd4650915a9c4534a5dd8855740c89f5a9829",
+      "bytes": 51564
+    },
+    {
+      "path": "app/widgets/gimppainterlayertiles.h",
+      "before_blob": "c6315a47a11a174da679523fdb2cfd24d730ec70",
+      "after_blob": "c6315a47a11a174da679523fdb2cfd24d730ec70",
+      "sha256": "58ac463fc09bb52183a3eb5e0d9cd4e296e6f83ddd8b2fea6e2b025c3536f1e4",
+      "bytes": 1689
+    },
+    {
+      "path": "app/display/gimppaintercanvasui.cpp",
+      "before_blob": "c7593df3ec2894fcf58793066c6ffb0f16bd5de7",
+      "after_blob": "92ac264d8a1f9726b4ed302d2e35fe28620d9684",
+      "sha256": "7a68916684310d56176c29f353d0d0c1461875e3c55b6a97d8800a82e3a555b4",
+      "bytes": 53046
+    },
+    {
+      "path": "app/tests/meson.build",
+      "before_blob": "74058de06a817550298a0fa27c543ee55b8dccb6",
+      "after_blob": "652d7aa0823a31c4bcd837c2bf69106845462eb4",
+      "sha256": "b937e9465470f8356d4a2dacce7ac3a193f8f21483ec2000d41b1c3c10712063",
+      "bytes": 43509
+    },
+    {
+      "path": "migration/inventory/additional-c-header-routes.json",
+      "before_blob": "56bb73c73d8ff57fe53aee5dfb2afaf324cacfa8",
+      "after_blob": "4f4f74d824c98f1233457eb4b3b7ec46b4f0104c",
+      "sha256": "2b3c50adab807893a8782edea85a40ff2e32c7b372855bfb733ff28b13f884c0",
+      "bytes": 5109
+    },
+    {
+      "path": "app/widgets/gimplayertileview.h",
+      "before_blob": null,
+      "after_blob": "37e2bfab34d6c5518c527d7b23f40054aba1e42b",
+      "sha256": "f01627897a7d5b78d34198eac7a826c0f40bb070aade2a564ac843a35ee441c7",
+      "bytes": 1763
+    },
+    {
+      "path": "app/widgets/gimplayertileview-handle.hpp",
+      "before_blob": null,
+      "after_blob": "940ab81a9de509112c4a217527f64c261f0611b6",
+      "sha256": "93509ac2adae6a181443aef2f4bbc3658153a5a63c05e9620872e47dee7f5faa",
+      "bytes": 1080
+    },
+    {
+      "path": "app/tests/test-layer-tile-entry-contracts.c",
+      "before_blob": null,
+      "after_blob": "3312a602b93b6d82d8bf8ea13f8dd5f36ea107b5",
+      "sha256": "92e2911d44f4f8d21cc4c0c2e6d42744d489c4e791418feaa20f23a3c9580b26",
+      "bytes": 45794
+    },
+    {
+      "path": "app/tests/test-layer-tile-entry-contracts.cpp",
+      "before_blob": null,
+      "after_blob": "74646293ac3c2a983b4f739a27ee88251d346d96",
+      "sha256": "3661308d4fcd3eb7b1e7365efe229349b33622a505b351148d8589d0b669a4a9",
+      "bytes": 25171
+    },
+    {
+      "path": "migration/contracts/cpp-c-entry-map.tsv",
+      "before_blob": "1f7908605b0da5233ee0fbb788b0960a618469fc",
+      "after_blob": "545b519c1346a89c43a38587184c3f378833c219",
+      "sha256": "3f613d57f3fe8456437f5f0f0de0be9ad7fc1c6293fbc32c3d2681eee5ab2650",
+      "bytes": 29721
+    }
+  ],
+  "results": {
+    "native": [
+      {
+        "run": "layer-tile-entry-candidate-native-v6",
+        "status": "PASS",
+        "case_count": 32,
+        "selected_case": null,
+        "language_case_counts": {
+          "c11": 20,
+          "cpp14": 12
+        },
+        "actual_c11": true,
+        "timeouts_unchanged": true,
+        "timeout_multiplier": null,
+        "isolation_and_authenticated_loopback_verified": true,
+        "lsan_enabled": null,
+        "verifier_sha256": "382446fd2422e54ab78b1d17bbfdf60425165872cdad4e0066d4f35213be90a7",
+        "input_sha256": {
+          "results.json": "cdb3b849ed014ce8e6a0a32c569fa61b0be4f7629cee3d61f72341ad79d846ff",
+          "registrations.json": "fdb4476b12237cdeec17a9f4d9a34c2c84a0d717a5549777f957289204275e2d",
+          "layer-tile-entry-candidate-native-v6.json": "2ed3e2c9ea011adc33da8c4f1a2e44323ed465ed3f8d36a791a88cc4a7a6be14",
+          "server.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "xauth-create.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "layer-tile-entry-candidate-native-v6-source-before.json": "08de4e94efbe38f28a79d666f64fa6b4465f6eec6922ebd7d87b52c15971285c",
+          "layer-tile-entry-candidate-native-v6-source-after.json": "08de4e94efbe38f28a79d666f64fa6b4465f6eec6922ebd7d87b52c15971285c",
+          "layer-tile-entry-candidate-native-v6.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+        },
+        "process_exit": 0,
+        "meson_exit": 0,
+        "xserver_exit": 0,
+        "results": [
+          {
+            "name": "layer-tile-entry-contracts",
+            "cases": [
+              "/layer-tile-entry-contracts/c/c_factory_type_and_property_contract",
+              "/layer-tile-entry-contracts/c/c_construct_property_orders",
+              "/layer-tile-entry-contracts/c/c_deferred_nullable_assignment_matrix",
+              "/layer-tile-entry-contracts/c/c_context_only_and_active_image_independence",
+              "/layer-tile-entry-contracts/c/c_inherited_source_properties_stay_isolated",
+              "/layer-tile-entry-contracts/c/c_exact_object_getter_reference_lifetimes",
+              "/layer-tile-entry-contracts/c/c_replacement_and_destroy_release_inputs",
+              "/layer-tile-entry-contracts/c/c_same_image_context_refreshes_previews",
+              "/layer-tile-entry-contracts/c/c_contextless_image_actions_inert",
+              "/layer-tile-entry-contracts/c/c_property_notifications_newer_assignment",
+              "/layer-tile-entry-contracts/c/c_property_notifications_destroy_no_revival",
+              "/layer-tile-entry-contracts/c/c_popup_close_newer_context_and_image",
+              "/layer-tile-entry-contracts/c/c_popup_close_aba_context_and_image",
+              "/layer-tile-entry-contracts/c/c_popup_close_destroy_no_revival",
+              "/layer-tile-entry-contracts/c/c_popup_close_same_target_image",
+              "/layer-tile-entry-contracts/c/c_context_clear_explicit_image_clear_wins",
+              "/layer-tile-entry-contracts/c/c_context_refresh_row_destroy_reentry",
+              "/layer-tile-entry-contracts/c/c_parent_image_reentry_keeps_newer_popup",
+              "/layer-tile-entry-contracts/c/c_native_invalid_and_wrong_thread_controls",
+              "/layer-tile-entry-contracts/c/c_destroyed_original_entry_is_terminal",
+              "/layer-tile-entry-contracts/cpp/original-provider-and-store",
+              "/layer-tile-entry-contracts/cpp/create-parent-first",
+              "/layer-tile-entry-contracts/cpp/create-handle-first",
+              "/layer-tile-entry-contracts/cpp/retain-parent-first",
+              "/layer-tile-entry-contracts/cpp/retain-handle-first",
+              "/layer-tile-entry-contracts/cpp/copy-move-ownership",
+              "/layer-tile-entry-contracts/cpp/retain-rejects-invalid",
+              "/layer-tile-entry-contracts/cpp/original-selection-and-visibility",
+              "/layer-tile-entry-contracts/cpp/original-popup-clone-undo",
+              "/layer-tile-entry-contracts/cpp/original-popup-preset-undo",
+              "/layer-tile-entry-contracts/cpp/supplied-context-isolation",
+              "/layer-tile-entry-contracts/cpp/both-canvas-action-isolation"
+            ],
+            "case_count": 32,
+            "duration_seconds": 5.989940166473389,
+            "registered_timeout_seconds": 120,
+            "stderr_lines": 80
+          }
+        ],
+        "allowed_exact_nonfatal_cloud_debug_count": 1,
+        "compile_units": [
+          {
+            "file": "gimppainterlayertiles.cpp",
+            "compiler": "c++",
+            "sanitized": false,
+            "standard": [
+              "-std=c++14"
+            ],
+            "object_sha256": "f68e9df9e68bbf1b16c8f63d6483b95dc505b38ac6f3cd1ba51604dcb9126c8a"
+          },
+          {
+            "file": "gimppaintercanvasui.cpp",
+            "compiler": "c++",
+            "sanitized": false,
+            "standard": [
+              "-std=c++14"
+            ],
+            "object_sha256": "3cc467937564557ed2dda200dd9f1ecbb567c5196de0fd3c59fb7366690a3e18"
+          },
+          {
+            "file": "test-layer-tile-entry-contracts.c",
+            "compiler": "cc",
+            "sanitized": false,
+            "standard": [
+              "-std=c11"
+            ],
+            "object_sha256": "62180734c1d9a1f5b71377d6b65b35395c6fd1fe5b27bb0c2fe25c9d0b1d77a0"
+          },
+          {
+            "file": "test-layer-tile-entry-contracts.cpp",
+            "compiler": "c++",
+            "sanitized": false,
+            "standard": [
+              "-std=c++14"
+            ],
+            "object_sha256": "7c8e99f8a4a784429451b3d0722c1a125f89506864e0b90f9dcc9806f16f3767"
+          }
+        ],
+        "binary_sha256": "aed5c5a5d6d490732697e2df9f663731c3a1e62b36eacf663701828ded75c56a"
+      },
+      {
+        "run": "layer-tile-entry-regression-native-case1-v2",
+        "status": "PASS",
+        "case_count": 1,
+        "selected_case": "/painter-canvas-ui/selection_and_visibility",
+        "language_case_counts": {
+          "c11": 0,
+          "cpp14": 0
+        },
+        "actual_c11": false,
+        "timeouts_unchanged": true,
+        "timeout_multiplier": null,
+        "isolation_and_authenticated_loopback_verified": true,
+        "lsan_enabled": null,
+        "verifier_sha256": "382446fd2422e54ab78b1d17bbfdf60425165872cdad4e0066d4f35213be90a7",
+        "input_sha256": {
+          "results.json": "09b4d832fcad6dc00946552aba37c68fdfe9578abe9a8034cfb9d9d7040891b9",
+          "registrations.json": "fdb4476b12237cdeec17a9f4d9a34c2c84a0d717a5549777f957289204275e2d",
+          "layer-tile-entry-regression-native-case1-v2.json": "6039666e1a3ea52b0d1d16e5ae50ee5de341e5289a594451dfc1556231296704",
+          "server.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "xauth-create.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "layer-tile-entry-regression-native-case1-v2-source-before.json": "06b8173421c22b9237a44e14102da7617771ee6ffcf791a97a2e83019e2ce7ad",
+          "layer-tile-entry-regression-native-case1-v2-source-after.json": "06b8173421c22b9237a44e14102da7617771ee6ffcf791a97a2e83019e2ce7ad",
+          "layer-tile-entry-regression-native-case1-v2.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+        },
+        "process_exit": 0,
+        "meson_exit": 0,
+        "xserver_exit": 0,
+        "results": [
+          {
+            "name": "painter-canvas-ui",
+            "cases": [
+              "/painter-canvas-ui/selection_and_visibility"
+            ],
+            "case_count": 1,
+            "duration_seconds": 2.3032615184783936,
+            "registered_timeout_seconds": 60,
+            "stderr_lines": 80
+          }
+        ],
+        "allowed_exact_nonfatal_cloud_debug_count": 1,
+        "compile_units": [
+          {
+            "file": "gimppainterlayertiles.cpp",
+            "compiler": "c++",
+            "sanitized": false,
+            "standard": [
+              "-std=c++14"
+            ],
+            "object_sha256": "f68e9df9e68bbf1b16c8f63d6483b95dc505b38ac6f3cd1ba51604dcb9126c8a"
+          },
+          {
+            "file": "gimppaintercanvasui.cpp",
+            "compiler": "c++",
+            "sanitized": false,
+            "standard": [
+              "-std=c++14"
+            ],
+            "object_sha256": "3cc467937564557ed2dda200dd9f1ecbb567c5196de0fd3c59fb7366690a3e18"
+          },
+          {
+            "file": "test-painter-canvas-ui.c",
+            "compiler": "cc",
+            "sanitized": false,
+            "standard": [],
+            "object_sha256": "8e8705dbaba37924575de529012a33176f25f8a58730ab5246aee7e6a0141ab4"
+          }
+        ],
+        "binary_sha256": "71fa85bc967d87930f173820e75d54f1f4d7601ce8cedd813109d1d8479eca06"
+      },
+      {
+        "run": "layer-tile-entry-regression-native-case2-v2",
+        "status": "PASS",
+        "case_count": 1,
+        "selected_case": "/painter-canvas-ui/image_switch_disconnect",
+        "language_case_counts": {
+          "c11": 0,
+          "cpp14": 0
+        },
+        "actual_c11": false,
+        "timeouts_unchanged": true,
+        "timeout_multiplier": null,
+        "isolation_and_authenticated_loopback_verified": true,
+        "lsan_enabled": null,
+        "verifier_sha256": "382446fd2422e54ab78b1d17bbfdf60425165872cdad4e0066d4f35213be90a7",
+        "input_sha256": {
+          "results.json": "eba92a0c5cb3572edfac7b84ea3adbc41a970b266cfbe3f07f6f1915c5a8cf1f",
+          "registrations.json": "fdb4476b12237cdeec17a9f4d9a34c2c84a0d717a5549777f957289204275e2d",
+          "layer-tile-entry-regression-native-case2-v2.json": "aedfc89ccd3c166646269ad77dd54adc6c297eda413ce43bf21824b67aa59395",
+          "server.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "xauth-create.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "layer-tile-entry-regression-native-case2-v2-source-before.json": "06b8173421c22b9237a44e14102da7617771ee6ffcf791a97a2e83019e2ce7ad",
+          "layer-tile-entry-regression-native-case2-v2-source-after.json": "06b8173421c22b9237a44e14102da7617771ee6ffcf791a97a2e83019e2ce7ad",
+          "layer-tile-entry-regression-native-case2-v2.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+        },
+        "process_exit": 0,
+        "meson_exit": 0,
+        "xserver_exit": 0,
+        "results": [
+          {
+            "name": "painter-canvas-ui",
+            "cases": [
+              "/painter-canvas-ui/image_switch_disconnect"
+            ],
+            "case_count": 1,
+            "duration_seconds": 2.5178632736206055,
+            "registered_timeout_seconds": 60,
+            "stderr_lines": 80
+          }
+        ],
+        "allowed_exact_nonfatal_cloud_debug_count": 1,
+        "compile_units": [
+          {
+            "file": "gimppainterlayertiles.cpp",
+            "compiler": "c++",
+            "sanitized": false,
+            "standard": [
+              "-std=c++14"
+            ],
+            "object_sha256": "f68e9df9e68bbf1b16c8f63d6483b95dc505b38ac6f3cd1ba51604dcb9126c8a"
+          },
+          {
+            "file": "gimppaintercanvasui.cpp",
+            "compiler": "c++",
+            "sanitized": false,
+            "standard": [
+              "-std=c++14"
+            ],
+            "object_sha256": "3cc467937564557ed2dda200dd9f1ecbb567c5196de0fd3c59fb7366690a3e18"
+          },
+          {
+            "file": "test-painter-canvas-ui.c",
+            "compiler": "cc",
+            "sanitized": false,
+            "standard": [],
+            "object_sha256": "8e8705dbaba37924575de529012a33176f25f8a58730ab5246aee7e6a0141ab4"
+          }
+        ],
+        "binary_sha256": "71fa85bc967d87930f173820e75d54f1f4d7601ce8cedd813109d1d8479eca06"
+      },
+      {
+        "run": "layer-tile-entry-regression-native-case3-v2",
+        "status": "PASS",
+        "case_count": 1,
+        "selected_case": "/painter-canvas-ui/popup_controls_and_clone",
+        "language_case_counts": {
+          "c11": 0,
+          "cpp14": 0
+        },
+        "actual_c11": false,
+        "timeouts_unchanged": true,
+        "timeout_multiplier": null,
+        "isolation_and_authenticated_loopback_verified": true,
+        "lsan_enabled": null,
+        "verifier_sha256": "382446fd2422e54ab78b1d17bbfdf60425165872cdad4e0066d4f35213be90a7",
+        "input_sha256": {
+          "results.json": "5f63af440dcc359f09181371bc2380b8709e4b96922c10a9fb9016966478cf08",
+          "registrations.json": "fdb4476b12237cdeec17a9f4d9a34c2c84a0d717a5549777f957289204275e2d",
+          "layer-tile-entry-regression-native-case3-v2.json": "9277cf7bf5ea7fc9bf5ef4b33117fdc35a8bd6c9535f8fa6390c341413034c99",
+          "server.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "xauth-create.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "layer-tile-entry-regression-native-case3-v2-source-before.json": "06b8173421c22b9237a44e14102da7617771ee6ffcf791a97a2e83019e2ce7ad",
+          "layer-tile-entry-regression-native-case3-v2-source-after.json": "06b8173421c22b9237a44e14102da7617771ee6ffcf791a97a2e83019e2ce7ad",
+          "layer-tile-entry-regression-native-case3-v2.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+        },
+        "process_exit": 0,
+        "meson_exit": 0,
+        "xserver_exit": 0,
+        "results": [
+          {
+            "name": "painter-canvas-ui",
+            "cases": [
+              "/painter-canvas-ui/popup_controls_and_clone"
+            ],
+            "case_count": 1,
+            "duration_seconds": 2.4720706939697266,
+            "registered_timeout_seconds": 60,
+            "stderr_lines": 80
+          }
+        ],
+        "allowed_exact_nonfatal_cloud_debug_count": 1,
+        "compile_units": [
+          {
+            "file": "gimppainterlayertiles.cpp",
+            "compiler": "c++",
+            "sanitized": false,
+            "standard": [
+              "-std=c++14"
+            ],
+            "object_sha256": "f68e9df9e68bbf1b16c8f63d6483b95dc505b38ac6f3cd1ba51604dcb9126c8a"
+          },
+          {
+            "file": "gimppaintercanvasui.cpp",
+            "compiler": "c++",
+            "sanitized": false,
+            "standard": [
+              "-std=c++14"
+            ],
+            "object_sha256": "3cc467937564557ed2dda200dd9f1ecbb567c5196de0fd3c59fb7366690a3e18"
+          },
+          {
+            "file": "test-painter-canvas-ui.c",
+            "compiler": "cc",
+            "sanitized": false,
+            "standard": [],
+            "object_sha256": "8e8705dbaba37924575de529012a33176f25f8a58730ab5246aee7e6a0141ab4"
+          }
+        ],
+        "binary_sha256": "71fa85bc967d87930f173820e75d54f1f4d7601ce8cedd813109d1d8479eca06"
+      },
+      {
+        "run": "layer-tile-entry-regression-native-case4-v2",
+        "status": "PASS",
+        "case_count": 1,
+        "selected_case": "/painter-canvas-ui/destroyed_tiles_reject_image",
+        "language_case_counts": {
+          "c11": 0,
+          "cpp14": 0
+        },
+        "actual_c11": false,
+        "timeouts_unchanged": true,
+        "timeout_multiplier": null,
+        "isolation_and_authenticated_loopback_verified": true,
+        "lsan_enabled": null,
+        "verifier_sha256": "382446fd2422e54ab78b1d17bbfdf60425165872cdad4e0066d4f35213be90a7",
+        "input_sha256": {
+          "results.json": "95f5fa199646b73a4555144f5366189ea4f8be92c7e2f7e59b0b5c35e7a40e62",
+          "registrations.json": "fdb4476b12237cdeec17a9f4d9a34c2c84a0d717a5549777f957289204275e2d",
+          "layer-tile-entry-regression-native-case4-v2.json": "2eb9b94802e7920d326cf69a141999e64d87552044715d5f0d2299263dd97f72",
+          "server.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "xauth-create.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "layer-tile-entry-regression-native-case4-v2-source-before.json": "06b8173421c22b9237a44e14102da7617771ee6ffcf791a97a2e83019e2ce7ad",
+          "layer-tile-entry-regression-native-case4-v2-source-after.json": "06b8173421c22b9237a44e14102da7617771ee6ffcf791a97a2e83019e2ce7ad",
+          "layer-tile-entry-regression-native-case4-v2.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+        },
+        "process_exit": 0,
+        "meson_exit": 0,
+        "xserver_exit": 0,
+        "results": [
+          {
+            "name": "painter-canvas-ui",
+            "cases": [
+              "/painter-canvas-ui/destroyed_tiles_reject_image"
+            ],
+            "case_count": 1,
+            "duration_seconds": 2.3269970417022705,
+            "registered_timeout_seconds": 60,
+            "stderr_lines": 80
+          }
+        ],
+        "allowed_exact_nonfatal_cloud_debug_count": 1,
+        "compile_units": [
+          {
+            "file": "gimppainterlayertiles.cpp",
+            "compiler": "c++",
+            "sanitized": false,
+            "standard": [
+              "-std=c++14"
+            ],
+            "object_sha256": "f68e9df9e68bbf1b16c8f63d6483b95dc505b38ac6f3cd1ba51604dcb9126c8a"
+          },
+          {
+            "file": "gimppaintercanvasui.cpp",
+            "compiler": "c++",
+            "sanitized": false,
+            "standard": [
+              "-std=c++14"
+            ],
+            "object_sha256": "3cc467937564557ed2dda200dd9f1ecbb567c5196de0fd3c59fb7366690a3e18"
+          },
+          {
+            "file": "test-painter-canvas-ui.c",
+            "compiler": "cc",
+            "sanitized": false,
+            "standard": [],
+            "object_sha256": "8e8705dbaba37924575de529012a33176f25f8a58730ab5246aee7e6a0141ab4"
+          }
+        ],
+        "binary_sha256": "71fa85bc967d87930f173820e75d54f1f4d7601ce8cedd813109d1d8479eca06"
+      },
+      {
+        "run": "layer-tile-entry-regression-native-case5-v2",
+        "status": "PASS",
+        "case_count": 1,
+        "selected_case": "/painter-canvas-ui/image_switch_popup_owner_close",
+        "language_case_counts": {
+          "c11": 0,
+          "cpp14": 0
+        },
+        "actual_c11": false,
+        "timeouts_unchanged": true,
+        "timeout_multiplier": null,
+        "isolation_and_authenticated_loopback_verified": true,
+        "lsan_enabled": null,
+        "verifier_sha256": "382446fd2422e54ab78b1d17bbfdf60425165872cdad4e0066d4f35213be90a7",
+        "input_sha256": {
+          "results.json": "e67e486b036773fc73926a888bb756a2275550d0c2d73912ccf6edb2a1c41611",
+          "registrations.json": "fdb4476b12237cdeec17a9f4d9a34c2c84a0d717a5549777f957289204275e2d",
+          "layer-tile-entry-regression-native-case5-v2.json": "3261405cd20366c6b1ba49cb22b502a30e2f9a2639aad20977e87db887a7851e",
+          "server.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "xauth-create.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "layer-tile-entry-regression-native-case5-v2-source-before.json": "06b8173421c22b9237a44e14102da7617771ee6ffcf791a97a2e83019e2ce7ad",
+          "layer-tile-entry-regression-native-case5-v2-source-after.json": "06b8173421c22b9237a44e14102da7617771ee6ffcf791a97a2e83019e2ce7ad",
+          "layer-tile-entry-regression-native-case5-v2.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+        },
+        "process_exit": 0,
+        "meson_exit": 0,
+        "xserver_exit": 0,
+        "results": [
+          {
+            "name": "painter-canvas-ui",
+            "cases": [
+              "/painter-canvas-ui/image_switch_popup_owner_close"
+            ],
+            "case_count": 1,
+            "duration_seconds": 2.35981822013855,
+            "registered_timeout_seconds": 60,
+            "stderr_lines": 80
+          }
+        ],
+        "allowed_exact_nonfatal_cloud_debug_count": 1,
+        "compile_units": [
+          {
+            "file": "gimppainterlayertiles.cpp",
+            "compiler": "c++",
+            "sanitized": false,
+            "standard": [
+              "-std=c++14"
+            ],
+            "object_sha256": "f68e9df9e68bbf1b16c8f63d6483b95dc505b38ac6f3cd1ba51604dcb9126c8a"
+          },
+          {
+            "file": "gimppaintercanvasui.cpp",
+            "compiler": "c++",
+            "sanitized": false,
+            "standard": [
+              "-std=c++14"
+            ],
+            "object_sha256": "3cc467937564557ed2dda200dd9f1ecbb567c5196de0fd3c59fb7366690a3e18"
+          },
+          {
+            "file": "test-painter-canvas-ui.c",
+            "compiler": "cc",
+            "sanitized": false,
+            "standard": [],
+            "object_sha256": "8e8705dbaba37924575de529012a33176f25f8a58730ab5246aee7e6a0141ab4"
+          }
+        ],
+        "binary_sha256": "71fa85bc967d87930f173820e75d54f1f4d7601ce8cedd813109d1d8479eca06"
+      },
+      {
+        "run": "layer-tile-entry-regression-native-case6-v2",
+        "status": "PASS",
+        "case_count": 1,
+        "selected_case": "/painter-canvas-ui/image_switch_popup_newer_image",
+        "language_case_counts": {
+          "c11": 0,
+          "cpp14": 0
+        },
+        "actual_c11": false,
+        "timeouts_unchanged": true,
+        "timeout_multiplier": null,
+        "isolation_and_authenticated_loopback_verified": true,
+        "lsan_enabled": null,
+        "verifier_sha256": "382446fd2422e54ab78b1d17bbfdf60425165872cdad4e0066d4f35213be90a7",
+        "input_sha256": {
+          "results.json": "b57d4945dfe1b3ca32bbc35def9c6407367c3d6fd010d48295b909f9c73a6104",
+          "registrations.json": "fdb4476b12237cdeec17a9f4d9a34c2c84a0d717a5549777f957289204275e2d",
+          "layer-tile-entry-regression-native-case6-v2.json": "d4b527d05e88b1362022ace72865b2a7116d4f1b35f68645c8628e75d33b01ed",
+          "server.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "xauth-create.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "layer-tile-entry-regression-native-case6-v2-source-before.json": "06b8173421c22b9237a44e14102da7617771ee6ffcf791a97a2e83019e2ce7ad",
+          "layer-tile-entry-regression-native-case6-v2-source-after.json": "06b8173421c22b9237a44e14102da7617771ee6ffcf791a97a2e83019e2ce7ad",
+          "layer-tile-entry-regression-native-case6-v2.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+        },
+        "process_exit": 0,
+        "meson_exit": 0,
+        "xserver_exit": 0,
+        "results": [
+          {
+            "name": "painter-canvas-ui",
+            "cases": [
+              "/painter-canvas-ui/image_switch_popup_newer_image"
+            ],
+            "case_count": 1,
+            "duration_seconds": 2.255704402923584,
+            "registered_timeout_seconds": 60,
+            "stderr_lines": 80
+          }
+        ],
+        "allowed_exact_nonfatal_cloud_debug_count": 1,
+        "compile_units": [
+          {
+            "file": "gimppainterlayertiles.cpp",
+            "compiler": "c++",
+            "sanitized": false,
+            "standard": [
+              "-std=c++14"
+            ],
+            "object_sha256": "f68e9df9e68bbf1b16c8f63d6483b95dc505b38ac6f3cd1ba51604dcb9126c8a"
+          },
+          {
+            "file": "gimppaintercanvasui.cpp",
+            "compiler": "c++",
+            "sanitized": false,
+            "standard": [
+              "-std=c++14"
+            ],
+            "object_sha256": "3cc467937564557ed2dda200dd9f1ecbb567c5196de0fd3c59fb7366690a3e18"
+          },
+          {
+            "file": "test-painter-canvas-ui.c",
+            "compiler": "cc",
+            "sanitized": false,
+            "standard": [],
+            "object_sha256": "8e8705dbaba37924575de529012a33176f25f8a58730ab5246aee7e6a0141ab4"
+          }
+        ],
+        "binary_sha256": "71fa85bc967d87930f173820e75d54f1f4d7601ce8cedd813109d1d8479eca06"
+      },
+      {
+        "run": "layer-tile-entry-regression-native-case7-v2",
+        "status": "PASS",
+        "case_count": 1,
+        "selected_case": "/painter-canvas-ui/parent_image_notify_owner_close",
+        "language_case_counts": {
+          "c11": 0,
+          "cpp14": 0
+        },
+        "actual_c11": false,
+        "timeouts_unchanged": true,
+        "timeout_multiplier": null,
+        "isolation_and_authenticated_loopback_verified": true,
+        "lsan_enabled": null,
+        "verifier_sha256": "382446fd2422e54ab78b1d17bbfdf60425165872cdad4e0066d4f35213be90a7",
+        "input_sha256": {
+          "results.json": "5695b1710957a920cce91265c475867bf02ff5b3bba9280f5c689906020efc70",
+          "registrations.json": "fdb4476b12237cdeec17a9f4d9a34c2c84a0d717a5549777f957289204275e2d",
+          "layer-tile-entry-regression-native-case7-v2.json": "a6cc259bcd4f4374c0c8fc52e3e2b3afbef2aee3fcbf1fc882c9ca4ec86a0fc0",
+          "server.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "xauth-create.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "layer-tile-entry-regression-native-case7-v2-source-before.json": "06b8173421c22b9237a44e14102da7617771ee6ffcf791a97a2e83019e2ce7ad",
+          "layer-tile-entry-regression-native-case7-v2-source-after.json": "06b8173421c22b9237a44e14102da7617771ee6ffcf791a97a2e83019e2ce7ad",
+          "layer-tile-entry-regression-native-case7-v2.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+        },
+        "process_exit": 0,
+        "meson_exit": 0,
+        "xserver_exit": 0,
+        "results": [
+          {
+            "name": "painter-canvas-ui",
+            "cases": [
+              "/painter-canvas-ui/parent_image_notify_owner_close"
+            ],
+            "case_count": 1,
+            "duration_seconds": 2.264065980911255,
+            "registered_timeout_seconds": 60,
+            "stderr_lines": 80
+          }
+        ],
+        "allowed_exact_nonfatal_cloud_debug_count": 1,
+        "compile_units": [
+          {
+            "file": "gimppainterlayertiles.cpp",
+            "compiler": "c++",
+            "sanitized": false,
+            "standard": [
+              "-std=c++14"
+            ],
+            "object_sha256": "f68e9df9e68bbf1b16c8f63d6483b95dc505b38ac6f3cd1ba51604dcb9126c8a"
+          },
+          {
+            "file": "gimppaintercanvasui.cpp",
+            "compiler": "c++",
+            "sanitized": false,
+            "standard": [
+              "-std=c++14"
+            ],
+            "object_sha256": "3cc467937564557ed2dda200dd9f1ecbb567c5196de0fd3c59fb7366690a3e18"
+          },
+          {
+            "file": "test-painter-canvas-ui.c",
+            "compiler": "cc",
+            "sanitized": false,
+            "standard": [],
+            "object_sha256": "8e8705dbaba37924575de529012a33176f25f8a58730ab5246aee7e6a0141ab4"
+          }
+        ],
+        "binary_sha256": "71fa85bc967d87930f173820e75d54f1f4d7601ce8cedd813109d1d8479eca06"
+      },
+      {
+        "run": "layer-tile-entry-regression-native-case8-v2",
+        "status": "PASS",
+        "case_count": 1,
+        "selected_case": "/painter-canvas-ui/multiple_canvas_context_and_dock_transfer",
+        "language_case_counts": {
+          "c11": 0,
+          "cpp14": 0
+        },
+        "actual_c11": false,
+        "timeouts_unchanged": true,
+        "timeout_multiplier": null,
+        "isolation_and_authenticated_loopback_verified": true,
+        "lsan_enabled": null,
+        "verifier_sha256": "382446fd2422e54ab78b1d17bbfdf60425165872cdad4e0066d4f35213be90a7",
+        "input_sha256": {
+          "results.json": "0df846abe4633d42f1a507d106138072863bdc674659b680178dc1b785f55d83",
+          "registrations.json": "fdb4476b12237cdeec17a9f4d9a34c2c84a0d717a5549777f957289204275e2d",
+          "layer-tile-entry-regression-native-case8-v2.json": "1628f765c79088aea32b958dcdfc6a153d924f685b665f54a052eb3c068393da",
+          "server.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "xauth-create.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "layer-tile-entry-regression-native-case8-v2-source-before.json": "06b8173421c22b9237a44e14102da7617771ee6ffcf791a97a2e83019e2ce7ad",
+          "layer-tile-entry-regression-native-case8-v2-source-after.json": "06b8173421c22b9237a44e14102da7617771ee6ffcf791a97a2e83019e2ce7ad",
+          "layer-tile-entry-regression-native-case8-v2.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+        },
+        "process_exit": 0,
+        "meson_exit": 0,
+        "xserver_exit": 0,
+        "results": [
+          {
+            "name": "painter-canvas-ui",
+            "cases": [
+              "/painter-canvas-ui/multiple_canvas_context_and_dock_transfer"
+            ],
+            "case_count": 1,
+            "duration_seconds": 3.2417304515838623,
+            "registered_timeout_seconds": 60,
+            "stderr_lines": 80
+          }
+        ],
+        "allowed_exact_nonfatal_cloud_debug_count": 1,
+        "compile_units": [
+          {
+            "file": "gimppainterlayertiles.cpp",
+            "compiler": "c++",
+            "sanitized": false,
+            "standard": [
+              "-std=c++14"
+            ],
+            "object_sha256": "f68e9df9e68bbf1b16c8f63d6483b95dc505b38ac6f3cd1ba51604dcb9126c8a"
+          },
+          {
+            "file": "gimppaintercanvasui.cpp",
+            "compiler": "c++",
+            "sanitized": false,
+            "standard": [
+              "-std=c++14"
+            ],
+            "object_sha256": "3cc467937564557ed2dda200dd9f1ecbb567c5196de0fd3c59fb7366690a3e18"
+          },
+          {
+            "file": "test-painter-canvas-ui.c",
+            "compiler": "cc",
+            "sanitized": false,
+            "standard": [],
+            "object_sha256": "8e8705dbaba37924575de529012a33176f25f8a58730ab5246aee7e6a0141ab4"
+          }
+        ],
+        "binary_sha256": "71fa85bc967d87930f173820e75d54f1f4d7601ce8cedd813109d1d8479eca06"
+      },
+      {
+        "run": "layer-tile-entry-regression-native-case9-v2",
+        "status": "PASS",
+        "case_count": 1,
+        "selected_case": "/painter-canvas-ui/popup_repeat_and_owner_close",
+        "language_case_counts": {
+          "c11": 0,
+          "cpp14": 0
+        },
+        "actual_c11": false,
+        "timeouts_unchanged": true,
+        "timeout_multiplier": null,
+        "isolation_and_authenticated_loopback_verified": true,
+        "lsan_enabled": null,
+        "verifier_sha256": "382446fd2422e54ab78b1d17bbfdf60425165872cdad4e0066d4f35213be90a7",
+        "input_sha256": {
+          "results.json": "48c33655cf0f202a634551150774a4d51e1a8f32fd2afb623f0fe999cc3d7cd0",
+          "registrations.json": "fdb4476b12237cdeec17a9f4d9a34c2c84a0d717a5549777f957289204275e2d",
+          "layer-tile-entry-regression-native-case9-v2.json": "1ba38dc80ee3e561a6a71fd0197bddf6e9c3c3a20b424e283591b13d48b1be08",
+          "server.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "xauth-create.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "layer-tile-entry-regression-native-case9-v2-source-before.json": "06b8173421c22b9237a44e14102da7617771ee6ffcf791a97a2e83019e2ce7ad",
+          "layer-tile-entry-regression-native-case9-v2-source-after.json": "06b8173421c22b9237a44e14102da7617771ee6ffcf791a97a2e83019e2ce7ad",
+          "layer-tile-entry-regression-native-case9-v2.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+        },
+        "process_exit": 0,
+        "meson_exit": 0,
+        "xserver_exit": 0,
+        "results": [
+          {
+            "name": "painter-canvas-ui",
+            "cases": [
+              "/painter-canvas-ui/popup_repeat_and_owner_close"
+            ],
+            "case_count": 1,
+            "duration_seconds": 2.5013580322265625,
+            "registered_timeout_seconds": 60,
+            "stderr_lines": 80
+          }
+        ],
+        "allowed_exact_nonfatal_cloud_debug_count": 1,
+        "compile_units": [
+          {
+            "file": "gimppainterlayertiles.cpp",
+            "compiler": "c++",
+            "sanitized": false,
+            "standard": [
+              "-std=c++14"
+            ],
+            "object_sha256": "f68e9df9e68bbf1b16c8f63d6483b95dc505b38ac6f3cd1ba51604dcb9126c8a"
+          },
+          {
+            "file": "gimppaintercanvasui.cpp",
+            "compiler": "c++",
+            "sanitized": false,
+            "standard": [
+              "-std=c++14"
+            ],
+            "object_sha256": "3cc467937564557ed2dda200dd9f1ecbb567c5196de0fd3c59fb7366690a3e18"
+          },
+          {
+            "file": "test-painter-canvas-ui.c",
+            "compiler": "cc",
+            "sanitized": false,
+            "standard": [],
+            "object_sha256": "8e8705dbaba37924575de529012a33176f25f8a58730ab5246aee7e6a0141ab4"
+          }
+        ],
+        "binary_sha256": "71fa85bc967d87930f173820e75d54f1f4d7601ce8cedd813109d1d8479eca06"
+      },
+      {
+        "run": "layer-tile-entry-regression-native-case10-v2",
+        "status": "PASS",
+        "case_count": 1,
+        "selected_case": "/painter-canvas-ui/long_press_cancel_destroy",
+        "language_case_counts": {
+          "c11": 0,
+          "cpp14": 0
+        },
+        "actual_c11": false,
+        "timeouts_unchanged": true,
+        "timeout_multiplier": null,
+        "isolation_and_authenticated_loopback_verified": true,
+        "lsan_enabled": null,
+        "verifier_sha256": "382446fd2422e54ab78b1d17bbfdf60425165872cdad4e0066d4f35213be90a7",
+        "input_sha256": {
+          "results.json": "169a7ed933457ab338f2e4887f4cc5cdd5ac5884c26bb9dcc90572b724953b6f",
+          "registrations.json": "fdb4476b12237cdeec17a9f4d9a34c2c84a0d717a5549777f957289204275e2d",
+          "layer-tile-entry-regression-native-case10-v2.json": "79a941a74267db82c3c569887c8ed25194ef30aef1fcaf3d5a546839d650f90d",
+          "server.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "xauth-create.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "layer-tile-entry-regression-native-case10-v2-source-before.json": "06b8173421c22b9237a44e14102da7617771ee6ffcf791a97a2e83019e2ce7ad",
+          "layer-tile-entry-regression-native-case10-v2-source-after.json": "06b8173421c22b9237a44e14102da7617771ee6ffcf791a97a2e83019e2ce7ad",
+          "layer-tile-entry-regression-native-case10-v2.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+        },
+        "process_exit": 0,
+        "meson_exit": 0,
+        "xserver_exit": 0,
+        "results": [
+          {
+            "name": "painter-canvas-ui",
+            "cases": [
+              "/painter-canvas-ui/long_press_cancel_destroy"
+            ],
+            "case_count": 1,
+            "duration_seconds": 2.2382755279541016,
+            "registered_timeout_seconds": 60,
+            "stderr_lines": 80
+          }
+        ],
+        "allowed_exact_nonfatal_cloud_debug_count": 1,
+        "compile_units": [
+          {
+            "file": "gimppainterlayertiles.cpp",
+            "compiler": "c++",
+            "sanitized": false,
+            "standard": [
+              "-std=c++14"
+            ],
+            "object_sha256": "f68e9df9e68bbf1b16c8f63d6483b95dc505b38ac6f3cd1ba51604dcb9126c8a"
+          },
+          {
+            "file": "gimppaintercanvasui.cpp",
+            "compiler": "c++",
+            "sanitized": false,
+            "standard": [
+              "-std=c++14"
+            ],
+            "object_sha256": "3cc467937564557ed2dda200dd9f1ecbb567c5196de0fd3c59fb7366690a3e18"
+          },
+          {
+            "file": "test-painter-canvas-ui.c",
+            "compiler": "cc",
+            "sanitized": false,
+            "standard": [],
+            "object_sha256": "8e8705dbaba37924575de529012a33176f25f8a58730ab5246aee7e6a0141ab4"
+          }
+        ],
+        "binary_sha256": "71fa85bc967d87930f173820e75d54f1f4d7601ce8cedd813109d1d8479eca06"
+      }
+    ],
+    "asan": [
+      {
+        "run": "layer-tile-entry-candidate-asan-v1",
+        "status": "PASS",
+        "case_count": 32,
+        "selected_case": null,
+        "language_case_counts": {
+          "c11": 20,
+          "cpp14": 12
+        },
+        "actual_c11": true,
+        "timeouts_unchanged": true,
+        "timeout_multiplier": null,
+        "isolation_and_authenticated_loopback_verified": true,
+        "lsan_enabled": false,
+        "verifier_sha256": "382446fd2422e54ab78b1d17bbfdf60425165872cdad4e0066d4f35213be90a7",
+        "input_sha256": {
+          "results.json": "474790a393273d59602b2d33c6fefca0f61aa7be861ff946bc6c308617e63418",
+          "registrations.json": "470d046abb5188bd7711e313ab9fd13d24b370bec7ebb3fd77730497fdd1a550",
+          "layer-tile-entry-candidate-asan-v1.json": "229fd37532b7ad26ed6c8dac087a897c0f353543f37251289fe60dd1f61328b9",
+          "server.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "xauth-create.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "layer-tile-entry-candidate-asan-v1-source-before.json": "a8bca7d3f5a4be644b97cb2a40c3b04eabb80404a86f1d02d2a62b60f1f57075",
+          "layer-tile-entry-candidate-asan-v1-source-after.json": "a8bca7d3f5a4be644b97cb2a40c3b04eabb80404a86f1d02d2a62b60f1f57075",
+          "layer-tile-entry-candidate-asan-v1.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+        },
+        "process_exit": 0,
+        "meson_exit": 0,
+        "xserver_exit": 0,
+        "results": [
+          {
+            "name": "layer-tile-entry-contracts",
+            "cases": [
+              "/layer-tile-entry-contracts/c/c_factory_type_and_property_contract",
+              "/layer-tile-entry-contracts/c/c_construct_property_orders",
+              "/layer-tile-entry-contracts/c/c_deferred_nullable_assignment_matrix",
+              "/layer-tile-entry-contracts/c/c_context_only_and_active_image_independence",
+              "/layer-tile-entry-contracts/c/c_inherited_source_properties_stay_isolated",
+              "/layer-tile-entry-contracts/c/c_exact_object_getter_reference_lifetimes",
+              "/layer-tile-entry-contracts/c/c_replacement_and_destroy_release_inputs",
+              "/layer-tile-entry-contracts/c/c_same_image_context_refreshes_previews",
+              "/layer-tile-entry-contracts/c/c_contextless_image_actions_inert",
+              "/layer-tile-entry-contracts/c/c_property_notifications_newer_assignment",
+              "/layer-tile-entry-contracts/c/c_property_notifications_destroy_no_revival",
+              "/layer-tile-entry-contracts/c/c_popup_close_newer_context_and_image",
+              "/layer-tile-entry-contracts/c/c_popup_close_aba_context_and_image",
+              "/layer-tile-entry-contracts/c/c_popup_close_destroy_no_revival",
+              "/layer-tile-entry-contracts/c/c_popup_close_same_target_image",
+              "/layer-tile-entry-contracts/c/c_context_clear_explicit_image_clear_wins",
+              "/layer-tile-entry-contracts/c/c_context_refresh_row_destroy_reentry",
+              "/layer-tile-entry-contracts/c/c_parent_image_reentry_keeps_newer_popup",
+              "/layer-tile-entry-contracts/c/c_native_invalid_and_wrong_thread_controls",
+              "/layer-tile-entry-contracts/c/c_destroyed_original_entry_is_terminal",
+              "/layer-tile-entry-contracts/cpp/original-provider-and-store",
+              "/layer-tile-entry-contracts/cpp/create-parent-first",
+              "/layer-tile-entry-contracts/cpp/create-handle-first",
+              "/layer-tile-entry-contracts/cpp/retain-parent-first",
+              "/layer-tile-entry-contracts/cpp/retain-handle-first",
+              "/layer-tile-entry-contracts/cpp/copy-move-ownership",
+              "/layer-tile-entry-contracts/cpp/retain-rejects-invalid",
+              "/layer-tile-entry-contracts/cpp/original-selection-and-visibility",
+              "/layer-tile-entry-contracts/cpp/original-popup-clone-undo",
+              "/layer-tile-entry-contracts/cpp/original-popup-preset-undo",
+              "/layer-tile-entry-contracts/cpp/supplied-context-isolation",
+              "/layer-tile-entry-contracts/cpp/both-canvas-action-isolation"
+            ],
+            "case_count": 32,
+            "duration_seconds": 13.047546148300171,
+            "registered_timeout_seconds": 120,
+            "stderr_lines": 80
+          }
+        ],
+        "allowed_exact_nonfatal_cloud_debug_count": 1,
+        "compile_units": [
+          {
+            "file": "gimppainterlayertiles.cpp",
+            "compiler": "c++",
+            "sanitized": true,
+            "standard": [
+              "-std=c++14"
+            ],
+            "object_sha256": "d0e1ef27c3c81bea31bfccf4392f693273239de9ef681d16662d3099041b1361"
+          },
+          {
+            "file": "gimppaintercanvasui.cpp",
+            "compiler": "c++",
+            "sanitized": true,
+            "standard": [
+              "-std=c++14"
+            ],
+            "object_sha256": "a1b3092e7c4a6fffd8c6d1beb79f82e107a6fcab051486c12eec622f6d129a0c"
+          },
+          {
+            "file": "test-layer-tile-entry-contracts.c",
+            "compiler": "cc",
+            "sanitized": true,
+            "standard": [
+              "-std=c11"
+            ],
+            "object_sha256": "c86d3e78e8bfae52f21240dadcf4ed3413eda1483fc5e018f4a8bf3f31e3f1ad"
+          },
+          {
+            "file": "test-layer-tile-entry-contracts.cpp",
+            "compiler": "c++",
+            "sanitized": true,
+            "standard": [
+              "-std=c++14"
+            ],
+            "object_sha256": "73f41cb0fcc4727db7837fcbc3a3090d8871701b2e9d8d2be6ea2ef77f6dd09c"
+          }
+        ],
+        "binary_sha256": "d27f855ecfa4994f9481550c78ac721ba7766f3538a9a4e1b4d70fa5396ccfdf"
+      },
+      {
+        "run": "layer-tile-entry-regression-asan-case1-v1",
+        "status": "PASS",
+        "case_count": 1,
+        "selected_case": "/painter-canvas-ui/selection_and_visibility",
+        "language_case_counts": {
+          "c11": 0,
+          "cpp14": 0
+        },
+        "actual_c11": false,
+        "timeouts_unchanged": true,
+        "timeout_multiplier": null,
+        "isolation_and_authenticated_loopback_verified": true,
+        "lsan_enabled": false,
+        "verifier_sha256": "382446fd2422e54ab78b1d17bbfdf60425165872cdad4e0066d4f35213be90a7",
+        "input_sha256": {
+          "results.json": "f132664b5ad497172d6be0107c720a936b24db695471f8ec4cfddc5426e30197",
+          "registrations.json": "470d046abb5188bd7711e313ab9fd13d24b370bec7ebb3fd77730497fdd1a550",
+          "layer-tile-entry-regression-asan-case1-v1.json": "8e62c767ef6a25d423162468e4ccd68e50a8a25bc624a17105a429a6bf91a783",
+          "server.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "xauth-create.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "layer-tile-entry-regression-asan-case1-v1-source-before.json": "064d3ade3d5ec71d39ea797b128f144749df91689e43c23387e61090b37409a3",
+          "layer-tile-entry-regression-asan-case1-v1-source-after.json": "064d3ade3d5ec71d39ea797b128f144749df91689e43c23387e61090b37409a3",
+          "layer-tile-entry-regression-asan-case1-v1.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+        },
+        "process_exit": 0,
+        "meson_exit": 0,
+        "xserver_exit": 0,
+        "results": [
+          {
+            "name": "painter-canvas-ui",
+            "cases": [
+              "/painter-canvas-ui/selection_and_visibility"
+            ],
+            "case_count": 1,
+            "duration_seconds": 4.344217300415039,
+            "registered_timeout_seconds": 60,
+            "stderr_lines": 80
+          }
+        ],
+        "allowed_exact_nonfatal_cloud_debug_count": 1,
+        "compile_units": [
+          {
+            "file": "gimppainterlayertiles.cpp",
+            "compiler": "c++",
+            "sanitized": true,
+            "standard": [
+              "-std=c++14"
+            ],
+            "object_sha256": "d0e1ef27c3c81bea31bfccf4392f693273239de9ef681d16662d3099041b1361"
+          },
+          {
+            "file": "gimppaintercanvasui.cpp",
+            "compiler": "c++",
+            "sanitized": true,
+            "standard": [
+              "-std=c++14"
+            ],
+            "object_sha256": "a1b3092e7c4a6fffd8c6d1beb79f82e107a6fcab051486c12eec622f6d129a0c"
+          },
+          {
+            "file": "test-painter-canvas-ui.c",
+            "compiler": "cc",
+            "sanitized": true,
+            "standard": [],
+            "object_sha256": "88eac8666f40348b36808842f4f4f0c9ad28e6113bddb3501b77fcc5caa2ca05"
+          }
+        ],
+        "binary_sha256": "11c13c5e8c2fb1b73dc632a047760fde537171f571b65cafb90c58afc6eeb5dc"
+      },
+      {
+        "run": "layer-tile-entry-regression-asan-case2-v1",
+        "status": "PASS",
+        "case_count": 1,
+        "selected_case": "/painter-canvas-ui/image_switch_disconnect",
+        "language_case_counts": {
+          "c11": 0,
+          "cpp14": 0
+        },
+        "actual_c11": false,
+        "timeouts_unchanged": true,
+        "timeout_multiplier": null,
+        "isolation_and_authenticated_loopback_verified": true,
+        "lsan_enabled": false,
+        "verifier_sha256": "382446fd2422e54ab78b1d17bbfdf60425165872cdad4e0066d4f35213be90a7",
+        "input_sha256": {
+          "results.json": "a2a1e754d2e655a4ffc2573c64ed4c1466b5c5d14506805e5ba5bb74563002ef",
+          "registrations.json": "470d046abb5188bd7711e313ab9fd13d24b370bec7ebb3fd77730497fdd1a550",
+          "layer-tile-entry-regression-asan-case2-v1.json": "58bffaf2777a7be4e9021001a7799be04337d882cbf39b128c4b52f38b54857c",
+          "server.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "xauth-create.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "layer-tile-entry-regression-asan-case2-v1-source-before.json": "064d3ade3d5ec71d39ea797b128f144749df91689e43c23387e61090b37409a3",
+          "layer-tile-entry-regression-asan-case2-v1-source-after.json": "064d3ade3d5ec71d39ea797b128f144749df91689e43c23387e61090b37409a3",
+          "layer-tile-entry-regression-asan-case2-v1.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+        },
+        "process_exit": 0,
+        "meson_exit": 0,
+        "xserver_exit": 0,
+        "results": [
+          {
+            "name": "painter-canvas-ui",
+            "cases": [
+              "/painter-canvas-ui/image_switch_disconnect"
+            ],
+            "case_count": 1,
+            "duration_seconds": 5.338929653167725,
+            "registered_timeout_seconds": 60,
+            "stderr_lines": 80
+          }
+        ],
+        "allowed_exact_nonfatal_cloud_debug_count": 1,
+        "compile_units": [
+          {
+            "file": "gimppainterlayertiles.cpp",
+            "compiler": "c++",
+            "sanitized": true,
+            "standard": [
+              "-std=c++14"
+            ],
+            "object_sha256": "d0e1ef27c3c81bea31bfccf4392f693273239de9ef681d16662d3099041b1361"
+          },
+          {
+            "file": "gimppaintercanvasui.cpp",
+            "compiler": "c++",
+            "sanitized": true,
+            "standard": [
+              "-std=c++14"
+            ],
+            "object_sha256": "a1b3092e7c4a6fffd8c6d1beb79f82e107a6fcab051486c12eec622f6d129a0c"
+          },
+          {
+            "file": "test-painter-canvas-ui.c",
+            "compiler": "cc",
+            "sanitized": true,
+            "standard": [],
+            "object_sha256": "88eac8666f40348b36808842f4f4f0c9ad28e6113bddb3501b77fcc5caa2ca05"
+          }
+        ],
+        "binary_sha256": "11c13c5e8c2fb1b73dc632a047760fde537171f571b65cafb90c58afc6eeb5dc"
+      },
+      {
+        "run": "layer-tile-entry-regression-asan-case3-v1",
+        "status": "PASS",
+        "case_count": 1,
+        "selected_case": "/painter-canvas-ui/popup_controls_and_clone",
+        "language_case_counts": {
+          "c11": 0,
+          "cpp14": 0
+        },
+        "actual_c11": false,
+        "timeouts_unchanged": true,
+        "timeout_multiplier": null,
+        "isolation_and_authenticated_loopback_verified": true,
+        "lsan_enabled": false,
+        "verifier_sha256": "382446fd2422e54ab78b1d17bbfdf60425165872cdad4e0066d4f35213be90a7",
+        "input_sha256": {
+          "results.json": "a141bbf02d0c2f348df2a237c0932d3154f8b41fda5f6908b1984f2287a08676",
+          "registrations.json": "470d046abb5188bd7711e313ab9fd13d24b370bec7ebb3fd77730497fdd1a550",
+          "layer-tile-entry-regression-asan-case3-v1.json": "babb97346a914c96043a30047115575415ab3e2812f43d5e6b4402f0e7adefe8",
+          "server.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "xauth-create.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "layer-tile-entry-regression-asan-case3-v1-source-before.json": "064d3ade3d5ec71d39ea797b128f144749df91689e43c23387e61090b37409a3",
+          "layer-tile-entry-regression-asan-case3-v1-source-after.json": "064d3ade3d5ec71d39ea797b128f144749df91689e43c23387e61090b37409a3",
+          "layer-tile-entry-regression-asan-case3-v1.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+        },
+        "process_exit": 0,
+        "meson_exit": 0,
+        "xserver_exit": 0,
+        "results": [
+          {
+            "name": "painter-canvas-ui",
+            "cases": [
+              "/painter-canvas-ui/popup_controls_and_clone"
+            ],
+            "case_count": 1,
+            "duration_seconds": 4.354605674743652,
+            "registered_timeout_seconds": 60,
+            "stderr_lines": 80
+          }
+        ],
+        "allowed_exact_nonfatal_cloud_debug_count": 1,
+        "compile_units": [
+          {
+            "file": "gimppainterlayertiles.cpp",
+            "compiler": "c++",
+            "sanitized": true,
+            "standard": [
+              "-std=c++14"
+            ],
+            "object_sha256": "d0e1ef27c3c81bea31bfccf4392f693273239de9ef681d16662d3099041b1361"
+          },
+          {
+            "file": "gimppaintercanvasui.cpp",
+            "compiler": "c++",
+            "sanitized": true,
+            "standard": [
+              "-std=c++14"
+            ],
+            "object_sha256": "a1b3092e7c4a6fffd8c6d1beb79f82e107a6fcab051486c12eec622f6d129a0c"
+          },
+          {
+            "file": "test-painter-canvas-ui.c",
+            "compiler": "cc",
+            "sanitized": true,
+            "standard": [],
+            "object_sha256": "88eac8666f40348b36808842f4f4f0c9ad28e6113bddb3501b77fcc5caa2ca05"
+          }
+        ],
+        "binary_sha256": "11c13c5e8c2fb1b73dc632a047760fde537171f571b65cafb90c58afc6eeb5dc"
+      },
+      {
+        "run": "layer-tile-entry-regression-asan-case4-v1",
+        "status": "PASS",
+        "case_count": 1,
+        "selected_case": "/painter-canvas-ui/destroyed_tiles_reject_image",
+        "language_case_counts": {
+          "c11": 0,
+          "cpp14": 0
+        },
+        "actual_c11": false,
+        "timeouts_unchanged": true,
+        "timeout_multiplier": null,
+        "isolation_and_authenticated_loopback_verified": true,
+        "lsan_enabled": false,
+        "verifier_sha256": "382446fd2422e54ab78b1d17bbfdf60425165872cdad4e0066d4f35213be90a7",
+        "input_sha256": {
+          "results.json": "98021685aee31ed9f6aa07ab358b564be6999dbf44103294234f5c143a6c81d6",
+          "registrations.json": "470d046abb5188bd7711e313ab9fd13d24b370bec7ebb3fd77730497fdd1a550",
+          "layer-tile-entry-regression-asan-case4-v1.json": "e2f24c7672406ddafcdb68ad10a80045c77f4ac918fc49d9699cb4b27715728c",
+          "server.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "xauth-create.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "layer-tile-entry-regression-asan-case4-v1-source-before.json": "064d3ade3d5ec71d39ea797b128f144749df91689e43c23387e61090b37409a3",
+          "layer-tile-entry-regression-asan-case4-v1-source-after.json": "064d3ade3d5ec71d39ea797b128f144749df91689e43c23387e61090b37409a3",
+          "layer-tile-entry-regression-asan-case4-v1.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+        },
+        "process_exit": 0,
+        "meson_exit": 0,
+        "xserver_exit": 0,
+        "results": [
+          {
+            "name": "painter-canvas-ui",
+            "cases": [
+              "/painter-canvas-ui/destroyed_tiles_reject_image"
+            ],
+            "case_count": 1,
+            "duration_seconds": 4.343520879745483,
+            "registered_timeout_seconds": 60,
+            "stderr_lines": 80
+          }
+        ],
+        "allowed_exact_nonfatal_cloud_debug_count": 1,
+        "compile_units": [
+          {
+            "file": "gimppainterlayertiles.cpp",
+            "compiler": "c++",
+            "sanitized": true,
+            "standard": [
+              "-std=c++14"
+            ],
+            "object_sha256": "d0e1ef27c3c81bea31bfccf4392f693273239de9ef681d16662d3099041b1361"
+          },
+          {
+            "file": "gimppaintercanvasui.cpp",
+            "compiler": "c++",
+            "sanitized": true,
+            "standard": [
+              "-std=c++14"
+            ],
+            "object_sha256": "a1b3092e7c4a6fffd8c6d1beb79f82e107a6fcab051486c12eec622f6d129a0c"
+          },
+          {
+            "file": "test-painter-canvas-ui.c",
+            "compiler": "cc",
+            "sanitized": true,
+            "standard": [],
+            "object_sha256": "88eac8666f40348b36808842f4f4f0c9ad28e6113bddb3501b77fcc5caa2ca05"
+          }
+        ],
+        "binary_sha256": "11c13c5e8c2fb1b73dc632a047760fde537171f571b65cafb90c58afc6eeb5dc"
+      },
+      {
+        "run": "layer-tile-entry-regression-asan-case5-v1",
+        "status": "PASS",
+        "case_count": 1,
+        "selected_case": "/painter-canvas-ui/image_switch_popup_owner_close",
+        "language_case_counts": {
+          "c11": 0,
+          "cpp14": 0
+        },
+        "actual_c11": false,
+        "timeouts_unchanged": true,
+        "timeout_multiplier": null,
+        "isolation_and_authenticated_loopback_verified": true,
+        "lsan_enabled": false,
+        "verifier_sha256": "382446fd2422e54ab78b1d17bbfdf60425165872cdad4e0066d4f35213be90a7",
+        "input_sha256": {
+          "results.json": "4ede64f0963dcc815855a230ad2a444f7f4fa0f55728ea0802b0f846780d87f6",
+          "registrations.json": "470d046abb5188bd7711e313ab9fd13d24b370bec7ebb3fd77730497fdd1a550",
+          "layer-tile-entry-regression-asan-case5-v1.json": "4d17cb9da70c52cc8425885c077c60821e6607bc51356eaf60694a2fe8d68a26",
+          "server.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "xauth-create.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "layer-tile-entry-regression-asan-case5-v1-source-before.json": "064d3ade3d5ec71d39ea797b128f144749df91689e43c23387e61090b37409a3",
+          "layer-tile-entry-regression-asan-case5-v1-source-after.json": "064d3ade3d5ec71d39ea797b128f144749df91689e43c23387e61090b37409a3",
+          "layer-tile-entry-regression-asan-case5-v1.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+        },
+        "process_exit": 0,
+        "meson_exit": 0,
+        "xserver_exit": 0,
+        "results": [
+          {
+            "name": "painter-canvas-ui",
+            "cases": [
+              "/painter-canvas-ui/image_switch_popup_owner_close"
+            ],
+            "case_count": 1,
+            "duration_seconds": 4.662114381790161,
+            "registered_timeout_seconds": 60,
+            "stderr_lines": 80
+          }
+        ],
+        "allowed_exact_nonfatal_cloud_debug_count": 1,
+        "compile_units": [
+          {
+            "file": "gimppainterlayertiles.cpp",
+            "compiler": "c++",
+            "sanitized": true,
+            "standard": [
+              "-std=c++14"
+            ],
+            "object_sha256": "d0e1ef27c3c81bea31bfccf4392f693273239de9ef681d16662d3099041b1361"
+          },
+          {
+            "file": "gimppaintercanvasui.cpp",
+            "compiler": "c++",
+            "sanitized": true,
+            "standard": [
+              "-std=c++14"
+            ],
+            "object_sha256": "a1b3092e7c4a6fffd8c6d1beb79f82e107a6fcab051486c12eec622f6d129a0c"
+          },
+          {
+            "file": "test-painter-canvas-ui.c",
+            "compiler": "cc",
+            "sanitized": true,
+            "standard": [],
+            "object_sha256": "88eac8666f40348b36808842f4f4f0c9ad28e6113bddb3501b77fcc5caa2ca05"
+          }
+        ],
+        "binary_sha256": "11c13c5e8c2fb1b73dc632a047760fde537171f571b65cafb90c58afc6eeb5dc"
+      },
+      {
+        "run": "layer-tile-entry-regression-asan-case6-v1",
+        "status": "PASS",
+        "case_count": 1,
+        "selected_case": "/painter-canvas-ui/image_switch_popup_newer_image",
+        "language_case_counts": {
+          "c11": 0,
+          "cpp14": 0
+        },
+        "actual_c11": false,
+        "timeouts_unchanged": true,
+        "timeout_multiplier": null,
+        "isolation_and_authenticated_loopback_verified": true,
+        "lsan_enabled": false,
+        "verifier_sha256": "382446fd2422e54ab78b1d17bbfdf60425165872cdad4e0066d4f35213be90a7",
+        "input_sha256": {
+          "results.json": "15203c1e6ffd0fb0c5078aed276b3ceb55f8c3199917ccda41b9001b79a4ce51",
+          "registrations.json": "470d046abb5188bd7711e313ab9fd13d24b370bec7ebb3fd77730497fdd1a550",
+          "layer-tile-entry-regression-asan-case6-v1.json": "3b59f8281a6948313a3af040aecc04be2b3af1565ea9a4ffcb99983394521a71",
+          "server.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "xauth-create.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "layer-tile-entry-regression-asan-case6-v1-source-before.json": "064d3ade3d5ec71d39ea797b128f144749df91689e43c23387e61090b37409a3",
+          "layer-tile-entry-regression-asan-case6-v1-source-after.json": "064d3ade3d5ec71d39ea797b128f144749df91689e43c23387e61090b37409a3",
+          "layer-tile-entry-regression-asan-case6-v1.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+        },
+        "process_exit": 0,
+        "meson_exit": 0,
+        "xserver_exit": 0,
+        "results": [
+          {
+            "name": "painter-canvas-ui",
+            "cases": [
+              "/painter-canvas-ui/image_switch_popup_newer_image"
+            ],
+            "case_count": 1,
+            "duration_seconds": 4.083504676818848,
+            "registered_timeout_seconds": 60,
+            "stderr_lines": 80
+          }
+        ],
+        "allowed_exact_nonfatal_cloud_debug_count": 1,
+        "compile_units": [
+          {
+            "file": "gimppainterlayertiles.cpp",
+            "compiler": "c++",
+            "sanitized": true,
+            "standard": [
+              "-std=c++14"
+            ],
+            "object_sha256": "d0e1ef27c3c81bea31bfccf4392f693273239de9ef681d16662d3099041b1361"
+          },
+          {
+            "file": "gimppaintercanvasui.cpp",
+            "compiler": "c++",
+            "sanitized": true,
+            "standard": [
+              "-std=c++14"
+            ],
+            "object_sha256": "a1b3092e7c4a6fffd8c6d1beb79f82e107a6fcab051486c12eec622f6d129a0c"
+          },
+          {
+            "file": "test-painter-canvas-ui.c",
+            "compiler": "cc",
+            "sanitized": true,
+            "standard": [],
+            "object_sha256": "88eac8666f40348b36808842f4f4f0c9ad28e6113bddb3501b77fcc5caa2ca05"
+          }
+        ],
+        "binary_sha256": "11c13c5e8c2fb1b73dc632a047760fde537171f571b65cafb90c58afc6eeb5dc"
+      },
+      {
+        "run": "layer-tile-entry-regression-asan-case7-v1",
+        "status": "PASS",
+        "case_count": 1,
+        "selected_case": "/painter-canvas-ui/parent_image_notify_owner_close",
+        "language_case_counts": {
+          "c11": 0,
+          "cpp14": 0
+        },
+        "actual_c11": false,
+        "timeouts_unchanged": true,
+        "timeout_multiplier": null,
+        "isolation_and_authenticated_loopback_verified": true,
+        "lsan_enabled": false,
+        "verifier_sha256": "382446fd2422e54ab78b1d17bbfdf60425165872cdad4e0066d4f35213be90a7",
+        "input_sha256": {
+          "results.json": "fd2c4d447706a106ef71132ddcd34357647ea3d04aa32c64df3f1eb23e2fb9bb",
+          "registrations.json": "470d046abb5188bd7711e313ab9fd13d24b370bec7ebb3fd77730497fdd1a550",
+          "layer-tile-entry-regression-asan-case7-v1.json": "4a40fa93441a7b4b5f89cac4f36f06285c69b20c18e210c084f23123913cc42b",
+          "server.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "xauth-create.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "layer-tile-entry-regression-asan-case7-v1-source-before.json": "064d3ade3d5ec71d39ea797b128f144749df91689e43c23387e61090b37409a3",
+          "layer-tile-entry-regression-asan-case7-v1-source-after.json": "064d3ade3d5ec71d39ea797b128f144749df91689e43c23387e61090b37409a3",
+          "layer-tile-entry-regression-asan-case7-v1.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+        },
+        "process_exit": 0,
+        "meson_exit": 0,
+        "xserver_exit": 0,
+        "results": [
+          {
+            "name": "painter-canvas-ui",
+            "cases": [
+              "/painter-canvas-ui/parent_image_notify_owner_close"
+            ],
+            "case_count": 1,
+            "duration_seconds": 3.990286111831665,
+            "registered_timeout_seconds": 60,
+            "stderr_lines": 80
+          }
+        ],
+        "allowed_exact_nonfatal_cloud_debug_count": 1,
+        "compile_units": [
+          {
+            "file": "gimppainterlayertiles.cpp",
+            "compiler": "c++",
+            "sanitized": true,
+            "standard": [
+              "-std=c++14"
+            ],
+            "object_sha256": "d0e1ef27c3c81bea31bfccf4392f693273239de9ef681d16662d3099041b1361"
+          },
+          {
+            "file": "gimppaintercanvasui.cpp",
+            "compiler": "c++",
+            "sanitized": true,
+            "standard": [
+              "-std=c++14"
+            ],
+            "object_sha256": "a1b3092e7c4a6fffd8c6d1beb79f82e107a6fcab051486c12eec622f6d129a0c"
+          },
+          {
+            "file": "test-painter-canvas-ui.c",
+            "compiler": "cc",
+            "sanitized": true,
+            "standard": [],
+            "object_sha256": "88eac8666f40348b36808842f4f4f0c9ad28e6113bddb3501b77fcc5caa2ca05"
+          }
+        ],
+        "binary_sha256": "11c13c5e8c2fb1b73dc632a047760fde537171f571b65cafb90c58afc6eeb5dc"
+      },
+      {
+        "run": "layer-tile-entry-regression-asan-case8-v1",
+        "status": "PASS",
+        "case_count": 1,
+        "selected_case": "/painter-canvas-ui/multiple_canvas_context_and_dock_transfer",
+        "language_case_counts": {
+          "c11": 0,
+          "cpp14": 0
+        },
+        "actual_c11": false,
+        "timeouts_unchanged": true,
+        "timeout_multiplier": null,
+        "isolation_and_authenticated_loopback_verified": true,
+        "lsan_enabled": false,
+        "verifier_sha256": "382446fd2422e54ab78b1d17bbfdf60425165872cdad4e0066d4f35213be90a7",
+        "input_sha256": {
+          "results.json": "00cab3c3540d78e79c54b320a84cbd54216474399124888ccd3aa667bd5aaa2c",
+          "registrations.json": "470d046abb5188bd7711e313ab9fd13d24b370bec7ebb3fd77730497fdd1a550",
+          "layer-tile-entry-regression-asan-case8-v1.json": "7208c62f9d6ff499eec5d5098b916d4da88d00aa13ea19d59a53f38021c6aac3",
+          "server.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "xauth-create.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "layer-tile-entry-regression-asan-case8-v1-source-before.json": "064d3ade3d5ec71d39ea797b128f144749df91689e43c23387e61090b37409a3",
+          "layer-tile-entry-regression-asan-case8-v1-source-after.json": "064d3ade3d5ec71d39ea797b128f144749df91689e43c23387e61090b37409a3",
+          "layer-tile-entry-regression-asan-case8-v1.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+        },
+        "process_exit": 0,
+        "meson_exit": 0,
+        "xserver_exit": 0,
+        "results": [
+          {
+            "name": "painter-canvas-ui",
+            "cases": [
+              "/painter-canvas-ui/multiple_canvas_context_and_dock_transfer"
+            ],
+            "case_count": 1,
+            "duration_seconds": 6.47170615196228,
+            "registered_timeout_seconds": 60,
+            "stderr_lines": 80
+          }
+        ],
+        "allowed_exact_nonfatal_cloud_debug_count": 1,
+        "compile_units": [
+          {
+            "file": "gimppainterlayertiles.cpp",
+            "compiler": "c++",
+            "sanitized": true,
+            "standard": [
+              "-std=c++14"
+            ],
+            "object_sha256": "d0e1ef27c3c81bea31bfccf4392f693273239de9ef681d16662d3099041b1361"
+          },
+          {
+            "file": "gimppaintercanvasui.cpp",
+            "compiler": "c++",
+            "sanitized": true,
+            "standard": [
+              "-std=c++14"
+            ],
+            "object_sha256": "a1b3092e7c4a6fffd8c6d1beb79f82e107a6fcab051486c12eec622f6d129a0c"
+          },
+          {
+            "file": "test-painter-canvas-ui.c",
+            "compiler": "cc",
+            "sanitized": true,
+            "standard": [],
+            "object_sha256": "88eac8666f40348b36808842f4f4f0c9ad28e6113bddb3501b77fcc5caa2ca05"
+          }
+        ],
+        "binary_sha256": "11c13c5e8c2fb1b73dc632a047760fde537171f571b65cafb90c58afc6eeb5dc"
+      },
+      {
+        "run": "layer-tile-entry-regression-asan-case9-v1",
+        "status": "PASS",
+        "case_count": 1,
+        "selected_case": "/painter-canvas-ui/popup_repeat_and_owner_close",
+        "language_case_counts": {
+          "c11": 0,
+          "cpp14": 0
+        },
+        "actual_c11": false,
+        "timeouts_unchanged": true,
+        "timeout_multiplier": null,
+        "isolation_and_authenticated_loopback_verified": true,
+        "lsan_enabled": false,
+        "verifier_sha256": "382446fd2422e54ab78b1d17bbfdf60425165872cdad4e0066d4f35213be90a7",
+        "input_sha256": {
+          "results.json": "cb8b2a4b4bd67b2894dc3c46efc577ab5e54e95595e1fdb34758c1100da20c3e",
+          "registrations.json": "470d046abb5188bd7711e313ab9fd13d24b370bec7ebb3fd77730497fdd1a550",
+          "layer-tile-entry-regression-asan-case9-v1.json": "39f734b57b480b195fc390011bacc1d9a9fa9ca7ecbe2bc2b66bc754765e7218",
+          "server.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "xauth-create.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "layer-tile-entry-regression-asan-case9-v1-source-before.json": "064d3ade3d5ec71d39ea797b128f144749df91689e43c23387e61090b37409a3",
+          "layer-tile-entry-regression-asan-case9-v1-source-after.json": "064d3ade3d5ec71d39ea797b128f144749df91689e43c23387e61090b37409a3",
+          "layer-tile-entry-regression-asan-case9-v1.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+        },
+        "process_exit": 0,
+        "meson_exit": 0,
+        "xserver_exit": 0,
+        "results": [
+          {
+            "name": "painter-canvas-ui",
+            "cases": [
+              "/painter-canvas-ui/popup_repeat_and_owner_close"
+            ],
+            "case_count": 1,
+            "duration_seconds": 4.005653619766235,
+            "registered_timeout_seconds": 60,
+            "stderr_lines": 80
+          }
+        ],
+        "allowed_exact_nonfatal_cloud_debug_count": 1,
+        "compile_units": [
+          {
+            "file": "gimppainterlayertiles.cpp",
+            "compiler": "c++",
+            "sanitized": true,
+            "standard": [
+              "-std=c++14"
+            ],
+            "object_sha256": "d0e1ef27c3c81bea31bfccf4392f693273239de9ef681d16662d3099041b1361"
+          },
+          {
+            "file": "gimppaintercanvasui.cpp",
+            "compiler": "c++",
+            "sanitized": true,
+            "standard": [
+              "-std=c++14"
+            ],
+            "object_sha256": "a1b3092e7c4a6fffd8c6d1beb79f82e107a6fcab051486c12eec622f6d129a0c"
+          },
+          {
+            "file": "test-painter-canvas-ui.c",
+            "compiler": "cc",
+            "sanitized": true,
+            "standard": [],
+            "object_sha256": "88eac8666f40348b36808842f4f4f0c9ad28e6113bddb3501b77fcc5caa2ca05"
+          }
+        ],
+        "binary_sha256": "11c13c5e8c2fb1b73dc632a047760fde537171f571b65cafb90c58afc6eeb5dc"
+      },
+      {
+        "run": "layer-tile-entry-regression-asan-case10-v1",
+        "status": "PASS",
+        "case_count": 1,
+        "selected_case": "/painter-canvas-ui/long_press_cancel_destroy",
+        "language_case_counts": {
+          "c11": 0,
+          "cpp14": 0
+        },
+        "actual_c11": false,
+        "timeouts_unchanged": true,
+        "timeout_multiplier": null,
+        "isolation_and_authenticated_loopback_verified": true,
+        "lsan_enabled": false,
+        "verifier_sha256": "382446fd2422e54ab78b1d17bbfdf60425165872cdad4e0066d4f35213be90a7",
+        "input_sha256": {
+          "results.json": "be0331b20ce4a2855b6590ddc1e938036f32aa2d19e2469c44131b4ce9313e64",
+          "registrations.json": "470d046abb5188bd7711e313ab9fd13d24b370bec7ebb3fd77730497fdd1a550",
+          "layer-tile-entry-regression-asan-case10-v1.json": "6e0953ccc6aa52eb6dd8331dae9f1b1c84105f5c39f8602305705b332df1dd84",
+          "server.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "xauth-create.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "layer-tile-entry-regression-asan-case10-v1-source-before.json": "064d3ade3d5ec71d39ea797b128f144749df91689e43c23387e61090b37409a3",
+          "layer-tile-entry-regression-asan-case10-v1-source-after.json": "064d3ade3d5ec71d39ea797b128f144749df91689e43c23387e61090b37409a3",
+          "layer-tile-entry-regression-asan-case10-v1.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+        },
+        "process_exit": 0,
+        "meson_exit": 0,
+        "xserver_exit": 0,
+        "results": [
+          {
+            "name": "painter-canvas-ui",
+            "cases": [
+              "/painter-canvas-ui/long_press_cancel_destroy"
+            ],
+            "case_count": 1,
+            "duration_seconds": 3.7389957904815674,
+            "registered_timeout_seconds": 60,
+            "stderr_lines": 80
+          }
+        ],
+        "allowed_exact_nonfatal_cloud_debug_count": 1,
+        "compile_units": [
+          {
+            "file": "gimppainterlayertiles.cpp",
+            "compiler": "c++",
+            "sanitized": true,
+            "standard": [
+              "-std=c++14"
+            ],
+            "object_sha256": "d0e1ef27c3c81bea31bfccf4392f693273239de9ef681d16662d3099041b1361"
+          },
+          {
+            "file": "gimppaintercanvasui.cpp",
+            "compiler": "c++",
+            "sanitized": true,
+            "standard": [
+              "-std=c++14"
+            ],
+            "object_sha256": "a1b3092e7c4a6fffd8c6d1beb79f82e107a6fcab051486c12eec622f6d129a0c"
+          },
+          {
+            "file": "test-painter-canvas-ui.c",
+            "compiler": "cc",
+            "sanitized": true,
+            "standard": [],
+            "object_sha256": "88eac8666f40348b36808842f4f4f0c9ad28e6113bddb3501b77fcc5caa2ca05"
+          }
+        ],
+        "binary_sha256": "11c13c5e8c2fb1b73dc632a047760fde537171f571b65cafb90c58afc6eeb5dc"
+      }
+    ]
+  },
+  "acceptance": {
+    "native": 42,
+    "asan_ubsan": 42,
+    "focused_per_mode": 32,
+    "actual_C11_per_mode": 20,
+    "Cpp14_per_mode": 12,
+    "selected_canvas_per_mode": 10,
+    "processes": 22,
+    "all_process_meson_xserver_exits": 0,
+    "full_canvas_aggregate": false,
+    "xcf_executed": false,
+    "lsan_enabled": false
+  },
+  "binary_sha256": {
+    "native/app/tests/layer-tile-entry-contracts": "aed5c5a5d6d490732697e2df9f663731c3a1e62b36eacf663701828ded75c56a",
+    "native/app/tests/painter-canvas-ui": "71fa85bc967d87930f173820e75d54f1f4d7601ce8cedd813109d1d8479eca06",
+    "native/compile_commands.json": "853c943dd98390db459d01f8ab3e6bad69a890db4e1d460eedc84d25813f03f8",
+    "native/meson-info/intro-tests.json": "69093d4765f40855ef34b23aea94328ca3740fb9c7afac1d00cac0bf299ff5b4",
+    "asan/app/tests/layer-tile-entry-contracts": "d27f855ecfa4994f9481550c78ac721ba7766f3538a9a4e1b4d70fa5396ccfdf",
+    "asan/app/tests/painter-canvas-ui": "11c13c5e8c2fb1b73dc632a047760fde537171f571b65cafb90c58afc6eeb5dc",
+    "asan/compile_commands.json": "19a006078f14ff0832e85ac4f662bdd3ee17bdf0c07e09a4e24553d3838ed4d2",
+    "asan/meson-info/intro-tests.json": "798c024da816970ea6bffa4d7d2ee95d2fa8ff3c57444b2898c75c39bf6e2451"
+  },
+  "symbol_evidence": {
+    "status": "PASS",
+    "records": [
+      {
+        "binary": "native-app",
+        "sha256": "b181aa63c2c24d1a72f0d7e2ffb5a7b63a3c2f9d5e7f0b19cc5ecad35c71b5d6",
+        "bytes": 76127704,
+        "defined_T_symbols": {
+          "gimp_layer_tile_view_new": [
+            "000000000069dae0 T gimp_layer_tile_view_new"
+          ],
+          "gimp_layer_tile_view_get_type": [
+            "000000000069dad0 T gimp_layer_tile_view_get_type"
+          ]
+        }
+      },
+      {
+        "binary": "native-focused",
+        "sha256": "aed5c5a5d6d490732697e2df9f663731c3a1e62b36eacf663701828ded75c56a",
+        "bytes": 74801936,
+        "defined_T_symbols": {
+          "gimp_layer_tile_view_new": [
+            "0000000000390320 T gimp_layer_tile_view_new"
+          ],
+          "gimp_layer_tile_view_get_type": [
+            "0000000000390310 T gimp_layer_tile_view_get_type"
+          ]
+        }
+      },
+      {
+        "binary": "asan-focused",
+        "sha256": "d27f855ecfa4994f9481550c78ac721ba7766f3538a9a4e1b4d70fa5396ccfdf",
+        "bytes": 235280016,
+        "defined_T_symbols": {
+          "gimp_layer_tile_view_new": [
+            "0000000003ac6e10 T gimp_layer_tile_view_new"
+          ],
+          "gimp_layer_tile_view_get_type": [
+            "0000000003ac6e00 T gimp_layer_tile_view_get_type"
+          ]
+        }
+      }
+    ]
+  },
+  "header_compilation": {
+    "status": "PASS",
+    "compiled_probes": 377,
+    "c11_probes": 179,
+    "cpp14_probes": 198,
+    "report_sha256": "0ad0d85c0be699e202783dd0642f704614df05e1908eb2bf8597bbd88542956c",
+    "registrations": [
+      {
+        "name": "gimp:painter / painter-public-header-compilation",
+        "result": "OK",
+        "returncode": 0,
+        "duration": 0.11845088005065918
+      },
+      {
+        "name": "gimp:painter / painter-additional-header-routes",
+        "result": "OK",
+        "returncode": 0,
+        "duration": 1.5236015319824219
+      }
+    ]
+  },
+  "handle_compile_controls": {
+    "status": "PASS",
+    "standard": "C++14",
+    "double_include": true,
+    "positive_count": 4,
+    "negative_count": 3,
+    "header_sha256": "93509ac2adae6a181443aef2f4bbc3658153a5a63c05e9620872e47dee7f5faa",
+    "results": [
+      {
+        "name": "header-only",
+        "expected": "compile",
+        "exit": 0,
+        "status": "PASS",
+        "source_sha256": "6cd1de37dbd9d338a34a2f24964eb95c156b94e9872d9e148e918fb459778e5f",
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "create",
+        "expected": "compile",
+        "exit": 0,
+        "status": "PASS",
+        "source_sha256": "223dcb20de282fedabd8934690dd7b3a8f9444fd6b2ae1ab70eeb89fa6b60bb5",
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "retain-copy-move",
+        "expected": "compile",
+        "exit": 0,
+        "status": "PASS",
+        "source_sha256": "a666d5480f85e25e1410731a0e509b5080b308ac9b694ec86aa204850ed07b14",
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "native-type",
+        "expected": "compile",
+        "exit": 0,
+        "status": "PASS",
+        "source_sha256": "181073a398894312e27e6f820b2cc4479812fae48522b1b1871b8eb78a389db6",
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "wrong-owner",
+        "expected": "reject-wrong-type",
+        "exit": 1,
+        "status": "PASS",
+        "source_sha256": "593b215ae0105ddf7db3fd9b9207abc6ee14fb0963d8ec431eb14127a8c14f8d",
+        "log_sha256": "40f3a1ef14571e7695738e5144625e1d908b642f054cbdd75074d7442ba6dbe0"
+      },
+      {
+        "name": "factory-argument",
+        "expected": "reject-wrong-type",
+        "exit": 1,
+        "status": "PASS",
+        "source_sha256": "6a9211903dc46f2c746959b7406e6580042c9e983d935372422189da7ecf186a",
+        "log_sha256": "54d3e87f93e7ae89ee9fb628b1cbc54cf1f2af28bed3f7a828244532af89e3e2"
+      },
+      {
+        "name": "unowned-constructor",
+        "expected": "reject-wrong-type",
+        "exit": 1,
+        "status": "PASS",
+        "source_sha256": "e2bf6eca929457ac3b796955bb35650561c088f8dcfeb13dd7b8a1e560c8aedf",
+        "log_sha256": "d358d6cc945545cd4645e65aa3d60d60b7304f1bc46afb25c001f4c74a16b436"
+      }
+    ]
+  },
+  "negative_controls": [
+    {
+      "status": "PASS",
+      "mode": "native",
+      "source_run": "layer-tile-entry-candidate-native-v6",
+      "selected_case": null,
+      "negative_case_count": 37,
+      "positive_control": "Unmodified copied evidence must pass",
+      "original_inputs_source_and_build_unchanged": true,
+      "verifier_sha256": "382446fd2422e54ab78b1d17bbfdf60425165872cdad4e0066d4f35213be90a7",
+      "controls": [
+        {
+          "mutation": "none",
+          "passed": true,
+          "expected_rejection": null,
+          "accepted_output_written": true,
+          "log_sha256": "769fc688c360e5196b8bc99aa86523686c17c6b198b84ab6dc76ec085a79ba62"
+        },
+        {
+          "mutation": "aggregate_nonzero",
+          "passed": true,
+          "expected_rejection": "aggregate or X server exit failed",
+          "accepted_output_written": false,
+          "log_sha256": "a62d8573de751ed4a4fcaacd551624b7ad01c844c7a561a780cb5d00a59418ac"
+        },
+        {
+          "mutation": "xserver_nonzero",
+          "passed": true,
+          "expected_rejection": "aggregate or X server exit failed",
+          "accepted_output_written": false,
+          "log_sha256": "a62d8573de751ed4a4fcaacd551624b7ad01c844c7a561a780cb5d00a59418ac"
+        },
+        {
+          "mutation": "incomplete_shutdown",
+          "passed": true,
+          "expected_rejection": "unclean server shutdown",
+          "accepted_output_written": false,
+          "log_sha256": "6d95c4f9f67cb97d2baf31e5f5bb0a29be865bb7fb1569f2ebf69c65bddb55b9"
+        },
+        {
+          "mutation": "authentication_negative_control_passes",
+          "passed": true,
+          "expected_rejection": "X authentication positive/negative control failed",
+          "accepted_output_written": false,
+          "log_sha256": "ae169abf236702808a8dbe7b5e45310e87a797cf994f6b1d8ed1bb48e479b15c"
+        },
+        {
+          "mutation": "process_nonzero_after_all_tap_ok",
+          "passed": true,
+          "expected_rejection": "test process failed",
+          "accepted_output_written": false,
+          "log_sha256": "cb4205ab703c14ac7a13fb0214afdaf1498e78808c700b6dc431a1e99af47bda"
+        },
+        {
+          "mutation": "meson_result_skip",
+          "passed": true,
+          "expected_rejection": "test process failed",
+          "accepted_output_written": false,
+          "log_sha256": "cb4205ab703c14ac7a13fb0214afdaf1498e78808c700b6dc431a1e99af47bda"
+        },
+        {
+          "mutation": "missing_tap_case",
+          "passed": true,
+          "expected_rejection": "TAP numbering missing/duplicated",
+          "accepted_output_written": false,
+          "log_sha256": "7d39dbbcedec4b5a64063931ecbefa9ee8d546481b2a601714f55f6ec48d49bd"
+        },
+        {
+          "mutation": "duplicate_tap_case",
+          "passed": true,
+          "expected_rejection": "TAP numbering missing/duplicated",
+          "accepted_output_written": false,
+          "log_sha256": "7d39dbbcedec4b5a64063931ecbefa9ee8d546481b2a601714f55f6ec48d49bd"
+        },
+        {
+          "mutation": "wrong_tap_case",
+          "passed": true,
+          "expected_rejection": "TAP IDs/order differ",
+          "accepted_output_written": false,
+          "log_sha256": "a84859dbad5ab204b27b0a4db64245c2b199abf26e1ca0a9df4da90e2113a323"
+        },
+        {
+          "mutation": "wrong_tap_plan",
+          "passed": true,
+          "expected_rejection": "TAP plan missing/duplicated/wrong",
+          "accepted_output_written": false,
+          "log_sha256": "2c0d59117bf7fea380b85f81a69542050612686db059ad0ec327f722a612ed27"
+        },
+        {
+          "mutation": "tap_skip_directive",
+          "passed": true,
+          "expected_rejection": "TAP IDs/order differ",
+          "accepted_output_written": false,
+          "log_sha256": "a84859dbad5ab204b27b0a4db64245c2b199abf26e1ca0a9df4da90e2113a323"
+        },
+        {
+          "mutation": "comment_skip",
+          "passed": true,
+          "expected_rejection": "forbidden diagnostic",
+          "accepted_output_written": false,
+          "log_sha256": "6616ff31482397a1a0e04defd7a2917dd68502a494e59ef0044e904a45f11efb"
+        },
+        {
+          "mutation": "teardown_critical_after_all_tap_ok",
+          "passed": true,
+          "expected_rejection": "forbidden diagnostic",
+          "accepted_output_written": false,
+          "log_sha256": "2b5f0f155540a23adc948abea57c1ac996440f446237d9caa7de57139bd863a2"
+        },
+        {
+          "mutation": "sanitizer_after_all_tap_ok",
+          "passed": true,
+          "expected_rejection": "forbidden diagnostic",
+          "accepted_output_written": false,
+          "log_sha256": "662b7a544d4a421c97ce07e4a2160e7414f7a591307fb642b4eb2614debb9ad8"
+        },
+        {
+          "mutation": "ubsan_after_all_tap_ok",
+          "passed": true,
+          "expected_rejection": "forbidden diagnostic",
+          "accepted_output_written": false,
+          "log_sha256": "e1af4c2d2996bd24e15383917a95090419bb3cec5bb5a1e21e746ad66e39bd4d"
+        },
+        {
+          "mutation": "unexpected_warning",
+          "passed": true,
+          "expected_rejection": "forbidden diagnostic",
+          "accepted_output_written": false,
+          "log_sha256": "b76dc45742adccffb337ff63b41cb567aa701ba2ed4a643bd4877640bccd3de3"
+        },
+        {
+          "mutation": "increased_registered_timeout",
+          "passed": true,
+          "expected_rejection": "registered timeout/serial contract changed",
+          "accepted_output_written": false,
+          "log_sha256": "33e1b749496d4d9ec05988401d6ff8a6612b7b01d2d7e3bad5580d91eb821362"
+        },
+        {
+          "mutation": "parallel_registration",
+          "passed": true,
+          "expected_rejection": "registered timeout/serial contract changed",
+          "accepted_output_written": false,
+          "log_sha256": "33e1b749496d4d9ec05988401d6ff8a6612b7b01d2d7e3bad5580d91eb821362"
+        },
+        {
+          "mutation": "missing_registration",
+          "passed": true,
+          "expected_rejection": "missing/duplicate Meson registration",
+          "accepted_output_written": false,
+          "log_sha256": "51e164530667d5f36269051a605aa64891fa9932192644f49fdcd9e71a1c83ec"
+        },
+        {
+          "mutation": "wrong_registration_command",
+          "passed": true,
+          "expected_rejection": "registration command changed",
+          "accepted_output_written": false,
+          "log_sha256": "f1a95ff2181e46ae3660902bd40d97d1031f3f1e0c1da3b9f24df7ac15ca1038"
+        },
+        {
+          "mutation": "command_timeout_multiplier",
+          "passed": true,
+          "expected_rejection": "aggregate command differs",
+          "accepted_output_written": false,
+          "log_sha256": "e7d2f1e43e594b9096cc0fb3a189e8ade1f322044402a8a347a9df8ab0da8ea3"
+        },
+        {
+          "mutation": "environment_timeout_multiplier",
+          "passed": true,
+          "expected_rejection": "forbidden environment override",
+          "accepted_output_written": false,
+          "log_sha256": "b9167cca8ba8ebc74eddd8bf92fef21bd2788a4e64a79bd3860e0f67f3f1f266"
+        },
+        {
+          "mutation": "wrong_case_selection",
+          "passed": true,
+          "expected_rejection": "case filter differs",
+          "accepted_output_written": false,
+          "log_sha256": "9958e6388bba7118538f01ce76d072e83bd914c2eafba430a72981f7e08dcdb2"
+        },
+        {
+          "mutation": "source_seal_tamper",
+          "passed": true,
+          "expected_rejection": "sealed SHA256 changed",
+          "accepted_output_written": false,
+          "log_sha256": "0dbd242a2b108c3e646fb6530677b6038f1b55dcee943dde6d4083bf06c366f7"
+        },
+        {
+          "mutation": "source_seal_missing_path",
+          "passed": true,
+          "expected_rejection": "source seal must contain exactly nine entries",
+          "accepted_output_written": false,
+          "log_sha256": "986858d13f511f8502bdd526ce3000aee8995bf38abfc0e5ebc15bcb3c2278de"
+        },
+        {
+          "mutation": "source_seal_duplicate_path",
+          "passed": true,
+          "expected_rejection": "source seal paths differ",
+          "accepted_output_written": false,
+          "log_sha256": "e2a1f926725e47980fa9094e0fc8fdc360d4fc048fc0eef7c933798ab9ed5e2e"
+        },
+        {
+          "mutation": "before_binary_tamper",
+          "passed": true,
+          "expected_rejection": "pre-run source/build snapshot differs",
+          "accepted_output_written": false,
+          "log_sha256": "99ba206c7ff06cc5dd255cb2603b74ae665ff8cad4bb80860ee53af2983e33b0"
+        },
+        {
+          "mutation": "after_source_tamper",
+          "passed": true,
+          "expected_rejection": "post-run source/build snapshot differs",
+          "accepted_output_written": false,
+          "log_sha256": "3c33d8d1086527722e75ed25e0718360949c776ecc0febc25d0632755f686283"
+        },
+        {
+          "mutation": "sanitizer_compile_disabled",
+          "passed": true,
+          "expected_rejection": "sanitizer disabled/suppressed in compile command",
+          "accepted_output_written": false,
+          "log_sha256": "e6eb131fc23fa7a63bb06a5da49a38e324d34c0f9ae8ed6fbb23dc1a9c358874"
+        },
+        {
+          "mutation": "sanitizer_runtime_suppression",
+          "passed": true,
+          "expected_rejection": "ASan options differ",
+          "accepted_output_written": false,
+          "log_sha256": "2e84169b564e2adc9d0a7942d53dddfe22eb46152d43b9b05deaafdd7ed910aa"
+        },
+        {
+          "mutation": "sanitizer_runtime_missing",
+          "passed": true,
+          "expected_rejection": "ASan options differ",
+          "accepted_output_written": false,
+          "log_sha256": "2e84169b564e2adc9d0a7942d53dddfe22eb46152d43b9b05deaafdd7ed910aa"
+        },
+        {
+          "mutation": "sanitizer_runtime_halt_disabled",
+          "passed": true,
+          "expected_rejection": "ASan options differ",
+          "accepted_output_written": false,
+          "log_sha256": "2e84169b564e2adc9d0a7942d53dddfe22eb46152d43b9b05deaafdd7ed910aa"
+        },
+        {
+          "mutation": "ubsan_runtime_abort_disabled",
+          "passed": true,
+          "expected_rejection": "UBSan options differ",
+          "accepted_output_written": false,
+          "log_sha256": "7838b35a133e59ca7d04a2f52a99584dfc5cd189becf0cf11644afff0cfad98d"
+        },
+        {
+          "mutation": "reordered_tap_cases",
+          "passed": true,
+          "expected_rejection": "TAP IDs/order differ",
+          "accepted_output_written": false,
+          "log_sha256": "a84859dbad5ab204b27b0a4db64245c2b199abf26e1ca0a9df4da90e2113a323"
+        },
+        {
+          "mutation": "wrong_c_standard",
+          "passed": true,
+          "expected_rejection": "wrong language standard",
+          "accepted_output_written": false,
+          "log_sha256": "33c55dc41dee43e3b05ce4be8cc8ea1050aeb298d3451d5c5eaee00ce8e0a6fd"
+        },
+        {
+          "mutation": "missing_wrap_define",
+          "passed": true,
+          "expected_rejection": "original-entry wrap control unavailable",
+          "accepted_output_written": false,
+          "log_sha256": "d4cff79d595bef922865c9deb687c282ddf1926b9f3395f3d0cb7d75bf723a6c"
+        },
+        {
+          "mutation": "missing_wrap_link",
+          "passed": true,
+          "expected_rejection": "original-provider wrap link flags missing/duplicated",
+          "accepted_output_written": false,
+          "log_sha256": "cccd15fa8bff7e3eae959da648b52b213997422b428c076df7e84b429a027233"
+        }
+      ]
+    },
+    {
+      "status": "PASS",
+      "mode": "native",
+      "source_run": "layer-tile-entry-regression-native-case1-v2",
+      "selected_case": "/painter-canvas-ui/selection_and_visibility",
+      "negative_case_count": 34,
+      "positive_control": "Unmodified copied evidence must pass",
+      "original_inputs_source_and_build_unchanged": true,
+      "verifier_sha256": "382446fd2422e54ab78b1d17bbfdf60425165872cdad4e0066d4f35213be90a7",
+      "controls": [
+        {
+          "mutation": "none",
+          "passed": true,
+          "expected_rejection": null,
+          "accepted_output_written": true,
+          "log_sha256": "00e5f860005c13f88fd27bd10e2ddc0fca8122cea65b5d3bcf66fb736430770c"
+        },
+        {
+          "mutation": "aggregate_nonzero",
+          "passed": true,
+          "expected_rejection": "aggregate or X server exit failed",
+          "accepted_output_written": false,
+          "log_sha256": "a62d8573de751ed4a4fcaacd551624b7ad01c844c7a561a780cb5d00a59418ac"
+        },
+        {
+          "mutation": "xserver_nonzero",
+          "passed": true,
+          "expected_rejection": "aggregate or X server exit failed",
+          "accepted_output_written": false,
+          "log_sha256": "a62d8573de751ed4a4fcaacd551624b7ad01c844c7a561a780cb5d00a59418ac"
+        },
+        {
+          "mutation": "incomplete_shutdown",
+          "passed": true,
+          "expected_rejection": "unclean server shutdown",
+          "accepted_output_written": false,
+          "log_sha256": "6d95c4f9f67cb97d2baf31e5f5bb0a29be865bb7fb1569f2ebf69c65bddb55b9"
+        },
+        {
+          "mutation": "authentication_negative_control_passes",
+          "passed": true,
+          "expected_rejection": "X authentication positive/negative control failed",
+          "accepted_output_written": false,
+          "log_sha256": "ae169abf236702808a8dbe7b5e45310e87a797cf994f6b1d8ed1bb48e479b15c"
+        },
+        {
+          "mutation": "process_nonzero_after_all_tap_ok",
+          "passed": true,
+          "expected_rejection": "test process failed",
+          "accepted_output_written": false,
+          "log_sha256": "9d27ab67ec59486c5a2654aad7bbb59663058bfae2ddc2b35fea1868668507f1"
+        },
+        {
+          "mutation": "meson_result_skip",
+          "passed": true,
+          "expected_rejection": "test process failed",
+          "accepted_output_written": false,
+          "log_sha256": "9d27ab67ec59486c5a2654aad7bbb59663058bfae2ddc2b35fea1868668507f1"
+        },
+        {
+          "mutation": "missing_tap_case",
+          "passed": true,
+          "expected_rejection": "TAP numbering missing/duplicated",
+          "accepted_output_written": false,
+          "log_sha256": "89581581f9ccdeb63d3d04589776a1672f6f9f12deb3f390bff56ad1b5bd6019"
+        },
+        {
+          "mutation": "duplicate_tap_case",
+          "passed": true,
+          "expected_rejection": "TAP numbering missing/duplicated",
+          "accepted_output_written": false,
+          "log_sha256": "89581581f9ccdeb63d3d04589776a1672f6f9f12deb3f390bff56ad1b5bd6019"
+        },
+        {
+          "mutation": "wrong_tap_case",
+          "passed": true,
+          "expected_rejection": "TAP IDs/order differ",
+          "accepted_output_written": false,
+          "log_sha256": "e47d39f190364aa9f34961ea681e1f30467919b52657f8ec7554ea67ab63006c"
+        },
+        {
+          "mutation": "wrong_tap_plan",
+          "passed": true,
+          "expected_rejection": "TAP plan missing/duplicated/wrong",
+          "accepted_output_written": false,
+          "log_sha256": "2c0d59117bf7fea380b85f81a69542050612686db059ad0ec327f722a612ed27"
+        },
+        {
+          "mutation": "tap_skip_directive",
+          "passed": true,
+          "expected_rejection": "TAP IDs/order differ",
+          "accepted_output_written": false,
+          "log_sha256": "e47d39f190364aa9f34961ea681e1f30467919b52657f8ec7554ea67ab63006c"
+        },
+        {
+          "mutation": "comment_skip",
+          "passed": true,
+          "expected_rejection": "forbidden diagnostic",
+          "accepted_output_written": false,
+          "log_sha256": "bd8305428973d948446ffc12a12c8074c88c02ecc7d321b6ee5904b725a5fde2"
+        },
+        {
+          "mutation": "teardown_critical_after_all_tap_ok",
+          "passed": true,
+          "expected_rejection": "forbidden diagnostic",
+          "accepted_output_written": false,
+          "log_sha256": "fed79046cb355dcd505e946da1b0f69984c215c41c3180a55f5bc020ee8ecb30"
+        },
+        {
+          "mutation": "sanitizer_after_all_tap_ok",
+          "passed": true,
+          "expected_rejection": "forbidden diagnostic",
+          "accepted_output_written": false,
+          "log_sha256": "6e15323b0dc951ff70a6241c256e40b51803df0cfc47e4064a01e08313c5f1b9"
+        },
+        {
+          "mutation": "ubsan_after_all_tap_ok",
+          "passed": true,
+          "expected_rejection": "forbidden diagnostic",
+          "accepted_output_written": false,
+          "log_sha256": "0e61c99863e08e5dd157f96e74e729130232fd0df7c30b70b909ba6060ab9832"
+        },
+        {
+          "mutation": "unexpected_warning",
+          "passed": true,
+          "expected_rejection": "forbidden diagnostic",
+          "accepted_output_written": false,
+          "log_sha256": "d514cc61bb2a5247e96ac6b8d3a1aa415eca90d5332a249c5b26f6c2cf813b6e"
+        },
+        {
+          "mutation": "increased_registered_timeout",
+          "passed": true,
+          "expected_rejection": "registered timeout/serial contract changed",
+          "accepted_output_written": false,
+          "log_sha256": "d15760deafd551aa3ccfc14a764835477fad9856c55cb83658af84deed736d92"
+        },
+        {
+          "mutation": "parallel_registration",
+          "passed": true,
+          "expected_rejection": "registered timeout/serial contract changed",
+          "accepted_output_written": false,
+          "log_sha256": "d15760deafd551aa3ccfc14a764835477fad9856c55cb83658af84deed736d92"
+        },
+        {
+          "mutation": "missing_registration",
+          "passed": true,
+          "expected_rejection": "missing/duplicate Meson registration",
+          "accepted_output_written": false,
+          "log_sha256": "4cc0f3f756051ca7ad3cc71428137f73e0cb61337d0bab5023c64ca14110cfe0"
+        },
+        {
+          "mutation": "wrong_registration_command",
+          "passed": true,
+          "expected_rejection": "registration command changed",
+          "accepted_output_written": false,
+          "log_sha256": "357443fc4c9766e558832e88eb07b23db9b7e07628cfc703e64e95adb368d26b"
+        },
+        {
+          "mutation": "command_timeout_multiplier",
+          "passed": true,
+          "expected_rejection": "aggregate command differs",
+          "accepted_output_written": false,
+          "log_sha256": "e7d2f1e43e594b9096cc0fb3a189e8ade1f322044402a8a347a9df8ab0da8ea3"
+        },
+        {
+          "mutation": "environment_timeout_multiplier",
+          "passed": true,
+          "expected_rejection": "forbidden environment override",
+          "accepted_output_written": false,
+          "log_sha256": "cf858ae7dfe58a5cc2d0cf6be6519c6ab74cd98378abe866ea7bad60663c4b35"
+        },
+        {
+          "mutation": "wrong_case_selection",
+          "passed": true,
+          "expected_rejection": "case filter differs",
+          "accepted_output_written": false,
+          "log_sha256": "9958e6388bba7118538f01ce76d072e83bd914c2eafba430a72981f7e08dcdb2"
+        },
+        {
+          "mutation": "source_seal_tamper",
+          "passed": true,
+          "expected_rejection": "sealed SHA256 changed",
+          "accepted_output_written": false,
+          "log_sha256": "0dbd242a2b108c3e646fb6530677b6038f1b55dcee943dde6d4083bf06c366f7"
+        },
+        {
+          "mutation": "source_seal_missing_path",
+          "passed": true,
+          "expected_rejection": "source seal must contain exactly nine entries",
+          "accepted_output_written": false,
+          "log_sha256": "986858d13f511f8502bdd526ce3000aee8995bf38abfc0e5ebc15bcb3c2278de"
+        },
+        {
+          "mutation": "source_seal_duplicate_path",
+          "passed": true,
+          "expected_rejection": "source seal paths differ",
+          "accepted_output_written": false,
+          "log_sha256": "e2a1f926725e47980fa9094e0fc8fdc360d4fc048fc0eef7c933798ab9ed5e2e"
+        },
+        {
+          "mutation": "before_binary_tamper",
+          "passed": true,
+          "expected_rejection": "pre-run source/build snapshot differs",
+          "accepted_output_written": false,
+          "log_sha256": "99ba206c7ff06cc5dd255cb2603b74ae665ff8cad4bb80860ee53af2983e33b0"
+        },
+        {
+          "mutation": "after_source_tamper",
+          "passed": true,
+          "expected_rejection": "post-run source/build snapshot differs",
+          "accepted_output_written": false,
+          "log_sha256": "3c33d8d1086527722e75ed25e0718360949c776ecc0febc25d0632755f686283"
+        },
+        {
+          "mutation": "sanitizer_compile_disabled",
+          "passed": true,
+          "expected_rejection": "sanitizer disabled/suppressed in compile command",
+          "accepted_output_written": false,
+          "log_sha256": "e6eb131fc23fa7a63bb06a5da49a38e324d34c0f9ae8ed6fbb23dc1a9c358874"
+        },
+        {
+          "mutation": "sanitizer_runtime_suppression",
+          "passed": true,
+          "expected_rejection": "ASan options differ",
+          "accepted_output_written": false,
+          "log_sha256": "cbf48cafcffb016118354ba078366dbe1512ac7254de21799bc3a76a67eb9342"
+        },
+        {
+          "mutation": "sanitizer_runtime_missing",
+          "passed": true,
+          "expected_rejection": "ASan options differ",
+          "accepted_output_written": false,
+          "log_sha256": "cbf48cafcffb016118354ba078366dbe1512ac7254de21799bc3a76a67eb9342"
+        },
+        {
+          "mutation": "sanitizer_runtime_halt_disabled",
+          "passed": true,
+          "expected_rejection": "ASan options differ",
+          "accepted_output_written": false,
+          "log_sha256": "cbf48cafcffb016118354ba078366dbe1512ac7254de21799bc3a76a67eb9342"
+        },
+        {
+          "mutation": "ubsan_runtime_abort_disabled",
+          "passed": true,
+          "expected_rejection": "UBSan options differ",
+          "accepted_output_written": false,
+          "log_sha256": "4d27d07e68daf88d4136b2acacf4165a8ba6913877969374e60dade07f555350"
+        },
+        {
+          "mutation": "wrong_canvas_group",
+          "passed": true,
+          "expected_rejection": "unexpected environment value: GIMP_TEST_PAINTER_CANVAS_GROUP",
+          "accepted_output_written": false,
+          "log_sha256": "b53103aaec2d10c59f7af3c648154b0baf03947c28219d14cfd7a21624e81c9e"
+        }
+      ]
+    },
+    {
+      "status": "PASS",
+      "mode": "asan",
+      "source_run": "layer-tile-entry-candidate-asan-v1",
+      "selected_case": null,
+      "negative_case_count": 38,
+      "positive_control": "Unmodified copied evidence must pass",
+      "original_inputs_source_and_build_unchanged": true,
+      "verifier_sha256": "382446fd2422e54ab78b1d17bbfdf60425165872cdad4e0066d4f35213be90a7",
+      "controls": [
+        {
+          "mutation": "none",
+          "passed": true,
+          "expected_rejection": null,
+          "accepted_output_written": true,
+          "log_sha256": "3e10def9ece9ac0c12e669d1eab8099f448c63283cc183c723ddfc4fc9e93c14"
+        },
+        {
+          "mutation": "aggregate_nonzero",
+          "passed": true,
+          "expected_rejection": "aggregate or X server exit failed",
+          "accepted_output_written": false,
+          "log_sha256": "a62d8573de751ed4a4fcaacd551624b7ad01c844c7a561a780cb5d00a59418ac"
+        },
+        {
+          "mutation": "xserver_nonzero",
+          "passed": true,
+          "expected_rejection": "aggregate or X server exit failed",
+          "accepted_output_written": false,
+          "log_sha256": "a62d8573de751ed4a4fcaacd551624b7ad01c844c7a561a780cb5d00a59418ac"
+        },
+        {
+          "mutation": "incomplete_shutdown",
+          "passed": true,
+          "expected_rejection": "unclean server shutdown",
+          "accepted_output_written": false,
+          "log_sha256": "6d95c4f9f67cb97d2baf31e5f5bb0a29be865bb7fb1569f2ebf69c65bddb55b9"
+        },
+        {
+          "mutation": "authentication_negative_control_passes",
+          "passed": true,
+          "expected_rejection": "X authentication positive/negative control failed",
+          "accepted_output_written": false,
+          "log_sha256": "ae169abf236702808a8dbe7b5e45310e87a797cf994f6b1d8ed1bb48e479b15c"
+        },
+        {
+          "mutation": "process_nonzero_after_all_tap_ok",
+          "passed": true,
+          "expected_rejection": "test process failed",
+          "accepted_output_written": false,
+          "log_sha256": "cb4205ab703c14ac7a13fb0214afdaf1498e78808c700b6dc431a1e99af47bda"
+        },
+        {
+          "mutation": "meson_result_skip",
+          "passed": true,
+          "expected_rejection": "test process failed",
+          "accepted_output_written": false,
+          "log_sha256": "cb4205ab703c14ac7a13fb0214afdaf1498e78808c700b6dc431a1e99af47bda"
+        },
+        {
+          "mutation": "missing_tap_case",
+          "passed": true,
+          "expected_rejection": "TAP numbering missing/duplicated",
+          "accepted_output_written": false,
+          "log_sha256": "7d39dbbcedec4b5a64063931ecbefa9ee8d546481b2a601714f55f6ec48d49bd"
+        },
+        {
+          "mutation": "duplicate_tap_case",
+          "passed": true,
+          "expected_rejection": "TAP numbering missing/duplicated",
+          "accepted_output_written": false,
+          "log_sha256": "7d39dbbcedec4b5a64063931ecbefa9ee8d546481b2a601714f55f6ec48d49bd"
+        },
+        {
+          "mutation": "wrong_tap_case",
+          "passed": true,
+          "expected_rejection": "TAP IDs/order differ",
+          "accepted_output_written": false,
+          "log_sha256": "a84859dbad5ab204b27b0a4db64245c2b199abf26e1ca0a9df4da90e2113a323"
+        },
+        {
+          "mutation": "wrong_tap_plan",
+          "passed": true,
+          "expected_rejection": "TAP plan missing/duplicated/wrong",
+          "accepted_output_written": false,
+          "log_sha256": "2c0d59117bf7fea380b85f81a69542050612686db059ad0ec327f722a612ed27"
+        },
+        {
+          "mutation": "tap_skip_directive",
+          "passed": true,
+          "expected_rejection": "TAP IDs/order differ",
+          "accepted_output_written": false,
+          "log_sha256": "a84859dbad5ab204b27b0a4db64245c2b199abf26e1ca0a9df4da90e2113a323"
+        },
+        {
+          "mutation": "comment_skip",
+          "passed": true,
+          "expected_rejection": "forbidden diagnostic",
+          "accepted_output_written": false,
+          "log_sha256": "6616ff31482397a1a0e04defd7a2917dd68502a494e59ef0044e904a45f11efb"
+        },
+        {
+          "mutation": "teardown_critical_after_all_tap_ok",
+          "passed": true,
+          "expected_rejection": "forbidden diagnostic",
+          "accepted_output_written": false,
+          "log_sha256": "2b5f0f155540a23adc948abea57c1ac996440f446237d9caa7de57139bd863a2"
+        },
+        {
+          "mutation": "sanitizer_after_all_tap_ok",
+          "passed": true,
+          "expected_rejection": "forbidden diagnostic",
+          "accepted_output_written": false,
+          "log_sha256": "662b7a544d4a421c97ce07e4a2160e7414f7a591307fb642b4eb2614debb9ad8"
+        },
+        {
+          "mutation": "ubsan_after_all_tap_ok",
+          "passed": true,
+          "expected_rejection": "forbidden diagnostic",
+          "accepted_output_written": false,
+          "log_sha256": "e1af4c2d2996bd24e15383917a95090419bb3cec5bb5a1e21e746ad66e39bd4d"
+        },
+        {
+          "mutation": "unexpected_warning",
+          "passed": true,
+          "expected_rejection": "forbidden diagnostic",
+          "accepted_output_written": false,
+          "log_sha256": "b76dc45742adccffb337ff63b41cb567aa701ba2ed4a643bd4877640bccd3de3"
+        },
+        {
+          "mutation": "increased_registered_timeout",
+          "passed": true,
+          "expected_rejection": "registered timeout/serial contract changed",
+          "accepted_output_written": false,
+          "log_sha256": "33e1b749496d4d9ec05988401d6ff8a6612b7b01d2d7e3bad5580d91eb821362"
+        },
+        {
+          "mutation": "parallel_registration",
+          "passed": true,
+          "expected_rejection": "registered timeout/serial contract changed",
+          "accepted_output_written": false,
+          "log_sha256": "33e1b749496d4d9ec05988401d6ff8a6612b7b01d2d7e3bad5580d91eb821362"
+        },
+        {
+          "mutation": "missing_registration",
+          "passed": true,
+          "expected_rejection": "missing/duplicate Meson registration",
+          "accepted_output_written": false,
+          "log_sha256": "51e164530667d5f36269051a605aa64891fa9932192644f49fdcd9e71a1c83ec"
+        },
+        {
+          "mutation": "wrong_registration_command",
+          "passed": true,
+          "expected_rejection": "registration command changed",
+          "accepted_output_written": false,
+          "log_sha256": "f1a95ff2181e46ae3660902bd40d97d1031f3f1e0c1da3b9f24df7ac15ca1038"
+        },
+        {
+          "mutation": "command_timeout_multiplier",
+          "passed": true,
+          "expected_rejection": "aggregate command differs",
+          "accepted_output_written": false,
+          "log_sha256": "e7d2f1e43e594b9096cc0fb3a189e8ade1f322044402a8a347a9df8ab0da8ea3"
+        },
+        {
+          "mutation": "environment_timeout_multiplier",
+          "passed": true,
+          "expected_rejection": "forbidden environment override",
+          "accepted_output_written": false,
+          "log_sha256": "b9167cca8ba8ebc74eddd8bf92fef21bd2788a4e64a79bd3860e0f67f3f1f266"
+        },
+        {
+          "mutation": "wrong_case_selection",
+          "passed": true,
+          "expected_rejection": "case filter differs",
+          "accepted_output_written": false,
+          "log_sha256": "9958e6388bba7118538f01ce76d072e83bd914c2eafba430a72981f7e08dcdb2"
+        },
+        {
+          "mutation": "source_seal_tamper",
+          "passed": true,
+          "expected_rejection": "sealed SHA256 changed",
+          "accepted_output_written": false,
+          "log_sha256": "0dbd242a2b108c3e646fb6530677b6038f1b55dcee943dde6d4083bf06c366f7"
+        },
+        {
+          "mutation": "source_seal_missing_path",
+          "passed": true,
+          "expected_rejection": "source seal must contain exactly nine entries",
+          "accepted_output_written": false,
+          "log_sha256": "986858d13f511f8502bdd526ce3000aee8995bf38abfc0e5ebc15bcb3c2278de"
+        },
+        {
+          "mutation": "source_seal_duplicate_path",
+          "passed": true,
+          "expected_rejection": "source seal paths differ",
+          "accepted_output_written": false,
+          "log_sha256": "e2a1f926725e47980fa9094e0fc8fdc360d4fc048fc0eef7c933798ab9ed5e2e"
+        },
+        {
+          "mutation": "before_binary_tamper",
+          "passed": true,
+          "expected_rejection": "pre-run source/build snapshot differs",
+          "accepted_output_written": false,
+          "log_sha256": "99ba206c7ff06cc5dd255cb2603b74ae665ff8cad4bb80860ee53af2983e33b0"
+        },
+        {
+          "mutation": "after_source_tamper",
+          "passed": true,
+          "expected_rejection": "post-run source/build snapshot differs",
+          "accepted_output_written": false,
+          "log_sha256": "3c33d8d1086527722e75ed25e0718360949c776ecc0febc25d0632755f686283"
+        },
+        {
+          "mutation": "sanitizer_compile_disabled",
+          "passed": true,
+          "expected_rejection": "sanitizer disabled/suppressed in compile command",
+          "accepted_output_written": false,
+          "log_sha256": "e6eb131fc23fa7a63bb06a5da49a38e324d34c0f9ae8ed6fbb23dc1a9c358874"
+        },
+        {
+          "mutation": "sanitizer_runtime_suppression",
+          "passed": true,
+          "expected_rejection": "ASan options differ",
+          "accepted_output_written": false,
+          "log_sha256": "ec534c79ad750d65382290ea25a5d41d1b6bda8bc2e6a2211382e511df6eba31"
+        },
+        {
+          "mutation": "sanitizer_runtime_missing",
+          "passed": true,
+          "expected_rejection": "ASan options differ",
+          "accepted_output_written": false,
+          "log_sha256": "ec534c79ad750d65382290ea25a5d41d1b6bda8bc2e6a2211382e511df6eba31"
+        },
+        {
+          "mutation": "sanitizer_runtime_halt_disabled",
+          "passed": true,
+          "expected_rejection": "ASan options differ",
+          "accepted_output_written": false,
+          "log_sha256": "ec534c79ad750d65382290ea25a5d41d1b6bda8bc2e6a2211382e511df6eba31"
+        },
+        {
+          "mutation": "ubsan_runtime_abort_disabled",
+          "passed": true,
+          "expected_rejection": "UBSan options differ",
+          "accepted_output_written": false,
+          "log_sha256": "a801d85f136064d12b4a192d69ebdf251dc3ee1586e56f4778bf49ead51851ba"
+        },
+        {
+          "mutation": "reordered_tap_cases",
+          "passed": true,
+          "expected_rejection": "TAP IDs/order differ",
+          "accepted_output_written": false,
+          "log_sha256": "a84859dbad5ab204b27b0a4db64245c2b199abf26e1ca0a9df4da90e2113a323"
+        },
+        {
+          "mutation": "wrong_c_standard",
+          "passed": true,
+          "expected_rejection": "wrong language standard",
+          "accepted_output_written": false,
+          "log_sha256": "33c55dc41dee43e3b05ce4be8cc8ea1050aeb298d3451d5c5eaee00ce8e0a6fd"
+        },
+        {
+          "mutation": "missing_wrap_define",
+          "passed": true,
+          "expected_rejection": "original-entry wrap control unavailable",
+          "accepted_output_written": false,
+          "log_sha256": "d4cff79d595bef922865c9deb687c282ddf1926b9f3395f3d0cb7d75bf723a6c"
+        },
+        {
+          "mutation": "missing_wrap_link",
+          "passed": true,
+          "expected_rejection": "original-provider wrap link flags missing/duplicated",
+          "accepted_output_written": false,
+          "log_sha256": "cccd15fa8bff7e3eae959da648b52b213997422b428c076df7e84b429a027233"
+        },
+        {
+          "mutation": "sanitizer_link_disabled",
+          "passed": true,
+          "expected_rejection": "wrong sanitizer link flags",
+          "accepted_output_written": false,
+          "log_sha256": "194b149b37e1cbf5348c3519081d28d4ae81d34f0214d33b2fdddaa0d9b46499"
+        }
+      ]
+    },
+    {
+      "status": "PASS",
+      "mode": "asan",
+      "source_run": "layer-tile-entry-regression-asan-case1-v1",
+      "selected_case": "/painter-canvas-ui/selection_and_visibility",
+      "negative_case_count": 35,
+      "positive_control": "Unmodified copied evidence must pass",
+      "original_inputs_source_and_build_unchanged": true,
+      "verifier_sha256": "382446fd2422e54ab78b1d17bbfdf60425165872cdad4e0066d4f35213be90a7",
+      "controls": [
+        {
+          "mutation": "none",
+          "passed": true,
+          "expected_rejection": null,
+          "accepted_output_written": true,
+          "log_sha256": "60cb2a7cc59518d10094344cdf900a66b3815c1b275b4bfbdae9b5f67557af5e"
+        },
+        {
+          "mutation": "aggregate_nonzero",
+          "passed": true,
+          "expected_rejection": "aggregate or X server exit failed",
+          "accepted_output_written": false,
+          "log_sha256": "a62d8573de751ed4a4fcaacd551624b7ad01c844c7a561a780cb5d00a59418ac"
+        },
+        {
+          "mutation": "xserver_nonzero",
+          "passed": true,
+          "expected_rejection": "aggregate or X server exit failed",
+          "accepted_output_written": false,
+          "log_sha256": "a62d8573de751ed4a4fcaacd551624b7ad01c844c7a561a780cb5d00a59418ac"
+        },
+        {
+          "mutation": "incomplete_shutdown",
+          "passed": true,
+          "expected_rejection": "unclean server shutdown",
+          "accepted_output_written": false,
+          "log_sha256": "6d95c4f9f67cb97d2baf31e5f5bb0a29be865bb7fb1569f2ebf69c65bddb55b9"
+        },
+        {
+          "mutation": "authentication_negative_control_passes",
+          "passed": true,
+          "expected_rejection": "X authentication positive/negative control failed",
+          "accepted_output_written": false,
+          "log_sha256": "ae169abf236702808a8dbe7b5e45310e87a797cf994f6b1d8ed1bb48e479b15c"
+        },
+        {
+          "mutation": "process_nonzero_after_all_tap_ok",
+          "passed": true,
+          "expected_rejection": "test process failed",
+          "accepted_output_written": false,
+          "log_sha256": "9d27ab67ec59486c5a2654aad7bbb59663058bfae2ddc2b35fea1868668507f1"
+        },
+        {
+          "mutation": "meson_result_skip",
+          "passed": true,
+          "expected_rejection": "test process failed",
+          "accepted_output_written": false,
+          "log_sha256": "9d27ab67ec59486c5a2654aad7bbb59663058bfae2ddc2b35fea1868668507f1"
+        },
+        {
+          "mutation": "missing_tap_case",
+          "passed": true,
+          "expected_rejection": "TAP numbering missing/duplicated",
+          "accepted_output_written": false,
+          "log_sha256": "89581581f9ccdeb63d3d04589776a1672f6f9f12deb3f390bff56ad1b5bd6019"
+        },
+        {
+          "mutation": "duplicate_tap_case",
+          "passed": true,
+          "expected_rejection": "TAP numbering missing/duplicated",
+          "accepted_output_written": false,
+          "log_sha256": "89581581f9ccdeb63d3d04589776a1672f6f9f12deb3f390bff56ad1b5bd6019"
+        },
+        {
+          "mutation": "wrong_tap_case",
+          "passed": true,
+          "expected_rejection": "TAP IDs/order differ",
+          "accepted_output_written": false,
+          "log_sha256": "e47d39f190364aa9f34961ea681e1f30467919b52657f8ec7554ea67ab63006c"
+        },
+        {
+          "mutation": "wrong_tap_plan",
+          "passed": true,
+          "expected_rejection": "TAP plan missing/duplicated/wrong",
+          "accepted_output_written": false,
+          "log_sha256": "2c0d59117bf7fea380b85f81a69542050612686db059ad0ec327f722a612ed27"
+        },
+        {
+          "mutation": "tap_skip_directive",
+          "passed": true,
+          "expected_rejection": "TAP IDs/order differ",
+          "accepted_output_written": false,
+          "log_sha256": "e47d39f190364aa9f34961ea681e1f30467919b52657f8ec7554ea67ab63006c"
+        },
+        {
+          "mutation": "comment_skip",
+          "passed": true,
+          "expected_rejection": "forbidden diagnostic",
+          "accepted_output_written": false,
+          "log_sha256": "bd8305428973d948446ffc12a12c8074c88c02ecc7d321b6ee5904b725a5fde2"
+        },
+        {
+          "mutation": "teardown_critical_after_all_tap_ok",
+          "passed": true,
+          "expected_rejection": "forbidden diagnostic",
+          "accepted_output_written": false,
+          "log_sha256": "fed79046cb355dcd505e946da1b0f69984c215c41c3180a55f5bc020ee8ecb30"
+        },
+        {
+          "mutation": "sanitizer_after_all_tap_ok",
+          "passed": true,
+          "expected_rejection": "forbidden diagnostic",
+          "accepted_output_written": false,
+          "log_sha256": "6e15323b0dc951ff70a6241c256e40b51803df0cfc47e4064a01e08313c5f1b9"
+        },
+        {
+          "mutation": "ubsan_after_all_tap_ok",
+          "passed": true,
+          "expected_rejection": "forbidden diagnostic",
+          "accepted_output_written": false,
+          "log_sha256": "0e61c99863e08e5dd157f96e74e729130232fd0df7c30b70b909ba6060ab9832"
+        },
+        {
+          "mutation": "unexpected_warning",
+          "passed": true,
+          "expected_rejection": "forbidden diagnostic",
+          "accepted_output_written": false,
+          "log_sha256": "d514cc61bb2a5247e96ac6b8d3a1aa415eca90d5332a249c5b26f6c2cf813b6e"
+        },
+        {
+          "mutation": "increased_registered_timeout",
+          "passed": true,
+          "expected_rejection": "registered timeout/serial contract changed",
+          "accepted_output_written": false,
+          "log_sha256": "d15760deafd551aa3ccfc14a764835477fad9856c55cb83658af84deed736d92"
+        },
+        {
+          "mutation": "parallel_registration",
+          "passed": true,
+          "expected_rejection": "registered timeout/serial contract changed",
+          "accepted_output_written": false,
+          "log_sha256": "d15760deafd551aa3ccfc14a764835477fad9856c55cb83658af84deed736d92"
+        },
+        {
+          "mutation": "missing_registration",
+          "passed": true,
+          "expected_rejection": "missing/duplicate Meson registration",
+          "accepted_output_written": false,
+          "log_sha256": "4cc0f3f756051ca7ad3cc71428137f73e0cb61337d0bab5023c64ca14110cfe0"
+        },
+        {
+          "mutation": "wrong_registration_command",
+          "passed": true,
+          "expected_rejection": "registration command changed",
+          "accepted_output_written": false,
+          "log_sha256": "357443fc4c9766e558832e88eb07b23db9b7e07628cfc703e64e95adb368d26b"
+        },
+        {
+          "mutation": "command_timeout_multiplier",
+          "passed": true,
+          "expected_rejection": "aggregate command differs",
+          "accepted_output_written": false,
+          "log_sha256": "e7d2f1e43e594b9096cc0fb3a189e8ade1f322044402a8a347a9df8ab0da8ea3"
+        },
+        {
+          "mutation": "environment_timeout_multiplier",
+          "passed": true,
+          "expected_rejection": "forbidden environment override",
+          "accepted_output_written": false,
+          "log_sha256": "cf858ae7dfe58a5cc2d0cf6be6519c6ab74cd98378abe866ea7bad60663c4b35"
+        },
+        {
+          "mutation": "wrong_case_selection",
+          "passed": true,
+          "expected_rejection": "case filter differs",
+          "accepted_output_written": false,
+          "log_sha256": "9958e6388bba7118538f01ce76d072e83bd914c2eafba430a72981f7e08dcdb2"
+        },
+        {
+          "mutation": "source_seal_tamper",
+          "passed": true,
+          "expected_rejection": "sealed SHA256 changed",
+          "accepted_output_written": false,
+          "log_sha256": "0dbd242a2b108c3e646fb6530677b6038f1b55dcee943dde6d4083bf06c366f7"
+        },
+        {
+          "mutation": "source_seal_missing_path",
+          "passed": true,
+          "expected_rejection": "source seal must contain exactly nine entries",
+          "accepted_output_written": false,
+          "log_sha256": "986858d13f511f8502bdd526ce3000aee8995bf38abfc0e5ebc15bcb3c2278de"
+        },
+        {
+          "mutation": "source_seal_duplicate_path",
+          "passed": true,
+          "expected_rejection": "source seal paths differ",
+          "accepted_output_written": false,
+          "log_sha256": "e2a1f926725e47980fa9094e0fc8fdc360d4fc048fc0eef7c933798ab9ed5e2e"
+        },
+        {
+          "mutation": "before_binary_tamper",
+          "passed": true,
+          "expected_rejection": "pre-run source/build snapshot differs",
+          "accepted_output_written": false,
+          "log_sha256": "99ba206c7ff06cc5dd255cb2603b74ae665ff8cad4bb80860ee53af2983e33b0"
+        },
+        {
+          "mutation": "after_source_tamper",
+          "passed": true,
+          "expected_rejection": "post-run source/build snapshot differs",
+          "accepted_output_written": false,
+          "log_sha256": "3c33d8d1086527722e75ed25e0718360949c776ecc0febc25d0632755f686283"
+        },
+        {
+          "mutation": "sanitizer_compile_disabled",
+          "passed": true,
+          "expected_rejection": "sanitizer disabled/suppressed in compile command",
+          "accepted_output_written": false,
+          "log_sha256": "e6eb131fc23fa7a63bb06a5da49a38e324d34c0f9ae8ed6fbb23dc1a9c358874"
+        },
+        {
+          "mutation": "sanitizer_runtime_suppression",
+          "passed": true,
+          "expected_rejection": "ASan options differ",
+          "accepted_output_written": false,
+          "log_sha256": "367b0fe05441e7390c8826957118e5453c659083ee043adb0c29ec066198b65b"
+        },
+        {
+          "mutation": "sanitizer_runtime_missing",
+          "passed": true,
+          "expected_rejection": "ASan options differ",
+          "accepted_output_written": false,
+          "log_sha256": "367b0fe05441e7390c8826957118e5453c659083ee043adb0c29ec066198b65b"
+        },
+        {
+          "mutation": "sanitizer_runtime_halt_disabled",
+          "passed": true,
+          "expected_rejection": "ASan options differ",
+          "accepted_output_written": false,
+          "log_sha256": "367b0fe05441e7390c8826957118e5453c659083ee043adb0c29ec066198b65b"
+        },
+        {
+          "mutation": "ubsan_runtime_abort_disabled",
+          "passed": true,
+          "expected_rejection": "UBSan options differ",
+          "accepted_output_written": false,
+          "log_sha256": "358b744385002ef227aa8a2b711e7fea99f57cc42abfea926cedcddefaafbb7e"
+        },
+        {
+          "mutation": "wrong_canvas_group",
+          "passed": true,
+          "expected_rejection": "unexpected environment value: GIMP_TEST_PAINTER_CANVAS_GROUP",
+          "accepted_output_written": false,
+          "log_sha256": "b53103aaec2d10c59f7af3c648154b0baf03947c28219d14cfd7a21624e81c9e"
+        },
+        {
+          "mutation": "sanitizer_link_disabled",
+          "passed": true,
+          "expected_rejection": "wrong sanitizer link flags",
+          "accepted_output_written": false,
+          "log_sha256": "194b149b37e1cbf5348c3519081d28d4ae81d34f0214d33b2fdddaa0d9b46499"
+        }
+      ]
+    }
+  ],
+  "negative_control_total": 144,
+  "positive_corruption_controls": 4,
+  "source_gate": "2469 sources; 683 reviewed data sites; 4 dormant findings",
+  "policy_tests": 48,
+  "contract_gate": "90 unique typed-handle contracts; 76 C entries",
+  "independent_review": "# Independent bounded source/runtime review\n\nPASS, 2026-10-14. All nine current candidate files independently matched the\nfinal source seal (SHA256 f5d8949b23a9c893ad51c9e30e332f898c0c115f7a81f6819a5750ad4da8bfbf).\nReview compared the preserved public preimages with the current source and\nchecked all 22 final process records and matching before/after snapshots.\n\nOriginal provider delegation, exact supplied-context strong ownership,\nindependent nullable image/context properties, private action-context isolation,\nand live Canvas handle ownership are coherent. Targeted reentry controls cover\nsame-target image completion, inherited context flags, nested explicit NULL,\nrow-destruction refresh replacement and parent-notify image ABA/newer popup.\n\nNative preview creation is deferred only while context is absent. The test\nqueues renderer work, clears context, proves release, drains callbacks and\nchecks recreation after context restoration. Final-storage qdata witnesses are\ncorrectly distinguished from GTK disposal/weak notifications. Real-canvas focus\nchanges are legitimate; configuration isolation is tested separately.\n\nNo remaining source/runtime blocker. Final approval was conditional on the\nseparately recorded production relink and verifier-corruption gates; the freeze\nscript requires those gates to pass. Historical parent/layout/Interface ABI,\ndirect external GimpDocked configuration, full canvas aggregate, XCF, LSan,\nbroad gesture/visual parity and overall 08.018 completion remain excluded.\n",
+  "unchanged_contracts_sha256": {
+    "app/tests/test-painter-canvas-ui.c": "313db1debd25117b05d178b39957f7f9ac2eb95fe214f8a1f9ff2f262353d41d",
+    "app/core/gimpcontext.c": "fc1b1ff6c4f9c5470c53b8fa991774639e5ef9c1abf011c245ec3699ae854ab7",
+    "app/widgets/gimpimageeditor.c": "0d4b81b14e2db5be3150321c758e12c89ae5b96702a64c33bdb7fa4766d4bb7f",
+    "app/painter/binding-store.cpp": "c69d65c22f26e6be8f6df69765cd30f7bbbd32b46b0eb847e9f6524b41c2b557",
+    "app/painter/binding-store.hpp": "c67deb0ccf33a13a5ba3ab3f50bdbb2ef8931f481acf62a9315d778388c90262",
+    "app/painter/object-ref.hpp": "5a8cc92afc56f652fd47c727269d71d9d97c4358015f13fe9c4764371fcb7c3a",
+    "app/xcf/painter-xcf-preserve.cpp": "9d79e3ba4657e0e4a15bf89f10a08555cfee935b362086991c59ad656df7af7a",
+    "app/xcf/painter-xcf-load.cpp": "d08022d60ccdb29a8119057ed3e5f375101be080b782a36b26c3b41e1132efb2",
+    "app/xcf/painter-xcf-arguments.cpp": "35927b8787496ba21ae7a5468fcb780fed09a097108eee4f4ca460e5b89f7562",
+    "tasks.md": "0a7274e11b0d5f554d99f9020988031765c23a3cbc82410cfb36594a3e1b7198",
+    "migration/progress.tsv": "bf3f867cecf4635f47e9c5d9d007c9d8ab2574080e376453ea31fdf572b3f3ba",
+    "migration/contracts/cpp-handle-registry.tsv": "6e63af0d9d79ccd4d8af6dbcfdb5f01a2278e203326ad6aae368b730fabb8e5c"
+  },
+  "visual_scope": "No ordinary configured Canvas appearance change. Real application canvases and actions are exercised; no artificial screenshot of incomplete API-only configuration.",
+  "intermediate_failures": [
+    {
+      "run": "native-v1",
+      "kind": "fixture",
+      "finding": "GTK weak notification denotes disposal, not final retained storage; qdata final-storage witnesses added."
+    },
+    {
+      "run": "native-v2",
+      "kind": "production",
+      "finding": "Contextless image preview attempted native renderer draw and emitted fatal warning; previews now deferred until context, pending renderer work cancels on clear."
+    },
+    {
+      "run": "native-v3",
+      "kind": "fixture",
+      "finding": "Destroy automatically disconnected instance signal handlers; fixture now asserts that cleanup instead of disconnecting an already-removed handler."
+    },
+    {
+      "run": "native-v4",
+      "kind": "fixture",
+      "finding": "In-memory preset needed a native resource identifier; fixture marks it internal with a stable test identifier."
+    },
+    {
+      "run": "native-v5",
+      "kind": "fixture",
+      "finding": "Normal popup dismissal changes canvas focus/global active image; corrected action isolation preconditions/results without suppressing focus."
+    },
+    {
+      "kind": "verifier",
+      "finding": "Definition parsing, actual per-unit header dependencies and exact source-established per-mode runtime options corrected; no runtime diagnostics waived."
+    }
+  ],
+  "limits": [
+    "Original names/properties/ownership and active Canvas route only. Native parent, runtime name, GTK3 presentation and layout are explicit source migrations; no historical Interface or binary/subclass ABI promise.",
+    "Direct external GimpDocked context replacement is outside the restored configuration route. Properties and native factory share the implementation helper.",
+    "Real-canvas actions begin with the opposite global image, but normal popup closure may focus the target before command execution. Separate context controls and native owner routing establish isolation.",
+    "Native application relinked; no full ASan application relink or new full-application shutdown claim. Compiler logs retain pre-existing/native qualifier warnings and C11 mixed-declaration warnings, without suppression.",
+    "Selected runtime gates only; no full canvas/GIMP suite, XCF, LSan, tablet/platform or broad WBS29 gesture/visual completion.",
+    "Other74 rows, separate31hooks/typecatalog, overall08.018/progress and excluded perspective/ImageGenerator work unchanged."
+  ],
+  "evidence_sha256": {
+    "layer-tile-entry-candidate-native-v6/results.json": "cdb3b849ed014ce8e6a0a32c569fa61b0be4f7629cee3d61f72341ad79d846ff",
+    "layer-tile-entry-candidate-native-v6/verified-results.json": "ac6b08a1a7932b34765bc421b360902d24bcc3a641d1a5998de9ac21249d2cfb",
+    "layer-tile-entry-candidate-native-v6/layer-tile-entry-candidate-native-v6.json": "2ed3e2c9ea011adc33da8c4f1a2e44323ed465ed3f8d36a791a88cc4a7a6be14",
+    "layer-tile-entry-candidate-native-v6/layer-tile-entry-candidate-native-v6.txt": "ff3098244d9080505de2bf89ba8ca60257efb801c1c5bb254520df166ff600d4",
+    "layer-tile-entry-regression-native-case1-v2/results.json": "09b4d832fcad6dc00946552aba37c68fdfe9578abe9a8034cfb9d9d7040891b9",
+    "layer-tile-entry-regression-native-case1-v2/verified-results.json": "a27b8a1065a6009fd77da38bf16d9de1a902d0a3ae801b92000adac326b1d5cc",
+    "layer-tile-entry-regression-native-case1-v2/layer-tile-entry-regression-native-case1-v2.json": "6039666e1a3ea52b0d1d16e5ae50ee5de341e5289a594451dfc1556231296704",
+    "layer-tile-entry-regression-native-case1-v2/layer-tile-entry-regression-native-case1-v2.txt": "fece7e9fc255721de09b1b75268fba6c9f20233b4532ae81076f6360c11eb98f",
+    "layer-tile-entry-regression-native-case2-v2/results.json": "eba92a0c5cb3572edfac7b84ea3adbc41a970b266cfbe3f07f6f1915c5a8cf1f",
+    "layer-tile-entry-regression-native-case2-v2/verified-results.json": "8214c15ee81fe9efef7e8b775c2a047f06c5736afdc16b39a810269b74bcc86d",
+    "layer-tile-entry-regression-native-case2-v2/layer-tile-entry-regression-native-case2-v2.json": "aedfc89ccd3c166646269ad77dd54adc6c297eda413ce43bf21824b67aa59395",
+    "layer-tile-entry-regression-native-case2-v2/layer-tile-entry-regression-native-case2-v2.txt": "02dcd0b1c659fd7df29bf97a901ee3792db890bd3ace8a6018eccbe48e07eca8",
+    "layer-tile-entry-regression-native-case3-v2/results.json": "5f63af440dcc359f09181371bc2380b8709e4b96922c10a9fb9016966478cf08",
+    "layer-tile-entry-regression-native-case3-v2/verified-results.json": "5164858f30faa9e656965bc4015b862b83f3e5fd6ca54549403150eefdc7821f",
+    "layer-tile-entry-regression-native-case3-v2/layer-tile-entry-regression-native-case3-v2.json": "9277cf7bf5ea7fc9bf5ef4b33117fdc35a8bd6c9535f8fa6390c341413034c99",
+    "layer-tile-entry-regression-native-case3-v2/layer-tile-entry-regression-native-case3-v2.txt": "3000f7d3e8f8388b227c4ba146e464328fccae3d16e2b41c8e1f812dab092422",
+    "layer-tile-entry-regression-native-case4-v2/results.json": "95f5fa199646b73a4555144f5366189ea4f8be92c7e2f7e59b0b5c35e7a40e62",
+    "layer-tile-entry-regression-native-case4-v2/verified-results.json": "be782cdf98b94c3172b9f8883d755c6f1e4ddbe058ebaf466ab168be38b20e9f",
+    "layer-tile-entry-regression-native-case4-v2/layer-tile-entry-regression-native-case4-v2.json": "2eb9b94802e7920d326cf69a141999e64d87552044715d5f0d2299263dd97f72",
+    "layer-tile-entry-regression-native-case4-v2/layer-tile-entry-regression-native-case4-v2.txt": "7fe337eda1101bf1dd7c7309171a3bc4843874eaec969a7efe880b309c0b3b34",
+    "layer-tile-entry-regression-native-case5-v2/results.json": "e67e486b036773fc73926a888bb756a2275550d0c2d73912ccf6edb2a1c41611",
+    "layer-tile-entry-regression-native-case5-v2/verified-results.json": "4f69fe15c687fcbfd07b692989f1ceecec11ef4ca247e89d1d3496e3ddb32b39",
+    "layer-tile-entry-regression-native-case5-v2/layer-tile-entry-regression-native-case5-v2.json": "3261405cd20366c6b1ba49cb22b502a30e2f9a2639aad20977e87db887a7851e",
+    "layer-tile-entry-regression-native-case5-v2/layer-tile-entry-regression-native-case5-v2.txt": "7602e28d638c20c52b6ed0008511ca589695cb598919a744a382fa5753e82538",
+    "layer-tile-entry-regression-native-case6-v2/results.json": "b57d4945dfe1b3ca32bbc35def9c6407367c3d6fd010d48295b909f9c73a6104",
+    "layer-tile-entry-regression-native-case6-v2/verified-results.json": "8c233e2d5998c29b0af62cbe1d90d66eefffcaed30a9428271722e15a6ef41a9",
+    "layer-tile-entry-regression-native-case6-v2/layer-tile-entry-regression-native-case6-v2.json": "d4b527d05e88b1362022ace72865b2a7116d4f1b35f68645c8628e75d33b01ed",
+    "layer-tile-entry-regression-native-case6-v2/layer-tile-entry-regression-native-case6-v2.txt": "9aec1a1eb2c43b7daf9757b56633cf62ca329ba08001325040fc7154cd3dd1b4",
+    "layer-tile-entry-regression-native-case7-v2/results.json": "5695b1710957a920cce91265c475867bf02ff5b3bba9280f5c689906020efc70",
+    "layer-tile-entry-regression-native-case7-v2/verified-results.json": "c3fa3cf9b200cbd060567b539f4b96b88f2b1e6c3e58d4b81c4c7035b40f3ab4",
+    "layer-tile-entry-regression-native-case7-v2/layer-tile-entry-regression-native-case7-v2.json": "a6cc259bcd4f4374c0c8fc52e3e2b3afbef2aee3fcbf1fc882c9ca4ec86a0fc0",
+    "layer-tile-entry-regression-native-case7-v2/layer-tile-entry-regression-native-case7-v2.txt": "888419a8461a32253c669b3ba956abaf899e3179338de28435852ddef3148027",
+    "layer-tile-entry-regression-native-case8-v2/results.json": "0df846abe4633d42f1a507d106138072863bdc674659b680178dc1b785f55d83",
+    "layer-tile-entry-regression-native-case8-v2/verified-results.json": "bed6bdee4ee930bf1986f9e640707ae435fb24ee46537e3a1f49922695d523c6",
+    "layer-tile-entry-regression-native-case8-v2/layer-tile-entry-regression-native-case8-v2.json": "1628f765c79088aea32b958dcdfc6a153d924f685b665f54a052eb3c068393da",
+    "layer-tile-entry-regression-native-case8-v2/layer-tile-entry-regression-native-case8-v2.txt": "daf7321b058a51dd4899abdf823e6074d31b8e2bff502afc50444e2c0c0fbd87",
+    "layer-tile-entry-regression-native-case9-v2/results.json": "48c33655cf0f202a634551150774a4d51e1a8f32fd2afb623f0fe999cc3d7cd0",
+    "layer-tile-entry-regression-native-case9-v2/verified-results.json": "9d0a96df8e1e8e2ab7b0fb4f19434a3eecf0a14cf054ba63245235c2f06255c3",
+    "layer-tile-entry-regression-native-case9-v2/layer-tile-entry-regression-native-case9-v2.json": "1ba38dc80ee3e561a6a71fd0197bddf6e9c3c3a20b424e283591b13d48b1be08",
+    "layer-tile-entry-regression-native-case9-v2/layer-tile-entry-regression-native-case9-v2.txt": "999205a971b77826e0f1a912949ef75b22f9b0654e990ee5fdbc510dec4960fc",
+    "layer-tile-entry-regression-native-case10-v2/results.json": "169a7ed933457ab338f2e4887f4cc5cdd5ac5884c26bb9dcc90572b724953b6f",
+    "layer-tile-entry-regression-native-case10-v2/verified-results.json": "435a6cda2af57d78bb1c17e3431d77c415440b7f183f653114e842993c531d5b",
+    "layer-tile-entry-regression-native-case10-v2/layer-tile-entry-regression-native-case10-v2.json": "79a941a74267db82c3c569887c8ed25194ef30aef1fcaf3d5a546839d650f90d",
+    "layer-tile-entry-regression-native-case10-v2/layer-tile-entry-regression-native-case10-v2.txt": "056ea8e5787a89b5ec8ffeb6d60ee5bc1d4d14053321fb3ee215bfaecf94850b",
+    "layer-tile-entry-candidate-asan-v1/results.json": "474790a393273d59602b2d33c6fefca0f61aa7be861ff946bc6c308617e63418",
+    "layer-tile-entry-candidate-asan-v1/verified-results.json": "31aea565399959c1f052f8a04396c1f4e7361bff5b716bdb2217a2e76c491aea",
+    "layer-tile-entry-candidate-asan-v1/layer-tile-entry-candidate-asan-v1.json": "229fd37532b7ad26ed6c8dac087a897c0f353543f37251289fe60dd1f61328b9",
+    "layer-tile-entry-candidate-asan-v1/layer-tile-entry-candidate-asan-v1.txt": "699f3dcaeca18d0bbe669ce9417db8d5b08485718ace6508486cde1b7790fe32",
+    "layer-tile-entry-regression-asan-case1-v1/results.json": "f132664b5ad497172d6be0107c720a936b24db695471f8ec4cfddc5426e30197",
+    "layer-tile-entry-regression-asan-case1-v1/verified-results.json": "07c7023ded62a62a8379b959f71fa2bf07ef3194e42911b68ea13bb4b4b19346",
+    "layer-tile-entry-regression-asan-case1-v1/layer-tile-entry-regression-asan-case1-v1.json": "8e62c767ef6a25d423162468e4ccd68e50a8a25bc624a17105a429a6bf91a783",
+    "layer-tile-entry-regression-asan-case1-v1/layer-tile-entry-regression-asan-case1-v1.txt": "6d50ef312d18f06f820acbeb8a009fd80527dcfee6020871dc70375d1f81f126",
+    "layer-tile-entry-regression-asan-case2-v1/results.json": "a2a1e754d2e655a4ffc2573c64ed4c1466b5c5d14506805e5ba5bb74563002ef",
+    "layer-tile-entry-regression-asan-case2-v1/verified-results.json": "a4514e73ab7bce18d74052d8bea3b3f921506b5f2fbc19f75884c14b6dd82eb3",
+    "layer-tile-entry-regression-asan-case2-v1/layer-tile-entry-regression-asan-case2-v1.json": "58bffaf2777a7be4e9021001a7799be04337d882cbf39b128c4b52f38b54857c",
+    "layer-tile-entry-regression-asan-case2-v1/layer-tile-entry-regression-asan-case2-v1.txt": "2edc4ae16006f544387e2b10b960abc4934699fd2b5d15ac8435970059603884",
+    "layer-tile-entry-regression-asan-case3-v1/results.json": "a141bbf02d0c2f348df2a237c0932d3154f8b41fda5f6908b1984f2287a08676",
+    "layer-tile-entry-regression-asan-case3-v1/verified-results.json": "47a00de4ea6fbefc492db358bd0b106958ad9c66c8ce1601d58429350cd93351",
+    "layer-tile-entry-regression-asan-case3-v1/layer-tile-entry-regression-asan-case3-v1.json": "babb97346a914c96043a30047115575415ab3e2812f43d5e6b4402f0e7adefe8",
+    "layer-tile-entry-regression-asan-case3-v1/layer-tile-entry-regression-asan-case3-v1.txt": "db89d6ac6a257d204ed2fe928b24ff4254a9488ad4e3dce43e61eed8b4c0ae4c",
+    "layer-tile-entry-regression-asan-case4-v1/results.json": "98021685aee31ed9f6aa07ab358b564be6999dbf44103294234f5c143a6c81d6",
+    "layer-tile-entry-regression-asan-case4-v1/verified-results.json": "923cc05ce61879a5da6f82be838036806cb2ce3611006c8937fb4ee4d6485707",
+    "layer-tile-entry-regression-asan-case4-v1/layer-tile-entry-regression-asan-case4-v1.json": "e2f24c7672406ddafcdb68ad10a80045c77f4ac918fc49d9699cb4b27715728c",
+    "layer-tile-entry-regression-asan-case4-v1/layer-tile-entry-regression-asan-case4-v1.txt": "13d481670d3b4e36f5e3cb1863ece89dda7961b023a945903ea9bed63e72435e",
+    "layer-tile-entry-regression-asan-case5-v1/results.json": "4ede64f0963dcc815855a230ad2a444f7f4fa0f55728ea0802b0f846780d87f6",
+    "layer-tile-entry-regression-asan-case5-v1/verified-results.json": "25bb795568858d52b8288f594eef1e87f7281b30b93e8bcca38bb69eaf00077a",
+    "layer-tile-entry-regression-asan-case5-v1/layer-tile-entry-regression-asan-case5-v1.json": "4d17cb9da70c52cc8425885c077c60821e6607bc51356eaf60694a2fe8d68a26",
+    "layer-tile-entry-regression-asan-case5-v1/layer-tile-entry-regression-asan-case5-v1.txt": "06755cd7930686404f594b977bfb09a240a882bfe5d8af50178f084d291d0854",
+    "layer-tile-entry-regression-asan-case6-v1/results.json": "15203c1e6ffd0fb0c5078aed276b3ceb55f8c3199917ccda41b9001b79a4ce51",
+    "layer-tile-entry-regression-asan-case6-v1/verified-results.json": "b3a9fab2302c1cd58a050eb5d9a87abdcd7964de8611932b8ca50274bebd2f38",
+    "layer-tile-entry-regression-asan-case6-v1/layer-tile-entry-regression-asan-case6-v1.json": "3b59f8281a6948313a3af040aecc04be2b3af1565ea9a4ffcb99983394521a71",
+    "layer-tile-entry-regression-asan-case6-v1/layer-tile-entry-regression-asan-case6-v1.txt": "2b307b92aaa2c9c212ef2aff85c60fa1f642277ea925e917f21fed2c0554a1a9",
+    "layer-tile-entry-regression-asan-case7-v1/results.json": "fd2c4d447706a106ef71132ddcd34357647ea3d04aa32c64df3f1eb23e2fb9bb",
+    "layer-tile-entry-regression-asan-case7-v1/verified-results.json": "416a15b1041a2fbd660ab95d2c7a6b8b98aa37a4d95aa1af14f12b380077521a",
+    "layer-tile-entry-regression-asan-case7-v1/layer-tile-entry-regression-asan-case7-v1.json": "4a40fa93441a7b4b5f89cac4f36f06285c69b20c18e210c084f23123913cc42b",
+    "layer-tile-entry-regression-asan-case7-v1/layer-tile-entry-regression-asan-case7-v1.txt": "b85d0f8277ef9fccc7da0fbfd50439ebb048e99e6833c06321e4eb6972d70792",
+    "layer-tile-entry-regression-asan-case8-v1/results.json": "00cab3c3540d78e79c54b320a84cbd54216474399124888ccd3aa667bd5aaa2c",
+    "layer-tile-entry-regression-asan-case8-v1/verified-results.json": "0e281a624fda5cdcd5639367a7474a53e4211fd264ec596de7bfa3c52361ff3b",
+    "layer-tile-entry-regression-asan-case8-v1/layer-tile-entry-regression-asan-case8-v1.json": "7208c62f9d6ff499eec5d5098b916d4da88d00aa13ea19d59a53f38021c6aac3",
+    "layer-tile-entry-regression-asan-case8-v1/layer-tile-entry-regression-asan-case8-v1.txt": "1ac4097170af810cfb42093ef8d073cc25a86a570a887cd5700054e97b343066",
+    "layer-tile-entry-regression-asan-case9-v1/results.json": "cb8b2a4b4bd67b2894dc3c46efc577ab5e54e95595e1fdb34758c1100da20c3e",
+    "layer-tile-entry-regression-asan-case9-v1/verified-results.json": "1a3f552dab7f7a42aa9b1e9fb9d32513c06806c5b542babefdf503d654e8b0df",
+    "layer-tile-entry-regression-asan-case9-v1/layer-tile-entry-regression-asan-case9-v1.json": "39f734b57b480b195fc390011bacc1d9a9fa9ca7ecbe2bc2b66bc754765e7218",
+    "layer-tile-entry-regression-asan-case9-v1/layer-tile-entry-regression-asan-case9-v1.txt": "75e435f718b407baa6e66abc3811a2a8c6813d94829439222af7ae35edfcfe56",
+    "layer-tile-entry-regression-asan-case10-v1/results.json": "be0331b20ce4a2855b6590ddc1e938036f32aa2d19e2469c44131b4ce9313e64",
+    "layer-tile-entry-regression-asan-case10-v1/verified-results.json": "b23a3ea65d7f919e976076d7e34c8e034e2eb551dbfe95b6238af53ef775a0bb",
+    "layer-tile-entry-regression-asan-case10-v1/layer-tile-entry-regression-asan-case10-v1.json": "6e0953ccc6aa52eb6dd8331dae9f1b1c84105f5c39f8602305705b332df1dd84",
+    "layer-tile-entry-regression-asan-case10-v1/layer-tile-entry-regression-asan-case10-v1.txt": "ed28df258779a147f21cab20a22bc169f29ceb9f198ecae431eb1f18ddd0f3af",
+    "layer-tile-entry-candidate-native-v5-console.log": "3b795dc7be6989612bdf281e55a5610f54267807e7b09137f4287e6899a61c61",
+    "capture_run_state.py": "afe81a237aa73496804f844c62948c8b8eca60b991933fc09e1d2bf41bd648cc",
+    "handle-compile-v3.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "candidate-source-seal-v5.json": "2f4c93b3df3dc0acca59b64d37d783da409c5fbec67103f7d03e70530caed632",
+    "candidate-native-v2-build.log": "2d94472a38c178df5045d03695ccd49187dda84455e159877f9b5a9086a85efb",
+    "candidate-native-v7-build.log": "64574f90b22b1a8ac3dcf25ed017fc18acd61f638292d0bda97692de0852dec4",
+    "negative-native-focused.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "layer-tile-entry-regression-native-case2-v2-source-before.json": "06b8173421c22b9237a44e14102da7617771ee6ffcf791a97a2e83019e2ce7ad",
+    "candidate-source-seal-v4.json": "e5c8b38dc86eb2f61090a8a5b267da0d4016e9ea3bcf49c7adb2aa06a52bc48c",
+    "handle-compile-console-v2.log": "4c38a46f05222878247ee7aa928e846b3f222f824a9e30752e8cdbb8ad5b759b",
+    "layer-tile-entry-regression-asan-case7-v1.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "layer-tile-entry-candidate-asan-v1-verifier-negative-results.json": "f66a9ed7b071ca3d72097d442c5ef44df0665e2c7cc1243bae4dfd622e95678c",
+    "layer-tile-entry-regression-asan-case8-v1.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "layer-tile-entry-regression-asan-case10-v1-console.log": "4ad505979927a43b5cbb6c2ab9022c43bf81ac053ad66e947241874c9b20a672",
+    "verification-focused-asan-v1.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "verify_candidate.pre-runtime-env-fix.py": "81004a569e9e035306f59272dfc7363fd83d307d9fa29bbf115d6de4f958e9dc",
+    "verification-focused-asan-v1.log": "3e10def9ece9ac0c12e669d1eab8099f448c63283cc183c723ddfc4fc9e93c14",
+    "layer-tile-entry-regression-native-case2-v2.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "layer-tile-entry-regression-native-case7-v2.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "layer-tile-entry-regression-native-case8-v2-console.log": "791b495dd53fcaf8af969c4ac8ea6d4556c4e3195d16dab63a5f4659a76cdb14",
+    "layer-tile-entry-regression-native-case8-v2-source-after.json": "06b8173421c22b9237a44e14102da7617771ee6ffcf791a97a2e83019e2ce7ad",
+    "layer-tile-entry-regression-asan-case5-v1-source-before.json": "064d3ade3d5ec71d39ea797b128f144749df91689e43c23387e61090b37409a3",
+    "headers-native-v1-build.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "candidate-source-seal.json": "f5d8949b23a9c893ad51c9e30e332f898c0c115f7a81f6819a5750ad4da8bfbf",
+    "verification-focused-native-v1.exit": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "layer-tile-entry-candidate-native-v1-source-after.json": "b0c4577bac196dd61367be3084ed3151437a58f62a95174e5f9089ba17b08204",
+    "layer-tile-entry-candidate-asan-v1.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "objects-native-v1-build.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "layer-tile-entry-regression-asan-case2-v1.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "layer-tile-entry-regression-native-case10-v2-console.log": "4e994bfe904ef345ba811b0beeb3a44aac4cd231fd4a546451007258c70e1c58",
+    "contracts-final.log": "5d7679fe57fa10916ee636e18c811f3cf0e7f5655dce2cb6868f62a4741265e1",
+    "layer-tile-entry-candidate-native-v2-source-before.json": "b4dff828303e6ec1b8f0f4f30999d0665131f5c3122d19d9d9f09d2e5bbce48d",
+    "production-native-v1-build.log": "9aedc6e4fa77e1b699187b2cb6cc9b0d2a83fbe4cfa32eefd14b195d4f9c9168",
+    "verify_candidate.pre-dependency-fix.py": "04235116aace95a4ba2fbbaa94bcad696c3ca48b27e77e7c3d8944e668dfe407",
+    "objects-native-v2-build.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "symbol-evidence.json": "bc5c72b5a0a7af5db361c920914526f76b5bb76e93985223e166b909dd4064a1",
+    "candidate-asan-v1-build.exit": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "layer-tile-entry-regression-asan-case1-v1-source-before.json": "064d3ade3d5ec71d39ea797b128f144749df91689e43c23387e61090b37409a3",
+    "layer-tile-entry-regression-native-case9-v2.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "layer-tile-entry-candidate-native-v2-console.log": "3e0777dd7eb1a61078d6f64f5981673bcf171e3510cc24def9da39bcaad2e9ff",
+    "prepared_header_compile_controls.py": "c62ce5a2d08252c42ec9bcbaef51c7cd8dc81d236b37305654963fc9a6474dbe",
+    "layer-tile-entry-regression-native-case9-v2-console.log": "27eddcdf3ca753694b40ccb74826fcd32f456ca954481374273f4b05d8b3c012",
+    "verification-focused-native-v2.exit": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "candidate-asan-v1-build.log": "885b5e3dec73a7f531c38cf0029ed2ecba90c8220a54fe9503c456b09aae8f3b",
+    "candidate-native-v1-build.log": "61ff7ffef65fa62d920d4e7bf4daab3f6360b85eef5b996f4c6aed8d735198ef",
+    "layer-tile-entry-candidate-native-v4-source-after.json": "4177ee6135edf507b7b5c451704dabc44f19f1e32b6a60e521316c42c8e1b9dd",
+    "test_verify_candidate.py": "3add075f151233307cb912d7cbe859d4d1ac8e0b28fae13db4f354fa3ffc30f9",
+    "candidate-native-v6-build.log": "64574f90b22b1a8ac3dcf25ed017fc18acd61f638292d0bda97692de0852dec4",
+    "handle-compile-v2.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "verified-all-asan.json": "f7013fbaf18cc37004a4c87f6405251a75ac1ec7ba5d373ab80a664a8924de5a",
+    "layer-tile-entry-candidate-native-v6.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "layer-tile-entry-regression-native-case5-v2.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "layer-tile-entry-regression-asan-case10-v1.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "layer-tile-entry-regression-native-case1-v2-verifier-negative-results.json": "25d5645ab2b289468666883ccc9f75d17e6f8c5bd098f8323d39736f4bbb6fe9",
+    "layer-tile-entry-candidate-native-v3-source-before.json": "0016ce4445f7d7020a01adba33342858e4e40f27df52d384022180618b7229f9",
+    "production-native-v2-build.log": "55a4dc76d62eeccf2ca6bc0bddafdb7624b299707202680e2bb8214fde0469f9",
+    "negative-asan-canvas.log": "025ce015884d90e4af0baa7a6df7a1b53f7ef2ee51a054512afcc1b5e61d6169",
+    "layer-tile-entry-regression-native-case2-v1-source-before.json": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "candidate-asan-v2-build.log": "cfa1c9470a685e148249ae9a3f2ad521f8c33643b05759952d018887d0a8f777",
+    "layer-tile-entry-regression-native-case10-v1-source-before.json": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "regression-asan-v1.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "layer-tile-entry-regression-native-case2-v2-source-after.json": "06b8173421c22b9237a44e14102da7617771ee6ffcf791a97a2e83019e2ce7ad",
+    "regression-native-v1.exit": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "layer-tile-entry-regression-native-case4-v2-source-after.json": "06b8173421c22b9237a44e14102da7617771ee6ffcf791a97a2e83019e2ce7ad",
+    "layer-tile-entry-regression-asan-case4-v1.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "harness-contract.json": "76e9e230985ea1e4223f6e7ba7210687058fb78cf72fee20c021528cc8e1a3d3",
+    "handle-compile-results-v1.json": "78abde16c117f1cbf264a76a6714a44b3ffa494d4af0f1e29aabe5de98c37322",
+    "layer-tile-entry-regression-native-case6-v2-source-before.json": "06b8173421c22b9237a44e14102da7617771ee6ffcf791a97a2e83019e2ce7ad",
+    "layer-tile-entry-regression-asan-case5-v1-source-after.json": "064d3ade3d5ec71d39ea797b128f144749df91689e43c23387e61090b37409a3",
+    "headers-gates.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "source-gate.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "negative-native-focused.log": "525d102c0be54a0ad8e88c8f1169de394702383fe03cab9e61ad429f0bc528af",
+    "candidate-native-v3-build.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "layer-tile-entry-candidate-native-v1.exit": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "layer-tile-entry-regression-native-case1-v2.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "layer-tile-entry-regression-asan-case7-v1-console.log": "d6f14298f807bbcb370ed9a8338d4890a7faff1fc56aff36994cfaf46d0d1737",
+    "layer-tile-entry-regression-asan-case1-v1-verifier-negative-results.json": "36fbae2e6c35a9323ddd3dc3d325da993085f8974fef0ebda261f17612be8331",
+    "negative-native-canvas.log": "6ec795c6b58aa99cd22ac2a41b0de592ebad97a2228c0690d064b96c6b684ff0",
+    "legacy-source-anchors.json": "f4fba247421295b550131aaa610251b2b92982d764e759d03750568a03ed522c",
+    "scope-and-contract.md": "42e6c4fde6b747cf65f4dc582bd9329c72c16291a85f295447203d0ca3ad101e",
+    "candidate-source-seal-v2.json": "aad854f59415758b7a9e7fb7337ac49a8663a7f0a150c4192a17c7f70b4462a3",
+    "layer-tile-entry-candidate-asan-v1-console.log": "2cf801a0a6b0121f64a3ca037b30ea2d8894842b9365ae23193382ba56fc4a84",
+    "layer-tile-entry-regression-asan-case3-v1-console.log": "1d2e782560210b61234177f4105f741ee8168e3073561c5a551a2653c1512190",
+    "candidate-asan-v2-build.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "handle-compile-results.json": "d122041c9403e7d57116a0a591fffac178c46dd32846ee60be240cf6a93821be",
+    "verification-asan-final.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "layer-tile-entry-candidate-native-v6-console.log": "845ceeb6a2ff2ad980f36f7cae2d0f1a83ba5e3c83577726060be19678ad7538",
+    "layer-tile-entry-regression-native-case4-v2.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "layer-tile-entry-regression-native-case5-v2-source-after.json": "06b8173421c22b9237a44e14102da7617771ee6ffcf791a97a2e83019e2ce7ad",
+    "layer-tile-entry-candidate-native-v4-source-before.json": "4177ee6135edf507b7b5c451704dabc44f19f1e32b6a60e521316c42c8e1b9dd",
+    "layer-tile-entry-regression-native-case4-v2-source-before.json": "06b8173421c22b9237a44e14102da7617771ee6ffcf791a97a2e83019e2ce7ad",
+    "verify_all.py": "676a8f6ffb3f59ad471451d25a844abd9047fdec7d5bf6c8ed56146320681a80",
+    "candidate-native-v2-build.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "layer-tile-entry-candidate-native-v4-console.log": "2dec78ac09ff1b480ff66c0d8606599fb2761c49a1b34f9bc4978612276813c2",
+    "layer-tile-entry-regression-native-case6-v1-source-before.json": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "headers-native-v1-build.log": "3715cd70e0a32f8ed483c701a8b9cf0e5cc94ca8c2366f75089ffaf83a683a11",
+    "test_verify_candidate.pre-runtime-env-fix.py": "9c305f36266dc6062e98deafeeeb9ab0c6cc217181c92ec024721ccdeb9231fd",
+    "production-native-v1-build.exit": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "layer-tile-entry-regression-asan-case3-v1-source-after.json": "064d3ade3d5ec71d39ea797b128f144749df91689e43c23387e61090b37409a3",
+    "layer-tile-entry-regression-asan-case9-v1-console.log": "b5c9752344e5f9c8b78ba8854576e46daaba95826c5d4544595fd62a02d97d0e",
+    "layer-tile-entry-regression-native-case5-v2-console.log": "a949ab5d71c48e3f123b8ea6186e25d6b39ee30d4e1c73ef34266457f8b0cd0f",
+    "layer-tile-entry-regression-asan-case9-v1.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "layer-tile-entry-regression-asan-case6-v1-source-before.json": "064d3ade3d5ec71d39ea797b128f144749df91689e43c23387e61090b37409a3",
+    "layer-tile-entry-regression-native-case6-v2.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "layer-tile-entry-regression-asan-case9-v1-source-after.json": "064d3ade3d5ec71d39ea797b128f144749df91689e43c23387e61090b37409a3",
+    "layer-tile-entry-regression-native-case3-v1-source-before.json": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "layer-tile-entry-regression-native-case7-v2-source-after.json": "06b8173421c22b9237a44e14102da7617771ee6ffcf791a97a2e83019e2ce7ad",
+    "layer-tile-entry-regression-native-case3-v2-source-before.json": "06b8173421c22b9237a44e14102da7617771ee6ffcf791a97a2e83019e2ce7ad",
+    "regression-asan-v1-build.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "layer-tile-entry-regression-asan-case4-v1-console.log": "2c0f1f7d45de89e072954ff0d8cd9be09405842fa95f73ac2ad06f446d217291",
+    "objects-native-v1-build.log": "e78ca2bb887579762176d470524ff86356adf6edcee0bd0f6cc9d2e12e117a4d",
+    "verification-asan-final.log": "ce86ec4b7f74575c698ba6564d009eb5290e2c1502d06f4ea3160a6be2b4d1fa",
+    "layer-tile-entry-regression-asan-case6-v1-source-after.json": "064d3ade3d5ec71d39ea797b128f144749df91689e43c23387e61090b37409a3",
+    "layer-tile-entry-candidate-native-v4.exit": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "layer-tile-entry-regression-native-case5-v2-source-before.json": "06b8173421c22b9237a44e14102da7617771ee6ffcf791a97a2e83019e2ce7ad",
+    "layer-tile-entry-regression-asan-case1-v1-console.log": "e48d4fe32ef576861d4487cc91989e3f91c3f1b39fb421ddeef192eab2f95f25",
+    "layer-tile-entry-regression-native-case9-v1-source-before.json": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "verification-focused-native-v1.log": "18eaa9ad19c02aab7e1e5520a64f44183420cf2fa239b47666443b8f2f97d4ef",
+    "policy-tests.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "layer-tile-entry-regression-asan-case10-v1-source-after.json": "064d3ade3d5ec71d39ea797b128f144749df91689e43c23387e61090b37409a3",
+    "handle-compile-console.log": "e30cf4186b51f903e76e299a8beae3c718ea82c596d2a91da2bd3c3bb21c98f9",
+    "handle-compile-console-v3.log": "4c38a46f05222878247ee7aa928e846b3f222f824a9e30752e8cdbb8ad5b759b",
+    "independent-review.md": "8e53d4577246fbc67eb28e9242abaa9432354418276772aab7e2341158d8d9ad",
+    "layer-tile-entry-candidate-native-v5-source-before.json": "40111a221bf965ad50b3284ca1adcbbee586482db7f38dae1c950e336934690c",
+    "layer-tile-entry-regression-asan-case6-v1.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "layer-tile-entry-candidate-native-v6-verifier-negative-results.json": "d1840c6dff0865926db650967bf7e3e310db86e18105627485ac6500d1afcb07",
+    "objects-native-v2-build.log": "312db73282f47688a174622d94b201a9f7b44bc92e5f918ef0d2d87a2dd34ad6",
+    "layer-tile-entry-regression-asan-case4-v1-source-before.json": "064d3ade3d5ec71d39ea797b128f144749df91689e43c23387e61090b37409a3",
+    "layer-tile-entry-regression-asan-case3-v1-source-before.json": "064d3ade3d5ec71d39ea797b128f144749df91689e43c23387e61090b37409a3",
+    "layer-tile-entry-regression-asan-case8-v1-source-after.json": "064d3ade3d5ec71d39ea797b128f144749df91689e43c23387e61090b37409a3",
+    "candidate-source-seal-v1.json": "c6291b6772d171b49f7097332062d2f88fe7c79e6d5e8fcff2a925a50fcfbafc",
+    "layer-tile-entry-regression-asan-case3-v1.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "negative-asan-focused.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "candidate-native-v5-build.log": "665ed009a29efdace9a9c2878460a11ae473c692c37fdfa38b615a6606b1ea07",
+    "candidate-source-seal-v3.json": "0c1674cbf3c7c3992e5d94661dd88722f27ff6599a48b3e0603b47cba1a970ab",
+    "layer-tile-entry-candidate-native-v3.exit": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "candidate-native-v6-build.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "verification-focused-native-v2.log": "690c0c1bf0019b65519109d797b38257dc59932ed59210f835d35236910ca6f3",
+    "layer-tile-entry-candidate-native-v6-source-after.json": "08de4e94efbe38f28a79d666f64fa6b4465f6eec6922ebd7d87b52c15971285c",
+    "candidate-native-v5-build.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "layer-tile-entry-regression-native-case7-v2-source-before.json": "06b8173421c22b9237a44e14102da7617771ee6ffcf791a97a2e83019e2ce7ad",
+    "layer-tile-entry-regression-native-case10-v2-source-before.json": "06b8173421c22b9237a44e14102da7617771ee6ffcf791a97a2e83019e2ce7ad",
+    "layer-tile-entry-regression-native-case4-v2-console.log": "4a6017d40335a19d61df75f97fb249037cd14d3498788669b84f0c11bf460e9c",
+    "source-gate.log": "46382fe6a466b90a1df0b82d0648d6ea66ed3c18d95e3b57df41fb9bee1ccddb",
+    "layer-tile-entry-candidate-native-v2-source-after.json": "b4dff828303e6ec1b8f0f4f30999d0665131f5c3122d19d9d9f09d2e5bbce48d",
+    "handle-compile.exit": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "layer-tile-entry-candidate-native-v1-console.log": "e2f2fc5c4b68ad954ad05399b50dbd41f8e60e7003a9d63e5ec04d04fdab5654",
+    "layer-tile-entry-regression-asan-case6-v1-console.log": "44e4fbffea76d29347e9528ec3ed09ab77a65318484700da316e15555fcfedef",
+    "layer-tile-entry-regression-asan-case1-v1.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "layer-tile-entry-candidate-native-v5.exit": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "layer-tile-entry-regression-asan-case1-v1-source-after.json": "064d3ade3d5ec71d39ea797b128f144749df91689e43c23387e61090b37409a3",
+    "layer-tile-entry-candidate-native-v5-source-after.json": "40111a221bf965ad50b3284ca1adcbbee586482db7f38dae1c950e336934690c",
+    "layer-tile-entry-regression-asan-case9-v1-source-before.json": "064d3ade3d5ec71d39ea797b128f144749df91689e43c23387e61090b37409a3",
+    "layer-tile-entry-regression-native-case2-v2-console.log": "ac951a5a0de010f01f62bc843c7da3394549ea7aeadcba0c2664f5f54838d281",
+    "layer-tile-entry-regression-asan-case2-v1-console.log": "a8ed2ff2169584d677840800498a344414415cd2c42873c26b06f8479284fc33",
+    "layer-tile-entry-regression-asan-case8-v1-console.log": "20325f1f8cbbaa99d1a0d079325efafaf3a952ae2cfc77d6a896a55a313c6f0c",
+    "verification-native-final.log": "357f081dcd9f31c60e26c2f8726bf68daf779e499826dd04b073ac7e4d28bf1f",
+    "layer-tile-entry-regression-asan-case10-v1-source-before.json": "064d3ade3d5ec71d39ea797b128f144749df91689e43c23387e61090b37409a3",
+    "contracts-final.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "verification-native-final.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "layer-tile-entry-regression-asan-case5-v1.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "verification-focused-native-v3.log": "769fc688c360e5196b8bc99aa86523686c17c6b198b84ab6dc76ec085a79ba62",
+    "layer-tile-entry-regression-native-case8-v2-source-before.json": "06b8173421c22b9237a44e14102da7617771ee6ffcf791a97a2e83019e2ce7ad",
+    "baseline-source.json": "30afb700fa043e9de74a0a51ab4f0bcb7e0c77be2e657d66a66f8317a628cea3",
+    "layer-tile-entry-regression-native-case3-v2.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "layer-tile-entry-regression-native-case3-v2-source-after.json": "06b8173421c22b9237a44e14102da7617771ee6ffcf791a97a2e83019e2ce7ad",
+    "unchanged-contracts.json": "d15ed73ae5006d0d373c0c78fd6cec3e30469551b5881f0d4be7e99131285ba2",
+    "layer-tile-entry-regression-native-case1-v1-source-before.json": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "policy-tests.log": "8ea4be602d8cfa3d3c36220070013cc7972225b7635ae1dfa3d8b9e82321d2df",
+    "negative-asan-canvas.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "layer-tile-entry-regression-native-case9-v2-source-after.json": "06b8173421c22b9237a44e14102da7617771ee6ffcf791a97a2e83019e2ce7ad",
+    "layer-tile-entry-regression-native-case1-v2-console.log": "d8971e5fa9c7da0f56273aad8fd7b3e90ae65eb46bdbd071655c4ec34f2a037a",
+    "layer-tile-entry-regression-native-case9-v2-source-before.json": "06b8173421c22b9237a44e14102da7617771ee6ffcf791a97a2e83019e2ce7ad",
+    "production-native-v2-build.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "layer-tile-entry-regression-native-case10-v2-source-after.json": "06b8173421c22b9237a44e14102da7617771ee6ffcf791a97a2e83019e2ce7ad",
+    "layer-tile-entry-candidate-native-v2.exit": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "layer-tile-entry-regression-native-case8-v1-source-before.json": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "verify_candidate.py": "382446fd2422e54ab78b1d17bbfdf60425165872cdad4e0066d4f35213be90a7",
+    "verified-all-native.json": "ebd38acda35021371b56a485a6e71fee99debc221e944801b6ff9862c896b003",
+    "layer-tile-entry-candidate-native-v3-source-after.json": "0016ce4445f7d7020a01adba33342858e4e40f27df52d384022180618b7229f9",
+    "layer-tile-entry-candidate-native-v1-source-before.json": "b0c4577bac196dd61367be3084ed3151437a58f62a95174e5f9089ba17b08204",
+    "contracts.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "layer-tile-entry-regression-native-case8-v2.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "final-runs.json": "5e8c3500dd7a0e23f88a803a1601ab3b3f2bea0f699130c37e68caa4320a0ea5",
+    "layer-tile-entry-regression-asan-case8-v1-source-before.json": "064d3ade3d5ec71d39ea797b128f144749df91689e43c23387e61090b37409a3",
+    "layer-tile-entry-candidate-asan-v1-source-after.json": "a8bca7d3f5a4be644b97cb2a40c3b04eabb80404a86f1d02d2a62b60f1f57075",
+    "check_handle_compile.py": "97368e9c47fd957824936ab1555df1153a3af57759410cd25f41f98d27cd06d8",
+    "layer-tile-entry-candidate-native-v6-source-before.json": "08de4e94efbe38f28a79d666f64fa6b4465f6eec6922ebd7d87b52c15971285c",
+    "public-README.md": "a439228d55d059e429b5bc78163d6241b49ca3f84090310fac237b6418c68371",
+    "verification-focused-native-v3.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "negative-native-canvas.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "layer-tile-entry-regression-native-case6-v2-source-after.json": "06b8173421c22b9237a44e14102da7617771ee6ffcf791a97a2e83019e2ce7ad",
+    "candidate-native-v7-build.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "layer-tile-entry-candidate-asan-v1-source-before.json": "a8bca7d3f5a4be644b97cb2a40c3b04eabb80404a86f1d02d2a62b60f1f57075",
+    "candidate-native-v4-build.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "validation-commands.md": "4cf028e77b883b085b3c9c99453e4589a18c5a188f6950e4cf5ac50dd472e63b",
+    "regression-native-v2.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "final-runs.template.json": "942843dbfb56f5646058b6e65e4b80c241585236941294b415f732ed1ff3814f",
+    "layer-tile-entry-regression-asan-case7-v1-source-before.json": "064d3ade3d5ec71d39ea797b128f144749df91689e43c23387e61090b37409a3",
+    "layer-tile-entry-regression-native-case7-v2-console.log": "e8d963ebc3c408e5998a266c41645230a5918e545680b1c2dfff0cf27d5ef4c2",
+    "layer-tile-entry-regression-asan-case5-v1-console.log": "7b00c764edd832fc14a44713b9bf448a432fa993c184d600622a51a16ff67c67",
+    "layer-tile-entry-regression-asan-case2-v1-source-after.json": "064d3ade3d5ec71d39ea797b128f144749df91689e43c23387e61090b37409a3",
+    "layer-tile-entry-regression-native-case1-v2-source-after.json": "06b8173421c22b9237a44e14102da7617771ee6ffcf791a97a2e83019e2ce7ad",
+    "candidate-native-v1-build.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "negative-asan-focused.log": "66437389b4965d0c5b7f599f2d70a30e2118cc22ba48bcea8655569c439081e3",
+    "freeze.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "layer-tile-entry-regression-native-case10-v2.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "layer-tile-entry-regression-native-case6-v2-console.log": "19fe98b61598d0921f7145e5dd251959d6733ed943b715d1ae71a4231327f175",
+    "regression-asan-v1-build.log": "75ab7bb7c883142af49606dc0d378639ce541865e1af5cafdda05b65ab017faa",
+    "layer-tile-entry-regression-native-case3-v2-console.log": "83f638f46837692a0fb14d591556cf5cc7f097041a8d89c7b48f59adc8126d74",
+    "layer-tile-entry-regression-asan-case4-v1-source-after.json": "064d3ade3d5ec71d39ea797b128f144749df91689e43c23387e61090b37409a3",
+    "headers-gates.log": "f2168d67d5c40cfca9c134572a50eb5ee801c4c3fbb5fc581d4b762646e8c8c6",
+    "layer-tile-entry-regression-asan-case2-v1-source-before.json": "064d3ade3d5ec71d39ea797b128f144749df91689e43c23387e61090b37409a3",
+    "layer-tile-entry-regression-native-case7-v1-source-before.json": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "layer-tile-entry-regression-asan-case7-v1-source-after.json": "064d3ade3d5ec71d39ea797b128f144749df91689e43c23387e61090b37409a3",
+    "contracts.log": "5d7679fe57fa10916ee636e18c811f3cf0e7f5655dce2cb6868f62a4741265e1",
+    "candidate-native-v3-build.log": "b784cfa13769019320046bba9c359d4c505f41d7aa6f598a29e7229197b64e35",
+    "layer-tile-entry-candidate-native-v3-console.log": "490c97dc1f8e30e7741e3b5750e5f5890cf08af49b9b4417d42ec6db411c885f",
+    "layer-tile-entry-regression-native-case4-v1-source-before.json": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "layer-tile-entry-regression-native-case1-v2-source-before.json": "06b8173421c22b9237a44e14102da7617771ee6ffcf791a97a2e83019e2ce7ad",
+    "layer-tile-entry-regression-native-case5-v1-source-before.json": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "candidate-native-v4-build.log": "9c8837a009c7736f7196297e82660120b9dec3ada298983d032a961a660cd270"
+  }
+}

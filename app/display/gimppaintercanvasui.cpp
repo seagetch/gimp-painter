@@ -35,6 +35,7 @@ extern "C" {
 #include "gimppaintercanvasui.h"
 #include "gimp-intl.h"
 }
+#include "widgets/gimplayertileview-handle.hpp"
 #include "painter/binding-store.hpp"
 #include "painter/connection.hpp"
 #include "painter/source.hpp"
@@ -262,7 +263,9 @@ GtkWidget *action_button(Canvas&s,GtkWidget*box,const char*label,const char*name
 }
 void Canvas::create () {
   if(layers)return;
-  layers=gimp_painter_layer_tiles_new(ctx(),image());
+  auto layer_owner = LayerTileViewRef::create ();
+  layers = GTK_WIDGET (layer_owner.get ());
+  g_object_set (layers, "context", ctx (), "image", image (), nullptr);
   gimp_painter_layer_tiles_set_display(GIMP_PAINTER_LAYER_TILES(layers),shell->display);
   if(!frame(*this,layers))return;
   connect(*this,signals,G_OBJECT(layers),"popup-closed",G_CALLBACK(popup_closed));

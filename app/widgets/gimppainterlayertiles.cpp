@@ -28,6 +28,7 @@ extern "C" {
 #include "gimpaction.h"
 #include "gimplayermodebox.h"
 #include "gimppainterlayertiles.h"
+#include "gimplayertileview.h"
 #include "actions/layers-commands.h"
 #include "display/display-types.h"
 #include "display/gimpdisplay.h"
@@ -39,18 +40,15 @@ extern "C" {
 #include "painter/binding-store.hpp"
 #include "painter/connection.hpp"
 #include "painter/source.hpp"
+#include "gimplayertileview-handle.hpp"
 #include <algorithm>
 #include <memory>
 #include <string>
 #include <vector>
 using namespace GimpPainter;
 G_DEFINE_TYPE (GimpPainterLayerTiles, gimp_painter_layer_tiles, GIMP_TYPE_IMAGE_EDITOR)
-namespace GimpPainter {
-template<> struct TypeTraits<GimpPainterLayerTiles> {
-  static GType type () noexcept { return GIMP_TYPE_PAINTER_LAYER_TILES; }
-};
-}
 namespace {
+enum { PROP_0, PROP_IMAGE, PROP_CONTEXT };
 struct Tiles;
 struct Slot : SlotSpec<GimpPainterLayerTiles, Tiles> {};
 struct Row {
@@ -67,14 +65,15 @@ struct Hook {
 };
 struct Tiles {
   GimpPainterLayerTiles *owner;
-  ObjectRef<GObject> context, image, popup, drag_layer, press_widget, pending_single;
+  ObjectRef<GObject> supplied_context, context, image, popup, drag_layer, press_widget, pending_single;
   GtkWidget *list = nullptr, *add = nullptr, *scroll = nullptr, *popup_content = nullptr;
   std::vector<ObjectRef<GObject>> widgets; // root children survive synchronous destroy reentry
   std::vector<Row> rows;
   std::vector<Connection> permanent, model, controls, popup_connections;
   Source rebuild, long_press, autoscroll;
   double scroll_step = 0;
-  std::uint64_t image_generation = 0, popup_generation = 0;
+  std::uint64_t image_generation = 0, popup_generation = 0, context_generation = 0, refresh_generation = 0;
+  bool clearing_context = false;
   bool syncing = false, closed = false, pressed = false, popup_opened = false, popup_active = false;
   double press_x = 0, press_y = 0;
   explicit Tiles (GimpPainterLayerTiles *o) : owner (o) {}
@@ -106,10 +105,11 @@ struct Tiles {
     close_popup (); permanent.clear (); model.clear (); controls.clear ();
     rows.clear (); drag_layer.reset (); pending_single.reset ();
     gimp_docked_set_context (GIMP_DOCKED (owner), nullptr);
-    image.reset (); context.reset ();
+    image.reset (); context.reset (); supplied_context.reset ();
   }
   void build ();
   void bind_image (GimpImage *value);
+  void bind_context (GimpContext *value);
   void refresh ();
   void schedule ();
   void observe (GimpContainer *container);
@@ -393,6 +393,46 @@ void Tiles::build () {
   widgets.push_back (ObjectRef<GObject>::retain (G_OBJECT (scroll)));
   gtk_widget_show_all (GTK_WIDGET (owner));
 }
+void Tiles::bind_context (GimpContext *value) {
+  if (closed) return;
+  const auto generation = ++context_generation;
+  if (supplied_context.get () == (value ? G_OBJECT (value) : nullptr)) return;
+  const auto image_epoch = image_generation;
+  auto next_source = ObjectRef<GObject>::retain (value ? G_OBJECT (value) : nullptr);
+  auto image_lease = image;
+  auto old_source = supplied_context;
+  auto old_context = context;
+  ObjectRef<GObject> next_context;
+  if (value) {
+    next_context = ObjectRef<GObject>::adopt (G_OBJECT (
+      gimp_context_new (value->gimp, "painter-layer-tiles", value)));
+    auto *next = GIMP_CONTEXT (next_context.get ());
+    gimp_context_define_properties (next, GimpContextPropMask (
+      GIMP_CONTEXT_PROP_MASK_ALL & ~(GIMP_CONTEXT_PROP_MASK_IMAGE | GIMP_CONTEXT_PROP_MASK_DISPLAY)), FALSE);
+    gimp_context_define_properties (next, GimpContextPropMask (
+      GIMP_CONTEXT_PROP_MASK_IMAGE | GIMP_CONTEXT_PROP_MASK_DISPLAY), TRUE);
+    gimp_context_set_parent (next, value);
+    gimp_context_set_display (next, ctx () ? gimp_context_get_display (ctx ()) : nullptr);
+    gimp_context_set_image (next, img ());
+  }
+  cancel_press (); autoscroll.close (); close_popup ();
+  if (closed || context_generation != generation || image_generation != image_epoch) return;
+  supplied_context = std::move (next_source);
+  context = std::move (next_context);
+  /* GimpImageEditor normally clears image when its context is removed. These
+   * two original properties are independent. Retained old contexts prevent
+   * finalizer reentry while the parent swaps its context and signal hooks. */
+  clearing_context = !ctx ();
+  gimp_docked_set_context (GIMP_DOCKED (owner), ctx ());
+  clearing_context = false;
+  if (closed || context_generation != generation || image_generation != image_epoch) return;
+  if (value && global_action_factory)
+    if (auto *factory = menus_get_global_menu_factory (value->gimp))
+      gimp_editor_create_menu (GIMP_EDITOR (owner), factory, "<Layers>", "/layers-popup", owner);
+  if (closed || context_generation != generation || image_generation != image_epoch) return;
+  /* Same-image native assignment is a no-op; rebuild renderer contexts too. */
+  refresh ();
+}
 void Tiles::bind_image (GimpImage *value) {
   if (closed) return;
   const auto generation = ++image_generation;
@@ -457,14 +497,19 @@ void Tiles::append (GimpContainer *container, int depth) {
     gtk_widget_set_name (event, "painter-layer-preview");
     GtkWidget *previews = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 1);
     gtk_container_add (GTK_CONTAINER (event), previews);
-    GtkWidget *preview = gimp_view_new_full (ctx (), GIMP_VIEWABLE (layer), 56, 56, 1, FALSE, FALSE, FALSE);
-    GIMP_VIEW (preview)->eat_button_events = FALSE;
-    gtk_box_pack_start (GTK_BOX (previews), preview, TRUE, FALSE, 0);
-    if (auto *mask = gimp_layer_get_mask (layer)) {
-      GtkWidget *mask_view = gimp_view_new_full (ctx (), GIMP_VIEWABLE (mask), 24, 40, 1, FALSE, FALSE, FALSE);
-      GIMP_VIEW (mask_view)->eat_button_events = FALSE;
-      gtk_box_pack_start (GTK_BOX (previews), mask_view, FALSE, FALSE, 0);
-    }
+    /* Original construction allows image before context. Native renderers
+     * require a context when drawing; keep rows/layout without creating an
+     * unusable renderer until the shared context setter refreshes this view. */
+    if (ctx ()) {
+      GtkWidget *preview = gimp_view_new_full (ctx (), GIMP_VIEWABLE (layer), 56, 56, 1, FALSE, FALSE, FALSE);
+      GIMP_VIEW (preview)->eat_button_events = FALSE;
+      gtk_box_pack_start (GTK_BOX (previews), preview, TRUE, FALSE, 0);
+      if (auto *mask = gimp_layer_get_mask (layer)) {
+        GtkWidget *mask_view = gimp_view_new_full (ctx (), GIMP_VIEWABLE (mask), 24, 40, 1, FALSE, FALSE, FALSE);
+        GIMP_VIEW (mask_view)->eat_button_events = FALSE;
+        gtk_box_pack_start (GTK_BOX (previews), mask_view, FALSE, FALSE, 0);
+      }
+    } else gtk_widget_set_size_request (previews, 58, 58);
     gtk_box_pack_start (GTK_BOX (box), event, FALSE, FALSE, 0);
     row.name = gtk_label_new (gimp_object_get_name (layer));
     gtk_label_set_ellipsize (GTK_LABEL (row.name), PANGO_ELLIPSIZE_END);
@@ -492,6 +537,7 @@ void Tiles::append (GimpContainer *container, int depth) {
 }
 void Tiles::refresh () {
   if (closed) return;
+  const auto generation = ++refresh_generation;
   cancel_press (); autoscroll.close ();
   rebuild.close (); model.clear (); controls.clear (); rows.clear ();
   syncing = true;
@@ -499,7 +545,10 @@ void Tiles::refresh () {
   std::vector<ObjectRef<GObject>> old_children;
   for (GList *i=children; i; i=i->next) old_children.push_back (ObjectRef<GObject>::retain (G_OBJECT (i->data)));
   g_list_free (children);
-  for (auto& child : old_children) { gtk_widget_destroy (GTK_WIDGET (child.get ())); if (closed) return; }
+  for (auto& child : old_children) {
+    gtk_widget_destroy (GTK_WIDGET (child.get ()));
+    if (closed || refresh_generation != generation) return;
+  }
   if (img ()) {
     observe (gimp_image_get_layers (img ()));
     connect (*this, model, G_OBJECT (img ()), "selected-layers-changed", G_CALLBACK (selected));
@@ -642,7 +691,7 @@ bool Tiles::move (GimpLayer *layer, GimpLayer *target, bool into, bool after) {
   return result;
 }
 void Tiles::action (const std::string& command, GObject *target) {
-  if (!img ()) return;
+  if (closed || !img () || !ctx ()) return;
   auto image_lease=image;
   auto context_lease=context;
   if (command == "visibility" && target) {
@@ -770,11 +819,17 @@ void set_image (GimpImageEditor *editor, GimpImage *image) {
   bool entered = false;
   use (G_OBJECT (editor), [&] (Tiles& s) {
     entered = true;
+    if (s.clearing_context && !image) {
+      s.clearing_context = false; // only the parent's implicit clear, not nested intent
+      return;
+    }
+    const auto image_epoch = s.image_generation;
     auto image_lease = ObjectRef<GObject>::retain (image ? G_OBJECT (image) : nullptr);
     GIMP_IMAGE_EDITOR_CLASS (gimp_painter_layer_tiles_parent_class)->set_image (editor, image);
     /* The parent changes sensitivity, which can synchronously close the widget
      * or route it to another image. Keep both parent and binding in agreement. */
-    if (!s.closed && gimp_image_editor_get_image (editor) == image)
+    if (!s.closed && s.image_generation == image_epoch &&
+        gimp_image_editor_get_image (editor) == image)
       s.bind_image (image);
   });
   /* Teardown must still disconnect the parent's image/flush handler, but a
@@ -782,8 +837,57 @@ void set_image (GimpImageEditor *editor, GimpImage *image) {
   if (!entered && !image)
     GIMP_IMAGE_EDITOR_CLASS (gimp_painter_layer_tiles_parent_class)->set_image (editor, nullptr);
 }
+void set_property (GObject *object, guint id, const GValue *value, GParamSpec *pspec) {
+  if (pspec->owner_type != GIMP_TYPE_PAINTER_LAYER_TILES) {
+    G_OBJECT_CLASS (gimp_painter_layer_tiles_parent_class)->set_property (object, id, value, pspec);
+    return;
+  }
+  boundary_void (nullptr, [&] {
+    auto *binding = BindingStore::find (object);
+    if (!binding || binding->state () != BindingStore::State::active) return;
+    binding->with<Slot> ([&] (Tiles& s) {
+      if (id == PROP_CONTEXT) s.bind_context (static_cast<GimpContext *> (g_value_get_object (value)));
+      else if (id == PROP_IMAGE) {
+        ++s.image_generation; // even a same-image request supersedes older configuration
+        if (!s.closed) {
+          auto *next = static_cast<GimpImage *> (g_value_get_object (value));
+          auto *editor = GIMP_IMAGE_EDITOR (object);
+          /* The parent publishes its image before popup-close callbacks. A
+           * nested request for that same image must still finish Tiles binding. */
+          if (gimp_image_editor_get_image (editor) == next && s.img () != next)
+            s.bind_image (next);
+          else gimp_image_editor_set_image (editor, next);
+        }
+      } else G_OBJECT_WARN_INVALID_PROPERTY_ID (object, id, pspec);
+    });
+  });
+}
+void get_property (GObject *object, guint id, GValue *value, GParamSpec *pspec) {
+  if (pspec->owner_type != GIMP_TYPE_PAINTER_LAYER_TILES) {
+    G_OBJECT_CLASS (gimp_painter_layer_tiles_parent_class)->get_property (object, id, value, pspec);
+    return;
+  }
+  boundary_void (nullptr, [&] {
+    auto *binding = BindingStore::find (object);
+    if (!binding || binding->state () != BindingStore::State::active) return;
+    binding->with<Slot> ([&] (Tiles& s) {
+      if (id == PROP_CONTEXT) g_value_set_object (value, s.supplied_context.get ());
+      else if (id == PROP_IMAGE) g_value_set_object (value, s.image.get ());
+      else G_OBJECT_WARN_INVALID_PROPERTY_ID (object, id, pspec);
+    });
+  });
+}
 }
 static void gimp_painter_layer_tiles_class_init (GimpPainterLayerTilesClass *klass) {
+  auto *object_class = G_OBJECT_CLASS (klass);
+  object_class->set_property = set_property;
+  object_class->get_property = get_property;
+  g_object_class_install_property (object_class, PROP_IMAGE,
+    g_param_spec_object ("image", "Image", "Independently bound image", GIMP_TYPE_IMAGE,
+      GParamFlags (G_PARAM_READWRITE | G_PARAM_CONSTRUCT | G_PARAM_STATIC_STRINGS)));
+  g_object_class_install_property (object_class, PROP_CONTEXT,
+    g_param_spec_object ("context", "Context", "Supplied context (owned separately from action context)", GIMP_TYPE_CONTEXT,
+      GParamFlags (G_PARAM_READWRITE | G_PARAM_CONSTRUCT | G_PARAM_STATIC_STRINGS)));
   g_signal_new ("popup-closed", G_TYPE_FROM_CLASS (klass), G_SIGNAL_RUN_LAST, 0,
                 nullptr, nullptr, nullptr, G_TYPE_NONE, 0);
   GTK_WIDGET_CLASS (klass)->destroy=close_widget;
@@ -795,21 +899,21 @@ static void gimp_painter_layer_tiles_init (GimpPainterLayerTiles *owner) {
     store.with<Slot> ([] (Tiles& s) { s.build (); });
   } catch (const std::exception& e) { g_warning ("Cannot construct painter layer tiles: %s", e.what ()); }
 }
+GType gimp_layer_tile_view_get_type (void) {
+  return gimp_painter_layer_tiles_get_type ();
+}
+GimpLayerTileView *gimp_layer_tile_view_new (void) {
+  return boundary<GimpLayerTileView *> (nullptr, nullptr, [] {
+    return static_cast<GimpLayerTileView *> (g_object_new (GIMP_TYPE_PAINTER_LAYER_TILES, nullptr));
+  });
+}
 GtkWidget *gimp_painter_layer_tiles_new (GimpContext *context, GimpImage *image) {
   g_return_val_if_fail (GIMP_IS_CONTEXT (context), nullptr);
-  auto *owner=GIMP_PAINTER_LAYER_TILES (g_object_new (GIMP_TYPE_PAINTER_LAYER_TILES, nullptr));
-  use (G_OBJECT (owner), [&] (Tiles& s) {
-    s.context=ObjectRef<GObject>::adopt (G_OBJECT (gimp_context_new (context->gimp, "painter-layer-tiles", context)));
-    gimp_context_define_properties (s.ctx (), GimpContextPropMask (GIMP_CONTEXT_PROP_MASK_ALL & ~(GIMP_CONTEXT_PROP_MASK_IMAGE | GIMP_CONTEXT_PROP_MASK_DISPLAY)), FALSE);
-    gimp_context_set_parent (s.ctx (), context);
-    gimp_context_set_display (s.ctx (), nullptr);
-    gimp_docked_set_context (GIMP_DOCKED (owner), s.ctx ());
-    if (global_action_factory)
-      if (auto *factory = menus_get_global_menu_factory (context->gimp))
-        gimp_editor_create_menu (GIMP_EDITOR (owner), factory, "<Layers>", "/layers-popup", owner);
+  g_return_val_if_fail (!image || GIMP_IS_IMAGE (image), nullptr);
+  return boundary<GtkWidget *> (nullptr, nullptr, [&] {
+    return GTK_WIDGET (g_object_new (GIMP_TYPE_PAINTER_LAYER_TILES,
+                                    "context", context, "image", image, nullptr));
   });
-  gimp_image_editor_set_image (GIMP_IMAGE_EDITOR (owner), image);
-  return GTK_WIDGET (owner);
 }
 void gimp_painter_layer_tiles_set_image (GimpPainterLayerTiles *tiles, GimpImage *image) {
   g_return_if_fail (GIMP_IS_PAINTER_LAYER_TILES (tiles));
