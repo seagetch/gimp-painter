@@ -12,6 +12,13 @@ enum class FilterPoint { value_invert, max_rgb, threshold_alpha };
 bool filter_point_raster (FilterRaster&, FilterRaster&, std::size_t, std::size_t,
                            FilterPoint, int argument, bool real, std::atomic<bool>&,
                            const std::shared_ptr<FilterProgress>& progress = {});
+/* Legacy Max RGB callback output before REPLACE_INTEN merging. RGB is
+ * transformed even when alpha is zero; alpha is copied unchanged. Positive
+ * mode selects maxima, zero/negative selects minima, with all ties retained.
+ * Private independent tightly packed RGBA8 rasters only; no owner merge. */
+bool filter_max_rgb_raw_raster (FilterRaster&, FilterRaster&, std::size_t, std::size_t,
+                                std::int32_t mode, std::atomic<bool>&,
+                                const std::shared_ptr<FilterProgress>& progress = {});
 bool filter_edge_real_raster (FilterRaster&, FilterRaster&, std::size_t, std::size_t,
                                const EdgeOptions&, std::atomic<bool>&,
                                const std::shared_ptr<FilterProgress>& progress = {});
