@@ -873,18 +873,24 @@
       "state": "COMPONENT_VERIFIED",
       "implementation_paths": [
         "app/painter/boundary.hpp",
-        "app/painter/gimp-painter-binding.cpp"
+        "app/painter/gimp-painter-binding.cpp",
+        "app/painter/tests/test-c-api.c",
+        "app/painter/tests/test-foundation.cpp",
+        "app/painter/tests/test-hierarchy.c",
+        "app/painter/tests/test-hierarchy.cpp"
       ],
       "test_ids": [
-        "/painter/boundary/c-close",
-        "/painter/boundary/exception",
-        "/painter/hierarchy/interface-exception"
+        "/painter/interop/result-boundary-policy",
+        "/painter/interop/void-boundary-policy",
+        "/painter/hierarchy/interface-exception",
+        "/painter/hierarchy/interface-exception-policy"
       ],
       "reports": [
-        "migration/tests/painter-foundation-acceptance-native.json",
-        "migration/tests/painter-foundation-acceptance-sanitizers.json"
+        "migration/tests/boundary-conversion/native.json",
+        "migration/tests/boundary-conversion/sanitizers.json",
+        "migration/tests/boundary-conversion/meson.json"
       ],
-      "scope_or_gap": "Common implementation only; all-feature registration and platform acceptance are separate."
+      "scope_or_gap": "Original common C entry/native vfunc exception conversion verified, including typed/std/bad_alloc/unknown and NULL GError; no production defect. All-feature38.004 and platform gates remain independent."
     },
     {
       "id": "07.011",

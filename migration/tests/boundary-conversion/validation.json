@@ -1,0 +1,70 @@
+{
+  "task": "07.010",
+  "status": "PASS",
+  "parent": "75e6df419a5f6e9c6cee79a3e6ce6f7c62b17472",
+  "reports": [
+    {
+      "path": "migration/tests/boundary-conversion/native.json",
+      "sha256": "b75e794109596ec7cd71cf4609e54d6183dd0ddd4c0c39362cc67f7896a31268",
+      "suite_cases": 69,
+      "current_source_seals": 25,
+      "new_execution": true
+    },
+    {
+      "path": "migration/tests/boundary-conversion/sanitizers.json",
+      "sha256": "cf5e920226f0fd7b772e6a165c2844efb12a35cabc11765549d4647131c0a469",
+      "suite_cases": 69,
+      "current_source_seals": 25,
+      "new_execution": true
+    },
+    {
+      "path": "migration/tests/boundary-conversion/meson.json",
+      "sha256": "cf072fdb26e5b1abf05b63edd683f293e8de69fe1efd970c21ae3aa2dc5f8f84",
+      "suite_cases": 69,
+      "current_source_seals": 25,
+      "new_execution": true
+    }
+  ],
+  "original_tasks": 661,
+  "original_done": 117,
+  "source_ledger_rows": 22778,
+  "source_ledger_done": 575,
+  "accepted_source_duties": [
+    "legacy-bd2d7eb004105ee29db2"
+  ],
+  "all_other_work_rows_preserved": true,
+  "legacy_source": {
+    "path": "migration/tests/inherited-properties/legacy-source/glib-cxx-impl.hpp",
+    "git_blob": "a2ad35e37a3e7a481698c1f8b78b71adb385f7d3",
+    "sha256": "5c50241a85ee4caaadb5c28cb4499c4348666281d24078c318cd31c643f04887",
+    "scope": "Old property adapters catch then exit; Binder invokes Impl without containment"
+  },
+  "current_acceptance_errors": [],
+  "whole_historical_foundation_status": "FAIL",
+  "unrelated_historical_errors": 118,
+  "exception_kinds": [
+    "typed Error",
+    "std::runtime_error",
+    "std::bad_alloc",
+    "unknown integer"
+  ],
+  "boundary_routes": [
+    "C result",
+    "C void",
+    "native interface vfunc"
+  ],
+  "gerror_modes": [
+    "output",
+    "NULL"
+  ],
+  "production_changes": false,
+  "limits": [
+    "Shared C/vfunc exception boundary acceptance; no production defect claimed.",
+    "No all-feature38.004, LSan, system-GLib instrumentation or platform acceptance claim."
+  ],
+  "checks": {
+    "python3 -B tools/check_tasks.py": "WBS dependencies, states, and completion evidence: OK\n",
+    "python3 -B tools/audit_legacy_granularity.py --check": "{\"assets\": 402, \"compound_action_rows\": 0, \"hunks\": 2489, \"implementation_actions\": 15999, \"source_checks\": 2891, \"statuses\": {\"DONE\": 575, \"TODO\": 22203}, \"unassigned_sources\": 0, \"verification_actions\": 6779}\n",
+    "git diff --check": ""
+  }
+}
