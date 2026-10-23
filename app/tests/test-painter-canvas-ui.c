@@ -573,6 +573,110 @@ static void popup_replacement_image_switch(gboolean creation) {
 }
 static void popup_properties_reentrant_image_switch(void) { popup_replacement_image_switch(FALSE); }
 static void popup_creation_reentrant_image_switch(void) { popup_replacement_image_switch(TRUE); }
+/* These clicks enter the live action before popup-closed reenters. They are
+ * distinct from emitting on an already disconnected, retired button. */
+static GtkWidget *new_group_action(GtkWidget *w) {
+  GtkWidget *p=gimp_painter_layer_tiles_popup(GIMP_PAINTER_LAYER_TILES(w),TRUE);
+  g_assert_nonnull(p);
+  GtkWidget *button=find(p,"layers-new-group");g_assert_nonnull(button);
+  return g_object_ref(button);
+}
+static void popup_action_image_switch(void) {
+  GimpImage *a=new_image(),*b=new_image();layer(a,NULL,"Old");layer(b,NULL,"New");
+  GtkWidget *w=tiles(a),*button=new_group_action(w);
+  PopupImageSwitch f={b,0};
+  gulong handler=g_signal_connect(w,"popup-closed",G_CALLBACK(switch_on_popup_closed),&f);
+  gtk_button_clicked(GTK_BUTTON(button));
+  g_assert_cmpuint(f.calls,==,1);
+  g_assert_true(action_data_get_image(w)==b);
+  g_test_message("A layers=%d; B layers=%d",gimp_image_get_n_layers(a),gimp_image_get_n_layers(b));
+  g_assert_cmpint(gimp_image_get_n_layers(a),==,1);
+  g_assert_cmpint(gimp_image_get_n_layers(b),==,1);
+  g_signal_handler_disconnect(w,handler);g_object_unref(button);
+  close_tiles(w);g_object_unref(a);g_object_unref(b);
+}
+static void popup_action_newer_same_image(void) {
+  GimpImage *image=new_image();layer(image,NULL,"Layer");
+  GtkWidget *w=tiles(image),*button=new_group_action(w);
+  PopupReplacement f={NULL,0,FALSE};
+  gulong handler=g_signal_connect(w,"popup-closed",G_CALLBACK(replace_on_popup_closed),&f);
+  gtk_button_clicked(GTK_BUTTON(button));
+  g_assert_cmpuint(f.calls,==,1);g_assert_nonnull(f.newer);
+  g_assert_true(action_data_get_image(w)==image);
+  g_assert_cmpint(gimp_image_get_n_layers(image),==,1);
+  g_assert_true(gtk_widget_get_visible(f.newer));
+  g_signal_handler_disconnect(w,handler);g_object_unref(button);
+  close_tiles(w);g_object_unref(f.newer);g_object_unref(image);
+}
+typedef struct { GimpContext *context; guint calls; } PopupContextSwitch;
+static void context_on_popup_closed(GimpPainterLayerTiles *w,gpointer data) {
+  PopupContextSwitch *f=data;++f->calls;
+  g_object_set(w,"context",f->context,NULL);
+}
+static void popup_action_context_switch(void) {
+  GimpImage *image=new_image();layer(image,NULL,"Layer");
+  GtkWidget *w=tiles(image),*button=new_group_action(w);
+  GimpContext *old=g_object_ref(action_data_get_context(w));
+  GimpContext *context=gimp_context_new(gimp,"action-replacement",gimp_get_user_context(gimp));
+  PopupContextSwitch f={context,0};
+  gulong handler=g_signal_connect(w,"popup-closed",G_CALLBACK(context_on_popup_closed),&f);
+  gtk_button_clicked(GTK_BUTTON(button));
+  g_assert_cmpuint(f.calls,==,1);
+  g_assert_true(action_data_get_image(w)==image);
+  g_assert_nonnull(action_data_get_context(w));
+  g_assert_true(action_data_get_context(w)!=old);
+  g_assert_cmpint(gimp_image_get_n_layers(image),==,1);
+  g_signal_handler_disconnect(w,handler);g_object_unref(button);
+  close_tiles(w);g_object_unref(old);g_object_unref(context);g_object_unref(image);
+}
+static void popup_action_owner_close(void) {
+  GimpImage *image=new_image();layer(image,NULL,"Layer");
+  GtkWidget *w=tiles(image),*button=new_group_action(w);gpointer weak=w;
+  guint calls=0;g_object_add_weak_pointer(G_OBJECT(w),&weak);
+  g_signal_connect(w,"popup-closed",G_CALLBACK(destroy_on_popup_closed),&calls);
+  gtk_button_clicked(GTK_BUTTON(button));
+  g_assert_cmpuint(calls,==,1);g_object_unref(button);drain();
+  /* Require finalization, not merely a null image making a late command inert. */
+  g_assert_null(weak);g_assert_cmpint(gimp_image_get_n_layers(image),==,1);
+  g_object_unref(image);
+}
+typedef struct { GimpImage *image; guint calls, updates; gboolean armed; } MenuActionSwitch;
+static void menu_switch_on_popup_closed(GimpPainterLayerTiles *w,gpointer data) {
+  MenuActionSwitch *f=data;++f->calls;
+  gimp_painter_layer_tiles_set_image(w,f->image);
+  f->armed=TRUE;
+}
+static void rejected_menu_update(GimpUIManager *manager,gpointer update_data,gpointer data) {
+  MenuActionSwitch *f=data;(void)manager;(void)update_data;
+  if (!f->armed) return;
+  ++f->updates;
+  /* Reaching native menu dispatch is already the regression. Stop before
+   * opening a context menu without a hardware event in this fixture. */
+  g_assert_cmpuint(f->updates,==,0);
+}
+static void popup_action_layer_menu_switch(void) {
+  GimpImage *a=new_image(),*b=new_image();layer(a,NULL,"Old");layer(b,NULL,"New");
+  GtkWidget *w=tiles(a),*p=gimp_painter_layer_tiles_popup(GIMP_PAINTER_LAYER_TILES(w),FALSE);
+  GtkWidget *button=find(p,"layer-menu");g_assert_nonnull(button);g_object_ref(button);
+  MenuActionSwitch f={b,0,0,FALSE};
+  GimpUIManager *manager=gimp_editor_get_ui_manager(GIMP_EDITOR(w));g_object_ref(manager);
+  gulong update_handler=g_signal_connect(manager,"update",G_CALLBACK(rejected_menu_update),&f);
+  gulong handler=g_signal_connect(w,"popup-closed",G_CALLBACK(menu_switch_on_popup_closed),&f);
+  gtk_button_clicked(GTK_BUTTON(button));
+  g_assert_cmpuint(f.calls,==,1);g_assert_true(action_data_get_image(w)==b);
+  g_assert_cmpuint(f.updates,==,0);
+  g_signal_handler_disconnect(manager,update_handler);g_signal_handler_disconnect(w,handler);
+  g_object_unref(manager);g_object_unref(button);close_tiles(w);g_object_unref(a);g_object_unref(b);
+}
+static void popup_action_normal_group(void) {
+  GimpImage *image=new_image();layer(image,NULL,"Layer");
+  GtkWidget *w=tiles(image),*button=new_group_action(w);
+  gtk_button_clicked(GTK_BUTTON(button));g_object_unref(button);
+  g_assert_cmpint(gimp_image_get_n_layers(image),==,2);
+  g_assert_true(GIMP_IS_GROUP_LAYER(gimp_image_get_selected_layers(image)->data));
+  g_assert_true(gimp_image_undo(image));g_assert_cmpint(gimp_image_get_n_layers(image),==,1);
+  close_tiles(w);g_object_unref(image);
+}
 /* The C entry and inherited image-editor entry must share the same terminal
  * lifecycle. Holding a reference after GtkWidget::destroy is legal. */
 static void destroyed_tiles_reject_image(void) {
@@ -2126,6 +2230,7 @@ ADD(w08017_dnd_relocate_later_on_cleanup);
   ADD(popup_native_events_and_parent);ADD(popup_destroy_orders);
   ADD(popup_properties_newer_same_image);ADD(popup_creation_newer_same_image);
   ADD(popup_properties_reentrant_owner_close);ADD(popup_creation_reentrant_owner_close);ADD(popup_properties_reentrant_image_switch);ADD(popup_creation_reentrant_image_switch);
+  ADD(popup_action_image_switch);ADD(popup_action_newer_same_image);ADD(popup_action_context_switch);ADD(popup_action_owner_close);ADD(popup_action_normal_group);ADD(popup_action_layer_menu_switch);
   ADD(destroyed_tiles_reject_image);ADD(image_switch_popup_owner_close);ADD(image_switch_popup_newer_image);ADD(parent_image_notify_owner_close);
   ADD(popup_controls_and_clone);ADD(mask_controls);ADD(long_press_once);ADD(reentrant_visibility_close);ADD(multiple_reorder_one_undo);ADD(hide_cancels_grab);
   ADD(overlay_topmost_visible_input);ADD(overlay_input_and_restore);ADD(dock_restore_and_parent_close);ADD(overlay_tools_and_colors);ADD(overlay_tool_group);ADD(tool_click_active_owner_close);ADD(tool_click_expanded_owner_close);ADD(tool_expander_owner_close);ADD(tool_click_newer_selection);ADD(tool_pending_refresh_owner_destroy);ADD(tool_group_selection_restores_canvas_focus);ADD(multiple_canvas_context_and_dock_transfer);ADD(overlay_owner_destroy_callbacks);ADD(overlay_retained_emitters_shell_close);ADD(overlay_emitters_destroy_before_owner);ADD(overlay_context_color_reentrant_close);
