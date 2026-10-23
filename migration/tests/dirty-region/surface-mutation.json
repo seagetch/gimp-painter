@@ -1,0 +1,13 @@
+[
+  {
+    "mutation": "replace-surface-union",
+    "path": "app/paint/painter-mypaint-surface/gegl-surface.cpp",
+    "before": "gegl_rectangle_bounding_box(&impl_->dirty,&impl_->dirty,&rect)",
+    "after": "impl_->dirty=rect",
+    "selected_test": "/coordinates/overlapping-adjacent-dirty-union",
+    "test_exit_code": -6,
+    "stdout": "TAP version 14\n# random seed: R02S3d2ec0598546e1fd73df2f451037f14e\n# Start of coordinates tests\nnot ok /coordinates/overlapping-adjacent-dirty-union - ERROR:<checkout>/app/paint/painter-mypaint-surface/tests/coordinate-boundaries.cpp:39:void {anonymous}::rect_equal(const GeglRectangle&, const GeglRectangle&): 'gegl_rectangle_equal(&a,&b)' should be TRUE\nBail out!\n",
+    "stderr": "**\nERROR:<checkout>/app/paint/painter-mypaint-surface/tests/coordinate-boundaries.cpp:39:void {anonymous}::rect_equal(const GeglRectangle&, const GeglRectangle&): 'gegl_rectangle_equal(&a,&b)' should be TRUE\n",
+    "scope": "Private copy of actual production Surface; real GEGL; unchanged existing coordinate fixture"
+  }
+]

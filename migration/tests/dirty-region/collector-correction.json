@@ -1,0 +1,10 @@
+{
+  "defect": "Evidence collector copied preceding work-buffer checkpoint rather than current dirty checkpoint",
+  "wrong_input": "meson-logs/work-buffer-native.json",
+  "wrong_tap_count": 33,
+  "correct_input": "meson-logs/dirty-native.json",
+  "correct_tap_count": 34,
+  "detected_by": "Exact TAP count assertion in verify.py",
+  "original_raw_dirty_aggregate_count": 34,
+  "runtime_or_stale_binary_defect": false
+}
