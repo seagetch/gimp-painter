@@ -53,7 +53,7 @@
 
 公開基準 `3f831a8a862dabcc60f0049c154f93655d8004e2` の区分29・30は完了していない。元の親行29.001–29.020、30.001–30.017はすべて未チェック/TODOである。`29.001/native-canvas-tiles` と `29.010/native-compact-runtime` の DONE は保存済みの限定コンポーネント試験の履歴であり、旧UIの忠実な復元完了を意味しない。後者の50 GUI/2868 widget保持は、旧tool別horizontal factory・独立toolbar widget・window/session modelの同等性を証明しない。過去の証跡とチェックを削除せず、その範囲を明示訂正する。
 
-受入条件・旧ソースの行番号・公開HEADとの差分・未完了割当の正本は `migration/contracts/legacy-ui-completion-correction.md`。復旧した変更は再検証中であり、旧snapshotのPASSを現在のコードへ流用しない。今回の復旧コードについて188件合格やASan合格を主張しない。下部toolbarはMyPaint専用ではなくactive toolごとの表示が要件。paint/non-paint/transformの独立horizontal factory復元は実装・再検証中であり、tool別対応表と合格証跡は未完了。toolbar window/session、実tablet・platform試験も引き続き未完了。dock orientationはwindow allocation、overlay配置はcanvas allocationで別判定し、実Dockable入りcollection試験を必要とする。`29.010/standard-tool-options`のみ実装中(DOING)へ更新し、他の状態と全チェックは保持する。
+受入条件・旧ソースの行番号・公開HEADとの差分・未完了割当の正本は `migration/contracts/legacy-ui-completion-correction.md`。復旧分は `1ec1e724c6e5f2c6b7c4c25febb9a56ae5e6ff49` として公開し、最終ソースの限定UI試験は通常148件・ASan/UBSan148件に合格した（リーク検査は除外）。旧snapshotの188件等を現在のコードの合格根拠に流用しない。下部toolbarはMyPaint専用ではなくactive toolごとの表示が要件。34ツールの独立horizontal factory構築・共有値・native dock widget保持を検証したが、16ツールと個別の残存control、toolbar window/session、実tablet・platform試験は未完了。通常アプリ終了時のdevice-info criticalと残存Stroke/Fill contextも記録しており、警告なしの終了や移植全体の完成を主張しない。dock orientationはwindow allocation、overlay配置はcanvas allocationで別判定し、実Dockable入りcollectionの縦・横・正方形試験を実施した。UI復旧commitでは `29.010/standard-tool-options` をDOINGへ更新し、他の完了状態を変更していない。その後の個別タスク進捗は下記WBSと `migration/progress.tsv` を正本とする。
 
 ## 3. 区分一覧
 
@@ -229,7 +229,7 @@
 | 02.005/resize-undo-capture | [x] | 実旧CloneLayerのresize/Undo/maskを観測する | 02.005 | 2有効RGB scene・12状態・8 Undo/Redoの実行を記録し、非理想な座標/history増加とmask不変を保存（`migration/fixtures/legacy-clone-undo/`） |
 | 02.006 | [x] | FilterLayer の旧 XCF fixture を作る | 02.005 | procedure・引数・キャッシュ・下層を含むファイルを保存 |
 | 02.006/writer-negative-fixture | [x] | 実旧FilterLayerの実行・保存とreader失敗を記録する | 02.005 | 実plug-in-edge非同期完了後のcache・6引数を旧writerで保存し、旧readerの再読込segfaultを別途再現（`migration/fixtures/legacy-runtime/`）。成功往復の代用にしない |
-| 02.007 | [ ] | 複合レイヤー作品を fixture 化する | 02.006 | アニメ塗り・水彩の再編集操作記録を保存 |
+| 02.007 | [x] | 複合レイヤー作品を fixture 化する | 02.006 | アニメ塗り・水彩の再編集操作記録を保存 |
 | 02.008 | [x] | 同梱ブラシ資産を固定する | 00.001 | 177 個の myb の version と hash を保存。固定 commit の386資産を Git blob ID・SHA256・出典へ対応（`migration/fixtures/legacy-source/`）。旧版実行を必要としない独立採取へ依存を明示変更 |
 | 02.009 | [x] | 筆跡入力の記録形式を定義する | 02.008 | 全GimpCoords・原時刻・筆圧・傾き・方向・RNGのfloat保存bitと実seed・初期状態・資産・出力hashを表現（`migration/fixtures/strokes/FORMAT.md`）。11形式試験に合格。実測採取は02.010 |
 | 02.010 | [ ] | 旧版の筆跡記録を採取する | 02.007, 02.009 | 代表ブラシごとの入力列と結果画素を保存 |

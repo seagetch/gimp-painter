@@ -1,0 +1,11 @@
+cc1plus: warning: command-line option ‘-Wdeclaration-after-statement’ is valid for C/ObjC but not for C++
+cc1plus: warning: command-line option ‘-Wmissing-prototypes’ is valid for C/ObjC but not for C++
+cc1plus: warning: command-line option ‘-Wstrict-prototypes’ is valid for C/ObjC but not for C++
+cc1plus: warning: command-line option ‘-Wold-style-definition’ is valid for C/ObjC but not for C++
+In file included from composite-preset.cpp:6:
+../../app/base/glib-cxx-impl.hpp:422:13: warning: Deprecated pre-processor symbol: replace with "G_ADD_PRIVATE"
+  422 |     return G_TYPE_INSTANCE_GET_PRIVATE(obj, Traits::get_type(), Impl);
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~       
+composite-preset.cpp:19:17: warning: no previous declaration for ‘void composite_apply_preset(GimpContext*, GimpLayer*, const gchar*)’ [-Wmissing-declarations]
+   19 | extern "C" void composite_apply_preset(GimpContext *context,GimpLayer *source,const gchar *path) {
+      |                 ^~~~~~~~~~~~~~~~~~~~~~

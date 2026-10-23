@@ -1,0 +1,7 @@
+(let* ((image (car (gimp-file-load RUN-NONINTERACTIVE "/workspace/scratch/5b5281e79681/legacy-composite-20261015/evidence-nonuniform/anime/anime-initial.xcf" "/workspace/scratch/5b5281e79681/legacy-composite-20261015/evidence-nonuniform/anime/anime-initial.xcf")))
+       (layers (gimp-image-get-layers image))
+       (group (vector-ref (cadr layers) 0)))
+ (if (not (= (car layers) 2)) (error "wrong root count"))
+ (if (not (string=? (car (gimp-item-get-name group)) "New group")) (error "wrong group name"))
+ (gimp-message "INDEPENDENT_ORIGINAL_COMPOSITE_REOPEN_PASS scene=anime stage=initial"))
+(gimp-quit 0)
