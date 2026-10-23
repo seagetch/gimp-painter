@@ -1,0 +1,23 @@
+{
+  "task": "08.006",
+  "child": "08.006/core-options-init",
+  "status": "PASS",
+  "original_done": 130,
+  "original_total": 661,
+  "source_done": 613,
+  "source_total": 22763,
+  "source_duties_accepted": [
+    "legacy-6913db9336e6cb305b48",
+    "legacy-c2d23a7cc8dd401f6015",
+    "legacy-c50abbc859ee647c9515",
+    "legacy-d766428b979a9b70274c"
+  ],
+  "other_source_rows_unchanged": 22759,
+  "routing_changes": 0,
+  "native_cases": 10,
+  "current_source_seals": 26,
+  "tasks_progress_errors": [],
+  "production_change": "None; current native implementation satisfies bounded type/ownership contract",
+  "independent_review": "Read-only native registration/dispatch/options ownership review found no blocker; reviewer did not build or execute new tests",
+  "limits": "Registered native type and supported coordinate stroke/Undo exercised; low-level start remains intentionally refused. Path/boundary/physical-input/full renderer compatibility not newly accepted. No new sanitizer/platform execution."
+}

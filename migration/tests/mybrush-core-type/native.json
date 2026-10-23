@@ -1,0 +1,50 @@
+{
+  "name": "native",
+  "argv": [
+    "/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/build-http/app/tests/gimp-painter-session"
+  ],
+  "exit_code": 0,
+  "status": "PASS",
+  "cases": [
+    "/painter-session/controller-pixels",
+    "/painter-session/registered-native-paint-core",
+    "/painter-session/options-first-stroke-ownership",
+    "/painter-session/settings-split-block",
+    "/painter-session/close-start",
+    "/painter-session/settings-during-motion",
+    "/painter-session/closed-options-cancel",
+    "/painter-session/notification-last-ref",
+    "/painter-session/deferred-sample-stop",
+    "/painter-session/cancel-native-start"
+  ],
+  "stdout": "TAP version 14\n# random seed: R02S8c7c44da66ded007788115e04fa369f0\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n1..10\n# Start of painter-session tests\nTime is running backwards!\nTime is running backwards!\nTime is running backwards!\nTime is running backwards!\nok 1 /painter-session/controller-pixels\nok 2 /painter-session/registered-native-paint-core\nTime is running backwards!\nTime is running backwards!\nok 3 /painter-session/options-first-stroke-ownership\nTime is running backwards!\nok 4 /painter-session/settings-split-block\nok 5 /painter-session/close-start\nTime is running backwards!\nok 6 /painter-session/settings-during-motion\nTime is running backwards!\nok 7 /painter-session/closed-options-cancel\nTime is running backwards!\nok 8 /painter-session/notification-last-ref\nok 9 /painter-session/deferred-sample-stop\nok 10 /painter-session/cancel-native-start\n# End of painter-session tests\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\nGIMP-Error: Failed to save data:\n\nYou have a writable data folder configured, but this folder is not part of your data search path. You probably edited the gimprc file manually, please fix it in the Preferences dialog's 'Folders' section.\n\n",
+  "binary_sha256": "e238d5b05c9d186a93c00662f9c1d0afae8947dcc89f11ab559bd033a9186aea",
+  "source_sha256": {
+    "app/paint/gimppainterpaintgate.cpp": "0adab689f1bfe4967da9f69259c7ba9b59bed6500a55d0eff643c4ad634986de",
+    "app/paint/gimppainterpaintgate.h": "8c29e4a1a5273f2f904c842fdcc67c925d1ff620ec888ebb88c07f305a81979a",
+    "app/paint/gimppainterpaintgate.hpp": "080c15a3353f557d9de135bd1f84e4f2498f5b41874abc79a4b23bdd7a987cc0",
+    "app/paint/gimp-paint.c": "fa4b70c01f6c8c73d6a546902facd7cdd6fcc6c98ce4b275a40d79a6a9f3dbbe",
+    "app/paint/gimppaintcore.c": "306710d7b6ae412e7e12bcedaf85b5f9bd4b43de2a7f424dca2bb82a9c6a16be",
+    "app/paint/gimppaintcore.h": "c4daffd4560445fe4796bd902006efadb91762781102f83d3745a0f2ba99967a",
+    "app/paint/gimppaintcore-stroke.c": "cb64290d8747e33e6833384a3be245915a24f9a90c57785de9c2d4c62b05adbf",
+    "app/paint/gimppaintcore-stroke.h": "5de48598705e0c9f3cf12d7e397e7b8ad23d48194f7229c397a55c2c70f5a60b",
+    "app/core/gimppaintinfo.c": "cf3dc58a8881f2f658353c41ca8cd7b220eeddfbf1b2de0176103de05cb8653a",
+    "app/core/gimppaintinfo.h": "58c46ff0698f77f044ccef826ae33e68064fcef1dfda7b6b582fa4eb86b1cab8",
+    "app/paint/painter-mypaint-surface/gimp-painter-session.cpp": "3784efe5ae3577d1329cc53f50102d424403385be99d66207e686ad250a2a6d9",
+    "app/paint/painter-mypaint-surface/gimp-painter-session.h": "4f53e90cf9902dd84b7b85f3417689d54c68b1ac8008c9eb181915e89f085345",
+    "app/paint/painter-mypaint-surface/gimp-painter-session.hpp": "c80ba555f7c1643085a0f1d559316690c16c2561260396b3c9634545100519c9",
+    "app/paint/painter-mypaint-surface/gimp-painter-options.cpp": "45a5f51c429e45de42b85317847211caa092d4a5c2a9784a17a9918b693ba91a",
+    "app/paint/painter-mypaint-surface/gimp-painter-options.h": "a714dd1306aea247ee82adfa5fdb2956f8da029f4829deb14ad97dd2e6403e01",
+    "app/paint/painter-mypaint-surface/gimp-painter-options.hpp": "01fe463e68988d4f81855ad4dca190248b691f36f3d8c2a625d1eea830b19903",
+    "app/paint/painter-mypaint-surface/paint-core.cpp": "b76d784b6173aba483cc88524db66d1d13a3f22c56c96de871c16f73772863d5",
+    "app/paint/painter-mypaint-surface/paint-core.hpp": "7b7ee841d0ffbf7cf6f77f3f0fc38d6e0f4009878a346bef310fd11a329775cc",
+    "app/painter/binding-store.cpp": "c69d65c22f26e6be8f6df69765cd30f7bbbd32b46b0eb847e9f6524b41c2b557",
+    "app/painter/binding-store.hpp": "c67deb0ccf33a13a5ba3ab3f50bdbb2ef8931f481acf62a9315d778388c90262",
+    "app/painter/gimp-painter-binding.cpp": "22aca4f9e467e16b86f2cbeec431d7d069fc552c98fad985db770720fcf876fd",
+    "app/painter/connection.hpp": "3f81d5889f046a12beae6f2c8975be2007742e4d8f99e8fc44877fc809d6e898",
+    "app/painter/object-ref.hpp": "5a8cc92afc56f652fd47c727269d71d9d97c4358015f13fe9c4764371fcb7c3a",
+    "app/painter/boundary.hpp": "d97a8b6e27a09fe69c7c1d6620361c3daaa1e5cf1bad8d2eb2d4b9a9faed6d2e",
+    "app/tests/test-gimp-painter-session.cpp": "951ede1749e1760cf4e85473301759c023bb2ca4386614605dbbd5d73d3008f2",
+    "app/tests/meson.build": "c0ca2ba436e782c8672cfd903c9bc71700438c29303ffa3f0ccbb58471fce1b5"
+  }
+}

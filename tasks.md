@@ -387,8 +387,8 @@
 | 08.003 | [x] | FilterLayer の GType 骨格を移植する | 08.002 | 同じ BindingStore 規約で生成・終了できる |
 | 08.004 | [x] | CloneLayerUndo の型を移植する | 08.003 | 現行 GimpItemUndo と親処理を接続 |
 | 08.005 | [x] | MyPaint 資源型を移植する | 08.004 | data factory から生成できる |
-| 08.006 | [ ] | MyPaint paint core 型を移植する | 08.005 | 現行 GimpPaintCore に登録できる |
-| 08.006/core-options-init | [ ] | MyPaint core の options 借用参照を初期化する | 08.006, 01.007/mypaint-core-raw | 初回 stroke_to の比較前に NULL 初期化し、signal 接続・切断と options 先行破棄を検証する |
+| 08.006 | [x] | MyPaint paint core 型を移植する | 08.005 | 現行 GimpPaintCore に登録できる |
+| 08.006/core-options-init | [x] | MyPaint core の options 借用参照を初期化する | 08.006, 01.007/mypaint-core-raw | 初回 stroke_to の比較前に NULL 初期化し、signal 接続・切断と options 先行破棄を検証する |
 | 08.007 | [ ] | MyPaint options 型を移植する | 08.006 | 現行 property と設定機構に接続 |
 | 08.007/dict-owner | [ ] | MyPaint 設定辞書の静的参照を整理する | 08.007, 01.007/dict-transfer | 辞書五種のキャッシュ参照と呼出し元へ渡す参照を分離し、初期化・終了・再取得を検証する |
 | 08.008/weak-pointer-teardown | [ ] | MyPaint GUI の weak pointer 登録を対称に解除する | 08.008, 01.007/raw-candidates | options/widget の先行破棄と GUI helper の先行破棄で解放済み領域に書き込まない |

@@ -12,6 +12,9 @@ extern "C" {
 #include "core/gimplayer.h"
 #include "core/gimplayer-new.h"
 #include "core/gimpcontext.h"
+#include "core/gimpcontainer.h"
+#include "core/gimppaintinfo.h"
+#include "paint/gimppainterpaintgate.h"
 #include "tests.h"
 #include "gimp-app-test-utils.h"
 }
@@ -58,6 +61,91 @@ static void exact_controller_pixels()
     g_assert_true(pixels(drawable)==actual);stroke(session,drawable);g_assert_true(gimp_painter_session_cancel(session,&error));g_assert_no_error(error);g_assert_true(pixels(drawable)==actual);
     g_object_unref(session);g_object_unref(options);g_object_unref(image);
   }
+}
+static void registered_native_paint_core()
+{
+  auto *info = GIMP_PAINT_INFO (gimp_container_get_child_by_name (
+    gimp->paint_info_list, "gimp-painter-mypaint"));
+  g_assert_nonnull (info);
+  g_assert_cmpuint (info->paint_type, ==, GIMP_TYPE_PAINTER_PAINT_GATE);
+  g_assert_cmpuint (info->paint_options_type, ==, GIMP_TYPE_PAINTER_MYBRUSH_OPTIONS);
+  g_assert_cmpuint (g_type_parent (info->paint_type), ==, GIMP_TYPE_PAINT_CORE);
+  GTypeQuery query;
+  g_type_query (info->paint_type, &query);
+  g_assert_cmpuint (query.instance_size, ==, sizeof (GimpPainterPaintGate));
+  g_assert_cmpuint (query.class_size, ==, sizeof (GimpPainterPaintGateClass));
+  auto *core = GIMP_PAINT_CORE (g_object_new (info->paint_type,
+    "undo-desc", "Registered Painter core", nullptr));
+  auto *options = gimp_paint_options_new (info);
+  g_assert_true (GIMP_IS_PAINTER_PAINT_GATE (core));
+  g_assert_true (GIMP_IS_PAINTER_MYBRUSH_OPTIONS (options));
+  g_assert_true (options->paint_info == info);
+  g_object_set (options, "dabs-per-second", 40., "radius-logarithmic", 1.5, nullptr);
+  GimpImage *image;
+  auto *drawable = GIMP_DRAWABLE (layer_new (&image));
+  const auto before = pixels (drawable);
+  GimpCoords coords[3] = {GIMP_COORDS_DEFAULT_VALUES, GIMP_COORDS_DEFAULT_VALUES,
+                         GIMP_COORDS_DEFAULT_VALUES};
+  for (int i = 0; i < 3; ++i)
+    { coords[i].x = 12 + i * 12; coords[i].y = 16 + i * 4; coords[i].pressure = .9; }
+  GList drawables = {drawable, nullptr, nullptr};
+  GError *error = nullptr;
+  g_assert_false (gimp_paint_core_start (core, &drawables, options, coords, &error));
+  g_assert_nonnull (error);
+  g_clear_error (&error);
+  g_assert_false (gimp_viewable_preview_is_frozen (GIMP_VIEWABLE (drawable)));
+  g_assert_true (pixels (drawable) == before);
+  g_assert_cmpint (gimp_undo_stack_get_depth (gimp_image_get_undo_stack (image)), ==, 0);
+  g_assert_true (gimp_paint_core_stroke (core, drawable, options, coords, 3, TRUE, &error));
+  g_assert_no_error (error);
+  const auto painted = pixels (drawable);
+  g_assert_true (painted != before);
+  g_assert_cmpint (gimp_undo_stack_get_depth (gimp_image_get_undo_stack (image)), ==, 1);
+  g_assert_false (gimp_viewable_preview_is_frozen (GIMP_VIEWABLE (drawable)));
+  g_assert_true (gimp_image_undo (image)); g_assert_true (pixels (drawable) == before);
+  g_assert_true (gimp_image_redo (image)); g_assert_true (pixels (drawable) == painted);
+  gpointer weak = core;
+  g_object_add_weak_pointer (G_OBJECT (core), &weak);
+  g_object_run_dispose (G_OBJECT (core)); g_object_run_dispose (G_OBJECT (core));
+  g_object_unref (core); g_assert_null (weak);
+  g_object_unref (options); g_object_unref (image);
+}
+
+static void options_first_stroke_ownership()
+{
+  for (bool release_caller : {true, false})
+    {
+      auto *options = options_new ();
+      const guint settings_signal = g_signal_lookup ("settings-changed", G_OBJECT_TYPE (options));
+      g_assert_cmpuint (settings_signal, !=, 0);
+      g_assert_false (g_signal_has_handler_pending (options, settings_signal, 0, TRUE));
+      gpointer weak_options = options;
+      g_object_add_weak_pointer (G_OBJECT (options), &weak_options);
+      auto *session = gimp_painter_session_new (options, nullptr);
+      g_assert_nonnull (session);
+      g_assert_true (g_signal_has_handler_pending (options, settings_signal, 0, TRUE));
+      if (release_caller) g_object_unref (options);
+      g_assert_nonnull (weak_options);
+      GimpImage *image;
+      auto *drawable = GIMP_DRAWABLE (layer_new (&image));
+      const auto before = pixels (drawable);
+      stroke (session, drawable);
+      g_assert_true (pixels (drawable) != before);
+      g_assert_true (gimp_painter_session_finish (session, nullptr));
+      g_object_set (options, "radius-logarithmic", 2., nullptr);
+      g_assert_null (gimp_painter_session_dup_error (session));
+      g_object_run_dispose (G_OBJECT (session));
+      g_object_run_dispose (G_OBJECT (session));
+      if (!release_caller)
+        {
+          g_assert_true (weak_options == options);
+          g_assert_false (g_signal_has_handler_pending (options, settings_signal, 0, TRUE));
+          g_object_set (options, "radius-logarithmic", 2.5, nullptr);
+          g_object_unref (options);
+        }
+      g_assert_null (weak_options);
+      g_object_unref (session); g_object_unref (image);
+    }
 }
 static void setting_splits_and_blocks()
 {
@@ -147,6 +235,8 @@ int main(int argc,char**argv)
 {
   g_test_init(&argc,&argv,nullptr);gimp_test_utils_set_gimp3_directory("GIMP_TESTING_ABS_TOP_SRCDIR","app/tests/gimpdir");gimp=gimp_init_for_testing();
   g_test_add_func("/painter-session/controller-pixels",exact_controller_pixels);
+  g_test_add_func("/painter-session/registered-native-paint-core",registered_native_paint_core);
+  g_test_add_func("/painter-session/options-first-stroke-ownership",options_first_stroke_ownership);
   g_test_add_func("/painter-session/settings-split-block",setting_splits_and_blocks);
   g_test_add_func("/painter-session/close-start",close_during_native_start);
   g_test_add_func("/painter-session/settings-during-motion",options_change_during_motion);

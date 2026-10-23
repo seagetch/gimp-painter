@@ -1,0 +1,90 @@
+{
+  "task": "08.006",
+  "child": "08.006/core-options-init",
+  "parent": "431bcdd78fc4a345c8a3aac87353ea8d51d8bb0b",
+  "source_duties": [
+    {
+      "work_id": "legacy-c50abbc859ee647c9515",
+      "source_kind": "hunk",
+      "source_id": "01.002/000936",
+      "path": "app/paint/gimpmypaintcore.cpp",
+      "source_blob": "0677f863605baf22755075cc13d535361a50af28",
+      "source_range": "-0,0 -> 1,471",
+      "source_sha256": "c86ba30bd29107fc2cb1f4530b9816f62fd3f67b4af0ea721e8b0ac8f62f998c",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "08.006",
+      "action": "MyPaint paint core 型を移植する",
+      "acceptance": "現行 GimpPaintCore に登録できる",
+      "source_copy": "migration/tests/mybrush-core-type/legacy-source/gimpmypaintcore.cpp",
+      "source_copy_sha256": "56cd5b1f0d0a951f6d1e3e843677edc3914a8f330f6e6ec721988b0b0a6a3835",
+      "legacy_role": "Plain C++ GimpMypaintCore owns Surface/Brush/Stroke and receives native drawable/options input; it is not a GObject subclass",
+      "current_contract": "Native GimpPainterPaintGate directly derives GimpPaintCore and is registered with GimpPaintInfo plus Painter options; supported generic operations invoke owned GimpPainterSession and MyPaint::PaintCore; interactive tool keeps persistent Session"
+    },
+    {
+      "work_id": "legacy-6913db9336e6cb305b48",
+      "source_kind": "hunk",
+      "source_id": "01.002/000936",
+      "path": "app/paint/gimpmypaintcore.cpp",
+      "source_blob": "0677f863605baf22755075cc13d535361a50af28",
+      "source_range": "-0,0 -> 1,471",
+      "source_sha256": "c86ba30bd29107fc2cb1f4530b9816f62fd3f67b4af0ea721e8b0ac8f62f998c",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "08.006/core-options-init",
+      "action": "MyPaint core の options 借用参照を初期化する",
+      "acceptance": "初回 stroke_to の比較前に NULL 初期化し、signal 接続・切断と options 先行破棄を検証する",
+      "source_copy": "migration/tests/mybrush-core-type/legacy-source/gimpmypaintcore.cpp",
+      "source_copy_sha256": "56cd5b1f0d0a951f6d1e3e843677edc3914a8f330f6e6ec721988b0b0a6a3835",
+      "legacy_role": "The options raw member is omitted from constructor initialization, compared on first stroke and connected through a raw delegator",
+      "current_contract": "Default-null ObjectRef options retained as construct-only Session property before signals and initial refresh; close holds local options/core references while disconnecting, then cancels; callbacks use weak session plus generation"
+    },
+    {
+      "work_id": "legacy-c2d23a7cc8dd401f6015",
+      "source_kind": "hunk",
+      "source_id": "01.002/000938",
+      "path": "app/paint/gimpmypaintcore.hpp",
+      "source_blob": "fc73490665cdafeed00c3fda2d78a1d99734b24f",
+      "source_range": "-0,0 -> 1,67",
+      "source_sha256": "d6731c1efe55fac944d1c0396083cceeb2ce4bdcaee84ddb7b316325502f21ea",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "08.006",
+      "action": "MyPaint paint core 型を移植する",
+      "acceptance": "現行 GimpPaintCore に登録できる",
+      "source_copy": "migration/tests/mybrush-core-type/legacy-source/gimpmypaintcore.hpp",
+      "source_copy_sha256": "02beeb6377381ddc3f293891063c558b4a62790fc16ab6669325d51f6d30d64e",
+      "legacy_role": "Plain C++ GimpMypaintCore owns Surface/Brush/Stroke and receives native drawable/options input; it is not a GObject subclass",
+      "current_contract": "Native GimpPainterPaintGate directly derives GimpPaintCore and is registered with GimpPaintInfo plus Painter options; supported generic operations invoke owned GimpPainterSession and MyPaint::PaintCore; interactive tool keeps persistent Session"
+    },
+    {
+      "work_id": "legacy-d766428b979a9b70274c",
+      "source_kind": "hunk",
+      "source_id": "01.002/000938",
+      "path": "app/paint/gimpmypaintcore.hpp",
+      "source_blob": "fc73490665cdafeed00c3fda2d78a1d99734b24f",
+      "source_range": "-0,0 -> 1,67",
+      "source_sha256": "d6731c1efe55fac944d1c0396083cceeb2ce4bdcaee84ddb7b316325502f21ea",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "08.006/core-options-init",
+      "action": "MyPaint core の options 借用参照を初期化する",
+      "acceptance": "初回 stroke_to の比較前に NULL 初期化し、signal 接続・切断と options 先行破棄を検証する",
+      "source_copy": "migration/tests/mybrush-core-type/legacy-source/gimpmypaintcore.hpp",
+      "source_copy_sha256": "02beeb6377381ddc3f293891063c558b4a62790fc16ab6669325d51f6d30d64e",
+      "legacy_role": "The options raw member is omitted from constructor initialization, compared on first stroke and connected through a raw delegator",
+      "current_contract": "Default-null ObjectRef options retained as construct-only Session property before signals and initial refresh; close holds local options/core references while disconnecting, then cancels; callbacks use weak session plus generation"
+    }
+  ],
+  "source_duties_accepted": 4,
+  "routing_changes": 0,
+  "reports": [
+    {
+      "path": "migration/tests/mybrush-core-type/native.json",
+      "sha256": "86b9a0129312ace71b1534e870de3b82bac4d4cf56e7f735be4fce2006451215",
+      "passed_cases": 10,
+      "current_source_seals": 26
+    }
+  ],
+  "limits": "Registered native type and supported coordinate stroke/Undo exercised; low-level start remains intentionally refused. Path/boundary/physical-input/full renderer compatibility not newly accepted. No new sanitizer/platform execution."
+}

@@ -64,12 +64,14 @@ per-instance; old singleton equivalence across such instances is an open gate.
 
 ## Explicit generic stroking gate
 
-`GimpPainterPaintGate` supplies the correct PaintInfo/options association. Its
-generic start returns an explicit error until Stroke Path/PDB can share the
-existing extended session transaction. This prevents the registration fallback
-from silently using the ordinary paintbrush for extended settings. It owns no
-second C++ implementation. This is an unfinished feature, not generic-stroking
-acceptance.
+`GimpPainterPaintGate` supplies the native PaintInfo/options association. Direct
+low-level PaintCore start remains explicitly rejected before a transaction is
+allocated. The later [generic stroking implementation](mypaint-generic-stroking.md)
+connects public coordinate, path and boundary operations to an owned extended
+Session and its native paint transaction. The adapter has one common-store slot
+and does not create a second renderer. Interactive input continues using the
+tool's persistent Session. This distinction preserves the original tool suite's
+direct-start refusal assertion without describing generic stroking as missing.
 
 ## Verification
 
