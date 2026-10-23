@@ -1,0 +1,262 @@
+{
+  "task": "10.008",
+  "status": "PASS original criterion only",
+  "date_utc": "2026-10-20",
+  "scope": "Observed original legacy reader string representation, value/type and following-record alignment; not full XCF Open or procedure execution",
+  "source_commit": "afa43fae3e920210146abed514f136fd49f671b5",
+  "base_branch_commit": "4a83db492ffe90db2372866675d56a45b7355f3f",
+  "reference": {
+    "version": "GNU Image Manipulation Program version 2.8.23",
+    "installed_pristine_binary_sha256": "703f634807aa3b0011f030c484c083ca80d1c0b8a8cd445990c3c83af9a64592",
+    "observer_binary_sha256": "093786f8c3463685d77327307606c5a334e8d831feb0d4cedfba24894112a53b",
+    "build_command": "JOBS=2 tools/build_legacy_reference.sh DEPS BUILD GIMP BABL GEGL",
+    "babl_commit": "e92ced2c54250af1dddb58f76ff1678d74a30dcf",
+    "gegl_commit": "29254dcd875d271043aba57d0e6ebc48ec63c013",
+    "package_count": 560,
+    "package_lock_sha256": "553f4051b91626bc2f5470373fd3e8d67c8d61ec62103b2addcab7a16492129f"
+  },
+  "source": {
+    "original_source_sha256": {
+      "app/xcf/xcf-save.c": "4fa9155d28054d62baa5b7c77bd17e27fbea254df1f68c85c2ac4708de1653ce",
+      "app/xcf/xcf-load.c": "9a0aeebda8471f78237b67df7418f56f92790fb1a5ac0504eaf14c02ac6e3168",
+      "app/tests/test-xcf.c": "732615003c2a9d33be4d2b556f85e2a4953a907bae799258cf2b3d5e32c6e70b"
+    },
+    "observer_source_sha256": {
+      "app/xcf/xcf-save.c": "6e8797981b1571e52fcd58870c835ee53b033f39fc4dc099e9b7dda8c16accb4",
+      "app/xcf/xcf-load.c": "fa90dd16ef766682b33ee565e2bf777faa9a4d654c2a57a30b8bee55722734cf",
+      "app/tests/test-xcf.c": "255699f9eb98fa5c6cc88c3063acf2fb000be9bb6fcdcf43b5f3d67c77ae66c0"
+    },
+    "reader_writer_original_bytes_preserved_as_prefix": true,
+    "patch_sha256": "f846208c8806dc709fd1dbe2002df8b7f48bdd22685cf8cf666d1598bb095851",
+    "reference_adaptations": {
+      "gimp-autoconf72-quoting.patch": "4e6d5d1deedb98e9b4ef49ab248a928b1829f3125aad32b5d330c1a230461afe",
+      "gimp-backtrace-declaration.patch": "364e7bb754511655b6101786a4a114c6d4c9c61b3cea77da905ce98009976502",
+      "gimp-glib-atomic-qualifier.patch": "243a6ba3c8621e5dfba3f5cad6d76de14215d05a5af3441f25d72b7af077d55a",
+      "gimp-overlay-declaration.patch": "a8cb4e6ced128a7a778e91c7139a1fde21e8294aaa3bcf4b4cc10b93a3e3ab44",
+      "gimp-preset-type-deduction.patch": "1671b04f7014e4cd5d6dc2e754318cf8188dd62708f08553d8faa39fab7a39c2"
+    }
+  },
+  "runs": {
+    "first_exit": 0,
+    "repeat_exit": 0,
+    "checked_in_helper_replay": [
+      {
+        "name": "build-xcf",
+        "exit": 0
+      },
+      {
+        "name": "build-observer",
+        "exit": 0
+      },
+      {
+        "name": "capture",
+        "exit": 0
+      }
+    ]
+  },
+  "observed": [
+    {
+      "case": "ascii",
+      "positive": 0,
+      "ok": 0,
+      "argc": 5,
+      "cp": 40,
+      "ftell": 42,
+      "bytes": 42,
+      "arguments": [
+        {
+          "index": 0,
+          "type": "INVALID"
+        },
+        {
+          "index": 1,
+          "type": "INVALID"
+        },
+        {
+          "index": 2,
+          "type": "INVALID"
+        },
+        {
+          "index": 3,
+          "type": "INVALID"
+        },
+        {
+          "index": 4,
+          "type": "INVALID"
+        }
+      ]
+    },
+    {
+      "case": "ascii",
+      "positive": 1,
+      "ok": 1,
+      "argc": 2,
+      "cp": 42,
+      "ftell": 42,
+      "bytes": 42,
+      "arguments": [
+        {
+          "index": 0,
+          "type": "gchararray",
+          "value": "reader string"
+        },
+        {
+          "index": 1,
+          "type": "gint",
+          "value": 305419896
+        }
+      ]
+    },
+    {
+      "case": "empty",
+      "positive": 0,
+      "ok": 1,
+      "argc": 1,
+      "cp": 16,
+      "ftell": 16,
+      "bytes": 29,
+      "arguments": [
+        {
+          "index": 0,
+          "type": "INVALID"
+        }
+      ]
+    },
+    {
+      "case": "empty",
+      "positive": 1,
+      "ok": 1,
+      "argc": 2,
+      "cp": 29,
+      "ftell": 29,
+      "bytes": 29,
+      "arguments": [
+        {
+          "index": 0,
+          "type": "gchararray",
+          "value": ""
+        },
+        {
+          "index": 1,
+          "type": "gint",
+          "value": 305419896
+        }
+      ]
+    },
+    {
+      "case": "utf8",
+      "positive": 0,
+      "ok": 0,
+      "argc": 4,
+      "cp": 36,
+      "ftell": 38,
+      "bytes": 38,
+      "arguments": [
+        {
+          "index": 0,
+          "type": "INVALID"
+        },
+        {
+          "index": 1,
+          "type": "INVALID"
+        },
+        {
+          "index": 2,
+          "type": "INVALID"
+        },
+        {
+          "index": 3,
+          "type": "INVALID"
+        }
+      ]
+    },
+    {
+      "case": "utf8",
+      "positive": 1,
+      "ok": 1,
+      "argc": 2,
+      "cp": 38,
+      "ftell": 38,
+      "bytes": 38,
+      "arguments": [
+        {
+          "index": 0,
+          "type": "gchararray",
+          "value": "日本語"
+        },
+        {
+          "index": 1,
+          "type": "gint",
+          "value": 305419896
+        }
+      ]
+    },
+    {
+      "case": "null",
+      "positive": 0,
+      "ok": 1,
+      "argc": 2,
+      "cp": 28,
+      "ftell": 28,
+      "bytes": 28,
+      "arguments": [
+        {
+          "index": 0,
+          "type": "INVALID"
+        },
+        {
+          "index": 1,
+          "type": "gint",
+          "value": 305419896
+        }
+      ]
+    },
+    {
+      "case": "null",
+      "positive": 1,
+      "ok": 1,
+      "argc": 2,
+      "cp": 28,
+      "ftell": 28,
+      "bytes": 28,
+      "arguments": [
+        {
+          "index": 0,
+          "type": "gchararray",
+          "value": null
+        },
+        {
+          "index": 1,
+          "type": "gint",
+          "value": 305419896
+        }
+      ]
+    }
+  ],
+  "limits": [
+    "Tag8 fixtures are controlled single-tag mutations, never represented as genuine old-writer output.",
+    "Tag7 fixtures are actual original writer output, and none recovers a string in the old reader.",
+    "Direct static parser observation through appended wrappers; normal full-file Open, runner binding and modern migration integration remain separate.",
+    "Legacy parser leaks and existing build/dependency warnings are preserved, not claimed fixed.",
+    "GEGL simple suite known failure is retained in native build evidence.",
+    "First observer compile failed missing-prototype checks; explicit wrapper prototypes fixed it; original failure log retained.",
+    "No unrelated WBS completion or old Edge disposition change."
+  ],
+  "evidence_sha256": {
+    "capture-repeat.log": "5f0d65652dda47c028c315c82fa18186f7de889a0d77b873148975e0b90ada10",
+    "capture.log": "63c5948fd20e14329da403cf44cd235de13ba01948b49693b5b81d5ad1b157cc",
+    "capture.patch": "f846208c8806dc709fd1dbe2002df8b7f48bdd22685cf8cf666d1598bb095851",
+    "capture.py": "32b47ebe02d46264a529aac1016ca2d381b9dba57a4f5e097af397bc703c13b3",
+    "fixtures/ascii-controlled-tag8.bin": "88a4aa0638cace962f8112bff53507a8f79c72cc64207086654204ca7822d3cf",
+    "fixtures/ascii-writer-tag7.bin": "bfb6f9da1279648188ac0ba4706b7acb87a022beae14eb10895621eb87df919c",
+    "fixtures/empty-controlled-tag8.bin": "76860a84fcda04bdae6d624020113e24fe994d4c1c2e0d5a9060eb2c9f11d801",
+    "fixtures/empty-writer-tag7.bin": "fcee33f55df3f2eab787a34d59cc574b3875027fbbad23d6682033b622ad548d",
+    "fixtures/null-controlled-tag8.bin": "7e178400465066e8b22e5cadcf3ddd06e423ac8e7309ab933ca3bc8dd68b2550",
+    "fixtures/null-writer-tag7.bin": "86a9c48f510791c7798f19290e25157d1366660b82504fb98e9e29ab9206756a",
+    "fixtures/utf8-controlled-tag8.bin": "bacee6d8f0d52a9fb5cee662e2c3783e7ec0017405da1cdda77503feb8171aec",
+    "fixtures/utf8-writer-tag7.bin": "07f99d4692b3094ab31946f6a724c32f4a0afd2d0bc03e42f1c406ab28432054",
+    "native-build-evidence.tar.xz": "712662b248fccd4e48978bee343213d7b2cf5c954f7e4b1d1417643513618b62",
+    "replay-manifest.json": "1bcfa51cb7d87c9f1c5d74a9712acbda5f878024898abe62e97f4cbfb62e42e9",
+    "test_evidence.py": "aee461646b9dbfddac5b1252272bd9023835a5b07ff852bcebabe3c1a8a9bb64"
+  }
+}

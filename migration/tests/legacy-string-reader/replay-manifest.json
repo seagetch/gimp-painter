@@ -1,0 +1,49 @@
+{
+  "source_commit": "afa43fae3e920210146abed514f136fd49f671b5",
+  "original_source_sha256": {
+    "app/xcf/xcf-save.c": "4fa9155d28054d62baa5b7c77bd17e27fbea254df1f68c85c2ac4708de1653ce",
+    "app/xcf/xcf-load.c": "9a0aeebda8471f78237b67df7418f56f92790fb1a5ac0504eaf14c02ac6e3168",
+    "app/tests/test-xcf.c": "732615003c2a9d33be4d2b556f85e2a4953a907bae799258cf2b3d5e32c6e70b"
+  },
+  "observer_source_sha256": {
+    "app/xcf/xcf-save.c": "6e8797981b1571e52fcd58870c835ee53b033f39fc4dc099e9b7dda8c16accb4",
+    "app/xcf/xcf-load.c": "fa90dd16ef766682b33ee565e2bf777faa9a4d654c2a57a30b8bee55722734cf",
+    "app/tests/test-xcf.c": "255699f9eb98fa5c6cc88c3063acf2fb000be9bb6fcdcf43b5f3d67c77ae66c0"
+  },
+  "patch_sha256": "f846208c8806dc709fd1dbe2002df8b7f48bdd22685cf8cf666d1598bb095851",
+  "installed_pristine_binary_sha256": "703f634807aa3b0011f030c484c083ca80d1c0b8a8cd445990c3c83af9a64592",
+  "observer_binary_sha256": "093786f8c3463685d77327307606c5a334e8d831feb0d4cedfba24894112a53b",
+  "runs": [
+    {
+      "name": "build-xcf",
+      "exit": 0
+    },
+    {
+      "name": "build-observer",
+      "exit": 0
+    },
+    {
+      "name": "capture",
+      "exit": 0
+    }
+  ],
+  "files": {
+    "build-observer.command": "0b177a0876e94236bc1668d06da2c9f34806e950dd7316440f59b6395573c7b2",
+    "build-observer.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "build-observer.log": "2ce32a6ff3142210c990f9888291bf3b12875613208f4267d32617bce012af87",
+    "build-xcf.command": "9eaea2a65ef66fcc007b6498c113cabdca10b7d01e115f115c46be29aeeecd01",
+    "build-xcf.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "build-xcf.log": "9ecfafc8455f036d77e9177d1488cdd1d87bea89403bd95011e79a834ad2ed2e",
+    "capture.command": "2f04f44f528b1ffddab422230bc9c15c7d21fa14df6e7b9a8c4b671ef6f86a4b",
+    "capture.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "capture.log": "9db5f918ad894f47e52b46b8ca80e58f55b1e673db61513526f394ccab858f37",
+    "fixtures/ascii-controlled-tag8.bin": "88a4aa0638cace962f8112bff53507a8f79c72cc64207086654204ca7822d3cf",
+    "fixtures/ascii-writer-tag7.bin": "bfb6f9da1279648188ac0ba4706b7acb87a022beae14eb10895621eb87df919c",
+    "fixtures/empty-controlled-tag8.bin": "76860a84fcda04bdae6d624020113e24fe994d4c1c2e0d5a9060eb2c9f11d801",
+    "fixtures/empty-writer-tag7.bin": "fcee33f55df3f2eab787a34d59cc574b3875027fbbad23d6682033b622ad548d",
+    "fixtures/null-controlled-tag8.bin": "7e178400465066e8b22e5cadcf3ddd06e423ac8e7309ab933ca3bc8dd68b2550",
+    "fixtures/null-writer-tag7.bin": "86a9c48f510791c7798f19290e25157d1366660b82504fb98e9e29ab9206756a",
+    "fixtures/utf8-controlled-tag8.bin": "bacee6d8f0d52a9fb5cee662e2c3783e7ec0017405da1cdda77503feb8171aec",
+    "fixtures/utf8-writer-tag7.bin": "07f99d4692b3094ab31946f6a724c32f4a0afd2d0bc03e42f1c406ab28432054"
+  }
+}

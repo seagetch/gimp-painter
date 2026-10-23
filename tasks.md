@@ -474,7 +474,7 @@
 | 10.005/native-paint-mode-route | [x] | Painter modeをPaintCore直接dispatchと旧opacity演算へ接続する | 10.005/normal-multiply-parity | 未prepare graph境界による無描画を修正しeffective opacity/255.999を使用。216直接caseと72実旧projectionが通常/3unit focused sanitizer合格。Fill実stroke統合は別gate |
 | 10.006 | [x] | FilterLayer 引数の wire 型を列挙する | 10.005 | 整数・浮動小数点・文字列・参照・未対応型を区別 |
 | 10.007 | [x] | INT16 の writer/reader 不整合を確定する | 10.006 | サイズ宣言と実書込みの両方を fixture 化 |
-| 10.008 | [ ] | 文字列型の不整合を確定する | 10.007 | 実際に旧 reader が読める表現を記録 |
+| 10.008 | [x] | 文字列型の不整合を確定する | 10.007 | 実際に旧 reader が読める表現を記録 |
 | 10.009 | [ ] | 旧配列・drawable 引数の可読範囲を確定する | 10.008 | 記録されない情報と回収可能情報を区別 |
 | 10.010 | [ ] | CloneLayer 名前解決規則を確定する | 10.009 | 探索順・同名・階層・未解決の期待値を記録 |
 | 10.011 | [ ] | 新保存拡張の識別子と版を定義する | 10.010 | 標準属性番号と衝突しない表現を選択 |
