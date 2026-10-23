@@ -1,0 +1,14 @@
+{
+  "task": "14.003/gegl-source-node",
+  "scope": "primary selected model-only probe; no clean whole-HEAD or sanitizer claim",
+  "test": "/gimp-clone-layer/clone_projection_roi_offset_detach",
+  "image_projection_pixel_assertions": 7,
+  "source_sha256": {
+    "app/tests/test-gimp-clone-layer.c": "8fc23243f3352f6f33b06dbef131edbfa5ba9dc88948d52022499e8a3684e7c5",
+    "app/tests/test-painter-clone-projection-contract.inc": "2e667af883fd0fe7520df28c2f6a1a3a6d9df951df3e503db5226b3386851194",
+    "app/core/gimpclonelayer.cpp": "22adedddcaeb6d70f4bf37e94cf92f3dbe4d1b84c7183097d3c24e49d02b081e",
+    "app/core/gimpitem.c": "e8c047589f9aa8b201d12b72678e528082034126d0becadd5b5a4180172c924e",
+    "app/core/gimpgrouplayer.c": "147296ee6102a46601c826ea9dedda513f07df8bc72e5aa8ddfcf833c41dd0c5"
+  },
+  "sanitizer": "not run; clean build queued"
+}
