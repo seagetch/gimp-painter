@@ -50,3 +50,12 @@ if not meson.is_cross_build()
   test('painter-mypaint-native-precision', painter_native_precision,
     suite: 'painter', timeout: 60)
 endif
+
+# Half-open GEGL domains on representative legacy-byte and native-double paths.
+painter_coordinate_boundaries = executable('painter-mypaint-coordinate-boundaries',
+  'tests/coordinate-boundaries.cpp', dependencies: painter_mypaint_surface_dep,
+  cpp_args: painter_cpp_args, override_options: ['cpp_std=c++14'])
+if not meson.is_cross_build()
+  test('painter-mypaint-coordinate-boundaries', painter_coordinate_boundaries,
+    suite: 'painter', timeout: 60)
+endif
