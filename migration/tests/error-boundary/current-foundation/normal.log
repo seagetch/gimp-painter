@@ -1,0 +1,105 @@
+TAP version 14
+# random seed: R02S85aebc1f9ada5036a4300e981b2e46a3
+1..71
+# Start of painter tests
+# Start of interop tests
+ok 1 /painter/interop/c-cpp-c-value
+ok 2 /painter/interop/cpp-error-to-c
+ok 3 /painter/interop/cpp-error-without-gerror
+ok 4 /painter/interop/result-boundary-policy
+ok 5 /painter/interop/void-boundary-policy
+ok 6 /painter/interop/construction-failure
+# End of interop tests
+# Start of resources tests
+ok 7 /painter/resources/value-assignment
+ok 8 /painter/resources/value-owned-borrow-copy
+ok 9 /painter/resources/array-assignment
+ok 10 /painter/resources/array-owned-ref-release
+ok 11 /painter/resources/glib-string-owner
+ok 12 /painter/resources/error-message-transfer
+ok 13 /painter/resources/mutex-exception
+# End of resources tests
+# Start of signal tests
+ok 14 /painter/signal/lifetime-blocks
+ok 15 /painter/signal/owned-lifetime
+ok 16 /painter/signal/transient-name-lifetime
+ok 17 /painter/signal/after-order
+ok 18 /painter/signal/block-phase-order
+ok 19 /painter/signal/reentrant-disconnect
+ok 20 /painter/signal/close-receiver-lifetime
+# End of signal tests
+# Start of source tests
+ok 21 /painter/source/cancel-repeat
+ok 22 /painter/source/owned-lifetime
+ok 23 /painter/source/self-close
+ok 24 /painter/source/exception
+ok 25 /painter/source/queued-callback-invalidation
+# End of source tests
+# Start of gobject tests
+# fixture event 1: construct
+# fixture event 2: construct-property
+# fixture event 3: activate
+# fixture event 4: get
+# fixture event 5: set
+# fixture event 6: get
+# fixture event 7: close
+# fixture event 8: get
+# fixture event 9: destroy
+ok 26 /painter/gobject/property-dispose-finalize
+ok 27 /painter/gobject/construction-property-callbacks
+ok 28 /painter/gobject/type-rejection
+ok 29 /painter/gobject/property-types-defaults-notify
+ok 30 /painter/gobject/property-notify-reentry
+# End of gobject tests
+# Start of reentry tests
+ok 31 /painter/reentry/ref-move
+ok 32 /painter/reentry/value-reset-move
+ok 33 /painter/reentry/array-move
+ok 34 /painter/reentry/source-move
+ok 35 /painter/reentry/connection-move
+ok 36 /painter/reentry/receiver-deletion
+ok 37 /painter/reentry/constructor-close
+ok 38 /painter/reentry/constructor-duplicate
+ok 39 /painter/reentry/constructor-owner-loss
+ok 40 /painter/reentry/finalizing-close-read
+# End of reentry tests
+# Start of hierarchy tests
+ok 41 /painter/hierarchy/properties-interface
+ok 42 /painter/hierarchy/interface-exception
+ok 43 /painter/hierarchy/interface-exception-policy
+ok 44 /painter/hierarchy/slot-identity
+ok 45 /painter/hierarchy/base-missing-derived
+ok 46 /painter/hierarchy/native-property-owner-dispatch
+ok 47 /painter/hierarchy/inherited-property-delegation
+ok 48 /painter/hierarchy/parent-dispose-reentry
+ok 49 /painter/hierarchy/shutdown-paths
+ok 50 /painter/hierarchy/type-ancestry
+# End of hierarchy tests
+# Start of ref tests
+ok 51 /painter/ref/copy-move-adopt-retain
+ok 52 /painter/ref/retain-factory
+ok 53 /painter/ref/adopt-factory
+ok 54 /painter/ref/sink-factory
+ok 55 /painter/ref/copy-move-contract
+ok 56 /painter/ref/floating-sink
+ok 57 /painter/ref/weak
+# End of ref tests
+# Start of store tests
+ok 58 /painter/store/lifecycle
+ok 59 /painter/store/registration
+ok 60 /painter/store/multiple-slots
+ok 61 /painter/store/slot-registration
+ok 62 /painter/store/slot-lookup
+ok 63 /painter/store/implementation-ownership
+ok 64 /painter/store/close-transitions
+ok 65 /painter/store/reentrant-close
+ok 66 /painter/store/call-leases
+ok 67 /painter/store/construction-failure
+ok 68 /painter/store/acquired-construction-failure
+ok 69 /painter/store/thread-rejection
+# End of store tests
+# Start of boundary tests
+ok 70 /painter/boundary/c-close
+ok 71 /painter/boundary/exception
+# End of boundary tests
+# End of painter tests
