@@ -1,0 +1,297 @@
+{
+  "schema_version": 1,
+  "base_commit": "bb991ef172c39042d9897aaf57618a1911b8a8c3",
+  "scope": "Native GUI coverage via authenticated loopback Xvfb; not sanitizer or installed-prefix acceptance",
+  "transport": {
+    "method": "systemd socket activation, inherited fd 3",
+    "listen_address": "127.0.0.1 only",
+    "automatic_transports_disabled": [
+      "tcp",
+      "unix",
+      "local"
+    ],
+    "authenticated_client": "PASS",
+    "unauthenticated_client": "REJECTED",
+    "temporary_credentials": "removed after each run",
+    "server_cleanup": "all exited 0"
+  },
+  "latest_results": {
+    "registrations_run": 16,
+    "result_counts": {
+      "OK": 16
+    },
+    "records": [
+      {
+        "name": "gimp:app / painter-fill-brush-ui",
+        "result": "OK",
+        "duration": 6.887938976287842,
+        "returncode": 0,
+        "command": [
+          "/workspace/scratch/5b5281e79681/standard-source-20261011/build-native/app/tests/painter-fill-brush-ui"
+        ],
+        "tap_plan": 32,
+        "tap_ok": 32,
+        "tap_individual_skips": 0,
+        "tap_not_ok": [],
+        "failures": [],
+        "evidence_run": "gui-isolated"
+      },
+      {
+        "name": "gimp:app / painter-layer-ui",
+        "result": "OK",
+        "duration": 83.69223284721375,
+        "returncode": 0,
+        "command": [
+          "/workspace/scratch/5b5281e79681/standard-source-20261011/build-native/app/tests/painter-layer-ui"
+        ],
+        "tap_plan": 63,
+        "tap_ok": 63,
+        "tap_individual_skips": 0,
+        "tap_not_ok": [],
+        "failures": [],
+        "evidence_run": "gui-focused"
+      },
+      {
+        "name": "gimp:app / painter-canvas-ui",
+        "result": "OK",
+        "duration": 6.6380627155303955,
+        "returncode": 0,
+        "command": [
+          "/workspace/scratch/5b5281e79681/standard-source-20261011/build-native/app/tests/painter-canvas-ui"
+        ],
+        "tap_plan": 19,
+        "tap_ok": 19,
+        "tap_individual_skips": 0,
+        "tap_not_ok": [],
+        "failures": [],
+        "evidence_run": "gui-isolated"
+      },
+      {
+        "name": "gimp:app / painter-compact-options",
+        "result": "OK",
+        "duration": 5.283964157104492,
+        "returncode": 0,
+        "command": [
+          "/workspace/scratch/5b5281e79681/standard-source-20261011/build-native/app/tests/painter-compact-options"
+        ],
+        "tap_plan": 10,
+        "tap_ok": 10,
+        "tap_individual_skips": 0,
+        "tap_not_ok": [],
+        "failures": [],
+        "evidence_run": "gui-isolated"
+      },
+      {
+        "name": "gimp:app / painter-navigation-ui",
+        "result": "OK",
+        "duration": 0.04287362098693848,
+        "returncode": 0,
+        "command": [
+          "/workspace/scratch/5b5281e79681/standard-source-20261011/build-native/app/tests/painter-navigation-ui"
+        ],
+        "tap_plan": 4,
+        "tap_ok": 4,
+        "tap_individual_skips": 0,
+        "tap_not_ok": [],
+        "failures": [],
+        "evidence_run": "gui-isolated"
+      },
+      {
+        "name": "gimp:app / painter-navigation-events",
+        "result": "OK",
+        "duration": 1.9308485984802246,
+        "returncode": 0,
+        "command": [
+          "/workspace/scratch/5b5281e79681/standard-source-20261011/build-native/app/tests/painter-navigation-events"
+        ],
+        "tap_plan": 4,
+        "tap_ok": 4,
+        "tap_individual_skips": 0,
+        "tap_not_ok": [],
+        "failures": [],
+        "evidence_run": "gui-isolated"
+      },
+      {
+        "name": "gimp:app / device-dialog-events",
+        "result": "OK",
+        "duration": 1.8313603401184082,
+        "returncode": 0,
+        "command": [
+          "/workspace/scratch/5b5281e79681/standard-source-20261011/build-native/app/tests/device-dialog-events"
+        ],
+        "tap_plan": 1,
+        "tap_ok": 1,
+        "tap_individual_skips": 0,
+        "tap_not_ok": [],
+        "failures": [],
+        "evidence_run": "gui-isolated"
+      },
+      {
+        "name": "gimp:app / painter-perspective-ui",
+        "result": "OK",
+        "duration": 2.814789295196533,
+        "returncode": 0,
+        "command": [
+          "/workspace/scratch/5b5281e79681/standard-source-20261011/build-native/app/tests/painter-perspective-ui"
+        ],
+        "tap_plan": 21,
+        "tap_ok": 21,
+        "tap_individual_skips": 0,
+        "tap_not_ok": [],
+        "failures": [],
+        "evidence_run": "gui-isolated"
+      },
+      {
+        "name": "gimp:app / painter-perspective-events",
+        "result": "OK",
+        "duration": 2.1773500442504883,
+        "returncode": 0,
+        "command": [
+          "/workspace/scratch/5b5281e79681/standard-source-20261011/build-native/app/tests/painter-perspective-events"
+        ],
+        "tap_plan": 9,
+        "tap_ok": 9,
+        "tap_individual_skips": 0,
+        "tap_not_ok": [],
+        "failures": [],
+        "evidence_run": "gui-isolated"
+      },
+      {
+        "name": "gimp:app / layer-presets-ui",
+        "result": "OK",
+        "duration": 7.444624662399292,
+        "returncode": 0,
+        "command": [
+          "/workspace/scratch/5b5281e79681/standard-source-20261011/build-native/app/tests/layer-presets-ui"
+        ],
+        "tap_plan": 4,
+        "tap_ok": 4,
+        "tap_individual_skips": 0,
+        "tap_not_ok": [],
+        "failures": [],
+        "evidence_run": "gui-isolated"
+      },
+      {
+        "name": "gimp:app / painter-mypaint-tool",
+        "result": "OK",
+        "duration": 38.13733792304993,
+        "returncode": 0,
+        "command": [
+          "/workspace/scratch/5b5281e79681/standard-source-20261011/build-native/app/tests/painter-mypaint-tool"
+        ],
+        "tap_plan": 17,
+        "tap_ok": 17,
+        "tap_individual_skips": 0,
+        "tap_not_ok": [],
+        "failures": [],
+        "evidence_run": "gui-isolated"
+      },
+      {
+        "name": "gimp:app / painter-mypaint-editor",
+        "result": "OK",
+        "duration": 11.919930696487427,
+        "returncode": 0,
+        "command": [
+          "/workspace/scratch/5b5281e79681/standard-source-20261011/build-native/app/tests/painter-mypaint-editor"
+        ],
+        "tap_plan": 13,
+        "tap_ok": 13,
+        "tap_individual_skips": 0,
+        "tap_not_ok": [],
+        "failures": [],
+        "evidence_run": "gui-isolated"
+      },
+      {
+        "name": "gimp:app / painter-smudge-ui",
+        "result": "OK",
+        "duration": 4.411025762557983,
+        "returncode": 0,
+        "command": [
+          "/workspace/scratch/5b5281e79681/standard-source-20261011/build-native/app/tests/painter-smudge-ui"
+        ],
+        "tap_plan": 26,
+        "tap_ok": 26,
+        "tap_individual_skips": 0,
+        "tap_not_ok": [],
+        "failures": [],
+        "evidence_run": "gui-isolated"
+      },
+      {
+        "name": "gimp:app / painter-save-continuation",
+        "result": "OK",
+        "duration": 5.273820400238037,
+        "returncode": 0,
+        "command": [
+          "/workspace/scratch/5b5281e79681/standard-source-20261011/build-native/app/tests/painter-save-continuation"
+        ],
+        "tap_plan": 13,
+        "tap_ok": 13,
+        "tap_individual_skips": 0,
+        "tap_not_ok": [],
+        "failures": [],
+        "evidence_run": "gui-save-memory"
+      },
+      {
+        "name": "gimp:painter / painter-profile-native",
+        "result": "OK",
+        "duration": 1.5219686031341553,
+        "returncode": 0,
+        "command": [
+          "/workspace/scratch/5b5281e79681/standard-source-20261011/build-native/app/tests/painter-profile-native"
+        ],
+        "tap_plan": 9,
+        "tap_ok": 9,
+        "tap_individual_skips": 0,
+        "tap_not_ok": [],
+        "failures": [],
+        "evidence_run": "gui-focused"
+      },
+      {
+        "name": "gimp:painter / painter-paper-ui",
+        "result": "OK",
+        "duration": 2.4480888843536377,
+        "returncode": 0,
+        "command": [
+          "/workspace/scratch/5b5281e79681/standard-source-20261011/build-native/app/tests/painter-paper-ui"
+        ],
+        "tap_plan": 7,
+        "tap_ok": 7,
+        "tap_individual_skips": 0,
+        "tap_not_ok": [],
+        "failures": [],
+        "evidence_run": "gui-isolated"
+      }
+    ],
+    "note": "Retains original failed and timed-out attempts separately; focused results use documented fixture overrides and a larger Layer time budget."
+  },
+  "tap_cases": 252,
+  "qualifications": {
+    "layer": "Default 60-second run timed out; timeout multiplier 3 passed 63 cases in 83.69 seconds",
+    "profile": "GIMP3_DATADIR points to real build-generated assets; not an installed-prefix first-run smoke",
+    "save": "GSETTINGS_BACKEND=memory; no persistent dconf integration coverage"
+  },
+  "earlier_attempts": {
+    "gui-run": {
+      "FAIL": 15,
+      "OK": 1
+    },
+    "gui-isolated": {
+      "OK": 13,
+      "TIMEOUT": 1,
+      "FAIL": 2
+    },
+    "gui-focused": {
+      "OK": 2
+    },
+    "gui-save-memory": {
+      "OK": 1
+    }
+  },
+  "sanitizer_status": "Separate known signed-overflow failure in gimpbrush-transform.cc remains unfixed; not rerun or relabeled as passing",
+  "wbs": {
+    "task": "08.012",
+    "state": "DOING",
+    "completed_original_tasks": 135,
+    "total_original_tasks": 661
+  }
+}

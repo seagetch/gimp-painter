@@ -1,0 +1,70 @@
+# Extracted TAP protocol lines; complete original stdout/stderr retained in checkpoint archive
+# Evidence run: gui-focused
+TAP version 14
+# random seed: R02S1cf35bb62c93d9a0af3026d95e563883
+1..63
+# Start of painter-layer-ui tests
+ok 1 /painter-layer-ui/filter_progress_widgets
+ok 2 /painter-layer-ui/filter_progress_running_cancel
+ok 3 /painter-layer-ui/filter_progress_render_reentry
+ok 4 /painter-layer-ui/clone_creation_source_reentry
+ok 5 /painter-layer-ui/clone_creation_and_parent
+ok 6 /painter-layer-ui/clone_edit_cancel_undo_live
+ok 7 /painter-layer-ui/clone_deleted_source_and_cycle
+ok 8 /painter-layer-ui/filter_create_cancel_and_validate
+ok 9 /painter-layer-ui/filter_preserve_unknown_and_undo
+ok 10 /painter-layer-ui/filter_preserve_float_shape
+ok 11 /painter-layer-ui/dialog_lifetimes
+ok 12 /painter-layer-ui/action_enablement
+ok 13 /painter-layer-ui/retained_child_widgets
+ok 14 /painter-layer-ui/detached_child_widgets
+ok 15 /painter-layer-ui/clone_response_close_reentry
+ok 16 /painter-layer-ui/filter_response_close_reentry
+ok 17 /painter-layer-ui/filter_creation_close_reentry
+ok 18 /painter-layer-ui/filter_gaussian_alias_forms
+ok 19 /painter-layer-ui/filter_point_creation_and_edit
+ok 20 /painter-layer-ui/filter_choice_reentry_preserves_latest
+ok 21 /painter-layer-ui/clone_refresh_close_reentry
+ok 22 /painter-layer-ui/filter_non_utf8_preview
+ok 23 /painter-layer-ui/dialog_binding_close
+ok 24 /painter-layer-ui/filter_choice_last_owner_reentry
+ok 25 /painter-layer-ui/filter_status_last_owner_reentry
+ok 26 /painter-layer-ui/dialog_destroy_last_owner_reentry
+ok 27 /painter-layer-ui/dialog_factory_reentry
+ok 28 /painter-layer-ui/isolated_editor_create_reedit
+ok 29 /painter-layer-ui/isolated_editor_preserve_and_undo
+ok 30 /painter-layer-ui/isolated_editor_stale_definition
+ok 31 /painter-layer-ui/isolated_editor_saved_enums
+ok 32 /painter-layer-ui/isolated_editor_every_field
+ok 33 /painter-layer-ui/isolated_editor_invalid_input
+ok 34 /painter-layer-ui/isolated_editor_precision_ranges
+ok 35 /painter-layer-ui/isolated_editor_unknown_shapes
+ok 36 /painter-layer-ui/isolated_editor_lifetimes
+ok 37 /painter-layer-ui/isolated_editor_reentry
+ok 38 /painter-layer-ui/isolated_editor_running_cache
+ok 39 /painter-layer-ui/isolated_editor_save_reopen
+ok 40 /painter-layer-ui/filter_schema_registry_invalidation
+ok 41 /painter-layer-ui/filter_schema_unavailable_creation
+ok 42 /painter-layer-ui/filter_schema_incompatible_metadata
+ok 43 /painter-layer-ui/filter_schema_provider_identity
+ok 44 /painter-layer-ui/filter_schema_reordered_keys
+ok 45 /painter-layer-ui/filter_schema_bounded_preview
+ok 46 /painter-layer-ui/filter_schema_materialization_budget
+ok 47 /painter-layer-ui/filter_schema_untouched_nonfinite
+ok 48 /painter-layer-ui/filter_schema_blinds_context_types
+ok 49 /painter-layer-ui/filter_schema_reference_tail_provenance
+ok 50 /painter-layer-ui/filter_schema_metadata_snapshot
+ok 51 /painter-layer-ui/filter_schema_manager_lifetime
+ok 52 /painter-layer-ui/filter_schema_argument_patch
+ok 53 /painter-layer-ui/filter_schema_undo_provider_reentry
+ok 54 /painter-layer-ui/filter_schema_persistence_routes
+ok 55 /painter-layer-ui/filter_schema_persistence_special_bits
+ok 56 /painter-layer-ui/filter_schema_persistence_large_tails
+ok 57 /painter-layer-ui/filter_schema_persistence_reference_identity
+ok 58 /painter-layer-ui/filter_schema_persistence_failures
+ok 59 /painter-layer-ui/filter_schema_persistence_nested_null
+ok 60 /painter-layer-ui/filter_schema_persistence_unknown_opaque
+ok 61 /painter-layer-ui/filter_schema_persistence_active_save
+ok 62 /painter-layer-ui/filter_schema_persistence_reference_lease
+ok 63 /painter-layer-ui/filter_schema_persistence_double_cache
+# End of painter-layer-ui tests
