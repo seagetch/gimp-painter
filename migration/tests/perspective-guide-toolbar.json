@@ -1,0 +1,127 @@
+{
+  "format": 1,
+  "status": "passed",
+  "scope": "Bounded Perspective Guide legacy empty horizontal factory",
+  "source_base": "74540cef1632cc10e551df29416e2fa013694265",
+  "legacy_pin": "afa43fae3e920210146abed514f136fd49f671b5",
+  "tested_sources": {
+    "app/tools/gimp-tools.c": "3818f3711edadfdfbf5a10a8cf21bb6b68c417fa1161f87f0cd5a5913a2a8b3f",
+    "app/tests/test-painter-independent-toolbar.inc": "03df2c0e90c92d69d5c05bec6bea060642d6e5f18bbb9d7f923a31039b5c3e30",
+    "app/tests/test-painter-compact-options.c": "24e518c2b610c1d9aec2990a1000c80dd009032a98018444baec5410226f455d"
+  },
+  "tests": [
+    {
+      "name": "gimp:app / painter-compact-options",
+      "result": "OK",
+      "duration": 5.449744462966919,
+      "returncode": 0,
+      "group": "focused",
+      "tap_cases": 3,
+      "skips": [],
+      "unexpected_diagnostics": [],
+      "expected_diagnostics": [],
+      "stdout_sha256": "50b7493b6e46bbd1ae25c58c1bc7749185e1b7b76607af7f28206ddce4a61a5b",
+      "stderr_sha256": "87c5dfa76f2213f9aec30a763881296817807518fea10cdd159051fc4b0f3087"
+    },
+    {
+      "name": "gimp:app / painter-canvas-ui",
+      "result": "OK",
+      "duration": 25.7283992767334,
+      "returncode": 0,
+      "group": "full",
+      "tap_cases": 99,
+      "skips": [],
+      "unexpected_diagnostics": [],
+      "expected_diagnostics": [],
+      "stdout_sha256": "f4aa12ee6696d61389055e49d669c4ecb6931ce9111b0df163bdfbe718008442",
+      "stderr_sha256": "87c5dfa76f2213f9aec30a763881296817807518fea10cdd159051fc4b0f3087"
+    },
+    {
+      "name": "gimp:app / painter-compact-options",
+      "result": "OK",
+      "duration": 106.44574689865112,
+      "returncode": 0,
+      "group": "full",
+      "tap_cases": 60,
+      "skips": [],
+      "unexpected_diagnostics": [],
+      "expected_diagnostics": [
+        "GIMP-Warning: There are no selected layers or channels to fill.",
+        "GIMP-Warning: There are no selected layers or channels to stroke to.",
+        "GIMP-Warning: A selected layer's pixels are locked.",
+        "GIMP-Warning: A selected layer's pixels are locked."
+      ],
+      "stdout_sha256": "dd79216f686fbc42f87dc64505aaa723fc163cd9eb639d49f5c823fc96ec84b2",
+      "stderr_sha256": "6d1e321e950ca4056a38764f81adf0540be16c7da72e0b1612c9346f6f89af65"
+    },
+    {
+      "name": "gimp:app / painter-perspective-ui",
+      "result": "OK",
+      "duration": 3.4459645748138428,
+      "returncode": 0,
+      "group": "full",
+      "tap_cases": 22,
+      "skips": [],
+      "unexpected_diagnostics": [],
+      "expected_diagnostics": [],
+      "stdout_sha256": "9136608fd57129efb4351e9b7001a65b954eaefcf58c81c32eafed60cb8e7d91",
+      "stderr_sha256": "87c5dfa76f2213f9aec30a763881296817807518fea10cdd159051fc4b0f3087"
+    },
+    {
+      "name": "gimp:app / painter-perspective-events",
+      "result": "OK",
+      "duration": 2.6154673099517822,
+      "returncode": 0,
+      "group": "full",
+      "tap_cases": 9,
+      "skips": [],
+      "unexpected_diagnostics": [],
+      "expected_diagnostics": [],
+      "stdout_sha256": "a56cd2ec60ec99967d7d19d0fa83ea44d393b0e6880da53f88022ac467e5b653",
+      "stderr_sha256": "87c5dfa76f2213f9aec30a763881296817807518fea10cdd159051fc4b0f3087"
+    },
+    {
+      "name": "gimp:app / painter-compact-options",
+      "result": "OK",
+      "duration": 4.2540130615234375,
+      "returncode": 0,
+      "group": "hidpi",
+      "tap_cases": 2,
+      "skips": [],
+      "unexpected_diagnostics": [],
+      "expected_diagnostics": [],
+      "stdout_sha256": "59dae89f35bf81e713082ee04208ac429cce90c2976739404d9b6bd50705a601",
+      "stderr_sha256": "87c5dfa76f2213f9aec30a763881296817807518fea10cdd159051fc4b0f3087"
+    }
+  ],
+  "inventory": {
+    "supported": 42,
+    "deliberately_unsupported": 8
+  },
+  "limitations": [
+    "No complete legacy UI/window/session acceptance",
+    "No sanitizer or other-platform run in this unit",
+    "Earlier frozen aggregate acceptance applies only to b6f0 baseline"
+  ],
+  "capture": {
+    "file": "gimp-perspective-portrait.png",
+    "sha256": "cf1a323cc85813dd4bf369885adddde4c7af5f5177ccb4b12054bf401e0d4b9e",
+    "dimensions": [
+      1080,
+      1920
+    ],
+    "display": "Authenticated loopback TCP Xvfb, empty authority rejected",
+    "gui_quit_exit": 0,
+    "observed": "Perspective Guide selected; empty bottom toolbar and baseline image visible",
+    "notices": [
+      "Unsupported host fonts ignored",
+      "Missing initial tag cache",
+      "No D-Bus session connection"
+    ]
+  },
+  "executables": {
+    "build/app/tests/painter-compact-options": "b865dc024c065be7e308f2fc5f4310946785ca131ad5490fb5af48062376ea03",
+    "build/app/gimp-3.0": "c885862bfea7c9c7b7d4a9c532fb51f8af1207dc8476ba82b92ba347cebb3dcb",
+    "prefix/bin/gimp-3.0": "0897a042c838caf0a4f48e73459c5a6e397f2d3b79f13965fe3a1b52b8ab7e2c"
+  }
+}

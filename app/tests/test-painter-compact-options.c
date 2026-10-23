@@ -607,6 +607,8 @@ int main(int argc,char **argv) {
   g_test_add_func ("/painter-compact-options/align-model-before-view", align_model_before_view);
   g_test_add_func ("/painter-compact-options/align-actions-and-reentry", align_actions_and_reentry);
   g_test_add_func ("/painter-compact-options/independent-mypaint-toolbar", independent_mypaint_toolbar);
+  g_test_add_func ("/painter-compact-options/independent-perspective-guide-toolbar", independent_perspective_guide_toolbar);
+  g_test_add_func ("/painter-compact-options/perspective-guide-toolbar-canvas-switching", perspective_guide_toolbar_canvas_switching);
   g_test_add_func ("/painter-compact-options/independent-horizontal-inventory", independent_horizontal_toolbar_inventory);
   g_test_add_func ("/painter-compact-options/independent-horizontal-binding", independent_horizontal_toolbar_numeric_binding);
   g_test_add_func ("/painter-compact-options/independent-horizontal-native-handles", independent_horizontal_toolbar_native_handles);

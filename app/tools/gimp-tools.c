@@ -140,6 +140,19 @@ gimp_tools_horizontal_options_gui (GimpToolOptions *options)
   GtkWidget *gui;
 
   if (g_strcmp0 (gimp_object_get_name (options->tool_info),
+                 "gimp-perspective-guide-tool") == 0)
+    {
+      /* The pinned Perspective Guide factory only calls the empty base
+       * options GUI. Its rate/eraser controls are inside #if 0. Match this
+       * tool by ID: other tools sharing GimpToolOptions are not fallbacks.
+       * Return a fresh floating widget, leaving the cached dock GUI alone. */
+      gui = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 4);
+      gtk_box_set_homogeneous (GTK_BOX (gui), FALSE);
+      gtk_widget_set_name (gui, "gimp-painter-perspective-guide-toolbar");
+      return gui;
+    }
+
+  if (g_strcmp0 (gimp_object_get_name (options->tool_info),
                  "gimp-painter-mypaint-tool") == 0)
     {
       GimpToolOptionsGUIFunc factory;
