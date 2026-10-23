@@ -352,8 +352,9 @@ void owned_closure_destroy (gpointer data, GClosure *)
 }
 void connection_ownership ()
 {
-  // Target first, explicit close, wrapper destruction, and external disconnect.
-  for (int order = 0; order < 4; ++order)
+  // Target first, explicit close, wrapper destruction, external disconnect,
+  // untouched expired handle destruction, and expired outstanding block depth.
+  for (int order = 0; order < 6; ++order)
     {
       int finalized = 0;
       ClosureCounts counts;
@@ -367,14 +368,24 @@ void connection_ownership ()
         notify (emitter.get ());
         g_assert_cmpint (counts.calls, ==, 1);
         g_assert_cmpint (counts.destroyed, ==, 0);
-        if (order == 0)
+        if (order == 0 || order == 4 || order == 5)
           {
+            if (order == 5) { connection.block (); connection.block (); }
             emitter.reset ();
             g_assert_cmpint (finalized, ==, 1);
             g_assert_cmpint (counts.destroyed, ==, 1);
-            g_assert_false (connection.connected ());
-            connection.block (); connection.unblock ();
-            connection.close (); connection.close ();
+            if (order == 0)
+              {
+                g_assert_false (connection.connected ());
+                connection.block (); connection.unblock ();
+                connection.close (); connection.close ();
+              }
+            else if (order == 5)
+              {
+                // Nonzero block depth takes the weak-lock path after death.
+                connection.unblock (); connection.unblock ();
+              }
+            // Orders 4/5 preserve the expired handler ID until the destructor.
           }
         else if (order == 1)
           {

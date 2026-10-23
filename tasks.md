@@ -363,7 +363,7 @@
 | 07.005 | [x] | 構築中 property を試験する | 07.004 | 接続前に設定でき未初期化 callback が走らない |
 | 07.006 | [x] | dispose の再実行を試験する | 07.005 | 二度目以降でも状態が壊れない |
 | 07.007 | [x] | signal 中の close を試験する | 07.006 | 呼出し中 Impl が生存する |
-| 07.008 | [ ] | 接続先先行破棄を試験する | 07.007 | Connection の destructor が解放済み object を触らない |
+| 07.008 | [x] | 接続先先行破棄を試験する | 07.007 | Connection の destructor が解放済み object を触らない |
 | 07.008/untracked-signals | [ ] | 返却 Connection を捨てる接続を追跡可能にする | 07.008, 01.008 | 旧 connect_noret と未保存の接続を owner の終了時に解除し、emitter・owner の先行破棄と callback 中の close を試験する |
 | 07.008/connection-name | [ ] | Connection の signal 名を解放する | 07.008, 01.007/connection-signal | 接続・切断・再切断で複製文字列を一回解放し、closure と target の寿命を検証する |
 | 07.009 | [ ] | 投入済み callback の失効を試験する | 07.008 | 切断前に予約済みでも変更を行わない |

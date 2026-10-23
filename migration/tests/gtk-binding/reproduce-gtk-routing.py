@@ -173,7 +173,11 @@ def regenerate(baseline, cases, sections, catalog):
         require(','.join(result['tasks']) == case['proposed_implementation_tasks'], row['hunk_id'] + ': wrong routed assignment')
         for result_key, row_key in (('profile', 'profile'), ('feature', 'feature'), ('reason', 'reason')):
             require(result[result_key] == row[row_key], row['hunk_id'] + ': changed unrelated ' + row_key)
-        require(','.join(result['tests']) == row['verification_tasks'], row['hunk_id'] + ': changed tests')
+        # Reproduce only this historical 06.023 implementation correction.
+        # Later independent verification routing (notably original 07.008)
+        # must not rewrite its copied, reviewed baseline verification fields.
+        require(row['verification_tasks'] == case['verification_tasks_unchanged'],
+                row['hunk_id'] + ': changed historical verification tasks')
         old_tasks = row['implementation_tasks'].split(','); new_tasks = result['tasks']
         require([t for t in old_tasks if t != '06.023'] == [t for t in new_tasks if t != '06.023'],
                 row['hunk_id'] + ': changed unrelated implementation task')
