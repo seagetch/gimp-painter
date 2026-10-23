@@ -41,6 +41,8 @@ public:
     GError *error = nullptr;
     if (!gimp_mypaint_brush_save (GIMP_DATA (get ()), &error)) fail (error);
   }
+  void begin_use () const { gimp_mypaint_brush_begin_use (get ()); }
+  void end_use () const { gimp_mypaint_brush_end_use (get ()); }
   GimpPainterMybrush *get () const noexcept { return owner_.get (); }
   PainterMybrushRef duplicate () const
   {

@@ -1,0 +1,45 @@
+{
+  "task_parent": "08.018",
+  "original_acceptance": "C 入口から旧 Interface::cast を排除",
+  "entries": [
+    "gimp_mypaint_brush_begin_use",
+    "gimp_mypaint_brush_end_use"
+  ],
+  "legacy_revision": "afa43fae3e920210146abed514f136fd49f671b5",
+  "legacy_files": {
+    "app/core/gimpmypaintbrush.cpp": {
+      "blob": "c4e9eaaf991c8855e2a6155bd3a74915bdff657d",
+      "sha256": "caa934e55a4414574893393e68fe71b4acef9d34dcb1ccc6f0df3369aae54a89"
+    },
+    "app/core/gimpmypaintbrush.h": {
+      "blob": "d005e559a20b8ad8deef3bce1d641c9fa4b5f7bf",
+      "sha256": "7ac3d06c587a6054703a3debfa796de0fe7a4dfaeda43cb9254a6da9c2fc4bf0"
+    }
+  },
+  "legacy_semantics": [
+    "Borrowed brush, void C signatures",
+    "Type precondition; end requires positive use_count",
+    "Increment before begin hook, only new count1 dispatches",
+    "Decrement before end hook, only new count0 dispatches",
+    "Default class begin/end hooks empty",
+    "No synthesized end hook in disposal"
+  ],
+  "native_policy": [
+    "Slot-owned private guint counter with overflow guard",
+    "Same transition order and real rebuilt subclass hooks",
+    "Strong owner spans hook; hook outside slot borrow permits reentry",
+    "Owner-thread active admission; closed/before-activation operation inert",
+    "Hook exceptions contained by original C boundary, already-mutated transition retained"
+  ],
+  "limitations": [
+    "No legacy object/class binary layout or runtime GType-name compatibility",
+    "No public legacy use_count field",
+    "Overflow guard is source-reviewed; exhaustive G_MAXUINT nesting not executed",
+    "Historical implicit get_new_preview begin/end caller integration remains unimplemented by this explicit-entry child"
+  ],
+  "canonical_rows": [
+    35,
+    40
+  ],
+  "remaining_preview_owner": "08.018/brush-preview-use-integration"
+}

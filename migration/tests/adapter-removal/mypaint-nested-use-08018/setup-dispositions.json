@@ -1,0 +1,26 @@
+{
+  "scope": "Setup failures excluded from behavioral evidence",
+  "failures": [
+    {
+      "stage": "primary Meson header regeneration",
+      "cause": "Redundant additional route for an already reviewed native header; first used later blob, then original blob still invalid because route already existed",
+      "resolution": "Removed only newly added redundant row; original closure and guard untouched; generator PASS then actual411 probes compiled"
+    },
+    {
+      "stage": "first tertiary configure",
+      "cause": "Same redundant additional route before removal",
+      "resolution": "Restarted private configure after exact route removal; committed archive plus owned overlay only"
+    },
+    {
+      "stage": "first bounded sanitizer build",
+      "cause": "Old builder iterated unrelated unbuilt painter-xcf-compat-test compile variant",
+      "resolution": "Select actual linked ordinary variants; all37 instrumented sources required,38 linked RTTI-only plus2 explicitly unlinked candidates recorded"
+    },
+    {
+      "stage": "link-graph discovery assertion",
+      "cause": "Two whole-app RTTI candidates were not linked to this target",
+      "resolution": "Explicit graph-proven exclusion of HTTP navigation/filter-worker only; no instrumented source omitted"
+    }
+  ],
+  "runtime_tests_ran_in_these_failed_attempts": false
+}

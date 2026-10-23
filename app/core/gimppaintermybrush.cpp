@@ -32,7 +32,8 @@ namespace {
 struct BrushImpl {
   MyPaint::Resource resource;
   ObjectRef<GdkPixbuf> icon;
-  void close () noexcept { icon.reset (); }
+  guint use_count = 0;
+  void close () noexcept { use_count = 0; icon.reset (); }
 };
 struct BrushSlot : SlotSpec<GimpPainterMybrush, BrushImpl> {};
 BindingStore& store (GimpPainterMybrush *brush)
@@ -161,8 +162,11 @@ gchar *checksum (GimpTagged *tagged)
 }
 }
 static void tagged_init (GimpTaggedInterface *iface) { iface->get_checksum = checksum; }
+static void no_use_transition (GimpPainterMybrush *) {}
 static void gimp_painter_mybrush_class_init (GimpPainterMybrushClass *klass)
 {
+  klass->begin_use = no_use_transition;
+  klass->end_use = no_use_transition;
   G_OBJECT_CLASS (klass)->constructed = constructed;
   G_OBJECT_CLASS (klass)->dispose = dispose;
   GIMP_DATA_CLASS (klass)->save = save;
@@ -354,5 +358,36 @@ gchar *gimp_painter_mybrush_dup_diagnostics (GimpPainterMybrush *brush)
       for (const auto& d : impl.resource.diagnostics ()) text += d.path+": "+d.message+"\n";
       return g_strdup (text.c_str ());
     });
+  });
+}
+
+void gimp_mypaint_brush_begin_use (GimpMypaintBrush *brush)
+{
+  g_return_if_fail (GIMP_IS_MYPAINT_BRUSH (brush));
+  boundary_void (nullptr, [&] {
+    auto owner = ObjectRef<GimpPainterMybrush>::retain (brush);
+    const bool transition = store (brush).with<BrushSlot> ([] (BrushImpl& impl) {
+      g_return_val_if_fail (impl.use_count < G_MAXUINT, false);
+      return ++impl.use_count == 1;
+    });
+    if (transition) {
+      auto hook = GIMP_MYPAINT_BRUSH_GET_CLASS (brush)->begin_use;
+      if (hook) hook (brush);
+    }
+  });
+}
+void gimp_mypaint_brush_end_use (GimpMypaintBrush *brush)
+{
+  g_return_if_fail (GIMP_IS_MYPAINT_BRUSH (brush));
+  boundary_void (nullptr, [&] {
+    auto owner = ObjectRef<GimpPainterMybrush>::retain (brush);
+    const bool transition = store (brush).with<BrushSlot> ([] (BrushImpl& impl) {
+      g_return_val_if_fail (impl.use_count > 0, false);
+      return --impl.use_count == 0;
+    });
+    if (transition) {
+      auto hook = GIMP_MYPAINT_BRUSH_GET_CLASS (brush)->end_use;
+      if (hook) hook (brush);
+    }
   });
 }

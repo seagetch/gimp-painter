@@ -12,7 +12,12 @@ G_BEGIN_DECLS
 typedef struct _GimpPainterMybrush GimpPainterMybrush;
 typedef struct _GimpPainterMybrushClass GimpPainterMybrushClass;
 struct _GimpPainterMybrush { GimpData parent_instance; gboolean binding_failed; };
-struct _GimpPainterMybrushClass { GimpDataClass parent_class; };
+struct _GimpPainterMybrushClass {
+  GimpDataClass parent_class;
+  /* Native rebuilt subclass hooks; no historical binary layout guarantee. */
+  void (*begin_use) (GimpPainterMybrush *brush);
+  void (*end_use) (GimpPainterMybrush *brush);
+};
 GType gimp_painter_mybrush_get_type (void) G_GNUC_CONST;
 GimpData *gimp_painter_mybrush_new (GimpContext *context, const gchar *name);
 GimpData *gimp_painter_mybrush_get_standard (GimpContext *context);

@@ -360,9 +360,41 @@ void handle_copy_failure_exception ()
 #endif
 }
 
+namespace {
+static guint use_handle_begins, use_handle_ends;
+static bool use_handle_throw;
+void use_handle_begin (GimpPainterMybrush *)
+{ ++use_handle_begins; if (use_handle_throw) throw std::runtime_error ("injected begin hook"); }
+void use_handle_end (GimpPainterMybrush *)
+{ ++use_handle_ends; if (use_handle_throw) throw std::runtime_error ("injected end hook"); }
+void nested_use_handle ()
+{
+  static_assert (std::is_same<decltype (&gimp_mypaint_brush_begin_use), void (*)(GimpMypaintBrush *)>::value, "original begin signature");
+  static_assert (std::is_same<decltype (&gimp_mypaint_brush_end_use), void (*)(GimpMypaintBrush *)>::value, "original end signature");
+  auto owner = MypaintBrushRef::create ("Use handle");
+  auto *klass = GIMP_MYPAINT_BRUSH_GET_CLASS (owner.get ());
+  const auto old_begin = klass->begin_use, old_end = klass->end_use;
+  klass->begin_use = use_handle_begin; klass->end_use = use_handle_end;
+  use_handle_begins = use_handle_ends = 0; use_handle_throw = false;
+  auto copy = owner;
+  owner.begin_use (); copy.begin_use (); owner.end_use ();
+  g_assert_cmpuint (use_handle_begins, ==, 1); g_assert_cmpuint (use_handle_ends, ==, 0);
+  copy.end_use (); g_assert_cmpuint (use_handle_ends, ==, 1);
+  // Exceptions in rebuilt C++ subclass hooks stop at the original C boundary;
+  // transition count already changed, exactly like a reentrant hook observes.
+  use_handle_throw = true;
+  owner.begin_use (); owner.end_use ();
+  use_handle_throw = false;
+  owner.begin_use (); owner.end_use ();
+  g_assert_cmpuint (use_handle_begins, ==, 3); g_assert_cmpuint (use_handle_ends, ==, 3);
+  klass->begin_use = old_begin; klass->end_use = old_end;
+}
+}
+
 extern "C" void
 gimp_test_painter_mybrush_duplicate_handle_register (void)
 {
+  g_test_add_func ("/painter-mybrush/nested-use/handle-and-throwing-hooks", nested_use_handle);
   g_test_add_func ("/painter-mybrush/file-save/handle", file_save_handle);
   g_test_add_func ("/painter-mybrush/filename-load/handle", filename_load_handle);
   g_test_add_func ("/painter-mybrush/named-standard/cold-recreation", named_standard_cold_recreation);

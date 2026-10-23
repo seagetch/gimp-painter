@@ -1,0 +1,15 @@
+[
+  {
+    "name": "gimp:app / gimp-painter-mybrush",
+    "stdout": "TAP version 14\n# random seed: R02Sa9a58548c548e7fe6b118d023e21a7c9\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# Start of painter-mybrush tests\n# Start of nested-use tests\nnot ok /painter-mybrush/nested-use/transitions - ERROR:../source/app/tests/test-painter-mybrush-use.inc:57:nested_use_transitions: assertion failed (b->events->str == \"BE\"): (\"E\" == \"BE\")\nBail out!\n",
+    "result": "FAIL",
+    "duration": 1.2785189151763916,
+    "returncode": -6,
+    "command": [
+      "/workspace/shared/gimp-native-brush/build/app/tests/gimp-painter-mybrush",
+      "-p",
+      "/painter-mybrush/nested-use/transitions"
+    ],
+    "stderr": "**\nERROR:../source/app/tests/test-painter-mybrush-use.inc:57:nested_use_transitions: assertion failed (b->events->str == \"BE\"): (\"E\" == \"BE\")\n"
+  }
+]

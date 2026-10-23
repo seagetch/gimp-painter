@@ -991,6 +991,7 @@ named_standard_c_contract (void)
 #include "test-painter-mybrush-filename.inc"
 #include "test-painter-mybrush-save.inc"
 #include "test-painter-mybrush-live-icon.inc"
+#include "test-painter-mybrush-use.inc"
 
 void gimp_test_painter_mybrush_duplicate_handle_register (void);
 
@@ -1045,6 +1046,12 @@ int main (int argc, char **argv)
   g_test_add_func ("/painter-mybrush/named-factory/c-contract", named_factory_c_contract);
   g_test_add_func ("/painter-mybrush/named-factory/invalid-names", named_factory_invalid_names);
   g_test_add_func ("/painter-mybrush/named-standard/c-contract", named_standard_c_contract);
+  g_test_add_func ("/painter-mybrush/nested-use/transitions", nested_use_transitions);
+  g_test_add_func ("/painter-mybrush/nested-use/preconditions", nested_use_preconditions);
+  g_test_add_func ("/painter-mybrush/nested-use/admission", nested_use_admission);
+  g_test_add_func ("/painter-mybrush/nested-use/reentry", nested_use_reentry);
+  g_test_add_func ("/painter-mybrush/nested-use/retained-lifetime", nested_use_retained_lifetime);
+  g_test_add_func ("/painter-mybrush/nested-use/constructor", nested_use_constructor);
   gimp_test_painter_mybrush_duplicate_handle_register ();
   result = g_test_run ();
   gimp_test_utils_set_gimp3_directory ("GIMP_TESTING_ABS_TOP_BUILDDIR", "app/tests/gimpdir-output");
