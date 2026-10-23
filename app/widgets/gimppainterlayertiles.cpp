@@ -115,7 +115,7 @@ struct Tiles {
   void observe (GimpContainer *container);
   void append (GimpContainer *container, int depth);
   void sync_selection ();
-  void choose (GimpLayer *layer, GdkModifierType state);
+  bool choose (GimpLayer *layer, GdkModifierType state);
   void action (const std::string& command, GObject *target);
   GtkWidget *show_popup (bool creation);
   bool move (GimpLayer *layer, GimpLayer *target, bool into, bool after);
@@ -181,7 +181,7 @@ gboolean press (GtkWidget *widget, GdkEventButton *event, gpointer data) {
       bool keep_multiple = !(event->state & (GDK_CONTROL_MASK | GDK_SHIFT_MASK)) &&
                            g_list_length (selection) > 1 && g_list_find (selection, target);
       auto image = s.image;
-      if (!keep_multiple) s.choose (GIMP_LAYER (target), GdkModifierType (event->state));
+      if (!keep_multiple && !s.choose (GIMP_LAYER (target), GdkModifierType (event->state))) return;
       if (s.closed || s.image.get () != image.get ()) return;
       if (event->button == 3) s.show_popup (false);
       else {
@@ -516,8 +516,9 @@ void Tiles::sync_selection () {
   }
   syncing = false;
 }
-void Tiles::choose (GimpLayer *layer, GdkModifierType state) {
-  if (!img () || gimp_item_get_image (GIMP_ITEM (layer)) != img ()) return;
+bool Tiles::choose (GimpLayer *layer, GdkModifierType state) {
+  if (!img () || gimp_item_get_image (GIMP_ITEM (layer)) != img ()) return false;
+  const auto image_epoch = image_generation;
   GList *selection = g_list_copy (gimp_image_get_selected_layers (img ()));
   if (state & GDK_CONTROL_MASK) {
     if (g_list_find (selection, layer)) selection = g_list_remove (selection, layer);
@@ -535,7 +536,18 @@ void Tiles::choose (GimpLayer *layer, GdkModifierType state) {
     }
   } else { g_list_free (selection); selection = g_list_append (nullptr, layer); }
   if (selection) gimp_image_set_selected_layers (img (), selection);
-  g_list_free (selection); sync_selection ();
+  sync_selection ();
+  /* The notification may replace this selection without changing the image.
+   * A retained callback target does not keep the old activation current. */
+  bool accepted = !closed && image_generation == image_epoch;
+  if (accepted && selection) {
+    GList *current = gimp_image_get_selected_layers (img ());
+    accepted = g_list_length (current) == g_list_length (selection);
+    for (GList *i = selection; accepted && i; i = i->next)
+      accepted = g_list_find (current, i->data) != nullptr;
+  }
+  g_list_free (selection);
+  return accepted;
 }
 void Tiles::begin_press (GtkWidget *widget, GimpLayer *layer, double x, double y) {
   if (closed || !img ()) return;
