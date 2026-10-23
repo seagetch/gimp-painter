@@ -29,9 +29,15 @@ extern "C" {
 #include "widgets/gimpactionfactory.h"
 #include "widgets/gimpdialogfactory.h"
 #include "widgets/gimpdocked.h"
+#include "widgets/gimpdock.h"
+#include "widgets/gimpdockable.h"
+#include "widgets/gimpdockbook.h"
+#include "widgets/gimphelp-ids.h"
+#include "widgets/gimpuimanager.h"
 #include "display/display-types.h"
 #include "actions/actions-types.h"
 #include "actions/actions.h"
+#include "actions/dockable-commands.h"
 #include "dialogs/preferences-dialog.h"
 #include "gimpcoreapp.h"
 #include "tests.h"
@@ -342,8 +348,11 @@ static void visual_demo(){
   auto*loop=g_main_loop_new(nullptr,FALSE);g_signal_connect(editor.window,"destroy",G_CALLBACK(+[](GtkWidget*,gpointer p){g_main_loop_quit(static_cast<GMainLoop*>(p));}),loop);g_main_loop_run(loop);g_main_loop_unref(loop);
 }
 static void registration(){
-  auto*group=gimp_action_factory_get_group(global_action_factory,"dialogs",gimp);g_assert_nonnull(gimp_action_group_get_action(group,"dialogs-painter-mypaint-editor"));
+  auto*group=gimp_action_factory_get_group(global_action_factory,"dialogs",gimp);
+  auto*action=gimp_action_group_get_action(group,"dialogs-painter-mypaint-editor");g_assert_nonnull(action);
+  g_assert_cmpstr(gimp_action_get_help_id(action),==,GIMP_HELP_MYPAINT_BRUSH_EDIT);
   auto*entry=gimp_dialog_factory_find_entry(gimp_dialog_factory_get_singleton(),"gimp-painter-mypaint-editor");g_assert_nonnull(entry);
+  g_assert_true(entry->dockable);g_assert_cmpstr(entry->help_id,==,GIMP_HELP_MYPAINT_BRUSH_EDIT);
   auto*dialog=preferences_dialog_create(gimp);g_object_ref_sink(dialog);gtk_dialog_response(GTK_DIALOG(dialog),GTK_RESPONSE_CANCEL);gtk_widget_destroy(dialog);g_object_unref(dialog);
 }
 /* Original 08.017: current shared widget controllers use one common store.
@@ -958,6 +967,153 @@ static void draft_name_history_save_workflow ()
   g_assert_cmpuint (GIMP_RC (gimp->edit_config)->save_idle_id, ==, 0);
 }
 
+/* These cases go through the native wrapper and notebook ownership path;
+ * the registered-constructor test above intentionally covers only its child. */
+static void native_dockable_close_reopen (bool through_action)
+{
+  constexpr auto identifier = "gimp-painter-mypaint-editor";
+  auto *factory = gimp_dialog_factory_get_singleton ();
+  auto *entry = gimp_dialog_factory_find_entry (factory, identifier);
+  g_assert_nonnull (entry);
+  g_assert_null (gimp_dialog_factory_find_widget (factory, identifier));
+  BoundaryBrushes resources;
+  auto user_selection = ObjectRef<GimpPainterMybrush>::retain (
+    gimp_context_get_painter_mybrush (gimp->user_context));
+  gimp_context_set_painter_mybrush (gimp->user_context, resources.first.get ());
+  const auto source_json = resources.first.snapshot ().encode ();
+  const std::string source_name = gimp_object_get_name (resources.first.get ());
+  const char *draft_name = "Unsaved native dockable draft";
+  auto *options = resources.shared_options.get ();
+  auto *manager = gimp_test_utils_get_ui_manager (gimp);
+  auto *monitor = gdk_display_get_monitor (gdk_display_get_default (), 0);
+  g_assert_nonnull (monitor);
+
+  const auto open = [&] () -> GtkWidget * {
+    if (through_action)
+      {
+        auto *action = gimp_ui_manager_find_action (
+          manager, "dialogs", "dialogs-painter-mypaint-editor");
+        g_assert_nonnull (action);
+        g_assert_true (gimp_action_is_sensitive (action, nullptr));
+        g_assert_true (gimp_ui_manager_activate_action (
+          manager, "dialogs", "dialogs-painter-mypaint-editor"));
+        // A creating factory call here would mask a broken action callback.
+        return gimp_dialog_factory_find_widget (factory, identifier);
+      }
+    return gimp_dialog_factory_dialog_raise (factory, monitor, nullptr,
+                                             identifier, -1);
+  };
+  const auto open_count = [&] {
+    guint count = 0;
+    for (auto *item = gimp_dialog_factory_get_open_dialogs (factory); item; item = item->next)
+      {
+        GimpDialogFactoryEntry *actual = nullptr;
+        if (gimp_dialog_factory_from_widget (GTK_WIDGET (item->data), &actual) == factory &&
+            actual == entry)
+          ++count;
+      }
+    return count;
+  };
+
+  for (int cycle = 0; cycle < 2; ++cycle)
+    {
+      // Reach real construction before checking metadata: the old NULL help
+      // registration must fail at gimp_dockable_new(), not a proxy assertion.
+      auto *dockable = open ();
+      g_assert_nonnull (dockable);
+      g_assert_true (GIMP_IS_DOCKABLE (dockable));
+      gimp_test_run_mainloop_until_idle ();
+      GimpDialogFactoryEntry *actual = nullptr;
+      g_assert_true (gimp_dialog_factory_from_widget (dockable, &actual) == factory);
+      g_assert_true (actual == entry);
+      g_assert_true (entry->dockable);
+      g_assert_cmpstr (entry->help_id, ==, GIMP_HELP_MYPAINT_BRUSH_EDIT);
+      g_assert_cmpstr (gimp_dockable_get_help_id (GIMP_DOCKABLE (dockable)), ==,
+                       GIMP_HELP_MYPAINT_BRUSH_EDIT);
+      if (through_action)
+        g_assert_cmpstr (gimp_action_get_help_id (gimp_ui_manager_find_action (
+          manager, "dialogs", "dialogs-painter-mypaint-editor")), ==,
+          GIMP_HELP_MYPAINT_BRUSH_EDIT);
+      auto *book = gimp_dockable_get_dockbook (GIMP_DOCKABLE (dockable));
+      g_assert_true (GIMP_IS_DOCKBOOK (book));
+      g_assert_true (GIMP_IS_DOCK (gimp_dockbook_get_dock (book)));
+      g_assert_true (gtk_widget_get_parent (dockable) == GTK_WIDGET (book));
+      const int page = gtk_notebook_page_num (GTK_NOTEBOOK (book), dockable);
+      g_assert_cmpint (page, >=, 0);
+      auto *child = gtk_bin_get_child (GTK_BIN (dockable));
+      g_assert_true (GIMP_IS_PAINTER_MYBRUSH_EDITOR (child));
+      g_assert_true (GIMP_IS_DOCKED (child));
+      g_assert_true (gtk_widget_get_parent (child) == dockable);
+      g_assert_true (gtk_widget_get_mapped (dockable));
+      g_assert_true (gtk_widget_get_mapped (child));
+      auto *editor = GIMP_PAINTER_MYBRUSH_EDITOR (child);
+      auto *binding = BindingStore::find (G_OBJECT (editor));
+      g_assert_nonnull (binding);
+      g_assert_true (binding->state () == BindingStore::State::active);
+      const auto generation = binding->generation ();
+      boundary_assert_selected (control (child, "painter-brush-list"), resources.first.get ());
+      g_assert_true (gimp_context_get_painter_mybrush (GIMP_CONTEXT (options)) == resources.first.get ());
+      auto *opaque = GTK_SPIN_BUTTON (control (child, "opaque"));
+      g_assert_cmpfloat_with_epsilon (gtk_spin_button_get_value (opaque),
+                                     cycle == 0 ? .217 : .431, 1e-6);
+      auto *name = GTK_ENTRY (control (child, "painter-brush-name"));
+      g_assert_cmpstr (gtk_entry_get_text (name), ==,
+                       cycle == 0 ? source_name.c_str () : draft_name);
+      gtk_entry_set_text (name, draft_name);
+      gtk_spin_button_set_value (opaque, cycle == 0 ? .431 : .572);
+      auto expected = resources.first.snapshot ();
+      expected.set_base_value (BRUSH_OPAQUE, cycle == 0 ? .431 : .572);
+      g_assert_true (PainterOptionsRef::retain (options).snapshot ().encode () == expected.encode ());
+
+      g_assert_true (open () == dockable);
+      g_assert_true (gtk_bin_get_child (GTK_BIN (dockable)) == child);
+      g_assert_cmpuint (open_count (), ==, 1);
+      gimp_painter_mybrush_editor_request_preview (editor);
+      g_assert_true (gimp_painter_mybrush_editor_preview_pending (editor));
+      gpointer weak_dockable = dockable, weak_editor = editor;
+      g_object_add_weak_pointer (G_OBJECT (dockable), &weak_dockable);
+      g_object_add_weak_pointer (G_OBJECT (editor), &weak_editor);
+      // Retain only the first child to inspect its closed store. The reopened
+      // iteration closes both wrapper and child with ordinary ownership alone.
+      if (cycle == 0) g_object_ref (editor);
+      gtk_notebook_set_current_page (GTK_NOTEBOOK (book), page);
+      dockable_close_tab_cmd_callback (nullptr, nullptr, book);
+      gimp_test_run_mainloop_until_idle ();
+      g_assert_null (weak_dockable);
+      g_assert_null (gimp_dialog_factory_find_widget (factory, identifier));
+      g_assert_cmpuint (open_count (), ==, 0);
+      if (cycle == 0)
+        {
+          g_assert_true (binding->state () == BindingStore::State::closed);
+          g_assert_false (binding->accepts (generation));
+          g_assert_false (gimp_painter_mybrush_editor_preview_pending (editor));
+          g_assert_null (gimp_painter_mybrush_editor_ref_preview (editor));
+          g_object_unref (editor);
+        }
+      g_assert_null (weak_editor);
+      g_assert_true (PainterOptionsRef::retain (options).snapshot ().encode () == expected.encode ());
+      GError *error = nullptr;
+      String pending_name (gimp_painter_mybrush_options_dup_draft_name (options, &error));
+      g_assert_no_error (error);
+      g_assert_cmpstr (pending_name.get (), ==, draft_name);
+      g_assert_true (resources.first.snapshot ().encode () == source_json);
+      g_assert_cmpstr (gimp_object_get_name (resources.first.get ()), ==, source_name.c_str ());
+    }
+  // Restore the ordinary context before BoundaryBrushes restores the shared
+  // model's original selection, JSON and draft name. No path refresh or save.
+  gimp_context_set_painter_mybrush (gimp->user_context, user_selection.get ());
+}
+
+static void dialog_factory_dockable_lifetime ()
+{
+  native_dockable_close_reopen (false);
+}
+
+static void action_dockable_close_reopen ()
+{
+  native_dockable_close_reopen (true);
+}
+
 int main(int argc,char**argv){
   g_test_init(&argc,&argv,nullptr);if(!gtk_init_check(&argc,&argv))return GIMP_EXIT_TEST_SKIPPED;
   gimp_test_utils_setup_menus_path();gimp=gimp_init_for_gui_testing(TRUE);
@@ -978,6 +1134,8 @@ int main(int argc,char**argv){
   add_editor_case("/painter-editor/15-registered-dock-selection-context",registered_dock_selection_context_boundary);
   add_editor_case("/painter-editor/16-factory-membership-context-lifetime",factory_membership_context_lifetime_boundary);
   add_editor_case("/painter-editor/17-draft-name-history-save",draft_name_history_save_workflow);
+  add_editor_case("/painter-editor/18-dialog-factory-dockable-lifetime",dialog_factory_dockable_lifetime);
+  add_editor_case("/painter-editor/19-action-dockable-close-reopen",action_dockable_close_reopen);
   if(g_getenv("PAINTER_EDITOR_DEMO"))add_editor_case("/painter-editor/visual-demo",visual_demo);
   g_application_run(gimp->app,0,nullptr);int result=gimp_core_app_get_exit_status(GIMP_CORE_APP(gimp->app));g_application_quit(gimp->app);g_clear_object(&gimp->app);g_free(original_search);return result;
 }
