@@ -87,6 +87,17 @@ if host_machine.system() == 'linux' and cxx.get_id() in ['gcc', 'clang'] and cxx
   mybrush_copy_fault_link_args = [mybrush_copy_fault_wrap]
 endif
 
+# Prove named clone setters traverse their original C symbols without adding
+# instrumentation to the production provider.
+clone_route_args = []
+clone_route_link_args = []
+clone_source_wrap = '-Wl,--wrap=gimp_clone_layer_set_source'
+clone_name_wrap = '-Wl,--wrap=gimp_clone_layer_set_source_by_name'
+if host_machine.system() == 'linux' and cxx.get_id() in ['gcc', 'clang'] and cxx.has_link_argument(clone_source_wrap) and cxx.has_link_argument(clone_name_wrap)
+  clone_route_args = ['-DGIMP_TEST_CLONE_WRAP_SETTERS']
+  clone_route_link_args = [clone_source_wrap, clone_name_wrap]
+endif
+
 prio = 1000
 foreach test_name : app_tests
   test_exe = executable(test_name,
@@ -99,12 +110,14 @@ foreach test_name : app_tests
     test_name == 'painter-layer-ui' ? ['test-filter-editor-metadata.cpp', 'test-filter-argument-patch.cpp'] : [],
     test_name == 'gimp-filter-layer' ? ['test-gimp-filter-layout.cpp', 'test-filter-owner-context.cpp', 'test-filter-parameters.cpp'] : [],
     c_args: test_name == 'gimp-painter-mybrush' ? mybrush_copy_fault_args : [],
-    cpp_args: test_name == 'gimp-painter-mybrush' ? mybrush_copy_fault_args : [],
-    link_args: test_name == 'gimp-painter-mybrush' ? mybrush_copy_fault_link_args : [],
+    cpp_args: (test_name == 'gimp-painter-mybrush' ? mybrush_copy_fault_args : []) +
+      (test_name == 'gimp-clone-layer' ? clone_route_args : []),
+    link_args: (test_name == 'gimp-painter-mybrush' ? mybrush_copy_fault_link_args : []) +
+      (test_name == 'gimp-clone-layer' ? clone_route_link_args : []),
     dependencies: [ libapp_dep, appstream ] +
       (test_name == 'gimp-painter-mybrush' ? [painter_brush_settings_dep] : []),
     link_with: apptests_links,
-    override_options: ['painter-compact-options', 'gimp-painter-mybrush', 'painter-layer-tree'].contains(test_name) ? ['c_std=c11', 'cpp_std=c++14'] : [],
+    override_options: ['painter-compact-options', 'gimp-painter-mybrush', 'painter-layer-tree', 'gimp-clone-layer'].contains(test_name) ? ['c_std=c11', 'cpp_std=c++14'] : [],
   )
 
   # Filter tests include real 8193x8193 spill and hundreds of old Gauss buffers.

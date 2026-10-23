@@ -32,12 +32,18 @@ public:
     return sink (GIMP_CLONE_LAYER (layer));
   }
   GimpCloneLayer *get () const noexcept { return owner_.get (); }
+  /* Original void-entry semantics: invalid/closed requests are contained by
+   * the C boundary. Use the explicit checked alternatives for Error reporting. */
   void set_source (GimpLayer *source) const
+  { gimp_clone_layer_set_source (get (), source); }
+  void set_source_name (const char *name) const
+  { gimp_clone_layer_set_source_by_name (get (), name); }
+  void set_source_checked (GimpLayer *source) const
   {
     GError *error = nullptr;
     if (!gimp_clone_layer_set_source_full (get (), source, &error)) fail (error);
   }
-  void set_source_name (const char *name) const
+  void set_source_name_checked (const char *name) const
   {
     GError *error = nullptr;
     if (!gimp_clone_layer_set_source_name_full (get (), name, &error)) fail (error);
