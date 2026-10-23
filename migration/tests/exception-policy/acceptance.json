@@ -1,0 +1,24 @@
+{
+  "task": "04.010",
+  "source_commit_before": "25b46e57717a650b6bf1a8473e9e75ffe397d89a",
+  "status": "PASS",
+  "artifact": "migration/tests/exception-policy/evidence.tar.gz",
+  "bytes": 1574623,
+  "sha256": "393463cf7b8acd646fb6fccbe50e4c7c91e64ed7ee52a7c8b007659e441e6479",
+  "canonical_source_duty_rows": 0,
+  "checks": [
+    "2 checker metadata cases",
+    "5 exact policy configure cases",
+    "default73 and HTTP78 production command probes",
+    "default64 and HTTP69 Painter commands require explicit exceptions",
+    "default/HTTP core and display archive rebuilds",
+    "39 foundation cases per configuration,16 injected C-boundary calls each",
+    "C argument vectors and RTTI arguments unchanged",
+    "WBS and source granularity consistency"
+  ],
+  "limitations": [
+    "Native Linux GCC evidence only; no full application relink or sanitizer run.",
+    "Baseline command snapshots are deliberately FAIL; current metadata is distinct.",
+    "No all-feature C ABI or future header/source closure claim."
+  ]
+}

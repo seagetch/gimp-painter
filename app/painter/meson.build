@@ -2,9 +2,27 @@
 # GIMP/GEGL adapters stay in their owning app modules; existing C stays C.
 painter_threads = dependency('threads')
 painter_include = include_directories('.')
-painter_cpp_args = cxx.get_supported_arguments(['-fexceptions', '-fno-rtti'])
+# C++ may throw internally; C entry points translate exceptions at the boundary.
+# Do not silently fall back to the compiler's default exception policy.
+painter_exception_switch = cxx.get_argument_syntax() == 'msvc' ? '/EHsc' : '-fexceptions'
+painter_exception_args = cxx.get_supported_arguments(
+  [painter_exception_switch], checked: 'require')
+if not cxx.compiles('''
+  #if !defined(__cpp_exceptions) && !defined(__EXCEPTIONS) && !defined(_CPPUNWIND)
+  #error Painter requires C++ exception handling
+  #endif
+  int main ()
+  {
+    try { throw 1; }
+    catch (int value) { return value == 1 ? 0 : 1; }
+  }
+''', args: painter_exception_args, name: 'Painter C++ exception support')
+  error('Painter requires C++ throw/catch support for its C error boundaries')
+endif
+
+painter_cpp_args = painter_exception_args + cxx.get_supported_arguments(['-fno-rtti'])
 if cxx.get_id() == 'msvc'
-  painter_cpp_args += ['/EHsc', '/GR-']
+  painter_cpp_args += ['/GR-']
 endif
 
 libapppainter = static_library('apppainter',

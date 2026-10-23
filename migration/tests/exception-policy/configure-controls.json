@@ -1,0 +1,63 @@
+{
+  "status": "PASS",
+  "policy_block_sha256": "8479757bdba12c0d3271514b2d0e54cf6f1e01722697d3b6848a28119b887391",
+  "production_meson_sha256": "dd94ce18187655b9c94342d93d9d129b2b3db50c74b0a558afb6920f544da106",
+  "cases": [
+    {
+      "name": "native",
+      "returncode": 0,
+      "expected_configure_success": true,
+      "pass": true,
+      "diagnostics": [
+        "Compiler for C++ supports arguments -fexceptions: YES ",
+        "Checking if \"Painter C++ exception support\" compiles: YES "
+      ]
+    },
+    {
+      "name": "earlier-global-disable",
+      "returncode": 0,
+      "expected_configure_success": true,
+      "pass": true,
+      "diagnostics": [
+        "Compiler for C++ supports arguments -fexceptions: YES ",
+        "Checking if \"Painter C++ exception support\" compiles: YES "
+      ]
+    },
+    {
+      "name": "legacy-silently-filtered",
+      "returncode": 0,
+      "expected_configure_success": true,
+      "pass": true,
+      "diagnostics": [
+        "Compiler for C++ supports arguments -fexceptions: NO ",
+        "Compiler for C++ supports arguments -fno-rtti: YES "
+      ]
+    },
+    {
+      "name": "required-switch-rejected",
+      "returncode": 1,
+      "expected_configure_success": false,
+      "pass": true,
+      "diagnostics": [
+        "Compiler for C++ supports arguments -fexceptions: NO ",
+        "../../../shared/gimp-exception-policy-04010/configure-controls-verified/required-switch-rejected/meson.build:4:29: ERROR: Compiler for C++ does not support \"-fexceptions\""
+      ]
+    },
+    {
+      "name": "accepted-switch-disabled",
+      "returncode": 1,
+      "expected_configure_success": false,
+      "pass": true,
+      "diagnostics": [
+        "Compiler for C++ supports arguments -fexceptions: YES ",
+        "Checking if \"Painter C++ exception support\" compiles: NO ",
+        "../../../shared/gimp-exception-policy-04010/configure-controls-verified/accepted-switch-disabled/meson.build:16:2: ERROR: Problem encountered: Painter requires C++ throw/catch support for its C error boundaries"
+      ]
+    }
+  ],
+  "limitations": [
+    "Native GNU compiler with deterministic wrapper controls only.",
+    "No MSVC, clang-cl, macOS or cross-compiler execution is claimed.",
+    "Isolated policy projects reproduce the exact current exception block; not a full GIMP setup on alternative compilers."
+  ]
+}

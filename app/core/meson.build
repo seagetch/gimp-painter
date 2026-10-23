@@ -296,7 +296,7 @@ libappcore = static_library('appcore',
   libappcore_sources,
   include_directories: [ rootInclude, rootAppInclude, ],
   c_args: '-DG_LOG_DOMAIN="Gimp-Core"',
-  cpp_args: [
+  cpp_args: painter_exception_args + [
     '-DGIMP_PAINTER_FILTER_BUILD_ROOT="' + meson.project_build_root() + '"',
     '-DGIMP_PAINTER_FILTER_BIN_TO_WORKER="' + painter_filter_bin_to_worker + '"',
     '-DGIMP_PAINTER_FILTER_WORKER_TO_PLUGINS="' + painter_filter_worker_to_plugins + '"',

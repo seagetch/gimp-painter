@@ -1,0 +1,98 @@
+{
+  "status": "PASS",
+  "task": "original 04.010 bounded native rebuild",
+  "tracked_source_files_checked": 9938,
+  "changed_tracked_files_during_build": [],
+  "configurations": [
+    {
+      "configuration": "default",
+      "build_returncode": 0,
+      "build_manifest": "/workspace/shared/gimp-exception-policy-04010/default.ninja",
+      "build_manifest_sha256": "c33b84440e867d4949685fb8fbca5a3f60cfdfcf49f621467fc817bdf39a21b3",
+      "protected_recipe_substitutions": 17,
+      "compile_link_recipes_unchanged": true,
+      "isolated_generators_executed": [
+        "app/core/stamp-core-enums.h",
+        "app/display/stamp-display-enums.h"
+      ],
+      "generated_output_comparison": [
+        {
+          "source": "app/core/core-enums.c",
+          "original_sha256": "9d635073841947b8f7a3044a43b868fc5efb2cb81ea64482e40a7ce25bc72a11",
+          "isolated_generated_sha256": "9d635073841947b8f7a3044a43b868fc5efb2cb81ea64482e40a7ce25bc72a11"
+        },
+        {
+          "source": "app/display/display-enums.c",
+          "original_sha256": "8eb2d9338870169b069d44d4cbcff9df51aef4602433b8da8983b3315f3e5a48",
+          "isolated_generated_sha256": "8eb2d9338870169b069d44d4cbcff9df51aef4602433b8da8983b3315f3e5a48"
+        }
+      ],
+      "built_outputs": {
+        "app/painter/painter-foundation": {
+          "sha256": "1f20310f5da63e552614d43525b7e053e63d434f1b832b8bb6df01c0f3a95bb5",
+          "size": 1566360
+        },
+        "app/core/libappcore.a": {
+          "sha256": "14756e4f641ee17d232d479d1b6ec46ae4cbe54e72ac8d6a6cf3fa2805273cb3",
+          "size": 132318
+        },
+        "app/display/libappdisplay.a": {
+          "sha256": "fca450b31cc4ea16821d093e225e62b4335c44c1cd38518e0475d5338aea7fde",
+          "size": 36374
+        }
+      },
+      "configure_diagnostics": [
+        "Compiler for C++ supports arguments -fexceptions: YES (cached)",
+        "Checking if \"Painter C++ exception support\" compiles: YES ",
+        "Build targets in project: 1007"
+      ]
+    },
+    {
+      "configuration": "http",
+      "build_returncode": 0,
+      "build_manifest": "/workspace/shared/gimp-exception-policy-04010/http.ninja",
+      "build_manifest_sha256": "eecff55e819e38591965645420e6e30d0f9053ded16d0b95365618759c5955c9",
+      "protected_recipe_substitutions": 17,
+      "compile_link_recipes_unchanged": true,
+      "isolated_generators_executed": [
+        "app/core/stamp-core-enums.h",
+        "app/display/stamp-display-enums.h"
+      ],
+      "generated_output_comparison": [
+        {
+          "source": "app/core/core-enums.c",
+          "original_sha256": "9d635073841947b8f7a3044a43b868fc5efb2cb81ea64482e40a7ce25bc72a11",
+          "isolated_generated_sha256": "9d635073841947b8f7a3044a43b868fc5efb2cb81ea64482e40a7ce25bc72a11"
+        },
+        {
+          "source": "app/display/display-enums.c",
+          "original_sha256": "8eb2d9338870169b069d44d4cbcff9df51aef4602433b8da8983b3315f3e5a48",
+          "isolated_generated_sha256": "8eb2d9338870169b069d44d4cbcff9df51aef4602433b8da8983b3315f3e5a48"
+        }
+      ],
+      "built_outputs": {
+        "app/painter/painter-foundation": {
+          "sha256": "e903f80ce93a407948c606980efdf0fed9b92b5cbe4a281a023b5a05c13d941c",
+          "size": 1566352
+        },
+        "app/core/libappcore.a": {
+          "sha256": "f5e171f37637f764305b5145e88ab11ccb7f7c69b2ab2496a718f9ce8a6a66b5",
+          "size": 132318
+        },
+        "app/display/libappdisplay.a": {
+          "sha256": "714b7b370ad928f60a1cd4b8221e432ce0299ee35ff6fe13caf0339b30fe847a",
+          "size": 36374
+        }
+      },
+      "configure_diagnostics": [
+        "Compiler for C++ supports arguments -fexceptions: YES (cached)",
+        "Checking if \"Painter C++ exception support\" compiles: YES ",
+        "Build targets in project: 1011"
+      ]
+    }
+  ],
+  "limitations": [
+    "Builds limited to foundation test and core/display archives; no full application relink or application execution.",
+    "Native Linux GCC14.2 only; cross-platform build and feature acceptance remain separate."
+  ]
+}
