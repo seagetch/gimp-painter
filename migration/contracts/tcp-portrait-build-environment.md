@@ -62,7 +62,8 @@ must use a deliberately reviewed bound rather than an unbounded server.
 
 ```sh
 python3 "$repo/tools/run-painter-xvfb.py" /bin/true
-python3 "$repo/tools/run-painter-xvfb.py" meson test -C "$run/build" \
+python3 "$repo/tools/run-painter-xvfb.py" flock "$GIMP_PAINTER_BUILD_LOCK" \
+  meson test -C "$run/build" \
   --num-processes 1 --print-errorlogs --logbase baseline-full
 ```
 
@@ -93,3 +94,8 @@ tiles, color controls and bottom active-tool options. This is bounded display
 verification, not full old-UI equivalence. The capture process was deliberately
 terminated; it is not clean-shutdown acceptance. The independent full aggregate
 and known compact-options registration budget issue remain separately tracked.
+
+A subsequent same-fixture, Painter-enabled smoke focused the real application
+window and issued Ctrl+Q through XTest. GIMP returned 0 without device-info
+criticals or Script-Fu crash diagnostics. Font and unavailable-D-Bus diagnostics
+remain. This one normal quit does not close the exhaustive shutdown/lifetime gates.

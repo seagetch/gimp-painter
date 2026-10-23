@@ -145,6 +145,11 @@ foreach test_name : app_tests
   if test_name == 'mypaint-selector-contracts'
     test_timeout = 180
   endif
+  if test_name == 'painter-compact-options'
+    # The first real-input case has >60s of required settle intervals alone.
+    # All 47 unchanged cases took 99.38s on authenticated portrait TCP Xvfb.
+    test_timeout = 180
+  endif
   if test_name == 'painter-layer-ui'
     # All 63 cases took 83.69s under Xvfb; keep the full suite within its budget.
     test_timeout = 180
