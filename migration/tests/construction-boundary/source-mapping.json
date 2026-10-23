@@ -1,0 +1,78 @@
+{
+  "task": "07.016",
+  "parent": "3b396a14dafde794952b868fbd685ed296b7d4a2",
+  "duties": [
+    {
+      "work_id": "legacy-ef67d764acf6a39e5bdd",
+      "source_id": "01.002/000045",
+      "path": "app/base/glib-cxx-impl.hpp",
+      "source_blob": "a2ad35e37a3e7a481698c1f8b78b71adb385f7d3",
+      "source_range": "-0,0 -> 1,560",
+      "source_sha256": "c24566a896ca3302c75736d6e78458027fc19b41b5b7d220a7990e8ecedbdf69",
+      "evidence_path": "migration/tests/inherited-properties/legacy-source/glib-cxx-impl.hpp",
+      "sha256": "5c50241a85ee4caaadb5c28cb4499c4348666281d24078c318cd31c643f04887",
+      "mapping": "Old placement construction in instance-private storage is replaced by unattached unique_ptr store and uniquely owned Entry/Impl candidates, pending-slot rollback and native owner lease."
+    },
+    {
+      "work_id": "legacy-3a4f94052bbed336593a",
+      "source_id": "01.002/000078",
+      "path": "app/base/scopeguard.hpp",
+      "source_blob": "9ddfb5976f4f0ccd3fef93cb3bc4fcd620f70649",
+      "source_range": "-0,0 -> 1,121",
+      "source_sha256": "e173ecd329308d7c9694c3f69ba5c1d4a93b8a130e7c3dd0206c44cbe6e9162e",
+      "archive": "migration/tests/impl-ownership/evidence.tar.gz",
+      "member": "legacy/scopeguard.hpp",
+      "sha256": "aa7b42c9d4738202d084d3feef7813969eb94a82ef0b9323ba22014f39e2284d",
+      "mapping": "Scoped matching releases are supplied by unique_ptr and ObjectRef/ArrayRef/String members; acquired members unwind even when the enclosing Impl never completes."
+    },
+    {
+      "work_id": "legacy-9077262cc5df2edf4ba4",
+      "source_id": "01.002/000079",
+      "path": "app/base/selectcase-utils.hpp",
+      "source_blob": "35ef728e6cba705cd168247a27660d1f0656d7da",
+      "source_range": "-0,0 -> 1,123",
+      "source_sha256": "a6b1ee524283527fd612a480cb91f576ec0fb93b0af8d120374e90021575a6dc",
+      "archive": "migration/tests/impl-ownership/evidence.tar.gz",
+      "member": "legacy/selectcase-utils.hpp",
+      "sha256": "42f29e95d200032cad592e8019cdd4a7e8ebbf1c1bf3f31113d7b12b71fa3896",
+      "mapping": "Copied matcher strings and owned pattern arrays release on constructor exceptions. This cleanup duty does not accept selection matching or feature callers."
+    }
+  ],
+  "reports": [
+    {
+      "path": "migration/tests/construction-boundary/native.json",
+      "sha256": "ecc237826c88043525ca0e5e9d48731c2a6c6a66a66c38d8c1623f1887474f2f",
+      "cases": 70,
+      "current_source_seals": 25
+    },
+    {
+      "path": "migration/tests/construction-boundary/sanitizers.json",
+      "sha256": "2bcd08b956adfbc0b0ce5a5a1f59d8d6c3ac5b861bd1f08d5606f5405db6151f",
+      "cases": 70,
+      "current_source_seals": 25
+    },
+    {
+      "path": "migration/tests/construction-boundary/meson.json",
+      "sha256": "d97582300afc94f17fd2c61f1c456b62dcbb725f1e1af66c0e3da46b26a71802",
+      "cases": 70,
+      "current_source_seals": 25
+    },
+    {
+      "path": "migration/tests/construction-failure/allocation-native.json",
+      "sha256": "5418203341bdfaffb584cd2c74922d8e432c3cf25893dbf6b4bd7395123d54e7",
+      "cases": 5,
+      "current_source_seals": 10,
+      "unchanged_existing_result": true
+    },
+    {
+      "path": "migration/tests/construction-failure/allocation-sanitizers.json",
+      "sha256": "16129360c0fc495d1627ec89d7fb792f7b4e4f15e113526503e49c1285ec6b80",
+      "cases": 5,
+      "current_source_seals": 10,
+      "unchanged_existing_result": true
+    }
+  ],
+  "original_gap": "Construction cleanup and C exception containment were previously tested separately. The added C11 caller now drives actual resource-acquiring constructor failure through the C-linkage C++ boundary.",
+  "production_defect_reproduced": false,
+  "routing_changes": 0
+}

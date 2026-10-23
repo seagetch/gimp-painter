@@ -1,0 +1,49 @@
+{
+  "task": "07.016",
+  "status": "PASS",
+  "original_done": 123,
+  "original_total": 661,
+  "source_duties_accepted": [
+    "legacy-ef67d764acf6a39e5bdd",
+    "legacy-3a4f94052bbed336593a",
+    "legacy-9077262cc5df2edf4ba4"
+  ],
+  "other_source_rows_unchanged": 22760,
+  "source_done": 587,
+  "source_total": 22763,
+  "routing_changes": 0,
+  "focused_foundation_errors": [],
+  "prior_platform_snapshot_now_historical": [
+    "07.014: linux-x86_64 report/source mismatch app/painter/tests/test-c-api.c",
+    "07.014: linux-x86_64 report/source mismatch app/painter/tests/test-c-api.h",
+    "07.014: linux-x86_64 report/source mismatch app/painter/tests/test-foundation.cpp",
+    "07.014: windows-x86_64 report/source mismatch app/painter/tests/test-c-api.c",
+    "07.014: windows-x86_64 report/source mismatch app/painter/tests/test-c-api.h",
+    "07.014: windows-x86_64 report/source mismatch app/painter/tests/test-foundation.cpp",
+    "07.014: windows-x86_64 checkout transformation record differs",
+    "07.014: macos-arm64 report/source mismatch app/painter/tests/test-c-api.c",
+    "07.014: macos-arm64 report/source mismatch app/painter/tests/test-c-api.h",
+    "07.014: macos-arm64 report/source mismatch app/painter/tests/test-foundation.cpp",
+    "07.014: macos-x86_64 report/source mismatch app/painter/tests/test-c-api.c",
+    "07.014: macos-x86_64 report/source mismatch app/painter/tests/test-c-api.h",
+    "07.014: macos-x86_64 report/source mismatch app/painter/tests/test-foundation.cpp"
+  ],
+  "other_historical_foundation_errors": 114,
+  "source_changes": [
+    "app/painter/tests/test-c-api.h",
+    "app/painter/tests/test-c-api.c",
+    "app/painter/tests/test-foundation.cpp"
+  ],
+  "production_changes": false,
+  "independent_review": "Combined C/construction path, counter lifetimes, optional GError and exact70-case report seals verified; no concrete defect found",
+  "checks": [
+    "Native70 PASS",
+    "ASanUBSan70 PASS",
+    "Actual Meson70 PASS",
+    "Existing allocation native5/sanitizer5 with10 currentseals",
+    "check_tasks.py PASS",
+    "audit_legacy_granularity.py --check PASS",
+    "git diff --check PASS"
+  ],
+  "limits": "C-callable construction adapter, not injected GType instance-init failure; String/free measured by separate unchanged allocation harness; no LSan/fatal GLib OOM/full application claim. Automatic native CI refresh will replace no historical bytes."
+}

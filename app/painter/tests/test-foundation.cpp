@@ -981,6 +981,25 @@ gboolean painter_test_cpp_exception (PainterTestExceptionKind kind,
   return boundary<gboolean> (error, FALSE, fail);
 }
 
+gboolean painter_test_cpp_construction (gint failure,
+                                        PainterTestConstructionResult *result,
+                                        GError **error)
+{
+  ConstructionCounts counts;
+  int finalized = 0;
+  const gboolean success = boundary<gboolean> (error, FALSE, [&] {
+    auto owner = new_object ();
+    g_object_weak_ref (owner.get (), weak_notify, &finalized);
+    auto& store = BindingStore::ensure (owner.get ());
+    store.emplace<AcquiredSlot> (counts, failure, nullptr);
+    store.activate ();
+    return TRUE;
+  });
+  *result = {counts.cpp_freed, counts.object_freed, counts.array_elements_freed,
+             counts.completed, counts.closed, counts.destroyed, finalized};
+  return success;
+}
+
 void painter_test_register ()
 {
   painter_test_register_resources ();

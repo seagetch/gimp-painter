@@ -17,5 +17,18 @@ gboolean painter_test_cpp_exception (PainterTestExceptionKind kind,
                                      gboolean                 use_void_boundary,
                                      int                     *destroyed,
                                      GError                 **error);
+typedef struct
+{
+  gint cpp_freed;
+  gint object_freed;
+  gint array_elements_freed;
+  gint completed;
+  gint closed;
+  gint destroyed;
+  gint owner_finalized;
+} PainterTestConstructionResult;
+gboolean painter_test_cpp_construction (gint failure,
+                                        PainterTestConstructionResult *result,
+                                        GError **error);
 G_END_DECLS
 #endif
