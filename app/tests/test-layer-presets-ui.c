@@ -17,6 +17,7 @@
 #include "core/gimplayerpreset.h"
 #include "core/gimpclonelayer.h"
 #include "core/gimpcontainer.h"
+#include "core/gimplist.h"
 #include "core/gimpdatafactory.h"
 #include "core/gimpundostack.h"
 #include "config/gimpcoreconfig.h"
@@ -39,6 +40,7 @@
 #include "widgets/gimpuimanager.h"
 #include "display/display-types.h"
 #include "display/gimpdisplay.h"
+#include "display/gimppaintercanvasui.h"
 #include "actions/actions-types.h"
 #include "actions/actions.h"
 #include "actions/dockable-commands.h"
@@ -662,33 +664,74 @@ gesture_button_event (GestureFixture *f,
   GdkSeat *seat = gdk_display_get_default_seat (gdk_window_get_display (window));
   GdkRectangle area;
   gint start, width, root_x, root_y;
+  gint click_x = 0, click_y = 0;
+  gboolean target_visible = FALSE;
   GdkEvent *event = gdk_event_new (type);
   gint64 deadline = g_get_monotonic_time () + 2 * G_TIME_SPAN_SECOND;
 
-  gtk_tree_view_scroll_to_cell (f->tree->view, path, NULL, FALSE, 0.0, 0.0);
+  gtk_tree_view_scroll_to_cell (f->tree->view, path, NULL, TRUE, 0.5, 0.0);
   while (! gdk_window_is_viewable (window) && g_get_monotonic_time () < deadline)
     { g_main_context_iteration (NULL, FALSE); g_usleep (1000); }
   g_assert_true (gdk_window_is_viewable (window));
-  /* A reopened mapped tree can precede its first cell allocation. Wait for
-   * the native layout rather than inventing click coordinates or resizing it. */
+  /* Mapping/allocation can precede deferred scrolling. A portrait oncanvas
+   * layout can also clip a renderer's full width. Wait for an actually visible
+   * portion of the target cell and verify its native row/column hit-test before
+   * dispatch; never resize the dock or invent coordinates outside its viewport. */
   do
     {
       gtk_tree_view_get_cell_area (f->tree->view, path, column, &area);
       g_assert_true (gtk_tree_view_column_cell_get_position (column, cell, &start, &width));
-      if (width > 0 && area.height > 0) break;
+      if (width > 0 && area.height > 0)
+        {
+          gint left = MAX (0, area.x + start);
+          gint right = MIN (gdk_window_get_width (window), area.x + start + width);
+          gint top = MAX (0, area.y);
+          gint bottom = MIN (gdk_window_get_height (window), area.y + area.height);
+
+          if (left < right && top < bottom)
+            {
+              click_x = left + (right - left) / 2;
+              click_y = top + (bottom - top) / 2;
+              target_visible = gtk_tree_view_get_path_at_pos (f->tree->view,
+                click_x, click_y, &hit, &hit_column, NULL, NULL) &&
+                gtk_tree_path_compare (path, hit) == 0 && hit_column == column;
+              g_clear_pointer (&hit, gtk_tree_path_free);
+              if (target_visible) break;
+            }
+        }
       g_main_context_iteration (NULL, FALSE);
       g_usleep (1000);
     }
   while (g_get_monotonic_time () < deadline);
   g_assert_cmpint (width, >, 0);
   g_assert_cmpint (area.height, >, 0);
+  if (!target_visible)
+    {
+      const gchar *capture = g_getenv ("GIMP_TEST_PRESET_GEOMETRY_SCREENSHOT");
+      g_test_message ("target area=%d,%d %dx%d renderer=%d,%d viewport=%dx%d click=%d,%d",
+                      area.x, area.y, area.width, area.height, start, width,
+                      gdk_window_get_width (window), gdk_window_get_height (window),
+                      click_x, click_y);
+      if (capture)
+        {
+          GdkWindow *root_window = gdk_get_default_root_window ();
+          GdkPixbuf *pixels = gdk_pixbuf_get_from_window (root_window, 0, 0,
+            gdk_window_get_width (root_window), gdk_window_get_height (root_window));
+          GError *error = NULL;
+          g_assert_nonnull (pixels);
+          g_assert_true (gdk_pixbuf_save (pixels, capture, "png", &error, NULL));
+          g_assert_no_error (error);
+          g_object_unref (pixels);
+        }
+    }
+  g_assert_true (target_visible);
   event->button.window = g_object_ref (window);
   event->button.send_event = TRUE;
   event->button.time = time;
   event->button.button = 1;
   event->button.state = type == GDK_BUTTON_RELEASE ? GDK_BUTTON1_MASK : 0;
-  event->button.x = area.x + start + width / 2;
-  event->button.y = area.y + area.height / 2;
+  event->button.x = click_x;
+  event->button.y = click_y;
   gdk_window_get_origin (window, &root_x, &root_y);
   event->button.x_root = root_x + event->button.x;
   event->button.y_root = root_y + event->button.y;
@@ -784,6 +827,42 @@ gesture_undo_all (GestureFixture *f,
   assert_native_source (f->image, f->source, f->pixels, operations);
 }
 
+/* Capture only after verified native queued click/release and Undo assertions.
+ * Resizing is evidence presentation after the interaction, never hit-test setup. */
+static void
+capture_native_preset_result (GestureFixture *f)
+{
+  const gchar *path = g_getenv ("GIMP_TEST_PRESET_SCREENSHOT");
+  GimpDisplayShell *shell;
+  GtkWidget *window;
+  GdkWindow *native;
+  GdkPixbuf *pixels;
+  GError *error = NULL;
+  gint old_width, old_height;
+  gint64 deadline;
+
+  if (!path) return;
+  shell = gimp_display_get_shell (f->display);
+  g_assert_true (gimp_painter_canvas_ui_get_visible (shell));
+  gesture_assert_operations (f, 1);
+  window = gtk_widget_get_toplevel (GTK_WIDGET (shell));
+  gtk_window_get_size (GTK_WINDOW (window), &old_width, &old_height);
+  gtk_window_resize (GTK_WINDOW (window), 1040, 1800);
+  gtk_window_present (GTK_WINDOW (window));
+  deadline = g_get_monotonic_time () + G_TIME_SPAN_SECOND;
+  while (g_get_monotonic_time () < deadline)
+    { g_main_context_iteration (NULL, FALSE); g_usleep (10000); }
+  native = gtk_widget_get_window (window);
+  pixels = gdk_pixbuf_get_from_window (native, 0, 0,
+    gdk_window_get_width (native), gdk_window_get_height (native));
+  g_assert_nonnull (pixels);
+  g_assert_true (gdk_pixbuf_save (pixels, path, "png", &error, NULL));
+  g_assert_no_error (error);
+  g_object_unref (pixels);
+  gtk_window_resize (GTK_WINDOW (window), old_width, old_height);
+  gimp_test_run_mainloop_until_idle ();
+}
+
 static void
 native_primary_click (void)
 {
@@ -796,6 +875,7 @@ native_primary_click (void)
   gesture_button (&f, GDK_BUTTON_RELEASE, 1010, FALSE);
   g_assert_cmpuint (f.release_selections, ==, 1);
   gesture_assert_operations (&f, 1);
+  capture_native_preset_result (&f);
   g_assert_true (gimp_image_undo (f.image));
   assert_native_source (f.image, f.source, f.pixels, 1);
   g_assert_true (gimp_image_redo (f.image));
@@ -1153,9 +1233,20 @@ native_blank_release_cancels (void)
   GdkEvent *release;
   GtkTreePath *hit = NULL;
   GdkWindow *window;
+  GimpContainer *original_container, *one_row;
   gint root_x, root_y;
 
   gesture_fixture_init (&f);
+  /* A compact portrait dock can fit no blank pixel below the full factory.
+   * Use a one-row view-only fixture to establish the blank-release condition.
+   * The application factory/container is never mutated, even on assertion abort. */
+  original_container = g_object_ref (gimp_container_view_get_container (f.container));
+  one_row = gimp_list_new (GIMP_TYPE_LAYER_PRESET, FALSE);
+  gimp_container_add (one_row, GIMP_OBJECT (f.preset));
+  gimp_container_view_set_container (f.container, one_row);
+  gimp_test_run_mainloop_until_idle ();
+  g_assert_cmpint (gimp_container_get_n_children (one_row), ==, 1);
+  gesture_assert_operations (&f, 0);
   gimp_container_view_set_1_selected (f.container, f.preset);
   gesture_undo_all (&f, 1);
   gesture_button (&f, GDK_BUTTON_PRESS, 14000, FALSE);
@@ -1177,6 +1268,9 @@ native_blank_release_cancels (void)
   gesture_button (&f, GDK_BUTTON_RELEASE, 14110, FALSE);
   gesture_assert_operations (&f, 1);
   gesture_undo_all (&f, 1);
+  gimp_container_view_set_container (f.container, original_container);
+  g_object_unref (one_row);
+  g_object_unref (original_container);
   gesture_fixture_clear (&f);
 }
 
@@ -1373,6 +1467,7 @@ int main (int argc, char **argv)
 {
   g_test_init (&argc, &argv, NULL); if (!gtk_init_check (&argc, &argv)) return GIMP_EXIT_TEST_SKIPPED;
   gimp_test_utils_setup_menus_path (); gimp = gimp_init_for_gui_testing (TRUE);
+  g_object_set (gimp->config, "painter-canvas-ui", TRUE, NULL);
   g_test_add_func ("/layer-presets-ui/selection-actions-lifetime", selection_actions_lifetime);
   g_test_add_func ("/layer-presets-ui/preferences-registration", preferences_and_registration);
   g_test_add_func ("/layer-presets-ui/dialog-factory-dockable-lifetime", dialog_factory_dockable_lifetime);
