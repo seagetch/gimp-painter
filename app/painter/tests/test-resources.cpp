@@ -118,6 +118,87 @@ void connections ()
   moved.close ();
   moved.close ();
 }
+struct ClosureCounts { int calls = 0; int destroyed = 0; };
+struct ClosureData { ClosureCounts *counts; };
+void owned_notify (GObject *, GParamSpec *, gpointer data)
+{ ++static_cast<ClosureData *> (data)->counts->calls; }
+void owned_closure_destroy (gpointer data, GClosure *)
+{
+  auto *owned = static_cast<ClosureData *> (data);
+  ++owned->counts->destroyed;
+  delete owned;
+}
+void connection_ownership ()
+{
+  // Target first, explicit close, wrapper destruction, and external disconnect.
+  for (int order = 0; order < 4; ++order)
+    {
+      int finalized = 0;
+      ClosureCounts counts;
+      auto emitter = new_object ();
+      g_object_weak_ref (emitter.get (), count_destroy, &finalized);
+      {
+        auto *data = new ClosureData { &counts };
+        auto connection = Connection::connect (emitter, "notify", G_CALLBACK (owned_notify),
+                                                data, owned_closure_destroy);
+        g_assert_cmpuint (emitter.get ()->ref_count, ==, 1);
+        notify (emitter.get ());
+        g_assert_cmpint (counts.calls, ==, 1);
+        g_assert_cmpint (counts.destroyed, ==, 0);
+        if (order == 0)
+          {
+            emitter.reset ();
+            g_assert_cmpint (finalized, ==, 1);
+            g_assert_cmpint (counts.destroyed, ==, 1);
+            g_assert_false (connection.connected ());
+            connection.block (); connection.unblock ();
+            connection.close (); connection.close ();
+          }
+        else if (order == 1)
+          {
+            connection.close (); connection.close ();
+            g_assert_false (connection.connected ());
+          }
+        else if (order == 3)
+          {
+            g_assert_cmpuint (g_signal_handlers_disconnect_by_data (emitter.get (), data), ==, 1);
+            g_assert_false (connection.connected ());
+            connection.close ();
+          }
+      }
+      g_assert_cmpint (counts.destroyed, ==, 1);
+      if (emitter)
+        {
+          notify (emitter.get ());
+          g_assert_cmpint (counts.calls, ==, 1);
+          g_assert_cmpint (finalized, ==, 0);
+          emitter.reset ();
+        }
+      g_assert_cmpint (finalized, ==, 1);
+      g_assert_cmpint (counts.destroyed, ==, 1);
+    }
+  ClosureCounts first, displaced;
+  auto emitter = new_object ();
+  auto source = Connection::connect (emitter, "notify", G_CALLBACK (owned_notify),
+                                     new ClosureData { &first }, owned_closure_destroy);
+  auto destination = Connection::connect (emitter, "notify", G_CALLBACK (owned_notify),
+                                          new ClosureData { &displaced }, owned_closure_destroy);
+  destination = std::move (source);
+  g_assert_false (source.connected ());
+  g_assert_true (destination.connected ());
+  g_assert_cmpint (displaced.destroyed, ==, 1);
+  Connection& alias = destination;
+  destination = std::move (alias);
+  auto moved = std::move (destination);
+  g_assert_false (destination.connected ());
+  notify (emitter.get ());
+  g_assert_cmpint (first.calls, ==, 1);
+  g_assert_cmpint (displaced.calls, ==, 0);
+  moved.close (); source.close (); destination.close ();
+  g_assert_cmpint (first.destroyed, ==, 1);
+  g_assert_cmpint (displaced.destroyed, ==, 1);
+  g_assert_cmpuint (emitter.get ()->ref_count, ==, 1);
+}
 struct Reconnect
 {
   Connection *connection;
@@ -226,6 +307,7 @@ void painter_test_register_resources ()
   g_test_add_func ("/painter/resources/error-message-transfer", errors);
   g_test_add_func ("/painter/resources/mutex-exception", mutex_guard);
   g_test_add_func ("/painter/signal/lifetime-blocks", connections);
+  g_test_add_func ("/painter/signal/owned-lifetime", connection_ownership);
   g_test_add_func ("/painter/signal/after-order", signal_order);
   g_test_add_func ("/painter/signal/reentrant-disconnect", reentrant_disconnect);
   g_test_add_func ("/painter/source/cancel-repeat", sources);
