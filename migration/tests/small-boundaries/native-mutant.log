@@ -1,0 +1,98 @@
+Xvfb verified: 127.0.0.1:92, 1080x1920x24, authenticated accepted, empty authority rejected
+1/1 gimp:app / gimp-painter-surface FAIL            1.23s   killed by signal 6 SIGABRT
+>>> LD_LIBRARY_PATH=<native>/build-port/libgimpthumb:<native>/build-port/libgimpwidgets:<native>/build-port/libgimpconfig:<native>/build-port/libgimpmodule:<native>/build-port/libgimpmath:<native>/build-port/libgimpcolor:<native>/build-port/libgimpbase:<native>/prefix/lib/x86_64-linux-gnu:<dependencies>/root/usr/lib/x86_64-linux-gnu ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 UI_TEST=yes GIMP_TESTING_ABS_TOP_SRCDIR=<native>/source MALLOC_PERTURB_=54 MESON_TEST_ITERATION=1 GIMP_TESTING_ABS_TOP_BUILDDIR=<native>/build-port GIMP_TESTING_PLUGINDIRS=<native>/build-port/plug-ins/common UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 <native>/build-port/app/tests/gimp-painter-surface -p /small-boundaries/native-tiny-edges
+――――――――――――――――――――――――――――――――――――― ✀  ―――――――――――――――――――――――――――――――――――――
+stdout:
+TAP version 14
+# random seed: R02S88a2ab074b1fae3b595cbcf14a96c74d
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+# Start of small-boundaries tests
+not ok /small-boundaries/native-tiny-edges - ERROR:../source/app/tests/test-painter-surface-small-boundaries.inc:24:void SmallBoundaries::native_small_edges(): 'painted!=before' should be TRUE
+Bail out!
+stderr:
+Skipping unknown file '<native>/build-port/plug-ins/common/contrast-retinex.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/align-layers.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/convolution-matrix.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/animation-optimize.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/animation-play.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/blinds.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/border-average.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/busy-dialog.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/checkerboard.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/cml-explorer.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/compose.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/colormap-remap.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/crop-zealous.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/curve-bend.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/decompose.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/depth-merge.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/despeckle.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/destripe.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/file-cel.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/file-compressor.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/file-dicom.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/file-farbfeld.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/file-csource.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/file-gbr.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/file-gegl.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/file-gif-export.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/file-gif-load.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/file-gih.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/file-glob.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/file-header.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/file-html-table.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/file-pat.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/file-pcx.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/file-pdf-load.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/file-pix.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/file-png.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/file-pnm.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/file-psp.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/file-raw-data.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/file-sunras.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/file-svg.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/file-tga.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/file-wbmp.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/file-xwd.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/file-xbm.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/film.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/gradient-map.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/grid.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/guillotine.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/hot.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/nl-filter.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/jigsaw.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/plugin-browser.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/procedure-browser.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/qbist.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/sample-colorize.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/smooth-palette.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/sparkle.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/tile-small.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/sphere-designer.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/tile.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/unit-editor.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/van-gogh-lic.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/warp.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/wavelet-decompose.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/web-browser.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/file-desktop-link.dummy' in plug-in directory.
+Skipping unknown file '<native>/build-port/plug-ins/common/mail.dummy' in plug-in directory.
+**
+ERROR:../source/app/tests/test-painter-surface-small-boundaries.inc:24:void SmallBoundaries::native_small_edges(): 'painted!=before' should be TRUE
+――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+
+
+Summary of Failures:
+
+1/1 gimp:app / gimp-painter-surface FAIL            1.23s   killed by signal 6 SIGABRT
+
+Ok:                 0   
+Expected Fail:      0   
+Fail:               1   
+Unexpected Pass:    0   
+Skipped:            0   
+Timeout:            0   
+
+Full log written to <native>/build-port/meson-logs/small-boundaries-mutant.txt

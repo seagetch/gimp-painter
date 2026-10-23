@@ -1,0 +1,7 @@
+{
+  "name": "off-by-one-one-pixel-extent",
+  "exit_code": 1,
+  "rejected": true,
+  "old": "if (right <= x || bottom <= y)",
+  "new": "if (right <= x + 1 || bottom <= y)"
+}

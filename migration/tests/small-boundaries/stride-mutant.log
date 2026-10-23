@@ -1,0 +1,7 @@
+TAP version 14
+# random seed: R02S6883e3eedc6a6884fdb51423b3f55a27
+# Start of buffer-read tests
+not ok /buffer-read/native-formats-and-partial-regions - ERROR:<checkout>/app/paint/painter-mypaint-surface/tests/buffer-read.cpp:46:void {anonymous}::verify(Fixture&, const GeglRectangle&): assertion failed (result[17 + y * stride + x * f.bpp + c] == value): (155 == 142)
+Bail out!
+**
+ERROR:<checkout>/app/paint/painter-mypaint-surface/tests/buffer-read.cpp:46:void {anonymous}::verify(Fixture&, const GeglRectangle&): assertion failed (result[17 + y * stride + x * f.bpp + c] == value): (155 == 142)

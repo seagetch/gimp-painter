@@ -1,0 +1,7 @@
+{
+  "name": "replace-padded-output-stride-with-packed-row",
+  "exit_code": -6,
+  "rejected": true,
+  "old": "gint (rowstride), GEGL_ABYSS_NONE);",
+  "new": "gint (row), GEGL_ABYSS_NONE);"
+}
