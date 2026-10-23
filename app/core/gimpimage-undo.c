@@ -48,7 +48,8 @@ static gboolean      gimp_image_undo_pop_stack       (GimpImage     *image,
 static void          gimp_image_undo_free_space      (GimpImage     *image);
 static void          gimp_image_undo_free_redo       (GimpImage     *image);
 static GimpUndo *     gimp_image_undo_publish         (GimpImage     *image,
-                                                      GimpUndo      *undo);
+                                                      GimpUndo      *undo,
+                                                      gboolean      *published);
 
 static GimpDirtyMask gimp_image_undo_dirty_from_type (GimpUndoType   undo_type);
 
@@ -480,7 +481,7 @@ gimp_image_undo_push (GimpImage     *image,
         }
     }
 
-  undo = gimp_image_undo_publish (image, undo);
+  undo = gimp_image_undo_publish (image, undo, NULL);
   if (undo) g_object_add_weak_pointer (G_OBJECT (undo), (gpointer *) &undo);
   g_object_unref (image);
   if (undo) g_object_remove_weak_pointer (G_OBJECT (undo), (gpointer *) &undo);
@@ -491,10 +492,11 @@ gimp_image_undo_push (GimpImage     *image,
  * initialization/frozen history consumes it without dirtying or replacing redo.
  * Native construction is separate so fallible payloads can be prepared before
  * their associated pixel transaction is committed. */
-GimpUndo *
-gimp_image_undo_push_prepared (GimpImage *image,
-                                GimpUndo  *undo,
-                                GError   **error)
+static GimpUndo *
+gimp_image_undo_push_prepared_internal (GimpImage *image,
+                                       GimpUndo  *undo,
+                                       gboolean  *published,
+                                       GError   **error)
 {
   g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
   g_return_val_if_fail (GIMP_IS_UNDO (undo), NULL);
@@ -533,7 +535,7 @@ gimp_image_undo_push_prepared (GimpImage *image,
   /* The image lease also spans initialization callbacks. */
   if (undo->dirty_mask != GIMP_DIRTY_NONE)
     gimp_image_dirty (image, undo->dirty_mask);
-  undo = gimp_image_undo_publish (image, undo);
+  undo = gimp_image_undo_publish (image, undo, published);
   /* Releasing the operation's last image lease can expire its history. */
   if (undo) g_object_add_weak_pointer (G_OBJECT (undo), (gpointer *) &undo);
   g_object_unref (image);
@@ -541,12 +543,30 @@ gimp_image_undo_push_prepared (GimpImage *image,
   return undo;
 }
 
+GimpUndo *
+gimp_image_undo_push_prepared (GimpImage *image, GimpUndo *undo, GError **error)
+{
+  return gimp_image_undo_push_prepared_internal (image, undo, NULL, error);
+}
+
+gboolean
+gimp_image_undo_publish_prepared (GimpImage *image, GimpUndo *undo,
+                                  GimpUndo **surviving_entry, GError **error)
+{
+  gboolean published = FALSE;
+  g_return_val_if_fail (surviving_entry != NULL, FALSE);
+  *surviving_entry = gimp_image_undo_push_prepared_internal (image, undo,
+                                                           &published, error);
+  return published;
+}
+
 /* Sole native stack publication path for both fresh and prepared objects.
  * The initial reference becomes the stack's explicit ownership; an additional
  * lease protects observer-driven immediate history expiration. */
 static GimpUndo *
 gimp_image_undo_publish (GimpImage *image,
-                         GimpUndo  *undo)
+                         GimpUndo  *undo,
+                         gboolean  *published)
 {
   GimpImagePrivate *private = GIMP_IMAGE_GET_PRIVATE (image);
   GimpUndo        *result = NULL;
@@ -560,6 +580,7 @@ gimp_image_undo_publish (GimpImage *image,
   if (private->pushing_undo_group == GIMP_UNDO_GROUP_NONE)
     {
       gimp_undo_stack_push_undo (private->undo_stack, undo);
+      if (published) *published = TRUE;
       gimp_image_undo_event (image, GIMP_UNDO_EVENT_UNDO_PUSHED, undo);
       gimp_image_undo_free_space (image);
       if (gimp_undo_stack_peek (private->undo_stack) == undo)
@@ -571,6 +592,7 @@ gimp_image_undo_publish (GimpImage *image,
 
       group = GIMP_UNDO_STACK (g_object_ref (gimp_undo_stack_peek (private->undo_stack)));
       gimp_undo_stack_push_undo (group, undo);
+      if (published) *published = TRUE;
       if (gimp_container_have (group->undos, GIMP_OBJECT (undo)))
         result = undo;
       g_object_unref (group);

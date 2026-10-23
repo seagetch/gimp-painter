@@ -7,4 +7,4 @@ extern "C" GimpUndo *gimp_image_undo_push_prepared(GimpImage*,GimpUndo*,GError**
 #include "core/gimpimage-undo.h"
 #include "core/gimpimage-undo.h"
 extern "C" void prepared_undo_cpp_signature(void);
-extern "C" void prepared_undo_cpp_signature(void){GimpUndo*(*entry)(GimpImage*,GimpUndo*,GError**)=gimp_image_undo_push_prepared;g_assert_nonnull(entry);}
+extern "C" void prepared_undo_cpp_signature(void){GimpUndo*(*entry)(GimpImage*,GimpUndo*,GError**)=gimp_image_undo_push_prepared;g_assert_nonnull(entry);gboolean(*publish)(GimpImage*,GimpUndo*,GimpUndo**,GError**)=gimp_image_undo_publish_prepared;g_assert_nonnull(publish);}

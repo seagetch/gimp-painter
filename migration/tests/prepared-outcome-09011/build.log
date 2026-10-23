@@ -1,0 +1,295 @@
+ninja: Entering directory `/workspace/shared/gimp-native-preset-gui/build'
+[1/111] Generating git-version.h.in.1 with a custom command
+fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+[2/111] Generating git-version.h.in.2 with a custom command
+fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+[3/111] Generating git-version.h with a custom command
+fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+[4/107] Generating app/tests/icon-theme-fixture/gimp-test-icon-theme-fixture with a custom command
+{"files": 1191, "manifest_sha256": "2f790ebf02244ef3c023f17f16ab614cbc315ee46d46abd87b7f73d4d5d9be41", "ownership_marker_sha256": "d3ebe76f57bdce73e82df17c3cd89f1a630f42f3c8d72dbfdacd4a000061b8bf", "plan_sha256": "0a16da7a76b5facf2d3d8084793b72e28d32d17c7ff6bf237d164075d4af4b95", "stamp_sha256": "c20e592420d8f1feb8e044c6114f8ed009473d411042806fd6e9aadd50c7ffc9", "status": "verified"}
+[5/107] Compiling C object app/actions/libappactions.a.p/channels-commands.c.o
+[6/107] Compiling C object app/actions/libappactions.a.p/edit-actions.c.o
+[7/107] Compiling C object app/actions/libappactions.a.p/drawable-commands.c.o
+[8/107] Compiling C object app/actions/libappactions.a.p/edit-commands.c.o
+[9/107] Compiling C object app/actions/libappactions.a.p/image-commands.c.o
+[10/107] Compiling C object app/actions/libappactions.a.p/items-commands.c.o
+[11/107] Compiling C object app/actions/libappactions.a.p/paths-commands.c.o
+[12/107] Compiling C object app/actions/libappactions.a.p/layers-commands.c.o
+[13/107] Compiling C object app/core/libappcore.a.p/gimp-edit.c.o
+[14/107] Compiling C++ object app/core/libappcore.a.p/gimpclonelayer.cpp.o
+[15/107] Compiling C++ object app/core/libappcore.a.p/gimpfilterprocedure.cpp.o
+[16/107] Compiling C object app/core/libappcore.a.p/gimpchannel.c.o
+[17/107] Compiling C object app/core/libappcore.a.p/gimpdrawable-filters.c.o
+[18/107] Compiling C object app/core/libappcore.a.p/gimpdrawable-transform.c.o
+[19/107] Compiling C object app/core/libappcore.a.p/gimpgrouplayer.c.o
+[20/107] Compiling C++ object app/core/libappcore.a.p/gimpperspectiveguideundo.cpp.o
+[21/107] Compiling C object app/core/libappcore.a.p/gimpimage-arrange.c.o
+[22/107] Compiling C object app/core/libappcore.a.p/gimpimage-color-profile.c.o
+[23/107] Compiling C object app/core/libappcore.a.p/gimpimage-colormap.c.o
+[24/107] Compiling C++ object app/core/libappcore.a.p/gimpfilterlayer.cpp.o
+[25/107] Compiling C object app/core/libappcore.a.p/gimpimage-convert-precision.c.o
+[26/107] Compiling C object app/core/libappcore.a.p/gimpimage-convert-type.c.o
+[27/107] Compiling C object app/core/libappcore.a.p/gimpimage-crop.c.o
+[28/107] Compiling C object app/core/libappcore.a.p/gimpimage-convert-indexed.c.o
+[29/107] Compiling C object app/core/libappcore.a.p/gimpimage-duplicate.c.o
+[30/107] Compiling C object app/core/libappcore.a.p/gimpimage-flip.c.o
+[31/107] Compiling C object app/core/libappcore.a.p/gimpimage-item-list.c.o
+[32/107] Compiling C object app/core/libappcore.a.p/gimpimage-merge.c.o
+[33/107] Compiling C object app/core/libappcore.a.p/gimpimage-metadata.c.o
+[34/107] Compiling C object app/core/libappcore.a.p/gimpimage-quick-mask.c.o
+[35/107] Compiling C object app/core/libappcore.a.p/gimpimage-new.c.o
+[36/107] Compiling C object app/core/libappcore.a.p/gimpimage-resize.c.o
+[37/107] Compiling C object app/core/libappcore.a.p/gimpimage-rotate.c.o
+[38/107] Compiling C object app/core/libappcore.a.p/gimpimage-scale.c.o
+[39/107] Compiling C object app/core/libappcore.a.p/gimpimage-transform.c.o
+[40/107] Compiling C object app/core/libappcore.a.p/gimpimage-undo.c.o
+[41/107] Compiling C object app/core/libappcore.a.p/gimpimage-undo-push.c.o
+[42/107] Compiling C object app/core/libappcore.a.p/gimpitem-exclusive.c.o
+[43/107] Compiling C object app/core/libappcore.a.p/gimpitem.c.o
+[44/107] Compiling C object app/core/libappcore.a.p/gimplayer-floating-selection.c.o
+[45/107] Compiling C object app/core/libappcore.a.p/gimpimage.c.o
+../source/app/core/gimpimage.c: In function ‘gimp_image_get_xcf_version’:
+../source/app/core/gimpimage.c:2864:7: warning: enumeration value ‘GIMP_LAYER_MODE_PAINTER_ERASE’ not handled in switch [-Wswitch]
+ 2864 |       switch (gimp_layer_get_mode (layer))
+      |       ^~~~~~
+../source/app/core/gimpimage.c:2864:7: warning: enumeration value ‘GIMP_LAYER_MODE_PAINTER_REPLACE’ not handled in switch [-Wswitch]
+../source/app/core/gimpimage.c:2864:7: warning: enumeration value ‘GIMP_LAYER_MODE_PAINTER_ANTI_ERASE’ not handled in switch [-Wswitch]
+../source/app/core/gimpimage.c:2864:7: warning: enumeration value ‘GIMP_LAYER_MODE_PAINTER_SRC_IN’ not handled in switch [-Wswitch]
+../source/app/core/gimpimage.c:2864:7: warning: enumeration value ‘GIMP_LAYER_MODE_PAINTER_DST_IN’ not handled in switch [-Wswitch]
+../source/app/core/gimpimage.c:2864:7: warning: enumeration value ‘GIMP_LAYER_MODE_PAINTER_SRC_OUT’ not handled in switch [-Wswitch]
+../source/app/core/gimpimage.c:2864:7: warning: enumeration value ‘GIMP_LAYER_MODE_PAINTER_DST_OUT’ not handled in switch [-Wswitch]
+../source/app/core/gimpimage.c:2864:7: warning: enumeration value ‘GIMP_LAYER_MODE_PAINTER_NORMAL’ not handled in switch [-Wswitch]
+../source/app/core/gimpimage.c:2864:7: warning: enumeration value ‘GIMP_LAYER_MODE_PAINTER_MULTIPLY’ not handled in switch [-Wswitch]
+[46/107] Compiling C object app/core/libappcore.a.p/gimpselection.c.o
+[47/107] Compiling C object app/core/libappcore.a.p/gimplayer.c.o
+[48/107] Compiling C object app/core/libappcore.a.p/gimpundo.c.o
+[49/107] Compiling C object app/dialogs/libappdialogs.a.p/file-open-dialog.c.o
+[50/107] Compiling C object app/dialogs/libappdialogs.a.p/grid-dialog.c.o
+[51/107] Compiling C++ object app/core/libappcore.a.p/gimplayerpreset-apply.cpp.o
+[52/107] Compiling C object app/display/libappdisplay.a.p/gimpdisplayshell-dnd.c.o
+[53/107] Compiling C++ object app/dialogs/libappdialogs.a.p/painter-layer-dialog.cpp.o
+[54/107] Compiling C object app/file/libappfile.a.p/file-open.c.o
+[55/107] Compiling C++ object app/display/libappdisplay.a.p/gimppaintercanvasui.cpp.o
+../source/app/display/gimppaintercanvasui.cpp:635:6: warning: ‘void {anonymous}::Canvas::finish_compact_restore(const std::shared_ptr<{anonymous}::Borrow>&)’ defined but not used [-Wunused-function]
+  635 | void Canvas::finish_compact_restore (const std::shared_ptr<Borrow>& borrowed) noexcept {
+      |      ^~~~~~
+../source/app/display/gimppaintercanvasui.cpp:282:12: warning: ‘GtkWidget* {anonymous}::action_button(Canvas&, GtkWidget*, const char*, const char*)’ defined but not used [-Wunused-function]
+  282 | GtkWidget *action_button(Canvas&s,GtkWidget*box,const char*label,const char*name) {
+      |            ^~~~~~~~~~~~~
+[56/107] Compiling C object app/paint/libapppaint.a.p/gimpink.c.o
+[57/107] Compiling C object app/pdb/libappinternalprocs.a.p/image-autocrop-cmds.c.o
+[58/107] Compiling C object app/paint/libapppaint.a.p/gimppaintcore.c.o
+[59/107] Compiling C object app/pdb/libappinternalprocs.a.p/image-undo-cmds.c.o
+[60/107] Compiling C object app/pdb/libappinternalprocs.a.p/layer-cmds.c.o
+[61/107] Compiling C object app/plug-in/libappplug-in.a.p/gimpplugin-cleanup.c.o
+[62/107] Compiling C object app/text/libapptext.a.p/gimptext-compat.c.o
+[63/107] Compiling C object app/text/libapptext.a.p/gimptextlayer-transform.c.o
+[64/107] Compiling C object app/text/libapptext.a.p/gimptextlayer.c.o
+[65/107] Compiling C object app/tools/libapptools.a.p/gimp-tools.c.o
+[66/107] Compiling C object app/tools/libapptools.a.p/gimpaligntool.c.o
+[67/107] Compiling C object app/tools/libapptools.a.p/gimpcroptool.c.o
+[68/107] Compiling C object app/tools/libapptools.a.p/gimpeditselectiontool.c.o
+[69/107] Compiling C object app/tools/libapptools.a.p/gimpguidetool.c.o
+[70/107] Compiling C object app/tools/libapptools.a.p/gimpmeasuretool.c.o
+[71/107] Compiling C object app/tools/libapptools.a.p/gimpmovetool.c.o
+[72/107] Compiling C++ object app/tools/libapptools.a.p/gimpfillbrushtool.cpp.o
+[73/107] Compiling C object app/tools/libapptools.a.p/gimpselectiontool.c.o
+[74/107] Compiling C object app/tools/libapptools.a.p/gimptexttool.c.o
+[75/107] Compiling C object app/tools/libapptools.a.p/gimptransformgridtool.c.o
+[76/107] Compiling C object app/tools/libapptools.a.p/gimptransformtool.c.o
+[77/107] Compiling C object app/tools/libapptools.a.p/gimpvectortool.c.o
+[78/107] Compiling C object app/widgets/libappwidgets.a.p/gimpchanneltreeview.c.o
+[79/107] Compiling C object app/vectors/libappvectors.a.p/gimppath-import.c.o
+[80/107] Compiling C object app/widgets/libappwidgets.a.p/gimpdrawabletreeview.c.o
+[81/107] Compiling C object app/widgets/libappwidgets.a.p/gimpimagepropview.c.o
+[82/107] Compiling C object app/widgets/libappwidgets.a.p/gimpitemtreeview.c.o
+[83/107] Compiling C object app/widgets/libappwidgets.a.p/gimplayertreeview.c.o
+[84/107] Compiling C object app/widgets/libappwidgets.a.p/gimptoolbox-dnd.c.o
+[85/107] Compiling C object app/widgets/libappwidgets.a.p/gimpundoeditor.c.o
+[86/107] Compiling C++ object app/xcf/libappxcf.a.p/painter-xcf-load.cpp.o
+[87/107] Compiling C++ object app/widgets/libappwidgets.a.p/gimppainterlayertiles.cpp.o
+[88/107] Compiling C object app/xcf/libappxcf.a.p/xcf-load.c.o
+[89/107] Linking static target app/actions/libappactions.a
+[90/107] Linking static target app/core/libappcore.a
+[91/107] Linking static target app/dialogs/libappdialogs.a
+[92/107] Linking static target app/display/libappdisplay.a
+[93/107] Linking static target app/file/libappfile.a
+[94/107] Linking static target app/paint/libapppaint.a
+[95/107] Linking static target app/pdb/libappinternalprocs.a
+[96/107] Linking static target app/plug-in/libappplug-in.a
+[97/107] Linking static target app/text/libapptext.a
+[98/107] Linking static target app/tools/libapptools.a
+[99/107] Linking static target app/vectors/libappvectors.a
+[100/107] Linking static target app/widgets/libappwidgets.a
+[101/107] Compiling C++ object app/xcf/libappxcf.a.p/painter-xcf-preserve.cpp.o
+[102/107] Linking static target app/xcf/libappxcf.a
+[103/107] Compiling C object app/tests/prepared-undo.p/test-prepared-undo.c.o
+../source/app/tests/test-prepared-undo.c: In function ‘success’:
+../source/app/tests/test-prepared-undo.c:51:2: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+   51 |  if(!begin())return;prepared_undo_cpp_signature();u=make();weak=u;g_object_add_weak_pointer(G_OBJECT(u),&weak);
+      |  ^~
+../source/app/tests/test-prepared-undo.c:51:21: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+   51 |  if(!begin())return;prepared_undo_cpp_signature();u=make();weak=u;g_object_add_weak_pointer(G_OBJECT(u),&weak);
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+../source/app/tests/test-prepared-undo.c: In function ‘failure’:
+../source/app/tests/test-prepared-undo.c:57:2: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+   57 |  if(!begin())return;seed_redo();redo=gimp_undo_stack_peek(gimp_image_get_redo_stack(image));dirty=gimp_image_is_dirty(image);u=make();weak=u;g_object_add_weak_pointer(G_OBJECT(u),&weak);fail_init=TRUE;
+      |  ^~
+../source/app/tests/test-prepared-undo.c:57:21: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+   57 |  if(!begin())return;seed_redo();redo=gimp_undo_stack_peek(gimp_image_get_redo_stack(image));dirty=gimp_image_is_dirty(image);u=make();weak=u;g_object_add_weak_pointer(G_OBJECT(u),&weak);fail_init=TRUE;
+      |                     ^~~~~~~~~
+../source/app/tests/test-prepared-undo.c: In function ‘frozen’:
+../source/app/tests/test-prepared-undo.c:62:2: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+   62 |  if(!begin())return;seed_redo();redo=gimp_undo_stack_peek(gimp_image_get_redo_stack(image));gimp_image_undo_freeze(image);u=make();weak=u;g_object_add_weak_pointer(G_OBJECT(u),&weak);
+      |  ^~
+../source/app/tests/test-prepared-undo.c:62:21: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+   62 |  if(!begin())return;seed_redo();redo=gimp_undo_stack_peek(gimp_image_get_redo_stack(image));gimp_image_undo_freeze(image);u=make();weak=u;g_object_add_weak_pointer(G_OBJECT(u),&weak);
+      |                     ^~~~~~~~~
+../source/app/tests/test-prepared-undo.c: In function ‘invalid’:
+../source/app/tests/test-prepared-undo.c:67:2: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+   67 |  if(!begin())return;u=make();other=gimp_image_new(application,16,16,GIMP_RGB,GIMP_PRECISION_U8_NON_LINEAR);
+      |  ^~
+../source/app/tests/test-prepared-undo.c:67:21: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+   67 |  if(!begin())return;u=make();other=gimp_image_new(application,16,16,GIMP_RGB,GIMP_PRECISION_U8_NON_LINEAR);
+      |                     ^
+../source/app/tests/test-prepared-undo.c: In function ‘duplicate’:
+../source/app/tests/test-prepared-undo.c:72:2: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+   72 |  if(!begin())return;u=make();g_assert_nonnull(gimp_image_undo_push_prepared(image,u,NULL));g_object_ref(u);
+      |  ^~
+../source/app/tests/test-prepared-undo.c:72:21: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+   72 |  if(!begin())return;u=make();g_assert_nonnull(gimp_image_undo_push_prepared(image,u,NULL));g_object_ref(u);
+      |                     ^
+../source/app/tests/test-prepared-undo.c: In function ‘grouped’:
+../source/app/tests/test-prepared-undo.c:76:2: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+   76 |  if(!begin())return;g_assert_true(gimp_image_undo_group_start(image,GIMP_UNDO_GROUP_PAINT,"Prepared group"));g_assert_nonnull(gimp_image_undo_push_prepared(image,make(),NULL));g_assert_nonnull(gimp_image_undo_push_prepared(image,make(),NULL));g_assert_true(gimp_image_undo_group_end(image));g_assert_cmpint(gimp_undo_stack_get_depth(gimp_image_get_undo_stack(image)),==,1);g_assert_true(gimp_image_undo(image));g_assert_true(gimp_image_redo(image));finish();
+      |  ^~
+In file included from /workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu/glib-2.0/include/glibconfig.h:9,
+                 from /workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/glib/gtypes.h:34,
+                 from /workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/glib/galloca.h:34,
+                 from /workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/glib.h:32,
+                 from /workspace/shared/gimp-deps-locked/root/usr/include/gtk-3.0/gdk/gdkconfig.h:8,
+                 from /workspace/shared/gimp-deps-locked/root/usr/include/gtk-3.0/gdk/gdk.h:30,
+                 from /workspace/shared/gimp-deps-locked/root/usr/include/gtk-3.0/gtk/gtk.h:30,
+                 from ../source/app/tests/test-prepared-undo.c:3:
+/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/glib/gmacros.h:991:23: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+  991 | #define G_STMT_START  do
+      |                       ^~
+/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/glib/gtestutils.h:227:41: note: in expansion of macro ‘G_STMT_START’
+  227 | #define g_assert_true(expr)             G_STMT_START { \
+      |                                         ^~~~~~~~~~~~
+../source/app/tests/test-prepared-undo.c:76:21: note: in expansion of macro ‘g_assert_true’
+   76 |  if(!begin())return;g_assert_true(gimp_image_undo_group_start(image,GIMP_UNDO_GROUP_PAINT,"Prepared group"));g_assert_nonnull(gimp_image_undo_push_prepared(image,make(),NULL));g_assert_nonnull(gimp_image_undo_push_prepared(image,make(),NULL));g_assert_true(gimp_image_undo_group_end(image));g_assert_cmpint(gimp_undo_stack_get_depth(gimp_image_get_undo_stack(image)),==,1);g_assert_true(gimp_image_undo(image));g_assert_true(gimp_image_redo(image));finish();
+      |                     ^~~~~~~~~~~~~
+../source/app/tests/test-prepared-undo.c: In function ‘immediate_expiry’:
+../source/app/tests/test-prepared-undo.c:82:2: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+   82 |  if(!begin())return;u=make();weak=u;g_object_add_weak_pointer(G_OBJECT(u),&weak);g_signal_connect(image,"undo-event",G_CALLBACK(expire),NULL);g_assert_null(gimp_image_undo_push_prepared(image,u,NULL));g_assert_null(weak);finish();
+      |  ^~
+../source/app/tests/test-prepared-undo.c:82:21: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+   82 |  if(!begin())return;u=make();weak=u;g_object_add_weak_pointer(G_OBJECT(u),&weak);g_signal_connect(image,"undo-event",G_CALLBACK(expire),NULL);g_assert_null(gimp_image_undo_push_prepared(image,u,NULL));g_assert_null(weak);finish();
+      |                     ^
+../source/app/tests/test-prepared-undo.c: In function ‘last_image_owner’:
+../source/app/tests/test-prepared-undo.c:86:2: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+   86 |  if(!begin())return;u=make();weak_image=image;weak_undo=u;g_object_add_weak_pointer(G_OBJECT(image),&weak_image);g_object_add_weak_pointer(G_OBJECT(u),&weak_undo);release_image=TRUE;g_assert_null(gimp_image_undo_push_prepared(image,u,NULL));g_assert_null(weak_image);g_assert_null(weak_undo);image=NULL;finish();
+      |  ^~
+../source/app/tests/test-prepared-undo.c:86:21: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+   86 |  if(!begin())return;u=make();weak_image=image;weak_undo=u;g_object_add_weak_pointer(G_OBJECT(image),&weak_image);g_object_add_weak_pointer(G_OBJECT(u),&weak_undo);release_image=TRUE;g_assert_null(gimp_image_undo_push_prepared(image,u,NULL));g_assert_null(weak_image);g_assert_null(weak_undo);image=NULL;finish();
+      |                     ^
+../source/app/tests/test-prepared-undo.c: In function ‘toggle_owner_reentry’:
+../source/app/tests/test-prepared-undo.c:97:2: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+   97 |  if(!begin())return;u=make();weak=image;g_object_add_weak_pointer(G_OBJECT(image),&weak);g_object_add_toggle_ref(G_OBJECT(image),toggle_reenter,u);g_object_unref(image);
+      |  ^~
+../source/app/tests/test-prepared-undo.c:97:21: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+   97 |  if(!begin())return;u=make();weak=image;g_object_add_weak_pointer(G_OBJECT(image),&weak);g_object_add_toggle_ref(G_OBJECT(image),toggle_reenter,u);g_object_unref(image);
+      |                     ^
+../source/app/tests/test-prepared-undo.c: In function ‘legacy_constructor_reentry’:
+../source/app/tests/test-prepared-undo.c:101:2: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+  101 |  if(!begin())return;reenter_init=TRUE;g_assert_nonnull(gimp_image_undo_push(image,test_prepared_undo_get_type(),GIMP_UNDO_PAINT,"Legacy constructor",GIMP_DIRTY_NONE,NULL));g_assert_cmpuint(reentries,==,1);g_assert_cmpint(gimp_undo_stack_get_depth(gimp_image_get_undo_stack(image)),==,1);finish();
+      |  ^~
+../source/app/tests/test-prepared-undo.c:101:21: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+  101 |  if(!begin())return;reenter_init=TRUE;g_assert_nonnull(gimp_image_undo_push(image,test_prepared_undo_get_type(),GIMP_UNDO_PAINT,"Legacy constructor",GIMP_DIRTY_NONE,NULL));g_assert_cmpuint(reentries,==,1);g_assert_cmpint(gimp_undo_stack_get_depth(gimp_image_get_undo_stack(image)),==,1);finish();
+      |                     ^~~~~~~~~~~~
+../source/app/tests/test-prepared-undo.c: In function ‘legacy_last_owner’:
+../source/app/tests/test-prepared-undo.c:105:2: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+  105 |  if(!begin())return;weak=image;g_object_add_weak_pointer(G_OBJECT(image),&weak);release_image=TRUE;g_assert_null(gimp_image_undo_push(image,test_prepared_undo_get_type(),GIMP_UNDO_PAINT,"Legacy constructor",GIMP_DIRTY_NONE,NULL));g_assert_null(weak);g_assert_null(released_undo);image=NULL;finish();
+      |  ^~
+../source/app/tests/test-prepared-undo.c:105:21: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+  105 |  if(!begin())return;weak=image;g_object_add_weak_pointer(G_OBJECT(image),&weak);release_image=TRUE;g_assert_null(gimp_image_undo_push(image,test_prepared_undo_get_type(),GIMP_UNDO_PAINT,"Legacy constructor",GIMP_DIRTY_NONE,NULL));g_assert_null(weak);g_assert_null(released_undo);image=NULL;finish();
+      |                     ^~~~
+../source/app/tests/test-prepared-undo.c: In function ‘outcome_rejected’:
+../source/app/tests/test-prepared-undo.c:109:105: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  109 | static void outcome_rejected(void){GimpUndo*entry=NULL;GError*error=NULL;if(!begin())return;seed_redo();GimpUndo*redo=gimp_undo_stack_peek(gimp_image_get_redo_stack(image));gint dirty=gimp_image_is_dirty(image);fail_init=TRUE;g_assert_false(gimp_image_undo_publish_prepared(image,make(),&entry,&error));g_assert_error(error,G_IO_ERROR,G_IO_ERROR_FAILED);g_clear_error(&error);g_assert_null(entry);g_assert_true(redo==gimp_undo_stack_peek(gimp_image_get_redo_stack(image)));g_assert_cmpint(gimp_image_is_dirty(image),==,dirty);finish();}
+      |                                                                                                         ^~~~~~~~
+../source/app/tests/test-prepared-undo.c: In function ‘outcome_frozen’:
+../source/app/tests/test-prepared-undo.c:110:103: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  110 | static void outcome_frozen(void){GimpUndo*entry=NULL;GError*error=NULL;if(!begin())return;seed_redo();GimpUndo*redo=gimp_undo_stack_peek(gimp_image_get_redo_stack(image));gimp_image_undo_freeze(image);g_assert_false(gimp_image_undo_publish_prepared(image,make(),&entry,&error));g_assert_nonnull(error);g_clear_error(&error);g_assert_null(entry);g_assert_true(redo==gimp_undo_stack_peek(gimp_image_get_redo_stack(image)));gimp_image_undo_thaw(image);finish();}
+      |                                                                                                       ^~~~~~~~
+../source/app/tests/test-prepared-undo.c: In function ‘outcome_last_owner’:
+../source/app/tests/test-prepared-undo.c:111:77: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  111 | static void outcome_last_owner(void){GimpUndo*entry=NULL;if(!begin())return;gpointer weak=image;g_object_add_weak_pointer(G_OBJECT(image),&weak);release_image=TRUE;g_assert_true(gimp_image_undo_publish_prepared(image,make(),&entry,NULL));g_assert_null(entry);g_assert_null(weak);image=NULL;finish();}
+      |                                                                             ^~~~~~~~
+../source/app/tests/test-prepared-undo.c: In function ‘outcome_dirty_owner’:
+../source/app/tests/test-prepared-undo.c:113:78: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  113 | static void outcome_dirty_owner(void){GimpUndo*entry=NULL;if(!begin())return;gpointer weak=image;g_object_add_weak_pointer(G_OBJECT(image),&weak);g_signal_connect(image,"dirty",G_CALLBACK(dirty_release),NULL);GimpUndo*u=g_object_new(test_prepared_undo_get_type(),"image",image,"undo-type",GIMP_UNDO_PAINT,"dirty-mask",GIMP_DIRTY_IMAGE,NULL);g_assert_true(gimp_image_undo_publish_prepared(image,u,&entry,NULL));g_assert_null(entry);g_assert_null(weak);image=NULL;finish();}
+      |                                                                              ^~~~~~~~
+../source/app/tests/test-prepared-undo.c:113:210: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  113 | static void outcome_dirty_owner(void){GimpUndo*entry=NULL;if(!begin())return;gpointer weak=image;g_object_add_weak_pointer(G_OBJECT(image),&weak);g_signal_connect(image,"dirty",G_CALLBACK(dirty_release),NULL);GimpUndo*u=g_object_new(test_prepared_undo_get_type(),"image",image,"undo-type",GIMP_UNDO_PAINT,"dirty-mask",GIMP_DIRTY_IMAGE,NULL);g_assert_true(gimp_image_undo_publish_prepared(image,u,&entry,NULL));g_assert_null(entry);g_assert_null(weak);image=NULL;finish();}
+      |                                                                                                                                                                                                                  ^~~~~~~~
+[104/107] Compiling C++ object app/tests/prepared-undo.p/test-prepared-undo.cpp.o
+[105/107] Compiling C object app/tests/undo-pop-guard.p/test-undo-pop-guard.c.o
+../source/app/tests/test-undo-pop-guard.c: In function ‘rejected’:
+../source/app/tests/test-undo-pop-guard.c:35:47: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   35 | static void rejected(void){if(!begin())return;TestGuardUndo*t=push(1);t->reject=TRUE;gint dirty=gimp_image_is_dirty(image);g_assert_false(gimp_image_undo(image));g_assert_true(gimp_undo_stack_peek(gimp_image_get_undo_stack(image))==GIMP_UNDO(t));g_assert_cmpint(gimp_image_is_dirty(image),==,dirty);g_assert_cmpuint(finished,==,0);g_assert_cmpuint(popped,==,0);t->reject=FALSE;g_assert_true(gimp_image_undo(image));t->reject=TRUE;g_assert_false(gimp_image_redo(image));g_assert_true(gimp_undo_stack_peek(gimp_image_get_redo_stack(image))==GIMP_UNDO(t));end();}
+      |                                               ^~~~~~~~~~~~~
+../source/app/tests/test-undo-pop-guard.c:35:86: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   35 | static void rejected(void){if(!begin())return;TestGuardUndo*t=push(1);t->reject=TRUE;gint dirty=gimp_image_is_dirty(image);g_assert_false(gimp_image_undo(image));g_assert_true(gimp_undo_stack_peek(gimp_image_get_undo_stack(image))==GIMP_UNDO(t));g_assert_cmpint(gimp_image_is_dirty(image),==,dirty);g_assert_cmpuint(finished,==,0);g_assert_cmpuint(popped,==,0);t->reject=FALSE;g_assert_true(gimp_image_undo(image));t->reject=TRUE;g_assert_false(gimp_image_redo(image));g_assert_true(gimp_undo_stack_peek(gimp_image_get_redo_stack(image))==GIMP_UNDO(t));end();}
+      |                                                                                      ^~~~
+../source/app/tests/test-undo-pop-guard.c: In function ‘group_reject’:
+../source/app/tests/test-undo-pop-guard.c:36:131: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   36 | static void group_reject(void){if(!begin())return;g_assert_true(gimp_image_undo_group_start(image,GIMP_UNDO_GROUP_PAINT,"Group"));TestGuardUndo*a=push(1);push(2);push(3);gimp_image_undo_group_end(image);a->reject=TRUE;GimpUndo*top=gimp_undo_stack_peek(gimp_image_get_undo_stack(image));g_assert_false(gimp_image_undo(image));g_assert_true(gimp_undo_stack_peek(gimp_image_get_undo_stack(image))==top);g_assert_cmpuint(prepared,==,2);g_assert_cmpuint(finished,==,2);g_assert_cmpuint(finish_order[0],==,2);g_assert_cmpuint(finish_order[1],==,3);g_assert_cmpuint(popped,==,0);a->reject=FALSE;prepared=finished=0;g_assert_true(gimp_image_undo(image));g_assert_cmpuint(popped,==,3);g_assert_true(gimp_image_redo(image));g_assert_cmpuint(popped,==,6);end();}
+      |                                                                                                                                   ^~~~~~~~~~~~~
+../source/app/tests/test-undo-pop-guard.c:36:219: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   36 | static void group_reject(void){if(!begin())return;g_assert_true(gimp_image_undo_group_start(image,GIMP_UNDO_GROUP_PAINT,"Group"));TestGuardUndo*a=push(1);push(2);push(3);gimp_image_undo_group_end(image);a->reject=TRUE;GimpUndo*top=gimp_undo_stack_peek(gimp_image_get_undo_stack(image));g_assert_false(gimp_image_undo(image));g_assert_true(gimp_undo_stack_peek(gimp_image_get_undo_stack(image))==top);g_assert_cmpuint(prepared,==,2);g_assert_cmpuint(finished,==,2);g_assert_cmpuint(finish_order[0],==,2);g_assert_cmpuint(finish_order[1],==,3);g_assert_cmpuint(popped,==,0);a->reject=FALSE;prepared=finished=0;g_assert_true(gimp_image_undo(image));g_assert_cmpuint(popped,==,3);g_assert_true(gimp_image_redo(image));g_assert_cmpuint(popped,==,6);end();}
+      |                                                                                                                                                                                                                           ^~~~~~~~
+../source/app/tests/test-undo-pop-guard.c: In function ‘pending_reject’:
+../source/app/tests/test-undo-pop-guard.c:38:61: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   38 | static void pending_reject(void){if(!begin())return;push(1);gulong id=g_signal_connect(image,"query-pending-paint",G_CALLBACK(pending),NULL);g_assert_false(gimp_image_undo(image));g_assert_false(gimp_image_strong_undo(image));g_assert_cmpuint(prepared,==,0);g_signal_handler_disconnect(image,id);g_assert_true(gimp_image_undo(image));end();}
+      |                                                             ^~~~~~
+../source/app/tests/test-undo-pop-guard.c: In function ‘removed’:
+../source/app/tests/test-undo-pop-guard.c:39:78: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   39 | static void removed(GimpContainer*c,GimpObject*o,gpointer d){(void)c;(void)o;TestGuardUndo*t=d;g_assert_true(t->locked);g_assert_false(gimp_image_undo(image));g_assert_false(gimp_image_redo(image));g_assert_false(gimp_image_strong_undo(image));++nested;}
+      |                                                                              ^~~~~~~~~~~~~
+../source/app/tests/test-undo-pop-guard.c: In function ‘reentrant_remove’:
+../source/app/tests/test-undo-pop-guard.c:40:55: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   40 | static void reentrant_remove(void){if(!begin())return;TestGuardUndo*t=push(1);gulong id=g_signal_connect(gimp_image_get_undo_stack(image)->undos,"remove",G_CALLBACK(removed),t);g_assert_true(gimp_image_undo(image));g_assert_cmpuint(nested,==,1);g_assert_cmpuint(popped,==,1);g_signal_handler_disconnect(gimp_image_get_undo_stack(image)->undos,id);end();}
+      |                                                       ^~~~~~~~~~~~~
+../source/app/tests/test-undo-pop-guard.c: In function ‘event’:
+../source/app/tests/test-undo-pop-guard.c:41:86: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   41 | static void event(GimpImage*i,GimpUndoEvent e,GimpUndo*u,gpointer d){(void)i;(void)u;TestGuardUndo*t=d;if(e==GIMP_UNDO_EVENT_UNDO||e==GIMP_UNDO_EVENT_REDO){g_assert_true(t->locked);g_assert_false(gimp_image_redo(image));++nested;}}
+      |                                                                                      ^~~~~~~~~~~~~
+../source/app/tests/test-undo-pop-guard.c: In function ‘notification_lease’:
+../source/app/tests/test-undo-pop-guard.c:42:57: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   42 | static void notification_lease(void){if(!begin())return;TestGuardUndo*t=push(1);gulong id=g_signal_connect(image,"undo-event",G_CALLBACK(event),t);g_assert_true(gimp_image_undo(image));g_assert_true(gimp_image_redo(image));g_assert_cmpuint(nested,==,2);g_signal_handler_disconnect(image,id);end();}
+      |                                                         ^~~~~~~~~~~~~
+../source/app/tests/test-undo-pop-guard.c: In function ‘last_owner’:
+../source/app/tests/test-undo-pop-guard.c:44:57: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   44 | static void last_owner(void){if(!begin())return;push(1);gpointer weak=image;g_object_add_weak_pointer(G_OBJECT(image),&weak);release_image=TRUE;g_assert_true(gimp_image_undo(image));g_assert_null(weak);g_assert_cmpuint(finished,==,1);image=NULL;end();}
+      |                                                         ^~~~~~~~
+../source/app/tests/test-undo-pop-guard.c: In function ‘nested_group’:
+../source/app/tests/test-undo-pop-guard.c:48:2: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   48 |  GimpUndoStack*outer=GIMP_UNDO_STACK(gimp_undo_stack_peek(gimp_image_get_undo_stack(image)));
+      |  ^~~~~~~~~~~~~
+../source/app/tests/test-undo-pop-guard.c:50:2: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   50 |  TestGuardUndo*a=g_object_new(test_guard_undo_get_type(),"image",image,"undo-type",GIMP_UNDO_PAINT,NULL);a->id=1;
+      |  ^~~~~~~~~~~~~
+../source/app/tests/test-undo-pop-guard.c:51:2: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   51 |  TestGuardUndo*b=g_object_new(test_guard_undo_get_type(),"image",image,"undo-type",GIMP_UNDO_PAINT,NULL);b->id=2;
+      |  ^~~~~~~~~~~~~
+../source/app/tests/test-undo-pop-guard.c: In function ‘strong_reject’:
+../source/app/tests/test-undo-pop-guard.c:56:52: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   56 | static void strong_reject(void){if(!begin())return;TestGuardUndo*t=push(1);GIMP_UNDO(t)->undo_type=GIMP_UNDO_ITEM_VISIBILITY;t->reject=TRUE;g_assert_false(gimp_image_strong_undo(image));g_assert_cmpuint(popped,==,0);t->reject=FALSE;g_assert_true(gimp_image_undo(image));t->reject=TRUE;g_assert_false(gimp_image_strong_redo(image));g_assert_cmpuint(popped,==,1);end();}
+      |                                                    ^~~~~~~~~~~~~
+[106/107] Linking target app/tests/prepared-undo
+[107/107] Linking target app/tests/undo-pop-guard

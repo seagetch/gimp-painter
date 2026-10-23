@@ -64,6 +64,16 @@ GimpUndo *      gimp_image_undo_push_prepared    (GimpImage     *image,
                                                GimpUndo      *undo,
                                                GError       **error);
 
+/* Same transfer contract, with publication independent of entry survival.
+ * TRUE means native stack insertion completed, even if observers immediately
+ * expired the entry/image. FALSE is rejection before insertion. On FALSE only
+ * helper-owned preflight failure is side-effect-free; arbitrary callbacks are
+ * never rolled back. surviving_entry must be non-NULL and is borrowed/nullable. */
+gboolean       gimp_image_undo_publish_prepared (GimpImage     *image,
+                                               GimpUndo      *undo,
+                                               GimpUndo     **surviving_entry,
+                                               GError       **error);
+
 G_END_DECLS
 
 #endif /* __GIMP_IMAGE__UNDO_H__ */
