@@ -940,9 +940,14 @@ static void colorpicker_visual_demo ()
                 "toolbox-color-area", saved_color_area, nullptr);
 }
 
+#include "test-painter-layer-mask.inc"
+
 int main(int argc,char**argv)
 {
   g_test_init(&argc,&argv,nullptr);if(!gtk_init_check(&argc,&argv))return GIMP_EXIT_TEST_SKIPPED;gimp_test_utils_setup_menus_path();gimp=gimp_init_for_gui_testing(TRUE);
+  g_test_add_func("/painter-tool/layer-mask/raw-apply-parity",layer_mask_raw_paint_apply_parity);
+  g_test_add_func("/painter-tool/layer-mask/projection-flags",layer_mask_projection_flags);
+  g_test_add_func("/painter-tool/layer-mask/tool-target-undo-cancel",layer_mask_tool_target_undo_cancel);
   g_test_add_func("/painter-tool/registration-gate",registration_and_gate);
   g_test_add_func("/painter-tool/standalone-lifecycle",standalone_lifecycle);
   g_test_add_func("/painter-tool/hover-default-pressure",hover_default_pressure);
