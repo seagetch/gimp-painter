@@ -184,6 +184,8 @@ def main(argv=None):
     parser.add_argument("build", type=Path)
     parser.add_argument("--report", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path)
+    parser.add_argument("--test-path", action="append", default=[],
+                        help="Run only an exact GLib test path (repeatable)")
     args = parser.parse_args(argv)
     build = args.build.resolve()
     root = Path(__file__).resolve().parents[2]
@@ -258,7 +260,11 @@ def main(argv=None):
         report["artifacts_before_run"] = artifacts()
         save()
         try:
-            result = run([str(exe)], env)
+            test_command = [str(exe)]
+            for test_path in args.test_path:
+                test_command += ["-p", test_path]
+            report["test_command"] = test_command
+            result = run(test_command, env)
         finally:
             report["artifacts_after_run"] = artifacts()
             save()
