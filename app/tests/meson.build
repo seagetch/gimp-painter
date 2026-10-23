@@ -68,6 +68,7 @@ app_tests = [
   'painter-xcf-roundtrip',
   'painter-provenance',
   'painter-layer-modes',
+  'painter-mode-ui',
   'painter-dynamics',
   'painter-core-metadata',
   'painter-ancestry-contract',
