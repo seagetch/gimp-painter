@@ -1,0 +1,46 @@
+{
+  "task": "09.007",
+  "checkpoint": "actual-portrait-oncanvas",
+  "acceptance_commit": "d2791f9283",
+  "resolution": [
+    1080,
+    1920
+  ],
+  "oncanvas": true,
+  "visually_inspected": true,
+  "scope": "Programmatic native layer-mask apply transitions rendered in actual app window; unedited full-root GDK captures, independent native pixel oracle;42 unchanged normal regression cases; not mouse-click automation or full-app sanitizer",
+  "source_sha256": {
+    "app/tests/test-gimp-painter-surface.cpp": "b9702f19b5837b26c00cad9f9f102c617a70ce1e17428e18fc6017de76fbaf0b",
+    "app/tests/test-painter-surface-layer-mask.inc": "f6bab76310055dd1f7f0749253504ab38b0552fafb3f17740ced5071ae55b8d3",
+    "app/paint/painter-mypaint-surface/paint-core.cpp": "b76d784b6173aba483cc88524db66d1d13a3f22c56c96de871c16f73772863d5",
+    "app/paint/painter-mypaint-surface/gegl-surface.cpp": "24921337d94409ac87460dfaa9a54d045bc8f8670af44b001bc63637da7c81dc",
+    "app/paint/painter-mypaint-surface/gegl-surface.hpp": "884084cf46a02639014ab8e777f55155cdd4571807f196874b6f7c68f7fe324d",
+    "app/paint/painter-mypaint-surface/buffer-read.hpp": "fe4ad4518f6223505f65d7b2173b30608b8c4e049ea5af9f7ec0cdeaf7d3b02d",
+    "app/paint/painter-mypaint-surface/native-pixels.hpp": "2a3e657e97fea07fd8b16f14ecbda1bb28a477324f9fe1c4b29ea7514a5f8d97",
+    "app/paint/gimppaintcore.c": "306710d7b6ae412e7e12bcedaf85b5f9bd4b43de2a7f424dca2bb82a9c6a16be",
+    "app/core/gimpchannel.c": "354af3ebe17527d2d8e56767c7ff502bdbcfbae7ac5534bd1164dcd74a5b38f1",
+    "app/core/gimplayer.c": "318ab25e71247a368454dcf9093144cf2598db9d43b90ea6e5ef89ed8b88d1ef",
+    "app/core/gimpprojection.c": "b64a76fcaf8912a9164f258390dc5ec50551c4ae6ccae5f34d513ee101a4be60",
+    "app/tests/test-painter-layer-mask.inc": "7b29bb5edb0ef2cda83ef92cf831964287db832919e21388e14f2099942b84f6",
+    "app/tests/test-painter-mypaint-tool.cpp": "1813c0b98d95e13e789211b0e0e826cc4c4e49989d7b13cd4eecc47ca8d980fd",
+    "app/tests/test-projection-update-bounds.c": "e1a35efb98e4cd5227e5cea800c72914314cecb0d914ea76ba37d607577c78ba",
+    "app/tests/test-painter-selection-mask.inc": "7e446ad4e9bbe4c080a3b4b3a642dfc76f5c286bc16a3a0ec90d00e467824ffb",
+    "app/tests/test-painter-tempbuf.cpp": "fdfa3782db01a0c9815b2d4420ef578f5d0fdcf1dd7e46517923ad18e32c56f3",
+    "app/tests/test-painter-buffer-read-domains.inc": "44263930557d8e37ad9620a133e495a78209491fdd8e09379f0e87506b8e552c",
+    "app/paint/painter-mypaint-surface/tests/coordinate-boundaries.cpp": "886e3526a14e8cfbcbcca1e05200a89b3085850cf6d8b2dcab2b29d6fd4d9cf3",
+    "app/paint/painter-mypaint-surface/tests/write-domains.inc": "d3769dcc39630840d82961d1fa9acc1b6bcdcd9af984c7a408dda9bc255e1ef2",
+    "app/tests/test-painter-layer-mask-visual.inc": "13505981e783f5de1e18d8c57bff502eada5c0bf5cc0ec3ebf29b79317850cc3"
+  },
+  "evidence_sha256": {
+    "README.md": "e9d4f40cc0d696eee3a36f7b2a8f99ade44293b6ad7d2874884e5824b24d9efd",
+    "build.log": "7b61b0cbe79392002fdd74d60bc27604db747241eaebf47b65affa1eecceec45",
+    "mask-applied.png": "20649dcf73e972d4361a1d2c1fe4aa3904218bc10f5436beb9b19d74ef752af3",
+    "mask-disabled.png": "2807957dee101e56ca394b449786444b2b44608f43a82a9938157136002a20ac",
+    "regression.json": "37bd7439f03cf0c368662157e84858f91e8fc794b686cf2598a1a79f4e72e5b3",
+    "regression.log": "a47c246881dc9bdd46a73035c3e96870f00532b82af17e300f8599c7b55e6033",
+    "run.sh": "bede13d695ee3dac60dfda3c4e45a0257b0e0270e8ec4c2aea3b2a440ca31bdd",
+    "validate.py": "05741c4fb87e30e07339e3e2c9f31a1ec0a98df62342a61fb8d3a20ec31591e8",
+    "visual.json": "69e002b4fa98ba41d5b1e57b31fea692d908f3515ae4214bf43ad333304126a1",
+    "visual.log": "a038f0cbf90d52fad8d7af4581be96bbbd7fab4b34dfb86fe4ea9f998becf300"
+  }
+}
