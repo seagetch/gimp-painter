@@ -1,0 +1,83 @@
+{
+  "task": "08.003",
+  "parent": "363dbf1cb13ea6765026ae4e355d8a922bc59e4f",
+  "source_duties": [
+    {
+      "work_id": "legacy-ada25377ad5234d099b2",
+      "source_kind": "hunk",
+      "source_id": "01.002/000255",
+      "path": "app/core/gimpfilterlayer.cpp",
+      "source_blob": "9141c8c7ea6009be3bb7be3141cd62d8930ed976",
+      "source_range": "-0,0 -> 1,1209",
+      "source_sha256": "05f67cfe5f278592c5b6f0ba5fe42b7013df189088c496909dc1636ef684cc4b",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "08.003",
+      "action": "FilterLayer の GType 骨格を移植する",
+      "acceptance": "同じ BindingStore 規約で生成・終了できる",
+      "legacy_role": "Legacy NewGClass/UseCStructs registration with GimpLayer parent, Progress/Pickable interfaces, construction and factory",
+      "current_type_contract": "Native G_DEFINE_TYPE_WITH_CODE retains parent/interfaces. FilterSlot initialization/activation and exception containment use the common BindingStore. Dispose closes scheduler, sources and connections before native parent dispose; owner-thread finalization destroys qdata state without joining workers",
+      "source_copy": "migration/tests/filter-type/legacy-source/gimpfilterlayer.cpp",
+      "source_copy_sha256": "b65c569e13123fd9e89ab74c6178e75b20beaa3bd7072892314d905aa5781708",
+      "tests": [
+        "/gimp-filter-layer/native_type_lifecycle",
+        "/gimp-filter-layer/independent_type_and_edge",
+        "/gimp-filter-layer/duplicate_failure_releases_partial",
+        "/gimp-filter-layer/cpp_header_layout",
+        "/gimp-filter-layer/close_during_preparation",
+        "/gimp-filter-layer/image_close_during_worker",
+        "/gimp-filter-layer/retained_handle_after_image_close",
+        "/gimp-filter-layer/completed_buffer_only",
+        "/gimp-filter-layer/removal_and_undo",
+        "/gimp-filter-layer/duplicate_keeps_definition",
+        "/gimp-filter-layer/object_arguments_do_not_cycle",
+        "/gimp-filter-layer/object_array_arguments_do_not_dangle",
+        "/gimp-filter-layer/progress_native_abi"
+      ]
+    },
+    {
+      "work_id": "legacy-892d82e06a38fd6d3f58",
+      "source_kind": "hunk",
+      "source_id": "01.002/000256",
+      "path": "app/core/gimpfilterlayer.h",
+      "source_blob": "b4948258d35e802d9c5c51578a9b17c08e50d2a0",
+      "source_range": "-0,0 -> 1,90",
+      "source_sha256": "1c9978f2dfb6adfcb149c1acd408ed6e3c3eaa2061a6fc4d2d2f4f589ff53845",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "08.003",
+      "action": "FilterLayer の GType 骨格を移植する",
+      "acceptance": "同じ BindingStore 規約で生成・終了できる",
+      "legacy_role": "Legacy C instance/class parent layout, get_type/factory declarations and C++ FilterLayerInterface bridge",
+      "current_type_contract": "Current C-layout FilterLayer and native C-linkage factory retain the same base relationship; only inert-construction status is a C boolean. Common store owns C++ state; typed handle uses the same native object",
+      "source_copy": "migration/tests/filter-type/legacy-source/gimpfilterlayer.h",
+      "source_copy_sha256": "62bcb2a12b015aeb0e1cb3eda9b1a1320e6703574f1ac35c6942b6ef8037b353",
+      "tests": [
+        "/gimp-filter-layer/native_type_lifecycle",
+        "/gimp-filter-layer/independent_type_and_edge",
+        "/gimp-filter-layer/duplicate_failure_releases_partial",
+        "/gimp-filter-layer/cpp_header_layout",
+        "/gimp-filter-layer/close_during_preparation",
+        "/gimp-filter-layer/image_close_during_worker",
+        "/gimp-filter-layer/retained_handle_after_image_close",
+        "/gimp-filter-layer/completed_buffer_only",
+        "/gimp-filter-layer/removal_and_undo",
+        "/gimp-filter-layer/duplicate_keeps_definition",
+        "/gimp-filter-layer/object_arguments_do_not_cycle",
+        "/gimp-filter-layer/object_array_arguments_do_not_dangle",
+        "/gimp-filter-layer/progress_native_abi"
+      ]
+    }
+  ],
+  "source_duties_accepted": 2,
+  "routing_changes": 0,
+  "reports": [
+    {
+      "path": "migration/tests/filter-type/native.json",
+      "sha256": "a7e7e0d7e0fa585ca27e6525a9e0ddf9fff689796a8606f93e817b7682857f36",
+      "passed_cases": 13,
+      "current_source_seals": 21
+    }
+  ],
+  "limits": "Original native type/common-store creation and termination only; whole-file anchors do not close separate procedure/pixel/Undo/XCF/UI/platform gates"
+}

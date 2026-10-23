@@ -1,0 +1,157 @@
+ninja: Entering directory `/workspace/scratch/5b5281e79681/gimp-native-restore-20261010/build-http'
+[1/11] Generating git-version.h.in.1 with a custom command
+[2/11] Generating git-version.h.in.2 with a custom command
+[3/11] Generating git-version.h with a custom command
+[4/11] Compiling C object app/libapp.a.p/gimp-version.c.o
+[5/11] Linking static target app/libapp.a
+[6/11] Compiling C object app/dialogs/libappdialogs.a.p/about-dialog.c.o
+[7/11] Compiling C object app/display/libappdisplay.a.p/gimpdisplayshell-callbacks.c.o
+[8/11] Linking static target app/dialogs/libappdialogs.a
+[9/11] Linking static target app/display/libappdisplay.a
+[10/11] Compiling C object app/tests/gimp-filter-layer.p/test-gimp-filter-layer.c.o
+In file included from ../../gtk-binding-recovery-20261010/worktree/app/tests/test-gimp-filter-layer.c:2567:
+../../gtk-binding-recovery-20261010/worktree/app/tests/test-filter-convolution.inc: In function ‘convolution_actual_old_live’:
+../../gtk-binding-recovery-20261010/worktree/app/tests/test-filter-convolution.inc:56:5: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   56 |     const gint w=atoi(v[1]), h=atoi(v[2]), components=atoi(v[3]);
+      |     ^~~~~
+../../gtk-binding-recovery-20261010/worktree/app/tests/test-filter-convolution.inc:64:5: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   64 |     GimpImage *image=gimp_image_new(gimp,w,h,gray?GIMP_GRAY:GIMP_RGB,GIMP_PRECISION_U8_NON_LINEAR);
+      |     ^~~~~~~~~
+../../gtk-binding-recovery-20261010/worktree/app/tests/test-filter-convolution.inc:68:5: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   68 |     const gint selection=atoi(strstr(v[0],"-s")+2), final=atoi(strstr(v[0],"-f")+2);
+      |     ^~~~~
+../../gtk-binding-recovery-20261010/worktree/app/tests/test-filter-convolution.inc:76:5: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   76 |     GimpFilterLayer *filter=filter_new(image,NULL,w,h);
+      |     ^~~~~~~~~~~~~~~
+../../gtk-binding-recovery-20261010/worktree/app/tests/test-filter-convolution.inc:81:5: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   81 |     guchar *actual=g_malloc(w*h*components);
+      |     ^~~~~~
+../../gtk-binding-recovery-20261010/worktree/app/tests/test-filter-convolution.inc: In function ‘convolution_invalid_arrays_keep_cache’:
+../../gtk-binding-recovery-20261010/worktree/app/tests/test-filter-convolution.inc:98:5: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   98 |     guint64 count=gimp_filter_layer_get_run_count(filter);
+      |     ^~~~~~~
+../../gtk-binding-recovery-20261010/worktree/app/tests/test-filter-convolution.inc:123:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  123 |   GimpImage *image=image_new(9,8);GimpFilterLayer *filter=filter_new(image,NULL,9,8);
+      |   ^~~~~~~~~
+../../gtk-binding-recovery-20261010/worktree/app/tests/test-filter-convolution.inc:128:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  128 |   GBytes *saved=gimp_filter_layer_ref_definition(filter);g_assert_cmpmem(g_bytes_get_data(saved,NULL),g_bytes_get_size(saved),omitted,sizeof omitted);
+      |   ^~~~~~
+../../gtk-binding-recovery-20261010/worktree/app/tests/test-filter-convolution.inc: In function ‘convolution_native_precisions’:
+../../gtk-binding-recovery-20261010/worktree/app/tests/test-filter-convolution.inc:138:5: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  138 |     GimpImage *image=gimp_image_new(gimp,9,8,gray?GIMP_GRAY:GIMP_RGB,precision);
+      |     ^~~~~~~~~
+../../gtk-binding-recovery-20261010/worktree/app/tests/test-filter-convolution.inc:141:5: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  141 |     const Babl *format=gimp_babl_format(gray?GIMP_GRAY:GIMP_RGB,gimp_babl_precision(GIMP_COMPONENT_TYPE_DOUBLE,trcs[r]),TRUE,
+      |     ^~~~~
+../../gtk-binding-recovery-20261010/worktree/app/tests/test-filter-convolution.inc:145:5: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  145 |     gdouble values[9*8*4];const guint channels=gray?2:4;
+      |     ^~~~~~~
+../../gtk-binding-recovery-20261010/worktree/app/tests/test-filter-convolution.inc:148:5: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  148 |     GimpFilterLayer *filter=filter_new(image,NULL,9,8);gdouble matrix[25];memcpy(matrix,convolution_identity,sizeof matrix);
+      |     ^~~~~~~~~~~~~~~
+../../gtk-binding-recovery-20261010/worktree/app/tests/test-filter-convolution.inc:149:19: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  149 |     matrix[12]=.5;GimpValueArray *args=convolution_args(matrix,convolution_all,1,0,0);
+      |                   ^~~~~~~~~~~~~~
+../../gtk-binding-recovery-20261010/worktree/app/tests/test-filter-convolution.inc:152:5: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  152 |     gdouble actual[4];gegl_buffer_get(gimp_drawable_get_buffer(GIMP_DRAWABLE(filter)),GEGL_RECTANGLE(4,4,1,1),1,format,actual,GEGL_AUTO_ROWSTRIDE,GEGL_ABYSS_NONE);
+      |     ^~~~~~~
+../../gtk-binding-recovery-20261010/worktree/app/tests/test-filter-convolution.inc:157:5: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  157 |     gdouble expected[4]={0};
+      |     ^~~~~~~
+../../gtk-binding-recovery-20261010/worktree/app/tests/test-filter-convolution.inc:161:5: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  161 |     GeglBuffer *rounded=gegl_buffer_new(GEGL_RECTANGLE(0,0,1,1),gimp_drawable_get_format(GIMP_DRAWABLE(filter)));
+      |     ^~~~~~~~~~
+../../gtk-binding-recovery-20261010/worktree/app/tests/test-filter-convolution.inc: In function ‘convolution_save_reopen’:
+../../gtk-binding-recovery-20261010/worktree/app/tests/test-filter-convolution.inc:178:5: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  178 |     guint8 *samples=g_malloc(w*h*bpp),*actual=g_malloc(w*h*bpp),*reopened=g_malloc(w*h*bpp);
+      |     ^~~~~~
+../../gtk-binding-recovery-20261010/worktree/app/tests/test-filter-convolution.inc:184:5: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  184 |     GimpFilterLayer *filter=filter_new(image,NULL,w,h);gimp_object_set_name(GIMP_OBJECT(filter),"Convolution filter");
+      |     ^~~~~~~~~~~~~~~
+../../gtk-binding-recovery-20261010/worktree/app/tests/test-filter-convolution.inc:185:5: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  185 |     gdouble matrix[25];memcpy(matrix,convolution_identity,sizeof matrix);matrix[12]=native?1+ldexp(1.,-30):2;
+      |     ^~~~~~~
+../../gtk-binding-recovery-20261010/worktree/app/tests/test-filter-convolution.inc:186:5: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  186 |     gint32 flags[5]={1,1,1,1,0};GimpValueArray *args=convolution_args(matrix,flags,1,0,0);
+      |     ^~~~~~
+../../gtk-binding-recovery-20261010/worktree/app/tests/test-filter-convolution.inc:190:5: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  190 |     GOutputStream *output=g_memory_output_stream_new_resizable();GFile *file=g_file_new_for_path("/tmp/convolution-roundtrip.xcf");GError *error=NULL;
+      |     ^~~~~~~~~~~~~
+../../gtk-binding-recovery-20261010/worktree/app/tests/test-filter-convolution.inc:192:5: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  192 |     GBytes *bytes=g_memory_output_stream_steal_as_bytes(G_MEMORY_OUTPUT_STREAM(output));
+      |     ^~~~~~
+../../gtk-binding-recovery-20261010/worktree/app/tests/test-filter-convolution.inc:196:7: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  196 |       const gchar *id=native?"double":"u8";gchar *name=g_strdup_printf("%s.xcf",id),*path=g_build_filename(export_dir,name,NULL);
+      |       ^~~~~
+../../gtk-binding-recovery-20261010/worktree/app/tests/test-filter-convolution.inc:201:5: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  201 |     GInputStream *input=g_memory_input_stream_new_from_bytes(bytes);GimpImage *copy=xcf_load_stream(gimp,input,file,NULL,&error);
+      |     ^~~~~~~~~~~~
+../../gtk-binding-recovery-20261010/worktree/app/tests/test-filter-convolution.inc:202:53: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  202 |     g_assert_no_error(error);g_assert_nonnull(copy);GimpFilterLayer *loaded=GIMP_FILTER_LAYER(gimp_container_get_first_child(gimp_image_get_layers(copy)));
+      |                                                     ^~~~~~~~~~~~~~~
+../../gtk-binding-recovery-20261010/worktree/app/tests/test-filter-convolution.inc: In function ‘convolution_ignored_legacy_tail’:
+../../gtk-binding-recovery-20261010/worktree/app/tests/test-filter-convolution.inc:222:5: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  222 |     guint8 samples[36]={0},actual[36]={0};const guint channels=gray?2:4;
+      |     ^~~~~~
+../../gtk-binding-recovery-20261010/worktree/app/tests/test-filter-convolution.inc:225:5: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  225 |     GimpFilterLayer *filter=filter_new(image,NULL,3,3);
+      |     ^~~~~~~~~~~~~~~
+../../gtk-binding-recovery-20261010/worktree/app/tests/test-filter-convolution.inc:233:5: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  233 |     GOutputStream *output=g_memory_output_stream_new_resizable();GFile *file=g_file_new_for_path("/tmp/convolution-tail.xcf");
+      |     ^~~~~~~~~~~~~
+../../gtk-binding-recovery-20261010/worktree/app/tests/test-filter-convolution.inc:235:5: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  235 |     GBytes *bytes=g_memory_output_stream_steal_as_bytes(G_MEMORY_OUTPUT_STREAM(output));GInputStream *input=g_memory_input_stream_new_from_bytes(bytes);
+      |     ^~~~~~
+../../gtk-binding-recovery-20261010/worktree/app/tests/test-filter-convolution.inc:237:5: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  237 |     GimpFilterLayer *loaded=GIMP_FILTER_LAYER(gimp_container_get_first_child(gimp_image_get_layers(copy)));
+      |     ^~~~~~~~~~~~~~~
+../../gtk-binding-recovery-20261010/worktree/app/tests/test-filter-convolution.inc: In function ‘convolution_native_storage_overflow’:
+../../gtk-binding-recovery-20261010/worktree/app/tests/test-filter-convolution.inc:252:5: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  252 |     gdouble samples[9*8*4],actual[9*8*4],before[9*8*4];
+      |     ^~~~~~~
+../../gtk-binding-recovery-20261010/worktree/app/tests/test-filter-convolution.inc:255:5: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  255 |     GimpFilterLayer *filter=filter_new(image,NULL,9,8);
+      |     ^~~~~~~~~~~~~~~
+../../gtk-binding-recovery-20261010/worktree/app/tests/test-filter-convolution.inc:257:5: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  257 |     gint32 flags[5]={1,1,1,1,0};GimpValueArray *args=convolution_args(matrix,flags,1,0,0);
+      |     ^~~~~~
+../../gtk-binding-recovery-20261010/worktree/app/tests/test-filter-convolution.inc:261:5: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  261 |     const guint64 cache=gimp_filter_layer_get_cache_generation(filter);
+      |     ^~~~~
+../../gtk-binding-recovery-20261010/worktree/app/tests/test-filter-convolution.inc:264:5: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  264 |     gchar *message=gimp_filter_layer_dup_error(filter);g_assert_nonnull(strstr(message,"finite native storage"));g_free(message);
+      |     ^~~~~
+../../gtk-binding-recovery-20261010/worktree/app/tests/test-filter-convolution.inc: In function ‘convolution_native_failure_keeps_cache’:
+../../gtk-binding-recovery-20261010/worktree/app/tests/test-filter-convolution.inc:281:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  281 |   gdouble samples[9*8*4],actual[9*8*4],before[9*8*4];
+      |   ^~~~~~~
+../../gtk-binding-recovery-20261010/worktree/app/tests/test-filter-convolution.inc:284:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  284 |   GimpFilterLayer *filter=filter_new(image,NULL,9,8);
+      |   ^~~~~~~~~~~~~~~
+../../gtk-binding-recovery-20261010/worktree/app/tests/test-filter-convolution.inc:288:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  288 |   gdouble matrix[25];memcpy(matrix,convolution_identity,sizeof matrix);matrix[12]=1e308;
+      |   ^~~~~~~
+../../gtk-binding-recovery-20261010/worktree/app/tests/test-filter-convolution.inc: In function ‘convolution_cancel_replace_close’:
+../../gtk-binding-recovery-20261010/worktree/app/tests/test-filter-convolution.inc:301:77: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  301 |   fill(source,41,83,127,255);convolution_define(filter,args);settle(filter);guint64 runs=gimp_filter_layer_get_run_count(filter);
+      |                                                                             ^~~~~~~
+../../gtk-binding-recovery-20261010/worktree/app/tests/test-filter-convolution.inc:304:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  304 |   gdouble matrix[25];memcpy(matrix,convolution_identity,sizeof matrix);matrix[12]=2;gimp_value_set_double_array(gimp_value_array_index(args,4),matrix,25);
+      |   ^~~~~~~
+In file included from ../../gtk-binding-recovery-20261010/worktree/app/tests/test-gimp-filter-layer.c:2568:
+../../gtk-binding-recovery-20261010/worktree/app/tests/test-filter-progress.inc: In function ‘progress_real_workers’:
+../../gtk-binding-recovery-20261010/worktree/app/tests/test-filter-progress.inc:138:5: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  138 |     const gint64 started=g_get_monotonic_time();
+      |     ^~~~~
+../../gtk-binding-recovery-20261010/worktree/app/tests/test-filter-progress.inc:140:5: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  140 |     const gint64 elapsed=g_get_monotonic_time()-started;
+      |     ^~~~~
+../../gtk-binding-recovery-20261010/worktree/app/tests/test-filter-progress.inc: In function ‘progress_worker_cancel_replace_close’:
+../../gtk-binding-recovery-20261010/worktree/app/tests/test-filter-progress.inc:170:7: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  170 |       const guint64 obsolete=state.generation;
+      |       ^~~~~
+../../gtk-binding-recovery-20261010/worktree/app/tests/test-filter-progress.inc: In function ‘progress_independent_owners’:
+../../gtk-binding-recovery-20261010/worktree/app/tests/test-filter-progress.inc:200:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  200 |   const guint64 token=gimp_filter_layer_get_generation(fb);
+      |   ^~~~~
+[11/11] Linking target app/tests/gimp-filter-layer
