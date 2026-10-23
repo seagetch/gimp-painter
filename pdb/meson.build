@@ -111,7 +111,8 @@ pdbgen_run   = find_program('meson-pdbgen.py')
 enumcode_run = find_program('meson-enumcode.py')
 
 enums_pl = custom_target('enums.pl',
-  input : [ 'meson-enumgen.py', 'enumgen.pl', 'enums-external.pl', enum_headers, ],
+  input : [ 'meson-enumgen.py', 'enumgen.pl', 'enums-external.pl',
+            'util.pl', enum_headers, ],
   output: [ 'stamp-enumgen.h', ],
   env: perl_env,
   command: [

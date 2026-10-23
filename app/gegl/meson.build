@@ -5,6 +5,7 @@ stamp_gegl_enums = custom_target('stamp-gimp-gegl-enums.h',
     ),
   ],
   output: [ 'stamp-gimp-gegl-enums.h', ],
+  depend_files: gimp_mkenums_source,
   command: [
     mkenums_wrap, perl,
     meson.project_source_root(), meson.current_source_dir(),

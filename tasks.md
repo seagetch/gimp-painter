@@ -275,7 +275,7 @@
 | 04.011 | [x] | RTTI 使用箇所を分離する | 04.010 | 移行用 dynamic_cast の条件と新 API の非依存を記録 |
 | 04.011/sanitizer-rtti-scope | [x] | focused sanitizerのRTTI補完範囲を実compile DBから区別する | 04.002/common-foundation | 3 metadata試験でC++各suffix・command/arguments・production境界を確認。-fno-rtti補完はRTTI-onlyとinstrumentedを区別しvptrを無効化しない。過去cpp-only helperをSHA付き保存し拡張closureの全runtime合格は主張しない |
 | 04.012 | [x] | symbol visibility を設定する | 04.011 | 必要な C 入口のみ公開し、内部 C++ ABI を配布契約にしない |
-| 04.013 | [ ] | enum 等の生成規則を Meson に接続する | 04.012 | 生成元変更で C/C++ 両方の対象が再ビルドされる |
+| 04.013 | [x] | enum 等の生成規則を Meson に接続する | 04.012 | 生成元変更で C/C++ 両方の対象が再ビルドされる |
 | 04.013/brush-setting-generator | [x] | 旧MyPaint設定の生成元を復元する | 04.002/common-foundation, 01.010 | 旧treeにないgenerate.pyの代わりに名前・index・型・既定値の正本を定め、103定数と設定tableを再生成し差分検査する |
 | 04.014 | [ ] | ヘッダー単体のコンパイル試験を登録する | 04.013 | 対象 C ヘッダーを C と C++ で検査 |
 | 04.015 | [ ] | incremental build を検証する | 04.014 | 共通ヘッダー変更で必要な object が更新される |

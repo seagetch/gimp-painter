@@ -5,6 +5,7 @@ stamp_display_enums = custom_target('stamp-display-enums.h',
     ),
   ],
   output: [ 'stamp-display-enums.h', ],
+  depend_files: gimp_mkenums_source,
   command: [
     mkenums_wrap, perl,
     meson.project_source_root(), meson.current_source_dir(),
