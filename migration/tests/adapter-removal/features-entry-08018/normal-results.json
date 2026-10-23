@@ -1,0 +1,23 @@
+[
+  {
+    "name": "gimp:app / preset-gui-entries",
+    "result": "OK",
+    "returncode": 0,
+    "stdout": "TAP version 14\n# random seed: R02S49129678842c0b933794c57a2944368a\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n1..6\n# Start of preset-gui-entry tests\nok 1 /preset-gui-entry/signature-null\nok 2 /preset-gui-entry/no-op-groups-handle\nok 3 /preset-gui-entry/dialog-metadata\nok 4 /preset-gui-entry/dialog-owner-callbacks\nok 5 /preset-gui-entry/preferences-metadata\nok 6 /preset-gui-entry/preferences-handle\n# End of preset-gui-entry tests\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n",
+    "stderr": "Refusing to add non-unique action 'dialogs-layer-presets' to action group 'restored-preset-dialog'\n",
+    "duration": 1.6863341331481934,
+    "command": [
+      "/workspace/shared/gimp-native-preset-gui/build/app/tests/preset-gui-entries"
+    ]
+  },
+  {
+    "name": "gimp:app / feature-lifecycle",
+    "result": "OK",
+    "returncode": 0,
+    "stdout": "TAP version 14\n# random seed: R02Sf179130375e7d042de82ebdc374c82e0\n1..11\n# Start of feature-lifecycle tests\nok 1 /feature-lifecycle/registration\n# slow test /feature-lifecycle/registration executed in 1.91 secs\nok 2 /feature-lifecycle/restore-order\n# slow test /feature-lifecycle/restore-order executed in 1.46 secs\nok 3 /feature-lifecycle/partial-provider-failure\n# slow test /feature-lifecycle/partial-provider-failure executed in 1.90 secs\nok 4 /feature-lifecycle/restore-disabled\n# slow test /feature-lifecycle/restore-disabled executed in 1.41 secs\nok 5 /feature-lifecycle/restore-opt-in\n# slow test /feature-lifecycle/restore-opt-in executed in 1.65 secs\nok 6 /feature-lifecycle/restore-failure\n# slow test /feature-lifecycle/restore-failure executed in 1.21 secs\nok 7 /feature-lifecycle/restore-reentry\n# slow test /feature-lifecycle/restore-reentry executed in 1.25 secs\nok 8 /feature-lifecycle/restore-close\n# slow test /feature-lifecycle/restore-close executed in 1.71 secs\nok 9 /feature-lifecycle/close-reentry\n# slow test /feature-lifecycle/close-reentry executed in 2.28 secs\nok 10 /feature-lifecycle/close-last-owner\n# slow test /feature-lifecycle/close-last-owner executed in 1.76 secs\nok 11 /feature-lifecycle/dispose-fallback\n# slow test /feature-lifecycle/dispose-fallback executed in 1.08 secs\n# End of feature-lifecycle tests\n",
+    "duration": 17.679863214492798,
+    "command": [
+      "/workspace/shared/gimp-native-preset-gui/build/app/tests/feature-lifecycle"
+    ]
+  }
+]

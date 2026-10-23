@@ -44,6 +44,7 @@ libapp_sources = [
   'gimpconsoleapp.c',
   'gimp-debug.c',
   'gimp-log.c',
+  'gimp-features.c',
   'gimp-update.c',
   'gimp-version.c',
   'language.c',

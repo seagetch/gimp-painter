@@ -5,6 +5,7 @@ extern "C" {
 #include "preset-factory-gui.h"
 #include "widgets/gimpactiongroup.h"
 #include "core/gimp.h"
+#include "gimp-features.h"
 }
 #include "painter/object-ref.hpp"
 #include "painter/resources.hpp"
@@ -24,6 +25,8 @@ public:
   explicit operator bool () const noexcept { return bool (owner_); }
   void reset () noexcept { owner_.reset (); }
   /* Native descriptor metadata is application-independent, including empty handles. */
+  void initialize_features () const
+  { features_entry_point (get ()); }
   ArrayRef preset_preferences () const
   { return ArrayRef::adopt (preset_factory_gui_prefs_entry_point ()); }
 private:

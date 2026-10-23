@@ -16,6 +16,7 @@
  */
 
 #include "config.h"
+#include "gimp-features.h"
 
 #include <string.h> /* strlen */
 
@@ -392,9 +393,7 @@ gimp_dispose (GObject *object)
   Gimp   *gimp = GIMP (object);
   GError *binding_error = NULL;
 
-  if (gimp->painter_httpd)
-    g_object_run_dispose (gimp->painter_httpd);
-  g_clear_object (&gimp->painter_httpd);
+  gimp_features_close (gimp);
 
   /* Stop painter-owned callbacks before their contexts/resources disappear.
    * This is a no-op until a feature has explicitly installed a binding store. */
@@ -860,7 +859,10 @@ gimp_initialize (Gimp               *gimp,
   if (gimp->be_verbose)
     g_print ("INIT: %s\n", G_STRFUNC);
 
+  g_object_ref (gimp);
   g_signal_emit (gimp, gimp_signals[INITIALIZE], 0, status_callback);
+  gimp_features_initialized (gimp);
+  g_object_unref (gimp);
 }
 
 /**

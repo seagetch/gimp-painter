@@ -1140,3 +1140,17 @@ test('bucket-fill-brush-entry', bucket_fill_entry_test,
         'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
         'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
         'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 60)
+
+# Native one-owner feature registration/startup/close boundaries.
+if painter_http_enabled
+  feature_lifecycle_test = executable('feature-lifecycle',
+    'test-feature-lifecycle.c', 'test-feature-lifecycle.cpp', 'tests.c',
+    dependencies: [libapp_dep, appstream], link_with: apptests_links,
+    link_args: ['-Wl,--wrap=gimp_painter_httpd_from_environment'],
+    cpp_args: painter_cpp_args, override_options: ['c_std=c11', 'cpp_std=c++14'])
+  test('feature-lifecycle', feature_lifecycle_test,
+    env: ['GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+          'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+          'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
+          'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 120)
+endif

@@ -145,6 +145,7 @@ struct _Gimp
 
   /* Optional service owner; implementation is in its typed BindingStore. */
   GObject                *painter_httpd;
+  guint                   painter_features_phase; /* native lifecycle; terminal on close */
 };
 
 struct _GimpClass

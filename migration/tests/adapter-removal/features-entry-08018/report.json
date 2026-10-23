@@ -1,0 +1,34 @@
+{
+  "scope": "08.018/features-entry: original C registration and one native lifecycle",
+  "normal_groups": {
+    "feature-lifecycle": 11,
+    "preset-gui-entries": 6
+  },
+  "sanitizer_groups": {
+    "feature-lifecycle": 11,
+    "preset-gui-entries": 6
+  },
+  "sanitizer_units": 14,
+  "header_probes": 421,
+  "regressions": {
+    "layer-presets-ui": 18,
+    "painter-perspective-ui": 24,
+    "painter-http": 18,
+    "painter-http-ui": 6
+  },
+  "legacy_commit": "afa43fae3e920210146abed514f136fd49f671b5",
+  "baseline": "77bcdf2b7fb8da6e01492bf2522ef541c2ea05ab",
+  "prior_evidence": "migration/tests/adapter-removal/preset-prefs-entry-08018/",
+  "prior_replay": "validate.py without --check-source recursively replays immutable dialog/no-op predecessors",
+  "current_proof": "validate.py --check-source binds current lifecycle/three preset routes and ownership handles",
+  "limits": [
+    "Native factory construction and phases differ from old dynamically registered Feature signal chain; exact original-runtime row remains PARTIAL",
+    "Existing opt-in/token/loopback HTTP policy retained; old automatic unauthenticated listener behavior is NOT restored",
+    "Native C Gimp layout changed; no old Interface/binary/subclass ABI claim",
+    "Selected14-unit sanitizers; dependencies uninstrumented, LSan/vptr off",
+    "Real HTTP opt-in native test uses disposable public fixture token and loopback port; injected provider faults explicitly use link-time wrapper",
+    "Console executable built/--version passed; HTTP-disabled unit compiled without HTTP undefined symbols, not full disabled application build",
+    "Image real native prefs cursor navigation/oncanvas portrait; no new pointer interaction claim",
+    "Pre-extraction nm audit demonstrates absent original symbol in prior binary, not an executed missing-symbol linker red"
+  ]
+}

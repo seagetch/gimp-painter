@@ -1,0 +1,51 @@
+Xvfb verified: 127.0.0.1:92, 1080x1920x24, authenticated accepted, empty authority rejected
+1/2 gimp:app / preset-gui-entries OK               1.04s
+2/2 gimp:app / feature-lifecycle  FAIL            10.84s   killed by signal 6 SIGABRT
+>>> GIMP_TESTING_ABS_TOP_SRCDIR=/workspace/shared/gimp-native-preset-gui/source MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 MESON_TEST_ITERATION=1 GIMP_TESTING_ABS_TOP_BUILDDIR=/workspace/shared/gimp-native-preset-gui/build ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 GIMP_TESTING_PLUGINDIRS=/workspace/shared/gimp-native-preset-gui/build/plug-ins/common MALLOC_PERTURB_=29 LD_LIBRARY_PATH=/workspace/shared/gimp-native-preset-gui/build/libgimpwidgets:/workspace/shared/gimp-native-preset-gui/build/libgimpthumb:/workspace/shared/gimp-native-preset-gui/build/libgimpcolor:/workspace/shared/gimp-native-preset-gui/build/libgimpmodule:/workspace/shared/gimp-native-preset-gui/build/libgimpbase:/workspace/shared/gimp-native-preset-gui/build/libgimpmath:/workspace/shared/gimp-native-preset-gui/build/libgimpconfig:/workspace/shared/gimp-native-preset-gui/prefix/lib/x86_64-linux-gnu:/workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu UI_TEST=yes /workspace/shared/gimp-native-preset-gui/build/app/tests/feature-lifecycle
+――――――――――――――――――――――――――――――――――――― ✀  ―――――――――――――――――――――――――――――――――――――
+stdout:
+TAP version 14
+# random seed: R02S9ee5a4603bcac8bbfab48be941f1694d
+1..10
+# Start of feature-lifecycle tests
+ok 1 /feature-lifecycle/registration
+# slow test /feature-lifecycle/registration executed in 1.06 secs
+ok 2 /feature-lifecycle/restore-order
+# slow test /feature-lifecycle/restore-order executed in 1.11 secs
+ok 3 /feature-lifecycle/partial-provider-failure
+# slow test /feature-lifecycle/partial-provider-failure executed in 1.21 secs
+ok 4 /feature-lifecycle/restore-disabled
+# slow test /feature-lifecycle/restore-disabled executed in 1.03 secs
+ok 5 /feature-lifecycle/restore-opt-in
+# slow test /feature-lifecycle/restore-opt-in executed in 1.07 secs
+ok 6 /feature-lifecycle/restore-failure
+# slow test /feature-lifecycle/restore-failure executed in 1.06 secs
+ok 7 /feature-lifecycle/restore-reentry
+# slow test /feature-lifecycle/restore-reentry executed in 1.08 secs
+ok 8 /feature-lifecycle/restore-close
+# slow test /feature-lifecycle/restore-close executed in 1.05 secs
+ok 9 /feature-lifecycle/close-reentry
+# slow test /feature-lifecycle/close-reentry executed in 1.04 secs
+# child process (/feature-lifecycle/dispose-fallback [184]) exit status: 1 (error)
+# child process (/feature-lifecycle/dispose-fallback [184]) stdout: ""
+# child process (/feature-lifecycle/dispose-fallback [184]) stderr: "\n(/workspace/shared/gimp-native-preset-gui/build/app/tests/feature-lifecycle:184): Gimp-Core-WARNING **: 13:05:09.358: gimp_finalize: list of contexts not empty upon exit (2 contexts left)\n\n"
+not ok /feature-lifecycle/dispose-fallback - ERROR:../source/app/tests/test-feature-lifecycle.c:48:begin_case: child process (/feature-lifecycle/dispose-fallback [184]) failed unexpectedly
+Bail out!
+stderr:
+**
+ERROR:../source/app/tests/test-feature-lifecycle.c:48:begin_case: child process (/feature-lifecycle/dispose-fallback [184]) failed unexpectedly
+――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+
+
+Summary of Failures:
+
+2/2 gimp:app / feature-lifecycle  FAIL            10.84s   killed by signal 6 SIGABRT
+
+Ok:                 1   
+Expected Fail:      0   
+Fail:               1   
+Unexpected Pass:    0   
+Skipped:            0   
+Timeout:            0   
+
+Full log written to /workspace/shared/gimp-native-preset-gui/build/meson-logs/features.txt

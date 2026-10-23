@@ -1,0 +1,3694 @@
+{
+  "status": "PASS",
+  "format": 1,
+  "scope": "C11/C++14 header compilation; no runtime or link ABI claim",
+  "http_enabled": true,
+  "public_targets": [
+    "app/actions/layer-presets-actions.h",
+    "app/actions/layers-commands.h",
+    "app/actions/view-commands.h",
+    "app/config/gimpcoreconfig.h",
+    "app/config/gimpgeglconfig.h",
+    "app/config/gimppainterfilterconfig.h",
+    "app/config/gimprc-blurbs.h",
+    "app/core/core-enums.h",
+    "app/core/core-types.h",
+    "app/core/gimp-painter-provenance-private.h",
+    "app/core/gimp-painter-provenance.h",
+    "app/core/gimp.h",
+    "app/core/gimpbrush.h",
+    "app/core/gimpchannel.h",
+    "app/core/gimpclonelayer.h",
+    "app/core/gimpclonelayerundo.h",
+    "app/core/gimpcontext.h",
+    "app/core/gimpdata.h",
+    "app/core/gimpdatafactory.h",
+    "app/core/gimpdrawable.h",
+    "app/core/gimpdrawablestack.h",
+    "app/core/gimpdynamics.h",
+    "app/core/gimpdynamicsoutput.h",
+    "app/core/gimpfilterexit.h",
+    "app/core/gimpfilterlayer.h",
+    "app/core/gimpfilterparametereditor.h",
+    "app/core/gimpfilterprocedure-progress.h",
+    "app/core/gimpgrouplayer.h",
+    "app/core/gimpimage-new.h",
+    "app/core/gimpimage-perspective-guide.h",
+    "app/core/gimpimage-private.h",
+    "app/core/gimpimage.h",
+    "app/core/gimpitemundo.h",
+    "app/core/gimplayer.h",
+    "app/core/gimplayerpreset.h",
+    "app/core/gimpobject.h",
+    "app/core/gimppaintermybrush.h",
+    "app/core/gimppainterprofile.h",
+    "app/core/gimpperspectiveguide.h",
+    "app/core/gimppickable.h",
+    "app/core/gimpprogress.h",
+    "app/core/gimpprojectable.h",
+    "app/core/gimpprojection.h",
+    "app/core/gimptemplate.h",
+    "app/core/gimptooloptions.h",
+    "app/core/gimptoolpreset.h",
+    "app/core/gimpviewable.h",
+    "app/dialogs/dialogs-constructors.h",
+    "app/dialogs/file-save-deferred.h",
+    "app/dialogs/file-save-dialog.h",
+    "app/dialogs/painter-layer-dialog.h",
+    "app/display/gimpcanvasitem.h",
+    "app/display/gimpcanvasperspectiveguide.h",
+    "app/display/gimpdisplayshell-tool-events.h",
+    "app/display/gimpdisplayshell.h",
+    "app/display/gimpmodifiersmanager.h",
+    "app/display/gimpmotionbuffer.h",
+    "app/display/gimppaintercanvasui.h",
+    "app/display/gimppainternavigation.h",
+    "app/display/gimpstatusbar.h",
+    "app/httpd/httpd.h",
+    "app/operations/layer-modes-legacy/gimpoperationpainterlegacy.h",
+    "app/operations/operations-enums.h",
+    "app/paint/gimpbrushcore.h",
+    "app/paint/gimpfillbrush.h",
+    "app/paint/gimppaintcore-stroke.h",
+    "app/paint/gimppaintcore.h",
+    "app/paint/gimppainterbrushgeometry.h",
+    "app/paint/gimppainterpaintgate.h",
+    "app/paint/gimppainterpaper-paste.h",
+    "app/paint/gimppainterpaper.h",
+    "app/paint/gimppaintersmudge.h",
+    "app/paint/gimppaintoptions.h",
+    "app/paint/painter-mypaint-surface/gimp-painter-options.h",
+    "app/paint/painter-mypaint-surface/gimp-painter-session.h",
+    "app/painter/gimp-painter-binding.h",
+    "app/painter/gimp-painter-error.h",
+    "app/painter/gimp-painter-visibility.h",
+    "app/pdb/gimpprocedure.h",
+    "app/tools/gimpdrawtool.h",
+    "app/tools/gimpfillbrushtool.h",
+    "app/tools/gimppaintermybrushtool.h",
+    "app/tools/gimppaintersmudgetool.h",
+    "app/tools/gimpperspectiveguidetool.h",
+    "app/tools/gimptool.h",
+    "app/widgets/gimpcontainereditor.h",
+    "app/widgets/gimpcontainerview.h",
+    "app/widgets/gimpdatafactoryview.h",
+    "app/widgets/gimpeditor.h",
+    "app/widgets/gimplayerpresetview.h",
+    "app/widgets/gimpoverlaybox.h",
+    "app/widgets/gimpoverlaychild.h",
+    "app/widgets/gimppaintercompactoptions.h",
+    "app/widgets/gimppainterlayertiles.h",
+    "app/widgets/gimppaintermybrusheditor.h",
+    "app/xcf/painter-xcf-load.h",
+    "app/xcf/painter-xcf-preserve.h",
+    "app/xcf/xcf-private.h",
+    "app/xcf/xcf.h",
+    "libgimpcolor/gimpcolor.h",
+    "libgimpconfig/gimpconfig.h",
+    "libgimpwidgets/gimpwidgets.h"
+  ],
+  "private_cpp_targets": [
+    "app/core/gimp-painter-type-traits.hpp",
+    "app/core/gimpclonelayer-handle.hpp",
+    "app/core/gimpfilterlayer-handle.hpp",
+    "app/httpd/httpd-private.hpp",
+    "app/httpd/httpd-resource.hpp",
+    "app/paint/painter-mypaint-surface/gegl-surface.hpp",
+    "app/paint/painter-mypaint-surface/gimp-painter-session.hpp",
+    "app/paint/painter-mypaint-surface/gimp-resources.hpp",
+    "app/paint/painter-mypaint-surface/legacy-generated-mask.hpp",
+    "app/paint/painter-mypaint-surface/legacy-mask-transform.hpp",
+    "app/paint/painter-mypaint-surface/legacy-pixel-modes.hpp",
+    "app/paint/painter-mypaint-surface/legacy-pixel.hpp",
+    "app/paint/painter-mypaint-surface/paint-core.hpp",
+    "app/paint/painter-mypaint/resource.hpp",
+    "app/painter/binding-store.hpp",
+    "app/painter/boundary.hpp",
+    "app/painter/connection.hpp",
+    "app/painter/gio-type-traits.hpp",
+    "app/painter/object-ref.hpp",
+    "app/painter/resources.hpp",
+    "app/painter/source.hpp"
+  ],
+  "probes": [
+    {
+      "name": "probe-000.c",
+      "label": "public-header",
+      "header": "app/actions/layer-presets-actions.h",
+      "language": "c",
+      "source_sha256": "90f261c12e06a6aeaf8ddb664feb7ee4a4af0e23adcc7b44929f0d844200b839"
+    },
+    {
+      "name": "probe-001.cpp",
+      "label": "public-header",
+      "header": "app/actions/layer-presets-actions.h",
+      "language": "cpp",
+      "source_sha256": "d99e3b37071fd39d45b4ccd1fd16e0a5577237b182f367956261c47f46598b72"
+    },
+    {
+      "name": "probe-002.c",
+      "label": "public-header",
+      "header": "app/actions/layers-commands.h",
+      "language": "c",
+      "source_sha256": "2e1856ec29afd58f3b7f98822537aac2ab3fd2b28bb5390bc5793ecdeebe6ef1"
+    },
+    {
+      "name": "probe-003.cpp",
+      "label": "public-header",
+      "header": "app/actions/layers-commands.h",
+      "language": "cpp",
+      "source_sha256": "2188fb03fe7ef5476babae01b689b1655b8834a8814ab4dcdbfef17f1b6a7ff4"
+    },
+    {
+      "name": "probe-004.c",
+      "label": "public-header",
+      "header": "app/actions/view-commands.h",
+      "language": "c",
+      "source_sha256": "ce74cee71aaa11ccc9f4ac0e21c86f43d5840bbc9b73cc14bc55e8eb658cb320"
+    },
+    {
+      "name": "probe-005.cpp",
+      "label": "public-header",
+      "header": "app/actions/view-commands.h",
+      "language": "cpp",
+      "source_sha256": "575bdc9fe78bb35bf3d89c5c4001ee69cf5d5218c3be354f530098b564798f0d"
+    },
+    {
+      "name": "probe-006.c",
+      "label": "public-header",
+      "header": "app/config/gimpcoreconfig.h",
+      "language": "c",
+      "source_sha256": "22eac662dd4f403fade8361894c3fd17d7a3b91e10f4bb94a8ecdb2a281fc5a1"
+    },
+    {
+      "name": "probe-007.cpp",
+      "label": "public-header",
+      "header": "app/config/gimpcoreconfig.h",
+      "language": "cpp",
+      "source_sha256": "ab5134933c3c4aeb60b6b6a0959bd3675d18168469c6d101952825733f83a30a"
+    },
+    {
+      "name": "probe-008.c",
+      "label": "public-header",
+      "header": "app/config/gimpgeglconfig.h",
+      "language": "c",
+      "source_sha256": "74b95e9d94ed08388ab0824efc8201cecd146f450cc497e961f4dcbabeaef562"
+    },
+    {
+      "name": "probe-009.cpp",
+      "label": "public-header",
+      "header": "app/config/gimpgeglconfig.h",
+      "language": "cpp",
+      "source_sha256": "f6771f46188c0185142c7b3058f6b3a6c3a1988db70d8430560dba95c99b483b"
+    },
+    {
+      "name": "probe-010.c",
+      "label": "public-header",
+      "header": "app/config/gimppainterfilterconfig.h",
+      "language": "c",
+      "source_sha256": "8ac5c1b64c75098e60eda38076a9c4488a0c700b11741a4b1e14635c0549562a"
+    },
+    {
+      "name": "probe-011.cpp",
+      "label": "public-header",
+      "header": "app/config/gimppainterfilterconfig.h",
+      "language": "cpp",
+      "source_sha256": "fe74bc2d6a0c49364706ac31ddea53d0b40a2d44ccf074e0f0275c72d7f66b47"
+    },
+    {
+      "name": "probe-012.c",
+      "label": "public-header",
+      "header": "app/config/gimprc-blurbs.h",
+      "language": "c",
+      "source_sha256": "07871da51cd529e8e0423d580ce0624fd3be3aec2127093f08fe2b65e3e1eb53"
+    },
+    {
+      "name": "probe-013.cpp",
+      "label": "public-header",
+      "header": "app/config/gimprc-blurbs.h",
+      "language": "cpp",
+      "source_sha256": "e0a9446e60f9da6e466f8a919d8f9facf070168f7e715f9d725a78091787ab04"
+    },
+    {
+      "name": "probe-014.c",
+      "label": "public-header",
+      "header": "app/core/core-enums.h",
+      "language": "c",
+      "source_sha256": "9c33c6c3001c4df4ac17c2c30b444b5029c71e3b1e4cb27b96176c3abf13371e"
+    },
+    {
+      "name": "probe-015.cpp",
+      "label": "public-header",
+      "header": "app/core/core-enums.h",
+      "language": "cpp",
+      "source_sha256": "7c275b2b24ae3cab91181dcd23fa27484482590a7347bbe35d2d237f8f6850b3"
+    },
+    {
+      "name": "probe-016.c",
+      "label": "public-header",
+      "header": "app/core/core-types.h",
+      "language": "c",
+      "source_sha256": "6eedcf1ed382ec5658a573dd1f56b15399d71802c506c1c0ba7f58237db66a88"
+    },
+    {
+      "name": "probe-017.cpp",
+      "label": "public-header",
+      "header": "app/core/core-types.h",
+      "language": "cpp",
+      "source_sha256": "d6dbae036727648a5ff5f7946953cddc06e577421641be3b57bcaa8b023df5dd"
+    },
+    {
+      "name": "probe-018.c",
+      "label": "public-header",
+      "header": "app/core/gimp-painter-provenance-private.h",
+      "language": "c",
+      "source_sha256": "24dd17b00dc3abf65dee75781b963bc16523fd00a9684f90fb09df7eaeffee5a"
+    },
+    {
+      "name": "probe-019.cpp",
+      "label": "public-header",
+      "header": "app/core/gimp-painter-provenance-private.h",
+      "language": "cpp",
+      "source_sha256": "6f6ca13fc277a5de2c84776f29a51b4fc27932b344e7c9cff6371c56b3badd65"
+    },
+    {
+      "name": "probe-020.c",
+      "label": "public-header",
+      "header": "app/core/gimp-painter-provenance.h",
+      "language": "c",
+      "source_sha256": "d42191f6529bbe53095087032e5f4216e8e54b564510c320f23e377b4b4b6812"
+    },
+    {
+      "name": "probe-021.cpp",
+      "label": "public-header",
+      "header": "app/core/gimp-painter-provenance.h",
+      "language": "cpp",
+      "source_sha256": "5274c3183a1bee24ed946cf00ebe1b159d03a339715710bd5bb2c5b4138a5d39"
+    },
+    {
+      "name": "probe-022.c",
+      "label": "public-header",
+      "header": "app/core/gimp.h",
+      "language": "c",
+      "source_sha256": "8769e9afc2ce230a9e58f6ea8eb859a2a38aaf5a4fd7524b5b8d5523da32dddd"
+    },
+    {
+      "name": "probe-023.cpp",
+      "label": "public-header",
+      "header": "app/core/gimp.h",
+      "language": "cpp",
+      "source_sha256": "255dbc401ffb0ca0a842afc1844f6637257fd454ae28f05b54e397191c35e45c"
+    },
+    {
+      "name": "probe-024.c",
+      "label": "public-header",
+      "header": "app/core/gimpbrush.h",
+      "language": "c",
+      "source_sha256": "daa03fa791eeb8770c6658c6ee3d6abe9f701f3bca072d7b421aec5c0e7e629e"
+    },
+    {
+      "name": "probe-025.cpp",
+      "label": "public-header",
+      "header": "app/core/gimpbrush.h",
+      "language": "cpp",
+      "source_sha256": "2b619c52852b58993664cef626ee3834c722f44cac15da70d3fd210b49e8152f"
+    },
+    {
+      "name": "probe-026.c",
+      "label": "public-header",
+      "header": "app/core/gimpchannel.h",
+      "language": "c",
+      "source_sha256": "6cf3332dc620fac79130d90b21f1466a6b70fba3523cf89b466f6bd436f193e9"
+    },
+    {
+      "name": "probe-027.cpp",
+      "label": "public-header",
+      "header": "app/core/gimpchannel.h",
+      "language": "cpp",
+      "source_sha256": "f8c74d4d1b6dcb353b9a0f5dbe6bdc082686c0750eb49e3c57a28345da2b7804"
+    },
+    {
+      "name": "probe-028.c",
+      "label": "public-header",
+      "header": "app/core/gimpclonelayer.h",
+      "language": "c",
+      "source_sha256": "7207edf8e13046c860175a53cb645aa7ad11b1797a571ec48c04dd351b270e0c"
+    },
+    {
+      "name": "probe-029.cpp",
+      "label": "public-header",
+      "header": "app/core/gimpclonelayer.h",
+      "language": "cpp",
+      "source_sha256": "b18ffb6ccd68a9599205fa576440c1a500ff5ffa76c7e3b4cce0ef791c075389"
+    },
+    {
+      "name": "probe-030.c",
+      "label": "public-header",
+      "header": "app/core/gimpclonelayerundo.h",
+      "language": "c",
+      "source_sha256": "cb249d425f411947bf8ebc9953614a76f4f78e2f528993550ac0fefe78956c84"
+    },
+    {
+      "name": "probe-031.cpp",
+      "label": "public-header",
+      "header": "app/core/gimpclonelayerundo.h",
+      "language": "cpp",
+      "source_sha256": "ff87e88de36cd43909fc600a13116b45b9c932a4a074e0fea565c85c65c50e50"
+    },
+    {
+      "name": "probe-032.c",
+      "label": "public-header",
+      "header": "app/core/gimpcontext.h",
+      "language": "c",
+      "source_sha256": "8c67699f2692bfa455a2be2d9d108530dde80b195a750cc72cb4ec27313e85cd"
+    },
+    {
+      "name": "probe-033.cpp",
+      "label": "public-header",
+      "header": "app/core/gimpcontext.h",
+      "language": "cpp",
+      "source_sha256": "4777648059bfaf53aca85e63566f4bdc27b2c5a2ad011c426e590d53d16b1481"
+    },
+    {
+      "name": "probe-034.c",
+      "label": "public-header",
+      "header": "app/core/gimpdata.h",
+      "language": "c",
+      "source_sha256": "02fb75b720747d9c1b490b16235a28253eaa5893b6d2ede70389ee0751c62687"
+    },
+    {
+      "name": "probe-035.cpp",
+      "label": "public-header",
+      "header": "app/core/gimpdata.h",
+      "language": "cpp",
+      "source_sha256": "65f65b8ec90cd5f53d4dd0767eefd347386f5ffc38769e45bff05b3d25143485"
+    },
+    {
+      "name": "probe-036.c",
+      "label": "public-header",
+      "header": "app/core/gimpdatafactory.h",
+      "language": "c",
+      "source_sha256": "33a4f28b4632c1ccf155868ac39c0d6cf8e242dd3db5ef8c1af884ac6ec31f70"
+    },
+    {
+      "name": "probe-037.cpp",
+      "label": "public-header",
+      "header": "app/core/gimpdatafactory.h",
+      "language": "cpp",
+      "source_sha256": "e6cba1249c74490f0be3e8e1901265d74fec338d00e010f32d1deb1576ae4a9b"
+    },
+    {
+      "name": "probe-038.c",
+      "label": "public-header",
+      "header": "app/core/gimpdrawable.h",
+      "language": "c",
+      "source_sha256": "70d1038d905e3e7418352fca55091f7d18f301878e8e49974d9070a2e99c91ab"
+    },
+    {
+      "name": "probe-039.cpp",
+      "label": "public-header",
+      "header": "app/core/gimpdrawable.h",
+      "language": "cpp",
+      "source_sha256": "b8e060bec2f0f97a3de4f7663da34b38ba4273f4075833044380be91614129c4"
+    },
+    {
+      "name": "probe-040.c",
+      "label": "public-header",
+      "header": "app/core/gimpdrawablestack.h",
+      "language": "c",
+      "source_sha256": "befe240e8c536f6d78baf4ded5c2c75c0ba1504e3f76df9e47e35097e98f2bbf"
+    },
+    {
+      "name": "probe-041.cpp",
+      "label": "public-header",
+      "header": "app/core/gimpdrawablestack.h",
+      "language": "cpp",
+      "source_sha256": "6031f82bd90a95d599772c06a57d1d4e1dd1335d2dd2c7bba6dcd386d6f69f69"
+    },
+    {
+      "name": "probe-042.c",
+      "label": "public-header",
+      "header": "app/core/gimpdynamics.h",
+      "language": "c",
+      "source_sha256": "faec770ced04bf2ea6d7587ca1d003363ecac899f95d51c31a7d6792acaa83a3"
+    },
+    {
+      "name": "probe-043.cpp",
+      "label": "public-header",
+      "header": "app/core/gimpdynamics.h",
+      "language": "cpp",
+      "source_sha256": "fc72ada5005fa048993187e83f74a26132e079135e27e32ba305de0b34991210"
+    },
+    {
+      "name": "probe-044.c",
+      "label": "public-header",
+      "header": "app/core/gimpdynamicsoutput.h",
+      "language": "c",
+      "source_sha256": "5264a9b2876bc71f9e908af30d85f011947ad8536c02f7b84aeeb4eb7db7f414"
+    },
+    {
+      "name": "probe-045.cpp",
+      "label": "public-header",
+      "header": "app/core/gimpdynamicsoutput.h",
+      "language": "cpp",
+      "source_sha256": "d2c617e220bdd879bbe0abe12bc73583457f59ef8e8a7409aab8d781adc0789b"
+    },
+    {
+      "name": "probe-046.c",
+      "label": "public-header",
+      "header": "app/core/gimpfilterexit.h",
+      "language": "c",
+      "source_sha256": "faf6dd39c28080d3daedc4a12a0db26e3ccc2f1445cf412ae63af4691862ec11"
+    },
+    {
+      "name": "probe-047.cpp",
+      "label": "public-header",
+      "header": "app/core/gimpfilterexit.h",
+      "language": "cpp",
+      "source_sha256": "545b9412e0649bdd64b2ab1fb6f439068410b85b2ad684cabb0935d85d5dc89e"
+    },
+    {
+      "name": "probe-048.c",
+      "label": "public-header",
+      "header": "app/core/gimpfilterlayer.h",
+      "language": "c",
+      "source_sha256": "e3689bf30b4742d930f8121646a0e1ec355f536265fc45812476ec8800b884aa"
+    },
+    {
+      "name": "probe-049.cpp",
+      "label": "public-header",
+      "header": "app/core/gimpfilterlayer.h",
+      "language": "cpp",
+      "source_sha256": "c1ae4988cc835801a41316618b5cf93ef068f43d46126079164d78a8c9344839"
+    },
+    {
+      "name": "probe-050.c",
+      "label": "public-header",
+      "header": "app/core/gimpfilterparametereditor.h",
+      "language": "c",
+      "source_sha256": "d217a10d4ab000033a23911f1e2f2be0393489e73cfa895fda278f736f8c3711"
+    },
+    {
+      "name": "probe-051.cpp",
+      "label": "public-header",
+      "header": "app/core/gimpfilterparametereditor.h",
+      "language": "cpp",
+      "source_sha256": "a5ab835aee49fcf5d68104671f288d63113d42606af9880307d6223695e46951"
+    },
+    {
+      "name": "probe-052.c",
+      "label": "public-header",
+      "header": "app/core/gimpfilterprocedure-progress.h",
+      "language": "c",
+      "source_sha256": "e2ad64bb198240ae22f508b19ec7eb79352656260e7e3d5870710e664fdf56cd"
+    },
+    {
+      "name": "probe-053.cpp",
+      "label": "public-header",
+      "header": "app/core/gimpfilterprocedure-progress.h",
+      "language": "cpp",
+      "source_sha256": "91701ab73f08ed0989412b563117e0baa2250a67072aa96f23a68e0e994e7ff0"
+    },
+    {
+      "name": "probe-054.c",
+      "label": "public-header",
+      "header": "app/core/gimpgrouplayer.h",
+      "language": "c",
+      "source_sha256": "35e749e11a2a6bebabfacf9c9994b3d071cbc31c3bcf4ca34f6cc7276dbdbcbf"
+    },
+    {
+      "name": "probe-055.cpp",
+      "label": "public-header",
+      "header": "app/core/gimpgrouplayer.h",
+      "language": "cpp",
+      "source_sha256": "35b069d993f38b8e9ba7a9c7803ccc836067e893a8cbb34acd8abbed7aca7bfe"
+    },
+    {
+      "name": "probe-056.c",
+      "label": "public-header",
+      "header": "app/core/gimpimage-new.h",
+      "language": "c",
+      "source_sha256": "4cc0cacec5a1024e0aabf0aca782e1c9e0ee8a4f898a7dffd884a368f65c00b0"
+    },
+    {
+      "name": "probe-057.cpp",
+      "label": "public-header",
+      "header": "app/core/gimpimage-new.h",
+      "language": "cpp",
+      "source_sha256": "2ca67538597cd28da428f3ecce2fed0ca38112be20087fd4c34552bdd00ccff7"
+    },
+    {
+      "name": "probe-058.c",
+      "label": "public-header",
+      "header": "app/core/gimpimage-perspective-guide.h",
+      "language": "c",
+      "source_sha256": "5fa9ff9c45a6958172c9046bd02205f86715ddc4e3395292f05234c5e5cc8d0e"
+    },
+    {
+      "name": "probe-059.cpp",
+      "label": "public-header",
+      "header": "app/core/gimpimage-perspective-guide.h",
+      "language": "cpp",
+      "source_sha256": "98f590da4fe401751d492d47454488cecfa4993eb0964c02506a96e72e13fcfa"
+    },
+    {
+      "name": "probe-060.c",
+      "label": "public-header",
+      "header": "app/core/gimpimage-private.h",
+      "language": "c",
+      "source_sha256": "e562693b997411b6591c8c90262b8c70f35e67c004a6a63274ca040d2e64ac8c"
+    },
+    {
+      "name": "probe-061.cpp",
+      "label": "public-header",
+      "header": "app/core/gimpimage-private.h",
+      "language": "cpp",
+      "source_sha256": "db951c7bc0ab7e406a8d459d4aafc6b78b8c049c87eb7c1b2769bd88514fc5e8"
+    },
+    {
+      "name": "probe-062.c",
+      "label": "public-header",
+      "header": "app/core/gimpimage.h",
+      "language": "c",
+      "source_sha256": "7025b34632e109a321c07516999a36e0987f6beb67318177adf80d715b5690ca"
+    },
+    {
+      "name": "probe-063.cpp",
+      "label": "public-header",
+      "header": "app/core/gimpimage.h",
+      "language": "cpp",
+      "source_sha256": "86e8a4a1bab84f6d08b316e563996ee8dd5c750d12ff15cda9ad11e5404fbc0b"
+    },
+    {
+      "name": "probe-064.c",
+      "label": "public-header",
+      "header": "app/core/gimpitemundo.h",
+      "language": "c",
+      "source_sha256": "f9a36ee61ba503bb185a504eee128968c422a2b431a782071cec5a0addfd8eb2"
+    },
+    {
+      "name": "probe-065.cpp",
+      "label": "public-header",
+      "header": "app/core/gimpitemundo.h",
+      "language": "cpp",
+      "source_sha256": "95941d57112fdc66193ce5472a7f1ec3ad142981517c7591ac17b6c56de3f299"
+    },
+    {
+      "name": "probe-066.c",
+      "label": "public-header",
+      "header": "app/core/gimplayer.h",
+      "language": "c",
+      "source_sha256": "bd09c3d1530d14d621c35e9cc0a6b855622688e34dbd4c9352a97588df93ce52"
+    },
+    {
+      "name": "probe-067.cpp",
+      "label": "public-header",
+      "header": "app/core/gimplayer.h",
+      "language": "cpp",
+      "source_sha256": "d42e88dfa90b7097e4739ac2a84439471fa081fc7f4fbfa9f18ed88fd78acfc1"
+    },
+    {
+      "name": "probe-068.c",
+      "label": "public-header",
+      "header": "app/core/gimplayerpreset.h",
+      "language": "c",
+      "source_sha256": "3cc1c1c421cef715fb88148d65bfc77748e439f46cb6a9b0415481abcfbf10be"
+    },
+    {
+      "name": "probe-069.cpp",
+      "label": "public-header",
+      "header": "app/core/gimplayerpreset.h",
+      "language": "cpp",
+      "source_sha256": "80b2d684712de0e50233dc479cc73d4ee94956eca2dd4fd5aac90f713a7a4689"
+    },
+    {
+      "name": "probe-070.c",
+      "label": "public-header",
+      "header": "app/core/gimpobject.h",
+      "language": "c",
+      "source_sha256": "202bb9aa7343b7c0bd416b8377ae4f5fec0432c3e228223689b35b54c54d84cc"
+    },
+    {
+      "name": "probe-071.cpp",
+      "label": "public-header",
+      "header": "app/core/gimpobject.h",
+      "language": "cpp",
+      "source_sha256": "3f4319e73bf54c100034ab05714a91f566da16b75e3adc8257b8861b0b760912"
+    },
+    {
+      "name": "probe-072.c",
+      "label": "public-header",
+      "header": "app/core/gimppaintermybrush.h",
+      "language": "c",
+      "source_sha256": "aaff99f220de85982bdec0375c19120acd480b99cacb7e43d7f23db4f356aad6"
+    },
+    {
+      "name": "probe-073.cpp",
+      "label": "public-header",
+      "header": "app/core/gimppaintermybrush.h",
+      "language": "cpp",
+      "source_sha256": "200e9e86fe99f78d9a39191bf009c5e6cb2c9e3ccba86a9427c973f031c90ec0"
+    },
+    {
+      "name": "probe-074.c",
+      "label": "public-header",
+      "header": "app/core/gimppainterprofile.h",
+      "language": "c",
+      "source_sha256": "696fca05a22ce853c7c41afd076c809f305a47890f2983232ef853123987a1c5"
+    },
+    {
+      "name": "probe-075.cpp",
+      "label": "public-header",
+      "header": "app/core/gimppainterprofile.h",
+      "language": "cpp",
+      "source_sha256": "1baa36fb7aa28179aa3029334af4b6336db7a0a8c2473584cd09a730d89a2603"
+    },
+    {
+      "name": "probe-076.c",
+      "label": "public-header",
+      "header": "app/core/gimpperspectiveguide.h",
+      "language": "c",
+      "source_sha256": "e9ba037e63dd59240fcd48e17c586b4012ffe41d31fa4375f0d7a421251c029a"
+    },
+    {
+      "name": "probe-077.cpp",
+      "label": "public-header",
+      "header": "app/core/gimpperspectiveguide.h",
+      "language": "cpp",
+      "source_sha256": "5167fd55ccbd7ad1c33df7409d8e55c4c8d5bdddd16b6cdea95fce825c916d9b"
+    },
+    {
+      "name": "probe-078.c",
+      "label": "public-header",
+      "header": "app/core/gimppickable.h",
+      "language": "c",
+      "source_sha256": "cc9b35b3a21bd6d85ceedf31ea5ad6bd35127a4800221c0509fda4a78bf54d8e"
+    },
+    {
+      "name": "probe-079.cpp",
+      "label": "public-header",
+      "header": "app/core/gimppickable.h",
+      "language": "cpp",
+      "source_sha256": "5e5f996a92dae9160b0cf30e70c2a2c38388ba255b2fea6b9a5b740fb27b04cb"
+    },
+    {
+      "name": "probe-080.c",
+      "label": "public-header",
+      "header": "app/core/gimpprogress.h",
+      "language": "c",
+      "source_sha256": "3f35d04763590812624e2d650d00e32c3008322071b61658ae4cd1f8479cf048"
+    },
+    {
+      "name": "probe-081.cpp",
+      "label": "public-header",
+      "header": "app/core/gimpprogress.h",
+      "language": "cpp",
+      "source_sha256": "726001d68b194c50dd83c172d159391829809f249ca9202828fa53980ee1103a"
+    },
+    {
+      "name": "probe-082.c",
+      "label": "public-header",
+      "header": "app/core/gimpprojectable.h",
+      "language": "c",
+      "source_sha256": "594facd9968966414ec554528ceea0fdd2f7e646b924b1e78d82ab2593df15e3"
+    },
+    {
+      "name": "probe-083.cpp",
+      "label": "public-header",
+      "header": "app/core/gimpprojectable.h",
+      "language": "cpp",
+      "source_sha256": "cfd62a1a3b4f059ad5136b5b3a62be16d515a09db575b2d1a2a6047fe2d15921"
+    },
+    {
+      "name": "probe-084.c",
+      "label": "public-header",
+      "header": "app/core/gimpprojection.h",
+      "language": "c",
+      "source_sha256": "b8033ffaa44e92ff6dbafecac57c22f80d59478955c4ace64ebfd33c3878ec69"
+    },
+    {
+      "name": "probe-085.cpp",
+      "label": "public-header",
+      "header": "app/core/gimpprojection.h",
+      "language": "cpp",
+      "source_sha256": "f43bed87adf6d91f189d38d67b21ac8895065012e6282bf97d4742814247697b"
+    },
+    {
+      "name": "probe-086.c",
+      "label": "public-header",
+      "header": "app/core/gimptemplate.h",
+      "language": "c",
+      "source_sha256": "bcaf957b8e730af6d1871b5d0d6a719670ea46b0f66c9d77ca11b2d690ea69ea"
+    },
+    {
+      "name": "probe-087.cpp",
+      "label": "public-header",
+      "header": "app/core/gimptemplate.h",
+      "language": "cpp",
+      "source_sha256": "032c8e0322298211806d2d5ce590e056d0ec5c108f87362163df39016da8ef9f"
+    },
+    {
+      "name": "probe-088.c",
+      "label": "public-header",
+      "header": "app/core/gimptooloptions.h",
+      "language": "c",
+      "source_sha256": "2813fd4a9dfb8f95b51b78ac1a4f6d451ac6eec93ca70fda13afebce4617633d"
+    },
+    {
+      "name": "probe-089.cpp",
+      "label": "public-header",
+      "header": "app/core/gimptooloptions.h",
+      "language": "cpp",
+      "source_sha256": "631a1e7841dd71d68d788756d48bd91cce9b404cf4128de7798e2e5ecf28a7c7"
+    },
+    {
+      "name": "probe-090.c",
+      "label": "public-header",
+      "header": "app/core/gimptoolpreset.h",
+      "language": "c",
+      "source_sha256": "dd0a67310d76b63a896f5d07ce4e4f74a41a8df78f6a784720a82aa790ef810f"
+    },
+    {
+      "name": "probe-091.cpp",
+      "label": "public-header",
+      "header": "app/core/gimptoolpreset.h",
+      "language": "cpp",
+      "source_sha256": "e5e0ab40a6e219c1460fc579b88469139ff0f46bf3a9229a6dae2ac359733259"
+    },
+    {
+      "name": "probe-092.c",
+      "label": "public-header",
+      "header": "app/core/gimpviewable.h",
+      "language": "c",
+      "source_sha256": "8ee2047d238e008abeb64169cfcbbb2640d183619e756ee2a140a9f962ed7d09"
+    },
+    {
+      "name": "probe-093.cpp",
+      "label": "public-header",
+      "header": "app/core/gimpviewable.h",
+      "language": "cpp",
+      "source_sha256": "4cbd4621e4e737a67589bdf9bb0b9f39494e6f67d462696b51681c7bd561693e"
+    },
+    {
+      "name": "probe-094.c",
+      "label": "public-header",
+      "header": "app/dialogs/dialogs-constructors.h",
+      "language": "c",
+      "source_sha256": "882e9dcd54c444bb19bf1f8e201859f975c84b28e24c44c229937ec9e8631aa1"
+    },
+    {
+      "name": "probe-095.cpp",
+      "label": "public-header",
+      "header": "app/dialogs/dialogs-constructors.h",
+      "language": "cpp",
+      "source_sha256": "35b254fb6e749d2f1eed7f6dcaba5efc88a35139fb7f41d77829b1ef07bb8d15"
+    },
+    {
+      "name": "probe-096.c",
+      "label": "public-header",
+      "header": "app/dialogs/file-save-deferred.h",
+      "language": "c",
+      "source_sha256": "4824bf59e1b046bb89d51c4aa48626cdfb4c8616308729d0e4ab9981aa715f46"
+    },
+    {
+      "name": "probe-097.cpp",
+      "label": "public-header",
+      "header": "app/dialogs/file-save-deferred.h",
+      "language": "cpp",
+      "source_sha256": "00ea67e9c1251c6d75374d4c2608369c7f11211396e91cf03049f48f8728588b"
+    },
+    {
+      "name": "probe-098.c",
+      "label": "public-header",
+      "header": "app/dialogs/file-save-dialog.h",
+      "language": "c",
+      "source_sha256": "d45f33222eb5e6040c6c4207dd133faa676c74b2a11b18332e578838cd9871fa"
+    },
+    {
+      "name": "probe-099.cpp",
+      "label": "public-header",
+      "header": "app/dialogs/file-save-dialog.h",
+      "language": "cpp",
+      "source_sha256": "d528dec7f4002abb7e0f9ce24b6983fd14c236006da8535c233bc1f46af5709e"
+    },
+    {
+      "name": "probe-100.c",
+      "label": "public-header",
+      "header": "app/dialogs/painter-layer-dialog.h",
+      "language": "c",
+      "source_sha256": "0ebd0b24f1a30fb03e7751831ea9f8f5a0fd1323775daeebfadf66973662efb2"
+    },
+    {
+      "name": "probe-101.cpp",
+      "label": "public-header",
+      "header": "app/dialogs/painter-layer-dialog.h",
+      "language": "cpp",
+      "source_sha256": "13dcd042f2e9473293404b8f0d49699eee10d61e6c229e8019c4c2565a997ec8"
+    },
+    {
+      "name": "probe-102.c",
+      "label": "public-header",
+      "header": "app/display/gimpcanvasitem.h",
+      "language": "c",
+      "source_sha256": "ebb9a64055094e877b9d7b68736dbef686786aaea5cfb882dd83353d79327c65"
+    },
+    {
+      "name": "probe-103.cpp",
+      "label": "public-header",
+      "header": "app/display/gimpcanvasitem.h",
+      "language": "cpp",
+      "source_sha256": "652e164a648375f3f79a042bde8c759b9d44aff0f4f06b935bde7ea0d5200f34"
+    },
+    {
+      "name": "probe-104.c",
+      "label": "public-header",
+      "header": "app/display/gimpcanvasperspectiveguide.h",
+      "language": "c",
+      "source_sha256": "6d7c37d8db4bfabe5b2bb0df8e1d85d33a3aa05a99a8793c5633d6a332145723"
+    },
+    {
+      "name": "probe-105.cpp",
+      "label": "public-header",
+      "header": "app/display/gimpcanvasperspectiveguide.h",
+      "language": "cpp",
+      "source_sha256": "4471ec62d38459e50fcf2e7b39c17aa77c67303d2ee4860c7e89424c5b4af2f8"
+    },
+    {
+      "name": "probe-106.c",
+      "label": "public-header",
+      "header": "app/display/gimpdisplayshell-tool-events.h",
+      "language": "c",
+      "source_sha256": "a789d7bcba880f4d00a82dea0a47e90b5b7ddc5374ccac8ee23ad261add91a60"
+    },
+    {
+      "name": "probe-107.cpp",
+      "label": "public-header",
+      "header": "app/display/gimpdisplayshell-tool-events.h",
+      "language": "cpp",
+      "source_sha256": "fc384491eb1e804b2df8a344f1b4510265e948282bbb8c7407efb98fc528cf42"
+    },
+    {
+      "name": "probe-108.c",
+      "label": "public-header",
+      "header": "app/display/gimpdisplayshell.h",
+      "language": "c",
+      "source_sha256": "b295cd9b6c84aecb68da8f882b02e2437bdd6bfaab01ab2c0a04143767056ae7"
+    },
+    {
+      "name": "probe-109.cpp",
+      "label": "public-header",
+      "header": "app/display/gimpdisplayshell.h",
+      "language": "cpp",
+      "source_sha256": "a83830dfcee7ba1788c59fee9ea257a0fc8eb1d65b9a2789885b235b4e99fa3e"
+    },
+    {
+      "name": "probe-110.c",
+      "label": "public-header",
+      "header": "app/display/gimpmodifiersmanager.h",
+      "language": "c",
+      "source_sha256": "7878d30c832dbd6ee1d365e82dc7f857b18cd04d443340e180ce9ce8bb32e3c7"
+    },
+    {
+      "name": "probe-111.cpp",
+      "label": "public-header",
+      "header": "app/display/gimpmodifiersmanager.h",
+      "language": "cpp",
+      "source_sha256": "110a83df6fbfd4423caf06cd8578e3d91db152006a5f53b877d73848fa2b3d47"
+    },
+    {
+      "name": "probe-112.c",
+      "label": "public-header",
+      "header": "app/display/gimpmotionbuffer.h",
+      "language": "c",
+      "source_sha256": "f4bf55a0a00fc05c3ba8d9c69f48d7b50bb48607c08ff51f0a9759a02c61fe74"
+    },
+    {
+      "name": "probe-113.cpp",
+      "label": "public-header",
+      "header": "app/display/gimpmotionbuffer.h",
+      "language": "cpp",
+      "source_sha256": "1302f94013cb1ee7805c2d9a7e49f311936469ef2fac7712099cb9286e50d464"
+    },
+    {
+      "name": "probe-114.c",
+      "label": "public-header",
+      "header": "app/display/gimppaintercanvasui.h",
+      "language": "c",
+      "source_sha256": "01f445b1a40822c3969b32c32b6021d0fa7b0afc45b03a743e578a3b929fb4ca"
+    },
+    {
+      "name": "probe-115.cpp",
+      "label": "public-header",
+      "header": "app/display/gimppaintercanvasui.h",
+      "language": "cpp",
+      "source_sha256": "74b8f8e5883bc9b85baff87bc3da306265a1ba6fe61f49f9dd84fadadc4985a9"
+    },
+    {
+      "name": "probe-116.c",
+      "label": "public-header",
+      "header": "app/display/gimppainternavigation.h",
+      "language": "c",
+      "source_sha256": "ff4072979a4d4123074ad444dd531d72fd5be0a2686fc8f7eecf3e7a4b00f10f"
+    },
+    {
+      "name": "probe-117.cpp",
+      "label": "public-header",
+      "header": "app/display/gimppainternavigation.h",
+      "language": "cpp",
+      "source_sha256": "e13261677405a926e7814d0f3fbc489a72c067cb53e6783f7694649c0d57f6bf"
+    },
+    {
+      "name": "probe-118.c",
+      "label": "public-header",
+      "header": "app/display/gimpstatusbar.h",
+      "language": "c",
+      "source_sha256": "bcbbf0f2ceb367848e0d5439c8a14e5d28bfca7273baf27c84d5c086595d5ca2"
+    },
+    {
+      "name": "probe-119.cpp",
+      "label": "public-header",
+      "header": "app/display/gimpstatusbar.h",
+      "language": "cpp",
+      "source_sha256": "fa451fcf82bbdbd76557a25dcd5f756ecdd20bf3665a4eb943cc6ed72c63c2e8"
+    },
+    {
+      "name": "probe-120.c",
+      "label": "public-header",
+      "header": "app/httpd/httpd.h",
+      "language": "c",
+      "source_sha256": "997440ea17819e6566340b4e1541cd22d6fcfdc3b8f3fc2d95d54e4af047ba5e"
+    },
+    {
+      "name": "probe-121.cpp",
+      "label": "public-header",
+      "header": "app/httpd/httpd.h",
+      "language": "cpp",
+      "source_sha256": "b81c8701b20b3e537e0ce08180da6fd59196f6ed079475c828b5a3c46a058859"
+    },
+    {
+      "name": "probe-122.c",
+      "label": "public-header",
+      "header": "app/operations/layer-modes-legacy/gimpoperationpainterlegacy.h",
+      "language": "c",
+      "source_sha256": "ad444ec3ae26d2653519612f7e8da5ebb78c24f1bb6f5f1c242d95509158d7fa"
+    },
+    {
+      "name": "probe-123.cpp",
+      "label": "public-header",
+      "header": "app/operations/layer-modes-legacy/gimpoperationpainterlegacy.h",
+      "language": "cpp",
+      "source_sha256": "185ce783a808a831fb113e8d5cc5dc4a67bac48712afeab8c10b1f012094801f"
+    },
+    {
+      "name": "probe-124.c",
+      "label": "public-header",
+      "header": "app/operations/operations-enums.h",
+      "language": "c",
+      "source_sha256": "04b13a17770ac0d80fb798b8995917e3cc262a388fb5a6cdfb69a18304a14efe"
+    },
+    {
+      "name": "probe-125.cpp",
+      "label": "public-header",
+      "header": "app/operations/operations-enums.h",
+      "language": "cpp",
+      "source_sha256": "c3bdb8c69f5d3c64c68529974b875b96dadc057e5aec160fa941dd9e065eefef"
+    },
+    {
+      "name": "probe-126.c",
+      "label": "public-header",
+      "header": "app/paint/gimpbrushcore.h",
+      "language": "c",
+      "source_sha256": "002ffad46b320641fadf6b6a8e6cdbd5cf979473bcfff0f83f735f0cef08b036"
+    },
+    {
+      "name": "probe-127.cpp",
+      "label": "public-header",
+      "header": "app/paint/gimpbrushcore.h",
+      "language": "cpp",
+      "source_sha256": "2e5e7ffd002da0049c57e345a34035971c472812558b6b96c35cc668a749035b"
+    },
+    {
+      "name": "probe-128.c",
+      "label": "public-header",
+      "header": "app/paint/gimpfillbrush.h",
+      "language": "c",
+      "source_sha256": "308d9c6518079a0ccdb3dc125a4b23e2d5767fc1ec7519fd286e111bd5aec707"
+    },
+    {
+      "name": "probe-129.cpp",
+      "label": "public-header",
+      "header": "app/paint/gimpfillbrush.h",
+      "language": "cpp",
+      "source_sha256": "a830c80c34c3ae929519e50a766579be9c4e1e570ca330eba50b449d7b23b0ea"
+    },
+    {
+      "name": "probe-130.c",
+      "label": "public-header",
+      "header": "app/paint/gimppaintcore-stroke.h",
+      "language": "c",
+      "source_sha256": "ba819c508232fd347c8cc982675a503bd344a03b7eca1d8e4ad13f10b5b6988d"
+    },
+    {
+      "name": "probe-131.cpp",
+      "label": "public-header",
+      "header": "app/paint/gimppaintcore-stroke.h",
+      "language": "cpp",
+      "source_sha256": "9342894ce1ce73f72956dfff2c1bd6fbbdc2568084ab4d5d3379906d28614569"
+    },
+    {
+      "name": "probe-132.c",
+      "label": "public-header",
+      "header": "app/paint/gimppaintcore.h",
+      "language": "c",
+      "source_sha256": "52926e8b867833792ed3eb2083ca0655407340a28dc2ce8fd7fdc2e3a7c45b2c"
+    },
+    {
+      "name": "probe-133.cpp",
+      "label": "public-header",
+      "header": "app/paint/gimppaintcore.h",
+      "language": "cpp",
+      "source_sha256": "9d2fb8e54febc07ac651a54b9bd1f40999d3cd36c3fc4888cdcb6cb9be6f774c"
+    },
+    {
+      "name": "probe-134.c",
+      "label": "public-header",
+      "header": "app/paint/gimppainterbrushgeometry.h",
+      "language": "c",
+      "source_sha256": "00f568864fb19bea3007182bcf6e393cb05fa00addb74b4b0184f19a6bc39ac2"
+    },
+    {
+      "name": "probe-135.cpp",
+      "label": "public-header",
+      "header": "app/paint/gimppainterbrushgeometry.h",
+      "language": "cpp",
+      "source_sha256": "ec22480ba86d42c9458aeeb36bd31fad6cc5b9e114cd46e73755272ee2027a01"
+    },
+    {
+      "name": "probe-136.c",
+      "label": "public-header",
+      "header": "app/paint/gimppainterpaintgate.h",
+      "language": "c",
+      "source_sha256": "4541a24b261aba051030b8e90fd6c82c01c2b9538e5dac92d282e1e604d169a5"
+    },
+    {
+      "name": "probe-137.cpp",
+      "label": "public-header",
+      "header": "app/paint/gimppainterpaintgate.h",
+      "language": "cpp",
+      "source_sha256": "4c3cb61d8136ba2208bb649b7c28acedaf815d39e90a71991ef761d5aa4e86d8"
+    },
+    {
+      "name": "probe-138.c",
+      "label": "public-header",
+      "header": "app/paint/gimppainterpaper-paste.h",
+      "language": "c",
+      "source_sha256": "50b2914a573d4af7fd4c4e79973fb921785b522dffb3a5d300d0763d97bafb51"
+    },
+    {
+      "name": "probe-139.cpp",
+      "label": "public-header",
+      "header": "app/paint/gimppainterpaper-paste.h",
+      "language": "cpp",
+      "source_sha256": "a96a2a147bfecc11c9ade460beb1e1c351794252c4a0b8697d316dea0c9c2b6e"
+    },
+    {
+      "name": "probe-140.c",
+      "label": "public-header",
+      "header": "app/paint/gimppainterpaper.h",
+      "language": "c",
+      "source_sha256": "23ca1939ec589eaf8d1129ddd990e0b36810aaa6847cbd599b88451eb72c0029"
+    },
+    {
+      "name": "probe-141.cpp",
+      "label": "public-header",
+      "header": "app/paint/gimppainterpaper.h",
+      "language": "cpp",
+      "source_sha256": "c7dbd56ce82342c5c5709e478d1eca86926a372e4b1fb29cd714121fa1ee46ea"
+    },
+    {
+      "name": "probe-142.c",
+      "label": "public-header",
+      "header": "app/paint/gimppaintersmudge.h",
+      "language": "c",
+      "source_sha256": "c7e96c974ea30ae9c7dc5012450641064808b93adedd8ab4e71133822108c856"
+    },
+    {
+      "name": "probe-143.cpp",
+      "label": "public-header",
+      "header": "app/paint/gimppaintersmudge.h",
+      "language": "cpp",
+      "source_sha256": "11c867ff5d8fae5cca2d91f21c8017c79dd7027f29eab159f904b380de0a4f2f"
+    },
+    {
+      "name": "probe-144.c",
+      "label": "public-header",
+      "header": "app/paint/gimppaintoptions.h",
+      "language": "c",
+      "source_sha256": "9faa665e2d5515f2a9a402b89cc26fb7de17d276bd69cb2c4ba0eed6cd8abba3"
+    },
+    {
+      "name": "probe-145.cpp",
+      "label": "public-header",
+      "header": "app/paint/gimppaintoptions.h",
+      "language": "cpp",
+      "source_sha256": "d8558f2e6dc1069db87cf64ec2ea6ef77e9472c05570d010ff491c281fc162dd"
+    },
+    {
+      "name": "probe-146.c",
+      "label": "public-header",
+      "header": "app/paint/painter-mypaint-surface/gimp-painter-options.h",
+      "language": "c",
+      "source_sha256": "836a5458ab08e319e1cc228dc3e348e68eb9155c40dacd02cbaa460f9b0ccb09"
+    },
+    {
+      "name": "probe-147.cpp",
+      "label": "public-header",
+      "header": "app/paint/painter-mypaint-surface/gimp-painter-options.h",
+      "language": "cpp",
+      "source_sha256": "2eb18d7def01a35ba9a41d301985500ddb960522667ba48b514316a609249d27"
+    },
+    {
+      "name": "probe-148.c",
+      "label": "public-header",
+      "header": "app/paint/painter-mypaint-surface/gimp-painter-session.h",
+      "language": "c",
+      "source_sha256": "1b8b446560fce839d6c48cffdc6db0bb331047c920aeb375808cad318ac60154"
+    },
+    {
+      "name": "probe-149.cpp",
+      "label": "public-header",
+      "header": "app/paint/painter-mypaint-surface/gimp-painter-session.h",
+      "language": "cpp",
+      "source_sha256": "326e7c45a56c1b85eb3ef3c07b35e02c5bf4e9dc177acff5e72076e8b4d86d70"
+    },
+    {
+      "name": "probe-150.c",
+      "label": "public-header",
+      "header": "app/painter/gimp-painter-binding.h",
+      "language": "c",
+      "source_sha256": "7575924c9ad17db35f9fe80a6d33e803cefd8f09779405ad4a639ebec5772990"
+    },
+    {
+      "name": "probe-151.cpp",
+      "label": "public-header",
+      "header": "app/painter/gimp-painter-binding.h",
+      "language": "cpp",
+      "source_sha256": "a48d39c6d0f4f38f144b4458ec09d12bda92d10c0a07113022777fccac06e51e"
+    },
+    {
+      "name": "probe-152.c",
+      "label": "public-header",
+      "header": "app/painter/gimp-painter-error.h",
+      "language": "c",
+      "source_sha256": "a9e1e80aaa6c8593a148cbe6e91729db95eb9ea242c721fcdc27e702bfb92d8f"
+    },
+    {
+      "name": "probe-153.cpp",
+      "label": "public-header",
+      "header": "app/painter/gimp-painter-error.h",
+      "language": "cpp",
+      "source_sha256": "afa6fa17071bb0f3c400c58b69d07b375d1b6b1fcdd88e7a60f8b909bf6d376c"
+    },
+    {
+      "name": "probe-154.c",
+      "label": "public-header",
+      "header": "app/painter/gimp-painter-visibility.h",
+      "language": "c",
+      "source_sha256": "06ac4ec6d3b55adc4f8560653371daa954fb8abe132857023d46c23c081bc68f"
+    },
+    {
+      "name": "probe-155.cpp",
+      "label": "public-header",
+      "header": "app/painter/gimp-painter-visibility.h",
+      "language": "cpp",
+      "source_sha256": "9c331039a03f3ddd7e644a8c64d7b37e6acec103a87d99bfa3a28c848db0d3a6"
+    },
+    {
+      "name": "probe-156.c",
+      "label": "public-header",
+      "header": "app/pdb/gimpprocedure.h",
+      "language": "c",
+      "source_sha256": "909889782ec59a0da398c60454fe02264869102cd156f048d6bf6683e0381abf"
+    },
+    {
+      "name": "probe-157.cpp",
+      "label": "public-header",
+      "header": "app/pdb/gimpprocedure.h",
+      "language": "cpp",
+      "source_sha256": "b268333300c00dc9f152db5224ca3e89ba3a6572dbcda0c760311e1ef7def948"
+    },
+    {
+      "name": "probe-158.c",
+      "label": "public-header",
+      "header": "app/tools/gimpdrawtool.h",
+      "language": "c",
+      "source_sha256": "84a3804f4ab71a21d065724c9e368e498667900f230d7bf7be7f0227dd8064a0"
+    },
+    {
+      "name": "probe-159.cpp",
+      "label": "public-header",
+      "header": "app/tools/gimpdrawtool.h",
+      "language": "cpp",
+      "source_sha256": "7803352b7d402cdc35d67490e28014b39c27ceaa01dbef3d7aa8db4570410e23"
+    },
+    {
+      "name": "probe-160.c",
+      "label": "public-header",
+      "header": "app/tools/gimpfillbrushtool.h",
+      "language": "c",
+      "source_sha256": "7c67bfe6603826f3fc61f1d2f6b535d93f5a624b7c8cac7c60a6b8e172f428cb"
+    },
+    {
+      "name": "probe-161.cpp",
+      "label": "public-header",
+      "header": "app/tools/gimpfillbrushtool.h",
+      "language": "cpp",
+      "source_sha256": "1e634d375b276c7ce81303557578701d5b46bf74aa1099eda7aa080e182be1ea"
+    },
+    {
+      "name": "probe-162.c",
+      "label": "public-header",
+      "header": "app/tools/gimppaintermybrushtool.h",
+      "language": "c",
+      "source_sha256": "eaf0a4e3a888089c3e142a95a5bc388c7cafd62ba291d04d2e756ea6e45bcdcd"
+    },
+    {
+      "name": "probe-163.cpp",
+      "label": "public-header",
+      "header": "app/tools/gimppaintermybrushtool.h",
+      "language": "cpp",
+      "source_sha256": "f65ad75080828fb000057ab42a5be1c71e2514fd93650735ab7837c27e8edf6d"
+    },
+    {
+      "name": "probe-164.c",
+      "label": "public-header",
+      "header": "app/tools/gimppaintersmudgetool.h",
+      "language": "c",
+      "source_sha256": "a28ea4ac46004c4cd05a99b309610250532ec556212cf238fa3ad663d810ed5f"
+    },
+    {
+      "name": "probe-165.cpp",
+      "label": "public-header",
+      "header": "app/tools/gimppaintersmudgetool.h",
+      "language": "cpp",
+      "source_sha256": "024979acc573f8acf29263c6e6f4653d521cd049ede6b2907bef881f09cef578"
+    },
+    {
+      "name": "probe-166.c",
+      "label": "public-header",
+      "header": "app/tools/gimpperspectiveguidetool.h",
+      "language": "c",
+      "source_sha256": "31f8f2935ed87f7dce366fc2761793ca09f7e65a3e9b7d1756e93e5cad99cafc"
+    },
+    {
+      "name": "probe-167.cpp",
+      "label": "public-header",
+      "header": "app/tools/gimpperspectiveguidetool.h",
+      "language": "cpp",
+      "source_sha256": "e353faa7458921d1a4732abe82a22f013f576c7a4e61e363027baacf23c14463"
+    },
+    {
+      "name": "probe-168.c",
+      "label": "public-header",
+      "header": "app/tools/gimptool.h",
+      "language": "c",
+      "source_sha256": "ab380da60158f34160f0978f75a642d2a8181552d3d5e3667f738d73f2663fde"
+    },
+    {
+      "name": "probe-169.cpp",
+      "label": "public-header",
+      "header": "app/tools/gimptool.h",
+      "language": "cpp",
+      "source_sha256": "bb667e090c1b1d443fb30eeea97fd883c78a34c50fa1bf8ddd63954fd0358665"
+    },
+    {
+      "name": "probe-170.c",
+      "label": "public-header",
+      "header": "app/widgets/gimpcontainereditor.h",
+      "language": "c",
+      "source_sha256": "d3850fb1e43ea216b03dbf910ad6567710c6c8a4fdb78a84d78e49bcc7822bbb"
+    },
+    {
+      "name": "probe-171.cpp",
+      "label": "public-header",
+      "header": "app/widgets/gimpcontainereditor.h",
+      "language": "cpp",
+      "source_sha256": "698c96ae0d81e844df8ea7c99c77e2c69f805fe9ca360b5861b1f1ffd9ecc5cb"
+    },
+    {
+      "name": "probe-172.c",
+      "label": "public-header",
+      "header": "app/widgets/gimpcontainerview.h",
+      "language": "c",
+      "source_sha256": "a969570f811d28b450b392dc8ac9cfecab97e426fcce54f2045947436fc1ec72"
+    },
+    {
+      "name": "probe-173.cpp",
+      "label": "public-header",
+      "header": "app/widgets/gimpcontainerview.h",
+      "language": "cpp",
+      "source_sha256": "b087b79491b4112b6c4cb430adaaefbc7f65f8cec24e0bbbb31e63349134b8cd"
+    },
+    {
+      "name": "probe-174.c",
+      "label": "public-header",
+      "header": "app/widgets/gimpdatafactoryview.h",
+      "language": "c",
+      "source_sha256": "85ea61733451595386a8353c440fdf19e19c364a9d9185de07fbe33a3672851a"
+    },
+    {
+      "name": "probe-175.cpp",
+      "label": "public-header",
+      "header": "app/widgets/gimpdatafactoryview.h",
+      "language": "cpp",
+      "source_sha256": "7495f7383f4abaa637d08b80dcab3ed3914a1aa48e93b4c6ad5f601f4d2111e0"
+    },
+    {
+      "name": "probe-176.c",
+      "label": "public-header",
+      "header": "app/widgets/gimpeditor.h",
+      "language": "c",
+      "source_sha256": "d8974c816b6418662fcdf93dd3eaaa05c6e54a2ab73e82ce3ecb0be27915567a"
+    },
+    {
+      "name": "probe-177.cpp",
+      "label": "public-header",
+      "header": "app/widgets/gimpeditor.h",
+      "language": "cpp",
+      "source_sha256": "4c8035151b0b0ec4e57d6a6e0db3f0119a1f26ccb24b86696c09082ab45c8bee"
+    },
+    {
+      "name": "probe-178.c",
+      "label": "public-header",
+      "header": "app/widgets/gimplayerpresetview.h",
+      "language": "c",
+      "source_sha256": "636cb9de84bcaa5595353f371476721aae02bbc6f4d8bdae3b73f1ffdc20d03f"
+    },
+    {
+      "name": "probe-179.cpp",
+      "label": "public-header",
+      "header": "app/widgets/gimplayerpresetview.h",
+      "language": "cpp",
+      "source_sha256": "aacbd2a5d805a4b3e42b829f45a71d9ad8ae2fd297a731d219b596849f913ce9"
+    },
+    {
+      "name": "probe-180.c",
+      "label": "public-header",
+      "header": "app/widgets/gimpoverlaybox.h",
+      "language": "c",
+      "source_sha256": "83b899d6f7abc90a84d617917964aa04705d2460fcf97f17e1bfa1cb184fabf0"
+    },
+    {
+      "name": "probe-181.cpp",
+      "label": "public-header",
+      "header": "app/widgets/gimpoverlaybox.h",
+      "language": "cpp",
+      "source_sha256": "5a28ea9fdd355a95d42a2f361bdfa816e2f7e5b1a75cdc74c6a63c5a9763b85a"
+    },
+    {
+      "name": "probe-182.c",
+      "label": "public-header",
+      "header": "app/widgets/gimpoverlaychild.h",
+      "language": "c",
+      "source_sha256": "e08614f4a2b989bad9a46e0dcbcc873d152232882866ddb8cea012f021dc0fd0"
+    },
+    {
+      "name": "probe-183.cpp",
+      "label": "public-header",
+      "header": "app/widgets/gimpoverlaychild.h",
+      "language": "cpp",
+      "source_sha256": "f07c3ce2d05f970f6386d0e3015c5ef54916f4ba0270939e5ab6bfa49aa9bb64"
+    },
+    {
+      "name": "probe-184.c",
+      "label": "public-header",
+      "header": "app/widgets/gimppaintercompactoptions.h",
+      "language": "c",
+      "source_sha256": "381de0f227e2f4768898f67dd0939ae8ed8a838d4d4185fe337aaed11c1613ba"
+    },
+    {
+      "name": "probe-185.cpp",
+      "label": "public-header",
+      "header": "app/widgets/gimppaintercompactoptions.h",
+      "language": "cpp",
+      "source_sha256": "c32398fd6ff4a07d0854c7467e812d76dd80a26c34e38a0860450f8ae17cb0a7"
+    },
+    {
+      "name": "probe-186.c",
+      "label": "public-header",
+      "header": "app/widgets/gimppainterlayertiles.h",
+      "language": "c",
+      "source_sha256": "f8dd6ba2940c0cd6383684406104ccf19aff50560f05afd1149c5141bdd3851a"
+    },
+    {
+      "name": "probe-187.cpp",
+      "label": "public-header",
+      "header": "app/widgets/gimppainterlayertiles.h",
+      "language": "cpp",
+      "source_sha256": "53d92760f4115d6ad4f031e3b36989fad90c36a947e6b0cff36ba8a1437c8ea0"
+    },
+    {
+      "name": "probe-188.c",
+      "label": "public-header",
+      "header": "app/widgets/gimppaintermybrusheditor.h",
+      "language": "c",
+      "source_sha256": "c5460a5818912a87b3ee8b13ca77504b499e710ab2399f1d083f54644e9c6a85"
+    },
+    {
+      "name": "probe-189.cpp",
+      "label": "public-header",
+      "header": "app/widgets/gimppaintermybrusheditor.h",
+      "language": "cpp",
+      "source_sha256": "498e768b02a0386c2ee009bb5187a0f56e8c5f9ecadfc7564c83948d4479dd1e"
+    },
+    {
+      "name": "probe-190.c",
+      "label": "public-header",
+      "header": "app/xcf/painter-xcf-load.h",
+      "language": "c",
+      "source_sha256": "e109cbb9431206fc0922037beb3f3f79b58c9faca2d716f84fde3e698e0e7cc6"
+    },
+    {
+      "name": "probe-191.cpp",
+      "label": "public-header",
+      "header": "app/xcf/painter-xcf-load.h",
+      "language": "cpp",
+      "source_sha256": "2e465f5e0a5e02903d63dff057cd01b3a106b9f2bdb01d1e14b587b211520d41"
+    },
+    {
+      "name": "probe-192.c",
+      "label": "public-header",
+      "header": "app/xcf/painter-xcf-preserve.h",
+      "language": "c",
+      "source_sha256": "dd8837b9e0d721b00542f3ba3aea66a7bd0c923e5dc794bc456682eda87aef41"
+    },
+    {
+      "name": "probe-193.cpp",
+      "label": "public-header",
+      "header": "app/xcf/painter-xcf-preserve.h",
+      "language": "cpp",
+      "source_sha256": "e84ac69d77d71b1acbef8ac5f5f9500957669d1b14d15767274f1d04587e0046"
+    },
+    {
+      "name": "probe-194.c",
+      "label": "public-header",
+      "header": "app/xcf/xcf-private.h",
+      "language": "c",
+      "source_sha256": "6e78a0260dc3db8eb10063f157ce80d1a4d1f390ad587855349bca3eb6a1fed1"
+    },
+    {
+      "name": "probe-195.cpp",
+      "label": "public-header",
+      "header": "app/xcf/xcf-private.h",
+      "language": "cpp",
+      "source_sha256": "94699f9a9f6a6c097baca8397bc9cca682f1cda1e393cb84d9fdc062d66ea331"
+    },
+    {
+      "name": "probe-196.c",
+      "label": "public-header",
+      "header": "app/xcf/xcf.h",
+      "language": "c",
+      "source_sha256": "6b73675c085b9cdaff432ef50d5a5935209ff19917c2a9d9ef03681b86d5ec15"
+    },
+    {
+      "name": "probe-197.cpp",
+      "label": "public-header",
+      "header": "app/xcf/xcf.h",
+      "language": "cpp",
+      "source_sha256": "d526e0de89507c87699c27c3d186ae05b46d3fef244c61afcc312ff8e66b8e84"
+    },
+    {
+      "name": "probe-198.c",
+      "label": "public-header",
+      "header": "libgimpcolor/gimpcolor.h",
+      "language": "c",
+      "source_sha256": "ee3897b7a81434e35080f86752c4e8665fb9ba3825a867af55bb0c2552ceaca1"
+    },
+    {
+      "name": "probe-199.cpp",
+      "label": "public-header",
+      "header": "libgimpcolor/gimpcolor.h",
+      "language": "cpp",
+      "source_sha256": "e90a1c4a10d84c4b3b7553008c6488efeac9f1aebe5f081cdda8b75f5a4b2ccb"
+    },
+    {
+      "name": "probe-200.c",
+      "label": "public-header",
+      "header": "libgimpconfig/gimpconfig.h",
+      "language": "c",
+      "source_sha256": "2507231b4f7b671ae7a695aa44ca0f069435877881164f4fe9c2cea5638c19dc"
+    },
+    {
+      "name": "probe-201.cpp",
+      "label": "public-header",
+      "header": "libgimpconfig/gimpconfig.h",
+      "language": "cpp",
+      "source_sha256": "86537901db20dd49599e25efb8a57d3c9158e29bccf52ea43ba80a11e4d17526"
+    },
+    {
+      "name": "probe-202.c",
+      "label": "public-header",
+      "header": "libgimpwidgets/gimpwidgets.h",
+      "language": "c",
+      "source_sha256": "3fe1e10a21a032576391357b3bc2de278257576613031327a65155cb212ecafc"
+    },
+    {
+      "name": "probe-203.cpp",
+      "label": "public-header",
+      "header": "libgimpwidgets/gimpwidgets.h",
+      "language": "cpp",
+      "source_sha256": "8155364275816455298d319a047bb7716776a9b928e3b93e0c84a14318e14534"
+    },
+    {
+      "name": "probe-204.c",
+      "label": "xcf-private-context",
+      "header": "app/xcf/painter-xcf-load.h",
+      "language": "c",
+      "source_sha256": "2c15d20c0d23d7658120ff87ac97883529924473a1a307b72578fcb93a16c728"
+    },
+    {
+      "name": "probe-205.cpp",
+      "label": "xcf-private-context",
+      "header": "app/xcf/painter-xcf-load.h",
+      "language": "cpp",
+      "source_sha256": "7e67e938f4344fa8e256f1fb8cf174af66ac78f39a89b6cbe8413e046607ef9c"
+    },
+    {
+      "name": "probe-206.c",
+      "label": "xcf-private-context",
+      "header": "app/xcf/painter-xcf-preserve.h",
+      "language": "c",
+      "source_sha256": "60a8d620a16d1bb886520a283bfd07ba9e9f1fb498dc18c484309e46fc173552"
+    },
+    {
+      "name": "probe-207.cpp",
+      "label": "xcf-private-context",
+      "header": "app/xcf/painter-xcf-preserve.h",
+      "language": "cpp",
+      "source_sha256": "27193e094a0b45b57eb5e6457cd52f5fce70928f81da97ab2114d130fecf85f6"
+    },
+    {
+      "name": "probe-208.c",
+      "label": "configuration-macros",
+      "header": null,
+      "language": "c",
+      "source_sha256": "3ac85b43e7293e73f6d058e08ddac09f5b480a421222f18cc98b2267967affcb"
+    },
+    {
+      "name": "probe-209.cpp",
+      "label": "configuration-macros",
+      "header": null,
+      "language": "cpp",
+      "source_sha256": "9cf9db5a19cbb85dbdb6b95d85a89b54f77a55a97e55d336084989092de6d722"
+    },
+    {
+      "name": "probe-210.c",
+      "label": "visibility-without-prelude",
+      "header": "app/painter/gimp-painter-visibility.h",
+      "language": "c",
+      "source_sha256": "06352f2bf649cdf234c3a24cc69b1b6d73370f63219119314423ce4fa4ea498c"
+    },
+    {
+      "name": "probe-211.cpp",
+      "label": "visibility-without-prelude",
+      "header": "app/painter/gimp-painter-visibility.h",
+      "language": "cpp",
+      "source_sha256": "905cce819f08163a8a555b5c0fe56bdf9c6cab4a4f5140177e25c663f642b6c5"
+    },
+    {
+      "name": "probe-212.cpp",
+      "label": "private-cpp-header",
+      "header": "app/core/gimp-painter-type-traits.hpp",
+      "language": "cpp",
+      "source_sha256": "dca8a205c9c8cdef28704fbc690fbb0749d8b0a218db92e5c9c29df22a1ac3c9"
+    },
+    {
+      "name": "probe-213.cpp",
+      "label": "private-cpp-header",
+      "header": "app/core/gimpclonelayer-handle.hpp",
+      "language": "cpp",
+      "source_sha256": "3ce8064004af19b1843e531805701be4a7be2ad7cf3dcfd705c3416f6f33f5d5"
+    },
+    {
+      "name": "probe-214.cpp",
+      "label": "private-cpp-header",
+      "header": "app/core/gimpfilterlayer-handle.hpp",
+      "language": "cpp",
+      "source_sha256": "756d04c79a32e6699680e6f79c52e3da237a1b51964e4f09dadda12ea1048c39"
+    },
+    {
+      "name": "probe-215.cpp",
+      "label": "private-cpp-header",
+      "header": "app/httpd/httpd-private.hpp",
+      "language": "cpp",
+      "source_sha256": "a903f8eb2531886d8837eb1d876b9e0861790c5bf42ae812f88c7c35884ccf01"
+    },
+    {
+      "name": "probe-216.cpp",
+      "label": "private-cpp-header",
+      "header": "app/httpd/httpd-resource.hpp",
+      "language": "cpp",
+      "source_sha256": "096b486e5a78c8e2d04bad35f2d428f4e0df0902b1bac65e0d394612dfd70ac2"
+    },
+    {
+      "name": "probe-217.cpp",
+      "label": "private-cpp-header",
+      "header": "app/paint/painter-mypaint-surface/gegl-surface.hpp",
+      "language": "cpp",
+      "source_sha256": "894479441032046507f16b96054a23f0c7d52b6cc6764a0e5e3bfe3108ac8527"
+    },
+    {
+      "name": "probe-218.cpp",
+      "label": "private-cpp-header",
+      "header": "app/paint/painter-mypaint-surface/gimp-painter-session.hpp",
+      "language": "cpp",
+      "source_sha256": "c36bd2e2c7c0eeff46b626d3181cfe02099f328acc0f1f5a856b432668bd963f"
+    },
+    {
+      "name": "probe-219.cpp",
+      "label": "private-cpp-header",
+      "header": "app/paint/painter-mypaint-surface/gimp-resources.hpp",
+      "language": "cpp",
+      "source_sha256": "df9f542e934f8e12504b50f75c719424da9bd303c84081cbfc99a205aa9eaea6"
+    },
+    {
+      "name": "probe-220.cpp",
+      "label": "private-cpp-header",
+      "header": "app/paint/painter-mypaint-surface/legacy-generated-mask.hpp",
+      "language": "cpp",
+      "source_sha256": "b3551e76859b2e766f0b22a5ffe05d9295026cc8f161852fface415fb8ccd170"
+    },
+    {
+      "name": "probe-221.cpp",
+      "label": "private-cpp-header",
+      "header": "app/paint/painter-mypaint-surface/legacy-mask-transform.hpp",
+      "language": "cpp",
+      "source_sha256": "867a4d344dc3cec72bd77d4a848c3960323e726c4374db4d22a54f79dde6e33c"
+    },
+    {
+      "name": "probe-222.cpp",
+      "label": "private-cpp-header",
+      "header": "app/paint/painter-mypaint-surface/legacy-pixel-modes.hpp",
+      "language": "cpp",
+      "source_sha256": "f64e95df5f003762cb0546a58090f21ca2e512b786cea81ca4d01781a86ba8f9"
+    },
+    {
+      "name": "probe-223.cpp",
+      "label": "private-cpp-header",
+      "header": "app/paint/painter-mypaint-surface/legacy-pixel.hpp",
+      "language": "cpp",
+      "source_sha256": "629a0739e4b75f254fcead3c10ea7274281a6969d0457c3a389cd5c4c4179408"
+    },
+    {
+      "name": "probe-224.cpp",
+      "label": "private-cpp-header",
+      "header": "app/paint/painter-mypaint-surface/paint-core.hpp",
+      "language": "cpp",
+      "source_sha256": "2427b80bfe661df2bea9cd00125c159ddfb9882e725cbaa30e46754576229a0a"
+    },
+    {
+      "name": "probe-225.cpp",
+      "label": "private-cpp-header",
+      "header": "app/paint/painter-mypaint/resource.hpp",
+      "language": "cpp",
+      "source_sha256": "e5c8b1d46bfc3347f7e93d22be81e7ff0dcb7b000b9307a2139bb0aa344e400a"
+    },
+    {
+      "name": "probe-226.cpp",
+      "label": "private-cpp-header",
+      "header": "app/painter/binding-store.hpp",
+      "language": "cpp",
+      "source_sha256": "ac4846ee9c732519a41b4868a36159f5f07c222ef29d338e7093f4e0b935ac76"
+    },
+    {
+      "name": "probe-227.cpp",
+      "label": "private-cpp-header",
+      "header": "app/painter/boundary.hpp",
+      "language": "cpp",
+      "source_sha256": "1a0e312c08e198cc28b7a2674f8cfe11d16875b828709a61d2d5a32d81a9bf2c"
+    },
+    {
+      "name": "probe-228.cpp",
+      "label": "private-cpp-header",
+      "header": "app/painter/connection.hpp",
+      "language": "cpp",
+      "source_sha256": "5b12a30e038ed6d84ae2d905598d86c091593d84c6bb9ab0a05b009ef8ecd969"
+    },
+    {
+      "name": "probe-229.cpp",
+      "label": "private-cpp-header",
+      "header": "app/painter/gio-type-traits.hpp",
+      "language": "cpp",
+      "source_sha256": "876ef0f57c480beed6afdf5ab0a321973dfabee38fffd3919a7e069360fd6202"
+    },
+    {
+      "name": "probe-230.cpp",
+      "label": "private-cpp-header",
+      "header": "app/painter/object-ref.hpp",
+      "language": "cpp",
+      "source_sha256": "d530263a741eb29f56ec4c8dd9ddb740d90303fa6b69fa79e47a3269a3b9cadb"
+    },
+    {
+      "name": "probe-231.cpp",
+      "label": "private-cpp-header",
+      "header": "app/painter/resources.hpp",
+      "language": "cpp",
+      "source_sha256": "c4ed001c64c3d1de00c20ac04e8a75952afcf330eb5c1c1a8c6ca6287fa8dd9e"
+    },
+    {
+      "name": "probe-232.cpp",
+      "label": "private-cpp-header",
+      "header": "app/painter/source.hpp",
+      "language": "cpp",
+      "source_sha256": "1c20b9e49c93d2c5f9693f22c083ce31d0b345f4165e5ad93cf62287650c5629"
+    },
+    {
+      "name": "probe-233.c",
+      "label": "generated-source-header",
+      "header": "app/pdb/internal-procs.h",
+      "language": "c",
+      "source_sha256": "87e30082f81a83471f145b34c90496eac15914de743d70f86c1d623caabaacf4"
+    },
+    {
+      "name": "probe-234.cpp",
+      "label": "generated-source-header",
+      "header": "app/pdb/internal-procs.h",
+      "language": "cpp",
+      "source_sha256": "983dfdf7b9de74b00c68047eca7a67f0f701805ceec516065561645c54c410f6"
+    },
+    {
+      "name": "probe-235.c",
+      "label": "generated-source-header",
+      "header": "libgimp/gimp_pdb.h",
+      "language": "c",
+      "source_sha256": "bffb8933f94e8ddd3bd3d41b9520c3fe80a48f9c7430b142b3fa4350e917c412"
+    },
+    {
+      "name": "probe-236.cpp",
+      "label": "generated-source-header",
+      "header": "libgimp/gimp_pdb.h",
+      "language": "cpp",
+      "source_sha256": "67f0b2223ce9cb6d8344b05409670bfd4cc6be39814f34f69d4edb1d85a904a9"
+    },
+    {
+      "name": "probe-237.c",
+      "label": "generated-source-header",
+      "header": "libgimp/gimp_pdb_headers.h",
+      "language": "c",
+      "source_sha256": "8559d90e9839c7d715eecc0cb5a9e89c2a2215a8767d4c5b47b6dc0d6f5a874b"
+    },
+    {
+      "name": "probe-238.cpp",
+      "label": "generated-source-header",
+      "header": "libgimp/gimp_pdb_headers.h",
+      "language": "cpp",
+      "source_sha256": "f96fd66d0dfdc42e29f45d5c66ea3217a64e0e010d9d3d10730db4d87dc7cc2b"
+    },
+    {
+      "name": "probe-239.c",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpbrush_pdb.h",
+      "language": "c",
+      "source_sha256": "4bc73510ad0f920dd82148d25a6313ee6891bfc87bf17001b49f5a0252fe104f"
+    },
+    {
+      "name": "probe-240.cpp",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpbrush_pdb.h",
+      "language": "cpp",
+      "source_sha256": "e691a2d23b28118046cb3954afbcc358697172a6d9e93f9a65c8d46f134efcc1"
+    },
+    {
+      "name": "probe-241.c",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpbrushes_pdb.h",
+      "language": "c",
+      "source_sha256": "1ea02caa6c09a1ad6f23d22c698f39f94be846e1ffdbe290caf2e7045fc985e8"
+    },
+    {
+      "name": "probe-242.cpp",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpbrushes_pdb.h",
+      "language": "cpp",
+      "source_sha256": "755d272a36583b98d0e8b0ca99dd0aa12090ca1c4c4b9db39b7345b23de158b7"
+    },
+    {
+      "name": "probe-243.c",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpbrushselect_pdb.h",
+      "language": "c",
+      "source_sha256": "a6c6270eaa6ce914c8bbfb8ed9ff1f508259889a7bff74697bb2dcd035cb78b7"
+    },
+    {
+      "name": "probe-244.cpp",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpbrushselect_pdb.h",
+      "language": "cpp",
+      "source_sha256": "ebc431f6e302c3e74c6c9355adb25f0748140940c4054022f245396c2c96f37b"
+    },
+    {
+      "name": "probe-245.c",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpbuffer_pdb.h",
+      "language": "c",
+      "source_sha256": "b5c4955a3979b6b89528ea3d100f2d5f996cb3abab12321d4b11a27e36ea8f3b"
+    },
+    {
+      "name": "probe-246.cpp",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpbuffer_pdb.h",
+      "language": "cpp",
+      "source_sha256": "849e2177ad059f23cc9c29b11b0fd9179f48ead67415bb527771c0fa6f85422e"
+    },
+    {
+      "name": "probe-247.c",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpchannel_pdb.h",
+      "language": "c",
+      "source_sha256": "b0c0db8785b08a657eec6c8ea337864ca55355115308e78db41c4a0894ba2a7e"
+    },
+    {
+      "name": "probe-248.cpp",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpchannel_pdb.h",
+      "language": "cpp",
+      "source_sha256": "b09bfe7b650eccf96b20a25dc79f45617f094a20d9498b334da2ec856eb1ad6a"
+    },
+    {
+      "name": "probe-249.c",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpcontext_pdb.h",
+      "language": "c",
+      "source_sha256": "4aff803c580387ff9a3054942efec3724e07df28d5b7f0ee2bdeda6e5d3a2355"
+    },
+    {
+      "name": "probe-250.cpp",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpcontext_pdb.h",
+      "language": "cpp",
+      "source_sha256": "0661f6ca1ffcdaf693139d411ef930ee5b758cd8f3e1c9841da450fbe7cf8586"
+    },
+    {
+      "name": "probe-251.c",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpdebug_pdb.h",
+      "language": "c",
+      "source_sha256": "72f1414abef0217e372a5e54cbfb3f360c24243a668149b510f532e790e6a7d6"
+    },
+    {
+      "name": "probe-252.cpp",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpdebug_pdb.h",
+      "language": "cpp",
+      "source_sha256": "b79d0fcbb07977245fa8ecd0eacc68626a466238536e7f8aee170faf54444018"
+    },
+    {
+      "name": "probe-253.c",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpdisplay_pdb.h",
+      "language": "c",
+      "source_sha256": "d2b983fe026b7073c11ec0e58bf8299bfdbafd54f0bce1729abdb345d2b1b0e2"
+    },
+    {
+      "name": "probe-254.cpp",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpdisplay_pdb.h",
+      "language": "cpp",
+      "source_sha256": "2c75a80e67b6900c9db7ea4ac202ac63f93bdd19c44d9724c7f1f22f1845aae7"
+    },
+    {
+      "name": "probe-255.c",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpdrawable_pdb.h",
+      "language": "c",
+      "source_sha256": "38d926fdc3212345321c7f40513cbeb1017b90a96b5b03356576592874834ac7"
+    },
+    {
+      "name": "probe-256.cpp",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpdrawable_pdb.h",
+      "language": "cpp",
+      "source_sha256": "229b3f846c434a6c99c201dfdd53db9efc74d537a550e4088d2957ba6f711777"
+    },
+    {
+      "name": "probe-257.c",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpdrawablecolor_pdb.h",
+      "language": "c",
+      "source_sha256": "9023dbfab59af3181d3597f6870deac51876b14840587871e14430875a566b13"
+    },
+    {
+      "name": "probe-258.cpp",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpdrawablecolor_pdb.h",
+      "language": "cpp",
+      "source_sha256": "e8e9806f575b219f3b9ff6fd857c47a69e577d4f844eae30cead244da6d8f887"
+    },
+    {
+      "name": "probe-259.c",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpdrawableedit_pdb.h",
+      "language": "c",
+      "source_sha256": "8b06c5b71a4811ddcd404c4a8a25df8f84fe2b2e50c81bccc93986fd2ac9f145"
+    },
+    {
+      "name": "probe-260.cpp",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpdrawableedit_pdb.h",
+      "language": "cpp",
+      "source_sha256": "dbf0dc13dc596a135bba84eb461f5096ffa4d856f144005b62dee153b401e656"
+    },
+    {
+      "name": "probe-261.c",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpdrawablefilter_pdb.h",
+      "language": "c",
+      "source_sha256": "a39b0865492ec22e267e64958f567adaaa8d39e6f3e48b860ebe3cbbcd5978b8"
+    },
+    {
+      "name": "probe-262.cpp",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpdrawablefilter_pdb.h",
+      "language": "cpp",
+      "source_sha256": "e6ba767020637f9b1d0ea21b49d7a00b004fb4701f7c3cfbe1761d4eb0d355a4"
+    },
+    {
+      "name": "probe-263.c",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpdrawableselect_pdb.h",
+      "language": "c",
+      "source_sha256": "de08decebbd393a72772b4a8d4efcab6696b2210e5cc95a1ad15e0232ad1213d"
+    },
+    {
+      "name": "probe-264.cpp",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpdrawableselect_pdb.h",
+      "language": "cpp",
+      "source_sha256": "d54e71945b40073daa0ad11fef5f73900a92888260b06ac8c19bd765b24bb720"
+    },
+    {
+      "name": "probe-265.c",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpdynamics_pdb.h",
+      "language": "c",
+      "source_sha256": "409709574c3f9070ec81af5e97460757cc7e3b2bc309d0b91dbe4a7ed37f8bd6"
+    },
+    {
+      "name": "probe-266.cpp",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpdynamics_pdb.h",
+      "language": "cpp",
+      "source_sha256": "4aeb78c2790c6ff71c3795ae2fe4c189c57a300871841f634b1984873b0b5549"
+    },
+    {
+      "name": "probe-267.c",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpedit_pdb.h",
+      "language": "c",
+      "source_sha256": "4f627436e05ce9c2c25f9f06bb24a14d81a39e42852d701552c57e167888ed80"
+    },
+    {
+      "name": "probe-268.cpp",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpedit_pdb.h",
+      "language": "cpp",
+      "source_sha256": "2655db6c6515a14eb406d4fe6a971aa11f8946016eed6d4a6b00accca162851a"
+    },
+    {
+      "name": "probe-269.c",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpenums.h",
+      "language": "c",
+      "source_sha256": "f5c53a85290add7eb67213e28ab2b5e05e89a7055c1373c0aaa09534376aca1f"
+    },
+    {
+      "name": "probe-270.cpp",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpenums.h",
+      "language": "cpp",
+      "source_sha256": "4859fd33d5d2df6726d602300f9bf24de3d3ef5ff2bf9ea935e1b86ea4b0c38a"
+    },
+    {
+      "name": "probe-271.c",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpfile_pdb.h",
+      "language": "c",
+      "source_sha256": "185791e8b1fdb9267848a582397cbb59be2b96703f6a9f4ca70e8e6cbd9d02a0"
+    },
+    {
+      "name": "probe-272.cpp",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpfile_pdb.h",
+      "language": "cpp",
+      "source_sha256": "d8737b1527c6c1bafff8c1d9ea3ccf1425eadbc9b4f5a084ffd8e759379c87a6"
+    },
+    {
+      "name": "probe-273.c",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpfloatingsel_pdb.h",
+      "language": "c",
+      "source_sha256": "c769139a4a5e8e35e53c539dd8af70e3efc728383a4fb02a1fbcaaa97fb97add"
+    },
+    {
+      "name": "probe-274.cpp",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpfloatingsel_pdb.h",
+      "language": "cpp",
+      "source_sha256": "4965887055910c9fac59d65d374cf062f6babcc0955d0f378471f24379f280d2"
+    },
+    {
+      "name": "probe-275.c",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpfont_pdb.h",
+      "language": "c",
+      "source_sha256": "b9fde2cdf95e77b5d4f2304893804bb0bdab40d17ec37c6ac905f690310f531b"
+    },
+    {
+      "name": "probe-276.cpp",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpfont_pdb.h",
+      "language": "cpp",
+      "source_sha256": "461fd7c3bd93f8b7bdd1b3cd8862a656221f0f599c27cae0dd9b11a35f3cab79"
+    },
+    {
+      "name": "probe-277.c",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpfonts_pdb.h",
+      "language": "c",
+      "source_sha256": "ae9f3fb574698398eb710374f04628454054ede71adcb13ae97ee3fd76cc5748"
+    },
+    {
+      "name": "probe-278.cpp",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpfonts_pdb.h",
+      "language": "cpp",
+      "source_sha256": "9a9e4976431f0b03298fdb9209e955b223b31570aca48f16b488d02ca6016566"
+    },
+    {
+      "name": "probe-279.c",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpfontselect_pdb.h",
+      "language": "c",
+      "source_sha256": "e273caf4e5f98bee9419511001656f2c3b3635dcbc67f37a7c2bfcce90178356"
+    },
+    {
+      "name": "probe-280.cpp",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpfontselect_pdb.h",
+      "language": "cpp",
+      "source_sha256": "cc8324d6c5d7b2251a0314a18bda92530c0325f0c10f50362fa0f374bc017556"
+    },
+    {
+      "name": "probe-281.c",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpgimprc_pdb.h",
+      "language": "c",
+      "source_sha256": "a2b4c55648373722c8189df30bc3a3f94daeeec38609159ead7810957d3ae4a3"
+    },
+    {
+      "name": "probe-282.cpp",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpgimprc_pdb.h",
+      "language": "cpp",
+      "source_sha256": "e10ec109bd17c55547daee25f63746ffc6566ad1fa6db77a292fcf3cca22625d"
+    },
+    {
+      "name": "probe-283.c",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpgradient_pdb.h",
+      "language": "c",
+      "source_sha256": "d329dc04c771fb438b4782bff057165e10517fb87a0cc63f840bf761f49682d5"
+    },
+    {
+      "name": "probe-284.cpp",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpgradient_pdb.h",
+      "language": "cpp",
+      "source_sha256": "127a0bdfe768a51662a86f5e044b0a662b09a8f81aa77bda215cf69454d82b3d"
+    },
+    {
+      "name": "probe-285.c",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpgradients_pdb.h",
+      "language": "c",
+      "source_sha256": "deabe9283ac6015cab903e391a4d1bd0d88bb6796eff19461b0048ccc92db8ad"
+    },
+    {
+      "name": "probe-286.cpp",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpgradients_pdb.h",
+      "language": "cpp",
+      "source_sha256": "b72a020c5ea9364850a86f83693dabaee1df958ba17f2e5ff45c5207619d344f"
+    },
+    {
+      "name": "probe-287.c",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpgradientselect_pdb.h",
+      "language": "c",
+      "source_sha256": "7346373936d9f0d655f7da34ee874cd43c76f0ddcc152c6be6df533c9d8c25f2"
+    },
+    {
+      "name": "probe-288.cpp",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpgradientselect_pdb.h",
+      "language": "cpp",
+      "source_sha256": "db4bd6fbe4bfc5fafdfc3d4d73011daeb05c7a032b6694ed5f08db74bfeab198"
+    },
+    {
+      "name": "probe-289.c",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpgrouplayer_pdb.h",
+      "language": "c",
+      "source_sha256": "e2edad18278d15713b447e55d42ff207f6fcf8a22efbe102afde575b9b201594"
+    },
+    {
+      "name": "probe-290.cpp",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpgrouplayer_pdb.h",
+      "language": "cpp",
+      "source_sha256": "6e9d747cebe8a05b8919d3ec9adf899753ef947be2f77ad9546c2732f3c858f3"
+    },
+    {
+      "name": "probe-291.c",
+      "label": "generated-source-header",
+      "header": "libgimp/gimphelp_pdb.h",
+      "language": "c",
+      "source_sha256": "0a9d700d5b0716b9fbe8d241589cca7ed78c23b5812a282a640396cdb572785e"
+    },
+    {
+      "name": "probe-292.cpp",
+      "label": "generated-source-header",
+      "header": "libgimp/gimphelp_pdb.h",
+      "language": "cpp",
+      "source_sha256": "fc6bc43bc703f86311606737dc8669a0feb890fd6d678d087e1ff22118bda32c"
+    },
+    {
+      "name": "probe-293.c",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpimage_pdb.h",
+      "language": "c",
+      "source_sha256": "442a1e202f9e967a8bb1608b1bcd3bc1fd09fbfcf9f9e1f0d330fe39ec33784a"
+    },
+    {
+      "name": "probe-294.cpp",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpimage_pdb.h",
+      "language": "cpp",
+      "source_sha256": "5a7c4c1d8d4e32f90f95ef8c87445c7a31dc2dae436439f71e7e00518c185a83"
+    },
+    {
+      "name": "probe-295.c",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpimageautocrop_pdb.h",
+      "language": "c",
+      "source_sha256": "51a0fe7e4b04dc29ee567651c132782398d2f221d3849217def49290dfcd120b"
+    },
+    {
+      "name": "probe-296.cpp",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpimageautocrop_pdb.h",
+      "language": "cpp",
+      "source_sha256": "d87acc2e37c2f2a2579c530a8cf3ae17510f996f2a8a761c85a92af093b90a01"
+    },
+    {
+      "name": "probe-297.c",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpimagecolorprofile_pdb.h",
+      "language": "c",
+      "source_sha256": "3f64b6f2428c5f53584cacc0539f3cca878359b2579cb47bb8b228a480c8c1a8"
+    },
+    {
+      "name": "probe-298.cpp",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpimagecolorprofile_pdb.h",
+      "language": "cpp",
+      "source_sha256": "b9cc8c9971ff8b9fb358c2fef88835e0040752d477bcde5d246da9c06457a4f5"
+    },
+    {
+      "name": "probe-299.c",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpimageconvert_pdb.h",
+      "language": "c",
+      "source_sha256": "eb9d019afba872d2015a6295d9aef9cfee586bd76b20bce7446fe6ca6da9cb4c"
+    },
+    {
+      "name": "probe-300.cpp",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpimageconvert_pdb.h",
+      "language": "cpp",
+      "source_sha256": "3d8735ad7d86828f76d0cd4e43692f1e7d88ca3e4fca164d8151a9e6a2f365d6"
+    },
+    {
+      "name": "probe-301.c",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpimagegrid_pdb.h",
+      "language": "c",
+      "source_sha256": "232099055f5819cb75549de8dedc7e6ea75171378336268cecba6dd40d9f356c"
+    },
+    {
+      "name": "probe-302.cpp",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpimagegrid_pdb.h",
+      "language": "cpp",
+      "source_sha256": "ebd64221191ab6a9febf72648e3badd8a1c705abe5f37ae4c1a3f54694eb241d"
+    },
+    {
+      "name": "probe-303.c",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpimageguides_pdb.h",
+      "language": "c",
+      "source_sha256": "f18cca0eeee04a2b9bde8d8509d8448a7695ca4a0a9204b14f12a76f59752b3c"
+    },
+    {
+      "name": "probe-304.cpp",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpimageguides_pdb.h",
+      "language": "cpp",
+      "source_sha256": "9ebc3a74529ce0d224ec10161dc44cc900e81f7221f3bada3031c3c23b9a0357"
+    },
+    {
+      "name": "probe-305.c",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpimagesamplepoints_pdb.h",
+      "language": "c",
+      "source_sha256": "c293019394432dd7cfb077ca1df235478316f40d3119b6ab7569ac0015dd8897"
+    },
+    {
+      "name": "probe-306.cpp",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpimagesamplepoints_pdb.h",
+      "language": "cpp",
+      "source_sha256": "c3ca77cc9558543fb3aef63332e39a66abfe67bd3eda7675f179284d12aa1dd5"
+    },
+    {
+      "name": "probe-307.c",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpimageselect_pdb.h",
+      "language": "c",
+      "source_sha256": "f43aafc9014a25aa06bcaef1bfc5dbdc33cf4e3780a97771de6855aeb89c1d6c"
+    },
+    {
+      "name": "probe-308.cpp",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpimageselect_pdb.h",
+      "language": "cpp",
+      "source_sha256": "2cc6e4d27368d01b74d9cc13571cfa3ee9eb7b43744a1f842f97e35112002304"
+    },
+    {
+      "name": "probe-309.c",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpimagetransform_pdb.h",
+      "language": "c",
+      "source_sha256": "9b521fa72b8be42e3afc08ff0fff4bdee3d3848d7351619aac9419fb07f7f755"
+    },
+    {
+      "name": "probe-310.cpp",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpimagetransform_pdb.h",
+      "language": "cpp",
+      "source_sha256": "1a7ff2a3081aaf8456b19cb7548aabd062a2b48de3ece815bcc8fe5da58993d6"
+    },
+    {
+      "name": "probe-311.c",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpimageundo_pdb.h",
+      "language": "c",
+      "source_sha256": "9e2f35a0836f1f5bbd54fae7ba8d23ce7401442a667d1c5f04b0939b527f2e8a"
+    },
+    {
+      "name": "probe-312.cpp",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpimageundo_pdb.h",
+      "language": "cpp",
+      "source_sha256": "5feb49723b28e0469b0cac9b5e7b875b950458ecbc518b24e221c802938f6dd9"
+    },
+    {
+      "name": "probe-313.c",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpitem_pdb.h",
+      "language": "c",
+      "source_sha256": "97d5809699c5c1df5e43c7cc967287af76fa11f600244dadbeb513d4d93a68c8"
+    },
+    {
+      "name": "probe-314.cpp",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpitem_pdb.h",
+      "language": "cpp",
+      "source_sha256": "1490c21df14a52e440c03d4cfffbb82fa80bcab191b98661689b24b78196686c"
+    },
+    {
+      "name": "probe-315.c",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpitemtransform_pdb.h",
+      "language": "c",
+      "source_sha256": "9cdfef3f94393a29c116b71aac9cdf039f06dfbee8b9f226e362aad46156fc79"
+    },
+    {
+      "name": "probe-316.cpp",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpitemtransform_pdb.h",
+      "language": "cpp",
+      "source_sha256": "3431d7684269f7ecdfdd88a5a658d2548bca53be357cd559c0e134aeb88d41e7"
+    },
+    {
+      "name": "probe-317.c",
+      "label": "generated-source-header",
+      "header": "libgimp/gimplayer_pdb.h",
+      "language": "c",
+      "source_sha256": "c4eae40e9f77cb410aab6a148ebb57e89447c0ef681c7fba1b52ff16b3ee8375"
+    },
+    {
+      "name": "probe-318.cpp",
+      "label": "generated-source-header",
+      "header": "libgimp/gimplayer_pdb.h",
+      "language": "cpp",
+      "source_sha256": "c60acbeef911269597c6cf8a5e73940b28fb0376369ecad3514b87579a49ac22"
+    },
+    {
+      "name": "probe-319.c",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpmessage_pdb.h",
+      "language": "c",
+      "source_sha256": "cdc2f02b50ca066b3ba714c7e9babfb063fb98fcc6e85d4d7a7ec91eeec52dc0"
+    },
+    {
+      "name": "probe-320.cpp",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpmessage_pdb.h",
+      "language": "cpp",
+      "source_sha256": "6bd3b74825f917f135140bad7b11cc01d12fbe1560acab05def685d264f0e3a3"
+    },
+    {
+      "name": "probe-321.c",
+      "label": "generated-source-header",
+      "header": "libgimp/gimppainttools_pdb.h",
+      "language": "c",
+      "source_sha256": "380f4cb999123b54ff4f7e9d55128fbfecaed59a1ed8763af566d545e25bc0db"
+    },
+    {
+      "name": "probe-322.cpp",
+      "label": "generated-source-header",
+      "header": "libgimp/gimppainttools_pdb.h",
+      "language": "cpp",
+      "source_sha256": "88e7b152fbe0b888b46d968f218aa0f9daea49cb7492063c1c24049e88370301"
+    },
+    {
+      "name": "probe-323.c",
+      "label": "generated-source-header",
+      "header": "libgimp/gimppalette_pdb.h",
+      "language": "c",
+      "source_sha256": "2418fc27a074d055916ea4fd5daf5b76318966a703ee863db6aa01c22356fc6c"
+    },
+    {
+      "name": "probe-324.cpp",
+      "label": "generated-source-header",
+      "header": "libgimp/gimppalette_pdb.h",
+      "language": "cpp",
+      "source_sha256": "b94cc4f7f16769b817f1bc0a2c47640c796c03b4a3f98186a3376746b589eab0"
+    },
+    {
+      "name": "probe-325.c",
+      "label": "generated-source-header",
+      "header": "libgimp/gimppalettes_pdb.h",
+      "language": "c",
+      "source_sha256": "8e2e851ecbdaa7b8bc7a41123bbd85294a9af9a77843beed47b5ab4b958d2589"
+    },
+    {
+      "name": "probe-326.cpp",
+      "label": "generated-source-header",
+      "header": "libgimp/gimppalettes_pdb.h",
+      "language": "cpp",
+      "source_sha256": "a1505b6180d5d81f44706e5ec32d8ff9820ec5c990fb0ea3c6174618e219ee20"
+    },
+    {
+      "name": "probe-327.c",
+      "label": "generated-source-header",
+      "header": "libgimp/gimppaletteselect_pdb.h",
+      "language": "c",
+      "source_sha256": "e72ee7e3beff6897d506a1143a300625b581262bc2817373d7a2d03c78d6837f"
+    },
+    {
+      "name": "probe-328.cpp",
+      "label": "generated-source-header",
+      "header": "libgimp/gimppaletteselect_pdb.h",
+      "language": "cpp",
+      "source_sha256": "25c6cd42bf708f0ffd75342008ae3234fa2088f6297103138a2723c577958068"
+    },
+    {
+      "name": "probe-329.c",
+      "label": "generated-source-header",
+      "header": "libgimp/gimppath_pdb.h",
+      "language": "c",
+      "source_sha256": "b736caecd677b2581eeeb545e4ae6d7c97ed22b416bf86258efe94494c76e725"
+    },
+    {
+      "name": "probe-330.cpp",
+      "label": "generated-source-header",
+      "header": "libgimp/gimppath_pdb.h",
+      "language": "cpp",
+      "source_sha256": "40b7bca9b4bd0e030f34df53ffec728e78dc89eb2ea93ec3a535b34d63b3de2f"
+    },
+    {
+      "name": "probe-331.c",
+      "label": "generated-source-header",
+      "header": "libgimp/gimppattern_pdb.h",
+      "language": "c",
+      "source_sha256": "f9720fab3daf9020ab1e2ec0319bbb4471925eccba8df540e4ec02954fd20410"
+    },
+    {
+      "name": "probe-332.cpp",
+      "label": "generated-source-header",
+      "header": "libgimp/gimppattern_pdb.h",
+      "language": "cpp",
+      "source_sha256": "b5735d44439fa2f201565129108d2fc71916729cf80c75e510a6a5785cb49c4c"
+    },
+    {
+      "name": "probe-333.c",
+      "label": "generated-source-header",
+      "header": "libgimp/gimppatterns_pdb.h",
+      "language": "c",
+      "source_sha256": "fef5cc65757be12ac8e204e266c32737fd925dc353e1cb4577d8d2d0595bc1c9"
+    },
+    {
+      "name": "probe-334.cpp",
+      "label": "generated-source-header",
+      "header": "libgimp/gimppatterns_pdb.h",
+      "language": "cpp",
+      "source_sha256": "bfac9c6f82dad5bcbb264ec75f9f56a827f07cb1b286bc299a44a905ea29f0c2"
+    },
+    {
+      "name": "probe-335.c",
+      "label": "generated-source-header",
+      "header": "libgimp/gimppatternselect_pdb.h",
+      "language": "c",
+      "source_sha256": "98e8294badf963cfa2a89a15dbeb89dd100475f8b7163c3871741da6ff7a04f3"
+    },
+    {
+      "name": "probe-336.cpp",
+      "label": "generated-source-header",
+      "header": "libgimp/gimppatternselect_pdb.h",
+      "language": "cpp",
+      "source_sha256": "a4a8908ef9afba9b7148dd03bd304737ff4256554763f195bc32d00db7906e23"
+    },
+    {
+      "name": "probe-337.c",
+      "label": "generated-source-header",
+      "header": "libgimp/gimppdb_pdb.h",
+      "language": "c",
+      "source_sha256": "a0a227e4ee9b4c785b50457b870c2d29187ea52f5ef98a3b5787c14f585bd909"
+    },
+    {
+      "name": "probe-338.cpp",
+      "label": "generated-source-header",
+      "header": "libgimp/gimppdb_pdb.h",
+      "language": "cpp",
+      "source_sha256": "96ab7e4219f50289a1f8813771b853c0516e6c17257ac62396d03180f017e18d"
+    },
+    {
+      "name": "probe-339.c",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpplugin_pdb.h",
+      "language": "c",
+      "source_sha256": "18bc20cb001185537a0f27f156cabe9627ac7561a1baabfc7663557c8494c7ec"
+    },
+    {
+      "name": "probe-340.cpp",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpplugin_pdb.h",
+      "language": "cpp",
+      "source_sha256": "7202e62c11f660e1c24c3eb246d63bb25731c3816968950c4c456c6455d7ac39"
+    },
+    {
+      "name": "probe-341.c",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpprogress_pdb.h",
+      "language": "c",
+      "source_sha256": "08779487a484e9fe93e92f74d143ae6dd34ee72c7745e8609886369c793f8cc1"
+    },
+    {
+      "name": "probe-342.cpp",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpprogress_pdb.h",
+      "language": "cpp",
+      "source_sha256": "73776034ceddde58d32cabcaba679a3227f5881f1d9f4debfdd4e6477aa42996"
+    },
+    {
+      "name": "probe-343.c",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpresource_pdb.h",
+      "language": "c",
+      "source_sha256": "8c10d641c197f85721a734566442e411af1826ffddd5d91fb778b15a7eb85c40"
+    },
+    {
+      "name": "probe-344.cpp",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpresource_pdb.h",
+      "language": "cpp",
+      "source_sha256": "2ba77d32a95cfaf3385af4ddd5a0c170bcaa56c957b0bb83ad71e5693058e0ca"
+    },
+    {
+      "name": "probe-345.c",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpselection_pdb.h",
+      "language": "c",
+      "source_sha256": "e410b2617f991fac5a75ac02a0dd1e2df9f5540251b0dada5a83ef16bfecd148"
+    },
+    {
+      "name": "probe-346.cpp",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpselection_pdb.h",
+      "language": "cpp",
+      "source_sha256": "7ba5a410f81e2dc94a9f4b98fbaea550fa81948b4525f3553975e499d4ec88dc"
+    },
+    {
+      "name": "probe-347.c",
+      "label": "generated-source-header",
+      "header": "libgimp/gimptextlayer_pdb.h",
+      "language": "c",
+      "source_sha256": "cf55ff6ad25eec07635463d0b264fc5567baa7dbdb82aa35f3982ac0c55f4c80"
+    },
+    {
+      "name": "probe-348.cpp",
+      "label": "generated-source-header",
+      "header": "libgimp/gimptextlayer_pdb.h",
+      "language": "cpp",
+      "source_sha256": "f333981f2830cca8fa78b36e68aa6f6bd2c39ece9a3cbacb8a28fa02d6cc76fc"
+    },
+    {
+      "name": "probe-349.c",
+      "label": "generated-source-header",
+      "header": "libgimp/gimptexttool_pdb.h",
+      "language": "c",
+      "source_sha256": "49c9a078db9f2c2c31ba634c4fd9d9e53c81e234d9abfd25de79b3f133e4e9e6"
+    },
+    {
+      "name": "probe-350.cpp",
+      "label": "generated-source-header",
+      "header": "libgimp/gimptexttool_pdb.h",
+      "language": "cpp",
+      "source_sha256": "48ca76f766c7f7fb5538d6b4eb544e637fadde0daa5b6be67b8778d15b36be90"
+    },
+    {
+      "name": "probe-351.c",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpunit_pdb.h",
+      "language": "c",
+      "source_sha256": "de7d5bb6f8b69a14e8ebde0d499c88df939196345332df9ca26793a07e6cb0bd"
+    },
+    {
+      "name": "probe-352.cpp",
+      "label": "generated-source-header",
+      "header": "libgimp/gimpunit_pdb.h",
+      "language": "cpp",
+      "source_sha256": "d3adcf52a094f65d03d646ead60c870c94a697e768924bc06bfa26c1de50ea1a"
+    },
+    {
+      "name": "probe-353.c",
+      "label": "generated-source-header",
+      "header": "plug-ins/imagemap/imap_cern_parse.h",
+      "language": "c",
+      "source_sha256": "d431358883b88a43c519056296aaf8613dbda61d6741912201dab34c868893de"
+    },
+    {
+      "name": "probe-354.cpp",
+      "label": "generated-source-header",
+      "header": "plug-ins/imagemap/imap_cern_parse.h",
+      "language": "cpp",
+      "source_sha256": "5a4e2ca582ee5c2051b7b2b433b4bbbf3b8be5df606e92b64fe305dee7e39b4b"
+    },
+    {
+      "name": "probe-355.c",
+      "label": "generated-source-header",
+      "header": "plug-ins/imagemap/imap_csim_parse.h",
+      "language": "c",
+      "source_sha256": "de66363b87f9d398ccdf79d1bc9544fdcd17c79a20387f63f0aece91be9cc405"
+    },
+    {
+      "name": "probe-356.cpp",
+      "label": "generated-source-header",
+      "header": "plug-ins/imagemap/imap_csim_parse.h",
+      "language": "cpp",
+      "source_sha256": "bff4b97cfdb2d831dde737591ea646b0d11fc7e083f471909a63193a96de7ea5"
+    },
+    {
+      "name": "probe-357.c",
+      "label": "generated-source-header",
+      "header": "plug-ins/imagemap/imap_ncsa_parse.h",
+      "language": "c",
+      "source_sha256": "150d848dc9c068832a920a41db140fe15b7abf73d91b2ed587bca76da6d52828"
+    },
+    {
+      "name": "probe-358.cpp",
+      "label": "generated-source-header",
+      "header": "plug-ins/imagemap/imap_ncsa_parse.h",
+      "language": "cpp",
+      "source_sha256": "af813461ddc7025df53e63fb47d5017dc22d48c0ca31ee6cd38038947a4c3d16"
+    },
+    {
+      "name": "probe-359.c",
+      "label": "additional-reviewed-header",
+      "header": "app/core/gimp-update-geometry.h",
+      "language": "c",
+      "source_sha256": "401cb899de5e4606088a3e6fc7c7e10fa94c5dc672ff25a1f53caf8b7c4455a5"
+    },
+    {
+      "name": "probe-360.cpp",
+      "label": "additional-reviewed-header",
+      "header": "app/core/gimp-update-geometry.h",
+      "language": "cpp",
+      "source_sha256": "be43217da84ba29001d17cc66bd6ad3933a0ebe7ab77f529fbfb687bf5325e0c"
+    },
+    {
+      "name": "probe-361.c",
+      "label": "additional-reviewed-header",
+      "header": "app/core/gimpjsonresource.h",
+      "language": "c",
+      "source_sha256": "9881749a46f97caca74f769a11c3ef53b8337d62daf3064f0d1b6a23b9942c9a"
+    },
+    {
+      "name": "probe-362.cpp",
+      "label": "additional-reviewed-header",
+      "header": "app/core/gimpjsonresource.h",
+      "language": "cpp",
+      "source_sha256": "3c77265c39f6356b3919dea31bc8c719706516c5ada197a6070f8d5beb67fba3"
+    },
+    {
+      "name": "probe-363.c",
+      "label": "additional-reviewed-header",
+      "header": "app/core/gimpmypaintbrush-load.h",
+      "language": "c",
+      "source_sha256": "f78dd79ee071f2d217114ebb6f53afec73fb22cecd3cc70dde5015d59a04fdea"
+    },
+    {
+      "name": "probe-364.cpp",
+      "label": "additional-reviewed-header",
+      "header": "app/core/gimpmypaintbrush-load.h",
+      "language": "cpp",
+      "source_sha256": "42ef79813eb2c341a74c2b6f33c11251e199b2dd7f44479407db035a705ab9a5"
+    },
+    {
+      "name": "probe-365.c",
+      "label": "additional-reviewed-header",
+      "header": "app/core/gimpmypaintbrush-save.h",
+      "language": "c",
+      "source_sha256": "19c39c751bbbbc0f31440e304dd2a8da7a5da4cffc6d1adc26c6d8047ed8e359"
+    },
+    {
+      "name": "probe-366.cpp",
+      "label": "additional-reviewed-header",
+      "header": "app/core/gimpmypaintbrush-save.h",
+      "language": "cpp",
+      "source_sha256": "5b07d839ce46d67249a8659f5b40df81d006b80e976c98376f75665d5187b370"
+    },
+    {
+      "name": "probe-367.c",
+      "label": "additional-reviewed-header",
+      "header": "app/core/gimpmypaintbrush.h",
+      "language": "c",
+      "source_sha256": "7af974916cd2cbfd7f0b2bf9b4fccb071078ac98ca4c2c6c21e3163f740e7519"
+    },
+    {
+      "name": "probe-368.cpp",
+      "label": "additional-reviewed-header",
+      "header": "app/core/gimpmypaintbrush.h",
+      "language": "cpp",
+      "source_sha256": "5de8e060531e010ab837e5727990141a03521d7dd4d1f1fd58ebb5d2701bff0d"
+    },
+    {
+      "name": "probe-369.c",
+      "label": "additional-reviewed-header",
+      "header": "app/dialogs/welcome-dialog.h",
+      "language": "c",
+      "source_sha256": "2cac61387542ada74adc78f7d00c531d8f923209f2a5b0534f0bcff35451258c"
+    },
+    {
+      "name": "probe-370.cpp",
+      "label": "additional-reviewed-header",
+      "header": "app/dialogs/welcome-dialog.h",
+      "language": "cpp",
+      "source_sha256": "e73d111ab4ffaaa626d9baac82d4f15c9d45811dadf75aa4e70cf5cdc805ac4d"
+    },
+    {
+      "name": "probe-371.c",
+      "label": "additional-reviewed-header",
+      "header": "app/display/gimpdisplayshell-scroll.h",
+      "language": "c",
+      "source_sha256": "255b353aabffc6f829d1ef864abb0364e1a692534eb05588c1208eaa28af52ec"
+    },
+    {
+      "name": "probe-372.cpp",
+      "label": "additional-reviewed-header",
+      "header": "app/display/gimpdisplayshell-scroll.h",
+      "language": "cpp",
+      "source_sha256": "33bb33eff80a692f2fbca13ad1c8bfc917f8d7ebfcb349c01a000d4c9f38a402"
+    },
+    {
+      "name": "probe-373.c",
+      "label": "additional-reviewed-header",
+      "header": "app/gimp-features.h",
+      "language": "c",
+      "source_sha256": "023c0673ce05ccd7b9129ef1eae36e4c6f36220b99f99ea516a0e4204078eac0"
+    },
+    {
+      "name": "probe-374.cpp",
+      "label": "additional-reviewed-header",
+      "header": "app/gimp-features.h",
+      "language": "cpp",
+      "source_sha256": "0d71e583252b87614ecba4f95a5058a6c95240917bb278208d2a60ad0d9026ed"
+    },
+    {
+      "name": "probe-375.c",
+      "label": "additional-reviewed-header",
+      "header": "app/gui/gimpuiconfigurer.h",
+      "language": "c",
+      "source_sha256": "00ab11f8c5250ad5e4ba22a43b84a982c25df87ddccc03b8eebbf36eb42b3d52"
+    },
+    {
+      "name": "probe-376.cpp",
+      "label": "additional-reviewed-header",
+      "header": "app/gui/gimpuiconfigurer.h",
+      "language": "cpp",
+      "source_sha256": "24914c6ac65acf56f9d355c089af54df1ba514af129c876cf68511e7ad128ccc"
+    },
+    {
+      "name": "probe-377.c",
+      "label": "additional-reviewed-header",
+      "header": "app/gui/session.h",
+      "language": "c",
+      "source_sha256": "e420b3c14e5fe089f82d652290a55c3c3ba5fbf32278d5362762db200e27c056"
+    },
+    {
+      "name": "probe-378.cpp",
+      "label": "additional-reviewed-header",
+      "header": "app/gui/session.h",
+      "language": "cpp",
+      "source_sha256": "0fbb0757dabbad746f5b277cbaec7125b8c4b2110f023acc3d202f097b1ed7f2"
+    },
+    {
+      "name": "probe-379.c",
+      "label": "additional-reviewed-header",
+      "header": "app/paint/gimpmypaintoptions.h",
+      "language": "c",
+      "source_sha256": "9c518366037f475711acda1d4f08c18124064257c775e5aaa84be12e65150b9e"
+    },
+    {
+      "name": "probe-380.cpp",
+      "label": "additional-reviewed-header",
+      "header": "app/paint/gimpmypaintoptions.h",
+      "language": "cpp",
+      "source_sha256": "e779ee573f98726cb911cc2908cb657a2bd3b34a49a7b3f16c677795c9bda29e"
+    },
+    {
+      "name": "probe-381.c",
+      "label": "additional-reviewed-header",
+      "header": "app/presets/gimpjsonresource.h",
+      "language": "c",
+      "source_sha256": "082d9f7df7b3806805315b70e77cf2d30b66689dca8d7b358c6c66531649216d"
+    },
+    {
+      "name": "probe-382.cpp",
+      "label": "additional-reviewed-header",
+      "header": "app/presets/gimpjsonresource.h",
+      "language": "cpp",
+      "source_sha256": "2226bd58b19ffa67c4714e3272865a698c349dcc587d47483db2c9289f6b78b7"
+    },
+    {
+      "name": "probe-383.c",
+      "label": "additional-reviewed-header",
+      "header": "app/presets/preset-factory-gui.h",
+      "language": "c",
+      "source_sha256": "463d8b3c68edb3430b6d0be755327a9441282a7f83b1408b06ccf0fa7bb8d704"
+    },
+    {
+      "name": "probe-384.cpp",
+      "label": "additional-reviewed-header",
+      "header": "app/presets/preset-factory-gui.h",
+      "language": "cpp",
+      "source_sha256": "2a9450a4cd4b46f72b3f9024427b3661e158666376d31356bdd31192373e238c"
+    },
+    {
+      "name": "probe-385.c",
+      "label": "additional-reviewed-header",
+      "header": "app/tools/gimpalignoptions.h",
+      "language": "c",
+      "source_sha256": "ca4496bd811c42ce9f627cd1c05bca26d7d1d92b34a37b5360e5ac8c850c6bf6"
+    },
+    {
+      "name": "probe-386.cpp",
+      "label": "additional-reviewed-header",
+      "header": "app/tools/gimpalignoptions.h",
+      "language": "cpp",
+      "source_sha256": "0ff7e3f60afedb15af541cdea68621e75961a9fd276c83d64b8d0efab7e3ab69"
+    },
+    {
+      "name": "probe-387.c",
+      "label": "additional-reviewed-header",
+      "header": "app/tools/gimpmypainttool.h",
+      "language": "c",
+      "source_sha256": "d83a1b1f279ab4368c92b00758eae5220997f602b26c07581ef7a8622565c9bd"
+    },
+    {
+      "name": "probe-388.cpp",
+      "label": "additional-reviewed-header",
+      "header": "app/tools/gimpmypainttool.h",
+      "language": "cpp",
+      "source_sha256": "793153edc06a5cb1bdf8969f08be0351aee9b61c142637a1ad793c634acc34e3"
+    },
+    {
+      "name": "probe-389.c",
+      "label": "additional-reviewed-header",
+      "header": "app/tools/gimppainterpainttoolbar.h",
+      "language": "c",
+      "source_sha256": "0d1356f169988b9ffa33dd96d11249e71fd33459ef243d524c0042a71c8401db"
+    },
+    {
+      "name": "probe-390.cpp",
+      "label": "additional-reviewed-header",
+      "header": "app/tools/gimppainterpainttoolbar.h",
+      "language": "cpp",
+      "source_sha256": "c755d46db09e80e744f7b766f5774fc93cf7aa21468df400e0e49e14588ba48b"
+    },
+    {
+      "name": "probe-391.c",
+      "label": "additional-reviewed-header",
+      "header": "app/tools/gimppaintertooltoolbar.h",
+      "language": "c",
+      "source_sha256": "0f21a627385789b797f16ab79ed03fab514da42b3e0805c1c7145ee4808a0061"
+    },
+    {
+      "name": "probe-392.cpp",
+      "label": "additional-reviewed-header",
+      "header": "app/tools/gimppaintertooltoolbar.h",
+      "language": "cpp",
+      "source_sha256": "ec7a80656e515888c42ebc6fc00fd6bd02d132fe5789ac580a1b40b829f66f35"
+    },
+    {
+      "name": "probe-393.c",
+      "label": "additional-reviewed-header",
+      "header": "app/tools/gimppaintertransformtoolbar.h",
+      "language": "c",
+      "source_sha256": "a017041cb1408ab8b3e8788b9db98b05e9ef9b881b99e3a043b04ea774aab7e5"
+    },
+    {
+      "name": "probe-394.cpp",
+      "label": "additional-reviewed-header",
+      "header": "app/tools/gimppaintertransformtoolbar.h",
+      "language": "cpp",
+      "source_sha256": "49f61ec537ab5d85f61c25d4bdcdb486bdd32020dd0803035ba197a807da4665"
+    },
+    {
+      "name": "probe-395.c",
+      "label": "additional-reviewed-header",
+      "header": "app/tools/gimprectangleoptions.h",
+      "language": "c",
+      "source_sha256": "750e9023453b50be62d8d3138c3ee1e4e1c2ed06252be174d3f44a85d4a743e4"
+    },
+    {
+      "name": "probe-396.cpp",
+      "label": "additional-reviewed-header",
+      "header": "app/tools/gimprectangleoptions.h",
+      "language": "cpp",
+      "source_sha256": "6c96d065a98a59448a267365736b52356404190f57c4f7ea1cce32edbc927e87"
+    },
+    {
+      "name": "probe-397.c",
+      "label": "additional-reviewed-header",
+      "header": "app/tools/gimpvectoroptions.h",
+      "language": "c",
+      "source_sha256": "d63d3bf3cb537393be1948e835d6e66db23037a51f5d05936287e510b7de070e"
+    },
+    {
+      "name": "probe-398.cpp",
+      "label": "additional-reviewed-header",
+      "header": "app/tools/gimpvectoroptions.h",
+      "language": "cpp",
+      "source_sha256": "fa18a56c8a0f3073975da82440ee90c0040598eddac9b96ee8497096b96f28bd"
+    },
+    {
+      "name": "probe-399.c",
+      "label": "additional-reviewed-header",
+      "header": "app/widgets/gimpaction.h",
+      "language": "c",
+      "source_sha256": "de7c9a5fec10721a28fb65c11d976c307b54d668bac0a9f0c6d92becc6b39a91"
+    },
+    {
+      "name": "probe-400.cpp",
+      "label": "additional-reviewed-header",
+      "header": "app/widgets/gimpaction.h",
+      "language": "cpp",
+      "source_sha256": "64b0732640b0e5f39f3414b864effa65472aeebb2cca6106157f654b8e9c6359"
+    },
+    {
+      "name": "probe-401.c",
+      "label": "additional-reviewed-header",
+      "header": "app/widgets/gimpcellrendererpopup.h",
+      "language": "c",
+      "source_sha256": "919c792379217ff0c566057561839e55c8b5c6b3b5f08adfa695b938f3eac2f1"
+    },
+    {
+      "name": "probe-402.cpp",
+      "label": "additional-reviewed-header",
+      "header": "app/widgets/gimpcellrendererpopup.h",
+      "language": "cpp",
+      "source_sha256": "0f8e05ac7046e0c47804341c9e45fbaa5f2d91de194baa138eee8d8f17fa2af8"
+    },
+    {
+      "name": "probe-403.c",
+      "label": "additional-reviewed-header",
+      "header": "app/widgets/gimpcontainertreeview-private.h",
+      "language": "c",
+      "source_sha256": "3070c92c9391ece80d2cff95d5427d653b8279134a53b5f9724761a78b2e5ff5"
+    },
+    {
+      "name": "probe-404.cpp",
+      "label": "additional-reviewed-header",
+      "header": "app/widgets/gimpcontainertreeview-private.h",
+      "language": "cpp",
+      "source_sha256": "7fa1a36009b42c5c6185436a980df4b9a614eeec0e4919165177119cb4c1aff3"
+    },
+    {
+      "name": "probe-405.c",
+      "label": "additional-reviewed-header",
+      "header": "app/widgets/gimpcontainertreeview.h",
+      "language": "c",
+      "source_sha256": "c5c9f2de7e54f550f4de55271bc4ba9d5f4d39f4d7277c06ba695b46c535a981"
+    },
+    {
+      "name": "probe-406.cpp",
+      "label": "additional-reviewed-header",
+      "header": "app/widgets/gimpcontainertreeview.h",
+      "language": "cpp",
+      "source_sha256": "6b951bd56ea5d2548e5fdcc6c3fe83c012c6bc26a07501a845a769300480ea07"
+    },
+    {
+      "name": "probe-407.c",
+      "label": "additional-reviewed-header",
+      "header": "app/widgets/gimpdialogfactory.h",
+      "language": "c",
+      "source_sha256": "a4f4cedfd832f76d84c3717de0290527bbbd24ed9d0b97fe21bd82718cdca9cf"
+    },
+    {
+      "name": "probe-408.cpp",
+      "label": "additional-reviewed-header",
+      "header": "app/widgets/gimpdialogfactory.h",
+      "language": "cpp",
+      "source_sha256": "f392cb7c3f5e3f5988d063c705e53a3cac2f0bf91d604d775f9a76ba064b5b33"
+    },
+    {
+      "name": "probe-409.c",
+      "label": "additional-reviewed-header",
+      "header": "app/widgets/gimpeditor-cxx-private.h",
+      "language": "c",
+      "source_sha256": "8fd0deb5fb2ff28d8c24ca342867947bd1af38d8313b79e48230c62e2c8db2c7"
+    },
+    {
+      "name": "probe-410.cpp",
+      "label": "additional-reviewed-header",
+      "header": "app/widgets/gimpeditor-cxx-private.h",
+      "language": "cpp",
+      "source_sha256": "344fd30df503d11bd6959724eb847dfd4dba0b505120ffee9523b092e3be4740"
+    },
+    {
+      "name": "probe-411.c",
+      "label": "additional-reviewed-header",
+      "header": "app/widgets/gimpeditor-cxx.h",
+      "language": "c",
+      "source_sha256": "704b7d17cfc4cdf63087de60afd28ffe09b97d6f8df7b5dfd2339afae0703cbb"
+    },
+    {
+      "name": "probe-412.cpp",
+      "label": "additional-reviewed-header",
+      "header": "app/widgets/gimpeditor-cxx.h",
+      "language": "cpp",
+      "source_sha256": "8b88a359d0ae104b3241861d12dc953670141c859756993acceb7b7ec7c787b6"
+    },
+    {
+      "name": "probe-413.c",
+      "label": "additional-reviewed-header",
+      "header": "app/widgets/gimplayertileview.h",
+      "language": "c",
+      "source_sha256": "ffe469c798fa50dced4de57ca533b6afdd7601640c63dea40e56fe4d22f075a7"
+    },
+    {
+      "name": "probe-414.cpp",
+      "label": "additional-reviewed-header",
+      "header": "app/widgets/gimplayertileview.h",
+      "language": "cpp",
+      "source_sha256": "8740667b881e94ef230e12e1e2617ec90b6f30f57b29fe8a51293ca659d7aadb"
+    },
+    {
+      "name": "probe-415.c",
+      "label": "additional-reviewed-header",
+      "header": "app/widgets/gimpmypaintbrushoptions-gui.h",
+      "language": "c",
+      "source_sha256": "a369bf01a4e626a0f65d521c9e7e80da8e730264415dfab2df8df73f8a164b07"
+    },
+    {
+      "name": "probe-416.cpp",
+      "label": "additional-reviewed-header",
+      "header": "app/widgets/gimpmypaintbrushoptions-gui.h",
+      "language": "cpp",
+      "source_sha256": "1a47b318a2f8e84aa73f14cd1255cfa01e668c314fe4a6f79a0efcdc1e2087a8"
+    },
+    {
+      "name": "probe-417.c",
+      "label": "additional-reviewed-header",
+      "header": "app/widgets/gimpsessioninfo-private.h",
+      "language": "c",
+      "source_sha256": "964fc786fa34e7893643d206fe1adfa6f69ff14f0c9164bc53b27a653d5e3147"
+    },
+    {
+      "name": "probe-418.cpp",
+      "label": "additional-reviewed-header",
+      "header": "app/widgets/gimpsessioninfo-private.h",
+      "language": "cpp",
+      "source_sha256": "f0c5c7478069c7ec2c93f29a23445ca6d4097fd2270149288e345bd102641228"
+    },
+    {
+      "name": "probe-419.c",
+      "label": "additional-reviewed-header",
+      "header": "app/widgets/gimpwidgets-utils.h",
+      "language": "c",
+      "source_sha256": "25f0e827045a0b721dc808f521180be269c717fb8c571057cd9d6674302589e3"
+    },
+    {
+      "name": "probe-420.cpp",
+      "label": "additional-reviewed-header",
+      "header": "app/widgets/gimpwidgets-utils.h",
+      "language": "cpp",
+      "source_sha256": "59c733d43490096e1cc5bdd9c40d2ce81187b872e833caa680087e8c2dfae0e0"
+    }
+  ],
+  "additional_public_targets": [
+    "app/core/gimp-update-geometry.h",
+    "app/core/gimpjsonresource.h",
+    "app/core/gimpmypaintbrush-load.h",
+    "app/core/gimpmypaintbrush-save.h",
+    "app/core/gimpmypaintbrush.h",
+    "app/dialogs/welcome-dialog.h",
+    "app/display/gimpdisplayshell-scroll.h",
+    "app/gimp-features.h",
+    "app/gui/gimpuiconfigurer.h",
+    "app/gui/session.h",
+    "app/paint/gimpmypaintoptions.h",
+    "app/presets/gimpjsonresource.h",
+    "app/presets/preset-factory-gui.h",
+    "app/tools/gimpalignoptions.h",
+    "app/tools/gimpmypainttool.h",
+    "app/tools/gimppainterpainttoolbar.h",
+    "app/tools/gimppaintertooltoolbar.h",
+    "app/tools/gimppaintertransformtoolbar.h",
+    "app/tools/gimprectangleoptions.h",
+    "app/tools/gimpvectoroptions.h",
+    "app/widgets/gimpaction.h",
+    "app/widgets/gimpcellrendererpopup.h",
+    "app/widgets/gimpcontainertreeview-private.h",
+    "app/widgets/gimpcontainertreeview.h",
+    "app/widgets/gimpdialogfactory.h",
+    "app/widgets/gimpeditor-cxx-private.h",
+    "app/widgets/gimpeditor-cxx.h",
+    "app/widgets/gimplayertileview.h",
+    "app/widgets/gimpmypaintbrushoptions-gui.h",
+    "app/widgets/gimpsessioninfo-private.h",
+    "app/widgets/gimpwidgets-utils.h"
+  ],
+  "additional_reviewed_routes": [
+    {
+      "path": "app/core/gimp-update-geometry.h",
+      "kind": "new",
+      "context": "standalone",
+      "prerequisites": [],
+      "review": "09.002/projection-update-bounds: private GLib-only signed-int update interval clipping and grid alignment helpers. Owns its GLib prerequisite and include guard; twice-include compilation in C11 and C++14 without an outer linkage wrapper. No public API or cross-language link ABI claim."
+    },
+    {
+      "path": "app/core/gimpjsonresource.h",
+      "kind": "new",
+      "context": "core",
+      "prerequisites": [],
+      "review": "08.018/json-resource-entries: original C get_type/new signatures and generic native GimpData root owner; specialized preset inherits one state. C11/C++14 double include; typed C++ facade is separately compiled; no old Interface or binary layout claim."
+    },
+    {
+      "path": "app/core/gimpmypaintbrush-load.h",
+      "kind": "new",
+      "context": "core",
+      "prerequisites": [],
+      "review": "08.018/brush-filename-load: original absolute-filename C signature delegates to sole native stream parser; owned list/resource, private stream/file lifetime. Header owns C linkage and include guards; double-include C11/C++14 probes, no legacy layout/parser/error ABI claim."
+    },
+    {
+      "path": "app/core/gimpmypaintbrush-save.h",
+      "kind": "new",
+      "context": "core",
+      "prerequisites": [],
+      "review": "08.018/brush-file-save: original gboolean borrowed GimpData/GError signature to native shared data transaction and BrushSlot serializer. Header owns linkage and include guards; C11/C++14 double inclusion, no historical unchecked sidecar/dirty or layout ABI claim."
+    },
+    {
+      "path": "app/core/gimpmypaintbrush.h",
+      "kind": "new",
+      "context": "core",
+      "prerequisites": [],
+      "review": "08.018 exact row 36: source-only alias to native GimpPainterMybrush and the original named duplicate C operation. Owns C linkage and include guard; compile twice with normal core prerequisites in C11 and C++14 without an outer linkage wrapper. Does not restore legacy object/class layout or runtime GType, or discharge other historical type/operation duties."
+    },
+    {
+      "path": "app/dialogs/welcome-dialog.h",
+      "kind": "changed-baseline",
+      "baseline_blob": "9e6d1a8e09009650b3a185938dce835eb87071c1",
+      "context": "core",
+      "prerequisites": [],
+      "review": "Welcome dialog shutdown ownership: preserve the baseline constructor and add the idempotent shutdown entry point with C linkage. Double-include after normal core/widget prerequisites in C11 and C++14."
+    },
+    {
+      "path": "app/display/gimpdisplayshell-scroll.h",
+      "kind": "changed-baseline",
+      "baseline_blob": "fba444baf2da4743d9bd2abd97c58a4a4fac227a",
+      "context": "core",
+      "prerequisites": [],
+      "review": "25.009 exact source-only legacy pan bridge: two double-coordinate begin/motion C entry declarations using opaque GimpDisplayShell and GLib scalar types. Existing integer scrolling signatures are unchanged. Header owns its C linkage and include guard; double-include C11/C++14 probes use normal reviewed core/display type prelude, without outer linkage adapter. This compile route does not close original navigation duties or claim runtime/ABI parity."
+    },
+    {
+      "path": "app/gimp-features.h",
+      "kind": "new",
+      "context": "standalone",
+      "prerequisites": [],
+      "review": "08.018/features-entry: original void C application registration and native lifecycle boundaries; GLib-only opaque Gimp header, no old Interface/layout or automatic HTTP listener semantics."
+    },
+    {
+      "path": "app/gui/gimpuiconfigurer.h",
+      "kind": "changed-baseline",
+      "baseline_blob": "db22ffccc37ec017d9c6c45a4f72ca655b441d74",
+      "context": "core",
+      "prerequisites": [],
+      "review": "29.010/startup-session-mode-barrier: native restore ownership and GUI/session readiness declarations or private state. Double-include the identified baseline header after standard core/widget prerequisites in C11 and C++14; no outer linkage wrapper, historical identity changes, or link ABI claim."
+    },
+    {
+      "path": "app/gui/session.h",
+      "kind": "changed-baseline",
+      "baseline_blob": "d5be445ca6639f0304038f8cac668281b1505409",
+      "context": "core",
+      "prerequisites": [],
+      "review": "29.010/startup-session-mode-barrier: native restore ownership and GUI/session readiness declarations or private state. Double-include the identified baseline header after standard core/widget prerequisites in C11 and C++14; no outer linkage wrapper, historical identity changes, or link ABI claim."
+    },
+    {
+      "path": "app/paint/gimpmypaintoptions.h",
+      "kind": "new",
+      "context": "core",
+      "prerequisites": [],
+      "review": "08.018 exact row 51: original owned mapping-point query signature and operation-level alias to native Options. Owns include guard and C linkage; compile twice with normal core prerequisites in C11 and C++14 without an outer linkage wrapper. Preserves caller g_free ownership and legacy float rounding; no borrowed live-brush, legacy layout/runtime GType, or unrelated operation claim."
+    },
+    {
+      "path": "app/presets/gimpjsonresource.h",
+      "kind": "new",
+      "context": "core",
+      "prerequisites": [],
+      "review": "08.018/json-resource-entries: original C get_type/new signatures and generic native GimpData root owner; specialized preset inherits one state. C11/C++14 double include; typed C++ facade is separately compiled; no old Interface or binary layout claim."
+    },
+    {
+      "path": "app/presets/preset-factory-gui.h",
+      "kind": "new",
+      "context": "standalone",
+      "prerequisites": [],
+      "review": "08.018/preset-action-group-entry: original C action-group entry declaration, GLib prerequisite and opaque GimpActionGroup; exact original no-op contract distinct from native Apply/Refresh setup."
+    },
+    {
+      "path": "app/tools/gimpalignoptions.h",
+      "kind": "changed-baseline",
+      "baseline_blob": "27b2b8f64290bbc446be20fb601f056e8ab141a0",
+      "context": "core",
+      "prerequisites": [],
+      "review": "04.003/tool-options-header-routes: independent horizontal alignment options constructor. Double-include the identified baseline header after normal core/tool/GTK prerequisites in C11 and C++14; preserve its original identity. Compilation only, without an outer linkage wrapper; no C/C++ link ABI claim."
+    },
+    {
+      "path": "app/tools/gimpmypainttool.h",
+      "kind": "new",
+      "context": "core",
+      "prerequisites": [],
+      "review": "08.018 row 58 partial operation port: original color-picker operation name and narrow native tool alias, with an explicit GimpColorPickTarget parameter migration. Owns C linkage and include guard; compile twice with normal core prerequisites in C11 and C++14 without an outer linkage wrapper. Does not restore the incompatible legacy GimpColorPickMode enum, object/class layout, runtime GType, or discharge other original duties."
+    },
+    {
+      "path": "app/tools/gimppainterpainttoolbar.h",
+      "kind": "new",
+      "context": "core",
+      "prerequisites": [],
+      "review": "Recovery 2026-10-15: independent legacy-source-based horizontal paint toolbar constructor; owns include guard and C linkage. Compile twice in C11/C++14 with standard core prerequisites; no old layout or factory completeness is implied."
+    },
+    {
+      "path": "app/tools/gimppaintertooltoolbar.h",
+      "kind": "new",
+      "context": "core",
+      "prerequisites": [],
+      "review": "Recovery 2026-10-15: independent legacy-source-based horizontal tool toolbar constructor; owns include guard and C linkage. Compile twice in C11/C++14 with standard core prerequisites; no old layout or factory completeness is implied."
+    },
+    {
+      "path": "app/tools/gimppaintertransformtoolbar.h",
+      "kind": "new",
+      "context": "core",
+      "prerequisites": [],
+      "review": "Recovery 2026-10-15: independent legacy-source-based horizontal transform toolbar constructor; owns include guard and C linkage. Compile twice in C11/C++14 with standard core prerequisites; no old layout or factory completeness is implied."
+    },
+    {
+      "path": "app/tools/gimprectangleoptions.h",
+      "kind": "changed-baseline",
+      "baseline_blob": "e3afeacdcd5b53900cb22fe46446372b81fa0c62",
+      "context": "core",
+      "prerequisites": [],
+      "review": "04.003/tool-options-header-routes: shared rectangle action endpoint, live size-entry metadata and retained history fields. Double-include the identified baseline header after normal core/tool/GTK prerequisites in C11 and C++14; preserve its original identity. Compilation only, without an outer linkage wrapper; no C/C++ link ABI claim."
+    },
+    {
+      "path": "app/tools/gimpvectoroptions.h",
+      "kind": "changed-baseline",
+      "baseline_blob": "783e4b5a91f5df87c8c5726e3133ac454bc8a308",
+      "context": "core",
+      "prerequisites": [],
+      "review": "04.003/tool-options-header-routes: horizontal path options constructor and runtime path availability. Double-include the identified baseline header after normal core/tool/GTK prerequisites in C11 and C++14; preserve its original identity. Compilation only, without an outer linkage wrapper; no C/C++ link ABI claim."
+    },
+    {
+      "path": "app/widgets/gimpaction.h",
+      "kind": "changed-baseline",
+      "baseline_blob": "95b757b65c3bcbcb584376e0ab4fc48d761f54a0",
+      "context": "core",
+      "prerequisites": [],
+      "review": "29.010/toolbar-transfer-menu-transaction: native GimpAction dispatch guard declaration, gboolean result and borrowed GimpAction pointer. Header retains its own C linkage/include guard; compile twice in C11 and C++14 with normal core/widget prerequisites, no outer linkage wrapper. No new type layout or historical ABI acceptance."
+    },
+    {
+      "path": "app/widgets/gimpcellrendererpopup.h",
+      "kind": "new",
+      "context": "standalone",
+      "prerequisites": [],
+      "review": "08.017: native popup renderer C interface; owns its GTK prerequisites and C linkage. Double-include in C11 and C++14 without an outer linkage wrapper."
+    },
+    {
+      "path": "app/widgets/gimpcontainertreeview-private.h",
+      "kind": "changed-baseline",
+      "baseline_blob": "364ca893d7c685c2c6281af00e7da9266cc02c40",
+      "context": "core",
+      "prerequisites": [
+        "app/widgets/gimpcontainertreeview.h"
+      ],
+      "review": "08.017 original001536: the native owning misc_cells list extends the identified private tree layout. Probe after its public tree header and core/widget types, twice in both C and C++; no outer linkage wrapper."
+    },
+    {
+      "path": "app/widgets/gimpcontainertreeview.h",
+      "kind": "changed-baseline",
+      "baseline_blob": "1473705a394041cc35205a5cc2ee151bde49cccc",
+      "context": "core",
+      "prerequisites": [],
+      "review": "08.017: native tree popup-cell registration interface, with normal core/widget type prerequisites. Extends the identified historical header without changing its original inventory identity or duties."
+    },
+    {
+      "path": "app/widgets/gimpdialogfactory.h",
+      "kind": "changed-baseline",
+      "baseline_blob": "d2015aace245252d8131ef8e5f4b15abc502451a",
+      "context": "core",
+      "prerequisites": [],
+      "review": "29.010/startup-session-mode-barrier: native restore ownership and GUI/session readiness declarations or private state. Double-include the identified baseline header after standard core/widget prerequisites in C11 and C++14; no outer linkage wrapper, historical identity changes, or link ABI claim."
+    },
+    {
+      "path": "app/widgets/gimpeditor-cxx-private.h",
+      "kind": "new",
+      "context": "core",
+      "prerequisites": [
+        "app/widgets/gimpeditor.h"
+      ],
+      "review": "08.017 original001606-001612: new app-private native construction-helper boundary used by C gimpeditor.c and C++ dropdown provider. Keeps GimpEditorPrivate and ExtendedAction layout in C; owns stdarg, C linkage and include guard. Compile twice after the reviewed editor header in C11 and C++14 without an outer linkage wrapper. Does not recreate the removed historical gimpeditor-private.h or discharge its duties."
+    },
+    {
+      "path": "app/widgets/gimpeditor-cxx.h",
+      "kind": "new",
+      "context": "core",
+      "prerequisites": [
+        "app/widgets/gimpeditor.h"
+      ],
+      "review": "08.017 original001605: restored callable dropdown C interface for the common-store provider. Uses the reviewed native editor header and normal core/widget types; owns its C linkage and include guard. Compile twice in C11 and C++14 without an outer linkage wrapper. This new current-tree header does not revise historical inventory identities or discharge original duties."
+    },
+    {
+      "path": "app/widgets/gimplayertileview.h",
+      "kind": "new",
+      "context": "standalone",
+      "prerequisites": [],
+      "review": "08.018 rows 32\u201333: restored original layer-tile C construction/type and object-property configuration over one native widget. Source-only type alias with native parent/layout; owns prerequisites, C linkage and include guard; double include in C11 and C++14."
+    },
+    {
+      "path": "app/widgets/gimpmypaintbrushoptions-gui.h",
+      "kind": "new",
+      "context": "standalone",
+      "prerequisites": [],
+      "review": "08.018 row 35 partial quick-selector port: original C factory name/signature over a native selected-resource button and canonical snapshot-history model. Owns prerequisites, include guard and C linkage; double include in C11 and C++14. No historical Custom brush-object identity or class/layout ABI claim."
+    },
+    {
+      "path": "app/widgets/gimpsessioninfo-private.h",
+      "kind": "changed-baseline",
+      "baseline_blob": "9b0dea0edd77251ac42428846d80e6c48056ee60",
+      "context": "core",
+      "prerequisites": [],
+      "review": "29.010/startup-session-mode-barrier: native restore ownership and GUI/session readiness declarations or private state. Double-include the identified baseline header after standard core/widget prerequisites in C11 and C++14; no outer linkage wrapper, historical identity changes, or link ABI claim."
+    },
+    {
+      "path": "app/widgets/gimpwidgets-utils.h",
+      "kind": "changed-baseline",
+      "baseline_blob": "9edb8a90af15dbc21250526146e63cb353e09210",
+      "context": "core",
+      "prerequisites": [],
+      "review": "08.017 original001813/001814: retain the callable native gimp_session_write_boolean true/false token helper and its original signature. Extends the identified historical header with C linkage for this declaration. Double-include with the normal core/config/widget type prelude in C11 and C++14; no outer linkage wrapper and no change to historical duties."
+    }
+  ],
+  "generated_source_targets": [
+    "app/pdb/internal-procs.h",
+    "libgimp/gimp_pdb.h",
+    "libgimp/gimp_pdb_headers.h",
+    "libgimp/gimpbrush_pdb.h",
+    "libgimp/gimpbrushes_pdb.h",
+    "libgimp/gimpbrushselect_pdb.h",
+    "libgimp/gimpbuffer_pdb.h",
+    "libgimp/gimpchannel_pdb.h",
+    "libgimp/gimpcontext_pdb.h",
+    "libgimp/gimpdebug_pdb.h",
+    "libgimp/gimpdisplay_pdb.h",
+    "libgimp/gimpdrawable_pdb.h",
+    "libgimp/gimpdrawablecolor_pdb.h",
+    "libgimp/gimpdrawableedit_pdb.h",
+    "libgimp/gimpdrawablefilter_pdb.h",
+    "libgimp/gimpdrawableselect_pdb.h",
+    "libgimp/gimpdynamics_pdb.h",
+    "libgimp/gimpedit_pdb.h",
+    "libgimp/gimpenums.h",
+    "libgimp/gimpfile_pdb.h",
+    "libgimp/gimpfloatingsel_pdb.h",
+    "libgimp/gimpfont_pdb.h",
+    "libgimp/gimpfonts_pdb.h",
+    "libgimp/gimpfontselect_pdb.h",
+    "libgimp/gimpgimprc_pdb.h",
+    "libgimp/gimpgradient_pdb.h",
+    "libgimp/gimpgradients_pdb.h",
+    "libgimp/gimpgradientselect_pdb.h",
+    "libgimp/gimpgrouplayer_pdb.h",
+    "libgimp/gimphelp_pdb.h",
+    "libgimp/gimpimage_pdb.h",
+    "libgimp/gimpimageautocrop_pdb.h",
+    "libgimp/gimpimagecolorprofile_pdb.h",
+    "libgimp/gimpimageconvert_pdb.h",
+    "libgimp/gimpimagegrid_pdb.h",
+    "libgimp/gimpimageguides_pdb.h",
+    "libgimp/gimpimagesamplepoints_pdb.h",
+    "libgimp/gimpimageselect_pdb.h",
+    "libgimp/gimpimagetransform_pdb.h",
+    "libgimp/gimpimageundo_pdb.h",
+    "libgimp/gimpitem_pdb.h",
+    "libgimp/gimpitemtransform_pdb.h",
+    "libgimp/gimplayer_pdb.h",
+    "libgimp/gimpmessage_pdb.h",
+    "libgimp/gimppainttools_pdb.h",
+    "libgimp/gimppalette_pdb.h",
+    "libgimp/gimppalettes_pdb.h",
+    "libgimp/gimppaletteselect_pdb.h",
+    "libgimp/gimppath_pdb.h",
+    "libgimp/gimppattern_pdb.h",
+    "libgimp/gimppatterns_pdb.h",
+    "libgimp/gimppatternselect_pdb.h",
+    "libgimp/gimppdb_pdb.h",
+    "libgimp/gimpplugin_pdb.h",
+    "libgimp/gimpprogress_pdb.h",
+    "libgimp/gimpresource_pdb.h",
+    "libgimp/gimpselection_pdb.h",
+    "libgimp/gimptextlayer_pdb.h",
+    "libgimp/gimptexttool_pdb.h",
+    "libgimp/gimpunit_pdb.h",
+    "plug-ins/imagemap/imap_cern_parse.h",
+    "plug-ins/imagemap/imap_csim_parse.h",
+    "plug-ins/imagemap/imap_ncsa_parse.h"
+  ],
+  "outer_linkage_adapter": false,
+  "source_sha256": {
+    "app/actions/layer-presets-actions.h": "aeb9ac1561a4745c8d1dabf26c46ea94d19aaef9b7360b79bafb5656a4699ee3",
+    "app/actions/layers-commands.h": "fab4d9b73897e677b28103e15709faa121c68a41997cfaea1793170c20524483",
+    "app/actions/view-commands.h": "b8d5b897c0078988093834deebe89d44cb0b00368e4869dc39bcdafd9c4ab428",
+    "app/config/config-enums.h": "6daf970e8f0a33813c960f5140734c9a5ec692acb40cebd5f20c560ca7e09edb",
+    "app/config/config-types.h": "e0afc9046b61f19b52d32b9a7be3e594b7c0d3202a28c4137703e2e950cb19a6",
+    "app/config/gimpcoreconfig.h": "e3c844ba09d18d43b5cef03001ef6647fd5bad409ba60e727298d498279abebc",
+    "app/config/gimpgeglconfig.h": "d4ded6c2773ecc5e4105b9d45fd3c01a6e67af4e814328cb6bdb8e6b59cda84e",
+    "app/config/gimppainterfilterconfig.h": "91c6442e057efc2434332a4d0fa6899460f3772439592bd4e495002596cc1998",
+    "app/config/gimprc-blurbs.h": "6bfd6e41f05d83773bba98ed444ddf08307499a6173462f1fa94b65d2ced356a",
+    "app/core/core-enums.h": "8b273ca25672d29707d14a017ae414a9dd05ed40e875d758c5480d179fb96534",
+    "app/core/core-types.h": "6843c4d1a5962cc458f5cc8331e7de7e09165cde98ba76966f35b270f79817d7",
+    "app/core/gimp-gui.h": "57f7f922420d1419b099a7e0b32319ab9e5dfb20ff5cf069503639360156869a",
+    "app/core/gimp-painter-provenance-private.h": "4932144713d8345ca358f6fd3a3a68967143e34d7dc0ad4f7efd6b5b2a55e473",
+    "app/core/gimp-painter-provenance.h": "9407e2d83d12b87ccd3b92114c1b59b6a0c8f430c981adb587684c0e331d3052",
+    "app/core/gimp-painter-type-traits.hpp": "5bc16efd001f1f83dfd2fa6de6260dbc4d3c646969a7801d27f1eb398869f29f",
+    "app/core/gimp-update-geometry.h": "950d4d4274b59871ea6c2b5aeab3bf69d14db7fc0e9a2ff2cc04a32dd2430cbd",
+    "app/core/gimp.h": "b51d9bb62d4c01e3ec177a0ca2787873465e3c61a3284e9e233595b2ab2c4f69",
+    "app/core/gimpbrush.h": "8ef2105b07e272ce9ffe9d5f4013c8c929d39b5dba3efbb2fe6de420340ad309",
+    "app/core/gimpchannel.h": "71ac815ddd65e2e7d903fa3c70a2c0ceb2b658c30ed715df726879d259842473",
+    "app/core/gimpclonelayer-handle.hpp": "1bf4ecd16600e028cc4deca022733bbb9d75adf3672193399ccdbe327b8f75b9",
+    "app/core/gimpclonelayer.h": "988baaa69210d5171eb29920146abb78d77cbc1d505f8b0aae45d06500aad73e",
+    "app/core/gimpclonelayerundo.h": "08952a62d26ecae1ebd11c01fe36b28082e598535a04921ae4278dee91a998b7",
+    "app/core/gimpcontainer.h": "4147261cbdd90f476c3af5feaa5cfb7bdc70606cfc8af86946c1a2842fc87c0f",
+    "app/core/gimpcontext.h": "777954c5b8789c4595979e721e9c3c204147eed25ebca94be19550b76bbe8ccd",
+    "app/core/gimpcoords.h": "b5806f2311817cd14c217702ed46d1048bd36c471fdcbd96c4bbf328070f7be8",
+    "app/core/gimpdata.h": "52050d5de04c23cced8d984364c178bd3d4d026ec0783b4aba1634573594645a",
+    "app/core/gimpdatafactory.h": "76a2e1561bf50621181e01129576c2ee6b832953a9afb5649b186242080a4b40",
+    "app/core/gimpdrawable.h": "c1de298fee095660cf998da214615fa97d88c6c85ded194c04d3dee033cd27b6",
+    "app/core/gimpdrawablestack.h": "c0bf3fb20fa9926a862e53c8c6bd421fbd30b5156df2315e82df22ceccd38c30",
+    "app/core/gimpdynamics.h": "eba773e1988b37f71fd14b956c27b1b355593faec15d21c87029aa2c5cf7430c",
+    "app/core/gimpdynamicsoutput.h": "3360b2918469131396f07d27335eb235fd1d2f05acebab3d398d495a7378da02",
+    "app/core/gimpfilter.h": "2d23447910f3a1c1cf872ffba4a2f7b4263f0ce615db99896d73f76434fc521a",
+    "app/core/gimpfilterexit.h": "3e70d5bae79aa141ec3475145b858ad4b25642e739e6448d0b6510180ec69eb0",
+    "app/core/gimpfilterlayer-handle.hpp": "3d4b584052d8f19b8947decf63ba3a2cdc08f0ae4de0a95c6b07c51752435951",
+    "app/core/gimpfilterlayer.h": "e228c7b5f5560fe3cf006f946435b8c298d00dcdc53bb41da0b622393d626832",
+    "app/core/gimpfilterparametereditor.h": "ec098ed545ef308e49e4193644e5e31aa4c51b00570eb7a9a6b20808843b5878",
+    "app/core/gimpfilterprocedure-progress.h": "b2c2329a2c38ecb767dd4c6b1f99e6cc76db7518bcae0781031700664901f53b",
+    "app/core/gimpfilterstack.h": "7ff8ebd9a5c95ccf4f50c3d8d17ff0f36e383539f5007be326117911edc8e2db",
+    "app/core/gimpgrouplayer.h": "2b42d9fca5157c6257c7d198777550a9e704ddc90119f4866dc8b77d116fba8d",
+    "app/core/gimpimage-new.h": "49752eb57a65f2b8808747bb0b0332b8b17de73a993f09027edc55dbf28404b3",
+    "app/core/gimpimage-perspective-guide.h": "6ee10256abc7c2361af7d498f0ffb4bb6305330449a5600005f5af46ccd9b570",
+    "app/core/gimpimage-private.h": "15460e3842dea43935acc567f98a15bd0f605e9e7c020b327efe84b9bf61c1d2",
+    "app/core/gimpimage.h": "803bae72bbd1dcbdd8518c604f1f4eabd6cfac291427bd6e42a419f8583346ac",
+    "app/core/gimpitem.h": "378ba81dc8f38e3a02ffd6bd4cdf9b380bb0d6f81916d32847b9cc6677383144",
+    "app/core/gimpitemstack.h": "24b32ebd5bae79d017d75d7967594eeb55a57cec9c0f9f22630e7aa5c4000be9",
+    "app/core/gimpitemundo.h": "f5d3776d6153301914b82cc1a0406b808dadcdc7914cdbf35db0287f2fb7aa2e",
+    "app/core/gimpjsonresource.h": "64615e9aa6f14249908144f77575d78046ff3eb90e391243c3b931a379ed544a",
+    "app/core/gimplayer.h": "1c4506b263d63d87806dd2aa0f644ee1d4a8028146515697496c8b731ea68a44",
+    "app/core/gimplayerpreset.h": "953e19a6759e79189aa19ba798df4bea551b13757755cff206ea63fd58351e7a",
+    "app/core/gimplist.h": "d8b181c935b9398c11994478d008ce359ed8467746613ec4893e3a0ec34c7077",
+    "app/core/gimpmypaintbrush-load.h": "c6fc0e3728fb2bc68f2d0b9b8867a777c0268eb329038502ec766eb7e223fe82",
+    "app/core/gimpmypaintbrush-save.h": "4293cbab8eaeafb1c33e0bdcdeef3e456e88f8188c1e1a0efe7df87431ea3a0d",
+    "app/core/gimpmypaintbrush.h": "8df6c0232e127dd98b7f0b3b3aaf357c72243cf057a0f19a10ee8812a75d925c",
+    "app/core/gimpobject.h": "f29b1f418b285a9c581c71f6cddd485ebb9e837b9b945b8b9ec389812b284b78",
+    "app/core/gimppaintermybrush.h": "03e8b58ad4f7c1241cd9480a31b1304db9a42c1d4de9011e96cb7f9a4b31e807",
+    "app/core/gimppainterprofile.h": "b0e3f32fd2e8dbd5ee0ba8da74421959ea3a26053b38d85e5e6988452800006b",
+    "app/core/gimpperspectiveguide.h": "38add8ccfe61a2dbd591f9dcaded4ea0f8add1de228b6b27b401eb36d5472a36",
+    "app/core/gimppickable.h": "2a345e77c784ba3dde6254d33522a879dea928287450c0410a055dc30fde496b",
+    "app/core/gimpprogress.h": "d1b625e9a9406ac2bb21e387dc125d34afa8bf653f351d61b906626e8edf6c1a",
+    "app/core/gimpprojectable.h": "8f619d78b9b76cebdfab5239e12a41955a13bae47d9ca9369fc5b27ccce33287",
+    "app/core/gimpprojection.h": "ed2f2f592c433a7ef23f8587d3e8e779fd7da0847fed25a37d700fbf143038e0",
+    "app/core/gimpresource.h": "63d065509a16cdf1fcc21b6bda3e77d8166056f3e2d5abb6dec12690166df408",
+    "app/core/gimptemplate.h": "b30144d3d7b9badc52698da343acc88a5d3d8da8ae2e8d5697e5817566ceca84",
+    "app/core/gimptooloptions.h": "aa1c9732cd31511a0a3938e33306797ee6644ff92905e095de961f7b8f1191a3",
+    "app/core/gimptoolpreset.h": "083e6041713951142fd02203fccaa74703200db334fa13e4d31e301356a5c66d",
+    "app/core/gimpundo.h": "ace7de32f7d3825511bb6ceea26f575dbbde50bfb483533f882c26347911a001",
+    "app/core/gimpviewable.h": "38889e398c2e3f4a52b6c5d427835e32cb958fc632f895304dca88d1e0c6ca97",
+    "app/dialogs/dialogs-constructors.h": "29a4f2525a139a6063c5787fae3d5abaff3380cae8d8605302a2e3f1eea480ee",
+    "app/dialogs/file-save-deferred.h": "10f85af424c9c5fd21b0a90af309fff4386d0b0dfbb8b75fd1ef99a66c5536cc",
+    "app/dialogs/file-save-dialog.h": "1ba235025b2ec841405b7eb51b8c18426a15f33547f49a52fb04db1daf223419",
+    "app/dialogs/painter-layer-dialog.h": "2cea59f291c5ecdd0700eb9433ff7e2be6739773a6329115cb21efd9bfe368c9",
+    "app/dialogs/welcome-dialog.h": "abe8079c1a3a2174b50febaa122604cb4ab60bbfbf8f1ba303cb98ef01da3b93",
+    "app/display/display-enums.h": "1f245251d35fdece02122e390124e71da245b6c9b6574578018ae24eedaa7000",
+    "app/display/display-types.h": "d37554bf7dd0db88574da5a43fa6e7bc8b625a3907156b28ea600e3559e7be36",
+    "app/display/gimpcanvasitem.h": "8db9193731f0cdf8e2751eda61f5cadbbb1921dfb9c39f8573c586be6a4eaece",
+    "app/display/gimpcanvasperspectiveguide.h": "bad7e6aa4a51790a591fdcc2f811125d9e47ea35a980379e51721b197e7b6eb4",
+    "app/display/gimpdisplayshell-scroll.h": "ab7da2ff5a5a460a7d2e4b11e881cf82ff05589e7ecb8843329ef7ba244f7950",
+    "app/display/gimpdisplayshell-tool-events.h": "e002937a99980860c96d4bb897a3969dea762f6417717a15f1bb461c312a0f62",
+    "app/display/gimpdisplayshell.h": "3f542c6021ecde3940426a0eb5d80460569f83bed762968272d8fb42652a6f4f",
+    "app/display/gimpmodifiersmanager.h": "f8332ae5a8ed2efcd8e0ae1d566eed8ffb3c81f1abcf884d59cf1081061cb72a",
+    "app/display/gimpmotionbuffer.h": "e14b70cd6f7570b100a2e75c1d9823f25b3c2a321a6cc9e86f2baffe4c9c9185",
+    "app/display/gimppaintercanvasui.h": "0b53364a49585796b3bb0e48bf50fe120339e5c36465b4d6145b436618e66f42",
+    "app/display/gimppainternavigation.h": "33f2032f1967cf84e5f4fde03a3b6fb3b82a8896c874a93adc013107d338a9e1",
+    "app/display/gimpstatusbar.h": "7ed7a0290bb9b8bb6ac2b8250517ace1f71a9a54a5dad7a6f0320d1c2763c87f",
+    "app/gegl/gimp-gegl-enums.h": "2e999775b7ceb9865d0f6b6d9bdb8924f46fddd191726cfd039c1043acff49d6",
+    "app/gegl/gimp-gegl-types.h": "d616a8e51d5a411e90290c46fb0a01932f77773ec5e5cae0b0f694343ebb48b0",
+    "app/gimp-features.h": "83d75144473b63932e6213e20ad1fc4966da5c0491d5e0c9e010b0a768e81877",
+    "app/gui/gimpuiconfigurer.h": "c1ba983c36125e7d759e5fb6bd95844a20f5f395951481bebc06cd37b468a16a",
+    "app/gui/session.h": "5991405e9c6a55093d1a0158f3d273f03886dc8aba17108dc95caf33069f8db0",
+    "app/httpd/httpd-private.hpp": "1bdf1adf63b4b946b2409ce2cead3c4b52677ff4e88f7398c87f59df05a3ccf1",
+    "app/httpd/httpd-resource.hpp": "683c29d4573c5c2cc0b212f99c496be2cd605f9adbe2837f980e6c303d1b301e",
+    "app/httpd/httpd.h": "df38f3538af72118ffa32ea8eabc57737d9e10045ec4c72c10c38881d4274227",
+    "app/operations/layer-modes-legacy/gimpoperationpainterlegacy.h": "c60b3967ef4c0e3088afa316bc6c17776bbfce255adb1671792acab551d03f21",
+    "app/operations/layer-modes/gimpoperationlayermode.h": "8af4d06c618a7e07130f11c2c3ca16f8953e24b68d91cc971f37c9f9cdd6b349",
+    "app/operations/operations-enums.h": "25b69e487d3b7114300e65fde2063303d50ceb3cd204ccfc527587ad2022277c",
+    "app/operations/operations-types.h": "38aae04f7a9ad91c641dfe8a2905d09a7648933883e29e87d6d99171700e1b1b",
+    "app/paint/gimpbrushcore.h": "b95d16c3202d79d7ca9bca340eea60718d2b82c445c3ffe88de83690cd4a168e",
+    "app/paint/gimpfillbrush.h": "17480b2edcca44a8ecc0e4d463461f57463db7dad841da49bd37af6d65ba6997",
+    "app/paint/gimpmypaintoptions.h": "281bd9425a3f2d5273c786c746250b6557f3438a8021ad885633e5cfcbbb3aad",
+    "app/paint/gimppaintcore-stroke.h": "5de48598705e0c9f3cf12d7e397e7b8ad23d48194f7229c397a55c2c70f5a60b",
+    "app/paint/gimppaintcore.h": "c4daffd4560445fe4796bd902006efadb91762781102f83d3745a0f2ba99967a",
+    "app/paint/gimppainterbrushgeometry.h": "a23988840a52bde0665c10eb28314f1ac24a0345e8c37a4cc26d2a3535fd1b32",
+    "app/paint/gimppainterpaintgate.h": "8c29e4a1a5273f2f904c842fdcc67c925d1ff620ec888ebb88c07f305a81979a",
+    "app/paint/gimppainterpaper-paste.h": "665366b6af83289096533552843f9c4b2f32a172ebdb0f10edf8d5960d4b547a",
+    "app/paint/gimppainterpaper.h": "589ac40248ef57f2ece0f5d9af87c88ae7a58f1c4a3e09f774c7f748775e4250",
+    "app/paint/gimppaintersmudge.h": "f666ceff82036bc0717997946333d1e3cae41ebed84b658b8edbfa5c0155febe",
+    "app/paint/gimppaintoptions.h": "5138abd4268b4a7036a1a6433adbc826f74cf6b79914f0467c6b5c271dada073",
+    "app/paint/paint-enums.h": "f1e70f9753a060f2e1660a6d69b550e7cb8e71e2af753b6396f17dd8f0bdf2ba",
+    "app/paint/paint-types.h": "72a1ec372d61527e62a8fb6031aa7ae8bd87498c5e204510b655776a2117fa7b",
+    "app/paint/painter-mypaint-surface/gegl-surface.hpp": "884084cf46a02639014ab8e777f55155cdd4571807f196874b6f7c68f7fe324d",
+    "app/paint/painter-mypaint-surface/gimp-painter-options.h": "a1690e0a92b49681751a0ac96c742d9de77da370463edc928f580c4267e39752",
+    "app/paint/painter-mypaint-surface/gimp-painter-session.h": "25c0328289f612caef042245431f65f5f5fa123314a7796e0a46485ec597db1b",
+    "app/paint/painter-mypaint-surface/gimp-painter-session.hpp": "c80ba555f7c1643085a0f1d559316690c16c2561260396b3c9634545100519c9",
+    "app/paint/painter-mypaint-surface/gimp-resources.hpp": "6711770fb4b6582aed3f11a2c1961d5eb19b09ff671d1f793593a0603d771de3",
+    "app/paint/painter-mypaint-surface/legacy-generated-mask.hpp": "998b27bf2cc3f99416330e3a9a6285172cc1b23724eb13f1dbb33506e1ad0619",
+    "app/paint/painter-mypaint-surface/legacy-mask-transform.hpp": "4726691480aeac146fc024710651eab01bf6d24af31a0f0946063b324813242e",
+    "app/paint/painter-mypaint-surface/legacy-pixel-modes.hpp": "afa0a00ffa5a99766ffce48e448f04b862659b6a52eaf3652998116b6cf90f15",
+    "app/paint/painter-mypaint-surface/legacy-pixel.hpp": "e9811a082356ad4e9b93b3bfdcb122fda6958a51a3e112ced06aa174a1335de2",
+    "app/paint/painter-mypaint-surface/paint-core.hpp": "7b7ee841d0ffbf7cf6f77f3f0fc38d6e0f4009878a346bef310fd11a329775cc",
+    "app/paint/painter-mypaint/resource.hpp": "088cdb4df4c757480329e45b5a1187c4ea5c8ce7c78b1279a9f2262636820ded",
+    "app/painter/binding-store.hpp": "c67deb0ccf33a13a5ba3ab3f50bdbb2ef8931f481acf62a9315d778388c90262",
+    "app/painter/boundary.hpp": "d97a8b6e27a09fe69c7c1d6620361c3daaa1e5cf1bad8d2eb2d4b9a9faed6d2e",
+    "app/painter/connection.hpp": "3f81d5889f046a12beae6f2c8975be2007742e4d8f99e8fc44877fc809d6e898",
+    "app/painter/gimp-painter-binding.h": "d0269c7b9dd84535d95f714e2227c280030cc922ba967823c00e98daa77d8c04",
+    "app/painter/gimp-painter-error.h": "b3c1e3550f83abd54726e752d069f0a591b105bcea249239277d2005ccf61465",
+    "app/painter/gimp-painter-visibility.h": "d832e5442d969ff8439292a61d0143532d85c1b7eaab0b29689c6dc04e9c4532",
+    "app/painter/gio-type-traits.hpp": "d9f410dede53e735b74c47b13e4e8f31384b9ff98a9992a48a09c63c50bde93c",
+    "app/painter/object-ref.hpp": "5a8cc92afc56f652fd47c727269d71d9d97c4358015f13fe9c4764371fcb7c3a",
+    "app/painter/resources.hpp": "0a337c7467ed382dc087a1fb611fa9639981ae2879fb36a0642833d787143bfa",
+    "app/painter/source.hpp": "88bb8935ba132345ddcb379aaee56340afc3b56ff3c463f0b4a0c1c5e1c5f418",
+    "app/painter/tests/headers/generate-probes.py": "7009bb39cd7796f782bd0b6952b8a5549d505a10ed3f3c67a2ffa96dfeecc096",
+    "app/pdb/gimpprocedure.h": "978a44b48f47b91ec609bb361ba9f3d6fd32bbf394a12c04e6e72721f95ec7df",
+    "app/pdb/internal-procs.h": "7269fb1e96d4f7a7186cb8c55c04356c0049541713efe1a0329d3989b5e71a14",
+    "app/pdb/pdb-types.h": "96c1040bd7701f2d31a3bfabc7cc29c4daf24edf58bb97b53055d9e840fb37b4",
+    "app/plug-in/plug-in-enums.h": "ffe27294a2529dd5b28608329ae5c6a206e5a21a23b30db0f43a1e74ea9a84f6",
+    "app/plug-in/plug-in-types.h": "be6880bbc87825cec2995ea172fbd73ca9cf56dd4bfda5de21ef52af19e7dd70",
+    "app/presets/gimpjsonresource.h": "5ea86d80bfb36fc2e1551b9204585654c847024e1848bb2e1bb9e423bc581b39",
+    "app/presets/preset-factory-gui.h": "1bfebdf3c9c657d77202feba3aaf9027bf7e62ec5daead2a6f0a1468bef8d3ac",
+    "app/propgui/propgui-types.h": "3c4a70dd687749d70122a54abe0df050de8092d7dae036d07819c85d758b117a",
+    "app/text/text-enums.h": "d94751e316e4f9c82afc894d0f60fb949aa44595167052b42963a998b2de5b52",
+    "app/text/text-types.h": "a9d005f26f68d62bf64006dd1e5695b6863ac6d9f53580a67b259365ab2570e6",
+    "app/tools/gimpalignoptions.h": "2c5cd366835523904c3d2f920453a8bea17199214f6a8737aad647915c10de84",
+    "app/tools/gimpbrushtool.h": "dc69350a0da8b812874116a6d9c1b51b2eeea6a67671da8e5d5da27650ae8aa6",
+    "app/tools/gimpcolortool.h": "21bb21606dd164b9767f2c6a2f899c1adb7b310bc93c70cbdb0e28422a5794d1",
+    "app/tools/gimpdrawtool.h": "b8b1b49039fcd0ab2f787cf31ec274f45197dc3bc2852a24e0be298a9e3d9d72",
+    "app/tools/gimpfillbrushtool.h": "be0af3237ea0c0df0fef534cca9e9ae117ea204028b00b1268770a07ace2dae5",
+    "app/tools/gimpmypainttool.h": "c5d8e4299ddf5e2474d4f181295377bf2aca405088bb3c0074713c8ce920a111",
+    "app/tools/gimppaintermybrushtool.h": "b2f2a648614ea2085e7131fb8219e7cb7b7a81f0cdd5690480742201379d74f0",
+    "app/tools/gimppainterpainttoolbar.h": "d367fe07c5a39f76d53692fa59ad997515ac459d7caa5f792f31012ae0ab800b",
+    "app/tools/gimppaintersmudgetool.h": "3eb4b66c4a6aac3f497b1ecc594dc4aabe92af56f300a957136897ac4e74e9d6",
+    "app/tools/gimppaintertooltoolbar.h": "37b78eda7797a9108d271448449b38e551b538c2cf43446cd9fee3e3c6c718c8",
+    "app/tools/gimppaintertransformtoolbar.h": "d03e3ba19673aff506e5679da3fd35f2c17f48c125ccbc1779e8b86f37220129",
+    "app/tools/gimppainttool.h": "0df4f683445aec4039225efdb690ff4d97a4e5862aef08dc9ebe6130a5608afa",
+    "app/tools/gimpperspectiveguidetool.h": "89eb32d34f32f2031fc9c0e0e5520569a50467972529f582c517c1f03c5d8e39",
+    "app/tools/gimprectangleoptions.h": "2ccafb774af5458630d2611304c3843a931ea0dcf4f86c480d30fa00b424df9b",
+    "app/tools/gimptool.h": "c72fae2f17e4fb53b2b239f081db5826e09118508522a9265e77394f9e0c1861",
+    "app/tools/gimpvectoroptions.h": "18c91f4ed8a6804c87c95db68bdfae817a27a3f6fbd71f4a98b71eb4ef48e621",
+    "app/tools/tools-enums.h": "8ff6596acaae74d3e7c09a13e2a08832cf80c769faa02f1dd39f0dd50da528bf",
+    "app/tools/tools-types.h": "0f5b432a7366677816fd887c13e15f0b3820ff1e5feaed7be75fcba44d15ed08",
+    "app/vectors/vectors-enums.h": "725d4ca0eec23eaad503f4a3eb431e3f32c38047efd91f106450614102edbcbd",
+    "app/vectors/vectors-types.h": "47c219f567302abbb29575e485f146cf4c2bd399ce4b2cd808659dda41a0d80c",
+    "app/widgets/gimpaction.h": "eb29593134ac10b54d5d015a4cbc81946cfbeac2e2b5753abe33a0a7e9612526",
+    "app/widgets/gimpcellrendererpopup.h": "a8fe7be5a98be80813d6538c4c9c05e366fcfba63774b280e0a6273a76e6f5f7",
+    "app/widgets/gimpcontainereditor.h": "50571a77a6d45a30a5a69ac8d33ac7bd6814deedd232316b3ffb9879ad9d2d75",
+    "app/widgets/gimpcontainertreeview-private.h": "1edb149dc1613e1265568f353933c3e52f1a80cca8dd4ae68fd12cf27bbd321d",
+    "app/widgets/gimpcontainertreeview.h": "16b11ce91530eb3650773a46fdd60973011ad248d4a7619749cfd49f7c78347d",
+    "app/widgets/gimpcontainerview.h": "f263a7ef02457e5f9d1269977ece80700b4731d8073cc52c1d28caabe61f9753",
+    "app/widgets/gimpdatafactoryview.h": "3f68df7a1d810aaa3bb9e34a871fb792df2758a62ae477afd664cdec51b8683d",
+    "app/widgets/gimpdialogfactory.h": "3e02318f0adfa4b9b0cbd352c73f10581fd22faedfe505334b44702ba5f6e18b",
+    "app/widgets/gimpeditor-cxx-private.h": "fc0bc5b8be989d98732b016795b47d4bc3975d9f0592085d2609b3a896079f50",
+    "app/widgets/gimpeditor-cxx.h": "87b3ff4d1d021503dcbed13246f9dce4f732855bef6ccae054694de81e8a5e31",
+    "app/widgets/gimpeditor.h": "c0e74c83703c7137ec37528d3518cac9e27ad2bcdf33e5b514204a1da3843ca8",
+    "app/widgets/gimpimageeditor.h": "3b369ede38a38422e8c24f5b0798a5ea2a4912add46fc1afe189f6dee42794e1",
+    "app/widgets/gimplayerpresetview.h": "d678e019a2772209e662ce0c96bd38b6fc2ae0884b4353ec115a7c939ab56577",
+    "app/widgets/gimplayertileview.h": "f01627897a7d5b78d34198eac7a826c0f40bb070aade2a564ac843a35ee441c7",
+    "app/widgets/gimpmypaintbrushoptions-gui.h": "c610e4debc485d2e2e6c647052c1b7a8da1045b50beb81006799742d6cbde524",
+    "app/widgets/gimpoverlaybox.h": "f8efde9128958fdc450873fcd29776e977ceb31d812d3d5b883b721707bb35b9",
+    "app/widgets/gimpoverlaychild.h": "582bc6adc9a775b32e636942a4f88dfd4b058febf61ef200d498071c52a1b660",
+    "app/widgets/gimppaintercompactoptions.h": "65421cb89e1c1cb8cb7baca3c251a94ead195f48c77de0361a65e37247b4e882",
+    "app/widgets/gimppainterlayertiles.h": "3d8a51e76366fda4a3ccb3080c6c9541560711a7b2bf9eae424b071922e314b1",
+    "app/widgets/gimppaintermybrusheditor.h": "ec3bfbc7fed16057876c8c9c5eb13aa96418ad59326ee01e98b05780981ff2b9",
+    "app/widgets/gimpsessioninfo-private.h": "b8537cff4b9c30d0814a66ed5128aeda597f8f07030fb2b2cf5048c4ef006fef",
+    "app/widgets/gimpwidgets-utils.h": "789ef81f329b83178847d900e9cd62d88867bb9e403711e5cc3751dad92ef70a",
+    "app/widgets/widgets-enums.h": "87fe49a79180987daa2845d938ef7ca813030683d1c14e22198673b45884b78b",
+    "app/widgets/widgets-types.h": "e3085bc3cd07e5532954f5db71352e813a46b74eb3273b763b73cd1b134ef1d3",
+    "app/xcf/painter-xcf-load.h": "05ec6e5cd7e196578d0b666e5904d07ab13a7487296fcab1c72ae43ed0f2b1de",
+    "app/xcf/painter-xcf-preserve.h": "eb93be89767c2e826ac32a4670dd3147f611a5bf2f6f5d30a284467f6f428dd9",
+    "app/xcf/xcf-private.h": "981962f9d26fbd46a80213d75615907e97ce953b05844cc156e5e4f257c3d9f4",
+    "app/xcf/xcf.h": "c7456251e3c282e1dff06045d2b068c3b044bba2ef3e6fccd3cc50f88d7db225",
+    "libgimp/gimp_pdb.h": "b75565bce0dad496f27945fc2a96d11ff9047b9d7f2889659f9c877d1e31cc23",
+    "libgimp/gimp_pdb_headers.h": "c3349dd38ed27ff68855d4a49319698cd627e30bea36eadf785fb0e17e660700",
+    "libgimp/gimpbrush_pdb.h": "34217337042da7f5db6262a45cc920dfb70adbf6a3a7ab27cb46b819f854ab4b",
+    "libgimp/gimpbrushes_pdb.h": "e0bc1e5e2bcaf7a7da493ca5f52e86d934ee6d2440f02c1803cd2d74014dc230",
+    "libgimp/gimpbrushselect_pdb.h": "2d9f9f93c07c396c454616df01b884ea03db6364f38d476cd1ba56f1e876caec",
+    "libgimp/gimpbuffer_pdb.h": "67b3504b329fa44de45f0721f23b42e02570279585b6ff07273b47e7ddb370ef",
+    "libgimp/gimpchannel_pdb.h": "73824c7d106a7c68c7430f7a51e7d23392e3037ed15cc37f4314e42c13ff4d8b",
+    "libgimp/gimpcontext_pdb.h": "f501efb8067340d8646bb9a109788f497c81bec4d1c88400a5d96f44709e936a",
+    "libgimp/gimpdebug_pdb.h": "d6dd1054dbbb3a53c6b3fe2b77ea20ee44bce2450c542efd0b53d211ef250860",
+    "libgimp/gimpdisplay_pdb.h": "f6444fc49a85d7cc04e8ea0bb7abee2216e34a635aa0dcf3431248ef996bb969",
+    "libgimp/gimpdrawable_pdb.h": "d7719548a17f39afce508a5bb20b432883d2b3fa18d54a66bf845ee8120819e8",
+    "libgimp/gimpdrawablecolor_pdb.h": "b4967d47992acfd35d6a8baabca308400c427d37544c6d49823f035a5d68f064",
+    "libgimp/gimpdrawableedit_pdb.h": "6d57bee9edc10bf0af45768265716dc37cb9fe7916d2529bbd6ab4cd1e4847de",
+    "libgimp/gimpdrawablefilter_pdb.h": "6f8efa18814d91a454e430d0d07e9a5e16225e278972a8ef1630df8e4e65b9ef",
+    "libgimp/gimpdrawableselect_pdb.h": "4432dbf97b34b368c63d024f4f8e761cdb6935bc8c88af8d2de4ca2aadc1ee96",
+    "libgimp/gimpdynamics_pdb.h": "ebda9c1ddacdc15b47abc463814699dbdaee94fa464c24a168949d57efc727f0",
+    "libgimp/gimpedit_pdb.h": "5aea5c258ce14724e5bab5093739015832ae61329dff634cee3e3c6d6ec3c818",
+    "libgimp/gimpenums.h": "a8c0c2c60932008c52918599a6c481b2cbec50f88258aabee42ed5c79b25cc0e",
+    "libgimp/gimpfile_pdb.h": "5e7df5febda85bc766cd81162f7c5d55cc15fda7b05edcefa9f3db644d53e446",
+    "libgimp/gimpfloatingsel_pdb.h": "2cc6ac7aa4337c9f01cd9d20cf95e1cdcef7ca68a46a9a61518828678fb0aa70",
+    "libgimp/gimpfont_pdb.h": "8aa35dab97b642d53e48416a8d37a00dbcc9138e5361ca015e94e503320f0874",
+    "libgimp/gimpfonts_pdb.h": "22add948713c67d753b3ce3fde04f3bf9585715fa3a84e1cd9615d1d11222d5a",
+    "libgimp/gimpfontselect_pdb.h": "f39dee28c967ec942199ee6d506a087ef571ab347c499cedc473125641cbcb13",
+    "libgimp/gimpgimprc_pdb.h": "c481e63b888a49c258a5813fecda98aeafb0146b98f89202039cb0676da422f1",
+    "libgimp/gimpgradient_pdb.h": "69ba1a2018e2ea666bd5a6490e08ce3dadc939624e22e51ce86aa0dd84332866",
+    "libgimp/gimpgradients_pdb.h": "190fa6bf91992a4b68753ced702a7f2775f75162575511a2dee98dfca78f1e75",
+    "libgimp/gimpgradientselect_pdb.h": "842d23e61ac33f35ed6861d38f2c0c7c2c6f326853175f7fe20c2ecd9f4b6bf6",
+    "libgimp/gimpgrouplayer_pdb.h": "d1a02f9e5824fa1d8a18fc67573044d31ee03f2a8e9c03bea2c0f84926e348bc",
+    "libgimp/gimphelp_pdb.h": "96405d4d7739c1443c16519525e46101b3b4278453925bf2e12f37a074d0dc06",
+    "libgimp/gimpimage_pdb.h": "fed355377e9609e0928440eace584f62c5f7a80d6e9320ed2fb35e4cac4b797f",
+    "libgimp/gimpimageautocrop_pdb.h": "1f27a7612e37774497a22cfcefdc066fcf896b9a6b95a1f7ee4988afcd7644f7",
+    "libgimp/gimpimagecolorprofile_pdb.h": "15065be221c5a5b97a5fb6cb2471018cb9d950ea864cd7aa49ac86bcf29b20b8",
+    "libgimp/gimpimageconvert_pdb.h": "9f7cc716f4456929454f7b67fda13f6f450fce54b4997066dae9bef78a817a89",
+    "libgimp/gimpimagegrid_pdb.h": "2ba72f1aba83986b67d3d7ad161945912ca7539ef82205a963506f00cf642f50",
+    "libgimp/gimpimageguides_pdb.h": "f1106a11ce642f74dc1c74605cc317a362b77663e053c155a22309e6e78e7169",
+    "libgimp/gimpimagesamplepoints_pdb.h": "214696afb60c8691b8580067ab6893380727aed38bd43eeb7520747d61413ee6",
+    "libgimp/gimpimageselect_pdb.h": "ba57832fe63e360371fa35d1f39fe7c1b0ae3639303de12ee4534a5bfc93265f",
+    "libgimp/gimpimagetransform_pdb.h": "e7bb981c175f73080bfad032568db916093fcc437ee8e4c7c4bdde5cd92972db",
+    "libgimp/gimpimageundo_pdb.h": "8a6bc841419ba81589eaf5c808935cad87a0481a1d2fc6165a2b3f674e58b3cf",
+    "libgimp/gimpitem_pdb.h": "d0dcd2e0cf2bec0bd26460640d245dc6b3041eb699845e6d0d91a51afa763945",
+    "libgimp/gimpitemtransform_pdb.h": "d32a9eec02889e0c0b1d2f38fff09579895da01ada30c782ade82f4c69706b01",
+    "libgimp/gimplayer_pdb.h": "c61bc006acbd1892071e38a7ab1dfedda46baa64e0cc980ee87879a18791526c",
+    "libgimp/gimpmessage_pdb.h": "eabbcf1ae4c7c761956c3d7c9f3f28cf9df161eef245362534586abade456b5f",
+    "libgimp/gimppainttools_pdb.h": "c0e65f898e301449755b46fd6b12ebe63d57631321fa1160c143b190f1166331",
+    "libgimp/gimppalette_pdb.h": "c581081c911eee887e29807049c4094d5ec4cff7aea1709b363d410d1aec232f",
+    "libgimp/gimppalettes_pdb.h": "8b448e2ff2697e1fc6d2d7fbb9e4c0abc3828b50ad811a868abb68d09dcbf0e5",
+    "libgimp/gimppaletteselect_pdb.h": "805cf63c1ea952776c5d37d694b1260eb248cec606e9c02fb89d05bda148b403",
+    "libgimp/gimppath_pdb.h": "57abfb7f6ccbebc951139a839e14569e092a94feb11de43cf3acb36c64c5acb8",
+    "libgimp/gimppattern_pdb.h": "e5fe284793875bbbad21caaffe07439941250f50543894462c210801af3c4a40",
+    "libgimp/gimppatterns_pdb.h": "6406434507a531c5c36565d561137aad688240f51f929a330582bdec513d6891",
+    "libgimp/gimppatternselect_pdb.h": "226d775d88e4012f47f912f2f119013453906384ac1dd72394fe079e8986843a",
+    "libgimp/gimppdb_pdb.h": "b73628646c6dd5ee955a25f97d2a7fbd774f7fdfe291e82813cf01e2e17493e7",
+    "libgimp/gimpplugin_pdb.h": "cad39c1553fef3969e3d987c3058a4fb5ccc7552c5051e8c640ee3189f586273",
+    "libgimp/gimpprogress_pdb.h": "a6d4c24ab254450022870803b4ea3480046a4d63c434e5a67fee0d4ab441bf31",
+    "libgimp/gimpresource_pdb.h": "8bab94cbd559a35ba3d76f5753c7a608359e105ee7bc189454d2e95497a054d0",
+    "libgimp/gimpselection_pdb.h": "33bc06953e085078f54a40c9be4e77dc4a2a129f5f5fa4410c7b658eb93e772d",
+    "libgimp/gimptextlayer_pdb.h": "1977ed4c6ccd3ffd8d92f5590865a87fe8e8652a9e69cd579e49a171fcc32fd1",
+    "libgimp/gimptexttool_pdb.h": "2a7713307b99ec3822823ed3d6fe294e08d3d192a54f15be33022173436e6f34",
+    "libgimp/gimpunit_pdb.h": "e6686981fec902e15d0aaf8d6004ea0fedff941a5a42cdcc4c45c8da6965c445",
+    "libgimpcolor/gimpcolor.h": "db26b4ee2bd9c9cbb3fa2635abf79737783ce0af826553a571f26133436286c8",
+    "libgimpconfig/gimpconfig.h": "8b316341d2b1384317afc844f79f7bc31b2dfeec7e7e835deb3fe8de05f68885",
+    "libgimpwidgets/gimpwidgets.h": "0b082ce95a8986f3a1841db108d17989bf7b8b8d8d655743d5b26cb36c9014fb",
+    "migration/inventory/additional-c-header-routes.json": "d0583cb5a84abd708991b8932466ff8d560245f862e71497c7520ba5674f0f31",
+    "migration/inventory/c-header-linkage.json": "31cf1b05b6f8d5e8a8c89f66136b036caa675dba6f176c61e0a2b0255cb01073",
+    "migration/inventory/cpp-header-boundary.json": "bca3774f0ae0099a99a2508a6f8a6dcbf725a30b83dd7823ca06d8dc14886568",
+    "migration/inventory/generated-c-header-scope.json": "3c660bf85cbaab938cd153ccdbbcab21c781b6d38dabc0055fd1ed20a43c25d1",
+    "migration/tests/painter-headers/config-macros.c": "e93de612424d83aa6aae4dcf9b87a666018f61f2a57bbe96da44c162de4f6dfd",
+    "migration/tests/painter-headers/prologue.h": "cc101d47164a54a76d274fcdcbd46210e213476134dbb4e0658348f242ca8e76",
+    "plug-ins/imagemap/imap_cern_parse.h": "51cabc1e1261f026cf0018679056a1d243843cf6930eeeb44488cfeecc84feb9",
+    "plug-ins/imagemap/imap_csim_parse.h": "80d4272efe5a9f305bbce302f10b5072029ff35b623fd051b21c1ed31e5884d0",
+    "plug-ins/imagemap/imap_ncsa_parse.h": "300f449a16963c94e0330b6cb76508af18cfbd59e2787f6d15e5387bd2bf19e3"
+  },
+  "compiled_probes": 421,
+  "c_probes": 200,
+  "cpp_probes": 221,
+  "libraries": {
+    "/workspace/shared/gimp-native-preset-gui/build/app/painter/tests/headers/libpainter-public-headers-c.a": {
+      "bytes": 25366,
+      "sha256": "d7d8320476b09dd6fc6ef452253f79fa202600bca6367fe09d7f99c52f67b91f"
+    },
+    "/workspace/shared/gimp-native-preset-gui/build/app/painter/tests/headers/libpainter-public-headers-cpp.a": {
+      "bytes": 28916,
+      "sha256": "ad301b087225442ddf10c0df24ea3f5ed886f17612f21d5565bc6ddb85f9a929"
+    }
+  }
+}

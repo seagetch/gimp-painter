@@ -16,6 +16,7 @@
  */
 
 #include "config.h"
+#include "gimp-features.h"
 
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gegl.h>
@@ -240,15 +241,7 @@ gimp_data_factories_init (Gimp *gimp)
                                        GIMP_TOOL_PRESET_FILE_EXTENSION,
                                        TRUE);
 
-  gimp->layer_preset_factory =
-    gimp_data_loader_factory_new (gimp, GIMP_TYPE_LAYER_PRESET,
-                                  "layer-presets-path", "layer-presets-path-writable",
-                                  "layer-preset-paths", NULL, NULL);
-  gimp_object_set_static_name (GIMP_OBJECT (gimp->layer_preset_factory),
-                               "layer preset factory");
-  gimp_data_loader_factory_add_loader (gimp->layer_preset_factory,
-                                       "Painter Layer Preset", gimp_layer_preset_load,
-                                       ".json", TRUE);
+  features_entry_point (gimp);
 
   gimp->tag_cache = gimp_tag_cache_new ();
 }
