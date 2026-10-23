@@ -538,6 +538,29 @@ GArray*gimp_painter_mybrush_options_get_curve(GimpPainterMybrushOptions*options,
 {
   return boundary<GArray*>(error,nullptr,[&]{auto curve=store(options).with<OptionsSlot>([&](const OptionsImpl&i){return i.draft.curve(setting,input);});auto*array=g_array_new(FALSE,FALSE,sizeof(GimpVector2));for(const auto&p:curve){GimpVector2 v={p.x,p.y};g_array_append_val(array,v);}return array;});
 }
+void gimp_mypaint_options_set_mapping_point(GimpMypaintOptions*options,gchar*name,guint input,guint size,GimpVector2*points)
+{
+  boundary_void(nullptr,[&]{
+    if(!name||input>=INPUT_COUNT||size>8||size==1||(size&&!points))return;
+    String normalized(g_strdup(name));
+    g_strcanon(normalized.get(),"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_",'_');
+    gint setting=-1;
+    for(const auto&candidate:painter_mypaint_settings)
+      if(g_str_equal(normalized.get(),candidate.internal_name)){setting=candidate.index;break;}
+    if(setting<0)return;
+    GimpVector2 rounded[8]{};
+    const auto representable=[](double value){
+      return std::isfinite(value)&&std::fabs(value)<=std::numeric_limits<float>::max();
+    };
+    for(guint i=0;i<size;++i){
+      if(!representable(points[i].x)||!representable(points[i].y))return;
+      rounded[i]={static_cast<float>(points[i].x),static_cast<float>(points[i].y)};
+    }
+    // The native operation validates rounded ordering, stages the complete
+    // replacement and owns all draft notifications. Zero is an explicit reset.
+    gimp_painter_mybrush_options_set_curve(options,setting,static_cast<gint>(input),rounded,size,nullptr);
+  });
+}
 void gimp_mypaint_options_get_mapping_point(GimpMypaintOptions*options,gchar*name,guint input,guint*size,GimpVector2**points)
 {
   if(size)*size=0;

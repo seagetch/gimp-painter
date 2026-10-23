@@ -49,6 +49,7 @@ extern "C" {
 #include "mypaintbrush-settings-data.h"
 #include "painter/gimp-painter-binding.h"
 #include <algorithm>
+#include <cstdio>
 #include <cstring>
 #include <string>
 #include <fstream>
@@ -1114,6 +1115,204 @@ static void action_dockable_close_reopen ()
   native_dockable_close_reopen (true);
 }
 
+/* Original setter boundary: compatibility writes must refresh the ordinary
+ * editor through the existing modern notification path. The editor itself
+ * continues to use the modern, double-precision curve API. */
+static void mapping_setter_show_curve (Editor &editor)
+{
+  gtk_combo_box_set_active (GTK_COMBO_BOX (editor.get ("painter-curve-setting")),
+                            BRUSH_TEXTURE_GRAIN);
+  gtk_combo_box_set_active (GTK_COMBO_BOX (editor.get ("painter-curve-input")),
+                            INPUT_PRESSURE);
+  auto *page = editor.get ("painter-curve-graph");
+  auto *parent = gtk_widget_get_parent (page);
+  while (parent && !GTK_IS_NOTEBOOK (parent))
+    {
+      page = parent;
+      parent = gtk_widget_get_parent (page);
+    }
+  g_assert_nonnull (parent);
+  const auto index = gtk_notebook_page_num (GTK_NOTEBOOK (parent), page);
+  g_assert_cmpint (index, >=, 0);
+  gtk_notebook_set_current_page (GTK_NOTEBOOK (parent), index);
+}
+
+static std::vector<GimpVector2> mapping_setter_rounded (
+  const GimpVector2 *points, guint count)
+{
+  std::vector<GimpVector2> result;
+  for (guint n = 0; n < count; ++n)
+    result.push_back ({static_cast<double> (static_cast<float> (points[n].x)),
+                       static_cast<double> (static_cast<float> (points[n].y))});
+  return result;
+}
+
+static void mapping_setter_assert_controls (
+  Editor &editor, const std::vector<GimpVector2> &expected, int selected)
+{
+  const auto actual = editor.snapshot ().curve (BRUSH_TEXTURE_GRAIN, INPUT_PRESSURE);
+  g_assert_cmpuint (actual.size (), ==, expected.size ());
+  for (guint n = 0; n < expected.size (); ++n)
+    {
+      g_assert_cmpfloat (actual[n].x, ==, expected[n].x);
+      g_assert_cmpfloat (actual[n].y, ==, expected[n].y);
+    }
+  g_assert_cmpint (gtk_combo_box_get_active (
+    GTK_COMBO_BOX (editor.get ("painter-curve-setting"))), ==, BRUSH_TEXTURE_GRAIN);
+  g_assert_cmpint (gtk_combo_box_get_active (
+    GTK_COMBO_BOX (editor.get ("painter-curve-input"))), ==, INPUT_PRESSURE);
+  auto *point = GTK_COMBO_BOX (editor.get ("painter-curve-point"));
+  g_assert_cmpint (gtk_tree_model_iter_n_children (
+    gtk_combo_box_get_model (point), nullptr), ==, expected.size ());
+  g_assert_cmpint (gtk_combo_box_get_active (point), ==, selected);
+  g_assert_cmpint (gtk_toggle_button_get_active (
+    GTK_TOGGLE_BUTTON (editor.get ("painter-curve-enabled"))), ==, !expected.empty ());
+  g_assert_cmpint (gtk_widget_get_sensitive (editor.get ("painter-curve-x")),
+                   ==, !expected.empty ());
+  g_assert_cmpint (gtk_widget_get_sensitive (editor.get ("painter-curve-y")),
+                   ==, !expected.empty ());
+  const GimpVector2 value = selected < 0 ? GimpVector2 {0, 0} : expected[selected];
+  g_assert_cmpfloat (gtk_spin_button_get_value (
+    GTK_SPIN_BUTTON (editor.get ("painter-curve-x"))), ==, value.x);
+  g_assert_cmpfloat (gtk_spin_button_get_value (
+    GTK_SPIN_BUTTON (editor.get ("painter-curve-y"))), ==, value.y);
+}
+
+static void mapping_setter_editor_refresh ()
+{
+  auto options = ObjectRef<GimpPainterMybrushOptions>::adopt (
+    GIMP_PAINTER_MYBRUSH_OPTIONS (g_object_new (
+      GIMP_TYPE_PAINTER_MYBRUSH_OPTIONS, "gimp", gimp, nullptr)));
+  Editor first (true, GIMP_CONTEXT (options.get ()));
+  Editor peer (false, GIMP_CONTEXT (options.get ()));
+  g_assert_true (first.model.get () == options.get ());
+  g_assert_true (peer.model.get () == options.get ());
+  MyPaint::Resource initial;
+  initial.set_curve (BRUSH_TEXTURE_GRAIN, INPUT_PRESSURE, {{0, -.25}, {1, .75}});
+  first.set (initial);
+  for (auto *editor : {&first, &peer})
+    {
+      mapping_setter_show_curve (*editor);
+      gtk_combo_box_set_active (GTK_COMBO_BOX (editor->get ("painter-curve-point")), 1);
+      mapping_setter_assert_controls (*editor, {{0, -.25}, {1, .75}}, 1);
+    }
+
+  gchar c_name[] = "texture-grain";
+  GimpVector2 c_points[] = {{.123456789012, -.234567890123},
+                           {.456789012345, .876543210987},
+                           {.987654321098, -.345678901234}};
+  const auto c_expected = mapping_setter_rounded (c_points, G_N_ELEMENTS (c_points));
+  g_assert_cmpfloat (c_expected[1].y, !=, c_points[1].y);
+  gimp_mypaint_options_set_mapping_point (options.get (), c_name, INPUT_PRESSURE,
+                                         G_N_ELEMENTS (c_points), c_points);
+  g_assert_cmpstr (c_name, ==, "texture-grain");
+  for (auto *editor : {&first, &peer})
+    mapping_setter_assert_controls (*editor, c_expected, 1);
+
+  gimp_mypaint_options_set_mapping_point (options.get (), c_name,
+                                         INPUT_PRESSURE, 0, nullptr);
+  for (auto *editor : {&first, &peer})
+    mapping_setter_assert_controls (*editor, {}, -1);
+
+  const auto handle = MypaintOptionsRef::retain (options.get ());
+  const GimpVector2 handle_points[] = {{.112345678901, .723456789012},
+                                      {.512345678901, -.823456789012},
+                                      {.912345678901, .323456789012}};
+  const auto handle_expected = mapping_setter_rounded (
+    handle_points, G_N_ELEMENTS (handle_points));
+  g_assert_cmpfloat (handle_expected[0].x, !=, handle_points[0].x);
+  handle.set_mapping_point ("texture grain", INPUT_PRESSURE,
+                            G_N_ELEMENTS (handle_points), handle_points);
+  for (auto *editor : {&first, &peer})
+    mapping_setter_assert_controls (*editor, handle_expected, 0);
+
+  // A real Apply Point click immediately after a compatibility write must
+  // retain modern precision in the model and the other editor's controls.
+  const GimpVector2 precise = {.234567891234, .654321098765};
+  g_assert_cmpfloat (precise.x, !=, static_cast<double> (static_cast<float> (precise.x)));
+  g_assert_cmpfloat (precise.y, !=, static_cast<double> (static_cast<float> (precise.y)));
+  gtk_spin_button_set_value (GTK_SPIN_BUTTON (first.get ("painter-curve-x")), precise.x);
+  gtk_spin_button_set_value (GTK_SPIN_BUTTON (first.get ("painter-curve-y")), precise.y);
+  gtk_button_clicked (GTK_BUTTON (first.get ("painter-curve-apply")));
+  auto edited = handle_expected;
+  edited[0] = precise;
+  for (auto *editor : {&first, &peer})
+    mapping_setter_assert_controls (*editor, edited, 0);
+
+  handle.set_mapping_point ("texture_grain", INPUT_PRESSURE, 0, nullptr);
+  for (auto *editor : {&first, &peer})
+    mapping_setter_assert_controls (*editor, {}, -1);
+
+  // Reset must leave the existing controls usable: the ordinary enable
+  // toggle creates a modern curve and Apply Point still preserves doubles.
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (peer.get ("painter-curve-enabled")), TRUE);
+  const auto enabled = peer.snapshot ().curve (BRUSH_TEXTURE_GRAIN, INPUT_PRESSURE);
+  g_assert_cmpuint (enabled.size (), ==, 2);
+  gtk_spin_button_set_value (GTK_SPIN_BUTTON (peer.get ("painter-curve-x")), precise.x);
+  gtk_spin_button_set_value (GTK_SPIN_BUTTON (peer.get ("painter-curve-y")), precise.y);
+  gtk_button_clicked (GTK_BUTTON (peer.get ("painter-curve-apply")));
+  const std::vector<GimpVector2> after_reset = {precise, {enabled[1].x, enabled[1].y}};
+  for (auto *editor : {&first, &peer})
+    mapping_setter_assert_controls (*editor, after_reset, 0);
+}
+
+/* Opt-in visual evidence only, excluded from the normal aggregate. The
+ * authenticated capture runner observes each marker and records the actual
+ * window during the eight-second GTK-pumped interval. No UI is added. */
+static void mapping_setter_visual_stage (Editor &editor, const char *stage,
+                                          const char *title)
+{
+  gtk_window_set_title (GTK_WINDOW (editor.window), title);
+  editor.preview ();
+  gimp_test_run_mainloop_until_idle ();
+  auto *graph = editor.get ("painter-curve-graph");
+  g_assert_true (gtk_widget_get_mapped (graph));
+  g_assert_cmpint (gtk_widget_get_allocated_width (graph), >, 16);
+  g_assert_cmpint (gtk_widget_get_allocated_height (graph), >, 16);
+  g_test_message ("%s; numeric and control assertions passed", title);
+  g_print ("MAPPING_SETTER_VISUAL_STAGE=%s\n", stage);
+  std::fflush (stdout);
+  const auto deadline = g_get_monotonic_time () + 8 * G_TIME_SPAN_SECOND;
+  while (g_get_monotonic_time () < deadline)
+    {
+      g_main_context_iteration (nullptr, FALSE);
+      g_usleep (1000);
+    }
+}
+
+static void mapping_setter_visual_demo ()
+{
+  auto options = ObjectRef<GimpPainterMybrushOptions>::adopt (
+    GIMP_PAINTER_MYBRUSH_OPTIONS (g_object_new (
+      GIMP_TYPE_PAINTER_MYBRUSH_OPTIONS, "gimp", gimp, nullptr)));
+  Editor editor (true, GIMP_CONTEXT (options.get ()));
+  gtk_window_resize (GTK_WINDOW (editor.window), 1100, 760);
+  MyPaint::Resource initial;
+  initial.set_curve (BRUSH_TEXTURE_GRAIN, INPUT_PRESSURE, {{0, -.25}, {1, .75}});
+  editor.set (initial);
+  mapping_setter_show_curve (editor);
+  mapping_setter_assert_controls (editor, {{0, -.25}, {1, .75}}, 0);
+  mapping_setter_visual_stage (editor, "before",
+    "Mapping setter BEFORE | API-driven modern draft | 2 points; enabled");
+
+  gchar name[] = "texture-grain";
+  GimpVector2 points[] = {{0, -.712345678901}, {.512345678901, .912345678901},
+                          {1, -.212345678901}};
+  gimp_mypaint_options_set_mapping_point (options.get (), name, INPUT_PRESSURE,
+                                         G_N_ELEMENTS (points), points);
+  gtk_combo_box_set_active (GTK_COMBO_BOX (editor.get ("painter-curve-point")), 1);
+  mapping_setter_assert_controls (editor,
+    mapping_setter_rounded (points, G_N_ELEMENTS (points)), 1);
+  mapping_setter_visual_stage (editor, "after",
+    "Mapping setter AFTER | API-driven gimp_mypaint_options_set_mapping_point | 3 points; enabled");
+
+  MypaintOptionsRef::retain (options.get ()).set_mapping_point (
+    "texture_grain", INPUT_PRESSURE, 0, nullptr);
+  mapping_setter_assert_controls (editor, {}, -1);
+  mapping_setter_visual_stage (editor, "reset",
+    "Mapping setter RESET | API-driven MypaintOptionsRef::set_mapping_point | 0 points; disabled");
+}
+
 int main(int argc,char**argv){
   g_test_init(&argc,&argv,nullptr);if(!gtk_init_check(&argc,&argv))return GIMP_EXIT_TEST_SKIPPED;
   gimp_test_utils_setup_menus_path();gimp=gimp_init_for_gui_testing(TRUE);
@@ -1136,6 +1335,8 @@ int main(int argc,char**argv){
   add_editor_case("/painter-editor/17-draft-name-history-save",draft_name_history_save_workflow);
   add_editor_case("/painter-editor/18-dialog-factory-dockable-lifetime",dialog_factory_dockable_lifetime);
   add_editor_case("/painter-editor/19-action-dockable-close-reopen",action_dockable_close_reopen);
+  add_editor_case("/painter-editor/20-mapping-setter-refresh",mapping_setter_editor_refresh);
   if(g_getenv("PAINTER_EDITOR_DEMO"))add_editor_case("/painter-editor/visual-demo",visual_demo);
+  if(g_getenv("GIMP_TEST_MAPPING_SETTER_VISUAL_DEMO"))add_editor_case("/painter-editor/mapping-setter/visual-demo",mapping_setter_visual_demo);
   g_application_run(gimp->app,0,nullptr);int result=gimp_core_app_get_exit_status(GIMP_CORE_APP(gimp->app));g_application_quit(gimp->app);g_clear_object(&gimp->app);g_free(original_search);return result;
 }
