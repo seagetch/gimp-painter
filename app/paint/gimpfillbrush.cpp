@@ -232,7 +232,7 @@ void finish_frame (BrushImpl& impl, bool commit) {
 
 }
 static void gimp_fill_brush_options_class_init(GimpFillBrushOptionsClass*k){auto*o=G_OBJECT_CLASS(k);o->constructed=options_constructed;o->dispose=options_dispose;o->get_property=options_get;o->set_property=options_set;
- GIMP_CONFIG_PROP_DOUBLE(o,1,"rate","Rate","Legacy fill rate (preserved; old output is rate-independent)",0,100,50,GIMP_PARAM_STATIC_STRINGS);
+ GIMP_CONFIG_PROP_DOUBLE(o,1,"rate",_("Rate"),"Legacy fill rate (preserved; old output is rate-independent)",0,100,50,GIMP_PARAM_STATIC_STRINGS);
  GIMP_CONFIG_PROP_BOOLEAN(o,2,"eraser-mode","Eraser mode","Erase instead of painting foreground",FALSE,GIMP_PARAM_STATIC_STRINGS);}
 static void gimp_fill_brush_options_init(GimpFillBrushOptions*o){o->binding_failed=!boundary<bool>(nullptr,false,[&]{BindingStore::ensure(G_OBJECT(o)).emplace<OptionsSlot>();return true;});}
 static void gimp_fill_brush_class_init(GimpFillBrushClass*k){G_OBJECT_CLASS(k)->constructed=constructed;G_OBJECT_CLASS(k)->dispose=dispose;GIMP_PAINT_CORE_CLASS(k)->paint=paint;GIMP_PAINT_CORE_CLASS(k)->check_start=check_start;GIMP_PAINT_CORE_CLASS(k)->start=native_start;auto*b=GIMP_BRUSH_CORE_CLASS(k);b->handles_changing_brush=TRUE;b->handles_transforming_brush=TRUE;b->handles_dynamic_transforming_brush=TRUE;}
