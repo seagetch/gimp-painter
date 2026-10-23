@@ -1,0 +1,11 @@
+{
+  "result": "expected-red diagnostic",
+  "test_source_sha256": "4f993e4b586c709e8490e29dfdc3348254af79cd7ddf81c38f3beb0181dd1b14",
+  "messages": [
+    "# after public buffer flush 0.70588235294117652",
+    "# diagnostic packed projection0 raw layer graph0.70588235294117652 image graph0.70588235294117652 update1 invalidation1 active1 painting0",
+    "# projection mismatch offset(0,0) initial_apply0 apply0 local(15,10) raw0.70588235294117652 mask0 actual0 expected0.70588235294117652",
+    "ERROR:../source/app/tests/test-painter-layer-mask.inc:94:void layer_mask_apply_read_and_raw_paint(): assertion failed (projected == expected (+/- 1./255.)): (0 == 0.705882353)"
+  ],
+  "interpretation": "Native layer and image graphs correct; cached projection stale until public buffer flush; original assertion remains failing."
+}

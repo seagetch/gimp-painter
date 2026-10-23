@@ -310,12 +310,23 @@ static void
 gimp_projection_pickable_flush (GimpPickable *pickable)
 {
   GimpProjection *proj = GIMP_PROJECTION (pickable);
+  gboolean        invalidate_tiles;
 
   /* create the buffer if it doesn't exist */
   gimp_projection_get_buffer (pickable);
 
   gimp_projection_finish_draw (proj);
+  invalidate_tiles = (proj->priv->update_region &&
+                      ! cairo_region_is_empty (proj->priv->update_region));
   gimp_projection_flush_now (proj, FALSE);
+
+  /* Lazy tile damage does not retire GEGL's shared hot tile.  A synchronous
+   * pickable read could otherwise bypass the validator and return pixels from
+   * before a layer-mask apply transition.  Retire that cache through the public
+   * buffer API only after pending damage; do not render the entire projection.
+   */
+  if (invalidate_tiles)
+    gegl_buffer_flush (proj->priv->buffer);
 
   if (proj->priv->invalidate_preview)
     {
