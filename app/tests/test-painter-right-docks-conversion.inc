@@ -344,18 +344,16 @@ right_conversion_assert_selected (RightDocksFixture *f)
 static void
 right_conversion_assert_options (RightDocksFixture *f)
 {
-  guint owners = 0;
-
   right_conversion_assert_selected (f);
   g_assert_nonnull (f->guis[0]);
   g_assert_true (gimp_tools_get_tool_options_gui (f->tools[0]->tool_options) == f->guis[0]);
-  g_assert_true (gimp_painter_compact_options_get (f->guis[0]));
-  for (guint i = 0; i < G_N_ELEMENTS (f->shells); i++)
-    if (gtk_widget_is_ancestor (f->guis[0], f->shells[i]->canvas))
-      owners++;
-  g_assert_cmpuint (owners, ==, 1);
-  g_assert_true (gtk_widget_is_ancestor (f->guis[0], f->shells[1]->canvas));
-  right_docks_overlay_root (f->guis[0], f->shells[1]->canvas);
+  g_assert_false (gimp_painter_compact_options_get (f->guis[0]));
+  g_assert_nonnull (gtk_widget_get_ancestor (f->guis[0], GIMP_TYPE_TOOL_OPTIONS_EDITOR));
+  GtkWidget *toolbar = right_docks_toolbar (f, 1);
+  g_assert_true (g_object_get_data (G_OBJECT (toolbar), "gimp-painter-toolbar-options") == f->tools[0]->tool_options);
+  g_assert_true (toolbar != f->guis[0]);
+  g_assert_false (gtk_widget_is_ancestor (toolbar, f->shells[0]->canvas));
+  right_docks_overlay_root (toolbar, f->shells[1]->canvas);
 }
 
 static void
@@ -551,7 +549,7 @@ right_conversion_assert_single (RightDocksFixture *f,
   g_assert_false (gtk_widget_is_ancestor (f->guis[0], columns));
   g_assert_false (gtk_widget_is_ancestor (columns, f->guis[0]));
   right_conversion_settle (GTK_WIDGET (image_window), f->shells[1]->canvas,
-                           columns, f->guis[0]);
+                           columns, right_docks_toolbar (f, 1));
   return columns;
 }
 

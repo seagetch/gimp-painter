@@ -733,6 +733,43 @@ static GimpOverlayChild *layer_panel(GimpDisplayShell *shell) {
   GtkWidget *frame=gtk_widget_get_parent(tiles);
   GimpOverlayChild *child=gimp_overlay_child_find(GIMP_OVERLAY_BOX(shell->canvas),frame);g_assert_nonnull(child);return child;
 }
+static GdkWindow *overlay_pick_window(GtkWidget *box,gdouble x,gdouble y) {
+  GdkWindow *picked=NULL;
+  g_signal_emit_by_name(gtk_widget_get_window(box),"pick-embedded-child",x,y,&picked);
+  return picked;
+}
+static void overlay_topmost_visible_input(void) {
+  GtkWidget *box=gimp_overlay_box_new();
+  GtkWidget *lower=gtk_event_box_new(),*upper=gtk_event_box_new();
+  gtk_widget_set_size_request(lower,100,100);gtk_widget_set_size_request(upper,100,100);
+  gtk_container_add(GTK_CONTAINER(window),box);
+  gimp_overlay_box_add_child(GIMP_OVERLAY_BOX(box),lower,0.,0.);
+  gimp_overlay_box_add_child(GIMP_OVERLAY_BOX(box),upper,0.,0.);
+  gimp_overlay_box_set_child_position(GIMP_OVERLAY_BOX(box),lower,10,10);
+  gimp_overlay_box_set_child_position(GIMP_OVERLAY_BOX(box),upper,60,60);
+  gtk_widget_show_all(window);gimp_test_run_temp_mainloop(100);drain();
+  GimpOverlayChild *bottom=gimp_overlay_child_find(GIMP_OVERLAY_BOX(box),lower);
+  GimpOverlayChild *top=gimp_overlay_child_find(GIMP_OVERLAY_BOX(box),upper);
+  g_assert_cmpfloat(bottom->matrix.x0,==,10);g_assert_cmpfloat(top->matrix.x0,==,60);
+  /* Later children paint last. Their visibly exposed midpoint must receive
+   * input; the first child still owns its unobscured region. */
+  g_assert_true(overlay_pick_window(box,80,80)==top->window);
+  g_assert_true(overlay_pick_window(box,20,20)==bottom->window);
+  g_assert_true(overlay_pick_window(box,140,140)==top->window);
+  /* Insensitivity disables native actions, not occlusion. It must not make
+   * a visible disabled control click through into the underlying panel. */
+  gtk_widget_set_sensitive(upper,FALSE);
+  g_assert_true(overlay_pick_window(box,80,80)==top->window);
+  gtk_widget_hide(upper);drain();
+  g_assert_true(overlay_pick_window(box,80,80)==bottom->window);
+  g_assert_null(overlay_pick_window(box,140,140));
+  gtk_widget_show(upper);drain();
+  gimp_overlay_box_set_child_input_pass_through(GIMP_OVERLAY_BOX(box),upper,TRUE);
+  g_assert_true(overlay_pick_window(box,80,80)==bottom->window);
+  gimp_overlay_box_set_child_input_pass_through(GIMP_OVERLAY_BOX(box),upper,FALSE);
+  g_assert_true(overlay_pick_window(box,80,80)==top->window);
+  close_tiles(box);
+}
 static void overlay_input_and_restore(void) {
   GimpDisplayShell *shell=new_shell();
   g_assert_false(gimp_painter_canvas_ui_get_visible(shell));
@@ -890,18 +927,26 @@ static void tool_click_close(gboolean expanded) {
 }
 static void tool_click_active_owner_close(void) { tool_click_close(FALSE); }
 static void tool_click_expanded_owner_close(void) { tool_click_close(TRUE); }
+static gulong canvas_handler (gpointer emitter, const gchar *name);
 static void tool_expander_owner_close(void) {
   ToolReentry f={0};tool_reentry_begin(&f);tool_reentry_inactive_group(&f);
   gimp_tool_group_set_active_tool_info(f.group,f.align);drain();
   GtkWidget *button=find(f.shell->canvas,"gimp-align-tool");g_assert_nonnull(button);
   GtkWidget *expander=gtk_widget_get_ancestor(button,GTK_TYPE_EXPANDER);g_assert_nonnull(expander);g_object_ref(expander);
   g_assert_false(gtk_expander_get_expanded(GTK_EXPANDER(expander)));
+  gulong expanded_handler=canvas_handler(expander,"notify::expanded");
   g_signal_connect(f.group,"expanded-changed",G_CALLBACK(tool_reentry_close),&f);
   gtk_expander_set_expanded(GTK_EXPANDER(expander),TRUE);
   g_assert_cmpuint(f.calls,==,1);
   g_assert_false(gimp_painter_canvas_ui_get_visible(f.shell));
   g_assert_true(gimp_context_get_tool(gimp_get_user_context(gimp))==f.replacement);
-  drain();g_object_unref(expander);tool_reentry_end(&f);
+  g_assert_false(g_signal_handler_is_connected(expander,expanded_handler));
+  gboolean expanded=gimp_viewable_get_expanded(GIMP_VIEWABLE(f.group));
+  gtk_expander_set_expanded(GTK_EXPANDER(expander),FALSE);
+  gtk_expander_set_expanded(GTK_EXPANDER(expander),TRUE);drain();
+  g_assert_cmpint(gimp_viewable_get_expanded(GIMP_VIEWABLE(f.group)),==,expanded);
+  g_assert_cmpuint(f.calls,==,1);
+  g_object_unref(expander);tool_reentry_end(&f);
 }
 static void tool_click_newer_selection(void) {
   ToolReentry f={0};tool_reentry_begin(&f);
@@ -1002,6 +1047,117 @@ static void overlay_owner_destroy_callbacks(void) {
   g_object_ref(shell);close_shell(shell);
   gtk_button_clicked(GTK_BUTTON(button));g_assert_false(gimp_painter_canvas_ui_get_visible(shell));
   g_object_unref(button);g_object_unref(shell);drain();
+}
+/* 07.008: observe the actual instance connections, not just safe dispatch
+ * through an already-closed BindingStore.  Keep native emitters alive while
+ * their Canvas owner retires. */
+static gulong canvas_handler (gpointer emitter, const gchar *name) {
+  guint id; GQuark detail;
+  g_assert_true(g_signal_parse_name(name,G_OBJECT_TYPE(emitter),&id,&detail,TRUE));
+  gulong handler=g_signal_handler_find(emitter,G_SIGNAL_MATCH_ID|G_SIGNAL_MATCH_DETAIL,
+                                      id,detail,NULL,NULL,NULL);
+  g_assert_cmpuint(handler,!=,0);return handler;
+}
+typedef struct {
+  GimpDisplayShell *shell;
+  GtkWidget *frame,*selector,*swatches,*button;
+  gulong enter,leave,color,active,clicked;
+  guint destroy_calls;
+} CanvasEmitters;
+static void canvas_emitters_begin(CanvasEmitters *f) {
+  f->shell=new_shell();g_object_ref(f->shell);
+  gimp_painter_canvas_ui_set_visible(f->shell,TRUE);drain();
+  f->frame=g_object_ref(layer_panel(f->shell)->widget);
+  f->selector=g_object_ref(find(f->shell->canvas,"painter-color-editor"));
+  f->swatches=g_object_ref(find(f->shell->canvas,"painter-fg-bg"));
+  f->button=g_object_ref(find(f->shell->canvas,"gimp-paintbrush-tool"));
+  f->enter=canvas_handler(f->frame,"enter-notify-event");
+  f->leave=canvas_handler(f->frame,"leave-notify-event");
+  f->color=canvas_handler(f->selector,"color-changed");
+  f->active=canvas_handler(f->swatches,"notify::active-color");
+  f->clicked=canvas_handler(f->button,"clicked");
+}
+static void canvas_emitters_disconnected(CanvasEmitters *f) {
+  g_assert_false(g_signal_handler_is_connected(f->frame,f->enter));
+  g_assert_false(g_signal_handler_is_connected(f->frame,f->leave));
+  g_assert_false(g_signal_handler_is_connected(f->selector,f->color));
+  g_assert_false(g_signal_handler_is_connected(f->swatches,f->active));
+  g_assert_false(g_signal_handler_is_connected(f->button,f->clicked));
+  GimpContext *context=gimp_get_user_context(gimp);
+  GimpToolInfo *tool=gimp_context_get_tool(context);
+  GeglColor *fg=gegl_color_duplicate(gimp_context_get_foreground(context));
+  GeglColor *bg=gegl_color_duplicate(gimp_context_get_background(context));
+  GeglColor *late=gegl_color_new("rgb(0.23,0.61,0.84)");
+  /* Emitting a signal remains valid on retained destroyed widgets; calling
+   * their disposed native selector implementation would test GTK internals. */
+  g_signal_emit_by_name(f->selector,"color-changed",late);
+  g_object_notify(G_OBJECT(f->swatches),"active-color");
+  GdkEventCrossing crossing={0};gboolean handled=FALSE;
+  crossing.type=GDK_ENTER_NOTIFY;
+  g_signal_emit_by_name(f->frame,"enter-notify-event",&crossing,&handled);
+  crossing.type=GDK_LEAVE_NOTIFY;
+  g_signal_emit_by_name(f->frame,"leave-notify-event",&crossing,&handled);
+  gtk_button_clicked(GTK_BUTTON(f->button));drain();
+  g_assert_true(gimp_context_get_tool(context)==tool);
+  gdouble actual[4],expected[4];
+  gegl_color_get_pixel(fg,babl_format("R'G'B'A double"),expected);
+  gegl_color_get_pixel(gimp_context_get_foreground(context),babl_format("R'G'B'A double"),actual);
+  for(guint i=0;i<4;i++)g_assert_cmpfloat_with_epsilon(actual[i],expected[i],1e-9);
+  gegl_color_get_pixel(bg,babl_format("R'G'B'A double"),expected);
+  gegl_color_get_pixel(gimp_context_get_background(context),babl_format("R'G'B'A double"),actual);
+  for(guint i=0;i<4;i++)g_assert_cmpfloat_with_epsilon(actual[i],expected[i],1e-9);
+  g_assert_false(gimp_painter_canvas_ui_get_visible(f->shell));
+  g_object_unref(fg);g_object_unref(bg);g_object_unref(late);
+}
+static void canvas_emitters_end(CanvasEmitters *f) {
+  g_object_unref(f->frame);g_object_unref(f->selector);
+  g_object_unref(f->swatches);g_object_unref(f->button);g_object_unref(f->shell);drain();
+}
+static void canvas_frame_close_reentry(GtkWidget *frame,gpointer data) {
+  CanvasEmitters *f=data;(void)frame;f->destroy_calls++;
+  /* This runs before child widget teardown can hide an owner leak by
+   * independently removing all of its signal handlers. */
+  g_assert_false(g_signal_handler_is_connected(f->selector,f->color));
+  g_assert_false(g_signal_handler_is_connected(f->swatches,f->active));
+  g_assert_false(g_signal_handler_is_connected(f->button,f->clicked));
+  gimp_painter_canvas_ui_close(f->shell);gimp_painter_canvas_ui_close(f->shell);
+}
+static void overlay_retained_emitters_shell_close(void) {
+  CanvasEmitters f={0};canvas_emitters_begin(&f);
+  g_signal_connect(f.frame,"destroy",G_CALLBACK(canvas_frame_close_reentry),&f);
+  close_shell(f.shell);
+  g_assert_cmpuint(f.destroy_calls,==,1);
+  gimp_painter_canvas_ui_close(f.shell);gimp_painter_canvas_ui_close(f.shell);
+  canvas_emitters_disconnected(&f);canvas_emitters_end(&f);
+}
+static void overlay_emitters_destroy_before_owner(void) {
+  CanvasEmitters f={0};canvas_emitters_begin(&f);
+  gtk_widget_destroy(f.frame);gtk_widget_destroy(f.selector);
+  gtk_widget_destroy(f.swatches);gtk_widget_destroy(f.button);
+  /* Emitter destroy can release closures before Connection::close. */
+  gimp_painter_canvas_ui_close(f.shell);gimp_painter_canvas_ui_close(f.shell);
+  canvas_emitters_disconnected(&f);close_shell(f.shell);canvas_emitters_end(&f);
+}
+static void canvas_color_close(GimpColorSelector *selector,GeglColor *color,gpointer data) {
+  guint *calls=g_object_get_data(G_OBJECT(selector),"canvas-close-calls");
+  (void)color;(*calls)++;
+  gimp_painter_canvas_ui_close(data);gimp_painter_canvas_ui_close(data);
+}
+static void overlay_context_color_reentrant_close(void) {
+  CanvasEmitters f={0};canvas_emitters_begin(&f);
+  GimpContext *context=gimp_get_user_context(gimp);guint calls=0;
+  GeglColor *saved=gegl_color_duplicate(gimp_context_get_foreground(context));
+  GeglColor *color=gegl_color_new("rgb(0.13,0.72,0.39)");
+  g_object_set_data(G_OBJECT(f.selector),"canvas-close-calls",&calls);
+  g_signal_connect(f.selector,"color-changed",G_CALLBACK(canvas_color_close),f.shell);
+  /* Context -> Canvas sync -> native selector -> reentrant owner close. */
+  gimp_context_set_foreground(context,color);
+  g_assert_cmpuint(calls,==,1);
+  canvas_emitters_disconnected(&f);
+  gimp_context_set_foreground(context,saved);drain();
+  g_assert_cmpuint(calls,==,1);
+  g_object_unref(saved);g_object_unref(color);
+  close_shell(f.shell);canvas_emitters_end(&f);
 }
 static gboolean demo_timeout(gpointer data) { g_main_loop_quit(data);return G_SOURCE_REMOVE; }
 static void demo(void) {
@@ -1972,7 +2128,7 @@ ADD(w08017_dnd_relocate_later_on_cleanup);
   ADD(popup_properties_reentrant_owner_close);ADD(popup_creation_reentrant_owner_close);ADD(popup_properties_reentrant_image_switch);ADD(popup_creation_reentrant_image_switch);
   ADD(destroyed_tiles_reject_image);ADD(image_switch_popup_owner_close);ADD(image_switch_popup_newer_image);ADD(parent_image_notify_owner_close);
   ADD(popup_controls_and_clone);ADD(mask_controls);ADD(long_press_once);ADD(reentrant_visibility_close);ADD(multiple_reorder_one_undo);ADD(hide_cancels_grab);
-  ADD(overlay_input_and_restore);ADD(dock_restore_and_parent_close);ADD(overlay_tools_and_colors);ADD(overlay_tool_group);ADD(tool_click_active_owner_close);ADD(tool_click_expanded_owner_close);ADD(tool_expander_owner_close);ADD(tool_click_newer_selection);ADD(tool_pending_refresh_owner_destroy);ADD(tool_group_selection_restores_canvas_focus);ADD(multiple_canvas_context_and_dock_transfer);ADD(overlay_owner_destroy_callbacks);
+  ADD(overlay_topmost_visible_input);ADD(overlay_input_and_restore);ADD(dock_restore_and_parent_close);ADD(overlay_tools_and_colors);ADD(overlay_tool_group);ADD(tool_click_active_owner_close);ADD(tool_click_expanded_owner_close);ADD(tool_expander_owner_close);ADD(tool_click_newer_selection);ADD(tool_pending_refresh_owner_destroy);ADD(tool_group_selection_restores_canvas_focus);ADD(multiple_canvas_context_and_dock_transfer);ADD(overlay_owner_destroy_callbacks);ADD(overlay_retained_emitters_shell_close);ADD(overlay_emitters_destroy_before_owner);ADD(overlay_context_color_reentrant_close);
   }
   }
   g_application_run(gimp->app,0,NULL);
