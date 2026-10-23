@@ -1231,6 +1231,7 @@
 | 34.015/exact-source-normal-baseline | [x] | 公開commit固定で通常Linux全登録targetを再検証する | 03.009/tcp-portrait-environment, 34.015/compact-options-test-budget | 65536379b9の全build/install後154/154登録合格、31834 file byte不変。XCF slow subtest skip1とGEGL/gradient診断を保持。厳密frozen gateは未完了 |
 | 34.015/gradient-test-path | [x] | in-build試験のgradient検索先と保存先を整合させる | 03.009/tcp-portrait-environment | テスト専用RCにsourceとprofile両gradient pathを設定しoverrideを維持。7 Python controlと影響13 native登録合格、保存先診断ゼロ。production保存処理は不変 |
 | 34.015/large-xcf-registration | [x] | 巨大XCF往復を通常登録集約のskip対象から外す | 12.015/multipart-storage, 03.009/tcp-portrait-environment | 既存256MiB+1caseを38.96sで測定し登録slow mode/180s枠を設定。追加引数なしで全49case87.50s合格、TAP skipゼロ。全集約再実行は別gate |
+| 34.015/frozen-aggregate-runner | [x] | commit・全登録・完全freshnessを検査する集約runnerを用意する | 03.009/tcp-portrait-environment | 共通lock下の全buildと前後seal・全登録serial実行・診断分類・失敗証跡を実装。41新規/60既存fixtureと独立review合格。native gate合格は未主張 |
 | 34.015/frozen-linux-aggregate | [ ] | commit固定の全Linux登録targetを一括検証する | 03.009, 34.005/runtime-prototype | 修正後996297f09f（公開13b795a27aと同一tree）を全buildし108全targetをserial実行、107 OK/1 FAIL/skip・timeoutゼロ。GUI3失敗は解消、3003具体output等の前後seal不変。既存Saveと12件Script-Fu診断を保持してgate false、最終clean集約は未完了 |
 | 34.015/baseline-batch-repair | [x] | 基準由来のfile-loadとScript-Fu起動・終了障害を修正する | 03.009 | 復旧環境の16通常targetと6native+7Script-Fuの5C unit focused ASan/UBSanが診断込み合格。282source/header/scriptと879外部headerをseal。過去の失敗集約は維持し全aggregateは別gate |
 
