@@ -357,3 +357,40 @@ is not valid input for `check_clone_acceptance.py --current-evidence`.
 Physical mouse/tablet equivalence, focus/device interruption, other platforms,
 all of section 25, the historical full aggregate, packaging/release and skipped
 old Edge/string-reader runtime remain outside this component acceptance.
+
+## Original 25.004: deferred Ctrl timing regression (source-only)
+
+The new `/navigation-events/rotation/ctrl-mid-drag` case is **source-only,
+pending native acceptance**. It replays the single unmirrored stationary old
+GUI sequence 22–30 with each real Paintbrush and Move tool. The retained
+`legacy-rotation-operations/gui-captures/rotation.tsv` is checked against its
+24-column header, the consumed row widths and SHA-256
+`bfc8b4ab8f532f5b8e0d97f2dd7cace9eec1aefe7a4cd532dbf4e4162cd9d46a`.
+Literal event types, pre-event modifier masks, key/button details, center-relative
+coordinates and old angle/anchor/held-state expectations are checked before
+modern events run. No production arithmetic helper supplies expected angles.
+
+The finite sequence starts at +7.5 degrees with Shift+middle. Free stationary
+motion and Ctrl press alone remain +7.5; the next Ctrl motion snaps to 15.
+Shift release and Ctrl-only motion retain 15; Ctrl release alone also retains
+15; the next stationary motion restores +7.5. Key events must leave the entire
+navigation snapshot unchanged. Every held step preserves the original anchors,
+initiating button, inherited action, scroll coordinates, scales and actual grab.
+Ordinary middle release and a subsequent accepted start/release use the existing
+cleanup/reentry helpers. This is one registered case over two tools, not a new
+recorder or general input matrix; all eleven preceding registrations are unchanged.
+
+Timing follows the pinned old handler's motion dispatch (1145–1154), modifier
+key branches (1436–1456 and 1517–1542), and rotation update (1842–1871). The
+modern key branches update tool modifiers without recalculating navigation; its
+motion adapter selects the current Ctrl constraint while retaining the start
+anchor. The reverse transition tightens 25.005 timing evidence without closing
+that row. Both original GUI captures retain teardown `command_exit=-11`; no old
+runtime is executed or reclassified, and its skipped/unverified status remains.
+
+Acceptance still requires an exact-source run of the three existing normal
+targets (expected 12 event + 4 UI + 6 arithmetic cases) and the five-C-unit
+focused event ASan/UBSan target (expected 12 cases). No production, fixture,
+receipt, procedure or ledger change is included here; physical input, other
+platforms, display-boundary acceptance and the remaining original rows are
+outside this source checkpoint.
