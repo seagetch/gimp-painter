@@ -42,6 +42,9 @@
 
 /*  local function prototypes  */
 
+static void   gimp_display_shell_rotate_to_internal      (GimpDisplayShell *shell,
+                                                          gdouble           value,
+                                                          gboolean          exact);
 static void   gimp_display_shell_save_viewport_center    (GimpDisplayShell *shell,
                                                           gdouble          *x,
                                                           gdouble          *y);
@@ -75,7 +78,7 @@ gimp_display_shell_flip (GimpDisplayShell *shell,
 
       /* Adjust the rotation angle so that the image gets reflected across the
        * horizontal, and/or vertical, axes in screen space, regardless of the
-       * current rotation.
+       * current rotation.  Keep its exact-angle provenance when reflecting it.
        */
       if (flip_horizontally == shell->flip_horizontally ||
           flip_vertically   == shell->flip_vertically)
@@ -112,34 +115,7 @@ void
 gimp_display_shell_rotate_to (GimpDisplayShell *shell,
                               gdouble           value)
 {
-  gdouble cx, cy;
-
-  g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
-
-  /* Maintain the current center of the viewport. */
-  gimp_display_shell_save_viewport_center (shell, &cx, &cy);
-
-  /* Make sure the angle is within the range [0, 360). */
-  value = fmod (value, 360.0);
-  if (value < 0.0)
-    value += 360.0;
-
-  shell->rotate_angle = value;
-
-  /* freeze the active tool */
-  gimp_display_shell_pause (shell);
-
-  gimp_display_shell_scroll_clamp_and_update (shell);
-
-  gimp_display_shell_rotated (shell);
-
-  gimp_display_shell_restore_viewport_center (shell, cx, cy);
-
-  gimp_display_shell_expose_full (shell);
-  gimp_display_shell_render_invalidate_full (shell);
-
-  /* re-enable the active tool */
-  gimp_display_shell_resume (shell);
+  gimp_display_shell_rotate_to_internal (shell, value, FALSE);
 }
 
 void
@@ -154,11 +130,12 @@ gimp_display_shell_rotate_drag (GimpDisplayShell *shell,
 
   /* Start-relative arithmetic is independent of skipped/compressed motion and
    * keeps the unsnapped reference when Ctrl is pressed or released mid-drag. */
-  gimp_display_shell_rotate_to (shell,
+  gimp_display_shell_rotate_to_internal (shell,
     gimp_painter_navigation_rotate (shell->disp_width, shell->disp_height,
                                     cur_x, cur_y, shell->rotate_drag_angle,
                                     shell->flip_horizontally, shell->flip_vertically,
-                                    constrain ? GDK_CONTROL_MASK : 0));
+                                    constrain ? GDK_CONTROL_MASK : 0),
+    shell->painter_navigation_inherited);
 }
 
 void
@@ -169,8 +146,12 @@ gimp_display_shell_rotate_update_transform (GimpDisplayShell *shell)
   g_clear_pointer (&shell->rotate_transform,   g_free);
   g_clear_pointer (&shell->rotate_untransform, g_free);
 
-  if (fabs (shell->rotate_angle)         < ANGLE_EPSILON ||
-      fabs (360.0 - shell->rotate_angle) < ANGLE_EPSILON)
+  /* Inherited painter angles have no zero epsilon in the old display path.
+   * This belongs to the displayed angle, not the lifetime of its input grab:
+   * scrolling, scaling and release must not collapse a later rebuild. */
+  if (! shell->rotate_angle_exact &&
+      (fabs (shell->rotate_angle)         < ANGLE_EPSILON ||
+       fabs (360.0 - shell->rotate_angle) < ANGLE_EPSILON))
     shell->rotate_angle = 0.0;
 
   if ((shell->rotate_angle != 0.0 ||
@@ -211,6 +192,42 @@ gimp_display_shell_rotate_update_transform (GimpDisplayShell *shell)
 
 
 /*  private functions  */
+
+static void
+gimp_display_shell_rotate_to_internal (GimpDisplayShell *shell,
+                                       gdouble           value,
+                                       gboolean          exact)
+{
+  gdouble cx, cy;
+
+  g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
+
+  /* Maintain the current center of the viewport. */
+  gimp_display_shell_save_viewport_center (shell, &cx, &cy);
+
+  /* Make sure the angle is within the range [0, 360). */
+  value = fmod (value, 360.0);
+  if (value < 0.0)
+    value += 360.0;
+
+  shell->rotate_angle       = value;
+  shell->rotate_angle_exact = exact;
+
+  /* freeze the active tool */
+  gimp_display_shell_pause (shell);
+
+  gimp_display_shell_scroll_clamp_and_update (shell);
+
+  gimp_display_shell_rotated (shell);
+
+  gimp_display_shell_restore_viewport_center (shell, cx, cy);
+
+  gimp_display_shell_expose_full (shell);
+  gimp_display_shell_render_invalidate_full (shell);
+
+  /* re-enable the active tool */
+  gimp_display_shell_resume (shell);
+}
 
 static void
 gimp_display_shell_save_viewport_center (GimpDisplayShell *shell,

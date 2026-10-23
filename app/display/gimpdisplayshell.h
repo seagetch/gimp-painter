@@ -73,6 +73,7 @@ struct _GimpDisplayShell
   gboolean           flip_horizontally;
   gboolean           flip_vertically;
   gdouble            rotate_angle;
+  gboolean           rotate_angle_exact; /* inherited angle, survives release */
   cairo_matrix_t    *rotate_transform;
   cairo_matrix_t    *rotate_untransform;
 
