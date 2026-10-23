@@ -1390,7 +1390,7 @@ painter_filter_isolated_args (PainterLayerDialog *state, const gchar *route,
     {
       GError *error = nullptr;
       PainterFilterCommitCheck check {state, image, layer, index};
-      const gboolean success = gimp_filter_layer_edit_argument_patch (GIMP_FILTER_LAYER (layer),
+      const gboolean success = FilterLayerRef::retain (GIMP_FILTER_LAYER (layer)).try_edit_argument_patch (
         state->loaded_revision, snapshot.get (), edits.size (), edits.data (),
         painter_filter_commit_current, &check, &error);
       if (!success)
@@ -1706,10 +1706,10 @@ painter_filter_response (PainterLayerDialog *state,
         {
           PainterFilterCommitCheck check {state, image, layer,
             static_cast<unsigned> (painter_filter_route (choice)) - 1};
-          success = gimp_filter_layer_set_definition_checked (GIMP_FILTER_LAYER (layer), procedure, raw, args,
+          success = FilterLayerRef::retain (GIMP_FILTER_LAYER (layer)).try_set_definition_checked (procedure, raw, args,
             TRUE, painter_filter_commit_current, &check, &error);
         }
-      else success = gimp_filter_layer_edit_definition (GIMP_FILTER_LAYER (layer), procedure, raw, args, &error);
+      else success = FilterLayerRef::retain (GIMP_FILTER_LAYER (layer)).try_edit_definition (procedure, raw, args, &error);
     }
   else
     {
@@ -1727,10 +1727,10 @@ painter_filter_response (PainterLayerDialog *state,
             {
               PainterFilterCommitCheck check {state, image, layer,
                 static_cast<unsigned> (painter_filter_route (choice)) - 1};
-              success = gimp_filter_layer_set_definition_checked (GIMP_FILTER_LAYER (layer), procedure, NULL, args,
+              success = FilterLayerRef::retain (GIMP_FILTER_LAYER (layer)).try_set_definition_checked (procedure, NULL, args,
                 FALSE, painter_filter_commit_current, &check, &error);
             }
-          else success = gimp_filter_layer_set_definition (GIMP_FILTER_LAYER (layer), procedure, NULL, args, &error);
+          else success = FilterLayerRef::retain (GIMP_FILTER_LAYER (layer)).try_set_definition (procedure, NULL, args, &error);
           if (state->closed) goto close;
           if (success)
             success = gimp_image_add_layer (image, layer, static_cast<GimpLayer *> (GIMP_IMAGE_ACTIVE_PARENT), -1, TRUE);

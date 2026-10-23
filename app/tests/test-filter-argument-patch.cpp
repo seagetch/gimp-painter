@@ -17,6 +17,7 @@ extern "C" {
 void gimp_test_filter_argument_patch (Gimp *application);
 }
 #include "core/gimpfilterlayer-arguments.hpp"
+#include "core/gimpfilterlayer-handle.hpp"
 #include <cstring>
 #include <memory>
 #include <vector>
@@ -60,6 +61,39 @@ struct Fixture
     g_assert_no_error (error); g_assert_nonnull (result.get ()); return result;
   }
 };
+
+/* The callback must see the caller's exact stack payload, only while the
+ * forwarding call is active. Drain pending work after return to detect retention. */
+struct Check
+{
+  Check *identity = this;
+  guint calls = 0;
+  guint reject_at = 0;
+  bool active = false;
+  static gboolean run (gpointer data)
+  {
+    auto *self = static_cast<Check *> (data);
+    g_assert_true (self == self->identity);
+    g_assert_true (self->active);
+    return ++self->calls != self->reject_at;
+  }
+  void after_return (guint expected)
+  {
+    active = false;
+    for (guint i = 0; i < 32 && g_main_context_pending (nullptr); ++i)
+      g_main_context_iteration (nullptr, FALSE);
+    g_assert_cmpuint (calls, ==, expected);
+  }
+};
+
+void same_error (GError *actual, GError *native)
+{
+  g_assert_nonnull (actual); g_assert_nonnull (native);
+  g_assert_cmpuint (actual->domain, ==, native->domain);
+  g_assert_cmpint (actual->code, ==, native->code);
+  g_assert_cmpstr (actual->message, ==, native->message);
+  g_error_free (native);
+}
 
 gint integer (const GimpFilterArgumentsSnapshot *snapshot)
 { return g_value_get_int (gimp_filter_arguments_snapshot_peek_value (snapshot, 0)); }
@@ -128,6 +162,7 @@ gimp_test_filter_argument_patch (Gimp *application)
   auto *filter = GIMP_FILTER_LAYER (gimp_filter_layer_new (owner, 4, 4, "Snapshot patch", 1,
                                                          GIMP_LAYER_MODE_NORMAL_LEGACY));
   g_assert_nonnull (filter);
+  const auto handle = FilterLayerRef::retain (filter);
   g_assert_true (gimp_image_add_layer (owner, GIMP_LAYER (filter), nullptr, 0, FALSE));
   const guint8 raw_data[] = {0xff, 0, 0x80, 7};
   Bytes raw (g_bytes_new_static (raw_data, sizeof raw_data));
@@ -150,15 +185,20 @@ gimp_test_filter_argument_patch (Gimp *application)
     g_assert_true (gimp_filter_arguments_snapshot_peek_value (actual.get (), 0) ==
                    gimp_filter_arguments_snapshot_peek_value (original.get (), 0));
   };
-  g_assert_true (gimp_filter_layer_edit_argument_patch (filter, revision, original.get (), 0, nullptr, nullptr, nullptr, &error));
+  g_assert_true (handle.try_edit_argument_patch (revision, original.get (), 0, nullptr, nullptr, nullptr, &error));
   g_assert_no_error (error); unchanged ();
 
   Value changed (G_TYPE_INT); g_value_set_int (changed.get (), 9);
   const GimpFilterArgumentPatch patch {0, changed.get ()};
   const auto rejects = [&] (guint64 expected, const GimpFilterArgumentsSnapshot *base,
                             guint count, const GimpFilterArgumentPatch *changes) {
-    g_assert_false (gimp_filter_layer_edit_argument_patch (filter, expected, base, count, changes, nullptr, nullptr, &error));
-    g_assert_nonnull (error); g_clear_error (&error); unchanged ();
+    GError *native = nullptr;
+    const gboolean result = gimp_filter_layer_edit_argument_patch (filter, expected, base, count,
+                                                                   changes, nullptr, nullptr, &native);
+    g_assert_cmpint (handle.try_edit_argument_patch (expected, base, count, changes,
+                                                    nullptr, nullptr, &error), ==, result);
+    g_assert_cmpint (result, ==, FALSE);
+    same_error (error, native); g_clear_error (&error); unchanged ();
   };
   const GimpFilterArgumentPatch duplicate[] = {patch, patch};
   rejects (revision, original.get (), G_N_ELEMENTS (duplicate), duplicate);
@@ -176,23 +216,27 @@ gimp_test_filter_argument_patch (Gimp *application)
   const GimpFilterArgumentPatch too_large {5, large.get ()};
   rejects (revision, original.get (), 1, &too_large);
 
-  guint guard_calls = 0;
-  const auto guard = [] (gpointer data) -> gboolean {
-    return ++*static_cast<guint *> (data) < 2;
-  };
-  g_assert_false (gimp_filter_layer_edit_argument_patch (filter, revision, original.get (), 1, &patch,
-                                                        guard, &guard_calls, &error));
-  g_assert_nonnull (error); g_clear_error (&error);
-  g_assert_cmpuint (guard_calls, ==, 2);
-  unchanged (); // Failed post-Undo guard removed only its own unchanged-definition item.
+  Check check;
+  check.reject_at = 2; check.active = true;
+  g_assert_cmpint (handle.try_edit_argument_patch (revision, original.get (), 1, &patch,
+                                                  Check::run, &check, &error), ==, FALSE);
+  g_assert_error (error, GIMP_PAINTER_ERROR, GIMP_PAINTER_ERROR_INVALID_STATE);
+  g_clear_error (&error); check.after_return (2);
+  unchanged (); // Removes only its own still-top unchanged-definition Undo item.
   auto *replacement_args = gimp_value_array_new_from_types (nullptr, G_TYPE_INT, 11, G_TYPE_NONE);
   for (gboolean push_undo = FALSE; push_undo <= TRUE; ++push_undo)
     {
-      guard_calls = 0;
-      g_assert_false (gimp_filter_layer_set_definition_checked (filter, "replacement-fixture", nullptr,
-                        replacement_args, push_undo, guard, &guard_calls, &error));
-      g_assert_nonnull (error); g_clear_error (&error);
-      g_assert_cmpuint (guard_calls, ==, 2); unchanged ();
+      Check native_check;
+      native_check.reject_at = 2; native_check.active = true;
+      GError *native = nullptr;
+      const gboolean result = gimp_filter_layer_set_definition_checked (filter, "replacement-fixture", nullptr,
+        replacement_args, push_undo, Check::run, &native_check, &native);
+      native_check.after_return (2);
+      check.calls = 0; check.active = true;
+      g_assert_cmpint (handle.try_set_definition_checked ("replacement-fixture", nullptr,
+        replacement_args, push_undo, Check::run, &check, &error), ==, result);
+      g_assert_cmpint (result, ==, FALSE); same_error (error, native);
+      g_clear_error (&error); check.after_return (2); unchanged ();
       Bytes saved (gimp_filter_layer_ref_definition (filter));
       g_assert_true (g_bytes_equal (saved.get (), raw.get ()));
     }
@@ -202,8 +246,10 @@ gimp_test_filter_argument_patch (Gimp *application)
   Value array (GIMP_TYPE_INT32_ARRAY);
   gimp_value_set_int32_array (array.get (), elements, G_N_ELEMENTS (elements));
   const GimpFilterArgumentPatch edits[] = {patch, {5, array.get ()}};
-  g_assert_true (gimp_filter_layer_edit_argument_patch (filter, revision, original.get (),
-                                                       G_N_ELEMENTS (edits), edits, nullptr, nullptr, &error));
+  check.calls = 0; check.reject_at = 0; check.active = true;
+  g_assert_cmpint (handle.try_edit_argument_patch (revision, original.get (),
+                    G_N_ELEMENTS (edits), edits, Check::run, &check, &error), ==, TRUE);
+  check.after_return (2);
   g_assert_no_error (error); g_assert_cmpint (depth (), ==, 1);
   Snapshot edited (gimp_filter_layer_snapshot_arguments (filter));
   g_assert_cmpint (integer (original.get ()), ==, 7);
@@ -232,7 +278,7 @@ gimp_test_filter_argument_patch (Gimp *application)
     filter, "future-opaque-fixture", raw.get (), opaque.get (), &error));
   g_assert_no_error (error); gimp_image_undo_free (owner);
   const auto opaque_revision = gimp_filter_layer_get_definition_revision (filter);
-  g_assert_false (gimp_filter_layer_edit_argument_patch (filter, opaque_revision,
+  g_assert_false (handle.try_edit_argument_patch (opaque_revision,
                                                         edited.get (), 1, &patch, nullptr, nullptr, &error));
   g_assert_nonnull (error); g_clear_error (&error);
   g_assert_true (gimp_filter_layer_get_definition_revision (filter) == opaque_revision);
@@ -241,4 +287,55 @@ gimp_test_filter_argument_patch (Gimp *application)
   retained_raw.reset (gimp_filter_layer_ref_definition (filter));
   g_assert_true (g_bytes_equal (retained_opaque.get (), opaque.get ()));
   g_assert_true (g_bytes_equal (retained_raw.get (), raw.get ()));
+
+  /* Initial setters create no definition Undo; edits create one. Exercise both
+   * successful checked modes as well as the ordinary dialog routes. */
+  auto *args = gimp_value_array_new_from_types (nullptr, G_TYPE_INT, 11, G_TYPE_NONE);
+  for (gboolean checked = FALSE; checked <= TRUE; ++checked)
+    {
+      gimp_image_undo_free (owner);
+      check.calls = 0; check.active = true;
+      const gboolean initial = checked
+        ? handle.try_set_definition_checked ("initial-fixture", raw.get (), args, FALSE,
+                                              Check::run, &check, &error)
+        : handle.try_set_definition ("initial-fixture", raw.get (), args, &error);
+      g_assert_cmpint (initial, ==, TRUE); g_assert_no_error (error);
+      check.after_return (checked ? 2 : 0);
+      g_assert_cmpint (depth (), ==, 0);
+      { const auto procedure = handle.procedure ();
+        g_assert_cmpstr (procedure.get (), ==, "initial-fixture"); }
+      check.calls = 0; check.active = true;
+      const gboolean edit = checked
+        ? handle.try_set_definition_checked ("edited-fixture", raw.get (), args, TRUE,
+                                              Check::run, &check, &error)
+        : handle.try_edit_definition ("edited-fixture", raw.get (), args, &error);
+      g_assert_cmpint (edit, ==, TRUE); g_assert_no_error (error);
+      check.after_return (checked ? 2 : 0);
+      g_assert_cmpint (depth (), ==, 1);
+      { const auto procedure = handle.procedure ();
+        g_assert_cmpstr (procedure.get (), ==, "edited-fixture"); }
+      g_assert_true (gimp_image_undo (owner));
+      { const auto procedure = handle.procedure ();
+        g_assert_cmpstr (procedure.get (), ==, "initial-fixture"); }
+      g_assert_true (gimp_image_redo (owner));
+      { const auto procedure = handle.procedure ();
+        g_assert_cmpstr (procedure.get (), ==, "edited-fixture"); }
+    }
+  /* Unsupported pointer values return the C boundary's exact failure. */
+  auto *invalid_args = gimp_value_array_new_from_types (nullptr, G_TYPE_POINTER, nullptr, G_TYPE_NONE);
+  for (gboolean edit = FALSE; edit <= TRUE; ++edit)
+    {
+      GError *native = nullptr;
+      const gboolean result = edit
+        ? gimp_filter_layer_edit_definition (filter, "invalid-fixture", nullptr, invalid_args, &native)
+        : gimp_filter_layer_set_definition (filter, "invalid-fixture", nullptr, invalid_args, &native);
+      const gboolean actual = edit
+        ? handle.try_edit_definition ("invalid-fixture", nullptr, invalid_args, &error)
+        : handle.try_set_definition ("invalid-fixture", nullptr, invalid_args, &error);
+      g_assert_cmpint (actual, ==, result); g_assert_cmpint (result, ==, FALSE);
+      same_error (error, native); g_clear_error (&error);
+    }
+  gimp_value_array_unref (invalid_args);
+  gimp_value_array_unref (args);
+
 }

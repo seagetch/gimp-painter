@@ -46,6 +46,27 @@ public:
         throw Error (code, take_error_message (error, "FilterLayer definition failed").c_str ());
       }
   }
+  /* Preserve the C result/error contract. Checks and their data are borrowed
+   * only for this synchronous call; snapshot identity and revision pass through. */
+  gboolean try_set_definition (const char *procedure, GBytes *raw,
+                               const GimpValueArray *args, GError **error) const noexcept
+  { return gimp_filter_layer_set_definition (get (), procedure, raw, args, error); }
+  gboolean try_edit_definition (const char *procedure, GBytes *raw,
+                                const GimpValueArray *args, GError **error) const noexcept
+  { return gimp_filter_layer_edit_definition (get (), procedure, raw, args, error); }
+  gboolean try_set_definition_checked (const char *procedure, GBytes *raw,
+                                       const GimpValueArray *args, gboolean push_undo,
+                                       gboolean (*check) (gpointer), gpointer check_data,
+                                       GError **error) const noexcept
+  { return gimp_filter_layer_set_definition_checked (get (), procedure, raw, args,
+                                                     push_undo, check, check_data, error); }
+  gboolean try_edit_argument_patch (guint64 expected_revision,
+                                    const GimpFilterArgumentsSnapshot *snapshot,
+                                    guint n_patches, const GimpFilterArgumentPatch *patches,
+                                    gboolean (*check) (gpointer), gpointer check_data,
+                                    GError **error) const noexcept
+  { return gimp_filter_layer_edit_argument_patch (get (), expected_revision, snapshot,
+                                                  n_patches, patches, check, check_data, error); }
   /* Original-name query routes over the saved native model. Copy a borrowed
    * name immediately; adopt the independently owned GArray returned by C. */
   String get_procedure () const
