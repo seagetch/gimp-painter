@@ -1,0 +1,61 @@
+{
+  "task": "10.010",
+  "source_commit": "afa43fae3e920210146abed514f136fd49f671b5",
+  "evidence_kind": "Source-derived expectations only; not native execution",
+  "sources": [
+    {
+      "path": "app/core/gimpclonelayer.cpp",
+      "full_source_sha256": "3e4ea9bc3f77379989a81c35fe0ace8ad3fe0763c0d66c2765e361ce504ff4bb",
+      "excerpts": [
+        {
+          "start_line": 277,
+          "end_line": 340,
+          "text": "void GLib::CloneLayer::set_source(GimpLayer* layer)\n{\n  if (source_layer) {\n    update_conn = NULL;\n    source_layer = NULL;\n  }\n  if (layer) {\n    update_conn = g_signal_connect_delegator (G_OBJECT(layer), \"update\",\n        Delegators::delegator(this, &GLib::CloneLayer::on_source_update));\n    freeze_conn = g_signal_connect_delegator (G_OBJECT(layer), \"notify::frozen\", \n        Delegators::delegator(this, &GLib::CloneLayer::on_source_frozen));\n    source_layer = layer;\n    auto src  = ref(layer);\n    gint w, h;\n    w = src [gimp_item_get_width] ();\n    h = src [gimp_item_get_height] ();\n    prev_x = src [gimp_item_get_offset_x] ();\n    prev_y = src [gimp_item_get_offset_y] ();\n    prev_w = w;\n    prev_h = h;\n\n    gimp_drawable_update(GIMP_DRAWABLE(layer), 0, 0, w, h);\n  }\n}\n\nGimpLayer*\nGLib::CloneLayer::get_source()\n{\n  if (source_name) {\n    std::function<GimpLayer*(GimpContainer*)> finder = [&](GimpContainer* _container)->GimpLayer* {\n      auto container = ref(_container);\n      GimpLayer* result = NULL;\n      gint n_children = container [gimp_container_get_n_children] ();\n      for (int i = 0; i < n_children; i ++) {\n        auto layer = ref(container[gimp_container_get_child_by_index](i));\n        if (strcmp(layer [gimp_object_get_name](), source_name) == 0) {\n          result = layer;\n          return result;\n        }\n        GimpContainer* children = layer [gimp_viewable_get_children] ();\n        if (children && children != _container) {\n          result = finder (children);\n          if (result)\n            return result;\n        }\n      }\n      return NULL;\n    };\n    auto image = ref(g_object) [gimp_item_get_image] ();\n    GimpLayer* src = finder(ref(image) [gimp_image_get_layers] ());\n\n    if (src) {\n      source_name = NULL;\n      set_source(src);\n    }\n  }\n  return source_layer;\n}\n\nvoid GLib::CloneLayer::set_source_by_name(const gchar* name)\n{\n  g_print(\"CloneLayer::set_source_by_name(%s)\\n\", name);\n  source_name = g_strdup(name);\n}\n"
+        }
+      ]
+    },
+    {
+      "path": "app/xcf/xcf-load.c",
+      "full_source_sha256": "9a0aeebda8471f78237b67df7418f56f92790fb1a5ac0504eaf14c02ac6e3168",
+      "excerpts": [
+        {
+          "start_line": 1099,
+          "end_line": 1108,
+          "text": "\n            g_print(\"xcf_load[%x] target_name\", info->cp);\n            info->cp += xcf_read_string (info->fp, &target_name, 1);\n            g_print(\"=%s\\n\", target_name);\n\n            if ( !xcf_load_clone_specs (info) )\n              return FALSE;\n            gimp_clone_layer_set_source_by_name (GIMP_CLONE_LAYER(cloned), target_name);\n            gimp_item_set_size(GIMP_ITEM(*layer), width, height);\n          }\n"
+        },
+        {
+          "start_line": 2508,
+          "end_line": 2533,
+          "text": "xcf_post_check_layers  (XcfInfo      *info,\n                        GimpImage    *image)\n{\n  GimpContainer* container;\n  container = gimp_image_get_layers(image);\n  return xcf_post_check_layers_recur (info, container);\n}\nstatic gboolean\nxcf_post_check_layers_recur (XcfInfo       *info,\n                             GimpContainer *container)\n{\n  gimp_container_foreach (container, (GFunc)(xcf_post_check_layers_foreach), info);\n  return TRUE;\n}\nstatic void\nxcf_post_check_layers_foreach (GimpLayer* layer,\n                               XcfInfo*   info)\n{\n  GimpContainer* container;\n  if (GIMP_IS_CLONE_LAYER(layer)) {\n    gimp_clone_layer_get_source (GIMP_CLONE_LAYER(layer));\n  }\n  container = gimp_viewable_get_children(GIMP_VIEWABLE(layer));\n  if (container)\n    xcf_post_check_layers_recur (info, container);\n}\n"
+        }
+      ]
+    },
+    {
+      "path": "app/xcf/xcf-save.c",
+      "full_source_sha256": "4fa9155d28054d62baa5b7c77bd17e27fbea254df1f68c85c2ac4708de1653ce",
+      "excerpts": [
+        {
+          "start_line": 664,
+          "end_line": 669,
+          "text": "  if (GIMP_IS_CLONE_LAYER (layer)) {\n    GimpCloneLayer* clone_layer = GIMP_CLONE_LAYER(layer);\n    GimpLayer* target_layer = gimp_clone_layer_get_source (clone_layer);\n    const gchar* target_name = gimp_object_get_name (target_layer);\n    xcf_check_error (xcf_save_prop (info, image, PROP_CLONE_SPEC, error, target_name));\n  }\n"
+        },
+        {
+          "start_line": 1293,
+          "end_line": 1313,
+          "text": "    case PROP_CLONE_SPEC:\n      {\n        guint32 length = 0;\n        gchar* target_name;\n        guint32 i;\n        guint32 base = 0, pos = 0;\n        size = 0; /* dummy */\n        target_name = va_arg (args, gchar*);\n\n        g_print(\"xcf_save[%x] prop_type=%u\\n\", info->cp, prop_type);\n        xcf_write_prop_type_check_error (info, prop_type);\n        pos  = info->cp;\n        g_print(\"xcf_save[%x] length=%u\\n\", info->cp, length);\n        xcf_write_int32_check_error (info, &length, 1);\n        base = info->cp;\n        g_print(\"xcf_save[%x] target_name=%s\\n\", info->cp, target_name);\n        xcf_write_string_check_error (info, (gchar **) &target_name, 1);\n\n        g_print(\"xcf_save[%x] PROP_END\\n\", info->cp);\n        xcf_check_error (xcf_save_prop (info, image, PROP_END, error));\n        length = info->cp - base;\n"
+        }
+      ]
+    },
+    {
+      "path": "app/core/gimpobject.c",
+      "full_source_sha256": "13701a1f08f48a7eddc04198ff5a351f2e2ac91d760a4bafd365e84ad1abb6ab",
+      "excerpts": [
+        {
+          "start_line": 325,
+          "end_line": 331,
+          "text": "gimp_object_get_name (gconstpointer object)\n{\n  const GimpObject *object_typed = object;\n  g_return_val_if_fail (GIMP_IS_OBJECT (object_typed), NULL);\n\n  return object_typed->p->name;\n}\n"
+        }
+      ]
+    }
+  ]
+}

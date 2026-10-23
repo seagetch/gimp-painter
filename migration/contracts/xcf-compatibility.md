@@ -269,7 +269,10 @@ children. It does not exclude the clone itself in this search. The setter stores
 a duplicate of the source name; loading invokes getters in a later recursive
 post-pass. A successful match clears the pending name and installs the pointer.
 An unresolved name remains pending and can be retried by later getters. The old
-writer dereferences that nullable result without a guard.
+writer passes that nullable result to `gimp_object_get_name` without a caller
+guard; the getter has a `g_return_val_if_fail` type check and returns NULL on
+failure. This is not evidence of an unconditional NULL dereference. See
+`legacy-clone-name-resolution.md` for the source-derived expectation matrix.
 
 This decoder does not resolve names or assign stable IDs. The future two-stage
 app construction must first restore layers/order/hierarchy, then reproduce this
