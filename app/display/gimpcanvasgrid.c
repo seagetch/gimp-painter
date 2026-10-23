@@ -376,6 +376,16 @@ gimp_canvas_grid_get_extents (GimpCanvasItem *item)
                                              &rectangle.height);
     }
 
+  /* Intersections admit centers CROSSHAIR (2) pixels outside the image,
+   * then extend an arm another CROSSHAIR + 1 pixels. Allow rounding (0.5),
+   * the default three-pixel stroke radius (1.5) and antialiasing (1) too.
+   * Include that ink when hiding/changing the grid, before group rotation.
+   * Grid-style strokes are narrower, but share these conservative bounds. */
+  rectangle.x      -= 8;
+  rectangle.y      -= 8;
+  rectangle.width  += 16;
+  rectangle.height += 16;
+
   return cairo_region_create_rectangle (&rectangle);
 }
 

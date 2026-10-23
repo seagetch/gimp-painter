@@ -2804,6 +2804,7 @@ device_image_origin (void)
 #include "test-painter-navigation-old-operations.inc"
 #include "test-painter-navigation-old-zoom.inc"
 #include "test-painter-navigation-old-space.inc"
+#include "test-painter-navigation-grid-damage.inc"
 
 int main(int argc,char **argv)
 {
@@ -2829,6 +2830,9 @@ int main(int argc,char **argv)
   g_test_add_func("/navigation-events/old-space/origin",old_space_pan_origin);
   g_test_add_func("/navigation-events/old-space/oncanvas-render",old_space_pan_render);
   g_test_add_func("/navigation-events/old-space/deferred-release",old_space_pan_deferred_release);
+  g_test_add_data_func("/navigation-events/grid-damage/geometry",NULL,grid_geometry_family);
+  for(guint a=0;a<3;a++)
+    {gchar*path=g_strdup_printf("/navigation-events/grid-damage/window-%u",a);g_test_add_data_func(path,GUINT_TO_POINTER(a),grid_grid_real_damage);g_free(path);}
   g_test_add_func("/navigation-events/default-rotation",rotate_defaults);
   g_test_add_func("/navigation-events/arbitrary-buttons",arbitrary_button_constraints);
   g_test_add_func("/navigation-events/radial-zoom",radial_zoom_event);
