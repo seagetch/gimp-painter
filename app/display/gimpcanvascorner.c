@@ -273,7 +273,10 @@ gimp_canvas_corner_transform (GimpCanvasItem *item,
   switch (private->anchor)
     {
     case GIMP_HANDLE_ANCHOR_CENTER:
-      break;
+      /* CENTER is the property default but denotes no corner. Do not leave
+       * draw/extents outputs uninitialized while a caller configures it. */
+      *x = *y = *w = *h = 0.0;
+      return;
 
     case GIMP_HANDLE_ANCHOR_NORTH_WEST:
       if (private->outside)
@@ -394,6 +397,9 @@ gimp_canvas_corner_draw (GimpCanvasItem *item,
 
   gimp_canvas_corner_transform (item, &x, &y, &w, &h);
 
+  if (GET_PRIVATE (item)->anchor == GIMP_HANDLE_ANCHOR_CENTER)
+    return;
+
   cairo_rectangle (cr, x, y, w, h);
 
   _gimp_canvas_item_stroke (item, cr);
@@ -407,6 +413,9 @@ gimp_canvas_corner_get_extents (GimpCanvasItem *item)
   gdouble               w, h;
 
   gimp_canvas_corner_transform (item, &x, &y, &w, &h);
+
+  if (GET_PRIVATE (item)->anchor == GIMP_HANDLE_ANCHOR_CENTER)
+    return NULL;
 
   rectangle.x      = floor (x - 1.5);
   rectangle.y      = floor (y - 1.5);
