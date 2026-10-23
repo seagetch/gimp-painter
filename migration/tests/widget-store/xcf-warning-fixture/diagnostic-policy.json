@@ -1,0 +1,28 @@
+{
+  "all_other_native_messages_fail_assertion_within_scoped_ordinary_Open": true,
+  "baseline_is_final_acceptance": false,
+  "baseline_warning_count_per_mode": 4,
+  "benign_stderr_policy": "Exact plug-in .dummy discovery and missing localization catalog notices only. No GIMP, LibGimp, GLib, error, warning or sanitizer domain is excluded.",
+  "candidate_console_diagnostics_allowed": 0,
+  "exact_native_domain": "GIMP",
+  "exact_native_message": "Painter XCF metadata was retained but could not be fully restored: Unsupported or malformed saved Filter argument; original definition is retained",
+  "exact_native_severity": "GIMP_MESSAGE_WARNING",
+  "expected_native_messages_per_opaque_open": 1,
+  "expected_native_messages_per_typed_open": 0,
+  "glib_fatal_policy_unchanged": true,
+  "historical_correction": "Historical orientation receipts remain preserved. Earlier omitted LibGimp and GIMP-Error diagnostics are not made clean by this narrow XCF test expectation. Full DnD and profile fixture gates remain pending.",
+  "negative_control_ids": [
+    "zero-expected",
+    "two-expected",
+    "wrong-text",
+    "wrong-domain",
+    "wrong-severity",
+    "duplicate-native-callback",
+    "typed-open-warning",
+    "fatal-glib-warning"
+  ],
+  "negative_controls_are_temporary_not_published": true,
+  "opaque_opens": 4,
+  "outside_scope": "Original handlers remain active for Save, Close, dialogs, and other tests; aggregate output scanning rejects unexpected diagnostics",
+  "typed_opens": 4
+}
