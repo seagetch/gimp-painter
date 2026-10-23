@@ -77,6 +77,7 @@ foreach test_name : app_tests
     'tests.c',
     test_name == 'gimp-clone-layer' ? ['test-gimp-clone-layout.cpp'] : [],
     test_name == 'painter-xcf-roundtrip' ? ['test-painter-xcf-argument-resources.cpp'] : [],
+    test_name == 'painter-layer-ui' ? ['test-filter-editor-metadata.cpp', 'test-filter-argument-patch.cpp'] : [],
     test_name == 'gimp-filter-layer' ? ['test-gimp-filter-layout.cpp', 'test-filter-owner-context.cpp', 'test-filter-parameters.cpp'] : [],
     dependencies: [ libapp_dep, appstream ],
     link_with: apptests_links,

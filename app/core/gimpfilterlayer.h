@@ -41,7 +41,19 @@ gboolean    gimp_filter_layer_set_definition (GimpFilterLayer *, const gchar *pr
 gboolean    gimp_filter_layer_edit_definition (GimpFilterLayer *, const gchar *procedure,
                                                GBytes *serialized_definition,
                                                const GimpValueArray *execution_args, GError **);
+/* UI-only checked replacement: check/check_data are borrowed synchronously,
+ * before staging and after Undo creation (if requested), never retained.
+ * The model/revision captured at entry must remain current until publication.
+ * Post-Undo rejection has the same history limitations documented below. */
+gboolean    gimp_filter_layer_set_definition_checked (GimpFilterLayer *, const gchar *procedure,
+                                                      GBytes *, const GimpValueArray *, gboolean push_undo,
+                                                      gboolean (*check) (gpointer), gpointer check_data,
+                                                      GError **);
 gchar *     gimp_filter_layer_dup_procedure  (GimpFilterLayer *);
+/* Bounded byte prefix for owner-thread UI inspection. The returned bytes may
+ * end inside a UTF-8 sequence; only the presentation copy may be repaired. */
+gchar *     gimp_filter_layer_dup_procedure_prefix (GimpFilterLayer *, gsize max_bytes,
+                                                   gboolean *truncated);
 GBytes *    gimp_filter_layer_ref_definition (GimpFilterLayer *);
 GimpValueArray *gimp_filter_layer_dup_args   (GimpFilterLayer *);
 /* Stable descriptor survives expiration; scalar object uses element 0.
@@ -58,6 +70,24 @@ gboolean gimp_filter_layer_get_argument_reference (GimpFilterLayer *, guint argu
  * API; types/values/reference IDs remain immutable after edits. Reference expiration
  * is queried at access time. */
 typedef struct _GimpFilterArgumentsSnapshot GimpFilterArgumentsSnapshot;
+typedef struct
+{
+  guint index;
+  const GValue *value;
+} GimpFilterArgumentPatch;
+/* Owner-thread, same-definition edit. Exact-type scalar/known-array patches
+ * share every untouched immutable slot, including nested/reference state.
+ * Snapshot identity and revision must still match when Undo is installed.
+ * Optional check/check_data are called synchronously before staging and after
+ * Undo creation, before publication; they are never stored. If a later check
+ * fails, a still-top Undo for the unchanged definition is removed. Undo push's
+ * earlier dirty/redo-expiration notifications cannot be rolled back here.
+ * Limits: 512 top-level slots/patches, 1 MiB additional copy/storage budget. */
+gboolean gimp_filter_layer_edit_argument_patch (GimpFilterLayer *, guint64 expected_revision,
+                                                const GimpFilterArgumentsSnapshot *,
+                                                guint n_patches, const GimpFilterArgumentPatch *,
+                                                gboolean (*check) (gpointer), gpointer check_data,
+                                                GError **);
 typedef struct
 {
   GType object_type;

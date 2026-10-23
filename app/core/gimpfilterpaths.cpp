@@ -94,6 +94,17 @@ std::string checked (const std::string& candidate)
     throw std::runtime_error ("Bundled Filter executable is missing or not executable: " + candidate);
   return candidate;
 }
+const char *plugin_name (FilterProcedure procedure)
+{
+  switch (procedure)
+    {
+    case FilterProcedure::blinds: return "blinds";
+    case FilterProcedure::small_tiles: return "tile-small";
+    case FilterProcedure::retinex: return "contrast-retinex";
+    case FilterProcedure::convolution: return "convolution-matrix";
+    default: throw std::invalid_argument ("No bundled executable for this Filter procedure");
+    }
+}
 }
 
 std::string filter_worker_path ()
@@ -111,20 +122,25 @@ std::string filter_worker_path ()
 
 std::string filter_plugin_path (FilterProcedure procedure)
 {
-  const char *name = nullptr;
-  switch (procedure)
-    {
-    case FilterProcedure::blinds: name = "blinds"; break;
-    case FilterProcedure::small_tiles: name = "tile-small"; break;
-    case FilterProcedure::retinex: name = "contrast-retinex"; break;
-    case FilterProcedure::convolution: name = "convolution-matrix"; break;
-    default: throw std::invalid_argument ("No bundled executable for this Filter procedure");
-    }
+  const char *name = plugin_name (procedure);
   const auto directory = executable_directory ();
   const auto executable = std::string (name) + GIMP_PAINTER_FILTER_EXECUTABLE_SUFFIX;
   if (overlay_location (directory)) return checked (joined (directory, executable.c_str ()));
   if (build_location (directory))
     return checked (joined (joined (GIMP_PAINTER_FILTER_BUILD_ROOT, "plug-ins/common"), executable.c_str ()));
   return checked (joined (joined (joined (directory, GIMP_PAINTER_FILTER_WORKER_TO_PLUGINS), name), executable.c_str ()));
+}
+
+std::string filter_registered_plugin_path (FilterProcedure procedure)
+{
+  const char *name = plugin_name (procedure);
+  const auto directory = executable_directory ();
+  const auto executable = std::string (name) + GIMP_PAINTER_FILTER_EXECUTABLE_SUFFIX;
+  if (overlay_location (directory)) return joined (directory, executable.c_str ());
+  if (build_location (directory))
+    return joined (joined (GIMP_PAINTER_FILTER_BUILD_ROOT, "plug-ins/common"), executable.c_str ());
+  const auto worker = joined (directory, GIMP_PAINTER_FILTER_BIN_TO_WORKER);
+  Text worker_directory (g_path_get_dirname (worker.c_str ()));
+  return joined (joined (joined (worker_directory.get (), GIMP_PAINTER_FILTER_WORKER_TO_PLUGINS), name), executable.c_str ());
 }
 }

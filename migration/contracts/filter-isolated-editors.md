@@ -11,9 +11,10 @@ authoritative; this UI introduces no filter algorithm or GEGL effect lifecycle.
 The literal procedure names and supported typed shapes are unchanged. The
 editor borrows an immutable argument snapshot when loading these four routes.
 No-op OK and Cancel perform no definition transaction. Editing the same route
-copies its current typed arguments only after checking the loaded definition
-revision, and patches only the controls whose numeric bits or semantic choice
-actually changed. Other scalars, array elements, context IDs, raw metadata and
+uses the [Phase C immutable snapshot patch](filter-parameter-editor.md) after
+checking the loaded definition revision and current provider, and patches only
+the controls whose numeric bits or semantic choice actually changed. Untouched
+slots, including reference provenance and huge ignored tails, remain shared. Other scalars, array elements, context IDs, raw metadata and
 Convolution's ignored twelfth value remain untouched. A stale editor reports
 that it must be reopened instead of overwriting a newer definition.
 
@@ -42,9 +43,11 @@ control.
 Unknown procedures/shapes remain selected as Keep saved definition, with types,
 values and raw metadata visible. Numeric-array previews show at most256 elements
 through an immutable borrow, including their byte lengths; they do not copy an
-entire array for the preview. This is not a claim that arbitrary unknown string,
-strv or non-isolated definition opening has a globally bounded cost. The existing
-512-argument and4096-byte raw presentation caps remain unchanged.
+entire array for the preview. Phase C subsequently adds a64 KiB total valid-UTF-8 preview bound, bounded
+string/STRV/procedure-name formatting, and a512-entry traversal budget, while
+retaining the4096-byte raw presentation cap. See the linked implementation
+contract for copied versus shared allocation accounting; this is not a total-RSS
+claim.
 
 ## Ownership, execution and limits
 

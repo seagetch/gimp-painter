@@ -44,6 +44,7 @@
 #include "gimpplugindebug.h"
 #include "gimpplugindef.h"
 #include "gimppluginmanager.h"
+#include "core/gimpfilterparametereditor.h"
 #include "gimppluginmanager-data.h"
 #include "gimppluginmanager-help-domain.h"
 #include "gimppluginmanager-menu-branch.h"
@@ -62,6 +63,8 @@ enum
 };
 
 
+static void     gimp_plug_in_manager_constructed (GObject    *object);
+static void     gimp_plug_in_manager_dispose     (GObject    *object);
 static void     gimp_plug_in_manager_finalize    (GObject    *object);
 
 static gint64   gimp_plug_in_manager_get_memsize (GimpObject *object,
@@ -114,6 +117,8 @@ gimp_plug_in_manager_class_init (GimpPlugInManagerClass *klass)
                   G_TYPE_STRING,
                   G_TYPE_STRING);
 
+  object_class->constructed      = gimp_plug_in_manager_constructed;
+  object_class->dispose          = gimp_plug_in_manager_dispose;
   object_class->finalize         = gimp_plug_in_manager_finalize;
 
   gimp_object_class->get_memsize = gimp_plug_in_manager_get_memsize;
@@ -122,6 +127,21 @@ gimp_plug_in_manager_class_init (GimpPlugInManagerClass *klass)
 static void
 gimp_plug_in_manager_init (GimpPlugInManager *manager)
 {
+  gimp_filter_parameter_editor_initialize (manager);
+}
+
+static void
+gimp_plug_in_manager_constructed (GObject *object)
+{
+  G_OBJECT_CLASS (parent_class)->constructed (object);
+  gimp_filter_parameter_editor_activate (GIMP_PLUG_IN_MANAGER (object));
+}
+
+static void
+gimp_plug_in_manager_dispose (GObject *object)
+{
+  gimp_filter_parameter_editor_close (GIMP_PLUG_IN_MANAGER (object));
+  G_OBJECT_CLASS (parent_class)->dispose (object);
 }
 
 static void
