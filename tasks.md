@@ -394,9 +394,9 @@
 | 08.008/weak-pointer-teardown | [x] | MyPaint GUI の weak pointer 登録を対称に解除する | 08.008, 01.007/raw-candidates | options/widget の先行破棄と GUI helper の先行破棄で解放済み領域に書き込まない |
 | 08.008 | [x] | MyPaint tool 型を移植する | 08.007 | tool manager に登録できる |
 | 08.008/tool-core-lifetime | [x] | MyPaint tool と core の生成・破棄順を明示する | 08.008, 01.005/gimp3-tool-callbacks | constructed で保持する core が finalize/停止時に二重解放や残存を起こさず、qdata と Undo の解除順が整合 |
-| 08.009 | [ ] | パース定規モデル型を移植する | 08.008 | 画像との所有関係を接続 |
-| 08.009/removed-signal | [ ] | パース定規型の削除通知 slot を復元する | 08.009, 01.005/gimp3-external-binders | 独自 `GimpPerspectiveGuideClass.removed` を新しい型に再定義し、削除時に一度だけ発火・接続解除する |
-| 08.009/guide-owner | [ ] | パース定規の image setter の参照移譲契約を確定する | 08.009, 01.007/c-state | setter の旧値解放と新値代入を対称にし、呼出し元・画像終了時の二重解放と残存を防ぐ |
+| 08.009 | [x] | パース定規モデル型を移植する | 08.008 | 画像との所有関係を接続 |
+| 08.009/removed-signal | [x] | パース定規型の削除通知 slot を復元する | 08.009, 01.005/gimp3-external-binders | 独自 `GimpPerspectiveGuideClass.removed` を新しい型に再定義し、削除時に一度だけ発火・接続解除する |
+| 08.009/guide-owner | [x] | パース定規の image setter の参照移譲契約を確定する | 08.009, 01.007/c-state | setter の旧値解放と新値代入を対称にし、呼出し元・画像終了時の二重解放と残存を防ぐ |
 | 08.010 | [ ] | パース定規 tool 型を移植する | 08.009 | draw tool と options に登録 |
 | 08.011 | [ ] | 塗りつぶし brush core 型を移植する | 08.010 | paint core と親 vfunc を接続 |
 | 08.012 | [ ] | 塗りつぶし tool/options 型を移植する | 08.011 | tool manager と設定に登録 |

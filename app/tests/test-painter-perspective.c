@@ -18,6 +18,18 @@
 #include "gimp-app-test-utils.h"
 
 static Gimp *gimp;
+typedef struct {
+  GimpPerspectiveGuide parent_instance;
+  guint removed_calls, before_calls, after_calls;
+} ProbeGuide;
+typedef GimpPerspectiveGuideClass ProbeGuideClass;
+G_DEFINE_TYPE (ProbeGuide, probe_guide, GIMP_TYPE_PERSPECTIVE_GUIDE)
+static void probe_removed (GimpPerspectiveGuide *guide)
+{ ++((ProbeGuide *) guide)->removed_calls; }
+static void probe_guide_class_init (ProbeGuideClass *klass)
+{ GIMP_PERSPECTIVE_GUIDE_CLASS (klass)->removed = probe_removed; }
+static void probe_guide_init (ProbeGuide *guide) { }
+
 /* This is an extracted SOURCE oracle, not a claim to run the old binary. */
 #define gimp_display_shell_snap_angle legacy_snap_angle
 #define g_print(...) ((void)0)
@@ -120,8 +132,137 @@ static void threshold_ties_and_constraint(void)
   g_object_unref(guide);
 }
 static GimpImage *new_image(void)
-{return gimp_image_new(gimp,128,128,GIMP_RGB,GIMP_PRECISION_U8_NON_LINEAR);}
+{
+  GimpImage *image = gimp_image_new (gimp, 128, 128, GIMP_RGB, GIMP_PRECISION_U8_NON_LINEAR);
+  g_assert_null (gimp_image_get_perspective_guide (image));
+  return image;
+}
 static void count_signal(GObject *object,gpointer data){++*(guint*)data;}
+static void finalized_flag (gpointer data) { *(gboolean *) data = TRUE; }
+static void removal_before (GimpPerspectiveGuide *guide, gpointer data)
+{
+  ProbeGuide *probe = (ProbeGuide *) guide;
+  ++probe->before_calls;
+  g_assert_cmpuint (probe->removed_calls, ==, probe->before_calls - 1);
+}
+static void removal_after (GimpPerspectiveGuide *guide, gpointer data)
+{
+  ProbeGuide *probe = (ProbeGuide *) guide;
+  ++probe->after_calls;
+  g_assert_cmpuint (probe->removed_calls, ==, probe->after_calls);
+}
+static void closure_released (gpointer data, GClosure *closure)
+{ ++*(guint *) data; }
+static void removed_class_slot (void)
+{
+  GimpImage *image = new_image ();
+  ProbeGuide *probe = g_object_new (probe_guide_get_type (), "id", G_MAXUINT32,
+                                  "angle", G_PI / 3, NULL);
+  GimpPerspectiveGuide *guide = GIMP_PERSPECTIVE_GUIDE (probe);
+  GimpPerspectiveGuideClass *klass = GIMP_PERSPECTIVE_GUIDE_GET_CLASS (guide);
+  GTypeQuery type = { 0 }; GSignalQuery signal = { 0 };
+  guint released = 0; gboolean finalized = FALSE;
+  gulong before, after;
+  g_assert_true (GIMP_IS_PERSPECTIVE_GUIDE_CLASS (klass));
+  g_assert_true (GIMP_PERSPECTIVE_GUIDE_CLASS (G_OBJECT_GET_CLASS (guide)) == klass);
+  g_assert_true (klass->removed == probe_removed);
+  g_assert_cmpuint (g_type_parent (GIMP_TYPE_PERSPECTIVE_GUIDE), ==, G_TYPE_OBJECT);
+  g_type_query (GIMP_TYPE_PERSPECTIVE_GUIDE, &type);
+  g_assert_cmpuint (type.instance_size, ==, sizeof (GimpPerspectiveGuide));
+  g_assert_cmpuint (type.class_size, ==, sizeof (GimpPerspectiveGuideClass));
+  g_signal_query (g_signal_lookup ("removed", GIMP_TYPE_PERSPECTIVE_GUIDE), &signal);
+  g_assert_cmpuint (signal.itype, ==, GIMP_TYPE_PERSPECTIVE_GUIDE);
+  g_assert_cmpuint (signal.return_type, ==, G_TYPE_NONE);
+  g_assert_cmpuint (signal.n_params, ==, 0);
+  g_assert_true ((signal.signal_flags & G_SIGNAL_RUN_LAST) != 0);
+  g_object_set_data_full (G_OBJECT (guide), "test-08009-finalized", &finalized, finalized_flag);
+  before = g_signal_connect_data (guide, "removed", G_CALLBACK (removal_before),
+                                  &released, closure_released, 0);
+  after = g_signal_connect_data (guide, "removed", G_CALLBACK (removal_after),
+                                 &released, closure_released, G_CONNECT_AFTER);
+  gimp_image_set_perspective_guide (image, guide);
+  gimp_image_set_perspective_guide (image, guide);
+  g_assert_cmpuint (probe->removed_calls, ==, 0);
+  gimp_image_set_perspective_guide (image, NULL);
+  gimp_image_set_perspective_guide (image, NULL);
+  g_assert_cmpuint (probe->removed_calls, ==, 1);
+  gimp_image_set_perspective_guide (image, guide);
+  g_object_unref (image);
+  g_assert_cmpuint (probe->removed_calls, ==, 2);
+  g_assert_cmpuint (probe->before_calls, ==, 2);
+  g_assert_cmpuint (probe->after_calls, ==, 2);
+  g_assert_false (finalized);
+  g_signal_handler_disconnect (guide, before);
+  g_signal_handler_disconnect (guide, after);
+  g_assert_cmpuint (released, ==, 2);
+  g_object_unref (guide);
+  g_assert_true (finalized);
+  g_assert_cmpuint (released, ==, 2);
+}
+
+typedef struct {
+  GimpImage *image;
+  GimpPerspectiveGuide *incoming;
+  guint calls;
+} DropOwners;
+static void drop_setter_owners (GimpPerspectiveGuide *previous, gpointer data)
+{
+  DropOwners *drop = data;
+  ++drop->calls;
+  g_assert_true (gimp_image_get_perspective_guide (drop->image) == drop->incoming);
+  g_object_unref (drop->image);
+  g_object_unref (drop->incoming);
+  g_object_unref (previous);
+  drop->image = NULL; drop->incoming = NULL;
+}
+static void setter_owner_release (void)
+{
+  GimpImage *image = new_image ();
+  GimpPerspectiveGuide *previous = gimp_perspective_guide_new (1);
+  GimpPerspectiveGuide *incoming = gimp_perspective_guide_new (2);
+  gboolean image_finalized = FALSE, previous_finalized = FALSE, incoming_finalized = FALSE;
+  guint removed = 0;
+  DropOwners drop = { image, incoming, 0 };
+  g_object_set_data_full (G_OBJECT (image), "test-08009-finalized", &image_finalized, finalized_flag);
+  g_object_set_data_full (G_OBJECT (previous), "test-08009-finalized", &previous_finalized, finalized_flag);
+  g_object_set_data_full (G_OBJECT (incoming), "test-08009-finalized", &incoming_finalized, finalized_flag);
+  gimp_image_set_perspective_guide (image, previous);
+  g_signal_connect (previous, "removed", G_CALLBACK (drop_setter_owners), &drop);
+  g_signal_connect (incoming, "removed", G_CALLBACK (count_signal), &removed);
+  gimp_image_set_perspective_guide (image, incoming);
+  g_assert_cmpuint (drop.calls, ==, 1);
+  g_assert_cmpuint (removed, ==, 1);
+  g_assert_true (image_finalized);
+  g_assert_true (previous_finalized);
+  g_assert_true (incoming_finalized);
+}
+
+static void duplicate_ownership (void)
+{
+  GimpImage *first = new_image (), *second = new_image ();
+  GimpPerspectiveGuide *guide = gimp_perspective_guide_new (G_MAXUINT32), *copy;
+  GimpPerspectiveGuideState a = { 0 }, b = { 0 };
+  gboolean old_finalized = FALSE, copy_finalized = FALSE;
+  g_object_set (guide, "angle", 1.25, NULL);
+  for (gint i = 0; i < 3; ++i) gimp_perspective_guide_add_vanish_points (guide, i + .25, i - .5);
+  copy = gimp_perspective_guide_duplicate (guide);
+  g_assert_nonnull (copy); g_assert_true (copy != guide);
+  g_assert_true (gimp_perspective_guide_get_state (guide, &a));
+  g_assert_true (gimp_perspective_guide_get_state (copy, &b));
+  g_assert_cmpuint (a.id, ==, b.id); g_assert_cmpfloat (a.angle, ==, b.angle);
+  g_assert_cmpint (a.n_points, ==, b.n_points);
+  for (gint i = 0; i < 3; ++i) point (copy, i, a.points[i].x, a.points[i].y);
+  g_object_set_data_full (G_OBJECT (guide), "test-08009-finalized", &old_finalized, finalized_flag);
+  g_object_set_data_full (G_OBJECT (copy), "test-08009-finalized", &copy_finalized, finalized_flag);
+  gimp_image_set_perspective_guide (first, guide);
+  gimp_image_set_perspective_guide (second, copy);
+  g_object_unref (guide); g_object_unref (copy);
+  g_assert_true (gimp_perspective_guide_set_vanish_points (gimp_image_get_perspective_guide (first), 0, 91, 92));
+  point (gimp_image_get_perspective_guide (second), 0, .25, -.5);
+  g_object_unref (first); g_assert_true (old_finalized); g_assert_false (copy_finalized);
+  point (gimp_image_get_perspective_guide (second), 2, 2.25, 1.5);
+  g_object_unref (second); g_assert_true (copy_finalized);
+}
 static void image_ownership(void)
 {
   GimpImage *image=new_image();GimpPerspectiveGuide *guide=gimp_perspective_guide_new(3);
@@ -193,5 +334,6 @@ int main(int argc,char **argv)
 #define ADD(name) g_test_add_func("/perspective/" #name,name)
   ADD(model_bounds);ADD(runtime_model_fixture);ADD(source_oracle);ADD(threshold_ties_and_constraint);ADD(image_ownership);
   ADD(reentrant_replacement);ADD(dispose_reentry);ADD(edit_undo);ADD(signal_lifetime);
+  ADD(removed_class_slot);ADD(setter_owner_release);ADD(duplicate_ownership);
   result=g_test_run();gimp_test_utils_set_gimp3_directory("GIMP_TESTING_ABS_TOP_BUILDDIR","app/tests/gimpdir-output");gimp_exit(gimp,TRUE);return result;
 }

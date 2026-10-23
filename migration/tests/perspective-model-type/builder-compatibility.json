@@ -1,0 +1,23 @@
+{
+  "method": "Static Python syntax and AST comparison; no tests or full-default build run",
+  "default_targets": [
+    "painter-perspective",
+    "painter-perspective-ui",
+    "painter-perspective-events",
+    "painter-navigation-events"
+  ],
+  "default_target_order_unchanged": true,
+  "original_instrumented_production_sources_unchanged": true,
+  "default_instrumented_source_count": 24,
+  "selected_model_instrumented_source_count": 21,
+  "default_output_names": [
+    "painter-perspective-asan",
+    "painter-perspective-ui-asan",
+    "painter-perspective-events-asan",
+    "painter-navigation-events-asan"
+  ],
+  "positional_build_and_required_report_preserved": true,
+  "native_runner_unchanged_targets_compatible": true,
+  "report_compatibility": "Retains scope, sanitizers, leak_detection, sources, commands and executables; adds explicit instrumentation, hashes and status",
+  "ninja_compatibility": "Default reads build/build.ninja; this recovery explicitly supplies existing http.ninja via --ninja-file; command extraction uses ninja -t only"
+}
