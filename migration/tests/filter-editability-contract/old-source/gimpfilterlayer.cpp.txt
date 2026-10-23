@@ -1,0 +1,53 @@
+gint GLib::FilterLayer::get_opacity_at (gint          x,
+                                          gint          y)
+{
+  /* Only consider child layers as having content */
+  return 0;
+}
+
+
+/*  priv functions  */
+
+void GLib::FilterLayer::filter_reset () {
+  g_print("FilterLayer::filter_reset\n");
+//  gimp_progress_cancel(GIMP_PROGRESS(g_object));
+  g_list_free_full(updates, delete_rectangle);
+  updates = NULL;
+  layer_projected_once = false;
+}
+
+
+void GLib::FilterLayer::notify_filter_end()
+{
+  auto self   = ref(g_object);
+  gint width  = self [gimp_item_get_width] ();
+  gint height = self [gimp_item_get_height] ();
+
+  self [gimp_drawable_update] (0, 0, width, height);
+  auto image  = ref( self [gimp_item_get_image]() );
+  auto parent = ref( self [gimp_viewable_get_parent]() );
+  set_waiting_for_runner(false);
+  auto projection = ref( parent ?
+      parent [gimp_group_layer_get_projection] () :
+      image [gimp_image_get_projection] () );
+  if (projection) {
+    projection [gimp_projection_flush_now] ();
+    image [gimp_image_flush] ();
+  }
+}
+
+
+void GLib::FilterLayer::update () {
+  update_size ();
+}
+
+void GLib::FilterLayer::update_size () {
+  invalidate_layer();
+  // TODO: need filter reset if boundary size is changed.
+}
+
+gboolean GLib::FilterLayer::is_editable()
+{
+  return FALSE;
+}
+

@@ -1,0 +1,17 @@
+{
+  "name": "gimp:app / gimp-filter-layer",
+  "stdout": "TAP version 14\n# random seed: R02Sd1670b3ec306a457c45d8343a52b0bf4\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# Start of gimp-filter-layer tests\nnot ok /gimp-filter-layer/filter_drawable_history_policy - ERROR:../source/app/tests/test-filter-editability-contract.inc:45:filter_drawable_history_policy: 'gimp_image_undo_push_drawable (image,\"Filter derived-cache\",GIMP_DRAWABLE (filter),buffer,0,0)' should be NULL\nBail out!\n",
+  "result": "FAIL",
+  "starttime": 1792562174.4343657,
+  "duration": 67.2266001701355,
+  "returncode": 250,
+  "command": [
+    "/usr/bin/python3",
+    "/workspace/shared/gimp-clean-aggregate/source/migration/tests/run_filter_owner_context_fixture_test.py",
+    "--",
+    "app/tests/gimp-filter-layer",
+    "-p",
+    "/gimp-filter-layer/filter_drawable_history_policy"
+  ],
+  "stderr": "**\nERROR:../source/app/tests/test-filter-editability-contract.inc:45:filter_drawable_history_policy: 'gimp_image_undo_push_drawable (image,\"Filter derived-cache\",GIMP_DRAWABLE (filter),buffer,0,0)' should be NULL\n"
+}

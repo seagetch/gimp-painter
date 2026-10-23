@@ -1,0 +1,43 @@
+--- a/app/core/gimpimage-undo.c
++++ b/app/core/gimpimage-undo.c
+@@ -32,6 +32,7 @@
+ #include "gimpimage-undo.h"
+ #include "gimpitem.h"
+ #include "gimpclonelayer.h"
++#include "gimpfilterlayer.h"
+ #include "gimpdrawableundo.h"
+ #include "gimpcontainer.h"
+ #include "gimplist.h"
+@@ -391,7 +392,7 @@
+   g_object_ref (image);
+   private = GIMP_IMAGE_GET_PRIVATE (image);
+ 
+-  /* Clone pixels are derived cache, not independently editable history.
++  /* Clone and Filter pixels are derived cache, not independent pixel history.
+    * Collect drawable properties once and retain their object references across
+    * dirty/toggle callbacks through construction. Ordinary user locks are not
+    * this permanent type contract. Non-drawable Undo keeps its existing order. */
+@@ -412,7 +413,8 @@
+       va_end (args);
+       for (i = 0; i < n_properties; i++)
+         if (g_strcmp0 (names[i], "item") == 0)
+-          reject = GIMP_IS_CLONE_LAYER (g_value_get_object (&values[i]));
++          reject = (GIMP_IS_CLONE_LAYER (g_value_get_object (&values[i])) ||
++                    GIMP_IS_FILTER_LAYER (g_value_get_object (&values[i])));
+       if (reject)
+         {
+           gimp_properties_free (n_properties, names, values);
+@@ -510,10 +512,11 @@
+   g_object_set_data (G_OBJECT (undo), "gimp-undo-publishing", GINT_TO_POINTER (1));
+   g_object_ref (image);
+   if (GIMP_IS_DRAWABLE_UNDO (undo) &&
+-      GIMP_IS_CLONE_LAYER (GIMP_ITEM_UNDO (undo)->item))
++      (GIMP_IS_CLONE_LAYER (GIMP_ITEM_UNDO (undo)->item) ||
++       GIMP_IS_FILTER_LAYER (GIMP_ITEM_UNDO (undo)->item)))
+     {
+       g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+-                           "Clone cache pixels do not have independent Undo");
++                           "Derived layer cache pixels do not have independent Undo");
+       g_object_set_data (G_OBJECT (undo), "gimp-undo-publishing", NULL);
+       g_object_unref (undo);
+       g_object_unref (image);
