@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Check bounded Surface ownership evidence, not whole-application leak freedom."""
-import argparse,hashlib,json,pathlib,re,tarfile
+import argparse,csv,hashlib,json,pathlib,re,tarfile
 HERE=pathlib.Path(__file__).resolve().parent
 ROOT=HERE.parents[2]
 def require(ok,msg):
@@ -34,9 +34,14 @@ def validate(data,native,mapping):
    require(duty.get('whole_hunk_status',duty.get('whole_hunk_checkpoint_status'))=='TODO','whole-hunk not closed')
    require('09.003/region-lifetime' in duty['successor_obligations'],'original lifetime obligation')
    require({'09.008','09.009','09.011','09.012'}<=set(duty['successor_obligations']),'remaining semantics retained')
+def validate_links(record):
+ for name in ('drawable-buffer-read-resolution','drawable-buffer-write','selection-mask'):
+  require('migration/contracts/'+name+'.json#09.003/region-lifetime' in record['commit_or_artifact'],'ancestor reverse cross-link: '+name)
 def main():
  p=argparse.ArgumentParser();p.add_argument('--check-source',action='store_true');a=p.parse_args()
  load=lambda n:json.loads((HERE/n).read_text())
+ progress=list(csv.DictReader((ROOT/'migration/progress.tsv').open(),delimiter='\t'))
+ validate_links(next(r for r in progress if r['id']=='09.003/region-lifetime'))
  data=load('results.json');mapping=load('ownership-map.json');validate(data,load('native.json'),mapping)
  for name,digest in load('artifact-sha256.json').items():require(hashlib.sha256((HERE/name).read_bytes()).hexdigest()==digest,'artifact changed: '+name)
  blob=(HERE/'legacy-surface.cpp.txt').read_bytes();require(hashlib.sha256(blob).hexdigest()==mapping['legacy_sha256'],'pinned original source')
