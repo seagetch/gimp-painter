@@ -1,0 +1,10 @@
+; Adapt /workspace/scratch/5b5281e79681/legacy-filter-positive-20261015/capture-builtin/fixtures/filter-brightness-contrast.xcf and brightness filter only; retains original application reader.
+(let* ((image (car (gimp-file-load RUN-NONINTERACTIVE "/workspace/scratch/5b5281e79681/legacy-filter-positive-20261015/capture-builtin/fixtures/filter-brightness-contrast.xcf" "/workspace/scratch/5b5281e79681/legacy-filter-positive-20261015/capture-builtin/fixtures/filter-brightness-contrast.xcf")))
+       (layers (gimp-image-get-layers image)))
+  (if (not (= (car layers) 2))
+      (error "wrong layer count"))
+  (if (not (string=? (car (gimp-item-get-name (vector-ref (cadr layers) 0)))
+                    "brightness filter"))
+      (error "wrong filter layer name"))
+  (gimp-message "INDEPENDENT_ORIGINAL_READER_REOPEN_PASS"))
+(gimp-quit 0)

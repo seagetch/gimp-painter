@@ -1,0 +1,232 @@
+diff --git a/app/core/gimpfilterlayer.cpp b/app/core/gimpfilterlayer.cpp
+index 9141c8c7..7be38b6e 100644
+--- a/app/core/gimpfilterlayer.cpp
++++ b/app/core/gimpfilterlayer.cpp
+@@ -769,6 +769,11 @@ void GLib::FilterLayer::end()
+   }
+ 
+   notify_filter_end();
++  if (g_getenv("GIMP_PAINTER_CAPTURE_FILTER")) {
++    gint n = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(g_object), "migration-capture-completions"));
++    g_object_set_data(G_OBJECT(g_object), "migration-capture-completions", GINT_TO_POINTER(n + 1));
++    g_print("FILTER_COMPLETE time_us=%" G_GINT64_FORMAT " name=%s\n", g_get_monotonic_time(), gimp_object_get_name(g_object));
++  }
+ }
+ 
+ gboolean GLib::FilterLayer::is_active()
+@@ -1207,3 +1212,11 @@ gimp_filter_layer_mark_as_loaded (GimpFilterLayer* layer)
+ {
+   FilterLayerInterface::cast(layer)->mark_as_loaded ();
+ }
++
++/* Read-only capture instrumentation, excluded from the reference app binary. */
++extern "C" gint gimp_filter_layer_capture_pending(GimpFilterLayer* layer)
++{
++  auto* impl = dynamic_cast<GLib::FilterLayer*>(FilterLayerInterface::cast(layer));
++  return (impl->is_waiting_to_be_processed() ? 1 : 0) |
++         (impl->waiting_for_runner ? 2 : 0);
++}
+diff --git a/app/tests/test-xcf.c b/app/tests/test-xcf.c
+index dc071cb1..9df56811 100644
+--- a/app/tests/test-xcf.c
++++ b/app/tests/test-xcf.c
+@@ -977,6 +977,183 @@ gimp_assert_mainimage (GimpImage *image,
+  *  - Make sure that the information put into a #GimpImage is not lost
+  *    when the #GimpImage is written to a file and then read again
+  **/
++/* Controlled inputs, executed against the pinned legacy application core.
++ * Instrumentation only: no reader, writer, or scheduler changes. */
++#include "core/gimpclonelayer.h"
++#include "core/gimpcontainer.h"
++#include "core/gimppickable.h"
++#include "core/gimpprojection.h"
++
++#include "core/gimpfilterlayer.h"
++#include "pdb/gimppdb.h"
++#include "pdb/gimpprocedure.h"
++#include "core/gimpparamspecs.h"
++extern gint gimp_filter_layer_capture_pending (GimpFilterLayer *layer);
++
++static gchar *
++capture_pixels_sha256 (GimpLayer *layer)
++{
++  GChecksum *sum=g_checksum_new(G_CHECKSUM_SHA256);
++  gint x,y;
++  guchar pixel[4];
++  gchar *result;
++  for(y=0;y<gimp_item_get_height(GIMP_ITEM(layer));y++)
++    for(x=0;x<gimp_item_get_width(GIMP_ITEM(layer));x++)
++      {
++        g_assert(gimp_pickable_get_pixel_at(GIMP_PICKABLE(layer),x,y,pixel));
++        g_checksum_update(sum,pixel,4);
++      }
++  result=g_strdup(g_checksum_get_string(sum));
++  g_checksum_free(sum);
++  return result;
++}
++
++static void
++capture_filter_fixture (Gimp *gimp)
++{
++  const gchar *directory = g_getenv ("GIMP_PAINTER_FIXTURE_DIR");
++  GimpImage *image = gimp_create_image (gimp,64,64,GIMP_RGB,FALSE);
++  GimpLayer *source = gimp_layer_new (image,24,20,GIMP_RGBA_IMAGE,"brightness source",1.0,GIMP_NORMAL_MODE);
++  GimpLayer *filter = gimp_filter_layer_new (image,64,64,"brightness filter",0.2,GIMP_DIFFERENCE_MODE);
++  GimpRGB color = {0.8,0.2,0.4,1.0};
++  GimpProcedure *procedure = gimp_pdb_lookup_procedure (gimp->pdb,"gimp-brightness-contrast");
++  GValueArray *defaults;
++  GArray *args;
++  GArray *read_args;
++  guint i;
++  gint64 deadline;
++  gint previous = -1;
++  gchar *filename;
++  GimpPlugInProcedure *save_proc;
++  GError *error = NULL;
++  GimpImage *loaded;
++  GimpLayer *loaded_filter;
++  guchar pixel[4] = {0};
++  gchar *cache_hash, *loaded_hash;
++  GimpLayer *loaded_source;
++  GimpImage *control_image;
++  GimpLayer *control_layer;
++  GValueArray *control_args, *control_result;
++  gchar *control_hash, *source_hash, *loaded_source_hash;
++
++  g_assert (procedure != NULL);
++  defaults = gimp_procedure_get_arguments (procedure);
++  g_assert_cmpuint (defaults->n_values, ==, 3);
++  args = g_array_sized_new(FALSE,TRUE,sizeof(GValue),defaults->n_values);
++  g_array_set_clear_func(args,(GDestroyNotify)g_value_unset);
++  g_array_set_size(args,defaults->n_values);
++  for(i=0;i<defaults->n_values;i++)
++    {
++      GValue *value = &g_array_index(args,GValue,i);
++      g_value_init(value,G_VALUE_TYPE(&defaults->values[i]));
++      g_value_copy(&defaults->values[i],value);
++    }
++  g_value_set_int(&g_array_index(args,GValue,1),25);
++  g_value_set_int(&g_array_index(args,GValue,2),-10);
++  g_value_array_free(defaults);
++  g_assert(gimp_image_add_layer(image,source,NULL,0,FALSE));
++  gimp_item_set_offset(GIMP_ITEM(source),8,7);
++  gimp_drawable_fill(GIMP_DRAWABLE(source),&color,NULL);
++  gimp_drawable_update(GIMP_DRAWABLE(source),0,0,24,20);
++  gimp_pickable_flush(GIMP_PICKABLE(gimp_image_get_projection(image)));
++  source_hash=capture_pixels_sha256(source);
++  g_print("LOWER_LAYER_SHA256 %s\n",source_hash);
++  control_image=gimp_create_image(gimp,64,64,GIMP_RGB,FALSE);
++  control_layer=gimp_layer_new_from_tiles(gimp_pickable_get_tiles(GIMP_PICKABLE(gimp_image_get_projection(image))),control_image,GIMP_RGBA_IMAGE,"control normal layer",1.0,GIMP_NORMAL_MODE);
++  g_assert(gimp_image_add_layer(control_image,control_layer,NULL,0,FALSE));
++  control_args=gimp_procedure_get_arguments(procedure);
++  gimp_value_set_drawable(&control_args->values[0],GIMP_DRAWABLE(control_layer));
++  g_value_set_int(&control_args->values[1],25);
++  g_value_set_int(&control_args->values[2],-10);
++  control_result=gimp_procedure_execute(procedure,gimp,gimp_get_user_context(gimp),NULL,control_args,&error);
++  g_assert_no_error(error);
++  g_assert(control_result != NULL);
++  g_assert_cmpint(g_value_get_enum(&control_result->values[0]),==,GIMP_PDB_SUCCESS);
++  g_value_array_free(control_args); g_value_array_free(control_result);
++  control_hash=capture_pixels_sha256(control_layer);
++  g_print("CONTROL_ORIGINAL_PDB_CACHE_SHA256 %s\n",control_hash);
++  g_assert(gimp_image_add_layer(image,filter,NULL,0,FALSE));
++  gimp_filter_layer_set_procedure(GIMP_FILTER_LAYER(filter),"gimp-brightness-contrast",args);
++  g_array_unref(args);
++  gimp_drawable_update(GIMP_DRAWABLE(source),0,0,24,20);
++  gimp_pickable_flush(GIMP_PICKABLE(gimp_image_get_projection(image)));
++  deadline = g_get_monotonic_time() + 2 * G_USEC_PER_SEC;
++  while (g_get_monotonic_time() < deadline)
++    {
++      gint pending;
++      while (g_main_context_iteration(NULL,FALSE)) {}
++      gimp_pickable_flush(GIMP_PICKABLE(gimp_image_get_projection(image)));
++      g_assert(gimp_pickable_get_pixel_at(GIMP_PICKABLE(gimp_image_get_projection(image)),12,12,pixel));
++      pending = gimp_filter_layer_capture_pending(GIMP_FILTER_LAYER(filter));
++      if (pending != previous)
++        {
++          g_print("FILTER_STATE time_us=%" G_GINT64_FORMAT " pending=%d completions=%d\n",
++                   g_get_monotonic_time(),pending,
++                   GPOINTER_TO_INT(g_object_get_data(G_OBJECT(filter),"migration-capture-completions")));
++          previous=pending;
++        }
++      if (!pending && g_object_get_data(G_OBJECT(filter),"migration-capture-completions"))
++        break;
++      g_usleep(1000);
++    }
++  g_print("FILTER_SAVE_STATE pending=%d completions=%d (not an idle assertion)\n",
++          gimp_filter_layer_capture_pending(GIMP_FILTER_LAYER(filter)),
++          GPOINTER_TO_INT(g_object_get_data(G_OBJECT(filter),"migration-capture-completions")));
++  /* The original built-in LUT path has no progress-end callback. */
++  g_assert(gimp_pickable_get_pixel_at(GIMP_PICKABLE(filter),12,12,pixel));
++  g_print("FILTER_CACHE_PIXEL x=12 y=12 rgba=%u,%u,%u,%u\n",pixel[0],pixel[1],pixel[2],pixel[3]);
++  cache_hash = capture_pixels_sha256(filter);
++  g_assert_cmpstr(cache_hash,==,control_hash);
++  g_free(control_hash);
++  g_print("FILTER_CACHE_SHA256 %s\n",cache_hash);
++  filename=g_build_filename(directory,"filter-brightness-contrast.xcf",NULL);
++  save_proc=file_procedure_find(gimp->plug_in_manager->save_procs,filename,&error);
++  g_assert_no_error(error);
++  g_assert_cmpint(file_save(gimp,image,NULL,filename,save_proc,GIMP_RUN_NONINTERACTIVE,FALSE,FALSE,FALSE,&error),==,GIMP_PDB_SUCCESS);
++  g_assert_no_error(error);
++  loaded=gimp_test_load_image(gimp,filename);
++  g_assert(loaded != NULL);
++  loaded_filter=GIMP_LAYER(gimp_container_get_child_by_index(gimp_image_get_layers(loaded),0));
++  g_assert(GIMP_IS_FILTER_LAYER(loaded_filter));
++  g_assert_cmpstr(gimp_filter_layer_get_procedure(GIMP_FILTER_LAYER(loaded_filter)),==,"gimp-brightness-contrast");
++  read_args=gimp_filter_layer_get_procedure_args(GIMP_FILTER_LAYER(loaded_filter));
++  g_assert_cmpuint(read_args->len,==,3);
++  g_assert_cmpint(g_value_get_int(&g_array_index(read_args,GValue,1)),==,25);
++  g_assert_cmpint(g_value_get_int(&g_array_index(read_args,GValue,2)),==,-10);
++  g_assert_cmpint(gimp_image_get_width(loaded),==,64);
++  g_assert_cmpint(gimp_image_get_height(loaded),==,64);
++  g_assert_cmpint(gimp_item_get_offset_x(GIMP_ITEM(loaded_filter)),==,0);
++  g_assert_cmpint(gimp_item_get_offset_y(GIMP_ITEM(loaded_filter)),==,0);
++  g_assert_cmpint(gimp_item_get_width(GIMP_ITEM(loaded_filter)),==,64);
++  g_assert_cmpint(gimp_item_get_height(GIMP_ITEM(loaded_filter)),==,64);
++  g_assert_cmpstr(gimp_object_get_name(loaded_filter),==,"brightness filter");
++  g_assert_cmpint(gimp_layer_get_mode(loaded_filter),==,GIMP_DIFFERENCE_MODE);
++  g_assert_cmpfloat(gimp_layer_get_opacity(loaded_filter),==,51.0/255.0);
++  loaded_source=GIMP_LAYER(gimp_container_get_child_by_index(gimp_image_get_layers(loaded),1));
++  g_assert(loaded_source != NULL);
++  g_assert_cmpint(gimp_container_get_n_children(gimp_image_get_layers(loaded)),==,2);
++  g_assert_cmpstr(gimp_object_get_name(loaded_source),==,"brightness source");
++  g_assert_cmpint(gimp_item_get_width(GIMP_ITEM(loaded_source)),==,24);
++  g_assert_cmpint(gimp_item_get_height(GIMP_ITEM(loaded_source)),==,20);
++  g_assert_cmpint(gimp_item_get_offset_x(GIMP_ITEM(loaded_source)),==,8);
++  g_assert_cmpint(gimp_item_get_offset_y(GIMP_ITEM(loaded_source)),==,7);
++  g_assert(gimp_pickable_get_pixel_at(GIMP_PICKABLE(loaded_source),0,0,pixel));
++  g_assert_cmpint(pixel[0],==,204); g_assert_cmpint(pixel[1],==,51);
++  g_assert_cmpint(pixel[2],==,102); g_assert_cmpint(pixel[3],==,255);
++  loaded_source_hash=capture_pixels_sha256(loaded_source);
++  g_assert_cmpstr(source_hash,==,loaded_source_hash);
++  g_print("REOPEN_LOWER_LAYER_SHA256 %s\n",loaded_source_hash);
++  g_free(source_hash); g_free(loaded_source_hash);
++  loaded_hash=capture_pixels_sha256(loaded_filter);
++  g_print("FILTER_REOPEN_CACHE_SHA256 %s\n",loaded_hash);
++  g_assert_cmpstr(cache_hash,==,loaded_hash);
++  g_free(cache_hash); g_free(loaded_hash);
++  g_print("LEGACY_FILTER_CAPTURE_COMPLETE procedure=gimp-brightness-contrast args=3 brightness=25 contrast=-10 cache=identical source=verified\n");
++  /* read_args is a legacy shallow value copy; these three values are scalar. */
++  g_array_unref(read_args);
++  g_free(filename);
++}
++
+ int
+ main (int    argc,
+       char **argv)
+@@ -986,6 +1163,15 @@ main (int    argc,
+ 
+   g_thread_init (NULL);
+   g_type_init ();
++  if (g_getenv ("GIMP_PAINTER_FIXTURE_DIR"))
++    {
++      g_mkdir_with_parents (g_getenv ("GIMP_PAINTER_FIXTURE_DIR"), 0700);
++      gimp = gimp_init_for_testing ();
++      if (g_getenv ("GIMP_PAINTER_CAPTURE_FILTER"))
++        capture_filter_fixture (gimp);
++      g_print ("LEGACY_BUILTIN_FILTER_CAPTURE_COMPLETE\n");
++      return 0;
++    }
+   g_test_init (&argc, &argv, NULL);
+ 
+   gimp_test_utils_set_gimp2_directory ("GIMP_TESTING_ABS_TOP_SRCDIR",

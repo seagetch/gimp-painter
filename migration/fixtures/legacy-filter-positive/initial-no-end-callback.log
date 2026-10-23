@@ -1,0 +1,32 @@
+
+(process:411): GLib-GObject-CRITICAL **: 09:12:26.980: g_value_set_object: assertion 'G_VALUE_HOLDS_OBJECT (value)' failed
+
+(process:411): GLib-GObject-CRITICAL **: 09:12:26.981: g_value_set_object: assertion 'G_VALUE_HOLDS_OBJECT (value)' failed
+Failed to parse tag cache: No such file or directory
+GIMP-Error: Plug-in "pagecurl"
+attempted to install procedure "plug-in-pagecurl" with invalid return-value name "Curl Layer".
+This is not allowed.
+
+GIMP-Error: Plug-in "pagecurl"
+(/workspace/scratch/5b5281e79681/legacy-filter-positive-20261015/build/prefix/lib/gimp/2.0/plug-ins/pagecurl)
+attempted to register the menu item "<Image>/Filters/Distorts" for the procedure "plug-in-pagecurl".
+It has however not installed that procedure.  This is not allowed.
+
+gimp_plug_in_manager_call_run_full
+gimp_plug_in_get_proc_frame=0x56476f6546a0:  set ignore_undos=0
+create instance type=56476f753030
+FilterLayer::class_init
+GimpFilterLayer: Set properties_base to 18
+FilterLayer::iface_init<GimpPickableInterface>
+FilterLayer::FilterLayer
+new_instance::group=0x56476f668130
+FilterLayer::filter_reset
+gimp_image_undo_push: ignore GimpDrawableUndo to uneditable layer
+--->brightness filter: start runner=1
+FILTER_STATE time_us=4844745766 pending=1 completions=0
+FILTER_SAVE_STATE pending=1 completions=0 (not an idle assertion)
+**
+ERROR:test-xcf.c:1221:capture_filter_fixture: assertion failed: (g_object_get_data(G_OBJECT(filter),"migration-capture-completions") != NULL)
+Bail out! ERROR:test-xcf.c:1221:capture_filter_fixture: assertion failed: (g_object_get_data(G_OBJECT(filter),"migration-capture-completions") != NULL)
+
+(script-fu:597): LibGimpBase-WARNING **: 09:12:30.251: script-fu: gimp_wire_read(): error

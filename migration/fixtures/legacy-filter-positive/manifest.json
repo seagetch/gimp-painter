@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "source_commit": "afa43fae3e920210146abed514f136fd49f671b5",
+  "origin": "Controlled input executed by original legacy application/core; built-in PDB control, writer, reader and independent uninstrumented reader",
+  "build_report": "../../baseline/legacy/replay-20261015/report.json",
+  "build_report_sha256": "20a8f938fcae097fe15776e43e1d2aebcd75215357f4478a4a137bb09b6c127d",
+  "capture_binary_sha256": "032c18f61e4180d1a28f0d9fd97996058206bf632d6ea2e9d0e27e191b5905a5",
+  "original_binary_sha256": "85bc4733504509eb7b5a215cd0d19f6b6af5c4a23cd6112987de92acf3d230a1",
+  "capture_exit_code": 0,
+  "independent_reopen_exit_code": 0,
+  "original_edge_negative_recheck_exit_code": 139,
+  "scheduler_acceptance_passed": false,
+  "files": {
+    "README.md": {
+      "bytes": 4216,
+      "sha256": "40efc35a264fad39094c4401e13a63fb27ce49c2159fe3b4084fb47155a51b1b"
+    },
+    "build-harness-record.sh": {
+      "bytes": 1253,
+      "sha256": "a318903ea8c7171280dda2f6595922fae2ea1ffedc17157fe068cf813ed79124"
+    },
+    "capture-instrumentation.patch": {
+      "bytes": 11348,
+      "sha256": "20143ab0c51e1ab4f5f40a15d84e2d4540f103a079eb11d1bc1d18010c19c260"
+    },
+    "capture.log": {
+      "bytes": 5033,
+      "sha256": "38761aa7a64fae5af94e3c4912b6f090b989a80033bd8fcf5e2ce9550fcbffcc"
+    },
+    "expectations.json": {
+      "bytes": 1305,
+      "sha256": "49c30ceefa543ed553caf5edfd64a51eba9bb036ef3bb077c65aa6164701b424"
+    },
+    "filter-brightness-contrast.xcf": {
+      "bytes": 1280,
+      "sha256": "95929d73a5eb18f5a16c8879b1d36f5f9bfaf2aeeabc23fa3325f149e8712704"
+    },
+    "independent-reopen.log": {
+      "bytes": 14842,
+      "sha256": "441c87d817c459e2019f6ca06d4e5c8ac20ec66a2bbaa4bfaedc7966a55898ab"
+    },
+    "independent-reopen.scm": {
+      "bytes": 841,
+      "sha256": "dc0d70c07699375e5f101554f331a44314483da882e631b7c85872384fcd2108"
+    },
+    "initial-no-end-callback.log": {
+      "bytes": 1706,
+      "sha256": "828d2401e24aaf5e33f54fb053f643265e4300f37b5dad45468e15898351b6d1"
+    },
+    "original-edge-negative-recheck.log": {
+      "bytes": 12077,
+      "sha256": "001768519a5cc8cfa1bf0bbec87c01093ad4248ed928bc0c3207ed05ed20352c"
+    },
+    "original-edge-negative-recheck.scm": {
+      "bytes": 274,
+      "sha256": "5741acb49afefffd6adbdffd776cd55f26ba57dfc34acc270ffb7cab7c59a517"
+    },
+    "run-independent-reopens-record.sh": {
+      "bytes": 1224,
+      "sha256": "069d345cd0e46b6e647100884711b890962a4ff83717749e02adef149025d8fe"
+    }
+  }
+}
