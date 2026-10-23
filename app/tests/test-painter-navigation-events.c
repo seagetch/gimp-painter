@@ -2814,12 +2814,17 @@ device_image_origin (void)
 #include "test-painter-navigation-selection-geometry.inc"
 #include "test-painter-navigation-signed-geometry.inc"
 #include "test-painter-navigation-grid-precise.inc"
+#include "test-painter-navigation-reset-action.inc"
 
 int main(int argc,char **argv)
 {
   gint result;
   g_test_init(&argc,&argv,NULL);if(!gtk_init_check(&argc,&argv))return GIMP_EXIT_TEST_SKIPPED;
   gimp_test_utils_setup_menus_path();gimp=gimp_init_for_gui_testing(TRUE);
+  for(guint f=0;f<4;f++)
+    {gchar*path=g_strdup_printf("/navigation-events/reset-action/state-%u",f);g_test_add_data_func(path,GUINT_TO_POINTER(f),reset_action_window);g_free(path);}
+  g_test_add_data_func("/navigation-events/reset-action/reentry-default",GUINT_TO_POINTER(0),reset_action_reentry);
+  g_test_add_data_func("/navigation-events/reset-action/reentry-custom",GUINT_TO_POINTER(1),reset_action_reentry);
   g_test_add_func("/navigation-events/legacy/inherited-fractional-pan",inherited_pan_fractional_origin);
   g_test_add_func("/navigation-events/legacy/oncanvas-render",inherited_pan_render);
   g_test_add_func("/navigation-events/legacy/transitions",inherited_pan_transitions);

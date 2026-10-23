@@ -1,0 +1,33 @@
+{
+  "scope": "Retrospective dependency audit, not a before-build asset seal. Existing source-bound native fixture asserts each literal SHA256 before parsing; no runtime receipt modified.",
+  "source": "app/tests/test-painter-navigation-events.c",
+  "assets": [
+    {
+      "path": "migration/fixtures/legacy-rotation-operations/gui-captures/rotation.tsv",
+      "bytes": 48915,
+      "sha256": "bfc8b4ab8f532f5b8e0d97f2dd7cace9eec1aefe7a4cd532dbf4e4162cd9d46a",
+      "native_read_functions": [
+        "retained_old_starts",
+        "retained_ctrl_mid_drag"
+      ],
+      "registered_consumers": [
+        "/navigation-events/start/retained-old",
+        "/navigation-events/rotation/ctrl-mid-drag"
+      ],
+      "historical_scope": "retained old GUI trace; historical teardown limitation preserved"
+    },
+    {
+      "path": "migration/fixtures/legacy-zoom/zoom.tsv",
+      "bytes": 130144,
+      "sha256": "5fcf9b0f0c66b707a6a57de8e617c49ed9d32dd21750bf1670d2e46ce711a21e",
+      "native_read_functions": [
+        "drag_check_retained_zoom"
+      ],
+      "registered_consumers": [
+        "/navigation-events/drag/radial-transformed",
+        "/navigation-events/drag/radial-clamp"
+      ],
+      "historical_scope": "retained old-function arithmetic output; not old GUI"
+    }
+  ]
+}

@@ -1029,7 +1029,7 @@
 | 25.009/radial-default | [x] | 旧Ctrl+middleの距離300 radial zoomを接続する | 25.001/start-relative-route | 開始scale最大値・整数中心・固定anchorを保持し2400不変旧関数演算に一致、6 pure通常/ASan/UBSan合格。明示custom zoomは現行設定を保持。実display clamp/pan/deviceは未完了 |
 2026-10-21 原25.009完了追記：196件の元source義務と削除265行を全件照合し、通常97件・ordinary ASan/UBSan97件、認証1080×1920のoncanvas実描画を検証した。上の子行に残る「原25.009未完」は各過去checkpoint時点の制限であり、証跡を遡って書換えない。全移植・実tablet・他OSの完了は意味しない（`migration/tests/navigation-item-geometry/`）。
 
-| 25.010 | [ ] | 回転 reset action を接続する | 25.009 | 状態と UI 表示が一致 |
+| 25.010 | [x] | 回転 reset action を接続する | 25.009 | 状態と UI 表示が一致 |
 | 25.011 | [ ] | modifier を含む操作試験を実行する | 25.010 | 記録した全キー遷移の期待角に一致 |
 | 25.011/native-event-route | [x] | 実DisplayShellへ回転/zoom修飾キーeventを通して検証する | 25.001/start-relative-route, 25.009/radial-default | Native Xfce上の4通常/4 focused sanitizerで反転・Ctrl解除・任意button・radial zoom・picker grab回収を検証。synthetic GDKであり実tablet/全focus/panは別gate |
 | 25.012 | [ ] | ペン・マウスの両方を試験する | 25.011 | 入力デバイスで snap 条件が変わらない |

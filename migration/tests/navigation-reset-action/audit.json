@@ -1,0 +1,152 @@
+{
+  "task": "25.010",
+  "criterion": "\u72b6\u614b\u3068 UI \u8868\u793a\u304c\u4e00\u81f4",
+  "dependency": "25.009",
+  "baseline": "0f71f055a5fc3bb2237a56303738a41d5d503663",
+  "old_revision": "afa43fae3e920210146abed514f136fd49f671b5",
+  "rows": [
+    {
+      "work_id": "legacy-d645e4989b44a0075bb0",
+      "source_kind": "hunk",
+      "source_id": "01.002/000626",
+      "path": "app/display/gimpdisplayshell-rotate.c",
+      "source_blob": "25081806ecd255b3e54277cefc135ec08aea6488",
+      "source_range": "-0,0 -> 1,233",
+      "source_sha256": "8dc22afc3f823ac33f2fb0bd73950b5ef3b5a34bc8a135c91668b87def01d564",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "25.010",
+      "action": "\u56de\u8ee2 reset action \u3092\u63a5\u7d9a\u3059\u308b",
+      "acceptance": "\u72b6\u614b\u3068 UI \u8868\u793a\u304c\u4e00\u81f4",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-21692d1ad089be9900df",
+          "task": "25.001"
+        },
+        {
+          "work_id": "legacy-3f7413764bc9f81475d9",
+          "task": "25.002"
+        },
+        {
+          "work_id": "legacy-a6758cc1cf9bc6bed9e9",
+          "task": "25.003"
+        },
+        {
+          "work_id": "legacy-363c8754b1e19f1e3c94",
+          "task": "25.004"
+        },
+        {
+          "work_id": "legacy-4e099aa1119c3e38af1d",
+          "task": "25.005"
+        },
+        {
+          "work_id": "legacy-674a83adb3bd18098f86",
+          "task": "25.006"
+        },
+        {
+          "work_id": "legacy-da6d057baca0b3f79723",
+          "task": "25.007"
+        },
+        {
+          "work_id": "legacy-8e4b322d8ca360906b26",
+          "task": "25.008"
+        },
+        {
+          "work_id": "legacy-0c022b73ab59eab08e94",
+          "task": "25.009"
+        },
+        {
+          "work_id": "legacy-251a83200cb826e99f8a",
+          "task": "25.011"
+        },
+        {
+          "work_id": "legacy-26236492c065f8be9cec",
+          "task": "25.012"
+        },
+        {
+          "work_id": "legacy-4aaaf2351a49bb50e3fc",
+          "task": "26.014"
+        }
+      ],
+      "full_payload": "pinned-hunks/01.002-000626.diff"
+    },
+    {
+      "work_id": "legacy-82e012b386e3ef2c1af5",
+      "source_kind": "hunk",
+      "source_id": "01.002/000627",
+      "path": "app/display/gimpdisplayshell-rotate.h",
+      "source_blob": "44ea702433d22c4410b34d5e44e818799cddabb2",
+      "source_range": "-0,0 -> 1,69",
+      "source_sha256": "46bfe5a4122b384dd2ade9b4e2f843368e171d955518c05755d7594fd00e651a",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "25.010",
+      "action": "\u56de\u8ee2 reset action \u3092\u63a5\u7d9a\u3059\u308b",
+      "acceptance": "\u72b6\u614b\u3068 UI \u8868\u793a\u304c\u4e00\u81f4",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-27244318aa5972a568f5",
+          "task": "25.001"
+        },
+        {
+          "work_id": "legacy-6c559a01116ca2f7bbe9",
+          "task": "25.002"
+        },
+        {
+          "work_id": "legacy-038d4039f5d751af38c6",
+          "task": "25.003"
+        },
+        {
+          "work_id": "legacy-c1f7841d2fbf7ea51e4b",
+          "task": "25.004"
+        },
+        {
+          "work_id": "legacy-f4db391e887f7a25e53b",
+          "task": "25.005"
+        },
+        {
+          "work_id": "legacy-1809f73a87f117baf140",
+          "task": "25.006"
+        },
+        {
+          "work_id": "legacy-ee24c404308d05168053",
+          "task": "25.007"
+        },
+        {
+          "work_id": "legacy-b4e7cfab13d4418fed59",
+          "task": "25.008"
+        },
+        {
+          "work_id": "legacy-4afb05daee2602e55987",
+          "task": "25.009"
+        },
+        {
+          "work_id": "legacy-7a8f46dd1f4f8ba8a55f",
+          "task": "25.011"
+        },
+        {
+          "work_id": "legacy-6a9e87b1e15065829854",
+          "task": "25.012"
+        },
+        {
+          "work_id": "legacy-9af42bdb86bb205f3c80",
+          "task": "26.014"
+        }
+      ],
+      "full_payload": "pinned-hunks/01.002-000627.diff"
+    }
+  ],
+  "source_resolution": "Pinned rotate.c/.h hunks add old transform helpers, not a named reset action. Native registered view-rotate-reset -> absolute callback -> public rotate_to(0) -> rotated signal/matrix/statusbar is the current route. No historical reset runtime or old pixel-parity claim; other whole-hunk owners retained."
+}
