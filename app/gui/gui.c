@@ -44,6 +44,8 @@
 #include "display/gimpdisplay.h"
 #include "display/gimpdisplay-foreach.h"
 #include "display/gimpdisplayshell.h"
+#include "display/gimpimagewindow.h"
+#include "display/gimppaintercanvasui.h"
 #include "display/gimpstatusbar.h"
 
 #include "tools/gimp-tools.h"
@@ -587,6 +589,9 @@ gui_restore_after_callback (Gimp               *gimp,
   g_signal_connect_object (gui_config, "notify::single-window-mode",
                            G_CALLBACK (gui_single_window_mode_notify),
                            ui_configurer, 0);
+  g_signal_connect_object (gui_config, "notify::painter-canvas-ui",
+                           G_CALLBACK (gui_single_window_mode_notify),
+                           ui_configurer, 0);
   g_signal_connect (image_ui_manager, "show-tooltip",
                     G_CALLBACK (gui_menu_show_tooltip),
                     gimp);
@@ -613,6 +618,9 @@ gui_restore_after_callback (Gimp               *gimp,
                                                    G_OBJECT (initial_monitor)));
 
       shell = gimp_display_get_shell (display);
+      if (gimp->config->painter_canvas_ui && ! gui_config->single_window_mode)
+        gimp_image_window_set_painter_toolbar (gimp_display_shell_get_window (shell),
+                                               TRUE);
 
 #ifdef G_OS_WIN32
       themes_set_title_bar (gimp);

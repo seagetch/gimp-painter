@@ -39,5 +39,12 @@ void               gimp_image_window_get_right_docks_geometry (GimpImageWindow *
                                                               gint            *position,
                                                               gint            *span,
                                                               gboolean        *position_set);
+/* The toolbar's owned shell remains an empty session placeholder.  Actions
+ * route separately to a live image in the user context. */
+gboolean           gimp_image_window_is_painter_toolbar  (GimpImageWindow  *window);
+void               gimp_image_window_set_painter_toolbar (GimpImageWindow  *window,
+                                                           gboolean          toolbar);
+GimpDisplay      * gimp_image_window_get_action_display   (GimpImageWindow  *window);
+
 G_END_DECLS
 #endif

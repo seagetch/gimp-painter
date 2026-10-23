@@ -816,9 +816,16 @@ view_painter_canvas_ui_cmd_callback (GimpAction *action,
                                     gpointer    data)
 {
   GimpDisplayShell *shell;
+  gboolean         active;
+
   return_if_no_shell (shell, data);
-  g_object_set (shell->display->gimp->config, "painter-canvas-ui",
-                g_variant_get_boolean (value), NULL);
+
+  active = g_variant_get_boolean (value);
+  /* Updating the action's checked state can invoke this callback while a
+   * window is being constructed. Do not turn that synchronization into a
+   * redundant topology conversion. */
+  if (active != shell->display->gimp->config->painter_canvas_ui)
+    g_object_set (shell->display->gimp->config, "painter-canvas-ui", active, NULL);
   /* Native reconciliation reads current intent after synchronous notify
    * callbacks.  Replaying the original shell/value here would be stale. */
 }

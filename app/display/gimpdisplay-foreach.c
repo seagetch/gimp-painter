@@ -33,6 +33,7 @@
 #include "gimpdisplayshell.h"
 #include "gimpdisplayshell-cursor.h"
 #include "gimpimagewindow.h"
+#include "gimppaintercanvasui.h"
 
 
 gboolean
@@ -334,6 +335,12 @@ gimp_displays_accept_focus_events (Gimp *gimp)
   windows = gimp_get_image_windows (gimp);
   for (GList *iter = windows; iter; iter = iter->next)
     {
+      /* A toolbar host deliberately never draws its owned placeholder.
+       * It must not keep real image windows in the construction-time focus
+       * embargo (which also suppresses their keyboard accelerators). */
+      if (gimp_image_window_is_painter_toolbar (iter->data))
+        continue;
+
       GimpDisplayShell *shell = gimp_image_window_get_active_shell (iter->data);
 
       if (shell && ! gimp_display_shell_is_drawn (shell))
