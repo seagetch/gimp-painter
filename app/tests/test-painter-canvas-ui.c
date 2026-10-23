@@ -146,6 +146,57 @@ static void popup_repeat_and_owner_close(void) {
   gtk_button_clicked(GTK_BUTTON(button));g_assert_cmpint(gimp_image_get_n_layers(image),==,1);
   g_object_unref(button);g_object_unref(p);g_object_unref(image);drain();
 }
+static void destroy_on_popup_closed(GimpPainterLayerTiles *w,gpointer data) {
+  guint *calls=data;
+  ++*calls;
+  gtk_widget_destroy(GTK_WIDGET(w));
+}
+static void popup_replacement_owner_close(gboolean creation) {
+  GimpImage *image=new_image();layer(image,NULL,"Layer");GtkWidget *w=tiles(image);
+  gpointer weak=w;
+  guint calls=0;
+  g_object_ref(w);
+  g_object_add_weak_pointer(G_OBJECT(w),&weak);
+  g_assert_nonnull(gimp_painter_layer_tiles_popup(GIMP_PAINTER_LAYER_TILES(w),creation));
+  gulong handler=g_signal_connect(w,"popup-closed",G_CALLBACK(destroy_on_popup_closed),&calls);
+  /* Closing the first popup destroys its owner before the replacement resumes. */
+  g_assert_null(gimp_painter_layer_tiles_popup(GIMP_PAINTER_LAYER_TILES(w),creation));
+  g_assert_cmpuint(calls,==,1);
+  g_assert_null(gimp_image_editor_get_image(GIMP_IMAGE_EDITOR(w)));
+  g_assert_false(gimp_painter_layer_tiles_long_press_pending(GIMP_PAINTER_LAYER_TILES(w)));
+  g_assert_cmpint(gimp_image_get_n_layers(image),==,1);
+  /* GtkWidget destruction may already have disconnected this handler. */
+  if (g_signal_handler_is_connected(w,handler))
+    g_signal_handler_disconnect(w,handler);
+  g_object_unref(w);drain();g_assert_null(weak);
+  g_object_unref(image);
+}
+static void popup_properties_reentrant_owner_close(void) { popup_replacement_owner_close(FALSE); }
+static void popup_creation_reentrant_owner_close(void) { popup_replacement_owner_close(TRUE); }
+typedef struct { GimpImage *image; guint calls; } PopupImageSwitch;
+static void switch_on_popup_closed(GimpPainterLayerTiles *w,gpointer data) {
+  PopupImageSwitch *switch_image=data;
+  ++switch_image->calls;
+  gimp_painter_layer_tiles_set_image(w,switch_image->image);
+}
+static void popup_replacement_image_switch(gboolean creation) {
+  GimpImage *a=new_image(),*b=new_image();layer(a,NULL,"Old");layer(b,NULL,"New");
+  GtkWidget *w=tiles(a);
+  PopupImageSwitch switch_image={b,0};
+  g_assert_nonnull(gimp_painter_layer_tiles_popup(GIMP_PAINTER_LAYER_TILES(w),creation));
+  gulong handler=g_signal_connect(w,"popup-closed",G_CALLBACK(switch_on_popup_closed),&switch_image);
+  g_assert_null(gimp_painter_layer_tiles_popup(GIMP_PAINTER_LAYER_TILES(w),creation));
+  g_assert_cmpuint(switch_image.calls,==,1);
+  g_assert_true(gimp_image_editor_get_image(GIMP_IMAGE_EDITOR(w))==b);
+  g_assert_false(gimp_painter_layer_tiles_long_press_pending(GIMP_PAINTER_LAYER_TILES(w)));
+  g_assert_cmpint(gimp_image_get_n_layers(a),==,1);
+  g_assert_cmpint(gimp_image_get_n_layers(b),==,1);
+  g_signal_handler_disconnect(w,handler);
+  g_assert_nonnull(gimp_painter_layer_tiles_popup(GIMP_PAINTER_LAYER_TILES(w),creation));
+  close_tiles(w);g_object_unref(a);g_object_unref(b);
+}
+static void popup_properties_reentrant_image_switch(void) { popup_replacement_image_switch(FALSE); }
+static void popup_creation_reentrant_image_switch(void) { popup_replacement_image_switch(TRUE); }
 static void popup_controls_and_clone(void) {
   GimpImage *image=new_image();GimpLayer *a=layer(image,NULL,"A");GtkWidget *w=tiles(image);
   GtkWidget *p=gimp_painter_layer_tiles_popup(GIMP_PAINTER_LAYER_TILES(w),FALSE);
@@ -383,6 +434,7 @@ int main(int argc,char **argv) {
   g_test_add_data_func("/painter-canvas-ui/" #f, &test_case, run_canvas_case); } while (0)
   if(g_getenv("PAINTER_CANVAS_DEMO")) { ADD(demo); } else {
   ADD(channel_preview_components);ADD(selection_and_visibility);ADD(group_move_and_undo);ADD(image_switch_disconnect);ADD(long_press_cancel_destroy);ADD(preview_pending_destroy);ADD(popup_repeat_and_owner_close);
+  ADD(popup_properties_reentrant_owner_close);ADD(popup_creation_reentrant_owner_close);ADD(popup_properties_reentrant_image_switch);ADD(popup_creation_reentrant_image_switch);
   ADD(popup_controls_and_clone);ADD(mask_controls);ADD(long_press_once);ADD(reentrant_visibility_close);ADD(multiple_reorder_one_undo);ADD(hide_cancels_grab);
   ADD(overlay_input_and_restore);ADD(dock_restore_and_parent_close);ADD(overlay_tools_and_colors);ADD(overlay_tool_group);ADD(multiple_canvas_context_and_dock_transfer);ADD(overlay_owner_destroy_callbacks);
   }

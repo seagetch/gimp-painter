@@ -668,8 +668,11 @@ void Tiles::action (const std::string& command, GObject *target) {
   }
 }
 GtkWidget *Tiles::show_popup (bool creation) {
-  if (!img ()) return nullptr;
+  if (closed || !img () || !ctx ()) return nullptr;
+  const auto image_epoch = image_generation;
   close_popup ();
+  /* popup-closed handlers may destroy the owner or bind a different image. */
+  if (closed || !img () || !ctx () || image_generation != image_epoch) return nullptr;
   popup = ObjectRef<GObject>::sink (G_OBJECT (gtk_popover_new (creation ? add : GTK_WIDGET (owner))));
   auto *widget=GTK_WIDGET (popup.get ());
   gtk_widget_set_name (widget, creation ? "painter-layer-create-popup" : "painter-layer-properties-popup");

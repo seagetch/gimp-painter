@@ -1,0 +1,238 @@
+{
+  "publication_parent": "f50b9e7f9c5e0681aa3551e09d7ccdd1db5ef0a8",
+  "scope": "Normal GTK3 popup reentry regression; no sanitizer acceptance",
+  "fix": "Revalidate closed state, image/context and image generation after synchronous popup-closed callbacks",
+  "regression_cleanup_correction": "GtkWidget destruction can disconnect the observer; disconnect only if still connected, without weakening lifecycle assertions",
+  "source_sha256": {
+    "app/widgets/gimppainterlayertiles.cpp": "e7952ab29456a5e9afb793b4259008362433cf0a866d0adda96f6e75b0117e62",
+    "app/tests/test-painter-canvas-ui.c": "1432c953179cbeba7b8778fd57b41b739bba1a8ccd550ac81d472386499a3a38"
+  },
+  "post_test_binary_sha256": "b996707888a676e8ae0a85989b61a5f7d737c4c6b1c75be5996b95022e522cfa",
+  "binary_hash_note": "Post-test hash recorded after ordinary incremental Meson rebuild. Runner pre-test binary hash is not used as post-build evidence.",
+  "corrected_individual_passes": 4,
+  "corrected_full_canvas_passes": 23,
+  "transport": {
+    "authenticated_client_exit": 0,
+    "unauthenticated_client_exit": 1,
+    "server_state": "stopped; temporary authentication files removed",
+    "server_exit": 0,
+    "start_utc": "2026-10-11T13:42:35.661972+00:00",
+    "end_utc": "2026-10-11T13:44:19.276175+00:00"
+  },
+  "records": [
+    {
+      "phase": "red",
+      "log": "red-popup_creation_reentrant_image_switch.json",
+      "name": "gimp:app / painter-canvas-ui",
+      "result": "FAIL",
+      "returncode": -6,
+      "duration": 4.989877462387085,
+      "tap": [
+        "not ok /painter-canvas-ui/popup_creation_reentrant_image_switch - ERROR:../source/app/tests/test-painter-canvas-ui.c:186:popup_replacement_image_switch: 'gimp_painter_layer_tiles_popup(GIMP_PAINTER_LAYER_TILES(w),creation)' should be NULL",
+        "Bail out!"
+      ]
+    },
+    {
+      "phase": "red",
+      "log": "red-popup_creation_reentrant_owner_close.json",
+      "name": "gimp:app / painter-canvas-ui",
+      "result": "FAIL",
+      "returncode": -11,
+      "duration": 4.81558895111084,
+      "tap": []
+    },
+    {
+      "phase": "red",
+      "log": "red-popup_properties_reentrant_image_switch.json",
+      "name": "gimp:app / painter-canvas-ui",
+      "result": "FAIL",
+      "returncode": -6,
+      "duration": 3.6569128036499023,
+      "tap": [
+        "not ok /painter-canvas-ui/popup_properties_reentrant_image_switch - ERROR:../source/app/tests/test-painter-canvas-ui.c:186:popup_replacement_image_switch: 'gimp_painter_layer_tiles_popup(GIMP_PAINTER_LAYER_TILES(w),creation)' should be NULL",
+        "Bail out!"
+      ]
+    },
+    {
+      "phase": "red",
+      "log": "red-popup_properties_reentrant_owner_close.json",
+      "name": "gimp:app / painter-canvas-ui",
+      "result": "FAIL",
+      "returncode": -5,
+      "duration": 8.397636890411377,
+      "tap": [
+        "not ok /painter-canvas-ui/popup_properties_reentrant_owner_close - Gimp-Core-FATAL-CRITICAL: gimp_image_get_selected_layers: assertion 'GIMP_IS_IMAGE (image)' failed",
+        "Bail out!"
+      ]
+    },
+    {
+      "phase": "candidate-cleanup-failure",
+      "log": "green-full-canvas.json",
+      "name": "gimp:app / painter-canvas-ui",
+      "result": "FAIL",
+      "returncode": -5,
+      "duration": 5.461137294769287,
+      "tap": [
+        "1..23",
+        "ok 1 /painter-canvas-ui/channel_preview_components",
+        "ok 2 /painter-canvas-ui/selection_and_visibility",
+        "# slow test /painter-canvas-ui/selection_and_visibility executed in 0.66 secs",
+        "ok 3 /painter-canvas-ui/group_move_and_undo",
+        "ok 4 /painter-canvas-ui/image_switch_disconnect",
+        "ok 5 /painter-canvas-ui/long_press_cancel_destroy",
+        "ok 6 /painter-canvas-ui/preview_pending_destroy",
+        "ok 7 /painter-canvas-ui/popup_repeat_and_owner_close",
+        "not ok /painter-canvas-ui/popup_properties_reentrant_owner_close - GLib-GObject-FATAL-CRITICAL: ../../../gobject/gsignal.c:2699: instance '0x56386a6f2c70' has no handler with id '76737'",
+        "Bail out!"
+      ]
+    },
+    {
+      "phase": "candidate-cleanup-failure",
+      "log": "green-popup_creation_reentrant_image_switch.json",
+      "name": "gimp:app / painter-canvas-ui",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 5.347163915634155,
+      "tap": [
+        "ok 1 /painter-canvas-ui/popup_creation_reentrant_image_switch",
+        "# slow test /painter-canvas-ui/popup_creation_reentrant_image_switch executed in 0.71 secs",
+        "1..1"
+      ]
+    },
+    {
+      "phase": "candidate-cleanup-failure",
+      "log": "green-popup_creation_reentrant_owner_close.json",
+      "name": "gimp:app / painter-canvas-ui",
+      "result": "FAIL",
+      "returncode": -5,
+      "duration": 4.4899961948394775,
+      "tap": [
+        "not ok /painter-canvas-ui/popup_creation_reentrant_owner_close - GLib-GObject-FATAL-CRITICAL: ../../../gobject/gsignal.c:2699: instance '0x5644be2a5820' has no handler with id '48311'",
+        "Bail out!"
+      ]
+    },
+    {
+      "phase": "candidate-cleanup-failure",
+      "log": "green-popup_properties_reentrant_image_switch.json",
+      "name": "gimp:app / painter-canvas-ui",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 4.4852681159973145,
+      "tap": [
+        "ok 1 /painter-canvas-ui/popup_properties_reentrant_image_switch",
+        "# slow test /painter-canvas-ui/popup_properties_reentrant_image_switch executed in 0.62 secs",
+        "1..1"
+      ]
+    },
+    {
+      "phase": "candidate-cleanup-failure",
+      "log": "green-popup_properties_reentrant_owner_close.json",
+      "name": "gimp:app / painter-canvas-ui",
+      "result": "FAIL",
+      "returncode": -5,
+      "duration": 6.6806957721710205,
+      "tap": [
+        "not ok /painter-canvas-ui/popup_properties_reentrant_owner_close - GLib-GObject-FATAL-CRITICAL: ../../../gobject/gsignal.c:2699: instance '0x55ff724f4cd0' has no handler with id '49243'",
+        "Bail out!"
+      ]
+    },
+    {
+      "phase": "corrected",
+      "log": "green-full-canvas.json",
+      "name": "gimp:app / painter-canvas-ui",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 25.985995769500732,
+      "tap": [
+        "1..23",
+        "ok 1 /painter-canvas-ui/channel_preview_components",
+        "ok 2 /painter-canvas-ui/selection_and_visibility",
+        "# slow test /painter-canvas-ui/selection_and_visibility executed in 0.79 secs",
+        "ok 3 /painter-canvas-ui/group_move_and_undo",
+        "ok 4 /painter-canvas-ui/image_switch_disconnect",
+        "ok 5 /painter-canvas-ui/long_press_cancel_destroy",
+        "ok 6 /painter-canvas-ui/preview_pending_destroy",
+        "ok 7 /painter-canvas-ui/popup_repeat_and_owner_close",
+        "ok 8 /painter-canvas-ui/popup_properties_reentrant_owner_close",
+        "ok 9 /painter-canvas-ui/popup_creation_reentrant_owner_close",
+        "ok 10 /painter-canvas-ui/popup_properties_reentrant_image_switch",
+        "ok 11 /painter-canvas-ui/popup_creation_reentrant_image_switch",
+        "ok 12 /painter-canvas-ui/popup_controls_and_clone",
+        "ok 13 /painter-canvas-ui/mask_controls",
+        "ok 14 /painter-canvas-ui/long_press_once",
+        "# slow test /painter-canvas-ui/long_press_once executed in 0.73 secs",
+        "ok 15 /painter-canvas-ui/reentrant_visibility_close",
+        "ok 16 /painter-canvas-ui/multiple_reorder_one_undo",
+        "ok 17 /painter-canvas-ui/hide_cancels_grab",
+        "ok 18 /painter-canvas-ui/overlay_input_and_restore",
+        "# slow test /painter-canvas-ui/overlay_input_and_restore executed in 3.11 secs",
+        "ok 19 /painter-canvas-ui/dock_restore_and_parent_close",
+        "# slow test /painter-canvas-ui/dock_restore_and_parent_close executed in 1.04 secs",
+        "ok 20 /painter-canvas-ui/overlay_tools_and_colors",
+        "# slow test /painter-canvas-ui/overlay_tools_and_colors executed in 2.45 secs",
+        "ok 21 /painter-canvas-ui/overlay_tool_group",
+        "# slow test /painter-canvas-ui/overlay_tool_group executed in 3.95 secs",
+        "ok 22 /painter-canvas-ui/multiple_canvas_context_and_dock_transfer",
+        "# slow test /painter-canvas-ui/multiple_canvas_context_and_dock_transfer executed in 2.89 secs",
+        "ok 23 /painter-canvas-ui/overlay_owner_destroy_callbacks",
+        "# slow test /painter-canvas-ui/overlay_owner_destroy_callbacks executed in 1.58 secs"
+      ]
+    },
+    {
+      "phase": "corrected",
+      "log": "green-popup_creation_reentrant_image_switch.json",
+      "name": "gimp:app / painter-canvas-ui",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 10.561641693115234,
+      "tap": [
+        "ok 1 /painter-canvas-ui/popup_creation_reentrant_image_switch",
+        "# slow test /painter-canvas-ui/popup_creation_reentrant_image_switch executed in 1.83 secs",
+        "1..1"
+      ]
+    },
+    {
+      "phase": "corrected",
+      "log": "green-popup_creation_reentrant_owner_close.json",
+      "name": "gimp:app / painter-canvas-ui",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 16.761564016342163,
+      "tap": [
+        "ok 1 /painter-canvas-ui/popup_creation_reentrant_owner_close",
+        "# slow test /painter-canvas-ui/popup_creation_reentrant_owner_close executed in 4.78 secs",
+        "1..1"
+      ]
+    },
+    {
+      "phase": "corrected",
+      "log": "green-popup_properties_reentrant_image_switch.json",
+      "name": "gimp:app / painter-canvas-ui",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 15.032923698425293,
+      "tap": [
+        "ok 1 /painter-canvas-ui/popup_properties_reentrant_image_switch",
+        "# slow test /painter-canvas-ui/popup_properties_reentrant_image_switch executed in 1.61 secs",
+        "1..1"
+      ]
+    },
+    {
+      "phase": "corrected",
+      "log": "green-popup_properties_reentrant_owner_close.json",
+      "name": "gimp:app / painter-canvas-ui",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 8.032819271087646,
+      "tap": [
+        "ok 1 /painter-canvas-ui/popup_properties_reentrant_owner_close",
+        "# slow test /painter-canvas-ui/popup_properties_reentrant_owner_close executed in 0.93 secs",
+        "1..1"
+      ]
+    }
+  ],
+  "limitations": [
+    "No full application sanitizer run for this popup change",
+    "08.013 acceptance and 08.012 dependency remain open; no WBS completion credit"
+  ]
+}
