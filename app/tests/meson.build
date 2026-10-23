@@ -150,15 +150,27 @@ foreach test_name : app_tests
     # All 47 unchanged cases took 99.38s on authenticated portrait TCP Xvfb.
     test_timeout = 180
   endif
+  if test_name == 'painter-xcf-roundtrip'
+    # Include the >256 MiB public Save/Open case in the registered aggregate.
+    # The unchanged large case alone measured 38.96s on portrait TCP Xvfb.
+    test_timeout = 180
+  endif
   if test_name == 'painter-layer-ui'
     # All 63 cases took 83.69s under Xvfb; keep the full suite within its budget.
     test_timeout = 180
   endif
 
+  test_args = []
+  if test_name == 'gimp-filter-layer'
+    test_args = [meson.project_source_root() /
+      'migration/tests/run_filter_owner_context_fixture_test.py', '--', test_exe]
+  elif test_name == 'painter-xcf-roundtrip'
+    test_args = ['-m', 'slow']
+  endif
+
   test(test_name,
     test_name == 'gimp-filter-layer' ? python : test_exe,
-    args: test_name == 'gimp-filter-layer' ? [meson.project_source_root() /
-      'migration/tests/run_filter_owner_context_fixture_test.py', '--', test_exe] : [],
+    args: test_args,
     env: [
       'GIMP_TESTING_ABS_TOP_SRCDIR='  + meson.project_source_root(),
       'GIMP_TESTING_ABS_TOP_BUILDDIR='+ meson.project_build_root(),
