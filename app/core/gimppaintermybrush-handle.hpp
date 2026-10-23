@@ -5,6 +5,7 @@
 extern "C" {
 #include "gimppaintermybrush.h"
 #include "gimpmypaintbrush.h"
+#include "gimpmypaintbrush-load.h"
 }
 #include "gimp-painter-type-traits.hpp"
 #include "painter/resources.hpp"
@@ -21,6 +22,19 @@ public:
   { return adopt (GIMP_PAINTER_MYBRUSH (gimp_mypaint_brush_new (nullptr, name))); }
   static PainterMybrushRef get_standard (GimpContext *context = nullptr)
   { return retain (GIMP_PAINTER_MYBRUSH (gimp_mypaint_brush_get_standard (context))); }
+  static PainterMybrushRef load (const char *filename, GimpContext *context = nullptr)
+  {
+    GError *error = nullptr;
+    GList *loaded = gimp_mypaint_brush_load (context, filename, &error);
+    if (!loaded) fail (error);
+    if (loaded->next || !GIMP_IS_PAINTER_MYBRUSH (loaded->data)) {
+      g_list_free_full (loaded, g_object_unref);
+      throw Error (GIMP_PAINTER_ERROR_INVALID_STATE, "Expected one loaded brush");
+    }
+    auto *brush = static_cast<GimpPainterMybrush *> (loaded->data);
+    g_list_free (loaded);
+    return adopt (brush);
+  }
   GimpPainterMybrush *get () const noexcept { return owner_.get (); }
   PainterMybrushRef duplicate () const
   {

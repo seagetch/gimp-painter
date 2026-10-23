@@ -1,0 +1,31 @@
+{
+  "canonical_row": 42,
+  "entry": "gimp_mypaint_brush_load",
+  "task_parent": "08.018",
+  "prerequisite": "08.017",
+  "original_acceptance": "C \u5165\u53e3\u304b\u3089\u65e7 Interface::cast \u3092\u6392\u9664",
+  "baseline_files": {
+    "app/core/gimpmypaintbrush-load.cpp": {
+      "blob": "c547ef131291770353ee9cb4159ff5664709ad67",
+      "sha256": "c4b6db71f25b7f3c503624d410fd3b2775a16370e169fb2c7d606db20b87322b"
+    },
+    "app/core/gimpmypaintbrush-load.h": {
+      "blob": "8ac9b3f60c8f9d7dbc5444e703b9b2e4eb2c2e96",
+      "sha256": "93e95834b3780b50112fa74f9f88c2a8121b58a6dac77654764c9b803c2138c3"
+    }
+  },
+  "signature": "GList *(GimpContext *, const gchar *, GError **)",
+  "preconditions": [
+    "filename != NULL",
+    "g_path_is_absolute(filename)",
+    "error == NULL || *error == NULL"
+  ],
+  "result": "one transfer-full list node with transfer-full brush; no file association",
+  "differences": [
+    "Native strict version/UTF-8/numeric/size parser errors replace permissive legacy fallback",
+    "Native parent brush naming and sidecar/embedded PNG policy retained",
+    "Native GType/layout/BrushSlot representation, not historical subclass ABI"
+  ],
+  "canonical_disposition": "PARTIAL: named filename operation restored, full legacy semantics not claimed",
+  "save_row44": "untouched"
+}

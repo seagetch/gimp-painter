@@ -6,10 +6,12 @@
 #include <gtk/gtk.h>
 #include <json-glib/json-glib.h>
 #include <string.h>
+#include <glib/gstdio.h>
 #include "core/core-types.h"
 #include "widgets/widgets-types.h"
 #include "core/gimppaintermybrush.h"
 #include "core/gimpmypaintbrush.h"
+#include "core/gimpmypaintbrush-load.h"
 #include "core/gimp.h"
 #include "core/gimpcontext.h"
 #include "tests.h"
@@ -984,6 +986,8 @@ named_standard_c_contract (void)
   /* Do not consume the borrowed provider reference in the live application. */
 }
 
+#include "test-painter-mybrush-filename.inc"
+
 void gimp_test_painter_mybrush_duplicate_handle_register (void);
 
 int main (int argc, char **argv)
@@ -1022,6 +1026,9 @@ int main (int argc, char **argv)
 #ifdef GIMP_TEST_MYBRUSH_WRAP_PIXBUF_COPY
   g_test_add_func ("/painter-mybrush/named-duplicate/copy-failure-atomic", named_duplicate_copy_failure_atomic);
 #endif
+  g_test_add_func ("/painter-mybrush/filename-load/ownership", filename_load_owned_resource);
+  g_test_add_func ("/painter-mybrush/filename-load/failures", filename_load_failures);
+  g_test_add_func ("/painter-mybrush/filename-load/preconditions", filename_load_preconditions);
   g_test_add_func ("/painter-mybrush/named-factory/c-contract", named_factory_c_contract);
   g_test_add_func ("/painter-mybrush/named-factory/invalid-names", named_factory_invalid_names);
   g_test_add_func ("/painter-mybrush/named-standard/c-contract", named_standard_c_contract);

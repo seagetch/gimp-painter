@@ -7,6 +7,7 @@ extern "C" {
 #include "core-types.h"
 #include "gimppaintermybrush.h"
 #include "gimpmypaintbrush.h"
+#include "gimpmypaintbrush-load.h"
 #include "gimptempbuf.h"
 #include "gimptagged.h"
 }
@@ -245,6 +246,21 @@ GList *gimp_painter_mybrush_load (GimpContext *context, GFile *file, GInputStrea
     }
     gimp_data_clean (GIMP_DATA (owner.get ()));
     return g_list_prepend (nullptr, owner.release ());
+  });
+}
+GList *gimp_mypaint_brush_load (GimpContext *context, const gchar *filename, GError **error)
+{
+  g_return_val_if_fail (filename != nullptr, nullptr);
+  g_return_val_if_fail (g_path_is_absolute (filename), nullptr);
+  g_return_val_if_fail (error == nullptr || *error == nullptr, nullptr);
+  return boundary<GList *> (error, nullptr, [&] {
+    auto file = ObjectRef<GObject>::adopt (G_OBJECT (g_file_new_for_path (filename)));
+    auto input = ObjectRef<GObject>::adopt (G_OBJECT (g_file_read (G_FILE (file.get ()), nullptr, error)));
+    if (!input) return static_cast<GList *> (nullptr);
+    // The one native parser constructs the one native BrushSlot. Neither the
+    // stream nor file is borrowed by its returned resource.
+    return gimp_painter_mybrush_load (context, G_FILE (file.get ()),
+                                    G_INPUT_STREAM (input.get ()), error);
   });
 }
 gchar *gimp_painter_mybrush_dup_json (GimpPainterMybrush *brush, GError **error)

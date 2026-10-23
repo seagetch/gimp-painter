@@ -186,6 +186,13 @@
       "context": "core",
       "prerequisites": [],
       "review": "29.010/toolbar-transfer-menu-transaction: native GimpAction dispatch guard declaration, gboolean result and borrowed GimpAction pointer. Header retains its own C linkage/include guard; compile twice in C11 and C++14 with normal core/widget prerequisites, no outer linkage wrapper. No new type layout or historical ABI acceptance."
+    },
+    {
+      "path": "app/core/gimpmypaintbrush-load.h",
+      "kind": "new",
+      "context": "core",
+      "prerequisites": [],
+      "review": "08.018/brush-filename-load: original absolute-filename C signature delegates to sole native stream parser; owned list/resource, private stream/file lifetime. Header owns C linkage and include guards; double-include C11/C++14 probes, no legacy layout/parser/error ABI claim."
     }
   ]
 }

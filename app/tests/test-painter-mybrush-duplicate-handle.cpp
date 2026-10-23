@@ -4,6 +4,7 @@
 #include <gio/gio.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gtk/gtk.h>
+#include <glib/gstdio.h>
 extern "C" {
 #include "libgimpbase/gimpbase.h"
 #include "libgimpmath/gimpmath.h"
@@ -239,6 +240,35 @@ void handle_copy_move_ownership ()
   g_assert_cmpuint (duplicate_finalized, ==, 1);
 }
 
+void filename_load_handle ()
+{
+  static_assert (std::is_same<decltype (&gimp_mypaint_brush_load),
+    GList *(*)(GimpContext *, const gchar *, GError **)>::value, "Original C filename signature");
+  GError *error = nullptr;
+  gchar *dir = g_dir_make_tmp ("painter-filename-handle-XXXXXX", &error);
+  gchar *path = g_build_filename (dir, "handle.myb", nullptr);
+  g_assert_no_error (error);
+  g_assert_true (g_file_set_contents (path, "version 2\n", -1, &error));
+  g_assert_no_error (error);
+  guint deaths = 0;
+  {
+    auto owner = MypaintBrushRef::load (path);
+    g_object_weak_ref (G_OBJECT (owner.get ()), finalized, &deaths);
+    g_assert_cmpstr (gimp_object_get_name (owner.get ()), ==, "handle");
+    const auto snapshot = owner.snapshot ().encode ();
+    g_assert_cmpint (g_unlink (path), ==, 0);
+    expect_handle_error ([&] { MypaintBrushRef::load (path); });
+    auto retained = owner;
+    g_assert_true (retained.get () == owner.get ());
+    const auto retained_snapshot = retained.snapshot ().encode ();
+    g_assert_cmpstr (retained_snapshot.c_str (), ==, snapshot.c_str ());
+    g_assert_cmpuint (deaths, ==, 0);
+  }
+  g_assert_cmpuint (deaths, ==, 1);
+  g_assert_cmpint (g_rmdir (dir), ==, 0);
+  g_free (path); g_free (dir);
+}
+
 struct WrongThreadCall { const PainterMybrushRef *source; bool caught; };
 gpointer handle_duplicate_wrong_thread (gpointer data)
 {
@@ -302,6 +332,7 @@ void handle_copy_failure_exception ()
 extern "C" void
 gimp_test_painter_mybrush_duplicate_handle_register (void)
 {
+  g_test_add_func ("/painter-mybrush/filename-load/handle", filename_load_handle);
   g_test_add_func ("/painter-mybrush/named-standard/cold-recreation", named_standard_cold_recreation);
   g_test_add_func ("/painter-mybrush/named-factory/handle", named_factory_handle);
   g_test_add_func ("/painter-mybrush/named-duplicate/handle-alias-resource", handle_alias_and_resource_independence);
