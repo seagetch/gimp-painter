@@ -1,0 +1,10 @@
+Compiler for C++ supports link arguments -Wl,--wrap=g_weak_ref_get: YES 
+
+../source/app/tests/meson.build:1044:32: ERROR: File test-painter-layer-dispatch.c does not exist.
+
+A full log can be found at /workspace/shared/gimp-native-baseline/build-port/meson-logs/meson-log.txt
+FAILED: build.ninja 
+/workspace/shared/gimp-deps-locked/root/usr/bin/meson --internal regenerate /workspace/shared/gimp-native-baseline/source .
+ninja: error: rebuilding 'build.ninja': subcommand failed
+INFO: autodetecting backend as ninja
+INFO: calculating backend command to run: /workspace/shared/gimp-deps-locked/root/usr/bin/ninja -C /workspace/shared/gimp-native-baseline/build-port -j 4 app/tests/gimp-painter-surface

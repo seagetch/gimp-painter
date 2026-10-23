@@ -1,0 +1,31 @@
+{
+  "task": "09.006",
+  "criterion": "オフセットと coverage が一致",
+  "production_changes": false,
+  "source_sha256": {
+    "app/tests/test-gimp-painter-surface.cpp": "4911e2d3d71d4ef3795a801c2041cd18e7481d8f04fdba99f680b09ea823dad0",
+    "app/tests/test-painter-selection-mask.inc": "7e446ad4e9bbe4c080a3b4b3a642dfc76f5c286bc16a3a0ec90d00e467824ffb",
+    "app/paint/painter-mypaint-surface/paint-core.cpp": "b76d784b6173aba483cc88524db66d1d13a3f22c56c96de871c16f73772863d5",
+    "app/paint/painter-mypaint-surface/gegl-surface.cpp": "24921337d94409ac87460dfaa9a54d045bc8f8670af44b001bc63637da7c81dc",
+    "app/paint/painter-mypaint-surface/gegl-surface.hpp": "884084cf46a02639014ab8e777f55155cdd4571807f196874b6f7c68f7fe324d",
+    "app/paint/painter-mypaint-surface/buffer-read.hpp": "fe4ad4518f6223505f65d7b2173b30608b8c4e049ea5af9f7ec0cdeaf7d3b02d",
+    "app/paint/painter-mypaint-surface/native-pixels.hpp": "2a3e657e97fea07fd8b16f14ecbda1bb28a477324f9fe1c4b29ea7514a5f8d97",
+    "app/paint/gimppaintcore.c": "306710d7b6ae412e7e12bcedaf85b5f9bd4b43de2a7f424dca2bb82a9c6a16be",
+    "app/core/gimpchannel.c": "354af3ebe17527d2d8e56767c7ff502bdbcfbae7ac5534bd1164dcd74a5b38f1"
+  },
+  "native_tree_hashes_match": true,
+  "scope": "Actual native PaintCore selection integration and native GimpPaintCore mask handoff;28 TAP +2 expected-red production mutations; no sanitizer claim",
+  "evidence_sha256": {
+    "README.md": "5f05f0a3f89c88f12a30c8d7d084270a254dbb5d80eb28b0bee49bd3c974060a",
+    "baseline-native.json": "ba0a44969fe1e245790b2219bf6f69f3d487f400655c9725ca4e9c3110d28ea0",
+    "excluded-fixture-attempts/initial-u8-oracle-failure.json": "fa296fff149c5b45869c462ffb3ffe26521fddff02795ef7c82bed6dd4841e47",
+    "excluded-fixture-attempts/missing-dispatch-source.log": "aa304308c2b67146501777427326b35c93e9c6e7efda48c6dbf0631c668869b9",
+    "mutation-results.json": "03e353d7cdf8afd15c93dfe656993b2ba944306a92dc397d4dc5bca38f805dd4",
+    "native-build.log": "5b2f0de34221bca41e555f672582862984bda8ee816cee155d64eaed164f9be0",
+    "native-run.log": "c7c6da7f012fdd2bd5a25985dcb867ceb538720082d980d8f7eeac2a2a6fcbc3",
+    "registered-native.json": "20eaf4ce0f03b21affc027923d1ade9f4730c828319a23b1bf06867a32dcd1d8",
+    "run-mutations.py": "8ea677a3773648d13312f057463911cba18439197d4c1530ae28b2df9e944fa4",
+    "run-native.sh": "0f6c8fb858295f62b1a2a37c2b3829e6de99ef9bfdecb40d603af4513e3ee994",
+    "validate.py": "58af767d2ba8da48edfff4eec528fa3e1ded319c11c31c9f8ad1706116d4c617"
+  }
+}

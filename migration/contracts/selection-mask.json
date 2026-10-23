@@ -1,0 +1,59 @@
+{
+  "task": "09.006",
+  "criterion_status": "DONE",
+  "original_action": "選択マスクの読取りを接続する",
+  "original_acceptance": "オフセットと coverage が一致",
+  "dependencies": [
+    "09.005"
+  ],
+  "legacy_commit": "afa43fae3e920210146abed514f136fd49f671b5",
+  "whole_hunk_checkpoint_status": "TODO",
+  "duties": [
+    {
+      "work_id": "legacy-8b9eba3c883fca55282a",
+      "source_id": "01.002/000933",
+      "path": "app/paint/gimpmypaintcore-drawablefeature.hpp",
+      "source_blob": "f822f8d4ede027ac9185d38669b66f7133d8a7d7",
+      "source_range": "-0,0 -> 1,429",
+      "source_sha256": "def3ec2441c48c2b64e440e216c4c10ecd8a8948600a19d97a4499defa1a3866",
+      "source_scope": "file-level declarations/content",
+      "source_blob_sha256": "6eb9434216b09585e6a45ed591ae5c2831cc032af5f1afca9c4c3e9f5dfcb283",
+      "whole_hunk_checkpoint_status": "TODO",
+      "historical_source_duty": "Entire 429-line GeneralDrawableFeature/GimpImageFeature/GimpTempBufFeature header: drawable reads/writes, selection, snapshots, undo, floating allocation, TempBuf preview and lifetime; selection acceptance alone does not complete this header.",
+      "related_obligations": [
+        {
+          "criterion": "09.003",
+          "work_id": "legacy-59c591933e446abda966",
+          "inherited_09_006_obligation": "Verify selection-mask offset/coverage integration beyond the combined read fixture."
+        },
+        {
+          "criterion": "09.004",
+          "work_id": "legacy-788dfcfdaadf20a03891",
+          "inherited_09_006_obligation": "Verify selection-mask integration."
+        }
+      ],
+      "successor_obligations": {
+        "09.004": "Verify DrawableFeature write bounds, dirty results and floating composition.",
+        "09.005": "Verify TempBuf preview/conversion paths and storage ownership beyond bridge reads. Verify TempBuf preview/conversion paths.",
+        "09.007": "Verify layer-mask application distinction. Verify layer-mask apply distinction.",
+        "09.008": "Verify immutable stroke-start snapshot integration.",
+        "09.009": "Verify floating and work-buffer allocation limits. Verify work/floating buffer allocation limits.",
+        "09.011": "Verify native Undo difference recording and restoration. Verify native Undo difference recording/restoration.",
+        "09.012": "Verify commit/cancel behavior. Verify full commit/cancel behavior.",
+        "09.003/region-lifetime": "Verify all draw_dab/get_color early-return, failure and callback lifecycle paths for read/write/snapshot/mask/texture ownership. Verify all callback/return/failure buffer lifetimes, not only successful writes.",
+        "09.010": "Verify all application dirty-region aggregation consumers; this task tests Surface conservative ROI only.",
+        "09.013": "Connect projection update notifications so changed regions reach the display.",
+        "21.010": "Switch sampling among stroke-start, working and composed buffers according to specification.",
+        "21.011": "Verify non-incremental working-buffer accumulation for coincident dabs against legacy semantics.",
+        "31.017": "Complete all remaining old TileManager/PixelRegion/TempBuf consumer replacement without dropping this entire header duty."
+      }
+    }
+  ],
+  "evidence": [
+    "migration/tests/selection-mask/report.json",
+    "migration/tests/selection-mask/registered-native.json",
+    "migration/tests/selection-mask/mutation-results.json",
+    "migration/tests/selection-mask/native-build.log",
+    "migration/tests/selection-mask/native-run.log"
+  ]
+}

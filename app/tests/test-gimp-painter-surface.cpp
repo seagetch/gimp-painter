@@ -294,6 +294,7 @@ static void rgb_native_cancel_undo()
   }
 }
 #include "test-painter-buffer-read-domains.inc"
+#include "test-painter-selection-mask.inc"
 
 int main(int argc,char**argv)
 {
@@ -310,5 +311,8 @@ int main(int argc,char**argv)
   g_test_add_func("/painter-surface/drawable-removal-native-callbacks",drawable_removal_during_native_callbacks);
   g_test_add_func("/painter-surface/temp-buf-read-domains",temp_buf_read_domains);
   g_test_add_func("/painter-surface/combined-read-domains",surface_combined_read_domains);
+  g_test_add_func("/selection/core-signed-offsets",selection_core_signed_offsets);
+  g_test_add_func("/selection/empty-unrestricted",selection_empty_is_unrestricted);
+  g_test_add_func("/selection/native-handoff-coverage",selection_native_handoff_coverage);
   int result=g_test_run();gimp_test_utils_set_gimp3_directory("GIMP_TESTING_ABS_TOP_BUILDDIR","app/tests/gimpdir-output");gimp_exit(gimp,TRUE);return result;
 }
