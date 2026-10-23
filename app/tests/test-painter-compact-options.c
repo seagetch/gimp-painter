@@ -569,6 +569,8 @@ static void native_editor_mixed_width_buttons (void)
 #include "test-painter-foreground-toolbar.inc"
 #include "test-painter-text-toolbar.inc"
 
+#include "test-painter-toolbar-lifetime.inc"
+
 int main(int argc,char **argv) {
   g_test_init(&argc,&argv,NULL);if(!gtk_init_check(&argc,&argv))return GIMP_EXIT_TEST_SKIPPED;
   gimp_test_utils_setup_menus_path();gimp=gimp_init_for_gui_testing(TRUE);
@@ -607,6 +609,8 @@ int main(int argc,char **argv) {
   g_test_add_func ("/painter-compact-options/align-model-before-view", align_model_before_view);
   g_test_add_func ("/painter-compact-options/align-actions-and-reentry", align_actions_and_reentry);
   g_test_add_func ("/painter-compact-options/independent-mypaint-toolbar", independent_mypaint_toolbar);
+  g_test_add_func ("/painter-compact-options/toolbar-lifetime-observer-control", toolbar_lifetime_observer_control);
+  g_test_add_func ("/painter-compact-options/canvas-toolbar-ref-balance", toolbar_canvas_ref_balance);
   g_test_add_func ("/painter-compact-options/independent-perspective-guide-toolbar", independent_perspective_guide_toolbar);
   g_test_add_func ("/painter-compact-options/perspective-guide-toolbar-canvas-switching", perspective_guide_toolbar_canvas_switching);
   g_test_add_func ("/painter-compact-options/independent-horizontal-inventory", independent_horizontal_toolbar_inventory);

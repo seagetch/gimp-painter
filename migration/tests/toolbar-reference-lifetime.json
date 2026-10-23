@@ -1,0 +1,68 @@
+{
+  "format": 1,
+  "status": "passed",
+  "scope": "Actual Canvas toolbar reference-lifetime acceptance, no production changes",
+  "source_base": "49afe40bad5e29ba9a7466da2684e8906682c630",
+  "tested_sources": {
+    "app/tests/test-painter-toolbar-lifetime.inc": "6581f1e571f9009b8dda235a9d47a9979e3fa88cf67dc4f75d62fef5abc080c5",
+    "app/tests/test-painter-compact-options.c": "60f75e37e5be97daea6f3e882fa4443aa325eb10a44d7643a4ad5cf3a41e782a"
+  },
+  "tests": [
+    {
+      "name": "gimp:app / painter-compact-options",
+      "result": "OK",
+      "duration": 3.592695713043213,
+      "returncode": 0,
+      "group": "focused",
+      "tap_cases": 2,
+      "skips": [],
+      "unexpected_diagnostics": [],
+      "expected_diagnostics": [],
+      "stdout_sha256": "3a6aa6dc4c83f021d066258881f49ad47cebe2f9af94e9d2e1fcb215a2c7f2c6",
+      "stderr_sha256": "87c5dfa76f2213f9aec30a763881296817807518fea10cdd159051fc4b0f3087"
+    },
+    {
+      "name": "gimp:app / painter-compact-options",
+      "result": "OK",
+      "duration": 107.73221635818481,
+      "returncode": 0,
+      "group": "full",
+      "tap_cases": 62,
+      "skips": [],
+      "unexpected_diagnostics": [],
+      "expected_diagnostics": [
+        "GIMP-Warning: There are no selected layers or channels to fill.",
+        "GIMP-Warning: There are no selected layers or channels to stroke to.",
+        "GIMP-Warning: A selected layer's pixels are locked.",
+        "GIMP-Warning: A selected layer's pixels are locked."
+      ],
+      "stdout_sha256": "737f98e37fe555f80b83559170202f32df7ab262ba807f0415717a5e3324197d",
+      "stderr_sha256": "6d1e321e950ca4056a38764f81adf0540be16c7da72e0b1612c9346f6f89af65"
+    },
+    {
+      "name": "gimp:app / painter-compact-options",
+      "result": "OK",
+      "duration": 3.4243977069854736,
+      "returncode": 0,
+      "group": "hidpi",
+      "tap_cases": 2,
+      "skips": [],
+      "unexpected_diagnostics": [],
+      "expected_diagnostics": [],
+      "stdout_sha256": "b3020ae1944df8464b609c8e5188072674b6e5bbbb5214c81a63f08937f1242e",
+      "stderr_sha256": "87c5dfa76f2213f9aec30a763881296817807518fea10cdd159051fc4b0f3087"
+    }
+  ],
+  "lifetime_contract": {
+    "toolbars_finalized_per_case": 8,
+    "hide_show_cycles_per_case": 64,
+    "container_finalizations_per_case": 2,
+    "retained_destroyed_observer_control": true,
+    "startup_display_and_dock_preserved": true
+  },
+  "limitations": [
+    "Normal Linux and GDK_SCALE=2 only; no sanitizer or other OS execution",
+    "No dedicated multi-window toolbar host/session/foreign-shell acceptance",
+    "Prior complete frozen gate applies to b6f0 baseline only"
+  ]
+}
