@@ -1,0 +1,18 @@
+{
+  "scope": "six Babl input storage formats into explicit float32 arithmetic; no lossless double or native-image storage claim",
+  "formats": [
+    "R'G'B'A u8",
+    "R'G'B'A u16",
+    "R'G'B'A u32",
+    "R'G'B'A half",
+    "R'G'B'A float",
+    "R'G'B'A double"
+  ],
+  "seed": 1301203,
+  "records": 162,
+  "pixels": 16,
+  "format": "little-endian int format index, int private mode, float opacity; backdrop64/source64/mask16/expected64 floats",
+  "oracle_sha256": "3b98507a2eb1b444194e0ae778f9552546dc3f40506faa819e4f897d0ea2ff07",
+  "generator_sha256": "bfdb1bef64f8a79aee7e2149de0f65e2102d7370dfe276b6c0c1163709c53881",
+  "sha256": "195cfc9ec7d3b44829689d1285b14c1289333595613aa5832e175209b97aad31"
+}
