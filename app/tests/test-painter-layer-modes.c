@@ -132,6 +132,56 @@ static void direct_paint_operation (void)
         }
   g_free(a);g_free(b);
 }
+/* Storage precision must not silently select modern blend math.  These are
+ * genuine old application pixels through differently typed GEGL buffers. */
+static void precision_and_offset_projection (void)
+{
+  static const gchar *formats[] = {"R'G'B'A u8", "R'G'B'A u16",
+    "R'G'B'A u32", "R'G'B'A half", "R'G'B'A float", "R'G'B'A double"};
+  const Babl *bytes = babl_format ("R'G'B'A u8");
+  const GeglRectangle backdrop = {-3,-2,14,13}, source = {0,0,8,8};
+  guchar *a = read_fixture ("backdrop.rgba"), *b = read_fixture ("source.rgba");
+  guchar padded[14*13*4], actual[sizeof padded], expected[sizeof padded], masks[64];
+  memset (masks,128,sizeof masks);
+  for (guint p=0;p<14*13;++p)
+    { padded[4*p]=41; padded[4*p+1]=173; padded[4*p+2]=229; padded[4*p+3]=191; }
+  for (guint y=0;y<8;++y)
+    memcpy (padded+4*((y+2)*14+3),a+4*y*8,8*4);
+  for (guint f=0;f<G_N_ELEMENTS(formats);++f)
+    for (guint raw=23;raw<=29;++raw)
+      {
+        gchar *name=g_strdup_printf("mode-%u-o50-m128-projection.rgba",raw);
+        guchar *reference=read_fixture(name);
+        GimpLayerMode mode;
+        GeglNode *graph=gegl_node_new(),*bottom,*top,*mask_node,*blend;
+        GeglBuffer *ab=gegl_buffer_new(&backdrop,babl_format(formats[f]));
+        GeglBuffer *bb=gegl_buffer_new(&source,babl_format(formats[f]));
+        GeglBuffer *mb=gegl_buffer_new(&source,babl_format("Y u8"));
+        memcpy(expected,padded,sizeof expected);
+        for(guint y=0;y<8;++y)
+          memcpy(expected+4*((y+2)*14+3),reference+4*y*8,8*4);
+        gegl_buffer_set(ab,&backdrop,0,bytes,padded,GEGL_AUTO_ROWSTRIDE);
+        gegl_buffer_set(bb,&source,0,bytes,b,GEGL_AUTO_ROWSTRIDE);
+        gegl_buffer_set(mb,&source,0,babl_format("Y u8"),masks,GEGL_AUTO_ROWSTRIDE);
+        g_assert_true(gimp_painter_layer_mode_from_legacy(raw,&mode));
+        bottom=gegl_node_new_child(graph,"operation","gegl:buffer-source","buffer",ab,NULL);
+        top=gegl_node_new_child(graph,"operation","gegl:buffer-source","buffer",bb,NULL);
+        mask_node=gegl_node_new_child(graph,"operation","gegl:buffer-source","buffer",mb,NULL);
+        blend=gegl_node_new_child(graph,"operation","gimp:painter-legacy-mode","layer-mode",mode,"opacity",.5,NULL);
+        gegl_node_connect(blend,"input",bottom,"output");
+        gegl_node_connect(blend,"aux",top,"output");
+        gegl_node_connect(blend,"aux2",mask_node,"output");
+        gegl_node_blit(blend,1.0,&backdrop,bytes,actual,GEGL_AUTO_ROWSTRIDE,GEGL_BLIT_DEFAULT);
+        g_test_message("mode %u format %s: 64 old pixels + 118 outside-source pixels",raw,formats[f]);
+        for(guint p=0;p<sizeof actual;++p)
+          if(actual[p]!=expected[p])
+            g_error("mode %u format %s byte %u expected %u got %u",raw,formats[f],p,expected[p],actual[p]);
+        g_object_unref(graph);g_object_unref(ab);g_object_unref(bb);g_object_unref(mb);
+        g_free(name);g_free(reference);
+      }
+  g_free(a);g_free(b);
+}
+
 int main (int argc, char **argv)
 {
   int result;
@@ -140,6 +190,7 @@ int main (int argc, char **argv)
   gimp = gimp_init_for_testing ();
   g_test_add_func ("/painter-layer-modes/genuine_projection_and_kernel",genuine_projection_and_kernel);
   g_test_add_func ("/painter-layer-modes/direct_paint_operation",direct_paint_operation);
+  g_test_add_func ("/painter-layer-modes/precision_and_offset_projection",precision_and_offset_projection);
   result = g_test_run ();
   gimp_test_utils_set_gimp3_directory ("GIMP_TESTING_ABS_TOP_BUILDDIR","app/tests/gimpdir-output");
   gimp_exit (gimp,TRUE); return result;
