@@ -120,6 +120,7 @@ template<class F> void use (GObject *owner, F&& f) noexcept {
   try { auto *store=BindingStore::find (owner);
     if (store && store->state () == BindingStore::State::active) store->with<Slot> (std::forward<F> (f));
   } catch (const std::exception& e) { g_warning ("Painter canvas UI: %s",e.what ()); }
+  catch (...) { g_warning ("Painter canvas UI: Unknown C++ exception"); }
 }
 struct Hook {
   WeakRef<GObject> owner;

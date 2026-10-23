@@ -1,0 +1,42 @@
+{
+  "public_base": "f10e0df5723ac961bf07aea137103a02c2ca8ecd",
+  "runs": [
+    {
+      "run": "widget-baseline-standard",
+      "result": "OK",
+      "returncode": 0,
+      "duration_seconds": 3.3954215049743652,
+      "passed_cases": [
+        "/painter-widget-exceptions/standard/canvas-set-visible",
+        "/painter-widget-exceptions/standard/canvas-attach-dock",
+        "/painter-widget-exceptions/standard/layer-tiles-popup"
+      ],
+      "termination_text": null
+    },
+    {
+      "run": "widget-baseline-unknown-canvas-set-visible",
+      "result": "FAIL",
+      "returncode": -6,
+      "duration_seconds": 2.087541341781616,
+      "passed_cases": [],
+      "termination_text": "terminate called after throwing an instance of 'int'"
+    },
+    {
+      "run": "widget-baseline-unknown-canvas-attach-dock",
+      "result": "FAIL",
+      "returncode": -6,
+      "duration_seconds": 2.5359435081481934,
+      "passed_cases": [],
+      "termination_text": "terminate called after throwing an instance of 'int'"
+    },
+    {
+      "run": "widget-baseline-unknown-layer-tiles-popup",
+      "result": "FAIL",
+      "returncode": -6,
+      "duration_seconds": 1.9618897438049316,
+      "passed_cases": [],
+      "termination_text": "terminate called after throwing an instance of 'int'"
+    }
+  ],
+  "qualification": "Expected causal baseline failures; none counted as passing acceptance."
+}

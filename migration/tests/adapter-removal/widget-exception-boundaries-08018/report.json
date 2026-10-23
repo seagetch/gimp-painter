@@ -1,0 +1,533 @@
+{
+  "public_base": "f10e0df5723ac961bf07aea137103a02c2ca8ecd",
+  "contract": "migration/contracts/cpp-error-boundary.md (05.013)",
+  "change": "Catch unknown C++ exceptions at Canvas::use and layer-tiles use; preserve the existing warning channel and declared facade fallbacks.",
+  "mechanism": "Linux ELF executable-only GNU linker wrapper for BindingStore::check_thread() const; thread-local, exact-owner and one-shot. Standard runtime_error and non-standard integer faults occur before protected operation entry; actual C11 facade callers assert one injection and exercise successful retry. No production injection API.",
+  "baseline": {
+    "standard_cases_passed": 3,
+    "unknown_cases_expected_SIGABRT": 3,
+    "required_termination_text": "terminate called after throwing an instance of 'int'",
+    "production_sources_match_base": true,
+    "sanitized_evidence_file": "baseline.json"
+  },
+  "candidate": {
+    "native": {
+      "mode": "native",
+      "status": "PASS",
+      "case_count": 138,
+      "new_cases": 6,
+      "registrations": 7,
+      "results": [
+        {
+          "name": "painter-dock-layout-ui",
+          "cases": [
+            "/painter-canvas-ui/right_docks_controls_reachable_1240",
+            "/painter-canvas-ui/right_docks_controls_reachable_1280",
+            "/painter-canvas-ui/right_docks_controls_reachable_portrait"
+          ],
+          "duration_seconds": 24.47568655014038,
+          "stderr_lines": 80,
+          "cloud_provider_debug_notices": 1
+        },
+        {
+          "name": "painter-dock-input-ui",
+          "cases": [
+            "/painter-canvas-ui/right_docks_panel_hover",
+            "/painter-canvas-ui/right_docks_panel_retreat_input",
+            "/painter-canvas-ui/right_docks_panel_release_recovery",
+            "/painter-canvas-ui/right_docks_panel_proximity_recovery",
+            "/painter-canvas-ui/right_docks_panel_grab_recovery",
+            "/painter-canvas-ui/right_docks_panel_focus_recovery"
+          ],
+          "duration_seconds": 12.141838788986206,
+          "stderr_lines": 80,
+          "cloud_provider_debug_notices": 1
+        },
+        {
+          "name": "painter-dock-session-ui",
+          "cases": [
+            "/painter-canvas-ui/right_docks_session_width_unchanged_restore",
+            "/painter-canvas-ui/right_docks_session_width_resize_restore",
+            "/painter-canvas-ui/right_docks_session_aux_positive_width",
+            "/painter-canvas-ui/right_docks_session_aux_legacy_position",
+            "/painter-canvas-ui/right_docks_session_aux_deferred_reborrow",
+            "/painter-canvas-ui/right_docks_session_aux_deferred_close",
+            "/painter-canvas-ui/right_docks_window_mode_roundtrip"
+          ],
+          "duration_seconds": 16.82572627067566,
+          "stderr_lines": 80,
+          "cloud_provider_debug_notices": 1
+        },
+        {
+          "name": "painter-right-docks-ui",
+          "cases": [
+            "/painter-canvas-ui/right_docks_native_notebook_transfer",
+            "/painter-canvas-ui/right_docks_switch_repeat_and_restore",
+            "/painter-canvas-ui/right_docks_hide_restore",
+            "/painter-canvas-ui/right_docks_cancel_on_remove",
+            "/painter-canvas-ui/right_docks_newer_selection_on_remove",
+            "/painter-canvas-ui/right_docks_close_active_tab",
+            "/painter-canvas-ui/right_docks_close_inactive_tab",
+            "/painter-canvas-ui/right_docks_options_coexist",
+            "/painter-canvas-ui/right_docks_first_opt_in_switch"
+          ],
+          "duration_seconds": 17.675128936767578,
+          "stderr_lines": 80,
+          "cloud_provider_debug_notices": 1
+        },
+        {
+          "name": "painter-canvas-ui",
+          "cases": [
+            "/painter-canvas-ui/w08017_dnd_same_parent_order",
+            "/painter-canvas-ui/w08017_dnd_cross_parent_last_owner",
+            "/painter-canvas-ui/w08017_dnd_reject_self_ancestor",
+            "/painter-canvas-ui/w08017_dnd_layer_group_move_undo",
+            "/painter-canvas-ui/w08017_dnd_cross_image_copy",
+            "/painter-canvas-ui/w08017_dnd_multi_into_before",
+            "/painter-canvas-ui/w08017_dnd_multi_into_after",
+            "/painter-canvas-ui/w08017_dnd_multi_same_parent_before",
+            "/painter-canvas-ui/w08017_dnd_multi_same_parent_after",
+            "/painter-canvas-ui/w08017_dnd_multi_cross_parent_before",
+            "/painter-canvas-ui/w08017_dnd_multi_cross_parent_after",
+            "/painter-canvas-ui/w08017_dnd_multi_caller_topology",
+            "/painter-canvas-ui/w08017_dnd_multi_selected_anchor_before",
+            "/painter-canvas-ui/w08017_dnd_multi_selected_anchor_after",
+            "/painter-canvas-ui/w08017_dnd_multi_transfer_lifetime",
+            "/painter-canvas-ui/w08017_dnd_multi_reject_unowned_ancestor",
+            "/painter-canvas-ui/w08017_dnd_multi_destination_lost_on_remove",
+            "/painter-canvas-ui/w08017_dnd_multi_destination_lost_on_insert",
+            "/painter-canvas-ui/w08017_dnd_multi_reject_group_into_before",
+            "/painter-canvas-ui/w08017_dnd_multi_reject_group_into_after",
+            "/painter-canvas-ui/w08017_dnd_relocate_parent_valid",
+            "/painter-canvas-ui/w08017_dnd_relocate_parent_lost",
+            "/painter-canvas-ui/w08017_dnd_relocate_root_valid",
+            "/painter-canvas-ui/w08017_dnd_relocate_root_lost",
+            "/painter-canvas-ui/w08017_dnd_relocate_foreign_root_valid",
+            "/painter-canvas-ui/w08017_dnd_relocate_foreign_root_lost",
+            "/painter-canvas-ui/w08017_dnd_relocate_later_foreign_valid",
+            "/painter-canvas-ui/w08017_dnd_relocate_later_foreign_lost",
+            "/painter-canvas-ui/w08017_dnd_relocate_on_insert_valid",
+            "/painter-canvas-ui/w08017_dnd_relocate_on_insert_lost",
+            "/painter-canvas-ui/w08017_dnd_relocate_on_rollback",
+            "/painter-canvas-ui/w08017_dnd_relocate_same_destination",
+            "/painter-canvas-ui/w08017_dnd_weak_admission_keeps_move",
+            "/painter-canvas-ui/w08017_dnd_relocate_later_on_cleanup",
+            "/painter-canvas-ui/native_tool_dnd_wire_payload",
+            "/painter-canvas-ui/native_renderer_background_lifetime",
+            "/painter-canvas-ui/native_layer_preview_pixels_lifetime",
+            "/painter-canvas-ui/native_tool_icon_preview_lifetime",
+            "/painter-canvas-ui/native_session_boolean_literals",
+            "/painter-canvas-ui/native_session_boolean_reader_writer",
+            "/painter-canvas-ui/renderer_native_size_draw",
+            "/painter-canvas-ui/renderer_native_activation_routes",
+            "/painter-canvas-ui/renderer_selection_reentry",
+            "/painter-canvas-ui/renderer_escape_owner_close",
+            "/painter-canvas-ui/renderer_stale_preview_disconnected",
+            "/painter-canvas-ui/renderer_modifier_activation",
+            "/painter-canvas-ui/renderer_selection_same_target",
+            "/painter-canvas-ui/channel_preview_components",
+            "/painter-canvas-ui/selection_and_visibility",
+            "/painter-canvas-ui/group_move_and_undo",
+            "/painter-canvas-ui/image_switch_disconnect",
+            "/painter-canvas-ui/long_press_cancel_destroy",
+            "/painter-canvas-ui/preview_pending_destroy",
+            "/painter-canvas-ui/popup_repeat_and_owner_close",
+            "/painter-canvas-ui/popup_native_events_and_parent",
+            "/painter-canvas-ui/popup_destroy_orders",
+            "/painter-canvas-ui/popup_properties_newer_same_image",
+            "/painter-canvas-ui/popup_creation_newer_same_image",
+            "/painter-canvas-ui/popup_properties_reentrant_owner_close",
+            "/painter-canvas-ui/popup_creation_reentrant_owner_close",
+            "/painter-canvas-ui/popup_properties_reentrant_image_switch",
+            "/painter-canvas-ui/popup_creation_reentrant_image_switch",
+            "/painter-canvas-ui/destroyed_tiles_reject_image",
+            "/painter-canvas-ui/image_switch_popup_owner_close",
+            "/painter-canvas-ui/image_switch_popup_newer_image",
+            "/painter-canvas-ui/parent_image_notify_owner_close",
+            "/painter-canvas-ui/popup_controls_and_clone",
+            "/painter-canvas-ui/mask_controls",
+            "/painter-canvas-ui/long_press_once",
+            "/painter-canvas-ui/reentrant_visibility_close",
+            "/painter-canvas-ui/multiple_reorder_one_undo",
+            "/painter-canvas-ui/hide_cancels_grab",
+            "/painter-canvas-ui/overlay_input_and_restore",
+            "/painter-canvas-ui/dock_restore_and_parent_close",
+            "/painter-canvas-ui/overlay_tools_and_colors",
+            "/painter-canvas-ui/overlay_tool_group",
+            "/painter-canvas-ui/tool_click_active_owner_close",
+            "/painter-canvas-ui/tool_click_expanded_owner_close",
+            "/painter-canvas-ui/tool_expander_owner_close",
+            "/painter-canvas-ui/tool_click_newer_selection",
+            "/painter-canvas-ui/tool_pending_refresh_owner_destroy",
+            "/painter-canvas-ui/tool_group_selection_restores_canvas_focus",
+            "/painter-canvas-ui/multiple_canvas_context_and_dock_transfer",
+            "/painter-canvas-ui/overlay_owner_destroy_callbacks"
+          ],
+          "duration_seconds": 20.31246280670166,
+          "stderr_lines": 80,
+          "cloud_provider_debug_notices": 1
+        },
+        {
+          "name": "painter-compact-options",
+          "cases": [
+            "/painter-compact-options/orientation-enum-contract",
+            "/painter-compact-options/orientation-integer-contract",
+            "/painter-compact-options/orientation-property-contract",
+            "/painter-compact-options/orientation-active-callers",
+            "/painter-compact-options/orientation-histogram-current-controls",
+            "/painter-compact-options/native-preview-factory-failure",
+            "/painter-compact-options/native-preview-factory-success",
+            "/painter-compact-options/native-property-controls",
+            "/painter-compact-options/native-enum-integer-helpers",
+            "/painter-compact-options/inventory-all-registered",
+            "/painter-compact-options/common-store-registration-close",
+            "/painter-compact-options/mypaint-store-page-retention",
+            "/painter-compact-options/native-editor-mixed-width",
+            "/painter-compact-options/paint-bidirectional-resource",
+            "/painter-compact-options/popup-repeat",
+            "/painter-compact-options/popup-native-events-window-destroy",
+            "/painter-compact-options/fresh-owner-lifecycle",
+            "/painter-compact-options/mixed-packing-owned-destruction",
+            "/painter-compact-options/native-viewport-composition",
+            "/painter-compact-options/registered-popup-contracts",
+            "/painter-compact-options/reentrant-destruction",
+            "/painter-compact-options/native-visibility-preference",
+            "/painter-compact-options/canvas-dock-tool-transfer-preference"
+          ],
+          "duration_seconds": 6.536252975463867,
+          "stderr_lines": 80,
+          "cloud_provider_debug_notices": 1
+        },
+        {
+          "name": "painter-widget-exceptions",
+          "cases": [
+            "/painter-widget-exceptions/standard/canvas-set-visible",
+            "/painter-widget-exceptions/standard/canvas-attach-dock",
+            "/painter-widget-exceptions/standard/layer-tiles-popup",
+            "/painter-widget-exceptions/unknown/canvas-set-visible",
+            "/painter-widget-exceptions/unknown/canvas-attach-dock",
+            "/painter-widget-exceptions/unknown/layer-tiles-popup"
+          ],
+          "duration_seconds": 3.861260414123535,
+          "stderr_lines": 80,
+          "cloud_provider_debug_notices": 1
+        }
+      ],
+      "actual_c11": true,
+      "lsan_enabled": false
+    },
+    "asan": {
+      "mode": "asan",
+      "status": "PASS",
+      "case_count": 138,
+      "new_cases": 6,
+      "registrations": 7,
+      "results": [
+        {
+          "name": "painter-dock-layout-ui",
+          "cases": [
+            "/painter-canvas-ui/right_docks_controls_reachable_1240",
+            "/painter-canvas-ui/right_docks_controls_reachable_1280",
+            "/painter-canvas-ui/right_docks_controls_reachable_portrait"
+          ],
+          "duration_seconds": 36.23924469947815,
+          "stderr_lines": 80,
+          "cloud_provider_debug_notices": 1
+        },
+        {
+          "name": "painter-dock-input-ui",
+          "cases": [
+            "/painter-canvas-ui/right_docks_panel_hover",
+            "/painter-canvas-ui/right_docks_panel_retreat_input",
+            "/painter-canvas-ui/right_docks_panel_release_recovery",
+            "/painter-canvas-ui/right_docks_panel_proximity_recovery",
+            "/painter-canvas-ui/right_docks_panel_grab_recovery",
+            "/painter-canvas-ui/right_docks_panel_focus_recovery"
+          ],
+          "duration_seconds": 26.302445888519287,
+          "stderr_lines": 80,
+          "cloud_provider_debug_notices": 1
+        },
+        {
+          "name": "painter-dock-session-ui",
+          "cases": [
+            "/painter-canvas-ui/right_docks_session_width_unchanged_restore",
+            "/painter-canvas-ui/right_docks_session_width_resize_restore",
+            "/painter-canvas-ui/right_docks_session_aux_positive_width",
+            "/painter-canvas-ui/right_docks_session_aux_legacy_position",
+            "/painter-canvas-ui/right_docks_session_aux_deferred_reborrow",
+            "/painter-canvas-ui/right_docks_session_aux_deferred_close",
+            "/painter-canvas-ui/right_docks_window_mode_roundtrip"
+          ],
+          "duration_seconds": 32.59565496444702,
+          "stderr_lines": 80,
+          "cloud_provider_debug_notices": 1
+        },
+        {
+          "name": "painter-right-docks-ui",
+          "cases": [
+            "/painter-canvas-ui/right_docks_native_notebook_transfer",
+            "/painter-canvas-ui/right_docks_switch_repeat_and_restore",
+            "/painter-canvas-ui/right_docks_hide_restore",
+            "/painter-canvas-ui/right_docks_cancel_on_remove",
+            "/painter-canvas-ui/right_docks_newer_selection_on_remove",
+            "/painter-canvas-ui/right_docks_close_active_tab",
+            "/painter-canvas-ui/right_docks_close_inactive_tab",
+            "/painter-canvas-ui/right_docks_options_coexist",
+            "/painter-canvas-ui/right_docks_first_opt_in_switch"
+          ],
+          "duration_seconds": 38.87923002243042,
+          "stderr_lines": 80,
+          "cloud_provider_debug_notices": 1
+        },
+        {
+          "name": "painter-canvas-ui",
+          "cases": [
+            "/painter-canvas-ui/w08017_dnd_same_parent_order",
+            "/painter-canvas-ui/w08017_dnd_cross_parent_last_owner",
+            "/painter-canvas-ui/w08017_dnd_reject_self_ancestor",
+            "/painter-canvas-ui/w08017_dnd_layer_group_move_undo",
+            "/painter-canvas-ui/w08017_dnd_cross_image_copy",
+            "/painter-canvas-ui/w08017_dnd_multi_into_before",
+            "/painter-canvas-ui/w08017_dnd_multi_into_after",
+            "/painter-canvas-ui/w08017_dnd_multi_same_parent_before",
+            "/painter-canvas-ui/w08017_dnd_multi_same_parent_after",
+            "/painter-canvas-ui/w08017_dnd_multi_cross_parent_before",
+            "/painter-canvas-ui/w08017_dnd_multi_cross_parent_after",
+            "/painter-canvas-ui/w08017_dnd_multi_caller_topology",
+            "/painter-canvas-ui/w08017_dnd_multi_selected_anchor_before",
+            "/painter-canvas-ui/w08017_dnd_multi_selected_anchor_after",
+            "/painter-canvas-ui/w08017_dnd_multi_transfer_lifetime",
+            "/painter-canvas-ui/w08017_dnd_multi_reject_unowned_ancestor",
+            "/painter-canvas-ui/w08017_dnd_multi_destination_lost_on_remove",
+            "/painter-canvas-ui/w08017_dnd_multi_destination_lost_on_insert",
+            "/painter-canvas-ui/w08017_dnd_multi_reject_group_into_before",
+            "/painter-canvas-ui/w08017_dnd_multi_reject_group_into_after",
+            "/painter-canvas-ui/w08017_dnd_relocate_parent_valid",
+            "/painter-canvas-ui/w08017_dnd_relocate_parent_lost",
+            "/painter-canvas-ui/w08017_dnd_relocate_root_valid",
+            "/painter-canvas-ui/w08017_dnd_relocate_root_lost",
+            "/painter-canvas-ui/w08017_dnd_relocate_foreign_root_valid",
+            "/painter-canvas-ui/w08017_dnd_relocate_foreign_root_lost",
+            "/painter-canvas-ui/w08017_dnd_relocate_later_foreign_valid",
+            "/painter-canvas-ui/w08017_dnd_relocate_later_foreign_lost",
+            "/painter-canvas-ui/w08017_dnd_relocate_on_insert_valid",
+            "/painter-canvas-ui/w08017_dnd_relocate_on_insert_lost",
+            "/painter-canvas-ui/w08017_dnd_relocate_on_rollback",
+            "/painter-canvas-ui/w08017_dnd_relocate_same_destination",
+            "/painter-canvas-ui/w08017_dnd_weak_admission_keeps_move",
+            "/painter-canvas-ui/w08017_dnd_relocate_later_on_cleanup",
+            "/painter-canvas-ui/native_tool_dnd_wire_payload",
+            "/painter-canvas-ui/native_renderer_background_lifetime",
+            "/painter-canvas-ui/native_layer_preview_pixels_lifetime",
+            "/painter-canvas-ui/native_tool_icon_preview_lifetime",
+            "/painter-canvas-ui/native_session_boolean_literals",
+            "/painter-canvas-ui/native_session_boolean_reader_writer",
+            "/painter-canvas-ui/renderer_native_size_draw",
+            "/painter-canvas-ui/renderer_native_activation_routes",
+            "/painter-canvas-ui/renderer_selection_reentry",
+            "/painter-canvas-ui/renderer_escape_owner_close",
+            "/painter-canvas-ui/renderer_stale_preview_disconnected",
+            "/painter-canvas-ui/renderer_modifier_activation",
+            "/painter-canvas-ui/renderer_selection_same_target",
+            "/painter-canvas-ui/channel_preview_components",
+            "/painter-canvas-ui/selection_and_visibility",
+            "/painter-canvas-ui/group_move_and_undo",
+            "/painter-canvas-ui/image_switch_disconnect",
+            "/painter-canvas-ui/long_press_cancel_destroy",
+            "/painter-canvas-ui/preview_pending_destroy",
+            "/painter-canvas-ui/popup_repeat_and_owner_close",
+            "/painter-canvas-ui/popup_native_events_and_parent",
+            "/painter-canvas-ui/popup_destroy_orders",
+            "/painter-canvas-ui/popup_properties_newer_same_image",
+            "/painter-canvas-ui/popup_creation_newer_same_image",
+            "/painter-canvas-ui/popup_properties_reentrant_owner_close",
+            "/painter-canvas-ui/popup_creation_reentrant_owner_close",
+            "/painter-canvas-ui/popup_properties_reentrant_image_switch",
+            "/painter-canvas-ui/popup_creation_reentrant_image_switch",
+            "/painter-canvas-ui/destroyed_tiles_reject_image",
+            "/painter-canvas-ui/image_switch_popup_owner_close",
+            "/painter-canvas-ui/image_switch_popup_newer_image",
+            "/painter-canvas-ui/parent_image_notify_owner_close",
+            "/painter-canvas-ui/popup_controls_and_clone",
+            "/painter-canvas-ui/mask_controls",
+            "/painter-canvas-ui/long_press_once",
+            "/painter-canvas-ui/reentrant_visibility_close",
+            "/painter-canvas-ui/multiple_reorder_one_undo",
+            "/painter-canvas-ui/hide_cancels_grab",
+            "/painter-canvas-ui/overlay_input_and_restore",
+            "/painter-canvas-ui/dock_restore_and_parent_close",
+            "/painter-canvas-ui/overlay_tools_and_colors",
+            "/painter-canvas-ui/overlay_tool_group",
+            "/painter-canvas-ui/tool_click_active_owner_close",
+            "/painter-canvas-ui/tool_click_expanded_owner_close",
+            "/painter-canvas-ui/tool_expander_owner_close",
+            "/painter-canvas-ui/tool_click_newer_selection",
+            "/painter-canvas-ui/tool_pending_refresh_owner_destroy",
+            "/painter-canvas-ui/tool_group_selection_restores_canvas_focus",
+            "/painter-canvas-ui/multiple_canvas_context_and_dock_transfer",
+            "/painter-canvas-ui/overlay_owner_destroy_callbacks"
+          ],
+          "duration_seconds": 46.10199165344238,
+          "stderr_lines": 80,
+          "cloud_provider_debug_notices": 1
+        },
+        {
+          "name": "painter-compact-options",
+          "cases": [
+            "/painter-compact-options/orientation-enum-contract",
+            "/painter-compact-options/orientation-integer-contract",
+            "/painter-compact-options/orientation-property-contract",
+            "/painter-compact-options/orientation-active-callers",
+            "/painter-compact-options/orientation-histogram-current-controls",
+            "/painter-compact-options/native-preview-factory-failure",
+            "/painter-compact-options/native-preview-factory-success",
+            "/painter-compact-options/native-property-controls",
+            "/painter-compact-options/native-enum-integer-helpers",
+            "/painter-compact-options/inventory-all-registered",
+            "/painter-compact-options/common-store-registration-close",
+            "/painter-compact-options/mypaint-store-page-retention",
+            "/painter-compact-options/native-editor-mixed-width",
+            "/painter-compact-options/paint-bidirectional-resource",
+            "/painter-compact-options/popup-repeat",
+            "/painter-compact-options/popup-native-events-window-destroy",
+            "/painter-compact-options/fresh-owner-lifecycle",
+            "/painter-compact-options/mixed-packing-owned-destruction",
+            "/painter-compact-options/native-viewport-composition",
+            "/painter-compact-options/registered-popup-contracts",
+            "/painter-compact-options/reentrant-destruction",
+            "/painter-compact-options/native-visibility-preference",
+            "/painter-compact-options/canvas-dock-tool-transfer-preference"
+          ],
+          "duration_seconds": 12.846604585647583,
+          "stderr_lines": 80,
+          "cloud_provider_debug_notices": 1
+        },
+        {
+          "name": "painter-widget-exceptions",
+          "cases": [
+            "/painter-widget-exceptions/standard/canvas-set-visible",
+            "/painter-widget-exceptions/standard/canvas-attach-dock",
+            "/painter-widget-exceptions/standard/layer-tiles-popup",
+            "/painter-widget-exceptions/unknown/canvas-set-visible",
+            "/painter-widget-exceptions/unknown/canvas-attach-dock",
+            "/painter-widget-exceptions/unknown/layer-tiles-popup"
+          ],
+          "duration_seconds": 8.123244047164917,
+          "stderr_lines": 80,
+          "cloud_provider_debug_notices": 1
+        }
+      ],
+      "actual_c11": true,
+      "lsan_enabled": false
+    }
+  },
+  "coverage_limits": [
+    "Only the three direct facade routes are fault-injected: canvas visibility, canvas dock attachment, layer-tiles popup creation. Shared helpers cover more callers, but those callers are not independently injected here.",
+    "No evidence of a naturally occurring user-triggered non-standard exception; deterministic containment defect only.",
+    "No arbitrary mid-operation rollback, initializer/dispatch/cleanup exception safety, all-vfunc acceptance, or cross-platform injection acceptance.",
+    "AddressSanitizer and UndefinedBehaviorSanitizer enabled for the complete application test links; LeakSanitizer disabled.",
+    "Seven ordinary Meson registrations, each normal 60-second timeout, serialized; no timeout multiplier, skip credit or parent fixture overrides.",
+    "Xvfb authentication and loopback-only listener verified; unauthenticated client rejected and server/authentication files cleaned.",
+    "Inherited desktop-icon, session-bus, plugin/localization fixture notices retained. Those external integrations are not validated."
+  ],
+  "scope_accounting": {
+    "original_c_entry_rows": 76,
+    "separate_core_hooks": 31,
+    "completion_count_unchanged": "141/661; 08.017 DONE, 08.018 open",
+    "related_legacy_entries": [
+      "gimp_display_shell_attach_on_canvas_view",
+      "gimp_display_shell_detach_on_canvas_view",
+      "gimp_display_shell_update_on_canvas_opacity",
+      "gimp_display_shell_update_on_canvas_views",
+      "gimp_layer_tile_view_new",
+      "gimp_popover_new",
+      "gimp_tool_tile_view_new"
+    ],
+    "qualification": "Closes the evidenced unknown-exception containment sub-obligation in two shared native helpers; it does not close all duties of any original row. The blocked perspective guard is excluded."
+  },
+  "verifier_negative_controls": [
+    {
+      "mutation": "drop_case",
+      "rejected": true
+    },
+    {
+      "mutation": "skip_case",
+      "rejected": true
+    },
+    {
+      "mutation": "sanitizer",
+      "rejected": true
+    },
+    {
+      "mutation": "nonzero",
+      "rejected": true
+    },
+    {
+      "mutation": "missing_registration",
+      "rejected": true
+    },
+    {
+      "mutation": "unclean_display",
+      "rejected": true
+    }
+  ],
+  "read_only_review": "Independent source review found no blockers in contract alignment, wrapped ABI, owner-specific injection, single consumption, state checks, cleanup or registration isolation.",
+  "test_source_seals": {
+    "app/tests/tests.c": "373bfc57b36015ff4853a11defd636c0abb1d9acc2740c47d056adb7ee43ec16",
+    "app/tests/test-painter-widget-exception-fault.h": "62f689efd0b27a723a5e15dd262a460b261e915799f53105e5bcd5b6ca2efdee",
+    "app/tests/test-painter-widget-exception-fault.cpp": "b083297a2a84c1ff7d050824602311cdaf103c958df6e9e69381ca85744c4507",
+    "app/tests/test-painter-widget-exceptions.c": "9c4097ee54ba64d29c070a060afa4cee87f9050ccf0612ce4342375b56808c43",
+    "app/tests/test-painter-compact-options.c": "b8659ad2b034736404d58af7bf6209fbbe5d89ffb73ea014429b65133beaaecb",
+    "app/tests/test-widget-store-orientation-callers.inc": "ad8d8b525b98b1360b32ba19d0e8467e4e0397116096e3a1df4e3685dd5448e6",
+    "app/tests/test-widget-store-orientation.inc": "83fac425c1114eaeb68a8b398a640241e10f80e521404175c1817e6f487b927b",
+    "app/tests/test-widget-store-native-controls.inc": "3b6a2b8e9edc7e1f03ea04ca833c395088a2c395a68a4512bd2d7d14284b84d4",
+    "app/tests/test-painter-canvas-ui.c": "313db1debd25117b05d178b39957f7f9ac2eb95fe214f8a1f9ff2f262353d41d",
+    "app/tests/test-painter-right-host-interactions.inc": "4f69a3addfd523391d16b3f7f57f83a85891e53c0839452969ba8bd977129b34",
+    "app/tests/test-painter-right-docks-conversion.inc": "7add88318d3336e4c56258b97e4de0daa9e51491a4a3f3d5448943cc5d19b9d1",
+    "app/tests/test-painter-right-docks-width.inc": "20d42c4ca6113aeee961fc5af75e67eae4c47a2cb13038baf1d722788c997e82",
+    "app/tests/test-painter-right-docks.inc": "3d28185fa49a36ad5437d4e51b79154c38e08255659a2ce3e84861441898aebd",
+    "app/tests/test-widget-store-native-dnd.inc": "da68516c6a5d4314c07874626a28f82ff4ba8f3de7866b6fd3116b5335472432"
+  },
+  "binary_seals": {
+    "native": {
+      "app/tests/painter-widget-exceptions": "7abe35b1639cda36c64bba6314d6ba1b6f7d423afb57e4cc392beeef2c94e7b2",
+      "app/tests/painter-canvas-ui": "09d7920cae4daa3c5ef3634028b998c2b2129116c5bee161c06bbf0bec551230",
+      "app/tests/painter-compact-options": "7976fb864985ddacb8a77b5dadb59b7d30b156164cf511fcc42a06f2005c6ef1",
+      "app/display/libappdisplay.a.p/gimppaintercanvasui.cpp.o": "2f12db8e15c11981b03febbcb0a212957ba249e8f912b4f7c8355f0ef7009cc0",
+      "app/widgets/libappwidgets.a.p/gimppainterlayertiles.cpp.o": "05c34b82c2a2cd19aaa6db2829176236a07403ff8bc6614e67888c47380b205d",
+      "compile_commands.json": "9d2de63681b42dc3d1bc9741b389ccfa5ec6de8e08d7d0e287d1a81e52a13613"
+    },
+    "asan": {
+      "app/tests/painter-widget-exceptions": "1b4ac93036318e8df982a02edc7ddc0f9a58096dd48958d4440a3aadfe3e5245",
+      "app/tests/painter-canvas-ui": "144af0f129185c92929aa4e9606f06ca0be9b6a582e02c5a6ce75bcdca9971f7",
+      "app/tests/painter-compact-options": "85ab6807ba16dd76a15b68754aa0e45cb54f51b02828b7b65f165c76ca2fe066",
+      "app/display/libappdisplay.a.p/gimppaintercanvasui.cpp.o": "c57376a57b931931a42c35f61e366c7ec8bae38e39e463557b11c9cdead6daef",
+      "app/widgets/libappwidgets.a.p/gimppainterlayertiles.cpp.o": "96f47351ca165974825651b9e3e4dd536d9de44016bf6a2a8cdefbe6fc2b4157",
+      "compile_commands.json": "0a28e6dd8ffe463af13cfbb2750a229ddb468bb072c0e0ef3d73f3de985e13e8"
+    }
+  },
+  "setup_attempts_retained": [
+    "Initial target compilation preceded Meson reconfiguration; explicit source-directory reconfiguration corrected target discovery.",
+    "One launcher invocation lacked the dependency environment and stopped before running tests; sourcing the existing environment corrected it. Neither attempt is acceptance evidence."
+  ],
+  "static_policy": {
+    "scanner": "PASS: 2462 sources; 683 reviewed data sites; 4 dormant legacy findings",
+    "regression_tests": 48
+  },
+  "evidence_sha256": {
+    "widget-candidate-native/widget-candidate-native.json": "4ecfa7f2e9aef66844bd5871b87f2b924b1c663e882e636c85b0edfef0c3bb24",
+    "widget-candidate-native/widget-candidate-native.txt": "9fcd7b005b49d806aed20ef044862ea9890bdcbc5661e858df7c8ea545ab86ba",
+    "widget-candidate-native/verified-results.json": "aed18716a08c0c1e5a8ef3b99fa6877ae98b6d6d49db86c9d05cb2e7065e8225",
+    "widget-candidate-asan/widget-candidate-asan.json": "5440ad496117d2aed6f8654e0d3a5c27789c56dedad81ce4a8b355e16aa73c99",
+    "widget-candidate-asan/widget-candidate-asan.txt": "79ff9b3f2074551dd866ccd1594554b71dbb43dabc17e2c536d02f7442a47b64",
+    "widget-candidate-asan/verified-results.json": "c3ce7f2454bd096705274cc7c3925940db77b09c9fc82950210f0fb706bd916d",
+    "baseline-source.json": "5ef3ba6278aa1b4f3e4a5f4903df8272f5ff9ad367d0a61b9aff1257a23a349e",
+    "baseline-causal.json": "4619491331e74bdb8f1f4c7e4f3d39f495b2e5d9a247dfc9fe481b9e5d5d58ba",
+    "verify_candidate.py": "ed1d51908a7f37aca001d619bcf674f6a36e760f895fb297f7359fcfe6c603cb",
+    "test_verify_candidate.py": "aa8cfef175baa04e7c3c19a8e85c8772debbdfd0c316ba9a20363f71de6cac5d",
+    "verifier-negative-results.json": "677f657b864cb19b6f5ea7da7096d2b415981d6749d3452a09d49d108cd1aa31",
+    "candidate-native-build.log": "9f3ab33757e391b2a325c6f490d465354d4cb6f3c4caf69cb51ecb62e176a43b",
+    "candidate-asan-build.log": "614feba5193240783522734afa4318d3ea0b27bb7555d257e7df07f54362ca70"
+  }
+}

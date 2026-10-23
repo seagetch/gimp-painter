@@ -128,6 +128,7 @@ template<class F> void use (GObject *owner, F&& f) noexcept {
     if (store && store->state () == BindingStore::State::active)
       store->with<Slot> (std::forward<F> (f));
   } catch (const std::exception& e) { g_warning ("Painter layer tiles: %s", e.what ()); }
+  catch (...) { g_warning ("Painter layer tiles: Unknown C++ exception"); }
 }
 template<class F> void dispatch (gpointer data, F&& f) noexcept {
   try {

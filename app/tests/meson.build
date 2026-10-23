@@ -264,6 +264,28 @@ if not meson.is_cross_build()
     ], suite: 'painter', is_parallel: false, timeout: 60)
 endif
 
+# Private ELF test seam: inject before a protected widget operation starts.
+painter_widget_exception_wrap = '-Wl,--wrap=_ZNK11GimpPainter12BindingStore12check_threadEv'
+if host_machine.system() == 'linux' and cxx.get_id() in ['gcc', 'clang'] and cxx.has_link_argument(painter_widget_exception_wrap)
+  painter_widget_exceptions_test = executable('painter-widget-exceptions',
+    'test-painter-widget-exceptions.c',
+    'test-painter-widget-exception-fault.cpp',
+    'tests.c',
+    dependencies: [libapp_dep, appstream],
+    link_with: apptests_links,
+    cpp_args: painter_cpp_args,
+    link_args: [painter_widget_exception_wrap],
+    override_options: ['c_std=c11', 'cpp_std=c++14'])
+  test('painter-widget-exceptions', painter_widget_exceptions_test,
+    depends: gimp_test_icon_dependencies,
+    env: [
+      'GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+      'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+      'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
+      'UI_TEST=yes',
+    ], suite: 'app', is_parallel: false, timeout: 60)
+endif
+
 painter_options_test = executable('gimp-painter-options',
   'test-gimp-painter-options.cpp', 'tests.c',
   dependencies: [libapp_dep, painter_mypaint_surface_dep, appstream],
