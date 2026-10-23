@@ -1,0 +1,105 @@
+{
+  "task": "06.026",
+  "work_id": "legacy-9a4db7e281551bade8cb",
+  "source_hunk": "01.002/000045",
+  "acceptance": "Unknown property IDs are sent to the correct parent handler",
+  "audited_head": "be8db6d13ba35bae31158ca5db82c75fc4c46934",
+  "audited_tree": "10623bbf3d78089f36880d540148b6e6b4ce547b",
+  "legacy_source": {
+    "path": "app/base/glib-cxx-impl.hpp",
+    "git_blob": "a2ad35e37a3e7a481698c1f8b78b71adb385f7d3",
+    "bytes": 18618,
+    "sha256": "5c50241a85ee4caaadb5c28cb4499c4348666281d24078c318cd31c643f04887",
+    "recovery_verified_with": "git hash-object plus independent Python Git-blob SHA-1",
+    "source_copy": "migration/tests/inherited-properties/legacy-source/glib-cxx-impl.hpp"
+  },
+  "legacy_mapping": [
+    {
+      "lines": "133-137,340",
+      "behavior": "Per-CStructs saved prior property handlers, initially null"
+    },
+    {
+      "lines": "185-204",
+      "behavior": "Local setter if present; otherwise saved prior setter for missing local accessor or out-of-range ID; out-of-range without saved handler warns"
+    },
+    {
+      "lines": "216-235",
+      "behavior": "Local getter transforms its result; otherwise saved prior getter for missing local accessor or out-of-range ID; out-of-range without saved handler warns"
+    },
+    {
+      "lines": "247-260",
+      "behavior": "Capture current class handler before replacing it; skip recapture when already wrapper handler"
+    },
+    {
+      "lines": "274-281,286-301",
+      "behavior": "Property base is existing property count plus one; appended properties installed at base plus array index"
+    }
+  ],
+  "native_mapping": [
+    {
+      "path": "app/painter/tests/test-hierarchy.c",
+      "lines": "37-68",
+      "behavior": "Base owns ID1; Child owns ID2. Child unknown IDs explicitly call statically captured immediate-parent setter/getter. Base rejects unhandled IDs"
+    },
+    {
+      "path": "app/painter/tests/test-hierarchy.cpp",
+      "lines": "58-86",
+      "behavior": "Tests construct defaults and explicit construction values, then ordinary g_object_set/get inherited/own roundtrips; does not call derived property vfunc directly"
+    },
+    {
+      "path": "app/painter/tests/test-hierarchy.cpp",
+      "lines": "241-248",
+      "behavior": "Native C property handlers select distinct BaseSlot/ChildSlot state via C++ entry points"
+    },
+    {
+      "path": "app/painter/boundary.hpp",
+      "lines": "54-78",
+      "behavior": "Exception/lifetime wrapper only, not property ownership or parent dispatch helper"
+    }
+  ],
+  "production_adapter_observations": [
+    {
+      "path": "app/core/gimpclonelayer.cpp",
+      "lines": "699-702",
+      "behavior": "Own ID1 getter; unknown IDs warn"
+    },
+    {
+      "path": "app/core/gimpfilterlayer.cpp",
+      "lines": "1387-1411",
+      "behavior": "Own IDs1..5 getter; unknown IDs warn"
+    },
+    {
+      "path": "app/core/gimpperspectiveguide.cpp",
+      "lines": "31-50",
+      "behavior": "Own property setters/getters; unknown IDs warn"
+    },
+    {
+      "path": "app/core/gimpperspectiveguideundo.cpp",
+      "lines": "30-34",
+      "behavior": "Own construct property ID1 setter; unknown IDs warn"
+    },
+    {
+      "path": "app/paint/gimpfillbrush.cpp",
+      "lines": "54-55",
+      "behavior": "Own IDs1/2 setters/getters; unknown IDs warn"
+    },
+    {
+      "path": "app/paint/gimppaintersmudge.cpp",
+      "lines": "142-159",
+      "behavior": "Own property setters/getters; unknown IDs warn"
+    },
+    {
+      "path": "app/paint/painter-mypaint-surface/gimp-painter-options.cpp",
+      "lines": "273-305",
+      "behavior": "Own settings/JSON/state setters/getters; unknown IDs warn"
+    },
+    {
+      "path": "app/paint/painter-mypaint-surface/gimp-painter-session.cpp",
+      "lines": "74-85",
+      "behavior": "Own options/active/error setters/getters; unknown IDs warn"
+    }
+  ],
+  "conclusion": "The common native hierarchy fallback exists. New direct C-vfunc tests observe its setter/getter dispatch counts, values and terminal warning; ordinary GObject owner-class dispatch is independently distinguished.",
+  "public_parent": "b83e688fcb6cf310136af8c348e0a74e9c16d0fb",
+  "audit_scope": "Source mapping before the new property dispatch regressions; current runtime evidence is in native.json and sanitizers.json"
+}

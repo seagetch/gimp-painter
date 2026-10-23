@@ -537,13 +537,14 @@
         "app/painter/tests/test-hierarchy.cpp"
       ],
       "test_ids": [
-        "/painter/hierarchy/properties-interface"
+        "/painter/hierarchy/native-property-owner-dispatch",
+        "/painter/hierarchy/inherited-property-delegation"
       ],
       "reports": [
-        "migration/tests/painter-foundation-acceptance-native.json",
-        "migration/tests/painter-foundation-acceptance-sanitizers.json"
+        "migration/tests/inherited-properties/native.json",
+        "migration/tests/inherited-properties/sanitizers.json"
       ],
-      "scope_or_gap": "Actual base/derived GTypes share one store with distinct slots of the same Impl type; inherited and own properties plus interface reads roundtrip."
+      "scope_or_gap": "Original property delegation verified by direct real child C vfunc calls and separately measured GObject owner-class dispatch. Base/child callbacks counted once; unknown ID reaches fixed parent and preserves warning/output/state. Exact one legacy duty accepted; native and ASan/UBSan63, Meson63. Production dispatch unchanged. LSan, teardown, platform and whole-application gates separate."
     },
     {
       "id": "06.027",
