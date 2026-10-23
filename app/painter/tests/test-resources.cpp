@@ -274,12 +274,35 @@ void string_ownership ()
 
 void mutex_guard ()
 {
+  static_assert (!std::is_copy_constructible<MutexGuard>::value, "A lock has one scoped owner");
+  static_assert (!std::is_move_constructible<MutexGuard>::value, "A lock is not moved across scopes/threads");
+  static_assert (std::is_nothrow_destructible<MutexGuard>::value, "Unlock must not throw");
   GMutex mutex;
   g_mutex_init (&mutex);
-  try { MutexGuard guard (mutex); throw 1; }
-  catch (int) {}
-  g_assert_true (g_mutex_trylock (&mutex));
-  g_mutex_unlock (&mutex);
+  auto available_to_other_thread = [&] {
+    auto *thread = g_thread_new ("painter-mutex-probe", [] (gpointer data) -> gpointer {
+      auto *mutex = static_cast<GMutex *> (data);
+      const bool acquired = g_mutex_trylock (mutex);
+      if (acquired) g_mutex_unlock (mutex);
+      return GINT_TO_POINTER (acquired);
+    }, &mutex);
+    return GPOINTER_TO_INT (g_thread_join (thread)) != 0;
+  };
+  for (int path = 0; path < 3; ++path)
+    {
+      bool reached_end = false;
+      auto operation = [&] {
+        MutexGuard guard (mutex);
+        g_assert_false (available_to_other_thread ());
+        if (path == 0) return;
+        if (path == 1) throw 1;
+        reached_end = true;
+      };
+      try { operation (); }
+      catch (int value) { g_assert_cmpint (path, ==, 1); g_assert_cmpint (value, ==, 1); }
+      g_assert_cmpint (reached_end, ==, path == 2);
+      g_assert_true (available_to_other_thread ());
+    }
   g_mutex_clear (&mutex);
 }
 
