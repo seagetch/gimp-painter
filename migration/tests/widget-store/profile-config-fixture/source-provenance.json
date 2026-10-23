@@ -1,0 +1,61 @@
+{
+  "base_commit": "01dc9775aa1d8c835da53f95235e7838b364e358",
+  "base_tree": "2e9e6a85f64daafa4d3377f1d88f29f7d711d6b3",
+  "earlier_gradient_helper": {
+    "bytes": 9030,
+    "git_blob": "71c366a172da6ed7c4a79b323f615525fc90d5f8",
+    "path": "app/tests/tests.c",
+    "publication_attribution": "This profile-config fixture prerequisite includes the earlier default-gradient-search helper, from the last public preimage, in the same tests.c source delta.",
+    "published": false,
+    "sha256": "1e2f4a893be5a3cae3213bc96c765571497db1e7f73a8e9388628c3cd6a8d74e"
+  },
+  "original_gradient_diagnostic_and_initial_helper_evidence_sha256": "2d310d9d19d604a62085221d9783b684822140025c92b085587cb3900045801c",
+  "preservation_checkpoint": {
+    "entries": 21054,
+    "scope": "Complete runtime preservation checkpoint verified by parent before final compact profile-fixture handoff",
+    "sha256": "2c55c582071a0325b2a889d9cd4df52781d47b65a7d888d76fd4d7781ac73423",
+    "verified_by_parent": true,
+    "version": 129
+  },
+  "runtime_attempts_sha256": "f9a88a906f6850417c3d45af9b598944f759e9427c80b035d785436eb12f948d",
+  "source80_scope": "Private runtime source closure, including unrelated unpublished DnD preparation. This package publishes only the three allowlisted test paths.",
+  "source80_sha256": "42c23a090852dd16a0d62f9ae760f0d2f69ba3bf70b97d62237dc310af0af89e",
+  "sources": {
+    "app/tests/meson.build": {
+      "candidate": {
+        "bytes": 34013,
+        "git_blob": "10ae36702ce6da0cb73809efa676dfee696ded67",
+        "sha256": "05906eae7404d45b5f0cd2dac9e33adc32bd9969c228eb0cc88b0797b3739530"
+      },
+      "preimage": {
+        "bytes": 33983,
+        "git_blob": "34cd5ead599e0cfc473f3df33dca15b78b1e2a42",
+        "sha256": "caa09872cd7f30e083f204435554884990b926b2c098fae7472fd1b91f3bf1d5"
+      },
+      "preimage_present": true
+    },
+    "app/tests/test-gimp-test-config-fixture.c": {
+      "candidate": {
+        "bytes": 12887,
+        "git_blob": "bb4acea4865a6b9b6bf77c0ed0751e5a7f5d0a0a",
+        "sha256": "ab87dd34e9c2b291e159727635cd932c8250dc0a301aa9b5d450e6603052098d"
+      },
+      "preimage": null,
+      "preimage_present": false
+    },
+    "app/tests/tests.c": {
+      "candidate": {
+        "bytes": 13161,
+        "git_blob": "42340ccb4e96f4a0015423f789323f7576c5b66f",
+        "sha256": "373bfc57b36015ff4853a11defd636c0abb1d9acc2740c47d056adb7ee43ec16"
+      },
+      "preimage": {
+        "bytes": 7226,
+        "git_blob": "5a23c132debf949fc1194f77ca08d2b2575d1878",
+        "sha256": "77a90bd4d367b905cf28ada9d4f2f288550b2af248e38d30f815d462c55dccf2"
+      },
+      "preimage_present": true
+    }
+  },
+  "syntax_checks": "Four syntax-only native/ASan source checks were historical preparation, not link or runtime acceptance."
+}
