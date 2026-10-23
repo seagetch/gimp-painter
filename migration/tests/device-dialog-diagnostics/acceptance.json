@@ -1,0 +1,194 @@
+{
+  "schema_version": 1,
+  "task": "34.003/dialog-device-diagnostics",
+  "status": "accepted",
+  "date": "2026-10-04",
+  "source_identity": {
+    "base_commit": "48449764e08a76d123e324ea55a3d75b5ae4fb46",
+    "base_tree": "e141f70fde8d11deaf57ee3283db7bd9b5ea064a",
+    "source_sha256": {
+      "app/display/gimpdisplayshell-tool-events.c": "85d4fb2bd7e3623fc246ef336dc759a056d79988f2817c995e74e776b8d5ff20",
+      "app/tests/test-device-dialog-events.c": "a4eb2a4831d0d4d91dde55fc9558e99e16e9450462be3e0384d2f807abc03ed9",
+      "app/tests/meson.build": "e81af050db8cf9d5b4cad66ef24bc39ba2b3ab848510cea607b0b7239f6d27f4",
+      "migration/tests/device-dialog-diagnostics/run-regression.py": "e04710358d00344bb48ee8dd25d7f66bc80f66d250e203abf7b217725ac2c1ca"
+    },
+    "unchanged_device_source_sha256": {
+      "app/widgets/gimpdeviceinfo-coords.c": "0c0ce1d51c196bd1722b1178317a1d4139a334af887c34924273cec019387bbd",
+      "app/widgets/gimpdeviceinfo.c": "19cf0a2c3450588ce47c076514dc3cf3b17cb2903dd896956e6518a677fa5327",
+      "app/widgets/gimpdevicemanager.c": "a305dfcc1ae097656daf434f93e9a7adee575bde34ac98b71c0243fe35420481",
+      "app/widgets/gimpdevices.c": "d684d90e352154acc4415d9c473dba73df91b897c722ab9332e7ff0b635d194f"
+    },
+    "baseline_application_sha256": "2d7d3c3e2a995207bdfc64d11d7ed3714d9e54a693abc45da790758d4f0eedb1",
+    "fixed_application_sha256": "a725bca1b56f73655ccd17a000265bebdfe6404f79a07a3c3872d7d751dfad53",
+    "helper_sha256": "ee327f9bdc614ad02808f48be0e2b2a7f1a6dd385139cbedc83a565a93b231e6",
+    "fixture_sha256": "f552c90e4ce1132310e3cf5e5beb01d1b26dbe07377c3ed1e0fc183a4f68d067",
+    "gtk_runtime_sha256": "a56aed9f46dc47d054555880c6dc543f41846b0732520c7d2e5ef45c5c7f2ddf",
+    "gtk_runtime_package": "libgtk-3-0t64 3.24.49-3 amd64",
+    "glib_runtime": "2.84.4",
+    "dependency_manifest_sha256": "553f4051b91626bc2f5470373fd3e8d67c8d61ec62103b2addcab7a16492129f",
+    "upstream_gimp_pin": "95f6410f25c5186686db7a489d79c1e79187cd41",
+    "upstream_gtk_contract_pin": "2776f156e2405727faea5d7ffa5bd035dc3945c0",
+    "upstream_source_sha256": {
+      "95f6410f25c5186686db7a489d79c1e79187cd41/app/core/gimp.c": "e26860a4dcdeb9ea377bdc3a268faaeff57464daf87cb6f00841bbe06be93d0f",
+      "95f6410f25c5186686db7a489d79c1e79187cd41/app/display/gimpdisplayshell-tool-events.c": "15fe568ff54e366d3538e8c9fff4eef831b9bfc59c2314a2da35fc1bf25653b1",
+      "95f6410f25c5186686db7a489d79c1e79187cd41/app/widgets/gimpdeviceinfo-coords.c": "0c0ce1d51c196bd1722b1178317a1d4139a334af887c34924273cec019387bbd",
+      "95f6410f25c5186686db7a489d79c1e79187cd41/app/widgets/gimpdeviceinfo.c": "d5332582a0a015234b58e18610094e2c618514ff9f8581daf43524dd383e1d49",
+      "95f6410f25c5186686db7a489d79c1e79187cd41/app/widgets/gimpdevicemanager.c": "a305dfcc1ae097656daf434f93e9a7adee575bde34ac98b71c0243fe35420481",
+      "95f6410f25c5186686db7a489d79c1e79187cd41/app/widgets/gimpdevices.c": "d684d90e352154acc4415d9c473dba73df91b897c722ab9332e7ff0b635d194f",
+      "gtk3/gdk/gdkdevice.c": "14dd7d86064d3a7c6b10e74b8bcc26e8594c7e20f5f2bedf5965b086d77fb9ad",
+      "gtk3/gdk/gdkevents.c": "de3d774c19a12aa3b45160f5eeb87d73c1cefc47862df67584b3e2ee3406b009",
+      "gtk3/gdk/wayland/gdkdevice-wayland.c": "5c8bcf0884d59f10ae240fbfa2f8ab60e14428cb798d48905238cf5362369f7b",
+      "gtk3/gdk/x11/gdkdevice-core-x11.c": "980dcbc37b7d41b38f9cd6302678d1381431482e3bb70d3b193dbb3bbc002c5e",
+      "gtk3/gdk/x11/gdkdevice-xi2.c": "79fdc4d67e8728738c0db6b3710e9dc1c85f21c6b385a5ab4965bdcd68014185"
+    }
+  },
+  "cause": {
+    "boundary": "Canvas tool-event sampling before first-focus device discovery",
+    "missing_current_device": true,
+    "disabled_or_unrecognized_device_cause": false,
+    "native_event_direction": "focus-out inferred from source/stack;event.in was not captured",
+    "first_failure_stack": "stack/app.stderr lines90-124;second state stack lines147-181",
+    "initialization_reentry_in_native_stack": false,
+    "initialization_reentry_covered_by_regression": true,
+    "typed_ownership": "Existing C/GObject interfaces;no new storage/owner/state",
+    "fix": "Return FALSE before sample/transform/tool dispatch while current device unavailable;keep first focus handling and device selection first",
+    "valid_sampling_and_device_policy_changed": false
+  },
+  "manual": {
+    "stack": {
+      "actual_critical_messages": 16,
+      "device_critical_messages": 16,
+      "old_gtk_window_accessible_assertions": 0,
+      "bounded_stacks": 2,
+      "disabled_xtest_mode_messages": 1,
+      "exit_code": 0,
+      "started_utc": "2026-10-04T09:15:12Z",
+      "ended_utc": "2026-10-04T09:21:28Z",
+      "instrumented": true,
+      "actions": [
+        "visible menu New Filter",
+        "Escape Cancel",
+        "two ineffective Ctrl+Q attempts",
+        "visible File/Quit normal exit"
+      ]
+    },
+    "native": {
+      "actual_critical_messages": 0,
+      "device_critical_messages": 0,
+      "old_gtk_window_accessible_assertions": 0,
+      "bounded_stacks": 0,
+      "disabled_xtest_mode_messages": 1,
+      "exit_code": 0,
+      "started_utc": "2026-10-04T09:32:51Z",
+      "ended_utc": "2026-10-04T09:37:14Z",
+      "instrumented": false,
+      "actions": [
+        "visible menu New Filter",
+        "Escape Cancel",
+        "visible menu New Filter reopen",
+        "native pointer Cancel",
+        "visible File/Quit normal exit"
+      ]
+    },
+    "fixture": "Synthetic3072x3072 RGB U8 nonlinear PNG",
+    "profile_data": "Copied same source directories from prior private synthetic dialog session;contents not published",
+    "screenshots_published": false,
+    "visual_states": "Direct native UI observation;UTC operation journal archived",
+    "image_edits_or_discard": false,
+    "whole_log_clean": false
+  },
+  "regression": {
+    "results": [
+      {
+        "name": "baseline-device-dialog-events",
+        "started_utc": "2026-10-04T09:44:21.589548+00:00",
+        "ended_utc": "2026-10-04T09:44:23.080388+00:00",
+        "exit_code": -5,
+        "expected_baseline_failure": true,
+        "passed": true,
+        "log": "baseline-device-dialog-events.log"
+      },
+      {
+        "name": "normal-device-dialog-events",
+        "started_utc": "2026-10-04T09:44:23.081333+00:00",
+        "ended_utc": "2026-10-04T09:44:24.904506+00:00",
+        "exit_code": 0,
+        "expected_baseline_failure": false,
+        "passed": true,
+        "log": "normal-device-dialog-events.log"
+      },
+      {
+        "name": "normal-painter-navigation-events",
+        "started_utc": "2026-10-04T09:44:24.905213+00:00",
+        "ended_utc": "2026-10-04T09:44:26.848640+00:00",
+        "exit_code": 0,
+        "expected_baseline_failure": false,
+        "passed": true,
+        "log": "normal-painter-navigation-events.log"
+      },
+      {
+        "name": "sanitized-device-dialog-events",
+        "started_utc": "2026-10-04T09:44:26.849602+00:00",
+        "ended_utc": "2026-10-04T09:44:29.728597+00:00",
+        "exit_code": 0,
+        "expected_baseline_failure": false,
+        "passed": true,
+        "log": "sanitized-device-dialog-events.log"
+      },
+      {
+        "name": "sanitized-painter-navigation-events",
+        "started_utc": "2026-10-04T09:44:29.729348+00:00",
+        "ended_utc": "2026-10-04T09:44:32.601416+00:00",
+        "exit_code": 0,
+        "expected_baseline_failure": false,
+        "passed": true,
+        "log": "sanitized-painter-navigation-events.log"
+      }
+    ],
+    "normal_case_count": 5,
+    "sanitizer_case_count": 5,
+    "baseline_negative_scope": "Same new test;only shell-event translation unit reverted to pinned baseline;expected exact GimpDeviceInfo fatal critical",
+    "initial_harness_failure": "Missing draw-admission wait caused hook-count assertion;corrected and retained separately",
+    "shell_without_display_exit_code": 77,
+    "disabled_slave_mice_checked": 1,
+    "instrumented_sources": [
+      "app/core/gimp.c",
+      "app/display/gimpdisplayshell-tool-events.c",
+      "app/tests/test-device-dialog-events.c",
+      "app/tests/test-painter-navigation-events.c",
+      "app/widgets/gimpdeviceinfo-coords.c",
+      "app/widgets/gimpdeviceinfo.c",
+      "app/widgets/gimpdevicemanager.c",
+      "app/widgets/gimpdevices.c"
+    ],
+    "instrumented_unit_count": 8,
+    "flags": [
+      "address",
+      "undefined",
+      "float-cast-overflow"
+    ],
+    "leak_sanitizer": false,
+    "other_gimp_cpp_and_dependencies_instrumented": false,
+    "full_tablet_pressure_runtime": false,
+    "receipt": "regression-final/regression.json",
+    "fixture_setup": "Block canvas callbacks only during first draw;unblock before all regression inputs;readiness/admission assertions retained",
+    "shell_without_display_exit_provenance": "candidate-shell-observed-result.json;observed executor result,not an original launcher exit file",
+    "reused_output_failure_probe": "stale-status-probe/verification.json;wrong digest rejects before binary execution;status incomplete"
+  },
+  "diagnostics": {
+    "suppression_added": false,
+    "startup_resource_notices_retained": true,
+    "gtk_dependency_defects_fixed": false,
+    "stack_method": "Diagnostic-only interposer,max32symbol frames;original diagnostic forwarded unchanged",
+    "locals_memory_environment_core_dumped": false,
+    "ptrace_used": false
+  },
+  "remaining_gates": [
+    "34.003/gtk-atk-menu-guards",
+    "real tablet/pressure/tilt",
+    "device hot-unplug/detached non-NULL info",
+    "Wayland/other platforms",
+    "original aggregate/release gates"
+  ],
+  "logs": "log-integrity.json"
+}
