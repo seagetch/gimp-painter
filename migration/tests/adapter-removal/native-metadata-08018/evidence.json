@@ -1,0 +1,750 @@
+{
+  "status": "PASS",
+  "scope": "08.018 native metadata policy prerequisite only",
+  "base_commit": "adfb8e289bc4eeccbd5bffa1bbe6da7840157294",
+  "base_tree": "56f2b1595a9c385950704a435ec73e3f085262d9",
+  "runtime_execution": false,
+  "build_execution": false,
+  "whole_08018_completion": false,
+  "changes": {
+    "migration/contracts/legacy-adapter-removal.json": {
+      "old": {
+        "sha256": "253d9eeb0d47e3b61116a1f49d982ca19a7f746b829ae8dd9e022e85ac5471b0",
+        "git_blob_sha1": "a54b064af7cc018139b07f8a9eafa0bfc5a7bc28",
+        "bytes": 196795
+      },
+      "new": {
+        "sha256": "6134c86acbdaebd752ce5e0105f0f849ce4d62cb1a164fefb8603b53510d7a4f",
+        "git_blob_sha1": "f77d23e004f9e0ec88b693afa87172cea0515f9a",
+        "bytes": 198523
+      }
+    },
+    "tools/tests/test_painter_legacy_adapters.py": {
+      "old": {
+        "sha256": "ce02bed96e6b01e7bbed2b29081dbc5d531214fcfa5e701cdb811232de6536e2",
+        "git_blob_sha1": "3430199f0df998cc8083e1dda0a0e208102bcbf6",
+        "bytes": 11144
+      },
+      "new": {
+        "sha256": "21a48d24fc672775b3869ff23cb89056e5577fce4440f88eb32829a92b585969",
+        "git_blob_sha1": "9f05668ab4889ad0630c75a25b18d126cbac4731",
+        "bytes": 17110
+      }
+    }
+  },
+  "preservation": {
+    "existing_entries": 570,
+    "existing_occurrences": 681,
+    "new_entries": 2,
+    "new_occurrences": 2,
+    "proposed_entries": 572,
+    "proposed_occurrences": 683,
+    "existing_data_entries_byte_and_semantic_unchanged": true,
+    "existing_reviews_byte_and_semantic_unchanged": true,
+    "all_other_policy_fields_unchanged": true,
+    "dormant_exceptions_unchanged": 4,
+    "scanner_unchanged": true
+  },
+  "scanner": {
+    "path": "tools/check_painter_legacy_adapters.py",
+    "sha256": "56f47a7f0598bd2f5450e2eb2ff7465f37eccc70b494949597d790c550fec4d5",
+    "git_blob_sha1": "96fb1292be31dde22134505f9f947a6f0f404166",
+    "bytes": 15710,
+    "unchanged": true
+  },
+  "added_exact_sites": [
+    {
+      "path": "app/widgets/gimpeditor-cxx.cpp",
+      "operation": "g_object_set_qdata_full",
+      "sha256": "41f19886d64f6911801df4adead4965ff28daa68f973131a5646e7596ee944a3",
+      "count": 1,
+      "reason": "Native GIMP_HELP_ID text copied with g_strdup and released by g_free on the arrow; the action adapter frees its temporary help copy on return. Dropdown behavior remains owned only by BindingStore DropdownSlot.",
+      "provenance": "native-editor-help"
+    },
+    {
+      "path": "app/widgets/gimppaintercompactoptions.cpp",
+      "operation": "g_object_get_data",
+      "sha256": "5aa62660106766da81a0f878ff53a3627f514343ed8e82c15687fc478ad74bfb",
+      "count": 1,
+      "reason": "Borrowed radio-button metadata installed by libgimpwidgets/gimppropwidgets.c native radio frame/box constructors; used only to find the native parent box. Presentation and Saved retain orientation/restoration state in BindingStore, with no new attachment.",
+      "provenance": "native-radio-button"
+    }
+  ],
+  "added_reviews": {
+    "native-editor-help": {
+      "paths": [
+        "app/widgets/gimpeditor-cxx.cpp"
+      ],
+      "reason": "Native GIMP_HELP_ID text copied with g_strdup and released by g_free on the arrow; the action adapter frees its temporary help copy on return. Dropdown behavior remains owned only by BindingStore DropdownSlot."
+    },
+    "native-radio-button": {
+      "paths": [
+        "app/widgets/gimppaintercompactoptions.cpp"
+      ],
+      "reason": "Borrowed radio-button metadata installed by libgimpwidgets/gimppropwidgets.c native radio frame/box constructors; used only to find the native parent box. Presentation and Saved retain orientation/restoration state in BindingStore, with no new attachment."
+    }
+  },
+  "source_gate": {
+    "scope": "All app C/C++ source/header/include files, every potentially active configuration; tests excluded",
+    "source_count": 2462,
+    "observed_and_approved_data_occurrences": 683,
+    "baseline_status": "FAIL",
+    "baseline_exit": 1,
+    "baseline_errors": [
+      "unaudited object data site: ('app/widgets/gimpeditor-cxx.cpp', 'g_object_set_qdata_full', '41f19886d64f6911801df4adead4965ff28daa68f973131a5646e7596ee944a3')",
+      "unaudited object data site: ('app/widgets/gimppaintercompactoptions.cpp', 'g_object_get_data', '5aa62660106766da81a0f878ff53a3627f514343ed8e82c15687fc478ad74bfb')"
+    ],
+    "candidate_status": "PASS",
+    "candidate_exit": 0,
+    "unchanged_active_findings": [
+      {
+        "path": "app/xcf/painter-xcf-preserve.cpp",
+        "line": 513,
+        "kind": "legacy ref acquisition or reviewed local construction",
+        "symbol": "ref",
+        "sha256": "b1633c49d0f01b441f0b686bcb3de0ac25f671ada8aa02a1e759ffffc04ec3ba"
+      }
+    ],
+    "unchanged_dormant_findings": [
+      {
+        "path": "app/tools/gimptransformgridtoolundo.c",
+        "line": 106,
+        "kind": "obsolete pixel API",
+        "symbol": "tile_manager_ref",
+        "sha256": "393113d77828e476912fd697440a3ca9cd2ca575731cba7e22db047cde13d6ed"
+      },
+      {
+        "path": "app/tools/gimptransformgridtoolundo.c",
+        "line": 164,
+        "kind": "obsolete bridge/pixel identifier",
+        "symbol": "TileManager",
+        "sha256": "3ce5bc6d57162919cef3e173e3216f2b4be6eee09623ec08e9eb41d4b98455b1"
+      },
+      {
+        "path": "app/tools/gimptransformgridtoolundo.c",
+        "line": 209,
+        "kind": "obsolete pixel API",
+        "symbol": "tile_manager_unref",
+        "sha256": "51e3126a68bbb2be479e77becaac755b88a9c29bfd7c4d540e1e4cbe89171629"
+      },
+      {
+        "path": "app/tools/gimptransformgridtoolundo.h",
+        "line": 43,
+        "kind": "obsolete bridge/pixel identifier",
+        "symbol": "TileManager",
+        "sha256": "3ce5bc6d57162919cef3e173e3216f2b4be6eee09623ec08e9eb41d4b98455b1"
+      }
+    ],
+    "baseline_candidate_inputs_sites_findings_identical": true,
+    "canonical_serialization": "UTF-8 JSON, sorted keys, separators comma/colon, ensure_ascii=false",
+    "sources_canonical_sha256": "cd8003d731be910612a4de1ce9f3a5f921639c669014f3dd217c59a37cc9dc83",
+    "data_sites_canonical_sha256": "26f151767fdd4c21b828820457574390bb56fe7f07d5ee62b130505f2090cd0a",
+    "baseline_raw_report": {
+      "sha256": "58de27213b674a7371f270588997cfc2246b468571c03250f3da67e46732ef82",
+      "git_blob_sha1": "3ddc3e4c71d31b2b5cc72b27513207253faa758d",
+      "bytes": 989805
+    },
+    "candidate_raw_report": {
+      "sha256": "68642fbaeddbb0296c383c15c69249b208e02136f41ff85dcfddf19c2b873e0a",
+      "git_blob_sha1": "56d6539d7b5bc427831616258a2db4a1c3da20e6",
+      "bytes": 989468
+    },
+    "isolated_replays_equal_prior_live_reports": true
+  },
+  "guard_tests": {
+    "baseline_count": 39,
+    "candidate_count": 48,
+    "added_count": 9,
+    "existing_test_methods_ast_unchanged": true,
+    "added_test_methods": [
+      "NativeWidgetMetadataTests.test_duplicate_native_metadata_calls_rejected",
+      "NativeWidgetMetadataTests.test_duplicate_native_metadata_policy_rejected",
+      "NativeWidgetMetadataTests.test_exact_native_metadata_calls",
+      "NativeWidgetMetadataTests.test_mutated_native_metadata_calls_rejected",
+      "NativeWidgetMetadataTests.test_native_metadata_review_path_drift_rejected",
+      "NativeWidgetMetadataTests.test_native_metadata_source_path_drift_rejected",
+      "NativeWidgetMetadataTests.test_policy_pins_exact_native_metadata_sites",
+      "NativeWidgetMetadataTests.test_unknown_native_metadata_provenance_rejected",
+      "NativeWidgetMetadataTests.test_unknown_qdata_site_rejected"
+    ],
+    "baseline_exit": 0,
+    "candidate_exit": 0,
+    "candidate_output": "test_bridge_macros (__main__.LexicalTests.test_bridge_macros) ... ok\ntest_comments_quoted_and_raw_strings (__main__.LexicalTests.test_comments_quoted_and_raw_strings) ... ok\ntest_data_calls_and_function_addresses (__main__.LexicalTests.test_data_calls_and_function_addresses) ... ok\ntest_elif_possible_and_impossible (__main__.LexicalTests.test_elif_possible_and_impossible) ... ok\ntest_elifdef_remains_possible (__main__.LexicalTests.test_elifdef_remains_possible) ... ok\ntest_includes (__main__.LexicalTests.test_includes) ... ok\ntest_interface_comments_and_lines (__main__.LexicalTests.test_interface_comments_and_lines) ... ok\ntest_literal_arguments_affect_fingerprint (__main__.LexicalTests.test_literal_arguments_affect_fingerprint) ... ok\ntest_malformed_source_is_not_a_pass (__main__.LexicalTests.test_malformed_source_is_not_a_pass) ... ok\ntest_modern_helpers_and_placement_new (__main__.LexicalTests.test_modern_helpers_and_placement_new) ... ok\ntest_multiline_directive_comment_cannot_hide_branch (__main__.LexicalTests.test_multiline_directive_comment_cannot_hide_branch) ... ok\ntest_namespace_alias (__main__.LexicalTests.test_namespace_alias) ... ok\ntest_nested_ref_and_stored_alias (__main__.LexicalTests.test_nested_ref_and_stored_alias) ... ok\ntest_nested_zero_and_else (__main__.LexicalTests.test_nested_zero_and_else) ... ok\ntest_old_identifiers (__main__.LexicalTests.test_old_identifiers) ... ok\ntest_pasted_data_call (__main__.LexicalTests.test_pasted_data_call) ... ok\ntest_pixel_functions (__main__.LexicalTests.test_pixel_functions) ... ok\ntest_private_placement_without_wrapper_name (__main__.LexicalTests.test_private_placement_without_wrapper_name) ... ok\ntest_simple_header_macro (__main__.LexicalTests.test_simple_header_macro) ... ok\ntest_split_identifier_and_paste (__main__.LexicalTests.test_split_identifier_and_paste) ... ok\ntest_unknown_branches_all_scanned (__main__.LexicalTests.test_unknown_branches_all_scanned) ... ok\ntest_duplicate_native_metadata_calls_rejected (__main__.NativeWidgetMetadataTests.test_duplicate_native_metadata_calls_rejected) ... ok\ntest_duplicate_native_metadata_policy_rejected (__main__.NativeWidgetMetadataTests.test_duplicate_native_metadata_policy_rejected) ... ok\ntest_exact_native_metadata_calls (__main__.NativeWidgetMetadataTests.test_exact_native_metadata_calls) ... ok\ntest_mutated_native_metadata_calls_rejected (__main__.NativeWidgetMetadataTests.test_mutated_native_metadata_calls_rejected) ... ok\ntest_native_metadata_review_path_drift_rejected (__main__.NativeWidgetMetadataTests.test_native_metadata_review_path_drift_rejected) ... ok\ntest_native_metadata_source_path_drift_rejected (__main__.NativeWidgetMetadataTests.test_native_metadata_source_path_drift_rejected) ... ok\ntest_policy_pins_exact_native_metadata_sites (__main__.NativeWidgetMetadataTests.test_policy_pins_exact_native_metadata_sites) ... ok\ntest_unknown_native_metadata_provenance_rejected (__main__.NativeWidgetMetadataTests.test_unknown_native_metadata_provenance_rejected) ... ok\ntest_unknown_qdata_site_rejected (__main__.NativeWidgetMetadataTests.test_unknown_qdata_site_rejected) ... ok\ntest_another_path_not_exempt (__main__.PolicyTests.test_another_path_not_exempt) ... ok\ntest_dormant_exception_and_reenable (__main__.PolicyTests.test_dormant_exception_and_reenable) ... ok\ntest_duplicate_call_rejected (__main__.PolicyTests.test_duplicate_call_rejected) ... ok\ntest_duplicate_policy_rejected (__main__.PolicyTests.test_duplicate_policy_rejected) ... ok\ntest_empty_scope_cannot_pass (__main__.PolicyTests.test_empty_scope_cannot_pass) ... ok\ntest_exact_approved_site (__main__.PolicyTests.test_exact_approved_site) ... ok\ntest_function_pointer_alias_rejected (__main__.PolicyTests.test_function_pointer_alias_rejected) ... ok\ntest_malformed_source_fails_scan (__main__.PolicyTests.test_malformed_source_fails_scan) ... ok\ntest_missing_upstream_provenance_rejected (__main__.PolicyTests.test_missing_upstream_provenance_rejected) ... ok\ntest_new_payload_rejected (__main__.PolicyTests.test_new_payload_rejected) ... ok\ntest_registered_test_source_cannot_hide (__main__.PolicyTests.test_registered_test_source_cannot_hide) ... ok\ntest_removed_site_requires_review (__main__.PolicyTests.test_removed_site_requires_review) ... ok\ntest_same_args_do_not_reuse_declaration_exception (__main__.PolicyTests.test_same_args_do_not_reuse_declaration_exception) ... ok\ntest_symlink_requires_scope_review (__main__.PolicyTests.test_symlink_requires_scope_review) ... ok\ntest_syntax_exception_not_general_ref_permission (__main__.PolicyTests.test_syntax_exception_not_general_ref_permission) ... ok\ntest_unknown_provenance_rejected (__main__.PolicyTests.test_unknown_provenance_rejected) ... ok\ntest_untracked_suffixes_scanned (__main__.PolicyTests.test_untracked_suffixes_scanned) ... ok\ntest_wrong_review_path_rejected (__main__.PolicyTests.test_wrong_review_path_rejected) ... ok\n\n----------------------------------------------------------------------\nRan 48 tests in 0.033s\n\nOK\n"
+  },
+  "continuity": {
+    "prior_accepted_commit": "adfb8e289bc4eeccbd5bffa1bbe6da7840157294",
+    "scope": "Byte identity reuse; no fresh runtime/build result",
+    "accepted_source_count": 80,
+    "accepted_sources": [
+      {
+        "path": "app/config/gimpcoreconfig.c",
+        "sha256": "23e25ae7461f5cd33d5351b1cd89d1efb43d9ae9796acd15fe3250cf9d359b34",
+        "git_blob_sha1": "98116687234cf5e16dd5dcc7ca72c8084367ac6e",
+        "bytes": 63955
+      },
+      {
+        "path": "app/config/gimprc.c",
+        "sha256": "bd91619e0aafa1ff77e8117a9d9f1aad13d152efc82ac38bf0d74bacf1d0e369",
+        "git_blob_sha1": "e6db2ad95fb4901a7174c0bae2a3ee749126fc19",
+        "bytes": 15878
+      },
+      {
+        "path": "app/config/gimprc.h",
+        "sha256": "c16f4addd7d818f87adcfb4b50f9cf091fca6ebb1196f0a50f44f8af3fbb47ff",
+        "git_blob_sha1": "fbe47a1a72bbada4fbf1e70074a9674fc5fe1b9b",
+        "bytes": 2587
+      },
+      {
+        "path": "app/core/gimp.c",
+        "sha256": "c7f23e4d018f9b8423fea2f8bd53450add435612d8e20b707a4f894ea7567070",
+        "git_blob_sha1": "6aa29b2088a6a1a497bbe3764ad75dd4bd8b8d38",
+        "bytes": 42438
+      },
+      {
+        "path": "app/dialogs/painter-layer-dialog.cpp",
+        "sha256": "70a5333cd50da3e680997d808baf8a10d31754a0de78158d528581fe091feea3",
+        "git_blob_sha1": "8cd67879392d71faf4eabd138ee48fc271926c3b",
+        "bytes": 94006
+      },
+      {
+        "path": "app/display/gimppaintercanvasui.cpp",
+        "sha256": "d04a48fcf83e3716827ee2adad4752d38f84835ea0b5880b11a9d221bee032f5",
+        "git_blob_sha1": "be4f3acf13a995e4882c60f178cbb55f68d20a1c",
+        "bytes": 31266
+      },
+      {
+        "path": "app/painter/binding-store.cpp",
+        "sha256": "c69d65c22f26e6be8f6df69765cd30f7bbbd32b46b0eb847e9f6524b41c2b557",
+        "git_blob_sha1": "ef864ac84295cbda1f8d47b04469e6d28742990b",
+        "bytes": 2934
+      },
+      {
+        "path": "app/painter/binding-store.hpp",
+        "sha256": "c67deb0ccf33a13a5ba3ab3f50bdbb2ef8931f481acf62a9315d778388c90262",
+        "git_blob_sha1": "eec80344987fed5318b857b74fc815dbb57faba0",
+        "bytes": 7111
+      },
+      {
+        "path": "app/painter/filter-process.cpp",
+        "sha256": "87918ee52bfcdacca648203151292021996a850332ce25c3444cd82f83867fc8",
+        "git_blob_sha1": "7fef8a6d6e3756eba99c3c457200e13a4f798899",
+        "bytes": 11005
+      },
+      {
+        "path": "app/painter/source.hpp",
+        "sha256": "88bb8935ba132345ddcb379aaee56340afc3b56ff3c463f0b4a0c1c5e1c5f418",
+        "git_blob_sha1": "4f8a48d2c686094808e163312071a29a35d1779b",
+        "bytes": 3089
+      },
+      {
+        "path": "app/painter/tests/headers/generate-probes.py",
+        "sha256": "7009bb39cd7796f782bd0b6952b8a5549d505a10ed3f3c67a2ffa96dfeecc096",
+        "git_blob_sha1": "23aa118db7a95eb919b375d56afabdfcfa33689a",
+        "bytes": 14987
+      },
+      {
+        "path": "app/painter/tests/headers/meson.build",
+        "sha256": "9b269b9e881ca862e9fe8d6d01fc6b05f0c725dbe732ecccba37fc2ea54e62c9",
+        "git_blob_sha1": "f632adce4cae4090a7e2351952ebef729236e0c0",
+        "bytes": 3230
+      },
+      {
+        "path": "app/painter/tests/headers/test-additional-routes.py",
+        "sha256": "5793d3ac6ade04b49c2c12533e0a9a1b434373c0bf2ba709df30f885bba7e73c",
+        "git_blob_sha1": "fec061fbe386a06c6f56dd456db62813a84d0f17",
+        "bytes": 12847
+      },
+      {
+        "path": "app/plug-in/gimpplugin-message.c",
+        "sha256": "408e0b11808ced8b3451c15ca0c1e6ae08a46ba959b417de1d60bac0e8962c42",
+        "git_blob_sha1": "d5816b3aaad8d967aebbed65c3b53e4fa23643c7",
+        "bytes": 31015
+      },
+      {
+        "path": "app/plug-in/gimpplugin.c",
+        "sha256": "96d65b9fd274bfb0a0c20910c4e988e9e2b822d7c6e0c3e5718a7fe9df94c15b",
+        "git_blob_sha1": "7753735425f0d89765a1d50752aaaf76075ea53d",
+        "bytes": 30772
+      },
+      {
+        "path": "app/plug-in/plug-in-rc.c",
+        "sha256": "c544cb5770cebffbee8c7e41e7aee215ade9984f36179e81bbc4b6467f106271",
+        "git_blob_sha1": "ddf632fc28ef7c4e6b354d9fdbd2f0ce581e77a5",
+        "bytes": 51064
+      },
+      {
+        "path": "app/tests/gimp-app-test-utils.c",
+        "sha256": "2d58f6f426f782cc2fca7207924d7d18f903b8b9519f1ef7b0c69b16c815929c",
+        "git_blob_sha1": "d2f9fd000dd5194fc398eea93140cfa199db0480",
+        "bytes": 11245
+      },
+      {
+        "path": "app/tests/icon-theme-fixture/generate.py",
+        "sha256": "42b3d179b24aba69366b3a1554f4f32833f9c48006cae4a47954a2785cc524fe",
+        "git_blob_sha1": "1d5adedd91a0112febe3e625727a8ca2ca9783ee",
+        "bytes": 8755
+      },
+      {
+        "path": "app/tests/icon-theme-fixture/meson.build",
+        "sha256": "923f0657f6dec18640d3a7c517a27be8546e46064af09e49438d75c006f48b8c",
+        "git_blob_sha1": "8ec12e845cd1455529106fc93363cdc2c9ced379",
+        "bytes": 5192
+      },
+      {
+        "path": "app/tests/icon-theme-fixture/test-generate.py",
+        "sha256": "cd636846a76b94083c7b8e706992ab24732785b036867fa96b155dd60b8d80e2",
+        "git_blob_sha1": "7be075cabeb06f0eb293e50b9de9500e4cebcf9f",
+        "bytes": 6318
+      },
+      {
+        "path": "app/tests/meson.build",
+        "sha256": "05906eae7404d45b5f0cd2dac9e33adc32bd9969c228eb0cc88b0797b3739530",
+        "git_blob_sha1": "10ae36702ce6da0cb73809efa676dfee696ded67",
+        "bytes": 34013
+      },
+      {
+        "path": "app/tests/test-editor-dropdown-preset-control.c",
+        "sha256": "db19373fddf1e95c60b1cfa7593501d0b85d87567d4419b1b418c173acab7c87",
+        "git_blob_sha1": "91e9acf75b5cac13e82c1e3c0722d70c2251b93f",
+        "bytes": 5146
+      },
+      {
+        "path": "app/tests/test-editor-dropdown.cpp",
+        "sha256": "6a3625f8ca94d7e90d8a042cbbb1d5d7acc45233435f997a405093bf2a84b1cc",
+        "git_blob_sha1": "e11c2f85e0059362f8018efaa4ecd983e2b670df",
+        "bytes": 63929
+      },
+      {
+        "path": "app/tests/test-filter-blinds-context.inc",
+        "sha256": "77657663773307b126d7ab61567fe0bac155e35fea39163e1f49dc13665e087c",
+        "git_blob_sha1": "6d5a0eab48485ed6ac8d5945a7afc74938d66b09",
+        "bytes": 11322
+      },
+      {
+        "path": "app/tests/test-filter-convolution.inc",
+        "sha256": "c06550d15f4cd69c29c656370f08e9c4eff451357d4a32a93ae47b824604e20c",
+        "git_blob_sha1": "5872c91e523bc69baa097a85ff038b591f2876d0",
+        "bytes": 23886
+      },
+      {
+        "path": "app/tests/test-filter-progress.inc",
+        "sha256": "ec6221e6dce35b6474bede835580489df23c4e5f9fa7579ae3c5fbfa52d792d2",
+        "git_blob_sha1": "7ecc5d236f129671394a1ac7a7173c049a9cadd8",
+        "bytes": 9681
+      },
+      {
+        "path": "app/tests/test-filter-schema-persistence.inc",
+        "sha256": "30d8127eca74f1325f0fce8405828607f0b97f394f0bd3714dc8bf767ee3bafb",
+        "git_blob_sha1": "2acf8371718fbc96ecafa14659e91ae37b594cc1",
+        "bytes": 46226
+      },
+      {
+        "path": "app/tests/test-gimp-filter-layer.c",
+        "sha256": "05fa1226bf4f6835fcffc0ba66b7ce928d9e514337c0c2447483997bde9eb286",
+        "git_blob_sha1": "6dc7576de4bece457a3c3857530c90286d7d4727",
+        "bytes": 155724
+      },
+      {
+        "path": "app/tests/test-gimp-test-config-fixture.c",
+        "sha256": "ab87dd34e9c2b291e159727635cd932c8250dc0a301aa9b5d450e6603052098d",
+        "git_blob_sha1": "bb4acea4865a6b9b6bf77c0ed0751e5a7f5d0a0a",
+        "bytes": 12887
+      },
+      {
+        "path": "app/tests/test-layer-presets-ui.c",
+        "sha256": "66f5e7f6b09ac13df1965c964e96182bd4bf7367aa38bfd26a169e4df53745dd",
+        "git_blob_sha1": "e517c686a3860ac968e1019ad99e129351b8d1d7",
+        "bytes": 13887
+      },
+      {
+        "path": "app/tests/test-painter-canvas-ui.c",
+        "sha256": "4889f86a34f65abf23ae225f7dc834f55f4197553ddfd0b83be01586908dbd59",
+        "git_blob_sha1": "f7c5515d7a7bc0d82aa83ed57e76bb03f3ca5ce4",
+        "bytes": 97908
+      },
+      {
+        "path": "app/tests/test-painter-compact-options.c",
+        "sha256": "b8659ad2b034736404d58af7bf6209fbbe5d89ffb73ea014429b65133beaaecb",
+        "git_blob_sha1": "bc957441c87b737ee8e3dc2c66689eac9bd1d90e",
+        "bytes": 39380
+      },
+      {
+        "path": "app/tests/test-painter-layer-tree.c",
+        "sha256": "3601ad5cb9bcf6206354ead656fc1581676e75c0b9ed02ad0c620d29edcc2822",
+        "git_blob_sha1": "d05f0f846d802b5742d5fabc31b666685390cdc7",
+        "bytes": 37244
+      },
+      {
+        "path": "app/tests/test-painter-layer-ui.c",
+        "sha256": "c7195b3ff2040748a6ad97f3c077ed926887159a8f7263ec0df36cd8d995285a",
+        "git_blob_sha1": "be6cdbc6b79fea16edbb0324a7f1823fc737fa44",
+        "bytes": 42782
+      },
+      {
+        "path": "app/tests/test-painter-mypaint-editor.cpp",
+        "sha256": "755de5a0025e4c346ac18fe8e022b224341962c76fd3418fbebc81cffb89e609",
+        "git_blob_sha1": "0dbb2278b04b52e4ba7fe37ff827a5bbbcfe7613",
+        "bytes": 50741
+      },
+      {
+        "path": "app/tests/test-widget-orientation-api.c",
+        "sha256": "d85281846b56ee88aa1a703ec5053ae677de9a08ab9f8cf8695c0c5359fa9648",
+        "git_blob_sha1": "149b9731eb96c0f2ddbc5f36d7f570dfc32254b0",
+        "bytes": 3443
+      },
+      {
+        "path": "app/tests/test-widget-orientation-api.cpp",
+        "sha256": "5e987e170aa64885ecf5c6fe6f400e47b0430a4dca7aabecbbb3a02dea480f8c",
+        "git_blob_sha1": "b24f7d7e57b46380ca8f3001fa6423c73d180de8",
+        "bytes": 2776
+      },
+      {
+        "path": "app/tests/test-widget-store-native-controls.inc",
+        "sha256": "3b6a2b8e9edc7e1f03ea04ca833c395088a2c395a68a4512bd2d7d14284b84d4",
+        "git_blob_sha1": "b22aceb18dc982209263fdb5a21592128e643eff",
+        "bytes": 19328
+      },
+      {
+        "path": "app/tests/test-widget-store-native-dnd.inc",
+        "sha256": "da68516c6a5d4314c07874626a28f82ff4ba8f3de7866b6fd3116b5335472432",
+        "git_blob_sha1": "6ddeba3f7f748f7a82c8608df968437ce8b0ee9e",
+        "bytes": 63121
+      },
+      {
+        "path": "app/tests/test-widget-store-orientation-callers.inc",
+        "sha256": "ad8d8b525b98b1360b32ba19d0e8467e4e0397116096e3a1df4e3685dd5448e6",
+        "git_blob_sha1": "cc89862fb3ddd769a0d56afd0c2acf19947a29cf",
+        "bytes": 4032
+      },
+      {
+        "path": "app/tests/test-widget-store-orientation.inc",
+        "sha256": "83fac425c1114eaeb68a8b398a640241e10f80e521404175c1817e6f487b927b",
+        "git_blob_sha1": "af5b7258e46266ce7d655731544c5b72294fc34e",
+        "bytes": 14993
+      },
+      {
+        "path": "app/tests/tests.c",
+        "sha256": "373bfc57b36015ff4853a11defd636c0abb1d9acc2740c47d056adb7ee43ec16",
+        "git_blob_sha1": "42340ccb4e96f4a0015423f789323f7576c5b66f",
+        "bytes": 13161
+      },
+      {
+        "path": "app/widgets/gimpcellrendererpopup.cpp",
+        "sha256": "b8980b5c2b45b60ff2112100f86327e4c587ea0c2473d0f5333f3f623fcc6648",
+        "git_blob_sha1": "6ab02230ee2351e2a2d8e30587f555b2a6ce41d7",
+        "bytes": 20830
+      },
+      {
+        "path": "app/widgets/gimpcellrendererpopup.h",
+        "sha256": "b9fdd7cf79b00f84902676f4305d64c21cd24130be2cb7d53d7c4bf503e33cf1",
+        "git_blob_sha1": "a8bfd75aa789c04865812fb98ef811e9b6d669e7",
+        "bytes": 1993
+      },
+      {
+        "path": "app/widgets/gimpcontainerbox.c",
+        "sha256": "fba1e434defbc21d7165ea6a0e0fb071b3cc0fdf06ec50c323db09a99ee07cd7",
+        "git_blob_sha1": "d18516d270c98c1959c8be30bc7886df3381730b",
+        "bytes": 13351
+      },
+      {
+        "path": "app/widgets/gimpcontainertreeview-dnd.c",
+        "sha256": "1414ab21bcb9d29ff6fbef5a18625d8121f4869327a4f6ff5e4b5a760e33fd9b",
+        "git_blob_sha1": "481dd716f67a44cdf646df44902057dc9fb0ad01",
+        "bytes": 40386
+      },
+      {
+        "path": "app/widgets/gimpcontainertreeview-private.h",
+        "sha256": "1edb149dc1613e1265568f353933c3e52f1a80cca8dd4ae68fd12cf27bbd321d",
+        "git_blob_sha1": "331026383ec8e1d97a945bee5e3e836d9c294dec",
+        "bytes": 1550
+      },
+      {
+        "path": "app/widgets/gimpcontainertreeview.c",
+        "sha256": "9fa7c61f8f7898fc1b622eeb3e214827ba047c2c463fa8fdbb6b5f1379f8a2d4",
+        "git_blob_sha1": "e2a55526a0613894618ad0ff898f259343b0db47",
+        "bytes": 83773
+      },
+      {
+        "path": "app/widgets/gimpcontainertreeview.h",
+        "sha256": "16b11ce91530eb3650773a46fdd60973011ad248d4a7619749cfd49f7c78347d",
+        "git_blob_sha1": "52641d6807982b6a8e05e1883c5b738cb38fc431",
+        "bytes": 7228
+      },
+      {
+        "path": "app/widgets/gimpeditor-cxx-private.h",
+        "sha256": "fc0bc5b8be989d98732b016795b47d4bc3975d9f0592085d2609b3a896079f50",
+        "git_blob_sha1": "9c481627802e56bdf6da691e49446f3a443e3159",
+        "bytes": 845
+      },
+      {
+        "path": "app/widgets/gimpeditor-cxx.cpp",
+        "sha256": "daee8295e94acbfdfcdb08539691f628756fe18fc6257813c158961afe6a72ea",
+        "git_blob_sha1": "afc054e7574985ebc46b83b646903aa660dbbda5",
+        "bytes": 17159
+      },
+      {
+        "path": "app/widgets/gimpeditor-cxx.h",
+        "sha256": "87b3ff4d1d021503dcbed13246f9dce4f732855bef6ccae054694de81e8a5e31",
+        "git_blob_sha1": "088da8cb8a9d8ec2dd96e84a1f6f9d6dbb7fe78a",
+        "bytes": 1237
+      },
+      {
+        "path": "app/widgets/gimpeditor.c",
+        "sha256": "21dc62ec23b6a65b9c2a9cfa858133d57de5704fcb8c38a738962f22ebe35659",
+        "git_blob_sha1": "9c8446c133a4a81e6665c15d725a2c0ed6c1b8fd",
+        "bytes": 37601
+      },
+      {
+        "path": "app/widgets/gimplayerpresetview.c",
+        "sha256": "5bada5c213100df67f522f73642b289a768ccb0049c70bdf3dbef8eb675ebbdc",
+        "git_blob_sha1": "10153cdf160401eacb818ac6964bd26b132f641b",
+        "bytes": 5024
+      },
+      {
+        "path": "app/widgets/gimplayertreeview.c",
+        "sha256": "d73ef4a0c8581d68c468aa2fee629bfdd9007152bfb52753d4d03c90c0c06b4f",
+        "git_blob_sha1": "2c07a15dd3e3b0651612909d9a8bd26569a85657",
+        "bytes": 67849
+      },
+      {
+        "path": "app/widgets/gimppaintercompactoptions.cpp",
+        "sha256": "449aba2103d81a6438ca0282b21aa7057a89818595059f6eb0c94ce3eeff4b8a",
+        "git_blob_sha1": "91a24ce1074ec53bb66b045a70d3535c57a1c7b1",
+        "bytes": 24231
+      },
+      {
+        "path": "app/widgets/gimppainterlayertiles.cpp",
+        "sha256": "293f5ff0006cff85a276ed9211df7e4f2215d102bad385b001b2974e9b69d613",
+        "git_blob_sha1": "eaa6d1eef21e304452e8d3bc44a59f731a946276",
+        "bytes": 46128
+      },
+      {
+        "path": "app/widgets/gimppaintermybrusheditor.cpp",
+        "sha256": "09cbfacf9e51c00a3ce903354194b249ea66a1de43c4b8eddfed8de444aa3143",
+        "git_blob_sha1": "1d40c0ee743cbb970d6c251fe4c67858e36dc7ae",
+        "bytes": 52807
+      },
+      {
+        "path": "app/widgets/gimpwidgets-utils.c",
+        "sha256": "4f763c8cf4d79be2fd59b028bd6321eb8c4687d5a222d4e136b37d9a342140d4",
+        "git_blob_sha1": "c41cbc4aea594137879718d892ad8e2033eeeea4",
+        "bytes": 83602
+      },
+      {
+        "path": "app/widgets/gimpwidgets-utils.h",
+        "sha256": "08cbca718991a5f68fc117a09ab9c98bbf3dc12187e8fddf1d51e4aa1bf935cb",
+        "git_blob_sha1": "220f88326b69152c8c19ca0983dbe796d25935a9",
+        "bytes": 11435
+      },
+      {
+        "path": "app/widgets/meson.build",
+        "sha256": "7cea4af1a1f7cc7d8e03e7daad433ea5a64207d61a969daade4b5852918cc6a0",
+        "git_blob_sha1": "d60e844c601771670ae047d24e8d61d8de52a18c",
+        "bytes": 7359
+      },
+      {
+        "path": "libgimp/gimp-debug.c",
+        "sha256": "baa2956654372f0473965fee2591fbf4ae474179432153c1c50e86d3183f377d",
+        "git_blob_sha1": "b6f69cd37b845eb9e1e2cd621e831f76fae9e0ed",
+        "bytes": 11084
+      },
+      {
+        "path": "libgimp/gimp.c",
+        "sha256": "952244785f88a9bc4b755e8ea0771e17088601f8e8c822fe9b04fde9cd56a00d",
+        "git_blob_sha1": "779a02ae02f4b2eb3271691016bbe367ed98b82b",
+        "bytes": 32570
+      },
+      {
+        "path": "libgimp/gimpplugin.c",
+        "sha256": "b581adbe25f831fae89a86106c373160ba85c36bd14d86836e275f8baa9e1e46",
+        "git_blob_sha1": "4bc188bd7a6b196919e026305ef3a339134094d2",
+        "bytes": 68414
+      },
+      {
+        "path": "libgimp/gimpprocedure.c",
+        "sha256": "5d22ee3ba7af2d4d6d9b1d403f13fc426dbbecd487d6942bd3ce964cd1cdcd5c",
+        "git_blob_sha1": "fe78485e2d3a525a8f390ab75451f382826713c2",
+        "bytes": 76877
+      },
+      {
+        "path": "libgimp/tests/meson.build",
+        "sha256": "921c3e532857a23d44c6a25e93d050effb33fc985158ac7f941a1294cce02eb2",
+        "git_blob_sha1": "e610dc740a066fc3bdeaaf986bd84afbf4b132c6",
+        "bytes": 3982
+      },
+      {
+        "path": "libgimp/tests/plug-in-protocol-fixture.c",
+        "sha256": "7ec8d89eef1b98556be488269b40080525dc6b8666d4dc3cfe106aa3ae5b7d52",
+        "git_blob_sha1": "3376f01f9b6586a896b51bb5492a8886ca2d1f34",
+        "bytes": 4948
+      },
+      {
+        "path": "libgimp/tests/test-plug-in-protocol.c",
+        "sha256": "6062798d7125d9853cd146f672eda2f233a662c48f20ad9128d2274b144a404e",
+        "git_blob_sha1": "42deacd4d7cd585f297f8315c9799b4488f16c20",
+        "bytes": 21569
+      },
+      {
+        "path": "libgimpbase/gimpprotocol.c",
+        "sha256": "42b00612efd048ec5e0c1ae278ad1c6244d16bf018308c8685852017a93e07bc",
+        "git_blob_sha1": "5d740997d0b718754e63986fedf2c85d1c4f7adf",
+        "bytes": 86316
+      },
+      {
+        "path": "libgimpbase/gimpwire.c",
+        "sha256": "3ddd68f2d5d8c4315a32026e0d13954b45cc1d97a1193d7cfd568af1e926a366",
+        "git_blob_sha1": "02f060784f28b1dcd79367b26774bccd54c3f80c",
+        "bytes": 18329
+      },
+      {
+        "path": "libgimpconfig/gimpconfig-register.c",
+        "sha256": "c59929b3a17f2adb5223b7866b2f5daaa5543cb7ad1e7d078ac34cc38d4699e7",
+        "git_blob_sha1": "e76862e7960b697043ae43846d9682bfcb37a96f",
+        "bytes": 8051
+      },
+      {
+        "path": "libgimpconfig/gimpconfigwriter.c",
+        "sha256": "c604932a1c60612d6ee07cdf183fd12ea7695fd88e04e76052863cfc252b5753",
+        "git_blob_sha1": "5d96e1ad4fb203e2185db3d8e5509ef6873c9b9b",
+        "bytes": 20995
+      },
+      {
+        "path": "libgimpwidgets/gimpenumwidgets.c",
+        "sha256": "6133cb814246d4b150f05fd8aba07be69c0cbafad3125ae6cca73e23405f4a54",
+        "git_blob_sha1": "77ecec2696a5f367c74664d740021cae68d59202",
+        "bytes": 21676
+      },
+      {
+        "path": "libgimpwidgets/gimpenumwidgets.h",
+        "sha256": "85053e5e17f8182a2031def42b00a29959ed5b175e028548da0f554ef6b92817",
+        "git_blob_sha1": "9b3559444a7567fa9c3f95e7a5189f56f93ea1a5",
+        "bytes": 7095
+      },
+      {
+        "path": "libgimpwidgets/gimppropwidgets.c",
+        "sha256": "66c5d07f15946dee2a719f6e8ab09e0cc52cfdc6b09524fca0974d5c79facbdb",
+        "git_blob_sha1": "ffcb3b9ae15c13b858c671b29cf4aecc29066f0b",
+        "bytes": 166464
+      },
+      {
+        "path": "libgimpwidgets/gimppropwidgets.h",
+        "sha256": "5e6a224f9d3429cee72245ac3ff49ff8ac620ec75d83d2aa0b7b41a7460a5397",
+        "git_blob_sha1": "eeda8562b0950c95bb4e61ec11d66c74b38970ff",
+        "bytes": 16494
+      },
+      {
+        "path": "libgimpwidgets/gimpwidgets.c",
+        "sha256": "a317c195dae7a0e37ee836c6fd3303bce9c664f993cec6e6fbbe24a1c45af55b",
+        "git_blob_sha1": "ac072dd63967eae1ab0173c66f4d4534d9fafd99",
+        "bytes": 25080
+      },
+      {
+        "path": "libgimpwidgets/gimpwidgets.def",
+        "sha256": "94c7bb9d3e34e43f42be97d87e6f6dffa3b76bd08d7b836b816d5fbd3a3cf04c",
+        "git_blob_sha1": "d3e5a8ad817a65a245491a90b58e9a7645877f4f",
+        "bytes": 16475
+      },
+      {
+        "path": "libgimpwidgets/gimpwidgets.h",
+        "sha256": "0b082ce95a8986f3a1841db108d17989bf7b8b8d8d655743d5b26cb36c9014fb",
+        "git_blob_sha1": "e7c472532578e84d293cf7ebd1611bd1ebbba6b4",
+        "bytes": 9205
+      },
+      {
+        "path": "migration/inventory/additional-c-header-routes.json",
+        "sha256": "f9bd13954dcf6b803e1f062bbaa958db17d8c819a7a05e2c60a43c1c514aed0a",
+        "git_blob_sha1": "39868fd53624a3f6a68669a6ebc829ca525b5dc1",
+        "bytes": 3047
+      }
+    ],
+    "relevant_binary_count": 6,
+    "relevant_binaries": [
+      {
+        "mode": "native",
+        "path": "app/tests/editor-dropdown",
+        "sha256": "d537bcee8a93649f17c29f5e438b0b74148fe0badb6fcb62a8837233ad1e9a14",
+        "git_blob_sha1": "9e6d7bde08e42c931371316cfa9e50d0c815633c",
+        "bytes": 74621456
+      },
+      {
+        "mode": "native",
+        "path": "app/tests/painter-compact-options",
+        "sha256": "28669289a10ce9e202b8a58fd9398b16b9a010effeb541227a669ada9593a2c0",
+        "git_blob_sha1": "2a05efb74a3488030ea10ffd0f040f7c2398e399",
+        "bytes": 75359432
+      },
+      {
+        "mode": "native",
+        "path": "libgimpwidgets/libgimpwidgets-3.0.so.0.8.1",
+        "sha256": "d4f9e36d143e782739ac557be751709a837e28ef89d1a329d505bb4bb4f82774",
+        "git_blob_sha1": "3ba8f15ae63560772f09c86275a53894bf173094",
+        "bytes": 5231496
+      },
+      {
+        "mode": "asan",
+        "path": "app/tests/editor-dropdown",
+        "sha256": "392a2007e1c8e372ee1102a5ebbd54cda64f27b54a2d33b7e0ff896936521f6f",
+        "git_blob_sha1": "a54467c99891ea3dd998f991ef514969c165aa35",
+        "bytes": 234063616
+      },
+      {
+        "mode": "asan",
+        "path": "app/tests/painter-compact-options",
+        "sha256": "cbbf77376ba682743229e5541ea3acd2d58e41b7568dac65e2d678082f763a78",
+        "git_blob_sha1": "aa3ef50aa3a29f341dcf9752182214a0c9c26607",
+        "bytes": 234879656
+      },
+      {
+        "mode": "asan",
+        "path": "libgimpwidgets/libgimpwidgets-3.0.so.0.8.1",
+        "sha256": "f542d83a4a8598d505f32e37e5028de242b6881e7bfa02f2e74584f1ab84e8ac",
+        "git_blob_sha1": "2ef38a19d29909971cd0be21fd3631ca7ed13a11",
+        "bytes": 10745608
+      }
+    ],
+    "ledger_and_historical_docs": {
+      "tasks.md": {
+        "sha256": "0a7274e11b0d5f554d99f9020988031765c23a3cbc82410cfb36594a3e1b7198",
+        "git_blob_sha1": "31ce45b37c1c0169b33b662bca523f6736bfca94",
+        "bytes": 197218
+      },
+      "migration/inventory/legacy-port-work-items.tsv": {
+        "sha256": "4d099324e22fd48833b9d6de39240bb37ad70891bb6492720e37f4768a37abb4",
+        "git_blob_sha1": "39ddc9b6f62a713398f5fb67f541d8c9d643d053",
+        "bytes": 10390384
+      },
+      "migration/progress.tsv": {
+        "sha256": "bf3f867cecf4635f47e9c5d9d007c9d8ab2574080e376453ea31fdf572b3f3ba",
+        "git_blob_sha1": "dcc05dc4f777e5b45bb43d206a3d25428ea127cd",
+        "bytes": 277832
+      },
+      "migration/contracts/legacy-adapter-removal.md": {
+        "sha256": "acc353aa0150968edb383e51618e3afb73164ce5c81d7a8db7083f3544335a45",
+        "git_blob_sha1": "946e529c2b5deb8577a545d0dcc60ae1758499d9",
+        "bytes": 6880
+      },
+      "migration/tests/adapter-removal/README.md": {
+        "sha256": "0205166787ff9ffa0d0dce75af0aa0b1cd476810c7f172a53246fef44fa06f07",
+        "git_blob_sha1": "2338fd662f9a0df7f29a67cb70b62bdd13a093e8",
+        "bytes": 2741
+      }
+    },
+    "all_inputs_rehashed_before_after": true
+  },
+  "policy_patch": {
+    "sha256": "983114f737b5c545c8e6041a7659b32c8cbd6c711ac8e61a08b45f362e27e7d9",
+    "git_blob_sha1": "2b872ab742c070fa5bf0733c4eaabdb167fe23f1",
+    "bytes": 9006
+  },
+  "reproduce": {
+    "candidate_gate": "python3 -B tools/check_painter_legacy_adapters.py --root . --report /tmp/native-metadata-gate.json",
+    "candidate_tests": "python3 -B tools/tests/test_painter_legacy_adapters.py",
+    "baseline": "Use the policy and test preimages from base_commit in a separate directory; scanner is unchanged. The baseline gate over candidate source is expected to fail only baseline_errors."
+  },
+  "limits": [
+    "Conservative lexical gate, not full C++ name resolution or a semantic proof.",
+    "Only these two exact metadata calls are approved; no blanket object-data allowance.",
+    "Historic 05.014 documents retain their 2457-source/681-occurrence accepted snapshot.",
+    "No runtime, build, ledger, task-state, or application behavior change is included."
+  ]
+}

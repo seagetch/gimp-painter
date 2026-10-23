@@ -534,6 +534,18 @@
         "app/widgets/gimppaintercompactoptions.cpp"
       ],
       "reason": "Borrowed property-name text owned by native libgimpwidgets/gimpwidgets-private.c:gimp_widget_set_bound_property; no new attachment."
+    },
+    "native-editor-help": {
+      "paths": [
+        "app/widgets/gimpeditor-cxx.cpp"
+      ],
+      "reason": "Native GIMP_HELP_ID text copied with g_strdup and released by g_free on the arrow; the action adapter frees its temporary help copy on return. Dropdown behavior remains owned only by BindingStore DropdownSlot."
+    },
+    "native-radio-button": {
+      "paths": [
+        "app/widgets/gimppaintercompactoptions.cpp"
+      ],
+      "reason": "Borrowed radio-button metadata installed by libgimpwidgets/gimppropwidgets.c native radio frame/box constructors; used only to find the native parent box. Presentation and Saved retain orientation/restoration state in BindingStore, with no new attachment."
     }
   },
   "syntax_exceptions": [
@@ -3949,6 +3961,14 @@
       "provenance": "upstream"
     },
     {
+      "path": "app/widgets/gimpeditor-cxx.cpp",
+      "operation": "g_object_set_qdata_full",
+      "sha256": "41f19886d64f6911801df4adead4965ff28daa68f973131a5646e7596ee944a3",
+      "count": 1,
+      "reason": "Native GIMP_HELP_ID text copied with g_strdup and released by g_free on the arrow; the action adapter frees its temporary help copy on return. Dropdown behavior remains owned only by BindingStore DropdownSlot.",
+      "provenance": "native-editor-help"
+    },
+    {
       "path": "app/widgets/gimpeditor.c",
       "operation": "g_object_get_data",
       "sha256": "cce6b2eb1f7140a49ee1ec18f94789eec9f571200241f6526a7ecad12a5325fe",
@@ -4379,6 +4399,14 @@
       "count": 1,
       "reason": "Borrowed property-name text owned by native libgimpwidgets/gimpwidgets-private.c:gimp_widget_set_bound_property; no new attachment.",
       "provenance": "native-property-name"
+    },
+    {
+      "path": "app/widgets/gimppaintercompactoptions.cpp",
+      "operation": "g_object_get_data",
+      "sha256": "5aa62660106766da81a0f878ff53a3627f514343ed8e82c15687fc478ad74bfb",
+      "count": 1,
+      "reason": "Borrowed radio-button metadata installed by libgimpwidgets/gimppropwidgets.c native radio frame/box constructors; used only to find the native parent box. Presentation and Saved retain orientation/restoration state in BindingStore, with no new attachment.",
+      "provenance": "native-radio-button"
     },
     {
       "path": "app/widgets/gimppropwidgets.c",
