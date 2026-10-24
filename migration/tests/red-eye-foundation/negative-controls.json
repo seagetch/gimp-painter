@@ -1,0 +1,18 @@
+{
+  "rounded-color": {
+    "exit_code": -6,
+    "stdout": "",
+    "stderr": "mismatch 0/0/6 t1073741873 a7 bpp4 actual0 expected1\n",
+    "mutation_from": "((uint64_t)g+ab)*10000000/10266666",
+    "mutation_to": "(((uint64_t)g+ab)*10000000+5133333)/10266666",
+    "source_sha256": "417023967f070a65fd9645a7e1a3248fccec5b2b40082078fb245fe08a66ae3d"
+  },
+  "clamped-threshold": {
+    "exit_code": -6,
+    "stdout": "",
+    "stderr": "mismatch 0/101/0 t1073741873 a102 bpp4 actual98 expected0\n",
+    "mutation_from": "int64_t at=((int64_t)t-50)*2;",
+    "mutation_to": "if(t<0)t=0;\n  if(t>100)t=100;\n  int64_t at=((int64_t)t-50)*2;",
+    "source_sha256": "739d1adb74aad8520d5ed6c6e1f7a63e7145c94d716f29c8bcc3a289214dfb1b"
+  }
+}

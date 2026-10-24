@@ -1,0 +1,53 @@
+{
+  "scope": "literal pinned old C loop versus independent rational oracle, no old PDB/runtime or native route",
+  "inputs": {
+    "test-oracle.c": "99d3c8a6064e21ae2afd64f7231d60f9f4f6cb75d32003d09acd9083ada6405d",
+    "old-inner-loop.inc": "1052f4d6da2290013d52d47163c7a9497f9443b80f06c85b763f77e37ab53586"
+  },
+  "runs": {
+    "normal": {
+      "compile_command": [
+        "cc",
+        "-std=c11",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-O2",
+        "/workspace/scratch/0015fc5d1a03/gimp-painter/migration/tests/red-eye-foundation/test-oracle.c",
+        "-o",
+        "/workspace/shared/red-eye-oracle-normal"
+      ],
+      "compile_stdout": "",
+      "compile_stderr": "",
+      "exit_code": 0,
+      "stdout": "PASS 234881024 scalar RGB/RGBA comparisons;all16777216 RGB triples;7 threshold classes each;critical transitions;safe signed32 endpoints;unsafe-domain rejection;row padding;zero extents\n",
+      "stderr": "",
+      "duration_seconds": 2.593109547997301,
+      "binary_sha256": "15ec25cdd8859aa4480ce2fae77703bd2e38cfc610bd9a2518a619de3838745d"
+    },
+    "sanitizer": {
+      "compile_command": [
+        "cc",
+        "-std=c11",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-O1",
+        "-g0",
+        "-fsanitize=address,undefined,float-cast-overflow",
+        "-fno-omit-frame-pointer",
+        "/workspace/scratch/0015fc5d1a03/gimp-painter/migration/tests/red-eye-foundation/test-oracle.c",
+        "-o",
+        "/workspace/shared/red-eye-oracle-sanitizer"
+      ],
+      "compile_stdout": "",
+      "compile_stderr": "",
+      "exit_code": 0,
+      "stdout": "PASS 234881024 scalar RGB/RGBA comparisons;all16777216 RGB triples;7 threshold classes each;critical transitions;safe signed32 endpoints;unsafe-domain rejection;row padding;zero extents\n",
+      "stderr": "",
+      "duration_seconds": 9.725556956000219,
+      "binary_sha256": "dad6fd7f6519003198581674cc7706d30c3e76c76be18dcbb582240904a7c553"
+    }
+  },
+  "input_changed": []
+}

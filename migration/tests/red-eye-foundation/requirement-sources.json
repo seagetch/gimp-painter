@@ -1,0 +1,39 @@
+{
+  "commit": "d9922e719b851af4ba511188b2ef04d0b2e8f2de",
+  "counts": {
+    "all": 108,
+    "required_labels": 93,
+    "bounded_labels": 15
+  },
+  "required_by_label": {
+    "explicit compatibility kernel or isolated plug-in adapter required": 59,
+    "isolated legacy image/output adapter required": 11,
+    "isolated context/resource adapter required": 23
+  },
+  "source_sha256": {
+    "migration/inventory/filter-procedure-routes.tsv": "d80807745f3b08258547cf4f97294f203de355b46e65e0c6122b28a957f30ee1",
+    "migration/inventory/filter-procedure-inventory.json": "8b4e168d07b218719c6cb2e5ce0bf2be03ad0f85839760ab792d7c50be5ca9e8",
+    "tools/inventory_filter_routes.py": "a68d671973fa4cd6758137678094611f8dc076717f5e54a7420ee02738d00e61",
+    "app/core/gimpfilterlayer.cpp": "ac5024392296a062e06df8ba219de5a7e9adbbcaaa30e2f3586e55f36b11d8ae",
+    "app/painter/filter-point-shadow.cpp": "ec2bccab4f3d994552d1415e3db8a8716d2476098bcb1afba7664a86fdb66345",
+    "app/painter/filter-point-shadow.hpp": "90c41d85f7e4e50d6242169cab843c1fc16ff1b774eddcaa4f3c4f33edbfafdc",
+    "app/painter/filter-native-kernels.cpp": "960667b9b738acb5613bf4a893a7ccc16fdcbdf56e9d84100d983516b0e273d7",
+    "app/painter/filter-procedure-policy.hpp": "79437458e4ef6075d6f1cfff820e8a022ce85f508690d758eed45b157a9ae2ea",
+    "migration/contracts/filter-native-execution.md": "31b3394f46cf72aea36ee634cf39308e2d003ae76db07f5d73baab537c0e5096",
+    "migration/contracts/filter-parameter-schema.md": "f76e3af4c725b4b65508abe268b258fb4fb3ddba3b7d4f197be80265a4e2e64d",
+    "migration/tests/native-point-precision-refresh/verify_inventory.py": "09edb85efd793b3f31dd5d535d998ef3d40e0065458619a802dd03908948c3e1"
+  },
+  "candidate": {
+    "procedure": "plug-in-red-eye-removal",
+    "eligibility": "installed-compiled-plugin",
+    "menu": "<Image>/Filters/Enhance",
+    "argument_types": "0,13,16,0",
+    "legacy_source": "plug-ins/common/red-eye-removal.c",
+    "current_source_mentions": "",
+    "current_gegl_counterpart": "gegl:red-eye-removal",
+    "executor_route": "explicit compatibility kernel or isolated plug-in adapter required",
+    "missing_port_work": "parameter/alpha/numerical parity and cancellation/crash isolation",
+    "dependency_status": "bundled original source exists; missing port code"
+  },
+  "scope": "literal full inventory-label reconciliation; source/contract review of proposed Red Eye route, not independent implementation audit of all93"
+}
