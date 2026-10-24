@@ -365,8 +365,9 @@ ink_popup_interrupted_drag (gconstpointer data)
 static void
 ink_popup_factory_caller_release (void)
 {
-  /* Source is not an Ink frame group: preserve its existing carrier. */
-  GtkWidget *other_gui = gimp_tools_create_painter_toolbar_gui (info ("gimp-clone-tool")->tool_options);
+  /* Heal Source remains unconverted; Clone now has its own native Options popup.
+   * Preserve the unchanged non-Ink carrier control and all Ink lifetime checks. */
+  GtkWidget *other_gui = gimp_tools_create_painter_toolbar_gui (info ("gimp-heal-tool")->tool_options);
   g_assert_nonnull (other_gui); g_object_ref_sink (other_gui);
   GtkWidget *source = find (other_gui, "painter-paint-source", GTK_TYPE_MENU_BUTTON); g_assert_nonnull (source);
   g_assert_true (GTK_IS_POPOVER (gtk_menu_button_get_popover (GTK_MENU_BUTTON (source))));

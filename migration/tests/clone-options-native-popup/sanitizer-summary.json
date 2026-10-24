@@ -1,0 +1,98 @@
+{
+  "base_commit": "244574c514bae2ddbfe9740fe06790ce21d83bee",
+  "base_tree": "e9712625e3bf2b7d204a772c4c3271fce1bb4501",
+  "scope": "Scoped Clone native popup7 plus inherited rectangle physical-input/reentry2 on the same final binary; repeats do not add to132 unique normal cases.",
+  "expected_cases": 9,
+  "exit": 0,
+  "pass_count": 9,
+  "fail_count": 0,
+  "sanitizer_findings": [],
+  "instrumented_translation_units": [
+    "app/widgets/gimpblobeditor.c",
+    "app/tools/gimppaintertooltoolbar.c",
+    "app/tools/gimppaintertransformtoolbar.c",
+    "app/tools/gimppaintertogglepopup.cpp",
+    "app/tools/gimppainterpainttoolbar.c",
+    "app/widgets/popupper.cpp",
+    "app/widgets/gimppropwidgets.c",
+    "app/widgets/gimpviewablebutton.c",
+    "app/widgets/gimpviewablebox.c",
+    "app/widgets/gimpcontainerpopup.c",
+    "app/widgets/gimppopup.c",
+    "app/painter/binding-store.cpp",
+    "app/painter/gimp-painter-binding.cpp",
+    "app/widgets/gimppaintercompactoptions.cpp",
+    "app/tests/test-painter-compact-options.c",
+    "app/tests/tests.c",
+    "app/tests/test-widget-orientation-api.c",
+    "app/tests/test-widget-orientation-api.cpp"
+  ],
+  "instrumentation": [
+    "ASan",
+    "UBSan excluding vptr",
+    "frame pointers",
+    "O1"
+  ],
+  "qualifications": [
+    "LSan disabled (detect_leaks=0)",
+    "Remaining application archives and dependency libraries are uninstrumented; not a whole-application sanitizer claim.",
+    "GTK and unit-store implementation remain uninstrumented; rectangle paths exercise their integration through the instrumented test TU, not full dependency instrumentation."
+  ],
+  "runtime": "Authenticated Xvfb1080x1920x24, official sessionrc-native-oncanvas, oncanvas defaultTRUE, trusted task299 libraries/plugin metadata, no LD_PRELOAD. Rectangle2 use the original registered compact profile with fresh per-case HOME/XDG; Clone7 uses official native session.",
+  "binary_sha256": "61590a49ba87f1dbbf40aaa72f388aba0685226f4bb7e566a95694dc76552537",
+  "source_sha256": {
+    "app/widgets/gimpblobeditor.c": "a51c256b25ad02028ccd9975cbcdbcd61821223eb559b550306a1a0f610e6650",
+    "app/tools/gimppaintertooltoolbar.c": "52461a6e8ed997446ad29347e96b9a2ef7cfe96027bd2cff1f9b0bd5d6c162e9",
+    "app/tools/gimppaintertransformtoolbar.c": "fcc5000c9ac60e74d33f34afb7905d67f36f6329c2077e8003e43c0b82593f0a",
+    "app/tools/gimppaintertogglepopup.cpp": "91ee0bf624425dbfdbc512609faf050ee07357536f806bac87818cb7a1ce887c",
+    "app/tools/gimppainterpainttoolbar.c": "aee6723df0be511c759eca221b62a39b6d6c7ddeb0fa8315fe0bf0d603932727",
+    "app/widgets/popupper.cpp": "6ea240dd7cf37624a0cba321d59ae30e4933f434dab318a417f255a27805be80",
+    "app/widgets/gimppropwidgets.c": "d9ea7d225b9538e005b538db88788e8d97ae8a0eafae9c66b72b9b8fbabe6714",
+    "app/widgets/gimpviewablebutton.c": "6dbaa7fd5e22235cda9f3a783a91188e0e968c0a10b3ceb138e24a5865df646b",
+    "app/widgets/gimpviewablebox.c": "fe87f0728ffe5fd348a14ccdfbc432d372fc7addd93730829723044b244b36ab",
+    "app/widgets/gimpcontainerpopup.c": "9f5ac34801ada8a71e6e23f4aa52b714eb515c25c4865ce4a659c85d7a8e104d",
+    "app/widgets/gimppopup.c": "83ee7bcb14623350af3f1dfffb23161d6c2ad31bf40efd7d9f86cc06143ef710",
+    "app/painter/binding-store.cpp": "c69d65c22f26e6be8f6df69765cd30f7bbbd32b46b0eb847e9f6524b41c2b557",
+    "app/painter/gimp-painter-binding.cpp": "22aca4f9e467e16b86f2cbeec431d7d069fc552c98fad985db770720fcf876fd",
+    "app/widgets/gimppaintercompactoptions.cpp": "0f7a1c780f3b64e92bc8d0f45c27f2b5c6fea1b6dcf5078c51b8536d8b25bcbc",
+    "app/tests/test-painter-compact-options.c": "7d54a5431a031f79c93ba020a9c94183238472731e6af245597cae08aa669ef4",
+    "app/tests/tests.c": "56303878e316e41fcb7c439b199cde5bd9fc4ac84b46b48efcbfbc79737747e7",
+    "app/tests/test-widget-orientation-api.c": "d85281846b56ee88aa1a703ec5053ae677de9a08ab9f8cf8695c0c5359fa9648",
+    "app/tests/test-widget-orientation-api.cpp": "5e987e170aa64885ecf5c6fe6f400e47b0430a4dca7aabecbbb3a02dea480f8c",
+    "app/tests/test-painter-clone-popup.inc": "b471554a0d7c5b6d0f70dea31b6bc803ff19ac9fa15a67b72efb003e9c40493a",
+    "app/tests/test-painter-ink-popup.inc": "95696619094b7d3e42ee5dae6e62db94c47899ca517eeec7defb99b53de5d073",
+    "app/tests/test-painter-bucket-popup.inc": "21e989f3d4263c7cb4e8486f7ddc876cc0d445cac9c4ab034220c0f8df784831",
+    "app/tests/test-painter-rectangle-unit-popup.inc": "39a391d399b6e2249ce89df5651d6d74a7e88daf50d803df5b9425375e020867",
+    "app/tests/test-painter-transform-popup.inc": "947804310847f70ec0123c875971a936c1053db9df44d36f96dd3e64814fd649",
+    "app/tools/gimppaintertogglepopup.h": "ce0c2246262f7b0ff9bc6f1c5058077930961d0289c870b772fac2534403088d",
+    "app/widgets/gimpblobeditor.h": "656ffb971be231fdcc4e744da6f07eedb8da1f5a3a50df1ec484cd04b5aaade5"
+  },
+  "source_changed": [],
+  "pass": true,
+  "results": [
+    {
+      "suite": "clone-native-popup",
+      "expected": 7,
+      "pass_count": 7,
+      "exit": 0,
+      "pass": true
+    },
+    {
+      "suite": "rectangle-units-real-popup-events",
+      "expected": 1,
+      "pass_count": 1,
+      "exit": 0,
+      "sanitizer_findings": [],
+      "pass": true
+    },
+    {
+      "suite": "rectangle-units-popup-model-reentry",
+      "expected": 1,
+      "pass_count": 1,
+      "exit": 0,
+      "sanitizer_findings": [],
+      "pass": true
+    }
+  ],
+  "prior_diagnostics": "Retained obsolete Ink Clone-carrier negative-control failure, then captured rectangle GdkWindow-not-viewable readiness failure. Narrow approved changes select unchanged Heal as control and include already-asserted nonnull/viewable state in the existing bounded wait. No row/model assertions removed, no click retries."
+}

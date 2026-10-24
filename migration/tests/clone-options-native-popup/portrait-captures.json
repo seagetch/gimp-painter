@@ -1,0 +1,81 @@
+{
+  "base_commit": "244574c514bae2ddbfe9740fe06790ce21d83bee",
+  "source_changed": [],
+  "binary_sha256": "a44d505a120fa534a74272a29ffffc7ee823914dba13b940feb41f1d7458d8b6",
+  "source_seal_sha256": "6c5eb2e0727184e37e9fdf08dcaa2fa621fa4bd9f57f3403eaadf347a702952c",
+  "captures": [
+    {
+      "case": "wm-scale1-clone",
+      "exit_code": 0,
+      "png": "wm-scale1-clone.png",
+      "png_sha256": "ba3164321809419ce01a100b430fcd077903b010cb96649a26280059c9e41dc1",
+      "physical_image_size": [
+        1080,
+        1920
+      ],
+      "physical_popup_bounds": [
+        782,
+        1695,
+        148,
+        117
+      ],
+      "scale": 1,
+      "log_sha256": "b3125dd63a1cce6de13415ee97c693d3de893a7b312ec27ae6b999ae47b8b1ab"
+    },
+    {
+      "case": "wm-scale1-perspective-clone",
+      "exit_code": 0,
+      "png": "wm-scale1-perspective-clone.png",
+      "png_sha256": "eaee1bb77af142133fc9ffc9d9946a5f83f0d7cb890fc4c387e5fc5fc7eb1762",
+      "physical_image_size": [
+        1080,
+        1920
+      ],
+      "physical_popup_bounds": [
+        881,
+        1695,
+        148,
+        138
+      ],
+      "scale": 1,
+      "log_sha256": "1d6f9d57a9f242d5f4aa67e111c1382e2f17ecdad51801452e3bef0e73cbc523"
+    },
+    {
+      "case": "wm-scale2-clone",
+      "exit_code": 0,
+      "png": "wm-scale2-clone.png",
+      "png_sha256": "ea0e8bd7102195bc100485ff31e8c37804ccc4c879bbd846cfb08fbe20e2dd4c",
+      "physical_image_size": [
+        1080,
+        1920
+      ],
+      "physical_popup_bounds": [
+        520,
+        1470,
+        296,
+        234
+      ],
+      "scale": 2,
+      "log_sha256": "e6c9caa1f37dc91556e5f3a0d49773498e898ebe272e690b8c2b66f26f072f4d"
+    },
+    {
+      "case": "wm-scale2-perspective-clone",
+      "exit_code": 0,
+      "png": "wm-scale2-perspective-clone.png",
+      "png_sha256": "ab1703f2d8f34f9798a65f3408bfcfe8e613d535d21b5262beec682cac687506",
+      "physical_image_size": [
+        1080,
+        1920
+      ],
+      "physical_popup_bounds": [
+        718,
+        1470,
+        296,
+        276
+      ],
+      "scale": 2,
+      "log_sha256": "90f7338df3b991e9a7f5adc94543da0caa0718b266acde899a68fa6f78dfc985"
+    }
+  ],
+  "qualification": "Four repetitions of two focused cases, not additional unique cases. Existing compact enum/name ellipsis and high-DPI dock clipping remain; no complete layout or pixel parity claim."
+}

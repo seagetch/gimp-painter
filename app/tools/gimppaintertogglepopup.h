@@ -11,5 +11,7 @@ GtkWidget *gimp_painter_transform_details_button_new (GtkWidget *body);
 GtkWidget *gimp_painter_bucket_details_button_new (GtkWidget *body);
 /* Ink frame entries use the same self-anchor policy, not toggle-row policy. */
 GtkWidget *gimp_painter_ink_popup_button_new (GtkWidget *body, gboolean blob);
+/* Clone and Perspective Clone Options use the frame self-anchor policy. */
+GtkWidget *gimp_painter_clone_options_button_new (GtkWidget *body);
 G_END_DECLS
 #endif

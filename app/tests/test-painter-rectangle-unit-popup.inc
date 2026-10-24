@@ -477,7 +477,9 @@ rectangle_reentry_ready (GtkWidget *target, GtkWidget *parent_grab)
 {
   gint64 deadline = g_get_monotonic_time () + 3 * G_TIME_SPAN_SECOND;
   while ((!gtk_widget_get_mapped (target) || !gtk_widget_get_realized (target) ||
-          !gtk_widget_is_sensitive (target) || gtk_grab_get_current () != parent_grab) &&
+          !gtk_widget_is_sensitive (target) || !gtk_widget_get_window (target) ||
+          !gdk_window_is_viewable (gtk_widget_get_window (target)) ||
+          gtk_grab_get_current () != parent_grab) &&
          g_get_monotonic_time () < deadline)
     {
       g_main_context_iteration (NULL, FALSE); g_usleep (1000);

@@ -1,0 +1,31 @@
+{
+  "base_commit": "244574c514bae2ddbfe9740fe06790ce21d83bee",
+  "actual305_painttoolbar_blob": "9ea09563205af8ddfce32ce7071886cfe933c09a",
+  "same_final_test_object": true,
+  "link_differences": [
+    [
+      "tests/clone-current",
+      "tests/clone-final-negative"
+    ],
+    [
+      "tests/gimppainterpainttoolbar.c.o",
+      "tests/actual305-painttoolbar.o"
+    ]
+  ],
+  "negative_binary_sha256": "b1cded66b73de42639ca515fe7b32aba19905aecf072aa5e3357d32658204d2b",
+  "source_seal_sha256": "6c5eb2e0727184e37e9fdf08dcaa2fa621fa4bd9f57f3403eaadf347a702952c",
+  "negatives": [
+    {
+      "case": "clone",
+      "expected_failure_exit": 250,
+      "log_sha256": "760a5018998ca856e3c2ce008245b3be7c614e020440b1a6199e4f1ee9ae4e41"
+    },
+    {
+      "case": "perspective-clone",
+      "expected_failure_exit": 250,
+      "log_sha256": "1c198b2f9bc1342f323f069099991a6b437e357e5f479f91d166ee69e895df17"
+    }
+  ],
+  "source_changed": [],
+  "qualification": "Only actual305 painttoolbar object and output path differ; extra new wrapper is unreachable through old call chain. Carrier assertion runs on actual same-shell entry before peer setup."
+}

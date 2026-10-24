@@ -28,6 +28,7 @@
 #include "core/gimpdatafactory.h"
 #include "core/gimptoolinfo.h"
 
+#include "paint/gimpcloneoptions.h"
 #include "paint/gimpinkoptions.h"
 #include "paint/gimppaintoptions.h"
 
@@ -107,9 +108,9 @@ paint_toolbar_enum (GObject     *config,
 }
 
 /* Presentation-owned content, never an expander taken from the dock. The
- * three historical toggle groups and two Ink frame entries use native popup
- * semantics; all other
- * callers retain their existing GtkPopover presentation unchanged.
+ * three historical toggle groups, Ink frame entries and Clone Options use
+ * native popup semantics; other callers retain their existing GtkPopover
+ * presentation unchanged.
  */
 static GtkWidget *
 paint_toolbar_popup (GtkWidget   *toolbar,
@@ -125,12 +126,14 @@ paint_toolbar_popup (GtkWidget   *toolbar,
                     !g_strcmp0 (id, "smoothing");
   gboolean ink = !g_strcmp0 (id, "ink-sensitivity") ||
                  !g_strcmp0 (id, "ink-blob");
+  gboolean clone = !g_strcmp0 (id, "source") && GIMP_IS_CLONE_OPTIONS (config);
   GtkWidget *scroll = gtk_scrolled_window_new (NULL, NULL);
   GtkWidget *button = native ? gimp_painter_toggle_popup_button_new (row, scroll) :
                       ink ? gimp_painter_ink_popup_button_new (scroll,
                                                   !g_strcmp0 (id, "ink-blob")) :
-                            gtk_menu_button_new ();
-  GtkWidget *popover = (native || ink) ? NULL : gtk_popover_new (button);
+                      clone ? gimp_painter_clone_options_button_new (scroll) :
+                              gtk_menu_button_new ();
+  GtkWidget *popover = (native || ink || clone) ? NULL : gtk_popover_new (button);
   gchar     *name = g_strconcat ("painter-paint-", id, NULL);
 
   gtk_widget_set_name (button, name);
@@ -151,7 +154,7 @@ paint_toolbar_popup (GtkWidget   *toolbar,
       g_object_bind_property (config, enable_property,
                               native ? button : contents, "sensitive", G_BINDING_SYNC_CREATE);
     }
-  else if (ink)
+  else if (ink || clone)
     {
       GtkWidget *entry = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 4);
 
@@ -562,7 +565,8 @@ paint_toolbar_specific (GtkWidget       *toolbar,
     {
       if (tool_type == GIMP_TYPE_PERSPECTIVE_CLONE_TOOL)
         paint_toolbar_pack (toolbar, paint_toolbar_enum (config, "clone-mode", NULL));
-      paint_toolbar_popup (toolbar, config, "source", _("Source"), NULL,
+      paint_toolbar_popup (toolbar, config, "source",
+                            tool_type == GIMP_TYPE_HEAL_TOOL ? _("Source") : _("Options"), NULL,
                             paint_toolbar_source_options (options, tool_type != GIMP_TYPE_HEAL_TOOL));
     }
   else if (tool_type == GIMP_TYPE_CONVOLVE_TOOL)

@@ -232,3 +232,8 @@ gimp_painter_ink_popup_button_new (GtkWidget *body, gboolean blob) {
                            blob ? "painter-ink-blob-popup" :
                                   "painter-ink-sensitivity-popup", true);
 }
+
+extern "C" GtkWidget *
+gimp_painter_clone_options_button_new (GtkWidget *body) {
+  return popup_button_new (nullptr, body, "painter-clone-options-popup", true);
+}

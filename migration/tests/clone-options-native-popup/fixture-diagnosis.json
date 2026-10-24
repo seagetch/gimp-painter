@@ -1,0 +1,11 @@
+{
+  "scope": "Earlier test setup/cleanup diagnostics, not production regression or accepted extra cases",
+  "initial_compile": "Missing intl header corrected in test include.",
+  "initial_runtime": "After tool switch destroyed toolbar, cleanup used a borrowed retired invoker; private trace identified invalid GObject access. Test cleanup now restores pattern-view-type on surviving canonical options after child closure; teardown/model assertions retained.",
+  "raw_private_hashes": {
+    "build1.log": "f66a9355d0183958b74cf39fc3a95b000817c76eb104df9176464e8ef134171c",
+    "run2.log": "b9b68ed8bf51d1138391f0bcfc9c83e1043825434edf334270ee6303a64b01c4",
+    "run2-private-trace.log": "1f70bffabd137d11808f9cb53d57ebdf723626affb8365024d3f98c66a9f02d9"
+  },
+  "production_changed_for_this_diagnostic": false
+}

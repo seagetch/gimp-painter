@@ -1,0 +1,28 @@
+{
+  "base_commit": "244574c514bae2ddbfe9740fe06790ce21d83bee",
+  "source_changed": [],
+  "source_seal_sha256": "6c5eb2e0727184e37e9fdf08dcaa2fa621fa4bd9f57f3403eaadf347a702952c",
+  "test_include_sha256": "b471554a0d7c5b6d0f70dea31b6bc803ff19ac9fa15a67b72efb003e9c40493a",
+  "adapted_ink_include_sha256": "95696619094b7d3e42ee5dae6e62db94c47899ca517eeec7defb99b53de5d073",
+  "binary_sha256": "a44d505a120fa534a74272a29ffffc7ee823914dba13b940feb41f1d7458d8b6",
+  "normal_cases": [
+    "/clone-native-popup/actual-clone",
+    "/clone-native-popup/actual-perspective-clone",
+    "/clone-native-popup/clone-source-native-menu",
+    "/clone-native-popup/perspective-alignment-native-menu",
+    "/clone-native-popup/clone-pattern-transaction-lifetime",
+    "/clone-native-popup/perspective-pattern-transaction-lifetime",
+    "/clone-native-popup/factory-caller-release-heal-control"
+  ],
+  "normal_count": 7,
+  "exit_code": 0,
+  "log": "run5.log",
+  "log_sha256": "c64580f75c58c738fc9d4e5095c5724b82de1a828b10da8ee0e52463b48313bb",
+  "qualifications": [
+    "Pattern row selection uses GTK selection API; entry and confirm/cancel keys use XTest server events.",
+    "Model/peer/dock API roundtrips are distinct from XTest widget actions.",
+    "Outer outside policy uses direct event-vfunc invocation, not physical outside click.",
+    "No old 2.8 executable was run.",
+    "Inherited Ink non-Ink control now uses unchanged Heal instead of intentionally converted Clone; all assertions retained. Prior obsolete-control failure preserved, not counted as pass."
+  ]
+}
