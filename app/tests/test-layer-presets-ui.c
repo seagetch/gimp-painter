@@ -309,9 +309,15 @@ native_dockable_close_reopen (gboolean through_action)
       g_assert_true (gimp_dialog_factory_from_widget (dockable, &actual) == factory);
       g_assert_true (actual == entry);
       g_assert_true (entry->dockable);
-      g_assert_cmpstr (entry->help_id, ==, GIMP_HELP_DOCK);
+      g_assert_nonnull (entry->help_id);
+      g_assert_cmpstr (entry->help_id, ==, "");
       g_assert_cmpstr (gimp_dockable_get_help_id (GIMP_DOCKABLE (dockable)), ==,
-                       GIMP_HELP_DOCK);
+                       "");
+      /* Empty is a valid explicit help ID, not NULL (which rejects the
+       * dockable constructor). Context help must retain the empty pointer
+       * rather than fall through to a parent dock topic. */
+      g_assert_nonnull (g_object_get_qdata (G_OBJECT (dockable), GIMP_HELP_ID));
+      g_assert_cmpstr (g_object_get_qdata (G_OBJECT (dockable), GIMP_HELP_ID), ==, "");
       g_assert_cmpstr (gimp_action_get_help_id (gimp_ui_manager_find_action (
         gimp_test_utils_get_ui_manager (gimp), "dialogs", "dialogs-layer-presets")), ==,
         "gimp-layer-preset-dialog");

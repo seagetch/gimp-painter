@@ -1,0 +1,20 @@
+[
+  {
+    "name": "unrelated-red",
+    "hash_updated": true,
+    "returncode": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/workspace/shared/help-negative-szp3w_hj/evidence/verify.py\", line 11, in <module>\n    r=read('red/results.json')[0];assert r['returncode']!=0 and 'entry->help_id' in r['stdout'] and '(\"gimp-dock\" == \"\")' in r['stdout']\n                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+  },
+  {
+    "name": "missing-native-case",
+    "hash_updated": true,
+    "returncode": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/workspace/shared/help-negative-oong9pap/evidence/verify.py\", line 14, in <module>\n    n=18 if r['name'].endswith('layer-presets-ui') else 6;assert r['returncode']==0 and len(re.findall(r'^ok \\d+',r['stdout'],re.M))==n\n                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+  },
+  {
+    "name": "wrong-original-help",
+    "hash_updated": true,
+    "returncode": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/workspace/shared/help-negative-1aealfc3/evidence/verify.py\", line 20, in <module>\n    o=read('legacy-source/oracle.json');assert o['dialog_help_id']=='' and o['action_help_id']=='gimp-layer-preset-dialog';assert sha((E/'legacy-source/layer-preset-gui.cpp').read_bytes())==o['sha256']\n                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+  }
+]

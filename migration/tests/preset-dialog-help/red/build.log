@@ -1,0 +1,37 @@
+ninja: Entering directory `/workspace/shared/gimp-clean-aggregate/build'
+[1/12] Generating git-version.h.in.1 with a custom command
+fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+[2/12] Generating git-version.h.in.2 with a custom command
+fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+[3/12] Generating git-version.h with a custom command
+fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+[4/6] Generating app/tests/icon-theme-fixture/gimp-test-icon-theme-fixture with a custom command
+{"files": 1191, "manifest_sha256": "2f790ebf02244ef3c023f17f16ab614cbc315ee46d46abd87b7f73d4d5d9be41", "ownership_marker_sha256": "d3ebe76f57bdce73e82df17c3cd89f1a630f42f3c8d72dbfdacd4a000061b8bf", "plan_sha256": "0a16da7a76b5facf2d3d8084793b72e28d32d17c7ff6bf237d164075d4af4b95", "stamp_sha256": "c20e592420d8f1feb8e044c6114f8ed009473d411042806fd6e9aadd50c7ffc9", "status": "verified"}
+[5/6] Compiling C object app/tests/layer-presets-ui.p/test-layer-presets-ui.c.o
+../source/app/tests/test-layer-presets-ui.c: In function ‘factory_prepare’:
+../source/app/tests/test-layer-presets-ui.c:61:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   61 |   gchar *path = g_build_filename (g_getenv ("GIMP_TESTING_ABS_TOP_SRCDIR"), "data", "layer-presets", NULL);
+      |   ^~~~~
+../source/app/tests/test-layer-presets-ui.c: In function ‘selection_actions_lifetime’:
+../source/app/tests/test-layer-presets-ui.c:99:7: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+   99 |       GimpActionGroup *group = gimp_action_factory_get_group (global_action_factory, "layer-presets", view);
+      |       ^~~~~~~~~~~~~~~
+../source/app/tests/test-layer-presets-ui.c:108:7: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  108 |       GObject *weak_group = G_OBJECT (group), *weak_view = G_OBJECT (view);
+      |       ^~~~~~~
+../source/app/tests/test-layer-presets-ui.c: In function ‘open_native_preset’:
+../source/app/tests/test-layer-presets-ui.c:136:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  136 |   GdkMonitor *monitor = gdk_display_get_monitor (gdk_display_get_default (), 0);
+      |   ^~~~~~~~~~
+../source/app/tests/test-layer-presets-ui.c: In function ‘native_dockable_close_reopen’:
+../source/app/tests/test-layer-presets-ui.c:360:11: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  360 |           GtkWidget *tab = gimp_dockable_create_tab_widget (
+      |           ^~~~~~~~~
+../source/app/tests/test-layer-presets-ui.c: In function ‘main’:
+../source/app/tests/test-layer-presets-ui.c:1624:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+ 1624 |   gint result = gimp_core_app_get_exit_status (GIMP_CORE_APP (gimp->app));
+      |   ^~~~
+[6/6] Linking target app/tests/layer-presets-ui

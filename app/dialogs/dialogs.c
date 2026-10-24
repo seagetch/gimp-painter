@@ -369,7 +369,7 @@ static const GimpDialogFactoryEntry entries[] =
             GIMP_HELP_MYPAINT_BRUSH_EDIT,
             dialogs_painter_mypaint_editor_new, GIMP_VIEW_SIZE_LARGE, FALSE),
   DOCKABLE ("gimp-layer-preset-list", N_("Layer Presets"), NULL, GIMP_ICON_LAYER,
-            GIMP_HELP_DOCK, dialogs_layer_preset_list_view_new, GIMP_VIEW_SIZE_SMALL, FALSE),
+            "", dialogs_layer_preset_list_view_new, GIMP_VIEW_SIZE_SMALL, FALSE),
   LISTGRID (tool-preset, tool_preset,
             N_("Tool Presets"), NULL, GIMP_ICON_TOOL_PRESET,
             GIMP_HELP_TOOL_PRESET_DIALOG, GIMP_VIEW_SIZE_MEDIUM),

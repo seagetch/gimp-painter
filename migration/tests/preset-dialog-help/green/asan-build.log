@@ -1,0 +1,23 @@
+[01m[K../source/app/tests/test-layer-presets-ui.c:[m[K In function ‘[01m[Kfactory_prepare[m[K’:
+[01m[K../source/app/tests/test-layer-presets-ui.c:61:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   61 |   [01;35m[Kgchar[m[K *path = g_build_filename (g_getenv ("GIMP_TESTING_ABS_TOP_SRCDIR"), "data", "layer-presets", NULL);
+      |   [01;35m[K^~~~~[m[K
+[01m[K../source/app/tests/test-layer-presets-ui.c:[m[K In function ‘[01m[Kselection_actions_lifetime[m[K’:
+[01m[K../source/app/tests/test-layer-presets-ui.c:99:7:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   99 |       [01;35m[KGimpActionGroup[m[K *group = gimp_action_factory_get_group (global_action_factory, "layer-presets", view);
+      |       [01;35m[K^~~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-layer-presets-ui.c:108:7:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  108 |       [01;35m[KGObject[m[K *weak_group = G_OBJECT (group), *weak_view = G_OBJECT (view);
+      |       [01;35m[K^~~~~~~[m[K
+[01m[K../source/app/tests/test-layer-presets-ui.c:[m[K In function ‘[01m[Kopen_native_preset[m[K’:
+[01m[K../source/app/tests/test-layer-presets-ui.c:136:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  136 |   [01;35m[KGdkMonitor[m[K *monitor = gdk_display_get_monitor (gdk_display_get_default (), 0);
+      |   [01;35m[K^~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-layer-presets-ui.c:[m[K In function ‘[01m[Knative_dockable_close_reopen[m[K’:
+[01m[K../source/app/tests/test-layer-presets-ui.c:360:11:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  360 |           [01;35m[KGtkWidget[m[K *tab = gimp_dockable_create_tab_widget (
+      |           [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-layer-presets-ui.c:[m[K In function ‘[01m[Kmain[m[K’:
+[01m[K../source/app/tests/test-layer-presets-ui.c:1624:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+ 1624 |   [01;35m[Kgint[m[K result = gimp_core_app_get_exit_status (GIMP_CORE_APP (gimp->app));
+      |   [01;35m[K^~~~[m[K
