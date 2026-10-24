@@ -1,0 +1,26 @@
+1/1 gimp:painter / painter-smudge-legacy-strokes FAIL             1.49s   exit status 1
+>>> MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 LD_LIBRARY_PATH=/workspace/shared/gimp-native-secondary/build/libgimpconfig:/workspace/shared/gimp-native-secondary/build/libgimpbase:/workspace/shared/gimp-native-secondary/build/libgimpcolor:/workspace/shared/gimp-native-secondary/build/libgimpmath:/workspace/shared/gimp-native-secondary/build/libgimpwidgets:/workspace/shared/gimp-native-secondary/build/libgimpmodule:/workspace/shared/gimp-native-secondary/build/libgimpthumb:/workspace/shared/gimp-native-secondary/prefix/lib/x86_64-linux-gnu:/workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu GIMP_TESTING_ABS_TOP_SRCDIR=/workspace/shared/gimp-native-secondary/source GIMP_TESTING_ABS_TOP_BUILDDIR=/workspace/shared/gimp-native-secondary/build MESON_TEST_ITERATION=1 GIMP_TESTING_PLUGINDIRS=/workspace/shared/gimp-native-secondary/build/plug-ins/common UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 MALLOC_PERTURB_=138 UI_TEST=yes ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 /usr/bin/python3 /workspace/shared/gimp-native-secondary/source/migration/tests/compare_smudge_strokes.py /workspace/shared/gimp-native-secondary/source/migration/fixtures/legacy-smudge/pixels.tsv.gz app/tests/painter-smudge-trace
+――――――――――――――――――――――――――――――――――――― ✀  ―――――――――――――――――――――――――――――――――――――
+stdout:
+Mismatched finish cases/count: [(6, 301), (7, 79), (10, 318), (11, 84), (14, 1), (15, 19), (18, 439), (19, 152), (22, 354), (23, 84), (30, 952), (31, 246), (34, 966), (35, 257), (38, 33), (39, 19), (42, 1126), (43, 326), (46, 998), (47, 258)]
+First mismatched record: SMUDGE 6 finish 1
+Different bytes: 301
+First byte differences: [(986, 52, 51), (1048, 61, 60), (1049, 67, 66), (1050, 66, 64), (1051, 63, 61), (1052, 61, 59), (1053, 61, 59), (1054, 65, 63), (1055, 69, 66), (1056, 127, 125), (1057, 133, 131), (1058, 133, 131), (1059, 133, 131), (1060, 113, 111), (1061, 129, 131), (1062, 149, 152), (1063, 149, 152), (1064, 149, 152), (1065, 149, 152), (1066, 149, 152)]
+stderr:
+Failed to parse tag cache: No such file or directory
+Legacy Smudge full stroke mismatch
+――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+
+
+Summary of Failures:
+
+1/1 gimp:painter / painter-smudge-legacy-strokes FAIL             1.49s   exit status 1
+
+Ok:                 0   
+Expected Fail:      0   
+Fail:               1   
+Unexpected Pass:    0   
+Skipped:            0   
+Timeout:            0   
+
+Full log written to /workspace/shared/gimp-native-secondary/build/meson-logs/testlog.txt

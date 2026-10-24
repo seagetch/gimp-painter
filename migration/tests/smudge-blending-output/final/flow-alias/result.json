@@ -1,0 +1,9 @@
+{
+  "name": "gimp:painter / painter-smudge-legacy-strokes",
+  "result": "FAIL",
+  "returncode": 1,
+  "duration": 1.3068530559539795,
+  "stdout": "Mismatched finish cases/count: [(2, 406), (3, 170), (6, 402), (7, 162), (10, 402), (11, 169), (14, 514), (15, 216), (18, 615), (19, 245), (22, 447), (23, 169), (26, 1011), (27, 404), (30, 1205), (31, 509), (34, 1218), (35, 518), (38, 1040), (39, 428), (42, 1454), (43, 593), (46, 1259), (47, 519)]\nFirst mismatched record: SMUDGE 2 finish 1\nDifferent bytes: 406\nFirst byte differences: [(979, 50, 49), (980, 55, 52), (981, 55, 52), (982, 55, 52), (983, 55, 52), (984, 55, 52), (985, 58, 54), (986, 53, 51), (987, 49, 48), (988, 49, 48), (989, 49, 48), (990, 49, 48), (991, 49, 48), (1042, 50, 49), (1043, 61, 56), (1044, 66, 59), (1045, 66, 59), (1046, 66, 59), (1047, 66, 59), (1048, 67, 61)]\n",
+  "stderr": "Failed to parse tag cache: No such file or directory\nLegacy Smudge full stroke mismatch\n",
+  "executable_sha256": "7594980a085db36f675d0717cb6a2488a42a5623beba92a988433fbf3b428954"
+}

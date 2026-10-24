@@ -1,0 +1,1 @@
+During development, the missing mismatch-summary negative control correctly invalidated the input but the checker raised TypeError from indexing a missing regex match. The checker now explicitly asserts a match and rejects the malformed summary with AssertionError. Final28 controls pass. No native test or production change was involved.

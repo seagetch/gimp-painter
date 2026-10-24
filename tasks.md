@@ -965,7 +965,7 @@
 | 23.002 | [x] | Smudge の蓄積 buffer を移植する | 23.001 | 初期採色と更新が一致 |
 | 23.002/native-byte-kernels | [x] | 旧Smudge蓄積・shade・native描画の別々の数式を保持する | 23.001/runtime-old-strokes | 1024実旧caseの全byte重み/RGB/Gray/alpha/選択を採取し891487 bytesが通常/ASan・UBSan・float-cast-overflow完全一致。PaintCore replaceとLayer Replaceの異なる半透明/透明色roundingを維持。native全stroke/toolは後続gate |
 | 23.002/native-owner-smudge | [x] | 旧Smudgeを専用native coreと単一Undo・取消しへ接続する | 23.002/native-byte-kernels, 27.009/native-start-preflight | Y/YA/RGB/RGBA48実旧sceneの193record/2952800 bytesがrawとowned経路で完全一致。10 lifecycle群と15source focused sanitizer合格。旧mask丸め/独立blendingを保持。GUI登録・長距離分割・memory admission・全precision/pipe・旧profile移行は別gate |
-| 23.003 | [ ] | Smudge の色混合を移植する | 23.002 | 旧 blending-output を再現 |
+| 23.003 | [x] | Smudge の色混合を移植する | 23.002 | 旧 blending-output を再現 |
 | 23.004 | [ ] | Smudge のサイズ変化を処理する | 23.003 | 蓄積 buffer の再配置が一致 |
 | 23.005 | [ ] | Smudge の設定 UI と保存を接続する | 23.004 | 値が描画と往復に反映 |
 | 23.005/native-smudge-tool | [x] | 独立Smudgeの実tool・owner入力queue・1dab継続・設定UIを接続する | 23.002/native-owner-smudge, 27.010/bounded-interpolation | 26実GTK通常/30source focused sanitizer、13core/17source sanitizer合格。2 owned routeで実旧193record/2952800 bytes一致。Undo/取消/Save query・長距離・再入を確認。既存標準S不変、旧profile・generic stroke・全dabメモリ/遅延・paper/pipe等は別gate |
@@ -1479,6 +1479,8 @@
 29.002 / 29.008 の icon 失敗経路の逆参照: 29.008/icon-null。元の全受入条件と親依存は未完了のまま保持する。有限な native 入力への依存整理の根拠と元依存: `migration/contracts/tile-icon-fallback.md`。
 
 2026-10-21 Original23.002 closed for unchanged initial sampling/update criterion after52-role review: final26 native cases,384 center scenes/2016 updates, four48-scene old-raster routes,1024 byte kernels and fresh dynamics/neutral mapping proof. Exact historical ledger successor retains every ID/criterion and all cross-owners;23.003 blending,23.004 full transformed footprint and23.005 UI/save remain OPEN. See `migration/tests/smudge-accumulator-closure/`. No new runtime or whole-HEAD claim.
+
+2026-10-21 Original23.003 closed for unchanged old blending-output criterion: actual native Flow-alias and shade-feedback mutations break24/20 enabled captured old scenes respectively; exact restored26 core,48-scene routes and1024 byte vectors pass, with18-unit sanitizer26+four48-scene routes. All52 source roles and cross-owners retained. No production change/new old runtime; full footprint23.004 and UI/save23.005 remain OPEN. See `migration/tests/smudge-blending-output/`.
 
 ## 5. 機能36項目の追跡表
 
