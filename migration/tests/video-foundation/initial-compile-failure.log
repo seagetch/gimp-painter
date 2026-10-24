@@ -1,0 +1,20 @@
+Traceback (most recent call last):
+  File "/workspace/scratch/0015fc5d1a03/gimp-painter/migration/tests/video-foundation/run.py", line 7, in <module>
+    exe=Path(td)/mode;cmd=['cc','-std=c11','-Wall','-Wextra','-Werror','-Wno-unused-parameter',*flags,str(E/'old-oracle.c'),str(E/'compare.c'),'-o',str(exe)];q=subprocess.run(cmd,capture_output=True,text=True);assert q.returncode==0,q.stderr
+                                                                                                                                                                                                                         ^^^^^^^^^^^^^^^
+AssertionError: /workspace/scratch/0015fc5d1a03/gimp-painter/migration/tests/video-foundation/compare.c:8:17: error: conflicting types for built-in function ‘remainder’; expected ‘double(double,  double)’ [-Werror=builtin-declaration-mismatch]
+    8 | static unsigned remainder(unsigned n,unsigned divisor){return n-(n/divisor)*divisor;}
+      |                 ^~~~~~~~~
+/workspace/scratch/0015fc5d1a03/gimp-painter/migration/tests/video-foundation/compare.c:7:1: note: ‘remainder’ is declared in header ‘<math.h>’
+    6 | #include "reference-patterns.h"
+  +++ |+#include <math.h>
+    7 | int video_old_oracle(int,int,const uint8_t*,uint8_t*,int,int,int,int);
+/workspace/scratch/0015fc5d1a03/gimp-painter/migration/tests/video-foundation/compare.c: In function ‘main’:
+/workspace/scratch/0015fc5d1a03/gimp-painter/migration/tests/video-foundation/compare.c:45:2: error: this ‘if’ clause does not guard... [-Werror=misleading-indentation]
+   45 |  if(video_old_oracle(0,0,in,NULL,4,0,0,0))return 2;rejected++;
+      |  ^~
+/workspace/scratch/0015fc5d1a03/gimp-painter/migration/tests/video-foundation/compare.c:45:52: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+   45 |  if(video_old_oracle(0,0,in,NULL,4,0,0,0))return 2;rejected++;
+      |                                                    ^~~~~~~~
+cc1: all warnings being treated as errors
+

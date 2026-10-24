@@ -1,0 +1,34 @@
+[
+  {
+    "name": "reset-roi-phase",
+    "source_sha256": "2ba6a4c6f733c68f257f94a274402066a489283f761c1df741012c885391b842",
+    "mutant_sha256": "f16e21de319b250078e2cf8c7a45c16294a52788dfe9316747fe55d7d36778bb",
+    "returncode": 1,
+    "stdout": "",
+    "stderr": "Video mismatch p0 x75 y116 add0 rot0 bpp3 c0 v0: 0,0,0,83 != 0,0,253,83\n"
+  },
+  {
+    "name": "ignore-rotation",
+    "source_sha256": "2ba6a4c6f733c68f257f94a274402066a489283f761c1df741012c885391b842",
+    "mutant_sha256": "b0fbb0a59d9dabdc6d5873192c9168ad5dd82fbf69b8afc2e89cc63c6a396130",
+    "returncode": 1,
+    "stdout": "",
+    "stderr": "Video mismatch p0 x224 y40 add0 rot1 bpp3 c0 v0: 0,0,253,83 != 0,129,0,83\n"
+  },
+  {
+    "name": "wrap-additive",
+    "source_sha256": "2ba6a4c6f733c68f257f94a274402066a489283f761c1df741012c885391b842",
+    "mutant_sha256": "65e8008df54e3f1feac9ea57a7436c47b527bfb6218c7ca51ac67ec74a5271f0",
+    "returncode": 1,
+    "stdout": "",
+    "stderr": "Video mismatch p0 x75 y116 add1 rot0 bpp3 c0 v0: 0,129,250,83 != 0,129,255,83\n"
+  },
+  {
+    "name": "erase-alpha",
+    "source_sha256": "2ba6a4c6f733c68f257f94a274402066a489283f761c1df741012c885391b842",
+    "mutant_sha256": "d1e27cfa198e0b42c61ed085a95e33a37c4e8fdbf7cb94bf4c8d3b10b6860f73",
+    "returncode": 1,
+    "stdout": "",
+    "stderr": "Video mismatch p0 x75 y116 add0 rot0 bpp4 c0 v1: 0,0,253,0 != 0,0,253,73\n"
+  }
+]

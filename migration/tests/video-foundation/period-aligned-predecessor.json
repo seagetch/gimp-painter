@@ -1,0 +1,54 @@
+{
+  "scope": "extracted pinned old C only;no oldapplication/nativeFilter execution",
+  "source_sha256": {
+    "old-oracle.c": "2ba6a4c6f733c68f257f94a274402066a489283f761c1df741012c885391b842",
+    "compare.c": "c68de8b8575e8abda11054af32914d1c5dba61265ae7a0def4da0e1dee56b6d3",
+    "reference-patterns.h": "38acf35efd556c4c332123aeb75824d09d4cc001e8c4f7ee0fbe5de64eaf02a3",
+    "patterns.json": "89fd2ba5dcc012e646078095b1cf28a35e5d2bd3d89189dde81213dd656528b1",
+    "old-source.json": "25b832b419de3ad4cadbe06ed5bb27fc94656d330029b2f333712accc0f5e38d"
+  },
+  "runs": {
+    "normal": {
+      "compile": [
+        "cc",
+        "-std=c11",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Wno-unused-parameter",
+        "-O2",
+        "/workspace/scratch/0015fc5d1a03/gimp-painter/migration/tests/video-foundation/old-oracle.c",
+        "/workspace/scratch/0015fc5d1a03/gimp-painter/migration/tests/video-foundation/compare.c",
+        "-o",
+        "/tmp/video-foundation-ilkx77lz/normal"
+      ],
+      "exit_code": 0,
+      "stdout": "Video 13708800 independent table/coordinate/channel comparisons;9 patterns,25 signed-flag pairs,RGB/RGBA,all256 component/alpha bytes,nonzero ROI origins and INT_MAX coordinates PASS\nHarness defined-domain guard rejected14 invalid inputs without calling old callback;not historical/native validation\n",
+      "stderr": "",
+      "seconds": 0.1719696779982769
+    },
+    "sanitizer": {
+      "compile": [
+        "cc",
+        "-std=c11",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Wno-unused-parameter",
+        "-O1",
+        "-g0",
+        "-fsanitize=address,undefined",
+        "-fno-omit-frame-pointer",
+        "/workspace/scratch/0015fc5d1a03/gimp-painter/migration/tests/video-foundation/old-oracle.c",
+        "/workspace/scratch/0015fc5d1a03/gimp-painter/migration/tests/video-foundation/compare.c",
+        "-o",
+        "/tmp/video-foundation-ilkx77lz/sanitizer"
+      ],
+      "exit_code": 0,
+      "stdout": "Video 13708800 independent table/coordinate/channel comparisons;9 patterns,25 signed-flag pairs,RGB/RGBA,all256 component/alpha bytes,nonzero ROI origins and INT_MAX coordinates PASS\nHarness defined-domain guard rejected14 invalid inputs without calling old callback;not historical/native validation\n",
+      "stderr": "",
+      "seconds": 0.9919197959970916
+    }
+  },
+  "changed_after_run": []
+}
