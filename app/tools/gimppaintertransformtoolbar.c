@@ -19,6 +19,7 @@
 #include "widgets/gimpwidgets-utils.h"
 #include "gimptransformgridoptions.h"
 #include "gimppaintertransformtoolbar.h"
+#include "gimppaintertogglepopup.h"
 #include "gimp-intl.h"
 
 static void
@@ -54,7 +55,6 @@ gimp_painter_transform_toolbar_new (GimpToolOptions *options)
   GtkWidget *details;
   GtkWidget *preview;
   GtkWidget *button;
-  GtkWidget *popover;
   GtkWidget *widget;
   gchar *label;
 
@@ -81,14 +81,19 @@ gimp_painter_transform_toolbar_new (GimpToolOptions *options)
   pack (root, gimp_prop_enum_radio_frame_new_with_orientation
                  (config, "direction", _("Direction"), 0, 0, GTK_ORIENTATION_HORIZONTAL));
 
-  button = gtk_menu_button_new ();
-  gtk_button_set_label (GTK_BUTTON (button), _("Transformation details…"));
-  pack (root, button);
-  popover = gtk_popover_new (button);
   details = gtk_box_new (GTK_ORIENTATION_VERTICAL, 4);
   gtk_container_set_border_width (GTK_CONTAINER (details), 8);
-  gtk_container_add (GTK_CONTAINER (popover), details);
-  gtk_menu_button_set_popover (GTK_MENU_BUTTON (button), popover);
+  button = gimp_painter_transform_details_button_new (details);
+  gtk_widget_set_name (button, "painter-transform-details");
+  gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
+  atk_object_set_name (gtk_widget_get_accessible (button),
+                       _("Transformation details…"));
+  widget = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 4);
+  pack (widget, gtk_label_new (_("Transformation details…")));
+  pack (widget, gtk_image_new_from_icon_name ("pan-down-symbolic", GTK_ICON_SIZE_MENU));
+  gtk_container_add (GTK_CONTAINER (button), widget);
+  gtk_widget_show (widget);
+  pack (root, button);
   gtk_widget_show (details);
 
   pack (details, combo (config, "interpolation", _("Interpolation")));

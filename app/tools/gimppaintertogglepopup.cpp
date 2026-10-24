@@ -25,13 +25,14 @@ struct TogglePopup;
 struct Slot : SlotSpec<GtkWidget, TogglePopup> {};
 struct TogglePopup {
   GtkWidget *owner;
+  const char *host_name;
   WeakRef<GObject> anchor;
   Ref body, popup;
   std::vector<Connection> connections, host_connections;
   std::shared_ptr<DeferredContent> deferred = std::make_shared<DeferredContent> ();
   bool closed = false, opening = false, retiring = false, disposing = false;
-  explicit TogglePopup (GtkWidget *button, GtkWidget *row, GtkWidget *content)
-    : owner (button), anchor (Ref::retain (G_OBJECT (row))),
+  explicit TogglePopup (GtkWidget *button, GtkWidget *row, GtkWidget *content, const char *name)
+    : owner (button), host_name (name), anchor (Ref::retain (G_OBJECT (row))),
       body (Ref::sink (G_OBJECT (content))) {}
   void detach (GtkWidget *host);
   void popdown ();
@@ -156,7 +157,7 @@ void TogglePopup::open () {
   host_connections.push_back (connect (host, "cancel", G_CALLBACK (dismiss), owner));
   host_connections.push_back (connect (host, "confirm", G_CALLBACK (dismiss), owner));
   host_connections.push_back (connect (host, "destroy", G_CALLBACK (destroyed), owner));
-  gtk_widget_set_name (host, "painter-standard-toggle-popup");
+  gtk_widget_set_name (host, host_name);
   if (closed || popup.get () != G_OBJECT (host) || gtk_widget_in_destruction (host) ||
       !gtk_widget_get_mapped (owner) || !gtk_widget_is_sensitive (owner)) {
     if (popup.get () == G_OBJECT (host)) popdown ();
@@ -188,13 +189,14 @@ void TogglePopup::close () noexcept {
   disposing = false;
 }
 }
-extern "C" GtkWidget *
-gimp_painter_toggle_popup_button_new (GtkWidget *anchor, GtkWidget *body) {
+static GtkWidget *
+popup_button_new (GtkWidget *anchor, GtkWidget *body, const char *host_name,
+                  bool self_anchor) {
   return boundary<GtkWidget*> (nullptr, nullptr, [&] {
     auto *button = gtk_button_new ();
     auto lease = Ref::sink (G_OBJECT (button));
     auto& store = BindingStore::ensure (G_OBJECT (button));
-    store.emplace<Slot> (button, anchor, body);
+    store.emplace<Slot> (button, self_anchor ? button : anchor, body, host_name);
     store.activate ();
     store.with<Slot> ([&] (TogglePopup& p) {
       p.connections.push_back (connect (button, "clicked", G_CALLBACK (clicked), button));
@@ -205,4 +207,16 @@ gimp_painter_toggle_popup_button_new (GtkWidget *anchor, GtkWidget *body) {
     g_object_force_floating (lease.release ());
     return button;
   });
+}
+
+extern "C" GtkWidget *
+gimp_painter_toggle_popup_button_new (GtkWidget *anchor, GtkWidget *body) {
+  return popup_button_new (anchor, body, "painter-standard-toggle-popup", false);
+}
+
+extern "C" GtkWidget *
+gimp_painter_transform_details_button_new (GtkWidget *body) {
+  // Legacy frame-with-popup anchors to its own label/arrow button, unlike the
+  // toggle helper which explicitly anchors to the whole checkbox/arrow row.
+  return popup_button_new (nullptr, body, "painter-transform-details-popup", true);
 }

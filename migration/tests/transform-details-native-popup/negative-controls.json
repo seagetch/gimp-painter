@@ -1,0 +1,42 @@
+{
+  "actual_base_commit": "dbb2b989d5b14110842977d1d77d48ebf7f86b92",
+  "actual_base_tree": "11d0496fe2461787c9f111deecc0a1ff4f98b5ec",
+  "binary_sha256": "e7613febfc092181ba4cfaae65a97505b8169aa169886c31d689491ab4ccfb10",
+  "same_final_test_object_sha256": "1666c452594a6ec1389d10aaf19c8bbc95421b1f9692d7c958c36b39ebf729ec",
+  "link_receipt": "tests/final-negative-link.json",
+  "production": "Exact frozen301 full supplemental link with explicit frozen301 Transform TU, final candidate test object only replaced. No candidate production objects.",
+  "controls": [
+    {
+      "tool": "rotate",
+      "log": "evidence/guard-negative-rotate.log",
+      "sha256": "719320d04970d4ad250c87bf383d7d338ac23ec77a57b67dac69db554b784e7d",
+      "expected_exit": 250,
+      "oracle": "actual invoked GtkMenuButton presents GtkPopover, not required native GTK_WINDOW_POPUP",
+      "public_excerpt": "baseline-rotate-red.txt"
+    },
+    {
+      "tool": "scale",
+      "log": "evidence/guard-negative-scale.log",
+      "sha256": "5b5521996b40e47090c5901d305bfd0a3faeb0f359b9e7566105184f267745dd",
+      "expected_exit": 250,
+      "oracle": "actual invoked GtkMenuButton presents GtkPopover, not required native GTK_WINDOW_POPUP",
+      "public_excerpt": "baseline-scale-red.txt"
+    },
+    {
+      "tool": "shear",
+      "log": "evidence/guard-negative-shear.log",
+      "sha256": "8a7bbcaa09c0d8d110c7b995d3bff1eaf89e2f5cdfa735d80693233f96a9e5c1",
+      "expected_exit": 250,
+      "oracle": "actual invoked GtkMenuButton presents GtkPopover, not required native GTK_WINDOW_POPUP",
+      "public_excerpt": "baseline-shear-red.txt"
+    },
+    {
+      "tool": "perspective",
+      "log": "evidence/guard-negative-perspective.log",
+      "sha256": "4a7d29c567f4ccf57128fda777a9b7acec4a0850a489f3d8e22f7d431176b103",
+      "expected_exit": 250,
+      "oracle": "actual invoked GtkMenuButton presents GtkPopover, not required native GTK_WINDOW_POPUP",
+      "public_excerpt": "baseline-perspective-red.txt"
+    }
+  ]
+}

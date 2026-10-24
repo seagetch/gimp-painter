@@ -409,6 +409,31 @@ independent_horizontal_toolbar_inventory (void)
   g_assert_cmpuint (supported, >=, 16);
 }
 
+/* Native Details contents live in a separately owned popup, not a dormant
+ * GtkMenuButton child. Map and invoke the real factory's button for inspection. */
+static GtkWidget *
+independent_transform_present (GtkWidget *gui, GtkWidget **host)
+{
+  *host = gtk_window_new (GTK_WINDOW_TOPLEVEL); g_object_ref_sink (*host);
+  gtk_container_add (GTK_CONTAINER (*host), gui); gtk_widget_show_all (*host); drain ();
+  GtkWidget *button = find (gui, "painter-transform-details", GTK_TYPE_BUTTON);
+  g_assert_nonnull (button);
+  GList *before = gtk_window_list_toplevels ();
+  gtk_button_clicked (GTK_BUTTON (button)); drain ();
+  GtkWidget *popup = NULL;
+  GList *windows = gtk_window_list_toplevels ();
+  for (GList *i = windows; i; i = i->next)
+    if (!g_list_find (before, i->data) && GTK_IS_WINDOW (i->data) &&
+        gtk_widget_get_visible (i->data) &&
+        !g_strcmp0 (gtk_widget_get_name (i->data), "painter-transform-details-popup")) {
+      g_assert_null (popup); popup = i->data;
+    }
+  g_list_free (before); g_list_free (windows);
+  g_assert_nonnull (popup);
+  g_assert_cmpint (gtk_window_get_window_type (GTK_WINDOW (popup)), ==, GTK_WINDOW_POPUP);
+  return popup;
+}
+
 static void
 independent_horizontal_toolbar_numeric_binding (void)
 {
@@ -431,6 +456,8 @@ independent_horizontal_toolbar_numeric_binding (void)
       GtkWidget *control;
       GtkWidget *peer;
       GtkWidget *dock_control;
+      GtkWidget *first_host = NULL, *second_host = NULL;
+      GtkWidget *first_contents = first, *second_contents = second;
       gdouble original;
       gdouble actual;
 
@@ -438,8 +465,12 @@ independent_horizontal_toolbar_numeric_binding (void)
       g_assert_nonnull (second);
       g_object_ref_sink (first);
       g_object_ref_sink (second);
-      control = find (first, cases[i].property, GTK_TYPE_SPIN_BUTTON);
-      peer = find (second, cases[i].property, GTK_TYPE_SPIN_BUTTON);
+      if (!strcmp (cases[i].tool, "gimp-rotate-tool")) {
+        first_contents = independent_transform_present (first, &first_host);
+        second_contents = independent_transform_present (second, &second_host);
+      }
+      control = find (first_contents, cases[i].property, GTK_TYPE_SPIN_BUTTON);
+      peer = find (second_contents, cases[i].property, GTK_TYPE_SPIN_BUTTON);
       dock_control = find (native, cases[i].property, GTK_TYPE_SPIN_BUTTON);
       g_assert_nonnull (control);
       g_assert_nonnull (peer);
@@ -460,12 +491,14 @@ independent_horizontal_toolbar_numeric_binding (void)
                                      cases[i].value, 1e-6);
       gtk_widget_destroy (first);
       g_object_unref (first);
+      if (first_host) { gtk_widget_destroy (first_host); g_object_unref (first_host); }
       g_object_set (options, cases[i].property, original, NULL);
       drain ();
       g_assert_cmpfloat_with_epsilon (gtk_spin_button_get_value (GTK_SPIN_BUTTON (peer)),
                                      gtk_spin_button_get_value (GTK_SPIN_BUTTON (dock_control)), 1e-6);
       gtk_widget_destroy (second);
       g_object_unref (second);
+      if (second_host) { gtk_widget_destroy (second_host); g_object_unref (second_host); }
     }
 }
 

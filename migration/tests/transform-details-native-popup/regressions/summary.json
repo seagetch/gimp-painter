@@ -1,0 +1,69 @@
+{
+  "scope": "Existing compact controls/independent factory ownership plus toolbar windows/actions/transfers/lifetime/session. Existing301 standard-toggle17 validates shared controller compatibility; new302 Transform focused tests counted by their normal owner, not duplicated here. No full Layer suite claim.",
+  "execution": "Direct override-linked target binaries corresponding to registered tests; not Meson runner.",
+  "runtime": "Authenticated Xvfb1080x1920x24; fresh dedicated HOME/XDG per target; original registered session fixture except standard-toggle17 uses official sessionrc-native-oncanvas. Toolbar cases deliberately vary native/painter and single/multiwindow config; not all defaultTRUE. New focused actualcanvas tests separately use official native/defaultTRUE fixture. Trusted task299 runtime libraries/plugins; no LD_PRELOAD.",
+  "results": [
+    {
+      "suite_label": "painter-compact-options",
+      "registration": "painter-compact-options",
+      "binary_sha256": "cbe4b36acd82169d36d8f67a921c2b6228dc5aea5cfb88be705c8c1bf06b1433",
+      "path_filter": "/painter-compact-options",
+      "exit": 0,
+      "pass_count": 62,
+      "expected": 62,
+      "skips": [],
+      "fail_count": 0,
+      "pass": true
+    },
+    {
+      "suite_label": "standard-toggle-popup",
+      "registration": "painter-compact-options",
+      "binary_sha256": "cbe4b36acd82169d36d8f67a921c2b6228dc5aea5cfb88be705c8c1bf06b1433",
+      "path_filter": "/standard-toggle-popup",
+      "exit": 0,
+      "pass_count": 17,
+      "expected": 17,
+      "skips": [],
+      "fail_count": 0,
+      "pass": true
+    },
+    {
+      "suite_label": "painter-toolbar-window",
+      "registration": "painter-toolbar-window",
+      "binary_sha256": "7869182da4aa2e744973a8ec4605b03eb3cac3e8af9bc06ce77f240249bcae62",
+      "path_filter": null,
+      "exit": 0,
+      "pass_count": 26,
+      "expected": 26,
+      "skips": [],
+      "fail_count": 0,
+      "pass": true
+    }
+  ],
+  "total_pass": 105,
+  "source_changed": [],
+  "source_sha256": {
+    "app/widgets/popupper.cpp": "6ea240dd7cf37624a0cba321d59ae30e4933f434dab318a417f255a27805be80",
+    "app/widgets/gimppaintercompactoptions.cpp": "0f7a1c780f3b64e92bc8d0f45c27f2b5c6fea1b6dcf5078c51b8536d8b25bcbc",
+    "app/widgets/gimppaintermybrusheditor.cpp": "bf8dabee843cc3a5b49e573fcfae398b325e1e39fd4e945f62c8da0d5b19f29b",
+    "app/widgets/gimppainterlayertiles.cpp": "999215c359a71b4f4773b02e3d84809ebf57a6638113872caf8f077a234fefa0",
+    "app/widgets/gimpcellrendererpopup.cpp": "51156ac326bce3c3d31a8bcf3a0f9657860ae9fa63c1518c34e639a692db7631",
+    "app/dialogs/painter-layer-dialog.cpp": "636b9a00bbe4c3cbed98f3a1d633092b1f82c7dd5208927e8ba94905eee05346",
+    "app/widgets/gimpmypaintbrushoptions-gui.cpp": "ab605c9a313a963697abf628d6ee11ef9d53d4f5256067392569971105bd29f8",
+    "app/tools/gimppainterpainttoolbar.c": "9ac50be5b98faa2f84f307a472e4a8fb1128054648983201a03d9a903bd3a6f5",
+    "app/tools/gimppaintertransformtoolbar.c": "fcc5000c9ac60e74d33f34afb7905d67f36f6329c2077e8003e43c0b82593f0a",
+    "app/tools/gimppaintertogglepopup.cpp": "2f3afa63a6b8281cc8b9f3ef91e3bcd6ff021d161e6814a9f8be33b2b0acbd62",
+    "app/tools/gimppaintertogglepopup.h": "4760b7630ca0588bb2efb2bb09f0c953cf0c93520ac75be99d0a932d554deb5e",
+    "app/tests/test-painter-compact-options.c": "cb219dd55eb638623995482688bc31a18528596d649d0f75fcd2ad7c154bbb52",
+    "app/tests/test-painter-toolbar-window.c": "3c42fa51db5224e2cb04006911e658142e2b4a1d6198124ec166bf3a6c63aeed",
+    "app/tests/tests.c": "56303878e316e41fcb7c439b199cde5bd9fc4ac84b46b48efcbfbc79737747e7",
+    "app/tests/test-widget-orientation-api.c": "d85281846b56ee88aa1a703ec5053ae677de9a08ab9f8cf8695c0c5359fa9648",
+    "app/tests/test-widget-orientation-api.cpp": "5e987e170aa64885ecf5c6fe6f400e47b0430a4dca7aabecbbb3a02dea480f8c",
+    "app/tests/test-painter-transform-popup.inc": "28e15f1b1ebe819340c7b237c74b442bd6077e34f6cbd29a62382917d4422d51",
+    "app/tests/test-painter-standard-toggle-popup.inc": "8c2f71f3c7a766485cfc9a53a9d453d972e1a2b59d8164ed1a1ba8087f288a42",
+    "app/tests/test-painter-independent-toolbar.inc": "a2ea04d564cb9482c5dbd1388f80e95bea0a82d03ba56ba0396ebf936f27286c",
+    "app/tests/test-painter-toolbar-transfer.inc": "cac9e0aadf29806119e81aba6b35c5e94d7084755257945f6d5114fe58c55377",
+    "app/tests/test-painter-toolbar-lifetime.inc": "6581f1e571f9009b8dda235a9d47a9979e3fa88cf67dc4f75d62fef5abc080c5"
+  },
+  "pass": true
+}

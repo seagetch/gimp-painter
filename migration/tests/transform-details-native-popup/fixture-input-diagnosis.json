@@ -1,0 +1,21 @@
+{
+  "finding": "Pointer motion changes horizontal viewport width253\u2192258 and hadjustment479\u2192474 while mainwindow remains800\u00d7600, before press/popup. Anchor shifts205\u2192210. Under instrumented timing prior fixed settle could finish late.",
+  "observed_sequence": [
+    "# Input geometry before-motion: button-root=205/482 top=800x600 scroll=253x50 hadj=479 page=253 upper=732 scale=1",
+    "# Input geometry after-motion: button-root=210/482 top=800x600 scroll=258x50 hadj=474 page=258 upper=732 scale=1",
+    "# Input geometry after-press: button-root=210/482 top=800x600 scroll=258x50 hadj=474 page=258 upper=732 scale=1",
+    "# Input geometry popup-realize: button-root=210/482 top=800x600 scroll=258x50 hadj=474 page=258 upper=732 scale=1",
+    "# Input geometry after-release: button-root=210/482 top=800x600 scroll=258x50 hadj=474 page=258 upper=732 scale=1",
+    "# Input geometry settled-popup: button-root=210/482 top=800x600 scroll=258x50 hadj=474 page=258 upper=732 scale=1",
+    "# Input geometry before-motion: button-root=210/482 top=800x600 scroll=258x50 hadj=474 page=258 upper=732 scale=1",
+    "# Input geometry after-motion: button-root=210/482 top=800x600 scroll=258x50 hadj=474 page=258 upper=732 scale=1",
+    "# Input geometry after-press: button-root=210/482 top=800x600 scroll=258x50 hadj=474 page=258 upper=732 scale=1",
+    "# Input geometry popup-realize: button-root=210/482 top=800x600 scroll=258x50 hadj=474 page=258 upper=732 scale=1",
+    "# Input geometry after-release: button-root=210/482 top=800x600 scroll=258x50 hadj=474 page=258 upper=732 scale=1",
+    "# Input geometry settled-popup: button-root=210/482 top=800x600 scroll=258x50 hadj=474 page=258 upper=732 scale=1"
+  ],
+  "normal_log_sha256": "49d0f8d04115fd6c795fc62eaa63d5f3bf05f291f680d070a5b2861dfe852501",
+  "diagnostic_source_sha256": "823b6411bdfb40a2a4105d9c021df7b6a1f2c027cc9b395d67a31cd90d4471ef",
+  "correction": "Wait real stable after-paint geometry after motion; recompute scale-aware physical target before press. Retain exact anchor/stationarity assertions.",
+  "other_fixture_corrections": "Scale2 multiplies GTK logical coordinates by window scale only in Transform XTest helper. Openbox actual-key delivery replaces invalid WM active flag; no focus/grab injection."
+}

@@ -1,0 +1,20 @@
+{
+  "result": "PASS",
+  "focused_cases": 8,
+  "focused_log": "evidence/final-backend-guard-eight.log",
+  "source_sha256": {
+    "app/tests/test-painter-transform-popup.inc": "28e15f1b1ebe819340c7b237c74b442bd6077e34f6cbd29a62382917d4422d51",
+    "app/tests/test-painter-independent-toolbar.inc": "a2ea04d564cb9482c5dbd1388f80e95bea0a82d03ba56ba0396ebf936f27286c",
+    "app/tests/test-painter-compact-options.c": "cb219dd55eb638623995482688bc31a18528596d649d0f75fcd2ad7c154bbb52",
+    "app/tools/gimppaintertogglepopup.cpp": "2f3afa63a6b8281cc8b9f3ef91e3bcd6ff021d161e6814a9f8be33b2b0acbd62",
+    "app/tools/gimppaintertogglepopup.h": "4760b7630ca0588bb2efb2bb09f0c953cf0c93520ac75be99d0a932d554deb5e",
+    "app/tools/gimppaintertransformtoolbar.c": "fcc5000c9ac60e74d33f34afb7905d67f36f6329c2077e8003e43c0b82593f0a"
+  },
+  "binary_sha256": "426c311bc96ae48eb855f160c4790639e7c2d229794f950dd2710b5bde398367",
+  "test_object_sha256": "1666c452594a6ec1389d10aaf19c8bbc95421b1f9692d7c958c36b39ebf729ec",
+  "input": "Actual Details button, opacity control and enum menus use XTest X-server events. No gdk_window_focus or artificial GTK/device grab. Outside FALSE policy inspected via actual vfunc. Not human physical input.",
+  "action_invariants": "Retained tool/widget/gui identity, visibility, both transform-info arrays and image Undo depth unchanged across click/key/dismiss. Existing transform action dialog is auto-activated by modern tool_manager before Details.",
+  "fixture_diagnosis": "fixture-input-diagnosis.json",
+  "geometry": "Before press, after actual pointer motion require three stable post-paint geometry observations, recompute scale-aware physical center. Exact premap/postmap anchor and edge-flip equation retained; no pixel tolerance.",
+  "backend": "Final Xvfb8PASS zero skips. Actual7 input cases explicitly require runtimeX11; private caller-release retains generic non-X11 path. No non-X11 execution/PASS claim."
+}

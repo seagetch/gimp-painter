@@ -1,0 +1,61 @@
+{
+  "scope": "Scoped Rotate/Scale/Shear/Perspective Details native popup regression instrumentation; sanitizer repetitions are not additional unique normal cases.",
+  "expected_cases": 8,
+  "prior_diagnostic": "Prior test snapshot19b261 failed a strict stationary-anchor assertion (205 vs210) with no sanitizer memory/UB report. Final fixture waits for painted target stability after real pointer motion and preserves exact alignment assertions; failed and diagnostic evidence retained separately.",
+  "exit": 0,
+  "pass_count": 8,
+  "fail_count": 0,
+  "sanitizer_findings": [],
+  "instrumented_translation_units": [
+    "app/tools/gimppaintertransformtoolbar.c",
+    "app/tools/gimppaintertogglepopup.cpp",
+    "app/tools/gimppainterpainttoolbar.c",
+    "app/widgets/popupper.cpp",
+    "app/widgets/gimppropwidgets.c",
+    "app/widgets/gimpviewablebutton.c",
+    "app/widgets/gimpviewablebox.c",
+    "app/widgets/gimpcontainerpopup.c",
+    "app/widgets/gimppopup.c",
+    "app/painter/binding-store.cpp",
+    "app/painter/gimp-painter-binding.cpp",
+    "app/widgets/gimppaintercompactoptions.cpp",
+    "app/tests/test-painter-compact-options.c",
+    "app/tests/tests.c",
+    "app/tests/test-widget-orientation-api.c",
+    "app/tests/test-widget-orientation-api.cpp"
+  ],
+  "instrumentation": [
+    "ASan",
+    "UBSan excluding vptr",
+    "frame pointers",
+    "O1"
+  ],
+  "qualifications": [
+    "LSan disabled (detect_leaks=0)",
+    "Remaining application archives and dependency libraries are uninstrumented; not a whole-application sanitizer claim."
+  ],
+  "runtime": "Authenticated Xvfb1080x1920x24, official sessionrc-native-oncanvas, oncanvas defaultTRUE, trusted task299 libraries/plugin metadata, no LD_PRELOAD.",
+  "binary_sha256": "88daa79091bb139329c9484c685e4b493a6da62bb1bf46e8bf198aab66d04269",
+  "source_sha256": {
+    "app/tools/gimppaintertransformtoolbar.c": "fcc5000c9ac60e74d33f34afb7905d67f36f6329c2077e8003e43c0b82593f0a",
+    "app/tools/gimppaintertogglepopup.cpp": "2f3afa63a6b8281cc8b9f3ef91e3bcd6ff021d161e6814a9f8be33b2b0acbd62",
+    "app/tools/gimppainterpainttoolbar.c": "9ac50be5b98faa2f84f307a472e4a8fb1128054648983201a03d9a903bd3a6f5",
+    "app/widgets/popupper.cpp": "6ea240dd7cf37624a0cba321d59ae30e4933f434dab318a417f255a27805be80",
+    "app/widgets/gimppropwidgets.c": "d9ea7d225b9538e005b538db88788e8d97ae8a0eafae9c66b72b9b8fbabe6714",
+    "app/widgets/gimpviewablebutton.c": "6dbaa7fd5e22235cda9f3a783a91188e0e968c0a10b3ceb138e24a5865df646b",
+    "app/widgets/gimpviewablebox.c": "fe87f0728ffe5fd348a14ccdfbc432d372fc7addd93730829723044b244b36ab",
+    "app/widgets/gimpcontainerpopup.c": "9f5ac34801ada8a71e6e23f4aa52b714eb515c25c4865ce4a659c85d7a8e104d",
+    "app/widgets/gimppopup.c": "83ee7bcb14623350af3f1dfffb23161d6c2ad31bf40efd7d9f86cc06143ef710",
+    "app/painter/binding-store.cpp": "c69d65c22f26e6be8f6df69765cd30f7bbbd32b46b0eb847e9f6524b41c2b557",
+    "app/painter/gimp-painter-binding.cpp": "22aca4f9e467e16b86f2cbeec431d7d069fc552c98fad985db770720fcf876fd",
+    "app/widgets/gimppaintercompactoptions.cpp": "0f7a1c780f3b64e92bc8d0f45c27f2b5c6fea1b6dcf5078c51b8536d8b25bcbc",
+    "app/tests/test-painter-compact-options.c": "cb219dd55eb638623995482688bc31a18528596d649d0f75fcd2ad7c154bbb52",
+    "app/tests/tests.c": "56303878e316e41fcb7c439b199cde5bd9fc4ac84b46b48efcbfbc79737747e7",
+    "app/tests/test-widget-orientation-api.c": "d85281846b56ee88aa1a703ec5053ae677de9a08ab9f8cf8695c0c5359fa9648",
+    "app/tests/test-widget-orientation-api.cpp": "5e987e170aa64885ecf5c6fe6f400e47b0430a4dca7aabecbbb3a02dea480f8c",
+    "app/tests/test-painter-transform-popup.inc": "28e15f1b1ebe819340c7b237c74b442bd6077e34f6cbd29a62382917d4422d51",
+    "app/tools/gimppaintertogglepopup.h": "4760b7630ca0588bb2efb2bb09f0c953cf0c93520ac75be99d0a932d554deb5e"
+  },
+  "source_changed": [],
+  "pass": true
+}
