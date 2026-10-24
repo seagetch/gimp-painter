@@ -1,0 +1,64 @@
+{
+  "executable_sha256": "85252082fa63f4312a79930d38c96e7f9e004dadf1a68c38f7906cba9431ea88",
+  "runtime_dependencies_unchanged": true,
+  "runs": [
+    {
+      "case": "same",
+      "returncode": -6,
+      "stdout": "TAP version 14\n# random seed: R02Sfd3232cf529661477c56afd8a7c040db\n1..1\n# Start of profile-discovery tests\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# error: Migration destination must be outside the source profile\nnot ok /profile-discovery/isolated-native - ERROR:/workspace/shared/profile-discovery/test.cpp:37:void run_case(): 'gimp_user_install_run(install,1)' should be TRUE\nBail out!\n",
+      "stderr": "Failed to parse tag cache: No such file or directory\n**\nERROR:/workspace/shared/profile-discovery/test.cpp:37:void run_case(): 'gimp_user_install_run(install,1)' should be TRUE\n",
+      "source_before": {
+        "gimprc": "18e2c80d28460ee4303fd64437edf88e5a51dd254a7675d807d967bb8794699d",
+        "tool-options/gimp-mypaint-tool": "ab8b6ee2b58f5b0a5afddabe963430391e28796d6b1a026674130b7d7952150d"
+      },
+      "source_after": {
+        "gimprc": "18e2c80d28460ee4303fd64437edf88e5a51dd254a7675d807d967bb8794699d",
+        "tool-options/gimp-mypaint-tool": "ab8b6ee2b58f5b0a5afddabe963430391e28796d6b1a026674130b7d7952150d"
+      },
+      "meaning": "Existing positive migration assertion fails specifically because public run returns FALSE; source unchanged"
+    },
+    {
+      "case": "dotdot",
+      "returncode": -6,
+      "stdout": "TAP version 14\n# random seed: R02S68eb2b5ad1472736c201775f41220984\n1..1\n# Start of profile-discovery tests\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# error: Migration destination must be outside the source profile\nnot ok /profile-discovery/isolated-native - ERROR:/workspace/shared/profile-discovery/test.cpp:37:void run_case(): 'gimp_user_install_run(install,1)' should be TRUE\nBail out!\n",
+      "stderr": "Failed to parse tag cache: No such file or directory\n**\nERROR:/workspace/shared/profile-discovery/test.cpp:37:void run_case(): 'gimp_user_install_run(install,1)' should be TRUE\n",
+      "source_before": {
+        "gimprc": "18e2c80d28460ee4303fd64437edf88e5a51dd254a7675d807d967bb8794699d",
+        "tool-options/gimp-mypaint-tool": "ab8b6ee2b58f5b0a5afddabe963430391e28796d6b1a026674130b7d7952150d"
+      },
+      "source_after": {
+        "gimprc": "18e2c80d28460ee4303fd64437edf88e5a51dd254a7675d807d967bb8794699d",
+        "tool-options/gimp-mypaint-tool": "ab8b6ee2b58f5b0a5afddabe963430391e28796d6b1a026674130b7d7952150d"
+      },
+      "meaning": "Existing positive migration assertion fails specifically because public run returns FALSE; source unchanged"
+    },
+    {
+      "case": "symlink",
+      "returncode": -6,
+      "stdout": "TAP version 14\n# random seed: R02Saa625e4fdd6bfc71f6f9cf93fb60aebe\n1..1\n# Start of profile-discovery tests\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# error: Profile destination is not a real directory\nnot ok /profile-discovery/isolated-native - ERROR:/workspace/shared/profile-discovery/test.cpp:37:void run_case(): 'gimp_user_install_run(install,1)' should be TRUE\nBail out!\n",
+      "stderr": "Failed to parse tag cache: No such file or directory\n**\nERROR:/workspace/shared/profile-discovery/test.cpp:37:void run_case(): 'gimp_user_install_run(install,1)' should be TRUE\n",
+      "source_before": {
+        "gimprc": "18e2c80d28460ee4303fd64437edf88e5a51dd254a7675d807d967bb8794699d",
+        "tool-options/gimp-mypaint-tool": "ab8b6ee2b58f5b0a5afddabe963430391e28796d6b1a026674130b7d7952150d"
+      },
+      "source_after": {
+        "gimprc": "18e2c80d28460ee4303fd64437edf88e5a51dd254a7675d807d967bb8794699d",
+        "tool-options/gimp-mypaint-tool": "ab8b6ee2b58f5b0a5afddabe963430391e28796d6b1a026674130b7d7952150d"
+      },
+      "meaning": "Existing positive migration assertion fails specifically because public run returns FALSE; source unchanged"
+    },
+    {
+      "case": "same-standard",
+      "returncode": -6,
+      "stdout": "TAP version 14\n# random seed: R02Sedf732c3aec90f675022804e374574d3\n1..1\n# Start of profile-discovery tests\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# error: Profile archive destination must be outside the source profile\nnot ok /profile-discovery/isolated-native - ERROR:/workspace/shared/profile-discovery/test.cpp:37:void run_case(): 'gimp_user_install_run(install,1)' should be TRUE\nBail out!\n",
+      "stderr": "Failed to parse tag cache: No such file or directory\n**\nERROR:/workspace/shared/profile-discovery/test.cpp:37:void run_case(): 'gimp_user_install_run(install,1)' should be TRUE\n",
+      "source_before": {
+        "gimprc": "18e2c80d28460ee4303fd64437edf88e5a51dd254a7675d807d967bb8794699d"
+      },
+      "source_after": {
+        "gimprc": "18e2c80d28460ee4303fd64437edf88e5a51dd254a7675d807d967bb8794699d"
+      },
+      "meaning": "Existing positive migration assertion fails specifically because public run returns FALSE; source unchanged"
+    }
+  ]
+}

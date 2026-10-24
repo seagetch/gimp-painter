@@ -214,6 +214,28 @@ gimp_user_install_new (GObject  *gimp,
       g_free (dir);
     }
 
+  /* The original Painter 2.8 build used this distinct home directory.
+   * Keep every standard/XDG/platform discovery above authoritative; directory
+   * naming alone does not establish Painter content ownership during migration.
+   */
+  if (! install->old_dir && g_get_home_dir ())
+    {
+      gchar *dir = g_build_filename (g_get_home_dir (),
+                                     ".gimp-painter-2.8", NULL);
+
+      if (g_file_test (dir, G_FILE_TEST_IS_DIR))
+        {
+          install->old_dir   = dir;
+          install->old_major = 2;
+          install->old_minor = 8;
+          install->migrate   = TRUE;
+        }
+      else
+        {
+          g_free (dir);
+        }
+    }
+
   return install;
 }
 

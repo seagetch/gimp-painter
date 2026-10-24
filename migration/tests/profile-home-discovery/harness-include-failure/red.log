@@ -1,0 +1,27 @@
+Traceback (most recent call last):
+  File "/workspace/shared/profile-discovery/build.py", line 101, in <module>
+    exe=build('red',[],False);z=execute('red',exe,'lone-painter');print('RED',z.returncode,z.stdout,z.stderr,flush=True)
+  File "/workspace/shared/profile-discovery/build.py", line 54, in build
+    z=run(mode+'-compile-'+n,clean);assert z.returncode==0,z.stderr
+                                           ^^^^^^^^^^^^^^^
+AssertionError: In file included from [01m[K../source/libgimpbase/gimpbase.h:31[m[K,
+                 from [01m[K/workspace/shared/profile-discovery/test.cpp:8[m[K:
+[01m[K../source/libgimpbase/gimpenv.h:58:1:[m[K [01;31m[Kerror: [m[K‘[01m[KGFile[m[K’ does not name a type
+   58 | [01;31m[KGFile[m[K       * gimp_directory_file              (const gchar *first_element,
+      | [01;31m[K^~~~~[m[K
+[01m[K../source/libgimpbase/gimpenv.h:60:1:[m[K [01;31m[Kerror: [m[K‘[01m[KGFile[m[K’ does not name a type
+   60 | [01;31m[KGFile[m[K       * gimp_installation_directory_file (const gchar *first_element,
+      | [01;31m[K^~~~~[m[K
+[01m[K../source/libgimpbase/gimpenv.h:62:1:[m[K [01;31m[Kerror: [m[K‘[01m[KGFile[m[K’ does not name a type
+   62 | [01;31m[KGFile[m[K       * gimp_data_directory_file         (const gchar *first_element,
+      | [01;31m[K^~~~~[m[K
+[01m[K../source/libgimpbase/gimpenv.h:64:1:[m[K [01;31m[Kerror: [m[K‘[01m[KGFile[m[K’ does not name a type
+   64 | [01;31m[KGFile[m[K       * gimp_locale_directory_file       (const gchar *first_element,
+      | [01;31m[K^~~~~[m[K
+[01m[K../source/libgimpbase/gimpenv.h:66:1:[m[K [01;31m[Kerror: [m[K‘[01m[KGFile[m[K’ does not name a type
+   66 | [01;31m[KGFile[m[K       * gimp_sysconf_directory_file      (const gchar *first_element,
+      | [01;31m[K^~~~~[m[K
+[01m[K../source/libgimpbase/gimpenv.h:68:1:[m[K [01;31m[Kerror: [m[K‘[01m[KGFile[m[K’ does not name a type
+   68 | [01;31m[KGFile[m[K       * gimp_plug_in_directory_file      (const gchar *first_element,
+      | [01;31m[K^~~~~[m[K
+

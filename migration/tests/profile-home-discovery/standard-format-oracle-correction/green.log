@@ -1,0 +1,77 @@
+normal missing 0 TAP version 14
+# random seed: R02S16cad5a22b968721bef3b0f058301736
+1..1
+# Start of profile-discovery tests
+ok 1 /profile-discovery/isolated-native
+# End of profile-discovery tests
+ 
+normal regular-file 0 TAP version 14
+# random seed: R02S8a59e00bf52f1e39eeecd02be7998d30
+1..1
+# Start of profile-discovery tests
+ok 1 /profile-discovery/isolated-native
+# End of profile-discovery tests
+ 
+normal lone-painter 0 TAP version 14
+# random seed: R02S7451108032f2ca49232cd0351dd43c5c
+1..1
+# Start of profile-discovery tests
+ok 1 /profile-discovery/isolated-native
+# End of profile-discovery tests
+ 
+normal standard-precedence 0 TAP version 14
+# random seed: R02Sbd440fb599aa7c1ad78fd3cc4d40d3b8
+1..1
+# Start of profile-discovery tests
+ok 1 /profile-discovery/isolated-native
+# End of profile-discovery tests
+ 
+normal xdg-precedence 0 TAP version 14
+# random seed: R02S968ba1bcd16c839073bb08d39cda304c
+1..1
+# Start of profile-discovery tests
+ok 1 /profile-discovery/isolated-native
+# End of profile-discovery tests
+ 
+normal explicit-precedence 0 TAP version 14
+# random seed: R02S9b700ca3de5ddee4955437449f88012e
+1..1
+# Start of profile-discovery tests
+ok 1 /profile-discovery/isolated-native
+# End of profile-discovery tests
+ 
+normal unicode 0 TAP version 14
+# random seed: R02Sa5e19450620cc6ff0a395cc23a2c93a1
+1..1
+# Start of profile-discovery tests
+ok 1 /profile-discovery/isolated-native
+# End of profile-discovery tests
+ 
+normal migrate-retry 0 TAP version 14
+# random seed: R02S701bcaa2e7ec93bc8c47189312e0f714
+1..1
+# Start of profile-discovery tests
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+ok 1 /profile-discovery/isolated-native
+# slow test /profile-discovery/isolated-native executed in 0.94 secs
+# End of profile-discovery tests
+ Failed to parse tag cache: No such file or directory
+
+normal migrate-standard -6 TAP version 14
+# random seed: R02S77aa027897bbe063a556904f198af5af
+1..1
+# Start of profile-discovery tests
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+not ok /profile-discovery/isolated-native - ERROR:/workspace/shared/profile-discovery/test.cpp:44:void run_case(): 'bytes==source_bytes' should be TRUE
+Bail out!
+ Failed to parse tag cache: No such file or directory
+**
+ERROR:/workspace/shared/profile-discovery/test.cpp:44:void run_case(): 'bytes==source_bytes' should be TRUE
+
+Traceback (most recent call last):
+  File "/workspace/shared/profile-discovery/build.py", line 109, in <module>
+    z=execute(mode,exe,case);print(mode,case,z.returncode,z.stdout[-1000:],z.stderr[-1000:],flush=True);assert z.returncode==0
+                                                                                                               ^^^^^^^^^^^^^^^
+AssertionError

@@ -1229,6 +1229,7 @@
 | 30.009 | [ ] | 新規ユーザーの資源初期化を接続する | 30.008 | 同梱ブラシ・紙目・preset が使用可能 |
 | 30.010 | [ ] | 既存ユーザーの資源移行を実装する | 30.009 | ユーザー編集済み資源を上書きしない |
 | 30.010/native-profile-migration | [x] | Painter由来の旧設定を実first-runと登録済みtool/deviceへ移す | 21.001/registered-tool, 23.005/native-smudge-tool, 04.003 | 実旧writer53file+6seedを区別しparser8/nativeGTK9が通常・focused sanitizer合格。原本SHA archive・編集済み非上書き・group/context/device/options/custom shortcut/Gradient filename再読込を検証。実hardware同名identity・crash recovery・全旧geometryは未完了 |
+| 30.010/legacy-home-discovery | [x] | 既知の旧 ~/.gimp-painter-2.8 を標準探索失敗後に検出する | 30.010/native-profile-migration, 04.016 | private HOME/XDG native9・3unit ASan9合格。標準/XDG/明示path優先、Unicode、file拒否、内容由来判定、実移行と編集先非上書きretryを確認。migration/tests/profile-home-discovery。旧profile9再実行・他platform・元30.010/011の依存は別gate |
 | 30.011 | [ ] | 資源検索パスを接続する | 30.010 | install prefix と user path の双方を解決 |
 | 30.012 | [ ] | 追加 PDB 手順を現行形式へ登録する | 30.011 | 引数と戻り値が現行 caller から使える |
 | 30.012/scheme-mode-constants | [ ] | Script-Fuの旧独自合成定数を現行APIへ対応する | 30.011, 01.015 | ERASE・REPLACE・ANTI-ERASE・SRC/DST IN/OUTの名前を保持し、衝突する旧数値を現行modeへ明示変換して呼出しと合成を試験する |
