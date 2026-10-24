@@ -5,6 +5,8 @@ import importlib.util
 import json
 from pathlib import Path
 import shutil
+import subprocess
+import sys
 import tempfile
 import tarfile
 import unittest
@@ -26,7 +28,9 @@ class HandleProofTests(unittest.TestCase):
         # Copy evidence only, never overwrite successor provider sources.
         for name in ['native-stroke-undo-09011', 'paired-stroke-09011',
                      'prepared-pixels-09011', 'engine-historical-09011',
-                     'engine-prepared-09011', 'engine-checkpoint-09011']:
+                     'engine-prepared-09011', 'engine-checkpoint-09011',
+                     'preset-legacy-metadata', 'features-legacy-contract',
+                     'resource-factory-wait']:
             shutil.copytree(ROOT / 'migration/tests' / name,
                             self.root / 'migration/tests' / name,
                             ignore=shutil.ignore_patterns('__pycache__'))
@@ -105,6 +109,55 @@ class HandleProofTests(unittest.TestCase):
                 path.write_bytes(data + b'\n# tampered')
                 self.assertTrue(self.check(rows))
                 path.write_bytes(data)
+
+    def test_each_successor_transition_missing_or_changed_rejected(self):
+        for owner in ['Gimp', 'GimpActionGroup']:
+            proof = c.BOUNDED_HANDLE_PROOFS[owner]
+            rows = [r for r in self.rows if r['legacy_type'] == owner]
+            self.assertEqual([], self.check(rows))
+            for filename in proof['support_files']:
+                with self.subTest(owner=owner, filename=filename):
+                    path = self.root / filename
+                    data = path.read_bytes()
+                    path.unlink()
+                    self.assertTrue(self.check(rows))
+                    path.write_bytes(data + b'\n# tampered')
+                    self.assertTrue(self.check(rows))
+                    path.write_bytes(data)
+
+    def test_missing_successor_receipt_rejected_before_any_replay(self):
+        rows = [r for r in self.rows if r['legacy_type'] == 'Gimp']
+        self.assertEqual([], self.check(rows))
+        path = self.root / 'migration/tests/resource-factory-wait/verify.py'
+        path.unlink()
+        with mock.patch.object(c.subprocess, 'run') as run:
+            self.assertTrue(self.check(rows))
+            run.assert_not_called()
+
+    def test_successor_transition_chain_semantics(self):
+        directory = self.root / 'migration/tests/features-successor-proof-admission'
+        path = directory / 'transitions.json'
+        original = json.loads(path.read_text())
+        command = [sys.executable, '-I', str(directory / 'validate.py'), '--check-source']
+        def run():
+            return subprocess.run(command, cwd=self.root, capture_output=True, text=True)
+        self.assertEqual(0, run().returncode)
+        mutations = []
+        for index in range(3):
+            missing = copy.deepcopy(original)
+            missing['transitions'].pop(index)
+            mutations.append(missing)
+        reordered = copy.deepcopy(original)
+        reordered['transitions'].reverse()
+        mutations.append(reordered)
+        unreviewed = copy.deepcopy(original)
+        unreviewed['allowed_changed_original_inputs'].append('app/core/gimp.c')
+        mutations.append(unreviewed)
+        for candidate in mutations:
+            path.write_text(json.dumps(candidate))
+            self.assertNotEqual(0, run().returncode)
+        path.write_text(json.dumps(original))
+        self.assertEqual(0, run().returncode)
 
     def test_current_source_drift_rejected(self):
         for owner, proof in c.BOUNDED_HANDLE_PROOFS.items():

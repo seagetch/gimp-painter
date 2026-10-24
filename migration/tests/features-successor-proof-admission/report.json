@@ -1,0 +1,34 @@
+{
+  "status": "PASS bounded source-proof admission; current dirty-source gate remains FAIL",
+  "base_commit": "20b2204b11",
+  "native_tests_run": false,
+  "source_only_tests": {
+    "unit_groups": 13,
+    "row_field_mutations": 24,
+    "receipt_missing_or_changed": 296,
+    "current_source_mutations": 86,
+    "successor_support_missing_or_changed": 528,
+    "undo_transitive_missing_or_changed": 62,
+    "entry_field_missing_duplicate": 7,
+    "transition_semantic_mutations": 5,
+    "before_replay_rejection": 1
+  },
+  "frozen_source_gate": {
+    "handles": 90,
+    "entries": 76,
+    "exact_committed_distinct_inputs": 52
+  },
+  "old_proof_literals": "all three originals and Undo AST unchanged; Gimp/GimpActionGroup former current proofs now immutable predecessor leaves",
+  "source_transitions": [
+    "aa12595aa6",
+    "857e3ea97a",
+    "73b78e3554"
+  ],
+  "current_gate_rejected": "uncommitted app/tests/test-painter-perspective-ui.c outside reviewed six changes; no waiver",
+  "limits": [
+    "No native or full application aggregate run here",
+    "No whole legacy feature parity or WBS completion claimed",
+    "No existing receipt changed; no task ledger/contract row edited",
+    "Publication paused; no commit or push by this worker"
+  ]
+}
