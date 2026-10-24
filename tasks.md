@@ -984,6 +984,8 @@
 
 2026-10-21 23.002 bounded initialization checkpoint: transparent first contact now seeds the first successful overlap before returning; existing zero-opacity accumulators are unchanged. Corrected same-fixture red/green, 24 native cases, both 48-scene/193-record legacy routes and 1024 pixel cases pass normally and in focused sanitizers. See `migration/contracts/smudge-initial-sampling.md` and `migration/tests/smudge-initial-sampling/`. Original acceptance/dependencies and all 52 source duties remain open; invalid-spacing diagnostics and mixed-RTTI harness failure are retained. No old runtime or whole-task closure is claimed.
 
+2026-10-21 23.002 hard-mask checkpoint: native float coverage is converted to legacy bytes after paper; same-fixture original red/candidate green,192 format/entry/rate/odd-even/paper scenes with1008 actual centers,25 native cases, four immutable48-scene routes and1024 kernels pass normally and in focused sanitizers. See `migration/contracts/smudge-mask-format.md` and `migration/tests/smudge-mask-format/`. Original52 duties and acceptance remain open; opaque-alpha center proof is not full raster/device parity. Earlier seed execution evidence remains unchanged with exact later source admission.
+
 ### 24 ブラシ editor・履歴・プレビュー
 
 主対象：tools/widgets/actions の拡張ブラシ UI

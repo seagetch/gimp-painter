@@ -1,0 +1,68 @@
+{
+  "scope": "Read-only isolation seal for all eight held production paths; no current main candidate imported or held test executed.",
+  "rows": [
+    {
+      "path": "app/widgets/gimpcellrendererpopup.cpp",
+      "baseline": "ce40ac4cffa5b6dba48cd9100303c3c94653a5bc",
+      "sha256": "6ee7a2f3987c1c3106aab79188e40238e307159c7d6986c5cc2f3c47ed8c954d",
+      "equals_committed_baseline": true
+    },
+    {
+      "path": "app/display/gimppaintercanvasui.cpp",
+      "baseline": "ce40ac4cffa5b6dba48cd9100303c3c94653a5bc",
+      "sha256": "3c5077f0ba87982a90fb90f2c0286c3c986cffe0faec3dc8aade7552ef1f9886",
+      "equals_committed_baseline": true
+    },
+    {
+      "path": "app/core/gimppaintermybrush.cpp",
+      "baseline": "ce40ac4cffa5b6dba48cd9100303c3c94653a5bc",
+      "sha256": "eb3b1fbcd8251bfa74dc33b3014875a65a32d0fd4d38a6926a6ede07d914a1a6",
+      "equals_committed_baseline": true
+    },
+    {
+      "path": "app/core/gimpviewable.c",
+      "baseline": "ce40ac4cffa5b6dba48cd9100303c3c94653a5bc",
+      "sha256": "979cf4b6a561393f9332331a6242836edd85224ab47b3be873e35e65d97b31b3",
+      "equals_committed_baseline": true
+    },
+    {
+      "path": "app/widgets/gimpviewrenderer.c",
+      "baseline": "ce40ac4cffa5b6dba48cd9100303c3c94653a5bc",
+      "sha256": "290da717b78aee26c0ba2a548aa696f0f56852fa321e9267f5286a123868fdf2",
+      "equals_committed_baseline": true
+    },
+    {
+      "path": "app/tools/gimpfillbrushtool.cpp",
+      "baseline": "ce40ac4cffa5b6dba48cd9100303c3c94653a5bc",
+      "sha256": "cc1930061b9d120bcb90f0e3efeafa502970655fde68ae493d5970fdbcf864c2",
+      "equals_committed_baseline": true
+    },
+    {
+      "path": "app/tools/gimpbucketfillbrushtool.h",
+      "baseline": "ce40ac4cffa5b6dba48cd9100303c3c94653a5bc",
+      "baseline_exists": false,
+      "native_exists": false
+    },
+    {
+      "path": "app/tools/gimp-tools.c",
+      "baseline": "ce40ac4cffa5b6dba48cd9100303c3c94653a5bc",
+      "sha256": "ee1a445f0a626b90119008aab0a9fa29e56b8c1811bcc094f742886f3a44ccf3",
+      "equals_committed_baseline": true
+    },
+    {
+      "path": "app/core/gimpclonelayer.cpp",
+      "committed_revision": "ce40ac4cffa5b6dba48cd9100303c3c94653a5bc",
+      "git_blob": "23cf00ae29bab04a1a9e625c1aa792867d584b79",
+      "sha256": "22adedddcaeb6d70f4bf37e94cf92f3dbe4d1b84c7183097d3c24e49d02b081e",
+      "native_exists": true,
+      "excluded": "No new extreme-offset/resize Clone diagnostic; committed ce40 provider only. Retrospective verification for baseline72 and initial damage, not an invented pre-build ninth seal."
+    },
+    {
+      "path": "app/paint/painter-mypaint-surface/gimp-painter-options.cpp",
+      "sha256": "fabaa82d82cb6a9ade1fb7bb7e860dd1f54ccbe81c4e25b6c07b4aba41cb2d27",
+      "git_blob": "12fd73dc406128bc94167ee3444caa05cbdd9a9d",
+      "native_exists": true,
+      "scope": "committed baseline; no ref_for_context acquisition diagnostic"
+    }
+  ]
+}

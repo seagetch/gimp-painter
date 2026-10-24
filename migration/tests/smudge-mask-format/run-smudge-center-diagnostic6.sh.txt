@@ -1,0 +1,28 @@
+#!/bin/bash
+set -euo pipefail
+D=/workspace/shared/gimp-native-secondary; R=/workspace/scratch/0015fc5d1a03/gimp-painter
+source "$D/env.sh";exec 9>"$D/build.lock";flock 9
+O="$D/smudge-center-matrix/diagnostic6";mkdir -p "$O"
+python3 - <<'PY'
+import pathlib,json,hashlib,shutil,subprocess
+D=pathlib.Path('/workspace/shared/gimp-native-secondary');R=pathlib.Path('/workspace/scratch/0015fc5d1a03/gimp-painter');S=D/'source';O=D/'smudge-center-matrix/diagnostic6'
+h=json.loads((R/'migration/tests/smudge-initial-sampling/final/held-source-isolation.json').read_text())
+for row in h['rows']:
+ p=S/row['path']
+ if row.get('native_exists') is False:assert not p.exists()
+ else:assert hashlib.sha256(p.read_bytes()).hexdigest()==row['sha256']
+p=S/'app/paint/painter-mypaint-surface/gimp-painter-options.cpp';b=p.read_bytes();blob=hashlib.sha1(b'blob '+str(len(b)).encode()+b'\0'+b).hexdigest();assert blob=='12fd73dc406128bc94167ee3444caa05cbdd9a9d',(p,blob)
+h['rows'].append({'path':str(p.relative_to(S)),'sha256':hashlib.sha256(b).hexdigest(),'git_blob':blob,'native_exists':True,'scope':'committed baseline; no ref_for_context acquisition diagnostic'})
+(O/'held-source-isolation.json').write_text(json.dumps(h,indent=2)+'\n')
+paths=['app/tests/test-gimp-painter-smudge.cpp','app/tests/test-painter-smudge-center-matrix.inc']+[str(p.relative_to(R))for p in (R/'migration/fixtures/legacy-smudge-center').iterdir() if p.is_file()]
+for n in paths:(S/n).parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(R/n,S/n)
+paths+=['app/paint/gimppaintersmudge.cpp'];(O/'source-before-build.json').write_text(json.dumps({p:hashlib.sha256((S/p).read_bytes()).hexdigest() for p in paths},indent=2)+'\n')
+PY
+cp "$D/source/app/paint/gimppaintersmudge.cpp" "$O/original.cpp"
+restore(){ cp "$O/original.cpp" "$D/source/app/paint/gimppaintersmudge.cpp"; };trap restore EXIT
+python3 - <<'TRACE'
+import pathlib
+p=pathlib.Path('/workspace/shared/gimp-native-secondary/source/app/paint/gimppaintersmudge.cpp');s=p.read_text();s=s.replace('gegl_buffer_set (state.accumulator.get (), &accum_area, 0, native, accumulated.data (), GEGL_AUTO_ROWSTRIDE);','g_printerr("TRACE coords=%g,%g area=%d,%d,%d,%d accum=%d,%d size=%d center=%u opacity=%g rate=%g\\n",coords.x,coords.y,area.x,area.y,area.width,area.height,accum_area.x,accum_area.y,state.size,accumulated[((int(coords.y)-area.y)*area.width+int(coords.x)-area.x)*channels],opacity,rate);\n  gegl_buffer_set (state.accumulator.get (), &accum_area, 0, native, accumulated.data (), GEGL_AUTO_ROWSTRIDE);');p.write_text(s)
+TRACE
+ninja -j2 -C "$D/build" app/tests/gimp-painter-smudge > "$O/build.log" 2>&1
+python3 "$D/source/tools/run-painter-xvfb.py" meson test -C "$D/build" --no-rebuild --print-errorlogs --test-args='-p /painter/smudge/center-matrix' gimp-painter-smudge > "$O/run.log" 2>&1

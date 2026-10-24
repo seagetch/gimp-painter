@@ -1,0 +1,9 @@
+{
+  "name": "gimp:app / gimp-painter-smudge",
+  "result": "FAIL",
+  "returncode": -6,
+  "duration": 1.1011388301849365,
+  "stdout": "TAP version 14\n# random seed: R02S8d9b18e48973af89791512af98939ad1\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# Start of painter tests\n# Start of smudge tests\n# seed channels=1 at(16,16) clamped(16,16) value=40\n# center scene size=17 paper=0 channels=1 entry=0 rate=0 callbacks=14 updates=5 outside=0\n# seed channels=1 at(16,16) clamped(16,16) value=40\n# center mismatch c=1 q=128 xy=(43,16) k=0 expected=130 actual=220\nnot ok /painter/smudge/center-matrix - ERROR:../source/app/tests/test-painter-smudge-center-matrix.inc:65:void center_observe(GimpPaintCore*, GList*, GimpPaintOptions*, GimpSymmetry*, GimpPaintState, guint32): assertion failed (after[i+k] == expected[k]): (220 == 130)\nBail out!\n",
+  "stderr": "Failed to parse tag cache: No such file or directory\n**\nERROR:../source/app/tests/test-painter-smudge-center-matrix.inc:65:void center_observe(GimpPaintCore*, GList*, GimpPaintOptions*, GimpSymmetry*, GimpPaintState, guint32): assertion failed (after[i+k] == expected[k]): (220 == 130)\n",
+  "executable_sha256": "98316d7544f1b637d8075efe30009b93b183e5d5b3be048eb383d64f2161cbc8"
+}

@@ -1,0 +1,11 @@
+import pathlib,tempfile,shutil,json,hashlib,importlib.util,contextlib,io
+P=pathlib.Path('/workspace/scratch/0015fc5d1a03/gimp-painter/migration/tests/smudge-initial-sampling');spec=importlib.util.spec_from_file_location('prior',P/'check-initial-sampling.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
+passed=[]
+for name,fn in [('historical pin',lambda j:j['files']['app/paint/gimppaintersmudge.cpp'].update(historical='0'*64)),('current pin',lambda j:j['files']['app/paint/gimppaintersmudge.cpp'].update(current='0'*64)),('checker pin',lambda j:j.update(checker_sha256='0'*64)),('future path',lambda j:j['files'].update({'unrelated.cpp':{'current':'0'*64,'historical':'0'*64}}))]:
+ with tempfile.TemporaryDirectory()as td:
+  q=pathlib.Path(td)/'prior';shutil.copytree(P,q);f=q/'successor-source-admission.json';j=json.loads(f.read_text());fn(j);f.write_text(json.dumps(j));manifest=json.loads((q/'manifest.json').read_text());manifest['successor-source-admission.json']=hashlib.sha256(f.read_bytes()).hexdigest();(q/'manifest.json').write_text(json.dumps(manifest))
+  try:
+   with contextlib.redirect_stdout(io.StringIO()):m.check(q)
+  except AssertionError:passed.append(name)
+  else:raise AssertionError('accepted '+name)
+print(json.dumps({'status':'PASS','rejected_successor_mutations':passed},indent=2))

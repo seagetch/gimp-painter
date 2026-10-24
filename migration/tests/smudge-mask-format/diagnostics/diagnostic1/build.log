@@ -1,0 +1,85 @@
+ninja: Entering directory `/workspace/shared/gimp-native-secondary/build'
+[1/12] Generating git-version.h.in.1 with a custom command
+fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+[2/12] Generating git-version.h.in.2 with a custom command
+fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+[3/12] Generating git-version.h with a custom command
+fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+[4/6] Generating app/tests/icon-theme-fixture/gimp-test-icon-theme-fixture with a custom command
+{"files": 1191, "manifest_sha256": "2f790ebf02244ef3c023f17f16ab614cbc315ee46d46abd87b7f73d4d5d9be41", "ownership_marker_sha256": "d3ebe76f57bdce73e82df17c3cd89f1a630f42f3c8d72dbfdacd4a000061b8bf", "plan_sha256": "0a16da7a76b5facf2d3d8084793b72e28d32d17c7ff6bf237d164075d4af4b95", "stamp_sha256": "c20e592420d8f1feb8e044c6114f8ed009473d411042806fd6e9aadd50c7ffc9", "status": "verified"}
+[5/6] Compiling C++ object app/tests/gimp-painter-smudge.p/test-gimp-painter-smudge.cpp.o
+FAILED: app/tests/gimp-painter-smudge.p/test-gimp-painter-smudge.cpp.o 
+c++ -Iapp/tests/gimp-painter-smudge.p -Iapp/tests -I../source/app/tests -I. -I../source -Iapp -I../source/app -I/workspace/shared/gimp-deps-locked/root/usr/include/cairo -I/workspace/shared/gimp-deps-locked/root/usr/include/libpng16 -I/workspace/shared/gimp-deps-locked/root/usr/include/freetype2 -I/workspace/shared/gimp-deps-locked/root/usr/include/pixman-1 -I/workspace/shared/gimp-deps-locked/root/usr/include/gdk-pixbuf-2.0 -I/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0 -I/workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu/glib-2.0/include -I/workspace/shared/gimp-deps-locked/root/usr/include/sysprof-6 -I/workspace/shared/gimp-deps-locked/root/usr/include/webp -I/workspace/shared/gimp-deps-locked/root/usr/include/libmount -I/workspace/shared/gimp-deps-locked/root/usr/include/blkid -I/workspace/shared/gimp-deps-locked/root/usr/include/gegl-0.4 -I/workspace/shared/gimp-deps-locked/root/usr/include/gio-unix-2.0 -I/workspace/shared/gimp-deps-locked/root/usr/include/json-glib-1.0 -I/workspace/shared/gimp-deps-locked/root/usr/include/babl-0.1 -I/workspace/shared/gimp-deps-locked/root/usr/include/pango-1.0 -I/workspace/shared/gimp-deps-locked/root/usr/include/harfbuzz -I/workspace/shared/gimp-deps-locked/root/usr/include/fribidi -I/workspace/shared/gimp-deps-locked/root/usr/include/libsoup-3.0 -I/workspace/shared/gimp-deps-locked/root/usr/include/gtk-3.0 -I/workspace/shared/gimp-deps-locked/root/usr/include/cloudproviders -I/workspace/shared/gimp-deps-locked/root/usr/include/atk-1.0 -I/workspace/shared/gimp-deps-locked/root/usr/include/at-spi2-atk/2.0 -I/workspace/shared/gimp-deps-locked/root/usr/include/at-spi-2.0 -I/workspace/shared/gimp-deps-locked/root/usr/include/dbus-1.0 -I/workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu/dbus-1.0/include -I/workspace/shared/gimp-deps-locked/root/usr/include/appstream -fdiagnostics-color=always -D_GLIBCXX_ASSERTIONS=1 -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -std=c++14 -O2 -DGLIB_VERSION_MIN_REQUIRED=GLIB_VERSION_2_70 -DGLIB_VERSION_MAX_ALLOWED=GLIB_VERSION_2_76 -fdiagnostics-show-option -fno-common -Wformat -Wformat-security -Winit-self -Wlogical-op -Wmissing-declarations -Wmissing-format-attribute -Wpointer-arith -Wreturn-type -Wtype-limits -DHAVE_CONFIG_H -pthread -isystem /workspace/shared/gimp-deps-locked/root/usr/include/mit-krb5 -fexceptions -fvisibility-inlines-hidden -fno-rtti -MD -MQ app/tests/gimp-painter-smudge.p/test-gimp-painter-smudge.cpp.o -MF app/tests/gimp-painter-smudge.p/test-gimp-painter-smudge.cpp.o.d -o app/tests/gimp-painter-smudge.p/test-gimp-painter-smudge.cpp.o -c ../source/app/tests/test-gimp-painter-smudge.cpp
+In file included from ../source/app/tests/test-gimp-painter-smudge.cpp:106:
+../source/app/tests/test-painter-smudge-center-matrix.inc: In function ‘void center_observe(GimpPaintCore*, GList*, GimpPaintOptions*, GimpSymmetry*, GimpPaintState, guint32)’:
+../source/app/tests/test-painter-smudge-center-matrix.inc:43:28: error: ‘floor’ is not a member of ‘std’; did you mean ‘floor’?
+   43 |   const int left=(int)std::floor(pos.x)-9,top=(int)std::floor(pos.y)-9;
+      |                            ^~~~~
+In file included from /workspace/shared/gimp-deps-locked/root/usr/include/features.h:523,
+                 from /workspace/shared/gimp-deps-locked/root/usr/include/x86_64-linux-gnu/bits/libc-header-start.h:33,
+                 from /workspace/shared/gimp-deps-locked/root/usr/include/limits.h:26,
+                 from /workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu/glib-2.0/include/glibconfig.h:11,
+                 from /workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/glib/gtypes.h:34,
+                 from /workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/glib/galloca.h:34,
+                 from /workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/glib.h:32,
+                 from /workspace/shared/gimp-deps-locked/root/usr/include/gtk-3.0/gdk/gdkconfig.h:8,
+                 from /workspace/shared/gimp-deps-locked/root/usr/include/gtk-3.0/gdk/gdk.h:30,
+                 from /workspace/shared/gimp-deps-locked/root/usr/include/gtk-3.0/gtk/gtk.h:30,
+                 from ../source/app/tests/test-gimp-painter-smudge.cpp:3:
+/workspace/shared/gimp-deps-locked/root/usr/include/x86_64-linux-gnu/bits/mathcalls.h:198:14: note: ‘floor’ declared here
+  198 | __MATHCALLX (floor,, (_Mdouble_ __x), (__const__));
+      |              ^~~~~
+/workspace/shared/gimp-deps-locked/root/usr/include/x86_64-linux-gnu/sys/cdefs.h:131:25: note: in definition of macro ‘__CONCAT’
+  131 | #define __CONCAT(x,y)   x ## y
+      |                         ^
+/workspace/shared/gimp-deps-locked/root/usr/include/x86_64-linux-gnu/bits/mathcalls-macros.h:39:15: note: in expansion of macro ‘__MATH_PRECNAME’
+   39 |   extern type __MATH_PRECNAME(function,suffix) args __THROW
+      |               ^~~~~~~~~~~~~~~
+/workspace/shared/gimp-deps-locked/root/usr/include/x86_64-linux-gnu/bits/mathcalls-macros.h:41:3: note: in expansion of macro ‘__MATHDECL_1_IMPL’
+   41 |   __MATHDECL_1_IMPL(type, function, suffix, args)
+      |   ^~~~~~~~~~~~~~~~~
+/workspace/shared/gimp-deps-locked/root/usr/include/x86_64-linux-gnu/bits/mathcalls-macros.h:37:3: note: in expansion of macro ‘__MATHDECL_1’
+   37 |   __MATHDECL_1(type, function,suffix, args) __attribute__ (attrib)
+      |   ^~~~~~~~~~~~
+/workspace/shared/gimp-deps-locked/root/usr/include/x86_64-linux-gnu/bits/mathcalls-macros.h:35:3: note: in expansion of macro ‘__MATHDECLX’
+   35 |   __MATHDECLX (_Mdouble_,function,suffix, args, attrib)
+      |   ^~~~~~~~~~~
+/workspace/shared/gimp-deps-locked/root/usr/include/x86_64-linux-gnu/bits/mathcalls.h:198:1: note: in expansion of macro ‘__MATHCALLX’
+  198 | __MATHCALLX (floor,, (_Mdouble_ __x), (__const__));
+      | ^~~~~~~~~~~
+../source/app/tests/test-painter-smudge-center-matrix.inc:44:46: error: ‘top’ was not declared in this scope
+   44 |   const bool overlap=left<64 && left+19>0 && top<48 && top+19>0;
+      |                                              ^~~
+../source/app/tests/test-painter-smudge-center-matrix.inc:46:93: error: ‘copy_n’ is not a member of ‘std’; did you mean ‘copy’?
+   46 |   if(!center_seeded && overlap){unsigned i=(CLAMP(y,0,47)*64+CLAMP(x,0,63))*s.channels;std::copy_n(before.data()+i,s.channels,center_accum);center_seeded=true;++center_seeds;g_test_message("seed channels=%u at(%g,%g) clamped(%d,%d) value=%u",s.channels,pos.x,pos.y,CLAMP(x,0,63),CLAMP(y,0,47),center_accum[0]);}
+      |                                                                                             ^~~~~~
+      |                                                                                             copy
+../source/app/tests/test-painter-smudge-center-matrix.inc: In function ‘void smudge_center_matrix()’:
+../source/app/tests/test-painter-smudge-center-matrix.inc:58:167: error: ‘floor’ is not a member of ‘std’; did you mean ‘floor’?
+   58 |     CenterScene s(channels);center_scene=&s;center_seeded=false;center_visible=false;center_callbacks=center_updates=center_outside=center_seeds=0;center_q=(int)std::floor(rate*255.0/100+.5);
+      |                                                                                                                                                                       ^~~~~
+/workspace/shared/gimp-deps-locked/root/usr/include/x86_64-linux-gnu/bits/mathcalls.h:198:14: note: ‘floor’ declared here
+  198 | __MATHCALLX (floor,, (_Mdouble_ __x), (__const__));
+      |              ^~~~~
+/workspace/shared/gimp-deps-locked/root/usr/include/x86_64-linux-gnu/sys/cdefs.h:131:25: note: in definition of macro ‘__CONCAT’
+  131 | #define __CONCAT(x,y)   x ## y
+      |                         ^
+/workspace/shared/gimp-deps-locked/root/usr/include/x86_64-linux-gnu/bits/mathcalls-macros.h:39:15: note: in expansion of macro ‘__MATH_PRECNAME’
+   39 |   extern type __MATH_PRECNAME(function,suffix) args __THROW
+      |               ^~~~~~~~~~~~~~~
+/workspace/shared/gimp-deps-locked/root/usr/include/x86_64-linux-gnu/bits/mathcalls-macros.h:41:3: note: in expansion of macro ‘__MATHDECL_1_IMPL’
+   41 |   __MATHDECL_1_IMPL(type, function, suffix, args)
+      |   ^~~~~~~~~~~~~~~~~
+/workspace/shared/gimp-deps-locked/root/usr/include/x86_64-linux-gnu/bits/mathcalls-macros.h:37:3: note: in expansion of macro ‘__MATHDECL_1’
+   37 |   __MATHDECL_1(type, function,suffix, args) __attribute__ (attrib)
+      |   ^~~~~~~~~~~~
+/workspace/shared/gimp-deps-locked/root/usr/include/x86_64-linux-gnu/bits/mathcalls-macros.h:35:3: note: in expansion of macro ‘__MATHDECLX’
+   35 |   __MATHDECLX (_Mdouble_,function,suffix, args, attrib)
+      |   ^~~~~~~~~~~
+/workspace/shared/gimp-deps-locked/root/usr/include/x86_64-linux-gnu/bits/mathcalls.h:198:1: note: in expansion of macro ‘__MATHCALLX’
+  198 | __MATHCALLX (floor,, (_Mdouble_ __x), (__const__));
+      | ^~~~~~~~~~~
+ninja: build stopped: subcommand failed.

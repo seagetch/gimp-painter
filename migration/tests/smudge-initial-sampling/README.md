@@ -71,3 +71,12 @@ establish the final red/green result. The clippedR41 diagnostic was partial opac
 not relaxed to a tolerance. All exact assertions remain; no historical log is
 rewritten as a pass. Final red/green source and binary hashes identify the admitted
 sequence separately from these diagnostics.
+
+## Exact later source admission (2026-10-21)
+
+`successor-source-admission.json` admits only the exact two source files changed
+by the separate hard-mask format checkpoint. The original57-input archive,
+24-case runtime receipt, diagnostics and sanitizer reports remain byte-identical.
+The validator checks the original proof against its archive and separately checks
+the pinned successor package; it does not relabel historical execution as current
+source or accept arbitrary later edits. All52 duties remain open.

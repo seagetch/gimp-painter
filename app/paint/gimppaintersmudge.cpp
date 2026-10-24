@@ -416,6 +416,17 @@ void motion (GimpPaintCore* core, GimpDrawable* drawable, GimpPaintOptions* opti
     }
     if (mask) mask = gimp_brush_core_texturize_mask (brush, mask, coords.x, coords.y);
     if (!mask) throw std::runtime_error ("Legacy Smudge paper mask could not be generated");
+    // Native solidify returns Y float, while this legacy compositor consumes
+    // byte coverage. Paper preserves its input format; normalize only here.
+    Temp byte_mask;
+    if (gimp_temp_buf_get_format (mask) != babl_format ("Y u8")) {
+      const int width = gimp_temp_buf_get_width (mask), height = gimp_temp_buf_get_height (mask);
+      byte_mask.reset (gimp_temp_buf_new (width, height, babl_format ("Y u8")));
+      babl_process (babl_fish (gimp_temp_buf_get_format (mask), babl_format ("Y u8")),
+                    gimp_temp_buf_get_data (mask), gimp_temp_buf_get_data (byte_mask.get ()),
+                    std::size_t (width) * height);
+      mask = byte_mask.get ();
+    }
     const int mx = int (std::floor (coords.x)) - (gimp_temp_buf_get_width (mask) >> 1);
     const int my = int (std::floor (coords.y)) - (gimp_temp_buf_get_height (mask) >> 1);
     const auto* mask_data = gimp_temp_buf_get_data (mask);

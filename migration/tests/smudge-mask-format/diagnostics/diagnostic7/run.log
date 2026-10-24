@@ -1,0 +1,59 @@
+Xvfb verified: 127.0.0.1:92, 1080x1920x24, authenticated accepted, empty authority rejected
+1/1 gimp:app / gimp-painter-smudge FAIL             1.04s   killed by signal 6 SIGABRT
+>>> UI_TEST=yes GIMP_TESTING_PLUGINDIRS=/workspace/shared/gimp-native-secondary/build/plug-ins/common ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 MESON_TEST_ITERATION=1 GIMP_TESTING_ABS_TOP_BUILDDIR=/workspace/shared/gimp-native-secondary/build MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 GIMP_TESTING_ABS_TOP_SRCDIR=/workspace/shared/gimp-native-secondary/source LD_LIBRARY_PATH=/workspace/shared/gimp-native-secondary/build/libgimpconfig:/workspace/shared/gimp-native-secondary/build/libgimpbase:/workspace/shared/gimp-native-secondary/build/libgimpcolor:/workspace/shared/gimp-native-secondary/build/libgimpmath:/workspace/shared/gimp-native-secondary/build/libgimpwidgets:/workspace/shared/gimp-native-secondary/build/libgimpmodule:/workspace/shared/gimp-native-secondary/build/libgimpthumb:/workspace/shared/gimp-native-secondary/prefix/lib/x86_64-linux-gnu:/workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu MALLOC_PERTURB_=133 /workspace/shared/gimp-native-secondary/build/app/tests/gimp-painter-smudge -p /painter/smudge/center-matrix
+――――――――――――――――――――――――――――――――――――― ✀  ―――――――――――――――――――――――――――――――――――――
+stdout:
+TAP version 14
+# random seed: R02Se4c7bb6cafc893fab5e0a1cdc1552f7f
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?
+# Start of painter tests
+# Start of smudge tests
+# seed channels=1 at(16,16) clamped(16,16) value=40
+# observed opacity=1 rate=1 contextopacity=1 affect=15 pressure=0
+# callback changed=0 centeractual=220 expected=220
+# observed opacity=1 rate=1 contextopacity=1 affect=15 pressure=0
+# callback changed=0 centeractual=220 expected=220
+# observed opacity=1 rate=1 contextopacity=1 affect=15 pressure=0
+# callback changed=0 centeractual=220 expected=220
+# observed opacity=1 rate=1 contextopacity=1 affect=15 pressure=0
+# callback changed=0 centeractual=220 expected=220
+# observed opacity=1 rate=1 contextopacity=1 affect=15 pressure=0
+# callback changed=0 centeractual=220 expected=220
+# center scene channels=1 entry=0 rate=0 callbacks=14 updates=5 outside=0
+# seed channels=1 at(16,16) clamped(16,16) value=40
+# observed opacity=1 rate=1 contextopacity=1 affect=15 pressure=0
+# callback changed=128 centeractual=220 expected=130
+# center mismatch c=1 q=128 xy=(43,16) k=0 expected=130 actual=220
+not ok /painter/smudge/center-matrix - ERROR:../source/app/tests/test-painter-smudge-center-matrix.inc:57:void center_observe(GimpPaintCore*, GList*, GimpPaintOptions*, GimpSymmetry*, GimpPaintState, guint32): assertion failed (after[i+k] == center_accum[k]): (220 == 130)
+Bail out!
+stderr:
+Failed to parse tag cache: No such file or directory
+TRACE coords=43,16 area=34,7,19,19 accum=4,4 size=27 center=220 opacity=1 rate=0
+COVER crop=34,7,19,19 mx=34,my=7 mask=19,19 center=0
+TRACE coords=46,16 area=37,7,19,19 accum=4,4 size=27 center=220 opacity=1 rate=0
+COVER crop=37,7,19,19 mx=37,my=7 mask=19,19 center=0
+TRACE coords=49,16 area=40,7,19,19 accum=4,4 size=27 center=220 opacity=1 rate=0
+COVER crop=40,7,19,19 mx=40,my=7 mask=19,19 center=0
+TRACE coords=52,16 area=43,7,19,19 accum=4,4 size=27 center=220 opacity=1 rate=0
+COVER crop=43,7,19,19 mx=43,my=7 mask=19,19 center=0
+TRACE coords=55,16 area=46,7,18,19 accum=4,4 size=27 center=220 opacity=1 rate=0
+COVER crop=46,7,18,19 mx=46,my=7 mask=19,19 center=0
+TRACE coords=43,16 area=34,7,19,19 accum=4,4 size=27 center=130 opacity=1 rate=0.5
+COVER crop=34,7,19,19 mx=34,my=7 mask=19,19 center=0
+**
+ERROR:../source/app/tests/test-painter-smudge-center-matrix.inc:57:void center_observe(GimpPaintCore*, GList*, GimpPaintOptions*, GimpSymmetry*, GimpPaintState, guint32): assertion failed (after[i+k] == center_accum[k]): (220 == 130)
+――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+
+
+Summary of Failures:
+
+1/1 gimp:app / gimp-painter-smudge FAIL             1.04s   killed by signal 6 SIGABRT
+
+Ok:                 0   
+Expected Fail:      0   
+Fail:               1   
+Unexpected Pass:    0   
+Skipped:            0   
+Timeout:            0   
+
+Full log written to /workspace/shared/gimp-native-secondary/build/meson-logs/testlog.txt
