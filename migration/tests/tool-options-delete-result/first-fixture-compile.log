@@ -1,0 +1,24 @@
+Traceback (most recent call last):
+  File "/workspace/shared/tool-options-delete-result/build.py", line 74, in <module>
+    red=build('red',[],False);z=execute('red',red,['-p','/tool-options-delete/caller-notempty']);print('RED',z.returncode,z.stdout[-1500:],z.stderr[-2000:],flush=True);assert z.returncode!=0 and "'error' should not be NULL" in z.stdout+z.stderr
+  File "/workspace/shared/tool-options-delete-result/build.py", line 49, in build
+    z=run(mode+'-compile-'+n,clean);assert z.returncode==0,z.stderr
+                                           ^^^^^^^^^^^^^^^
+AssertionError: [01m[K/workspace/shared/tool-options-delete-result/test.cpp:[m[K In function ‘[01m[Kvoid[01;32m[K run_case[m[K(gconstpointer)[m[K’:
+[01m[K/workspace/shared/tool-options-delete-result/test.cpp:34:71:[m[K [01;31m[Kerror: [m[Kinvalid conversion from ‘[01m[Kint[m[K’ to ‘[01m[KGimpContextPropMask[m[K’ [[01;31m[K-fpermissive[m[K]
+   34 |  auto*info=gimp_tool_info_new(g,GIMP_TYPE_TOOL,GIMP_TYPE_TOOL_OPTIONS,[01;31m[K0[m[K,"delete-proof-tool","Delete proof","Delete proof","Delete proof",nullptr,nullptr,"delete-proof","gimp-paintbrush","gimp-tool-paintbrush");g_assert_nonnull(info);
+      |                                                                       [01;31m[K^[m[K
+      |                                                                       [01;31m[K|[m[K
+      |                                                                       [01;31m[Kint[m[K
+In file included from [01m[K/workspace/shared/tool-options-delete-result/test.cpp:16[m[K:
+[01m[K../source/app/core/gimptoolinfo.h:74:70:[m[K [01;36m[Knote: [m[K  initializing argument 4 of ‘[01m[KGimpToolInfo*[01;32m[K gimp_tool_info_new[m[K(Gimp*, GType, GType, GimpContextPropMask, const gchar*, const gchar*, const gchar*, const gchar*, const gchar*, const gchar*, const gchar*, const gchar*, const gchar*)[m[K’
+   74 |                                                 [01;36m[KGimpContextPropMask  context_props[m[K,
+      |                                                 [01;36m[K~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~[m[K
+[01m[K/workspace/shared/tool-options-delete-result/test.cpp:[m[K In function ‘[01m[Kint[01;32m[K main[m[K(int, char**)[m[K’:
+[01m[K/workspace/shared/tool-options-delete-result/test.cpp:65:2:[m[K [01;35m[Kwarning: [m[Kthis ‘[01m[Kfor[m[K’ clause does not guard... [[01;35m[K-Wmisleading-indentation[m[K]
+   65 |  [01;35m[Kfor[m[K(int i=0;i<10;++i)g_test_add_data_func(names[i],GINT_TO_POINTER(i),run_case);return g_test_run();}
+      |  [01;35m[K^~~[m[K
+[01m[K/workspace/shared/tool-options-delete-result/test.cpp:65:82:[m[K [01;36m[Knote: [m[K...this statement, but the latter is misleadingly indented as if it were guarded by the ‘[01m[Kfor[m[K’
+   65 |  for(int i=0;i<10;++i)g_test_add_data_func(names[i],GINT_TO_POINTER(i),run_case);[01;36m[Kreturn[m[K g_test_run();}
+      |                                                                                  [01;36m[K^~~~~~[m[K
+

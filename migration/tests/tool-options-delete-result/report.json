@@ -1,0 +1,22 @@
+{
+  "scope": "native filesystem and caller contract; no Preferences GUI rendering; no actual profiles or bundled asset writes",
+  "task": "30.008/tool-options-delete-result",
+  "original_requirement": "Correct the inverted legacy unlink error condition; test successful removal, absent file and genuine failure without deleting unrelated state.",
+  "legacy_commit": "afa43fae3e920210146abed514f136fd49f671b5",
+  "legacy_path": "app/core/gimptooloptions.c",
+  "legacy_sha256": "8c149c05a47d1cf54e85374fad4de8cac02cd27770fc500a28c1505b80957ed2",
+  "normal_cases": 10,
+  "asan_cases": 10,
+  "sanitizer_units": 4,
+  "execution_uid": 1000,
+  "permissions": "Actual EACCES under unprivileged UID1000; temporary target parent0500 restored after assertion",
+  "old_bug": "gimp_tools_clear discarded delete error, then Preferences caller dereferenced NULL error",
+  "fix": "Forward caller error to gimp_tool_options_delete; no other provider change",
+  "limits": [
+    "No Preferences GUI notification screenshot; model notify and GError contract tested.",
+    "Clear remains nontransactional across tools; no rollback promise.",
+    "Only ToolOptions,ToolInfo,tools and fixture instrumented; other GIMP/dependencies uninstrumented; leak detection disabled.",
+    "Initial fixture compile enum cast and nullptr diagnostic-matcher corrections retained as harness failures, not product reds.",
+    "Original task/dependency closure belongs to parent; no held registration candidate tested."
+  ]
+}

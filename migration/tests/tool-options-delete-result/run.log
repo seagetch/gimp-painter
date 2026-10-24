@@ -1,0 +1,64 @@
+RED -6 TAP version 14
+# random seed: R02Sd7cef84c3578ead012ae73b613253f45
+# Start of tool-options-delete tests
+# child process (/tool-options-delete/caller-notempty [68]) exit status: 1 (error)
+# child process (/tool-options-delete/caller-notempty [68]) stdout: ""
+# child process (/tool-options-delete/caller-notempty [68]) stderr: "Failed to parse tag cache: No such file or directory\n**\nERROR:/workspace/shared/tool-options-delete-result/test.cpp:49:void run_case(gconstpointer): 'error' should not be nullptr\n"
+not ok /tool-options-delete/caller-notempty - ERROR:/workspace/shared/tool-options-delete-result/test.cpp:29:void run_case(gconstpointer): child process (/tool-options-delete/caller-notempty [68]) failed unexpectedly
+Bail out!
+ **
+ERROR:/workspace/shared/tool-options-delete-result/test.cpp:29:void run_case(gconstpointer): child process (/tool-options-delete/caller-notempty [68]) failed unexpectedly
+
+NORMAL 0 TAP version 14
+# random seed: R02S99b3806f63264e9b10d4db909fa0c23f
+1..10
+# Start of tool-options-delete tests
+ok 1 /tool-options-delete/direct-success
+# slow test /tool-options-delete/direct-success executed in 1.00 secs
+ok 2 /tool-options-delete/direct-absent
+# slow test /tool-options-delete/direct-absent executed in 0.98 secs
+ok 3 /tool-options-delete/direct-notempty
+# slow test /tool-options-delete/direct-notempty executed in 1.00 secs
+ok 4 /tool-options-delete/direct-notdir
+# slow test /tool-options-delete/direct-notdir executed in 0.99 secs
+ok 5 /tool-options-delete/direct-permission
+# slow test /tool-options-delete/direct-permission executed in 0.99 secs
+ok 6 /tool-options-delete/caller-success
+# slow test /tool-options-delete/caller-success executed in 1.07 secs
+ok 7 /tool-options-delete/caller-absent
+# slow test /tool-options-delete/caller-absent executed in 1.11 secs
+ok 8 /tool-options-delete/caller-notempty
+# slow test /tool-options-delete/caller-notempty executed in 1.02 secs
+ok 9 /tool-options-delete/caller-notdir
+# slow test /tool-options-delete/caller-notdir executed in 1.05 secs
+ok 10 /tool-options-delete/caller-permission
+# slow test /tool-options-delete/caller-permission executed in 1.08 secs
+# End of tool-options-delete tests
+ 
+ASAN 0 TAP version 14
+# random seed: R02S28e265d7a859e3c612d507d78c1a65d5
+1..10
+# Start of tool-options-delete tests
+ok 1 /tool-options-delete/direct-success
+# slow test /tool-options-delete/direct-success executed in 1.21 secs
+ok 2 /tool-options-delete/direct-absent
+# slow test /tool-options-delete/direct-absent executed in 1.16 secs
+ok 3 /tool-options-delete/direct-notempty
+# slow test /tool-options-delete/direct-notempty executed in 1.30 secs
+ok 4 /tool-options-delete/direct-notdir
+# slow test /tool-options-delete/direct-notdir executed in 1.24 secs
+ok 5 /tool-options-delete/direct-permission
+# slow test /tool-options-delete/direct-permission executed in 1.27 secs
+ok 6 /tool-options-delete/caller-success
+# slow test /tool-options-delete/caller-success executed in 1.17 secs
+ok 7 /tool-options-delete/caller-absent
+# slow test /tool-options-delete/caller-absent executed in 1.16 secs
+ok 8 /tool-options-delete/caller-notempty
+# slow test /tool-options-delete/caller-notempty executed in 1.21 secs
+ok 9 /tool-options-delete/caller-notdir
+# slow test /tool-options-delete/caller-notdir executed in 1.14 secs
+ok 10 /tool-options-delete/caller-permission
+# slow test /tool-options-delete/caller-permission executed in 1.13 secs
+# End of tool-options-delete tests
+ 
+PASS causal red; native10 + selected4-unit sanitizer10; linked inputs unchanged

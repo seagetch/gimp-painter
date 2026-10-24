@@ -495,7 +495,7 @@ gimp_tools_clear (Gimp    *gimp,
     {
       GimpToolInfo *tool_info = GIMP_TOOL_INFO (list->data);
 
-      success = gimp_tool_options_delete (tool_info->tool_options, NULL);
+      success = gimp_tool_options_delete (tool_info->tool_options, error);
     }
 
   if (success)

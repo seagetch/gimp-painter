@@ -1,0 +1,16 @@
+RED -6 TAP version 14
+# random seed: R02S143c7dd142e10d3a47ef0779cf99c04d
+# Start of tool-options-delete tests
+# child process (/tool-options-delete/caller-notempty [70]) exit status: 1 (error)
+# child process (/tool-options-delete/caller-notempty [70]) stdout: ""
+# child process (/tool-options-delete/caller-notempty [70]) stderr: "Failed to parse tag cache: No such file or directory\n**\nERROR:/workspace/shared/tool-options-delete-result/test.cpp:49:void run_case(gconstpointer): 'error' should not be nullptr\n"
+not ok /tool-options-delete/caller-notempty - ERROR:/workspace/shared/tool-options-delete-result/test.cpp:29:void run_case(gconstpointer): child process (/tool-options-delete/caller-notempty [70]) failed unexpectedly
+Bail out!
+ **
+ERROR:/workspace/shared/tool-options-delete-result/test.cpp:29:void run_case(gconstpointer): child process (/tool-options-delete/caller-notempty [70]) failed unexpectedly
+
+Traceback (most recent call last):
+  File "/workspace/shared/tool-options-delete-result/build.py", line 74, in <module>
+    red=build('red',[],False);z=execute('red',red,['-p','/tool-options-delete/caller-notempty']);print('RED',z.returncode,z.stdout[-1500:],z.stderr[-2000:],flush=True);assert z.returncode!=0 and "'error' should not be NULL" in z.stdout+z.stderr
+                                                                                                                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError
