@@ -1,0 +1,1 @@
+Six native cases passed. Seventh failed before invalid argument execution because test called gimp_value_array_truncate(array,0), prohibited by its API. Correction constructs a genuinely empty array; no product/assertion changes.

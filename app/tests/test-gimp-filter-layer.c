@@ -2657,6 +2657,7 @@ static void image_close_during_strong_redo_callbacks (void) { undo_owner_lifetim
 #include "test-filter-threshold-context.inc"
 #include "test-filter-sobel-context.inc"
 #include "test-filter-max-rgb-context.inc"
+#include "test-filter-red-eye-contract.inc"
 #include "test-filter-value-invert-context.inc"
 #include "test-filter-value-invert-capture.inc"
 #include "test-filter-max-rgb-capture.inc"
@@ -2890,6 +2891,13 @@ int main (int argc, char **argv)
   ADD (object_arguments_do_not_cycle); ADD (expired_object_records_and_reassignment);
   ADD (object_array_arguments_do_not_dangle); ADD (removal_and_undo); ADD (lower_group_failure_and_recovery);
   ADD (filter_flip_legacy_reset_contract);
+  ADD (filter_red_eye_native_basic);
+  ADD (red_eye_thresholds_and_rejections);
+  ADD (red_eye_unsupported_formats);
+  ADD (red_eye_component_masks);
+  ADD (red_eye_late_context_routes);
+  ADD (red_eye_cancel_and_resume);
+  ADD (red_eye_invalid_arguments);
   ADD (filter_gaussian_attributes_contract);
   ADD (filter_gaussian_property_contract);
   ADD (filter_gaussian_translate_noop);

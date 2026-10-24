@@ -569,6 +569,72 @@ struct FilterImpl
               }
           }
       }
+    else if (procedure == "plug-in-red-eye-removal")
+      {
+        /* New literal compatibility route, not a GEGL name substitution.
+         * Claim malformed/unsupported definitions too: only nonlinear U8 RGB
+         * is admitted, never a silent precision conversion or generic fallback.
+         * Old execution replaces the first three saved scalar context slots. */
+        if (!real && args && args->size () == 4 &&
+            gimp_drawable_get_base_type (GIMP_DRAWABLE (owner)) == GIMP_RGB &&
+            G_VALUE_HOLDS_INT (args->at (0)) && G_VALUE_HOLDS_INT (args->at (1)) &&
+            G_VALUE_HOLDS_INT (args->at (2)) && G_VALUE_HOLDS_INT (args->at (3)) &&
+            filter_red_eye_threshold_valid (g_value_get_int (args->at (3))))
+          {
+            const auto width = request.width, height = request.height;
+            constexpr auto maximum = std::numeric_limits<std::int32_t>::max ();
+            /* Full logical storage and the fixed bound below must fit before
+             * admission. The smaller legacy selected-area limit is checked
+             * after owner capture, before any point kernel can run. */
+            if (width && height && width <= std::size_t (maximum) && height <= std::size_t (maximum) &&
+                std::uint64_t (width) <= std::uint64_t (std::numeric_limits<std::int64_t>::max ()) / 4 / height &&
+                std::uint64_t (width) <= (std::numeric_limits<std::uint64_t>::max () - 2 * 1024 * 1024) / 17 / height)
+              {
+                const auto region = std::make_shared<FilterSelectionRegion> ();
+                const auto outcome = std::make_shared<FilterProcedureResult> ();
+                const std::int32_t mode = g_value_get_int (args->at (3));
+                const auto pixels = std::uint64_t (width) * height;
+                const auto owner_bytes = pixels * 9u;
+                /* Native input + final mask + private native staging: 9 Bpp.
+                 * Two RGBA vectors or files: 8 Bpp. Bounded owner capture/merge
+                 * needs at most eight bytes per transport pixel, and the raw
+                 * wrapper/kernel retain 16 + 32 KiB stack pixel arrays. Spill
+                 * additionally charges the established six RGBA queue chunks.
+                 * These are logical reservations, not process-RSS limits. */
+                const auto bounded = std::uint64_t (FilterScheduler::pixel_budget) * 8 + 48 * 1024;
+                const auto peak = owner_bytes + bounded + (spill ?
+                  std::uint64_t (FilterScheduler::pixel_budget) * 4 * 6 : pixels * 8);
+                request.peak_bytes = std::size_t (std::min (peak,
+                  std::uint64_t (std::numeric_limits<std::size_t>::max ())));
+                if (spill) request.peak_spill_bytes = pixels * 8 + owner_bytes;
+                request.process = [width, height, region, mode, channel, outcome]
+                  (const FilterScheduler::Bytes& input, std::atomic<bool>& cancel, FilterScheduler::Bytes& output) {
+                    const auto result = filter_point_shadow_vector (input, width, height, *region,
+                      FilterPointShadowOperation::red_eye, mode, cancel, output, channel);
+                    if (result == FilterPointShadowOutcome::cancelled) return false;
+                    outcome->publish (result == FilterPointShadowOutcome::shadow ?
+                      FilterProcedureDisposition::shadow : FilterProcedureDisposition::no_merge);
+                    return true;
+                  };
+                if (spill)
+                  request.raster_process = [width, height, region, mode, channel, outcome]
+                    (FilterRaster& input, FilterRaster& output, std::atomic<bool>& cancel, const FilterRasterFactory&) {
+                      const auto result = filter_point_shadow_raster (input, width, height, *region,
+                        FilterPointShadowOperation::red_eye, mode, cancel, output, channel);
+                      if (result == FilterPointShadowOutcome::cancelled) return false;
+                      outcome->publish (result == FilterPointShadowOutcome::shadow ?
+                        FilterProcedureDisposition::shadow : FilterProcedureDisposition::no_merge);
+                      return true;
+                    };
+                prepared.kernel_region = region;
+                prepared.kernel_validate = [width, height, region] {
+                  filter_point_shadow_validate (width, height, *region);
+                };
+                prepared.outcome = outcome;
+                prepared.projection_input = true;
+              }
+          }
+      }
     else if (procedure == "plug-in-max-rgb" && !real)
       {
         /* Claim this literal name even for malformed byte definitions. Falling
