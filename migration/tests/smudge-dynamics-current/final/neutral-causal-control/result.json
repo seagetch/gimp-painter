@@ -1,0 +1,9 @@
+{
+  "name": "gimp:painter / painter-brush-geometry",
+  "result": "FAIL",
+  "returncode": -6,
+  "duration": 1.0239253044128418,
+  "stdout": "TAP version 14\n# random seed: R02S1e9c9f5c0a896f351bb5c1528a6b8598\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# Start of painter tests\n# Start of geometry tests\nnot ok /painter/geometry/default-dynamics - ERROR:../source/app/tests/test-painter-brush-geometry.cpp:169:void original_default_dynamics(): assertion failed (gimp_dynamics_get_linear_value(dynamics,GIMP_DYNAMICS_OUTPUT_FORCE,&coords,options,1) == expected): (0.00977517107 == 0.00977517107)\nBail out!\n",
+  "stderr": "Failed to parse tag cache: No such file or directory\n**\nERROR:../source/app/tests/test-painter-brush-geometry.cpp:169:void original_default_dynamics(): assertion failed (gimp_dynamics_get_linear_value(dynamics,GIMP_DYNAMICS_OUTPUT_FORCE,&coords,options,1) == expected): (0.00977517107 == 0.00977517107)\n",
+  "executable_sha256": "7ec0cd71a09449f09accc716674edf3bb57ce5cbb2ad197e10a8c28d5697f586"
+}

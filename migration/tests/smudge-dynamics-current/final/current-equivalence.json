@@ -1,0 +1,31 @@
+{
+  "main_commit": "2aca7e7308c871aa4518fbc4e81258403eafa5eb",
+  "scope": "Read-only relevant functions and specified whole units; private held providers remain earlier committed baselines, not exact current-HEAD whole-app proof.",
+  "whole_equal": [
+    "app/core/gimpdynamics.c",
+    "app/core/gimpdynamicsoutput.c",
+    "app/core/gimpcurve.c",
+    "app/tests/test-painter-dynamics.c",
+    "app/tests/test-painter-brush-geometry.cpp"
+  ],
+  "functions": [
+    {
+      "path": "app/core/core-enums.c",
+      "function": "GType\ngimp_dynamics_output_type_get_type (void)",
+      "equal": true,
+      "body_sha256": "94dda9a5c248f7e14c7b3ebd9cdb6d4ad4c1d0690533de0ec65fe1910a16c1af",
+      "body": "GType\ngimp_dynamics_output_type_get_type (void)\n{\n  static const GEnumValue values[] =\n  {\n    { GIMP_DYNAMICS_OUTPUT_OPACITY, \"GIMP_DYNAMICS_OUTPUT_OPACITY\", \"opacity\" },\n    { GIMP_DYNAMICS_OUTPUT_SIZE, \"GIMP_DYNAMICS_OUTPUT_SIZE\", \"size\" },\n    { GIMP_DYNAMICS_OUTPUT_ANGLE, \"GIMP_DYNAMICS_OUTPUT_ANGLE\", \"angle\" },\n    { GIMP_DYNAMICS_OUTPUT_COLOR, \"GIMP_DYNAMICS_OUTPUT_COLOR\", \"color\" },\n    { GIMP_DYNAMICS_OUTPUT_HARDNESS, \"GIMP_DYNAMICS_OUTPUT_HARDNESS\", \"hardness\" },\n    { GIMP_DYNAMICS_OUTPUT_FORCE, \"GIMP_DYNAMICS_OUTPUT_FORCE\", \"force\" },\n    { GIMP_DYNAMICS_OUTPUT_ASPECT_RATIO, \"GIMP_DYNAMICS_OUTPUT_ASPECT_RATIO\", \"aspect-ratio\" },\n    { GIMP_DYNAMICS_OUTPUT_SPACING, \"GIMP_DYNAMICS_OUTPUT_SPACING\", \"spacing\" },\n    { GIMP_DYNAMICS_OUTPUT_RATE, \"GIMP_DYNAMICS_OUTPUT_RATE\", \"rate\" },\n    { GIMP_DYNAMICS_OUTPUT_FLOW, \"GIMP_DYNAMICS_OUTPUT_FLOW\", \"flow\" },\n    { GIMP_DYNAMICS_OUTPUT_JITTER, \"GIMP_DYNAMICS_OUTPUT_JITTER\", \"jitter\" },\n    { GIMP_DYNAMICS_OUTPUT_BLENDING, \"GIMP_DYNAMICS_OUTPUT_BLENDING\", \"blending\" },\n    { 0, NULL, NULL }\n  };\n\n  static const GimpEnumDesc descs[] =\n  {\n    { GIMP_DYNAMICS_OUTPUT_OPACITY, NC_(\"dynamics-output-type\", \"Opacity\"), NULL },\n    { GIMP_DYNAMICS_OUTPUT_SIZE, NC_(\"dynamics-output-type\", \"Size\"), NULL },\n    { GIMP_DYNAMICS_OUTPUT_ANGLE, NC_(\"dynamics-output-type\", \"Angle\"), NULL },\n    { GIMP_DYNAMICS_OUTPUT_COLOR, NC_(\"dynamics-output-type\", \"Color\"), NULL },\n    { GIMP_DYNAMICS_OUTPUT_HARDNESS, NC_(\"dynamics-output-type\", \"Hardness\"), NULL },\n    { GIMP_DYNAMICS_OUTPUT_FORCE, NC_(\"dynamics-output-type\", \"Force\"), NULL },\n    { GIMP_DYNAMICS_OUTPUT_ASPECT_RATIO, NC_(\"dynamics-output-type\", \"Aspect ratio\"), NULL },\n    { GIMP_DYNAMICS_OUTPUT_SPACING, NC_(\"dynamics-output-type\", \"Spacing\"), NULL },\n    { GIMP_DYNAMICS_OUTPUT_RATE, NC_(\"dynamics-output-type\", \"Rate\"), NULL },\n    { GIMP_DYNAMICS_OUTPUT_FLOW, NC_(\"dynamics-output-type\", \"Flow\"), NULL },\n    { GIMP_DYNAMICS_OUTPUT_JITTER, NC_(\"dynamics-output-type\", \"Jitter\"), NULL },\n    { GIMP_DYNAMICS_OUTPUT_BLENDING, NC_(\"dynamics-output-type\", \"Blending\"), NULL },\n    { 0, NULL, NULL }\n  };\n\n  static GType type = 0;\n\n  if (G_UNLIKELY (! type))\n    {\n      type = g_enum_register_static (\"GimpDynamicsOutputType\", values);\n      gimp_type_set_translation_context (type, \"dynamics-output-type\");\n      gimp_enum_set_value_descriptions (type, descs);\n    }\n\n  return type;\n}",
+      "main_sha256": "37d6d4c9c45a8a9967511590d694c2bba3179cdef8b16568b58e5ab1cb8f3f0a",
+      "private_sha256": "9d635073841947b8f7a3044a43b868fc5efb2cb81ea64482e40a7ce25bc72a11"
+    },
+    {
+      "path": "app/paint/gimppaintoptions.c",
+      "function": "gboolean\ngimp_painter_brush_geometry_options (GimpPaintOptions *options)",
+      "equal": true,
+      "body_sha256": "241dd1d38210cac20890fd5a1c614e1004037905d70446c81accf01b0f4df765",
+      "body": "gboolean\ngimp_painter_brush_geometry_options (GimpPaintOptions *options)\n{\n  g_return_val_if_fail (GIMP_IS_PAINT_OPTIONS (options), FALSE);\n  return ((GimpPaintOptionsPrivate *) gimp_paint_options_get_instance_private (options))->legacy_brush_geometry;\n}",
+      "main_sha256": "a434f30fcdcde309405aab0b121e19019b541b847203cdeeb1921ffd7edf98a8",
+      "private_sha256": "a434f30fcdcde309405aab0b121e19019b541b847203cdeeb1921ffd7edf98a8"
+    }
+  ]
+}

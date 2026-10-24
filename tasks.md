@@ -988,6 +988,8 @@
 
 2026-10-21 23.002 alpha-center checkpoint:192 additional YA/RGBA partial/transparent-alpha scenes reproduce1008 old-source center updates and101688 changed hidden-color bytes; no production change. Original opaque192 scenes and prior25 cases remain unchanged, now26 native cases plus four48-scene old routes and1024 kernels pass normally/focused sanitizers. Two old-oracle sensitivity mutants fail and exact sources restore. See `migration/tests/smudge-alpha-centers/` for52-duty per-hunk review, unchanged acceptance/owners and remaining cross-pin gaps; all52 duties remain OPEN.
 
+2026-10-21 23.002 dynamics cross-pin checkpoint: existing5 native enum/property/curve cases and registered1028-value neutral mapping case pass normally and with5-C-unit ASan/UBSan; bypassing mapping fails exact old-sample comparison, then restoration passes. Relevant committed-main/private functions are byte-identical; appended MyPaint Undo enum differences are explicitly disjoint. See `migration/tests/smudge-dynamics-current/`. All52 original duties/criteria/shared owners remain OPEN pending whole source-role review; no product/test edit or old-runtime claim.
+
 ### 24 ブラシ editor・履歴・プレビュー
 
 主対象：tools/widgets/actions の拡張ブラシ UI

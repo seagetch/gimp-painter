@@ -1,0 +1,24 @@
+Xvfb verified: 127.0.0.1:95, 1080x1920x24, authenticated accepted, empty authority rejected
+TAP version 14
+# random seed: R02S574546196819937ddb8da3af2ff9dafd
+1..5
+# Start of painter tests
+# Start of dynamics tests
+ok 1 /painter/dynamics/defaults-enum
+ok 2 /painter/dynamics/independent-flow
+ok 3 /painter/dynamics/roundtrip-copy
+ok 4 /painter/dynamics/legacy-key
+ok 5 /painter/dynamics/empty-curve
+# End of dynamics tests
+# End of painter tests
+
+TAP version 14
+# random seed: R02S10ba301a3604a66713c6cac0627ddb96
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?
+# Start of painter tests
+# Start of geometry tests
+ok 1 /painter/geometry/default-dynamics
+# End of geometry tests
+# End of painter tests
+1..1
+
