@@ -1,0 +1,55 @@
+{
+  "scope": "exact extracted old C pixel/LUT code versus independent integer IEEE754+rational luminance oracle;no old application/runtime",
+  "source_sha256": {
+    "old-oracle.c": "814aac8a2ab43ea056ec77b6acbadb6151019679b1c0f11b8c4a65de70cee88c",
+    "compare.c": "21c951e84b4f4b5a7d4673d02ed715a0889fc0e2dbecd1924a60e2afc7cb13cb",
+    "old-source.json": "f344ac6d1ca59aec8db76c0ab4bf8c5dfe188b2e56ed0324a3af10d29b3f9fec",
+    "run.py": "b83675def865dfae3d0a422b0d17619807d53a80235eb72d111d492ce08110d4"
+  },
+  "runs": {
+    "normal": {
+      "command": [
+        "cc",
+        "-std=c11",
+        "-O2",
+        "/workspace/scratch/0015fc5d1a03/gimp-painter/migration/tests/colorify-foundation/old-oracle.c",
+        "/workspace/scratch/0015fc5d1a03/gimp-painter/migration/tests/colorify-foundation/compare.c",
+        "-lm",
+        "-o",
+        "/tmp/colorify-foundation-m8spy35d/normal"
+      ],
+      "exit_code": 0,
+      "stdout": "PASS Colorify 268435456 complete RGB/RGBA pixel comparisons;98685 binary64 tint-boundary comparisons;white254;alpha/hidden RGB preserved\n",
+      "stderr": "",
+      "seconds": 1.5857545790058794
+    },
+    "sanitizer": {
+      "command": [
+        "cc",
+        "-std=c11",
+        "-O1",
+        "-fsanitize=address,undefined,float-cast-overflow",
+        "-fno-omit-frame-pointer",
+        "/workspace/scratch/0015fc5d1a03/gimp-painter/migration/tests/colorify-foundation/old-oracle.c",
+        "/workspace/scratch/0015fc5d1a03/gimp-painter/migration/tests/colorify-foundation/compare.c",
+        "-lm",
+        "-o",
+        "/tmp/colorify-foundation-m8spy35d/sanitizer"
+      ],
+      "exit_code": 0,
+      "stdout": "PASS Colorify 268435456 complete RGB/RGBA pixel comparisons;98685 binary64 tint-boundary comparisons;white254;alpha/hidden RGB preserved\n",
+      "stderr": "",
+      "seconds": 9.507471898999938
+    },
+    "rounded-tint": {
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "mismatch 0/0/14 channel0 got1 expected0\n"
+    },
+    "combined-luminance": {
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "mismatch 0/1/4 channel0 got1 expected0\n"
+    }
+  }
+}

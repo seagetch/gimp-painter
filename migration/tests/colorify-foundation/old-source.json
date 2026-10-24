@@ -1,0 +1,14 @@
+{
+  "old_ref": "afa43fae3e920210146abed514f136fd49f671b5",
+  "pixel_function": "colorify_func (const guchar *src,\n               guchar       *dest,\n               gint          bpp,\n               gpointer      data)\n{\n  gint lum;\n\n  lum = lum_red_lookup[src[0]]   +\n        lum_green_lookup[src[1]] +\n        lum_blue_lookup[src[2]];\n\n  dest[0] = final_red_lookup[lum];\n  dest[1] = final_green_lookup[lum];\n  dest[2] = final_blue_lookup[lum];\n\n  if (bpp == 4)\n    dest[3] = src[3];\n}",
+  "lookup_initialization": "  for (i = 0; i < 256; i ++)\n    {\n      lum_red_lookup[i]     = i * GIMP_RGB_LUMINANCE_RED;\n      lum_green_lookup[i]   = i * GIMP_RGB_LUMINANCE_GREEN;\n      lum_blue_lookup[i]    = i * GIMP_RGB_LUMINANCE_BLUE;\n      final_red_lookup[i]   = i * cvals.color.r;\n      final_green_lookup[i] = i * cvals.color.g;\n      final_blue_lookup[i]  = i * cvals.color.b;\n    }",
+  "source_sha256": {
+    "plug-ins/common/colorify.c": "13b48c8dc0ecc067ee33a40c040ca63f1126b52623e77801f0f0f38dbc0cdd77",
+    "libgimpcolor/gimprgb.h": "c471b0ddfc0e95965d1a6df76607a4c7f9993aa0ef911b0233e1569c66c20608",
+    "libgimpcolor/gimprgb.c": "d3f3712a5829d4b453ed5fcf5d3eafea460d673e41d60dbab816353d4cf483fb",
+    "app/pdb/gimp-pdb-compat.c": "20d4e7c3c90bf5b6e8f60ccc2afe5e00086f2b7555be520fefc040649eae2b20",
+    "app/pdb/gimpprocedure.c": "567959d487e8d2b29d4a5140813e14449fb37cbcf544b8831488d612d088729b",
+    "app/xcf/xcf-save.c": "4fa9155d28054d62baa5b7c77bd17e27fbea254df1f68c85c2ac4708de1653ce",
+    "libgimp/gimpregioniterator.c": "1289b75a1c49185d9ddaa5f97b5a406b297eab78560854344e8b9a4da41213be"
+  }
+}
