@@ -1,0 +1,12 @@
+-  gimp_display_shell_transform_xy_f (shell,
+-                                     x, y,
+-                                     &tx, &ty);
+-  gimp_display_shell_transform_xy_f (shell,
+-                                     handle_x, handle_y,
+-                                     &handle_tx, &handle_ty);
++  gimp_display_shell_zoom_xy_f (shell,
++                                x, y,
++                                &tx, &ty);
++  gimp_display_shell_zoom_xy_f (shell,
++                                handle_x, handle_y,
++                                &handle_tx, &handle_ty);

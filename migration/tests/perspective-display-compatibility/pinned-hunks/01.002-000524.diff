@@ -1,0 +1,20 @@
+-      gimp_display_shell_transform_xy (shell, private->position, 0, &x, &y);
+-      *x1 = *x2 = x + 0.5;
++      gimp_display_shell_transform_xy_f (shell, private->position, 0, x1, y1);
++      gimp_display_shell_transform_xy_f (shell, private->position, allocation.height, x2, y2);
++      if (*y1 < *y2) {
++        gdouble ratio = (*x2 - *x1) / (*y2 - *y1);
++        *x1 -= ratio * *y1;
++        *y1  = 0;
++        *x2 += ratio * (allocation.height - *y2);
++        *y2  = allocation.height;
++      } else if (*y1 > *y2) {
++        gdouble ratio = (*x2 - *x1) / (*y2 - *y1);
++        *x2 -= ratio * *y2;
++        *y2  = 0;
++        *x1 += ratio * (allocation.height - *y1);
++        *y1  = allocation.height;
++      } else {
++        *x1 = 0;
++        *x2 = allocation.width;
++      }

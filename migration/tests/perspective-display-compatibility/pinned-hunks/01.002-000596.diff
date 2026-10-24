@@ -1,0 +1,33 @@
+-  x2 = x + w;
+-  y2 = y + h;
++  gimp_display_shell_scroll_get_disp_offset (shell,
++                                             &disp_xoffset,
++                                             &disp_yoffset);
++
++  x1 = x - 1;
++  y1 = y - 1;
++  x2 = x + w + 1;
++  y2 = y + h + 1;
++
++  gimp_display_shell_get_image_bouding_box_for_device_coords(shell, cr, &x1, &y1, &x2, &y2);
++
++//  x  = CLAMP(x,  -shell->offset_x, shell->disp_width  + 1);
++//  y  = CLAMP(y,  -shell->offset_y, shell->disp_height + 1);
++//  x2 = CLAMP(x2, -shell->offset_x, shell->disp_width  + 1);
++//  y2 = CLAMP(y2, -shell->offset_y, shell->disp_height + 1);
++  x1 = MAX(x1, -shell->offset_x);
++  y1 = MAX(y1, -shell->offset_y);
++  x2 = MAX(x2, -shell->offset_x);
++  y2 = MAX(y2, -shell->offset_y);
++
++  x1 = floor(x1 - 0.5);
++  y1 = floor(y1 - 0.5);
++  x2 = ceil(x2 + 0.5);
++  y2 = ceil(y2 + 0.5);
++
++  w = x2 - x1 + 1;
++  h = y2 - y1 + 1;
++  x = x1;
++  y = y1;
++
++//  g_print("draw: %d,%d,%d,%d: ofs=%d,%d: bound=%d,%d\n", x, y, x + w, y + h, disp_xoffset, disp_yoffset, shell->disp_width, shell->disp_height);

@@ -185,16 +185,25 @@ void draw (GimpCanvasItem *item, cairo_t *cr)
   boundary_void (nullptr, [&] { BindingStore::require (G_OBJECT (item)).read<OverlaySlot> ([&] (const OverlayImpl& impl) {
     auto *shell = gimp_canvas_item_get_shell (item);
     if (shell->scale_x <= 0) return;
-    const double ry = 8 * shell->scale_y / shell->scale_x;
-    double points[3][2];
+    /* Preserve the pinned image-coordinate path, including its radial
+     * segments. Pre-rounding centers through SCALEX/Y shifts fractional zoom
+     * positions; separate circle subpaths also discard the old radial ink.
+     * The canvas group already supplies the common outer display matrix. */
+    cairo_save (cr);
+    cairo_translate (cr, -shell->offset_x, -shell->offset_y);
+    cairo_scale (cr, shell->scale_x, shell->scale_y);
     for (int i = 0; i < impl.state.n_points; ++i) {
-      gimp_canvas_item_transform_xy_f (item, impl.state.points[i].x, impl.state.points[i].y, &points[i][0], &points[i][1]);
-      cairo_save (cr); cairo_translate (cr, points[i][0], points[i][1]); cairo_scale (cr, 8, ry);
-      cairo_new_sub_path (cr); cairo_arc (cr, 0, 0, 1, 0, 2 * G_PI); cairo_restore (cr);
+      const double x = impl.state.points[i].x;
+      const double y = impl.state.points[i].y;
+      if (impl.state.n_points != 2)
+        cairo_move_to (cr, x, y);
+      else if (i > 0)
+        cairo_line_to (cr, x, y);
+      cairo_arc (cr, x, y, 8 / shell->scale_x, 0, 2 * G_PI);
+      if (impl.state.n_points == 2)
+        cairo_move_to (cr, x, y);
     }
-    if (impl.state.n_points == 2) {
-      cairo_move_to (cr, points[0][0], points[0][1]); cairo_line_to (cr, points[1][0], points[1][1]);
-    }
+    cairo_restore (cr);
     _gimp_canvas_item_stroke (item, cr);
   }); });
 }

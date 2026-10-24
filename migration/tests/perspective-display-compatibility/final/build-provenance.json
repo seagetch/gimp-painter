@@ -1,0 +1,54 @@
+{
+  "normal": {
+    "options": {
+      "auto_features": "disabled",
+      "debug": false,
+      "optimization": "2",
+      "b_ndebug": "false",
+      "b_sanitize": "none",
+      "headless-tests": "disabled",
+      "libunwind": false,
+      "painter-http": "enabled"
+    },
+    "executables": {
+      "painter-perspective": {
+        "sha256": "3174c13c3321055871db4cf003add871057f7e5ac1ce99e0ec19d9091fbbcb4d",
+        "size": 11688488
+      },
+      "painter-perspective-ui": {
+        "sha256": "0154a0cd6ee14ca36199130dc33edfd5a339903501bb80ba20619293c0e913e8",
+        "size": 11686272
+      },
+      "painter-perspective-events": {
+        "sha256": "b94f0ec59445202c8ec3216c189d619409e6fad10f3e04ef5cf12b82a6a719bd",
+        "size": 11653312
+      }
+    }
+  },
+  "sanitizer": {
+    "options": {
+      "auto_features": "disabled",
+      "debug": false,
+      "optimization": "2",
+      "b_ndebug": "false",
+      "b_sanitize": "address,undefined",
+      "headless-tests": "disabled",
+      "libunwind": false,
+      "painter-http": "enabled"
+    },
+    "executables": {
+      "painter-perspective": {
+        "sha256": "d7e185c8661c83437e1fad7d1f9dfc0e3f65720f0f46f3fb9b25ef88c9bdee6c",
+        "size": 146867800
+      },
+      "painter-perspective-ui": {
+        "sha256": "9800bb425c5aa5685bdbe2f622a526949ab17a7bfe22b5a32f0f551366161fc2",
+        "size": 147044216
+      },
+      "painter-perspective-events": {
+        "sha256": "e5273b21e09c9d65bfcf2429d76677744d4d2fc280593700d5f1aad4501af291",
+        "size": 146742872
+      }
+    }
+  }
+}

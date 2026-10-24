@@ -1,0 +1,12 @@
++  gimp_display_shell_transform_xy_f (shell,
++                                     MIN (private->x,
++                                          private->x + private->width),
++                                     MAX (private->y,
++                                          private->y + private->height),
++                                     x3, y3);
++  gimp_display_shell_transform_xy_f (shell,
++                                     MAX (private->x,
++                                          private->x + private->width),
++                                     MAX (private->y,
++                                          private->y + private->height),
++                                     x4, y4);

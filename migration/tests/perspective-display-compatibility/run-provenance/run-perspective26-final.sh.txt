@@ -1,0 +1,19 @@
+#!/bin/bash
+set -euo pipefail
+D=/workspace/shared/gimp-native-secondary
+source "$D/env.sh";exec 9>"$D/build.lock";flock 9
+python3 "$D/prepare-perspective26-final.py"
+if [[ $MODE == normal ]]; then build=build; else build=build-asan; fi
+ninja -j2 -C "$D/$build" app/tests/painter-perspective app/tests/painter-perspective-ui app/tests/painter-perspective-events > "$D/perspective26/final/$MODE-build.log" 2>&1
+for group in original geometry angle0 angle1 angle2; do
+ case $group in
+ original) args='--skip-prefix /perspective-ui/damage --skip-prefix /perspective-ui/old-path';targets='painter-perspective painter-perspective-ui painter-perspective-events';;
+ geometry) args='-p /perspective-ui/damage-ink-bounds -p /perspective-ui/old-path-pixels';targets='painter-perspective-ui';;
+ angle*) args="-p /perspective-ui/damage-mutations/${group#angle}";targets='painter-perspective-ui';;
+ esac
+ set +e
+ ASAN_OPTIONS=detect_leaks=0:halt_on_error=1 UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1 GIMP_TEST_PERSPECTIVE_SCREENSHOT="$D/perspective26/final/$MODE-oncanvas.png" python3 "$D/source/tools/run-painter-xvfb.py" meson test -C "$D/$build" --no-rebuild --num-processes=1 --print-errorlogs --test-args="$args" $targets > "$D/perspective26/final/$MODE-$group.log" 2>&1
+ status=$?;set -e
+ python3 "$D/record-perspective26-final.py" "$build" "$MODE-$group.json"
+ [[ $status == 0 ]] || exit "$status"
+done

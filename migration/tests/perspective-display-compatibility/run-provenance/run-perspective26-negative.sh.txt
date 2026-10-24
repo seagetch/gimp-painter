@@ -1,0 +1,30 @@
+#!/bin/bash
+set -euo pipefail
+D=/workspace/shared/gimp-native-secondary
+source "$D/env.sh";exec 9>"$D/build.lock";flock 9
+O="$D/perspective26/negative-missing-damage";mkdir -p "$O"
+cp "$D/source/app/display/gimpcanvasperspectiveguide.cpp" "$O/original.cpp"
+restore(){ cp "$O/original.cpp" "$D/source/app/display/gimpcanvasperspectiveguide.cpp"; }
+trap restore EXIT
+python3 - <<'PY'
+import pathlib,json,hashlib,tarfile
+D=pathlib.Path('/workspace/shared/gimp-native-secondary');O=D/'perspective26/negative-missing-damage';seal=json.loads((D/'perspective26/final/source-before-build.json').read_text())
+for p,h in seal.items():assert hashlib.sha256((D/'source'/p).read_bytes()).hexdigest()==h,p
+p=D/'source/app/display/gimpcanvasperspectiveguide.cpp';s=p.read_text();old='if (!impl.state.n_points) return nullptr;';assert s.count(old)==1;s=s.replace(old,'if (impl.state.n_points >= 0) return nullptr; /* controlled missing damage */');p.write_text(s)
+seal[str(p.relative_to(D/'source'))]=hashlib.sha256(p.read_bytes()).hexdigest();(O/'source-before-build.json').write_text(json.dumps(seal,indent=2)+'\n')
+with tarfile.open(O/'tested-sources.tar.xz','w:xz') as t:
+ for path in seal:t.add(D/'source'/path,arcname=path)
+PY
+ninja -j2 -C "$D/build" app/tests/painter-perspective-ui > "$O/build.log" 2>&1
+set +e
+python3 "$D/source/tools/run-painter-xvfb.py" meson test -C "$D/build" --no-rebuild --print-errorlogs --test-args='-p /perspective-ui/damage-mutations/0' painter-perspective-ui > "$O/run.log" 2>&1
+status=$?;set -e
+python3 - <<'PY'
+import pathlib,json,hashlib
+D=pathlib.Path('/workspace/shared/gimp-native-secondary');O=D/'perspective26/negative-missing-damage';seal=json.loads((O/'source-before-build.json').read_text())
+for p,h in seal.items():assert hashlib.sha256((D/'source'/p).read_bytes()).hexdigest()==h,p
+j=[json.loads(x) for x in (D/'build/meson-logs/testlog.json').read_text().splitlines() if 'painter-perspective-ui' in json.loads(x)['name']][0];row={k:j.get(k,'') for k in ['name','result','returncode','duration','stdout','stderr']};row['source_sha256']=seal;(O/'result.json').write_text(json.dumps(row,indent=2)+'\n');assert row['returncode']!=0;assert 'perspective_damage_global_audit' in row['stdout']+row['stderr'];assert 'guide == 0' in row['stdout']+row['stderr'];print('missing-damage mutation rejected')
+PY
+[[ $status != 0 ]]
+restore;trap - EXIT
+ninja -j2 -C "$D/build" app/tests/painter-perspective-ui > "$O/restored-build.log" 2>&1

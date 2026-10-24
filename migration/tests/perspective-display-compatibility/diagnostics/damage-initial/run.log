@@ -1,0 +1,120 @@
+Xvfb verified: 127.0.0.1:92, 1080x1920x24, authenticated accepted, empty authority rejected
+1/1 gimp:app / painter-perspective-ui FAIL           20.78s   killed by signal 6 SIGABRT
+>>> MESON_TEST_ITERATION=1 MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 GIMP_TESTING_ABS_TOP_SRCDIR=/workspace/shared/gimp-native-secondary/source MALLOC_PERTURB_=83 GIMP_TESTING_ABS_TOP_BUILDDIR=/workspace/shared/gimp-native-secondary/build UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 LD_LIBRARY_PATH=/workspace/shared/gimp-native-secondary/build/libgimpwidgets:/workspace/shared/gimp-native-secondary/build/libgimpthumb:/workspace/shared/gimp-native-secondary/build/libgimpconfig:/workspace/shared/gimp-native-secondary/build/libgimpbase:/workspace/shared/gimp-native-secondary/build/libgimpcolor:/workspace/shared/gimp-native-secondary/build/libgimpmodule:/workspace/shared/gimp-native-secondary/build/libgimpmath:/workspace/shared/gimp-native-secondary/prefix/lib/x86_64-linux-gnu:/workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu UI_TEST=yes GIMP_TESTING_PLUGINDIRS=/workspace/shared/gimp-native-secondary/build/plug-ins/common /workspace/shared/gimp-native-secondary/build/app/tests/painter-perspective-ui -p /perspective-ui/damage-mutations
+――――――――――――――――――――――――――――――――――――― ✀  ―――――――――――――――――――――――――――――――――――――
+Listing only the last 100 lines from a long log.
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# perspective damage angle=0 aniso=0 flip=0 step=0 changed=205 residual=0
+# perspective damage angle=0 aniso=0 flip=0 step=1 changed=1056 residual=0
+# perspective damage angle=0 aniso=0 flip=0 step=2 changed=1067 residual=0
+# perspective damage angle=0 aniso=0 flip=0 step=3 changed=412 residual=0
+# perspective damage angle=0 aniso=0 flip=0 step=4 changed=893 residual=0
+# perspective damage angle=0 aniso=0 flip=0 step=5 changed=1271 residual=0
+# perspective damage angle=0 aniso=0 flip=0 step=6 changed=202 residual=0
+# perspective damage angle=0 aniso=0 flip=1 step=0 changed=205 residual=0
+# perspective damage angle=0 aniso=0 flip=1 step=1 changed=1052 residual=0
+# perspective damage angle=0 aniso=0 flip=1 step=2 changed=1066 residual=0
+# perspective damage angle=0 aniso=0 flip=1 step=3 changed=405 residual=0
+# perspective damage angle=0 aniso=0 flip=1 step=4 changed=895 residual=0
+# perspective damage angle=0 aniso=0 flip=1 step=5 changed=1276 residual=0
+# perspective damage angle=0 aniso=0 flip=1 step=6 changed=207 residual=0
+# perspective damage angle=0 aniso=0 flip=2 step=0 changed=202 residual=0
+# perspective damage angle=0 aniso=0 flip=2 step=1 changed=1054 residual=0
+# perspective damage angle=0 aniso=0 flip=2 step=2 changed=1070 residual=0
+# perspective damage angle=0 aniso=0 flip=2 step=3 changed=406 residual=0
+# perspective damage angle=0 aniso=0 flip=2 step=4 changed=891 residual=0
+# perspective damage angle=0 aniso=0 flip=2 step=5 changed=1276 residual=0
+# perspective damage angle=0 aniso=0 flip=2 step=6 changed=206 residual=0
+# perspective damage angle=0 aniso=0 flip=3 step=0 changed=204 residual=0
+# perspective damage angle=0 aniso=0 flip=3 step=1 changed=1056 residual=0
+# perspective damage angle=0 aniso=0 flip=3 step=2 changed=1067 residual=0
+# perspective damage angle=0 aniso=0 flip=3 step=3 changed=411 residual=0
+# perspective damage angle=0 aniso=0 flip=3 step=4 changed=890 residual=0
+# perspective damage angle=0 aniso=0 flip=3 step=5 changed=1273 residual=0
+# perspective damage angle=0 aniso=0 flip=3 step=6 changed=204 residual=0
+# perspective damage angle=0 aniso=1 flip=0 step=0 changed=315 residual=0
+# perspective damage angle=0 aniso=1 flip=0 step=1 changed=1132 residual=0
+# perspective damage angle=0 aniso=1 flip=0 step=2 changed=1149 residual=0
+# perspective damage angle=0 aniso=1 flip=0 step=3 changed=633 residual=0
+# perspective damage angle=0 aniso=1 flip=0 step=4 changed=1147 residual=0
+# perspective damage angle=0 aniso=1 flip=0 step=5 changed=1748 residual=0
+# perspective damage angle=0 aniso=1 flip=0 step=6 changed=316 residual=0
+# perspective damage angle=0 aniso=1 flip=1 step=0 changed=317 residual=0
+# perspective damage angle=0 aniso=1 flip=1 step=1 changed=1132 residual=0
+# perspective damage angle=0 aniso=1 flip=1 step=2 changed=1150 residual=0
+# perspective damage angle=0 aniso=1 flip=1 step=3 changed=632 residual=0
+# perspective damage angle=0 aniso=1 flip=1 step=4 changed=1151 residual=0
+# perspective damage angle=0 aniso=1 flip=1 step=5 changed=1752 residual=0
+# perspective damage angle=0 aniso=1 flip=1 step=6 changed=316 residual=0
+# perspective damage angle=0 aniso=1 flip=2 step=0 changed=316 residual=0
+# perspective damage angle=0 aniso=1 flip=2 step=1 changed=1132 residual=0
+# perspective damage angle=0 aniso=1 flip=2 step=2 changed=1150 residual=0
+# perspective damage angle=0 aniso=1 flip=2 step=3 changed=630 residual=0
+# perspective damage angle=0 aniso=1 flip=2 step=4 changed=1146 residual=0
+# perspective damage angle=0 aniso=1 flip=2 step=5 changed=1746 residual=0
+# perspective damage angle=0 aniso=1 flip=2 step=6 changed=316 residual=0
+# perspective damage angle=0 aniso=1 flip=3 step=0 changed=316 residual=0
+# perspective damage angle=0 aniso=1 flip=3 step=1 changed=1133 residual=0
+# perspective damage angle=0 aniso=1 flip=3 step=2 changed=1150 residual=0
+# perspective damage angle=0 aniso=1 flip=3 step=3 changed=633 residual=0
+# perspective damage angle=0 aniso=1 flip=3 step=4 changed=1151 residual=0
+# perspective damage angle=0 aniso=1 flip=3 step=5 changed=1749 residual=0
+# perspective damage angle=0 aniso=1 flip=3 step=6 changed=316 residual=0
+ok 1 /perspective-ui/damage-mutations/0
+# slow test /perspective-ui/damage-mutations/0 executed in 17.94 secs
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# perspective damage angle=37 aniso=0 flip=0 step=0 changed=228 residual=361
+not ok /perspective-ui/damage-mutations/1 - ERROR:../source/app/tests/test-painter-perspective-damage.inc:83:perspective_damage_mutations: assertion failed (residual == 0): (361 == 0)
+Bail out!
+stderr:
+Application icon missing: /workspace/shared/gimp-native-secondary/source/desktop/16x16/gimp.png (Failed to open file “/workspace/shared/gimp-native-secondary/source/desktop/16x16/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-native-secondary/source/desktop/32x32/gimp.png (Failed to open file “/workspace/shared/gimp-native-secondary/source/desktop/32x32/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-native-secondary/source/desktop/48x48/gimp.png (Failed to open file “/workspace/shared/gimp-native-secondary/source/desktop/48x48/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-native-secondary/source/desktop/64x64/gimp.png (Failed to open file “/workspace/shared/gimp-native-secondary/source/desktop/64x64/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-native-secondary/source/desktop/scalable/gimp.svg (Failed to open file “/workspace/shared/gimp-native-secondary/source/desktop/scalable/gimp.svg”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-native-secondary/source/desktop/256x256/gimp.png
+gui_dbus_name_lost: connection to the bus cannot be established.
+set device 'Virtual core XTEST pointer' to mode: disabled
+set device 'Xvfb mouse' to mode: disabled
+**
+ERROR:../source/app/tests/test-painter-perspective-damage.inc:83:perspective_damage_mutations: assertion failed (residual == 0): (361 == 0)
+――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+
+
+Summary of Failures:
+
+1/1 gimp:app / painter-perspective-ui FAIL           20.78s   killed by signal 6 SIGABRT
+
+Ok:                 0   
+Expected Fail:      0   
+Fail:               1   
+Unexpected Pass:    0   
+Skipped:            0   
+Timeout:            0   
+
+Full log written to /workspace/shared/gimp-native-secondary/build/meson-logs/testlog.txt

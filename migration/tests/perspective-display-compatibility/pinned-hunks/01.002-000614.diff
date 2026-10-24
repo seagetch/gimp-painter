@@ -1,0 +1,26 @@
++  gimp_display_shell_scroll_get_render_start_offset (shell, 
++                                                     &render_start_x,
++                                                     &render_start_y);
++  
++  image_w = SCALEX(shell, gimp_image_get_width(image)) - render_start_x;
++  image_h = SCALEY(shell, gimp_image_get_height(image)) - render_start_y;
++
++  if (x + render_start_x < 0) {
++    w += x + render_start_x;
++    x  = - render_start_x;
++  }
++
++  if (y + render_start_y < 0) {
++    h += y + render_start_y;
++    y  = - render_start_y;
++  }
++  
++  if (x > image_w || y > image_h)
++    return;
++
++  w = CLAMP(w, 0, image_w - x);
++  h = CLAMP(h, 0, image_h - y);
++
++  if (w == 0 || h == 0)
++    return;
++

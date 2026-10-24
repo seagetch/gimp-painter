@@ -1,0 +1,121 @@
+Xvfb verified: 127.0.0.1:92, 1080x1920x24, authenticated accepted, empty authority rejected
+gimp:app / painter-perspective-ui time out (After 60 seconds)
+1/1 gimp:app / painter-perspective-ui TIMEOUT        60.03s   killed by signal 15 SIGTERM
+>>> LD_LIBRARY_PATH=/workspace/shared/gimp-native-secondary/build/libgimpwidgets:/workspace/shared/gimp-native-secondary/build/libgimpthumb:/workspace/shared/gimp-native-secondary/build/libgimpconfig:/workspace/shared/gimp-native-secondary/build/libgimpbase:/workspace/shared/gimp-native-secondary/build/libgimpcolor:/workspace/shared/gimp-native-secondary/build/libgimpmodule:/workspace/shared/gimp-native-secondary/build/libgimpmath:/workspace/shared/gimp-native-secondary/prefix/lib/x86_64-linux-gnu:/workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu GIMP_TESTING_PLUGINDIRS=/workspace/shared/gimp-native-secondary/build/plug-ins/common UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 MALLOC_PERTURB_=36 MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 UI_TEST=yes GIMP_TESTING_ABS_TOP_BUILDDIR=/workspace/shared/gimp-native-secondary/build ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 GIMP_TESTING_ABS_TOP_SRCDIR=/workspace/shared/gimp-native-secondary/source MESON_TEST_ITERATION=1 /workspace/shared/gimp-native-secondary/build/app/tests/painter-perspective-ui -p /perspective-ui/damage-mutations
+――――――――――――――――――――――――――――――――――――― ✀  ―――――――――――――――――――――――――――――――――――――
+Listing only the last 100 lines from a long log.
+# perspective damage angle=37 aniso=0 flip=2 step=5 changed=1188 residual=0
+# perspective damage angle=37 aniso=0 flip=2 step=6 changed=194 residual=0
+# perspective damage angle=37 aniso=0 flip=3 step=0 changed=191 residual=0
+# perspective damage angle=37 aniso=0 flip=3 step=1 changed=975 residual=0
+# perspective damage angle=37 aniso=0 flip=3 step=2 changed=986 residual=0
+# perspective damage angle=37 aniso=0 flip=3 step=3 changed=389 residual=0
+# perspective damage angle=37 aniso=0 flip=3 step=4 changed=833 residual=0
+# perspective damage angle=37 aniso=0 flip=3 step=5 changed=1191 residual=0
+# perspective damage angle=37 aniso=0 flip=3 step=6 changed=188 residual=0
+# perspective damage angle=37 aniso=1 flip=0 step=0 changed=306 residual=0
+# perspective damage angle=37 aniso=1 flip=0 step=1 changed=1042 residual=0
+# perspective damage angle=37 aniso=1 flip=0 step=2 changed=1064 residual=0
+# perspective damage angle=37 aniso=1 flip=0 step=3 changed=599 residual=0
+# perspective damage angle=37 aniso=1 flip=0 step=4 changed=1108 residual=0
+# perspective damage angle=37 aniso=1 flip=0 step=5 changed=1687 residual=0
+# perspective damage angle=37 aniso=1 flip=0 step=6 changed=302 residual=0
+# perspective damage angle=37 aniso=1 flip=1 step=0 changed=302 residual=0
+# perspective damage angle=37 aniso=1 flip=1 step=1 changed=1049 residual=0
+# perspective damage angle=37 aniso=1 flip=1 step=2 changed=1068 residual=0
+# perspective damage angle=37 aniso=1 flip=1 step=3 changed=587 residual=0
+# perspective damage angle=37 aniso=1 flip=1 step=4 changed=1095 residual=0
+# perspective damage angle=37 aniso=1 flip=1 step=5 changed=1656 residual=0
+# perspective damage angle=37 aniso=1 flip=1 step=6 changed=296 residual=0
+# perspective damage angle=37 aniso=1 flip=2 step=0 changed=287 residual=0
+# perspective damage angle=37 aniso=1 flip=2 step=1 changed=1057 residual=0
+# perspective damage angle=37 aniso=1 flip=2 step=2 changed=1074 residual=0
+# perspective damage angle=37 aniso=1 flip=2 step=3 changed=601 residual=0
+# perspective damage angle=37 aniso=1 flip=2 step=4 changed=1077 residual=0
+# perspective damage angle=37 aniso=1 flip=2 step=5 changed=1661 residual=0
+# perspective damage angle=37 aniso=1 flip=2 step=6 changed=298 residual=0
+# perspective damage angle=37 aniso=1 flip=3 step=0 changed=297 residual=0
+# perspective damage angle=37 aniso=1 flip=3 step=1 changed=1045 residual=0
+# perspective damage angle=37 aniso=1 flip=3 step=2 changed=1063 residual=0
+# perspective damage angle=37 aniso=1 flip=3 step=3 changed=592 residual=0
+# perspective damage angle=37 aniso=1 flip=3 step=4 changed=1106 residual=0
+# perspective damage angle=37 aniso=1 flip=3 step=5 changed=1667 residual=0
+# perspective damage angle=37 aniso=1 flip=3 step=6 changed=292 residual=0
+ok 2 /perspective-ui/damage-mutations/1
+# slow test /perspective-ui/damage-mutations/1 executed in 21.18 secs
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# perspective damage angle=90 aniso=0 flip=0 step=0 changed=188 residual=0
+# perspective damage angle=90 aniso=0 flip=0 step=1 changed=981 residual=0
+# perspective damage angle=90 aniso=0 flip=0 step=2 changed=987 residual=0
+# perspective damage angle=90 aniso=0 flip=0 step=3 changed=382 residual=0
+# perspective damage angle=90 aniso=0 flip=0 step=4 changed=823 residual=0
+# perspective damage angle=90 aniso=0 flip=0 step=5 changed=1179 residual=0
+# perspective damage angle=90 aniso=0 flip=0 step=6 changed=188 residual=0
+# perspective damage angle=90 aniso=0 flip=1 step=0 changed=186 residual=0
+# perspective damage angle=90 aniso=0 flip=1 step=1 changed=977 residual=0
+# perspective damage angle=90 aniso=0 flip=1 step=2 changed=983 residual=0
+# perspective damage angle=90 aniso=0 flip=1 step=3 changed=378 residual=0
+# perspective damage angle=90 aniso=0 flip=1 step=4 changed=827 residual=0
+# perspective damage angle=90 aniso=0 flip=1 step=5 changed=1184 residual=0
+# perspective damage angle=90 aniso=0 flip=1 step=6 changed=190 residual=0
+# perspective damage angle=90 aniso=0 flip=2 step=0 changed=188 residual=0
+# perspective damage angle=90 aniso=0 flip=2 step=1 changed=977 residual=0
+# perspective damage angle=90 aniso=0 flip=2 step=2 changed=991 residual=0
+# perspective damage angle=90 aniso=0 flip=2 step=3 changed=376 residual=0
+# perspective damage angle=90 aniso=0 flip=2 step=4 changed=825 residual=0
+# perspective damage angle=90 aniso=0 flip=2 step=5 changed=1177 residual=0
+# perspective damage angle=90 aniso=0 flip=2 step=6 changed=189 residual=0
+# perspective damage angle=90 aniso=0 flip=3 step=0 changed=186 residual=0
+# perspective damage angle=90 aniso=0 flip=3 step=1 changed=979 residual=0
+# perspective damage angle=90 aniso=0 flip=3 step=2 changed=989 residual=0
+# perspective damage angle=90 aniso=0 flip=3 step=3 changed=381 residual=0
+# perspective damage angle=90 aniso=0 flip=3 step=4 changed=827 residual=0
+# perspective damage angle=90 aniso=0 flip=3 step=5 changed=1186 residual=0
+# perspective damage angle=90 aniso=0 flip=3 step=6 changed=188 residual=0
+# perspective damage angle=90 aniso=1 flip=0 step=0 changed=296 residual=0
+# perspective damage angle=90 aniso=1 flip=0 step=1 changed=1049 residual=0
+# perspective damage angle=90 aniso=1 flip=0 step=2 changed=1063 residual=0
+# perspective damage angle=90 aniso=1 flip=0 step=3 changed=591 residual=0
+# perspective damage angle=90 aniso=1 flip=0 step=4 changed=1078 residual=0
+# perspective damage angle=90 aniso=1 flip=0 step=5 changed=1643 residual=0
+# perspective damage angle=90 aniso=1 flip=0 step=6 changed=298 residual=0
+# perspective damage angle=90 aniso=1 flip=1 step=0 changed=297 residual=0
+# perspective damage angle=90 aniso=1 flip=1 step=1 changed=1052 residual=0
+# perspective damage angle=90 aniso=1 flip=1 step=2 changed=1069 residual=0
+# perspective damage angle=90 aniso=1 flip=1 step=3 changed=590 residual=0
+# perspective damage angle=90 aniso=1 flip=1 step=4 changed=1084 residual=0
+# perspective damage angle=90 aniso=1 flip=1 step=5 changed=1651 residual=0
+stderr:
+Application icon missing: /workspace/shared/gimp-native-secondary/source/desktop/16x16/gimp.png (Failed to open file “/workspace/shared/gimp-native-secondary/source/desktop/16x16/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-native-secondary/source/desktop/32x32/gimp.png (Failed to open file “/workspace/shared/gimp-native-secondary/source/desktop/32x32/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-native-secondary/source/desktop/48x48/gimp.png (Failed to open file “/workspace/shared/gimp-native-secondary/source/desktop/48x48/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-native-secondary/source/desktop/64x64/gimp.png (Failed to open file “/workspace/shared/gimp-native-secondary/source/desktop/64x64/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-native-secondary/source/desktop/scalable/gimp.svg (Failed to open file “/workspace/shared/gimp-native-secondary/source/desktop/scalable/gimp.svg”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-native-secondary/source/desktop/256x256/gimp.png
+gui_dbus_name_lost: connection to the bus cannot be established.
+set device 'Virtual core XTEST pointer' to mode: disabled
+set device 'Xvfb mouse' to mode: disabled
+――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+
+
+Summary of Failures:
+
+1/1 gimp:app / painter-perspective-ui TIMEOUT        60.03s   killed by signal 15 SIGTERM
+
+Ok:                 0   
+Expected Fail:      0   
+Fail:               0   
+Unexpected Pass:    0   
+Skipped:            0   
+Timeout:            1   
+
+Full log written to /workspace/shared/gimp-native-secondary/build/meson-logs/testlog.txt

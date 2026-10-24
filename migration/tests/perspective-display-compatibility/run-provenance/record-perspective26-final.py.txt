@@ -1,0 +1,9 @@
+import pathlib,json,hashlib,sys
+D=pathlib.Path('/workspace/shared/gimp-native-secondary');O=D/'perspective26/final';build,name=sys.argv[1:];seal=json.loads((O/'source-before-build.json').read_text())
+for p,h in seal.items():assert hashlib.sha256((D/'source'/p).read_bytes()).hexdigest()==h,p
+rows=[]
+for line in (D/build/'meson-logs/testlog.json').read_text().splitlines():
+ j=json.loads(line)
+ if j['name'].split(' / ')[-1] not in ['painter-perspective','painter-perspective-ui','painter-perspective-events']:continue
+ row={k:j.get(k,'') for k in ['name','result','returncode','duration','stdout','stderr']};row.update(source_sha256=seal,test_budget_seconds=60,xvfb=dict(width=1080,height=1920,depth=24,authenticated=True));exe=D/build/'app/tests'/j['name'].split(' / ')[-1];row['executable_sha256']=hashlib.sha256(exe.read_bytes()).hexdigest();row['cases']=sum(x.startswith('ok ') and '# SKIP' not in x for x in j['stdout'].splitlines());rows.append(row)
+(O/name).write_text(json.dumps(rows,indent=2)+'\n');print(name,[(x['result'],x['cases'],x['duration']) for x in rows])

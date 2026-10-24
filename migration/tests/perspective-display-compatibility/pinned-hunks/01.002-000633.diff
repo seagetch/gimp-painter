@@ -1,0 +1,11 @@
++      rx_offset = shell->offset_x;
++      ry_offset = shell->offset_y;
++
++      gimp_display_shell_image_to_device_coords (shell, &rx_offset, &ry_offset);
++
++      rx_offset -= old_x;
++      ry_offset -= old_y;
++
++      rx_offset += shell->accum_error_x;
++      ry_offset += shell->accum_error_y;
++

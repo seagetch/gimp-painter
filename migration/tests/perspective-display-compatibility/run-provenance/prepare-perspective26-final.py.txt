@@ -1,0 +1,16 @@
+import pathlib,hashlib,json,subprocess
+D=pathlib.Path('/workspace/shared/gimp-native-secondary');R=pathlib.Path('/workspace/scratch/0015fc5d1a03/gimp-painter');O=D/'perspective26/final';O.mkdir(exist_ok=True)
+held=json.loads((D/'perspective26/held-source-isolation.json').read_text());held['rows'].append(json.loads((D/'perspective26/clone-held-retrospective.json').read_text()))
+for row in held['rows']:
+ p=D/'source'/row['path']
+ if row.get('native_exists') is False:assert not p.exists()
+ else:assert hashlib.sha256(p.read_bytes()).hexdigest()==row['sha256'],row['path']
+owned=['app/display/gimpcanvasperspectiveguide.cpp','app/tests/test-painter-perspective-ui.c','app/tests/test-painter-perspective-damage.inc','app/tests/test-painter-perspective-path-oracle.cpp']
+owned += ['migration/fixtures/legacy-perspective-draw/'+name for name in ['draw-source.inc','pinned-source.cpp','source.json']]
+for p in owned:(D/'source'/p).parent.mkdir(parents=True,exist_ok=True);(D/'source'/p).write_bytes((R/p).read_bytes())
+paths=set(json.loads((D/'perspective26/source-before-build.json').read_text()))|set(owned)
+paths.update(['app/core/gimpclonelayer.cpp','app/display/gimpcanvasitem.c','app/display/gimpcanvasitem.h','app/display/gimpcanvasgroup.c','app/display/gimpcanvasgroup.h','app/display/gimpdisplayshell-expose.c','app/display/gimpdisplayshell-draw.c','app/display/gimpcanvaslayerboundary.c','app/display/gimpcanvasrectangle.c','app/display/gimpdisplayshell.c','app/display/gimpdisplayshell-callbacks.c','app/display/gimpcanvas-style.c'])
+seal={p:hashlib.sha256((D/'source'/p).read_bytes()).hexdigest() for p in sorted(paths)}
+if (O/'source-before-build.json').exists():assert json.loads((O/'source-before-build.json').read_text())==seal
+else:(O/'source-before-build.json').write_text(json.dumps(seal,indent=2)+'\n')
+(O/'held-source-isolation.json').write_text(json.dumps(held,indent=2)+'\n');print('final',len(seal),'inputs,9 held providers')

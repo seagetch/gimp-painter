@@ -138,6 +138,7 @@ foreach test_name : app_tests
     'test-@0@.@1@'.format(test_name, test_name == 'painter-type-startup' ? 'cpp' : 'c'),
     'tests.c',
     test_name == 'painter-perspective' ? ['test-painter-perspective-handle.cpp'] : [],
+    test_name == 'painter-perspective-ui' ? ['test-painter-perspective-path-oracle.cpp'] : [],
     test_name == 'mypaint-selector-contracts' ? ['test-mypaint-selector-contracts.cpp'] : [],
     test_name == 'painter-compact-options' ? ['test-widget-orientation-api.c', 'test-widget-orientation-api.cpp'] : [],
     test_name == 'gimp-clone-layer' ? ['test-gimp-clone-layout.cpp'] : [],

@@ -1,0 +1,50 @@
+{
+  "build": {
+    "painter-perspective": {
+      "sha256": "aaf45ef422e8c6eedc1b34b2bb631b772c8b0836cd91f7bf76948e3cc1bf08a3",
+      "size": 11688488
+    },
+    "painter-perspective-ui": {
+      "sha256": "9f62cc3a10906d0b805dadbbee63a645ad8b3c35adb21ef4c934c649bc826f39",
+      "size": 11670592
+    },
+    "painter-perspective-events": {
+      "sha256": "1146a00ccc69e9f417e72734d2fc3f2c96edfc3d95add31a23d6485111c6ea5f",
+      "size": 11653312
+    },
+    "options": {
+      "auto_features": "disabled",
+      "debug": false,
+      "optimization": "2",
+      "b_ndebug": "false",
+      "b_sanitize": "none",
+      "headless-tests": "disabled",
+      "libunwind": false,
+      "painter-http": "enabled"
+    }
+  },
+  "build-asan": {
+    "painter-perspective": {
+      "sha256": "a41350240d37487b91abab752817c742bd6f53f89daaae634183d8b6dfb78ac8",
+      "size": 146868952
+    },
+    "painter-perspective-ui": {
+      "sha256": "e4ac06eff3c83f1218578984dc850abb24f5568dd991c3618a8e34ec590094ea",
+      "size": 146878848
+    },
+    "painter-perspective-events": {
+      "sha256": "216bfbaf59b42a443897a41ffcc39dc878aadc6792d3307ccca3d38c310d3c74",
+      "size": 146744024
+    },
+    "options": {
+      "auto_features": "disabled",
+      "debug": false,
+      "optimization": "2",
+      "b_ndebug": "false",
+      "b_sanitize": "address,undefined",
+      "headless-tests": "disabled",
+      "libunwind": false,
+      "painter-http": "enabled"
+    }
+  }
+}

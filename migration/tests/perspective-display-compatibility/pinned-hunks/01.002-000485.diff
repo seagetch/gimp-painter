@@ -1,0 +1,8 @@
+-          *x = rx + rw - private->corner_width;
+-          *y = ry + rh - private->corner_height;
++          *x1 = rx4 
++            - vec_xx * private->corner_width
++            - vec_yx * private->corner_height;
++          *y1 = ry4 
++            - vec_xy * private->corner_width
++            - vec_yy * private->corner_height;

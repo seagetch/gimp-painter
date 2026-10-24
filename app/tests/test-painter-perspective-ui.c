@@ -627,12 +627,16 @@ static void stale_target_motion (void)
 }
 
 #include "test-painter-tool-group-retirement.inc"
+#include "test-painter-perspective-damage.inc"
 
 int main(int argc,char **argv)
 {
   gint result;g_test_init(&argc,&argv,NULL);if(!gtk_init_check(&argc,&argv))return GIMP_EXIT_TEST_SKIPPED;
   gimp_test_utils_setup_menus_path();gimp=gimp_init_for_gui_testing(TRUE);
   g_object_set(gimp->config,"painter-canvas-ui",TRUE,NULL);
+  g_test_add_func ("/perspective-ui/damage-ink-bounds", perspective_damage_ink_bounds);
+  g_test_add_func ("/perspective-ui/old-path-pixels", perspective_old_path_pixels);
+  for (guint a = 0; a < 3; a++) { gchar *name = g_strdup_printf ("/perspective-ui/damage-mutations/%u", a); g_test_add_data_func (name, GUINT_TO_POINTER (a), perspective_damage_mutations); g_free (name); }
   g_test_add_func("/perspective-ui/retained-groups-deserialize",retained_groups_deserialize);
   g_test_add_func("/perspective-ui/retained-groups-reset",retained_groups_reset);
   g_test_add_func("/perspective-ui/add-move-remove-undo",add_move_remove_undo);
