@@ -77,6 +77,11 @@ new_exact={'plug-in-vinvert','plug-in-max-rgb','plug-in-threshold-alpha'}
 # Accepted bounded children supersede historical discovery/development labels.
 # Preserve their exact per-route caveats; no generic or whole-port acceptance.
 BOUNDED_CONTEXT_ROUTES = {
+    "plug-in-red-eye-removal": {
+        "executor_route": "bounded native nonlinear-U8 RGB owner-context route with strict old-wire restoration; no high-precision conversion",
+        "missing_port_work": "genuine old-application Red Eye capture, non-U8/nonlinear and indexed domains, parameter-editor activation, generic PDB/process isolation, other OS/full aggregate and global resource/latency gates remain",
+        "dependency_status": "bounded source-oracle/raw/native/XCF/portrait checkpoints verified; see migration/tests/red-eye-route-inventory.json; unsafe INT32 arithmetic rejected without losing saved data"
+    },
     "plug-in-max-rgb": {
         "executor_route": "accepted bounded native nonlinear-U8 RGB owner-context route; existing context-free real point extension retained",
         "missing_port_work": "Gray/indexed raw owner route, real-extension owner context and legacy precision parity, generic PDB/process isolation, installed UI/full aggregate/other OS and global memory/latency remain",

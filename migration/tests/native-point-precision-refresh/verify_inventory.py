@@ -3,6 +3,7 @@
 import ast
 import csv
 import json
+import hashlib
 from pathlib import Path
 ROOT = Path(__file__).resolve().parents[3]
 source = ast.parse((ROOT/'tools/inventory_filter_routes.py').read_text())
@@ -16,7 +17,8 @@ rows = list(csv.DictReader((ROOT/'migration/inventory/filter-procedure-routes.ts
 assert len(rows) == len({row['procedure'] for row in rows}) == 108
 slugs = {'plug-in-max-rgb':'native-max-rgb-context', 'plug-in-vinvert':'native-value-invert-context',
          'plug-in-sobel':'native-sobel-context', 'plug-in-sharpen':'native-sharpen-context',
-         'plug-in-threshold-alpha':'native-threshold-alpha-context'}
+         'plug-in-threshold-alpha':'native-threshold-alpha-context',
+         'plug-in-red-eye-removal':'red-eye-route-inventory'}
 assert set(constants['BOUNDED_CONTEXT_ROUTES']) == set(slugs)
 for name, slug in slugs.items():
     row = next(row for row in rows if row['procedure'] == name)
@@ -25,6 +27,12 @@ for name, slug in slugs.items():
     receipt = ROOT/'migration/tests'/f'{slug}.json'
     accepted = json.loads(receipt.read_text())
     assert accepted['status'].startswith('passed')
+    if name == 'plug-in-red-eye-removal':
+        for package, digest in accepted['proofs'].items():
+            artifact = ROOT/'migration/tests'/package/'artifact-sha256.json'
+            assert hashlib.sha256(artifact.read_bytes()).hexdigest() == digest
+        assert accepted['total_procedure_identities'] == 108
+        assert accepted['remaining_required_labels'] == 92
     assert str(receipt.relative_to(ROOT)) in row['dependency_status']
     assert row['missing_port_work'] and row['dependency_status']
 # Exercise the actual generator row body; discovery inputs are deliberately empty.
@@ -39,5 +47,5 @@ for name in constants['BOUNDED_CONTEXT_ROUTES']:
     for key in ('executor_route', 'missing_port_work', 'dependency_status'):
         assert actual[key] == expected[key], (name, key)
 missing = sum('required' in row['executor_route'] for row in rows)
-assert missing == 93, missing
-print('PASS:108 unique procedures;5 source-backed bounded dispositions;93 required-labelled rows; no generic completeness or parent claim')
+assert missing == 92, missing
+print('PASS:108 unique procedures;6 source-backed bounded dispositions;92 required-labelled rows; no generic completeness or parent claim')

@@ -184,3 +184,29 @@ isolation or the global latency/platform gates. Installed UI/full aggregate,
 whole-program sanitizers and enormous-I/O/resource guarantees remain distinct.
 The finite mappings in this checkpoint cannot be presented as a complete
 generic FilterLayer port.
+
+## Red Eye bounded successor (2026-10-21)
+
+The current inventory now distinguishes the implemented literal Red Eye route
+from thematic GEGL counterparts. Immutable checkpoints: old-C/rational scalar
+foundation `bdb36bcea0`, raw raster/shadow `18bd51ec86`, native owner route
+`12ac0d03c0`, strict old-wire/current XCF transport `8927e35a87`, actual portrait
+`2c36b2575c`. `migration/tests/red-eye-route-inventory.json` binds each artifact
+manifest and lists every remaining required-labelled name/category.
+
+Only nonlinear U8 RGB/RGBA is admitted; four exact integer slots and the old
+universally defined signed threshold interval [-1073741646,1073741873] are
+required. Unsafe/unsupported definitions fail without losing saved data/cache.
+No claim of higher-precision extension or genuine old-application capture is
+made. The rendered proof uses direct core API calls, not parameter-editor clicks.
+Generic PDB/process isolation, other platforms/full aggregate and global resource
+and latency gates remain. This does not close original16.022 or its dependencies.
+
+The factual disposition refresh changes only Red Eye's three route/gap/evidence
+columns and the matching generator literal: all108 identities, original public
+metadata and107 other rows are retained. It is not a fresh old registry scan.
+Current labels:92 still required (58 explicit kernel/isolated procedure,11
+image/output,23 context/resource);16 have bounded dispositions. These are labels,
+not a statement that all16 are fully complete. Historical93-required snapshots
+remain immutable. ColorExchange remains required-labelled until its own bounded
+acceptance review, despite independent implementation work in progress.
