@@ -67,3 +67,40 @@ lower-source flips, derived pixels and whole-image Undo/Redo. Four neighboring
 scale/resize/rotate/transform slots remain identical to the native parent.
 Selected sanitizer verification and the implementation commit are still separate
 from this audit checkpoint; this document does not certify their future result.
+
+## Current supplement (2026-10-21, after cddafca8dd)
+
+The table and chronology above describe the immutable bf547/audit checkpoint,
+not today's implementation. They are retained so their provider hashes and
+historical gap statements are not silently rewritten. The following separately
+committed evidence advances those gaps without changing any original acceptance
+or dependency:
+
+* 15.001/pdb-temporary-gvalue: 7adadb8f4f maps both original temporary string
+  sites to removed debug-only work and admitted current RAII value ownership.
+* 15.003: cddafca8dd, `migration/tests/filter-property-contract/`, verifies six
+  publications with four coherent notifications each, independent scalar input
+  and getter ownership, raw/opaque bytes and no opaque execution. Native1 and
+  selected sanitizer1; not arbitrary boxed-value proof.
+* 15.004/15.009: 109b2963e1 ancestry proof follows seven root/group stages,
+  reentrant parent changes, 28 subscription counts and16 pixels; native3/san2.
+  These are the six cross-owned ancestry duties, not paused renderer lifetimes.
+* 15.005: 11ea92ef08 restores old flip-only invalidation (no parent flip), while
+  2f34bbc47c rotate and e68ce702a0 matrix delegate to native then invalidate.
+  9fad7ffbc6 adds the same pinned old unconditional scheduling after native
+  translate/scale/resize. The no-op failures were scheduling parity mismatches,
+  not demonstrated wrong pixels. 0feeaa9d95 and2ef2dd32ee render actual portrait
+  oncanvas API-driven states; unchanged regenerated rotate/matrix appearance is
+  expected, and no pointer gesture interaction is claimed.
+* 15.007 already has Gaussian first-loaded-cache evidence in 1ae9221541:
+  distinct green saved cache and run_count0 initially, then lower edit produces
+  a red completed Gaussian with run_count1. No need to rerun old Edge fixtures
+  or invent another equivalent first-display test.
+* 15.010: 985c217c99 duplicates an actual RUNNING Gaussian without shared runner,
+  independent destination group/source/definition and cancellation; native2/san1.
+* 15.012: 915c6e00ae exercises six native Undo restorations and four Redo deletes,
+  reconnects latest lower sources and proves eight pixels/six subscriptions.
+
+The original08.020/09/10 dependency chain and other explicitly open obligations
+remain open. This supplement is factual indexing of existing receipts, not a
+new runtime result or permission to run the user-skipped old Edge path.
