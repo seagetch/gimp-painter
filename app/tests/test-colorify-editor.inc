@@ -36,13 +36,21 @@ colorify_test_close (GimpImage *image)
   }
 }
 static void
-colorify_test_screenshot (const char *name)
+colorify_test_screenshot (const char *name,GtkWidget *front)
 {
   if(!g_getenv("GIMP_TEST_COLORIFY_SCREENSHOT_DIR"))return;
   g_assert_nonnull(colorify_test_display);
   g_assert_true(gimp_painter_canvas_ui_get_visible(gimp_display_get_shell(colorify_test_display)));
   gint64 deadline=g_get_monotonic_time()+G_TIME_SPAN_SECOND;
   while(g_get_monotonic_time()<deadline){g_main_context_iteration(NULL,FALSE);g_usleep(10000);}
+  if(front){
+    gtk_window_set_keep_above(GTK_WINDOW(front),TRUE);
+    gtk_window_move(GTK_WINDOW(front),80,100);gtk_window_present(GTK_WINDOW(front));
+    gint64 show_until=g_get_monotonic_time()+G_TIME_SPAN_SECOND/2;
+    while(g_get_monotonic_time()<show_until){g_main_context_iteration(NULL,FALSE);g_usleep(10000);}
+    g_assert_true(gtk_widget_get_mapped(front));g_assert_nonnull(gtk_widget_get_window(front));
+    gdk_window_raise(gtk_widget_get_window(front));gdk_display_sync(gdk_display_get_default());
+  }
   GdkWindow *root=gdk_get_default_root_window();g_assert_cmpint(gdk_window_get_width(root),==,1080);g_assert_cmpint(gdk_window_get_height(root),==,1920);
   GdkPixbuf *shot=gdk_pixbuf_get_from_window(root,0,0,1080,1920);g_assert_nonnull(shot);
   gchar *path=g_build_filename(g_getenv("GIMP_TEST_COLORIFY_SCREENSHOT_DIR"),name,NULL);GError *error=NULL;
@@ -144,12 +152,12 @@ colorify_editor_create_pixels (void)
   gtk_entry_set_text(GTK_ENTRY(field(dialog,"painter-colorify-green")),"0.25");
   gtk_entry_set_text(GTK_ENTRY(field(dialog,"painter-colorify-blue")),"1");
   gtk_entry_set_text(GTK_ENTRY(field(dialog,"painter-colorify-alpha")),"0");
-  colorify_test_screenshot("colorify-editor-before-oncanvas-portrait.png");
+  colorify_test_screenshot("colorify-editor-before-oncanvas-portrait.png",dialog);
   gtk_dialog_response(GTK_DIALOG(dialog),GTK_RESPONSE_OK);g_object_unref(dialog);
   GimpFilterLayer *layer=GIMP_FILTER_LAYER(gimp_image_get_selected_layers(image)->data);g_assert_true(GIMP_IS_FILTER_LAYER(layer));settle(layer);
   gegl_buffer_get(gimp_drawable_get_buffer(GIMP_DRAWABLE(layer)),NULL,1,babl_format("R'G'B'A u8"),actual,GEGL_AUTO_ROWSTRIDE,GEGL_ABYSS_NONE);
   for(guint p=0;p<sizeof actual;p+=4){g_assert_cmpuint(actual[p],==,127);g_assert_cmpuint(actual[p+1],==,63);g_assert_cmpuint(actual[p+2],==,254);g_assert_cmpuint(actual[p+3],==,255);}
-  gimp_image_flush(image);colorify_test_screenshot("colorify-editor-after-oncanvas-portrait.png");
+  gimp_image_flush(image);colorify_test_screenshot("colorify-editor-after-oncanvas-portrait.png",NULL);
   colorify_test_close(image);
 }
 static void
