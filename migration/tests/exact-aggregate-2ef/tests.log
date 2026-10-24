@@ -1,0 +1,44 @@
+Xvfb verified: 127.0.0.1:92, 1080x1920x24, authenticated accepted, empty authority rejected
+ 1/34 gimp:app / painter-layer-modes                  OK              28.76s
+ 2/34 gimp:app / painter-mode-ui                      OK              16.60s
+ 3/34 gimp:app / painter-perspective                  OK               2.04s
+ 4/34 gimp:app / painter-perspective-ui               OK               4.94s
+ 5/34 gimp:app / painter-perspective-ui-geometry      OK               5.07s
+ 6/34 gimp:app / painter-perspective-ui-damage-0      OK              25.31s
+ 7/34 gimp:app / painter-perspective-ui-damage-1      OK              25.21s
+ 8/34 gimp:app / painter-perspective-ui-damage-2      OK              25.38s
+ 9/34 gimp:app / painter-perspective-events           OK               8.87s
+10/34 gimp:app / painter-perspective-stroke-events    OK               2.80s
+11/34 gimp:libgimpbase / mypaint-enum-library-only    OK               0.01s
+12/34 gimp:painter / painter-mypaint-resource         OK               0.25s
+13/34 gimp:painter / painter-mypaint-work-buffer      OK               0.08s
+14/34 gimp:app / gimp-painter-surface                 OK               3.73s
+15/34 gimp:app / layer-presets-ui                     OK              15.94s
+16/34 gimp:app / painter-mypaint-tool                 OK              48.76s
+17/34 gimp:painter / application-owned-lifecycle      OK               9.06s
+18/34 gimp:app / preset-gui-entries                   OK               1.07s
+19/34 gimp:app / feature-lifecycle                    OK              14.71s
+20/34 gimp:app / prepared-undo                        OK              20.41s
+21/34 gimp:app / undo-pop-guard                       OK              13.88s
+22/34 gimp:app / painter-prepared-pixels              OK               1.48s
+23/34 gimp:app / painter-stroke-undo                  OK               1.18s
+24/34 gimp:app / mypaint-options-construction         OK              10.30s
+25/34 gimp:app / mypaint-options-construction-reentry OK               2.38s
+26/34 gimp:app / paired-stroke-undo                   OK               1.26s
+27/34 gimp:app / paired-stroke-ui                     OK               6.19s
+28/34 gimp:app / painter-graph-invalidation           OK               1.39s
+29/34 gimp:app / mypaint-undo-ref                     OK               1.05s
+30/34 gimp:app / mypaint-options-gui                  OK              30.92s
+31/34 gimp:app / mypaint-options-mode                 OK               6.37s
+32/34 gimp:app / mypaint-enum-public                  OK               2.40s
+33/34 gimp:app / paint-geometry-conflict              OK               1.28s
+34/34 gimp:app / paint-geometry-tool                  OK               2.99s
+
+Ok:                 34  
+Expected Fail:      0   
+Fail:               0   
+Unexpected Pass:    0   
+Skipped:            0   
+Timeout:            0   
+
+Full log written to /workspace/shared/gimp-clean-aggregate/build/meson-logs/exact-committed-aggregate-corrected.txt
