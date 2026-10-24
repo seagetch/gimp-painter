@@ -1,0 +1,18 @@
+{
+  "combined-luminance": {
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": "mismatch 0/1/4 channel0 got1 expected0\n",
+    "replace_from": "const unsigned luminance = tables_.luminance[0][input[0]] +\n                               tables_.luminance[1][input[1]] +\n                               tables_.luminance[2][input[2]];",
+    "replace_to": "const unsigned luminance = static_cast<unsigned>(input[0]*0.2126 + input[1]*0.7152 + input[2]*0.0722);",
+    "mutated_header_sha256": "1934731eacce44ce21796bfe6c50442ef92cd80029551ce8f37f1f9593b93104"
+  },
+  "ignored-rounding-precondition": {
+    "exit_code": -6,
+    "stdout": "",
+    "stderr": "ignored-rounding-precondition: /workspace/scratch/0015fc5d1a03/gimp-painter/migration/tests/colorify-kernel/contracts.cpp:24: int main(): Assertion `false' failed.\n",
+    "replace_from": "if (std::fegetround () != FE_TONEAREST)",
+    "replace_to": "if (false)",
+    "mutated_header_sha256": "ba203534e9e5b928ea1def6e45da870775444243c28a1d182b4eec397c1791a4"
+  }
+}

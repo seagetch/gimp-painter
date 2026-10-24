@@ -1,0 +1,45 @@
+{
+  "header_sha256": "117e91c89ef3b7e631af0261dbf766327fbf63ab9f20e6d3ad8da9eb1c5a38ab",
+  "runs": [
+    {
+      "command": [
+        "c++",
+        "-std=c++14",
+        "-fno-rtti",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-pedantic",
+        "-I/workspace/scratch/0015fc5d1a03/gimp-painter",
+        "-x",
+        "c++",
+        "-fsyntax-only",
+        "-"
+      ],
+      "input": "#include \"app/painter/filter-colorify-kernel.hpp\"\nint main(){GimpPainter::FilterColorifyKernel k({1,1,1,1});return k.tint_component(0,254)!=254;}\n",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "c++",
+        "-std=c++14",
+        "-fno-rtti",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-pedantic",
+        "-I/workspace/scratch/0015fc5d1a03/gimp-painter",
+        "-x",
+        "c++",
+        "-fsyntax-only",
+        "-"
+      ],
+      "input": "#include \"app/painter/filter-colorify-kernel.hpp\"\n#include \"app/painter/filter-colorify-kernel.hpp\"\nint main(){GimpPainter::FilterColorifyKernel k({1,1,1,1});return k.tint_component(0,254)!=254;}\n",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ]
+}

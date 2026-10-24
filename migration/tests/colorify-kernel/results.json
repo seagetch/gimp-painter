@@ -1,0 +1,87 @@
+{
+  "scope": "isolated immutable typed Colorify pixel kernel;no raw/native/storage admission",
+  "source_sha256": {
+    "app/painter/filter-colorify-kernel.hpp": "117e91c89ef3b7e631af0261dbf766327fbf63ab9f20e6d3ad8da9eb1c5a38ab",
+    "migration/tests/colorify-foundation/compare.c": "21c951e84b4f4b5a7d4673d02ed715a0889fc0e2dbecd1924a60e2afc7cb13cb",
+    "migration/tests/colorify-kernel/adapter.cpp": "b724da121741665ee5206de12bd1d630e32717cd46fc262750c24256cde46d89",
+    "migration/tests/colorify-kernel/contracts.cpp": "3d8ea743d559f466371f9111bef4cd0463cc317f95453ea080bdf4d11f3a55ce",
+    "migration/tests/colorify-kernel/run.py": "faf564cc4086f8a51fd8ba729e5f41997e078fe2e70340aa437feaef8603c850"
+  },
+  "runs": {
+    "normal-matrix": {
+      "compile": [
+        "c++",
+        "-std=c++17",
+        "-O2",
+        "-I/workspace/scratch/0015fc5d1a03/gimp-painter",
+        "/workspace/scratch/0015fc5d1a03/gimp-painter/migration/tests/colorify-kernel/adapter.cpp",
+        "/tmp/colorify-kernel-d6a3a2ji/normal.o",
+        "-lm",
+        "-o",
+        "/tmp/colorify-kernel-d6a3a2ji/normal-matrix"
+      ],
+      "compile_stderr": "",
+      "exit_code": 0,
+      "stdout": "PASS Colorify 268435456 complete RGB/RGBA pixel comparisons;98685 binary64 tint-boundary comparisons;white254;alpha/hidden RGB preserved\n",
+      "stderr": "",
+      "seconds": 2.7836708550021285
+    },
+    "normal-contracts": {
+      "compile": [
+        "c++",
+        "-std=c++17",
+        "-O2",
+        "-I/workspace/scratch/0015fc5d1a03/gimp-painter",
+        "/workspace/scratch/0015fc5d1a03/gimp-painter/migration/tests/colorify-kernel/contracts.cpp",
+        "-lm",
+        "-o",
+        "/tmp/colorify-kernel-d6a3a2ji/normal-contracts"
+      ],
+      "compile_stderr": "",
+      "exit_code": 0,
+      "stdout": "PASS Colorify immutable metadata;20 invalidRGBA+3 rounding rejections;9 invalid pixel/index calls;8 separate/exact/partial aliases;no rounding-mode mutation\n",
+      "stderr": "",
+      "seconds": 0.002202902003773488
+    },
+    "sanitizer-matrix": {
+      "compile": [
+        "c++",
+        "-std=c++17",
+        "-O1",
+        "-fsanitize=address,undefined,float-cast-overflow",
+        "-fno-omit-frame-pointer",
+        "-I/workspace/scratch/0015fc5d1a03/gimp-painter",
+        "/workspace/scratch/0015fc5d1a03/gimp-painter/migration/tests/colorify-kernel/adapter.cpp",
+        "/tmp/colorify-kernel-d6a3a2ji/sanitizer.o",
+        "-lm",
+        "-o",
+        "/tmp/colorify-kernel-d6a3a2ji/sanitizer-matrix"
+      ],
+      "compile_stderr": "",
+      "exit_code": 0,
+      "stdout": "PASS Colorify 268435456 complete RGB/RGBA pixel comparisons;98685 binary64 tint-boundary comparisons;white254;alpha/hidden RGB preserved\n",
+      "stderr": "",
+      "seconds": 15.302579244998924
+    },
+    "sanitizer-contracts": {
+      "compile": [
+        "c++",
+        "-std=c++17",
+        "-O1",
+        "-fsanitize=address,undefined,float-cast-overflow",
+        "-fno-omit-frame-pointer",
+        "-I/workspace/scratch/0015fc5d1a03/gimp-painter",
+        "/workspace/scratch/0015fc5d1a03/gimp-painter/migration/tests/colorify-kernel/contracts.cpp",
+        "-lm",
+        "-o",
+        "/tmp/colorify-kernel-d6a3a2ji/sanitizer-contracts"
+      ],
+      "compile_stderr": "",
+      "exit_code": 0,
+      "stdout": "PASS Colorify immutable metadata;20 invalidRGBA+3 rounding rejections;9 invalid pixel/index calls;8 separate/exact/partial aliases;no rounding-mode mutation\n",
+      "stderr": "",
+      "seconds": 0.005218407997745089
+    }
+  },
+  "changed_after_run": []
+}
