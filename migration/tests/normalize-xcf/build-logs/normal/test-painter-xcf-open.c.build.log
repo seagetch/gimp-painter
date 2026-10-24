@@ -1,0 +1,39 @@
+In file included from [01m[K/tmp/normalize-xcf-private/source/app/tests/test-painter-xcf-open.c:499[m[K:
+[01m[K../source/app/tests/test-painter-xcf-red-eye.inc:[m[K In function ‘[01m[Kred_eye_malformed_wire[m[K’:
+[01m[K../source/app/tests/test-painter-xcf-red-eye.inc:103:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  103 |     [01;35m[KGimpImage[m[K *image=open_bytes(bytes,size,XCF_PAINTER_DIALECT_LEGACY,&error);g_assert_no_error(error);g_assert_nonnull(image);
+      |     [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-xcf-red-eye.inc:104:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  104 |     [01;35m[KGimpFilterLayer[m[K *filter=xcf_max_rgb_filter(image);GBytes *preserved=g_bytes_new(bytes+offset,retained);
+      |     [01;35m[K^~~~~~~~~~~~~~~[m[K
+In file included from [01m[K/tmp/normalize-xcf-private/source/app/tests/test-painter-xcf-open.c:500[m[K:
+[01m[K../source/app/tests/test-painter-xcf-color-exchange.inc:[m[K In function ‘[01m[Kexchange_malformed_wire[m[K’:
+[01m[K../source/app/tests/test-painter-xcf-color-exchange.inc:88:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   88 |     [01;35m[Kguint[m[K offset;GBytes *file=xcf_max_rgb_synthetic_file(variant,cache,source,&offset);
+      |     [01;35m[K^~~~~[m[K
+[01m[K../source/app/tests/test-painter-xcf-color-exchange.inc:104:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  104 |     [01;35m[KGimpImage[m[K *image=open_bytes(bytes,size,XCF_PAINTER_DIALECT_LEGACY,&error);g_assert_no_error(error);g_assert_nonnull(image);
+      |     [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-xcf-color-exchange.inc:105:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  105 |     [01;35m[KGimpFilterLayer[m[K *filter=xcf_max_rgb_filter(image);GBytes *preserved=g_bytes_new(bytes+offset,retained);
+      |     [01;35m[K^~~~~~~~~~~~~~~[m[K
+In file included from [01m[K/tmp/normalize-xcf-private/source/app/tests/test-painter-xcf-open.c:501[m[K:
+[01m[K/tmp/normalize-xcf-private/source/app/tests/test-painter-xcf-normalize.inc:[m[K In function ‘[01m[Knormalize_malformed_wire[m[K’:
+[01m[K/tmp/normalize-xcf-private/source/app/tests/test-painter-xcf-normalize.inc:60:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   60 |   [01;35m[Kguint[m[K offset;GBytes *file=xcf_max_rgb_synthetic_file(variant,cache,source,&offset);gsize size,retained=g_bytes_get_size(variant);const guint8 *original=g_bytes_get_data(file,&size);guint8 *bytes=g_memdup2(original,size);GError *error=NULL;
+      |   [01;35m[K^~~~~[m[K
+[01m[K/tmp/normalize-xcf-private/source/app/tests/test-painter-xcf-normalize.inc:74:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   74 |   [01;35m[KGimpImage[m[K *image=open_bytes(bytes,size,XCF_PAINTER_DIALECT_LEGACY,&error);g_assert_no_error(error);g_assert_nonnull(image);GimpFilterLayer *filter=xcf_max_rgb_filter(image);GBytes *preserved=g_bytes_new(bytes+offset,retained);
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K/tmp/normalize-xcf-private/source/app/tests/test-painter-xcf-normalize.inc:74:126:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   74 |   GimpImage *image=open_bytes(bytes,size,XCF_PAINTER_DIALECT_LEGACY,&error);g_assert_no_error(error);g_assert_nonnull(image);[01;35m[KGimpFilterLayer[m[K *filter=xcf_max_rgb_filter(image);GBytes *preserved=g_bytes_new(bytes+offset,retained);
+      |                                                                                                                              [01;35m[K^~~~~~~~~~~~~~~[m[K
+[01m[K/tmp/normalize-xcf-private/source/app/tests/test-painter-xcf-normalize.inc:[m[K In function ‘[01m[Knormalize_undefined_cache_roundtrip[m[K’:
+[01m[K/tmp/normalize-xcf-private/source/app/tests/test-painter-xcf-normalize.inc:96:349:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   96 |  GimpImage *image=xcf_max_rgb_open_synthetic(raw,cache,source);GimpFilterLayer *filter=xcf_max_rgb_filter(image);xcf_max_rgb_lower_input(image,4,empty);xcf_max_rgb_settle(filter,GIMP_FILTER_LAYER_FAILED);g_assert_cmpuint(gimp_filter_layer_get_run_count(filter),==,1);xcf_max_rgb_raw_equal(filter,raw);xcf_max_rgb_pixels(GIMP_LAYER(filter),cache,4);[01;35m[Kgchar[m[K *message=gimp_filter_layer_dup_error(filter);g_assert_nonnull(message);g_assert_nonnull(strstr(message,"no nonzero-alpha samples"));g_free(message);
+      |                                                                                                                                                                                                                                                                                                                                                             [01;35m[K^~~~~[m[K
+In file included from [01m[K/tmp/normalize-xcf-private/source/app/tests/test-painter-xcf-open.c:502[m[K:
+[01m[K/tmp/normalize-xcf-private/source/app/tests/test-painter-xcf-colorify.inc:[m[K In function ‘[01m[Kxcf_colorify_model[m[K’:
+[01m[K/tmp/normalize-xcf-private/source/app/tests/test-painter-xcf-colorify.inc:24:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   24 |   [01;35m[KGVariant[m[K *actual=g_value_get_variant(gimp_value_array_index(args,3));
+      |   [01;35m[K^~~~~~~~[m[K

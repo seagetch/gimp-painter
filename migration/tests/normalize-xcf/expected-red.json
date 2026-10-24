@@ -1,0 +1,11 @@
+{
+  "command": [
+    "/tmp/normalize-xcf-private/normal/red",
+    "-p",
+    "/painter-xcf-open/normalize_old_wire_admission"
+  ],
+  "exit_code": -6,
+  "stdout": "TAP version 14\n# random seed: R02Sf2233f816255de5694e1f6f46a0112da\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# Start of painter-xcf-open tests\nnot ok /painter-xcf-open/normalize_old_wire_admission - ERROR:/tmp/normalize-xcf-private/source/app/tests/test-painter-xcf-normalize.inc:13:xcf_normalize_parameters: 'args' should not be NULL\nBail out!\n",
+  "stderr": "**\nERROR:/tmp/normalize-xcf-private/source/app/tests/test-painter-xcf-normalize.inc:13:xcf_normalize_parameters: 'args' should not be NULL\n",
+  "seconds": 1.0250086779997218
+}
