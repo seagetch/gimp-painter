@@ -24,7 +24,7 @@ static void
 normalize_unsupported_formats (void)
 {
   const struct {GimpImageBaseType base;GimpPrecision precision;} formats[]={
-    {GIMP_GRAY,GIMP_PRECISION_U8_NON_LINEAR},{GIMP_RGB,GIMP_PRECISION_U16_NON_LINEAR},
+    {GIMP_GRAY,GIMP_PRECISION_U16_NON_LINEAR},{GIMP_RGB,GIMP_PRECISION_U16_NON_LINEAR},
     {GIMP_RGB,GIMP_PRECISION_FLOAT_LINEAR},{GIMP_RGB,GIMP_PRECISION_U8_LINEAR}};
   for(guint i=0;i<G_N_ELEMENTS(formats);i++)
     {
@@ -36,7 +36,7 @@ normalize_unsupported_formats (void)
       gchar *name=gimp_filter_layer_dup_procedure(filter);g_assert_cmpstr(name,==,"plug-in-normalize");g_free(name);
       g_object_unref(cache);g_object_unref(image);
     }
-  g_test_message("Gray,U16 nonlinear,float linear,U8 linear explicitly rejected;no silent U8 conversion");
+  g_test_message("Gray U16,RGB U16 nonlinear,float linear,U8 linear explicitly rejected;no silent U8 conversion");
 }
 
 static void

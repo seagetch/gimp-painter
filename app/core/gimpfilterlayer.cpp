@@ -801,14 +801,15 @@ struct FilterImpl
     else if (procedure == "plug-in-normalize")
       {
         /* New literal compatibility route, not a GEGL name substitution.
-         * Claim malformed/unsupported definitions too: only nonlinear U8 RGB
+         * Claim malformed/unsupported definitions too: only nonlinear U8 RGB/Gray
          * is admitted, never a silent precision conversion or generic fallback.
          * Old execution replaces the three saved scalar context slots; there
-         * are no user arguments. Gray/indexed native ownership remains open.
+         * are no user arguments. Indexed palette ownership remains separate.
          * Nonempty undefined old-alpha domains fail before publication; an
          * empty selection follows the normal no_merge path. */
         if (!real && args && args->size () == 3 &&
-            gimp_drawable_get_base_type (GIMP_DRAWABLE (owner)) == GIMP_RGB &&
+            (gimp_drawable_get_base_type (GIMP_DRAWABLE (owner)) == GIMP_RGB ||
+             gimp_drawable_get_base_type (GIMP_DRAWABLE (owner)) == GIMP_GRAY) &&
             G_VALUE_HOLDS_INT (args->at (0)) && G_VALUE_HOLDS_INT (args->at (1)) &&
             G_VALUE_HOLDS_INT (args->at (2)) &&
             gimp_drawable_has_alpha (GIMP_DRAWABLE (owner)))

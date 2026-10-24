@@ -1,0 +1,167 @@
+{
+  "runs": [
+    {
+      "name": "normal",
+      "commands": [
+        [
+          "cc",
+          "-std=c11",
+          "-O2",
+          "-c",
+          "/tmp/normalize-gray-6mg6e11r/old-host.c",
+          "-o",
+          "/tmp/normalize-gray-6mg6e11r/old.o"
+        ],
+        [
+          "c++",
+          "-std=c++14",
+          "-fno-rtti",
+          "-O2",
+          "-I/workspace/scratch/0015fc5d1a03/gimp-painter/app/painter",
+          "/tmp/normalize-gray-6mg6e11r/test.cpp",
+          "/tmp/normalize-gray-6mg6e11r/old.o",
+          "-o",
+          "/tmp/normalize-gray-6mg6e11r/test"
+        ]
+      ],
+      "code": 0,
+      "stdout": "PASS 65792 Gray/GrayA old-C/equal-RGB/integer-oracle scenes\n",
+      "stderr": "",
+      "binary_sha256": "13a4fbec7281204a6dc587e557e611c6d5e79d297693c7f1625d9efeeb9b02b6",
+      "header_sha256": "9b976c33e3be95d12a25e1b21153735bb065d51518826f35b6dbc3197be578e4"
+    },
+    {
+      "name": "sanitizer",
+      "commands": [
+        [
+          "cc",
+          "-std=c11",
+          "-O1",
+          "-g0",
+          "-fsanitize=address,undefined,float-cast-overflow",
+          "-fno-omit-frame-pointer",
+          "-c",
+          "/tmp/normalize-gray-6mg6e11r/old-host.c",
+          "-o",
+          "/tmp/normalize-gray-6mg6e11r/old.o"
+        ],
+        [
+          "c++",
+          "-std=c++14",
+          "-fno-rtti",
+          "-O1",
+          "-g0",
+          "-fsanitize=address,undefined,float-cast-overflow",
+          "-fno-omit-frame-pointer",
+          "-I/workspace/scratch/0015fc5d1a03/gimp-painter/app/painter",
+          "/tmp/normalize-gray-6mg6e11r/test.cpp",
+          "/tmp/normalize-gray-6mg6e11r/old.o",
+          "-o",
+          "/tmp/normalize-gray-6mg6e11r/test"
+        ]
+      ],
+      "code": 0,
+      "stdout": "PASS 65792 Gray/GrayA old-C/equal-RGB/integer-oracle scenes\n",
+      "stderr": "",
+      "binary_sha256": "d9eba08d3e8cb0df102f09f36b15807407bf7e4c168f785d298665840817965f",
+      "header_sha256": "9b976c33e3be95d12a25e1b21153735bb065d51518826f35b6dbc3197be578e4"
+    },
+    {
+      "name": "scale",
+      "commands": [
+        [
+          "cc",
+          "-std=c11",
+          "-O2",
+          "-c",
+          "/tmp/normalize-gray-6mg6e11r/old-host.c",
+          "-o",
+          "/tmp/normalize-gray-6mg6e11r/old.o"
+        ],
+        [
+          "c++",
+          "-std=c++14",
+          "-fno-rtti",
+          "-O2",
+          "-I/workspace/scratch/0015fc5d1a03/gimp-painter/app/painter",
+          "/tmp/normalize-gray-6mg6e11r/test.cpp",
+          "/tmp/normalize-gray-6mg6e11r/old.o",
+          "-o",
+          "/tmp/normalize-gray-6mg6e11r/test"
+        ]
+      ],
+      "code": -6,
+      "stdout": "",
+      "stderr": "test: /tmp/normalize-gray-6mg6e11r/test.cpp:13: int main(): Assertion `out[c]==want' failed.\n",
+      "binary_sha256": "0c5ff443df67b3c224b5caaf8523f0334503e800408ddf45fea3bd84a4624780",
+      "header_sha256": "eb642d35761f3f55246c5ef5ccdcd1de2ff876a06837a312625d023415cdf0f7"
+    },
+    {
+      "name": "flat",
+      "commands": [
+        [
+          "cc",
+          "-std=c11",
+          "-O2",
+          "-c",
+          "/tmp/normalize-gray-6mg6e11r/old-host.c",
+          "-o",
+          "/tmp/normalize-gray-6mg6e11r/old.o"
+        ],
+        [
+          "c++",
+          "-std=c++14",
+          "-fno-rtti",
+          "-O2",
+          "-I/workspace/scratch/0015fc5d1a03/gimp-painter/app/painter",
+          "/tmp/normalize-gray-6mg6e11r/test.cpp",
+          "/tmp/normalize-gray-6mg6e11r/old.o",
+          "-o",
+          "/tmp/normalize-gray-6mg6e11r/test"
+        ]
+      ],
+      "code": -6,
+      "stdout": "",
+      "stderr": "test: /tmp/normalize-gray-6mg6e11r/test.cpp:13: int main(): Assertion `out[c]==want' failed.\n",
+      "binary_sha256": "54fb95e191a377f7d02c6a8e5a9aeab82a94ee43943c4c50bbb3ab61ea00a0c5",
+      "header_sha256": "20f7d38a08b419562caa63df35bcb7d4a9d3551f4023ad831217277d17caad95"
+    },
+    {
+      "name": "alpha",
+      "commands": [
+        [
+          "cc",
+          "-std=c11",
+          "-O2",
+          "-c",
+          "/tmp/normalize-gray-6mg6e11r/old-host.c",
+          "-o",
+          "/tmp/normalize-gray-6mg6e11r/old.o"
+        ],
+        [
+          "c++",
+          "-std=c++14",
+          "-fno-rtti",
+          "-O2",
+          "-I/workspace/scratch/0015fc5d1a03/gimp-painter/app/painter",
+          "/tmp/normalize-gray-6mg6e11r/test.cpp",
+          "/tmp/normalize-gray-6mg6e11r/old.o",
+          "-o",
+          "/tmp/normalize-gray-6mg6e11r/test"
+        ]
+      ],
+      "code": -6,
+      "stdout": "",
+      "stderr": "test: /tmp/normalize-gray-6mg6e11r/test.cpp:13: int main(): Assertion `out[3]==a' failed.\n",
+      "binary_sha256": "5874ada0fd79e1efb8a31e1d319a30a2b85cf68e7c72850576943d0d73261444",
+      "header_sha256": "f2bcf47406527ec8a59eeda290b60af9fc32f1e7d0a7a1d6e15432214a3edeaf"
+    }
+  ],
+  "inputs": {
+    "old-host.c": "d7fc8ce60385f3149a8f2dd641d9626530eedb1a56ac9dad8400e1748bd98212",
+    "test-oracle.c": "f36bb2288dfcb8cf68db20fcd7c7899e400a6fefb03ffa2fa491d9329fa1a7d0",
+    "old-normalize.inc": "e90db3bc4e26009a97868b2d9fe847167985c6acbece869652612d808446a8f6",
+    "test.cpp": "eaa3746f64f4d0527049d1d13d0dac5ce8d09595f4bbfa63603b0fcb636b23d8"
+  },
+  "kernel_sha256": "9b976c33e3be95d12a25e1b21153735bb065d51518826f35b6dbc3197be578e4"
+}

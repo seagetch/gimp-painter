@@ -1,0 +1,27 @@
+{
+  "seal": {
+    "base_commit": "0a775df4135052a2c851c9a5dfa37cea25887268",
+    "manifest": "/workspace/shared/gimp-clean-aggregate/exact-0a775df4135052a2c851c9a5dfa37cea25887268/prebuild-tracked-source-sha256.json",
+    "manifest_sha256": "db5c23c22a007a2ead92eddb16213d4f6b2890c1bd3274c8149502561b5d84c7",
+    "base_sources": 19601,
+    "linked_inputs": 1329,
+    "changed": [],
+    "owned": {
+      "app/core/gimpfilterlayer.cpp": "48ab20874b49bb8fb12c537dcc16fc092c06191bacf16cbe2273aacab304d3f1",
+      "app/painter/filter-point-shadow.cpp": "0f0776a1e07f4c05b8b376089af1e49c84e0b0e6d9e42fe6598ba51accf718da",
+      "app/painter/filter-point-shadow.hpp": "90738625aebd46cb8d3114724a0ba411a902d8037c62c33c195895710b52a389",
+      "app/tests/test-gimp-filter-layer.c": "b47d318251c870bc122689d483115f1b4c91bbeb8a790b15dbacf1645adefb99",
+      "app/tests/test-filter-normalize-contract.inc": "8d6d0b40f5d2626da0ab518c9ac07c16f20ba569da529cff586b7a1cf4c79673",
+      "app/tests/test-filter-normalize-gray.inc": "c00681699e400e55575e4bf98db770bb08ab4d9752fe3b0b16c9b035d486902d"
+    }
+  },
+  "archive_overrides": {
+    "app/core/libappcore.a": "/tmp/normalize-gray-native-sealed/normal/green-libappcore.a",
+    "app/painter/libapppainter.a": "/tmp/normalize-gray-native-sealed/normal/green-libapppainter.a"
+  },
+  "auxiliary_source_sha256": {
+    "app/core/gimpfilterlayer.cpp": "48ab20874b49bb8fb12c537dcc16fc092c06191bacf16cbe2273aacab304d3f1",
+    "app/painter/filter-point-shadow.cpp": "0f0776a1e07f4c05b8b376089af1e49c84e0b0e6d9e42fe6598ba51accf718da",
+    "app/painter/filter-point-shadow.hpp": "90738625aebd46cb8d3114724a0ba411a902d8037c62c33c195895710b52a389"
+  }
+}
