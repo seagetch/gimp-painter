@@ -1072,6 +1072,8 @@
 | 26.013 | [ ] | 定規と補正の併用を試験する | 26.012 | 順序と描き味が一致 |
 | 26.014 | [ ] | 3消失点と表示変換を試験する | 26.013 | 回転・反転中も期待方向に拘束 |
 
+2026-10-21 原26.010–012進捗：実DisplayShell編集Undo/Redo、XCF Save/Open・複製の定規非保存、編集中の画像切替・終了を通常13+2+3件／ordinary ASan・UBSan13+2+3件で確認。定規有無のwriter byte一致とoncanvas縦画面の削除前／削除後／Undo復元画像を保存。旧XCF全treeはsource照合のみ、原45義務・依存・未完チェックを維持し、新DONE子は追加しない。証跡は `migration/tests/perspective-lifecycle-entry/`。
+
 2026-10-21 原26.007–009進捗：不変旧snap／lazy関数と実DisplayShell入力を216変換pose・432連続strokeで照合。31.999/32.001pxと厳密32px境界・45度同順位・次stroke解除を通常13+2件／ordinary ASan・UBSan13+2件で確認。原87義務・依存・未完チェックを維持し、新DONE子は追加しない。現行入力座標変換は共有し、旧runtime／実pen／補正・対称描画の証明ではない。証跡は `migration/tests/perspective-stroke-entry/`。
 
 2026-10-21 原26.002/003/004/006進捗：実DisplayShell経由の追加・移動・削除・hit判定を通常13件／ordinary ASan・UBSan13件で検証。72変換scene・不変旧関数1152hit照合、取消／Undo・Redo／再入を確認。原62義務・依存・未完チェックを維持し、新DONE子は追加しない。合成master-pointerであり実pen／旧runtimeの証明ではない。証跡は `migration/tests/perspective-editor-entry/`。

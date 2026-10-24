@@ -1,0 +1,31 @@
+#!/bin/bash
+set -euo pipefail
+D=/workspace/shared/gimp-native-secondary
+source "$D/env.sh";exec 9>"$D/build.lock";flock 9
+O="$D/perspective-lifecycle-entry/negative";mkdir -p "$O"
+for kind in skipped-undo extra-persistent-guide missing-image-switch;do
+ export KIND="$kind"
+ python3 - <<'PY'
+import pathlib,os,json,hashlib
+D=pathlib.Path('/workspace/shared/gimp-native-secondary');kind=os.environ['KIND'];O=D/'perspective-lifecycle-entry/negative'/kind;O.mkdir(exist_ok=True);p=D/'source/app/tests/test-painter-perspective-lifecycle-events.c';s=p.read_text();(O/'original-input.txt').write_text(s)
+if kind=='skipped-undo':a='g_assert_true (gimp_image_undo (image)); g_assert_null (gimp_image_get_perspective_guide (image));';b='/* fault: omit native Undo */ g_assert_null (gimp_image_get_perspective_guide (image));'
+elif kind=='missing-image-switch':a='gimp_display_set_image (shell->display, other);';b='/* fault: omit native image switch */'
+else:a='gimp_image_set_perspective_guide (image, NULL);';b=a+'\n    { GimpParasite *fault = gimp_parasite_new ("mutation-perspective-guide", GIMP_PARASITE_PERSISTENT, 4, "bad!"); gimp_image_parasite_attach (image, fault, FALSE); gimp_parasite_free (fault); }'
+assert s.count(a)==1;s=s.replace(a,b);p.write_text(s);(O/'mutated-input.txt').write_text(s);(O/'mutation.json').write_text(json.dumps({'path':str(p.relative_to(D/'source')),'original_sha256':hashlib.sha256((O/'original-input.txt').read_bytes()).hexdigest(),'mutated_sha256':hashlib.sha256(s.encode()).hexdigest()},indent=2)+'\n')
+PY
+ restore() { cp "$O/$kind/original-input.txt" "$D/source/app/tests/test-painter-perspective-lifecycle-events.c"; }
+ trap restore EXIT
+ ninja -j2 -C "$D/build" app/tests/painter-perspective-lifecycle-events > "$O/$kind/build.log" 2>&1
+ case "$kind" in skipped-undo) filter=native-undo-all-edits;;extra-persistent-guide) filter=xcf-nonpersistent;;*) filter=switch-close;;esac
+ set +e
+ python3 "$D/source/tools/run-painter-xvfb.py" meson test -C "$D/build" --no-rebuild --num-processes=1 --print-errorlogs --test-args="-p /perspective-lifecycle/$filter" painter-perspective-lifecycle-events > "$O/$kind/run.log" 2>&1
+ status=$?;set -e
+ python3 - "$D" "$kind" <<'PY'
+import pathlib,json,sys,hashlib
+D=pathlib.Path(sys.argv[1]);O=D/'perspective-lifecycle-entry/negative'/sys.argv[2];j=json.loads((D/'build/meson-logs/testlog.json').read_text().splitlines()[0]);r={k:j.get(k,'') for k in ['name','result','returncode','duration','stdout','stderr']};r['executable_sha256']=hashlib.sha256((D/'build/app/tests/painter-perspective-lifecycle-events').read_bytes()).hexdigest();(O/'result.json').write_text(json.dumps(r,indent=2)+'\n');assert r['result']=='FAIL' and ('assertion failed' in r['stdout'] or 'should be' in r['stdout'])
+PY
+ restore;trap - EXIT
+ [[ $status != 0 ]]
+done
+flock -u 9
+bash /workspace/shared/run-perspective-lifecycle-final.sh
