@@ -1875,6 +1875,27 @@ void rotate (GimpItem *item, GimpContext *context, GimpRotationType rotate_type,
       store->with<FilterSlot> ([] (FilterImpl& impl) { impl.invalidate (); });
   });
 }
+/* The legacy matrix transform also delegates before resetting derived output;
+ * unchanged extents do not imply that native cache pixels stayed unchanged. */
+void transform (GimpItem *item, GimpContext *context, const GimpMatrix3 *matrix,
+                GimpTransformDirection direction,
+                GimpInterpolationType interpolation_type,
+                GimpTransformResize clip_result, GimpProgress *progress)
+{
+  boundary_void (nullptr, [&] {
+    auto owner_pin = ObjectRef<GObject>::retain (G_OBJECT (item));
+    auto image_pin = ObjectRef<GObject>::retain (G_OBJECT (gimp_item_get_image (item)));
+    auto *store = BindingStore::find (owner_pin.get ());
+    if (!store) return;
+    const auto token = store->generation ();
+    if (!store->accepts (token)) return;
+    GIMP_ITEM_CLASS (gimp_filter_layer_parent_class)->transform (
+      item, context, matrix, direction, interpolation_type, clip_result, progress);
+    store = BindingStore::find (owner_pin.get ());
+    if (store && store->accepts (token))
+      store->with<FilterSlot> ([] (FilterImpl& impl) { impl.invalidate (); });
+  });
+}
 gboolean content_locked (GimpItem *item, GimpItem **locked) { if (locked) *locked = item; return TRUE; }
 gdouble opacity_at (GimpPickable *, gint, gint) { return 0.0; }
 } // namespace
@@ -1911,6 +1932,7 @@ static void gimp_filter_layer_class_init (GimpFilterLayerClass *klass)
   GIMP_ITEM_CLASS (klass)->duplicate = duplicate;
   GIMP_ITEM_CLASS (klass)->flip = flip;
   GIMP_ITEM_CLASS (klass)->rotate = rotate;
+  GIMP_ITEM_CLASS (klass)->transform = transform;
   GIMP_ITEM_CLASS (klass)->is_content_locked = content_locked;
   GIMP_VIEWABLE_CLASS (klass)->default_icon_name = "gimp-gegl";
   GIMP_VIEWABLE_CLASS (klass)->default_name = "Filter Layer";
