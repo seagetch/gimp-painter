@@ -1,0 +1,11 @@
+import pathlib,json,os,subprocess,time,sys,hashlib
+O=pathlib.Path(__file__).resolve().parent;A=pathlib.Path('/workspace/shared/gimp-clean-aggregate');mode=sys.argv[1];run=O/'runs'/mode;run.mkdir(parents=True,exist_ok=False);env=os.environ.copy();spec=next(r for r in json.loads((A/'build/meson-info/intro-tests.json').read_text())if r['name']=='painter-mypaint-tool');ld=env.get('LD_LIBRARY_PATH','');env.update(spec['env']);env['LD_LIBRARY_PATH']+=':'+ld
+for key,name in [('HOME','home'),('XDG_CONFIG_HOME','config'),('XDG_CACHE_HOME','cache'),('XDG_DATA_HOME','data'),('XDG_STATE_HOME','state'),('XDG_RUNTIME_DIR','runtime'),('TMPDIR','tmp'),('GIMP3_DIRECTORY','gimp')]:
+ p=run/name;p.mkdir();env[key]=str(p)
+shot=run/'screenshots';shot.mkdir();env['TIMESTAMP_RENDER_DIRECTORY']=str(shot);env.pop('GIMP_TEST_ONCANVAS_SCREENSHOTS',None);env['GIMP_TEST_REQUIRE_PORTRAIT']='1';env['UI_TEST']='yes';env['ASAN_OPTIONS']='detect_leaks=0:halt_on_error=1:abort_on_error=1';env['UBSAN_OPTIONS']='halt_on_error=1:print_stacktrace=1'
+binary=O/sys.argv[2];sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest();loader=subprocess.check_output(['ldd',str(binary)],env=env,text=True);deps={str(binary):sha(binary)}
+for line in loader.splitlines():
+ for v in line.split():
+  p=pathlib.Path(v)
+  if v.startswith('/')and p.is_file():deps[str(p)]=sha(p)
+cmd=['python',str(A/'source/tools/run-painter-xvfb.py'),str(binary)];start=time.monotonic();result=subprocess.run(cmd,env=env,text=True,capture_output=True,timeout=120);screens={str(p):sha(p)for p in shot.glob('*.png')};receipt={'command':cmd,'returncode':result.returncode,'seconds':time.monotonic()-start,'stdout':result.stdout,'stderr':result.stderr,'runtime_inputs':deps,'runtime_unchanged':all(sha(pathlib.Path(p))==h for p,h in deps.items()),'screenshots':screens,'profile':str(run),'GIMP3_DIRECTORY':env['GIMP3_DIRECTORY'],'scope':'separate one-case render successor, actual native wrap input, presentation flush/zoom after timing assertions, no queued events or automatic notification proof'};(run/'receipt.json').write_text(json.dumps(receipt,indent=2)+'\n');print(result.returncode);print('\n'.join(l for l in result.stdout.splitlines()if 'VERIFIED_RENDER' in l or 'ok ' in l or 'ERROR' in l));print(result.stderr[-1500:])

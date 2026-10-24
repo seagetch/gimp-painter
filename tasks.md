@@ -994,6 +994,8 @@
 
 2026-10-21 原23.009進捗：登録MyPaint toolの通常・同時刻・逆行後復帰・UINT32 wrap・INT32_MAX境界・zero開始7系列を通常/1provider focused ASan・UBSanで検証。時刻/座標/筆圧の完全一致、正規化系列の全画素一致とUndo/Redo、3因果変異を確認。旧active zero破棄/逆行巨大値との差を明記し、queued GDK/間引き/実pen/全platformと元依存は未完。`migration/tests/painter-time-sequences/`。
 
+2026-10-21 原23.009画像証跡の訂正：b804577710のPNGは後続runで上書きされた未確認の空canvas画像であり、旧READMEの赤stroke表示の主張は無効。元7+7の入力/生画素試験と不正確な画像/記録は変更せず保存。別fresh profileの描画1通常+1focused sanitizerで実target表示・onscreen editor・赤画素・capture時SHAを確認した最終画像は `migration/tests/painter-time-render-correction/`。自動projection通知・実pen・元依存の完了は主張しない。
+
 ### 24 ブラシ editor・履歴・プレビュー
 
 主対象：tools/widgets/actions の拡張ブラシ UI
