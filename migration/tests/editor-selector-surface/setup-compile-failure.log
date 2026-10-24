@@ -1,0 +1,81 @@
+[01m[K/workspace/shared/editor-selector-surface/fixture.cpp:77:8:[m[K [01;35m[Kwarning: [m[K‘[01m[KEditor[m[K’ declared with greater visibility than the type of its field ‘[01m[KEditor::model[m[K’ [[01;35m[K-Wattributes[m[K]
+   77 | struct [01;35m[KEditor[m[K {
+      |        [01;35m[K^~~~~~[m[K
+[01m[K/workspace/shared/editor-selector-surface/fixture.cpp:[m[K In function ‘[01m[Kvoid[01;32m[K selector_surface[m[K()[m[K’:
+[01m[K/workspace/shared/editor-selector-surface/fixture.cpp:141:2:[m[K [01;35m[Kwarning: [m[Kthis ‘[01m[Kfor[m[K’ clause does not guard... [[01;35m[K-Wmisleading-indentation[m[K]
+  141 |  [01;35m[Kfor[m[K(auto*x:{a.get(),b.get()})gimp_container_add(brushes,GIMP_OBJECT(x));for(auto*x:{white.get(),black.get()})gimp_container_add(papers,GIMP_OBJECT(x));
+      |  [01;35m[K^~~[m[K
+[01m[K/workspace/shared/editor-selector-surface/fixture.cpp:141:74:[m[K [01;36m[Knote: [m[K...this statement, but the latter is misleadingly indented as if it were guarded by the ‘[01m[Kfor[m[K’
+  141 |  for(auto*x:{a.get(),b.get()})gimp_container_add(brushes,GIMP_OBJECT(x));[01;36m[Kfor[m[K(auto*x:{white.get(),black.get()})gimp_container_add(papers,GIMP_OBJECT(x));
+      |                                                                          [01;36m[K^~~[m[K
+[01m[K/workspace/shared/editor-selector-surface/fixture.cpp:155:2:[m[K [01;35m[Kwarning: [m[Kthis ‘[01m[Kfor[m[K’ clause does not guard... [[01;35m[K-Wmisleading-indentation[m[K]
+  155 |  [01;35m[Kfor[m[K(auto*x:{a.get(),b.get()})gimp_container_remove(brushes,GIMP_OBJECT(x));for(auto*x:{white.get(),black.get()})gimp_container_remove(papers,GIMP_OBJECT(x));g_assert_cmpint(gimp_container_get_n_children(brushes),==,nb);g_assert_cmpint(gimp_container_get_n_children(papers),==,np);
+      |  [01;35m[K^~~[m[K
+[01m[K/workspace/shared/editor-selector-surface/fixture.cpp:155:77:[m[K [01;36m[Knote: [m[K...this statement, but the latter is misleadingly indented as if it were guarded by the ‘[01m[Kfor[m[K’
+  155 |  for(auto*x:{a.get(),b.get()})gimp_container_remove(brushes,GIMP_OBJECT(x));[01;36m[Kfor[m[K(auto*x:{white.get(),black.get()})gimp_container_remove(papers,GIMP_OBJECT(x));g_assert_cmpint(gimp_container_get_n_children(brushes),==,nb);g_assert_cmpint(gimp_container_get_n_children(papers),==,np);
+      |                                                                             [01;36m[K^~~[m[K
+In file included from [01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/gobject/gobject.h:26[m[K,
+                 from [01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/gobject/gbinding.h:31[m[K,
+                 from [01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/glib-object.h:24[m[K,
+                 from [01m[K../source/app/painter/gimp-painter-error.h:5[m[K,
+                 from [01m[K../source/app/painter/boundary.hpp:6[m[K,
+                 from [01m[K../source/app/painter/object-ref.hpp:6[m[K,
+                 from [01m[K../source/app/painter/binding-store.hpp:6[m[K,
+                 from [01m[K/workspace/shared/editor-selector-surface/fixture.cpp:3[m[K:
+../source/app/painter/object-ref.hpp: In instantiation of ‘[01m[Kstatic void GimpPainter::ObjectRef<T>::[01;32m[Kcheck[m[K(T*) [35m[K[with T = _GeglBuffer][m[K[m[K’:
+[01m[K../source/app/painter/object-ref.hpp:34:11:[m[K   required from ‘[01m[Kstatic GimpPainter::ObjectRef<T> GimpPainter::ObjectRef<T>::[01;32m[Kadopt[m[K(T*) [35m[K[with T = _GeglBuffer][m[K[m[K’
+   34 |   { [01;36m[Kcheck (object)[m[K; return ObjectRef (object, Owned{}); }
+      |     [01;36m[K~~~~~~^~~~~~~~[m[K
+[01m[K/workspace/shared/editor-selector-surface/fixture.cpp:119:42:[m[K   required from here
+  119 |  auto buffer=[01;36m[KObjectRef<GeglBuffer>::adopt(gegl_buffer_new(GEGL_RECTANGLE(0,0,16,16),babl_format("R'G'B'A u8")))[m[K;
+      |              [01;36m[K~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K../source/app/painter/object-ref.hpp:50:76:[m[K [01;31m[Kerror: [m[Kincomplete type ‘[01m[KGimpPainter::TypeTraits<_GeglBuffer>[m[K’ used in nested name specifier
+   50 |     if (object && !G_TYPE_CHECK_INSTANCE_TYPE (object, TypeTraits<T>::type ()))
+[01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/gobject/gtype.h:2678:60:[m[K [01;36m[Knote: [m[Kin definition of macro ‘[01m[K_G_TYPE_CIT[m[K’
+ 2678 |   GTypeInstance *__inst = (GTypeInstance*) ip; GType __t = [01;36m[Kgt[m[K; gboolean __r; \
+      |                                                            [01;36m[K^~[m[K
+[01m[K../source/app/painter/object-ref.hpp:50:20:[m[K [01;36m[Knote: [m[Kin expansion of macro ‘[01m[KG_TYPE_CHECK_INSTANCE_TYPE[m[K’
+   50 |     if (object && ![01;36m[KG_TYPE_CHECK_INSTANCE_TYPE[m[K (object, TypeTraits<T>::type ()))
+      |                    [01;36m[K^~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+../source/app/painter/object-ref.hpp: In instantiation of ‘[01m[Kstatic void GimpPainter::ObjectRef<T>::[01;32m[Kcheck[m[K(T*) [35m[K[with T = _GimpBrush][m[K[m[K’:
+[01m[K../source/app/painter/object-ref.hpp:34:11:[m[K   required from ‘[01m[Kstatic GimpPainter::ObjectRef<T> GimpPainter::ObjectRef<T>::[01;32m[Kadopt[m[K(T*) [35m[K[with T = _GimpBrush][m[K[m[K’
+   34 |   { [01;36m[Kcheck (object)[m[K; return ObjectRef (object, Owned{}); }
+      |     [01;36m[K~~~~~~^~~~~~~~[m[K
+[01m[K/workspace/shared/editor-selector-surface/fixture.cpp:140:36:[m[K   required from here
+  140 |  auto a=[01;36m[KObjectRef<GimpBrush>::adopt(make_mask("Selector shape A 日本語",3))[m[K;auto b=ObjectRef<GimpBrush>::adopt(make_mask("Selector shape B",5));auto white=ObjectRef<GimpPattern>::adopt(make_paper("Selector white paper",255));auto black=ObjectRef<GimpPattern>::adopt(make_paper("Selector black paper 日本語",0));
+      |         [01;36m[K~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K../source/app/painter/object-ref.hpp:50:76:[m[K [01;31m[Kerror: [m[Kincomplete type ‘[01m[KGimpPainter::TypeTraits<_GimpBrush>[m[K’ used in nested name specifier
+   50 |     if (object && !G_TYPE_CHECK_INSTANCE_TYPE (object, TypeTraits<T>::type ()))
+[01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/gobject/gtype.h:2678:60:[m[K [01;36m[Knote: [m[Kin definition of macro ‘[01m[K_G_TYPE_CIT[m[K’
+ 2678 |   GTypeInstance *__inst = (GTypeInstance*) ip; GType __t = [01;36m[Kgt[m[K; gboolean __r; \
+      |                                                            [01;36m[K^~[m[K
+[01m[K../source/app/painter/object-ref.hpp:50:20:[m[K [01;36m[Knote: [m[Kin expansion of macro ‘[01m[KG_TYPE_CHECK_INSTANCE_TYPE[m[K’
+   50 |     if (object && ![01;36m[KG_TYPE_CHECK_INSTANCE_TYPE[m[K (object, TypeTraits<T>::type ()))
+      |                    [01;36m[K^~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+../source/app/painter/object-ref.hpp: In instantiation of ‘[01m[Kstatic void GimpPainter::ObjectRef<T>::[01;32m[Kcheck[m[K(T*) [35m[K[with T = _GimpPattern][m[K[m[K’:
+[01m[K../source/app/painter/object-ref.hpp:34:11:[m[K   required from ‘[01m[Kstatic GimpPainter::ObjectRef<T> GimpPainter::ObjectRef<T>::[01;32m[Kadopt[m[K(T*) [35m[K[with T = _GimpPattern][m[K[m[K’
+   34 |   { [01;36m[Kcheck (object)[m[K; return ObjectRef (object, Owned{}); }
+      |     [01;36m[K~~~~~~^~~~~~~~[m[K
+[01m[K/workspace/shared/editor-selector-surface/fixture.cpp:140:188:[m[K   required from here
+  140 |  auto a=ObjectRef<GimpBrush>::adopt(make_mask("Selector shape A 日本語",3));auto b=ObjectRef<GimpBrush>::adopt(make_mask("Selector shape B",5));auto white=[01;36m[KObjectRef<GimpPattern>::adopt(make_paper("Selector white paper",255))[m[K;auto black=ObjectRef<GimpPattern>::adopt(make_paper("Selector black paper 日本語",0));
+      |                                                                                                                                                            [01;36m[K~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K../source/app/painter/object-ref.hpp:50:76:[m[K [01;31m[Kerror: [m[Kincomplete type ‘[01m[KGimpPainter::TypeTraits<_GimpPattern>[m[K’ used in nested name specifier
+   50 |     if (object && !G_TYPE_CHECK_INSTANCE_TYPE (object, TypeTraits<T>::type ()))
+[01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/gobject/gtype.h:2678:60:[m[K [01;36m[Knote: [m[Kin definition of macro ‘[01m[K_G_TYPE_CIT[m[K’
+ 2678 |   GTypeInstance *__inst = (GTypeInstance*) ip; GType __t = [01;36m[Kgt[m[K; gboolean __r; \
+      |                                                            [01;36m[K^~[m[K
+[01m[K../source/app/painter/object-ref.hpp:50:20:[m[K [01;36m[Knote: [m[Kin expansion of macro ‘[01m[KG_TYPE_CHECK_INSTANCE_TYPE[m[K’
+   50 |     if (object && ![01;36m[KG_TYPE_CHECK_INSTANCE_TYPE[m[K (object, TypeTraits<T>::type ()))
+      |                    [01;36m[K^~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/workspace/shared/editor-selector-surface/fixture.cpp:[m[K At global scope:
+[01m[K/workspace/shared/editor-selector-surface/fixture.cpp:71:15:[m[K [01;35m[Kwarning: [m[K‘[01m[Koriginal_search[m[K’ defined but not used [[01;35m[K-Wunused-variable[m[K]
+   71 | static gchar *[01;35m[Koriginal_search[m[K;
+      |               [01;35m[K^~~~~~~~~~~~~~~[m[K
+Traceback (most recent call last):
+  File "/workspace/shared/editor-selector-surface/run.py", line 10, in <module>
+    (W/'fixture.cpp').write_text(text);c=shlex.split(row['command']);c[1:1]=['-iquote',str(S/'app/tests')];c[c.index('-o')+1]=str(W/'fixture.o');c[c.index('-MF')+1]=str(W/'fixture.o.d');c[-1]=str(W/'fixture.cpp');subprocess.run(c,cwd=B,check=True)
+                                                                                                                                                                                                                     ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/subprocess.py", line 577, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['c++', '-iquote', '/workspace/shared/gimp-clean-aggregate/source/app/tests', '-Iapp/tests/painter-mypaint-editor.p', '-Iapp/tests', '-I../source/app/tests', '-I.', '-I../source', '-Iapp', '-I../source/app', '-Iapp/paint/painter-mypaint-surface', '-I../source/app/paint/painter-mypaint-surface', '-Iapp/paint/painter-mypaint', '-I../source/app/paint/painter-mypaint', '-Iapp/painter', '-I../source/app/painter', '-Iapp/paint/painter-brush-settings', '-I../source/app/paint/painter-brush-settings', '-I/workspace/shared/gimp-deps-locked/root/usr/include/cairo', '-I/workspace/shared/gimp-deps-locked/root/usr/include/libpng16', '-I/workspace/shared/gimp-deps-locked/root/usr/include/freetype2', '-I/workspace/shared/gimp-deps-locked/root/usr/include/pixman-1', '-I/workspace/shared/gimp-deps-locked/root/usr/include/gdk-pixbuf-2.0', '-I/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0', '-I/workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu/glib-2.0/include', '-I/workspace/shared/gimp-deps-locked/root/usr/include/sysprof-6', '-I/workspace/shared/gimp-deps-locked/root/usr/include/webp', '-I/workspace/shared/gimp-deps-locked/root/usr/include/libmount', '-I/workspace/shared/gimp-deps-locked/root/usr/include/blkid', '-I/workspace/shared/gimp-deps-locked/root/usr/include/gegl-0.4', '-I/workspace/shared/gimp-deps-locked/root/usr/include/gio-unix-2.0', '-I/workspace/shared/gimp-deps-locked/root/usr/include/json-glib-1.0', '-I/workspace/shared/gimp-deps-locked/root/usr/include/babl-0.1', '-I/workspace/shared/gimp-deps-locked/root/usr/include/pango-1.0', '-I/workspace/shared/gimp-deps-locked/root/usr/include/harfbuzz', '-I/workspace/shared/gimp-deps-locked/root/usr/include/fribidi', '-I/workspace/shared/gimp-deps-locked/root/usr/include/libsoup-3.0', '-I/workspace/shared/gimp-deps-locked/root/usr/include/gtk-3.0', '-I/workspace/shared/gimp-deps-locked/root/usr/include/cloudproviders', '-I/workspace/shared/gimp-deps-locked/root/usr/include/atk-1.0', '-I/workspace/shared/gimp-deps-locked/root/usr/include/at-spi2-atk/2.0', '-I/workspace/shared/gimp-deps-locked/root/usr/include/at-spi-2.0', '-I/workspace/shared/gimp-deps-locked/root/usr/include/dbus-1.0', '-I/workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu/dbus-1.0/include', '-I/workspace/shared/gimp-deps-locked/root/usr/include/appstream', '-fdiagnostics-color=always', '-D_GLIBCXX_ASSERTIONS=1', '-D_FILE_OFFSET_BITS=64', '-Wall', '-Winvalid-pch', '-std=c++14', '-O2', '-DGLIB_VERSION_MIN_REQUIRED=GLIB_VERSION_2_70', '-DGLIB_VERSION_MAX_ALLOWED=GLIB_VERSION_2_76', '-fdiagnostics-show-option', '-fno-common', '-Wformat', '-Wformat-security', '-Winit-self', '-Wlogical-op', '-Wmissing-declarations', '-Wmissing-format-attribute', '-Wpointer-arith', '-Wreturn-type', '-Wtype-limits', '-DHAVE_CONFIG_H', '-pthread', '-isystem', '/workspace/shared/gimp-deps-locked/root/usr/include/mit-krb5', '-fexceptions', '-fvisibility-inlines-hidden', '-fno-rtti', '-MD', '-MQ', 'app/tests/painter-mypaint-editor.p/test-painter-mypaint-editor.cpp.o', '-MF', '/workspace/shared/editor-selector-surface/fixture.o.d', '-o', '/workspace/shared/editor-selector-surface/fixture.o', '-c', '/workspace/shared/editor-selector-surface/fixture.cpp']' returned non-zero exit status 1.

@@ -1,0 +1,106 @@
+[01m[K/workspace/shared/editor-selector-surface/fixture.cpp:77:8:[m[K [01;35m[Kwarning: [m[K‘[01m[KEditor[m[K’ declared with greater visibility than the type of its field ‘[01m[KEditor::model[m[K’ [[01;35m[K-Wattributes[m[K]
+   77 | struct [01;35m[KEditor[m[K {
+      |        [01;35m[K^~~~~~[m[K
+[01m[K/workspace/shared/editor-selector-surface/fixture.cpp:[m[K In function ‘[01m[Kvoid[01;32m[K selector_surface[m[K()[m[K’:
+[01m[K/workspace/shared/editor-selector-surface/fixture.cpp:142:2:[m[K [01;35m[Kwarning: [m[Kthis ‘[01m[Kfor[m[K’ clause does not guard... [[01;35m[K-Wmisleading-indentation[m[K]
+  142 |  [01;35m[Kfor[m[K(auto*x:{a.get(),b.get()})gimp_container_add(brushes,GIMP_OBJECT(x));for(auto*x:{white.get(),black.get()})gimp_container_add(papers,GIMP_OBJECT(x));
+      |  [01;35m[K^~~[m[K
+[01m[K/workspace/shared/editor-selector-surface/fixture.cpp:142:74:[m[K [01;36m[Knote: [m[K...this statement, but the latter is misleadingly indented as if it were guarded by the ‘[01m[Kfor[m[K’
+  142 |  for(auto*x:{a.get(),b.get()})gimp_container_add(brushes,GIMP_OBJECT(x));[01;36m[Kfor[m[K(auto*x:{white.get(),black.get()})gimp_container_add(papers,GIMP_OBJECT(x));
+      |                                                                          [01;36m[K^~~[m[K
+[01m[K/workspace/shared/editor-selector-surface/fixture.cpp:163:2:[m[K [01;35m[Kwarning: [m[Kthis ‘[01m[Kfor[m[K’ clause does not guard... [[01;35m[K-Wmisleading-indentation[m[K]
+  163 |  [01;35m[Kfor[m[K(auto*x:{a.get(),b.get()})gimp_container_remove(brushes,GIMP_OBJECT(x));for(auto*x:{white.get(),black.get()})gimp_container_remove(papers,GIMP_OBJECT(x));g_assert_cmpint(gimp_container_get_n_children(brushes),==,nb);g_assert_cmpint(gimp_container_get_n_children(papers),==,np);
+      |  [01;35m[K^~~[m[K
+[01m[K/workspace/shared/editor-selector-surface/fixture.cpp:163:77:[m[K [01;36m[Knote: [m[K...this statement, but the latter is misleadingly indented as if it were guarded by the ‘[01m[Kfor[m[K’
+  163 |  for(auto*x:{a.get(),b.get()})gimp_container_remove(brushes,GIMP_OBJECT(x));[01;36m[Kfor[m[K(auto*x:{white.get(),black.get()})gimp_container_remove(papers,GIMP_OBJECT(x));g_assert_cmpint(gimp_container_get_n_children(brushes),==,nb);g_assert_cmpint(gimp_container_get_n_children(papers),==,np);
+      |                                                                             [01;36m[K^~~[m[K
+[01m[K/workspace/shared/editor-selector-surface/fixture.cpp:[m[K At global scope:
+[01m[K/workspace/shared/editor-selector-surface/fixture.cpp:71:15:[m[K [01;35m[Kwarning: [m[K‘[01m[Koriginal_search[m[K’ defined but not used [[01;35m[K-Wunused-variable[m[K]
+   71 | static gchar *[01;35m[Koriginal_search[m[K;
+      |               [01;35m[K^~~~~~~~~~~~~~~[m[K
+0
+UG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 36 x 36
+# GdkPixbuf-DEBUG: 	Rowstride: 144, Length: 5208
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 36 x 36
+# GdkPixbuf-DEBUG: 	Rowstride: 144, Length: 5208
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# Native selector text edits: six exact stroke-purpose surface scenes; oncanvas enabled1080x1920; not physical pointer gestures
+ok 1 /painter-selector/stroke-surface
+# slow test /painter-selector/stroke-surface executed in 1.15 secs
+# End of painter-selector tests
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+
+le/gimp.svg”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/256x256/gimp.png
+gui_dbus_name_lost: connection to the bus cannot be established.
+set device 'Virtual core XTEST pointer' to mode: disabled
+set device 'Xvfb mouse' to mode: disabled
+WARNING: icon theme has no icon 'gimp-tool-paintbrush'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-dynamics'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-default-colors'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-swap-colors'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-tool-paintbrush'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+INFO: a stray image seems to have been left around by a plug-in: "[Untitled]"
