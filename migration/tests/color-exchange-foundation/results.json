@@ -1,0 +1,173 @@
+{
+  "scope": "literal old C exchange/helper bodies with mock row transport versus independent integer oracle; not old PDB/native shadow merge",
+  "inputs": {
+    "test-oracle.c": "4862ec77cded14417b1e2d2922b53ccac570d5fa7e3ae1e0ebeb724d147a7d7b",
+    "old-exchange.inc": "5b924ddba7ba8181611b1609ded7258258800128dc178f6249cc6d5af86d0f27",
+    "old-rgb.inc": "faa8a9b9d5ab0c0ef4ad92f42f3d276084d5be87f707f646d49d8d9b025b3254"
+  },
+  "runs": {
+    "normal": {
+      "command": [
+        "cc",
+        "-std=c11",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-O2",
+        "/tmp/color-exchange-oracle-ksvilzxw/test-oracle.c",
+        "-lm",
+        "-o",
+        "/tmp/color-exchange-oracle-ksvilzxw/normal"
+      ],
+      "build_stdout": "",
+      "build_stderr": "",
+      "returncode": 0,
+      "stdout": "PASS 17387044 assertions/scenes: exhaustive byte bounds, randomized RGB/RGBA ROI, alpha/source/outside preservation, empty ROI and preview/shadow dispatch\n",
+      "stderr": "",
+      "seconds": 0.08963949400640558,
+      "binary_sha256": "cb256b2772fbf0ff79379370772afe688d297a290cb1948138cfb80a1cd35d88"
+    },
+    "sanitizer": {
+      "command": [
+        "cc",
+        "-std=c11",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-O1",
+        "-g0",
+        "-fsanitize=address,undefined,float-cast-overflow",
+        "-fno-omit-frame-pointer",
+        "/tmp/color-exchange-oracle-ksvilzxw/test-oracle.c",
+        "-lm",
+        "-o",
+        "/tmp/color-exchange-oracle-ksvilzxw/sanitizer"
+      ],
+      "build_stdout": "",
+      "build_stderr": "",
+      "returncode": 0,
+      "stdout": "PASS 17387044 assertions/scenes: exhaustive byte bounds, randomized RGB/RGBA ROI, alpha/source/outside preservation, empty ROI and preview/shadow dispatch\n",
+      "stderr": "",
+      "seconds": 0.5042545670003165,
+      "binary_sha256": "bb6de3e19e4e6dd33d54ae41136315867017bff4991fa702b9afeea14c3b8bd9"
+    }
+  },
+  "negative_controls": [
+    {
+      "command": [
+        "cc",
+        "-std=c11",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-O2",
+        "/tmp/color-exchange-oracle-ksvilzxw/test-oracle.c",
+        "-lm",
+        "-o",
+        "/tmp/color-exchange-oracle-ksvilzxw/exclusive-low"
+      ],
+      "build_stdout": "",
+      "build_stderr": "",
+      "returncode": -6,
+      "stdout": "",
+      "stderr": "exclusive-low: /tmp/color-exchange-oracle-ksvilzxw/test-oracle.c:47: critical: Assertion `!memcmp(destination+stride+2*bpp,expected,bpp)' failed.\n",
+      "seconds": 0.02103210000495892,
+      "binary_sha256": "2cb81c774edc93409c1522b4f4f4e0a4dfeceeebec1698a008deed7d2d3d23b8",
+      "name": "exclusive-low",
+      "mutant_sha256": "36dbe844399c0324e594171a2928671fad29d77297a6a1cbd8f9252ac0605536"
+    },
+    {
+      "command": [
+        "cc",
+        "-std=c11",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-O2",
+        "/tmp/color-exchange-oracle-ksvilzxw/test-oracle.c",
+        "-lm",
+        "-o",
+        "/tmp/color-exchange-oracle-ksvilzxw/exclusive-high"
+      ],
+      "build_stdout": "",
+      "build_stderr": "",
+      "returncode": -6,
+      "stdout": "",
+      "stderr": "exclusive-high: /tmp/color-exchange-oracle-ksvilzxw/test-oracle.c:47: critical: Assertion `!memcmp(destination+stride+2*bpp,expected,bpp)' failed.\n",
+      "seconds": 0.02129856200190261,
+      "binary_sha256": "0f223582153f5ef90ef91a7b46ae11f973be8b72000e8cc58f13441f133cc0d8",
+      "name": "exclusive-high",
+      "mutant_sha256": "1b01d0be3caf9cefb99c078baaa705f71199bdf7d3363c97237f85024dc2e66d"
+    },
+    {
+      "command": [
+        "cc",
+        "-std=c11",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-O2",
+        "/tmp/color-exchange-oracle-ksvilzxw/test-oracle.c",
+        "-lm",
+        "-o",
+        "/tmp/color-exchange-oracle-ksvilzxw/signed-delta"
+      ],
+      "build_stdout": "",
+      "build_stderr": "",
+      "returncode": -6,
+      "stdout": "",
+      "stderr": "signed-delta: /tmp/color-exchange-oracle-ksvilzxw/test-oracle.c:44: one: Assertion `!memcmp(destination,expected,sizeof expected)' failed.\n",
+      "seconds": 0.07252467500075,
+      "binary_sha256": "a6995307a497dc462ed592a5b1c1033118792adbda4c525582597e5b7824b4dd",
+      "name": "signed-delta",
+      "mutant_sha256": "96cec9dd026984436b909030fcb10a19dd3f1d44bd0e5408cc12a7ea05d779de"
+    },
+    {
+      "command": [
+        "cc",
+        "-std=c11",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-O2",
+        "/tmp/color-exchange-oracle-ksvilzxw/test-oracle.c",
+        "-lm",
+        "-o",
+        "/tmp/color-exchange-oracle-ksvilzxw/alpha-overwrite"
+      ],
+      "build_stdout": "",
+      "build_stderr": "",
+      "returncode": -6,
+      "stdout": "",
+      "stderr": "alpha-overwrite: /tmp/color-exchange-oracle-ksvilzxw/test-oracle.c:47: critical: Assertion `!memcmp(destination+stride+2*bpp,expected,bpp)' failed.\n",
+      "seconds": 0.022525242005940527,
+      "binary_sha256": "8185cc6acca45de96695035050296c4b02724bd595a701f217511fbc3ebf578c",
+      "name": "alpha-overwrite",
+      "mutant_sha256": "e667b9a7f9c68b72bb388d218dabfa0bc87963a16870f132408cb0352ec59165"
+    },
+    {
+      "command": [
+        "cc",
+        "-std=c11",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-O2",
+        "/tmp/color-exchange-oracle-ksvilzxw/test-oracle.c",
+        "-lm",
+        "-o",
+        "/tmp/color-exchange-oracle-ksvilzxw/missing-saturation"
+      ],
+      "build_stdout": "",
+      "build_stderr": "",
+      "returncode": -6,
+      "stdout": "",
+      "stderr": "missing-saturation: /tmp/color-exchange-oracle-ksvilzxw/test-oracle.c:47: critical: Assertion `!memcmp(destination+stride+2*bpp,expected,bpp)' failed.\n",
+      "seconds": 0.03150230099709006,
+      "binary_sha256": "8bf6aeced3e557efe16cee09549fe8dc1d18a452b050e8280f256fd934ac538f",
+      "name": "missing-saturation",
+      "mutant_sha256": "e4ef694830d4c2be18346f90ca4201332b588fbbfc89b4c96a5338785eb5f113"
+    }
+  ],
+  "inputs_changed": []
+}
