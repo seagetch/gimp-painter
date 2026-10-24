@@ -1,0 +1,18 @@
+import pathlib,hashlib,json,shutil,tarfile
+D=pathlib.Path('/workspace/shared/gimp-native-secondary');R=pathlib.Path('/workspace/scratch/0015fc5d1a03/gimp-painter');O=D/'perspective-stroke-entry/final';O.mkdir(exist_ok=True)
+prior=json.loads((D/'perspective-editor-entry/final/source-before-build.json').read_text());held=json.loads((D/'perspective-editor-entry/final/held-source-isolation.json').read_text())
+for p,h in prior.items():
+ if p!='app/tests/meson.build':assert hashlib.sha256((D/'source'/p).read_bytes()).hexdigest()==h,p
+for r in held['rows']:
+ p=D/'source'/r['path']
+ if r.get('native_exists') is False:assert not p.exists()
+ else:assert hashlib.sha256(p.read_bytes()).hexdigest()==r['sha256']
+owned=['app/tests/test-painter-perspective-stroke-events.c']+[str(p.relative_to(R)) for p in (R/'migration/fixtures/legacy-perspective-stroke').iterdir() if p.is_file()]
+for p in owned:(D/'source'/p).parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(R/p,D/'source'/p)
+seal={p:hashlib.sha256((D/'source'/p).read_bytes()).hexdigest() for p in sorted(set(prior)|set(owned))}
+if (O/'source-before-build.json').exists():assert json.loads((O/'source-before-build.json').read_text())==seal
+else:(O/'source-before-build.json').write_text(json.dumps(seal,indent=2)+'\n')
+(O/'held-source-isolation.json').write_text(json.dumps(held,indent=2)+'\n')
+with tarfile.open(O/'tested-sources.tar.gz','w:gz') as t:
+ for p in seal:t.add(D/'source'/p,arcname=p)
+print(len(seal),'inputs,prior editor sources unchanged,9 held providers')

@@ -1,0 +1,36 @@
+-
+-            if (gimp_display_shell_initialize_tool (shell,
+-                                                    &image_coords, state))
+-              {
+-                GimpCoords last_motion;
+-
+-                /* Use the last evaluated dynamic axes instead of the
+-                 * button_press event's ones because the click is
+-                 * usually at the same spot as the last motion event
+-                 * which would give us bogus dynamics.
+-                 */
+-                gimp_motion_buffer_begin_stroke (shell->motion_buffer, time,
+-                                                 &last_motion);
+-
+-                last_motion.x        = image_coords.x;
+-                last_motion.y        = image_coords.y;
+-                last_motion.pressure = image_coords.pressure;
+-                last_motion.xtilt    = image_coords.xtilt;
+-                last_motion.ytilt    = image_coords.ytilt;
+-                last_motion.wheel    = image_coords.wheel;
+-
+-                image_coords = last_motion;
+-
+-                tool_manager_button_press_active (gimp,
+-                                                  &image_coords,
+-                                                  time, state,
+-                                                  GIMP_BUTTON_PRESS_NORMAL,
+-                                                  display);
+-              }
++            if (!shell->snap_perspective || (active_tool && active_tool->disable_lazy_snap)) {
++              gimp_display_shell_begin_tool (gimp, shell, &display_coords, &image_coords, time, state, display);
++            } else {
++              g_print("snapping to angle...\n");
++              shell->snapping    = TRUE;
++              shell->snap_origin = image_coords;
++            }

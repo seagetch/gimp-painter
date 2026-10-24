@@ -1,0 +1,33 @@
+#!/bin/bash
+set -euo pipefail
+D=/workspace/shared/gimp-native-secondary
+source "$D/env.sh";exec 9>"$D/build.lock";flock 9
+O="$D/perspective-stroke-entry/negative";mkdir -p "$O"
+for kind in threshold-31 last-tie reversed-projection;do
+ export KIND="$kind"
+ python3 - <<'PY'
+import pathlib,os,json,hashlib
+D=pathlib.Path('/workspace/shared/gimp-native-secondary');kind=os.environ['KIND'];O=D/'perspective-stroke-entry/negative'/kind;O.mkdir(exist_ok=True)
+name={'threshold-31':'oracle.inc','last-tie':'snap-angle.inc','reversed-projection':'lazy-snap.inc'}[kind];p=D/'source/migration/fixtures/legacy-perspective-stroke'/name;s=p.read_text();(O/'original-input.txt').write_text(s)
+a,b={'threshold-31':('#define DIST_THRESHOLD 32','#define DIST_THRESHOLD 31'),'last-tie':('ang < min_angle','ang <= min_angle'),'reversed-projection':('shell->snap_origin.y - siny / cosx * dx','shell->snap_origin.y + siny / cosx * dx')}[kind];assert s.count(a)==1;s=s.replace(a,b);p.write_text(s);(O/'mutated-input.txt').write_text(s);(O/'mutation.json').write_text(json.dumps({'path':str(p.relative_to(D/'source')),'original_sha256':hashlib.sha256((O/'original-input.txt').read_bytes()).hexdigest(),'mutated_sha256':hashlib.sha256(s.encode()).hexdigest()},indent=2)+'\n')
+PY
+ restore() { python3 - "$D" "$kind" <<'PY'
+import pathlib,json,sys
+D=pathlib.Path(sys.argv[1]);O=D/'perspective-stroke-entry/negative'/sys.argv[2];j=json.loads((O/'mutation.json').read_text());(D/'source'/j['path']).write_bytes((O/'original-input.txt').read_bytes())
+PY
+ }
+ trap restore EXIT
+ ninja -j2 -C "$D/build" app/tests/painter-perspective-stroke-events > "$O/$kind/build.log" 2>&1
+ if [[ $kind == last-tie ]];then filter=exact-threshold-tie-reset;else filter=old-transformed-entry;fi
+ set +e
+ python3 "$D/source/tools/run-painter-xvfb.py" meson test -C "$D/build" --no-rebuild --num-processes=1 --print-errorlogs --test-args="-p /perspective-stroke/$filter" painter-perspective-stroke-events > "$O/$kind/run.log" 2>&1
+ status=$?;set -e
+ python3 - "$D" "$kind" <<'PY'
+import pathlib,json,sys,hashlib
+D=pathlib.Path(sys.argv[1]);O=D/'perspective-stroke-entry/negative'/sys.argv[2];j=json.loads((D/'build/meson-logs/testlog.json').read_text().splitlines()[0]);r={k:j.get(k,'') for k in ['name','result','returncode','duration','stdout','stderr']};r['executable_sha256']=hashlib.sha256((D/'build/app/tests/painter-perspective-stroke-events').read_bytes()).hexdigest();(O/'result.json').write_text(json.dumps(r,indent=2)+'\n');assert r['result']=='FAIL' and ('assertion failed' in r['stdout'] or 'should be FALSE' in r['stdout'])
+PY
+ restore;trap - EXIT
+ [[ $status != 0 ]]
+done
+flock -u 9
+bash /workspace/shared/run-perspective-stroke-final.sh

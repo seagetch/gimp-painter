@@ -1,0 +1,22 @@
+/* Source-only old arithmetic on current model accessors, default angle zero.
+ * The old id/angle accessor defect is not reinstated. No old runtime is run. */
+typedef struct {
+  gdouble scale_x, scale_y, snapped_angle;
+  gboolean snapping;
+  GimpCoords snap_origin;
+} LegacyStrokeShell;
+#ifndef M_PI
+#define M_PI G_PI
+#endif
+#define DIST_THRESHOLD 32
+#define GimpDisplayShell LegacyStrokeShell
+#define gimp_display_shell_snap_angle legacy_stroke_snap_angle
+#define gimp_display_shell_lazy_snap legacy_stroke_lazy_snap
+#define g_print(...) ((void) 0)
+#include "snap-angle.inc"
+#include "lazy-snap.inc"
+#undef g_print
+#undef gimp_display_shell_lazy_snap
+#undef gimp_display_shell_snap_angle
+#undef GimpDisplayShell
+#undef DIST_THRESHOLD

@@ -1,0 +1,17 @@
+-                    if (gimp_motion_buffer_motion_event (shell->motion_buffer,
+-                                                         &image_coords,
+-                                                         time,
+-                                                         shell->scale_x,
+-                                                         shell->scale_y,
+-                                                         event_fill))
+-                      {
+-                        gimp_motion_buffer_request_stroke (shell->motion_buffer,
+-                                                           state,
+-                                                           time);
++                    if (!shell->snapping) {
++                      if (state & GDK_BUTTON1_MASK) {
++                        gimp_display_shell_update_on_canvas_opacity (shell,display_coords.x, display_coords.y, FALSE);
++                      }
++
++                      if (shell->snap_perspective && (!active_tool || !active_tool->disable_lazy_snap)) {
++                        gimp_display_shell_lazy_snap (shell, image, &image_coords);

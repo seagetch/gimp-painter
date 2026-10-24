@@ -78,6 +78,7 @@ app_tests = [
   'painter-perspective',
   'painter-perspective-ui',
   'painter-perspective-events',
+  'painter-perspective-stroke-events',
   'gimp-painter-context',
   'mypaint-selector-contracts',
 ]
