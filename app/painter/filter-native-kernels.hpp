@@ -28,6 +28,14 @@ bool filter_max_rgb_raw_raster (FilterRaster&, FilterRaster&, std::size_t, std::
 bool filter_value_invert_raw_raster (FilterRaster&, FilterRaster&, std::size_t, std::size_t,
                                      std::atomic<bool>&,
                                      const std::shared_ptr<FilterProgress>& progress = {});
+/* Literal old Red Eye raw callback, nonlinear U8 RGB/RGBA only. Alpha and
+ * hidden RGB follow old scalar arithmetic; no owner merge or real extension.
+ * The declared INT32 PDB range includes undefined old signed arithmetic:
+ * reject values outside the universally defined interval before any I/O. */
+bool filter_red_eye_threshold_valid (std::int32_t) noexcept;
+bool filter_red_eye_raw_raster (FilterRaster&, FilterRaster&, std::size_t, std::size_t,
+                                 std::int32_t threshold, std::atomic<bool>&,
+                                 const std::shared_ptr<FilterProgress>& progress = {});
 bool filter_edge_real_raster (FilterRaster&, FilterRaster&, std::size_t, std::size_t,
                                const EdgeOptions&, std::atomic<bool>&,
                                const std::shared_ptr<FilterProgress>& progress = {});

@@ -224,6 +224,47 @@ bool filter_max_rgb_raw_raster (FilterRaster& in, FilterRaster& out,
   if (progress) progress->set_value (1.0);
   return true;
 }
+bool filter_red_eye_threshold_valid (std::int32_t threshold) noexcept
+{
+  return threshold >= -1073741646 && threshold <= 1073741873;
+}
+bool filter_red_eye_raw_raster (FilterRaster& in, FilterRaster& out,
+                                std::size_t width, std::size_t height,
+                                std::int32_t threshold, std::atomic<bool>& cancel,
+                                const std::shared_ptr<FilterProgress>& progress)
+{
+  if (!filter_red_eye_threshold_valid (threshold))
+    throw std::invalid_argument ("Red Eye threshold overflows original signed arithmetic");
+  const auto size = extent (in, out, width, height, 4);
+  const int adjusted_threshold = (threshold - 50) * 2;
+  std::array<std::uint8_t, 32768> bytes;
+  for (std::uint64_t offset = 0; offset < size; )
+    {
+      if (cancel.load (std::memory_order_relaxed)) return false;
+      const auto count = std::size_t (std::min<std::uint64_t> (bytes.size (), size - offset));
+      in.read (offset, count, bytes.data ());
+      for (std::size_t i = 0; i < count; i += 4)
+        {
+          if ((i & 1023) == 0 && cancel.load (std::memory_order_relaxed)) return false;
+          auto *pixel = bytes.data () + i;
+          // Preserve original decimal constants and each separate truncation.
+          // No alpha-zero early return: this is raw shadow, not owner merge.
+          const int red = pixel[0] * 0.5133333;
+          const int green = pixel[1];
+          const int blue = pixel[2] * 0.1933333;
+          if (red >= green - adjusted_threshold && red >= blue - adjusted_threshold)
+            pixel[0] = std::uint8_t (std::min (255.0, (green + blue) / (2.0 * 0.5133333)));
+        }
+      out.write (offset, count, bytes.data ());
+      if (cancel.load (std::memory_order_relaxed)) return false;
+      offset += count;
+      if (progress) progress->set_value (0.99 * double (offset) / size);
+    }
+  out.flush ();
+  if (cancel.load (std::memory_order_relaxed)) return false;
+  if (progress) progress->set_value (1.0);
+  return true;
+}
 bool filter_value_invert_raw_raster (FilterRaster& in, FilterRaster& out,
                                      std::size_t width, std::size_t height,
                                      std::atomic<bool>& cancel,

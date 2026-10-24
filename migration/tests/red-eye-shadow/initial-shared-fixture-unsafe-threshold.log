@@ -1,0 +1,7 @@
+normal 1  Red Eye threshold overflows original signed arithmetic
+
+Traceback (most recent call last):
+  File "/workspace/shared/run-red-eye-shadow-proof.py", line 7, in <module>
+    env=dict(os.environ);env.update(ASAN_OPTIONS='detect_leaks=0:halt_on_error=1:abort_on_error=1',UBSAN_OPTIONS='halt_on_error=1:print_stacktrace=1');start=time.monotonic();t=subprocess.run([str(exe),str(r/'migration/fixtures/legacy-filter-points/fixtures.tsv')],capture_output=True,text=True,env=env,timeout=240);report['runs'][mode]={'compile':cmd,'oracle_compile':cc,'exit_code':t.returncode,'stdout':t.stdout,'stderr':t.stderr,'seconds':time.monotonic()-start,'binary_sha256':hashlib.sha256(exe.read_bytes()).hexdigest()};(o/'results.json').write_text(json.dumps(report,indent=2)+'\n');print(mode,t.returncode,t.stdout,t.stderr,flush=True);assert t.returncode==0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            ^^^^^^^^^^^^^^^
+AssertionError

@@ -12,7 +12,7 @@ class FilterProgress;
 
 /* An outside, nonempty start selection returns before the old plug-in merge.
  * Its private output is still initialized; no_merge forbids merging zeros. */
-enum class FilterPointShadowOperation { threshold_alpha, max_rgb, value_invert };
+enum class FilterPointShadowOperation { threshold_alpha, max_rgb, value_invert, red_eye };
 
 enum class FilterPointShadowOutcome { cancelled, shadow, no_merge };
 
@@ -59,7 +59,10 @@ FilterPointShadowOutcome filter_point_shadow_raster (
   FilterRaster& output,
   const std::shared_ptr<FilterProgress>& progress = {});
 
-/* Operation-tagged raw shadow. Max RGB and Value Invert transform all RGB
+/* Red Eye additionally uses the original signed-arithmetic domain validated
+ * before allocation or I/O; only the captured RGB owner route may admit it.
+ *
+ * Operation-tagged raw shadow. Max RGB and Value Invert transform all RGB
  * bytes, including hidden colors, and copy alpha. Value Invert ignores the
  * argument; its public legacy procedure has no operation parameter. Owner
  * admission remains separate: neither Gray nor indexed is supported by these

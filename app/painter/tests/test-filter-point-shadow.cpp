@@ -77,6 +77,16 @@ Bytes expected_shadow (const Bytes& input, std::size_t width, std::size_t height
             std::copy_n (input.data () + offset, 3, result.data () + offset);
             result[offset + 3] = threshold < input[offset + 3] ? 255 : 0;
           }
+        else if (operation == PointOperation::red_eye)
+          {
+            std::copy_n(input.data()+offset,4,result.data()+offset);
+            const auto r=std::uint64_t(input[offset])*5133333/10000000;
+            const auto b=std::uint64_t(input[offset+2])*1933333/10000000;
+            const auto g=std::int64_t(input[offset+1]);
+            const auto adjustment=(std::int64_t(threshold)-50)*2;
+            if(std::int64_t(r)>=g-adjustment&&std::int64_t(r)>=std::int64_t(b)-adjustment)
+              result[offset]=std::uint8_t(std::min<std::uint64_t>(255,(g+b)*10000000/10266666));
+          }
         else if (operation == PointOperation::value_invert)
           painter_legacy_vinvert_row (input.data () + offset, result.data () + offset, 1, 4);
         else
@@ -631,7 +641,9 @@ void cancellation_errors_and_progress (PointOperation point_operation = PointOpe
   rejects<std::invalid_argument> ([&] { run_shadow_vector (alias,width,height,{true,true,0,0,0,1},argument,cancel,alias,{},point_operation); },
                                   "Malformed aliased vector region accepted");
   require (alias == input,"Malformed aliased vector changed input");
-  require (run_shadow_vector (alias,width,height,{true,false,0,0,0,7},int_minimum,cancel,alias,{},point_operation) == Outcome::no_merge &&
+  require (run_shadow_vector (alias,width,height,{true,false,0,0,0,7},
+                             point_operation == PointOperation::red_eye ? argument : int_minimum,
+                             cancel,alias,{},point_operation) == Outcome::no_merge &&
            alias == Bytes (input.size (),0),"Aliased no-merge lost distinct zero-workspace outcome");
   std::cout << (point_operation == PointOperation::max_rgb ? "Max RGB " :
                 point_operation == PointOperation::value_invert ? "Value Invert " : "Threshold Alpha ")
@@ -805,7 +817,7 @@ void max_rgb_validation ()
   for (bool cancelled : {false,true})
     {
       std::atomic<bool> cancel{cancelled};
-      for (const auto invalid : {static_cast<PointOperation>(-1),static_cast<PointOperation>(3),static_cast<PointOperation>(99)})
+      for (const auto invalid : {static_cast<PointOperation>(-1),static_cast<PointOperation>(4),static_cast<PointOperation>(99)})
         for (const auto& selected : {region,FilterSelectionRegion{true,false,0,0,0,7}})
           {
             rejects<std::invalid_argument> ([&] { filter_point_shadow_raster(input,width,height,selected,invalid,0,cancel,output); },
@@ -1178,6 +1190,8 @@ void value_invert_validation ()
   std::cout << "Value Invert raw/tagged no-I/O validation, alias/geometry/extents/signed-area boundaries passed\n";
 }
 
+#include "test-filter-red-eye-shadow.inc"
+
 } // namespace
 
 int main (int argc, char **argv)
@@ -1193,6 +1207,7 @@ int main (int argc, char **argv)
   directory = path; g_free (path); int status = 0;
   try
     {
+      red_eye_raw_and_shadow ();
       scalar_and_tiny_geometry ();
       genuine_point_corpus (argv[1]);
       offsets_outside_and_final_colors ();

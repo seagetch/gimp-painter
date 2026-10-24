@@ -161,8 +161,11 @@ FilterPointShadowOutcome filter_point_shadow_raster (
 {
   if (operation != FilterPointShadowOperation::threshold_alpha &&
       operation != FilterPointShadowOperation::max_rgb &&
-      operation != FilterPointShadowOperation::value_invert)
+      operation != FilterPointShadowOperation::value_invert &&
+      operation != FilterPointShadowOperation::red_eye)
     throw std::invalid_argument ("Unknown point shadow operation");
+  if (operation == FilterPointShadowOperation::red_eye && !filter_red_eye_threshold_valid (argument))
+    throw std::invalid_argument ("Red Eye threshold overflows original signed arithmetic");
   if (&input == &output)
     throw std::invalid_argument ("Point shadow input/output alias");
   const auto geometry = validate (width, height, region);
@@ -190,6 +193,10 @@ FilterPointShadowOutcome filter_point_shadow_raster (
           bool completed = false;
           switch (operation)
             {
+            case FilterPointShadowOperation::red_eye:
+              completed = filter_red_eye_raw_raster (source, destination,
+                geometry.crop_width, geometry.crop_height, argument, cancel);
+              break;
             case FilterPointShadowOperation::max_rgb:
               completed = filter_max_rgb_raw_raster (source, destination,
                 geometry.crop_width, geometry.crop_height, argument, cancel);
@@ -229,8 +236,11 @@ FilterPointShadowOutcome filter_point_shadow_vector (
 {
   if (operation != FilterPointShadowOperation::threshold_alpha &&
       operation != FilterPointShadowOperation::max_rgb &&
-      operation != FilterPointShadowOperation::value_invert)
+      operation != FilterPointShadowOperation::value_invert &&
+      operation != FilterPointShadowOperation::red_eye)
     throw std::invalid_argument ("Unknown point shadow operation");
+  if (operation == FilterPointShadowOperation::red_eye && !filter_red_eye_threshold_valid (argument))
+    throw std::invalid_argument ("Red Eye threshold overflows original signed arithmetic");
   const auto geometry = validate (width, height, region);
   if (input.size () != geometry.full_size)
     throw std::invalid_argument ("Point shadow is not full tightly packed RGBA8");
