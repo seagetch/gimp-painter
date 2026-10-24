@@ -1,0 +1,31 @@
+{
+  "status": "PASS",
+  "generated_sha256": [
+    "37d6d4c9c45a8a9967511590d694c2bba3179cdef8b16568b58e5ab1cb8f3f0a",
+    "37d6d4c9c45a8a9967511590d694c2bba3179cdef8b16568b58e5ab1cb8f3f0a"
+  ],
+  "command": [
+    "python3",
+    "/workspace/scratch/0015fc5d1a03/gimp-painter/tools/meson-mkenums.py",
+    "/usr/bin/perl",
+    "/workspace/scratch/0015fc5d1a03/gimp-painter",
+    "/workspace/shared/undo-enum-restore/enum-generate-sjte2qix/source",
+    "/workspace/shared/undo-enum-restore/enum-generate-sjte2qix/build",
+    "core-",
+    "#include <gio/gio.h>\n#include \"libgimpbase/gimpbase.h\"\n",
+    "#include \"gimp-intl.h\""
+  ],
+  "noop_stdout": "ninja: no work to do.\n",
+  "noop_stderr": "",
+  "header_sha256": "bcd8e5d4082d99ff13179f8449887127868e82fd5d7fc6a3cf5a4c548aa01b60",
+  "baseline_sha256": {
+    "core-enums.h": "8b273ca25672d29707d14a017ae414a9dd05ed40e875d758c5480d179fb96534",
+    "core-enums.c": "9d635073841947b8f7a3044a43b868fc5efb2cb81ea64482e40a7ce25bc72a11"
+  },
+  "old_named_values": 112,
+  "old_registered_values": 110,
+  "appended": {
+    "GIMP_UNDO_GROUP_MYPAINT": 110,
+    "GIMP_UNDO_MYPAINT": 111
+  }
+}

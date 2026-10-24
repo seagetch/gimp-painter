@@ -1,0 +1,8 @@
+import pathlib,subprocess,json,hashlib,tempfile,re
+R=pathlib.Path('/workspace/scratch/0015fc5d1a03/gimp-painter');W=pathlib.Path('/workspace/shared/gimp-native-preset-gui');O=pathlib.Path('/workspace/shared/undo-enum-restore');sha=lambda b:hashlib.sha256(b).hexdigest()
+with tempfile.TemporaryDirectory(dir=O,prefix='enum-generate-')as d:
+ d=pathlib.Path(d);s=d/'source';b=d/'build';s.mkdir();b.mkdir();(s/'core-enums.h').write_bytes((R/'app/core/core-enums.h').read_bytes());(s/'core-enums.c').write_bytes((R/'app/core/core-enums.c').read_bytes());cmd=['python3',str(R/'tools/meson-mkenums.py'),'/usr/bin/perl',str(R),str(s),str(b),'core-','#include <gio/gio.h>\n#include "libgimpbase/gimpbase.h"\n','#include "gimp-intl.h"'];runs=[]
+ for _ in range(2):subprocess.run(cmd,check=True);runs.append(sha((s/'core-enums.c').read_bytes()))
+ assert runs==[sha((R/'app/core/core-enums.c').read_bytes())]*2
+ result=subprocess.run(['ninja','-n','app/core/libappcore.a.p/core-enums.c.o','app/paint/libapppaint.a.p/gimpmypaintcoreundo.cpp.o'],cwd=W/'build',capture_output=True,text=True);assert result.returncode==0 and 'no work to do' in result.stdout,(result.stdout,result.stderr)
+ (O/'generation.json').write_text(json.dumps(dict(status='PASS',generated_sha256=runs,command=cmd,noop_stdout=result.stdout,noop_stderr=result.stderr,header_sha256=sha((R/'app/core/core-enums.h').read_bytes()),baseline_sha256={n:sha((O/('baseline-'+n)).read_bytes())for n in ['core-enums.h','core-enums.c']},old_named_values=112,old_registered_values=110,appended={'GIMP_UNDO_GROUP_MYPAINT':110,'GIMP_UNDO_MYPAINT':111}),indent=2))

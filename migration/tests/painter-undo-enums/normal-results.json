@@ -1,0 +1,50 @@
+[
+  {
+    "name": "gimp:app / prepared-undo",
+    "stdout": "TAP version 14\n# random seed: R02Sa7ac354c45197f3acf89891557641d96\n1..18\n# Start of prepared-undo tests\nok 1 /prepared-undo/success\n# slow test /prepared-undo/success executed in 1.23 secs\nok 2 /prepared-undo/failure-preserves-redo\n# slow test /prepared-undo/failure-preserves-redo executed in 1.11 secs\nok 3 /prepared-undo/frozen\n# slow test /prepared-undo/frozen executed in 1.04 secs\nok 4 /prepared-undo/invalid-owner\n# slow test /prepared-undo/invalid-owner executed in 1.22 secs\nok 5 /prepared-undo/duplicate\n# slow test /prepared-undo/duplicate executed in 1.20 secs\nok 6 /prepared-undo/group\n# slow test /prepared-undo/group executed in 1.17 secs\nok 7 /prepared-undo/reentry\n# slow test /prepared-undo/reentry executed in 1.24 secs\nok 8 /prepared-undo/immediate-expiry\n# slow test /prepared-undo/immediate-expiry executed in 1.11 secs\nok 9 /prepared-undo/last-image-owner\n# slow test /prepared-undo/last-image-owner executed in 1.08 secs\nok 10 /prepared-undo/toggle-owner-reentry\n# slow test /prepared-undo/toggle-owner-reentry executed in 1.09 secs\nok 11 /prepared-undo/legacy-constructor-reentry\n# slow test /prepared-undo/legacy-constructor-reentry executed in 1.20 secs\nok 12 /prepared-undo/legacy-last-owner\n# slow test /prepared-undo/legacy-last-owner executed in 1.04 secs\n# End of prepared-undo tests\n# Start of prepared-outcome tests\nok 13 /prepared-outcome/retained\n# slow test /prepared-outcome/retained executed in 1.02 secs\nok 14 /prepared-outcome/expired\n# slow test /prepared-outcome/expired executed in 1.00 secs\nok 15 /prepared-outcome/rejected\n# slow test /prepared-outcome/rejected executed in 1.07 secs\nok 16 /prepared-outcome/frozen\n# slow test /prepared-outcome/frozen executed in 1.07 secs\nok 17 /prepared-outcome/last-owner\n# slow test /prepared-outcome/last-owner executed in 1.00 secs\nok 18 /prepared-outcome/dirty-last-owner\n# slow test /prepared-outcome/dirty-last-owner executed in 1.10 secs\n# End of prepared-outcome tests\n",
+    "result": "OK",
+    "starttime": 1792570251.0363653,
+    "duration": 20.051000356674194,
+    "returncode": 0,
+    
+    "command": [
+      "/workspace/shared/gimp-native-preset-gui/build/app/tests/prepared-undo"
+    ]
+  },
+  {
+    "name": "gimp:app / undo-pop-guard",
+    "stdout": "TAP version 14\n# random seed: R02S44af4253826b0bbcf0ae1689ce3caa75\n1..11\n# Start of pop-guard tests\nok 1 /pop-guard/ordinary\n# slow test /pop-guard/ordinary executed in 0.98 secs\nok 2 /pop-guard/success\n# slow test /pop-guard/success executed in 1.01 secs\nok 3 /pop-guard/rejected\n# slow test /pop-guard/rejected executed in 1.02 secs\nok 4 /pop-guard/group-reverse-unwind\n# slow test /pop-guard/group-reverse-unwind executed in 0.98 secs\nok 5 /pop-guard/pending\n# slow test /pop-guard/pending executed in 1.01 secs\nok 6 /pop-guard/remove-reentry\n# slow test /pop-guard/remove-reentry executed in 1.17 secs\nok 7 /pop-guard/notification-lease\n# slow test /pop-guard/notification-lease executed in 1.18 secs\nok 8 /pop-guard/changed-prepare\n# slow test /pop-guard/changed-prepare executed in 1.01 secs\nok 9 /pop-guard/last-image-owner\n# slow test /pop-guard/last-image-owner executed in 1.46 secs\nok 10 /pop-guard/nested-group\n# slow test /pop-guard/nested-group executed in 1.25 secs\nok 11 /pop-guard/strong-rejected\n# slow test /pop-guard/strong-rejected executed in 1.26 secs\n# End of pop-guard tests\n",
+    "result": "OK",
+    "starttime": 1792570271.0885332,
+    "duration": 12.373547792434692,
+    "returncode": 0,
+    
+    "command": [
+      "/workspace/shared/gimp-native-preset-gui/build/app/tests/undo-pop-guard"
+    ]
+  },
+  {
+    "name": "gimp:app / paired-stroke-undo",
+    "stdout": "TAP version 14\n# random seed: R02Sa3a3e2e528bb22b08216582fda9e36a2\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n1..18\n# Start of paired tests\nTime is running backwards!\nok 1 /paired/repeated-live-reconfigure\nTime is running backwards!\nok 2 /paired/update-coherent\nTime is running backwards!\nTime is running backwards!\nok 3 /paired/cancel-preserves-redo\nTime is running backwards!\nTime is running backwards!\nok 4 /paired/frozen-preflight\nTime is running backwards!\nTime is running backwards!\nTime is running backwards!\nTime is running backwards!\nTime is running backwards!\nTime is running backwards!\nok 5 /paired/allocation-before-publication\nTime is running backwards!\nok 6 /paired/destroyed-owner\nTime is running backwards!\nok 7 /paired/replaced-owner\nTime is running backwards!\nTime is running backwards!\nok 8 /paired/group-shared-owner\nTime is running backwards!\nok 9 /paired/active-pending\nTime is running backwards!\nok 10 /paired/idle-open-history-rejection\nok 11 /paired/empty-cancel\nTime is running backwards!\nok 12 /paired/no-undo-commit\nTime is running backwards!\nok 13 /paired/begin-allocation\nTime is running backwards!\nok 14 /paired/native-continuation-coordinates\nTime is running backwards!\nok 15 /paired/buffer-observer-coherent\nTime is running backwards!\nTime is running backwards!\nok 16 /paired/cancel-observer-coherent\nTime is running backwards!\nTime is running backwards!\nok 17 /paired/failure-observer-coherent\n# retained bytes: checkpoint=38048 Resource=525927 nativeUndo=1194204\nok 18 /paired/retained-memory\n# End of paired tests\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n",
+    "result": "OK",
+    "starttime": 1792570283.4635284,
+    "duration": 1.1056864261627197,
+    "returncode": 0,
+    
+    "command": [
+      "/workspace/shared/gimp-native-preset-gui/build/app/tests/paired-stroke-undo"
+    ]
+  },
+  {
+    "name": "gimp:app / painter-undo-enums",
+    "stdout": "TAP version 14\n# random seed: R02S43107b2ffbaf649a12f6b686ccb76739\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n1..5\n# Start of undo-enums tests\nok 1 /undo-enums/old-ids-metadata\nok 2 /undo-enums/restored\nTime is running backwards!\nok 3 /undo-enums/nested-paired\nTime is running backwards!\nok 4 /undo-enums/action-identity\nok 5 /undo-enums/classification\n# End of undo-enums tests\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n",
+    "result": "OK",
+    "starttime": 1792570284.5701962,
+    "duration": 1.065680742263794,
+    "returncode": 0,
+    
+    "command": [
+      "/workspace/shared/gimp-native-preset-gui/build/app/tests/painter-undo-enums"
+    ]
+  }
+]

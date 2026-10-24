@@ -118,7 +118,7 @@ GimpUndo* GimpPainter::MyPaint::create_stroke_undo(GimpImage*image,GimpDrawable*
   if(gegl_buffer_share_storage(buffer,gimp_drawable_get_buffer(drawable))||r->x!=0||r->y!=0||r->width<=0||r->height<=0||gegl_buffer_get_format(buffer)!=gimp_drawable_get_format(drawable)||std::int64_t(x)+r->width>G_MAXINT||std::int64_t(y)+r->height>G_MAXINT)throw Error(GIMP_PAINTER_ERROR_INVALID_STATE,"Invalid stroke pixel geometry or format");
   auto holder=ObjectRef<GObject>::adopt(G_OBJECT(g_object_new(gimp_painter_stroke_payload_get_type(),nullptr)));
   BindingStore::require(holder.get()).with<PayloadSlot>([&](Payload&p){p.state=std::move(state);});
-  auto result=ObjectRef<GObject>::adopt(G_OBJECT(g_initable_new(GIMP_TYPE_MYPAINT_CORE_UNDO,nullptr,error,"image",image,"item",drawable,"buffer",buffer,"x",x,"y",y,"name",description?description:"Paint","undo-type",GIMP_UNDO_PAINT,"dirty-mask",GIMP_DIRTY_ITEM|GIMP_DIRTY_DRAWABLE,"stroke",holder.get(),nullptr)));
+  auto result=ObjectRef<GObject>::adopt(G_OBJECT(g_initable_new(GIMP_TYPE_MYPAINT_CORE_UNDO,nullptr,error,"image",image,"item",drawable,"buffer",buffer,"x",x,"y",y,"name",description?description:"Paint","undo-type",GIMP_UNDO_MYPAINT,"dirty-mask",GIMP_DIRTY_ITEM|GIMP_DIRTY_DRAWABLE,"stroke",holder.get(),nullptr)));
   if(!result)return nullptr;
   const auto*now=gegl_buffer_get_extent(buffer);
   if(gegl_buffer_share_storage(buffer,gimp_drawable_get_buffer(drawable))||!gimp_item_is_attached(GIMP_ITEM(drawable))||gimp_item_get_image(GIMP_ITEM(drawable))!=image||gimp_drawable_get_format(drawable)!=format||gegl_buffer_get_format(buffer)!=format||now->x!=r->x||now->y!=r->y||now->width!=r->width||now->height!=r->height)

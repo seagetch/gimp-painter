@@ -650,7 +650,12 @@ typedef enum /*< pdb-skip >*/
 
   GIMP_UNDO_CLONE_LAYER_SOURCE,         /*< desc="Clone layer source"              >*/
 
-  GIMP_UNDO_CANT                         /*< desc="Not undoable"                   >*/
+  GIMP_UNDO_CANT,                        /*< desc="Not undoable"                   >*/
+
+  /* Appended Painter extensions preserve all existing numeric values.
+   * MYPAINT group is outside the legacy contiguous group range. */
+  GIMP_UNDO_GROUP_MYPAINT = 110,         /*< desc="Mypaint"                       >*/
+  GIMP_UNDO_MYPAINT = 111                /*< desc="Mypaint"                       >*/
 } GimpUndoType;
 
 

@@ -1,0 +1,14 @@
+Xvfb verified: 127.0.0.1:94, 1080x1920x24, authenticated accepted, empty authority rejected
+1/4 gimp:app / prepared-undo      OK              20.05s
+2/4 gimp:app / undo-pop-guard     OK              12.37s
+3/4 gimp:app / paired-stroke-undo OK               1.11s
+4/4 gimp:app / painter-undo-enums OK               1.07s
+
+Ok:                 4   
+Expected Fail:      0   
+Fail:               0   
+Unexpected Pass:    0   
+Skipped:            0   
+Timeout:            0   
+
+Full log written to /workspace/shared/gimp-native-preset-gui/build/meson-logs/undo-enums.txt

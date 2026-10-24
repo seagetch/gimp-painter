@@ -1,0 +1,5 @@
+{
+  "returncode": -6,
+  "stdout": "TAP version 14\n# random seed: R02S8e256c63161103b1a72e88c205ebfc0a\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n1..5\n# Start of undo-enums tests\nok 1 /undo-enums/old-ids-metadata\nok 2 /undo-enums/restored\nTime is running backwards!\nok 3 /undo-enums/nested-paired\nTime is running backwards!\nok 4 /undo-enums/action-identity\nnot ok /undo-enums/classification - ERROR:../source/app/tests/test-painter-undo-enums.cpp:8:void classification_guards(): 'gimp_image_is_dirty(f.image)' should be FALSE\nBail out!\n",
+  "stderr": "**\nERROR:../source/app/tests/test-painter-undo-enums.cpp:8:void classification_guards(): 'gimp_image_is_dirty(f.image)' should be FALSE\n"
+}

@@ -1,0 +1,10 @@
+./app/core/core-enums.c:1295:    { GIMP_UNDO_CANT, "GIMP_UNDO_CANT", "cant" },
+./app/core/core-enums.c:1410:    { GIMP_UNDO_CANT, NC_("undo-type", "Not undoable"), NULL },
+./app/core/gimpimage-undo.c:310:  g_return_val_if_fail (undo_type >  GIMP_UNDO_GROUP_FIRST &&
+./app/core/gimpimage-undo.c:311:                        undo_type <= GIMP_UNDO_GROUP_LAST, FALSE);
+./app/core/gimpimage-undo.c:398:  g_return_val_if_fail (undo_type > GIMP_UNDO_GROUP_LAST, NULL);
+./app/core/gimpimage-undo.c:514:  g_return_val_if_fail (undo->undo_type > GIMP_UNDO_GROUP_LAST, NULL);
+./app/core/core-enums.h:535:  GIMP_UNDO_GROUP_FIRST = GIMP_UNDO_GROUP_NONE, /*< skip >*/
+./app/core/core-enums.h:586:  GIMP_UNDO_GROUP_LAST = GIMP_UNDO_GROUP_MISC, /*< skip >*/
+./app/core/core-enums.h:653:  GIMP_UNDO_CANT                         /*< desc="Not undoable"                   >*/
+./app/core/gimpimage-undo-push.c:1164:                               GIMP_UNDO_CANT, undo_desc,

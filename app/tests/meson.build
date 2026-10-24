@@ -1418,3 +1418,15 @@ test('paint-geometry-tool', paint_geometry_tool,
         'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
         'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
         'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 120)
+
+# Restore distinct Painter Undo enum identities without renumbering.
+painter_undo_enums = executable('painter-undo-enums',
+ ['test-painter-undo-enums.cpp','tests.c'],
+ dependencies: [libapp_dep,painter_mypaint_surface_dep,appstream],
+ link_with: apptests_links,cpp_args:painter_cpp_args,
+ link_args:['-Wl,--wrap=_Znwm'],override_options:['cpp_std=c++14'])
+test('painter-undo-enums',painter_undo_enums,
+ env:['GIMP_TESTING_ABS_TOP_SRCDIR='+meson.project_source_root(),
+ 'GIMP_TESTING_ABS_TOP_BUILDDIR='+meson.project_build_root(),
+ 'GIMP_TESTING_PLUGINDIRS='+meson.project_build_root()/'plug-ins/common','UI_TEST=yes'],
+ suite:'app',is_parallel:false,timeout:120)

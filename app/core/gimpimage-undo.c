@@ -52,6 +52,14 @@ static GimpUndo *     gimp_image_undo_publish         (GimpImage     *image,
                                                       GimpUndo      *undo,
                                                       gboolean      *published);
 
+/* Painter groups are appended to preserve existing enum ABI values. */
+static gboolean
+gimp_image_undo_type_is_group (GimpUndoType type)
+{
+  return (type > GIMP_UNDO_GROUP_FIRST && type <= GIMP_UNDO_GROUP_LAST) ||
+         type == GIMP_UNDO_GROUP_MYPAINT;
+}
+
 static GimpDirtyMask gimp_image_undo_dirty_from_type (GimpUndoType   undo_type);
 
 
@@ -307,8 +315,7 @@ gimp_image_undo_group_start (GimpImage    *image,
   GimpDirtyMask     dirty_mask;
 
   g_return_val_if_fail (GIMP_IS_IMAGE (image), FALSE);
-  g_return_val_if_fail (undo_type >  GIMP_UNDO_GROUP_FIRST &&
-                        undo_type <= GIMP_UNDO_GROUP_LAST, FALSE);
+  g_return_val_if_fail (gimp_image_undo_type_is_group (undo_type), FALSE);
 
   private = GIMP_IMAGE_GET_PRIVATE (image);
 
@@ -395,7 +402,8 @@ gimp_image_undo_push (GimpImage     *image,
 
   g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
   g_return_val_if_fail (g_type_is_a (object_type, GIMP_TYPE_UNDO), NULL);
-  g_return_val_if_fail (undo_type > GIMP_UNDO_GROUP_LAST, NULL);
+  g_return_val_if_fail (undo_type > GIMP_UNDO_GROUP_LAST &&
+                        ! gimp_image_undo_type_is_group (undo_type), NULL);
 
   g_object_ref (image);
   private = GIMP_IMAGE_GET_PRIVATE (image);
@@ -511,7 +519,8 @@ gimp_image_undo_push_prepared_internal (GimpImage *image,
   g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
   g_return_val_if_fail (GIMP_IS_UNDO (undo), NULL);
   g_return_val_if_fail (undo->image == image, NULL);
-  g_return_val_if_fail (undo->undo_type > GIMP_UNDO_GROUP_LAST, NULL);
+  g_return_val_if_fail (undo->undo_type > GIMP_UNDO_GROUP_LAST &&
+                        ! gimp_image_undo_type_is_group (undo->undo_type), NULL);
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
   g_return_val_if_fail (! g_object_get_data (G_OBJECT (undo), "gimp-undo-published"), NULL);
 
@@ -967,6 +976,7 @@ gimp_image_undo_dirty_from_type (GimpUndoType undo_type)
       return GIMP_DIRTY_ITEM | GIMP_DIRTY_DRAWABLE | GIMP_DIRTY_PATH;
 
     case GIMP_UNDO_GROUP_PAINT:
+    case GIMP_UNDO_GROUP_MYPAINT:
       return GIMP_DIRTY_ITEM | GIMP_DIRTY_DRAWABLE;
 
     case GIMP_UNDO_GROUP_PARASITE_ATTACH:

@@ -1,0 +1,40 @@
+Xvfb verified: 127.0.0.1:92, 1080x1920x24, authenticated accepted, empty authority rejected
+1/4 gimp:app / prepared-undo      OK              21.79s
+2/4 gimp:app / undo-pop-guard     OK              14.13s
+3/4 gimp:app / paired-stroke-undo OK               1.40s
+4/4 gimp:app / painter-undo-enums FAIL             1.42s   killed by signal 6 SIGABRT
+>>> UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 GIMP_TESTING_ABS_TOP_SRCDIR=/workspace/shared/gimp-native-preset-gui/source GIMP_TESTING_PLUGINDIRS=/workspace/shared/gimp-native-preset-gui/build/plug-ins/common LD_LIBRARY_PATH=/workspace/shared/gimp-native-preset-gui/build/libgimpconfig:/workspace/shared/gimp-native-preset-gui/build/libgimpwidgets:/workspace/shared/gimp-native-preset-gui/build/libgimpbase:/workspace/shared/gimp-native-preset-gui/build/libgimpcolor:/workspace/shared/gimp-native-preset-gui/build/libgimpmath:/workspace/shared/gimp-native-preset-gui/build/libgimpmodule:/workspace/shared/gimp-native-preset-gui/build/libgimpthumb:/workspace/shared/gimp-native-preset-gui/prefix/lib/x86_64-linux-gnu:/workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu MESON_TEST_ITERATION=1 ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 UI_TEST=yes GIMP_TESTING_ABS_TOP_BUILDDIR=/workspace/shared/gimp-native-preset-gui/build MALLOC_PERTURB_=140 MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 /workspace/shared/gimp-native-preset-gui/build/app/tests/painter-undo-enums
+――――――――――――――――――――――――――――――――――――― ✀  ―――――――――――――――――――――――――――――――――――――
+stdout:
+TAP version 14
+# random seed: R02Sdebc8fce7e5f2e9d3ebd6b20230e95a9
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+1..5
+# Start of undo-enums tests
+ok 1 /undo-enums/old-ids-metadata
+ok 2 /undo-enums/restored
+Time is running backwards!
+ok 3 /undo-enums/nested-paired
+Time is running backwards!
+ok 4 /undo-enums/action-identity
+not ok /undo-enums/classification - ERROR:../source/app/tests/test-painter-undo-enums.cpp:8:void classification_guards(): 'gimp_image_is_dirty(f.image)' should be FALSE
+Bail out!
+stderr:
+**
+ERROR:../source/app/tests/test-painter-undo-enums.cpp:8:void classification_guards(): 'gimp_image_is_dirty(f.image)' should be FALSE
+――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+
+
+Summary of Failures:
+
+4/4 gimp:app / painter-undo-enums FAIL             1.42s   killed by signal 6 SIGABRT
+
+Ok:                 3   
+Expected Fail:      0   
+Fail:               1   
+Unexpected Pass:    0   
+Skipped:            0   
+Timeout:            0   
+
+Full log written to /workspace/shared/gimp-native-preset-gui/build/meson-logs/undo-enums.txt
