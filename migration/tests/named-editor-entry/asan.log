@@ -1,0 +1,44 @@
+Xvfb verified: 127.0.0.1:92, 1080x1920x24, authenticated accepted, empty authority rejected
+TAP version 14
+# random seed: R02S0ee0ab142987bf91e6ddcfe4dd26b196
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ‘gio-vfs’
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+# GLib-DEBUG: unsetenv() is not thread-safe and should not be used after threads are created
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 64 x 64
+# GdkPixbuf-DEBUG: 	Rowstride: 256, Length: 16408
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+Application icon missing: /workspace/shared/named-editor-entry/source/desktop/16x16/gimp.png (Failed to open file “/workspace/shared/named-editor-entry/source/desktop/16x16/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/named-editor-entry/source/desktop/32x32/gimp.png (Failed to open file “/workspace/shared/named-editor-entry/source/desktop/32x32/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/named-editor-entry/source/desktop/48x48/gimp.png (Failed to open file “/workspace/shared/named-editor-entry/source/desktop/48x48/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/named-editor-entry/source/desktop/64x64/gimp.png (Failed to open file “/workspace/shared/named-editor-entry/source/desktop/64x64/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/named-editor-entry/source/desktop/scalable/gimp.svg (Failed to open file “/workspace/shared/named-editor-entry/source/desktop/scalable/gimp.svg”: No such file or directory)
+Application icon missing: /workspace/shared/named-editor-entry/source/desktop/256x256/gimp.png
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation dconf (DConfSettingsBackend) for ‘gsettings-backend’
+gui_dbus_name_lost: connection to the bus cannot be established.
+# DEBUG: Error acquiring bus for cloud providers: Error spawning command line “dbus-launch --autolaunch=f09796fd086547da9ddf7488d4386bdf --binary-syntax --close-stderr”: Child process exited with code 1
+1..3
+# Start of painter-editor tests
+# Start of named-entry tests
+set device 'Virtual core XTEST pointer' to mode: disabled
+set device 'Xvfb mouse' to mode: disabled
+ok 1 /painter-editor/named-entry/constructor
+# slow test /painter-editor/named-entry/constructor executed in 2.03 secs
+ok 2 /painter-editor/named-entry/menu-save
+# slow test /painter-editor/named-entry/menu-save executed in 3.86 secs
+ok 3 /painter-editor/named-entry/menu-lifetime
+# slow test /painter-editor/named-entry/menu-lifetime executed in 0.69 secs
+# End of named-entry tests
+# End of painter-editor tests
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false

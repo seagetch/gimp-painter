@@ -1,0 +1,38 @@
+Xvfb verified: 127.0.0.1:95, 1080x1920x24, authenticated accepted, empty authority rejected
+TAP version 14
+# random seed: R02Se16a8d17926340ec501f8eb43ae7a7d8
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ‘gio-vfs’
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+# GLib-DEBUG: unsetenv() is not thread-safe and should not be used after threads are created
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 64 x 64
+# GdkPixbuf-DEBUG: 	Rowstride: 256, Length: 16408
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+Application icon missing: /workspace/shared/named-editor-entry/source/desktop/16x16/gimp.png (Failed to open file “/workspace/shared/named-editor-entry/source/desktop/16x16/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/named-editor-entry/source/desktop/32x32/gimp.png (Failed to open file “/workspace/shared/named-editor-entry/source/desktop/32x32/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/named-editor-entry/source/desktop/48x48/gimp.png (Failed to open file “/workspace/shared/named-editor-entry/source/desktop/48x48/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/named-editor-entry/source/desktop/64x64/gimp.png (Failed to open file “/workspace/shared/named-editor-entry/source/desktop/64x64/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/named-editor-entry/source/desktop/scalable/gimp.svg (Failed to open file “/workspace/shared/named-editor-entry/source/desktop/scalable/gimp.svg”: No such file or directory)
+Application icon missing: /workspace/shared/named-editor-entry/source/desktop/256x256/gimp.png
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation dconf (DConfSettingsBackend) for ‘gsettings-backend’
+gui_dbus_name_lost: connection to the bus cannot be established.
+# DEBUG: Error acquiring bus for cloud providers: Error spawning command line “dbus-launch --autolaunch=f09796fd086547da9ddf7488d4386bdf --binary-syntax --close-stderr”: Child process exited with code 1
+# Start of painter-editor tests
+# Start of named-entry tests
+set device 'Virtual core XTEST pointer' to mode: disabled
+set device 'Xvfb mouse' to mode: disabled
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+**
+ERROR:/workspace/shared/named-editor-entry/source/app/tests/test-painter-editor-entry.inc:146:void named_editor_menu_save(): 'dialog' should not be nullptr
+not ok /painter-editor/named-entry/menu-save - ERROR:/workspace/shared/named-editor-entry/source/app/tests/test-painter-editor-entry.inc:146:void named_editor_menu_save(): 'dialog' should not be nullptr
+Bail out!

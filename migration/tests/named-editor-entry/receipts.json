@@ -1,0 +1,49 @@
+{
+  "base_commit": "2c36b2575c7be1ba0a4d1fb5246bdc5213f2b536",
+  "owned_sha256": {
+    "app/actions/actions.c": "fa6ff27d07b1f76a32fd6565311c340194fb90674dd85d89b402cb08355d44a1",
+    "app/actions/meson.build": "baf7fc2b2cca98a6e3c317da099fe57d1b1c43a4720729391b1e4d9843e75046",
+    "app/actions/mypaint-brush-editor-actions.c": "685641cedb4aaa7fe7e631d6f0d4063ca16a9c4657aaae7329c6d510b4293471",
+    "app/actions/mypaint-brush-editor-actions.h": "7f01db9cf8784b8bb89b89c9596e655b23e987ece0c8ad0d4baa717cdf2cd110",
+    "app/dialogs/dialogs-constructors.c": "d5da4a18ca70783e32ed8d824b84adaac6bdcd9cf306c777dd6fca4a81355342",
+    "app/menus/menus.c": "17b9624bca7e9e49cafdfae337a4313e6ec03aaf891eebe582792d05fa093c45",
+    "app/widgets/gimppaintermybrusheditor.cpp": "9d1be2616d85109454afb44493eae75f96aca3e9e8e61a500af3e56dad0877ca",
+    "app/widgets/gimppaintermybrusheditor.h": "f4bbdaa5380acf1f53458dd353b377e79001fb6baf1480621969eca8e6e08cf6",
+    "app/widgets/gimppaintermybrusheditor.hpp": "f67f1b310732e40b2ef0bdb20f2d328824795d446acfd4ce598d258bfb3a6656",
+    "app/widgets/gimpmypaintbrusheditor.h": "a37b25c9c85656416246d9d74ea3f7c3a241c91ce3b52116379f857c0171879e",
+    "app/widgets/gimpmypaintbrusheditor.hpp": "7bac84f12afcf7652cd8639098044c35287afd21ea18e2e3bfbd186459aa60d0",
+    "menus/meson.build": "56b7a3292acaed6fd37709007f2426060ff2a6d9f45400b6998c658d749f1890",
+    "menus/mypaint-brush-editor-menu.ui": "cd0c140a50fec50f7579b64499b055f0ae66cedde86c7f87fe92c44578d4c24f",
+    "po/POTFILES.in": "bf5f2122db99706e5b8b9bf8d372583e3997e303d8f8112b116e293e3324d53e",
+    "app/tests/test-painter-mypaint-editor.cpp": "dca56a7d4685a1c52807a0b17c4c9f4a5613b56ca2e06be9c2280b125629d0e7",
+    "app/tests/test-painter-editor-entry.inc": "0a99bb79c4b75fcfa1c45aa8dfa22c8988322c97a801cf706f9d2e0754bde022"
+  },
+  "normal": {
+    "cases": 3,
+    "exit": 0,
+    "executable_sha256": "e73797c31bc52461be741f086128375272838c0aa41e589e38a9fb25dc875ebe"
+  },
+  "asan": {
+    "cases": 3,
+    "exit": 0,
+    "instrumented_translation_units": 7,
+    "executable_sha256": "5fb2fac8120c7306d7599d32ab2411e059fe338e7640359df9f472e8dd596fa0"
+  },
+  "compiled_negative_controls": 5,
+  "headers": [
+    "C11",
+    "C++14"
+  ],
+  "xvfb": {
+    "width": 1080,
+    "height": 1920,
+    "depth": 24,
+    "oncanvas": true,
+    "input": "API-activated menu action"
+  },
+  "predecessor": "40a1001ff1",
+  "current_HEAD_aggregate": false,
+  "old_edit_active_session_parity": false,
+  "held_diagnostics_run": false,
+  "source_inputs": 379
+}

@@ -19,6 +19,9 @@ extern "C" {
 #include "core/gimppattern.h"
 #include "core/gimpcoords.h"
 #include "gimpdocked.h"
+#include "gimpmenufactory.h"
+#include "gimpactiongroup.h"
+#include "gimpuimanager.h"
 #include "gimpviewablebox.h"
 #include "gimp-intl.h"
 }
@@ -135,6 +138,7 @@ struct EditorPageMemory { int page = 0; };
 struct EditorImpl {
   GimpPainterMybrushEditor *owner; // owner contains the single slot
   ObjectRef<GObject> context;
+  ObjectRef<GObject> named_menu_factory;
   ObjectRef<GimpPainterMybrushOptions> options;
   std::vector<Connection> connections;
   std::shared_ptr<EditorPageMemory> page_memory = std::make_shared<EditorPageMemory> ();
@@ -172,7 +176,21 @@ struct EditorImpl {
     for (auto& resource : watched_resource) resource.reset ();
     listed.reset (); options.reset (); context.reset ();
   }
-  void close () noexcept { if (!closed) { closed = true; detach (); } }
+  void close () noexcept {
+    if (closed) return;
+    closed = true;
+    // Only the named constructor owns this cache entry. Context replacement
+    // keeps it; final slot close removes both manager and action-group caches.
+    auto factory = std::move (named_menu_factory);
+    if (factory) {
+      auto *manager = gimp_editor_get_ui_manager (GIMP_EDITOR (owner));
+      auto *group = manager ? gimp_ui_manager_get_action_group (manager, "mypaint-brush-editor") : nullptr;
+      if (group && group->user_data == owner) group->user_data = nullptr;
+      gimp_menu_factory_delete_manager (GIMP_MENU_FACTORY (factory.get ()),
+                                        "<MypaintBrushEditor>", owner);
+    }
+    detach ();
+  }
   GimpContext *ctx () const { return options ? GIMP_CONTEXT (options.get ()) : nullptr; }
   MP::Resource snapshot () const { return PainterOptionsRef::retain (options.get ()).snapshot (); }
 };
@@ -732,6 +750,43 @@ static GtkWidget*new_editor(GimpContext*context,gboolean horizontal,
 }
 GtkWidget*gimp_painter_mybrush_editor_new(GimpContext*context,gboolean horizontal,GError**error) {
   return new_editor(context,horizontal,nullptr,error);
+}
+GtkWidget *gimp_mypaint_brush_editor_new (GimpContext *context, GimpMenuFactory *factory)
+{
+  return boundary<GtkWidget *> (nullptr, nullptr, [&] () -> GtkWidget * {
+    if (!GIMP_IS_CONTEXT (context) || (factory && !GIMP_IS_MENU_FACTORY (factory))) return nullptr;
+    if (factory) {
+      bool registered = false;
+      for (auto *l = gimp_menu_factory_get_registered_menus (factory); l; l = l->next)
+        if (!g_strcmp0 (static_cast<GimpMenuFactoryEntry *> (l->data)->identifier,
+                       "<MypaintBrushEditor>")) registered = true;
+      if (!registered) return nullptr;
+    }
+    auto *widget = gimp_painter_mybrush_editor_new (context, FALSE, nullptr);
+    if (!widget) return nullptr;
+    auto owner = ObjectRef<GimpPainterMybrushEditor>::sink (GIMP_PAINTER_MYBRUSH_EDITOR (widget));
+    if (factory) {
+      gimp_editor_create_menu (GIMP_EDITOR (widget), factory, "<MypaintBrushEditor>",
+                               "/mypaint_brush-editor-popup", widget);
+      store (owner.get ()).with<EditorSlot> ([&] (EditorImpl &i) {
+        i.named_menu_factory = ObjectRef<GObject>::retain (G_OBJECT (factory));
+      });
+    }
+    g_object_force_floating (G_OBJECT (widget));
+    return GTK_WIDGET (owner.release ());
+  });
+}
+gboolean gimp_painter_mybrush_editor_save_command (GimpPainterMybrushEditor *editor,
+                                                  gboolean save_as, GError **error)
+{
+  if (!save_as) return gimp_painter_mybrush_editor_save (editor, nullptr, error);
+  return boundary<gboolean> (error, FALSE, [&] {
+    return store (editor).with<EditorSlot> ([] (EditorImpl &i) -> gboolean {
+      if (i.closed || !i.options) return FALSE;
+      prompt (i, 0);
+      return TRUE;
+    });
+  });
 }
 namespace {
 GtkWidget *original_options_gui (GimpToolOptions *options, gboolean horizontal)

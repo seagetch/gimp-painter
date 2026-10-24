@@ -12,6 +12,13 @@ template<> struct TypeTraits<GimpPainterMybrushEditor> {
 };
 class PainterEditorRef {
 public:
+  static PainterEditorRef create (GimpContext *context, GimpMenuFactory *factory)
+  {
+    auto *widget = gimp_mypaint_brush_editor_new (context, factory);
+    if (!widget) throw Error (GIMP_PAINTER_ERROR_WRONG_TYPE, "Cannot create painter editor");
+    return PainterEditorRef (ObjectRef<GimpPainterMybrushEditor>::sink (
+      GIMP_PAINTER_MYBRUSH_EDITOR (widget)));
+  }
   static PainterEditorRef retain (GimpPainterMybrushEditor *editor)
   { return PainterEditorRef (ObjectRef<GimpPainterMybrushEditor>::retain (editor)); }
   GimpPainterMybrushEditor *get () const noexcept { return owner_.get (); }
@@ -20,5 +27,6 @@ private:
   { if (!owner_) throw Error (GIMP_PAINTER_ERROR_WRONG_TYPE, "Expected painter editor"); }
   ObjectRef<GimpPainterMybrushEditor> owner_;
 };
+using MypaintBrushEditorRef = PainterEditorRef;
 }
 #endif

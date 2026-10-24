@@ -929,9 +929,6 @@ GtkWidget *dialogs_painter_mypaint_editor_new (GimpDialogFactory *factory,
                                              GimpContext *context,
                                              GimpUIManager *manager, gint size)
 {
-  GError *error = NULL;
-  GtkWidget *editor = gimp_painter_mybrush_editor_new (context, FALSE, &error);
-  if (error)
-    { gimp_message_literal (context->gimp, NULL, GIMP_MESSAGE_ERROR, error->message); g_clear_error (&error); }
-  return editor;
+  return gimp_mypaint_brush_editor_new (context,
+            menus_get_global_menu_factory (context->gimp));
 }

@@ -666,6 +666,14 @@ test('painter-mypaint-editor', painter_editor_test,
         'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
         'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 120)
 
+# Named native C constructor/menu behavior, separate from lifecycle/reentry suites.
+test('painter-editor-named-entry', painter_editor_test,
+  depends: gimp_test_icon_dependencies,
+  env: ['GIMP_TEST_EDITOR_NAMED_ENTRY=1','GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+        'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+        'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
+        'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 120)
+
 # Keep the original editor suite and its 120s budget unchanged.
 # The two additional page-memory lifecycle regressions have their own bounded run.
 test('painter-editor-page-memory', painter_editor_test,

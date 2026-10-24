@@ -53,6 +53,7 @@
 
 #include "actions.h"
 #include "brush-editor-actions.h"
+#include "mypaint-brush-editor-actions.h"
 #include "brushes-actions.h"
 #include "buffers-actions.h"
 #include "channels-actions.h"
@@ -113,6 +114,8 @@ GHashTable        *aux_filter_hash_table = NULL;
 
 static const GimpActionFactoryEntry action_groups[] =
 {
+  { "mypaint-brush-editor", N_("Painter Brush Editor"), GIMP_ICON_BRUSH,
+    mypaint_brush_editor_actions_setup, mypaint_brush_editor_actions_update },
   { "brush-editor", N_("Brush Editor"), GIMP_ICON_BRUSH,
     brush_editor_actions_setup,
     brush_editor_actions_update },

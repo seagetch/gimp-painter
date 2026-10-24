@@ -17,6 +17,12 @@ GType gimp_painter_mybrush_editor_get_type (void) G_GNUC_CONST;
 /* All presentations own a reference to the canonical tool model, obtained
  * through ref_for_context. NULL, wrong and closed contexts return an error. */
 GtkWidget *gimp_painter_mybrush_editor_new (GimpContext *context, gboolean horizontal, GError **error);
+/* Legacy named constructor, native shared-model implementation. A non-NULL
+ * factory must register <MypaintBrushEditor>; NULL constructs without a menu.
+ * This is not a GimpDataEditor and does not implement its edit-active/session information-view behavior. */
+GtkWidget *gimp_mypaint_brush_editor_new (GimpContext *context, GimpMenuFactory *menu_factory);
+/* UI command shared by the native menu and editor, without another model. */
+gboolean gimp_painter_mybrush_editor_save_command (GimpPainterMybrushEditor *editor, gboolean save_as, GError **error);
 GtkWidget *gimp_painter_mybrush_editor_popup (GimpContext *context, GtkWidget *parent, GError **error);
 gboolean gimp_painter_mybrush_editor_set_context (GimpPainterMybrushEditor *editor, GimpContext *context, GError **error);
 /* A NULL name uses the pending draft name: an unchanged name saves the selected

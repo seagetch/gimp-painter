@@ -1786,10 +1786,16 @@ static void notebook_page_build_reentry ()
 
 #include "test-painter-editor-control-lifetimes.inc"
 
+#include "test-painter-editor-entry.inc"
+
 int main(int argc,char**argv){
   g_test_init(&argc,&argv,nullptr);if(!gtk_init_check(&argc,&argv))return GIMP_EXIT_TEST_SKIPPED;
   gimp_test_utils_setup_menus_path();gimp=gimp_init_for_gui_testing(TRUE);
-  if (g_getenv("GIMP_TEST_EDITOR_CONTROL_LIFETIMES")) {
+  if (g_getenv("GIMP_TEST_EDITOR_NAMED_ENTRY")) {
+  add_editor_case("/painter-editor/named-entry/constructor", named_editor_constructor);
+  add_editor_case("/painter-editor/named-entry/menu-save", named_editor_menu_save);
+  add_editor_case("/painter-editor/named-entry/menu-lifetime", named_editor_menu_lifetime);
+  } else if (g_getenv("GIMP_TEST_EDITOR_CONTROL_LIFETIMES")) {
   add_editor_case("/painter-editor/29-direct-control-retirement",direct_control_retirement);
   add_editor_case("/painter-editor/30-direct-control-emitter-first",direct_control_emitter_first);
   add_editor_case("/painter-editor/31-direct-control-callback-close",direct_control_callback_close);

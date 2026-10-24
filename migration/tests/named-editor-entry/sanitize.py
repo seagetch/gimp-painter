@@ -1,0 +1,5 @@
+import pathlib,json,subprocess,hashlib
+O=pathlib.Path('/workspace/shared/named-editor-entry');B=pathlib.Path('/workspace/shared/gimp-native-preset-gui/build');D=O/'asan';D.mkdir(exist_ok=True);j=json.loads((O/'build.json').read_text());mapping={};commands=[]
+for command in j['compile']:
+ c=command[:];old=c[c.index('-o')+1];new=str(D/pathlib.Path(old).name);mapping[old]=new;c[c.index('-o')+1]=new;c[c.index('-MF')+1]=new+'.d';c[1:1]=['-fsanitize=address,undefined','-fno-omit-frame-pointer','-O1','-g0'];c=[x for x in c if x!='-O2'];subprocess.run(c,cwd=B,check=True);commands.append(c)
+l=[mapping.get(x,x) for x in j['link']];l[l.index('-o')+1]=str(O/'named-editor-asan');l[1:1]=['-fsanitize=address,undefined','-fno-omit-frame-pointer'];subprocess.run(l,cwd=B,check=True);(O/'asan-build.json').write_text(json.dumps({'compile':commands,'link':l,'executable_sha256':hashlib.sha256((O/'named-editor-asan').read_bytes()).hexdigest(),'scope':'7 translation units; linked native dependencies uninstrumented'},indent=2)+'\n')

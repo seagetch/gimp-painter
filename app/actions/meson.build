@@ -1,6 +1,7 @@
 libappactions_sources = [
   'actions.c',
   'brush-editor-actions.c',
+  'mypaint-brush-editor-actions.c',
   'brushes-actions.c',
   'buffers-actions.c',
   'buffers-commands.c',

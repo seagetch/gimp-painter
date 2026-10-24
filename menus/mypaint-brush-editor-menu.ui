@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<interface>
+  <menu id="/mypaint_brush-editor-popup">
+    <submenu>
+      <attribute name="label" translatable="yes" context="mypaint-brush-editor-action">Painter Brush Editor Menu</attribute>
+      <attribute name="icon">gimp-tool-paintbrush</attribute>
+      <item><attribute name="action">mypaint-brush-editor.mypaint-brush-editor-save</attribute></item>
+      <item><attribute name="action">mypaint-brush-editor.mypaint-brush-editor-save-as</attribute></item>
+    </submenu>
+  </menu>
+</interface>

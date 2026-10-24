@@ -3,6 +3,7 @@ menus_dir = prefix / gimpdatadir / 'menus'
 ui_menus_files = files(
   'app-menu.ui',
   'brush-editor-menu.ui',
+  'mypaint-brush-editor-menu.ui',
   'brushes-menu.ui',
   'buffers-menu.ui',
   'channels-menu.ui',

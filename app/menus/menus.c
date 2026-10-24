@@ -297,6 +297,11 @@ menus_init (Gimp *gimp)
                                       "images-menu", NULL,
                                       NULL);
 
+  gimp_menu_factory_manager_register (global_menu_factory, "<MypaintBrushEditor>",
+                                      "mypaint-brush-editor", NULL,
+                                      "/mypaint_brush-editor-popup",
+                                      "mypaint-brush-editor-menu", NULL, NULL);
+
   gimp_menu_factory_manager_register (global_menu_factory, "<BrushEditor>",
                                       "brush-editor",
                                       NULL,
