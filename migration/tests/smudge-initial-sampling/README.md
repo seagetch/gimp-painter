@@ -88,3 +88,9 @@ center scenes without production changes. The exact source admission now pins
 that package's current entry source and checker; all historical runtime/archive
 bytes remain unchanged. Original25/24-case results are not relabeled26-case runs.
 Arbitrary future edits are rejected. Original52 duties remain open.
+
+## Exact ledger successor
+The OPEN audit and runtime receipts above remain immutable historical evidence.
+The checker admits only the exact reviewed23.002 ledger successor in
+`../smudge-accumulator-closure/rows.json`; it does not relabel this historical
+execution as a new run, admit future source changes, or close cross-owned tasks.

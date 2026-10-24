@@ -2,12 +2,18 @@
 import csv,hashlib,json,pathlib,re,tarfile,importlib.util,gzip
 P=pathlib.Path(__file__).resolve().parent;R=P.parents[2]
 def sha(b):return hashlib.sha256(b).hexdigest()
+def ledger_admit(historical,current):
+ import importlib.util
+ p=R/'migration/tests/smudge-accumulator-closure/ledger-admission.py'
+ assert sha(p.read_bytes())=='9924df43db71bfa891d2181bdb427a175e239e610e1df63c1429d38ca1e0b24e'
+ spec=importlib.util.spec_from_file_location('smudge_ledger_admission',p);m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
+ m.admit(historical,current)
 def check(p=P):
  for n,h in json.loads((p/'manifest.json').read_text()).items():assert sha((p/n).read_bytes())==h,n
  a=json.loads((p/'audit.json').read_text());assert a['tasks']==['23.002'] and a['status']=='OPEN' and a['closed_original_duties']==0 and len(a['rows'])==52
  rows=list(csv.DictReader((R/'migration/inventory/legacy-port-work-items.tsv').open(),delimiter='\t'));lookup={r['work_id']:r for r in rows}
  for r in a['rows']:
-  assert all(lookup[r['work_id']][k]==v for k,v in r.items() if k not in ['payload','other_whole_hunk_owners'])
+  ledger_admit(r,lookup[r['work_id']])
   assert sha((p/r['payload']).read_bytes())==r['source_sha256']
   assert {(x['work_id'],x['wbs_task']) for x in rows if x['source_id']==r['source_id'] and x['work_id']!=r['work_id']}=={(x['work_id'],x['task']) for x in r['other_whole_hunk_owners']}
  seal=json.loads((p/'final/source-before-normal-build.json').read_text());assert len(seal)==57

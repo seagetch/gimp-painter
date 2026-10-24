@@ -962,7 +962,7 @@
 | 23.001 | [x] | 旧 blending-output の式を抽出する | 02.015, 09.017 | Flow/Rate と区別した仕様を記録 |
 | 23.001/runtime-old-strokes | [x] | 独立Smudgeの旧実描画・蓄積・blending出力を採取する | 02.003, 04.002/common-foundation | 48実旧scene/192全native画素snapshotをRGB/Gray・alpha有無・rate・色混合・size dynamicsで採取し、独立再実行2952800 bytes完全一致。全Undo/Redo一致・4fixture試験合格。現行Flow同等性・移植は未完了 |
 | 23.001/blending-dynamics-model | [x] | 独立blending-outputとnative曲線往復を復元する | 23.001/runtime-old-strokes | 既存enumをずらさず旧value11/nick・aggregateを追加しFlowと分離。5 native/5unit ASan・UBSan合格。空curveのnull/zero長memcpy・memcmpも実検出してguard、旧property・curve roundtripとcopy独立を確認。Smudge toolは別gate |
-| 23.002 | [ ] | Smudge の蓄積 buffer を移植する | 23.001 | 初期採色と更新が一致 |
+| 23.002 | [x] | Smudge の蓄積 buffer を移植する | 23.001 | 初期採色と更新が一致 |
 | 23.002/native-byte-kernels | [x] | 旧Smudge蓄積・shade・native描画の別々の数式を保持する | 23.001/runtime-old-strokes | 1024実旧caseの全byte重み/RGB/Gray/alpha/選択を採取し891487 bytesが通常/ASan・UBSan・float-cast-overflow完全一致。PaintCore replaceとLayer Replaceの異なる半透明/透明色roundingを維持。native全stroke/toolは後続gate |
 | 23.002/native-owner-smudge | [x] | 旧Smudgeを専用native coreと単一Undo・取消しへ接続する | 23.002/native-byte-kernels, 27.009/native-start-preflight | Y/YA/RGB/RGBA48実旧sceneの193record/2952800 bytesがrawとowned経路で完全一致。10 lifecycle群と15source focused sanitizer合格。旧mask丸め/独立blendingを保持。GUI登録・長距離分割・memory admission・全precision/pipe・旧profile移行は別gate |
 | 23.003 | [ ] | Smudge の色混合を移植する | 23.002 | 旧 blending-output を再現 |
@@ -1476,6 +1476,8 @@
 | 38.017 | [ ] | release tag と変更一覧を準備する | 38.016 | 配布物からソース commit を追跡可能 |
 
 29.002 / 29.008 の icon 失敗経路の逆参照: 29.008/icon-null。元の全受入条件と親依存は未完了のまま保持する。有限な native 入力への依存整理の根拠と元依存: `migration/contracts/tile-icon-fallback.md`。
+
+2026-10-21 Original23.002 closed for unchanged initial sampling/update criterion after52-role review: final26 native cases,384 center scenes/2016 updates, four48-scene old-raster routes,1024 byte kernels and fresh dynamics/neutral mapping proof. Exact historical ledger successor retains every ID/criterion and all cross-owners;23.003 blending,23.004 full transformed footprint and23.005 UI/save remain OPEN. See `migration/tests/smudge-accumulator-closure/`. No new runtime or whole-HEAD claim.
 
 ## 5. 機能36項目の追跡表
 

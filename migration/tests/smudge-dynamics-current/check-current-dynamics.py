@@ -6,12 +6,18 @@ def body(s,needle):
  a=s.index(needle);b=s.index('{',a);depth=1;i=b+1
  while depth:depth+=(s[i]=='{')-(s[i]=='}');i+=1
  return s[a:i]
+def ledger_admit(historical,current):
+ import importlib.util
+ p=R/'migration/tests/smudge-accumulator-closure/ledger-admission.py'
+ assert sha(p.read_bytes())=='9924df43db71bfa891d2181bdb427a175e239e610e1df63c1429d38ca1e0b24e'
+ spec=importlib.util.spec_from_file_location('smudge_ledger_admission',p);m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
+ m.admit(historical,current)
 def check(p=P):
  for n,h in json.loads((p/'manifest.json').read_text()).items():assert sha((p/n).read_bytes())==h,n
  a=json.loads((p/'audit.json').read_text());assert a['tasks']==['23.002']and a['status']=='OPEN'and a['closed_original_duties']==0 and len(a['rows'])==52
  current={r['work_id']:r for r in csv.DictReader((R/'migration/inventory/legacy-port-work-items.tsv').open(),delimiter='\t')}
  for row in a['rows']:
-  assert all(current[row['work_id']][k]==v for k,v in row.items()if k not in ['payload','other_whole_hunk_owners'])
+  ledger_admit(row,current[row['work_id']])
   assert {(x['work_id'],x['wbs_task'])for x in current.values()if x['source_id']==row['source_id']and x['work_id']!=row['work_id']}=={(x['work_id'],x['task'])for x in row['other_whole_hunk_owners']}
  review=json.loads((p/'source-duty-review.json').read_text());assert len(review['rows'])==52 and {r['work_id']for r in review['rows']}==set(r['work_id']for r in a['rows']);assert all(r['status']=='OPEN_REVIEW_NOT_CLOSURE'and r['original_criterion']=='初期採色と更新が一致'for r in review['rows'])
  seal=json.loads((p/'final/source-before-build.json').read_text());assert len(seal)==26

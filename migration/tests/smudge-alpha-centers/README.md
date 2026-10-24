@@ -46,3 +46,9 @@ from historical prior25/24-case results. The map's retrospective dynamics cross-
 finds historical model/test/curve hashes unchanged, but dynamicsoutput differs in
 main and private, and core-enums differs in main; it is explicitly NOT fresh proof
 for changed units. Those source-specific review gaps remain open.
+
+## Exact ledger successor
+The OPEN audit and runtime receipts above remain immutable historical evidence.
+The checker admits only the exact reviewed23.002 ledger successor in
+`../smudge-accumulator-closure/rows.json`; it does not relabel this historical
+execution as a new run, admit future source changes, or close cross-owned tasks.

@@ -2,6 +2,12 @@
 import pathlib,json,hashlib,tarfile,csv,re,gzip,importlib.util
 P=pathlib.Path(__file__).resolve().parent;R=P.parents[2]
 def sha(b):return hashlib.sha256(b).hexdigest()
+def ledger_admit(historical,current):
+ import importlib.util
+ p=R/'migration/tests/smudge-accumulator-closure/ledger-admission.py'
+ assert sha(p.read_bytes())=='9924df43db71bfa891d2181bdb427a175e239e610e1df63c1429d38ca1e0b24e'
+ spec=importlib.util.spec_from_file_location('smudge_ledger_admission',p);m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
+ m.admit(historical,current)
 def check(p=P):
  for n,h in json.loads((p/'manifest.json').read_text()).items():assert sha((p/n).read_bytes())==h,n
  a=json.loads((p/'audit.json').read_text());assert a['tasks']==['23.002']and a['status']=='OPEN'and a['closed_original_duties']==0 and len(a['rows'])==52
@@ -10,7 +16,7 @@ def check(p=P):
   assert row['acceptance']=='初期採色と更新が一致'
   assert sha((R/'migration/tests/smudge-initial-sampling'/row['payload']).read_bytes())==row['source_sha256']
   assert {(x['work_id'],x['wbs_task'])for x in current.values()if x['source_id']==row['source_id']and x['work_id']!=row['work_id']}=={(x['work_id'],x['task'])for x in row['other_whole_hunk_owners']}
-  assert all(current[row['work_id']][k]==v for k,v in row.items() if k not in ['payload','other_whole_hunk_owners'])
+  ledger_admit(row,current[row['work_id']])
  seal=json.loads((p/'final/source-before-build.json').read_text());assert len(seal)==71
  with tarfile.open(p/'final/tested-sources.tar.gz','r:gz')as t:
   assert set(t.getnames())==set(seal);src={n:t.extractfile(n).read()for n in seal}

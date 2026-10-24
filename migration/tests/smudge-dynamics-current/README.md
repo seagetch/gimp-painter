@@ -44,3 +44,9 @@ not packaged; focused command/source hashes and selected test fields are retaine
 24 semantic evidence controls reject altered source/commit/function claims,
 missing real neutral path, disabled sanitizer, missing held provider, accepted
 causal mutant and failed restoration. No historical stale receipt is rewritten.
+
+## Exact ledger successor
+The OPEN audit and runtime receipts above remain immutable historical evidence.
+The checker admits only the exact reviewed23.002 ledger successor in
+`../smudge-accumulator-closure/rows.json`; it does not relabel this historical
+execution as a new run, admit future source changes, or close cross-owned tasks.
