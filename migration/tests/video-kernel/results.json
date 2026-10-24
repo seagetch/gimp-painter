@@ -1,0 +1,181 @@
+{
+  "scope": "isolated immutable Video product kernel only;no native owner/transport/runtime",
+  "source_sha256": {
+    "app/painter/filter-video-kernel.hpp": "8c38cdee0ca14cb3bb700eff7a66a424ae8e796c48574723a71233fd0b80bb04",
+    "migration/tests/video-kernel/adapter.cpp": "497dd24cb70dbafb1d06fc8f699afa337c3a9e1b0d50bfde7018b7b032056320",
+    "migration/tests/video-kernel/contracts.cpp": "6c790a22234ac01c1aca6cc85b6ae8d415a6f23df55c2f3c3773b930bcadde45",
+    "migration/tests/video-foundation/compare.c": "fd846514be5e6a0f7f3e4b8515a7728447b67a9a9f18ac11316f1b7ba4ef81da",
+    "migration/tests/video-foundation/reference-patterns.h": "38acf35efd556c4c332123aeb75824d09d4cc001e8c4f7ee0fbe5de64eaf02a3"
+  },
+  "runs": {
+    "normal-matrix": {
+      "compile": [
+        "c++",
+        "-std=c++14",
+        "-fno-rtti",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-pedantic",
+        "-I/workspace/scratch/0015fc5d1a03/gimp-painter/app/painter",
+        "-O2",
+        "/workspace/scratch/0015fc5d1a03/gimp-painter/migration/tests/video-kernel/adapter.cpp",
+        "/tmp/video-kernel-8qatt8hf/compare.o",
+        "-o",
+        "/tmp/video-kernel-8qatt8hf/normal-matrix"
+      ],
+      "reference_compile": [
+        "cc",
+        "-std=c11",
+        "-O2",
+        "-c",
+        "/workspace/scratch/0015fc5d1a03/gimp-painter/migration/tests/video-foundation/compare.c",
+        "-o",
+        "/tmp/video-kernel-8qatt8hf/compare.o"
+      ],
+      "exit_code": 0,
+      "stdout": "Video 13708800 independent table/coordinate/channel comparisons;9 patterns,25 signed-flag pairs,RGB/RGBA,all256 component/alpha bytes,nonzero ROI origins and INT_MAX coordinates PASS\nHarness defined-domain guard rejected14 invalid inputs without calling old callback;not historical/native validation\n",
+      "stderr": "",
+      "seconds": 0.2609914599961485
+    },
+    "normal-contracts": {
+      "compile": [
+        "c++",
+        "-std=c++14",
+        "-fno-rtti",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-pedantic",
+        "-I/workspace/scratch/0015fc5d1a03/gimp-painter/app/painter",
+        "-O2",
+        "/workspace/scratch/0015fc5d1a03/gimp-painter/migration/tests/video-kernel/contracts.cpp",
+        "-o",
+        "/tmp/video-kernel-8qatt8hf/normal-contracts"
+      ],
+      "reference_compile": [
+        "cc",
+        "-std=c11",
+        "-O2",
+        "-c",
+        "/workspace/scratch/0015fc5d1a03/gimp-painter/migration/tests/video-foundation/compare.c",
+        "-o",
+        "/tmp/video-kernel-8qatt8hf/compare.o"
+      ],
+      "exit_code": 0,
+      "stdout": "Video product28 invalid-input no-write rejections,54 exact/partial aliases,immutable original flags/origin PASS\n",
+      "stderr": "",
+      "seconds": 0.0022240639955271035
+    },
+    "sanitizer-matrix": {
+      "compile": [
+        "c++",
+        "-std=c++14",
+        "-fno-rtti",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-pedantic",
+        "-I/workspace/scratch/0015fc5d1a03/gimp-painter/app/painter",
+        "-O1",
+        "-g0",
+        "-fsanitize=address,undefined",
+        "-fno-omit-frame-pointer",
+        "/workspace/scratch/0015fc5d1a03/gimp-painter/migration/tests/video-kernel/adapter.cpp",
+        "/tmp/video-kernel-8qatt8hf/compare.o",
+        "-o",
+        "/tmp/video-kernel-8qatt8hf/sanitizer-matrix"
+      ],
+      "reference_compile": [
+        "cc",
+        "-std=c11",
+        "-O1",
+        "-g0",
+        "-fsanitize=address,undefined",
+        "-fno-omit-frame-pointer",
+        "-c",
+        "/workspace/scratch/0015fc5d1a03/gimp-painter/migration/tests/video-foundation/compare.c",
+        "-o",
+        "/tmp/video-kernel-8qatt8hf/compare.o"
+      ],
+      "exit_code": 0,
+      "stdout": "Video 13708800 independent table/coordinate/channel comparisons;9 patterns,25 signed-flag pairs,RGB/RGBA,all256 component/alpha bytes,nonzero ROI origins and INT_MAX coordinates PASS\nHarness defined-domain guard rejected14 invalid inputs without calling old callback;not historical/native validation\n",
+      "stderr": "",
+      "seconds": 2.1898492780019296
+    },
+    "sanitizer-contracts": {
+      "compile": [
+        "c++",
+        "-std=c++14",
+        "-fno-rtti",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-pedantic",
+        "-I/workspace/scratch/0015fc5d1a03/gimp-painter/app/painter",
+        "-O1",
+        "-g0",
+        "-fsanitize=address,undefined",
+        "-fno-omit-frame-pointer",
+        "/workspace/scratch/0015fc5d1a03/gimp-painter/migration/tests/video-kernel/contracts.cpp",
+        "-o",
+        "/tmp/video-kernel-8qatt8hf/sanitizer-contracts"
+      ],
+      "reference_compile": [
+        "cc",
+        "-std=c11",
+        "-O1",
+        "-g0",
+        "-fsanitize=address,undefined",
+        "-fno-omit-frame-pointer",
+        "-c",
+        "/workspace/scratch/0015fc5d1a03/gimp-painter/migration/tests/video-foundation/compare.c",
+        "-o",
+        "/tmp/video-kernel-8qatt8hf/compare.o"
+      ],
+      "exit_code": 0,
+      "stdout": "Video product28 invalid-input no-write rejections,54 exact/partial aliases,immutable original flags/origin PASS\n",
+      "stderr": "",
+      "seconds": 0.006904961999680381
+    }
+  },
+  "header_probes": [
+    {
+      "include_count": 1,
+      "command": [
+        "c++",
+        "-std=c++14",
+        "-fno-rtti",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-pedantic",
+        "-I/workspace/scratch/0015fc5d1a03/gimp-painter/app/painter",
+        "-fsyntax-only",
+        "/tmp/video-kernel-8qatt8hf/header.cpp"
+      ],
+      "returncode": 0,
+      "source": "#include \"filter-video-kernel.hpp\"\nint main(){}\n",
+      "stderr": ""
+    },
+    {
+      "include_count": 2,
+      "command": [
+        "c++",
+        "-std=c++14",
+        "-fno-rtti",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-pedantic",
+        "-I/workspace/scratch/0015fc5d1a03/gimp-painter/app/painter",
+        "-fsyntax-only",
+        "/tmp/video-kernel-8qatt8hf/header.cpp"
+      ],
+      "returncode": 0,
+      "source": "#include \"filter-video-kernel.hpp\"\n#include \"filter-video-kernel.hpp\"\nint main(){}\n",
+      "stderr": ""
+    }
+  ],
+  "changed_after_run": []
+}

@@ -1,0 +1,47 @@
+[
+  {
+    "name": "discard-origin",
+    "source_sha256": "8c38cdee0ca14cb3bb700eff7a66a424ae8e796c48574723a71233fd0b80bb04",
+    "mutant_sha256": "57dbc73e56f4f0eb0430d426f5fb8572442deebeebf24f2674f2fe1378778177",
+    "returncode": 1,
+    "stdout": "",
+    "stderr": "Video mismatch p0 x75 y116 add0 rot0 bpp3 c0 v0: 0,129,0,83 != 0,0,253,83\n",
+    "kind": "matrix"
+  },
+  {
+    "name": "ignore-rotation",
+    "source_sha256": "8c38cdee0ca14cb3bb700eff7a66a424ae8e796c48574723a71233fd0b80bb04",
+    "mutant_sha256": "f8d9ac07d0bae0e921cbc12560b2b52d600a6f244a5aec24018c28dbcc97f4a2",
+    "returncode": 1,
+    "stdout": "",
+    "stderr": "Video mismatch p0 x224 y40 add0 rot1 bpp3 c0 v0: 0,0,253,83 != 0,129,0,83\n",
+    "kind": "matrix"
+  },
+  {
+    "name": "wrong-saturation",
+    "source_sha256": "8c38cdee0ca14cb3bb700eff7a66a424ae8e796c48574723a71233fd0b80bb04",
+    "mutant_sha256": "f5a87762325e3c912c0c46e40e8ba857f8900badfaede23cba44216e4ec2edf5",
+    "returncode": 1,
+    "stdout": "",
+    "stderr": "Video mismatch p0 x75 y116 add1 rot0 bpp3 c0 v0: 0,129,254,83 != 0,129,255,83\n",
+    "kind": "matrix"
+  },
+  {
+    "name": "missing-pattern-admission",
+    "source_sha256": "8c38cdee0ca14cb3bb700eff7a66a424ae8e796c48574723a71233fd0b80bb04",
+    "mutant_sha256": "c6a758bd264560e523b5e1202b28042ed1293696fce1b4a87ffb9b5bb0a504f5",
+    "returncode": 1,
+    "stdout": "",
+    "stderr": "Video bad pattern accepted\n",
+    "kind": "contracts"
+  },
+  {
+    "name": "erase-alpha",
+    "source_sha256": "8c38cdee0ca14cb3bb700eff7a66a424ae8e796c48574723a71233fd0b80bb04",
+    "mutant_sha256": "91789087f614849c48bf719bafdb64adc3c6811d8fad2513afb0c0edf197390c",
+    "returncode": 1,
+    "stdout": "",
+    "stderr": "Video mismatch p0 x75 y116 add0 rot0 bpp4 c0 v1: 0,0,253,0 != 0,0,253,73\n",
+    "kind": "matrix"
+  }
+]
