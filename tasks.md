@@ -1015,6 +1015,7 @@
 | 24.007 | [ ] | ブラシ一覧を移植する | 24.006 | tag・検索・選択の資源対応が保たれる |
 | 24.008 | [ ] | 保存 action を接続する | 24.007 | 編集中状態を正しい資源へ書く |
 | 24.009 | [ ] | 複製・改名・削除 action を接続する | 24.008 | 選択中資源と editor が整合 |
+| 24.009/duplicate-saved-resource | [x] | Duplicateで保存資源を複製し未保存draftと履歴を保持する | 24.017/native-editor-workflow, 24.001/application-history | 新規leaf。4修正後default TRUE環境の実GTK38case、実保存再読込・履歴・別Save As・取消/衝突/I/O/選択変更/削除/再入を確認。旧editor negative保持。6TU ASan+UBSan(vptr除外・LSan無効)4case合格。full-vptr開始時失敗は旧editor対照でも再現し未解決gate。実1080x1920 oncanvas画像: migration/tests/editor-duplicate-saved-resource/integration。親24.009・全portは未完了 |
 | 24.010 | [ ] | ブラシ履歴 model を移植する | 24.009 | 編集中状態と保存資源を区別 |
 | 24.011 | [ ] | 履歴選択の復元を実装する | 24.010 | 独自値・曲線・参照を全復元 |
 | 24.012 | [ ] | preview 入力を固定する | 24.011 | 同設定で同じ試し描きを生成 |

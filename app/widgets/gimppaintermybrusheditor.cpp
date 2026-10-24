@@ -44,6 +44,7 @@ extern "C" {
 using namespace GimpPainter;
 namespace MP = GimpPainter::MyPaint;
 static void docked_init (GimpDockedInterface *iface);
+static gboolean save_editor (GimpPainterMybrushEditor *, const gchar *, bool, GError **, bool duplicate_saved = false);
 G_DEFINE_TYPE_WITH_CODE (GimpPainterMybrushEditor, gimp_painter_mybrush_editor, GIMP_TYPE_EDITOR,
                         G_IMPLEMENT_INTERFACE (GIMP_TYPE_DOCKED, docked_init))
 GType gimp_mypaint_brush_editor_get_type (void)
@@ -529,10 +530,10 @@ void prompt(EditorImpl&i,int operation) {
   payload->generation = store (i.owner).generation ();
   payload->ui = revision; payload->operation = operation;
   payload->resource = ObjectRef<GimpPainterMybrush>::retain (gimp_context_get_painter_mybrush (i.ctx ()));
-  auto*dialog=gtk_dialog_new_with_buttons(operation==2?_("Delete Painter Brush"):operation==1?_("Rename Painter Brush"):_("Save Painter Brush As"),
+  auto*dialog=gtk_dialog_new_with_buttons(operation==2?_("Delete Painter Brush"):operation==1?_("Rename Painter Brush"):operation==3?_("Duplicate Painter Brush"):_("Save Painter Brush As"),
     GTK_IS_WINDOW(gtk_widget_get_toplevel(GTK_WIDGET(i.owner)))?GTK_WINDOW(gtk_widget_get_toplevel(GTK_WIDGET(i.owner))):nullptr,
     GtkDialogFlags(GTK_DIALOG_DESTROY_WITH_PARENT),_("Cancel"),GTK_RESPONSE_CANCEL,
-    operation==2?_("Delete"):_("Save"),GTK_RESPONSE_OK,nullptr);
+    operation==2?_("Delete"):operation==3?_("Duplicate"):_("Save"),GTK_RESPONSE_OK,nullptr);
   payload->dialog = ObjectRef<GObject>::sink (G_OBJECT (dialog));
   payload->destroyed = Connection::connect(payload->dialog,"destroy",G_CALLBACK(+[](GtkWidget*,gpointer data){
     boundary_void(nullptr,[&]{auto p=static_cast<EditorPrompt*>(data)->shared_from_this();retire_prompt(p);});
@@ -541,8 +542,8 @@ void prompt(EditorImpl&i,int operation) {
   payload->entry = ObjectRef<GObject>::sink (G_OBJECT (entry));
   if (payload->closed || i.closed || i.ui_revision != revision) return;
   auto*source=payload->resource.get();const char*source_name=source?gimp_object_get_name(source):"";
-  gtk_entry_set_text(GTK_ENTRY(entry),operation==1?source_name:gtk_entry_get_text(GTK_ENTRY(i.name)));
-  if(operation==0&&g_strcmp0(gtk_entry_get_text(GTK_ENTRY(entry)),source_name)==0){std::string n=gtk_entry_get_text(GTK_ENTRY(entry));n+=_(" copy");gtk_entry_set_text(GTK_ENTRY(entry),n.c_str());}
+  gtk_entry_set_text(GTK_ENTRY(entry),(operation==1||operation==3)?source_name:gtk_entry_get_text(GTK_ENTRY(i.name)));
+  if((operation==0||operation==3)&&g_strcmp0(gtk_entry_get_text(GTK_ENTRY(entry)),source_name)==0){std::string n=gtk_entry_get_text(GTK_ENTRY(entry));n+=_(" copy");gtk_entry_set_text(GTK_ENTRY(entry),n.c_str());}
   gtk_container_add(GTK_CONTAINER(gtk_dialog_get_content_area(GTK_DIALOG(dialog))),operation==2?gtk_label_new(_("Delete the selected brush from disk?")):entry);
   if (payload->closed || i.closed || i.ui_revision != revision) return;
   payload->response = Connection::connect(payload->dialog,"response",G_CALLBACK(+[](GtkDialog*,gint response,gpointer data){
@@ -558,7 +559,7 @@ void prompt(EditorImpl&i,int operation) {
       auto owner=p->editor.lock();
       if(response==GTK_RESPONSE_OK&&owner){auto*b=BindingStore::find(G_OBJECT(owner.get()));if(b&&b->accepts(p->generation))b->with<EditorSlot>([&](EditorImpl&i){
         if(i.ui_revision!=p->ui||i.closed||gimp_context_get_painter_mybrush(i.ctx())!=p->resource.get()){status(i,_("Selection changed; no brush was modified"));return;}
-        GError*error=nullptr;gboolean ok=p->operation==2?gimp_painter_mybrush_editor_delete(i.owner,&error):p->operation==1?gimp_painter_mybrush_editor_rename(i.owner,gtk_entry_get_text(GTK_ENTRY(p->entry.get())),&error):gimp_painter_mybrush_editor_save(i.owner,gtk_entry_get_text(GTK_ENTRY(p->entry.get())),&error);
+        GError*error=nullptr;gboolean ok=p->operation==2?gimp_painter_mybrush_editor_delete(i.owner,&error):p->operation==1?gimp_painter_mybrush_editor_rename(i.owner,gtk_entry_get_text(GTK_ENTRY(p->entry.get())),&error):p->operation==3?save_editor(i.owner,gtk_entry_get_text(GTK_ENTRY(p->entry.get())),false,&error,true):gimp_painter_mybrush_editor_save(i.owner,gtk_entry_get_text(GTK_ENTRY(p->entry.get())),&error);
         if(!ok)status(i,error?error->message:_("Unable to save brush"));g_clear_error(&error);
       });}
     });
@@ -617,7 +618,7 @@ void build(EditorImpl&i) {
   i.rename=button(i,actions,_("Rename"),"painter-brush-rename",[](EditorImpl&i){prompt(i,1);});
   i.remove=button(i,actions,_("Delete"),"painter-brush-delete",[](EditorImpl&i){prompt(i,2);});
   auto*more=gtk_box_new(GTK_ORIENTATION_HORIZONTAL,2);pack(left,more);
-  button(i,more,_("Duplicate"),"painter-brush-duplicate",[](EditorImpl&i){prompt(i,0);});
+  button(i,more,_("Duplicate"),"painter-brush-duplicate",[](EditorImpl&i){prompt(i,3);});
   button(i,more,_("Popup Editor"),"painter-brush-popup",[](EditorImpl&i){GError*e=nullptr;auto*w=gimp_painter_mybrush_editor_popup(i.ctx(),GTK_WIDGET(i.owner),&e);checked(w!=nullptr,e);});
   button(i,more,_("Refresh"),"painter-brush-refresh",[](EditorImpl&i){gimp_data_factory_data_refresh(i.ctx()->gimp->painter_mybrush_factory,i.ctx());rebuild_list(i);});
   i.history=named(gtk_combo_box_text_new(),"painter-brush-history");row(left,_("Draft history"),i.history);
@@ -884,7 +885,7 @@ GtkWidget*gimp_painter_mybrush_editor_popup(GimpContext*context,GtkWidget*parent
   gtk_window_set_destroy_with_parent(GTK_WINDOW(window),TRUE);gtk_container_add(GTK_CONTAINER(window),editor);gtk_widget_show_all(window);return window;
   });
 }
-static gboolean save_editor(GimpPainterMybrushEditor*editor,const gchar*name,bool use_draft_name,GError**error) {
+static gboolean save_editor(GimpPainterMybrushEditor*editor,const gchar*name,bool use_draft_name,GError**error,bool duplicate_saved) {
   return boundary<gboolean>(error,FALSE,[&]()->gboolean {return store(editor).with<EditorSlot>([&](EditorImpl&i)->gboolean {
     if(!i.options)throw Error(GIMP_PAINTER_ERROR_INVALID_STATE,"The editor has no context");
     auto model=i.options;auto context=ObjectRef<GObject>::retain(G_OBJECT(i.ctx()));auto*ctx=GIMP_CONTEXT(context.get());auto*factory=ctx->gimp->painter_mybrush_factory;
@@ -905,7 +906,14 @@ static gboolean save_editor(GimpPainterMybrushEditor*editor,const gchar*name,boo
       if(!*name||!g_utf8_validate(name,-1,nullptr))throw Error(GIMP_PAINTER_ERROR_INVALID_STATE,"A valid brush name is required");
       auto draft=PainterOptionsRef::retain(model.get()).snapshot();const auto saved_draft=draft.encode();
       String saved_name(gimp_painter_mybrush_options_dup_draft_name(model.get(),&failure));checked(bool(saved_name),failure);
-      auto copy=PainterMybrushRef::create(name);copy.replace(draft);
+      /* Duplicate is a saved-resource operation, not an implicit Save As.
+       * Keep the draft snapshot solely as a reentry guard; selection below
+       * records that dirty draft in history before adopting the saved copy. */
+      if(duplicate_saved&&!gimp_container_have(gimp_data_factory_get_container(factory),GIMP_OBJECT(selected.get())))
+        throw Error(GIMP_PAINTER_ERROR_INVALID_STATE,"The selected brush is no longer available");
+      auto copy=duplicate_saved?PainterMybrushRef::retain(selected.get()).duplicate():PainterMybrushRef::create(name);
+      if(duplicate_saved)gimp_object_set_name(GIMP_OBJECT(copy.get()),name);
+      else copy.replace(draft);
       gimp_tagged_set_tags(GIMP_TAGGED(copy.get()),gimp_tagged_get_tags(GIMP_TAGGED(selected.get())));
       auto*container=gimp_data_factory_get_container(factory);
       if(gimp_container_get_child_by_name(container,name))throw Error(GIMP_PAINTER_ERROR_INVALID_STATE,"A painter brush with that name already exists");

@@ -1,0 +1,125 @@
+{
+  "leaf": "24.009/duplicate-saved-resource",
+  "base_commit": "b35ed653e2f84f8912a5323c0745b7279d02ca13",
+  "fresh_work_not_historical_reconstruction": true,
+  "legacy_source": {
+    "commit": "afa43fae3e920210146abed514f136fd49f671b5",
+    "path": "app/actions/data-commands.c",
+    "callback": "data_duplicate_cmd_callback",
+    "excerpt_sha256": "68751a9a7a133a58346a9d3f56dffcf4f753e6f0893fda92c2781b79e84974b0"
+  },
+  "results": {
+    "final-red": {
+      "exit_status": 250,
+      "evidence": "final-red.txt"
+    },
+    "final-registered": {
+      "exit_status": 0,
+      "evidence": "final-registered.txt"
+    },
+    "asan": {
+      "exit_status": 0,
+      "evidence": "asan.txt"
+    },
+    "asan-vptr-baseline": {
+      "exit_status": 1,
+      "evidence": "asan-vptr-baseline.txt"
+    },
+    "capture-fix": {
+      "exit_status": 0,
+      "evidence": "capture-fix.txt"
+    }
+  },
+  "original_editor_sha256": "57b7da0651bb69e0a3eaf5670fac22a5b3d89009c27d0f07334efc0814fc6c4e",
+  "sources": {
+    "app/widgets/gimppaintermybrusheditor.cpp": "35bc34abc168a49ebd5cbc6c7e95cd514333e56745a74eb2a4731476ec518a01",
+    "app/tests/test-painter-mypaint-editor.cpp": "034a4011b62aa547e9ac8fc70b07deb59f44acc92680fcb857683c849d4d0bbd",
+    "app/tests/test-painter-editor-duplicate.inc": "3de3dead9b6c078908453c982e9bf687a90a3da7deb4b76514fb32ed88e3a07e",
+    "app/tests/meson.build": "f3404131ad5c22346e46860d632ab1113577ceb914e2eaa74f6b002e6742208e",
+    "app/core/gimppaintermybrush.cpp": "380d658a72554156704380c28000a9f54bc424789383f6e774916f3818773b20",
+    "app/paint/painter-mypaint-surface/gimp-painter-options.cpp": "1c6ae211d6352eeacd0be9e5e2ed54fd9e5a7f731c4f18c595e66392aea5165a",
+    "app/painter/binding-store.cpp": "c69d65c22f26e6be8f6df69765cd30f7bbbd32b46b0eb847e9f6524b41c2b557",
+    "app/painter/gimp-painter-binding.cpp": "22aca4f9e467e16b86f2cbeec431d7d069fc552c98fad985db770720fcf876fd"
+  },
+  "binaries": {
+    "painter-mypaint-editor": "8d45caee1b9a291511a08bf23aa57b7afa86f5ba9b5d828942e92e7ccc4dca9c",
+    "painter-editor-duplicate-red": "259f82526fa717c167c647753f3e0f3cd4fc123d433bca432e9949ce494588c6",
+    "painter-editor-duplicate-asan": "477086e78588b0573412e5cb5b7e54d0cf487c162068f82249521e2299d3d092",
+    "painter-editor-duplicate-asan-vptr-baseline": "ceba18fd7aa8518601c4ce7267ab1c96be6b0f5a048b3e8f70b034349e43fc0a"
+  },
+  "native_registered_cases": 38,
+  "sanitizer": {
+    "translation_units": 6,
+    "address": true,
+    "undefined_except_vptr": true,
+    "leak_detection": false,
+    "vptr_gate": "UNRESOLVED: pre-test BindingStore EntryBase invalid-vptr diagnostic; compare original-editor baseline control. Mixed RTTI/-fno-rtti incompatibility suspected, not proven.",
+    "unmodified_application_and_dependencies": "not instrumented"
+  },
+  "portrait": {
+    "dimensions": [
+      1080,
+      1920
+    ],
+    "oncanvas": "explicitly enabled by opt-in test because base predates separately reviewed default-oncanvas fix",
+    "capture": "actual Xvfb root-window pixels; visually inspected"
+  },
+  "limitations": [
+    "No whole-port completion or parent 24.009 closure",
+    "No claim to reconstruct missing historic tests or commits",
+    "No full-application/full-dependency sanitizer pass",
+    "Original full-vptr startup failure retained as separate unresolved gate",
+    "Official extracted older dependencies; not a current upstream dependency-readiness claim"
+  ],
+  "artifacts": {
+    "legacy-duplicate.c": "68751a9a7a133a58346a9d3f56dffcf4f753e6f0893fda92c2781b79e84974b0",
+    "final-registered.txt": "8581f3f1694b83a5a3da765e2b7c460945b87b2c50fea34c7654d77e4e0f05ee",
+    "asan-vptr-initial.txt": "8321c72f383510abdb517713a26804471df73b027fbb5bdea2cea9b71bdb867a",
+    "capture-fix.txt": "d160f01805ff145bc5032bf361b2d004ace2b07eb70681de6eb66052420337d1",
+    "asan-vptr-baseline-build.json": "f7138022b527abef5ef0983da5c1820e41843e3b17c57b257fbb63f2361349a4",
+    "asan.txt": "e1436c11fff3d5749b2e955f1278edfa9e870e763ecacd2440c764330f4a9f77",
+    "build-red.py": "40cf3fb363f194198f180a3d0d0ff2e1a518b49751eba3a8746758f8163b2587",
+    "asan-build.json": "e94bf6453df9347d01490248102dea44702d0159b414de74a4536fbae03c2177",
+    "sanitize.py": "8b1460c88964614e5276b509ccc260940278ce30d533c825db124391a89f3b03",
+    "duplicate-restored-draft.png": "33cc93f0e450ba3ba2c9c997dfb31086af64e26a7d943d97371670dea0d68061",
+    "duplicate-saved-copy.png": "7cb9aa3c4d2e1b05e19dfd7e88ef6b3b81cc064b90504ad0ecd31307f3c48ab2",
+    "README.md": "305a3f634693a64913dc5cb33d6a344005262a92306772f0cde09e0962ba0cb1",
+    "final-red.txt": "28bb01d37edc6c37dba7c3358e8407d61bc885d32ad402736f9861d5d9e5661e",
+    "asan-vptr-baseline.txt": "01dbbb66ad426ebdb44ad058cd5e41ae6699e7939b8ce45b77a57461fc6725fc"
+  },
+  "transcript_correction_provenance": {
+    "immutable_original_package_patch_sha256": "892e0c4335e35aababd0c2a7f50d25bd2c5376cacb54d3e0a9d30a979e49eb5b",
+    "corrections": [
+      {
+        "path": "final-red.txt",
+        "original_published_candidate_sha256": "32c61764906aac3c9671a26fff9dbd9b7b767dcaf1e86607c93ccc5cadea6b57",
+        "corrected_sha256": "28bb01d37edc6c37dba7c3358e8407d61bc885d32ad402736f9861d5d9e5661e",
+        "change": "Regenerated allowlisted transcript from retained raw log; lexical pointer matcher preserves display dimensions."
+      },
+      {
+        "path": "final-registered.txt",
+        "original_published_candidate_sha256": "68a6703b4a859649393b973bf9a84e35a283960503ef95e9e236be18376e08dc",
+        "corrected_sha256": "8581f3f1694b83a5a3da765e2b7c460945b87b2c50fea34c7654d77e4e0f05ee",
+        "change": "Regenerated allowlisted transcript from retained raw log; lexical pointer matcher preserves display dimensions."
+      },
+      {
+        "path": "asan.txt",
+        "original_published_candidate_sha256": "29f19eeac16c5bb68266c2a3025a925df1b708fdb88fc1383cb44bd892e06ee9",
+        "corrected_sha256": "e1436c11fff3d5749b2e955f1278edfa9e870e763ecacd2440c764330f4a9f77",
+        "change": "Regenerated allowlisted transcript from retained raw log; lexical pointer matcher preserves display dimensions."
+      },
+      {
+        "path": "asan-vptr-baseline.txt",
+        "original_published_candidate_sha256": "f07fba776d45f24359ef4bd07a743fb486f6d74359e58938270d33d588349b50",
+        "corrected_sha256": "01dbbb66ad426ebdb44ad058cd5e41ae6699e7939b8ce45b77a57461fc6725fc",
+        "change": "Regenerated allowlisted transcript from retained raw log; lexical pointer matcher preserves display dimensions."
+      },
+      {
+        "path": "capture-fix.txt",
+        "original_published_candidate_sha256": "f0ac2de6540bf04d93101d97562296d0ca40976e63dc11920b0e7ed17cca8408",
+        "corrected_sha256": "d160f01805ff145bc5032bf361b2d004ace2b07eb70681de6eb66052420337d1",
+        "change": "Regenerated allowlisted transcript from retained raw log; lexical pointer matcher preserves display dimensions."
+      }
+    ]
+  }
+}

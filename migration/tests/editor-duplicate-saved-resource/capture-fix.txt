@@ -1,0 +1,8 @@
+Xvfb verified: 127.0.0.1:91, 1080x1920x24, authenticated accepted, empty authority rejected
+1..4
+# Actual portrait 1080x1920; oncanvas explicitly enabled; Duplicate persisted saved A (opacity 0.21); dirty B retained in history
+# Actual portrait 1080x1920; oncanvas explicitly enabled; Restored unsaved draft B (opacity 0.83); saved A and duplicate unchanged
+ok 1 /painter-editor/duplicate/saved-resource
+ok 2 /painter-editor/duplicate/interrupted
+ok 3 /painter-editor/duplicate/reentry
+ok 4 /painter-editor/duplicate/deleted-source

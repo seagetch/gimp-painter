@@ -1,0 +1,102 @@
+{
+  "scope": "Fresh Duplicate fifth task AFTER four reviewed fixes, not part of their frozen plan",
+  "base_expected_296_tree": "ac116d76422d3e4d89cc79985a94b172f18d9f03",
+  "results": {
+    "registered": {
+      "exit_status": 0,
+      "evidence": "registered.txt"
+    },
+    "portrait": {
+      "exit_status": 0,
+      "evidence": "portrait.txt"
+    },
+    "red": {
+      "exit_status": 250,
+      "evidence": "red.txt"
+    },
+    "asan": {
+      "exit_status": 0,
+      "evidence": "asan.txt"
+    }
+  },
+  "registered_suites": 5,
+  "distinct_registered_native_cases": 38,
+  "portrait_cases": 4,
+  "default_TRUE": "Actual configured default and visible oncanvas asserted in portrait fixture; no enabling setter or environment override",
+  "four_reviewed_sources_preserved": "All 12 distinct paths match final reviewed source except additive Duplicate Meson registration; removing only that registration yields exact296 Meson blob",
+  "sources": {
+    "app/widgets/gimppaintermybrusheditor.cpp": "35bc34abc168a49ebd5cbc6c7e95cd514333e56745a74eb2a4731476ec518a01",
+    "app/tests/test-painter-mypaint-editor.cpp": "034a4011b62aa547e9ac8fc70b07deb59f44acc92680fcb857683c849d4d0bbd",
+    "app/tests/test-painter-editor-duplicate.inc": "2868a0e507068d421b1a03ff84d1635b3f7c8978c7eceb6a4eacdd8db5bbe5f8",
+    "app/tests/meson.build": "39d5d3ba9b150e34f6fb49fdf4cd8dfe6aca7575c8c152ce27f6f040c466b397",
+    "app/config/gimpcoreconfig.c": "b130c97b1351383d8f15dba34d1c30e45376f46a8c50a79a76d0866ca2102cb9",
+    "app/core/gimppaintermybrush.cpp": "380d658a72554156704380c28000a9f54bc424789383f6e774916f3818773b20",
+    "app/paint/painter-mypaint-surface/gimp-painter-options.cpp": "1c6ae211d6352eeacd0be9e5e2ed54fd9e5a7f731c4f18c595e66392aea5165a",
+    "app/painter/binding-store.cpp": "c69d65c22f26e6be8f6df69765cd30f7bbbd32b46b0eb847e9f6524b41c2b557",
+    "app/painter/gimp-painter-binding.cpp": "22aca4f9e467e16b86f2cbeec431d7d069fc552c98fad985db770720fcf876fd"
+  },
+  "binaries": {
+    "painter-mypaint-editor": "c5cef7be8609c0eba0d839d4f8996cf95476786e09c01f2b22a585b94b92bb7b",
+    "painter-editor-duplicate-red": "a428010bf9e6b0755d4a3820ee0cc0047b15e304b6380da27ebf886606240eb8",
+    "painter-editor-duplicate-asan": "afad325545dbe3149278cdc95dc8b60d234cb6ed29eb3a538856cae4f518473f"
+  },
+  "production_editor_equals_original_reviewed_candidate": true,
+  "sanitizer_scope": "Six TUs, ASan + UBSan excluding vptr, LSan off; remaining application/dependencies uninstrumented. Earlier full-vptr original-editor control remains unresolved, not repeated here.",
+  "portrait": {
+    "pixels": [
+      1080,
+      1920
+    ],
+    "real_xvfb_capture": true,
+    "visually_reviewed": true
+  },
+  "component_transcript_corrections": [
+    {
+      "path": "final-red.txt",
+      "original_published_candidate_sha256": "32c61764906aac3c9671a26fff9dbd9b7b767dcaf1e86607c93ccc5cadea6b57",
+      "corrected_sha256": "28bb01d37edc6c37dba7c3358e8407d61bc885d32ad402736f9861d5d9e5661e",
+      "change": "Regenerated allowlisted transcript from retained raw log; lexical pointer matcher preserves display dimensions."
+    },
+    {
+      "path": "final-registered.txt",
+      "original_published_candidate_sha256": "68a6703b4a859649393b973bf9a84e35a283960503ef95e9e236be18376e08dc",
+      "corrected_sha256": "8581f3f1694b83a5a3da765e2b7c460945b87b2c50fea34c7654d77e4e0f05ee",
+      "change": "Regenerated allowlisted transcript from retained raw log; lexical pointer matcher preserves display dimensions."
+    },
+    {
+      "path": "asan.txt",
+      "original_published_candidate_sha256": "29f19eeac16c5bb68266c2a3025a925df1b708fdb88fc1383cb44bd892e06ee9",
+      "corrected_sha256": "e1436c11fff3d5749b2e955f1278edfa9e870e763ecacd2440c764330f4a9f77",
+      "change": "Regenerated allowlisted transcript from retained raw log; lexical pointer matcher preserves display dimensions."
+    },
+    {
+      "path": "asan-vptr-baseline.txt",
+      "original_published_candidate_sha256": "f07fba776d45f24359ef4bd07a743fb486f6d74359e58938270d33d588349b50",
+      "corrected_sha256": "01dbbb66ad426ebdb44ad058cd5e41ae6699e7939b8ce45b77a57461fc6725fc",
+      "change": "Regenerated allowlisted transcript from retained raw log; lexical pointer matcher preserves display dimensions."
+    },
+    {
+      "path": "capture-fix.txt",
+      "original_published_candidate_sha256": "f0ac2de6540bf04d93101d97562296d0ca40976e63dc11920b0e7ed17cca8408",
+      "corrected_sha256": "d160f01805ff145bc5032bf361b2d004ace2b07eb70681de6eb66052420337d1",
+      "change": "Regenerated allowlisted transcript from retained raw log; lexical pointer matcher preserves display dimensions."
+    }
+  ],
+  "original_ready_package_unchanged_sha256": "892e0c4335e35aababd0c2a7f50d25bd2c5376cacb54d3e0a9d30a979e49eb5b",
+  "limits": [
+    "No parent 24.009 or whole-port completion",
+    "Not a full application/dependency sanitizer pass",
+    "No proof that unresolved baseline vptr diagnostic is benign",
+    "No external write/commit/push claims"
+  ],
+  "artifacts": {
+    "portrait.txt": "779d23d0fc963ee839221f366e380e262906c62895a69b371b2a48733d0bd284",
+    "registered.txt": "c2931452aec6467f76f587bb9770affa31e1323a34c03ae0e18803b5528bfeeb",
+    "asan.txt": "16793150030fd440f684268f77762ec59e867d56a96a881501b4d0b59eb0a9ea",
+    "asan-build.json": "e94bf6453df9347d01490248102dea44702d0159b414de74a4536fbae03c2177",
+    "duplicate-restored-draft.png": "5e385fb3febadd4c80bc292fb006176eb1c49a3d41b12adbd975cad777ef1a69",
+    "duplicate-saved-copy.png": "cc9c125676c6075502c6bd2dda3dc0782a026f783d9d4476fdc09064ba38758b",
+    "README.md": "c62774fcfb7826215db44dfca61f043534373b9d5e921446d3581e571a6b8489",
+    "red.txt": "220938ae775bd402dbef981bf7f48bc0235b78f916df1b0dc485992dc0a0a332"
+  }
+}

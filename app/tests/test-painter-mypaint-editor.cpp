@@ -1787,11 +1787,17 @@ static void notebook_page_build_reentry ()
 #include "test-painter-editor-control-lifetimes.inc"
 
 #include "test-painter-editor-entry.inc"
+#include "test-painter-editor-duplicate.inc"
 
 int main(int argc,char**argv){
   g_test_init(&argc,&argv,nullptr);if(!gtk_init_check(&argc,&argv))return GIMP_EXIT_TEST_SKIPPED;
   gimp_test_utils_setup_menus_path();gimp=gimp_init_for_gui_testing(TRUE);
-  if (g_getenv("GIMP_TEST_EDITOR_NAMED_ENTRY")) {
+  if (g_getenv("GIMP_TEST_EDITOR_DUPLICATE")) {
+  add_editor_case("/painter-editor/duplicate/saved-resource", duplicate_saved_resource);
+  add_editor_case("/painter-editor/duplicate/interrupted", duplicate_interrupted_resource);
+  add_editor_case("/painter-editor/duplicate/reentry", duplicate_reentry_resource);
+  add_editor_case("/painter-editor/duplicate/deleted-source", duplicate_deleted_source);
+  } else if (g_getenv("GIMP_TEST_EDITOR_NAMED_ENTRY")) {
   add_editor_case("/painter-editor/named-entry/constructor", named_editor_constructor);
   add_editor_case("/painter-editor/named-entry/menu-save", named_editor_menu_save);
   add_editor_case("/painter-editor/named-entry/menu-lifetime", named_editor_menu_lifetime);
