@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "/workspace/scratch/0015fc5d1a03/gimp-painter/migration/tests/normalize-shadow/run.py", line 7, in <module>
+    cmd=['g++','-std=c++14','-Wall','-Wextra','-Werror','-fvisibility=hidden','-fno-rtti','-fno-sanitize=vptr','-pthread',*extra,'-I'+str(r/'app/painter'),*[str(r/p) for p in sources],str(obj),*flags,'-o',str(exe)];c=subprocess.run(cmd,capture_output=True,text=True);(o/(mode+'-build.log')).write_text(c.stdout+c.stderr);assert c.returncode==0,c.stderr
+                                                                                                                                                                                                                                                                                                                                        ^^^^^^^^^^^^^^^
+AssertionError: In file included from /usr/include/c++/14/cstdint:45,
+                 from /workspace/scratch/0015fc5d1a03/gimp-painter/app/painter/filter-context.hpp:7,
+                 from /workspace/scratch/0015fc5d1a03/gimp-painter/app/painter/filter-point-shadow.hpp:5,
+                 from /workspace/scratch/0015fc5d1a03/gimp-painter/app/painter/tests/test-filter-point-shadow.cpp:2,
+                 from /workspace/scratch/0015fc5d1a03/gimp-painter/app/painter/tests/test-filter-normalize-shadow.cpp:3:
+/workspace/scratch/0015fc5d1a03/gimp-painter/app/painter/tests/test-filter-normalize-shadow.cpp: In function ‘void NormalizeTest::test()’:
+/workspace/scratch/0015fc5d1a03/gimp-painter/app/painter/tests/test-filter-normalize-shadow.cpp:26:304: error: ‘INT32_MAXUL’ was not declared in this scope; did you mean ‘INT32_MAX’?
+   26 |  {std::atomic<bool>stop{true};Sized a(UINT64_C(46341)*46341*4),b(a.size());auto r=full_region(46341,46341);rejects<std::invalid_argument>([&]{filter_normalize_shadow_raster(a,46341,46341,r,stop,b);},"Normalize area overflow");require(a.calls==0&&b.calls==0,"Normalize invalid area IO");Sized c(UINT64_C(INT32_MAX)*4),d(c.size());require(filter_normalize_shadow_raster(c,INT32_MAX,1,full_region(INT32_MAX,1),stop,d)==Outcome::cancelled&&c.calls==0&&d.calls==0,"Normalize valid large area preflight");scenes++;}
+      |                                                                                                                                                                                                                                                                                                                ^~~~~~~~~
+

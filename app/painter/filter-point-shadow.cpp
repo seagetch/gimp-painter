@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 #include "filter-point-shadow.hpp"
 #include "filter-native-kernels.hpp"
+#include "filter-normalize-raster.hpp"
 #include "filter-progress.hpp"
 
 #include <algorithm>
@@ -390,6 +391,35 @@ FilterPointShadowOutcome filter_point_shadow_vector(const std::vector<std::uint8
   const auto completed=filter_native_vector(input,cancel,output,
     [&, options, layout] (FilterRaster& source,FilterRaster& destination,std::atomic<bool>& stop,const FilterRasterFactory&) {
       outcome=filter_point_shadow_raster(source,width,height,region,options,layout,stop,destination,progress);
+      return outcome!=FilterPointShadowOutcome::cancelled;
+    });
+  return completed?outcome:FilterPointShadowOutcome::cancelled;
+}
+FilterPointShadowOutcome filter_normalize_shadow_raster(FilterRaster& input,
+  std::size_t width,std::size_t height,const FilterSelectionRegion& region,
+  std::atomic<bool>& cancel,FilterRaster& output,const std::shared_ptr<FilterProgress>& progress)
+{
+  const auto captured=region; // snapshot before storage callbacks
+  return shadow_impl(input,width,height,captured,0,cancel,output,progress,
+    [](FilterRaster& source,FilterRaster& destination,std::size_t w,std::size_t h,
+       std::atomic<bool>& stop) {
+      return filter_normalize_raw_raster(source,destination,w,h,stop)==FilterNormalizeOutcome::complete;
+    });
+}
+FilterPointShadowOutcome filter_normalize_shadow_vector(const std::vector<std::uint8_t>& input,
+  std::size_t width,std::size_t height,const FilterSelectionRegion& region,
+  std::atomic<bool>& cancel,std::vector<std::uint8_t>& output,
+  const std::shared_ptr<FilterProgress>& progress)
+{
+  const auto captured=region;
+  const auto geometry=validate(width,height,captured);
+  if(input.size()!=geometry.full_size)
+    throw std::invalid_argument("Point shadow is not full tightly packed RGBA8");
+  auto outcome=FilterPointShadowOutcome::cancelled;
+  const auto completed=filter_native_vector(input,cancel,output,
+    [&,captured](FilterRaster& source,FilterRaster& destination,std::atomic<bool>& stop,
+                 const FilterRasterFactory&) {
+      outcome=filter_normalize_shadow_raster(source,width,height,captured,stop,destination,progress);
       return outcome!=FilterPointShadowOutcome::cancelled;
     });
   return completed?outcome:FilterPointShadowOutcome::cancelled;

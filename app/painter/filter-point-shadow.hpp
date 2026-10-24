@@ -131,5 +131,16 @@ FilterPointShadowOutcome filter_point_shadow_vector(const std::vector<std::uint8
   FilterColorExchangeLayout,std::atomic<bool>&,std::vector<std::uint8_t>&,
   const std::shared_ptr<FilterProgress>& progress = {});
 
+/* Normalize uses the sole CropRaster/zero-fill backend. Statistics visit only
+ * actual ROI bytes. Undefined nonempty input throws after possible PRIVATE
+ * zero-fill, never authorizing publication; vectors retain prior output.
+ * Nonintersecting selection is ordinary no_merge, not old undefined math. */
+FilterPointShadowOutcome filter_normalize_shadow_raster(FilterRaster&,
+  std::size_t,std::size_t,const FilterSelectionRegion&,std::atomic<bool>&,
+  FilterRaster&,const std::shared_ptr<FilterProgress>& progress = {});
+FilterPointShadowOutcome filter_normalize_shadow_vector(const std::vector<std::uint8_t>&,
+  std::size_t,std::size_t,const FilterSelectionRegion&,std::atomic<bool>&,
+  std::vector<std::uint8_t>&,const std::shared_ptr<FilterProgress>& progress = {});
+
 } // namespace GimpPainter
 #endif

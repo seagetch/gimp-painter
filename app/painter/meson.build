@@ -244,3 +244,12 @@ test('painter-filter-import-completion', filter_import_completion_test,
 test('painter-public-mode-abi', python,
   args: [meson.project_source_root() / 'tools/check_painter_public_modes.py'],
   depends: [stamp_enumcode], suite: 'painter', timeout: 30)
+
+# Normalize sole-backend ROI proof plus unchanged point regressions.
+painter_normalize_shadow_test = executable('painter-filter-normalize-shadow',
+  ['tests/test-filter-normalize-shadow.cpp', 'tests/value-invert-legacy-oracle.c'],
+  dependencies: [painter_dep, painter_threads], cpp_args: painter_cpp_args,
+  override_options: ['cpp_std=c++14'])
+test('painter-filter-normalize-shadow', painter_normalize_shadow_test,
+  args: [meson.project_source_root() / 'migration/fixtures/legacy-filter-points/fixtures.tsv'],
+  suite: 'painter', timeout: 180)

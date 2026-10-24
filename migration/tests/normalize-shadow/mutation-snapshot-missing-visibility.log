@@ -1,0 +1,39 @@
+Traceback (most recent call last):
+  File "/workspace/scratch/0015fc5d1a03/gimp-painter/migration/tests/normalize-shadow/mutations.py", line 12, in <module>
+    assert body.count(a)==1;target.write_text(prefix+body.replace(a,b));cmd=[str(v).replace(str(R),str(D))for v in base['runs']['normal']['compile']];cmd[cmd.index('-o')+1]=str(D/name);cmd=[str(obj)if v.endswith('normal-oracle.o')else v for v in cmd];build=subprocess.run(cmd,capture_output=True,text=True);assert build.returncode==0,build.stderr
+                                                                                                                                                                                                                                                                                                                          ^^^^^^^^^^^^^^^^^^^
+AssertionError: In file included from /tmp/normalize-shadow-mutants-f_y2a93f/app/painter/filter-normalize-raster.hpp:4,
+                 from /tmp/normalize-shadow-mutants-f_y2a93f/app/painter/filter-normalize-raster.cpp:2:
+/tmp/normalize-shadow-mutants-f_y2a93f/app/painter/filter-raster.hpp:4:10: fatal error: gimp-painter-visibility.h: No such file or directory
+    4 | #include "gimp-painter-visibility.h"
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+compilation terminated.
+In file included from /tmp/normalize-shadow-mutants-f_y2a93f/app/painter/filter-raster.cpp:2:
+/tmp/normalize-shadow-mutants-f_y2a93f/app/painter/filter-raster.hpp:4:10: fatal error: gimp-painter-visibility.h: No such file or directory
+    4 | #include "gimp-painter-visibility.h"
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+compilation terminated.
+In file included from /tmp/normalize-shadow-mutants-f_y2a93f/app/painter/filter-context.cpp:2:
+/tmp/normalize-shadow-mutants-f_y2a93f/app/painter/filter-context.hpp:5:10: fatal error: gimp-painter-visibility.h: No such file or directory
+    5 | #include "gimp-painter-visibility.h"
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+compilation terminated.
+In file included from /tmp/normalize-shadow-mutants-f_y2a93f/app/painter/filter-native-kernels.cpp:7:
+/tmp/normalize-shadow-mutants-f_y2a93f/app/painter/filter-native-kernels.hpp:4:10: fatal error: gimp-painter-visibility.h: No such file or directory
+    4 | #include "gimp-painter-visibility.h"
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+compilation terminated.
+In file included from /tmp/normalize-shadow-mutants-f_y2a93f/app/painter/filter-point-shadow.hpp:5,
+                 from /tmp/normalize-shadow-mutants-f_y2a93f/app/painter/filter-point-shadow.cpp:2:
+/tmp/normalize-shadow-mutants-f_y2a93f/app/painter/filter-context.hpp:5:10: fatal error: gimp-painter-visibility.h: No such file or directory
+    5 | #include "gimp-painter-visibility.h"
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+compilation terminated.
+In file included from /tmp/normalize-shadow-mutants-f_y2a93f/app/painter/filter-point-shadow.hpp:5,
+                 from /tmp/normalize-shadow-mutants-f_y2a93f/app/painter/tests/test-filter-point-shadow.cpp:2,
+                 from /tmp/normalize-shadow-mutants-f_y2a93f/app/painter/tests/test-filter-normalize-shadow.cpp:3:
+/tmp/normalize-shadow-mutants-f_y2a93f/app/painter/filter-context.hpp:5:10: fatal error: gimp-painter-visibility.h: No such file or directory
+    5 | #include "gimp-painter-visibility.h"
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+compilation terminated.
+
