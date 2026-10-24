@@ -4,6 +4,7 @@ import ast
 import csv
 import json
 import hashlib
+import subprocess
 from pathlib import Path
 ROOT = Path(__file__).resolve().parents[3]
 source = ast.parse((ROOT/'tools/inventory_filter_routes.py').read_text())
@@ -18,7 +19,8 @@ assert len(rows) == len({row['procedure'] for row in rows}) == 108
 slugs = {'plug-in-max-rgb':'native-max-rgb-context', 'plug-in-vinvert':'native-value-invert-context',
          'plug-in-sobel':'native-sobel-context', 'plug-in-sharpen':'native-sharpen-context',
          'plug-in-threshold-alpha':'native-threshold-alpha-context',
-         'plug-in-red-eye-removal':'red-eye-route-inventory'}
+         'plug-in-red-eye-removal':'red-eye-route-inventory',
+         'plug-in-exchange':'color-exchange-route-inventory'}
 assert set(constants['BOUNDED_CONTEXT_ROUTES']) == set(slugs)
 for name, slug in slugs.items():
     row = next(row for row in rows if row['procedure'] == name)
@@ -27,12 +29,12 @@ for name, slug in slugs.items():
     receipt = ROOT/'migration/tests'/f'{slug}.json'
     accepted = json.loads(receipt.read_text())
     assert accepted['status'].startswith('passed')
-    if name == 'plug-in-red-eye-removal':
+    if name in ('plug-in-red-eye-removal','plug-in-exchange'):
         for package, digest in accepted['proofs'].items():
             artifact = ROOT/'migration/tests'/package/'artifact-sha256.json'
             assert hashlib.sha256(artifact.read_bytes()).hexdigest() == digest
         assert accepted['total_procedure_identities'] == 108
-        assert accepted['remaining_required_labels'] == 92
+        assert accepted['remaining_required_labels'] == (92 if name == 'plug-in-red-eye-removal' else 91)
     assert str(receipt.relative_to(ROOT)) in row['dependency_status']
     assert row['missing_port_work'] and row['dependency_status']
 # Exercise the actual generator row body; discovery inputs are deliberately empty.
@@ -47,5 +49,6 @@ for name in constants['BOUNDED_CONTEXT_ROUTES']:
     for key in ('executor_route', 'missing_port_work', 'dependency_status'):
         assert actual[key] == expected[key], (name, key)
 missing = sum('required' in row['executor_route'] for row in rows)
-assert missing == 92, missing
-print('PASS:108 unique procedures;6 source-backed bounded dispositions;92 required-labelled rows; no generic completeness or parent claim')
+assert missing == 91, missing
+subprocess.run(['python3','-B',str(ROOT/'migration/tests/color-exchange-route-disposition/validate.py')],check=True)
+print('PASS:108 unique procedures;7 source-backed bounded dispositions;91 required-labelled rows; no generic completeness or parent claim')
