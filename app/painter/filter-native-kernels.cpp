@@ -5,6 +5,7 @@
  * Shuji Narazaki, Sven Neumann, Adam D. Moss and Mukund Sivaraman. Gaussian/Edge equations share the audited
  * legacy kernels; normalized-double calculations are a modern extension. */
 #include "filter-native-kernels.hpp"
+#include "filter-color-exchange.hpp"
 #include "filter-edge-kernel-private.hpp"
 #include "filter-gauss-kernel-private.hpp"
 #include "filter-progress.hpp"
@@ -219,6 +220,32 @@ bool filter_max_rgb_raw_raster (FilterRaster& in, FilterRaster& out,
       offset += count;
       if (progress) progress->set_value (0.99 * double (offset) / size);
     }
+  out.flush ();
+  if (cancel.load (std::memory_order_relaxed)) return false;
+  if (progress) progress->set_value (1.0);
+  return true;
+}
+bool filter_color_exchange_raw_raster (FilterRaster& in, FilterRaster& out,
+  std::size_t width, std::size_t height, const FilterColorExchangeOptions& options,
+  std::atomic<bool>& cancel, const std::shared_ptr<FilterProgress>& progress)
+{
+  const auto settings = options; // snapshot before any user-supplied raster I/O
+  const auto size = extent (in, out, width, height, 4);
+  std::array<std::uint8_t,32768> bytes;
+  for (std::uint64_t offset = 0; offset < size; ) {
+    if (cancel.load (std::memory_order_relaxed)) return false;
+    const auto count = std::size_t (std::min<std::uint64_t> (bytes.size (), size-offset));
+    in.read (offset,count,bytes.data ());
+    for (std::size_t i=0;i<count;i+=4) {
+      if ((i&1023)==0 && cancel.load (std::memory_order_relaxed)) return false;
+      const auto result=filter_color_exchange_pixel ({{bytes[i],bytes[i+1],bytes[i+2],bytes[i+3]}},settings);
+      std::copy (result.begin (),result.end (),bytes.data ()+i);
+    }
+    out.write (offset,count,bytes.data ());
+    if (cancel.load (std::memory_order_relaxed)) return false;
+    offset+=count;
+    if (progress) progress->set_value (.99*double(offset)/size);
+  }
   out.flush ();
   if (cancel.load (std::memory_order_relaxed)) return false;
   if (progress) progress->set_value (1.0);

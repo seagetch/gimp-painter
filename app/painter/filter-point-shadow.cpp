@@ -21,7 +21,7 @@ struct Geometry
 };
 
 Geometry validate (std::size_t width, std::size_t height,
-                   const FilterSelectionRegion& region)
+                   const FilterSelectionRegion& region, unsigned original_bpp=0)
 {
   constexpr auto maximum = std::numeric_limits<std::int32_t>::max ();
   constexpr auto offset_maximum = std::uint64_t
@@ -30,6 +30,10 @@ Geometry validate (std::size_t width, std::size_t height,
       height > std::size_t (maximum) ||
       std::uint64_t (width) > offset_maximum / 4 / height)
     throw std::invalid_argument ("Unsupported full point shadow dimensions");
+  // Exchange allocates drawable->width*bpp and indexes x*bpp as signed gint.
+  // Unlike iterator-based point routes it never multiplies crop width*height.
+  if (original_bpp && width > std::size_t(maximum)/original_bpp)
+    throw std::invalid_argument ("Color Exchange original row overflows signed gint");
   const auto size = std::uint64_t (width) * height * 4;
 
   if (region.x1 < 0 || region.y1 < 0 || region.x2 < region.x1 ||
@@ -47,7 +51,7 @@ Geometry validate (std::size_t width, std::size_t height,
   // Threshold/Max RGB's gimp_rgn_iterate2 total_area and Value Invert's own
   // pixel-region loop width*height both multiply signed gint operands. Reject
   // their undefined overflow domain, admitting positive one-dimensional crops.
-  if (std::uint64_t (crop_width) * crop_height > std::uint64_t (maximum))
+  if (!original_bpp && std::uint64_t (crop_width) * crop_height > std::uint64_t (maximum))
     throw std::invalid_argument ("Point intersection overflows legacy total area");
   return {size, std::uint64_t (crop_width) * crop_height * 4,
           crop_width, crop_height};
@@ -152,23 +156,22 @@ void filter_point_shadow_validate (std::size_t width, std::size_t height,
   validate (width, height, region);
 }
 
-FilterPointShadowOutcome filter_point_shadow_raster (
-  FilterRaster& input, std::size_t width, std::size_t height,
-  const FilterSelectionRegion& region, FilterPointShadowOperation operation,
-  std::int32_t argument,
-  std::atomic<bool>& cancel, FilterRaster& output,
-  const std::shared_ptr<FilterProgress>& progress)
+namespace {
+unsigned exchange_bpp(FilterColorExchangeLayout layout) {
+  switch(layout) {
+    case FilterColorExchangeLayout::rgb8:return 3;
+    case FilterColorExchangeLayout::rgba8:return 4;
+  }
+  throw std::invalid_argument("Unknown Color Exchange original layout");
+}
+template<class Kernel>
+FilterPointShadowOutcome shadow_impl(FilterRaster& input,std::size_t width,std::size_t height,
+  const FilterSelectionRegion& region,unsigned original_bpp,std::atomic<bool>& cancel,
+  FilterRaster& output,const std::shared_ptr<FilterProgress>& progress,const Kernel& kernel)
 {
-  if (operation != FilterPointShadowOperation::threshold_alpha &&
-      operation != FilterPointShadowOperation::max_rgb &&
-      operation != FilterPointShadowOperation::value_invert &&
-      operation != FilterPointShadowOperation::red_eye)
-    throw std::invalid_argument ("Unknown point shadow operation");
-  if (operation == FilterPointShadowOperation::red_eye && !filter_red_eye_threshold_valid (argument))
-    throw std::invalid_argument ("Red Eye threshold overflows original signed arithmetic");
   if (&input == &output)
     throw std::invalid_argument ("Point shadow input/output alias");
-  const auto geometry = validate (width, height, region);
+  const auto geometry = validate (width, height, region, original_bpp);
   if (input.size () != geometry.full_size || output.size () != geometry.full_size)
     throw std::invalid_argument ("Point shadow is not full tightly packed RGBA8");
   try
@@ -190,27 +193,7 @@ FilterPointShadowOutcome filter_point_shadow_raster (
         {
           CropRaster source (input, width, region, geometry, true, cancel, work);
           CropRaster destination (output, width, region, geometry, false, cancel, work);
-          bool completed = false;
-          switch (operation)
-            {
-            case FilterPointShadowOperation::red_eye:
-              completed = filter_red_eye_raw_raster (source, destination,
-                geometry.crop_width, geometry.crop_height, argument, cancel);
-              break;
-            case FilterPointShadowOperation::max_rgb:
-              completed = filter_max_rgb_raw_raster (source, destination,
-                geometry.crop_width, geometry.crop_height, argument, cancel);
-              break;
-            case FilterPointShadowOperation::value_invert:
-              completed = filter_value_invert_raw_raster (source, destination,
-                geometry.crop_width, geometry.crop_height, cancel);
-              break;
-            case FilterPointShadowOperation::threshold_alpha:
-              completed = filter_point_raster (source, destination,
-                geometry.crop_width, geometry.crop_height,
-                FilterPoint::threshold_alpha, argument, false, cancel);
-              break;
-            }
+          const bool completed = kernel(source,destination,geometry.crop_width,geometry.crop_height,cancel);
           if (!completed)
             return FilterPointShadowOutcome::cancelled;
         }
@@ -225,6 +208,48 @@ FilterPointShadowOutcome filter_point_shadow_raster (
                                  FilterPointShadowOutcome::no_merge;
     }
   catch (const Cancelled&) { return FilterPointShadowOutcome::cancelled; }
+}
+
+} // namespace
+FilterPointShadowOutcome filter_point_shadow_raster (
+  FilterRaster& input, std::size_t width, std::size_t height,
+  const FilterSelectionRegion& region, FilterPointShadowOperation operation,
+  std::int32_t argument,
+  std::atomic<bool>& cancel, FilterRaster& output,
+  const std::shared_ptr<FilterProgress>& progress)
+{
+  if (operation != FilterPointShadowOperation::threshold_alpha &&
+      operation != FilterPointShadowOperation::max_rgb &&
+      operation != FilterPointShadowOperation::value_invert &&
+      operation != FilterPointShadowOperation::red_eye)
+    throw std::invalid_argument ("Unknown point shadow operation");
+  if (operation == FilterPointShadowOperation::red_eye && !filter_red_eye_threshold_valid (argument))
+    throw std::invalid_argument ("Red Eye threshold overflows original signed arithmetic");
+  return shadow_impl(input,width,height,region,0,cancel,output,progress,
+    [&] (FilterRaster& source,FilterRaster& destination,std::size_t crop_width,std::size_t crop_height,std::atomic<bool>& stop) {
+          bool completed = false;
+          switch (operation)
+            {
+            case FilterPointShadowOperation::red_eye:
+              completed = filter_red_eye_raw_raster (source, destination,
+                crop_width, crop_height, argument, stop);
+              break;
+            case FilterPointShadowOperation::max_rgb:
+              completed = filter_max_rgb_raw_raster (source, destination,
+                crop_width, crop_height, argument, stop);
+              break;
+            case FilterPointShadowOperation::value_invert:
+              completed = filter_value_invert_raw_raster (source, destination,
+                crop_width, crop_height, stop);
+              break;
+            case FilterPointShadowOperation::threshold_alpha:
+              completed = filter_point_raster (source, destination,
+                crop_width, crop_height,
+                FilterPoint::threshold_alpha, argument, false, stop);
+              break;
+            }
+      return completed;
+    });
 }
 
 FilterPointShadowOutcome filter_point_shadow_vector (
@@ -275,4 +300,33 @@ FilterPointShadowOutcome filter_point_shadow_vector (
     FilterPointShadowOperation::threshold_alpha, threshold, cancel, output, progress);
 }
 
+void filter_color_exchange_shadow_validate(std::size_t width,std::size_t height,
+  const FilterSelectionRegion& region,FilterColorExchangeLayout layout)
+{ validate(width,height,region,exchange_bpp(layout)); }
+FilterPointShadowOutcome filter_point_shadow_raster(FilterRaster& input,
+  std::size_t width,std::size_t height,const FilterSelectionRegion& region,
+  const FilterColorExchangeOptions& options,FilterColorExchangeLayout layout,
+  std::atomic<bool>& cancel,FilterRaster& output,const std::shared_ptr<FilterProgress>& progress)
+{
+  const auto bpp=exchange_bpp(layout);
+  return shadow_impl(input,width,height,region,bpp,cancel,output,progress,
+    [options] (FilterRaster& source,FilterRaster& destination,std::size_t w,std::size_t h,std::atomic<bool>& stop) {
+      return filter_color_exchange_raw_raster(source,destination,w,h,options,stop);
+    });
+}
+FilterPointShadowOutcome filter_point_shadow_vector(const std::vector<std::uint8_t>& input,
+  std::size_t width,std::size_t height,const FilterSelectionRegion& region,
+  const FilterColorExchangeOptions& options,FilterColorExchangeLayout layout,
+  std::atomic<bool>& cancel,std::vector<std::uint8_t>& output,const std::shared_ptr<FilterProgress>& progress)
+{
+  const auto geometry=validate(width,height,region,exchange_bpp(layout));
+  if(input.size()!=geometry.full_size)throw std::invalid_argument("Point shadow is not full tightly packed RGBA8");
+  auto outcome=FilterPointShadowOutcome::cancelled;
+  const auto completed=filter_native_vector(input,cancel,output,
+    [&, options, layout] (FilterRaster& source,FilterRaster& destination,std::atomic<bool>& stop,const FilterRasterFactory&) {
+      outcome=filter_point_shadow_raster(source,width,height,region,options,layout,stop,destination,progress);
+      return outcome!=FilterPointShadowOutcome::cancelled;
+    });
+  return completed?outcome:FilterPointShadowOutcome::cancelled;
+}
 } // namespace GimpPainter

@@ -3,6 +3,7 @@
 #define GIMP_PAINTER_FILTER_POINT_SHADOW_HPP
 
 #include "filter-context.hpp"
+#include "filter-color-exchange.hpp"
 #include "filter-raster.hpp"
 #include <vector>
 
@@ -91,6 +92,20 @@ FilterPointShadowOutcome filter_point_shadow_vector (
   const FilterSelectionRegion& region, FilterPointShadowOperation operation,
   std::int32_t argument, std::atomic<bool>& cancel,
   std::vector<std::uint8_t>& output,
+  const std::shared_ptr<FilterProgress>& progress = {});
+
+/* Color Exchange uses its original RGB3/RGBA4 signed row bound, not the
+ * unrelated old iterator crop-area limit. RGBA8 transport remains checked64bit.
+ * Same sole private zero-fill/CropRaster transaction and no_merge semantics. */
+void filter_color_exchange_shadow_validate(std::size_t,std::size_t,
+  const FilterSelectionRegion&,FilterColorExchangeLayout);
+FilterPointShadowOutcome filter_point_shadow_raster(FilterRaster&,
+  std::size_t,std::size_t,const FilterSelectionRegion&,const FilterColorExchangeOptions&,
+  FilterColorExchangeLayout,std::atomic<bool>&,FilterRaster&,
+  const std::shared_ptr<FilterProgress>& progress = {});
+FilterPointShadowOutcome filter_point_shadow_vector(const std::vector<std::uint8_t>&,
+  std::size_t,std::size_t,const FilterSelectionRegion&,const FilterColorExchangeOptions&,
+  FilterColorExchangeLayout,std::atomic<bool>&,std::vector<std::uint8_t>&,
   const std::shared_ptr<FilterProgress>& progress = {});
 
 } // namespace GimpPainter

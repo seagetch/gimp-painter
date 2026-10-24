@@ -1,0 +1,14 @@
+Package glib-2.0 was not found in the pkg-config search path.
+Perhaps you should add the directory containing `glib-2.0.pc'
+to the PKG_CONFIG_PATH environment variable
+Package 'glib-2.0', required by 'virtual:world', not found
+Traceback (most recent call last):
+  File "/workspace/shared/run-color-exchange-shadow.py", line 3, in <module>
+    r=Path('/workspace/scratch/0015fc5d1a03/gimp-painter');o=Path('/workspace/shared/color-exchange-shadow');sources=['app/painter/filter-raster.cpp','app/painter/filter-context.cpp','app/painter/filter-native-kernels.cpp','app/painter/filter-point-shadow.cpp','app/painter/tests/test-filter-color-exchange-shadow.cpp'];inputs=sources+['app/painter/tests/test-filter-point-shadow.cpp','app/painter/tests/test-filter-red-eye-shadow.inc','app/painter/tests/value-invert-legacy-oracle.c']+[str(x.relative_to(r)) for x in (r/'app/painter').glob('filter*.hpp')];h={p:hashlib.sha256((r/p).read_bytes()).hexdigest() for p in inputs};flags=shlex.split(subprocess.check_output(['pkg-config','--cflags','--libs','glib-2.0'],text=True));report={'scope':'independent point-shadow/raster kernels and existing point fixtures;no native Filter/GEGL or Edge invocation','source_sha256':h,'runs':{}}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/subprocess.py", line 466, in check_output
+    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['pkg-config', '--cflags', '--libs', 'glib-2.0']' returned non-zero exit status 1.
