@@ -1,0 +1,100 @@
+{
+  "source_root": "/workspace/shared/gtk-menu-guards/source",
+  "version_source": [
+    "project('gtk', 'c',",
+    "  version: '3.24.49',",
+    "  default_options: [",
+    "    'buildtype=debugoptimized',",
+    "    'warning_level=1'",
+    "  ],",
+    "  meson_version : '>= 0.60.0',",
+    "  license: 'LGPL-2.1-or-later',",
+    ")",
+    "",
+    "glib_major_req = 2",
+    "glib_minor_req = 57"
+  ],
+  "files": {
+    "gdk/gdkdevice.c": {
+      "sha256": "14dd7d86064d3a7c6b10e74b8bcc26e8594c7e20f5f2bedf5965b086d77fb9ad",
+      "extracts": [
+        {
+          "first": 1505,
+          "last": 1523,
+          "text": "/**\n * gdk_device_ungrab:\n * @device: a #GdkDevice\n * @time_: a timestap (e.g. %GDK_CURRENT_TIME).\n *\n * Release any grab on @device.\n *\n * Since: 3.0\n *\n * Deprecated: 3.20. Use gdk_seat_ungrab() instead.\n */\nvoid\ngdk_device_ungrab (GdkDevice  *device,\n                   guint32     time_)\n{\n  g_return_if_fail (GDK_IS_DEVICE (device));\n\n  GDK_DEVICE_GET_CLASS (device)->ungrab (device, time_);\n}"
+        }
+      ]
+    },
+    "gdk/gdkseatdefault.c": {
+      "sha256": "d3a5553e3b768a628ff31e0e81bc1485886d0a7c38b158b947eb5879be377511",
+      "extracts": [
+        {
+          "first": 110,
+          "last": 120,
+          "text": "                       gboolean                owner_events,\n                       GdkCursor              *cursor,\n                       const GdkEvent         *event,\n                       GdkSeatGrabPrepareFunc  prepare_func,\n                       gpointer                prepare_func_data)\n{\n  GdkSeatDefaultPrivate *priv;\n  guint32 evtime = event ? gdk_event_get_time (event) : GDK_CURRENT_TIME;\n  GdkGrabStatus status = GDK_GRAB_SUCCESS;\n  gboolean was_visible;\n"
+        },
+        {
+          "first": 181,
+          "last": 191,
+          "text": "gdk_seat_default_ungrab (GdkSeat *seat)\n{\n  GdkSeatDefaultPrivate *priv;\n\n  priv = gdk_seat_default_get_instance_private (GDK_SEAT_DEFAULT (seat));\n\n  G_GNUC_BEGIN_IGNORE_DEPRECATIONS;\n  gdk_device_ungrab (priv->master_pointer, GDK_CURRENT_TIME);\n  gdk_device_ungrab (priv->master_keyboard, GDK_CURRENT_TIME);\n  G_GNUC_END_IGNORE_DEPRECATIONS;\n}"
+        }
+      ]
+    },
+    "gdk/x11/gdkdevice-xi2.c": {
+      "sha256": "79fdc4d67e8728738c0db6b3710e9dc1c85f21c6b385a5ab4965bdcd68014185",
+      "extracts": [
+        {
+          "first": 470,
+          "last": 483,
+          "text": "gdk_x11_device_xi2_ungrab (GdkDevice *device,\n                           guint32    time_)\n{\n  GdkX11DeviceXI2 *device_xi2 = GDK_X11_DEVICE_XI2 (device);\n  GdkDisplay *display;\n  gulong serial;\n\n  display = gdk_device_get_display (device);\n  serial = NextRequest (GDK_DISPLAY_XDISPLAY (display));\n\n  XIUngrabDevice (GDK_DISPLAY_XDISPLAY (display), device_xi2->device_id, time_);\n\n  _gdk_x11_display_update_grab_info_ungrab (display, device, time_, serial);\n}"
+        }
+      ]
+    },
+    "gdk/x11/gdkdisplay-x11.c": {
+      "sha256": "d2dccaec5fbb199ad5b80c726edf1d6a3f0080a05e527666f25779e266095020",
+      "extracts": [
+        {
+          "first": 1944,
+          "last": 1962,
+          "text": "_gdk_x11_display_update_grab_info_ungrab (GdkDisplay *display,\n                                          GdkDevice  *device,\n                                          guint32     time,\n                                          gulong      serial)\n{\n  GdkDeviceGrabInfo *grab;\n\n  XFlush (GDK_DISPLAY_XDISPLAY (display));\n\n  grab = _gdk_display_get_last_device_grab (display, device);\n  if (grab &&\n      (time == GDK_CURRENT_TIME ||\n       grab->time == GDK_CURRENT_TIME ||\n       !XSERVER_TIME_IS_LATER (grab->time, time)))\n    {\n      grab->serial_end = serial;\n      _gdk_x11_roundtrip_async (display, device_grab_update_callback, device);\n    }\n}"
+        }
+      ]
+    },
+    "gdk/wayland/gdkdevice-wayland.c": {
+      "sha256": "f14ec1506a28523d6ecbe66a12e01433405cd7f6d516bd81152e6df4234f8e02",
+      "extracts": [
+        {
+          "first": 861,
+          "last": 883,
+          "text": "device_maybe_emit_ungrab_crossing (GdkDevice      *device,\n                                   guint32         time)\n{\n  GdkDeviceGrabInfo *grab;\n  GdkWindow *focus = NULL;\n  GdkWindow *native = NULL;\n  GdkWindow *prev_focus = NULL;\n\n  focus = gdk_wayland_device_get_focus (device);\n  grab = _gdk_display_get_last_device_grab (gdk_device_get_display (device), device);\n\n  if (grab)\n    {\n      grab->serial_end = grab->serial_start;\n      prev_focus = grab->window;\n      native = grab->native_window;\n    }\n\n  if (focus != native)\n    device_emit_grab_crossing (device, prev_focus, focus, GDK_CROSSING_UNGRAB, time);\n\n  return prev_focus;\n}"
+        },
+        {
+          "first": 947,
+          "last": 971,
+          "text": "gdk_wayland_device_ungrab (GdkDevice *device,\n                           guint32    time_)\n{\n  GdkWaylandPointerData *pointer = GDK_WAYLAND_DEVICE (device)->pointer;\n  GdkWindow *prev_focus;\n\n  prev_focus = device_maybe_emit_ungrab_crossing (device, time_);\n\n  if (gdk_device_get_source (device) == GDK_SOURCE_KEYBOARD)\n    {\n      /* Device is a keyboard */\n      if (prev_focus)\n        gdk_wayland_window_restore_shortcuts (prev_focus,\n                                              gdk_device_get_seat (device));\n    }\n  else\n    {\n      /* Device is a pointer */\n      gdk_wayland_device_update_window_cursor (device);\n\n      if (pointer->grab_window)\n        _gdk_wayland_window_set_grab_seat (pointer->grab_window,\n                                           NULL);\n    }\n}"
+        }
+      ]
+    },
+    "gdk/win32/gdkdevice-virtual.c": {
+      "sha256": "26ab067678419dab2d3f07c16ef46f53a22b71e4af7785e69d2b3c8a9b756f44",
+      "extracts": [
+        {
+          "first": 188,
+          "last": 214,
+          "text": "gdk_device_virtual_ungrab (GdkDevice *device,\n                         guint32    time_)\n{\n  GdkDeviceGrabInfo *info;\n  GdkDisplay *display;\n\n  display = gdk_device_get_display (device);\n  info = _gdk_display_get_last_device_grab (display, device);\n\n  if (info)\n    info->serial_end = 0;\n\n  if (gdk_device_get_source (device) != GDK_SOURCE_KEYBOARD)\n    {\n      if (_gdk_win32_grab_cursor != NULL)\n\t{\n\t  if (GetCursor () == GDK_WIN32_CURSOR (_gdk_win32_grab_cursor)->hcursor)\n\t    SetCursor (NULL);\n\t}\n      g_clear_object (&_gdk_win32_grab_cursor);\n\n      ReleaseCapture ();\n    }\n\n  _gdk_display_device_grab_update (display, device, device, 0);\n}\n"
+        }
+      ]
+    },
+    "gdk/gdkevents.h": {
+      "sha256": "53f2920f8e0dd7893678da35ec37c5398a2e4ee0db788c1c5d8e3fba26c5709d",
+      "extracts": [
+        {
+          "first": 1143,
+          "last": 1170,
+          "text": " * GdkEventGrabBroken:\n * @type: the type of the event (%GDK_GRAB_BROKEN)\n * @window: the window which received the event, i.e. the window\n *   that previously owned the grab\n * @send_event: %TRUE if the event was sent explicitly.\n * @keyboard: %TRUE if a keyboard grab was broken, %FALSE if a pointer\n *   grab was broken\n * @implicit: %TRUE if the broken grab was implicit\n * @grab_window: If this event is caused by another grab in the same\n *   application, @grab_window contains the new grab window. Otherwise\n *   @grab_window is %NULL.\n *\n * Generated when a pointer or keyboard grab is broken. On X11, this happens\n * when the grab window becomes unviewable (i.e. it or one of its ancestors\n * is unmapped), or if the same application grabs the pointer or keyboard\n * again. Note that implicit grabs (which are initiated by button presses)\n * can also cause #GdkEventGrabBroken events.\n *\n * Since: 2.8\n */\nstruct _GdkEventGrabBroken {\n  GdkEventType type;\n  GdkWindow *window;\n  gint8 send_event;\n  gboolean keyboard;\n  gboolean implicit;\n  GdkWindow *grab_window;\n};"
+        }
+      ]
+    }
+  },
+  "scope": "primary vendored GTK source; Win32/Wayland source audit only, no runtime proof"
+}

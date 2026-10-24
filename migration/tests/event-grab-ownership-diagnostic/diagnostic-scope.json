@@ -1,0 +1,19 @@
+{
+  "diagnostic_only": true,
+  "clean_host": "55bfa5f1f72f33fb5a2f10b1f7a319bd773b0e94",
+  "main_head": "9c2c76c4158b0eabcdac3e5eb4df896baf17b13e",
+  "fixture_sha256": "bec67a4c861ec98f160daea016386a3d13081ff251de3ba0d39c63a65fd280b6",
+  "note": "Main compression fix differs from55 tool-events; grab provider unchanged. No product patch. Baseline receipt scope phrase inherited from earlier harness; this manifest explicitly corrects it to whole55 no overrides.",
+  "files": {
+    "app/display/gimpdisplayshell-grab.c": {
+      "clean": "c920f1a8fba76d2497ec8d8eff6c5234963e74a7b93d17b1893e4fb33150df13",
+      "main": "c920f1a8fba76d2497ec8d8eff6c5234963e74a7b93d17b1893e4fb33150df13"
+    },
+    "app/display/gimpdisplayshell-tool-events.c": {
+      "clean": "b0fc9430e170ab1855f2b4e890cf1d2babbd464773b0d053cdf3012f858151d8",
+      "main": "7c56b303cab4ef6ed6d8a9c30015543d2570e2211ef295e6c8db98ff9b297577"
+    }
+  },
+  "baseline_returncode": 0,
+  "naive_returncode": 250
+}
