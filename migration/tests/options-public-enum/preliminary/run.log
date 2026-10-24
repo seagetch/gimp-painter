@@ -1,0 +1,31 @@
+Xvfb verified: 127.0.0.1:92, 1080x1920x24, authenticated accepted, empty authority rejected
+mypaint-enum-library-only 0 PASS: standalone C11 public library enum identity/values/nicks/metadata
+ 
+mypaint-enum-public 0 TAP version 14
+# random seed: R02S0107ab9200f3a57a83c7ded055bf32a4
+1..2
+# Start of mypaint-public-enum tests
+ok 1 /mypaint-public-enum/library-first
+# slow test /mypaint-public-enum/library-first executed in 0.95 secs
+ok 2 /mypaint-public-enum/app-first
+# slow test /mypaint-public-enum/app-first executed in 0.99 secs
+# End of mypaint-public-enum tests
+ 
+mypaint-options-mode 0 TAP version 14
+# random seed: R02Sae0f84a6aa10e3a5075fb8697709c3d6
+1..6
+# Start of original-options-mode tests
+ok 1 /original-options-mode/stored-normal
+# slow test /original-options-mode/stored-normal executed in 0.98 secs
+ok 2 /original-options-mode/stored-normal-erase
+# slow test /original-options-mode/stored-normal-erase executed in 0.99 secs
+ok 3 /original-options-mode/stored-lock-alpha
+# slow test /original-options-mode/stored-lock-alpha executed in 1.03 secs
+ok 4 /original-options-mode/stored-colorize
+# slow test /original-options-mode/stored-colorize executed in 1.01 secs
+ok 5 /original-options-mode/disposed-still-normal
+# slow test /original-options-mode/disposed-still-normal executed in 1.05 secs
+ok 6 /original-options-mode/invalid-default-diagnostic
+# slow test /original-options-mode/invalid-default-diagnostic executed in 1.00 secs
+# End of original-options-mode tests
+ 

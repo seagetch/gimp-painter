@@ -1,0 +1,14 @@
+Xvfb verified: 127.0.0.1:92, 1080x1920x24, authenticated accepted, empty authority rejected
+1/4 gimp:libgimpbase / mypaint-enum-library-only OK               0.01s
+2/4 gimp:app / gimp-painter-options              OK               1.89s
+3/4 gimp:app / mypaint-options-mode              OK               6.22s
+4/4 gimp:app / mypaint-enum-public               OK               2.02s
+
+Ok:                 4   
+Expected Fail:      0   
+Fail:               0   
+Unexpected Pass:    0   
+Skipped:            0   
+Timeout:            0   
+
+Full log written to /workspace/shared/gimp-clean-aggregate/build/meson-logs/options-enum-meson.txt

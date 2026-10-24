@@ -1,0 +1,26 @@
+[
+  {
+    "name": "normal_failure",
+    "artifact_hash_updated": true,
+    "returncode": 1,
+    "diagnostic": "Traceback (most recent call last):\n  File \"/workspace/shared/enum-negative-lelbb26w/proof/verify.py\", line 22, in <module>\n    for row in normal:assert row['returncode']==0 and row['result']=='OK',row['name']\n                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: gimp:libgimpbase / mypaint-enum-library-only\n"
+  },
+  {
+    "name": "sanitizer_failure",
+    "artifact_hash_updated": true,
+    "returncode": 1,
+    "diagnostic": "Traceback (most recent call last):\n  File \"/workspace/shared/enum-negative-5_19vs62/proof/verify.py\", line 38, in <module>\n    assert not re.search(r'ERROR: AddressSanitizer|runtime error:',row['stdout']+row['stderr'])\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+  },
+  {
+    "name": "generated_mismatch",
+    "artifact_hash_updated": true,
+    "returncode": 1,
+    "diagnostic": "Traceback (most recent call last):\n  File \"/workspace/shared/enum-negative-880ggksb/proof/verify.py\", line 42, in <module>\n    g=read('generator/reproducibility.json');assert g['exact_original_registrar_body'] and g['private_generation_runs']==2 and not g['unrelated_enum_churn'];assert g['generated_sha256']==post['generated_enum_sha256']\n                                                                                                                                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+  },
+  {
+    "name": "source_not_sealed",
+    "artifact_hash_updated": true,
+    "returncode": 1,
+    "diagnostic": "Traceback (most recent call last):\n  File \"/workspace/shared/enum-negative-d4jjyo2u/proof/verify.py\", line 19, in <module>\n    post=read('integration/source-after.json');assert post['all_source_content_unchanged'] and post['generated_enum_matches_private_generator']\n                                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+  }
+]

@@ -1365,6 +1365,29 @@ typedef enum
 } GimpFileChooserAction;
 
 
+/**
+ * GimpMypaintBrushMode:
+ * @GIMP_MYPAINT_NORMAL: Normal.
+ * @GIMP_MYPAINT_NORMAL_AND_ERASE: Normal and erase.
+ * @GIMP_MYPAINT_LOCK_ALPHA: Lock alpha.
+ * @GIMP_MYPAINT_COLORIZE: Colorize.
+ *
+ * Stored legacy gimp-painter MyPaint brush mode. The historical rendering
+ * helper independently returns %GIMP_MYPAINT_NORMAL.
+ **/
+#define GIMP_TYPE_MYPAINT_BRUSH_MODE (gimp_mypaint_brush_mode_get_type ())
+
+GType gimp_mypaint_brush_mode_get_type (void) G_GNUC_CONST;
+
+typedef enum
+{
+  GIMP_MYPAINT_NORMAL = 0,           /*< desc="Normal" >*/
+  GIMP_MYPAINT_NORMAL_AND_ERASE = 1, /*< desc="Normal and Erase" >*/
+  GIMP_MYPAINT_LOCK_ALPHA = 2,       /*< desc="Lock Alpha" >*/
+  GIMP_MYPAINT_COLORIZE = 3,         /*< desc="Colorize" >*/
+} GimpMypaintBrushMode;
+
+
 G_END_DECLS
 
 #endif  /* __GIMP_BASE_ENUMS_H__ */

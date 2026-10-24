@@ -1996,6 +1996,40 @@ gimp_file_chooser_action_get_type (void)
   return type;
 }
 
+GType
+gimp_mypaint_brush_mode_get_type (void)
+{
+  static const GEnumValue values[] =
+  {
+    { GIMP_MYPAINT_NORMAL, "GIMP_MYPAINT_NORMAL", "normal" },
+    { GIMP_MYPAINT_NORMAL_AND_ERASE, "GIMP_MYPAINT_NORMAL_AND_ERASE", "normal-and-erase" },
+    { GIMP_MYPAINT_LOCK_ALPHA, "GIMP_MYPAINT_LOCK_ALPHA", "lock-alpha" },
+    { GIMP_MYPAINT_COLORIZE, "GIMP_MYPAINT_COLORIZE", "colorize" },
+    { 0, NULL, NULL }
+  };
+
+  static const GimpEnumDesc descs[] =
+  {
+    { GIMP_MYPAINT_NORMAL, NC_("mypaint-brush-mode", "Normal"), NULL },
+    { GIMP_MYPAINT_NORMAL_AND_ERASE, NC_("mypaint-brush-mode", "Normal and Erase"), NULL },
+    { GIMP_MYPAINT_LOCK_ALPHA, NC_("mypaint-brush-mode", "Lock Alpha"), NULL },
+    { GIMP_MYPAINT_COLORIZE, NC_("mypaint-brush-mode", "Colorize"), NULL },
+    { 0, NULL, NULL }
+  };
+
+  static GType type = 0;
+
+  if (G_UNLIKELY (! type))
+    {
+      type = g_enum_register_static ("GimpMypaintBrushMode", values);
+      gimp_type_set_translation_domain (type, GETTEXT_PACKAGE "-libgimp");
+      gimp_type_set_translation_context (type, "mypaint-brush-mode");
+      gimp_enum_set_value_descriptions (type, descs);
+    }
+
+  return type;
+}
+
 
 /* Generated data ends here */
 

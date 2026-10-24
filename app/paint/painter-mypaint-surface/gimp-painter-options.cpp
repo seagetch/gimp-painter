@@ -38,22 +38,6 @@ namespace {
 enum { PROP_JSON=BRUSH_SETTINGS_COUNT+1, PROP_DIRTY, PROP_CONFLICT, PROP_BRUSH_MODE,
        PROP_DRAFT_NAME, PROP_NAME_DIRTY };
 GParamSpec *properties[PROP_NAME_DIRTY+1]{};
-GType legacy_brush_mode_type ()
-{
-  // Preserve the old serialized enum. Its rendering helper always returned
-  // Normal, independently of this stored GObject property value.
-  static const GEnumValue values[] = {
-    {0, "GIMP_MYPAINT_NORMAL", "normal"},
-    {1, "GIMP_MYPAINT_NORMAL_AND_ERASE", "normal-and-erase"},
-    {2, "GIMP_MYPAINT_LOCK_ALPHA", "lock-alpha"},
-    {3, "GIMP_MYPAINT_COLORIZE", "colorize"},
-    {0, nullptr, nullptr}
-  };
-  static gsize type = 0;
-  if (g_once_init_enter (&type))
-    g_once_init_leave (&type, g_enum_register_static ("GimpMypaintBrushMode", values));
-  return type;
-}
 struct History {
   ObjectRef<GimpPainterMybrush> source;
   Resource resource;
@@ -463,7 +447,7 @@ static void gimp_painter_mybrush_options_class_init(GimpPainterMybrushOptionsCla
   properties[PROP_DIRTY]=g_param_spec_boolean("painter-dirty","Edited painter brush",nullptr,FALSE,G_PARAM_READABLE);
   properties[PROP_CONFLICT]=g_param_spec_boolean("painter-conflict","Saved brush changed",nullptr,FALSE,G_PARAM_READABLE);
   properties[PROP_BRUSH_MODE]=g_param_spec_enum("brush-mode","Legacy brush mode",
-    "Preserved legacy option; does not select a rendering mode",legacy_brush_mode_type(),0,flags);
+    "Preserved legacy option; does not select a rendering mode",GIMP_TYPE_MYPAINT_BRUSH_MODE,0,flags);
   properties[PROP_DRAFT_NAME]=g_param_spec_string("painter-draft-name","Unsaved painter brush name",
     "Name for the draft; does not rename the selected resource",nullptr,G_PARAM_READABLE);
   properties[PROP_NAME_DIRTY]=g_param_spec_boolean("painter-name-dirty","Edited painter brush name",nullptr,FALSE,G_PARAM_READABLE);

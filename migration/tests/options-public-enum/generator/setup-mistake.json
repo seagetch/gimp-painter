@@ -1,0 +1,30 @@
+{
+  "kind": "setup mistake; not acceptance proof",
+  "command": [
+    "/workspace/shared/gimp-deps-locked/root/usr/bin/meson",
+    "--internal",
+    "exe",
+    "--unpickle",
+    "/workspace/shared/gimp-clean-aggregate/build/meson-private/meson_exe_python3_f0641086b78179b0e9b81e689defa7e29b252527.dat"
+  ],
+  "mechanism": "Serialized Meson command retained old internal paths; executed existing clean generator instead of private main generator. No candidate header copied. No restore/retry on clean.",
+  "paths": {
+    "/workspace/shared/gimp-clean-aggregate/source/libgimpbase/gimpbaseenums.c": {
+      "after_sha256": "b1f2c45bf0b88b7143179279acc5787e5943a5f216749ffa9504dc306f510b54",
+      "mtime_ns": 1792567222203077948
+    },
+    "/workspace/shared/gimp-clean-aggregate/build/libgimpbase/gimpbaseenums-tmp.c": {
+      "after_sha256": "b1f2c45bf0b88b7143179279acc5787e5943a5f216749ffa9504dc306f510b54",
+      "mtime_ns": 1792567222199077870
+    },
+    "/workspace/shared/gimp-clean-aggregate/build/libgimpbase/stamp-gimpbaseenums.h": {
+      "after_sha256": "a0a3a3a5a589e61e45bf1a6778b2e05cb4bbaf8959abb5a5da70a6854d391709",
+      "mtime_ns": 1792567222204131800
+    }
+  },
+  "committed_20b_source_sha256": "b1f2c45bf0b88b7143179279acc5787e5943a5f216749ffa9504dc306f510b54",
+  "source_equals_committed_20b": true,
+  "temporary_output_equals_committed_20b": true,
+  "before_stamp_and_temporary_sha256": "not captured before setup action; unknown, do not infer unchanged",
+  "stamp_change": "generated current-time comment; source mtime touched even when bytes equal"
+}

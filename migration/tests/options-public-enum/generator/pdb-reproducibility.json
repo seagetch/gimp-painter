@@ -1,0 +1,71 @@
+{
+  "commands": [
+    [
+      "python3",
+      "/workspace/shared/options-enum-generator/pdb-private/source/pdb/meson-enumgen.py",
+      "/usr/bin/perl",
+      "/workspace/shared/options-enum-generator/pdb-private/source",
+      "/workspace/shared/options-enum-generator/pdb-private/build",
+      "/workspace/shared/options-enum-generator/pdb-private/source/libgimpbase/gimpbaseenums.h",
+      "/workspace/shared/options-enum-generator/pdb-private/source/libgimpconfig/gimpconfigenums.h",
+      "/workspace/shared/options-enum-generator/pdb-private/source/app/operations/operations-enums.h",
+      "/workspace/shared/options-enum-generator/pdb-private/source/app/core/core-enums.h",
+      "/workspace/shared/options-enum-generator/pdb-private/source/app/paint/paint-enums.h"
+    ],
+    [
+      "python3",
+      "/workspace/shared/options-enum-generator/pdb-private/source/pdb/meson-enumcode.py",
+      "/usr/bin/perl",
+      "/workspace/shared/options-enum-generator/pdb-private/source",
+      "/workspace/shared/options-enum-generator/pdb-private/build"
+    ],
+    [
+      "python3",
+      "/workspace/shared/options-enum-generator/pdb-private/source/pdb/meson-enumgen.py",
+      "/usr/bin/perl",
+      "/workspace/shared/options-enum-generator/pdb-private/source",
+      "/workspace/shared/options-enum-generator/pdb-private/build",
+      "/workspace/shared/options-enum-generator/pdb-private/source/libgimpbase/gimpbaseenums.h",
+      "/workspace/shared/options-enum-generator/pdb-private/source/libgimpconfig/gimpconfigenums.h",
+      "/workspace/shared/options-enum-generator/pdb-private/source/app/operations/operations-enums.h",
+      "/workspace/shared/options-enum-generator/pdb-private/source/app/core/core-enums.h",
+      "/workspace/shared/options-enum-generator/pdb-private/source/app/paint/paint-enums.h"
+    ],
+    [
+      "python3",
+      "/workspace/shared/options-enum-generator/pdb-private/source/pdb/meson-enumcode.py",
+      "/usr/bin/perl",
+      "/workspace/shared/options-enum-generator/pdb-private/source",
+      "/workspace/shared/options-enum-generator/pdb-private/build"
+    ]
+  ],
+  "runs": [
+    {
+      "pdb/enums.pl": "a108716f28b1b770094b4faf34d5bf989f531933f99a0eddf76bdd7fa6d1c532",
+      "libgimp/gimpenums.c.tail": "096988b75f1e4925b43c3873a6dad84897c5f4e7a459e8adaec5b23345fdf50b",
+      "libgimp/gimpenums.h": "a01f9f8a97073251e12c57f115d79c45894d71be082432509624308ec5e71220"
+    },
+    {
+      "pdb/enums.pl": "a108716f28b1b770094b4faf34d5bf989f531933f99a0eddf76bdd7fa6d1c532",
+      "libgimp/gimpenums.c.tail": "096988b75f1e4925b43c3873a6dad84897c5f4e7a459e8adaec5b23345fdf50b",
+      "libgimp/gimpenums.h": "a01f9f8a97073251e12c57f115d79c45894d71be082432509624308ec5e71220"
+    }
+  ],
+  "input_sha256": {
+    "libgimpbase/gimpbaseenums.h": "ef56b63737b0314f25a223db642000a01c9b687fd0d6c2a31c821331ea6e9971",
+    "libgimpconfig/gimpconfigenums.h": "1bbbb0d47a581a169b271d1f3605e1c6e7c15da57d926862f5697f850e61fa18",
+    "app/operations/operations-enums.h": "49e50ffffc9671c1a2c96fbe1cba74f69b1668a20f38ac3d3c6a2f71a3b6055e",
+    "app/core/core-enums.h": "8b273ca25672d29707d14a017ae414a9dd05ed40e875d758c5480d179fb96534",
+    "app/paint/paint-enums.h": "f1e70f9753a060f2e1660a6d69b550e7cb8e71e2af753b6396f17dd8f0bdf2ba",
+    "pdb/meson-enumgen.py": "7397205af3ee1a3c0df0d7fe7d3ec721fdb429384cfeb3b14bf51f54b4b3d440",
+    "pdb/enumgen.pl": "cd6b937ee66744deadbd64b198bf6b580cee4c3ed11a6825012d568ea1553290",
+    "pdb/enums-external.pl": "dce37a38fe134fe0dac7d1f309cb8e1a0348353981f998531a621063d206d6b5",
+    "pdb/util.pl": "ae91ac0c6367b57a686ff1e86a71dae39aaf1c0c0968cd21e08acfcdf9a424a0",
+    "pdb/meson-enumcode.py": "0215c72a978e02b434367f7b4cd021629ece6323ca1926f29c07944dd6d4bdbd",
+    "pdb/enumcode.pl": "60445fb2ac0dde89016b3a1b4737520dc31159f84eeaf8fdf8984c749a6b9816",
+    "libgimp/gimpenums.h": "a01f9f8a97073251e12c57f115d79c45894d71be082432509624308ec5e71220",
+    "libgimp/gimpenums.c.tail": "096988b75f1e4925b43c3873a6dad84897c5f4e7a459e8adaec5b23345fdf50b",
+    "pdb/enums.pl": "a108716f28b1b770094b4faf34d5bf989f531933f99a0eddf76bdd7fa6d1c532"
+  },
+  "unrelated_header_unchanged": true
+}

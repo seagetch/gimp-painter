@@ -1,0 +1,23 @@
+[
+  {
+    "name": "mypaint-enum-library-only",
+    "returncode": 0,
+    "stdout": "PASS: standalone C11 public library enum identity/values/nicks/metadata\n",
+    "stderr": "",
+    "duration": 0.005122402999404585
+  },
+  {
+    "name": "mypaint-enum-public",
+    "returncode": 0,
+    "stdout": "TAP version 14\n# random seed: R02S0107ab9200f3a57a83c7ded055bf32a4\n1..2\n# Start of mypaint-public-enum tests\nok 1 /mypaint-public-enum/library-first\n# slow test /mypaint-public-enum/library-first executed in 0.95 secs\nok 2 /mypaint-public-enum/app-first\n# slow test /mypaint-public-enum/app-first executed in 0.99 secs\n# End of mypaint-public-enum tests\n",
+    "stderr": "",
+    "duration": 2.0180025640001986
+  },
+  {
+    "name": "mypaint-options-mode",
+    "returncode": 0,
+    "stdout": "TAP version 14\n# random seed: R02Sae0f84a6aa10e3a5075fb8697709c3d6\n1..6\n# Start of original-options-mode tests\nok 1 /original-options-mode/stored-normal\n# slow test /original-options-mode/stored-normal executed in 0.98 secs\nok 2 /original-options-mode/stored-normal-erase\n# slow test /original-options-mode/stored-normal-erase executed in 0.99 secs\nok 3 /original-options-mode/stored-lock-alpha\n# slow test /original-options-mode/stored-lock-alpha executed in 1.03 secs\nok 4 /original-options-mode/stored-colorize\n# slow test /original-options-mode/stored-colorize executed in 1.01 secs\nok 5 /original-options-mode/disposed-still-normal\n# slow test /original-options-mode/disposed-still-normal executed in 1.05 secs\nok 6 /original-options-mode/invalid-default-diagnostic\n# slow test /original-options-mode/invalid-default-diagnostic executed in 1.00 secs\n# End of original-options-mode tests\n",
+    "stderr": "",
+    "duration": 6.107482950999838
+  }
+]

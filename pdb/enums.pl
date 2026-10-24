@@ -666,6 +666,16 @@ package Gimp::CodeGen::enums;
 		       GIMP_FILE_CHOOSER_ACTION_SELECT_FOLDER => '2',
 		       GIMP_FILE_CHOOSER_ACTION_CREATE_FOLDER => '3' }
 	},
+    GimpMypaintBrushMode =>
+	{ contig => 1,
+	  header => 'libgimpbase/gimpbaseenums.h',
+	  symbols => [ qw(GIMP_MYPAINT_NORMAL GIMP_MYPAINT_NORMAL_AND_ERASE
+			  GIMP_MYPAINT_LOCK_ALPHA GIMP_MYPAINT_COLORIZE) ],
+	  mapping => { GIMP_MYPAINT_NORMAL => '0',
+		       GIMP_MYPAINT_NORMAL_AND_ERASE => '1',
+		       GIMP_MYPAINT_LOCK_ALPHA => '2',
+		       GIMP_MYPAINT_COLORIZE => '3' }
+	},
     GimpColorManagementMode =>
 	{ contig => 1,
 	  header => 'libgimpconfig/gimpconfigenums.h',

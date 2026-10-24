@@ -154,3 +154,13 @@ executable('test-cpu-accel',
   ],
   install: false,
 )
+
+# Public original MyPaint enum entry must work without linking the application.
+mypaint_enum_library = executable('mypaint-enum-library-only',
+  '../app/tests/test-mypaint-enum-public-c.c',
+  include_directories: rootInclude,
+  dependencies: [glib, gobject, gio, gegl, gexiv2],
+  c_args: ['-DMYPAINT_ENUM_STANDALONE'],
+  link_with: libgimpbase, override_options: ['c_std=c11'], install: false)
+test('mypaint-enum-library-only', mypaint_enum_library,
+  suite: 'libgimpbase', is_parallel: false, timeout: 30)

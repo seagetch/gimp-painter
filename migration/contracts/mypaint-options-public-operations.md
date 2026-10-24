@@ -12,10 +12,13 @@ instance and always returns GIMP_MYPAINT_NORMAL, irrespective of stored brush-mo
 The sole native model already stores the original enum property0–3. Restoration
 must not return that property, consult Resource, or change rendering behavior.
 Original enum source values NORMAL0, NORMAL_AND_ERASE1, LOCK_ALPHA2, COLORIZE3
-are declared in the compatibility options header. No second GType is registered;
-the existing native property remains authoritative for serialized storage. The
-original libgimpbase enum header route and generated enum-get-type C symbol are
-not restored by this operation-level declaration.
+were initially declared in the compatibility options header in commit
+6b6a6cf393; that operation-only proof did not restore the public library route.
+The separately tested `options-public-enum` successor moves the same declaration
+and sole registrar into libgimpbase and wires the generated libgimp/PDB enum
+metadata. No second GType is registered; the native property remains authoritative
+for serialized storage. See `mypaint-public-enum.md`; the original mode proof
+remains immutable and its six cases are repeated by the successor.
 
 Typed get_brush_mode delegates to the original C entry. Valid disposed instances
 still return NORMAL (no slot/draft access); NULL or wrong-type instances retain

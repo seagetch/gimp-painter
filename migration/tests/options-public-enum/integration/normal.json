@@ -1,0 +1,46 @@
+[
+  {
+    "name": "gimp:libgimpbase / mypaint-enum-library-only",
+    "result": "OK",
+    "returncode": 0,
+    "stdout": "PASS: standalone C11 public library enum identity/values/nicks/metadata\n",
+    "stderr": null,
+    "duration": 0.008170604705810547,
+    "command": [
+      "/workspace/shared/gimp-clean-aggregate/build/libgimpbase/mypaint-enum-library-only"
+    ]
+  },
+  {
+    "name": "gimp:app / gimp-painter-options",
+    "result": "OK",
+    "returncode": 0,
+    "stdout": "TAP version 14\n# random seed: R02S866197d92659e245a5132d48e9d15e3b\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n1..24\n# Start of painter-options tests\nok 1 /painter-options/generated-properties\nok 2 /painter-options/all-native-properties-config\nok 3 /painter-options/legacy-brush-mode-config\nok 4 /painter-options/edit-curve-commit-conflict\nok 5 /painter-options/history-config\nok 6 /painter-options/draft-name-identity-commit\nok 7 /painter-options/draft-name-history-copy\nok 8 /painter-options/draft-name-external-errors\nok 9 /painter-options/draft-name-notification-lifetime\nok 10 /painter-options/draft-name-reentry\nok 11 /painter-options/native-config-reset-defaults\nok 12 /painter-options/notification-last-ref\nok 13 /painter-options/closed-invalid-curve\nok 14 /painter-options/named-resources\nok 15 /painter-options/selection-reentry\nok 16 /painter-options/commit-close\nok 17 /painter-options/cross-options-history\nok 18 /painter-options/mapping-point-generated-matrix\nok 19 /painter-options/mapping-point-handle-lifetime-failures\nok 20 /painter-options/mapping-point-set-generated-matrix\n# slow test /painter-options/mapping-point-set-generated-matrix executed in 0.82 secs\nok 21 /painter-options/mapping-point-set-precision-reset-history\nok 22 /painter-options/mapping-point-set-fail-closed\nok 23 /painter-options/mapping-point-set-notification-reentry\nok 24 /painter-options/application-history-close\n# End of painter-options tests\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n",
+    "stderr": null,
+    "duration": 1.8928074836730957,
+    "command": [
+      "/workspace/shared/gimp-clean-aggregate/build/app/tests/gimp-painter-options"
+    ]
+  },
+  {
+    "name": "gimp:app / mypaint-options-mode",
+    "result": "OK",
+    "returncode": 0,
+    "stdout": "TAP version 14\n# random seed: R02Sab523de400126d672de601fb5578e548\n1..6\n# Start of original-options-mode tests\nok 1 /original-options-mode/stored-normal\n# slow test /original-options-mode/stored-normal executed in 1.05 secs\nok 2 /original-options-mode/stored-normal-erase\n# slow test /original-options-mode/stored-normal-erase executed in 1.05 secs\nok 3 /original-options-mode/stored-lock-alpha\n# slow test /original-options-mode/stored-lock-alpha executed in 1.04 secs\nok 4 /original-options-mode/stored-colorize\n# slow test /original-options-mode/stored-colorize executed in 1.01 secs\nok 5 /original-options-mode/disposed-still-normal\n# slow test /original-options-mode/disposed-still-normal executed in 1.00 secs\nok 6 /original-options-mode/invalid-default-diagnostic\n# slow test /original-options-mode/invalid-default-diagnostic executed in 0.96 secs\n# End of original-options-mode tests\n",
+    "stderr": null,
+    "duration": 6.215028524398804,
+    "command": [
+      "/workspace/shared/gimp-clean-aggregate/build/app/tests/mypaint-options-mode"
+    ]
+  },
+  {
+    "name": "gimp:app / mypaint-enum-public",
+    "result": "OK",
+    "returncode": 0,
+    "stdout": "TAP version 14\n# random seed: R02S3dfbb52e4d0ac2b94ad1b7190d297c68\n1..2\n# Start of mypaint-public-enum tests\nok 1 /mypaint-public-enum/library-first\n# slow test /mypaint-public-enum/library-first executed in 0.97 secs\nok 2 /mypaint-public-enum/app-first\n# slow test /mypaint-public-enum/app-first executed in 0.99 secs\n# End of mypaint-public-enum tests\n",
+    "stderr": null,
+    "duration": 2.0159103870391846,
+    "command": [
+      "/workspace/shared/gimp-clean-aggregate/build/app/tests/mypaint-enum-public"
+    ]
+  }
+]
