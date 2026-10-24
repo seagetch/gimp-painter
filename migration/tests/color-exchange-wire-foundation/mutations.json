@@ -1,0 +1,16 @@
+[
+  {
+    "name": "unsigned-getter",
+    "exit_code": -6,
+    "stdout": "",
+    "stderr": "unsigned-getter: /workspace/shared/color-exchange-wire-foundation/unsigned-getter.c:298: main: Assertion `criticals==(k+1)*9' failed.\n",
+    "source_sha256": "df3f9d57e28c6c98b9b8b8f32706e3d54bbabc2b275f8ae1051d519cce606a18"
+  },
+  {
+    "name": "wrong-int8-parent",
+    "exit_code": -6,
+    "stdout": "",
+    "stderr": "wrong-int8-parent: /workspace/shared/color-exchange-wire-foundation/wrong-int8-parent.c:287: main: Assertion `g_type_parent(gimp_int8_get_type())==G_TYPE_UINT' failed.\n",
+    "source_sha256": "df3f9d57e28c6c98b9b8b8f32706e3d54bbabc2b275f8ae1051d519cce606a18"
+  }
+]

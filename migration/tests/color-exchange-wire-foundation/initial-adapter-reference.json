@@ -1,0 +1,36 @@
+{
+  "old_ref": "afa43fae3e920210146abed514f136fd49f671b5",
+  "sources": {
+    "app/xcf/xcf-save.c": {
+      "blob": "c894ac58f7866196b21507508cd6c1245d9b64c4",
+      "sha256": "4fa9155d28054d62baa5b7c77bd17e27fbea254df1f68c85c2ac4708de1653ce"
+    },
+    "app/xcf/xcf-write.c": {
+      "blob": "5c779f33bbf864997cbfcbda8bc3a599f0291bd0",
+      "sha256": "ec8bce3cf10d36a99842e391723da968eaf1a3aa96e798e7bca9612c4303d09d"
+    },
+    "app/xcf/xcf-private.h": {
+      "blob": "e823a8ee3edd9fc3330910d0ea0565ecd15a6286",
+      "sha256": "72b75d7eee3d63b7bfdd962bfdb14f8560cdb430cca712f21c83d4be4a325480"
+    },
+    "app/core/gimpparamspecs.c": {
+      "blob": "5250c380ddef2c82ce346fba008020bac99051e8",
+      "sha256": "884a7dfe9e1a38a91ed2b5907a0b08cf1fec3f5c74af57f07455e5cb984cbfab"
+    },
+    "app/core/gimpparamspecs.h": {
+      "blob": "2f4c0f5e0d0071e6d9ecd35153ca95aa3aa1b905",
+      "sha256": "e6787ef4a80160922608295df0ed5b86fd896f5eb62d15e5f7600b867b384b92"
+    },
+    "app/pdb/gimp-pdb-compat.c": {
+      "blob": "3258321a876bf10f00eccfa59b50ba0aad0cd0bd",
+      "sha256": "20d4e7c3c90bf5b6e8f60ccc2afe5e00086f2b7555be520fefc040649eae2b20"
+    }
+  },
+  "exact_functions": {
+    "xcf_save_filter_spec_value": "xcf_save_filter_spec_value   (XcfInfo           *info,\n                              GimpImage         *image,\n                              GError           **error,\n                              GValue            *value)\n{\n  XcfFilterArgType value_type = (XcfFilterArgType)0;\n  guint32 size = 0;\n  GError  *tmp_error = NULL;\n\n  if ( G_VALUE_HOLDS_DOUBLE(value) ) {\n    gfloat write_value = (gfloat)g_value_get_double(value);\n    value_type = XCF_FILTER_FLOAT;\n    size = sizeof(write_value);\n    g_print(\"  [%x] type=%u, value=%f\\n\", info->cp, value_type, write_value);\n    xcf_write_int32_check_error (info, &value_type, 1);\n    xcf_write_int32_check_error (info, &size, 1);\n    xcf_write_float_check_error (info, &write_value, 1);\n\n  } else if ( GIMP_VALUE_HOLDS_INT32(value) ) {\n    guint32 write_value = (guint32)g_value_get_int(value);\n    value_type = XCF_FILTER_INT32;\n    size = 4;\n    g_print(\"  [%x] type=%u, value=%u\\n\", info->cp, value_type, write_value);\n    xcf_write_int32_check_error (info, &value_type, 1);\n    xcf_write_int32_check_error (info, &size, 1);\n    xcf_write_int32_check_error (info, &write_value, 1);\n\n  } else if ( GIMP_VALUE_HOLDS_INT8(value) ) {\n    guint8 write_value = (guint8)g_value_get_int(value);\n    value_type = XCF_FILTER_INT8;\n    size = sizeof(gint8);\n    g_print(\"  [%x] type=%u, value=%u\\n\", info->cp, value_type, write_value);\n    xcf_write_int32_check_error (info, &value_type, 1);\n    xcf_write_int32_check_error (info, &size, 1);\n    xcf_write_int8_check_error (info, &write_value, 1);\n\n  } else if ( GIMP_VALUE_HOLDS_INT16(value) ) {\n    guint32 write_value = (guint32)g_value_get_int(value);\n    value_type = XCF_FILTER_INT16;\n    size = 2;\n    g_print(\"  [%x] type=%u, value=%u\\n\", info->cp, value_type, write_value);\n    xcf_write_int32_check_error (info, &value_type, 1);\n    xcf_write_int32_check_error (info, &size, 1);\n    xcf_write_int32_check_error (info, &write_value, 1);\n\n  } else if ( GIMP_VALUE_HOLDS_INT8_ARRAY(value) ) {\n    value_type = XCF_FILTER_INT8ARRAY;\n    // FIXME: int8 array is not supported for now.\n    g_print(\"  [%x] type=%u, N/A\\n\", info->cp, value_type);\n    xcf_write_int32_check_error (info, &value_type, 1);\n    xcf_write_int32_check_error (info, &size, 1);\n\n  } else if ( GIMP_VALUE_HOLDS_FLOAT_ARRAY(value) ) {\n    value_type = XCF_FILTER_FLOATARRAY;\n    // FIXME: float array is not supported for now.\n    g_print(\"  [%x] type=%u, N/A\\n\", info->cp, value_type);\n    xcf_write_int32_check_error (info, &value_type, 1);\n    xcf_write_int32_check_error (info, &size, 1);\n\n  } else if ( G_VALUE_HOLDS_STRING(value) ) {\n    gchar* write_value = (gchar*)g_value_get_string(value);\n    value_type = XCF_FILTER_FLOATARRAY;\n    g_print(\"  [%x] type=%u, value=%s\\n\", info->cp, value_type, write_value);\n    xcf_write_int32_check_error (info, &value_type, 1);\n    xcf_write_string_check_error (info, &write_value, 1);\n\n  } else if ( GIMP_VALUE_HOLDS_DRAWABLE_ID(value) ) {\n    value_type = XCF_FILTER_DRAWABLE;\n    // FIXME: drawable is not supported for now.\n    g_print(\"  [%x] type=%u, N/A\\n\", info->cp, value_type);\n    xcf_write_int32_check_error (info, &value_type, 1);\n    xcf_write_int32_check_error (info, &size, 1);\n\n  } else {\n    value_type = XCF_FILTER_UNSUPPORTED;\n    // skip this value.\n    g_print(\"  [%x] UNKNOWN\\n\", info->cp);\n    xcf_write_int32_check_error (info, &value_type, 1);\n    xcf_write_int32_check_error (info, &size, 1);\n\n  }\n  if (tmp_error) {\n    g_propagate_error (error, tmp_error);\n    return FALSE;\n  }\n  return TRUE;\n}",
+    "xcf_write_int32": "xcf_write_int32 (FILE           *fp,\n                 const guint32  *data,\n                 gint            count,\n                 GError        **error)\n{\n  GError  *tmp_error = NULL;\n  gint     i;\n\n  if (count > 0)\n    {\n      for (i = 0; i < count; i++)\n        {\n          guint32  tmp = g_htonl (data[i]);\n\n          xcf_write_int8 (fp, (const guint8 *) &tmp, 4, &tmp_error);\n\n          if (tmp_error)\n            {\n              g_propagate_error (error, tmp_error);\n\n              return i * 4;\n            }\n        }\n    }\n\n  return count * 4;\n}",
+    "xcf_write_string": "xcf_write_string (FILE     *fp,\n                  gchar   **data,\n                  gint      count,\n                  GError  **error)\n{\n  GError  *tmp_error = NULL;\n  guint    total     = 0;\n  gint     i;\n\n  for (i = 0; i < count; i++)\n    {\n      guint32 tmp;\n\n      if (data[i])\n        tmp = strlen (data[i]) + 1;\n      else\n        tmp = 0;\n\n      xcf_write_int32 (fp, &tmp, 1, &tmp_error);\n\n      if (tmp_error)\n        {\n          g_propagate_error (error, tmp_error);\n          return total;\n        }\n\n      if (tmp > 0)\n        xcf_write_int8 (fp, (const guint8 *) data[i], tmp, &tmp_error);\n\n      if (tmp_error)\n        {\n          g_propagate_error (error, tmp_error);\n          return total;\n        }\n\n      total += 4 + tmp;\n    }\n\n  return total;\n}",
+    "gimp_int8_get_type": "gimp_int8_get_type (void)\n{\n  static GType type = 0;\n\n  if (! type)\n    {\n      const GTypeInfo info = { 0, };\n\n      type = g_type_register_static (G_TYPE_UINT, \"GimpInt8\", &info, 0);\n    }\n\n  return type;\n}"
+  },
+  "scope": "Literal old emitter/BE/string/GimpInt8 type functions on current GLib host; successful byte IO stub, INT32/context kind adapters, unused types disabled and debug print suppressed. Not old application capture or universal GLib-build behavior."
+}
