@@ -73,13 +73,16 @@ path override over fixture-specific registered conditions.
 
 ## Inspect the Painter canvas, not only startup
 
-The current branch defines `painter-canvas-ui` as false by default. A clean
-profile therefore opens the standard layout. The existing View → Painter Canvas
-Controls action enables the custom controls; an image must also be open. For an
-isolated display test only, seed a dedicated `gimprc` with
-`(painter-canvas-ui yes)` and open `migration/fixtures/gimp3-baseline.xcf` through
-the installed binary. Do not overwrite an existing user profile. A welcome-only
-screenshot cannot establish Painter UI behavior.
+The current branch enables `painter-canvas-ui` by default. A clean profile uses
+that default and the shipped native single-window dock layout; no enabling
+`gimprc` entry is required. Open a real image to inspect populated Painter canvas
+panels. Existing explicit `(painter-canvas-ui no)` preferences and custom saved
+dock layouts remain respected. Do not overwrite an existing user profile.
+A welcome-only screenshot cannot establish Painter UI behavior.
+
+The historical capture below predates the default change and explicitly enabled
+the preference in its isolated profile; its original results are not relabeled
+as verification of the new no-setting default.
 
 On 2026-10-15, source `6e6f2568e7593089c4f3c93e4613354c1f915001` plus the reviewed
 three-header route repair configured, built all 3024 steps, installed, and passed

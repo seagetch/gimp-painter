@@ -1,11 +1,14 @@
-# Opt-in multi-window toolbar host
+# Multi-window toolbar host
 
 This bounded child of `29.010` and `30.005` restores a usable dedicated toolbar
 host, not merely a hidden notebook. The runtime gate is exactly
-`painter-canvas-ui && !single-window-mode`. Ordinary GIMP profiles default to
-false; proven Painter migration enables the existing preference. No new saved
-preference, inferred tool/provenance gate, or process-global host singleton is
-introduced.
+`painter-canvas-ui && !single-window-mode`. Painter canvas controls now default
+to true; the shipped session remains single-window. An explicit false preference
+still disables them, and existing custom saved layouts are preserved. The
+original host implementation was qualified while this preference defaulted to
+false; changing its default does not alter the two-part runtime gate. No new
+saved preference, inferred tool/provenance gate, or process-global host singleton
+is introduced.
 
 ## Legacy correspondence and qualification
 

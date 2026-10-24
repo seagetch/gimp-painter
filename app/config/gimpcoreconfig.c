@@ -224,7 +224,7 @@ gimp_core_config_class_init (GimpCoreConfigClass *klass)
                             "painter-canvas-ui",
                             _("Painter Canvas UI"),
                             _("Show Painter canvas controls in new image windows"),
-                            FALSE,
+                            TRUE,
                             GIMP_PARAM_STATIC_STRINGS);
 
   GIMP_CONFIG_PROP_ENUM (object_class, PROP_INTERPOLATION_TYPE,

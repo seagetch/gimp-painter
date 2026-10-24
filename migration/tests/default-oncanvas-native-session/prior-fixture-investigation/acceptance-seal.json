@@ -1,0 +1,60 @@
+{
+  "base": "b35ed653e2f84f8912a5323c0745b7279d02ca13",
+  "scope": "Standalone native-session UI acceptance + dedicated official session fixture; NO production fixes or synthetic dock/brush population",
+  "source_sha256": {
+    "app/tests/meson.build": "6679a9e046f1e2f7c0998df2b76e9675da9cf07c82933fb777cf284f4a73adea",
+    "app/tests/test-painter-native-session-ui.c": "91fb682875ffe64ea3b594215d01f01275e21022131ee79910b72862665b1db6",
+    "app/tests/gimpdir/sessionrc-native-oncanvas": "75f60bbb224293a5399f4d7bc043461ec1004bc8abbc3968f315bf40650b8e56"
+  },
+  "source_snapshot": "Repository files identified by source_sha256",
+  "source_drift": [],
+  "production_comparison": "source-baseline-comparison.json",
+  "production_identical": true,
+  "official_session_fixture_byte_identical": true,
+  "generic_negative_control": {
+    "exit": 250,
+    "right_docks": 0,
+    "floating_windows": 4,
+    "assertion": "right dock columns must be nonempty"
+  },
+  "native_positive_control": {
+    "exit": 0,
+    "right_docks": 1,
+    "floating_windows": 0,
+    "shipped_file_backed_brushes": 56
+  },
+  "registered_acceptance": {
+    "result": "PASS",
+    "exit": 0
+  },
+  "registered_related_tests": {
+    "passed_groups": 5,
+    "failed_groups": 1,
+    "passed_cases": 34,
+    "failure": "painter-perspective-ui-damage-1: unexplained1 !=0; same unchanged failure on exact recheck",
+    "full_gate": "FAIL",
+    "attribution": "Existing Perspective results retained: unchanged binary and sources; native acceptance rebuilt and rerun with strengthened file-backed brush assertion."
+  },
+  "image": {
+    "path": "acceptance.png",
+    "sha256": "9da76e26f0c95f825f37e6a48df1fbaa1fab974a97ac991e65efd205bcd2cd3c",
+    "screen": [
+      1080,
+      1920
+    ],
+    "app_window": [
+      1040,
+      1800
+    ],
+    "oncanvas": true,
+    "visual_qa": "Native Layers/layer1 row and real shipped brush thumbnails/filter/spacing controls visible"
+  },
+  "binaries_sha256": {
+    "app/gimp-3.0": "4309a00e022df5a879ab940f82e3b18f5b381c1c7c95db9bdad711e726566286",
+    "app/tests/painter-native-session-ui": "fa2983371b0b68a453a671c16c8e60f5728a4ca1109ad608d03f2fce41e36d8c",
+    "app/tests/painter-perspective-ui": "fb82eda6bd2d00fe47a8ed6b357e6ac66b024dd7d6398af6bc116538b7e361c7"
+  },
+  "sanitizers": "NOT RUN; native runtime only",
+  "diagnostic_matrix_evidence": "diagnostic-seal.json and causal-matrix.json",
+  "stronger_assertion": "Icon model must contain an actual file-backed brush below source/gimp-data/brushes; internal placeholders cannot satisfy."
+}

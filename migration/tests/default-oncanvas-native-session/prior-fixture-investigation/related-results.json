@@ -1,0 +1,101 @@
+{
+  "full_related_gate": "FAIL",
+  "note": "Existing damage1 exact repeat reproduces failure; existing source/binary unchanged. Standalone native fixture acceptance passes.",
+  "groups": [
+    {
+      "name": "gimp:app / painter-perspective-ui",
+      "result": "OK",
+      "exit": 0,
+      "duration_seconds": 5.2905073165893555,
+      "passed_cases": [
+        "/perspective-ui/damage-ink-bounds",
+        "/perspective-ui/old-path-pixels",
+        "/perspective-ui/retained-groups-deserialize",
+        "/perspective-ui/retained-groups-reset",
+        "/perspective-ui/add-move-remove-undo",
+        "/perspective-ui/stale-target-motion",
+        "/perspective-ui/close-pending-resize",
+        "/perspective-ui/cancel-hit-transforms",
+        "/perspective-ui/overlay-extents-replace",
+        "/perspective-ui/overlay-pixels-image-switch",
+        "/perspective-ui/registration-external-replace",
+        "/perspective-ui/old-toolrc-preserves-groups",
+        "/perspective-ui/interrupted-add",
+        "/perspective-ui/interrupted-add-dispose",
+        "/perspective-ui/interrupted-remove",
+        "/perspective-ui/interrupted-remove-dispose",
+        "/perspective-ui/proximity-status",
+        "/perspective-ui/registered-type-options",
+        "/perspective-ui/standalone-lifetime",
+        "/perspective-ui/interrupted-motion",
+        "/perspective-ui/recursive-cancel",
+        "/perspective-ui/switch-finalizer-disposes-tool",
+        "/perspective-ui/notification-last-owner",
+        "/perspective-ui/guide-property-ownership",
+        "/perspective-ui/property-finalizer-disposes-tool",
+        "/perspective-ui/property-finalizer-replaces-model",
+        "/perspective-ui/damage-mutations/0",
+        "/perspective-ui/damage-mutations/1",
+        "/perspective-ui/damage-mutations/2"
+      ],
+      "failed_assertions": []
+    },
+    {
+      "name": "gimp:app / painter-perspective-ui-geometry",
+      "result": "OK",
+      "exit": 0,
+      "duration_seconds": 6.189058065414429,
+      "passed_cases": [
+        "/perspective-ui/damage-ink-bounds",
+        "/perspective-ui/old-path-pixels"
+      ],
+      "failed_assertions": []
+    },
+    {
+      "name": "gimp:app / painter-perspective-ui-damage-0",
+      "result": "OK",
+      "exit": 0,
+      "duration_seconds": 27.05033802986145,
+      "passed_cases": [
+        "/perspective-ui/damage-mutations/0"
+      ],
+      "failed_assertions": []
+    },
+    {
+      "name": "gimp:app / painter-perspective-ui-damage-1",
+      "result": "FAIL",
+      "exit": -6,
+      "duration_seconds": 22.027289390563965,
+      "passed_cases": [],
+      "failed_assertions": [
+        "app/tests/test-painter-perspective-damage.inc:84:perspective_damage_global_audit: assertion failed (unexplained == 0): (1 == 0)"
+      ]
+    },
+    {
+      "name": "gimp:app / painter-perspective-ui-damage-2",
+      "result": "OK",
+      "exit": 0,
+      "duration_seconds": 27.035613536834717,
+      "passed_cases": [
+        "/perspective-ui/damage-mutations/2"
+      ],
+      "failed_assertions": []
+    },
+    {
+      "name": "gimp:app / painter-native-session-ui",
+      "result": "OK",
+      "exit": 0,
+      "duration_seconds": 5.113011121749878,
+      "passed_cases": [
+        "/native-session-ui/populated-portrait"
+      ],
+      "failed_assertions": []
+    }
+  ],
+  "exact_damage1_recheck": {
+    "result": "FAIL",
+    "assertion": "app/tests/test-painter-perspective-damage.inc:84:perspective_damage_global_audit: assertion failed (unexplained == 0): (1 == 0)",
+    "maximum_pixel_difference": 4,
+    "source_and_binary_unchanged": true
+  }
+}

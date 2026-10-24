@@ -875,7 +875,15 @@ static void overlay_topmost_visible_input(void) {
   close_tiles(box);
 }
 static void overlay_input_and_restore(void) {
+  gboolean expected_visible;
+  g_object_get(gimp->config,"painter-canvas-ui",&expected_visible,NULL);
   GimpDisplayShell *shell=new_shell();
+  /* Startup follows the current preference. Establish the hidden precondition
+   * explicitly instead of assuming the historical FALSE default. */
+  g_assert_cmpint(gimp_painter_canvas_ui_get_visible(shell),==,expected_visible);
+  /* Check the shell-local hide synchronously: the native window may reapply
+   * the unchanged global preference during subsequent event processing. */
+  gimp_painter_canvas_ui_set_visible(shell,FALSE);
   g_assert_false(gimp_painter_canvas_ui_get_visible(shell));
   gimp_painter_canvas_ui_set_visible(shell,TRUE);drain();
   GimpOverlayChild *child=layer_panel(shell);

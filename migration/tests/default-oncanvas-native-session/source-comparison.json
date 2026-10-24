@@ -1,0 +1,18 @@
+{
+  "base": "b35ed653e2f84f8912a5323c0745b7279d02ca13",
+  "existing_tracked_files_checked": 19964,
+  "existing_files_changed": [
+    "app/config/gimpcoreconfig.c",
+    "app/tests/meson.build",
+    "app/tests/test-painter-compact-options.c",
+    "migration/contracts/multiwindow-toolbar-host.md",
+    "migration/contracts/tcp-portrait-build-environment.md"
+  ],
+  "new_files": [
+    "app/tests/test-painter-native-session-ui.c",
+    "app/tests/gimpdir/sessionrc-native-oncanvas"
+  ],
+  "sole_production_change": "app/config/gimpcoreconfig.c default FALSE to TRUE",
+  "no_production_instrumentation": true,
+  "dock_layout_and_restoration_code_unchanged": true
+}

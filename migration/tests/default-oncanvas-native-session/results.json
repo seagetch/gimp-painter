@@ -1,0 +1,83 @@
+{
+  "targeted_gate": "PASS",
+  "broader_compact_gate": "FAIL",
+  "runs": [
+    {
+      "run": "native-baseline-red",
+      "exit": 250,
+      "assertions_and_case_results": [
+        "ERROR:app/tests/test-painter-native-session-ui.c:205:main: 'gimp->config->painter_canvas_ui' should be TRUE"
+      ]
+    },
+    {
+      "run": "preference-baseline-red",
+      "exit": 250,
+      "assertions_and_case_results": [
+        "ERROR:app/tests/test-painter-compact-options.c:369:native_visibility_preference: 'config->painter_canvas_ui' should be TRUE",
+        "not ok /painter-compact-options/native-visibility-preference - ERROR:app/tests/test-painter-compact-options.c:369:native_visibility_preference: 'config->painter_canvas_ui' should be TRUE"
+      ]
+    },
+    {
+      "run": "native-green",
+      "exit": 0,
+      "assertions_and_case_results": [
+        "# Restored native session: right docks=1, floating windows=0",
+        "# Mapped brush grid contains 56 shipped file-backed brushes",
+        "ok 1 /native-session-ui/populated-portrait"
+      ]
+    },
+    {
+      "run": "preference-green",
+      "exit": 0,
+      "assertions_and_case_results": [
+        "ok 1 /painter-compact-options/native-visibility-preference"
+      ]
+    },
+    {
+      "run": "registered-native",
+      "exit": 0,
+      "assertions_and_case_results": []
+    },
+    {
+      "run": "compact-popup-baseline-compare",
+      "exit": 250,
+      "assertions_and_case_results": [
+        "ERROR:app/tests/test-painter-rectangle-unit-popup.inc:161:rectangle_popup_assert_menu: 'grab == popover' should be TRUE",
+        "not ok /painter-compact-options/rectangle-units-real-popup-events - ERROR:app/tests/test-painter-rectangle-unit-popup.inc:161:rectangle_popup_assert_menu: 'grab == popover' should be TRUE"
+      ]
+    },
+    {
+      "run": "preference-transfer-green",
+      "exit": 250,
+      "assertions_and_case_results": [
+        "ERROR:app/tests/test-painter-compact-options.c:394:canvas_dock_tool_transfer_and_preference: 'find(a->canvas,\"painter-compact-mypaint\",GTK_TYPE_MENU_BUTTON)' should not be NULL",
+        "not ok /painter-compact-options/canvas-dock-tool-transfer-preference - ERROR:app/tests/test-painter-compact-options.c:394:canvas_dock_tool_transfer_and_preference: 'find(a->canvas,\"painter-compact-mypaint\",GTK_TYPE_MENU_BUTTON)' should not be NULL"
+      ]
+    },
+    {
+      "run": "preference-transfer-baseline",
+      "exit": 250,
+      "assertions_and_case_results": [
+        "ERROR:app/tests/test-painter-compact-options.c:394:canvas_dock_tool_transfer_and_preference: 'find(a->canvas,\"painter-compact-mypaint\",GTK_TYPE_MENU_BUTTON)' should not be NULL",
+        "not ok /painter-compact-options/canvas-dock-tool-transfer-preference - ERROR:app/tests/test-painter-compact-options.c:394:canvas_dock_tool_transfer_and_preference: 'find(a->canvas,\"painter-compact-mypaint\",GTK_TYPE_MENU_BUTTON)' should not be NULL"
+      ]
+    }
+  ],
+  "registered_compact": {
+    "result": "FAIL",
+    "failure": "rectangle-units-real-popup-events: grab == popover at test-painter-rectangle-unit-popup.inc:161",
+    "baseline_comparison": {
+      "exit": 250,
+      "assertion": "same grab==popover line161 failed with originalFALSE production binary; row differed"
+    }
+  },
+  "focused_transfer": {
+    "result": "FAIL",
+    "exit": 250,
+    "assertion": "line394 painter-compact-mypaint menu button missing",
+    "baseline_exit": 250,
+    "baseline_assertion": "identical missing menu button at line394"
+  },
+  "default_dump_before": "(painter-canvas-ui no)",
+  "default_dump_after": "(painter-canvas-ui yes)"
+}

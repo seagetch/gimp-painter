@@ -366,7 +366,7 @@ static void reentrant_destroy_during_compaction (void) {
   g_clear_error(&error);g_object_unref(gui);
 }
 static void native_visibility_preference (void) {
-  GimpCoreConfig *config=GIMP_CORE_CONFIG(g_object_new(GIMP_TYPE_RC,"gimp",gimp,NULL));g_assert_false(config->painter_canvas_ui);
+  GimpCoreConfig *config=GIMP_CORE_CONFIG(g_object_new(GIMP_TYPE_RC,"gimp",gimp,NULL));g_assert_true(config->painter_canvas_ui);
   GError *error=NULL;gchar *converted=gimp_painter_profile_transform("# old defaults\n","gimprc",TRUE,&error);g_assert_no_error(error);
   g_assert_true(gimp_config_deserialize_string(GIMP_CONFIG(config),converted,-1,NULL,&error));g_assert_no_error(error);g_free(converted);g_assert_true(config->painter_canvas_ui);
   g_object_set(config,"painter-canvas-ui",FALSE,NULL);gchar *saved=gimp_config_serialize_to_string(GIMP_CONFIG(config),NULL);g_assert_nonnull(strstr(saved,"(painter-canvas-ui no)"));

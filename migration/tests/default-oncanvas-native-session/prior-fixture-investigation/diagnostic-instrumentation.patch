@@ -1,0 +1,135 @@
+--- a/app/gui/gui.c
++++ b/app/gui/gui.c
+@@ -35,6 +35,8 @@
+ #include "core/gimpcontainer.h"
+ #include "core/gimpcontext.h"
+ #include "core/gimpimage.h"
++#include "core/gimp-gui.h"
++#include "core/gimplayer-new.h"
+ #include "core/gimptoolinfo.h"
+ 
+ #include "plug-in/gimpenvirontable.h"
+@@ -62,6 +64,9 @@
+ #include "widgets/gimpdevices.h"
+ #include "widgets/gimpdialogfactory.h"
+ #include "widgets/gimpdnd.h"
++#include "widgets/gimpdockcolumns.h"
++#include "widgets/gimpdockwindow.h"
++#include "widgets/gimpdockcontainer.h"
+ #include "widgets/gimprender.h"
+ #include "widgets/gimphelp.h"
+ #include "widgets/gimphelp-ids.h"
+@@ -113,6 +118,61 @@
+ 
+ #include "gimp-intl.h"
+ 
++
++/* Local diagnostic build only: no topology changes except explicit toggles. */
++static void dock_rootcause_trace (Gimp *gimp, const gchar *stage)
++{
++  if (!g_getenv ("GIMP_DOCK_ROOTCAUSE")) return;
++  GList *windows = gimp_get_image_windows (gimp);
++  guint left = 0, right = 0, floating = 0;
++  for (GList *i = windows; i; i = i->next) {
++    GimpImageWindow *window = i->data;
++    left += g_list_length (gimp_dock_columns_get_docks (gimp_image_window_get_left_docks (window)));
++    right += g_list_length (gimp_dock_columns_get_docks (gimp_image_window_get_right_docks (window)));
++  }
++  for (GList *i = gimp_dialog_factory_get_open_dialogs (gimp_dialog_factory_get_singleton ()); i; i = i->next)
++    if (GIMP_IS_DOCK_WINDOW (i->data)) floating++;
++  g_print ("DOCK-ROOTCAUSE stage=%s single=%d painter=%d restore_session=%d restore_pending=%d ready=%d image_windows=%u left=%u right=%u floating_windows=%u profile=%s\n",
++           stage, GIMP_GUI_CONFIG(gimp->config)->single_window_mode,
++           gimp->config->painter_canvas_ui, GIMP_GUI_CONFIG(gimp->config)->restore_session,
++           gimp_dialog_factory_restore_pending(gimp_dialog_factory_get_singleton()),
++           session_is_ready(gimp),g_list_length(windows),left,right,floating,gimp_directory());
++  g_list_free(windows);
++}
++static gboolean dock_rootcause_tick (gpointer data)
++{
++  Gimp *gimp=data;
++  guint stage=GPOINTER_TO_UINT(g_object_get_data(G_OBJECT(gimp),"dock-rootcause-stage"));
++  const gchar *toggle=g_getenv("GIMP_DOCK_ROOTCAUSE_TOGGLE");
++  if (!session_is_ready(gimp)) return G_SOURCE_CONTINUE;
++  if(g_getenv("GIMP_DOCK_ROOTCAUSE_NEW_IMAGE") &&
++     !g_object_get_data(G_OBJECT(gimp),"dock-rootcause-created-image")) {
++    dock_rootcause_trace(gimp,"settled-before-new-image");
++    GimpImage *image=gimp_image_new(gimp,256,256,GIMP_RGB,GIMP_PRECISION_U8_NON_LINEAR);
++    GimpLayer *layer=gimp_layer_new(image,256,256,gimp_image_get_layer_format(image,TRUE),"rootcause layer",1.0,GIMP_LAYER_MODE_NORMAL);
++    gimp_image_add_layer(image,layer,NULL,0,FALSE);
++    GimpDisplay *display=GIMP_DISPLAY(gimp_create_display(gimp,image,gimp_unit_pixel(),1.0,NULL));
++    GtkWidget *window=GTK_WIDGET(gimp_display_shell_get_window(gimp_display_get_shell(display)));
++    gtk_window_resize(GTK_WINDOW(window),1040,1800);
++    gtk_window_present(GTK_WINDOW(window));
++    g_object_unref(image);
++    g_object_set_data(G_OBJECT(gimp),"dock-rootcause-created-image",GINT_TO_POINTER(1));
++    return G_SOURCE_CONTINUE;
++  }
++  dock_rootcause_trace(gimp,stage==0?"settled":stage==1?"after-toggle-off":"after-toggle-on");
++  if (toggle && stage<2) {
++    g_object_set_data(G_OBJECT(gimp),"dock-rootcause-stage",GUINT_TO_POINTER(stage+1));
++    g_object_set(gimp->config,g_str_equal(toggle,"single")?"single-window-mode":"painter-canvas-ui",stage==1,NULL);
++    return G_SOURCE_CONTINUE;
++  }
++  if(g_getenv("GIMP_DOCK_ROOTCAUSE_SCREENSHOT")) {
++    GdkWindow *root=gdk_get_default_root_window();
++    GdkPixbuf *pixels=gdk_pixbuf_get_from_window(root,0,0,gdk_window_get_width(root),gdk_window_get_height(root));
++    if(pixels){gdk_pixbuf_save(pixels,g_getenv("GIMP_DOCK_ROOTCAUSE_SCREENSHOT"),"png",NULL,NULL);g_object_unref(pixels);}
++  }
++  if (g_getenv("GIMP_DOCK_ROOTCAUSE_EXIT")) gimp_exit(gimp,TRUE);
++  return G_SOURCE_REMOVE;
++}
+ 
+ /*  local function prototypes  */
+ 
+@@ -539,6 +599,7 @@
+   gimp_controllers_init (gimp);
+   modifiers_init (gimp);
+   session_init (gimp);
++  dock_rootcause_trace(gimp,"after-session-init");
+ 
+   g_type_class_unref (g_type_class_ref (GIMP_TYPE_COLOR_SELECTOR_PALETTE));
+ 
+@@ -644,6 +705,10 @@
+       /*  move keyboard focus to the display  */
+       gtk_window_present (GTK_WINDOW (toplevel));
+     }
++
++  dock_rootcause_trace(gimp,"after-session-restore-request");
++  if(g_getenv("GIMP_DOCK_ROOTCAUSE"))
++    g_timeout_add_full(G_PRIORITY_DEFAULT,1000,dock_rootcause_tick,g_object_ref(gimp),g_object_unref);
+ 
+   /*  indicate that the application has finished loading  */
+   gdk_notify_startup_complete ();
+--- a/app/gui/gimpuiconfigurer.c
++++ b/app/gui/gimpuiconfigurer.c
+@@ -1237,6 +1237,8 @@
+ 
+   g_return_if_fail (GIMP_IS_UI_CONFIGURER (ui_configurer));
+ 
++  if(g_getenv("GIMP_DOCK_ROOTCAUSE"))
++    g_print("DOCK-CONFIGURE requested=%d settled=%d painter=%d settled_painter=%d pending=%d replay=%d dirty=%d\n",single_window_mode,ui_configurer->p->settled_single_window_mode,ui_configurer->p->gimp->config->painter_canvas_ui,ui_configurer->p->settled_painter_canvas_ui,gimp_dialog_factory_restore_pending(ui_configurer->p->restore_factory),ui_configurer->p->restore_replay_pending,ui_configurer->p->painter_dirty);
+   if (ui_configurer->p->stopping ||
+       gimp_dialog_factory_restore_stopping (ui_configurer->p->restore_factory))
+     return;
+--- a/app/tests/test-painter-perspective-ui.c
++++ b/app/tests/test-painter-perspective-ui.c
+@@ -629,11 +629,18 @@
+ #include "test-painter-tool-group-retirement.inc"
+ #include "test-painter-perspective-damage.inc"
+ 
++static void rootcause_startup (void) {
++  create_image();
++  gint64 deadline=g_get_monotonic_time()+5*G_TIME_SPAN_SECOND;
++  while(g_get_monotonic_time()<deadline){g_main_context_iteration(NULL,FALSE);g_usleep(1000);}
++  close_image();
++}
+ int main(int argc,char **argv)
+ {
+   gint result;g_test_init(&argc,&argv,NULL);if(!gtk_init_check(&argc,&argv))return GIMP_EXIT_TEST_SKIPPED;
+   gimp_test_utils_setup_menus_path();gimp=gimp_init_for_gui_testing(TRUE);
+-  g_object_set(gimp->config,"painter-canvas-ui",TRUE,NULL);
++  g_object_set(gimp->config,"painter-canvas-ui",g_strcmp0(g_getenv("GIMP_DOCK_ROOTCAUSE_PAINTER"),"0")!=0,NULL);
++  g_test_add_func("/perspective-ui/rootcause-startup",rootcause_startup);
+   g_test_add_func ("/perspective-ui/damage-ink-bounds", perspective_damage_ink_bounds);
+   g_test_add_func ("/perspective-ui/old-path-pixels", perspective_old_path_pixels);
+   for (guint a = 0; a < 3; a++) { gchar *name = g_strdup_printf ("/perspective-ui/damage-mutations/%u", a); g_test_add_data_func (name, GUINT_TO_POINTER (a), perspective_damage_mutations); g_free (name); }

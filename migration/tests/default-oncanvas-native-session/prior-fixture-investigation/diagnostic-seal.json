@@ -1,0 +1,81 @@
+{
+  "base": "b35ed653e2f84f8912a5323c0745b7279d02ca13",
+  "diagnostic_only": true,
+  "sources_sha256": {
+    "app/gui/gui.c": "d3271df7e0a9c6b46055750fbd5f26438c49d4990cf9ca3e9439f065ec707dc2",
+    "app/gui/gimpuiconfigurer.c": "356855e38d38bbdd3ae4f0ba2a178a848f68050536a072a35bf2a09e594ae62c",
+    "app/tests/test-painter-perspective-ui.c": "7740d7eb3acedbe6ba23b919a80141a066741d94a19c437dd3c9780120c73a01"
+  },
+  "binaries_sha256": {
+    "app/gimp-3.0": "9759e0e2d5b3b5b2d210cc89ccf3d222597fe71efbf4ce954f2f8172c8dcb043",
+    "app/tests/painter-perspective-ui": "51688fe94c5fce0e8d2ed88a3b08c1af4c114d59bf1664e5785943cada0aba2b"
+  },
+  "matrix": "causal-matrix.json",
+  "toggles": "causal-matrix.json",
+  "normal_app_flags": [
+    "--new-instance",
+    "--no-splash"
+  ],
+  "normal_app_environment_unset": [
+    "GIMP_TESTING_ABS_TOP_SRCDIR",
+    "GIMP_TESTING_ABS_TOP_BUILDDIR",
+    "GIMP_TESTING_PLUGINDIRS",
+    "UI_TEST"
+  ],
+  "normal_data_loading": "enabled, no --no-data or --no-fonts",
+  "runtime": "official pinned Debian dependency extract; official Meson install-map share/etcassets; no plugin binaries installed",
+  "limitations": [
+    "Instrumentation logs dock ownership and creates native image only after startup ready; no arbitrary dock population",
+    "Initial matrix screenshots are full1080x1920 root but some appwindows retain session800x600; separate portrait profiles record display-only changes",
+    "Native runtime only, no ASan"
+  ],
+  "portrait": {
+    "pristine": {
+      "image_sha256": "adf482ed53a0c84ea13ffa427ff883b05802b37fbe7d03e190ad299956f75f43",
+      "image_path": "normal-pristine-portrait.png",
+      "input_record": "case-inputs.json",
+      "visual_qa": "PASS actual portrait app window; native populated Layers/brush grid",
+      "exit": 0
+    },
+    "generic-test-profile": {
+      "image_sha256": "33743ad5857db0ff30e4f5164d778f07ca2626ccf68617c70b66cc2dd73d84e3",
+      "image_path": "normal-generic-test-profile-portrait.png",
+      "input_record": "case-inputs.json",
+      "visual_qa": "PASS reproduces empty upper-left native right-column host",
+      "exit": 0
+    }
+  },
+  "harness_native_session": {
+    "fixture_sha256": "75f60bbb224293a5399f4d7bc043461ec1004bc8abbc3968f315bf40650b8e56",
+    "identical_to_etc_sessionrc": true,
+    "exit": 0,
+    "settled": {
+      "single": 1,
+      "painter": 1,
+      "left": 1,
+      "right": 1,
+      "floating_windows": 0
+    }
+  },
+  "source_drift": [],
+  "summary": {
+    "normal_matrix_cases": 12,
+    "normal_matrix_exit0": 12,
+    "normal_toggle_cases": 3,
+    "normal_toggle_exit0": 3,
+    "harness_generic_cases": 2,
+    "harness_generic_exit0": 2,
+    "harness_native_session_cases": 1,
+    "harness_native_session_exit0": 1,
+    "finding": "Saved session topology determines native dock ownership under both normal app and harness. Pristine native session yields right1/floating0; generic floating session yields right0/floating4. Explicit single-window OFF/ON merges to left2/right3/floating0. Painter OFF/ON preserves topology."
+  },
+  "sources_location": "Reconstruct base with diagnostic-instrumentation.patch; source hashes below identify experimental files",
+  "active_source_after_matrix": "Restored original production source before separate native-session acceptance. Diagnostic snapshots and binaries retained privately, not shipped in this package.",
+  "preserved_diagnostic_binary_files": [
+    "app/gimp-3.0",
+    "app/tests/painter-perspective-ui"
+  ],
+  "diagnostic_source_snapshot": "Reconstruct from base plus diagnostic-instrumentation.patch; production fix does not apply it",
+  "preserved_diagnostic_binary_files_note": "Paths identify privately retained binaries, whose hashes are recorded here; executable binaries are not bundled.",
+  "gimp_data_commit": "a31e5dea4f572fb5f33b06f5c4b86db5f30643dc"
+}

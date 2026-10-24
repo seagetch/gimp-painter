@@ -1,0 +1,105 @@
+[
+  {
+    "case": "pristine-absent",
+    "painter_setting": "ABSENT",
+    "sessionrc": "ABSENT; normal fallback",
+    "files": {},
+    "normal_app_arguments": [
+      "--new-instance",
+      "--no-splash",
+      "app/tests/files/gimp-2-6-file.xcf"
+    ],
+    "xcf_sha256": "a1557a22fd7ba5d8185447c932a708bd2369910203081590e45e3a3cabe46636",
+    "display": "authenticated loopback Xvfb1080x1920x24",
+    "test_environment_variables": "unset",
+    "instrumentation": "none",
+    "external_ui_actions": [
+      "Close first-run Welcome using WM_DELETE_WINDOW",
+      "Resize main application window1040x1800",
+      "Capture full root1080x1920"
+    ],
+    "driver_exit": 0,
+    "post_capture_termination_status": 1,
+    "capture_sha256": "38e5e14823515ef9137a11ae961354e887230ce726097901b9b6fafddb39f314",
+    "observed_ui": "oncanvas native Layers, shipped brush grid, left toolbar, color and bottom controls",
+    "window_observer": [
+      "WINDOW 2097178 567x640 name=Welcome to GIMP 3.0.9",
+      "ACTION close welcome via WM_DELETE_WINDOW",
+      "WINDOW 2097156 800x600 name=gimp-2-6-file.xcf-1.0 (RGB color 8-bit non-linear integer, GIMP built-in sRGB, 2 layers) 100x90 \u2013 GIMP",
+      "ACTION resize main window 1040x1800"
+    ],
+    "image": "pristine-absent.png"
+  },
+  {
+    "case": "native-session-absent",
+    "painter_setting": "ABSENT",
+    "sessionrc": "official copied",
+    "files": {
+      "sessionrc": {
+        "contents": "# GIMP sessionrc\n# \n# This file takes session-specific info (that is info, you want to keep\n# between two GIMP sessions).  You are not supposed to edit it manually, but\n# of course you can do.  The sessionrc will be entirely rewritten every time\n# you quit GIMP.  If this file isn't found, defaults are used.\n\n(session-info \"toplevel\"\n    (factory-entry \"gimp-empty-image-window\")\n    (position 200 100)\n    (size 640 480))\n(session-info \"toplevel\"\n    (factory-entry \"gimp-single-image-window\")\n    (position 0 0)\n    (size 800 600)\n    (open-on-exit)\n    (aux-info\n        (left-docks-width \"188\")\n        (right-docks-width \"205\")\n        (maximized \"no\"))\n    (gimp-toolbox\n        (side left)\n        )\n    (gimp-dock\n        (side right)\n        (book\n            (position 336)\n            (current-page 0)\n            (dockable \"gimp-layer-list\"\n                (tab-style automatic)\n                (preview-size 32)\n                (aux-info\n                    (show-button-bar \"true\")))\n            (dockable \"gimp-channel-list\"\n                (tab-style automatic)\n                (preview-size 32)\n                (aux-info\n                    (show-button-bar \"true\")))\n            (dockable \"gimp-vectors-list\"\n                (tab-style automatic)\n                (preview-size 32)\n                (aux-info\n                    (show-button-bar \"true\")))\n            (dockable \"gimp-tool-options\"\n                (tab-style automatic)\n                (aux-info\n                    (show-button-bar \"true\")))\n            (dockable \"gimp-device-status\"\n                (tab-style automatic)\n                (aux-info\n                    (show-button-bar \"true\")))\n            (dockable \"gimp-undo-history\"\n                (tab-style automatic)\n                (aux-info\n                    (show-button-bar \"true\")))\n            (dockable \"gimp-image-list\"\n                (tab-style automatic)\n                (aux-info\n                    (show-button-bar \"true\"))))\n        (book\n            (current-page 0)\n            (dockable \"gimp-brush-grid\"\n                (tab-style automatic)\n                (aux-info\n                    (show-button-bar \"true\")))\n            (dockable \"gimp-pattern-grid\"\n                (tab-style automatic)\n                (aux-info\n                    (show-button-bar \"true\")))\n            (dockable \"gimp-font-list\"\n                (tab-style automatic)\n                (aux-info\n                    (show-button-bar \"true\")))\n            (dockable \"gimp-document-list\"\n                (tab-style automatic)\n                (aux-info\n                    (show-button-bar \"true\"))))))\n\n(hide-docks no)\n(single-window-mode yes)\n(tabs-position 0)\n(last-tip-shown 0)\n\n# end of sessionrc\n",
+        "sha256": "75f60bbb224293a5399f4d7bc043461ec1004bc8abbc3968f315bf40650b8e56"
+      }
+    },
+    "normal_app_arguments": [
+      "--new-instance",
+      "--no-splash",
+      "app/tests/files/gimp-2-6-file.xcf"
+    ],
+    "xcf_sha256": "a1557a22fd7ba5d8185447c932a708bd2369910203081590e45e3a3cabe46636",
+    "display": "authenticated loopback Xvfb1080x1920x24",
+    "test_environment_variables": "unset",
+    "instrumentation": "none",
+    "external_ui_actions": [
+      "Close first-run Welcome using WM_DELETE_WINDOW",
+      "Resize main application window1040x1800",
+      "Capture full root1080x1920"
+    ],
+    "driver_exit": 0,
+    "post_capture_termination_status": 1,
+    "capture_sha256": "66d81be3fd4982c0951576ab7118d25625dbb061dec8b46368060059bd77ebee",
+    "observed_ui": "oncanvas native Layers, shipped brush grid, left toolbar, color and bottom controls",
+    "window_observer": [
+      "WINDOW 2097178 567x640 name=Welcome to GIMP 3.0.9",
+      "ACTION close welcome via WM_DELETE_WINDOW",
+      "WINDOW 2097156 800x600 name=gimp-2-6-file.xcf-1.0 (RGB color 8-bit non-linear integer, GIMP built-in sRGB, 2 layers) 100x90 \u2013 GIMP",
+      "ACTION resize main window 1040x1800"
+    ],
+    "image": "native-session-absent.png"
+  },
+  {
+    "case": "explicit-false",
+    "painter_setting": "explicit false",
+    "sessionrc": "ABSENT; normal fallback",
+    "files": {
+      "gimprc": {
+        "contents": "(painter-canvas-ui no)\n",
+        "sha256": "f313bd12619d969123d558c9e8b2887dbc52600d2212d55b4452e20b6daa226b"
+      }
+    },
+    "normal_app_arguments": [
+      "--new-instance",
+      "--no-splash",
+      "app/tests/files/gimp-2-6-file.xcf"
+    ],
+    "xcf_sha256": "a1557a22fd7ba5d8185447c932a708bd2369910203081590e45e3a3cabe46636",
+    "display": "authenticated loopback Xvfb1080x1920x24",
+    "test_environment_variables": "unset",
+    "instrumentation": "none",
+    "external_ui_actions": [
+      "Close first-run Welcome using WM_DELETE_WINDOW",
+      "Resize main application window1040x1800",
+      "Capture full root1080x1920"
+    ],
+    "driver_exit": 0,
+    "post_capture_termination_status": 1,
+    "capture_sha256": "bedf2b132b183ba21d5e70762417735e5603d9e4d6d4b99ceb57b03b545b0955",
+    "observed_ui": "standard native toolbox and right docks; oncanvas off",
+    "window_observer": [
+      "WINDOW 2097173 567x640 name=Welcome to GIMP 3.0.9",
+      "ACTION close welcome via WM_DELETE_WINDOW",
+      "WINDOW 2097156 800x600 name=gimp-2-6-file.xcf-1.0 (RGB color 8-bit non-linear integer, GIMP built-in sRGB, 2 layers) 100x90 \u2013 GIMP",
+      "ACTION resize main window 1040x1800"
+    ],
+    "image": "explicit-false.png"
+  }
+]

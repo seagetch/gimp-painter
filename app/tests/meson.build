@@ -1564,3 +1564,16 @@ if host_machine.system() == 'linux'
           'UI_TEST=yes'],
     suite: 'app', is_parallel: false, timeout: 120)
 endif
+
+# Normal UI acceptance uses a saved single-window topology, not the generic
+# legacy floating-dock fixture. Production restoration owns all dock contents.
+painter_native_session_ui = executable('painter-native-session-ui',
+  'test-painter-native-session-ui.c', 'tests.c',
+  dependencies: [libapp_dep, appstream], link_with: apptests_links)
+test('painter-native-session-ui', painter_native_session_ui,
+  depends: gimp_test_icon_dependencies,
+  env: ['GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+        'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+        'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
+        'GIMP_TESTING_SESSIONRC_NAME=sessionrc-native-oncanvas',
+        'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 60)

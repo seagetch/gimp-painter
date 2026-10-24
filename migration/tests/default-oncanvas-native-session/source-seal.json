@@ -1,0 +1,101 @@
+{
+  "base": "b35ed653e2f84f8912a5323c0745b7279d02ca13",
+  "changed_source_sha256": {
+    "app/config/gimpcoreconfig.c": "b130c97b1351383d8f15dba34d1c30e45376f46a8c50a79a76d0866ca2102cb9",
+    "app/tests/meson.build": "6679a9e046f1e2f7c0998df2b76e9675da9cf07c82933fb777cf284f4a73adea",
+    "app/tests/test-painter-compact-options.c": "6d7c06e9b5470f863b00c926b9b38cc8b6b66654d93092c5115111114cf4ff5d",
+    "migration/contracts/multiwindow-toolbar-host.md": "7685c1f222cb37ab7b3945ba8b48a15844b8d08f0d15526007df1c93c9a4955a",
+    "migration/contracts/tcp-portrait-build-environment.md": "5194f3dcc761c6e85aaf16b86c863cb1213062e91b855f143878c509a6e17aa1",
+    "app/tests/test-painter-native-session-ui.c": "99766da1b49517b192477bd93589f3061d9c64b9ccb93bf46a59323dd9d649d2",
+    "app/tests/gimpdir/sessionrc-native-oncanvas": "75f60bbb224293a5399f4d7bc043461ec1004bc8abbc3968f315bf40650b8e56"
+  },
+  "binaries_sha256": {
+    "app/gimp-3.0": "ff543199059720748fb292556ad8a86e0eb19ddfd8f6aac78569061faefd56cd",
+    "app/tests/painter-native-session-ui": "04f9a032333cf712e31865d22c3a0d580ba96c440b4ce057712475c77d12a96d",
+    "app/tests/painter-compact-options": "b72f69c620497c4fffbe64ba05a9e758c9eccb4cddb3134ac9873140197eba4c"
+  },
+  "baseline_binaries_sha256": {
+    "painter-native-session-ui": "47b00b7dec5fdb36cb01a6b3ee5074a8eb8b4d7818a217b13edadb09bdb6fcd6",
+    "painter-compact-options": "86027d59bc251c6d73635acb54ecc8a87e92eaba878964361baa1ae9d371fb58",
+    "gimp-3.0": "6a71a4df3157c1faff4e527ed2bfdae65362284027d9fa55d4b02fcb8530541c"
+  },
+  "baseline_native_exit": 250,
+  "baseline_preference_exit": 250,
+  "green_native_exit": 0,
+  "green_preference_exit": 0,
+  "registered_native_exit": 0,
+  "normal_app": "uninstrumented production executable; real repository XCF argument; no testing environment; no explicit UI enable",
+  "sanitizers": "NOT RUN; native only",
+  "screen": [
+    1080,
+    1920
+  ],
+  "window": [
+    1040,
+    1800
+  ],
+  "normal_controls": {
+    "explicit-false": {
+      "driver_exit": 0,
+      "inputs": "normal-inputs-and-results.json#explicit-false",
+      "screenshot": "explicit-false.png",
+      "image_sha256": "bedf2b132b183ba21d5e70762417735e5603d9e4d6d4b99ceb57b03b545b0955",
+      "visual_oncanvas": false,
+      "visual_native_content": "2 existing XCF layers and shipped brush grid",
+      "instrumentation": false,
+      "original_private_input_record_sha256": "9e3a6fc4558986a1c465b5d63e797bab47e8f1c5d931893328f8d22fcb2c9c08"
+    },
+    "pristine-absent": {
+      "driver_exit": 0,
+      "inputs": "normal-inputs-and-results.json#pristine-absent",
+      "screenshot": "pristine-absent.png",
+      "image_sha256": "38e5e14823515ef9137a11ae961354e887230ce726097901b9b6fafddb39f314",
+      "visual_oncanvas": true,
+      "visual_native_content": "2 existing XCF layers and shipped brush grid",
+      "instrumentation": false,
+      "original_private_input_record_sha256": "e7a25aee52b4c1e8f52acf9d0876ab08699a968b54a92f7a2efeee74c1e151ed"
+    },
+    "native-session-absent": {
+      "driver_exit": 0,
+      "inputs": "normal-inputs-and-results.json#native-session-absent",
+      "screenshot": "native-session-absent.png",
+      "image_sha256": "66d81be3fd4982c0951576ab7118d25625dbb061dec8b46368060059bd77ebee",
+      "visual_oncanvas": true,
+      "visual_native_content": "2 existing XCF layers and shipped brush grid",
+      "instrumentation": false,
+      "original_private_input_record_sha256": "3beb45290116b61da32b86def7cd4d8882676aef519943aff8d03c623ab668e7"
+    }
+  },
+  "native_screenshot_sha256": "b6c836b30786a58531796dbd1d85bec1f18bf5b24f17f08566093d3520304a9f",
+  "native_shipped_file_backed_brushes": 56,
+  "registered_compact": {
+    "result": "FAIL",
+    "failure": "rectangle-units-real-popup-events: grab == popover at test-painter-rectangle-unit-popup.inc:161",
+    "baseline_comparison": {
+      "exit": 250,
+      "assertion": "same grab==popover line161 failed with originalFALSE production binary; row differed"
+    }
+  },
+  "external_capture_helper_sha256": {
+    "capture-x11.c": "bfbe2e229dbeaf631f40ec7921dfabef0174101e2f2dea3e402c171b69495f72",
+    "capture-x11": "d0d3b5ffc27a9761d5de4e5810814488efae422babcfa21db15ea01a9ece1b5b",
+    "normal-driver.sh": "0cdc67981b14f11cbde8bbb1fb50ff563e13dfccf35c2513acb7eadfbb60695b"
+  },
+  "notes": [
+    "Initial normal capture retained under normal-before-welcome-close; Welcome overlay was present. Final normal controls close Welcome using external WM_DELETE then resize only.",
+    "Normal application terminated with SIGTERM after successful observation, not a graceful exit persistence test.",
+    "No new ASan execution. Full compact gate failed; both observed compact failures reproduce with preserved originalFALSE production binary. Do not report aggregatePASS."
+  ],
+  "source_drift": [],
+  "binary_drift": [],
+  "focused_transfer": {
+    "result": "FAIL",
+    "exit": 250,
+    "assertion": "line394 painter-compact-mypaint menu button missing",
+    "baseline_exit": 250,
+    "baseline_assertion": "identical missing menu button at line394"
+  },
+  "status": "Targeted default and explicitfalse serialization PASS; registered native PASS; actual normal3controls verified; full compact FAIL with baseline reproductions.",
+  "gimp_data_commit": "a31e5dea4f572fb5f33b06f5c4b86db5f30643dc",
+  "normal_input_contents": "Exact original file contents preserved in normal-inputs-and-results.json; only workspace path labels normalized."
+}

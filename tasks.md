@@ -1180,6 +1180,7 @@
 | ID | 完了 | 作業 | 依存ID | 完了条件・証跡 |
 |---|:---:|---|---|---|
 | 29.001 | [ ] | overlay の配置 model を移植する | 08.020, 14.020, 15.014, 24.017 | 画像表示と独立して位置を保持 |
+| 29.001/default-oncanvas-native-session | [x] | Enable Painter canvas controls by default and qualify the official native session | 29.001/native-canvas-tiles | Native default TRUE without enabling override; omitted-setting startup and explicit-FALSE controls; reviewed canvas-input oracle addendum; original RED, focused GREEN and wrong-visibility negative preserved. Native only, no parent/full-port/ASan completion. Evidence: `migration/tests/default-oncanvas-native-session/`. |
 | 29.001/preview-idle-lifetime-contract | [ ] | layer preview idle の捕捉寿命を定義する | 29.001, 01.005/deferred-sources | preview と viewable の所有・破棄順、再予約時の旧 source 解除を明記 |
 | 29.001/native-canvas-tiles | [x] | 実canvas overlay・layer/tool tiles・色とnative optionsを接続する | 30.001/layer-create-edit, 30.010/native-profile-migration, 24.017/native-editor-workflow | 2026-10-02凍結componentの履歴:実GTK19/52unit sanitizer19/HiDPI19合格（今回の復旧コードの結果ではない）。pointer選択/DND/Undo・Clone popup・黒赤描画・portraitを視認。alpha previewの上流bounds不具合を修正しRGBA/Gray pixel検査。当時のfull options共有は実装。旧Cairo表示・配置・独立toolbarの忠実性は未証明、旧compact toolbar/persist overlay/実tabletは当時未完了。最新の範囲訂正はlegacy-ui-completion-correction契約 |
 | 29.002 | [ ] | layer tile の表示を移植する | 29.001 | 名前・preview・選択状態が一致 |
