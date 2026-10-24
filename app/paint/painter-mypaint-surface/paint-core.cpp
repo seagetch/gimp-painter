@@ -14,6 +14,7 @@ extern "C" {
 #include "core/gimpcontext.h"
 #include "core/gimpdrawable.h"
 #include "core/gimplayer.h"
+#include "core/gimplayermask.h"
 #include "core/gimpimage.h"
 #include "core/gimpimage-undo.h"
 #include "paint/gimppaintcore.h"
@@ -73,6 +74,39 @@ struct PaintCore::Impl : std::enable_shared_from_this<Impl> {
   std::shared_ptr<const Resource> before_resource;
   Connection pending_paint;
   unsigned history_depth=0;
+  bool conflicted=false;
+  struct Geometry {
+    ObjectRef<GimpDrawable> target;
+    ObjectRef<GObject> buffer;
+    GeglRectangle bounds{},extent{};
+    const Babl*format=nullptr;
+    void capture(GimpDrawable*d) {
+      target=ObjectRef<GimpDrawable>::retain(d);if(!d){buffer.reset();return;}
+      auto*b=gimp_drawable_get_buffer(d);if(!b)throw std::invalid_argument("Drawable buffer is unavailable");buffer=ObjectRef<GObject>::retain(G_OBJECT(b));
+      bounds={gimp_item_get_offset_x(GIMP_ITEM(d)),gimp_item_get_offset_y(GIMP_ITEM(d)),gimp_item_get_width(GIMP_ITEM(d)),gimp_item_get_height(GIMP_ITEM(d))};
+      extent=*gegl_buffer_get_extent(b);format=gegl_buffer_get_format(b);
+    }
+    bool matches()const noexcept {
+      auto*d=target.get();if(!d)return true;auto*b=gimp_drawable_get_buffer(d);
+      return b&&G_OBJECT(b)==buffer.get()&&gegl_buffer_get_format(b)==format&&
+        gegl_rectangle_equal(&extent,gegl_buffer_get_extent(b))&&
+        gimp_item_get_offset_x(GIMP_ITEM(d))==bounds.x&&gimp_item_get_offset_y(GIMP_ITEM(d))==bounds.y&&
+        gimp_item_get_width(GIMP_ITEM(d))==bounds.width&&gimp_item_get_height(GIMP_ITEM(d))==bounds.height;
+    }
+  } geometry,companion;
+  ObjectRef<GObject> rollback_baseline;
+  void require_usable()const {if(conflicted)throw TransactionConflict();}
+  static GimpDrawable* companion_of(GimpDrawable*d) noexcept {
+    if(GIMP_IS_LAYER(d))return GIMP_DRAWABLE(gimp_layer_get_mask(GIMP_LAYER(d)));
+    if(GIMP_IS_LAYER_MASK(d))return GIMP_DRAWABLE(GIMP_LAYER_MASK(d)->layer);
+    return nullptr;
+  }
+  bool geometry_matches()const noexcept {
+    return geometry.matches()&&companion.matches()&&
+      gimp_item_get_image(GIMP_ITEM(geometry.target.get()))==image.get()&&
+      companion_of(geometry.target.get())==companion.target.get();
+  }
+
   struct History final : StrokeState {
     std::weak_ptr<Impl> owner;
     std::shared_ptr<Impl> lease;
@@ -92,6 +126,7 @@ struct PaintCore::Impl : std::enable_shared_from_this<Impl> {
     bool prepare(GimpUndoMode) noexcept override {
       if(lease)return false;
       auto live=owner.lock();if(!live)return true;
+      if(live->conflicted)return false;
       if(!live->history_depth && (live->started||live->starting||live->ending||live->processing||live->batch))return false;
       ++live->history_depth;lease=std::move(live);return true;
     }
@@ -168,6 +203,7 @@ struct PaintCore::Impl : std::enable_shared_from_this<Impl> {
   }
   void end(bool commit)
   {
+    require_usable();
     if(batch){batch_aborted=true;commit=false;}
     if(starting){cancel_requested=true;return;}
     if(processing){finish_requested=true;if(!commit)cancel_requested=true;return;}
@@ -180,9 +216,20 @@ struct PaintCore::Impl : std::enable_shared_from_this<Impl> {
     auto raster=surface;auto owners=resources;
     auto*c=native.get();GList drawables={target.get(),nullptr,nullptr};
     bool published=false;
+    auto reject_conflict=[&]{
+      // Terminal rejection, not rollback. Keep baseline/checkpoint for the
+      // caller until explicit owner disposal, but release native paint leases.
+      conflicted=true;started=false;batch=false;batch_aborted=false;
+      if(raster){read+=raster->bytes_read();written+=raster->bytes_written();raster->end_session();}
+      gimp_paint_core_finish(c,&drawables,FALSE);
+      release_native_scratch();surface.reset();resources.reset();pending_paint.close();
+      drawable.reset();image.reset();restore_undo_desc();
+      throw TransactionConflict();
+    };
+    if(!geometry_matches())reject_conflict();
     auto cleanup=[&]{
       release_native_scratch();surface.reset();resources.reset();pending_paint.close();
-      drawable.reset();image.reset();clear_before();
+      drawable.reset();image.reset();clear_before();geometry=Geometry{};companion=Geometry{};rollback_baseline.reset();
     };
     try {
       commit=commit&&gimp_item_is_attached(GIMP_ITEM(target.get()));
@@ -217,6 +264,7 @@ struct PaintCore::Impl : std::enable_shared_from_this<Impl> {
       // New recoverable failures occur only before publication. Standard native
       // pixel allocator behavior is unchanged and has no error-return protocol.
       if(published)g_error("Unexpected failure after paired native publication");
+      if(!geometry_matches())reject_conflict();
       started=false;
       if(raster){read+=raster->bytes_read();written+=raster->bytes_written();raster->end_session();}
       restore_before();
@@ -227,6 +275,7 @@ struct PaintCore::Impl : std::enable_shared_from_this<Impl> {
   }
   void retire_segment(bool reset)
   {
+    require_usable();
     if(starting||ending||processing||history_depth)throw std::logic_error("Paint transaction is transitioning");
     if(!batch||batch_aborted)throw std::logic_error("No usable atomic paint operation");
     {
@@ -242,6 +291,7 @@ struct PaintCore::Impl : std::enable_shared_from_this<Impl> {
   {if(batch)retire_segment(false);else end(true);}
   void begin_batch(bool undo,const char*description)
   {
+    require_usable();
     if(batch||started||starting||ending||processing||history_depth)throw std::logic_error("Paint operation is already active");
     capture_before();
     try {
@@ -252,6 +302,7 @@ struct PaintCore::Impl : std::enable_shared_from_this<Impl> {
   }
   void end_batch(bool commit)
   {
+    require_usable();
     if(starting||ending||processing||history_depth)throw std::logic_error("Paint transaction is transitioning");
     if(!batch)throw std::logic_error("No atomic paint operation");
     const bool failed=commit&&batch_aborted;
@@ -284,6 +335,9 @@ struct PaintCore::Impl : std::enable_shared_from_this<Impl> {
       if(fresh)image=ObjectRef<GimpImage>::retain(gimp_item_get_image(GIMP_ITEM(d)));
       else if(gimp_item_get_image(GIMP_ITEM(d))!=image.get())throw std::invalid_argument("Atomic paint image changed");
       if(gimp_item_is_content_locked(GIMP_ITEM(d),nullptr))throw std::invalid_argument("Drawable content is locked");
+      if(fresh) {
+        geometry.capture(d);companion.capture(companion_of(d));
+      }
       if(fresh){if(!batch)capture_before();watch_pending(image.get());}
       auto raster=std::make_shared<GeglSurface>(gimp_drawable_get_buffer(d));
       auto owners=std::make_shared<GimpResources>(GIMP_CONTEXT(options.get()),*resource);
@@ -293,11 +347,16 @@ struct PaintCore::Impl : std::enable_shared_from_this<Impl> {
       raster->set_background(rgba[0],rgba[1],rgba[2]);
       if(!gimp_item_is_attached(GIMP_ITEM(d))||gimp_item_get_image(GIMP_ITEM(d))!=image.get())
         throw std::invalid_argument("Drawable changed during resource setup");
+      // Resource begin-use and reference callbacks may replace the target.
+      // Reject before native start: no preview freeze exists to finish/thaw.
+      if(!geometry_matches())throw std::invalid_argument("Drawable changed during paint resource setup");
       GList drawables={d,nullptr,nullptr};GError*error=nullptr;
       if(fresh&&!gimp_paint_core_start(native.get(),&drawables,options.get(),&coords,&error)) {
         const std::string message = GimpPainter::take_error_message (error, "Unable to start paint transaction");throw std::runtime_error(message);
       }
       started=true;surface=raster;resources=owners;
+      if(fresh)rollback_baseline=ObjectRef<GObject>::retain(G_OBJECT(g_hash_table_lookup(native.get()->undo_buffers,d)));
+      if(!geometry_matches())cancel_requested=true;
       // notify::frozen may request cancellation or remove the drawable. Do not
       // expose another begin, configure, or paint while native start unwinds.
       if(!gimp_item_is_attached(GIMP_ITEM(d))||gimp_item_get_image(GIMP_ITEM(d))!=image.get())cancel_requested=true;
@@ -329,6 +388,8 @@ struct PaintCore::Impl : std::enable_shared_from_this<Impl> {
   }
   bool motion(GimpDrawable *d,double dt,const GimpCoords&coords)
   {
+    require_usable();
+    if(started&&!geometry_matches())end(false);
     if(starting||ending||processing||history_depth)throw std::logic_error("Paint transaction is transitioning");
     validate_input(dt,coords); // native start converts x/y to integer extents
     if(!GIMP_IS_DRAWABLE(d))throw std::invalid_argument("Expected drawable");
@@ -356,6 +417,8 @@ struct PaintCore::Impl : std::enable_shared_from_this<Impl> {
   }
   bool hover(GimpDrawable*d,double dt,const GimpCoords&coords)
   {
+    require_usable();
+    if(started&&!geometry_matches())end(false);
     if(starting||ending||processing||history_depth)throw std::logic_error("Paint transaction is transitioning");
     validate_input(dt,coords);
     if(batch_aborted)throw std::logic_error("Atomic paint operation was canceled");
@@ -395,7 +458,7 @@ struct PaintCore::Impl : std::enable_shared_from_this<Impl> {
 };
 PaintCore::PaintCore(GimpPaintOptions*options,const Resource&resource):impl_(std::make_shared<Impl>(options,resource)){}
 PaintCore::~PaintCore()=default;
-void PaintCore::configure(const Resource&r){auto self=impl_;if(self->starting||self->ending||self->processing||self->history_depth)throw std::logic_error("Paint transaction is transitioning");if(self->batch){self->end(false);throw std::logic_error("Brush settings changed during an atomic paint operation");}auto replacement=std::make_shared<const Resource>(r);Engine validate(r);self->end(true);self->engine.configure(*replacement);self->resource=std::move(replacement);}
+void PaintCore::configure(const Resource&r){auto self=impl_;self->require_usable();if(self->starting||self->ending||self->processing||self->history_depth)throw std::logic_error("Paint transaction is transitioning");if(self->batch){self->end(false);throw std::logic_error("Brush settings changed during an atomic paint operation");}auto replacement=std::make_shared<const Resource>(r);Engine validate(r);self->end(true);self->engine.configure(*replacement);self->resource=std::move(replacement);}
 bool PaintCore::stroke_to(GimpDrawable*d,double dt,const GimpCoords&coords){auto self=impl_;return self->motion(d,dt,coords);}
 bool PaintCore::hover_to(GimpDrawable*d,double dt,const GimpCoords&coords){auto self=impl_;return self->hover(d,dt,coords);}
 void PaintCore::finish(){auto self=impl_;self->end(true);}

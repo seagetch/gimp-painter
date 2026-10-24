@@ -1,0 +1,7 @@
+import pathlib,json,tempfile,shutil,subprocess,hashlib
+E=pathlib.Path(__file__).resolve().parent;R=E.parents[2];results=[]
+controls=[('setup-order','setup-order.json',lambda x:dict(x,source_sha256='0'*64)),('setup-red','prestart-red.json',lambda x:dict(x,returncode=0)),('normal-count','normal-results.json',lambda x:x[:-1]),('san-return','asan-results.json',lambda x:[dict(r,returncode=1)for r in x]),('san-unit','asan-build.json',lambda x:dict(x,instrumented_sources=x['instrumented_sources'][:-1])),('mutant-return','mutations.json',lambda x:[dict(r,returncode=0)for r in x]),('source-omission','source-manifest.json',lambda x:x[1:]),('held-omission','held-source-seal.json',lambda x:x[:-1]),('fixed-blob','source-manifest.json',lambda x:[dict(r,baseline_blob='0'*40)if'source_mode'in r else r for r in x])]
+for name,file,change in controls:
+ with tempfile.TemporaryDirectory(prefix='geometry-proof-')as d:
+  d=pathlib.Path(d);shutil.copytree(E,d/'proof');q=d/'proof';p=q/file;p.write_text(json.dumps(change(json.loads(p.read_text()))));pins=json.loads((q/'artifact-sha256.json').read_text());pins[file]=hashlib.sha256(p.read_bytes()).hexdigest();(q/'artifact-sha256.json').write_text(json.dumps(pins));r=subprocess.run(['python3',str(q/'validate.py'),'--root',str(R)],capture_output=True,text=True);assert r.returncode!=0,name;results.append(dict(name=name,returncode=r.returncode,stderr=r.stderr))
+print('PASS',len(results),'resealed negative controls')

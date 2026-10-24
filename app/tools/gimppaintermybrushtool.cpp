@@ -1,5 +1,6 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 #include "config.h"
+#include "paint/painter-mypaint-surface/paint-core.hpp"
 #include "../painter/resources.hpp"
 #include <gtk/gtk.h>
 #include <gegl.h>
@@ -88,13 +89,30 @@ struct DrawPause {
 };
 ObjectRef<GimpPainterSession> session(GimpTool*tool)
 {return store(tool).with<ToolSlot>([](ToolImpl&i){return i.session;});}
+void clear_input(GimpTool*tool);
 void report(GimpTool*tool,GimpDisplay*display,GError*error)
 {
   if(!error)return;
+  const bool conflict=g_error_matches(error,GIMP_PAINTER_ERROR,GIMP_PAINTER_ERROR_EXCEPTION)&&!g_strcmp0(error->message,MyPaint::TransactionConflict::message());
   const std::string message = GimpPainter::take_error_message (error, "Unknown error");
   auto*binding=BindingStore::find(G_OBJECT(tool));if(!binding||binding->state()!=BindingStore::State::active)return;
+  const auto generation=binding->generation();
+  auto failed=conflict?session(tool):ObjectRef<GimpPainterSession>();
   bool changed=binding->with<ToolSlot>([&](ToolImpl&i){if(i.error==message)return false;i.error=message;return true;});
   if(changed&&display)gimp_tool_message_literal(tool,display,message.c_str());
+  if(conflict&&binding->accepts(generation)) {
+    struct Retired {ObjectRef<GimpPainterSession> session;bool stopping=false;};
+    auto retired=binding->with<ToolSlot>([&](ToolImpl&i){
+      if(i.session.get()!=failed.get())return Retired{};
+      Retired result{std::move(i.session),i.stopping};i.stopping=true;return result;
+    });
+    if(retired.session) {
+      const auto restore=[&]{auto*b=BindingStore::find(G_OBJECT(tool));if(b&&b->accepts(generation))b->with<ToolSlot>([&](ToolImpl&i){i.stopping=retired.stopping;});};
+      try{clear_input(tool);g_object_run_dispose(G_OBJECT(retired.session.get()));}
+      catch(...){try{restore();}catch(...){}throw;}
+      restore();
+    }
+  }
 }
 void clear_input(GimpTool*tool)
 {
@@ -118,7 +136,11 @@ void cancel_observed(GObject*,gpointer data) noexcept
   boundary_void(nullptr,[&]{auto owner=lock_tool(data);if(!owner)return;auto*tool=GIMP_TOOL(owner.get());
     auto current=store(tool).with<ToolSlot>([](ToolImpl&i){if(i.stopping)return ObjectRef<GimpPainterSession>();i.stopping=true;return i.session;});
     if(!current)return;
-    clear_input(tool);gimp_painter_session_cancel(current.get(),nullptr);
+    auto display=store(tool).with<ToolSlot>([](const ToolImpl&i){return i.display.lock();});
+    clear_input(tool);GError*error=nullptr;
+    if(!gimp_painter_session_cancel(current.get(),&error)) {
+      report(tool,display.get(),error);
+    }
     auto*b=BindingStore::find(owner.get());if(b&&b->state()==BindingStore::State::active)b->with<ToolSlot>([](ToolImpl&i){i.stopping=false;});
   });
 }
@@ -126,7 +148,7 @@ void target_notify(GObject*object,GParamSpec*,gpointer data) noexcept {cancel_ob
 void image_dirty(GimpImage*image,GimpDirtyMask,gpointer data) noexcept
 {
   boundary_void(nullptr,[&]{auto owner=lock_tool(data);if(!owner)return;auto*tool=GIMP_TOOL(owner.get());
-    const bool own=store(tool).with<ToolSlot>([](const ToolImpl&i){return i.busy||i.stopping||!gimp_painter_session_is_active(i.session.get());});
+    const bool own=store(tool).with<ToolSlot>([](const ToolImpl&i){return i.busy||i.stopping||!i.session||!gimp_painter_session_is_active(i.session.get());});
     if(!own)cancel_observed(G_OBJECT(image),data);
   });
 }
@@ -158,6 +180,7 @@ void observe_targets(GimpTool*tool,GimpDisplay*display,GimpImage*image,GimpDrawa
 void input(GimpTool*tool,const GimpCoords*coords,guint32 time,GimpDisplay*display,bool paint)
 {
   Operation operation(tool);DrawPause draw_pause(tool);auto display_owner=ObjectRef<GimpDisplay>::retain(display);
+  if(!session(tool))return; // A rejected transaction is replaced only by a new press.
   auto image=ObjectRef<GimpImage>::retain(gimp_display_get_image(display));if(!image)return;
   GList*selected=gimp_image_get_selected_drawables(image.get());
   auto drawable=selected&&!selected->next?ObjectRef<GimpDrawable>::retain(GIMP_DRAWABLE(selected->data)):ObjectRef<GimpDrawable>();g_list_free(selected);
@@ -202,7 +225,7 @@ void dispose(GObject*object)
 void control(GimpTool*tool,GimpToolAction action,GimpDisplay*display)
 {
   boundary_void(nullptr,[&]{auto owner=PainterMybrushToolRef::retain(GIMP_PAINTER_MYBRUSH_TOOL(tool));
-    if(usable(tool)&&(action==GIMP_TOOL_ACTION_HALT||action==GIMP_TOOL_ACTION_COMMIT)){auto current=session(tool);GError*error=nullptr;gimp_painter_session_finish(current.get(),&error);report(tool,display,error);clear_input(tool);}
+    if(usable(tool)&&(action==GIMP_TOOL_ACTION_HALT||action==GIMP_TOOL_ACTION_COMMIT)){auto current=session(tool);GError*error=nullptr;if(current)gimp_painter_session_finish(current.get(),&error);report(tool,display,error);clear_input(tool);}
     GIMP_TOOL_CLASS(gimp_painter_mybrush_tool_parent_class)->control(tool,action,display);
   });
 }
@@ -217,7 +240,16 @@ void press(GimpTool*tool,const GimpCoords*coords,guint32 time,GdkModifierType st
   }
   if(type!=GIMP_BUTTON_PRESS_NORMAL)return;
   boundary_void(nullptr,[&]{auto owner=PainterMybrushToolRef::retain(GIMP_PAINTER_MYBRUSH_TOOL(tool));
-    const bool accepted=store(tool).with<ToolSlot>([&](ToolImpl&i){if(i.busy)return false;i.pressed=true;i.last_press=*coords;return true;});
+    if(!session(tool)) {
+      const bool blocked=store(tool).with<ToolSlot>([](const ToolImpl&i){return i.busy||i.stopping;});
+      if(blocked)return;
+      Operation creating(tool);GError*error=nullptr;
+      auto fresh=ObjectRef<GimpPainterSession>::adopt(gimp_painter_session_new(GIMP_PAINTER_MYBRUSH_OPTIONS(gimp_tool_get_options(tool)),&error));
+      if(!fresh){report(tool,display,error);return;}
+      if(!creating.binding.accepts(creating.generation))return;
+      creating.binding.with<ToolSlot>([&](ToolImpl&i){i.session=std::move(fresh);});
+    }
+    const bool accepted=store(tool).with<ToolSlot>([&](ToolImpl&i){if(i.busy||i.stopping)return false;i.pressed=true;i.last_press=*coords;return true;});
     if(!accepted)return;
     tool->display=display;gimp_tool_control_activate(tool->control);input(tool,coords,time,display,true);
   });
@@ -367,7 +399,7 @@ void gimp_mypaint_tool_enable_color_picker(GimpMypaintTool*self,GimpColorPickTar
   });
 }
 gboolean gimp_painter_mybrush_tool_has_pending_stroke(GimpPainterMybrushTool*self)
-{return boundary<gboolean>(nullptr,FALSE,[&]() -> gboolean{auto current=session(GIMP_TOOL(self));return gimp_painter_session_is_active(current.get());});}
+{return boundary<gboolean>(nullptr,FALSE,[&]() -> gboolean{auto current=session(GIMP_TOOL(self));return current&&gimp_painter_session_is_active(current.get());});}
 
 gboolean gimp_painter_mybrush_tool_get_last_press(GimpPainterMybrushTool*self,GimpCoords*coords)
 {return boundary<gboolean>(nullptr,FALSE,[&]() -> gboolean{if(!coords)return FALSE;*coords=store(GIMP_TOOL(self)).with<ToolSlot>([](const ToolImpl&i){return i.last_press;});return TRUE;});}

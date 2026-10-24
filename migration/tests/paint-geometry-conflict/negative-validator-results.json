@@ -1,0 +1,37 @@
+[
+  {
+    "name": "normal-count",
+    "returncode": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/workspace/shared/geometry-proof-6uur2it4/proof/validate.py\", line 5, in <module>\n    rows=read('normal-results.json');assert len(rows)==5 and all(r['returncode']==0 for r in rows) and sorted(count(r)for r in rows)==[6,12,18,24,27]\n                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+  },
+  {
+    "name": "san-return",
+    "returncode": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/workspace/shared/geometry-proof-vyt8w_05/proof/validate.py\", line 6, in <module>\n    rows=read('asan-results.json');assert len(rows)==2 and sorted(count(r)for r in rows)==[6,12] and all(r['returncode']==0 for r in rows)\n                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+  },
+  {
+    "name": "san-unit",
+    "returncode": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/workspace/shared/geometry-proof-h72nfq8g/proof/validate.py\", line 7, in <module>\n    b=read('asan-build.json');assert len(b['instrumented_sources'])==21 and not b['changed_during_build'];assert {'app/paint/gimppaintcore.c','app/core/gimpdrawable.c','app/core/gimpitem.c','app/core/gimpviewable.c','app/core/gimplayer.c'}<=set(b['instrumented_sources'])\n                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+  },
+  {
+    "name": "mutant-return",
+    "returncode": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/workspace/shared/geometry-proof-2v9plg58/proof/validate.py\", line 10, in <module>\n    assert r['returncode']!=0\n           ^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+  },
+  {
+    "name": "source-omission",
+    "returncode": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/workspace/shared/geometry-proof-mvb_in9y/proof/validate.py\", line 26, in <module>\n    assert set(b['sources_sha256'])<={r['path']for r in read('source-manifest.json')}\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+  },
+  {
+    "name": "held-omission",
+    "returncode": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/workspace/shared/geometry-proof-l1spd9k0/proof/validate.py\", line 37, in <module>\n    seal=read('held-source-seal.json');assert len(seal)==9\n                                              ^^^^^^^^^^^^\nAssertionError\n"
+  },
+  {
+    "name": "fixed-blob",
+    "returncode": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/workspace/shared/geometry-proof-uc8pa5my/proof/validate.py\", line 30, in <module>\n    if 'source_mode'in r:assert re.fullmatch('[0-9a-f]{40}',r['baseline_commit']) and hashlib.sha1(b'blob '+str(len(archived)).encode()+b'\\0'+archived).hexdigest()==r['baseline_blob']\n                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+  }
+]

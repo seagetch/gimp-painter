@@ -1,0 +1,5 @@
+{
+  "returncode": -6,
+  "stdout": "TAP version 14\n# random seed: R02S3c7aa965b86f56f560c19f310e79be0b\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# Start of geometry-conflict tests\nTime is running backwards!\nnot ok /geometry-conflict/prestart-resource-replacement - ERROR:../source/app/tests/test-paint-geometry-conflict.cpp:32:void resource_setup_replacement(): 'rejected' should be TRUE\nBail out!\n",
+  "stderr": "**\nERROR:../source/app/tests/test-paint-geometry-conflict.cpp:32:void resource_setup_replacement(): 'rejected' should be TRUE\n"
+}
