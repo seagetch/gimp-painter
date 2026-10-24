@@ -1,0 +1,23 @@
+{
+  "base": "55bfa5f1f72f33fb5a2f10b1f7a319bd773b0e94",
+  "task": "23.014/event-compression-order",
+  "original_criterion": "旧compress_motionとnext_event経路を現行入力へ接続し、pen up・key・crossing・device切替が欠落せずイベント所有が一回解放される",
+  "status": "DOING",
+  "providers": {
+    "app/display/gimpdisplayshell.c": "59c1dd2e05f020d186b275bdc96079da8ee9f0769416558f145e999ec9f1af5f",
+    "app/display/gimpdisplayshell.h": "ce92cc0410fa286a981c400815587e6c0df37793fbec2552c4b3c16f7775efc2",
+    "app/display/gimpdisplayshell-tool-events.c": "7c56b303cab4ef6ed6d8a9c30015543d2570e2211ef295e6c8db98ff9b297577",
+    "app/display/gimpdisplayshell-tool-events.h": "8422c2d0ced3188d92de34c42350346e2ed73888b7f6024cb9c5d664cf3db21b",
+    "app/display/gimpdisplayshell-handlers.c": "7ea7322730693d663d691f77276bcc7670fccf6fd7cbb2d25b72a0bc642146cf"
+  },
+  "fixture": {
+    "app/tests/test-event-compression-order.c": "64cb25c18e5e40b51fc27410162147ac35a4b6abdede14a1267a8744b607f2d6"
+  },
+  "normal_passed": 14,
+  "focused_sanitizer_passed": 14,
+  "explicit_exclusion": "/event-order/close-active-image",
+  "known_gap": "Live reused empty shell swallows initiating release before grab cleanup; separate ownership design remains open",
+  "sanitizer_scope": "fixture and three changed C provider translation units only; remaining native application/GDK uninstrumented; LSan disabled",
+  "ownership_scope": "old owned-event oracle separately committed; current GDK events borrowed, no internal-free count claim",
+  "hardware_windows_history_proof": false
+}

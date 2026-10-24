@@ -24,6 +24,7 @@ G_BEGIN_DECLS
 void       gimp_display_shell_set_perspective_snap    (GimpDisplayShell *shell,
                                                        gboolean          enabled);
 void       gimp_display_shell_reset_perspective_snap  (GimpDisplayShell *shell);
+void       gimp_display_shell_restore_motion_compression (GimpDisplayShell *shell);
 /* Shared production route for live and historical image-coordinate samples. */
 gboolean   gimp_display_shell_perspective_motion      (GimpDisplayShell *shell,
                                                        GimpCoords       *coords,

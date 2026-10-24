@@ -839,6 +839,7 @@ gimp_display_shell_dispose (GObject *object)
 {
   GimpDisplayShell *shell = GIMP_DISPLAY_SHELL (object);
 
+  gimp_display_shell_restore_motion_compression (shell);
   gimp_painter_canvas_ui_close (shell);
   gimp_display_shell_reset_perspective_snap (shell);
   if (shell->display && gimp_display_get_shell (shell->display))

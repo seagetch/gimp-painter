@@ -173,6 +173,7 @@ gimp_display_shell_begin_perspective_tool (GimpDisplayShell *shell,
   GimpTool *tool;
   GimpCoords last_motion;
   gboolean active;
+  guint64 compression_generation;
 
   tool = tool_manager_get_active (gimp);
   if (! tool) return FALSE;
@@ -181,7 +182,27 @@ gimp_display_shell_begin_perspective_tool (GimpDisplayShell *shell,
       tool_manager_get_active (gimp) != tool)
     { g_object_unref (tool); return FALSE; }
   if (gimp_tool_control_get_motion_mode (tool->control) == GIMP_MOTION_MODE_EXACT)
-    gdk_window_set_event_compression (gtk_widget_get_window (shell->canvas), FALSE);
+    {
+      GdkWindow *window = gtk_widget_get_window (shell->canvas);
+
+      if (shell->painter_compression_window != window)
+        {
+          gimp_display_shell_restore_motion_compression (shell);
+          if (window)
+            {
+              shell->painter_compression_window = g_object_ref (window);
+              shell->painter_compression_previous =
+                gdk_window_get_event_compression (window);
+            }
+        }
+      if (window)
+        gdk_window_set_event_compression (window, FALSE);
+    }
+  else
+    gimp_display_shell_restore_motion_compression (shell);
+  /* A nested press can acquire the same window; identity alone cannot decide
+   * whether a failed outer delivery still owns the compression lease. */
+  compression_generation = ++shell->painter_compression_generation;
   gimp_motion_buffer_begin_stroke (shell->motion_buffer, time, &last_motion);
   coords->velocity = last_motion.velocity;
   coords->direction = last_motion.direction;
@@ -192,6 +213,9 @@ gimp_display_shell_begin_perspective_tool (GimpDisplayShell *shell,
                                     GIMP_BUTTON_PRESS_NORMAL, shell->display);
   active = tool_manager_get_active (gimp) == tool &&
            gimp_tool_control_is_active (tool->control);
+  if (! active &&
+      compression_generation == shell->painter_compression_generation)
+    gimp_display_shell_restore_motion_compression (shell);
   g_object_unref (tool);
   return active;
 }
@@ -206,6 +230,28 @@ gimp_display_shell_perspective_valid (GimpDisplayShell *shell, GimpTool *tool)
          shell->perspective_model == gimp_image_get_perspective_guide (image) &&
          shell->perspective_model &&
          gimp_perspective_guide_get_vanish_point_length (shell->perspective_model) > 0;
+}
+
+/* Only release the setting owned by this stroke. A window can outlive its
+ * widget or be replaced during cancellation; keep identity, not canvas lookup. */
+void
+gimp_display_shell_restore_motion_compression (GimpDisplayShell *shell)
+{
+  GdkWindow *window;
+  gboolean   previous;
+
+  g_return_if_fail (GIMP_IS_DISPLAY_SHELL (shell));
+
+  ++shell->painter_compression_generation;
+  window = g_steal_pointer (&shell->painter_compression_window);
+  previous = shell->painter_compression_previous;
+  shell->painter_compression_previous = FALSE;
+  if (window)
+    {
+      if (! gdk_window_is_destroyed (window))
+        gdk_window_set_event_compression (window, previous);
+      g_object_unref (window);
+    }
 }
 
 void
@@ -888,8 +934,7 @@ gimp_display_shell_canvas_tool_events (GtkWidget        *canvas,
               {
                 gimp_motion_buffer_end_stroke (shell->motion_buffer);
 
-                gdk_window_set_event_compression (
-                  gtk_widget_get_window (canvas), TRUE);
+                gimp_display_shell_restore_motion_compression (shell);
 
                 if (gimp_tool_control_is_active (active_tool->control))
                   {

@@ -1532,3 +1532,19 @@ if host_machine.system() == 'linux'
           'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
           'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 120)
 endif
+
+# 23.014: native borrowed-event ordering and owned compression restoration.
+# The documented empty-shell grab gap stays explicit, not counted passed.
+if host_machine.system() == 'linux'
+  event_compression_order = executable('event-compression-order',
+    'test-event-compression-order.c', 'tests.c',
+    dependencies: [libapp_dep, painter_mypaint_surface_dep, appstream],
+    link_with: apptests_links, override_options: ['c_std=c11'],
+    c_args: ['-DLEASE_CANDIDATE=1'])
+  test('event-compression-order', event_compression_order,
+    args: ['-x', '/event-order/close-active-image'],
+    env: ['GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+          'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+          'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
+          'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 120)
+endif

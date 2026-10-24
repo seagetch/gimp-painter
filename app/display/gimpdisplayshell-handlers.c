@@ -188,6 +188,7 @@ gimp_display_shell_perspective_tool_changed (GimpContext *context,
                                               GimpToolInfo *tool_info,
                                               GimpDisplayShell *shell)
 {
+  gimp_display_shell_restore_motion_compression (shell);
   gimp_display_shell_reset_perspective_snap (shell);
   gimp_motion_buffer_cancel_stroke (shell->motion_buffer);
 }
@@ -467,6 +468,7 @@ gimp_display_shell_disconnect (GimpDisplayShell *shell)
 
   g_return_if_fail (GIMP_IS_IMAGE (image));
 
+  gimp_display_shell_restore_motion_compression (shell);
   g_signal_handlers_disconnect_by_func (image,
     gimp_display_shell_perspective_guide_changed, shell);
   gimp_motion_buffer_cancel_stroke (shell->motion_buffer);

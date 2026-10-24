@@ -294,6 +294,11 @@ struct _GimpDisplayShell
   gdouble painter_origin_y;
   gdouble painter_origin_key[20];
   GimpImage *painter_origin_image; /* weak identity, cleared on empty/reconnect */
+
+  /* Owned exact-stroke compression lease; never restore a replacement window. */
+  GdkWindow *painter_compression_window;
+  gboolean   painter_compression_previous;
+  guint64    painter_compression_generation;
 };
 
 struct _GimpDisplayShellClass
