@@ -1,0 +1,142 @@
+{
+  "production": "No production source changes; actual302 normal and scoped-instrumented production/reference files reused and hash-pinned. Only current main test TU rebuilt. Offset mutant confined to expected-negative executable.",
+  "source_sha256": {
+    "app/tests/test-painter-compact-options.c": "cb219dd55eb638623995482688bc31a18528596d649d0f75fcd2ad7c154bbb52",
+    "app/tests/test-painter-rectangle-unit-popup.inc": "4fc2bee241548f7b0ce7eab06dfd60d829bdedc3a5a62f84da5518953bbd0990",
+    "app/tests/test-painter-transform-popup.inc": "947804310847f70ec0123c875971a936c1053db9df44d36f96dd3e64814fd649"
+  },
+  "source_changes_during_validation": [],
+  "normal_disjoint_results": [
+    {
+      "name": "compact62",
+      "exit": 0,
+      "pass_count": 62,
+      "expected": 62,
+      "skip_count": 0,
+      "sanitizer_findings": [],
+      "pass": true
+    },
+    {
+      "name": "toggle17",
+      "exit": 0,
+      "pass_count": 17,
+      "expected": 17,
+      "skip_count": 0,
+      "sanitizer_findings": [],
+      "pass": true
+    },
+    {
+      "name": "transform8-final",
+      "exit": 0,
+      "pass_count": 8,
+      "expected": 8,
+      "skip_count": 0,
+      "sanitizer_findings": [],
+      "pass": true
+    },
+    {
+      "name": "toolbar26",
+      "exit": 0,
+      "pass_count": 26,
+      "expected": 26,
+      "skip_count": 0,
+      "sanitizer_findings": [],
+      "pass": true
+    }
+  ],
+  "unique_normal_cases": 113,
+  "supporting_not_additive": [
+    {
+      "name": "rectangle2",
+      "exit": 0,
+      "pass_count": 2,
+      "expected": 2,
+      "skip_count": 0,
+      "sanitizer_findings": [],
+      "pass": true
+    },
+    {
+      "name": "transform8",
+      "exit": 0,
+      "pass_count": 8,
+      "expected": 8,
+      "skip_count": 0,
+      "sanitizer_findings": [],
+      "pass": true
+    },
+    {
+      "name": "reentry-repeat-1",
+      "exit": 0,
+      "pass_count": 1,
+      "expected": 1,
+      "skip_count": 0,
+      "sanitizer_findings": [],
+      "pass": true
+    },
+    {
+      "name": "reentry-repeat-2",
+      "exit": 0,
+      "pass_count": 1,
+      "expected": 1,
+      "skip_count": 0,
+      "sanitizer_findings": [],
+      "pass": true
+    },
+    {
+      "name": "reentry-repeat-3",
+      "exit": 0,
+      "pass_count": 1,
+      "expected": 1,
+      "skip_count": 0,
+      "sanitizer_findings": [],
+      "pass": true
+    }
+  ],
+  "scoped_sanitizer_results": [
+    {
+      "name": "rectangle2",
+      "exit": 0,
+      "pass_count": 2,
+      "expected": 2,
+      "skip_count": 0,
+      "sanitizer_findings": [],
+      "pass": true
+    },
+    {
+      "name": "transform8",
+      "exit": 0,
+      "pass_count": 8,
+      "expected": 8,
+      "skip_count": 0,
+      "sanitizer_findings": [],
+      "pass": true
+    }
+  ],
+  "scoped_sanitizer_cases": 10,
+  "sanitizer_qualifications": [
+    "Actual30216TU instrumentation scope retained with only testmain recompiled",
+    "ASan+UBSan excludingvptr; LSan disabled",
+    "Unit-store, GTK and remaining application/dependency code uninstrumented; not whole-app sanitizer proof"
+  ],
+  "negative": {
+    "expected_exit": 250,
+    "actual_exit": 250,
+    "assertion": "actual_x == x: observed217, expected210",
+    "pass": true,
+    "mutation": "private popupper object changes only native placement x to x+7",
+    "normal_test_object_sha256": "91c6d2f5be799e864141a1cef0dc11100d9d7a866aac7c20d296e0f3e2194cb4",
+    "normal_carrier_sha256": "6ea240dd7cf37624a0cba321d59ae30e4933f434dab318a417f255a27805be80",
+    "actual302_carrier_sha256": "6ea240dd7cf37624a0cba321d59ae30e4933f434dab318a417f255a27805be80",
+    "mutant_source_sha256": "51a5c0a37d93ff14c3f49f54779c948808b293b250027669729adad61b78d31a",
+    "mutant_object_sha256": "fcb2eb03bd1574c5fb84ab5d457e8626cd954316531b499c4c0f6dff7d80d398",
+    "mutant_binary_sha256": "0ea71f169561c175b5d0c16dc3b678fb43d61ad61e742535077e9bbd6763e7fa"
+  },
+  "runtime": "Authenticated1080x1920x24 Xvfb, fresh runtime per sequence; original registration fixtures for rectangle/compact/toolbar, official sessionrc-native-oncanvas for native popup namespaces; toolbar deliberately varies native/painter/single/multi configurations. No Wayland runtime claim.",
+  "historical_qualification": "Moving historical failures and zero Bucket-constructor calls motivated stronger test prerequisites. No missed prerequisite was captured in the old failing runs; these passes do not establish their exact historical cause. No retry-until-green or removed row/model assertions.",
+  "binary_sha256": {
+    "normal": "6e60509c8c763eb1d9365ca933ca39fa9b30d3e7a5df03f59d7bff1dd868a8c6",
+    "toolbar_actual302": "7869182da4aa2e744973a8ec4605b03eb3cac3e8af9bc06ce77f240249bcae62",
+    "scoped_sanitizer": "0f6b09df42f9301df8e9d3e78cbf0613262972cacf8c67565dca1f2a9fbca98c"
+  },
+  "pass": true
+}

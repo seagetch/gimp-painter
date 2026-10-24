@@ -440,6 +440,139 @@ typedef struct
   guint fired;
 } RectanglePopupReentry;
 
+/* Reentry fixture prerequisites are observed, not manufactured. Keep these
+ * local to this synthetic fixture: other suites retain their input helpers. */
+typedef struct
+{
+  GtkWidget *target;
+  GtkAllocation allocation;
+  gint x, y;
+  guint frames, stable;
+} RectangleReentryLayout;
+
+static void
+rectangle_reentry_after_paint (GdkFrameClock *clock, gpointer data)
+{
+  RectangleReentryLayout *state = data;
+  GtkAllocation allocation;
+  gint x, y;
+  gtk_widget_get_allocation (state->target, &allocation);
+  gdk_window_get_origin (gtk_widget_get_window (state->target), &x, &y);
+  if (state->frames && x == state->x && y == state->y &&
+      allocation.x == state->allocation.x && allocation.y == state->allocation.y &&
+      allocation.width == state->allocation.width && allocation.height == state->allocation.height)
+    ++state->stable;
+  else
+    state->stable = 0;
+  state->x = x; state->y = y; state->allocation = allocation; ++state->frames;
+  if (state->stable < 3)
+    {
+      gtk_widget_queue_draw (state->target);
+      gdk_frame_clock_request_phase (clock, GDK_FRAME_CLOCK_PHASE_AFTER_PAINT);
+    }
+}
+
+static void
+rectangle_reentry_ready (GtkWidget *target, GtkWidget *parent_grab)
+{
+  gint64 deadline = g_get_monotonic_time () + 3 * G_TIME_SPAN_SECOND;
+  while ((!gtk_widget_get_mapped (target) || !gtk_widget_get_realized (target) ||
+          !gtk_widget_is_sensitive (target) || gtk_grab_get_current () != parent_grab) &&
+         g_get_monotonic_time () < deadline)
+    {
+      g_main_context_iteration (NULL, FALSE); g_usleep (1000);
+    }
+  g_test_message ("Reentry prerequisite target=%s mapped=%d realized=%d sensitive=%d expected-grab=%s actual-grab=%s",
+                  G_OBJECT_TYPE_NAME (target), gtk_widget_get_mapped (target), gtk_widget_get_realized (target),
+                  gtk_widget_is_sensitive (target), parent_grab ? G_OBJECT_TYPE_NAME (parent_grab) : "none",
+                  gtk_grab_get_current () ? G_OBJECT_TYPE_NAME (gtk_grab_get_current ()) : "none");
+  g_assert_true (gtk_widget_get_mapped (target));
+  g_assert_true (gtk_widget_get_realized (target));
+  g_assert_true (gtk_widget_is_sensitive (target));
+  g_assert_true (gdk_window_is_viewable (gtk_widget_get_window (target)));
+  g_assert_true (gtk_grab_get_current () == parent_grab);
+  if (parent_grab)
+    {
+      g_assert_true (GTK_IS_POPOVER (parent_grab));
+      g_assert_true (gtk_popover_get_modal (GTK_POPOVER (parent_grab)));
+      g_assert_true (gtk_widget_get_mapped (parent_grab));
+      g_assert_true (gtk_widget_is_ancestor (target, parent_grab));
+    }
+}
+
+static void
+rectangle_reentry_stable (GtkWidget *target)
+{
+  RectangleReentryLayout state = { 0 };
+  GdkFrameClock *clock = gtk_widget_get_frame_clock (target);
+  gulong handler;
+  gint64 deadline;
+  state.target = target;
+  g_assert_nonnull (clock);
+  handler = g_signal_connect (clock, "after-paint", G_CALLBACK (rectangle_reentry_after_paint), &state);
+  gdk_frame_clock_begin_updating (clock);
+  gtk_widget_queue_draw (target);
+  gdk_frame_clock_request_phase (clock, GDK_FRAME_CLOCK_PHASE_AFTER_PAINT);
+  deadline = g_get_monotonic_time () + 3 * G_TIME_SPAN_SECOND;
+  while (state.stable < 3 && g_get_monotonic_time () < deadline)
+    {
+      g_main_context_iteration (NULL, FALSE); g_usleep (1000);
+    }
+  gdk_frame_clock_end_updating (clock);
+  g_signal_handler_disconnect (clock, handler);
+  g_assert_cmpuint (state.stable, >=, 3);
+}
+
+static void
+rectangle_reentry_center (GtkWidget *target, gint *x, gint *y)
+{
+  GtkWidget *top = gtk_widget_get_toplevel (target);
+  gint root_x, root_y, local_x, local_y, scale;
+  g_assert_true (gtk_widget_translate_coordinates (target, top,
+                  gtk_widget_get_allocated_width (target) / 2,
+                  gtk_widget_get_allocated_height (target) / 2, &local_x, &local_y));
+  gdk_window_get_origin (gtk_widget_get_window (top), &root_x, &root_y);
+  scale = gdk_window_get_scale_factor (gtk_widget_get_window (top));
+  *x = (root_x + local_x) * scale; *y = (root_y + local_y) * scale;
+}
+
+static void
+rectangle_reentry_prepare (RectanglePopupInput *input, GtkWidget *target, GtkWidget *parent_grab)
+{
+  GdkDisplay *display = gtk_widget_get_display (target);
+  gpointer native = gdk_x11_display_get_xdisplay (display);
+  gint x, y, updated_x, updated_y;
+  rectangle_reentry_ready (target, parent_grab);
+  rectangle_reentry_stable (target);
+  rectangle_reentry_center (target, &x, &y);
+  input->motion (native, -1, x, y, 0); gdk_display_flush (display);
+  rectangle_reentry_stable (target);
+  rectangle_reentry_center (target, &updated_x, &updated_y);
+  if (updated_x != x || updated_y != y)
+    {
+      x = updated_x; y = updated_y;
+      input->motion (native, -1, x, y, 0); gdk_display_flush (display);
+      rectangle_reentry_stable (target);
+      rectangle_reentry_center (target, &updated_x, &updated_y);
+      g_assert_cmpint (updated_x, ==, x); g_assert_cmpint (updated_y, ==, y);
+    }
+  rectangle_reentry_ready (target, parent_grab);
+  g_test_message ("Reentry input prepared physical target=%d/%d", x, y);
+}
+
+static void
+rectangle_reentry_press_release (RectanglePopupInput *input, GtkWidget *target)
+{
+  GdkDisplay *display = gtk_widget_get_display (target);
+  gpointer native = gdk_x11_display_get_xdisplay (display);
+  /* No event-loop turn before this single press: a fresh unit is introduced
+   * after preparation, immediately before the intended show-time sync seam. */
+  input->button (native, 1, TRUE, 0); gdk_display_flush (display);
+  rectangle_popup_settle ();
+  input->button (native, 1, FALSE, 0); gdk_display_flush (display);
+  rectangle_popup_settle ();
+}
+
 static void
 rectangle_popup_row_inserted (GtkTreeModel *model, GtkTreePath *path,
                               GtkTreeIter *iter, gpointer data)
@@ -530,8 +663,10 @@ rectangle_units_popup_model_reentry (void)
       gimp_unit_combo_box_set_active (GIMP_UNIT_COMBO_BOX (state.combo), gimp_unit_pixel ());
       gtk_widget_show_all (host);
       gtk_window_present (GTK_WINDOW (host));
-      rectangle_popup_settle ();
-      rectangle_popup_click_center (&input, button);
+      rectangle_reentry_prepare (&input, button, NULL);
+      rectangle_reentry_press_release (&input, button);
+      rectangle_reentry_ready (state.combo, state.popover);
+      rectangle_reentry_stable (state.combo);
       accessible = gtk_combo_box_get_popup_accessible (GTK_COMBO_BOX (state.combo));
       g_assert_true (GTK_IS_ACCESSIBLE (accessible));
       state.menu = gtk_accessible_get_widget (GTK_ACCESSIBLE (accessible));
@@ -542,7 +677,16 @@ rectangle_units_popup_model_reentry (void)
       model = gtk_combo_box_get_model (GTK_COMBO_BOX (state.combo));
       g_signal_connect (model, "row-inserted",
                          G_CALLBACK (rectangle_popup_row_inserted), &state);
-      _gimp_unit_new (gimp, unit_name, 7.25, 4, "pr", "p.r.");
+      /* Finish mapping/grab/layout/motion before creating the fresh unit.
+       * GimpUnitStore get_iter can advance its sync frontier; the readiness
+       * oracle must not query a newly exposed row or run frames after this. */
+      if (scenario < 2)
+        rectangle_reentry_prepare (&input, state.combo, state.popover);
+      g_assert_true (gtk_combo_box_get_model (GTK_COMBO_BOX (state.combo)) == model);
+      g_assert_false (gtk_widget_get_visible (state.menu));
+      g_assert_cmpuint (state.fired, ==, 0);
+      g_assert_nonnull (_gimp_unit_new (gimp, unit_name, 7.25, 4, "pr", "p.r."));
+      g_assert_cmpuint (state.fired, ==, 0);
       g_free (unit_name);
       /* Keep only the combo's normal model ownership, to expose a borrowed
        * model reference dropped by the reentrant replace/clear callback. */
@@ -557,7 +701,7 @@ rectangle_units_popup_model_reentry (void)
           rectangle_popup_settle ();
         }
       else
-        rectangle_popup_click_center (&input, state.combo);
+        rectangle_reentry_press_release (&input, state.combo);
       g_assert_cmpuint (state.fired, >, 0);
       if (scenario < 2)
         {
@@ -568,7 +712,8 @@ rectangle_units_popup_model_reentry (void)
           if (scenario == 1)
             gtk_combo_box_set_model (GTK_COMBO_BOX (state.combo), state.replacement);
           gimp_unit_combo_box_set_active (GIMP_UNIT_COMBO_BOX (state.combo), gimp_unit_pixel ());
-          rectangle_popup_click_center (&input, state.combo);
+          rectangle_reentry_prepare (&input, state.combo, state.popover);
+          rectangle_reentry_press_release (&input, state.combo);
           rectangle_popup_assert_menu (state.combo, state.popover, TRUE);
           rectangle_popup_key (&input, state.combo, GDK_KEY_Escape);
           rectangle_popup_assert_menu (state.combo, state.popover, FALSE);

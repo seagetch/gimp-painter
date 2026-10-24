@@ -1,0 +1,33 @@
+{
+  "result": "PASS",
+  "exit_code": 0,
+  "case": "/transform-native-popup/baseline-rotate",
+  "scope": "One representative scale1 Openbox portrait repeat; unchanged actual302 production, independent test-only prerequisite candidate. Not new UI implementation or full matrix.",
+  "base_commit": "052a64ab0af3efa2b14835731f5f9cc85bcc9fc5",
+  "source_sha256": {
+    "app/tests/test-painter-compact-options.c": "cb219dd55eb638623995482688bc31a18528596d649d0f75fcd2ad7c154bbb52",
+    "app/tests/test-painter-rectangle-unit-popup.inc": "4fc2bee241548f7b0ce7eab06dfd60d829bdedc3a5a62f84da5518953bbd0990",
+    "app/tests/test-painter-transform-popup.inc": "947804310847f70ec0123c875971a936c1053db9df44d36f96dd3e64814fd649"
+  },
+  "binary_sha256": "6e60509c8c763eb1d9365ca933ca39fa9b30d3e7a5df03f59d7bff1dd868a8c6",
+  "normal_link_sha256": "21d4572023ba2cfaf6954d556c638301bce47d8a07627c82d1d2b92c0e644122",
+  "source_changed": [],
+  "png": "rotate-scale1.png",
+  "png_sha256": "4c466e89b84ba429f5cd98fa180abfce9c73ae0b01702769b077406099177702",
+  "pixels": [
+    1080,
+    1920
+  ],
+  "log": "capture/rotate-scale1/test.log",
+  "log_sha256": "5535febe5c6003e0f925eff6fe266de1d61999c62d20e14915c2d114a947cf32",
+  "x_properties": "rotate-x-properties.txt",
+  "x_properties_sha256": "e49d2ff907244b35a3f09367bd27d539e4041baf232dacf99cefda35937bcf28",
+  "geometry_lines": [
+    "# Native opening anchor 593/1802 189x50: popup 216x316 at 593/1486; later anchor 593/1802 189x50",
+    "# Native opening anchor 593/1802 189x50: popup 216x316 at 593/1486; later anchor 593/1802 189x50",
+    "# Native opening anchor 593/1802 189x50: popup 216x222 at 593/1580; later anchor 593/1802 189x50"
+  ],
+  "visual_review": "Raw PNG viewed; unframed Details fully visible, live73 value shown. Separate modern Rotate operation dialog retained; no all UI/old2.8 visual identity claim.",
+  "input": "Existing actual XTest entry/keyboard/escape, no source hook/focus injection. Official native-oncanvas session set by private wrapper; default-oncanvas test assertion unchanged.",
+  "excerpt_qualification": "Mapped popup matching measured rectangle; raw original hash retained, sampling not simultaneous with PNG."
+}

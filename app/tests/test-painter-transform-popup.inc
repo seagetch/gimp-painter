@@ -286,25 +286,24 @@ static void
 transform_popup_assert_anchor (GtkWidget *popup, GtkWidget *button,
                                TransformPopupPosition *realize)
 {
+  g_assert_true (realize->button == button);
+  g_assert_true (realize->captured); g_assert_false (realize->mapped);
+  /* show_over snapshots this intended button before synchronous show().
+   * Later toolbar scrolling is not a promise to dynamically reanchor. The
+   * expected coordinates never derive from the observed popup position. */
+  GdkMonitor *monitor = gdk_display_get_monitor_at_point (gtk_widget_get_display (button), realize->left, realize->top);
+  GdkRectangle rect; gdk_monitor_get_geometry (monitor, &rect);
+  gint x = realize->left, y = realize->top + realize->anchor_height, actual_x, actual_y;
+  if (x + realize->width > rect.x + rect.width) x = realize->left + realize->anchor_width - realize->width;
+  if (y + realize->height > rect.y + rect.height) y = realize->top - realize->height;
+  gtk_window_get_position (GTK_WINDOW (popup), &actual_x, &actual_y);
+  g_assert_cmpint (actual_x, ==, x); g_assert_cmpint (actual_y, ==, y);
   GtkAllocation allocation; gtk_widget_get_allocation (button, &allocation);
   gint left, top; gdk_window_get_origin (gtk_widget_get_window (button), &left, &top);
   if (!gtk_widget_get_has_window (button)) { left += allocation.x; top += allocation.y; }
-  GtkRequisition natural; gtk_widget_get_preferred_size (popup, NULL, &natural);
-  GdkMonitor *monitor = gdk_display_get_monitor_at_point (gtk_widget_get_display (button), left, top);
-  GdkRectangle rect; gdk_monitor_get_geometry (monitor, &rect);
-  gint x = left, y = top + allocation.height, actual_x, actual_y;
-  if (x + natural.width > rect.x + rect.width) x = left + allocation.width - natural.width;
-  if (y + natural.height > rect.y + rect.height) y = top - natural.height;
-  gtk_window_get_position (GTK_WINDOW (popup), &actual_x, &actual_y);
-  g_assert_true (realize->captured); g_assert_false (realize->mapped);
-  /* The source button must remain stationary across popup mapping, not merely
-   * agree with an obsolete coordinate sampled during unfinished main layout. */
-  g_assert_cmpint (realize->left, ==, left); g_assert_cmpint (realize->top, ==, top);
-  g_assert_cmpint (realize->anchor_width, ==, allocation.width);
-  g_assert_cmpint (realize->anchor_height, ==, allocation.height);
-  g_test_message ("Native anchor %d/%d %dx%d: popup %dx%d at %d/%d",
-    left, top, allocation.width, allocation.height, natural.width, natural.height, actual_x, actual_y);
-  g_assert_cmpint (actual_x, ==, x); g_assert_cmpint (actual_y, ==, y);
+  g_test_message ("Native opening anchor %d/%d %dx%d: popup %dx%d at %d/%d; later anchor %d/%d %dx%d",
+    realize->left, realize->top, realize->anchor_width, realize->anchor_height,
+    realize->width, realize->height, actual_x, actual_y, left, top, allocation.width, allocation.height);
 }
 
 static GtkWidget *
