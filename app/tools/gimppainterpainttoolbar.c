@@ -107,7 +107,8 @@ paint_toolbar_enum (GObject     *config,
 }
 
 /* Presentation-owned content, never an expander taken from the dock. The
- * three historical toggle groups use native GimpPopup semantics; all other
+ * three historical toggle groups and two Ink frame entries use native popup
+ * semantics; all other
  * callers retain their existing GtkPopover presentation unchanged.
  */
 static GtkWidget *
@@ -122,10 +123,14 @@ paint_toolbar_popup (GtkWidget   *toolbar,
   gboolean native = !g_strcmp0 (id, "jitter") ||
                     !g_strcmp0 (id, "texture") ||
                     !g_strcmp0 (id, "smoothing");
+  gboolean ink = !g_strcmp0 (id, "ink-sensitivity") ||
+                 !g_strcmp0 (id, "ink-blob");
   GtkWidget *scroll = gtk_scrolled_window_new (NULL, NULL);
   GtkWidget *button = native ? gimp_painter_toggle_popup_button_new (row, scroll) :
-                               gtk_menu_button_new ();
-  GtkWidget *popover = native ? NULL : gtk_popover_new (button);
+                      ink ? gimp_painter_ink_popup_button_new (scroll,
+                                                  !g_strcmp0 (id, "ink-blob")) :
+                            gtk_menu_button_new ();
+  GtkWidget *popover = (native || ink) ? NULL : gtk_popover_new (button);
   gchar     *name = g_strconcat ("painter-paint-", id, NULL);
 
   gtk_widget_set_name (button, name);
@@ -145,6 +150,17 @@ paint_toolbar_popup (GtkWidget   *toolbar,
                                                        GTK_ICON_SIZE_MENU));
       g_object_bind_property (config, enable_property,
                               native ? button : contents, "sensitive", G_BINDING_SYNC_CREATE);
+    }
+  else if (ink)
+    {
+      GtkWidget *entry = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 4);
+
+      atk_object_set_name (gtk_widget_get_accessible (button), label);
+      paint_toolbar_pack (entry, gtk_label_new (label));
+      paint_toolbar_pack (entry,
+                          gtk_image_new_from_icon_name ("pan-down-symbolic",
+                                                        GTK_ICON_SIZE_MENU));
+      gtk_container_add (GTK_CONTAINER (button), entry);
     }
   else
     {
@@ -478,6 +494,15 @@ paint_toolbar_source_options (GimpToolOptions *options,
 }
 
 static void
+paint_toolbar_ink_editor_unmapped (GtkWidget *editor,
+                                   gpointer   unused)
+{
+  /* The old popup recreated its editor on every open. Our retained editor
+   * must end only its transient gesture when the presentation disappears. */
+  gimp_blob_editor_cancel_interaction (GIMP_BLOB_EDITOR (editor));
+}
+
+static void
 paint_toolbar_ink (GtkWidget       *toolbar,
                    GimpToolOptions *options)
 {
@@ -501,6 +526,8 @@ paint_toolbar_ink (GtkWidget       *toolbar,
   paint_toolbar_pack (box, shape);
   editor = gimp_blob_editor_new (ink->blob_type, ink->blob_aspect, ink->blob_angle);
   gtk_widget_set_size_request (editor, 160, 160);
+  g_signal_connect (editor, "unmap",
+                    G_CALLBACK (paint_toolbar_ink_editor_unmapped), NULL);
   paint_toolbar_pack (box, editor);
   gimp_config_connect (config, G_OBJECT (editor), "blob-type");
   gimp_config_connect (config, G_OBJECT (editor), "blob-aspect");

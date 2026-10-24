@@ -225,3 +225,10 @@ extern "C" GtkWidget *
 gimp_painter_bucket_details_button_new (GtkWidget *body) {
   return popup_button_new (nullptr, body, "painter-bucket-details-popup", true);
 }
+
+extern "C" GtkWidget *
+gimp_painter_ink_popup_button_new (GtkWidget *body, gboolean blob) {
+  return popup_button_new (nullptr, body,
+                           blob ? "painter-ink-blob-popup" :
+                                  "painter-ink-sensitivity-popup", true);
+}

@@ -1,0 +1,42 @@
+{
+  "base_commit": "5361c04a1985c2f43019db453158d321f92415ff",
+  "base_tree": "390a3b5434b042e46216896eeab8eebcf2361ce8",
+  "source_sha256": {
+    "app/tools/gimppaintertogglepopup.cpp": "58a6e3d6f9ef557958a754bbba431d0e44f4933b9f81c054ad343b5c5992833b",
+    "app/tools/gimppaintertogglepopup.h": "468778c66a8a30482373d09755da492f75dcc3aa15e00a4afffe77679d9bf534",
+    "app/tools/gimppainterpainttoolbar.c": "9580c7ca559ecefec2316fea7631835f46e4a537b05cae92a7ea5a1e4e2f577f",
+    "app/widgets/gimpblobeditor.c": "a51c256b25ad02028ccd9975cbcdbcd61821223eb559b550306a1a0f610e6650",
+    "app/widgets/gimpblobeditor.h": "656ffb971be231fdcc4e744da6f07eedb8da1f5a3a50df1ec484cd04b5aaade5",
+    "app/tests/test-painter-compact-options.c": "b1b57a1ecbc2956f5d9fbbd6296a0b1791dd376d7b7b3276f0a47bf57d5c41c5",
+    "app/tests/test-painter-ink-popup.inc": "d601eeee10cf9dab07d536f328383caa75f36f2f804454f8bb4b2f3b879293b5",
+    "app/tests/test-painter-rectangle-unit-popup.inc": "4fc2bee241548f7b0ce7eab06dfd60d829bdedc3a5a62f84da5518953bbd0990",
+    "app/tests/test-painter-transform-popup.inc": "947804310847f70ec0123c875971a936c1053db9df44d36f96dd3e64814fd649"
+  },
+  "binary_sha256": "db3e4e11ee7fd1f9c634576a5e8d611fe856f04ef5fe16ae281b79ee2d4501c4",
+  "test_object_sha256": "d77adf08122de2a4cf3e8db912a292132e51e0967e3935068daa55e7ed1af253",
+  "negatives": [
+    {
+      "name": "actual304-sensitivity",
+      "exit_code": 250,
+      "log": "evidence/final-actual304-sensitivity-red.log",
+      "log_sha256": "10a21e8bd511e341164841512c427a31d55f95d8d4798caeda9ca077930ecf42",
+      "binary_sha256": "93c89579093bb19f6cecbfd786ca31a6a556a07d8d0670671f10ac65c94271f2"
+    },
+    {
+      "name": "actual304-blob",
+      "exit_code": 250,
+      "log": "evidence/final-actual304-blob-red.log",
+      "log_sha256": "b932891d2fabf7872b4eb566255ed4b81decfbf6d401d14cc8c35ff6c1f2a44a",
+      "binary_sha256": "93c89579093bb19f6cecbfd786ca31a6a556a07d8d0670671f10ac65c94271f2"
+    },
+    {
+      "name": "no-unmap",
+      "exit_code": 250,
+      "log": "evidence/final-no-unmap-red.log",
+      "log_sha256": "a41a96bff0375ebca53a8b2df11b4156df6a6a32bc429e743bdccfbaf7383806",
+      "binary_sha256": "f9a41a517f5cf0df35b0cf34cc54bda65c6e37d0d9c5e407a4075f7970da728f"
+    }
+  ],
+  "qualification": "Same final test object for all controls. Actual304 painttoolbar override rejects real GtkPopover entry. Private no-unmap painttoolbar differs only omitted Ink unmap connection; reproduces canonical angle/aspect drift without new press. These three expected reds are not normal passes. Added unused API does not affect actual304 call chain.",
+  "private_no_unmap_source_sha256": "1981c29687f55acbda29fac59dfdb8c878a4b3520ec716125380f36e5c6ebae1"
+}

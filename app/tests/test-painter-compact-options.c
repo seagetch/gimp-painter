@@ -666,6 +666,7 @@ static void standard_toggle_native_carrier_baseline (gconstpointer data)
 #include "test-painter-standard-toggle-popup.inc"
 #include "test-painter-transform-popup.inc"
 #include "test-painter-bucket-popup.inc"
+#include "test-painter-ink-popup.inc"
 
 int main(int argc,char **argv) {
   g_test_init(&argc,&argv,NULL);if(!gtk_init_check(&argc,&argv))return GIMP_EXIT_TEST_SKIPPED;
@@ -674,6 +675,7 @@ int main(int argc,char **argv) {
   register_standard_toggle_popup_tests ();
   register_transform_popup_tests ();
   register_bucket_popup_tests ();
+  register_ink_popup_tests ();
   g_test_add_data_func ("/standard-toggle-popup/baseline-jitter", "jitter", standard_toggle_native_carrier_baseline);
   g_test_add_data_func ("/standard-toggle-popup/baseline-texture", "texture", standard_toggle_native_carrier_baseline);
   g_test_add_data_func ("/standard-toggle-popup/baseline-smoothing", "smoothing", standard_toggle_native_carrier_baseline);

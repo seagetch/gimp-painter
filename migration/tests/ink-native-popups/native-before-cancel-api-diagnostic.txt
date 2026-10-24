@@ -1,0 +1,6 @@
+ok 1 /ink-native-popup/actual-sensitivity
+ok 2 /ink-native-popup/actual-blob
+# Interrupted Ink mode0: active=1 before=7.0158/0.576375 after-motion-without-press=2.07973/0.785398
+ERROR:<private-source>:358:ink_popup_interrupted_drag: assertion failed (after_aspect == aspect (+/- 1e-6)): (2.07972583 == 7.01580026)
+not ok /ink-native-popup/interrupted-escape - ERROR:<private-source>:358:ink_popup_interrupted_drag: assertion failed (after_aspect == aspect (+/- 1e-6)): (2.07972583 == 7.01580026)
+Bail out!

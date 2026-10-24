@@ -131,6 +131,16 @@ gimp_blob_editor_new (GimpInkBlobType  type,
                        NULL);
 }
 
+void
+gimp_blob_editor_cancel_interaction (GimpBlobEditor *editor)
+{
+  g_return_if_fail (GIMP_IS_BLOB_EDITOR (editor));
+
+  editor->active = FALSE;
+  editor->in_handle = FALSE;
+  gtk_widget_queue_draw (GTK_WIDGET (editor));
+}
+
 static void
 gimp_blob_editor_set_property (GObject      *object,
                                guint         property_id,

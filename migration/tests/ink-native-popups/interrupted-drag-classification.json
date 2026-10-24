@@ -1,0 +1,115 @@
+{
+  "classification": "Private author diagnostics, not extra unique passing coverage",
+  "native_before_fix": "Real handle press/motion, Escape, outside release, reopen and unpressed motion changed canonical aspect7.01580026 to2.07972583 and angle.576375 to.785398; active remained1; exit250. Other two interrupted modes passed separately.",
+  "actual304_baseline": "Exact published304 production via frozen normal link, private test-only adapter accepts actual GtkPopover and waits native mapped/grab/frame readiness and actual dismissal. Real Escape completes after bounded animation wait; on reopen active1 fails assertion, canonical angle/aspect remained unchanged in the sampled motion. Same full value-leak is NOT proven on304. No forced popdown/focus/grab used for Escape comparison. Tool-switch and owner-close rerun with this exact final private adapter/binary: both PASS0 (supporting only, not additional accepted cases).",
+  "retained_prior_setup_failures": "Initial private adapter cleanup used invalid GtkPopover cancel signal; first owner run failed handle readiness; first Escape mapped assertion preceded animation. Corrected test-only setup with bounded readiness/unmap waits. Raw prior logs retained privately; not classified as production failures.",
+  "fixed": "Scoped transient cancel API plus Ink-only unmap connection; fixed six cases PASS and live model retained.",
+  "files": [
+    {
+      "file": "native-before-cancel-api.log",
+      "sha256": "56b415b99418a9c51874b41d0158c2e60358c911e4037a9c79630772004baabe",
+      "size": 22632
+    },
+    {
+      "file": "native-before-cancel-api.status",
+      "sha256": "e4355a05c3a4b156700c4a1a32867d8f7a25a0dd24c6146c2deb2a1c96a6c93c",
+      "size": 4
+    },
+    {
+      "file": "native-before-tool-switch.log",
+      "sha256": "3e2e215f990c84aa1fc8cf685fc9eaf7fad0cb06f165f3bb50a0235566010574",
+      "size": 8589
+    },
+    {
+      "file": "native-before-owner-close.log",
+      "sha256": "50daca6270f4c589b4c8322b23ff9198adf4fbd2cdedf7f779d0805b651dea06",
+      "size": 8589
+    },
+    {
+      "file": "fixed-six.log",
+      "sha256": "cb8315a4c7cb489d5594438a04eb8b4e007ba552395b4b4c8189091886d7ab00",
+      "size": 32761
+    },
+    {
+      "file": "fixed-six.status",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "size": 2
+    },
+    {
+      "file": "native-red-test.inc",
+      "sha256": "640d9108a322a0a6e3b376d213380dd5fe13e4bfdbd9e51add65a587ed87c166",
+      "size": 22158
+    },
+    {
+      "file": "baseline-gtkpopover-adapter.inc",
+      "sha256": "f937c4d72fbcf9733910641087ec5600fe87376fbfffeb86aa2928b7d590ef73",
+      "size": 22916
+    },
+    {
+      "file": "baseline-gtkpopover-build.py",
+      "sha256": "c9d4fd08cb14c7200428960006ee1c65b4ce452e65819ea65f17d46f4da92ffb",
+      "size": 2644
+    },
+    {
+      "file": "baseline-link.private.json",
+      "sha256": "846fffbc5912b952009a4acf17663da4851a1871a9e096b25953659af265cc93",
+      "size": 6772
+    },
+    {
+      "file": "baseline-escape.log",
+      "sha256": "295a1de58636311f52773936d252dcb0cad9b05e60671450d41d84f0f8b438f3",
+      "size": 8709
+    },
+    {
+      "file": "baseline-escape.status",
+      "sha256": "e4355a05c3a4b156700c4a1a32867d8f7a25a0dd24c6146c2deb2a1c96a6c93c",
+      "size": 4
+    },
+    {
+      "file": "baseline-tool-switch.log",
+      "sha256": "34e84297177a5bb13bd538872cfe38265f2bf8a0ca228634033693fb323de651",
+      "size": 9276
+    },
+    {
+      "file": "baseline-tool-switch.status",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "size": 2
+    },
+    {
+      "file": "baseline-owner-close.log",
+      "sha256": "deaf69311291c176fb324bb03490d775586db9b9630bb9707ef4a68be004e61c",
+      "size": 8408
+    },
+    {
+      "file": "baseline-owner-close.status",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "size": 2
+    }
+  ],
+  "artifacts": {
+    "native_red_binary": {
+      "path": "ink-current",
+      "sha256": "192c6a8d3203ef0995cf144593aca252fc7909561cf888d8d3eb8aab2f625460"
+    },
+    "native_red_test_object": {
+      "path": "test-main.o",
+      "sha256": "09a31721c191c0cfaa54a0882b5edadf5551de5af467c35e02053dcbbcd1bbe7"
+    },
+    "native_red_painttoolbar_object": {
+      "path": "painttoolbar.o",
+      "sha256": "b1a8d1a9c091922123b6955dfeeffaffd3aab7235530ee1d9d9ec925d4a9c075"
+    },
+    "baseline_diagnostic_binary": {
+      "path": "baseline",
+      "sha256": "625b85dcb118946bb38f1f3b5a95b91b15262c05b497093d54aa6fc5a5188db7"
+    },
+    "baseline_diagnostic_test_object": {
+      "path": "main.o",
+      "sha256": "e201404a6f2bd1eeeeddf8ae3e85469224434e858f502cd9dc57a022197fdaec"
+    },
+    "fixed_binary": {
+      "path": "ink-current",
+      "sha256": "db3e4e11ee7fd1f9c634576a5e8d611fe856f04ef5fe16ae281b79ee2d4501c4"
+    }
+  }
+}

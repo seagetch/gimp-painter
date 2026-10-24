@@ -56,5 +56,7 @@ GtkWidget * gimp_blob_editor_new      (GimpInkBlobType  type,
                                        gdouble          aspect,
                                        gdouble          angle);
 
+/* End a presentation-owned gesture without changing the live blob values. */
+void        gimp_blob_editor_cancel_interaction (GimpBlobEditor *editor);
 
 #endif  /*  __GIMP_BLOB_EDITOR_H__  */
