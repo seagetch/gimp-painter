@@ -2,5 +2,6 @@
 #ifndef GIMP_MYPAINT_BRUSH_EDITOR_COMPAT_HPP
 #define GIMP_MYPAINT_BRUSH_EDITOR_COMPAT_HPP
 /* Named typed owner delegates to the sole native C constructor. */
+#include "gimpmypaintbrusheditor.h"
 #include "gimppaintermybrusheditor.hpp"
 #endif

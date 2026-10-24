@@ -46,6 +46,10 @@ namespace MP = GimpPainter::MyPaint;
 static void docked_init (GimpDockedInterface *iface);
 G_DEFINE_TYPE_WITH_CODE (GimpPainterMybrushEditor, gimp_painter_mybrush_editor, GIMP_TYPE_EDITOR,
                         G_IMPLEMENT_INTERFACE (GIMP_TYPE_DOCKED, docked_init))
+GType gimp_mypaint_brush_editor_get_type (void)
+{
+  return gimp_painter_mybrush_editor_get_type ();
+}
 namespace {
 constexpr int preview_width = 256, preview_height = 256, preview_samples = 257;
 enum { COL_RESOURCE, COL_ICON, COL_NAME, COL_TAGS, N_COLUMNS };

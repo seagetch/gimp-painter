@@ -14,6 +14,8 @@ typedef struct _GimpPainterMybrushEditorClass GimpPainterMybrushEditorClass;
 struct _GimpPainterMybrushEditor { GimpEditor parent_instance; gboolean binding_failed; };
 struct _GimpPainterMybrushEditorClass { GimpEditorClass parent_class; };
 GType gimp_painter_mybrush_editor_get_type (void) G_GNUC_CONST;
+/* Named compatibility getter: the same native runtime type, never a second registration. */
+GType gimp_mypaint_brush_editor_get_type (void) G_GNUC_CONST;
 /* All presentations own a reference to the canonical tool model, obtained
  * through ref_for_context. NULL, wrong and closed contexts return an error. */
 GtkWidget *gimp_painter_mybrush_editor_new (GimpContext *context, gboolean horizontal, GError **error);

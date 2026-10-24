@@ -8,7 +8,7 @@ extern "C" {
 #include "painter/object-ref.hpp"
 namespace GimpPainter GIMP_PAINTER_PRIVATE {
 template<> struct TypeTraits<GimpPainterMybrushEditor> {
-  static GType type () noexcept { return GIMP_TYPE_PAINTER_MYBRUSH_EDITOR; }
+  static GType type () noexcept { return gimp_mypaint_brush_editor_get_type (); }
 };
 class PainterEditorRef {
 public:
