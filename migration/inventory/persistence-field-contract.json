@@ -4185,6 +4185,11 @@
     },
     {
       "revision": "native",
+      "path": "app/paint/gimpmypaintoptions.h",
+      "sha256": "daadeaacac56a68f09c85220ab789fa80bc38db9745ef7c8a6b5848244a75985"
+    },
+    {
+      "revision": "native",
       "path": "app/paint/gimppaintersmudge.cpp",
       "sha256": "1cbbcbb3dd373265f597a52a3d4cdb137b889c4d430f9f24064cce8cf1df7a43"
     },
@@ -4226,7 +4231,7 @@
     {
       "revision": "native",
       "path": "app/paint/painter-mypaint-surface/gimp-painter-options.cpp",
-      "sha256": "f6f1701310d3d1c0c3afd195a34cc26bd343e3a77a39292ba0f7a81d711bb830"
+      "sha256": "3f0059d377ce6f0e988aa34986a98860cc23e2dbd443ce8acd0f502bbd94e007"
     },
     {
       "revision": "native",
@@ -4450,6 +4455,26 @@
     },
     {
       "revision": "native",
+      "path": "libgimp/gimpenums.c.tail",
+      "sha256": "096988b75f1e4925b43c3873a6dad84897c5f4e7a459e8adaec5b23345fdf50b"
+    },
+    {
+      "revision": "native",
+      "path": "libgimpbase/gimpbase.def",
+      "sha256": "73adbd6fd8f55c659de41df6ec67aa726cf74461f4ab6be360c36beccd8a0bdf"
+    },
+    {
+      "revision": "native",
+      "path": "libgimpbase/gimpbaseenums.c",
+      "sha256": "79ff9f9e06b87366c74acbfc815c3e81ac504495208d905a52905a42091be265"
+    },
+    {
+      "revision": "native",
+      "path": "libgimpbase/gimpbaseenums.h",
+      "sha256": "ef56b63737b0314f25a223db642000a01c9b687fd0d6c2a31c821331ea6e9971"
+    },
+    {
+      "revision": "native",
       "path": "libgimpconfig/gimpcolorconfig.c",
       "sha256": "bf6bc55900f7505612849e6ac6725bc0a5460160a846102c06b0943ce0db576f"
     },
@@ -4467,6 +4492,11 @@
       "revision": "native",
       "path": "libgimpconfig/gimpconfig-serialize.c",
       "sha256": "75dcdefedfe98a068066dbf96d35ff6b290a2385d77004c28e53d539206609fd"
+    },
+    {
+      "revision": "native",
+      "path": "pdb/enums.pl",
+      "sha256": "a108716f28b1b770094b4faf34d5bf989f531933f99a0eddf76bdd7fa6d1c532"
     }
   ],
   "source_successors": [
@@ -4494,13 +4524,16 @@
       "path": "app/paint/painter-mypaint-surface/gimp-painter-options.cpp",
       "revision": "native",
       "predecessor_sha256": "fabaa82d82cb6a9ade1fb7bb7e860dd1f54ccbe81c4e25b6c07b4aba41cb2d27",
-      "successor_sha256": "f6f1701310d3d1c0c3afd195a34cc26bd343e3a77a39292ba0f7a81d711bb830",
+      "successor_sha256": "3f0059d377ce6f0e988aa34986a98860cc23e2dbd443ce8acd0f502bbd94e007",
       "predecessor_commit": "3f831a8a862dabcc60f0049c154f93655d8004e2",
       "commits": [
         "0976ae344bc3ba60440c9fdcefc435e9aaf6d9de",
         "65213bdc96d26127b0cce6e1957d09a17a2184b8",
-        "6b6a6cf39366de1251d0149b118e4e8851c840b3"
-      ]
+        "6b6a6cf39366de1251d0149b118e4e8851c840b3",
+        "18c43bbe7c2157484201e127c558e77f7c683086"
+      ],
+      "intermediate_sha256": "f6f1701310d3d1c0c3afd195a34cc26bd343e3a77a39292ba0f7a81d711bb830",
+      "semantic_successor": "public-enum-registrar; unchanged saved values/default/flags"
     },
     {
       "path": "app/paint/painter-mypaint/mapping.hpp",
@@ -4543,10 +4576,88 @@
       ]
     }
   ],
+  "enum_successor": {
+    "schema_version": 1,
+    "predecessor_commit": "d1387732d357bd19a4ca4cc855fbedf4783e3fb5",
+    "successor_commit": "18c43bbe7c2157484201e127c558e77f7c683086",
+    "providers": [
+      {
+        "path": "libgimpbase/gimpbaseenums.h",
+        "predecessor_sha256": "97d16393e9646c5954b33e931fe921523ea8e079a4e9b400aaf6c5b1ea868978",
+        "successor_sha256": "ef56b63737b0314f25a223db642000a01c9b687fd0d6c2a31c821331ea6e9971"
+      },
+      {
+        "path": "libgimpbase/gimpbaseenums.c",
+        "predecessor_sha256": "b1f2c45bf0b88b7143179279acc5787e5943a5f216749ffa9504dc306f510b54",
+        "successor_sha256": "79ff9f9e06b87366c74acbfc815c3e81ac504495208d905a52905a42091be265"
+      },
+      {
+        "path": "libgimpbase/gimpbase.def",
+        "predecessor_sha256": "83baaef565a2ed87c4a9a87820d4530b3c9d77f95f05f325b2163442ce112e23",
+        "successor_sha256": "73adbd6fd8f55c659de41df6ec67aa726cf74461f4ab6be360c36beccd8a0bdf"
+      },
+      {
+        "path": "libgimp/gimpenums.c.tail",
+        "predecessor_sha256": "cd1c6a9526147b1a7cbbc1a91aa28c1085b305748575c5ce1507e61b0e4cc0cf",
+        "successor_sha256": "096988b75f1e4925b43c3873a6dad84897c5f4e7a459e8adaec5b23345fdf50b"
+      },
+      {
+        "path": "pdb/enums.pl",
+        "predecessor_sha256": "aaf68f864c2e848fae5745fc579d75810d717818f42b8465342e89ab4087b98d",
+        "successor_sha256": "a108716f28b1b770094b4faf34d5bf989f531933f99a0eddf76bdd7fa6d1c532"
+      },
+      {
+        "path": "app/paint/gimpmypaintoptions.h",
+        "predecessor_sha256": "db187a9a67d963be2e620daa97640a602f60615aecf2ac4497304381cc3e3500",
+        "successor_sha256": "daadeaacac56a68f09c85220ab789fa80bc38db9745ef7c8a6b5848244a75985"
+      },
+      {
+        "path": "app/paint/painter-mypaint-surface/gimp-painter-options.cpp",
+        "predecessor_sha256": "f6f1701310d3d1c0c3afd195a34cc26bd343e3a77a39292ba0f7a81d711bb830",
+        "successor_sha256": "3f0059d377ce6f0e988aa34986a98860cc23e2dbd443ce8acd0f502bbd94e007"
+      }
+    ],
+    "evidence_successors": [
+      {
+        "field_id": "mypaint.option.mode",
+        "predecessor": {
+          "path": "app/paint/painter-mypaint-surface/gimp-painter-options.cpp",
+          "revision": "native",
+          "anchor": "legacy_brush_mode_type",
+          "expected": "{3, \"GIMP_MYPAINT_COLORIZE\", \"colorize\"}"
+        },
+        "successor": {
+          "path": "libgimpbase/gimpbaseenums.c",
+          "revision": "native",
+          "anchor": "gimp_mypaint_brush_mode_get_type",
+          "expected": "{ GIMP_MYPAINT_COLORIZE, \"GIMP_MYPAINT_COLORIZE\", \"colorize\" }"
+        }
+      },
+      {
+        "field_id": "mypaint.option.mode",
+        "predecessor": {
+          "path": "app/paint/painter-mypaint-surface/gimp-painter-options.cpp",
+          "revision": "native",
+          "anchor": "gimp_painter_mybrush_options_class_init",
+          "expected": "legacy_brush_mode_type(),0,flags)"
+        },
+        "successor": {
+          "path": "app/paint/painter-mypaint-surface/gimp-painter-options.cpp",
+          "revision": "native",
+          "anchor": "gimp_painter_mybrush_options_class_init",
+          "expected": "GIMP_TYPE_MYPAINT_BRUSH_MODE,0,flags)"
+        }
+      }
+    ]
+  },
   "tests": [
     {
+      "path": "migration/tests/persistence_enum_successor.py",
+      "sha256": "65485236c78c896e593faceb9bb9866b438a00f021b04611c746518b4680155e"
+    },
+    {
       "path": "migration/tests/persistence_successors.py",
-      "sha256": "8aca235b6f2a3f6f7623761f6e1065bd4befba02936d03c04c6b88c7c886df4c"
+      "sha256": "0ffcbcf43795a0276d885ff256e359800127e53e036df0c52c0ebf70f7572dc3"
     },
     {
       "path": "migration/tests/persistence_source.py",
@@ -4554,7 +4665,7 @@
     },
     {
       "path": "migration/tests/test_persistence_field_contract.py",
-      "sha256": "86660ce1798cd8713cdef6f6f55eb712301d06d7326d9287e09597088e86b0a6"
+      "sha256": "d4bf46c527a6d03f8bfaa288c03554499b1704e9b929cd147bec6d32a67200a5"
     },
     {
       "path": "migration/tests/test_persistence_xcf_contract.py",
@@ -4562,7 +4673,7 @@
     },
     {
       "path": "migration/tests/test_persistence_mypaint_contract.py",
-      "sha256": "886429d4101837d704515de9840ccbb3f10fb2c277900344ab3938ea80540800"
+      "sha256": "eb83bdac01a8a3d11af29bea6e5f0740c49d95aee18b70a7cb3f2d51e666deb1"
     },
     {
       "path": "migration/tests/test_persistence_config_contract.py",

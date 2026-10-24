@@ -8,6 +8,7 @@ This certifies source metadata, not runtime equivalence or property ordering.
 """
 from __future__ import annotations
 from persistence_successors import resolve as resolve_source_successor
+from persistence_enum_successor import mode_values, resolve_evidence
 import argparse
 import csv
 import hashlib
@@ -216,7 +217,7 @@ def _validate_source_semantics(root):
     _require_scope(r,'std::vector<Point> parse_legacy_curve',
        'if (result.size () == 1 || result.size () > 8)',
        'if (result[i].x < result[i-1].x)')
-    modes = re.findall(r'\{([0-3]), "(GIMP_MYPAINT_[A-Z_]+)", "([a-z-]+)"\}',_block(o,'GType legacy_brush_mode_type'))
+    modes = mode_values(root, o)
     assert modes == [('0','GIMP_MYPAINT_NORMAL','normal'),('1','GIMP_MYPAINT_NORMAL_AND_ERASE','normal-and-erase'),('2','GIMP_MYPAINT_LOCK_ALPHA','lock-alpha'),('3','GIMP_MYPAINT_COLORIZE','colorize')]
     paint = source(root,'app/paint/gimppaintoptions.c')
     for prop,typ,args in [
@@ -380,6 +381,7 @@ def validate_family(data, root):
                 assert anchor in source(root,path,'legacy' if key.startswith('legacy') else 'native'),(id,key,location)
         assert row['evidence'], (id,'empty evidence')
         for evidence in row['evidence']:
+            evidence = resolve_evidence(root, id, evidence, source(root, OPTIONS))
             text=source(root,evidence['path'],evidence['revision'])
             assert evidence['expected'] in text,(id,evidence)
             assert evidence['anchor'] in text,(id,'evidence anchor',evidence)
