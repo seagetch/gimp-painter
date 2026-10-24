@@ -26,5 +26,10 @@ GType gimp_popover_get_type (void) G_GNUC_CONST;
  * NULL/non-widget/toplevel/already-parented/currently-destroying views reject.
  * Old Interface/decorator APIs and GTK2 class-layout ABI are not restored. */
 GtkWidget *gimp_popover_new (GtkWidget *view);
+/* MyPaint toolbar uses the historical GimpPopup event contract: outside
+ * cancellation is not consumed. Distinct from legacy GimpPopover2. */
+GType gimp_painter_popup_get_type (void) G_GNUC_CONST;
+GtkWidget *gimp_painter_popup_new (GtkWidget *view);
+void gimp_painter_popup_show_over (GtkWidget *popup, GtkWidget *anchor);
 G_END_DECLS
 #endif

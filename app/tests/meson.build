@@ -667,6 +667,15 @@ test('painter-mypaint-editor', painter_editor_test,
         'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
         'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 120)
 
+# Real default-oncanvas MyPaint popup entry and nested prompt lifecycle.
+test('painter-editor-popup-parity', painter_editor_test,
+  depends: gimp_test_icon_dependencies,
+  env: ['GIMP_TEST_EDITOR_POPUP=1','GIMP_TESTING_SESSIONRC_NAME=sessionrc-native-oncanvas',
+        'GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+        'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+        'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
+        'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 120)
+
 # Duplicate copies the selected saved resource; Save As copies the draft.
 test('painter-editor-duplicate-saved-resource', painter_editor_test,
   depends: gimp_test_icon_dependencies,

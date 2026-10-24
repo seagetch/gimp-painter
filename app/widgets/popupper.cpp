@@ -127,12 +127,12 @@ static void gimp_popover_init (GimpPopover2 *popover)
     BindingStore::ensure (G_OBJECT (popover)).emplace<PopupSlot> (); return true;
   })) gimp_painter_binding_close (G_OBJECT (popover), nullptr);
 }
-GtkWidget *gimp_popover_new (GtkWidget *view)
+static GtkWidget *new_popup (GtkWidget *view, GType type)
 {
   return boundary<GtkWidget *> (nullptr, nullptr, [&] () -> GtkWidget * {
     if (!GTK_IS_WIDGET (view) || GTK_IS_WINDOW (view) || gtk_widget_get_parent (view) || gtk_widget_in_destruction (view)) return nullptr;
     auto view_lease = ObjectRef<GObject>::retain (G_OBJECT (view));
-    auto *widget = GTK_WIDGET (g_object_new (GIMP_TYPE_POPOVER, "type", GTK_WINDOW_POPUP, nullptr));
+    auto *widget = GTK_WIDGET (g_object_new (type, "type", GTK_WINDOW_POPUP, nullptr));
     /* GtkWindow owns its nonfloating top-level reference. This is an extra
      * factory lease, not adoption of GTK's reference. */
     auto owner_lease = ObjectRef<GObject>::retain (G_OBJECT (widget));
@@ -151,5 +151,56 @@ GtkWidget *gimp_popover_new (GtkWidget *view)
     });
     if (!ready) { gtk_widget_destroy (widget); return nullptr; }
     return widget;
+  });
+}
+
+/* The 2.8 toolbar uses GimpPopup, not GimpPopover2. Its only event-policy
+ * difference here is returning FALSE after outside cancellation. Reuse the
+ * guarded frame/grab/lifetime implementation without changing other users. */
+struct GimpPainterPopup { GimpPopover parent_instance; };
+struct GimpPainterPopupClass { GimpPopoverClass parent_class; };
+G_DEFINE_TYPE (GimpPainterPopup, gimp_painter_popup, GIMP_TYPE_POPOVER)
+static gboolean painter_popup_button_press (GtkWidget *widget, GdkEventButton *event)
+{
+  auto lease = ObjectRef<GObject>::retain (G_OBJECT (widget));
+  auto parent = GTK_WIDGET_CLASS (gimp_painter_popup_parent_class)->button_press_event;
+  if (parent) parent (widget, event);
+  return FALSE;
+}
+static void gimp_painter_popup_class_init (GimpPainterPopupClass *klass)
+{
+  GTK_WIDGET_CLASS (klass)->button_press_event = painter_popup_button_press;
+  /* The inherited key vfunc activates this concrete class's binding set. */
+  gtk_binding_entry_add_signal (gtk_binding_set_by_class (klass), GDK_KEY_Escape,
+                                GdkModifierType (0), "cancel", 0);
+}
+static void gimp_painter_popup_init (GimpPainterPopup *) {}
+GtkWidget *gimp_popover_new (GtkWidget *view)
+{ return new_popup (view, GIMP_TYPE_POPOVER); }
+GtkWidget *gimp_painter_popup_new (GtkWidget *view)
+{ return new_popup (view, gimp_painter_popup_get_type ()); }
+void gimp_painter_popup_show_over (GtkWidget *popup, GtkWidget *anchor)
+{
+  boundary_void (nullptr, [&] {
+    if (!GIMP_IS_POPOVER (popup) || !GTK_IS_WIDGET (anchor) ||
+        !gtk_widget_get_realized (anchor) || !active (G_OBJECT (popup)) ||
+        gtk_widget_in_destruction (popup)) return;
+    auto owner = ObjectRef<GObject>::retain (G_OBJECT (popup));
+    auto target = ObjectRef<GObject>::retain (G_OBJECT (anchor));
+    GtkAllocation allocation; gtk_widget_get_allocation (anchor, &allocation);
+    gint left, top; gdk_window_get_origin (gtk_widget_get_window (anchor), &left, &top);
+    if (!gtk_widget_get_has_window (anchor)) { left += allocation.x; top += allocation.y; }
+    GtkRequisition natural; gtk_widget_get_preferred_size (popup, nullptr, &natural);
+    if (!active (G_OBJECT (popup)) || !gtk_widget_get_realized (anchor)) return;
+    auto *display = gtk_widget_get_display (anchor);
+    auto *monitor = gdk_display_get_monitor_at_point (display, left, top);
+    if (!monitor) return;
+    GdkRectangle rect; gdk_monitor_get_geometry (monitor, &rect);
+    gint x = left, y = top + allocation.height;
+    if (x + natural.width > rect.x + rect.width) x = left + allocation.width - natural.width;
+    if (y + natural.height > rect.y + rect.height) y = top - natural.height;
+    /* Exact 2.8 bottom-left edge-flipping policy; not WM centering. */
+    gtk_window_move (GTK_WINDOW (popup), x, y);
+    if (active (G_OBJECT (popup))) gtk_widget_show (popup);
   });
 }

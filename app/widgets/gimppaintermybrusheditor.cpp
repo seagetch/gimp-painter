@@ -26,6 +26,7 @@ extern "C" {
 #include "gimp-intl.h"
 }
 #include "gimppaintermybrusheditor.hpp"
+#include "popupper.h"
 #include "core/gimppaintermybrush-handle.hpp"
 #include "paint/painter-mypaint-surface/gimp-painter-options.hpp"
 #include "paint/painter-mypaint-surface/gimp-resources.hpp"
@@ -159,7 +160,7 @@ struct EditorImpl {
   GtkWidget *root = nullptr, *status = nullptr, *preview_image = nullptr, *search = nullptr,
     *tree = nullptr, *history = nullptr, *setting = nullptr, *input = nullptr, *graph = nullptr,
     *point = nullptr, *px = nullptr, *py = nullptr, *name = nullptr, *tags = nullptr,
-    *save = nullptr, *rename = nullptr, *remove = nullptr;
+    *save = nullptr, *rename = nullptr, *remove = nullptr, *popup_button = nullptr;
   std::vector<GtkWidget *> numeric, switches, texts;
   GtkWidget *curve_enabled=nullptr;
   GtkWidget *ranges[4]{};
@@ -535,6 +536,11 @@ void prompt(EditorImpl&i,int operation) {
     GtkDialogFlags(GTK_DIALOG_DESTROY_WITH_PARENT),_("Cancel"),GTK_RESPONSE_CANCEL,
     operation==2?_("Delete"):operation==3?_("Duplicate"):_("Save"),GTK_RESPONSE_OK,nullptr);
   payload->dialog = ObjectRef<GObject>::sink (G_OBJECT (dialog));
+  /* A nested prompt takes the GTK grab while active and restores the popup's
+   * grab on close. Without this, its clicks are outside the grabbed popup. */
+  auto *prompt_parent = gtk_window_get_transient_for (GTK_WINDOW (dialog));
+  if (prompt_parent && gtk_window_get_window_type (prompt_parent) == GTK_WINDOW_POPUP)
+    gtk_window_set_modal (GTK_WINDOW (dialog), TRUE);
   payload->destroyed = Connection::connect(payload->dialog,"destroy",G_CALLBACK(+[](GtkWidget*,gpointer data){
     boundary_void(nullptr,[&]{auto p=static_cast<EditorPrompt*>(data)->shared_from_this();retire_prompt(p);});
   }),payload.get(),nullptr);
@@ -619,7 +625,7 @@ void build(EditorImpl&i) {
   i.remove=button(i,actions,_("Delete"),"painter-brush-delete",[](EditorImpl&i){prompt(i,2);});
   auto*more=gtk_box_new(GTK_ORIENTATION_HORIZONTAL,2);pack(left,more);
   button(i,more,_("Duplicate"),"painter-brush-duplicate",[](EditorImpl&i){prompt(i,3);});
-  button(i,more,_("Popup Editor"),"painter-brush-popup",[](EditorImpl&i){GError*e=nullptr;auto*w=gimp_painter_mybrush_editor_popup(i.ctx(),GTK_WIDGET(i.owner),&e);checked(w!=nullptr,e);});
+  i.popup_button=button(i,more,_("Popup Editor"),"painter-brush-popup",[](EditorImpl&i){GError*e=nullptr;auto*w=gimp_painter_mybrush_editor_popup(i.ctx(),i.popup_button,&e);checked(w!=nullptr,e);});
   button(i,more,_("Refresh"),"painter-brush-refresh",[](EditorImpl&i){gimp_data_factory_data_refresh(i.ctx()->gimp->painter_mybrush_factory,i.ctx());rebuild_list(i);});
   i.history=named(gtk_combo_box_text_new(),"painter-brush-history");row(left,_("Draft history"),i.history);
   connect(i,i.history,"changed",G_CALLBACK(simple_cb),[](EditorImpl&i){int n=gtk_combo_box_get_active(GTK_COMBO_BOX(i.history));if(n>=0){GError*e=nullptr;auto ok=gimp_painter_mybrush_options_restore_history(i.options.get(),n,&e);checked(ok,e);}});
@@ -873,6 +879,19 @@ GtkWidget *gimp_mypaint_options_gui_horizontal (GimpToolOptions *options)
 
 GtkWidget*gimp_painter_mybrush_editor_popup(GimpContext*context,GtkWidget*parent,GError**error) {
   return boundary<GtkWidget*>(error,nullptr,[&]()->GtkWidget* {
+  if(parent&&!GTK_IS_WIDGET(parent))throw Error(GIMP_PAINTER_ERROR_WRONG_TYPE,"Popup anchor is not a widget");
+  auto anchor_lease=ObjectRef<GObject>::retain(parent?G_OBJECT(parent):nullptr);
+  if(parent&&(!gtk_widget_get_realized(parent)||gtk_widget_in_destruction(parent)))
+    throw Error(GIMP_PAINTER_ERROR_INVALID_STATE,"Popup anchor is not a live realized widget");
+  auto invoker_lease=ObjectRef<GObject>::retain(parent?G_OBJECT(gtk_widget_get_toplevel(parent)):nullptr);
+  bool anchor_alive=true,invoker_alive=true;
+  auto retired=G_CALLBACK(+[](GtkWidget*,gpointer data){*static_cast<bool*>(data)=false;});
+  Connection anchor_watch,invoker_watch;
+  if(parent) {
+    anchor_watch=Connection::connect(anchor_lease,"destroy",retired,&anchor_alive,nullptr);
+    invoker_watch=Connection::connect(invoker_lease,"destroy",retired,&invoker_alive,nullptr);
+  }
+  auto available=[&]{return anchor_alive&&invoker_alive&&(!parent||gtk_widget_get_realized(parent));};
   std::shared_ptr<EditorPageMemory> page_memory;
   for(auto*w=parent;w;w=gtk_widget_get_parent(w))
     if(GIMP_IS_PAINTER_MYBRUSH_EDITOR(w)) {
@@ -880,9 +899,28 @@ GtkWidget*gimp_painter_mybrush_editor_popup(GimpContext*context,GtkWidget*parent
       break;
     }
   auto*editor=new_editor(context,TRUE,std::move(page_memory),error);if(!editor)return nullptr;
-  auto*window=gtk_window_new(GTK_WINDOW_TOPLEVEL);gtk_window_set_title(GTK_WINDOW(window),_("Painter MyPaint Brush Editor"));gtk_window_set_default_size(GTK_WINDOW(window),860,630);
-  if(parent&&GTK_IS_WINDOW(gtk_widget_get_toplevel(parent)))gtk_window_set_transient_for(GTK_WINDOW(window),GTK_WINDOW(gtk_widget_get_toplevel(parent)));
-  gtk_window_set_destroy_with_parent(GTK_WINDOW(window),TRUE);gtk_container_add(GTK_CONTAINER(window),editor);gtk_widget_show_all(window);return window;
+  auto editor_lease=ObjectRef<GObject>::sink(G_OBJECT(editor));
+  if(!available()){gtk_widget_destroy(editor);throw Error(GIMP_PAINTER_ERROR_CLOSED,"Popup anchor closed during construction");}
+  auto*window=gimp_painter_popup_new(editor);
+  if(!window){gtk_widget_destroy(editor);return nullptr;}
+  auto lease=ObjectRef<GObject>::retain(G_OBJECT(window));
+  if(!available()){gtk_widget_destroy(window);throw Error(GIMP_PAINTER_ERROR_CLOSED,"Popup anchor closed during construction");}
+  gtk_window_set_title(GTK_WINDOW(window),_("Painter MyPaint Brush Editor"));
+  gtk_window_set_default_size(GTK_WINDOW(window),860,630);
+  if(parent) {
+    g_signal_connect_object(parent,"destroy",G_CALLBACK(gtk_widget_destroy),window,G_CONNECT_SWAPPED);
+    auto *invoker=GTK_WIDGET(invoker_lease.get());
+    if(invoker!=parent&&GTK_IS_WINDOW(invoker))
+      g_signal_connect_object(invoker,"destroy",G_CALLBACK(gtk_widget_destroy),window,G_CONNECT_SWAPPED);
+  }
+  if(!available()){gtk_widget_destroy(window);throw Error(GIMP_PAINTER_ERROR_CLOSED,"Popup anchor closed before presentation");}
+  gtk_widget_show_all(editor);
+  if(!available()){gtk_widget_destroy(window);throw Error(GIMP_PAINTER_ERROR_CLOSED,"Popup anchor closed during presentation");}
+  if(parent)gimp_painter_popup_show_over(window,parent);
+  else gtk_widget_show(window);
+  if(!available()){gtk_widget_destroy(window);throw Error(GIMP_PAINTER_ERROR_CLOSED,"Popup anchor closed during presentation");}
+  auto *binding=BindingStore::find(G_OBJECT(window));
+  return binding&&binding->state()==BindingStore::State::active?window:nullptr;
   });
 }
 static gboolean save_editor(GimpPainterMybrushEditor*editor,const gchar*name,bool use_draft_name,GError**error,bool duplicate_saved) {

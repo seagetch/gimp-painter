@@ -21,6 +21,7 @@ extern "C" {
 #include "display/gimppaintercanvasui.h"
 #include "gimppaintermybrusheditor.h"
 #include "gimppaintercompactoptions.h"
+#include "popupper.h"
 #include "gimp-intl.h"
 }
 #include "painter/binding-store.hpp"
@@ -53,7 +54,7 @@ struct Saved {
 };
 struct Group {
   std::string id;
-  ObjectRef<GObject> row, button, popup, box, editor;
+  ObjectRef<GObject> row, button, popup, box, editor, content;
 };
 struct Presentation {
   GtkWidget *owner;
@@ -131,11 +132,98 @@ void popup_closed (GtkPopover*, gpointer data) {
     }
   });
 }
+/* A MyPaint popup borrows the canonical editor hierarchy. Detach its retained
+ * scroll before the host's default cancel/confirm/destroy disposes children. */
+void detach_native_popup (Presentation& p, GtkWidget *popup, bool retiring) {
+  ObjectRef<GObject> content;
+  for (auto& group : p.groups) if (group->popup.get () == G_OBJECT (popup)) {
+    content = group->content;
+    if (retiring) group->popup.reset ();
+    break;
+  }
+  if (content) {
+    auto *widget = GTK_WIDGET (content.get ());
+    if (auto *parent = gtk_widget_get_parent (widget))
+      gtk_container_remove (GTK_CONTAINER (parent), widget);
+  }
+}
+void native_popup_dismiss (GtkWidget *popup, gpointer data) {
+  auto lease = ObjectRef<GObject>::retain (G_OBJECT (popup));
+  dispatch (data, [popup] (Presentation& p, Saved*, GObject*) { detach_native_popup (p, popup, false); });
+}
+void native_popup_destroyed (GtkWidget *popup, gpointer data) {
+  auto lease = ObjectRef<GObject>::retain (G_OBJECT (popup));
+  dispatch (data, [popup] (Presentation& p, Saved*, GObject*) {
+    detach_native_popup (p, popup, true);
+    if (p.closed || !p.enabled) return;
+    auto *shell = gtk_widget_get_ancestor (p.owner, GIMP_TYPE_DISPLAY_SHELL);
+    if (shell) {
+      gimp_painter_canvas_ui_pointer (GIMP_DISPLAY_SHELL (shell), 0, 0, TRUE);
+      if (!p.closed) gtk_widget_grab_focus (GIMP_DISPLAY_SHELL (shell)->canvas);
+    }
+  });
+}
+void native_anchor_unmapped (GtkWidget *anchor, gpointer data) {
+  dispatch (data, [anchor] (Presentation& p, Saved*, GObject*) {
+    ObjectRef<GObject> popup;
+    for (auto& group : p.groups) if (group->button.get () == G_OBJECT (anchor)) {
+      popup = group->popup; break;
+    }
+    if (popup) gtk_widget_destroy (GTK_WIDGET (popup.get ()));
+  });
+}
+void native_popup_clicked (GtkButton *button, gpointer data);
 void connect (Presentation& p, GObject *emitter, const char *signal, GCallback callback,
               Saved *saved = nullptr, GObject *target = nullptr) {
   auto hook = std::unique_ptr<Hook> (new Hook (p, saved, target));
   auto c = Connection::connect (ObjectRef<GObject>::retain (emitter), signal, callback, hook.get (), free_hook);
   hook.release (); p.connections.push_back (std::move (c));
+}
+void native_popup_clicked (GtkButton *button, gpointer data) {
+  auto anchor = ObjectRef<GObject>::retain (G_OBJECT (button));
+  dispatch (data, [&] (Presentation& p, Saved*, GObject*) {
+    if (!p.enabled) return;
+    /* Closed hosts are ephemeral; do not accumulate expired weak signal records
+     * across repeated openings of the still-live canonical presentation. */
+    p.connections.erase (std::remove_if (p.connections.begin (), p.connections.end (),
+      [] (const Connection& connection) { return !connection.connected (); }), p.connections.end ());
+    const auto revision = p.epoch;
+    ObjectRef<GObject> content, previous;
+    for (auto& group : p.groups) if (group->button.get () == anchor.get ()) {
+      content = group->content; previous = group->popup; break;
+    }
+    if (!content) return;
+    if (previous) gtk_widget_destroy (GTK_WIDGET (previous.get ()));
+    if (p.closed || !p.enabled || p.epoch != revision) return;
+    /* Build the host around an empty owned carrier first. Its factory can
+     * synchronously emit signals before returning; never expose borrowed
+     * controls until the pre-destruction detach handlers are installed. */
+    auto carrier = ObjectRef<GObject>::sink (G_OBJECT (gtk_box_new (GTK_ORIENTATION_VERTICAL, 0)));
+    auto *created = gimp_painter_popup_new (GTK_WIDGET (carrier.get ()));
+    if (!created) return;
+    auto popup = ObjectRef<GObject>::retain (G_OBJECT (created));
+    if (p.closed || !p.enabled || p.epoch != revision) { gtk_widget_destroy (created); return; }
+    bool accepted = false;
+    for (auto& group : p.groups) if (group->button.get () == anchor.get () && group->content.get () == content.get ()) {
+      group->popup = popup; accepted = true; break;
+    }
+    if (!accepted) { gtk_widget_destroy (created); return; }
+    auto current = [&] {
+      if (p.closed || !p.enabled || p.epoch != revision) return false;
+      for (auto& group : p.groups)
+        if (group->button.get () == anchor.get () && group->popup.get () == popup.get ()) return true;
+      return false;
+    };
+    connect (p, popup.get (), "cancel", G_CALLBACK (native_popup_dismiss));
+    connect (p, popup.get (), "confirm", G_CALLBACK (native_popup_dismiss));
+    connect (p, popup.get (), "destroy", G_CALLBACK (native_popup_destroyed));
+    gtk_widget_set_name (created, "painter-compact-mypaint-popup");
+    if (!current ()) return;
+    if (gtk_widget_get_parent (GTK_WIDGET (content.get ()))) { gtk_widget_destroy (created); return; }
+    gtk_box_pack_start (GTK_BOX (carrier.get ()), GTK_WIDGET (content.get ()), TRUE, TRUE, 0);
+    if (!current ()) return;
+    gimp_painter_popup_show_over (created, GTK_WIDGET (anchor.get ()));
+  });
 }
 /* This is the existing native property identity used by widget search/blink;
  * no private model or extra qdata protocol is introduced by this adapter. */
@@ -225,8 +313,10 @@ Group& Presentation::group (GtkWidget *box, const char *id, const char *label, G
   g->id = id;
   g->row = ObjectRef<GObject>::sink (G_OBJECT (gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0)));
   gtk_widget_set_valign (GTK_WIDGET (g->row.get ()), GTK_ALIGN_CENTER);
-  g->button = ObjectRef<GObject>::sink (G_OBJECT (gtk_menu_button_new ()));
-  g->popup = ObjectRef<GObject>::sink (G_OBJECT (gtk_popover_new (GTK_WIDGET (g->button.get ()))));
+  const bool native_mypaint = g->id == "mypaint";
+  g->button = ObjectRef<GObject>::sink (G_OBJECT (native_mypaint ? gtk_button_new () : gtk_menu_button_new ()));
+  if (!native_mypaint)
+    g->popup = ObjectRef<GObject>::sink (G_OBJECT (gtk_popover_new (GTK_WIDGET (g->button.get ()))));
   g->box = ObjectRef<GObject>::sink (G_OBJECT (gtk_box_new (GTK_ORIENTATION_VERTICAL, 4)));
   gtk_widget_set_name (GTK_WIDGET (g->button.get ()), (std::string ("painter-compact-") + id).c_str ());
   gtk_widget_set_tooltip_text (GTK_WIDGET (g->button.get ()), label);
@@ -243,10 +333,20 @@ Group& Presentation::group (GtkWidget *box, const char *id, const char *label, G
   gtk_scrolled_window_set_propagate_natural_height (GTK_SCROLLED_WINDOW (scroll), TRUE);
   gtk_container_set_border_width (GTK_CONTAINER (g->box.get ()), 8);
   gtk_container_add (GTK_CONTAINER (scroll), GTK_WIDGET (g->box.get ()));
-  gtk_container_add (GTK_CONTAINER (g->popup.get ()), scroll);
-  gtk_menu_button_set_popover (GTK_MENU_BUTTON (g->button.get ()), GTK_WIDGET (g->popup.get ()));
-  connect (*this, g->popup.get (), "show", G_CALLBACK (popup_shown));
-  connect (*this, g->popup.get (), "closed", G_CALLBACK (popup_closed));
+  if (native_mypaint) {
+    /* GtkWindow popup has no GtkPopover allocation policy. Its external
+     * request must include the editor viewport width, not only the scroll
+     * child's min-content hint (which can yield a clipped narrow window). */
+    gtk_widget_set_size_request (scroll, 340, -1);
+    g->content = ObjectRef<GObject>::sink (G_OBJECT (scroll));
+    connect (*this, g->button.get (), "clicked", G_CALLBACK (native_popup_clicked));
+    connect (*this, g->button.get (), "unmap", G_CALLBACK (native_anchor_unmapped));
+  } else {
+    gtk_container_add (GTK_CONTAINER (g->popup.get ()), scroll);
+    gtk_menu_button_set_popover (GTK_MENU_BUTTON (g->button.get ()), GTK_WIDGET (g->popup.get ()));
+    connect (*this, g->popup.get (), "show", G_CALLBACK (popup_shown));
+    connect (*this, g->popup.get (), "closed", G_CALLBACK (popup_closed));
+  }
   gtk_box_pack_start (GTK_BOX (g->row.get ()), GTK_WIDGET (g->button.get ()), FALSE, FALSE, 0);
   gtk_box_pack_start (GTK_BOX (box), GTK_WIDGET (g->row.get ()), FALSE, FALSE, 0);
   gtk_widget_show_all (GTK_WIDGET (g->row.get ()));
@@ -362,8 +462,11 @@ void Presentation::populate (GtkWidget *popup) {
 }
 void Presentation::popdown () noexcept {
   auto snapshot = std::vector<ObjectRef<GObject>> ();
-  for (auto& g : groups) snapshot.push_back (g->popup);
-  for (auto& popup : snapshot) gtk_popover_popdown (GTK_POPOVER (popup.get ()));
+  for (auto& g : groups) if (g->popup) snapshot.push_back (g->popup);
+  for (auto& popup : snapshot) {
+    if (GTK_IS_POPOVER (popup.get ())) gtk_popover_popdown (GTK_POPOVER (popup.get ()));
+    else gtk_widget_destroy (GTK_WIDGET (popup.get ()));
+  }
 }
 void Presentation::restore () noexcept {
   if (!enabled && saved.empty ()) return;
@@ -383,6 +486,7 @@ void Presentation::restore () noexcept {
   for (auto& g : old_groups) {
     if (closed) break;
     auto *popup = GTK_WIDGET (g->popup.get ());
+    if (!popup) continue;
     if (!gtk_widget_get_sensitive (popup)) gtk_widget_set_sensitive (popup, TRUE);
   }
   for (auto it = old.rbegin (); it != old.rend (); ++it) {
@@ -409,7 +513,7 @@ void Presentation::restore () noexcept {
     gtk_widget_set_no_show_all (w, s.no_show_all);
     gtk_widget_set_valign (w, s.valign);
   }
-  for (auto& g : old_groups) { gtk_widget_destroy (GTK_WIDGET (g->popup.get ())); gtk_widget_destroy (GTK_WIDGET (g->row.get ())); }
+  for (auto& g : old_groups) { if (g->popup) gtk_widget_destroy (GTK_WIDGET (g->popup.get ())); gtk_widget_destroy (GTK_WIDGET (g->row.get ())); }
   /* Temporary buttons must be gone before restoring absolute sibling indices. */
   for (auto& item : old) {
     auto& s = *item;

@@ -1,0 +1,10 @@
+Xvfb verified: authenticated local display, 1080x1920x24, authenticated accepted, empty authority rejected
+1..5
+# Native dock factory has 56 shipped file-backed brushes
+ok 1 /painter-editor/popup/real-entry-type
+ok 2 /painter-editor/popup/live-keys-outside
+# Nested prompt geometry 638,696 178x72; current grab GtkDialog
+# Nested prompt geometry 638,696 178x72; current grab GtkDialog
+ok 3 /painter-editor/popup/nested-save-as
+ok 4 /painter-editor/popup/parent-close-reopen
+ok 5 /painter-editor/popup/anchor-construction-reentry

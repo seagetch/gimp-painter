@@ -1023,6 +1023,7 @@
 | 24.013 | [ ] | preview 描画を実装する | 24.012 | 紙目・Smudge・非累積を含む独自設定が反映 |
 | 24.014 | [ ] | preview 更新の取消しを実装する | 24.013 | 古い設定の結果を表示しない |
 | 24.015 | [ ] | dock と popup の共有 UI を接続する | 24.014 | 二重保存・二重通知がない |
+| 24.015/legacy-popup-presentation | [x] | MyPaint実oncanvas入口を旧2.8のnative popup表示へ合わせる | 24.017/native-editor-workflow, 34.015/compact-options-native-oracles | 新規leaf。旧gimp-2-8 ref/source確認、実入口TOPLEVEL negative→GTK_WINDOW_POPUP。native119(新popup5+既存editor38+compact62+popover14)、限定8TU ASan/UBSan(vptr除外・LSan無効)5合格。Escape/外側/取消非rollback、nested保存/grab、再入・借用復帰・実幅340を検証。公式singlewindow/default TRUE/実資源1080x1920画像。親24.015・全port・旧runtime視覚一致・layer-filter経路は未完了 |
 | 24.015/brush-popup-signal-owner | [ ] | ブラシ popup の旧資源への通知接続を解除する | 24.015, 01.008 | 選択変更時に旧ブラシの notify を解除して新ブラシへ接続し、popup 終了時には保持した接続先を解除して解放済み user data を呼ばない |
 | 24.015/mypaint-editor-create | [ ] | MyPaint editor の生成条件と options を修正する | 24.014, 24.001/editor-context-contract | `GimpContext` への誤った `GIMP_IS_MYPAINT_OPTIONS` 判定と NULL options の参照を排除し、正しいブラシを表示する |
 | 24.015/named-native-editor-entry | [x] | 旧名C constructorと単一native modelの実Save/Save As menuを接続する | 24.017/native-editor-workflow, 04.016 | native3・7unit ASan/UBSan3・compiled negative5・C11/C++14・replay3合格。供給menu factory・浮動/typed所有権・共有draft・実保存再読込・取消し・別資源保存・cache/action/group解放を確認。1080x1920 Xvfb/oncanvas画像: migration/tests/named-editor-entry。旧edit-active/session情報表示・旧型layout・全constructor/24系依存・current HEAD aggregateは未完了 |

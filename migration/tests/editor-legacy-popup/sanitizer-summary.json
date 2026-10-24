@@ -1,0 +1,18 @@
+{
+  "status": 0,
+  "passed": [
+    "ok 1 /painter-editor/popup/real-entry-type",
+    "ok 2 /painter-editor/popup/live-keys-outside",
+    "ok 3 /painter-editor/popup/nested-save-as",
+    "ok 4 /painter-editor/popup/parent-close-reopen",
+    "ok 5 /painter-editor/popup/anchor-construction-reentry"
+  ],
+  "binary_sha256": "676c1ed1148744d939e360611bf5fd0afcd9bc724889f97e709648680b191884",
+  "popup_test_sha256": "fa2fbf245b4bea8da2fcacf1009cb9f1006f361579b3b6b4a668557d235b70fe",
+  "source_unchanged_after_runtime": true,
+  "instrumented_tus": 8,
+  "sanitizers": "address,undefined; vptr excluded; leaks disabled",
+  "sessionrc": "sessionrc-native-oncanvas",
+  "scope": "focused popup5; application remainder and dependencies uninstrumented",
+  "raw_log_sha256": "60ae5a88fb2b275d149cb370715b3c233e9fc931ab4206367448f03f70c2c776"
+}

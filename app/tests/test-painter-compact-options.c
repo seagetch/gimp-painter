@@ -95,6 +95,18 @@ static void compact (GtkWidget *gui,GimpToolOptions *options,gboolean enabled,Gt
 static GimpToolInfo *info (const char *name) {
   GimpToolInfo *result=GIMP_TOOL_INFO(gimp_container_get_child_by_name(gimp->tool_info_list,name));g_assert_nonnull(result);return result;
 }
+static GtkWidget *mypaint_native_popup (void) {
+  GtkWidget *popup = NULL;
+  GList *windows = gtk_window_list_toplevels ();
+  for (GList *item = windows; item; item = item->next)
+    if (!g_strcmp0 (gtk_widget_get_name (item->data), "painter-compact-mypaint-popup")) {
+      g_assert_null (popup); popup = item->data;
+    }
+  g_list_free (windows);
+  g_assert_nonnull (popup);
+  g_assert_cmpint (gtk_window_get_window_type (GTK_WINDOW (popup)), ==, GTK_WINDOW_POPUP);
+  return popup;
+}
 static void inventory_all_registered_tools (void) {
   gimp_set_focused_once(gimp);
   guint tools=0,controls=0;
@@ -106,6 +118,14 @@ static void inventory_all_registered_tools (void) {
     GList *order=gtk_container_get_children(GTK_CONTAINER(gui));
     compact(gui,tool->tool_options,TRUE,GTK_ORIENTATION_HORIZONTAL);
     GPtrArray *after=g_ptr_array_new();gather(gui,after);
+    /* MyPaint's historical popup is a separate native popup hierarchy, not
+     * a GtkMenuButton-owned GtkPopover. Exercise the actual entry before
+     * checking the same complete set of borrowed native widget identities. */
+    GtkWidget *mypaint = find (gui, "painter-compact-mypaint", GTK_TYPE_BUTTON);
+    if (mypaint) {
+      gtk_button_clicked (GTK_BUTTON (mypaint));
+      gather (mypaint_native_popup (), after);
+    }
     for(guint n=0;n<original->len;n++)g_assert_true(g_ptr_array_find(after,g_ptr_array_index(original,n),NULL));
     g_assert_cmpint(gtk_orientable_get_orientation(GTK_ORIENTABLE(gui)),==,GTK_ORIENTATION_HORIZONTAL);
     g_test_message("Registered compact %s: %u original widgets retained",gimp_object_get_name(tool),original->len);
@@ -395,13 +415,13 @@ static void canvas_dock_tool_transfer_and_preference (void) {
   gimp_painter_canvas_ui_set_visible(a,TRUE);drain();
   g_assert_false(gimp_painter_compact_options_get(native));
   g_assert_true(gtk_widget_get_parent(native)==parent);
-  g_assert_nonnull(find(a->canvas,"painter-compact-mypaint",GTK_TYPE_MENU_BUTTON));
+  g_assert_nonnull(find(a->canvas,"painter-compact-mypaint",GTK_TYPE_BUTTON));
   g_assert_null(find(a->canvas,"painter-canvas-undo",GTK_TYPE_BUTTON));
   gimp_context_set_tool(gimp_get_user_context(gimp),rect);drain();
   g_assert_true(gtk_widget_get_parent(native)==parent);
-  g_assert_null(find(a->canvas,"painter-compact-mypaint",GTK_TYPE_MENU_BUTTON));
+  g_assert_null(find(a->canvas,"painter-compact-mypaint",GTK_TYPE_BUTTON));
   gimp_context_set_tool(gimp_get_user_context(gimp),paint);drain();
-  g_assert_nonnull(find(a->canvas,"painter-compact-mypaint",GTK_TYPE_MENU_BUTTON));
+  g_assert_nonnull(find(a->canvas,"painter-compact-mypaint",GTK_TYPE_BUTTON));
   for(int i=0;i<3;i++) {gimp_painter_canvas_ui_set_visible(a,FALSE);gimp_painter_canvas_ui_set_visible(a,TRUE);drain();}
   g_assert_true(gimp_tools_get_tool_options_gui(paint->tool_options)==native);
   g_assert_true(gtk_widget_get_parent(native)==parent);
@@ -491,25 +511,55 @@ static void mypaint_popup_store_and_page_retention (void)
   g_assert_nonnull (notebook);
   g_assert_cmpint (gtk_notebook_get_n_pages (GTK_NOTEBOOK (notebook)), >=, 3);
   gtk_notebook_set_current_page (GTK_NOTEBOOK (notebook), 2);
+  GtkWidget *opacity = find (editor, "opaque", GTK_TYPE_SPIN_BUTTON);
+  g_assert_nonnull (opacity);
+  gdouble previous_opacity = gtk_spin_button_get_value (GTK_SPIN_BUTTON (opacity));
+  gtk_spin_button_set_value (GTK_SPIN_BUTTON (opacity), .438);
   for (guint cycle = 0; cycle < 4; ++cycle)
     {
       compact (gui, tool->tool_options, TRUE,
                cycle % 2 ? GTK_ORIENTATION_VERTICAL : GTK_ORIENTATION_HORIZONTAL);
-      GtkWidget *button = find (gui, "painter-compact-mypaint", GTK_TYPE_MENU_BUTTON);
+      GtkWidget *button = find (gui, "painter-compact-mypaint", GTK_TYPE_BUTTON);
       g_assert_nonnull (button);
-      GtkWidget *popup = GTK_WIDGET (gtk_menu_button_get_popover (GTK_MENU_BUTTON (button)));
-      g_assert_nonnull (popup);
+      gtk_button_clicked (GTK_BUTTON (button)); drain ();
+      GtkWidget *popup = mypaint_native_popup (); g_object_ref (popup);
+      g_assert_false (gtk_window_get_resizable (GTK_WINDOW (popup)));
       g_assert_true (find (popup, NULL, GIMP_TYPE_PAINTER_MYBRUSH_EDITOR) == editor);
-      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button), TRUE); drain ();
       g_assert_true (gtk_widget_get_visible (popup));
+      g_assert_cmpint (gtk_widget_get_allocated_width (popup), >=, 340);
+      g_assert_true (gtk_grab_get_current () == popup);
       g_assert_cmpint (gtk_notebook_get_current_page (GTK_NOTEBOOK (notebook)), ==, 2);
       g_assert_true (g_object_get_qdata (G_OBJECT (editor), key) == editor_store);
       g_assert_true (g_object_get_qdata (G_OBJECT (gui), key) != editor_store);
-      gimp_painter_compact_options_popdown (gui); drain ();
+      /* Both native dismissal signals must release their grab without rolling
+       * back the live draft or destroying the borrowed canonical editor. */
+      g_signal_emit_by_name (popup, cycle % 2 ? "confirm" : "cancel"); drain ();
+      g_assert_false (gtk_widget_get_visible (popup));
+      g_assert_true (gtk_grab_get_current () != popup);
+      g_assert_cmpfloat_with_epsilon (gtk_spin_button_get_value (GTK_SPIN_BUTTON (opacity)), .438, 1e-6);
+      gtk_button_clicked (GTK_BUTTON (button)); drain ();
+      GtkWidget *reopened = mypaint_native_popup ();
+      g_assert_true (reopened != popup);
+      g_assert_true (find (reopened, NULL, GIMP_TYPE_PAINTER_MYBRUSH_EDITOR) == editor);
+      g_assert_cmpint (gtk_notebook_get_current_page (GTK_NOTEBOOK (notebook)), ==, 2);
+      g_assert_true (g_object_get_qdata (G_OBJECT (editor), key) == editor_store);
+      g_assert_true (gtk_grab_get_current () == reopened);
+      g_object_unref (popup); popup = reopened; g_object_ref (popup);
+      if (cycle % 2) {
+        gtk_widget_hide (button); drain ();
+        gtk_widget_show (button); drain ();
+      } else {
+        gimp_painter_compact_options_popdown (gui); drain ();
+      }
+      g_assert_false (gtk_widget_get_visible (popup));
+      g_assert_true (gtk_grab_get_current () != popup);
+      g_assert_true (g_object_get_qdata (G_OBJECT (editor), key) == editor_store);
+      g_object_unref (popup);
       compact (gui, tool->tool_options, FALSE, GTK_ORIENTATION_HORIZONTAL);
       g_assert_true (gtk_widget_get_parent (editor) == gui);
       g_assert_cmpint (gtk_notebook_get_current_page (GTK_NOTEBOOK (notebook)), ==, 2);
     }
+  gtk_spin_button_set_value (GTK_SPIN_BUTTON (opacity), previous_opacity);
   gboolean editor_gone = FALSE, gui_gone = FALSE;
   g_object_set_data_full (G_OBJECT (editor), "08017-finalized", &editor_gone, widget_store_finalized);
   g_object_set_data_full (G_OBJECT (gui), "08017-finalized", &gui_gone, widget_store_finalized);
