@@ -134,7 +134,7 @@ gboolean query_pending(GimpImage*,gpointer data) noexcept
 {return boundary<gboolean>(nullptr,FALSE,[&]() -> gboolean{auto owner=lock_tool(data);return owner?store(GIMP_TOOL(owner.get())).with<ToolSlot>([](const ToolImpl&i)->gboolean{return i.busy;}):FALSE;});}
 void image_saving(GimpImage*,gpointer data) noexcept
 {
-  boundary_void(nullptr,[&]{auto owner=lock_tool(data);if(!owner)return;auto current=session(GIMP_TOOL(owner.get()));gimp_painter_session_finish(current.get(),nullptr);});
+  boundary_void(nullptr,[&]{auto owner=lock_tool(data);if(!owner)return;auto*tool=GIMP_TOOL(owner.get());Operation operation(tool);auto current=session(tool);gimp_painter_session_finish(current.get(),nullptr);});
 }
 void observe_targets(GimpTool*tool,GimpDisplay*display,GimpImage*image,GimpDrawable*drawable)
 {

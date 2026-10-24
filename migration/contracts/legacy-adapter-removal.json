@@ -5387,7 +5387,7 @@
       "path": "app/core/gimpimage-undo.c",
       "operation": "g_object_get_data",
       "sha256": "d70acf7c2d71743c97895dfa29bc6dce23fc0ae31f6b56ed5ff07498ebdfc31e",
-      "count": 1,
+      "count": 2,
       "reason": "Native C boolean publication/reentry markers only (GINT_TO_POINTER(1)/NULL), no allocated pointer, destructor, C++ Impl or second BindingStore. Publishing rejects nested/duplicate publication; all refusal paths clear it; published marks consumed native payload. Pop-active is held across preflight, stack transition, notifications and reverse finish, then cleared before final image unref. Exact source and prepared18/guard11/Filter3/typed16 historical checkpoint evidence: migration/tests/native-undo-preferences-data-review/.",
       "provenance": "native-undo-publication-scalars"
     },

@@ -1,0 +1,50 @@
+compile app/paint/painter-mypaint/resource.cpp
+compile app/paint/painter-mypaint/engine.cpp
+In file included from [01m[K../source/app/paint/painter-mypaint/engine.cpp:3[m[K:
+[01m[K../source/app/paint/painter-mypaint/legacy-brush.hpp:[m[K In member function ‘[01m[Kvoid GimpPainter::MyPaint::Legacy::Brush::[01;32m[Kupdate_states_and_setting_values[m[K(float, float, float, float, float, float)[m[K’:
+[01m[K../source/app/paint/painter-mypaint/legacy-brush.hpp:422:13:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kdx_old[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  422 |       float [01;35m[Kdx_old[m[K = states[STATE_DIRECTION_DX];
+      |             [01;35m[K^~~~~~[m[K
+[01m[K../source/app/paint/painter-mypaint/legacy-brush.hpp:423:13:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kdy_old[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  423 |       float [01;35m[Kdy_old[m[K = states[STATE_DIRECTION_DY];
+      |             [01;35m[K^~~~~~[m[K
+compile app/core/gimpdrawableundo.c
+compile app/core/gimpimage-undo.c
+compile app/core/gimpitemundo.c
+compile app/core/gimpobject.c
+compile app/core/gimpundo.c
+compile app/core/gimpundopopguard.c
+compile app/core/gimpundostack.c
+compile app/paint/painter-mypaint-surface/paint-core.cpp
+compile app/paint/painter-mypaint-surface/paint-core-pixels.cpp
+compile app/paint/painter-mypaint-surface/gimp-painter-session.cpp
+compile app/paint/gimpmypaintcoreundo.cpp
+compile app/tools/gimppaintermybrushtool.cpp
+compile app/tests/test-painter-mypaint-tool.cpp
+compile app/tests/test-paired-stroke-undo.cpp
+In file included from [01m[K../source/app/tests/test-paired-stroke-undo.cpp:3[m[K:
+[01m[K../source/app/tests/test-gimp-painter-surface.cpp:191:8:[m[K [01;35m[Kwarning: [m[K‘[01m[KStartReentry[m[K’ declared with greater visibility than the type of its field ‘[01m[KStartReentry::core[m[K’ [[01;35m[K-Wattributes[m[K]
+  191 | struct [01;35m[KStartReentry[m[K {
+      |        [01;35m[K^~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-paired-stroke-undo.cpp:2:14:[m[K [01;35m[Kwarning: [m[Kno previous declaration for ‘[01m[Kint[01;32m[K surface_fixture_main[m[K(int, char**)[m[K’ [[01;35m[K-Wmissing-declarations[m[K]
+    2 | #define main [01;35m[Ksurface_fixture_main[m[K
+      |              [01;35m[K^~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-gimp-painter-surface.cpp:306:5:[m[K [01;36m[Knote: [m[Kin expansion of macro ‘[01m[Kmain[m[K’
+  306 | int [01;36m[Kmain[m[K(int argc,char**argv)
+      |     [01;36m[K^~~~[m[K
+In file included from [01m[K../source/app/tests/test-paired-stroke-undo.cpp:6[m[K:
+[01m[K../source/app/paint/painter-mypaint/tests/test-checkpoint.cpp:12:18:[m[K [01;35m[Kwarning: [m[Kno previous declaration for ‘[01m[Kvoid*[01;32m[K __wrap__Znwm[m[K(std::size_t)[m[K’ [[01;35m[K-Wmissing-declarations[m[K]
+   12 | extern "C" void *[01;35m[K__wrap__Znwm[m[K(std::size_t size)
+      |                  [01;35m[K^~~~~~~~~~~~[m[K
+[01m[K../source/app/paint/painter-mypaint/tests/test-checkpoint.cpp:17:8:[m[K [01;35m[Kwarning: [m[K‘[01m[KTrace[m[K’ declared with greater visibility than its base ‘[01m[KGimpPainter::MyPaint::Surface[m[K’ [[01;35m[K-Wattributes[m[K]
+   17 | struct [01;35m[KTrace[m[K : Surface {
+      |        [01;35m[K^~~~~[m[K
+[01m[K../source/app/tests/test-paired-stroke-undo.cpp:5:14:[m[K [01;35m[Kwarning: [m[Kno previous declaration for ‘[01m[Kint[01;32m[K checkpoint_fixture_main[m[K(int, char**)[m[K’ [[01;35m[K-Wmissing-declarations[m[K]
+    5 | #define main [01;35m[Kcheckpoint_fixture_main[m[K
+      |              [01;35m[K^~~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K../source/app/paint/painter-mypaint/tests/test-checkpoint.cpp:80:5:[m[K [01;36m[Knote: [m[Kin expansion of macro ‘[01m[Kmain[m[K’
+   80 | int [01;36m[Kmain[m[K(int argc,char**argv){g_test_init(&argc,&argv,nullptr);g_test_add_func("/checkpoint/initial",initial);g_test_add_func("/checkpoint/midstroke-random",midstroke);g_test_add_func("/checkpoint/changed-settings",changed_settings);g_test_add_func("/checkpoint/reset-pending",reset_pending);g_test_add_func("/checkpoint/owner-gone",owner_gone);g_test_add_func("/checkpoint/independent",independent);g_test_add_func("/checkpoint/empty-rejected",empty);g_test_add_func("/checkpoint/reentrant-boundary",reentry);g_test_add_func("/checkpoint/allocation-failure",allocation_failure);return g_test_run();}
+      |     [01;36m[K^~~~[m[K
+[01m[K../source/app/tests/test-paired-stroke-undo.cpp:15:8:[m[K [01;35m[Kwarning: [m[K‘[01m[KPairFixture[m[K’ declared with greater visibility than the type of its field ‘[01m[KPairFixture::core[m[K’ [[01;35m[K-Wattributes[m[K]
+   15 | struct [01;35m[KPairFixture[m[K {
+      |        [01;35m[K^~~~~~~~~~~[m[K

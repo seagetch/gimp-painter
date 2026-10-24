@@ -27,6 +27,10 @@ gboolean        gimp_image_undo_disable         (GimpImage     *image);
 gboolean        gimp_image_undo_freeze          (GimpImage     *image);
 gboolean        gimp_image_undo_thaw            (GimpImage     *image);
 
+/* Internal observer query: true throughout native Undo/Redo preflight and pop.
+ * Distinguishes an Undo request from finishable normal save preflight. */
+gboolean        gimp_image_undo_is_pop_active   (GimpImage     *image);
+
 gboolean        gimp_image_undo                 (GimpImage     *image);
 gboolean        gimp_image_redo                 (GimpImage     *image);
 

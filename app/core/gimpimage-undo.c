@@ -121,6 +121,14 @@ gimp_image_undo_thaw (GimpImage *image)
 }
 
 gboolean
+gimp_image_undo_is_pop_active (GimpImage *image)
+{
+  g_return_val_if_fail (GIMP_IS_IMAGE (image), FALSE);
+
+  return g_object_get_data (G_OBJECT (image), "gimp-undo-pop-active") != NULL;
+}
+
+gboolean
 gimp_image_undo (GimpImage *image)
 {
   GimpImagePrivate *private;

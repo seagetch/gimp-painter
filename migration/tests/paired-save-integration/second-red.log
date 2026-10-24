@@ -1,0 +1,94 @@
+Xvfb verified: 127.0.0.1:92, 1080x1920x24, authenticated accepted, empty authority rejected
+1/5 gimp:app / gimp-painter-surface OK               3.54s
+2/5 gimp:app / painter-mypaint-tool FAIL             2.67s   killed by signal 5 SIGTRAP
+>>> MESON_TEST_ITERATION=1 GIMP_TESTING_ABS_TOP_BUILDDIR=/workspace/shared/gimp-native-preset-gui/build GIMP_TESTING_ABS_TOP_SRCDIR=/workspace/shared/gimp-native-preset-gui/source MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 MALLOC_PERTURB_=97 ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 LD_LIBRARY_PATH=/workspace/shared/gimp-native-preset-gui/build/libgimpbase:/workspace/shared/gimp-native-preset-gui/build/libgimpthumb:/workspace/shared/gimp-native-preset-gui/build/libgimpconfig:/workspace/shared/gimp-native-preset-gui/build/libgimpmodule:/workspace/shared/gimp-native-preset-gui/build/libgimpmath:/workspace/shared/gimp-native-preset-gui/build/libgimpcolor:/workspace/shared/gimp-native-preset-gui/build/libgimpwidgets:/workspace/shared/gimp-native-preset-gui/prefix/lib/x86_64-linux-gnu:/workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu UI_TEST=yes GIMP_TESTING_PLUGINDIRS=/workspace/shared/gimp-native-preset-gui/build/plug-ins/common /workspace/shared/gimp-native-preset-gui/build/app/tests/painter-mypaint-tool
+――――――――――――――――――――――――――――――――――――― ✀  ―――――――――――――――――――――――――――――――――――――
+stdout:
+TAP version 14
+# random seed: R02S3f59de9bceee8fdf288ef700d04cf8eb
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ‘gio-vfs’
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+# GLib-DEBUG: unsetenv() is not thread-safe and should not be used after threads are created
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 64 x 64
+# GdkPixbuf-DEBUG: 	Rowstride: 256, Length: 16408
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation dconf (DConfSettingsBackend) for ‘gsettings-backend’
+# DEBUG: Error acquiring bus for cloud providers: Error spawning command line “dbus-launch --autolaunch=f09796fd086547da9ddf7488d4386bdf --binary-syntax --close-stderr”: Child process exited with code 1
+1..24
+# Start of painter-tool tests
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 36 x 36
+# GdkPixbuf-DEBUG: 	Rowstride: 144, Length: 5208
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 36 x 36
+# GdkPixbuf-DEBUG: 	Rowstride: 144, Length: 5208
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 36 x 36
+# GdkPixbuf-DEBUG: 	Rowstride: 144, Length: 5208
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# registration: image=0x561886218fc0 drawable-image=0x561886218fc0 before options GUI
+# registration: before refusing paint-core start
+# registration: before scene destruction
+ok 1 /painter-tool/registration-gate
+ok 2 /painter-tool/standalone-lifecycle
+ok 3 /painter-tool/hover-default-pressure
+ok 4 /painter-tool/stationary-equal-time-undo
+ok 5 /painter-tool/cancel
+ok 6 /painter-tool/editor-context
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 36 x 36
+# GdkPixbuf-DEBUG: 	Rowstride: 144, Length: 5208
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+ok 7 /painter-tool/ruler-origin
+# explicit HALT drop=0 unchanged=0 depth=1
+# explicit HALT drop=1 unchanged=0 depth=1
+ok 8 /painter-tool/halt-last-ref-motion
+ok 9 /painter-tool/image-change
+not ok /painter-tool/save-pending - Gimp-Tools-FATAL-CRITICAL: gimp_tool_button_release: assertion 'gimp_tool_control_is_active (tool->control) == TRUE' failed
+Bail out!
+stderr:
+Application icon missing: /workspace/shared/gimp-native-preset-gui/source/desktop/16x16/gimp.png (Failed to open file “/workspace/shared/gimp-native-preset-gui/source/desktop/16x16/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-native-preset-gui/source/desktop/32x32/gimp.png (Failed to open file “/workspace/shared/gimp-native-preset-gui/source/desktop/32x32/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-native-preset-gui/source/desktop/48x48/gimp.png (Failed to open file “/workspace/shared/gimp-native-preset-gui/source/desktop/48x48/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-native-preset-gui/source/desktop/64x64/gimp.png (Failed to open file “/workspace/shared/gimp-native-preset-gui/source/desktop/64x64/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-native-preset-gui/source/desktop/scalable/gimp.svg (Failed to open file “/workspace/shared/gimp-native-preset-gui/source/desktop/scalable/gimp.svg”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-native-preset-gui/source/desktop/256x256/gimp.png
+gui_dbus_name_lost: connection to the bus cannot be established.
+set device 'Virtual core XTEST pointer' to mode: disabled
+set device 'Xvfb mouse' to mode: disabled
+――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+
+3/5 gimp:app / painter-stroke-undo  OK               1.28s
+4/5 gimp:app / paired-stroke-undo   OK               1.23s
+5/5 gimp:app / paired-stroke-ui     OK               6.65s
+
+Summary of Failures:
+
+2/5 gimp:app / painter-mypaint-tool FAIL             2.67s   killed by signal 5 SIGTRAP
+
+Ok:                 4   
+Expected Fail:      0   
+Fail:               1   
+Unexpected Pass:    0   
+Skipped:            0   
+Timeout:            0   
+
+Full log written to /workspace/shared/gimp-native-preset-gui/build/meson-logs/save-pending-green.txt

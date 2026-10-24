@@ -119,9 +119,12 @@ struct PaintCore::Impl : std::enable_shared_from_this<Impl> {
     }
   }
   void clear_before() noexcept {before_engine=Engine::Checkpoint{};before_resource.reset();}
-  static gboolean pending(GimpImage*,gpointer data) noexcept {
+  static gboolean pending(GimpImage*image,gpointer data) noexcept {
     auto live=static_cast<std::weak_ptr<Impl>*>(data)->lock();
-    return live&&(live->started||live->starting||live->ending||live->processing||live->batch||live->history_depth);
+    // An open interactive stroke can finish on the saving signal; native Undo
+    // must instead reject it before moving either history stack.
+    return live&&(live->starting||live->ending||live->processing||live->batch||live->history_depth||
+                  (live->started&&gimp_image_undo_is_pop_active(image)));
   }
   Connection make_pending(GimpImage*i) {
     std::unique_ptr<std::weak_ptr<Impl>> weak(new std::weak_ptr<Impl>(shared_from_this()));

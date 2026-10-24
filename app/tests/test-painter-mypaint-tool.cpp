@@ -241,6 +241,10 @@ static void saving_finishes_pending()
   for(std::size_t i=3;i<saved.size();i+=4)g_assert_cmpuint(saved[i],>=,before[i]);
   g_assert_false(gimp_painter_mybrush_tool_has_pending_stroke(GIMP_PAINTER_MYBRUSH_TOOL(s.tool)));g_assert_cmpint(s.depth(),==,1);s.release();g_assert_true(s.pixels()==saved);
 }
+struct SaveDispose {Scene*scene;bool fired=false;};
+static void dispose_during_save(GimpImage*,GimpDirtyMask,gpointer data){auto&o=*static_cast<SaveDispose*>(data);if(o.fired)return;o.fired=true;g_assert_true(gimp_image_has_pending_paint(o.scene->image));g_object_run_dispose(G_OBJECT(o.scene->tool));g_object_run_dispose(G_OBJECT(o.scene->tool));}
+static void saving_disposal(){Scene s;auto initial=s.pixels();s.motion(false);s.press();s.coords.x+=20;s.motion(true,75);SaveDispose state{&s,false};auto id=g_signal_connect(s.image,"dirty",G_CALLBACK(dispose_during_save),&state);gimp_image_saving(s.image);g_signal_handler_disconnect(s.image,id);g_assert_true(state.fired);g_assert_false(gimp_image_has_pending_paint(s.image));g_assert_false(gimp_viewable_preview_is_frozen(GIMP_VIEWABLE(s.drawable)));g_assert_cmpint(s.depth(),==,1);g_assert_true(s.pixels()!=initial);g_assert_true(gimp_image_undo(s.image));g_assert_true(s.pixels()==initial);}
+static void external_dirty_still_cancels(){Scene s;auto initial=s.pixels();s.motion(false);s.press();s.coords.x+=20;s.motion(true,75);gimp_image_dirty(s.image,GIMP_DIRTY_DRAWABLE);g_assert_false(gimp_tool_control_is_active(s.tool->control));g_assert_false(gimp_painter_mybrush_tool_has_pending_stroke(GIMP_PAINTER_MYBRUSH_TOOL(s.tool)));g_assert_true(s.pixels()==initial);g_assert_false(gimp_image_has_pending_paint(s.image));}
 static void save_preflight_on_update(GimpDrawable*,gint,gint,gint,gint,gpointer data)
 {auto&s=*static_cast<During*>(data);if(s.fired)return;s.fired=true;g_assert_true(gimp_image_has_pending_paint(s.scene->image));}
 static void save_defers_during_sample()
@@ -962,7 +966,7 @@ int main(int argc,char**argv)
   g_test_add_func("/painter-tool/ruler-origin",ruler_saved_pressure);
   g_test_add_func("/painter-tool/halt-last-ref-motion",halt_and_last_ref_in_motion);
   g_test_add_func("/painter-tool/image-change",image_change_finishes_old);
-  g_test_add_func("/painter-tool/save-pending",saving_finishes_pending);
+  g_test_add_func("/painter-tool/save-pending",saving_finishes_pending);g_test_add_func("/painter-tool/save-disposal",saving_disposal);g_test_add_func("/painter-tool/external-dirty-cancels",external_dirty_still_cancels);
   g_test_add_func("/painter-tool/save-preflight",save_defers_during_sample);
   g_test_add_func("/painter-tool/outline-projection",outline_and_projection);
   g_test_add_func("/painter-tool/public-press-last-ref",public_press_drops_last_ref);
