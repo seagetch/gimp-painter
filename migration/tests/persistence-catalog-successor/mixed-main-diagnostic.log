@@ -1,0 +1,23 @@
+test_all_sources_receipts_and_proof_bound (__main__.CatalogSuccessor.test_all_sources_receipts_and_proof_bound) ... ok
+test_exact_dispatch_endpoints (__main__.CatalogSuccessor.test_exact_dispatch_endpoints) ... FAIL
+test_saved_metadata_and_dynamic_schema_controls (__main__.CatalogSuccessor.test_saved_metadata_and_dynamic_schema_controls) ... ok
+
+======================================================================
+FAIL: test_exact_dispatch_endpoints (__main__.CatalogSuccessor.test_exact_dispatch_endpoints)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/0015fc5d1a03/gimp-painter/migration/tests/persistence-catalog-successor/test_successor.py", line 35, in test_exact_dispatch_endpoints
+    result=dispatch.resolve(ROOT,'native',gate.GIMP,a,b)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/0015fc5d1a03/gimp-painter/migration/tests/persistence_successors.py", line 60, in resolve
+    rows = reviewed(root)['transitions']
+           ^^^^^^^^^^^^^^
+  File "/workspace/scratch/0015fc5d1a03/gimp-painter/migration/tests/persistence_successors.py", line 52, in reviewed
+    assert (root / path).read_bytes() == old[path], ('predecessor family changed', family)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ('predecessor family changed', 'xcf')
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.203s
+
+FAILED (failures=1)

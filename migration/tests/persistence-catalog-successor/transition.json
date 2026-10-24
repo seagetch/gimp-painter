@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "successor_commit": "893c4e0d3d14f7fb61065ad2e0b5cac613f31312",
+  "providers": [
+    {
+      "path": "app/core/gimp.c",
+      "successor_sha256": "5ab6e3d6d6acd9a335792798df7ea00b847adc98768c25a7ea866dd86aea256b",
+      "predecessor_sha256": "9350a870603358469c592ded1b42ae8b860a5d1b6e0d26fa4942411acbfb8e77"
+    },
+    {
+      "path": "app/presets/gimppresetdescriptor.c",
+      "successor_sha256": "621a953b358d2864089913a07e09fad85303dcfc90d20c006fb25c022d417981"
+    },
+    {
+      "path": "app/presets/gimppresetdescriptor-private.h",
+      "successor_sha256": "7dc37f81fc38341e33a136859b01264520d835fe6628b861cb5c65a836baf64d"
+    },
+    {
+      "path": "app/presets/gimppresetdescriptor.h",
+      "successor_sha256": "2cf845c9ebd04023e4c3c594474e84446958125077c2071f3e0121459a99253c"
+    }
+  ],
+  "proof": {
+    "migration/tests/preset-catalog/source-manifest.json": "fc1b771dcb1539a33e04b2db3fe0752750298c7cd1d022cd8618d3f168ce0a16",
+    "migration/tests/preset-catalog/tested-inputs.tar.gz": "5494bc67288ab18c80eb7d71102650d85e2d2432054e18102e3a874df406c189",
+    "migration/tests/preset-catalog/normal-results.json": "eb88aa903e83b2731bf3f3f47ede16e94937efb8a8bef6400ac81e182e12a722",
+    "migration/tests/preset-catalog/sanitizer-results.json": "a129b3f11c83f2f065741a7475e1c815706c9ec90c0f221dacf748766ea1fe11",
+    "migration/tests/preset-catalog/sanitizer-build.json": "f218eb90b0f14cdd7e8ec92b095362674e700865fce2ba10d01b4bd6af1b373e",
+    "migration/tests/preset-catalog/sanitizer-source-before.json": "b7f3ed207d2838395cf0d426a8d20c34c3bb3c8fffe37003b9f999ece2d8fe1f",
+    "migration/tests/preset-catalog/sanitizer-source-after.json": "b7f3ed207d2838395cf0d426a8d20c34c3bb3c8fffe37003b9f999ece2d8fe1f",
+    "migration/tests/preset-catalog/link-inputs-before.json": "dd318f65ef928a85babdad90772e74b8b36f48f8c56365ab3243db4a8f570b90",
+    "migration/tests/preset-catalog/link-inputs-after.json": "dd318f65ef928a85babdad90772e74b8b36f48f8c56365ab3243db4a8f570b90",
+    "migration/tests/preset-catalog/mutants.json": "07d6b03ea58b7a78765811ff5abe590cf5cce51454b7957d4a8bee7d384d4044",
+    "migration/tests/preset-catalog/cleanup-red.log": "1664aa45362af287437462163b5ca1f3d5e2645b443f6af9c19e197dd54530dc",
+    "migration/tests/preset-catalog/regression-results.json": "a09ab17d727f55ef1c4c5385264d081f27fad9efc0ca36db12e500955fd5dbb6"
+  },
+  "semantics": "Exact Gimp private descriptor lifecycle source admission; unchanged registered Gimp property/config bodies, existing validated directory-list path schema; no new persisted field or old runtime repin."
+}

@@ -143,15 +143,21 @@ def expected_manifest(root,families,assertions):
         readiness_successor = readiness_reviewed(root)
         for provider in readiness_successor['providers']:
             sources[('native', provider['path'])] = provider['successor_sha256']
+    catalog_successor = None
+    if ('native', 'app/core/gimp.c') in successors:
+        from persistence_catalog_successor import reviewed as catalog_reviewed
+        catalog_successor = catalog_reviewed(root)
+        for provider in catalog_successor['providers']:
+            sources[('native', provider['path'])] = provider['successor_sha256']
     route_rows=read_tsv(root,'migration/inventory/persistence-routes.tsv')
     source_hashes=[dict(revision=rev,path=path,sha256=digest) for (rev,path),digest in sorted(sources.items())]
-    tests=['migration/tests/persistence_readiness_successor.py','migration/tests/persistence_undo_successor.py','migration/tests/persistence_delete_successor.py','migration/tests/persistence_enum_successor.py','migration/tests/persistence_successors.py','migration/tests/persistence_source.py','migration/tests/test_persistence_field_contract.py']+[f'migration/tests/test_persistence_{n}_contract.py' for n in FAMILIES]
+    tests=['migration/tests/persistence_catalog_successor.py','migration/tests/persistence_readiness_successor.py','migration/tests/persistence_undo_successor.py','migration/tests/persistence_delete_successor.py','migration/tests/persistence_enum_successor.py','migration/tests/persistence_successors.py','migration/tests/persistence_source.py','migration/tests/test_persistence_field_contract.py']+[f'migration/tests/test_persistence_{n}_contract.py' for n in FAMILIES]
     return dict(schema_version=1,task='10.001',scope='source-grounded saved field/type/default/owner/serialization contract across existing16 routes',
       base_public_commit=BASE,legacy_commit=LEGACY,
       inputs=[dict(path=p,sha256=sha((root/p).read_bytes())) for p in ['migration/inventory/persistence-routes.tsv','migration/inventory/persistence-sites.tsv']],
       families=[dict(name=n,path=p,sha256=sha((root/p).read_bytes()),test=f'migration/tests/test_persistence_{n}_contract.py',field_ids=sorted(f['id'] for f in families[n]['fields'])) for n,(m,p) in FAMILIES.items()],
       routes=[dict(id=f'{i:02d}',inventory=r,field_ids=sorted(f['id'] for f in fields if f['route']==f'{i:02d}')) for i,r in enumerate(route_rows,1)],
-      cross_family_domains=[domain],sources=source_hashes,source_successors=[successors[k] for k in sorted(successors)],enum_successor=enum_successor,readiness_successor=readiness_successor,tests=[dict(path=p,sha256=sha((root/p).read_bytes())) for p in tests],
+      cross_family_domains=[domain],sources=source_hashes,source_successors=[successors[k] for k in sorted(successors)],enum_successor=enum_successor,readiness_successor=readiness_successor,catalog_successor=catalog_successor,tests=[dict(path=p,sha256=sha((root/p).read_bytes())) for p in tests],
       counts=dict(contract_records=len(fields),syntax_candidates=len(candidates),routes=len(route_rows),by_disposition=dict(sorted(Counter(f['disposition'] for f in fields).items())),candidate_dispositions=dict(sorted(Counter(c['disposition'] for c in candidates).items()))),
       unresolved=[],limits=['Finite schema members and parameterized/opaque schemas are separate contract records, not a count of runtime instances or873 independent fields.','Source assertions do not establish runtime roundtrip, property ordering/duplicates, rendering, platform equivalence or later WBS completion.'])
 
