@@ -1,0 +1,131 @@
+{
+  "inputs": {
+    "test-oracle.c": "5e7c418b76d3572e75899f0d082e1186ea43a7017a7d7410cdd589f83d9e6918",
+    "old-wrapper.inc": "4c2ed0ac945c17f476b1d474ddddd6f038df23362e4cdcbc3c06b89458e02a27",
+    "old-compressor.inc": "401c3dd47d740b8f8270ef83a3d63750b0145a009ed29dcc626b137962c4695c",
+    "reference.json": "55656a468baf16f0b4652f5353fbd096da21fe5f00ae5273cbd1c9e6cdb3ce90"
+  },
+  "runs": {
+    "normal": {
+      "compile": {
+        "command": [
+          "gcc",
+          "-std=c11",
+          "-Wall",
+          "-Wextra",
+          "-Werror",
+          "/workspace/scratch/0015fc5d1a03/gimp-painter/migration/tests/event-compression-foundation/test-oracle.c",
+          "-o",
+          "/workspace/shared/event-compression-order/tmprezegwwl/normal"
+        ],
+        "exit_code": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      "runtime": {
+        "command": [
+          "/workspace/shared/event-compression-order/tmprezegwwl/normal"
+        ],
+        "exit_code": 0,
+        "stdout": "PASS 4163 bounded old wrapper/compressor scenes; borrowed initial untouched, acquired prefix/terminal freed exactly once, tail unchanged\n",
+        "stderr": ""
+      }
+    },
+    "sanitizer": {
+      "compile": {
+        "command": [
+          "gcc",
+          "-std=c11",
+          "-Wall",
+          "-Wextra",
+          "-Werror",
+          "-fsanitize=address,undefined",
+          "-fno-omit-frame-pointer",
+          "/workspace/scratch/0015fc5d1a03/gimp-painter/migration/tests/event-compression-foundation/test-oracle.c",
+          "-o",
+          "/workspace/shared/event-compression-order/tmprezegwwl/sanitizer"
+        ],
+        "exit_code": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      "runtime": {
+        "command": [
+          "/workspace/shared/event-compression-order/tmprezegwwl/sanitizer"
+        ],
+        "exit_code": 0,
+        "stdout": "PASS 4163 bounded old wrapper/compressor scenes; borrowed initial untouched, acquired prefix/terminal freed exactly once, tail unchanged\n",
+        "stderr": ""
+      }
+    }
+  },
+  "mutations": [
+    {
+      "name": "state-boundary",
+      "changed_file": "old-compressor.inc",
+      "original_sha256": "401c3dd47d740b8f8270ef83a3d63750b0145a009ed29dcc626b137962c4695c",
+      "command": [
+        "/workspace/shared/event-compression-order/tmprezegwwl/state-boundary/oracle"
+      ],
+      "exit_code": -6,
+      "stdout": "",
+      "stderr": "oracle: /workspace/shared/event-compression-order/tmprezegwwl/state-boundary/test-oracle.c:47: one: Assertion `dispatch_count==(boundary?2u:1u)' failed.\n"
+    },
+    {
+      "name": "device-boundary",
+      "changed_file": "old-compressor.inc",
+      "original_sha256": "401c3dd47d740b8f8270ef83a3d63750b0145a009ed29dcc626b137962c4695c",
+      "command": [
+        "/workspace/shared/event-compression-order/tmprezegwwl/device-boundary/oracle"
+      ],
+      "exit_code": -6,
+      "stdout": "",
+      "stderr": "oracle: /workspace/shared/event-compression-order/tmprezegwwl/device-boundary/test-oracle.c:47: one: Assertion `dispatch_count==(boundary?2u:1u)' failed.\n"
+    },
+    {
+      "name": "window-boundary",
+      "changed_file": "old-compressor.inc",
+      "original_sha256": "401c3dd47d740b8f8270ef83a3d63750b0145a009ed29dcc626b137962c4695c",
+      "command": [
+        "/workspace/shared/event-compression-order/tmprezegwwl/window-boundary/oracle"
+      ],
+      "exit_code": -6,
+      "stdout": "",
+      "stderr": "oracle: /workspace/shared/event-compression-order/tmprezegwwl/window-boundary/test-oracle.c:47: one: Assertion `dispatch_count==(boundary?2u:1u)' failed.\n"
+    },
+    {
+      "name": "terminal-dispatch",
+      "changed_file": "old-wrapper.inc",
+      "original_sha256": "4c2ed0ac945c17f476b1d474ddddd6f038df23362e4cdcbc3c06b89458e02a27",
+      "command": [
+        "/workspace/shared/event-compression-order/tmprezegwwl/terminal-dispatch/oracle"
+      ],
+      "exit_code": -6,
+      "stdout": "",
+      "stderr": "oracle: /workspace/shared/event-compression-order/tmprezegwwl/terminal-dispatch/test-oracle.c:47: one: Assertion `dispatch_count==(boundary?2u:1u)' failed.\n"
+    },
+    {
+      "name": "terminal-free",
+      "changed_file": "old-wrapper.inc",
+      "original_sha256": "4c2ed0ac945c17f476b1d474ddddd6f038df23362e4cdcbc3c06b89458e02a27",
+      "command": [
+        "/workspace/shared/event-compression-order/tmprezegwwl/terminal-free/oracle"
+      ],
+      "exit_code": -6,
+      "stdout": "",
+      "stderr": "oracle: /workspace/shared/event-compression-order/tmprezegwwl/terminal-free/test-oracle.c:49: one: Assertion `freed[i]==expected' failed.\n"
+    },
+    {
+      "name": "double-terminal-free",
+      "changed_file": "old-wrapper.inc",
+      "original_sha256": "4c2ed0ac945c17f476b1d474ddddd6f038df23362e4cdcbc3c06b89458e02a27",
+      "command": [
+        "/workspace/shared/event-compression-order/tmprezegwwl/double-terminal-free/oracle"
+      ],
+      "exit_code": -6,
+      "stdout": "",
+      "stderr": "oracle: /workspace/shared/event-compression-order/tmprezegwwl/double-terminal-free/test-oracle.c:27: gdk_event_free: Assertion `freed[e->id]++==0' failed.\n"
+    }
+  ],
+  "changed_after_run": []
+}
