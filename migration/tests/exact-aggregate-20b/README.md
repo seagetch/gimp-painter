@@ -1,0 +1,11 @@
+# Exact committed-source integration, 20b2204b11
+
+Fresh Git archive of `20b2204b11df079c306a680b41ac623f3be75c76`; all **16,265 tracked files** verified against Git blobs before build and SHA256 after both runs (zero changes). Nine providers implicated in five paused work paths are exact committed files, never unverified candidate overlays. The separate gimp-data asset snapshot is byte-pinned; its declared submodule identity is not inferred from hashes alone. Native compilation completed 1,527 actions in the reused build directory after source refresh.
+
+Authenticated loopback Xvfb **1080×1920×24**: **21/21 selected Meson targets, 238 native cases PASS**, zero target skips/timeouts/failures. Additional selected Gaussian/flip Filter cases **4 PASS**; additional normal graph/UI publication cases **3 PASS**. The full Filter target is deliberately not claimed, nor any held diagnostic. Adapter static gate passes **2,521 sources / 718 reviewed object-data sites**, retaining four known dormant findings. No whole-port, all-platform, or new aggregate sanitizer claim.
+
+This rerun resolves both failures preserved under `../exact-aggregate-a84cd/`: native save integration (2918c045e5) and default paired UI screenshot-directory fixture (5251816697). The earlier failed receipt remains immutable. New unrelated commits after 20b220 are not included in this result.
+
+Screenshots are actual native rendering, not mockups. Oncanvas preferences are explicitly enabled by UI fixtures. Graph/Filter root captures are 1080×1920; paired-history images capture the actual 1040×1800 application window on that screen and compare the 510×382 image viewport. Options images show the native vertical/horizontal editor, not a visible canvas. Operations are direct native/GTK test APIs followed by ordinary publication, not physical-user gesture coverage. Default paired fixture ran with no screenshot-directory override; its reported temporary output was copied afterward unchanged. All original logs/warnings are retained, including the existing synthetic-time diagnostic; no failure output is hidden.
+
+`driver.sh` and `extra-ui-driver.sh` record the executed cloud-specific setup; do not run them over unrelated workspaces without reviewing their fixed paths. `validate.py` verifies the portable evidence identities and counts without rebuilding.

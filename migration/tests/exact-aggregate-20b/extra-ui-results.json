@@ -1,0 +1,40 @@
+[
+  {
+    "name": "filter-four",
+    "command": [
+      "/workspace/shared/gimp-clean-aggregate/build/app/tests/gimp-filter-layer",
+      "-p",
+      "/gimp-filter-layer/filter_flip_legacy_reset_contract",
+      "-p",
+      "/gimp-filter-layer/filter_gaussian_ancestry_contract",
+      "-p",
+      "/gimp-filter-layer/filter_gaussian_reentrant_ancestry_contract",
+      "-p",
+      "/gimp-filter-layer/filter_gaussian_restore_latest_lower_contract"
+    ],
+    "returncode": 0,
+    "stdout": "TAP version 14\n# random seed: R02Sa4d7b3c3ed04f25a7a28030df1101adc\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# Start of gimp-filter-layer tests\n# four H/V direct/image flips retain Filter extent and reevaluate lower pixels;whole-image Undo/Redo and four inherited-transform slots preserved\nok 1 /gimp-filter-layer/filter_flip_legacy_reset_contract\n# End of gimp-filter-layer tests\n1..1\n# Start of gimp-filter-layer tests\n# seven root/A/B stages;24 exact stack reorder handler counts;14 derived pixels;14 retired/upper source updates ignored;7 active updates rerun once;Gaussian only\nok 2 /gimp-filter-layer/filter_gaussian_ancestry_contract\n# End of gimp-filter-layer tests\n1..2\n# Start of gimp-filter-layer tests\n# reentrant old-to-new stack refresh;4 exact handler counts;2 independent Gaussian pixels;retired source ignored/current source reruns once\nok 3 /gimp-filter-layer/filter_gaussian_reentrant_ancestry_contract\n# End of gimp-filter-layer tests\n1..3\n# Start of gimp-filter-layer tests\n# root/group deletion history:6 restores after independent lower edits,4 redo deletions,8 exact pixels,identity/definition and6 stack handler counts preserved;Gaussian only\nok 4 /gimp-filter-layer/filter_gaussian_restore_latest_lower_contract\n# End of gimp-filter-layer tests\n1..4\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n",
+    "stderr": "",
+    "duration": 1.8588731288909912
+  },
+  {
+    "name": "graph-ui",
+    "command": [
+      "meson",
+      "test",
+      "-C",
+      "/workspace/shared/gimp-clean-aggregate/build",
+      "--no-rebuild",
+      "--num-processes",
+      "1",
+      "--print-errorlogs",
+      "--logbase",
+      "exact-committed-graph-ui",
+      "painter-graph-invalidation"
+    ],
+    "returncode": 0,
+    "stdout": "1/1 gimp:app / painter-graph-invalidation OK               6.33s\n\nOk:                 1   \nExpected Fail:      0   \nFail:               0   \nUnexpected Pass:    0   \nSkipped:            0   \nTimeout:            0   \n\nFull log written to /workspace/shared/gimp-clean-aggregate/build/meson-logs/exact-committed-graph-ui.txt\n",
+    "stderr": "",
+    "duration": 6.689347267150879
+  }
+]
