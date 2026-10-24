@@ -1,0 +1,38 @@
+[
+  {
+    "name": "positive-baseline",
+    "returncode": 0,
+    "stdout": "PASS Resource structural/default/text/stream four groups normal+three-unit ASan/UBSan;23 state scenarios;5 output cases;4 causal mutants;exact source archive;not native/UI/whole-app\n",
+    "stderr": ""
+  },
+  {
+    "name": "normal-failure",
+    "returncode": 1,
+    "stdout": "",
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/resource-proof-controls-x_rpuvh8/migration/tests/resource-lossless-stream/validate.py\", line 10, in <module>\n    z=rows[mode];assert z['returncode']==0 and len(re.findall(r'^ok \\d+ ',z['stdout'],re.M))==4\n                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+  },
+  {
+    "name": "mutant-false-success",
+    "returncode": 1,
+    "stdout": "",
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/resource-proof-controls-x_rpuvh8/migration/tests/resource-lossless-stream/validate.py\", line 14, in <module>\n    z=rows[name];assert z['returncode']!=0 and needle in z['stdout']+z['stderr'],name\n                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: drop-unknown-object\n"
+  },
+  {
+    "name": "current-source-drift",
+    "returncode": 1,
+    "stdout": "",
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/resource-proof-controls-x_rpuvh8/migration/tests/resource-lossless-stream/validate.py\", line 18, in <module>\n    if a.check_source:assert sha((r/f).read_bytes())==h,f\n                             ^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: app/paint/painter-mypaint/resource.cpp\n"
+  },
+  {
+    "name": "missing-source-archive",
+    "returncode": 1,
+    "stdout": "",
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/resource-proof-controls-x_rpuvh8/migration/tests/resource-lossless-stream/validate.py\", line 6, in <module>\n    for f,h in read('artifact-sha256.json').items():assert sha((e/f).read_bytes())==h,f\n                                                               ^^^^^^^^^^^^^^^^^^\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py\", line 1019, in read_bytes\n    with self.open(mode='rb') as f:\n         ^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py\", line 1013, in open\n    return io.open(self, mode, buffering, encoding, errors, newline)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nFileNotFoundError: [Errno 2] No such file or directory: '/tmp/resource-proof-controls-x_rpuvh8/migration/tests/resource-lossless-stream/tested-sources.tar.gz'\n"
+  },
+  {
+    "name": "restored-positive",
+    "returncode": 0,
+    "stdout": "PASS Resource structural/default/text/stream four groups normal+three-unit ASan/UBSan;23 state scenarios;5 output cases;4 causal mutants;exact source archive;not native/UI/whole-app\n",
+    "stderr": ""
+  }
+]

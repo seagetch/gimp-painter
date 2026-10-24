@@ -1,0 +1,23 @@
+normal 0 TAP version 14
+# random seed: R02S0cfb7b76fa9c3e35e3b9ccb9152c2171
+1..4
+# Start of resource-proof tests
+ok 1 /resource-proof/lossless
+# default/null/empty/Unicode scenarios=23
+ok 2 /resource-proof/defaults-texts
+ok 3 /resource-proof/output
+ok 4 /resource-proof/malformed
+# End of resource-proof tests
+ 
+asan-ubsan 0 TAP version 14
+# random seed: R02Sdc953863f47f3c75d3e90cfcc94b5a79
+1..4
+# Start of resource-proof tests
+ok 1 /resource-proof/lossless
+# default/null/empty/Unicode scenarios=23
+ok 2 /resource-proof/defaults-texts
+ok 3 /resource-proof/output
+ok 4 /resource-proof/malformed
+# End of resource-proof tests
+ 
+PASS four structural/default/text/output/malformed groups normal+sanitizer; four compiled causal mutants

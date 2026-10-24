@@ -1,0 +1,63 @@
+{
+  "source_sha256": {
+    "app/paint/painter-mypaint/resource.cpp": "879537859b023c455b0ec9d20a3bde4a15fbef66d84f16df7605e883638b0397",
+    "app/paint/painter-mypaint/resource.hpp": "8eed0ac43d9c473f963dce96f6aa16a2675d7d48bc4db35219012a409fed6052",
+    "app/paint/painter-mypaint/mapping.hpp": "cd0bdde8d19bce8567d06767d12108ae97a0169b535e35fa8f9c886cfef095b6",
+    "app/painter/gimp-painter-error.cpp": "14bc510a2c3721894854b871402c7c95caa94d6559ab79731c7eb4ee76d83cf3",
+    "app/painter/gimp-painter-error.h": "b3c1e3550f83abd54726e752d069f0a591b105bcea249239277d2005ccf61465",
+    "app/painter/gimp-painter-visibility.h": "d832e5442d969ff8439292a61d0143532d85c1b7eaab0b29689c6dc04e9c4532",
+    "app/painter/object-ref.hpp": "5a8cc92afc56f652fd47c727269d71d9d97c4358015f13fe9c4764371fcb7c3a",
+    "app/painter/boundary.hpp": "d97a8b6e27a09fe69c7c1d6620361c3daaa1e5cf1bad8d2eb2d4b9a9faed6d2e",
+    "app/painter/resources.hpp": "0a337c7467ed382dc087a1fb611fa9639981ae2879fb36a0642833d787143bfa",
+    "migration/tests/resource-lossless-stream/test.cpp": "cd6d82aedb4bc02bb4c9a10c751ede0e935577b73b8580613ba9fb16e7f7e053",
+    "migration/tests/resource-lossless-stream/generated/mypaintbrush-settings-data.h": "f9e2bf77bb7d0c360b7536daa5578465e12d854340f976ce324e5306fca029b5",
+    "migration/tests/resource-lossless-stream/generated/mypaintbrush-enum-settings.h": "36c203c31c0f45889ef5667cad4f04e4774b0505708931ccf7f410d0f935b678"
+  },
+  "changed_after": [],
+  "scope": "Standalone Resource/error/test three compiled units normal and ASan/UBSan; dependency libraries uninstrumented; LSan disabled; no held providers or whole-app claim",
+  "results": [
+    {
+      "name": "normal-compile",
+      "command": [
+        "c++",
+        "-std=c++14",
+        "-O1",
+        "-g",
+        "-Wall",
+        "-Wextra",
+        "-I/workspace/scratch/0015fc5d1a03/gimp-painter/app",
+        "-I/workspace/scratch/0015fc5d1a03/gimp-painter/app/paint/painter-mypaint",
+        "-I/workspace/scratch/0015fc5d1a03/gimp-painter/migration/tests/resource-lossless-stream/generated",
+        "-I/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0",
+        "-I/workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu/glib-2.0/include",
+        "-I/workspace/shared/gimp-deps-locked/root/usr/include/json-glib-1.0",
+        "/workspace/scratch/0015fc5d1a03/gimp-painter/app/paint/painter-mypaint/resource.cpp",
+        "/workspace/scratch/0015fc5d1a03/gimp-painter/app/painter/gimp-painter-error.cpp",
+        "/workspace/scratch/0015fc5d1a03/gimp-painter/migration/tests/resource-lossless-stream/test.cpp",
+        "-o",
+        "/workspace/shared/resource-lossless-stream-run/normal",
+        "/workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu/libjson-glib-1.0.so",
+        "/workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu/libgio-2.0.so",
+        "/workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu/libgobject-2.0.so",
+        "/workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu/libglib-2.0.so",
+        "-Wl,-rpath,/workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu",
+        "-Wl,--dynamic-linker=/workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+        "-pthread"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "/workspace/scratch/0015fc5d1a03/gimp-painter/migration/tests/resource-lossless-stream/test.cpp: In function \u2018gssize output_write(GOutputStream*, const void*, gsize, GCancellable*, GError**)\u2019:\n/workspace/scratch/0015fc5d1a03/gimp-painter/migration/tests/resource-lossless-stream/test.cpp:63:3: warning: this \u2018if\u2019 clause does not guard... [-Wmisleading-indentation]\n   63 |   if(p->bytes->len>=p->cancel_after&&cancel)g_cancellable_cancel(cancel);return n;\n      |   ^~\n/workspace/scratch/0015fc5d1a03/gimp-painter/migration/tests/resource-lossless-stream/test.cpp:63:74: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the \u2018if\u2019\n   63 |   if(p->bytes->len>=p->cancel_after&&cancel)g_cancellable_cancel(cancel);return n;\n      |                                                                          ^~~~~~\n/workspace/scratch/0015fc5d1a03/gimp-painter/migration/tests/resource-lossless-stream/test.cpp: In function \u2018void output_matrix()\u2019:\n/workspace/scratch/0015fc5d1a03/gimp-painter/migration/tests/resource-lossless-stream/test.cpp:72:5: warning: this \u2018if\u2019 clause does not guard... [-Wmisleading-indentation]\n   72 |     if(mode==1)p->fail_after=0;if(mode==2)p->fail_after=17;if(mode==3)g_cancellable_cancel(c);if(mode==4)p->cancel_after=14;\n      |     ^~\n/workspace/scratch/0015fc5d1a03/gimp-painter/migration/tests/resource-lossless-stream/test.cpp:72:32: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the \u2018if\u2019\n   72 |     if(mode==1)p->fail_after=0;if(mode==2)p->fail_after=17;if(mode==3)g_cancellable_cancel(c);if(mode==4)p->cancel_after=14;\n      |                                ^~\nIn file included from /workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/glib.h:89,\n                 from /workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/gobject/gbinding.h:30,\n                 from /workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/glib-object.h:24,\n                 from /workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/gio/gioenums.h:30,\n                 from /workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/gio/giotypes.h:30,\n                 from /workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/gio/gio.h:28,\n                 from /workspace/scratch/0015fc5d1a03/gimp-painter/app/paint/painter-mypaint/resource.hpp:5,\n                 from /workspace/scratch/0015fc5d1a03/gimp-painter/migration/tests/resource-lossless-stream/test.cpp:2:\n/workspace/scratch/0015fc5d1a03/gimp-painter/migration/tests/resource-lossless-stream/test.cpp:75:65: warning: suggest parentheses around comparison in operand of \u2018!=\u2019 [-Wparentheses]\n   75 |     else {g_assert_false(saved);g_assert_error(e,G_IO_ERROR,mode<3?G_IO_ERROR_PERMISSION_DENIED:G_IO_ERROR_CANCELLED);g_assert_cmpuint(p->bytes->len,<,serialized.size());g_assert_cmpmem(p->bytes->data,p->bytes->len,serialized.data(),p->bytes->len);g_clear_error(&e);}\n      |                                                             ~~~~^~\n/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/glib/gtestutils.h:223:99: note: in definition of macro \u2018g_assert_error\u2019\n  223 |                                                if (!err || (err)->domain != dom || (err)->code != c) \\\n      |                                                                                                   ^\n/workspace/scratch/0015fc5d1a03/gimp-painter/migration/tests/resource-lossless-stream/test.cpp:75:67: warning: \u2018?:\u2019 using integer constants in boolean context, the expression will always evaluate to \u2018true\u2019 [-Wint-in-bool-context]\n   75 |     else {g_assert_false(saved);g_assert_error(e,G_IO_ERROR,mode<3?G_IO_ERROR_PERMISSION_DENIED:G_IO_ERROR_CANCELLED);g_assert_cmpuint(p->bytes->len,<,serialized.size());g_assert_cmpmem(p->bytes->data,p->bytes->len,serialized.data(),p->bytes->len);g_clear_error(&e);}\n/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/glib/gtestutils.h:223:99: note: in definition of macro \u2018g_assert_error\u2019\n  223 |                                                if (!err || (err)->domain != dom || (err)->code != c) \\\n      |                                                                                                   ^\n",
+      "seconds": 2.2755340080002497
+    },
+    {
+      "name": "normal",
+      "command": [
+        "/workspace/shared/resource-lossless-stream-run/normal"
+      ],
+      "returncode": -6,
+      "stdout": "TAP version 14\n# random seed: R02Sa5c7707486e9d2d1f404a2eaf7b1c15a\n1..4\n# Start of resource-proof tests\nnot ok /resource-proof/lossless - ERROR:/workspace/scratch/0015fc5d1a03/gimp-painter/migration/tests/resource-lossless-stream/test.cpp:28:JsonParser* parse(const std::string&): 'json_parser_load_from_data(p,s.data(),s.size(),&e)' should be TRUE\nBail out!\n",
+      "stderr": "**\nERROR:/workspace/scratch/0015fc5d1a03/gimp-painter/migration/tests/resource-lossless-stream/test.cpp:28:JsonParser* parse(const std::string&): 'json_parser_load_from_data(p,s.data(),s.size(),&e)' should be TRUE\n",
+      "seconds": 0.004357950998382876
+    }
+  ]
+}

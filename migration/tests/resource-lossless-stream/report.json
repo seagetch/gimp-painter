@@ -1,0 +1,36 @@
+{
+  "status": "PASS",
+  "production_changed": false,
+  "original_duties": {
+    "19.004": "default vs explicit switches:5keys x3states",
+    "19.005": "both reference text keys:absent/null/empty/Unicode",
+    "19.007": "independent structural unknown-member preservation before/after known edits",
+    "19.011": "settings,curves,real short-write output,error/cancellation propagation",
+    "19.012": "parent/group/reference/unknown metadata preservation"
+  },
+  "normal_groups": 4,
+  "sanitizer_groups": 4,
+  "instrumented_translation_units": 3,
+  "state_scenarios": 23,
+  "output_cases": 5,
+  "malformed_cases": 4,
+  "compiled_mutants": 4,
+  "receipt_source_negative_controls": 4,
+  "source_base": "6b6a6cf39366de1251d0149b118e4e8851c840b3",
+  "dependencies_open": true,
+  "not_claimed": [
+    "native provider/save-icon consistency",
+    "preview/UI",
+    "input stream fault matrix",
+    "whole-app instrumentation",
+    "LSan",
+    "external stream rollback",
+    "original dependency completion"
+  ],
+  "harness_corrections": [
+    "invalid JSON fixture brace",
+    "GLib assertion macro ternary precedence"
+  ],
+  "source_changed_after": [],
+  "numeric_oracle": "exact signed int64 constants at +/- (2^53+1), min/max and nested; range-checked mixed integral-double equivalence"
+}
