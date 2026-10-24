@@ -3951,7 +3951,7 @@
     {
       "revision": "native",
       "path": "app/core/core-enums.h",
-      "sha256": "8b273ca25672d29707d14a017ae414a9dd05ed40e875d758c5480d179fb96534"
+      "sha256": "bcd8e5d4082d99ff13179f8449887127868e82fd5d7fc6a3cf5a4c548aa01b60"
     },
     {
       "revision": "native",
@@ -4501,6 +4501,17 @@
   ],
   "source_successors": [
     {
+      "revision": "native",
+      "path": "app/core/core-enums.h",
+      "predecessor_sha256": "8b273ca25672d29707d14a017ae414a9dd05ed40e875d758c5480d179fb96534",
+      "successor_sha256": "bcd8e5d4082d99ff13179f8449887127868e82fd5d7fc6a3cf5a4c548aa01b60",
+      "commits": [
+        "5c77f4ef20b78476394b568d0c65ad78563aafbd"
+      ],
+      "semantic_successor": "Append only nonpersisted PDB-skipped Undo IDs 110/111; all other header bytes and 112 old values preserved",
+      "proof_commit": "5c77f4ef20b78476394b568d0c65ad78563aafbd"
+    },
+    {
       "path": "app/core/gimpcontainer.c",
       "revision": "native",
       "predecessor_sha256": "d289b12f38dad3a7964d0bb14ad175e55c786c4e59f56c3183998e4ef2bd5ab6",
@@ -4660,6 +4671,10 @@
   },
   "tests": [
     {
+      "path": "migration/tests/persistence_undo_successor.py",
+      "sha256": "a6ca50421576d5144413559fe3dbdad50f08d2bd745f9c181404bcaa0b18a76c"
+    },
+    {
       "path": "migration/tests/persistence_delete_successor.py",
       "sha256": "ae77a1330f256a769e0eb09311fc35109a32eb57bd02eaf549b3e3433cc7a848"
     },
@@ -4669,7 +4684,7 @@
     },
     {
       "path": "migration/tests/persistence_successors.py",
-      "sha256": "5ddebf725e4ecd52dd82acc332eaf8d28dc1ee4624938a01f181e5ee640b45be"
+      "sha256": "f9ed5654e84c4f5ea68635228503aa92149658a04e66cde5e84187dffed68122"
     },
     {
       "path": "migration/tests/persistence_source.py",
@@ -4677,7 +4692,7 @@
     },
     {
       "path": "migration/tests/test_persistence_field_contract.py",
-      "sha256": "a9e4baace0946b847c8fd204586d722fc1794afbdeea193cd059d7d2ab1a7883"
+      "sha256": "7d814a687c3e58cfa421c5286d278c0c0804f15664958aeb58a3f8b97a2efa2b"
     },
     {
       "path": "migration/tests/test_persistence_xcf_contract.py",

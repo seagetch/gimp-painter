@@ -58,6 +58,9 @@ def resolve(root, revision, path, predecessor, actual):
     if predecessor == actual:
         return None
     rows = reviewed(root)['transitions']
+    if revision == 'native' and path == 'app/core/core-enums.h':
+        from persistence_undo_successor import resolve_source
+        return resolve_source(root, predecessor, actual)
     row = next((r for r in rows if (r['revision'], r['path']) == (revision, path)), None)
     assert row is not None, ('unreviewed persistence source drift', revision, path)
     assert predecessor == row['predecessor_sha256'], ('wrong persistence predecessor', path)
