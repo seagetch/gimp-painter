@@ -1242,6 +1242,8 @@
 
 2026-10-21 原30.017/brush-manifest-generator進捗：全363資産を明示Meson台帳へ移し、旧Ruby選択354件のsort・root未対preview・notice/supportを保持。独立Meson実installの全SHA一致を含む9試験、既存fixture4試験合格。元の2義務・依存・未完チェックを維持し、previewラベル生成は別未完。証跡は `migration/tests/painter-brush-manifest/`。
 
+2026-10-21 原30.017/brush-preview-generator進捗：旧ImageMagick順序とcaption/上書き範囲を維持したargv安全版を追加。全178previewの旧script同環境RGBA完全一致・363manifest名/185非preview bytes保持を含む7群合格。原本は無変更。fixed font不在の同一fallback警告を保持し、歴史的font一致・GIMP UIは主張しない。元義務・依存・未完チェックは維持。`migration/tests/painter-preview-labels/`。
+
 ### 31 周辺機能と重複実装の整理
 
 主対象：HTTP/REST、placeholder、旧補助コード
