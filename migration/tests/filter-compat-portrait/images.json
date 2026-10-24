@@ -1,0 +1,110 @@
+{
+  "normalize-before": {
+    "sha256": "63993d30e6627418a65567b7ecc6d97d103179bde44b42d9019bba7e0685e5f8",
+    "dimensions": [
+      1080,
+      1920
+    ],
+    "independent_patch_colors": [
+      {
+        "expected_display_rgb": [
+          120,
+          80,
+          40
+        ],
+        "channel_tolerance": 3,
+        "pixels": 56150
+      },
+      {
+        "expected_display_rgb": [
+          40,
+          120,
+          180
+        ],
+        "channel_tolerance": 3,
+        "pixels": 56160
+      }
+    ]
+  },
+  "normalize-after": {
+    "sha256": "a9b9cd5f78e8dee211f5df27a1d1c9e97991c25a8597d70719a30062de5c31b2",
+    "dimensions": [
+      1080,
+      1920
+    ],
+    "independent_patch_colors": [
+      {
+        "expected_display_rgb": [
+          145,
+          72,
+          0
+        ],
+        "channel_tolerance": 3,
+        "pixels": 56150
+      },
+      {
+        "expected_display_rgb": [
+          0,
+          145,
+          255
+        ],
+        "channel_tolerance": 3,
+        "pixels": 56180
+      }
+    ]
+  },
+  "exchange-before": {
+    "sha256": "a9e0dedf5bcabc30784f54f1110e070751429450c4e14306c35dc6b26482cd90",
+    "dimensions": [
+      1080,
+      1920
+    ],
+    "independent_patch_colors": [
+      {
+        "expected_display_rgb": [
+          120,
+          80,
+          40
+        ],
+        "channel_tolerance": 3,
+        "pixels": 56150
+      },
+      {
+        "expected_display_rgb": [
+          40,
+          120,
+          180
+        ],
+        "channel_tolerance": 3,
+        "pixels": 56160
+      }
+    ]
+  },
+  "exchange-after": {
+    "sha256": "a0bfbbe6b0fcd3e0786331f1ad4a6bba9948b0ae828c8d48ac67946264651cb4",
+    "dimensions": [
+      1080,
+      1920
+    ],
+    "independent_patch_colors": [
+      {
+        "expected_display_rgb": [
+          240,
+          30,
+          100
+        ],
+        "channel_tolerance": 3,
+        "pixels": 56150
+      },
+      {
+        "expected_display_rgb": [
+          40,
+          120,
+          180
+        ],
+        "channel_tolerance": 3,
+        "pixels": 56160
+      }
+    ]
+  }
+}

@@ -117,6 +117,7 @@ static void mode_selection(gconstpointer data)
 #include "test-filter-flip-portrait.inc"
 #include "test-filter-geometry-portrait.inc"
 #include "test-filter-red-eye-portrait.inc"
+#include "test-filter-compat-portrait.inc"
 
 int main(int argc,char **argv)
 {
@@ -124,6 +125,8 @@ int main(int argc,char **argv)
   gimp_test_utils_setup_menus_path();gimp=gimp_init_for_gui_testing(TRUE);
   g_object_set(gimp->config,"painter-canvas-ui",TRUE,NULL);
   g_test_add_func("/painter-mode-ui/filter-red-eye-portrait",filter_red_eye_oncanvas_portrait);
+  g_test_add_func("/painter-mode-ui/filter-normalize-portrait",filter_normalize_oncanvas_portrait);
+  g_test_add_func("/painter-mode-ui/filter-exchange-portrait",filter_exchange_oncanvas_portrait);
   g_test_add_func("/painter-mode-ui/filter-flip-portrait",filter_flip_oncanvas_portrait);
   g_test_add_func("/painter-mode-ui/filter-geometry-portrait",filter_geometry_oncanvas_portrait);
   g_test_add_data_func("/painter-mode-ui/native-selector",GINT_TO_POINTER(FALSE),mode_selection);
