@@ -1,0 +1,124 @@
+249: void FilterLayer::class_init(Traits<GimpFilterLayer>::Class *this_class)
+250: {
+251:   typedef FilterLayer Impl;
+252:   g_print("FilterLayer::class_init\n");
+253:   class_instance.with_class (this_class)->
+254:       as_class <GObject> ([](GObjectClass* klass) {
+255:         _override(constructed);
+256: 
+257:       })->
+258:       as_class <GimpObject> ([](GimpObjectClass* klass) {
+259:         _override (get_memsize);
+260: 
+261:       })->
+262:       as_class <GimpViewable> ([](GimpViewableClass* klass) {
+263:         klass->default_stock_id = "gimp-display-filter";
+264: 
+265:       })->
+266:       as_class <GimpItem> ([](GimpItemClass* klass) {
+267:         _override (duplicate);
+268:         _override (translate);
+269:         _override (scale);
+270:         _override (resize);
+271:         _override (flip);
+272:         _override (rotate);
+273:         _override (transform);
+274:         _override (is_editable);
+275:         klass->default_name   = _("Filter Layer");
+276:         klass->rename_desc    = C_("undo-type", "Rename Filter Layer");
+277:         klass->translate_desc = C_("undo-type", "Move Filter Layer");
+278:         klass->scale_desc     = C_("undo-type", "Scale Filter Layer");
+279:         klass->resize_desc    = C_("undo-type", "Resize Filter Layer");
+280:         klass->flip_desc      = C_("undo-type", "Flip Filter Layer");
+281:         klass->rotate_desc    = C_("undo-type", "Rotate Filter Layer");
+282:         klass->transform_desc = C_("undo-type", "Transform Filter Layer");
+283:         //  F::__(&item_class->convert            ).bind<&Impl::convert>();
+284: 
+285:       })->
+286:       as_class<GimpDrawable> ([](GimpDrawableClass* klass) {
+287:         _override (project_region);
+288:         _override (estimate_memsize);
+289:       });
+290: }
+291: 
+292: template<>
+293: void FilterLayer::iface_init<GimpPickableInterface>(GimpPickableInterface* klass)
+294: {
+295:   typedef FilterLayer Impl;
+296:   g_print("FilterLayer::iface_init<GimpPickableInterface>\n");
+297:   
+298:   _override (get_opacity_at);
+299: }
+300: 
+301: template<>
+302: void FilterLayer::iface_init<GimpProgressInterface>(GimpProgressInterface* klass)
+303: {
+304:   typedef GLib::FilterLayer Impl;
+305:   _override (start);
+465: void GLib::FilterLayer::project_region (gint          x,
+466:                                           gint          y,
+467:                                           gint          width,
+468:                                           gint          height,
+469:                                           PixelRegion  *projPR,
+470:                                           gboolean      combine)
+471: {
+472: //  g_print("project_region:%s\n", gimp_object_get_name(GIMP_OBJECT(g_object)));
+473: 
+474: // Shorcut skip when image is loaded.
+475:   {
+476:     GLib::synchronized locker(&m_updates);
+477:     if (!layer_projected_once && loaded) {
+478:       g_print("ignores initial loading.\n");
+479:       loaded = false;
+480:       layer_projected_once = true;
+481:       waiting_process_stack = false;
+482:       g_list_free_full(updates, delete_rectangle);
+483:       updates = NULL;
+484: 
+485:       locker.exit();
+486: 
+487:       GIMP_DRAWABLE_CLASS(Class::parent_class)->project_region (GIMP_DRAWABLE(g_object), x, y, width, height, projPR, combine);
+488:       return;
+489:     }
+490:   }
+491: 
+492:   auto           self         = ref( GIMP_ITEM(g_object) );
+493:   GimpLayerMask *mask         = self [gimp_layer_get_mask] ();
+494:   const gchar*   name         = self [gimp_object_get_name] ();
+495:   gint           x1           = x;
+617:       projected_tiles_updated = false;
+618:     } else
+619:       projected_tiles_updated = true;
+620:   }
+621: 
+622:   if (!runner || is_waiting_to_be_processed()) {
+623:     return;
+624:   }
+625: //  g_print("--->%s: do parent process\n",self [gimp_object_get_name] () );
+626: 
+627:   GIMP_DRAWABLE_CLASS(Class::parent_class)->project_region (self, x, y, width, height, projPR, combine);
+628: }
+1130:                                     const gchar          *name,
+1131:                                     gdouble               opacity,
+1132:                                     GimpLayerModeEffects  mode)
+1133: {
+1134:   typedef GLib::Class F;
+1135:   GimpImageType   type;
+1136:   GimpFilterLayer *group;
+1137: 
+1138:   g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
+1139: 
+1140:   type = gimp_image_base_type_with_alpha (image);
+1141: 
+1142:   g_print("create instance type=%lx\n", GLib::Class::Traits::get_type());
+1143:   group = F::Traits::cast (gimp_drawable_new (GLib::Class::Traits::get_type(),
+1144:                                                image, name,
+1145:                                                0, 0, width, height,
+1146:                                                type));
+1147:   GimpLayer* layer = GIMP_LAYER(group);
+1148:   opacity = CLAMP (opacity, GIMP_OPACITY_TRANSPARENT, GIMP_OPACITY_OPAQUE);
+1149: 
+1150:   layer->opacity = opacity;
+1151:   layer->mode    = mode;
+1152: 
+1153:   g_print("new_instance::group=%p\n", group);
