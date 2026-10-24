@@ -4191,7 +4191,7 @@
     {
       "revision": "native",
       "path": "app/paint/gimppaintersmudge.cpp",
-      "sha256": "1cbbcbb3dd373265f597a52a3d4cdb137b889c4d430f9f24064cce8cf1df7a43"
+      "sha256": "212e94c0385ab84bbd52810aad37e3a4ab94f28561b1bc7dc4b28d0c6f70b633"
     },
     {
       "revision": "native",
@@ -4601,6 +4601,17 @@
       ]
     },
     {
+      "revision": "native",
+      "path": "app/paint/gimppaintersmudge.cpp",
+      "predecessor_sha256": "1cbbcbb3dd373265f597a52a3d4cdb137b889c4d430f9f24064cce8cf1df7a43",
+      "successor_sha256": "212e94c0385ab84bbd52810aad37e3a4ab94f28561b1bc7dc4b28d0c6f70b633",
+      "commits": [
+        "21e9163fd132754b5d575276f5e165c5158470d5",
+        "5d455fd98cb8416f71b65869fbe4801d72a9d36b"
+      ],
+      "semantic_successor": "Only committed motion changes; saved Settings/properties and all bytes outside motion unchanged; no held geometry execution"
+    },
+    {
       "path": "app/paint/painter-mypaint-surface/gimp-painter-options.cpp",
       "revision": "native",
       "predecessor_sha256": "fabaa82d82cb6a9ade1fb7bb7e860dd1f54ccbe81c4e25b6c07b4aba41cb2d27",
@@ -4837,6 +4848,10 @@
   },
   "tests": [
     {
+      "path": "migration/tests/persistence_smudge_source_successor.py",
+      "sha256": "08f298c7a4367bfbbe4f4b494849205b46e23667b10d5ef9a7258449c62c60ea"
+    },
+    {
       "path": "migration/tests/persistence_catalog_successor.py",
       "sha256": "d92913ecc59eeca7a09ecd1a6c6a4c601acd0f74cb5ef4bdb5ec132ac249064e"
     },
@@ -4858,7 +4873,7 @@
     },
     {
       "path": "migration/tests/persistence_successors.py",
-      "sha256": "0d079b0ad90ee63bb83bfe07c2221ecf4ca8f51ab845836d7ebce5d2c00666c2"
+      "sha256": "d55f50698e631c4ffe102cdeb21b4ee3bbc52a838725897504528d764e2441aa"
     },
     {
       "path": "migration/tests/persistence_source.py",
@@ -4866,7 +4881,7 @@
     },
     {
       "path": "migration/tests/test_persistence_field_contract.py",
-      "sha256": "0598a10b5b89d84608b6f480f9de6aa7efcbaee8538dfbd7ab1d98a85440d168"
+      "sha256": "a648b092f6ef804aaba2b9d29504195c5cf057add6e6df6301c4f1b3d420aff6"
     },
     {
       "path": "migration/tests/test_persistence_xcf_contract.py",

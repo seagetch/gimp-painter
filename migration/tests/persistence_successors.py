@@ -64,6 +64,9 @@ def resolve(root, revision, path, predecessor, actual):
     if revision == 'native' and path == 'app/core/gimpcontext.c':
         from persistence_readiness_successor import resolve_source
         return resolve_source(root, path, predecessor, actual)
+    if revision == 'native' and path == 'app/paint/gimppaintersmudge.cpp':
+        from persistence_smudge_source_successor import resolve_source
+        return resolve_source(root, predecessor, actual)
     if revision == 'native' and path == 'app/core/core-enums.h':
         from persistence_undo_successor import resolve_source
         return resolve_source(root, predecessor, actual)
