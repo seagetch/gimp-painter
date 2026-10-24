@@ -24,7 +24,11 @@ def check(p=P):
  prior=json.loads((R/'migration/tests/perspective-stroke-entry/final/source-before-build.json').read_text())
  for n,h in prior.items():
   if n!='app/tests/meson.build':assert seal[n]==h,n
- assert sha((R/'app/tests/test-painter-perspective-lifecycle-events.c').read_bytes())==seal['app/tests/test-painter-perspective-lifecycle-events.c']
+ current=(R/'app/tests/test-painter-perspective-lifecycle-events.c').read_bytes()
+ if sha(current)!=seal['app/tests/test-painter-perspective-lifecycle-events.c']:
+  # Historical runtime stays pinned; only this exact additive tested successor is admitted.
+  spec=importlib.util.spec_from_file_location('lifecycle_successor',R/'migration/tests/perspective-smoothing-entry/admit-lifecycle-successor.py');successor=importlib.util.module_from_spec(spec);spec.loader.exec_module(successor)
+  assert successor.check(source['app/tests/test-painter-perspective-lifecycle-events.c'],current)
  text=source['app/tests/test-painter-perspective-lifecycle-events.c'].decode();assert '#define main frozen_lifecycle_editor_main' in text and text.count('g_test_add_func (')==3
  meson=source['app/tests/meson.build'].decode();assert meson.count("  'painter-perspective-lifecycle-events',")==1
  assert 'GIMP_DIRTY_NONE' in source['app/core/gimpperspectiveguideundo.cpp'].decode()

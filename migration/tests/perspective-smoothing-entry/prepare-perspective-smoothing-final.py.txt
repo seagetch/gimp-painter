@@ -1,0 +1,21 @@
+import pathlib,hashlib,json,shutil,tarfile
+D=pathlib.Path('/workspace/shared/gimp-native-secondary');R=pathlib.Path('/workspace/scratch/0015fc5d1a03/gimp-painter');O=D/'perspective-smoothing-entry/final';O.mkdir(parents=True,exist_ok=True)
+prior=json.loads((D/'perspective-lifecycle-entry/final/source-before-build.json').read_text());held=json.loads((D/'perspective-lifecycle-entry/final/held-source-isolation.json').read_text())
+for p,h in prior.items():
+ if p not in ['app/tests/meson.build','app/tests/test-painter-perspective-lifecycle-events.c']:assert hashlib.sha256((D/'source'/p).read_bytes()).hexdigest()==h,p
+for r in held['rows']:
+ p=D/'source'/r['path']
+ if r.get('native_exists') is False:assert not p.exists()
+ else:assert hashlib.sha256(p.read_bytes()).hexdigest()==r['sha256']
+owned=['app/tests/test-painter-perspective-lifecycle-events.c','app/tests/test-painter-perspective-smoothing-events.inc']+[str(p.relative_to(R)) for p in (R/'migration/fixtures/legacy-perspective-smoothing').iterdir() if p.is_file()]
+for p in owned:(D/'source'/p).parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(R/p,D/'source'/p)
+paths=set(prior)|set(owned)|{str(p.relative_to(D/'source')) for p in (D/'source/app/xcf').iterdir() if p.suffix in ['.c','.h','.cpp','.hpp']}
+paths.update('app/core/'+p for p in ['gimpimage-duplicate.c','gimpimage-duplicate.h','gimpitem.c','gimpitem.h','gimplayer.c','gimpdrawable.c','gimpimage-undo-push.c','gimpundo.c','gimpundostack.c','gimpperspectiveguideundo.cpp'])
+paths.update(['app/tools/gimppainttool.c','app/tools/gimppainttool-paint.c','app/tools/gimppainttool.h','app/paint/gimppaintcore.c','app/paint/gimppaintcore.h','app/paint/gimppaintoptions.c','app/paint/gimppaintoptions.h','app/paint/gimpbrushcore.c','app/paint/gimppaintbrush.c','app/core/gimpbrush-private.h','app/core/gimptempbuf.h'])
+seal={p:hashlib.sha256((D/'source'/p).read_bytes()).hexdigest() for p in sorted(paths)}
+if (O/'source-before-build.json').exists():assert json.loads((O/'source-before-build.json').read_text())==seal
+else:(O/'source-before-build.json').write_text(json.dumps(seal,indent=2)+'\n')
+(O/'held-source-isolation.json').write_text(json.dumps(held,indent=2)+'\n')
+with tarfile.open(O/'tested-sources.tar.gz','w:gz') as t:
+ for p in seal:t.add(D/'source'/p,arcname=p)
+print(len(seal),'inputs,prior editor/stroke and lifecycle bodies unchanged, explicit test-main successor,9 held providers')

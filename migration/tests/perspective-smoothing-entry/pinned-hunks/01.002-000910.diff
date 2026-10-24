@@ -1,0 +1,7 @@
++#if 0  
++  if (paint_core->stroke_buffer)
++    {
++      current_coords = gimp_paint_core_get_smoothed_coords (paint_core,
++                                                            paint_options, &current_coords);
++      gimp_paint_core_set_current_coords (paint_core, &current_coords);
++    }

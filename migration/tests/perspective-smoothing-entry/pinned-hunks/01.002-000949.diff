@@ -1,0 +1,48 @@
++GimpCircularQueue* gimp_circular_queue_new(guint element_size, guint queue_size)
++{
++  GimpCircularQueue* queue = g_new0(GimpCircularQueue, 1);
++  queue->data = g_malloc0(element_size * queue_size);
++  if (queue->data) {
++    queue->element_size = element_size;
++    queue->queue_size = queue_size;
++  }
++  queue->start = 0;
++  queue->end = 0;
++  return queue;
++}
++
++void gimp_circular_queue_free(GimpCircularQueue* queue)
++{
++  if (queue) {
++    if (queue->data)
++      g_free(queue->data);
++    g_free(queue);
++  }
++}
++
++void gimp_circular_queue_enqueue_data(GimpCircularQueue* queue, gpointer data)
++{
++  guint index = queue->end % queue->queue_size;
++
++  if (index > queue->start && index == queue->start % queue->queue_size)
++    queue->start ++;
++    
++  index *= queue->element_size;
++  g_memmove((guchar*)queue->data + index, data, queue->element_size);
++  queue->end ++;
++}
++
++gpointer gimp_circular_queue_get_nth_offset(GimpCircularQueue* queue, guint index)
++{
++  index = (queue->start + index) % queue->queue_size;
++  index *= queue->element_size;
++  return (guchar*)queue->data + index;
++}
++
++gpointer gimp_circular_queue_get_last_offset(GimpCircularQueue* queue)
++{
++  gint index = (queue->end - 1) % queue->queue_size;
++  index *= queue->element_size;
++  return (guchar*)queue->data + index;
++}
++

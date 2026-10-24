@@ -1,0 +1,26 @@
+ninja: Entering directory `/workspace/shared/gimp-native-secondary/build'
+[1/12] Generating git-version.h.in.1 with a custom command
+fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+[2/12] Generating git-version.h.in.2 with a custom command
+fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+[3/12] Generating git-version.h with a custom command
+fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+[4/6] Generating app/tests/icon-theme-fixture/gimp-test-icon-theme-fixture with a custom command
+{"files": 1191, "manifest_sha256": "2f790ebf02244ef3c023f17f16ab614cbc315ee46d46abd87b7f73d4d5d9be41", "ownership_marker_sha256": "d3ebe76f57bdce73e82df17c3cd89f1a630f42f3c8d72dbfdacd4a000061b8bf", "plan_sha256": "0a16da7a76b5facf2d3d8084793b72e28d32d17c7ff6bf237d164075d4af4b95", "stamp_sha256": "c20e592420d8f1feb8e044c6114f8ed009473d411042806fd6e9aadd50c7ffc9", "status": "verified"}
+[5/6] Compiling C object app/tests/painter-perspective-lifecycle-events.p/test-painter-perspective-lifecycle-events.c.o
+In file included from ../source/app/tests/test-painter-perspective-smoothing-events.inc:13,
+                 from ../source/app/tests/test-painter-perspective-lifecycle-events.c:192:
+../source/app/tests/../../migration/fixtures/legacy-perspective-smoothing/oracle.inc:4:39: warning: no previous declaration for ‘legacy_perspective_smooth_coords’ [-Wmissing-declarations]
+    4 | #define gimp_paint_core_smooth_coords legacy_perspective_smooth_coords
+      |                                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../source/app/tests/../../migration/fixtures/legacy-perspective-smoothing/smooth-coords.inc:2:1: note: in expansion of macro ‘gimp_paint_core_smooth_coords’
+    2 | gimp_paint_core_smooth_coords (GimpPaintCore    *core,
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../source/app/tests/test-painter-perspective-lifecycle-events.c: In function ‘main’:
+../source/app/tests/test-painter-perspective-lifecycle-events.c:196:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  196 |   gint result; g_test_init (&argc, &argv, NULL);
+      |   ^~~~
+[6/6] Linking target app/tests/painter-perspective-lifecycle-events

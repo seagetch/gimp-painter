@@ -1,0 +1,4 @@
++  if (private->perspective_guides) {
++    g_object_unref (private->perspective_guides);
++  }
++

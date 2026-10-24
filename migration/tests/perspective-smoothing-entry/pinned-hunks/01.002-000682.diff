@@ -1,0 +1,3 @@
+-      gimp_tool_control_is_active (active_tool->control))
++      (gimp_tool_control_is_active (active_tool->control)||
++       active_tool->want_full_motion_tracking))

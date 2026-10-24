@@ -1,0 +1,19 @@
++typedef struct _GimpCircularQueue   GimpCircularQueue;
++struct _GimpCircularQueue
++{
++  guint    element_size;
++  guint    queue_size;
++  guint    start;
++  guint    end;
++  gpointer data;
++};
++GimpCircularQueue* gimp_circular_queue_new(guint element_size, guint queue_size);
++void gimp_circular_queue_free(GimpCircularQueue* queue);
++void gimp_circular_queue_enqueue_data(GimpCircularQueue* queue, gpointer data);
++gpointer gimp_circular_queue_get_nth_offset(GimpCircularQueue* queue, guint index);
++gpointer gimp_circular_queue_get_last_offset(GimpCircularQueue* queue);
++#define gimp_circular_queue_length(q) ((q)->end - (q)->start)
++#define gimp_circular_queue_enqueue(q, a) gimp_circular_queue_enqueue_data(q, (void*)(&(a)))
++#define gimp_circular_queue_index(q, type, i) (*(type*)gimp_circular_queue_get_nth_offset(q, i))
++#define gimp_circular_queue_last(q, type) (*(type*)gimp_circular_queue_get_last_offset(q))
++

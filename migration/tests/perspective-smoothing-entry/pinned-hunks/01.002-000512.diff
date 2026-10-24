@@ -1,0 +1,6 @@
+-
+-          if (x_real >= x1 && x_real < x2)
++          gimp_display_shell_transform_xy (shell, x, height, &x_real2, &y_real2);
++#if 0
++          if (x_real >= MIN(x1,x2) && x_real < MAX(x1, x2))
++#endif

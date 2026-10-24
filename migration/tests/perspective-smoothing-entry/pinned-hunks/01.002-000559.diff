@@ -1,0 +1,18 @@
+-  y = floor (y) + 0.5;
+-
+-  cairo_move_to (cr, x1, y);
+-  cairo_line_to (cr, x2, y);
++  gdouble vec_xx = vx2 - vx1;
++  gdouble vec_xy = vy2 - vy1;
++  gdouble vec_yx = vx3 - vx1;
++  gdouble vec_yy = vy3 - vy1;
++//  y = floor (y) + 0.5;
++  gdouble x1, y1, x2, y2;
++
++  x1 = vx1 + vec_xx * ratio_x1 + vec_yx * ratio_y;
++  y1 = vy1 + vec_xy * ratio_x1 + vec_yy * ratio_y;
++  x2 = vx1 + vec_xx * ratio_x2 + vec_yx * ratio_y;
++  y2 = vy1 + vec_xy * ratio_x2 + vec_yy * ratio_y;
++
++  cairo_move_to (cr, x1, y1);
++  cairo_line_to (cr, x2, y2);

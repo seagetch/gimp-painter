@@ -1,0 +1,19 @@
+#!/bin/bash
+set -euo pipefail
+D=/workspace/shared/gimp-native-secondary
+source "$D/env.sh";exec 9>"$D/build.lock";flock 9
+python3 /workspace/shared/prepare-perspective-smoothing-final.py
+O="$D/perspective-smoothing-entry/final"
+for build in build build-asan;do
+ mkdir -p "$O/$build-images"
+ ninja -j2 -C "$D/$build" app/tests/painter-perspective-events app/tests/painter-perspective-stroke-events app/tests/painter-perspective-lifecycle-events > "$O/$build-build.log" 2>&1
+ GIMP_TEST_PERSPECTIVE_LIFECYCLE_SCREENSHOT_DIR="$O/$build-images" GIMP_TEST_PERSPECTIVE_LIFECYCLE_EVIDENCE_DIR="$O/$build-images" ASAN_OPTIONS=detect_leaks=0:halt_on_error=1 UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1 python3 "$D/source/tools/run-painter-xvfb.py" meson test -C "$D/$build" --no-rebuild --num-processes=1 --print-errorlogs painter-perspective-events painter-perspective-stroke-events painter-perspective-lifecycle-events > "$O/$build.log" 2>&1
+ python3 - "$D" "$build" <<'PY'
+import pathlib,json,hashlib,sys
+D=pathlib.Path(sys.argv[1]);b=sys.argv[2];O=D/'perspective-smoothing-entry/final';seal=json.loads((O/'source-before-build.json').read_text());rows=[]
+for p,h in seal.items():assert hashlib.sha256((D/'source'/p).read_bytes()).hexdigest()==h,p
+for line in (D/b/'meson-logs/testlog.json').read_text().splitlines():
+ j=json.loads(line);r={k:j.get(k,'') for k in ['name','result','returncode','duration','stdout','stderr']};name=r['name'].split(' / ')[-1];r.update(source_sha256=seal,executable_sha256=hashlib.sha256((D/b/'app/tests'/name).read_bytes()).hexdigest(),timeout_seconds=60,xvfb={'width':1080,'height':1920,'depth':24,'authenticated':True});r['cases']=[l for l in r['stdout'].splitlines() if l.startswith('ok ') and '# SKIP' not in l];rows.append(r)
+(O/(b+'.json')).write_text(json.dumps(rows,indent=2)+'\n');assert len(rows)==3 and sorted(len(r['cases']) for r in rows)==[2,4,13];assert all(r['result']=='OK' and r['duration']<60 for r in rows);print(b,[(len(r['cases']),r['duration']) for r in rows])
+PY
+done

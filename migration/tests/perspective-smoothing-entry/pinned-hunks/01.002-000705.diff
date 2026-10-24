@@ -1,0 +1,8 @@
++  if (shell->rotate_angle != 0.0 || shell->mirrored) {
++    cr = gdk_cairo_create(gtk_widget_get_window (shell->canvas));
++    g_return_if_fail (cr != NULL);
++    gimp_display_shell_set_cairo_rotate (shell, cr);
++  }
++  
++
++  

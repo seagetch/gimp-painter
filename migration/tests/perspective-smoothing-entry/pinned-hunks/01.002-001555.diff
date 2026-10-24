@@ -1,0 +1,4 @@
++      else
++        {
++          coords->pressure = (event->motion.state & GDK_BUTTON1_MASK)? 1.0: 0.0;
++        }

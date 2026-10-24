@@ -1,0 +1,22 @@
+-  tx = ((gint64) x * shell->x_src_dec) / shell->x_dest_inc;
+-  ty = ((gint64) y * shell->y_src_dec) / shell->y_dest_inc;
+-
+-  tx -= shell->offset_x;
+-  ty -= shell->offset_y;
+-
++  r_tx = (x * shell->x_src_dec) / shell->x_dest_inc;
++  r_ty = (y * shell->y_src_dec) / shell->y_dest_inc;
++
++  r_tx -= shell->offset_x;
++  r_ty -= shell->offset_y;
++
++  if (shell->rotate_angle != 0.0 || shell->mirrored) {
++    cairo_t* cr = gdk_cairo_create(gtk_widget_get_window (shell->canvas));
++    g_return_if_fail (cr != NULL);
++//    g_print("Transform xy:%4.1f,%4.1f->", r_tx, r_ty);
++    gimp_display_shell_set_cairo_rotate (shell, cr);
++    cairo_user_to_device(cr, &r_tx, &r_ty);
++    cairo_destroy(cr);
++//    g_print("%4.1f,%4.1f\n", r_tx, r_ty);
++  }
++  

@@ -188,14 +188,19 @@ static void lifecycle_switch_close (void)
   g_object_unref (editor); g_object_unref (old); g_object_unref (new_model); g_object_unref (other); g_object_unref (image);
   g_test_message ("native image-switch ignores stale release/model signal; close active editor clears control/draw/display/status refs");
 }
+
+#include "test-painter-perspective-smoothing-events.inc"
 int main (int argc, char **argv)
 {
-  gint result; g_test_init (&argc, &argv, NULL);
+  gint result;
+  g_setenv ("GIMP_NO_PAINT_THREAD", "1", TRUE);
+  g_test_init (&argc, &argv, NULL);
   if (!gtk_init_check (&argc, &argv)) return GIMP_EXIT_TEST_SKIPPED;
   gimp_test_utils_setup_menus_path (); gimp = gimp_init_for_gui_testing (TRUE);
   g_test_add_func ("/perspective-lifecycle/native-undo-all-edits", lifecycle_undo_all_edits);
   g_test_add_func ("/perspective-lifecycle/xcf-nonpersistent", lifecycle_xcf_nonpersistent);
   g_test_add_func ("/perspective-lifecycle/switch-close", lifecycle_switch_close);
+  g_test_add_func ("/perspective-correction/paintbrush-smoothing-order", smoothing_real_paintbrush);
   g_application_run (gimp->app, 0, NULL); result = gimp_core_app_get_exit_status (GIMP_CORE_APP (gimp->app));
   g_application_quit (G_APPLICATION (gimp->app)); g_clear_object (&gimp->app); return result;
 }

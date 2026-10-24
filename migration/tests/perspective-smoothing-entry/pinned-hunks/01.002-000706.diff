@@ -1,0 +1,17 @@
+-      dest_segs[i].x1 = SCALEX (shell, x1) - shell->offset_x;
+-      dest_segs[i].x2 = SCALEX (shell, x2) - shell->offset_x;
+-      dest_segs[i].y1 = SCALEY (shell, y1) - shell->offset_y;
+-      dest_segs[i].y2 = SCALEY (shell, y2) - shell->offset_y;
++      x1 = SCALEX (shell, x1) - shell->offset_x;
++      x2 = SCALEX (shell, x2) - shell->offset_x;
++      y1 = SCALEY (shell, y1) - shell->offset_y;
++      y2 = SCALEY (shell, y2) - shell->offset_y;
++
++      if (cr) {
++        cairo_user_to_device(cr, &x1, &y1);
++        cairo_user_to_device(cr, &x2, &y2);
++      }
++      dest_segs[i].x1 = x1;
++      dest_segs[i].x2 = x2;
++      dest_segs[i].y1 = y1;
++      dest_segs[i].y2 = y2;

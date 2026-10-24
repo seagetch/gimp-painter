@@ -1,0 +1,8 @@
++  gimp_display_shell_transform_xy_f (shell,
++                                     private->center_x - private->radius_x,
++                                     private->center_y + private->radius_y,
++                                     &x3, &y3);
++  gimp_display_shell_transform_xy_f (shell,
++                                     private->center_x + private->radius_x,
++                                     private->center_y + private->radius_y,
++                                     &x4, &y4);

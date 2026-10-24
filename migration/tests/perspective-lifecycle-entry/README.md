@@ -54,3 +54,12 @@ sanitizer13+2+3 PASS (18.75s/4.69s/7.23s), zero skipped cases/timeouts. Three ca
 controls fail as required; eighteen evidence-mutation controls pass. Native
 production files are unchanged. Check `check-lifecycle-entry.py`,
 `test-lifecycle-evidence.py`, and the pinned old fixture's `verify-source.py`.
+
+## Explicit source successor (2026-10-21)
+
+The smoothing checkpoint reuses this target with one additive case/include and a
+non-threaded painting test setting. All three lifecycle case bodies and this
+checkpoint's original runtime archive/receipts remain unchanged. The checker
+admits only the exact additive transformation in
+`../perspective-smoothing-entry/admit-lifecycle-successor.py`; new runtime claims
+belong to that successor, not retroactively to this receipt.

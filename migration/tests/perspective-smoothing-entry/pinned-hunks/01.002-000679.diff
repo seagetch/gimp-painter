@@ -1,0 +1,3 @@
++            if (shell->snap_perspective && (active_tool && active_tool->want_full_motion_tracking)) {
++              gimp_display_shell_lazy_snap (shell, image, &image_coords);
++            }

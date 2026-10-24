@@ -1,0 +1,28 @@
+-  gimp_canvas_arc_transform (item, shell,
+-                             &center_x, &center_y,
+-                             &radius_x, &radius_y);
+-
+-  rectangle.x      = floor (center_x - radius_x - 1.5);
+-  rectangle.y      = floor (center_y - radius_y - 1.5);
+-  rectangle.width  = ceil (center_x + radius_x + 1.5) - rectangle.x;
+-  rectangle.height = ceil (center_y + radius_y + 1.5) - rectangle.y;
++  gimp_display_shell_transform_xy_f (shell,
++                                     private->center_x - private->radius_x,
++                                     private->center_y - private->radius_y,
++                                     &x1, &y1);
++  gimp_display_shell_transform_xy_f (shell,
++                                     private->center_x + private->radius_x,
++                                     private->center_y - private->radius_y,
++                                     &x2, &y2);
++  gimp_display_shell_transform_xy_f (shell,
++                                     private->center_x - private->radius_x,
++                                     private->center_y + private->radius_y,
++                                     &x3, &y3);
++  gimp_display_shell_transform_xy_f (shell,
++                                     private->center_x + private->radius_x,
++                                     private->center_y + private->radius_y,
++                                     &x4, &y4);
++  rectangle.x      = floor (MIN(MIN(MIN(x1, x2),x3),x4) - 1.5);
++  rectangle.y      = floor (MIN(MIN(MIN(y1, y2),y3),y4) - 1.5);
++  rectangle.width  = ceil (MAX(MAX(MAX(x1, x2),x3),x4) + 1.5) - rectangle.x;
++  rectangle.height = ceil (MAX(MAX(MAX(y1, y2),y3),y4) + 1.5) - rectangle.y;

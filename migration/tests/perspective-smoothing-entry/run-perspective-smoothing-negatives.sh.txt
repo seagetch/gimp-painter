@@ -1,0 +1,33 @@
+#!/bin/bash
+set -euo pipefail
+D=/workspace/shared/gimp-native-secondary
+source "$D/env.sh";exec 9>"$D/build.lock";flock 9
+python3 /workspace/shared/prepare-perspective-smoothing-final.py
+O="$D/perspective-smoothing-entry/negative";mkdir -p "$O"
+for kind in identity-smoothing wrong-angle shifted-raster-envelope;do
+ export KIND="$kind"
+ python3 - <<'PY'
+import pathlib,os,json,hashlib
+D=pathlib.Path('/workspace/shared/gimp-native-secondary');kind=os.environ['KIND'];O=D/'perspective-smoothing-entry/negative'/kind;O.mkdir(exist_ok=True);p=D/'source/app/tests/test-painter-perspective-smoothing-events.inc';s=p.read_text();(O/'original-input.txt').write_text(s)
+if kind=='identity-smoothing':a='legacy_perspective_smooth_coords (&smoothing_old, GIMP_PAINT_TOOL_GET_OPTIONS (paint), &smoothing_expected);';b='/* fault: bypass old smoothing oracle */'
+elif kind=='wrong-angle':a='old.snapped_angle = smoothing_angle;';b='old.snapped_angle = smoothing_angle + .25;'
+else:a='segments[strokes][0]=smoothing_ox;segments[strokes][1]=smoothing_oy;';b='segments[strokes][0]=smoothing_ox+40;segments[strokes][1]=smoothing_oy+40;'
+
+assert s.count(a)==1;s=s.replace(a,b);p.write_text(s);(O/'mutated-input.txt').write_text(s);(O/'mutation.json').write_text(json.dumps({'path':str(p.relative_to(D/'source')),'original_sha256':hashlib.sha256((O/'original-input.txt').read_bytes()).hexdigest(),'mutated_sha256':hashlib.sha256(s.encode()).hexdigest()},indent=2)+'\n')
+PY
+ restore() { cp "$O/$kind/original-input.txt" "$D/source/app/tests/test-painter-perspective-smoothing-events.inc"; }
+ trap restore EXIT
+ ninja -j2 -C "$D/build" app/tests/painter-perspective-lifecycle-events > "$O/$kind/build.log" 2>&1
+
+ set +e
+ python3 "$D/source/tools/run-painter-xvfb.py" meson test -C "$D/build" --no-rebuild --num-processes=1 --print-errorlogs --test-args="-p /perspective-correction/paintbrush-smoothing-order" painter-perspective-lifecycle-events > "$O/$kind/run.log" 2>&1
+ status=$?;set -e
+ python3 - "$D" "$kind" <<'PY'
+import pathlib,json,sys,hashlib
+D=pathlib.Path(sys.argv[1]);O=D/'perspective-smoothing-entry/negative'/sys.argv[2];j=json.loads((D/'build/meson-logs/testlog.json').read_text().splitlines()[0]);r={k:j.get(k,'') for k in ['name','result','returncode','duration','stdout','stderr']};r['executable_sha256']=hashlib.sha256((D/'build/app/tests/painter-perspective-lifecycle-events').read_bytes()).hexdigest();(O/'result.json').write_text(json.dumps(r,indent=2)+'\n');assert r['result']=='FAIL' and ('assertion failed' in r['stdout'] or 'should be' in r['stdout'])
+PY
+ restore;trap - EXIT
+ [[ $status != 0 ]]
+done
+flock -u 9
+bash /workspace/shared/run-perspective-smoothing-final.sh

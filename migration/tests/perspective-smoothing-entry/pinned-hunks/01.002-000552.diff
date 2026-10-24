@@ -1,0 +1,8 @@
+-      rectangle.x      = floor (x - 1.5);
+-      rectangle.y      = floor (y - 1.5);
+-      rectangle.width  = ceil (w + 3.0);
+-      rectangle.height = ceil (h + 3.0);
++      rectangle.x      = floor (x);
++      rectangle.y      = floor (y);
++      rectangle.width  = ceil (w);
++      rectangle.height = ceil (h);

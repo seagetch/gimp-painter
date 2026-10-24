@@ -1,0 +1,4 @@
++GimpCoords gimp_paint_options_get_smoothed_coords (GimpPaintOptions  *paint_options,
++                                                   const GimpCoords *original_coords,
++                                                   GimpCircularQueue *history);
++

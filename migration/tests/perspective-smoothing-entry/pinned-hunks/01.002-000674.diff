@@ -1,0 +1,6 @@
++                        if (!shell->snapping) {
++                          /* Early removal of useless events saves CPU time.
++                          */
++                          if (state & GDK_BUTTON1_MASK) {
++                            gimp_display_shell_update_on_canvas_opacity (shell, display_coords.x, display_coords.y, FALSE);
++                          }

@@ -1,0 +1,6 @@
++
++            if (shell->snap_perspective && 
++                (!active_tool || !active_tool->disable_lazy_snap) &&
++                (!active_tool || !active_tool->want_full_motion_tracking)) {
++              shell->snapping = FALSE;
++            }
