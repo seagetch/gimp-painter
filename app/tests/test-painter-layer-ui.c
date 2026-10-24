@@ -889,6 +889,7 @@ static void dialog_factory_reentry (void)
 #include "test-filter-schema-persistence-failures.inc"
 #include "test-filter-progress-ui.inc"
 #include "test-filter-dialog-reads.inc"
+#include "test-colorify-editor.inc"
 
 /* C entry points implemented by the native C++ metadata boundary fixtures. */
 void gimp_test_filter_editor_metadata (Gimp *application);
@@ -914,9 +915,18 @@ int main (int argc, char **argv)
   g_test_init (&argc, &argv, NULL);
   if (! gtk_init_check (&argc, &argv)) return GIMP_EXIT_TEST_SKIPPED;
   gimp_test_utils_set_gimp3_directory ("GIMP_TESTING_ABS_TOP_SRCDIR", "app/tests/gimpdir");
-  gimp = gimp_init_for_testing ();
+  const gboolean colorify_oncanvas=g_getenv("GIMP_TEST_COLORIFY_ONCANVAS")!=NULL;
+  if(colorify_oncanvas){gimp_test_utils_setup_menus_path();gimp=gimp_init_for_gui_testing(TRUE);g_object_set(gimp->config,"painter-canvas-ui",TRUE,NULL);}
+  else gimp = gimp_init_for_testing ();
   parent = gtk_window_new (GTK_WINDOW_TOPLEVEL); g_object_ref_sink (parent);
 #define ADD(name) g_test_add_func ("/painter-layer-ui/" #name, name)
+  ADD (colorify_editor_draft_reentry);
+  ADD (colorify_editor_create_pixels);
+  ADD (colorify_editor_closed_controls);
+  ADD (colorify_editor_creation_close_reentry);
+  ADD (colorify_editor_noop_and_edit);
+  ADD (colorify_editor_unknown_keep);
+  ADD (colorify_editor_invalid_and_stale);
   ADD (filter_progress_widgets); ADD (filter_progress_running_cancel); ADD (filter_progress_render_reentry);
   ADD (clone_creation_source_reentry); ADD (clone_creation_and_parent); ADD (clone_edit_cancel_undo_live); ADD (clone_deleted_source_and_cycle);
   ADD (filter_create_cancel_and_validate); ADD (filter_preserve_unknown_and_undo); ADD (filter_preserve_float_shape);
@@ -975,8 +985,11 @@ int main (int argc, char **argv)
 #ifdef GIMP_PAINTER_FAULT_TEST
   gimp_test_filter_allocation_register (gimp);
 #endif
-  result = g_test_run ();
+  if(colorify_oncanvas){g_application_run(gimp->app,0,NULL);result=gimp_core_app_get_exit_status(GIMP_CORE_APP(gimp->app));}
+  else result = g_test_run ();
   gtk_widget_destroy (parent); g_object_unref (parent);
   gimp_test_utils_set_gimp3_directory ("GIMP_TESTING_ABS_TOP_BUILDDIR", "app/tests/gimpdir-output");
-  gimp_exit (gimp, TRUE); return result;
+  if(colorify_oncanvas){g_application_quit(G_APPLICATION(gimp->app));g_clear_object(&gimp->app);}
+  else gimp_exit (gimp, TRUE);
+  return result;
 }

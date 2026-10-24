@@ -1,0 +1,441 @@
+In file included from [01m[K/tmp/colorify-editor-private/red/app/tests/test-painter-layer-ui.c:887[m[K:
+[01m[K../source/app/tests/test-filter-schema-editors.inc:[m[K In function ‘[01m[Kfilter_schema_undo_provider_reentry[m[K’:
+[01m[K../source/app/tests/test-filter-schema-editors.inc:668:7:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  668 |       [01;35m[Kgint[m[K maximum = mutation.spec->maximum;
+      |       [01;35m[K^~~~[m[K
+[01m[K../source/app/tests/test-filter-schema-editors.inc:673:7:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  673 |       [01;35m[Kgulong[m[K hook = g_signal_connect (image, "undo-event", G_CALLBACK (schema_undo_mutation), &mutation);
+      |       [01;35m[K^~~~~~[m[K
+In file included from [01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/glib.h:89[m[K,
+                 from [01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/gobject/gbinding.h:30[m[K,
+                 from [01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/glib-object.h:24[m[K,
+                 from [01m[K/workspace/shared/gimp-deps-locked/root/usr/include/gegl-0.4/gegl.h:22[m[K,
+                 from [01m[K/tmp/colorify-editor-private/red/app/tests/test-painter-layer-ui.c:3[m[K:
+[01m[K../source/app/tests/test-filter-schema-persistence-failures.inc:[m[K In function ‘[01m[Kfilter_schema_persistence_failures[m[K’:
+[01m[K../source/app/tests/test-filter-schema-persistence-failures.inc:321:52:[m[K [01;35m[Kwarning: [m[Kcomparison of constant ‘[01m[K4[m[K’ with boolean expression is always false [[01;35m[K-Wbool-compare[m[K]
+  321 |           g_assert_error (error, G_IO_ERROR, scene [01;35m[K==[m[K 4 ? G_IO_ERROR_NO_SPACE : G_IO_ERROR_FAILED);
+      |                                                    [01;35m[K^~[m[K
+[01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/glib/gtestutils.h:223:99:[m[K [01;36m[Knote: [m[Kin definition of macro ‘[01m[Kg_assert_error[m[K’
+  223 |                                                if (!err || (err)->domain != dom || (err)->code != [01;36m[Kc[m[K) \
+      |                                                                                                   [01;36m[K^[m[K
+[01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/glib/gtestutils.h:223:96:[m[K [01;35m[Kwarning: [m[Ksuggest parentheses around comparison in operand of ‘[01m[K==[m[K’ [[01;35m[K-Wparentheses[m[K]
+  223 |                                                if (!err || (err)->domain != dom || (err)->code != c) \
+[01m[K../source/app/tests/test-filter-schema-persistence-failures.inc:321:11:[m[K [01;36m[Knote: [m[Kin expansion of macro ‘[01m[Kg_assert_error[m[K’
+  321 |           [01;36m[Kg_assert_error[m[K (error, G_IO_ERROR, scene == 4 ? G_IO_ERROR_NO_SPACE : G_IO_ERROR_FAILED);
+      |           [01;36m[K^~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-filter-schema-persistence-failures.inc:321:79:[m[K [01;35m[Kwarning: [m[K‘[01m[K?:[m[K’ using integer constants in boolean context [[01;35m[K-Wint-in-bool-context[m[K]
+  321 |           g_assert_error (error, G_IO_ERROR, scene == 4 ? G_IO_ERROR_NO_SPACE : G_IO_ERROR_FAILED);
+[01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/glib/gtestutils.h:223:99:[m[K [01;36m[Knote: [m[Kin definition of macro ‘[01m[Kg_assert_error[m[K’
+  223 |                                                if (!err || (err)->domain != dom || (err)->code != [01;36m[Kc[m[K) \
+      |                                                                                                   [01;36m[K^[m[K
+In file included from [01m[K/tmp/colorify-editor-private/red/app/tests/test-painter-layer-ui.c:890[m[K:
+[01m[K../source/app/tests/test-filter-progress-ui.inc:[m[K In function ‘[01m[Kfilter_progress_widgets[m[K’:
+[01m[K../source/app/tests/test-filter-progress-ui.inc:10:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   10 |   [01;35m[KGtkWidget[m[K *dialog=new_filter_dialog(image,GIMP_LAYER(layer));
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-filter-progress-ui.inc:27:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   27 |   [01;35m[Kconst[m[K guint64 generation=gimp_filter_layer_get_generation(layer);
+      |   [01;35m[K^~~~~[m[K
+[01m[K../source/app/tests/test-filter-progress-ui.inc:[m[K In function ‘[01m[Kfilter_progress_running_cancel[m[K’:
+[01m[K../source/app/tests/test-filter-progress-ui.inc:41:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   41 |     [01;35m[KGimpValueArray[m[K *args=isolated_args(route,0);
+      |     [01;35m[K^~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-filter-progress-ui.inc:43:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   43 |     [01;35m[KGimpFilterLayer[m[K *layer=isolated_layer(image,route,args);
+      |     [01;35m[K^~~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-filter-progress-ui.inc:45:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   45 |     [01;35m[KGtkWidget[m[K *dialog=new_filter_dialog(image,GIMP_LAYER(layer));
+      |     [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-filter-progress-ui.inc:56:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   56 |     [01;35m[Kgchar[m[K *procedure=g_strconcat("plug-in-",isolated_choices[route],NULL);
+      |     [01;35m[K^~~~~[m[K
+[01m[K../source/app/tests/test-filter-progress-ui.inc:58:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   58 |     [01;35m[Kconst[m[K guint64 generation=gimp_filter_layer_get_generation(layer);
+      |     [01;35m[K^~~~~[m[K
+[01m[K../source/app/tests/test-filter-progress-ui.inc:[m[K In function ‘[01m[Kfilter_progress_render_reentry[m[K’:
+[01m[K../source/app/tests/test-filter-progress-ui.inc:85:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   85 |     [01;35m[KGtkWidget[m[K *dialog=new_filter_dialog(image,GIMP_LAYER(layer));
+      |     [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-filter-progress-ui.inc:89:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   89 |     [01;35m[KProgressUiReentry[m[K state={layer,dialog,args,action,FALSE};
+      |     [01;35m[K^~~~~~~~~~~~~~~~~[m[K
+In file included from [01m[K/tmp/colorify-editor-private/red/app/tests/test-painter-layer-ui.c:892[m[K:
+[01m[K/tmp/colorify-editor-private/red/app/tests/test-colorify-editor.inc:[m[K In function ‘[01m[Kcolorify_test_image[m[K’:
+[01m[K/tmp/colorify-editor-private/red/app/tests/test-colorify-editor.inc:16:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   16 |     [01;35m[KGimpDisplayShell[m[K *shell=gimp_display_get_shell(colorify_test_display);
+      |     [01;35m[K^~~~~~~~~~~~~~~~[m[K
+[01m[K/tmp/colorify-editor-private/red/app/tests/test-colorify-editor.inc:22:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   22 |     [01;35m[Kgboolean[m[K enabled=FALSE;g_object_get(gimp->config,"painter-canvas-ui",&enabled,NULL);g_assert_true(enabled);
+      |     [01;35m[K^~~~~~~~[m[K
+[01m[K/tmp/colorify-editor-private/red/app/tests/test-colorify-editor.inc:23:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   23 |     [01;35m[KGdkWindow[m[K *root=gdk_get_default_root_window();g_assert_cmpint(gdk_window_get_width(root),==,1080);g_assert_cmpint(gdk_window_get_height(root),==,1920);
+      |     [01;35m[K^~~~~~~~~[m[K
+[01m[K/tmp/colorify-editor-private/red/app/tests/test-colorify-editor.inc:[m[K In function ‘[01m[Kcolorify_test_close[m[K’:
+[01m[K/tmp/colorify-editor-private/red/app/tests/test-colorify-editor.inc:34:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   34 |     [01;35m[KGtkWidget[m[K *window=parent;parent=colorify_test_saved_parent;colorify_test_saved_parent=NULL;
+      |     [01;35m[K^~~~~~~~~[m[K
+[01m[K/tmp/colorify-editor-private/red/app/tests/test-colorify-editor.inc:[m[K In function ‘[01m[Kcolorify_test_screenshot[m[K’:
+[01m[K/tmp/colorify-editor-private/red/app/tests/test-colorify-editor.inc:44:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   44 |   [01;35m[Kgint64[m[K deadline=g_get_monotonic_time()+G_TIME_SPAN_SECOND;
+      |   [01;35m[K^~~~~~[m[K
+[01m[K/tmp/colorify-editor-private/red/app/tests/test-colorify-editor.inc:46:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   46 |   [01;35m[KGdkWindow[m[K *root=gdk_get_default_root_window();g_assert_cmpint(gdk_window_get_width(root),==,1080);g_assert_cmpint(gdk_window_get_height(root),==,1920);
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K/tmp/colorify-editor-private/red/app/tests/test-colorify-editor.inc:47:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   47 |   [01;35m[KGdkPixbuf[m[K *shot=gdk_pixbuf_get_from_window(root,0,0,1080,1920);g_assert_nonnull(shot);
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K/tmp/colorify-editor-private/red/app/tests/test-colorify-editor.inc:48:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   48 |   [01;35m[Kgchar[m[K *path=g_build_filename(g_getenv("GIMP_TEST_COLORIFY_SCREENSHOT_DIR"),name,NULL);GError *error=NULL;
+      |   [01;35m[K^~~~~[m[K
+[01m[K/tmp/colorify-editor-private/red/app/tests/test-colorify-editor.inc:[m[K In function ‘[01m[Kui_colorify_equal[m[K’:
+[01m[K/tmp/colorify-editor-private/red/app/tests/test-colorify-editor.inc:66:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   66 |   [01;35m[Kconst[m[K gint values[]={-123,456,-789};for(guint i=0;i<3;i++){
+      |   [01;35m[K^~~~~[m[K
+[01m[K/tmp/colorify-editor-private/red/app/tests/test-colorify-editor.inc:68:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   68 |   [01;35m[KGVariant[m[K *actual=g_value_get_variant(gimp_value_array_index(args,3));
+      |   [01;35m[K^~~~~~~~[m[K
+[01m[K/tmp/colorify-editor-private/red/app/tests/test-colorify-editor.inc:[m[K In function ‘[01m[Kui_colorify_layer[m[K’:
+[01m[K/tmp/colorify-editor-private/red/app/tests/test-colorify-editor.inc:78:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   78 |   [01;35m[KGimpFilterLayer[m[K *layer=GIMP_FILTER_LAYER(gimp_filter_layer_new(image,16,16,"tint",1,GIMP_LAYER_MODE_NORMAL_LEGACY));
+      |   [01;35m[K^~~~~~~~~~~~~~~[m[K
+[01m[K/tmp/colorify-editor-private/red/app/tests/test-colorify-editor.inc:[m[K In function ‘[01m[Kcolorify_editor_noop_and_edit[m[K’:
+[01m[K/tmp/colorify-editor-private/red/app/tests/test-colorify-editor.inc:92:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   92 |   [01;35m[KGtkWidget[m[K *dialog=new_filter_dialog(image,GIMP_LAYER(layer));
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K/tmp/colorify-editor-private/red/app/tests/test-colorify-editor.inc:95:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   95 |   [01;35m[KGVariant[m[K *edited=ui_colorify_tint(-0.,0.25,1.,-0.);ui_colorify_equal(layer,raw,edited);
+      |   [01;35m[K^~~~~~~~[m[K
+[01m[K/tmp/colorify-editor-private/red/app/tests/test-colorify-editor.inc:[m[K In function ‘[01m[Kcolorify_editor_unknown_keep[m[K’:
+[01m[K/tmp/colorify-editor-private/red/app/tests/test-colorify-editor.inc:114:5:[m[K [01;35m[Kwarning: [m[Kthis ‘[01m[Kif[m[K’ clause does not guard... [[01;35m[K-Wmisleading-indentation[m[K]
+  114 |     [01;35m[Kif[m[K(v)g_variant_unref(v);g_bytes_unref(raw);colorify_test_close(image);
+      |     [01;35m[K^~[m[K
+[01m[K/tmp/colorify-editor-private/red/app/tests/test-colorify-editor.inc:114:29:[m[K [01;36m[Knote: [m[K...this statement, but the latter is misleadingly indented as if it were guarded by the ‘[01m[Kif[m[K’
+  114 |     if(v)g_variant_unref(v);[01;36m[Kg_bytes_unref[m[K(raw);colorify_test_close(image);
+      |                             [01;36m[K^~~~~~~~~~~~~[m[K
+[01m[K/tmp/colorify-editor-private/red/app/tests/test-colorify-editor.inc:[m[K In function ‘[01m[Kcolorify_editor_invalid_and_stale[m[K’:
+[01m[K/tmp/colorify-editor-private/red/app/tests/test-colorify-editor.inc:122:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  122 |   [01;35m[KGtkWidget[m[K *dialog=new_filter_dialog(image,GIMP_LAYER(layer));
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K/tmp/colorify-editor-private/red/app/tests/test-colorify-editor.inc:130:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  130 |   [01;35m[KGVariant[m[K *external=ui_colorify_tint(0.25,0.5,0.75,1);ui_colorify_define(layer,raw,external);
+      |   [01;35m[K^~~~~~~~[m[K
+[01m[K/tmp/colorify-editor-private/red/app/tests/test-colorify-editor.inc:[m[K In function ‘[01m[Kcolorify_editor_create_pixels[m[K’:
+[01m[K/tmp/colorify-editor-private/red/app/tests/test-colorify-editor.inc:142:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  142 |   [01;35m[KGtkWidget[m[K *dialog=new_filter_dialog(image,NULL);choice(dialog,"painter-filter-choice","colorify");
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K/tmp/colorify-editor-private/red/app/tests/test-colorify-editor.inc:149:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  149 |   [01;35m[KGimpFilterLayer[m[K *layer=GIMP_FILTER_LAYER(gimp_image_get_selected_layers(image)->data);g_assert_true(GIMP_IS_FILTER_LAYER(layer));settle(layer);
+      |   [01;35m[K^~~~~~~~~~~~~~~[m[K
+[01m[K/tmp/colorify-editor-private/red/app/tests/test-colorify-editor.inc:[m[K In function ‘[01m[Kcolorify_editor_creation_close_reentry[m[K’:
+[01m[K/tmp/colorify-editor-private/red/app/tests/test-colorify-editor.inc:172:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  172 |   [01;35m[KGtkWidget[m[K *dialog=new_filter_dialog(image,NULL);choice(dialog,"painter-filter-choice","colorify");
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K/tmp/colorify-editor-private/red/app/tests/test-colorify-editor.inc:173:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  173 |   [01;35m[KResponseClose[m[K state={dialog,image,NULL,FALSE,FALSE};gpointer klass=g_type_class_ref(GIMP_TYPE_FILTER_LAYER);
+      |   [01;35m[K^~~~~~~~~~~~~[m[K
+[01m[K/tmp/colorify-editor-private/red/app/tests/test-colorify-editor.inc:[m[K In function ‘[01m[Kcolorify_editor_draft_reentry[m[K’:
+[01m[K/tmp/colorify-editor-private/red/app/tests/test-colorify-editor.inc:193:71:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  193 |   GimpFilterLayer *layer=ui_colorify_layer(image,raw,v);settle(layer);[01;35m[KGtkWidget[m[K *dialog=new_filter_dialog(image,GIMP_LAYER(layer));
+      |                                                                       [01;35m[K^~~~~~~~~[m[K
+[01m[K/tmp/colorify-editor-private/red/app/tests/test-colorify-editor.inc:195:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  195 |   [01;35m[KColorifyDraftMutation[m[K mutation={entry,FALSE};
+      |   [01;35m[K^~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/tmp/colorify-editor-private/red/app/tests/test-painter-layer-ui.c:[m[K In function ‘[01m[Kmain[m[K’:
+[01m[K/tmp/colorify-editor-private/red/app/tests/test-painter-layer-ui.c:918:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  918 |   [01;35m[Kconst[m[K gboolean colorify_oncanvas=g_getenv("GIMP_TEST_COLORIFY_ONCANVAS")!=NULL;
+      |   [01;35m[K^~~~~[m[K
+red /tmp/colorify-editor-private/red/painter-layer-ui 1327 125
+In file included from [01m[K/tmp/colorify-editor-private/green/app/tests/test-painter-layer-ui.c:887[m[K:
+[01m[K../source/app/tests/test-filter-schema-editors.inc:[m[K In function ‘[01m[Kfilter_schema_undo_provider_reentry[m[K’:
+[01m[K../source/app/tests/test-filter-schema-editors.inc:668:7:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  668 |       [01;35m[Kgint[m[K maximum = mutation.spec->maximum;
+      |       [01;35m[K^~~~[m[K
+[01m[K../source/app/tests/test-filter-schema-editors.inc:673:7:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  673 |       [01;35m[Kgulong[m[K hook = g_signal_connect (image, "undo-event", G_CALLBACK (schema_undo_mutation), &mutation);
+      |       [01;35m[K^~~~~~[m[K
+In file included from [01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/glib.h:89[m[K,
+                 from [01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/gobject/gbinding.h:30[m[K,
+                 from [01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/glib-object.h:24[m[K,
+                 from [01m[K/workspace/shared/gimp-deps-locked/root/usr/include/gegl-0.4/gegl.h:22[m[K,
+                 from [01m[K/tmp/colorify-editor-private/green/app/tests/test-painter-layer-ui.c:3[m[K:
+[01m[K../source/app/tests/test-filter-schema-persistence-failures.inc:[m[K In function ‘[01m[Kfilter_schema_persistence_failures[m[K’:
+[01m[K../source/app/tests/test-filter-schema-persistence-failures.inc:321:52:[m[K [01;35m[Kwarning: [m[Kcomparison of constant ‘[01m[K4[m[K’ with boolean expression is always false [[01;35m[K-Wbool-compare[m[K]
+  321 |           g_assert_error (error, G_IO_ERROR, scene [01;35m[K==[m[K 4 ? G_IO_ERROR_NO_SPACE : G_IO_ERROR_FAILED);
+      |                                                    [01;35m[K^~[m[K
+[01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/glib/gtestutils.h:223:99:[m[K [01;36m[Knote: [m[Kin definition of macro ‘[01m[Kg_assert_error[m[K’
+  223 |                                                if (!err || (err)->domain != dom || (err)->code != [01;36m[Kc[m[K) \
+      |                                                                                                   [01;36m[K^[m[K
+[01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/glib/gtestutils.h:223:96:[m[K [01;35m[Kwarning: [m[Ksuggest parentheses around comparison in operand of ‘[01m[K==[m[K’ [[01;35m[K-Wparentheses[m[K]
+  223 |                                                if (!err || (err)->domain != dom || (err)->code != c) \
+[01m[K../source/app/tests/test-filter-schema-persistence-failures.inc:321:11:[m[K [01;36m[Knote: [m[Kin expansion of macro ‘[01m[Kg_assert_error[m[K’
+  321 |           [01;36m[Kg_assert_error[m[K (error, G_IO_ERROR, scene == 4 ? G_IO_ERROR_NO_SPACE : G_IO_ERROR_FAILED);
+      |           [01;36m[K^~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-filter-schema-persistence-failures.inc:321:79:[m[K [01;35m[Kwarning: [m[K‘[01m[K?:[m[K’ using integer constants in boolean context [[01;35m[K-Wint-in-bool-context[m[K]
+  321 |           g_assert_error (error, G_IO_ERROR, scene == 4 ? G_IO_ERROR_NO_SPACE : G_IO_ERROR_FAILED);
+[01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/glib/gtestutils.h:223:99:[m[K [01;36m[Knote: [m[Kin definition of macro ‘[01m[Kg_assert_error[m[K’
+  223 |                                                if (!err || (err)->domain != dom || (err)->code != [01;36m[Kc[m[K) \
+      |                                                                                                   [01;36m[K^[m[K
+In file included from [01m[K/tmp/colorify-editor-private/green/app/tests/test-painter-layer-ui.c:890[m[K:
+[01m[K../source/app/tests/test-filter-progress-ui.inc:[m[K In function ‘[01m[Kfilter_progress_widgets[m[K’:
+[01m[K../source/app/tests/test-filter-progress-ui.inc:10:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   10 |   [01;35m[KGtkWidget[m[K *dialog=new_filter_dialog(image,GIMP_LAYER(layer));
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-filter-progress-ui.inc:27:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   27 |   [01;35m[Kconst[m[K guint64 generation=gimp_filter_layer_get_generation(layer);
+      |   [01;35m[K^~~~~[m[K
+[01m[K../source/app/tests/test-filter-progress-ui.inc:[m[K In function ‘[01m[Kfilter_progress_running_cancel[m[K’:
+[01m[K../source/app/tests/test-filter-progress-ui.inc:41:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   41 |     [01;35m[KGimpValueArray[m[K *args=isolated_args(route,0);
+      |     [01;35m[K^~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-filter-progress-ui.inc:43:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   43 |     [01;35m[KGimpFilterLayer[m[K *layer=isolated_layer(image,route,args);
+      |     [01;35m[K^~~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-filter-progress-ui.inc:45:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   45 |     [01;35m[KGtkWidget[m[K *dialog=new_filter_dialog(image,GIMP_LAYER(layer));
+      |     [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-filter-progress-ui.inc:56:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   56 |     [01;35m[Kgchar[m[K *procedure=g_strconcat("plug-in-",isolated_choices[route],NULL);
+      |     [01;35m[K^~~~~[m[K
+[01m[K../source/app/tests/test-filter-progress-ui.inc:58:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   58 |     [01;35m[Kconst[m[K guint64 generation=gimp_filter_layer_get_generation(layer);
+      |     [01;35m[K^~~~~[m[K
+[01m[K../source/app/tests/test-filter-progress-ui.inc:[m[K In function ‘[01m[Kfilter_progress_render_reentry[m[K’:
+[01m[K../source/app/tests/test-filter-progress-ui.inc:85:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   85 |     [01;35m[KGtkWidget[m[K *dialog=new_filter_dialog(image,GIMP_LAYER(layer));
+      |     [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-filter-progress-ui.inc:89:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   89 |     [01;35m[KProgressUiReentry[m[K state={layer,dialog,args,action,FALSE};
+      |     [01;35m[K^~~~~~~~~~~~~~~~~[m[K
+In file included from [01m[K/tmp/colorify-editor-private/green/app/tests/test-painter-layer-ui.c:892[m[K:
+[01m[K/tmp/colorify-editor-private/green/app/tests/test-colorify-editor.inc:[m[K In function ‘[01m[Kcolorify_test_image[m[K’:
+[01m[K/tmp/colorify-editor-private/green/app/tests/test-colorify-editor.inc:16:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   16 |     [01;35m[KGimpDisplayShell[m[K *shell=gimp_display_get_shell(colorify_test_display);
+      |     [01;35m[K^~~~~~~~~~~~~~~~[m[K
+[01m[K/tmp/colorify-editor-private/green/app/tests/test-colorify-editor.inc:22:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   22 |     [01;35m[Kgboolean[m[K enabled=FALSE;g_object_get(gimp->config,"painter-canvas-ui",&enabled,NULL);g_assert_true(enabled);
+      |     [01;35m[K^~~~~~~~[m[K
+[01m[K/tmp/colorify-editor-private/green/app/tests/test-colorify-editor.inc:23:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   23 |     [01;35m[KGdkWindow[m[K *root=gdk_get_default_root_window();g_assert_cmpint(gdk_window_get_width(root),==,1080);g_assert_cmpint(gdk_window_get_height(root),==,1920);
+      |     [01;35m[K^~~~~~~~~[m[K
+[01m[K/tmp/colorify-editor-private/green/app/tests/test-colorify-editor.inc:[m[K In function ‘[01m[Kcolorify_test_close[m[K’:
+[01m[K/tmp/colorify-editor-private/green/app/tests/test-colorify-editor.inc:34:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   34 |     [01;35m[KGtkWidget[m[K *window=parent;parent=colorify_test_saved_parent;colorify_test_saved_parent=NULL;
+      |     [01;35m[K^~~~~~~~~[m[K
+[01m[K/tmp/colorify-editor-private/green/app/tests/test-colorify-editor.inc:[m[K In function ‘[01m[Kcolorify_test_screenshot[m[K’:
+[01m[K/tmp/colorify-editor-private/green/app/tests/test-colorify-editor.inc:44:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   44 |   [01;35m[Kgint64[m[K deadline=g_get_monotonic_time()+G_TIME_SPAN_SECOND;
+      |   [01;35m[K^~~~~~[m[K
+[01m[K/tmp/colorify-editor-private/green/app/tests/test-colorify-editor.inc:46:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   46 |   [01;35m[KGdkWindow[m[K *root=gdk_get_default_root_window();g_assert_cmpint(gdk_window_get_width(root),==,1080);g_assert_cmpint(gdk_window_get_height(root),==,1920);
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K/tmp/colorify-editor-private/green/app/tests/test-colorify-editor.inc:47:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   47 |   [01;35m[KGdkPixbuf[m[K *shot=gdk_pixbuf_get_from_window(root,0,0,1080,1920);g_assert_nonnull(shot);
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K/tmp/colorify-editor-private/green/app/tests/test-colorify-editor.inc:48:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   48 |   [01;35m[Kgchar[m[K *path=g_build_filename(g_getenv("GIMP_TEST_COLORIFY_SCREENSHOT_DIR"),name,NULL);GError *error=NULL;
+      |   [01;35m[K^~~~~[m[K
+[01m[K/tmp/colorify-editor-private/green/app/tests/test-colorify-editor.inc:[m[K In function ‘[01m[Kui_colorify_equal[m[K’:
+[01m[K/tmp/colorify-editor-private/green/app/tests/test-colorify-editor.inc:66:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   66 |   [01;35m[Kconst[m[K gint values[]={-123,456,-789};for(guint i=0;i<3;i++){
+      |   [01;35m[K^~~~~[m[K
+[01m[K/tmp/colorify-editor-private/green/app/tests/test-colorify-editor.inc:68:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   68 |   [01;35m[KGVariant[m[K *actual=g_value_get_variant(gimp_value_array_index(args,3));
+      |   [01;35m[K^~~~~~~~[m[K
+[01m[K/tmp/colorify-editor-private/green/app/tests/test-colorify-editor.inc:[m[K In function ‘[01m[Kui_colorify_layer[m[K’:
+[01m[K/tmp/colorify-editor-private/green/app/tests/test-colorify-editor.inc:78:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   78 |   [01;35m[KGimpFilterLayer[m[K *layer=GIMP_FILTER_LAYER(gimp_filter_layer_new(image,16,16,"tint",1,GIMP_LAYER_MODE_NORMAL_LEGACY));
+      |   [01;35m[K^~~~~~~~~~~~~~~[m[K
+[01m[K/tmp/colorify-editor-private/green/app/tests/test-colorify-editor.inc:[m[K In function ‘[01m[Kcolorify_editor_noop_and_edit[m[K’:
+[01m[K/tmp/colorify-editor-private/green/app/tests/test-colorify-editor.inc:92:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   92 |   [01;35m[KGtkWidget[m[K *dialog=new_filter_dialog(image,GIMP_LAYER(layer));
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K/tmp/colorify-editor-private/green/app/tests/test-colorify-editor.inc:95:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   95 |   [01;35m[KGVariant[m[K *edited=ui_colorify_tint(-0.,0.25,1.,-0.);ui_colorify_equal(layer,raw,edited);
+      |   [01;35m[K^~~~~~~~[m[K
+[01m[K/tmp/colorify-editor-private/green/app/tests/test-colorify-editor.inc:[m[K In function ‘[01m[Kcolorify_editor_unknown_keep[m[K’:
+[01m[K/tmp/colorify-editor-private/green/app/tests/test-colorify-editor.inc:114:5:[m[K [01;35m[Kwarning: [m[Kthis ‘[01m[Kif[m[K’ clause does not guard... [[01;35m[K-Wmisleading-indentation[m[K]
+  114 |     [01;35m[Kif[m[K(v)g_variant_unref(v);g_bytes_unref(raw);colorify_test_close(image);
+      |     [01;35m[K^~[m[K
+[01m[K/tmp/colorify-editor-private/green/app/tests/test-colorify-editor.inc:114:29:[m[K [01;36m[Knote: [m[K...this statement, but the latter is misleadingly indented as if it were guarded by the ‘[01m[Kif[m[K’
+  114 |     if(v)g_variant_unref(v);[01;36m[Kg_bytes_unref[m[K(raw);colorify_test_close(image);
+      |                             [01;36m[K^~~~~~~~~~~~~[m[K
+[01m[K/tmp/colorify-editor-private/green/app/tests/test-colorify-editor.inc:[m[K In function ‘[01m[Kcolorify_editor_invalid_and_stale[m[K’:
+[01m[K/tmp/colorify-editor-private/green/app/tests/test-colorify-editor.inc:122:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  122 |   [01;35m[KGtkWidget[m[K *dialog=new_filter_dialog(image,GIMP_LAYER(layer));
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K/tmp/colorify-editor-private/green/app/tests/test-colorify-editor.inc:130:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  130 |   [01;35m[KGVariant[m[K *external=ui_colorify_tint(0.25,0.5,0.75,1);ui_colorify_define(layer,raw,external);
+      |   [01;35m[K^~~~~~~~[m[K
+[01m[K/tmp/colorify-editor-private/green/app/tests/test-colorify-editor.inc:[m[K In function ‘[01m[Kcolorify_editor_create_pixels[m[K’:
+[01m[K/tmp/colorify-editor-private/green/app/tests/test-colorify-editor.inc:142:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  142 |   [01;35m[KGtkWidget[m[K *dialog=new_filter_dialog(image,NULL);choice(dialog,"painter-filter-choice","colorify");
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K/tmp/colorify-editor-private/green/app/tests/test-colorify-editor.inc:149:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  149 |   [01;35m[KGimpFilterLayer[m[K *layer=GIMP_FILTER_LAYER(gimp_image_get_selected_layers(image)->data);g_assert_true(GIMP_IS_FILTER_LAYER(layer));settle(layer);
+      |   [01;35m[K^~~~~~~~~~~~~~~[m[K
+[01m[K/tmp/colorify-editor-private/green/app/tests/test-colorify-editor.inc:[m[K In function ‘[01m[Kcolorify_editor_creation_close_reentry[m[K’:
+[01m[K/tmp/colorify-editor-private/green/app/tests/test-colorify-editor.inc:172:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  172 |   [01;35m[KGtkWidget[m[K *dialog=new_filter_dialog(image,NULL);choice(dialog,"painter-filter-choice","colorify");
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K/tmp/colorify-editor-private/green/app/tests/test-colorify-editor.inc:173:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  173 |   [01;35m[KResponseClose[m[K state={dialog,image,NULL,FALSE,FALSE};gpointer klass=g_type_class_ref(GIMP_TYPE_FILTER_LAYER);
+      |   [01;35m[K^~~~~~~~~~~~~[m[K
+[01m[K/tmp/colorify-editor-private/green/app/tests/test-colorify-editor.inc:[m[K In function ‘[01m[Kcolorify_editor_draft_reentry[m[K’:
+[01m[K/tmp/colorify-editor-private/green/app/tests/test-colorify-editor.inc:193:71:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  193 |   GimpFilterLayer *layer=ui_colorify_layer(image,raw,v);settle(layer);[01;35m[KGtkWidget[m[K *dialog=new_filter_dialog(image,GIMP_LAYER(layer));
+      |                                                                       [01;35m[K^~~~~~~~~[m[K
+[01m[K/tmp/colorify-editor-private/green/app/tests/test-colorify-editor.inc:195:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  195 |   [01;35m[KColorifyDraftMutation[m[K mutation={entry,FALSE};
+      |   [01;35m[K^~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/tmp/colorify-editor-private/green/app/tests/test-painter-layer-ui.c:[m[K In function ‘[01m[Kmain[m[K’:
+[01m[K/tmp/colorify-editor-private/green/app/tests/test-painter-layer-ui.c:918:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  918 |   [01;35m[Kconst[m[K gboolean colorify_oncanvas=g_getenv("GIMP_TEST_COLORIFY_ONCANVAS")!=NULL;
+      |   [01;35m[K^~~~~[m[K
+green /tmp/colorify-editor-private/green/painter-layer-ui 1328 125
+In file included from [01m[K/tmp/colorify-editor-private/sanitizer/app/tests/test-painter-layer-ui.c:887[m[K:
+[01m[K../source/app/tests/test-filter-schema-editors.inc:[m[K In function ‘[01m[Kfilter_schema_undo_provider_reentry[m[K’:
+[01m[K../source/app/tests/test-filter-schema-editors.inc:668:7:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  668 |       [01;35m[Kgint[m[K maximum = mutation.spec->maximum;
+      |       [01;35m[K^~~~[m[K
+[01m[K../source/app/tests/test-filter-schema-editors.inc:673:7:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  673 |       [01;35m[Kgulong[m[K hook = g_signal_connect (image, "undo-event", G_CALLBACK (schema_undo_mutation), &mutation);
+      |       [01;35m[K^~~~~~[m[K
+In file included from [01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/glib.h:89[m[K,
+                 from [01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/gobject/gbinding.h:30[m[K,
+                 from [01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/glib-object.h:24[m[K,
+                 from [01m[K/workspace/shared/gimp-deps-locked/root/usr/include/gegl-0.4/gegl.h:22[m[K,
+                 from [01m[K/tmp/colorify-editor-private/sanitizer/app/tests/test-painter-layer-ui.c:3[m[K:
+[01m[K../source/app/tests/test-filter-schema-persistence-failures.inc:[m[K In function ‘[01m[Kfilter_schema_persistence_failures[m[K’:
+[01m[K../source/app/tests/test-filter-schema-persistence-failures.inc:321:52:[m[K [01;35m[Kwarning: [m[Kcomparison of constant ‘[01m[K4[m[K’ with boolean expression is always false [[01;35m[K-Wbool-compare[m[K]
+  321 |           g_assert_error (error, G_IO_ERROR, scene [01;35m[K==[m[K 4 ? G_IO_ERROR_NO_SPACE : G_IO_ERROR_FAILED);
+      |                                                    [01;35m[K^~[m[K
+[01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/glib/gtestutils.h:223:99:[m[K [01;36m[Knote: [m[Kin definition of macro ‘[01m[Kg_assert_error[m[K’
+  223 |                                                if (!err || (err)->domain != dom || (err)->code != [01;36m[Kc[m[K) \
+      |                                                                                                   [01;36m[K^[m[K
+[01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/glib/gtestutils.h:223:96:[m[K [01;35m[Kwarning: [m[Ksuggest parentheses around comparison in operand of ‘[01m[K==[m[K’ [[01;35m[K-Wparentheses[m[K]
+  223 |                                                if (!err || (err)->domain != dom || (err)->code != c) \
+[01m[K../source/app/tests/test-filter-schema-persistence-failures.inc:321:11:[m[K [01;36m[Knote: [m[Kin expansion of macro ‘[01m[Kg_assert_error[m[K’
+  321 |           [01;36m[Kg_assert_error[m[K (error, G_IO_ERROR, scene == 4 ? G_IO_ERROR_NO_SPACE : G_IO_ERROR_FAILED);
+      |           [01;36m[K^~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-filter-schema-persistence-failures.inc:321:79:[m[K [01;35m[Kwarning: [m[K‘[01m[K?:[m[K’ using integer constants in boolean context [[01;35m[K-Wint-in-bool-context[m[K]
+  321 |           g_assert_error (error, G_IO_ERROR, scene == 4 ? G_IO_ERROR_NO_SPACE : G_IO_ERROR_FAILED);
+[01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/glib/gtestutils.h:223:99:[m[K [01;36m[Knote: [m[Kin definition of macro ‘[01m[Kg_assert_error[m[K’
+  223 |                                                if (!err || (err)->domain != dom || (err)->code != [01;36m[Kc[m[K) \
+      |                                                                                                   [01;36m[K^[m[K
+In file included from [01m[K/tmp/colorify-editor-private/sanitizer/app/tests/test-painter-layer-ui.c:890[m[K:
+[01m[K../source/app/tests/test-filter-progress-ui.inc:[m[K In function ‘[01m[Kfilter_progress_widgets[m[K’:
+[01m[K../source/app/tests/test-filter-progress-ui.inc:10:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   10 |   [01;35m[KGtkWidget[m[K *dialog=new_filter_dialog(image,GIMP_LAYER(layer));
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-filter-progress-ui.inc:27:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   27 |   [01;35m[Kconst[m[K guint64 generation=gimp_filter_layer_get_generation(layer);
+      |   [01;35m[K^~~~~[m[K
+[01m[K../source/app/tests/test-filter-progress-ui.inc:[m[K In function ‘[01m[Kfilter_progress_running_cancel[m[K’:
+[01m[K../source/app/tests/test-filter-progress-ui.inc:41:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   41 |     [01;35m[KGimpValueArray[m[K *args=isolated_args(route,0);
+      |     [01;35m[K^~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-filter-progress-ui.inc:43:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   43 |     [01;35m[KGimpFilterLayer[m[K *layer=isolated_layer(image,route,args);
+      |     [01;35m[K^~~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-filter-progress-ui.inc:45:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   45 |     [01;35m[KGtkWidget[m[K *dialog=new_filter_dialog(image,GIMP_LAYER(layer));
+      |     [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-filter-progress-ui.inc:56:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   56 |     [01;35m[Kgchar[m[K *procedure=g_strconcat("plug-in-",isolated_choices[route],NULL);
+      |     [01;35m[K^~~~~[m[K
+[01m[K../source/app/tests/test-filter-progress-ui.inc:58:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   58 |     [01;35m[Kconst[m[K guint64 generation=gimp_filter_layer_get_generation(layer);
+      |     [01;35m[K^~~~~[m[K
+[01m[K../source/app/tests/test-filter-progress-ui.inc:[m[K In function ‘[01m[Kfilter_progress_render_reentry[m[K’:
+[01m[K../source/app/tests/test-filter-progress-ui.inc:85:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   85 |     [01;35m[KGtkWidget[m[K *dialog=new_filter_dialog(image,GIMP_LAYER(layer));
+      |     [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-filter-progress-ui.inc:89:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   89 |     [01;35m[KProgressUiReentry[m[K state={layer,dialog,args,action,FALSE};
+      |     [01;35m[K^~~~~~~~~~~~~~~~~[m[K
+In file included from [01m[K/tmp/colorify-editor-private/sanitizer/app/tests/test-painter-layer-ui.c:892[m[K:
+[01m[K/tmp/colorify-editor-private/sanitizer/app/tests/test-colorify-editor.inc:[m[K In function ‘[01m[Kcolorify_test_image[m[K’:
+[01m[K/tmp/colorify-editor-private/sanitizer/app/tests/test-colorify-editor.inc:16:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   16 |     [01;35m[KGimpDisplayShell[m[K *shell=gimp_display_get_shell(colorify_test_display);
+      |     [01;35m[K^~~~~~~~~~~~~~~~[m[K
+[01m[K/tmp/colorify-editor-private/sanitizer/app/tests/test-colorify-editor.inc:22:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   22 |     [01;35m[Kgboolean[m[K enabled=FALSE;g_object_get(gimp->config,"painter-canvas-ui",&enabled,NULL);g_assert_true(enabled);
+      |     [01;35m[K^~~~~~~~[m[K
+[01m[K/tmp/colorify-editor-private/sanitizer/app/tests/test-colorify-editor.inc:23:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   23 |     [01;35m[KGdkWindow[m[K *root=gdk_get_default_root_window();g_assert_cmpint(gdk_window_get_width(root),==,1080);g_assert_cmpint(gdk_window_get_height(root),==,1920);
+      |     [01;35m[K^~~~~~~~~[m[K
+[01m[K/tmp/colorify-editor-private/sanitizer/app/tests/test-colorify-editor.inc:[m[K In function ‘[01m[Kcolorify_test_close[m[K’:
+[01m[K/tmp/colorify-editor-private/sanitizer/app/tests/test-colorify-editor.inc:34:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   34 |     [01;35m[KGtkWidget[m[K *window=parent;parent=colorify_test_saved_parent;colorify_test_saved_parent=NULL;
+      |     [01;35m[K^~~~~~~~~[m[K
+[01m[K/tmp/colorify-editor-private/sanitizer/app/tests/test-colorify-editor.inc:[m[K In function ‘[01m[Kcolorify_test_screenshot[m[K’:
+[01m[K/tmp/colorify-editor-private/sanitizer/app/tests/test-colorify-editor.inc:44:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   44 |   [01;35m[Kgint64[m[K deadline=g_get_monotonic_time()+G_TIME_SPAN_SECOND;
+      |   [01;35m[K^~~~~~[m[K
+[01m[K/tmp/colorify-editor-private/sanitizer/app/tests/test-colorify-editor.inc:46:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   46 |   [01;35m[KGdkWindow[m[K *root=gdk_get_default_root_window();g_assert_cmpint(gdk_window_get_width(root),==,1080);g_assert_cmpint(gdk_window_get_height(root),==,1920);
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K/tmp/colorify-editor-private/sanitizer/app/tests/test-colorify-editor.inc:47:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   47 |   [01;35m[KGdkPixbuf[m[K *shot=gdk_pixbuf_get_from_window(root,0,0,1080,1920);g_assert_nonnull(shot);
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K/tmp/colorify-editor-private/sanitizer/app/tests/test-colorify-editor.inc:48:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   48 |   [01;35m[Kgchar[m[K *path=g_build_filename(g_getenv("GIMP_TEST_COLORIFY_SCREENSHOT_DIR"),name,NULL);GError *error=NULL;
+      |   [01;35m[K^~~~~[m[K
+[01m[K/tmp/colorify-editor-private/sanitizer/app/tests/test-colorify-editor.inc:[m[K In function ‘[01m[Kui_colorify_equal[m[K’:
+[01m[K/tmp/colorify-editor-private/sanitizer/app/tests/test-colorify-editor.inc:66:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   66 |   [01;35m[Kconst[m[K gint values[]={-123,456,-789};for(guint i=0;i<3;i++){
+      |   [01;35m[K^~~~~[m[K
+[01m[K/tmp/colorify-editor-private/sanitizer/app/tests/test-colorify-editor.inc:68:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   68 |   [01;35m[KGVariant[m[K *actual=g_value_get_variant(gimp_value_array_index(args,3));
+      |   [01;35m[K^~~~~~~~[m[K
+[01m[K/tmp/colorify-editor-private/sanitizer/app/tests/test-colorify-editor.inc:[m[K In function ‘[01m[Kui_colorify_layer[m[K’:
+[01m[K/tmp/colorify-editor-private/sanitizer/app/tests/test-colorify-editor.inc:78:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   78 |   [01;35m[KGimpFilterLayer[m[K *layer=GIMP_FILTER_LAYER(gimp_filter_layer_new(image,16,16,"tint",1,GIMP_LAYER_MODE_NORMAL_LEGACY));
+      |   [01;35m[K^~~~~~~~~~~~~~~[m[K
+[01m[K/tmp/colorify-editor-private/sanitizer/app/tests/test-colorify-editor.inc:[m[K In function ‘[01m[Kcolorify_editor_noop_and_edit[m[K’:
+[01m[K/tmp/colorify-editor-private/sanitizer/app/tests/test-colorify-editor.inc:92:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   92 |   [01;35m[KGtkWidget[m[K *dialog=new_filter_dialog(image,GIMP_LAYER(layer));
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K/tmp/colorify-editor-private/sanitizer/app/tests/test-colorify-editor.inc:95:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   95 |   [01;35m[KGVariant[m[K *edited=ui_colorify_tint(-0.,0.25,1.,-0.);ui_colorify_equal(layer,raw,edited);
+      |   [01;35m[K^~~~~~~~[m[K
+[01m[K/tmp/colorify-editor-private/sanitizer/app/tests/test-colorify-editor.inc:[m[K In function ‘[01m[Kcolorify_editor_unknown_keep[m[K’:
+[01m[K/tmp/colorify-editor-private/sanitizer/app/tests/test-colorify-editor.inc:114:5:[m[K [01;35m[Kwarning: [m[Kthis ‘[01m[Kif[m[K’ clause does not guard... [[01;35m[K-Wmisleading-indentation[m[K]
+  114 |     [01;35m[Kif[m[K(v)g_variant_unref(v);g_bytes_unref(raw);colorify_test_close(image);
+      |     [01;35m[K^~[m[K
+[01m[K/tmp/colorify-editor-private/sanitizer/app/tests/test-colorify-editor.inc:114:29:[m[K [01;36m[Knote: [m[K...this statement, but the latter is misleadingly indented as if it were guarded by the ‘[01m[Kif[m[K’
+  114 |     if(v)g_variant_unref(v);[01;36m[Kg_bytes_unref[m[K(raw);colorify_test_close(image);
+      |                             [01;36m[K^~~~~~~~~~~~~[m[K
+[01m[K/tmp/colorify-editor-private/sanitizer/app/tests/test-colorify-editor.inc:[m[K In function ‘[01m[Kcolorify_editor_invalid_and_stale[m[K’:
+[01m[K/tmp/colorify-editor-private/sanitizer/app/tests/test-colorify-editor.inc:122:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  122 |   [01;35m[KGtkWidget[m[K *dialog=new_filter_dialog(image,GIMP_LAYER(layer));
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K/tmp/colorify-editor-private/sanitizer/app/tests/test-colorify-editor.inc:130:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  130 |   [01;35m[KGVariant[m[K *external=ui_colorify_tint(0.25,0.5,0.75,1);ui_colorify_define(layer,raw,external);
+      |   [01;35m[K^~~~~~~~[m[K
+[01m[K/tmp/colorify-editor-private/sanitizer/app/tests/test-colorify-editor.inc:[m[K In function ‘[01m[Kcolorify_editor_create_pixels[m[K’:
+[01m[K/tmp/colorify-editor-private/sanitizer/app/tests/test-colorify-editor.inc:142:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  142 |   [01;35m[KGtkWidget[m[K *dialog=new_filter_dialog(image,NULL);choice(dialog,"painter-filter-choice","colorify");
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K/tmp/colorify-editor-private/sanitizer/app/tests/test-colorify-editor.inc:149:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  149 |   [01;35m[KGimpFilterLayer[m[K *layer=GIMP_FILTER_LAYER(gimp_image_get_selected_layers(image)->data);g_assert_true(GIMP_IS_FILTER_LAYER(layer));settle(layer);
+      |   [01;35m[K^~~~~~~~~~~~~~~[m[K
+[01m[K/tmp/colorify-editor-private/sanitizer/app/tests/test-colorify-editor.inc:[m[K In function ‘[01m[Kcolorify_editor_creation_close_reentry[m[K’:
+[01m[K/tmp/colorify-editor-private/sanitizer/app/tests/test-colorify-editor.inc:172:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  172 |   [01;35m[KGtkWidget[m[K *dialog=new_filter_dialog(image,NULL);choice(dialog,"painter-filter-choice","colorify");
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K/tmp/colorify-editor-private/sanitizer/app/tests/test-colorify-editor.inc:173:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  173 |   [01;35m[KResponseClose[m[K state={dialog,image,NULL,FALSE,FALSE};gpointer klass=g_type_class_ref(GIMP_TYPE_FILTER_LAYER);
+      |   [01;35m[K^~~~~~~~~~~~~[m[K
+[01m[K/tmp/colorify-editor-private/sanitizer/app/tests/test-colorify-editor.inc:[m[K In function ‘[01m[Kcolorify_editor_draft_reentry[m[K’:
+[01m[K/tmp/colorify-editor-private/sanitizer/app/tests/test-colorify-editor.inc:193:71:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  193 |   GimpFilterLayer *layer=ui_colorify_layer(image,raw,v);settle(layer);[01;35m[KGtkWidget[m[K *dialog=new_filter_dialog(image,GIMP_LAYER(layer));
+      |                                                                       [01;35m[K^~~~~~~~~[m[K
+[01m[K/tmp/colorify-editor-private/sanitizer/app/tests/test-colorify-editor.inc:195:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  195 |   [01;35m[KColorifyDraftMutation[m[K mutation={entry,FALSE};
+      |   [01;35m[K^~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/tmp/colorify-editor-private/sanitizer/app/tests/test-painter-layer-ui.c:[m[K In function ‘[01m[Kmain[m[K’:
+[01m[K/tmp/colorify-editor-private/sanitizer/app/tests/test-painter-layer-ui.c:918:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  918 |   [01;35m[Kconst[m[K gboolean colorify_oncanvas=g_getenv("GIMP_TEST_COLORIFY_ONCANVAS")!=NULL;
+      |   [01;35m[K^~~~~[m[K
+sanitizer /tmp/colorify-editor-private/sanitizer/painter-layer-ui 1334 127

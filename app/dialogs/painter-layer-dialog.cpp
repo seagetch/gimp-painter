@@ -92,6 +92,10 @@ struct PainterLayerDialog
   GtkWidget *vertical = nullptr;
   GtkWidget *method = nullptr;
   GtkWidget *point_argument = nullptr;
+  std::array<GtkWidget *, 4> colorify_entries {};
+  std::array<double, 4> colorify_values {{1,1,1,1}};
+  std::array<std::string, 4> colorify_text;
+  bool colorify_loaded = false;
   GtkWidget *radius = nullptr;
   GtkWidget *horizontal_flag = nullptr;
   GtkWidget *vertical_flag = nullptr;
@@ -1245,6 +1249,25 @@ painter_filter_commit_current (gpointer data)
          state->schemas[check.route]->current (check.image->gimp);
 }
 
+struct PainterColorifyCommitCheck
+{
+  PainterLayerDialog *state;
+  GimpLayer *layer;
+  const std::array<std::string,4> *text;
+};
+
+static gboolean
+painter_colorify_commit_current (gpointer data)
+{
+  const auto& check=*static_cast<const PainterColorifyCommitCheck *>(data);
+  const auto *state=check.state;
+  if (state->closed || g_strcmp0(gtk_combo_box_get_active_id(GTK_COMBO_BOX(state->choice)),"colorify")) return FALSE;
+  for (unsigned i=0;i<4;++i)
+    if ((*check.text)[i]!=gtk_entry_get_text(GTK_ENTRY(state->colorify_entries[i]))) return FALSE;
+  return !state->editing || (check.layer && state->loaded_revision==
+    gimp_filter_layer_get_definition_revision(GIMP_FILTER_LAYER(check.layer)));
+}
+
 static gboolean
 painter_filter_isolated_args (PainterLayerDialog *state, const gchar *route,
                              GimpImage *image, GimpLayer *layer, GimpValueArray **result)
@@ -1492,6 +1515,25 @@ painter_filter_number (const GValue *value,
   return std::isfinite (*out) && *out >= min && *out <= max;
 }
 
+/* Native Colorify has an explicit new immutable tint identity. The old boxed
+ * tint was not serialized, so an unknown/lost definition never supplies defaults. */
+static bool
+painter_colorify_tint (const GimpValueArray *args, std::array<double,4>& values)
+{
+  if (!args || gimp_value_array_length (args) != 4) return false;
+  for (unsigned i=0;i<3;++i)
+    if (!G_VALUE_HOLDS_INT (gimp_value_array_index (args,i))) return false;
+  const auto *value=gimp_value_array_index (args,3);
+  if (!G_VALUE_HOLDS_VARIANT (value)) return false;
+  GVariant *tint=g_value_get_variant (value);
+  if (!tint || !g_variant_is_of_type (tint,G_VARIANT_TYPE ("(sudddd)"))) return false;
+  const char *identity;guint version;
+  g_variant_get (tint,"(&sudddd)",&identity,&version,&values[0],&values[1],&values[2],&values[3]);
+  if (strcmp(identity,"gimp-painter-colorify-rgba") || version!=1) return false;
+  for (double v:values) if (!std::isfinite(v) || v<0 || v>1) return false;
+  return true;
+}
+
 /* Keep unsupported shapes selected as "keep", including known procedure names
  * with future/unknown arguments. Merely opening and accepting never normalizes. */
 static void
@@ -1524,6 +1566,17 @@ painter_filter_load (PainterLayerDialog *state,
   args_owner = filter.arguments ();
   args = args_owner.get ();
   count = args ? gimp_value_array_length (args) : 0;
+  if (!g_strcmp0 (procedure,"plug-in-colorify") && painter_colorify_tint (args,state->colorify_values))
+    {
+      for (unsigned i=0;i<4;++i) {
+        char text[G_ASCII_DTOSTR_BUF_SIZE];
+        state->colorify_text[i]=g_ascii_dtostr(text,sizeof text,state->colorify_values[i]);
+        gtk_entry_set_text(GTK_ENTRY(state->colorify_entries[i]),state->colorify_text[i].c_str());
+      }
+      state->colorify_loaded=true;
+      gtk_combo_box_set_active_id(GTK_COMBO_BOX(state->choice),"colorify");
+      goto out;
+    }
   if ((!g_strcmp0 (procedure,"plug-in-vinvert") && count == 3) ||
       ((!g_strcmp0 (procedure,"plug-in-max-rgb") || !g_strcmp0 (procedure,"plug-in-threshold-alpha")) &&
        count == 4 && G_VALUE_HOLDS_INT (gimp_value_array_index (args,3))))
@@ -1590,9 +1643,15 @@ painter_filter_response (PainterLayerDialog *state,
   const gchar       *procedure;
   GBytes            *raw = NULL;
   gboolean           success = TRUE;
+  std::array<std::string,4> colorify_text;
 
   if (response != GTK_RESPONSE_OK)
     goto close;
+  /* Capture allocation-bearing draft strings inside the guarded callback,
+   * before acquiring the manually released native response leases. */
+  if (!state->closed && !g_strcmp0(gtk_combo_box_get_active_id(GTK_COMBO_BOX(state->choice)),"colorify"))
+    for (unsigned i=0;i<4;++i)
+      colorify_text[i]=gtk_entry_get_text(GTK_ENTRY(state->colorify_entries[i]));
   image = GIMP_IMAGE (g_weak_ref_get (&state->image));
   layer = GIMP_LAYER (g_weak_ref_get (&state->layer));
   if (state->closed || ! image || (state->editing &&
@@ -1611,6 +1670,25 @@ painter_filter_response (PainterLayerDialog *state,
                   !strcmp (choice, "retinex") ? "plug-in-retinex" : "plug-in-convmatrix";
       if (!painter_filter_isolated_args (state, choice, image, layer, &args)) goto out;
       if (!args) goto close;
+    }
+  else if (g_str_equal (choice, "colorify"))
+    {
+      if (state->editing && state->loaded_revision!=gimp_filter_layer_get_definition_revision(GIMP_FILTER_LAYER(layer))) {
+        painter_dialog_error(state,_("This filter definition changed while the editor was open. Reopen the editor to use the latest values."));goto out;
+      }
+      std::array<double,4> tint=state->colorify_values;
+      for (unsigned i=0;i<4;++i) {
+        const char *text=colorify_text[i].c_str();
+        if (state->colorify_loaded && state->colorify_text[i]==text) continue;
+        char *end=nullptr;errno=0;tint[i]=g_ascii_strtod(text,&end);
+        if (!text[0] || !end || *end || errno==ERANGE || !std::isfinite(tint[i]) || tint[i]<0 || tint[i]>1) {
+          painter_dialog_error(state,_("Colorify channels must be finite numbers from 0 to 1."));goto out;
+        }
+      }
+      procedure="plug-in-colorify";
+      GVariant *value=g_variant_ref_sink(g_variant_new("(sudddd)","gimp-painter-colorify-rgba",1u,tint[0],tint[1],tint[2],tint[3]));
+      args=gimp_value_array_new_from_types(NULL,G_TYPE_INT,1,G_TYPE_INT,gimp_image_get_id(image),G_TYPE_INT,0,G_TYPE_VARIANT,value,G_TYPE_NONE);
+      g_variant_unref(value);
     }
   else if (g_str_equal (choice, "edge"))
     {
@@ -1673,7 +1751,11 @@ painter_filter_response (PainterLayerDialog *state,
                 {
                   const GValue *old = gimp_value_array_index (old_args, i);
                   const GValue *current = gimp_value_array_index (args, i);
-                  if (G_VALUE_HOLDS_DOUBLE (current) ?
+                  if (g_str_equal(choice,"colorify") && i==3 && G_VALUE_HOLDS_VARIANT(current)) {
+                    std::array<double,4> retained;
+                    if (!painter_colorify_tint(old_args,retained)) compatible=FALSE;
+                  }
+                  else if (G_VALUE_HOLDS_DOUBLE (current) ?
                       ! (G_VALUE_HOLDS_DOUBLE (old) || G_VALUE_HOLDS_FLOAT (old)) :
                       ! G_VALUE_HOLDS_INT (old))
                     compatible = FALSE;
@@ -1684,7 +1766,9 @@ painter_filter_response (PainterLayerDialog *state,
                     {
                       GValue *old = gimp_value_array_index (old_args, i);
                       const GValue *current = gimp_value_array_index (args, i);
-                      if (G_VALUE_HOLDS_FLOAT (old))
+                      if (g_str_equal(choice,"colorify") && G_VALUE_HOLDS_VARIANT(old))
+                        g_value_set_variant(old,g_value_get_variant(current));
+                      else if (G_VALUE_HOLDS_FLOAT (old))
                         g_value_set_float (old, g_value_get_double (current));
                       else if (G_VALUE_HOLDS_DOUBLE (old))
                         g_value_set_double (old, g_value_get_double (current));
@@ -1709,6 +1793,11 @@ painter_filter_response (PainterLayerDialog *state,
           success = FilterLayerRef::retain (GIMP_FILTER_LAYER (layer)).try_set_definition_checked (procedure, raw, args,
             TRUE, painter_filter_commit_current, &check, &error);
         }
+      else if (g_str_equal(choice,"colorify")) {
+        PainterColorifyCommitCheck check {state,layer,&colorify_text};
+        success=FilterLayerRef::retain(GIMP_FILTER_LAYER(layer)).try_set_definition_checked(procedure,raw,args,
+          TRUE,painter_colorify_commit_current,&check,&error);
+      }
       else success = FilterLayerRef::retain (GIMP_FILTER_LAYER (layer)).try_edit_definition (procedure, raw, args, &error);
     }
   else
@@ -1730,6 +1819,11 @@ painter_filter_response (PainterLayerDialog *state,
               success = FilterLayerRef::retain (GIMP_FILTER_LAYER (layer)).try_set_definition_checked (procedure, NULL, args,
                 FALSE, painter_filter_commit_current, &check, &error);
             }
+          else if (g_str_equal(choice,"colorify")) {
+            PainterColorifyCommitCheck check {state,layer,&colorify_text};
+            success=FilterLayerRef::retain(GIMP_FILTER_LAYER(layer)).try_set_definition_checked(procedure,NULL,args,
+              FALSE,painter_colorify_commit_current,&check,&error);
+          }
           else success = FilterLayerRef::retain (GIMP_FILTER_LAYER (layer)).try_set_definition (procedure, NULL, args, &error);
           if (state->closed) goto close;
           if (success)
@@ -1825,6 +1919,7 @@ painter_filter_layer_dialog_new (GimpImage   *image,
       gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (state->choice),"vinvert",_("Value Invert (Painter compatibility)"));
       gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (state->choice),"max-rgb",_("Maximum/Minimum RGB (Painter compatibility)"));
       gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (state->choice),"threshold-alpha",_("Threshold Alpha (Painter compatibility)"));
+      gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (state->choice), "colorify", _("Colorify (explicit Painter tint)"));
       gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (state->choice), "blinds", _("Blinds (Painter compatibility)"));
       gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (state->choice), "small-tiles", _("Small Tiles (Painter compatibility)"));
       gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (state->choice), "retinex", _("Retinex (Painter compatibility)"));
@@ -1879,6 +1974,21 @@ painter_filter_layer_dialog_new (GimpImage   *image,
       state->point_argument = painter_dialog_spin (state,_("_Integer argument:"),"painter-point-argument",G_MININT,G_MAXINT,1,0);
       painter_dialog_field (state,NULL,gtk_label_new (_("Maximum RGB: positive selects maximum, otherwise minimum.\nThreshold Alpha: alpha byte threshold (normally 0–255).\nValue Invert has no additional argument.")),"painter-point-help");
       std::size_t descriptor_bytes = 0;
+      grid=gtk_grid_new();gtk_grid_set_row_spacing(GTK_GRID(grid),6);gtk_grid_set_column_spacing(GTK_GRID(grid),6);
+      gtk_stack_add_named(GTK_STACK(state->parameters),grid,"colorify");
+      {
+        const char *labels[]={_("Red (0–1):"),_("Green (0–1):"),_("Blue (0–1):"),_("Alpha metadata (unused):")};
+        const char *names[]={"painter-colorify-red","painter-colorify-green","painter-colorify-blue","painter-colorify-alpha"};
+        for (unsigned i=0;i<4;++i) {
+          auto *entry=gtk_entry_new();state->colorify_entries[i]=entry;
+          gtk_widget_set_name(entry,names[i]);gtk_entry_set_max_length(GTK_ENTRY(entry),128);
+          gtk_entry_set_text(GTK_ENTRY(entry),"1");gtk_entry_set_activates_default(GTK_ENTRY(entry),TRUE);
+          gtk_grid_attach(GTK_GRID(grid),gtk_label_new(labels[i]),0,i,1,1);gtk_grid_attach(GTK_GRID(grid),entry,1,i,1,1);
+        }
+        auto *help=gtk_label_new(_("Explicit non-linear 8-bit RGB tint. Alpha is retained metadata, not a pixel multiplier. Lost old boxed tints are never reconstructed."));
+        gtk_label_set_line_wrap(GTK_LABEL(help),TRUE);gtk_label_set_max_width_chars(GTK_LABEL(help),55);
+        gtk_grid_attach(GTK_GRID(grid),help,0,4,2,1);
+      }
       for (unsigned index = 0; index < state->schemas.size (); ++index)
         {
           try
@@ -1934,6 +2044,8 @@ painter_filter_layer_dialog_new (GimpImage   *image,
       painter_dialog_connect (state,state->radius,"value-changed",G_CALLBACK (painter_filter_dirty));
       painter_dialog_connect (state,state->horizontal_flag,"value-changed",G_CALLBACK (painter_filter_dirty));
       painter_dialog_connect (state,state->vertical_flag,"value-changed",G_CALLBACK (painter_filter_dirty));
+      for (auto *entry : state->colorify_entries)
+        painter_dialog_connect(state,entry,"changed",G_CALLBACK(painter_filter_dirty));
       for (const auto& number : state->numbers)
         painter_dialog_connect (state, number.entry, "changed", G_CALLBACK (painter_filter_dirty));
       for (const auto& flag : state->flags)

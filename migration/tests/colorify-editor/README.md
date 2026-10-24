@@ -1,0 +1,15 @@
+# Colorify native tint page in the existing Filter Layer dialog
+
+Original 16.022 stays DOING. This extends the existing native editor, not the four isolated plug-in enum/schema routes. No arbitrary PDB execution or old boxed tint reconstruction. Current exact signed tuple codec proof is f5398e02c4.
+
+Seven normal and seven scoped ASan/UBSan cases each create an actual associated GimpDisplay, parent the real editor to its window, explicitly enable/assert oncanvas visibility/config and root1080×1920. Cases: new tint creation with independent white→(127,63,254,255) pixels; exact no-op/cancel and one-channel edit/Undo/Redo preserving signed-zero channels/unused alpha/raw/context; unknown/future/invalid/null Keep; invalid text and stale definition rejection; retained control after close inert; actual creation status callback closes editor; actual Undo-pushed callback changes draft and rejects/rolls back publication. No Edge execution.
+
+New draft strings are captured within the existing noexcept boundary, before manually owned native leases; commit checker compares captured text, choice, revision and closed state. Untouched fields use original double bits. Explicit user selection may create a new tint, but an unsupported saved definition stays Keep unless deliberately replaced.
+
+Causal red uses exact committed dialog plus identical new fixture and fails missing Colorify selection after actual oncanvas assertion. Initial absent auxiliary link objects and private runtime menus are preserved as setup failures, not product reds. Green uses private dialog/test objects. Eight sanitizer units: dialog/test/Filter/context/Undo/store/binding/error; three auxiliary test TUs uninstrumented, no-RTTI preserved/vptr excluded. Other libraries are uninstrumented. Expanded archive members, compiler dependencies, resolved libraries and binary hashes sealed. Seven libgimp DSOs were copied privately before sanitizer runtime to avoid future clean rebuild drift; original/native run bindings retained.
+
+Pictures are actual1080×1920 Xvfb rendering: white source before, purple filtered result after. **Before editor is occluded by Xvfb stacking; these are canvas-result pictures, not proof that controls were visible.** A separate fixture-only capture follow-up will raise/show the page. Baseline icons/assets log missing entries; no overall icon/theme visual parity claim. GTK signals drive the test, not mouse gestures.
+
+Original pinned old app setter is called by XCF loader; old New Filter response only creates the default Filter. There is no old generic color editor silently replaced here. Old scalar arithmetic is separately pinned by Colorify foundation/kernel/native receipts. No high precision or old runtime claim.
+
+Run portable `python3 migration/tests/colorify-editor/validate.py [--check-owned]`. Build/runtime scripts are archival exact55bf read-only private-link commands, not fresh checkout builders. They retain all source/input provenance; no shared clean source/object was modified.
