@@ -1,0 +1,36 @@
+__wrap_gimp_tool_control_halt
+??:?
+(anonymous namespace)::clear_input(_GimpTool*)
+gimppaintermybrushtool.cpp:?
+(anonymous namespace)::cancel_observed(_GObject*, void*)::{lambda()#1}::operator()() const [clone .isra.0]
+gimppaintermybrushtool.cpp:?
+(anonymous namespace)::image_dirty(_GimpImage*, GimpDirtyMask, void*)
+gimppaintermybrushtool.cpp:?
+gimp_image_dirty
+??:?
+gimp_image_undo_push_prepared_internal
+gimpimage-undo.c:?
+gimp_image_undo_publish_prepared
+??:?
+GimpPainter::MyPaint::PaintCore::Impl::end(bool)
+:?
+GimpPainter::MyPaint::PaintCore::configure(GimpPainter::MyPaint::Resource const&)
+:?
+(anonymous namespace)::refresh(_GimpPainterSession*)
+gimp-painter-session.cpp:?
+void GimpPainter::boundary_void<(anonymous namespace)::changed(_GObject*, void*)::{lambda()#1}>(_GError**, (anonymous namespace)::changed(_GObject*, void*)::{lambda()#1}&&) [clone .constprop.0] [clone .isra.0]
+gimp-painter-session.cpp:?
+(anonymous namespace)::changed(_GObject*, void*)
+gimp-painter-session.cpp:?
+(anonymous namespace)::notify_changed(_GimpPainterMybrushOptions*, unsigned long, bool, bool, bool)
+gimp-painter-options.cpp:?
+(anonymous namespace)::set_property(_GObject*, unsigned int, _GValue const*, _GParamSpec*)
+gimp-painter-options.cpp:?
+trace()
+current.cpp:?
+gimp_test_app_activate_callback
+tests.c:?
+main
+??:?
+_start
+??:?

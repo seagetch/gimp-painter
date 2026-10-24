@@ -1,0 +1,26 @@
+# Ordinary physical gesture: one paired native Undo
+
+This is a bounded child of original21.014, not closure of its unchanged criterion **一筆一 Undo で開始前へ戻る**. The required user decision about Save during a held press is pending. Existing supported Save checkpoint/held-motion continuation is deliberately retained and tested, so that case still produces two entries. No elapsed time or silence is treated as approval to suppress it.
+
+## Production change
+A private interactive mode reuses the existing sole native paint snapshot and paired historical evaluator/Resource payload. It does not reset the warmed evaluator on press. Each logical engine split still retires its raster/resources and preserves the old evaluator timing. Release processes its existing zero-pressure delayed tail, then publishes one paired entry. No early native group is opened, no pregesture redo is cleared during motion, and no duplicate history owner is introduced. Generic immutable batch behavior remains unchanged.
+
+Settings changes retire the logical raster and configure the existing evaluator while keeping the physical before-state. The old registered Tool accidentally halted here: options set_property → Session refresh → configure → end(true) → prepared publication → image dirty → the Tool's own image_dirty → cancel_observed → clear_input → control halt. A test-only linker wrapper captured this exact stack. Avoiding premature publication removes that self-dirty cancellation, deliberately allowing the same gesture to continue. The direct-core oracle compares every pixel and independent checkpoint continuation for180 samples and two settings changes, both incremental and nonincremental.
+
+A failed pre-start admission releases interactive bookkeeping without native start/freeze; the same controller can be used for a later valid gesture. Active cancellation/disposal restores the whole gesture and preserves pregesture redo. Existing geometry conflict rejection and terminal Tool retirement are unchanged.
+
+The Session facade's redundant outer extern-C block was removed: its C header and native prerequisites already declare their own G_BEGIN_DECLS. A first-include C++14 probe had exposed GLib C++ templates incorrectly nested under the outer C linkage. First/double include and no-RTTI compilation now cover both changed facades.
+
+## Save is an explicit unresolved exception
+The original runtime probe uses the registered Tool and actual file_save/XCF writer, reopens the file and verifies exact saved pixels. Its native control has preserve=true; the manager therefore skips its generic COMMIT/HALT path. The Tool's own saving callback commits the current prefix while leaving the physical press active. Subsequent held motion paints another transaction. A signal-only preliminary probe is kept separately and is not misrepresented as the real file test.
+
+The candidate retains that behavior: real Save produces one prefix entry; held continuation/release produces a second, Undo returns exactly to the saved prefix, and Redo restores the continuation. A Save rejected at pending-paint preflight leaves the active gesture intact. The existing save/disposal, XCF, pipe-tail and release tests are retained. The old pipe fixture's expectation pending=true AFTER release was changed to pending=false/depth1/pipe-use0, because ordinary physical release now seals the entry; every tail-pixel/pipe-index/Save/XCF/Undo/Redo assertion remains.
+
+## Causal reference and scope
+The old real core/drawable long-stroke diagnostic produced three logical history entries. The earlier current registered Tool diagnostic likewise produced three after a final saving flush. A later current reference captures release before that extra flush: two committed entries plus its open tail. Both distinguish finalization timing rather than contradict each other. In the candidate the same ordinary gesture is fully sealed at release with one entry. All360 no-settings per-sample pixel hashes (incremental and nonincremental) and both final release hashes match that old current-provider reference exactly.
+
+Tests use authenticated1080×1920 Xvfb. Screenshots show an actual1040×1800 application, oncanvas enabled, at300% zoom: before, released multi-segment gesture, one Undo, one Redo. Input is native Tool API press/motions/release with timestamps, not OS pointer automation. Redraw uses normal application flushing. No Save exception is depicted or claimed resolved by those pictures.
+
+Normal model7 + Tool8, selected20-unit ASan/UBSan15, original Tool27, Surface24, Session10, generic Batch13, paired18, geometry14+8, and the unchanged129/385/193-record old golden comparisons are recorded separately. Four causal controls remove split aggregation, reset the warmed evaluator, commit cancellation, or omit release sealing. Dependencies outside the20 named units, vptr checks and LSan are not instrumented; no whole-application sanitizer claim is made. Native pixel allocator semantics remain unchanged.
+
+Historical fixture failures (private-field access, nested fixture main, incorrect Save-HALT expectation, earlier postrelease pending expectation, and first-include linkage) are retained and classified, not presented as new product failures. Held providers remain fixed committed baselines; no paused candidate/diagnostic is retried.

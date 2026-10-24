@@ -920,6 +920,7 @@
 | 21.012 | [ ] | ストローク全体の不透明度を実装する | 21.011 | dab opacity への単純置換をしない |
 | 21.013 | [ ] | 非累積の表示合成を実装する | 21.012 | 作業中の見た目と確定結果が整合 |
 | 21.014 | [ ] | ストローク確定を Undo に接続する | 21.013 | 一筆一 Undo で開始前へ戻る |
+| 21.014/ordinary-physical-gesture | [x] | 通常pressからreleaseをlogical splitを保った一paired Undoへ接続する | 09.011/mypaint-undo-stroke | Saveを含まない通常gestureの画素/evaluator/Resource往復、cancel/redo保持、129native・20-unit ASan15・4変異・3旧golden・portrait4PNGを検証。実Save後のheld continuationは既存2entryを維持し利用者判断待ち、原21.014と21.013依存は未完。migration/tests/physical-gesture-21014/ |
 | 21.015 | [ ] | ストローク取消しを実装する | 21.014 | 作業 buffer を破棄し開始前を保持 |
 | 21.016 | [ ] | dirty と extent 更新を接続する | 21.015 | ブラシ外への不要更新を抑える |
 | 21.017 | [ ] | 負座標・画面外の dab を処理する | 21.016 | buffer 境界を破らない |

@@ -368,7 +368,9 @@ static void pipe_release_save_roundtrip()
   // Actual registered release dispatch must preserve the delayed tail.
   s.coords.x+=12;s.time+=100;s.release();const auto released=s.pixels();g_assert_true(released!=pressed);
   const int index=pipe->index[0];auto*child=pipe->current;
-  g_assert_true(gimp_painter_mybrush_tool_has_pending_stroke(GIMP_PAINTER_MYBRUSH_TOOL(s.tool)));
+  // A physical release now seals the paired entry immediately, after its tail.
+  g_assert_false(gimp_painter_mybrush_tool_has_pending_stroke(GIMP_PAINTER_MYBRUSH_TOOL(s.tool)));
+  g_assert_cmpint(s.depth(),==,1);g_assert_cmpint(GIMP_BRUSH(pipe)->priv->use_count,==,0);
   auto*procedure=gimp_pdb_lookup_procedure(gimp->pdb,"gimp-xcf-save");g_assert_true(GIMP_IS_PLUG_IN_PROCEDURE(procedure));
   GFileIOStream*io=nullptr;auto*file=g_file_new_tmp("painter-pipe-tool-XXXXXX.xcf",&io,&error);g_assert_no_error(error);g_assert_nonnull(file);
   g_assert_true(g_io_stream_close(G_IO_STREAM(io),nullptr,&error));g_assert_no_error(error);g_object_unref(io);

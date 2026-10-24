@@ -1,0 +1,44 @@
+Xvfb verified: 127.0.0.1:92, 1080x1920x24, authenticated accepted, empty authority rejected
+1/2 gimp:app / painter-physical-gesture OK               1.24s
+2/2 gimp:app / painter-physical-tool    OK               7.55s
+
+Ok:                 2   
+Expected Fail:      0   
+Fail:               0   
+Unexpected Pass:    0   
+Skipped:            0   
+Timeout:            0   
+
+Full log written to /workspace/shared/gimp-native-preset-gui/build/meson-logs/physical-new.txt
+
+Xvfb verified: 127.0.0.1:94, 1080x1920x24, authenticated accepted, empty authority rejected
+1/1 gimp:app / painter-mypaint-tool OK              46.81s
+
+Ok:                 1   
+Expected Fail:      0   
+Fail:               0   
+Unexpected Pass:    0   
+Skipped:            0   
+Timeout:            0   
+
+Full log written to /workspace/shared/gimp-native-preset-gui/build/meson-logs/physical-candidate.txt
+
+Xvfb verified: 127.0.0.1:92, 1080x1920x24, authenticated accepted, empty authority rejected
+1/9 gimp:app / gimp-painter-surface                    OK               3.71s
+2/9 gimp:painter / painter-mypaint-legacy-session      OK               1.55s
+3/9 gimp:app / gimp-painter-session                    OK               1.09s
+4/9 gimp:painter / painter-mypaint-legacy-rgb-session  OK               2.93s
+5/9 gimp:app / gimp-painter-batch                      OK               1.15s
+6/9 gimp:painter / painter-mypaint-legacy-gray-session OK               1.30s
+7/9 gimp:app / paired-stroke-undo                      OK               1.16s
+8/9 gimp:app / paint-geometry-conflict                 OK               1.30s
+9/9 gimp:app / paint-geometry-tool                     OK               3.12s
+
+Ok:                 9   
+Expected Fail:      0   
+Fail:               0   
+Unexpected Pass:    0   
+Skipped:            0   
+Timeout:            0   
+
+Full log written to /workspace/shared/gimp-native-preset-gui/build/meson-logs/physical-regressions.txt

@@ -2,9 +2,7 @@
 #ifndef GIMP_PAINTER_SESSION_HPP
 #define GIMP_PAINTER_SESSION_HPP
 #include "../../painter/gimp-painter-visibility.h"
-extern "C" {
 #include "gimp-painter-session.h"
-}
 #include "painter/object-ref.hpp"
 namespace GimpPainter GIMP_PAINTER_PRIVATE {
 template<> struct TypeTraits<GimpPainterSession>
@@ -13,6 +11,7 @@ class PainterSessionRef {
 public:
   static PainterSessionRef retain(GimpPainterSession*p){return PainterSessionRef(ObjectRef<GimpPainterSession>::retain(p));}
   static PainterSessionRef adopt(GimpPainterSession*p){return PainterSessionRef(ObjectRef<GimpPainterSession>::adopt(p));}
+  void begin_gesture() const;
   GimpPainterSession*get() const noexcept{return owner_.get();}
 private:
   explicit PainterSessionRef(ObjectRef<GimpPainterSession>owner):owner_(std::move(owner))

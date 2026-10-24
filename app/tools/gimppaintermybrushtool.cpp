@@ -67,7 +67,7 @@ struct ToolImpl {
 struct ToolSlot:SlotSpec<GimpPainterMybrushTool,ToolImpl>{};
 BindingStore&store(GimpTool*tool){return BindingStore::require(G_OBJECT(tool));}
 bool usable(GimpTool*tool){auto*b=BindingStore::find(G_OBJECT(tool));return b&&b->state()==BindingStore::State::active;}
-void input(GimpTool*,const GimpCoords*,guint32,GimpDisplay*,bool);
+void input(GimpTool*,const GimpCoords*,guint32,GimpDisplay*,bool,bool finish_after=false);
 struct Operation {
   PainterMybrushToolRef owner;
   BindingStore&binding;
@@ -78,7 +78,7 @@ struct Operation {
     boundary_void(nullptr,[&]{if(!binding.accepts(generation))return;
       struct Pending {bool ready;GimpCoords coords;guint32 time;ObjectRef<GimpDisplay> display;};
       auto pending=binding.with<ToolSlot>([](ToolImpl&i){i.busy=false;Pending p{i.hover_pending,i.pending_coords,i.pending_time,i.pending_display.lock()};i.hover_pending=false;i.pending_display.reset();return p;});
-      if(pending.ready&&pending.display)input(GIMP_TOOL(owner.get()),&pending.coords,pending.time,pending.display.get(),false);
+      if(pending.ready&&pending.display)input(GIMP_TOOL(owner.get()),&pending.coords,pending.time,pending.display.get(),false,true);
     });
   }
 };
@@ -177,7 +177,7 @@ void observe_targets(GimpTool*tool,GimpDisplay*display,GimpImage*image,GimpDrawa
   auto retired=binding.with<ToolSlot>([&](ToolImpl&i){auto previous=std::move(i.connections);i.connections=std::move(connections);i.observed_image=WeakRef<GimpImage>(ObjectRef<GimpImage>::retain(image));i.observed_drawable=WeakRef<GimpDrawable>(ObjectRef<GimpDrawable>::retain(drawable));return previous;});
   for(auto&c:retired)c.close();
 }
-void input(GimpTool*tool,const GimpCoords*coords,guint32 time,GimpDisplay*display,bool paint)
+void input(GimpTool*tool,const GimpCoords*coords,guint32 time,GimpDisplay*display,bool paint,bool finish_after)
 {
   Operation operation(tool);DrawPause draw_pause(tool);auto display_owner=ObjectRef<GimpDisplay>::retain(display);
   if(!session(tool))return; // A rejected transaction is replaced only by a new press.
@@ -197,8 +197,10 @@ void input(GimpTool*tool,const GimpCoords*coords,guint32 time,GimpDisplay*displa
   if(state.display_changed)gimp_painter_session_cancel(state.session.get(),&error);
   if(error){report(tool,display,error);return;}
   GimpCoords local=*coords;gint x,y;gimp_item_get_offset(GIMP_ITEM(drawable.get()),&x,&y);local.x-=x;local.y-=y;
-  const gboolean success=paint?gimp_painter_session_stroke_to(state.session.get(),drawable.get(),state.seconds,&local,nullptr,&error):
+  if(paint&&!boundary<gboolean>(&error,FALSE,[&]() -> gboolean{PainterSessionRef::retain(state.session.get()).begin_gesture();return TRUE;})){report(tool,display,error);return;}
+  gboolean success=paint?gimp_painter_session_stroke_to(state.session.get(),drawable.get(),state.seconds,&local,nullptr,&error):
                                gimp_painter_session_hover_to(state.session.get(),drawable.get(),state.seconds,&local,nullptr,&error);
+  if(success&&finish_after)success=gimp_painter_session_finish(state.session.get(),&error);
   if(!success)report(tool,display,error);
   if(success&&gimp_display_get_image(display)==image.get()) {
     gimp_projection_finish_draw(gimp_image_get_projection(image.get()));
@@ -277,7 +279,7 @@ void release(GimpTool*tool,const GimpCoords*coords,guint32 time,GdkModifierType 
         gimp_display_flush_now(display_owner.get());
       }
     }
-    else if(!busy)input(tool,coords,time,display,false); // engine decides the idle split
+    else if(!busy)input(tool,coords,time,display,false,true); // retain release tail, then seal one physical gesture
     g_clear_pointer(&tool->drawables,g_list_free);
   });
 }

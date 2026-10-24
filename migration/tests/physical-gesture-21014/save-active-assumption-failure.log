@@ -1,0 +1,121 @@
+Xvfb verified: 127.0.0.1:95, 1080x1920x24, authenticated accepted, empty authority rejected
+1/2 gimp:app / painter-physical-gesture OK               1.37s
+2/2 gimp:app / painter-physical-tool    FAIL             6.93s   killed by signal 6 SIGABRT
+>>> MESON_TEST_ITERATION=1 MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 MALLOC_PERTURB_=212 UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 LD_LIBRARY_PATH=/workspace/shared/gimp-native-preset-gui/build/libgimpwidgets:/workspace/shared/gimp-native-preset-gui/build/libgimpbase:/workspace/shared/gimp-native-preset-gui/build/libgimpmodule:/workspace/shared/gimp-native-preset-gui/build/libgimpconfig:/workspace/shared/gimp-native-preset-gui/build/libgimpmath:/workspace/shared/gimp-native-preset-gui/build/libgimpcolor:/workspace/shared/gimp-native-preset-gui/build/libgimpthumb:/workspace/shared/gimp-native-preset-gui/build/libgimpthumb:/workspace/shared/gimp-native-preset-gui/build/libgimpconfig:/workspace/shared/gimp-native-preset-gui/build/libgimpmodule:/workspace/shared/gimp-native-preset-gui/build/libgimpwidgets:/workspace/shared/gimp-native-preset-gui/build/libgimpmath:/workspace/shared/gimp-native-preset-gui/build/libgimpcolor:/workspace/shared/gimp-native-preset-gui/build/libgimpbase:/workspace/shared/gimp-native-preset-gui/build/libgimp:/workspace/shared/gimp-native-preset-gui/prefix/lib/x86_64-linux-gnu:/workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu /workspace/shared/gimp-native-preset-gui/build/app/tests/painter-physical-tool
+――――――――――――――――――――――――――――――――――――― ✀  ―――――――――――――――――――――――――――――――――――――
+Listing only the last 100 lines from a long log.
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 36 x 36
+# GdkPixbuf-DEBUG: 	Rowstride: 144, Length: 5208
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 36 x 36
+# GdkPixbuf-DEBUG: 	Rowstride: 144, Length: 5208
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 36 x 36
+# GdkPixbuf-DEBUG: 	Rowstride: 144, Length: 5208
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 36 x 36
+# GdkPixbuf-DEBUG: 	Rowstride: 144, Length: 5208
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+ok 1 /physical/tool/roundtrip
+# slow test /physical/tool/roundtrip executed in 4.96 secs
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+ok 2 /physical/tool/cancel
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+not ok /physical/tool/save-motion-release - ERROR:../source/app/tests/test-painter-physical-tool.cpp:12:void save_motion_release(): 'gimp_tool_control_is_active(s.tool->control)' should be FALSE
+Bail out!
+stderr:
+Application icon missing: /workspace/shared/gimp-native-preset-gui/source/desktop/16x16/gimp.png (Failed to open file “/workspace/shared/gimp-native-preset-gui/source/desktop/16x16/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-native-preset-gui/source/desktop/32x32/gimp.png (Failed to open file “/workspace/shared/gimp-native-preset-gui/source/desktop/32x32/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-native-preset-gui/source/desktop/48x48/gimp.png (Failed to open file “/workspace/shared/gimp-native-preset-gui/source/desktop/48x48/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-native-preset-gui/source/desktop/64x64/gimp.png (Failed to open file “/workspace/shared/gimp-native-preset-gui/source/desktop/64x64/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-native-preset-gui/source/desktop/scalable/gimp.svg (Failed to open file “/workspace/shared/gimp-native-preset-gui/source/desktop/scalable/gimp.svg”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-native-preset-gui/source/desktop/256x256/gimp.png
+gui_dbus_name_lost: connection to the bus cannot be established.
+set device 'Virtual core XTEST pointer' to mode: disabled
+set device 'Xvfb mouse' to mode: disabled
+**
+ERROR:../source/app/tests/test-painter-physical-tool.cpp:12:void save_motion_release(): 'gimp_tool_control_is_active(s.tool->control)' should be FALSE
+――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+
+
+Summary of Failures:
+
+2/2 gimp:app / painter-physical-tool    FAIL             6.93s   killed by signal 6 SIGABRT
+
+Ok:                 1   
+Expected Fail:      0   
+Fail:               1   
+Unexpected Pass:    0   
+Skipped:            0   
+Timeout:            0   
+
+Full log written to /workspace/shared/gimp-native-preset-gui/build/meson-logs/physical-new.txt

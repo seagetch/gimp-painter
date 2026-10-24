@@ -186,3 +186,6 @@ gboolean gimp_painter_session_is_active(GimpPainterSession*session)
 {return boundary<gboolean>(nullptr,FALSE,[&]{return store(session).read<SessionSlot>([](const SessionImpl&i)->gboolean{return i.core&&i.core->active();});});}
 gchar*gimp_painter_session_dup_error(GimpPainterSession*session)
 {return boundary<gchar*>(nullptr,nullptr,[&]{return store(session).read<SessionSlot>([](const SessionImpl&i){return i.error.empty()?nullptr:g_strdup(i.error.c_str());});});}
+
+void GimpPainter::PainterSessionRef::begin_gesture() const
+{operate(get(),true,[](PaintCore&core){core.begin_gesture();});}

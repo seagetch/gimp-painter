@@ -158,7 +158,7 @@ struct PaintCore::Impl : std::enable_shared_from_this<Impl> {
     auto live=static_cast<std::weak_ptr<Impl>*>(data)->lock();
     // An open interactive stroke can finish on the saving signal; native Undo
     // must instead reject it before moving either history stack.
-    return live&&(live->starting||live->ending||live->processing||live->batch||live->history_depth||
+    return live&&(live->starting||live->ending||live->processing||(live->batch&&!live->gesture)||live->history_depth||
                   (live->started&&gimp_image_undo_is_pop_active(image)));
   }
   Connection make_pending(GimpImage*i) {
@@ -171,7 +171,7 @@ struct PaintCore::Impl : std::enable_shared_from_this<Impl> {
   std::shared_ptr<GeglSurface> surface;
   std::shared_ptr<GimpResources> resources;
   bool started=false,starting=false,ending=false,cancel_requested=false,finish_requested=false,processing=false,logical=false;
-  bool batch=false,batch_aborted=false,push_undo=true;
+  bool batch=false,batch_aborted=false,push_undo=true,gesture=false;
   std::unique_ptr<gchar,decltype(&g_free)> saved_undo_desc{nullptr,g_free};
   bool custom_undo_desc=false;
   void validate_input(double dt,const GimpCoords&c)
@@ -204,10 +204,11 @@ struct PaintCore::Impl : std::enable_shared_from_this<Impl> {
   void end(bool commit)
   {
     require_usable();
-    if(batch){batch_aborted=true;commit=false;}
+    if(batch&&!gesture){batch_aborted=true;commit=false;}
     if(starting){cancel_requested=true;return;}
     if(processing){finish_requested=true;if(!commit)cancel_requested=true;return;}
     if(ending||history_depth)return;
+    if(gesture){gesture=false;batch=false;}
     ++lifecycle;logical=false;logical_target=WeakRef<GimpDrawable>();
     cancel_requested=finish_requested=false;
     if(!started){if(!commit)restore_before();clear_before();return;}
@@ -219,7 +220,7 @@ struct PaintCore::Impl : std::enable_shared_from_this<Impl> {
     auto reject_conflict=[&]{
       // Terminal rejection, not rollback. Keep baseline/checkpoint for the
       // caller until explicit owner disposal, but release native paint leases.
-      conflicted=true;started=false;batch=false;batch_aborted=false;
+      conflicted=true;started=false;batch=false;gesture=false;batch_aborted=false;
       if(raster){read+=raster->bytes_read();written+=raster->bytes_written();raster->end_session();}
       gimp_paint_core_finish(c,&drawables,FALSE);
       release_native_scratch();surface.reset();resources.reset();pending_paint.close();
@@ -300,6 +301,17 @@ struct PaintCore::Impl : std::enable_shared_from_this<Impl> {
       batch=true;batch_aborted=false;push_undo=undo;logical=false;logical_target=WeakRef<GimpDrawable>();++lifecycle;
     }catch(...){restore_before();clear_before();restore_undo_desc();throw;}
   }
+  void begin_gesture()
+  {
+    require_usable();
+    if(starting||ending||processing||history_depth)throw std::logic_error("Paint transaction is transitioning");
+    if(gesture)return;
+    if(batch||started)throw std::logic_error("Paint operation is already active");
+    // Unlike generic atomic operations, a physical press continues the warmed
+    // evaluator. Logical splits still retire their raster/resources separately.
+    capture_before();
+    batch=true;gesture=true;batch_aborted=false;push_undo=true;
+  }
   void end_batch(bool commit)
   {
     require_usable();
@@ -379,7 +391,7 @@ struct PaintCore::Impl : std::enable_shared_from_this<Impl> {
       }
     }catch(...){
       if(started){starting=false;end(false);}
-      else {release_native_scratch();resources.reset();surface.reset();pending_paint.close();drawable.reset();image.reset();starting=false;if(batch)batch_aborted=true;restore_before();clear_before();}
+      else {release_native_scratch();resources.reset();surface.reset();pending_paint.close();drawable.reset();image.reset();starting=false;if(gesture){gesture=false;batch=false;}else if(batch)batch_aborted=true;restore_before();clear_before();}
       throw;
     }
     starting=false;
@@ -458,11 +470,12 @@ struct PaintCore::Impl : std::enable_shared_from_this<Impl> {
 };
 PaintCore::PaintCore(GimpPaintOptions*options,const Resource&resource):impl_(std::make_shared<Impl>(options,resource)){}
 PaintCore::~PaintCore()=default;
-void PaintCore::configure(const Resource&r){auto self=impl_;self->require_usable();if(self->starting||self->ending||self->processing||self->history_depth)throw std::logic_error("Paint transaction is transitioning");if(self->batch){self->end(false);throw std::logic_error("Brush settings changed during an atomic paint operation");}auto replacement=std::make_shared<const Resource>(r);Engine validate(r);self->end(true);self->engine.configure(*replacement);self->resource=std::move(replacement);}
+void PaintCore::configure(const Resource&r){auto self=impl_;self->require_usable();if(self->starting||self->ending||self->processing||self->history_depth)throw std::logic_error("Paint transaction is transitioning");if(self->batch&&!self->gesture){self->end(false);throw std::logic_error("Brush settings changed during an atomic paint operation");}auto replacement=std::make_shared<const Resource>(r);Engine validate(r);if(self->gesture)self->retire_segment(false);else self->end(true);try{self->engine.configure(*replacement);self->resource=std::move(replacement);}catch(...){self->end(false);throw;}}
 bool PaintCore::stroke_to(GimpDrawable*d,double dt,const GimpCoords&coords){auto self=impl_;return self->motion(d,dt,coords);}
 bool PaintCore::hover_to(GimpDrawable*d,double dt,const GimpCoords&coords){auto self=impl_;return self->hover(d,dt,coords);}
 void PaintCore::finish(){auto self=impl_;self->end(true);}
 void PaintCore::cancel(){auto self=impl_;self->end(false);}
+void PaintCore::begin_gesture(){auto self=impl_;self->begin_gesture();}
 void PaintCore::begin_batch(bool push_undo,const char*description){auto self=impl_;self->begin_batch(push_undo,description);}
 void PaintCore::next_segment(){auto self=impl_;self->retire_segment(true);}
 void PaintCore::end_batch(bool commit){auto self=impl_;self->end_batch(commit);}

@@ -35,7 +35,9 @@ public:
   void finish ();
   void cancel ();
   // Generic operations use one native snapshot while logical evaluator/Surface
-  // segments remain separate. Interactive callers keep the default behavior.
+  // segments remain separate. Generic batch explicitly resets the evaluator.
+  // Interactive one-press transaction: retain warmed evaluator and logical splits.
+  void begin_gesture ();
   void begin_batch (bool push_undo, const char *undo_description = nullptr);
   void next_segment ();
   void end_batch (bool commit);
