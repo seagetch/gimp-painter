@@ -1,0 +1,10 @@
+{
+  "command": [
+    "/workspace/shared/gimp-clean-aggregate/build/app/tests/painter-xcf-open",
+    "-p",
+    "/painter-xcf-open/exchange_wire_roundtrips"
+  ],
+  "exit_code": 0,
+  "stdout": "TAP version 14\n# random seed: R02Sa42287cabe716ad81a5478701a2e380a\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# Start of painter-xcf-open tests\n# Exchange wire scene0 (writer-observed zero payload): exact UINT bytes/raw/cache,2 Save/Open rounds,independent execution pixels\n# Exchange wire scene1 (synthetic nonzero payload): exact UINT bytes/raw/cache,2 Save/Open rounds,independent execution pixels\n# Exchange wire scene2 (synthetic nonzero payload): exact UINT bytes/raw/cache,2 Save/Open rounds,independent execution pixels\n# Exchange wire scene3 (synthetic nonzero payload): exact UINT bytes/raw/cache,2 Save/Open rounds,independent execution pixels\nok 1 /painter-xcf-open/exchange_wire_roundtrips\n# End of painter-xcf-open tests\n1..1\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n",
+  "stderr": ""
+}

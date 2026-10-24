@@ -1,0 +1,101 @@
+{
+  "exchange_old_wire_admission": {
+    "command": [
+      "/workspace/shared/gimp-clean-aggregate/build/app/tests/painter-xcf-open",
+      "-p",
+      "/painter-xcf-open/exchange_old_wire_admission"
+    ],
+    "exit_code": 0,
+    "stdout": "TAP version 14\n# random seed: R02S694751e4bdc169757bbd08b8ff70e949\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# Start of painter-xcf-open tests\nok 1 /painter-xcf-open/exchange_old_wire_admission\n# End of painter-xcf-open tests\n1..1\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n",
+    "stderr": "",
+    "seconds": 0.979313183001068
+  },
+  "exchange_wire_roundtrips": {
+    "command": [
+      "/workspace/shared/gimp-clean-aggregate/build/app/tests/painter-xcf-open",
+      "-p",
+      "/painter-xcf-open/exchange_wire_roundtrips"
+    ],
+    "exit_code": 0,
+    "stdout": "TAP version 14\n# random seed: R02S60afdab0beb606006f7990ce8af678f0\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# Start of painter-xcf-open tests\n# Exchange wire scene0 (writer-observed zero payload): exact UINT bytes/raw/cache,2 Save/Open rounds,independent execution pixels\n# Exchange wire scene1 (synthetic nonzero payload): exact UINT bytes/raw/cache,2 Save/Open rounds,independent execution pixels\n# Exchange wire scene2 (synthetic nonzero payload): exact UINT bytes/raw/cache,2 Save/Open rounds,independent execution pixels\n# Exchange wire scene3 (synthetic nonzero payload): exact UINT bytes/raw/cache,2 Save/Open rounds,independent execution pixels\nok 1 /painter-xcf-open/exchange_wire_roundtrips\n# End of painter-xcf-open tests\n1..1\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n",
+    "stderr": "",
+    "seconds": 1.208011455993983
+  },
+  "exchange_malformed_wire": {
+    "command": [
+      "/workspace/shared/gimp-clean-aggregate/build/app/tests/painter-xcf-open",
+      "-p",
+      "/painter-xcf-open/exchange_malformed_wire"
+    ],
+    "exit_code": 0,
+    "stdout": "TAP version 14\n# random seed: R02S0d2797b811411290b2499b7cb4c8f70c\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# Start of painter-xcf-open tests\n# Exchange malformed0: opaque bytes/cache and2 Save/Open rounds,zero executions\n# Exchange malformed1: opaque bytes/cache and2 Save/Open rounds,zero executions\n# Exchange malformed2: opaque bytes/cache and2 Save/Open rounds,zero executions\n# Exchange malformed3: opaque bytes/cache and2 Save/Open rounds,zero executions\n# Exchange malformed4: opaque bytes/cache and2 Save/Open rounds,zero executions\n# Exchange malformed5: opaque bytes/cache and2 Save/Open rounds,zero executions\n# Exchange malformed6: opaque bytes/cache and2 Save/Open rounds,zero executions\n# Exchange malformed7: opaque bytes/cache and2 Save/Open rounds,zero executions\n# Exchange malformed8: opaque bytes/cache and2 Save/Open rounds,zero executions\n# Exchange malformed9: opaque bytes/cache and2 Save/Open rounds,zero executions\n# Exchange malformed10: opaque bytes/cache and2 Save/Open rounds,zero executions\n# Exchange malformed11: opaque bytes/cache and2 Save/Open rounds,zero executions\n# Exchange malformed12: opaque bytes/cache and2 Save/Open rounds,zero executions\n# Exchange malformed13: opaque bytes/cache and2 Save/Open rounds,zero executions\n# Exchange malformed14: opaque bytes/cache and2 Save/Open rounds,zero executions\n# Exchange malformed15: opaque bytes/cache and2 Save/Open rounds,zero executions\n# Exchange malformed16: opaque bytes/cache and2 Save/Open rounds,zero executions\n# Exchange malformed17: opaque bytes/cache and2 Save/Open rounds,zero executions\n# Exchange malformed18: opaque bytes/cache and2 Save/Open rounds,zero executions\n# Exchange malformed19: opaque bytes/cache and2 Save/Open rounds,zero executions\n# Exchange malformed20: opaque bytes/cache and2 Save/Open rounds,zero executions\n# Exchange malformed21: opaque bytes/cache and2 Save/Open rounds,zero executions\n# Exchange malformed22: opaque bytes/cache and2 Save/Open rounds,zero executions\n# Exchange malformed23: opaque bytes/cache and2 Save/Open rounds,zero executions\n# Exchange malformed24: opaque bytes/cache and2 Save/Open rounds,zero executions\n# Exchange malformed25: opaque bytes/cache and2 Save/Open rounds,zero executions\n# Exchange malformed26: opaque bytes/cache and2 Save/Open rounds,zero executions\n# Exchange malformed27: opaque bytes/cache and2 Save/Open rounds,zero executions\nok 1 /painter-xcf-open/exchange_malformed_wire\n# slow test /painter-xcf-open/exchange_malformed_wire executed in 0.65 secs\n# End of painter-xcf-open tests\n1..1\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n",
+    "stderr": "",
+    "seconds": 1.6042668329973822
+  },
+  "exchange_native_model_precedence": {
+    "command": [
+      "/workspace/shared/gimp-clean-aggregate/build/app/tests/painter-xcf-open",
+      "-p",
+      "/painter-xcf-open/exchange_native_model_precedence"
+    ],
+    "exit_code": 0,
+    "stdout": "TAP version 14\n# random seed: R02Sa2b12de5bc2abb68acd6f05f62dd2f05\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# Start of painter-xcf-open tests\nok 1 /painter-xcf-open/exchange_native_model_precedence\n# End of painter-xcf-open tests\n1..1\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n",
+    "stderr": "",
+    "seconds": 1.0823502959974576
+  },
+  "red_eye_old_wire_admission": {
+    "command": [
+      "/workspace/shared/gimp-clean-aggregate/build/app/tests/painter-xcf-open",
+      "-p",
+      "/painter-xcf-open/red_eye_old_wire_admission"
+    ],
+    "exit_code": 0,
+    "stdout": "TAP version 14\n# random seed: R02S0c3de8ed5e5c7878198eff8fbea1b4b0\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# Start of painter-xcf-open tests\nok 1 /painter-xcf-open/red_eye_old_wire_admission\n# End of painter-xcf-open tests\n1..1\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n",
+    "stderr": "",
+    "seconds": 0.9918947570040473
+  },
+  "red_eye_old_wire_roundtrips": {
+    "command": [
+      "/workspace/shared/gimp-clean-aggregate/build/app/tests/painter-xcf-open",
+      "-p",
+      "/painter-xcf-open/red_eye_old_wire_roundtrips"
+    ],
+    "exit_code": 0,
+    "stdout": "TAP version 14\n# random seed: R02S5c63f8f5c3a101be0ff06fc2ea99ab5c\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# Start of painter-xcf-open tests\n# Red Eye wire scene0: exact signed scalar bits,raw/cache;two native Save/Open rounds;execution explicit rejection\n# Red Eye wire scene1: exact signed scalar bits,raw/cache;two native Save/Open rounds;execution rational match\n# Red Eye wire scene2: exact signed scalar bits,raw/cache;two native Save/Open rounds;execution rational match\n# Red Eye wire scene3: exact signed scalar bits,raw/cache;two native Save/Open rounds;execution rational match\n# Red Eye wire scene4: exact signed scalar bits,raw/cache;two native Save/Open rounds;execution rational match\n# Red Eye wire scene5: exact signed scalar bits,raw/cache;two native Save/Open rounds;execution rational match\n# Red Eye wire scene6: exact signed scalar bits,raw/cache;two native Save/Open rounds;execution rational match\n# Red Eye wire scene7: exact signed scalar bits,raw/cache;two native Save/Open rounds;execution explicit rejection\nok 1 /painter-xcf-open/red_eye_old_wire_roundtrips\n# End of painter-xcf-open tests\n1..1\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n",
+    "stderr": "",
+    "seconds": 1.364484656995046
+  },
+  "red_eye_malformed_wire": {
+    "command": [
+      "/workspace/shared/gimp-clean-aggregate/build/app/tests/painter-xcf-open",
+      "-p",
+      "/painter-xcf-open/red_eye_malformed_wire"
+    ],
+    "exit_code": 0,
+    "stdout": "TAP version 14\n# random seed: R02S172f11d97f6da0be29980de3d0d41dd2\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# Start of painter-xcf-open tests\n# Red Eye malformed0: exact opaque bytes/cache;two Save/Open rounds;zero executions\n# Red Eye malformed1: exact opaque bytes/cache;two Save/Open rounds;zero executions\n# Red Eye malformed2: exact opaque bytes/cache;two Save/Open rounds;zero executions\n# Red Eye malformed3: exact opaque bytes/cache;two Save/Open rounds;zero executions\n# Red Eye malformed4: exact opaque bytes/cache;two Save/Open rounds;zero executions\n# Red Eye malformed5: exact opaque bytes/cache;two Save/Open rounds;zero executions\n# Red Eye malformed6: exact opaque bytes/cache;two Save/Open rounds;zero executions\n# Red Eye malformed7: exact opaque bytes/cache;two Save/Open rounds;zero executions\n# Red Eye malformed8: exact opaque bytes/cache;two Save/Open rounds;zero executions\n# Red Eye malformed9: exact opaque bytes/cache;two Save/Open rounds;zero executions\n# Red Eye malformed10: exact opaque bytes/cache;two Save/Open rounds;zero executions\n# Red Eye malformed11: exact opaque bytes/cache;two Save/Open rounds;zero executions\n# Red Eye malformed12: exact opaque bytes/cache;two Save/Open rounds;zero executions\n# Red Eye malformed13: exact opaque bytes/cache;two Save/Open rounds;zero executions\n# Red Eye malformed14: exact opaque bytes/cache;two Save/Open rounds;zero executions\n# Red Eye malformed15: exact opaque bytes/cache;two Save/Open rounds;zero executions\nok 1 /painter-xcf-open/red_eye_malformed_wire\n# End of painter-xcf-open tests\n1..1\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n",
+    "stderr": "",
+    "seconds": 1.4965124189984635
+  },
+  "max_rgb_old_writer_roundtrip": {
+    "command": [
+      "/workspace/shared/gimp-clean-aggregate/build/app/tests/painter-xcf-open",
+      "-p",
+      "/painter-xcf-open/max_rgb_old_writer_roundtrip"
+    ],
+    "exit_code": 0,
+    "stdout": "TAP version 14\n# random seed: R02S347190b3a6a0f5d402fad2b30c775c71\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# Start of painter-xcf-open tests\n# Max RGB old-writer case legacy-max-rgb-context/live-c3-17x13-m-2147483648-s0-f-1-a15-l0.xcf\n# Max RGB old-writer case legacy-max-rgb-context/live-c3-17x13-m-2-s0-f-1-a15-l0.xcf\n# Max RGB old-writer case legacy-max-rgb-context/live-c3-17x13-m-1-s0-f-1-a15-l0.xcf\n# Max RGB old-writer case legacy-max-rgb-context/live-c3-17x13-m0-s0-f-1-a15-l0.xcf\n# Max RGB old-writer case legacy-max-rgb-context/live-c3-17x13-m1-s0-f-1-a15-l0.xcf\n# Max RGB old-writer case legacy-max-rgb-context/live-c3-17x13-m3-s0-f-1-a15-l0.xcf\n# Max RGB old-writer case legacy-max-rgb-context/live-c3-17x13-m2147483647-s0-f-1-a15-l0.xcf\n# Max RGB old-writer case legacy-max-rgb-context/live-c4-17x13-m-2147483648-s0-f-1-a15-l0.xcf\n# Max RGB old-writer case legacy-max-rgb-context/live-c4-17x13-m-2-s0-f-1-a15-l0.xcf\n# Max RGB old-writer case legacy-max-rgb-context/live-c4-17x13-m-1-s0-f-1-a15-l0.xcf\n# Max RGB old-writer case legacy-max-rgb-context/live-c4-17x13-m0-s0-f-1-a15-l0.xcf\n# Max RGB old-writer case legacy-max-rgb-context/live-c4-17x13-m1-s0-f-1-a15-l0.xcf\n# Max RGB old-writer case legacy-max-rgb-context/live-c4-17x13-m3-s0-f-1-a15-l0.xcf\n# Max RGB old-writer case legacy-max-rgb-context/live-c4-17x13-m2147483647-s0-f-1-a15-l0.xcf\nok 1 /painter-xcf-open/max_rgb_old_writer_roundtrip\n# slow test /painter-xcf-open/max_rgb_old_writer_roundtrip executed in 1.11 secs\n# End of painter-xcf-open tests\n1..1\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n",
+    "stderr": "",
+    "seconds": 2.1794721670012223
+  },
+  "max_rgb_malformed_capsules": {
+    "command": [
+      "/workspace/shared/gimp-clean-aggregate/build/app/tests/painter-xcf-open",
+      "-p",
+      "/painter-xcf-open/max_rgb_malformed_capsules"
+    ],
+    "exit_code": 0,
+    "stdout": "TAP version 14\n# random seed: R02Scdbfa5cdc52323b336aaffb4e9bd1ba2\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# Start of painter-xcf-open tests\n# Synthetic Max RGB capsule mutation 0\n# Synthetic Max RGB capsule mutation 1\n# Synthetic Max RGB capsule mutation 2\n# Synthetic Max RGB capsule mutation 3\n# Synthetic Max RGB capsule mutation 4\n# Synthetic Max RGB capsule mutation 5\n# Synthetic Max RGB capsule mutation 6\n# Synthetic Max RGB capsule mutation 7\n# Synthetic Max RGB capsule mutation 8\n# Synthetic Max RGB capsule mutation 9\n# Synthetic Max RGB capsule mutation 10\n# Synthetic Max RGB capsule mutation 11\n# Synthetic Max RGB capsule mutation 12\n# Synthetic Max RGB capsule mutation 13\n# Synthetic Max RGB capsule mutation 14\n# Synthetic Max RGB capsule mutation 15\nok 1 /painter-xcf-open/max_rgb_malformed_capsules\n# End of painter-xcf-open tests\n1..1\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n",
+    "stderr": "",
+    "seconds": 1.4902781240016338
+  }
+}

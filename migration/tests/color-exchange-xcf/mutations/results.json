@@ -1,0 +1,41 @@
+[
+  {
+    "name": "wrong-native-type",
+    "command": [
+      "/workspace/shared/gimp-clean-aggregate/build/app/tests/painter-xcf-open",
+      "-p",
+      "/painter-xcf-open/exchange_old_wire_admission"
+    ],
+    "exit_code": -6,
+    "stdout": "TAP version 14\n# random seed: R02Scec5f0fa34d293ea58323c6e7243cde1\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# Start of painter-xcf-open tests\nnot ok /painter-xcf-open/exchange_old_wire_admission - ERROR:../source/app/tests/test-painter-xcf-color-exchange.inc:25:xcf_exchange_parameters: 'G_VALUE_HOLDS_UINT(gimp_value_array_index(args,i+3))' should be TRUE\nBail out!\n",
+    "stderr": "**\nERROR:../source/app/tests/test-painter-xcf-color-exchange.inc:25:xcf_exchange_parameters: 'G_VALUE_HOLDS_UINT(gimp_value_array_index(args,i+3))' should be TRUE\n",
+    "seconds": 0.9649903210010962,
+    "mutated_source_sha256": "dcd99d7b2ff1b61aace8f82bf866b2f50d0a5cab49bb4c9481fed97f2519f0fd"
+  },
+  {
+    "name": "signed-byte",
+    "command": [
+      "/workspace/shared/gimp-clean-aggregate/build/app/tests/painter-xcf-open",
+      "-p",
+      "/painter-xcf-open/exchange_wire_roundtrips"
+    ],
+    "exit_code": -6,
+    "stdout": "TAP version 14\n# random seed: R02S5e996503750812d83a668db40c0dbf22\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# Start of painter-xcf-open tests\n# Exchange wire scene0 (writer-observed zero payload): exact UINT bytes/raw/cache,2 Save/Open rounds,independent execution pixels\nnot ok /painter-xcf-open/exchange_wire_roundtrips - ERROR:../source/app/tests/test-painter-xcf-color-exchange.inc:25:xcf_exchange_parameters: assertion failed (g_value_get_uint(gimp_value_array_index(args,i+3)) == values[i]): (4294967240 == 200)\nBail out!\n",
+    "stderr": "**\nERROR:../source/app/tests/test-painter-xcf-color-exchange.inc:25:xcf_exchange_parameters: assertion failed (g_value_get_uint(gimp_value_array_index(args,i+3)) == values[i]): (4294967240 == 200)\n",
+    "seconds": 1.1998980659991503,
+    "mutated_source_sha256": "ea911c348f21f75d55819797ef98f3f380572445ecb6146e699066b7130ff042"
+  },
+  {
+    "name": "wrong-last-slot",
+    "command": [
+      "/workspace/shared/gimp-clean-aggregate/build/app/tests/painter-xcf-open",
+      "-p",
+      "/painter-xcf-open/exchange_wire_roundtrips"
+    ],
+    "exit_code": -6,
+    "stdout": "TAP version 14\n# random seed: R02Sbefc7ebc4b58f95f0b1fd5ccb4b1cd8a\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# Start of painter-xcf-open tests\n# Exchange wire scene0 (writer-observed zero payload): exact UINT bytes/raw/cache,2 Save/Open rounds,independent execution pixels\nnot ok /painter-xcf-open/exchange_wire_roundtrips - ERROR:../source/app/tests/test-painter-xcf-color-exchange.inc:25:xcf_exchange_parameters: assertion failed (g_value_get_uint(gimp_value_array_index(args,i+3)) == values[i]): (4 == 5)\nBail out!\n",
+    "stderr": "**\nERROR:../source/app/tests/test-painter-xcf-color-exchange.inc:25:xcf_exchange_parameters: assertion failed (g_value_get_uint(gimp_value_array_index(args,i+3)) == values[i]): (4 == 5)\n",
+    "seconds": 1.123065432999283,
+    "mutated_source_sha256": "df4c47e26a2f0a573225680e6d39f1916dd3f0a640b78de99119e58223b3e76c"
+  }
+]
