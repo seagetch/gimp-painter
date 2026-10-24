@@ -1,0 +1,34 @@
+1/1 gimp:app / gimp-painter-smudge FAIL             1.14s   killed by signal 6 SIGABRT
+>>> LD_LIBRARY_PATH=/workspace/shared/gimp-native-secondary/build/libgimpconfig:/workspace/shared/gimp-native-secondary/build/libgimpbase:/workspace/shared/gimp-native-secondary/build/libgimpcolor:/workspace/shared/gimp-native-secondary/build/libgimpmath:/workspace/shared/gimp-native-secondary/build/libgimpwidgets:/workspace/shared/gimp-native-secondary/build/libgimpmodule:/workspace/shared/gimp-native-secondary/build/libgimpthumb:/workspace/shared/gimp-native-secondary/prefix/lib/x86_64-linux-gnu:/workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu GIMP_TESTING_ABS_TOP_BUILDDIR=/workspace/shared/gimp-native-secondary/build UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 GIMP_TESTING_ABS_TOP_SRCDIR=/workspace/shared/gimp-native-secondary/source MESON_TEST_ITERATION=1 ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 MALLOC_PERTURB_=194 GIMP_TESTING_PLUGINDIRS=/workspace/shared/gimp-native-secondary/build/plug-ins/common UI_TEST=yes /workspace/shared/gimp-native-secondary/build/app/tests/gimp-painter-smudge -p /painter/smudge/alpha-centers
+――――――――――――――――――――――――――――――――――――― ✀  ―――――――――――――――――――――――――――――――――――――
+stdout:
+TAP version 14
+# random seed: R02S6444a44a054cc1b67babd06f784bd812
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?
+# Start of painter tests
+# Start of smudge tests
+# seed channels=2 at(16,16) clamped(16,16) value=40
+# alpha center scene alpha=1 size=17 paper=0 channels=2 entry=0 rate=0 callbacks=14 updates=5 outside=0 hidden_changed=0
+# seed channels=2 at(16,16) clamped(16,16) value=40
+# center mismatch c=2 q=128 xy=(43,16) k=0 expected=162 actual=163
+not ok /painter/smudge/alpha-centers - ERROR:../source/app/tests/test-painter-smudge-center-matrix.inc:65:void center_observe(GimpPaintCore*, GList*, GimpPaintOptions*, GimpSymmetry*, GimpPaintState, guint32): assertion failed (after[i+k] == expected[k]): (163 == 162)
+Bail out!
+stderr:
+Failed to parse tag cache: No such file or directory
+**
+ERROR:../source/app/tests/test-painter-smudge-center-matrix.inc:65:void center_observe(GimpPaintCore*, GList*, GimpPaintOptions*, GimpSymmetry*, GimpPaintState, guint32): assertion failed (after[i+k] == expected[k]): (163 == 162)
+――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+
+
+Summary of Failures:
+
+1/1 gimp:app / gimp-painter-smudge FAIL             1.14s   killed by signal 6 SIGABRT
+
+Ok:                 0   
+Expected Fail:      0   
+Fail:               1   
+Unexpected Pass:    0   
+Skipped:            0   
+Timeout:            0   
+
+Full log written to /workspace/shared/gimp-native-secondary/build/meson-logs/testlog.txt

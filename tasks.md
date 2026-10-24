@@ -986,6 +986,8 @@
 
 2026-10-21 23.002 hard-mask checkpoint: native float coverage is converted to legacy bytes after paper; same-fixture original red/candidate green,192 format/entry/rate/odd-even/paper scenes with1008 actual centers,25 native cases, four immutable48-scene routes and1024 kernels pass normally and in focused sanitizers. See `migration/contracts/smudge-mask-format.md` and `migration/tests/smudge-mask-format/`. Original52 duties and acceptance remain open; opaque-alpha center proof is not full raster/device parity. Earlier seed execution evidence remains unchanged with exact later source admission.
 
+2026-10-21 23.002 alpha-center checkpoint:192 additional YA/RGBA partial/transparent-alpha scenes reproduce1008 old-source center updates and101688 changed hidden-color bytes; no production change. Original opaque192 scenes and prior25 cases remain unchanged, now26 native cases plus four48-scene old routes and1024 kernels pass normally/focused sanitizers. Two old-oracle sensitivity mutants fail and exact sources restore. See `migration/tests/smudge-alpha-centers/` for52-duty per-hunk review, unchanged acceptance/owners and remaining cross-pin gaps; all52 duties remain OPEN.
+
 ### 24 ブラシ editor・履歴・プレビュー
 
 主対象：tools/widgets/actions の拡張ブラシ UI

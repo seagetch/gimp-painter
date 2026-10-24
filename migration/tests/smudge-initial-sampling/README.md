@@ -80,3 +80,11 @@ by the separate hard-mask format checkpoint. The original57-input archive,
 The validator checks the original proof against its archive and separately checks
 the pinned successor package; it does not relabel historical execution as current
 source or accept arbitrary later edits. All52 duties remain open.
+
+## Exact alpha-center successor admission (2026-10-21)
+
+The separate `smudge-alpha-centers` checkpoint adds partial/transparent alpha
+center scenes without production changes. The exact source admission now pins
+that package's current entry source and checker; all historical runtime/archive
+bytes remain unchanged. Original25/24-case results are not relabeled26-case runs.
+Arbitrary future edits are rejected. Original52 duties remain open.

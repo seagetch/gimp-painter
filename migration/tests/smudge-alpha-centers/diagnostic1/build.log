@@ -1,0 +1,36 @@
+ninja: Entering directory `/workspace/shared/gimp-native-secondary/build'
+[1/14] Generating git-version.h.in.1 with a custom command
+fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+[2/14] Generating git-version.h.in.2 with a custom command
+fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+[3/14] Generating git-version.h with a custom command
+fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+[4/8] Generating app/tests/icon-theme-fixture/gimp-test-icon-theme-fixture with a custom command
+{"files": 1191, "manifest_sha256": "2f790ebf02244ef3c023f17f16ab614cbc315ee46d46abd87b7f73d4d5d9be41", "ownership_marker_sha256": "d3ebe76f57bdce73e82df17c3cd89f1a630f42f3c8d72dbfdacd4a000061b8bf", "plan_sha256": "0a16da7a76b5facf2d3d8084793b72e28d32d17c7ff6bf237d164075d4af4b95", "stamp_sha256": "c20e592420d8f1feb8e044c6114f8ed009473d411042806fd6e9aadd50c7ffc9", "status": "verified"}
+[5/8] Compiling C++ object app/tests/gimp-painter-smudge.p/test-gimp-painter-smudge.cpp.o
+In file included from ../source/app/tests/test-painter-smudge-center-matrix.inc:12,
+                 from ../source/app/tests/test-gimp-painter-smudge.cpp:106:
+../source/app/tests/../../migration/fixtures/legacy-smudge-center/replace-pixels.inc: In function ‘void LegacySmudgeCenter::replace_pixels(const guchar*, const guchar*, guchar*, const guchar*, gint, gint, const gboolean*, gint, gint)’:
+../source/app/tests/../../migration/fixtures/legacy-smudge-center/replace-pixels.inc:41:29: warning: comparison of integer expressions of different signedness: ‘guint’ {aka ‘unsigned int’} and ‘const gint’ {aka ‘const int’} [-Wsign-compare]
+   41 |               for (b = 0; b < alpha; b++)
+      |                           ~~^~~~~~~
+../source/app/tests/../../migration/fixtures/legacy-smudge-center/replace-pixels.inc:53:29: warning: comparison of integer expressions of different signedness: ‘guint’ {aka ‘unsigned int’} and ‘const gint’ {aka ‘const int’} [-Wsign-compare]
+   53 |               for (b = 0; b < alpha; b++)
+      |                           ~~^~~~~~~
+../source/app/tests/../../migration/fixtures/legacy-smudge-center/replace-pixels.inc:60:29: warning: comparison of integer expressions of different signedness: ‘guint’ {aka ‘unsigned int’} and ‘const gint’ {aka ‘const int’} [-Wsign-compare]
+   60 |               for (b = 0; b < alpha; b++)
+      |                           ~~^~~~~~~
+../source/app/tests/../../migration/fixtures/legacy-smudge-center/replace-pixels.inc:68:25: warning: comparison of integer expressions of different signedness: ‘guint’ {aka ‘unsigned int’} and ‘const gint’ {aka ‘const int’} [-Wsign-compare]
+   68 |           for (b = 0; b < alpha; b++)
+      |                       ~~^~~~~~~
+In file included from ../source/app/tests/test-painter-smudge-center-matrix.inc:13:
+../source/app/tests/../../migration/fixtures/legacy-smudge-center/opaque-compose.inc: At global scope:
+../source/app/tests/../../migration/fixtures/legacy-smudge-center/opaque-compose.inc:2:1: warning: no previous declaration for ‘void LegacySmudgeCenter::combine_inten_and_inten_a_pixels(const guchar*, const guchar*, guchar*, const guchar*, guint, const gboolean*, guint, guint)’ [-Wmissing-declarations]
+    2 | combine_inten_and_inten_a_pixels (const guchar   *src1,
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[6/8] Compiling C++ object app/paint/libapppaint.a.p/gimppaintersmudge.cpp.o
+[7/8] Linking static target app/paint/libapppaint.a
+[8/8] Linking target app/tests/gimp-painter-smudge

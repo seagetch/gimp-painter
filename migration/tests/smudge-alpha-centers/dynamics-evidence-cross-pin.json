@@ -1,0 +1,56 @@
+{
+  "scope": "Retrospective read-only historical source cross-pin; not a fresh dynamics runtime/build claim. Changed source units remain a review gap.",
+  "historical_artifact": "migration/tests/dynamics-sanitizers.json",
+  "artifact_sha256": "c9b9d5bca503be346be8c51d08007698a8b5bed0af1a5dbd22059965337a860a",
+  "historical_exit_code": 0,
+  "historical_changed_during_build": [],
+  "historical_five_tests": [
+    "ok 1 /painter/dynamics/defaults-enum",
+    "ok 2 /painter/dynamics/independent-flow",
+    "ok 3 /painter/dynamics/roundtrip-copy",
+    "ok 4 /painter/dynamics/legacy-key",
+    "ok 5 /painter/dynamics/empty-curve"
+  ],
+  "rows": [
+    {
+      "path": "app/tests/test-painter-dynamics.c",
+      "historical_tested_sha256": "9953a2d21aad5f2a0e66921dedae3f91950bea9bbb5e133f6ac6dfecb7197858",
+      "current_main_sha256": "9953a2d21aad5f2a0e66921dedae3f91950bea9bbb5e133f6ac6dfecb7197858",
+      "private_sha256": "9953a2d21aad5f2a0e66921dedae3f91950bea9bbb5e133f6ac6dfecb7197858",
+      "main_matches_historical": true,
+      "private_matches_historical": true
+    },
+    {
+      "path": "app/core/gimpdynamics.c",
+      "historical_tested_sha256": "0d165af116d8f920cc5bcf71fde6c0bf23604bf623c484da21bc8e4d2966b550",
+      "current_main_sha256": "0d165af116d8f920cc5bcf71fde6c0bf23604bf623c484da21bc8e4d2966b550",
+      "private_sha256": "0d165af116d8f920cc5bcf71fde6c0bf23604bf623c484da21bc8e4d2966b550",
+      "main_matches_historical": true,
+      "private_matches_historical": true
+    },
+    {
+      "path": "app/core/core-enums.c",
+      "historical_tested_sha256": "9d635073841947b8f7a3044a43b868fc5efb2cb81ea64482e40a7ce25bc72a11",
+      "current_main_sha256": "37d6d4c9c45a8a9967511590d694c2bba3179cdef8b16568b58e5ab1cb8f3f0a",
+      "private_sha256": "9d635073841947b8f7a3044a43b868fc5efb2cb81ea64482e40a7ce25bc72a11",
+      "main_matches_historical": false,
+      "private_matches_historical": true
+    },
+    {
+      "path": "app/core/gimpdynamicsoutput.c",
+      "historical_tested_sha256": "9418684796a64a956064efb38e49f91616cb27b332a64383a8d92de73e7f98b8",
+      "current_main_sha256": "f779c48a3a7d377a6588ee9c9fb4752fcc60783a00c8e1d834f28368c1345704",
+      "private_sha256": "f779c48a3a7d377a6588ee9c9fb4752fcc60783a00c8e1d834f28368c1345704",
+      "main_matches_historical": false,
+      "private_matches_historical": false
+    },
+    {
+      "path": "app/core/gimpcurve.c",
+      "historical_tested_sha256": "36401cb750551620a32161de0b4286ff68eacca85dfe2c486e44471781e52f02",
+      "current_main_sha256": "36401cb750551620a32161de0b4286ff68eacca85dfe2c486e44471781e52f02",
+      "private_sha256": "36401cb750551620a32161de0b4286ff68eacca85dfe2c486e44471781e52f02",
+      "main_matches_historical": true,
+      "private_matches_historical": true
+    }
+  ]
+}

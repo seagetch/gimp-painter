@@ -66,3 +66,11 @@ a separately captured pre-build manifest. Diagnostic6/7 source manifests describ
 the pre-instrumentation baseline; exact tracing edits are in retained scripts.
 Neither trace is used as final source/binary acceptance proof. Final ordinary
 production has no tracing. Native test display is authenticated1080×1920x24.
+
+## Exact alpha-center successor admission (2026-10-21)
+
+The separate `smudge-alpha-centers` checkpoint adds partial/transparent alpha
+center scenes without production changes. The exact source admission now pins
+that package's current entry source and checker; all historical runtime/archive
+bytes remain unchanged. Original25/24-case results are not relabeled26-case runs.
+Arbitrary future edits are rejected. Original52 duties remain open.

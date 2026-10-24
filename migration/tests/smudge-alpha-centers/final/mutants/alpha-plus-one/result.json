@@ -1,0 +1,11 @@
+{
+  "name": "gimp:app / gimp-painter-smudge",
+  "result": "FAIL",
+  "returncode": -6,
+  "duration": 1.101261854171753,
+  "stdout": "TAP version 14\n# random seed: R02S041b6573fe097533247f515fcc9b6a5d\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# Start of painter tests\n# Start of smudge tests\n# seed channels=2 at(16,16) clamped(16,16) value=40\n# center mismatch c=2 q=0 xy=(46,16) k=1 expected=198 actual=199\nnot ok /painter/smudge/alpha-centers - ERROR:../source/app/tests/test-painter-smudge-center-matrix.inc:65:void center_observe(GimpPaintCore*, GList*, GimpPaintOptions*, GimpSymmetry*, GimpPaintState, guint32): assertion failed (after[i+k] == expected[k]): (199 == 198)\nBail out!\n",
+  "stderr": "Failed to parse tag cache: No such file or directory\n**\nERROR:../source/app/tests/test-painter-smudge-center-matrix.inc:65:void center_observe(GimpPaintCore*, GList*, GimpPaintOptions*, GimpSymmetry*, GimpPaintState, guint32): assertion failed (after[i+k] == expected[k]): (199 == 198)\n",
+  "mutant": "alpha-plus-one",
+  "changed_path": "migration/fixtures/legacy-smudge-center/blend-pixels.inc",
+  "executable_sha256": "803613638c2428d6b98daa22cfbd33d56e5f413a3c6fc2fa3eef8ac9baecfe71"
+}

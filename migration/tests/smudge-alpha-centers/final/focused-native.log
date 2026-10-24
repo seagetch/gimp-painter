@@ -1,0 +1,26 @@
+Xvfb verified: 127.0.0.1:92, 1080x1920x24, authenticated accepted, empty authority rejected
+[01m[K../source/app/tests/painter-smudge-trace.cpp:[m[K In function ‘[01m[Kint[01;32m[K main[m[K(int, char**)[m[K’:
+[01m[K../source/app/tests/painter-smudge-trace.cpp:81:117:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Klist[m[K’ [[01;35m[K-Wunused-variable[m[K]
+   81 |   GimpPaintCore*core=GIMP_PAINT_CORE(g_object_new(GIMP_TYPE_PAINTER_SMUDGE,"undo-desc","smudge oracle",NULL));GList [01;35m[Klist[m[K={d,NULL,NULL};
+      |                                                                                                                     [01;35m[K^~~~[m[K
+In file included from [01m[K../source/app/tests/test-painter-smudge-center-matrix.inc:12[m[K,
+                 from [01m[K../source/app/tests/test-gimp-painter-smudge.cpp:106[m[K:
+[01m[K../source/app/tests/../../migration/fixtures/legacy-smudge-center/replace-pixels.inc:[m[K In function ‘[01m[Kvoid LegacySmudgeCenter::[01;32m[Kreplace_pixels[m[K(const guchar*, const guchar*, guchar*, const guchar*, gint, gint, const gboolean*, gint, gint)[m[K’:
+[01m[K../source/app/tests/../../migration/fixtures/legacy-smudge-center/replace-pixels.inc:41:29:[m[K [01;35m[Kwarning: [m[Kcomparison of integer expressions of different signedness: ‘[01m[Kguint[m[K’ {aka ‘[01m[Kunsigned int[m[K’} and ‘[01m[Kconst gint[m[K’ {aka ‘[01m[Kconst int[m[K’} [[01;35m[K-Wsign-compare[m[K]
+   41 |               for (b = 0; [01;35m[Kb < alpha[m[K; b++)
+      |                           [01;35m[K~~^~~~~~~[m[K
+[01m[K../source/app/tests/../../migration/fixtures/legacy-smudge-center/replace-pixels.inc:53:29:[m[K [01;35m[Kwarning: [m[Kcomparison of integer expressions of different signedness: ‘[01m[Kguint[m[K’ {aka ‘[01m[Kunsigned int[m[K’} and ‘[01m[Kconst gint[m[K’ {aka ‘[01m[Kconst int[m[K’} [[01;35m[K-Wsign-compare[m[K]
+   53 |               for (b = 0; [01;35m[Kb < alpha[m[K; b++)
+      |                           [01;35m[K~~^~~~~~~[m[K
+[01m[K../source/app/tests/../../migration/fixtures/legacy-smudge-center/replace-pixels.inc:60:29:[m[K [01;35m[Kwarning: [m[Kcomparison of integer expressions of different signedness: ‘[01m[Kguint[m[K’ {aka ‘[01m[Kunsigned int[m[K’} and ‘[01m[Kconst gint[m[K’ {aka ‘[01m[Kconst int[m[K’} [[01;35m[K-Wsign-compare[m[K]
+   60 |               for (b = 0; [01;35m[Kb < alpha[m[K; b++)
+      |                           [01;35m[K~~^~~~~~~[m[K
+[01m[K../source/app/tests/../../migration/fixtures/legacy-smudge-center/replace-pixels.inc:68:25:[m[K [01;35m[Kwarning: [m[Kcomparison of integer expressions of different signedness: ‘[01m[Kguint[m[K’ {aka ‘[01m[Kunsigned int[m[K’} and ‘[01m[Kconst gint[m[K’ {aka ‘[01m[Kconst int[m[K’} [[01;35m[K-Wsign-compare[m[K]
+   68 |           for (b = 0; [01;35m[Kb < alpha[m[K; b++)
+      |                       [01;35m[K~~^~~~~~~[m[K
+In file included from [01m[K../source/app/tests/test-painter-smudge-center-matrix.inc:13[m[K:
+[01m[K../source/app/tests/../../migration/fixtures/legacy-smudge-center/opaque-compose.inc:[m[K At global scope:
+[01m[K../source/app/tests/../../migration/fixtures/legacy-smudge-center/opaque-compose.inc:2:1:[m[K [01;35m[Kwarning: [m[Kno previous declaration for ‘[01m[Kvoid LegacySmudgeCenter::[01;32m[Kcombine_inten_and_inten_a_pixels[m[K(const guchar*, const guchar*, guchar*, const guchar*, guint, const gboolean*, guint, guint)[m[K’ [[01;35m[K-Wmissing-declarations[m[K]
+    2 | [01;35m[Kcombine_inten_and_inten_a_pixels[m[K (const guchar   *src1,
+      | [01;35m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[('gimp-painter-smudge', [], 0), ('painter-smudge-trace', [], 0), ('painter-smudge-trace', ['owned'], 0), ('painter-smudge-trace', ['paper'], 0), ('painter-smudge-trace', ['paper', 'owned'], 0)]

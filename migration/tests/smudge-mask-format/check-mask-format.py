@@ -16,7 +16,14 @@ def check(p=P):
   assert set(t.getnames())==set(seal);src={n:t.extractfile(n).read()for n in seal}
   for n,h in seal.items():assert sha(src[n])==h,n
  for n in ['app/paint/gimppaintersmudge.cpp','app/tests/test-gimp-painter-smudge.cpp','app/tests/test-painter-smudge-center-matrix.inc','migration/tests/run_smudge_center_sanitizers.py']:
-  assert sha((R/n).read_bytes())==seal[n],n
+  actual=sha((R/n).read_bytes())
+  if actual!=seal[n]:
+   admission=json.loads((p/'successor-source-admission.json').read_text());assert set(admission['files'])=={'app/tests/test-gimp-painter-smudge.cpp'}
+   assert admission['files'][n]=={'historical':seal[n],'current':actual}
+   assert admission['successor']=='migration/tests/smudge-alpha-centers';successor=R/admission['successor']
+   assert sha((successor/'check-alpha-centers.py').read_bytes())==admission['checker_sha256']
+   assert json.loads((successor/'final/source-before-build.json').read_text())[n]==actual
+   spec=importlib.util.spec_from_file_location('alpha_successor',successor/'check-alpha-centers.py');mod=importlib.util.module_from_spec(spec);spec.loader.exec_module(mod);mod.check()
  held=json.loads((p/'final/held-source-isolation.json').read_text())['rows'];assert len(held)==10
  for row in held:
   if row.get('native_exists')is False:assert row['path']not in seal
