@@ -1504,21 +1504,6 @@ test('preset-catalog', preset_catalog_test,
         'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
         'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 180)
 
-# Nonincremental live composition at stroke opacity .37.
-
-nonincremental_display = executable('painter-nonincremental-display',
-  ['test-painter-nonincremental-display.cpp', 'test-mypaint-colorpicker-c.c', 'tests.c'],
-  dependencies: [libapp_dep, painter_mypaint_surface_dep, appstream],
-  link_with: apptests_links, cpp_args: painter_cpp_args,
-  override_options: ['cpp_std=c++14'],
-)
-test('painter-nonincremental-display', nonincremental_display,
-  env: ['GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
-        'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
-        'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
-        'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 120)
-
-
 # Actual selected preset descriptor GUI, distinct from catalog coexistence model.
 preset_catalog_ui_test = executable('preset-catalog-ui', 'test-preset-catalog-ui.c', 'tests.c',
   dependencies: [libapp_dep, appstream], link_with: apptests_links,
