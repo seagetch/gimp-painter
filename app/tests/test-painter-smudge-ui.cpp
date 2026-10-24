@@ -31,6 +31,7 @@ extern "C" {
 #include "core/gimppaintinfo.h"
 #include "core/gimpundostack.h"
 #include "display/gimpdisplay.h"
+#include "display/gimppaintercanvasui.h"
 #include "display/gimpcanvasitem.h"
 #include "core/gimpprojection.h"
 #include "core/gimppickable.h"
@@ -65,10 +66,22 @@ struct Scene {
   int side;
   std::vector<guchar> initial;
   explicit Scene (int size=128) : side(size), initial (size*size*4, 80) {
+    g_object_set (gimp->config, "painter-canvas-ui", TRUE, nullptr);
+    gboolean oncanvas_enabled = FALSE;
+    g_object_get (gimp->config, "painter-canvas-ui", &oncanvas_enabled, nullptr);
+    g_assert_true (oncanvas_enabled);
     gimp_set_focused_once (gimp);
     gimp_test_utils_create_image (gimp, side, side);
     gimp_test_run_mainloop_until_idle ();
     display = GIMP_DISPLAY (gimp_get_display_iter (gimp)->data);
+    auto *oncanvas_shell = gimp_display_get_shell (display);
+    gimp_painter_canvas_ui_set_visible (oncanvas_shell, TRUE);
+    g_assert_true (gimp_painter_canvas_ui_get_visible (oncanvas_shell));
+    auto *oncanvas_root = gdk_get_default_root_window ();
+    if (g_strcmp0 (g_getenv ("GIMP_TEST_REQUIRE_PORTRAIT"), "1") == 0) {
+      g_assert_cmpint (gdk_window_get_width (oncanvas_root), ==, 1080);
+      g_assert_cmpint (gdk_window_get_height (oncanvas_root), ==, 1920);
+    }
     image = gimp_display_get_image (display);
     auto *list = gimp_image_get_selected_drawables (image); g_assert_nonnull (list);
     drawable = GIMP_DRAWABLE (list->data); g_object_ref (drawable); g_list_free (list);
@@ -90,6 +103,40 @@ struct Scene {
     gimp_context_set_paint_mode (GIMP_CONTEXT (options), GIMP_LAYER_MODE_PAINTER_NORMAL);
     coords.x = 32; coords.y = 32; coords.pressure = 1;
     gimp_image_undo_free (image);
+  }
+  void capture_oncanvas (const char *name) {
+    const char *directory = g_getenv ("GIMP_TEST_ONCANVAS_SCREENSHOTS");
+    if (! directory) return; /* Artifact destination only, never enablement. */
+    auto *shell = gimp_display_get_shell (display);
+    auto *window = gtk_widget_get_toplevel (GTK_WIDGET (shell));
+    gtk_window_move (GTK_WINDOW (window), 0, 0);
+    if (g_strcmp0 (g_getenv ("GIMP_TEST_REQUIRE_PORTRAIT"), "1") == 0)
+      gtk_window_resize (GTK_WINDOW (window), 1080, 1920);
+    gtk_window_present (GTK_WINDOW (window));
+    gimp_image_flush (image);
+    const auto deadline = g_get_monotonic_time () + 300000;
+    while (g_get_monotonic_time () < deadline) {
+      g_main_context_iteration (nullptr, FALSE); g_usleep (1000);
+    }
+    gboolean enabled = FALSE;
+    g_object_get (gimp->config, "painter-canvas-ui", &enabled, nullptr);
+    g_assert_true (enabled);
+    g_assert_true (gimp_painter_canvas_ui_get_visible (shell));
+    auto *root = gdk_get_default_root_window ();
+    if (g_strcmp0 (g_getenv ("GIMP_TEST_REQUIRE_PORTRAIT"), "1") == 0) {
+      g_assert_cmpint (gdk_window_get_width (root), ==, 1080);
+      g_assert_cmpint (gdk_window_get_height (root), ==, 1920);
+    }
+    auto *shot = gdk_pixbuf_get_from_window (root, 0, 0,
+                                               gdk_window_get_width (root),
+                                               gdk_window_get_height (root));
+    g_assert_nonnull (shot);
+    auto *path = g_build_filename (directory, name, nullptr);
+    GError *error = nullptr;
+    g_assert_true (gdk_pixbuf_save (shot, path, "png", &error, nullptr));
+    g_assert_no_error (error); g_object_unref (shot); g_free (path);
+    g_test_message ("Actual oncanvas TRUE/get_visible;%dx%d root;direct native test input:%s",
+                    gdk_window_get_width (root), gdk_window_get_height (root), name);
   }
   ~Scene () {
     if (tool) { gimp_tool_control (tool, GIMP_TOOL_ACTION_HALT, display); g_object_unref (tool); }
@@ -224,6 +271,7 @@ static void undo_pending () {
   const auto before=s.pixels();const gint64 deadline=g_get_monotonic_time()+10000000;
   while(s.pixels()==before && g_get_monotonic_time()<deadline)g_main_context_iteration(nullptr,FALSE);
   g_assert(s.pixels()!=before);g_assert_true(gimp_image_undo(s.image));s.drain();g_assert(s.pixels()==s.initial);
+  s.capture_oncanvas("smudge-pending-undo-result-oncanvas.png");
   g_assert_true(gimp_image_redo(s.image));g_assert(s.pixels()==before);
 }
 static void outline_and_projection () {

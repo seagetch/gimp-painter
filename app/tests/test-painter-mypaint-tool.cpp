@@ -44,6 +44,7 @@ extern "C" {
 #include "core/gimptoolinfo.h"
 #include "core/gimpundostack.h"
 #include "display/gimpdisplay.h"
+#include "display/gimppaintercanvasui.h"
 #include "display/gimpdisplayshell.h"
 #include "display/gimpdisplayshell-tool-events.h"
 #include "display/gimpdisplayshell-transform.h"
@@ -73,8 +74,21 @@ static Gimp*gimp;
 struct Scene {
   GimpDisplay*display;GimpImage*image;GimpDrawable*drawable;GimpTool*tool;GimpPainterMybrushOptions*options;GimpCoords coords=GIMP_COORDS_DEFAULT_VALUES;guint32 time=100;
   Scene(){
+    g_object_set (gimp->config, "painter-canvas-ui", TRUE, nullptr);
+    gboolean oncanvas_enabled = FALSE;
+    g_object_get (gimp->config, "painter-canvas-ui", &oncanvas_enabled, nullptr);
+    g_assert_true (oncanvas_enabled);
     gimp_set_focused_once(gimp);gimp_test_utils_create_image(gimp,128,128);gimp_test_run_mainloop_until_idle();
     display=GIMP_DISPLAY(gimp_get_display_iter(gimp)->data);image=gimp_display_get_image(display);
+    auto *oncanvas_shell = gimp_display_get_shell (display);
+    gimp_painter_canvas_ui_set_visible (oncanvas_shell, TRUE);
+    g_assert_true (gimp_painter_canvas_ui_get_visible (oncanvas_shell));
+    auto *oncanvas_root = gdk_get_default_root_window ();
+    if (g_strcmp0 (g_getenv ("GIMP_TEST_REQUIRE_PORTRAIT"), "1") == 0) {
+      g_assert_cmpint (gdk_window_get_width (oncanvas_root), ==, 1080);
+      g_assert_cmpint (gdk_window_get_height (oncanvas_root), ==, 1920);
+    }
+
     auto*list=gimp_image_get_selected_drawables(image);g_assert_nonnull(list);drawable=GIMP_DRAWABLE(g_object_ref(list->data));g_list_free(list);
     gegl_buffer_clear(gimp_drawable_get_buffer(drawable),nullptr);
     auto*info=gimp_get_tool_info(gimp,"gimp-painter-mypaint-tool");g_assert_nonnull(info);gimp_context_set_tool(gimp_get_user_context(gimp),info);
@@ -82,6 +96,40 @@ struct Scene {
     MyPaint::Resource r;r.set_base_value(BRUSH_DABS_PER_SECOND,40);r.set_base_value(BRUSH_RADIUS_LOGARITHMIC,1.5);g_assert_true(gimp_painter_mybrush_options_set_json(options,r.encode().c_str(),nullptr));
     auto*color=gegl_color_new("red");gimp_context_set_foreground(GIMP_CONTEXT(options),color);g_object_unref(color);
     coords.x=32;coords.y=32;coords.pressure=1;gimp_image_undo_free(image);
+  }
+  void capture_oncanvas (const char *name) {
+    const char *directory = g_getenv ("GIMP_TEST_ONCANVAS_SCREENSHOTS");
+    if (! directory) return; /* Artifact destination only, never enablement. */
+    auto *shell = gimp_display_get_shell (display);
+    auto *window = gtk_widget_get_toplevel (GTK_WIDGET (shell));
+    gtk_window_move (GTK_WINDOW (window), 0, 0);
+    if (g_strcmp0 (g_getenv ("GIMP_TEST_REQUIRE_PORTRAIT"), "1") == 0)
+      gtk_window_resize (GTK_WINDOW (window), 1080, 1920);
+    gtk_window_present (GTK_WINDOW (window));
+    gimp_image_flush (image);
+    const auto deadline = g_get_monotonic_time () + 300000;
+    while (g_get_monotonic_time () < deadline) {
+      g_main_context_iteration (nullptr, FALSE); g_usleep (1000);
+    }
+    gboolean enabled = FALSE;
+    g_object_get (gimp->config, "painter-canvas-ui", &enabled, nullptr);
+    g_assert_true (enabled);
+    g_assert_true (gimp_painter_canvas_ui_get_visible (shell));
+    auto *root = gdk_get_default_root_window ();
+    if (g_strcmp0 (g_getenv ("GIMP_TEST_REQUIRE_PORTRAIT"), "1") == 0) {
+      g_assert_cmpint (gdk_window_get_width (root), ==, 1080);
+      g_assert_cmpint (gdk_window_get_height (root), ==, 1920);
+    }
+    auto *shot = gdk_pixbuf_get_from_window (root, 0, 0,
+                                               gdk_window_get_width (root),
+                                               gdk_window_get_height (root));
+    g_assert_nonnull (shot);
+    auto *path = g_build_filename (directory, name, nullptr);
+    GError *error = nullptr;
+    g_assert_true (gdk_pixbuf_save (shot, path, "png", &error, nullptr));
+    g_assert_no_error (error); g_object_unref (shot); g_free (path);
+    g_test_message ("Actual oncanvas TRUE/get_visible;%dx%d root;direct native test input:%s",
+                    gdk_window_get_width (root), gdk_window_get_height (root), name);
   }
   ~Scene(){gimp_context_set_tool(gimp_get_user_context(gimp),gimp_get_tool_info(gimp,"gimp-paintbrush-tool"));if(tool)g_object_unref(tool);g_object_unref(drawable);g_object_unref(image);gimp_display_close(display);gimp_test_run_mainloop_until_idle();}
   std::vector<guchar>pixels(){std::vector<guchar>v(128*128*4);gegl_buffer_get(gimp_drawable_get_buffer(drawable),GEGL_RECTANGLE(0,0,128,128),1,babl_format("R'G'B'A u8"),v.data(),GEGL_AUTO_ROWSTRIDE,GEGL_ABYSS_NONE);return v;}
@@ -122,6 +170,7 @@ static void pressure_and_undo()
   auto painted=s.pixels();g_assert_true(painted!=before);s.release();painted=s.pixels();gimp_tool_control(s.tool,GIMP_TOOL_ACTION_COMMIT,s.display);
   g_assert_cmpint(s.depth(),==,1);g_assert_true(gimp_image_undo(s.image));g_assert_true(s.pixels()==before);g_assert_true(gimp_image_redo(s.image));g_assert_true(s.pixels()==painted);
   s.coords.x=80;s.motion(false);g_assert_true(s.pixels()==painted);g_assert_cmpint(s.depth(),==,1);
+  s.capture_oncanvas("mypaint-pressure-undo-redo-oncanvas.png");
 }
 static void cancel_rolls_back()
 {

@@ -31,6 +31,7 @@ static void deferred_save_export(){
   s.press();s.motion(50,32);s.release();s.color("blue");s.coords.x=88;s.coords.y=88;s.press();s.release();
   start_save(s,G_OBJECT(s.display),file,state,kind);g_assert_false(state.done);g_assert_cmpint(state.destroyed,==,0);assert_sentinel(file);g_assert_true(s.pending());
   s.drain();auto expected=s.pixels();wait_completed(state);g_assert_true(state.done);g_assert_true(state.success);g_assert_cmpint(s.depth(),==,2);assert_saved_pixels(file,expected,s.side);
+  if(kind==0)s.capture_oncanvas("save-completed-oncanvas.png");
   g_assert_true(gimp_image_undo(s.image));g_assert_true(gimp_image_undo(s.image));g_assert(s.pixels()==s.initial);
   g_file_delete(file,nullptr,nullptr);g_object_unref(file);
  }
