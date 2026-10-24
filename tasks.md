@@ -919,6 +919,7 @@
 | 21.011 | [ ] | 非累積の作業 buffer を実装する | 21.010 | 同位置の dab が旧仕様で蓄積 |
 | 21.012 | [ ] | ストローク全体の不透明度を実装する | 21.011 | dab opacity への単純置換をしない |
 | 21.013 | [ ] | 非累積の表示合成を実装する | 21.012 | 作業中の見た目と確定結果が整合 |
+| 21.013/live-nonincremental-composition | [x] | 非累積 .37 の作業中と確定後の実表示を検証する | 21.014/ordinary-physical-gesture | 縦型 Xvfb/oncanvas の実 canvas・projection・採色が一致し cancel/Undo/Redo が往復（原親・依存は未完） |
 | 21.014 | [ ] | ストローク確定を Undo に接続する | 21.013 | 一筆一 Undo で開始前へ戻る |
 | 21.014/ordinary-physical-gesture | [x] | 通常pressからreleaseをlogical splitを保った一paired Undoへ接続する | 09.011/mypaint-undo-stroke | Saveを含まない通常gestureの画素/evaluator/Resource往復、cancel/redo保持、129native・20-unit ASan15・4変異・3旧golden・portrait4PNGを検証。実Save後のheld continuationは既存2entryを維持し利用者判断待ち、原21.014と21.013依存は未完。migration/tests/physical-gesture-21014/ |
 | 21.015 | [ ] | ストローク取消しを実装する | 21.014 | 作業 buffer を破棄し開始前を保持 |

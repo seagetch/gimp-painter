@@ -1,0 +1,12 @@
+compile app/paint/painter-mypaint-surface/gegl-surface.cpp
+compile app/paint/painter-mypaint-surface/gimp-resources.cpp
+compile app/paint/painter-mypaint-surface/paint-core.cpp
+compile app/paint/painter-mypaint-surface/gimp-painter-session.cpp
+compile app/tools/gimppaintermybrushtool.cpp
+compile app/tests/test-painter-nonincremental-display.cpp
+[01m[K../source/app/tests/test-painter-nonincremental-display.cpp:2:14:[m[K [01;35m[Kwarning: [m[Kno previous declaration for ‘[01m[Kint[01;32m[K original_tool_main[m[K(int, char**)[m[K’ [[01;35m[K-Wmissing-declarations[m[K]
+    2 | #define main [01;35m[Koriginal_tool_main[m[K
+      |              [01;35m[K^~~~~~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-painter-mypaint-tool.cpp:953:5:[m[K [01;36m[Knote: [m[Kin expansion of macro ‘[01m[Kmain[m[K’
+  953 | int [01;36m[Kmain[m[K(int argc,char**argv)
+      |     [01;36m[K^~~~[m[K
