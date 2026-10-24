@@ -1,0 +1,7 @@
+# Typed Color Exchange scalar kernel
+
+`app/painter/filter-color-exchange-private.hpp` is a private allocation-free C++14/no-RTTI RGBA8 value kernel. Nine original channel arguments are represented by three uint8 arrays; no unchecked pointer, mutable external state, enum/PDB alias or fallback operation is introduced. Original `libgimp/gimp.h:126` declares `d_int8` as `guint8`, confirming the complete0–255 domain. All three inclusive distance tests must pass; matching RGB adds absolute distance to target with saturation. Alpha is always unchanged, including hidden RGB at zero alpha.
+
+The immutable ColorExchange foundation is reused without editing any old C body. A generated fixture renames only the independent oracle function/call sites so every pixel oracle result is additionally compared with the new kernel. Normal and ASan/UBSan pass989,864 actual production-kernel comparisons each, within17,387,044 total old-boundary assertions/scenes. RGB promotion uses255 solely in the test adapter; the production value kernel always accepts exactly four channels. First and double inclusion compile with C++14/no-RTTI. Five actual header mutants are rejected: exclusive threshold, partial channel gate, signed delta, absent saturation and overwritten alpha.
+
+No native procedure is registered and no owner, selection/ROI merge, vector/spill transport, cancellation, real precision or GUI behavior is claimed. Those are subsequent coordinated integration duties. This header does not silently enable `gegl:color-exchange` or close original section16 tasks.
