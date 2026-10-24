@@ -1,0 +1,118 @@
+{
+  "inputs": {
+    "app/painter/filter-normalize-kernel.hpp": "9b976c33e3be95d12a25e1b21153735bb065d51518826f35b6dbc3197be578e4",
+    "app/painter/gimp-painter-visibility.h": "d832e5442d969ff8439292a61d0143532d85c1b7eaab0b29689c6dc04e9c4532",
+    "migration/tests/normalize-kernel/test-kernel.cpp": "a41ce88a2a29e5d48ef33223d215f262a3e190aeac479fe503ab3df806b0cff6"
+  },
+  "runs": {
+    "normal": {
+      "command": [
+        "c++",
+        "-std=c++14",
+        "-fno-rtti",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-I/tmp/normalize-kernel-vghfmxrr",
+        "-O2",
+        "/tmp/normalize-kernel-vghfmxrr/migration/tests/normalize-kernel/test-kernel.cpp",
+        "-o",
+        "/tmp/normalize-kernel-vghfmxrr/normal"
+      ],
+      "build_stderr": "",
+      "returncode": 0,
+      "stdout": "PASS 11316224 defined pixel/alpha checks; empty/all-transparent/hidden-outside rejected; immutable snapshot\n",
+      "stderr": "",
+      "binary_sha256": "1e9ac9361bfb72dacfa3bbbd9974346e9b2ddf4ee71818490ff22b358257a7c3"
+    },
+    "sanitizer": {
+      "command": [
+        "c++",
+        "-std=c++14",
+        "-fno-rtti",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-I/tmp/normalize-kernel-vghfmxrr",
+        "-O1",
+        "-g0",
+        "-fsanitize=address,undefined",
+        "-fno-sanitize=vptr",
+        "/tmp/normalize-kernel-vghfmxrr/migration/tests/normalize-kernel/test-kernel.cpp",
+        "-o",
+        "/tmp/normalize-kernel-vghfmxrr/sanitizer"
+      ],
+      "build_stderr": "",
+      "returncode": 0,
+      "stdout": "PASS 11316224 defined pixel/alpha checks; empty/all-transparent/hidden-outside rejected; immutable snapshot\n",
+      "stderr": "",
+      "binary_sha256": "d290d41e241b78b1612e68e0ce87575948cc18a1adcdfcc9e5b5eb7871d93e59"
+    }
+  },
+  "mutants": [
+    {
+      "command": [
+        "c++",
+        "-std=c++14",
+        "-fno-rtti",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-I/tmp/normalize-kernel-vghfmxrr",
+        "-O2",
+        "/tmp/normalize-kernel-vghfmxrr/migration/tests/normalize-kernel/test-kernel.cpp",
+        "-o",
+        "/tmp/normalize-kernel-vghfmxrr/wrong-scale"
+      ],
+      "build_stderr": "",
+      "returncode": -6,
+      "stdout": "",
+      "stderr": "wrong-scale: /tmp/normalize-kernel-vghfmxrr/migration/tests/normalize-kernel/test-kernel.cpp:16: int main(): Assertion `out[0]==want&&out[1]==(high==low?high:255)&&out[2]==(high==low?low:0)&&out[3]==a' failed.\n",
+      "binary_sha256": "519c26d9b47960e58d6db0e338a65f8368f7e694369d3473a9da653ddd6f172f",
+      "name": "wrong-scale"
+    },
+    {
+      "command": [
+        "c++",
+        "-std=c++14",
+        "-fno-rtti",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-I/tmp/normalize-kernel-vghfmxrr",
+        "-O2",
+        "/tmp/normalize-kernel-vghfmxrr/migration/tests/normalize-kernel/test-kernel.cpp",
+        "-o",
+        "/tmp/normalize-kernel-vghfmxrr/hidden-ignore"
+      ],
+      "build_stderr": "",
+      "returncode": -6,
+      "stdout": "",
+      "stderr": "hidden-ignore: /tmp/normalize-kernel-vghfmxrr/migration/tests/normalize-kernel/test-kernel.cpp:23: int main(): Assertion `s.finish().status()==FilterNormalizeStatus::hidden_outside_range' failed.\n",
+      "binary_sha256": "9e4eb3d99a2099443f836626a9912252f309d1c1869893d7a41c94bbee4c1bb7",
+      "name": "hidden-ignore"
+    },
+    {
+      "command": [
+        "c++",
+        "-std=c++14",
+        "-fno-rtti",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-I/tmp/normalize-kernel-vghfmxrr",
+        "-O2",
+        "/tmp/normalize-kernel-vghfmxrr/migration/tests/normalize-kernel/test-kernel.cpp",
+        "-o",
+        "/tmp/normalize-kernel-vghfmxrr/alpha-overwrite"
+      ],
+      "build_stderr": "",
+      "returncode": -6,
+      "stdout": "",
+      "stderr": "alpha-overwrite: /tmp/normalize-kernel-vghfmxrr/migration/tests/normalize-kernel/test-kernel.cpp:16: int main(): Assertion `out[0]==want&&out[1]==(high==low?high:255)&&out[2]==(high==low?low:0)&&out[3]==a' failed.\n",
+      "binary_sha256": "b5943a5ab703b5fa7e55f8253d242cdcad8773ec293b3f91198a4beaa49b3a0b",
+      "name": "alpha-overwrite"
+    }
+  ],
+  "changed": []
+}
