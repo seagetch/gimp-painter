@@ -1,0 +1,16 @@
+#!/bin/bash
+set -euo pipefail
+D=/workspace/shared/gimp-native-secondary
+source "$D/env.sh";exec 9>"$D/build.lock";flock 9
+python3 /workspace/shared/prepare-perspective-editor-final.py
+O="$D/perspective-editor-entry/final"
+for build in build build-asan;do
+ ninja -j2 -C "$D/$build" app/tests/painter-perspective-events > "$O/$build-build.log" 2>&1
+  GIMP_TEST_PERSPECTIVE_EDITOR_SCREENSHOT="$O/$build-oncanvas.png" ASAN_OPTIONS=detect_leaks=0:halt_on_error=1 UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1 python3 "$D/source/tools/run-painter-xvfb.py" meson test -C "$D/$build" --no-rebuild --num-processes=1 --print-errorlogs painter-perspective-events > "$O/$build.log" 2>&1
+ python3 - "$D" "$build" <<'PY'
+import pathlib,json,hashlib,sys
+D=pathlib.Path(sys.argv[1]);b=sys.argv[2];O=D/'perspective-editor-entry/final';seal=json.loads((O/'source-before-build.json').read_text())
+for p,h in seal.items():assert hashlib.sha256((D/'source'/p).read_bytes()).hexdigest()==h,p
+j=json.loads((D/b/'meson-logs/testlog.json').read_text().splitlines()[0]);r={k:j.get(k,'') for k in ['name','result','returncode','duration','stdout','stderr']};r.update(source_sha256=seal,executable_sha256=hashlib.sha256((D/b/'app/tests/painter-perspective-events').read_bytes()).hexdigest(),timeout_seconds=60,xvfb={'width':1080,'height':1920,'depth':24,'authenticated':True});r['cases']=[l for l in r['stdout'].splitlines() if l.startswith('ok ') and '# SKIP' not in l];(O/(b+'.json')).write_text(json.dumps(r,indent=2)+'\n');assert r['result']=='OK' and len(r['cases'])==13 and r['duration']<60;print(b,len(r['cases']),r['duration'])
+PY
+done

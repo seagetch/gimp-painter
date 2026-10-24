@@ -1,0 +1,120 @@
+Xvfb verified: 127.0.0.1:92, 1080x1920x24, authenticated accepted, empty authority rejected
+1/1 gimp:app / painter-perspective-events FAIL            5.65s   killed by signal 6 SIGABRT
+>>> GIMP_TESTING_PLUGINDIRS=/workspace/shared/gimp-native-secondary/build/plug-ins/common GIMP_TESTING_ABS_TOP_SRCDIR=/workspace/shared/gimp-native-secondary/source MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 MESON_TEST_ITERATION=1 GIMP_TESTING_ABS_TOP_BUILDDIR=/workspace/shared/gimp-native-secondary/build MALLOC_PERTURB_=140 UI_TEST=yes LD_LIBRARY_PATH=/workspace/shared/gimp-native-secondary/build/libgimpwidgets:/workspace/shared/gimp-native-secondary/build/libgimpcolor:/workspace/shared/gimp-native-secondary/build/libgimpthumb:/workspace/shared/gimp-native-secondary/build/libgimpconfig:/workspace/shared/gimp-native-secondary/build/libgimpbase:/workspace/shared/gimp-native-secondary/build/libgimpmath:/workspace/shared/gimp-native-secondary/build/libgimpmodule:/workspace/shared/gimp-native-secondary/prefix/lib/x86_64-linux-gnu:/workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 /workspace/shared/gimp-native-secondary/build/app/tests/painter-perspective-events -p /perspective-events/editor_transformed_entry -p /perspective-events/editor_old_hit_policy -p /perspective-events/editor_cancel_reentry
+――――――――――――――――――――――――――――――――――――― ✀  ―――――――――――――――――――――――――――――――――――――
+Listing only the last 100 lines from a long log.
+# scene 28 z=1 a=0 aniso=1 flip=0
+# scene 29 z=1 a=0 aniso=1 flip=1
+# scene 30 z=1 a=0 aniso=1 flip=2
+# scene 31 z=1 a=0 aniso=1 flip=3
+# scene 32 z=1 a=1 aniso=0 flip=0
+# scene 33 z=1 a=1 aniso=0 flip=1
+# scene 34 z=1 a=1 aniso=0 flip=2
+# scene 35 z=1 a=1 aniso=0 flip=3
+# scene 36 z=1 a=1 aniso=1 flip=0
+# scene 37 z=1 a=1 aniso=1 flip=1
+# scene 38 z=1 a=1 aniso=1 flip=2
+# scene 39 z=1 a=1 aniso=1 flip=3
+# scene 40 z=1 a=2 aniso=0 flip=0
+# scene 41 z=1 a=2 aniso=0 flip=1
+# scene 42 z=1 a=2 aniso=0 flip=2
+# scene 43 z=1 a=2 aniso=0 flip=3
+# scene 44 z=1 a=2 aniso=1 flip=0
+# scene 45 z=1 a=2 aniso=1 flip=1
+# scene 46 z=1 a=2 aniso=1 flip=2
+# scene 47 z=1 a=2 aniso=1 flip=3
+# scene 48 z=2 a=0 aniso=0 flip=0
+# scene 49 z=2 a=0 aniso=0 flip=1
+# scene 50 z=2 a=0 aniso=0 flip=2
+# scene 51 z=2 a=0 aniso=0 flip=3
+# scene 52 z=2 a=0 aniso=1 flip=0
+# scene 53 z=2 a=0 aniso=1 flip=1
+# scene 54 z=2 a=0 aniso=1 flip=2
+# scene 55 z=2 a=0 aniso=1 flip=3
+# scene 56 z=2 a=1 aniso=0 flip=0
+# scene 57 z=2 a=1 aniso=0 flip=1
+# scene 58 z=2 a=1 aniso=0 flip=2
+# scene 59 z=2 a=1 aniso=0 flip=3
+# scene 60 z=2 a=1 aniso=1 flip=0
+# scene 61 z=2 a=1 aniso=1 flip=1
+# scene 62 z=2 a=1 aniso=1 flip=2
+# scene 63 z=2 a=1 aniso=1 flip=3
+# scene 64 z=2 a=2 aniso=0 flip=0
+# scene 65 z=2 a=2 aniso=0 flip=1
+# scene 66 z=2 a=2 aniso=0 flip=2
+# scene 67 z=2 a=2 aniso=0 flip=3
+# scene 68 z=2 a=2 aniso=1 flip=0
+# scene 69 z=2 a=2 aniso=1 flip=1
+# scene 70 z=2 a=2 aniso=1 flip=2
+# scene 71 z=2 a=2 aniso=1 flip=3
+# synthetic master-pointer editor fractional add/max3/move/delete scenes=72
+ok 1 /perspective-events/editor_transformed_entry
+# slow test /perspective-events/editor_transformed_entry executed in 2.01 secs
+# End of perspective-events tests
+1..1
+# Start of perspective-events tests
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# unchanged old-source circle/center13 policy: 552 hits 600 misses, 1152 real native entry checks
+ok 2 /perspective-events/editor_old_hit_policy
+# slow test /perspective-events/editor_old_hit_policy executed in 2.10 secs
+# End of perspective-events tests
+1..2
+# Start of perspective-events tests
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+not ok /perspective-events/editor_cancel_reentry - ERROR:../source/app/tests/test-painter-perspective-editor-events.inc:42:editor_point: assertion failed (x == ex (+/- 1e-8)): (150.625 == 110.125)
+Bail out!
+stderr:
+Application icon missing: /workspace/shared/gimp-native-secondary/source/desktop/16x16/gimp.png (Failed to open file “/workspace/shared/gimp-native-secondary/source/desktop/16x16/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-native-secondary/source/desktop/32x32/gimp.png (Failed to open file “/workspace/shared/gimp-native-secondary/source/desktop/32x32/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-native-secondary/source/desktop/48x48/gimp.png (Failed to open file “/workspace/shared/gimp-native-secondary/source/desktop/48x48/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-native-secondary/source/desktop/64x64/gimp.png (Failed to open file “/workspace/shared/gimp-native-secondary/source/desktop/64x64/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-native-secondary/source/desktop/scalable/gimp.svg (Failed to open file “/workspace/shared/gimp-native-secondary/source/desktop/scalable/gimp.svg”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-native-secondary/source/desktop/256x256/gimp.png
+gui_dbus_name_lost: connection to the bus cannot be established.
+set device 'Virtual core XTEST pointer' to mode: disabled
+set device 'Xvfb mouse' to mode: disabled
+**
+ERROR:../source/app/tests/test-painter-perspective-editor-events.inc:42:editor_point: assertion failed (x == ex (+/- 1e-8)): (150.625 == 110.125)
+――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+
+
+Summary of Failures:
+
+1/1 gimp:app / painter-perspective-events FAIL            5.65s   killed by signal 6 SIGABRT
+
+Ok:                 0   
+Expected Fail:      0   
+Fail:               1   
+Unexpected Pass:    0   
+Skipped:            0   
+Timeout:            0   
+
+Full log written to /workspace/shared/gimp-native-secondary/build/meson-logs/testlog.txt

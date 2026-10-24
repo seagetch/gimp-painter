@@ -1,0 +1,17 @@
+import pathlib,hashlib,json,shutil,tarfile
+D=pathlib.Path('/workspace/shared/gimp-native-secondary');R=pathlib.Path('/workspace/scratch/0015fc5d1a03/gimp-painter');O=D/'perspective-editor-entry/final';O.mkdir(exist_ok=True)
+held=json.loads((D/'perspective26/final/held-source-isolation.json').read_text())
+for r in held['rows']:
+ p=D/'source'/r['path']
+ if r.get('native_exists') is False:assert not p.exists()
+ else:assert hashlib.sha256(p.read_bytes()).hexdigest()==r['sha256']
+owned=['app/tests/test-painter-perspective-events.c','app/tests/test-painter-perspective-editor-events.inc']+[str(p.relative_to(R)) for p in (R/'migration/fixtures/legacy-perspective-editor').iterdir() if p.is_file()]
+for p in owned:(D/'source'/p).parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(R/p,D/'source'/p)
+paths=set(json.loads((D/'perspective26/final/source-before-build.json').read_text()))|set(owned)|{'app/display/gimpmotionbuffer.c','app/display/gimpmotionbuffer.h','app/tools/tool_manager.c','app/tools/gimptool.c','app/tools/gimptoolcontrol.c','app/core/gimpimage-undo.c'}
+seal={p:hashlib.sha256((D/'source'/p).read_bytes()).hexdigest() for p in sorted(paths)}
+if (O/'source-before-build.json').exists():assert json.loads((O/'source-before-build.json').read_text())==seal
+else:(O/'source-before-build.json').write_text(json.dumps(seal,indent=2)+'\n')
+(O/'held-source-isolation.json').write_text(json.dumps(held,indent=2)+'\n')
+with tarfile.open(O/'tested-sources.tar.gz','w:gz') as t:
+ for p in seal:t.add(D/'source'/p,arcname=p)
+print(len(seal),'source inputs; all nine held providers unchanged')

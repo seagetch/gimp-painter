@@ -1,0 +1,35 @@
+ninja: Entering directory `/workspace/shared/gimp-native-secondary/build'
+[1/12] Generating git-version.h.in.1 with a custom command
+fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+[2/12] Generating git-version.h.in.2 with a custom command
+fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+[3/12] Generating git-version.h with a custom command
+fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+[4/6] Generating app/tests/icon-theme-fixture/gimp-test-icon-theme-fixture with a custom command
+{"files": 1191, "manifest_sha256": "2f790ebf02244ef3c023f17f16ab614cbc315ee46d46abd87b7f73d4d5d9be41", "ownership_marker_sha256": "d3ebe76f57bdce73e82df17c3cd89f1a630f42f3c8d72dbfdacd4a000061b8bf", "plan_sha256": "0a16da7a76b5facf2d3d8084793b72e28d32d17c7ff6bf237d164075d4af4b95", "stamp_sha256": "c20e592420d8f1feb8e044c6114f8ed009473d411042806fd6e9aadd50c7ffc9", "status": "verified"}
+[5/6] Compiling C object app/tests/painter-perspective-events.p/test-painter-perspective-events.c.o
+In file included from ../source/app/tests/test-painter-perspective-editor-events.inc:99,
+                 from ../source/app/tests/test-painter-perspective-events.c:217:
+../source/app/tests/../../migration/fixtures/legacy-perspective-editor/hit-oracle.inc:24:38: warning: no previous declaration for ‘legacy_hit_zoom_xy_f’ [-Wmissing-declarations]
+   24 | #define gimp_display_shell_zoom_xy_f legacy_hit_zoom_xy_f
+      |                                      ^~~~~~~~~~~~~~~~~~~~
+../source/app/tests/../../migration/fixtures/legacy-perspective-editor/zoom.inc:2:1: note: in expansion of macro ‘gimp_display_shell_zoom_xy_f’
+    2 | gimp_display_shell_zoom_xy_f  (const GimpDisplayShell *shell,
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../source/app/tests/../../migration/fixtures/legacy-perspective-editor/hit-oracle.inc:25:34: warning: no previous declaration for ‘legacy_hit_on_handle’ [-Wmissing-declarations]
+   25 | #define gimp_draw_tool_on_handle legacy_hit_on_handle
+      |                                  ^~~~~~~~~~~~~~~~~~~~
+../source/app/tests/../../migration/fixtures/legacy-perspective-editor/on-handle.inc:2:1: note: in expansion of macro ‘gimp_draw_tool_on_handle’
+    2 | gimp_draw_tool_on_handle (GimpDrawTool     *draw_tool,
+      | ^~~~~~~~~~~~~~~~~~~~~~~~
+../source/app/tests/test-painter-perspective-editor-events.inc: In function ‘editor_old_hit_policy’:
+../source/app/tests/test-painter-perspective-editor-events.inc:121:13: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  121 |             LegacyHitShell old = { shell->scale_x, shell->scale_y, shell->offset_x, shell->offset_y };
+      |             ^~~~~~~~~~~~~~
+../source/app/tests/test-painter-perspective-editor-events.inc:127:17: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+  127 |                 gdouble x = 120.125 + (axis == 0 ? deltas[d] / shell->scale_x : 0);
+      |                 ^~~~~~~
+[6/6] Linking target app/tests/painter-perspective-events

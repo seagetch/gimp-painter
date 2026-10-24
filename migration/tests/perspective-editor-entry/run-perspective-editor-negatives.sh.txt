@@ -1,0 +1,35 @@
+#!/bin/bash
+set -euo pipefail
+D=/workspace/shared/gimp-native-secondary
+source "$D/env.sh";exec 9>"$D/build.lock";flock 9
+O="$D/perspective-editor-entry/negative";mkdir -p "$O"
+for kind in rounded-input radius-seven;do
+ export KIND="$kind"
+ python3 - <<'PY'
+import pathlib,os,json,hashlib
+D=pathlib.Path('/workspace/shared/gimp-native-secondary');kind=os.environ['KIND'];O=D/'perspective-editor-entry/negative'/kind;O.mkdir(exist_ok=True)
+p=D/'source'/('app/tests/test-painter-perspective-editor-events.inc' if kind=='rounded-input' else 'migration/fixtures/legacy-perspective-editor/on-handle.inc');s=p.read_text();(O/'original-input.txt').write_text(s)
+if kind=='rounded-input':s=s.replace('x * shell->scale_x - shell->offset_x','floor (x * shell->scale_x + .5) - shell->offset_x').replace('y * shell->scale_y - shell->offset_y','floor (y * shell->scale_y + .5) - shell->offset_y')
+else:s=s.replace('width /= 2;','width = (width + 1) / 2;')
+p.write_text(s);(O/'mutated-input.txt').write_text(s);(O/'mutation.json').write_text(json.dumps({'path':str(p.relative_to(D/'source')),'original_sha256':hashlib.sha256((O/'original-input.txt').read_bytes()).hexdigest(),'mutated_sha256':hashlib.sha256(s.encode()).hexdigest()},indent=2)+'\n')
+PY
+ restore() { python3 - "$D" "$kind" <<'PY'
+import pathlib,json,sys
+D=pathlib.Path(sys.argv[1]);O=D/'perspective-editor-entry/negative'/sys.argv[2];j=json.loads((O/'mutation.json').read_text());(D/'source'/j['path']).write_bytes((O/'original-input.txt').read_bytes())
+PY
+ }
+ trap restore EXIT
+ ninja -j2 -C "$D/build" app/tests/painter-perspective-events > "$O/$kind/build.log" 2>&1
+ if [[ $kind == rounded-input ]];then filter=editor_transformed_entry;else filter=editor_old_hit_policy;fi
+ set +e
+ python3 "$D/source/tools/run-painter-xvfb.py" meson test -C "$D/build" --no-rebuild --num-processes=1 --print-errorlogs --test-args="-p /perspective-events/$filter" painter-perspective-events > "$O/$kind/run.log" 2>&1
+ status=$?;set -e
+ python3 - "$D" "$kind" <<'PY'
+import pathlib,json,sys,hashlib
+D=pathlib.Path(sys.argv[1]);O=D/'perspective-editor-entry/negative'/sys.argv[2];j=json.loads((D/'build/meson-logs/testlog.json').read_text().splitlines()[0]);r={k:j.get(k,'') for k in ['name','result','returncode','duration','stdout','stderr']};r['executable_sha256']=hashlib.sha256((D/'build/app/tests/painter-perspective-events').read_bytes()).hexdigest();(O/'result.json').write_text(json.dumps(r,indent=2)+'\n');assert r['result']=='FAIL' and 'assertion failed' in r['stdout']
+PY
+ restore;trap - EXIT
+ [[ $status != 0 ]]
+done
+flock -u 9
+bash /workspace/shared/run-perspective-editor-final.sh

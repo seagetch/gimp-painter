@@ -1,0 +1,63 @@
+gboolean
+gimp_draw_tool_on_handle (GimpDrawTool     *draw_tool,
+                          GimpDisplay      *display,
+                          gdouble           x,
+                          gdouble           y,
+                          GimpHandleType    type,
+                          gdouble           handle_x,
+                          gdouble           handle_y,
+                          gint              width,
+                          gint              height,
+                          GimpHandleAnchor  anchor)
+{
+  GimpDisplayShell *shell;
+  gdouble           tx, ty;
+  gdouble           handle_tx, handle_ty;
+
+  g_return_val_if_fail (GIMP_IS_DRAW_TOOL (draw_tool), FALSE);
+  g_return_val_if_fail (GIMP_IS_DISPLAY (display), FALSE);
+
+  shell = gimp_display_get_shell (display);
+
+  gimp_display_shell_zoom_xy_f (shell,
+                                x, y,
+                                &tx, &ty);
+  gimp_display_shell_zoom_xy_f (shell,
+                                handle_x, handle_y,
+                                &handle_tx, &handle_ty);
+
+  switch (type)
+    {
+    case GIMP_HANDLE_SQUARE:
+    case GIMP_HANDLE_FILLED_SQUARE:
+    case GIMP_HANDLE_CROSS:
+      gimp_canvas_item_shift_to_north_west (anchor,
+                                            handle_tx, handle_ty,
+                                            width, height,
+                                            &handle_tx, &handle_ty);
+
+      return (tx == CLAMP (tx, handle_tx, handle_tx + width) &&
+              ty == CLAMP (ty, handle_ty, handle_ty + height));
+
+    case GIMP_HANDLE_CIRCLE:
+    case GIMP_HANDLE_FILLED_CIRCLE:
+      gimp_canvas_item_shift_to_center (anchor,
+                                        handle_tx, handle_ty,
+                                        width, height,
+                                        &handle_tx, &handle_ty);
+
+      /* FIXME */
+      if (width != height)
+        width = (width + height) / 2;
+
+      width /= 2;
+
+      return ((SQR (handle_tx - tx) + SQR (handle_ty - ty)) < SQR (width));
+
+    default:
+      g_warning ("%s: invalid handle type %d", G_STRFUNC, type);
+      break;
+    }
+
+  return FALSE;
+}

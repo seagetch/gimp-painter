@@ -213,11 +213,14 @@ static void three_point_transforms(void)
     }
   close_image();
 }
+/* Separate original editing-entry acceptance; preserve the nine existing cases. */
+#include "test-painter-perspective-editor-events.inc"
 int main(int argc,char **argv)
 {
   gint result;g_test_init(&argc,&argv,NULL);if(!gtk_init_check(&argc,&argv))return GIMP_EXIT_TEST_SKIPPED;
   gimp_test_utils_setup_menus_path();gimp=gimp_init_for_gui_testing(TRUE);
 #define ADD(name) g_test_add_func("/perspective-events/" #name,name)
   ADD(short_threshold_release);ADD(no_guide_clicks_and_toggle);ADD(cancel_and_tool_switch);ADD(guide_and_image_switch);ADD(history_origin_and_full_tracking);ADD(replacement_during_delivery);ADD(prior_hover_does_not_bend_stroke);ADD(editing_tool_bypass);ADD(three_point_transforms);
+  ADD(editor_transformed_entry); ADD(editor_old_hit_policy); ADD(editor_cancel_reentry); ADD(editor_nearest_policy);
   g_application_run(gimp->app,0,NULL);result=gimp_core_app_get_exit_status(GIMP_CORE_APP(gimp->app));g_application_quit(G_APPLICATION(gimp->app));g_clear_object(&gimp->app);return result;
 }

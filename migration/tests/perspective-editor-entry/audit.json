@@ -1,0 +1,6059 @@
+{
+  "tasks": [
+    "26.002",
+    "26.003",
+    "26.004",
+    "26.006"
+  ],
+  "baseline": "1f02654fd9d83d51e6d3330c24c14b781a878e8a",
+  "status": "OPEN",
+  "closed_original_duties": 0,
+  "rows": [
+    {
+      "work_id": "legacy-a32e39aa1202f7d996df",
+      "source_kind": "hunk",
+      "source_id": "01.002/000333",
+      "path": "app/core/gimpimage-perspective-guide.c",
+      "source_blob": "12e7e1705482314b381858cd16f6f4ec42e42545",
+      "source_range": "-0,0 -> 1,57",
+      "source_sha256": "c98f4ee925fb9f7525ac06d1ac3b711fcac820b6cddc43b471ccc3fcd36345f1",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "26.002",
+      "action": "消失点の追加を実装する",
+      "acceptance": "上限と初期位置が旧仕様どおり",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence",
+      "payload": "pinned-hunks/01.002-000333.diff",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-f3b69863cc2470d3df66",
+          "task": "08.009",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-02c7c1a60a0ac3f5805c",
+          "task": "08.009/removed-signal",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-926433d19d05ed852da3",
+          "task": "08.009/guide-owner",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-d7482fba84000bdd34a6",
+          "task": "26.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-7b20cac1ddb6490e42d7",
+          "task": "26.003",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-1b502f7c1cfdf0f8f34c",
+          "task": "26.004",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-e5e58200e1d48d86f9c4",
+          "task": "26.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-094a7260ba3814e09438",
+          "task": "26.006",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-2a8503256136bfae2f34",
+          "task": "26.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-9e12ed07eed8962ec6b4",
+          "task": "26.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-160ac8996f1faf8ddee6",
+          "task": "26.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-02e1d259333d7d53ed4f",
+          "task": "26.010",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-33ff88c79f7cd2388440",
+          "task": "26.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-573c07b7246a937e9cb9",
+          "task": "26.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-377ff704e5c29e27424c",
+          "task": "26.013",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-3bd25be34106722c4416",
+          "task": "26.014",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-7b20cac1ddb6490e42d7",
+      "source_kind": "hunk",
+      "source_id": "01.002/000333",
+      "path": "app/core/gimpimage-perspective-guide.c",
+      "source_blob": "12e7e1705482314b381858cd16f6f4ec42e42545",
+      "source_range": "-0,0 -> 1,57",
+      "source_sha256": "c98f4ee925fb9f7525ac06d1ac3b711fcac820b6cddc43b471ccc3fcd36345f1",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "26.003",
+      "action": "消失点の移動を実装する",
+      "acceptance": "画像座標へ変換して保持",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence",
+      "payload": "pinned-hunks/01.002-000333.diff",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-f3b69863cc2470d3df66",
+          "task": "08.009",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-02c7c1a60a0ac3f5805c",
+          "task": "08.009/removed-signal",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-926433d19d05ed852da3",
+          "task": "08.009/guide-owner",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-d7482fba84000bdd34a6",
+          "task": "26.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-a32e39aa1202f7d996df",
+          "task": "26.002",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-1b502f7c1cfdf0f8f34c",
+          "task": "26.004",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-e5e58200e1d48d86f9c4",
+          "task": "26.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-094a7260ba3814e09438",
+          "task": "26.006",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-2a8503256136bfae2f34",
+          "task": "26.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-9e12ed07eed8962ec6b4",
+          "task": "26.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-160ac8996f1faf8ddee6",
+          "task": "26.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-02e1d259333d7d53ed4f",
+          "task": "26.010",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-33ff88c79f7cd2388440",
+          "task": "26.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-573c07b7246a937e9cb9",
+          "task": "26.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-377ff704e5c29e27424c",
+          "task": "26.013",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-3bd25be34106722c4416",
+          "task": "26.014",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-1b502f7c1cfdf0f8f34c",
+      "source_kind": "hunk",
+      "source_id": "01.002/000333",
+      "path": "app/core/gimpimage-perspective-guide.c",
+      "source_blob": "12e7e1705482314b381858cd16f6f4ec42e42545",
+      "source_range": "-0,0 -> 1,57",
+      "source_sha256": "c98f4ee925fb9f7525ac06d1ac3b711fcac820b6cddc43b471ccc3fcd36345f1",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "26.004",
+      "action": "消失点の削除を実装する",
+      "acceptance": "残りの参照と選択が整合",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence",
+      "payload": "pinned-hunks/01.002-000333.diff",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-f3b69863cc2470d3df66",
+          "task": "08.009",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-02c7c1a60a0ac3f5805c",
+          "task": "08.009/removed-signal",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-926433d19d05ed852da3",
+          "task": "08.009/guide-owner",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-d7482fba84000bdd34a6",
+          "task": "26.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-a32e39aa1202f7d996df",
+          "task": "26.002",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-7b20cac1ddb6490e42d7",
+          "task": "26.003",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-e5e58200e1d48d86f9c4",
+          "task": "26.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-094a7260ba3814e09438",
+          "task": "26.006",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-2a8503256136bfae2f34",
+          "task": "26.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-9e12ed07eed8962ec6b4",
+          "task": "26.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-160ac8996f1faf8ddee6",
+          "task": "26.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-02e1d259333d7d53ed4f",
+          "task": "26.010",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-33ff88c79f7cd2388440",
+          "task": "26.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-573c07b7246a937e9cb9",
+          "task": "26.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-377ff704e5c29e27424c",
+          "task": "26.013",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-3bd25be34106722c4416",
+          "task": "26.014",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-094a7260ba3814e09438",
+      "source_kind": "hunk",
+      "source_id": "01.002/000333",
+      "path": "app/core/gimpimage-perspective-guide.c",
+      "source_blob": "12e7e1705482314b381858cd16f6f4ec42e42545",
+      "source_range": "-0,0 -> 1,57",
+      "source_sha256": "c98f4ee925fb9f7525ac06d1ac3b711fcac820b6cddc43b471ccc3fcd36345f1",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "26.006",
+      "action": "消失点 hit test を移植する",
+      "acceptance": "画面縮尺を考慮して選択",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence",
+      "payload": "pinned-hunks/01.002-000333.diff",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-f3b69863cc2470d3df66",
+          "task": "08.009",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-02c7c1a60a0ac3f5805c",
+          "task": "08.009/removed-signal",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-926433d19d05ed852da3",
+          "task": "08.009/guide-owner",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-d7482fba84000bdd34a6",
+          "task": "26.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-a32e39aa1202f7d996df",
+          "task": "26.002",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-7b20cac1ddb6490e42d7",
+          "task": "26.003",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-1b502f7c1cfdf0f8f34c",
+          "task": "26.004",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-e5e58200e1d48d86f9c4",
+          "task": "26.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-2a8503256136bfae2f34",
+          "task": "26.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-9e12ed07eed8962ec6b4",
+          "task": "26.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-160ac8996f1faf8ddee6",
+          "task": "26.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-02e1d259333d7d53ed4f",
+          "task": "26.010",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-33ff88c79f7cd2388440",
+          "task": "26.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-573c07b7246a937e9cb9",
+          "task": "26.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-377ff704e5c29e27424c",
+          "task": "26.013",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-3bd25be34106722c4416",
+          "task": "26.014",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-88664da52d793475fcad",
+      "source_kind": "hunk",
+      "source_id": "01.002/000334",
+      "path": "app/core/gimpimage-perspective-guide.h",
+      "source_blob": "20ebacb27dbf00b9b3a822e2367f9433433a9199",
+      "source_range": "-0,0 -> 1,28",
+      "source_sha256": "1aeb5acc3f5a8c142a5dbdf3536697a9a923c0ff3fcd180a1f00ac7ade07269c",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "26.002",
+      "action": "消失点の追加を実装する",
+      "acceptance": "上限と初期位置が旧仕様どおり",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence",
+      "payload": "pinned-hunks/01.002-000334.diff",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-1466692d30fa2cad1d0c",
+          "task": "08.009",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-a21e8a0d9647f39f565b",
+          "task": "08.009/removed-signal",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-f8ff04262f987b46a04c",
+          "task": "08.009/guide-owner",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-73cab472282bf9716d8b",
+          "task": "26.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-3faff49fd003c5dff39d",
+          "task": "26.003",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-1d6971e724ad9fb8d2bc",
+          "task": "26.004",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-26232885c43a77ec8535",
+          "task": "26.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-aa4c1d84fa4042f26379",
+          "task": "26.006",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-0f50c2eadb47230814af",
+          "task": "26.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-ee7e8f17ca6f09769d50",
+          "task": "26.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-b1006b357497fd0ad8ac",
+          "task": "26.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-8b2e58c8700ff30023fa",
+          "task": "26.010",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-aa10a27636cad7badb74",
+          "task": "26.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-3cd44ce419dc62fa8c68",
+          "task": "26.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-26c006ddae7c33df7283",
+          "task": "26.013",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-6fca39f584598487ef70",
+          "task": "26.014",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-3faff49fd003c5dff39d",
+      "source_kind": "hunk",
+      "source_id": "01.002/000334",
+      "path": "app/core/gimpimage-perspective-guide.h",
+      "source_blob": "20ebacb27dbf00b9b3a822e2367f9433433a9199",
+      "source_range": "-0,0 -> 1,28",
+      "source_sha256": "1aeb5acc3f5a8c142a5dbdf3536697a9a923c0ff3fcd180a1f00ac7ade07269c",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "26.003",
+      "action": "消失点の移動を実装する",
+      "acceptance": "画像座標へ変換して保持",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence",
+      "payload": "pinned-hunks/01.002-000334.diff",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-1466692d30fa2cad1d0c",
+          "task": "08.009",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-a21e8a0d9647f39f565b",
+          "task": "08.009/removed-signal",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-f8ff04262f987b46a04c",
+          "task": "08.009/guide-owner",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-73cab472282bf9716d8b",
+          "task": "26.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-88664da52d793475fcad",
+          "task": "26.002",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-1d6971e724ad9fb8d2bc",
+          "task": "26.004",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-26232885c43a77ec8535",
+          "task": "26.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-aa4c1d84fa4042f26379",
+          "task": "26.006",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-0f50c2eadb47230814af",
+          "task": "26.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-ee7e8f17ca6f09769d50",
+          "task": "26.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-b1006b357497fd0ad8ac",
+          "task": "26.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-8b2e58c8700ff30023fa",
+          "task": "26.010",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-aa10a27636cad7badb74",
+          "task": "26.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-3cd44ce419dc62fa8c68",
+          "task": "26.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-26c006ddae7c33df7283",
+          "task": "26.013",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-6fca39f584598487ef70",
+          "task": "26.014",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-1d6971e724ad9fb8d2bc",
+      "source_kind": "hunk",
+      "source_id": "01.002/000334",
+      "path": "app/core/gimpimage-perspective-guide.h",
+      "source_blob": "20ebacb27dbf00b9b3a822e2367f9433433a9199",
+      "source_range": "-0,0 -> 1,28",
+      "source_sha256": "1aeb5acc3f5a8c142a5dbdf3536697a9a923c0ff3fcd180a1f00ac7ade07269c",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "26.004",
+      "action": "消失点の削除を実装する",
+      "acceptance": "残りの参照と選択が整合",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence",
+      "payload": "pinned-hunks/01.002-000334.diff",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-1466692d30fa2cad1d0c",
+          "task": "08.009",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-a21e8a0d9647f39f565b",
+          "task": "08.009/removed-signal",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-f8ff04262f987b46a04c",
+          "task": "08.009/guide-owner",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-73cab472282bf9716d8b",
+          "task": "26.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-88664da52d793475fcad",
+          "task": "26.002",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-3faff49fd003c5dff39d",
+          "task": "26.003",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-26232885c43a77ec8535",
+          "task": "26.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-aa4c1d84fa4042f26379",
+          "task": "26.006",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-0f50c2eadb47230814af",
+          "task": "26.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-ee7e8f17ca6f09769d50",
+          "task": "26.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-b1006b357497fd0ad8ac",
+          "task": "26.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-8b2e58c8700ff30023fa",
+          "task": "26.010",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-aa10a27636cad7badb74",
+          "task": "26.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-3cd44ce419dc62fa8c68",
+          "task": "26.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-26c006ddae7c33df7283",
+          "task": "26.013",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-6fca39f584598487ef70",
+          "task": "26.014",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-aa4c1d84fa4042f26379",
+      "source_kind": "hunk",
+      "source_id": "01.002/000334",
+      "path": "app/core/gimpimage-perspective-guide.h",
+      "source_blob": "20ebacb27dbf00b9b3a822e2367f9433433a9199",
+      "source_range": "-0,0 -> 1,28",
+      "source_sha256": "1aeb5acc3f5a8c142a5dbdf3536697a9a923c0ff3fcd180a1f00ac7ade07269c",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "26.006",
+      "action": "消失点 hit test を移植する",
+      "acceptance": "画面縮尺を考慮して選択",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence",
+      "payload": "pinned-hunks/01.002-000334.diff",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-1466692d30fa2cad1d0c",
+          "task": "08.009",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-a21e8a0d9647f39f565b",
+          "task": "08.009/removed-signal",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-f8ff04262f987b46a04c",
+          "task": "08.009/guide-owner",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-73cab472282bf9716d8b",
+          "task": "26.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-88664da52d793475fcad",
+          "task": "26.002",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-3faff49fd003c5dff39d",
+          "task": "26.003",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-1d6971e724ad9fb8d2bc",
+          "task": "26.004",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-26232885c43a77ec8535",
+          "task": "26.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-0f50c2eadb47230814af",
+          "task": "26.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-ee7e8f17ca6f09769d50",
+          "task": "26.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-b1006b357497fd0ad8ac",
+          "task": "26.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-8b2e58c8700ff30023fa",
+          "task": "26.010",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-aa10a27636cad7badb74",
+          "task": "26.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-3cd44ce419dc62fa8c68",
+          "task": "26.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-26c006ddae7c33df7283",
+          "task": "26.013",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-6fca39f584598487ef70",
+          "task": "26.014",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-d7093e57d01b711ff0d3",
+      "source_kind": "hunk",
+      "source_id": "01.002/000335",
+      "path": "app/core/gimpimage-private.h",
+      "source_blob": "e86752331c8c03c516b3289309412217d7b0dc29",
+      "source_range": "-72,0 -> 73",
+      "source_sha256": "ccf68bed32c8ce6f4efda34a7a47ff771993af6a444aee56a93249f4282418ec",
+      "source_scope": "struct _GimpImagePrivate",
+      "phase": "implementation",
+      "wbs_task": "26.002",
+      "action": "消失点の追加を実装する",
+      "acceptance": "上限と初期位置が旧仕様どおり",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence",
+      "payload": "pinned-hunks/01.002-000335.diff",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-d1d0cce439f18c634968",
+          "task": "08.009",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-79f5d0ac95251d49e357",
+          "task": "08.009/removed-signal",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-e7166b6c86eff9f7206c",
+          "task": "08.009/guide-owner",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-7a955292b02e6303431c",
+          "task": "26.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-69c9955bad422cc9c93a",
+          "task": "26.003",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-a0226d5e5f55d67b6660",
+          "task": "26.004",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-88885aa7eeb9a4de1810",
+          "task": "26.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-1b7190d6f9a7bf189f99",
+          "task": "26.006",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-fcae1062eb4a17620c49",
+          "task": "26.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-b4036414d653be5b9127",
+          "task": "26.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-29098a5c0f85b280ce03",
+          "task": "26.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-c602c99668a53df8ee05",
+          "task": "26.010",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-368dc8af8ca683e5c21b",
+          "task": "26.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-4dd815b270682ea41464",
+          "task": "26.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-8d95fd2dfa757a9dcc4d",
+          "task": "26.013",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-b8a7229c35821ea5be23",
+          "task": "26.014",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-69c9955bad422cc9c93a",
+      "source_kind": "hunk",
+      "source_id": "01.002/000335",
+      "path": "app/core/gimpimage-private.h",
+      "source_blob": "e86752331c8c03c516b3289309412217d7b0dc29",
+      "source_range": "-72,0 -> 73",
+      "source_sha256": "ccf68bed32c8ce6f4efda34a7a47ff771993af6a444aee56a93249f4282418ec",
+      "source_scope": "struct _GimpImagePrivate",
+      "phase": "implementation",
+      "wbs_task": "26.003",
+      "action": "消失点の移動を実装する",
+      "acceptance": "画像座標へ変換して保持",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence",
+      "payload": "pinned-hunks/01.002-000335.diff",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-d1d0cce439f18c634968",
+          "task": "08.009",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-79f5d0ac95251d49e357",
+          "task": "08.009/removed-signal",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-e7166b6c86eff9f7206c",
+          "task": "08.009/guide-owner",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-7a955292b02e6303431c",
+          "task": "26.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-d7093e57d01b711ff0d3",
+          "task": "26.002",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-a0226d5e5f55d67b6660",
+          "task": "26.004",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-88885aa7eeb9a4de1810",
+          "task": "26.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-1b7190d6f9a7bf189f99",
+          "task": "26.006",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-fcae1062eb4a17620c49",
+          "task": "26.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-b4036414d653be5b9127",
+          "task": "26.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-29098a5c0f85b280ce03",
+          "task": "26.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-c602c99668a53df8ee05",
+          "task": "26.010",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-368dc8af8ca683e5c21b",
+          "task": "26.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-4dd815b270682ea41464",
+          "task": "26.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-8d95fd2dfa757a9dcc4d",
+          "task": "26.013",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-b8a7229c35821ea5be23",
+          "task": "26.014",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-a0226d5e5f55d67b6660",
+      "source_kind": "hunk",
+      "source_id": "01.002/000335",
+      "path": "app/core/gimpimage-private.h",
+      "source_blob": "e86752331c8c03c516b3289309412217d7b0dc29",
+      "source_range": "-72,0 -> 73",
+      "source_sha256": "ccf68bed32c8ce6f4efda34a7a47ff771993af6a444aee56a93249f4282418ec",
+      "source_scope": "struct _GimpImagePrivate",
+      "phase": "implementation",
+      "wbs_task": "26.004",
+      "action": "消失点の削除を実装する",
+      "acceptance": "残りの参照と選択が整合",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence",
+      "payload": "pinned-hunks/01.002-000335.diff",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-d1d0cce439f18c634968",
+          "task": "08.009",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-79f5d0ac95251d49e357",
+          "task": "08.009/removed-signal",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-e7166b6c86eff9f7206c",
+          "task": "08.009/guide-owner",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-7a955292b02e6303431c",
+          "task": "26.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-d7093e57d01b711ff0d3",
+          "task": "26.002",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-69c9955bad422cc9c93a",
+          "task": "26.003",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-88885aa7eeb9a4de1810",
+          "task": "26.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-1b7190d6f9a7bf189f99",
+          "task": "26.006",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-fcae1062eb4a17620c49",
+          "task": "26.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-b4036414d653be5b9127",
+          "task": "26.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-29098a5c0f85b280ce03",
+          "task": "26.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-c602c99668a53df8ee05",
+          "task": "26.010",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-368dc8af8ca683e5c21b",
+          "task": "26.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-4dd815b270682ea41464",
+          "task": "26.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-8d95fd2dfa757a9dcc4d",
+          "task": "26.013",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-b8a7229c35821ea5be23",
+          "task": "26.014",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-1b7190d6f9a7bf189f99",
+      "source_kind": "hunk",
+      "source_id": "01.002/000335",
+      "path": "app/core/gimpimage-private.h",
+      "source_blob": "e86752331c8c03c516b3289309412217d7b0dc29",
+      "source_range": "-72,0 -> 73",
+      "source_sha256": "ccf68bed32c8ce6f4efda34a7a47ff771993af6a444aee56a93249f4282418ec",
+      "source_scope": "struct _GimpImagePrivate",
+      "phase": "implementation",
+      "wbs_task": "26.006",
+      "action": "消失点 hit test を移植する",
+      "acceptance": "画面縮尺を考慮して選択",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence",
+      "payload": "pinned-hunks/01.002-000335.diff",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-d1d0cce439f18c634968",
+          "task": "08.009",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-79f5d0ac95251d49e357",
+          "task": "08.009/removed-signal",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-e7166b6c86eff9f7206c",
+          "task": "08.009/guide-owner",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-7a955292b02e6303431c",
+          "task": "26.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-d7093e57d01b711ff0d3",
+          "task": "26.002",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-69c9955bad422cc9c93a",
+          "task": "26.003",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-a0226d5e5f55d67b6660",
+          "task": "26.004",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-88885aa7eeb9a4de1810",
+          "task": "26.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-fcae1062eb4a17620c49",
+          "task": "26.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-b4036414d653be5b9127",
+          "task": "26.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-29098a5c0f85b280ce03",
+          "task": "26.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-c602c99668a53df8ee05",
+          "task": "26.010",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-368dc8af8ca683e5c21b",
+          "task": "26.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-4dd815b270682ea41464",
+          "task": "26.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-8d95fd2dfa757a9dcc4d",
+          "task": "26.013",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-b8a7229c35821ea5be23",
+          "task": "26.014",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-a6a4593d43080f6ba0c2",
+      "source_kind": "hunk",
+      "source_id": "01.002/000336",
+      "path": "app/core/gimpimage-snap.c",
+      "source_blob": "c640f70aceaba5b9d4914ef0a3d701110c679085",
+      "source_range": "-17,0 -> 18,2",
+      "source_sha256": "7d3697147ff122b1c8af89ea5c4e8a0323637d3a6cdf7c6bb25561515b0c3e2b",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "26.002",
+      "action": "消失点の追加を実装する",
+      "acceptance": "上限と初期位置が旧仕様どおり",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence",
+      "payload": "pinned-hunks/01.002-000336.diff",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-66256287fef3f844905d",
+          "task": "26.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-234c9a36b896419cc27d",
+          "task": "26.003",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-71b03144521a2741d70c",
+          "task": "26.004",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-e670bd959b770ec33f7b",
+          "task": "26.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-6e1df4b55e0d0544a67b",
+          "task": "26.006",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-5be9586ff8fd2c993109",
+          "task": "26.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-d88c04c64d23b63e0fad",
+          "task": "26.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-b842d73c130032684b7b",
+          "task": "26.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-302eefd3dac69c0a2475",
+          "task": "26.010",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-63870b82f6bf991d48a1",
+          "task": "26.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-b102db4cbf9b5c5012b2",
+          "task": "26.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-1007742eacca7c132a57",
+          "task": "26.013",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-77c1bbd4474ad79358b8",
+          "task": "26.014",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-234c9a36b896419cc27d",
+      "source_kind": "hunk",
+      "source_id": "01.002/000336",
+      "path": "app/core/gimpimage-snap.c",
+      "source_blob": "c640f70aceaba5b9d4914ef0a3d701110c679085",
+      "source_range": "-17,0 -> 18,2",
+      "source_sha256": "7d3697147ff122b1c8af89ea5c4e8a0323637d3a6cdf7c6bb25561515b0c3e2b",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "26.003",
+      "action": "消失点の移動を実装する",
+      "acceptance": "画像座標へ変換して保持",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence",
+      "payload": "pinned-hunks/01.002-000336.diff",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-66256287fef3f844905d",
+          "task": "26.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-a6a4593d43080f6ba0c2",
+          "task": "26.002",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-71b03144521a2741d70c",
+          "task": "26.004",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-e670bd959b770ec33f7b",
+          "task": "26.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-6e1df4b55e0d0544a67b",
+          "task": "26.006",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-5be9586ff8fd2c993109",
+          "task": "26.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-d88c04c64d23b63e0fad",
+          "task": "26.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-b842d73c130032684b7b",
+          "task": "26.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-302eefd3dac69c0a2475",
+          "task": "26.010",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-63870b82f6bf991d48a1",
+          "task": "26.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-b102db4cbf9b5c5012b2",
+          "task": "26.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-1007742eacca7c132a57",
+          "task": "26.013",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-77c1bbd4474ad79358b8",
+          "task": "26.014",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-71b03144521a2741d70c",
+      "source_kind": "hunk",
+      "source_id": "01.002/000336",
+      "path": "app/core/gimpimage-snap.c",
+      "source_blob": "c640f70aceaba5b9d4914ef0a3d701110c679085",
+      "source_range": "-17,0 -> 18,2",
+      "source_sha256": "7d3697147ff122b1c8af89ea5c4e8a0323637d3a6cdf7c6bb25561515b0c3e2b",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "26.004",
+      "action": "消失点の削除を実装する",
+      "acceptance": "残りの参照と選択が整合",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence",
+      "payload": "pinned-hunks/01.002-000336.diff",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-66256287fef3f844905d",
+          "task": "26.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-a6a4593d43080f6ba0c2",
+          "task": "26.002",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-234c9a36b896419cc27d",
+          "task": "26.003",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-e670bd959b770ec33f7b",
+          "task": "26.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-6e1df4b55e0d0544a67b",
+          "task": "26.006",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-5be9586ff8fd2c993109",
+          "task": "26.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-d88c04c64d23b63e0fad",
+          "task": "26.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-b842d73c130032684b7b",
+          "task": "26.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-302eefd3dac69c0a2475",
+          "task": "26.010",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-63870b82f6bf991d48a1",
+          "task": "26.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-b102db4cbf9b5c5012b2",
+          "task": "26.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-1007742eacca7c132a57",
+          "task": "26.013",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-77c1bbd4474ad79358b8",
+          "task": "26.014",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-6e1df4b55e0d0544a67b",
+      "source_kind": "hunk",
+      "source_id": "01.002/000336",
+      "path": "app/core/gimpimage-snap.c",
+      "source_blob": "c640f70aceaba5b9d4914ef0a3d701110c679085",
+      "source_range": "-17,0 -> 18,2",
+      "source_sha256": "7d3697147ff122b1c8af89ea5c4e8a0323637d3a6cdf7c6bb25561515b0c3e2b",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "26.006",
+      "action": "消失点 hit test を移植する",
+      "acceptance": "画面縮尺を考慮して選択",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence",
+      "payload": "pinned-hunks/01.002-000336.diff",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-66256287fef3f844905d",
+          "task": "26.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-a6a4593d43080f6ba0c2",
+          "task": "26.002",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-234c9a36b896419cc27d",
+          "task": "26.003",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-71b03144521a2741d70c",
+          "task": "26.004",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-e670bd959b770ec33f7b",
+          "task": "26.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-5be9586ff8fd2c993109",
+          "task": "26.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-d88c04c64d23b63e0fad",
+          "task": "26.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-b842d73c130032684b7b",
+          "task": "26.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-302eefd3dac69c0a2475",
+          "task": "26.010",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-63870b82f6bf991d48a1",
+          "task": "26.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-b102db4cbf9b5c5012b2",
+          "task": "26.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-1007742eacca7c132a57",
+          "task": "26.013",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-77c1bbd4474ad79358b8",
+          "task": "26.014",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-35a904ae5a2ea88e4117",
+      "source_kind": "hunk",
+      "source_id": "01.002/000337",
+      "path": "app/core/gimpimage-snap.h",
+      "source_blob": "68660a3d7eb54a6dbf213dc79518dbf3e4cb6cb6",
+      "source_range": "-61 -> 60,0",
+      "source_sha256": "61d1954b9aba0c9aedb8d1338804e817c7262cfc36da94161dab8e3ed7a3a43a",
+      "source_scope": "gboolean    gimp_image_snap_rectangle (GimpImage *image,",
+      "phase": "implementation",
+      "wbs_task": "26.002",
+      "action": "消失点の追加を実装する",
+      "acceptance": "上限と初期位置が旧仕様どおり",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence",
+      "payload": "pinned-hunks/01.002-000337.diff",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-5322ad5c99eedb9c969b",
+          "task": "26.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-7c0d283ba46f07246beb",
+          "task": "26.003",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-98d55967c521b6a68d04",
+          "task": "26.004",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-8a2a99d865ff90e32fe2",
+          "task": "26.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-d7f9d9e5520d668a0073",
+          "task": "26.006",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-22d232413c15d9021544",
+          "task": "26.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-ee11e025e88e0cd0362c",
+          "task": "26.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-e475f35154d6eb571c70",
+          "task": "26.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-b9dddd000aae3af0cd28",
+          "task": "26.010",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-d09ed118f17b3fa6b99e",
+          "task": "26.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-35c4c875ce029f6c14b8",
+          "task": "26.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-93c6d002a46a92833043",
+          "task": "26.013",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-6ddfdba149dba1f9ebbf",
+          "task": "26.014",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-7c0d283ba46f07246beb",
+      "source_kind": "hunk",
+      "source_id": "01.002/000337",
+      "path": "app/core/gimpimage-snap.h",
+      "source_blob": "68660a3d7eb54a6dbf213dc79518dbf3e4cb6cb6",
+      "source_range": "-61 -> 60,0",
+      "source_sha256": "61d1954b9aba0c9aedb8d1338804e817c7262cfc36da94161dab8e3ed7a3a43a",
+      "source_scope": "gboolean    gimp_image_snap_rectangle (GimpImage *image,",
+      "phase": "implementation",
+      "wbs_task": "26.003",
+      "action": "消失点の移動を実装する",
+      "acceptance": "画像座標へ変換して保持",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence",
+      "payload": "pinned-hunks/01.002-000337.diff",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-5322ad5c99eedb9c969b",
+          "task": "26.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-35a904ae5a2ea88e4117",
+          "task": "26.002",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-98d55967c521b6a68d04",
+          "task": "26.004",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-8a2a99d865ff90e32fe2",
+          "task": "26.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-d7f9d9e5520d668a0073",
+          "task": "26.006",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-22d232413c15d9021544",
+          "task": "26.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-ee11e025e88e0cd0362c",
+          "task": "26.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-e475f35154d6eb571c70",
+          "task": "26.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-b9dddd000aae3af0cd28",
+          "task": "26.010",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-d09ed118f17b3fa6b99e",
+          "task": "26.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-35c4c875ce029f6c14b8",
+          "task": "26.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-93c6d002a46a92833043",
+          "task": "26.013",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-6ddfdba149dba1f9ebbf",
+          "task": "26.014",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-98d55967c521b6a68d04",
+      "source_kind": "hunk",
+      "source_id": "01.002/000337",
+      "path": "app/core/gimpimage-snap.h",
+      "source_blob": "68660a3d7eb54a6dbf213dc79518dbf3e4cb6cb6",
+      "source_range": "-61 -> 60,0",
+      "source_sha256": "61d1954b9aba0c9aedb8d1338804e817c7262cfc36da94161dab8e3ed7a3a43a",
+      "source_scope": "gboolean    gimp_image_snap_rectangle (GimpImage *image,",
+      "phase": "implementation",
+      "wbs_task": "26.004",
+      "action": "消失点の削除を実装する",
+      "acceptance": "残りの参照と選択が整合",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence",
+      "payload": "pinned-hunks/01.002-000337.diff",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-5322ad5c99eedb9c969b",
+          "task": "26.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-35a904ae5a2ea88e4117",
+          "task": "26.002",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-7c0d283ba46f07246beb",
+          "task": "26.003",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-8a2a99d865ff90e32fe2",
+          "task": "26.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-d7f9d9e5520d668a0073",
+          "task": "26.006",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-22d232413c15d9021544",
+          "task": "26.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-ee11e025e88e0cd0362c",
+          "task": "26.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-e475f35154d6eb571c70",
+          "task": "26.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-b9dddd000aae3af0cd28",
+          "task": "26.010",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-d09ed118f17b3fa6b99e",
+          "task": "26.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-35c4c875ce029f6c14b8",
+          "task": "26.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-93c6d002a46a92833043",
+          "task": "26.013",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-6ddfdba149dba1f9ebbf",
+          "task": "26.014",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-d7f9d9e5520d668a0073",
+      "source_kind": "hunk",
+      "source_id": "01.002/000337",
+      "path": "app/core/gimpimage-snap.h",
+      "source_blob": "68660a3d7eb54a6dbf213dc79518dbf3e4cb6cb6",
+      "source_range": "-61 -> 60,0",
+      "source_sha256": "61d1954b9aba0c9aedb8d1338804e817c7262cfc36da94161dab8e3ed7a3a43a",
+      "source_scope": "gboolean    gimp_image_snap_rectangle (GimpImage *image,",
+      "phase": "implementation",
+      "wbs_task": "26.006",
+      "action": "消失点 hit test を移植する",
+      "acceptance": "画面縮尺を考慮して選択",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence",
+      "payload": "pinned-hunks/01.002-000337.diff",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-5322ad5c99eedb9c969b",
+          "task": "26.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-35a904ae5a2ea88e4117",
+          "task": "26.002",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-7c0d283ba46f07246beb",
+          "task": "26.003",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-98d55967c521b6a68d04",
+          "task": "26.004",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-8a2a99d865ff90e32fe2",
+          "task": "26.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-22d232413c15d9021544",
+          "task": "26.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-ee11e025e88e0cd0362c",
+          "task": "26.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-e475f35154d6eb571c70",
+          "task": "26.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-b9dddd000aae3af0cd28",
+          "task": "26.010",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-d09ed118f17b3fa6b99e",
+          "task": "26.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-35c4c875ce029f6c14b8",
+          "task": "26.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-93c6d002a46a92833043",
+          "task": "26.013",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-6ddfdba149dba1f9ebbf",
+          "task": "26.014",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-25e69a803efab75bffbe",
+      "source_kind": "hunk",
+      "source_id": "01.002/000342",
+      "path": "app/core/gimpimage.c",
+      "source_blob": "886102871dbc7a24e53b921b56a9988a04ab4c52",
+      "source_range": "-61,0 -> 62",
+      "source_sha256": "6af43761b0c8d6c82ea6787f2349a00ebf8cabee07341678ce25c7d7b0aab6a6",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "26.002",
+      "action": "消失点の追加を実装する",
+      "acceptance": "上限と初期位置が旧仕様どおり",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence",
+      "payload": "pinned-hunks/01.002-000342.diff",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-f021fc9435f85bbfe034",
+          "task": "08.009",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-e089a4ba40f0924052b6",
+          "task": "08.009/removed-signal",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-331fd64508adfd248d1a",
+          "task": "08.009/guide-owner",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-54e347453904b3d3eb27",
+          "task": "26.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-a2888301b3ab19118f25",
+          "task": "26.003",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-f8082e0b42b046391f0f",
+          "task": "26.004",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-904480f317186884013d",
+          "task": "26.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-437454f920e2a2f165b4",
+          "task": "26.006",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-32b4cec069930f987ddb",
+          "task": "26.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-bb9cc59e55852aa781f4",
+          "task": "26.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-9530b31bee6cfeff395d",
+          "task": "26.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-4435326b001098dc43a8",
+          "task": "26.010",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-5ef0e0f12ecf52117efd",
+          "task": "26.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-94bdcb97994a2d7b02e4",
+          "task": "26.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-bf41a29df26e9f3f6e22",
+          "task": "26.013",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-6d005bf1150b7820997b",
+          "task": "26.014",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-a2888301b3ab19118f25",
+      "source_kind": "hunk",
+      "source_id": "01.002/000342",
+      "path": "app/core/gimpimage.c",
+      "source_blob": "886102871dbc7a24e53b921b56a9988a04ab4c52",
+      "source_range": "-61,0 -> 62",
+      "source_sha256": "6af43761b0c8d6c82ea6787f2349a00ebf8cabee07341678ce25c7d7b0aab6a6",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "26.003",
+      "action": "消失点の移動を実装する",
+      "acceptance": "画像座標へ変換して保持",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence",
+      "payload": "pinned-hunks/01.002-000342.diff",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-f021fc9435f85bbfe034",
+          "task": "08.009",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-e089a4ba40f0924052b6",
+          "task": "08.009/removed-signal",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-331fd64508adfd248d1a",
+          "task": "08.009/guide-owner",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-54e347453904b3d3eb27",
+          "task": "26.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-25e69a803efab75bffbe",
+          "task": "26.002",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-f8082e0b42b046391f0f",
+          "task": "26.004",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-904480f317186884013d",
+          "task": "26.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-437454f920e2a2f165b4",
+          "task": "26.006",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-32b4cec069930f987ddb",
+          "task": "26.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-bb9cc59e55852aa781f4",
+          "task": "26.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-9530b31bee6cfeff395d",
+          "task": "26.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-4435326b001098dc43a8",
+          "task": "26.010",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-5ef0e0f12ecf52117efd",
+          "task": "26.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-94bdcb97994a2d7b02e4",
+          "task": "26.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-bf41a29df26e9f3f6e22",
+          "task": "26.013",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-6d005bf1150b7820997b",
+          "task": "26.014",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-f8082e0b42b046391f0f",
+      "source_kind": "hunk",
+      "source_id": "01.002/000342",
+      "path": "app/core/gimpimage.c",
+      "source_blob": "886102871dbc7a24e53b921b56a9988a04ab4c52",
+      "source_range": "-61,0 -> 62",
+      "source_sha256": "6af43761b0c8d6c82ea6787f2349a00ebf8cabee07341678ce25c7d7b0aab6a6",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "26.004",
+      "action": "消失点の削除を実装する",
+      "acceptance": "残りの参照と選択が整合",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence",
+      "payload": "pinned-hunks/01.002-000342.diff",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-f021fc9435f85bbfe034",
+          "task": "08.009",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-e089a4ba40f0924052b6",
+          "task": "08.009/removed-signal",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-331fd64508adfd248d1a",
+          "task": "08.009/guide-owner",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-54e347453904b3d3eb27",
+          "task": "26.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-25e69a803efab75bffbe",
+          "task": "26.002",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-a2888301b3ab19118f25",
+          "task": "26.003",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-904480f317186884013d",
+          "task": "26.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-437454f920e2a2f165b4",
+          "task": "26.006",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-32b4cec069930f987ddb",
+          "task": "26.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-bb9cc59e55852aa781f4",
+          "task": "26.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-9530b31bee6cfeff395d",
+          "task": "26.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-4435326b001098dc43a8",
+          "task": "26.010",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-5ef0e0f12ecf52117efd",
+          "task": "26.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-94bdcb97994a2d7b02e4",
+          "task": "26.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-bf41a29df26e9f3f6e22",
+          "task": "26.013",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-6d005bf1150b7820997b",
+          "task": "26.014",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-437454f920e2a2f165b4",
+      "source_kind": "hunk",
+      "source_id": "01.002/000342",
+      "path": "app/core/gimpimage.c",
+      "source_blob": "886102871dbc7a24e53b921b56a9988a04ab4c52",
+      "source_range": "-61,0 -> 62",
+      "source_sha256": "6af43761b0c8d6c82ea6787f2349a00ebf8cabee07341678ce25c7d7b0aab6a6",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "26.006",
+      "action": "消失点 hit test を移植する",
+      "acceptance": "画面縮尺を考慮して選択",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence",
+      "payload": "pinned-hunks/01.002-000342.diff",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-f021fc9435f85bbfe034",
+          "task": "08.009",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-e089a4ba40f0924052b6",
+          "task": "08.009/removed-signal",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-331fd64508adfd248d1a",
+          "task": "08.009/guide-owner",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-54e347453904b3d3eb27",
+          "task": "26.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-25e69a803efab75bffbe",
+          "task": "26.002",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-a2888301b3ab19118f25",
+          "task": "26.003",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-f8082e0b42b046391f0f",
+          "task": "26.004",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-904480f317186884013d",
+          "task": "26.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-32b4cec069930f987ddb",
+          "task": "26.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-bb9cc59e55852aa781f4",
+          "task": "26.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-9530b31bee6cfeff395d",
+          "task": "26.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-4435326b001098dc43a8",
+          "task": "26.010",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-5ef0e0f12ecf52117efd",
+          "task": "26.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-94bdcb97994a2d7b02e4",
+          "task": "26.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-bf41a29df26e9f3f6e22",
+          "task": "26.013",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-6d005bf1150b7820997b",
+          "task": "26.014",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-c49c5ba12f63562ad0a0",
+      "source_kind": "hunk",
+      "source_id": "01.002/000343",
+      "path": "app/core/gimpimage.c",
+      "source_blob": "886102871dbc7a24e53b921b56a9988a04ab4c52",
+      "source_range": "-658,0 -> 660",
+      "source_sha256": "1d9c5648f15a460edb29d3f8637d55198cf0980e1ecb6b816ed1e319cd38056b",
+      "source_scope": "gimp_image_init (GimpImage *image)",
+      "phase": "implementation",
+      "wbs_task": "26.002",
+      "action": "消失点の追加を実装する",
+      "acceptance": "上限と初期位置が旧仕様どおり",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence",
+      "payload": "pinned-hunks/01.002-000343.diff",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-309f9f9d65a806465559",
+          "task": "08.009",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-9b859a8695be4d26f51f",
+          "task": "08.009/removed-signal",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-23218c7b3149ab64639d",
+          "task": "08.009/guide-owner",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-00a46c4be8eb6cbac935",
+          "task": "26.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-77969aa61c0bf4db7210",
+          "task": "26.003",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-0ef910279fc9eaa2e99a",
+          "task": "26.004",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-9263bad44258221be5a9",
+          "task": "26.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-833ce1548cd536c2dea2",
+          "task": "26.006",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-b30880e16ec62c9e97e8",
+          "task": "26.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-b32986d576b440c13e8f",
+          "task": "26.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-d6196fe3509a91f6e58c",
+          "task": "26.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-b5fc054e50f47cf32644",
+          "task": "26.010",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-639a280dd8da4f68def1",
+          "task": "26.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-2b2dc9624dec0692c694",
+          "task": "26.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-d425b979aa6b772a0d28",
+          "task": "26.013",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-88789f50a6b8aabeb977",
+          "task": "26.014",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-77969aa61c0bf4db7210",
+      "source_kind": "hunk",
+      "source_id": "01.002/000343",
+      "path": "app/core/gimpimage.c",
+      "source_blob": "886102871dbc7a24e53b921b56a9988a04ab4c52",
+      "source_range": "-658,0 -> 660",
+      "source_sha256": "1d9c5648f15a460edb29d3f8637d55198cf0980e1ecb6b816ed1e319cd38056b",
+      "source_scope": "gimp_image_init (GimpImage *image)",
+      "phase": "implementation",
+      "wbs_task": "26.003",
+      "action": "消失点の移動を実装する",
+      "acceptance": "画像座標へ変換して保持",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence",
+      "payload": "pinned-hunks/01.002-000343.diff",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-309f9f9d65a806465559",
+          "task": "08.009",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-9b859a8695be4d26f51f",
+          "task": "08.009/removed-signal",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-23218c7b3149ab64639d",
+          "task": "08.009/guide-owner",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-00a46c4be8eb6cbac935",
+          "task": "26.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-c49c5ba12f63562ad0a0",
+          "task": "26.002",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-0ef910279fc9eaa2e99a",
+          "task": "26.004",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-9263bad44258221be5a9",
+          "task": "26.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-833ce1548cd536c2dea2",
+          "task": "26.006",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-b30880e16ec62c9e97e8",
+          "task": "26.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-b32986d576b440c13e8f",
+          "task": "26.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-d6196fe3509a91f6e58c",
+          "task": "26.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-b5fc054e50f47cf32644",
+          "task": "26.010",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-639a280dd8da4f68def1",
+          "task": "26.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-2b2dc9624dec0692c694",
+          "task": "26.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-d425b979aa6b772a0d28",
+          "task": "26.013",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-88789f50a6b8aabeb977",
+          "task": "26.014",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-0ef910279fc9eaa2e99a",
+      "source_kind": "hunk",
+      "source_id": "01.002/000343",
+      "path": "app/core/gimpimage.c",
+      "source_blob": "886102871dbc7a24e53b921b56a9988a04ab4c52",
+      "source_range": "-658,0 -> 660",
+      "source_sha256": "1d9c5648f15a460edb29d3f8637d55198cf0980e1ecb6b816ed1e319cd38056b",
+      "source_scope": "gimp_image_init (GimpImage *image)",
+      "phase": "implementation",
+      "wbs_task": "26.004",
+      "action": "消失点の削除を実装する",
+      "acceptance": "残りの参照と選択が整合",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence",
+      "payload": "pinned-hunks/01.002-000343.diff",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-309f9f9d65a806465559",
+          "task": "08.009",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-9b859a8695be4d26f51f",
+          "task": "08.009/removed-signal",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-23218c7b3149ab64639d",
+          "task": "08.009/guide-owner",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-00a46c4be8eb6cbac935",
+          "task": "26.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-c49c5ba12f63562ad0a0",
+          "task": "26.002",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-77969aa61c0bf4db7210",
+          "task": "26.003",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-9263bad44258221be5a9",
+          "task": "26.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-833ce1548cd536c2dea2",
+          "task": "26.006",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-b30880e16ec62c9e97e8",
+          "task": "26.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-b32986d576b440c13e8f",
+          "task": "26.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-d6196fe3509a91f6e58c",
+          "task": "26.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-b5fc054e50f47cf32644",
+          "task": "26.010",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-639a280dd8da4f68def1",
+          "task": "26.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-2b2dc9624dec0692c694",
+          "task": "26.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-d425b979aa6b772a0d28",
+          "task": "26.013",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-88789f50a6b8aabeb977",
+          "task": "26.014",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-833ce1548cd536c2dea2",
+      "source_kind": "hunk",
+      "source_id": "01.002/000343",
+      "path": "app/core/gimpimage.c",
+      "source_blob": "886102871dbc7a24e53b921b56a9988a04ab4c52",
+      "source_range": "-658,0 -> 660",
+      "source_sha256": "1d9c5648f15a460edb29d3f8637d55198cf0980e1ecb6b816ed1e319cd38056b",
+      "source_scope": "gimp_image_init (GimpImage *image)",
+      "phase": "implementation",
+      "wbs_task": "26.006",
+      "action": "消失点 hit test を移植する",
+      "acceptance": "画面縮尺を考慮して選択",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence",
+      "payload": "pinned-hunks/01.002-000343.diff",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-309f9f9d65a806465559",
+          "task": "08.009",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-9b859a8695be4d26f51f",
+          "task": "08.009/removed-signal",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-23218c7b3149ab64639d",
+          "task": "08.009/guide-owner",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-00a46c4be8eb6cbac935",
+          "task": "26.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-c49c5ba12f63562ad0a0",
+          "task": "26.002",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-77969aa61c0bf4db7210",
+          "task": "26.003",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-0ef910279fc9eaa2e99a",
+          "task": "26.004",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-9263bad44258221be5a9",
+          "task": "26.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-b30880e16ec62c9e97e8",
+          "task": "26.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-b32986d576b440c13e8f",
+          "task": "26.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-d6196fe3509a91f6e58c",
+          "task": "26.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-b5fc054e50f47cf32644",
+          "task": "26.010",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-639a280dd8da4f68def1",
+          "task": "26.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-2b2dc9624dec0692c694",
+          "task": "26.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-d425b979aa6b772a0d28",
+          "task": "26.013",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-88789f50a6b8aabeb977",
+          "task": "26.014",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-0ae40f29dfbc78f688f0",
+      "source_kind": "hunk",
+      "source_id": "01.002/000344",
+      "path": "app/core/gimpimage.c",
+      "source_blob": "886102871dbc7a24e53b921b56a9988a04ab4c52",
+      "source_range": "-784,0 -> 787,17",
+      "source_sha256": "5a18ff5e8163c834ff90fa256f8346f11a73cba2307201746e544b22d128f881",
+      "source_scope": "gimp_image_constructed (GObject *object)",
+      "phase": "implementation",
+      "wbs_task": "26.002",
+      "action": "消失点の追加を実装する",
+      "acceptance": "上限と初期位置が旧仕様どおり",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence",
+      "payload": "pinned-hunks/01.002-000344.diff",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-d73837eaf04720be5b47",
+          "task": "08.009",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-2ba712333ce48250fb5f",
+          "task": "08.009/removed-signal",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-e8db50af82960dd1dacd",
+          "task": "08.009/guide-owner",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-204af6ed6647e6c91e1b",
+          "task": "26.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-f06bad2e62d61458b699",
+          "task": "26.003",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-e3d7b50059e2cd9f10e5",
+          "task": "26.004",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-2a14278e6d284ee7cd66",
+          "task": "26.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-0d5db6bfbbee7590decb",
+          "task": "26.006",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-990cec613edf5a8f2ce2",
+          "task": "26.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-fdc3f75537c373609d17",
+          "task": "26.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-63493d2256e709f87745",
+          "task": "26.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-571603141ff869553974",
+          "task": "26.010",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-efab5d0bf42f211730eb",
+          "task": "26.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-a41c8d5d17e8e1364bd1",
+          "task": "26.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-d595b7dfb3b33cef18da",
+          "task": "26.013",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-5a2a7af0e243ca7b4e1d",
+          "task": "26.014",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-f06bad2e62d61458b699",
+      "source_kind": "hunk",
+      "source_id": "01.002/000344",
+      "path": "app/core/gimpimage.c",
+      "source_blob": "886102871dbc7a24e53b921b56a9988a04ab4c52",
+      "source_range": "-784,0 -> 787,17",
+      "source_sha256": "5a18ff5e8163c834ff90fa256f8346f11a73cba2307201746e544b22d128f881",
+      "source_scope": "gimp_image_constructed (GObject *object)",
+      "phase": "implementation",
+      "wbs_task": "26.003",
+      "action": "消失点の移動を実装する",
+      "acceptance": "画像座標へ変換して保持",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence",
+      "payload": "pinned-hunks/01.002-000344.diff",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-d73837eaf04720be5b47",
+          "task": "08.009",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-2ba712333ce48250fb5f",
+          "task": "08.009/removed-signal",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-e8db50af82960dd1dacd",
+          "task": "08.009/guide-owner",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-204af6ed6647e6c91e1b",
+          "task": "26.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-0ae40f29dfbc78f688f0",
+          "task": "26.002",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-e3d7b50059e2cd9f10e5",
+          "task": "26.004",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-2a14278e6d284ee7cd66",
+          "task": "26.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-0d5db6bfbbee7590decb",
+          "task": "26.006",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-990cec613edf5a8f2ce2",
+          "task": "26.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-fdc3f75537c373609d17",
+          "task": "26.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-63493d2256e709f87745",
+          "task": "26.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-571603141ff869553974",
+          "task": "26.010",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-efab5d0bf42f211730eb",
+          "task": "26.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-a41c8d5d17e8e1364bd1",
+          "task": "26.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-d595b7dfb3b33cef18da",
+          "task": "26.013",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-5a2a7af0e243ca7b4e1d",
+          "task": "26.014",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-e3d7b50059e2cd9f10e5",
+      "source_kind": "hunk",
+      "source_id": "01.002/000344",
+      "path": "app/core/gimpimage.c",
+      "source_blob": "886102871dbc7a24e53b921b56a9988a04ab4c52",
+      "source_range": "-784,0 -> 787,17",
+      "source_sha256": "5a18ff5e8163c834ff90fa256f8346f11a73cba2307201746e544b22d128f881",
+      "source_scope": "gimp_image_constructed (GObject *object)",
+      "phase": "implementation",
+      "wbs_task": "26.004",
+      "action": "消失点の削除を実装する",
+      "acceptance": "残りの参照と選択が整合",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence",
+      "payload": "pinned-hunks/01.002-000344.diff",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-d73837eaf04720be5b47",
+          "task": "08.009",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-2ba712333ce48250fb5f",
+          "task": "08.009/removed-signal",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-e8db50af82960dd1dacd",
+          "task": "08.009/guide-owner",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-204af6ed6647e6c91e1b",
+          "task": "26.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-0ae40f29dfbc78f688f0",
+          "task": "26.002",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-f06bad2e62d61458b699",
+          "task": "26.003",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-2a14278e6d284ee7cd66",
+          "task": "26.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-0d5db6bfbbee7590decb",
+          "task": "26.006",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-990cec613edf5a8f2ce2",
+          "task": "26.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-fdc3f75537c373609d17",
+          "task": "26.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-63493d2256e709f87745",
+          "task": "26.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-571603141ff869553974",
+          "task": "26.010",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-efab5d0bf42f211730eb",
+          "task": "26.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-a41c8d5d17e8e1364bd1",
+          "task": "26.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-d595b7dfb3b33cef18da",
+          "task": "26.013",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-5a2a7af0e243ca7b4e1d",
+          "task": "26.014",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-0d5db6bfbbee7590decb",
+      "source_kind": "hunk",
+      "source_id": "01.002/000344",
+      "path": "app/core/gimpimage.c",
+      "source_blob": "886102871dbc7a24e53b921b56a9988a04ab4c52",
+      "source_range": "-784,0 -> 787,17",
+      "source_sha256": "5a18ff5e8163c834ff90fa256f8346f11a73cba2307201746e544b22d128f881",
+      "source_scope": "gimp_image_constructed (GObject *object)",
+      "phase": "implementation",
+      "wbs_task": "26.006",
+      "action": "消失点 hit test を移植する",
+      "acceptance": "画面縮尺を考慮して選択",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence",
+      "payload": "pinned-hunks/01.002-000344.diff",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-d73837eaf04720be5b47",
+          "task": "08.009",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-2ba712333ce48250fb5f",
+          "task": "08.009/removed-signal",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-e8db50af82960dd1dacd",
+          "task": "08.009/guide-owner",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-204af6ed6647e6c91e1b",
+          "task": "26.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-0ae40f29dfbc78f688f0",
+          "task": "26.002",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-f06bad2e62d61458b699",
+          "task": "26.003",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-e3d7b50059e2cd9f10e5",
+          "task": "26.004",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-2a14278e6d284ee7cd66",
+          "task": "26.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-990cec613edf5a8f2ce2",
+          "task": "26.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-fdc3f75537c373609d17",
+          "task": "26.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-63493d2256e709f87745",
+          "task": "26.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-571603141ff869553974",
+          "task": "26.010",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-efab5d0bf42f211730eb",
+          "task": "26.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-a41c8d5d17e8e1364bd1",
+          "task": "26.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-d595b7dfb3b33cef18da",
+          "task": "26.013",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-5a2a7af0e243ca7b4e1d",
+          "task": "26.014",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-317804003fe964418bcd",
+      "source_kind": "hunk",
+      "source_id": "01.002/000345",
+      "path": "app/core/gimpimage.c",
+      "source_blob": "886102871dbc7a24e53b921b56a9988a04ab4c52",
+      "source_range": "-1002,0 -> 1022,4",
+      "source_sha256": "8bf860926dcec49726fb64c5dcb6bc801169b1b7a6188e6091ea495ce06b5243",
+      "source_scope": "gimp_image_finalize (GObject *object)",
+      "phase": "implementation",
+      "wbs_task": "26.002",
+      "action": "消失点の追加を実装する",
+      "acceptance": "上限と初期位置が旧仕様どおり",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence",
+      "payload": "pinned-hunks/01.002-000345.diff",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-290db3b02996092ccb19",
+          "task": "08.009",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-d49c1036714bb6fd3453",
+          "task": "08.009/removed-signal",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-2ee2c1a84f8f11d16dd9",
+          "task": "08.009/guide-owner",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-aab95d8a597cbf577d5b",
+          "task": "26.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-ca8ecd01daa97a03e64b",
+          "task": "26.003",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-3589bb4307124f2a582a",
+          "task": "26.004",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-60240425500b10a5ee53",
+          "task": "26.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-d97d628b721c80e2dbbd",
+          "task": "26.006",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-55ec23d7f9122dea1ff9",
+          "task": "26.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-486c630bcf3b383a6714",
+          "task": "26.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-0c7321abde0ea514e544",
+          "task": "26.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-0e6f3c3b2f1a61a01dbd",
+          "task": "26.010",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-75e183a49b0e691b2384",
+          "task": "26.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-69ec7a5c805abd80e51d",
+          "task": "26.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-1b1081873b7d992938ad",
+          "task": "26.013",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-17a3a2ca03c6d1c45488",
+          "task": "26.014",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-ca8ecd01daa97a03e64b",
+      "source_kind": "hunk",
+      "source_id": "01.002/000345",
+      "path": "app/core/gimpimage.c",
+      "source_blob": "886102871dbc7a24e53b921b56a9988a04ab4c52",
+      "source_range": "-1002,0 -> 1022,4",
+      "source_sha256": "8bf860926dcec49726fb64c5dcb6bc801169b1b7a6188e6091ea495ce06b5243",
+      "source_scope": "gimp_image_finalize (GObject *object)",
+      "phase": "implementation",
+      "wbs_task": "26.003",
+      "action": "消失点の移動を実装する",
+      "acceptance": "画像座標へ変換して保持",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence",
+      "payload": "pinned-hunks/01.002-000345.diff",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-290db3b02996092ccb19",
+          "task": "08.009",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-d49c1036714bb6fd3453",
+          "task": "08.009/removed-signal",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-2ee2c1a84f8f11d16dd9",
+          "task": "08.009/guide-owner",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-aab95d8a597cbf577d5b",
+          "task": "26.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-317804003fe964418bcd",
+          "task": "26.002",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-3589bb4307124f2a582a",
+          "task": "26.004",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-60240425500b10a5ee53",
+          "task": "26.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-d97d628b721c80e2dbbd",
+          "task": "26.006",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-55ec23d7f9122dea1ff9",
+          "task": "26.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-486c630bcf3b383a6714",
+          "task": "26.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-0c7321abde0ea514e544",
+          "task": "26.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-0e6f3c3b2f1a61a01dbd",
+          "task": "26.010",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-75e183a49b0e691b2384",
+          "task": "26.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-69ec7a5c805abd80e51d",
+          "task": "26.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-1b1081873b7d992938ad",
+          "task": "26.013",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-17a3a2ca03c6d1c45488",
+          "task": "26.014",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-3589bb4307124f2a582a",
+      "source_kind": "hunk",
+      "source_id": "01.002/000345",
+      "path": "app/core/gimpimage.c",
+      "source_blob": "886102871dbc7a24e53b921b56a9988a04ab4c52",
+      "source_range": "-1002,0 -> 1022,4",
+      "source_sha256": "8bf860926dcec49726fb64c5dcb6bc801169b1b7a6188e6091ea495ce06b5243",
+      "source_scope": "gimp_image_finalize (GObject *object)",
+      "phase": "implementation",
+      "wbs_task": "26.004",
+      "action": "消失点の削除を実装する",
+      "acceptance": "残りの参照と選択が整合",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence",
+      "payload": "pinned-hunks/01.002-000345.diff",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-290db3b02996092ccb19",
+          "task": "08.009",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-d49c1036714bb6fd3453",
+          "task": "08.009/removed-signal",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-2ee2c1a84f8f11d16dd9",
+          "task": "08.009/guide-owner",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-aab95d8a597cbf577d5b",
+          "task": "26.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-317804003fe964418bcd",
+          "task": "26.002",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-ca8ecd01daa97a03e64b",
+          "task": "26.003",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-60240425500b10a5ee53",
+          "task": "26.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-d97d628b721c80e2dbbd",
+          "task": "26.006",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-55ec23d7f9122dea1ff9",
+          "task": "26.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-486c630bcf3b383a6714",
+          "task": "26.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-0c7321abde0ea514e544",
+          "task": "26.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-0e6f3c3b2f1a61a01dbd",
+          "task": "26.010",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-75e183a49b0e691b2384",
+          "task": "26.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-69ec7a5c805abd80e51d",
+          "task": "26.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-1b1081873b7d992938ad",
+          "task": "26.013",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-17a3a2ca03c6d1c45488",
+          "task": "26.014",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-d97d628b721c80e2dbbd",
+      "source_kind": "hunk",
+      "source_id": "01.002/000345",
+      "path": "app/core/gimpimage.c",
+      "source_blob": "886102871dbc7a24e53b921b56a9988a04ab4c52",
+      "source_range": "-1002,0 -> 1022,4",
+      "source_sha256": "8bf860926dcec49726fb64c5dcb6bc801169b1b7a6188e6091ea495ce06b5243",
+      "source_scope": "gimp_image_finalize (GObject *object)",
+      "phase": "implementation",
+      "wbs_task": "26.006",
+      "action": "消失点 hit test を移植する",
+      "acceptance": "画面縮尺を考慮して選択",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence",
+      "payload": "pinned-hunks/01.002-000345.diff",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-290db3b02996092ccb19",
+          "task": "08.009",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-d49c1036714bb6fd3453",
+          "task": "08.009/removed-signal",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-2ee2c1a84f8f11d16dd9",
+          "task": "08.009/guide-owner",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-aab95d8a597cbf577d5b",
+          "task": "26.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-317804003fe964418bcd",
+          "task": "26.002",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-ca8ecd01daa97a03e64b",
+          "task": "26.003",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-3589bb4307124f2a582a",
+          "task": "26.004",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-60240425500b10a5ee53",
+          "task": "26.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-55ec23d7f9122dea1ff9",
+          "task": "26.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-486c630bcf3b383a6714",
+          "task": "26.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-0c7321abde0ea514e544",
+          "task": "26.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-0e6f3c3b2f1a61a01dbd",
+          "task": "26.010",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-75e183a49b0e691b2384",
+          "task": "26.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-69ec7a5c805abd80e51d",
+          "task": "26.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-1b1081873b7d992938ad",
+          "task": "26.013",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-17a3a2ca03c6d1c45488",
+          "task": "26.014",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-4a77c93aa8dca162708f",
+      "source_kind": "hunk",
+      "source_id": "01.002/000380",
+      "path": "app/core/gimpperspectiveguide.cpp",
+      "source_blob": "3f43d175c733975c2afe58c828af93a3f491f5ab",
+      "source_range": "-0,0 -> 1,275",
+      "source_sha256": "759dea832744218b7c586d2b49e852631a99fdd07c5f3c591674f48f5db3466f",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "26.002",
+      "action": "消失点の追加を実装する",
+      "acceptance": "上限と初期位置が旧仕様どおり",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence",
+      "payload": "pinned-hunks/01.002-000380.diff",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-fe2dcc02f5511f973087",
+          "task": "08.009",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-c9fda7bec986a8909213",
+          "task": "08.009/removed-signal",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-3782cc8311ee308b2367",
+          "task": "08.009/guide-owner",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-5d139483a85d585ede9c",
+          "task": "26.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-af00fb34b030b9b32598",
+          "task": "26.003",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-1e4b3a9b867c23d99100",
+          "task": "26.004",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-a6d22485fec75a0bc474",
+          "task": "26.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-8fc431cac39e09c686cc",
+          "task": "26.006",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-270166c3bfd6d3f470c2",
+          "task": "26.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-ec652dfe77b25df9d35c",
+          "task": "26.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-af25f91cbaf76beabe96",
+          "task": "26.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-276cbdebf52dfe5b1eec",
+          "task": "26.010",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-74daa9ec33b4f6f2f035",
+          "task": "26.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-4c0dd50be313c275a953",
+          "task": "26.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-61b0a0d0516e6f333e29",
+          "task": "26.013",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-9ad3da524654095a9494",
+          "task": "26.014",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-af00fb34b030b9b32598",
+      "source_kind": "hunk",
+      "source_id": "01.002/000380",
+      "path": "app/core/gimpperspectiveguide.cpp",
+      "source_blob": "3f43d175c733975c2afe58c828af93a3f491f5ab",
+      "source_range": "-0,0 -> 1,275",
+      "source_sha256": "759dea832744218b7c586d2b49e852631a99fdd07c5f3c591674f48f5db3466f",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "26.003",
+      "action": "消失点の移動を実装する",
+      "acceptance": "画像座標へ変換して保持",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence",
+      "payload": "pinned-hunks/01.002-000380.diff",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-fe2dcc02f5511f973087",
+          "task": "08.009",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-c9fda7bec986a8909213",
+          "task": "08.009/removed-signal",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-3782cc8311ee308b2367",
+          "task": "08.009/guide-owner",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-5d139483a85d585ede9c",
+          "task": "26.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-4a77c93aa8dca162708f",
+          "task": "26.002",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-1e4b3a9b867c23d99100",
+          "task": "26.004",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-a6d22485fec75a0bc474",
+          "task": "26.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-8fc431cac39e09c686cc",
+          "task": "26.006",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-270166c3bfd6d3f470c2",
+          "task": "26.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-ec652dfe77b25df9d35c",
+          "task": "26.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-af25f91cbaf76beabe96",
+          "task": "26.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-276cbdebf52dfe5b1eec",
+          "task": "26.010",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-74daa9ec33b4f6f2f035",
+          "task": "26.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-4c0dd50be313c275a953",
+          "task": "26.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-61b0a0d0516e6f333e29",
+          "task": "26.013",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-9ad3da524654095a9494",
+          "task": "26.014",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-1e4b3a9b867c23d99100",
+      "source_kind": "hunk",
+      "source_id": "01.002/000380",
+      "path": "app/core/gimpperspectiveguide.cpp",
+      "source_blob": "3f43d175c733975c2afe58c828af93a3f491f5ab",
+      "source_range": "-0,0 -> 1,275",
+      "source_sha256": "759dea832744218b7c586d2b49e852631a99fdd07c5f3c591674f48f5db3466f",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "26.004",
+      "action": "消失点の削除を実装する",
+      "acceptance": "残りの参照と選択が整合",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence",
+      "payload": "pinned-hunks/01.002-000380.diff",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-fe2dcc02f5511f973087",
+          "task": "08.009",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-c9fda7bec986a8909213",
+          "task": "08.009/removed-signal",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-3782cc8311ee308b2367",
+          "task": "08.009/guide-owner",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-5d139483a85d585ede9c",
+          "task": "26.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-4a77c93aa8dca162708f",
+          "task": "26.002",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-af00fb34b030b9b32598",
+          "task": "26.003",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-a6d22485fec75a0bc474",
+          "task": "26.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-8fc431cac39e09c686cc",
+          "task": "26.006",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-270166c3bfd6d3f470c2",
+          "task": "26.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-ec652dfe77b25df9d35c",
+          "task": "26.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-af25f91cbaf76beabe96",
+          "task": "26.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-276cbdebf52dfe5b1eec",
+          "task": "26.010",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-74daa9ec33b4f6f2f035",
+          "task": "26.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-4c0dd50be313c275a953",
+          "task": "26.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-61b0a0d0516e6f333e29",
+          "task": "26.013",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-9ad3da524654095a9494",
+          "task": "26.014",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-8fc431cac39e09c686cc",
+      "source_kind": "hunk",
+      "source_id": "01.002/000380",
+      "path": "app/core/gimpperspectiveguide.cpp",
+      "source_blob": "3f43d175c733975c2afe58c828af93a3f491f5ab",
+      "source_range": "-0,0 -> 1,275",
+      "source_sha256": "759dea832744218b7c586d2b49e852631a99fdd07c5f3c591674f48f5db3466f",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "26.006",
+      "action": "消失点 hit test を移植する",
+      "acceptance": "画面縮尺を考慮して選択",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence",
+      "payload": "pinned-hunks/01.002-000380.diff",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-fe2dcc02f5511f973087",
+          "task": "08.009",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-c9fda7bec986a8909213",
+          "task": "08.009/removed-signal",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-3782cc8311ee308b2367",
+          "task": "08.009/guide-owner",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-5d139483a85d585ede9c",
+          "task": "26.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-4a77c93aa8dca162708f",
+          "task": "26.002",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-af00fb34b030b9b32598",
+          "task": "26.003",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-1e4b3a9b867c23d99100",
+          "task": "26.004",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-a6d22485fec75a0bc474",
+          "task": "26.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-270166c3bfd6d3f470c2",
+          "task": "26.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-ec652dfe77b25df9d35c",
+          "task": "26.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-af25f91cbaf76beabe96",
+          "task": "26.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-276cbdebf52dfe5b1eec",
+          "task": "26.010",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-74daa9ec33b4f6f2f035",
+          "task": "26.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-4c0dd50be313c275a953",
+          "task": "26.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-61b0a0d0516e6f333e29",
+          "task": "26.013",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-9ad3da524654095a9494",
+          "task": "26.014",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-497c4e3015807c82d32b",
+      "source_kind": "hunk",
+      "source_id": "01.002/000381",
+      "path": "app/core/gimpperspectiveguide.h",
+      "source_blob": "98a1dfbe8d604cd0ed4d582f254eec9bdd54d44c",
+      "source_range": "-0,0 -> 1,94",
+      "source_sha256": "200677e48c74c5355e523bd57351947921f3937f1859a08d8c6dd640cb2ea7fb",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "26.002",
+      "action": "消失点の追加を実装する",
+      "acceptance": "上限と初期位置が旧仕様どおり",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence",
+      "payload": "pinned-hunks/01.002-000381.diff",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-1542ff64ab27d691fc9a",
+          "task": "08.009",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-442f9c2bb3a9bda946d9",
+          "task": "08.009/removed-signal",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-a6237f4dc09a362b8f13",
+          "task": "08.009/guide-owner",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-813f20092364dc8b8acd",
+          "task": "26.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-b8d3adf6077f8518cd93",
+          "task": "26.003",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-340d2e1a57ab37db1b18",
+          "task": "26.004",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-43b34463a59569b0c4da",
+          "task": "26.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-89aab6123f564731596f",
+          "task": "26.006",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-46e17967b2413133ffee",
+          "task": "26.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-21888b69bfb9108982a2",
+          "task": "26.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-61d8f475b110bbc7dcfe",
+          "task": "26.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-d0e929907898ff34403a",
+          "task": "26.010",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-f01c42cd222b91a5a643",
+          "task": "26.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-d6158a16d576a515453f",
+          "task": "26.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-03600d48ce482b235979",
+          "task": "26.013",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-f098a88beef3b0de72e8",
+          "task": "26.014",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-b8d3adf6077f8518cd93",
+      "source_kind": "hunk",
+      "source_id": "01.002/000381",
+      "path": "app/core/gimpperspectiveguide.h",
+      "source_blob": "98a1dfbe8d604cd0ed4d582f254eec9bdd54d44c",
+      "source_range": "-0,0 -> 1,94",
+      "source_sha256": "200677e48c74c5355e523bd57351947921f3937f1859a08d8c6dd640cb2ea7fb",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "26.003",
+      "action": "消失点の移動を実装する",
+      "acceptance": "画像座標へ変換して保持",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence",
+      "payload": "pinned-hunks/01.002-000381.diff",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-1542ff64ab27d691fc9a",
+          "task": "08.009",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-442f9c2bb3a9bda946d9",
+          "task": "08.009/removed-signal",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-a6237f4dc09a362b8f13",
+          "task": "08.009/guide-owner",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-813f20092364dc8b8acd",
+          "task": "26.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-497c4e3015807c82d32b",
+          "task": "26.002",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-340d2e1a57ab37db1b18",
+          "task": "26.004",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-43b34463a59569b0c4da",
+          "task": "26.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-89aab6123f564731596f",
+          "task": "26.006",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-46e17967b2413133ffee",
+          "task": "26.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-21888b69bfb9108982a2",
+          "task": "26.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-61d8f475b110bbc7dcfe",
+          "task": "26.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-d0e929907898ff34403a",
+          "task": "26.010",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-f01c42cd222b91a5a643",
+          "task": "26.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-d6158a16d576a515453f",
+          "task": "26.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-03600d48ce482b235979",
+          "task": "26.013",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-f098a88beef3b0de72e8",
+          "task": "26.014",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-340d2e1a57ab37db1b18",
+      "source_kind": "hunk",
+      "source_id": "01.002/000381",
+      "path": "app/core/gimpperspectiveguide.h",
+      "source_blob": "98a1dfbe8d604cd0ed4d582f254eec9bdd54d44c",
+      "source_range": "-0,0 -> 1,94",
+      "source_sha256": "200677e48c74c5355e523bd57351947921f3937f1859a08d8c6dd640cb2ea7fb",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "26.004",
+      "action": "消失点の削除を実装する",
+      "acceptance": "残りの参照と選択が整合",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence",
+      "payload": "pinned-hunks/01.002-000381.diff",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-1542ff64ab27d691fc9a",
+          "task": "08.009",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-442f9c2bb3a9bda946d9",
+          "task": "08.009/removed-signal",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-a6237f4dc09a362b8f13",
+          "task": "08.009/guide-owner",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-813f20092364dc8b8acd",
+          "task": "26.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-497c4e3015807c82d32b",
+          "task": "26.002",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-b8d3adf6077f8518cd93",
+          "task": "26.003",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-43b34463a59569b0c4da",
+          "task": "26.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-89aab6123f564731596f",
+          "task": "26.006",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-46e17967b2413133ffee",
+          "task": "26.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-21888b69bfb9108982a2",
+          "task": "26.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-61d8f475b110bbc7dcfe",
+          "task": "26.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-d0e929907898ff34403a",
+          "task": "26.010",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-f01c42cd222b91a5a643",
+          "task": "26.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-d6158a16d576a515453f",
+          "task": "26.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-03600d48ce482b235979",
+          "task": "26.013",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-f098a88beef3b0de72e8",
+          "task": "26.014",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-89aab6123f564731596f",
+      "source_kind": "hunk",
+      "source_id": "01.002/000381",
+      "path": "app/core/gimpperspectiveguide.h",
+      "source_blob": "98a1dfbe8d604cd0ed4d582f254eec9bdd54d44c",
+      "source_range": "-0,0 -> 1,94",
+      "source_sha256": "200677e48c74c5355e523bd57351947921f3937f1859a08d8c6dd640cb2ea7fb",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "26.006",
+      "action": "消失点 hit test を移植する",
+      "acceptance": "画面縮尺を考慮して選択",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence",
+      "payload": "pinned-hunks/01.002-000381.diff",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-1542ff64ab27d691fc9a",
+          "task": "08.009",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-442f9c2bb3a9bda946d9",
+          "task": "08.009/removed-signal",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-a6237f4dc09a362b8f13",
+          "task": "08.009/guide-owner",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-813f20092364dc8b8acd",
+          "task": "26.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-497c4e3015807c82d32b",
+          "task": "26.002",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-b8d3adf6077f8518cd93",
+          "task": "26.003",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-340d2e1a57ab37db1b18",
+          "task": "26.004",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-43b34463a59569b0c4da",
+          "task": "26.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-46e17967b2413133ffee",
+          "task": "26.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-21888b69bfb9108982a2",
+          "task": "26.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-61d8f475b110bbc7dcfe",
+          "task": "26.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-d0e929907898ff34403a",
+          "task": "26.010",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-f01c42cd222b91a5a643",
+          "task": "26.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-d6158a16d576a515453f",
+          "task": "26.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-03600d48ce482b235979",
+          "task": "26.013",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-f098a88beef3b0de72e8",
+          "task": "26.014",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-7dbc770c1557354c1e9a",
+      "source_kind": "hunk",
+      "source_id": "01.002/000532",
+      "path": "app/display/gimpcanvasperspectiveguide.cpp",
+      "source_blob": "8238ea7e565a62c92e3afc7b8da5b3235f04d1a6",
+      "source_range": "-0,0 -> 1,305",
+      "source_sha256": "05e7c1c99472cf777ed8a719e5137c0d90fce65aee6e0dd4ec27d8dbe2c3fce2",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "26.006",
+      "action": "消失点 hit test を移植する",
+      "acceptance": "画面縮尺を考慮して選択",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence",
+      "payload": "pinned-hunks/01.002-000532.diff",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-cf0e7373680579646933",
+          "task": "26.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-8f06a820f6852223f610",
+          "task": "29.017",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-7008a3cc66608287da84",
+          "task": "26.014",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-6ddc23f70ab905b7dba4",
+          "task": "29.020",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-7e18be6a08da136bb462",
+      "source_kind": "hunk",
+      "source_id": "01.002/000533",
+      "path": "app/display/gimpcanvasperspectiveguide.h",
+      "source_blob": "fb17bd424a7a2bec5043e05c60a35f31862ad256",
+      "source_range": "-0,0 -> 1,81",
+      "source_sha256": "0e283467aec360d9fc5b5f1bbf8d477bc27a8be5ef091e7e098f09e723035c1e",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "26.006",
+      "action": "消失点 hit test を移植する",
+      "acceptance": "画面縮尺を考慮して選択",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence",
+      "payload": "pinned-hunks/01.002-000533.diff",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-44446371d59825f23139",
+          "task": "26.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-d92b14c8394b59673ecb",
+          "task": "29.017",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-27202cbdeb7b81620cac",
+          "task": "26.014",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-4cf9f00a3e7815d1b6e2",
+          "task": "29.020",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-c18ac50c8ccb54a6c896",
+      "source_kind": "hunk",
+      "source_id": "01.002/001091",
+      "path": "app/tools/gimp-tools.c",
+      "source_blob": "018aa68742928631399a43506e7fdd047c6f4126",
+      "source_range": "-74,0 -> 79",
+      "source_sha256": "f31f4305b667ccc8d5804e54bbb633bf634647f0080a95068fed649f271d3081",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "26.002",
+      "action": "消失点の追加を実装する",
+      "acceptance": "上限と初期位置が旧仕様どおり",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence",
+      "payload": "pinned-hunks/01.002-001091.diff",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-5c1cd9fdb8f26913af43",
+          "task": "08.010",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-44335b8cb986c4eb8253",
+          "task": "26.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-737cd86ce9b38a6c7742",
+          "task": "26.003",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-1f9c3007763be48f5f93",
+          "task": "26.004",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-4c3edafc08847b9932f9",
+          "task": "26.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-9b3ce89899c142e1246c",
+          "task": "26.006",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-70b687f9728f30540131",
+          "task": "26.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-221b037ec43e3e442914",
+          "task": "26.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-8f4bc03e73b6034f37ad",
+          "task": "26.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-fc681b6409c1896cc452",
+          "task": "26.010",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-362fcae03f94f1c3e33b",
+          "task": "26.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-b7233864f4c34f32452c",
+          "task": "26.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-148ef589a53ccca2097b",
+          "task": "26.013",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-16ca8e0e3001cb300910",
+          "task": "26.014",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-737cd86ce9b38a6c7742",
+      "source_kind": "hunk",
+      "source_id": "01.002/001091",
+      "path": "app/tools/gimp-tools.c",
+      "source_blob": "018aa68742928631399a43506e7fdd047c6f4126",
+      "source_range": "-74,0 -> 79",
+      "source_sha256": "f31f4305b667ccc8d5804e54bbb633bf634647f0080a95068fed649f271d3081",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "26.003",
+      "action": "消失点の移動を実装する",
+      "acceptance": "画像座標へ変換して保持",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence",
+      "payload": "pinned-hunks/01.002-001091.diff",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-5c1cd9fdb8f26913af43",
+          "task": "08.010",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-44335b8cb986c4eb8253",
+          "task": "26.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-c18ac50c8ccb54a6c896",
+          "task": "26.002",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-1f9c3007763be48f5f93",
+          "task": "26.004",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-4c3edafc08847b9932f9",
+          "task": "26.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-9b3ce89899c142e1246c",
+          "task": "26.006",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-70b687f9728f30540131",
+          "task": "26.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-221b037ec43e3e442914",
+          "task": "26.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-8f4bc03e73b6034f37ad",
+          "task": "26.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-fc681b6409c1896cc452",
+          "task": "26.010",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-362fcae03f94f1c3e33b",
+          "task": "26.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-b7233864f4c34f32452c",
+          "task": "26.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-148ef589a53ccca2097b",
+          "task": "26.013",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-16ca8e0e3001cb300910",
+          "task": "26.014",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-1f9c3007763be48f5f93",
+      "source_kind": "hunk",
+      "source_id": "01.002/001091",
+      "path": "app/tools/gimp-tools.c",
+      "source_blob": "018aa68742928631399a43506e7fdd047c6f4126",
+      "source_range": "-74,0 -> 79",
+      "source_sha256": "f31f4305b667ccc8d5804e54bbb633bf634647f0080a95068fed649f271d3081",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "26.004",
+      "action": "消失点の削除を実装する",
+      "acceptance": "残りの参照と選択が整合",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence",
+      "payload": "pinned-hunks/01.002-001091.diff",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-5c1cd9fdb8f26913af43",
+          "task": "08.010",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-44335b8cb986c4eb8253",
+          "task": "26.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-c18ac50c8ccb54a6c896",
+          "task": "26.002",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-737cd86ce9b38a6c7742",
+          "task": "26.003",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-4c3edafc08847b9932f9",
+          "task": "26.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-9b3ce89899c142e1246c",
+          "task": "26.006",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-70b687f9728f30540131",
+          "task": "26.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-221b037ec43e3e442914",
+          "task": "26.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-8f4bc03e73b6034f37ad",
+          "task": "26.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-fc681b6409c1896cc452",
+          "task": "26.010",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-362fcae03f94f1c3e33b",
+          "task": "26.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-b7233864f4c34f32452c",
+          "task": "26.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-148ef589a53ccca2097b",
+          "task": "26.013",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-16ca8e0e3001cb300910",
+          "task": "26.014",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-9b3ce89899c142e1246c",
+      "source_kind": "hunk",
+      "source_id": "01.002/001091",
+      "path": "app/tools/gimp-tools.c",
+      "source_blob": "018aa68742928631399a43506e7fdd047c6f4126",
+      "source_range": "-74,0 -> 79",
+      "source_sha256": "f31f4305b667ccc8d5804e54bbb633bf634647f0080a95068fed649f271d3081",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "26.006",
+      "action": "消失点 hit test を移植する",
+      "acceptance": "画面縮尺を考慮して選択",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence",
+      "payload": "pinned-hunks/01.002-001091.diff",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-5c1cd9fdb8f26913af43",
+          "task": "08.010",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-44335b8cb986c4eb8253",
+          "task": "26.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-c18ac50c8ccb54a6c896",
+          "task": "26.002",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-737cd86ce9b38a6c7742",
+          "task": "26.003",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-1f9c3007763be48f5f93",
+          "task": "26.004",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-4c3edafc08847b9932f9",
+          "task": "26.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-70b687f9728f30540131",
+          "task": "26.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-221b037ec43e3e442914",
+          "task": "26.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-8f4bc03e73b6034f37ad",
+          "task": "26.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-fc681b6409c1896cc452",
+          "task": "26.010",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-362fcae03f94f1c3e33b",
+          "task": "26.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-b7233864f4c34f32452c",
+          "task": "26.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-148ef589a53ccca2097b",
+          "task": "26.013",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-16ca8e0e3001cb300910",
+          "task": "26.014",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-2dc5a56d98a8589de036",
+      "source_kind": "hunk",
+      "source_id": "01.002/001240",
+      "path": "app/tools/gimpdrawtool.c",
+      "source_blob": "fe40a3f60d33add8cfea8e038c7da5a0eca67a89",
+      "source_range": "-1012,6 -> 1012,6",
+      "source_sha256": "4c54f448d900ba4034bf0c163eaa8193a4e176d564c19503302a8a0712a22031",
+      "source_scope": "gimp_draw_tool_on_handle (GimpDrawTool     *draw_tool,",
+      "phase": "implementation",
+      "wbs_task": "26.002",
+      "action": "消失点の追加を実装する",
+      "acceptance": "上限と初期位置が旧仕様どおり",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence",
+      "payload": "pinned-hunks/01.002-001240.diff",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-3225d5149c955ad2b0ca",
+          "task": "08.010",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-18971515284c02391f1d",
+          "task": "26.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-832738739edff4c01661",
+          "task": "26.003",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-8cd8aba67213c714b287",
+          "task": "26.004",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-03ef448ba2ffc5b7d2c6",
+          "task": "26.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-c64f68ffe52ede31bc57",
+          "task": "26.006",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-558b9987398600e17572",
+          "task": "26.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-06b457bbb3eeeeb0b199",
+          "task": "26.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-9139670148712fe5a260",
+          "task": "26.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-6310ad1b03e38fb9e8a3",
+          "task": "26.010",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-15fe0b2c32158346651a",
+          "task": "26.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-5d3d80acf538382eac35",
+          "task": "26.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-a9408d359f7158de019f",
+          "task": "26.013",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-de482fa2b8d8fa8e9304",
+          "task": "26.014",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-832738739edff4c01661",
+      "source_kind": "hunk",
+      "source_id": "01.002/001240",
+      "path": "app/tools/gimpdrawtool.c",
+      "source_blob": "fe40a3f60d33add8cfea8e038c7da5a0eca67a89",
+      "source_range": "-1012,6 -> 1012,6",
+      "source_sha256": "4c54f448d900ba4034bf0c163eaa8193a4e176d564c19503302a8a0712a22031",
+      "source_scope": "gimp_draw_tool_on_handle (GimpDrawTool     *draw_tool,",
+      "phase": "implementation",
+      "wbs_task": "26.003",
+      "action": "消失点の移動を実装する",
+      "acceptance": "画像座標へ変換して保持",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence",
+      "payload": "pinned-hunks/01.002-001240.diff",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-3225d5149c955ad2b0ca",
+          "task": "08.010",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-18971515284c02391f1d",
+          "task": "26.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-2dc5a56d98a8589de036",
+          "task": "26.002",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-8cd8aba67213c714b287",
+          "task": "26.004",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-03ef448ba2ffc5b7d2c6",
+          "task": "26.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-c64f68ffe52ede31bc57",
+          "task": "26.006",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-558b9987398600e17572",
+          "task": "26.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-06b457bbb3eeeeb0b199",
+          "task": "26.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-9139670148712fe5a260",
+          "task": "26.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-6310ad1b03e38fb9e8a3",
+          "task": "26.010",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-15fe0b2c32158346651a",
+          "task": "26.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-5d3d80acf538382eac35",
+          "task": "26.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-a9408d359f7158de019f",
+          "task": "26.013",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-de482fa2b8d8fa8e9304",
+          "task": "26.014",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-8cd8aba67213c714b287",
+      "source_kind": "hunk",
+      "source_id": "01.002/001240",
+      "path": "app/tools/gimpdrawtool.c",
+      "source_blob": "fe40a3f60d33add8cfea8e038c7da5a0eca67a89",
+      "source_range": "-1012,6 -> 1012,6",
+      "source_sha256": "4c54f448d900ba4034bf0c163eaa8193a4e176d564c19503302a8a0712a22031",
+      "source_scope": "gimp_draw_tool_on_handle (GimpDrawTool     *draw_tool,",
+      "phase": "implementation",
+      "wbs_task": "26.004",
+      "action": "消失点の削除を実装する",
+      "acceptance": "残りの参照と選択が整合",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence",
+      "payload": "pinned-hunks/01.002-001240.diff",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-3225d5149c955ad2b0ca",
+          "task": "08.010",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-18971515284c02391f1d",
+          "task": "26.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-2dc5a56d98a8589de036",
+          "task": "26.002",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-832738739edff4c01661",
+          "task": "26.003",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-03ef448ba2ffc5b7d2c6",
+          "task": "26.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-c64f68ffe52ede31bc57",
+          "task": "26.006",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-558b9987398600e17572",
+          "task": "26.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-06b457bbb3eeeeb0b199",
+          "task": "26.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-9139670148712fe5a260",
+          "task": "26.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-6310ad1b03e38fb9e8a3",
+          "task": "26.010",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-15fe0b2c32158346651a",
+          "task": "26.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-5d3d80acf538382eac35",
+          "task": "26.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-a9408d359f7158de019f",
+          "task": "26.013",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-de482fa2b8d8fa8e9304",
+          "task": "26.014",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-c64f68ffe52ede31bc57",
+      "source_kind": "hunk",
+      "source_id": "01.002/001240",
+      "path": "app/tools/gimpdrawtool.c",
+      "source_blob": "fe40a3f60d33add8cfea8e038c7da5a0eca67a89",
+      "source_range": "-1012,6 -> 1012,6",
+      "source_sha256": "4c54f448d900ba4034bf0c163eaa8193a4e176d564c19503302a8a0712a22031",
+      "source_scope": "gimp_draw_tool_on_handle (GimpDrawTool     *draw_tool,",
+      "phase": "implementation",
+      "wbs_task": "26.006",
+      "action": "消失点 hit test を移植する",
+      "acceptance": "画面縮尺を考慮して選択",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence",
+      "payload": "pinned-hunks/01.002-001240.diff",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-3225d5149c955ad2b0ca",
+          "task": "08.010",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-18971515284c02391f1d",
+          "task": "26.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-2dc5a56d98a8589de036",
+          "task": "26.002",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-832738739edff4c01661",
+          "task": "26.003",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-8cd8aba67213c714b287",
+          "task": "26.004",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-03ef448ba2ffc5b7d2c6",
+          "task": "26.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-558b9987398600e17572",
+          "task": "26.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-06b457bbb3eeeeb0b199",
+          "task": "26.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-9139670148712fe5a260",
+          "task": "26.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-6310ad1b03e38fb9e8a3",
+          "task": "26.010",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-15fe0b2c32158346651a",
+          "task": "26.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-5d3d80acf538382eac35",
+          "task": "26.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-a9408d359f7158de019f",
+          "task": "26.013",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-de482fa2b8d8fa8e9304",
+          "task": "26.014",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-f144b17a569474e26f5a",
+      "source_kind": "hunk",
+      "source_id": "01.002/001409",
+      "path": "app/tools/gimpperspectiveguidetool.cpp",
+      "source_blob": "f78df23259748af0217c7fd26a3924bcbf0d9d9b",
+      "source_range": "-0,0 -> 1,665",
+      "source_sha256": "43223db5be874f3977e9cb8ab2bfeb239a66b4cac67462927dd6ec463cb980db",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "26.002",
+      "action": "消失点の追加を実装する",
+      "acceptance": "上限と初期位置が旧仕様どおり",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence",
+      "payload": "pinned-hunks/01.002-001409.diff",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-5696357b54ec01348a72",
+          "task": "08.009",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-6052aec133ae48b36992",
+          "task": "08.009/removed-signal",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-b38754ef8897b5b63363",
+          "task": "08.009/guide-owner",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-71dabe93e87197e45fb3",
+          "task": "08.010",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-8c2348fe992ea461be62",
+          "task": "26.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-f97d7fb4bc9bed7aa1b5",
+          "task": "26.003",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-2e3333255ace43113834",
+          "task": "26.004",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-f1edd82ac497860336df",
+          "task": "26.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-afae9068c9c6bde378b3",
+          "task": "26.006",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-9130aaa60667a30540ed",
+          "task": "26.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-b154fe22596b1a564f55",
+          "task": "26.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-1337e7259800050b1314",
+          "task": "26.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-a168647501d496951b61",
+          "task": "26.010",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-b085e4828e7d2261b28a",
+          "task": "26.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-3932bbd8912797bfae72",
+          "task": "26.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-7aadf6ec6644e4f29749",
+          "task": "26.013",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-8e8784714b98a5beae6d",
+          "task": "26.014",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-f97d7fb4bc9bed7aa1b5",
+      "source_kind": "hunk",
+      "source_id": "01.002/001409",
+      "path": "app/tools/gimpperspectiveguidetool.cpp",
+      "source_blob": "f78df23259748af0217c7fd26a3924bcbf0d9d9b",
+      "source_range": "-0,0 -> 1,665",
+      "source_sha256": "43223db5be874f3977e9cb8ab2bfeb239a66b4cac67462927dd6ec463cb980db",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "26.003",
+      "action": "消失点の移動を実装する",
+      "acceptance": "画像座標へ変換して保持",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence",
+      "payload": "pinned-hunks/01.002-001409.diff",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-5696357b54ec01348a72",
+          "task": "08.009",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-6052aec133ae48b36992",
+          "task": "08.009/removed-signal",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-b38754ef8897b5b63363",
+          "task": "08.009/guide-owner",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-71dabe93e87197e45fb3",
+          "task": "08.010",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-8c2348fe992ea461be62",
+          "task": "26.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-f144b17a569474e26f5a",
+          "task": "26.002",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-2e3333255ace43113834",
+          "task": "26.004",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-f1edd82ac497860336df",
+          "task": "26.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-afae9068c9c6bde378b3",
+          "task": "26.006",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-9130aaa60667a30540ed",
+          "task": "26.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-b154fe22596b1a564f55",
+          "task": "26.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-1337e7259800050b1314",
+          "task": "26.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-a168647501d496951b61",
+          "task": "26.010",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-b085e4828e7d2261b28a",
+          "task": "26.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-3932bbd8912797bfae72",
+          "task": "26.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-7aadf6ec6644e4f29749",
+          "task": "26.013",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-8e8784714b98a5beae6d",
+          "task": "26.014",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-2e3333255ace43113834",
+      "source_kind": "hunk",
+      "source_id": "01.002/001409",
+      "path": "app/tools/gimpperspectiveguidetool.cpp",
+      "source_blob": "f78df23259748af0217c7fd26a3924bcbf0d9d9b",
+      "source_range": "-0,0 -> 1,665",
+      "source_sha256": "43223db5be874f3977e9cb8ab2bfeb239a66b4cac67462927dd6ec463cb980db",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "26.004",
+      "action": "消失点の削除を実装する",
+      "acceptance": "残りの参照と選択が整合",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence",
+      "payload": "pinned-hunks/01.002-001409.diff",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-5696357b54ec01348a72",
+          "task": "08.009",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-6052aec133ae48b36992",
+          "task": "08.009/removed-signal",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-b38754ef8897b5b63363",
+          "task": "08.009/guide-owner",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-71dabe93e87197e45fb3",
+          "task": "08.010",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-8c2348fe992ea461be62",
+          "task": "26.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-f144b17a569474e26f5a",
+          "task": "26.002",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-f97d7fb4bc9bed7aa1b5",
+          "task": "26.003",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-f1edd82ac497860336df",
+          "task": "26.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-afae9068c9c6bde378b3",
+          "task": "26.006",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-9130aaa60667a30540ed",
+          "task": "26.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-b154fe22596b1a564f55",
+          "task": "26.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-1337e7259800050b1314",
+          "task": "26.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-a168647501d496951b61",
+          "task": "26.010",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-b085e4828e7d2261b28a",
+          "task": "26.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-3932bbd8912797bfae72",
+          "task": "26.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-7aadf6ec6644e4f29749",
+          "task": "26.013",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-8e8784714b98a5beae6d",
+          "task": "26.014",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-afae9068c9c6bde378b3",
+      "source_kind": "hunk",
+      "source_id": "01.002/001409",
+      "path": "app/tools/gimpperspectiveguidetool.cpp",
+      "source_blob": "f78df23259748af0217c7fd26a3924bcbf0d9d9b",
+      "source_range": "-0,0 -> 1,665",
+      "source_sha256": "43223db5be874f3977e9cb8ab2bfeb239a66b4cac67462927dd6ec463cb980db",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "26.006",
+      "action": "消失点 hit test を移植する",
+      "acceptance": "画面縮尺を考慮して選択",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence",
+      "payload": "pinned-hunks/01.002-001409.diff",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-5696357b54ec01348a72",
+          "task": "08.009",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-6052aec133ae48b36992",
+          "task": "08.009/removed-signal",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-b38754ef8897b5b63363",
+          "task": "08.009/guide-owner",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-71dabe93e87197e45fb3",
+          "task": "08.010",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-8c2348fe992ea461be62",
+          "task": "26.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-f144b17a569474e26f5a",
+          "task": "26.002",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-f97d7fb4bc9bed7aa1b5",
+          "task": "26.003",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-2e3333255ace43113834",
+          "task": "26.004",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-f1edd82ac497860336df",
+          "task": "26.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-9130aaa60667a30540ed",
+          "task": "26.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-b154fe22596b1a564f55",
+          "task": "26.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-1337e7259800050b1314",
+          "task": "26.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-a168647501d496951b61",
+          "task": "26.010",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-b085e4828e7d2261b28a",
+          "task": "26.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-3932bbd8912797bfae72",
+          "task": "26.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-7aadf6ec6644e4f29749",
+          "task": "26.013",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-8e8784714b98a5beae6d",
+          "task": "26.014",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-0384e5ad27c6400b3337",
+      "source_kind": "hunk",
+      "source_id": "01.002/001410",
+      "path": "app/tools/gimpperspectiveguidetool.h",
+      "source_blob": "225c7d194448a68f5d44dfdd98dfb2f7b3429e21",
+      "source_range": "-0,0 -> 1,60",
+      "source_sha256": "f1f65f77a9a4e08b458e4f6b975ed3c68d16d5ba81c348d54bba6afe4c1dbcd6",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "26.002",
+      "action": "消失点の追加を実装する",
+      "acceptance": "上限と初期位置が旧仕様どおり",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence",
+      "payload": "pinned-hunks/01.002-001410.diff",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-d438ab33d5805c5f0c31",
+          "task": "08.010",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-5041fbf3a234536501b1",
+          "task": "26.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-cfc419aea336b99b7b25",
+          "task": "26.003",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-057700b58c87af41979f",
+          "task": "26.004",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-4ef81540d0ee71c8b076",
+          "task": "26.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-96d45c3df5ce66bd97ba",
+          "task": "26.006",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-336a891ea17c4ccda186",
+          "task": "26.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-97860402724506179e0b",
+          "task": "26.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-1b3b02ae7f45de63bab5",
+          "task": "26.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-9b32217131666dec7776",
+          "task": "26.010",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-d3cdc74fa34fcc7fd80b",
+          "task": "26.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-fe96a2af9f13118cabc5",
+          "task": "26.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-4569b6f792be9a95e75a",
+          "task": "26.013",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-d7d63fb622494a4edd4c",
+          "task": "26.014",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-cfc419aea336b99b7b25",
+      "source_kind": "hunk",
+      "source_id": "01.002/001410",
+      "path": "app/tools/gimpperspectiveguidetool.h",
+      "source_blob": "225c7d194448a68f5d44dfdd98dfb2f7b3429e21",
+      "source_range": "-0,0 -> 1,60",
+      "source_sha256": "f1f65f77a9a4e08b458e4f6b975ed3c68d16d5ba81c348d54bba6afe4c1dbcd6",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "26.003",
+      "action": "消失点の移動を実装する",
+      "acceptance": "画像座標へ変換して保持",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence",
+      "payload": "pinned-hunks/01.002-001410.diff",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-d438ab33d5805c5f0c31",
+          "task": "08.010",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-5041fbf3a234536501b1",
+          "task": "26.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-0384e5ad27c6400b3337",
+          "task": "26.002",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-057700b58c87af41979f",
+          "task": "26.004",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-4ef81540d0ee71c8b076",
+          "task": "26.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-96d45c3df5ce66bd97ba",
+          "task": "26.006",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-336a891ea17c4ccda186",
+          "task": "26.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-97860402724506179e0b",
+          "task": "26.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-1b3b02ae7f45de63bab5",
+          "task": "26.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-9b32217131666dec7776",
+          "task": "26.010",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-d3cdc74fa34fcc7fd80b",
+          "task": "26.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-fe96a2af9f13118cabc5",
+          "task": "26.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-4569b6f792be9a95e75a",
+          "task": "26.013",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-d7d63fb622494a4edd4c",
+          "task": "26.014",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-057700b58c87af41979f",
+      "source_kind": "hunk",
+      "source_id": "01.002/001410",
+      "path": "app/tools/gimpperspectiveguidetool.h",
+      "source_blob": "225c7d194448a68f5d44dfdd98dfb2f7b3429e21",
+      "source_range": "-0,0 -> 1,60",
+      "source_sha256": "f1f65f77a9a4e08b458e4f6b975ed3c68d16d5ba81c348d54bba6afe4c1dbcd6",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "26.004",
+      "action": "消失点の削除を実装する",
+      "acceptance": "残りの参照と選択が整合",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence",
+      "payload": "pinned-hunks/01.002-001410.diff",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-d438ab33d5805c5f0c31",
+          "task": "08.010",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-5041fbf3a234536501b1",
+          "task": "26.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-0384e5ad27c6400b3337",
+          "task": "26.002",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-cfc419aea336b99b7b25",
+          "task": "26.003",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-4ef81540d0ee71c8b076",
+          "task": "26.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-96d45c3df5ce66bd97ba",
+          "task": "26.006",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-336a891ea17c4ccda186",
+          "task": "26.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-97860402724506179e0b",
+          "task": "26.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-1b3b02ae7f45de63bab5",
+          "task": "26.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-9b32217131666dec7776",
+          "task": "26.010",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-d3cdc74fa34fcc7fd80b",
+          "task": "26.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-fe96a2af9f13118cabc5",
+          "task": "26.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-4569b6f792be9a95e75a",
+          "task": "26.013",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-d7d63fb622494a4edd4c",
+          "task": "26.014",
+          "status": "TODO"
+        }
+      ]
+    },
+    {
+      "work_id": "legacy-96d45c3df5ce66bd97ba",
+      "source_kind": "hunk",
+      "source_id": "01.002/001410",
+      "path": "app/tools/gimpperspectiveguidetool.h",
+      "source_blob": "225c7d194448a68f5d44dfdd98dfb2f7b3429e21",
+      "source_range": "-0,0 -> 1,60",
+      "source_sha256": "f1f65f77a9a4e08b458e4f6b975ed3c68d16d5ba81c348d54bba6afe4c1dbcd6",
+      "source_scope": "file-level declarations/content",
+      "phase": "implementation",
+      "wbs_task": "26.006",
+      "action": "消失点 hit test を移植する",
+      "acceptance": "画面縮尺を考慮して選択",
+      "status": "TODO",
+      "owner": "",
+      "artifact": "",
+      "test": "",
+      "result": "",
+      "limitations": "Assigned only; requires this source-specific action and evidence",
+      "payload": "pinned-hunks/01.002-001410.diff",
+      "other_whole_hunk_owners": [
+        {
+          "work_id": "legacy-d438ab33d5805c5f0c31",
+          "task": "08.010",
+          "status": "DONE"
+        },
+        {
+          "work_id": "legacy-5041fbf3a234536501b1",
+          "task": "26.001",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-0384e5ad27c6400b3337",
+          "task": "26.002",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-cfc419aea336b99b7b25",
+          "task": "26.003",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-057700b58c87af41979f",
+          "task": "26.004",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-4ef81540d0ee71c8b076",
+          "task": "26.005",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-336a891ea17c4ccda186",
+          "task": "26.007",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-97860402724506179e0b",
+          "task": "26.008",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-1b3b02ae7f45de63bab5",
+          "task": "26.009",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-9b32217131666dec7776",
+          "task": "26.010",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-d3cdc74fa34fcc7fd80b",
+          "task": "26.011",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-fe96a2af9f13118cabc5",
+          "task": "26.012",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-4569b6f792be9a95e75a",
+          "task": "26.013",
+          "status": "TODO"
+        },
+        {
+          "work_id": "legacy-d7d63fb622494a4edd4c",
+          "task": "26.014",
+          "status": "TODO"
+        }
+      ]
+    }
+  ]
+}

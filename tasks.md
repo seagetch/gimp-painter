@@ -1070,6 +1070,8 @@
 | 26.013 | [ ] | 定規と補正の併用を試験する | 26.012 | 順序と描き味が一致 |
 | 26.014 | [ ] | 3消失点と表示変換を試験する | 26.013 | 回転・反転中も期待方向に拘束 |
 
+2026-10-21 原26.002/003/004/006進捗：実DisplayShell経由の追加・移動・削除・hit判定を通常13件／ordinary ASan・UBSan13件で検証。72変換scene・不変旧関数1152hit照合、取消／Undo・Redo／再入を確認。原62義務・依存・未完チェックを維持し、新DONE子は追加しない。合成master-pointerであり実pen／旧runtimeの証明ではない。証跡は `migration/tests/perspective-editor-entry/`。
+
 2026-10-21 原26.005進捗：旧Cairo描画の浮動小数点中心と点数別radial pathを復元。原193義務・依存26.004・未完チェックを維持し、新DONE子は追加しない。通常77件／ordinary ASan・UBSan77件、旧path比較288scene・ink包含288scene・oncanvas実再描画168遷移、各scope60秒以内。旧runtimeは再実行せず、同じ現行外側matrix/native strokeを使う不変旧関数oracleでpath構築だけを照合。証跡は `migration/tests/perspective-display-compatibility/`。
 
 ### 27 塗りつぶし brush と選択境界
