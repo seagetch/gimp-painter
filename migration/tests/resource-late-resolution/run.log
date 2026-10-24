@@ -1,0 +1,21 @@
+normal 0 TAP version 14
+# random seed: R02Sd03800fa08f7244715a74ffd87a96585
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+1..2
+# Start of resource-late-resolution tests
+ok 1 /resource-late-resolution/lifecycle
+ok 2 /resource-late-resolution/flags
+# End of resource-late-resolution tests
+ 
+asan 0 TAP version 14
+# random seed: R02S760b42ed1b2396155b8cd755f7c7c7c3
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+1..2
+# Start of resource-late-resolution tests
+ok 1 /resource-late-resolution/lifecycle
+ok 2 /resource-late-resolution/flags
+# End of resource-late-resolution tests
+ 
+PASS native2/scoped8-unit sanitizer2;2 lookup mutants;linked inputs unchanged
