@@ -1,0 +1,26 @@
+{
+  "base_commit": "d02374e8c3ab184440b1872198a09fc018df46de",
+  "binary_sha256": "2f0e55c16bdd70cb1dde600cac5da5a5837927f8288235de44bdf53f593460c3",
+  "pass_count": 17,
+  "case_ids": [
+    "/standard-toggle-popup/jitter-live-lifecycle",
+    "/standard-toggle-popup/texture-live-lifecycle",
+    "/standard-toggle-popup/smoothing-live-lifecycle",
+    "/standard-toggle-popup/texture-nested-stock",
+    "/standard-toggle-popup/texture-stock-cancel-owner-reentry",
+    "/standard-toggle-popup/texture-pending-stock-reopen",
+    "/standard-toggle-popup/texture-pending-stock-confirm-reopen",
+    "/standard-toggle-popup/texture-pending-stock-direct-reopen",
+    "/standard-toggle-popup/texture-multiple-pending-stock-children",
+    "/standard-toggle-popup/texture-caller-release-host-destroy",
+    "/standard-toggle-popup/texture-caller-release-owner-unmap",
+    "/standard-toggle-popup/actual-canvas-jitter",
+    "/standard-toggle-popup/actual-canvas-texture",
+    "/standard-toggle-popup/actual-canvas-smoothing",
+    "/standard-toggle-popup/baseline-jitter",
+    "/standard-toggle-popup/baseline-texture",
+    "/standard-toggle-popup/baseline-smoothing"
+  ],
+  "invocation": "painter-compact-options -p /standard-toggle-popup",
+  "scope": "Direct override-linked native executable; not a Meson-runner claim. All repeated scale/WM/sanitizer cases are separate, not additive."
+}

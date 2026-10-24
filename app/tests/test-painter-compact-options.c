@@ -625,10 +625,54 @@ static void native_editor_mixed_width_buttons (void)
 
 #include "test-painter-toolbar-lifetime.inc"
 
+/* Preparation-only red oracle: invoke the registered independent factory,
+ * not the reversible compact adapter or an invented popup wrapper. */
+static void standard_toggle_native_carrier_baseline (gconstpointer data)
+{
+  const gchar *id = data;
+  const gchar *property = !strcmp (id, "jitter") ? "use-jitter" :
+                          !strcmp (id, "texture") ? "use-texture" : "use-smoothing";
+  GimpToolOptions *options = info ("gimp-paintbrush-tool")->tool_options;
+  GtkWidget *gui = gimp_tools_create_painter_toolbar_gui (options);
+  GtkWidget *host = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  g_object_ref_sink (host);
+  g_assert_nonnull (gui);
+  g_assert_cmpstr (gtk_widget_get_name (gui), ==, "gimp-painter-paint-toolbar");
+  g_object_set (options, property, TRUE, NULL);
+  gtk_container_add (GTK_CONTAINER (host), gui);
+  gtk_widget_show_all (host); drain ();
+  gchar *name = g_strconcat ("painter-paint-", id, NULL);
+  GtkWidget *button = find (gui, name, GTK_TYPE_BUTTON); g_free (name);
+  g_assert_nonnull (button); g_assert_true (gtk_widget_get_mapped (button));
+  gtk_button_clicked (GTK_BUTTON (button)); drain ();
+  if (GTK_IS_MENU_BUTTON (button)) {
+    GtkWidget *actual = GTK_WIDGET (gtk_menu_button_get_popover (GTK_MENU_BUTTON (button)));
+    g_assert_nonnull (actual); g_assert_true (gtk_widget_get_visible (actual));
+    g_test_message ("Actual registered %s trigger: button=%s shown carrier=%s; old2.8 requires GTK_WINDOW_POPUP", id, G_OBJECT_TYPE_NAME (button), G_OBJECT_TYPE_NAME (actual));
+    g_assert_false (GTK_IS_POPOVER (actual));
+  } else {
+    GtkWidget *actual = NULL;
+    GList *windows = gtk_window_list_toplevels ();
+    for (GList *item = windows; item; item = item->next)
+      if (GTK_IS_WINDOW (item->data) && gtk_window_get_window_type (item->data) == GTK_WINDOW_POPUP && gtk_widget_get_visible (item->data)) {
+        g_assert_null (actual); actual = item->data;
+      }
+    g_list_free (windows); g_assert_nonnull (actual);
+    g_signal_emit_by_name (actual, "cancel");
+  }
+  gtk_widget_destroy (host); g_object_unref (host);
+}
+
+#include "test-painter-standard-toggle-popup.inc"
+
 int main(int argc,char **argv) {
   g_test_init(&argc,&argv,NULL);if(!gtk_init_check(&argc,&argv))return GIMP_EXIT_TEST_SKIPPED;
   gimp_test_utils_setup_menus_path();gimp=gimp_init_for_gui_testing(TRUE);
   window=gtk_window_new(GTK_WINDOW_TOPLEVEL);g_object_ref_sink(window);gtk_window_set_default_size(GTK_WINDOW(window),1100,130);
+  register_standard_toggle_popup_tests ();
+  g_test_add_data_func ("/standard-toggle-popup/baseline-jitter", "jitter", standard_toggle_native_carrier_baseline);
+  g_test_add_data_func ("/standard-toggle-popup/baseline-texture", "texture", standard_toggle_native_carrier_baseline);
+  g_test_add_data_func ("/standard-toggle-popup/baseline-smoothing", "smoothing", standard_toggle_native_carrier_baseline);
   g_test_add_func ("/painter-compact-options/rectangle-units-real-popup-events",
                    rectangle_units_real_popup_events);
   g_test_add_func ("/painter-compact-options/rectangle-units-popup-model-reentry",

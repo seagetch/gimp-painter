@@ -1,0 +1,53 @@
+{
+  "scope": "Existing compact controls/independent factory ownership plus toolbar windows/actions/transfers/lifetime/session. New focused toggle popup tests counted by their normal owner, not duplicated here. No full Layer suite claim.",
+  "execution": "Direct override-linked target binaries corresponding to registered tests; not Meson runner.",
+  "runtime": "Authenticated Xvfb1080x1920x24; fresh dedicated HOME/XDG per target; original registered session fixture. Toolbar cases deliberately vary native/painter and single/multiwindow config; not all defaultTRUE. New focused actualcanvas tests separately use official native/defaultTRUE fixture. Trusted task299 runtime libraries/plugins; no LD_PRELOAD.",
+  "results": [
+    {
+      "registration": "painter-compact-options",
+      "binary_sha256": "75d237b6ee1199ce4c085c0366e0333201444904040ec78d7b0218d7f31457b3",
+      "path_filter": "/painter-compact-options",
+      "exit": 0,
+      "pass_count": 62,
+      "expected": 62,
+      "skips": [],
+      "fail_count": 0,
+      "pass": true
+    },
+    {
+      "registration": "painter-toolbar-window",
+      "binary_sha256": "5a6d9b0c54177b8e0a0b116874a65d8d92b96be6e2793adac8a690baed612076",
+      "path_filter": null,
+      "exit": 0,
+      "pass_count": 26,
+      "expected": 26,
+      "skips": [],
+      "fail_count": 0,
+      "pass": true
+    }
+  ],
+  "total_pass": 88,
+  "source_changed": [],
+  "source_sha256": {
+    "app/widgets/popupper.cpp": "6ea240dd7cf37624a0cba321d59ae30e4933f434dab318a417f255a27805be80",
+    "app/widgets/gimppaintercompactoptions.cpp": "0f7a1c780f3b64e92bc8d0f45c27f2b5c6fea1b6dcf5078c51b8536d8b25bcbc",
+    "app/widgets/gimppaintermybrusheditor.cpp": "bf8dabee843cc3a5b49e573fcfae398b325e1e39fd4e945f62c8da0d5b19f29b",
+    "app/widgets/gimppainterlayertiles.cpp": "999215c359a71b4f4773b02e3d84809ebf57a6638113872caf8f077a234fefa0",
+    "app/widgets/gimpcellrendererpopup.cpp": "51156ac326bce3c3d31a8bcf3a0f9657860ae9fa63c1518c34e639a692db7631",
+    "app/dialogs/painter-layer-dialog.cpp": "636b9a00bbe4c3cbed98f3a1d633092b1f82c7dd5208927e8ba94905eee05346",
+    "app/widgets/gimpmypaintbrushoptions-gui.cpp": "ab605c9a313a963697abf628d6ee11ef9d53d4f5256067392569971105bd29f8",
+    "app/tools/gimppainterpainttoolbar.c": "9ac50be5b98faa2f84f307a472e4a8fb1128054648983201a03d9a903bd3a6f5",
+    "app/tools/gimppaintertogglepopup.cpp": "42e0df6514a258473d85b906aab65d197c372deca1d4bb16f271c8fae76e965b",
+    "app/tools/gimppaintertogglepopup.h": "a4fecf9172251f8dc6992917d82d4d35d34619a72a75ec3ebd7494778b9b7c8b",
+    "app/tests/test-painter-compact-options.c": "8be95f70efd8652c88f0c4e612037b6364474da27328ce7bc3476d3a10aedefd",
+    "app/tests/test-painter-toolbar-window.c": "3c42fa51db5224e2cb04006911e658142e2b4a1d6198124ec166bf3a6c63aeed",
+    "app/tests/tests.c": "56303878e316e41fcb7c439b199cde5bd9fc4ac84b46b48efcbfbc79737747e7",
+    "app/tests/test-widget-orientation-api.c": "d85281846b56ee88aa1a703ec5053ae677de9a08ab9f8cf8695c0c5359fa9648",
+    "app/tests/test-widget-orientation-api.cpp": "5e987e170aa64885ecf5c6fe6f400e47b0430a4dca7aabecbbb3a02dea480f8c",
+    "app/tests/test-painter-standard-toggle-popup.inc": "8c2f71f3c7a766485cfc9a53a9d453d972e1a2b59d8164ed1a1ba8087f288a42",
+    "app/tests/test-painter-independent-toolbar.inc": "7a684350945c0ba836868e6d29007756f7201b7f09baa2527d6e53d157471f1e",
+    "app/tests/test-painter-toolbar-transfer.inc": "cac9e0aadf29806119e81aba6b35c5e94d7084755257945f6d5114fe58c55377",
+    "app/tests/test-painter-toolbar-lifetime.inc": "6581f1e571f9009b8dda235a9d47a9979e3fa88cf67dc4f75d62fef5abc080c5"
+  },
+  "pass": true
+}

@@ -50,6 +50,7 @@
 #include "gimpinktool.h"
 #include "gimpmybrushtool.h"
 #include "gimppainterpainttoolbar.h"
+#include "gimppaintertogglepopup.h"
 #include "gimppaintersmudgetool.h"
 #include "gimppenciltool.h"
 #include "gimpperspectiveclonetool.h"
@@ -105,9 +106,9 @@ paint_toolbar_enum (GObject     *config,
   return combo;
 }
 
-/* This is a presentation-owned popup, not an expander taken from the dock.
- * Its menu button owns its popover; destroying one toolbar closes only that
- * toolbar's popups and disconnects the property bindings with its widgets.
+/* Presentation-owned content, never an expander taken from the dock. The
+ * three historical toggle groups use native GimpPopup semantics; all other
+ * callers retain their existing GtkPopover presentation unchanged.
  */
 static GtkWidget *
 paint_toolbar_popup (GtkWidget   *toolbar,
@@ -118,16 +119,20 @@ paint_toolbar_popup (GtkWidget   *toolbar,
                      GtkWidget   *contents)
 {
   GtkWidget *row = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
-  GtkWidget *button = gtk_menu_button_new ();
-  GtkWidget *popover = gtk_popover_new (button);
+  gboolean native = !g_strcmp0 (id, "jitter") ||
+                    !g_strcmp0 (id, "texture") ||
+                    !g_strcmp0 (id, "smoothing");
   GtkWidget *scroll = gtk_scrolled_window_new (NULL, NULL);
+  GtkWidget *button = native ? gimp_painter_toggle_popup_button_new (row, scroll) :
+                               gtk_menu_button_new ();
+  GtkWidget *popover = native ? NULL : gtk_popover_new (button);
   gchar     *name = g_strconcat ("painter-paint-", id, NULL);
 
   gtk_widget_set_name (button, name);
   g_free (name);
   gtk_widget_set_tooltip_text (button, label);
   gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
-  gtk_popover_set_position (GTK_POPOVER (popover), GTK_POS_TOP);
+  if (popover) gtk_popover_set_position (GTK_POPOVER (popover), GTK_POS_TOP);
 
   if (enable_property)
     {
@@ -139,7 +144,7 @@ paint_toolbar_popup (GtkWidget   *toolbar,
                          gtk_image_new_from_icon_name ("pan-down-symbolic",
                                                        GTK_ICON_SIZE_MENU));
       g_object_bind_property (config, enable_property,
-                              contents, "sensitive", G_BINDING_SYNC_CREATE);
+                              native ? button : contents, "sensitive", G_BINDING_SYNC_CREATE);
     }
   else
     {
@@ -153,8 +158,11 @@ paint_toolbar_popup (GtkWidget   *toolbar,
   gtk_scrolled_window_set_propagate_natural_height (GTK_SCROLLED_WINDOW (scroll), TRUE);
   gtk_container_set_border_width (GTK_CONTAINER (contents), 8);
   gtk_container_add (GTK_CONTAINER (scroll), contents);
-  gtk_container_add (GTK_CONTAINER (popover), scroll);
-  gtk_menu_button_set_popover (GTK_MENU_BUTTON (button), popover);
+  if (popover)
+    {
+      gtk_container_add (GTK_CONTAINER (popover), scroll);
+      gtk_menu_button_set_popover (GTK_MENU_BUTTON (button), popover);
+    }
   g_object_set_data (G_OBJECT (button), "gimp-painter-toolbar-popup", contents);
   gtk_widget_show_all (scroll);
   gtk_widget_show_all (button);

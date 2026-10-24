@@ -1,0 +1,11 @@
+--- a/app/tools/gimppaintertogglepopup.cpp
++++ b/app/tools/gimppaintertogglepopup.cpp
+@@ -81,7 +81,7 @@
+ void pending_child_destroyed (GtkWidget*, gpointer data) {
+   auto deferred = *static_cast<std::shared_ptr<DeferredContent>*> (data);
+   if (deferred->pending) --deferred->pending;
+-  if (!deferred->pending) {
++  if (!deferred->pending || deferred->dispose) {
+     auto content = std::move (deferred->content);
+     if (deferred->dispose && content) gtk_widget_destroy (GTK_WIDGET (content.get ()));
+   }

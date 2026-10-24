@@ -1,0 +1,32 @@
+# Extracted derivative: last mapped popup sample matching tested rectangle.
+# Raw sampling includes lifecycle reopen generations; this is not a claim of a unique XID throughout the test.
+# Unrelated and repeated windows omitted; raw original remains private.
+xwininfo: Window id: 0x4027db "standard-toggle-current"
+
+  Absolute upper-left X:  170
+  Absolute upper-left Y:  1524
+  Relative upper-left X:  170
+  Relative upper-left Y:  1524
+  Width: 516
+  Height: 180
+  Depth: 24
+  Visual: 0x1cf
+  Visual Class: TrueColor
+  Border width: 0
+  Class: InputOutput
+  Colormap: 0x400003 (installed)
+  Bit Gravity State: NorthWestGravity
+  Window Gravity State: NorthWestGravity
+  Backing Store State: NotUseful
+  Save Under State: yes
+  Map State: IsViewable
+  Override Redirect State: yes
+  Corners:  +170+1524  -394+1524  -394-216  +170-216
+  -geometry 258x90+170+1524
+
+X Error of failed request:  BadWindow (invalid Window parameter)
+  Major opcode of failed request:  20 (X_GetProperty)
+  Resource id in failed request:  0x4027db
+  Serial number of failed request:  13
+  Current serial number in output stream:  13
+_NET_WM_WINDOW_TYPE

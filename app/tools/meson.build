@@ -22,6 +22,7 @@ stamp_tools_enums = custom_target('stamp-tools-enums.h',
 libapptools_sources = [
   'gimp-tools.c',
   'gimppainterpainttoolbar.c',
+  'gimppaintertogglepopup.cpp',
   'gimppaintertooltoolbar.c',
   'gimppaintertransformtoolbar.c',
   'gimp-tool-options-manager.c',

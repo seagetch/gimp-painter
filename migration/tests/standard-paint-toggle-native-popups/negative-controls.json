@@ -1,0 +1,73 @@
+{
+  "pending_child_reopen": {
+    "red": "actual Texture stock cancel observer closes outer and clicks arrow before stock default destruction; callback recursion count2 expected1",
+    "green": "same compiled test object after adding pending_children admission guard; exit0",
+    "hashes": {
+      "tests/pending-reopen-negative": "7a1edfec415f56bbc2f63bf90553dab4088df85101475cffbd794651063446ba",
+      "tests/pending-reopen-negative.cpp": "7061efb99c3a99a9d8b1123b58f9c655c4fbf4b85cf50fe4376795378bf4578e",
+      "evidence/pending-reopen-red.log": "d68e45bf0867e1dd101090b86981f4063f667b4523622741db2c4fb1cba916d9",
+      "evidence/pending-reopen-green.log": "92fc390acbe1dbb840cbfd69e09d988531f361684d1567272ce65a87ae6645e5"
+    }
+  },
+  "qualification": "Expected failures are not normal passes. Pending-child comparison uses the same compiled test object with pre-guard implementation; final suite includes this case.",
+  "earlier_factory_carriers": [
+    {
+      "name": "jitter",
+      "base_commit": "d02374e8c3ab184440b1872198a09fc018df46de",
+      "exit": 250,
+      "oracle": "Actual registered toolbar arrow returns GtkPopover instead of native popup",
+      "raw_log_sha256": "7daa3ae85b53599c32ce628962bb619057ef02f62bb2bf85d3bb11c0f5169cc6"
+    },
+    {
+      "name": "texture",
+      "base_commit": "d02374e8c3ab184440b1872198a09fc018df46de",
+      "exit": 250,
+      "oracle": "Actual registered toolbar arrow returns GtkPopover instead of native popup",
+      "raw_log_sha256": "0d505ffea5c63824e3904690edab7dbd47e80cab8808e04ff27a0d1c20462583"
+    },
+    {
+      "name": "smoothing",
+      "base_commit": "d02374e8c3ab184440b1872198a09fc018df46de",
+      "exit": 250,
+      "oracle": "Actual registered toolbar arrow returns GtkPopover instead of native popup",
+      "raw_log_sha256": "b7da52aea8aff36421b905a3b8071eeff4e4fd67bc958a08759fa84ca1ed9280"
+    }
+  ],
+  "final_test_actual300_canvas_carriers": [
+    {
+      "family": "jitter",
+      "base_commit": "d02374e8c3ab184440b1872198a09fc018df46de",
+      "exit": 250,
+      "test_source_sha256": "8c2f71f3c7a766485cfc9a53a9d453d972e1a2b59d8164ed1a1ba8087f288a42",
+      "oracle": "Real oncanvas arrow is old GtkMenuButton, expected native helper GtkButton",
+      "raw_log_sha256": "e8c994aca016d85c42668d9fa7b3ca923a23b742779255069f3f9a0130cab5ea"
+    },
+    {
+      "family": "texture",
+      "base_commit": "d02374e8c3ab184440b1872198a09fc018df46de",
+      "exit": 250,
+      "test_source_sha256": "8c2f71f3c7a766485cfc9a53a9d453d972e1a2b59d8164ed1a1ba8087f288a42",
+      "oracle": "Real oncanvas arrow is old GtkMenuButton, expected native helper GtkButton",
+      "raw_log_sha256": "a0c08a342378acb929cb65bd54b428685cd8a79c44f71c91be8912e487203442"
+    },
+    {
+      "family": "smoothing",
+      "base_commit": "d02374e8c3ab184440b1872198a09fc018df46de",
+      "exit": 250,
+      "test_source_sha256": "8c2f71f3c7a766485cfc9a53a9d453d972e1a2b59d8164ed1a1ba8087f288a42",
+      "oracle": "Real oncanvas arrow is old GtkMenuButton, expected native helper GtkButton",
+      "raw_log_sha256": "935d95e5ce9474ab897d4232320dadae8cd513be9256d05ae8ae691736cdda86"
+    }
+  ],
+  "final_test_shared_retirement_mutation": {
+    "exit": 250,
+    "source_sha256": "42e0df6514a258473d85b906aab65d197c372deca1d4bb16f271c8fae76e965b",
+    "mutant_source_sha256": "3598c5d9eee65f9adf6e257adc91c4203164dcf99ffb6025a91c2b186f339260",
+    "binary_sha256": "59b3d24f53f9ef70ec5632d7109722a60097ff66ab75f311da39202df74ec0ba",
+    "test_source_sha256": "8c2f71f3c7a766485cfc9a53a9d453d972e1a2b59d8164ed1a1ba8087f288a42",
+    "oracle": "body_destroyed must remain FALSE while another real stock child is pending",
+    "mutation": "Release deferred body on first child when disposing rather than wait until pending count is zero",
+    "raw_log_sha256": "74f2090a9991a129e901a5f5c0ea96ce3ab419111950541f9278ab1406e5710f"
+  },
+  "counting": "Three final-source actualcanvas baseline controls plus one final-source shared-retirement mutation. One earlier same-test-object pending-reopen RED/GREEN regression pair and three earlier factory baseline controls are supporting evidence, not additional final-source tests or normal passes."
+}

@@ -1,0 +1,144 @@
+{
+  "captures": [
+    {
+      "file": "jitter-scale1.png",
+      "sha256": "44d635c35c46fb4ebeffe3542648dd0810e02fbd27c82383ce9f4e6030c3e1a0",
+      "physical_pixels": [
+        1080,
+        1920
+      ],
+      "scale": 1,
+      "test_exit": 0,
+      "popup_bounds_scale1": [
+        {
+          "x": 394,
+          "y": 1846,
+          "width": 258,
+          "height": 52,
+          "inside1080x1920": true
+        }
+      ]
+    },
+    {
+      "file": "texture-scale1.png",
+      "sha256": "de4a710c88132056e02fbdc1a3fbefb3a885921e70ee60a0afe74a51d89b4a94",
+      "physical_pixels": [
+        1080,
+        1920
+      ],
+      "scale": 1,
+      "test_exit": 0,
+      "popup_bounds_scale1": [
+        {
+          "x": 492,
+          "y": 1846,
+          "width": 124,
+          "height": 62,
+          "inside1080x1920": true
+        }
+      ]
+    },
+    {
+      "file": "smoothing-scale1.png",
+      "sha256": "2c8f6503c91817b0cf96fe39c16a42a1f08c999af062af32c9caeba9540de3ce",
+      "physical_pixels": [
+        1080,
+        1920
+      ],
+      "scale": 1,
+      "test_exit": 0,
+      "popup_bounds_scale1": [
+        {
+          "x": 607,
+          "y": 1722,
+          "width": 258,
+          "height": 90,
+          "inside1080x1920": true
+        }
+      ]
+    },
+    {
+      "file": "jitter-scale2.png",
+      "sha256": "573ac6732514705acc2e0c336c23873d8a582048b57060c246a64a407d4e2eb0",
+      "physical_pixels": [
+        1080,
+        1920
+      ],
+      "scale": 2,
+      "test_exit": 0,
+      "popup_bounds_scale1": null,
+      "popup_bounds_physical": [
+        {
+          "x_physical": 130,
+          "y_physical": 1772,
+          "width_physical": 516,
+          "height_physical": 104,
+          "inside1080x1920": true,
+          "logical_rectangle": [
+            65.0,
+            886.0,
+            258.0,
+            52.0
+          ]
+        }
+      ]
+    },
+    {
+      "file": "texture-scale2.png",
+      "sha256": "525a1d40f2bde99a9e1be704e8ba40101d51f6e2417a9ce06cad7acb6ea758b7",
+      "physical_pixels": [
+        1080,
+        1920
+      ],
+      "scale": 2,
+      "test_exit": 0,
+      "popup_bounds_scale1": null,
+      "popup_bounds_physical": [
+        {
+          "x_physical": 130,
+          "y_physical": 1772,
+          "width_physical": 248,
+          "height_physical": 124,
+          "inside1080x1920": true,
+          "logical_rectangle": [
+            65.0,
+            886.0,
+            124.0,
+            62.0
+          ]
+        }
+      ]
+    },
+    {
+      "file": "smoothing-scale2.png",
+      "sha256": "9fe937c40079659442b1834339a4751e5b818f1d20938b10f45231e3126d18f3",
+      "physical_pixels": [
+        1080,
+        1920
+      ],
+      "scale": 2,
+      "test_exit": 0,
+      "popup_bounds_scale1": null,
+      "popup_bounds_physical": [
+        {
+          "x_physical": 170,
+          "y_physical": 1524,
+          "width_physical": 516,
+          "height_physical": 180,
+          "inside1080x1920": true,
+          "logical_rectangle": [
+            85.0,
+            762.0,
+            258.0,
+            90.0
+          ]
+        }
+      ]
+    }
+  ],
+  "runtime": "Xvfb 1080x1920x24; official sessionrc-native-oncanvas; oncanvas default TRUE; Openbox 3.6.1. Raw genuine framebuffer PNGs, no synthetic chrome or pixel editing.",
+  "positioning": "Fixture maximizes main window and scrolls the existing toolbar adjustment to reveal the real arrow before clicking; popup placement is production row-anchored positioning.",
+  "input": "Native GTK event/test activation, not claimed physical X input.",
+  "scale2_note": "Actual canvas cases are separate WM executions; unmaximized non-WM scale2 aggregate hit rowvisibility=-99 and is not represented as a passing aggregate.",
+  "resource_scope": "Real Pattern corpus loaded for Texture child; no all-brush-corpus or complete dock inventory claim."
+}

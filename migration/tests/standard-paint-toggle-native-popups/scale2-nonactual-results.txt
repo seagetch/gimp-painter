@@ -1,0 +1,18 @@
+ok 1 /standard-toggle-popup/jitter-live-lifecycle
+ok 2 /standard-toggle-popup/texture-live-lifecycle
+ok 3 /standard-toggle-popup/smoothing-live-lifecycle
+ok 4 /standard-toggle-popup/texture-nested-stock
+ok 5 /standard-toggle-popup/texture-stock-cancel-owner-reentry
+ok 6 /standard-toggle-popup/texture-pending-stock-reopen
+ok 7 /standard-toggle-popup/texture-pending-stock-confirm-reopen
+ok 8 /standard-toggle-popup/texture-pending-stock-direct-reopen
+ok 9 /standard-toggle-popup/texture-multiple-pending-stock-children
+ok 10 /standard-toggle-popup/texture-caller-release-host-destroy
+ok 11 /standard-toggle-popup/texture-caller-release-owner-unmap
+ok 12 /standard-toggle-popup/actual-canvas-jitter # SKIP by request (-s option)
+ok 13 /standard-toggle-popup/actual-canvas-texture # SKIP by request (-s option)
+ok 14 /standard-toggle-popup/actual-canvas-smoothing # SKIP by request (-s option)
+ok 15 /standard-toggle-popup/baseline-jitter
+ok 16 /standard-toggle-popup/baseline-texture
+ok 17 /standard-toggle-popup/baseline-smoothing
+1..17
