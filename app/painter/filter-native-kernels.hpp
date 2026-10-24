@@ -4,6 +4,7 @@
 #include "gimp-painter-visibility.h"
 #include "filter-raster-kernels.hpp"
 #include "filter-colorify-kernel.hpp"
+#include "filter-video-kernel.hpp"
 #include <vector>
 namespace GimpPainter GIMP_PAINTER_PRIVATE {
 enum class FilterPoint { value_invert, max_rgb, threshold_alpha };
@@ -16,6 +17,11 @@ bool filter_point_raster (FilterRaster&, FilterRaster&, std::size_t, std::size_t
 /* Immutable validated Colorify LUT snapshot; private tightly packed RGBA8.
  * RGB inputs are promoted with alpha255 by the owner. Hidden RGB is processed;
  * source alpha is unchanged. No native owner/precision admission implied. */
+/* RGBA8 cropped transport. Kernel carries immutable drawable-local origin;
+ * every row/chunk uses its global raster offset to preserve pattern phase. */
+bool filter_video_raw_raster (FilterRaster&, FilterRaster&, std::size_t, std::size_t,
+  const FilterVideoKernel&, std::atomic<bool>&,
+  const std::shared_ptr<FilterProgress>& progress = {});
 bool filter_colorify_raw_raster (FilterRaster&, FilterRaster&, std::size_t, std::size_t,
                                   const FilterColorifyKernel&, std::atomic<bool>&,
                                   const std::shared_ptr<FilterProgress>& progress = {});
