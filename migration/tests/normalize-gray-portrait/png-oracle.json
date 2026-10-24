@@ -1,0 +1,112 @@
+[
+  {
+    "path": "normalize-gray-before-oncanvas-portrait.png",
+    "sha256": "c66a4d240130ef26bd4a4cf9e38c890eb6a9612ea2884bacf63f68a490d87456",
+    "size": [
+      1080,
+      1920
+    ],
+    "probes": [
+      {
+        "rect": [
+          290,
+          890,
+          310,
+          910
+        ],
+        "expected_rgb": [
+          120,
+          120,
+          120
+        ],
+        "pixels": 400,
+        "max_channel_error": 0
+      },
+      {
+        "rect": [
+          690,
+          890,
+          710,
+          910
+        ],
+        "expected_rgb": [
+          40,
+          40,
+          40
+        ],
+        "pixels": 400,
+        "max_channel_error": 0
+      },
+      {
+        "rect": [
+          490,
+          690,
+          510,
+          710
+        ],
+        "expected_rgb": [
+          80,
+          80,
+          80
+        ],
+        "pixels": 400,
+        "max_channel_error": 0
+      }
+    ]
+  },
+  {
+    "path": "normalize-gray-after-oncanvas-portrait.png",
+    "sha256": "db8e999dbaca249c9bb7e411d4a1c422077e9e24bbac26899503d939804e0130",
+    "size": [
+      1080,
+      1920
+    ],
+    "probes": [
+      {
+        "rect": [
+          290,
+          890,
+          310,
+          910
+        ],
+        "expected_rgb": [
+          255,
+          255,
+          255
+        ],
+        "pixels": 400,
+        "max_channel_error": 0
+      },
+      {
+        "rect": [
+          690,
+          890,
+          710,
+          910
+        ],
+        "expected_rgb": [
+          0,
+          0,
+          0
+        ],
+        "pixels": 400,
+        "max_channel_error": 0
+      },
+      {
+        "rect": [
+          490,
+          690,
+          510,
+          710
+        ],
+        "expected_rgb": [
+          127,
+          127,
+          127
+        ],
+        "pixels": 400,
+        "max_channel_error": 0
+      }
+    ]
+  }
+]

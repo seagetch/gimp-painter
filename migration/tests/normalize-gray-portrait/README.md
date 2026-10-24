@@ -1,0 +1,9 @@
+# Actual Gray Normalize portrait
+
+One real GTK application case renders two native Gray states under authenticated 1080×1920 Xvfb with oncanvas UI enabled and visibly asserted. The application window is 1040×1800 and the image zoom200%. Direct API definition/visibility hides then shows the committed Normalize Filter; this is not a parameter-editor gesture or old-application capture.
+
+The 400×300 GA source contains40/80/120 gray controls. Independent integer normalization predicts0/127/255. Every source, native cache and projection pixel is checked; the original source is unchanged. Six independent20×20 PNG patches (three per state,400pixels each,≤3per-channel display tolerance) verify actual rendered gray values. Both raw, unedited PNGs were visually inspected: oncanvas controls and real image are visible, and the expected contrast expansion is visible. The initial thumbnail settlement shifts the image12pixels vertically; no fixed-origin claim is made. Existing missing-icon warnings are retained.
+
+The base build remains exact0a775df413. A private archive replaces only its Filter core object with exact committed7e975aa124 bytes, independently verified against Git and the sealed Gray native package. One private C fixture TU includes the new Gray scene and previously committed RGB portrait helper. Full baseline source, linked input and runtime asset hashes are unchanged pre/post. No shared source/build write or held XCF boundary candidate is used. This GUI run is not instrumented; native Gray sanitizer and storage proof remain separate pinned predecessors.
+
+`validate.py --check-source` checks owned fixture bytes, exact committed provider, raw images and five runtime-admission negative controls. It does not mark WBS16.022 or unsupported indexed/precision/editor/genuine-old-artwork gates complete.

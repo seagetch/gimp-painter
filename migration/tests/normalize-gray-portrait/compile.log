@@ -1,0 +1,8 @@
+In file included from [01m[K/tmp/normalize-gray-portrait-private/source/app/tests/test-painter-mode-ui.c:120[m[K:
+[01m[K/tmp/normalize-gray-portrait-private/source/app/tests/test-filter-compat-portrait.inc:[m[K In function ‘[01m[Kfilter_compat_oncanvas_portrait[m[K’:
+[01m[K/tmp/normalize-gray-portrait-private/source/app/tests/test-filter-compat-portrait.inc:16:3:[m[K [01;35m[Kwarning: [m[Kthis ‘[01m[Kfor[m[K’ clause does not guard... [[01;35m[K-Wmisleading-indentation[m[K]
+   16 |   [01;35m[Kfor[m[K(guint c=0;c<3;c++)expected[p+c]=normalize?255*(input[p+c]-40)/140:(warm?(const guchar[]){240,30,100}[c]:input[p+c]);expected[p+3]=255;
+      |   [01;35m[K^~~[m[K
+[01m[K/tmp/normalize-gray-portrait-private/source/app/tests/test-filter-compat-portrait.inc:16:123:[m[K [01;36m[Knote: [m[K...this statement, but the latter is misleadingly indented as if it were guarded by the ‘[01m[Kfor[m[K’
+   16 |   for(guint c=0;c<3;c++)expected[p+c]=normalize?255*(input[p+c]-40)/140:(warm?(const guchar[]){240,30,100}[c]:input[p+c]);[01;36m[Kexpected[m[K[p+3]=255;
+      |                                                                                                                           [01;36m[K^~~~~~~~[m[K

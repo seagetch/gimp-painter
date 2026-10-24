@@ -118,6 +118,7 @@ static void mode_selection(gconstpointer data)
 #include "test-filter-geometry-portrait.inc"
 #include "test-filter-red-eye-portrait.inc"
 #include "test-filter-compat-portrait.inc"
+#include "test-filter-normalize-gray-portrait.inc"
 
 int main(int argc,char **argv)
 {
@@ -126,6 +127,7 @@ int main(int argc,char **argv)
   g_object_set(gimp->config,"painter-canvas-ui",TRUE,NULL);
   g_test_add_func("/painter-mode-ui/filter-red-eye-portrait",filter_red_eye_oncanvas_portrait);
   g_test_add_func("/painter-mode-ui/filter-normalize-portrait",filter_normalize_oncanvas_portrait);
+  g_test_add_func("/painter-mode-ui/filter-normalize-gray-portrait",filter_normalize_gray_oncanvas_portrait);
   g_test_add_func("/painter-mode-ui/filter-exchange-portrait",filter_exchange_oncanvas_portrait);
   g_test_add_func("/painter-mode-ui/filter-flip-portrait",filter_flip_oncanvas_portrait);
   g_test_add_func("/painter-mode-ui/filter-geometry-portrait",filter_geometry_oncanvas_portrait);
