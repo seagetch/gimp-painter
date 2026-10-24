@@ -1,0 +1,3595 @@
+{
+  "scope": "Original25.011 verification mapping, no ownership reassignment or whole-port claim",
+  "current_sources_sha256": {
+    "app/display/gimpdisplayshell-callbacks.c": "1b2c56ce1ff5e3d9f2dcbb9ecf9ddebace3886802985826d678b83663c80ebeb",
+    "app/display/gimpdisplayshell-draw.c": "80e9a13121c0abf9d3fff5502abb5cebbdd9ea524a3c910d2c1947fac661b4f3",
+    "app/display/gimpdisplayshell-expose.c": "42f06075c8a1242442a2d45e7ce7ab107f2d6b62eecfb8f4731c979f51ad16a8",
+    "app/display/gimpdisplayshell-expose.h": "a0e48678c1400de1e7a122fc28d4663604ecdebf74f1dcfe0750c3a2b5859974",
+    "app/display/gimpdisplayshell-render.c": "25758a52552f03f4dea85154c025d17d795406b08f6263e58fe7e30ab8df7c66",
+    "app/display/gimpdisplayshell-scroll.c": "aeadd556556cf41dee34e800cbb6afddbe8a8de23ebc6199ea50fb46ee8acf7a",
+    "app/display/gimpdisplayshell-selection.c": "15e4853f93644aa95133c2f47c00d68854a9be9b1e68eb189566cd2168b64d77",
+    "app/display/gimpdisplayshell.c": "1577ba570231d747e8a5cff3a69de24f0bb4281acc4d20f4b3baf8b3e18cab28",
+    "app/display/gimpdisplayshell.h": "f252c410848b22709827bd3b4a75b03aeac4fed5141a622438236486ca539f09",
+    "app/display/gimpcanvasarc.c": "371858ba456d9bdb5a26a7668a076a45c021c5c6fe058edbf81e5fd356918859",
+    "app/display/gimpcanvascorner.c": "1c2826251b5e3736a8ba837b32f832f0734a79eef1538bb1392bfd949d82b0db",
+    "app/display/gimpcanvasgrid.c": "82b4ed858c915135864fec2ba1c98d3ebafe73df01098e223cdec155797c6c85",
+    "app/display/gimpcanvasguide.c": "8d27bff8e536c96d2143afacf9dccda20cc677a7e52968b455defed589788255",
+    "app/display/gimpcanvashandle.c": "8a87049aa3181aa4c6d891c4fcd37ed0b110d122c1f5d48717ea4f559ab6db6b",
+    "app/display/gimpcanvasitem.c": "9ec1528cd0fa350d3126d9e3863069f7fdb5dab5484ceb9f482ce6a8254c9d57",
+    "app/display/gimpcanvaspath.c": "b4cdf815fd19d89c2f8e6061831136784fc752439e85a50eb2b318c5e27a378d",
+    "app/display/gimpcanvasrectangle.c": "7910d73eaadb4530be396997a4cc46ea1c4e8e102fa0571da1969219e89d4ae7",
+    "app/display/gimpcanvasrectangleguides.c": "bb1c2fb8b5fafbf7bba4cbad571f2d4c1c92420f2c572062c912fe19dee7181c",
+    "app/display/gimpdisplayshell-items.c": "11a926da7edd94f56d3f3d17528952f150e7bb140c7a6c7811c3b29e2aef8992",
+    "app/display/gimpdisplayshell-rotate.c": "f0d43ee83dfb6d9510aba8d1674ff65d974f5be771e2adaf051255d175934d39",
+    "app/display/gimpdisplayshell-rotate.h": "e8d84913349fb3b2ca624bfe98278b9e63e084ef909c3efd17956583f29073d6",
+    "app/display/gimpdisplayshell-scroll.h": "d5a841fc9e7d2f40cb9ba79ce02dca43a069ed16ac38f0628a1045d23a292e7d",
+    "app/display/gimpdisplayshell-tool-events.c": "b0fc9430e170ab1855f2b4e890cf1d2babbd464773b0d053cdf3012f858151d8",
+    "app/display/gimpdisplayshell-transform.c": "1532f024a9c23f673bbb6926fc8544cd8b40a5a09fdbf9184565e9e9520821fd",
+    "app/display/gimpdisplayshell-transform.h": "6c5fc3ed216f53d18369e8561b3502bfec192b0a0b49062bfa11fecf2260e190",
+    "app/widgets/gimpnavigationview.c": "d491691622cca4a16c7e08b1c6c18d8381ceb94419575a8ed7ad79dfd12d7d3a",
+    "app/display/meson.build": "6a8db0a6db78a956e8580a95090ce1b056d6003c77dbbfde3bc3cf8d4f1bf41b",
+    "app/display/gimppainternavigation.c": "6d5ace7b15a13c795141e60d206bd1b044a30a6f1e15742097d3b58c65aa24e9"
+  },
+  "rows": [
+    {
+      "work_id": "legacy-07ccf324a85bb8c53fb0",
+      "source_id": "01.002/000457",
+      "path": "app/display/Makefile.am",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "resolution": "Autotools rotate.c/.h registration is replaced by the native Meson display source list. The registered native navigation executable links and exercises rotate implementation; no unused legacy header surface is recreated.",
+      "current_routes": [
+        "app/display/meson.build",
+        "app/display/gimpdisplayshell-rotate.c",
+        "app/display/gimpdisplayshell-rotate.h"
+      ],
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "registration-source.json"
+      ]
+    },
+    {
+      "work_id": "legacy-44d357e8030d0ebfa877",
+      "source_id": "01.002/000458",
+      "path": "app/display/gimpcanvasarc.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-58205604829d17a129c0"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-f92be8f19dd12f35e871",
+      "source_id": "01.002/000459",
+      "path": "app/display/gimpcanvasarc.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-736fb55fc104a68c0bb0"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-c76b600efb8688581ae5",
+      "source_id": "01.002/000460",
+      "path": "app/display/gimpcanvasarc.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-e838f269d38486420a53"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-c3bcb1bcd2ebac32f92c",
+      "source_id": "01.002/000461",
+      "path": "app/display/gimpcanvasarc.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-84099e129c7fba7c8886"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-165d9df0a936d06e264f",
+      "source_id": "01.002/000462",
+      "path": "app/display/gimpcanvasarc.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-3aacf36357e2d6942b99"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-ed5e0abed9076982c644",
+      "source_id": "01.002/000463",
+      "path": "app/display/gimpcanvasarc.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-7e925b9b59369702e8e7"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-2757cca6b81af540b15e",
+      "source_id": "01.002/000464",
+      "path": "app/display/gimpcanvasarc.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-9ab67b107b038b4167f1"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-90492dd56b97cf322692",
+      "source_id": "01.002/000465",
+      "path": "app/display/gimpcanvasarc.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-881ddcb00bac7edf7e6e"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-cd17f4c16c6c3bb0a06b",
+      "source_id": "01.002/000466",
+      "path": "app/display/gimpcanvasarc.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-d346f3f27ae90c5ff39e"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-8921427c2dd3233cf4a0",
+      "source_id": "01.002/000467",
+      "path": "app/display/gimpcanvasarc.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-08e171be30f1498c184a"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-f94d9a8111620495e111",
+      "source_id": "01.002/000468",
+      "path": "app/display/gimpcanvasarc.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-be2426049159285aff40"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-640e7765cf29704dba5f",
+      "source_id": "01.002/000469",
+      "path": "app/display/gimpcanvascorner.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-2adf0f57a5c47f2b7cdb"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-4f1cfa13ba2da1632d2f",
+      "source_id": "01.002/000470",
+      "path": "app/display/gimpcanvascorner.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-1ddf8895ec5094b0ba24"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-b8b86f986b2d77f016fc",
+      "source_id": "01.002/000471",
+      "path": "app/display/gimpcanvascorner.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-a07381a76e3087f60e1c"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-2436ab4eb84e49b506ba",
+      "source_id": "01.002/000472",
+      "path": "app/display/gimpcanvascorner.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-0f65cb830a4496fbaf13"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-9118b9f4227db1024b4c",
+      "source_id": "01.002/000473",
+      "path": "app/display/gimpcanvascorner.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-81c10d968d399acc4d52"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-c2847ffdbd70ab23f8dc",
+      "source_id": "01.002/000474",
+      "path": "app/display/gimpcanvascorner.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-35c916e4639c947f814e"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-71451a668393b0bea73b",
+      "source_id": "01.002/000475",
+      "path": "app/display/gimpcanvascorner.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-876a08d7d8ba9967f39e"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-e9236ae5b6b2ab1aa8ce",
+      "source_id": "01.002/000476",
+      "path": "app/display/gimpcanvascorner.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-7a079909199927fdb5d2"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-8f8109e5f948dcd2d540",
+      "source_id": "01.002/000477",
+      "path": "app/display/gimpcanvascorner.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-a0bf489efe53cacc4437"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-9a023e31025aad3d6cb1",
+      "source_id": "01.002/000478",
+      "path": "app/display/gimpcanvascorner.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-171686032a0479264c21"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-92b55944b7bb4b6883e8",
+      "source_id": "01.002/000479",
+      "path": "app/display/gimpcanvascorner.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-3804d825179b63906d70"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-d7d2ecf7909ccf36ca93",
+      "source_id": "01.002/000480",
+      "path": "app/display/gimpcanvascorner.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-eba1402ca572ad063bfc"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-5ee01ca14000ccf32e25",
+      "source_id": "01.002/000481",
+      "path": "app/display/gimpcanvascorner.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-8f49b63acf94503a13a5"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-4276d238d68adced34e0",
+      "source_id": "01.002/000482",
+      "path": "app/display/gimpcanvascorner.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-b59bd250cc996dde0f5f"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-f68b4e37eaa11732d61d",
+      "source_id": "01.002/000483",
+      "path": "app/display/gimpcanvascorner.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-2b86360d1937b34c9b90"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-ed13945821b3c74ea9ef",
+      "source_id": "01.002/000484",
+      "path": "app/display/gimpcanvascorner.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-b1c6cd3d3cb2a7647e9f"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-eb21b73fcc96b6dfdf7b",
+      "source_id": "01.002/000485",
+      "path": "app/display/gimpcanvascorner.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-dc776c82b83694b27e99"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-f75325f07beeea49d502",
+      "source_id": "01.002/000486",
+      "path": "app/display/gimpcanvascorner.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-400a6c745d2458f0750d"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-244da3964a1eafe9fc13",
+      "source_id": "01.002/000487",
+      "path": "app/display/gimpcanvascorner.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-0580095a9ca51ffd41c4"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-d8a9f5efe5d22450dca6",
+      "source_id": "01.002/000488",
+      "path": "app/display/gimpcanvascorner.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-39a9769a7265b9267da0"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-c51e88db667848d91629",
+      "source_id": "01.002/000489",
+      "path": "app/display/gimpcanvascorner.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-7d62a936da419ea64572"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-29d7d9dc8ac8192d985c",
+      "source_id": "01.002/000490",
+      "path": "app/display/gimpcanvascorner.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-324a35de428a53084349"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-4b27e5a8b9414dc4fa69",
+      "source_id": "01.002/000491",
+      "path": "app/display/gimpcanvascorner.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-b75797165f60a593c7d0"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-ec95079a0f91c9048e07",
+      "source_id": "01.002/000492",
+      "path": "app/display/gimpcanvascorner.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-b2e98c8887b542581e20"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-588d1921d258f965f9a5",
+      "source_id": "01.002/000493",
+      "path": "app/display/gimpcanvascorner.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-a52eeed899d0468bdf5f"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-62b0d7eeb5020551495e",
+      "source_id": "01.002/000494",
+      "path": "app/display/gimpcanvascorner.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-b511b38cef1acadcb210"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-3d3635ba3debb4393a86",
+      "source_id": "01.002/000495",
+      "path": "app/display/gimpcanvascorner.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-7a9d618565f34faae2d9"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-135e3f1ddebaa6db910d",
+      "source_id": "01.002/000496",
+      "path": "app/display/gimpcanvascorner.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-51c53a2100d320176fb9"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-85784d8e32698f4f2e94",
+      "source_id": "01.002/000497",
+      "path": "app/display/gimpcanvascorner.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-2c15ec93c1a4e021829d"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-1c68f49005bb48bed4cd",
+      "source_id": "01.002/000498",
+      "path": "app/display/gimpcanvascorner.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-4307267bf0dcd5b065c5"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-43530d80ee88a408bfa2",
+      "source_id": "01.002/000499",
+      "path": "app/display/gimpcanvascorner.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-0c669890d2badcc3feec"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-4064e2151eb23437e982",
+      "source_id": "01.002/000500",
+      "path": "app/display/gimpcanvascorner.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-d52872eaeace2efb42e5"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-d81a61f7e22714b47da8",
+      "source_id": "01.002/000501",
+      "path": "app/display/gimpcanvasgrid.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-1ccec1f9d3ce42b5377e"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-1b2b8bc96443323bb607",
+      "source_id": "01.002/000502",
+      "path": "app/display/gimpcanvasgrid.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-87f9d67abb72fa8d0535"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-9c16d33bed4783520e4b",
+      "source_id": "01.002/000503",
+      "path": "app/display/gimpcanvasgrid.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-770734395e39e80f288b"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-7c5eb5275d72518028ee",
+      "source_id": "01.002/000504",
+      "path": "app/display/gimpcanvasgrid.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-145cb8c75292e01cbdee"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-3c1d1ec939e8db9689fa",
+      "source_id": "01.002/000505",
+      "path": "app/display/gimpcanvasgrid.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-44628ed3f68ebff75944"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-6456de7c689580f22376",
+      "source_id": "01.002/000506",
+      "path": "app/display/gimpcanvasgrid.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-3b39143b94909ca88bbd"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-a9d7bd212fec89bf4b07",
+      "source_id": "01.002/000507",
+      "path": "app/display/gimpcanvasgrid.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-4aad78e39068cbc0a9bd"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-ad24baecfcd0ea6e32ab",
+      "source_id": "01.002/000508",
+      "path": "app/display/gimpcanvasgrid.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-055f7e70bb5df8588605"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-be333bf983cdfd3230d0",
+      "source_id": "01.002/000509",
+      "path": "app/display/gimpcanvasgrid.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-4f93dd968f7bccdb488a"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-abecc87bab37d3f9bb83",
+      "source_id": "01.002/000510",
+      "path": "app/display/gimpcanvasgrid.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-ace44b143edbf2c64106"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-05934c8f70c33d60a08c",
+      "source_id": "01.002/000511",
+      "path": "app/display/gimpcanvasgrid.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-f2ab691541e709ef01d0"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-525972e63ea04cbbbbc2",
+      "source_id": "01.002/000512",
+      "path": "app/display/gimpcanvasgrid.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-c559ff5a7908e41e6c2f"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-636501fecd5f5678c179",
+      "source_id": "01.002/000513",
+      "path": "app/display/gimpcanvasgrid.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-e7248683734be76da89d"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-a9097cc8050450c23ca7",
+      "source_id": "01.002/000514",
+      "path": "app/display/gimpcanvasgrid.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-73063155fc1840520887"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-251ce2e8256b364a56dd",
+      "source_id": "01.002/000515",
+      "path": "app/display/gimpcanvasgrid.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-a32ca32f5fcb936c3d2f"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-6de8d0d99c2823accece",
+      "source_id": "01.002/000516",
+      "path": "app/display/gimpcanvasgrid.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-04ea144ed01befc8b4ca"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-ec05b3566a16230afec9",
+      "source_id": "01.002/000517",
+      "path": "app/display/gimpcanvasgrid.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-a490490a3c4a652982e6"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-4d47570bdae02a6dbd9d",
+      "source_id": "01.002/000518",
+      "path": "app/display/gimpcanvasgrid.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-98e3dec05e41da08236b"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-7e7d9b2ebcbd706f6e43",
+      "source_id": "01.002/000519",
+      "path": "app/display/gimpcanvasgrid.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-64c8d722366608156c9b"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-0b00e0e92becec92ef09",
+      "source_id": "01.002/000520",
+      "path": "app/display/gimpcanvasgrid.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-eef991f785a7d929b00a"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-bfc3e5e7c833630a2c2d",
+      "source_id": "01.002/000521",
+      "path": "app/display/gimpcanvasgrid.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-46c363a626ab9bcd7448"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-13b8eb8b090376a05c29",
+      "source_id": "01.002/000522",
+      "path": "app/display/gimpcanvasguide.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-87a36a162611c23a25bc"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-c092cb78a0cd01a232e7",
+      "source_id": "01.002/000523",
+      "path": "app/display/gimpcanvasguide.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-150e0389cbdcb0d8fe68"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-ad01ddd8d90a635220ad",
+      "source_id": "01.002/000524",
+      "path": "app/display/gimpcanvasguide.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-f29da8133d6b51db0fad"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-479883acde37880816bd",
+      "source_id": "01.002/000525",
+      "path": "app/display/gimpcanvashandle.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-ddcc49e3e2f88122c824"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-fdea70fbc3790f1cfa18",
+      "source_id": "01.002/000526",
+      "path": "app/display/gimpcanvashandle.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-a35d9210c0c7e7e614c0"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-d29af47c9b45bb9face3",
+      "source_id": "01.002/000527",
+      "path": "app/display/gimpcanvashandle.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-23ff39c05f2ebe98feeb"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-d4e63f99f20c491c65bf",
+      "source_id": "01.002/000529",
+      "path": "app/display/gimpcanvaspath.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-af5ccf8d8906762a37b3"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-5a8e6a12184b616391ea",
+      "source_id": "01.002/000530",
+      "path": "app/display/gimpcanvaspath.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-2fb8c3b56277d5c205f9"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-a9c6b062101279943109",
+      "source_id": "01.002/000531",
+      "path": "app/display/gimpcanvaspath.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-1f6ffb4529672db91b7c"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-2031b33f88950f4fa381",
+      "source_id": "01.002/000534",
+      "path": "app/display/gimpcanvasrectangle.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-e4d589bcc34dfe208231"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-b4c244a3b5a47c441f06",
+      "source_id": "01.002/000535",
+      "path": "app/display/gimpcanvasrectangle.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-c97cd921002faf42f633"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-e6e6872da03a38241bfa",
+      "source_id": "01.002/000536",
+      "path": "app/display/gimpcanvasrectangle.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-ddab33fa4976327cb54e"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-4dedc44ae8affa438367",
+      "source_id": "01.002/000537",
+      "path": "app/display/gimpcanvasrectangle.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-d3da641d25721717ea9a"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-e00560475ec61eaad5fe",
+      "source_id": "01.002/000538",
+      "path": "app/display/gimpcanvasrectangle.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-108a2f743dc24c24ed87"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-13c9bbd9c6320c1ba078",
+      "source_id": "01.002/000539",
+      "path": "app/display/gimpcanvasrectangle.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-1301ce78f7c9d4e2a017"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-7b000ed44884d39be5c2",
+      "source_id": "01.002/000540",
+      "path": "app/display/gimpcanvasrectangle.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-029045129693b0184fda"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-3db4b13492d65ec9d76a",
+      "source_id": "01.002/000541",
+      "path": "app/display/gimpcanvasrectangle.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-d31b89717758984b1d93"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-f50b391e6b6f6cedd866",
+      "source_id": "01.002/000542",
+      "path": "app/display/gimpcanvasrectangle.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-5275622710c1b5f52ae3"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-4a78f7c2673bfce57db1",
+      "source_id": "01.002/000543",
+      "path": "app/display/gimpcanvasrectangle.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-5116d1277280afa1b04d"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-2c197828b693e66ee5aa",
+      "source_id": "01.002/000544",
+      "path": "app/display/gimpcanvasrectangle.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-944c30b8e696ea2c9c13"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-a0ecba581ea05d30ddda",
+      "source_id": "01.002/000545",
+      "path": "app/display/gimpcanvasrectangle.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-55d1fa72b92695f32369"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-e94ae1967e727989d267",
+      "source_id": "01.002/000546",
+      "path": "app/display/gimpcanvasrectangle.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-4ef90dc3e012dfcd5bdf"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-8fa823cfee251d7194ba",
+      "source_id": "01.002/000547",
+      "path": "app/display/gimpcanvasrectangle.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-88917c9aceac6955993d"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-3c3b47d319dfbacbd890",
+      "source_id": "01.002/000548",
+      "path": "app/display/gimpcanvasrectangle.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-8fe05957673bb1e53805"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-c5d0b05c41ef6b715b48",
+      "source_id": "01.002/000549",
+      "path": "app/display/gimpcanvasrectangle.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-5cb6a9e83f716b2b5bd5"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-2d08b47e7ba06647cbbb",
+      "source_id": "01.002/000550",
+      "path": "app/display/gimpcanvasrectangle.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-4eac11dedbb774c14700"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-e232bf70f04d84458a18",
+      "source_id": "01.002/000551",
+      "path": "app/display/gimpcanvasrectangle.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-d0584edc2482858588dd"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-16dd184dbd75c6a75135",
+      "source_id": "01.002/000552",
+      "path": "app/display/gimpcanvasrectangle.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-06ccc72af0163b640141"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-d1428651166239ed0f93",
+      "source_id": "01.002/000553",
+      "path": "app/display/gimpcanvasrectangleguides.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-ffe843016e1a20c8472b"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-54cc9e81f45fb8cfb476",
+      "source_id": "01.002/000554",
+      "path": "app/display/gimpcanvasrectangleguides.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-8ddede725db347aa6f80"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-7789ed948da828708992",
+      "source_id": "01.002/000555",
+      "path": "app/display/gimpcanvasrectangleguides.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-5153b1ab6e0d844a41ce"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-af15002abfef3aa3f046",
+      "source_id": "01.002/000556",
+      "path": "app/display/gimpcanvasrectangleguides.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-c0908402769e3b8b4d91"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-c16607bc258cbc890991",
+      "source_id": "01.002/000557",
+      "path": "app/display/gimpcanvasrectangleguides.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-79df1beb54de02b4fa98"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-bb462b1ae2b4a458207e",
+      "source_id": "01.002/000558",
+      "path": "app/display/gimpcanvasrectangleguides.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-cf97abfe1d3b33ef0182"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-723187f64ae26050f50d",
+      "source_id": "01.002/000559",
+      "path": "app/display/gimpcanvasrectangleguides.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-a5f8007137d30b4aa26f"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-2f64eb20c1c8d9b8da45",
+      "source_id": "01.002/000560",
+      "path": "app/display/gimpcanvasrectangleguides.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-adc8387b4697c61dbd71"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-4562b0d19f77c00078c2",
+      "source_id": "01.002/000561",
+      "path": "app/display/gimpcanvasrectangleguides.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-752c9bddffd5e951df8d"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-8c5912f95ba0a962c645",
+      "source_id": "01.002/000562",
+      "path": "app/display/gimpcanvasrectangleguides.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-804699fd385bc5461941"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-47dbb6594ad265642481",
+      "source_id": "01.002/000563",
+      "path": "app/display/gimpcanvasrectangleguides.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-b3b60837952702dbaa5b"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-8747ff439e59c96dfbfd",
+      "source_id": "01.002/000564",
+      "path": "app/display/gimpcanvasrectangleguides.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-52eed6456bd377a1eb17"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-3637505b9f478e1b6f7a",
+      "source_id": "01.002/000565",
+      "path": "app/display/gimpcanvasrectangleguides.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-1799798995028535756f"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-8c8c4bafffe74cd1b308",
+      "source_id": "01.002/000566",
+      "path": "app/display/gimpcanvasrectangleguides.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-a3c605af36c856e9ad6b"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-e4f8bed8800c8c0fcd98",
+      "source_id": "01.002/000567",
+      "path": "app/display/gimpcanvasrectangleguides.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-158b2877af1288978216"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-cb2987326958f200f5c3",
+      "source_id": "01.002/000568",
+      "path": "app/display/gimpcanvasrectangleguides.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-f48de91e023a6b1eb5a5"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-83e5edfcea07a7b0b8e3",
+      "source_id": "01.002/000569",
+      "path": "app/display/gimpcanvasrectangleguides.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-0d0adfc4e77f1faa4d8c"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-15cf34e921dc800208fa",
+      "source_id": "01.002/000570",
+      "path": "app/display/gimpcanvasrectangleguides.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-a79a14ffa1ad634da2ae"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-3a6b9098fe9fe3235947",
+      "source_id": "01.002/000571",
+      "path": "app/display/gimpcanvasrectangleguides.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-4fc5b3f01d5c239bca64"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-fd22bee02bce68de0e36",
+      "source_id": "01.002/000572",
+      "path": "app/display/gimpcanvasrectangleguides.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-491fbcbef3392458d62b"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-486d496efb58fe1cb9ca",
+      "source_id": "01.002/000573",
+      "path": "app/display/gimpcanvasrectangleguides.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/primitive-source-duty-review.json",
+        "work_id": "legacy-cafdc9397b0be5916dcb"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-585dfe2b2143a5747064",
+      "source_id": "01.002/000591",
+      "path": "app/display/gimpdisplayshell-draw.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/render-source-duty-review.json",
+        "work_id": "legacy-b748d5af6045afc4a692"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-3a5271c0444ca0be7ff6",
+      "source_id": "01.002/000592",
+      "path": "app/display/gimpdisplayshell-draw.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/render-source-duty-review.json",
+        "work_id": "legacy-dcc792ae4b9d6dde3af5"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-d67e8c663823d37926ff",
+      "source_id": "01.002/000593",
+      "path": "app/display/gimpdisplayshell-draw.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/render-source-duty-review.json",
+        "work_id": "legacy-5d654bc35c38d7051fac"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-fcc8444fe5cc10289ea0",
+      "source_id": "01.002/000594",
+      "path": "app/display/gimpdisplayshell-draw.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/render-source-duty-review.json",
+        "work_id": "legacy-857a5edb76992bb9f1a5"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-5fbcddc81f1d8938a8fc",
+      "source_id": "01.002/000595",
+      "path": "app/display/gimpdisplayshell-draw.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/render-source-duty-review.json",
+        "work_id": "legacy-542fe3c688f61674e69b"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-7c4f91b651dcd0b738c8",
+      "source_id": "01.002/000596",
+      "path": "app/display/gimpdisplayshell-draw.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/render-source-duty-review.json",
+        "work_id": "legacy-c2deca23bc1ee76d1ab0"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-83c9e336b7beeada54c7",
+      "source_id": "01.002/000597",
+      "path": "app/display/gimpdisplayshell-draw.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/render-source-duty-review.json",
+        "work_id": "legacy-8a57e458f53cf27935cb"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-59d7d1d3130914a517cd",
+      "source_id": "01.002/000598",
+      "path": "app/display/gimpdisplayshell-draw.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/render-source-duty-review.json",
+        "work_id": "legacy-46b81a78c341ed40b3ba"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-f19e275ba4ba9785d258",
+      "source_id": "01.002/000599",
+      "path": "app/display/gimpdisplayshell-draw.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/render-source-duty-review.json",
+        "work_id": "legacy-46f8b81069e10d2d8737"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-9aab3ebadfa8dbfab305",
+      "source_id": "01.002/000600",
+      "path": "app/display/gimpdisplayshell-draw.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/render-source-duty-review.json",
+        "work_id": "legacy-d1ecf9cbfef4218ff140"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-c1afd14c85ec5f456dc0",
+      "source_id": "01.002/000601",
+      "path": "app/display/gimpdisplayshell-draw.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/render-source-duty-review.json",
+        "work_id": "legacy-f45e052c99ebf5b373bd"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-abbdfa32ee044348265f",
+      "source_id": "01.002/000602",
+      "path": "app/display/gimpdisplayshell-draw.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/render-source-duty-review.json",
+        "work_id": "legacy-4437ec700324d66ed5c9"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-1093d0ae5c20ab167de2",
+      "source_id": "01.002/000603",
+      "path": "app/display/gimpdisplayshell-draw.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/render-source-duty-review.json",
+        "work_id": "legacy-e2556e2ab104cacded7d"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-40e9d9158c7b20709b3c",
+      "source_id": "01.002/000604",
+      "path": "app/display/gimpdisplayshell-draw.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/render-source-duty-review.json",
+        "work_id": "legacy-a70545327ad88749d87b"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-378d57430b1851356a2b",
+      "source_id": "01.002/000605",
+      "path": "app/display/gimpdisplayshell-expose.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/render-source-duty-review.json",
+        "work_id": "legacy-2fa082f964aef178de18"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-ba6854ecf9d620171706",
+      "source_id": "01.002/000606",
+      "path": "app/display/gimpdisplayshell-expose.h",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/render-source-duty-review.json",
+        "work_id": "legacy-6c85a50925644c08c499"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-cb0e40dd93a96e82af8d",
+      "source_id": "01.002/000609",
+      "path": "app/display/gimpdisplayshell-render.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/render-source-duty-review.json",
+        "work_id": "legacy-3fd84c70aff8fcf5eb07"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-0ebd0a884b32a2a56a90",
+      "source_id": "01.002/000610",
+      "path": "app/display/gimpdisplayshell-render.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/render-source-duty-review.json",
+        "work_id": "legacy-ee5e0312c04a8c12dd6c"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-4ef450ddb4f7012c8d71",
+      "source_id": "01.002/000611",
+      "path": "app/display/gimpdisplayshell-render.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/render-source-duty-review.json",
+        "work_id": "legacy-aa1088ab9bc5c756d96c"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-5b181598f07c5a2561d2",
+      "source_id": "01.002/000612",
+      "path": "app/display/gimpdisplayshell-render.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/render-source-duty-review.json",
+        "work_id": "legacy-e4978d379ce7ee57b77f"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-a3d7afcc24cb0a22c1ca",
+      "source_id": "01.002/000613",
+      "path": "app/display/gimpdisplayshell-render.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/render-source-duty-review.json",
+        "work_id": "legacy-d581cfd85a1361dae7f9"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-79c8207c8e35108c12b9",
+      "source_id": "01.002/000614",
+      "path": "app/display/gimpdisplayshell-render.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/render-source-duty-review.json",
+        "work_id": "legacy-664a494d97250fc1453a"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-b190f07780fdefb7746f",
+      "source_id": "01.002/000615",
+      "path": "app/display/gimpdisplayshell-render.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/render-source-duty-review.json",
+        "work_id": "legacy-13eba4e4f3aaa87ba740"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-d2099cf7f4792d34d933",
+      "source_id": "01.002/000616",
+      "path": "app/display/gimpdisplayshell-render.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/render-source-duty-review.json",
+        "work_id": "legacy-1d73a07ce898d4f32233"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-fcb02f4f7e7db17b1b62",
+      "source_id": "01.002/000617",
+      "path": "app/display/gimpdisplayshell-render.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/render-source-duty-review.json",
+        "work_id": "legacy-7b2c9274dcab3aaa72a0"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-3a2b1dd7b351d8787a20",
+      "source_id": "01.002/000618",
+      "path": "app/display/gimpdisplayshell-render.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/render-source-duty-review.json",
+        "work_id": "legacy-29523d76a454c8c2782c"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-fc328ece39196594d44e",
+      "source_id": "01.002/000619",
+      "path": "app/display/gimpdisplayshell-render.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/render-source-duty-review.json",
+        "work_id": "legacy-5fe066e1eae6f4d65682"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-78f821c4a2453f2700e0",
+      "source_id": "01.002/000620",
+      "path": "app/display/gimpdisplayshell-render.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/render-source-duty-review.json",
+        "work_id": "legacy-a6f5fb67150d23174382"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-6c0e70e78869966b3d26",
+      "source_id": "01.002/000621",
+      "path": "app/display/gimpdisplayshell-render.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/render-source-duty-review.json",
+        "work_id": "legacy-cd9b369201bc8b21746d"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-dd9314f17627a6e9b0b6",
+      "source_id": "01.002/000622",
+      "path": "app/display/gimpdisplayshell-render.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/render-source-duty-review.json",
+        "work_id": "legacy-1af2aa8c2261a068137e"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-056622768daabb15fd8f",
+      "source_id": "01.002/000623",
+      "path": "app/display/gimpdisplayshell-render.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/render-source-duty-review.json",
+        "work_id": "legacy-9bccb718c1292b3cba37"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-f8b9d1dcb74d69e8f6ee",
+      "source_id": "01.002/000624",
+      "path": "app/display/gimpdisplayshell-render.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/render-source-duty-review.json",
+        "work_id": "legacy-fe2d635bc148f4fc00cb"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-9c739144c389edbb2a02",
+      "source_id": "01.002/000625",
+      "path": "app/display/gimpdisplayshell-render.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/render-source-duty-review.json",
+        "work_id": "legacy-8b968391b103c119fde0"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-251a83200cb826e99f8a",
+      "source_id": "01.002/000626",
+      "path": "app/display/gimpdisplayshell-rotate.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/navigation-source-duty-review.json",
+        "work_id": "legacy-0c022b73ab59eab08e94"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-7a8f46dd1f4f8ba8a55f",
+      "source_id": "01.002/000627",
+      "path": "app/display/gimpdisplayshell-rotate.h",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/navigation-source-duty-review.json",
+        "work_id": "legacy-4afb05daee2602e55987"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-6a18d743f84204ecec3b",
+      "source_id": "01.002/000628",
+      "path": "app/display/gimpdisplayshell-scroll.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/navigation-source-duty-review.json",
+        "work_id": "legacy-3791a6b0f5c8b3ddc4d7"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-6e8133247830aa699896",
+      "source_id": "01.002/000629",
+      "path": "app/display/gimpdisplayshell-scroll.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/navigation-source-duty-review.json",
+        "work_id": "legacy-b1d3da193c44943a8d4b"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-292dd2b757f69a5ded06",
+      "source_id": "01.002/000630",
+      "path": "app/display/gimpdisplayshell-scroll.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/navigation-source-duty-review.json",
+        "work_id": "legacy-1ca590dc3c427600dbe1"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-acc23eb223f6afbe663d",
+      "source_id": "01.002/000631",
+      "path": "app/display/gimpdisplayshell-scroll.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/navigation-source-duty-review.json",
+        "work_id": "legacy-029d8f6b9cff96b79ef6"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-cf24378252d2fe70a042",
+      "source_id": "01.002/000632",
+      "path": "app/display/gimpdisplayshell-scroll.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/navigation-source-duty-review.json",
+        "work_id": "legacy-82a2fac3fea96ec9d137"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-7112e9da2c9aeabace44",
+      "source_id": "01.002/000633",
+      "path": "app/display/gimpdisplayshell-scroll.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/navigation-source-duty-review.json",
+        "work_id": "legacy-326955f65c01ead142a3"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-c20e378da49629e8e21c",
+      "source_id": "01.002/000634",
+      "path": "app/display/gimpdisplayshell-scroll.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/navigation-source-duty-review.json",
+        "work_id": "legacy-d157e9edd64f22097081"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-45ab861782b56beb152a",
+      "source_id": "01.002/000635",
+      "path": "app/display/gimpdisplayshell-scroll.h",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/navigation-source-duty-review.json",
+        "work_id": "legacy-9ac295064c6a500201e2"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-d8ed844bb2644316ba85",
+      "source_id": "01.002/000636",
+      "path": "app/display/gimpdisplayshell-selection.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/render-source-duty-review.json",
+        "work_id": "legacy-fc3ca7edf2aa17bb6f4d"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-3ddec5b7955d2f0e8bda",
+      "source_id": "01.002/000637",
+      "path": "app/display/gimpdisplayshell-selection.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/render-source-duty-review.json",
+        "work_id": "legacy-ce3478f71912920bbeb1"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-92bdbd94f2550c2e282e",
+      "source_id": "01.002/000638",
+      "path": "app/display/gimpdisplayshell-selection.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/render-source-duty-review.json",
+        "work_id": "legacy-a882153e52f18820e541"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-4eeb959988070516d427",
+      "source_id": "01.002/000639",
+      "path": "app/display/gimpdisplayshell-selection.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/render-source-duty-review.json",
+        "work_id": "legacy-3ea6bf28be4b9d95b91d"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-d417f74573acdf11acef",
+      "source_id": "01.002/000640",
+      "path": "app/display/gimpdisplayshell-selection.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/render-source-duty-review.json",
+        "work_id": "legacy-f397d5ce3f3392abe974"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-950f9219d394029b8196",
+      "source_id": "01.002/000641",
+      "path": "app/display/gimpdisplayshell-tool-events.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/navigation-source-duty-review.json",
+        "work_id": "legacy-0bf4a600ab7acd600490"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-6430b6778de6bc6f348f",
+      "source_id": "01.002/000643",
+      "path": "app/display/gimpdisplayshell-tool-events.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/navigation-source-duty-review.json",
+        "work_id": "legacy-f4fe09cc649123474659"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-88c7d5d238ac2fb682c3",
+      "source_id": "01.002/000644",
+      "path": "app/display/gimpdisplayshell-tool-events.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/navigation-source-duty-review.json",
+        "work_id": "legacy-1a30075d8b1b2457efab"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-8386c0bc546eaecced53",
+      "source_id": "01.002/000646",
+      "path": "app/display/gimpdisplayshell-tool-events.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/navigation-source-duty-review.json",
+        "work_id": "legacy-6d1e539a1f8276f17c0e"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-bb9f756f9e7fe9574356",
+      "source_id": "01.002/000647",
+      "path": "app/display/gimpdisplayshell-tool-events.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/navigation-source-duty-review.json",
+        "work_id": "legacy-beb46dc724cd604fa29f"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-7b25b8e535a99e217b01",
+      "source_id": "01.002/000659",
+      "path": "app/display/gimpdisplayshell-tool-events.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/navigation-source-duty-review.json",
+        "work_id": "legacy-8554fa9cea12353e8316"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-8a654e7f825d858d50ae",
+      "source_id": "01.002/000662",
+      "path": "app/display/gimpdisplayshell-tool-events.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/navigation-source-duty-review.json",
+        "work_id": "legacy-65b4ef709d129e9a6899"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-4bdf903167480d849479",
+      "source_id": "01.002/000665",
+      "path": "app/display/gimpdisplayshell-tool-events.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/navigation-source-duty-review.json",
+        "work_id": "legacy-f1ac6b1dbad2a034e68e"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-ad8391dfbca910af446e",
+      "source_id": "01.002/000668",
+      "path": "app/display/gimpdisplayshell-tool-events.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/navigation-source-duty-review.json",
+        "work_id": "legacy-7e818f0031968dd49d40"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-22094edd5895e3004092",
+      "source_id": "01.002/000669",
+      "path": "app/display/gimpdisplayshell-tool-events.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/navigation-source-duty-review.json",
+        "work_id": "legacy-854f90c117440213c8bd"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-e1e26ed8b34db2a12100",
+      "source_id": "01.002/000670",
+      "path": "app/display/gimpdisplayshell-tool-events.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/navigation-source-duty-review.json",
+        "work_id": "legacy-c966266c0f5d838dc5b9"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-c5b50b4aa2a6cee82561",
+      "source_id": "01.002/000671",
+      "path": "app/display/gimpdisplayshell-tool-events.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/navigation-source-duty-review.json",
+        "work_id": "legacy-add752da6bff9e30340e"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-ed2ddc39ff10e31e7cf7",
+      "source_id": "01.002/000672",
+      "path": "app/display/gimpdisplayshell-tool-events.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/navigation-source-duty-review.json",
+        "work_id": "legacy-12cc1335a91cab82b77c"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-dc9adc4013732d478435",
+      "source_id": "01.002/000680",
+      "path": "app/display/gimpdisplayshell-tool-events.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "resolution": "Old mirrored Left/Right KEY_PRESS swap follows wants-all-keys early handling. Native event dispatcher translates a copy through gimp_painter_navigation_key, preserving original event fields; KEY_RELEASE remains unchanged. Existing four mirrored-key scopes cover idle/free/snapped routing,96 sends and64press/32release callbacks.",
+      "current_routes": [
+        "app/display/gimpdisplayshell-tool-events.c",
+        "app/display/gimppainternavigation.c"
+      ],
+      "proof": [
+        "normal-original.json",
+        "sanitizer-original.json"
+      ]
+    },
+    {
+      "work_id": "legacy-1ba5c363ee469ea4c55a",
+      "source_id": "01.002/000683",
+      "path": "app/display/gimpdisplayshell-tool-events.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/navigation-source-duty-review.json",
+        "work_id": "legacy-003827fbe823c76f1891"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-97306fcbd120a56e5f8e",
+      "source_id": "01.002/000684",
+      "path": "app/display/gimpdisplayshell-tool-events.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/navigation-source-duty-review.json",
+        "work_id": "legacy-80c1d045a108034bbd9b"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-1e1329a3630da47cd3d2",
+      "source_id": "01.002/000685",
+      "path": "app/display/gimpdisplayshell-tool-events.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/navigation-source-duty-review.json",
+        "work_id": "legacy-88587141c1535cd1d18c"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-7fcf2652a21b72c47205",
+      "source_id": "01.002/000686",
+      "path": "app/display/gimpdisplayshell-tool-events.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/navigation-source-duty-review.json",
+        "work_id": "legacy-e85c70a36fdceb249dfc"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-97d09ba3f1b2566f0868",
+      "source_id": "01.002/000687",
+      "path": "app/display/gimpdisplayshell-tool-events.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/navigation-source-duty-review.json",
+        "work_id": "legacy-0ee5eb8b2f5a5549958a"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-6531ab9c3d920df4a01e",
+      "source_id": "01.002/000693",
+      "path": "app/display/gimpdisplayshell-transform.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/navigation-source-duty-review.json",
+        "work_id": "legacy-4a283b015d53f9db4df5"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-16fd8fa2f2489adb2adc",
+      "source_id": "01.002/000694",
+      "path": "app/display/gimpdisplayshell-transform.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/navigation-source-duty-review.json",
+        "work_id": "legacy-6743c87ae6577fdab6a7"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-a938ab8bfc90193ff304",
+      "source_id": "01.002/000695",
+      "path": "app/display/gimpdisplayshell-transform.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/navigation-source-duty-review.json",
+        "work_id": "legacy-1e59b99a66cb1940cfe0"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-a0d5dc2b062e6971e536",
+      "source_id": "01.002/000696",
+      "path": "app/display/gimpdisplayshell-transform.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/navigation-source-duty-review.json",
+        "work_id": "legacy-65f2573eaf901de80043"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-ac22c43c62fb14a46e88",
+      "source_id": "01.002/000697",
+      "path": "app/display/gimpdisplayshell-transform.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/navigation-source-duty-review.json",
+        "work_id": "legacy-46c3edecd18133694d72"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-e530ecc92eb9c18ee0c8",
+      "source_id": "01.002/000698",
+      "path": "app/display/gimpdisplayshell-transform.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/navigation-source-duty-review.json",
+        "work_id": "legacy-369c285e28527e5fdade"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-e919d9d69cf5b86dc6d2",
+      "source_id": "01.002/000699",
+      "path": "app/display/gimpdisplayshell-transform.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/navigation-source-duty-review.json",
+        "work_id": "legacy-bbc61945470eaca23df2"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-112a4b404960d66920de",
+      "source_id": "01.002/000700",
+      "path": "app/display/gimpdisplayshell-transform.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/navigation-source-duty-review.json",
+        "work_id": "legacy-a2c921df689049e42001"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-6c7c49905d0dccde136b",
+      "source_id": "01.002/000701",
+      "path": "app/display/gimpdisplayshell-transform.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/navigation-source-duty-review.json",
+        "work_id": "legacy-7be7a4ad6d86b0282489"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-cff11910982e26c0a48f",
+      "source_id": "01.002/000702",
+      "path": "app/display/gimpdisplayshell-transform.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/navigation-source-duty-review.json",
+        "work_id": "legacy-e09e4efca9764072b60b"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-4cc710f7a356bf710ebb",
+      "source_id": "01.002/000703",
+      "path": "app/display/gimpdisplayshell-transform.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/navigation-source-duty-review.json",
+        "work_id": "legacy-576d2496ed0ae52468da"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-d6a2dcf1d22bc5136dd2",
+      "source_id": "01.002/000704",
+      "path": "app/display/gimpdisplayshell-transform.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/navigation-source-duty-review.json",
+        "work_id": "legacy-44d8381b42242e8231f8"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-1d62ebad5eaf38125a26",
+      "source_id": "01.002/000705",
+      "path": "app/display/gimpdisplayshell-transform.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/navigation-source-duty-review.json",
+        "work_id": "legacy-a3bae7e58329927b5b97"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-5442223392d56be582e1",
+      "source_id": "01.002/000706",
+      "path": "app/display/gimpdisplayshell-transform.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/navigation-source-duty-review.json",
+        "work_id": "legacy-2b6fafdfcd405b1d724b"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-c389f5bfb110b4d40510",
+      "source_id": "01.002/000707",
+      "path": "app/display/gimpdisplayshell-transform.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/navigation-source-duty-review.json",
+        "work_id": "legacy-510dfb9d768bf92378bf"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-6eaf73078059b387e6d5",
+      "source_id": "01.002/000708",
+      "path": "app/display/gimpdisplayshell-transform.h",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/navigation-source-duty-review.json",
+        "work_id": "legacy-f497c74884be26161840"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    },
+    {
+      "work_id": "legacy-07c2b44b46de6143df66",
+      "source_id": "01.002/001659",
+      "path": "app/widgets/gimpnavigationview.c",
+      "criterion": "\u8a18\u9332\u3057\u305f\u5168\u30ad\u30fc\u9077\u79fb\u306e\u671f\u5f85\u89d2\u306b\u4e00\u81f4",
+      "previous_common_matrix_mapping": {
+        "review": "migration/tests/navigation-item-geometry/navigation-source-duty-review.json",
+        "work_id": "legacy-e44792bc19e219c20516"
+      },
+      "resolution": "Same unchanged native common-matrix/navigation source route as committed0f71. Original25.011 verification is all recorded key-transition angles, not a second production migration or a new pixel-parity claim.",
+      "proof": [
+        "normal.json",
+        "sanitizer.json",
+        "normal-original.json",
+        "sanitizer-original.json",
+        "replay-common-matrix-and-reset.py"
+      ]
+    }
+  ]
+}

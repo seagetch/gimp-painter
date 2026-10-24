@@ -1,0 +1,5 @@
+-
+-  tile_release (tile, FALSE);
++  done:
++  if (tile)
++    tile_release (tile, FALSE);

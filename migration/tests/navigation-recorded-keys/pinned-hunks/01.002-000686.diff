@@ -1,0 +1,5 @@
+-
++        start_x = coords.x;
++        start_y = coords.y;
++        gimp_display_shell_device_to_image_coords (shell, &start_x, &start_y);
++        

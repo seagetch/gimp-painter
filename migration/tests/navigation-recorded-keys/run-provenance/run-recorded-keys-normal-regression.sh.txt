@@ -1,0 +1,36 @@
+#!/bin/bash
+set -euo pipefail
+D=/workspace/shared/gimp-native-secondary
+R=/workspace/scratch/0015fc5d1a03/gimp-painter
+source "$D/env.sh";exec 9>"$D/build.lock";flock 9
+python3 - <<'PY'
+import pathlib,json,hashlib
+D=pathlib.Path('/workspace/shared/gimp-native-secondary');R=pathlib.Path('/workspace/scratch/0015fc5d1a03/gimp-painter')
+for row in json.loads((R/'migration/tests/navigation-item-geometry/held-source-isolation.json').read_text())['rows']:
+ p=D/'source'/row['path']
+ if row.get('native_exists') is False:assert not p.exists()
+ else:assert hashlib.sha256(p.read_bytes()).hexdigest()==row['sha256'],row['path']
+for path in ['app/tests/test-painter-navigation-events.c','app/tests/test-painter-navigation-recorded-keys.inc']:
+ (D/'source'/path).write_bytes((R/path).read_bytes())
+paths=list(json.loads((R/'migration/tests/navigation-reset-action/manifest.json').read_text())['source_sha256'])
+paths+=['app/tests/test-painter-navigation-recorded-keys.inc','app/core/gimpprojection.c','migration/fixtures/legacy-rotation-operations/gui-captures/rotation.tsv','migration/fixtures/legacy-zoom/zoom.tsv']
+for path in paths:assert (R/path).read_bytes()==(D/'source'/path).read_bytes(),path
+out={p:hashlib.sha256((D/'source'/p).read_bytes()).hexdigest() for p in paths}
+(R/'migration/tests/navigation-recorded-keys/source-before-build.json').write_text(json.dumps(out,indent=2)+'\n')
+PY
+ninja -j2 -C "$D/build" app/tests/painter-navigation-events > "$D/recorded-keys-normal-build.log" 2>&1
+for group in reset original rotation zoom space; do
+ case "$group" in
+ keys) args='-p /navigation-events/recorded-keys';name=sanitizer.json;;
+ reset) args='-p /navigation-events/reset-action';name=normal-reset.json;;
+ original) args='--skip-prefix /navigation-events/old-zoom --skip-prefix /navigation-events/old-operations --skip-prefix /navigation-events/old-space --skip-prefix /navigation-events/grid-damage --skip-prefix /navigation-events/handle-damage --skip-prefix /navigation-events/corner-safety --skip-prefix /navigation-events/path-damage --skip-prefix /navigation-events/item-geometry --skip-prefix /navigation-events/reset-action --skip-prefix /navigation-events/recorded-keys';name=normal-original.json;;
+ rotation) args='-p /navigation-events/old-operations';name=normal-rotation.json;;
+ zoom) args='-p /navigation-events/old-zoom';name=normal-zoom.json;;
+ space) args='-p /navigation-events/old-space';name=normal-space.json;;
+ esac
+ set +e
+ ASAN_OPTIONS=detect_leaks=0:halt_on_error=1 UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1 GIMP_TEST_NAVIGATION_DRAW_DIR="$D/pan-screenshots" python3 "$D/source/tools/run-painter-xvfb.py" meson test -C "$D/build" --no-rebuild --print-errorlogs --test-args="$args" painter-navigation-events > "$D/recorded-keys-normal-$group.log" 2>&1
+ status=$?;set -e
+ python3 "$D/record-keys.py" build "$name"
+ [[ $status == 0 ]] || exit "$status"
+done

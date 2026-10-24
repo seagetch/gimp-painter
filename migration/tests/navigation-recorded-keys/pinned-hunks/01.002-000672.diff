@@ -1,0 +1,15 @@
+-        else if (state & GDK_BUTTON1_MASK)
++        else if (shell->scaling)
++          {
++            gdouble x  = (compressed_motion
++                            ? ((GdkEventMotion *) compressed_motion)->x
++                            : mevent->x);
++            gdouble y  = (compressed_motion
++                            ? ((GdkEventMotion *) compressed_motion)->y
++                            : mevent->y);
++
++            gimp_display_shell_do_scaling (shell, x, y);
++          }
++        else if (state & GDK_BUTTON1_MASK || 
++                 (active_tool && active_tool->want_full_motion_tracking) ||
++                 shell->snapping)

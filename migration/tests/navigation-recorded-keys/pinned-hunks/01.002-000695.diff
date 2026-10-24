@@ -1,0 +1,12 @@
+-  image_coords->x = display_coords->x + shell->offset_x;
+-  image_coords->y = display_coords->y + shell->offset_y;
++  if (shell->rotate_angle != 0.0 || shell->mirrored) {
++    cairo_t* cr = gdk_cairo_create(gtk_widget_get_window (shell->canvas));
++    g_return_if_fail (cr != NULL);
++    gimp_display_shell_set_cairo_rotate (shell, cr);
++    cairo_device_to_user(cr, &image_coords->x, &image_coords->y);
++    cairo_destroy(cr);
++  }
++
++  image_coords->x = image_coords->x + shell->offset_x;
++  image_coords->y = image_coords->y + shell->offset_y;

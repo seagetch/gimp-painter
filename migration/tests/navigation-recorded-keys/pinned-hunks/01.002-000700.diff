@@ -1,0 +1,13 @@
++  if (shell->rotate_angle != 0.0 || shell->mirrored) {
++    gdouble xx, yy;
++    cairo_t* cr = gdk_cairo_create(gtk_widget_get_window (shell->canvas));
++    g_return_if_fail (cr != NULL);
++    xx = x;
++    yy = y;
++    gimp_display_shell_set_cairo_rotate (shell, cr);
++    cairo_device_to_user(cr, &xx, &yy);
++    cairo_destroy(cr);
++    x = (gint)xx;
++    y = (gint)yy;
++  }
++

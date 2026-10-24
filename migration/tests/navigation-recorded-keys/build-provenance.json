@@ -1,0 +1,39 @@
+{
+  "scope": "Allowlisted native build configuration and executable identity; no raw environment",
+  "private_base": "ce40ac4cffa5b6dba48cd9100303c3c94653a5bc",
+  "projection_commit": "d2791f92835d3c743268a3c985fc9892c6903c8b",
+  "projection_sha256": "b64a76fcaf8912a9164f258390dc5ec50551c4ae6ccae5f34d513ee101a4be60",
+  "builds": [
+    {
+      "build": "build",
+      "options": {
+        "auto_features": "disabled",
+        "debug": false,
+        "optimization": "2",
+        "b_ndebug": "false",
+        "b_sanitize": "none",
+        "headless-tests": "disabled",
+        "libunwind": false,
+        "painter-http": "enabled"
+      },
+      "executable_sha256": "733bcd5322d8856d0b7d4f1d1ff38f3544b73b55e73a3afe0d2f656350c4be91",
+      "executable_bytes": 11885512
+    },
+    {
+      "build": "build-asan",
+      "options": {
+        "auto_features": "disabled",
+        "debug": false,
+        "optimization": "2",
+        "b_ndebug": "false",
+        "b_sanitize": "address,undefined",
+        "headless-tests": "disabled",
+        "libunwind": false,
+        "painter-http": "enabled"
+      },
+      "executable_sha256": "b315b5f824592bd07ed31b0b01ba8ad627ab11ff4a42e0fce411cdb1b50fb047",
+      "executable_bytes": 148442144
+    }
+  ],
+  "xvfb_helper_sha256": "6481502846d9f896cb906c8b1cde26f59d6899d1d5f889e1ffbf8e106e743fde"
+}

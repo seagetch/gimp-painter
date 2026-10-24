@@ -1,0 +1,21 @@
++static void       gimp_display_shell_start_rotating          (GimpDisplayShell  *shell,
++                                                               const GdkEvent    *event,
++                                                               gint               x,
++                                                               gint               y);
++static void       gimp_display_shell_rotate                  (GimpDisplayShell *shell,
++                                                               const GdkEvent   *event,
++                                                               gint              x,
++                                                               gint              y);
++static void       gimp_display_shell_stop_rotating           (GimpDisplayShell  *shell,
++                                                               const GdkEvent    *event);
++
++static void       gimp_display_shell_start_scaling           (GimpDisplayShell  *shell,
++                                                               const GdkEvent    *event,
++                                                               gint               x,
++                                                               gint               y);
++static void       gimp_display_shell_do_scaling              (GimpDisplayShell *shell,
++                                                               gint              x,
++                                                               gint              y);
++static void       gimp_display_shell_stop_scaling            (GimpDisplayShell  *shell,
++                                                               const GdkEvent    *event);
++

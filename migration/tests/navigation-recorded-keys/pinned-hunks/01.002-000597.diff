@@ -1,0 +1,5 @@
+-  for (i = y; i < y2; i += GIMP_DISPLAY_RENDER_BUF_HEIGHT)
++  if (fmod(shell->rotate_angle, 90.0) != 0.0)
++    overlap = 1;
++    
++  for (i = y; i < y2; i += GIMP_DISPLAY_RENDER_BUF_HEIGHT - overlap)

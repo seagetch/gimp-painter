@@ -2815,12 +2815,15 @@ device_image_origin (void)
 #include "test-painter-navigation-signed-geometry.inc"
 #include "test-painter-navigation-grid-precise.inc"
 #include "test-painter-navigation-reset-action.inc"
+#include "test-painter-navigation-recorded-keys.inc"
 
 int main(int argc,char **argv)
 {
   gint result;
   g_test_init(&argc,&argv,NULL);if(!gtk_init_check(&argc,&argv))return GIMP_EXIT_TEST_SKIPPED;
   gimp_test_utils_setup_menus_path();gimp=gimp_init_for_gui_testing(TRUE);
+  for(guint t=0;t<2;t++)for(guint h=0;h<2;h++)
+    {gchar*path=g_strdup_printf("/navigation-events/recorded-keys/tool-%u-mirror-%u",t,h);g_test_add_data_func(path,GUINT_TO_POINTER(t*2+h),recorded_key_stationary);g_free(path);}
   for(guint f=0;f<4;f++)
     {gchar*path=g_strdup_printf("/navigation-events/reset-action/state-%u",f);g_test_add_data_func(path,GUINT_TO_POINTER(f),reset_action_window);g_free(path);}
   g_test_add_data_func("/navigation-events/reset-action/reentry-default",GUINT_TO_POINTER(0),reset_action_reentry);

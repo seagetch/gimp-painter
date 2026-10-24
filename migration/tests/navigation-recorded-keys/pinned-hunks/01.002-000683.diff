@@ -1,0 +1,7 @@
+-  shell->scroll_start_x = x + shell->offset_x;
+-  shell->scroll_start_y = y + shell->offset_y;
++  shell->scroll_start_x = x;
++  shell->scroll_start_y = y;
++
++  shell->scroll_start_x += shell->offset_x;
++  shell->scroll_start_y += shell->offset_y;

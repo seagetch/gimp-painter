@@ -1,0 +1,6 @@
+import pathlib,json,hashlib,sys
+D=pathlib.Path('/workspace/shared/gimp-native-secondary');R=pathlib.Path('/workspace/scratch/0015fc5d1a03/gimp-painter');E=R/'migration/tests/navigation-recorded-keys';build,name=sys.argv[1:]
+j=[json.loads(x) for x in (D/build/'meson-logs/testlog.json').read_text().splitlines() if json.loads(x)['name']=='gimp:app / painter-navigation-events'][0];out={k:j.get(k,'') for k in ['name','result','returncode','duration','stdout','stderr']};out['source_sha256']=json.loads((E/'source-before-build.json').read_text())
+for p,h in out['source_sha256'].items():assert hashlib.sha256((D/'source'/p).read_bytes()).hexdigest()==h,p
+out['cases']=sum(x.startswith('ok ') and '# SKIP' not in x for x in j['stdout'].splitlines());out['test_budget_seconds']=60;out['xvfb']=dict(width=1080,height=1920,depth=24,authenticated=True)
+(E/name).write_text(json.dumps(out,indent=2)+'\n');print(name,out['result'],out['cases'],out['duration'])

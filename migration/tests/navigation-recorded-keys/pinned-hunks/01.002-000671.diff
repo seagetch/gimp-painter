@@ -1,0 +1,17 @@
+-                                       (shell->scroll_start_x - x -
+-                                        shell->offset_x),
+-                                       (shell->scroll_start_y - y -
+-                                        shell->offset_y));
++                                       start_x - x - offset_x,
++                                       start_y - y - offset_y);
++          }
++        else if (shell->rotating)
++          {
++            gdouble x  = (compressed_motion
++                            ? ((GdkEventMotion *) compressed_motion)->x
++                            : mevent->x);
++            gdouble y  = (compressed_motion
++                            ? ((GdkEventMotion *) compressed_motion)->y
++                            : mevent->y);
++
++            gimp_display_shell_rotate (shell, event, x, y);
