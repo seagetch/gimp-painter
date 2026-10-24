@@ -2660,6 +2660,7 @@ static void image_close_during_strong_redo_callbacks (void) { undo_owner_lifetim
 #include "test-filter-red-eye-contract.inc"
 #include "test-filter-colorify-contract.inc"
 #include "test-filter-color-exchange-contract.inc"
+#include "test-filter-normalize-contract.inc"
 #include "test-filter-value-invert-context.inc"
 #include "test-filter-value-invert-capture.inc"
 #include "test-filter-max-rgb-capture.inc"
@@ -2906,6 +2907,18 @@ int main (int argc, char **argv)
   ADD (colorify_component_masks);
   ADD (colorify_cancel_and_resume);
   ADD (filter_color_exchange_native_basic);
+  ADD (filter_normalize_native_basic);
+  ADD (normalize_unsupported_formats);
+  ADD (normalize_late_context_routes);
+  ADD (normalize_component_masks);
+  ADD (normalize_cancel_and_resume);
+  ADD (normalize_outside_selection_no_merge);
+  ADD (normalize_rgb_rgba_inputs);
+  ADD (normalize_noalpha_owner_rejected);
+  ADD (normalize_projection_extent_cache);
+  ADD (normalize_invalid_arguments);
+  ADD (normalize_undefined_preserves_cache_history);
+
   ADD (exchange_unsupported_formats);
   ADD (exchange_late_context_routes);
   ADD (exchange_component_masks);
