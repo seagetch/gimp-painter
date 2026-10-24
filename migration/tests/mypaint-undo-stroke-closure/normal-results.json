@@ -1,0 +1,14 @@
+[
+  {
+    "name": "gimp:app / painter-stroke-undo",
+    "stdout": "TAP version 14\n# random seed: R02S52cda3985d7eb8825ce18d0609e0addc\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n1..16\n# Start of stroke-undo tests\nok 1 /stroke-undo/roundtrip\nok 2 /stroke-undo/active-rejection\nok 3 /stroke-undo/observer-coherence\nok 4 /stroke-undo/update-dispose\nok 5 /stroke-undo/dirty-dispose\nok 6 /stroke-undo/unpublished-lifetime\nok 7 /stroke-undo/typed-property\nok 8 /stroke-undo/expired-owner\nok 9 /stroke-undo/invalid-factory\nok 10 /stroke-undo/prepare-dispose\nok 11 /stroke-undo/finish-reentry\nok 12 /stroke-undo/guard-once\nok 13 /stroke-undo/factory-reentry\n# live changed: historical-state=1 live-pixel=1 guarded=1\n# payload changed: historical-state=1 live-pixel=1 guarded=1\n# Undo changed counts payload=1 live=1\n# live changed: historical-state=2 live-pixel=2 guarded=1\n# payload changed: historical-state=2 live-pixel=2 guarded=1\nok 14 /stroke-undo/buffer-observer-coherence\n# live-dispose changed: historical-state=1 live-pixel=1 guarded=1\n# payload-dispose changed: historical-state=1 live-pixel=1 guarded=1\nok 15 /stroke-undo/buffer-observer-dispose\nok 16 /stroke-undo/nested-buffer-freeze\n# End of stroke-undo tests\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n",
+    "result": "OK",
+    "starttime": 1792570780.674537,
+    "duration": 1.225163459777832,
+    "returncode": 0,
+    
+    "command": [
+      "/workspace/shared/gimp-native-preset-gui/build/app/tests/painter-stroke-undo"
+    ]
+  }
+]
