@@ -225,6 +225,35 @@ bool filter_max_rgb_raw_raster (FilterRaster& in, FilterRaster& out,
   if (progress) progress->set_value (1.0);
   return true;
 }
+bool filter_colorify_raw_raster (FilterRaster& in, FilterRaster& out,
+                                std::size_t width, std::size_t height,
+                                const FilterColorifyKernel& kernel,
+                                std::atomic<bool>& cancel,
+                                const std::shared_ptr<FilterProgress>& progress)
+{
+  const auto settings = kernel; // immutable snapshot before any raster callback
+  const auto size = extent (in, out, width, height, 4);
+  std::array<std::uint8_t, 32768> bytes;
+  for (std::uint64_t offset = 0; offset < size; )
+    {
+      if (cancel.load (std::memory_order_relaxed)) return false;
+      const auto count = std::size_t (std::min<std::uint64_t> (bytes.size (), size - offset));
+      in.read (offset, count, bytes.data ());
+      for (std::size_t i = 0; i < count; i += 4)
+        {
+          if ((i & 1023) == 0 && cancel.load (std::memory_order_relaxed)) return false;
+          settings.pixel (bytes.data () + i, bytes.data () + i, 4);
+        }
+      out.write (offset, count, bytes.data ());
+      if (cancel.load (std::memory_order_relaxed)) return false;
+      offset += count;
+      if (progress) progress->set_value (0.99 * double (offset) / size);
+    }
+  out.flush ();
+  if (cancel.load (std::memory_order_relaxed)) return false;
+  if (progress) progress->set_value (1.0);
+  return true;
+}
 bool filter_color_exchange_raw_raster (FilterRaster& in, FilterRaster& out,
   std::size_t width, std::size_t height, const FilterColorExchangeOptions& options,
   std::atomic<bool>& cancel, const std::shared_ptr<FilterProgress>& progress)

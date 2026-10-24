@@ -1,0 +1,17 @@
+{
+  "command": [
+    "c++",
+    "-std=c++14",
+    "-fno-rtti",
+    "-Wall",
+    "-Wextra",
+    "-Werror",
+    "-fsyntax-only",
+    "-I/workspace/scratch/0015fc5d1a03/gimp-painter",
+    "/workspace/shared/colorify-shadow/headers.cpp"
+  ],
+  "returncode": 0,
+  "stdout": "",
+  "stderr": "",
+  "source": "#include \"app/painter/filter-colorify-kernel.hpp\"\n#include \"app/painter/filter-colorify-kernel.hpp\"\n#include \"app/painter/filter-point-shadow.hpp\"\n#include \"app/painter/filter-point-shadow.hpp\"\nusing GimpPainter::FilterPointShadowOperation;\nstatic_assert(int(FilterPointShadowOperation::threshold_alpha)==0,\"old enum\");\nstatic_assert(int(FilterPointShadowOperation::max_rgb)==1,\"old enum\");\nstatic_assert(int(FilterPointShadowOperation::value_invert)==2,\"old enum\");\nstatic_assert(int(FilterPointShadowOperation::red_eye)==3,\"old enum\");\nint main(){}\n"
+}

@@ -4,6 +4,7 @@
 
 #include "filter-context.hpp"
 #include "filter-color-exchange.hpp"
+#include "filter-colorify-kernel.hpp"
 #include "filter-raster.hpp"
 #include <vector>
 
@@ -92,6 +93,17 @@ FilterPointShadowOutcome filter_point_shadow_vector (
   const FilterSelectionRegion& region, FilterPointShadowOperation operation,
   std::int32_t argument, std::atomic<bool>& cancel,
   std::vector<std::uint8_t>& output,
+  const std::shared_ptr<FilterProgress>& progress = {});
+
+/* Colorify uses the original iterator's checked signed selected-area rule,
+ * and the same sole zero-fill/CropRaster transaction. Kernel is validated and
+ * immutable before any output or raster callbacks, including no_merge. */
+FilterPointShadowOutcome filter_point_shadow_raster(FilterRaster&,
+  std::size_t,std::size_t,const FilterSelectionRegion&,const FilterColorifyKernel&,
+  std::atomic<bool>&,FilterRaster&,const std::shared_ptr<FilterProgress>& progress = {});
+FilterPointShadowOutcome filter_point_shadow_vector(const std::vector<std::uint8_t>&,
+  std::size_t,std::size_t,const FilterSelectionRegion&,const FilterColorifyKernel&,
+  std::atomic<bool>&,std::vector<std::uint8_t>&,
   const std::shared_ptr<FilterProgress>& progress = {});
 
 /* Color Exchange uses its original RGB3/RGBA4 signed row bound, not the
