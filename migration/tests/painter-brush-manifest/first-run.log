@@ -1,0 +1,21 @@
+test_exact_tree_and_reproducible_list (__main__.ManifestTests.test_exact_tree_and_reproducible_list) ... FAIL
+test_invalid_paths_and_duplicate_rejected (__main__.ManifestTests.test_invalid_paths_and_duplicate_rejected) ... ok
+test_legacy_selection_and_additional_preserved_assets (__main__.ManifestTests.test_legacy_selection_and_additional_preserved_assets) ... ok
+test_missing_extra_changed_and_symlink_rejected (__main__.ManifestTests.test_missing_extra_changed_and_symlink_rejected) ... ok
+test_real_meson_install (__main__.ManifestTests.test_real_meson_install) ... ok
+test_space_and_unicode_paths_are_literal (__main__.ManifestTests.test_space_and_unicode_paths_are_literal) ... ok
+
+======================================================================
+FAIL: test_exact_tree_and_reproducible_list (__main__.ManifestTests.test_exact_tree_and_reproducible_list)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/0015fc5d1a03/gimp-painter/migration/tests/test_painter_brush_manifest.py", line 27, in test_exact_tree_and_reproducible_list
+    self.assertEqual(manifest.render(list(reversed(self.rows))), manifest.render(self.rows))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "# Ge[262 chars]ssic/wet_knife_prev.png',\n  'classic/wet_knif[12123 chars]n)\n" != "# Ge[262 chars]ssic/blend+paint.myb',\n  'classic/blend+paint[12123 chars]n)\n"
+Diff is 24659 characters long. Set self.maxDiff to None to see it.
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.743s
+
+FAILED (failures=1)

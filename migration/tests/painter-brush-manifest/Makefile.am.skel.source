@@ -1,0 +1,31 @@
+#!/usr/bin/env ruby
+
+def generate_skel(subdir, ext) 
+files = [""]
+ext.each {|e|
+  files.concat(Dir.glob("#{subdir}/*#{e}").map{|f| File::basename(f) })
+}
+files=files.sort
+skel = <<EOF
+## Makefile.am for gimp/data/mypaint-brushes/#{subdir}
+
+mypaintbrushes#{subdir}datadir = $(gimpdatadir)/mypaint-brushes/#{subdir}
+
+mypaintbrushes#{subdir}data_DATA = #{files.join("\t\\\n    ")}
+
+EXTRA_DIST = $(mypaintbrushes#{subdir}data_DATA)
+EOF
+  return skel
+end
+
+
+Dir.glob("*") {|f|
+  if File.directory?(f) then
+    str = generate_skel(f, [".myb", "_prev.png"])
+    filename = "#{f}/Makefile.am"
+    $stderr.print "generate #{filename}...\n"
+    File.open(filename , "w") {|file|
+      file.write(str)
+    }
+  end
+}

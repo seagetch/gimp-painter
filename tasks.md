@@ -1234,6 +1234,8 @@
 | 30.017/brush-manifest-generator | [ ] | Ruby版ブラシmanifest生成をMeson資源台帳へ置き換える | 30.016, 01.015 | Makefile.am.skelのmyb・preview列挙とsortを保持し、全同梱資産・root未対preview・noticeの欠落を検査する |
 | 30.017/brush-preview-generator | [ ] | ImageMagickの旧ブラシpreviewラベル生成を維持する | 30.016, 01.015 | label-brush-mypaint.shのcaption・border・resizeと上書き対象を保持し、空白等のfilename・画素出力・manifest一致を試験する。GIMP batch依存と混同しない |
 
+2026-10-21 原30.017/brush-manifest-generator進捗：全363資産を明示Meson台帳へ移し、旧Ruby選択354件のsort・root未対preview・notice/supportを保持。独立Meson実installの全SHA一致を含む9試験、既存fixture4試験合格。元の2義務・依存・未完チェックを維持し、previewラベル生成は別未完。証跡は `migration/tests/painter-brush-manifest/`。
+
 ### 31 周辺機能と重複実装の整理
 
 主対象：HTTP/REST、placeholder、旧補助コード

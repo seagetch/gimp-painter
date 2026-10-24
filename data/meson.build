@@ -8,7 +8,7 @@ subdir('tips')
 subdir('tool-presets')
 
 # Exact pinned painter assets, including previews and original license notices.
-install_subdir('painter-mypaint-brushes', install_dir: gimpdatadir)
+subdir('painter-mypaint-brushes')
 
 
 meson.add_install_script(python, '-c',
