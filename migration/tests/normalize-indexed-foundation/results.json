@@ -1,0 +1,131 @@
+{
+  "scope": "literal indexed_normalize body with nonempty bounded palette; independent integer oracle, no image/history ownership",
+  "inputs": {
+    "test-oracle.c": "3ddd740f39becce4519b61db853a8ca74dc919b77152ae486130792cafed5884",
+    "old-indexed.inc": "ae69f8b0758cf18872a4cacfec4fe1993dd1bb6a3480c8d22f72aa8290cabbfe"
+  },
+  "runs": {
+    "normal": {
+      "command": [
+        "cc",
+        "-std=c11",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Wno-unused-parameter",
+        "-O2",
+        "/tmp/normalize-indexed-oracle-v2bqvpvm/test-oracle.c",
+        "-lm",
+        "-o",
+        "/tmp/normalize-indexed-oracle-v2bqvpvm/normal"
+      ],
+      "build_stdout": "",
+      "build_stderr": "",
+      "returncode": 0,
+      "stdout": "PASS 42896 nonempty palette scenes\n",
+      "stderr": "",
+      "seconds": 0.03483988800144289,
+      "binary_sha256": "54fd8cfc9aa6d5870d7a0f84919a111f92fcd263288d71a66712d5a80083ccf9"
+    },
+    "sanitizer": {
+      "command": [
+        "cc",
+        "-std=c11",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Wno-unused-parameter",
+        "-O1",
+        "-g0",
+        "-fsanitize=address,undefined,float-cast-overflow",
+        "-fno-omit-frame-pointer",
+        "/tmp/normalize-indexed-oracle-v2bqvpvm/test-oracle.c",
+        "-lm",
+        "-o",
+        "/tmp/normalize-indexed-oracle-v2bqvpvm/sanitizer"
+      ],
+      "build_stdout": "",
+      "build_stderr": "",
+      "returncode": 0,
+      "stdout": "PASS 42896 nonempty palette scenes\n",
+      "stderr": "",
+      "seconds": 0.14317907900112914,
+      "binary_sha256": "2afc20b9759696f4e860f1c4969c51adffe50ddfdbe6db81abc129f534fce2e8"
+    }
+  },
+  "negative_controls": [
+    {
+      "command": [
+        "cc",
+        "-std=c11",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Wno-unused-parameter",
+        "-O2",
+        "/tmp/normalize-indexed-oracle-v2bqvpvm/test-oracle.c",
+        "-lm",
+        "-o",
+        "/tmp/normalize-indexed-oracle-v2bqvpvm/skip-blue-extrema"
+      ],
+      "build_stdout": "",
+      "build_stderr": "",
+      "returncode": -6,
+      "stdout": "",
+      "stderr": "skip-blue-extrema: /tmp/normalize-indexed-oracle-v2bqvpvm/test-oracle.c:13: check: Assertion `palette[i]==want' failed.\n",
+      "seconds": 0.001188130998343695,
+      "binary_sha256": "d8f6a4c328321732fceaf89410985fcc2c577b4d02fc90c1ca537ceef735c5ae",
+      "name": "skip-blue-extrema",
+      "mutant_sha256": "a07ec50ceb4c04bbb441c8ac25611cee28444efe81d4b4c834527c12fdab0945"
+    },
+    {
+      "command": [
+        "cc",
+        "-std=c11",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Wno-unused-parameter",
+        "-O2",
+        "/tmp/normalize-indexed-oracle-v2bqvpvm/test-oracle.c",
+        "-lm",
+        "-o",
+        "/tmp/normalize-indexed-oracle-v2bqvpvm/wrong-scale"
+      ],
+      "build_stdout": "",
+      "build_stderr": "",
+      "returncode": -6,
+      "stdout": "",
+      "stderr": "wrong-scale: /tmp/normalize-indexed-oracle-v2bqvpvm/test-oracle.c:13: check: Assertion `palette[i]==want' failed.\n",
+      "seconds": 0.0012557430018205196,
+      "binary_sha256": "0f91105015a82bb3458113588bf230b50d62e3d713884a0c466060feb31ce69f",
+      "name": "wrong-scale",
+      "mutant_sha256": "9f19f56b9117fe42d22f2e45bfccacd3d908cf6f74e505ac466bc5651d6e900f"
+    },
+    {
+      "command": [
+        "cc",
+        "-std=c11",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Wno-unused-parameter",
+        "-O2",
+        "/tmp/normalize-indexed-oracle-v2bqvpvm/test-oracle.c",
+        "-lm",
+        "-o",
+        "/tmp/normalize-indexed-oracle-v2bqvpvm/omit-writeback"
+      ],
+      "build_stdout": "",
+      "build_stderr": "",
+      "returncode": -6,
+      "stdout": "",
+      "stderr": "omit-writeback: /tmp/normalize-indexed-oracle-v2bqvpvm/test-oracle.c:13: check: Assertion `gets==1&&sets==1' failed.\n",
+      "seconds": 0.0011259020029683597,
+      "binary_sha256": "fae4d5cea235a11e00b228db73864bb3d7b656e7e87324f734e5299b739b46c4",
+      "name": "omit-writeback",
+      "mutant_sha256": "c032d067a997a40b23aa443dc244357e82f3ee7a40913a29187524ea379f23c3"
+    }
+  ],
+  "inputs_changed": []
+}
