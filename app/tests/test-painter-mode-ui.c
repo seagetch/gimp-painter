@@ -115,6 +115,7 @@ static void mode_selection(gconstpointer data)
 }
 #include "test-painter-mode-anime.inc"
 #include "test-filter-flip-portrait.inc"
+#include "test-filter-geometry-portrait.inc"
 
 int main(int argc,char **argv)
 {
@@ -122,6 +123,7 @@ int main(int argc,char **argv)
   gimp_test_utils_setup_menus_path();gimp=gimp_init_for_gui_testing(TRUE);
   g_object_set(gimp->config,"painter-canvas-ui",TRUE,NULL);
   g_test_add_func("/painter-mode-ui/filter-flip-portrait",filter_flip_oncanvas_portrait);
+  g_test_add_func("/painter-mode-ui/filter-geometry-portrait",filter_geometry_oncanvas_portrait);
   g_test_add_data_func("/painter-mode-ui/native-selector",GINT_TO_POINTER(FALSE),mode_selection);
   g_test_add_data_func("/painter-mode-ui/float-selector",GINT_TO_POINTER(TRUE),mode_selection);
   g_test_add_data_func("/painter-mode-ui/anime-initial",GUINT_TO_POINTER(0),anime_composite_reference);
