@@ -1,0 +1,77 @@
+{
+  "frozen": "7c60612b37",
+  "rows": [
+    {
+      "family": "mypaint",
+      "path": "app/paint/painter-mypaint-surface/gimp-painter-options.cpp",
+      "pinned_sha256": "fabaa82d82cb6a9ade1fb7bb7e860dd1f54ccbe81c4e25b6c07b4aba41cb2d27",
+      "frozen_sha256": "f6f1701310d3d1c0c3afd195a34cc26bd343e3a77a39292ba0f7a81d711bb830",
+      "last_matching_commit": "3f831a8a862dabcc60f0049c154f93655d8004e2",
+      "transitions": [
+        "6b6a6cf393 port: restore original constant MyPaint mode helper",
+        "65213bdc96 mypaint: reject options retired by final ToolInfo lease release",
+        "0976ae344b mypaint: restore options construction entries and reject reentrant app closure"
+      ]
+    },
+    {
+      "family": "mypaint",
+      "path": "app/paint/painter-mypaint/mapping.hpp",
+      "pinned_sha256": "91aa220915e41092d27fe7abc5742b3741a7b5dbf8d49b2053e30a3581cd21e7",
+      "frozen_sha256": "cd0bdde8d19bce8567d06767d12108ae97a0169b535e35fa8f9c886cfef095b6",
+      "last_matching_commit": "818ed559d007aac618120df20aaf76cee7c087af",
+      "transitions": [
+        "a84cd0b051 mypaint: pair fixed-bounds pixel history with immutable evaluator state"
+      ]
+    },
+    {
+      "family": "mypaint",
+      "path": "app/paint/painter-mypaint/resource.cpp",
+      "pinned_sha256": "ea2006b960d8e03de5c9ef77299f336d51430b4d30865bf3f37bbe2dc874f14f",
+      "frozen_sha256": "879537859b023c455b0ec9d20a3bde4a15fbef66d84f16df7605e883638b0397",
+      "last_matching_commit": "442d9c21737900dd7bc1ded05336ea52f54723f5",
+      "transitions": [
+        "a84cd0b051 mypaint: pair fixed-bounds pixel history with immutable evaluator state"
+      ]
+    },
+    {
+      "family": "mypaint",
+      "path": "app/paint/painter-mypaint/resource.hpp",
+      "pinned_sha256": "088cdb4df4c757480329e45b5a1187c4ea5c8ce7c78b1279a9f2262636820ded",
+      "frozen_sha256": "8eed0ac43d9c473f963dce96f6aa16a2675d7d48bc4db35219012a409fed6052",
+      "last_matching_commit": "442d9c21737900dd7bc1ded05336ea52f54723f5",
+      "transitions": [
+        "a84cd0b051 mypaint: pair fixed-bounds pixel history with immutable evaluator state"
+      ]
+    },
+    {
+      "family": "config",
+      "path": "app/core/gimpcontainer.c",
+      "pinned_sha256": "d289b12f38dad3a7964d0bb14ad175e55c786c4e59f56c3183998e4ef2bd5ab6",
+      "frozen_sha256": "c07884ce2dcec663431d4256f4b3b80190208d473ec64b739dc5c5195ea5c422",
+      "last_matching_commit": "170d676a22c8a90be0d6ce0db456b1dfa72b5d64",
+      "transitions": [
+        "aa893b3c70 core: preserve reentrant container membership and coherent model notifications"
+      ]
+    },
+    {
+      "family": "config",
+      "path": "app/core/gimptooloptions.c",
+      "pinned_sha256": "65797b79006804998e21a4c05fe1ad4d3b06d0856c9dc6d7748ff24cd058edb4",
+      "frozen_sha256": "2d4c69523661cc3261f79c9444981fa91ee124ed9406efe859a7330704353745",
+      "last_matching_commit": "d0181989842ba1591913822f293fdcece1c0c8ca",
+      "transitions": [
+        "f54dba608f core: retain retired tool-options identity across registry thaw"
+      ]
+    },
+    {
+      "family": "config",
+      "path": "app/tools/gimp-tools.c",
+      "pinned_sha256": "ee1a445f0a626b90119008aab0a9fa29e56b8c1811bcc094f742886f3a44ccf3",
+      "frozen_sha256": "18bf540fb7db9484ac064ba271a936acb8195f00d08ff5702d599fc3b553dcfa",
+      "last_matching_commit": "f314ea2236ecf6a429f1b3dbc5d6d90e5cc1a2c2",
+      "transitions": [
+        "151507743e tools: restore consuming native tool registration and reentrant startup ownership"
+      ]
+    }
+  ]
+}

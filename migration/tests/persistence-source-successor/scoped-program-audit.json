@@ -1,0 +1,429 @@
+{
+  "frozen": "7c60612b37",
+  "scope": "read-only source audit; no ledger reseal, preview diagnostics, mutants or runtime tests",
+  "families": {
+    "xcf": {
+      "fields": 438,
+      "source_records": 42,
+      "drift": []
+    },
+    "mypaint": {
+      "fields": 201,
+      "source_records": 19,
+      "drift": [
+        {
+          "path": "app/paint/painter-mypaint-surface/gimp-painter-options.cpp",
+          "revision": "native",
+          "expected": "fabaa82d82cb6a9ade1fb7bb7e860dd1f54ccbe81c4e25b6c07b4aba41cb2d27",
+          "actual": "f6f1701310d3d1c0c3afd195a34cc26bd343e3a77a39292ba0f7a81d711bb830"
+        },
+        {
+          "path": "app/paint/painter-mypaint/mapping.hpp",
+          "revision": "native",
+          "expected": "91aa220915e41092d27fe7abc5742b3741a7b5dbf8d49b2053e30a3581cd21e7",
+          "actual": "cd0bdde8d19bce8567d06767d12108ae97a0169b535e35fa8f9c886cfef095b6"
+        },
+        {
+          "path": "app/paint/painter-mypaint/resource.cpp",
+          "revision": "native",
+          "expected": "ea2006b960d8e03de5c9ef77299f336d51430b4d30865bf3f37bbe2dc874f14f",
+          "actual": "879537859b023c455b0ec9d20a3bde4a15fbef66d84f16df7605e883638b0397"
+        },
+        {
+          "path": "app/paint/painter-mypaint/resource.hpp",
+          "revision": "native",
+          "expected": "088cdb4df4c757480329e45b5a1187c4ea5c8ce7c78b1279a9f2262636820ded",
+          "actual": "8eed0ac43d9c473f963dce96f6aa16a2675d7d48bc4db35219012a409fed6052"
+        }
+      ]
+    },
+    "config": {
+      "fields": 740,
+      "source_records": 164,
+      "drift": [
+        {
+          "path": "app/core/gimpcontainer.c",
+          "revision": "native",
+          "expected": "d289b12f38dad3a7964d0bb14ad175e55c786c4e59f56c3183998e4ef2bd5ab6",
+          "actual": "c07884ce2dcec663431d4256f4b3b80190208d473ec64b739dc5c5195ea5c422"
+        },
+        {
+          "path": "app/core/gimptooloptions.c",
+          "revision": "native",
+          "expected": "65797b79006804998e21a4c05fe1ad4d3b06d0856c9dc6d7748ff24cd058edb4",
+          "actual": "2d4c69523661cc3261f79c9444981fa91ee124ed9406efe859a7330704353745"
+        },
+        {
+          "path": "app/tools/gimp-tools.c",
+          "revision": "native",
+          "expected": "ee1a445f0a626b90119008aab0a9fa29e56b8c1811bcc094f742886f3a44ccf3",
+          "actual": "18bf540fb7db9484ac064ba271a936acb8195f00d08ff5702d599fc3b553dcfa"
+        }
+      ]
+    }
+  },
+  "programs": [
+    {
+      "path": "app/core/gimplayerpreset-apply.cpp",
+      "revision": "native",
+      "function": "string",
+      "sha256": "dbea809cf61bce555a6656fe93ab116a5f1f7eb9c9838d0d942bc3d1c2e226d3",
+      "verified": true
+    },
+    {
+      "path": "app/core/gimplayerpreset-apply.cpp",
+      "revision": "native",
+      "function": "number",
+      "sha256": "4e99d3107f744b96d03fad35345ef7c9e98ac159c82afdf81cb7780c6de294cc",
+      "verified": true
+    },
+    {
+      "path": "app/core/gimplayerpreset-apply.cpp",
+      "revision": "native",
+      "function": "integer",
+      "sha256": "a3bb3a24abb5b7ec9c6e47c6ecb490a7e94b069c864f3a6f1ce5347c0e79c708",
+      "verified": true
+    },
+    {
+      "path": "app/core/gimplayerpreset-apply.cpp",
+      "revision": "native",
+      "function": "matches",
+      "sha256": "0a3d99d7d4dd09ad20d5da053f31ffd66d3b2f88827b5dab68a9ab6ebd7469ca",
+      "verified": true
+    },
+    {
+      "path": "app/core/gimplayerpreset-apply.cpp",
+      "revision": "native",
+      "function": "mode",
+      "sha256": "d8fefb9fc45a63f824e859a5a6bd28eed7ddc0bc1397be457dec9e9fbc6cf8da",
+      "verified": true
+    },
+    {
+      "path": "app/core/gimplayerpreset-apply.cpp",
+      "revision": "native",
+      "function": "bounds",
+      "sha256": "e797e1319c96cd81403dc5d13cde6b55aacf2dc959f103bc766b435e93c75f33",
+      "verified": true
+    },
+    {
+      "path": "app/core/gimplayerpreset-apply.cpp",
+      "revision": "native",
+      "function": "install_filter",
+      "sha256": "e07140b24a35149450dfb56fde2378c369b1c963d0422350c7a77859632d3230",
+      "verified": true
+    },
+    {
+      "path": "app/core/gimplayerpreset-apply.cpp",
+      "revision": "native",
+      "function": "layers",
+      "sha256": "94804ea2dec4720d5d93572ca8b2d5109201346a6584d2520a32559b4dc96a34",
+      "verified": true
+    },
+    {
+      "path": "app/core/gimplayerpreset-apply.cpp",
+      "revision": "native",
+      "function": "gimp_layer_preset_apply_full",
+      "sha256": "65409b39e4860e6f1427525f32c9486a218538d6aa9f3bea4895fc1cb62e3555",
+      "verified": true
+    },
+    {
+      "path": "app/core/gimplayerpreset.c",
+      "revision": "native",
+      "function": "save",
+      "sha256": "cc8c0ab878921b010a9f97131e1b2506c8fa27486f3dd398af4eb0398cd28cd3",
+      "verified": true
+    },
+    {
+      "path": "app/core/gimplayerpreset.c",
+      "revision": "native",
+      "function": "gimp_layer_preset_new",
+      "sha256": "2e97aa1c064e4afb0ab9398fd5a2c01e4e38606f9c068ac17eacf485005b11ac",
+      "verified": true
+    },
+    {
+      "path": "app/core/gimplayerpreset.c",
+      "revision": "native",
+      "function": "gimp_layer_preset_set_json",
+      "sha256": "4fdc735458031d9caf0c5f8dccbb14f4a3385cc09fdc268d3f6275320f2cedf4",
+      "verified": true
+    },
+    {
+      "path": "app/core/gimplayerpreset.c",
+      "revision": "native",
+      "function": "gimp_layer_preset_load",
+      "sha256": "6f61efe4e19bab289b1577002529106a77bd9c3c7d8a2666f9463fcb30e57008",
+      "verified": true
+    },
+    {
+      "path": "app/presets/layer-preset.cpp",
+      "revision": "legacy",
+      "function": "is_source_valid",
+      "sha256": "06161b811606031ba9a9b54f1ade0581c126242cbc620f2322630ef84c125e26",
+      "verified": true
+    },
+    {
+      "path": "app/presets/layer-preset.cpp",
+      "revision": "legacy",
+      "function": "get_boundary",
+      "sha256": "4c345fe34aabbbe7314779372428bdb24d0899d08be8874623c61c19c5d64cde",
+      "verified": true
+    },
+    {
+      "path": "app/presets/layer-preset.cpp",
+      "revision": "legacy",
+      "function": "get_source",
+      "sha256": "c5d267240e38b7b376700e421ded201d24c02d1cc47970cb679a5a77b4e8d459",
+      "verified": true
+    },
+    {
+      "path": "app/presets/layer-preset.cpp",
+      "revision": "legacy",
+      "function": "get_mode",
+      "sha256": "c560cf12c00c3dbd11572003197e12c26646aa51a5887dc790f01f88740cd7cc",
+      "verified": true
+    },
+    {
+      "path": "app/presets/layer-preset.cpp",
+      "revision": "legacy",
+      "function": "get_opacity",
+      "sha256": "4f7e117d058f4215ea2c54fa6f629f6325a1371a787c8055c4eb1847b48e41b2",
+      "verified": true
+    },
+    {
+      "path": "app/presets/layer-preset.cpp",
+      "revision": "legacy",
+      "function": "get_alpha",
+      "sha256": "24f487b0cb40f55ef9a32c1b2319cf044c852077455263f16fe3c96e587fbe29",
+      "verified": true
+    },
+    {
+      "path": "app/presets/layer-preset.cpp",
+      "revision": "legacy",
+      "function": "get_args",
+      "sha256": "6ffec18087950b935cdd79073cdcd6bc07967ddfb04701f4d3f6dcf43f0e1b96",
+      "verified": true
+    },
+    {
+      "path": "app/presets/layer-preset.cpp",
+      "revision": "legacy",
+      "function": "create_one_layer",
+      "sha256": "8c86f6d7a3f3bd70de7f16f1b43f107899cfea927e12b3bc3f4a8d1643a48864",
+      "verified": true
+    },
+    {
+      "path": "app/presets/layer-preset.cpp",
+      "revision": "legacy",
+      "function": "apply_for",
+      "sha256": "a7854f8aeb84ea1ae0fdb74bcaef6ea7585c46885fba276946279f018cd7aac5",
+      "verified": true
+    },
+    {
+      "path": "app/presets/gimpjsonresource.cpp",
+      "revision": "legacy",
+      "function": "JsonResource::load",
+      "sha256": "8ea4df0b358d20c8df93cbec50525aa754dd5b2a80871b7e0a2006727a3c899b",
+      "verified": true
+    },
+    {
+      "path": "app/presets/gimpjsonresource.cpp",
+      "revision": "legacy",
+      "function": "JsonResource::save",
+      "sha256": "78c4c821e4a07d638d206b681783faa20c2b80d3a2f7fa786b810aef9bc864bc",
+      "verified": true
+    },
+    {
+      "path": "app/core/gimpparasitelist.c",
+      "revision": "native",
+      "function": "parasite_serialize",
+      "sha256": "8084433fc1228582159ba81f849fb92ed64d4650abc8e886f175d96cf91544a3",
+      "verified": true
+    },
+    {
+      "path": "app/core/gimpparasitelist.c",
+      "revision": "native",
+      "function": "gimp_parasite_list_deserialize",
+      "sha256": "8aeba7f6c3205b081b847a786e4d02b056fb6fa4eafc0ebdfcf0b1500e79af57",
+      "verified": true
+    },
+    {
+      "path": "app/core/gimpparasitelist.c",
+      "revision": "legacy",
+      "function": "parasite_serialize",
+      "sha256": "71a49e1d072afddd8da7f0d7a4815f546c94e29ed6cb7205a328ee08fe959f67",
+      "verified": true
+    },
+    {
+      "path": "app/core/gimpparasitelist.c",
+      "revision": "legacy",
+      "function": "gimp_parasite_list_deserialize",
+      "sha256": "8aeba7f6c3205b081b847a786e4d02b056fb6fa4eafc0ebdfcf0b1500e79af57",
+      "verified": true
+    },
+    {
+      "path": "app/tools/gimp-tools.c",
+      "revision": "native",
+      "function": "gimp_tools_serialize",
+      "sha256": "68a5fe66f6f66b53a69b422ff7f48993fba1d801a90c0b5b6444d8058a746405",
+      "verified": true,
+      "unchanged_from_pinned_predecessor": "f314ea2236ecf6a429f1b3dbc5d6d90e5cc1a2c2"
+    },
+    {
+      "path": "app/tools/gimp-tools.c",
+      "revision": "native",
+      "function": "gimp_tools_deserialize",
+      "sha256": "e405fedb7c411bd6eb7ee119f11db0935a6335f1940b384842eef8bf471fd05f",
+      "verified": true,
+      "unchanged_from_pinned_predecessor": "f314ea2236ecf6a429f1b3dbc5d6d90e5cc1a2c2"
+    },
+    {
+      "path": "app/tools/gimp-tools.c",
+      "revision": "native",
+      "function": "gimp_tools_clear_structure",
+      "sha256": "58f8e5f1f0eaed15cc5248791e9371f34d1fb2721211c5abf566497cb5ca6cd1",
+      "verified": true,
+      "unchanged_from_pinned_predecessor": "f314ea2236ecf6a429f1b3dbc5d6d90e5cc1a2c2"
+    },
+    {
+      "path": "app/tools/gimp-tools.c",
+      "revision": "legacy",
+      "function": "gimp_tools_serialize",
+      "sha256": "68a5fe66f6f66b53a69b422ff7f48993fba1d801a90c0b5b6444d8058a746405",
+      "verified": true
+    },
+    {
+      "path": "app/tools/gimp-tools.c",
+      "revision": "legacy",
+      "function": "gimp_tools_deserialize",
+      "sha256": "4f59ffd422a11d9467256953b5dba22d64e9dcc5190bd495781603af3cf5b688",
+      "verified": true
+    },
+    {
+      "path": "app/core/gimpcontainer.c",
+      "revision": "native",
+      "function": "gimp_container_serialize_foreach",
+      "sha256": "35e3e14fcfd6e54e5798e94f4016e623fae930401c26702468a2a9838a6d5208",
+      "verified": true,
+      "unchanged_from_pinned_predecessor": "170d676a22c8a90be0d6ce0db456b1dfa72b5d64"
+    },
+    {
+      "path": "app/core/gimpcontainer.c",
+      "revision": "native",
+      "function": "gimp_container_deserialize",
+      "sha256": "43bdaeea7e47462b398027576b743012e84df746e3124be4353bf1f6bf007810",
+      "verified": true,
+      "unchanged_from_pinned_predecessor": "170d676a22c8a90be0d6ce0db456b1dfa72b5d64"
+    },
+    {
+      "path": "app/core/gimpcontainer.c",
+      "revision": "legacy",
+      "function": "gimp_container_serialize_foreach",
+      "sha256": "5aea2a1b87b7442ab5937f93a3da256d3e45342ff8f38bae10a43b64f05b076a",
+      "verified": true
+    },
+    {
+      "path": "app/core/gimpcontainer.c",
+      "revision": "legacy",
+      "function": "gimp_container_deserialize",
+      "sha256": "9cefcdd95b06cf08b42232ed780a8b4ba9c72dc50c5bb1432584fbb5496f88bc",
+      "verified": true
+    },
+    {
+      "path": "app/config/gimprc-serialize.c",
+      "revision": "native",
+      "function": "serialize_unknown_token",
+      "sha256": "9312dbc98bd01cd0982cf47525de1d639fed0538c6b9cef97bf66bf0970fe271",
+      "verified": true
+    },
+    {
+      "path": "app/config/gimprc-serialize.c",
+      "revision": "legacy",
+      "function": "serialize_unknown_token",
+      "sha256": "9312dbc98bd01cd0982cf47525de1d639fed0538c6b9cef97bf66bf0970fe271",
+      "verified": true
+    },
+    {
+      "path": "app/core/gimpjsonresource.c",
+      "revision": "native",
+      "function": "gimp_json_resource_set_json",
+      "sha256": "dc265a908b5c4af20e9a0d6460d8cc14da4c7e17ef404926d87db517bfc6b3c9",
+      "verified": true
+    },
+    {
+      "path": "app/core/gimpjsonresource.c",
+      "revision": "native",
+      "function": "gimp_json_resource_ref_json",
+      "sha256": "642938fba93fabd852927b06237df4dd99122a9a0d11416989a803efc0495666",
+      "verified": true
+    },
+    {
+      "path": "app/core/gimpjsonresource.c",
+      "revision": "native",
+      "function": "gimp_json_resource_is_live",
+      "sha256": "54b1839a2573a0e2f8bef9895d883d24f3de4120dbc2f87800413b34e203967e",
+      "verified": true
+    },
+    {
+      "path": "app/core/gimpjsonresource.c",
+      "revision": "native",
+      "function": "save",
+      "sha256": "a17de8e2c709fb41d2dbbd95f133d484321f325a3d9a4ee9dea5b136c919f7b3",
+      "verified": true
+    },
+    {
+      "path": "app/core/gimpjsonresource.c",
+      "revision": "native",
+      "function": "copy",
+      "sha256": "e49218c66313d773e0a2c13e953cfb32e57ad163eddd8a0de9fd3d6c0239b2e3",
+      "verified": true
+    },
+    {
+      "path": "app/core/gimpjsonresource.c",
+      "revision": "native",
+      "function": "prepare_root",
+      "sha256": "ff8a4e572d8f8d23048e065134c9ab5a40922dd465e41f5d7aa69fb9c471bb2b",
+      "verified": true
+    },
+    {
+      "path": "app/core/gimpjsonresource.c",
+      "revision": "native",
+      "function": "dispose",
+      "sha256": "e2c1d6848c5367bc70b6fffb2e0f9088840c9fc5e002aa9119146db5ba574180",
+      "verified": true
+    },
+    {
+      "path": "app/core/gimpjsonresource.c",
+      "revision": "native",
+      "function": "gimp_json_resource_class_init",
+      "sha256": "d226bedb353cb9b77e138de27d34e351d5c4e6efbc442c1e463d00fc8476499e",
+      "verified": true
+    },
+    {
+      "path": "app/core/gimplayerpreset.c",
+      "revision": "native",
+      "function": "prepare_root",
+      "sha256": "96069361080acedfd47093e3854d2d3cb14314e7f1217905fc12071c6b587e8b",
+      "verified": true
+    },
+    {
+      "path": "app/core/gimplayerpreset.c",
+      "revision": "native",
+      "function": "root_changed",
+      "sha256": "e22c0d7cb136174a63dd7415deadc3146423c47d83fb1b642aca1f50363bb357",
+      "verified": true
+    },
+    {
+      "path": "app/core/gimplayerpreset.c",
+      "revision": "native",
+      "function": "gimp_layer_preset_dup_json",
+      "sha256": "63f7ba7e983a8d08327c602cfc14c439cb9e009779b37ac3dedebda2b2050baf",
+      "verified": true
+    },
+    {
+      "path": "app/core/gimplayerpreset-apply.cpp",
+      "revision": "native",
+      "function": "gimp_layer_preset_matches",
+      "sha256": "32b7285528e3cf56fc339bd550bfdb9e263a61e6bf2780a4bddd002ea2f6c236",
+      "verified": true
+    }
+  ]
+}

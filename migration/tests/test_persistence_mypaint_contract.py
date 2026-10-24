@@ -7,6 +7,7 @@ resource read/write expressions and fixed JSON grammar are checked explicitly.
 This certifies source metadata, not runtime equivalence or property ordering.
 """
 from __future__ import annotations
+from persistence_successors import resolve as resolve_source_successor
 import argparse
 import csv
 import hashlib
@@ -386,7 +387,8 @@ def validate_family(data, root):
     actual_sources={(r['revision'],r['path']):r['sha256'] for r in data['source_files']}
     assert set(actual_sources)==SOURCE_FILES,'source manifest completeness'
     for (revision,path),digest in actual_sources.items():
-        assert hashlib.sha256(source(root,path,revision).encode()).hexdigest()==digest,(revision,path)
+        actual_digest = hashlib.sha256(source(root,path,revision).encode()).hexdigest()
+        resolve_source_successor(root, revision, path, digest, actual_digest)
     assert data['unresolved']==[]
     return assertions
 

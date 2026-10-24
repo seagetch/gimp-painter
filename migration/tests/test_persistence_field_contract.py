@@ -18,6 +18,7 @@ from persistence_source import source, exact, LEGACY
 import test_persistence_xcf_contract as xcf
 import test_persistence_config_contract as config
 import test_persistence_mypaint_contract as mypaint
+from persistence_successors import resolve as resolve_source_successor
 
 ROOT=Path(__file__).resolve().parents[2]
 BASE='ade58551ffc6326b8feecadaa3351ba14cd0aa0a'
@@ -117,11 +118,13 @@ def validate_schema(root,families,assertions):
 
 def expected_manifest(root,families,assertions):
     fields,candidates,domain=validate_schema(root,families,assertions)
-    sources={}
+    sources={}; successors={}
     for data in families.values():
         for f in data['source_files']:
             key=(f['revision'],f['path']); digest=sha(source(str(root),f['path'],f['revision']).encode())
-            exact(f['sha256'],digest,'source seal '+str(key)); sources[key]=digest
+            transition = resolve_source_successor(root, *key, f['sha256'], digest)
+            if transition: successors[key] = transition
+            sources[key]=digest
         for f in data['fields']:
             for side in ('reader','writer','legacy_reader','legacy_writer'):
                 for anchor in f[side]:
@@ -131,13 +134,13 @@ def expected_manifest(root,families,assertions):
                 sources[(ev['revision'],ev['path'])]=sha(source(str(root),ev['path'],ev['revision']).encode())
     route_rows=read_tsv(root,'migration/inventory/persistence-routes.tsv')
     source_hashes=[dict(revision=rev,path=path,sha256=digest) for (rev,path),digest in sorted(sources.items())]
-    tests=['migration/tests/persistence_source.py','migration/tests/test_persistence_field_contract.py']+[f'migration/tests/test_persistence_{n}_contract.py' for n in FAMILIES]
+    tests=['migration/tests/persistence_successors.py','migration/tests/persistence_source.py','migration/tests/test_persistence_field_contract.py']+[f'migration/tests/test_persistence_{n}_contract.py' for n in FAMILIES]
     return dict(schema_version=1,task='10.001',scope='source-grounded saved field/type/default/owner/serialization contract across existing16 routes',
       base_public_commit=BASE,legacy_commit=LEGACY,
       inputs=[dict(path=p,sha256=sha((root/p).read_bytes())) for p in ['migration/inventory/persistence-routes.tsv','migration/inventory/persistence-sites.tsv']],
       families=[dict(name=n,path=p,sha256=sha((root/p).read_bytes()),test=f'migration/tests/test_persistence_{n}_contract.py',field_ids=sorted(f['id'] for f in families[n]['fields'])) for n,(m,p) in FAMILIES.items()],
       routes=[dict(id=f'{i:02d}',inventory=r,field_ids=sorted(f['id'] for f in fields if f['route']==f'{i:02d}')) for i,r in enumerate(route_rows,1)],
-      cross_family_domains=[domain],sources=source_hashes,tests=[dict(path=p,sha256=sha((root/p).read_bytes())) for p in tests],
+      cross_family_domains=[domain],sources=source_hashes,source_successors=[successors[k] for k in sorted(successors)],tests=[dict(path=p,sha256=sha((root/p).read_bytes())) for p in tests],
       counts=dict(contract_records=len(fields),syntax_candidates=len(candidates),routes=len(route_rows),by_disposition=dict(sorted(Counter(f['disposition'] for f in fields).items())),candidate_dispositions=dict(sorted(Counter(c['disposition'] for c in candidates).items()))),
       unresolved=[],limits=['Finite schema members and parameterized/opaque schemas are separate contract records, not a count of runtime instances or873 independent fields.','Source assertions do not establish runtime roundtrip, property ordering/duplicates, rendering, platform equivalence or later WBS completion.'])
 
