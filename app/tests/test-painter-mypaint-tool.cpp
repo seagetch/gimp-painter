@@ -246,10 +246,10 @@ static void dispose_during_save(GimpImage*,GimpDirtyMask,gpointer data){auto&o=*
 static void saving_disposal(){Scene s;auto initial=s.pixels();s.motion(false);s.press();s.coords.x+=20;s.motion(true,75);SaveDispose state{&s,false};auto id=g_signal_connect(s.image,"dirty",G_CALLBACK(dispose_during_save),&state);gimp_image_saving(s.image);g_signal_handler_disconnect(s.image,id);g_assert_true(state.fired);g_assert_false(gimp_image_has_pending_paint(s.image));g_assert_false(gimp_viewable_preview_is_frozen(GIMP_VIEWABLE(s.drawable)));g_assert_cmpint(s.depth(),==,1);g_assert_true(s.pixels()!=initial);g_assert_true(gimp_image_undo(s.image));g_assert_true(s.pixels()==initial);}
 static void external_dirty_still_cancels(){Scene s;auto initial=s.pixels();s.motion(false);s.press();s.coords.x+=20;s.motion(true,75);gimp_image_dirty(s.image,GIMP_DIRTY_DRAWABLE);g_assert_false(gimp_tool_control_is_active(s.tool->control));g_assert_false(gimp_painter_mybrush_tool_has_pending_stroke(GIMP_PAINTER_MYBRUSH_TOOL(s.tool)));g_assert_true(s.pixels()==initial);g_assert_false(gimp_image_has_pending_paint(s.image));}
 static void save_preflight_on_update(GimpDrawable*,gint,gint,gint,gint,gpointer data)
-{auto&s=*static_cast<During*>(data);if(s.fired)return;s.fired=true;g_assert_true(gimp_image_has_pending_paint(s.scene->image));}
+{auto&s=*static_cast<During*>(data);if(s.fired)return;s.fired=true;g_assert_true(gimp_image_has_pending_paint(s.scene->image));g_assert_true(gimp_image_has_unsafe_undo(s.scene->image));const auto depth=s.scene->depth();g_assert_false(gimp_image_undo(s.scene->image));g_assert_false(gimp_image_redo(s.scene->image));g_assert_cmpint(s.scene->depth(),==,depth);}
 static void save_defers_during_sample()
 {
-  Scene s;s.motion(false);s.press();During state{&s};auto id=g_signal_connect(s.drawable,"update",G_CALLBACK(save_preflight_on_update),&state);s.coords.x+=20;s.motion(true,75);g_assert_true(state.fired);g_signal_handler_disconnect(s.drawable,id);s.release();
+  Scene s;s.motion(false);s.press();During state{&s};auto id=g_signal_connect(s.drawable,"update",G_CALLBACK(save_preflight_on_update),&state);s.coords.x+=20;s.motion(true,75);g_assert_true(state.fired);g_signal_handler_disconnect(s.drawable,id);s.release();g_assert_false(gimp_image_has_unsafe_undo(s.image));
 }
 static void outline_and_projection()
 {

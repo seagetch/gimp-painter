@@ -1,0 +1,33 @@
+gimp-fill-brush 0 
+ok 16 /fill-core/invalid-coordinates
+ok 17 /fill-core/stale-external-pixels
+ok 18 /fill-core/stale-geometry-format-lock
+ok 19 /fill-core/pending-query-lifetime
+# End of fill-core tests
+# Start of fill-core-async tests
+ok 20 /fill-core-async/normal-reuse
+ok 21 /fill-core-async/cancel-before-after
+ok 22 /fill-core-async/dispose-rollback
+ok 23 /fill-core-async/publication-cancel
+ok 24 /fill-core-async/caller-core-loss
+ok 25 /fill-core-async/caller-image-loss
+ok 26 /fill-core-async/detached-target
+ok 27 /fill-core-async/invalid-coordinates
+ok 28 /fill-core-async/stale-external-pixels
+ok 29 /fill-core-async/stale-geometry-format-lock
+ok 30 /fill-core-async/pending-query-lifetime
+# End of fill-core-async tests
+# Start of owned-generic tests
+ok 31 /owned-generic/first-failure
+ok 32 /owned-generic/finish-boundary
+ok 33 /owned-generic/raw-undo
+ok 34 /owned-generic/path-boundary
+ok 35 /owned-generic/no-undo-noop
+ok 36 /owned-generic/active-rejected
+ok 37 /owned-generic/reentry-abort-loss
+ok 38 /owned-generic/later-failure-history
+ok 39 /owned-generic/invalid-axes
+ok 40 /owned-generic/after-commit-notification
+# End of owned-generic tests
+Failed to parse tag cache: No such file or directory
+

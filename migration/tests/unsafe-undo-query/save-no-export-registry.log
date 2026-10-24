@@ -1,0 +1,111 @@
+Xvfb verified: 127.0.0.1:92, 1080x1920x24, authenticated accepted, empty authority rejected
+TAP version 14
+# random seed: R02S63db3748ef6f43fe1b429a0c74e68407
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ‘gio-vfs’
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+# GLib-DEBUG: unsetenv() is not thread-safe and should not be used after threads are created
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 64 x 64
+# GdkPixbuf-DEBUG: 	Rowstride: 256, Length: 16408
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation memory (GMemorySettingsBackend) for ‘gsettings-backend’
+# DEBUG: Error acquiring bus for cloud providers: Error spawning command line “dbus-launch --autolaunch=f09796fd086547da9ddf7488d4386bdf --binary-syntax --close-stderr”: Child process exited with code 1
+1..13
+# Start of save-continuation tests
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 36 x 36
+# GdkPixbuf-DEBUG: 	Rowstride: 144, Length: 5208
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 36 x 36
+# GdkPixbuf-DEBUG: 	Rowstride: 144, Length: 5208
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 36 x 36
+# GdkPixbuf-DEBUG: 	Rowstride: 144, Length: 5208
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+ok 1 /save-continuation/query-replaces-file
+ok 2 /save-continuation/dialog-close-before-admission
+# slow test /save-continuation/dialog-close-before-admission executed in 0.83 secs
+ok 3 /save-continuation/nested-commit
+ok 4 /save-continuation/save-and-close
+ok 5 /save-continuation/late-writer-reentry
+ok 6 /save-continuation/dialog-response
+# slow test /save-continuation/dialog-response executed in 0.84 secs
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+ok 7 /save-continuation/active-tool-commit
+not ok /save-continuation/save-export-pixels - Gimp-Plug-In-FATAL-CRITICAL: file_proc_find: assertion 'procs != NULL' failed
+Bail out!
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/16x16/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/16x16/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/32x32/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/32x32/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/48x48/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/48x48/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/64x64/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/64x64/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/scalable/gimp.svg (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/scalable/gimp.svg”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/256x256/gimp.png
+gui_dbus_name_lost: connection to the bus cannot be established.
+set device 'Virtual core XTEST pointer' to mode: disabled
+set device 'Xvfb mouse' to mode: disabled
+WARNING: icon theme has no icon 'gimp-tool-bucket-fill'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+GIMP-Message: Waiting for painting to finish before saving.
+
+WARNING: icon theme has no icon 'gimp-tool-paintbrush'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-frame'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-image'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-image'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+GIMP-Message: Waiting for painting to finish before saving.
+
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+GIMP-Message: Waiting for painting to finish before saving.
+
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-image'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+GIMP-Message: Waiting for painting to finish before saving.
+
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-image'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+GIMP-Message: Waiting for painting to finish before saving.
+
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.

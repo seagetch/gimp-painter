@@ -35,12 +35,12 @@ struct Operation {
   ObjectRef<GimpDrawable> drawable;
   ObjectRef<GimpImage> image;
   ObjectRef<GimpPainterSession> session;
-  Connection pending;
+  Connection pending, unsafe_undo;
   bool active=false,canceled=false,batch=false;
   void cancel() noexcept{canceled=true;if(session)gimp_painter_session_cancel(session.get(),nullptr);}
   ~Operation() noexcept{
     if(batch&&session)gimp_painter_session_end_batch(session.get(),FALSE,nullptr);
-    active=false;pending.close();
+    active=false;pending.close();unsafe_undo.close();
   }
 };
 struct GateImpl {
@@ -69,7 +69,7 @@ struct Admission {
     // callback explicitly disposed the adapter during an evaluator sample.
     if(operation->batch&&operation->session){gimp_painter_session_end_batch(operation->session.get(),FALSE,nullptr);operation->batch=false;}
     if(!committed){auto*core=GIMP_PAINT_CORE(owner.get());core->start_coords=saved_start;core->cur_coords=saved_current;core->last_coords=saved_last;core->last_paint=saved_paint;}
-    operation->active=false;operation->pending.close();
+    operation->active=false;operation->pending.close();operation->unsafe_undo.close();
     boundary_void(nullptr,[&]{if(binding.accepts(generation))binding.with<GateSlot>([&](GateImpl&i){if(i.operation==operation)i.operation.reset();});});
   }
   void validate()const{if(operation->canceled||!binding.accepts(generation))throw Error(GIMP_PAINTER_ERROR_CLOSED,"Painter operation was closed or canceled");}
@@ -105,7 +105,9 @@ gboolean gimp_painter_paint_gate_stroke(GimpPaintCore*core,GimpDrawable*drawable
     if(!segments&&n_segments)throw std::invalid_argument("Expected stroke segments");
     if(gimp_image_has_pending_paint(operation->image.get()))throw std::runtime_error("Image is already processing paint");
     std::unique_ptr<WeakOperation>weak(new WeakOperation(operation));
-    operation->pending=Connection::connect(ObjectRef<GObject>::retain(G_OBJECT(operation->image.get())),"query-pending-paint",G_CALLBACK(query_pending),weak.get(),weak_destroy);weak.release();operation->active=true;
+    operation->pending=Connection::connect(ObjectRef<GObject>::retain(G_OBJECT(operation->image.get())),"query-pending-paint",G_CALLBACK(query_pending),weak.get(),weak_destroy);weak.release();
+    weak.reset(new WeakOperation(operation));
+    operation->unsafe_undo=Connection::connect(ObjectRef<GObject>::retain(G_OBJECT(operation->image.get())),"query-unsafe-undo",G_CALLBACK(query_pending),weak.get(),weak_destroy);weak.release();operation->active=true;
     GError*create_error=nullptr;operation->session=ObjectRef<GimpPainterSession>::adopt(gimp_painter_session_new(model.get(),&create_error));
     if(!operation->session){std::string why = GimpPainter::take_error_message (create_error, "Cannot create extended stroke session");throw std::runtime_error(why);}
     admission.validate();checked([&](GError**e){return gimp_painter_session_begin_named_batch(operation->session.get(),push_undo,core->undo_desc,e);});operation->batch=true;

@@ -1,0 +1,9 @@
+Traceback (most recent call last):
+  File "/workspace/shared/unsafe-undo-query/headers.py", line 10, in <module>
+    c=[x for x in c if x not in ['-MD','-c'] and not x.startswith('-std=')];c[-1]=str(p);c[1:1]=['-I'+str(W/'source/app'),'-iquote',str(S/'app/core'),'-std='+std,'-fsyntax-only'];r=subprocess.run(c,cwd=B,capture_output=True,text=True);out.append({'language':language,'double_include':twice,'exit':r.returncode,'command':c,'stdout':r.stdout,'stderr':r.stderr});assert r.returncode==0,r.stderr
+                                                                                                                                                                                                                                                                                                                                                                               ^^^^^^^^^^^^^^^
+AssertionError: [01m[K/workspace/shared/unsafe-undo-query/header-c0.c:2:10:[m[K [01;31m[Kfatal error: [m[Kgtk/gtk.h: No such file or directory
+    2 | #include [01;31m[K<gtk/gtk.h>[m[K
+      |          [01;31m[K^~~~~~~~~~~[m[K
+compilation terminated.
+

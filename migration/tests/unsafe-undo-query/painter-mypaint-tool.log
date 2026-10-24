@@ -1,0 +1,472 @@
+Xvfb verified: 127.0.0.1:92, 1080x1920x24, authenticated accepted, empty authority rejected
+TAP version 14
+# random seed: R02Sf654db71fab1bf763868bd09c4f83191
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ‘gio-vfs’
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+# GLib-DEBUG: unsetenv() is not thread-safe and should not be used after threads are created
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 64 x 64
+# GdkPixbuf-DEBUG: 	Rowstride: 256, Length: 16408
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation dconf (DConfSettingsBackend) for ‘gsettings-backend’
+# DEBUG: Error acquiring bus for cloud providers: Error spawning command line “dbus-launch --autolaunch=f09796fd086547da9ddf7488d4386bdf --binary-syntax --close-stderr”: Child process exited with code 1
+1..27
+# Start of painter-tool tests
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 36 x 36
+# GdkPixbuf-DEBUG: 	Rowstride: 144, Length: 5208
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 36 x 36
+# GdkPixbuf-DEBUG: 	Rowstride: 144, Length: 5208
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 36 x 36
+# GdkPixbuf-DEBUG: 	Rowstride: 144, Length: 5208
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# registration: image=0x559fe576f2d0 drawable-image=0x559fe576f2d0 before options GUI
+# registration: before refusing paint-core start
+# registration: before scene destruction
+ok 1 /painter-tool/registration-gate
+ok 2 /painter-tool/standalone-lifecycle
+ok 3 /painter-tool/hover-default-pressure
+ok 4 /painter-tool/stationary-equal-time-undo
+ok 5 /painter-tool/cancel
+ok 6 /painter-tool/editor-context
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 36 x 36
+# GdkPixbuf-DEBUG: 	Rowstride: 144, Length: 5208
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+ok 7 /painter-tool/ruler-origin
+# explicit HALT drop=0 unchanged=0 depth=1
+# explicit HALT drop=1 unchanged=0 depth=1
+ok 8 /painter-tool/halt-last-ref-motion
+ok 9 /painter-tool/image-change
+ok 10 /painter-tool/save-pending
+ok 11 /painter-tool/save-disposal
+ok 12 /painter-tool/external-dirty-cancels
+ok 13 /painter-tool/save-preflight
+ok 14 /painter-tool/outline-projection
+ok 15 /painter-tool/public-press-last-ref
+ok 16 /painter-tool/last-ref-without-halt
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in sRGB' -> 'GIMP built-in D65 Grayscale with sRGB TRC'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in D65 Grayscale with sRGB TRC' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in sRGB' -> 'GIMP built-in D65 Grayscale with sRGB TRC'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in D65 Grayscale with sRGB TRC' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in sRGB' -> 'GIMP built-in D65 Grayscale with sRGB TRC'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in D65 Grayscale with sRGB TRC' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in sRGB' -> 'GIMP built-in D65 Grayscale with sRGB TRC'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in D65 Grayscale with sRGB TRC' -> 'GIMP built-in sRGB'
+ok 17 /painter-tool/gray-native-save-roundtrip
+# slow test /painter-tool/gray-native-save-roundtrip executed in 0.99 secs
+ok 18 /painter-tool/pipe-release-save-roundtrip
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in Linear sRGB' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in Linear sRGB' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in Linear sRGB' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in Linear sRGB' -> 'GIMP built-in sRGB'
+# GTK/XCF precision=100 gray=0 alpha=0 nonincremental=0 custom-profile=0 format=RGB u8
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in sRGB' -> 'GIMP built-in D65 Grayscale with sRGB TRC'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in D65 Grayscale with sRGB TRC' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in D50 Grayscale with LAB L TRC' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in D50 Grayscale with LAB L TRC' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in D50 Grayscale with LAB L TRC' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in D50 Grayscale with LAB L TRC' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in D50 Grayscale with LAB L TRC' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in D50 Grayscale with LAB L TRC' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in sRGB' -> 'GIMP built-in D50 Grayscale with LAB L TRC'
+# GTK/XCF precision=150 gray=1 alpha=0 nonincremental=0 custom-profile=1 format=Y' u8-space-gray-3.000000 0.862075 0.1379 0.1107 0.0800 0.0000 0.
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'Compatible with Adobe RGB (1998)' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'Compatible with Adobe RGB (1998)' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'Compatible with Adobe RGB (1998)' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'Compatible with Adobe RGB (1998)' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'Compatible with Adobe RGB (1998)' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in sRGB' -> 'Compatible with Adobe RGB (1998)'
+# GTK/XCF precision=175 gray=0 alpha=1 nonincremental=0 custom-profile=1 format=R~G~B~A u8-space-0.9642,1.0000_0.6097,0.3111_0.1492,0.0632_0.2053,0.6257_2.199218,2.199218,2.199218
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in sRGB' -> 'GIMP built-in D65 Grayscale with sRGB TRC'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in D65 Grayscale with sRGB TRC' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in D65 Linear Grayscale' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in D65 Linear Grayscale' -> 'GIMP built-in sRGB'
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in D65 Linear Grayscale' -> 'GIMP built-in sRGB'
+# GTK/XCF precision=200 gray=1 alpha=1 nonincremental=1 custom-profile=0 format=YA u16
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'Compatible with Adobe RGB (1998)' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'Compatible with Adobe RGB (1998)' -> 'GIMP built-in sRGB'
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'Compatible with Adobe RGB (1998)' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'Compatible with Adobe RGB (1998)' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'Compatible with Adobe RGB (1998)' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in sRGB' -> 'Compatible with Adobe RGB (1998)'
+# GTK/XCF precision=250 gray=0 alpha=0 nonincremental=1 custom-profile=1 format=R'G'B' u16-space-0.9642,1.0000_0.6097,0.3111_0.1492,0.0632_0.2053,0.6257_2.199218,2.199218,2.199218
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in sRGB' -> 'GIMP built-in D65 Grayscale with sRGB TRC'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in D65 Grayscale with sRGB TRC' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in D65 Grayscale with sRGB TRC' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in D50 Grayscale with LAB L TRC' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in D50 Grayscale with LAB L TRC' -> 'GIMP built-in sRGB'
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in D50 Grayscale with LAB L TRC' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in D50 Grayscale with LAB L TRC' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in D50 Grayscale with LAB L TRC' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in sRGB' -> 'GIMP built-in D50 Grayscale with LAB L TRC'
+# GTK/XCF precision=275 gray=1 alpha=0 nonincremental=1 custom-profile=1 format=Y~ u16-space-gray-3.000000 0.862075 0.1379 0.1107 0.0800 0.0000 0.
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in Linear sRGB' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in Linear sRGB' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in Linear sRGB' -> 'GIMP built-in sRGB'
+# GTK/XCF precision=300 gray=0 alpha=1 nonincremental=0 custom-profile=0 format=RGBA u32
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in sRGB' -> 'GIMP built-in D65 Grayscale with sRGB TRC'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in D65 Grayscale with sRGB TRC' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in D65 Grayscale with sRGB TRC' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in D50 Grayscale with LAB L TRC' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in D50 Grayscale with LAB L TRC' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in D50 Grayscale with LAB L TRC' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in D50 Grayscale with LAB L TRC' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in D50 Grayscale with LAB L TRC' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in sRGB' -> 'GIMP built-in D50 Grayscale with LAB L TRC'
+# GTK/XCF precision=350 gray=1 alpha=1 nonincremental=0 custom-profile=1 format=Y'A u32-space-gray-3.000000 0.862075 0.1379 0.1107 0.0800 0.0000 0.
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'Compatible with Adobe RGB (1998)' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'Compatible with Adobe RGB (1998)' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'Compatible with Adobe RGB (1998)' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'Compatible with Adobe RGB (1998)' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'Compatible with Adobe RGB (1998)' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in sRGB' -> 'Compatible with Adobe RGB (1998)'
+# GTK/XCF precision=375 gray=0 alpha=0 nonincremental=0 custom-profile=1 format=R~G~B~ u32-space-0.9642,1.0000_0.6097,0.3111_0.1492,0.0632_0.2053,0.6257_2.199218,2.199218,2.199218
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in sRGB' -> 'GIMP built-in D65 Grayscale with sRGB TRC'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in D65 Grayscale with sRGB TRC' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in D65 Linear Grayscale' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in D65 Linear Grayscale' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in D65 Linear Grayscale' -> 'GIMP built-in sRGB'
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in D65 Linear Grayscale' -> 'GIMP built-in sRGB'
+# GTK/XCF precision=500 gray=1 alpha=0 nonincremental=1 custom-profile=0 format=Y half
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'Compatible with Adobe RGB (1998)' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'Compatible with Adobe RGB (1998)' -> 'GIMP built-in sRGB'
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'Compatible with Adobe RGB (1998)' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'Compatible with Adobe RGB (1998)' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'Compatible with Adobe RGB (1998)' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in sRGB' -> 'Compatible with Adobe RGB (1998)'
+# GTK/XCF precision=550 gray=0 alpha=1 nonincremental=1 custom-profile=1 format=R'G'B'A half-space-0.9642,1.0000_0.6097,0.3111_0.1492,0.0632_0.2053,0.6257_2.199218,2.199218,2.199218
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in sRGB' -> 'GIMP built-in D65 Grayscale with sRGB TRC'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in D65 Grayscale with sRGB TRC' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in D65 Grayscale with sRGB TRC' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in D50 Grayscale with LAB L TRC' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in D50 Grayscale with LAB L TRC' -> 'GIMP built-in sRGB'
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in D50 Grayscale with LAB L TRC' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in D50 Grayscale with LAB L TRC' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in D50 Grayscale with LAB L TRC' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in sRGB' -> 'GIMP built-in D50 Grayscale with LAB L TRC'
+# GTK/XCF precision=575 gray=1 alpha=1 nonincremental=1 custom-profile=1 format=Y~A half-space-gray-3.000000 0.862075 0.1379 0.1107 0.0800 0.0000 0.
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in Linear sRGB' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in Linear sRGB' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in Linear sRGB' -> 'GIMP built-in sRGB'
+# GTK/XCF precision=600 gray=0 alpha=0 nonincremental=0 custom-profile=0 format=RGB float
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in sRGB' -> 'GIMP built-in D65 Grayscale with sRGB TRC'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in D65 Grayscale with sRGB TRC' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in D65 Grayscale with sRGB TRC' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in D50 Grayscale with LAB L TRC' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in D50 Grayscale with LAB L TRC' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in D50 Grayscale with LAB L TRC' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in D50 Grayscale with LAB L TRC' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in D50 Grayscale with LAB L TRC' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in sRGB' -> 'GIMP built-in D50 Grayscale with LAB L TRC'
+# GTK/XCF precision=650 gray=1 alpha=0 nonincremental=0 custom-profile=1 format=Y' float-space-gray-3.000000 0.862075 0.1379 0.1107 0.0800 0.0000 0.
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'Compatible with Adobe RGB (1998)' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'Compatible with Adobe RGB (1998)' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'Compatible with Adobe RGB (1998)' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'Compatible with Adobe RGB (1998)' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'Compatible with Adobe RGB (1998)' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in sRGB' -> 'Compatible with Adobe RGB (1998)'
+# GTK/XCF precision=675 gray=0 alpha=1 nonincremental=0 custom-profile=1 format=R~G~B~A float-space-0.9642,1.0000_0.6097,0.3111_0.1492,0.0632_0.2053,0.6257_2.199218,2.199218,2.199218
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in sRGB' -> 'GIMP built-in D65 Grayscale with sRGB TRC'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in D65 Grayscale with sRGB TRC' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in D65 Linear Grayscale' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in D65 Linear Grayscale' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in D65 Linear Grayscale' -> 'GIMP built-in sRGB'
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GTK/XCF precision=700 gray=1 alpha=1 nonincremental=1 custom-profile=0 format=YA double
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'Compatible with Adobe RGB (1998)' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'Compatible with Adobe RGB (1998)' -> 'GIMP built-in sRGB'
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'Compatible with Adobe RGB (1998)' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'Compatible with Adobe RGB (1998)' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'Compatible with Adobe RGB (1998)' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in sRGB' -> 'Compatible with Adobe RGB (1998)'
+# GTK/XCF precision=750 gray=0 alpha=0 nonincremental=1 custom-profile=1 format=R'G'B' double-space-0.9642,1.0000_0.6097,0.3111_0.1492,0.0632_0.2053,0.6257_2.199218,2.199218,2.199218
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in sRGB' -> 'GIMP built-in D65 Grayscale with sRGB TRC'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in D65 Grayscale with sRGB TRC' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in D65 Grayscale with sRGB TRC' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in D50 Grayscale with LAB L TRC' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in D50 Grayscale with LAB L TRC' -> 'GIMP built-in sRGB'
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in D50 Grayscale with LAB L TRC' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in D50 Grayscale with LAB L TRC' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in D50 Grayscale with LAB L TRC' -> 'GIMP built-in sRGB'
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'GIMP built-in sRGB' -> 'GIMP built-in D50 Grayscale with LAB L TRC'
+# GTK/XCF precision=775 gray=1 alpha=0 nonincremental=1 custom-profile=1 format=Y~ double-space-gray-3.000000 0.862075 0.1379 0.1107 0.0800 0.0000 0.
+ok 19 /painter-tool/precision-native-save-roundtrip
+# slow test /painter-tool/precision-native-save-roundtrip executed in 37.98 secs
+# Start of projection tests
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# RAW_CANVAS projection-before.png portrait=1080x1920 oncanvas=1 sample=422,851 rgb=0,0,255
+# RAW_CANVAS projection-live.png portrait=1080x1920 oncanvas=1 sample=422,851 rgb=255,0,0
+# RAW_CANVAS projection-canceled.png portrait=1080x1920 oncanvas=1 sample=422,851 rgb=0,0,255
+# RAW_CANVAS projection-committed.png portrait=1080x1920 oncanvas=1 sample=422,851 rgb=255,0,0
+ok 20 /painter-tool/projection/visible-update
+# slow test /painter-tool/projection/visible-update executed in 2.83 secs
+# End of projection tests
+# Start of layer-mask tests
+ok 21 /painter-tool/layer-mask/raw-apply-parity
+# LibGimpColor-DEBUG: gimp_color_transform_new: using babl for 'linear TRC from babl profile' -> 'GIMP built-in sRGB'
+# layer mask native format=Y u8; set Y float=0.5, read=0.501960814
+ok 22 /painter-tool/layer-mask/projection-flags
+ok 23 /painter-tool/layer-mask/tool-target-undo-cancel
+# End of layer-mask tests
+# Start of colorpicker tests
+ok 24 /painter-tool/colorpicker/c-boundary
+ok 25 /painter-tool/colorpicker/named-handle
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 36 x 36
+# GdkPixbuf-DEBUG: 	Rowstride: 144, Length: 5208
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 36 x 36
+# GdkPixbuf-DEBUG: 	Rowstride: 144, Length: 5208
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 36 x 36
+# GdkPixbuf-DEBUG: 	Rowstride: 144, Length: 5208
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+ok 26 /painter-tool/colorpicker/native-targets
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 36 x 36
+# GdkPixbuf-DEBUG: 	Rowstride: 144, Length: 5208
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 36 x 36
+# GdkPixbuf-DEBUG: 	Rowstride: 144, Length: 5208
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+ok 27 /painter-tool/colorpicker/pick-only-interruptions
+# End of colorpicker tests
+# End of painter-tool tests
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/16x16/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/16x16/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/32x32/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/32x32/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/48x48/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/48x48/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/64x64/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/64x64/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/scalable/gimp.svg (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/scalable/gimp.svg”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/256x256/gimp.png
+gui_dbus_name_lost: connection to the bus cannot be established.
+set device 'Virtual core XTEST pointer' to mode: disabled
+set device 'Xvfb mouse' to mode: disabled
+WARNING: icon theme has no icon 'gimp-tool-paintbrush'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-tool-mypaint-brush'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+void gimp_gegl_convert_color_profile(GeglBuffer*, const GeglRectangle*, GimpColorProfile*, GeglBuffer*, const GeglRectangle*, GimpColorProfile*, GimpColorRenderingIntent, gboolean, GimpProgress*): converting buffer took 0.0024 seconds
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+void gimp_gegl_convert_color_profile(GeglBuffer*, const GeglRectangle*, GimpColorProfile*, GeglBuffer*, const GeglRectangle*, GimpColorProfile*, GimpColorRenderingIntent, gboolean, GimpProgress*): converting buffer took 0.0023 seconds
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+void gimp_gegl_convert_color_profile(GeglBuffer*, const GeglRectangle*, GimpColorProfile*, GeglBuffer*, const GeglRectangle*, GimpColorProfile*, GimpColorRenderingIntent, gboolean, GimpProgress*): converting buffer took 0.0023 seconds
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+void gimp_gegl_convert_color_profile(GeglBuffer*, const GeglRectangle*, GimpColorProfile*, GeglBuffer*, const GeglRectangle*, GimpColorProfile*, GimpColorRenderingIntent, gboolean, GimpProgress*): converting buffer took 0.0023 seconds
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-tool-mypaint-brush'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+void gimp_gegl_convert_color_profile(GeglBuffer*, const GeglRectangle*, GimpColorProfile*, GeglBuffer*, const GeglRectangle*, GimpColorProfile*, GimpColorRenderingIntent, gboolean, GimpProgress*): converting buffer took 0.0023 seconds
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+void gimp_gegl_convert_color_profile(GeglBuffer*, const GeglRectangle*, GimpColorProfile*, GeglBuffer*, const GeglRectangle*, GimpColorProfile*, GimpColorRenderingIntent, gboolean, GimpProgress*): converting buffer took 0.0023 seconds
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+void gimp_gegl_convert_color_profile(GeglBuffer*, const GeglRectangle*, GimpColorProfile*, GeglBuffer*, const GeglRectangle*, GimpColorProfile*, GimpColorRenderingIntent, gboolean, GimpProgress*): converting buffer took 0.0023 seconds
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+void gimp_gegl_convert_color_profile(GeglBuffer*, const GeglRectangle*, GimpColorProfile*, GeglBuffer*, const GeglRectangle*, GimpColorProfile*, GimpColorRenderingIntent, gboolean, GimpProgress*): converting buffer took 0.0023 seconds
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+void gimp_gegl_convert_color_profile(GeglBuffer*, const GeglRectangle*, GimpColorProfile*, GeglBuffer*, const GeglRectangle*, GimpColorProfile*, GimpColorRenderingIntent, gboolean, GimpProgress*): converting buffer took 0.0023 seconds
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+void gimp_gegl_convert_color_profile(GeglBuffer*, const GeglRectangle*, GimpColorProfile*, GeglBuffer*, const GeglRectangle*, GimpColorProfile*, GimpColorRenderingIntent, gboolean, GimpProgress*): converting buffer took 0.0023 seconds
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+void gimp_gegl_convert_color_profile(GeglBuffer*, const GeglRectangle*, GimpColorProfile*, GeglBuffer*, const GeglRectangle*, GimpColorProfile*, GimpColorRenderingIntent, gboolean, GimpProgress*): converting buffer took 0.0024 seconds
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+void gimp_gegl_convert_color_profile(GeglBuffer*, const GeglRectangle*, GimpColorProfile*, GeglBuffer*, const GeglRectangle*, GimpColorProfile*, GimpColorRenderingIntent, gboolean, GimpProgress*): converting buffer took 0.0024 seconds
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+void gimp_gegl_convert_color_profile(GeglBuffer*, const GeglRectangle*, GimpColorProfile*, GeglBuffer*, const GeglRectangle*, GimpColorProfile*, GimpColorRenderingIntent, gboolean, GimpProgress*): converting buffer took 0.0023 seconds
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-default-colors'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-swap-colors'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-tool-mypaint-brush'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-layer-mask'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-tool-paintbrush'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.

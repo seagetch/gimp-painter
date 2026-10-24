@@ -1,0 +1,204 @@
+diff --git a/app/core/gimpimage-undo.c b/app/core/gimpimage-undo.c
+index d549965c97..c09e96a7d6 100644
+--- a/app/core/gimpimage-undo.c
++++ b/app/core/gimpimage-undo.c
+@@ -738,7 +738,7 @@ gimp_image_undo_pop_stack (GimpImage     *image,
+   g_object_set_data (G_OBJECT (image), "gimp-undo-pop-active", GINT_TO_POINTER (1));
+   g_object_ref (image);
+   plan = g_ptr_array_new_with_free_func (gimp_undo_pop_node_free);
+-  if (gimp_image_has_pending_paint (image))
++  if (gimp_image_has_unsafe_undo (image))
+     goto finish;
+   undo = gimp_undo_stack_peek (undo_stack);
+   if (undo && ! gimp_undo_pop_plan_add (plan, undo, undo_stack, 0))
+diff --git a/app/core/gimpimage.c b/app/core/gimpimage.c
+index 83ce7980b4..fb1d1e40ef 100644
+--- a/app/core/gimpimage.c
++++ b/app/core/gimpimage.c
+@@ -121,6 +121,7 @@ enum
+   DIRTY,
+   SAVING,
+   QUERY_PENDING_PAINT,
++  QUERY_UNSAFE_UNDO,
+   SAVED,
+   EXPORTED,
+   GUIDE_ADDED,
+@@ -473,6 +474,14 @@ gimp_image_class_init (GimpImageClass *klass)
+                   g_signal_accumulator_true_handled, NULL,
+                   NULL, G_TYPE_BOOLEAN, 0);
+ 
++  /* Unlike pending paint, only transactions which cannot be canceled by
++   * ordinary Undo notifications veto history movement here. */
++  gimp_image_signals[QUERY_UNSAFE_UNDO] =
++    g_signal_new ("query-unsafe-undo",
++                  G_TYPE_FROM_CLASS (klass), G_SIGNAL_RUN_LAST, 0,
++                  g_signal_accumulator_true_handled, NULL,
++                  NULL, G_TYPE_BOOLEAN, 0);
++
+   gimp_image_signals[SAVING] =
+     g_signal_new ("saving",
+                   G_TYPE_FROM_CLASS (klass),
+@@ -4214,6 +4223,18 @@ gimp_image_has_pending_paint (GimpImage *image)
+   return pending;
+ }
+ 
++gboolean
++gimp_image_has_unsafe_undo (GimpImage *image)
++{
++  gboolean unsafe = FALSE;
++
++  g_return_val_if_fail (GIMP_IS_IMAGE (image), FALSE);
++  g_object_ref (image);
++  g_signal_emit (image, gimp_image_signals[QUERY_UNSAFE_UNDO], 0, &unsafe);
++  g_object_unref (image);
++  return unsafe;
++}
++
+ void
+ gimp_image_saving (GimpImage *image)
+ {
+diff --git a/app/core/gimpimage.h b/app/core/gimpimage.h
+index 02ed578a35..2d2ca5cf11 100644
+--- a/app/core/gimpimage.h
++++ b/app/core/gimpimage.h
+@@ -177,6 +177,8 @@ void            gimp_image_set_save_proc         (GimpImage          *image,
+                                                   GimpPlugInProcedure *proc);
+ GimpPlugInProcedure * gimp_image_get_save_proc   (GimpImage          *image);
+ gboolean        gimp_image_has_pending_paint      (GimpImage          *image);
++/* Read-only veto for non-cancelable paint/history transitions, not Save. */
++gboolean        gimp_image_has_unsafe_undo        (GimpImage          *image);
+ void            gimp_image_saving                (GimpImage          *image);
+ void            gimp_image_saved                 (GimpImage          *image,
+                                                   GFile              *file);
+diff --git a/app/paint/gimppainterpaintgate.cpp b/app/paint/gimppainterpaintgate.cpp
+index 5b17d1081d..f8a2411804 100644
+--- a/app/paint/gimppainterpaintgate.cpp
++++ b/app/paint/gimppainterpaintgate.cpp
+@@ -35,12 +35,12 @@ struct Operation {
+   ObjectRef<GimpDrawable> drawable;
+   ObjectRef<GimpImage> image;
+   ObjectRef<GimpPainterSession> session;
+-  Connection pending;
++  Connection pending, unsafe_undo;
+   bool active=false,canceled=false,batch=false;
+   void cancel() noexcept{canceled=true;if(session)gimp_painter_session_cancel(session.get(),nullptr);}
+   ~Operation() noexcept{
+     if(batch&&session)gimp_painter_session_end_batch(session.get(),FALSE,nullptr);
+-    active=false;pending.close();
++    active=false;pending.close();unsafe_undo.close();
+   }
+ };
+ struct GateImpl {
+@@ -69,7 +69,7 @@ struct Admission {
+     // callback explicitly disposed the adapter during an evaluator sample.
+     if(operation->batch&&operation->session){gimp_painter_session_end_batch(operation->session.get(),FALSE,nullptr);operation->batch=false;}
+     if(!committed){auto*core=GIMP_PAINT_CORE(owner.get());core->start_coords=saved_start;core->cur_coords=saved_current;core->last_coords=saved_last;core->last_paint=saved_paint;}
+-    operation->active=false;operation->pending.close();
++    operation->active=false;operation->pending.close();operation->unsafe_undo.close();
+     boundary_void(nullptr,[&]{if(binding.accepts(generation))binding.with<GateSlot>([&](GateImpl&i){if(i.operation==operation)i.operation.reset();});});
+   }
+   void validate()const{if(operation->canceled||!binding.accepts(generation))throw Error(GIMP_PAINTER_ERROR_CLOSED,"Painter operation was closed or canceled");}
+@@ -105,7 +105,9 @@ gboolean gimp_painter_paint_gate_stroke(GimpPaintCore*core,GimpDrawable*drawable
+     if(!segments&&n_segments)throw std::invalid_argument("Expected stroke segments");
+     if(gimp_image_has_pending_paint(operation->image.get()))throw std::runtime_error("Image is already processing paint");
+     std::unique_ptr<WeakOperation>weak(new WeakOperation(operation));
+-    operation->pending=Connection::connect(ObjectRef<GObject>::retain(G_OBJECT(operation->image.get())),"query-pending-paint",G_CALLBACK(query_pending),weak.get(),weak_destroy);weak.release();operation->active=true;
++    operation->pending=Connection::connect(ObjectRef<GObject>::retain(G_OBJECT(operation->image.get())),"query-pending-paint",G_CALLBACK(query_pending),weak.get(),weak_destroy);weak.release();
++    weak.reset(new WeakOperation(operation));
++    operation->unsafe_undo=Connection::connect(ObjectRef<GObject>::retain(G_OBJECT(operation->image.get())),"query-unsafe-undo",G_CALLBACK(query_pending),weak.get(),weak_destroy);weak.release();operation->active=true;
+     GError*create_error=nullptr;operation->session=ObjectRef<GimpPainterSession>::adopt(gimp_painter_session_new(model.get(),&create_error));
+     if(!operation->session){std::string why = GimpPainter::take_error_message (create_error, "Cannot create extended stroke session");throw std::runtime_error(why);}
+     admission.validate();checked([&](GError**e){return gimp_painter_session_begin_named_batch(operation->session.get(),push_undo,core->undo_desc,e);});operation->batch=true;
+diff --git a/app/paint/painter-mypaint-surface/paint-core.cpp b/app/paint/painter-mypaint-surface/paint-core.cpp
+index 4a899b780c..e16eb93d71 100644
+--- a/app/paint/painter-mypaint-surface/paint-core.cpp
++++ b/app/paint/painter-mypaint-surface/paint-core.cpp
+@@ -72,7 +72,11 @@ struct PaintCore::Impl : std::enable_shared_from_this<Impl> {
+   Engine::Checkpoint before_engine;
+   GimpCoords before_coords=GIMP_COORDS_DEFAULT_VALUES;
+   std::shared_ptr<const Resource> before_resource;
+-  Connection pending_paint;
++  struct PendingConnections {
++    Connection save, undo;
++    void close() noexcept {save.close();undo.close();}
++  };
++  PendingConnections pending_paint;
+   unsigned history_depth=0;
+   bool conflicted=false;
+   struct Geometry {
+@@ -161,12 +165,23 @@ struct PaintCore::Impl : std::enable_shared_from_this<Impl> {
+     return live&&(live->starting||live->ending||live->processing||(live->batch&&!live->gesture)||live->history_depth||
+                   (live->started&&gimp_image_undo_is_pop_active(image)));
+   }
+-  Connection make_pending(GimpImage*i) {
++  static gboolean unsafe_undo(GimpImage*,gpointer data) noexcept {
++    auto live=static_cast<std::weak_ptr<Impl>*>(data)->lock();
++    return live&&(live->starting||live->ending||live->processing||live->started||
++                  live->batch||live->history_depth);
++  }
++  Connection connect_query(GimpImage*i,const char*signal,GCallback callback) {
+     std::unique_ptr<std::weak_ptr<Impl>> weak(new std::weak_ptr<Impl>(shared_from_this()));
+-    auto connection=Connection::connect(ObjectRef<GObject>::retain(G_OBJECT(i)),"query-pending-paint",G_CALLBACK(pending),weak.get(),
++    auto connection=Connection::connect(ObjectRef<GObject>::retain(G_OBJECT(i)),signal,callback,weak.get(),
+       [](gpointer p,GClosure*){delete static_cast<std::weak_ptr<Impl>*>(p);});
+     weak.release();return connection;
+   }
++  PendingConnections make_pending(GimpImage*i) {
++    PendingConnections connections;
++    connections.save=connect_query(i,"query-pending-paint",G_CALLBACK(pending));
++    connections.undo=connect_query(i,"query-unsafe-undo",G_CALLBACK(unsafe_undo));
++    return connections;
++  }
+   void watch_pending(GimpImage*i) {pending_paint=make_pending(i);}
+   std::shared_ptr<GeglSurface> surface;
+   std::shared_ptr<GimpResources> resources;
+diff --git a/app/tests/test-painter-mypaint-tool.cpp b/app/tests/test-painter-mypaint-tool.cpp
+index f1fb66c6b4..9b71c8dee6 100644
+--- a/app/tests/test-painter-mypaint-tool.cpp
++++ b/app/tests/test-painter-mypaint-tool.cpp
+@@ -246,10 +246,10 @@ static void dispose_during_save(GimpImage*,GimpDirtyMask,gpointer data){auto&o=*
+ static void saving_disposal(){Scene s;auto initial=s.pixels();s.motion(false);s.press();s.coords.x+=20;s.motion(true,75);SaveDispose state{&s,false};auto id=g_signal_connect(s.image,"dirty",G_CALLBACK(dispose_during_save),&state);gimp_image_saving(s.image);g_signal_handler_disconnect(s.image,id);g_assert_true(state.fired);g_assert_false(gimp_image_has_pending_paint(s.image));g_assert_false(gimp_viewable_preview_is_frozen(GIMP_VIEWABLE(s.drawable)));g_assert_cmpint(s.depth(),==,1);g_assert_true(s.pixels()!=initial);g_assert_true(gimp_image_undo(s.image));g_assert_true(s.pixels()==initial);}
+ static void external_dirty_still_cancels(){Scene s;auto initial=s.pixels();s.motion(false);s.press();s.coords.x+=20;s.motion(true,75);gimp_image_dirty(s.image,GIMP_DIRTY_DRAWABLE);g_assert_false(gimp_tool_control_is_active(s.tool->control));g_assert_false(gimp_painter_mybrush_tool_has_pending_stroke(GIMP_PAINTER_MYBRUSH_TOOL(s.tool)));g_assert_true(s.pixels()==initial);g_assert_false(gimp_image_has_pending_paint(s.image));}
+ static void save_preflight_on_update(GimpDrawable*,gint,gint,gint,gint,gpointer data)
+-{auto&s=*static_cast<During*>(data);if(s.fired)return;s.fired=true;g_assert_true(gimp_image_has_pending_paint(s.scene->image));}
++{auto&s=*static_cast<During*>(data);if(s.fired)return;s.fired=true;g_assert_true(gimp_image_has_pending_paint(s.scene->image));g_assert_true(gimp_image_has_unsafe_undo(s.scene->image));const auto depth=s.scene->depth();g_assert_false(gimp_image_undo(s.scene->image));g_assert_false(gimp_image_redo(s.scene->image));g_assert_cmpint(s.scene->depth(),==,depth);}
+ static void save_defers_during_sample()
+ {
+-  Scene s;s.motion(false);s.press();During state{&s};auto id=g_signal_connect(s.drawable,"update",G_CALLBACK(save_preflight_on_update),&state);s.coords.x+=20;s.motion(true,75);g_assert_true(state.fired);g_signal_handler_disconnect(s.drawable,id);s.release();
++  Scene s;s.motion(false);s.press();During state{&s};auto id=g_signal_connect(s.drawable,"update",G_CALLBACK(save_preflight_on_update),&state);s.coords.x+=20;s.motion(true,75);g_assert_true(state.fired);g_signal_handler_disconnect(s.drawable,id);s.release();g_assert_false(gimp_image_has_unsafe_undo(s.image));
+ }
+ static void outline_and_projection()
+ {
+diff --git a/app/tests/test-undo-pop-guard.c b/app/tests/test-undo-pop-guard.c
+index 1f337cc107..dff1a5e7ff 100644
+--- a/app/tests/test-undo-pop-guard.c
++++ b/app/tests/test-undo-pop-guard.c
+@@ -35,7 +35,9 @@ static void success(void){if(!begin())return;push(1);g_assert_true(gimp_image_un
+ static void rejected(void){if(!begin())return;TestGuardUndo*t=push(1);t->reject=TRUE;gint dirty=gimp_image_is_dirty(image);g_assert_false(gimp_image_undo(image));g_assert_true(gimp_undo_stack_peek(gimp_image_get_undo_stack(image))==GIMP_UNDO(t));g_assert_cmpint(gimp_image_is_dirty(image),==,dirty);g_assert_cmpuint(finished,==,0);g_assert_cmpuint(popped,==,0);t->reject=FALSE;g_assert_true(gimp_image_undo(image));t->reject=TRUE;g_assert_false(gimp_image_redo(image));g_assert_true(gimp_undo_stack_peek(gimp_image_get_redo_stack(image))==GIMP_UNDO(t));end();}
+ static void group_reject(void){if(!begin())return;g_assert_true(gimp_image_undo_group_start(image,GIMP_UNDO_GROUP_PAINT,"Group"));TestGuardUndo*a=push(1);push(2);push(3);gimp_image_undo_group_end(image);a->reject=TRUE;GimpUndo*top=gimp_undo_stack_peek(gimp_image_get_undo_stack(image));g_assert_false(gimp_image_undo(image));g_assert_true(gimp_undo_stack_peek(gimp_image_get_undo_stack(image))==top);g_assert_cmpuint(prepared,==,2);g_assert_cmpuint(finished,==,2);g_assert_cmpuint(finish_order[0],==,2);g_assert_cmpuint(finish_order[1],==,3);g_assert_cmpuint(popped,==,0);a->reject=FALSE;prepared=finished=0;g_assert_true(gimp_image_undo(image));g_assert_cmpuint(popped,==,3);g_assert_true(gimp_image_redo(image));g_assert_cmpuint(popped,==,6);end();}
+ static gboolean pending(GimpImage*i,gpointer d){(void)i;(void)d;return TRUE;}
+-static void pending_reject(void){if(!begin())return;push(1);gulong id=g_signal_connect(image,"query-pending-paint",G_CALLBACK(pending),NULL);g_assert_false(gimp_image_undo(image));g_assert_false(gimp_image_strong_undo(image));g_assert_cmpuint(prepared,==,0);g_signal_handler_disconnect(image,id);g_assert_true(gimp_image_undo(image));end();}
++static void pending_reject(void){if(!begin())return;push(1);gulong id=g_signal_connect(image,"query-unsafe-undo",G_CALLBACK(pending),NULL);g_assert_true(gimp_image_has_unsafe_undo(image));g_assert_false(gimp_image_undo(image));g_assert_false(gimp_image_strong_undo(image));g_assert_cmpuint(prepared,==,0);g_signal_handler_disconnect(image,id);g_assert_true(gimp_image_undo(image));end();}
++static void pending_only_cancelable(void){if(!begin())return;push(1);g_assert_false(gimp_image_has_unsafe_undo(image));g_assert_false(gimp_image_has_pending_paint(image));gulong id=g_signal_connect(image,"query-pending-paint",G_CALLBACK(pending),NULL);g_assert_true(gimp_image_has_pending_paint(image));g_assert_false(gimp_image_has_unsafe_undo(image));g_assert_true(gimp_image_undo(image));g_assert_true(gimp_image_redo(image));g_assert_cmpuint(popped,==,2);g_signal_handler_disconnect(image,id);end();}
++static void mixed_queries(void){if(!begin())return;TestGuardUndo*t=push(1);gulong save=g_signal_connect(image,"query-pending-paint",G_CALLBACK(pending),NULL);gulong unsafe=g_signal_connect(image,"query-unsafe-undo",G_CALLBACK(pending),NULL);g_assert_false(gimp_image_undo(image));g_assert_true(gimp_undo_stack_peek(gimp_image_get_undo_stack(image))==GIMP_UNDO(t));g_assert_cmpuint(prepared,==,0);g_signal_handler_disconnect(image,unsafe);g_assert_true(gimp_image_has_pending_paint(image));g_assert_true(gimp_image_undo(image));g_signal_handler_disconnect(image,save);end();}
+ static void removed(GimpContainer*c,GimpObject*o,gpointer d){(void)c;(void)o;TestGuardUndo*t=d;g_assert_true(t->locked);g_assert_false(gimp_image_undo(image));g_assert_false(gimp_image_redo(image));g_assert_false(gimp_image_strong_undo(image));++nested;}
+ static void reentrant_remove(void){if(!begin())return;TestGuardUndo*t=push(1);gulong id=g_signal_connect(gimp_image_get_undo_stack(image)->undos,"remove",G_CALLBACK(removed),t);g_assert_true(gimp_image_undo(image));g_assert_cmpuint(nested,==,1);g_assert_cmpuint(popped,==,1);g_signal_handler_disconnect(gimp_image_get_undo_stack(image)->undos,id);end();}
+ static void event(GimpImage*i,GimpUndoEvent e,GimpUndo*u,gpointer d){(void)i;(void)u;TestGuardUndo*t=d;if(e==GIMP_UNDO_EVENT_UNDO||e==GIMP_UNDO_EVENT_REDO){g_assert_true(t->locked);g_assert_false(gimp_image_redo(image));++nested;}}
+@@ -54,4 +56,4 @@ static void nested_group(void){
+  a->reject=FALSE;prepared=finished=0;g_assert_true(gimp_image_undo(image));g_assert_true(gimp_image_redo(image));g_assert_cmpuint(popped,==,4);end();
+ }
+ static void strong_reject(void){if(!begin())return;TestGuardUndo*t=push(1);GIMP_UNDO(t)->undo_type=GIMP_UNDO_ITEM_VISIBILITY;t->reject=TRUE;g_assert_false(gimp_image_strong_undo(image));g_assert_cmpuint(popped,==,0);t->reject=FALSE;g_assert_true(gimp_image_undo(image));t->reject=TRUE;g_assert_false(gimp_image_strong_redo(image));g_assert_cmpuint(popped,==,1);end();}
+-int main(int argc,char**argv){g_test_init(&argc,&argv,NULL);g_test_add_func("/pop-guard/ordinary",ordinary);g_test_add_func("/pop-guard/success",success);g_test_add_func("/pop-guard/rejected",rejected);g_test_add_func("/pop-guard/group-reverse-unwind",group_reject);g_test_add_func("/pop-guard/pending",pending_reject);g_test_add_func("/pop-guard/remove-reentry",reentrant_remove);g_test_add_func("/pop-guard/notification-lease",notification_lease);g_test_add_func("/pop-guard/changed-prepare",changed_during_prepare);g_test_add_func("/pop-guard/last-image-owner",last_owner);g_test_add_func("/pop-guard/nested-group",nested_group);g_test_add_func("/pop-guard/strong-rejected",strong_reject);return g_test_run();}
++int main(int argc,char**argv){g_test_init(&argc,&argv,NULL);g_test_add_func("/pop-guard/ordinary",ordinary);g_test_add_func("/pop-guard/success",success);g_test_add_func("/pop-guard/rejected",rejected);g_test_add_func("/pop-guard/group-reverse-unwind",group_reject);g_test_add_func("/pop-guard/unsafe-pending",pending_reject);g_test_add_func("/pop-guard/cancelable-pending",pending_only_cancelable);g_test_add_func("/pop-guard/mixed-pending",mixed_queries);g_test_add_func("/pop-guard/remove-reentry",reentrant_remove);g_test_add_func("/pop-guard/notification-lease",notification_lease);g_test_add_func("/pop-guard/changed-prepare",changed_during_prepare);g_test_add_func("/pop-guard/last-image-owner",last_owner);g_test_add_func("/pop-guard/nested-group",nested_group);g_test_add_func("/pop-guard/strong-rejected",strong_reject);return g_test_run();}
+diff --git a/app/tools/gimppaintermybrushtool.cpp b/app/tools/gimppaintermybrushtool.cpp
+index a2e39f4778..8dbbe7b468 100644
+--- a/app/tools/gimppaintermybrushtool.cpp
++++ b/app/tools/gimppaintermybrushtool.cpp
+@@ -174,6 +174,7 @@ void observe_targets(GimpTool*tool,GimpDisplay*display,GimpImage*image,GimpDrawa
+   for(auto*name:{"selected-layers-changed","selected-channels-changed","mask-changed","precision-changed"})connect(G_OBJECT(image),name,G_CALLBACK(cancel_observed));
+   connect(G_OBJECT(image),"dirty",G_CALLBACK(image_dirty));connect(G_OBJECT(image),"clean",G_CALLBACK(image_dirty));
+   connect(G_OBJECT(image),"saving",G_CALLBACK(image_saving));connect(G_OBJECT(image),"query-pending-paint",G_CALLBACK(query_pending));
++  connect(G_OBJECT(image),"query-unsafe-undo",G_CALLBACK(query_pending));
+   auto retired=binding.with<ToolSlot>([&](ToolImpl&i){auto previous=std::move(i.connections);i.connections=std::move(connections);i.observed_image=WeakRef<GimpImage>(ObjectRef<GimpImage>::retain(image));i.observed_drawable=WeakRef<GimpDrawable>(ObjectRef<GimpDrawable>::retain(drawable));return previous;});
+   for(auto&c:retired)c.close();
+ }

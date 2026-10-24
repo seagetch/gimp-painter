@@ -738,7 +738,7 @@ gimp_image_undo_pop_stack (GimpImage     *image,
   g_object_set_data (G_OBJECT (image), "gimp-undo-pop-active", GINT_TO_POINTER (1));
   g_object_ref (image);
   plan = g_ptr_array_new_with_free_func (gimp_undo_pop_node_free);
-  if (gimp_image_has_pending_paint (image))
+  if (gimp_image_has_unsafe_undo (image))
     goto finish;
   undo = gimp_undo_stack_peek (undo_stack);
   if (undo && ! gimp_undo_pop_plan_add (plan, undo, undo_stack, 0))

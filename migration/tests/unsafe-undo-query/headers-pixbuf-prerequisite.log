@@ -1,0 +1,22 @@
+Traceback (most recent call last):
+  File "/workspace/shared/unsafe-undo-query/headers.py", line 10, in <module>
+    c=[x for x in c if x not in ['-MD','-c'] and not x.startswith('-std=')];c[-1]=str(p);c[1:1]=['-I'+str(W/'source/app'),'-iquote',str(S/'app/core'),'-std='+std,'-fsyntax-only'];r=subprocess.run(c,cwd=B,capture_output=True,text=True);out.append({'language':language,'double_include':twice,'exit':r.returncode,'command':c,'stdout':r.stdout,'stderr':r.stderr});assert r.returncode==0,r.stderr
+                                                                                                                                                                                                                                                                                                                                                                               ^^^^^^^^^^^^^^^
+AssertionError: In file included from [01m[K/workspace/shared/unsafe-undo-query/source/app/core/gimpimage.h:22[m[K,
+                 from [01m[K/workspace/shared/unsafe-undo-query/header-c0.c:5[m[K:
+[01m[K/workspace/shared/gimp-clean-aggregate/source/app/core/gimpviewable.h:84:3:[m[K [01;31m[Kerror: [m[Kunknown type name ‘[01m[KGdkPixbuf[m[K’
+   84 |   [01;31m[KGdkPixbuf[m[K     * (* get_pixbuf)         (GimpViewable  *viewable,
+      |   [01;31m[K^~~~~~~~~[m[K
+[01m[K/workspace/shared/gimp-clean-aggregate/source/app/core/gimpviewable.h:89:3:[m[K [01;31m[Kerror: [m[Kunknown type name ‘[01m[KGdkPixbuf[m[K’
+   89 |   [01;31m[KGdkPixbuf[m[K     * (* get_new_pixbuf)     (GimpViewable  *viewable,
+      |   [01;31m[K^~~~~~~~~[m[K
+[01m[K/workspace/shared/gimp-clean-aggregate/source/app/core/gimpviewable.h:160:1:[m[K [01;31m[Kerror: [m[Kunknown type name ‘[01m[KGdkPixbuf[m[K’
+  160 | [01;31m[KGdkPixbuf[m[K     * gimp_viewable_get_pixbuf         (GimpViewable  *viewable,
+      | [01;31m[K^~~~~~~~~[m[K
+[01m[K/workspace/shared/gimp-clean-aggregate/source/app/core/gimpviewable.h:165:1:[m[K [01;31m[Kerror: [m[Kunknown type name ‘[01m[KGdkPixbuf[m[K’
+  165 | [01;31m[KGdkPixbuf[m[K     * gimp_viewable_get_new_pixbuf     (GimpViewable  *viewable,
+      | [01;31m[K^~~~~~~~~[m[K
+[01m[K/workspace/shared/gimp-clean-aggregate/source/app/core/gimpviewable.h:171:1:[m[K [01;31m[Kerror: [m[Kunknown type name ‘[01m[KGdkPixbuf[m[K’
+  171 | [01;31m[KGdkPixbuf[m[K     * gimp_viewable_get_dummy_pixbuf   (GimpViewable  *viewable,
+      | [01;31m[K^~~~~~~~~[m[K
+

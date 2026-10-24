@@ -174,6 +174,7 @@ void observe_targets(GimpTool*tool,GimpDisplay*display,GimpImage*image,GimpDrawa
   for(auto*name:{"selected-layers-changed","selected-channels-changed","mask-changed","precision-changed"})connect(G_OBJECT(image),name,G_CALLBACK(cancel_observed));
   connect(G_OBJECT(image),"dirty",G_CALLBACK(image_dirty));connect(G_OBJECT(image),"clean",G_CALLBACK(image_dirty));
   connect(G_OBJECT(image),"saving",G_CALLBACK(image_saving));connect(G_OBJECT(image),"query-pending-paint",G_CALLBACK(query_pending));
+  connect(G_OBJECT(image),"query-unsafe-undo",G_CALLBACK(query_pending));
   auto retired=binding.with<ToolSlot>([&](ToolImpl&i){auto previous=std::move(i.connections);i.connections=std::move(connections);i.observed_image=WeakRef<GimpImage>(ObjectRef<GimpImage>::retain(image));i.observed_drawable=WeakRef<GimpDrawable>(ObjectRef<GimpDrawable>::retain(drawable));return previous;});
   for(auto&c:retired)c.close();
 }

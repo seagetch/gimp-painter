@@ -72,7 +72,11 @@ struct PaintCore::Impl : std::enable_shared_from_this<Impl> {
   Engine::Checkpoint before_engine;
   GimpCoords before_coords=GIMP_COORDS_DEFAULT_VALUES;
   std::shared_ptr<const Resource> before_resource;
-  Connection pending_paint;
+  struct PendingConnections {
+    Connection save, undo;
+    void close() noexcept {save.close();undo.close();}
+  };
+  PendingConnections pending_paint;
   unsigned history_depth=0;
   bool conflicted=false;
   struct Geometry {
@@ -161,11 +165,22 @@ struct PaintCore::Impl : std::enable_shared_from_this<Impl> {
     return live&&(live->starting||live->ending||live->processing||(live->batch&&!live->gesture)||live->history_depth||
                   (live->started&&gimp_image_undo_is_pop_active(image)));
   }
-  Connection make_pending(GimpImage*i) {
+  static gboolean unsafe_undo(GimpImage*,gpointer data) noexcept {
+    auto live=static_cast<std::weak_ptr<Impl>*>(data)->lock();
+    return live&&(live->starting||live->ending||live->processing||live->started||
+                  live->batch||live->history_depth);
+  }
+  Connection connect_query(GimpImage*i,const char*signal,GCallback callback) {
     std::unique_ptr<std::weak_ptr<Impl>> weak(new std::weak_ptr<Impl>(shared_from_this()));
-    auto connection=Connection::connect(ObjectRef<GObject>::retain(G_OBJECT(i)),"query-pending-paint",G_CALLBACK(pending),weak.get(),
+    auto connection=Connection::connect(ObjectRef<GObject>::retain(G_OBJECT(i)),signal,callback,weak.get(),
       [](gpointer p,GClosure*){delete static_cast<std::weak_ptr<Impl>*>(p);});
     weak.release();return connection;
+  }
+  PendingConnections make_pending(GimpImage*i) {
+    PendingConnections connections;
+    connections.save=connect_query(i,"query-pending-paint",G_CALLBACK(pending));
+    connections.undo=connect_query(i,"query-unsafe-undo",G_CALLBACK(unsafe_undo));
+    return connections;
   }
   void watch_pending(GimpImage*i) {pending_paint=make_pending(i);}
   std::shared_ptr<GeglSurface> surface;

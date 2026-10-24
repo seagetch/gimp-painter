@@ -1,0 +1,17 @@
+Xvfb verified: 127.0.0.1:94, 1080x1920x24, authenticated accepted, empty authority rejected
+TAP version 14
+# random seed: R02S5834eb83cb412f0accd0205af2a9149d
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+# Start of paired tests
+Time is running backwards!
+not ok /paired/idle-open-history-rejection - ERROR:../source/app/tests/test-paired-stroke-undo.cpp:39:void idle_open_history_rejection(): 'gimp_image_undo(f.image)' should be FALSE
+Bail out!
+[file-png-load] The catalog directory does not exist: /workspace/shared/gimp-clean-aggregate/prefix/share/locale
+[file-png-load] Override method set_i18n() for the plug-in to customize or disable localization.
+[file-png-load] Localization disabled
+[file-png-export] The catalog directory does not exist: /workspace/shared/gimp-clean-aggregate/prefix/share/locale
+[file-png-export] Override method set_i18n() for the plug-in to customize or disable localization.
+[file-png-export] Localization disabled
+**
+ERROR:../source/app/tests/test-paired-stroke-undo.cpp:39:void idle_open_history_rejection(): 'gimp_image_undo(f.image)' should be FALSE

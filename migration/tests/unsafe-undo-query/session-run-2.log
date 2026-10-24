@@ -1,0 +1,30 @@
+gimp-painter-session 0 henticated accepted, empty authority rejected
+TAP version 14
+# random seed: R02Sa3acb6aceb807a5f9b53c9c12fd163bd
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+1..10
+# Start of painter-session tests
+Time is running backwards!
+Time is running backwards!
+Time is running backwards!
+Time is running backwards!
+ok 1 /painter-session/controller-pixels
+ok 2 /painter-session/registered-native-paint-core
+Time is running backwards!
+Time is running backwards!
+ok 3 /painter-session/options-first-stroke-ownership
+Time is running backwards!
+ok 4 /painter-session/settings-split-block
+ok 5 /painter-session/close-start
+Time is running backwards!
+ok 6 /painter-session/settings-during-motion
+Time is running backwards!
+ok 7 /painter-session/closed-options-cancel
+Time is running backwards!
+ok 8 /painter-session/notification-last-ref
+ok 9 /painter-session/deferred-sample-stop
+ok 10 /painter-session/cancel-native-start
+# End of painter-session tests
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+

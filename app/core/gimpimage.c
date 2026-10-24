@@ -121,6 +121,7 @@ enum
   DIRTY,
   SAVING,
   QUERY_PENDING_PAINT,
+  QUERY_UNSAFE_UNDO,
   SAVED,
   EXPORTED,
   GUIDE_ADDED,
@@ -469,6 +470,14 @@ gimp_image_class_init (GimpImageClass *klass)
    * defers saving before opening/replacing a destination; input is preserved. */
   gimp_image_signals[QUERY_PENDING_PAINT] =
     g_signal_new ("query-pending-paint",
+                  G_TYPE_FROM_CLASS (klass), G_SIGNAL_RUN_LAST, 0,
+                  g_signal_accumulator_true_handled, NULL,
+                  NULL, G_TYPE_BOOLEAN, 0);
+
+  /* Unlike pending paint, only transactions which cannot be canceled by
+   * ordinary Undo notifications veto history movement here. */
+  gimp_image_signals[QUERY_UNSAFE_UNDO] =
+    g_signal_new ("query-unsafe-undo",
                   G_TYPE_FROM_CLASS (klass), G_SIGNAL_RUN_LAST, 0,
                   g_signal_accumulator_true_handled, NULL,
                   NULL, G_TYPE_BOOLEAN, 0);
@@ -4212,6 +4221,18 @@ gimp_image_has_pending_paint (GimpImage *image)
   g_signal_emit (image, gimp_image_signals[QUERY_PENDING_PAINT], 0, &pending);
   g_object_unref (image);
   return pending;
+}
+
+gboolean
+gimp_image_has_unsafe_undo (GimpImage *image)
+{
+  gboolean unsafe = FALSE;
+
+  g_return_val_if_fail (GIMP_IS_IMAGE (image), FALSE);
+  g_object_ref (image);
+  g_signal_emit (image, gimp_image_signals[QUERY_UNSAFE_UNDO], 0, &unsafe);
+  g_object_unref (image);
+  return unsafe;
 }
 
 void

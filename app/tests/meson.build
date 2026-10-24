@@ -1270,7 +1270,10 @@ undo_pop_guard = executable('undo-pop-guard',
   c_args: ['-DG_LOG_DOMAIN="Gimp-App-Test"'],
   override_options: ['c_std=c11'],
 )
-test('undo-pop-guard', undo_pop_guard, suite: 'app', timeout: 120)
+test('undo-pop-guard', undo_pop_guard,
+  env: ['GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+        'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root()],
+  suite: 'app', timeout: 120)
 
 # Prepare-only native pixel rollback payload; no history publication.
 prepared_pixels_test = executable('painter-prepared-pixels',

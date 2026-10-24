@@ -1,0 +1,88 @@
+[01m[K/workspace/scratch/0015fc5d1a03/gimp-painter/app/tests/test-undo-pop-guard.c:[m[K In function ‘[01m[Krejected[m[K’:
+[01m[K/workspace/scratch/0015fc5d1a03/gimp-painter/app/tests/test-undo-pop-guard.c:35:47:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   35 | static void rejected(void){if(!begin())return;[01;35m[KTestGuardUndo[m[K*t=push(1);t->reject=TRUE;gint dirty=gimp_image_is_dirty(image);g_assert_false(gimp_image_undo(image));g_assert_true(gimp_undo_stack_peek(gimp_image_get_undo_stack(image))==GIMP_UNDO(t));g_assert_cmpint(gimp_image_is_dirty(image),==,dirty);g_assert_cmpuint(finished,==,0);g_assert_cmpuint(popped,==,0);t->reject=FALSE;g_assert_true(gimp_image_undo(image));t->reject=TRUE;g_assert_false(gimp_image_redo(image));g_assert_true(gimp_undo_stack_peek(gimp_image_get_redo_stack(image))==GIMP_UNDO(t));end();}
+      |                                               [01;35m[K^~~~~~~~~~~~~[m[K
+[01m[K/workspace/scratch/0015fc5d1a03/gimp-painter/app/tests/test-undo-pop-guard.c:35:86:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   35 | static void rejected(void){if(!begin())return;TestGuardUndo*t=push(1);t->reject=TRUE;[01;35m[Kgint[m[K dirty=gimp_image_is_dirty(image);g_assert_false(gimp_image_undo(image));g_assert_true(gimp_undo_stack_peek(gimp_image_get_undo_stack(image))==GIMP_UNDO(t));g_assert_cmpint(gimp_image_is_dirty(image),==,dirty);g_assert_cmpuint(finished,==,0);g_assert_cmpuint(popped,==,0);t->reject=FALSE;g_assert_true(gimp_image_undo(image));t->reject=TRUE;g_assert_false(gimp_image_redo(image));g_assert_true(gimp_undo_stack_peek(gimp_image_get_redo_stack(image))==GIMP_UNDO(t));end();}
+      |                                                                                      [01;35m[K^~~~[m[K
+[01m[K/workspace/scratch/0015fc5d1a03/gimp-painter/app/tests/test-undo-pop-guard.c:[m[K In function ‘[01m[Kgroup_reject[m[K’:
+[01m[K/workspace/scratch/0015fc5d1a03/gimp-painter/app/tests/test-undo-pop-guard.c:36:131:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   36 | static void group_reject(void){if(!begin())return;g_assert_true(gimp_image_undo_group_start(image,GIMP_UNDO_GROUP_PAINT,"Group"));[01;35m[KTestGuardUndo[m[K*a=push(1);push(2);push(3);gimp_image_undo_group_end(image);a->reject=TRUE;GimpUndo*top=gimp_undo_stack_peek(gimp_image_get_undo_stack(image));g_assert_false(gimp_image_undo(image));g_assert_true(gimp_undo_stack_peek(gimp_image_get_undo_stack(image))==top);g_assert_cmpuint(prepared,==,2);g_assert_cmpuint(finished,==,2);g_assert_cmpuint(finish_order[0],==,2);g_assert_cmpuint(finish_order[1],==,3);g_assert_cmpuint(popped,==,0);a->reject=FALSE;prepared=finished=0;g_assert_true(gimp_image_undo(image));g_assert_cmpuint(popped,==,3);g_assert_true(gimp_image_redo(image));g_assert_cmpuint(popped,==,6);end();}
+      |                                                                                                                                   [01;35m[K^~~~~~~~~~~~~[m[K
+[01m[K/workspace/scratch/0015fc5d1a03/gimp-painter/app/tests/test-undo-pop-guard.c:36:219:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   36 | static void group_reject(void){if(!begin())return;g_assert_true(gimp_image_undo_group_start(image,GIMP_UNDO_GROUP_PAINT,"Group"));TestGuardUndo*a=push(1);push(2);push(3);gimp_image_undo_group_end(image);a->reject=TRUE;[01;35m[KGimpUndo[m[K*top=gimp_undo_stack_peek(gimp_image_get_undo_stack(image));g_assert_false(gimp_image_undo(image));g_assert_true(gimp_undo_stack_peek(gimp_image_get_undo_stack(image))==top);g_assert_cmpuint(prepared,==,2);g_assert_cmpuint(finished,==,2);g_assert_cmpuint(finish_order[0],==,2);g_assert_cmpuint(finish_order[1],==,3);g_assert_cmpuint(popped,==,0);a->reject=FALSE;prepared=finished=0;g_assert_true(gimp_image_undo(image));g_assert_cmpuint(popped,==,3);g_assert_true(gimp_image_redo(image));g_assert_cmpuint(popped,==,6);end();}
+      |                                                                                                                                                                                                                           [01;35m[K^~~~~~~~[m[K
+[01m[K/workspace/scratch/0015fc5d1a03/gimp-painter/app/tests/test-undo-pop-guard.c:[m[K In function ‘[01m[Kpending_reject[m[K’:
+[01m[K/workspace/scratch/0015fc5d1a03/gimp-painter/app/tests/test-undo-pop-guard.c:38:61:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   38 | static void pending_reject(void){if(!begin())return;push(1);[01;35m[Kgulong[m[K id=g_signal_connect(image,"query-unsafe-undo",G_CALLBACK(pending),NULL);g_assert_true(gimp_image_has_unsafe_undo(image));g_assert_false(gimp_image_undo(image));g_assert_false(gimp_image_strong_undo(image));g_assert_cmpuint(prepared,==,0);g_signal_handler_disconnect(image,id);g_assert_true(gimp_image_undo(image));end();}
+      |                                                             [01;35m[K^~~~~~[m[K
+[01m[K/workspace/scratch/0015fc5d1a03/gimp-painter/app/tests/test-undo-pop-guard.c:[m[K In function ‘[01m[Kpending_only_cancelable[m[K’:
+[01m[K/workspace/scratch/0015fc5d1a03/gimp-painter/app/tests/test-undo-pop-guard.c:39:172:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   39 | static void pending_only_cancelable(void){if(!begin())return;push(1);g_assert_false(gimp_image_has_unsafe_undo(image));g_assert_false(gimp_image_has_pending_paint(image));[01;35m[Kgulong[m[K id=g_signal_connect(image,"query-pending-paint",G_CALLBACK(pending),NULL);g_assert_true(gimp_image_has_pending_paint(image));g_assert_false(gimp_image_has_unsafe_undo(image));g_assert_true(gimp_image_undo(image));g_assert_true(gimp_image_redo(image));g_assert_cmpuint(popped,==,2);g_signal_handler_disconnect(image,id);end();}
+      |                                                                                                                                                                            [01;35m[K^~~~~~[m[K
+[01m[K/workspace/scratch/0015fc5d1a03/gimp-painter/app/tests/test-undo-pop-guard.c:[m[K In function ‘[01m[Kmixed_queries[m[K’:
+[01m[K/workspace/scratch/0015fc5d1a03/gimp-painter/app/tests/test-undo-pop-guard.c:40:52:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   40 | static void mixed_queries(void){if(!begin())return;[01;35m[KTestGuardUndo[m[K*t=push(1);gulong save=g_signal_connect(image,"query-pending-paint",G_CALLBACK(pending),NULL);gulong unsafe=g_signal_connect(image,"query-unsafe-undo",G_CALLBACK(pending),NULL);g_assert_false(gimp_image_undo(image));g_assert_true(gimp_undo_stack_peek(gimp_image_get_undo_stack(image))==GIMP_UNDO(t));g_assert_cmpuint(prepared,==,0);g_signal_handler_disconnect(image,unsafe);g_assert_true(gimp_image_has_pending_paint(image));g_assert_true(gimp_image_undo(image));g_signal_handler_disconnect(image,save);end();}
+      |                                                    [01;35m[K^~~~~~~~~~~~~[m[K
+[01m[K/workspace/scratch/0015fc5d1a03/gimp-painter/app/tests/test-undo-pop-guard.c:[m[K In function ‘[01m[Kremoved[m[K’:
+[01m[K/workspace/scratch/0015fc5d1a03/gimp-painter/app/tests/test-undo-pop-guard.c:41:78:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   41 | static void removed(GimpContainer*c,GimpObject*o,gpointer d){(void)c;(void)o;[01;35m[KTestGuardUndo[m[K*t=d;g_assert_true(t->locked);g_assert_false(gimp_image_undo(image));g_assert_false(gimp_image_redo(image));g_assert_false(gimp_image_strong_undo(image));++nested;}
+      |                                                                              [01;35m[K^~~~~~~~~~~~~[m[K
+[01m[K/workspace/scratch/0015fc5d1a03/gimp-painter/app/tests/test-undo-pop-guard.c:[m[K In function ‘[01m[Kreentrant_remove[m[K’:
+[01m[K/workspace/scratch/0015fc5d1a03/gimp-painter/app/tests/test-undo-pop-guard.c:42:55:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   42 | static void reentrant_remove(void){if(!begin())return;[01;35m[KTestGuardUndo[m[K*t=push(1);gulong id=g_signal_connect(gimp_image_get_undo_stack(image)->undos,"remove",G_CALLBACK(removed),t);g_assert_true(gimp_image_undo(image));g_assert_cmpuint(nested,==,1);g_assert_cmpuint(popped,==,1);g_signal_handler_disconnect(gimp_image_get_undo_stack(image)->undos,id);end();}
+      |                                                       [01;35m[K^~~~~~~~~~~~~[m[K
+[01m[K/workspace/scratch/0015fc5d1a03/gimp-painter/app/tests/test-undo-pop-guard.c:[m[K In function ‘[01m[Kevent[m[K’:
+[01m[K/workspace/scratch/0015fc5d1a03/gimp-painter/app/tests/test-undo-pop-guard.c:43:86:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   43 | static void event(GimpImage*i,GimpUndoEvent e,GimpUndo*u,gpointer d){(void)i;(void)u;[01;35m[KTestGuardUndo[m[K*t=d;if(e==GIMP_UNDO_EVENT_UNDO||e==GIMP_UNDO_EVENT_REDO){g_assert_true(t->locked);g_assert_false(gimp_image_redo(image));++nested;}}
+      |                                                                                      [01;35m[K^~~~~~~~~~~~~[m[K
+[01m[K/workspace/scratch/0015fc5d1a03/gimp-painter/app/tests/test-undo-pop-guard.c:[m[K In function ‘[01m[Knotification_lease[m[K’:
+[01m[K/workspace/scratch/0015fc5d1a03/gimp-painter/app/tests/test-undo-pop-guard.c:44:57:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   44 | static void notification_lease(void){if(!begin())return;[01;35m[KTestGuardUndo[m[K*t=push(1);gulong id=g_signal_connect(image,"undo-event",G_CALLBACK(event),t);g_assert_true(gimp_image_undo(image));g_assert_true(gimp_image_redo(image));g_assert_cmpuint(nested,==,2);g_signal_handler_disconnect(image,id);end();}
+      |                                                         [01;35m[K^~~~~~~~~~~~~[m[K
+[01m[K/workspace/scratch/0015fc5d1a03/gimp-painter/app/tests/test-undo-pop-guard.c:[m[K In function ‘[01m[Klast_owner[m[K’:
+[01m[K/workspace/scratch/0015fc5d1a03/gimp-painter/app/tests/test-undo-pop-guard.c:46:57:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   46 | static void last_owner(void){if(!begin())return;push(1);[01;35m[Kgpointer[m[K weak=image;g_object_add_weak_pointer(G_OBJECT(image),&weak);release_image=TRUE;g_assert_true(gimp_image_undo(image));g_assert_null(weak);g_assert_cmpuint(finished,==,1);image=NULL;end();}
+      |                                                         [01;35m[K^~~~~~~~[m[K
+[01m[K/workspace/scratch/0015fc5d1a03/gimp-painter/app/tests/test-undo-pop-guard.c:[m[K In function ‘[01m[Knested_group[m[K’:
+[01m[K/workspace/scratch/0015fc5d1a03/gimp-painter/app/tests/test-undo-pop-guard.c:50:2:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   50 |  [01;35m[KGimpUndoStack[m[K*outer=GIMP_UNDO_STACK(gimp_undo_stack_peek(gimp_image_get_undo_stack(image)));
+      |  [01;35m[K^~~~~~~~~~~~~[m[K
+[01m[K/workspace/scratch/0015fc5d1a03/gimp-painter/app/tests/test-undo-pop-guard.c:52:2:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   52 |  [01;35m[KTestGuardUndo[m[K*a=g_object_new(test_guard_undo_get_type(),"image",image,"undo-type",GIMP_UNDO_PAINT,NULL);a->id=1;
+      |  [01;35m[K^~~~~~~~~~~~~[m[K
+[01m[K/workspace/scratch/0015fc5d1a03/gimp-painter/app/tests/test-undo-pop-guard.c:53:2:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   53 |  [01;35m[KTestGuardUndo[m[K*b=g_object_new(test_guard_undo_get_type(),"image",image,"undo-type",GIMP_UNDO_PAINT,NULL);b->id=2;
+      |  [01;35m[K^~~~~~~~~~~~~[m[K
+[01m[K/workspace/scratch/0015fc5d1a03/gimp-painter/app/tests/test-undo-pop-guard.c:[m[K In function ‘[01m[Kstrong_reject[m[K’:
+[01m[K/workspace/scratch/0015fc5d1a03/gimp-painter/app/tests/test-undo-pop-guard.c:58:52:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   58 | static void strong_reject(void){if(!begin())return;[01;35m[KTestGuardUndo[m[K*t=push(1);GIMP_UNDO(t)->undo_type=GIMP_UNDO_ITEM_VISIBILITY;t->reject=TRUE;g_assert_false(gimp_image_strong_undo(image));g_assert_cmpuint(popped,==,0);t->reject=FALSE;g_assert_true(gimp_image_undo(image));t->reject=TRUE;g_assert_false(gimp_image_strong_redo(image));g_assert_cmpuint(popped,==,1);end();}
+      |                                                    [01;35m[K^~~~~~~~~~~~~[m[K
+undo-pop-guard 0  /pop-guard/ordinary
+# slow test /pop-guard/ordinary executed in 1.53 secs
+ok 2 /pop-guard/success
+# slow test /pop-guard/success executed in 1.51 secs
+ok 3 /pop-guard/rejected
+# slow test /pop-guard/rejected executed in 1.39 secs
+ok 4 /pop-guard/group-reverse-unwind
+# slow test /pop-guard/group-reverse-unwind executed in 1.45 secs
+ok 5 /pop-guard/unsafe-pending
+# slow test /pop-guard/unsafe-pending executed in 1.35 secs
+ok 6 /pop-guard/cancelable-pending
+# slow test /pop-guard/cancelable-pending executed in 1.42 secs
+ok 7 /pop-guard/mixed-pending
+# slow test /pop-guard/mixed-pending executed in 1.30 secs
+ok 8 /pop-guard/remove-reentry
+# slow test /pop-guard/remove-reentry executed in 1.40 secs
+ok 9 /pop-guard/notification-lease
+# slow test /pop-guard/notification-lease executed in 1.38 secs
+ok 10 /pop-guard/changed-prepare
+# slow test /pop-guard/changed-prepare executed in 1.47 secs
+ok 11 /pop-guard/last-image-owner
+# slow test /pop-guard/last-image-owner executed in 1.46 secs
+ok 12 /pop-guard/nested-group
+# slow test /pop-guard/nested-group executed in 1.35 secs
+ok 13 /pop-guard/strong-rejected
+# slow test /pop-guard/strong-rejected executed in 1.29 secs
+# End of pop-guard tests
+

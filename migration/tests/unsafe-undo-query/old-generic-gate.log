@@ -1,0 +1,11 @@
+Xvfb verified: 127.0.0.1:92, 1080x1920x24, authenticated accepted, empty authority rejected
+TAP version 14
+# random seed: R02Sdec11127d96d5fc45ca593cba0bb0e20
+# Start of pop-guard tests
+# child process (/pop-guard/cancelable-pending [24]) exit status: 1 (error)
+# child process (/pop-guard/cancelable-pending [24]) stdout: ""
+# child process (/pop-guard/cancelable-pending [24]) stderr: "**\nGimp-App-Test:ERROR:/workspace/scratch/0015fc5d1a03/gimp-painter/app/tests/test-undo-pop-guard.c:39:pending_only_cancelable: 'gimp_image_undo(image)' should be TRUE\n"
+not ok /pop-guard/cancelable-pending - Gimp-App-Test:ERROR:/workspace/scratch/0015fc5d1a03/gimp-painter/app/tests/test-undo-pop-guard.c:30:begin: child process (/pop-guard/cancelable-pending [24]) failed unexpectedly
+Bail out!
+**
+Gimp-App-Test:ERROR:/workspace/scratch/0015fc5d1a03/gimp-painter/app/tests/test-undo-pop-guard.c:30:begin: child process (/pop-guard/cancelable-pending [24]) failed unexpectedly
