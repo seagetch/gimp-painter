@@ -22,6 +22,14 @@ class HandleProofTests(unittest.TestCase):
         self.addCleanup(self.temp.cleanup)
         self.root = Path(self.temp.name)
         self.rows = c.read('migration/contracts/cpp-handle-registry.tsv')
+        # The Undo validator replays its immutable native/engine predecessors.
+        # Copy evidence only, never overwrite successor provider sources.
+        for name in ['native-stroke-undo-09011', 'paired-stroke-09011',
+                     'prepared-pixels-09011', 'engine-historical-09011',
+                     'engine-prepared-09011', 'engine-checkpoint-09011']:
+            shutil.copytree(ROOT / 'migration/tests' / name,
+                            self.root / 'migration/tests' / name,
+                            ignore=shutil.ignore_patterns('__pycache__'))
         for proof in [q for p in c.BOUNDED_HANDLE_PROOFS.values()
                       for q in p.get('predecessors', []) + [p]]:
             source = ROOT / proof['directory']
@@ -43,6 +51,18 @@ class HandleProofTests(unittest.TestCase):
     def test_reviewed_claims_and_original_todos_pass(self):
         self.assertEqual([], self.check())
 
+    def test_bounded_c_entry_claim_fields_are_bound(self):
+        rows = c.read('migration/contracts/cpp-c-entry-map.tsv')
+        self.assertEqual([], c.verify_bounded_entry_implementations(rows))
+        original = next(r for r in rows if r['c_entry'] == 'gimp_mypaint_core_undo_get_type')
+        for field in original:
+            with self.subTest(field=field):
+                altered = copy.deepcopy(rows)
+                next(r for r in altered if r['c_entry'] == original['c_entry'])[field] += ' forged'
+                self.assertTrue(c.verify_bounded_entry_implementations(altered))
+        self.assertTrue(c.verify_bounded_entry_implementations([r for r in rows if r is not original]))
+        self.assertTrue(c.verify_bounded_entry_implementations(rows + [original]))
+
     def test_unknown_claim_rejected(self):
         row = next(r for r in self.rows if r['implementation'] == 'TODO')
         row['implementation'] = 'IMPLEMENTED bounded native; tests PASS'
@@ -55,30 +75,48 @@ class HandleProofTests(unittest.TestCase):
                     rows = copy.deepcopy(self.rows)
                     row = next(r for r in rows if r['legacy_type'] == name)
                     row[field] += ' forged'
-                    self.assertTrue(self.check(rows))
+                    self.assertTrue(self.check([row]))
 
     def test_receipts_missing_or_changed_rejected(self):
-        for proof in [q for p in c.BOUNDED_HANDLE_PROOFS.values()
-                      for q in p.get('predecessors', []) + [p]]:
+        for owner, proof in [(name, q) for name, p in c.BOUNDED_HANDLE_PROOFS.items()
+                             for q in p.get('predecessors', []) + [p]]:
+            rows = [r for r in self.rows if r['legacy_type'] == owner]
+            self.assertEqual([], self.check(rows))
             for filename in proof['files']:
                 with self.subTest(proof=proof['directory'], filename=filename):
                     path = self.root / proof['directory'] / filename
                     data = path.read_bytes()
                     path.unlink()
-                    self.assertTrue(self.check())
+                    self.assertTrue(self.check(rows))
                     path.write_bytes(data + b'\n# tampered')
-                    self.assertTrue(self.check())
+                    self.assertTrue(self.check(rows))
                     path.write_bytes(data)
 
+    def test_transitive_replay_receipts_missing_or_changed_rejected(self):
+        proof = c.BOUNDED_HANDLE_PROOFS['GimpMypaintCoreUndo']
+        rows = [r for r in self.rows if r['legacy_type'] == 'GimpMypaintCoreUndo']
+        self.assertEqual([], self.check(rows))
+        for filename in proof['support_files']:
+            with self.subTest(filename=filename):
+                path = self.root / filename
+                data = path.read_bytes()
+                path.unlink()
+                self.assertTrue(self.check(rows))
+                path.write_bytes(data + b'\n# tampered')
+                self.assertTrue(self.check(rows))
+                path.write_bytes(data)
+
     def test_current_source_drift_rejected(self):
-        for proof in c.BOUNDED_HANDLE_PROOFS.values():
+        for owner, proof in c.BOUNDED_HANDLE_PROOFS.items():
+            rows = [r for r in self.rows if r['legacy_type'] == owner]
+            self.assertEqual([], self.check(rows))
             manifest = json.loads((self.root / proof['directory'] / 'source-manifest.json').read_text())
             for item in manifest:
                 with self.subTest(source=item['path']):
                     path = self.root / item['path']
                     data = path.read_bytes()
                     path.write_bytes(data + b'\n/* untested change */\n')
-                    self.assertTrue(self.check())
+                    self.assertTrue(self.check(rows))
                     path.write_bytes(data)
 
     def test_reviewed_claim_rollback_rejected(self):
