@@ -10,7 +10,9 @@ filter_flip_legacy_reset_contract (void)
   GimpItemClass *parent=g_type_class_peek_parent (klass);
   g_assert_true (klass->scale==parent->scale);
   g_assert_true (klass->resize==parent->resize);
-  g_assert_true (klass->rotate==parent->rotate);
+  /* Rotate now delegates then invalidates even with unchanged bounds. Its
+   * separate behavioral contract observes the actual native buffer update. */
+  g_assert_true (klass->rotate!=parent->rotate);
   g_assert_true (klass->transform==parent->transform);
   g_type_class_unref (klass);
   for (guint whole_image=0;whole_image<2;whole_image++)
@@ -71,5 +73,5 @@ filter_flip_legacy_reset_contract (void)
         else pixel (GIMP_LAYER (filter),255,0,0,255);
         g_object_unref (image);
       }
-  g_test_message ("four H/V direct/image flips retain Filter extent and reevaluate lower pixels;whole-image Undo/Redo and four inherited-transform slots preserved");
+  g_test_message ("four H/V direct/image flips retain Filter extent and reevaluate lower pixels;whole-image Undo/Redo and three inherited-transform slots and delegated rotate preserved");
 }

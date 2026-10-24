@@ -1,0 +1,17 @@
+{
+  "command": [
+    "/workspace/shared/gimp-clean-aggregate/build/app/tests/gimp-filter-layer",
+    "-p",
+    "/gimp-filter-layer/filter_gaussian_own_center_rotate_contract",
+    "-p",
+    "/gimp-filter-layer/filter_flip_legacy_reset_contract",
+    "-p",
+    "/gimp-filter-layer/filter_gaussian_restore_latest_lower_contract",
+    "-p",
+    "/gimp-filter-layer/filter_gaussian_running_duplicate_contract"
+  ],
+  "exit_code": 0,
+  "duration": 1.696244239807129,
+  "stdout": "TAP version 14\n# random seed: R02Sb6f5591f4d4b87d747fa5012896dc83b\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# Start of gimp-filter-layer tests\n# own-center rotate180:buffer notifications=1;generation=2->3;immediate pixel=0,0,255,255;source/extent unchanged\nok 1 /gimp-filter-layer/filter_gaussian_own_center_rotate_contract\n# End of gimp-filter-layer tests\n1..1\n# Start of gimp-filter-layer tests\n# four H/V direct/image flips retain Filter extent and reevaluate lower pixels;whole-image Undo/Redo and three inherited-transform slots and delegated rotate preserved\nok 2 /gimp-filter-layer/filter_flip_legacy_reset_contract\n# End of gimp-filter-layer tests\n1..2\n# Start of gimp-filter-layer tests\n# root/group deletion history:6 restores after independent lower edits,4 redo deletions,8 exact pixels,identity/definition and6 stack handler counts preserved;Gaussian only\nok 3 /gimp-filter-layer/filter_gaussian_restore_latest_lower_contract\n# End of gimp-filter-layer tests\n1..3\n# Start of gimp-filter-layer tests\n# real RUNNING Gaussian duplicated with fresh zero-run scheduler;original cancellation isolated;independent red/blue-green groups,immutable definition/raw bytes and4 exact pixels\nok 4 /gimp-filter-layer/filter_gaussian_running_duplicate_contract\n# End of gimp-filter-layer tests\n1..4\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n",
+  "stderr": ""
+}

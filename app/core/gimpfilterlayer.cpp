@@ -1855,6 +1855,26 @@ void flip (GimpItem *item, GimpContext *, GimpOrientationType, gdouble, gboolean
     });
   });
 }
+/* Unlike flip, legacy rotate performs the native transform before invalidating
+ * its derived cache. Same-extent rotations emit no size/offset/format change. */
+void rotate (GimpItem *item, GimpContext *context, GimpRotationType rotate_type,
+             gdouble center_x, gdouble center_y, gboolean clip_result)
+{
+  boundary_void (nullptr, [&] {
+    auto owner_pin = ObjectRef<GObject>::retain (G_OBJECT (item));
+    auto image_pin = ObjectRef<GObject>::retain (G_OBJECT (gimp_item_get_image (item)));
+    auto *store = BindingStore::find (owner_pin.get ());
+    if (!store) return;
+    const auto token = store->generation ();
+    if (!store->accepts (token)) return;
+    /* No Impl borrow survives the native transform's synchronous callbacks. */
+    GIMP_ITEM_CLASS (gimp_filter_layer_parent_class)->rotate (
+      item, context, rotate_type, center_x, center_y, clip_result);
+    store = BindingStore::find (owner_pin.get ());
+    if (store && store->accepts (token))
+      store->with<FilterSlot> ([] (FilterImpl& impl) { impl.invalidate (); });
+  });
+}
 gboolean content_locked (GimpItem *item, GimpItem **locked) { if (locked) *locked = item; return TRUE; }
 gdouble opacity_at (GimpPickable *, gint, gint) { return 0.0; }
 } // namespace
@@ -1890,6 +1910,7 @@ static void gimp_filter_layer_class_init (GimpFilterLayerClass *klass)
                         G_TYPE_BYTES, G_PARAM_READABLE));
   GIMP_ITEM_CLASS (klass)->duplicate = duplicate;
   GIMP_ITEM_CLASS (klass)->flip = flip;
+  GIMP_ITEM_CLASS (klass)->rotate = rotate;
   GIMP_ITEM_CLASS (klass)->is_content_locked = content_locked;
   GIMP_VIEWABLE_CLASS (klass)->default_icon_name = "gimp-gegl";
   GIMP_VIEWABLE_CLASS (klass)->default_name = "Filter Layer";
