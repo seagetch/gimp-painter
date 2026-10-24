@@ -997,7 +997,7 @@
 | ID | 完了 | 作業 | 依存ID | 完了条件・証跡 |
 |---|:---:|---|---|---|
 | 24.001 | [ ] | 設定 model を共通化する | 19.016, 20.018, 21.020, 22.010 | dock・popup・横型 UI が同一データを操作 |
-| 24.001/editor-context-contract | [ ] | MyPaint editor の context と options の取得契約を定める | 24.001, 01.005/non-xcf-c-calls | `GimpContext` を正しい型として受け、選択中ブラシと編集 options の取得方法、NULL の扱い、所有権を明記する。契約本文・18元source duty照合: migration/contracts/mypaint-editor-context.md / migration/tests/editor-context-contract（spec3controls合格、constructor NULLとDocked detach・borrowed選択資源/owned Options・Cfloating/typed sinkを明記。親依存と停止中acquisition再入・全GUI挙動は未完了） |
+| 24.001/editor-context-contract | [ ] | MyPaint editor の context と options の取得契約を定める | 24.001, 01.005/non-xcf-c-calls | `GimpContext` を正しい型として受け、選択中ブラシと編集 options の取得方法、NULL の扱い、所有権を明記する |
 | 24.001/application-history | [x] | 任意Options間で旧履歴をapplication所有として共有する | 21.001/registered-tool | 10 native/26source focused sanitizer合格。単一Gimp BindingStore slotとweak/generation observerで共有し、別app分離・閉鎖/通知再入・未知値/curve/reference復元を検証。閉鎖Options name/restoreを明示拒否。全editor/previewは別gate |
 | 24.002 | [ ] | 数値設定 editor を移植する | 24.001 | 独自パラメーターを全編集可能 |
 | 24.003 | [ ] | switch editor を移植する | 24.002 | 値と表示が双方向に同期 |
