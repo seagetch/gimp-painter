@@ -54,7 +54,10 @@ def reviewed(root):
     for row in rows:
         p=row['path']
         for side in ('predecessor','successor'): assert sha(archived[side+'/'+p])==row[side+'_sha256']
-        assert (root/p).read_bytes()==archived['successor/'+p], ('unreviewed readiness source drift',p)
+        current = (root/p).read_bytes()
+        if current != archived['successor/'+p]:
+            from persistence_switch_default_successor import provider as default_provider
+            default_provider(root,p,row['successor_sha256'],sha(current))
         before[p]=archived['predecessor/'+p].decode();after[p]=archived['successor/'+p].decode()
     semantic_proof(before,after)
     proof={p:(root/p).read_bytes() for p in record['proof']}
@@ -92,7 +95,9 @@ def reviewed(root):
 def provider(root,path,predecessor,actual):
     data=reviewed(root);row=next((r for r in data['providers'] if r['path']==path),None)
     assert row and row['predecessor_sha256']==predecessor, ('readiness predecessor mismatch',path)
-    assert row['successor_sha256']==actual, ('readiness successor mismatch',path)
+    if row['successor_sha256']!=actual:
+        from persistence_switch_default_successor import provider as default_provider
+        default_provider(root,path,row['successor_sha256'],actual)
     return data,row
 
 
@@ -102,4 +107,10 @@ def resolve_source(root,path,predecessor,actual,previous=None):
     if previous:result['readiness_intermediate_sha256']=predecessor
     result.update(successor_sha256=actual,commits=result['commits']+[data['successor_commit']],
                   readiness_semantics=data['semantics'],readiness_runtime_proof=data['proof'])
+    if actual != row['successor_sha256']:
+        from persistence_switch_default_successor import provider as default_provider
+        transition=default_provider(root,path,row['successor_sha256'],actual)
+        result['default_intermediate_sha256']=row['successor_sha256']
+        result['commits'].append(transition['successor_commit'])
+        result['switch_default_successor']=transition
     return result

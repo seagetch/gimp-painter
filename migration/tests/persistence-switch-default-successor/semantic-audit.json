@@ -1,0 +1,47 @@
+{
+  "field_changes": [
+    [
+      "mypaint.option.use_gimp_brushmark",
+      "default",
+      "Native GParamSpec default: FALSE; legacy GParamSpec metadata default: TRUE. Resource missing default remains FALSE.",
+      "Native GParamSpec default: TRUE; legacy GParamSpec metadata default: TRUE. Resource missing default remains FALSE."
+    ]
+  ],
+  "tsv_cells_changed": [
+    [
+      "mypaint.option.use_gimp_brushmark",
+      "default"
+    ]
+  ],
+  "counts_unchanged": {
+    "contract_records": 1379,
+    "syntax_candidates": 873,
+    "routes": 16,
+    "by_disposition": {
+      "dynamic-schema": 164,
+      "saved-field": 905,
+      "unchanged-standard": 310
+    },
+    "candidate_dispositions": {
+      "dynamic-schema": 496,
+      "non-persisted": 132,
+      "saved-field": 80,
+      "unchanged-standard": 165
+    }
+  },
+  "source_hash_changes": [
+    [
+      {
+        "revision": "native",
+        "path": "app/paint/painter-mypaint-surface/gimp-painter-options.cpp",
+        "sha256": "ce89680231cea5229cbcb5305710bf8fd98e7e59a62f9fccfd8a35a53ebec3fc"
+      },
+      {
+        "revision": "native",
+        "path": "app/paint/painter-mypaint-surface/gimp-painter-options.cpp",
+        "sha256": "1c6ae211d6352eeacd0be9e5e2ed54fd9e5a7f731c4f18c595e66392aea5165a"
+      }
+    ]
+  ],
+  "all_other_family_and_view_bytes_unchanged": true
+}

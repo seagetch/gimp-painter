@@ -49,7 +49,12 @@ def reviewed(root):
     # Preserve every original field/candidate row and every original family seal.
     for family in ('xcf', 'mypaint', 'config'):
         path = 'migration/inventory/persistence-' + family + '-fields.json'
-        assert (root / path).read_bytes() == old[path], ('predecessor family changed', family)
+        current = (root / path).read_bytes()
+        if family == 'mypaint' and current != old[path]:
+            from persistence_switch_default_successor import family_projection
+            family_projection(root, old[path], current)
+        else:
+            assert current == old[path], ('predecessor family changed', family)
     return table
 
 

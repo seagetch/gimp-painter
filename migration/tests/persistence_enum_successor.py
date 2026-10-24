@@ -90,7 +90,11 @@ def reviewed(root):
             except (AssertionError, FileNotFoundError) as error:
                 raise AssertionError(('enum provider drift', path)) from error
         before[path] = archived['predecessor/' + path].decode()
-        after[path] = current.decode()
+        if path == OPTIONS and b'g_param_spec_boolean(s.internal_name,s.displayed_name,nullptr,s.default_value,flags)' in current:
+            from persistence_switch_default_successor import property_predecessor
+            after[path] = property_predecessor(root,path,current).decode()
+        else:
+            after[path] = current.decode()
     semantic_proof(before, after)
     return data
 

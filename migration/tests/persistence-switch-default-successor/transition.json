@@ -1,0 +1,16 @@
+{
+  "predecessor_commit": "55bfa5f1f72f33fb5a2f10b1f7a319bd773b0e94",
+  "successor_commit": "a67cc26ef26615c61fe414c22111ace5de91b6c6",
+  "path": "app/paint/painter-mypaint-surface/gimp-painter-options.cpp",
+  "predecessor_sha256": "ce89680231cea5229cbcb5305710bf8fd98e7e59a62f9fccfd8a35a53ebec3fc",
+  "successor_sha256": "1c6ae211d6352eeacd0be9e5e2ed54fd9e5a7f731c4f18c595e66392aea5165a",
+  "family": "migration/inventory/persistence-mypaint-fields.json",
+  "family_predecessor_sha256": "d897d44d3a290adf8199cbffa5c07a05d55d28ae21d5592dfb9f65eedfc0b001",
+  "family_successor_sha256": "da9da9ecd672566cafa768f5ee478d755ffe0e006eaae5d24addea1fdbb70aa5",
+  "field_id": "mypaint.option.use_gimp_brushmark",
+  "default_before": "Native GParamSpec default: FALSE; legacy GParamSpec metadata default: TRUE. Resource missing default remains FALSE.",
+  "default_after": "Native GParamSpec default: TRUE; legacy GParamSpec metadata default: TRUE. Resource missing default remains FALSE.",
+  "runtime_package": "migration/tests/options-switch-default",
+  "runtime_manifest_sha256": "d72ac0042d87c77346ee899b56ab7ddc8eee3bd995f2161dbfb0866725953a4f",
+  "semantics": "Only declared use_gimp_brushmark default FALSE->TRUE. Resource missing FALSE unchanged, no CONSTRUCT flag. Actual prior native JSON retains FALSE; scalar-only omission after reset changes receiver default. Original readiness proof remains historical; no acquisition claim."
+}

@@ -8351,7 +8351,7 @@
       "native_type": "GParamSpecBoolean / G_TYPE_BOOLEAN",
       "legacy_type": "GParamSpecBoolean / G_TYPE_BOOLEAN",
       "owner": "GimpPainterMybrushOptions / GimpMypaintOptions",
-      "default": "Native GParamSpec default: FALSE; legacy GParamSpec metadata default: TRUE. Resource missing default remains FALSE.",
+      "default": "Native GParamSpec default: TRUE; legacy GParamSpec metadata default: TRUE. Resource missing default remains FALSE.",
       "absence": "Absent config property leaves current selected-resource draft unchanged; reset uses the GParamSpec default. Selected-resource construction may replace the initial unselected draft.",
       "flags": "Native G_PARAM_READWRITE|GIMP_CONFIG_PARAM_SERIALIZE; legacy GIMP_CONFIG_INSTALL_PROP_* adds GIMP_CONFIG_PARAM_FLAGS to GIMP_PARAM_STATIC_STRINGS. Native inherited GimpContext serializer emits only values unequal to their GParamSpec defaults; legacy config macros also include G_PARAM_CONSTRUCT.",
       "reader": [

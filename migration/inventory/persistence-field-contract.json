@@ -464,7 +464,7 @@
     {
       "name": "mypaint",
       "path": "migration/inventory/persistence-mypaint-fields.json",
-      "sha256": "d897d44d3a290adf8199cbffa5c07a05d55d28ae21d5592dfb9f65eedfc0b001",
+      "sha256": "da9da9ecd672566cafa768f5ee478d755ffe0e006eaae5d24addea1fdbb70aa5",
       "test": "migration/tests/test_persistence_mypaint_contract.py",
       "field_ids": [
         "mypaint.curve.custom",
@@ -4231,7 +4231,7 @@
     {
       "revision": "native",
       "path": "app/paint/painter-mypaint-surface/gimp-painter-options.cpp",
-      "sha256": "ce89680231cea5229cbcb5305710bf8fd98e7e59a62f9fccfd8a35a53ebec3fc"
+      "sha256": "1c6ae211d6352eeacd0be9e5e2ed54fd9e5a7f731c4f18c595e66392aea5165a"
     },
     {
       "revision": "native",
@@ -4631,14 +4631,15 @@
       "path": "app/paint/painter-mypaint-surface/gimp-painter-options.cpp",
       "revision": "native",
       "predecessor_sha256": "fabaa82d82cb6a9ade1fb7bb7e860dd1f54ccbe81c4e25b6c07b4aba41cb2d27",
-      "successor_sha256": "ce89680231cea5229cbcb5305710bf8fd98e7e59a62f9fccfd8a35a53ebec3fc",
+      "successor_sha256": "1c6ae211d6352eeacd0be9e5e2ed54fd9e5a7f731c4f18c595e66392aea5165a",
       "predecessor_commit": "3f831a8a862dabcc60f0049c154f93655d8004e2",
       "commits": [
         "0976ae344bc3ba60440c9fdcefc435e9aaf6d9de",
         "65213bdc96d26127b0cce6e1957d09a17a2184b8",
         "6b6a6cf39366de1251d0149b118e4e8851c840b3",
         "18c43bbe7c2157484201e127c558e77f7c683086",
-        "a2f3ec947000aca3f895d4fc016943ffa1f11d82"
+        "a2f3ec947000aca3f895d4fc016943ffa1f11d82",
+        "a67cc26ef26615c61fe414c22111ace5de91b6c6"
       ],
       "intermediate_sha256": "f6f1701310d3d1c0c3afd195a34cc26bd343e3a77a39292ba0f7a81d711bb830",
       "semantic_successor": "public-enum-registrar; unchanged saved values/default/flags",
@@ -4658,6 +4659,23 @@
         "migration/tests/options-readiness-entry/reviewed-red/blanket-red-results.json": "4515c325b3993760e3a216b19d3827df10caa51e648aad72cdeb93254e0193e9",
         "migration/tests/options-readiness-entry/pre-adoption-red/result.json": "1d1c766b4a8f1f347ae9611ded77aba67a31b4cf11d6f5a04856667b91003af8",
         "migration/tests/options-readiness-entry/legacy-source/oracle.json": "8d1fbada52f671ab3f7c7439ee769080e518d4aee9f6ea44f9f421f49865fc45"
+      },
+      "default_intermediate_sha256": "ce89680231cea5229cbcb5305710bf8fd98e7e59a62f9fccfd8a35a53ebec3fc",
+      "switch_default_successor": {
+        "predecessor_commit": "55bfa5f1f72f33fb5a2f10b1f7a319bd773b0e94",
+        "successor_commit": "a67cc26ef26615c61fe414c22111ace5de91b6c6",
+        "path": "app/paint/painter-mypaint-surface/gimp-painter-options.cpp",
+        "predecessor_sha256": "ce89680231cea5229cbcb5305710bf8fd98e7e59a62f9fccfd8a35a53ebec3fc",
+        "successor_sha256": "1c6ae211d6352eeacd0be9e5e2ed54fd9e5a7f731c4f18c595e66392aea5165a",
+        "family": "migration/inventory/persistence-mypaint-fields.json",
+        "family_predecessor_sha256": "d897d44d3a290adf8199cbffa5c07a05d55d28ae21d5592dfb9f65eedfc0b001",
+        "family_successor_sha256": "da9da9ecd672566cafa768f5ee478d755ffe0e006eaae5d24addea1fdbb70aa5",
+        "field_id": "mypaint.option.use_gimp_brushmark",
+        "default_before": "Native GParamSpec default: FALSE; legacy GParamSpec metadata default: TRUE. Resource missing default remains FALSE.",
+        "default_after": "Native GParamSpec default: TRUE; legacy GParamSpec metadata default: TRUE. Resource missing default remains FALSE.",
+        "runtime_package": "migration/tests/options-switch-default",
+        "runtime_manifest_sha256": "d72ac0042d87c77346ee899b56ab7ddc8eee3bd995f2161dbfb0866725953a4f",
+        "semantics": "Only declared use_gimp_brushmark default FALSE->TRUE. Resource missing FALSE unchanged, no CONSTRUCT flag. Actual prior native JSON retains FALSE; scalar-only omission after reset changes receiver default. Original readiness proof remains historical; no acquisition claim."
       }
     },
     {
@@ -4824,6 +4842,22 @@
     },
     "semantics": "Historical successful adoption bit; constructor seed excluded, NULL/dispose sticky; same-source requests observed via transient private scalar/signal. No persisted property addition."
   },
+  "switch_default_successor": {
+    "predecessor_commit": "55bfa5f1f72f33fb5a2f10b1f7a319bd773b0e94",
+    "successor_commit": "a67cc26ef26615c61fe414c22111ace5de91b6c6",
+    "path": "app/paint/painter-mypaint-surface/gimp-painter-options.cpp",
+    "predecessor_sha256": "ce89680231cea5229cbcb5305710bf8fd98e7e59a62f9fccfd8a35a53ebec3fc",
+    "successor_sha256": "1c6ae211d6352eeacd0be9e5e2ed54fd9e5a7f731c4f18c595e66392aea5165a",
+    "family": "migration/inventory/persistence-mypaint-fields.json",
+    "family_predecessor_sha256": "d897d44d3a290adf8199cbffa5c07a05d55d28ae21d5592dfb9f65eedfc0b001",
+    "family_successor_sha256": "da9da9ecd672566cafa768f5ee478d755ffe0e006eaae5d24addea1fdbb70aa5",
+    "field_id": "mypaint.option.use_gimp_brushmark",
+    "default_before": "Native GParamSpec default: FALSE; legacy GParamSpec metadata default: TRUE. Resource missing default remains FALSE.",
+    "default_after": "Native GParamSpec default: TRUE; legacy GParamSpec metadata default: TRUE. Resource missing default remains FALSE.",
+    "runtime_package": "migration/tests/options-switch-default",
+    "runtime_manifest_sha256": "d72ac0042d87c77346ee899b56ab7ddc8eee3bd995f2161dbfb0866725953a4f",
+    "semantics": "Only declared use_gimp_brushmark default FALSE->TRUE. Resource missing FALSE unchanged, no CONSTRUCT flag. Actual prior native JSON retains FALSE; scalar-only omission after reset changes receiver default. Original readiness proof remains historical; no acquisition claim."
+  },
   "catalog_successor": {
     "schema_version": 1,
     "successor_commit": "893c4e0d3d14f7fb61065ad2e0b5cac613f31312",
@@ -4864,6 +4898,10 @@
   },
   "tests": [
     {
+      "path": "migration/tests/persistence_switch_default_successor.py",
+      "sha256": "428316ade4111716559362f79e45b649f904896c480c66bb6f3737a50866ae6d"
+    },
+    {
       "path": "migration/tests/persistence_unsafe_undo_successor.py",
       "sha256": "7e36af00a3ce07ea7578a38fbae8d40314916bd2d6061ac37895276a8c6b1245"
     },
@@ -4877,7 +4915,7 @@
     },
     {
       "path": "migration/tests/persistence_readiness_successor.py",
-      "sha256": "1ac2743ea583991c01204f87dad9ab34c915fefd7b5842f6c46e7df6afd49a37"
+      "sha256": "233a6e9befe77026b4ef0d50331b5febbb221cb68d7f250e3d7e14fe079015fc"
     },
     {
       "path": "migration/tests/persistence_undo_successor.py",
@@ -4889,11 +4927,11 @@
     },
     {
       "path": "migration/tests/persistence_enum_successor.py",
-      "sha256": "c283828c4f7e98ebd81c37b6bb067eb5e56c82444e5bafcdbf7b76d3ec6f59eb"
+      "sha256": "4e96900b56b0f83224e32dcf14485a59932c58e2000471ffa6dd4de5ed5a5d36"
     },
     {
       "path": "migration/tests/persistence_successors.py",
-      "sha256": "9096746a6ed113bc749fcc98d6e597c4e82b77e367bf67a042115e6aa81cd7d1"
+      "sha256": "8cba02572d83f08eee689475051fc961da4ef72d01309146f60ddf47b8888601"
     },
     {
       "path": "migration/tests/persistence_source.py",
@@ -4901,7 +4939,7 @@
     },
     {
       "path": "migration/tests/test_persistence_field_contract.py",
-      "sha256": "401b48f16b8ca0b6c1c50bd3f068b4fc0ea3edc47b07b9c36a156e0e028436ea"
+      "sha256": "9640e3ef4c833a9979da9f8ee0d198199860d63bb217431a2473beb58ab43d6a"
     },
     {
       "path": "migration/tests/test_persistence_xcf_contract.py",
@@ -4909,7 +4947,7 @@
     },
     {
       "path": "migration/tests/test_persistence_mypaint_contract.py",
-      "sha256": "eb83bdac01a8a3d11af29bea6e5f0740c49d95aee18b70a7cb3f2d51e666deb1"
+      "sha256": "1a1db64a94f128a099cd06d49631e2240c8c162bb51b85acbf2bf7c713c2183e"
     },
     {
       "path": "migration/tests/test_persistence_config_contract.py",

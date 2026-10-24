@@ -155,7 +155,7 @@ def _validate_source_semantics(root):
     registrations = re.findall(r'for\(const auto&s:(painter_mypaint_\w+)\)\{properties\[s.index\+1\]=(g_param_spec_\w+)\(([^;]+)\);\}', init)
     assert registrations == [
       ('painter_mypaint_settings','g_param_spec_double','s.internal_name,s.displayed_name,s.tooltip,s.minimum,s.maximum,s.default_value,flags'),
-      ('painter_mypaint_switches','g_param_spec_boolean','s.internal_name,s.displayed_name,nullptr,FALSE,flags'),
+      ('painter_mypaint_switches','g_param_spec_boolean','s.internal_name,s.displayed_name,nullptr,s.default_value,flags'),
       ('painter_mypaint_texts','g_param_spec_string','s.internal_name,s.displayed_name,nullptr,nullptr,flags')], registrations
     transient = re.findall(r'properties\[(PROP_\w+)\]=g_param_spec_\w+\(((?:"(?:\\.|[^"\\])*"|[^;"])*?)G_PARAM_READABLE\);',init,re.S)
     assert {key for key,_ in transient} == {'PROP_DIRTY','PROP_CONFLICT','PROP_DRAFT_NAME','PROP_NAME_DIRTY'}
@@ -326,7 +326,7 @@ def validate_family(data, root):
             elif kind == 'switches':
                 assert m['default_value'] == (c[2]=='TRUE'),c
                 default = 'Native and legacy resource constructor/missing default: FALSE; metadata switch default is not loaded into the resource.'
-                option_default = f'Native GParamSpec default: FALSE; legacy GParamSpec metadata default: {c[2]}. Resource missing default remains FALSE.'
+                option_default = f'Native GParamSpec default: {c[2]}; legacy GParamSpec metadata default: {c[2]}. Resource missing default remains FALSE.'
             elif kind == 'texts':
                 assert m['default_value'] is None,c
                 default = 'Native and legacy resource constructor/missing default: NULL; native text_value convenience accessor returns empty string for NULL.'
