@@ -1855,6 +1855,60 @@ void flip (GimpItem *item, GimpContext *, GimpOrientationType, gdouble, gboolean
     });
   });
 }
+/* Legacy geometry wrappers invalidate after delegation even for no-op
+ * geometry; property notifications alone cannot preserve that scheduling duty. */
+void translate (GimpItem *item, gdouble offset_x, gdouble offset_y, gboolean push_undo)
+{
+  boundary_void (nullptr, [&] {
+    auto owner_pin = ObjectRef<GObject>::retain (G_OBJECT (item));
+    auto image_pin = ObjectRef<GObject>::retain (G_OBJECT (gimp_item_get_image (item)));
+    auto *store = BindingStore::find (owner_pin.get ());
+    if (!store) return;
+    const auto token = store->generation ();
+    if (!store->accepts (token)) return;
+    GIMP_ITEM_CLASS (gimp_filter_layer_parent_class)->translate (
+      item, offset_x, offset_y, push_undo);
+    store = BindingStore::find (owner_pin.get ());
+    if (store && store->accepts (token))
+      store->with<FilterSlot> ([] (FilterImpl& impl) { impl.invalidate (); });
+  });
+}
+void scale (GimpItem *item, gint new_width, gint new_height,
+            gint new_offset_x, gint new_offset_y,
+            GimpInterpolationType interpolation_type, GimpProgress *progress)
+{
+  boundary_void (nullptr, [&] {
+    auto owner_pin = ObjectRef<GObject>::retain (G_OBJECT (item));
+    auto image_pin = ObjectRef<GObject>::retain (G_OBJECT (gimp_item_get_image (item)));
+    auto *store = BindingStore::find (owner_pin.get ());
+    if (!store) return;
+    const auto token = store->generation ();
+    if (!store->accepts (token)) return;
+    GIMP_ITEM_CLASS (gimp_filter_layer_parent_class)->scale (
+      item, new_width, new_height, new_offset_x, new_offset_y,
+      interpolation_type, progress);
+    store = BindingStore::find (owner_pin.get ());
+    if (store && store->accepts (token))
+      store->with<FilterSlot> ([] (FilterImpl& impl) { impl.invalidate (); });
+  });
+}
+void resize (GimpItem *item, GimpContext *context, GimpFillType fill_type,
+             gint new_width, gint new_height, gint offset_x, gint offset_y)
+{
+  boundary_void (nullptr, [&] {
+    auto owner_pin = ObjectRef<GObject>::retain (G_OBJECT (item));
+    auto image_pin = ObjectRef<GObject>::retain (G_OBJECT (gimp_item_get_image (item)));
+    auto *store = BindingStore::find (owner_pin.get ());
+    if (!store) return;
+    const auto token = store->generation ();
+    if (!store->accepts (token)) return;
+    GIMP_ITEM_CLASS (gimp_filter_layer_parent_class)->resize (
+      item, context, fill_type, new_width, new_height, offset_x, offset_y);
+    store = BindingStore::find (owner_pin.get ());
+    if (store && store->accepts (token))
+      store->with<FilterSlot> ([] (FilterImpl& impl) { impl.invalidate (); });
+  });
+}
 /* Unlike flip, legacy rotate performs the native transform before invalidating
  * its derived cache. Same-extent rotations emit no size/offset/format change. */
 void rotate (GimpItem *item, GimpContext *context, GimpRotationType rotate_type,
@@ -1930,6 +1984,9 @@ static void gimp_filter_layer_class_init (GimpFilterLayerClass *klass)
     g_param_spec_boxed ("filter-opaque-arguments", "Opaque arguments", "Unavailable converted argument model, retained uninterpreted",
                         G_TYPE_BYTES, G_PARAM_READABLE));
   GIMP_ITEM_CLASS (klass)->duplicate = duplicate;
+  GIMP_ITEM_CLASS (klass)->translate = translate;
+  GIMP_ITEM_CLASS (klass)->scale = scale;
+  GIMP_ITEM_CLASS (klass)->resize = resize;
   GIMP_ITEM_CLASS (klass)->flip = flip;
   GIMP_ITEM_CLASS (klass)->rotate = rotate;
   GIMP_ITEM_CLASS (klass)->transform = transform;

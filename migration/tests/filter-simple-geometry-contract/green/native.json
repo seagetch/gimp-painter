@@ -1,0 +1,31 @@
+{
+  "command": [
+    "/workspace/shared/gimp-clean-aggregate/build/app/tests/gimp-filter-layer",
+    "-p",
+    "/gimp-filter-layer/filter_gaussian_translate_noop",
+    "-p",
+    "/gimp-filter-layer/filter_gaussian_translate_changed",
+    "-p",
+    "/gimp-filter-layer/filter_gaussian_scale_same",
+    "-p",
+    "/gimp-filter-layer/filter_gaussian_scale_changed",
+    "-p",
+    "/gimp-filter-layer/filter_gaussian_resize_noop",
+    "-p",
+    "/gimp-filter-layer/filter_gaussian_resize_changed",
+    "-p",
+    "/gimp-filter-layer/filter_gaussian_same_extent_matrix_contract",
+    "-p",
+    "/gimp-filter-layer/filter_gaussian_own_center_rotate_contract",
+    "-p",
+    "/gimp-filter-layer/filter_flip_legacy_reset_contract",
+    "-p",
+    "/gimp-filter-layer/filter_gaussian_restore_latest_lower_contract",
+    "-p",
+    "/gimp-filter-layer/filter_gaussian_running_duplicate_contract"
+  ],
+  "exit_code": 0,
+  "duration": 1.9648730754852295,
+  "stdout": "TAP version 14\n# random seed: R02Sec681a6d921157d5ee285ba430ee0e57\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# Start of gimp-filter-layer tests\n# operation=0 changed=0 buffer-notify=0 generation=2->3 bounds=0,0/16x16;unchanged lower source;no-op failure is scheduling-only\nok 1 /gimp-filter-layer/filter_gaussian_translate_noop\n# End of gimp-filter-layer tests\n1..1\n# Start of gimp-filter-layer tests\n# operation=0 changed=1 buffer-notify=0 generation=2->5 bounds=4,4/16x16;unchanged lower source;no-op failure is scheduling-only\nok 2 /gimp-filter-layer/filter_gaussian_translate_changed\n# End of gimp-filter-layer tests\n1..2\n# Start of gimp-filter-layer tests\n# operation=1 changed=0 buffer-notify=1 generation=2->3 bounds=0,0/16x16;unchanged lower source;no-op failure is scheduling-only\nok 3 /gimp-filter-layer/filter_gaussian_scale_same\n# End of gimp-filter-layer tests\n1..3\n# Start of gimp-filter-layer tests\n# operation=1 changed=1 buffer-notify=1 generation=2->6 bounds=4,4/24x24;unchanged lower source;no-op failure is scheduling-only\nok 4 /gimp-filter-layer/filter_gaussian_scale_changed\n# End of gimp-filter-layer tests\n1..4\n# Start of gimp-filter-layer tests\n# operation=2 changed=0 buffer-notify=0 generation=2->3 bounds=0,0/16x16;unchanged lower source;no-op failure is scheduling-only\nok 5 /gimp-filter-layer/filter_gaussian_resize_noop\n# End of gimp-filter-layer tests\n1..5\n# Start of gimp-filter-layer tests\n# operation=2 changed=1 buffer-notify=1 generation=2->6 bounds=4,4/24x24;unchanged lower source;no-op failure is scheduling-only\nok 6 /gimp-filter-layer/filter_gaussian_resize_changed\n# End of gimp-filter-layer tests\n1..6\n# Start of gimp-filter-layer tests\n# same-extent matrix180:buffer notifications=1;generation=2->3;immediate pixel=0,0,255,255;source/extent unchanged\nok 7 /gimp-filter-layer/filter_gaussian_same_extent_matrix_contract\n# End of gimp-filter-layer tests\n1..7\n# Start of gimp-filter-layer tests\n# own-center rotate180:buffer notifications=1;generation=2->3;immediate pixel=0,0,255,255;source/extent unchanged\nok 8 /gimp-filter-layer/filter_gaussian_own_center_rotate_contract\n# End of gimp-filter-layer tests\n1..8\n# Start of gimp-filter-layer tests\n# four H/V direct/image flips retain Filter extent and reevaluate lower pixels;whole-image Undo/Redo and delegated translate/scale/resize/rotate/matrix preserved\nok 9 /gimp-filter-layer/filter_flip_legacy_reset_contract\n# End of gimp-filter-layer tests\n1..9\n# Start of gimp-filter-layer tests\n# root/group deletion history:6 restores after independent lower edits,4 redo deletions,8 exact pixels,identity/definition and6 stack handler counts preserved;Gaussian only\nok 10 /gimp-filter-layer/filter_gaussian_restore_latest_lower_contract\n# End of gimp-filter-layer tests\n1..10\n# Start of gimp-filter-layer tests\n# real RUNNING Gaussian duplicated with fresh zero-run scheduler;original cancellation isolated;independent red/blue-green groups,immutable definition/raw bytes and4 exact pixels\nok 11 /gimp-filter-layer/filter_gaussian_running_duplicate_contract\n# End of gimp-filter-layer tests\n1..11\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n",
+  "stderr": ""
+}

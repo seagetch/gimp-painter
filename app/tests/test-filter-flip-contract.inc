@@ -8,10 +8,11 @@ filter_flip_legacy_reset_contract (void)
 {
   GimpItemClass *klass=g_type_class_ref (GIMP_TYPE_FILTER_LAYER);
   GimpItemClass *parent=g_type_class_peek_parent (klass);
-  g_assert_true (klass->scale==parent->scale);
-  g_assert_true (klass->resize==parent->resize);
-  /* Rotate and matrix transform delegate then invalidate unchanged bounds.
-   * Separate behavioral contracts observe their native buffer updates. */
+  g_assert_true (klass->translate!=parent->translate);
+  g_assert_true (klass->scale!=parent->scale);
+  g_assert_true (klass->resize!=parent->resize);
+  /* All five geometry wrappers preserve parent delegation then invalidate.
+   * Separate behavioral contracts observe native bounds/buffers and no-ops. */
   g_assert_true (klass->rotate!=parent->rotate);
   g_assert_true (klass->transform!=parent->transform);
   g_type_class_unref (klass);
@@ -73,5 +74,5 @@ filter_flip_legacy_reset_contract (void)
         else pixel (GIMP_LAYER (filter),255,0,0,255);
         g_object_unref (image);
       }
-  g_test_message ("four H/V direct/image flips retain Filter extent and reevaluate lower pixels;whole-image Undo/Redo and two inherited-transform slots and delegated rotate/matrix preserved");
+  g_test_message ("four H/V direct/image flips retain Filter extent and reevaluate lower pixels;whole-image Undo/Redo and delegated translate/scale/resize/rotate/matrix preserved");
 }

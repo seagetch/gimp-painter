@@ -1,0 +1,74 @@
+[
+  {
+    "case": "translate_noop",
+    "command": [
+      "/workspace/shared/gimp-clean-aggregate/build/app/tests/gimp-filter-layer",
+      "-p",
+      "/gimp-filter-layer/filter_gaussian_translate_noop"
+    ],
+    "exit_code": -6,
+    "duration": 1.1819939613342285,
+    "stdout": "TAP version 14\n# random seed: R02S0a244e93df97c0cdbc378ced44262402\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# Start of gimp-filter-layer tests\n# operation=0 changed=0 buffer-notify=0 generation=2->2 bounds=0,0/16x16;unchanged lower source;no-op failure is scheduling-only\nnot ok /gimp-filter-layer/filter_gaussian_translate_noop - ERROR:../source/app/tests/test-filter-simple-geometry-contract.inc:52:filter_gaussian_simple_geometry: assertion failed (gimp_filter_layer_get_generation(filter) > generation): (2 > 2)\nBail out!\n",
+    "stderr": "**\nERROR:../source/app/tests/test-filter-simple-geometry-contract.inc:52:filter_gaussian_simple_geometry: assertion failed (gimp_filter_layer_get_generation(filter) > generation): (2 > 2)\n"
+  },
+  {
+    "case": "translate_changed",
+    "command": [
+      "/workspace/shared/gimp-clean-aggregate/build/app/tests/gimp-filter-layer",
+      "-p",
+      "/gimp-filter-layer/filter_gaussian_translate_changed"
+    ],
+    "exit_code": 0,
+    "duration": 1.134483814239502,
+    "stdout": "TAP version 14\n# random seed: R02S5f97eb96f8bab4379d553b325ef98433\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# Start of gimp-filter-layer tests\n# operation=0 changed=1 buffer-notify=0 generation=2->4 bounds=4,4/16x16;unchanged lower source;no-op failure is scheduling-only\nok 1 /gimp-filter-layer/filter_gaussian_translate_changed\n# End of gimp-filter-layer tests\n1..1\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n",
+    "stderr": ""
+  },
+  {
+    "case": "scale_same",
+    "command": [
+      "/workspace/shared/gimp-clean-aggregate/build/app/tests/gimp-filter-layer",
+      "-p",
+      "/gimp-filter-layer/filter_gaussian_scale_same"
+    ],
+    "exit_code": -6,
+    "duration": 1.1666176319122314,
+    "stdout": "TAP version 14\n# random seed: R02S42dfaf2cc7bc13d726c84774ca7f8243\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# Start of gimp-filter-layer tests\n# operation=1 changed=0 buffer-notify=1 generation=2->2 bounds=0,0/16x16;unchanged lower source;no-op failure is scheduling-only\nnot ok /gimp-filter-layer/filter_gaussian_scale_same - ERROR:../source/app/tests/test-filter-simple-geometry-contract.inc:52:filter_gaussian_simple_geometry: assertion failed (gimp_filter_layer_get_generation(filter) > generation): (2 > 2)\nBail out!\n",
+    "stderr": "**\nERROR:../source/app/tests/test-filter-simple-geometry-contract.inc:52:filter_gaussian_simple_geometry: assertion failed (gimp_filter_layer_get_generation(filter) > generation): (2 > 2)\n"
+  },
+  {
+    "case": "scale_changed",
+    "command": [
+      "/workspace/shared/gimp-clean-aggregate/build/app/tests/gimp-filter-layer",
+      "-p",
+      "/gimp-filter-layer/filter_gaussian_scale_changed"
+    ],
+    "exit_code": 0,
+    "duration": 1.1984071731567383,
+    "stdout": "TAP version 14\n# random seed: R02S20dea2d67b3425c98a8c07a9e5503f13\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# Start of gimp-filter-layer tests\n# operation=1 changed=1 buffer-notify=1 generation=2->5 bounds=4,4/24x24;unchanged lower source;no-op failure is scheduling-only\nok 1 /gimp-filter-layer/filter_gaussian_scale_changed\n# End of gimp-filter-layer tests\n1..1\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n",
+    "stderr": ""
+  },
+  {
+    "case": "resize_noop",
+    "command": [
+      "/workspace/shared/gimp-clean-aggregate/build/app/tests/gimp-filter-layer",
+      "-p",
+      "/gimp-filter-layer/filter_gaussian_resize_noop"
+    ],
+    "exit_code": -6,
+    "duration": 1.1427586078643799,
+    "stdout": "TAP version 14\n# random seed: R02S39a4e73762317c457d60b79505cbf7fc\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# Start of gimp-filter-layer tests\n# operation=2 changed=0 buffer-notify=0 generation=2->2 bounds=0,0/16x16;unchanged lower source;no-op failure is scheduling-only\nnot ok /gimp-filter-layer/filter_gaussian_resize_noop - ERROR:../source/app/tests/test-filter-simple-geometry-contract.inc:52:filter_gaussian_simple_geometry: assertion failed (gimp_filter_layer_get_generation(filter) > generation): (2 > 2)\nBail out!\n",
+    "stderr": "**\nERROR:../source/app/tests/test-filter-simple-geometry-contract.inc:52:filter_gaussian_simple_geometry: assertion failed (gimp_filter_layer_get_generation(filter) > generation): (2 > 2)\n"
+  },
+  {
+    "case": "resize_changed",
+    "command": [
+      "/workspace/shared/gimp-clean-aggregate/build/app/tests/gimp-filter-layer",
+      "-p",
+      "/gimp-filter-layer/filter_gaussian_resize_changed"
+    ],
+    "exit_code": 0,
+    "duration": 1.2047183513641357,
+    "stdout": "TAP version 14\n# random seed: R02Sbf21cecd03c3b07b00b0ab9d3209aa2a\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# Start of gimp-filter-layer tests\n# operation=2 changed=1 buffer-notify=1 generation=2->5 bounds=4,4/24x24;unchanged lower source;no-op failure is scheduling-only\nok 1 /gimp-filter-layer/filter_gaussian_resize_changed\n# End of gimp-filter-layer tests\n1..1\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n",
+    "stderr": ""
+  }
+]
