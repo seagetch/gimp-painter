@@ -1,0 +1,41 @@
+{
+  "base": "2ef2dd32eeb7201e8e0318f169c6005a21c10410",
+  "scope": "explicit final readiness overlay on exact2ef source after source-bound same-request and constructor/blocked-handler reds",
+  "held_exact_base": [
+    "app/widgets/gimpcellrendererpopup.cpp",
+    "app/display/gimppaintercanvasui.cpp",
+    "app/core/gimppaintermybrush.cpp",
+    "app/core/gimpviewable.c",
+    "app/widgets/gimpviewrenderer.c",
+    "app/tools/gimpfillbrushtool.cpp",
+    "app/tools/gimpbucketfillbrushtool.h",
+    "app/tools/gimp-tools.c",
+    "app/core/gimpclonelayer.cpp",
+    "app/core/gimpclonelayer.h",
+    "app/core/gimpclonelayer-handle.hpp",
+    "app/core/gimpclonelayerundo.h"
+  ],
+  "owned_sha256": {
+    "app/core/gimpcontext.c": "5d4ca65dbbfb7bbefeb63514969a96b5ae29069d8434562b6aab6d813d21d13e",
+    "app/paint/painter-mypaint-surface/gimp-painter-options.cpp": "ce89680231cea5229cbcb5305710bf8fd98e7e59a62f9fccfd8a35a53ebec3fc",
+    "app/paint/painter-mypaint-surface/gimp-painter-options.hpp": "4f8a5d635574d9a609c976b9679cd0b6e5ed61a2e926c466f7991588dab1f3d0",
+    "app/paint/gimpmypaintoptions.h": "c0f7b8f309a0580ad8ebc7f7cff228b625f43999573e6745dbc9f258094c66be",
+    "app/tests/test-mypaint-options-readiness.cpp": "a15949d6e4c5caa06c8b9c691e0ab26a1e16dad97442782760b9bc60a2ed5cad",
+    "app/tests/test-mypaint-options-readiness-c.c": "28b1fe7b87bde5b750d2336c1655389445531a94bd50a413648f4727502a902f"
+  },
+  "input_sha256": {
+    "app/core/gimpcontext.c": "5d4ca65dbbfb7bbefeb63514969a96b5ae29069d8434562b6aab6d813d21d13e",
+    "app/paint/painter-mypaint-surface/gimp-painter-options.cpp": "ce89680231cea5229cbcb5305710bf8fd98e7e59a62f9fccfd8a35a53ebec3fc",
+    "app/paint/painter-mypaint-surface/gimp-painter-options.hpp": "4f8a5d635574d9a609c976b9679cd0b6e5ed61a2e926c466f7991588dab1f3d0",
+    "app/paint/gimpmypaintoptions.h": "c0f7b8f309a0580ad8ebc7f7cff228b625f43999573e6745dbc9f258094c66be",
+    "app/tests/test-mypaint-options-readiness.cpp": "a15949d6e4c5caa06c8b9c691e0ab26a1e16dad97442782760b9bc60a2ed5cad",
+    "app/tests/test-mypaint-options-readiness-c.c": "28b1fe7b87bde5b750d2336c1655389445531a94bd50a413648f4727502a902f",
+    "app/tests/meson.build": "6272926298fb80db6459d8b7f2fe9c5bf672ca0e6c411f4f0b4f6a78b7c417d0",
+    "app/core/gimpcontext.h": "777954c5b8789c4595979e721e9c3c204147eed25ebca94be19550b76bbe8ccd",
+    "app/painter/binding-store.cpp": "c69d65c22f26e6be8f6df69765cd30f7bbbd32b46b0eb847e9f6524b41c2b557",
+    "app/painter/binding-store.hpp": "c67deb0ccf33a13a5ba3ab3f50bdbb2ef8931f481acf62a9315d778388c90262",
+    "app/paint/painter-mypaint-surface/gimp-painter-options.h": "a1690e0a92b49681751a0ac96c742d9de77da370463edc928f580c4267e39752"
+  },
+  "full_manifest_sha256": "d93f3dad6f4dfc44b7d59f6453e0eb3ffb19e5f6c78da9e092d5d559b5a64050",
+  "note": "Derived bounded excerpt; complete source map stays in original readiness receipt."
+}

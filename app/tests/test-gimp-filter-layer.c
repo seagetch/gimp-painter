@@ -2635,6 +2635,7 @@ static void image_close_during_strong_undo_callbacks (void) { undo_owner_lifetim
 static void image_close_during_strong_redo_callbacks (void) { undo_owner_lifetime (TRUE,TRUE); }
 
 #include "test-filter-pickable-contract.inc"
+#include "test-filter-property-contract.inc"
 #include "test-filter-simple-geometry-contract.inc"
 #include "test-filter-matrix-contract.inc"
 #include "test-filter-rotate-contract.inc"
@@ -2888,6 +2889,7 @@ int main (int argc, char **argv)
   ADD (object_arguments_do_not_cycle); ADD (expired_object_records_and_reassignment);
   ADD (object_array_arguments_do_not_dangle); ADD (removal_and_undo); ADD (lower_group_failure_and_recovery);
   ADD (filter_flip_legacy_reset_contract);
+  ADD (filter_gaussian_property_contract);
   ADD (filter_gaussian_translate_noop);
   ADD (filter_gaussian_translate_changed);
   ADD (filter_gaussian_scale_same);

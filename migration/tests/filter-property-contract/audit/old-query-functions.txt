@@ -1,0 +1,63 @@
+void GLib::FilterLayer::set_procedure(const char* proc_name, GArray* _args)
+{
+  if (runner) {
+    runner = NULL;
+    g_print("FilterLayer::set_procedure(%s), Cleanup existing runner.\n", proc_name);
+  }
+  auto           pdb   = ref( gimp_item_get_image(GIMP_ITEM(g_object))->gimp->pdb );
+  auto           args  = ref<GValue>(_args);
+  GimpProcedure* proc    = pdb [gimp_pdb_lookup_procedure] (proc_name);
+  if (proc) {
+    ProcedureRunner* r     = new ProcedureRunner(proc, GIMP_PROGRESS(g_object));
+    if (args) {
+      for (int i = 0; i < proc->num_args; i ++) {
+        GParamSpec* pspec = proc->args[i];
+
+        if (GIMP_IS_PARAM_SPEC_IMAGE_ID(pspec) ||
+            GIMP_IS_PARAM_SPEC_DRAWABLE_ID(pspec) ||
+            GIMP_IS_PARAM_SPEC_ITEM_ID(pspec))
+          continue;
+
+        r->set_arg(i, args[i]);
+      }
+    }
+
+    runner     = r;
+    filter_reset();
+    invalidate_layer();
+  }
+}
+
+const char* GLib::FilterLayer::get_procedure()
+{
+  if (runner)
+    return runner->get_procedure_name();
+  return "";
+}
+
+GArray* GLib::FilterLayer::get_procedure_args()
+{
+  if (runner) {
+    GValueArray* varray = runner->get_args();
+
+    GArray *array = g_array_sized_new (FALSE, TRUE, sizeof (GValue), varray->n_values);
+    g_array_set_clear_func (array, (GDestroyNotify) g_value_unset);
+    g_array_append_vals(array, varray->values, varray->n_values);
+    return array;
+  }
+  return  NULL;
+}
+
+GValue GLib::FilterLayer::get_procedure_arg(int index)
+{
+  if (runner)
+    runner->get_arg(index);
+  return  G_VALUE_INIT;
+}
+
+void GLib::FilterLayer::set_procedure_arg(int index, GValue value)
+{
+  if (runner)
+    runner->set_arg(index, value);
+}
+
