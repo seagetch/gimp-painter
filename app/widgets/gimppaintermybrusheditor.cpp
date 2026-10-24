@@ -733,6 +733,49 @@ static GtkWidget*new_editor(GimpContext*context,gboolean horizontal,
 GtkWidget*gimp_painter_mybrush_editor_new(GimpContext*context,gboolean horizontal,GError**error) {
   return new_editor(context,horizontal,nullptr,error);
 }
+namespace {
+GtkWidget *original_options_gui (GimpToolOptions *options, gboolean horizontal)
+{
+  return boundary<GtkWidget *> (nullptr, nullptr, [&] () -> GtkWidget * {
+    if (!GIMP_IS_PAINTER_MYBRUSH_OPTIONS (options)) return nullptr;
+    auto *model = GIMP_PAINTER_MYBRUSH_OPTIONS (options);
+    auto *context = GIMP_CONTEXT (model);
+    if (!context->gimp) return nullptr;
+    // Acquiring the options lease can synchronously retire its application.
+    // Capture the borrowed endpoint weakly before the acquisition callback.
+    GWeakRef application;
+    g_weak_ref_init (&application, G_OBJECT (context->gimp));
+    struct ClearWeak { GWeakRef *ref; ~ClearWeak () { g_weak_ref_clear (ref); } } clear{&application};
+    auto model_owner = ObjectRef<GimpPainterMybrushOptions>::retain (model);
+    auto app_owner = ObjectRef<GObject>::adopt (G_OBJECT (g_weak_ref_get (&application)));
+    if (!app_owner || context->gimp != GIMP (app_owner.get ())) return nullptr;
+    auto *app = GIMP (app_owner.get ());
+    auto available = [&] {
+      auto *model_binding = BindingStore::find (G_OBJECT (model));
+      auto *app_binding = BindingStore::find (G_OBJECT (app));
+      return context->gimp == app && app->config && model_binding &&
+        model_binding->state () == BindingStore::State::active &&
+        (!app_binding || app_binding->state () == BindingStore::State::active);
+    };
+    if (!available ()) return nullptr;
+    auto widget = ObjectRef<GObject>::sink (G_OBJECT (
+      gimp_painter_mybrush_editor_new (context, horizontal, nullptr)));
+    if (!widget || !available ()) return nullptr;
+    auto *editor_binding = BindingStore::find (widget.get ());
+    if (!editor_binding || editor_binding->state () != BindingStore::State::active)
+      return nullptr;
+    // Existing editor construction owns the exact supplied options through
+    // ref_for_context; no tool-info is read and no canonical options replaced.
+    g_object_force_floating (widget.get ());
+    return GTK_WIDGET (widget.release ());
+  });
+}
+}
+GtkWidget *gimp_mypaint_options_gui (GimpToolOptions *options)
+{ return original_options_gui (options, FALSE); }
+GtkWidget *gimp_mypaint_options_gui_horizontal (GimpToolOptions *options)
+{ return original_options_gui (options, TRUE); }
+
 GtkWidget*gimp_painter_mybrush_editor_popup(GimpContext*context,GtkWidget*parent,GError**error) {
   return boundary<GtkWidget*>(error,nullptr,[&]()->GtkWidget* {
   std::shared_ptr<EditorPageMemory> page_memory;

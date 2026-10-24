@@ -4,6 +4,7 @@
 #include "../../painter/gimp-painter-visibility.h"
 extern "C" {
 #include "paint/gimpmypaintoptions.h"
+#include "tools/gimpmypaintoptions-gui.h"
 }
 #include "painter/object-ref.hpp"
 #include "painter/resources.hpp"
@@ -19,6 +20,13 @@ public:
   static PainterOptionsRef retain (GimpPainterMybrushOptions *options)
   { return PainterOptionsRef (ObjectRef<GimpPainterMybrushOptions>::retain (options)); }
   GimpPainterMybrushOptions *get () const noexcept { return owner_.get (); }
+  ObjectRef<GObject> gui () const
+  { return ObjectRef<GObject>::sink (G_OBJECT (
+      gimp_mypaint_options_gui (GIMP_TOOL_OPTIONS (get ())))); }
+  ObjectRef<GObject> gui_horizontal () const
+  { return ObjectRef<GObject>::sink (G_OBJECT (
+      gimp_mypaint_options_gui_horizontal (GIMP_TOOL_OPTIONS (get ())))); }
+
   void set_mapping_point (const gchar *name, guint input, guint count,
                           const GimpVector2 *points) const
   {

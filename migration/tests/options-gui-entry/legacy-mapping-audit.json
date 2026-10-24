@@ -1,0 +1,78 @@
+{
+  "legacy_pin": "afa43fae3e920210146abed514f136fd49f671b5",
+  "legacy_source_sha256": {
+    "app/tools/gimpmypaintoptions-gui.cpp": "4e91b22f60dfa80f4d8a87672aa5ff545c909f18eb3cc2926413c1cbc5abb020",
+    "app/tools/gimpmypaintoptions-gui.h": "94dc5d4620403f15305b650edbbaa2b10b8ea09dbc9b70b6240d8a1b90583eeb",
+    "app/tools/gimpmypaintbrusheditor.cpp": "79cffbb15ceda0d96ccb6b2e81dd7c7ac16a362a7b65b96c7eaad7192bc9c040",
+    "app/tools/gimpmypaintbrushoptions-gui.cpp": "73b57f221c94f6fc45799009a893dae4dce825b0f6faa541a0856f87cfd499f5"
+  },
+  "signatures": {
+    "gimp_mypaint_options_gui": "GtkWidget *(GimpToolOptions *)",
+    "gimp_mypaint_options_gui_horizontal": "GtkWidget *(GimpToolOptions *)"
+  },
+  "mapping": [
+    {
+      "original": "vertical Basic/Details notebook",
+      "native": "native editor Settings/Shape & Paper/Input Curves plus selector/actions",
+      "qualification": "layout replacement; not widget-tree parity"
+    },
+    {
+      "original": "horizontal basic opaque/radius-logarithmic/slow-tracking/hardness",
+      "native": "same named numeric controls in horizontally oriented native editor",
+      "qualification": "all functional controls available; not compact-toolbar geometry"
+    },
+    {
+      "original": "preset selection + custom dirty history selection",
+      "native": "painter-brush-list and painter-brush-history on same Options",
+      "qualification": "native history restores immutable Resource; no borrowed old draft GObject identity"
+    },
+    {
+      "original": "numeric setting edits and bool switches",
+      "native": "all BRUSH_MAPPING_COUNT numeric and BRUSH_BOOL_COUNT controls",
+      "qualification": "native metadata/ranges existing implementation; verify inventory exhaustively"
+    },
+    {
+      "original": "input selection/enable/point graph/range rescale",
+      "native": "native Input Curves combo/toggle/graph/point/range controls",
+      "qualification": "old constant-y collapse differs; native explicit constant curve retained"
+    },
+    {
+      "original": "draft name",
+      "native": "painter-brush-name edits same options draft name",
+      "qualification": "native separate unsaved name tracks name_dirty; old duplicate brush name mutated"
+    },
+    {
+      "original": "save duplicate under current draft name deleting collision",
+      "native": "native Save/Save As with collision/conflict/writable checks",
+      "qualification": "semantic mismatch intentionally must not restore destructive overwrite"
+    },
+    {
+      "original": "delete matching clean-draft name",
+      "native": "native selected writable resource Delete with protections",
+      "qualification": "semantic mismatch: identity and safety preconditions"
+    },
+    {
+      "original": "size Reset callback",
+      "native": "none",
+      "qualification": "old entire body commented: no supported effect"
+    },
+    {
+      "original": "per-numeric Reset button",
+      "native": "none",
+      "qualification": "old signal connection commented: no supported effect"
+    },
+    {
+      "original": "history name editing",
+      "native": "none",
+      "qualification": "old handler empty: no supported effect"
+    },
+    {
+      "original": "popup editor remembered page",
+      "native": "native existing EditorPageMemory",
+      "qualification": "separate existing native behavior; no held renderer edits"
+    }
+  ],
+  "independent_options": "native ref_for_context returns reference to supplied native Options before canonical tool lookup; no tool-info needed",
+  "status": "READ_ONLY_AUDIT; no GUI edits/builds; no full semantic-equivalence claim",
+  "needed_decision": "Native layout replacement can preserve operation access but cannot claim destructive save/delete or old curve normalization parity; row must state partial/replacement semantics unless acceptance mapping explicitly covers those differences."
+}

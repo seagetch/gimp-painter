@@ -1328,3 +1328,15 @@ test('mypaint-undo-ref', mypaint_undo_ref,
         'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
         'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
         'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 120)
+
+# Original MyPaint GUI entries share the sole native editor/model.
+mypaint_options_gui = executable('mypaint-options-gui',
+  ['test-mypaint-options-gui.cpp', 'test-mypaint-options-gui-c.c', 'tests.c'],
+  dependencies: [libapp_dep, painter_mypaint_surface_dep, appstream],
+  link_with: apptests_links, cpp_args: painter_cpp_args,
+  override_options: ['c_std=c11', 'cpp_std=c++14'])
+test('mypaint-options-gui', mypaint_options_gui,
+  env: ['GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+        'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+        'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
+        'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 180)

@@ -312,6 +312,13 @@
       "context": "core",
       "prerequisites": [],
       "review": "09.011/native-stroke-undo: original native type name with typed GObject stroke property and native DrawableUndo parent; no raw Stroke pointer ABI claim. Core prelude and header-owned C linkage, first/double C11/C++14 compile."
+    },
+    {
+      "path": "app/tools/gimpmypaintoptions-gui.h",
+      "kind": "new",
+      "context": "standalone",
+      "prerequisites": [],
+      "review": "08.018/mypaint-options-gui-entry: original vertical/horizontal C signatures forward to sole native editor using exact supplied native Options, including unbound independent models. Header owns GTK/core prerequisites and C linkage; first/double C11/C++14 compile, no full historical GUI/save/delete/layout parity claim."
     }
   ]
 }
