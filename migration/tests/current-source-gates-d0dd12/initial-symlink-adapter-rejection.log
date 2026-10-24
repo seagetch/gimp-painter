@@ -1,0 +1,13 @@
+Traceback (most recent call last):
+  File "/workspace/shared/current-source-gates-d0dd12c943/source/tools/check_painter_legacy_adapters.py", line 294, in <module>
+    main()
+  File "/workspace/shared/current-source-gates-d0dd12c943/source/tools/check_painter_legacy_adapters.py", line 286, in main
+    result = scan(args.root, policy)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/shared/current-source-gates-d0dd12c943/source/tools/check_painter_legacy_adapters.py", line 226, in scan
+    for path in source_paths(root):
+                ^^^^^^^^^^^^^^^^^^
+  File "/workspace/shared/current-source-gates-d0dd12c943/source/tools/check_painter_legacy_adapters.py", line 220, in source_paths
+    if path.is_symlink(): raise ValueError('source symlink requires a reviewed scope: ' + str(path))
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: source symlink requires a reviewed scope: /workspace/shared/current-source-gates-d0dd12c943/source/app/about.h

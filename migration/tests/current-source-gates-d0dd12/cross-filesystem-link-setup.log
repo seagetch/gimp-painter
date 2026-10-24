@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/workspace/shared/persistence-switch-default/materialize-gates.py", line 7, in <module>
+    src=f.resolve();assert not src.is_symlink();f.unlink();os.link(src,f);r['linked']=False;r['immutable_hardlink']=str(src);hard+=1
+                                                           ^^^^^^^^^^^^^^
+OSError: [Errno 18] Invalid cross-device link: '/tmp/current-source-gates-9abddbd319/source/app/about.h' -> '/workspace/shared/current-source-gates-d0dd12c943/source/app/about.h'
