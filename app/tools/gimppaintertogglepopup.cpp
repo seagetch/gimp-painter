@@ -220,3 +220,8 @@ gimp_painter_transform_details_button_new (GtkWidget *body) {
   // toggle helper which explicitly anchors to the whole checkbox/arrow row.
   return popup_button_new (nullptr, body, "painter-transform-details-popup", true);
 }
+
+extern "C" GtkWidget *
+gimp_painter_bucket_details_button_new (GtkWidget *body) {
+  return popup_button_new (nullptr, body, "painter-bucket-details-popup", true);
+}

@@ -1,0 +1,54 @@
+{
+  "source_sha256": {
+    "app/tools/gimppaintertogglepopup.cpp": "00f8d9733a0e25be446f853adfed82b8059abdb77653c6e42f84b30c4eb929e2",
+    "app/tools/gimppaintertogglepopup.h": "1d258b4bd03231dd2dc63ae306d0805dd46e5804c8e00200d4e7878bbf2793c9",
+    "app/tools/gimppaintertooltoolbar.c": "52461a6e8ed997446ad29347e96b9a2ef7cfe96027bd2cff1f9b0bd5d6c162e9",
+    "app/tests/test-painter-compact-options.c": "da98814865107a1a87af67d5122c11f9f237f09ed4402ea60aef10e9759446b6",
+    "app/tests/test-painter-bucket-popup.inc": "21e989f3d4263c7cb4e8486f7ddc876cc0d445cac9c4ab034220c0f8df784831",
+    "app/tests/test-painter-rectangle-unit-popup.inc": "4fc2bee241548f7b0ce7eab06dfd60d829bdedc3a5a62f84da5518953bbd0990",
+    "app/tests/test-painter-transform-popup.inc": "947804310847f70ec0123c875971a936c1053db9df44d36f96dd3e64814fd649"
+  },
+  "binary_sha256": "0085590ce2e323cb3b9c7ff116537b5ef9ccc98908c08b606e4c418d0cb533de",
+  "captures": [
+    {
+      "scale": 1,
+      "exit_code": 0,
+      "png": "bucket-scale1.png",
+      "png_sha256": "38f5e87028e81fdf1e3138a9015701b8c14e7a7f874f551b24dd8c754480360b",
+      "pixels": [
+        1080,
+        1920
+      ],
+      "log": "evidence/task304-wm-scale1/test.log",
+      "log_sha256": "314be226efc6b50daff5b9ff058e66bb9499d3f27a400329a20d7bc63a04ca16",
+      "physical_bounds": [
+        "popup=703/1515 291x297 scale=1",
+        "control threshold=777/1731 136x34",
+        "control fill-area=712/1583 273x34",
+        "control fill-criterion=712/1769 273x34"
+      ],
+      "x_properties": "bucket-scale1-x-properties.txt"
+    },
+    {
+      "scale": 2,
+      "exit_code": 0,
+      "png": "bucket-scale2.png",
+      "png_sha256": "885dbbed099353fd976e04f437a8cdcaa76dda33432b089dc7d173c65760e53f",
+      "pixels": [
+        1080,
+        1920
+      ],
+      "log": "evidence/task304-wm-scale2/test.log",
+      "log_sha256": "926a431077633d8f1a8c7de6bba850f1efdde89e9ab4c49b02eb2aca30feaf6c",
+      "physical_bounds": [
+        "popup=432/1110 582x594 scale=2",
+        "control threshold=580/1542 272x68",
+        "control fill-area=450/1246 546x68",
+        "control fill-criterion=450/1618 546x68"
+      ],
+      "x_properties": "bucket-scale2-x-properties.txt"
+    }
+  ],
+  "counting": "2 repeats of actual-canvas; not additional unique normal cases",
+  "resources": "Shipped file-backed Pattern corpus; no all-brush-resources or full UI fit claim"
+}

@@ -1,0 +1,18 @@
+{
+  "classification": "Historical fixture/oracle diagnosis, not a final passing or additional negative-control case",
+  "initial_failure": "Earlier criterion case required later anchor stationarity; realize left301 differed from later306.",
+  "observed_sequence": [
+    "# Bucket geometry before-click origin=-107/492 allocation=408/0 93x34 hadj=248/page253/upper501 viewport=253",
+    "# Bucket geometry realize origin=-102/492 allocation=408/0 93x34 hadj=243/page258/upper501 viewport=258",
+    "# Bucket geometry after-click origin=-102/492 allocation=408/0 93x34 hadj=243/page258/upper501 viewport=258"
+  ],
+  "cause_scope": "Viewport253\u2192258 and hadjustment248\u2192243 with upper501; anchor moved after opening. Legacy popup positions at opening, not continuously tracking later scroller allocation.",
+  "final_oracle": "Assert exact synchronous opening-anchor snapshot and edge-flip equation; log later coordinates separately. No pixel tolerance or production repositioning change.",
+  "private_raw_sha256": {
+    "run1.log": "e0b91f0cc4254553a4d90a40e67384991c67f37eaef33823e29b7423213a59bf",
+    "run2.log": "5e2d0111d273ca1b882cbfc33d7d104ada8c91451eb5d66a0cd94a0b78b3c99b"
+  },
+  "diagnostic_test_sha256": "f6a4039788e9bd546b75dbeddab3261f081de4186718b617780b636d3d2ee226",
+  "counting": "Earlier failed/diagnostic executions excluded from final normal/sanitizer acceptance totals.",
+  "timing_qualification": "Run1 directly observed realize301 versus later306. In diagnostic run2 the illustrated253\u2192258 viewport shift occurred before realize (301 before-click\u2192306 realize). This supports the layout explanation but is not presented as a direct reproduction of the same post-realize timing."
+}

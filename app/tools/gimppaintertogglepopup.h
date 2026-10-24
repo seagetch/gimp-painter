@@ -8,5 +8,6 @@ GtkWidget *gimp_painter_toggle_popup_button_new (GtkWidget *anchor,
                                                  GtkWidget *body);
 /* Self-anchored Details entry; shares retained-body/lifetime policy above. */
 GtkWidget *gimp_painter_transform_details_button_new (GtkWidget *body);
+GtkWidget *gimp_painter_bucket_details_button_new (GtkWidget *body);
 G_END_DECLS
 #endif

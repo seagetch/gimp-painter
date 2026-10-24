@@ -1,0 +1,26 @@
+{
+  "result": "EXPECTED_RED",
+  "exit_code": 250,
+  "base_commit": "ba4bde5e3ff3636a6f8e3edfa4949732c0901ac1",
+  "base_tree": "3312fe894b1f26ea32a8416ad1ef8e00c18b1d55",
+  "case": "/bucket-native-popup/actual-canvas",
+  "route": "Actual same-shell default-oncanvas Bucket Details, XTest opening before peer construction",
+  "classification": "GtkMenuButton -> GtkPopover; GTK_IS_WINDOW(actual) assertion fails",
+  "log": "evidence/task304-actual303-red.log",
+  "log_sha256": "81b2935ad7ee142d2fbac7e36484f40b3bff1bc5d6df8c5fc47988de28f825f8",
+  "binary_sha256": "a85647c25faddd34a4c0aa5c0918f882b0cd4f024d38784ffe6287e2650fd75e",
+  "test_object_sha256": "dcdbe8c243a002f4b12ecd5bf0d56ec9c207ea04817b8501626038593df6481b",
+  "source_sha256": {
+    "app/tools/gimppaintertogglepopup.cpp": "00f8d9733a0e25be446f853adfed82b8059abdb77653c6e42f84b30c4eb929e2",
+    "app/tools/gimppaintertogglepopup.h": "1d258b4bd03231dd2dc63ae306d0805dd46e5804c8e00200d4e7878bbf2793c9",
+    "app/tools/gimppaintertooltoolbar.c": "52461a6e8ed997446ad29347e96b9a2ef7cfe96027bd2cff1f9b0bd5d6c162e9",
+    "app/tests/test-painter-compact-options.c": "da98814865107a1a87af67d5122c11f9f237f09ed4402ea60aef10e9759446b6",
+    "app/tests/test-painter-bucket-popup.inc": "21e989f3d4263c7cb4e8486f7ddc876cc0d445cac9c4ab034220c0f8df784831",
+    "app/tests/test-painter-rectangle-unit-popup.inc": "4fc2bee241548f7b0ce7eab06dfd60d829bdedc3a5a62f84da5518953bbd0990",
+    "app/tests/test-painter-transform-popup.inc": "947804310847f70ec0123c875971a936c1053db9df44d36f96dd3e64814fd649"
+  },
+  "qualification": "Same final test object, actual303 gimppaintertooltoolbar.c object; other inherited code same, added unused Bucket wrapper does not affect baseline call chain. Earlier peer-assumption failure excluded from acceptance negative.",
+  "baseline_source_path": "app/tools/gimppaintertooltoolbar.c",
+  "baseline_source_git_blob": "6f0022f141660ca6110978bf5577a0d9635b65cf",
+  "baseline_source_sha256": "4d012e722bf3660f77dcccdf969b542fff1e34704083644d42ab4722b6a9d5ac"
+}

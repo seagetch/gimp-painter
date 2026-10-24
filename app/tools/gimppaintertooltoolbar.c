@@ -16,9 +16,9 @@
  * gimpiscissorsoptions, gimpcropoptions, gimpmeasureoptions,
  * gimphistogramoptions, and gimpforegroundselectoptions.
  *
- * The old inline/details split is retained, with GTK3 popovers replacing the
- * legacy popup window helpers. All controls bind directly to the current
- * options object. In particular, no ordinary options-GUI constructor is
+ * Independent inline/details controls use GTK3 popovers except the Bucket
+ * Details entry, which uses the native legacy-style popup carrier. All controls
+ * bind directly to the current options object. In particular, no ordinary options-GUI constructor is
  * called, and no native options widget pointer is replaced. Multiple views
  * can therefore coexist with the dockable and with each other.
  */
@@ -64,6 +64,7 @@
 #include "text/text-enums.h"
 #include "gimptextoptions.h"
 #include "gimppaintertooltoolbar.h"
+#include "gimppaintertogglepopup.h"
 
 #include "gimp-intl.h"
 
@@ -127,15 +128,19 @@ painter_details (GtkWidget   *box,
                  const gchar *label,
                  const gchar *name)
 {
-  GtkWidget *button  = gtk_menu_button_new ();
-  GtkWidget *popover = gtk_popover_new (button);
+  gboolean   native_bucket = ! g_strcmp0 (name, "gimp-painter-fill-details");
+  GtkWidget *button  = native_bucket ? NULL : gtk_menu_button_new ();
+  GtkWidget *popover = native_bucket ? NULL : gtk_popover_new (button);
   GtkWidget *scroll  = gtk_scrolled_window_new (NULL, NULL);
   GtkWidget *content = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
 
-  gtk_button_set_label (GTK_BUTTON (button), label);
-  gtk_widget_set_name (button, name);
-  gtk_widget_set_tooltip_text (button, label);
-  gtk_popover_set_position (GTK_POPOVER (popover), GTK_POS_TOP);
+  if (! native_bucket)
+    {
+      gtk_button_set_label (GTK_BUTTON (button), label);
+      gtk_widget_set_name (button, name);
+      gtk_widget_set_tooltip_text (button, label);
+      gtk_popover_set_position (GTK_POPOVER (popover), GTK_POS_TOP);
+    }
   gtk_container_set_border_width (GTK_CONTAINER (content), 8);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scroll),
                                    GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
@@ -143,6 +148,28 @@ painter_details (GtkWidget   *box,
   gtk_scrolled_window_set_propagate_natural_height (GTK_SCROLLED_WINDOW (scroll), TRUE);
   gtk_scrolled_window_set_max_content_height (GTK_SCROLLED_WINDOW (scroll), 420);
   gtk_container_add (GTK_CONTAINER (scroll), content);
+
+  if (native_bucket)
+    {
+      GtkWidget *entry = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 4);
+
+      /* The old frame-with-popup helper anchors to its own label/arrow
+       * button. Keep the current Bucket controls and bindings unchanged. */
+      button = gimp_painter_bucket_details_button_new (scroll);
+      gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
+      atk_object_set_name (gtk_widget_get_accessible (button), label);
+      painter_pack (entry, gtk_label_new (label));
+      painter_pack (entry, gtk_image_new_from_icon_name ("pan-down-symbolic",
+                                                        GTK_ICON_SIZE_MENU));
+      gtk_container_add (GTK_CONTAINER (button), entry);
+      gtk_widget_show (entry);
+      gtk_widget_set_name (button, name);
+      gtk_widget_set_tooltip_text (button, label);
+      gtk_widget_show_all (scroll);
+      painter_pack (box, button);
+      return content;
+    }
+
   gtk_container_add (GTK_CONTAINER (popover), scroll);
   gtk_widget_show_all (scroll);
   /* GtkMenuButton applies its direction when attaching the popover, which
