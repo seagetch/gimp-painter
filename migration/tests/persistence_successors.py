@@ -64,5 +64,8 @@ def resolve(root, revision, path, predecessor, actual):
     if actual != row['successor_sha256'] and path == 'app/paint/painter-mypaint-surface/gimp-painter-options.cpp':
         from persistence_enum_successor import resolve_source
         return resolve_source(root, row, actual)
+    if actual != row['successor_sha256'] and path == 'app/tools/gimp-tools.c':
+        from persistence_delete_successor import resolve_source
+        return resolve_source(root, row, actual)
     assert actual == row['successor_sha256'], ('unreviewed persistence successor', path)
     return row.copy()

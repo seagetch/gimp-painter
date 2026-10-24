@@ -4266,7 +4266,7 @@
     {
       "revision": "native",
       "path": "app/tools/gimp-tools.c",
-      "sha256": "18bf540fb7db9484ac064ba271a936acb8195f00d08ff5702d599fc3b553dcfa"
+      "sha256": "aa9d90ec2b5cc548384eb168ccb2d659018a156c6a55b88f7edaf7b24902b041"
     },
     {
       "revision": "native",
@@ -4569,11 +4569,19 @@
       "path": "app/tools/gimp-tools.c",
       "revision": "native",
       "predecessor_sha256": "ee1a445f0a626b90119008aab0a9fa29e56b8c1811bcc094f742886f3a44ccf3",
-      "successor_sha256": "18bf540fb7db9484ac064ba271a936acb8195f00d08ff5702d599fc3b553dcfa",
+      "successor_sha256": "aa9d90ec2b5cc548384eb168ccb2d659018a156c6a55b88f7edaf7b24902b041",
       "predecessor_commit": "f314ea2236ecf6a429f1b3dbc5d6d90e5cc1a2c2",
       "commits": [
-        "151507743e5ddd63f9fa15eaa899768901c797e0"
-      ]
+        "151507743e5ddd63f9fa15eaa899768901c797e0",
+        "272f56f10a3a17df4bfd9e66f64a323bf7ee907f"
+      ],
+      "intermediate_sha256": "18bf540fb7db9484ac064ba271a936acb8195f00d08ff5702d599fc3b553dcfa",
+      "semantic_successor": "one-line delete error propagation; serialization unchanged",
+      "runtime_proof": {
+        "migration/tests/tool-options-delete-result/results.json": "8dff40bfbb72c352e055230be7c55061ec12d4369fd86695a9a718381a7b9484",
+        "migration/tests/tool-options-delete-result/tested-sources.tar.gz": "80563f045a9f23b804e4348cd4f8d2bc6474001b50a9700f19d4eec7152b09c5",
+        "migration/tests/tool-options-delete-result/report.json": "e84a5ab76f915902eb7e7464d387b0550b1cd9a86329af1b6a450614d7784abd"
+      }
     }
   ],
   "enum_successor": {
@@ -4652,12 +4660,16 @@
   },
   "tests": [
     {
+      "path": "migration/tests/persistence_delete_successor.py",
+      "sha256": "ae77a1330f256a769e0eb09311fc35109a32eb57bd02eaf549b3e3433cc7a848"
+    },
+    {
       "path": "migration/tests/persistence_enum_successor.py",
       "sha256": "65485236c78c896e593faceb9bb9866b438a00f021b04611c746518b4680155e"
     },
     {
       "path": "migration/tests/persistence_successors.py",
-      "sha256": "0ffcbcf43795a0276d885ff256e359800127e53e036df0c52c0ebf70f7572dc3"
+      "sha256": "5ddebf725e4ecd52dd82acc332eaf8d28dc1ee4624938a01f181e5ee640b45be"
     },
     {
       "path": "migration/tests/persistence_source.py",
@@ -4665,7 +4677,7 @@
     },
     {
       "path": "migration/tests/test_persistence_field_contract.py",
-      "sha256": "d4bf46c527a6d03f8bfaa288c03554499b1704e9b929cd147bec6d32a67200a5"
+      "sha256": "a9e4baace0946b847c8fd204586d722fc1794afbdeea193cd059d7d2ab1a7883"
     },
     {
       "path": "migration/tests/test_persistence_xcf_contract.py",

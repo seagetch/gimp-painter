@@ -139,7 +139,7 @@ def expected_manifest(root,families,assertions):
             sources[('native', provider['path'])] = provider['successor_sha256']
     route_rows=read_tsv(root,'migration/inventory/persistence-routes.tsv')
     source_hashes=[dict(revision=rev,path=path,sha256=digest) for (rev,path),digest in sorted(sources.items())]
-    tests=['migration/tests/persistence_enum_successor.py','migration/tests/persistence_successors.py','migration/tests/persistence_source.py','migration/tests/test_persistence_field_contract.py']+[f'migration/tests/test_persistence_{n}_contract.py' for n in FAMILIES]
+    tests=['migration/tests/persistence_delete_successor.py','migration/tests/persistence_enum_successor.py','migration/tests/persistence_successors.py','migration/tests/persistence_source.py','migration/tests/test_persistence_field_contract.py']+[f'migration/tests/test_persistence_{n}_contract.py' for n in FAMILIES]
     return dict(schema_version=1,task='10.001',scope='source-grounded saved field/type/default/owner/serialization contract across existing16 routes',
       base_public_commit=BASE,legacy_commit=LEGACY,
       inputs=[dict(path=p,sha256=sha((root/p).read_bytes())) for p in ['migration/inventory/persistence-routes.tsv','migration/inventory/persistence-sites.tsv']],
