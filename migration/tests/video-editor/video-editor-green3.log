@@ -1,0 +1,1116 @@
+In file included from [01m[K/tmp/video-editor-private/green/app/tests/test-painter-layer-ui.c:887[m[K:
+[01m[K../source/app/tests/test-filter-schema-editors.inc:[m[K In function ‘[01m[Kfilter_schema_undo_provider_reentry[m[K’:
+[01m[K../source/app/tests/test-filter-schema-editors.inc:668:7:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  668 |       [01;35m[Kgint[m[K maximum = mutation.spec->maximum;
+      |       [01;35m[K^~~~[m[K
+[01m[K../source/app/tests/test-filter-schema-editors.inc:673:7:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  673 |       [01;35m[Kgulong[m[K hook = g_signal_connect (image, "undo-event", G_CALLBACK (schema_undo_mutation), &mutation);
+      |       [01;35m[K^~~~~~[m[K
+In file included from [01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/glib.h:89[m[K,
+                 from [01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/gobject/gbinding.h:30[m[K,
+                 from [01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/glib-object.h:24[m[K,
+                 from [01m[K/workspace/shared/gimp-deps-locked/root/usr/include/gegl-0.4/gegl.h:22[m[K,
+                 from [01m[K/tmp/video-editor-private/green/app/tests/test-painter-layer-ui.c:3[m[K:
+[01m[K../source/app/tests/test-filter-schema-persistence-failures.inc:[m[K In function ‘[01m[Kfilter_schema_persistence_failures[m[K’:
+[01m[K../source/app/tests/test-filter-schema-persistence-failures.inc:321:52:[m[K [01;35m[Kwarning: [m[Kcomparison of constant ‘[01m[K4[m[K’ with boolean expression is always false [[01;35m[K-Wbool-compare[m[K]
+  321 |           g_assert_error (error, G_IO_ERROR, scene [01;35m[K==[m[K 4 ? G_IO_ERROR_NO_SPACE : G_IO_ERROR_FAILED);
+      |                                                    [01;35m[K^~[m[K
+[01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/glib/gtestutils.h:223:99:[m[K [01;36m[Knote: [m[Kin definition of macro ‘[01m[Kg_assert_error[m[K’
+  223 |                                                if (!err || (err)->domain != dom || (err)->code != [01;36m[Kc[m[K) \
+      |                                                                                                   [01;36m[K^[m[K
+[01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/glib/gtestutils.h:223:96:[m[K [01;35m[Kwarning: [m[Ksuggest parentheses around comparison in operand of ‘[01m[K==[m[K’ [[01;35m[K-Wparentheses[m[K]
+  223 |                                                if (!err || (err)->domain != dom || (err)->code != c) \
+[01m[K../source/app/tests/test-filter-schema-persistence-failures.inc:321:11:[m[K [01;36m[Knote: [m[Kin expansion of macro ‘[01m[Kg_assert_error[m[K’
+  321 |           [01;36m[Kg_assert_error[m[K (error, G_IO_ERROR, scene == 4 ? G_IO_ERROR_NO_SPACE : G_IO_ERROR_FAILED);
+      |           [01;36m[K^~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-filter-schema-persistence-failures.inc:321:79:[m[K [01;35m[Kwarning: [m[K‘[01m[K?:[m[K’ using integer constants in boolean context [[01;35m[K-Wint-in-bool-context[m[K]
+  321 |           g_assert_error (error, G_IO_ERROR, scene == 4 ? G_IO_ERROR_NO_SPACE : G_IO_ERROR_FAILED);
+[01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/glib/gtestutils.h:223:99:[m[K [01;36m[Knote: [m[Kin definition of macro ‘[01m[Kg_assert_error[m[K’
+  223 |                                                if (!err || (err)->domain != dom || (err)->code != [01;36m[Kc[m[K) \
+      |                                                                                                   [01;36m[K^[m[K
+In file included from [01m[K/tmp/video-editor-private/green/app/tests/test-painter-layer-ui.c:890[m[K:
+[01m[K../source/app/tests/test-filter-progress-ui.inc:[m[K In function ‘[01m[Kfilter_progress_widgets[m[K’:
+[01m[K../source/app/tests/test-filter-progress-ui.inc:10:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   10 |   [01;35m[KGtkWidget[m[K *dialog=new_filter_dialog(image,GIMP_LAYER(layer));
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-filter-progress-ui.inc:27:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   27 |   [01;35m[Kconst[m[K guint64 generation=gimp_filter_layer_get_generation(layer);
+      |   [01;35m[K^~~~~[m[K
+[01m[K../source/app/tests/test-filter-progress-ui.inc:[m[K In function ‘[01m[Kfilter_progress_running_cancel[m[K’:
+[01m[K../source/app/tests/test-filter-progress-ui.inc:41:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   41 |     [01;35m[KGimpValueArray[m[K *args=isolated_args(route,0);
+      |     [01;35m[K^~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-filter-progress-ui.inc:43:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   43 |     [01;35m[KGimpFilterLayer[m[K *layer=isolated_layer(image,route,args);
+      |     [01;35m[K^~~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-filter-progress-ui.inc:45:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   45 |     [01;35m[KGtkWidget[m[K *dialog=new_filter_dialog(image,GIMP_LAYER(layer));
+      |     [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-filter-progress-ui.inc:56:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   56 |     [01;35m[Kgchar[m[K *procedure=g_strconcat("plug-in-",isolated_choices[route],NULL);
+      |     [01;35m[K^~~~~[m[K
+[01m[K../source/app/tests/test-filter-progress-ui.inc:58:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   58 |     [01;35m[Kconst[m[K guint64 generation=gimp_filter_layer_get_generation(layer);
+      |     [01;35m[K^~~~~[m[K
+[01m[K../source/app/tests/test-filter-progress-ui.inc:[m[K In function ‘[01m[Kfilter_progress_render_reentry[m[K’:
+[01m[K../source/app/tests/test-filter-progress-ui.inc:85:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   85 |     [01;35m[KGtkWidget[m[K *dialog=new_filter_dialog(image,GIMP_LAYER(layer));
+      |     [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-filter-progress-ui.inc:89:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   89 |     [01;35m[KProgressUiReentry[m[K state={layer,dialog,args,action,FALSE};
+      |     [01;35m[K^~~~~~~~~~~~~~~~~[m[K
+In file included from [01m[K/tmp/video-editor-private/green/app/tests/test-painter-layer-ui.c:892[m[K:
+[01m[K../source/app/tests/test-colorify-editor.inc:[m[K In function ‘[01m[Kcolorify_test_image[m[K’:
+[01m[K../source/app/tests/test-colorify-editor.inc:16:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   16 |     [01;35m[KGimpDisplayShell[m[K *shell=gimp_display_get_shell(colorify_test_display);
+      |     [01;35m[K^~~~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-colorify-editor.inc:22:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   22 |     [01;35m[Kgboolean[m[K enabled=FALSE;g_object_get(gimp->config,"painter-canvas-ui",&enabled,NULL);g_assert_true(enabled);
+      |     [01;35m[K^~~~~~~~[m[K
+[01m[K../source/app/tests/test-colorify-editor.inc:23:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   23 |     [01;35m[KGdkWindow[m[K *root=gdk_get_default_root_window();g_assert_cmpint(gdk_window_get_width(root),==,1080);g_assert_cmpint(gdk_window_get_height(root),==,1920);
+      |     [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-colorify-editor.inc:[m[K In function ‘[01m[Kcolorify_test_close[m[K’:
+[01m[K../source/app/tests/test-colorify-editor.inc:34:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   34 |     [01;35m[KGtkWidget[m[K *window=parent;parent=colorify_test_saved_parent;colorify_test_saved_parent=NULL;
+      |     [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-colorify-editor.inc:[m[K In function ‘[01m[Kcolorify_test_screenshot[m[K’:
+[01m[K../source/app/tests/test-colorify-editor.inc:44:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   44 |   [01;35m[Kgint64[m[K deadline=g_get_monotonic_time()+G_TIME_SPAN_SECOND;
+      |   [01;35m[K^~~~~~[m[K
+[01m[K../source/app/tests/test-colorify-editor.inc:49:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   49 |     [01;35m[Kgint64[m[K show_until=g_get_monotonic_time()+G_TIME_SPAN_SECOND/2;
+      |     [01;35m[K^~~~~~[m[K
+[01m[K../source/app/tests/test-colorify-editor.inc:54:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   54 |   [01;35m[KGdkWindow[m[K *root=gdk_get_default_root_window();g_assert_cmpint(gdk_window_get_width(root),==,1080);g_assert_cmpint(gdk_window_get_height(root),==,1920);
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-colorify-editor.inc:55:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   55 |   [01;35m[KGdkPixbuf[m[K *shot=gdk_pixbuf_get_from_window(root,0,0,1080,1920);g_assert_nonnull(shot);
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-colorify-editor.inc:56:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   56 |   [01;35m[Kgchar[m[K *path=g_build_filename(g_getenv("GIMP_TEST_COLORIFY_SCREENSHOT_DIR"),name,NULL);GError *error=NULL;
+      |   [01;35m[K^~~~~[m[K
+[01m[K../source/app/tests/test-colorify-editor.inc:[m[K In function ‘[01m[Kui_colorify_equal[m[K’:
+[01m[K../source/app/tests/test-colorify-editor.inc:74:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   74 |   [01;35m[Kconst[m[K gint values[]={-123,456,-789};for(guint i=0;i<3;i++){
+      |   [01;35m[K^~~~~[m[K
+[01m[K../source/app/tests/test-colorify-editor.inc:76:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   76 |   [01;35m[KGVariant[m[K *actual=g_value_get_variant(gimp_value_array_index(args,3));
+      |   [01;35m[K^~~~~~~~[m[K
+[01m[K../source/app/tests/test-colorify-editor.inc:[m[K In function ‘[01m[Kui_colorify_layer[m[K’:
+[01m[K../source/app/tests/test-colorify-editor.inc:86:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   86 |   [01;35m[KGimpFilterLayer[m[K *layer=GIMP_FILTER_LAYER(gimp_filter_layer_new(image,16,16,"tint",1,GIMP_LAYER_MODE_NORMAL_LEGACY));
+      |   [01;35m[K^~~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-colorify-editor.inc:[m[K In function ‘[01m[Kcolorify_editor_noop_and_edit[m[K’:
+[01m[K../source/app/tests/test-colorify-editor.inc:100:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  100 |   [01;35m[KGtkWidget[m[K *dialog=new_filter_dialog(image,GIMP_LAYER(layer));
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-colorify-editor.inc:103:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  103 |   [01;35m[KGVariant[m[K *edited=ui_colorify_tint(-0.,0.25,1.,-0.);ui_colorify_equal(layer,raw,edited);
+      |   [01;35m[K^~~~~~~~[m[K
+[01m[K../source/app/tests/test-colorify-editor.inc:[m[K In function ‘[01m[Kcolorify_editor_unknown_keep[m[K’:
+[01m[K../source/app/tests/test-colorify-editor.inc:122:5:[m[K [01;35m[Kwarning: [m[Kthis ‘[01m[Kif[m[K’ clause does not guard... [[01;35m[K-Wmisleading-indentation[m[K]
+  122 |     [01;35m[Kif[m[K(v)g_variant_unref(v);g_bytes_unref(raw);colorify_test_close(image);
+      |     [01;35m[K^~[m[K
+[01m[K../source/app/tests/test-colorify-editor.inc:122:29:[m[K [01;36m[Knote: [m[K...this statement, but the latter is misleadingly indented as if it were guarded by the ‘[01m[Kif[m[K’
+  122 |     if(v)g_variant_unref(v);[01;36m[Kg_bytes_unref[m[K(raw);colorify_test_close(image);
+      |                             [01;36m[K^~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-colorify-editor.inc:[m[K In function ‘[01m[Kcolorify_editor_invalid_and_stale[m[K’:
+[01m[K../source/app/tests/test-colorify-editor.inc:130:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  130 |   [01;35m[KGtkWidget[m[K *dialog=new_filter_dialog(image,GIMP_LAYER(layer));
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-colorify-editor.inc:138:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  138 |   [01;35m[KGVariant[m[K *external=ui_colorify_tint(0.25,0.5,0.75,1);ui_colorify_define(layer,raw,external);
+      |   [01;35m[K^~~~~~~~[m[K
+[01m[K../source/app/tests/test-colorify-editor.inc:[m[K In function ‘[01m[Kcolorify_editor_create_pixels[m[K’:
+[01m[K../source/app/tests/test-colorify-editor.inc:150:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  150 |   [01;35m[KGtkWidget[m[K *dialog=new_filter_dialog(image,NULL);choice(dialog,"painter-filter-choice","colorify");
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-colorify-editor.inc:157:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  157 |   [01;35m[KGimpFilterLayer[m[K *layer=GIMP_FILTER_LAYER(gimp_image_get_selected_layers(image)->data);g_assert_true(GIMP_IS_FILTER_LAYER(layer));settle(layer);
+      |   [01;35m[K^~~~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-colorify-editor.inc:[m[K In function ‘[01m[Kcolorify_editor_creation_close_reentry[m[K’:
+[01m[K../source/app/tests/test-colorify-editor.inc:180:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  180 |   [01;35m[KGtkWidget[m[K *dialog=new_filter_dialog(image,NULL);choice(dialog,"painter-filter-choice","colorify");
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-colorify-editor.inc:181:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  181 |   [01;35m[KResponseClose[m[K state={dialog,image,NULL,FALSE,FALSE};gpointer klass=g_type_class_ref(GIMP_TYPE_FILTER_LAYER);
+      |   [01;35m[K^~~~~~~~~~~~~[m[K
+[01m[K../source/app/tests/test-colorify-editor.inc:[m[K In function ‘[01m[Kcolorify_editor_draft_reentry[m[K’:
+[01m[K../source/app/tests/test-colorify-editor.inc:201:71:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  201 |   GimpFilterLayer *layer=ui_colorify_layer(image,raw,v);settle(layer);[01;35m[KGtkWidget[m[K *dialog=new_filter_dialog(image,GIMP_LAYER(layer));
+      |                                                                       [01;35m[K^~~~~~~~~[m[K
+[01m[K../source/app/tests/test-colorify-editor.inc:203:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  203 |   [01;35m[KColorifyDraftMutation[m[K mutation={entry,FALSE};
+      |   [01;35m[K^~~~~~~~~~~~~~~~~~~~~[m[K
+In file included from [01m[K/tmp/video-editor-private/green/app/tests/test-painter-layer-ui.c:893[m[K:
+[01m[K/tmp/video-editor-private/green/app/tests/test-video-editor.inc:[m[K In function ‘[01m[Kui_video_equal[m[K’:
+[01m[K/tmp/video-editor-private/green/app/tests/test-video-editor.inc:16:2:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   16 |  [01;35m[KGBytes[m[K *copy=gimp_filter_layer_ref_definition(layer);g_assert_true(g_bytes_equal(raw,copy));g_bytes_unref(copy);
+      |  [01;35m[K^~~~~~[m[K
+[01m[K/tmp/video-editor-private/green/app/tests/test-video-editor.inc:[m[K In function ‘[01m[Kui_video_layer[m[K’:
+[01m[K/tmp/video-editor-private/green/app/tests/test-video-editor.inc:24:34:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   24 |  new_source(image,NULL,"source");[01;35m[KGimpFilterLayer[m[K *layer=GIMP_FILTER_LAYER(gimp_filter_layer_new(image,16,16,"video",1,GIMP_LAYER_MODE_NORMAL_LEGACY));
+      |                                  [01;35m[K^~~~~~~~~~~~~~~[m[K
+[01m[K/tmp/video-editor-private/green/app/tests/test-video-editor.inc:[m[K In function ‘[01m[Kvideo_editor_create_pixels[m[K’:
+[01m[K/tmp/video-editor-private/green/app/tests/test-video-editor.inc:34:2:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   34 |  [01;35m[KGtkWidget[m[K *dialog=new_filter_dialog(image,NULL);choice(dialog,"painter-filter-choice","video");
+      |  [01;35m[K^~~~~~~~~[m[K
+[01m[K/tmp/video-editor-private/green/app/tests/test-video-editor.inc:43:2:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   43 |  [01;35m[KGimpFilterLayer[m[K *layer=GIMP_FILTER_LAYER(gimp_image_get_selected_layers(image)->data);g_assert_true(GIMP_IS_FILTER_LAYER(layer));settle(layer);
+      |  [01;35m[K^~~~~~~~~~~~~~~[m[K
+[01m[K/tmp/video-editor-private/green/app/tests/test-video-editor.inc:47:3:[m[K [01;35m[Kwarning: [m[Kthis ‘[01m[Kfor[m[K’ clause does not guard... [[01;35m[K-Wmisleading-indentation[m[K]
+   47 |   [01;35m[Kfor[m[K(guint c=0;c<3;c++)g_assert_cmpuint(actual[p+c],==,c==selected?255:0);g_assert_cmpuint(actual[p+3],==,255);}
+      |   [01;35m[K^~~[m[K
+In file included from [01m[K/workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu/glib-2.0/include/glibconfig.h:9[m[K,
+                 from [01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/glib/gtypes.h:34[m[K,
+                 from [01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/glib/galloca.h:34[m[K,
+                 from [01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/glib.h:32[m[K:
+[01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/glib/gmacros.h:991:23:[m[K [01;36m[Knote: [m[K...this statement, but the latter is misleadingly indented as if it were guarded by the ‘[01m[Kfor[m[K’
+  991 | #define G_STMT_START  [01;36m[Kdo[m[K
+      |                       [01;36m[K^~[m[K
+[01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/glib/gtestutils.h:78:41:[m[K [01;36m[Knote: [m[Kin expansion of macro ‘[01m[KG_STMT_START[m[K’
+   78 | #define g_assert_cmpuint(n1, cmp, n2)   [01;36m[KG_STMT_START[m[K { \
+      |                                         [01;36m[K^~~~~~~~~~~~[m[K
+[01m[K/tmp/video-editor-private/green/app/tests/test-video-editor.inc:47:76:[m[K [01;36m[Knote: [m[Kin expansion of macro ‘[01m[Kg_assert_cmpuint[m[K’
+   47 |   for(guint c=0;c<3;c++)g_assert_cmpuint(actual[p+c],==,c==selected?255:0);[01;36m[Kg_assert_cmpuint[m[K(actual[p+3],==,255);}
+      |                                                                            [01;36m[K^~~~~~~~~~~~~~~~[m[K
+[01m[K/tmp/video-editor-private/green/app/tests/test-video-editor.inc:[m[K In function ‘[01m[Kvideo_editor_noop_and_edit[m[K’:
+[01m[K/tmp/video-editor-private/green/app/tests/test-video-editor.inc:62:2:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   62 |  [01;35m[KGtkWidget[m[K *dialog=new_filter_dialog(image,GIMP_LAYER(layer));choice(dialog,"painter-video-pattern","8");
+      |  [01;35m[K^~~~~~~~~[m[K
+[01m[K/tmp/video-editor-private/green/app/tests/test-video-editor.inc:[m[K In function ‘[01m[Kvideo_editor_flag_edits[m[K’:
+[01m[K/tmp/video-editor-private/green/app/tests/test-video-editor.inc:74:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   74 |   [01;35m[KGtkWidget[m[K *dialog=new_filter_dialog(image,GIMP_LAYER(layer));gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(field(dialog,flag?"painter-video-rotated":"painter-video-additive")),FALSE);
+      |   [01;35m[K^~~~~~~~~[m[K
+[01m[K/tmp/video-editor-private/green/app/tests/test-video-editor.inc:[m[K In function ‘[01m[Kvideo_editor_malformed_context_replace[m[K’:
+[01m[K/tmp/video-editor-private/green/app/tests/test-video-editor.inc:102:2:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  102 |  [01;35m[KGtkWidget[m[K *dialog=new_filter_dialog(image,GIMP_LAYER(layer));g_assert_cmpstr(gtk_combo_box_get_active_id(GTK_COMBO_BOX(field(dialog,"painter-filter-choice"))),==,"keep");
+      |  [01;35m[K^~~~~~~~~[m[K
+[01m[K/tmp/video-editor-private/green/app/tests/test-video-editor.inc:104:2:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  104 |  [01;35m[KGimpValueArray[m[K *args=gimp_filter_layer_dup_args(layer);g_assert_true(G_VALUE_HOLDS_UINT(gimp_value_array_index(args,0)));g_assert_cmpuint(g_value_get_uint(gimp_value_array_index(args,0)),==,7);gimp_value_array_unref(args);
+      |  [01;35m[K^~~~~~~~~~~~~~[m[K
+[01m[K/tmp/video-editor-private/green/app/tests/test-video-editor.inc:107:94:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  107 |  args=gimp_filter_layer_dup_args(layer);g_assert_cmpuint(gimp_value_array_length(args),==,6);[01;35m[Kconst[m[K gint values[]={0,0,0,2,1,0};
+      |                                                                                              [01;35m[K^~~~~[m[K
+[01m[K/tmp/video-editor-private/green/app/tests/test-video-editor.inc:109:2:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  109 |  [01;35m[KGBytes[m[K *copy=gimp_filter_layer_ref_definition(layer);g_assert_true(g_bytes_equal(raw,copy));g_bytes_unref(copy);
+      |  [01;35m[K^~~~~~[m[K
+[01m[K/tmp/video-editor-private/green/app/tests/test-video-editor.inc:[m[K In function ‘[01m[Kvideo_editor_stale_and_invalid_dropdown[m[K’:
+[01m[K/tmp/video-editor-private/green/app/tests/test-video-editor.inc:117:2:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  117 |  [01;35m[KGtkWidget[m[K *dialog=new_filter_dialog(image,GIMP_LAYER(layer));GtkComboBox *pattern=GTK_COMBO_BOX(field(dialog,"painter-video-pattern"));
+      |  [01;35m[K^~~~~~~~~[m[K
+[01m[K/tmp/video-editor-private/green/app/tests/test-video-editor.inc:[m[K In function ‘[01m[Kvideo_editor_creation_close_reentry[m[K’:
+[01m[K/tmp/video-editor-private/green/app/tests/test-video-editor.inc:138:73:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  138 |  GimpImage *image=colorify_test_image();new_source(image,NULL,"source");[01;35m[KGtkWidget[m[K *dialog=new_filter_dialog(image,NULL);choice(dialog,"painter-filter-choice","video");
+      |                                                                         [01;35m[K^~~~~~~~~[m[K
+[01m[K/tmp/video-editor-private/green/app/tests/test-video-editor.inc:139:2:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  139 |  [01;35m[KResponseClose[m[K state={dialog,image,NULL,FALSE,FALSE};gpointer klass=g_type_class_ref(GIMP_TYPE_FILTER_LAYER);
+      |  [01;35m[K^~~~~~~~~~~~~[m[K
+[01m[K/tmp/video-editor-private/green/app/tests/test-video-editor.inc:[m[K In function ‘[01m[Kvideo_editor_draft_reentry[m[K’:
+[01m[K/tmp/video-editor-private/green/app/tests/test-video-editor.inc:156:2:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  156 |  [01;35m[KGtkWidget[m[K *dialog=new_filter_dialog(image,GIMP_LAYER(layer));choice(dialog,"painter-video-pattern","8");
+      |  [01;35m[K^~~~~~~~~[m[K
+[01m[K/tmp/video-editor-private/green/app/tests/test-video-editor.inc:157:2:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  157 |  [01;35m[KVideoDraftMutation[m[K mutation={field(dialog,"painter-video-additive"),FALSE};gulong hook=g_signal_connect(image,"undo-event",G_CALLBACK(video_mutate_draft_at_undo),&mutation);
+      |  [01;35m[K^~~~~~~~~~~~~~~~~~[m[K
+[01m[K/tmp/video-editor-private/green/app/tests/test-painter-layer-ui.c:[m[K In function ‘[01m[Kmain[m[K’:
+[01m[K/tmp/video-editor-private/green/app/tests/test-painter-layer-ui.c:919:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  919 |   [01;35m[Kconst[m[K gboolean colorify_oncanvas=g_getenv("GIMP_TEST_COLORIFY_ONCANVAS")!=NULL;
+      |   [01;35m[K^~~~~[m[K
+green /tmp/video-editor-private/green/painter-layer-ui 1328 125
+Xvfb verified: 127.0.0.1:92, 1080x1920x24, authenticated accepted, empty authority rejected
+video_editor_create_pixels 0 BUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+ok 1 /painter-layer-ui/video_editor_create_pixels
+# slow test /painter-layer-ui/video_editor_create_pixels executed in 3.26 secs
+# End of painter-layer-ui tests
+1..1
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+ ate/source/desktop/16x16/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/16x16/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/32x32/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/32x32/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/48x48/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/48x48/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/64x64/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/64x64/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/scalable/gimp.svg (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/scalable/gimp.svg”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/256x256/gimp.png
+[file-png-load] The catalog directory does not exist: /workspace/shared/gimp-clean-aggregate/prefix/share/locale
+[file-png-load] Override method set_i18n() for the plug-in to customize or disable localization.
+[file-png-load] Localization disabled
+[file-png-export] The catalog directory does not exist: /workspace/shared/gimp-clean-aggregate/prefix/share/locale
+[file-png-export] Override method set_i18n() for the plug-in to customize or disable localization.
+[file-png-export] Localization disabled
+gui_dbus_name_lost: connection to the bus cannot be established.
+set device 'Virtual core XTEST pointer' to mode: disabled
+set device 'Xvfb mouse' to mode: disabled
+WARNING: icon theme has no icon 'gimp-tool-paintbrush'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-default-colors'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-swap-colors'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-dynamics'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-tool-paintbrush'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-gegl'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+
+video_editor_noop_and_edit 0 BUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+ok 1 /painter-layer-ui/video_editor_noop_and_edit
+# slow test /painter-layer-ui/video_editor_noop_and_edit executed in 1.08 secs
+# End of painter-layer-ui tests
+1..1
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+ Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/16x16/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/16x16/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/32x32/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/32x32/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/48x48/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/48x48/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/64x64/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/64x64/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/scalable/gimp.svg (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/scalable/gimp.svg”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/256x256/gimp.png
+gui_dbus_name_lost: connection to the bus cannot be established.
+set device 'Virtual core XTEST pointer' to mode: disabled
+set device 'Xvfb mouse' to mode: disabled
+WARNING: icon theme has no icon 'gimp-tool-paintbrush'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-default-colors'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-swap-colors'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-dynamics'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-tool-paintbrush'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-gegl'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+
+video_editor_flag_edits 0 buf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+ok 1 /painter-layer-ui/video_editor_flag_edits
+# slow test /painter-layer-ui/video_editor_flag_edits executed in 1.39 secs
+# End of painter-layer-ui tests
+1..1
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+ Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/16x16/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/16x16/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/32x32/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/32x32/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/48x48/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/48x48/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/64x64/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/64x64/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/scalable/gimp.svg (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/scalable/gimp.svg”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/256x256/gimp.png
+gui_dbus_name_lost: connection to the bus cannot be established.
+set device 'Virtual core XTEST pointer' to mode: disabled
+set device 'Xvfb mouse' to mode: disabled
+WARNING: icon theme has no icon 'gimp-tool-paintbrush'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-default-colors'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-swap-colors'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-dynamics'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-tool-paintbrush'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-gegl'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-gegl'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+
+video_editor_unknown_keep_replace 0 
+# GdkPixbuf-DEBUG: 	Dimensions: 36 x 36
+# GdkPixbuf-DEBUG: 	Rowstride: 144, Length: 5208
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 36 x 36
+# GdkPixbuf-DEBUG: 	Rowstride: 144, Length: 5208
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+ok 1 /painter-layer-ui/video_editor_unknown_keep_replace
+# slow test /painter-layer-ui/video_editor_unknown_keep_replace executed in 1.02 secs
+# End of painter-layer-ui tests
+1..1
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+ Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/16x16/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/16x16/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/32x32/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/32x32/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/48x48/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/48x48/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/64x64/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/64x64/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/scalable/gimp.svg (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/scalable/gimp.svg”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/256x256/gimp.png
+gui_dbus_name_lost: connection to the bus cannot be established.
+set device 'Virtual core XTEST pointer' to mode: disabled
+set device 'Xvfb mouse' to mode: disabled
+WARNING: icon theme has no icon 'gimp-tool-paintbrush'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-default-colors'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-swap-colors'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-dynamics'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-tool-paintbrush'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-gegl'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+
+video_editor_malformed_context_replace 0 Pixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+ok 1 /painter-layer-ui/video_editor_malformed_context_replace
+# slow test /painter-layer-ui/video_editor_malformed_context_replace executed in 0.97 secs
+# End of painter-layer-ui tests
+1..1
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+ Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/16x16/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/16x16/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/32x32/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/32x32/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/48x48/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/48x48/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/64x64/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/64x64/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/scalable/gimp.svg (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/scalable/gimp.svg”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/256x256/gimp.png
+gui_dbus_name_lost: connection to the bus cannot be established.
+set device 'Virtual core XTEST pointer' to mode: disabled
+set device 'Xvfb mouse' to mode: disabled
+WARNING: icon theme has no icon 'gimp-tool-paintbrush'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-default-colors'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-swap-colors'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-dynamics'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-tool-paintbrush'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-gegl'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+
+video_editor_stale_and_invalid_dropdown 0 xbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+ok 1 /painter-layer-ui/video_editor_stale_and_invalid_dropdown
+# slow test /painter-layer-ui/video_editor_stale_and_invalid_dropdown executed in 0.84 secs
+# End of painter-layer-ui tests
+1..1
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+ Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/16x16/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/16x16/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/32x32/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/32x32/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/48x48/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/48x48/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/64x64/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/64x64/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/scalable/gimp.svg (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/scalable/gimp.svg”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/256x256/gimp.png
+gui_dbus_name_lost: connection to the bus cannot be established.
+set device 'Virtual core XTEST pointer' to mode: disabled
+set device 'Xvfb mouse' to mode: disabled
+WARNING: icon theme has no icon 'gimp-tool-paintbrush'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-default-colors'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-swap-colors'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-dynamics'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-tool-paintbrush'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-gegl'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+
+video_editor_closed_controls 0  false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+ok 1 /painter-layer-ui/video_editor_closed_controls
+# End of painter-layer-ui tests
+1..1
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+ Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/16x16/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/16x16/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/32x32/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/32x32/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/48x48/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/48x48/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/64x64/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/64x64/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/scalable/gimp.svg (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/scalable/gimp.svg”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/256x256/gimp.png
+gui_dbus_name_lost: connection to the bus cannot be established.
+set device 'Virtual core XTEST pointer' to mode: disabled
+set device 'Xvfb mouse' to mode: disabled
+WARNING: icon theme has no icon 'gimp-tool-paintbrush'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+
+video_editor_creation_close_reentry 0 # GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+ok 1 /painter-layer-ui/video_editor_creation_close_reentry
+# End of painter-layer-ui tests
+1..1
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+ Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/16x16/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/16x16/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/32x32/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/32x32/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/48x48/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/48x48/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/64x64/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/64x64/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/scalable/gimp.svg (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/scalable/gimp.svg”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/256x256/gimp.png
+gui_dbus_name_lost: connection to the bus cannot be established.
+set device 'Virtual core XTEST pointer' to mode: disabled
+set device 'Xvfb mouse' to mode: disabled
+WARNING: icon theme has no icon 'gimp-tool-paintbrush'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+
+video_editor_draft_reentry 0 BUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+ok 1 /painter-layer-ui/video_editor_draft_reentry
+# slow test /painter-layer-ui/video_editor_draft_reentry executed in 0.90 secs
+# End of painter-layer-ui tests
+1..1
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+ Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/16x16/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/16x16/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/32x32/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/32x32/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/48x48/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/48x48/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/64x64/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/64x64/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/scalable/gimp.svg (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/scalable/gimp.svg”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/256x256/gimp.png
+gui_dbus_name_lost: connection to the bus cannot be established.
+set device 'Virtual core XTEST pointer' to mode: disabled
+set device 'Xvfb mouse' to mode: disabled
+WARNING: icon theme has no icon 'gimp-tool-paintbrush'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-default-colors'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-swap-colors'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-dynamics'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-tool-paintbrush'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-gegl'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+
+colorify_editor_create_pixels 0 Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+ok 1 /painter-layer-ui/colorify_editor_create_pixels
+# slow test /painter-layer-ui/colorify_editor_create_pixels executed in 3.24 secs
+# End of painter-layer-ui tests
+1..1
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+ Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/16x16/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/16x16/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/32x32/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/32x32/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/48x48/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/48x48/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/64x64/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/64x64/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/scalable/gimp.svg (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/scalable/gimp.svg”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/256x256/gimp.png
+gui_dbus_name_lost: connection to the bus cannot be established.
+set device 'Virtual core XTEST pointer' to mode: disabled
+set device 'Xvfb mouse' to mode: disabled
+WARNING: icon theme has no icon 'gimp-tool-paintbrush'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-default-colors'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-swap-colors'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-dynamics'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-tool-paintbrush'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-gegl'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+
+colorify_editor_noop_and_edit 0 Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+ok 1 /painter-layer-ui/colorify_editor_noop_and_edit
+# slow test /painter-layer-ui/colorify_editor_noop_and_edit executed in 0.98 secs
+# End of painter-layer-ui tests
+1..1
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+ Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/16x16/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/16x16/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/32x32/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/32x32/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/48x48/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/48x48/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/64x64/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/64x64/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/scalable/gimp.svg (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/scalable/gimp.svg”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/256x256/gimp.png
+gui_dbus_name_lost: connection to the bus cannot be established.
+set device 'Virtual core XTEST pointer' to mode: disabled
+set device 'Xvfb mouse' to mode: disabled
+WARNING: icon theme has no icon 'gimp-tool-paintbrush'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-default-colors'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-swap-colors'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-dynamics'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-tool-paintbrush'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-gegl'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+
+colorify_editor_unknown_keep 0  	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+ok 1 /painter-layer-ui/colorify_editor_unknown_keep
+# slow test /painter-layer-ui/colorify_editor_unknown_keep executed in 0.82 secs
+# End of painter-layer-ui tests
+1..1
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+ Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/16x16/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/16x16/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/32x32/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/32x32/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/48x48/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/48x48/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/64x64/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/64x64/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/scalable/gimp.svg (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/scalable/gimp.svg”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/256x256/gimp.png
+gui_dbus_name_lost: connection to the bus cannot be established.
+set device 'Virtual core XTEST pointer' to mode: disabled
+set device 'Xvfb mouse' to mode: disabled
+WARNING: icon theme has no icon 'gimp-tool-paintbrush'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+
+colorify_editor_invalid_and_stale 0  raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+ok 1 /painter-layer-ui/colorify_editor_invalid_and_stale
+# slow test /painter-layer-ui/colorify_editor_invalid_and_stale executed in 0.87 secs
+# End of painter-layer-ui tests
+1..1
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+ Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/16x16/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/16x16/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/32x32/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/32x32/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/48x48/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/48x48/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/64x64/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/64x64/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/scalable/gimp.svg (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/scalable/gimp.svg”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/256x256/gimp.png
+gui_dbus_name_lost: connection to the bus cannot be established.
+set device 'Virtual core XTEST pointer' to mode: disabled
+set device 'Xvfb mouse' to mode: disabled
+WARNING: icon theme has no icon 'gimp-tool-paintbrush'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-default-colors'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-swap-colors'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-dynamics'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-tool-paintbrush'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-gegl'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+
+colorify_editor_closed_controls 0 lse
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+ok 1 /painter-layer-ui/colorify_editor_closed_controls
+# End of painter-layer-ui tests
+1..1
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+ Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/16x16/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/16x16/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/32x32/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/32x32/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/48x48/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/48x48/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/64x64/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/64x64/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/scalable/gimp.svg (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/scalable/gimp.svg”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/256x256/gimp.png
+gui_dbus_name_lost: connection to the bus cannot be established.
+set device 'Virtual core XTEST pointer' to mode: disabled
+set device 'Xvfb mouse' to mode: disabled
+WARNING: icon theme has no icon 'gimp-tool-paintbrush'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+
+colorify_editor_creation_close_reentry 0 dkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+ok 1 /painter-layer-ui/colorify_editor_creation_close_reentry
+# End of painter-layer-ui tests
+1..1
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+ Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/16x16/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/16x16/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/32x32/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/32x32/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/48x48/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/48x48/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/64x64/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/64x64/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/scalable/gimp.svg (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/scalable/gimp.svg”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/256x256/gimp.png
+gui_dbus_name_lost: connection to the bus cannot be established.
+set device 'Virtual core XTEST pointer' to mode: disabled
+set device 'Xvfb mouse' to mode: disabled
+WARNING: icon theme has no icon 'gimp-tool-paintbrush'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+
+colorify_editor_draft_reentry 0 Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+ok 1 /painter-layer-ui/colorify_editor_draft_reentry
+# slow test /painter-layer-ui/colorify_editor_draft_reentry executed in 0.97 secs
+# End of painter-layer-ui tests
+1..1
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+ Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/16x16/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/16x16/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/32x32/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/32x32/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/48x48/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/48x48/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/64x64/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/64x64/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/scalable/gimp.svg (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/scalable/gimp.svg”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/256x256/gimp.png
+gui_dbus_name_lost: connection to the bus cannot be established.
+set device 'Virtual core XTEST pointer' to mode: disabled
+set device 'Xvfb mouse' to mode: disabled
+WARNING: icon theme has no icon 'gimp-tool-paintbrush'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-default-colors'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-swap-colors'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-dynamics'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-tool-paintbrush'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-gegl'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+

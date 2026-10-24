@@ -890,6 +890,7 @@ static void dialog_factory_reentry (void)
 #include "test-filter-progress-ui.inc"
 #include "test-filter-dialog-reads.inc"
 #include "test-colorify-editor.inc"
+#include "test-video-editor.inc"
 
 /* C entry points implemented by the native C++ metadata boundary fixtures. */
 void gimp_test_filter_editor_metadata (Gimp *application);
@@ -922,6 +923,15 @@ int main (int argc, char **argv)
 #define ADD(name) g_test_add_func ("/painter-layer-ui/" #name, name)
   ADD (colorify_editor_draft_reentry);
   ADD (colorify_editor_create_pixels);
+  ADD (video_editor_create_pixels);
+  ADD (video_editor_noop_and_edit);
+  ADD (video_editor_flag_edits);
+  ADD (video_editor_unknown_keep_replace);
+  ADD (video_editor_malformed_context_replace);
+  ADD (video_editor_stale_and_invalid_dropdown);
+  ADD (video_editor_closed_controls);
+  ADD (video_editor_creation_close_reentry);
+  ADD (video_editor_draft_reentry);
   ADD (colorify_editor_closed_controls);
   ADD (colorify_editor_creation_close_reentry);
   ADD (colorify_editor_noop_and_edit);

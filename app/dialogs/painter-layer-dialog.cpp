@@ -96,6 +96,11 @@ struct PainterLayerDialog
   std::array<double, 4> colorify_values {{1,1,1,1}};
   std::array<std::string, 4> colorify_text;
   bool colorify_loaded = false;
+  GtkWidget *video_pattern = nullptr;
+  GtkWidget *video_additive = nullptr;
+  GtkWidget *video_rotated = nullptr;
+  std::array<int,3> video_values {{2,1,0}};
+  bool video_loaded = false;
   GtkWidget *radius = nullptr;
   GtkWidget *horizontal_flag = nullptr;
   GtkWidget *vertical_flag = nullptr;
@@ -1249,6 +1254,26 @@ painter_filter_commit_current (gpointer data)
          state->schemas[check.route]->current (check.image->gimp);
 }
 
+struct PainterVideoCommitCheck
+{
+  PainterLayerDialog *state;
+  GimpLayer *layer;
+  const std::array<int,3> *draft;
+};
+
+static gboolean
+painter_video_commit_current (gpointer data)
+{
+  const auto& check=*static_cast<const PainterVideoCommitCheck *>(data);
+  const auto *state=check.state;
+  if (state->closed || g_strcmp0(gtk_combo_box_get_active_id(GTK_COMBO_BOX(state->choice)),"video")) return FALSE;
+  if ((*check.draft)[0]!=gtk_combo_box_get_active(GTK_COMBO_BOX(state->video_pattern)) ||
+      (*check.draft)[1]!=gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(state->video_additive)) ||
+      (*check.draft)[2]!=gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(state->video_rotated))) return FALSE;
+  return !state->editing || (check.layer && state->loaded_revision==
+    gimp_filter_layer_get_definition_revision(GIMP_FILTER_LAYER(check.layer)));
+}
+
 struct PainterColorifyCommitCheck
 {
   PainterLayerDialog *state;
@@ -1566,6 +1591,23 @@ painter_filter_load (PainterLayerDialog *state,
   args_owner = filter.arguments ();
   args = args_owner.get ();
   count = args ? gimp_value_array_length (args) : 0;
+  if (!g_strcmp0(procedure,"plug-in-video") && count==6)
+    {
+      bool valid=true;
+      for (unsigned i=0;i<6;++i) valid=valid && G_VALUE_HOLDS_INT(gimp_value_array_index(args,i));
+      if (valid) {
+        const int pattern=g_value_get_int(gimp_value_array_index(args,3));
+        if (pattern>=0 && pattern<9) {
+          for (unsigned i=0;i<3;++i) state->video_values[i]=g_value_get_int(gimp_value_array_index(args,i+3));
+          gtk_combo_box_set_active(GTK_COMBO_BOX(state->video_pattern),pattern);
+          gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(state->video_additive),state->video_values[1]!=0);
+          gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(state->video_rotated),state->video_values[2]!=0);
+          state->video_loaded=true;
+          gtk_combo_box_set_active_id(GTK_COMBO_BOX(state->choice),"video");
+        }
+      }
+      goto out;
+    }
   if (!g_strcmp0 (procedure,"plug-in-colorify") && painter_colorify_tint (args,state->colorify_values))
     {
       for (unsigned i=0;i<4;++i) {
@@ -1644,6 +1686,7 @@ painter_filter_response (PainterLayerDialog *state,
   GBytes            *raw = NULL;
   gboolean           success = TRUE;
   std::array<std::string,4> colorify_text;
+  std::array<int,3> video_draft {{-1,0,0}};
 
   if (response != GTK_RESPONSE_OK)
     goto close;
@@ -1652,6 +1695,11 @@ painter_filter_response (PainterLayerDialog *state,
   if (!state->closed && !g_strcmp0(gtk_combo_box_get_active_id(GTK_COMBO_BOX(state->choice)),"colorify"))
     for (unsigned i=0;i<4;++i)
       colorify_text[i]=gtk_entry_get_text(GTK_ENTRY(state->colorify_entries[i]));
+  if (!state->closed && !g_strcmp0(gtk_combo_box_get_active_id(GTK_COMBO_BOX(state->choice)),"video")) {
+    video_draft[0]=gtk_combo_box_get_active(GTK_COMBO_BOX(state->video_pattern));
+    video_draft[1]=gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(state->video_additive));
+    video_draft[2]=gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(state->video_rotated));
+  }
   image = GIMP_IMAGE (g_weak_ref_get (&state->image));
   layer = GIMP_LAYER (g_weak_ref_get (&state->layer));
   if (state->closed || ! image || (state->editing &&
@@ -1670,6 +1718,26 @@ painter_filter_response (PainterLayerDialog *state,
                   !strcmp (choice, "retinex") ? "plug-in-retinex" : "plug-in-convmatrix";
       if (!painter_filter_isolated_args (state, choice, image, layer, &args)) goto out;
       if (!args) goto close;
+    }
+  else if (g_str_equal(choice,"video"))
+    {
+      if (state->editing && state->loaded_revision!=gimp_filter_layer_get_definition_revision(GIMP_FILTER_LAYER(layer))) {
+        painter_dialog_error(state,_("This filter definition changed while the editor was open. Reopen the editor to use the latest values."));goto out;
+      }
+      if (state->editing && state->video_loaded && video_draft[0]==state->video_values[0] &&
+          (video_draft[1]!=0)==(state->video_values[1]!=0) &&
+          (video_draft[2]!=0)==(state->video_values[2]!=0)) goto close;
+      if (video_draft[0]<0 || video_draft[0]>=9) {
+        painter_dialog_error(state,_("Choose one of the nine Video patterns."));goto out;
+      }
+      auto values=video_draft;
+      for (unsigned i=1;i<3;++i)
+        if (state->video_loaded && (state->video_values[i]!=0)==(video_draft[i]!=0)) values[i]=state->video_values[i];
+      procedure="plug-in-video";
+      /* These saved context placeholders are not executor inputs. Compatible
+       * old INT context is retained below; malformed context is not guessed. */
+      args=gimp_value_array_new_from_types(NULL,G_TYPE_INT,0,G_TYPE_INT,0,G_TYPE_INT,0,
+        G_TYPE_INT,values[0],G_TYPE_INT,values[1],G_TYPE_INT,values[2],G_TYPE_NONE);
     }
   else if (g_str_equal (choice, "colorify"))
     {
@@ -1747,6 +1815,9 @@ painter_filter_response (PainterLayerDialog *state,
               (count == 5 && g_str_equal (choice,"edge"))))
             {
               gboolean compatible = TRUE;
+              if (g_str_equal(choice,"video"))
+                for (guint i=0;i<3;++i)
+                  if (!G_VALUE_HOLDS_INT(gimp_value_array_index(old_args,i))) compatible=FALSE;
               for (guint i = 3; i < count; i++)
                 {
                   const GValue *old = gimp_value_array_index (old_args, i);
@@ -1793,6 +1864,11 @@ painter_filter_response (PainterLayerDialog *state,
           success = FilterLayerRef::retain (GIMP_FILTER_LAYER (layer)).try_set_definition_checked (procedure, raw, args,
             TRUE, painter_filter_commit_current, &check, &error);
         }
+      else if (g_str_equal(choice,"video")) {
+        PainterVideoCommitCheck check {state,layer,&video_draft};
+        success=FilterLayerRef::retain(GIMP_FILTER_LAYER(layer)).try_set_definition_checked(procedure,raw,args,
+          TRUE,painter_video_commit_current,&check,&error);
+      }
       else if (g_str_equal(choice,"colorify")) {
         PainterColorifyCommitCheck check {state,layer,&colorify_text};
         success=FilterLayerRef::retain(GIMP_FILTER_LAYER(layer)).try_set_definition_checked(procedure,raw,args,
@@ -1819,6 +1895,11 @@ painter_filter_response (PainterLayerDialog *state,
               success = FilterLayerRef::retain (GIMP_FILTER_LAYER (layer)).try_set_definition_checked (procedure, NULL, args,
                 FALSE, painter_filter_commit_current, &check, &error);
             }
+          else if (g_str_equal(choice,"video")) {
+            PainterVideoCommitCheck check {state,layer,&video_draft};
+            success=FilterLayerRef::retain(GIMP_FILTER_LAYER(layer)).try_set_definition_checked(procedure,NULL,args,
+              FALSE,painter_video_commit_current,&check,&error);
+          }
           else if (g_str_equal(choice,"colorify")) {
             PainterColorifyCommitCheck check {state,layer,&colorify_text};
             success=FilterLayerRef::retain(GIMP_FILTER_LAYER(layer)).try_set_definition_checked(procedure,NULL,args,
@@ -1919,6 +2000,7 @@ painter_filter_layer_dialog_new (GimpImage   *image,
       gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (state->choice),"vinvert",_("Value Invert (Painter compatibility)"));
       gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (state->choice),"max-rgb",_("Maximum/Minimum RGB (Painter compatibility)"));
       gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (state->choice),"threshold-alpha",_("Threshold Alpha (Painter compatibility)"));
+      gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (state->choice), "video", _("Video (legacy RGB pattern)"));
       gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (state->choice), "colorify", _("Colorify (explicit Painter tint)"));
       gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (state->choice), "blinds", _("Blinds (Painter compatibility)"));
       gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (state->choice), "small-tiles", _("Small Tiles (Painter compatibility)"));
@@ -1973,6 +2055,19 @@ painter_filter_layer_dialog_new (GimpImage   *image,
       gtk_stack_add_named (GTK_STACK (state->parameters),grid,"point");
       state->point_argument = painter_dialog_spin (state,_("_Integer argument:"),"painter-point-argument",G_MININT,G_MAXINT,1,0);
       painter_dialog_field (state,NULL,gtk_label_new (_("Maximum RGB: positive selects maximum, otherwise minimum.\nThreshold Alpha: alpha byte threshold (normally 0–255).\nValue Invert has no additional argument.")),"painter-point-help");
+      state->grid=grid=gtk_grid_new();state->row=0;
+      gtk_grid_set_row_spacing(GTK_GRID(grid),8);gtk_grid_set_column_spacing(GTK_GRID(grid),8);
+      gtk_stack_add_named(GTK_STACK(state->parameters),grid,"video");
+      state->video_pattern=painter_dialog_field(state,_("_Pattern:"),gtk_combo_box_text_new(),"painter-video-pattern");
+      {
+        const char *labels[]={_("Staggered"),_("Large staggered"),_("Striped"),_("Wide-striped"),_("Long-staggered"),_("3x3"),_("Large 3x3"),_("Hex"),_("Dots")};
+        for (unsigned i=0;i<9;++i) { char id[2]={static_cast<char>('0'+i),0};gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(state->video_pattern),id,labels[i]); }
+      }
+      gtk_combo_box_set_active(GTK_COMBO_BOX(state->video_pattern),2);
+      state->video_additive=painter_dialog_field(state,NULL,gtk_check_button_new_with_mnemonic(_("_Additive")),"painter-video-additive");
+      state->video_rotated=painter_dialog_field(state,NULL,gtk_check_button_new_with_mnemonic(_("_Rotated")),"painter-video-rotated");
+      gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(state->video_additive),TRUE);
+      painter_dialog_field(state,NULL,gtk_label_new(_("Non-linear 8-bit RGB only. Unchanged flags retain their original signed values.")),"painter-video-help");
       std::size_t descriptor_bytes = 0;
       grid=gtk_grid_new();gtk_grid_set_row_spacing(GTK_GRID(grid),6);gtk_grid_set_column_spacing(GTK_GRID(grid),6);
       gtk_stack_add_named(GTK_STACK(state->parameters),grid,"colorify");
@@ -2044,6 +2139,9 @@ painter_filter_layer_dialog_new (GimpImage   *image,
       painter_dialog_connect (state,state->radius,"value-changed",G_CALLBACK (painter_filter_dirty));
       painter_dialog_connect (state,state->horizontal_flag,"value-changed",G_CALLBACK (painter_filter_dirty));
       painter_dialog_connect (state,state->vertical_flag,"value-changed",G_CALLBACK (painter_filter_dirty));
+      painter_dialog_connect(state,state->video_pattern,"changed",G_CALLBACK(painter_filter_dirty));
+      painter_dialog_connect(state,state->video_additive,"toggled",G_CALLBACK(painter_filter_dirty));
+      painter_dialog_connect(state,state->video_rotated,"toggled",G_CALLBACK(painter_filter_dirty));
       for (auto *entry : state->colorify_entries)
         painter_dialog_connect(state,entry,"changed",G_CALLBACK(painter_filter_dirty));
       for (const auto& number : state->numbers)
