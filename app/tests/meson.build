@@ -1548,3 +1548,19 @@ if host_machine.system() == 'linux'
           'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
           'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 120)
 endif
+
+# Original23.009: observing wrapper forwards unchanged to the real session.
+if host_machine.system() == 'linux'
+  painter_time_sequences = executable('painter-time-sequences',
+    'test-painter-time-sequences.cpp', 'test-mypaint-colorpicker-c.c', 'tests.c',
+    dependencies: [libapp_dep, painter_mypaint_surface_dep, appstream],
+    link_with: apptests_links, cpp_args: painter_cpp_args,
+    link_args: ['-Wl,--wrap=gimp_painter_session_stroke_to'],
+    override_options: ['c_std=c11', 'cpp_std=c++14'])
+  test('painter-time-sequences', painter_time_sequences,
+    env: ['GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+          'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+          'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
+          'UI_TEST=yes'],
+    suite: 'app', is_parallel: false, timeout: 120)
+endif

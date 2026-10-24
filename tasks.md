@@ -992,6 +992,8 @@
 
 2026-10-21 23.002 dynamics cross-pin checkpoint: existing5 native enum/property/curve cases and registered1028-value neutral mapping case pass normally and with5-C-unit ASan/UBSan; bypassing mapping fails exact old-sample comparison, then restoration passes. Relevant committed-main/private functions are byte-identical; appended MyPaint Undo enum differences are explicitly disjoint. See `migration/tests/smudge-dynamics-current/`. All52 original duties/criteria/shared owners remain OPEN pending whole source-role review; no product/test edit or old-runtime claim.
 
+2026-10-21 原23.009進捗：登録MyPaint toolの通常・同時刻・逆行後復帰・UINT32 wrap・INT32_MAX境界・zero開始7系列を通常/1provider focused ASan・UBSanで検証。時刻/座標/筆圧の完全一致、正規化系列の全画素一致とUndo/Redo、3因果変異を確認。旧active zero破棄/逆行巨大値との差を明記し、queued GDK/間引き/実pen/全platformと元依存は未完。`migration/tests/painter-time-sequences/`。
+
 ### 24 ブラシ editor・履歴・プレビュー
 
 主対象：tools/widgets/actions の拡張ブラシ UI
