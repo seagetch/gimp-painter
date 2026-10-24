@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "/workspace/shared/gimp-clean-aggregate/source/tools/run-painter-xvfb.py", line 11, in <module>
+    with tempfile.TemporaryDirectory(prefix='xvfb-auth-', dir=os.environ['TMPDIR']) as temporary:
+         ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/tempfile.py", line 1077, in __init__
+    self.name = mkdtemp(suffix, prefix, dir)
+                ~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/tempfile.py", line 575, in mkdtemp
+    _os.mkdir(file, 0o700)
+    ~~~~~~~~~^^^^^^^^^^^^^
+OSError: [Errno 28] No space left on device: '/workspace/shared/device-name-identity/profile/tmp/xvfb-auth-uenlo5rl'

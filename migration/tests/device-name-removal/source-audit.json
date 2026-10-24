@@ -1,0 +1,16 @@
+{
+  "commit": "e9ce894b9d0f2b564a351e768729231ea21164ad",
+  "source_sha256": {
+    "app/widgets/gimpdevicemanager.c": "a305dfcc1ae097656daf434f93e9a7adee575bde34ac98b71c0243fe35420481",
+    "app/widgets/gimpdeviceinfo.c": "19cf0a2c3450588ce47c076514dc3cf3b17cb2903dd896956e6518a677fa5327",
+    "app/widgets/gimpdevices.c": "58fe7b47f26b2014058a6f7a111cce61e7d75ab77ea4914da4a4580b2d4a6553",
+    "app/core/gimpcontainer.c": "c07884ce2dcec663431d4256f4b3b80190208d473ec64b739dc5c5195ea5c422",
+    "app/core/gimplist.c": "70897bce9b3be7c76ccdf6c86c30c9ea66173f9ac0f6ee7c897f8636f3d90e76"
+  },
+  "scope": "read-only source plan; no runtime test or product change",
+  "legacy_unique_names": "FALSE to TRUE; target already TRUE",
+  "persistent_identity": "serialized GimpDeviceInfo name; unique-name deserialization merges existing named child",
+  "platform_policy": "Linux replaces duplicate device attachment; Windows refuses; preserve unless explicit review",
+  "causal_candidate": "remove superseded A resolved by same name may detach currently attached B",
+  "remaining": "genuinely separate same-name physical devices not identified by current name or vendor/product IDs"
+}

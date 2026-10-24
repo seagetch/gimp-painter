@@ -1514,3 +1514,17 @@ test('preset-catalog-ui', preset_catalog_ui_test,
         'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
         'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
         'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 180)
+
+# Synthetic duplicate exposure using real GDK devices; Linux name-only link seam.
+if host_machine.system() == 'linux'
+  device_name_identity = executable('device-name-identity',
+    'test-device-name-identity.c', 'tests.c',
+    dependencies: [libapp_dep, painter_mypaint_surface_dep, appstream],
+    link_with: apptests_links, override_options: ['c_std=c11'],
+    link_args: ['-Wl,--wrap=gdk_device_get_name'])
+  test('device-name-identity', device_name_identity,
+    env: ['GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+          'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+          'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
+          'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 120)
+endif

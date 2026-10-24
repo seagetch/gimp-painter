@@ -583,7 +583,10 @@ gimp_device_manager_device_removed (GdkSeat           *seat,
     GIMP_DEVICE_INFO (gimp_container_get_child_by_name (GIMP_CONTAINER (manager),
                                                         gdk_device_get_name (device)));
 
-  if (device_info)
+  /* A superseded same-name exposure can be removed after its replacement.
+   * Do not detach the device which currently owns this persisted profile. */
+  if (device_info &&
+      gimp_device_info_get_device (device_info, NULL) == device)
     {
       gimp_device_info_set_device (device_info, NULL, NULL);
 

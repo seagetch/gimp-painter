@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/workspace/shared/device-name-identity/build-green.py", line 20, in <module>
+    (O/(prefix+'-link-before.json')).write_text(json.dumps(inputs,indent=2)+'\n');subprocess.run(l,cwd=B,check=True);assert all(sha(pathlib.Path(p))==h for p,h in inputs.items());(O/(prefix+'-build.json')).write_text(json.dumps({'compile':commands,'link':l,'linked_inputs':len(inputs),'unchanged':True,'sources':{str(p):sha(p) for p in [O/'test-device-name-identity.c',O/('manager-before.c'if mode=='mutant'else'manager-after.c')]},'binary_sha256':sha(O/('device-name-'+mode))},indent=2)+'\n');print('PASS',mode,len(inputs))
+                                                                                                                            ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

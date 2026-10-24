@@ -1,0 +1,16 @@
+{
+  "baseline_commit": "503ade3466ddebc60d13d20502ebf0eb0c617f96",
+  "current_source_delta": "only app/widgets/gimpdevicemanager.c removal guard; private final fixture",
+  "unchanged_shared_link_inputs": 1068,
+  "core_regular_archive_members_verified": 254,
+  "unexpected_shared_input_changes": [],
+  "focused_instrumentation": [
+    "test-device-name-identity.c",
+    "manager-after.c"
+  ],
+  "lsan": false,
+  "whole_app_sanitizer": false,
+  "wrapper": "gdk_device_get_name for exactly two retained real nonkeyboard mouse-class GdkDevice objects; no Gimp manager/info/config function wrapped",
+  "platform": "Linux Xvfb synthetic exposure; not physical tablet, Windows or unique physical identity proof",
+  "screenshot": "actual1080x1920 oncanvas main window; native input dialog obscured, no device-dialog visual proof"
+}

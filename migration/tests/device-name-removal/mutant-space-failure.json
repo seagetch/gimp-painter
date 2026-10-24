@@ -1,0 +1,12 @@
+{
+  "command": [
+    "python3",
+    "/workspace/shared/gimp-clean-aggregate/source/tools/run-painter-xvfb.py",
+    "/workspace/shared/device-name-identity/device-name-mutant"
+  ],
+  "returncode": 1,
+  "seconds": 0.04056723399844486,
+  "stdout": "",
+  "stderr": "Traceback (most recent call last):\n  File \"/workspace/shared/gimp-clean-aggregate/source/tools/run-painter-xvfb.py\", line 11, in <module>\n    with tempfile.TemporaryDirectory(prefix='xvfb-auth-', dir=os.environ['TMPDIR']) as temporary:\n         ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.13/tempfile.py\", line 1077, in __init__\n    self.name = mkdtemp(suffix, prefix, dir)\n                ~~~~~~~^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.13/tempfile.py\", line 575, in mkdtemp\n    _os.mkdir(file, 0o700)\n    ~~~~~~~~~^^^^^^^^^^^^^\nOSError: [Errno 28] No space left on device: '/workspace/shared/device-name-identity/profile/tmp/xvfb-auth-uenlo5rl'\n",
+  "scope": "real GDK objects with exactly two name substitutions; synthetic seat signal; no host devices removed"
+}
