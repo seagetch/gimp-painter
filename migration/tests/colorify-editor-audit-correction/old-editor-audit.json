@@ -1,0 +1,140 @@
+{
+  "old_ref": "afa43fae3e920210146abed514f136fd49f671b5",
+  "path": "app/widgets/gimplayerpopup.cpp",
+  "sha256": "baeeb4da9647a5d1969dc36aa5f5b724c2d2fd05078dab9137a99bacca6cb5f8",
+  "generic_editor": {
+    "update_filter_edit_line": 216,
+    "rgb_branch_line": 662,
+    "apply_line": 1098
+  },
+  "source_observations": [
+    "Generic popup selects registered procedures and edits an argument array; Apply calls FilterLayerInterface::set_procedure directly.",
+    "RGB branch reads pspec default rather than current argument; initializes GimpRGB pointer null, passes it to gimp_value_get_rgb, then falls back to white.",
+    "RGB color panel branch shown has no color-changed callback writing proc_args; no inference that visible color selection updates saved tint.",
+    "New native dialog page is explicit bounded typed successor, not exact reproduction of incomplete/unsafe old widget implementation.",
+    "No old popup/Edge/string runtime was executed."
+  ],
+  "all_proc_args_source_references": [
+    {
+      "line": 87,
+      "text": "Array                 proc_args;"
+    },
+    {
+      "line": 227,
+      "text": "proc_args = f->get_procedure_args();"
+    },
+    {
+      "line": 229,
+      "text": "if (proc_args) {"
+    },
+    {
+      "line": 230,
+      "text": "auto i_proc_args = ref<GValue>(proc_args);"
+    },
+    {
+      "line": 231,
+      "text": "for (auto gvalue : i_proc_args) {"
+    },
+    {
+      "line": 236,
+      "text": "g_print(\"  proc_args = NULL\\n\");"
+    },
+    {
+      "line": 239,
+      "text": "proc_args = NULL;"
+    },
+    {
+      "line": 240,
+      "text": "if (!proc_args) {"
+    },
+    {
+      "line": 242,
+      "text": "proc_args = g_array_sized_new (FALSE, TRUE, sizeof (GValue), temp_args->n_values);"
+    },
+    {
+      "line": 243,
+      "text": "g_array_set_clear_func (proc_args, (GDestroyNotify) g_value_unset);"
+    },
+    {
+      "line": 244,
+      "text": "g_array_append_vals(proc_args, temp_args->values, temp_args->n_values);"
+    },
+    {
+      "line": 336,
+      "text": "auto i_proc_args = ref<GValue>(proc_args);"
+    },
+    {
+      "line": 337,
+      "text": "double            cur_value      = g_value_get_double(&i_proc_args[j]);"
+    },
+    {
+      "line": 403,
+      "text": "auto i_proc_args = ref<GValue>(proc_args);"
+    },
+    {
+      "line": 404,
+      "text": "g_value_set_double(&i_proc_args[j], ref(o)[\"value\"]);"
+    },
+    {
+      "line": 421,
+      "text": "auto i_proc_args = ref<GValue>(proc_args);"
+    },
+    {
+      "line": 422,
+      "text": "g_value_set_double(&i_proc_args[j], ref(o)[\"value\"]);"
+    },
+    {
+      "line": 457,
+      "text": "auto i_proc_args = ref<GValue>(proc_args);"
+    },
+    {
+      "line": 458,
+      "text": "gint         cur_value      = g_value_get_int(&i_proc_args[j]);"
+    },
+    {
+      "line": 461,
+      "text": "cur_value = ref(proc_args->values[j]);"
+    },
+    {
+      "line": 463,
+      "text": "cur_value = ref(proc_args->values[j]);"
+    },
+    {
+      "line": 514,
+      "text": "auto i_proc_args = ref<GValue>(proc_args);"
+    },
+    {
+      "line": 515,
+      "text": "g_value_set_int(&i_proc_args[j], ref(o) [gtk_toggle_button_get_active] ());"
+    },
+    {
+      "line": 535,
+      "text": "auto i_proc_args = ref<GValue>(proc_args);"
+    },
+    {
+      "line": 536,
+      "text": "g_value_set_int(&i_proc_args[j], value);"
+    },
+    {
+      "line": 628,
+      "text": "auto i_proc_args = ref<GValue>(proc_args);"
+    },
+    {
+      "line": 629,
+      "text": "g_value_set_int(&i_proc_args[j], ref(o)[\"value\"]);"
+    },
+    {
+      "line": 647,
+      "text": "auto i_proc_args = ref<GValue>(proc_args);"
+    },
+    {
+      "line": 648,
+      "text": "g_value_set_int(&i_proc_args[j], (gint32)value);"
+    },
+    {
+      "line": 1099,
+      "text": "filter_layer->set_procedure(this->proc_name, this->proc_args);"
+    }
+  ],
+  "interpretation_limit": "Source-only: no explicit RGB write-back observed in the branch or Apply, which forwards proc_args; no old runtime failure/behavior is asserted."
+}
