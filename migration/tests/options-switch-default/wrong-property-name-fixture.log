@@ -1,0 +1,15 @@
+Xvfb verified: 127.0.0.1:94, 1080x1920x24, authenticated accepted, empty authority rejected
+TAP version 14
+# random seed: R02S9b23c966bbdda330c9da776927329228
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+1..4
+# Start of switch-default tests
+ok 1 /switch-default/metadata-reset
+# omitted switch preserves receiver: fresh Resource FALSE; reset receiver TRUE; prior-native omitted FALSE after reset is intentionally not preserved
+ok 2 /switch-default/explicit-omitted-config
+ok 3 /switch-default/changed-serialization
+not ok /switch-default/prior-native-replay - ERROR:/workspace/shared/editor-switch-default/green/fixture.cpp:72:void SwitchDefaults::prior_native_replay(): 'text.find("painter-resource-json")!=std::string::npos' should be TRUE
+Bail out!
+**
+ERROR:/workspace/shared/editor-switch-default/green/fixture.cpp:72:void SwitchDefaults::prior_native_replay(): 'text.find("painter-resource-json")!=std::string::npos' should be TRUE

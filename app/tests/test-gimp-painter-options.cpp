@@ -339,8 +339,8 @@ static Resource reset_scalar_defaults(Resource resource)
     if(resource.base_value(setting.index)!=setting.default_value)
       resource.set_base_value(setting.index,setting.default_value);
   for(const auto &setting:painter_mypaint_switches)
-    if(resource.switch_value(setting.index))
-      resource.set_switch(setting.index,false);
+    if(resource.switch_value(setting.index)!=bool(setting.default_value))
+      resource.set_switch(setting.index,setting.default_value);
   for(const auto &setting:painter_mypaint_texts)
     if(!resource.text_is_null(setting.index))
       resource.set_text(setting.index,nullptr);
@@ -1038,9 +1038,14 @@ static void shared_history_application_close()
   while(g_main_context_pending(nullptr))g_main_context_iteration(nullptr,FALSE);
   g_object_unref(second);g_assert_true(gimp_painter_binding_close(G_OBJECT(gimp),nullptr));
 }
+#include "test-painter-switch-defaults.inc"
 int main(int argc,char**argv)
 {
   g_test_init(&argc,&argv,nullptr);gimp_test_utils_set_gimp3_directory("GIMP_TESTING_ABS_TOP_SRCDIR","app/tests/gimpdir");gimp=gimp_init_for_testing();
+  g_test_add_func("/painter-options/switch-defaults-metadata-reset",SwitchDefaults::metadata_reset);
+  g_test_add_func("/painter-options/switch-defaults-explicit-omitted-config",SwitchDefaults::explicit_and_omitted_config);
+  g_test_add_func("/painter-options/switch-defaults-changed-serialization",SwitchDefaults::changed_serialization);
+  g_test_add_func("/painter-options/switch-defaults-prior-native-replay",SwitchDefaults::prior_native_replay);
   g_test_add_func("/painter-options/generated-properties",generated_properties);
   g_test_add_func("/painter-options/all-native-properties-config",all_native_properties_config);
   g_test_add_func("/painter-options/legacy-brush-mode-config",legacy_brush_mode_config);

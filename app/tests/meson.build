@@ -425,6 +425,7 @@ painter_options_test = executable('gimp-painter-options',
 )
 test('gimp-painter-options', painter_options_test,
   env: [
+    'GIMP_TEST_PRIOR_SWITCH_CONFIGS=' + meson.project_source_root() / 'migration/tests/options-switch-default/prior-serializer',
     'GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
     'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
     'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',

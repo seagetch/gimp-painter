@@ -1,0 +1,17 @@
+{
+  "baseline_commit": "55bfa5f1f72f33fb5a2f10b1f7a319bd773b0e94",
+  "owned": {
+    "app/paint/painter-mypaint-surface/gimp-painter-options.cpp": "1c6ae211d6352eeacd0be9e5e2ed54fd9e5a7f731c4f18c595e66392aea5165a",
+    "app/tests/test-gimp-painter-options.cpp": "cf2bffec48ae1dff7e7d0b408c609ea87efba390a788c606be0f1a95ddf5de7b",
+    "app/tests/test-painter-switch-defaults.inc": "34aedd67fd890229df1bb4f2f6ade5216eae7c2fa0608a6d77876d9bb71a7a87"
+  },
+  "scope": "Private exact55bf linked dependencies; single Options class_init default expression override. Four selected tests, not full Options suite. No acquisition diagnostics.",
+  "instrumented_production_units": [
+    "app/paint/painter-mypaint-surface/gimp-painter-options.cpp",
+    "app/paint/painter-mypaint/resource.cpp",
+    "app/painter/binding-store.cpp"
+  ],
+  "fixture_instrumented": true,
+  "leak_detection": false,
+  "numeric_cases_sha256": "a502f6f9c0ec2f493a8027b72d5f05556e58b0c7b093bdb71b418b9f2f645ffc"
+}

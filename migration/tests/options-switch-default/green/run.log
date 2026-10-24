@@ -1,0 +1,19 @@
+Xvfb verified: 127.0.0.1:92, 1080x1920x24, authenticated accepted, empty authority rejected
+TAP version 14
+# random seed: R02Sa447b82e4d0a5bc0b5cfcb30930be781
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+1..4
+# Start of switch-default tests
+ok 1 /switch-default/metadata-reset
+# omitted switch preserves receiver: fresh Resource FALSE; reset receiver TRUE; scalar-only omission after reset intentionally now TRUE; actual native captures tested separately
+ok 2 /switch-default/explicit-omitted-config
+ok 3 /switch-default/changed-serialization
+# actual prechange native FALSE full preserves value after reset
+# removing actual native painter-settings causally changes omitted FALSE to reset TRUE
+# actual prechange native FALSE changed preserves value after reset
+# removing actual native painter-settings causally changes omitted FALSE to reset TRUE
+# actual prechange native TRUE full preserves value after reset
+# actual prechange native TRUE changed preserves value after reset
+ok 4 /switch-default/prior-native-replay
+# End of switch-default tests

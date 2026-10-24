@@ -1,0 +1,92 @@
+[01m[K/workspace/shared/editor-switch-default/numeric-candidate/fixture.cpp:77:8:[m[K [01;35m[Kwarning: [m[K‘[01m[KEditor[m[K’ declared with greater visibility than the type of its field ‘[01m[KEditor::model[m[K’ [[01;35m[K-Wattributes[m[K]
+   77 | struct [01;35m[KEditor[m[K {
+      |        [01;35m[K^~~~~~[m[K
+[01m[K/workspace/shared/editor-switch-default/numeric-candidate/fixture.cpp:97:21:[m[K [01;35m[Kwarning: [m[Kno previous declaration for ‘[01m[Kgboolean[01;32m[K __wrap_gimp_painter_mybrush_options_set_json[m[K(GimpPainterMybrushOptions*, const gchar*, GError**)[m[K’ [[01;35m[K-Wmissing-declarations[m[K]
+   97 | extern "C" gboolean [01;35m[K__wrap_gimp_painter_mybrush_options_set_json[m[K(GimpPainterMybrushOptions*o,const gchar*j,GError**e){
+      |                     [01;35m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/workspace/shared/editor-switch-default/numeric-candidate/fixture.cpp:71:15:[m[K [01;35m[Kwarning: [m[K‘[01m[Koriginal_search[m[K’ defined but not used [[01;35m[K-Wunused-variable[m[K]
+   71 | static gchar *[01;35m[Koriginal_search[m[K;
+      |               [01;35m[K^~~~~~~~~~~~~~~[m[K
+0
+raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# Actual1080x1920 oncanvas visible; API-edited spin5.9 and model verified
+# loaded6 ->5.9->5.7->4.9: both views coherent, exact whole Resource/selection/name retained; settings signal1; outside notifies52 / inside1
+ok 1 /painter-controls/numeric-loaded-range
+# slow test /painter-controls/numeric-loaded-range executed in 1.05 secs
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# rejected draft update restores displayed6 and unchanged model
+ok 2 /painter-controls/numeric-rejection
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# switch non_incremental model/two-view bidirectional PASS
+# switch use_gimp_brushmark model/two-view bidirectional PASS
+# switch use_gimp_texture model/two-view bidirectional PASS
+# switch brushmark_specified model/two-view bidirectional PASS
+# switch texture_specified model/two-view bidirectional PASS
+ok 3 /painter-controls/switches-two-way
+# End of painter-controls tests
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+
+le/gimp.svg”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/256x256/gimp.png
+gui_dbus_name_lost: connection to the bus cannot be established.
+set device 'Virtual core XTEST pointer' to mode: disabled
+set device 'Xvfb mouse' to mode: disabled
+WARNING: icon theme has no icon 'gimp-tool-paintbrush'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-dynamics'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-default-colors'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-swap-colors'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-tool-paintbrush'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+INFO: a stray image seems to have been left around by a plug-in: "[Untitled]"

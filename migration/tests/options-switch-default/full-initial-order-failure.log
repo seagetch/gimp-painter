@@ -1,0 +1,35 @@
+Xvfb verified: 127.0.0.1:94, 1080x1920x24, authenticated accepted, empty authority rejected
+TAP version 14
+# random seed: R02Sc6d6d23d755a223a86f0bd41f09c6938
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+1..28
+# Start of painter-options tests
+ok 1 /painter-options/generated-properties
+ok 2 /painter-options/all-native-properties-config
+ok 3 /painter-options/legacy-brush-mode-config
+ok 4 /painter-options/edit-curve-commit-conflict
+ok 5 /painter-options/history-config
+ok 6 /painter-options/draft-name-identity-commit
+ok 7 /painter-options/draft-name-history-copy
+ok 8 /painter-options/draft-name-external-errors
+ok 9 /painter-options/draft-name-notification-lifetime
+ok 10 /painter-options/draft-name-reentry
+ok 11 /painter-options/native-config-reset-defaults
+ok 12 /painter-options/notification-last-ref
+ok 13 /painter-options/closed-invalid-curve
+ok 14 /painter-options/named-resources
+ok 15 /painter-options/selection-reentry
+ok 16 /painter-options/commit-close
+ok 17 /painter-options/cross-options-history
+ok 18 /painter-options/mapping-point-generated-matrix
+ok 19 /painter-options/mapping-point-handle-lifetime-failures
+ok 20 /painter-options/mapping-point-set-generated-matrix
+# slow test /painter-options/mapping-point-set-generated-matrix executed in 0.75 secs
+ok 21 /painter-options/mapping-point-set-precision-reset-history
+ok 22 /painter-options/mapping-point-set-fail-closed
+ok 23 /painter-options/mapping-point-set-notification-reentry
+ok 24 /painter-options/application-history-close
+# Start of switch-defaults tests
+terminate called after throwing an instance of 'GimpPainter::Error'
+  what():  Binding is not active

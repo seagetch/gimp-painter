@@ -1,0 +1,12 @@
+Xvfb verified: 127.0.0.1:92, 1080x1920x24, authenticated accepted, empty authority rejected
+TAP version 14
+# random seed: R02S031e110b6b3f97934ba848857ae2b171
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+1..1
+# Start of switch-default tests
+# old expectedTRUE; current declared=0 reset=0 defaultTRUE incorrectly serialized=1
+not ok /switch-default/old-metadata-reset-serialize - ERROR:/workspace/shared/editor-switch-default/fixture.cpp:46:void switch_default_metadata(): 'declared' should be TRUE
+Bail out!
+**
+ERROR:/workspace/shared/editor-switch-default/fixture.cpp:46:void switch_default_metadata(): 'declared' should be TRUE

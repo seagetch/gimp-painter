@@ -1,0 +1,22 @@
+{
+  "scope": "Options class_init boolean GParamSpec defaults and ordinary config reset/serialization only; no acquisition diagnostic",
+  "sources": {
+    "old-options.cpp": {
+      "commit": "afa43fae3e920210146abed514f136fd49f671b5",
+      "path": "app/paint/gimpmypaintoptions.cpp",
+      "sha256": "2c72f9fbe9a9a6c3d42c838c4d92b2f6d1c3d15ab9cdeecb77f32ae3fce3dc0b"
+    },
+    "old-settings.c": {
+      "commit": "afa43fae3e920210146abed514f136fd49f671b5",
+      "path": "app/core/mypaintbrush-brushsettings.c",
+      "sha256": "bc734413af37338972d73bb8e9c70daab14bb9a897728b4170e17068168fa0b2"
+    },
+    "current-options.cpp": {
+      "commit": "503ade3466ddebc60d13d20502ebf0eb0c617f96",
+      "path": "app/paint/painter-mypaint-surface/gimp-painter-options.cpp",
+      "sha256": "ce89680231cea5229cbcb5305710bf8fd98e7e59a62f9fccfd8a35a53ebec3fc"
+    }
+  },
+  "expected_true_switch": "use-gimp-brushmark",
+  "runtime_executed": false
+}

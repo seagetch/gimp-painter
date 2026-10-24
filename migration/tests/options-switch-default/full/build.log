@@ -1,0 +1,48 @@
+0
+Xvfb verified: 127.0.0.1:92, 1080x1920x24, authenticated accepted, empty authority rejected
+TAP version 14
+# random seed: R02S03fb4e3a615cd572aafb36ec40a2c39b
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+1..28
+# Start of painter-options tests
+ok 1 /painter-options/switch-defaults-metadata-reset
+# omitted switch preserves receiver: fresh Resource FALSE; reset receiver TRUE; scalar-only omission after reset intentionally now TRUE; actual native captures tested separately
+ok 2 /painter-options/switch-defaults-explicit-omitted-config
+ok 3 /painter-options/switch-defaults-changed-serialization
+# actual prechange native FALSE full preserves value after reset
+# removing actual native painter-settings causally changes omitted FALSE to reset TRUE
+# actual prechange native FALSE changed preserves value after reset
+# removing actual native painter-settings causally changes omitted FALSE to reset TRUE
+# actual prechange native TRUE full preserves value after reset
+# actual prechange native TRUE changed preserves value after reset
+ok 4 /painter-options/switch-defaults-prior-native-replay
+ok 5 /painter-options/generated-properties
+ok 6 /painter-options/all-native-properties-config
+ok 7 /painter-options/legacy-brush-mode-config
+ok 8 /painter-options/edit-curve-commit-conflict
+ok 9 /painter-options/history-config
+ok 10 /painter-options/draft-name-identity-commit
+ok 11 /painter-options/draft-name-history-copy
+ok 12 /painter-options/draft-name-external-errors
+ok 13 /painter-options/draft-name-notification-lifetime
+ok 14 /painter-options/draft-name-reentry
+ok 15 /painter-options/native-config-reset-defaults
+ok 16 /painter-options/notification-last-ref
+ok 17 /painter-options/closed-invalid-curve
+ok 18 /painter-options/named-resources
+ok 19 /painter-options/selection-reentry
+ok 20 /painter-options/commit-close
+ok 21 /painter-options/cross-options-history
+ok 22 /painter-options/mapping-point-generated-matrix
+ok 23 /painter-options/mapping-point-handle-lifetime-failures
+ok 24 /painter-options/mapping-point-set-generated-matrix
+# slow test /painter-options/mapping-point-set-generated-matrix executed in 0.73 secs
+ok 25 /painter-options/mapping-point-set-precision-reset-history
+ok 26 /painter-options/mapping-point-set-fail-closed
+ok 27 /painter-options/mapping-point-set-notification-reentry
+ok 28 /painter-options/application-history-close
+# End of painter-options tests
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+
+

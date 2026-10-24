@@ -474,7 +474,7 @@ static void gimp_painter_mybrush_options_class_init(GimpPainterMybrushOptionsCla
   // GParamSpec copies and canonicalizes '_' to '-'. Do not allocate C++
   // strings inside this native class initializer (no G_PARAM_STATIC_NAME).
   for(const auto&s:painter_mypaint_settings){properties[s.index+1]=g_param_spec_double(s.internal_name,s.displayed_name,s.tooltip,s.minimum,s.maximum,s.default_value,flags);}
-  for(const auto&s:painter_mypaint_switches){properties[s.index+1]=g_param_spec_boolean(s.internal_name,s.displayed_name,nullptr,FALSE,flags);}
+  for(const auto&s:painter_mypaint_switches){properties[s.index+1]=g_param_spec_boolean(s.internal_name,s.displayed_name,nullptr,s.default_value,flags);}
   for(const auto&s:painter_mypaint_texts){properties[s.index+1]=g_param_spec_string(s.internal_name,s.displayed_name,nullptr,nullptr,flags);}
   // No full-resource override is the config default. Reset changes only the
   // exposed settings, preserving draft curves, icon and non-property metadata.
