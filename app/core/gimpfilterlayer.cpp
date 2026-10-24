@@ -730,6 +730,74 @@ struct FilterImpl
               }
           }
       }
+    else if (procedure == "plug-in-video")
+      {
+        /* Literal old six-INT32 definition, not a GEGL substitution. Preserve
+         * signed flag values in the model; every nonzero value means true.
+         * The worker captures drawable-local ROI origin, never image offsets.
+         * Claim malformed definitions as unsupported, without fallback. */
+        if (!real && args && args->size () == 6 &&
+            gimp_drawable_get_base_type (GIMP_DRAWABLE (owner)) == GIMP_RGB &&
+            gimp_drawable_has_alpha (GIMP_DRAWABLE (owner)) &&
+            [&] { for (std::size_t i = 0; i < 6; ++i)
+                    if (!G_VALUE_HOLDS_INT (args->at (i))) return false;
+                  return true; } () &&
+            g_value_get_int (args->at (3)) >= 0 && g_value_get_int (args->at (3)) < 9)
+          {
+            const auto width = request.width, height = request.height;
+            constexpr auto maximum = std::numeric_limits<std::int32_t>::max ();
+            /* Full logical storage and the fixed bound below must fit before
+             * admission. The smaller legacy selected-area limit is checked
+             * after owner capture, before any point kernel can run. */
+            if (width && height && width <= std::size_t (maximum) && height <= std::size_t (maximum) &&
+                std::uint64_t (width) <= std::uint64_t (std::numeric_limits<std::int64_t>::max ()) / 4 / height &&
+                std::uint64_t (width) <= (std::numeric_limits<std::uint64_t>::max () - 2 * 1024 * 1024) / 17 / height)
+              {
+                const auto region = std::make_shared<FilterSelectionRegion> ();
+                const auto outcome = std::make_shared<FilterProcedureResult> ();
+                const FilterVideoOptions options {g_value_get_int (args->at (3)),
+                  g_value_get_int (args->at (4)), g_value_get_int (args->at (5))};
+                const auto pixels = std::uint64_t (width) * height;
+                const auto owner_bytes = pixels * 9u;
+                /* Logical input/mask/staging9 Bpp and private RGBA8 Bpp.
+                 * Capture/merge queue,16-KiB shadow and32-KiB raw scratch,
+                 * plus eight bounded options/kernel copies. No LUT and no
+                 * claim that this reservation caps process RSS or GEGL cache. */
+                const auto bounded = std::uint64_t (FilterScheduler::pixel_budget) * 8 +
+                                     48 * 1024 + 8 * (sizeof (FilterVideoOptions) + sizeof (FilterVideoKernel));
+                const auto peak = owner_bytes + bounded + (spill ?
+                  std::uint64_t (FilterScheduler::pixel_budget) * 4 * 6 : pixels * 8);
+                request.peak_bytes = std::size_t (std::min (peak,
+                  std::uint64_t (std::numeric_limits<std::size_t>::max ())));
+                if (spill) request.peak_spill_bytes = pixels * 8 + owner_bytes;
+                request.process = [width, height, region, options, channel, outcome]
+                  (const FilterScheduler::Bytes& input, std::atomic<bool>& cancel, FilterScheduler::Bytes& output) {
+                    const auto result = filter_point_shadow_vector (input, width, height, *region,
+                      options, cancel, output, channel);
+                    if (result == FilterPointShadowOutcome::cancelled) return false;
+                    outcome->publish (result == FilterPointShadowOutcome::shadow ?
+                      FilterProcedureDisposition::shadow : FilterProcedureDisposition::no_merge);
+                    return true;
+                  };
+                if (spill)
+                  request.raster_process = [width, height, region, options, channel, outcome]
+                    (FilterRaster& input, FilterRaster& output, std::atomic<bool>& cancel, const FilterRasterFactory&) {
+                      const auto result = filter_point_shadow_raster (input, width, height, *region,
+                        options, cancel, output, channel);
+                      if (result == FilterPointShadowOutcome::cancelled) return false;
+                      outcome->publish (result == FilterPointShadowOutcome::shadow ?
+                        FilterProcedureDisposition::shadow : FilterProcedureDisposition::no_merge);
+                      return true;
+                    };
+                prepared.kernel_region = region;
+                prepared.kernel_validate = [width, height, region] {
+                  filter_point_shadow_validate (width, height, *region);
+                };
+                prepared.outcome = outcome;
+                prepared.projection_input = true;
+              }
+          }
+      }
     else if (procedure == "plug-in-normalize")
       {
         /* New literal compatibility route, not a GEGL name substitution.

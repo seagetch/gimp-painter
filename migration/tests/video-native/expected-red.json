@@ -1,0 +1,11 @@
+{
+  "command": [
+    "/tmp/video-native-final/normal/red",
+    "-p",
+    "/gimp-filter-layer/filter_video_native_basic"
+  ],
+  "exit_code": -5,
+  "stdout": "TAP version 14\n# random seed: R02S8c586c245f468c057dc1871ae97a1849\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# Start of gimp-filter-layer tests\nnot ok /gimp-filter-layer/filter_video_native_basic - FATAL-ERROR: Filter failed: Saved filter procedure or argument mapping is unsupported\nBail out!\n",
+  "stderr": "",
+  "seconds": 1.2287366399978055
+}

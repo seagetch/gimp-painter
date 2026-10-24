@@ -2659,6 +2659,7 @@ static void image_close_during_strong_redo_callbacks (void) { undo_owner_lifetim
 #include "test-filter-max-rgb-context.inc"
 #include "test-filter-red-eye-contract.inc"
 #include "test-filter-colorify-contract.inc"
+#include "test-filter-video-contract.inc"
 #include "test-filter-color-exchange-contract.inc"
 #include "test-filter-normalize-contract.inc"
 #include "test-filter-value-invert-context.inc"
@@ -2896,6 +2897,17 @@ int main (int argc, char **argv)
   ADD (filter_flip_legacy_reset_contract);
   ADD (filter_red_eye_native_basic);
   ADD (filter_colorify_native_basic);
+  ADD (filter_video_native_basic);
+  ADD (video_native_patterns_and_flags);
+  ADD (video_native_roi_phase);
+  ADD (video_native_invalid_and_formats);
+  ADD (video_native_rgb_rgba_inputs);
+  ADD (video_native_noalpha_owner_rejected);
+  ADD (video_native_cancel_and_resume);
+  ADD (video_native_invalid_arguments);
+  ADD (video_native_late_context_routes);
+  ADD (video_native_component_masks);
+  ADD (video_native_saved_context_metadata);
   ADD (colorify_tints_and_metadata);
   ADD (colorify_invalid_tuples);
   ADD (colorify_invalid_arguments);
