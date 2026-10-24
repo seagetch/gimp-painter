@@ -4026,7 +4026,7 @@
     {
       "revision": "native",
       "path": "app/core/gimpimage.c",
-      "sha256": "5bc173d76bf5501bdbac896b9e3a50e1724568fd28e53352d88b37662bfa2ff1"
+      "sha256": "1089677cd0413382bcd87dd89c6044ca4b9944990d340568e8d9a9072b13c5e0"
     },
     {
       "revision": "native",
@@ -4591,6 +4591,22 @@
       }
     },
     {
+      "revision": "native",
+      "path": "app/core/gimpimage.c",
+      "predecessor_sha256": "5bc173d76bf5501bdbac896b9e3a50e1724568fd28e53352d88b37662bfa2ff1",
+      "successor_sha256": "1089677cd0413382bcd87dd89c6044ca4b9944990d340568e8d9a9072b13c5e0",
+      "commits": [
+        "84ee103a0ec676937784fe67f7cdf63cf92530b4"
+      ],
+      "base_commit": "5d1c22bc7bdd01e2ef7d36cebed41a52c3a8b15c",
+      "header_path": "app/core/gimpimage.h",
+      "header_predecessor_sha256": "803bae72bbd1dcbdd8518c604f1f4eabd6cfac291427bd6e42a419f8583346ac",
+      "header_successor_sha256": "0bda4852ac3fc480f175ce9c97f841fa8d9a7f3fc3973c115dc6c82dc8b6fb39",
+      "runtime_package": "migration/tests/unsafe-undo-query",
+      "runtime_manifest_sha256": "67cfd4a286d9401340b158d65bad55dab0d39da497859eddecb4befa6cb1ec77",
+      "semantic_successor": "Only private signal index/registration and read-only unsafe-Undo getter added. GimpImageClass layout/vfuncs, all old properties/defaults/serializers and complete other source bytes unchanged. Cancelable legacy paint Undo is no longer vetoed by the separate Save/admission query."
+    },
+    {
       "path": "app/core/gimptooloptions.c",
       "revision": "native",
       "predecessor_sha256": "65797b79006804998e21a4c05fe1ad4d3b06d0856c9dc6d7748ff24cd058edb4",
@@ -4848,6 +4864,10 @@
   },
   "tests": [
     {
+      "path": "migration/tests/persistence_unsafe_undo_successor.py",
+      "sha256": "7e36af00a3ce07ea7578a38fbae8d40314916bd2d6061ac37895276a8c6b1245"
+    },
+    {
       "path": "migration/tests/persistence_smudge_source_successor.py",
       "sha256": "08f298c7a4367bfbbe4f4b494849205b46e23667b10d5ef9a7258449c62c60ea"
     },
@@ -4873,7 +4893,7 @@
     },
     {
       "path": "migration/tests/persistence_successors.py",
-      "sha256": "d55f50698e631c4ffe102cdeb21b4ee3bbc52a838725897504528d764e2441aa"
+      "sha256": "9096746a6ed113bc749fcc98d6e597c4e82b77e367bf67a042115e6aa81cd7d1"
     },
     {
       "path": "migration/tests/persistence_source.py",
@@ -4881,7 +4901,7 @@
     },
     {
       "path": "migration/tests/test_persistence_field_contract.py",
-      "sha256": "a648b092f6ef804aaba2b9d29504195c5cf057add6e6df6301c4f1b3d420aff6"
+      "sha256": "401b48f16b8ca0b6c1c50bd3f068b4fc0ea3edc47b07b9c36a156e0e028436ea"
     },
     {
       "path": "migration/tests/test_persistence_xcf_contract.py",

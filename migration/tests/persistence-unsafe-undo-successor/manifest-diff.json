@@ -1,0 +1,52 @@
+{
+  "counts": {
+    "contract_records": 1379,
+    "syntax_candidates": 873,
+    "routes": 16,
+    "by_disposition": {
+      "dynamic-schema": 164,
+      "saved-field": 905,
+      "unchanged-standard": 310
+    },
+    "candidate_dispositions": {
+      "dynamic-schema": 496,
+      "non-persisted": 132,
+      "saved-field": 80,
+      "unchanged-standard": 165
+    }
+  },
+  "source_changes": [
+    [
+      {
+        "revision": "native",
+        "path": "app/core/gimpimage.c",
+        "sha256": "5bc173d76bf5501bdbac896b9e3a50e1724568fd28e53352d88b37662bfa2ff1"
+      },
+      {
+        "revision": "native",
+        "path": "app/core/gimpimage.c",
+        "sha256": "1089677cd0413382bcd87dd89c6044ca4b9944990d340568e8d9a9072b13c5e0"
+      }
+    ]
+  ],
+  "added_successor": [
+    {
+      "revision": "native",
+      "path": "app/core/gimpimage.c",
+      "predecessor_sha256": "5bc173d76bf5501bdbac896b9e3a50e1724568fd28e53352d88b37662bfa2ff1",
+      "successor_sha256": "1089677cd0413382bcd87dd89c6044ca4b9944990d340568e8d9a9072b13c5e0",
+      "commits": [
+        "84ee103a0ec676937784fe67f7cdf63cf92530b4"
+      ],
+      "base_commit": "5d1c22bc7bdd01e2ef7d36cebed41a52c3a8b15c",
+      "header_path": "app/core/gimpimage.h",
+      "header_predecessor_sha256": "803bae72bbd1dcbdd8518c604f1f4eabd6cfac291427bd6e42a419f8583346ac",
+      "header_successor_sha256": "0bda4852ac3fc480f175ce9c97f841fa8d9a7f3fc3973c115dc6c82dc8b6fb39",
+      "runtime_package": "migration/tests/unsafe-undo-query",
+      "runtime_manifest_sha256": "67cfd4a286d9401340b158d65bad55dab0d39da497859eddecb4befa6cb1ec77",
+      "semantic_successor": "Only private signal index/registration and read-only unsafe-Undo getter added. GimpImageClass layout/vfuncs, all old properties/defaults/serializers and complete other source bytes unchanged. Cancelable legacy paint Undo is no longer vetoed by the separate Save/admission query."
+    }
+  ],
+  "all_families_routes_crossdomains_preserved": true,
+  "only_other_changes": "added exact source module; dispatcher/checker test hashes"
+}
