@@ -647,6 +647,88 @@ struct FilterImpl
               }
           }
       }
+    else if (procedure == "plug-in-colorify")
+      {
+        /* Exact immutable native tint tuple. Old boxed-color wire loss is
+         * not guessed, and an unknown shape/version remains non-executable. */
+        FilterColorifyColor color {};
+        bool valid = false;
+        if (!real && args && args->size () == 4 &&
+            gimp_drawable_get_base_type (GIMP_DRAWABLE (owner)) == GIMP_RGB &&
+            G_VALUE_HOLDS_INT (args->at (0)) && G_VALUE_HOLDS_INT (args->at (1)) &&
+            G_VALUE_HOLDS_INT (args->at (2)) && G_VALUE_HOLDS_VARIANT (args->at (3)))
+          {
+            GVariant *tint = g_value_get_variant (args->at (3));
+            if (tint && g_variant_is_of_type (tint, G_VARIANT_TYPE ("(sudddd)")))
+              {
+                const gchar *identifier = nullptr;
+                guint32 version = 0;
+                g_variant_get (tint, "(&sudddd)", &identifier, &version,
+                               &color.r, &color.g, &color.b, &color.a);
+                valid = !g_strcmp0 (identifier, "gimp-painter-colorify-rgba") && version == 1 &&
+                        std::fegetround () == FE_TONEAREST;
+                for (double component : {color.r, color.g, color.b, color.a})
+                  valid = valid && std::isfinite (component) && component >= 0.0 && component <= 1.0;
+              }
+          }
+        if (valid)
+          {
+            const auto width = request.width, height = request.height;
+            constexpr auto maximum = std::numeric_limits<std::int32_t>::max ();
+            /* Full logical storage and the fixed bound below must fit before
+             * admission. The smaller legacy selected-area limit is checked
+             * after owner capture, before any point kernel can run. */
+            if (width && height && width <= std::size_t (maximum) && height <= std::size_t (maximum) &&
+                std::uint64_t (width) <= std::uint64_t (std::numeric_limits<std::int64_t>::max ()) / 4 / height &&
+                std::uint64_t (width) <= (std::numeric_limits<std::uint64_t>::max () - 2 * 1024 * 1024) / 17 / height)
+              {
+                const auto region = std::make_shared<FilterSelectionRegion> ();
+                const auto outcome = std::make_shared<FilterProcedureResult> ();
+                const auto kernel = std::make_shared<const FilterColorifyKernel> (color);
+                const auto pixels = std::uint64_t (width) * height;
+                const auto owner_bytes = pixels * 9u;
+                /* Logical input/final-mask/staging9 Bpp and two private
+                 * RGBA transports8 Bpp. Existing bounded capture/merge plus
+                 * 16-KiB shadow and32-KiB raw scratch remain charged. Add eight
+                 * actual kernel sizes: retained request kernel; vector closure
+                 * and temporary std::function copy; shadow settings and lambda;
+                 * raw settings; construction tables and a spare copy. Scalar
+                 * spill uses fewer copies. This is not an RSS/GEGL-cache cap. */
+                const auto bounded = std::uint64_t (FilterScheduler::pixel_budget) * 8 +
+                                     48 * 1024 + 8 * sizeof (FilterColorifyKernel);
+                const auto peak = owner_bytes + bounded + (spill ?
+                  std::uint64_t (FilterScheduler::pixel_budget) * 4 * 6 : pixels * 8);
+                request.peak_bytes = std::size_t (std::min (peak,
+                  std::uint64_t (std::numeric_limits<std::size_t>::max ())));
+                if (spill) request.peak_spill_bytes = pixels * 8 + owner_bytes;
+                request.process = [width, height, region, kernel, channel, outcome]
+                  (const FilterScheduler::Bytes& input, std::atomic<bool>& cancel, FilterScheduler::Bytes& output) {
+                    const auto result = filter_point_shadow_vector (input, width, height, *region,
+                      *kernel, cancel, output, channel);
+                    if (result == FilterPointShadowOutcome::cancelled) return false;
+                    outcome->publish (result == FilterPointShadowOutcome::shadow ?
+                      FilterProcedureDisposition::shadow : FilterProcedureDisposition::no_merge);
+                    return true;
+                  };
+                if (spill)
+                  request.raster_process = [width, height, region, kernel, channel, outcome]
+                    (FilterRaster& input, FilterRaster& output, std::atomic<bool>& cancel, const FilterRasterFactory&) {
+                      const auto result = filter_point_shadow_raster (input, width, height, *region,
+                        *kernel, cancel, output, channel);
+                      if (result == FilterPointShadowOutcome::cancelled) return false;
+                      outcome->publish (result == FilterPointShadowOutcome::shadow ?
+                        FilterProcedureDisposition::shadow : FilterProcedureDisposition::no_merge);
+                      return true;
+                    };
+                prepared.kernel_region = region;
+                prepared.kernel_validate = [width, height, region] {
+                  filter_point_shadow_validate (width, height, *region);
+                };
+                prepared.outcome = outcome;
+                prepared.projection_input = true;
+              }
+          }
+      }
     else if (procedure == "plug-in-red-eye-removal")
       {
         /* New literal compatibility route, not a GEGL name substitution.

@@ -2658,6 +2658,7 @@ static void image_close_during_strong_redo_callbacks (void) { undo_owner_lifetim
 #include "test-filter-sobel-context.inc"
 #include "test-filter-max-rgb-context.inc"
 #include "test-filter-red-eye-contract.inc"
+#include "test-filter-colorify-contract.inc"
 #include "test-filter-color-exchange-contract.inc"
 #include "test-filter-value-invert-context.inc"
 #include "test-filter-value-invert-capture.inc"
@@ -2893,6 +2894,17 @@ int main (int argc, char **argv)
   ADD (object_array_arguments_do_not_dangle); ADD (removal_and_undo); ADD (lower_group_failure_and_recovery);
   ADD (filter_flip_legacy_reset_contract);
   ADD (filter_red_eye_native_basic);
+  ADD (filter_colorify_native_basic);
+  ADD (colorify_tints_and_metadata);
+  ADD (colorify_invalid_tuples);
+  ADD (colorify_invalid_arguments);
+  ADD (colorify_non_nearest_rounding);
+  ADD (colorify_rgb_rgba_inputs);
+  ADD (colorify_noalpha_owner_rejected);
+  ADD (colorify_unsupported_formats);
+  ADD (colorify_late_context_routes);
+  ADD (colorify_component_masks);
+  ADD (colorify_cancel_and_resume);
   ADD (filter_color_exchange_native_basic);
   ADD (exchange_unsupported_formats);
   ADD (exchange_late_context_routes);
