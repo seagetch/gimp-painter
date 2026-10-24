@@ -1,0 +1,11 @@
+Final exact test source 4528d006c517f12c4012468c93387b41582b43b59b89ffe4e7073f9f1a7d42f9
+Pointer-event tile and custom tree-cell routes against baseline298.
+Base297 archives plus unchanged inherited298 production overrides; task299 dialog/callers omitted.
+Both expected nonzero250: old GtkPopover is not GTK_WINDOW_POPUP.
+
+final-source-baseline-red.log
+ERROR:<source>/app/tests/test-filter-layer-popup.cpp:137:void {anonymous}::actual_tile_type(): 'GTK_IS_WINDOW(p)' should be TRUE
+
+final-source-tree-red.log
+ERROR:<source>/app/tests/test-filter-layer-popup.cpp:141:void {anonymous}::actual_tree_type(): 'GTK_IS_WINDOW(p)' should be TRUE
+Baseline binary SHA256 07518eb271538c302c154843def455f63a303b6bf282ea88d0a48bb7ca226881

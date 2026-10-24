@@ -1,0 +1,29 @@
+{
+  "schema": 1,
+  "popup_normal": {
+    "passed": 17,
+    "failed": 0,
+    "exit": 0
+  },
+  "original_layer_ui": {
+    "passed": 86,
+    "failed": 0,
+    "exit": 0
+  },
+  "normal_total": 103,
+  "binary_sha256": "e945ca026e3aba8b362d2a7aa787e664c656dabc57c8c48d4ff4961509ed2852",
+  "source_sha256": {
+    "app/tests/test-filter-layer-popup.cpp": "4528d006c517f12c4012468c93387b41582b43b59b89ffe4e7073f9f1a7d42f9",
+    "app/tests/test-painter-layer-ui.c": "a7b9da7ca41f5db334575cd93c30cc85541d0ef880adb2b25ef05d951a7bddf0",
+    "app/tests/meson.build": "998b705d9db8c5a766d83f1a40e8fadff6843b917f5a8b21425fe3062780de49"
+  },
+  "core_sha256": "636b9a00bbe4c3cbed98f3a1d633092b1f82c7dd5208927e8ba94905eee05346",
+  "negative_controls": {
+    "baseline298_entry_routes": 2,
+    "prior_dialog_rebaseline_regressions": 2,
+    "each_exit": 250
+  },
+  "diagnostic_preload_on_accepted_runs": false,
+  "supersedes_prior_15_16_case_receipts": true,
+  "sanitizer_and_supplemental_and_images": "Separate independently owned receipts; not counted here."
+}

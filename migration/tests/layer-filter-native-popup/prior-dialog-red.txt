@@ -1,0 +1,11 @@
+Prior candidate comparison: exact old dialog object, not an invented modified implementation.
+Old dialog source SHA256 31bcc29caa5ea16b97299348125460602c87de8872b33cc76a8872b72bef653b
+Old object SHA256 9ccc723c5fbe2684c6a0b2ff57d3c6aab293ecb3cd88662477c05dfb36208e9f
+Current corrected dialog source SHA256 636b9a00bbe4c3cbed98f3a1d633092b1f82c7dd5208927e8ba94905eee05346
+Exact final test SHA256 4528d006c517f12c4012468c93387b41582b43b59b89ffe4e7073f9f1a7d42f9
+Both comparisons exit250 as expected. Current corrected implementation passes the same tests.
+repeated-apply-red.log
+ERROR:<source>/app/tests/test-filter-layer-popup.cpp:224:void {anonymous}::isolated_routes_repeated_apply(): 'gtk_widget_get_sensitive(field(f.popup,"painter-filter-apply"))' should be TRUE
+postcommit-red.log
+ERROR:<source>/app/tests/test-filter-layer-popup.cpp:252:void {anonymous}::isolated_patch_postcommit_reentry(): 'gtk_widget_get_sensitive(field(f.popup,"painter-filter-apply"))' should be FALSE
+Comparison binary SHA256 26d1fed23fb02dd4c7cdef9a0e2aa1f60c6c19fb17d1632688dce9cf4f40ecff

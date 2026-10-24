@@ -114,8 +114,14 @@ struct Tiles {
     popup_connections.clear ();
     auto old = std::move (popup);
     popup_content = nullptr;
+    const bool was_active = popup_active;
+    popup_active = false;
     if (old) gtk_widget_destroy (GTK_WIDGET (old.get ()));
-    restore_focus ();
+    /* A destroy observer may already have installed a replacement host. */
+    if (was_active && !closed && !popup) {
+      gtk_widget_grab_focus (GTK_WIDGET (owner));
+      g_signal_emit_by_name (owner, "popup-closed");
+    }
   }
   void close () noexcept {
     if (closed) return;
@@ -424,6 +430,19 @@ void opacity (GtkRange *range, gpointer data) {
 }
 void popup_closed (GtkPopover *, gpointer data) {
   dispatch (data, [] (Tiles& s, GObject *, const std::string&) {
+    s.cancel_press ();
+    s.restore_focus ();
+  });
+}
+/* Native filter hosts disappear by destruction, not GtkPopover::closed.
+ * Identity guards keep a retiring host from clearing a synchronously reopened one. */
+void native_popup_destroyed (GtkWidget *widget, gpointer data) {
+  dispatch (data, [widget] (Tiles& s, GObject *, const std::string&) {
+    if (s.popup.get () != G_OBJECT (widget)) return;
+    auto hold = s.popup;
+    s.popup.reset ();
+    s.popup_content = nullptr;
+    s.popup_connections.clear ();
     s.cancel_press ();
     s.restore_focus ();
   });
@@ -977,26 +996,65 @@ void Tiles::action (const std::string& command, GObject *target) {
 GtkWidget *Tiles::show_popup (bool creation) {
   if (closed || !img () || !ctx ()) return nullptr;
   const auto image_epoch = image_generation;
+  const auto context_epoch = context_generation;
   const auto popup_epoch = ++popup_generation;
   close_popup ();
   /* Closing may synchronously open a newer popup even on the same image.
    * A live owner and unchanged image do not keep this request current. */
   if (closed || !img () || !ctx () || image_generation != image_epoch ||
       popup_generation != popup_epoch) return nullptr;
-  popup = ObjectRef<GObject>::sink (G_OBJECT (gtk_popover_new (creation ? add : GTK_WIDGET (owner))));
-  auto *widget=GTK_WIDGET (popup.get ());
+  auto image_hold = image;
+  auto context_hold = context;
+  GList *selected_layers = gimp_image_get_selected_layers (img ());
+  auto layer_hold = ObjectRef<GObject>::retain (selected_layers ? G_OBJECT (selected_layers->data) : nullptr);
+  const bool native_filter = !creation && layer_hold && GIMP_IS_FILTER_LAYER (layer_hold.get ());
+  auto content_hold = ObjectRef<GObject>::sink (G_OBJECT (gtk_box_new (GTK_ORIENTATION_VERTICAL, 3)));
+  auto *content = GTK_WIDGET (content_hold.get ());
+  gtk_container_set_border_width (GTK_CONTAINER (content), 8);
+  GtkWidget *anchor_widget = native_filter ? list : (creation ? add : GTK_WIDGET (owner));
+  auto anchor_hold = ObjectRef<GObject>::retain (G_OBJECT (anchor_widget));
+  GdkRectangle anchor_area = {0, 0, gtk_widget_get_allocated_width (anchor_widget), tile_pitch};
+  if (native_filter) for (unsigned i = 0; i < rows.size (); ++i)
+    if (rows[i].layer.get () == layer_hold.get ()) {
+      anchor_area.x = rows[i].depth * indent_width;
+      anchor_area.y = i * tile_pitch;
+      anchor_area.width = preview_size;
+      break;
+    }
+  GtkWidget *created = native_filter ?
+    painter_filter_layer_popup_new (GIMP_IMAGE (image_hold.get ()), GIMP_LAYER (layer_hold.get ()),
+                                    GIMP_CONTEXT (context_hold.get ()), anchor_widget, content) :
+    gtk_popover_new (anchor_widget);
+  if (!created) return nullptr;
+  auto hold = ObjectRef<GObject>::sink (G_OBJECT (created));
+  auto current = [&] {
+    if (closed || image_generation != image_epoch || context_generation != context_epoch ||
+        popup_generation != popup_epoch || image.get () != image_hold.get () ||
+        context.get () != context_hold.get () || gtk_widget_in_destruction (anchor_widget) ||
+        gtk_widget_in_destruction (created)) return false;
+    GList *selected = gimp_image_get_selected_layers (GIMP_IMAGE (image_hold.get ()));
+    return !native_filter || (selected && selected->data == layer_hold.get () &&
+      gimp_item_is_attached (GIMP_ITEM (layer_hold.get ())) &&
+      gimp_item_get_image (GIMP_ITEM (layer_hold.get ())) == GIMP_IMAGE (image_hold.get ()));
+  };
+  if (!current ()) { gtk_widget_destroy (created); return nullptr; }
+  popup = hold;
+  auto *widget = created;
+  popup_content = content;
+  connect (*this, popup_connections, G_OBJECT (widget), native_filter ? "destroy" : "closed",
+           native_filter ? G_CALLBACK (native_popup_destroyed) : G_CALLBACK (popup_closed));
   gtk_widget_set_name (widget, creation ? "painter-layer-create-popup" : "painter-layer-properties-popup");
-  gtk_popover_set_position (GTK_POPOVER (widget), GTK_POS_LEFT);
-  popup_content=gtk_box_new (GTK_ORIENTATION_VERTICAL, 3);
-  gtk_container_set_border_width (GTK_CONTAINER (popup_content), 8);
-  GtkWidget *scroller = gtk_scrolled_window_new (nullptr, nullptr);
-  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scroller), GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
-  gtk_scrolled_window_set_min_content_width (GTK_SCROLLED_WINDOW (scroller), 260);
-  gtk_scrolled_window_set_max_content_height (GTK_SCROLLED_WINDOW (scroller), 500);
-  gtk_scrolled_window_set_propagate_natural_height (GTK_SCROLLED_WINDOW (scroller), TRUE);
-  gtk_container_add (GTK_CONTAINER (scroller), popup_content);
-  gtk_container_add (GTK_CONTAINER (widget), scroller);
-  connect (*this, popup_connections, G_OBJECT (widget), "closed", G_CALLBACK (popup_closed));
+  if (!current () || popup.get () != hold.get ()) return nullptr;
+  if (!native_filter) {
+    gtk_popover_set_position (GTK_POPOVER (widget), GTK_POS_LEFT);
+    GtkWidget *scroller = gtk_scrolled_window_new (nullptr, nullptr);
+    gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scroller), GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
+    gtk_scrolled_window_set_min_content_width (GTK_SCROLLED_WINDOW (scroller), 260);
+    gtk_scrolled_window_set_max_content_height (GTK_SCROLLED_WINDOW (scroller), 500);
+    gtk_scrolled_window_set_propagate_natural_height (GTK_SCROLLED_WINDOW (scroller), TRUE);
+    gtk_container_add (GTK_CONTAINER (scroller), popup_content);
+    gtk_container_add (GTK_CONTAINER (widget), scroller);
+  }
   const char *create_labels[] = { N_("New Layer…"), N_("New Group"), N_("Duplicate"), N_("New Clone Layer"), N_("New Filter Layer…") };
   const char *create_commands[] = { "layers-new", "layers-new-group", "layers-duplicate", "layers-new-clone", "layers-new-filter" };
   for (unsigned i=0; i<G_N_ELEMENTS(create_commands); ++i)
@@ -1036,7 +1094,7 @@ GtkWidget *Tiles::show_popup (bool creation) {
       }
       button (*this, popup_content, _("Edit Layer Attributes…"), "layers-edit-attributes", popup_connections);
       if (GIMP_IS_CLONE_LAYER (layer)) button (*this, popup_content, _("Clone Source…"), "layers-edit-clone", popup_connections);
-      if (GIMP_IS_FILTER_LAYER (layer)) button (*this, popup_content, _("Filter Settings…"), "layers-edit-filter", popup_connections);
+
       button (*this, popup_content, _("Raise Layer"), "layers-raise", popup_connections);
       button (*this, popup_content, _("Lower Layer"), "layers-lower", popup_connections);
       button (*this, popup_content, _("Delete Layer"), "layers-delete", popup_connections);
@@ -1047,8 +1105,11 @@ GtkWidget *Tiles::show_popup (bool creation) {
   for (GList *i=GIMP_LIST (presets)->queue->head; i; i=i->next)
     button (*this, popup_content, gimp_object_get_name (i->data), "preset", popup_connections, G_OBJECT (i->data));
   popup_active = true;
-  gtk_widget_show_all (widget); gtk_popover_popup (GTK_POPOVER (widget));
-  return widget;
+  gtk_widget_show_all (widget);
+  if (!current () || popup.get () != hold.get ()) return nullptr;
+  if (native_filter) painter_filter_layer_popup_show_at (widget, anchor_widget, &anchor_area);
+  else gtk_popover_popup (GTK_POPOVER (widget));
+  return current () && popup.get () == hold.get () ? widget : nullptr;
 }
 void close_widget (GtkWidget *widget) {
   try { if (auto *store=BindingStore::find (G_OBJECT (widget))) store->close (); }

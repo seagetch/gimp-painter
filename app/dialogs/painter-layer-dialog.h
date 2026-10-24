@@ -13,6 +13,12 @@ GtkWidget * painter_filter_layer_dialog_new (GimpImage   *image,
                                              GimpContext *context,
                                              GtkWidget   *parent);
 
+GtkWidget *painter_filter_layer_popup_new (GimpImage *image, GimpLayer *layer,
+                                            GimpContext *context, GtkWidget *anchor,
+                                            GtkWidget *layer_controls);
+void painter_filter_layer_popup_show_at (GtkWidget *popup, GtkWidget *anchor,
+                                         const GdkRectangle *area);
+
 G_END_DECLS
 
 #endif

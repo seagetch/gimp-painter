@@ -288,14 +288,20 @@ static void filter_editor_clicked_target (void) {
   GimpLayer *filter = gimp_filter_layer_new (f.image, 16, 16, "Filter popup target", 1, GIMP_LAYER_MODE_NORMAL_LEGACY);
   g_assert_true (gimp_image_add_layer (f.image, filter, NULL, 0, FALSE)); drain ();
   open_signal (&f, filter); GtkWidget *popup = current_popup (popup_cell (&f)); g_assert_nonnull (popup);
-  GtkWidget *button = find (popup, "painter-tree-edit-filter"); g_assert_nonnull (button);
+  g_assert_true (GTK_IS_WINDOW (popup));
+  g_assert_cmpint (gtk_window_get_window_type (GTK_WINDOW (popup)), ==, GTK_WINDOW_POPUP);
+  g_assert_null (find (popup, "painter-tree-edit-filter"));
+  g_assert_null (find (popup, "painter-filter-name"));
+  g_assert_nonnull (find (popup, "painter-filter-definition"));
   gimp_container_view_set_1_selected (GIMP_CONTAINER_VIEW (f.tree), GIMP_VIEWABLE (f.b));
-  gtk_button_clicked (GTK_BUTTON (button));
-  GtkWidget *dialog = filter_dialog (); g_assert_nonnull (dialog);
-  g_assert_null (find (dialog, "painter-filter-name"));
-  g_assert_nonnull (find (dialog, "painter-filter-definition"));
+  GtkWidget *still_open = current_popup (popup_cell (&f));
+  g_assert_true (still_open == popup);
+  g_object_unref (still_open);
+  gtk_range_set_value (GTK_RANGE (find (popup, "painter-tree-layer-opacity")), 37);
+  g_assert_cmpfloat_with_epsilon (gimp_layer_get_opacity (filter), .37, .000001);
+  g_assert_cmpfloat (gimp_layer_get_opacity (f.b), ==, 1);
+  gtk_dialog_response (GTK_DIALOG (popup), GTK_RESPONSE_CANCEL);
   g_assert_null (current_popup (popup_cell (&f)));
-  gtk_dialog_response (GTK_DIALOG (dialog), GTK_RESPONSE_CANCEL);
   g_object_unref (popup); fixture_clear (&f);
 }
 static void switch_during_refresh (GtkRange *range, gpointer data) {

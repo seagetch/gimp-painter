@@ -125,7 +125,7 @@ void target_removed (GimpItem *, gpointer data) noexcept {
   auto owner = hook->owner.lock (); const auto request = hook->epoch;
   if (owner) use (owner.get (), [request] (Popup& p) { if (p.epoch == request) p.clear (); });
 }
-void popup_closed (GtkPopover *, gpointer data) noexcept {
+void popup_closed (GtkWidget *, gpointer data) noexcept {
   auto *hook = static_cast<Hook *> (data);
   auto owner = hook->owner.lock (); const auto request = hook->epoch;
   if (owner) use (owner.get (), [request] (Popup& p) { if (p.epoch == request) p.clear (); });
@@ -238,24 +238,42 @@ void Popup::open (GtkWidget *widget, const gchar *path_str, const GdkRectangle *
   if (closed || epoch != request) return;
   target = std::move (clicked); image = std::move (clicked_image);
   if (!current (request)) { clear (); return; }
-  auto hold = ObjectRef<GObject>::sink (G_OBJECT (gtk_popover_new (widget)));
+  const bool native_filter = GIMP_IS_FILTER_LAYER (target.get ());
+  auto layer_hold = target;
+  auto image_hold = image;
+  auto context_hold = ObjectRef<GObject>::retain (G_OBJECT (
+    gimp_container_view_get_context (GIMP_CONTAINER_VIEW (view.get ()))));
+  auto box_hold = ObjectRef<GObject>::sink (G_OBJECT (gtk_box_new (GTK_ORIENTATION_VERTICAL, 6)));
+  GtkWidget *box = GTK_WIDGET (box_hold.get ());
+  gtk_container_set_border_width (GTK_CONTAINER (box), 8);
+  GtkWidget *created = native_filter ?
+    painter_filter_layer_popup_new (GIMP_IMAGE (image_hold.get ()), GIMP_LAYER (layer_hold.get ()),
+                                    GIMP_CONTEXT (context_hold.get ()), widget, box) :
+    gtk_popover_new (widget);
+  if (!created) { if (current (request)) clear (); return; }
+  auto hold = ObjectRef<GObject>::sink (G_OBJECT (created));
+  if (!current (request) || gtk_widget_in_destruction (created)) {
+    gtk_widget_destroy (created); return;
+  }
   popup = hold;
   auto *popover = GTK_WIDGET (hold.get ());
+  connect (*this, controls, G_OBJECT (popover), native_filter ? "destroy" : "closed", G_CALLBACK (popup_closed));
   gtk_widget_set_name (popover, "painter-tree-layer-popup");
-  gtk_popover_set_position (GTK_POPOVER (popover), GTK_POS_RIGHT);
+  if (!current (request)) return;
+  GdkRectangle anchor = {0, 0, gtk_widget_get_allocated_width (widget), 1};
   if (area) {
-    GdkRectangle anchor = *area;
+    anchor = *area;
     gtk_tree_view_convert_bin_window_to_widget_coords (GTK_TREE_VIEW (widget),
       area->x, area->y, &anchor.x, &anchor.y);
-    /* The legacy caller supplies a full-row anchor. Its horizontal extent is
-     * the visible tree viewport, independent of horizontal scroll offset. */
+    /* Keep the existing full-row viewport anchor for the mapped cell trigger. */
     anchor.x = 0;
     anchor.width = gtk_widget_get_allocated_width (widget);
-    gtk_popover_set_pointing_to (GTK_POPOVER (popover), &anchor);
   }
-  GtkWidget *box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
-  gtk_container_set_border_width (GTK_CONTAINER (box), 8);
-  gtk_container_add (GTK_CONTAINER (popover), box);
+  if (!native_filter) {
+    gtk_popover_set_position (GTK_POPOVER (popover), GTK_POS_RIGHT);
+    if (area) gtk_popover_set_pointing_to (GTK_POPOVER (popover), &anchor);
+    gtk_container_add (GTK_CONTAINER (popover), box);
+  }
   opacity = gtk_scale_new_with_range (GTK_ORIENTATION_HORIZONTAL, 0, 100, 1);
   gtk_widget_set_name (opacity, "painter-tree-layer-opacity");
   gtk_widget_set_size_request (opacity, 240, -1);
@@ -278,16 +296,17 @@ void Popup::open (GtkWidget *widget, const gchar *path_str, const GdkRectangle *
   connect (*this, controls, target.get (), "mode-changed", G_CALLBACK (model_changed));
   connect (*this, controls, target.get (), "lock-alpha-changed", G_CALLBACK (model_changed));
   connect (*this, controls, target.get (), "removed", G_CALLBACK (target_removed));
-  connect (*this, controls, G_OBJECT (popover), "closed", G_CALLBACK (popup_closed));
-  if (GIMP_IS_FILTER_LAYER (target.get ()) || GIMP_IS_CLONE_LAYER (target.get ())) {
-    const bool filter = GIMP_IS_FILTER_LAYER (target.get ());
-    GtkWidget *edit = gtk_button_new_with_label (filter ? _("Filter Settings…") : _("Clone Source…"));
-    gtk_widget_set_name (edit, filter ? "painter-tree-edit-filter" : "painter-tree-edit-clone");
+  if (GIMP_IS_CLONE_LAYER (target.get ())) {
+    GtkWidget *edit = gtk_button_new_with_label (_("Clone Source…"));
+    gtk_widget_set_name (edit, "painter-tree-edit-clone");
     gtk_box_pack_start (GTK_BOX (box), edit, FALSE, FALSE, 0);
     connect (*this, controls, G_OBJECT (edit), "clicked", G_CALLBACK (edit_layer));
   }
   gtk_widget_show_all (popover);
-  if (current (request)) gtk_popover_popup (GTK_POPOVER (popover));
+  if (current (request)) {
+    if (native_filter) painter_filter_layer_popup_show_at (popover, widget, area ? &anchor : nullptr);
+    else gtk_popover_popup (GTK_POPOVER (popover));
+  }
 }
 enum { PROP_0, PROP_ACTIVE, PROP_POPUP };
 void get_property (GObject *object, guint id, GValue *value, GParamSpec *spec) noexcept {

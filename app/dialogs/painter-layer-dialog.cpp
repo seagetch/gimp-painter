@@ -40,6 +40,66 @@ namespace {
 
 /* ASCII entries avoid GtkSpinButton's display rounding and silent clamping.
  * Each field patches only its own saved scalar/array element. */
+/* A real one-owner native popup: the dialog owns its existing typed state and
+ * content.  Do not put a hidden GtkDialog inside a separate popup. */
+struct PainterFilterPopup { GimpViewableDialog parent; };
+struct PainterFilterPopupClass { GimpViewableDialogClass parent; };
+G_DEFINE_TYPE (PainterFilterPopup, painter_filter_popup, GIMP_TYPE_VIEWABLE_DIALOG)
+
+static void painter_filter_popup_close (GtkDialog *dialog)
+{
+  gtk_widget_destroy (GTK_WIDGET (dialog));
+}
+static void painter_filter_popup_map (GtkWidget *widget)
+{
+  GTK_WIDGET_CLASS (painter_filter_popup_parent_class)->map (widget);
+  if (!gtk_widget_in_destruction (widget) && gtk_widget_get_mapped (widget))
+    gtk_grab_add (widget);
+}
+static void painter_filter_popup_unmap (GtkWidget *widget)
+{
+  if (gtk_widget_has_grab (widget)) gtk_grab_remove (widget);
+  GTK_WIDGET_CLASS (painter_filter_popup_parent_class)->unmap (widget);
+}
+static gboolean painter_filter_popup_key (GtkWidget *widget, GdkEventKey *event)
+{
+  if (event->keyval == GDK_KEY_Escape) {
+    gtk_widget_destroy (widget);
+    return TRUE;
+  }
+  /* No popup-wide Return/Space confirmation. Focused controls retain their
+   * normal keyboard handling; there is deliberately no default response. */
+  return GTK_WIDGET_CLASS (painter_filter_popup_parent_class)->key_press_event (widget, event);
+}
+static gboolean painter_filter_popup_button (GtkWidget *widget, GdkEventButton *event)
+{
+  GtkWidget *target = gtk_get_event_widget (reinterpret_cast<GdkEvent *> (event));
+  if (!target || (target != widget && !gtk_widget_is_ancestor (target, widget)) ||
+      (target == widget && (event->x < 0 || event->y < 0 ||
+       event->x >= gtk_widget_get_allocated_width (widget) ||
+       event->y >= gtk_widget_get_allocated_height (widget)))) {
+    gtk_widget_destroy (widget);
+    return TRUE; /* Legacy layer GimpPopover2 consumes outside presses. */
+  }
+  auto parent = GTK_WIDGET_CLASS (painter_filter_popup_parent_class);
+  return parent->button_press_event ? parent->button_press_event (widget, event) : FALSE;
+}
+static void painter_filter_popup_class_init (PainterFilterPopupClass *klass)
+{
+  auto *widget = GTK_WIDGET_CLASS (klass);
+  widget->map = painter_filter_popup_map;
+  widget->unmap = painter_filter_popup_unmap;
+  widget->key_press_event = painter_filter_popup_key;
+  widget->button_press_event = painter_filter_popup_button;
+  GTK_DIALOG_CLASS (klass)->close = painter_filter_popup_close;
+}
+static void painter_filter_popup_init (PainterFilterPopup *self)
+{
+  gtk_window_set_resizable (GTK_WINDOW (self), FALSE);
+  gtk_widget_set_name (GTK_WIDGET (self), "painter-filter-layer-popup");
+  gtk_widget_add_events (GTK_WIDGET (self), GDK_BUTTON_PRESS_MASK);
+}
+
 struct FilterNumberField
 {
   GtkWidget *entry;
@@ -71,6 +131,13 @@ struct FilterEnumField
 
 /* The native dialog owns exactly one typed implementation. Helpers borrow it
  * only inside initialize()/with(); no closure or qdata key owns a raw Impl. */
+struct FilterWidgetDefault {
+  ObjectRef<GObject> widget;
+  enum Kind { spin, entry, combo, toggle } kind;
+  std::string text;
+  double value;
+};
+
 struct PainterLayerDialog
 {
   GWeakRef   image;
@@ -116,6 +183,21 @@ struct PainterLayerDialog
   std::vector<FilterNumberField> numbers;
   std::vector<FilterFlagField> flags;
   std::vector<FilterEnumField> enums;
+  bool popup = false, applying = false, loading = false, invalidated = false;
+  guint64 draft_epoch = 0;
+  std::vector<FilterWidgetDefault> defaults, saved_widgets;
+  const FilterWidgetDefault *expected_setter = nullptr;
+  std::vector<FilterNumberField> saved_numbers;
+  std::vector<FilterFlagField> saved_flags;
+  std::vector<FilterEnumField> saved_enums;
+  std::string saved_route;
+  std::array<double,4> saved_colorify_values {{1,1,1,1}};
+  std::array<std::string,4> saved_colorify_text;
+  std::array<int,3> saved_video_values {{2,1,0}};
+  bool saved_colorify_loaded=false, saved_video_loaded=false;
+  std::vector<FilterNumberField> default_numbers;
+  std::vector<FilterFlagField> default_flags;
+  std::vector<FilterEnumField> default_enums;
   std::string loaded_route;
   guint64 loaded_revision = 0;
   std::array<std::unique_ptr<FilterEditorSchema>, 4> schemas;
@@ -267,7 +349,8 @@ painter_dialog_new (GimpImage   *image,
                     const gchar *role,
                     const gchar *description,
                     Initialize&& initialize,
-                    Activate&&   activate) noexcept
+                    Activate&&   activate,
+                    bool popup = false, GtkWidget *layer_controls = nullptr) noexcept
 {
   GtkWidget *dialog = nullptr;
   return boundary<GtkWidget *> (nullptr, nullptr, [&] {
@@ -283,11 +366,22 @@ painter_dialog_new (GimpImage   *image,
       layer_lease.reset ();
       image_lease.reset ();
     };
-    dialog = gimp_viewable_dialog_new (
-      g_list_prepend (NULL, layer ? GIMP_VIEWABLE (layer) : GIMP_VIEWABLE (image)),
-      context, title, role, GIMP_ICON_LAYER, description, parent,
-      gimp_standard_help_func, GIMP_HELP_LAYER_EDIT,
-      _("_Cancel"), GTK_RESPONSE_CANCEL, _("_OK"), GTK_RESPONSE_OK, NULL);
+    if (popup) {
+      GList *viewables = g_list_prepend (nullptr, layer);
+      dialog = GTK_WIDGET (g_object_new (painter_filter_popup_get_type (),
+        "type", GTK_WINDOW_POPUP, "viewables", viewables, "context", context,
+        "title", title, "role", role, "icon-name", GIMP_ICON_LAYER,
+        "description", description, "parent", parent, "use-header-bar", FALSE, nullptr));
+      /* The viewables property takes ownership of the list. */
+      auto *apply = gtk_dialog_add_button (GTK_DIALOG (dialog), _("_Apply"), GTK_RESPONSE_OK);
+      gtk_widget_set_name (apply, "painter-filter-apply");
+    } else {
+      dialog = gimp_viewable_dialog_new (
+        g_list_prepend (NULL, layer ? GIMP_VIEWABLE (layer) : GIMP_VIEWABLE (image)),
+        context, title, role, GIMP_ICON_LAYER, description, parent,
+        gimp_standard_help_func, GIMP_HELP_LAYER_EDIT,
+        _("_Cancel"), GTK_RESPONSE_CANCEL, _("_OK"), GTK_RESPONSE_OK, NULL);
+    }
     auto owner = ObjectRef<GObject>::retain (G_OBJECT (dialog));
     try
       {
@@ -295,17 +389,27 @@ painter_dialog_new (GimpImage   *image,
         store.emplace<DialogSlot> (dialog, image, layer);
         store.initialize<DialogSlot> ([&] (PainterLayerDialog& value) {
           auto *state = &value;
+          state->popup = popup;
           GtkWidget *content;
           state->connections.push_back (Connection::connect (owner, "destroy",
             G_CALLBACK (painter_dialog_destroy), nullptr, nullptr));
           painter_dialog_connect (state, image, "disconnect", G_CALLBACK (painter_dialog_image_disconnect));
-          gtk_dialog_set_default_response (GTK_DIALOG (state->dialog), GTK_RESPONSE_OK);
+          if (popup && parent) {
+            painter_dialog_connect (state, parent, "destroy", G_CALLBACK (painter_dialog_image_disconnect));
+            painter_dialog_connect (state, parent, "unmap", G_CALLBACK (painter_dialog_image_disconnect));
+          }
+          if (!popup) gtk_dialog_set_default_response (GTK_DIALOG (state->dialog), GTK_RESPONSE_OK);
           content = gtk_dialog_get_content_area (GTK_DIALOG (state->dialog));
           state->grid = gtk_grid_new ();
           gtk_container_set_border_width (GTK_CONTAINER (state->grid), 12);
           gtk_grid_set_column_spacing (GTK_GRID (state->grid), 8);
           gtk_grid_set_row_spacing (GTK_GRID (state->grid), 8);
-          gtk_box_pack_start (GTK_BOX (content), state->grid, TRUE, TRUE, 0);
+          if (popup && layer_controls) {
+            auto *panes = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 8);
+            gtk_box_pack_start (GTK_BOX (panes), layer_controls, FALSE, FALSE, 0);
+            gtk_box_pack_start (GTK_BOX (panes), state->grid, TRUE, TRUE, 0);
+            gtk_box_pack_start (GTK_BOX (content), panes, TRUE, TRUE, 0);
+          } else gtk_box_pack_start (GTK_BOX (content), state->grid, TRUE, TRUE, 0);
           state->error = gtk_label_new (NULL);
           gtk_label_set_line_wrap (GTK_LABEL (state->error), TRUE);
           gtk_label_set_xalign (GTK_LABEL (state->error), 0);
@@ -506,11 +610,26 @@ painter_clone_layer_dialog_new (GimpImage   *image,
 }
 
 namespace {
-static void
-painter_filter_dirty (GtkWidget *, gpointer data)
+static bool painter_filter_expected_signal (const PainterLayerDialog& state, GtkWidget *widget)
 {
-  painter_dialog_dispatch (data, [] (PainterLayerDialog& state) {
-    state.dirty = TRUE;
+  const auto *item=state.expected_setter;
+  if (!item || item->widget.get()!=G_OBJECT(widget)) return false;
+  switch(item->kind) {
+    case FilterWidgetDefault::spin: return gtk_spin_button_get_value(GTK_SPIN_BUTTON(widget))==item->value;
+    case FilterWidgetDefault::entry: return item->text==gtk_entry_get_text(GTK_ENTRY(widget));
+    case FilterWidgetDefault::combo: return gtk_combo_box_get_active(GTK_COMBO_BOX(widget))==item->value;
+    case FilterWidgetDefault::toggle: return gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget))==(item->value!=0);
+  }
+  return false;
+}
+
+static void
+painter_filter_dirty (GtkWidget *widget, gpointer data)
+{
+  painter_dialog_dispatch (data, [widget] (PainterLayerDialog& state) {
+    if (state.loading && painter_filter_expected_signal(state,widget)) return;
+    state.dirty=TRUE; ++state.draft_epoch;
+    if (state.loading) state.invalidated=true;
   });
 }
 
@@ -1034,7 +1153,7 @@ painter_filter_schema_status (PainterLayerDialog *state)
   /* Existing definitions always retain a no-op OK path. A new definition
    * cannot Apply settings until its registered metadata is ready. */
   gtk_dialog_set_response_sensitive (GTK_DIALOG (state->dialog), GTK_RESPONSE_OK,
-    usable || state->editing);
+    !state->invalidated && !state->applying && (usable || state->editing));
 }
 
 static void
@@ -1175,6 +1294,7 @@ painter_filter_isolated_load (PainterLayerDialog *state, const gchar *route,
               }
             painter_filter_entry_value (field, number);
           }
+        if (state->closed) return;
       }
   for (auto& field : state->flags)
     if (field.route == route)
@@ -1190,6 +1310,7 @@ painter_filter_isolated_load (PainterLayerDialog *state, const gchar *route,
         field.initial = GTK_IS_COMBO_BOX (field.widget) ? flag == 1 : flag != 0;
         if (GTK_IS_COMBO_BOX (field.widget)) gtk_combo_box_set_active (GTK_COMBO_BOX (field.widget), field.initial ? 1 : 0);
         else gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (field.widget), field.initial);
+        if (state->closed) return;
       }
   for (auto& field : state->enums)
     if (field.route == route)
@@ -1201,9 +1322,11 @@ painter_filter_isolated_load (PainterLayerDialog *state, const gchar *route,
           {
             gchar *label = g_strdup_printf (_("Saved value: %d (unsupported)"), field.initial);
             gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (field.widget), "saved", label);
+            if (state->closed) { g_free(label); return; }
             gtk_combo_box_set_active_id (GTK_COMBO_BOX (field.widget), "saved");
             g_free (label);
           }
+        if (state->closed) return;
       }
   state->loaded_route = route;
   gtk_combo_box_set_active_id (GTK_COMBO_BOX (state->choice), route);
@@ -1293,9 +1416,37 @@ painter_colorify_commit_current (gpointer data)
     gimp_filter_layer_get_definition_revision(GIMP_FILTER_LAYER(check.layer)));
 }
 
+struct PainterPopupCommitCheck {
+  PainterLayerDialog *state;
+  GimpImage *image;
+  GimpLayer *layer;
+  guint64 revision, epoch;
+  const char *route;
+};
+static gboolean painter_popup_commit_current(gpointer data)
+{
+  const auto& check=*static_cast<PainterPopupCommitCheck*>(data);
+  auto *state=check.state;
+  if (state->closed || state->invalidated || state->loading ||
+      state->draft_epoch!=check.epoch ||
+      gimp_item_get_image(GIMP_ITEM(check.layer))!=check.image ||
+      !gimp_item_is_attached(GIMP_ITEM(check.layer)) ||
+      gimp_filter_layer_get_definition_revision(GIMP_FILTER_LAYER(check.layer))!=check.revision ||
+      g_strcmp0(gtk_combo_box_get_active_id(GTK_COMBO_BOX(state->choice)),check.route)) return FALSE;
+  if (painter_filter_isolated(check.route)) {
+    const auto index=static_cast<unsigned>(painter_filter_route(check.route))-1;
+    return !state->schema_stale[index] && state->schemas[index] &&
+      state->schemas[index]->current(check.image->gimp);
+  }
+  return TRUE;
+}
+
 static gboolean
 painter_filter_isolated_args (PainterLayerDialog *state, const gchar *route,
-                             GimpImage *image, GimpLayer *layer, GimpValueArray **result)
+                             GimpImage *image, GimpLayer *layer, GimpValueArray **result,
+                             PainterPopupCommitCheck *popup_check,
+                             bool *patch_attempted, gboolean *patch_success,
+                             GError **popup_error)
 {
   const bool preserve = layer && state->loaded_route == route;
   if (layer && state->loaded_revision != gimp_filter_layer_get_definition_revision (GIMP_FILTER_LAYER (layer)))
@@ -1438,9 +1589,19 @@ painter_filter_isolated_args (PainterLayerDialog *state, const gchar *route,
     {
       GError *error = nullptr;
       PainterFilterCommitCheck check {state, image, layer, index};
+      if (popup_check) *patch_attempted=true;
       const gboolean success = FilterLayerRef::retain (GIMP_FILTER_LAYER (layer)).try_edit_argument_patch (
         state->loaded_revision, snapshot.get (), edits.size (), edits.data (),
-        painter_filter_commit_current, &check, &error);
+        popup_check ? painter_popup_commit_current : painter_filter_commit_current,
+        popup_check ? static_cast<gpointer>(popup_check) : static_cast<gpointer>(&check),
+        popup_check ? popup_error : &error);
+      if (popup_check) {
+        /* An attempted patch is not the args==NULL no-op. The outer response
+         * owns exact-result acknowledgment, including failed-after-installation
+         * outcomes, and must rebaseline before another Apply is possible. */
+        *patch_success=success; *result=nullptr;
+        return TRUE;
+      }
       if (!success)
         {
           if (!state->closed) painter_dialog_error (state, error ? error->message : _("The saved arguments could not be edited safely."));
@@ -1559,6 +1720,53 @@ painter_colorify_tint (const GimpValueArray *args, std::array<double,4>& values)
   return true;
 }
 
+static void
+painter_filter_capture_defaults (std::vector<FilterWidgetDefault>& target, GtkWidget *widget)
+{
+  FilterWidgetDefault item {ObjectRef<GObject>::retain (G_OBJECT (widget)),
+    FilterWidgetDefault::entry, {}, 0};
+  if (GTK_IS_SPIN_BUTTON (widget)) {
+    item.kind=FilterWidgetDefault::spin;
+    item.value=gtk_spin_button_get_value(GTK_SPIN_BUTTON(widget));
+  } else if (GTK_IS_ENTRY(widget)) {
+    item.text=gtk_entry_get_text(GTK_ENTRY(widget));
+  } else if (GTK_IS_COMBO_BOX(widget)) {
+    item.kind=FilterWidgetDefault::combo;
+    item.value=gtk_combo_box_get_active(GTK_COMBO_BOX(widget));
+  } else if (GTK_IS_TOGGLE_BUTTON(widget)) {
+    item.kind=FilterWidgetDefault::toggle;
+    item.value=gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget));
+  } else {
+    if (GTK_IS_CONTAINER(widget)) {
+      GList *children=gtk_container_get_children(GTK_CONTAINER(widget));
+      for (GList *i=children;i;i=i->next)
+        painter_filter_capture_defaults(target,GTK_WIDGET(i->data));
+      g_list_free(children);
+    }
+    return;
+  }
+  target.push_back(std::move(item));
+}
+
+/* Only the last COMMITTED operation is retained, never a per-operation draft
+ * cache. Capturing values emits no GTK signals and preserves user formatting. */
+static void painter_filter_save_baseline (PainterLayerDialog *state)
+{
+  std::vector<FilterWidgetDefault> widgets;
+  painter_filter_capture_defaults(widgets,state->parameters);
+  auto numbers=state->numbers; auto flags=state->flags; auto enums=state->enums;
+  const char *route=gtk_combo_box_get_active_id(GTK_COMBO_BOX(state->choice));
+  std::string saved_route=route ? route : "keep";
+  auto colorify_text=state->colorify_text;
+  state->saved_widgets=std::move(widgets);
+  state->saved_numbers=std::move(numbers); state->saved_flags=std::move(flags); state->saved_enums=std::move(enums);
+  state->saved_route=std::move(saved_route);
+  state->saved_colorify_values=state->colorify_values;
+  state->saved_colorify_text=std::move(colorify_text);
+  state->saved_video_values=state->video_values;
+  state->saved_colorify_loaded=state->colorify_loaded; state->saved_video_loaded=state->video_loaded;
+}
+
 /* Keep unsupported shapes selected as "keep", including known procedure names
  * with future/unknown arguments. Merely opening and accepting never normalizes. */
 static void
@@ -1574,6 +1782,7 @@ painter_filter_load (PainterLayerDialog *state,
   gdouble        first, second;
   const GValue  *a, *b, *c;
   gtk_combo_box_set_active_id (GTK_COMBO_BOX (state->choice), "keep");
+      if (state->closed) return;
   state->loaded_revision = filter.definition_revision ();
   if (procedure && g_str_has_prefix (procedure, "plug-in-") &&
       painter_filter_isolated (procedure + strlen ("plug-in-")))
@@ -1600,10 +1809,14 @@ painter_filter_load (PainterLayerDialog *state,
         if (pattern>=0 && pattern<9) {
           for (unsigned i=0;i<3;++i) state->video_values[i]=g_value_get_int(gimp_value_array_index(args,i+3));
           gtk_combo_box_set_active(GTK_COMBO_BOX(state->video_pattern),pattern);
+      if (state->closed) return;
           gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(state->video_additive),state->video_values[1]!=0);
+      if (state->closed) return;
           gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(state->video_rotated),state->video_values[2]!=0);
+      if (state->closed) return;
           state->video_loaded=true;
           gtk_combo_box_set_active_id(GTK_COMBO_BOX(state->choice),"video");
+      if (state->closed) return;
         }
       }
       goto out;
@@ -1614,9 +1827,11 @@ painter_filter_load (PainterLayerDialog *state,
         char text[G_ASCII_DTOSTR_BUF_SIZE];
         state->colorify_text[i]=g_ascii_dtostr(text,sizeof text,state->colorify_values[i]);
         gtk_entry_set_text(GTK_ENTRY(state->colorify_entries[i]),state->colorify_text[i].c_str());
+      if (state->closed) return;
       }
       state->colorify_loaded=true;
       gtk_combo_box_set_active_id(GTK_COMBO_BOX(state->choice),"colorify");
+      if (state->closed) return;
       goto out;
     }
   if ((!g_strcmp0 (procedure,"plug-in-vinvert") && count == 3) ||
@@ -1624,7 +1839,9 @@ painter_filter_load (PainterLayerDialog *state,
        count == 4 && G_VALUE_HOLDS_INT (gimp_value_array_index (args,3))))
     {
       if (count == 4) gtk_spin_button_set_value (GTK_SPIN_BUTTON (state->point_argument),g_value_get_int (gimp_value_array_index (args,3)));
+      if (state->closed) return;
       gtk_combo_box_set_active_id (GTK_COMBO_BOX (state->choice),procedure + strlen ("plug-in-"));
+      if (state->closed) return;
       goto out;
     }
   if (count != 5 && count != 6) goto out;
@@ -1636,9 +1853,13 @@ painter_filter_load (PainterLayerDialog *state,
       (! c || (G_VALUE_HOLDS_INT (c) && g_value_get_int (c) >= 0 && g_value_get_int (c) <= 5)))
     {
       gtk_spin_button_set_value (GTK_SPIN_BUTTON (state->amount), first);
+      if (state->closed) return;
       gtk_combo_box_set_active (GTK_COMBO_BOX (state->wrap), g_value_get_int (b) - 1);
+      if (state->closed) return;
       gtk_combo_box_set_active (GTK_COMBO_BOX (state->edge), c ? g_value_get_int (c) : 0);
+      if (state->closed) return;
       gtk_combo_box_set_active_id (GTK_COMBO_BOX (state->choice), "edge");
+      if (state->closed) return;
     }
   else if (! g_strcmp0 (procedure, "plug-in-gauss") && count == 6 &&
            painter_filter_number (a, -500, 500, &first) && painter_filter_number (b, -500, 500, &second) &&
@@ -1646,30 +1867,94 @@ painter_filter_load (PainterLayerDialog *state,
            g_value_get_int (c) >= 0 && g_value_get_int (c) <= 1)
     {
       gtk_spin_button_set_value (GTK_SPIN_BUTTON (state->horizontal), first);
+      if (state->closed) return;
       gtk_spin_button_set_value (GTK_SPIN_BUTTON (state->vertical), second);
+      if (state->closed) return;
       gtk_combo_box_set_active (GTK_COMBO_BOX (state->method), g_value_get_int (c));
+      if (state->closed) return;
       gtk_combo_box_set_active_id (GTK_COMBO_BOX (state->choice), "gauss");
+      if (state->closed) return;
     }
   else if ((!g_strcmp0 (procedure,"plug-in-gauss-iir") || !g_strcmp0 (procedure,"plug-in-gauss-rle")) &&
            count == 6 && painter_filter_number (a,0,500,&first) && first > 0 &&
            G_VALUE_HOLDS_INT (b) && G_VALUE_HOLDS_INT (c))
     {
       gtk_spin_button_set_value (GTK_SPIN_BUTTON (state->radius),first);
+      if (state->closed) return;
       gtk_spin_button_set_value (GTK_SPIN_BUTTON (state->horizontal_flag),g_value_get_int (b));
+      if (state->closed) return;
       gtk_spin_button_set_value (GTK_SPIN_BUTTON (state->vertical_flag),g_value_get_int (c));
+      if (state->closed) return;
       gtk_combo_box_set_active_id (GTK_COMBO_BOX (state->choice),procedure + strlen ("plug-in-"));
+      if (state->closed) return;
     }
   else if ((!g_strcmp0 (procedure,"plug-in-gauss-iir2") || !g_strcmp0 (procedure,"plug-in-gauss-rle2")) &&
            count == 5 && painter_filter_number (a,-500,500,&first) &&
            painter_filter_number (b,-500,500,&second) && (first > 0 || second > 0))
     {
       gtk_spin_button_set_value (GTK_SPIN_BUTTON (state->horizontal),first);
+      if (state->closed) return;
       gtk_spin_button_set_value (GTK_SPIN_BUTTON (state->vertical),second);
+      if (state->closed) return;
       gtk_combo_box_set_active (GTK_COMBO_BOX (state->method),!g_strcmp0 (procedure,"plug-in-gauss-rle2"));
+      if (state->closed) return;
       gtk_combo_box_set_active_id (GTK_COMBO_BOX (state->choice),procedure + strlen ("plug-in-"));
+      if (state->closed) return;
     }
 out:
   return;
+}
+
+
+static void
+painter_filter_reset_popup_route (PainterLayerDialog *state)
+{
+  const char *id=gtk_combo_box_get_active_id(GTK_COMBO_BOX(state->choice));
+  const std::string selected=id ? id : "keep";
+  auto layer=ObjectRef<GObject>::adopt(static_cast<GObject*>(g_weak_ref_get(&state->layer)));
+  if (!layer || state->invalidated || state->closed) return;
+  if (state->loaded_revision != gimp_filter_layer_get_definition_revision(GIMP_FILTER_LAYER(layer.get()))) {
+    state->invalidated=true;
+    painter_dialog_error(state,_("This filter definition changed. Reopen the popup to edit it."));
+    return;
+  }
+  const bool saved=selected==state->saved_route;
+  state->numbers=saved ? state->saved_numbers : state->default_numbers;
+  state->flags=saved ? state->saved_flags : state->default_flags;
+  state->enums=saved ? state->saved_enums : state->default_enums;
+  state->loaded_route=saved && painter_filter_isolated(selected.c_str()) ? selected : "";
+  state->colorify_loaded=saved && state->saved_colorify_loaded;
+  state->video_loaded=saved && state->saved_video_loaded;
+  state->colorify_values=saved ? state->saved_colorify_values : std::array<double,4>{{1,1,1,1}};
+  state->colorify_text=saved ? state->saved_colorify_text : std::array<std::string,4>{};
+  state->video_values=saved ? state->saved_video_values : std::array<int,3>{{2,1,0}};
+  state->loading=true;
+  struct Reset {PainterLayerDialog *state; ~Reset(){state->loading=false;state->expected_setter=nullptr;}} reset {state};
+  for (const auto& item: saved ? state->saved_widgets : state->defaults) {
+    auto *widget=GTK_WIDGET(item.widget.get());
+    state->expected_setter=&item;
+    switch(item.kind) {
+      case FilterWidgetDefault::spin: gtk_spin_button_set_value(GTK_SPIN_BUTTON(widget),item.value);break;
+      case FilterWidgetDefault::entry: gtk_entry_set_text(GTK_ENTRY(widget),item.text.c_str());break;
+      case FilterWidgetDefault::combo: gtk_combo_box_set_active(GTK_COMBO_BOX(widget),static_cast<int>(item.value));break;
+      case FilterWidgetDefault::toggle: gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget),item.value!=0);break;
+    }
+    state->expected_setter=nullptr;
+    if (state->closed) return;
+    /* Nested observers may edit another field, the same field to a different
+     * value, or the operation itself. Do not overwrite or clean that newer draft. */
+    state->expected_setter=&item;
+    const bool expected=painter_filter_expected_signal(*state,widget);
+    state->expected_setter=nullptr;
+    if (state->invalidated || !expected ||
+        g_strcmp0(gtk_combo_box_get_active_id(GTK_COMBO_BOX(state->choice)),selected.c_str()) ||
+        state->loaded_revision!=gimp_filter_layer_get_definition_revision(GIMP_FILTER_LAYER(layer.get()))) {
+      state->invalidated=true;
+      painter_dialog_error(state,_("The draft changed while switching filters. Reopen the popup to continue."));
+      return;
+    }
+  }
+  ++state->draft_epoch;
 }
 
 static void
@@ -1687,9 +1972,21 @@ painter_filter_response (PainterLayerDialog *state,
   gboolean           success = TRUE;
   std::array<std::string,4> colorify_text;
   std::array<int,3> video_draft {{-1,0,0}};
+  guint64 popup_revision=0, popup_epoch=0;
+  bool popup_patch_attempted=false;
+  gboolean popup_patch_success=FALSE;
+  PainterPopupCommitCheck popup_check {state,nullptr,nullptr,0,0,nullptr};
+  std::string popup_route;
+  struct ApplyingReset { PainterLayerDialog *state; bool owned=false;
+    ~ApplyingReset() {if(owned) state->applying=false;} } applying_reset {state};
 
   if (response != GTK_RESPONSE_OK)
     goto close;
+  if (state->popup) {
+    if (state->applying || state->loading || state->invalidated || state->closed) return;
+    state->applying=true; applying_reset.owned=true;
+    popup_revision=state->loaded_revision; popup_epoch=state->draft_epoch;
+  }
   /* Capture allocation-bearing draft strings inside the guarded callback,
    * before acquiring the manually released native response leases. */
   if (!state->closed && !g_strcmp0(gtk_combo_box_get_active_id(GTK_COMBO_BOX(state->choice)),"colorify"))
@@ -1707,8 +2004,19 @@ painter_filter_response (PainterLayerDialog *state,
        ! gimp_item_is_attached (GIMP_ITEM (layer)))))
     goto close;
   choice = gtk_combo_box_get_active_id (GTK_COMBO_BOX (state->choice));
+  if (state->popup) {
+    popup_route=choice ? choice : "keep";
+    choice=popup_route.c_str();
+    popup_check={state,image,layer,popup_revision,popup_epoch,choice};
+    if (popup_revision!=gimp_filter_layer_get_definition_revision(GIMP_FILTER_LAYER(layer))) {
+      state->invalidated=true;
+      gtk_dialog_set_response_sensitive(GTK_DIALOG(dialog),GTK_RESPONSE_OK,FALSE);
+      painter_dialog_error(state,_("This filter definition changed. Reopen the popup to edit it."));
+      goto out;
+    }
+  }
   if (state->editing && (! state->dirty || ! choice || g_str_equal (choice, "keep")))
-    goto close;
+    { if (state->popup) goto out; goto close; }
   if (! choice || g_str_equal (choice, "keep"))
     procedure = "";
   else if (painter_filter_isolated (choice))
@@ -1716,8 +2024,14 @@ painter_filter_response (PainterLayerDialog *state,
       procedure = !strcmp (choice, "blinds") ? "plug-in-blinds" :
                   !strcmp (choice, "small-tiles") ? "plug-in-small-tiles" :
                   !strcmp (choice, "retinex") ? "plug-in-retinex" : "plug-in-convmatrix";
-      if (!painter_filter_isolated_args (state, choice, image, layer, &args)) goto out;
-      if (!args) goto close;
+      if (!painter_filter_isolated_args (state, choice, image, layer, &args,
+            state->popup ? &popup_check : nullptr, &popup_patch_attempted,
+            &popup_patch_success, &error)) goto out;
+      if (popup_patch_attempted) {
+        success=popup_patch_success;
+        goto apply_completed;
+      }
+      if (!args) { if (state->popup) goto out; goto close; }
     }
   else if (g_str_equal(choice,"video"))
     {
@@ -1726,7 +2040,7 @@ painter_filter_response (PainterLayerDialog *state,
       }
       if (state->editing && state->video_loaded && video_draft[0]==state->video_values[0] &&
           (video_draft[1]!=0)==(state->video_values[1]!=0) &&
-          (video_draft[2]!=0)==(state->video_values[2]!=0)) goto close;
+          (video_draft[2]!=0)==(state->video_values[2]!=0)) { if (state->popup) goto out; goto close; }
       if (video_draft[0]<0 || video_draft[0]>=9) {
         painter_dialog_error(state,_("Choose one of the nine Video patterns."));goto out;
       }
@@ -1857,7 +2171,12 @@ painter_filter_response (PainterLayerDialog *state,
           g_clear_pointer (&old_args, gimp_value_array_unref);
         }
       g_free (old_procedure);
-      if (painter_filter_isolated (choice))
+      if (state->popup) {
+        PainterPopupCommitCheck check {state,image,layer,popup_revision,popup_epoch,choice};
+        success=FilterLayerRef::retain(GIMP_FILTER_LAYER(layer)).try_set_definition_checked(
+          procedure,raw,args,TRUE,painter_popup_commit_current,&check,&error);
+      }
+      else if (painter_filter_isolated (choice))
         {
           PainterFilterCommitCheck check {state, image, layer,
             static_cast<unsigned> (painter_filter_route (choice)) - 1};
@@ -1912,12 +2231,82 @@ painter_filter_response (PainterLayerDialog *state,
         }
       else success = FALSE;
     }
+apply_completed:
   if (state->closed) goto close;
+  if (state->popup) {
+    const guint64 revision=gimp_filter_layer_get_definition_revision(GIMP_FILTER_LAYER(layer));
+    bool metadata_current=true;
+    if (painter_filter_isolated(choice)) {
+      const auto index=static_cast<unsigned>(painter_filter_route(choice))-1;
+      metadata_current=!state->schema_stale[index] && state->schemas[index] && state->schemas[index]->current(image->gimp);
+    }
+    /* A failed notification can occur AFTER installation. Never acknowledge
+     * an arbitrary latest definition or allow blind retry against it. Revision
+     * advances exactly once per installed definition, so a successful checked
+     * commit at +1 identifies our own installation, including same-value edits. */
+    if ((!success && revision!=popup_revision) ||
+        (success && (!metadata_current || revision!=popup_revision+1 || state->draft_epoch!=popup_epoch ||
+         !gimp_item_is_attached(GIMP_ITEM(layer)) || gimp_item_get_image(GIMP_ITEM(layer))!=image))) {
+      state->invalidated=true;
+      gtk_dialog_set_response_sensitive(GTK_DIALOG(dialog),GTK_RESPONSE_OK,FALSE);
+      painter_dialog_error(state,_("The filter changed during Apply. Reopen the popup before editing again; an applied change may already be present."));
+      goto out;
+    }
+  }
   if (! success)
     {
       painter_dialog_error (state, error ? error->message : _("The filter layer could not be created or changed."));
       goto out;
     }
+  if (state->popup) {
+    try {
+      /* Rebaseline from our exact committed arguments and unchanged draft.
+       * No GTK setters: observers cannot overwrite a newer draft during reload.
+       * A preserving patch uses a bounded snapshot, never materializes unknown
+       * tails or loses their types/references just to acknowledge edited fields. */
+      auto patch_snapshot=popup_patch_attempted ?
+        FilterLayerRef::retain(GIMP_FILTER_LAYER(layer)).snapshot_arguments() :
+        FilterLayerRef::ArgumentsSnapshot {};
+      if (popup_patch_attempted && (!patch_snapshot ||
+          gimp_filter_layer_get_definition_revision(GIMP_FILTER_LAYER(layer))!=popup_revision+1))
+        throw std::runtime_error("The committed patch baseline changed");
+      const auto committed_value=[&](guint slot) -> const GValue * {
+        return popup_patch_attempted ? gimp_filter_arguments_snapshot_peek_value(patch_snapshot.get(),slot) :
+          gimp_value_array_index(args,slot);
+      };
+      state->loaded_revision=popup_revision+1;
+      state->loaded_route=painter_filter_isolated(choice) ? choice : "";
+      state->colorify_loaded=!strcmp(choice,"colorify") && painter_colorify_tint(args,state->colorify_values);
+      if (state->colorify_loaded) state->colorify_text=colorify_text;
+      state->video_loaded=!strcmp(choice,"video");
+      if (state->video_loaded)
+        for (unsigned i=0;i<3;++i) state->video_values[i]=g_value_get_int(gimp_value_array_index(args,i+3));
+      if (painter_filter_isolated(choice)) {
+        for (auto& field:state->numbers) if(field.route==choice) {
+          const GValue *value=committed_value(painter_filter_field(state,field.route,field.key).saved_slot);
+          field.initial=gtk_entry_get_text(GTK_ENTRY(field.entry));
+          if(field.integer) field.initial_integer=g_value_get_int(value);
+          else if(field.element<0) field.initial_real=g_value_get_double(value);
+          else { const auto *array=static_cast<const GimpArray*>(g_value_get_boxed(value));
+            memcpy(&field.initial_real,array->data+field.element*sizeof(double),sizeof(double)); }
+        }
+        for(auto& field:state->flags) if(field.route==choice)
+          field.initial=GTK_IS_COMBO_BOX(field.widget) ? gtk_combo_box_get_active(GTK_COMBO_BOX(field.widget))==1 : gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(field.widget));
+        for(auto& field:state->enums) if(field.route==choice)
+          field.initial=g_value_get_int(committed_value(painter_filter_field(state,field.route,field.key).saved_slot));
+      }
+      painter_filter_save_baseline(state);
+      state->dirty=FALSE;
+    } catch (...) {
+      state->invalidated=true;
+      gtk_dialog_set_response_sensitive(GTK_DIALOG(dialog),GTK_RESPONSE_OK,FALSE);
+      painter_dialog_error(state,_("Apply succeeded, but the editor could not refresh. Reopen the popup to continue."));
+      goto out;
+    }
+    gtk_widget_hide(state->error);
+    gimp_image_flush(image);
+    goto out;
+  }
   gimp_image_flush (image);
 close:
   gtk_widget_destroy (dialog);
@@ -1933,7 +2322,9 @@ static void
 painter_filter_choice_received (GtkComboBox *, gpointer data)
 {
   painter_dialog_dispatch (data, [] (PainterLayerDialog& state) {
-    painter_filter_choice_changed (&state);
+    if (state.loading) {state.invalidated=true;++state.draft_epoch;return;}
+    if (state.popup) painter_filter_reset_popup_route (&state);
+    if (!state.closed) painter_filter_choice_changed (&state);
   });
 }
 
@@ -1965,11 +2356,11 @@ painter_filter_response_received (GtkDialog *, gint response, gpointer data)
 
 } // namespace
 
-GtkWidget *
-painter_filter_layer_dialog_new (GimpImage   *image,
+static GtkWidget *
+painter_filter_layer_create (GimpImage   *image,
                                  GimpLayer   *layer,
                                  GimpContext *context,
-                                 GtkWidget   *parent)
+                                 GtkWidget   *parent, bool popup, GtkWidget *layer_controls)
 {
   g_return_val_if_fail (GIMP_IS_IMAGE (image), NULL);
   g_return_val_if_fail (layer == NULL || GIMP_IS_FILTER_LAYER (layer), NULL);
@@ -2117,9 +2508,16 @@ painter_filter_layer_dialog_new (GimpImage   *image,
       gtk_widget_set_no_show_all (state->cancel_filter, TRUE);
       painter_dialog_connect (state, state->cancel_filter, "clicked", G_CALLBACK (painter_filter_cancel_received));
       gtk_widget_show_all (state->grid);
+      if (state->popup) {
+        painter_filter_capture_defaults(state->defaults,state->parameters);
+        state->default_numbers=state->numbers;
+        state->default_flags=state->flags;
+        state->default_enums=state->enums;
+      }
       if (layer)
         {
           painter_filter_load (state, GIMP_FILTER_LAYER (layer));
+          if (state->popup && !state->closed) painter_filter_save_baseline(state);
           painter_filter_details (state, GIMP_FILTER_LAYER (layer));
           painter_dialog_connect (state, layer, "filter-state-changed", G_CALLBACK (painter_filter_status_received));
           painter_dialog_connect (state, layer, "filter-progress-changed", G_CALLBACK (painter_filter_status_received));
@@ -2158,5 +2556,69 @@ painter_filter_layer_dialog_new (GimpImage   *image,
       painter_filter_choice_changed (&state);
       state.dirty = FALSE;
       if (!state.closed) gtk_widget_show_all (state.grid);
-    });
+    }, popup, layer_controls);
+}
+
+GtkWidget *
+painter_filter_layer_dialog_new (GimpImage *image, GimpLayer *layer,
+                                 GimpContext *context, GtkWidget *parent)
+{
+  return painter_filter_layer_create (image, layer, context, parent, false, nullptr);
+}
+
+GtkWidget *
+painter_filter_layer_popup_new (GimpImage *image, GimpLayer *layer,
+                                GimpContext *context, GtkWidget *anchor,
+                                GtkWidget *layer_controls)
+{
+  g_return_val_if_fail (GIMP_IS_FILTER_LAYER (layer), nullptr);
+  g_return_val_if_fail (GTK_IS_WIDGET (anchor) && gtk_widget_get_realized (anchor), nullptr);
+  g_return_val_if_fail (GTK_IS_WIDGET (layer_controls) && !gtk_widget_get_parent (layer_controls), nullptr);
+  return boundary<GtkWidget *> (nullptr, nullptr, [&] () -> GtkWidget * {
+  auto anchor_lease=ObjectRef<GObject>::retain(G_OBJECT(anchor));
+  auto controls_lease=ObjectRef<GObject>::retain(G_OBJECT(layer_controls));
+  bool retired=gtk_widget_in_destruction(anchor);
+  auto destroyed=Connection::connect(anchor_lease,"destroy",G_CALLBACK(+[](GtkWidget*,gpointer data){
+    *static_cast<bool*>(data)=true;
+  }),&retired,nullptr);
+  auto unmapped=Connection::connect(anchor_lease,"unmap",G_CALLBACK(+[](GtkWidget*,gpointer data){
+    *static_cast<bool*>(data)=true;
+  }),&retired,nullptr);
+  if (retired) return nullptr;
+  auto *popup=painter_filter_layer_create(image,layer,context,anchor,true,layer_controls);
+  if (popup && (retired || !gtk_widget_get_realized(anchor))) {
+    gtk_widget_destroy(popup); return nullptr;
+  }
+  return popup;
+  });
+}
+
+void
+painter_filter_layer_popup_show_at (GtkWidget *popup, GtkWidget *anchor,
+                                    const GdkRectangle *area)
+{
+  g_return_if_fail (G_TYPE_CHECK_INSTANCE_TYPE (popup, painter_filter_popup_get_type ()));
+  boundary_void (nullptr, [&] {
+  if (!GTK_IS_WIDGET (anchor) || !gtk_widget_get_realized (anchor) ||
+      gtk_widget_in_destruction (anchor)) { gtk_widget_destroy (popup); return; }
+  auto lease = ObjectRef<GObject>::retain (G_OBJECT (popup));
+  gtk_widget_show_all (popup);
+  if (gtk_widget_in_destruction (popup) || !gtk_widget_get_realized (popup)) return;
+  gint x = 0, y = 0;
+  gdk_window_get_origin (gtk_widget_get_window (anchor), &x, &y);
+  GtkAllocation allocation; gtk_widget_get_allocation (anchor, &allocation);
+  if (!gtk_widget_get_has_window (anchor)) { x += allocation.x; y += allocation.y; }
+  GdkRectangle rect = area ? *area : GdkRectangle {0,0,allocation.width,allocation.height};
+  x += rect.x; y += rect.y;
+  GdkRectangle monitor;
+  auto *screen = gtk_widget_get_screen (anchor);
+  gdk_screen_get_monitor_workarea (screen, gdk_screen_get_monitor_at_point (screen,x,y), &monitor);
+  gint width, height; gtk_window_get_size (GTK_WINDOW (popup), &width, &height);
+  gint px=x, py=y+rect.height;
+  if (px+width > monitor.x+monitor.width) px=x+rect.width-width;
+  if (py+height > monitor.y+monitor.height) py=y-height;
+  px=std::max(monitor.x,std::min(px,monitor.x+monitor.width-width));
+  py=std::max(monitor.y,std::min(py,monitor.y+monitor.height-height));
+  gtk_window_move (GTK_WINDOW (popup),px,py);
+  });
 }

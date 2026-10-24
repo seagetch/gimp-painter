@@ -1,0 +1,113 @@
+{
+  "status": "PASS",
+  "exit_status": 0,
+  "instrumented_translation_units": [
+    "app/widgets/popupper.cpp",
+    "app/widgets/gimppaintercompactoptions.cpp",
+    "app/widgets/gimppaintermybrusheditor.cpp",
+    "app/dialogs/painter-layer-dialog.cpp",
+    "app/widgets/gimppainterlayertiles.cpp",
+    "app/widgets/gimpcellrendererpopup.cpp",
+    "app/tests/test-filter-layer-popup.cpp",
+    "app/tests/test-painter-layer-ui.c",
+    "app/tests/test-filter-editor-metadata.cpp",
+    "app/tests/test-filter-argument-patch.cpp",
+    "app/tests/tests.c",
+    "app/painter/binding-store.cpp",
+    "app/painter/gimp-painter-binding.cpp"
+  ],
+  "cases": [
+    "ok 1 /filter-popup/actual-tile-type",
+    "ok 2 /filter-popup/actual-tree-type",
+    "ok 3 /filter-popup/staged-apply-undo",
+    "ok 4 /filter-popup/invalid-return",
+    "ok 5 /filter-popup/ordinary-dialog-unchanged",
+    "ok 6 /filter-popup/outside-staged-live-opacity",
+    "ok 7 /filter-popup/operation-reload",
+    "ok 8 /filter-popup/stale-deleted",
+    "ok 9 /filter-popup/apply-reentry",
+    "ok 10 /filter-popup/gaussian-common-guard",
+    "ok 11 /filter-popup/operation-menu-grab",
+    "ok 12 /filter-popup/postcommit-uncertain",
+    "ok 13 /filter-popup/anchor-teardown",
+    "ok 14 /filter-popup/operation-switch-reentry",
+    "ok 15 /filter-popup/published-definition-reentry",
+    "ok 16 /filter-popup/isolated-routes-repeated-apply",
+    "ok 17 /filter-popup/isolated-patch-postcommit-reentry"
+  ],
+  "source_sha256": {
+    "app/widgets/popupper.cpp": "6ea240dd7cf37624a0cba321d59ae30e4933f434dab318a417f255a27805be80",
+    "app/widgets/gimppaintercompactoptions.cpp": "0f7a1c780f3b64e92bc8d0f45c27f2b5c6fea1b6dcf5078c51b8536d8b25bcbc",
+    "app/widgets/gimppaintermybrusheditor.cpp": "bf8dabee843cc3a5b49e573fcfae398b325e1e39fd4e945f62c8da0d5b19f29b",
+    "app/dialogs/painter-layer-dialog.cpp": "636b9a00bbe4c3cbed98f3a1d633092b1f82c7dd5208927e8ba94905eee05346",
+    "app/widgets/gimppainterlayertiles.cpp": "999215c359a71b4f4773b02e3d84809ebf57a6638113872caf8f077a234fefa0",
+    "app/widgets/gimpcellrendererpopup.cpp": "51156ac326bce3c3d31a8bcf3a0f9657860ae9fa63c1518c34e639a692db7631",
+    "app/tests/test-filter-layer-popup.cpp": "4528d006c517f12c4012468c93387b41582b43b59b89ffe4e7073f9f1a7d42f9",
+    "app/tests/test-painter-layer-ui.c": "a7b9da7ca41f5db334575cd93c30cc85541d0ef880adb2b25ef05d951a7bddf0",
+    "app/tests/test-filter-editor-metadata.cpp": "8187f0749f317f6ca8d3a87c6893a17498a7b24166e5a5b7be351504774d03ad",
+    "app/tests/test-filter-argument-patch.cpp": "5195aeacb64026b8ed46bfd2170af81e26c2b5bcadd65ba950d7e8bada61826f",
+    "app/tests/tests.c": "56303878e316e41fcb7c439b199cde5bd9fc4ac84b46b48efcbfbc79737747e7",
+    "app/painter/binding-store.cpp": "c69d65c22f26e6be8f6df69765cd30f7bbbd32b46b0eb847e9f6524b41c2b557",
+    "app/painter/gimp-painter-binding.cpp": "22aca4f9e467e16b86f2cbeec431d7d069fc552c98fad985db770720fcf876fd"
+  },
+  "binary_sha256": "6f0c1482ac73d29fd790ad2c416db14dadb77529f6bacd79bc0bc7fa5cbfd6c8",
+  "compiler_flags": [
+    "-fsanitize=address,undefined",
+    "-fno-sanitize=vptr",
+    "-fno-omit-frame-pointer",
+    "-O1",
+    "-g"
+  ],
+  "runtime_options": {
+    "ASAN_OPTIONS": "detect_leaks=0:abort_on_error=1",
+    "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1"
+  },
+  "session_fixture": "sessionrc-native-oncanvas",
+  "display": "authenticated Xvfb 1080x1920x24",
+  "final_source_unchanged_across_build_and_runtime": true,
+  "sanitizer_findings": 0,
+  "limitations": [
+    "Only the 13 listed translation units were instrumented; remaining application objects and dependencies were uninstrumented.",
+    "vptr checks excluded; LeakSanitizer disabled.",
+    "Prior full-vptr baseline failure remains a separate unresolved gate.",
+    "Focused 17-case popup suite only; not whole-application or full-suite sanitizer acceptance."
+  ],
+  "private_diagnostics_retained": true,
+  "runtime_metadata": {
+    "plugin_discovery": "Genuine bundled plug-in executables through GIMP_TESTING_PLUGINDIRS",
+    "shared_libraries": "Private matching libgimp and libgimpui runtime bundle",
+    "executables": [
+      {
+        "name": "gimp-painter-filter-worker",
+        "sha256": "95b6d1aa537860dad0c5e7dec21172a0779be464b4db4b7556fd294ba27a9bd8"
+      },
+      {
+        "name": "blinds",
+        "sha256": "af5f22f2b9bf73663900f24c9593653262575823204ba7a0dbb2b68ae54153ff"
+      },
+      {
+        "name": "tile-small",
+        "sha256": "aae0d992a664bb1801b89d70386df718887d0bb6079e7ca36350128c6cde2104"
+      },
+      {
+        "name": "contrast-retinex",
+        "sha256": "f9f3f6ff52834eaf13bd0d5ec4aa7b9cf754bda2b570f2771ba6e9135419b8eb"
+      },
+      {
+        "name": "convolution-matrix",
+        "sha256": "4dedd95356257a555bd44e19885d76d134e0eb4f60261c029b471ddd371104fb"
+      }
+    ],
+    "dependency_libraries": [
+      {
+        "name": "libgimp-3.0.so.0.8.1",
+        "sha256": "915c9c2530974fcd4d3491fdff2be1d7c6ce79055227bb8ea77d906ac92693fd"
+      },
+      {
+        "name": "libgimpui-3.0.so.0.8.1",
+        "sha256": "7ccedba39801e43c1e48f66b8d3773e41976de5567bb18f4b6bd5650b440c1cb"
+      }
+    ]
+  },
+  "supersedes": "Earlier 15-case and insufficient-assertion 16-case diagnostic runs; not additive coverage"
+}

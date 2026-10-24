@@ -1,0 +1,24 @@
+{
+  "scope": "Correct two prerequisite bookkeeping mistakes introduced by earlier test-only tasks295/296; no production/test changes or parent completion",
+  "intentional_prior_dependency_edits": {
+    "34.015/perspective-exact-clip-border-oracle": {
+      "before": "26.005",
+      "after": "26.001/model-editor-checkpoint, 25.009",
+      "reason": "The exact-clip test consumes the completed model/overlay checkpoint and current display rotation matrix, not completion of the entire unfinished Perspective stroke/feature task."
+    },
+    "34.015/compact-options-native-oracles": {
+      "before": "29.010/standard-tool-options",
+      "after": "29.010/native-compact-runtime, 29.010/perspective-guide-toolbar, 08.018/perspective-options-registration",
+      "reason": "The tests consume completed native compact controls, empty Perspective toolbar and exact registered options subtype. First-focus dock-parent setup is not the separate shell-transfer/open-menu transaction."
+    }
+  },
+  "statuses_and_acceptance_cells_byte_identical": true,
+  "all_other_prior_wbs_rows_byte_identical": true,
+  "prior_progress_rows_byte_identical": true,
+  "completed_inputs_verified_against": "149766f442cf95e97f2f91d9a6e015c277f9d366 tasks.md",
+  "independent_review": "Completed component input relevance independently checked; unrelated toolbar-transfer-menu-transaction intentionally not added",
+  "checker_command": "python tools/check_tasks.py",
+  "checker_exit": 0,
+  "checker_output": "WBS dependencies, states, and completion evidence: OK",
+  "baseline_findings_corrected": 2
+}

@@ -1,0 +1,38 @@
+{
+  "viewport": [
+    1080,
+    1920
+  ],
+  "window_manager": "Openbox 3.6.1 (Debian signed distribution package 3.6.1-12+b2; extracted locally)",
+  "session": "sessionrc-native-oncanvas",
+  "oncanvas": "production default TRUE; not forced by this test",
+  "resources": "56 shipped file-backed brushes; real opaque lower image layer",
+  "test_case": "/filter-popup/staged-apply-undo",
+  "source": "actual custom canvas tile right-button route using pointer-device GTK event dispatch, not physical X input",
+  "capture": "unmodified raw GdkPixbuf root-window PNG; no postprocessing or synthetic chrome; no LD_PRELOAD",
+  "test_positioning": "Only actual main window resized1040x1800/moved0,0; popup placed by production anchor policy",
+  "popup": {
+    "xid": "0x6036ef",
+    "transient_for": "0x600004",
+    "override_redirect": true,
+    "frame_extents": "absent",
+    "gtk_type": "GTK_WINDOW_POPUP (runtime assertion)",
+    "x11_window_type": "_NET_WM_WINDOW_TYPE_DIALOG",
+    "initial_geometry": [
+      235,
+      625,
+      746,
+      688
+    ]
+  },
+  "before_after": "Same fixture/process. Initial saved red1; edit0.5000 then explicit Apply; popup remains open and exact text retained. Filter thumbnails show genuine output change. Does not claim execution of old2.8 UI.",
+  "exit_status": 0,
+  "binary_sha256": "e945ca026e3aba8b362d2a7aa787e664c656dabc57c8c48d4ff4961509ed2852",
+  "images": {
+    "filter-popup.png": "51db2ebff6aaff71feb18d47fc2fb5d776fe3204edecd78ccb32f2822c539ca1",
+    "filter-popup-applied.png": "a2dbbb84d50314adf7c211f020e23e3b778ef11b477a5a6eed63f87c993e2f43"
+  },
+  "source_test_sha256": "4528d006c517f12c4012468c93387b41582b43b59b89ffe4e7073f9f1a7d42f9",
+  "final_core_sha256": "636b9a00bbe4c3cbed98f3a1d633092b1f82c7dd5208927e8ba94905eee05346",
+  "final_capture": "Captured again from final17-case frozen binary; both PNGs byte-identical to earlier visually inspected candidate capture."
+}

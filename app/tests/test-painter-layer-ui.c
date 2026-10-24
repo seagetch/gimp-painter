@@ -910,6 +910,8 @@ static void filter_schema_argument_patch (void)
 void gimp_test_filter_allocation_register (Gimp *application);
 #endif
 
+void gimp_test_filter_layer_popup_register (Gimp *application);
+
 int main (int argc, char **argv)
 {
   int result;
@@ -917,9 +919,13 @@ int main (int argc, char **argv)
   if (! gtk_init_check (&argc, &argv)) return GIMP_EXIT_TEST_SKIPPED;
   gimp_test_utils_set_gimp3_directory ("GIMP_TESTING_ABS_TOP_SRCDIR", "app/tests/gimpdir");
   const gboolean colorify_oncanvas=g_getenv("GIMP_TEST_COLORIFY_ONCANVAS")!=NULL;
-  if(colorify_oncanvas){gimp_test_utils_setup_menus_path();gimp=gimp_init_for_gui_testing(TRUE);g_object_set(gimp->config,"painter-canvas-ui",TRUE,NULL);}
+  const gboolean filter_popup=g_getenv("GIMP_TEST_FILTER_LAYER_POPUP")!=NULL;
+  if(filter_popup){gimp_test_utils_setup_menus_path();gimp=gimp_init_for_gui_testing(TRUE);}
+  else if(colorify_oncanvas){gimp_test_utils_setup_menus_path();gimp=gimp_init_for_gui_testing(TRUE);g_object_set(gimp->config,"painter-canvas-ui",TRUE,NULL);}
   else gimp = gimp_init_for_testing ();
   parent = gtk_window_new (GTK_WINDOW_TOPLEVEL); g_object_ref_sink (parent);
+  if(filter_popup) gimp_test_filter_layer_popup_register(gimp);
+  else {
 #define ADD(name) g_test_add_func ("/painter-layer-ui/" #name, name)
   ADD (colorify_editor_draft_reentry);
   ADD (colorify_editor_create_pixels);
@@ -995,11 +1001,12 @@ int main (int argc, char **argv)
 #ifdef GIMP_PAINTER_FAULT_TEST
   gimp_test_filter_allocation_register (gimp);
 #endif
-  if(colorify_oncanvas){g_application_run(gimp->app,0,NULL);result=gimp_core_app_get_exit_status(GIMP_CORE_APP(gimp->app));}
+  }
+  if(colorify_oncanvas || filter_popup){g_application_run(gimp->app,0,NULL);result=gimp_core_app_get_exit_status(GIMP_CORE_APP(gimp->app));}
   else result = g_test_run ();
   gtk_widget_destroy (parent); g_object_unref (parent);
   gimp_test_utils_set_gimp3_directory ("GIMP_TESTING_ABS_TOP_BUILDDIR", "app/tests/gimpdir-output");
-  if(colorify_oncanvas){g_application_quit(G_APPLICATION(gimp->app));g_clear_object(&gimp->app);}
+  if(colorify_oncanvas || filter_popup){g_application_quit(G_APPLICATION(gimp->app));g_clear_object(&gimp->app);}
   else gimp_exit (gimp, TRUE);
   return result;
 }

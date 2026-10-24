@@ -1,0 +1,23 @@
+Normal native popup suite: 17 passed; authenticated 1080x1920x24 Xvfb.
+Official sessionrc-native-oncanvas; production default TRUE, no forced enabling.
+Private trusted worker/plugin bundle and registered native isolated-filter metadata; no diagnostic LD_PRELOAD.
+1..17
+# Shipped native brushes: 56
+ok 1 /filter-popup/actual-tile-type
+ok 2 /filter-popup/actual-tree-type
+ok 3 /filter-popup/staged-apply-undo
+ok 4 /filter-popup/invalid-return
+ok 5 /filter-popup/ordinary-dialog-unchanged
+ok 6 /filter-popup/outside-staged-live-opacity
+ok 7 /filter-popup/operation-reload
+ok 8 /filter-popup/stale-deleted
+ok 9 /filter-popup/apply-reentry
+ok 10 /filter-popup/gaussian-common-guard
+ok 11 /filter-popup/operation-menu-grab
+ok 12 /filter-popup/postcommit-uncertain
+ok 13 /filter-popup/anchor-teardown
+ok 14 /filter-popup/operation-switch-reentry
+ok 15 /filter-popup/published-definition-reentry
+ok 16 /filter-popup/isolated-routes-repeated-apply
+ok 17 /filter-popup/isolated-patch-postcommit-reentry
+Binary SHA256 e945ca026e3aba8b362d2a7aa787e664c656dabc57c8c48d4ff4961509ed2852

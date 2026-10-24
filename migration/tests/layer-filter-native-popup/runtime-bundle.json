@@ -1,0 +1,84 @@
+{
+  "purpose": "Supplemental unchanged bundled runtime for original layer-ui regression; no task299 product-source change",
+  "path_policy": "Unmodified executable-relative installed BIN_TO_WORKER ../libexec/gimp-painter-filter-worker and WORKER_TO_PLUGINS ../lib/x86_64-linux-gnu/gimp/3.0/plug-ins; no environment path override or compile-time overlay",
+  "build": "Original base297 compile/link recipes, private outputs; plugin shared dependencies libgimp and libgimpui reconstructed from same sources. Existing other base archives/libs reused. Generated enum header/tail byte-identical to checked-in source; original enumcode/mkenums and glib-genmarshal tools generated private artifacts. Generated include directories added to private compilation only.",
+  "dependency_libraries": [
+    {
+      "name": "libgimp-3.0.so.0.8.1",
+      "sha256": "915c9c2530974fcd4d3491fdff2be1d7c6ce79055227bb8ea77d906ac92693fd"
+    },
+    {
+      "name": "libgimpui-3.0.so.0.8.1",
+      "sha256": "7ccedba39801e43c1e48f66b8d3773e41976de5567bb18f4b6bd5650b440c1cb"
+    }
+  ],
+  "verification": [
+    "ldd all five executables: no missing shared libraries under recorded build environment with runtime-build LD_LIBRARY_PATH prepend",
+    "worker without protocol arguments returned expected 125",
+    "Trusted provider restore requires the testing plugin scanner to use the canonical installed-relative plugin tree; baseline and candidate failed identically with the old empty build plugin directory, and isolated create/reedit passed after correcting only this runtime setting."
+  ],
+  "executables": [
+    {
+      "name": "gimp-painter-filter-worker",
+      "source": "app/painter-filter-worker.cpp",
+      "source_sha256": "4a841382f471e71a59ce26865a62919213450ba03b62552096d7a10a589d1838",
+      "source_identical_to_base297": true,
+      "output": "libexec/gimp-painter-filter-worker",
+      "output_sha256": "95b6d1aa537860dad0c5e7dec21172a0779be464b4db4b7556fd294ba27a9bd8",
+      "output_size": 45898312,
+      "base_compile_recipe_sha256": "ed42a536ab501be37c75edcf9a8574ad8d1e769df602ffca241d80cb13c04559",
+      "base_link_recipe_sha256": "7c8e60d81aed33f1a2c8638df4cda22a43959d0192683099ba327d1b92d3aa68"
+    },
+    {
+      "name": "blinds",
+      "source": "plug-ins/common/blinds.c",
+      "source_sha256": "20841f666d1479b516045b6953c7007c17524aecb54c2e393df4752ab69c9943",
+      "source_identical_to_base297": true,
+      "output": "lib/x86_64-linux-gnu/gimp/3.0/plug-ins/blinds/blinds",
+      "output_sha256": "af5f22f2b9bf73663900f24c9593653262575823204ba7a0dbb2b68ae54153ff",
+      "output_size": 71416,
+      "base_compile_recipe_sha256": "facddc1ec5ed6eb331c174df1943ac7f2030d7d0772422c0c25155dba192576b",
+      "base_link_recipe_sha256": "37f221d83c0102398ca25ad3b17f7fa4463c2ff8741ff524989f9ec72a67e8f0"
+    },
+    {
+      "name": "tile-small",
+      "source": "plug-ins/common/tile-small.c",
+      "source_sha256": "6601d059f60dab9406733474fcff60c746a056d8da8c77388d3c522c6a197044",
+      "source_identical_to_base297": true,
+      "output": "lib/x86_64-linux-gnu/gimp/3.0/plug-ins/tile-small/tile-small",
+      "output_sha256": "aae0d992a664bb1801b89d70386df718887d0bb6079e7ca36350128c6cde2104",
+      "output_size": 102176,
+      "base_compile_recipe_sha256": "79bf2908f54f1cdb3f9af610c366f72608277d10900240e0140bcbb85aa6777a",
+      "base_link_recipe_sha256": "f79655d99f1895e900cef96fb8f34c509dc5d0b19b6ddff18468ea60ad9ee377"
+    },
+    {
+      "name": "contrast-retinex",
+      "source": "plug-ins/common/contrast-retinex.c",
+      "source_sha256": "d5a2f22516aec102d25f4d244ea9c2da9d4fea2bf5869ec165377261c3dc5f13",
+      "source_identical_to_base297": true,
+      "output": "lib/x86_64-linux-gnu/gimp/3.0/plug-ins/contrast-retinex/contrast-retinex",
+      "output_sha256": "f9f3f6ff52834eaf13bd0d5ec4aa7b9cf754bda2b570f2771ba6e9135419b8eb",
+      "output_size": 73888,
+      "base_compile_recipe_sha256": "8313079c6c8a3444102d9491fac0a4b51f682d259484c0825f94766ceffae569",
+      "base_link_recipe_sha256": "fd25be9a5769ef1f1a0da0d93ea8721ebb8c17c7619fec92db1e576d9572c98b"
+    },
+    {
+      "name": "convolution-matrix",
+      "source": "plug-ins/common/convolution-matrix.c",
+      "source_sha256": "bffb9e07ec4d25988c0d1065e0c5d50b17f6bfd9d49e25b633c25c68ddfeedee",
+      "source_identical_to_base297": true,
+      "output": "lib/x86_64-linux-gnu/gimp/3.0/plug-ins/convolution-matrix/convolution-matrix",
+      "output_sha256": "4dedd95356257a555bd44e19885d76d134e0eb4f60261c029b471ddd371104fb",
+      "output_size": 57480,
+      "base_compile_recipe_sha256": "37f8e099f1cfc20ac7911bcf2f393d9a370959f74da86fbcf153eb1580b19cf2",
+      "base_link_recipe_sha256": "6b50f754be1d2d14501dbc05ad38efa42eb357346aa9ac15ded14db4de0a406e"
+    }
+  ],
+  "verification_scope": "Runtime reconstruction and loader checks only; original 86-case layer-ui results are recorded separately by the validator.",
+  "runtime_environment_relative_to_fixture_root": {
+    "LD_LIBRARY_PATH_prepend": "runtime-build",
+    "GIMP_TESTING_PLUGINDIRS": "lib/x86_64-linux-gnu/gimp/3.0/plug-ins"
+  },
+  "popup_core_sha256_at_runtime_reconstruction": "31bcc29caa5ea16b97299348125460602c87de8872b33cc76a8872b72bef653b",
+  "runtime_reconstruction_history": "Popup source was subsequently corrected for repeated preserving argument-patch Apply; it is not a rebuilt worker/plugin source dependency. The five runtime source files and binaries recorded here remained unchanged. Final popup source hashes are recorded separately."
+}
