@@ -1,0 +1,18 @@
+[
+  {
+    "name": "no-op",
+    "returncode": -6,
+    "stdout": "TAP version 14\n# random seed: R02Sd856235cf55669877860a9c15b79f724\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# Start of preset-catalog tests\n# child process (/preset-catalog/replace-retained-snapshots [833]) exit status: 1 (error)\n# child process (/preset-catalog/replace-retained-snapshots [833]) stdout: \"\"\n# child process (/preset-catalog/replace-retained-snapshots [833]) stderr: \"**\\nERROR:../source/app/tests/test-preset-catalog.c:138:assert_pair: assertion failed (gimp_preset_descriptor_values (d)->label == name): (\\\"Layer presets Folders\\\" == \\\"replacement\\\")\\n\"\nnot ok /preset-catalog/replace-retained-snapshots - ERROR:../source/app/tests/test-preset-catalog.c:199:run: child process (/preset-catalog/replace-retained-snapshots [833]) failed unexpectedly\nBail out!\n",
+    "stderr": "**\nERROR:../source/app/tests/test-preset-catalog.c:199:run: child process (/preset-catalog/replace-retained-snapshots [833]) failed unexpectedly\n",
+    "mutant_sha256": "aba384c83c60f9a83c9e00cee3202a42c75c1d4b53cf27356c808446e08f869d",
+    "expected_assertion": "gimp_preset_descriptor_values (d)->label == name"
+  },
+  {
+    "name": "lost-generation",
+    "returncode": -6,
+    "stdout": "TAP version 14\n# random seed: R02Sbabbed0294e9a9038e670b3deeed5c1e\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# Start of preset-catalog tests\n# child process (/preset-catalog/prepare-other-owner-generation [866]) exit status: 1 (error)\n# child process (/preset-catalog/prepare-other-owner-generation [866]) stdout: \"unit boundary: target init bypass only\\nunit boundary: target init bypass only\\n\"\n# child process (/preset-catalog/prepare-other-owner-generation [866]) stderr: \"**\\nERROR:../source/app/tests/test-preset-catalog.c:133:rejects: 'gimp_preset_catalog_register (g,d,&e)' should be FALSE\\n\"\nnot ok /preset-catalog/prepare-other-owner-generation - ERROR:../source/app/tests/test-preset-catalog.c:199:run: child process (/preset-catalog/prepare-other-owner-generation [866]) failed unexpectedly\nBail out!\n",
+    "stderr": "**\nERROR:../source/app/tests/test-preset-catalog.c:199:run: child process (/preset-catalog/prepare-other-owner-generation [866]) failed unexpectedly\n",
+    "mutant_sha256": "4f27d7c3921c96ca9564415b8b56021316752faa4122fde03d803b4c107de10d",
+    "expected_assertion": "should be FALSE"
+  }
+]

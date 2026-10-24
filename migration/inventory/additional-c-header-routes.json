@@ -9,25 +9,55 @@
       "review": "09.002/projection-update-bounds: private GLib-only signed-int update interval clipping and grid alignment helpers. Owns its GLib prerequisite and include guard; twice-include compilation in C11 and C++14 without an outer linkage wrapper. No public API or cross-language link ABI claim."
     },
     {
-      "path": "app/core/gimpjsonresource.h",
+      "path": "app/widgets/gimpcellrendererpopup.h",
       "kind": "new",
-      "context": "core",
+      "context": "standalone",
       "prerequisites": [],
-      "review": "08.018/json-resource-entries: original C get_type/new signatures and generic native GimpData root owner; specialized preset inherits one state. C11/C++14 double include; typed C++ facade is separately compiled; no old Interface or binary layout claim."
+      "review": "08.017: native popup renderer C interface; owns its GTK prerequisites and C linkage. Double-include in C11 and C++14 without an outer linkage wrapper."
     },
     {
-      "path": "app/core/gimpmypaintbrush-load.h",
-      "kind": "new",
+      "path": "app/widgets/gimpcontainertreeview.h",
+      "kind": "changed-baseline",
+      "baseline_blob": "1473705a394041cc35205a5cc2ee151bde49cccc",
       "context": "core",
       "prerequisites": [],
-      "review": "08.018/brush-filename-load: original absolute-filename C signature delegates to sole native stream parser; owned list/resource, private stream/file lifetime. Header owns C linkage and include guards; double-include C11/C++14 probes, no legacy layout/parser/error ABI claim."
+      "review": "08.017: native tree popup-cell registration interface, with normal core/widget type prerequisites. Extends the identified historical header without changing its original inventory identity or duties."
     },
     {
-      "path": "app/core/gimpmypaintbrush-save.h",
-      "kind": "new",
+      "path": "app/widgets/gimpcontainertreeview-private.h",
+      "kind": "changed-baseline",
+      "baseline_blob": "364ca893d7c685c2c6281af00e7da9266cc02c40",
+      "context": "core",
+      "prerequisites": [
+        "app/widgets/gimpcontainertreeview.h"
+      ],
+      "review": "08.017 original001536: the native owning misc_cells list extends the identified private tree layout. Probe after its public tree header and core/widget types, twice in both C and C++; no outer linkage wrapper."
+    },
+    {
+      "path": "app/widgets/gimpwidgets-utils.h",
+      "kind": "changed-baseline",
+      "baseline_blob": "9edb8a90af15dbc21250526146e63cb353e09210",
       "context": "core",
       "prerequisites": [],
-      "review": "08.018/brush-file-save: original gboolean borrowed GimpData/GError signature to native shared data transaction and BrushSlot serializer. Header owns linkage and include guards; C11/C++14 double inclusion, no historical unchecked sidecar/dirty or layout ABI claim."
+      "review": "08.017 original001813/001814: retain the callable native gimp_session_write_boolean true/false token helper and its original signature. Extends the identified historical header with C linkage for this declaration. Double-include with the normal core/config/widget type prelude in C11 and C++14; no outer linkage wrapper and no change to historical duties."
+    },
+    {
+      "path": "app/widgets/gimpeditor-cxx.h",
+      "kind": "new",
+      "context": "core",
+      "prerequisites": [
+        "app/widgets/gimpeditor.h"
+      ],
+      "review": "08.017 original001605: restored callable dropdown C interface for the common-store provider. Uses the reviewed native editor header and normal core/widget types; owns its C linkage and include guard. Compile twice in C11 and C++14 without an outer linkage wrapper. This new current-tree header does not revise historical inventory identities or discharge original duties."
+    },
+    {
+      "path": "app/widgets/gimpeditor-cxx-private.h",
+      "kind": "new",
+      "context": "core",
+      "prerequisites": [
+        "app/widgets/gimpeditor.h"
+      ],
+      "review": "08.017 original001606-001612: new app-private native construction-helper boundary used by C gimpeditor.c and C++ dropdown provider. Keeps GimpEditorPrivate and ExtendedAction layout in C; owns stdarg, C linkage and include guard. Compile twice after the reviewed editor header in C11 and C++14 without an outer linkage wrapper. Does not recreate the removed historical gimpeditor-private.h or discharge its duties."
     },
     {
       "path": "app/core/gimpmypaintbrush.h",
@@ -37,36 +67,11 @@
       "review": "08.018 exact row 36: source-only alias to native GimpPainterMybrush and the original named duplicate C operation. Owns C linkage and include guard; compile twice with normal core prerequisites in C11 and C++14 without an outer linkage wrapper. Does not restore legacy object/class layout or runtime GType, or discharge other historical type/operation duties."
     },
     {
-      "path": "app/dialogs/welcome-dialog.h",
-      "kind": "changed-baseline",
-      "baseline_blob": "9e6d1a8e09009650b3a185938dce835eb87071c1",
+      "path": "app/tools/gimpmypainttool.h",
+      "kind": "new",
       "context": "core",
       "prerequisites": [],
-      "review": "Welcome dialog shutdown ownership: preserve the baseline constructor and add the idempotent shutdown entry point with C linkage. Double-include after normal core/widget prerequisites in C11 and C++14."
-    },
-    {
-      "path": "app/display/gimpdisplayshell-scroll.h",
-      "kind": "changed-baseline",
-      "baseline_blob": "fba444baf2da4743d9bd2abd97c58a4a4fac227a",
-      "context": "core",
-      "prerequisites": [],
-      "review": "25.009 exact source-only legacy pan bridge: two double-coordinate begin/motion C entry declarations using opaque GimpDisplayShell and GLib scalar types. Existing integer scrolling signatures are unchanged. Header owns its C linkage and include guard; double-include C11/C++14 probes use normal reviewed core/display type prelude, without outer linkage adapter. This compile route does not close original navigation duties or claim runtime/ABI parity."
-    },
-    {
-      "path": "app/gui/gimpuiconfigurer.h",
-      "kind": "changed-baseline",
-      "baseline_blob": "db22ffccc37ec017d9c6c45a4f72ca655b441d74",
-      "context": "core",
-      "prerequisites": [],
-      "review": "29.010/startup-session-mode-barrier: native restore ownership and GUI/session readiness declarations or private state. Double-include the identified baseline header after standard core/widget prerequisites in C11 and C++14; no outer linkage wrapper, historical identity changes, or link ABI claim."
-    },
-    {
-      "path": "app/gui/session.h",
-      "kind": "changed-baseline",
-      "baseline_blob": "d5be445ca6639f0304038f8cac668281b1505409",
-      "context": "core",
-      "prerequisites": [],
-      "review": "29.010/startup-session-mode-barrier: native restore ownership and GUI/session readiness declarations or private state. Double-include the identified baseline header after standard core/widget prerequisites in C11 and C++14; no outer linkage wrapper, historical identity changes, or link ABI claim."
+      "review": "08.018 row 58 partial operation port: original color-picker operation name and narrow native tool alias, with an explicit GimpColorPickTarget parameter migration. Owns C linkage and include guard; compile twice with normal core prerequisites in C11 and C++14 without an outer linkage wrapper. Does not restore the incompatible legacy GimpColorPickMode enum, object/class layout, runtime GType, or discharge other original duties."
     },
     {
       "path": "app/paint/gimpmypaintoptions.h",
@@ -76,26 +81,18 @@
       "review": "08.018 exact row 51: original owned mapping-point query signature and operation-level alias to native Options. Owns include guard and C linkage; compile twice with normal core prerequisites in C11 and C++14 without an outer linkage wrapper. Preserves caller g_free ownership and legacy float rounding; no borrowed live-brush, legacy layout/runtime GType, or unrelated operation claim."
     },
     {
-      "path": "app/presets/gimpjsonresource.h",
+      "path": "app/widgets/gimplayertileview.h",
       "kind": "new",
-      "context": "core",
+      "context": "standalone",
       "prerequisites": [],
-      "review": "08.018/json-resource-entries: original C get_type/new signatures and generic native GimpData root owner; specialized preset inherits one state. C11/C++14 double include; typed C++ facade is separately compiled; no old Interface or binary layout claim."
+      "review": "08.018 rows 32\u201333: restored original layer-tile C construction/type and object-property configuration over one native widget. Source-only type alias with native parent/layout; owns prerequisites, C linkage and include guard; double include in C11 and C++14."
     },
     {
-      "path": "app/tools/gimpalignoptions.h",
-      "kind": "changed-baseline",
-      "baseline_blob": "27b2b8f64290bbc446be20fb601f056e8ab141a0",
-      "context": "core",
-      "prerequisites": [],
-      "review": "04.003/tool-options-header-routes: independent horizontal alignment options constructor. Double-include the identified baseline header after normal core/tool/GTK prerequisites in C11 and C++14; preserve its original identity. Compilation only, without an outer linkage wrapper; no C/C++ link ABI claim."
-    },
-    {
-      "path": "app/tools/gimpmypainttool.h",
+      "path": "app/widgets/gimpmypaintbrushoptions-gui.h",
       "kind": "new",
-      "context": "core",
+      "context": "standalone",
       "prerequisites": [],
-      "review": "08.018 row 58 partial operation port: original color-picker operation name and narrow native tool alias, with an explicit GimpColorPickTarget parameter migration. Owns C linkage and include guard; compile twice with normal core prerequisites in C11 and C++14 without an outer linkage wrapper. Does not restore the incompatible legacy GimpColorPickMode enum, object/class layout, runtime GType, or discharge other original duties."
+      "review": "08.018 row 35 partial quick-selector port: original C factory name/signature over a native selected-resource button and canonical snapshot-history model. Owns prerequisites, include guard and C linkage; double include in C11 and C++14. No historical Custom brush-object identity or class/layout ABI claim."
     },
     {
       "path": "app/tools/gimppainterpainttoolbar.h",
@@ -119,6 +116,22 @@
       "review": "Recovery 2026-10-15: independent legacy-source-based horizontal transform toolbar constructor; owns include guard and C linkage. Compile twice in C11/C++14 with standard core prerequisites; no old layout or factory completeness is implied."
     },
     {
+      "path": "app/dialogs/welcome-dialog.h",
+      "kind": "changed-baseline",
+      "baseline_blob": "9e6d1a8e09009650b3a185938dce835eb87071c1",
+      "context": "core",
+      "prerequisites": [],
+      "review": "Welcome dialog shutdown ownership: preserve the baseline constructor and add the idempotent shutdown entry point with C linkage. Double-include after normal core/widget prerequisites in C11 and C++14."
+    },
+    {
+      "path": "app/tools/gimpalignoptions.h",
+      "kind": "changed-baseline",
+      "baseline_blob": "27b2b8f64290bbc446be20fb601f056e8ab141a0",
+      "context": "core",
+      "prerequisites": [],
+      "review": "04.003/tool-options-header-routes: independent horizontal alignment options constructor. Double-include the identified baseline header after normal core/tool/GTK prerequisites in C11 and C++14; preserve its original identity. Compilation only, without an outer linkage wrapper; no C/C++ link ABI claim."
+    },
+    {
       "path": "app/tools/gimprectangleoptions.h",
       "kind": "changed-baseline",
       "baseline_blob": "e3afeacdcd5b53900cb22fe46446372b81fa0c62",
@@ -135,37 +148,20 @@
       "review": "04.003/tool-options-header-routes: horizontal path options constructor and runtime path availability. Double-include the identified baseline header after normal core/tool/GTK prerequisites in C11 and C++14; preserve its original identity. Compilation only, without an outer linkage wrapper; no C/C++ link ABI claim."
     },
     {
-      "path": "app/widgets/gimpaction.h",
+      "path": "app/gui/gimpuiconfigurer.h",
       "kind": "changed-baseline",
-      "baseline_blob": "95b757b65c3bcbcb584376e0ab4fc48d761f54a0",
+      "baseline_blob": "db22ffccc37ec017d9c6c45a4f72ca655b441d74",
       "context": "core",
       "prerequisites": [],
-      "review": "29.010/toolbar-transfer-menu-transaction: native GimpAction dispatch guard declaration, gboolean result and borrowed GimpAction pointer. Header retains its own C linkage/include guard; compile twice in C11 and C++14 with normal core/widget prerequisites, no outer linkage wrapper. No new type layout or historical ABI acceptance."
+      "review": "29.010/startup-session-mode-barrier: native restore ownership and GUI/session readiness declarations or private state. Double-include the identified baseline header after standard core/widget prerequisites in C11 and C++14; no outer linkage wrapper, historical identity changes, or link ABI claim."
     },
     {
-      "path": "app/widgets/gimpcellrendererpopup.h",
-      "kind": "new",
-      "context": "standalone",
-      "prerequisites": [],
-      "review": "08.017: native popup renderer C interface; owns its GTK prerequisites and C linkage. Double-include in C11 and C++14 without an outer linkage wrapper."
-    },
-    {
-      "path": "app/widgets/gimpcontainertreeview-private.h",
+      "path": "app/gui/session.h",
       "kind": "changed-baseline",
-      "baseline_blob": "364ca893d7c685c2c6281af00e7da9266cc02c40",
-      "context": "core",
-      "prerequisites": [
-        "app/widgets/gimpcontainertreeview.h"
-      ],
-      "review": "08.017 original001536: the native owning misc_cells list extends the identified private tree layout. Probe after its public tree header and core/widget types, twice in both C and C++; no outer linkage wrapper."
-    },
-    {
-      "path": "app/widgets/gimpcontainertreeview.h",
-      "kind": "changed-baseline",
-      "baseline_blob": "1473705a394041cc35205a5cc2ee151bde49cccc",
+      "baseline_blob": "d5be445ca6639f0304038f8cac668281b1505409",
       "context": "core",
       "prerequisites": [],
-      "review": "08.017: native tree popup-cell registration interface, with normal core/widget type prerequisites. Extends the identified historical header without changing its original inventory identity or duties."
+      "review": "29.010/startup-session-mode-barrier: native restore ownership and GUI/session readiness declarations or private state. Double-include the identified baseline header after standard core/widget prerequisites in C11 and C++14; no outer linkage wrapper, historical identity changes, or link ABI claim."
     },
     {
       "path": "app/widgets/gimpdialogfactory.h",
@@ -176,38 +172,6 @@
       "review": "29.010/startup-session-mode-barrier: native restore ownership and GUI/session readiness declarations or private state. Double-include the identified baseline header after standard core/widget prerequisites in C11 and C++14; no outer linkage wrapper, historical identity changes, or link ABI claim."
     },
     {
-      "path": "app/widgets/gimpeditor-cxx-private.h",
-      "kind": "new",
-      "context": "core",
-      "prerequisites": [
-        "app/widgets/gimpeditor.h"
-      ],
-      "review": "08.017 original001606-001612: new app-private native construction-helper boundary used by C gimpeditor.c and C++ dropdown provider. Keeps GimpEditorPrivate and ExtendedAction layout in C; owns stdarg, C linkage and include guard. Compile twice after the reviewed editor header in C11 and C++14 without an outer linkage wrapper. Does not recreate the removed historical gimpeditor-private.h or discharge its duties."
-    },
-    {
-      "path": "app/widgets/gimpeditor-cxx.h",
-      "kind": "new",
-      "context": "core",
-      "prerequisites": [
-        "app/widgets/gimpeditor.h"
-      ],
-      "review": "08.017 original001605: restored callable dropdown C interface for the common-store provider. Uses the reviewed native editor header and normal core/widget types; owns its C linkage and include guard. Compile twice in C11 and C++14 without an outer linkage wrapper. This new current-tree header does not revise historical inventory identities or discharge original duties."
-    },
-    {
-      "path": "app/widgets/gimplayertileview.h",
-      "kind": "new",
-      "context": "standalone",
-      "prerequisites": [],
-      "review": "08.018 rows 32\u201333: restored original layer-tile C construction/type and object-property configuration over one native widget. Source-only type alias with native parent/layout; owns prerequisites, C linkage and include guard; double include in C11 and C++14."
-    },
-    {
-      "path": "app/widgets/gimpmypaintbrushoptions-gui.h",
-      "kind": "new",
-      "context": "standalone",
-      "prerequisites": [],
-      "review": "08.018 row 35 partial quick-selector port: original C factory name/signature over a native selected-resource button and canonical snapshot-history model. Owns prerequisites, include guard and C linkage; double include in C11 and C++14. No historical Custom brush-object identity or class/layout ABI claim."
-    },
-    {
       "path": "app/widgets/gimpsessioninfo-private.h",
       "kind": "changed-baseline",
       "baseline_blob": "9b0dea0edd77251ac42428846d80e6c48056ee60",
@@ -216,12 +180,48 @@
       "review": "29.010/startup-session-mode-barrier: native restore ownership and GUI/session readiness declarations or private state. Double-include the identified baseline header after standard core/widget prerequisites in C11 and C++14; no outer linkage wrapper, historical identity changes, or link ABI claim."
     },
     {
-      "path": "app/widgets/gimpwidgets-utils.h",
+      "path": "app/widgets/gimpaction.h",
       "kind": "changed-baseline",
-      "baseline_blob": "9edb8a90af15dbc21250526146e63cb353e09210",
+      "baseline_blob": "95b757b65c3bcbcb584376e0ab4fc48d761f54a0",
       "context": "core",
       "prerequisites": [],
-      "review": "08.017 original001813/001814: retain the callable native gimp_session_write_boolean true/false token helper and its original signature. Extends the identified historical header with C linkage for this declaration. Double-include with the normal core/config/widget type prelude in C11 and C++14; no outer linkage wrapper and no change to historical duties."
+      "review": "29.010/toolbar-transfer-menu-transaction: native GimpAction dispatch guard declaration, gboolean result and borrowed GimpAction pointer. Header retains its own C linkage/include guard; compile twice in C11 and C++14 with normal core/widget prerequisites, no outer linkage wrapper. No new type layout or historical ABI acceptance."
+    },
+    {
+      "path": "app/core/gimpmypaintbrush-load.h",
+      "kind": "new",
+      "context": "core",
+      "prerequisites": [],
+      "review": "08.018/brush-filename-load: original absolute-filename C signature delegates to sole native stream parser; owned list/resource, private stream/file lifetime. Header owns C linkage and include guards; double-include C11/C++14 probes, no legacy layout/parser/error ABI claim."
+    },
+    {
+      "path": "app/core/gimpmypaintbrush-save.h",
+      "kind": "new",
+      "context": "core",
+      "prerequisites": [],
+      "review": "08.018/brush-file-save: original gboolean borrowed GimpData/GError signature to native shared data transaction and BrushSlot serializer. Header owns linkage and include guards; C11/C++14 double inclusion, no historical unchecked sidecar/dirty or layout ABI claim."
+    },
+    {
+      "path": "app/display/gimpdisplayshell-scroll.h",
+      "kind": "changed-baseline",
+      "baseline_blob": "fba444baf2da4743d9bd2abd97c58a4a4fac227a",
+      "context": "core",
+      "prerequisites": [],
+      "review": "25.009 exact source-only legacy pan bridge: two double-coordinate begin/motion C entry declarations using opaque GimpDisplayShell and GLib scalar types. Existing integer scrolling signatures are unchanged. Header owns its C linkage and include guard; double-include C11/C++14 probes use normal reviewed core/display type prelude, without outer linkage adapter. This compile route does not close original navigation duties or claim runtime/ABI parity."
+    },
+    {
+      "path": "app/core/gimpjsonresource.h",
+      "kind": "new",
+      "context": "core",
+      "prerequisites": [],
+      "review": "08.018/json-resource-entries: original C get_type/new signatures and generic native GimpData root owner; specialized preset inherits one state. C11/C++14 double include; typed C++ facade is separately compiled; no old Interface or binary layout claim."
+    },
+    {
+      "path": "app/presets/gimpjsonresource.h",
+      "kind": "new",
+      "context": "core",
+      "prerequisites": [],
+      "review": "08.018/json-resource-entries: original C get_type/new signatures and generic native GimpData root owner; specialized preset inherits one state. C11/C++14 double include; typed C++ facade is separately compiled; no old Interface or binary layout claim."
     },
     {
       "path": "app/presets/preset-factory-gui.h",
@@ -229,13 +229,6 @@
       "context": "standalone",
       "prerequisites": [],
       "review": "08.018/preset-action-group-entry: original C action-group entry declaration, GLib prerequisite and opaque GimpActionGroup; exact original no-op contract distinct from native Apply/Refresh setup."
-    },
-    {
-      "path": "app/operations/layer-modes-legacy/gimppainterfloatkernel.h",
-      "kind": "new",
-      "context": "standalone",
-      "prerequisites": [],
-      "review": "13.012: private continuous kernel enum/function with own include guard and C linkage, standard types only. Twice-include C11/C++14 without outer linkage adapter; not a public enum compatibility claim."
     },
     {
       "path": "app/display/gimpdisplayshell-scale.h",
@@ -250,7 +243,21 @@
       "kind": "new",
       "context": "core",
       "prerequisites": [],
-      "review": "08.018/bucket-fill-tool-entries: original C get_type/register operation names and source aliases to sole native FillBrush tool. Double-include C11/C++14 with normal core/tool prerequisites and owned C linkage; not historical runtime GType name, object/class layout, direct registry or old options semantics."
+      "review": "08.018/bucket-fill-original-registration supersedes historical callback-alias semantics: exact original C names and source aliases to sole native FillBrush type; old register requires Gimp data and ignores callback, while modern opaque-data callback entry remains separate. Double C11/C++14 includes with owned linkage; no legacy runtime GType name/class layout claim."
+    },
+    {
+      "path": "app/operations/layer-modes-legacy/gimppainterfloatkernel.h",
+      "kind": "new",
+      "context": "standalone",
+      "prerequisites": [],
+      "review": "13.012: private continuous kernel enum/function with own include guard and C linkage, standard types only. Twice-include C11/C++14 without outer linkage adapter; not a public enum compatibility claim."
+    },
+    {
+      "path": "app/gimp-features.h",
+      "kind": "new",
+      "context": "standalone",
+      "prerequisites": [],
+      "review": "08.018/features-entry: original void C application registration and native lifecycle boundaries; GLib-only opaque Gimp header, no old Interface/layout or automatic HTTP listener semantics."
     },
     {
       "path": "app/operations/layer-modes-legacy/gimpoperationpainterfloat.h",
@@ -262,11 +269,11 @@
       "review": "13.012: distinct native continuous-float operation type, direct preparation and is_float query. Owns include guard and C linkage. Matches existing painter legacy operation core/type prelude with the registered layer-mode parent prerequisite; twice-include C11/C++14 without outer linkage adapter. No legacy wire mapping or public enum equivalence claim."
     },
     {
-      "path": "app/gimp-features.h",
+      "path": "app/widgets/popupper.h",
       "kind": "new",
       "context": "standalone",
       "prerequisites": [],
-      "review": "08.018/features-entry: original void C application registration and native lifecycle boundaries; GLib-only opaque Gimp header, no old Interface/layout or automatic HTTP listener semantics."
+      "review": "08.018/native-popover-factory: original GtkWindow popup C factory and native type/class action interface, not GtkPopover or paused cell-renderer/decorator route. Own GTK prerequisite, include guard and C linkage; twice-include C11/C++14 without outer adapter. No GTK2 binary class-layout ABI claim."
     },
     {
       "path": "app/paint/gimp-paint.h",
@@ -277,11 +284,12 @@
       "review": "30.016/paint-registration: original consuming GimpPaintInfo C entry shares the sole native registry. Header owns GLib prerequisite, opaque types, include guard and C linkage; twice-include C11/C++14 without outer adapter. No old C++ PaintInfo layout claim."
     },
     {
-      "path": "app/widgets/popupper.h",
-      "kind": "new",
+      "path": "app/tools/gimp-tools.h",
+      "kind": "changed-baseline",
+      "baseline_blob": "5be61c3e12400743ca9b734bee2b7b379e5d9227",
       "context": "standalone",
       "prerequisites": [],
-      "review": "08.018/native-popover-factory: original GtkWindow popup C factory and native type/class action interface, not GtkPopover or paused cell-renderer/decorator route. Own GTK prerequisite, include guard and C linkage; twice-include C11/C++14 without outer adapter. No GTK2 binary class-layout ABI claim."
+      "review": "08.018/tool-registration: restore original consuming Gimp/GimpToolInfo C entry while renaming native private callback; explicit GLib prerequisite and opaque forwards, owned C linkage, first/double C11/C++14 without outer adapter. Original registry consumption, not Bucket options or old callback compatibility."
     },
     {
       "path": "app/core/gimpimage-undo.h",
@@ -290,14 +298,6 @@
       "context": "core",
       "prerequisites": [],
       "review": "09.011/prepared-undo: native prepared-object publication entry shares existing stack backend; core type prelude, header-owned C linkage, double include C11/C++14. Typed construction preflight is not original raw Stroke pointer compatibility."
-    },
-    {
-      "path": "app/tools/gimp-tools.h",
-      "kind": "changed-baseline",
-      "baseline_blob": "5be61c3e12400743ca9b734bee2b7b379e5d9227",
-      "context": "standalone",
-      "prerequisites": [],
-      "review": "08.018/tool-registration: restore original consuming Gimp/GimpToolInfo C entry while renaming native private callback; explicit GLib prerequisite and opaque forwards, owned C linkage, first/double C11/C++14 without outer adapter. Original registry consumption, not Bucket options or old callback compatibility."
     },
     {
       "path": "app/core/gimpundopopguard.h",
@@ -319,6 +319,20 @@
       "context": "standalone",
       "prerequisites": [],
       "review": "08.018/mypaint-options-gui-entry: original vertical/horizontal C signatures forward to sole native editor using exact supplied native Options, including unbound independent models. Header owns GTK/core prerequisites and C linkage; first/double C11/C++14 compile, no full historical GUI/save/delete/layout parity claim."
+    },
+    {
+      "path": "app/presets/gimppresetdescriptor.h",
+      "kind": "new",
+      "context": "standalone",
+      "prerequisites": [],
+      "review": "08.018/preset-native-catalog: Immutable metadata snapshot and explicit native catalog source migration; GLib-only opaque Gimp/descriptor/GUI lease names; no resource/GType or old virtual ABI."
+    },
+    {
+      "path": "app/presets/gimppresetdescriptor-private.h",
+      "kind": "new",
+      "context": "standalone",
+      "prerequisites": [],
+      "review": "08.018/preset-native-catalog: Internal typed owner embedded solely in standard Gimp private data; own public GLib descriptor prerequisite, C linkage, no public Gimp instance-size change or owner map."
     }
   ]
 }

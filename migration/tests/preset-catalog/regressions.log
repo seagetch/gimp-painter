@@ -1,0 +1,16 @@
+Xvfb verified: 127.0.0.1:95, 1080x1920x24, authenticated accepted, empty authority rejected
+1/6 gimp:painter / painter-public-header-compilation OK               0.11s
+2/6 gimp:painter / painter-additional-header-routes  OK               2.78s
+3/6 gimp:app / gimp-layer-presets                    OK               1.55s
+4/6 gimp:app / layer-presets-ui                      OK              14.42s
+5/6 gimp:app / preset-gui-entries                    OK               1.02s
+6/6 gimp:app / feature-lifecycle                     OK              13.51s
+
+Ok:                 6   
+Expected Fail:      0   
+Fail:               0   
+Unexpected Pass:    0   
+Skipped:            0   
+Timeout:            0   
+
+Full log written to /workspace/shared/gimp-clean-aggregate/build/meson-logs/preset-catalog-cleanup-regressions.txt

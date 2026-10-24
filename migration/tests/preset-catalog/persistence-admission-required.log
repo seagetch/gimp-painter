@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "/workspace/shared/preset-catalog-persistence-source/migration/tests/test_persistence_field_contract.py", line 275, in <module>
+    if __name__=='__main__':main()
+                            ^^^^^^
+  File "/workspace/shared/preset-catalog-persistence-source/migration/tests/test_persistence_field_contract.py", line 261, in main
+    expected=expected_manifest(root,families,assertions)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/shared/preset-catalog-persistence-source/migration/tests/test_persistence_field_contract.py", line 126, in expected_manifest
+    transition = resolve_source_successor(root, *key, f['sha256'], digest)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/shared/preset-catalog-persistence-source/migration/tests/persistence_successors.py", line 68, in resolve
+    assert row is not None, ('unreviewed persistence source drift', revision, path)
+           ^^^^^^^^^^^^^^^
+AssertionError: ('unreviewed persistence source drift', 'native', 'app/core/gimp.c')

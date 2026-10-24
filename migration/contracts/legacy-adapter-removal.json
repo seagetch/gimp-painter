@@ -609,6 +609,12 @@
         "app/dialogs/preferences-dialog.c"
       ],
       "reason": "Borrowed process-lifetime property-name literals from static const PrefsPathDescriptor arrays and layer_preset_path; NULL writable field stays NULL. Native prefs_path_reset reads strings synchronously. No descriptor pointer, allocation, destructor, dynamic registry or C++ implementation state stored. Exact source and original metadata/UI evidence: migration/tests/native-undo-preferences-data-review/."
+    },
+    "native-preset-preferences-publication": {
+      "paths": [
+        "app/dialogs/preferences-dialog.c"
+      ],
+      "reason": "Native Gtk Preferences only: borrowed Gimp pointer under unchanged application-outlives-dialog contract; GimpConfig duplicate references owned by config-copy/config-orig data with g_object_unref; two existing theme handler numeric IDs read and cleared by exact owned disconnect helper; copied descriptor Help/path strings owned by widget via g_free. No C++ Impl, resource backend, alternate BindingStore, or owner map. Publication refusal retains original config endpoints and widget, disconnects only owned handlers, clears tool editor, releases copies/widget exactly once and restores prior autosave. Native37/selected ASan37 and causal autosave red: migration/tests/preset-catalog/."
     }
   },
   "syntax_exceptions": [
@@ -1450,14 +1456,6 @@
     {
       "path": "app/dialogs/preferences-dialog.c",
       "operation": "g_object_get_data",
-      "sha256": "36a22686de430846386aea309b7f52a290113f2c3b64f5fa0929b2b6de7bdf53",
-      "count": 1,
-      "reason": "Unchanged native upstream data site",
-      "provenance": "upstream"
-    },
-    {
-      "path": "app/dialogs/preferences-dialog.c",
-      "operation": "g_object_get_data",
       "sha256": "3a7ee2288d8817f375af38e35e3a678d31f24221032994b2ff1ee8320eda7079",
       "count": 1,
       "reason": "Unchanged native upstream data site",
@@ -1475,14 +1473,6 @@
       "path": "app/dialogs/preferences-dialog.c",
       "operation": "g_object_get_data",
       "sha256": "6046ec29856886b68a4424c7abfdc065c3c1999a71edac84f060fc04215ea19f",
-      "count": 1,
-      "reason": "Unchanged native upstream data site",
-      "provenance": "upstream"
-    },
-    {
-      "path": "app/dialogs/preferences-dialog.c",
-      "operation": "g_object_get_data",
-      "sha256": "647d66d180d97f939f37b828cd75d946277166ef6b8df3e52385bc88549ced91",
       "count": 1,
       "reason": "Unchanged native upstream data site",
       "provenance": "upstream"
@@ -1539,14 +1529,6 @@
       "path": "app/dialogs/preferences-dialog.c",
       "operation": "g_object_get_data",
       "sha256": "f429cc9231c5cf40480344112ada05e962cfba9b69dacab5da78971bc26bc238",
-      "count": 1,
-      "reason": "Unchanged native upstream data site",
-      "provenance": "upstream"
-    },
-    {
-      "path": "app/dialogs/preferences-dialog.c",
-      "operation": "g_object_set_data",
-      "sha256": "0ca3c9908d2cd3330b3da24329cc2f7a33d074b85000cf1e00501a05a33a3258",
       "count": 1,
       "reason": "Unchanged native upstream data site",
       "provenance": "upstream"
@@ -1627,22 +1609,6 @@
       "path": "app/dialogs/preferences-dialog.c",
       "operation": "g_object_set_data_full",
       "sha256": "5f31d9e021cb89eb525467df803c83b9d7c312c3f3f751e1197e69c60661d36e",
-      "count": 1,
-      "reason": "Unchanged native upstream data site",
-      "provenance": "upstream"
-    },
-    {
-      "path": "app/dialogs/preferences-dialog.c",
-      "operation": "g_object_set_data_full",
-      "sha256": "d0291d0af1e23070444afe92642f9685a5a3350035d4dbe45e53d1e533810966",
-      "count": 1,
-      "reason": "Unchanged native upstream data site",
-      "provenance": "upstream"
-    },
-    {
-      "path": "app/dialogs/preferences-dialog.c",
-      "operation": "g_object_set_data_full",
-      "sha256": "d9993f07f6820641f97be349152b48202fe3a69d84d581788d44544d4a927fd4",
       "count": 1,
       "reason": "Unchanged native upstream data site",
       "provenance": "upstream"
@@ -5409,19 +5375,75 @@
     },
     {
       "path": "app/dialogs/preferences-dialog.c",
-      "operation": "g_object_set_data",
-      "sha256": "d8dc5fe62377c182af43f29ecb728a7e4138370e353ef1d5909cc89efbc0d870",
+      "operation": "g_object_get_data",
+      "sha256": "02ef7c83286406d6d2c29144356385bedf841997a436205e205f02053977c85f",
       "count": 1,
-      "reason": "Borrowed process-lifetime property-name literals from static const PrefsPathDescriptor arrays and layer_preset_path; NULL writable field stays NULL. Native prefs_path_reset reads strings synchronously. No descriptor pointer, allocation, destructor, dynamic registry or C++ implementation state stored. Exact source and original metadata/UI evidence: migration/tests/native-undo-preferences-data-review/.",
-      "provenance": "native-preferences-static-paths"
+      "reason": "Reviewed native Preferences widget metadata/config ownership, not a C++ implementation store: g_object_get_data ( G_OBJECT ( help_data ) , \"preset-descriptor-help\" )",
+      "provenance": "native-preset-preferences-publication"
+    },
+    {
+      "path": "app/dialogs/preferences-dialog.c",
+      "operation": "g_object_get_data",
+      "sha256": "b03f8f61711f572bc3fd992489f16df6e3684b2ef0971d4cf2ac4d2ab973fabb",
+      "count": 1,
+      "reason": "Reviewed native Preferences widget metadata/config ownership, not a C++ implementation store: g_object_get_data ( G_OBJECT ( dialog ) , keys [ i ] )",
+      "provenance": "native-preset-preferences-publication"
     },
     {
       "path": "app/dialogs/preferences-dialog.c",
       "operation": "g_object_set_data",
-      "sha256": "3bcc4590ede60c59df88cedeefe6c2bf9a18e9f9dda71ac9adef93567c6791a2",
+      "sha256": "09a9611ced9ce3031c9cda3d766c7ccd1229aec5ea7a1bf300f139a37fa812e8",
       "count": 1,
-      "reason": "Borrowed process-lifetime property-name literals from static const PrefsPathDescriptor arrays and layer_preset_path; NULL writable field stays NULL. Native prefs_path_reset reads strings synchronously. No descriptor pointer, allocation, destructor, dynamic registry or C++ implementation state stored. Exact source and original metadata/UI evidence: migration/tests/native-undo-preferences-data-review/.",
-      "provenance": "native-preferences-static-paths"
+      "reason": "Reviewed native Preferences widget metadata/config ownership, not a C++ implementation store: g_object_set_data ( G_OBJECT ( dialog ) , keys [ i ] , NULL )",
+      "provenance": "native-preset-preferences-publication"
+    },
+    {
+      "path": "app/dialogs/preferences-dialog.c",
+      "operation": "g_object_set_data",
+      "sha256": "bcd71901500f57cf1f6c5f3ac915d42ba8625a36ae52048a0023bbfcef061382",
+      "count": 1,
+      "reason": "Reviewed native Preferences widget metadata/config ownership, not a C++ implementation store: g_object_set_data ( G_OBJECT ( dialog ) , \"gimp\" , gimp )",
+      "provenance": "native-preset-preferences-publication"
+    },
+    {
+      "path": "app/dialogs/preferences-dialog.c",
+      "operation": "g_object_set_data_full",
+      "sha256": "0674c88b16ef0314667e0a20ae1dec94e8e05545873c32a34cf5d844ed039200",
+      "count": 1,
+      "reason": "Reviewed native Preferences widget metadata/config ownership, not a C++ implementation store: g_object_set_data_full ( G_OBJECT ( dialog ) , \"config-copy\" , config_copy , ( GDestroyNotify ) g_object_unref )",
+      "provenance": "native-preset-preferences-publication"
+    },
+    {
+      "path": "app/dialogs/preferences-dialog.c",
+      "operation": "g_object_set_data_full",
+      "sha256": "ab58a46ed580019c86cecf683ac34e3b1d91dce0d812fe3c93cce62e090d05e9",
+      "count": 1,
+      "reason": "Reviewed native Preferences widget metadata/config ownership, not a C++ implementation store: g_object_set_data_full ( G_OBJECT ( button ) , \"path\" , g_strdup ( path -> path_property_name ) , g_free )",
+      "provenance": "native-preset-preferences-publication"
+    },
+    {
+      "path": "app/dialogs/preferences-dialog.c",
+      "operation": "g_object_set_data_full",
+      "sha256": "b98450223a3f3d29701e087fe1d75f93e725c373edca46793a603c91843f5bf6",
+      "count": 1,
+      "reason": "Reviewed native Preferences widget metadata/config ownership, not a C++ implementation store: g_object_set_data_full ( G_OBJECT ( dialog ) , \"config-orig\" , config_orig , ( GDestroyNotify ) g_object_unref )",
+      "provenance": "native-preset-preferences-publication"
+    },
+    {
+      "path": "app/dialogs/preferences-dialog.c",
+      "operation": "g_object_set_data_full",
+      "sha256": "c7ca1a27ea6efc103106eda1219c2ba42c0eab9fcc00b47dc651962788a8cf70",
+      "count": 1,
+      "reason": "Reviewed native Preferences widget metadata/config ownership, not a C++ implementation store: g_object_set_data_full ( G_OBJECT ( dialog ) , \"preset-descriptor-help\" , g_strdup ( preset -> help_data ) , g_free )",
+      "provenance": "native-preset-preferences-publication"
+    },
+    {
+      "path": "app/dialogs/preferences-dialog.c",
+      "operation": "g_object_set_data_full",
+      "sha256": "effa5bedc50a6207a286f1013da82fd64dce5d5e46e64ece0f86024aa6299bfc",
+      "count": 1,
+      "reason": "Reviewed native Preferences widget metadata/config ownership, not a C++ implementation store: g_object_set_data_full ( G_OBJECT ( button ) , \"path-writable\" , g_strdup ( path -> writable_property_name ) , g_free )",
+      "provenance": "native-preset-preferences-publication"
     }
   ],
   "dormant_exceptions": [

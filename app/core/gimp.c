@@ -17,6 +17,7 @@
 
 #include "config.h"
 #include "gimp-features.h"
+#include "presets/gimppresetdescriptor-private.h"
 
 #include <string.h> /* strlen */
 
@@ -148,7 +149,15 @@ static void      gimp_edit_config_notify             (GObject           *edit_co
 static gboolean  gimp_exit_idle_cleanup_stray_images (Gimp              *gimp);
 
 
-G_DEFINE_TYPE (Gimp, gimp, GIMP_TYPE_OBJECT)
+typedef struct { GimpPresetOwner preset_owner; } GimpPrivate;
+G_DEFINE_TYPE_WITH_PRIVATE (Gimp, gimp, GIMP_TYPE_OBJECT)
+
+GimpPresetOwner *
+gimp_preset_owner (Gimp *gimp)
+{
+  GimpPrivate *priv = gimp_get_instance_private (gimp);
+  return &priv->preset_owner;
+}
 
 #define parent_class gimp_parent_class
 
@@ -423,6 +432,8 @@ gimp_finalize (GObject *object)
 {
   Gimp  *gimp      = GIMP (object);
   GList *standards = NULL;
+
+  gimp_preset_owner_finalize (gimp);
 
   if (gimp->be_verbose)
     g_print ("EXIT: %s\n", G_STRFUNC);
@@ -860,6 +871,7 @@ gimp_initialize (Gimp               *gimp,
     g_print ("INIT: %s\n", G_STRFUNC);
 
   g_object_ref (gimp);
+  gimp_preset_owner_freeze (gimp);
   g_signal_emit (gimp, gimp_signals[INITIALIZE], 0, status_callback);
   gimp_features_initialized (gimp);
   g_object_unref (gimp);

@@ -1,0 +1,5 @@
+/workspace/shared/preset-catalog/red/missing-entry.c: In function ‘main’:
+/workspace/shared/preset-catalog/red/missing-entry.c:5:26: error: ‘gimp_preset_catalog_register’ undeclared (first use in this function)
+    5 | int main (void) { return gimp_preset_catalog_register == NULL; }
+      |                          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/workspace/shared/preset-catalog/red/missing-entry.c:5:26: note: each undeclared identifier is reported only once for each function it appears in

@@ -2,6 +2,7 @@
 #ifndef GIMP_FEATURES_H
 #define GIMP_FEATURES_H
 #include <glib-object.h>
+#include "presets/gimppresetdescriptor.h"
 typedef struct _Gimp Gimp;
 G_BEGIN_DECLS
 /* Original C registration entry. Native lifecycle owns all resources. */

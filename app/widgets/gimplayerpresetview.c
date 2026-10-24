@@ -1,5 +1,6 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 #include "config.h"
+#include "presets/gimppresetdescriptor.h"
 #include <gegl.h>
 #include <gtk/gtk.h>
 #include "libgimpwidgets/gimpwidgets.h"
@@ -385,6 +386,10 @@ static void gimp_layer_preset_view_init (GimpLayerPresetView *view)
 }
 GtkWidget *gimp_layer_preset_view_new (GimpContext *context, gint size, GimpMenuFactory *menu_factory)
 {
+  GimpPresetGuiLease *lease;
+  g_return_val_if_fail (GIMP_IS_CONTEXT (context), NULL);
+  lease = gimp_preset_gui_begin (context->gimp);
+  if (!lease) return NULL;
   GimpLayerPresetView *view = g_object_new (GIMP_TYPE_LAYER_PRESET_VIEW,
     "view-type", GIMP_VIEW_TYPE_LIST, "data-factory", context->gimp->layer_preset_factory,
     "context", context, "view-size", size, "view-border-width", 0,
@@ -405,5 +410,10 @@ GtkWidget *gimp_layer_preset_view_new (GimpContext *context, gint size, GimpMenu
   gesture_watch_context (view, gimp_container_view_get_context (
     GIMP_CONTAINER_EDITOR (view)->view));
   view->ready = TRUE;
+  if (!gimp_preset_gui_end (lease, TRUE))
+    {
+      g_object_ref_sink (view); gtk_widget_destroy (GTK_WIDGET (view));
+      g_object_unref (view); return NULL;
+    }
   return GTK_WIDGET (view);
 }

@@ -1,0 +1,13 @@
+[
+  {
+    "name": "gimp:app / preset-catalog",
+    "result": "FAIL",
+    "returncode": -6,
+    "stdout": "TAP version 14\n# random seed: R02S97dff2a6976b791d58d86eeed70bbb8a\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n1..20\n# Start of preset-catalog tests\nok 1 /preset-catalog/preentry-overwrite-array\nok 2 /preset-catalog/replace-retained-snapshots\n# child process (/preset-catalog/two-owners-first-close [83]) exit status: 1 (error)\n# child process (/preset-catalog/two-owners-first-close [83]) stdout: \"\"\n# child process (/preset-catalog/two-owners-first-close [83]) stderr: \"\\n(/workspace/shared/gimp-clean-aggregate/build/app/tests/preset-catalog:83): Gimp-Core-CRITICAL **: 18:03:22.246: gimp_units_init: assertion 'the_unit_gimp == NULL' failed\\n\"\nnot ok /preset-catalog/two-owners-first-close - ERROR:../source/app/tests/test-preset-catalog.c:157:run: child process (/preset-catalog/two-owners-first-close [83]) failed unexpectedly\nBail out!\n",
+    "stderr": "**\nERROR:../source/app/tests/test-preset-catalog.c:157:run: child process (/preset-catalog/two-owners-first-close [83]) failed unexpectedly\n",
+    "duration": 0.6030161380767822,
+    "command": [
+      "/workspace/shared/gimp-clean-aggregate/build/app/tests/preset-catalog"
+    ]
+  }
+]

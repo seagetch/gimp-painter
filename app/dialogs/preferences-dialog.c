@@ -76,6 +76,7 @@
 
 #include "preferences-dialog.h"
 #include "presets/preset-factory-gui.h"
+#include "presets/gimppresetdescriptor.h"
 #include "preferences-dialog-utils.h"
 #include "resolution-calibrate-dialog.h"
 
@@ -97,36 +98,10 @@ typedef struct
   const gchar *writable_property_name;
 } PrefsPathDescriptor;
 
-/* One native descriptor feeds both the real folder page and the original API. */
-static const PrefsPathDescriptor layer_preset_path =
-{
-  N_("Layer Presets"), N_("Layer presets Folders"),
-  "folders-layer-presets", "",
-  N_("Reset Layer Preset _Folders"),
-  N_("Select Layer Presets Folders"),
-  "layer-presets-path", "layer-presets-path-writable"
-};
-
-GArray *
-preset_factory_gui_prefs_entry_point (void)
-{
-  const PrefsDialogEntry entry =
-  {
-    layer_preset_path.tree_label, layer_preset_path.label,
-    layer_preset_path.icon, layer_preset_path.help_data,
-    layer_preset_path.fs_label, layer_preset_path.path_property_name,
-    layer_preset_path.writable_property_name
-  };
-  GArray *entries = g_array_new (FALSE, TRUE, sizeof (PrefsDialogEntry));
-
-  g_array_append_val (entries, entry);
-  return entries;
-}
-
-/*  preferences local functions  */
 
 static GtkWidget * prefs_dialog_new                (Gimp       *gimp,
-                                                    GimpConfig *config);
+                                                    GimpConfig *config,
+                                                    const GimpPresetDescriptorValues *preset);
 static void        prefs_response                  (GtkWidget  *widget,
                                                     gint        response_id,
                                                     GtkWidget  *dialog);
@@ -194,6 +169,24 @@ static GtkWidget *prefs_dialog = NULL;
 static GtkWidget *tool_editor  = NULL;
 
 
+/* Release only the two manually connected observers owned by this dialog. */
+static void
+prefs_disconnect_reset_handlers (GtkWidget *dialog,
+                                 GObject   *config)
+{
+  const gchar *keys[] = { "gimp-theme-reset-handler",
+                          "gimp-icon-theme-reset-handler" };
+  guint i;
+
+  for (i = 0; i < G_N_ELEMENTS (keys); i++)
+    {
+      gulong id = GPOINTER_TO_UINT (g_object_get_data (G_OBJECT (dialog), keys[i]));
+      if (id && g_signal_handler_is_connected (config, id))
+        g_signal_handler_disconnect (config, id);
+      g_object_set_data (G_OBJECT (dialog), keys[i], NULL);
+    }
+}
+
 /*  public function  */
 
 GtkWidget *
@@ -202,16 +195,25 @@ preferences_dialog_create (Gimp *gimp)
   GimpConfig *config;
   GimpConfig *config_copy;
   GimpConfig *config_orig;
+  GimpPresetGuiLease *preset_lease;
+  GObject *live_config;
+  GtkWidget *dialog;
+  gboolean prior_autosave;
 
   g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
 
   if (prefs_dialog)
     return prefs_dialog;
 
-  /*  turn off autosaving while the prefs dialog is open  */
-  gimp_rc_set_autosave (GIMP_RC (gimp->edit_config), FALSE);
+  preset_lease = gimp_preset_gui_begin (gimp);
+  if (!preset_lease) return NULL;
 
-  config       = GIMP_CONFIG (gimp->edit_config);
+  /* Retain the exact endpoints for failed-publication cleanup.  The lease
+   * release can run owner callbacks; never dereference gimp after it. */
+  config = g_object_ref (GIMP_CONFIG (gimp->edit_config));
+  live_config = g_object_ref (G_OBJECT (gimp->config));
+  prior_autosave = GIMP_RC (config)->autosave;
+  gimp_rc_set_autosave (GIMP_RC (config), FALSE);
   config_copy  = gimp_config_duplicate (config);
   config_orig  = gimp_config_duplicate (config);
 
@@ -222,14 +224,45 @@ preferences_dialog_create (Gimp *gimp)
                            G_CALLBACK (prefs_config_copy_notify),
                            config, 0);
 
-  g_set_weak_pointer (&prefs_dialog, prefs_dialog_new (gimp, config_copy));
+  dialog = prefs_dialog_new (gimp, config_copy,
+                             gimp_preset_gui_values (preset_lease));
+  g_set_weak_pointer (&prefs_dialog, dialog);
+  /* GtkWindow keeps its native toplevel ownership.  A temporary reference
+   * protects cleanup across publication callbacks, not the caller's Gimp. */
+  if (dialog)
+    {
+      g_object_ref (dialog);
+      g_object_set_data (G_OBJECT (dialog), "gimp", gimp);
+      g_object_set_data_full (G_OBJECT (dialog), "config-copy", config_copy,
+                             (GDestroyNotify) g_object_unref);
+      g_object_set_data_full (G_OBJECT (dialog), "config-orig", config_orig,
+                             (GDestroyNotify) g_object_unref);
+    }
 
-  g_object_set_data (G_OBJECT (prefs_dialog), "gimp", gimp);
+  if (!gimp_preset_gui_end (preset_lease, dialog != NULL))
+    {
+      if (dialog)
+        {
+          prefs_disconnect_reset_handlers (dialog, live_config);
+          tool_editor = NULL;
+          g_signal_handlers_disconnect_by_func (dialog, prefs_response, dialog);
+          gtk_widget_destroy (dialog);
+          g_object_unref (dialog);
+        }
+      else
+        {
+          g_object_unref (config_copy);
+          g_object_unref (config_orig);
+        }
+      gimp_rc_set_autosave (GIMP_RC (config), prior_autosave);
+      g_object_unref (live_config);
+      g_object_unref (config);
+      return NULL;
+    }
 
-  g_object_set_data_full (G_OBJECT (prefs_dialog), "config-copy", config_copy,
-                          (GDestroyNotify) g_object_unref);
-  g_object_set_data_full (G_OBJECT (prefs_dialog), "config-orig", config_orig,
-                          (GDestroyNotify) g_object_unref);
+  g_object_unref (dialog);
+  g_object_unref (live_config);
+  g_object_unref (config);
 
   return prefs_dialog;
 }
@@ -243,7 +276,6 @@ prefs_response (GtkWidget *widget,
                 GtkWidget *dialog)
 {
   Gimp   *gimp = g_object_get_data (G_OBJECT (dialog), "gimp");
-  gulong  reset_handler;
 
   switch (response_id)
     {
@@ -418,13 +450,7 @@ prefs_response (GtkWidget *widget,
   /* Disconnect the signals used to update the selection of the
    * theme and icon theme list boxes, since they're not directly
    * connected to their properties like the other widgets */
-  reset_handler = GPOINTER_TO_UINT (g_object_get_data (G_OBJECT (dialog),
-                                    "gimp-theme-reset-handler"));
-  g_signal_handler_disconnect (gimp->config, reset_handler);
-
-  reset_handler = GPOINTER_TO_UINT (g_object_get_data (G_OBJECT (dialog),
-                                    "gimp-icon-theme-reset-handler"));
-  g_signal_handler_disconnect (gimp->config, reset_handler);
+  prefs_disconnect_reset_handlers (dialog, G_OBJECT (gimp->config));
 
   /*  enable autosaving again  */
   gimp_rc_set_autosave (GIMP_RC (gimp->edit_config), TRUE);
@@ -1166,6 +1192,8 @@ prefs_help_func (const gchar *help_id,
 
   help_id = gimp_prefs_box_get_current_help_id (GIMP_PREFS_BOX (prefs_box));
 
+  if (g_strcmp0 (help_id, "gimp-prefs-folders-layer-presets") == 0)
+    help_id = g_object_get_data (G_OBJECT (help_data), "preset-descriptor-help");
   gimp_standard_help_func (help_id, NULL);
 }
 
@@ -1236,7 +1264,8 @@ prefs_filter_storage_from_text (GBinding     *binding,
 
 static GtkWidget *
 prefs_dialog_new (Gimp       *gimp,
-                  GimpConfig *config)
+                  GimpConfig *config,
+                  const GimpPresetDescriptorValues *preset)
 {
   GtkWidget         *dialog;
   GtkTreeIter        top_iter;
@@ -1263,6 +1292,9 @@ prefs_dialog_new (Gimp       *gimp,
   GimpCoreConfig    *core_config;
   GimpDisplayConfig *display_config;
   GList             *manuals;
+  const PrefsPathDescriptor layer_preset_path = { preset->tree_label, preset->label,
+    preset->icon, preset->help_data, preset->reset_label, preset->fs_label,
+    preset->path_property_name, preset->writable_property_name };
 
   g_return_val_if_fail (GIMP_IS_GIMP (gimp), NULL);
   g_return_val_if_fail (GIMP_IS_CONFIG (config), NULL);
@@ -1282,6 +1314,9 @@ prefs_dialog_new (Gimp       *gimp,
 
                             NULL);
 
+  /* Stack identity stays stable; Help uses the selected descriptor topic. */
+  g_object_set_data_full (G_OBJECT (dialog), "preset-descriptor-help",
+                          g_strdup (preset->help_data), g_free);
   gimp_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
                                             RESPONSE_RESET,
                                             GTK_RESPONSE_OK,
@@ -3726,7 +3761,8 @@ prefs_boolean_combo_box_add (object, "initial-zoom-to-fit",
          * Keep the native GtkStack page identity independent of the legacy
          * help string. These are presentation mappings, not another registry. */
         icon_name = g_strconcat ("gimp-prefs-",
-                                path == &layer_preset_path ?
+                                path == &layer_preset_path &&
+                                g_strcmp0 (path->icon, "folders-layer-presets") == 0 ?
                                   "folders-tool-presets" : path->icon, NULL);
         vbox = gimp_prefs_box_add_page (GIMP_PREFS_BOX (prefs_box),
                                         icon_name,
@@ -3741,10 +3777,10 @@ prefs_boolean_combo_box_add (object, "initial-zoom-to-fit",
         button = gimp_prefs_box_set_page_resettable (GIMP_PREFS_BOX (prefs_box),
                                                      vbox,
                                                      gettext (path->reset_label));
-        g_object_set_data (G_OBJECT (button), "path",
-                           (gpointer) path->path_property_name);
-        g_object_set_data (G_OBJECT (button), "path-writable",
-                           (gpointer) path->writable_property_name);
+        g_object_set_data_full (G_OBJECT (button), "path",
+                                g_strdup (path->path_property_name), g_free);
+        g_object_set_data_full (G_OBJECT (button), "path-writable",
+                                g_strdup (path->writable_property_name), g_free);
         g_signal_connect (button, "clicked",
                           G_CALLBACK (prefs_path_reset),
                           config);

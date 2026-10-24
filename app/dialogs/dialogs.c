@@ -19,6 +19,7 @@
  */
 
 #include "config.h"
+#include "presets/gimppresetdescriptor.h"
 
 #include <gegl.h>
 #include <gtk/gtk.h>
@@ -558,30 +559,52 @@ void
 dialogs_init (Gimp *gimp)
 {
   GimpDialogFactory *factory = NULL;
+  GimpPresetGuiLease *preset_lease;
+  const GimpPresetDescriptorValues *preset;
   gint               i       = 0;
 
   g_return_if_fail (GIMP_IS_GIMP (gimp));
+
+  preset_lease = gimp_preset_gui_begin (gimp);
+  if (!preset_lease)
+    g_error ("Cannot initialize required preset dialog descriptor");
+  preset = gimp_preset_gui_values (preset_lease);
 
   factory = gimp_dialog_factory_new ("toplevel", gimp_get_user_context (gimp));
   gimp_dialog_factory_set_singleton (factory);
 
   for (i = 0; i < G_N_ELEMENTS (entries); i++)
-    gimp_dialog_factory_register_entry (factory,
-                                        entries[i].identifier,
-                                        entries[i].name ? gettext(entries[i].name) : NULL,
-                                        entries[i].blurb ? gettext(entries[i].blurb) : NULL,
-                                        entries[i].icon_name,
-                                        entries[i].help_id,
-                                        entries[i].new_func,
-                                        entries[i].restore_func,
-                                        entries[i].view_size,
-                                        entries[i].singleton,
-                                        entries[i].session_managed,
-                                        entries[i].remember_size,
-                                        entries[i].remember_if_open,
-                                        entries[i].hideable,
-                                        entries[i].image_window,
-                                        entries[i].dockable);
+    {
+      GimpDialogFactoryEntry entry = entries[i];
+      gboolean selected = g_str_equal (entry.identifier, "gimp-layer-preset-list");
+      const gchar *name = selected ? preset->dialog_label : entry.name;
+      const gchar *blurb = selected ? preset->dialog_blurb : entry.blurb;
+      gimp_dialog_factory_register_entry (factory,
+                                        entry.identifier,
+                                        name ? gettext(name) : NULL,
+                                        blurb ? gettext(blurb) : NULL,
+                                        selected ? preset->dialog_icon : entry.icon_name,
+                                        selected ? preset->dialog_help : entry.help_id,
+                                        entry.new_func,
+                                        entry.restore_func,
+                                        entry.view_size,
+                                        entry.singleton,
+                                        entry.session_managed,
+                                        entry.remember_size,
+                                        entry.remember_if_open,
+                                        entry.hideable,
+                                        entry.image_window,
+                                        entry.dockable);
+
+    }
+
+  if (!gimp_preset_gui_end (preset_lease, TRUE))
+    {
+      if (gimp_dialog_factory_get_singleton () == factory)
+        gimp_dialog_factory_set_singleton (NULL);
+      g_object_unref (factory);
+      g_error ("Preset dialog descriptor changed during required startup");
+    }
 
   global_recent_docks = gimp_list_new (GIMP_TYPE_SESSION_INFO, FALSE);
 }

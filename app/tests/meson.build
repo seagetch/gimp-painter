@@ -1491,3 +1491,41 @@ test('painter-nonincremental-display', nonincremental_display,
         'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
         'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 120)
 
+
+# Immutable preset catalog source-migration replacement and lifetime contract.
+preset_catalog_test = executable('preset-catalog', 'test-preset-catalog.c', 'tests.c',
+  dependencies: [libapp_dep, appstream], link_with: apptests_links,
+  link_args: ['-Wl,--wrap=g_try_malloc0', '-Wl,--wrap=gimp_data_loader_factory_new',
+              '-Wl,--wrap=gimp_action_group_add_string_actions',
+              '-Wl,--wrap=gimp_units_init', '-Wl,--wrap=gimp_units_exit', '-Wl,--wrap=g_free'])
+test('preset-catalog', preset_catalog_test,
+  env: ['GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+        'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+        'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
+        'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 180)
+
+# Nonincremental live composition at stroke opacity .37.
+
+nonincremental_display = executable('painter-nonincremental-display',
+  ['test-painter-nonincremental-display.cpp', 'test-mypaint-colorpicker-c.c', 'tests.c'],
+  dependencies: [libapp_dep, painter_mypaint_surface_dep, appstream],
+  link_with: apptests_links, cpp_args: painter_cpp_args,
+  override_options: ['cpp_std=c++14'],
+)
+test('painter-nonincremental-display', nonincremental_display,
+  env: ['GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+        'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+        'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
+        'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 120)
+
+
+# Actual selected preset descriptor GUI, distinct from catalog coexistence model.
+preset_catalog_ui_test = executable('preset-catalog-ui', 'test-preset-catalog-ui.c', 'tests.c',
+  dependencies: [libapp_dep, appstream], link_with: apptests_links,
+  link_args: ['-Wl,--wrap=g_try_malloc0', '-Wl,--wrap=gimp_config_duplicate',
+              '-Wl,--wrap=gimp_preset_gui_end'])
+test('preset-catalog-ui', preset_catalog_ui_test,
+  env: ['GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+        'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+        'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
+        'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 180)

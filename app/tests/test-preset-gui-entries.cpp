@@ -62,7 +62,17 @@ extern "C" void preset_gui_preferences_handle_test (Gimp *application)
   auto raw = shared.release ();
   g_assert_null (shared.get ());
   g_array_unref (raw);
-  copy.reset ();
+  auto snapshot = copy.preset_preferences_snapshot ();
+  g_assert_true (bool (snapshot));
+  auto retained_snapshot = snapshot;
+  snapshot.reset (); copy.reset ();
+  guint snapshot_length = 0;
+  g_assert_cmpstr (retained_snapshot.entries (&snapshot_length)->label, ==, "Layer presets Folders");
+  g_assert_cmpuint (snapshot_length, ==, 1);
+  PreferencesSnapshotRef moved_snapshot (std::move (retained_snapshot));
+  g_assert_false (bool (retained_snapshot));
+  g_assert_cmpstr (moved_snapshot.entries ()->tree_label, ==, "Layer Presets");
+  moved_snapshot.reset ();
   auto *wrong = G_OBJECT (g_object_new (G_TYPE_OBJECT, nullptr));
   bool rejected = false;
   try { auto bad = ApplicationRef::retain (reinterpret_cast<Gimp *> (wrong)); }

@@ -38,6 +38,7 @@
 #include "dialogs-actions.h"
 #include "dialogs-commands.h"
 #include "presets/preset-factory-gui.h"
+#include "presets/gimppresetdescriptor.h"
 
 #include "gimp-intl.h"
 
@@ -436,37 +437,53 @@ dialogs_actions_toolbox_exists (Gimp *gimp)
 
 /* Restore the original public entry without a second preset registry or a
  * duplicate descriptor. Full native dialogs setup retains its existing order. */
+static gboolean
+add_dialog_actions (GimpActionGroup *group, gboolean preset_only)
+{
+  GimpPresetGuiLease *lease;
+  const GimpPresetDescriptorValues *preset;
+  guint i;
+  gboolean published = FALSE, valid;
+  g_return_val_if_fail (GIMP_IS_ACTION_GROUP (group), FALSE);
+  lease = gimp_preset_gui_begin (group->gimp);
+  if (!lease && preset_only) return FALSE;
+  preset = gimp_preset_gui_values (lease);
+  g_object_ref (group);
+  for (i = 0; i < G_N_ELEMENTS (dialogs_dockable_actions); i++)
+    {
+      GimpStringActionEntry entry = dialogs_dockable_actions[i];
+      gboolean selected = g_str_equal (entry.name, "dialogs-layer-presets");
+      if (lease && !gimp_preset_gui_valid (lease)) break;
+      if (selected && !preset) continue;
+      if (preset_only && !selected) continue;
+      if (selected)
+        { entry.icon_name = preset->dialog_icon; entry.label = preset->action_label;
+          entry.short_label = preset->action_short_label;
+          entry.tooltip = preset->action_tooltip; entry.help_id = preset->action_help; }
+      gimp_action_group_add_string_actions (group, "dialogs-action", &entry, 1,
+                                            dialogs_create_dockable_cmd_callback);
+      if (selected && gimp_action_group_get_action (group, entry.name)) published = TRUE;
+    }
+  valid = lease ? gimp_preset_gui_end (lease, published) : TRUE;
+  g_object_unref (group);
+  return valid;
+}
 void
 preset_factory_gui_dialogs_actions_entry_point (GimpActionGroup *group)
-{
-  guint i;
-
-  g_return_if_fail (GIMP_IS_ACTION_GROUP (group));
-  for (i = 0; i < G_N_ELEMENTS (dialogs_dockable_actions); ++i)
-    if (g_str_equal (dialogs_dockable_actions[i].name, "dialogs-layer-presets"))
-      {
-        /* Native action-added observers may release their last group owner. */
-        g_object_ref (group);
-        gimp_action_group_add_string_actions (group, "dialogs-action",
-          &dialogs_dockable_actions[i], 1, dialogs_create_dockable_cmd_callback);
-        g_object_unref (group);
-        return;
-      }
-  g_assert_not_reached ();
-}
+{ add_dialog_actions (group, TRUE); }
 
 void
 dialogs_actions_setup (GimpActionGroup *group)
 {
-  gimp_action_group_add_string_actions (group, "dialogs-action",
-                                        dialogs_dockable_actions,
-                                        G_N_ELEMENTS (dialogs_dockable_actions),
-                                        dialogs_create_dockable_cmd_callback);
-
+  g_return_if_fail (GIMP_IS_ACTION_GROUP (group));
+  g_object_ref (group);
+  if (!add_dialog_actions (group, FALSE))
+    { g_object_unref (group); return; }
   gimp_action_group_add_string_actions (group, "dialogs-action",
                                         dialogs_toplevel_actions,
                                         G_N_ELEMENTS (dialogs_toplevel_actions),
                                         dialogs_create_toplevel_cmd_callback);
+  g_object_unref (group);
 }
 
 void

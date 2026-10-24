@@ -1,0 +1,25 @@
+{
+  "scope": "Source-derived dynamic consumer trace, not new field discovery waiver",
+  "default_property_pair": [
+    "layer-presets-path",
+    "layer-presets-path-writable"
+  ],
+  "tested_alternate_pair": [
+    "tool-preset-path",
+    "tool-preset-path-writable"
+  ],
+  "constraints": [
+    "existing registered property",
+    "directory-list config path type",
+    "readable and writable flags"
+  ],
+  "fixed_loader": "gimp_layer_preset_load",
+  "fixed_extension_path": "layer-preset-paths",
+  "providers": {
+    "app/gimp-features.c": "39343c090e5dbffefa4b0a203720b612592b8ad03c7d146a414a0eddd42395ec",
+    "app/presets/gimppresetdescriptor.c": "e316e67349483fd4d732733b362bd0a01657b0561b585fba58102108274fc2b1",
+    "app/config/gimpcoreconfig.c": "23e25ae7461f5cd33d5351b1cd89d1efb43d9ae9796acd15fe3250cf9d359b34",
+    "app/core/gimpdatafactory.c": "d1a7a033197db51b7162ba5a81474d51771e2d7bbbe6b3e43edb47644a2759bf",
+    "app/core/gimpdataloaderfactory.c": "893389d7e1f3d4790f7ed1acfcbc2adc27d074759ec0dd3fc2fed4e322d4d702"
+  }
+}
