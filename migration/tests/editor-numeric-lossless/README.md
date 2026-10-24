@@ -1,0 +1,19 @@
+# Lossless numeric editor update outside legacy metadata bounds
+
+Original24.002 requires every active custom numeric parameter editable; original24.003 requires value/display bidirectional synchronization. Read-only inventory finds all45 active numeric and5 switches present. The old group list omitted active color_h/s/v and referenced inactive colorize; neither is used to invent missing fields.
+
+Actual native red: Resource radius_logarithmic6 is displayed because refresh extends the adjustment beyond metadata maximum5. Editing5.9 then calls a bounded GObject property, produces GLib-GObject CRITICAL, leaves model6 versus displayed5.9; in-range4.9 still works. The expected-red equality assertion fails. The fixture's initial warning/critical category correction is retained separately.
+
+The fix changes only the editor's numeric callback. Finite out-of-metadata edits snapshot the sole canonical Resource, replace only that indexed base value, and use existing set_json. In-range edits retain the existing property route; GParamSpec bounds/defaults are unchanged. On failure the still-current UI/model identity restores the displayed scalar from CURRENT model state, not an assumed uncommitted snapshot. It does not touch paused acquisition code or resource providers.
+
+Native3 and scoped sanitizer3 pass: loaded6→5.9→5.7→4.9 across two presentations; complete Resource equality retains unknown fields/curves/other settings, pending name and selection; one settings-changed per edit. Existing set_json deliberately notifies all52 numeric/switch/text properties, unlike the in-range single property notification; this difference is measured, not hidden. A private --wrap setter rejects one update before publication and proves coherent visible/model restoration. A compiled mutant omitting restoration fails that causal assertion. All5 switches are checked false/true/false both model→two views and each view→model.
+
+Sanitizer scope:2 freshly compiled editor/fixture TUs plus5 unchanged instrumented predecessor TUs; dependencies uninstrumented, leaks disabled. Source/dependency archives and unchanged original linked-object hashes are included. This is explicitly the older committed private integration from named-editor-entry, not current HEAD aggregate. Its Options predates the readiness API, so readiness runtime invariance is NOT claimed; the read-only setter comparison shows no readiness/source/name mutation, while final current integration remains required. Neither setter directly rewrites Engine state; both emit the same settings-changed route. No new full Engine reconfiguration runtime claim.
+
+The screenshot is an actual1080x1920 Xvfb desktop with oncanvas visible and native Radius5.900000. The spin was API-edited, not physically clicked. It proves the visible candidate/private baseline, not current aggregate.
+
+Current source gate: `python3 migration/tests/editor-numeric-lossless/validate.py --negative-controls` (or `--commit SHA`). It preserves and replays the immutable getter successor at0dd8c85deb, then admits only this exact editor callback change; all prior owned source files remain bound. Earlier gates must be invoked with their historical commit, not silently resealed. Parent tasks/dependencies and unrelated six holds remain open. The separate use_gimp_brushmark default-metadata mismatch is unmodified and awaits exact-current proof.
+
+## Independent translation inventory successor
+
+Between getter base0dd8 and this fix, committed893c4e0d3d added exactly one blank line and `app/presets/gimppresetdescriptor.c` to the predecessor-owned po/POTFILES.in. The gate separately binds this exact append and its commit/before/after hashes, retaining the original predecessor manifest. It is translation extraction for the already committed catalog, not changed editor or Options metadata. No other POTFILES or owned-source drift is admitted.

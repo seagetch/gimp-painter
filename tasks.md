@@ -1001,6 +1001,7 @@
 | 24.001/editor-context-contract | [ ] | MyPaint editor の context と options の取得契約を定める | 24.001, 01.005/non-xcf-c-calls | `GimpContext` を正しい型として受け、選択中ブラシと編集 options の取得方法、NULL の扱い、所有権を明記する |
 | 24.001/application-history | [x] | 任意Options間で旧履歴をapplication所有として共有する | 21.001/registered-tool | 10 native/26source focused sanitizer合格。単一Gimp BindingStore slotとweak/generation observerで共有し、別app分離・閉鎖/通知再入・未知値/curve/reference復元を検証。閉鎖Options name/restoreを明示拒否。全editor/previewは別gate |
 | 24.002 | [ ] | 数値設定 editor を移植する | 24.001 | 独自パラメーターを全編集可能 |
+| 24.002/lossless-loaded-numeric | [x] | 読込済み範囲外numeric値をlossless共有draftへ編集する | 24.017/native-editor-workflow | loaded6→5.9の表示/model不一致とGLib criticalを修正。native3・scoped7unit sanitizer3・compiled rollback mutant1・switch5双方向を確認。未知値/curve/name/selection保持、通知1回、失敗時表示復帰。migration/tests/editor-numeric-lossless。1080x1920 oncanvas画像。旧依存での限定検証、current readiness/aggregate・親依存・default metadataは未完了 |
 | 24.003 | [ ] | switch editor を移植する | 24.002 | 値と表示が双方向に同期 |
 | 24.004 | [ ] | 入力カーブ editor を移植する | 24.003 | 各入力の点追加・移動・削除が可能 |
 | 24.005 | [ ] | ブラシ形状 selector を移植する | 24.004 | 選択が押印と採色へ反映 |

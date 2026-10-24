@@ -1,0 +1,4 @@
+from pathlib import Path
+import json,subprocess
+O=Path('/workspace/shared/editor-controls-audit');B=Path('/workspace/shared/gimp-native-preset-gui/build');j=json.loads((O/'green-build.json').read_text());s=(O/'source/app/widgets/gimppaintermybrusheditor.cpp').read_text();old='SyncScope sync(i);gtk_spin_button_set_value(GTK_SPIN_BUTTON(widget.get()),current);';assert s.count(old)==1;p=O/'no-restore.cpp';p.write_text(s.replace(old,'/* causal mutant: omit visible rollback */'))
+c=j['compile'][0][:];c[-1]=str(p);c[c.index('-o')+1]=str(O/'no-restore.o');c[c.index('-MF')+1]=str(O/'no-restore.d');subprocess.run(c,cwd=B,check=True);l=[str(O/'no-restore.o') if x==str(O/'green-editor.o') else x for x in j['link']];l[l.index('-o')+1]=str(O/'no-restore');subprocess.run(l,cwd=B,check=True);(O/'mutant-build.json').write_text(json.dumps({'compile':c,'link':l},indent=2)+'\n')

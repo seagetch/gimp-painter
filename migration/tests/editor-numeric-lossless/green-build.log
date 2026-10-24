@@ -1,0 +1,15 @@
+[01m[K/workspace/shared/editor-controls-audit/source/app/widgets/gimppaintermybrusheditor.cpp:858:12:[m[K [01;35m[Kwarning: [m[Kno previous declaration for ‘[01m[KGtkWidget*[01;32m[K gimp_mypaint_options_gui[m[K(GimpToolOptions*)[m[K’ [[01;35m[K-Wmissing-declarations[m[K]
+  858 | GtkWidget *[01;35m[Kgimp_mypaint_options_gui[m[K (GimpToolOptions *options)
+      |            [01;35m[K^~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/workspace/shared/editor-controls-audit/source/app/widgets/gimppaintermybrusheditor.cpp:860:12:[m[K [01;35m[Kwarning: [m[Kno previous declaration for ‘[01m[KGtkWidget*[01;32m[K gimp_mypaint_options_gui_horizontal[m[K(GimpToolOptions*)[m[K’ [[01;35m[K-Wmissing-declarations[m[K]
+  860 | GtkWidget *[01;35m[Kgimp_mypaint_options_gui_horizontal[m[K (GimpToolOptions *options)
+      |            [01;35m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/workspace/shared/editor-controls-audit/green-standalone.cpp:77:8:[m[K [01;35m[Kwarning: [m[K‘[01m[KEditor[m[K’ declared with greater visibility than the type of its field ‘[01m[KEditor::model[m[K’ [[01;35m[K-Wattributes[m[K]
+   77 | struct [01;35m[KEditor[m[K {
+      |        [01;35m[K^~~~~~[m[K
+[01m[K/workspace/shared/editor-controls-audit/green-standalone.cpp:122:21:[m[K [01;35m[Kwarning: [m[Kno previous declaration for ‘[01m[Kgboolean[01;32m[K __wrap_gimp_painter_mybrush_options_set_json[m[K(GimpPainterMybrushOptions*, const gchar*, GError**)[m[K’ [[01;35m[K-Wmissing-declarations[m[K]
+  122 | extern "C" gboolean [01;35m[K__wrap_gimp_painter_mybrush_options_set_json[m[K(GimpPainterMybrushOptions*o,const gchar*j,GError**e){
+      |                     [01;35m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/workspace/shared/editor-controls-audit/green-standalone.cpp:96:13:[m[K [01;35m[Kwarning: [m[K‘[01m[Kvoid[01;32m[K prepare[m[K()[m[K’ defined but not used [[01;35m[K-Wunused-function[m[K]
+   96 | static void [01;35m[Kprepare[m[K(){
+      |             [01;35m[K^~~~~~~[m[K

@@ -1,0 +1,38 @@
+diff --git a/app/widgets/gimppaintermybrusheditor.cpp b/app/widgets/gimppaintermybrusheditor.cpp
+index 2a5105d664..e361e3c3ab 100644
+--- a/app/widgets/gimppaintermybrusheditor.cpp
++++ b/app/widgets/gimppaintermybrusheditor.cpp
+@@ -618,7 +618,32 @@ void build(EditorImpl&i) {
+   auto notebook_lease=ObjectRef<GObject>::retain(G_OBJECT(notebook));
+   auto*settings=gtk_box_new(GTK_ORIENTATION_VERTICAL,3);auto*ss=gtk_scrolled_window_new(nullptr,nullptr);gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(ss),GTK_POLICY_NEVER,GTK_POLICY_AUTOMATIC);gtk_widget_set_size_request(ss,270,250);gtk_container_add(GTK_CONTAINER(ss),settings);gtk_notebook_append_page(GTK_NOTEBOOK(notebook),ss,gtk_label_new(_("Settings")));
+   for(int n=0;n<BRUSH_MAPPING_COUNT;++n){auto&m=painter_mypaint_settings[n];auto key=property(m.internal_name);auto*w=named(gtk_spin_button_new_with_range(m.minimum,m.maximum,.01),key.c_str());gtk_spin_button_set_digits(GTK_SPIN_BUTTON(w),6);gtk_widget_set_tooltip_text(w,m.tooltip);row(settings,m.displayed_name,w);i.numeric.push_back(w);
+-    connect(i,w,"value-changed",G_CALLBACK(simple_cb),[n,key](EditorImpl&i){g_object_set(i.options.get(),key.c_str(),gtk_spin_button_get_value(GTK_SPIN_BUTTON(i.numeric[n])),nullptr);});}
++    connect(i,w,"value-changed",G_CALLBACK(simple_cb),[n,key](EditorImpl&i){
++      auto model=i.options;auto widget=ObjectRef<GObject>::retain(G_OBJECT(i.numeric[n]));
++      const auto revision=i.ui_revision;
++      const double value=gtk_spin_button_get_value(GTK_SPIN_BUTTON(widget.get()));
++      try {
++        const auto&metadata=painter_mypaint_settings[n];
++        if(!std::isfinite(value))throw std::invalid_argument("Expected finite numeric setting");
++        if(value<metadata.minimum||value>metadata.maximum) {
++          // Loaded finite values may extend the UI beyond the legacy property
++          // bounds. Preserve them through the canonical lossless draft setter,
++          // without widening GParamSpec or clamping untouched resource data.
++          auto resource=i.snapshot();resource.set_base_value(n,value);
++          GError*error=nullptr;
++          auto success=gimp_painter_mybrush_options_set_json(model.get(),resource.encode().c_str(),&error);
++          checked(success,error);
++        } else g_object_set(model.get(),key.c_str(),value,nullptr);
++      } catch (...) {
++        // A failed update must not leave a plausible but uncommitted value on
++        // screen. Read current state: notification failure may follow publish.
++        if(!i.closed&&i.ui_revision==revision&&i.options.get()==model.get()) {
++          double current=0;g_object_get(model.get(),key.c_str(),&current,nullptr);
++          SyncScope sync(i);gtk_spin_button_set_value(GTK_SPIN_BUTTON(widget.get()),current);
++        }
++        throw;
++      }
++    });}
+   auto*resources=gtk_box_new(GTK_ORIENTATION_VERTICAL,3);gtk_notebook_append_page(GTK_NOTEBOOK(notebook),resources,gtk_label_new(_("Shape & Paper")));
+   for(int n=0;n<BRUSH_BOOL_COUNT;++n){auto&m=painter_mypaint_switches[n];auto key=property(m.internal_name);auto*w=named(gtk_check_button_new_with_label(m.displayed_name),key.c_str());pack(resources,w);i.switches.push_back(w);connect(i,w,"toggled",G_CALLBACK(simple_cb),[n,key](EditorImpl&i){g_object_set(i.options.get(),key.c_str(),gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(i.switches[n])),nullptr);});}
+   pack(resources,gimp_brush_box_new(nullptr,i.ctx(),_("Brush shape"),3));pack(resources,gimp_pattern_box_new(nullptr,i.ctx(),_("Paper texture"),3));
