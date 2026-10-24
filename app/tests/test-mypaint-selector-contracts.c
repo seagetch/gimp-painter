@@ -75,7 +75,7 @@ c_floating_parent_and_final_storage (void)
       GimpPainterMybrushOptions *options = new_options ();
       GtkWidget *button = original_factory (G_OBJECT (options));
       GtkWidget *window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-      g_assert_true (GTK_IS_MENU_BUTTON (button));
+      g_assert_true (GTK_IS_BUTTON (button));
       g_assert_true (g_object_is_floating (button));
       watch_storage (G_OBJECT (options), &model_gone);
       watch_storage (G_OBJECT (button), &button_gone);

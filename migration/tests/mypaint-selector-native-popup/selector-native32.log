@@ -1,0 +1,105 @@
+1..32
+# Start of mypaint-selector tests
+# Start of c tests
+ok 1 /mypaint-selector/c/01-invalid-closed
+ok 2 /mypaint-selector/c/02-floating-parent-storage
+ok 3 /mypaint-selector/c/03-context-retention
+ok 4 /mypaint-selector/c/04-terminal-thread-admission
+ok 5 /mypaint-selector/c/05-unsupported-context
+# slow test /mypaint-selector/c/05-unsupported-context executed in 2.82 secs
+# End of c tests
+# Start of cpp tests
+ok 6 /mypaint-selector/cpp/01-handle-route-ownership
+# Opening painter-mypaint-brush-selector: mapped=1 visible=1
+# Opening painter-mypaint-brush-selector: mapped=1 visible=1
+# Opening painter-mypaint-brush-selector: mapped=1 visible=1
+# Opening painter-mypaint-brush-selector: mapped=1 visible=1
+# Opening painter-mypaint-brush-selector: mapped=1 visible=1
+ok 7 /mypaint-selector/cpp/02-preset-canonical-sync
+# Opening painter-mypaint-brush-selector: mapped=1 visible=1
+# Opening painter-mypaint-brush-selector: mapped=1 visible=1
+ok 8 /mypaint-selector/cpp/03-custom-immutable-snapshot
+# Opening painter-mypaint-brush-selector: mapped=1 visible=1
+ok 9 /mypaint-selector/cpp/04-duplicate-history-refresh-teardown
+# Opening painter-mypaint-brush-selector: mapped=1 visible=1
+# Opening painter-mypaint-brush-selector: mapped=1 visible=1
+# Opening painter-mypaint-brush-selector: mapped=1 visible=1
+# Opening painter-mypaint-brush-selector: mapped=1 visible=1
+# Opening painter-mypaint-brush-selector: mapped=1 visible=1
+# Opening painter-mypaint-brush-selector: mapped=1 visible=1
+# Opening painter-mypaint-brush-selector: mapped=1 visible=1
+ok 10 /mypaint-selector/cpp/05-popup-repeat-native-dismissal
+# Opening painter-mypaint-brush-selector: mapped=1 visible=1
+# Opening painter-mypaint-brush-selector: mapped=1 visible=1
+# Opening painter-mypaint-brush-selector: mapped=1 visible=1
+ok 11 /mypaint-selector/cpp/06-reentrant-newer-selection
+# Opening painter-mypaint-brush-selector: mapped=1 visible=1
+# Opening painter-mypaint-brush-selector: mapped=1 visible=1
+# Opening painter-mypaint-brush-selector: mapped=1 visible=1
+# Opening painter-mypaint-brush-selector: mapped=1 visible=1
+# Opening painter-mypaint-brush-selector: mapped=1 visible=1
+# Opening painter-mypaint-brush-selector: mapped=1 visible=1
+ok 12 /mypaint-selector/cpp/07-reentrant-destroy-close
+# Opening painter-mypaint-brush-selector: mapped=1 visible=1
+ok 13 /mypaint-selector/cpp/08-resource-rename-icon-remove
+# Opening painter-mypaint-brush-selector: mapped=1 visible=1
+# Opening painter-mypaint-brush-selector: mapped=1 visible=1
+# Opening painter-mypaint-brush-selector: mapped=1 visible=1
+# Opening painter-mypaint-brush-selector: mapped=1 visible=1
+ok 14 /mypaint-selector/cpp/09-source-less-missing-preview
+# slow test /mypaint-selector/cpp/09-source-less-missing-preview executed in 2.53 secs
+# Opening painter-mypaint-brush-selector: mapped=1 visible=1
+# Opening painter-compact-mypaint: mapped=1 visible=1
+# Opening painter-compact-mypaint: mapped=1 visible=1
+ok 15 /mypaint-selector/cpp/10-registered-editor-identity
+# Opening painter-compact-mypaint: mapped=1 visible=1
+# Opening painter-mypaint-brush-selector: mapped=1 visible=1
+# Opening painter-mypaint-brush-selector: mapped=1 visible=1
+# Opening painter-compact-mypaint: mapped=1 visible=1
+# Opening painter-compact-mypaint: mapped=1 visible=1
+# Opening painter-mypaint-brush-selector: mapped=1 visible=1
+# Opening painter-compact-mypaint: mapped=1 visible=1
+# Opening painter-mypaint-brush-selector: mapped=1 visible=1
+ok 16 /mypaint-selector/cpp/11-canvas-independent-toolbars-tool-switch
+# slow test /mypaint-selector/cpp/11-canvas-independent-toolbars-tool-switch executed in 3.63 secs
+# Opening painter-mypaint-brush-selector: mapped=1 visible=1
+# Opening painter-mypaint-brush-selector: mapped=1 visible=1
+# Opening painter-mypaint-brush-selector: mapped=1 visible=1
+ok 17 /mypaint-selector/cpp/12-preset-custom-stroke-undo-cancel
+# slow test /mypaint-selector/cpp/12-preset-custom-stroke-undo-cancel executed in 1.08 secs
+# Opening painter-mypaint-brush-selector: mapped=1 visible=1
+# Opening painter-mypaint-brush-selector: mapped=1 visible=1
+# Opening painter-mypaint-brush-selector: mapped=1 visible=1
+# Opening painter-mypaint-brush-selector: mapped=1 visible=1
+ok 18 /mypaint-selector/cpp/13-retained-history-close-finalize
+# Opening painter-mypaint-brush-selector: mapped=1 visible=1
+# Opening painter-mypaint-brush-selector: mapped=1 visible=1
+ok 19 /mypaint-selector/cpp/14-history-model-swap-close-reentry
+# Opening painter-mypaint-brush-selector: mapped=1 visible=1
+# Opening painter-mypaint-brush-selector: mapped=1 visible=1
+ok 20 /mypaint-selector/cpp/15-source-context-button-destruction-orders
+# Opening painter-mypaint-brush-selector: mapped=1 visible=1
+# Opening painter-mypaint-brush-selector: mapped=1 visible=1
+ok 21 /mypaint-selector/cpp/16-registered-factory-handle-lifetime
+ok 22 /mypaint-selector/cpp/17-registered-factory-empty-invalid-context
+# Opening painter-mypaint-brush-selector: mapped=1 visible=1
+# Opening painter-mypaint-brush-selector: mapped=1 visible=1
+ok 23 /mypaint-selector/cpp/18-native-popup-cursor-keys
+# Opening painter-mypaint-brush-selector: mapped=1 visible=1
+ok 24 /mypaint-selector/cpp/19-actual-canvas-real-resources
+# slow test /mypaint-selector/cpp/19-actual-canvas-real-resources executed in 172.66 secs
+# Opening painter-mypaint-brush-selector: mapped=1 visible=1
+ok 25 /mypaint-selector/cpp/20-history-external-model-replacement
+# slow test /mypaint-selector/cpp/20-history-external-model-replacement executed in 1.73 secs
+# End of cpp tests
+# Start of history tests
+ok 26 /mypaint-selector/history/empty-and-invalid
+ok 27 /mypaint-selector/history/malformed
+ok 28 /mypaint-selector/history/independent-owned-pixels
+ok 29 /mypaint-selector/history/source-mutation
+ok 30 /mypaint-selector/history/producer-lifetime
+# slow test /mypaint-selector/history/producer-lifetime executed in 2.89 secs
+ok 31 /mypaint-selector/history/closed-and-thread
+ok 32 /mypaint-selector/history/read-only
+# End of history tests
+# End of mypaint-selector tests

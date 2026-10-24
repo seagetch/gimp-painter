@@ -1,0 +1,31 @@
+--- a/app/widgets/gimpmypaintbrushoptions-gui.cpp
++++ b/app/widgets/gimpmypaintbrushoptions-gui.cpp
+@@ -353,27 +353,8 @@
+       HISTORY_NAME, name ? name.get () : _("Unnamed brush"), -1);
+   }
+   if (!alive (i) || i.history_epoch != revision) return;
+-  // A restore can append the outgoing dirty draft and refresh this model.
+-  // Keep the append-only history identity under the cursor so the next keyboard
+-  // move continues from that row, without restoring it again during the swap.
+-  guint cursor_index = count;
+-  GtkTreePath *cursor = nullptr;
+-  auto *view = GTK_TREE_VIEW (history.get ());
+-  gtk_tree_view_get_cursor (view, &cursor, nullptr);
+-  auto previous = Ref::retain (G_OBJECT (gtk_tree_view_get_model (view)));
+-  GtkTreeIter old_row;
+-  if (cursor && previous && gtk_tree_model_get_iter (GTK_TREE_MODEL (previous.get ()), &old_row, cursor))
+-    gtk_tree_model_get (GTK_TREE_MODEL (previous.get ()), &old_row, HISTORY_INDEX, &cursor_index, -1);
+-  if (cursor) gtk_tree_path_free (cursor);
+   Updating updating (i);
+-  gtk_tree_view_set_model (view, GTK_TREE_MODEL (list.get ()));
+-  if (!alive (i) || i.history_epoch != revision ||
+-      gtk_tree_view_get_model (view) != GTK_TREE_MODEL (list.get ())) return;
+-  if (cursor_index < count) {
+-    auto *path = gtk_tree_path_new_from_indices (cursor_index, -1);
+-    gtk_tree_view_set_cursor (view, path, nullptr, FALSE);
+-    gtk_tree_path_free (path);
+-  }
++  gtk_tree_view_set_model (GTK_TREE_VIEW (history.get ()), GTK_TREE_MODEL (list.get ()));
+   if (alive (i) && i.history_epoch == revision)
+     status (i, damaged_preview ? _("Some saved previews are unavailable.") : "");
+ }

@@ -1,0 +1,34 @@
+{
+  "task": 300,
+  "base_commit": "1d00792a0e3936b829caeea4063e145ea005b328",
+  "base_tree": "5a887c7d5e05d269941a595fecdce7e1d569059a",
+  "native_cases": {
+    "selector": 32,
+    "editor": 43,
+    "compact": 62,
+    "resource": 49,
+    "factory": 2,
+    "context": 4,
+    "distinct_total": 192
+  },
+  "expected_negative_controls": 2,
+  "scale2_repeated_cases": 2,
+  "sanitizer": {
+    "pass": 32,
+    "instrumented_TUs": 12,
+    "ASan": true,
+    "UBSan": "vptr excluded",
+    "LSan": false,
+    "remaining_archives_and_dependencies": "uninstrumented",
+    "findings": [],
+    "counted_as_extra_native_cases": false
+  },
+  "portrait_images": [
+    "selector-popup.png",
+    "selector-custom.png"
+  ],
+  "legacy_reference": "afa43fae3e920210146abed514f136fd49f671b5",
+  "legacy_runtime_executed": false,
+  "scope": "One MyPaint preset/custom selector; parent24.015, other popup families and full port remain open. No standard GimpContainerPopup policy change.",
+  "result": "PASS"
+}

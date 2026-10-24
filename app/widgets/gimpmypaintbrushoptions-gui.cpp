@@ -18,6 +18,7 @@ extern "C" {
 #include "gimpcontainertreestore.h"
 #include "gimpcontainerview.h"
 #include "gimpview.h"
+#include "popupper.h"
 #include "gimpviewrenderer.h"
 #include "gimpmypaintbrushoptions-gui.h"
 #include "paint/painter-mypaint-surface/gimp-painter-options.h"
@@ -41,12 +42,14 @@ using Ref = ObjectRef<GObject>;
 struct Selector {
   GtkWidget *owner;                 // native button owns the only binding slot
   Ref context, options, container, render_context;
-  Ref thumbnail, popup, notebook, grid, history, message;
+  Ref thumbnail, popup, body, notebook, grid, history, message;
   std::vector<Connection> connections;
   std::uint64_t epoch = 0, history_epoch = 0;
   guint64 source_seen = 0;
   unsigned updating = 0;
   bool closed = false, refreshing = false, identity_pending = false;
+  bool opening = false;
+  std::uint64_t presentation = 0;
 
   explicit Selector (GtkWidget *button) : owner (button) {}
   GimpContext *source () const { return GIMP_CONTEXT (context.get ()); }
@@ -55,19 +58,25 @@ struct Selector {
   { return GIMP_PAINTER_MYBRUSH_OPTIONS (options.get ()); }
   void close () noexcept {
     if (closed) return;
-    closed = true; ++epoch; ++history_epoch;
+    closed = true; ++epoch; ++history_epoch; ++presentation;
+    if (body) {
+      auto *content = GTK_WIDGET (body.get ());
+      if (auto *parent = gtk_widget_get_parent (content))
+        gtk_container_remove (GTK_CONTAINER (parent), content);
+    }
     connections.clear ();
     // Each signal owns only a weak button reference. No widget/model retains
     // the controller, and no new model is allocated by this presentation.
     auto old_popup = std::move (popup);
     if (old_popup) gtk_widget_destroy (GTK_WIDGET (old_popup.get ()));
-    thumbnail.reset (); notebook.reset (); grid.reset ();
+    if (body) gtk_widget_destroy (GTK_WIDGET (body.get ()));
+    body.reset (); thumbnail.reset (); notebook.reset (); grid.reset ();
     history.reset (); message.reset ();
     container.reset (); options.reset (); context.reset (); render_context.reset ();
   }
 };
 struct SelectorSlot : SlotSpec<GObject, Selector> {
-  static GType owner_type () { return GTK_TYPE_MENU_BUTTON; }
+  static GType owner_type () { return GTK_TYPE_BUTTON; }
 };
 struct Updating {
   Selector& selector;
@@ -141,8 +150,15 @@ void name_cb (GimpContext *context, GimpContextPropType property, gpointer data)
   if (property == GIMP_CONTEXT_PROP_PAINTER_MYBRUSH)
     dispatch (data, Event{G_OBJECT (context), nullptr, nullptr});
 }
-void row_cb (GtkTreeView *view, GtkTreePath *path, GtkTreeViewColumn *, gpointer data)
-{ dispatch (data, Event{G_OBJECT (view), nullptr, path}); }
+void cursor_cb (GtkTreeView *view, gpointer data) {
+  GtkTreeModel *model = nullptr;
+  GtkTreeIter row;
+  GtkTreePath *path = nullptr;
+  if (gtk_tree_selection_get_selected (gtk_tree_view_get_selection (view), &model, &row))
+    path = gtk_tree_model_get_path (model, &row);
+  dispatch (data, Event{G_OBJECT (view), nullptr, path});
+  if (path) gtk_tree_path_free (path);
+}
 void model_row_cb (GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *, gpointer data)
 { dispatch (data, Event{G_OBJECT (model), nullptr, path}); }
 void free_callback (gpointer data, GClosure *)
@@ -337,8 +353,27 @@ void refresh_history (Selector& i) {
       HISTORY_NAME, name ? name.get () : _("Unnamed brush"), -1);
   }
   if (!alive (i) || i.history_epoch != revision) return;
+  // A restore can append the outgoing dirty draft and refresh this model.
+  // Keep the append-only history identity under the cursor so the next keyboard
+  // move continues from that row, without restoring it again during the swap.
+  guint cursor_index = count;
+  GtkTreePath *cursor = nullptr;
+  auto *view = GTK_TREE_VIEW (history.get ());
+  gtk_tree_view_get_cursor (view, &cursor, nullptr);
+  auto previous = Ref::retain (G_OBJECT (gtk_tree_view_get_model (view)));
+  GtkTreeIter old_row;
+  if (cursor && previous && gtk_tree_model_get_iter (GTK_TREE_MODEL (previous.get ()), &old_row, cursor))
+    gtk_tree_model_get (GTK_TREE_MODEL (previous.get ()), &old_row, HISTORY_INDEX, &cursor_index, -1);
+  if (cursor) gtk_tree_path_free (cursor);
   Updating updating (i);
-  gtk_tree_view_set_model (GTK_TREE_VIEW (history.get ()), GTK_TREE_MODEL (list.get ()));
+  gtk_tree_view_set_model (view, GTK_TREE_MODEL (list.get ()));
+  if (!alive (i) || i.history_epoch != revision ||
+      gtk_tree_view_get_model (view) != GTK_TREE_MODEL (list.get ())) return;
+  if (cursor_index < count) {
+    auto *path = gtk_tree_path_new_from_indices (cursor_index, -1);
+    gtk_tree_view_set_cursor (view, path, nullptr, FALSE);
+    gtk_tree_path_free (path);
+  }
   if (alive (i) && i.history_epoch == revision)
     status (i, damaged_preview ? _("Some saved previews are unavailable.") : "");
 }
@@ -383,8 +418,63 @@ void render_row (Selector& i, const Event& event) {
     gimp_view_renderer_set_context (renderer, GIMP_CONTEXT (context.get ()));
 }
 void dismiss (Selector& i, const Event&) {
+  ++i.presentation;
   auto popup = i.popup;
-  if (popup) gtk_popover_popdown (GTK_POPOVER (popup.get ()));
+  if (popup) gtk_widget_destroy (GTK_WIDGET (popup.get ()));
+}
+// The retained content belongs to the selector, not to any ephemeral host.
+// Detach before the popup's default cancellation/destruction destroys children.
+void detach_popup (Selector& i, const Event& event, bool retiring) {
+  if (i.popup.get () != event.emitter) return;
+  auto popup = i.popup, body = i.body;
+  if (retiring) { i.popup.reset (); ++i.presentation; }
+  if (body) {
+    auto *content = GTK_WIDGET (body.get ());
+    if (auto *parent = gtk_widget_get_parent (content))
+      gtk_container_remove (GTK_CONTAINER (parent), content);
+  }
+}
+void open_popup (Selector& i, const Event&) {
+  if (i.opening || !gtk_widget_get_mapped (i.owner)) return;
+  struct Opening {
+    Selector& selector;
+    explicit Opening (Selector& s) : selector (s) { s.opening = true; }
+    ~Opening () { selector.opening = false; }
+  } opening (i);
+  auto anchor = Ref::retain (G_OBJECT (i.owner));
+  dismiss (i, Event{});
+  const auto revision = i.presentation;
+  auto valid = [&] { return alive (i) && i.presentation == revision &&
+    gtk_widget_get_mapped (GTK_WIDGET (anchor.get ())) &&
+    !gtk_widget_in_destruction (GTK_WIDGET (anchor.get ())); };
+  refresh_identity (i);
+  if (!valid ()) return;
+  refresh_history (i);
+  if (!valid ()) return;
+  i.connections.erase (std::remove_if (i.connections.begin (), i.connections.end (),
+    [] (const Connection& connection) { return !connection.connected (); }), i.connections.end ());
+  auto body = i.body;
+  auto carrier = Ref::sink (G_OBJECT (gtk_box_new (GTK_ORIENTATION_VERTICAL, 0)));
+  auto *created = gimp_painter_popup_new (GTK_WIDGET (carrier.get ()));
+  if (!created) return;
+  auto popup = Ref::retain (G_OBJECT (created));
+  if (!valid ()) { gtk_widget_destroy (created); return; }
+  i.popup = popup;
+  connect (i, popup.get (), "cancel", G_CALLBACK (simple_cb),
+    [] (Selector& s, const Event& e) { detach_popup (s, e, false); });
+  connect (i, popup.get (), "confirm", G_CALLBACK (simple_cb),
+    [] (Selector& s, const Event& e) { detach_popup (s, e, false); });
+  connect (i, popup.get (), "destroy", G_CALLBACK (simple_cb),
+    [] (Selector& s, const Event& e) { detach_popup (s, e, true); });
+  gtk_widget_set_name (created, "painter-mypaint-brush-popup");
+  if (!valid () || i.popup.get () != popup.get ()) return;
+  if (gtk_widget_get_parent (GTK_WIDGET (body.get ()))) { gtk_widget_destroy (created); return; }
+  gtk_box_pack_start (GTK_BOX (carrier.get ()), GTK_WIDGET (body.get ()), TRUE, TRUE, 0);
+  if (!valid () || i.popup.get () != popup.get ()) return;
+  // Showing a tree can establish its initial cursor; this is presentation sync,
+  // not a user request to restore a history snapshot.
+  Updating updating (i);
+  gimp_painter_popup_show_over (created, GTK_WIDGET (anchor.get ()));
 }
 void disconnect_context (Selector& i, const Event&)
 { store (i.owner).close (); }
@@ -407,12 +497,9 @@ void build (Selector& i) {
     GIMP_TYPE_PAINTER_MYBRUSH, 32, 32, 1, FALSE, FALSE, FALSE),
     "painter-mypaint-brush-thumbnail");
   gtk_container_add (GTK_CONTAINER (i.owner), GTK_WIDGET (i.thumbnail.get ()));
-  i.popup = widget (gtk_popover_new (i.owner), "painter-mypaint-brush-popup");
-  gtk_popover_set_position (GTK_POPOVER (i.popup.get ()), GTK_POS_BOTTOM);
-  gtk_menu_button_set_popover (GTK_MENU_BUTTON (i.owner), GTK_WIDGET (i.popup.get ()));
-  auto body = widget (gtk_box_new (GTK_ORIENTATION_VERTICAL, 6), "painter-mypaint-selector-body");
+  i.body = widget (gtk_box_new (GTK_ORIENTATION_VERTICAL, 6), "painter-mypaint-selector-body");
+  auto body = i.body;
   gtk_container_set_border_width (GTK_CONTAINER (body.get ()), 6);
-  gtk_container_add (GTK_CONTAINER (i.popup.get ()), GTK_WIDGET (body.get ()));
   i.notebook = widget (gtk_notebook_new (), "painter-mypaint-brush-tabs");
   gtk_box_pack_start (GTK_BOX (body.get ()), GTK_WIDGET (i.notebook.get ()), TRUE, TRUE, 0);
   i.grid = widget (GTK_WIDGET (g_object_new (GIMP_TYPE_CONTAINER_EDITOR,
@@ -434,7 +521,6 @@ void build (Selector& i) {
                             GTK_WIDGET (i.grid.get ()), gtk_label_new (_("Preset")));
   i.history = widget (gtk_tree_view_new (), "painter-mypaint-custom-list");
   gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (i.history.get ()), FALSE);
-  gtk_tree_view_set_activate_on_single_click (GTK_TREE_VIEW (i.history.get ()), TRUE);
   auto *column = gtk_tree_view_column_new ();
   auto *preview = gtk_cell_renderer_pixbuf_new ();
   g_object_set (preview, "stock-size", GTK_ICON_SIZE_LARGE_TOOLBAR, nullptr);
@@ -464,18 +550,14 @@ void build (Selector& i) {
     connect (i, i.context.get (), "disconnect", G_CALLBACK (simple_cb), disconnect_context);
   }
   connect (i, G_OBJECT (view), "selection-changed", G_CALLBACK (simple_cb), choose_preset);
-  connect (i, i.history.get (), "row-activated", G_CALLBACK (row_cb), choose_history);
+  connect (i, i.history.get (), "cursor-changed", G_CALLBACK (cursor_cb), choose_history);
   connect (i, i.container.get (), "remove", G_CALLBACK (object_cb),
     [] (Selector& s, const Event&) { refresh_identity (s); });
   connect (i, i.container.get (), "thaw", G_CALLBACK (simple_cb),
     [] (Selector& s, const Event&) { refresh_identity (s); });
-  connect (i, G_OBJECT (i.owner), "toggled", G_CALLBACK (simple_cb),
-    [] (Selector& s, const Event&) {
-      if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (s.owner))) {
-        refresh_identity (s);
-        if (alive (s)) refresh_history (s);
-      }
-    });
+  // Use GtkButton's accessible clicked action, once per release/keyboard action.
+  // No press+clicked double-open; selection never confirms this presentation.
+  connect (i, G_OBJECT (i.owner), "clicked", G_CALLBACK (simple_cb), open_popup);
   connect (i, G_OBJECT (i.owner), "unmap", G_CALLBACK (simple_cb), dismiss);
   refresh_identity (i);
   if (!alive (i)) return;
@@ -506,7 +588,7 @@ GtkWidget *gimp_mypaint_brush_button_with_popup (GObject *config) {
       throw Error (GIMP_PAINTER_ERROR_INVALID_STATE,
                    take_error_message (error, "Painter options are unavailable").c_str ());
     g_clear_error (&error);
-    auto button = widget (gtk_menu_button_new (), "painter-mypaint-brush-selector");
+    auto button = widget (gtk_button_new (), "painter-mypaint-brush-selector");
     auto *result = GTK_WIDGET (button.get ());
     auto& binding = BindingStore::ensure (button.get ());
     binding.emplace<SelectorSlot> (result);

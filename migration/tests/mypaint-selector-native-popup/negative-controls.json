@@ -1,0 +1,25 @@
+{
+  "controls": [
+    {
+      "case": "/mypaint-selector/cpp/19-actual-canvas-real-resources",
+      "result": "EXPECTED_FAILURE",
+      "baseline_commit": "1d00792a0e3936b829caeea4063e145ea005b328",
+      "baseline_selector_sha256": "c1fd672cbf3a7b39d8f56155c53bcf7551b6bc7776596d1866a807f74d5bdecb",
+      "baseline_object_sha256": "201487aa088c16bdaf7ec231acaf3f9712ff0c60898d7813fe9088516c5a79c2",
+      "binary_sha256": "4aa2161de7538e85aa674fd5534acc5b501aa0717e8dca2a193f203570bae429",
+      "failure": "actual compact canvas toolbar selector is GtkMenuButton/GtkPopover, rejected before native host checks",
+      "qualification": "Final tests and all other actual299 production overrides; only selector implementation replaced with exact published299 bytes"
+    },
+    {
+      "production_sha256": "ab605c9a313a963697abf628d6ee11ef9d53d4f5256067392569971105bd29f8",
+      "variant_sha256": "a7ad9e1d5c490ed3eecba5705eb5f431d3d61787c7e263a6e5e22ca012a2e393",
+      "object_sha256": "9a2addedcec176ec002cd96cefc1e247c72a87f65dab7ac9cedd0698c5c9ba83",
+      "binary_sha256": "bea4ec719cd21dea27b8ad9efe47719e232874cbbedb5cdcbff16be3f34558f3",
+      "mutation": "Only remove guarded history-cursor identity preservation from refresh_history; keep native carrier and cursor-changed selection.",
+      "case": "/mypaint-selector/cpp/18-native-popup-cursor-keys",
+      "result": "EXPECTED_FAILURE",
+      "failure": "actual cursor is null after first dirty keyboard restore, with focused device-associated key input",
+      "source_patch": "cursor-preservation-negative.patch"
+    }
+  ]
+}

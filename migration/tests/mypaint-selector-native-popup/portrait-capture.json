@@ -1,0 +1,36 @@
+{
+  "result": "PASS",
+  "case": "/mypaint-selector/cpp/19-actual-canvas-real-resources",
+  "profile": "sessionrc-native-oncanvas",
+  "canvas_ui": "production default TRUE; no enabling setter",
+  "single_window": true,
+  "screen": {
+    "width": 1080,
+    "height": 1920,
+    "depth": 24
+  },
+  "window_manager": "Openbox 3.6.1",
+  "actual_loaded_mypaint_brushes": 177,
+  "popup": {
+    "type": "GTK_WINDOW_POPUP",
+    "override_redirect": true,
+    "width": 306,
+    "height": 328,
+    "border": 0,
+    "wm_frame_extents": "absent",
+    "transient_for": "absent",
+    "position": "production anchor helper; flips above bottom toolbar"
+  },
+  "main_window": "maximized only by capture fixture",
+  "images": [
+    {
+      "path": "selector-popup.png",
+      "sha256": "b4b231c51e906255d9b088d4456f67092dfd3755a6e65b7043b3a1719071739e"
+    },
+    {
+      "path": "selector-custom.png",
+      "sha256": "c72bab9bad66e04c23318b96b07ad84330adbd6faf272f0138aafc50a4d95773"
+    }
+  ],
+  "qualification": "Raw full-root pixels inspected. Preset contains shipped resources; Custom contains immutable drafts derived from those resources. Not old-runtime visual equivalence. Native selector has no nested stock brush-picker entry."
+}

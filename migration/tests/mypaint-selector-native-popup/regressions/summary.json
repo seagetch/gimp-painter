@@ -1,0 +1,145 @@
+{
+  "scope": "Existing editor six registrations, compact options, MyPaint resource/factory/context. Selector contracts counted separately by its normal owner; no duplicate history/source totals. No full Layer86 claim.",
+  "execution": "Direct override-linked target binaries using the corresponding registered mode environment; no Meson test runner claim.",
+  "results": [
+    {
+      "name": "editor-popup",
+      "exit": 0,
+      "pass": 5,
+      "fail": 0,
+      "binary": "painter-mypaint-editor",
+      "registration": "painter-editor-popup-parity",
+      "mode_env": {
+        "GIMP_TEST_EDITOR_POPUP": "1"
+      },
+      "session_fixture": "sessionrc-native-oncanvas"
+    },
+    {
+      "name": "editor-original",
+      "exit": 0,
+      "pass": 25,
+      "fail": 0,
+      "binary": "painter-mypaint-editor",
+      "registration": "painter-mypaint-editor",
+      "mode_env": {},
+      "session_fixture": "registered default"
+    },
+    {
+      "name": "editor-duplicate",
+      "exit": 0,
+      "pass": 4,
+      "fail": 0,
+      "binary": "painter-mypaint-editor",
+      "registration": "painter-editor-duplicate-saved-resource",
+      "mode_env": {
+        "GIMP_TEST_EDITOR_DUPLICATE": "1"
+      },
+      "session_fixture": "registered default"
+    },
+    {
+      "name": "editor-named",
+      "exit": 0,
+      "pass": 3,
+      "fail": 0,
+      "binary": "painter-mypaint-editor",
+      "registration": "painter-editor-named-entry",
+      "mode_env": {
+        "GIMP_TEST_EDITOR_NAMED_ENTRY": "1"
+      },
+      "session_fixture": "registered default"
+    },
+    {
+      "name": "editor-page",
+      "exit": 0,
+      "pass": 3,
+      "fail": 0,
+      "binary": "painter-mypaint-editor",
+      "registration": "painter-editor-page-memory",
+      "mode_env": {
+        "GIMP_TEST_EDITOR_PAGE_MEMORY": "1"
+      },
+      "session_fixture": "registered default"
+    },
+    {
+      "name": "editor-lifetime",
+      "exit": 0,
+      "pass": 3,
+      "fail": 0,
+      "binary": "painter-mypaint-editor",
+      "registration": "painter-editor-control-lifetimes",
+      "mode_env": {
+        "GIMP_TEST_EDITOR_CONTROL_LIFETIMES": "1"
+      },
+      "session_fixture": "registered default"
+    },
+    {
+      "name": "painter-compact-options",
+      "exit": 0,
+      "pass": 62,
+      "fail": 0,
+      "binary": "painter-compact-options",
+      "registration": "painter-compact-options",
+      "mode_env": {},
+      "session_fixture": "registered default"
+    },
+    {
+      "name": "gimp-painter-mybrush",
+      "exit": 0,
+      "pass": 49,
+      "fail": 0,
+      "binary": "gimp-painter-mybrush",
+      "registration": "gimp-painter-mybrush",
+      "mode_env": {},
+      "session_fixture": "sessionrc-native-oncanvas"
+    },
+    {
+      "name": "gimp-painter-mybrush-factory",
+      "exit": 0,
+      "pass": 2,
+      "fail": 0,
+      "binary": "gimp-painter-mybrush-factory",
+      "registration": "gimp-painter-mybrush-factory",
+      "mode_env": {},
+      "session_fixture": "sessionrc-native-oncanvas"
+    },
+    {
+      "name": "gimp-painter-context",
+      "exit": 0,
+      "pass": 4,
+      "fail": 0,
+      "binary": "gimp-painter-context",
+      "registration": "gimp-painter-context",
+      "mode_env": {},
+      "session_fixture": "sessionrc-native-oncanvas"
+    }
+  ],
+  "total_pass": 160,
+  "source_sha256": {
+    "app/widgets/popupper.cpp": "6ea240dd7cf37624a0cba321d59ae30e4933f434dab318a417f255a27805be80",
+    "app/widgets/gimppaintercompactoptions.cpp": "0f7a1c780f3b64e92bc8d0f45c27f2b5c6fea1b6dcf5078c51b8536d8b25bcbc",
+    "app/widgets/gimppaintermybrusheditor.cpp": "bf8dabee843cc3a5b49e573fcfae398b325e1e39fd4e945f62c8da0d5b19f29b",
+    "app/widgets/gimppainterlayertiles.cpp": "999215c359a71b4f4773b02e3d84809ebf57a6638113872caf8f077a234fefa0",
+    "app/widgets/gimpcellrendererpopup.cpp": "51156ac326bce3c3d31a8bcf3a0f9657860ae9fa63c1518c34e639a692db7631",
+    "app/dialogs/painter-layer-dialog.cpp": "636b9a00bbe4c3cbed98f3a1d633092b1f82c7dd5208927e8ba94905eee05346",
+    "app/widgets/gimpmypaintbrushoptions-gui.cpp": "ab605c9a313a963697abf628d6ee11ef9d53d4f5256067392569971105bd29f8",
+    "app/tests/test-painter-editor-popup.inc": "fa2fbf245b4bea8da2fcacf1009cb9f1006f361579b3b6b4a668557d235b70fe",
+    "app/tests/test-painter-editor-entry.inc": "0a99bb79c4b75fcfa1c45aa8dfa22c8988322c97a801cf706f9d2e0754bde022",
+    "app/tests/test-painter-editor-duplicate.inc": "2868a0e507068d421b1a03ff84d1635b3f7c8978c7eceb6a4eacdd8db5bbe5f8",
+    "app/tests/test-painter-editor-control-lifetimes.inc": "71edf8cf6f524b9af4b4c57b732c5ba95671f7c4a526508250cf8c9197048df5",
+    "app/tests/test-painter-mypaint-editor.cpp": "e48295daa2705c4a042c7ab25176bed7eee06530280a804c50612a14ee4ac762",
+    "app/tests/test-painter-compact-options.c": "d8943e27a29238dea8569b8937217ac4d4d10c492346952623d3408a5d9785d7",
+    "app/tests/test-gimp-painter-mybrush.c": "46f2b42b374951afa1d0a0a11d28a7192fbc899b158d672c9630824cc3a8c6f8",
+    "app/tests/test-gimp-painter-mybrush-factory.c": "d4f9741f74c153a547864490a58b2954687a4ce3618e79f0d3d3f103ad8c687d",
+    "app/tests/test-gimp-painter-context.c": "ec98078f5db3835c5ef3f3d96e9c0c1b918641066633f0e24d2fa9d69328e271"
+  },
+  "source_changed": [],
+  "binary_sha256": {
+    "painter-mypaint-editor": "d432edb6cde541b406d544338932f7ff943d217c3f580e9124b3d74dba9e7f3c",
+    "painter-compact-options": "0fd27bf5cdba6fcea388efce0019fde60fb5fe715bc1b47ca67448438dd7d8b0",
+    "gimp-painter-mybrush": "d81ac6283e05e65d3a5ab24dad0653915f24303adc0e07782ee241f24dabd89c",
+    "gimp-painter-mybrush-factory": "9f5eb1287c99ee55cbad030eb1bae808d017fc701b73a20ceb1c06e1a3d2d771",
+    "gimp-painter-context": "27e05f47753e09da0a40078154c05bd4e0db43c96b059f8944ce6a36007eafb4"
+  },
+  "runtime": "Authenticated Xvfb 1080x1920; default oncanvas TRUE. Official sessionrc-native-oncanvas for popup/resource registrations; compact and original editor registrations retain their original default session. Preserved diagnostic failures: extra native-profile aggregate failed at rectangle-units-native-canvas-baseline; reused-runtime default-profile aggregate failed at rectangle-units-popup-model-reentry. Both unchanged cases passed individually. Final full62 passed in a fresh dedicated runtime with registered default profile; root cause of earlier physical-fixture failures not proven. Trusted local task299 runtime, no LD_PRELOAD.",
+  "pass": true
+}

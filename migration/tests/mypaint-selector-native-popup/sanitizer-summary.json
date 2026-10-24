@@ -1,0 +1,50 @@
+{
+  "scope": "Scoped native MyPaint selector popup regression instrumentation; sanitizer repetitions are not additional unique normal cases.",
+  "exit": 0,
+  "pass_count": 32,
+  "fail_count": 0,
+  "sanitizer_findings": [],
+  "instrumented_translation_units": [
+    "app/widgets/popupper.cpp",
+    "app/widgets/gimppaintercompactoptions.cpp",
+    "app/widgets/gimppaintermybrusheditor.cpp",
+    "app/dialogs/painter-layer-dialog.cpp",
+    "app/widgets/gimppainterlayertiles.cpp",
+    "app/widgets/gimpcellrendererpopup.cpp",
+    "app/widgets/gimpmypaintbrushoptions-gui.cpp",
+    "app/tests/test-mypaint-selector-contracts.c",
+    "app/tests/test-mypaint-selector-contracts.cpp",
+    "app/tests/tests.c",
+    "app/painter/binding-store.cpp",
+    "app/painter/gimp-painter-binding.cpp"
+  ],
+  "instrumentation": [
+    "ASan",
+    "UBSan excluding vptr",
+    "frame pointers",
+    "O1"
+  ],
+  "qualifications": [
+    "LSan disabled (detect_leaks=0)",
+    "Remaining application archives and dependency libraries are uninstrumented; not a whole-application sanitizer claim."
+  ],
+  "runtime": "Authenticated Xvfb1080x1920x24, official sessionrc-native-oncanvas, oncanvas defaultTRUE, genuine corpus177, trusted task299 libraries/plugin metadata, no LD_PRELOAD.",
+  "binary_sha256": "37e77ae3d0eef7997b2ebb2235f48675ac85468062e1e070a83cafcf1a74c4ed",
+  "source_sha256": {
+    "app/widgets/popupper.cpp": "6ea240dd7cf37624a0cba321d59ae30e4933f434dab318a417f255a27805be80",
+    "app/widgets/gimppaintercompactoptions.cpp": "0f7a1c780f3b64e92bc8d0f45c27f2b5c6fea1b6dcf5078c51b8536d8b25bcbc",
+    "app/widgets/gimppaintermybrusheditor.cpp": "bf8dabee843cc3a5b49e573fcfae398b325e1e39fd4e945f62c8da0d5b19f29b",
+    "app/dialogs/painter-layer-dialog.cpp": "636b9a00bbe4c3cbed98f3a1d633092b1f82c7dd5208927e8ba94905eee05346",
+    "app/widgets/gimppainterlayertiles.cpp": "999215c359a71b4f4773b02e3d84809ebf57a6638113872caf8f077a234fefa0",
+    "app/widgets/gimpcellrendererpopup.cpp": "51156ac326bce3c3d31a8bcf3a0f9657860ae9fa63c1518c34e639a692db7631",
+    "app/widgets/gimpmypaintbrushoptions-gui.cpp": "ab605c9a313a963697abf628d6ee11ef9d53d4f5256067392569971105bd29f8",
+    "app/tests/test-mypaint-selector-contracts.c": "9c0978cc96cd519cd0ece684c13d8a13a3d07ca9fb90ac9db00833ab496b0190",
+    "app/tests/test-mypaint-selector-contracts.cpp": "99b20a1f373fb315b01ed5325148b7bd2dbfadbc8c5e07fcae4fbbb6f489f70d",
+    "app/tests/tests.c": "56303878e316e41fcb7c439b199cde5bd9fc4ac84b46b48efcbfbc79737747e7",
+    "app/painter/binding-store.cpp": "c69d65c22f26e6be8f6df69765cd30f7bbbd32b46b0eb847e9f6524b41c2b557",
+    "app/painter/gimp-painter-binding.cpp": "22aca4f9e467e16b86f2cbeec431d7d069fc552c98fad985db770720fcf876fd",
+    "app/tests/test-mypaint-selector-history.inc": "aeab48a48b34150f0e8045373e2baa7a798f09e1d347cd7750a4802b2a627aef"
+  },
+  "source_changed": [],
+  "pass": true
+}
