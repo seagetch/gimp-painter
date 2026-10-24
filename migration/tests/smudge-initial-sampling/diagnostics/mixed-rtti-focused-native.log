@@ -1,0 +1,10 @@
+[01m[K../source/app/tests/painter-smudge-trace.cpp:[m[K In function ‘[01m[Kint[01;32m[K main[m[K(int, char**)[m[K’:
+[01m[K../source/app/tests/painter-smudge-trace.cpp:81:117:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Klist[m[K’ [[01;35m[K-Wunused-variable[m[K]
+   81 |   GimpPaintCore*core=GIMP_PAINT_CORE(g_object_new(GIMP_TYPE_PAINTER_SMUDGE,"undo-desc","smudge oracle",NULL));GList [01;35m[Klist[m[K={d,NULL,NULL};
+      |                                                                                                                     [01;35m[K^~~~[m[K
+[('gimp-painter-smudge', [], 1), ('painter-smudge-trace', [], 1)]
+Traceback (most recent call last):
+  File "/workspace/shared/gimp-native-secondary/source/migration/tests/run_smudge_native_sanitizers.py", line 45, in <module>
+    a.report.write_text(json.dumps({'scope':f'{len(sources)} focused native units: Smudge renderer/owner transaction, native PaintCore/BrushCore/Undo, exact legacy mask transforms and common bridge; globally registered Options/session RTTI owners included; remaining host/dependencies uninstrumented;LSan disabled','commands':commands,'sources_sha256':hashes,'changed_during_run':changed,'runs':runs},indent=2)+'\n');print([(r['test'],r['args'],r['exit_code']) for r in runs]);assert not changed;assert all(r['exit_code']==0 for r in runs)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

@@ -1,0 +1,4 @@
++  gint         x, y, w, h;
++  GimpBrushCore *brush_core  = GIMP_BRUSH_CORE (paint_core);        /* gimp-painter-2.7 */
++  GimpSmudgeOptions *options = GIMP_SMUDGE_OPTIONS (paint_options); /* gimp-painter-2.7 */
++#if 0

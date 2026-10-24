@@ -1,0 +1,9 @@
+-      core->scale *= gimp_dynamics_output_get_linear_value (output,
+-                                                            coords,
+-                                                            paint_options,
+-                                                            fade_point);
++      if (!core->ignore_scale)
++        core->scale *= gimp_dynamics_output_get_linear_value (output,
++                                                              coords,
++                                                              paint_options,
++                                                              fade_point);

@@ -1,0 +1,52 @@
+Xvfb verified: 127.0.0.1:95, 1080x1920x24, authenticated accepted, empty authority rejected
+1/1 gimp:app / gimp-painter-smudge FAIL             1.13s   killed by signal 6 SIGABRT
+>>> GIMP_TESTING_ABS_TOP_SRCDIR=/workspace/shared/gimp-native-secondary/source MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 UI_TEST=yes GIMP_TESTING_ABS_TOP_BUILDDIR=/workspace/shared/gimp-native-secondary/build MESON_TEST_ITERATION=1 ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 LD_LIBRARY_PATH=/workspace/shared/gimp-native-secondary/build/libgimpconfig:/workspace/shared/gimp-native-secondary/build/libgimpbase:/workspace/shared/gimp-native-secondary/build/libgimpcolor:/workspace/shared/gimp-native-secondary/build/libgimpmath:/workspace/shared/gimp-native-secondary/build/libgimpwidgets:/workspace/shared/gimp-native-secondary/build/libgimpmodule:/workspace/shared/gimp-native-secondary/build/libgimpthumb:/workspace/shared/gimp-native-secondary/prefix/lib/x86_64-linux-gnu:/workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 GIMP_TESTING_PLUGINDIRS=/workspace/shared/gimp-native-secondary/build/plug-ins/common MALLOC_PERTURB_=98 /workspace/shared/gimp-native-secondary/build/app/tests/gimp-painter-smudge
+――――――――――――――――――――――――――――――――――――― ✀  ―――――――――――――――――――――――――――――――――――――
+stdout:
+TAP version 14
+# random seed: R02Sdb82502210463d4a546d921f10d59784
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?
+1..24
+# Start of painter tests
+# Start of smudge tests
+ok 1 /painter/smudge/reuse-undo
+ok 2 /painter/smudge/cancel
+ok 3 /painter/smudge/dispose
+ok 4 /painter/smudge/start-cancel
+ok 5 /painter/smudge/publication-cancel
+ok 6 /painter/smudge/core-loss
+ok 7 /painter/smudge/image-loss
+ok 8 /painter/smudge/invalid-axes
+ok 9 /painter/smudge/external-edit
+ok 10 /painter/smudge/invalid-vfunc
+ok 11 /painter/smudge/paused-segment
+ok 12 /painter/smudge/nested-native-start
+ok 13 /painter/smudge/unowned-start-refused
+# fixture original brush spacing=20
+# actual positive-pressure native Smudge dabs=2
+# old initial seed variant=0 target=(56,16) expectedR=40 actualR=40
+# initial seed changed native bytes=378
+# fixture original brush spacing=20
+# actual positive-pressure native Smudge dabs=1
+# old initial seed variant=1 target=(56,16) expectedR=40 actualR=41
+not ok /painter/smudge/initial-zero-opacity - ERROR:../source/app/tests/test-painter-smudge-initial-sampling.inc:43:void initial_zero_opacity_sampling(): assertion failed (pixels[(y*64+x)*4] == expected): (41 == 40)
+Bail out!
+stderr:
+Failed to parse tag cache: No such file or directory
+**
+ERROR:../source/app/tests/test-painter-smudge-initial-sampling.inc:43:void initial_zero_opacity_sampling(): assertion failed (pixels[(y*64+x)*4] == expected): (41 == 40)
+――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+
+
+Summary of Failures:
+
+1/1 gimp:app / gimp-painter-smudge FAIL             1.13s   killed by signal 6 SIGABRT
+
+Ok:                 0   
+Expected Fail:      0   
+Fail:               1   
+Unexpected Pass:    0   
+Skipped:            0   
+Timeout:            0   
+
+Full log written to /workspace/shared/gimp-native-secondary/build/meson-logs/testlog.txt

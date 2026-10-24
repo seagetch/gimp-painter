@@ -1,0 +1,13 @@
++
++  /* gimp-painter-2.7: tweaks for smudge */
++  gboolean       ignore_scale;
++
++#if 0
++  /*  don't use these...  */
++  BoundSeg      *brush_bound_segs;
++  gint           n_brush_bound_segs;
++  gint           brush_bound_width;
++  gint           brush_bound_height;
++  gint           transformed_brush_bound_width;
++  gint           transformed_brush_bound_height;
++#endif

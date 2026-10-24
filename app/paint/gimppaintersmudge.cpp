@@ -339,7 +339,9 @@ void motion (GimpPaintCore* core, GimpDrawable* drawable, GimpPaintOptions* opti
   const double fade = gimp_paint_options_get_fade (options, image.get (), core->pixel_dist);
   const double opacity = gimp_dynamics_get_linear_value (brush->dynamics, GIMP_DYNAMICS_OUTPUT_OPACITY, &coords, options, fade);
   finite_value (opacity, "Nonfinite Smudge opacity");
-  if (opacity == 0) return;
+  // Old start seeds the first overlapping footprint even when this dab is
+  // transparent. Later zero-opacity dabs neither resample nor update it.
+  if (opacity == 0 && state.accumulator) return;
   const Settings settings = BindingStore::require (G_OBJECT (options)).read<OptionsSlot> ([] (const Settings& s) { return s; });
   brush->spacing = gimp_brush_get_spacing (brush->main_brush) / 100.0;
   // The old accumulation footprint explicitly ignored size dynamics, and
@@ -366,6 +368,7 @@ void motion (GimpPaintCore* core, GimpDrawable* drawable, GimpPaintOptions* opti
     GeglRectangle destination = {area.x - x, area.y - y, area.width, area.height};
     gegl_buffer_copy (gimp_drawable_get_buffer (drawable), &area, GEGL_ABYSS_NONE, state.accumulator.get (), &destination);
   }
+  if (opacity == 0) return;
   const int x = int (coords.x) - (state.size - 2) / 2 - 1, y = int (coords.y) - (state.size - 2) / 2 - 1;
   GeglRectangle accum_area = {area.x - x, area.y - y, area.width, area.height};
   if (accum_area.x < 0 || accum_area.y < 0 || accum_area.x + accum_area.width > state.size || accum_area.y + accum_area.height > state.size)

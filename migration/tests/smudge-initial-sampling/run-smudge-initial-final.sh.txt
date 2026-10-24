@@ -1,0 +1,41 @@
+#!/bin/bash
+set -euo pipefail
+D=/workspace/shared/gimp-native-secondary
+R=/workspace/scratch/0015fc5d1a03/gimp-painter
+source "$D/env.sh";exec 9>"$D/build.lock";flock 9
+python3 /workspace/shared/prepare-smudge-initial-final.py
+O="$D/smudge-initial-sampling/final"
+cp "$D/source/app/paint/gimppaintersmudge.cpp" "$O/candidate.cpp"
+restore(){ cp "$O/candidate.cpp" "$D/source/app/paint/gimppaintersmudge.cpp"; }
+trap restore EXIT
+mkdir -p "$O/expected-red"
+git -C "$R" show HEAD:app/paint/gimppaintersmudge.cpp > "$O/expected-red/original.cpp"
+cp "$O/expected-red/original.cpp" "$D/source/app/paint/gimppaintersmudge.cpp"
+python3 - <<'PY'
+import pathlib,json,hashlib
+D=pathlib.Path('/workspace/shared/gimp-native-secondary');O=D/'smudge-initial-sampling/final';s=json.loads((O/'source-before-normal-build.json').read_text());s['app/paint/gimppaintersmudge.cpp']=hashlib.sha256((O/'expected-red/original.cpp').read_bytes()).hexdigest()
+for p,h in s.items():assert hashlib.sha256((D/'source'/p).read_bytes()).hexdigest()==h,p
+(O/'expected-red/source-before-build.json').write_text(json.dumps(s,indent=2)+'\n')
+PY
+ninja -j2 -C "$D/build" app/tests/gimp-painter-smudge > "$O/expected-red/build.log" 2>&1
+set +e
+python3 "$D/source/tools/run-painter-xvfb.py" meson test -C "$D/build" --no-rebuild --print-errorlogs --test-args='-p /painter/smudge/initial-zero-opacity' gimp-painter-smudge > "$O/expected-red/run.log" 2>&1
+status=$?;set -e
+python3 - <<'PY'
+import pathlib,json,hashlib
+D=pathlib.Path('/workspace/shared/gimp-native-secondary');O=D/'smudge-initial-sampling/final/expected-red';j=json.loads((D/'build/meson-logs/testlog.json').read_text().splitlines()[0]);r={k:j.get(k,'') for k in ['name','result','returncode','duration','stdout','stderr']};r['executable_sha256']=hashlib.sha256((D/'build/app/tests/gimp-painter-smudge').read_bytes()).hexdigest();(O/'result.json').write_text(json.dumps(r,indent=2)+'\n');assert r['result']=='FAIL' and 'expectedR=40 actualR=220' in r['stdout'] and 'actual positive-pressure native Smudge dabs=4' in r['stdout']
+PY
+[[ $status != 0 ]]
+restore;trap - EXIT
+ninja -j2 -C "$D/build" app/tests/gimp-painter-smudge app/tests/painter-smudge-trace app/paint/painter-smudge/painter-smudge-pixels-trace > "$O/normal-build.log" 2>&1
+python3 "$D/source/tools/run-painter-xvfb.py" meson test -C "$D/build" --no-rebuild --num-processes=1 --print-errorlogs gimp-painter-smudge painter-smudge-legacy-strokes painter-smudge-owned-strokes painter-smudge-legacy-pixels > "$O/normal.log" 2>&1
+python3 - <<'PY'
+import pathlib,json,hashlib
+D=pathlib.Path('/workspace/shared/gimp-native-secondary');O=D/'smudge-initial-sampling/final';seal=json.loads((O/'source-before-normal-build.json').read_text());rows=[]
+for p,h in seal.items():assert hashlib.sha256((D/'source'/p).read_bytes()).hexdigest()==h,p
+for line in (D/'build/meson-logs/testlog.json').read_text().splitlines():
+ j=json.loads(line);r={k:j.get(k,'') for k in ['name','result','returncode','duration','stdout','stderr']};r['source_sha256']=seal;r['xvfb']={'width':1080,'height':1920,'depth':24,'authenticated':True};rows.append(r)
+(O/'normal.json').write_text(json.dumps(rows,indent=2)+'\n');assert len(rows)==4 and all(r['result']=='OK' and r['duration']<60 for r in rows)
+(O/'normal-executables.json').write_text(json.dumps({p:hashlib.sha256((D/'build'/p).read_bytes()).hexdigest() for p in ['app/tests/gimp-painter-smudge','app/tests/painter-smudge-trace','app/paint/painter-smudge/painter-smudge-pixels-trace']},indent=2)+'\n')
+print([(r['name'],r['result'],r['duration']) for r in rows])
+PY

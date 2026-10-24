@@ -979,6 +979,9 @@
 | 23.014/event-compression-order | [ ] | motion圧縮と非motionイベント再投入の順序を維持する | 23.013, 01.017 | 旧compress_motionとnext_event経路を現行入力へ接続し、pen up・key・crossing・device切替が欠落せずイベント所有が一回解放される |
 | 23.015 | [ ] | ペン入力の回帰試験を実行する | 23.014 | 連続・微小・固定筆圧・pen up を比較 |
 
+
+2026-10-21 23.002 bounded initialization checkpoint: transparent first contact now seeds the first successful overlap before returning; existing zero-opacity accumulators are unchanged. Corrected same-fixture red/green, 24 native cases, both 48-scene/193-record legacy routes and 1024 pixel cases pass normally and in focused sanitizers. See `migration/contracts/smudge-initial-sampling.md` and `migration/tests/smudge-initial-sampling/`. Original acceptance/dependencies and all 52 source duties remain open; invalid-spacing diagnostics and mixed-RTTI harness failure are retained. No old runtime or whole-task closure is claimed.
+
 ### 24 ブラシ editor・履歴・プレビュー
 
 主対象：tools/widgets/actions の拡張ブラシ UI

@@ -1,0 +1,12 @@
++  /*  adjust the x and y coordinates to the upper left corner of the brush  */
++  smudge->max_radius = 0;
++  w = h = 0;
++  gimp_smudge_brush_coords (paint_core, paint_options, coords, &x, &y, &w, &h);
++//  g_print ("smudge:start: (x,y,w,h)=%d,%d,%d,%d\n", x, y, w, h);
++
++  /*  Allocate the accumulation buffer */
++  bytes = gimp_drawable_bytes (drawable);
++  smudge->accum_data = g_malloc (w * h * bytes);
++  if (options->use_color_blending)
++    smudge->blending_data = g_malloc (w * h * bytes);
++#if 0

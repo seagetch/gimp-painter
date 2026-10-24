@@ -1,0 +1,5 @@
++      if (smudge->blending_data)
++        {
++          g_free (smudge->blending_data);
++          smudge->blending_data = NULL;
++        }

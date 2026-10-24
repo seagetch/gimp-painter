@@ -1,0 +1,36 @@
++  if (options->use_color_blending)
++    {
++      guchar col[MAX_CHANNELS];
++      gdouble blending_rate = 1.0;
++      PixelRegion        blendPR;
++      
++      pixel_region_init_data (&blendPR, smudge->blending_data,
++                              smudge->accumPR.bytes,
++                              smudge->accumPR.rowstride,
++                              area->x - x,
++                              area->y - y,
++                              area->width,
++                              area->height);
++
++      blending_output = gimp_dynamics_get_output (dynamics,
++                                                  GIMP_DYNAMICS_OUTPUT_BLENDING);
++
++      blending_rate *= gimp_dynamics_output_get_linear_value (blending_output,
++                                                              coords,
++                                                              paint_options,
++                                                              fade_point);
++
++      gimp_image_get_foreground (image, context, gimp_drawable_type (drawable), col);
++      col[area->bytes - 1] = OPAQUE_OPACITY;
++      shade_region (&tempPR, &blendPR, col, ROUND (blending_rate * 255.0));
++
++      /* re-initialize the tempPR */
++      pixel_region_init_data (&tempPR, smudge->blending_data,
++                              smudge->accumPR.bytes,
++                              smudge->accumPR.rowstride,
++                              area->x - x,
++                              area->y - y,
++                              area->width,
++                              area->height);
++    }
++

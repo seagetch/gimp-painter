@@ -1,0 +1,39 @@
+Xvfb verified: 127.0.0.1:94, 1080x1920x24, authenticated accepted, empty authority rejected
+1/1 gimp:app / gimp-painter-smudge FAIL             1.19s   killed by signal 6 SIGABRT
+>>> GIMP_TESTING_PLUGINDIRS=/workspace/shared/gimp-native-secondary/build/plug-ins/common MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 LD_LIBRARY_PATH=/workspace/shared/gimp-native-secondary/build/libgimpconfig:/workspace/shared/gimp-native-secondary/build/libgimpbase:/workspace/shared/gimp-native-secondary/build/libgimpcolor:/workspace/shared/gimp-native-secondary/build/libgimpmath:/workspace/shared/gimp-native-secondary/build/libgimpwidgets:/workspace/shared/gimp-native-secondary/build/libgimpmodule:/workspace/shared/gimp-native-secondary/build/libgimpthumb:/workspace/shared/gimp-native-secondary/prefix/lib/x86_64-linux-gnu:/workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu GIMP_TESTING_ABS_TOP_BUILDDIR=/workspace/shared/gimp-native-secondary/build GIMP_TESTING_ABS_TOP_SRCDIR=/workspace/shared/gimp-native-secondary/source UI_TEST=yes MESON_TEST_ITERATION=1 MALLOC_PERTURB_=214 UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 /workspace/shared/gimp-native-secondary/build/app/tests/gimp-painter-smudge -p /painter/smudge/initial-zero-opacity
+――――――――――――――――――――――――――――――――――――― ✀  ―――――――――――――――――――――――――――――――――――――
+stdout:
+TAP version 14
+# random seed: R02S0eb2cd977c193010bec08a0eb9b95398
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?
+# Start of painter tests
+# Start of smudge tests
+# old initial seed variant=0 target=(49,16) expectedR=40 actualR=220
+not ok /painter/smudge/initial-zero-opacity - ERROR:../source/app/tests/test-painter-smudge-initial-sampling.inc:30:void initial_zero_opacity_sampling(): assertion failed (pixels[(y*64+x)*4] == expected): (220 == 40)
+Bail out!
+stderr:
+Failed to parse tag cache: No such file or directory
+TRACE opacity=0 coords=16,16 hasaccum=0
+TRACE seed=40,120,70,255 size=27
+TRACE opacity=0 coords=22,16 hasaccum=1
+TRACE opacity=0 coords=28,16 hasaccum=1
+TRACE opacity=0 coords=34,16 hasaccum=1
+TRACE opacity=0 coords=40,16 hasaccum=1
+TRACE opacity=0 coords=46,16 hasaccum=1
+**
+ERROR:../source/app/tests/test-painter-smudge-initial-sampling.inc:30:void initial_zero_opacity_sampling(): assertion failed (pixels[(y*64+x)*4] == expected): (220 == 40)
+――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+
+
+Summary of Failures:
+
+1/1 gimp:app / gimp-painter-smudge FAIL             1.19s   killed by signal 6 SIGABRT
+
+Ok:                 0   
+Expected Fail:      0   
+Fail:               1   
+Unexpected Pass:    0   
+Skipped:            0   
+Timeout:            0   
+
+Full log written to /workspace/shared/gimp-native-secondary/build/meson-logs/testlog.txt

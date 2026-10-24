@@ -1,0 +1,12 @@
+-                          bytes, bytes * smudge->accum_size,
+-                          0,
+-                          0,
+-                          smudge->accum_size,
+-                          smudge->accum_size);
++                          bytes, bytes * w,
++                          area->x - x,
++                          area->y - y,
++                          area->width,
++                          area->height);
++
++  brush_core->ignore_scale = FALSE;

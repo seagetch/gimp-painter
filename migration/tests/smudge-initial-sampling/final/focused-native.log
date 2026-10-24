@@ -1,0 +1,5 @@
+[01m[K../source/app/tests/painter-smudge-trace.cpp:[m[K In function ‘[01m[Kint[01;32m[K main[m[K(int, char**)[m[K’:
+[01m[K../source/app/tests/painter-smudge-trace.cpp:81:117:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Klist[m[K’ [[01;35m[K-Wunused-variable[m[K]
+   81 |   GimpPaintCore*core=GIMP_PAINT_CORE(g_object_new(GIMP_TYPE_PAINTER_SMUDGE,"undo-desc","smudge oracle",NULL));GList [01;35m[Klist[m[K={d,NULL,NULL};
+      |                                                                                                                     [01;35m[K^~~~[m[K
+[('gimp-painter-smudge', [], 0), ('painter-smudge-trace', [], 0), ('painter-smudge-trace', ['owned'], 0)]

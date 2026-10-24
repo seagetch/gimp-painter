@@ -1,0 +1,21 @@
+import pathlib,json,hashlib,shutil,tarfile
+D=pathlib.Path('/workspace/shared/gimp-native-secondary');R=pathlib.Path('/workspace/scratch/0015fc5d1a03/gimp-painter');O=D/'smudge-initial-sampling/final';O.mkdir(parents=True,exist_ok=True)
+S=D/'source';prior=D/'smudge-initial-sampling/corrected-sanitizers'
+focused=json.loads((prior/'focused-native.json').read_text());pixels=json.loads((prior/'focused-pixels.json').read_text());held=json.loads((prior/'held-source-isolation.json').read_text())
+for p,h in focused['sources_sha256'].items():assert hashlib.sha256((S/p).read_bytes()).hexdigest()==h,p
+assert not focused['changed_during_run'] and all(r['exit_code']==0 for r in focused['runs'])
+for row in held['rows']:
+ p=S/row['path']
+ if row.get('native_exists') is False:assert not p.exists()
+ else:assert hashlib.sha256(p.read_bytes()).hexdigest()==row['sha256']
+for p in (R/'migration/fixtures/legacy-smudge-initial-order').iterdir():
+ if p.is_file():shutil.copyfile(p,S/p.relative_to(R))
+paths=set(focused['sources_sha256'])|set(pixels['sources_sha256'])|{r['path'] for r in held['rows'] if r.get('native_exists') is not False}
+paths.update(['app/tests/meson.build','app/paint/painter-smudge/meson.build','migration/tests/compare_smudge_strokes.py','migration/tests/compare_smudge_pixels.py','migration/tests/run_smudge_pixels_sanitizers.py','migration/fixtures/legacy-smudge-pixels/pixels.tsv.gz'])
+paths.update(str(p.relative_to(R)) for p in (R/'migration/fixtures/legacy-smudge-initial-order').iterdir() if p.is_file())
+seal={p:hashlib.sha256((S/p).read_bytes()).hexdigest() for p in sorted(paths)}
+(O/'source-before-normal-build.json').write_text(json.dumps(seal,indent=2)+'\n')
+with tarfile.open(O/'tested-sources.tar.gz','w:gz') as t:
+ for p in seal:t.add(S/p,arcname=p)
+for n in ['focused-native.json','focused-native.log','focused-pixels.json','focused-pixels.log','held-source-isolation.json']:shutil.copyfile(prior/n,O/n)
+print(len(seal),'scoped normal-before-build inputs; focused reports retain independent before-compile source hashes')

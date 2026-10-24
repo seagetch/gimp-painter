@@ -1,0 +1,46 @@
+Xvfb verified: 127.0.0.1:92, 1080x1920x24, authenticated accepted, empty authority rejected
+1/1 gimp:app / gimp-painter-smudge FAIL             1.11s   killed by signal 6 SIGABRT
+>>> MALLOC_PERTURB_=160 UI_TEST=yes MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 LD_LIBRARY_PATH=/workspace/shared/gimp-native-secondary/build/libgimpconfig:/workspace/shared/gimp-native-secondary/build/libgimpbase:/workspace/shared/gimp-native-secondary/build/libgimpcolor:/workspace/shared/gimp-native-secondary/build/libgimpmath:/workspace/shared/gimp-native-secondary/build/libgimpwidgets:/workspace/shared/gimp-native-secondary/build/libgimpmodule:/workspace/shared/gimp-native-secondary/build/libgimpthumb:/workspace/shared/gimp-native-secondary/prefix/lib/x86_64-linux-gnu:/workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu GIMP_TESTING_PLUGINDIRS=/workspace/shared/gimp-native-secondary/build/plug-ins/common GIMP_TESTING_ABS_TOP_BUILDDIR=/workspace/shared/gimp-native-secondary/build UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 MESON_TEST_ITERATION=1 GIMP_TESTING_ABS_TOP_SRCDIR=/workspace/shared/gimp-native-secondary/source /workspace/shared/gimp-native-secondary/build/app/tests/gimp-painter-smudge
+――――――――――――――――――――――――――――――――――――― ✀  ―――――――――――――――――――――――――――――――――――――
+stdout:
+TAP version 14
+# random seed: R02S4dc1db9b840259340e98aa5de3b0d4af
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?
+1..24
+# Start of painter tests
+# Start of smudge tests
+ok 1 /painter/smudge/reuse-undo
+ok 2 /painter/smudge/cancel
+ok 3 /painter/smudge/dispose
+ok 4 /painter/smudge/start-cancel
+ok 5 /painter/smudge/publication-cancel
+ok 6 /painter/smudge/core-loss
+ok 7 /painter/smudge/image-loss
+ok 8 /painter/smudge/invalid-axes
+ok 9 /painter/smudge/external-edit
+ok 10 /painter/smudge/invalid-vfunc
+ok 11 /painter/smudge/paused-segment
+ok 12 /painter/smudge/nested-native-start
+ok 13 /painter/smudge/unowned-start-refused
+# actual positive-pressure native Smudge dabs=0
+not ok /painter/smudge/initial-zero-opacity - ERROR:../source/app/tests/test-painter-smudge-initial-sampling.inc:37:void initial_zero_opacity_sampling(): assertion failed (initial_positive_dabs > 0): (0 > 0)
+Bail out!
+stderr:
+Failed to parse tag cache: No such file or directory
+**
+ERROR:../source/app/tests/test-painter-smudge-initial-sampling.inc:37:void initial_zero_opacity_sampling(): assertion failed (initial_positive_dabs > 0): (0 > 0)
+――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+
+
+Summary of Failures:
+
+1/1 gimp:app / gimp-painter-smudge FAIL             1.11s   killed by signal 6 SIGABRT
+
+Ok:                 0   
+Expected Fail:      0   
+Fail:               1   
+Unexpected Pass:    0   
+Skipped:            0   
+Timeout:            0   
+
+Full log written to /workspace/shared/gimp-native-secondary/build/meson-logs/testlog.txt

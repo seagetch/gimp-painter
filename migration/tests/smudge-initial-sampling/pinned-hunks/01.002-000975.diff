@@ -1,0 +1,4 @@
+-  area = gimp_paint_core_get_paint_area (paint_core, drawable, paint_options,
++  brush_core->ignore_scale = TRUE;
++
++  area  = gimp_paint_core_get_paint_area (paint_core, drawable, paint_options,

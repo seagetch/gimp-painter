@@ -1,0 +1,9 @@
+{
+  "name": "gimp:app / gimp-painter-smudge",
+  "result": "FAIL",
+  "returncode": -6,
+  "duration": 1.09250807762146,
+  "stdout": "TAP version 14\n# random seed: R02Sd3e81ba843da2b951ddcf375368817e0\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# Start of painter tests\n# Start of smudge tests\n# old initial seed variant=0 target=(49,16) expectedR=40 actualR=220\nnot ok /painter/smudge/initial-zero-opacity - ERROR:../source/app/tests/test-painter-smudge-initial-sampling.inc:27:void initial_zero_opacity_sampling(): assertion failed (pixels[(y*64+x)*4] == expected): (220 == 40)\nBail out!\n",
+  "stderr": "Failed to parse tag cache: No such file or directory\n**\nERROR:../source/app/tests/test-painter-smudge-initial-sampling.inc:27:void initial_zero_opacity_sampling(): assertion failed (pixels[(y*64+x)*4] == expected): (220 == 40)\n",
+  "executable_sha256": "941749920cdf0a63cbc9523b04466c2a21cb0deedaf2eca768bb58acc87c94dc"
+}

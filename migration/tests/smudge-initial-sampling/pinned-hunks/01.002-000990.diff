@@ -1,0 +1,50 @@
++  brush_core->ignore_scale = FALSE;
++
++  {
++    gint brush_width,brush_height;
++    gint x, y;
++    gint x1, y1, x2, y2;
++    gint drawable_width, drawable_height;
++    
++    gimp_brush_core_eval_transform_dynamics (brush_core,
++                                             drawable,
++                                             paint_options,
++                                             coords);
++    /* FIXME: following code is simply copied from gimp_brush_core_clamp_scale */
++    {
++      TempBuf *mask = brush_core->main_brush->mask;
++
++      /* ensure that the final brush mask remains >= 0.5 pixel along both axes */
++      brush_core->scale = MAX (0.5 / (gfloat) MIN (mask->width, mask->height), brush_core->scale);
++    }
++
++    gimp_brush_transform_size (brush_core->brush,
++                               brush_core->scale, brush_core->aspect_ratio, brush_core->angle,
++                               &brush_width, &brush_height);
++
++    /*  adjust the x and y coordinates to the upper left corner of the brush  */
++    x = (gint) floor (coords->x) - (brush_width  / 2);
++    y = (gint) floor (coords->y) - (brush_height / 2);
++
++    drawable_width  = gimp_item_get_width  (GIMP_ITEM (drawable));
++    drawable_height = gimp_item_get_height (GIMP_ITEM (drawable));
++
++    x1 = CLAMP (x - 1, 0, drawable_width);
++    y1 = CLAMP (y - 1, 0, drawable_height);
++    x2 = CLAMP (x + brush_width  + 1, 0, drawable_width);
++    y2 = CLAMP (y + brush_height + 1, 0, drawable_height);
++
++    /*  configure the canvas buffer  */
++    if ((x2 - x1) && (y2 - y1))
++      {
++        gint bytes;
++
++        bytes = gimp_drawable_bytes_with_alpha (drawable);
++
++        old_canvas_buf         = paint_core->canvas_buf;
++        paint_core->canvas_buf = temp_buf_subwindow (paint_core->canvas_buf,
++                                                     x1, y1,
++                                                     (x2 - x1), (y2 - y1));
++      }
++  }
++  
