@@ -1,0 +1,32 @@
+{
+  "legacy_commit": "afa43fae3e920210146abed514f136fd49f671b5",
+  "legacy_sources": {
+    "app/core/gimpparamspecs.c": {
+      "blob": "5250c380ddef2c82ce346fba008020bac99051e8",
+      "sha256": "884a7dfe9e1a38a91ed2b5907a0b08cf1fec3f5c74af57f07455e5cb984cbfab"
+    },
+    "app/pdb/gimp-pdb-compat.c": {
+      "blob": "3258321a876bf10f00eccfa59b50ba0aad0cd0bd",
+      "sha256": "20d4e7c3c90bf5b6e8f60ccc2afe5e00086f2b7555be520fefc040649eae2b20"
+    },
+    "libgimp/gimp.h": {
+      "blob": "ab054e4bac64c041e6d063315926a96f88ece19e",
+      "sha256": "5d5b9a95868bd632a2c64b21f715aa0a17eccc4fa7a56012968af4546d29e7fc"
+    },
+    "plug-ins/common/color-exchange.c": {
+      "blob": "2382469cfdd38189983ce39f50a2e82204e8eac1",
+      "sha256": "d2957bc3e8d2680f44920f508768b0cefc0ebf4fb90ac6bb001c447f7c440513"
+    },
+    "app/xcf/xcf-save.c": {
+      "blob": "c894ac58f7866196b21507508cd6c1245d9b64c4",
+      "sha256": "4fa9155d28054d62baa5b7c77bd17e27fbea254df1f68c85c2ac4708de1653ce"
+    }
+  },
+  "old_INT8_value_type": "GimpInt8 derives G_TYPE_UINT; param spec bounds0..G_MAXUINT8; libgimp wire payload guint8",
+  "native_arguments": "Exactly12 slots: three signed INT context placeholders; nine UINT values<=255; copied into typed uint8 options before callbacks. No UCHAR/INT/DOUBLE conversion.",
+  "format_policy": "Existing native Filter context requires alpha-bearing nonlinear U8 RGB owner; RGB/RGBA lower input accepted. Gray/linear/higher precision/no-alpha owner rejected; standalone raw supports original RGB3/RGBA4 domains.",
+  "old_writer_limitation": "INT8 branch calls g_value_get_int despite UINT-derived GimpInt8; cannot reconstruct caller intent from saved byte. Actual wire decoder work remains separate.",
+  "unmodified_outside_new_branch": true,
+  "head_core_blob": "946857c5c55be6ac9c119c0f77c60c1c137d8a2e",
+  "head_core_sha256": "c06ae2d3cbd20ce7dffd86cdd42a9beb54aa542c3f0629d719ba66c9d3240fc9"
+}

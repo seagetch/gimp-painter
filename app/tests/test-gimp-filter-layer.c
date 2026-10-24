@@ -2658,6 +2658,7 @@ static void image_close_during_strong_redo_callbacks (void) { undo_owner_lifetim
 #include "test-filter-sobel-context.inc"
 #include "test-filter-max-rgb-context.inc"
 #include "test-filter-red-eye-contract.inc"
+#include "test-filter-color-exchange-contract.inc"
 #include "test-filter-value-invert-context.inc"
 #include "test-filter-value-invert-capture.inc"
 #include "test-filter-max-rgb-capture.inc"
@@ -2892,6 +2893,16 @@ int main (int argc, char **argv)
   ADD (object_array_arguments_do_not_dangle); ADD (removal_and_undo); ADD (lower_group_failure_and_recovery);
   ADD (filter_flip_legacy_reset_contract);
   ADD (filter_red_eye_native_basic);
+  ADD (filter_color_exchange_native_basic);
+  ADD (exchange_unsupported_formats);
+  ADD (exchange_late_context_routes);
+  ADD (exchange_component_masks);
+  ADD (exchange_cancel_and_resume);
+  ADD (exchange_invalid_arguments);
+  ADD (exchange_outside_selection_no_merge);
+  ADD (exchange_rgb_rgba_inputs);
+  ADD (exchange_noalpha_owner_rejected);
+  ADD (exchange_projection_extent_cache);
   ADD (red_eye_thresholds_and_rejections);
   ADD (red_eye_unsupported_formats);
   ADD (red_eye_component_masks);

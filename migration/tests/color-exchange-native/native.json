@@ -1,0 +1,156 @@
+{
+  "filter_color_exchange_native_basic": {
+    "command": [
+      "/workspace/shared/gimp-clean-aggregate/build/app/tests/gimp-filter-layer",
+      "-p",
+      "/gimp-filter-layer/filter_color_exchange_native_basic"
+    ],
+    "exit_code": 0,
+    "stdout": "TAP version 14\n# random seed: R02S1a5014efa374902b2cbe220da5d46aef\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# Start of gimp-filter-layer tests\nok 1 /gimp-filter-layer/filter_color_exchange_native_basic\n# End of gimp-filter-layer tests\n1..1\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n",
+    "stderr": "",
+    "seconds": 1.1348182999936398
+  },
+  "exchange_unsupported_formats": {
+    "command": [
+      "/workspace/shared/gimp-clean-aggregate/build/app/tests/gimp-filter-layer",
+      "-p",
+      "/gimp-filter-layer/exchange_unsupported_formats"
+    ],
+    "exit_code": 0,
+    "stdout": "TAP version 14\n# random seed: R02Sb0fc87b13a45247e93a2c3352f0f8a0e\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# Start of gimp-filter-layer tests\n# Gray,U16 nonlinear,float linear,U8 linear explicitly rejected;no silent U8 conversion\nok 1 /gimp-filter-layer/exchange_unsupported_formats\n# End of gimp-filter-layer tests\n1..1\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n",
+    "stderr": "",
+    "seconds": 1.0865953660031664
+  },
+  "exchange_component_masks": {
+    "command": [
+      "/workspace/shared/gimp-clean-aggregate/build/app/tests/gimp-filter-layer",
+      "-p",
+      "/gimp-filter-layer/exchange_component_masks"
+    ],
+    "exit_code": 0,
+    "stdout": "TAP version 14\n# random seed: R02Sa5fe488a0c076013797a7fa6f883b98f\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# Start of gimp-filter-layer tests\nok 1 /gimp-filter-layer/exchange_component_masks\n# End of gimp-filter-layer tests\n1..1\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n",
+    "stderr": "",
+    "seconds": 1.4032272289987304
+  },
+  "exchange_late_context_routes": {
+    "command": [
+      "/workspace/shared/gimp-clean-aggregate/build/app/tests/gimp-filter-layer",
+      "-p",
+      "/gimp-filter-layer/exchange_late_context_routes"
+    ],
+    "exit_code": 0,
+    "stdout": "TAP version 14\n# random seed: R02S6795d6d4769ec30c66d653a9c4261671\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# Start of gimp-filter-layer tests\nok 1 /gimp-filter-layer/exchange_late_context_routes\n# slow test /gimp-filter-layer/exchange_late_context_routes executed in 5.37 secs\n# End of gimp-filter-layer tests\n1..1\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n",
+    "stderr": "",
+    "seconds": 6.340264031998231
+  },
+  "exchange_cancel_and_resume": {
+    "command": [
+      "/workspace/shared/gimp-clean-aggregate/build/app/tests/gimp-filter-layer",
+      "-p",
+      "/gimp-filter-layer/exchange_cancel_and_resume"
+    ],
+    "exit_code": 0,
+    "stdout": "TAP version 14\n# random seed: R02Sfdad15a56c60ce854578d002f044f717\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# Start of gimp-filter-layer tests\n# actual vector RUNNING and spill IMPORTING cancel retain prior cache;later source update completes\nok 1 /gimp-filter-layer/exchange_cancel_and_resume\n# End of gimp-filter-layer tests\n1..1\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n",
+    "stderr": "",
+    "seconds": 1.5296106650057482
+  },
+  "exchange_invalid_arguments": {
+    "command": [
+      "/workspace/shared/gimp-clean-aggregate/build/app/tests/gimp-filter-layer",
+      "-p",
+      "/gimp-filter-layer/exchange_invalid_arguments"
+    ],
+    "exit_code": 0,
+    "stdout": "TAP version 14\n# random seed: R02S8dc6316b6afacfa053a80ace402a904b\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# Start of gimp-filter-layer tests\nok 1 /gimp-filter-layer/exchange_invalid_arguments\n# End of gimp-filter-layer tests\n1..1\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n",
+    "stderr": "",
+    "seconds": 1.0399157159990864
+  },
+  "exchange_outside_selection_no_merge": {
+    "command": [
+      "/workspace/shared/gimp-clean-aggregate/build/app/tests/gimp-filter-layer",
+      "-p",
+      "/gimp-filter-layer/exchange_outside_selection_no_merge"
+    ],
+    "exit_code": 0,
+    "stdout": "TAP version 14\n# random seed: R02Sf6b659ed1d775567493dec23d2472292\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# Start of gimp-filter-layer tests\nok 1 /gimp-filter-layer/exchange_outside_selection_no_merge\n# End of gimp-filter-layer tests\n1..1\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n",
+    "stderr": "",
+    "seconds": 1.5249439969993546
+  },
+  "exchange_rgb_rgba_inputs": {
+    "command": [
+      "/workspace/shared/gimp-clean-aggregate/build/app/tests/gimp-filter-layer",
+      "-p",
+      "/gimp-filter-layer/exchange_rgb_rgba_inputs"
+    ],
+    "exit_code": 0,
+    "stdout": "TAP version 14\n# random seed: R02S90fd9e350620bbdf7834cd9541957170\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# Start of gimp-filter-layer tests\nok 1 /gimp-filter-layer/exchange_rgb_rgba_inputs\n# End of gimp-filter-layer tests\n1..1\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n",
+    "stderr": "",
+    "seconds": 1.0952279529956286
+  },
+  "exchange_noalpha_owner_rejected": {
+    "command": [
+      "/workspace/shared/gimp-clean-aggregate/build/app/tests/gimp-filter-layer",
+      "-p",
+      "/gimp-filter-layer/exchange_noalpha_owner_rejected"
+    ],
+    "exit_code": 0,
+    "stdout": "TAP version 14\n# random seed: R02Sdeb3c362d8acc38c7cb8e949f62f0f83\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# Start of gimp-filter-layer tests\nok 1 /gimp-filter-layer/exchange_noalpha_owner_rejected\n# End of gimp-filter-layer tests\n1..1\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n",
+    "stderr": "",
+    "seconds": 1.0699750620042323
+  },
+  "exchange_projection_extent_cache": {
+    "command": [
+      "/workspace/shared/gimp-clean-aggregate/build/app/tests/gimp-filter-layer",
+      "-p",
+      "/gimp-filter-layer/exchange_projection_extent_cache"
+    ],
+    "exit_code": 0,
+    "stdout": "TAP version 14\n# random seed: R02Sfb90d235fb6526d9b83fff17f5893bac\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# Start of gimp-filter-layer tests\nok 1 /gimp-filter-layer/exchange_projection_extent_cache\n# End of gimp-filter-layer tests\n1..1\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n",
+    "stderr": "",
+    "seconds": 1.0862540529997204
+  },
+  "filter_red_eye_native_basic": {
+    "command": [
+      "/workspace/shared/gimp-clean-aggregate/build/app/tests/gimp-filter-layer",
+      "-p",
+      "/gimp-filter-layer/filter_red_eye_native_basic"
+    ],
+    "exit_code": 0,
+    "stdout": "TAP version 14\n# random seed: R02S488679ad4581b5986ba7d088c91a7f24\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# Start of gimp-filter-layer tests\nok 1 /gimp-filter-layer/filter_red_eye_native_basic\n# End of gimp-filter-layer tests\n1..1\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n",
+    "stderr": "",
+    "seconds": 1.092265088998829
+  },
+  "red_eye_component_masks": {
+    "command": [
+      "/workspace/shared/gimp-clean-aggregate/build/app/tests/gimp-filter-layer",
+      "-p",
+      "/gimp-filter-layer/red_eye_component_masks"
+    ],
+    "exit_code": 0,
+    "stdout": "TAP version 14\n# random seed: R02S897ddfdac3566d9ec78b32ae110b48dd\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# Start of gimp-filter-layer tests\nok 1 /gimp-filter-layer/red_eye_component_masks\n# End of gimp-filter-layer tests\n1..1\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n",
+    "stderr": "",
+    "seconds": 1.2882077760004904
+  },
+  "red_eye_invalid_arguments": {
+    "command": [
+      "/workspace/shared/gimp-clean-aggregate/build/app/tests/gimp-filter-layer",
+      "-p",
+      "/gimp-filter-layer/red_eye_invalid_arguments"
+    ],
+    "exit_code": 0,
+    "stdout": "TAP version 14\n# random seed: R02Sfc12840ab9b88886bdad41980a0d476e\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# Start of gimp-filter-layer tests\n# six malformed/absent definitions retained but never executed;cache unchanged\nok 1 /gimp-filter-layer/red_eye_invalid_arguments\n# End of gimp-filter-layer tests\n1..1\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n",
+    "stderr": "",
+    "seconds": 1.0195922470011283
+  },
+  "filter_gaussian_attributes_contract": {
+    "command": [
+      "/workspace/shared/gimp-clean-aggregate/build/app/tests/gimp-filter-layer",
+      "-p",
+      "/gimp-filter-layer/filter_gaussian_attributes_contract"
+    ],
+    "exit_code": 0,
+    "stdout": "TAP version 14\n# random seed: R02Sf1e3049add23f4bfe1f0436b16c23dd2\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# Start of gimp-filter-layer tests\n# scene1 mode=0 opacity=0.0 mask=0:ordinary-cache projection equal;GEGL reads start no runner;completed cache unchanged\n# scene2 mode=0 opacity=0.0 mask=128:ordinary-cache projection equal;GEGL reads start no runner;completed cache unchanged\n# scene3 mode=0 opacity=0.0 mask=255:ordinary-cache projection equal;GEGL reads start no runner;completed cache unchanged\n# scene4 mode=0 opacity=0.5 mask=0:ordinary-cache projection equal;GEGL reads start no runner;completed cache unchanged\n# scene5 mode=0 opacity=0.5 mask=128:ordinary-cache projection equal;GEGL reads start no runner;completed cache unchanged\n# scene6 mode=0 opacity=0.5 mask=255:ordinary-cache projection equal;GEGL reads start no runner;completed cache unchanged\n# scene7 mode=0 opacity=1.0 mask=0:ordinary-cache projection equal;GEGL reads start no runner;completed cache unchanged\n# scene8 mode=0 opacity=1.0 mask=128:ordinary-cache projection equal;GEGL reads start no runner;completed cache unchanged\n# scene9 mode=0 opacity=1.0 mask=255:ordinary-cache projection equal;GEGL reads start no runner;completed cache unchanged\n# scene10 mode=3 opacity=0.0 mask=0:ordinary-cache projection equal;GEGL reads start no runner;completed cache unchanged\n# scene11 mode=3 opacity=0.0 mask=128:ordinary-cache projection equal;GEGL reads start no runner;completed cache unchanged\n# scene12 mode=3 opacity=0.0 mask=255:ordinary-cache projection equal;GEGL reads start no runner;completed cache unchanged\n# scene13 mode=3 opacity=0.5 mask=0:ordinary-cache projection equal;GEGL reads start no runner;completed cache unchanged\n# scene14 mode=3 opacity=0.5 mask=128:ordinary-cache projection equal;GEGL reads start no runner;completed cache unchanged\n# scene15 mode=3 opacity=0.5 mask=255:ordinary-cache projection equal;GEGL reads start no runner;completed cache unchanged\n# scene16 mode=3 opacity=1.0 mask=0:ordinary-cache projection equal;GEGL reads start no runner;completed cache unchanged\n# scene17 mode=3 opacity=1.0 mask=128:ordinary-cache projection equal;GEGL reads start no runner;completed cache unchanged\n# scene18 mode=3 opacity=1.0 mask=255:ordinary-cache projection equal;GEGL reads start no runner;completed cache unchanged\n# scene19 mode=65 opacity=0.0 mask=0:ordinary-cache projection equal;GEGL reads start no runner;completed cache unchanged\n# scene20 mode=65 opacity=0.0 mask=128:ordinary-cache projection equal;GEGL reads start no runner;completed cache unchanged\n# scene21 mode=65 opacity=0.0 mask=255:ordinary-cache projection equal;GEGL reads start no runner;completed cache unchanged\n# scene22 mode=65 opacity=0.5 mask=0:ordinary-cache projection equal;GEGL reads start no runner;completed cache unchanged\n# scene23 mode=65 opacity=0.5 mask=128:ordinary-cache projection equal;GEGL reads start no runner;completed cache unchanged\n# scene24 mode=65 opacity=0.5 mask=255:ordinary-cache projection equal;GEGL reads start no runner;completed cache unchanged\n# scene25 mode=65 opacity=1.0 mask=0:ordinary-cache projection equal;GEGL reads start no runner;completed cache unchanged\n# scene26 mode=65 opacity=1.0 mask=128:ordinary-cache projection equal;GEGL reads start no runner;completed cache unchanged\n# scene27 mode=65 opacity=1.0 mask=255:ordinary-cache projection equal;GEGL reads start no runner;completed cache unchanged\n# 27 actual Gaussian completed-cache scenes;54 ordinary-layer projection comparisons;18 independent Normalcolor checks;no default Edge\nok 1 /gimp-filter-layer/filter_gaussian_attributes_contract\n# End of gimp-filter-layer tests\n1..1\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n",
+    "stderr": "",
+    "seconds": 1.5204758530016989
+  }
+}

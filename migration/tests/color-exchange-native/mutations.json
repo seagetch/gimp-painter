@@ -1,0 +1,58 @@
+[
+  {
+    "name": "omit-uint8-domain",
+    "command": [
+      "/workspace/shared/gimp-clean-aggregate/build/app/tests/gimp-filter-layer",
+      "-p",
+      "/gimp-filter-layer/exchange_invalid_arguments"
+    ],
+    "exit_code": -6,
+    "stdout": "TAP version 14\n# random seed: R02Se0e8241467670d878099db6da589f26e\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# Start of gimp-filter-layer tests\nnot ok /gimp-filter-layer/exchange_invalid_arguments - ERROR:../source/app/tests/test-filter-max-rgb-context.inc:60:max_rgb_wait: assertion failed (gimp_filter_layer_get_state (filter) == expected): (0 == 6)\nBail out!\n",
+    "stderr": "**\nERROR:../source/app/tests/test-filter-max-rgb-context.inc:60:max_rgb_wait: assertion failed (gimp_filter_layer_get_state (filter) == expected): (0 == 6)\n",
+    "seconds": 90.96264858599898,
+    "source_sha256": "a136f2d9f2a9d49aabafe12df0b40da56a56890a70facc62ba64675a6e804c67",
+    "mutated_sha256": "ba200c51d7a658ef254a26b4baf08868ae686524ed871d1430c2ce0ee9b367de"
+  },
+  {
+    "name": "wrong-to-slots",
+    "command": [
+      "/workspace/shared/gimp-clean-aggregate/build/app/tests/gimp-filter-layer",
+      "-p",
+      "/gimp-filter-layer/filter_color_exchange_native_basic"
+    ],
+    "exit_code": -6,
+    "stdout": "TAP version 14\n# random seed: R02S083b171c30b4b364403230b1db216ada\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# Start of gimp-filter-layer tests\nnot ok /gimp-filter-layer/filter_color_exchange_native_basic - ERROR:../source/app/tests/test-gimp-filter-layer.c:222:pixel: assertion failed (actual[0] == r): (202 == 7)\nBail out!\n",
+    "stderr": "**\nERROR:../source/app/tests/test-gimp-filter-layer.c:222:pixel: assertion failed (actual[0] == r): (202 == 7)\n",
+    "seconds": 1.1794611320001422,
+    "source_sha256": "a136f2d9f2a9d49aabafe12df0b40da56a56890a70facc62ba64675a6e804c67",
+    "mutated_sha256": "befd051e5e43c40d19b063e686d961086d7a5f042aca83e042a3cb1b52b3b97d"
+  },
+  {
+    "name": "omit-start-roi-binding",
+    "command": [
+      "/workspace/shared/gimp-clean-aggregate/build/app/tests/gimp-filter-layer",
+      "-p",
+      "/gimp-filter-layer/filter_color_exchange_native_basic"
+    ],
+    "exit_code": -5,
+    "stdout": "TAP version 14\n# random seed: R02Seb6e1ed624fd2bda89d3cf55428604e1\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# Start of gimp-filter-layer tests\nnot ok /gimp-filter-layer/filter_color_exchange_native_basic - FATAL-ERROR: Filter failed: Invalid captured point selection region\nBail out!\n",
+    "stderr": "",
+    "seconds": 1.1233374000003096,
+    "source_sha256": "a136f2d9f2a9d49aabafe12df0b40da56a56890a70facc62ba64675a6e804c67",
+    "mutated_sha256": "aa5d361d404d1f515f766c814785aa8ac2a9f94ac3c090bcf907601825110230"
+  },
+  {
+    "name": "omit-owner-projection-extent",
+    "command": [
+      "/workspace/shared/gimp-clean-aggregate/build/app/tests/gimp-filter-layer",
+      "-p",
+      "/gimp-filter-layer/exchange_projection_extent_cache"
+    ],
+    "exit_code": -6,
+    "stdout": "TAP version 14\n# random seed: R02Sfc01e89391c03f07987bbcf6ac0c2ba7\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# Start of gimp-filter-layer tests\n# Max RGB first mismatch local=0,0 channel=0 actual=5 expected=188 owner_offset=-2,-1\nnot ok /gimp-filter-layer/exchange_projection_extent_cache - ERROR:../source/app/tests/test-filter-max-rgb-context.inc:82:max_rgb_compare: assertion failed (actual == expected)\nBail out!\n",
+    "stderr": "**\nERROR:../source/app/tests/test-filter-max-rgb-context.inc:82:max_rgb_compare: assertion failed (actual == expected)\n",
+    "seconds": 1.1116925550013548,
+    "source_sha256": "a136f2d9f2a9d49aabafe12df0b40da56a56890a70facc62ba64675a6e804c67",
+    "mutated_sha256": "dc7cdfe709fb6cdc639d3e0d8244796c7964d26e81b451da9a6baf9a76a792e4"
+  }
+]

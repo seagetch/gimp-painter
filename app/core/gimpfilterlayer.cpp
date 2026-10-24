@@ -569,6 +569,84 @@ struct FilterImpl
               }
           }
       }
+    else if (procedure == "plug-in-exchange")
+      {
+        /* New literal compatibility route, not a GEGL name substitution.
+         * Claim malformed/unsupported definitions too: only nonlinear U8 RGB
+         * is admitted, never a silent precision conversion or generic fallback.
+         * Old execution replaces the first three saved scalar context slots. */
+        if (!real && args && args->size () == 12 &&
+            gimp_drawable_get_base_type (GIMP_DRAWABLE (owner)) == GIMP_RGB &&
+            G_VALUE_HOLDS_INT (args->at (0)) && G_VALUE_HOLDS_INT (args->at (1)) &&
+            G_VALUE_HOLDS_INT (args->at (2)) &&
+            [&] { for (std::size_t i = 3; i < 12; ++i)
+                    if (!G_VALUE_HOLDS_UINT (args->at (i)) || g_value_get_uint (args->at (i)) > 255u)
+                      return false;
+                  return true; } ())
+          {
+            const auto width = request.width, height = request.height;
+            const auto layout = gimp_drawable_has_alpha (GIMP_DRAWABLE (owner)) ?
+              FilterColorExchangeLayout::rgba8 : FilterColorExchangeLayout::rgb8;
+            const auto original_bpp = layout == FilterColorExchangeLayout::rgba8 ? 4u : 3u;
+            constexpr auto maximum = std::numeric_limits<std::int32_t>::max ();
+            /* Original exchange allocates/indexes full rows using signed gint
+             * width*bpp, but never multiplies ROI area. Preserve RGB3 versus
+             * RGBA4 owner limits separately from promoted RGBA8 transport. */
+            if (width && height && width <= std::size_t (maximum) / original_bpp && height <= std::size_t (maximum) &&
+                std::uint64_t (width) <= std::uint64_t (std::numeric_limits<std::int64_t>::max ()) / 4 / height &&
+                std::uint64_t (width) <= (std::numeric_limits<std::uint64_t>::max () - 2 * 1024 * 1024) / 17 / height)
+              {
+                const auto region = std::make_shared<FilterSelectionRegion> ();
+                const auto outcome = std::make_shared<FilterProcedureResult> ();
+                FilterColorExchangeOptions options;
+                for (std::size_t i = 0; i < 3; ++i)
+                  {
+                    options.from[i] = std::uint8_t (g_value_get_uint (args->at (3 + i)));
+                    options.to[i] = std::uint8_t (g_value_get_uint (args->at (6 + i)));
+                    options.threshold[i] = std::uint8_t (g_value_get_uint (args->at (9 + i)));
+                  }
+                const auto pixels = std::uint64_t (width) * height;
+                const auto owner_bytes = pixels * 9u;
+                /* Native input + final mask + private native staging: 9 Bpp.
+                 * Two RGBA vectors or files: 8 Bpp. Bounded owner capture/merge
+                 * needs at most eight bytes per transport pixel, and the raw
+                 * wrapper/kernel retain 16 + 32 KiB stack pixel arrays. Spill
+                 * additionally charges the established six RGBA queue chunks.
+                 * These are logical reservations, not process-RSS limits. */
+                const auto bounded = std::uint64_t (FilterScheduler::pixel_budget) * 8 + 48 * 1024;
+                const auto peak = owner_bytes + bounded + (spill ?
+                  std::uint64_t (FilterScheduler::pixel_budget) * 4 * 6 : pixels * 8);
+                request.peak_bytes = std::size_t (std::min (peak,
+                  std::uint64_t (std::numeric_limits<std::size_t>::max ())));
+                if (spill) request.peak_spill_bytes = pixels * 8 + owner_bytes;
+                request.process = [width, height, region, options, layout, channel, outcome]
+                  (const FilterScheduler::Bytes& input, std::atomic<bool>& cancel, FilterScheduler::Bytes& output) {
+                    const auto result = filter_point_shadow_vector (input, width, height, *region,
+                      options, layout, cancel, output, channel);
+                    if (result == FilterPointShadowOutcome::cancelled) return false;
+                    outcome->publish (result == FilterPointShadowOutcome::shadow ?
+                      FilterProcedureDisposition::shadow : FilterProcedureDisposition::no_merge);
+                    return true;
+                  };
+                if (spill)
+                  request.raster_process = [width, height, region, options, layout, channel, outcome]
+                    (FilterRaster& input, FilterRaster& output, std::atomic<bool>& cancel, const FilterRasterFactory&) {
+                      const auto result = filter_point_shadow_raster (input, width, height, *region,
+                        options, layout, cancel, output, channel);
+                      if (result == FilterPointShadowOutcome::cancelled) return false;
+                      outcome->publish (result == FilterPointShadowOutcome::shadow ?
+                        FilterProcedureDisposition::shadow : FilterProcedureDisposition::no_merge);
+                      return true;
+                    };
+                prepared.kernel_region = region;
+                prepared.kernel_validate = [width, height, region, layout] {
+                  filter_color_exchange_shadow_validate (width, height, *region, layout);
+                };
+                prepared.outcome = outcome;
+                prepared.projection_input = true;
+              }
+          }
+      }
     else if (procedure == "plug-in-red-eye-removal")
       {
         /* New literal compatibility route, not a GEGL name substitution.
