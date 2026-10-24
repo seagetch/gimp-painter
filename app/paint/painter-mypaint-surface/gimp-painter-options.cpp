@@ -751,3 +751,12 @@ GimpMypaintOptions *gimp_mypaint_options_new (GimpToolInfo *tool_info)
     return owner.release ();
   });
 }
+
+GimpMypaintBrushMode
+gimp_mypaint_options_get_brush_mode (GimpMypaintOptions *options)
+{
+  g_return_val_if_fail (GIMP_IS_MYPAINT_OPTIONS (options), GIMP_MYPAINT_NORMAL);
+  // Deliberately not the brush-mode property: the pinned original helper
+  // always returned NORMAL, including for other stored modes.
+  return GIMP_MYPAINT_NORMAL;
+}

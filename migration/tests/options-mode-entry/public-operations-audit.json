@@ -1,0 +1,35 @@
+{
+  "legacy_pin": "afa43fae3e920210146abed514f136fd49f671b5",
+  "legacy_sha256": {
+    "app/paint/gimpmypaintoptions.cpp": "2c72f9fbe9a9a6c3d42c838c4d92b2f6d1c3d15ab9cdeecb77f32ae3fce3dc0b",
+    "app/paint/gimpmypaintoptions.h": "9d492476404b110284c0f6cce144cb05504cbb75e232dba40c6863811f23508f",
+    "libgimpbase/gimpbaseenums.h": "593347b39c0762ae62664f6b521d3797264e382cf092cbdc84cc40a1a075cb9f",
+    "app/core/gimptooloptions.c": "8c149c05a47d1cf54e85374fad4de8cac02cd27770fc500a28c1505b80957ed2",
+    "app/core/gimpcontext.c": "7d0300731addeb97ce5eef636f33f6619ccace342cbaf517560039667cc6195d",
+    "app/core/gimpmypaintbrush.cpp": "caa934e55a4414574893393e68fe71b4acef9d34dcb1ccc6f0df3369aae54a89"
+  },
+  "operations": {
+    "get_brush_mode": {
+      "signature": "GimpMypaintBrushMode (GimpMypaintOptions*)",
+      "behavior": "Always NORMAL0, even when property stores1\u20133; invalid instance GLib guard returns NORMAL. No field or draft read. Proposed exact C operation restoration, no model mutation."
+    },
+    "copy_brush_props": {
+      "signature": "void (GimpMypaintOptions*,GimpMypaintOptions*)",
+      "behavior": "Reads brush-size/brush-angle/brush-aspect-ratio into uninitialized doubles, then writes same names; old options subclasses GimpToolOptions and neither class nor context installs these names. No pinned app callers beyond declaration/definition. Existing native inherited properties do not establish old semantic parity. Do not recreate undefined values."
+    },
+    "get_current_brush": {
+      "signature": "GimpMypaintBrush* (GimpMypaintOptions*)",
+      "behavior": "Borrowed options->brush mutable duplicate, NULL before valid selection; not context selected resource. Native draft is immutable Resource in sole Options slot. Returning selected source or temporary snapshot changes identity/mutation/lifetime semantics; unmatched."
+    },
+    "mapping_get_set": {
+      "behavior": "Already restored bounded original signatures; getter float rounding/owned output, setter native wider notifications explicit PARTIAL. Initial absent-old-draft versus native seeded draft remains distinct."
+    },
+    "is_ready": {
+      "behavior": "Legacy nonNULL duplicated brush; initialFALSE, sticky valid selection on NULL change, dispose keeps brush until finalizer. Native seeded draft/explicit clear/closed binding differ. No false active-state alias."
+    },
+    "want_null_motion": {
+      "signature": "gboolean (GimpMypaintBrush*,const GimpCoords*,const GimpCoords*)",
+      "behavior": "Brush class virtual, not Options. Guards brush+coords then invokes vfunc; original defaultTRUE. Held brush provider excludes implementation work. Existing native tool behavior cannot substitute original extensible class contract."
+    }
+  }
+}

@@ -1,0 +1,34 @@
+[
+  {
+    "mutation": "normal-exit",
+    "rejected": true,
+    "returncode": 1,
+    "artifact_hash_updated_to_mutated_bytes": true,
+    "causal_assertion": "assert row['returncode']==0",
+    "assertion_observed": true
+  },
+  {
+    "mutation": "sanitizer-exit",
+    "rejected": true,
+    "returncode": 1,
+    "artifact_hash_updated_to_mutated_bytes": true,
+    "causal_assertion": "assert row['returncode']==0",
+    "assertion_observed": true
+  },
+  {
+    "mutation": "held-provider-count",
+    "rejected": true,
+    "returncode": 1,
+    "artifact_hash_updated_to_mutated_bytes": true,
+    "causal_assertion": "assert len(m['held_providers'])==8",
+    "assertion_observed": true
+  },
+  {
+    "mutation": "post-test-seal",
+    "rejected": true,
+    "returncode": 1,
+    "artifact_hash_updated_to_mutated_bytes": true,
+    "causal_assertion": "assert read('green/post-test-inputs.json')['all_recorded_inputs_unchanged'] is True",
+    "assertion_observed": true
+  }
+]

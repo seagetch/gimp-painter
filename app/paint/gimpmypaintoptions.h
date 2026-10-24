@@ -16,6 +16,21 @@ typedef GimpPainterMybrushOptionsClass GimpMypaintOptionsClass;
 #define GIMP_MYPAINT_OPTIONS(obj) GIMP_PAINTER_MYBRUSH_OPTIONS (obj)
 #define GIMP_IS_MYPAINT_OPTIONS(obj) GIMP_IS_PAINTER_MYBRUSH_OPTIONS (obj)
 
+/* Original source enum values. The native property uses the existing sole
+ * GimpMypaintBrushMode GType; this declaration does not register another type. */
+typedef enum
+{
+  GIMP_MYPAINT_NORMAL = 0,
+  GIMP_MYPAINT_NORMAL_AND_ERASE = 1,
+  GIMP_MYPAINT_LOCK_ALPHA = 2,
+  GIMP_MYPAINT_COLORIZE = 3
+} GimpMypaintBrushMode;
+
+/* Historical rendering helper always returns NORMAL, independently of the
+ * stored brush-mode property and without reading or changing the draft.
+ * Invalid instances retain the original GLib guard diagnostic/default. */
+GimpMypaintBrushMode gimp_mypaint_options_get_brush_mode (GimpMypaintOptions *options);
+
 /* Original symbol, sole native runtime type; not historical class layout. */
 GType gimp_mypaint_options_get_type (void) G_GNUC_CONST;
 /* Transfer-full independent options using only tool_info->gimp and the original
