@@ -1,0 +1,32 @@
+--- a/app/tests/test-painter-compact-options.c
++++ b/app/tests/test-painter-compact-options.c
+@@ -386,11 +386,11 @@
+   /* First focus restores device tools, and image creation attaches the native
+    * dock options. Finish that setup before selecting and snapshotting the
+    * tool whose independent canvas presentation is exercised below. */
+-  GimpDisplayShell *a=new_shell();
+   GimpToolInfo *paint=info("gimp-painter-mypaint-tool"),*rect=info("gimp-rect-select-tool");
+   gimp_context_set_tool(gimp_get_user_context(gimp),paint);
+   GtkWidget *native=gimp_tools_get_tool_options_gui(paint->tool_options);
+   GtkWidget *parent=gtk_widget_get_parent(native);
++  GimpDisplayShell *a=new_shell();
+   g_assert_true (gimp_context_get_tool (gimp_get_user_context (gimp)) == paint);
+   gimp_painter_canvas_ui_set_visible(a,TRUE);drain();
+   g_assert_false(gimp_painter_compact_options_get(native));
+--- a/app/tests/test-painter-rectangle-unit-popup.inc
++++ b/app/tests/test-painter-rectangle-unit-popup.inc
+@@ -164,6 +164,14 @@
+        * a fixed input delay is not a completion condition under load.
+        * Wait for that exact state, retaining a bounded failure and the
+        * original identity oracle (including NULL for non-popover hosts). */
++      if (popover)
++        {
++          rectangle_popup_settle ();
++          rectangle_popup_settle ();
++          gtk_grab_remove (popover);
++          grab = gtk_grab_get_current ();
++          g_test_message ("Negative control: removed restored parent grab");
++        }
+       gint64 deadline = g_get_monotonic_time () + 2 * G_TIME_SPAN_SECOND;
+       while (grab != popover && g_get_monotonic_time () < deadline)
+         {

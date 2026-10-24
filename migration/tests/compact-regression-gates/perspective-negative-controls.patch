@@ -1,0 +1,20 @@
+--- a/app/tests/test-painter-independent-toolbar.inc
++++ b/app/tests/test-painter-independent-toolbar.inc
+@@ -108,6 +108,8 @@
+   /* The restored original options class has its own exact identity while
+    * deliberately adding no controls. Do not confuse that empty subtype with
+    * the base GimpToolOptions used by the earlier toolbar-only port. */
++  if (g_getenv ("GIMP_TEST_NEGATIVE_PERSPECTIVE_METADATA"))
++    tool->tool_options_type = GIMP_TYPE_TOOL_OPTIONS;
+   g_assert_cmpuint (tool->tool_options_type, ==, GIMP_TYPE_PERSPECTIVE_GUIDE_OPTIONS);
+   g_assert_cmpuint (G_OBJECT_TYPE (tool->tool_options), ==, GIMP_TYPE_PERSPECTIVE_GUIDE_OPTIONS);
+   g_assert_cmpuint (g_type_parent (GIMP_TYPE_PERSPECTIVE_GUIDE_OPTIONS), ==, GIMP_TYPE_TOOL_OPTIONS);
+@@ -155,6 +157,8 @@
+           g_object_add_weak_pointer (G_OBJECT (views[i]), &weak[i]);
+           g_assert_true (views[i] != fixture.native);
+           g_assert_null (gtk_widget_get_parent (views[i]));
++          if (g_getenv ("GIMP_TEST_NEGATIVE_PERSPECTIVE_CONTENT"))
++            gtk_box_pack_start (GTK_BOX (views[i]), gtk_label_new ("unexpected control"), FALSE, FALSE, 0);
+           perspective_toolbar_assert_empty (views[i], GTK_ORIENTATION_HORIZONTAL);
+         }
+       g_assert_true (views[0] != views[1]);

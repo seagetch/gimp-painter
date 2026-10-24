@@ -1,0 +1,42 @@
+{
+  "base_package_sha256": "f2703350319822db3e45e6e076e5954b904e4798cee864aac62eb970979d45eb",
+  "files": {
+    "app/tests/test-painter-compact-options.c": {
+      "base": "6d7c06e9b5470f863b00c926b9b38cc8b6b66654d93092c5115111114cf4ff5d",
+      "final": "514d7bfba2b179ce9dc5432c217198faf55e460c05a62946de9945b862aea5ea"
+    },
+    "app/tests/test-painter-rectangle-unit-popup.inc": {
+      "base": "dd7d444f97581d6a312bac2d6762c55ab495f2ce6bbda4221b6afa3c6be4ce8c",
+      "final": "f9f343196729b369343f91503af24a349d0164392ae1c9ef1116d421e0f000fa"
+    },
+    "app/tests/test-painter-independent-toolbar.inc": {
+      "base": "03df2c0e90c92d69d5c05bec6bea060642d6e5f18bbb9d7f923a31039b5c3e30",
+      "final": "7a684350945c0ba836868e6d29007756f7201b7f09baa2527d6e53d157471f1e"
+    }
+  },
+  "unchanged_production_config": "b130c97b1351383d8f15dba34d1c30e45376f46a8c50a79a76d0866ca2102cb9",
+  "base_production_config": "b130c97b1351383d8f15dba34d1c30e45376f46a8c50a79a76d0866ca2102cb9",
+  "binaries": {
+    "compact-three-final-true": "58c1d57a9988263bd7a2f78f1d31e1835215370664028bd5c5196bb3ba7cfead",
+    "compact-diag-true-original": "25cfe585b1a6bc2f4001d72cdf33c20ae892ac8ec760bd0bd8a2c8c9a42ece3c",
+    "compact-original-false": "632ba811f20e1c6e29b987803e8e0463ba4d9d5a96558dc720477814bf70f8bd",
+    "compact-final-true": "e15f79f371e7f4eddb0a96eaef919df7f66097b4cb1533ab0ad766564f2b6db9",
+    "compact-perspective-negative": "684c94ee173f7e43861c80201a1a24f80f358373507a3b863b9f732258cfa15f",
+    "compact-final-false": "4a932474713f55cd962e340f577ff35a8c28bf5ce6fb618d29295987e161f96e",
+    "compact-negative-true": "c2b7fdea91b5d5a0cddc6dcde1e922e579b948cdc52f4570f9cd4397cf4662c5",
+    "compact-three-final-false": "3a17996113ddb187a335466f308dbf835e5593e6a1b75a8794baf0c0195b0b85",
+    "compact-diag-true-wait": "3994083cdfc200cc410a643bacdd1845cb651af4373d2606ef70e5aba56c0987"
+  },
+  "final_binary": "58c1d57a9988263bd7a2f78f1d31e1835215370664028bd5c5196bb3ba7cfead",
+  "full_source_comparison": {
+    "differing_files": [
+      "app/tests/test-painter-compact-options.c",
+      "app/tests/test-painter-rectangle-unit-popup.inc",
+      "app/tests/test-painter-independent-toolbar.inc"
+    ],
+    "excluded_mutable_or_metadata_directories": [
+      ".git",
+      "gimpdir-output"
+    ]
+  }
+}

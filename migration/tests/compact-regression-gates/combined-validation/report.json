@@ -1,0 +1,41 @@
+{
+  "baseline_source_commit": "b35ed653e2f84f8912a5323c0745b7279d02ca13",
+  "baseline_sanitized_public_tree": "401b0bfe263db6a5d03f157c26dd0780b6c1bab3",
+  "logical_task_order": [
+    "29.001/default-oncanvas-native-session",
+    "08.017/dnd-container-notification-contract",
+    "34.015/perspective-exact-clip-border-oracle",
+    "34.015/compact-options-native-oracles"
+  ],
+  "final_gates": {
+    "registrations": 8,
+    "passed_distinct_cases": 199,
+    "canvas": 107,
+    "compact": 62,
+    "perspective": 29,
+    "native_session": 1,
+    "excluded_cases": 0,
+    "perspective_aggregate_scope_skips": "5 registrations intentionally routed into geometry/damage scopes; each executed and passed",
+    "normal_startup_controls": 3,
+    "sanitizers": "not run"
+  },
+  "product_source_equal_to_reviewed_replay": true,
+  "source_files": [
+    "app/config/gimpcoreconfig.c",
+    "app/tests/gimpdir/sessionrc-native-oncanvas",
+    "app/tests/meson.build",
+    "app/tests/test-painter-canvas-ui.c",
+    "app/tests/test-painter-compact-options.c",
+    "app/tests/test-painter-independent-toolbar.inc",
+    "app/tests/test-painter-native-session-ui.c",
+    "app/tests/test-painter-perspective-damage.inc",
+    "app/tests/test-painter-rectangle-unit-popup.inc",
+    "app/tests/test-widget-store-native-dnd.inc",
+    "migration/contracts/multiwindow-toolbar-host.md",
+    "migration/contracts/tcp-portrait-build-environment.md"
+  ],
+  "source_binary_seal_rechecked": true,
+  "normal_screenshots": "real authenticated portrait Xvfb framebuffer; visually reviewed",
+  "normal_shutdown": "SIGTERM after capture, not graceful-quit acceptance",
+  "scope": "native scoped four-task integration; no ASan/full-repository/parent/full-port completion"
+}

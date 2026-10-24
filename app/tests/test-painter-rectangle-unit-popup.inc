@@ -158,7 +158,21 @@ rectangle_popup_assert_menu (GtkWidget *combo, GtkWidget *popover, gboolean show
       }
     }
   else
-    g_assert_true (grab == popover);
+    {
+      /* GtkMenu releases its native X grab on popdown. The resulting host
+       * focus event restores GtkPopover's modal GTK grab asynchronously;
+       * a fixed input delay is not a completion condition under load.
+       * Wait for that exact state, retaining a bounded failure and the
+       * original identity oracle (including NULL for non-popover hosts). */
+      gint64 deadline = g_get_monotonic_time () + 2 * G_TIME_SPAN_SECOND;
+      while (grab != popover && g_get_monotonic_time () < deadline)
+        {
+          g_main_context_iteration (NULL, FALSE);
+          g_usleep (1000);
+          grab = gtk_grab_get_current ();
+        }
+      g_assert_true (grab == popover);
+    }
 }
 
 /* Replacing a native model and restyling must keep the menu hook live. These

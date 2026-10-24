@@ -1,0 +1,28 @@
+{
+  "configure_exit": 0,
+  "build_exit": 0,
+  "steps": 1489,
+  "warnings": {
+    "ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]": 313,
+    "unused variable \u2018dx_old\u2019 [-Wunused-variable]": 1,
+    "unused variable \u2018dy_old\u2019 [-Wunused-variable]": 1,
+    "\u2018void {anonymous}::Canvas::finish_compact_restore(const std::shared_ptr<{anonymous}::Borrow>&)\u2019 defined but not used [-Wunused-function]": 1,
+    "\u2018GtkWidget* {anonymous}::action_button(Canvas&, GtkWidget*, const char*, const char*)\u2019 defined but not used [-Wunused-function]": 1,
+    "comparison of integer expressions of different signedness: \u2018const std::size_t\u2019 {aka \u2018const long unsigned int\u2019} and \u2018int\u2019 [-Wsign-compare]": 1,
+    "\"MIN\" redefined": 1,
+    "\"MAX\" redefined": 1,
+    "this \u2018if\u2019 clause does not guard... [-Wmisleading-indentation]": 2,
+    "no previous declaration for \u2018ownership_box_get_type\u2019 [-Wmissing-declarations]": 1,
+    "this \u2018for\u2019 clause does not guard... [-Wmisleading-indentation]": 1,
+    "unused variable \u2018a\u2019 [-Wunused-variable]": 1
+  },
+  "targets": [
+    "painter-canvas-ui",
+    "painter-compact-options",
+    "painter-perspective-ui",
+    "painter-native-session-ui",
+    "app/gimp-3.0",
+    "image-menu.ui",
+    "dockable-menu.ui"
+  ]
+}

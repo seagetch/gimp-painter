@@ -1,5 +1,6 @@
 /* The toolbar owns a fresh GUI; the dockable keeps its cached GUI and parent. */
 #include "core/gimp-gui.h"
+#include "tools/gimpperspectiveguidetool.h"
 #include "widgets/gimpdialogfactory.h"
 #include "widgets/gimpdockable.h"
 #include "widgets/gimpoverlayframe.h"
@@ -104,7 +105,12 @@ perspective_toolbar_fixture_begin (PerspectiveToolbarFixture *fixture)
   gimp_context_set_tool (context, tool);
   drain ();
   g_assert_true (gimp_context_get_tool (context) == tool);
-  g_assert_true (G_OBJECT_TYPE (tool->tool_options) == GIMP_TYPE_TOOL_OPTIONS);
+  /* The restored original options class has its own exact identity while
+   * deliberately adding no controls. Do not confuse that empty subtype with
+   * the base GimpToolOptions used by the earlier toolbar-only port. */
+  g_assert_cmpuint (tool->tool_options_type, ==, GIMP_TYPE_PERSPECTIVE_GUIDE_OPTIONS);
+  g_assert_cmpuint (G_OBJECT_TYPE (tool->tool_options), ==, GIMP_TYPE_PERSPECTIVE_GUIDE_OPTIONS);
+  g_assert_cmpuint (g_type_parent (GIMP_TYPE_PERSPECTIVE_GUIDE_OPTIONS), ==, GIMP_TYPE_TOOL_OPTIONS);
   g_assert_true (gimp_tool_options_editor_get_tool_options
                   (GIMP_TOOL_OPTIONS_EDITOR (fixture->editor)) == tool->tool_options);
   fixture->native = gimp_tools_get_tool_options_gui (tool->tool_options);
@@ -204,6 +210,29 @@ perspective_guide_toolbar_canvas_switching (void)
   g_assert_true (GTK_IS_BOX (bar));
   panel = gtk_widget_get_ancestor (bar, GIMP_TYPE_OVERLAY_FRAME);
   g_assert_nonnull (panel);
+  {
+    const gchar *screenshot = g_getenv ("GIMP_TEST_PERSPECTIVE_TOOLBAR_SCREENSHOT");
+
+    if (screenshot)
+      {
+        GdkWindow *root = gdk_get_default_root_window ();
+        GdkPixbuf *pixels;
+        GError *error = NULL;
+
+        perspective_toolbar_assert_empty (guide, GTK_ORIENTATION_HORIZONTAL);
+        perspective_toolbar_assert_dock (&fixture);
+        g_assert_true (gtk_widget_get_visible (panel));
+        g_assert_true (gtk_widget_get_mapped (panel));
+        g_assert_true (gtk_widget_get_mapped (guide));
+        g_assert_cmpint (gdk_window_get_width (root), ==, 1080);
+        g_assert_cmpint (gdk_window_get_height (root), ==, 1920);
+        pixels = gdk_pixbuf_get_from_window (root, 0, 0, 1080, 1920);
+        g_assert_nonnull (pixels);
+        g_assert_true (gdk_pixbuf_save (pixels, screenshot, "png", &error, NULL));
+        g_assert_no_error (error);
+        g_object_unref (pixels);
+      }
+  }
   for (guint i = 0; i < G_N_ELEMENTS (horizontal_toolbar_unsupported); i++)
     {
       GtkWidget *populated;

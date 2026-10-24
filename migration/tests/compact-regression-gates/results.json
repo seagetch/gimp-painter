@@ -1,0 +1,804 @@
+{
+  "runtime": {
+    "gtk": "3.24.49",
+    "gegl": "0.4.62",
+    "display": "authenticated loopback Xvfb 1080x1920x24",
+    "oncanvas_default_final": true
+  },
+  "cases": [
+    {
+      "case": "true-popup-red",
+      "exit_status": 250,
+      "passed_tests": [],
+      "failed_tests": [
+        "/painter-compact-options/rectangle-units-real-popup-events"
+      ],
+      "assertions": [
+        "ERROR:../gimp-compact-regression-src/app/tests/test-painter-rectangle-unit-popup.inc:175:rectangle_popup_assert_menu: 'grab == popover' should be TRUE"
+      ],
+      "log_sha256": "b389395f1a5ce4fecc9c8b3a1e5e988f8ceaacb049ecfa612afa8455a0cb7d90",
+      "last_popup_row": "gimp-rect-select-tool: size-unit",
+      "menu_open_count_in_row": 2,
+      "dismissal": "Escape",
+      "purpose": "original-or-exploratory-failure",
+      "skip_count": 0
+    },
+    {
+      "case": "true-popup-trace",
+      "exit_status": 250,
+      "passed_tests": [],
+      "failed_tests": [
+        "/painter-compact-options/rectangle-units-real-popup-events"
+      ],
+      "assertions": [
+        "ERROR:../gimp-compact-regression-src/app/tests/test-painter-rectangle-unit-popup.inc:184:rectangle_popup_assert_menu: 'grab == popover' should be TRUE"
+      ],
+      "log_sha256": "3a8ae639226d0d3af460f307e2090135c210bc9544b5afec60527bd4bf7cd23b",
+      "last_popup_row": "gimp-crop-tool: fixed-unit",
+      "menu_open_count_in_row": 1,
+      "dismissal": "selection/Return",
+      "purpose": "original-or-exploratory-failure",
+      "skip_count": 0
+    },
+    {
+      "case": "true-popup-wait",
+      "exit_status": 0,
+      "passed_tests": [
+        "/painter-compact-options/rectangle-units-real-popup-events"
+      ],
+      "failed_tests": [],
+      "assertions": [],
+      "log_sha256": "e733b23a0955cfe2530f6b01a7ccb91808d8dcdf71702daeb96fd15979025f8a",
+      "purpose": "passing-runtime-case",
+      "skip_count": 0
+    },
+    {
+      "case": "false-popup-original",
+      "exit_status": 0,
+      "passed_tests": [
+        "/painter-compact-options/rectangle-units-real-popup-events"
+      ],
+      "failed_tests": [],
+      "assertions": [],
+      "log_sha256": "b681a7cf7997c3ae914aa3236711235fd38a645cfdff222efd522c5ae7385b5a",
+      "purpose": "passing-runtime-case",
+      "skip_count": 0
+    },
+    {
+      "case": "false-popup-original-repeat",
+      "exit_status": 250,
+      "passed_tests": [],
+      "failed_tests": [
+        "/painter-compact-options/rectangle-units-real-popup-events"
+      ],
+      "assertions": [
+        "ERROR:../gimp-compact-regression-src/app/tests/test-painter-rectangle-unit-popup.inc:161:rectangle_popup_assert_menu: 'grab == popover' should be TRUE"
+      ],
+      "log_sha256": "6fe73c327a148d190d090417dafc53f2a00d36fdfee392cc387875c87885b0a8",
+      "last_popup_row": "gimp-ellipse-select-tool: position-unit",
+      "menu_open_count_in_row": 1,
+      "dismissal": "selection/Return",
+      "purpose": "original-or-exploratory-failure",
+      "skip_count": 0
+    },
+    {
+      "case": "false-popup-final",
+      "exit_status": 0,
+      "passed_tests": [
+        "/painter-compact-options/rectangle-units-real-popup-events"
+      ],
+      "failed_tests": [],
+      "assertions": [],
+      "log_sha256": "adb86b640f7ad78315a604d81b2f6808f04e6da6213c4439d8e52c5ba0415bd5",
+      "purpose": "passing-runtime-case",
+      "skip_count": 0
+    },
+    {
+      "case": "true-popup-final",
+      "exit_status": 0,
+      "passed_tests": [
+        "/painter-compact-options/rectangle-units-real-popup-events"
+      ],
+      "failed_tests": [],
+      "assertions": [],
+      "log_sha256": "734de3d3319238f372808efe24fa7f85fae0dd3db0168219d496da161106d310",
+      "purpose": "passing-runtime-case",
+      "skip_count": 0
+    },
+    {
+      "case": "true-popup-negative",
+      "exit_status": 250,
+      "passed_tests": [],
+      "failed_tests": [
+        "/painter-compact-options/rectangle-units-real-popup-events"
+      ],
+      "assertions": [
+        "ERROR:../gimp-compact-regression-src/app/tests/test-painter-rectangle-unit-popup.inc:182:rectangle_popup_assert_menu: 'grab == popover' should be TRUE"
+      ],
+      "log_sha256": "b2bc07d8dc9d32ca875cad3bef572ff42d83c2aff774b2301392a12bc9d7a104",
+      "last_popup_row": "gimp-crop-tool: position-unit",
+      "menu_open_count_in_row": 1,
+      "dismissal": "selection/Return",
+      "purpose": "injected-negative-control",
+      "skip_count": 0
+    },
+    {
+      "case": "true-transfer-red",
+      "exit_status": 250,
+      "passed_tests": [],
+      "failed_tests": [
+        "/painter-compact-options/canvas-dock-tool-transfer-preference"
+      ],
+      "assertions": [
+        "ERROR:../gimp-compact-regression-src/app/tests/test-painter-compact-options.c:402:canvas_dock_tool_transfer_and_preference: 'find(a->canvas,\"painter-compact-mypaint\",GTK_TYPE_MENU_BUTTON)' should not be NULL"
+      ],
+      "log_sha256": "6add4db451dc551ad5cd845f3872e0a035b332e6ff0cbd12993c0949c947792b",
+      "purpose": "original-or-exploratory-failure",
+      "skip_count": 0
+    },
+    {
+      "case": "false-transfer-original",
+      "exit_status": 250,
+      "passed_tests": [],
+      "failed_tests": [
+        "/painter-compact-options/canvas-dock-tool-transfer-preference"
+      ],
+      "assertions": [
+        "ERROR:../gimp-compact-regression-src/app/tests/test-painter-compact-options.c:394:canvas_dock_tool_transfer_and_preference: 'find(a->canvas,\"painter-compact-mypaint\",GTK_TYPE_MENU_BUTTON)' should not be NULL"
+      ],
+      "log_sha256": "e3bdb2c8ff6db1a86a3023cfd10cafe584633bb72d7e2f92993fd3a374b6549b",
+      "purpose": "original-or-exploratory-failure",
+      "skip_count": 0
+    },
+    {
+      "case": "true-transfer-green",
+      "exit_status": 250,
+      "passed_tests": [],
+      "failed_tests": [
+        "/painter-compact-options/canvas-dock-tool-transfer-preference"
+      ],
+      "assertions": [
+        "ERROR:../gimp-compact-regression-src/app/tests/test-painter-compact-options.c:403:canvas_dock_tool_transfer_and_preference: 'gtk_widget_get_parent(native)==parent' should be TRUE"
+      ],
+      "log_sha256": "8f997101f08fe39ca1565d2312faba664f33556c421b018ba9366cdbbe21ad68",
+      "purpose": "original-or-exploratory-failure",
+      "skip_count": 0
+    },
+    {
+      "case": "true-transfer-initialized",
+      "exit_status": 0,
+      "passed_tests": [
+        "/painter-compact-options/canvas-dock-tool-transfer-preference"
+      ],
+      "failed_tests": [],
+      "assertions": [],
+      "log_sha256": "a268e0309e085f6a00717e76066de578c4570dafdc60ad19822a8aa14e9b518b",
+      "purpose": "passing-runtime-case",
+      "skip_count": 0
+    },
+    {
+      "case": "true-transfer-final",
+      "exit_status": 0,
+      "passed_tests": [
+        "/painter-compact-options/canvas-dock-tool-transfer-preference"
+      ],
+      "failed_tests": [],
+      "assertions": [],
+      "log_sha256": "24004d2dd0d28ceb5adf77413a76d84a70ebf0c371a3535f3436e4de3a87c3ca",
+      "purpose": "passing-runtime-case",
+      "skip_count": 0
+    },
+    {
+      "case": "false-transfer-final",
+      "exit_status": 0,
+      "passed_tests": [
+        "/painter-compact-options/canvas-dock-tool-transfer-preference"
+      ],
+      "failed_tests": [],
+      "assertions": [],
+      "log_sha256": "7d7eed41e1060b4e3f17377caa4db59933eb8ed65476f6c8f3f630923fa07750",
+      "purpose": "passing-runtime-case",
+      "skip_count": 0
+    },
+    {
+      "case": "true-preference-final",
+      "exit_status": 0,
+      "passed_tests": [
+        "/painter-compact-options/native-visibility-preference"
+      ],
+      "failed_tests": [],
+      "assertions": [],
+      "log_sha256": "3f55759e3e6ad57d638dc035b0576cb990c7892787b147864349010d2450242b",
+      "purpose": "passing-runtime-case",
+      "skip_count": 0
+    },
+    {
+      "case": "false-default-confirmation",
+      "exit_status": 250,
+      "passed_tests": [],
+      "failed_tests": [
+        "/painter-compact-options/native-visibility-preference"
+      ],
+      "assertions": [
+        "ERROR:../gimp-compact-regression-src/app/tests/test-painter-compact-options.c:369:native_visibility_preference: 'config->painter_canvas_ui' should be TRUE"
+      ],
+      "log_sha256": "31fb69a832a06effe7898ec216bf829a5b5570f598db8bb3ad7f88edb97c0db7",
+      "purpose": "default-FALSE-control",
+      "skip_count": 0
+    },
+    {
+      "case": "true-transfer-negative",
+      "exit_status": 250,
+      "passed_tests": [],
+      "failed_tests": [
+        "/painter-compact-options/canvas-dock-tool-transfer-preference"
+      ],
+      "assertions": [
+        "ERROR:../gimp-compact-regression-src/app/tests/test-painter-compact-options.c:394:canvas_dock_tool_transfer_and_preference: 'gimp_context_get_tool (gimp_get_user_context (gimp)) == paint' should be TRUE"
+      ],
+      "log_sha256": "a45d7bee79c8ccfb9aa06c319f215f2fee468a508bbf69731660fca98295ec97",
+      "purpose": "injected-negative-control",
+      "skip_count": 0
+    },
+    {
+      "case": "full-true-final",
+      "exit_status": 250,
+      "passed_tests": [
+        "/painter-compact-options/rectangle-units-real-popup-events",
+        "/painter-compact-options/rectangle-units-popup-model-reentry",
+        "/painter-compact-options/rectangle-units-native-baseline",
+        "/painter-compact-options/rectangle-units-numeric-and-sync",
+        "/painter-compact-options/rectangle-units-metadata-and-lifetimes",
+        "/painter-compact-options/rectangle-units-options-lifetime-and-reentry",
+        "/painter-compact-options/rectangle-units-weak-helper-lifetime",
+        "/painter-compact-options/rectangle-units-native-canvas-baseline",
+        "/painter-compact-options/independent-rectangle-toolbar",
+        "/painter-compact-options/rectangle-native-shrink-bounds",
+        "/painter-compact-options/rectangle-shrink-lifecycle",
+        "/painter-compact-options/rectangle-shrink-owner-lifetime-and-reentry",
+        "/painter-compact-options/independent-foreground-toolbar",
+        "/painter-compact-options/independent-text-toolbar",
+        "/painter-compact-options/text-toolbar-model-before-view",
+        "/painter-compact-options/text-toolbar-units-images",
+        "/painter-compact-options/text-toolbar-native-units",
+        "/painter-compact-options/text-toolbar-canvas-popup-lifetime",
+        "/painter-compact-options/foreground-toolbar-model-before-view",
+        "/painter-compact-options/foreground-toolbar-canvas-popup-lifetime",
+        "/painter-compact-options/independent-histogram-toolbar",
+        "/painter-compact-options/histogram-toolbar-native-dialogs",
+        "/painter-compact-options/histogram-toolbar-canvas-popup-lifetime",
+        "/painter-compact-options/independent-vector-toolbar",
+        "/painter-compact-options/vector-selection-actions",
+        "/painter-compact-options/vector-native-dialog-actions",
+        "/painter-compact-options/vector-model-before-view",
+        "/painter-compact-options/vector-path-lifecycle-and-reentry",
+        "/painter-compact-options/independent-align-toolbar",
+        "/painter-compact-options/align-model-before-view",
+        "/painter-compact-options/align-actions-and-reentry",
+        "/painter-compact-options/independent-mypaint-toolbar",
+        "/painter-compact-options/toolbar-lifetime-observer-control",
+        "/painter-compact-options/canvas-toolbar-ref-balance"
+      ],
+      "failed_tests": [
+        "/painter-compact-options/independent-perspective-guide-toolbar"
+      ],
+      "assertions": [
+        "ERROR:../gimp-compact-regression-src/app/tests/test-painter-independent-toolbar.inc:107:perspective_toolbar_fixture_begin: 'G_OBJECT_TYPE (tool->tool_options) == GIMP_TYPE_TOOL_OPTIONS' should be TRUE"
+      ],
+      "log_sha256": "0bbda7f95ab2429038a8d2068b22836951154af0e6225c7657ba91dda16761af",
+      "last_popup_row": "gimp-ellipse-select-tool: fixed-unit height row",
+      "menu_open_count_in_row": 21,
+      "dismissal": "other",
+      "purpose": "original-or-exploratory-failure",
+      "skip_count": 0
+    },
+    {
+      "case": "false-perspective-existing",
+      "exit_status": 250,
+      "passed_tests": [],
+      "failed_tests": [
+        "/painter-compact-options/independent-perspective-guide-toolbar"
+      ],
+      "assertions": [
+        "ERROR:../gimp-compact-regression-src/app/tests/test-painter-independent-toolbar.inc:107:perspective_toolbar_fixture_begin: 'G_OBJECT_TYPE (tool->tool_options) == GIMP_TYPE_TOOL_OPTIONS' should be TRUE"
+      ],
+      "log_sha256": "15a7d30e004d8599691a89ed140b747229d4d42b9ae4636e643d0eab5112bf89",
+      "purpose": "original-or-exploratory-failure",
+      "skip_count": 0
+    },
+    {
+      "case": "true-perspective-final",
+      "exit_status": 0,
+      "passed_tests": [
+        "/painter-compact-options/independent-perspective-guide-toolbar"
+      ],
+      "failed_tests": [],
+      "assertions": [],
+      "log_sha256": "0be4dc747a97fb18f30a9c639ca85c9f49c10c77839d0b38f1b4de1f3670f029",
+      "purpose": "passing-runtime-case",
+      "skip_count": 0
+    },
+    {
+      "case": "true-perspective-canvas-final",
+      "exit_status": 0,
+      "passed_tests": [
+        "/painter-compact-options/perspective-guide-toolbar-canvas-switching"
+      ],
+      "failed_tests": [],
+      "assertions": [],
+      "log_sha256": "616539db4c6ae735585ce1dc3aef05a3b642d3528a0323e17d46876f9be23d4b",
+      "purpose": "passing-runtime-case",
+      "skip_count": 0
+    },
+    {
+      "case": "false-perspective-final",
+      "exit_status": 0,
+      "passed_tests": [
+        "/painter-compact-options/independent-perspective-guide-toolbar"
+      ],
+      "failed_tests": [],
+      "assertions": [],
+      "log_sha256": "b08d819d80672c63a891486bd33bedf37a5848230e40b3e870e543e220e541de",
+      "purpose": "passing-runtime-case",
+      "skip_count": 0
+    },
+    {
+      "case": "false-perspective-canvas-final",
+      "exit_status": 0,
+      "passed_tests": [
+        "/painter-compact-options/perspective-guide-toolbar-canvas-switching"
+      ],
+      "failed_tests": [],
+      "assertions": [],
+      "log_sha256": "1a4b54e64dc3aa9bbfe0d18aba7278dfdbb2ca77b5f858cb9ce06b441a010467",
+      "purpose": "passing-runtime-case",
+      "skip_count": 0
+    },
+    {
+      "case": "true-perspective-metadata-negative",
+      "exit_status": 250,
+      "passed_tests": [],
+      "failed_tests": [
+        "/painter-compact-options/independent-perspective-guide-toolbar"
+      ],
+      "assertions": [
+        "ERROR:../gimp-compact-regression-src/app/tests/test-painter-independent-toolbar.inc:113:perspective_toolbar_fixture_begin: assertion failed (tool->tool_options_type == GIMP_TYPE_PERSPECTIVE_GUIDE_OPTIONS): (<type-id> == <type-id>)"
+      ],
+      "log_sha256": "b544891bea1848a0439b7c51a5acd53245252157b2b7ac0af9a6af9122dcf96c",
+      "purpose": "injected-negative-control",
+      "skip_count": 0
+    },
+    {
+      "case": "true-perspective-content-negative",
+      "exit_status": 250,
+      "passed_tests": [],
+      "failed_tests": [
+        "/painter-compact-options/independent-perspective-guide-toolbar"
+      ],
+      "assertions": [
+        "ERROR:../gimp-compact-regression-src/app/tests/test-painter-independent-toolbar.inc:53:perspective_toolbar_assert_empty: 'children' should be NULL"
+      ],
+      "log_sha256": "fe13407691b24ae824c5f9cfd5069ff0711033ed051de39efb9b3bfc5a2125fb",
+      "purpose": "injected-negative-control",
+      "skip_count": 0
+    },
+    {
+      "case": "full-three-final-true",
+      "exit_status": 0,
+      "passed_tests": [
+        "/painter-compact-options/rectangle-units-real-popup-events",
+        "/painter-compact-options/rectangle-units-popup-model-reentry",
+        "/painter-compact-options/rectangle-units-native-baseline",
+        "/painter-compact-options/rectangle-units-numeric-and-sync",
+        "/painter-compact-options/rectangle-units-metadata-and-lifetimes",
+        "/painter-compact-options/rectangle-units-options-lifetime-and-reentry",
+        "/painter-compact-options/rectangle-units-weak-helper-lifetime",
+        "/painter-compact-options/rectangle-units-native-canvas-baseline",
+        "/painter-compact-options/independent-rectangle-toolbar",
+        "/painter-compact-options/rectangle-native-shrink-bounds",
+        "/painter-compact-options/rectangle-shrink-lifecycle",
+        "/painter-compact-options/rectangle-shrink-owner-lifetime-and-reentry",
+        "/painter-compact-options/independent-foreground-toolbar",
+        "/painter-compact-options/independent-text-toolbar",
+        "/painter-compact-options/text-toolbar-model-before-view",
+        "/painter-compact-options/text-toolbar-units-images",
+        "/painter-compact-options/text-toolbar-native-units",
+        "/painter-compact-options/text-toolbar-canvas-popup-lifetime",
+        "/painter-compact-options/foreground-toolbar-model-before-view",
+        "/painter-compact-options/foreground-toolbar-canvas-popup-lifetime",
+        "/painter-compact-options/independent-histogram-toolbar",
+        "/painter-compact-options/histogram-toolbar-native-dialogs",
+        "/painter-compact-options/histogram-toolbar-canvas-popup-lifetime",
+        "/painter-compact-options/independent-vector-toolbar",
+        "/painter-compact-options/vector-selection-actions",
+        "/painter-compact-options/vector-native-dialog-actions",
+        "/painter-compact-options/vector-model-before-view",
+        "/painter-compact-options/vector-path-lifecycle-and-reentry",
+        "/painter-compact-options/independent-align-toolbar",
+        "/painter-compact-options/align-model-before-view",
+        "/painter-compact-options/align-actions-and-reentry",
+        "/painter-compact-options/independent-mypaint-toolbar",
+        "/painter-compact-options/toolbar-lifetime-observer-control",
+        "/painter-compact-options/canvas-toolbar-ref-balance",
+        "/painter-compact-options/independent-perspective-guide-toolbar",
+        "/painter-compact-options/perspective-guide-toolbar-canvas-switching",
+        "/painter-compact-options/independent-horizontal-inventory",
+        "/painter-compact-options/independent-horizontal-binding",
+        "/painter-compact-options/independent-horizontal-native-handles",
+        "/painter-compact-options/orientation-enum-contract",
+        "/painter-compact-options/orientation-integer-contract",
+        "/painter-compact-options/orientation-property-contract",
+        "/painter-compact-options/orientation-active-callers",
+        "/painter-compact-options/orientation-histogram-current-controls",
+        "/painter-compact-options/native-preview-factory-failure",
+        "/painter-compact-options/native-preview-factory-success",
+        "/painter-compact-options/native-property-controls",
+        "/painter-compact-options/native-enum-integer-helpers",
+        "/painter-compact-options/inventory-all-registered",
+        "/painter-compact-options/common-store-registration-close",
+        "/painter-compact-options/mypaint-store-page-retention",
+        "/painter-compact-options/native-editor-mixed-width",
+        "/painter-compact-options/paint-bidirectional-resource",
+        "/painter-compact-options/popup-repeat",
+        "/painter-compact-options/popup-native-events-window-destroy",
+        "/painter-compact-options/fresh-owner-lifecycle",
+        "/painter-compact-options/mixed-packing-owned-destruction",
+        "/painter-compact-options/native-viewport-composition",
+        "/painter-compact-options/registered-popup-contracts",
+        "/painter-compact-options/reentrant-destruction",
+        "/painter-compact-options/native-visibility-preference",
+        "/painter-compact-options/canvas-dock-tool-transfer-preference"
+      ],
+      "failed_tests": [],
+      "assertions": [],
+      "log_sha256": "9c086be8ee8d334bc23ad4f0d1ca8cc4d8ca564da0c1805f7e5bc4401984a3b8",
+      "purpose": "passing-runtime-case",
+      "skip_count": 0
+    },
+    {
+      "case": "residual-perspective-guide-toolbar-canvas-switching",
+      "exit_status": 250,
+      "passed_tests": [],
+      "failed_tests": [
+        "/painter-compact-options/perspective-guide-toolbar-canvas-switching"
+      ],
+      "assertions": [
+        "ERROR:../gimp-compact-regression-src/app/tests/test-painter-independent-toolbar.inc:107:perspective_toolbar_fixture_begin: 'G_OBJECT_TYPE (tool->tool_options) == GIMP_TYPE_TOOL_OPTIONS' should be TRUE"
+      ],
+      "log_sha256": "bcd933660f07aa4acdbc0c37b1e9c688fefa693b1303c9fac9b80c7a10d71b61",
+      "purpose": "original-or-exploratory-failure",
+      "skip_count": 0
+    },
+    {
+      "case": "residual-independent-horizontal-inventory",
+      "exit_status": 0,
+      "passed_tests": [
+        "/painter-compact-options/independent-horizontal-inventory"
+      ],
+      "failed_tests": [],
+      "assertions": [],
+      "log_sha256": "da2068da76807bb57a4ca86027ab9d1b2f3a0dce6456e58b40a40715096dc580",
+      "purpose": "passing-runtime-case",
+      "skip_count": 0
+    },
+    {
+      "case": "residual-independent-horizontal-binding",
+      "exit_status": 0,
+      "passed_tests": [
+        "/painter-compact-options/independent-horizontal-binding"
+      ],
+      "failed_tests": [],
+      "assertions": [],
+      "log_sha256": "0a9f36dc8f643482492590de592d3a481c91e2bccc05b9b7789632699a04bbc4",
+      "purpose": "passing-runtime-case",
+      "skip_count": 0
+    },
+    {
+      "case": "residual-independent-horizontal-native-handles",
+      "exit_status": 0,
+      "passed_tests": [
+        "/painter-compact-options/independent-horizontal-native-handles"
+      ],
+      "failed_tests": [],
+      "assertions": [],
+      "log_sha256": "c1dd45e0795fd84d6e1892b645ec528aa0b5180110bfbea0854e73379bc945c3",
+      "purpose": "passing-runtime-case",
+      "skip_count": 0
+    },
+    {
+      "case": "residual-orientation-enum-contract",
+      "exit_status": 0,
+      "passed_tests": [
+        "/painter-compact-options/orientation-enum-contract"
+      ],
+      "failed_tests": [],
+      "assertions": [],
+      "log_sha256": "04964233781d25a093a3e300bd69a53aadcc2f7b80017ac803f0e06d3fe14ad3",
+      "purpose": "passing-runtime-case",
+      "skip_count": 0
+    },
+    {
+      "case": "residual-orientation-integer-contract",
+      "exit_status": 0,
+      "passed_tests": [
+        "/painter-compact-options/orientation-integer-contract"
+      ],
+      "failed_tests": [],
+      "assertions": [],
+      "log_sha256": "48bd081116e6890f410996268b5a466da7632772250d5b3bd0b6ef3eb26fc1af",
+      "purpose": "passing-runtime-case",
+      "skip_count": 0
+    },
+    {
+      "case": "residual-orientation-property-contract",
+      "exit_status": 0,
+      "passed_tests": [
+        "/painter-compact-options/orientation-property-contract"
+      ],
+      "failed_tests": [],
+      "assertions": [],
+      "log_sha256": "032e19d2b65939906768fb12abc4c1c5fd5bb5e5a91212057e445c364a675415",
+      "purpose": "passing-runtime-case",
+      "skip_count": 0
+    },
+    {
+      "case": "residual-orientation-active-callers",
+      "exit_status": 0,
+      "passed_tests": [
+        "/painter-compact-options/orientation-active-callers"
+      ],
+      "failed_tests": [],
+      "assertions": [],
+      "log_sha256": "aae802e46c93002715bba5edb9b6c3d02df441425dc2f60f05ec56f9af597ef2",
+      "purpose": "passing-runtime-case",
+      "skip_count": 0
+    },
+    {
+      "case": "residual-orientation-histogram-current-controls",
+      "exit_status": 0,
+      "passed_tests": [
+        "/painter-compact-options/orientation-histogram-current-controls"
+      ],
+      "failed_tests": [],
+      "assertions": [],
+      "log_sha256": "fa9a59d81d325285049b180b396244201f7ca2559fb2b9de4b39b8747f2f6043",
+      "purpose": "passing-runtime-case",
+      "skip_count": 0
+    },
+    {
+      "case": "residual-native-preview-factory-failure",
+      "exit_status": 0,
+      "passed_tests": [
+        "/painter-compact-options/native-preview-factory-failure"
+      ],
+      "failed_tests": [],
+      "assertions": [],
+      "log_sha256": "c7c06e079d75a9eede1cc5b5de8f72f3fbccfc9db7699544f5b9da8b2cf120a5",
+      "purpose": "passing-runtime-case",
+      "skip_count": 0
+    },
+    {
+      "case": "residual-native-preview-factory-success",
+      "exit_status": 0,
+      "passed_tests": [
+        "/painter-compact-options/native-preview-factory-success"
+      ],
+      "failed_tests": [],
+      "assertions": [],
+      "log_sha256": "6d6b8903ef4e672c07070e6cd5f553485a69b0ab2cc603f328c542105856def8",
+      "purpose": "passing-runtime-case",
+      "skip_count": 0
+    },
+    {
+      "case": "residual-native-property-controls",
+      "exit_status": 0,
+      "passed_tests": [
+        "/painter-compact-options/native-property-controls"
+      ],
+      "failed_tests": [],
+      "assertions": [],
+      "log_sha256": "bb534eb22835958e61a2105a7770043ec41367d20f57f107713e73898448629a",
+      "purpose": "passing-runtime-case",
+      "skip_count": 0
+    },
+    {
+      "case": "residual-native-enum-integer-helpers",
+      "exit_status": 0,
+      "passed_tests": [
+        "/painter-compact-options/native-enum-integer-helpers"
+      ],
+      "failed_tests": [],
+      "assertions": [],
+      "log_sha256": "27df2ac39a59d4a8a98ff635b5d1ad7b319d86483edcc1f009d59330db7b449e",
+      "purpose": "passing-runtime-case",
+      "skip_count": 0
+    },
+    {
+      "case": "residual-inventory-all-registered",
+      "exit_status": 0,
+      "passed_tests": [
+        "/painter-compact-options/inventory-all-registered"
+      ],
+      "failed_tests": [],
+      "assertions": [],
+      "log_sha256": "270b6eab044bd68c767d93dfc9e6d5239f13a54bc7a0ec4eae31936b88c0aa36",
+      "purpose": "passing-runtime-case",
+      "skip_count": 0
+    },
+    {
+      "case": "residual-common-store-registration-close",
+      "exit_status": 0,
+      "passed_tests": [
+        "/painter-compact-options/common-store-registration-close"
+      ],
+      "failed_tests": [],
+      "assertions": [],
+      "log_sha256": "9acc0e00193f8e1fee162a97bbce74d3f9ee8efe1a2f708633fd76dfce833c81",
+      "purpose": "passing-runtime-case",
+      "skip_count": 0
+    },
+    {
+      "case": "residual-mypaint-store-page-retention",
+      "exit_status": 0,
+      "passed_tests": [
+        "/painter-compact-options/mypaint-store-page-retention"
+      ],
+      "failed_tests": [],
+      "assertions": [],
+      "log_sha256": "7f17640a80884cc3cd6377de78db55cbbf3fdf2f305246cbb3f5a63184a60661",
+      "purpose": "passing-runtime-case",
+      "skip_count": 0
+    },
+    {
+      "case": "residual-native-editor-mixed-width",
+      "exit_status": 0,
+      "passed_tests": [
+        "/painter-compact-options/native-editor-mixed-width"
+      ],
+      "failed_tests": [],
+      "assertions": [],
+      "log_sha256": "e2eee6d6120e92e8f5947f0cbb896ddc0102ad3dbae9ac74c88f2ddf68539d43",
+      "purpose": "passing-runtime-case",
+      "skip_count": 0
+    },
+    {
+      "case": "residual-paint-bidirectional-resource",
+      "exit_status": 0,
+      "passed_tests": [
+        "/painter-compact-options/paint-bidirectional-resource"
+      ],
+      "failed_tests": [],
+      "assertions": [],
+      "log_sha256": "a741a55413634f37b3c1762bc068e75b33fd029f048dc1f6784352e62af21cef",
+      "purpose": "passing-runtime-case",
+      "skip_count": 0
+    },
+    {
+      "case": "residual-popup-repeat",
+      "exit_status": 0,
+      "passed_tests": [
+        "/painter-compact-options/popup-repeat"
+      ],
+      "failed_tests": [],
+      "assertions": [],
+      "log_sha256": "1e13579e4aa78bef29b2568652e386ac40af8cb761579d67b4cacebb0e1c0e65",
+      "purpose": "passing-runtime-case",
+      "skip_count": 0
+    },
+    {
+      "case": "residual-popup-native-events-window-destroy",
+      "exit_status": 0,
+      "passed_tests": [
+        "/painter-compact-options/popup-native-events-window-destroy"
+      ],
+      "failed_tests": [],
+      "assertions": [],
+      "log_sha256": "7eefae8f3165caf4a25e259a410f17e9a8f901dab355fd91ebb3574398022809",
+      "purpose": "passing-runtime-case",
+      "skip_count": 0
+    },
+    {
+      "case": "residual-fresh-owner-lifecycle",
+      "exit_status": 0,
+      "passed_tests": [
+        "/painter-compact-options/fresh-owner-lifecycle"
+      ],
+      "failed_tests": [],
+      "assertions": [],
+      "log_sha256": "86fd6ec06dab85a2b101c50fe1d46a4b05fd0a3556b9c52cde2d48c29ec8ed65",
+      "purpose": "passing-runtime-case",
+      "skip_count": 0
+    },
+    {
+      "case": "residual-mixed-packing-owned-destruction",
+      "exit_status": 0,
+      "passed_tests": [
+        "/painter-compact-options/mixed-packing-owned-destruction"
+      ],
+      "failed_tests": [],
+      "assertions": [],
+      "log_sha256": "4e021d0debb54f19604cb8ffe281c8d3c6bf2d3faccf9f54200ec7e75cc0263c",
+      "purpose": "passing-runtime-case",
+      "skip_count": 0
+    },
+    {
+      "case": "residual-native-viewport-composition",
+      "exit_status": 0,
+      "passed_tests": [
+        "/painter-compact-options/native-viewport-composition"
+      ],
+      "failed_tests": [],
+      "assertions": [],
+      "log_sha256": "dbda16629132585635f06d85a16b60c46870fcb8418a11aeffcb6f5022a660fd",
+      "purpose": "passing-runtime-case",
+      "skip_count": 0
+    },
+    {
+      "case": "residual-registered-popup-contracts",
+      "exit_status": 0,
+      "passed_tests": [
+        "/painter-compact-options/registered-popup-contracts"
+      ],
+      "failed_tests": [],
+      "assertions": [],
+      "log_sha256": "7d9d1c3f87d40382fd3e7122b332f19f5f54bcbc2bedda045db2ec19d1c51179",
+      "purpose": "passing-runtime-case",
+      "skip_count": 0
+    },
+    {
+      "case": "residual-reentrant-destruction",
+      "exit_status": 0,
+      "passed_tests": [
+        "/painter-compact-options/reentrant-destruction"
+      ],
+      "failed_tests": [],
+      "assertions": [],
+      "log_sha256": "38acabde2d2b912356f5e98d42e715fff9ed7efe87f850ae6ad92f2a3111252a",
+      "purpose": "passing-runtime-case",
+      "skip_count": 0
+    },
+    {
+      "case": "residual-native-visibility-preference",
+      "exit_status": 0,
+      "passed_tests": [
+        "/painter-compact-options/native-visibility-preference"
+      ],
+      "failed_tests": [],
+      "assertions": [],
+      "log_sha256": "38ce84157c8fd23fc7246a856e398ef93b8e306482f6111906c84b780960a84b",
+      "purpose": "passing-runtime-case",
+      "skip_count": 0
+    },
+    {
+      "case": "residual-canvas-dock-tool-transfer-preference",
+      "exit_status": 0,
+      "passed_tests": [
+        "/painter-compact-options/canvas-dock-tool-transfer-preference"
+      ],
+      "failed_tests": [],
+      "assertions": [],
+      "log_sha256": "dbd4a74b65068a287ab9679e9c2ff5bf04239faf1375cf4c361ead2e877c823b",
+      "purpose": "passing-runtime-case",
+      "skip_count": 0
+    }
+  ],
+  "observed_transitions": {
+    "popup_waits": [
+      {
+        "additional_microseconds": 33266,
+        "exact_parent_restored": true
+      },
+      {
+        "additional_microseconds": 36468,
+        "exact_parent_restored": true
+      }
+    ],
+    "transfer_original": [
+      "# Transfer pre-shell: focused=0 tool=gimp-painter-mypaint-tool native-editor=1",
+      "# Transfer post-shell: focused=1 tool=gimp-paintbrush-tool native-editor=1"
+    ],
+    "failed_popup_grab": [
+      "# Closed grab: type=NULL expected-popover=0 popover-has-grab=0 mapped=1"
+    ]
+  }
+}

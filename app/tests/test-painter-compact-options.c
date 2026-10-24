@@ -383,11 +383,15 @@ static void close_shell (GimpDisplayShell *shell) {
 static void canvas_dock_tool_transfer_and_preference (void) {
   gboolean old=gimp->config->painter_canvas_ui;
   g_object_set(gimp->config,"painter-canvas-ui",FALSE,NULL);
+  /* First focus restores device tools, and image creation attaches the native
+   * dock options. Finish that setup before selecting and snapshotting the
+   * tool whose independent canvas presentation is exercised below. */
+  GimpDisplayShell *a=new_shell();
   GimpToolInfo *paint=info("gimp-painter-mypaint-tool"),*rect=info("gimp-rect-select-tool");
   gimp_context_set_tool(gimp_get_user_context(gimp),paint);
   GtkWidget *native=gimp_tools_get_tool_options_gui(paint->tool_options);
   GtkWidget *parent=gtk_widget_get_parent(native);
-  GimpDisplayShell *a=new_shell();
+  g_assert_true (gimp_context_get_tool (gimp_get_user_context (gimp)) == paint);
   gimp_painter_canvas_ui_set_visible(a,TRUE);drain();
   g_assert_false(gimp_painter_compact_options_get(native));
   g_assert_true(gtk_widget_get_parent(native)==parent);

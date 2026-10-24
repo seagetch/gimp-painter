@@ -1,0 +1,85 @@
+--- a/app/tests/test-painter-compact-options.c
++++ b/app/tests/test-painter-compact-options.c
+@@ -383,11 +383,20 @@
+ static void canvas_dock_tool_transfer_and_preference (void) {
+   gboolean old=gimp->config->painter_canvas_ui;
+   g_object_set(gimp->config,"painter-canvas-ui",FALSE,NULL);
++  GimpDisplayShell *a=new_shell();
+   GimpToolInfo *paint=info("gimp-painter-mypaint-tool"),*rect=info("gimp-rect-select-tool");
+   gimp_context_set_tool(gimp_get_user_context(gimp),paint);
+   GtkWidget *native=gimp_tools_get_tool_options_gui(paint->tool_options);
+   GtkWidget *parent=gtk_widget_get_parent(native);
+-  GimpDisplayShell *a=new_shell();
++  g_test_message ("Transfer pre-shell: focused=%d tool=%s native-editor=%d",
++                  gimp_has_focused_once (gimp),
++                  gimp_object_get_name (gimp_context_get_tool (gimp_get_user_context (gimp))),
++                  find (native, NULL, GIMP_TYPE_PAINTER_MYBRUSH_EDITOR) != NULL);
++  g_test_message ("Transfer post-shell: focused=%d tool=%s native-editor=%d",
++                  gimp_has_focused_once (gimp),
++                  gimp_object_get_name (gimp_context_get_tool (gimp_get_user_context (gimp))),
++                  find (native, NULL, GIMP_TYPE_PAINTER_MYBRUSH_EDITOR) != NULL);
++  g_assert_true (gimp_context_get_tool (gimp_get_user_context (gimp)) == paint);
+   gimp_painter_canvas_ui_set_visible(a,TRUE);drain();
+   g_assert_false(gimp_painter_compact_options_get(native));
+   g_assert_true(gtk_widget_get_parent(native)==parent);
+--- a/app/tests/test-painter-rectangle-unit-popup.inc
++++ b/app/tests/test-painter-rectangle-unit-popup.inc
+@@ -119,6 +119,15 @@
+                   ==, shown ? GIMP_UNIT_STORE_UNIT_LONG_FORMAT :
+                               GIMP_UNIT_STORE_UNIT_SHORT_FORMAT);
+   g_list_free (cells);
++}
++
++static void
++rectangle_popup_grab_trace (GtkWidget *widget, gboolean previous, gpointer data)
++{
++  GtkWidget *grab = gtk_grab_get_current ();
++  g_test_message ("Grab trace %s: previous=%d has-grab=%d current=%s visible=%d mapped=%d",
++                  (char *) data, previous, gtk_widget_has_grab(widget),
++                  grab ? G_OBJECT_TYPE_NAME(grab) : "NULL", gtk_widget_get_visible(widget), gtk_widget_get_mapped(widget));
+ }
+ 
+ static void
+@@ -158,7 +167,33 @@
+       }
+     }
+   else
+-    g_assert_true (grab == popover);
++    {
++      if (grab != popover)
++        {
++          gint64 started = g_get_monotonic_time ();
++          while (grab != popover && g_get_monotonic_time () - started < 2000000)
++            {
++              g_main_context_iteration (NULL, FALSE);
++              g_usleep (1000);
++              grab = gtk_grab_get_current ();
++            }
++          g_test_message ("Restoration wait: us=%" G_GINT64_FORMAT " restored=%d", g_get_monotonic_time () - started, grab == popover);
++        }
++      g_test_message ("Closed grab: type=%s expected-popover=%d popover-has-grab=%d mapped=%d",
++                      grab ? G_OBJECT_TYPE_NAME (grab) : "NULL", grab == popover,
++                      popover ? gtk_widget_has_grab (popover) : 0,
++                      popover ? gtk_widget_get_mapped (popover) : 0);
++      if (grab != popover)
++        {
++          GdkWindow *root = gdk_get_default_root_window ();
++          GdkPixbuf *pixels = gdk_pixbuf_get_from_window (root, 0, 0,
++                                 gdk_window_get_width (root), gdk_window_get_height (root));
++          const gchar *output = g_getenv ("GIMP_TEST_POPUP_FAILURE_SCREENSHOT");
++          if (pixels && output) gdk_pixbuf_save (pixels, output, "png", NULL, NULL);
++          g_clear_object (&pixels);
++        }
++      g_assert_true (grab == popover);
++    }
+ }
+ 
+ /* Replacing a native model and restyling must keep the menu hook live. These
+@@ -338,6 +373,7 @@
+       rectangle_popup_settle ();
+       button = find (view, "gimp-painter-selection-details", GTK_TYPE_MENU_BUTTON);
+       popover = GTK_WIDGET (gtk_menu_button_get_popover (GTK_MENU_BUTTON (button)));
++      g_signal_connect (popover, "grab-notify", G_CALLBACK (rectangle_popup_grab_trace), "popover");
+       for (guint group = 0; group < 4; group++)
+         {
+           guint unit_group = MIN (group, 2);
