@@ -1,0 +1,120 @@
+[01m[K/workspace/shared/editor-list-history/fixture.cpp:77:8:[m[K [01;35m[Kwarning: [m[K‘[01m[KEditor[m[K’ declared with greater visibility than the type of its field ‘[01m[KEditor::model[m[K’ [[01;35m[K-Wattributes[m[K]
+   77 | struct [01;35m[KEditor[m[K {
+      |        [01;35m[K^~~~~~[m[K
+[01m[K/workspace/shared/editor-list-history/fixture.cpp:[m[K In function ‘[01m[Kvoid[01;32m[K list_history[m[K()[m[K’:
+[01m[K/workspace/shared/editor-list-history/fixture.cpp:136:3:[m[K [01;35m[Kwarning: [m[Kthis ‘[01m[Kfor[m[K’ clause does not guard... [[01;35m[K-Wmisleading-indentation[m[K]
+  136 |   [01;35m[Kfor[m[K(auto*e:{&first,&peer})g_assert_cmpstr(gtk_entry_get_text(GTK_ENTRY(e->get("painter-brush-name"))),==,"Unsaved draft 日本語");gboolean dirty=FALSE,name_dirty=FALSE;g_object_get(options.get(),"painter-dirty",&dirty,"painter-name-dirty",&name_dirty,nullptr);g_assert_true(dirty);g_assert_true(name_dirty);
+      |   [01;35m[K^~~[m[K
+[01m[K/workspace/shared/editor-list-history/fixture.cpp:136:132:[m[K [01;36m[Knote: [m[K...this statement, but the latter is misleadingly indented as if it were guarded by the ‘[01m[Kfor[m[K’
+  136 |   for(auto*e:{&first,&peer})g_assert_cmpstr(gtk_entry_get_text(GTK_ENTRY(e->get("painter-brush-name"))),==,"Unsaved draft 日本語");[01;36m[Kgboolean[m[K dirty=FALSE,name_dirty=FALSE;g_object_get(options.get(),"painter-dirty",&dirty,"painter-name-dirty",&name_dirty,nullptr);g_assert_true(dirty);g_assert_true(name_dirty);
+      |                                                                                                                                    [01;36m[K^~~~~~~~[m[K
+[01m[K/workspace/shared/editor-list-history/fixture.cpp:149:2:[m[K [01;35m[Kwarning: [m[Kthis ‘[01m[Kfor[m[K’ clause does not guard... [[01;35m[K-Wmisleading-indentation[m[K]
+  149 |  [01;35m[Kfor[m[K(auto*p:{a.get(),b.get(),c.get()})gimp_container_remove(factory,GIMP_OBJECT(p));g_assert_cmpint(gimp_container_get_n_children(factory),==,count);
+      |  [01;35m[K^~~[m[K
+In file included from [01m[K/workspace/shared/gimp-deps-locked/root/usr/lib/x86_64-linux-gnu/glib-2.0/include/glibconfig.h:9[m[K,
+                 from [01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/glib/gtypes.h:34[m[K,
+                 from [01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/glib/galloca.h:34[m[K,
+                 from [01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/glib.h:32[m[K,
+                 from [01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/gobject/gbinding.h:30[m[K,
+                 from [01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/glib-object.h:24[m[K,
+                 from [01m[K../source/app/painter/gimp-painter-error.h:5[m[K,
+                 from [01m[K../source/app/painter/boundary.hpp:6[m[K,
+                 from [01m[K../source/app/painter/object-ref.hpp:6[m[K,
+                 from [01m[K../source/app/painter/binding-store.hpp:6[m[K,
+                 from [01m[K/workspace/shared/editor-list-history/fixture.cpp:3[m[K:
+[01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/glib/gmacros.h:991:23:[m[K [01;36m[Knote: [m[K...this statement, but the latter is misleadingly indented as if it were guarded by the ‘[01m[Kfor[m[K’
+  991 | #define G_STMT_START  [01;36m[Kdo[m[K
+      |                       [01;36m[K^~[m[K
+[01m[K/workspace/shared/gimp-deps-locked/root/usr/include/glib-2.0/glib/gtestutils.h:72:41:[m[K [01;36m[Knote: [m[Kin expansion of macro ‘[01m[KG_STMT_START[m[K’
+   72 | #define g_assert_cmpint(n1, cmp, n2)    [01;36m[KG_STMT_START[m[K { \
+      |                                         [01;36m[K^~~~~~~~~~~~[m[K
+[01m[K/workspace/shared/editor-list-history/fixture.cpp:149:85:[m[K [01;36m[Knote: [m[Kin expansion of macro ‘[01m[Kg_assert_cmpint[m[K’
+  149 |  for(auto*p:{a.get(),b.get(),c.get()})gimp_container_remove(factory,GIMP_OBJECT(p));[01;36m[Kg_assert_cmpint[m[K(gimp_container_get_n_children(factory),==,count);
+      |                                                                                     [01;36m[K^~~~~~~~~~~~~~~[m[K
+[01m[K/workspace/shared/editor-list-history/fixture.cpp:[m[K At global scope:
+[01m[K/workspace/shared/editor-list-history/fixture.cpp:71:15:[m[K [01;35m[Kwarning: [m[K‘[01m[Koriginal_search[m[K’ defined but not used [[01;35m[K-Wunused-variable[m[K]
+   71 | static gchar *[01;35m[Koriginal_search[m[K;
+      |               [01;35m[K^~~~~~~~~~~~~~~[m[K
+0
+-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 36 x 36
+# GdkPixbuf-DEBUG: 	Rowstride: 144, Length: 5208
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 36 x 36
+# GdkPixbuf-DEBUG: 	Rowstride: 144, Length: 5208
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 14 x 14
+# GdkPixbuf-DEBUG: 	Rowstride: 56, Length: 808
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# Direct text/list/combo APIs: normalized search and full draft restore; oncanvas1080x1920; not physical pointer
+# Unicode/casefold/group/tag row identity and selection PASS; full45 scalar/5switch/2reference/9input curves + unknown/name draft restored through peer combo; saved resources unchanged
+ok 1 /painter-list/history-full-state
+# slow test /painter-list/history-full-state executed in 1.53 secs
+# End of painter-list tests
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+
+le/gimp.svg”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/256x256/gimp.png
+gui_dbus_name_lost: connection to the bus cannot be established.
+set device 'Virtual core XTEST pointer' to mode: disabled
+set device 'Xvfb mouse' to mode: disabled
+WARNING: icon theme has no icon 'gimp-tool-paintbrush'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-layer'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-dynamics'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-default-colors'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-swap-colors'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+WARNING: icon theme has no icon 'gimp-tool-paintbrush'.
+WARNING: icon theme has no icon 'gimp-wilber-eek'.
+INFO: a stray image seems to have been left around by a plug-in: "[Untitled]"

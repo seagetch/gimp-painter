@@ -1,0 +1,37 @@
+diff --git a/app/widgets/gimppaintermybrusheditor.cpp b/app/widgets/gimppaintermybrusheditor.cpp
+index e361e3c3ab..5443c68f54 100644
+--- a/app/widgets/gimppaintermybrusheditor.cpp
++++ b/app/widgets/gimppaintermybrusheditor.cpp
+@@ -359,12 +359,22 @@ std::string resource_tags(GimpPainterMybrush*b) {
+   auto r=PainterMybrushRef::retain(b).snapshot();std::string result=r.group();
+   for(auto*l=gimp_tagged_get_tags(GIMP_TAGGED(b));l;l=l->next){if(!result.empty())result+=", ";result+=gimp_tag_get_name(GIMP_TAG(l->data));}return result;
+ }
++String search_key(const char *text) {
++  const char *value=text?text:"";
++  if(!g_utf8_validate(value,-1,nullptr))
++    throw Error(GIMP_PAINTER_ERROR_INVALID_STATE,"Brush search needs valid UTF-8");
++  String normalized(g_utf8_normalize(value,-1,G_NORMALIZE_ALL));
++  if(!normalized)throw Error(GIMP_PAINTER_ERROR_INVALID_STATE,"Brush search normalization failed");
++  String folded(g_utf8_casefold(normalized.get(),-1));
++  if(!folded)throw Error(GIMP_PAINTER_ERROR_INVALID_STATE,"Brush search case folding failed");
++  return folded;
++}
+ void rebuild_list(EditorImpl&i) {
+   if(!i.tree||!i.options||i.closed)return;
+   auto options=i.options;auto*ctx=GIMP_CONTEXT(options.get());
+   auto model_owner=ObjectRef<GObject>::retain(G_OBJECT(gtk_tree_view_get_model(GTK_TREE_VIEW(i.tree))));
+   auto*model=GTK_LIST_STORE(model_owner.get());
+-  String needle(g_utf8_casefold(gtk_entry_get_text(GTK_ENTRY(i.search)),-1));
++  String needle=search_key(gtk_entry_get_text(GTK_ENTRY(i.search)));
+   auto*container=gimp_data_factory_get_container(ctx->gimp->painter_mybrush_factory);
+   std::vector<ObjectRef<GimpPainterMybrush>> resources;
+   for(int n=0;n<gimp_container_get_n_children(container);++n)
+@@ -372,7 +382,7 @@ void rebuild_list(EditorImpl&i) {
+   SyncScope sync(i);gtk_list_store_clear(model);if(!sync.current())return;
+   for(const auto&owner:resources){
+     auto*b=owner.get();const char*name=gimp_object_get_name(b);auto tags=resource_tags(b);
+-    String haystack(g_utf8_casefold((std::string(name?name:"")+" "+tags).c_str(),-1));
++    String haystack=search_key((std::string(name?name:"")+" "+tags).c_str());
+     if(*needle.get()&&!strstr(haystack.get(),needle.get()))continue;
+     auto icon=ObjectRef<GObject>::adopt(G_OBJECT(gimp_painter_mybrush_ref_icon(b)));
+     ObjectRef<GObject> small;if(icon)small=ObjectRef<GObject>::adopt(G_OBJECT(gdk_pixbuf_scale_simple(GDK_PIXBUF(icon.get()),32,32,GDK_INTERP_BILINEAR)));

@@ -1,0 +1,62 @@
+from pathlib import Path
+W=Path('/workspace/shared/editor-list-history');base=Path('/workspace/shared/editor-numeric-matrix/fixture.cpp').read_text().split('struct NumericExpected')[0]
+body=r'''
+static GtkTreeModel*list(Editor&e){return gtk_tree_view_get_model(GTK_TREE_VIEW(e.get("painter-brush-list")));}
+static void search(Editor&e,const char*query,const std::vector<GimpPainterMybrush*>&expected){
+ gtk_entry_set_text(GTK_ENTRY(e.get("painter-brush-search")),query);auto*m=list(e);g_test_message("search [%s]: rows=%d expected=%zu",query,gtk_tree_model_iter_n_children(m,nullptr),expected.size());g_assert_cmpint(gtk_tree_model_iter_n_children(m,nullptr),==,int(expected.size()));
+ std::vector<GimpPainterMybrush*>seen;GtkTreeIter iter;for(gboolean valid=gtk_tree_model_get_iter_first(m,&iter);valid;valid=gtk_tree_model_iter_next(m,&iter)){
+  GimpPainterMybrush*b=nullptr;gchar*name=nullptr;gtk_tree_model_get(m,&iter,0,&b,2,&name,-1);g_assert_nonnull(b);g_assert_cmpstr(name,==,gimp_object_get_name(b));seen.push_back(b);g_free(name);g_object_unref(b);
+ }for(auto*b:expected)g_assert_cmpuint(std::count(seen.begin(),seen.end(),b),==,1);
+}
+static void select(Editor&e,GimpPainterMybrush*desired){
+ auto*m=list(e);GtkTreeIter iter;bool found=false;for(gboolean valid=gtk_tree_model_get_iter_first(m,&iter);valid;valid=gtk_tree_model_iter_next(m,&iter)){
+  GimpPainterMybrush*b=nullptr;gtk_tree_model_get(m,&iter,0,&b,-1);bool match=b==desired;g_object_unref(b);if(match){gtk_tree_selection_select_iter(gtk_tree_view_get_selection(GTK_TREE_VIEW(e.get("painter-brush-list"))),&iter);found=true;break;}
+ }g_assert_true(found);g_assert_true(gimp_context_get_painter_mybrush(GIMP_CONTEXT(e.model.get()))==desired);
+}
+static void assert_controls(Editor&e,const MyPaint::Resource&r){
+ for(auto&setting:painter_mypaint_settings){std::string name=setting.internal_name;std::replace(name.begin(),name.end(),'_','-');g_assert_cmpfloat(gtk_spin_button_get_value(GTK_SPIN_BUTTON(e.get(name.c_str()))),==,r.base_value(setting.index));}
+ for(auto&setting:painter_mypaint_switches){std::string name=setting.internal_name;std::replace(name.begin(),name.end(),'_','-');g_assert_cmpint(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(e.get(name.c_str()))),==,r.switch_value(setting.index));}
+ for(auto&setting:painter_mypaint_texts){std::string name=setting.internal_name;std::replace(name.begin(),name.end(),'_','-');const auto value=r.text_value(setting.index);g_assert_cmpstr(gtk_entry_get_text(GTK_ENTRY(e.get(name.c_str()))),==,value.c_str());}
+ for(int input=0;input<INPUT_COUNT;++input){gtk_combo_box_set_active(GTK_COMBO_BOX(e.get("painter-curve-setting")),BRUSH_TEXTURE_GRAIN);gtk_combo_box_set_active(GTK_COMBO_BOX(e.get("painter-curve-input")),input);auto pts=r.curve(BRUSH_TEXTURE_GRAIN,input);auto*combo=GTK_COMBO_BOX(e.get("painter-curve-point"));g_assert_cmpint(gtk_tree_model_iter_n_children(gtk_combo_box_get_model(combo),nullptr),==,int(pts.size()));for(unsigned n=0;n<pts.size();++n){gtk_combo_box_set_active(combo,n);g_assert_cmpfloat(gtk_spin_button_get_value(GTK_SPIN_BUTTON(e.get("painter-curve-x"))),==,pts[n].x);g_assert_cmpfloat(gtk_spin_button_get_value(GTK_SPIN_BUTTON(e.get("painter-curve-y"))),==,pts[n].y);}}
+ g_assert_true(e.snapshot().encode()==r.encode());
+}
+static void list_history(){
+ auto*factory=gimp_data_factory_get_container(gimp->painter_mybrush_factory);const auto count=gimp_container_get_n_children(factory);
+ auto a=PainterMybrushRef::create("List Straße 日本語"),b=PainterMybrushRef::create("List Second"),c=PainterMybrushRef::create("List Third");
+ MyPaint::Resource ar;ar.set_group("Group Ω");ar.set_base_value(BRUSH_OPAQUE,.25);a.replace(ar);MyPaint::Resource br;br.set_group("Group other");br.set_base_value(BRUSH_OPAQUE,.75);b.replace(br);
+ auto*tag=gimp_tag_new("InkTag");gimp_tagged_add_tag(GIMP_TAGGED(a.get()),tag);g_object_unref(tag);tag=gimp_tag_new("OtherTag");gimp_tagged_add_tag(GIMP_TAGGED(b.get()),tag);g_object_unref(tag);
+ for(auto*p:{a.get(),b.get(),c.get()}){gimp_data_make_internal(GIMP_DATA(p),gimp_object_get_name(p));gimp_container_add(factory,GIMP_OBJECT(p));}
+ const auto a_json=a.snapshot().encode(),b_json=b.snapshot().encode(),c_json=c.snapshot().encode();
+ {
+  auto options=ObjectRef<GimpPainterMybrushOptions>::adopt(GIMP_PAINTER_MYBRUSH_OPTIONS(g_object_new(GIMP_TYPE_PAINTER_MYBRUSH_OPTIONS,"gimp",gimp,nullptr)));gimp_context_set_painter_mybrush(GIMP_CONTEXT(options.get()),a.get());Editor first(true,GIMP_CONTEXT(options.get())),peer(false,GIMP_CONTEXT(options.get()));g_assert_true(first.model.get()==peer.model.get());
+  search(first,"STRASSE",{a.get()});select(first,a.get());search(first,"日本語",{a.get()});search(first,"group ω",{a.get()});search(first,"inktag",{a.get()});search(first,"missing-list-proof",{});g_assert_true(gimp_context_get_painter_mybrush(GIMP_CONTEXT(options.get()))==a.get());search(first,"List",{a.get(),b.get(),c.get()});
+  // Ordinary local tag editing; no invented asynchronous peer-refresh requirement.
+  gtk_entry_set_text(GTK_ENTRY(first.get("painter-brush-tags")),"FreshTag, 日本タグ, Café");g_signal_emit_by_name(first.get("painter-brush-tags"),"activate");search(first,"freshtag",{a.get()});String normalized_tag(g_utf8_normalize("日本タグ",-1,G_NORMALIZE_ALL));bool found_normalized=false;for(auto*l=gimp_tagged_get_tags(GIMP_TAGGED(a.get()));l;l=l->next){const char*name=gimp_tag_get_name(GIMP_TAG(l->data));if(!g_strcmp0(name,normalized_tag.get()))found_normalized=true;}g_assert_true(found_normalized);g_assert_cmpstr(normalized_tag.get(),!=,"日本タグ");g_test_message("Native tag normalized and retained; composedquery differs in bytes before search");search(first,"日本タグ",{a.get()});search(first,"日本タグ",{a.get()});search(first,"café",{a.get()});search(first,"café",{a.get()});search(first,"ＦＲＥＳＨＴＡＧ",{a.get()});search(first,"inktag",{});search(peer,"freshtag",{a.get()});search(first,"List",{a.get(),b.get(),c.get()});
+  std::vector<std::string>saved_tags;for(auto*l=gimp_tagged_get_tags(GIMP_TAGGED(a.get()));l;l=l->next)saved_tags.emplace_back(gimp_tag_get_name(GIMP_TAG(l->data)));std::vector<GimpPainterMybrush*>all;for(int n=0;n<gimp_container_get_n_children(factory);++n)all.push_back(GIMP_PAINTER_MYBRUSH(gimp_container_get_child_by_index(factory,n)));search(first,"",all);search(first,"List",{a.get(),b.get(),c.get()});
+  auto draft=MyPaint::Resource::decode("{\"version\":3,\"unknown_history\":{\"nested\":[null,9007199254740993,\"日本語\"]},\"settings\":{},\"texts\":{\"future_history_reference\":\"retained\"}}");
+  for(auto&s:painter_mypaint_settings)draft.set_base_value(s.index,double(s.minimum)+(double(s.maximum)-double(s.minimum))*.37);
+  for(auto&s:painter_mypaint_switches)draft.set_switch(s.index,true);
+  draft.set_text(BRUSH_BRUSHMARK_NAME,"missing history shape 日本語");draft.set_text(BRUSH_TEXTURE_NAME,"missing history paper 日本語");for(int n=0;n<INPUT_COUNT;++n)draft.set_curve(BRUSH_TEXTURE_GRAIN,n,{{-1,.123456789012+n*.01},{0,.654321098765},{1,-.234567890123}});
+  first.set(draft);gtk_entry_set_text(GTK_ENTRY(first.get("painter-brush-name")),"Unsaved draft 日本語");const guint history=gimp_painter_mybrush_options_history_size(options.get());assert_controls(first,draft);assert_controls(peer,draft);
+  select(first,b.get());g_assert_cmpuint(gimp_painter_mybrush_options_history_size(options.get()),==,history+1);g_assert_true(first.snapshot().encode()==b_json);g_assert_true(peer.snapshot().encode()==b_json);g_assert_true(a.snapshot().encode()==a_json);g_assert_true(b.snapshot().encode()==b_json);
+  gimp_test_run_mainloop_until_idle();auto*combo=GTK_COMBO_BOX(peer.get("painter-brush-history"));g_assert_cmpint(gtk_tree_model_iter_n_children(gtk_combo_box_get_model(combo),nullptr),>=,int(history+1));gtk_combo_box_set_active(combo,history);
+  g_assert_true(gimp_context_get_painter_mybrush(GIMP_CONTEXT(options.get()))==a.get());assert_controls(first,draft);assert_controls(peer,draft);
+  for(auto*e:{&first,&peer})g_assert_cmpstr(gtk_entry_get_text(GTK_ENTRY(e->get("painter-brush-name"))),==,"Unsaved draft 日本語");gboolean dirty=FALSE,name_dirty=FALSE;g_object_get(options.get(),"painter-dirty",&dirty,"painter-name-dirty",&name_dirty,nullptr);g_assert_true(dirty);g_assert_true(name_dirty);
+  g_assert_true(a.snapshot().encode()==a_json);g_assert_true(b.snapshot().encode()==b_json);g_assert_true(c.snapshot().encode()==c_json);g_assert_cmpstr(gimp_object_get_name(a.get()),==,"List Straße 日本語");
+  std::vector<std::string>after_tags;for(auto*l=gimp_tagged_get_tags(GIMP_TAGGED(a.get()));l;l=l->next)after_tags.emplace_back(gimp_tag_get_name(GIMP_TAG(l->data)));g_assert_true(after_tags==saved_tags);
+  search(first,"日本タグ",{a.get()});
+   const char*shot=g_getenv("GIMP_TEST_LIST_SCREENSHOT");g_assert_nonnull(shot);
+   gimp_test_utils_create_image(gimp,640,480);auto*display=gimp_context_get_display(gimp->user_context);g_assert_nonnull(display);auto*shell=gimp_display_get_shell(display);gimp_painter_canvas_ui_set_visible(shell,TRUE);g_assert_true(gimp_painter_canvas_ui_get_visible(shell));
+   auto*main=gtk_widget_get_toplevel(GTK_WIDGET(shell));gtk_window_resize(GTK_WINDOW(main),1040,1850);gtk_window_move(GTK_WINDOW(main),0,0);gtk_widget_hide(peer.window);gtk_window_resize(GTK_WINDOW(first.window),1000,1180);gtk_window_move(GTK_WINDOW(first.window),20,650);gtk_window_set_title(GTK_WINDOW(first.window),"Normalized tag search and full draft history restoration PASS");
+   auto*tab=gtk_widget_get_parent(first.get("painter-curve-graph"));while(tab&&!GTK_IS_NOTEBOOK(tab))tab=gtk_widget_get_parent(tab);g_assert_nonnull(tab);gtk_notebook_set_current_page(GTK_NOTEBOOK(tab),2);
+   gimp_test_run_temp_mainloop(500);gtk_window_present(GTK_WINDOW(first.window));gimp_test_run_temp_mainloop(200);gdk_window_raise(gtk_widget_get_window(first.window));gdk_display_sync(gdk_display_get_default());g_assert_true(gtk_widget_is_drawable(first.get("painter-curve-graph")));
+   auto*root=gdk_get_default_root_window();g_assert_cmpint(gdk_window_get_width(root),==,1080);g_assert_cmpint(gdk_window_get_height(root),==,1920);auto pixels=ObjectRef<GObject>::adopt(G_OBJECT(gdk_pixbuf_get_from_window(root,0,0,1080,1920)));g_assert_nonnull(pixels.get());GError*error=nullptr;g_assert_true(gdk_pixbuf_save(GDK_PIXBUF(pixels.get()),shot,"png",&error,nullptr));g_assert_no_error(error);g_test_message("Direct text/list/combo APIs: normalized search and full draft restore; oncanvas1080x1920; not physical pointer");
+
+  g_test_message("Unicode/casefold/group/tag row identity and selection PASS; full45 scalar/5switch/2reference/9input curves + unknown/name draft restored through peer combo; saved resources unchanged");
+ }
+ for(auto*p:{a.get(),b.get(),c.get()})gimp_container_remove(factory,GIMP_OBJECT(p));g_assert_cmpint(gimp_container_get_n_children(factory),==,count);
+}
+int main(int argc,char**argv){g_test_init(&argc,&argv,nullptr);if(!gtk_init_check(&argc,&argv))return GIMP_EXIT_TEST_SKIPPED;gimp_test_utils_setup_menus_path();gimp=gimp_init_for_gui_testing(TRUE);add_editor_case("/painter-list/history-full-state",list_history);g_application_run(gimp->app,0,nullptr);int result=gimp_core_app_get_exit_status(GIMP_CORE_APP(gimp->app));g_application_quit(gimp->app);g_clear_object(&gimp->app);return result;}
+'''
+(W/'fixture.cpp').write_text(base+body)
+s=Path('/workspace/shared/editor-curve-matrix/run.py').read_text().replace("W=Path('/workspace/shared/editor-curve-matrix')","W=Path('/workspace/shared/editor-list-history')");(W/'run.py').write_text(s)

@@ -1,0 +1,37 @@
+Xvfb verified: 127.0.0.1:92, 1080x1920x24, authenticated accepted, empty authority rejected
+TAP version 14
+# random seed: R02S4e72ac2934082d429d662d2e8f0ea3b1
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ‘gio-vfs’
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+# GLib-DEBUG: unsetenv() is not thread-safe and should not be used after threads are created
+# GdkPixbuf-DEBUG: gdk_pixbuf_from_pixdata() called on:
+# GdkPixbuf-DEBUG: 	Encoding raw
+# GdkPixbuf-DEBUG: 	Dimensions: 64 x 64
+# GdkPixbuf-DEBUG: 	Rowstride: 256, Length: 16408
+# GdkPixbuf-DEBUG: 	Copy pixels == false
+# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation dconf (DConfSettingsBackend) for ‘gsettings-backend’
+# DEBUG: Error acquiring bus for cloud providers: Error spawning command line “dbus-launch --autolaunch=f09796fd086547da9ddf7488d4386bdf --binary-syntax --close-stderr”: Child process exited with code 1
+1..1
+# Start of painter-list tests
+# search [STRASSE]: rows=1 expected=1
+# search [日本語]: rows=1 expected=1
+# search [group ω]: rows=1 expected=1
+# search [inktag]: rows=1 expected=1
+# search [missing-list-proof]: rows=0 expected=0
+# search [List]: rows=3 expected=3
+# search [freshtag]: rows=1 expected=1
+# Native tag normalized and retained; composedquery differs in bytes before search
+# search [日本タグ]: rows=0 expected=1
+not ok /painter-list/history-full-state - ERROR:/workspace/shared/editor-list-history/fixture.cpp:98:void search(Editor&, const char*, const std::vector<_GimpPainterMybrush*>&): assertion failed (gtk_tree_model_iter_n_children(m,nullptr) == int(expected.size())): (0 == 1)
+Bail out!
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/16x16/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/16x16/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/32x32/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/32x32/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/48x48/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/48x48/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/64x64/gimp.png (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/64x64/gimp.png”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/scalable/gimp.svg (Failed to open file “/workspace/shared/gimp-clean-aggregate/source/desktop/scalable/gimp.svg”: No such file or directory)
+Application icon missing: /workspace/shared/gimp-clean-aggregate/source/desktop/256x256/gimp.png
+gui_dbus_name_lost: connection to the bus cannot be established.
+set device 'Virtual core XTEST pointer' to mode: disabled
+set device 'Xvfb mouse' to mode: disabled
+**
+ERROR:/workspace/shared/editor-list-history/fixture.cpp:98:void search(Editor&, const char*, const std::vector<_GimpPainterMybrush*>&): assertion failed (gtk_tree_model_iter_n_children(m,nullptr) == int(expected.size())): (0 == 1)

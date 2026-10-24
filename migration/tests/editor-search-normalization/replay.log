@@ -1,0 +1,33 @@
+numeric {
+  "exit": 0,
+  "command": [
+    "python3",
+    "/workspace/shared/gimp-clean-aggregate/source/tools/run-painter-xvfb.py",
+    "/workspace/shared/editor-list-history/test"
+  ],
+  "binary_sha256": "93fcc3c6a742129a2706b3327afcbaa9ad9623cf02b9bec930ee549d33bef7ab",
+  "fixture_sha256": "23bf4d6b802e184af13db2f9d164ed28e76dc1fd15197b12a60c7fafdf37c53e"
+}
+
+curve {
+  "exit": 0,
+  "command": [
+    "python3",
+    "/workspace/shared/gimp-clean-aggregate/source/tools/run-painter-xvfb.py",
+    "/workspace/shared/editor-list-history/test"
+  ],
+  "binary_sha256": "28d5d4a5ff14f7eb74da5b8f4c2427ad50c75e7dbdc06945997c53826867b44f",
+  "fixture_sha256": "8a4f871d398532984665e9e6accb87a846818df3459c4555706f465597fb5685"
+}
+
+selector {
+  "exit": 0,
+  "command": [
+    "python3",
+    "/workspace/shared/gimp-clean-aggregate/source/tools/run-painter-xvfb.py",
+    "/workspace/shared/editor-list-history/test"
+  ],
+  "binary_sha256": "aae03813d621f7573a07b5cb9acedf0de9db027c68d3ca08b3478ede1f200a1a",
+  "fixture_sha256": "c64cdfdf82a7b738091209b09524407672e3b045efa5bec5ec9917dc0cc5d8d5"
+}
+
