@@ -199,6 +199,12 @@ foreach test_name : app_tests
     test_args = ['-m', 'slow']
   endif
 
+  if test_name == 'painter-perspective-ui'
+    # Preserve the original 24-case process budget; register every added case below.
+    test_args = ['--skip-prefix', '/perspective-ui/damage',
+                 '--skip-prefix', '/perspective-ui/old-path']
+  endif
+
   test(test_name,
     ['gimp-filter-layer', 'painter-xcf-open'].contains(test_name) ? python : test_exe,
     args: test_args,
@@ -215,6 +221,29 @@ foreach test_name : app_tests
     is_parallel : false,
     priority: prio,
   )
+
+  if test_name == 'painter-perspective-ui'
+    # Each disjoint scope keeps the original 60-second timeout, without skips.
+    foreach scope : [
+      ['geometry', ['-p', '/perspective-ui/damage-ink-bounds',
+                    '-p', '/perspective-ui/old-path-pixels']],
+      ['damage-0', ['-p', '/perspective-ui/damage-mutations/0']],
+      ['damage-1', ['-p', '/perspective-ui/damage-mutations/1']],
+      ['damage-2', ['-p', '/perspective-ui/damage-mutations/2']],
+    ]
+      test('painter-perspective-ui-' + scope[0], test_exe,
+        args: scope[1],
+        env: [
+          'GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+          'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+          'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
+          'UI_TEST=yes',
+        ],
+        suite: 'app', depends: gimp_test_icon_dependencies,
+        timeout: 60, is_parallel: false, priority: prio,
+      )
+    endforeach
+  endif
 
   if test_name == 'painter-canvas-ui'
     # Both registrations use the same binary and preserve their original IDs.

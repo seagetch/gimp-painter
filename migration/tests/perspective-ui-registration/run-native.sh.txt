@@ -1,0 +1,21 @@
+#!/bin/bash
+set -euo pipefail
+D=/workspace/shared/gimp-native-secondary
+source "$D/env.sh";exec 9>"$D/build.lock";flock 9
+O="$D/perspective-registration";mkdir -p "$O"
+cp "$D/source/app/tests/meson.build" "$O/meson.build"
+for build in build build-asan; do
+ meson setup --reconfigure "$D/$build" "$D/source" > "$O/$build-setup.log" 2>&1
+ ASAN_OPTIONS=detect_leaks=0:halt_on_error=1 UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1 python3 "$D/source/tools/run-painter-xvfb.py" meson test -C "$D/$build" --no-rebuild --num-processes=1 --print-errorlogs painter-perspective-ui painter-perspective-ui-geometry painter-perspective-ui-damage-0 painter-perspective-ui-damage-1 painter-perspective-ui-damage-2 > "$O/$build.log" 2>&1
+ python3 - "$D/$build/meson-logs/testlog.json" "$O/$build.json" <<'PY'
+import sys,json,pathlib,hashlib
+rows=[]
+for l in pathlib.Path(sys.argv[1]).read_text().splitlines():
+ j=json.loads(l);r={k:j.get(k,'') for k in ['name','result','returncode','duration','stdout','stderr']};r['cases']=[x for x in r['stdout'].splitlines() if x.startswith('ok ') and '# SKIP' not in x];rows.append(r)
+pathlib.Path(sys.argv[2]).write_text(json.dumps(rows,indent=2)+'\n')
+assert len(rows)==5
+assert all(r['result']=='OK' and r['duration']<60 for r in rows)
+assert sorted(len(r['cases']) for r in rows)==[1,1,1,2,24]
+print([(r['name'],len(r['cases']),r['duration']) for r in rows])
+PY
+done
