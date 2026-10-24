@@ -1373,6 +1373,7 @@ malformed_clone_reference_stays_opaque (void)
   g_object_unref (seed_file);
 }
 
+#include "test-filter-unknown-xcf.inc"
 #include "test-painter-xcf-fields.inc"
 #include "test-painter-xcf-property-order.inc"
 #include "test-painter-xcf-known-property-boundaries.inc"
@@ -1388,6 +1389,7 @@ int main (int argc, char **argv)
   g_test_init (&argc, &argv, NULL);
   gimp_test_utils_set_gimp3_directory ("GIMP_TESTING_ABS_TOP_SRCDIR", "app/tests/gimpdir");
   gimp = gimp_init_for_testing ();
+  g_test_add_func ("/painter-xcf-roundtrip/filter_unknown_xcf_preservation", filter_unknown_xcf_preservation);
   g_test_add_func ("/painter-xcf-roundtrip/clones_edit_save_reopen", clones_edit_save_reopen);
   g_test_add_func ("/painter-xcf-roundtrip/filter_cache_and_arguments", filter_cache_and_arguments);
   g_test_add_func ("/painter-xcf-roundtrip/ordinary_exact_roundtrip", ordinary_exact_roundtrip);

@@ -1,0 +1,11 @@
+{
+  "command": [
+    "/workspace/shared/gimp-clean-aggregate/build/app/tests/painter-xcf-roundtrip",
+    "-p",
+    "/painter-xcf-roundtrip/filter_unknown_xcf_preservation"
+  ],
+  "exit_code": 0,
+  "duration": 1.193732738494873,
+  "stdout": "TAP version 14\n# random seed: R02S139fa94195c5ef661eaeee85e272e9f5\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# Start of painter-xcf-roundtrip tests\n# unknown typed pass1:Open/resave exact name/raw/arguments/cache;explicit FAILED without executor\n# unknown typed pass2:Open/resave exact name/raw/arguments/cache;explicit FAILED without executor\n# unknown typed pass3:Open/resave exact name/raw/arguments/cache;explicit FAILED without executor\n# unknown opaque pass1:Open/resave exact name/raw/arguments/cache;explicit FAILED without executor\n# unknown opaque pass2:Open/resave exact name/raw/arguments/cache;explicit FAILED without executor\n# unknown opaque pass3:Open/resave exact name/raw/arguments/cache;explicit FAILED without executor\n# 6 unknown-only public XCF Save/Open rounds;6 explicit failures;zero executor runs;typed and opaque bytes retained\nok 1 /painter-xcf-roundtrip/filter_unknown_xcf_preservation\n# End of painter-xcf-roundtrip tests\n1..1\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n",
+  "stderr": "GIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Unsupported or malformed saved Filter argument; original definition is retained\n\nGIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Unsupported or malformed saved Filter argument; original definition is retained\n\nGIMP-Warning: Painter XCF metadata was retained but could not be fully restored: Unsupported or malformed saved Filter argument; original definition is retained\n\n"
+}
