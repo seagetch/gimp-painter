@@ -1,0 +1,14 @@
+{
+  "name": "mutant-wrong-replacement",
+  "exit_status": -6,
+  "duration_seconds": 2.165137631003745,
+  "passed_cases": [],
+  "failed_cases": [
+    "/painter-canvas-ui/w08017_dnd_weak_admission_keeps_move"
+  ],
+  "assertions": [
+    "ERROR:../gimp-dnd-src/app/tests/test-widget-store-native-dnd.inc:1144:w08017_dnd_model_changed: assertion failed (probe->items->len == g_list_model_get_n_items (model)): (1 == 2)"
+  ],
+  "portrait": "authenticated 1080x1920x24 Xvfb",
+  "scope": "targeted compiled production mutation; expected assertion failure"
+}

@@ -1,0 +1,14 @@
+{
+  "name": "mutant-missing-snapshot",
+  "exit_status": -6,
+  "duration_seconds": 2.2067753079900285,
+  "passed_cases": [],
+  "failed_cases": [
+    "/painter-canvas-ui/w08017_dnd_cross_parent_last_owner"
+  ],
+  "assertions": [
+    "ERROR:../gimp-dnd-src/app/tests/test-widget-store-native-dnd.inc:267:w08017_dnd_source_changed: assertion failed (G_OBJECT (state->source)->ref_count == 2): (1 == 2)"
+  ],
+  "portrait": "authenticated 1080x1920x24 Xvfb",
+  "scope": "targeted compiled production mutation; expected assertion failure"
+}

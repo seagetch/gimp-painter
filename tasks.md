@@ -420,6 +420,7 @@
 | 08.016 | [x] | CellRendererPopup 型を移植する | 08.015 | cell renderer の vfunc と callback を接続 |
 | 08.016/pixbuf-owner | [x] | popup renderer の pixbuf 寿命を修正する | 08.016, 01.007/cpp-ownership | 初期値・生成失敗・再生成・破棄時の参照を一回だけ解放し、NULL pixbuf を描画しない |
 | 08.017 | [x] | 既存 widget behavior を store に移す | 08.016 | 全登録箇所が共通 slot を利用 |
+| 08.017/dnd-container-notification-contract | [x] | Align native DnD test oracle with reentrant container notifications | 08.018/container-reentrant-membership | Test-only; component original107 canvas cases and two negative controls. Exact retained-reference/admission/splice identity checks; production unchanged. Native vfunc/model fixture, not pointer gesture or parent/full-port/ASan completion. Evidence: `migration/tests/widget-store/dnd-container-notification-contract/`. |
 | 08.018 | [ ] | C 公開操作を新 Impl へ接続する | 08.017 | C 入口から旧 Interface::cast を排除 |
 | 08.018/mypaint-options-construction | [x] | 元MyPaint options型・生成入口を単一native modelへ接続する | 08.017 | 元署名/name Mypaint/独立所有/no tool-info・型handleを通常12/限定5unit ASan12、C consumer/実callback red-greenで確認。旧9証跡/2mutant保持。旧layout/runtime/readiness/GUIと親08.018は未完。migration/tests/adapter-removal/mypaint-options-construction-reentry-08018/ |
 | 08.018/options-construction-publication | [x] | 一時ToolInfo lease解放後のoptions生存を再検証する | 08.018/mypaint-options-construction | 実last-ref callbackが新optionsのみdisposeする0976ae344bのredを修正。通常13/限定5unit ASan13、4証跡negative、8held provider sealで検証。Gimp借用寿命/旧9・12証跡保持。migration/tests/options-construction-publication/ |

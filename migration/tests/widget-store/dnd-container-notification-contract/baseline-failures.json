@@ -1,0 +1,56 @@
+{
+  "full_original_gate": "FAIL",
+  "registered": 107,
+  "partial_diagnostic_passes": 100,
+  "original_cpp_reproduced_failures": [
+    {
+      "name": "/painter-canvas-ui/w08017_dnd_cross_parent_last_owner",
+      "status": -6,
+      "assertions": [
+        "ERROR:app/tests/test-widget-store-native-dnd.inc:266:w08017_dnd_source_changed: assertion failed (G_OBJECT (state->source)->ref_count == 1): (2 == 1)"
+      ]
+    },
+    {
+      "name": "/painter-canvas-ui/w08017_dnd_multi_transfer_lifetime",
+      "status": -6,
+      "assertions": [
+        "ERROR:app/tests/test-widget-store-native-dnd.inc:768:w08017_dnd_multi_source_changed: assertion failed (G_OBJECT (states[i].source)->ref_count == 1): (2 == 1)"
+      ]
+    },
+    {
+      "name": "/painter-canvas-ui/w08017_dnd_relocate_on_insert_valid",
+      "status": -6,
+      "assertions": [
+        "ERROR:app/tests/test-widget-store-native-dnd.inc:1270:w08017_dnd_adoption_case: assertion failed (state.destination_added == kind == W08017_ADOPT_SAME_DESTINATION ? 2 : phase == W08017_ADOPT_ON_SOURCE_REMOVE ? 0 : 1): (2 == 1)"
+      ]
+    },
+    {
+      "name": "/painter-canvas-ui/w08017_dnd_relocate_on_insert_lost",
+      "status": -6,
+      "assertions": [
+        "ERROR:app/tests/test-widget-store-native-dnd.inc:1270:w08017_dnd_adoption_case: assertion failed (state.destination_added == kind == W08017_ADOPT_SAME_DESTINATION ? 2 : phase == W08017_ADOPT_ON_SOURCE_REMOVE ? 0 : 1): (2 == 1)"
+      ]
+    },
+    {
+      "name": "/painter-canvas-ui/w08017_dnd_relocate_on_rollback",
+      "status": -6,
+      "assertions": [
+        "ERROR:app/tests/test-widget-store-native-dnd.inc:1270:w08017_dnd_adoption_case: assertion failed (state.destination_added == kind == W08017_ADOPT_SAME_DESTINATION ? 2 : phase == W08017_ADOPT_ON_SOURCE_REMOVE ? 0 : 1): (2 == 1)"
+      ]
+    },
+    {
+      "name": "/painter-canvas-ui/w08017_dnd_relocate_same_destination",
+      "status": -6,
+      "assertions": [
+        "ERROR:app/tests/test-widget-store-native-dnd.inc:1270:w08017_dnd_adoption_case: assertion failed (state.destination_added == kind == W08017_ADOPT_SAME_DESTINATION ? 2 : phase == W08017_ADOPT_ON_SOURCE_REMOVE ? 0 : 1): (3 == 2)"
+      ]
+    },
+    {
+      "name": "/painter-canvas-ui/w08017_dnd_weak_admission_keeps_move",
+      "status": -6,
+      "assertions": [
+        "ERROR:app/tests/test-widget-store-native-dnd.inc:1241:w08017_dnd_adoption_case: assertion failed (state.destination_added == 2): (5 == 2)"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "name": "green-original",
+  "exit_status": -6,
+  "duration_seconds": 2.8172990870079957,
+  "passed_cases": [
+    "/painter-canvas-ui/w08017_dnd_same_parent_order"
+  ],
+  "failed_cases": [
+    "/painter-canvas-ui/w08017_dnd_cross_parent_last_owner"
+  ],
+  "assertions": [
+    "ERROR:../gimp-dnd-src/app/tests/test-widget-store-native-dnd.inc:312:w08017_dnd_cross_parent_last_owner: assertion failed (state.destination_added == 1): (2 == 1)"
+  ],
+  "portrait": "authenticated 1080x1920x24 Xvfb",
+  "scope": "native DnD fixtures plus original oncanvas UI group; no skip filters"
+}

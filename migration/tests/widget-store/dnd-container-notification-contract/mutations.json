@@ -1,0 +1,25 @@
+{
+  "mutations": [
+    {
+      "name": "missing-snapshot",
+      "file": "app/widgets/gimpcontainertreeview-dnd.c",
+      "replace_once": {
+        "before": "return g_object_ref ((gpointer) source);",
+        "after": "return (gpointer) source; /* intentional missing DnD snapshot owner */"
+      },
+      "target": "/painter-canvas-ui/w08017_dnd_cross_parent_last_owner",
+      "result": "mutant-missing-snapshot.json"
+    },
+    {
+      "name": "wrong-replacement",
+      "file": "app/core/gimpcontainer.c",
+      "replace_once": {
+        "before": "mutation->before,\n                                    container->priv->n_children);",
+        "after": "mutation->before,\n                                    gimp_container_get_child_by_name (container, \"Anchor\") ? container->priv->n_children - 1 : container->priv->n_children);"
+      },
+      "target": "/painter-canvas-ui/w08017_dnd_weak_admission_keeps_move",
+      "result": "mutant-wrong-replacement.json"
+    }
+  ],
+  "procedure": "Apply each mutation separately, rebuild app/tests/painter-canvas-ui, run target via authenticated portrait Xvfb with GIMP_TEST_PAINTER_CANVAS_GROUP=original, require intended assertion, restore source, rebuild, run original group without filters. Mutation files are never published as production changes."
+}

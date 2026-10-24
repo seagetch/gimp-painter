@@ -247,9 +247,10 @@ w08017_dnd_finalized (gpointer data,
   state->finalized = TRUE;
 }
 
-/* items-changed is emitted after the source container has released its strong
- * reference. Survival here therefore tests the DnD temporary ref rather than
- * merely survival inside a pre-remove signal. */
+/* The model membership reference is gone at items-changed, but remove()
+ * retains one temporary reference until notification returns.  The second
+ * reference must be the DnD snapshot: it bridges remove() returning and the
+ * next destination insertion.  Final teardown below also rejects leaks. */
 static void
 w08017_dnd_source_changed (GListModel *model,
                           guint       position,
@@ -263,20 +264,18 @@ w08017_dnd_source_changed (GListModel *model,
     {
       g_assert_false (state->finalized);
       g_assert_null (gimp_viewable_get_parent (state->source));
-      g_assert_cmpuint (G_OBJECT (state->source)->ref_count, ==, 1);
+      g_assert_cmpuint (G_OBJECT (state->source)->ref_count, ==, 2);
       state->observed_owner_gap = TRUE;
     }
 }
 
 static void
-w08017_dnd_destination_changed (GListModel *model,
-                               guint       position,
-                               guint       removed,
-                               guint       added,
-                               gpointer    data)
+w08017_dnd_destination_added (GimpContainer *container,
+                              GimpObject    *object,
+                              gpointer       data)
 {
   W08017DndLifetime *state = data;
-  state->destination_added += added;
+  state->destination_added++;
 }
 
 static void
@@ -300,8 +299,8 @@ w08017_dnd_cross_parent_last_owner (void)
   g_assert_cmpuint (G_OBJECT (source)->ref_count, ==, 1);
   source_handler = g_signal_connect (left_children, "items-changed",
                                       G_CALLBACK (w08017_dnd_source_changed), &state);
-  destination_handler = g_signal_connect (right_children, "items-changed",
-                                           G_CALLBACK (w08017_dnd_destination_changed), &state);
+  destination_handler = g_signal_connect (right_children, "add",
+                                           G_CALLBACK (w08017_dnd_destination_added), &state);
   w08017_dnd_drop (view, GIMP_DND_TYPE_TOOL_ITEM,
                    GIMP_VIEWABLE (source), GIMP_VIEWABLE (destination),
                    GTK_TREE_VIEW_DROP_BEFORE, GDK_ACTION_MOVE);
@@ -765,7 +764,7 @@ w08017_dnd_multi_source_changed (GListModel *model,
       g_assert_false (states[i].finalized);
       if (! gimp_viewable_get_parent (states[i].source))
         {
-          g_assert_cmpuint (G_OBJECT (states[i].source)->ref_count, ==, 1);
+          g_assert_cmpuint (G_OBJECT (states[i].source)->ref_count, ==, 2);
           states[i].source_removed++;
           states[i].observed_owner_gap = TRUE;
           owner_gaps++;
@@ -1115,6 +1114,51 @@ w08017_dnd_adoption_choose (W08017DndAdoption *state)
     w08017_dnd_adoption_remove_destination (state);
 }
 
+/* Count native admissions separately from GListModel splices: an insert
+ * followed by reorder may publish a coherent replacement including unchanged
+ * rows.  Replay every splice against borrowed identity snapshots, so counts
+ * are not merely ignored and the probes do not add object owners. */
+typedef struct
+{
+  GPtrArray *items;
+} W08017DndModelProbe;
+
+static void
+w08017_dnd_model_changed (GListModel *model,
+                         guint       position,
+                         guint       removed,
+                         guint       added,
+                         gpointer    data)
+{
+  W08017DndModelProbe *probe = data;
+  g_assert_cmpuint (position, <=, probe->items->len);
+  g_assert_cmpuint (removed, <=, probe->items->len - position);
+  g_ptr_array_remove_range (probe->items, position, removed);
+  for (guint i = 0; i < added; i++)
+    {
+      GObject *item = g_list_model_get_item (model, position + i);
+      g_assert_nonnull (item);
+      g_ptr_array_insert (probe->items, position + i, item);
+      g_object_unref (item);
+    }
+  g_assert_cmpuint (probe->items->len, ==, g_list_model_get_n_items (model));
+  for (guint i = 0; i < probe->items->len; i++)
+    {
+      GObject *item = g_list_model_get_item (model, i);
+      g_assert_true (item == g_ptr_array_index (probe->items, i));
+      g_object_unref (item);
+    }
+}
+
+static void
+w08017_dnd_count_membership (GimpContainer *container,
+                           GimpObject    *object,
+                           gpointer       data)
+{
+  guint *count = data;
+  (*count)++;
+}
+
 static void
 w08017_dnd_adoption_source_changed (GListModel *model,
                                      guint       position,
@@ -1123,8 +1167,7 @@ w08017_dnd_adoption_source_changed (GListModel *model,
                                      gpointer    data)
 {
   W08017DndAdoption *state = data;
-  state->source_removed += removed;
-  state->source_added += added;
+
   if (! state->fired && removed && state->phase == W08017_ADOPT_ON_SOURCE_REMOVE)
     w08017_dnd_adoption_choose (state);
 }
@@ -1137,8 +1180,7 @@ w08017_dnd_adoption_destination_changed (GListModel *model,
                                           gpointer    data)
 {
   W08017DndAdoption *state = data;
-  state->destination_added += added;
-  state->destination_removed_items += removed;
+
   if (! state->fired && added && state->phase == W08017_ADOPT_ON_DESTINATION_INSERT)
     w08017_dnd_adoption_choose (state);
   else if (! state->fired && state->phase == W08017_ADOPT_ON_ROLLBACK_REMOVE)
@@ -1184,6 +1226,8 @@ w08017_dnd_adoption_case (W08017DndAdoptKind       kind,
                   position == GTK_TREE_VIEW_DROP_INTO_OR_AFTER;
   gulong source_handler;
   gulong destination_handler;
+  W08017DndModelProbe probes[2] = { { NULL }, { NULL } };
+  GimpContainer *models[] = { source, destination };
 
   state.root = root;
   state.source = source;
@@ -1204,6 +1248,20 @@ w08017_dnd_adoption_case (W08017DndAdoptKind       kind,
   for (guint i = 0; i < 2; i++)
     g_object_weak_ref (G_OBJECT (lifetime[i].source), w08017_dnd_finalized, &lifetime[i]);
   g_object_weak_ref (G_OBJECT (right), w08017_dnd_adoption_destination_finalized, &state);
+  for (guint i = 0; i < 2; i++)
+    {
+      probes[i].items = g_ptr_array_new ();
+      w08017_dnd_model_changed (G_LIST_MODEL (models[i]), 0, 0,
+                               g_list_model_get_n_items (G_LIST_MODEL (models[i])),
+                               &probes[i]);
+      /* Validate before the reentrant adoption observer mutates the model. */
+      g_signal_connect (models[i], "items-changed",
+                        G_CALLBACK (w08017_dnd_model_changed), &probes[i]);
+    }
+  g_signal_connect (source, "add", G_CALLBACK (w08017_dnd_count_membership), &state.source_added);
+  g_signal_connect (source, "remove", G_CALLBACK (w08017_dnd_count_membership), &state.source_removed);
+  g_signal_connect (destination, "add", G_CALLBACK (w08017_dnd_count_membership), &state.destination_added);
+  g_signal_connect (destination, "remove", G_CALLBACK (w08017_dnd_count_membership), &state.destination_removed_items);
   source_handler = g_signal_connect (source, "items-changed",
                                       G_CALLBACK (w08017_dnd_adoption_source_changed), &state);
   destination_handler = g_signal_connect (destination, "items-changed",
@@ -1282,6 +1340,8 @@ w08017_dnd_adoption_case (W08017DndAdoptKind       kind,
   g_assert_true (lifetime[0].finalized);
   g_assert_true (lifetime[1].finalized);
   g_assert_true (state.destination_finalized);
+  for (guint i = 0; i < 2; i++)
+    g_ptr_array_unref (probes[i].items);
 }
 
 static void
