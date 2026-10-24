@@ -48,7 +48,17 @@ static void paired_visual()
 }
 int main(int argc,char**argv)
 {
- g_test_init(&argc,&argv,nullptr);g_assert_true(gtk_init_check(&argc,&argv));gimp_test_utils_set_gimp3_directory("GIMP_TESTING_ABS_TOP_SRCDIR","app/tests/gimpdir");
+ g_test_init(&argc,&argv,nullptr);
+ // A plain Meson invocation must capture the same real screenshots without
+ // requiring an out-of-band environment setup. Keep the unique directory for
+ // inspection; explicit evidence runners may still select their own location.
+ if(!g_getenv("GIMP_TEST_PAIRED_SCREENSHOTS")){
+  GError*error=nullptr;gchar*directory=g_dir_make_tmp("gimp-paired-stroke-XXXXXX",&error);
+  g_assert_no_error(error);g_assert_nonnull(directory);
+  g_setenv("GIMP_TEST_PAIRED_SCREENSHOTS",directory,TRUE);
+  g_test_message("paired screenshot directory %s",directory);g_free(directory);
+ }
+ g_assert_true(gtk_init_check(&argc,&argv));gimp_test_utils_set_gimp3_directory("GIMP_TESTING_ABS_TOP_SRCDIR","app/tests/gimpdir");
  gimp_test_utils_setup_menus_path();gimp=gimp_init_for_gui_testing(TRUE);
  g_object_set(gimp->config,"painter-canvas-ui",TRUE,nullptr);gboolean enabled=FALSE;g_object_get(gimp->config,"painter-canvas-ui",&enabled,nullptr);g_assert_true(enabled);
  g_test_add_func("/paired-ui/visible-roundtrip",paired_visual);g_application_run(gimp->app,0,nullptr);int result=gimp_core_app_get_exit_status(GIMP_CORE_APP(gimp->app));
