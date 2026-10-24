@@ -1,0 +1,168 @@
+{
+  "scope": "Standalone real Mapping value owner; not app/runtime/old invalid allocator execution. LSan disabled.",
+  "source_sha256": {
+    "app/paint/painter-mypaint/mapping.hpp": "cd0bdde8d19bce8567d06767d12108ae97a0169b535e35fa8f9c886cfef095b6",
+    "app/painter/gimp-painter-visibility.h": "d832e5442d969ff8439292a61d0143532d85c1b7eaab0b29689c6dc04e9c4532",
+    "migration/tests/mapping-value-owner/test.cpp": "079af0484d999d2ed9bbc98a04d4ffc7637d6d512321667cdd313bdb95ead660"
+  },
+  "changed_after": [],
+  "results": [
+    {
+      "name": "normal-compile",
+      "command": [
+        "c++",
+        "-std=c++14",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-O1",
+        "-g",
+        "-I",
+        "/workspace/scratch/0015fc5d1a03/gimp-painter",
+        "/workspace/scratch/0015fc5d1a03/gimp-painter/migration/tests/mapping-value-owner/test.cpp",
+        "-o",
+        "/workspace/shared/mapping-value-owner/replay/normal"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "duration": 0.6243613369988452
+    },
+    {
+      "name": "normal",
+      "command": [
+        "/workspace/shared/mapping-value-owner/replay/normal"
+      ],
+      "returncode": 0,
+      "stdout": "PASS ownership scenarios=80 clear-counter=1\n",
+      "stderr": "",
+      "duration": 0.0033548370010976214
+    },
+    {
+      "name": "asan-ubsan-compile",
+      "command": [
+        "c++",
+        "-std=c++14",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-O1",
+        "-g",
+        "-fsanitize=address,undefined",
+        "-fno-omit-frame-pointer",
+        "-I",
+        "/workspace/scratch/0015fc5d1a03/gimp-painter",
+        "/workspace/scratch/0015fc5d1a03/gimp-painter/migration/tests/mapping-value-owner/test.cpp",
+        "-o",
+        "/workspace/shared/mapping-value-owner/replay/asan-ubsan"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "duration": 1.2080213019980874
+    },
+    {
+      "name": "asan-ubsan",
+      "command": [
+        "/workspace/shared/mapping-value-owner/replay/asan-ubsan"
+      ],
+      "returncode": 0,
+      "stdout": "PASS ownership scenarios=80 clear-counter=1\n",
+      "stderr": "",
+      "duration": 0.016827240000566235
+    },
+    {
+      "name": "copy-loses-curves-compile",
+      "command": [
+        "c++",
+        "-std=c++14",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-O1",
+        "-g",
+        "-I",
+        "/workspace/shared/mapping-value-owner/replay/mapping-mutant-jm_rcxoa",
+        "/workspace/scratch/0015fc5d1a03/gimp-painter/migration/tests/mapping-value-owner/test.cpp",
+        "-o",
+        "/workspace/shared/mapping-value-owner/replay/mapping-mutant-jm_rcxoa/test"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "duration": 0.5798612449980283
+    },
+    {
+      "name": "copy-loses-curves",
+      "command": [
+        "/workspace/shared/mapping-value-owner/replay/mapping-mutant-jm_rcxoa/test"
+      ],
+      "returncode": -6,
+      "stdout": "",
+      "stderr": "test: /workspace/scratch/0015fc5d1a03/gimp-painter/migration/tests/mapping-value-owner/test.cpp:18: void check(const GimpPainter::MyPaint::Mapping&, int, int): Assertion `m.is_constant()==(inputs==0 || count==0)' failed.\n",
+      "duration": 0.0025076009987969883
+    },
+    {
+      "name": "assignment-retains-old-compile",
+      "command": [
+        "c++",
+        "-std=c++14",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-O1",
+        "-g",
+        "-I",
+        "/workspace/shared/mapping-value-owner/replay/mapping-mutant-6n_qiqi0",
+        "/workspace/scratch/0015fc5d1a03/gimp-painter/migration/tests/mapping-value-owner/test.cpp",
+        "-o",
+        "/workspace/shared/mapping-value-owner/replay/mapping-mutant-6n_qiqi0/test"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "duration": 0.5110578870007885
+    },
+    {
+      "name": "assignment-retains-old",
+      "command": [
+        "/workspace/shared/mapping-value-owner/replay/mapping-mutant-6n_qiqi0/test"
+      ],
+      "returncode": -6,
+      "stdout": "",
+      "stderr": "test: /workspace/scratch/0015fc5d1a03/gimp-painter/migration/tests/mapping-value-owner/test.cpp:18: void check(const GimpPainter::MyPaint::Mapping&, int, int): Assertion `m.is_constant()==(inputs==0 || count==0)' failed.\n",
+      "duration": 0.002671416998055065
+    },
+    {
+      "name": "clear-stale-counter-compile",
+      "command": [
+        "c++",
+        "-std=c++14",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-O1",
+        "-g",
+        "-I",
+        "/workspace/shared/mapping-value-owner/replay/mapping-mutant-o_mhv55b",
+        "/workspace/scratch/0015fc5d1a03/gimp-painter/migration/tests/mapping-value-owner/test.cpp",
+        "-o",
+        "/workspace/shared/mapping-value-owner/replay/mapping-mutant-o_mhv55b/test"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "duration": 0.6961240710006678
+    },
+    {
+      "name": "clear-stale-counter",
+      "command": [
+        "/workspace/shared/mapping-value-owner/replay/mapping-mutant-o_mhv55b/test"
+      ],
+      "returncode": -6,
+      "stdout": "",
+      "stderr": "test: /workspace/scratch/0015fc5d1a03/gimp-painter/migration/tests/mapping-value-owner/test.cpp:18: void check(const GimpPainter::MyPaint::Mapping&, int, int): Assertion `m.is_constant()==(inputs==0 || count==0)' failed.\n",
+      "duration": 0.004310468000767287
+    }
+  ]
+}

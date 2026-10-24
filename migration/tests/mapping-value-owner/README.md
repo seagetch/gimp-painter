@@ -1,0 +1,9 @@
+# Original 19.006/mapping-value-owner — bounded value-ownership proof
+
+The preserved requirement is independent curve copies/moves/reassignment/destruction without multiple frees (`点列を独立にコピー・移動し、再代入・破棄で配列の多重解放を起こさない`). The existing native `Mapping` replaces old `new[]` ownership with `std::vector<Points>` and fixed `std::array` values. No production change is needed for this tested ownership scope. The historical invalid `new[]`/`delete` implementation is not executed.
+
+At committed source `20b2204b11df079c306a680b41ac623f3be75c76`, both normal C++14 and fully instrumented standalone ASan/UBSan builds pass 80 scenarios (0–9 inputs × empty/2–8 points), plus active-input counter clearing. Each scenario verifies independent copy construction and copy assignment, self-copy, move construction/assignment, reassignment of moved-from values, vector relocation/destruction, 50 repeated assignments, exact retained points, and an independent affine evaluation/extrapolation oracle. Three compiled production-header controls (copy loses curves, assignment retains old state, clearing leaves stale counter) fail the intended runtime assertions; none relies on compile failure.
+
+`results.json` pins all implementation/test inputs and records unchanged post-run hashes and full commands/results. LeakSanitizer is disabled; no leak-check or whole-application sanitizer claim is made. No old-runtime, resource decoder, GUI, allocation-failure, arbitrary moved-from evaluation, or self-move semantic claim is made. Original dependency 19.006 remains open; the original row therefore remains unchecked and DOING, not DONE. The earlier native resource `/painter/myb/mapping` regression is retained unchanged.
+
+Replay: `python3 migration/tests/mapping-value-owner/run.py --output /tmp/mapping-value-owner-result`.
