@@ -114,12 +114,14 @@ static void mode_selection(gconstpointer data)
   g_object_unref(image);gimp_display_close(shell->display);gimp_test_run_mainloop_until_idle();
 }
 #include "test-painter-mode-anime.inc"
+#include "test-filter-flip-portrait.inc"
 
 int main(int argc,char **argv)
 {
   gint result;g_test_init(&argc,&argv,NULL);if(!gtk_init_check(&argc,&argv))return GIMP_EXIT_TEST_SKIPPED;
   gimp_test_utils_setup_menus_path();gimp=gimp_init_for_gui_testing(TRUE);
   g_object_set(gimp->config,"painter-canvas-ui",TRUE,NULL);
+  g_test_add_func("/painter-mode-ui/filter-flip-portrait",filter_flip_oncanvas_portrait);
   g_test_add_data_func("/painter-mode-ui/native-selector",GINT_TO_POINTER(FALSE),mode_selection);
   g_test_add_data_func("/painter-mode-ui/float-selector",GINT_TO_POINTER(TRUE),mode_selection);
   g_test_add_data_func("/painter-mode-ui/anime-initial",GUINT_TO_POINTER(0),anime_composite_reference);
