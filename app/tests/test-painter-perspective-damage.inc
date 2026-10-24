@@ -9,6 +9,85 @@ static GdkPixbuf *perspective_damage_capture (void)
   g_assert_nonnull (pixels);
   return pixels;
 }
+typedef struct
+{
+  cairo_region_t *region;
+  guint          draws;
+} PerspectiveDamageClip;
+
+/* Record the real device-space clip, not the overlay's extent estimate. */
+static gboolean
+perspective_damage_record_clip (GtkWidget *widget, cairo_t *cr, gpointer data)
+{
+  PerspectiveDamageClip *clip = data;
+  clip->draws++;
+  cairo_rectangle_list_t *rectangles = cairo_copy_clip_rectangle_list (cr);
+
+  g_assert_cmpint (rectangles->status, ==, CAIRO_STATUS_SUCCESS);
+  for (gint i = 0; i < rectangles->num_rectangles; i++)
+    {
+      cairo_rectangle_t r = rectangles->rectangles[i];
+      cairo_rectangle_int_t rect = { floor (r.x), floor (r.y),
+        ceil (r.x + r.width) - floor (r.x),
+        ceil (r.y + r.height) - floor (r.y) };
+      cairo_region_union_rectangle (clip->region, &rect);
+    }
+  cairo_rectangle_list_destroy (rectangles);
+  return FALSE;
+}
+
+/* Xlib's clipped image/border compositing is not pixel-identical to a full
+ * redraw (nor to Cairo image surfaces). Establish its actual contribution
+ * without the perspective item, using precisely the recorded window clip.
+ * This is a causal control, not a larger allowed channel-error threshold. */
+static void
+perspective_damage_border_control (PerspectiveDamageClip *clip,
+                                   GdkPixbuf **full, GdkPixbuf **clipped)
+{
+  GdkPixbuf *restored;
+  PerspectiveDamageClip replay = { cairo_region_create (), 0 };
+  gulong replay_handler;
+
+  g_assert_false (cairo_region_is_empty (clip->region));
+  /* A region union cannot reproduce the chronology of multiple frames. */
+  g_assert_cmpuint (clip->draws, ==, 1);
+  g_assert_true (gimp_canvas_item_get_visible (shell->perspective_guide));
+  gimp_canvas_item_set_visible (shell->perspective_guide, FALSE);
+  gtk_widget_queue_draw (shell->canvas);
+  *full = perspective_damage_capture ();
+  replay_handler = g_signal_connect (shell->canvas, "draw",
+    G_CALLBACK (perspective_damage_record_clip), &replay);
+  gtk_widget_queue_draw_region (shell->canvas, clip->region);
+  *clipped = perspective_damage_capture ();
+  g_signal_handler_disconnect (shell->canvas, replay_handler);
+  g_assert_cmpuint (replay.draws, ==, 1);
+  g_assert_true (cairo_region_equal (clip->region, replay.region));
+  cairo_region_destroy (replay.region);
+  gimp_canvas_item_set_visible (shell->perspective_guide, TRUE);
+  gtk_widget_queue_draw (shell->canvas);
+  /* Drain restoration before the next mutation: a pending full redraw must
+   * never repair the next incremental capture and conceal missing damage. */
+  restored = perspective_damage_capture ();
+  g_object_unref (restored);
+}
+
+static gboolean
+perspective_damage_control_matches (GdkPixbuf *full, GdkPixbuf *clipped,
+                                    gint x, gint y,
+                                    const guchar *actual, const guchar *reference)
+{
+  const guchar *f = gdk_pixbuf_get_pixels (full) +
+    y * gdk_pixbuf_get_rowstride (full) + x * gdk_pixbuf_get_n_channels (full);
+  const guchar *c = gdk_pixbuf_get_pixels (clipped) +
+    y * gdk_pixbuf_get_rowstride (clipped) + x * gdk_pixbuf_get_n_channels (clipped);
+
+  /* Require absolute RGB equality in both frames, not just a similar delta. */
+  for (guint channel = 0; channel < 3; channel++)
+    if (actual[channel] != c[channel] || reference[channel] != f[channel])
+      return FALSE;
+  return TRUE;
+}
+
 static cairo_surface_t *perspective_damage_ink (void)
 {
   cairo_surface_t *surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, shell->disp_width, shell->disp_height);
@@ -51,12 +130,14 @@ static guint perspective_damage_difference (GdkPixbuf *a, GdkPixbuf *b,
       }
   return count;
 }
-/* Keep global diagnostics: only independently drawn pre-existing image/layer
- * border ink may explain the separately observed3-level clipping difference.
- * Unknown outside pixels, or larger border differences, still fail. */
+/* Keep global diagnostics. Only independently drawn pre-existing border ink
+ * with an exact guide-free replay may explain a difference above two levels.
+ * Guide pixels, unrelated pixels, and unmatched border pixels still fail. */
 static void perspective_damage_global_audit (GdkPixbuf *a, GdkPixbuf *b,
-                                             cairo_surface_t *old_ink, cairo_surface_t *new_ink)
+                                             cairo_surface_t *old_ink, cairo_surface_t *new_ink,
+                                             PerspectiveDamageClip *clip)
 {
+  GdkPixbuf *control_full = NULL, *control_clipped = NULL;
   cairo_surface_t *border = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, shell->disp_width, shell->disp_height);
   cairo_t *cr = cairo_create (border);
   if (shell->rotate_transform) cairo_transform (cr, shell->rotate_transform);
@@ -75,13 +156,22 @@ static void perspective_damage_global_audit (GdkPixbuf *a, GdkPixbuf *b,
         {
           above_two++;
           if (perspective_damage_mask_contains (old_ink, x, y) || perspective_damage_mask_contains (new_ink, x, y)) guide++;
-          else if (delta == 3 && perspective_damage_mask_contains (border, x, y)) classified_border++;
+          else if (perspective_damage_mask_contains (border, x, y))
+            {
+              if (!control_full)
+                perspective_damage_border_control (clip, &control_full, &control_clipped);
+              if (perspective_damage_control_matches (control_full, control_clipped, x, y, p, q))
+                classified_border++;
+              else
+                unexplained++;
+            }
           else unexplained++;
         }
     }
   g_test_message ("perspective global all=%u above2=%u guide=%u preexisting-border=%u unexplained=%u maximum=%u",
                   all, above_two, guide, classified_border, unexplained, maximum);
   g_assert_cmpuint (guide, ==, 0); g_assert_cmpuint (unexplained, ==, 0);
+  g_clear_object (&control_full); g_clear_object (&control_clipped);
   cairo_surface_destroy (border);
 }
 static void perspective_damage_mutations (gconstpointer data)
@@ -132,12 +222,17 @@ static void perspective_damage_mutations (gconstpointer data)
             /* Capture incremental damage FIRST. A later full redraw is only an
              * independent reference and cannot repair the captured result. */
             cairo_surface_t *current_ink = perspective_damage_ink ();
+            PerspectiveDamageClip clip = { cairo_region_create (), 0 };
+            gulong clip_handler = g_signal_connect (shell->canvas, "draw",
+              G_CALLBACK (perspective_damage_record_clip), &clip);
             GdkPixbuf *incremental = perspective_damage_capture ();
+            g_signal_handler_disconnect (shell->canvas, clip_handler);
             guint changed = perspective_damage_difference (previous, incremental, previous_ink, current_ink);
             gtk_widget_queue_draw (shell->canvas);
             GdkPixbuf *reference = perspective_damage_capture ();
             guint residual = perspective_damage_difference (incremental, reference, previous_ink, current_ink);
-            perspective_damage_global_audit (incremental, reference, previous_ink, current_ink);
+            perspective_damage_global_audit (incremental, reference, previous_ink, current_ink, &clip);
+            cairo_region_destroy (clip.region);
             g_test_message ("perspective damage angle=%g aniso=%u flip=%u step=%u changed=%u residual=%u",
                             angles[a], aniso, flip, step, changed, residual);
             if (residual && g_getenv ("GIMP_TEST_PERSPECTIVE_DAMAGE_DIR")) {

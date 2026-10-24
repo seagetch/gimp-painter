@@ -1374,6 +1374,7 @@
 | 34.013 | [ ] | 生成物の差分検査を登録する | 34.012 | enum/PDB 等の再生成漏れを検出 |
 | 34.014 | [ ] | 資源 manifest の検査を登録する | 34.013 | 同梱ファイルの欠落と未登録を検出 |
 | 34.015 | [ ] | ログと失敗 fixture を保存する | 34.014 | 再現に必要な入力と版が残る |
+| 34.015/perspective-exact-clip-border-oracle | [x] | Qualify exact Xlib border replay for incremental Perspective damage | 26.005 | Test-only; component29 distinct Perspective cases,168 transitions and two negative controls; exact same-clip RGB replay without widening guide tolerance. Original26.005 and193 duties remain open; no ASan/full-port completion. Evidence: `migration/tests/perspective-exact-clip-border-oracle/`. |
 | 34.015/compact-options-test-budget | [x] | 実入力compact-options試験の登録時間枠を実測に合わせる | 03.009/tcp-portrait-environment | 旧60s失敗を保持し、必須待機だけで60sを超える47caseを無変更で測定。180s登録を通常Meson再生成し全47caseと新規全153targetを検証 |
 | 34.015/exact-source-normal-baseline | [x] | 公開commit固定で通常Linux全登録targetを再検証する | 03.009/tcp-portrait-environment, 34.015/compact-options-test-budget | 65536379b9の全build/install後154/154登録合格、31834 file byte不変。XCF slow subtest skip1とGEGL/gradient診断を保持。厳密frozen gateは未完了 |
 | 34.015/gradient-test-path | [x] | in-build試験のgradient検索先と保存先を整合させる | 03.009/tcp-portrait-environment | テスト専用RCにsourceとprofile両gradient pathを設定しoverrideを維持。7 Python controlと影響13 native登録合格、保存先診断ゼロ。production保存処理は不変 |

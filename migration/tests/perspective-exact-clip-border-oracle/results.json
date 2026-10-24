@@ -1,0 +1,68 @@
+{
+  "baseline_commit": "b35ed653e2f84f8912a5323c0745b7279d02ca13",
+  "source_changed": [
+    "app/tests/test-painter-perspective-damage.inc"
+  ],
+  "production_changed": false,
+  "original_binary_sha256": "fb82eda6bd2d00fe47a8ed6b357e6ac66b024dd7d6398af6bc116538b7e361c7",
+  "fixed_binary_sha256": "8fb43c352f6ee982e0172933ff4170cdf097f4df54dbcea14c05b0df7abd6d80",
+  "original_source_sha256": "ca912c90a5efab3d3470f49b5ee465b3250037ca9f4060eb1c82ac2e581d46fa",
+  "fixed_source_sha256": "18073df1ac23a3fc38480095a5941da308d349f529ace7a6a636ba814145ccad",
+  "display": {
+    "xvfb": "1080x1920x24",
+    "authenticated": true,
+    "oncanvas_ui": true
+  },
+  "cause": {
+    "angle": 37,
+    "anisotropic": true,
+    "flip": 2,
+    "step": 2,
+    "pixel": [
+      390,
+      796
+    ],
+    "actual_rgb": [
+      66,
+      66,
+      23
+    ],
+    "reference_rgb": [
+      62,
+      62,
+      23
+    ],
+    "guide_free_clipped_rgb": [
+      66,
+      66,
+      23
+    ],
+    "guide_free_full_rgb": [
+      62,
+      62,
+      23
+    ]
+  },
+  "passed": {
+    "damage_scenes": 24,
+    "mutations": 168,
+    "geometry_scenes": 288,
+    "old_path_scenes": 288,
+    "existing_ui_cases": 24,
+    "total_cases": 29
+  },
+  "negative_controls": {
+    "missing_update": {
+      "expected": "FAIL",
+      "guide_pixels": 224,
+      "maximum": 114
+    },
+    "border_red_channel_plus_one": {
+      "expected": "FAIL",
+      "unexplained_pixels": 1,
+      "maximum": 5
+    }
+  },
+  "full_port_gate": "NOT RUN; targeted Perspective scopes only",
+  "review": "Independent review approved final hardened source SHA256 18073df1ac23a3fc38480095a5941da308d349f529ace7a6a636ba814145ccad; no blocking issue"
+}

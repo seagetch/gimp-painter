@@ -1,0 +1,10 @@
+--- a/app/tests/test-painter-perspective-damage.inc
++++ b/app/tests/test-painter-perspective-damage.inc
+@@ -230,6 +230,7 @@
+             guint changed = perspective_damage_difference (previous, incremental, previous_ink, current_ink);
+             gtk_widget_queue_draw (shell->canvas);
+             GdkPixbuf *reference = perspective_damage_capture ();
++            if (a == 1 && aniso == 1 && flip == 2 && step == 2) { guchar *pixel=gdk_pixbuf_get_pixels(incremental)+796*gdk_pixbuf_get_rowstride(incremental)+390*gdk_pixbuf_get_n_channels(incremental); pixel[0]++; }
+             guint residual = perspective_damage_difference (incremental, reference, previous_ink, current_ink);
+             perspective_damage_global_audit (incremental, reference, previous_ink, current_ink, &clip);
+             cairo_region_destroy (clip.region);

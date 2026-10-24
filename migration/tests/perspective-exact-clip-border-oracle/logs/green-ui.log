@@ -1,0 +1,32 @@
+Xvfb verified: 127.0.0.1:91, 1080x1920x24, authenticated accepted, empty authority rejected
+1..29
+ok 1 /perspective-ui/damage-ink-bounds # SKIP by request (-s option)
+ok 2 /perspective-ui/old-path-pixels # SKIP by request (-s option)
+ok 3 /perspective-ui/retained-groups-deserialize
+# slow test /perspective-ui/retained-groups-deserialize executed in 0.74 secs
+ok 4 /perspective-ui/retained-groups-reset
+ok 5 /perspective-ui/add-move-remove-undo
+ok 6 /perspective-ui/stale-target-motion
+ok 7 /perspective-ui/close-pending-resize
+ok 8 /perspective-ui/cancel-hit-transforms
+ok 9 /perspective-ui/overlay-extents-replace
+ok 10 /perspective-ui/overlay-pixels-image-switch
+ok 11 /perspective-ui/registration-external-replace
+ok 12 /perspective-ui/old-toolrc-preserves-groups
+ok 13 /perspective-ui/interrupted-add
+ok 14 /perspective-ui/interrupted-add-dispose
+ok 15 /perspective-ui/interrupted-remove
+ok 16 /perspective-ui/interrupted-remove-dispose
+ok 17 /perspective-ui/proximity-status
+ok 18 /perspective-ui/registered-type-options
+ok 19 /perspective-ui/standalone-lifetime
+ok 20 /perspective-ui/interrupted-motion
+ok 21 /perspective-ui/recursive-cancel
+ok 22 /perspective-ui/switch-finalizer-disposes-tool
+ok 23 /perspective-ui/notification-last-owner
+ok 24 /perspective-ui/guide-property-ownership
+ok 25 /perspective-ui/property-finalizer-disposes-tool
+ok 26 /perspective-ui/property-finalizer-replaces-model
+ok 27 /perspective-ui/damage-mutations/0 # SKIP by request (-s option)
+ok 28 /perspective-ui/damage-mutations/1 # SKIP by request (-s option)
+ok 29 /perspective-ui/damage-mutations/2 # SKIP by request (-s option)
