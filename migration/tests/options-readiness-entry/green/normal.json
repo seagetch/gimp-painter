@@ -1,0 +1,57 @@
+[
+  {
+    "name": "gimp:libgimpbase / mypaint-enum-library-only",
+    "result": "OK",
+    "returncode": 0,
+    "stdout": "PASS: standalone C11 public library enum identity/values/nicks/metadata\n",
+    "stderr": null,
+    "duration": 0.007880687713623047,
+    "command": [
+      "/workspace/shared/gimp-clean-aggregate/build/libgimpbase/mypaint-enum-library-only"
+    ]
+  },
+  {
+    "name": "gimp:app / gimp-painter-options",
+    "result": "OK",
+    "returncode": 0,
+    "stdout": "TAP version 14\n# random seed: R02S5bfcbc29a34f37cc1bbbdda297759306\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n1..24\n# Start of painter-options tests\nok 1 /painter-options/generated-properties\nok 2 /painter-options/all-native-properties-config\nok 3 /painter-options/legacy-brush-mode-config\nok 4 /painter-options/edit-curve-commit-conflict\nok 5 /painter-options/history-config\nok 6 /painter-options/draft-name-identity-commit\nok 7 /painter-options/draft-name-history-copy\nok 8 /painter-options/draft-name-external-errors\nok 9 /painter-options/draft-name-notification-lifetime\nok 10 /painter-options/draft-name-reentry\nok 11 /painter-options/native-config-reset-defaults\nok 12 /painter-options/notification-last-ref\nok 13 /painter-options/closed-invalid-curve\nok 14 /painter-options/named-resources\nok 15 /painter-options/selection-reentry\nok 16 /painter-options/commit-close\nok 17 /painter-options/cross-options-history\nok 18 /painter-options/mapping-point-generated-matrix\nok 19 /painter-options/mapping-point-handle-lifetime-failures\nok 20 /painter-options/mapping-point-set-generated-matrix\n# slow test /painter-options/mapping-point-set-generated-matrix executed in 0.76 secs\nok 21 /painter-options/mapping-point-set-precision-reset-history\nok 22 /painter-options/mapping-point-set-fail-closed\nok 23 /painter-options/mapping-point-set-notification-reentry\nok 24 /painter-options/application-history-close\n# End of painter-options tests\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n",
+    "stderr": null,
+    "duration": 1.8499996662139893,
+    "command": [
+      "/workspace/shared/gimp-clean-aggregate/build/app/tests/gimp-painter-options"
+    ]
+  },
+  {
+    "name": "gimp:app / mypaint-options-mode",
+    "result": "OK",
+    "returncode": 0,
+    "stdout": "TAP version 14\n# random seed: R02Sf7317027de4d4e5ad584fe19f34528b2\n1..6\n# Start of original-options-mode tests\nok 1 /original-options-mode/stored-normal\n# slow test /original-options-mode/stored-normal executed in 0.98 secs\nok 2 /original-options-mode/stored-normal-erase\n# slow test /original-options-mode/stored-normal-erase executed in 0.98 secs\nok 3 /original-options-mode/stored-lock-alpha\n# slow test /original-options-mode/stored-lock-alpha executed in 1.04 secs\nok 4 /original-options-mode/stored-colorize\n# slow test /original-options-mode/stored-colorize executed in 0.97 secs\nok 5 /original-options-mode/disposed-still-normal\n# slow test /original-options-mode/disposed-still-normal executed in 1.11 secs\nok 6 /original-options-mode/invalid-default-diagnostic\n# slow test /original-options-mode/invalid-default-diagnostic executed in 1.03 secs\n# End of original-options-mode tests\n",
+    "stderr": null,
+    "duration": 6.205265760421753,
+    "command": [
+      "/workspace/shared/gimp-clean-aggregate/build/app/tests/mypaint-options-mode"
+    ]
+  },
+  {
+    "name": "gimp:app / mypaint-enum-public",
+    "result": "OK",
+    "returncode": 0,
+    "stdout": "TAP version 14\n# random seed: R02S960dafb9fc0f948724ab591cfeefc5d6\n1..2\n# Start of mypaint-public-enum tests\nok 1 /mypaint-public-enum/library-first\n# slow test /mypaint-public-enum/library-first executed in 1.05 secs\nok 2 /mypaint-public-enum/app-first\n# slow test /mypaint-public-enum/app-first executed in 1.07 secs\n# End of mypaint-public-enum tests\n",
+    "stderr": null,
+    "duration": 2.1744837760925293,
+    "command": [
+      "/workspace/shared/gimp-clean-aggregate/build/app/tests/mypaint-enum-public"
+    ]
+  },
+  {
+    "name": "gimp:app / mypaint-options-readiness",
+    "result": "OK",
+    "returncode": 0,
+    "stdout": "TAP version 14\n# random seed: R02Sc0a33f3a28553e3af16144fc3d12c21a\n1..20\n# Start of original-options-readiness tests\nok 1 /original-options-readiness/initial-implicit-false\n# slow test /original-options-readiness/initial-implicit-false executed in 1.26 secs\nok 2 /original-options-readiness/same-source-adopted\n# slow test /original-options-readiness/same-source-adopted executed in 1.15 secs\nok 3 /original-options-readiness/changed-adopted-before-observer\n# slow test /original-options-readiness/changed-adopted-before-observer executed in 1.20 secs\nok 4 /original-options-readiness/null-sticky\n# slow test /original-options-readiness/null-sticky executed in 1.10 secs\nok 5 /original-options-readiness/dispose-sticky\n# slow test /original-options-readiness/dispose-sticky executed in 1.10 secs\nok 6 /original-options-readiness/context-copy\n# slow test /original-options-readiness/context-copy executed in 1.09 secs\nok 7 /original-options-readiness/context-inheritance\n# slow test /original-options-readiness/context-inheritance executed in 1.13 secs\nok 8 /original-options-readiness/same-request-reentry\n# slow test /original-options-readiness/same-request-reentry executed in 1.14 secs\nok 9 /original-options-readiness/request-dispose\n# slow test /original-options-readiness/request-dispose executed in 1.10 secs\nok 10 /original-options-readiness/no-observer-no-toggle\n# slow test /original-options-readiness/no-observer-no-toggle executed in 1.11 secs\nok 11 /original-options-readiness/stale-manual-signal\n# slow test /original-options-readiness/stale-manual-signal executed in 1.10 secs\nok 12 /original-options-readiness/explicit-construction-property\n# slow test /original-options-readiness/explicit-construction-property executed in 1.12 secs\nok 13 /original-options-readiness/same-source-dirty-preserved\n# slow test /original-options-readiness/same-source-dirty-preserved executed in 1.14 secs\nok 14 /original-options-readiness/request-last-owner\n# slow test /original-options-readiness/request-last-owner executed in 1.09 secs\nok 15 /original-options-readiness/context-lease-disposes-brush\n# slow test /original-options-readiness/context-lease-disposes-brush executed in 1.08 secs\nok 16 /original-options-readiness/initial-dispose-false\n# slow test /original-options-readiness/initial-dispose-false executed in 1.29 secs\nok 17 /original-options-readiness/constructor-nested-different\n# slow test /original-options-readiness/constructor-nested-different executed in 1.05 secs\nok 18 /original-options-readiness/constructor-nested-same\n# slow test /original-options-readiness/constructor-nested-same executed in 1.05 secs\nok 19 /original-options-readiness/blocked-observer-no-toggle\n# slow test /original-options-readiness/blocked-observer-no-toggle executed in 1.00 secs\nok 20 /original-options-readiness/constructor-before-adoption-same\n# slow test /original-options-readiness/constructor-before-adoption-same executed in 0.95 secs\n# End of original-options-readiness tests\n",
+    "stderr": null,
+    "duration": 22.308342933654785,
+    "command": [
+      "/workspace/shared/gimp-clean-aggregate/build/app/tests/mypaint-options-readiness"
+    ]
+  }
+]

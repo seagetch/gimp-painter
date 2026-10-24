@@ -1,0 +1,12 @@
+Xvfb verified: 127.0.0.1:92, 1080x1920x24, authenticated accepted, empty authority rejected
+TAP version 14
+# random seed: R02S085cb5813db52d2f75dfef17521af571
+# Start of original-options-readiness tests
+# child process (/original-options-readiness/constructor-before-adoption-same [49]) exit status: 1 (error)
+# child process (/original-options-readiness/constructor-before-adoption-same [49]) stdout: ""
+# child process (/original-options-readiness/constructor-before-adoption-same [49]) stderr: "**\nERROR:../source/app/tests/test-mypaint-options-readiness.cpp:23:void assert_ready(GimpMypaintOptions*, bool): assertion failed (options_readiness_c_consumer(o) == expected): (0 == 1)\n"
+not ok /original-options-readiness/constructor-before-adoption-same - ERROR:../source/app/tests/test-mypaint-options-readiness.cpp:51:void run_case(gconstpointer): child process (/original-options-readiness/constructor-before-adoption-same [49]) failed unexpectedly
+Bail out!
+ **
+ERROR:../source/app/tests/test-mypaint-options-readiness.cpp:51:void run_case(gconstpointer): child process (/original-options-readiness/constructor-before-adoption-same [49]) failed unexpectedly
+

@@ -22,6 +22,8 @@ public:
   GimpPainterMybrushOptions *get () const noexcept { return owner_.get (); }
   GimpMypaintBrushMode get_brush_mode () const
   { return gimp_mypaint_options_get_brush_mode (get ()); }
+  bool is_ready () const
+  { return gimp_mypaint_options_is_ready (get ()) != FALSE; }
   ObjectRef<GObject> gui () const
   { return ObjectRef<GObject>::sink (G_OBJECT (
       gimp_mypaint_options_gui (GIMP_TOOL_OPTIONS (get ())))); }

@@ -350,6 +350,7 @@ enum
   DUMMY_EXPAND, /* bit21 is a paint-options mask, not a context property */
   PAINTER_MYBRUSH_CHANGED,
   PROP_NAME_CHANGED,
+  PAINTER_MYBRUSH_REAFFIRMED,
   LAST_SIGNAL
 };
 
@@ -408,7 +409,15 @@ static GType gimp_context_prop_types[] =
 };
 
 
+/* Transient recursion protection only; no Resource or alternate model store.
+ * Kept in standard GObject private storage, outside public instance/class ABI. */
+typedef struct
+{
+  gboolean painter_reaffirming;
+} GimpContextPrivate;
+
 G_DEFINE_TYPE_WITH_CODE (GimpContext, gimp_context, GIMP_TYPE_VIEWABLE,
+                         G_ADD_PRIVATE (GimpContext)
                          G_IMPLEMENT_INTERFACE (GIMP_TYPE_CONFIG,
                                                 gimp_context_config_iface_init))
 
@@ -534,6 +543,16 @@ gimp_context_class_init (GimpContextClass *klass)
                   NULL, NULL, NULL,
                   G_TYPE_NONE, 1,
                   GIMP_TYPE_PAINTER_MYBRUSH);
+
+  /* Successful same-resource selection requests also arise from context copy
+   * and inheritance. Existing changed/property notifications stay unchanged.
+   * No class closure slot or emission hooks: unobserved requests remain no-ops. */
+  gimp_context_signals[PAINTER_MYBRUSH_REAFFIRMED] =
+    g_signal_new ("painter-mybrush-reaffirmed",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_FIRST | G_SIGNAL_NO_HOOKS,
+                  0, NULL, NULL, NULL,
+                  G_TYPE_NONE, 1, GIMP_TYPE_PAINTER_MYBRUSH);
 
   gimp_context_signals[PATTERN_CHANGED] =
     g_signal_new ("pattern-changed",
@@ -3128,8 +3147,42 @@ gimp_context_real_set_painter_mybrush (GimpContext *context,
   GimpPainterMybrush *old;
   guint64 revision;
 
-  if (!context->gimp || context->painter_mybrush == brush)
+  if (!context->gimp)
     return;
+
+  if (context->painter_mybrush == brush)
+    {
+      GimpContextPrivate *priv = gimp_context_get_instance_private (context);
+
+      if (brush && !priv->painter_reaffirming &&
+          g_signal_has_handler_pending (context,
+                                        gimp_context_signals[PAINTER_MYBRUSH_REAFFIRMED],
+                                        0, FALSE))
+        {
+          /* Acquiring/releasing endpoint leases can invoke toggle callbacks.
+           * Keep the recursion guard through brush release, and revalidate
+           * after acquisition before publishing a successful reaffirmation. */
+          GWeakRef brush_weak;
+          GimpPainterMybrush *held_brush;
+
+          priv->painter_reaffirming = TRUE;
+          /* Pin via a weak lease: acquiring the context can dispose it and
+           * release the last brush owner before a direct brush ref is safe. */
+          g_weak_ref_init (&brush_weak, brush);
+          g_object_ref (context);
+          held_brush = g_weak_ref_get (&brush_weak);
+          g_weak_ref_clear (&brush_weak);
+          if (held_brush && context->gimp &&
+              context->painter_mybrush == held_brush)
+            g_signal_emit (context,
+                           gimp_context_signals[PAINTER_MYBRUSH_REAFFIRMED],
+                           0, held_brush);
+          g_clear_object (&held_brush);
+          priv->painter_reaffirming = FALSE;
+          g_object_unref (context);
+        }
+      return;
+    }
 
   /* Publish a coherent selection before releasing the old resource: a resource
    * finalizer or notify listener may reenter, or drop the caller's last context

@@ -21,6 +21,11 @@ typedef GimpPainterMybrushOptionsClass GimpMypaintOptionsClass;
  * Invalid instances retain the original GLib guard diagnostic/default. */
 GimpMypaintBrushMode gimp_mypaint_options_get_brush_mode (GimpMypaintOptions *options);
 
+/* Historical successful-selection predicate: excludes the native implicit
+ * constructor seed, stays TRUE after accepted selection, NULL clear and dispose.
+ * This is not current draft validity and does not expose a mutable brush view. */
+gboolean gimp_mypaint_options_is_ready (GimpMypaintOptions *options);
+
 /* Original symbol, sole native runtime type; not historical class layout. */
 GType gimp_mypaint_options_get_type (void) G_GNUC_CONST;
 /* Transfer-full independent options using only tool_info->gimp and the original

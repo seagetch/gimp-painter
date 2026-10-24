@@ -114,11 +114,15 @@ struct OptionsImpl {
   std::uint64_t revision=0;
   std::uint64_t name_revision=0;
   gint legacy_brush_mode=0;
+  // Original is_ready is adoption history, not current Resource validity.
+  bool legacy_adopted=false,implicit_seed=false,legacy_reaffirm_pending=false;
+  GimpPainterMybrush* implicit_seed_source=nullptr; // transient identity only
+  std::uint64_t implicit_seed_revision=0;
   bool dirty=false,name_dirty=false,conflict=false,committing=false;
   void remember () {
     if((dirty||name_dirty) && history)history->push({selected,draft,draft_name,dirty});
   }
-  void close () noexcept {changed.close();renamed.close();selected.reset();history.reset();}
+  void close () noexcept {implicit_seed=false;implicit_seed_source=nullptr;legacy_reaffirm_pending=false;changed.close();renamed.close();selected.reset();history.reset();}
 };
 struct OptionsSlot : SlotSpec<GimpPainterMybrushOptions,OptionsImpl> {};
 BindingStore& store(GimpPainterMybrushOptions*o)
@@ -282,6 +286,11 @@ void select_source(GimpPainterMybrushOptions*options,GimpPainterMybrush*brush)
   const auto update=[&](OptionsImpl&i){
     i.remember();auto old_source=std::move(i.selected);auto old_connection=std::move(i.changed);auto old_rename_connection=std::move(i.renamed);
     i.selected=source;i.changed=std::move(connection);i.renamed=std::move(rename_connection);
+    const bool own_seed=i.implicit_seed&&i.implicit_seed_source==source.get()&&
+      i.implicit_seed_revision==GIMP_CONTEXT(options)->painter_mybrush_revision;
+    if(source&&(!own_seed||i.legacy_reaffirm_pending))i.legacy_adopted=true;
+    // Consume only this adoption before any Options observer can reenter.
+    i.implicit_seed=false;i.implicit_seed_source=nullptr;i.legacy_reaffirm_pending=false;
     i.draft=std::move(next);i.baseline=std::move(next_baseline);
     i.draft_name=std::move(next_name);i.source_name=std::move(next_source_name);
     i.dirty=false;i.name_dirty=false;i.conflict=false;i.committing=false;++i.name_revision;
@@ -292,6 +301,25 @@ void select_source(GimpPainterMybrushOptions*options,GimpPainterMybrush*brush)
   // complete replacement and leaving the implementation borrow.
   change.old_connection.close();change.old_rename_connection.close();change.old_source.reset();
   if(!constructing)notify_changed(options,change.revision,true,true,true);
+}
+void selection_reaffirmed(GimpContext*context,GimpPainterMybrush*brush,gpointer) noexcept
+{
+  boundary_void(nullptr,[&]{
+    auto*binding=BindingStore::find(G_OBJECT(context));
+    if(!brush||!context->gimp||gimp_context_get_painter_mybrush(context)!=brush||
+       !binding||binding->state()!=BindingStore::State::active)return;
+    const auto generation=binding->generation();
+    binding->with<OptionsSlot>([&](OptionsImpl&i){
+      // The owner lease itself can reenter through a toggle callback.
+      if(binding->accepts(generation)&&context->gimp&&
+         gimp_context_get_painter_mybrush(context)==brush) {
+        if(i.implicit_seed&&i.implicit_seed_source==brush&&
+           i.implicit_seed_revision==context->painter_mybrush_revision)
+          i.legacy_reaffirm_pending=true; // publish only after successful adoption
+        else if(i.selected.get()==brush)i.legacy_adopted=true;
+      }
+    });
+  });
 }
 void selected_changed(GimpContext*context,GimpPainterMybrush*brush) noexcept
 {boundary_void(nullptr,[&]{select_source(GIMP_PAINTER_MYBRUSH_OPTIONS(context),brush);});}
@@ -310,8 +338,15 @@ void constructed(GObject*object)
     auto*context=GIMP_CONTEXT(options);auto*selected=gimp_context_get_painter_mybrush(context);
     if(!selected&&gimp_get_user_context(context->gimp))selected=gimp_context_get_painter_mybrush(gimp_get_user_context(context->gimp));
     if(!selected)selected=GIMP_PAINTER_MYBRUSH(gimp_painter_mybrush_get_standard(context));
+    store(options).with<OptionsSlot>([&](OptionsImpl&i){
+      i.implicit_seed=true;i.implicit_seed_source=selected;
+      i.implicit_seed_revision=context->painter_mybrush_revision+
+        (gimp_context_get_painter_mybrush(context)!=selected?1:0);
+      i.legacy_reaffirm_pending=false;
+    });
     if(gimp_context_get_painter_mybrush(context)!=selected)gimp_context_set_painter_mybrush(context,selected);
     else select_source(options,selected);
+    store(options).with<OptionsSlot>([](OptionsImpl&i){i.implicit_seed=false;i.implicit_seed_source=nullptr;i.legacy_reaffirm_pending=false;});
     return true;
   });
   if(options->binding_failed)gimp_painter_binding_close(object,nullptr);
@@ -456,7 +491,11 @@ static void gimp_painter_mybrush_options_class_init(GimpPainterMybrushOptionsCla
   g_signal_new("settings-changed",G_TYPE_FROM_CLASS(klass),G_SIGNAL_RUN_LAST,0,nullptr,nullptr,nullptr,G_TYPE_NONE,0);
 }
 static void gimp_painter_mybrush_options_init(GimpPainterMybrushOptions*options)
-{options->binding_failed=!boundary<bool>(nullptr,false,[&]{BindingStore::ensure(G_OBJECT(options)).emplace<OptionsSlot>();return true;});}
+{options->binding_failed=!boundary<bool>(nullptr,false,[&]{
+  BindingStore::ensure(G_OBJECT(options)).emplace<OptionsSlot>();
+  g_signal_connect(options,"painter-mybrush-reaffirmed",G_CALLBACK(selection_reaffirmed),nullptr);
+  return true;
+});}
 gchar*gimp_painter_mybrush_options_dup_json(GimpPainterMybrushOptions*options,GError**error)
 {return boundary<gchar*>(error,nullptr,[&]{return store(options).with<OptionsSlot>([](const OptionsImpl&i){return g_strdup(i.draft.encode().c_str());});});}
 gchar*gimp_painter_mybrush_options_dup_draft_name(GimpPainterMybrushOptions*options,GError**error)
@@ -743,4 +782,17 @@ gimp_mypaint_options_get_brush_mode (GimpMypaintOptions *options)
   // Deliberately not the brush-mode property: the pinned original helper
   // always returned NORMAL, including for other stored modes.
   return GIMP_MYPAINT_NORMAL;
+}
+
+
+gboolean
+gimp_mypaint_options_is_ready (GimpMypaintOptions *options)
+{
+  // The old pointer predicate survives dispose until finalize. Read only the
+  // historical bit in the same slot; do not substitute active/selected state.
+  return boundary<gboolean>(nullptr,FALSE,[&]{
+    return store(options).read<OptionsSlot>([](const OptionsImpl&i){
+      return i.legacy_adopted ? TRUE : FALSE;
+    });
+  });
 }

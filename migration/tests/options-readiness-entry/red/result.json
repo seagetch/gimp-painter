@@ -1,0 +1,5 @@
+{
+  "returncode": -6,
+  "stdout": "TAP version 14\n# random seed: R02S2c823261eac1b0895ca0ab3700a77459\n# Start of original-options-readiness tests\n# child process (/original-options-readiness/same-source-adopted [321]) exit status: 1 (error)\n# child process (/original-options-readiness/same-source-adopted [321]) stdout: \"\"\n# child process (/original-options-readiness/same-source-adopted [321]) stderr: \"**\\nERROR:../source/app/tests/test-mypaint-options-readiness.cpp:23:void assert_ready(GimpMypaintOptions*, bool): assertion failed (options_readiness_c_consumer(o) == expected): (0 == 1)\\n\"\nnot ok /original-options-readiness/same-source-adopted - ERROR:../source/app/tests/test-mypaint-options-readiness.cpp:47:void run_case(gconstpointer): child process (/original-options-readiness/same-source-adopted [321]) failed unexpectedly\nBail out!\n",
+  "stderr": "**\nERROR:../source/app/tests/test-mypaint-options-readiness.cpp:47:void run_case(gconstpointer): child process (/original-options-readiness/same-source-adopted [321]) failed unexpectedly\n"
+}

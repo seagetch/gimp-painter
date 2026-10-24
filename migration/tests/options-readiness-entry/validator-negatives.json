@@ -1,0 +1,26 @@
+[
+  {
+    "name": "missing-readiness-case",
+    "hash_updated": true,
+    "returncode": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/workspace/shared/readiness-negative-ebhqb1ph/evidence/verify.py\", line 22, in <module>\n    row=counts[name];assert row['returncode']==0 and row['result']=='OK';assert len(re.findall(r'^ok \\d+',row['stdout'],re.M))==n\n                                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+  },
+  {
+    "name": "red-without-causal-assertion",
+    "hash_updated": true,
+    "returncode": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/workspace/shared/readiness-negative-fv7gcqtk/evidence/verify.py\", line 17, in <module>\n    assert ('toggle.calls == 0' if i==3 else 'options_readiness_c_consumer(o) == expected') in row['stdout']\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+  },
+  {
+    "name": "wrong-sanitizer-count",
+    "hash_updated": true,
+    "returncode": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/workspace/shared/readiness-negative-z8u09p45/evidence/verify.py\", line 24, in <module>\n    row=read('green/asan-results.json');assert row['returncode']==0;assert len(re.findall(r'^ok \\d+',row['stdout'],re.M))==20\n                                                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+  },
+  {
+    "name": "old-oracle-initial-true",
+    "hash_updated": true,
+    "returncode": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/workspace/shared/readiness-negative-j51ns771/evidence/verify.py\", line 33, in <module>\n    o=read('legacy-source/oracle.json');assert [x['ready'] for x in o['trace']]==[False,False,True,True,True,True]\n                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+  }
+]

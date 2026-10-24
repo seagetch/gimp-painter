@@ -1,0 +1,20 @@
+[
+  {
+    "case": "constructor-nested-different",
+    "returncode": -6,
+    "stdout": "TAP version 14\n# random seed: R02Sabfdc368fd78606cb6918397ae066680\n# Start of original-options-readiness tests\n# child process (/original-options-readiness/constructor-nested-different [414]) exit status: 1 (error)\n# child process (/original-options-readiness/constructor-nested-different [414]) stdout: \"\"\n# child process (/original-options-readiness/constructor-nested-different [414]) stderr: \"**\\nERROR:../source/app/tests/test-mypaint-options-readiness.cpp:23:void assert_ready(GimpMypaintOptions*, bool): assertion failed (options_readiness_c_consumer(o) == expected): (0 == 1)\\n\"\nnot ok /original-options-readiness/constructor-nested-different - ERROR:../source/app/tests/test-mypaint-options-readiness.cpp:47:void run_case(gconstpointer): child process (/original-options-readiness/constructor-nested-different [414]) failed unexpectedly\nBail out!\n",
+    "stderr": "**\nERROR:../source/app/tests/test-mypaint-options-readiness.cpp:47:void run_case(gconstpointer): child process (/original-options-readiness/constructor-nested-different [414]) failed unexpectedly\n"
+  },
+  {
+    "case": "constructor-nested-same",
+    "returncode": -6,
+    "stdout": "TAP version 14\n# random seed: R02S3f32a33eb75b0a5e2409ae4414ae73b1\n# Start of original-options-readiness tests\n# child process (/original-options-readiness/constructor-nested-same [434]) exit status: 1 (error)\n# child process (/original-options-readiness/constructor-nested-same [434]) stdout: \"\"\n# child process (/original-options-readiness/constructor-nested-same [434]) stderr: \"**\\nERROR:../source/app/tests/test-mypaint-options-readiness.cpp:23:void assert_ready(GimpMypaintOptions*, bool): assertion failed (options_readiness_c_consumer(o) == expected): (0 == 1)\\n\"\nnot ok /original-options-readiness/constructor-nested-same - ERROR:../source/app/tests/test-mypaint-options-readiness.cpp:47:void run_case(gconstpointer): child process (/original-options-readiness/constructor-nested-same [434]) failed unexpectedly\nBail out!\n",
+    "stderr": "**\nERROR:../source/app/tests/test-mypaint-options-readiness.cpp:47:void run_case(gconstpointer): child process (/original-options-readiness/constructor-nested-same [434]) failed unexpectedly\n"
+  },
+  {
+    "case": "blocked-observer-no-toggle",
+    "returncode": -6,
+    "stdout": "TAP version 14\n# random seed: R02Sf40ff5eca40d799cb16ee637bf90291b\n# Start of original-options-readiness tests\n# child process (/original-options-readiness/blocked-observer-no-toggle [454]) exit status: 1 (error)\n# child process (/original-options-readiness/blocked-observer-no-toggle [454]) stdout: \"\"\n# child process (/original-options-readiness/blocked-observer-no-toggle [454]) stderr: \"**\\nERROR:../source/app/tests/test-mypaint-options-readiness.cpp:77:void run_case(gconstpointer): assertion failed (toggle.calls == 0): (2 == 0)\\n\"\nnot ok /original-options-readiness/blocked-observer-no-toggle - ERROR:../source/app/tests/test-mypaint-options-readiness.cpp:47:void run_case(gconstpointer): child process (/original-options-readiness/blocked-observer-no-toggle [454]) failed unexpectedly\nBail out!\n",
+    "stderr": "**\nERROR:../source/app/tests/test-mypaint-options-readiness.cpp:47:void run_case(gconstpointer): child process (/original-options-readiness/blocked-observer-no-toggle [454]) failed unexpectedly\n"
+  }
+]

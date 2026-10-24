@@ -1,0 +1,44 @@
+{
+  "legacy_pin": "afa43fae3e920210146abed514f136fd49f671b5",
+  "scope": "source-derived successful old brush adoption boolean; no old executable/UI run; invalid pointers and failed duplicate undefined behavior excluded",
+  "input_sha256": {
+    "app/paint/gimpmypaintoptions.cpp": "2c72f9fbe9a9a6c3d42c838c4d92b2f6d1c3d15ab9cdeecb77f32ae3fce3dc0b",
+    "app/paint/gimpmypaintoptions.h": "9d492476404b110284c0f6cce144cb05504cbb75e232dba40c6863811f23508f",
+    "app/core/gimpcontext.c": "7d0300731addeb97ce5eef636f33f6619ccace342cbaf517560039667cc6195d",
+    "app/core/gimptoolinfo.c": "282bb3dca1df0a3b92a1eab15b23d3aefa33781c3085aa8689b2cc173a9de3dd",
+    "app/tools/gimpmypaintbrushoptions-gui.cpp": "73b57f221c94f6fc45799009a893dae4dce825b0f6faa541a0856f87cfd499f5",
+    "app/widgets/gimpcontainerview.c": "f77a8d58ae3ba47e5e5313cd691260fde7be3a0a55691f3a2ef5263431f8f88b"
+  },
+  "trace": [
+    {
+      "event": "initial",
+      "ready": false
+    },
+    {
+      "event": "null",
+      "ready": false
+    },
+    {
+      "event": "successful adoption",
+      "ready": true
+    },
+    {
+      "event": "null",
+      "ready": true
+    },
+    {
+      "event": "successful adoption",
+      "ready": true
+    },
+    {
+      "event": "dispose",
+      "ready": true
+    }
+  ],
+  "actual_supported_routes": [
+    "MyPaint popup container editor on Options context -> container view selection -> context_set_by_type",
+    "MyPaint history selection -> context_set_mypaint_brush",
+    "context copy and parent inheritance -> real setter"
+  ],
+  "native_implicit_seed_difference": "native constructor auto-selects user resource or standard; explicit selection/copy of same resource needs its successful-request event, not active-state alias"
+}

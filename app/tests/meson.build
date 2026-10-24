@@ -1430,3 +1430,14 @@ test('painter-undo-enums',painter_undo_enums,
  'GIMP_TESTING_ABS_TOP_BUILDDIR='+meson.project_build_root(),
  'GIMP_TESTING_PLUGINDIRS='+meson.project_build_root()/'plug-ins/common','UI_TEST=yes'],
  suite:'app',is_parallel:false,timeout:120)
+# Original readiness is successful selection history, not draft validity.
+mypaint_options_readiness = executable('mypaint-options-readiness',
+  ['test-mypaint-options-readiness.cpp', 'test-mypaint-options-readiness-c.c', 'tests.c'],
+  dependencies: [libapp_dep, painter_mypaint_surface_dep, appstream],
+  link_with: apptests_links, cpp_args: painter_cpp_args,
+  override_options: ['c_std=c11', 'cpp_std=c++14'])
+test('mypaint-options-readiness', mypaint_options_readiness,
+  env: ['GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+        'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+        'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
+        'UI_TEST=yes'], suite: 'app', is_parallel: false, timeout: 120)
