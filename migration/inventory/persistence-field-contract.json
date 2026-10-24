@@ -3981,7 +3981,7 @@
     {
       "revision": "native",
       "path": "app/core/gimpcontext.c",
-      "sha256": "fc1b1ff6c4f9c5470c53b8fa991774639e5ef9c1abf011c245ec3699ae854ab7"
+      "sha256": "5d4ca65dbbfb7bbefeb63514969a96b5ae29069d8434562b6aab6d813d21d13e"
     },
     {
       "revision": "native",
@@ -4186,7 +4186,7 @@
     {
       "revision": "native",
       "path": "app/paint/gimpmypaintoptions.h",
-      "sha256": "daadeaacac56a68f09c85220ab789fa80bc38db9745ef7c8a6b5848244a75985"
+      "sha256": "c0f7b8f309a0580ad8ebc7f7cff228b625f43999573e6745dbc9f258094c66be"
     },
     {
       "revision": "native",
@@ -4231,7 +4231,12 @@
     {
       "revision": "native",
       "path": "app/paint/painter-mypaint-surface/gimp-painter-options.cpp",
-      "sha256": "3f0059d377ce6f0e988aa34986a98860cc23e2dbd443ce8acd0f502bbd94e007"
+      "sha256": "ce89680231cea5229cbcb5305710bf8fd98e7e59a62f9fccfd8a35a53ebec3fc"
+    },
+    {
+      "revision": "native",
+      "path": "app/paint/painter-mypaint-surface/gimp-painter-options.hpp",
+      "sha256": "4f8a5d635574d9a609c976b9679cd0b6e5ed61a2e926c466f7991588dab1f3d0"
     },
     {
       "revision": "native",
@@ -4522,6 +4527,31 @@
       ]
     },
     {
+      "revision": "native",
+      "path": "app/core/gimpcontext.c",
+      "predecessor_sha256": "fc1b1ff6c4f9c5470c53b8fa991774639e5ef9c1abf011c245ec3699ae854ab7",
+      "commits": [
+        "a2f3ec947000aca3f895d4fc016943ffa1f11d82"
+      ],
+      "successor_sha256": "5d4ca65dbbfb7bbefeb63514969a96b5ae29069d8434562b6aab6d813d21d13e",
+      "readiness_semantics": "Historical successful adoption bit; constructor seed excluded, NULL/dispose sticky; same-source requests observed via transient private scalar/signal. No persisted property addition.",
+      "readiness_runtime_proof": {
+        "migration/tests/options-readiness-entry/green/source-manifest.json": "d93f3dad6f4dfc44b7d59f6453e0eb3ffb19e5f6c78da9e092d5d559b5a64050",
+        "migration/tests/options-readiness-entry/green/tested-inputs.tar.gz": "1a287de68b28602be9d13d6a5ad1f0e6d0e44cc7c6f54fbbb276ce9280084f31",
+        "migration/tests/options-readiness-entry/green/normal.json": "ed0d97bcb41757663ae645bcf5bed87fd7a431a96a72c6bcd90d958b37d2c951",
+        "migration/tests/options-readiness-entry/green/asan-results.json": "9521de8d6ed70e2678cf6c3ba25d340ee8601bab62d1c8b656a3da9811615fd4",
+        "migration/tests/options-readiness-entry/green/asan-build.json": "6eb8df5a77a84f080b9d848b4ccaa382632a9d273bfc0fc2de304832e8c3200d",
+        "migration/tests/options-readiness-entry/green/headers.json": "75c241d897ecdaa0bb9ed7db2361714b27dd574ffbd6bd47ea8daa40605dca39",
+        "migration/tests/options-readiness-entry/green/asan-post.json": "f0b939e18df9bcbfa122a0172df1f1e69fec751b3c710473097a0f0e7dd3fa1f",
+        "migration/tests/options-readiness-entry/green/final-input-seal.json": "7169a9d3635e67043f83a8a8587e7763ca659627e35ca5fd873ae528d2591cb5",
+        "migration/tests/options-readiness-entry/green/source-after.json": "37cf06a3e7020714e44706cd09106bb86493f9a2d41ec36cb0265fa6a30bade0",
+        "migration/tests/options-readiness-entry/red/result.json": "e2bda5da613dfa27c838a38ebf4af4560404fa92544886a509ce650c65261a86",
+        "migration/tests/options-readiness-entry/reviewed-red/blanket-red-results.json": "4515c325b3993760e3a216b19d3827df10caa51e648aad72cdeb93254e0193e9",
+        "migration/tests/options-readiness-entry/pre-adoption-red/result.json": "1d1c766b4a8f1f347ae9611ded77aba67a31b4cf11d6f5a04856667b91003af8",
+        "migration/tests/options-readiness-entry/legacy-source/oracle.json": "8d1fbada52f671ab3f7c7439ee769080e518d4aee9f6ea44f9f421f49865fc45"
+      }
+    },
+    {
       "path": "app/core/gimptooloptions.c",
       "revision": "native",
       "predecessor_sha256": "65797b79006804998e21a4c05fe1ad4d3b06d0856c9dc6d7748ff24cd058edb4",
@@ -4535,16 +4565,34 @@
       "path": "app/paint/painter-mypaint-surface/gimp-painter-options.cpp",
       "revision": "native",
       "predecessor_sha256": "fabaa82d82cb6a9ade1fb7bb7e860dd1f54ccbe81c4e25b6c07b4aba41cb2d27",
-      "successor_sha256": "3f0059d377ce6f0e988aa34986a98860cc23e2dbd443ce8acd0f502bbd94e007",
+      "successor_sha256": "ce89680231cea5229cbcb5305710bf8fd98e7e59a62f9fccfd8a35a53ebec3fc",
       "predecessor_commit": "3f831a8a862dabcc60f0049c154f93655d8004e2",
       "commits": [
         "0976ae344bc3ba60440c9fdcefc435e9aaf6d9de",
         "65213bdc96d26127b0cce6e1957d09a17a2184b8",
         "6b6a6cf39366de1251d0149b118e4e8851c840b3",
-        "18c43bbe7c2157484201e127c558e77f7c683086"
+        "18c43bbe7c2157484201e127c558e77f7c683086",
+        "a2f3ec947000aca3f895d4fc016943ffa1f11d82"
       ],
       "intermediate_sha256": "f6f1701310d3d1c0c3afd195a34cc26bd343e3a77a39292ba0f7a81d711bb830",
-      "semantic_successor": "public-enum-registrar; unchanged saved values/default/flags"
+      "semantic_successor": "public-enum-registrar; unchanged saved values/default/flags",
+      "readiness_intermediate_sha256": "3f0059d377ce6f0e988aa34986a98860cc23e2dbd443ce8acd0f502bbd94e007",
+      "readiness_semantics": "Historical successful adoption bit; constructor seed excluded, NULL/dispose sticky; same-source requests observed via transient private scalar/signal. No persisted property addition.",
+      "readiness_runtime_proof": {
+        "migration/tests/options-readiness-entry/green/source-manifest.json": "d93f3dad6f4dfc44b7d59f6453e0eb3ffb19e5f6c78da9e092d5d559b5a64050",
+        "migration/tests/options-readiness-entry/green/tested-inputs.tar.gz": "1a287de68b28602be9d13d6a5ad1f0e6d0e44cc7c6f54fbbb276ce9280084f31",
+        "migration/tests/options-readiness-entry/green/normal.json": "ed0d97bcb41757663ae645bcf5bed87fd7a431a96a72c6bcd90d958b37d2c951",
+        "migration/tests/options-readiness-entry/green/asan-results.json": "9521de8d6ed70e2678cf6c3ba25d340ee8601bab62d1c8b656a3da9811615fd4",
+        "migration/tests/options-readiness-entry/green/asan-build.json": "6eb8df5a77a84f080b9d848b4ccaa382632a9d273bfc0fc2de304832e8c3200d",
+        "migration/tests/options-readiness-entry/green/headers.json": "75c241d897ecdaa0bb9ed7db2361714b27dd574ffbd6bd47ea8daa40605dca39",
+        "migration/tests/options-readiness-entry/green/asan-post.json": "f0b939e18df9bcbfa122a0172df1f1e69fec751b3c710473097a0f0e7dd3fa1f",
+        "migration/tests/options-readiness-entry/green/final-input-seal.json": "7169a9d3635e67043f83a8a8587e7763ca659627e35ca5fd873ae528d2591cb5",
+        "migration/tests/options-readiness-entry/green/source-after.json": "37cf06a3e7020714e44706cd09106bb86493f9a2d41ec36cb0265fa6a30bade0",
+        "migration/tests/options-readiness-entry/red/result.json": "e2bda5da613dfa27c838a38ebf4af4560404fa92544886a509ce650c65261a86",
+        "migration/tests/options-readiness-entry/reviewed-red/blanket-red-results.json": "4515c325b3993760e3a216b19d3827df10caa51e648aad72cdeb93254e0193e9",
+        "migration/tests/options-readiness-entry/pre-adoption-red/result.json": "1d1c766b4a8f1f347ae9611ded77aba67a31b4cf11d6f5a04856667b91003af8",
+        "migration/tests/options-readiness-entry/legacy-source/oracle.json": "8d1fbada52f671ab3f7c7439ee769080e518d4aee9f6ea44f9f421f49865fc45"
+      }
     },
     {
       "path": "app/paint/painter-mypaint/mapping.hpp",
@@ -4669,7 +4717,52 @@
       }
     ]
   },
+  "readiness_successor": {
+    "successor_commit": "a2f3ec947000aca3f895d4fc016943ffa1f11d82",
+    "providers": [
+      {
+        "path": "app/core/gimpcontext.c",
+        "predecessor_sha256": "fc1b1ff6c4f9c5470c53b8fa991774639e5ef9c1abf011c245ec3699ae854ab7",
+        "successor_sha256": "5d4ca65dbbfb7bbefeb63514969a96b5ae29069d8434562b6aab6d813d21d13e"
+      },
+      {
+        "path": "app/paint/painter-mypaint-surface/gimp-painter-options.cpp",
+        "predecessor_sha256": "3f0059d377ce6f0e988aa34986a98860cc23e2dbd443ce8acd0f502bbd94e007",
+        "successor_sha256": "ce89680231cea5229cbcb5305710bf8fd98e7e59a62f9fccfd8a35a53ebec3fc"
+      },
+      {
+        "path": "app/paint/painter-mypaint-surface/gimp-painter-options.hpp",
+        "predecessor_sha256": "c48fc41dc1f32ebbd8a046f633dd542ce290cd8f5587ca6c07021b6950223ffe",
+        "successor_sha256": "4f8a5d635574d9a609c976b9679cd0b6e5ed61a2e926c466f7991588dab1f3d0"
+      },
+      {
+        "path": "app/paint/gimpmypaintoptions.h",
+        "predecessor_sha256": "daadeaacac56a68f09c85220ab789fa80bc38db9745ef7c8a6b5848244a75985",
+        "successor_sha256": "c0f7b8f309a0580ad8ebc7f7cff228b625f43999573e6745dbc9f258094c66be"
+      }
+    ],
+    "proof": {
+      "migration/tests/options-readiness-entry/green/source-manifest.json": "d93f3dad6f4dfc44b7d59f6453e0eb3ffb19e5f6c78da9e092d5d559b5a64050",
+      "migration/tests/options-readiness-entry/green/tested-inputs.tar.gz": "1a287de68b28602be9d13d6a5ad1f0e6d0e44cc7c6f54fbbb276ce9280084f31",
+      "migration/tests/options-readiness-entry/green/normal.json": "ed0d97bcb41757663ae645bcf5bed87fd7a431a96a72c6bcd90d958b37d2c951",
+      "migration/tests/options-readiness-entry/green/asan-results.json": "9521de8d6ed70e2678cf6c3ba25d340ee8601bab62d1c8b656a3da9811615fd4",
+      "migration/tests/options-readiness-entry/green/asan-build.json": "6eb8df5a77a84f080b9d848b4ccaa382632a9d273bfc0fc2de304832e8c3200d",
+      "migration/tests/options-readiness-entry/green/headers.json": "75c241d897ecdaa0bb9ed7db2361714b27dd574ffbd6bd47ea8daa40605dca39",
+      "migration/tests/options-readiness-entry/green/asan-post.json": "f0b939e18df9bcbfa122a0172df1f1e69fec751b3c710473097a0f0e7dd3fa1f",
+      "migration/tests/options-readiness-entry/green/final-input-seal.json": "7169a9d3635e67043f83a8a8587e7763ca659627e35ca5fd873ae528d2591cb5",
+      "migration/tests/options-readiness-entry/green/source-after.json": "37cf06a3e7020714e44706cd09106bb86493f9a2d41ec36cb0265fa6a30bade0",
+      "migration/tests/options-readiness-entry/red/result.json": "e2bda5da613dfa27c838a38ebf4af4560404fa92544886a509ce650c65261a86",
+      "migration/tests/options-readiness-entry/reviewed-red/blanket-red-results.json": "4515c325b3993760e3a216b19d3827df10caa51e648aad72cdeb93254e0193e9",
+      "migration/tests/options-readiness-entry/pre-adoption-red/result.json": "1d1c766b4a8f1f347ae9611ded77aba67a31b4cf11d6f5a04856667b91003af8",
+      "migration/tests/options-readiness-entry/legacy-source/oracle.json": "8d1fbada52f671ab3f7c7439ee769080e518d4aee9f6ea44f9f421f49865fc45"
+    },
+    "semantics": "Historical successful adoption bit; constructor seed excluded, NULL/dispose sticky; same-source requests observed via transient private scalar/signal. No persisted property addition."
+  },
   "tests": [
+    {
+      "path": "migration/tests/persistence_readiness_successor.py",
+      "sha256": "1ac2743ea583991c01204f87dad9ab34c915fefd7b5842f6c46e7df6afd49a37"
+    },
     {
       "path": "migration/tests/persistence_undo_successor.py",
       "sha256": "a6ca50421576d5144413559fe3dbdad50f08d2bd745f9c181404bcaa0b18a76c"
@@ -4680,11 +4773,11 @@
     },
     {
       "path": "migration/tests/persistence_enum_successor.py",
-      "sha256": "65485236c78c896e593faceb9bb9866b438a00f021b04611c746518b4680155e"
+      "sha256": "c283828c4f7e98ebd81c37b6bb067eb5e56c82444e5bafcdbf7b76d3ec6f59eb"
     },
     {
       "path": "migration/tests/persistence_successors.py",
-      "sha256": "f9ed5654e84c4f5ea68635228503aa92149658a04e66cde5e84187dffed68122"
+      "sha256": "e4da5b22817189913ad0e6f67c0b224d73b8d4dc1fa6b1df46a82e6be26bf5d7"
     },
     {
       "path": "migration/tests/persistence_source.py",
@@ -4692,7 +4785,7 @@
     },
     {
       "path": "migration/tests/test_persistence_field_contract.py",
-      "sha256": "7d814a687c3e58cfa421c5286d278c0c0804f15664958aeb58a3f8b97a2efa2b"
+      "sha256": "b73e92839b4d5cd93987f0237d9e3ebae3ea70cadeff1c6218713df6e773c957"
     },
     {
       "path": "migration/tests/test_persistence_xcf_contract.py",

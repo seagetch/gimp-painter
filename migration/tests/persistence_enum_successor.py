@@ -83,7 +83,12 @@ def reviewed(root):
         for side in ('predecessor', 'successor'):
             assert sha(archived[side + '/' + path]) == row[side + '_sha256']
         current = (root / path).read_bytes()
-        assert sha(current) == row['successor_sha256'], ('enum provider drift', path)
+        if sha(current) != row['successor_sha256']:
+            from persistence_readiness_successor import provider
+            try:
+                provider(root, path, row['successor_sha256'], sha(current))
+            except (AssertionError, FileNotFoundError) as error:
+                raise AssertionError(('enum provider drift', path)) from error
         before[path] = archived['predecessor/' + path].decode()
         after[path] = current.decode()
     semantic_proof(before, after)
@@ -102,11 +107,14 @@ def resolve_source(root, previous, actual):
     row = next(r for r in data['providers'] if r['path'] == OPTIONS)
     assert previous['path'] == OPTIONS and previous['revision'] == 'native'
     assert previous['successor_sha256'] == row['predecessor_sha256'], 'enum chain predecessor mismatch'
-    assert actual == row['successor_sha256'], 'enum chain successor mismatch'
-    return dict(previous, successor_sha256=actual,
+    result = dict(previous, successor_sha256=row['successor_sha256'],
                 intermediate_sha256=previous['successor_sha256'],
                 commits=previous['commits'] + [data['successor_commit']],
                 semantic_successor='public-enum-registrar; unchanged saved values/default/flags')
+    if actual != row['successor_sha256']:
+        from persistence_readiness_successor import resolve_source as readiness_source
+        return readiness_source(root, OPTIONS, row['successor_sha256'], actual, result)
+    return result
 
 
 def resolve_evidence(root, field_id, evidence, options):
