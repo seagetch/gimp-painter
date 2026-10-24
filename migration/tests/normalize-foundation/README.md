@@ -1,0 +1,17 @@
+# Normalize: defined-domain old-C foundation only
+
+Pinned `afa43fae3e920210146abed514f136fd49f671b5:plug-ins/common/contrast-normalize.c` registers `plug-in-normalize` with only INT32 run-mode, image and drawable; menu `<Image>/Colors/Auto`. No parameter tuple follows those three context arguments. This package extracts its literal NormalizeParam_t, find_min_max, normalize_func and normalize bodies, with a bounded mock iterator host. It does not build or run the original application/plugin/PDB or any held diagnostic.
+
+**Only a defined subset is executed.** ROI must be nonempty with at least one nonzero-alpha pixel (or no alpha), and every color channel of every transparent pixel must lie within the visible-pixel shared min/max interval. Gray, GrayA, RGB and RGBA layouts are exercised. Alpha 1 and 255 contribute equally to extrema; alpha 0 does not. A single min/max spans all color channels, not one pair per channel. Output uses floor(255*(value-min)/(max-min)); a flat interval keeps its original value. Alpha and input are preserved, and pixels outside the mocked ROI remain sentinel bytes.
+
+The independent integer oracle computes its own extrema and outputs. 141,584 scenes per normal and ASan/UBSan/float-cast-overflow run include all 32,896 ordered byte min/max pairs in four layouts, flat intervals, mixed transparent/partial/full alpha, and 10,000 seeded ROI scenes. Four actual mutations are rejected: ignore partial alpha, overwrite alpha, wrong scale, and flat-to-zero. Before invoking normalize, a direct extrema assertion detects the first mutation, avoiding a mutated uninitialized-LUT read. Compiler flags and output hashes are in results.json; leak detection is off. The bounded C host simulates one read/write pass, not actual native shadow merge, tile scheduling or selection weights.
+
+## Undefined/unsupported domains are not executed or assigned invented outputs
+
+The original local LUT is not initialized outside `[min,max]`, but normalize_func applies it even to alpha-zero pixels. Transparent colors outside the visible interval therefore have no deterministic initialized legacy result. An all-transparent or empty ROI leaves min=255/max=0, followed by out-of-range conversion of double -255 to guchar range. These old cases are not run, including under sanitizer, and no output is claimed. The source's two iterator functions compute signed `width*height`; this foundation uses small bounded areas and makes no overflow or unbounded geometry claim. A future production route needs an explicitly reviewed safe policy for these domains, cancellation, owner/format validation, projection and native preservation.
+
+The pinned iterator source establishes both passes visit the drawable-mask bounding rectangle, not only nonzero selection-weight pixels. The write iterator subsequently flushes, merges shadow and updates that rectangle. Those host/native operations are not reproduced here.
+
+## Indexed branch: source audit only
+
+The separate indexed_normalize operates on the entire image colormap, not drawable ROI. It finds shared RGB extrema over all entries, applies integer division only when hi!=lo, then sets the colormap. It does not alter index pixels or alpha. NULL colormap prints a diagnostic and returns. This branch is not extracted or executed by this package; empty palettes, image-wide ownership/history and indexed rendering remain unverified. Thus this evidence does not implement or close the full RGB*/GRAY*/INDEXED* procedure contract, WBS16.022 or any UI/PDB obligation.

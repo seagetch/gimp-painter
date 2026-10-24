@@ -1,0 +1,155 @@
+{
+  "scope": "literal old Normalize bodies in defined domain only; independent integer shared-channel oracle; no old PDB/native selection merge",
+  "inputs": {
+    "test-oracle.c": "f36bb2288dfcb8cf68db20fcd7c7899e400a6fefb03ffa2fa491d9329fa1a7d0",
+    "old-normalize.inc": "e90db3bc4e26009a97868b2d9fe847167985c6acbece869652612d808446a8f6"
+  },
+  "runs": {
+    "normal": {
+      "command": [
+        "cc",
+        "-std=c11",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Wno-unused-parameter",
+        "-O2",
+        "/tmp/normalize-oracle-fv03dpsd/test-oracle.c",
+        "-lm",
+        "-o",
+        "/tmp/normalize-oracle-fv03dpsd/normal"
+      ],
+      "build_stdout": "",
+      "build_stderr": "",
+      "returncode": 0,
+      "stdout": "PASS 141584 defined-domain scenes\n",
+      "stderr": "",
+      "seconds": 0.04692060499655781,
+      "binary_sha256": "6cb096a067f2e1569544b3656299a3e7b652f378cf7156bd043d45b1f47802eb"
+    },
+    "sanitizer": {
+      "command": [
+        "cc",
+        "-std=c11",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Wno-unused-parameter",
+        "-O1",
+        "-g0",
+        "-fsanitize=address,undefined,float-cast-overflow",
+        "-fno-omit-frame-pointer",
+        "/tmp/normalize-oracle-fv03dpsd/test-oracle.c",
+        "-lm",
+        "-o",
+        "/tmp/normalize-oracle-fv03dpsd/sanitizer"
+      ],
+      "build_stdout": "",
+      "build_stderr": "",
+      "returncode": 0,
+      "stdout": "PASS 141584 defined-domain scenes\n",
+      "stderr": "",
+      "seconds": 0.2472252829975332,
+      "binary_sha256": "4a59aafeaece5cc335650a98fef965598e39cbe16eab1b960eabbff55ddb331f"
+    }
+  },
+  "negative_controls": [
+    {
+      "command": [
+        "cc",
+        "-std=c11",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Wno-unused-parameter",
+        "-O2",
+        "/tmp/normalize-oracle-fv03dpsd/test-oracle.c",
+        "-lm",
+        "-o",
+        "/tmp/normalize-oracle-fv03dpsd/ignore-partial-alpha"
+      ],
+      "build_stdout": "",
+      "build_stderr": "",
+      "returncode": -6,
+      "stdout": "",
+      "stderr": "ignore-partial-alpha: /tmp/normalize-oracle-fv03dpsd/test-oracle.c:28: check: Assertion `probe.min==lo&&probe.max==hi' failed.\n",
+      "seconds": 0.04291718900640262,
+      "binary_sha256": "553c019dc51afba45f4fbda238181ad06e91b9be815f53ba2a6ac9b37216aa6a",
+      "name": "ignore-partial-alpha",
+      "mutant_sha256": "7dfb998203ea78299db75fa5267b024ff810575cd00dd81e720b1ef95488c032"
+    },
+    {
+      "command": [
+        "cc",
+        "-std=c11",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Wno-unused-parameter",
+        "-O2",
+        "/tmp/normalize-oracle-fv03dpsd/test-oracle.c",
+        "-lm",
+        "-o",
+        "/tmp/normalize-oracle-fv03dpsd/overwrite-alpha"
+      ],
+      "build_stdout": "",
+      "build_stderr": "",
+      "returncode": -6,
+      "stdout": "",
+      "stderr": "overwrite-alpha: /tmp/normalize-oracle-fv03dpsd/test-oracle.c:30: check: Assertion `output[i*bpp+c]==want' failed.\n",
+      "seconds": 0.010147289001906756,
+      "binary_sha256": "05dcc29280129105711299dedf86827cf9ec981687321ee52d59a5909f33bcd5",
+      "name": "overwrite-alpha",
+      "mutant_sha256": "ab894ee3a448cf3a596e58228c21f65643345bb6a6e5c2567f82bd772aa511ef"
+    },
+    {
+      "command": [
+        "cc",
+        "-std=c11",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Wno-unused-parameter",
+        "-O2",
+        "/tmp/normalize-oracle-fv03dpsd/test-oracle.c",
+        "-lm",
+        "-o",
+        "/tmp/normalize-oracle-fv03dpsd/wrong-scale"
+      ],
+      "build_stdout": "",
+      "build_stderr": "",
+      "returncode": -6,
+      "stdout": "",
+      "stderr": "wrong-scale: /tmp/normalize-oracle-fv03dpsd/test-oracle.c:30: check: Assertion `output[i*bpp+c]==want' failed.\n",
+      "seconds": 0.0011824429966509342,
+      "binary_sha256": "740f65ff4628d0d4e4433c414942d9e2b7d902a0ac6455211cbb05898d014c1c",
+      "name": "wrong-scale",
+      "mutant_sha256": "983470c30682924b1ebe7fed988864c63fdcfbf2f11734c619da86dc621831d9"
+    },
+    {
+      "command": [
+        "cc",
+        "-std=c11",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Wno-unused-parameter",
+        "-O2",
+        "/tmp/normalize-oracle-fv03dpsd/test-oracle.c",
+        "-lm",
+        "-o",
+        "/tmp/normalize-oracle-fv03dpsd/flat-zero"
+      ],
+      "build_stdout": "",
+      "build_stderr": "",
+      "returncode": -6,
+      "stdout": "",
+      "stderr": "flat-zero: /tmp/normalize-oracle-fv03dpsd/test-oracle.c:30: check: Assertion `output[i*bpp+c]==want' failed.\n",
+      "seconds": 0.0015110780004761182,
+      "binary_sha256": "1f84a36dfe10ee293b1c0c77b50936245a7ed7d04d942f0e1b375e3d5cf1f426",
+      "name": "flat-zero",
+      "mutant_sha256": "e3ad6d2c1ab8e985d80d82286f6cb72695a88a85836bc7c3d9f4303007dd1cbe"
+    }
+  ],
+  "inputs_changed": []
+}
