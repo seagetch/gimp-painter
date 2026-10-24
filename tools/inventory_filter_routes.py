@@ -77,10 +77,15 @@ new_exact={'plug-in-vinvert','plug-in-max-rgb','plug-in-threshold-alpha'}
 # Accepted bounded children supersede historical discovery/development labels.
 # Preserve their exact per-route caveats; no generic or whole-port acceptance.
 BOUNDED_CONTEXT_ROUTES = {
+    "plug-in-normalize": {
+        "executor_route": "bounded native nonlinear-U8 alpha-bearing RGB Filter owner route with strict3INT contexts,defined-domain shared extrema,old-wire XCF and actual portrait rendering; no GEGL substitution",
+        "missing_port_work": "Gray/GrayA and indexed image-wide palette ownership, alpha-less/highprecision/TRC owner domains, old undefined nonempty alpha domains remain explicitly unsupported; procedure-editor activation,genuine old-application capture,generic PDB/process isolation,other OS/full aggregate and global resource/latency gates remain",
+        "dependency_status": "bounded old-C oracle/stats/raw/soleROI/native/XCF/direct-API portrait checkpoints verified; see migration/tests/normalize-exchange-route-inventory.json; emptyROI no_merge distinct from useful-error nonempty refusal,cache/model/history preserved; not full original-route acceptance"
+    },
     "plug-in-exchange": {
-        "executor_route": "bounded native nonlinear-U8 alpha-bearing RGB Filter owner route; RGB/RGBA lower inputs and strict UINT8 controls; no GEGL substitution",
-        "missing_port_work": "old-wire INT8 decoder and native XCF Save/Open, parameter-editor activation and rendered portrait UI, genuine old-application capture, unsupported precision/TRC/indexed/alpha-less owners, generic PDB/process isolation, other OS/full aggregate and global resource/latency gates remain",
-        "dependency_status": "bounded source-oracle/raw/native checkpoints verified; see migration/tests/color-exchange-route-inventory.json; old INT8 signed-getter loss measured on GLib2.84.4 only; restore encoded bytes without guessing lost controls"
+        "executor_route": "bounded native nonlinear-U8 alpha-bearing RGB Filter owner route; RGB/RGBA lower inputs,strict UINT8 controls,old-wire/current XCF and actual portrait rendering; no GEGL substitution",
+        "missing_port_work": "parameter-editor activation,genuine old-application capture,unsupported precision/TRC/indexed/alpha-less owners,generic PDB/process isolation,other OS/full aggregate and global resource/latency gates remain",
+        "dependency_status": "bounded source-oracle/raw/native/XCF/direct-API portrait checkpoints verified; see migration/tests/normalize-exchange-route-inventory.json; old INT8 signed-getter loss measured on GLib2.84.4 only; restores recorded encoded bytes without guessing lost controls; previous native-only disposition retained as immutable historical proof"
     },
     "plug-in-red-eye-removal": {
         "executor_route": "bounded native nonlinear-U8 RGB owner-context route with strict old-wire restoration; no high-precision conversion",
