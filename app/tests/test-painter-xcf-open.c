@@ -496,6 +496,7 @@ static void unknown_extension_preserves_destination (void)
 #include "test-painter-xcf-sobel.inc"
 #include "test-painter-xcf-max-rgb.inc"
 #include "test-painter-xcf-value-invert.inc"
+#include "test-painter-xcf-red-eye.inc"
 
 int main (int argc, char **argv)
 {
@@ -504,6 +505,7 @@ int main (int argc, char **argv)
   gimp_test_utils_set_gimp3_directory ("GIMP_TESTING_ABS_TOP_SRCDIR", "app/tests/gimpdir");
   gimp = gimp_init_for_testing ();
 #define ADD(name) g_test_add_func ("/painter-xcf-open/" #name, name)
+  ADD (red_eye_old_wire_admission); ADD (red_eye_old_wire_roundtrips); ADD (red_eye_malformed_wire);
   ADD (absent_mode_historical_default); ADD (unknown_extension_preserves_destination); ADD (dual_valid_short_extension); ADD (explicit_provenance_resolves_ambiguity); ADD (ambiguity_and_failures); ADD (unresolved_and_length_recovery); ADD (large_source);
   ADD (ordinary); ADD (ordinary_projection_exact_gate); ADD (clones); ADD (filter_recovery); ADD (standard); ADD (recovery_handlers); ADD (cancel);
   ADD (sharpen_old_writer_roundtrip); ADD (sharpen_malformed_writer_capsules);

@@ -152,6 +152,55 @@ GimpValueArray *execution_args (const compat::Extension &ext, const gchar *name,
         G_TYPE_INT, 0, G_TYPE_INT, 0,
         G_TYPE_INT, static_cast<gint32> (ext.arguments[3].scalar_bits), G_TYPE_NONE);
     }
+  if (name && std::strcmp (name, "plug-in-red-eye-removal") == 0)
+    {
+      /* Pinned old writer emitter/BE/name functions independently extracted
+       * and checked against a separate wire serializer. Synthetic schema
+       * tests are not genuine old-application capture. Name is exactly
+       * four BE length bytes plus24 NUL-terminated bytes, without padding;
+       * 28 +12 +8 +8 +12 +8 =76 bytes.
+       * Exactly four arguments must be followed immediately by END.
+       * Inspect the original framed name, never the repaired display name.
+       * Omitted image/drawable IDs are execution-context placeholders only;
+       * the original capsule and all recorded signed scalar bits survive. */
+      static constexpr char literal[] = "plug-in-red-eye-removal";
+      static constexpr guint32 tags[] = {2, 1, 10, 2, 0};
+      static constexpr guint32 sizes[] = {4, 0, 0, 4, 0};
+      static constexpr compat::ArgumentKind kinds[] = {
+        compat::ArgumentKind::int32_bits, compat::ArgumentKind::unsupported,
+        compat::ArgumentKind::omitted_drawable, compat::ArgumentKind::int32_bits,
+        compat::ArgumentKind::terminator};
+      if (ext.diagnostic.status != compat::Status::ok ||
+          capsule.offset > bytes.size || capsule.size > bytes.size - capsule.offset ||
+          capsule.size != 76 || declared_size != capsule.size ||
+          ext.arguments.size () != G_N_ELEMENTS (tags) || !ext.name.has_terminal_nul ||
+          ext.name.encoded.offset != capsule.offset ||
+          ext.name.encoded.size != sizeof literal + 4 ||
+          ext.name.bytes.offset != capsule.offset + 4 ||
+          ext.name.bytes.size != sizeof literal ||
+          ext.name.bytes.offset > bytes.size ||
+          sizeof literal > bytes.size - ext.name.bytes.offset ||
+          std::memcmp (bytes.data + ext.name.bytes.offset, literal, sizeof literal) != 0 ||
+          ext.tail.offset != capsule.offset + capsule.size)
+        return nullptr;
+      std::size_t position = ext.name.encoded.offset + ext.name.encoded.size;
+      for (std::size_t i = 0; i < G_N_ELEMENTS (tags); ++i)
+        {
+          const auto &arg = ext.arguments[i];
+          if (arg.tag != tags[i] || arg.kind != kinds[i] ||
+              arg.declared_size != sizes[i] || arg.payload.size != sizes[i] ||
+              arg.encoded.offset != position || arg.encoded.size != 8 + sizes[i] ||
+              arg.payload.offset != position + 8 || arg.length_mismatch)
+            return nullptr;
+          position += arg.encoded.size;
+        }
+      if (position != capsule.offset + capsule.size)
+        return nullptr; /* No bytes inside the capsule may follow END. */
+      return gimp_value_array_new_from_types (nullptr,
+        G_TYPE_INT, static_cast<gint32> (ext.arguments[0].scalar_bits),
+        G_TYPE_INT, 0, G_TYPE_INT, 0,
+        G_TYPE_INT, static_cast<gint32> (ext.arguments[3].scalar_bits), G_TYPE_NONE);
+    }
   if (name && std::strcmp (name, "plug-in-max-rgb") == 0)
     {
       /* Pinned old writer/source shape, separately exercised by synthetic

@@ -1,0 +1,35 @@
+{
+  "red_eye_old_wire_admission": {
+    "command": [
+      "/workspace/shared/gimp-clean-aggregate/build/app/tests/painter-xcf-open",
+      "-p",
+      "/painter-xcf-open/red_eye_old_wire_admission"
+    ],
+    "exit_code": 0,
+    "stdout": "TAP version 14\n# random seed: R02S17a8b4dee30e03ab19239c9077040a7d\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# Start of painter-xcf-open tests\nok 1 /painter-xcf-open/red_eye_old_wire_admission\n# End of painter-xcf-open tests\n1..1\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n",
+    "stderr": "",
+    "seconds": 1.0904256919966429
+  },
+  "red_eye_old_wire_roundtrips": {
+    "command": [
+      "/workspace/shared/gimp-clean-aggregate/build/app/tests/painter-xcf-open",
+      "-p",
+      "/painter-xcf-open/red_eye_old_wire_roundtrips"
+    ],
+    "exit_code": 0,
+    "stdout": "TAP version 14\n# random seed: R02S6a38db830bba9e639f12732d1fd13827\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# Start of painter-xcf-open tests\n# Red Eye wire scene0: exact signed scalar bits,raw/cache;two native Save/Open rounds;execution explicit rejection\n# Red Eye wire scene1: exact signed scalar bits,raw/cache;two native Save/Open rounds;execution rational match\n# Red Eye wire scene2: exact signed scalar bits,raw/cache;two native Save/Open rounds;execution rational match\n# Red Eye wire scene3: exact signed scalar bits,raw/cache;two native Save/Open rounds;execution rational match\n# Red Eye wire scene4: exact signed scalar bits,raw/cache;two native Save/Open rounds;execution rational match\n# Red Eye wire scene5: exact signed scalar bits,raw/cache;two native Save/Open rounds;execution rational match\n# Red Eye wire scene6: exact signed scalar bits,raw/cache;two native Save/Open rounds;execution rational match\n# Red Eye wire scene7: exact signed scalar bits,raw/cache;two native Save/Open rounds;execution explicit rejection\nok 1 /painter-xcf-open/red_eye_old_wire_roundtrips\n# slow test /painter-xcf-open/red_eye_old_wire_roundtrips executed in 0.63 secs\n# End of painter-xcf-open tests\n1..1\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n",
+    "stderr": "",
+    "seconds": 1.7143155749945436
+  },
+  "red_eye_malformed_wire": {
+    "command": [
+      "/workspace/shared/gimp-clean-aggregate/build/app/tests/painter-xcf-open",
+      "-p",
+      "/painter-xcf-open/red_eye_malformed_wire"
+    ],
+    "exit_code": 0,
+    "stdout": "TAP version 14\n# random seed: R02S2298435c45a1d7ee502d77017001006f\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# Start of painter-xcf-open tests\n# Red Eye malformed0: exact opaque bytes/cache;two Save/Open rounds;zero executions\n# Red Eye malformed1: exact opaque bytes/cache;two Save/Open rounds;zero executions\n# Red Eye malformed2: exact opaque bytes/cache;two Save/Open rounds;zero executions\n# Red Eye malformed3: exact opaque bytes/cache;two Save/Open rounds;zero executions\n# Red Eye malformed4: exact opaque bytes/cache;two Save/Open rounds;zero executions\n# Red Eye malformed5: exact opaque bytes/cache;two Save/Open rounds;zero executions\n# Red Eye malformed6: exact opaque bytes/cache;two Save/Open rounds;zero executions\n# Red Eye malformed7: exact opaque bytes/cache;two Save/Open rounds;zero executions\n# Red Eye malformed8: exact opaque bytes/cache;two Save/Open rounds;zero executions\n# Red Eye malformed9: exact opaque bytes/cache;two Save/Open rounds;zero executions\n# Red Eye malformed10: exact opaque bytes/cache;two Save/Open rounds;zero executions\n# Red Eye malformed11: exact opaque bytes/cache;two Save/Open rounds;zero executions\n# Red Eye malformed12: exact opaque bytes/cache;two Save/Open rounds;zero executions\n# Red Eye malformed13: exact opaque bytes/cache;two Save/Open rounds;zero executions\n# Red Eye malformed14: exact opaque bytes/cache;two Save/Open rounds;zero executions\n# Red Eye malformed15: exact opaque bytes/cache;two Save/Open rounds;zero executions\nok 1 /painter-xcf-open/red_eye_malformed_wire\n# slow test /painter-xcf-open/red_eye_malformed_wire executed in 0.57 secs\n# End of painter-xcf-open tests\n1..1\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n",
+    "stderr": "",
+    "seconds": 1.6569837749993894
+  }
+}

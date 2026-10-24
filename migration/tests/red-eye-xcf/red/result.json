@@ -1,0 +1,11 @@
+{
+  "command": [
+    "/workspace/shared/gimp-clean-aggregate/build/app/tests/painter-xcf-open",
+    "-p",
+    "/painter-xcf-open/red_eye_old_wire_admission"
+  ],
+  "exit_code": -6,
+  "stdout": "TAP version 14\n# random seed: R02S11e981793c0daa9dd5de57d471ac653f\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ?gio-vfs?\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# Start of painter-xcf-open tests\nnot ok /painter-xcf-open/red_eye_old_wire_admission - ERROR:../source/app/tests/test-painter-xcf-red-eye.inc:25:red_eye_old_wire_admission: 'args' should not be NULL\nBail out!\n",
+  "stderr": "**\nERROR:../source/app/tests/test-painter-xcf-red-eye.inc:25:red_eye_old_wire_admission: 'args' should not be NULL\n",
+  "seconds": 1.0560348220024025
+}

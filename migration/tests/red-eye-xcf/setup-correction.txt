@@ -1,0 +1,1 @@
+First green-runner generation used a conflicting nested shell heredoc delimiter; Python syntax failed, subsequent empty-variable commands could not find files and did not execute a native test or modify clean source. Runner recreated with distinct delimiter, bash -n passed before actual green.
