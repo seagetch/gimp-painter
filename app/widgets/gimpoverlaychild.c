@@ -53,6 +53,173 @@ static void   gimp_overlay_child_to_embedder      (GdkWindow        *child_windo
                                                    GimpOverlayChild *child);
 
 
+/* Synchronize this independently clocked offscreen with its widget's
+ * logical layout clock. No widget allocation or update processing belongs here.
+ * The window's user_data remains the overlay box for GTK event routing.
+ *
+ * This is a layout-phase gate, not an allocation-readiness check. GTK's
+ * ordinary layout handlers precede our after-handler, and its layout loop
+ * handles requests for another pass before after-paint. A hooked invalidation
+ * after our layout observation invalidates that observation. This does not
+ * cover queue_resize_no_redraw(), clipped-out invalidations, or an expose
+ * already running. GTK's own repeated-layout limit and warning are unchanged.
+ */
+#define PAINT_GATE_DATA "gimp-overlay-child-paint-gate"
+
+static void
+gimp_overlay_child_paint_disconnect_clock (GimpOverlayChild *child)
+{
+  if (child->paint_clock)
+    {
+      g_signal_handler_disconnect (child->paint_clock, child->paint_layout_id);
+      g_signal_handler_disconnect (child->paint_clock, child->paint_after_id);
+      child->paint_layout_id = 0;
+      child->paint_after_id = 0;
+      g_clear_object (&child->paint_clock);
+    }
+  child->paint_layout_seen = FALSE;
+}
+
+static void
+gimp_overlay_child_paint_hold (GimpOverlayChild *child)
+{
+  if (! child->paint_frozen)
+    {
+      gdk_window_freeze_updates (child->window);
+      child->paint_frozen = TRUE;
+    }
+  child->paint_generation++;
+  child->paint_layout_seen = FALSE;
+
+  if (child->paint_clock)
+    gdk_frame_clock_request_phase (child->paint_clock,
+                                  GDK_FRAME_CLOCK_PHASE_LAYOUT |
+                                  GDK_FRAME_CLOCK_PHASE_AFTER_PAINT);
+}
+
+static void
+gimp_overlay_child_paint_layout (GdkFrameClock    *clock,
+                                  GimpOverlayChild *child)
+{
+  if (clock == child->paint_clock && child->paint_frozen &&
+      gtk_widget_get_mapped (child->widget))
+    {
+      child->paint_layout_generation = child->paint_generation;
+      child->paint_layout_seen = TRUE;
+    }
+}
+
+static void
+gimp_overlay_child_paint_after (GdkFrameClock    *clock,
+                                 GimpOverlayChild *child)
+{
+  if (clock != child->paint_clock || ! child->paint_frozen ||
+      ! gtk_widget_get_mapped (child->widget))
+    return;
+
+  if (child->paint_layout_seen &&
+      child->paint_layout_generation == child->paint_generation)
+    {
+      child->paint_frozen = FALSE;
+      child->paint_layout_seen = FALSE;
+      gdk_window_thaw_updates (child->window);
+    }
+  else
+    {
+      /* An invalidation after layout needs a later layout opportunity. */
+      gdk_frame_clock_request_phase (clock,
+                                    GDK_FRAME_CLOCK_PHASE_LAYOUT |
+                                    GDK_FRAME_CLOCK_PHASE_AFTER_PAINT);
+    }
+}
+
+static void
+gimp_overlay_child_paint_map (GtkWidget        *widget,
+                               GimpOverlayChild *child)
+{
+  GdkFrameClock *clock;
+
+  gimp_overlay_child_paint_disconnect_clock (child);
+  clock = gtk_widget_get_frame_clock (widget);
+  if (clock)
+    {
+      child->paint_clock = g_object_ref (clock);
+      child->paint_layout_id =
+        g_signal_connect_after (clock, "layout",
+                                G_CALLBACK (gimp_overlay_child_paint_layout),
+                                child);
+      child->paint_after_id =
+        g_signal_connect_after (clock, "after-paint",
+                                G_CALLBACK (gimp_overlay_child_paint_after),
+                                child);
+    }
+  /* Includes remap and a possible change of logical toplevel/clock. */
+  gimp_overlay_child_paint_hold (child);
+}
+
+static void
+gimp_overlay_child_paint_unmap (GtkWidget        *widget,
+                                 GimpOverlayChild *child)
+{
+  /* Do not wait on a hidden owner's clock or accept a stale layout pass. */
+  gimp_overlay_child_paint_disconnect_clock (child);
+  gimp_overlay_child_paint_hold (child);
+}
+
+static void
+gimp_overlay_child_paint_invalidate (GdkWindow      *window,
+                                      cairo_region_t *region)
+{
+  GimpOverlayChild *child = g_object_get_data (G_OBJECT (window),
+                                              PAINT_GATE_DATA);
+
+  if (child)
+    gimp_overlay_child_paint_hold (child);
+}
+
+static void
+gimp_overlay_child_paint_start (GimpOverlayChild *child)
+{
+  g_object_set_data (G_OBJECT (child->window), PAINT_GATE_DATA, child);
+  gdk_window_set_invalidate_handler (child->window,
+                                    gimp_overlay_child_paint_invalidate);
+  child->paint_map_id =
+    g_signal_connect_after (child->widget, "map",
+                            G_CALLBACK (gimp_overlay_child_paint_map), child);
+  child->paint_unmap_id =
+    g_signal_connect (child->widget, "unmap",
+                      G_CALLBACK (gimp_overlay_child_paint_unmap), child);
+
+  /* Realize may precede set_parent(); defer clock binding until map. */
+  if (gtk_widget_get_mapped (child->widget))
+    gimp_overlay_child_paint_map (child->widget, child);
+  else
+    gimp_overlay_child_paint_hold (child);
+}
+
+static void
+gimp_overlay_child_paint_stop (GimpOverlayChild *child)
+{
+  if (! child->window)
+    return;
+
+  /* Keep paint blocked during unparent (which can destroy the widget).
+   * The one owned token is balanced immediately before window destruction.
+   */
+  gimp_overlay_child_paint_disconnect_clock (child);
+  gimp_overlay_child_paint_hold (child);
+  gdk_window_set_invalidate_handler (child->window, NULL);
+  g_object_set_data (G_OBJECT (child->window), PAINT_GATE_DATA, NULL);
+
+  if (child->paint_map_id)
+    {
+      g_signal_handler_disconnect (child->widget, child->paint_map_id);
+      g_signal_handler_disconnect (child->widget, child->paint_unmap_id);
+      child->paint_map_id = 0;
+      child->paint_unmap_id = 0;
+    }
+}
+
 /*  public functions  */
 
 GimpOverlayChild *
@@ -95,6 +262,8 @@ gimp_overlay_child_free (GimpOverlayBox   *box,
 {
   g_return_if_fail (GIMP_IS_OVERLAY_BOX (box));
   g_return_if_fail (child != NULL);
+
+  gimp_overlay_child_paint_stop (child);
 
   gtk_widget_unparent (child->widget);
 
@@ -194,6 +363,8 @@ gimp_overlay_child_realize (GimpOverlayBox   *box,
                     G_CALLBACK (gimp_overlay_child_to_embedder),
                     child);
 
+  gimp_overlay_child_paint_start (child);
+
   gdk_window_show (child->window);
 }
 
@@ -204,6 +375,14 @@ gimp_overlay_child_unrealize (GimpOverlayBox   *box,
   g_return_if_fail (GIMP_IS_OVERLAY_BOX (box));
   g_return_if_fail (child != NULL);
   g_return_if_fail (child->window != NULL);
+
+  gimp_overlay_child_paint_stop (child);
+
+  if (child->paint_frozen)
+    {
+      child->paint_frozen = FALSE;
+      gdk_window_thaw_updates (child->window);
+    }
 
   gdk_window_set_user_data (child->window, NULL);
   gdk_window_destroy (child->window);

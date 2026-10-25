@@ -27,6 +27,7 @@ extern "C" {
 #include "gimpaction.h"
 #include "gimplayermodebox.h"
 #include "gimppainterlayertiles.h"
+#include "popupper.h"
 #include "gimplayertileview.h"
 #include "actions/layers-commands.h"
 #include "display/display-types.h"
@@ -73,9 +74,11 @@ struct Hook {
   WeakRef<GObject> owner;
   ObjectRef<GObject> target;
   std::string command;
-  Hook (GimpPainterLayerTiles *o, GObject *t, const char *c = "")
+  std::uint64_t popup_epoch, close_epoch;
+  Hook (GimpPainterLayerTiles *o, GObject *t, const char *c = "",
+        std::uint64_t p = 0, std::uint64_t close = 0)
     : owner (ObjectRef<GObject>::retain (G_OBJECT (o))),
-      target (ObjectRef<GObject>::retain (t)), command (c) {}
+      target (ObjectRef<GObject>::retain (t)), command (c), popup_epoch (p), close_epoch (close) {}
 };
 struct Tiles {
   GimpPainterLayerTiles *owner;
@@ -89,8 +92,10 @@ struct Tiles {
   bool drop_into = false, drop_after = false;
   std::vector<Connection> permanent, model, controls, popup_connections;
   Source rebuild, preview_update, long_press, autoscroll;
+  std::unique_ptr<GdkEvent, decltype (&gdk_event_free)> closing_press {nullptr, gdk_event_free};
+  std::unique_ptr<GdkEvent, decltype (&gdk_event_free)> cancelling_press {nullptr, gdk_event_free};
   double scroll_step = 0;
-  std::uint64_t image_generation = 0, popup_generation = 0, context_generation = 0, refresh_generation = 0;
+  std::uint64_t image_generation = 0, popup_generation = 0, popup_close_generation = 0, context_generation = 0, refresh_generation = 0;
   bool clearing_context = false;
   bool syncing = false, closed = false, pressed = false, popup_opened = false, popup_active = false;
   double press_x = 0, press_y = 0;
@@ -111,6 +116,8 @@ struct Tiles {
     }
   }
   void close_popup () noexcept {
+    closing_press.reset (); cancelling_press.reset ();
+    ++popup_close_generation;
     popup_connections.clear ();
     auto old = std::move (popup);
     popup_content = nullptr;
@@ -150,6 +157,9 @@ struct Tiles {
   bool choose (GimpLayer *layer, GdkModifierType state);
   void action (const std::string& command, GObject *target);
   GtkWidget *show_popup (bool creation);
+  GtkWidget *show_common_popup (ObjectRef<GObject> image, ObjectRef<GObject> context,
+                               ObjectRef<GObject> layer, std::uint64_t image_epoch,
+                               std::uint64_t context_epoch, std::uint64_t popup_epoch);
   bool move (GimpLayer *layer, GimpLayer *target, bool into, bool after);
   void begin_press (GtkWidget *widget, GimpLayer *layer, double x, double y);
   void scroll_drag (GtkWidget *widget, int x, int y);
@@ -168,15 +178,20 @@ template<class F> void dispatch (gpointer data, F&& f) noexcept {
   auto owner = hook->owner.lock ();
   auto target = hook->target;
   auto command = hook->command;
-  if (owner) use (owner.get (), [&] (Tiles& s) { f (s, target.get (), command); });
+  const auto popup_epoch = hook->popup_epoch, close_epoch = hook->close_epoch;
+  if (owner) use (owner.get (), [&] (Tiles& s) {
+    if (popup_epoch && (s.popup_generation != popup_epoch ||
+                       s.popup_close_generation != close_epoch || !s.popup_active)) return;
+    f (s, target.get (), command);
+  });
   } catch (const std::exception& error) { g_warning ("Painter layer callback: %s", error.what ()); }
   catch (...) { g_warning ("Painter layer callback: Unknown C++ exception"); }
 }
 void destroy_hook (gpointer data, GClosure *) { delete static_cast<Hook *> (data); }
 void connect (Tiles& s, std::vector<Connection>& connections, GObject *emitter,
               const char *signal, GCallback callback, GObject *target = nullptr,
-              const char *command = "") {
-  auto hook = std::unique_ptr<Hook> (new Hook (s.owner, target, command));
+              const char *command = "", std::uint64_t popup_epoch = 0, std::uint64_t close_epoch = 0) {
+  auto hook = std::unique_ptr<Hook> (new Hook (s.owner, target, command, popup_epoch, close_epoch));
   connections.emplace_back (Connection::connect (ObjectRef<GObject>::retain (emitter),
     signal, callback, hook.get (), destroy_hook));
   hook.release ();
@@ -224,6 +239,23 @@ gboolean query_tooltip (GtkWidget *, gint x, gint y, gboolean keyboard,
   return found;
 }
 gboolean press (GtkWidget *widget, GdkEventButton *event, gpointer data) {
+  bool companion = false;
+  dispatch (data, [&] (Tiles& s, GObject *, const std::string&) {
+    /* Only the exact classified counterpart of a consumed common-host close
+     * is inert. Take the marker before any row/action lookup; unmatched input
+     * retains the original list/add policy, including Filter and left input. */
+    s.cancelling_press.reset ();
+    auto closing = std::move (s.closing_press);
+    if (!closing) return;
+    const auto& previous = closing->button;
+    companion = (widget == s.list || widget == s.add) &&
+      (event->type == GDK_2BUTTON_PRESS || event->type == GDK_3BUTTON_PRESS) &&
+      event->time == previous.time && event->button == previous.button &&
+      event->window == previous.window &&
+      gdk_event_get_device (reinterpret_cast<GdkEvent *> (event)) == gdk_event_get_device (closing.get ()) &&
+      event->x_root == previous.x_root && event->y_root == previous.y_root;
+  });
+  if (companion) return TRUE;
   if (event->button != 1 && event->button != 3) return FALSE;
   if (g_getenv ("PAINTER_CANVAS_TRACE")) g_printerr ("TILE_PRESS button=%u state=%u x=%.1f y=%.1f\n", event->button,event->state,event->x,event->y);
   dispatch (data, [&] (Tiles& s, GObject *target, const std::string&) {
@@ -279,6 +311,7 @@ gboolean motion (GtkWidget *widget, GdkEventMotion *event, gpointer data) {
   return FALSE;
 }
 gboolean release (GtkWidget *widget, GdkEventButton *event, gpointer data) {
+  dispatch (data, [] (Tiles& s, GObject *, const std::string&) { s.closing_press.reset (); s.cancelling_press.reset (); });
   if (event->button != 1) return FALSE;
   dispatch (data, [&] (Tiles& s, GObject *target, const std::string&) {
     auto held = s.press_layer;
@@ -294,6 +327,7 @@ gboolean release (GtkWidget *widget, GdkEventButton *event, gpointer data) {
 gboolean key (GtkWidget *, GdkEventKey *event, gpointer data) {
   bool handled = false;
   dispatch (data, [&] (Tiles& s, GObject *, const std::string&) {
+    s.closing_press.reset (); s.cancelling_press.reset ();
     if (event->keyval == GDK_KEY_Insert) {
       s.action ("layers-new-last-values", nullptr); handled = true;
     } else if (event->keyval == GDK_KEY_Menu || (event->keyval == GDK_KEY_F10 && (event->state & GDK_SHIFT_MASK))) {
@@ -428,18 +462,59 @@ void opacity (GtkRange *range, gpointer data) {
     gimp_image_flush (GIMP_IMAGE (image.get ()));
   });
 }
+void popup_target_removed (GimpItem *, gpointer data) {
+  auto *hook = static_cast<Hook *> (data);
+  auto owner = hook->owner.lock ();
+  const auto request = hook->popup_epoch, close_request = hook->close_epoch;
+  if (owner) use (owner.get (), [request, close_request] (Tiles& s) {
+    if (s.popup_generation == request && s.popup_close_generation == close_request) s.close_popup ();
+  });
+}
 void popup_closed (GtkPopover *, gpointer data) {
   dispatch (data, [] (Tiles& s, GObject *, const std::string&) {
     s.cancel_press ();
     s.restore_focus ();
   });
 }
-/* Native filter hosts disappear by destruction, not GtkPopover::closed.
+/* Stage provenance only while the common host emits outside cancellation.
+ * Native destruction below confirms it against the still-current event; a
+ * vetoed cancel or later unrelated destruction must not arm a companion. */
+void common_popup_cancel (GtkWidget *widget, gpointer data) {
+  dispatch (data, [widget] (Tiles& s, GObject *, const std::string&) {
+    s.closing_press.reset (); s.cancelling_press.reset ();
+    std::unique_ptr<GdkEvent, decltype (&gdk_event_free)> event {gtk_get_current_event (), gdk_event_free};
+    if (s.popup.get () != G_OBJECT (widget) || !event || event->type != GDK_BUTTON_PRESS ||
+        (event->button.button != 1 && event->button.button != 3) || !event->button.time || !event->button.window ||
+        !gdk_event_get_device (event.get ())) return;
+    auto *source = gtk_get_event_widget (event.get ());
+    if ((source != s.list && source != s.add) || gtk_widget_get_toplevel (source) == widget) return;
+    s.cancelling_press = std::move (event);
+  });
+}
+void common_popup_cancel_finished (GtkWidget *, gpointer data) {
+  auto *hook = static_cast<Hook *> (data);
+  auto owner = hook->owner.lock ();
+  const auto request = hook->popup_epoch, close_request = hook->close_epoch;
+  if (owner) use (owner.get (), [request, close_request] (Tiles& s) {
+    if (s.popup_generation == request && s.popup_close_generation == close_request)
+      s.cancelling_press.reset ();
+  });
+}
+/* Native property hosts disappear by destruction, not GtkPopover::closed.
  * Identity guards keep a retiring host from clearing a synchronously reopened one. */
 void native_popup_destroyed (GtkWidget *widget, gpointer data) {
   dispatch (data, [widget] (Tiles& s, GObject *, const std::string&) {
     if (s.popup.get () != G_OBJECT (widget)) return;
     auto hold = s.popup;
+    auto cancelling = std::move (s.cancelling_press);
+    s.closing_press.reset ();
+    std::unique_ptr<GdkEvent, decltype (&gdk_event_free)> current {gtk_get_current_event (), gdk_event_free};
+    if (cancelling && current && current->type == GDK_BUTTON_PRESS &&
+        current->button.time == cancelling->button.time && current->button.button == cancelling->button.button &&
+        current->button.window == cancelling->button.window &&
+        gdk_event_get_device (current.get ()) == gdk_event_get_device (cancelling.get ()) &&
+        current->button.x_root == cancelling->button.x_root && current->button.y_root == cancelling->button.y_root)
+      s.closing_press = std::move (cancelling);
     s.popup.reset ();
     s.popup_content = nullptr;
     s.popup_connections.clear ();
@@ -457,11 +532,12 @@ gboolean grab_broken (GtkWidget *, GdkEventGrabBroken *, gpointer data) {
   return FALSE;
 }
 GtkWidget *button (Tiles& s, GtkWidget *box, const char *label, const char *name,
-                   std::vector<Connection>& hooks, GObject *target = nullptr) {
+                   std::vector<Connection>& hooks, GObject *target = nullptr,
+                   std::uint64_t popup_epoch = 0, std::uint64_t close_epoch = 0) {
   GtkWidget *result = gtk_button_new_with_label (label);
   gtk_widget_set_name (result, name); gtk_widget_set_can_focus (result, FALSE);
   gtk_box_pack_start (GTK_BOX (box), result, FALSE, FALSE, 0);
-  connect (s, hooks, G_OBJECT (result), "clicked", G_CALLBACK (clicked), target, name);
+  connect (s, hooks, G_OBJECT (result), "clicked", G_CALLBACK (clicked), target, name, popup_epoch, close_epoch);
   return result;
 }
 void Tiles::build () {
@@ -993,6 +1069,140 @@ void Tiles::action (const std::string& command, GObject *target) {
     }
   }
 }
+GtkWidget *Tiles::show_common_popup (ObjectRef<GObject> image_hold,
+                                      ObjectRef<GObject> context_hold,
+                                      ObjectRef<GObject> layer_hold,
+                                      std::uint64_t image_epoch,
+                                      std::uint64_t context_epoch,
+                                      std::uint64_t popup_epoch) {
+  const auto close_epoch = popup_close_generation;
+  auto content_hold = ObjectRef<GObject>::sink (G_OBJECT (gtk_box_new (GTK_ORIENTATION_VERTICAL, 3)));
+  auto *content = GTK_WIDGET (content_hold.get ());
+  gtk_container_set_border_width (GTK_CONTAINER (content), 8);
+  GtkWidget *anchor_widget = list;
+  auto anchor_hold = ObjectRef<GObject>::retain (G_OBJECT (anchor_widget));
+  GdkRectangle anchor_area = {0, 0, gtk_widget_get_allocated_width (anchor_widget), tile_pitch};
+  for (unsigned i = 0; i < rows.size (); ++i)
+    if (rows[i].layer.get () == layer_hold.get ()) {
+      anchor_area.x = rows[i].depth * indent_width;
+      anchor_area.y = i * tile_pitch;
+      anchor_area.width = preview_size;
+      break;
+    }
+  /* No GTK host owns this content until every common control is complete.
+   * parent-set observers may close/unmap the owner or open another request.
+   * A strong widget reference alone cannot make a half-destroyed host usable. */
+  auto current = [&] {
+    if (closed || image_generation != image_epoch || context_generation != context_epoch ||
+        popup_generation != popup_epoch || popup_close_generation != close_epoch ||
+        image.get () != image_hold.get () || context.get () != context_hold.get () ||
+        gtk_widget_in_destruction (anchor_widget) ||
+        !gtk_widget_get_mapped (GTK_WIDGET (owner)) ||
+        !gtk_widget_get_mapped (anchor_widget)) return false;
+    GList *selected = gimp_image_get_selected_layers (GIMP_IMAGE (image_hold.get ()));
+    return ((selected ? G_OBJECT (selected->data) : nullptr) == layer_hold.get () &&
+      (!layer_hold || (gimp_item_is_attached (GIMP_ITEM (layer_hold.get ())) &&
+       gimp_item_get_image (GIMP_ITEM (layer_hold.get ())) == GIMP_IMAGE (image_hold.get ()) )));
+  };
+  std::vector<Connection> staged_connections;
+  if (layer_hold)
+    connect (*this, staged_connections, layer_hold.get (), "removed", G_CALLBACK (popup_target_removed),
+             nullptr, "", popup_epoch, close_epoch);
+  auto content_cleanup = std::unique_ptr<GtkWidget, decltype (&gtk_widget_destroy)> (content, gtk_widget_destroy);
+  auto scroller_hold = ObjectRef<GObject> ();
+  GtkWidget *view = content;
+  {
+    scroller_hold = ObjectRef<GObject>::sink (G_OBJECT (gtk_scrolled_window_new (nullptr, nullptr)));
+    auto *scroller = GTK_WIDGET (scroller_hold.get ());
+    gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scroller), GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
+    gtk_scrolled_window_set_min_content_width (GTK_SCROLLED_WINDOW (scroller), 260);
+    gtk_scrolled_window_set_max_content_height (GTK_SCROLLED_WINDOW (scroller), 500);
+    gtk_scrolled_window_set_propagate_natural_height (GTK_SCROLLED_WINDOW (scroller), TRUE);
+    gtk_container_add (GTK_CONTAINER (scroller), content);
+    view = scroller;
+  }
+  const char *create_labels[] = { N_("New Layer…"), N_("New Group"), N_("Duplicate"), N_("New Clone Layer"), N_("New Filter Layer…") };
+  const char *create_commands[] = { "layers-new", "layers-new-group", "layers-duplicate", "layers-new-clone", "layers-new-filter" };
+  for (unsigned i=0; i<G_N_ELEMENTS(create_commands); ++i)
+    button (*this, content, _(create_labels[i]), create_commands[i], staged_connections, nullptr, popup_epoch, close_epoch);
+  {
+    auto *layer = layer_hold ? GIMP_LAYER (layer_hold.get ()) : nullptr;
+    if (layer) {
+      GtkWidget *scale=gtk_scale_new_with_range (GTK_ORIENTATION_HORIZONTAL, 0, 100, 1);
+      gtk_widget_set_name (scale, "painter-layer-opacity");
+      gtk_range_set_value (GTK_RANGE (scale), 100*gimp_layer_get_opacity (layer));
+      gtk_box_pack_start (GTK_BOX (content), gtk_label_new (_("Opacity")), FALSE, FALSE, 0);
+      gtk_box_pack_start (GTK_BOX (content), scale, FALSE, FALSE, 0);
+      connect (*this, staged_connections, G_OBJECT (scale), "value-changed", G_CALLBACK (opacity), nullptr, "", popup_epoch, close_epoch);
+      GtkWidget *mode = gimp_layer_mode_box_new (GIMP_LAYER_MODE_CONTEXT_LAYER);
+      gtk_widget_set_name (mode, "painter-layer-mode");
+      gimp_layer_mode_box_set_mode (GIMP_LAYER_MODE_BOX (mode), gimp_layer_get_mode (layer));
+      gtk_box_pack_start (GTK_BOX (content), mode, FALSE, FALSE, 0);
+      connect (*this, staged_connections, G_OBJECT (mode), "notify::layer-mode", G_CALLBACK (mode_changed), nullptr, "", popup_epoch, close_epoch);
+      auto flag = [&] (const char *label, const char *name, bool value) {
+        GtkWidget *check = gtk_check_button_new_with_label (label);
+        gtk_widget_set_name (check, name);
+        if (!strcmp (name, "painter-layer-lock-alpha")) gtk_widget_set_sensitive (check, gimp_layer_can_lock_alpha (layer));
+        if (!strcmp (name, "painter-layer-lock-content")) gtk_widget_set_sensitive (check, gimp_item_can_lock_content (GIMP_ITEM (layer)));
+        if (!strcmp (name, "painter-layer-lock-position")) gtk_widget_set_sensitive (check, gimp_item_can_lock_position (GIMP_ITEM (layer)));
+        gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (check), value);
+        gtk_box_pack_start (GTK_BOX (content), check, FALSE, FALSE, 0);
+        connect (*this, staged_connections, G_OBJECT (check), "toggled", G_CALLBACK (flag_toggled), nullptr, name, popup_epoch, close_epoch);
+      };
+      flag (_("Lock Alpha"), "painter-layer-lock-alpha", gimp_layer_get_lock_alpha (layer));
+      flag (_("Lock Pixels"), "painter-layer-lock-content", gimp_item_get_lock_content (GIMP_ITEM (layer)));
+      flag (_("Lock Position"), "painter-layer-lock-position", gimp_item_get_lock_position (GIMP_ITEM (layer)));
+      if (gimp_layer_get_mask (layer)) {
+        flag (_("Edit Mask"), "painter-layer-mask-edit", gimp_layer_get_edit_mask (layer));
+        flag (_("Show Mask"), "painter-layer-mask-show", gimp_layer_get_show_mask (layer));
+        flag (_("Apply Mask"), "painter-layer-mask-apply", gimp_layer_get_apply_mask (layer));
+      }
+      button (*this, content, _("Edit Layer Attributes…"), "layers-edit-attributes", staged_connections, nullptr, popup_epoch, close_epoch);
+      if (GIMP_IS_CLONE_LAYER (layer)) button (*this, content, _("Clone Source…"), "layers-edit-clone", staged_connections, nullptr, popup_epoch, close_epoch);
+
+      button (*this, content, _("Raise Layer"), "layers-raise", staged_connections, nullptr, popup_epoch, close_epoch);
+      button (*this, content, _("Lower Layer"), "layers-lower", staged_connections, nullptr, popup_epoch, close_epoch);
+      button (*this, content, _("Delete Layer"), "layers-delete", staged_connections, nullptr, popup_epoch, close_epoch);
+    }
+  }
+  button (*this, content, _("All Layer Actions…"), "layer-menu", staged_connections, nullptr, popup_epoch, close_epoch);
+  GimpContainer *presets=gimp_data_factory_get_container (GIMP_CONTEXT (context_hold.get ())->gimp->layer_preset_factory);
+  for (GList *i=GIMP_LIST (presets)->queue->head; i; i=i->next)
+    button (*this, content, gimp_object_get_name (i->data), "preset", staged_connections, G_OBJECT (i->data), popup_epoch, close_epoch);
+  if (!current ()) return nullptr;
+  gtk_widget_show_all (view);
+  if (!current ()) return nullptr;
+  GtkWidget *created = gimp_popover_new (view);
+  if (!created) return nullptr;
+  auto hold = ObjectRef<GObject>::retain (G_OBJECT (created));
+  auto host_cleanup = std::unique_ptr<GtkWidget, decltype (&gtk_widget_destroy)> (created, gtk_widget_destroy);
+  if (!current () || gtk_widget_in_destruction (created)) return nullptr;
+  gtk_widget_set_name (created, "painter-layer-properties-popup");
+  if (!current () || gtk_widget_in_destruction (created) ||
+      !gtk_widget_is_ancestor (view, created)) return nullptr;
+  connect (*this, staged_connections, G_OBJECT (created), "cancel",
+           G_CALLBACK (common_popup_cancel), nullptr, "", popup_epoch, close_epoch);
+  /* The after handler must survive default destruction clearing the normal
+   * connection vector. Its weak-owner closure belongs to the host itself. */
+  g_signal_connect_data (created, "cancel", G_CALLBACK (common_popup_cancel_finished),
+                         new Hook (owner, nullptr, "", popup_epoch, close_epoch), destroy_hook, G_CONNECT_AFTER);
+  connect (*this, staged_connections, G_OBJECT (created), "destroy", G_CALLBACK (native_popup_destroyed));
+  popup = hold;
+  popup_content = content;
+  popup_connections = std::move (staged_connections);
+  content_cleanup.release ();
+  host_cleanup.release ();
+  popup_active = true;
+  gimp_popover_show_at (created, anchor_widget, &anchor_area);
+  if (!current () || popup.get () != hold.get () || gtk_widget_in_destruction (created) ||
+      !gtk_widget_is_ancestor (view, created)) {
+    if (popup.get () == hold.get ()) close_popup ();
+    else gtk_widget_destroy (created);
+    return nullptr;
+  }
+  return created;
+}
+
 GtkWidget *Tiles::show_popup (bool creation) {
   if (closed || !img () || !ctx ()) return nullptr;
   const auto image_epoch = image_generation;
@@ -1008,6 +1218,9 @@ GtkWidget *Tiles::show_popup (bool creation) {
   GList *selected_layers = gimp_image_get_selected_layers (img ());
   auto layer_hold = ObjectRef<GObject>::retain (selected_layers ? G_OBJECT (selected_layers->data) : nullptr);
   const bool native_filter = !creation && layer_hold && GIMP_IS_FILTER_LAYER (layer_hold.get ());
+  if (!creation && !native_filter)
+    return show_common_popup (image_hold, context_hold, layer_hold,
+                              image_epoch, context_epoch, popup_epoch);
   auto content_hold = ObjectRef<GObject>::sink (G_OBJECT (gtk_box_new (GTK_ORIENTATION_VERTICAL, 3)));
   auto *content = GTK_WIDGET (content_hold.get ());
   gtk_container_set_border_width (GTK_CONTAINER (content), 8);

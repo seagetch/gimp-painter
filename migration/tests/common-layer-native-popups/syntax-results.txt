@@ -1,0 +1,78 @@
+Final scope/provenance syntax checks: no runtime result
+g++ (Debian 14.2.0-19) 14.2.0
+C++14 syntax-only: app/widgets/popupper.cpp
+C++14 syntax-only: app/widgets/gimpcellrendererpopup.cpp
+C++14 syntax-only: app/widgets/gimppainterlayertiles.cpp
+C++14 syntax-only: app/tests/test-common-layer-popup.cpp
+0745c35cb4fe2cd705ae1f85e98444bfaf8299a24aa7a067737998444b3d459d  app/widgets/popupper.h
+2a32434f9eca1db8435eed057ed9e1d3233d5120be5f974c9568529bad2d0044  app/widgets/popupper.cpp
+c0cdefcd25bf544e7c23a8d0cd0bf2b5bd46e922a1e8d782cb450215bff014d2  app/widgets/gimpcellrendererpopup.cpp
+0925b0e4b5408113b9d973cfd5f463cb82a3d2c6c874cff5de20866d7f6ac470  app/widgets/gimppainterlayertiles.cpp
+fcbbab7be3e73e47295e16bb2d33c86d3493a425849533a9419475cfa75071fa  app/tests/test-common-layer-popup.cpp
+
+Attempt-6 diagnostic/capture/isolation harness revision: syntax only, native rerun pending
+C++14 syntax-only: app/tests/test-common-layer-popup.cpp (exit 0)
+b930720f6687d3662258fbf452d9eb15bf9b6f0d426ee501288f50e30dae79df  app/tests/test-common-layer-popup.cpp
+C++14 syntax-only: app/tests/test-layer-tile-entry-contracts.cpp (exit 0)
+e4b4e481497aa4d3de5aa1620df3b5efd52d800d3adead9e118ee721cc2fe4c0  app/tests/test-layer-tile-entry-contracts.cpp
+
+Attempt-7 first-open readiness and actual-hit harness revision: syntax only, native rerun pending
+C++14 syntax-only: app/tests/test-common-layer-popup.cpp (exit 0, no warnings)
+9966782569a09688a38ee98d237d9defa90cfe9e8311c7bcc3a150b052f7ec31  app/tests/test-common-layer-popup.cpp
+
+Additional classified closing-companion assertion in existing rapid cases: syntax only, native rerun pending
+C++14 syntax-only: app/tests/test-common-layer-popup.cpp (exit 0, no warnings)
+4c9995c12d0955008c5bd0af56a6342b4608b0bb617a8ccc6ab31da42209cd1e  app/tests/test-common-layer-popup.cpp
+
+Attempt-8 same-owner closing provenance and lower-control reachability revision: syntax only, native rerun pending
+C++14 syntax-only: app/widgets/gimppainterlayertiles.cpp (exit 0, no warnings)
+8c6addf0e246a1cb9800e3eb515f4af9797dabdd6b51e72a83c4ca2bc8d7ea6d  app/widgets/gimppainterlayertiles.cpp
+C++14 syntax-only: app/tests/test-common-layer-popup.cpp (exit 0, no warnings)
+6e17620edf6b4f9f3a6a40ac8fa0251ce561234a9a9442e85e3951e06fa481a4  app/tests/test-common-layer-popup.cpp
+
+Attempt-9 physical overlay-scrollbar hover/reveal and early diagnostics: syntax only, native rerun pending
+C++14 syntax-only: app/tests/test-common-layer-popup.cpp (exit 0, no warnings)
+88f76f3e98c09168a1a8a9da1363808c25191fafdd1d88d652c462e31321e8c1  app/tests/test-common-layer-popup.cpp
+
+Attempt-10 tree closing provenance, scrollbar stable hover and Canvas parented-owner guard: syntax only, native rerun pending
+C++14 syntax-only: app/widgets/gimpcellrendererpopup.cpp (exit 0, no warnings)
+342e0da5c83dc80fe20256bf32f4042c204dfb76dcb4cb6923bec3057383c207  app/widgets/gimpcellrendererpopup.cpp
+C++14 syntax-only: app/tests/test-common-layer-popup.cpp (exit 0, no warnings)
+7fe7fbf65fe70c79846cebb902c101073ced4f4252d7158479ccd40536f49423  app/tests/test-common-layer-popup.cpp
+C++14 syntax-only: app/display/gimppaintercanvasui.cpp (exit 0, no warnings)
+b6e6c6c069bb513a8872aa988c133f0fff8ffcaabc2527ef4640cad3baaf14df  app/display/gimppaintercanvasui.cpp
+
+Attempt-11 early classified-event observation and semantic scrollbar hover readiness: syntax only, native rerun pending
+C++14 syntax-only: app/tests/test-common-layer-popup.cpp (exit 0, no warnings)
+49eb5a701b4f0a082c1f88f6a2f3a34546c738dfec4de1d28bf7989b12d5d664  app/tests/test-common-layer-popup.cpp
+
+Attempt-12 adjacent exception fixture precondition ordering: syntax only, native rerun pending
+C11 syntax-only: app/tests/test-painter-widget-exceptions.c (exit 0, no warnings)
+30930cb38982d5b4e6d51d5ac5244583c492b1f86c4985e1ee967867a6e6d868  app/tests/test-painter-widget-exceptions.c
+
+Attempt-13 opt-in passive dock diagnostics: syntax only, diagnostic execution pending
+C++14 syntax-only: app/tests/test-common-layer-popup.cpp (exit 0, no warnings)
+236098bc509a123ec5209dbab683d55d231adf922f794b3f7ded9a6c9fdb1411  app/tests/test-common-layer-popup.cpp
+Display-independent GTK signal probe: before GtkNotebook class ref, page-added=0; after balanced class ref, realize/draw/page-added signal lookup and emission-hook add/remove passed (no widget instance or display connection).
+
+Attempt-14 passive clock identity/phase extension: syntax only, clock-order runtime evidence pending
+C++14 syntax-only: app/tests/test-common-layer-popup.cpp (exit 0, no warnings)
+1fb2347433345556f1266fd54b5ec7e3b174ef80457233800f6ba17294389adc  app/tests/test-common-layer-popup.cpp
+Display-independent GdkFrameClock probe: balanced class initialization and before-paint/layout/paint/after-paint signal lookup plus emission-hook add/remove all passed; no widget instance, clock phase request or display connection.
+
+Attempt-15 separately flagged ACTIVE existing-offscreen-update scheduling probe: syntax only, controlled runtime execution pending
+C++14 syntax-only: app/tests/test-common-layer-popup.cpp (exit 0, no warnings)
+78079b8209f0bb4a06f9c44ef15a2ee393c3d917da7ecad213cee8b259c61152  app/tests/test-common-layer-popup.cpp
+
+Attempt-16 controlled-warning response: six separate real-dock gate tests and optional common-fixture bridge; final native/GUI qualification pending
+C++14 syntax-only: app/tests/test-common-layer-popup.cpp (exit 0, no warnings)
+31ff252f755a9f152cb7f4ea7da400f62fa69d8a3b0ab8f83a9495809a4b05bf  app/tests/test-common-layer-popup.cpp
+C++14 syntax-only: app/tests/test-overlay-paint-gate.cpp (exit 0, no warnings)
+e54c12fabca0e6d16f124b2fca47f9ba20bbcda49a868125b5e07ec59e0bddba  app/tests/test-overlay-paint-gate.cpp
+C11 syntax-only: app/tests/test-painter-layer-ui.c (exit 0; 54 warning texts identical to published1618cc baseline, zero added warning texts)
+0663b3dcedf94eab17ef5ae24ccf3a6678599627aa5c36ec2210a48efe9172be  app/tests/test-painter-layer-ui.c
+
+Attempt-17 focused-only native insertion/current-tab allocation oracle and bounded counters: syntax only, native014/GUI pending
+C++14 syntax-only: app/tests/test-overlay-paint-gate.cpp (exit 0, no warnings)
+4af7e5e61c7d0d33970db90dc73e03094ec42f0b61c529a03da4d4fa9bf2e9fd  app/tests/test-overlay-paint-gate.cpp
+Other sixteen source-manifest entries unchanged from published d2e85ec5; normal58/16-image registration and production untouched.

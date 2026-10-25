@@ -220,8 +220,10 @@ static gboolean renderer_key_event(GtkWidget *w,guint keyval,GdkModifierType sta
 }
 static GtkWidget *renderer_current_popup(GtkWidget *owner) {
   GtkWidget *popup=gtk_grab_get_current();
-  g_assert_true(GTK_IS_POPOVER(popup));
-  g_assert_true(gtk_popover_get_relative_to(GTK_POPOVER(popup))==owner);
+  g_assert_true(GTK_IS_WINDOW(popup));
+  g_assert_cmpint(gtk_window_get_window_type(GTK_WINDOW(popup)),==,GTK_WINDOW_POPUP);
+  g_assert_true(gtk_widget_get_mapped(owner));
+  g_assert_cmpstr(gtk_widget_get_name(popup),==,"painter-layer-properties-popup");
   g_assert_true(gtk_widget_get_mapped(popup));return popup;
 }
 static gboolean renderer_count_draw(GtkWidget *w,cairo_t *cr,gpointer data) {
@@ -272,7 +274,7 @@ static void renderer_native_activation_routes(void) {
     GtkWidget *opacity=find(popup,"painter-layer-opacity");g_assert_nonnull(opacity);
     g_assert_cmpfloat_with_epsilon(gtk_range_get_value(GTK_RANGE(opacity)),37.,.000001);
     gimp_painter_layer_tiles_cancel_interaction(GIMP_PAINTER_LAYER_TILES(w));drain();
-    g_assert_false(GTK_IS_POPOVER(gtk_grab_get_current()));
+    g_assert_null(gtk_grab_get_current());
   }
   close_tiles(w);g_object_unref(image);
 }
@@ -291,7 +293,7 @@ static void renderer_selection_reentry_case(gboolean superseded) {
   g_assert_true(layer_button(w,a,3,0,FALSE));drain();
   g_assert_cmpuint(f.calls,==,1);g_assert_cmpuint(g_list_length(gimp_image_get_selected_layers(image)),==,1);g_assert_true(gimp_image_get_selected_layers(image)->data==f.newer);
   /* A same-target notification completes the activation; B supersedes it. */
-  if(superseded)g_assert_false(GTK_IS_POPOVER(gtk_grab_get_current()));
+  if(superseded)g_assert_null(gtk_grab_get_current());
   else renderer_current_popup(w);
   g_signal_handlers_disconnect_by_data(image,&f);close_tiles(w);g_object_unref(image);
 }
@@ -317,7 +319,7 @@ static void renderer_escape_owner_close(void) {
   g_assert_true(renderer_key_event(w,GDK_KEY_Escape,0));drain();
   g_signal_remove_emission_hook(focus_signal,focus_hook);
   g_assert_true(f.closed);g_assert_cmpuint(f.late_focus,==,0);
-  g_assert_false(GTK_IS_POPOVER(gtk_grab_get_current()));
+  g_assert_null(gtk_grab_get_current());
   g_signal_handlers_disconnect_by_data(w,&f);g_object_unref(w);g_object_unref(image);
 }
 
@@ -389,7 +391,7 @@ static void preview_pending_destroy(void) {
 }
 static void popup_repeat_and_owner_close(void) {
   GimpImage *image=new_image();layer(image,NULL,"Layer");GtkWidget *w=tiles(image);
-  for(int i=0;i<5;++i) { GtkWidget *p=gimp_painter_layer_tiles_popup(GIMP_PAINTER_LAYER_TILES(w),FALSE);g_assert_nonnull(p);gtk_popover_popdown(GTK_POPOVER(p));drain(); }
+  for(int i=0;i<5;++i) { GtkWidget *p=gimp_painter_layer_tiles_popup(GIMP_PAINTER_LAYER_TILES(w),FALSE);g_assert_nonnull(p);g_signal_emit_by_name(p,"cancel");drain(); }
   GtkWidget *p=gimp_painter_layer_tiles_popup(GIMP_PAINTER_LAYER_TILES(w),TRUE);g_object_ref(p);
   GtkWidget *button=find(p,"layers-new-clone");g_object_ref(button);close_tiles(w);
   gtk_button_clicked(GTK_BUTTON(button));g_assert_cmpint(gimp_image_get_n_layers(image),==,1);
@@ -430,9 +432,12 @@ static void popup_native_events_and_parent(void) {
   guint closed=0;g_signal_connect(w,"popup-closed",G_CALLBACK(count_popup_closed),&closed);
   for(guint cycle=0;cycle<3;cycle++) {
     GtkWidget *popup=gimp_painter_layer_tiles_popup(GIMP_PAINTER_LAYER_TILES(w),FALSE);g_assert_nonnull(popup);
-    g_assert_true(GTK_IS_POPOVER(popup));g_assert_true(gtk_popover_get_modal(GTK_POPOVER(popup)));
-    g_assert_true(gtk_popover_get_relative_to(GTK_POPOVER(popup))==w);
-    GtkWidget *scroll=gtk_bin_get_child(GTK_BIN(popup));g_assert_true(GTK_IS_SCROLLED_WINDOW(scroll));
+    g_assert_true(GTK_IS_WINDOW(popup));
+    g_assert_cmpint(gtk_window_get_window_type(GTK_WINDOW(popup)),==,GTK_WINDOW_POPUP);
+    /* Native windows destroy on Escape; retain the old host for assertions. */
+    g_object_ref(popup);
+    GtkWidget *frame=gtk_bin_get_child(GTK_BIN(popup));g_assert_true(GTK_IS_FRAME(frame));
+    GtkWidget *scroll=gtk_bin_get_child(GTK_BIN(frame));g_assert_true(GTK_IS_SCROLLED_WINDOW(scroll));
     GtkWidget *viewport=gtk_bin_get_child(GTK_BIN(scroll));g_assert_true(GTK_IS_VIEWPORT(viewport));
     g_assert_true(GTK_IS_BOX(gtk_bin_get_child(GTK_BIN(viewport))));drain();
     g_assert_true(gtk_widget_get_realized(popup));g_assert_true(gtk_widget_get_mapped(popup));g_assert_true(gtk_widget_has_grab(popup));
@@ -440,10 +445,10 @@ static void popup_native_events_and_parent(void) {
     gtk_widget_grab_focus(opacity);
     gtk_range_set_value(GTK_RANGE(opacity),70.);
     g_assert_cmpfloat(gimp_layer_get_opacity(selected),==,.7);
-    /* Exercise GtkPopover's inherited event handlers, not a synthetic closed signal. */
+    /* Exercise the native inherited event handler, not a synthetic close signal. */
     g_assert_true(native_popup_key(popup,GDK_KEY_Escape));drain();
     g_assert_false(gtk_widget_get_visible(popup));g_assert_false(gtk_widget_has_grab(popup));
-    g_assert_cmpuint(closed,==,cycle*2+1);
+    g_assert_cmpuint(closed,==,cycle*2+1);g_object_unref(popup);
     popup=gimp_painter_layer_tiles_popup(GIMP_PAINTER_LAYER_TILES(w),TRUE);g_assert_nonnull(popup);drain();
     g_assert_true(gtk_popover_get_relative_to(GTK_POPOVER(popup))==find(w,"painter-layer-add"));
     g_assert_true(gtk_widget_get_mapped(popup));g_assert_true(gtk_widget_has_grab(popup));

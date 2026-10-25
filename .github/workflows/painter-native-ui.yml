@@ -1,0 +1,93 @@
+name: Painter native UI
+
+on:
+  push:
+    branches: [gimp-3-0-port]
+    paths:
+      - 'app/**'
+      - 'libgimp*/**'
+      - 'tools/**'
+      - 'migration/baseline/debian13-package-lock.json'
+      - 'migration/inventory/**'
+      - 'meson.build'
+      - 'meson_options.txt'
+      - 'gimp-data'
+      - '.github/workflows/painter-native-ui.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  common-layer-popup:
+    name: ${{ matrix.target }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [candidate, baseline-carrier-red, dockbook-controlled-order-3d6f]
+    # Official multi-platform Debian 13 image, verified 2026-10-25 at:
+    # https://github.com/docker-library/repo-info/blob/master/repos/debian/remote/13-slim.md
+    container: debian:13-slim@sha256:62bd423aeee912639ca8ee681c2b762cb3e25137e0a92b20be455898a9f034ad
+    defaults:
+      run:
+        shell: bash
+    env:
+      DEBIAN_FRONTEND: noninteractive
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - name: Bootstrap native build tools
+        run: |
+          set -euo pipefail
+          # Keep the image's normal signed sources and expiry checks. The
+          # driver records bootstrap versions; project build dependencies use
+          # the separately checked-in signed snapshot/SHA-256 lock.
+          apt-get update
+          apt-get install --no-install-recommends -y \
+            ca-certificates git python3 build-essential pkg-config \
+            debian-archive-keyring util-linux x11-utils \
+            xvfb xauth dbus-x11 libxtst6 librsvg2-common fontconfig fonts-cantarell glib-networking at-spi2-core libblas3 liblapack3 libgtk-3-common
+          # Bounded historical investigations; neither is an acceptance job.
+          if [[ '${{ matrix.target }}' == pre-fix-stack-978 || '${{ matrix.target }}' == dockbook-stack-3d6f || '${{ matrix.target }}' == dockbook-controlled-order-3d6f ]]; then
+            apt-get install --no-install-recommends -y gdb
+          fi
+      - name: Fetch exact public source into container-owned directory
+        run: |
+          set -euo pipefail
+          [[ "$GITHUB_SHA" =~ ^[0-9a-f]{40}$ ]]
+          source=$(mktemp -d "$RUNNER_TEMP/painter-ci-checkout.XXXXXXXX")
+          git -C "$source" init
+          git -C "$source" remote add origin https://github.com/seagetch/gimp-painter.git
+          git -C "$source" fetch --no-tags --depth=1 origin "$GITHUB_SHA"
+          git -C "$source" checkout --detach FETCH_HEAD
+          test "$(git -C "$source" rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$(stat -c %u "$source")" = "$(id -u)"
+          printf 'PAINTER_CI_SOURCE=%s\n' "$source" >> "$GITHUB_ENV"
+          mkdir -p "$GITHUB_WORKSPACE/ci-results"
+          {
+            printf 'commit=%s\n' "$(git -C "$source" rev-parse HEAD)"
+            printf 'container_uid=%s container_gid=%s\n' "$(id -u)" "$(id -g)"
+            stat -c 'checkout_owner=%u:%g path=%n' "$source" "$source/.git"
+          } > "$GITHUB_WORKSPACE/ci-results/checkout-identity.txt"
+      - name: Unit-check CI evidence validation
+        run: |
+          cd "$PAINTER_CI_SOURCE"
+          python3 -B tools/tests/test_painter_ui_ci.py 2>&1 | tee "$GITHUB_WORKSPACE/ci-results/ci-validator-unit-tests.log"
+          python3 -B tools/tests/test_painter_popup_baseline.py 2>&1 | tee "$GITHUB_WORKSPACE/ci-results/baseline-validator-unit-tests.log"
+          python3 -B tools/tests/test_painter_dockbook_diagnostic.py 2>&1 | tee "$GITHUB_WORKSPACE/ci-results/dockbook-overlay-unit-tests.log"
+          python3 -B tools/tests/test_painter_dockbook_stack.py 2>&1 | tee "$GITHUB_WORKSPACE/ci-results/dockbook-stack-unit-tests.log"
+          python3 -B tools/tests/test_painter_controlled_order_stack.py 2>&1 | tee "$GITHUB_WORKSPACE/ci-results/controlled-order-stack-unit-tests.log"
+          python3 -B tools/tests/test_painter_overlay_gate_ci.py 2>&1 | tee "$GITHUB_WORKSPACE/ci-results/overlay-gate-ci-unit-tests.log"
+      - name: Build and test native portrait UI
+        run: |
+          cd "$PAINTER_CI_SOURCE"
+          bash tools/run-painter-ui-ci.sh "$GITHUB_WORKSPACE/ci-results" '${{ matrix.target }}'
+      - name: Preserve focused verification evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: painter-native-ui-${{ matrix.target }}-${{ github.sha }}-${{ github.run_attempt }}
+          path: ci-results/
+          if-no-files-found: warn
+          retention-days: 7

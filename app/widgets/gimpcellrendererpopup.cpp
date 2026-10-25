@@ -20,6 +20,7 @@ extern "C" {
 #include "gimpviewrenderer.h"
 #include "dialogs/painter-layer-dialog.h"
 #include "gimpcellrendererpopup.h"
+#include "popupper.h"
 #include "gimp-intl.h"
 }
 #include "gimpcellrendererpopup-handle.hpp"
@@ -39,6 +40,8 @@ struct Popup {
   ObjectRef<GObject> popup, target, image;
   std::vector<Connection> permanent, controls;
   Source resync;
+  std::unique_ptr<GdkEvent, decltype (&gdk_event_free)> closing_press {nullptr, gdk_event_free};
+  std::unique_ptr<GdkEvent, decltype (&gdk_event_free)> cancelling_press {nullptr, gdk_event_free};
   GtkWidget *opacity = nullptr, *mode = nullptr, *alpha = nullptr;
   guint64 epoch = 0, syncing_epoch = 0;
   bool closed = false, active = false;
@@ -46,6 +49,7 @@ struct Popup {
   void clear () noexcept {
     /* Invalidate and detach before disconnect/destroy can call back. */
     ++epoch;
+    closing_press.reset (); cancelling_press.reset ();
     resync.close ();
     auto old_connections = std::move (controls);
     auto old_popup = std::move (popup);
@@ -69,11 +73,15 @@ struct Popup {
   }
   void refresh ();
   void open (GtkWidget *widget, const gchar *path, const GdkRectangle *area);
+  void open_common (ObjectRef<GObject> view, ObjectRef<GObject> layer,
+                    ObjectRef<GObject> image, GtkWidget *widget,
+                    const GdkRectangle *area, guint64 request);
 };
 struct Hook {
   WeakRef<GObject> owner;
   guint64 epoch;
-  Hook (Popup& p) : owner (ObjectRef<GObject>::retain (G_OBJECT (p.owner))), epoch (p.epoch) {}
+  bool staged;
+  Hook (Popup& p, guint64 request = 0) : owner (ObjectRef<GObject>::retain (G_OBJECT (p.owner))), epoch (request ? request : p.epoch), staged (request != 0) {}
 };
 template<class F> void use (GObject *object, F&& f) noexcept {
   try {
@@ -87,15 +95,16 @@ template<class F> void dispatch (gpointer data, F&& f) noexcept {
     auto *hook = static_cast<Hook *> (data);
     auto owner = hook->owner.lock ();
     const auto request = hook->epoch;
+    const bool staged = hook->staged;
     if (owner) use (owner.get (), [&] (Popup& p) {
-      if (p.current (request)) f (p);
+      if (p.current (request) && (!staged || p.popup)) f (p);
     });
   } catch (...) { g_warning ("Painter tree popup dispatch failed"); }
 }
 void free_hook (gpointer data, GClosure *) { delete static_cast<Hook *> (data); }
 void connect (Popup& p, std::vector<Connection>& list, GObject *emitter,
-              const char *signal, GCallback callback, GConnectFlags flags = GConnectFlags (0)) {
-  auto hook = std::unique_ptr<Hook> (new Hook (p));
+              const char *signal, GCallback callback, GConnectFlags flags = GConnectFlags (0), guint64 request = 0) {
+  auto hook = std::unique_ptr<Hook> (new Hook (p, request));
   auto c = Connection::connect (ObjectRef<GObject>::retain (emitter), signal,
                                callback, hook.get (), free_hook, flags);
   hook.release (); list.emplace_back (std::move (c));
@@ -105,6 +114,13 @@ void owner_destroyed (GtkWidget *, gpointer data) noexcept {
     auto owner = static_cast<Hook *> (data)->owner.lock ();
     if (owner) if (auto *store = BindingStore::find (owner.get ())) store->close ();
   } catch (...) { g_warning ("Could not close painter tree popup"); }
+}
+void owner_unmapped (GtkWidget *, gpointer data) noexcept {
+  auto owner = static_cast<Hook *> (data)->owner.lock ();
+  if (owner) use (owner.get (), [] (Popup& p) {
+    p.closing_press.reset (); p.cancelling_press.reset ();
+    if (p.target && !GIMP_IS_FILTER_LAYER (p.target.get ())) p.clear ();
+  });
 }
 void image_changed (GimpItemTreeView *, GimpImage *, gpointer data) noexcept {
   auto owner = static_cast<Hook *> (data)->owner.lock ();
@@ -129,6 +145,69 @@ void popup_closed (GtkWidget *, gpointer data) noexcept {
   auto *hook = static_cast<Hook *> (data);
   auto owner = hook->owner.lock (); const auto request = hook->epoch;
   if (owner) use (owner.get (), [request] (Popup& p) { if (p.epoch == request) p.clear (); });
+}
+bool same_press (const GdkEvent *a, const GdkEvent *b) {
+  return a && b && a->button.time == b->button.time && a->button.button == b->button.button &&
+    a->button.window == b->button.window &&
+    gdk_event_get_device (a) == gdk_event_get_device (b) &&
+    a->button.x_root == b->button.x_root && a->button.y_root == b->button.y_root;
+}
+/* GtkWidget::event precedes the bound tree's button handlers, including its
+ * existing double-click activation. Only a confirmed common-host closing
+ * counterpart is consumed here; unmatched native row activation is unchanged. */
+gboolean anchor_event (GtkWidget *widget, GdkEvent *event, gpointer data) noexcept {
+  bool handled = false;
+  auto owner = static_cast<Hook *> (data)->owner.lock ();
+  if (owner) use (owner.get (), [&] (Popup& p) {
+    auto view = p.tree.lock ();
+    if (!view || widget != GTK_WIDGET (GIMP_CONTAINER_TREE_VIEW (view.get ())->view)) return;
+    if (event->type == GDK_BUTTON_PRESS || event->type == GDK_2BUTTON_PRESS || event->type == GDK_3BUTTON_PRESS) {
+      p.cancelling_press.reset ();
+      auto closing = std::move (p.closing_press);
+      handled = (event->type == GDK_2BUTTON_PRESS || event->type == GDK_3BUTTON_PRESS) &&
+        same_press (event, closing.get ());
+    } else if (event->type == GDK_BUTTON_RELEASE || event->type == GDK_KEY_PRESS || event->type == GDK_KEY_RELEASE) {
+      p.closing_press.reset (); p.cancelling_press.reset ();
+    }
+  });
+  return handled;
+}
+void common_cancel (GtkWidget *widget, gpointer data) noexcept {
+  dispatch (data, [widget] (Popup& p) {
+    p.closing_press.reset (); p.cancelling_press.reset ();
+    std::unique_ptr<GdkEvent, decltype (&gdk_event_free)> event {gtk_get_current_event (), gdk_event_free};
+    if (p.popup.get () != G_OBJECT (widget) || !event || event->type != GDK_BUTTON_PRESS ||
+        (event->button.button != 1 && event->button.button != 3) || !event->button.time || !event->button.window ||
+        !gdk_event_get_device (event.get ())) return;
+    auto view = p.tree.lock ();
+    auto *source = gtk_get_event_widget (event.get ());
+    if (!view || source != GTK_WIDGET (GIMP_CONTAINER_TREE_VIEW (view.get ())->view) ||
+        gtk_widget_get_toplevel (source) == widget) return;
+    p.cancelling_press = std::move (event);
+  });
+}
+void common_cancel_finished (GtkWidget *, gpointer data) noexcept {
+  auto *hook = static_cast<Hook *> (data);
+  auto owner = hook->owner.lock (); const auto request = hook->epoch;
+  if (owner) use (owner.get (), [request] (Popup& p) {
+    if (p.epoch == request) p.cancelling_press.reset ();
+  });
+}
+void common_destroyed (GtkWidget *widget, gpointer data) noexcept {
+  auto *hook = static_cast<Hook *> (data);
+  auto owner = hook->owner.lock (); const auto request = hook->epoch;
+  if (owner) use (owner.get (), [widget, request] (Popup& p) {
+    if (p.epoch != request || p.popup.get () != G_OBJECT (widget)) return;
+    auto cancelling = std::move (p.cancelling_press);
+    std::unique_ptr<GdkEvent, decltype (&gdk_event_free)> current {gtk_get_current_event (), gdk_event_free};
+    const bool confirmed = current && current->type == GDK_BUTTON_PRESS && same_press (current.get (), cancelling.get ());
+    p.clear ();
+    auto view = p.tree.lock ();
+    if (confirmed && !p.closed && p.epoch == request + 1 && view &&
+        gtk_widget_get_mapped (GTK_WIDGET (view.get ())) &&
+        gtk_widget_get_mapped (GTK_WIDGET (GIMP_CONTAINER_TREE_VIEW (view.get ())->view)))
+      p.closing_press = std::move (cancelling);
+  });
 }
 void opacity_changed (GtkRange *range, gpointer data) noexcept {
   const auto value = gtk_range_get_value (range) / 100.0;
@@ -218,6 +297,97 @@ void Popup::refresh () {
   if (current (request)) gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (alpha_hold.get ()), gimp_layer_get_lock_alpha (GIMP_LAYER (layer.get ())));
   if (syncing_epoch == request) syncing_epoch = 0;
 }
+void Popup::open_common (ObjectRef<GObject> view, ObjectRef<GObject> layer_hold,
+                         ObjectRef<GObject> image_hold, GtkWidget *widget,
+                         const GdkRectangle *area, guint64 request) {
+  const auto still_current = [&] {
+    return current (request) && target.get () == layer_hold.get () && image.get () == image_hold.get () &&
+      !gtk_widget_in_destruction (widget) &&
+      gtk_widget_get_mapped (GTK_WIDGET (view.get ())) && gtk_widget_get_mapped (widget);
+  };
+  if (!still_current ()) { if (epoch == request) clear (); return; }
+  auto box_hold = ObjectRef<GObject>::sink (G_OBJECT (gtk_box_new (GTK_ORIENTATION_VERTICAL, 6)));
+  GtkWidget *box = GTK_WIDGET (box_hold.get ());
+  auto content_cleanup = std::unique_ptr<GtkWidget, decltype (&gtk_widget_destroy)> (box, gtk_widget_destroy);
+  std::vector<Connection> staged_connections;
+  connect (*this, staged_connections, layer_hold.get (), "removed", G_CALLBACK (target_removed), GConnectFlags (0), request);
+  gtk_container_set_border_width (GTK_CONTAINER (box), 8);
+  /* All controls stay local until the fully assembled content has a host.
+   * Synchronous parent-set observers must never retire a partial GTK host. */
+  GtkWidget *new_opacity = gtk_scale_new_with_range (GTK_ORIENTATION_HORIZONTAL, 0, 100, 1);
+  gtk_widget_set_name (new_opacity, "painter-tree-layer-opacity");
+  gtk_widget_set_size_request (new_opacity, 240, -1);
+  gtk_range_set_value (GTK_RANGE (new_opacity), 100 * gimp_layer_get_opacity (GIMP_LAYER (layer_hold.get ())));
+  gtk_box_pack_start (GTK_BOX (box), gtk_label_new (_("Opacity")), FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (box), new_opacity, FALSE, FALSE, 0);
+  GtkWidget *new_mode = gimp_layer_mode_box_new (gimp_viewable_get_children (GIMP_VIEWABLE (layer_hold.get ())) ?
+                                  GIMP_LAYER_MODE_CONTEXT_GROUP : GIMP_LAYER_MODE_CONTEXT_LAYER);
+  gtk_widget_set_name (new_mode, "painter-tree-layer-mode");
+  gimp_layer_mode_box_set_mode (GIMP_LAYER_MODE_BOX (new_mode), gimp_layer_get_mode (GIMP_LAYER (layer_hold.get ())));
+  gtk_box_pack_start (GTK_BOX (box), new_mode, FALSE, FALSE, 0);
+  GtkWidget *new_alpha = gtk_check_button_new_with_label (_("Lock alpha channel"));
+  gtk_widget_set_name (new_alpha, "painter-tree-layer-lock-alpha");
+  gtk_widget_set_sensitive (new_alpha, gimp_layer_can_lock_alpha (GIMP_LAYER (layer_hold.get ())));
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (new_alpha), gimp_layer_get_lock_alpha (GIMP_LAYER (layer_hold.get ())));
+  gtk_box_pack_start (GTK_BOX (box), new_alpha, FALSE, FALSE, 0);
+  if (!still_current ()) { if (epoch == request) clear (); return; }
+  connect (*this, staged_connections, G_OBJECT (new_opacity), "value-changed", G_CALLBACK (opacity_changed), GConnectFlags (0), request);
+  connect (*this, staged_connections, G_OBJECT (new_mode), "notify::layer-mode", G_CALLBACK (mode_changed), GConnectFlags (0), request);
+  connect (*this, staged_connections, G_OBJECT (new_alpha), "toggled", G_CALLBACK (alpha_changed), GConnectFlags (0), request);
+  connect (*this, staged_connections, layer_hold.get (), "opacity-changed", G_CALLBACK (model_changed), GConnectFlags (0), request);
+  connect (*this, staged_connections, layer_hold.get (), "mode-changed", G_CALLBACK (model_changed), GConnectFlags (0), request);
+  connect (*this, staged_connections, layer_hold.get (), "lock-alpha-changed", G_CALLBACK (model_changed), GConnectFlags (0), request);
+  if (GIMP_IS_CLONE_LAYER (layer_hold.get ())) {
+    GtkWidget *edit = gtk_button_new_with_label (_("Clone Source…"));
+    gtk_widget_set_name (edit, "painter-tree-edit-clone");
+    gtk_box_pack_start (GTK_BOX (box), edit, FALSE, FALSE, 0);
+    if (!still_current ()) { if (epoch == request) clear (); return; }
+    connect (*this, staged_connections, G_OBJECT (edit), "clicked", G_CALLBACK (edit_layer), GConnectFlags (0), request);
+  }
+  gtk_widget_show_all (box);
+  if (!still_current ()) { if (epoch == request) clear (); return; }
+  GtkWidget *created = gimp_popover_new (box);
+  if (!created) { if (epoch == request) clear (); return; }
+  auto hold = ObjectRef<GObject>::retain (G_OBJECT (created));
+  auto host_cleanup = std::unique_ptr<GtkWidget, decltype (&gtk_widget_destroy)> (created, gtk_widget_destroy);
+  if (!still_current () || gtk_widget_in_destruction (created) ||
+      !gtk_widget_is_ancestor (box, created)) { if (epoch == request) clear (); return; }
+  gtk_widget_set_name (created, "painter-tree-layer-popup");
+  if (!still_current () || gtk_widget_in_destruction (created) ||
+      !gtk_widget_is_ancestor (box, created)) { if (epoch == request) clear (); return; }
+  connect (*this, staged_connections, G_OBJECT (created), "cancel", G_CALLBACK (common_cancel), GConnectFlags (0), request);
+  /* This weak after closure survives clear() disconnecting control hooks. */
+  g_signal_connect_data (created, "cancel", G_CALLBACK (common_cancel_finished),
+                         new Hook (*this, request), free_hook, G_CONNECT_AFTER);
+  connect (*this, staged_connections, G_OBJECT (created), "destroy", G_CALLBACK (common_destroyed), GConnectFlags (0), request);
+  popup = hold;
+  opacity = new_opacity; mode = new_mode; alpha = new_alpha;
+  controls = std::move (staged_connections);
+  content_cleanup.release ();
+  host_cleanup.release ();
+  /* Include model changes emitted by synchronous content/factory observers. */
+  refresh ();
+  if (!still_current () || popup.get () != hold.get () || !gtk_widget_is_ancestor (box, created)) {
+    if (epoch == request) clear ();
+    else gtk_widget_destroy (created);
+    return;
+  }
+  GdkRectangle anchor = {0, 0, gtk_widget_get_allocated_width (widget), 1};
+  if (area) {
+    anchor = *area;
+    gtk_tree_view_convert_bin_window_to_widget_coords (GTK_TREE_VIEW (widget),
+      area->x, area->y, &anchor.x, &anchor.y);
+    /* Keep the existing full-row viewport anchor for the mapped cell trigger. */
+    anchor.x = 0;
+    anchor.width = gtk_widget_get_allocated_width (widget);
+  }
+  gimp_popover_show_at (created, widget, area ? &anchor : nullptr);
+  if (!still_current () || popup.get () != hold.get () || !gtk_widget_is_ancestor (box, created)) {
+    if (epoch == request) clear ();
+    else gtk_widget_destroy (created);
+  }
+}
+/* Filter retains its original construction/publication and callback ordering. */
 void Popup::open (GtkWidget *widget, const gchar *path_str, const GdkRectangle *area) {
   auto view = tree.lock ();
   if (closed || !view || gtk_widget_in_destruction (GTK_WIDGET (view.get ())) ||
@@ -243,6 +413,10 @@ void Popup::open (GtkWidget *widget, const gchar *path_str, const GdkRectangle *
   auto image_hold = image;
   auto context_hold = ObjectRef<GObject>::retain (G_OBJECT (
     gimp_container_view_get_context (GIMP_CONTAINER_VIEW (view.get ()))));
+  if (!native_filter) {
+    open_common (view, layer_hold, image_hold, widget, area, request);
+    return;
+  }
   auto box_hold = ObjectRef<GObject>::sink (G_OBJECT (gtk_box_new (GTK_ORIENTATION_VERTICAL, 6)));
   GtkWidget *box = GTK_WIDGET (box_hold.get ());
   gtk_container_set_border_width (GTK_CONTAINER (box), 8);
@@ -394,7 +568,9 @@ gboolean gimp_cell_renderer_popup_bind_tree (GimpCellRendererPopup *cell, GtkWid
     if (previous) { result = previous.get () == G_OBJECT (tree); return; }
     if (p.closed || gtk_widget_in_destruction (tree)) return;
     p.tree = WeakRef<GObject> (ObjectRef<GObject>::retain (G_OBJECT (tree)));
+    connect (p, p.permanent, G_OBJECT (GIMP_CONTAINER_TREE_VIEW (tree)->view), "event", G_CALLBACK (anchor_event));
     connect (p, p.permanent, G_OBJECT (tree), "destroy", G_CALLBACK (owner_destroyed));
+    connect (p, p.permanent, G_OBJECT (tree), "unmap", G_CALLBACK (owner_unmapped));
     connect (p, p.permanent, G_OBJECT (tree), "set-image", G_CALLBACK (image_changed));
     connect (p, p.permanent, G_OBJECT (tree), "set-image", G_CALLBACK (image_changed_after), G_CONNECT_AFTER);
     result = true;

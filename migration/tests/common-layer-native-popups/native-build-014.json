@@ -1,0 +1,125 @@
+{
+  "format": 1,
+  "status": "native-focused-gate-test-fixture-compile-and-header-checks-pass; GUI-qualification-pending",
+  "revision": "014",
+  "source": {
+    "base_commit": "d4ce384f708090facbf6b08edc38b4ddcf84cff0",
+    "development_head": "d2e85ec5de546348a75a8b02c7851669f4440dc7",
+    "reviewed_manifest_sha256": "04b3053c24509ad643b6782197bd80abcf5a74582c3e474500a01323e2c87e9f",
+    "reviewed_manifest_file_count": 17,
+    "source_file_sha256": {
+      "app/widgets/popupper.h": "0745c35cb4fe2cd705ae1f85e98444bfaf8299a24aa7a067737998444b3d459d",
+      "app/widgets/popupper.cpp": "2a32434f9eca1db8435eed057ed9e1d3233d5120be5f974c9568529bad2d0044",
+      "app/widgets/gimpcellrendererpopup.cpp": "342e0da5c83dc80fe20256bf32f4042c204dfb76dcb4cb6923bec3057383c207",
+      "app/widgets/gimppainterlayertiles.cpp": "8c6addf0e246a1cb9800e3eb515f4af9797dabdd6b51e72a83c4ca2bc8d7ea6d",
+      "app/tests/meson.build": "c65567c7fa8f3e75dbcf24ab5986e8c697dc3fe1d52bf88384ca58817423849e",
+      "app/tests/test-common-layer-popup.cpp": "31ff252f755a9f152cb7f4ea7da400f62fa69d8a3b0ab8f83a9495809a4b05bf",
+      "app/tests/test-layer-tile-entry-contracts.c": "c8e125ce835c27449afdbc2e4b7fd44648b909d401cd6da6c67a7aabac43e326",
+      "app/tests/test-layer-tile-entry-contracts.cpp": "e4b4e481497aa4d3de5aa1620df3b5efd52d800d3adead9e118ee721cc2fe4c0",
+      "app/tests/test-painter-canvas-ui.c": "6724e3e0a2cbe3a0ab73fb31a0b88c87a9727bce09d2779e3af9c8b2cff523dc",
+      "app/tests/test-painter-layer-tree.c": "78245a714da02e03aa20aa3aeb9a6d763176df9d15269b8e165828c8c8a63de4",
+      "app/tests/test-painter-layer-ui.c": "0663b3dcedf94eab17ef5ae24ccf3a6678599627aa5c36ec2210a48efe9172be",
+      "app/tests/test-painter-widget-exceptions.c": "30930cb38982d5b4e6d51d5ac5244583c492b1f86c4985e1ee967867a6e6d868",
+      "migration/inventory/additional-c-header-routes.json": "80c52295e173481073be17d988e8238b473d197e266c1e7c6644bd61789917e1",
+      "app/display/gimppaintercanvasui.cpp": "b6e6c6c069bb513a8872aa988c133f0fff8ffcaabc2527ef4640cad3baaf14df",
+      "app/widgets/gimpoverlaychild.c": "8f558769cc18f5d2d70e75c09913ecc91cbbe74518cad196666a88cb38556349",
+      "app/widgets/gimpoverlaychild.h": "c5d3631889c89b57dbfc26fa7a471c814b6bee775bf4e2d241eee45ca1071b18",
+      "app/tests/test-overlay-paint-gate.cpp": "4af7e5e61c7d0d33970db90dc73e03094ec42f0b61c529a03da4d4fa9bf2e9fd"
+    },
+    "tracked_patch_sha256": "c10959b57b2ba64914882ee6c5ff23f0460cb8c6fc2c72193e12a9ec7373de2b",
+    "explicitly_untracked_source_paths": [
+      "app/tests/test-common-layer-popup.cpp",
+      "app/tests/test-overlay-paint-gate.cpp"
+    ],
+    "changed_test_path": "app/tests/test-overlay-paint-gate.cpp",
+    "changed_test_sha256": "4af7e5e61c7d0d33970db90dc73e03094ec42f0b61c529a03da4d4fa9bf2e9fd",
+    "changed_file_count_from013": 1,
+    "common_layer_registered_cases_unchanged": 58,
+    "overlay_gate_registered_cases_unchanged": 6,
+    "other16_source_files_including_all_production_unchanged_from013": true,
+    "all_reviewed_source_hashes_unchanged_after_build": true
+  },
+  "tool_versions": {
+    "meson": "1.7.0",
+    "ninja": "1.12.1",
+    "gcc": "14.2.0",
+    "g++": "14.2.0",
+    "gnu_ld": "2.44",
+    "python": "3.13.5"
+  },
+  "dependency_versions": {
+    "glib": "2.84.4",
+    "gtk": "3.24.49",
+    "gegl": "0.4.62",
+    "babl": "0.1.114",
+    "gexiv2": "0.14.3",
+    "libmypaint": "1.6.0"
+  },
+  "configuration": {
+    "buildtype": "debugoptimized",
+    "painter_http": "disabled",
+    "headless_tests": "disabled",
+    "sanitizers": "none",
+    "jobs": 2
+  },
+  "build": {
+    "method": "Ordinary Meson/Ninja incremental target build after the exact reviewed focused gate-test-only fixture correction; no backend or object substitution. CI infrastructure and documentation are not compiler inputs.",
+    "prior_native_evidence": "native-build-013.json",
+    "compile_exitcode": 0,
+    "compiled_translation_units": [
+      "app/tests/test-overlay-paint-gate.cpp"
+    ],
+    "targets": [
+      {
+        "path": "app/tests/painter-layer-ui",
+        "kind": "executable",
+        "sha256": "ecf260aa34bd373221408ab3190fd83ef8ff9c7fb860fd80f1055956e4394b4f",
+        "bytes": 83122008,
+        "action": "normally recompiled and relinked"
+      },
+      {
+        "path": "app/painter/tests/headers/libpainter-public-headers-c.a",
+        "kind": "static-archive",
+        "sha256": "a89e73d03efe892bdf2a23c60c287226d7f610d9184b8fa883758a3211c99670",
+        "bytes": 27508,
+        "action": "unchanged archive verified"
+      },
+      {
+        "path": "app/painter/tests/headers/libpainter-public-headers-cpp.a",
+        "kind": "static-archive",
+        "sha256": "38dff0d318f2f85829eb7961f8533187f8b04a7e65a126a6982efb766cf2d2f3",
+        "bytes": 30866,
+        "action": "unchanged archive verified"
+      }
+    ],
+    "prior013_app_and_other_UI_binary_hashes_preserved": true,
+    "tracked_patch_unchanged_during_build": true,
+    "untracked_source_note": "Both new C++ test files are explicitly untracked in the disposable base checkout and separately verified by the17-file source map. The focused-test-only update therefore does not change the tracked patch.",
+    "generated_source_diff_bytes": 0,
+    "generated_source_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "target_compile_warning_count": 0,
+    "warning_scope": "Only this incremental target compilation; prior full-source warnings remain disclosed in earlier native receipts."
+  },
+  "header_checks": {
+    "painter-public-header-compilation": "PASS",
+    "painter-additional-header-routes": "PASS",
+    "probe_languages": {
+      "c": 217,
+      "cpp": 236
+    },
+    "compiled_probes": 453,
+    "scope": "C11/C++14 header compilation and reviewed-route validation; no runtime or cross-language link ABI claim.",
+    "passed": 2,
+    "failed": 0,
+    "skipped": 0,
+    "timeouts": 0
+  },
+  "ui_acceptance": {
+    "executed": false,
+    "passed": false,
+    "reason": "Local executor rejects AF_UNIX socket creation with EPERM. No alternative transport or security change attempted.",
+    "qualification": "Reviewed test-only corrections cover tab-label replacement and existing-session first-factory reuse, with bounded passive failure reports. This compilation does not validate the corrected oracle, prove the production gate fixes the GTK tab warning, or claim runtime acceptance.",
+    "sanitizer_runtime_executed": false,
+    "screenshots_produced": false
+  }
+}

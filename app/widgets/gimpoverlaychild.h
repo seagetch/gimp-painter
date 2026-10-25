@@ -31,6 +31,17 @@ struct _GimpOverlayChild
   GtkWidget      *widget;
   GdkWindow      *window;
 
+  /* Owned offscreen paint gate; not an allocation-dirty-state oracle. */
+  GdkFrameClock  *paint_clock;
+  gulong          paint_layout_id;
+  gulong          paint_after_id;
+  gulong          paint_map_id;
+  gulong          paint_unmap_id;
+  guint64         paint_generation;
+  guint64         paint_layout_generation;
+  gboolean        paint_layout_seen;
+  gboolean        paint_frozen;
+
   gboolean        has_position;
   gdouble         xalign;
   gdouble         yalign;

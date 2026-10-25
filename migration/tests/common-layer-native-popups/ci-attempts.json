@@ -1,0 +1,3215 @@
+{
+  "attempts": [
+    {
+      "commit": "59a761958ba9e5ee2be8c7dda93da0cbb5959874",
+      "run_id": 40163469850,
+      "url": "https://github.com/seagetch/gimp-painter/actions/runs/40163469850",
+      "result": "failure",
+      "candidate_job": 121079648286,
+      "baseline_job": 121079648220,
+      "failed_step": "Build and test native portrait UI",
+      "cause": "First driver git rev-parse rejected checkout repository ownership in the job container. Exit 128; no native configuration, tests, baseline REDs or PNGs ran.",
+      "validator_unit_tests": 20,
+      "native_cases_executed": 0,
+      "accepted_baseline_reds": 0,
+      "screenshots": 0,
+      "repair": "Create a fresh directory owned by the job user, fetch the exact public source commit, verify identity and ownership, and run there. Git safety checks and permissions remain unchanged."
+    },
+    {
+      "commit": "e5ea423539b0d929ed0b5a9ff7eb79db679e4f36",
+      "run_id": 40163878428,
+      "url": "https://github.com/seagetch/gimp-painter/actions/runs/40163878428",
+      "result": "failure",
+      "failed_stage": "configure",
+      "cause": "Required TLS probe found GDummyTlsBackend because the extracted dependency lock did not supply glib-networking. Both jobs exit1 before compilation/native tests. Owned source checkout and validator units succeeded.",
+      "validator_unit_tests": 20,
+      "native_cases_executed": 0,
+      "accepted_baseline_reds": 0,
+      "screenshots": 0,
+      "artifact_sha256": {
+        "candidate": "646b40f8b9aa35e71d7626682f558e83755a89bed154d532ec53fe93c126d273",
+        "baseline": "1a48ff52f13d34a1dc026b149d2da9bfe45ade87d17c94fc0c24ce6825c370ad"
+      },
+      "repair": "Install glib-networking through the normal signed Debian bootstrap and record its installed version; retain the real TLS backend probe, normal module loading and certificate checks."
+    },
+    {
+      "commit": "ef6640451c1c7ac50a7a354e8b57ecfe1ebc8bbb",
+      "run_id": 40164289565,
+      "url": "https://github.com/seagetch/gimp-painter/actions/runs/40164289565",
+      "result": "failure",
+      "candidate": {
+        "stage": "compile target resolution",
+        "cause": "Unqualified gimp-3.0 is ambiguous between app executable and libgimp shared library. Configuration completed; compilation did not begin."
+      },
+      "baseline": {
+        "compile_actions": 1930,
+        "compile_result": "PASS",
+        "header_checks_passed": 2,
+        "c11_probes": 217,
+        "cpp14_probes": 236,
+        "overlay_source_unchanged": true,
+        "cause": "All four selected RED runs aborted before case execution with fatal AT-SPI warning: org.a11y.Bus service unavailable. These are not intended carrier assertion failures."
+      },
+      "native_cases_executed": 0,
+      "accepted_baseline_reds": 0,
+      "screenshots": 0,
+      "artifact_sha256": {
+        "candidate": "11f7874c937175d1bdbaef581646eee3f89d17dbba10871ce1a4325dfa2ecde4",
+        "baseline": "09822df4075a0b0eabd73b13477ce60866a9f90fed0c8338ba3d726606946818"
+      },
+      "repair": "Qualify app/gimp-3.0:executable and install normal at-spi2-core service package. Preserve accessibility and fatal warnings. Entire candidate 11-target and baseline 3-target lists resolve in real Meson dry-run."
+    },
+    {
+      "commit": "3015b5e1cb08e600619096dca7566ab878ab3dc8",
+      "run_id": 40164845631,
+      "url": "https://github.com/seagetch/gimp-painter/actions/runs/40164845631",
+      "result": "failure",
+      "candidate_compile_actions": 1957,
+      "baseline_compile_actions": 1930,
+      "both_compile_and_header_checks": "PASS",
+      "source_integrity": "PASS",
+      "causes": [
+        "Generated build/menus/image-menu.ui was not among focused build targets; both new suites and four baseline controls stopped before intended assertions.",
+        "Existing painter-layer-ui passed 17 early cases, then required the unbuilt bundled gimp-painter-filter-worker."
+      ],
+      "existing_layer_ui_early_cases_passed": 17,
+      "new_common_cases_passed": 0,
+      "accepted_baseline_reds": 0,
+      "screenshots": 0,
+      "artifact_sha256": {
+        "candidate": "0ffc0528c428d33dd9839b1e4334052a74f9742501bf02c796be9946587bc65c",
+        "baseline": "7ef58b7d58b1c448b8d475e78183eb08023c3a26fd5ff50968223e0eb6f16eeb"
+      },
+      "repair": "Build both declared menus, candidate worker and four mapped Filter plug-ins, and actual declared gettext catalogs. Stage/verify real locale outputs with existing strict helper; precreate private temporary/cache directories. Install normal BLAS/LAPACK packages to establish required SONAME alternatives. Full target closure dry-run: 24 candidate and 5 baseline targets.",
+      "remaining_qualification": "Old test-base desktop app-icon lookup reports missing icons nonfatally. No fake icons or source aliases added; this is not full UI/pixel identity acceptance."
+    },
+    {
+      "commit": "82e18daf69318f1fc4731a5be8309d82b5efeda1",
+      "run_id": 40166134328,
+      "url": "https://github.com/seagetch/gimp-painter/actions/runs/40166134328",
+      "result": "failure",
+      "candidate_compile_actions": 2534,
+      "both_compile_and_header_checks": "PASS",
+      "source_integrity": "PASS",
+      "global_catalogs_staged_and_verified": 361,
+      "existing_layer_ui_cases_passed": 86,
+      "existing_layer_ui_registration": "PASS",
+      "new_common_cases_passed": 0,
+      "accepted_baseline_reds": 0,
+      "screenshots": 0,
+      "cause": "Both new suites, the other 12 adjacent registrations and all four baseline controls aborted before case execution because org.gtk.Settings.FileChooser was absent from the composite runtime schema cache.",
+      "artifact_sha256": {
+        "candidate": "1da7d8d2d8ef5016a2729f7569bf5748383f935793dfe9365eb3906ae70aa8d0",
+        "baseline": "a8161f25ce1136c507c2457d76abbf659d4f2c3c7a073ccfb6aec4c9184aeaa5"
+      },
+      "repair": "Install normal signed libgtk-3-common, allowing the normal GLib package trigger to compile GTK schemas. Verify all four required GTK schema IDs with actual gsettings after loading dependency environment and before compilation. No backend or schema-directory override."
+    },
+    {
+      "commit": "c4405e72a40950ba26428e04c771e226376e8e55",
+      "run_id": 40167140576,
+      "url": "https://github.com/seagetch/gimp-painter/actions/runs/40167140576",
+      "result": "failure",
+      "source_integrity": "PASS",
+      "headers_and_361_catalog_hashes": "PASS",
+      "adjacent_registrations_passed": 12,
+      "adjacent_registrations_total": 13,
+      "cases_in_passing_adjacent_registrations": 328,
+      "failing_adjacent_registration": "layer-tile-entry-contracts: 31 cases pass before both-canvas-action-isolation requires a popup from a hidden notebook owner",
+      "common_scale1": "Two group cases pass. Ordinary-tile actual entry opens, edits and captures PNG, then fails because residual grab is non-null after outside dismissal. Not a passing actual-entry case.",
+      "common_scale2": "First group-tile fails: popup not captured. Input geometry/discovery remains unresolved.",
+      "baseline": "All four actual-entry controls fail popup-not-null, not the intended GTK_IS_WINDOW assertion. GtkPopover realizes in its factory before assigned widget name; named realize-only capture misses it.",
+      "accepted_baseline_reds": 0,
+      "screenshots": {
+        "accepted_full_matrix": false,
+        "partial_file": "ci-run-6/ordinary-tile-scale1.png",
+        "sha256": "13148587585e6248e732cf513cfaa94aee2b2133314710a2b733bf3f1e26060d",
+        "qualification": "Raw RGB1080x1920 screenshot before later failure. Minimal API test fixture disables resource/font loading; not normal-startup brush-catalog acceptance."
+      },
+      "artifact_sha256": {
+        "candidate": "c7f4903d198358767f0d3fda9858a2e260c2349827de50187494f157c5cee7d4",
+        "baseline": "6082f9539d1102d92acefbca6c6947ab98d7643cadc8c953827545ac794ffdc5"
+      },
+      "next_revision": "Test-only map capture fallback, mapped multiwindow context-isolation fixture, and bounded failure-only actual input/geometry/PNG diagnostics. Production sources unchanged. Same final test hash is pinned for both candidate and baseline; carrier assertion and positive image gate unchanged."
+    },
+    {
+      "commit": "4a1daeae3a5cfbcae6c649fd6e6dfdc7f321f2f5",
+      "run_id": 40169528288,
+      "url": "https://github.com/seagetch/gimp-painter/actions/runs/40169528288",
+      "result": "candidate failure; baseline control success",
+      "baseline": {
+        "strict_intended_carrier_reds": 4,
+        "assertion": "GTK_IS_WINDOW (popup) should be TRUE",
+        "input": "Real in-screen input reached each named, mapped GtkPopover; exact b930 test and d4ce production overlay preserved.",
+        "header_checks": "PASS"
+      },
+      "candidate": {
+        "adjacent_registrations_passed": 13,
+        "adjacent_registrations_total": 13,
+        "cases_in_passing_adjacent_registrations": 360,
+        "common_cases_passed": 0,
+        "acceptance_pngs": 0,
+        "failure": "Both scales fail first group-tile because input hits the wrong widget before opening. Scale1 root616,235 reaches Brush GtkIconView; scale2 physical1232,470 is beyond1080 screen and reaches canvas after clamping.",
+        "qualified_diagnosis": "Intended rail is elsewhere in actual frames. GTK translation supports offscreen embedding; stale/reflow readiness is implicated, not invalid scale math. Prior residual-grab failure was not reached in this run."
+      },
+      "artifact_sha256": {
+        "candidate": "dd9bce5c3e070c35e12ebdb2588cf44838ecf2c34aa19ce3ff5bc8f54a1ca233",
+        "baseline": "02adb37fa749aab01c481d9234fbd73ece047aa8433154450737fceb1be42da9"
+      },
+      "next_revision": "Test-only bounded first-opening after-paint stability, remeasure after motion and strict intended pointer hit before press. Fast-sequence timing/classification retained, plus separately reset classified closing pair within the same 46 cases. No production change or geometry waiver."
+    },
+    {
+      "commit": "9e96cf561432c1b99c27cc2a924e311c0314783f",
+      "tree": "4b075d8a13f12f4a5c05661ff55f6c5392265653",
+      "run_id": 40172232500,
+      "url": "https://github.com/seagetch/gimp-painter/actions/runs/40172232500",
+      "result": "candidate failure; baseline control success",
+      "candidate_job": 121105327497,
+      "baseline_job": 121105327717,
+      "focused_test_sha256": "4c9995c12d0955008c5bd0af56a6342b4608b0bb617a8ccc6ab31da42209cd1e",
+      "source_integrity": "PASS: candidate source-after status empty; exact baseline overlay verified after build and tests.",
+      "headers_and_361_catalog_hashes": "PASS",
+      "baseline": {
+        "strict_intended_carrier_reds": 4,
+        "assertion": "GTK_IS_WINDOW (popup) should be TRUE",
+        "source_location": "app/tests/test-common-layer-popup.cpp:432",
+        "input": "All four real in-screen inputs pass intended-target checks and reach named, mapped GtkPopover hosts. Each first-opening readiness reports four frames and three stable observations.",
+        "scope": "Exact d4ce production plus the two reviewed header prerequisites and frozen harness overlay; these are expected RED controls, not passing baseline UI tests."
+      },
+      "candidate": {
+        "adjacent_registrations_passed": 13,
+        "adjacent_registrations_total": 13,
+        "cases_in_passing_adjacent_registrations": 360,
+        "common_cases_passed_per_scale": 2,
+        "common_passing_cases": [
+          "/common-layer-native-popup/group-tile",
+          "/common-layer-native-popup/group-tree"
+        ],
+        "common_failing_case": "/common-layer-native-popup/ordinary-tile/actual-entry",
+        "source_location": "app/tests/test-common-layer-popup.cpp:528",
+        "assertion": "gtk_grab_get_current () should be nullptr",
+        "physical_input": "Both scales pass readiness, translated/Gdk-root agreement, in-screen and intended-widget hit checks. Scale1 tile root952,584; scale2 logical488,488 and physical976,976.",
+        "failure": "The old native popup becomes unrealized, but a new mapped GimpPopover2 holds the grab after outside dismissal.",
+        "observed_event_sequence": "Scale1 timestamp539077: BUTTON_PRESS(type4) reaches the old popup and unmaps it; the same-timestamp 3BUTTON_PRESS(type6) then reaches painter-layer-canvas with no grab and creates a new native popup. Release539178 reaches the new host.",
+        "scope": "Ordinary tile opening, opacity edit and partial captures succeeded; the actual-entry case as a whole failed. Remaining ordinary/Clone matrix routes and rapid-case acceptance were not reached."
+      },
+      "screenshots": {
+        "accepted_full_matrix": false,
+        "partial_actual_entry_captures": [
+          {
+            "artifact_path": "common-layer-scale1/ordinary-tile-scale1.png",
+            "width": 1080,
+            "height": 1920,
+            "sha256": "25fa01d7221d4100505bedbdec70d137830b0cfde9efefdefa9e3571d66217d1"
+          },
+          {
+            "artifact_path": "common-layer-scale2/ordinary-tile-scale2.png",
+            "width": 1080,
+            "height": 1920,
+            "sha256": "37e41c3e9db0a3f3abae6654e8a1868ae0e267e31e970825e1cb8e01c888faad"
+          }
+        ],
+        "failure_diagnostic_pngs": 2,
+        "qualification": "Unedited portrait captures were visually inspected: native ordinary popup with opacity48 and upper oncanvas controls at scales1/2. Scale2 is top-clamped at y0; Delete/All Actions lie below the current internal scroll viewport and a tooltip overlays the lower edge. These partial upper-control captures do not prove lower-control reachability or full visual acceptance, and precede the failed assertion. Minimal API test fixture disables resource/font loading; not normal-startup brush-catalog acceptance."
+      },
+      "artifact_ids": {
+        "candidate": 12590254619,
+        "baseline": 12590986484
+      },
+      "artifact_sha256": {
+        "candidate": "53d193573c8c0cf9201e14064021edeb623496a91d78b5475f62d220663308c2",
+        "baseline": "7f0a1ebbfc54a6118309b09a3af496861e2740cbdc79ff352d5d04d1576206a6"
+      },
+      "next_revision": "Review a narrow one-shot closing-event provenance correction preserving unmatched input, Filter and creation routes. Keep real XTest and strict carrier/geometry/grab assertions; align the committed case manifest with any reviewed additional cases. Native rerun and full eight-image inspection remain required; no runtime gate waiver."
+    },
+    {
+      "commit": "d5c68afde28d127763584224cedeb812f6b9ff84",
+      "tree": "5884789304a2bf9e125541e89be79a69a19e1b88",
+      "run_id": 40175112005,
+      "url": "https://github.com/seagetch/gimp-painter/actions/runs/40175112005",
+      "result": "candidate failure; baseline control success",
+      "candidate_job": 121113983614,
+      "baseline_job": 121113983701,
+      "focused_test_sha256": "6e17620edf6b4f9f3a6a40ac8fa0251ce561234a9a9442e85e3951e06fa481a4",
+      "validator_unit_tests": 24,
+      "source_integrity": "PASS: candidate source-after status empty; exact baseline overlay verified after build and tests.",
+      "headers_and_361_catalog_hashes": "PASS",
+      "baseline": {
+        "strict_intended_carrier_reds": 4,
+        "assertion": "GTK_IS_WINDOW (popup) should be TRUE",
+        "source_location": "app/tests/test-common-layer-popup.cpp:478",
+        "scope": "Exact d4ce production plus reviewed header prerequisites and frozen harness overlay; expected RED controls, not passing baseline UI tests."
+      },
+      "candidate": {
+        "adjacent_registrations_passed": 13,
+        "adjacent_registrations_total": 13,
+        "cases_in_passing_adjacent_registrations": 360,
+        "common_cases_expected_per_scale": 54,
+        "common_cases_passed_per_scale": 3,
+        "common_passing_cases": [
+          "/common-layer-native-popup/group-tile",
+          "/common-layer-native-popup/group-tree",
+          "/common-layer-native-popup/ordinary-tile/actual-entry"
+        ],
+        "common_failing_case": "/common-layer-native-popup/ordinary-tile/lower-controls",
+        "source_location": "app/tests/test-common-layer-popup.cpp:231",
+        "assertion": "gdk_window_is_viewable (gtk_widget_get_window (widget)) should be TRUE",
+        "failure": "Both scales abort at the early Input::click window-viewability precondition before diagnostic flushing or a bottom capture. The failed widget is not identified in this artifact; a scrollbar-specific cause must not be inferred as proved.",
+        "scope": "Ordinary-tile actual-entry, including outside dismissal, passes at both scales. The separate closing-provenance cases and remaining common route matrix are not reached."
+      },
+      "screenshots": {
+        "accepted_full_matrix": false,
+        "expected_raw_captures": 16,
+        "captured_original_views": 2,
+        "captured_bottom_views": 0,
+        "partial_matrix_captures": [
+          {
+            "artifact_path": "common-layer-scale1/ordinary-tile-scale1.png",
+            "width": 1080,
+            "height": 1920,
+            "sha256": "13148587585e6248e732cf513cfaa94aee2b2133314710a2b733bf3f1e26060d"
+          },
+          {
+            "artifact_path": "common-layer-scale2/ordinary-tile-scale2.png",
+            "width": 1080,
+            "height": 1920,
+            "sha256": "37e41c3e9db0a3f3abae6654e8a1868ae0e267e31e970825e1cb8e01c888faad"
+          }
+        ],
+        "qualification": "Both files match previously visually inspected raw upper-control captures exactly. They do not prove lower-action reachability, full16-image acceptance, normal-startup resource loading or brush-catalog acceptance."
+      },
+      "artifact_ids": {
+        "candidate": 12592495309,
+        "baseline": 12591419514
+      },
+      "artifact_sha256": {
+        "candidate": "4ac7383c1f09595bc3e54e83b28269cc9c2bb900904b3443ca655fd7d9afc3ad",
+        "baseline": "0f0d0972a0af9980d0257661c91f7672369753e141e7c5f89b7d0623293502e2"
+      },
+      "next_revision": "Diagnose the actual lower-controls click target and native window visibility. Preserve genuine physical scrolling, observed adjustment movement, lower-control geometry/activation, strict case manifest and all16 image requirements; no skip, synthetic scroll or runtime gate waiver."
+    },
+    {
+      "commit": "978461dde961ee6f11067b8f9c68085bc442a600",
+      "tree": "5e0d6678c6eda0f042e458ec5cb3c3c21a6d53a2",
+      "run_id": 40176782833,
+      "url": "https://github.com/seagetch/gimp-painter/actions/runs/40176782833",
+      "result": "candidate failure; baseline control success",
+      "candidate_job": 121119061646,
+      "baseline_job": 121119061958,
+      "focused_test_sha256": "88f76f3e98c09168a1a8a9da1363808c25191fafdd1d88d652c462e31321e8c1",
+      "validator_unit_tests": 24,
+      "baseline_validator_unit_tests": 8,
+      "source_integrity": "PASS: candidate source-after status empty; exact baseline overlay verified after build and tests.",
+      "headers_and_361_catalog_hashes": "PASS",
+      "baseline": {
+        "strict_intended_carrier_reds": 4,
+        "assertion": "GTK_IS_WINDOW (popup) should be TRUE",
+        "source_location": "app/tests/test-common-layer-popup.cpp:499",
+        "scope": "Exact d4ce production plus reviewed header prerequisites and frozen harness overlay; expected RED controls, not passing baseline UI tests."
+      },
+      "candidate": {
+        "adjacent_registrations_passed": 13,
+        "adjacent_registrations_total": 13,
+        "cases_in_passing_adjacent_registrations": 360,
+        "common_cases_expected_per_scale": 54,
+        "scale1": {
+          "passed_case_count": 3,
+          "passed_case_ids": [
+            "/common-layer-native-popup/group-tile",
+            "/common-layer-native-popup/group-tree",
+            "/common-layer-native-popup/ordinary-tile/actual-entry"
+          ],
+          "failing_case": "/common-layer-native-popup/ordinary-tile/lower-controls",
+          "source_location": "app/tests/test-common-layer-popup.cpp:273",
+          "assertion": "next.same (current) should be TRUE",
+          "observed": "GtkScrollbar native window widths change 6 -> 8 -> 14 during motion/re-motion; strict actual-input geometry gate rejects the moving target."
+        },
+        "scale2": {
+          "passed_case_count": 13,
+          "passed_case_ids": [
+            "/common-layer-native-popup/group-tile",
+            "/common-layer-native-popup/group-tree",
+            "/common-layer-native-popup/ordinary-tile/actual-entry",
+            "/common-layer-native-popup/ordinary-tile/lower-controls",
+            "/common-layer-native-popup/ordinary-tile/opening-provenance-mismatch",
+            "/common-layer-native-popup/ordinary-tile/mode-growth",
+            "/common-layer-native-popup/ordinary-tile/owner-target-lifetimes",
+            "/common-layer-native-popup/ordinary-tile/staged-newer-request",
+            "/common-layer-native-popup/ordinary-tile/host-name-destroy",
+            "/common-layer-native-popup/ordinary-tile/rapid-escape-reopen",
+            "/common-layer-native-popup/ordinary-tile/closing-provenance-exact",
+            "/common-layer-native-popup/ordinary-tile/closing-provenance-mismatch",
+            "/common-layer-native-popup/ordinary-tile/staged-child-0"
+          ],
+          "returncode": -11,
+          "observed": "SIGSEGV after staged-child-0 passes, with no assertion, native backtrace or core in this artifact.",
+          "inference": "staged-child-1 is the next registered sibling, but the crash location and Canvas source hypothesis are not proven by this artifact."
+        }
+      },
+      "diagnostic_only_routes": {
+        "acceptance_eligible": false,
+        "scale": 1,
+        "invocations": 4,
+        "timeouts": 0,
+        "tile_routes": "Each reaches one actual-entry case then the same lower-controls motion geometry assertion.",
+        "tree_routes": "Each reaches seven subset cases then rapid-escape-reopen fails new_window should be FALSE at classified-outside-dismissal. Visually inspected ordinary-tree failure PNG shows an unexpected Edit Layer Attributes dialog.",
+        "scope": "Fresh-profile diagnostic prefixes are not acceptance retries, do not replace full suites, and are never added to full-suite pass counts."
+      },
+      "screenshots": {
+        "accepted_full_matrix": false,
+        "expected_raw_captures": 16,
+        "captured_original_views": 2,
+        "captured_bottom_views": 1,
+        "partial_matrix_captures": [
+          {
+            "artifact_path": "common-layer-scale1/ordinary-tile-scale1.png",
+            "width": 1080,
+            "height": 1920,
+            "sha256": "13148587585e6248e732cf513cfaa94aee2b2133314710a2b733bf3f1e26060d"
+          },
+          {
+            "artifact_path": "common-layer-scale2/ordinary-tile-bottom-scale2.png",
+            "width": 1080,
+            "height": 1920,
+            "sha256": "b7964c9df5d2fe53395bbd87b9052acebd011fafc6aa04dbf23dd935cea00d42"
+          },
+          {
+            "artifact_path": "common-layer-scale2/ordinary-tile-scale2.png",
+            "width": 1080,
+            "height": 1920,
+            "sha256": "37e41c3e9db0a3f3abae6654e8a1868ae0e267e31e970825e1cb8e01c888faad"
+          }
+        ],
+        "qualification": "Only 3/16 acceptance-directory captures exist. Visually inspected ordinary-tile bottom scale2 shows Delete Layer and All Layer Actions fully visible; its physical lower-controls case passes before the later crash. Upper captures match earlier inspected bytes. Failure-only images are separate diagnostic evidence, not accepted captures; no normal-startup resource or brush-catalog acceptance."
+      },
+      "artifact_ids": {
+        "candidate": 12592937494,
+        "baseline": 12592896877
+      },
+      "artifact_sha256": {
+        "candidate": "cbe5ed4b8a461664d890c69b6a7e83aecfc041ba1d871f7e64c3db21782a61a8",
+        "baseline": "571e8ddd8a3c2179d0f7a6c11647065b4e687689a17bf994f535d9c95ca0880f"
+      },
+      "next_revision": "Review native scrollbar animation readiness and tree same-owner closing provenance; obtain an isolated historical 978461dd GDB stack without altering old production source. The source-demonstrated Canvas destroyed-owner guard needs runtime validation; full58/16-image acceptance remains required for the revised candidate."
+    },
+    {
+      "commit": "1a7b273de263b158db3382228dd7b59028c58d13",
+      "tree": "80ceede3cb2dbca5091e8918d8317969ac3c8c4f",
+      "run_id": 40178769191,
+      "url": "https://github.com/seagetch/gimp-painter/actions/runs/40178769191",
+      "result": "candidate failure; baseline control success; historical SIGSEGV diagnostic failure with useful SIGTRAP stack",
+      "candidate_job": 121125108108,
+      "baseline_job": 121125107950,
+      "historical_stack_job": 121125108087,
+      "focused_test_sha256": "7fe7fbf65fe70c79846cebb902c101073ced4f4252d7158479ccd40536f49423",
+      "validator_unit_tests": 33,
+      "baseline_validator_unit_tests": 8,
+      "source_integrity": "PASS: candidate and unmodified historical978 source-after statuses empty; exact306 baseline harness overlay verified.",
+      "headers_and_361_catalog_hashes": "PASS",
+      "baseline": {
+        "strict_intended_carrier_reds": 4,
+        "assertion": "GTK_IS_WINDOW (popup) should be TRUE",
+        "scope": "Exact d4ce production plus reviewed header prerequisites and frozen7fe harness overlay; expected RED controls, not passing baseline UI tests."
+      },
+      "candidate": {
+        "adjacent_registrations_passed": 13,
+        "adjacent_registrations_total": 13,
+        "cases_in_passing_adjacent_registrations": 360,
+        "common_cases_expected_per_scale": 58,
+        "scale1": {
+          "passed_case_count": 37,
+          "passed_case_ids": [
+            "/common-layer-native-popup/group-tile",
+            "/common-layer-native-popup/group-tree",
+            "/common-layer-native-popup/ordinary-tile/actual-entry",
+            "/common-layer-native-popup/ordinary-tile/lower-controls",
+            "/common-layer-native-popup/ordinary-tile/opening-provenance-mismatch",
+            "/common-layer-native-popup/ordinary-tile/mode-growth",
+            "/common-layer-native-popup/ordinary-tile/owner-target-lifetimes",
+            "/common-layer-native-popup/ordinary-tile/staged-newer-request",
+            "/common-layer-native-popup/ordinary-tile/host-name-destroy",
+            "/common-layer-native-popup/ordinary-tile/rapid-escape-reopen",
+            "/common-layer-native-popup/ordinary-tile/closing-provenance-exact",
+            "/common-layer-native-popup/ordinary-tile/closing-provenance-mismatch",
+            "/common-layer-native-popup/ordinary-tile/staged-child-0",
+            "/common-layer-native-popup/ordinary-tile/staged-child-1",
+            "/common-layer-native-popup/ordinary-tile/staged-child-2",
+            "/common-layer-native-popup/ordinary-tile/staged-child-3",
+            "/common-layer-native-popup/clone-tile/actual-entry",
+            "/common-layer-native-popup/clone-tile/lower-controls",
+            "/common-layer-native-popup/clone-tile/opening-provenance-mismatch",
+            "/common-layer-native-popup/clone-tile/mode-growth",
+            "/common-layer-native-popup/clone-tile/owner-target-lifetimes",
+            "/common-layer-native-popup/clone-tile/staged-newer-request",
+            "/common-layer-native-popup/clone-tile/host-name-destroy",
+            "/common-layer-native-popup/clone-tile/rapid-escape-reopen",
+            "/common-layer-native-popup/clone-tile/closing-provenance-exact",
+            "/common-layer-native-popup/clone-tile/closing-provenance-mismatch",
+            "/common-layer-native-popup/clone-tile/staged-child-0",
+            "/common-layer-native-popup/clone-tile/staged-child-1",
+            "/common-layer-native-popup/clone-tile/staged-child-2",
+            "/common-layer-native-popup/clone-tile/staged-child-3",
+            "/common-layer-native-popup/ordinary-tree/actual-entry",
+            "/common-layer-native-popup/ordinary-tree/lower-controls",
+            "/common-layer-native-popup/ordinary-tree/opening-provenance-mismatch",
+            "/common-layer-native-popup/ordinary-tree/mode-growth",
+            "/common-layer-native-popup/ordinary-tree/owner-target-lifetimes",
+            "/common-layer-native-popup/ordinary-tree/staged-newer-request",
+            "/common-layer-native-popup/ordinary-tree/host-name-destroy"
+          ],
+          "failing_case": "/common-layer-native-popup/ordinary-tree/rapid-escape-reopen",
+          "source_location": "app/tests/test-common-layer-popup.cpp:836",
+          "assertion": "closing.doubles + closing.triples > 0: (0 > 0)",
+          "observed": "Rapid opening observes double=1 and triple=1; separately classified outside input reports35ms but double=0/triple=0. No grab or unexpected dialog in viewed failure image.",
+          "qualification": "Both full tile route groups, including staged-child-1 and remaining destructive cases, pass at scale1. This is not scale2 or full58 acceptance."
+        },
+        "scale2": {
+          "passed_case_count": 3,
+          "passed_case_ids": [
+            "/common-layer-native-popup/group-tile",
+            "/common-layer-native-popup/group-tree",
+            "/common-layer-native-popup/ordinary-tile/actual-entry"
+          ],
+          "failing_case": "/common-layer-native-popup/ordinary-tile/lower-controls",
+          "source_location": "app/tests/test-common-layer-popup.cpp:273",
+          "assertion": "next.same (current) should be TRUE",
+          "observed": "Scrollbar preparation reports3 stable frames at width6, followed by strict aim widths6->11->14. Native expansion starts after the readiness observation."
+        }
+      },
+      "diagnostic_only_routes": {
+        "acceptance_eligible": false,
+        "scale": 1,
+        "invocations": 4,
+        "timeouts": 0,
+        "ordinary_tile": {
+          "subset_passed": true,
+          "passed_cases": 14
+        },
+        "clone_tile": {
+          "subset_passed": true,
+          "passed_cases": 14
+        },
+        "ordinary_tree": {
+          "subset_passed": false,
+          "passed_cases": 7
+        },
+        "clone_tree": {
+          "subset_passed": false,
+          "passed_cases": 7
+        },
+        "scope": "Separate fresh-profile prefix diagnostics. Do not substitute for original suites or add/double-count their passing cases."
+      },
+      "historical_stack_diagnostic": {
+        "publishing_sha": "1a7b273de263b158db3382228dd7b59028c58d13",
+        "tested_sha": "978461dde961ee6f11067b8f9c68085bc442a600",
+        "tested_tree": "5e0d6678c6eda0f042e458ec5cb3c3c21a6d53a2",
+        "focused_test_sha256": "88f76f3e98c09168a1a8a9da1363808c25191fafdd1d88d652c462e31321e8c1",
+        "overlay": "none",
+        "selected_case": "/common-layer-native-popup/ordinary-tile/staged-child-1",
+        "scale": 2,
+        "result": "FAIL",
+        "returncode": 255,
+        "actual_stop": "SIGTRAP",
+        "fatal": "GLib-GObject-FATAL-CRITICAL: g_object_setv: assertion G_IS_OBJECT(object) failed",
+        "plain_backtrace_frames": 131,
+        "sigsegv_gate_passed": false,
+        "acceptance_eligible": false,
+        "stack_path": "g_object_set_property -> g_object_set -> Canvas::show:361 -> Canvas::reconnect:529 -> image_changed -> gimp_display_delete:468 -> Fixture::~Fixture:515 -> staged_lifetimes:1004",
+        "qualification": "Actual runtime invalid private-label property path agrees with frozen978 source; it is not reproduction or proven attribution of run10 SIGSEGV.",
+        "source_after_status": ""
+      },
+      "screenshots": {
+        "accepted_full_matrix": false,
+        "expected_raw_captures": 16,
+        "captured_original_views": 4,
+        "captured_bottom_views": 3,
+        "partial_matrix_captures": [
+          {
+            "artifact_path": "common-layer-scale1/clone-tile-bottom-scale1.png",
+            "width": 1080,
+            "height": 1920,
+            "sha256": "4b0b941c35403a9b8b8274df45ad29b2613011857037545d6b7e4e6a91050e24"
+          },
+          {
+            "artifact_path": "common-layer-scale1/clone-tile-scale1.png",
+            "width": 1080,
+            "height": 1920,
+            "sha256": "83f62ba871ce49ba35d16218d87e16dcebf29918630d7f7742e9e49485f33f06"
+          },
+          {
+            "artifact_path": "common-layer-scale1/ordinary-tile-bottom-scale1.png",
+            "width": 1080,
+            "height": 1920,
+            "sha256": "503e16759832c4e679315cd50f5a8b232d766e840675f4af8d7407e5d6f34686"
+          },
+          {
+            "artifact_path": "common-layer-scale1/ordinary-tile-scale1.png",
+            "width": 1080,
+            "height": 1920,
+            "sha256": "25fa01d7221d4100505bedbdec70d137830b0cfde9efefdefa9e3571d66217d1"
+          },
+          {
+            "artifact_path": "common-layer-scale1/ordinary-tree-bottom-scale1.png",
+            "width": 1080,
+            "height": 1920,
+            "sha256": "e1ef3a94cb462c0bb17855e7097c2252c8388628fb7975d9844008a713857772"
+          },
+          {
+            "artifact_path": "common-layer-scale1/ordinary-tree-scale1.png",
+            "width": 1080,
+            "height": 1920,
+            "sha256": "3aa9b4db9dc90c54d9a0144961cf94516b0b40661a4c02f9e5aa5278986f2874"
+          },
+          {
+            "artifact_path": "common-layer-scale2/ordinary-tile-scale2.png",
+            "width": 1080,
+            "height": 1920,
+            "sha256": "37e41c3e9db0a3f3abae6654e8a1868ae0e267e31e970825e1cb8e01c888faad"
+          }
+        ],
+        "qualification": "All six new scale1 captures inspected; ordinary/Clone tile bottom views show Delete and All Actions completely, ordinary-tree short form and alpha toggle visible. Sole scale2 upper capture matches previously inspected bytes. Only7/16; no full image matrix, normal-startup resource or brush-catalog acceptance."
+      },
+      "artifact_ids": {
+        "candidate": 12594446042,
+        "baseline": 12593960034,
+        "historical_stack": 12593950601
+      },
+      "artifact_sha256": {
+        "candidate": "01a151a9576601228e0ec6222af372e54221ffb90575943ddbeda41730c63616",
+        "baseline": "fb09f91551b41a555071dda6a0503bfad9d45e390122cf3f91d7610ec765f73f",
+        "historical_stack": "9ee4b4c6f64a7c400dfb9d283b9754405701ddf8bdace627626e4c23062639f5"
+      },
+      "next_revision": "Investigate real event-observer placement for consumed tree closing companions and delayed native scrollbar expansion; retain genuine XTest, strict geometry/classification proof,58 cases and16 images. Preserve historical diagnostic as SIGTRAP, not reclassified SIGSEGV success."
+    },
+    {
+      "commit": "be0fc600678a3a3bdddbd51f08e081d62faa24c8",
+      "tree": "aae9647aa5b5c115dbb6da211802a2d646b01318",
+      "run_id": 40180882908,
+      "url": "https://github.com/seagetch/gimp-painter/actions/runs/40180882908",
+      "result": "candidate failure in adjacent exception test; both complete common suites and baseline controls pass",
+      "candidate_job": 121131504906,
+      "baseline_job": 121131504657,
+      "focused_test_sha256": "49eb5a701b4f0a082c1f88f6a2f3a34546c738dfec4de1d28bf7989b12d5d664",
+      "validator_unit_tests": 33,
+      "baseline_validator_unit_tests": 8,
+      "source_integrity": "PASS: candidate source-after status empty; exact306 production/reviewed harness overlay verified after tests.",
+      "headers_and_361_catalog_hashes": "PASS",
+      "baseline": {
+        "strict_intended_carrier_reds": 4,
+        "assertion": "GTK_IS_WINDOW (popup) should be TRUE",
+        "source_location": "app/tests/test-common-layer-popup.cpp:499",
+        "scope": "Exact d4ce production plus reviewed header prerequisites and frozen49eb harness overlay; expected RED controls, not passing baseline UI tests."
+      },
+      "candidate": {
+        "common_cases_expected_per_scale": 58,
+        "scale1": {
+          "passed": true,
+          "passed_case_count": 58,
+          "passed_case_ids": [
+            "/common-layer-native-popup/group-tile",
+            "/common-layer-native-popup/group-tree",
+            "/common-layer-native-popup/ordinary-tile/actual-entry",
+            "/common-layer-native-popup/ordinary-tile/lower-controls",
+            "/common-layer-native-popup/ordinary-tile/opening-provenance-mismatch",
+            "/common-layer-native-popup/ordinary-tile/mode-growth",
+            "/common-layer-native-popup/ordinary-tile/owner-target-lifetimes",
+            "/common-layer-native-popup/ordinary-tile/staged-newer-request",
+            "/common-layer-native-popup/ordinary-tile/host-name-destroy",
+            "/common-layer-native-popup/ordinary-tile/rapid-escape-reopen",
+            "/common-layer-native-popup/ordinary-tile/closing-provenance-exact",
+            "/common-layer-native-popup/ordinary-tile/closing-provenance-mismatch",
+            "/common-layer-native-popup/ordinary-tile/staged-child-0",
+            "/common-layer-native-popup/ordinary-tile/staged-child-1",
+            "/common-layer-native-popup/ordinary-tile/staged-child-2",
+            "/common-layer-native-popup/ordinary-tile/staged-child-3",
+            "/common-layer-native-popup/clone-tile/actual-entry",
+            "/common-layer-native-popup/clone-tile/lower-controls",
+            "/common-layer-native-popup/clone-tile/opening-provenance-mismatch",
+            "/common-layer-native-popup/clone-tile/mode-growth",
+            "/common-layer-native-popup/clone-tile/owner-target-lifetimes",
+            "/common-layer-native-popup/clone-tile/staged-newer-request",
+            "/common-layer-native-popup/clone-tile/host-name-destroy",
+            "/common-layer-native-popup/clone-tile/rapid-escape-reopen",
+            "/common-layer-native-popup/clone-tile/closing-provenance-exact",
+            "/common-layer-native-popup/clone-tile/closing-provenance-mismatch",
+            "/common-layer-native-popup/clone-tile/staged-child-0",
+            "/common-layer-native-popup/clone-tile/staged-child-1",
+            "/common-layer-native-popup/clone-tile/staged-child-2",
+            "/common-layer-native-popup/clone-tile/staged-child-3",
+            "/common-layer-native-popup/ordinary-tree/actual-entry",
+            "/common-layer-native-popup/ordinary-tree/lower-controls",
+            "/common-layer-native-popup/ordinary-tree/opening-provenance-mismatch",
+            "/common-layer-native-popup/ordinary-tree/mode-growth",
+            "/common-layer-native-popup/ordinary-tree/owner-target-lifetimes",
+            "/common-layer-native-popup/ordinary-tree/staged-newer-request",
+            "/common-layer-native-popup/ordinary-tree/host-name-destroy",
+            "/common-layer-native-popup/ordinary-tree/rapid-escape-reopen",
+            "/common-layer-native-popup/ordinary-tree/closing-provenance-exact",
+            "/common-layer-native-popup/ordinary-tree/closing-provenance-mismatch",
+            "/common-layer-native-popup/ordinary-tree/staged-child-0",
+            "/common-layer-native-popup/ordinary-tree/staged-child-1",
+            "/common-layer-native-popup/ordinary-tree/staged-child-2",
+            "/common-layer-native-popup/ordinary-tree/staged-child-3",
+            "/common-layer-native-popup/clone-tree/actual-entry",
+            "/common-layer-native-popup/clone-tree/lower-controls",
+            "/common-layer-native-popup/clone-tree/opening-provenance-mismatch",
+            "/common-layer-native-popup/clone-tree/mode-growth",
+            "/common-layer-native-popup/clone-tree/owner-target-lifetimes",
+            "/common-layer-native-popup/clone-tree/staged-newer-request",
+            "/common-layer-native-popup/clone-tree/host-name-destroy",
+            "/common-layer-native-popup/clone-tree/rapid-escape-reopen",
+            "/common-layer-native-popup/clone-tree/closing-provenance-exact",
+            "/common-layer-native-popup/clone-tree/closing-provenance-mismatch",
+            "/common-layer-native-popup/clone-tree/staged-child-0",
+            "/common-layer-native-popup/clone-tree/staged-child-1",
+            "/common-layer-native-popup/clone-tree/staged-child-2",
+            "/common-layer-native-popup/clone-tree/staged-child-3"
+          ]
+        },
+        "scale2": {
+          "passed": true,
+          "passed_case_count": 58,
+          "passed_case_ids": [
+            "/common-layer-native-popup/group-tile",
+            "/common-layer-native-popup/group-tree",
+            "/common-layer-native-popup/ordinary-tile/actual-entry",
+            "/common-layer-native-popup/ordinary-tile/lower-controls",
+            "/common-layer-native-popup/ordinary-tile/opening-provenance-mismatch",
+            "/common-layer-native-popup/ordinary-tile/mode-growth",
+            "/common-layer-native-popup/ordinary-tile/owner-target-lifetimes",
+            "/common-layer-native-popup/ordinary-tile/staged-newer-request",
+            "/common-layer-native-popup/ordinary-tile/host-name-destroy",
+            "/common-layer-native-popup/ordinary-tile/rapid-escape-reopen",
+            "/common-layer-native-popup/ordinary-tile/closing-provenance-exact",
+            "/common-layer-native-popup/ordinary-tile/closing-provenance-mismatch",
+            "/common-layer-native-popup/ordinary-tile/staged-child-0",
+            "/common-layer-native-popup/ordinary-tile/staged-child-1",
+            "/common-layer-native-popup/ordinary-tile/staged-child-2",
+            "/common-layer-native-popup/ordinary-tile/staged-child-3",
+            "/common-layer-native-popup/clone-tile/actual-entry",
+            "/common-layer-native-popup/clone-tile/lower-controls",
+            "/common-layer-native-popup/clone-tile/opening-provenance-mismatch",
+            "/common-layer-native-popup/clone-tile/mode-growth",
+            "/common-layer-native-popup/clone-tile/owner-target-lifetimes",
+            "/common-layer-native-popup/clone-tile/staged-newer-request",
+            "/common-layer-native-popup/clone-tile/host-name-destroy",
+            "/common-layer-native-popup/clone-tile/rapid-escape-reopen",
+            "/common-layer-native-popup/clone-tile/closing-provenance-exact",
+            "/common-layer-native-popup/clone-tile/closing-provenance-mismatch",
+            "/common-layer-native-popup/clone-tile/staged-child-0",
+            "/common-layer-native-popup/clone-tile/staged-child-1",
+            "/common-layer-native-popup/clone-tile/staged-child-2",
+            "/common-layer-native-popup/clone-tile/staged-child-3",
+            "/common-layer-native-popup/ordinary-tree/actual-entry",
+            "/common-layer-native-popup/ordinary-tree/lower-controls",
+            "/common-layer-native-popup/ordinary-tree/opening-provenance-mismatch",
+            "/common-layer-native-popup/ordinary-tree/mode-growth",
+            "/common-layer-native-popup/ordinary-tree/owner-target-lifetimes",
+            "/common-layer-native-popup/ordinary-tree/staged-newer-request",
+            "/common-layer-native-popup/ordinary-tree/host-name-destroy",
+            "/common-layer-native-popup/ordinary-tree/rapid-escape-reopen",
+            "/common-layer-native-popup/ordinary-tree/closing-provenance-exact",
+            "/common-layer-native-popup/ordinary-tree/closing-provenance-mismatch",
+            "/common-layer-native-popup/ordinary-tree/staged-child-0",
+            "/common-layer-native-popup/ordinary-tree/staged-child-1",
+            "/common-layer-native-popup/ordinary-tree/staged-child-2",
+            "/common-layer-native-popup/ordinary-tree/staged-child-3",
+            "/common-layer-native-popup/clone-tree/actual-entry",
+            "/common-layer-native-popup/clone-tree/lower-controls",
+            "/common-layer-native-popup/clone-tree/opening-provenance-mismatch",
+            "/common-layer-native-popup/clone-tree/mode-growth",
+            "/common-layer-native-popup/clone-tree/owner-target-lifetimes",
+            "/common-layer-native-popup/clone-tree/staged-newer-request",
+            "/common-layer-native-popup/clone-tree/host-name-destroy",
+            "/common-layer-native-popup/clone-tree/rapid-escape-reopen",
+            "/common-layer-native-popup/clone-tree/closing-provenance-exact",
+            "/common-layer-native-popup/clone-tree/closing-provenance-mismatch",
+            "/common-layer-native-popup/clone-tree/staged-child-0",
+            "/common-layer-native-popup/clone-tree/staged-child-1",
+            "/common-layer-native-popup/clone-tree/staged-child-2",
+            "/common-layer-native-popup/clone-tree/staged-child-3"
+          ]
+        },
+        "common_gate": "Both original full58-ID suites PASS with no skips and all16 expected PNGs. Independently rechecked exact IDs, returncodes, skip rejection and screenshot geometry/hashes after download.",
+        "adjacent_registrations_passed": 12,
+        "adjacent_registrations_total": 13,
+        "cases_in_passing_adjacent_registrations": 354,
+        "partial_failed_registration": {
+          "name": "painter-widget-exceptions",
+          "passed_case_count": 3,
+          "passed_cases": [
+            "/painter-widget-exceptions/standard/canvas-set-visible",
+            "/painter-widget-exceptions/standard/canvas-attach-dock",
+            "/painter-widget-exceptions/standard/layer-tiles-popup"
+          ],
+          "failing_case": "/painter-widget-exceptions/unknown/canvas-set-visible",
+          "source_location": "app/tests/test-painter-widget-exceptions.c:97",
+          "assertion": "gimp_painter_canvas_ui_get_visible (shell) should be FALSE",
+          "qualification": "Expected warning and fault-consumption assertions precede the failure. Late pre-arm visibility change is a source-based hypothesis, not established causation in this artifact. No retry-only waiver or assertion removal."
+        }
+      },
+      "diagnostic_prefixes_run": false,
+      "screenshots": {
+        "complete_required_matrix": true,
+        "expected_raw_captures": 16,
+        "captured_raw_views": 16,
+        "all_actual_pixels_viewed": true,
+        "visual_review_sha256": "4e29c2cf905e211ee75102653c5b6fa320795956624980820d7c5098ab33d9d0",
+        "visual_review_result": "No focused popup content blocker found at either scale.",
+        "captures": [
+          {
+            "artifact_path": "common-layer-scale1/clone-tile-bottom-scale1.png",
+            "sha256": "4b0b941c35403a9b8b8274df45ad29b2613011857037545d6b7e4e6a91050e24",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale1/clone-tile-scale1.png",
+            "sha256": "8cd3347a0f66595ebbc24ca61ee36a7901da574e061412c142bd89be44c5f586",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale1/clone-tree-bottom-scale1.png",
+            "sha256": "d9fee719a627aa8edc85d6899460334d358562cec18371a5e9e8a18e99c273f2",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale1/clone-tree-scale1.png",
+            "sha256": "83ce19f136a3ff095eae5a2cfb969e48294831abba2b1d834eb5c413b0783fda",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale1/ordinary-tile-bottom-scale1.png",
+            "sha256": "503e16759832c4e679315cd50f5a8b232d766e840675f4af8d7407e5d6f34686",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale1/ordinary-tile-scale1.png",
+            "sha256": "13148587585e6248e732cf513cfaa94aee2b2133314710a2b733bf3f1e26060d",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale1/ordinary-tree-bottom-scale1.png",
+            "sha256": "e7a81acd5a46bebf9bf44d82c2825590ce40b23c6e3531be13eef5dcec237a86",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale1/ordinary-tree-scale1.png",
+            "sha256": "3aa9b4db9dc90c54d9a0144961cf94516b0b40661a4c02f9e5aa5278986f2874",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale2/clone-tile-bottom-scale2.png",
+            "sha256": "3fb96729e6ead67d5414ee2b8812fdc4eec23fad8ece04ab8948a334356d2c8f",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale2/clone-tile-scale2.png",
+            "sha256": "990cb66c06abdcd06f0e376e6bbdc7234d0c49ffb0757b341ca432b6fcd3f21c",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale2/clone-tree-bottom-scale2.png",
+            "sha256": "85c8251531e906767e2a1fe5d2618656591cfa19394c42b32bfa7f97a085e5be",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale2/clone-tree-scale2.png",
+            "sha256": "7ddd1c428f260a4b5a94899a8221b630ca3bf4bcdf307210d1fd092b78334bf8",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale2/ordinary-tile-bottom-scale2.png",
+            "sha256": "a90ef70c755b5f3af514b51380856de549aa8a7be94f74a83ba99d4a6305bf40",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale2/ordinary-tile-scale2.png",
+            "sha256": "37e41c3e9db0a3f3abae6654e8a1868ae0e267e31e970825e1cb8e01c888faad",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale2/ordinary-tree-bottom-scale2.png",
+            "sha256": "9a64ca2d03caf0df0e3fa20eb9eda905bf6c0726e25e0b17f7c0d8d4daffee3b",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale2/ordinary-tree-scale2.png",
+            "sha256": "665a19eb7c43049a8bd5d8f80ba4d5d73e8076a5dcde43059bcba2a609cc43b8",
+            "width": 1080,
+            "height": 1920
+          }
+        ],
+        "qualification": "All16 actual raw PNGs viewed. Tile upper/bottom pairs complement intentional viewport clipping; lower Delete and All Actions fully visible at both scales. Tree short forms complete, alpha toggle and Clone Source visible. Static pixels do not alone prove activation/Undo; associated common cases pass. Minimal-resource fixture, not normal-startup resource or brush-catalog acceptance."
+      },
+      "artifact_ids": {
+        "candidate": 12594591204,
+        "baseline": 12594023996
+      },
+      "artifact_sha256": {
+        "candidate": "892fa87e3bc8e1ea10e5404e514043aa1b07569c60d9968e8f04cc19a47402e2",
+        "baseline": "dff98a4c7a3f07d8cc21ec001984360df0ca4ccb65f04aa3f3d282ef5d5c7246"
+      },
+      "next_revision": "Resolve the genuine adjacent exception-test failure with a reviewed pre-fault state/readiness oracle; retain complete58/16 common and all13 adjacent gates. This run is not overall acceptance or DONE."
+    },
+    {
+      "commit": "3d6f62235c6bc9e2505d2c2b6ad1d42e15d081af",
+      "tree": "a5a14a81a10857834301888a0cd2b3cf902bf17d",
+      "run_id": 40182923810,
+      "url": "https://github.com/seagetch/gimp-painter/actions/runs/40182923810",
+      "result": "candidate failure from GTK GimpDockbook tab geometry warning; baseline control success",
+      "candidate_job": 121137610066,
+      "baseline_job": 121137610148,
+      "focused_test_sha256": "49eb5a701b4f0a082c1f88f6a2f3a34546c738dfec4de1d28bf7989b12d5d664",
+      "validator_unit_tests": 33,
+      "baseline_validator_unit_tests": 8,
+      "source_integrity": "PASS: candidate source-after status empty; exact306 baseline overlay verified after build/tests.",
+      "headers_and_361_catalog_hashes": "PASS",
+      "baseline": {
+        "strict_intended_carrier_reds": 4,
+        "assertion": "GTK_IS_WINDOW (popup) should be TRUE",
+        "scope": "Exact d4ce production plus reviewed header prerequisites and49eb common harness; RED controls, not passing baseline UI tests."
+      },
+      "candidate": {
+        "adjacent_registrations_passed": 13,
+        "adjacent_registrations_total": 13,
+        "cases_in_passing_adjacent_registrations": 360,
+        "exception_fixture": "All six original standard/unknown boundary cases pass after moving initialization drain before the explicit hidden precondition; warning/fault/state/recovery assertions remain.",
+        "common_cases_expected_per_scale": 58,
+        "scale1": {
+          "passed_case_count": 47,
+          "passed_case_ids": [
+            "/common-layer-native-popup/group-tile",
+            "/common-layer-native-popup/group-tree",
+            "/common-layer-native-popup/ordinary-tile/actual-entry",
+            "/common-layer-native-popup/ordinary-tile/lower-controls",
+            "/common-layer-native-popup/ordinary-tile/opening-provenance-mismatch",
+            "/common-layer-native-popup/ordinary-tile/mode-growth",
+            "/common-layer-native-popup/ordinary-tile/owner-target-lifetimes",
+            "/common-layer-native-popup/ordinary-tile/staged-newer-request",
+            "/common-layer-native-popup/ordinary-tile/host-name-destroy",
+            "/common-layer-native-popup/ordinary-tile/rapid-escape-reopen",
+            "/common-layer-native-popup/ordinary-tile/closing-provenance-exact",
+            "/common-layer-native-popup/ordinary-tile/closing-provenance-mismatch",
+            "/common-layer-native-popup/ordinary-tile/staged-child-0",
+            "/common-layer-native-popup/ordinary-tile/staged-child-1",
+            "/common-layer-native-popup/ordinary-tile/staged-child-2",
+            "/common-layer-native-popup/ordinary-tile/staged-child-3",
+            "/common-layer-native-popup/clone-tile/actual-entry",
+            "/common-layer-native-popup/clone-tile/lower-controls",
+            "/common-layer-native-popup/clone-tile/opening-provenance-mismatch",
+            "/common-layer-native-popup/clone-tile/mode-growth",
+            "/common-layer-native-popup/clone-tile/owner-target-lifetimes",
+            "/common-layer-native-popup/clone-tile/staged-newer-request",
+            "/common-layer-native-popup/clone-tile/host-name-destroy",
+            "/common-layer-native-popup/clone-tile/rapid-escape-reopen",
+            "/common-layer-native-popup/clone-tile/closing-provenance-exact",
+            "/common-layer-native-popup/clone-tile/closing-provenance-mismatch",
+            "/common-layer-native-popup/clone-tile/staged-child-0",
+            "/common-layer-native-popup/clone-tile/staged-child-1",
+            "/common-layer-native-popup/clone-tile/staged-child-2",
+            "/common-layer-native-popup/clone-tile/staged-child-3",
+            "/common-layer-native-popup/ordinary-tree/actual-entry",
+            "/common-layer-native-popup/ordinary-tree/lower-controls",
+            "/common-layer-native-popup/ordinary-tree/opening-provenance-mismatch",
+            "/common-layer-native-popup/ordinary-tree/mode-growth",
+            "/common-layer-native-popup/ordinary-tree/owner-target-lifetimes",
+            "/common-layer-native-popup/ordinary-tree/staged-newer-request",
+            "/common-layer-native-popup/ordinary-tree/host-name-destroy",
+            "/common-layer-native-popup/ordinary-tree/rapid-escape-reopen",
+            "/common-layer-native-popup/ordinary-tree/closing-provenance-exact",
+            "/common-layer-native-popup/ordinary-tree/closing-provenance-mismatch",
+            "/common-layer-native-popup/ordinary-tree/staged-child-0",
+            "/common-layer-native-popup/ordinary-tree/staged-child-1",
+            "/common-layer-native-popup/ordinary-tree/staged-child-2",
+            "/common-layer-native-popup/ordinary-tree/staged-child-3",
+            "/common-layer-native-popup/clone-tree/actual-entry",
+            "/common-layer-native-popup/clone-tree/lower-controls",
+            "/common-layer-native-popup/clone-tree/opening-provenance-mismatch"
+          ],
+          "last_pass": "/common-layer-native-popup/clone-tree/opening-provenance-mismatch",
+          "returncode": -5
+        },
+        "scale2": {
+          "passed_case_count": 44,
+          "passed_case_ids": [
+            "/common-layer-native-popup/group-tile",
+            "/common-layer-native-popup/group-tree",
+            "/common-layer-native-popup/ordinary-tile/actual-entry",
+            "/common-layer-native-popup/ordinary-tile/lower-controls",
+            "/common-layer-native-popup/ordinary-tile/opening-provenance-mismatch",
+            "/common-layer-native-popup/ordinary-tile/mode-growth",
+            "/common-layer-native-popup/ordinary-tile/owner-target-lifetimes",
+            "/common-layer-native-popup/ordinary-tile/staged-newer-request",
+            "/common-layer-native-popup/ordinary-tile/host-name-destroy",
+            "/common-layer-native-popup/ordinary-tile/rapid-escape-reopen",
+            "/common-layer-native-popup/ordinary-tile/closing-provenance-exact",
+            "/common-layer-native-popup/ordinary-tile/closing-provenance-mismatch",
+            "/common-layer-native-popup/ordinary-tile/staged-child-0",
+            "/common-layer-native-popup/ordinary-tile/staged-child-1",
+            "/common-layer-native-popup/ordinary-tile/staged-child-2",
+            "/common-layer-native-popup/ordinary-tile/staged-child-3",
+            "/common-layer-native-popup/clone-tile/actual-entry",
+            "/common-layer-native-popup/clone-tile/lower-controls",
+            "/common-layer-native-popup/clone-tile/opening-provenance-mismatch",
+            "/common-layer-native-popup/clone-tile/mode-growth",
+            "/common-layer-native-popup/clone-tile/owner-target-lifetimes",
+            "/common-layer-native-popup/clone-tile/staged-newer-request",
+            "/common-layer-native-popup/clone-tile/host-name-destroy",
+            "/common-layer-native-popup/clone-tile/rapid-escape-reopen",
+            "/common-layer-native-popup/clone-tile/closing-provenance-exact",
+            "/common-layer-native-popup/clone-tile/closing-provenance-mismatch",
+            "/common-layer-native-popup/clone-tile/staged-child-0",
+            "/common-layer-native-popup/clone-tile/staged-child-1",
+            "/common-layer-native-popup/clone-tile/staged-child-2",
+            "/common-layer-native-popup/clone-tile/staged-child-3",
+            "/common-layer-native-popup/ordinary-tree/actual-entry",
+            "/common-layer-native-popup/ordinary-tree/lower-controls",
+            "/common-layer-native-popup/ordinary-tree/opening-provenance-mismatch",
+            "/common-layer-native-popup/ordinary-tree/mode-growth",
+            "/common-layer-native-popup/ordinary-tree/owner-target-lifetimes",
+            "/common-layer-native-popup/ordinary-tree/staged-newer-request",
+            "/common-layer-native-popup/ordinary-tree/host-name-destroy",
+            "/common-layer-native-popup/ordinary-tree/rapid-escape-reopen",
+            "/common-layer-native-popup/ordinary-tree/closing-provenance-exact",
+            "/common-layer-native-popup/ordinary-tree/closing-provenance-mismatch",
+            "/common-layer-native-popup/ordinary-tree/staged-child-0",
+            "/common-layer-native-popup/ordinary-tree/staged-child-1",
+            "/common-layer-native-popup/ordinary-tree/staged-child-2",
+            "/common-layer-native-popup/ordinary-tree/staged-child-3"
+          ],
+          "last_pass": "/common-layer-native-popup/ordinary-tree/staged-child-3",
+          "returncode": -5
+        },
+        "observed_fatal_warning": "Gtk-WARNING: Drawing a gadget with negative dimensions. Did you forget to allocate a size? (node tab owner GimpDockbook)",
+        "qualification": "No native call stack or specific failing notebook allocation was captured. Warning follows differing Clone-tree fixture stages; exact next-case callback and cause remain unproven. Prior run12 full common success does not substitute for this failed fresh run."
+      },
+      "diagnostic_only_routes": {
+        "acceptance_eligible": false,
+        "scale": 1,
+        "invocations": 4,
+        "timeouts": 0,
+        "ordinary_tile": {
+          "subset_passed": true,
+          "passed_cases": 14
+        },
+        "clone_tile": {
+          "subset_passed": true,
+          "passed_cases": 14
+        },
+        "ordinary_tree": {
+          "subset_passed": true,
+          "passed_cases": 14
+        },
+        "clone_tree": {
+          "subset_passed": false,
+          "passed_cases": 1,
+          "last_pass": "/common-layer-native-popup/clone-tree/actual-entry",
+          "returncode": -5,
+          "warning": "Same fatal GimpDockbook negative tab dimensions warning"
+        },
+        "scope": "Fresh-profile diagnostic prefixes are never acceptance substitutes or added/double-counted passes."
+      },
+      "screenshots": {
+        "accepted_full_matrix": false,
+        "expected_raw_captures": 16,
+        "captured_raw_views": 14,
+        "scale1_captures": 8,
+        "scale2_captures": 6,
+        "missing": [
+          "clone-tree-scale2.png",
+          "clone-tree-bottom-scale2.png"
+        ],
+        "captures": [
+          {
+            "artifact_path": "common-layer-scale1/clone-tile-bottom-scale1.png",
+            "sha256": "4b0b941c35403a9b8b8274df45ad29b2613011857037545d6b7e4e6a91050e24",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale1/clone-tile-scale1.png",
+            "sha256": "8cd3347a0f66595ebbc24ca61ee36a7901da574e061412c142bd89be44c5f586",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale1/clone-tree-bottom-scale1.png",
+            "sha256": "d9fee719a627aa8edc85d6899460334d358562cec18371a5e9e8a18e99c273f2",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale1/clone-tree-scale1.png",
+            "sha256": "83ce19f136a3ff095eae5a2cfb969e48294831abba2b1d834eb5c413b0783fda",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale1/ordinary-tile-bottom-scale1.png",
+            "sha256": "503e16759832c4e679315cd50f5a8b232d766e840675f4af8d7407e5d6f34686",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale1/ordinary-tile-scale1.png",
+            "sha256": "13148587585e6248e732cf513cfaa94aee2b2133314710a2b733bf3f1e26060d",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale1/ordinary-tree-bottom-scale1.png",
+            "sha256": "e7691bdf92a3ebe4f9acde068bd65c5ed48e6af9f77b305d137f39d913b29417",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale1/ordinary-tree-scale1.png",
+            "sha256": "3aa9b4db9dc90c54d9a0144961cf94516b0b40661a4c02f9e5aa5278986f2874",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale2/clone-tile-bottom-scale2.png",
+            "sha256": "3fb96729e6ead67d5414ee2b8812fdc4eec23fad8ece04ab8948a334356d2c8f",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale2/clone-tile-scale2.png",
+            "sha256": "990cb66c06abdcd06f0e376e6bbdc7234d0c49ffb0757b341ca432b6fcd3f21c",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale2/ordinary-tile-bottom-scale2.png",
+            "sha256": "a90ef70c755b5f3af514b51380856de549aa8a7be94f74a83ba99d4a6305bf40",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale2/ordinary-tile-scale2.png",
+            "sha256": "37e41c3e9db0a3f3abae6654e8a1868ae0e267e31e970825e1cb8e01c888faad",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale2/ordinary-tree-bottom-scale2.png",
+            "sha256": "da3da1facc8773a54bd1eba4f663a9386a7d498800252ab4b7b2633e3e686547",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale2/ordinary-tree-scale2.png",
+            "sha256": "665a19eb7c43049a8bd5d8f80ba4d5d73e8076a5dcde43059bcba2a609cc43b8",
+            "width": 1080,
+            "height": 1920
+          }
+        ],
+        "qualification": "Incomplete current-run matrix; prior16-image visual receipt belongs to run12 only. No new full visual acceptance claimed."
+      },
+      "artifact_ids": {
+        "candidate": 12594784080,
+        "baseline": 12594728324
+      },
+      "artifact_sha256": {
+        "candidate": "e3209306ec5d378057939c6d9d76d52f1e8096833aff3e1c3bc7de01d99d7f5c",
+        "baseline": "0fd8e8498a6d7dd1f7948f691c34d3d4f068240b6b6c02b539d9828cae13f0d8"
+      },
+      "next_revision": "Obtain bounded genuine stack/allocation evidence for the GimpDockbook tab warning before choosing a layout fix. Preserve fatal warning behavior, full58/16 common and all13 adjacent gates; no warning suppression or rerun-only waiver."
+    },
+    {
+      "commit": "8705f42653f18f2d333b56b6c261ebc849edec46",
+      "tree": "e70965964a31d8ec0780081d280af753acf24496",
+      "run_id": 40186532510,
+      "url": "https://github.com/seagetch/gimp-painter/actions/runs/40186532510",
+      "result": "all three jobs successful, but third success means exact fatal Dockbook warning reproduced; not an intermittent defect fix",
+      "candidate_job": 121148382508,
+      "baseline_job": 121148382585,
+      "diagnostic_job": 121148382674,
+      "focused_test_sha256": "236098bc509a123ec5209dbab683d55d231adf922f794b3f7ded9a6c9fdb1411",
+      "validator_unit_tests": 100,
+      "source_integrity": "PASS: candidate pristine; baseline exact reviewed overlay; diagnostic exact3d6f+single236 test overlay verified after execution.",
+      "headers_and_361_catalog_hashes": "PASS",
+      "candidate": {
+        "common": {
+          "scale1": {
+            "passed_case_count": 58,
+            "expected_case_count": 58,
+            "passed_case_ids": [
+              "/common-layer-native-popup/group-tile",
+              "/common-layer-native-popup/group-tree",
+              "/common-layer-native-popup/ordinary-tile/actual-entry",
+              "/common-layer-native-popup/ordinary-tile/lower-controls",
+              "/common-layer-native-popup/ordinary-tile/opening-provenance-mismatch",
+              "/common-layer-native-popup/ordinary-tile/mode-growth",
+              "/common-layer-native-popup/ordinary-tile/owner-target-lifetimes",
+              "/common-layer-native-popup/ordinary-tile/staged-newer-request",
+              "/common-layer-native-popup/ordinary-tile/host-name-destroy",
+              "/common-layer-native-popup/ordinary-tile/rapid-escape-reopen",
+              "/common-layer-native-popup/ordinary-tile/closing-provenance-exact",
+              "/common-layer-native-popup/ordinary-tile/closing-provenance-mismatch",
+              "/common-layer-native-popup/ordinary-tile/staged-child-0",
+              "/common-layer-native-popup/ordinary-tile/staged-child-1",
+              "/common-layer-native-popup/ordinary-tile/staged-child-2",
+              "/common-layer-native-popup/ordinary-tile/staged-child-3",
+              "/common-layer-native-popup/clone-tile/actual-entry",
+              "/common-layer-native-popup/clone-tile/lower-controls",
+              "/common-layer-native-popup/clone-tile/opening-provenance-mismatch",
+              "/common-layer-native-popup/clone-tile/mode-growth",
+              "/common-layer-native-popup/clone-tile/owner-target-lifetimes",
+              "/common-layer-native-popup/clone-tile/staged-newer-request",
+              "/common-layer-native-popup/clone-tile/host-name-destroy",
+              "/common-layer-native-popup/clone-tile/rapid-escape-reopen",
+              "/common-layer-native-popup/clone-tile/closing-provenance-exact",
+              "/common-layer-native-popup/clone-tile/closing-provenance-mismatch",
+              "/common-layer-native-popup/clone-tile/staged-child-0",
+              "/common-layer-native-popup/clone-tile/staged-child-1",
+              "/common-layer-native-popup/clone-tile/staged-child-2",
+              "/common-layer-native-popup/clone-tile/staged-child-3",
+              "/common-layer-native-popup/ordinary-tree/actual-entry",
+              "/common-layer-native-popup/ordinary-tree/lower-controls",
+              "/common-layer-native-popup/ordinary-tree/opening-provenance-mismatch",
+              "/common-layer-native-popup/ordinary-tree/mode-growth",
+              "/common-layer-native-popup/ordinary-tree/owner-target-lifetimes",
+              "/common-layer-native-popup/ordinary-tree/staged-newer-request",
+              "/common-layer-native-popup/ordinary-tree/host-name-destroy",
+              "/common-layer-native-popup/ordinary-tree/rapid-escape-reopen",
+              "/common-layer-native-popup/ordinary-tree/closing-provenance-exact",
+              "/common-layer-native-popup/ordinary-tree/closing-provenance-mismatch",
+              "/common-layer-native-popup/ordinary-tree/staged-child-0",
+              "/common-layer-native-popup/ordinary-tree/staged-child-1",
+              "/common-layer-native-popup/ordinary-tree/staged-child-2",
+              "/common-layer-native-popup/ordinary-tree/staged-child-3",
+              "/common-layer-native-popup/clone-tree/actual-entry",
+              "/common-layer-native-popup/clone-tree/lower-controls",
+              "/common-layer-native-popup/clone-tree/opening-provenance-mismatch",
+              "/common-layer-native-popup/clone-tree/mode-growth",
+              "/common-layer-native-popup/clone-tree/owner-target-lifetimes",
+              "/common-layer-native-popup/clone-tree/staged-newer-request",
+              "/common-layer-native-popup/clone-tree/host-name-destroy",
+              "/common-layer-native-popup/clone-tree/rapid-escape-reopen",
+              "/common-layer-native-popup/clone-tree/closing-provenance-exact",
+              "/common-layer-native-popup/clone-tree/closing-provenance-mismatch",
+              "/common-layer-native-popup/clone-tree/staged-child-0",
+              "/common-layer-native-popup/clone-tree/staged-child-1",
+              "/common-layer-native-popup/clone-tree/staged-child-2",
+              "/common-layer-native-popup/clone-tree/staged-child-3"
+            ],
+            "result": "OK",
+            "returncode": 0,
+            "duration_seconds": 151.1579418182373
+          },
+          "scale2": {
+            "passed_case_count": 58,
+            "expected_case_count": 58,
+            "passed_case_ids": [
+              "/common-layer-native-popup/group-tile",
+              "/common-layer-native-popup/group-tree",
+              "/common-layer-native-popup/ordinary-tile/actual-entry",
+              "/common-layer-native-popup/ordinary-tile/lower-controls",
+              "/common-layer-native-popup/ordinary-tile/opening-provenance-mismatch",
+              "/common-layer-native-popup/ordinary-tile/mode-growth",
+              "/common-layer-native-popup/ordinary-tile/owner-target-lifetimes",
+              "/common-layer-native-popup/ordinary-tile/staged-newer-request",
+              "/common-layer-native-popup/ordinary-tile/host-name-destroy",
+              "/common-layer-native-popup/ordinary-tile/rapid-escape-reopen",
+              "/common-layer-native-popup/ordinary-tile/closing-provenance-exact",
+              "/common-layer-native-popup/ordinary-tile/closing-provenance-mismatch",
+              "/common-layer-native-popup/ordinary-tile/staged-child-0",
+              "/common-layer-native-popup/ordinary-tile/staged-child-1",
+              "/common-layer-native-popup/ordinary-tile/staged-child-2",
+              "/common-layer-native-popup/ordinary-tile/staged-child-3",
+              "/common-layer-native-popup/clone-tile/actual-entry",
+              "/common-layer-native-popup/clone-tile/lower-controls",
+              "/common-layer-native-popup/clone-tile/opening-provenance-mismatch",
+              "/common-layer-native-popup/clone-tile/mode-growth",
+              "/common-layer-native-popup/clone-tile/owner-target-lifetimes",
+              "/common-layer-native-popup/clone-tile/staged-newer-request",
+              "/common-layer-native-popup/clone-tile/host-name-destroy",
+              "/common-layer-native-popup/clone-tile/rapid-escape-reopen",
+              "/common-layer-native-popup/clone-tile/closing-provenance-exact",
+              "/common-layer-native-popup/clone-tile/closing-provenance-mismatch",
+              "/common-layer-native-popup/clone-tile/staged-child-0",
+              "/common-layer-native-popup/clone-tile/staged-child-1",
+              "/common-layer-native-popup/clone-tile/staged-child-2",
+              "/common-layer-native-popup/clone-tile/staged-child-3",
+              "/common-layer-native-popup/ordinary-tree/actual-entry",
+              "/common-layer-native-popup/ordinary-tree/lower-controls",
+              "/common-layer-native-popup/ordinary-tree/opening-provenance-mismatch",
+              "/common-layer-native-popup/ordinary-tree/mode-growth",
+              "/common-layer-native-popup/ordinary-tree/owner-target-lifetimes",
+              "/common-layer-native-popup/ordinary-tree/staged-newer-request",
+              "/common-layer-native-popup/ordinary-tree/host-name-destroy",
+              "/common-layer-native-popup/ordinary-tree/rapid-escape-reopen",
+              "/common-layer-native-popup/ordinary-tree/closing-provenance-exact",
+              "/common-layer-native-popup/ordinary-tree/closing-provenance-mismatch",
+              "/common-layer-native-popup/ordinary-tree/staged-child-0",
+              "/common-layer-native-popup/ordinary-tree/staged-child-1",
+              "/common-layer-native-popup/ordinary-tree/staged-child-2",
+              "/common-layer-native-popup/ordinary-tree/staged-child-3",
+              "/common-layer-native-popup/clone-tree/actual-entry",
+              "/common-layer-native-popup/clone-tree/lower-controls",
+              "/common-layer-native-popup/clone-tree/opening-provenance-mismatch",
+              "/common-layer-native-popup/clone-tree/mode-growth",
+              "/common-layer-native-popup/clone-tree/owner-target-lifetimes",
+              "/common-layer-native-popup/clone-tree/staged-newer-request",
+              "/common-layer-native-popup/clone-tree/host-name-destroy",
+              "/common-layer-native-popup/clone-tree/rapid-escape-reopen",
+              "/common-layer-native-popup/clone-tree/closing-provenance-exact",
+              "/common-layer-native-popup/clone-tree/closing-provenance-mismatch",
+              "/common-layer-native-popup/clone-tree/staged-child-0",
+              "/common-layer-native-popup/clone-tree/staged-child-1",
+              "/common-layer-native-popup/clone-tree/staged-child-2",
+              "/common-layer-native-popup/clone-tree/staged-child-3"
+            ],
+            "result": "OK",
+            "returncode": 0,
+            "duration_seconds": 147.10706186294556
+          }
+        },
+        "adjacent": [
+          {
+            "name": "painter-layer-ui",
+            "cases": 86,
+            "result": "OK",
+            "returncode": 0
+          },
+          {
+            "name": "painter-layer-tree",
+            "cases": 35,
+            "result": "OK",
+            "returncode": 0
+          },
+          {
+            "name": "painter-dock-layout-ui",
+            "cases": 3,
+            "result": "OK",
+            "returncode": 0
+          },
+          {
+            "name": "painter-dock-input-ui",
+            "cases": 6,
+            "result": "OK",
+            "returncode": 0
+          },
+          {
+            "name": "painter-dock-session-ui",
+            "cases": 7,
+            "result": "OK",
+            "returncode": 0
+          },
+          {
+            "name": "painter-right-docks-ui",
+            "cases": 9,
+            "result": "OK",
+            "returncode": 0
+          },
+          {
+            "name": "painter-canvas-ui",
+            "cases": 107,
+            "result": "OK",
+            "returncode": 0
+          },
+          {
+            "name": "painter-filter-layer-popup",
+            "cases": 17,
+            "result": "OK",
+            "returncode": 0
+          },
+          {
+            "name": "painter-widget-exceptions",
+            "cases": 6,
+            "result": "OK",
+            "returncode": 0
+          },
+          {
+            "name": "painter-popup-handles",
+            "cases": 34,
+            "result": "OK",
+            "returncode": 0
+          },
+          {
+            "name": "layer-tile-entry-contracts",
+            "cases": 32,
+            "result": "OK",
+            "returncode": 0
+          },
+          {
+            "name": "painter-layer-dispatch",
+            "cases": 4,
+            "result": "OK",
+            "returncode": 0
+          },
+          {
+            "name": "native-popover-entry",
+            "cases": 14,
+            "result": "OK",
+            "returncode": 0
+          }
+        ],
+        "adjacent_case_count": 360,
+        "adjacent_registration_count": 13,
+        "headers_passed": true,
+        "compiled_locale_catalogs": 361,
+        "locale_final_hash_verification": "PASS",
+        "source_after_status": "empty",
+        "dock_trace": "unset; no runtime trace file",
+        "route_diagnostic_reruns": 0,
+        "screenshots": 16,
+        "visual_receipt_sha256": "8b2b66d3d6f34c34a9813277e5b2881185763efb0ee47b4bfcd7aeb4c82ab3c2"
+      },
+      "baseline": {
+        "strict_intended_carrier_reds": 4,
+        "assertion": "GTK_IS_WINDOW (popup) should be TRUE",
+        "scope": "Exact306 plus reviewed header prerequisites and236 harness; not passing baseline UI tests"
+      },
+      "diagnostic": {
+        "tested_commit": "3d6f62235c6bc9e2505d2c2b6ad1d42e15d081af",
+        "tested_tree": "a5a14a81a10857834301888a0cd2b3cf902bf17d",
+        "original_test_sha256": "49eb5a701b4f0a082c1f88f6a2f3a34546c738dfec4de1d28bf7989b12d5d664",
+        "instrumented_test_sha256": "236098bc509a123ec5209dbab683d55d231adf922f794b3f7ded9a6c9fdb1411",
+        "only_overlay": "app/tests/test-common-layer-popup.cpp",
+        "acceptance_eligible": false,
+        "strict_sigtrap_warning_frames_gate": "captured",
+        "observed_signal": "SIGTRAP",
+        "frame_count": 131,
+        "completed_prefix_cases": 8,
+        "last_phase": "205 fixture/native-dock-settle in clone-tree/closing-provenance-exact",
+        "trace_bytes": 1544021,
+        "pre_default_draw_snapshots": 0,
+        "qualification": "Main40-frame cap remains inside GTK drawing. Newly inserted tab hidden/unallocated is also seen in prior successful fixture opens, so alone does not identify cause. No measured frame-clock identity yet.",
+        "inspection_receipt_sha256": "f75005100a97b45a346fb81c504420417ef8800fc68646c87910f10f87290e8c"
+      },
+      "screenshots": {
+        "expected_raw_captures": 16,
+        "captured_raw_views": 16,
+        "all_raw_pixels_reviewed": true,
+        "visual_receipt_sha256": "8b2b66d3d6f34c34a9813277e5b2881185763efb0ee47b4bfcd7aeb4c82ab3c2",
+        "captures": [
+          {
+            "artifact_path": "common-layer-scale1/clone-tile-bottom-scale1.png",
+            "sha256": "4b0b941c35403a9b8b8274df45ad29b2613011857037545d6b7e4e6a91050e24",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale1/clone-tile-scale1.png",
+            "sha256": "8cd3347a0f66595ebbc24ca61ee36a7901da574e061412c142bd89be44c5f586",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale1/clone-tree-bottom-scale1.png",
+            "sha256": "d9fee719a627aa8edc85d6899460334d358562cec18371a5e9e8a18e99c273f2",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale1/clone-tree-scale1.png",
+            "sha256": "83ce19f136a3ff095eae5a2cfb969e48294831abba2b1d834eb5c413b0783fda",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale1/ordinary-tile-bottom-scale1.png",
+            "sha256": "503e16759832c4e679315cd50f5a8b232d766e840675f4af8d7407e5d6f34686",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale1/ordinary-tile-scale1.png",
+            "sha256": "25fa01d7221d4100505bedbdec70d137830b0cfde9efefdefa9e3571d66217d1",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale1/ordinary-tree-bottom-scale1.png",
+            "sha256": "f2cf5f1a300002c979da337d3ed66ad305d38f72bb239ab9da20bb90fca621ed",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale1/ordinary-tree-scale1.png",
+            "sha256": "3aa9b4db9dc90c54d9a0144961cf94516b0b40661a4c02f9e5aa5278986f2874",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale2/clone-tile-bottom-scale2.png",
+            "sha256": "3fb96729e6ead67d5414ee2b8812fdc4eec23fad8ece04ab8948a334356d2c8f",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale2/clone-tile-scale2.png",
+            "sha256": "990cb66c06abdcd06f0e376e6bbdc7234d0c49ffb0757b341ca432b6fcd3f21c",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale2/clone-tree-bottom-scale2.png",
+            "sha256": "85c8251531e906767e2a1fe5d2618656591cfa19394c42b32bfa7f97a085e5be",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale2/clone-tree-scale2.png",
+            "sha256": "7ddd1c428f260a4b5a94899a8221b630ca3bf4bcdf307210d1fd092b78334bf8",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale2/ordinary-tile-bottom-scale2.png",
+            "sha256": "a90ef70c755b5f3af514b51380856de549aa8a7be94f74a83ba99d4a6305bf40",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale2/ordinary-tile-scale2.png",
+            "sha256": "37e41c3e9db0a3f3abae6654e8a1868ae0e267e31e970825e1cb8e01c888faad",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale2/ordinary-tree-bottom-scale2.png",
+            "sha256": "5bb095737051912f63e475750380c1c5c3f5de5d38771b385bd165ed99703225",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale2/ordinary-tree-scale2.png",
+            "sha256": "665a19eb7c43049a8bd5d8f80ba4d5d73e8076a5dcde43059bcba2a609cc43b8",
+            "width": 1080,
+            "height": 1920
+          }
+        ],
+        "qualification": "Upper tile views require complementary bottom views; tree forms are short. Minimal resource fixture, not normal installed startup. No focused popup visual blocker seen."
+      },
+      "artifact_ids": {
+        "candidate": 12597120859,
+        "baseline": 12596595313,
+        "diagnostic": 12596363745
+      },
+      "artifact_sha256": {
+        "candidate": "213e249f6eadbb9dbb1b9d9ab22342e6a910aae086890d86d35b76da3b18da7f",
+        "baseline": "2d8e0eb47cdf5e46517b17d091bc1486f923d2847b66c07fd6143077aaece211",
+        "diagnostic": "13e09007b3810b2a1302f90a6a3e47a9a357aa9d97c4b33a7d84ba2f6562aec1"
+      },
+      "qualification": "First fresh complete automated focused candidate pass plus actual16-image review. Diagnostic-only revision changes no production and does NOT establish that the intermittently reproduced GimpDockbook warning is fixed. Task307 remains DOING pending root source diagnosis; no rerun-until-green waiver.",
+      "next_revision": "Investigate actual native dock allocation/frame-clock ordering from captured evidence before claiming the intermittent warning resolved; preserve all focused gates and fatal behavior."
+    },
+    {
+      "commit": "0e77b99c32d93a6066172b74a55abc2e2f2a1636",
+      "tree": "0b642834c97f5199f7e7f4f4415723734d371383",
+      "run_id": 40189766233,
+      "url": "https://github.com/seagetch/gimp-painter/actions/runs/40189766233",
+      "result": "candidate and baseline success; separate passive diagnostic failed strict reproduction gate after normal inferior exit",
+      "candidate_job": 121158066011,
+      "baseline_job": 121158066227,
+      "diagnostic_job": 121158066204,
+      "focused_test_sha256": "1fb2347433345556f1266fd54b5ec7e3b174ef80457233800f6ba17294389adc",
+      "validator_unit_tests": 101,
+      "source_integrity": "PASS: candidate pristine; baseline reviewed overlay; diagnostic immutable3d6f plus only1fb test overlay verified after compile/execution.",
+      "headers_and_361_catalog_hashes": "PASS",
+      "candidate": {
+        "common": {
+          "scale1": {
+            "passed_case_count": 58,
+            "expected_case_count": 58,
+            "passed_case_ids": [
+              "/common-layer-native-popup/group-tile",
+              "/common-layer-native-popup/group-tree",
+              "/common-layer-native-popup/ordinary-tile/actual-entry",
+              "/common-layer-native-popup/ordinary-tile/lower-controls",
+              "/common-layer-native-popup/ordinary-tile/opening-provenance-mismatch",
+              "/common-layer-native-popup/ordinary-tile/mode-growth",
+              "/common-layer-native-popup/ordinary-tile/owner-target-lifetimes",
+              "/common-layer-native-popup/ordinary-tile/staged-newer-request",
+              "/common-layer-native-popup/ordinary-tile/host-name-destroy",
+              "/common-layer-native-popup/ordinary-tile/rapid-escape-reopen",
+              "/common-layer-native-popup/ordinary-tile/closing-provenance-exact",
+              "/common-layer-native-popup/ordinary-tile/closing-provenance-mismatch",
+              "/common-layer-native-popup/ordinary-tile/staged-child-0",
+              "/common-layer-native-popup/ordinary-tile/staged-child-1",
+              "/common-layer-native-popup/ordinary-tile/staged-child-2",
+              "/common-layer-native-popup/ordinary-tile/staged-child-3",
+              "/common-layer-native-popup/clone-tile/actual-entry",
+              "/common-layer-native-popup/clone-tile/lower-controls",
+              "/common-layer-native-popup/clone-tile/opening-provenance-mismatch",
+              "/common-layer-native-popup/clone-tile/mode-growth",
+              "/common-layer-native-popup/clone-tile/owner-target-lifetimes",
+              "/common-layer-native-popup/clone-tile/staged-newer-request",
+              "/common-layer-native-popup/clone-tile/host-name-destroy",
+              "/common-layer-native-popup/clone-tile/rapid-escape-reopen",
+              "/common-layer-native-popup/clone-tile/closing-provenance-exact",
+              "/common-layer-native-popup/clone-tile/closing-provenance-mismatch",
+              "/common-layer-native-popup/clone-tile/staged-child-0",
+              "/common-layer-native-popup/clone-tile/staged-child-1",
+              "/common-layer-native-popup/clone-tile/staged-child-2",
+              "/common-layer-native-popup/clone-tile/staged-child-3",
+              "/common-layer-native-popup/ordinary-tree/actual-entry",
+              "/common-layer-native-popup/ordinary-tree/lower-controls",
+              "/common-layer-native-popup/ordinary-tree/opening-provenance-mismatch",
+              "/common-layer-native-popup/ordinary-tree/mode-growth",
+              "/common-layer-native-popup/ordinary-tree/owner-target-lifetimes",
+              "/common-layer-native-popup/ordinary-tree/staged-newer-request",
+              "/common-layer-native-popup/ordinary-tree/host-name-destroy",
+              "/common-layer-native-popup/ordinary-tree/rapid-escape-reopen",
+              "/common-layer-native-popup/ordinary-tree/closing-provenance-exact",
+              "/common-layer-native-popup/ordinary-tree/closing-provenance-mismatch",
+              "/common-layer-native-popup/ordinary-tree/staged-child-0",
+              "/common-layer-native-popup/ordinary-tree/staged-child-1",
+              "/common-layer-native-popup/ordinary-tree/staged-child-2",
+              "/common-layer-native-popup/ordinary-tree/staged-child-3",
+              "/common-layer-native-popup/clone-tree/actual-entry",
+              "/common-layer-native-popup/clone-tree/lower-controls",
+              "/common-layer-native-popup/clone-tree/opening-provenance-mismatch",
+              "/common-layer-native-popup/clone-tree/mode-growth",
+              "/common-layer-native-popup/clone-tree/owner-target-lifetimes",
+              "/common-layer-native-popup/clone-tree/staged-newer-request",
+              "/common-layer-native-popup/clone-tree/host-name-destroy",
+              "/common-layer-native-popup/clone-tree/rapid-escape-reopen",
+              "/common-layer-native-popup/clone-tree/closing-provenance-exact",
+              "/common-layer-native-popup/clone-tree/closing-provenance-mismatch",
+              "/common-layer-native-popup/clone-tree/staged-child-0",
+              "/common-layer-native-popup/clone-tree/staged-child-1",
+              "/common-layer-native-popup/clone-tree/staged-child-2",
+              "/common-layer-native-popup/clone-tree/staged-child-3"
+            ],
+            "result": "OK",
+            "returncode": 0,
+            "duration_seconds": 153.26767563819885
+          },
+          "scale2": {
+            "passed_case_count": 58,
+            "expected_case_count": 58,
+            "passed_case_ids": [
+              "/common-layer-native-popup/group-tile",
+              "/common-layer-native-popup/group-tree",
+              "/common-layer-native-popup/ordinary-tile/actual-entry",
+              "/common-layer-native-popup/ordinary-tile/lower-controls",
+              "/common-layer-native-popup/ordinary-tile/opening-provenance-mismatch",
+              "/common-layer-native-popup/ordinary-tile/mode-growth",
+              "/common-layer-native-popup/ordinary-tile/owner-target-lifetimes",
+              "/common-layer-native-popup/ordinary-tile/staged-newer-request",
+              "/common-layer-native-popup/ordinary-tile/host-name-destroy",
+              "/common-layer-native-popup/ordinary-tile/rapid-escape-reopen",
+              "/common-layer-native-popup/ordinary-tile/closing-provenance-exact",
+              "/common-layer-native-popup/ordinary-tile/closing-provenance-mismatch",
+              "/common-layer-native-popup/ordinary-tile/staged-child-0",
+              "/common-layer-native-popup/ordinary-tile/staged-child-1",
+              "/common-layer-native-popup/ordinary-tile/staged-child-2",
+              "/common-layer-native-popup/ordinary-tile/staged-child-3",
+              "/common-layer-native-popup/clone-tile/actual-entry",
+              "/common-layer-native-popup/clone-tile/lower-controls",
+              "/common-layer-native-popup/clone-tile/opening-provenance-mismatch",
+              "/common-layer-native-popup/clone-tile/mode-growth",
+              "/common-layer-native-popup/clone-tile/owner-target-lifetimes",
+              "/common-layer-native-popup/clone-tile/staged-newer-request",
+              "/common-layer-native-popup/clone-tile/host-name-destroy",
+              "/common-layer-native-popup/clone-tile/rapid-escape-reopen",
+              "/common-layer-native-popup/clone-tile/closing-provenance-exact",
+              "/common-layer-native-popup/clone-tile/closing-provenance-mismatch",
+              "/common-layer-native-popup/clone-tile/staged-child-0",
+              "/common-layer-native-popup/clone-tile/staged-child-1",
+              "/common-layer-native-popup/clone-tile/staged-child-2",
+              "/common-layer-native-popup/clone-tile/staged-child-3",
+              "/common-layer-native-popup/ordinary-tree/actual-entry",
+              "/common-layer-native-popup/ordinary-tree/lower-controls",
+              "/common-layer-native-popup/ordinary-tree/opening-provenance-mismatch",
+              "/common-layer-native-popup/ordinary-tree/mode-growth",
+              "/common-layer-native-popup/ordinary-tree/owner-target-lifetimes",
+              "/common-layer-native-popup/ordinary-tree/staged-newer-request",
+              "/common-layer-native-popup/ordinary-tree/host-name-destroy",
+              "/common-layer-native-popup/ordinary-tree/rapid-escape-reopen",
+              "/common-layer-native-popup/ordinary-tree/closing-provenance-exact",
+              "/common-layer-native-popup/ordinary-tree/closing-provenance-mismatch",
+              "/common-layer-native-popup/ordinary-tree/staged-child-0",
+              "/common-layer-native-popup/ordinary-tree/staged-child-1",
+              "/common-layer-native-popup/ordinary-tree/staged-child-2",
+              "/common-layer-native-popup/ordinary-tree/staged-child-3",
+              "/common-layer-native-popup/clone-tree/actual-entry",
+              "/common-layer-native-popup/clone-tree/lower-controls",
+              "/common-layer-native-popup/clone-tree/opening-provenance-mismatch",
+              "/common-layer-native-popup/clone-tree/mode-growth",
+              "/common-layer-native-popup/clone-tree/owner-target-lifetimes",
+              "/common-layer-native-popup/clone-tree/staged-newer-request",
+              "/common-layer-native-popup/clone-tree/host-name-destroy",
+              "/common-layer-native-popup/clone-tree/rapid-escape-reopen",
+              "/common-layer-native-popup/clone-tree/closing-provenance-exact",
+              "/common-layer-native-popup/clone-tree/closing-provenance-mismatch",
+              "/common-layer-native-popup/clone-tree/staged-child-0",
+              "/common-layer-native-popup/clone-tree/staged-child-1",
+              "/common-layer-native-popup/clone-tree/staged-child-2",
+              "/common-layer-native-popup/clone-tree/staged-child-3"
+            ],
+            "result": "OK",
+            "returncode": 0,
+            "duration_seconds": 148.08238434791565
+          }
+        },
+        "adjacent": [
+          {
+            "name": "painter-layer-ui",
+            "cases": 86,
+            "result": "OK",
+            "returncode": 0
+          },
+          {
+            "name": "painter-layer-tree",
+            "cases": 35,
+            "result": "OK",
+            "returncode": 0
+          },
+          {
+            "name": "painter-dock-layout-ui",
+            "cases": 3,
+            "result": "OK",
+            "returncode": 0
+          },
+          {
+            "name": "painter-dock-input-ui",
+            "cases": 6,
+            "result": "OK",
+            "returncode": 0
+          },
+          {
+            "name": "painter-dock-session-ui",
+            "cases": 7,
+            "result": "OK",
+            "returncode": 0
+          },
+          {
+            "name": "painter-right-docks-ui",
+            "cases": 9,
+            "result": "OK",
+            "returncode": 0
+          },
+          {
+            "name": "painter-canvas-ui",
+            "cases": 107,
+            "result": "OK",
+            "returncode": 0
+          },
+          {
+            "name": "painter-filter-layer-popup",
+            "cases": 17,
+            "result": "OK",
+            "returncode": 0
+          },
+          {
+            "name": "painter-widget-exceptions",
+            "cases": 6,
+            "result": "OK",
+            "returncode": 0
+          },
+          {
+            "name": "painter-popup-handles",
+            "cases": 34,
+            "result": "OK",
+            "returncode": 0
+          },
+          {
+            "name": "layer-tile-entry-contracts",
+            "cases": 32,
+            "result": "OK",
+            "returncode": 0
+          },
+          {
+            "name": "painter-layer-dispatch",
+            "cases": 4,
+            "result": "OK",
+            "returncode": 0
+          },
+          {
+            "name": "native-popover-entry",
+            "cases": 14,
+            "result": "OK",
+            "returncode": 0
+          }
+        ],
+        "adjacent_case_count": 360,
+        "adjacent_registration_count": 13,
+        "headers_passed": true,
+        "compiled_locale_catalogs": 361,
+        "locale_final_hash_verification": "PASS",
+        "source_after_status": "empty",
+        "dock_trace": "unset; no runtime trace file",
+        "route_diagnostic_reruns": 0,
+        "screenshots": 16,
+        "visual_receipt_sha256": "eeaf39aabc6bbdc96d9d7552c5063a67208ce1590bd313391eb18673c6ec8eeb"
+      },
+      "baseline": {
+        "strict_intended_carrier_reds": 4,
+        "assertion": "GTK_IS_WINDOW (popup) should be TRUE",
+        "scope": "Exact306 plus reviewed header prerequisites and1fb harness; not passing baseline UI tests"
+      },
+      "diagnostic": {
+        "tested_commit": "3d6f62235c6bc9e2505d2c2b6ad1d42e15d081af",
+        "tested_tree": "a5a14a81a10857834301888a0cd2b3cf902bf17d",
+        "original_test_sha256": "49eb5a701b4f0a082c1f88f6a2f3a34546c738dfec4de1d28bf7989b12d5d664",
+        "instrumented_test_sha256": "1fb2347433345556f1266fd54b5ec7e3b174ef80457233800f6ba17294389adc",
+        "only_overlay": "app/tests/test-common-layer-popup.cpp",
+        "acceptance_eligible": false,
+        "strict_sigtrap_warning_frames_gate": "failed: no reproduction",
+        "observed_signal": null,
+        "frame_count": 0,
+        "completed_prefix_cases": 14,
+        "inferior_status": "Exited normally after all14 selected diagnostic-prefix cases; not candidate acceptance",
+        "gdb_status": "Main-thread200 commands ran after normal exit, reporting Unknown thread1/No stack; wrapper return1, not a native crash",
+        "trace": {
+          "file": "dockbook-lifecycle-trace.txt",
+          "sha256": "4e31f1cebd0ab1d1479e4ee8045a96350b1c94503970f891e82ceea4d6c661e1",
+          "bytes": 2096120,
+          "cap_reached": true,
+          "cap_phase": "324 fixture/test-image-create, clone-tree/staged-child-2",
+          "later_absence": "Inconclusive, never absence-of-event proof",
+          "clock_event_counts": {
+            "layout": 25,
+            "paint": 111,
+            "after-paint": 111,
+            "before-paint": 110
+          },
+          "measured_distinct_domains": true,
+          "safe_order_example": "Uncapped lines3534-3548, closing-provenance-exact phase205: widget/main clock0x557dfbe25d30 layout, book allocation153, main paint/afterpaint, then native/offscreen clock0x557dfc4c0a80 paint. This is a successful ordering, not reproduction of the failing ordering.",
+          "reviewer_independent_observation": "11 uncapped fresh insertions show main layout/book allocation preceding that book native/offscreen paint; failing ordering not observed."
+        },
+        "root_capture": "Black root after normal inferior exit, not a stopped popup image.",
+        "qualification": "Distinct main/layout and native/offscreen clock domains measured; 11 uncapped successful insertions allocate before offscreen paint. Failing ordering NOT observed; trace cap makes later absence inconclusive. Prior run14 real warning reproduction remains unresolved.",
+        "inspection_receipt_sha256": "d6cc20b05217b9e30e34c53e8c0f63fb4bf3334317cd6aba1c2d9c1fcfddebb7"
+      },
+      "screenshots": {
+        "expected_raw_captures": 16,
+        "captured_raw_views": 16,
+        "all_raw_pixels_reviewed": true,
+        "visual_receipt_sha256": "eeaf39aabc6bbdc96d9d7552c5063a67208ce1590bd313391eb18673c6ec8eeb",
+        "captures": [
+          {
+            "artifact_path": "common-layer-scale1/clone-tile-bottom-scale1.png",
+            "sha256": "4b0b941c35403a9b8b8274df45ad29b2613011857037545d6b7e4e6a91050e24",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale1/clone-tile-scale1.png",
+            "sha256": "8cd3347a0f66595ebbc24ca61ee36a7901da574e061412c142bd89be44c5f586",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale1/clone-tree-bottom-scale1.png",
+            "sha256": "d9fee719a627aa8edc85d6899460334d358562cec18371a5e9e8a18e99c273f2",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale1/clone-tree-scale1.png",
+            "sha256": "83ce19f136a3ff095eae5a2cfb969e48294831abba2b1d834eb5c413b0783fda",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale1/ordinary-tile-bottom-scale1.png",
+            "sha256": "503e16759832c4e679315cd50f5a8b232d766e840675f4af8d7407e5d6f34686",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale1/ordinary-tile-scale1.png",
+            "sha256": "13148587585e6248e732cf513cfaa94aee2b2133314710a2b733bf3f1e26060d",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale1/ordinary-tree-bottom-scale1.png",
+            "sha256": "453843bdac5e18ac21034033fb46e5ac67059efad03e058d62b0959756bfb9ac",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale1/ordinary-tree-scale1.png",
+            "sha256": "3aa9b4db9dc90c54d9a0144961cf94516b0b40661a4c02f9e5aa5278986f2874",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale2/clone-tile-bottom-scale2.png",
+            "sha256": "3fb96729e6ead67d5414ee2b8812fdc4eec23fad8ece04ab8948a334356d2c8f",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale2/clone-tile-scale2.png",
+            "sha256": "990cb66c06abdcd06f0e376e6bbdc7234d0c49ffb0757b341ca432b6fcd3f21c",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale2/clone-tree-bottom-scale2.png",
+            "sha256": "85c8251531e906767e2a1fe5d2618656591cfa19394c42b32bfa7f97a085e5be",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale2/clone-tree-scale2.png",
+            "sha256": "7ddd1c428f260a4b5a94899a8221b630ca3bf4bcdf307210d1fd092b78334bf8",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale2/ordinary-tile-bottom-scale2.png",
+            "sha256": "a90ef70c755b5f3af514b51380856de549aa8a7be94f74a83ba99d4a6305bf40",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale2/ordinary-tile-scale2.png",
+            "sha256": "37e41c3e9db0a3f3abae6654e8a1868ae0e267e31e970825e1cb8e01c888faad",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale2/ordinary-tree-bottom-scale2.png",
+            "sha256": "28e678061811d2f05afa69f702b11e676ddc6490f253ca2a20eaa05ea9ff17a0",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale2/ordinary-tree-scale2.png",
+            "sha256": "665a19eb7c43049a8bd5d8f80ba4d5d73e8076a5dcde43059bcba2a609cc43b8",
+            "width": 1080,
+            "height": 1920
+          }
+        ],
+        "qualification": "Upper tile views need complementary bottom views; tree forms are short and complete. Minimal test resource fixture, not normal installed startup. No focused popup visual blocker seen."
+      },
+      "artifact_ids": {
+        "candidate": 12598465709,
+        "baseline": 12597484897,
+        "diagnostic": 12597910635
+      },
+      "artifact_sha256": {
+        "baseline-red-controls": "4a93deae5ed84e83451817f82638420dcad6830607bf3b1460252c1b1b20e3ae",
+        "diagnostic-only": "5a4e9021ddbfec77ae24b69c372fadbd4b1ce2556f33d3ab06fd769b80d357ef",
+        "candidate": "97efa2697bb4174125b102605e249339e1d4bdae0cc2553ee89e1312b61060ec"
+      },
+      "qualification": "Normal candidate automated58x2/16images/360adjacent plus four baseline REDs passed; all16 raw images actually reviewed. Separate pinned diagnostic failed its strict reproduction gate after14 diagnostic cases completed and inferior exited normally. No production fix and no rerun-until-green waiver: intermittent Dockbook warning remains unresolved; task307 stays DOING.",
+      "next_revision": "Separately identified controlled-order diagnostic may process only already-pending offscreen updates after actual native insertion; it is not a production fix or acceptance substitute. Preserve strict candidate and baseline gates."
+    },
+    {
+      "commit": "1618cc5958148c7d534f9e3893681e14fcc94d80",
+      "tree": "253fcbdeb7c39391ddf8bad89b7877e1e18911b8",
+      "run_id": 40193546110,
+      "url": "https://github.com/seagetch/gimp-painter/actions/runs/40193546110",
+      "result": "all three jobs successful; third is controlled fatal-warning reproduction, not a defect fix",
+      "candidate_job": 121169440677,
+      "baseline_job": 121169440566,
+      "diagnostic_job": 121169440457,
+      "focused_test_sha256": "78079b8209f0bb4a06f9c44ef15a2ee393c3d917da7ecad213cee8b259c61152",
+      "validator_unit_tests": 135,
+      "source_integrity": "PASS: candidate pristine; reviewed306 overlay; immutable3d6 production plus only78079 test overlay verified after compile and execution.",
+      "headers_and_361_catalog_hashes": "PASS",
+      "candidate": {
+        "common": {
+          "scale1": {
+            "passed_case_count": 58,
+            "expected_case_count": 58,
+            "passed_case_ids": [
+              "/common-layer-native-popup/group-tile",
+              "/common-layer-native-popup/group-tree",
+              "/common-layer-native-popup/ordinary-tile/actual-entry",
+              "/common-layer-native-popup/ordinary-tile/lower-controls",
+              "/common-layer-native-popup/ordinary-tile/opening-provenance-mismatch",
+              "/common-layer-native-popup/ordinary-tile/mode-growth",
+              "/common-layer-native-popup/ordinary-tile/owner-target-lifetimes",
+              "/common-layer-native-popup/ordinary-tile/staged-newer-request",
+              "/common-layer-native-popup/ordinary-tile/host-name-destroy",
+              "/common-layer-native-popup/ordinary-tile/rapid-escape-reopen",
+              "/common-layer-native-popup/ordinary-tile/closing-provenance-exact",
+              "/common-layer-native-popup/ordinary-tile/closing-provenance-mismatch",
+              "/common-layer-native-popup/ordinary-tile/staged-child-0",
+              "/common-layer-native-popup/ordinary-tile/staged-child-1",
+              "/common-layer-native-popup/ordinary-tile/staged-child-2",
+              "/common-layer-native-popup/ordinary-tile/staged-child-3",
+              "/common-layer-native-popup/clone-tile/actual-entry",
+              "/common-layer-native-popup/clone-tile/lower-controls",
+              "/common-layer-native-popup/clone-tile/opening-provenance-mismatch",
+              "/common-layer-native-popup/clone-tile/mode-growth",
+              "/common-layer-native-popup/clone-tile/owner-target-lifetimes",
+              "/common-layer-native-popup/clone-tile/staged-newer-request",
+              "/common-layer-native-popup/clone-tile/host-name-destroy",
+              "/common-layer-native-popup/clone-tile/rapid-escape-reopen",
+              "/common-layer-native-popup/clone-tile/closing-provenance-exact",
+              "/common-layer-native-popup/clone-tile/closing-provenance-mismatch",
+              "/common-layer-native-popup/clone-tile/staged-child-0",
+              "/common-layer-native-popup/clone-tile/staged-child-1",
+              "/common-layer-native-popup/clone-tile/staged-child-2",
+              "/common-layer-native-popup/clone-tile/staged-child-3",
+              "/common-layer-native-popup/ordinary-tree/actual-entry",
+              "/common-layer-native-popup/ordinary-tree/lower-controls",
+              "/common-layer-native-popup/ordinary-tree/opening-provenance-mismatch",
+              "/common-layer-native-popup/ordinary-tree/mode-growth",
+              "/common-layer-native-popup/ordinary-tree/owner-target-lifetimes",
+              "/common-layer-native-popup/ordinary-tree/staged-newer-request",
+              "/common-layer-native-popup/ordinary-tree/host-name-destroy",
+              "/common-layer-native-popup/ordinary-tree/rapid-escape-reopen",
+              "/common-layer-native-popup/ordinary-tree/closing-provenance-exact",
+              "/common-layer-native-popup/ordinary-tree/closing-provenance-mismatch",
+              "/common-layer-native-popup/ordinary-tree/staged-child-0",
+              "/common-layer-native-popup/ordinary-tree/staged-child-1",
+              "/common-layer-native-popup/ordinary-tree/staged-child-2",
+              "/common-layer-native-popup/ordinary-tree/staged-child-3",
+              "/common-layer-native-popup/clone-tree/actual-entry",
+              "/common-layer-native-popup/clone-tree/lower-controls",
+              "/common-layer-native-popup/clone-tree/opening-provenance-mismatch",
+              "/common-layer-native-popup/clone-tree/mode-growth",
+              "/common-layer-native-popup/clone-tree/owner-target-lifetimes",
+              "/common-layer-native-popup/clone-tree/staged-newer-request",
+              "/common-layer-native-popup/clone-tree/host-name-destroy",
+              "/common-layer-native-popup/clone-tree/rapid-escape-reopen",
+              "/common-layer-native-popup/clone-tree/closing-provenance-exact",
+              "/common-layer-native-popup/clone-tree/closing-provenance-mismatch",
+              "/common-layer-native-popup/clone-tree/staged-child-0",
+              "/common-layer-native-popup/clone-tree/staged-child-1",
+              "/common-layer-native-popup/clone-tree/staged-child-2",
+              "/common-layer-native-popup/clone-tree/staged-child-3"
+            ],
+            "result": "OK",
+            "returncode": 0,
+            "duration_seconds": 155.08373999595642
+          },
+          "scale2": {
+            "passed_case_count": 58,
+            "expected_case_count": 58,
+            "passed_case_ids": [
+              "/common-layer-native-popup/group-tile",
+              "/common-layer-native-popup/group-tree",
+              "/common-layer-native-popup/ordinary-tile/actual-entry",
+              "/common-layer-native-popup/ordinary-tile/lower-controls",
+              "/common-layer-native-popup/ordinary-tile/opening-provenance-mismatch",
+              "/common-layer-native-popup/ordinary-tile/mode-growth",
+              "/common-layer-native-popup/ordinary-tile/owner-target-lifetimes",
+              "/common-layer-native-popup/ordinary-tile/staged-newer-request",
+              "/common-layer-native-popup/ordinary-tile/host-name-destroy",
+              "/common-layer-native-popup/ordinary-tile/rapid-escape-reopen",
+              "/common-layer-native-popup/ordinary-tile/closing-provenance-exact",
+              "/common-layer-native-popup/ordinary-tile/closing-provenance-mismatch",
+              "/common-layer-native-popup/ordinary-tile/staged-child-0",
+              "/common-layer-native-popup/ordinary-tile/staged-child-1",
+              "/common-layer-native-popup/ordinary-tile/staged-child-2",
+              "/common-layer-native-popup/ordinary-tile/staged-child-3",
+              "/common-layer-native-popup/clone-tile/actual-entry",
+              "/common-layer-native-popup/clone-tile/lower-controls",
+              "/common-layer-native-popup/clone-tile/opening-provenance-mismatch",
+              "/common-layer-native-popup/clone-tile/mode-growth",
+              "/common-layer-native-popup/clone-tile/owner-target-lifetimes",
+              "/common-layer-native-popup/clone-tile/staged-newer-request",
+              "/common-layer-native-popup/clone-tile/host-name-destroy",
+              "/common-layer-native-popup/clone-tile/rapid-escape-reopen",
+              "/common-layer-native-popup/clone-tile/closing-provenance-exact",
+              "/common-layer-native-popup/clone-tile/closing-provenance-mismatch",
+              "/common-layer-native-popup/clone-tile/staged-child-0",
+              "/common-layer-native-popup/clone-tile/staged-child-1",
+              "/common-layer-native-popup/clone-tile/staged-child-2",
+              "/common-layer-native-popup/clone-tile/staged-child-3",
+              "/common-layer-native-popup/ordinary-tree/actual-entry",
+              "/common-layer-native-popup/ordinary-tree/lower-controls",
+              "/common-layer-native-popup/ordinary-tree/opening-provenance-mismatch",
+              "/common-layer-native-popup/ordinary-tree/mode-growth",
+              "/common-layer-native-popup/ordinary-tree/owner-target-lifetimes",
+              "/common-layer-native-popup/ordinary-tree/staged-newer-request",
+              "/common-layer-native-popup/ordinary-tree/host-name-destroy",
+              "/common-layer-native-popup/ordinary-tree/rapid-escape-reopen",
+              "/common-layer-native-popup/ordinary-tree/closing-provenance-exact",
+              "/common-layer-native-popup/ordinary-tree/closing-provenance-mismatch",
+              "/common-layer-native-popup/ordinary-tree/staged-child-0",
+              "/common-layer-native-popup/ordinary-tree/staged-child-1",
+              "/common-layer-native-popup/ordinary-tree/staged-child-2",
+              "/common-layer-native-popup/ordinary-tree/staged-child-3",
+              "/common-layer-native-popup/clone-tree/actual-entry",
+              "/common-layer-native-popup/clone-tree/lower-controls",
+              "/common-layer-native-popup/clone-tree/opening-provenance-mismatch",
+              "/common-layer-native-popup/clone-tree/mode-growth",
+              "/common-layer-native-popup/clone-tree/owner-target-lifetimes",
+              "/common-layer-native-popup/clone-tree/staged-newer-request",
+              "/common-layer-native-popup/clone-tree/host-name-destroy",
+              "/common-layer-native-popup/clone-tree/rapid-escape-reopen",
+              "/common-layer-native-popup/clone-tree/closing-provenance-exact",
+              "/common-layer-native-popup/clone-tree/closing-provenance-mismatch",
+              "/common-layer-native-popup/clone-tree/staged-child-0",
+              "/common-layer-native-popup/clone-tree/staged-child-1",
+              "/common-layer-native-popup/clone-tree/staged-child-2",
+              "/common-layer-native-popup/clone-tree/staged-child-3"
+            ],
+            "result": "OK",
+            "returncode": 0,
+            "duration_seconds": 148.91483902931213
+          }
+        },
+        "adjacent": [
+          {
+            "name": "painter-layer-ui",
+            "cases": 86,
+            "result": "OK",
+            "returncode": 0
+          },
+          {
+            "name": "painter-layer-tree",
+            "cases": 35,
+            "result": "OK",
+            "returncode": 0
+          },
+          {
+            "name": "painter-dock-layout-ui",
+            "cases": 3,
+            "result": "OK",
+            "returncode": 0
+          },
+          {
+            "name": "painter-dock-input-ui",
+            "cases": 6,
+            "result": "OK",
+            "returncode": 0
+          },
+          {
+            "name": "painter-dock-session-ui",
+            "cases": 7,
+            "result": "OK",
+            "returncode": 0
+          },
+          {
+            "name": "painter-right-docks-ui",
+            "cases": 9,
+            "result": "OK",
+            "returncode": 0
+          },
+          {
+            "name": "painter-canvas-ui",
+            "cases": 107,
+            "result": "OK",
+            "returncode": 0
+          },
+          {
+            "name": "painter-filter-layer-popup",
+            "cases": 17,
+            "result": "OK",
+            "returncode": 0
+          },
+          {
+            "name": "painter-widget-exceptions",
+            "cases": 6,
+            "result": "OK",
+            "returncode": 0
+          },
+          {
+            "name": "painter-popup-handles",
+            "cases": 34,
+            "result": "OK",
+            "returncode": 0
+          },
+          {
+            "name": "layer-tile-entry-contracts",
+            "cases": 32,
+            "result": "OK",
+            "returncode": 0
+          },
+          {
+            "name": "painter-layer-dispatch",
+            "cases": 4,
+            "result": "OK",
+            "returncode": 0
+          },
+          {
+            "name": "native-popover-entry",
+            "cases": 14,
+            "result": "OK",
+            "returncode": 0
+          }
+        ],
+        "adjacent_case_count": 360,
+        "adjacent_registration_count": 13,
+        "headers_passed": true,
+        "compiled_locale_catalogs": 361,
+        "locale_final_hash_verification": "PASS",
+        "source_after_status": "empty",
+        "dock_trace": "unset; active early-updates flag unset; no runtime trace file",
+        "route_diagnostic_reruns": 0,
+        "screenshots": 16,
+        "visual_receipt_sha256": "149fef8ca54187a7ead62c6f761312032fd6ac5bc6492aa08029998b01f9d30b"
+      },
+      "baseline": {
+        "strict_intended_carrier_reds": 4,
+        "assertion": "GTK_IS_WINDOW (popup) should be TRUE",
+        "scope": "Exact306 plus reviewed header prerequisites and78079 harness; not passing baseline UI tests"
+      },
+      "diagnostic": {
+        "tested_commit": "3d6f62235c6bc9e2505d2c2b6ad1d42e15d081af",
+        "tested_tree": "a5a14a81a10857834301888a0cd2b3cf902bf17d",
+        "original_test_sha256": "49eb5a701b4f0a082c1f88f6a2f3a34546c738dfec4de1d28bf7989b12d5d664",
+        "instrumented_test_sha256": "78079b8209f0bb4a06f9c44ef15a2ee393c3d917da7ecad213cee8b259c61152",
+        "only_overlay": "app/tests/test-common-layer-popup.cpp",
+        "acceptance_eligible": false,
+        "strict_controlled_gate": "reproduced",
+        "observed_signal": "SIGTRAP",
+        "frame_count": 238,
+        "completed_prefix_cases": 1,
+        "main_thread_attribution": "Frame89: (anonymous namespace)::controlled_dock_updates at app/tests/test-common-layer-popup.cpp:291; then Fixture constructor636/lower_controls942. PublicGDK wrapper absent as predicted from pinned binary tail jump.",
+        "trace": {
+          "sha256": "2d470356d28c351c18677c0779f9725bafd89cba13c9e95c5244ab27bb48b360",
+          "bytes": 405611,
+          "cap_reached": false,
+          "begin_count": 2,
+          "returned_count": 1,
+          "unreturned_dispatch": {
+            "line": 923,
+            "window": "0x55662443ec10",
+            "phase": "phase=46 fixture/controlled-offscreen-updates test=/common-layer-native-popup/clone-tree/lower-controls"
+          }
+        },
+        "root_capture": "Native docks/Clone selected before common popup, observed at stopped controlled dispatch; not an acceptance image.",
+        "qualification": "Active test-only scheduling processed existing pending exact-OFFSCREEN updates after real insertion. This confirms the specific controlled failing order on immutable3d6, not its frequency or full causal equivalence to every natural warning. Prior natural warning remains real; no production fix applied. Normal candidate passes separately as documented here; this is still not a production fix.",
+        "inspection_receipt_sha256": "1ac07c8a2a1fa6a921d5819609369baf80d8f2a7504223413251f3bd5f029d51"
+      },
+      "screenshots": {
+        "expected_raw_captures": 16,
+        "captured_raw_views": 16,
+        "all_raw_pixels_reviewed": true,
+        "visual_receipt_sha256": "149fef8ca54187a7ead62c6f761312032fd6ac5bc6492aa08029998b01f9d30b",
+        "captures": [
+          {
+            "artifact_path": "common-layer-scale1/clone-tile-bottom-scale1.png",
+            "sha256": "4b0b941c35403a9b8b8274df45ad29b2613011857037545d6b7e4e6a91050e24",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale1/clone-tile-scale1.png",
+            "sha256": "8cd3347a0f66595ebbc24ca61ee36a7901da574e061412c142bd89be44c5f586",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale1/clone-tree-bottom-scale1.png",
+            "sha256": "d9fee719a627aa8edc85d6899460334d358562cec18371a5e9e8a18e99c273f2",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale1/clone-tree-scale1.png",
+            "sha256": "83ce19f136a3ff095eae5a2cfb969e48294831abba2b1d834eb5c413b0783fda",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale1/ordinary-tile-bottom-scale1.png",
+            "sha256": "503e16759832c4e679315cd50f5a8b232d766e840675f4af8d7407e5d6f34686",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale1/ordinary-tile-scale1.png",
+            "sha256": "13148587585e6248e732cf513cfaa94aee2b2133314710a2b733bf3f1e26060d",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale1/ordinary-tree-bottom-scale1.png",
+            "sha256": "4a7da351119f6b5a81b808aa48d6a395f73452934d5f84f988cdf079ae57bd8a",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale1/ordinary-tree-scale1.png",
+            "sha256": "3aa9b4db9dc90c54d9a0144961cf94516b0b40661a4c02f9e5aa5278986f2874",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale2/clone-tile-bottom-scale2.png",
+            "sha256": "3fb96729e6ead67d5414ee2b8812fdc4eec23fad8ece04ab8948a334356d2c8f",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale2/clone-tile-scale2.png",
+            "sha256": "990cb66c06abdcd06f0e376e6bbdc7234d0c49ffb0757b341ca432b6fcd3f21c",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale2/clone-tree-bottom-scale2.png",
+            "sha256": "e46d939aab0a923c95a8fc38fa03b97854174cd937a6ea86038d092dc0ef2e42",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale2/clone-tree-scale2.png",
+            "sha256": "7ddd1c428f260a4b5a94899a8221b630ca3bf4bcdf307210d1fd092b78334bf8",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale2/ordinary-tile-bottom-scale2.png",
+            "sha256": "a90ef70c755b5f3af514b51380856de549aa8a7be94f74a83ba99d4a6305bf40",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale2/ordinary-tile-scale2.png",
+            "sha256": "37e41c3e9db0a3f3abae6654e8a1868ae0e267e31e970825e1cb8e01c888faad",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale2/ordinary-tree-bottom-scale2.png",
+            "sha256": "9dc3aedb6fc0c5217d42ff28a46f8f6cfc995898ba3ab35b3f697f502cca9b3e",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale2/ordinary-tree-scale2.png",
+            "sha256": "665a19eb7c43049a8bd5d8f80ba4d5d73e8076a5dcde43059bcba2a609cc43b8",
+            "width": 1080,
+            "height": 1920
+          }
+        ],
+        "qualification": "Upper tile views need complementary scrolled bottom views; expanded scrollbar overlaps some right-edge values but not bottom action labels. Tree forms are short/complete. Minimal resource fixture, not normal installed startup."
+      },
+      "artifact_ids": {
+        "candidate": 12599228214,
+        "baseline": 12599082397,
+        "diagnostic": 12598848291
+      },
+      "artifact_sha256": {
+        "baseline-red-controls": "2b907f299361af9f84f6b3e7de00dd65dce80ee3baf7cd0719fc9fd9d87dd65c",
+        "diagnostic-only": "31579a1cff2a396fc927dd2dad439918a4bfc207d8aa08f2cd60903e68663da3",
+        "candidate": "c85703b3c189d2bade008f571a70b4e30e28292e653a8014569791fcc82e1a39"
+      },
+      "qualification": "Normal candidate58x2/16images/360adjacent and four306carrier REDs passed; all16 raw candidate images actually reviewed. Separate active scheduling diagnostic confirmed exact warning/SIGTRAP inside unreturned process_updates call on immutable3d6 production. This controlled reproduction is not a fix or acceptance substitution; task307 remains DOING pending source repair and focused regression proof.",
+      "next_revision": "Source repair and separate six-case frame-order regression gate under review. Preserve all58/16/360 acceptance gates and immutable3d6+78079 controlled RED; do not treat fresh ordinary success as a defect fix."
+    },
+    {
+      "commit": "d2e85ec5de546348a75a8b02c7851669f4440dc7",
+      "tree": "cf6c5c41f5d82dc3ed6629c069331489fa4e30a8",
+      "run_id": 40196267428,
+      "url": "https://github.com/seagetch/gimp-painter/actions/runs/40196267428",
+      "result": "candidate failed new six-case paint gate at both scales; normal common and adjacent gates passed; baseline and immutable controlled REDs passed",
+      "candidate_job": 121177647913,
+      "baseline_job": 121177647689,
+      "diagnostic_job": 121177647877,
+      "focused_test_sha256": "31ff252f755a9f152cb7f4ea7da400f62fa69d8a3b0ab8f83a9495809a4b05bf",
+      "gate_test_sha256": "e54c12fabca0e6d16f124b2fca47f9ba20bbcda49a868125b5e07ec59e0bddba",
+      "validator_unit_tests": 169,
+      "source_integrity": "PASS: candidate pristine; narrow306 overlay excluding gate production/TU/wiring; immutable3d6 plus only78079 test from exact1618 donor verified after compile and execution.",
+      "headers_and_361_catalog_hashes": "PASS",
+      "candidate": {
+        "accepted": false,
+        "overlay_paint_gate": {
+          "scale1": {
+            "passed": false,
+            "passed_case_count": 0,
+            "expected_case_count": 6,
+            "first_failed_case": "/overlay-paint-gate/native-insertion",
+            "result": "FAIL",
+            "returncode": -6,
+            "duration_seconds": 6.158964157104492,
+            "error_excerpts": [
+              "# gate predicate: real allocation and native child paint",
+              "not ok /overlay-paint-gate/native-insertion - ERROR:../source/app/tests/test-overlay-paint-gate.cpp:40:void {anonymous}::await(const char*, Predicate) [with Predicate = Probe::wait_painted()::<lambda()>]: 'predicate ()' should be TRUE",
+              "Bail out!"
+            ],
+            "artifact_path": "overlay-paint-gate-scale1-results.json",
+            "result_sha256": "93b8a96a8f827c1e32f815a85e3d29cb828ac09e6759734b3dc3b1f37f70a2fc",
+            "qualification": "Conjunction draws && tab_serial && afters failed; output does not identify which component was missing. No proven production deadlock or test-oracle cause from this runtime log."
+          },
+          "scale2": {
+            "passed": false,
+            "passed_case_count": 0,
+            "expected_case_count": 6,
+            "first_failed_case": "/overlay-paint-gate/native-insertion",
+            "result": "FAIL",
+            "returncode": -6,
+            "duration_seconds": 5.990583181381226,
+            "error_excerpts": [
+              "# gate predicate: real allocation and native child paint",
+              "not ok /overlay-paint-gate/native-insertion - ERROR:../source/app/tests/test-overlay-paint-gate.cpp:40:void {anonymous}::await(const char*, Predicate) [with Predicate = Probe::wait_painted()::<lambda()>]: 'predicate ()' should be TRUE",
+              "Bail out!"
+            ],
+            "artifact_path": "overlay-paint-gate-scale2-results.json",
+            "result_sha256": "22610779d7d31b101d64c891ffb3b207bed732e04cb0625206f8b22fe616957c",
+            "qualification": "Conjunction draws && tab_serial && afters failed; output does not identify which component was missing. No proven production deadlock or test-oracle cause from this runtime log."
+          }
+        },
+        "common": {
+          "scale1": {
+            "passed_case_count": 58,
+            "expected_case_count": 58,
+            "passed_case_ids": [
+              "/common-layer-native-popup/group-tile",
+              "/common-layer-native-popup/group-tree",
+              "/common-layer-native-popup/ordinary-tile/actual-entry",
+              "/common-layer-native-popup/ordinary-tile/lower-controls",
+              "/common-layer-native-popup/ordinary-tile/opening-provenance-mismatch",
+              "/common-layer-native-popup/ordinary-tile/mode-growth",
+              "/common-layer-native-popup/ordinary-tile/owner-target-lifetimes",
+              "/common-layer-native-popup/ordinary-tile/staged-newer-request",
+              "/common-layer-native-popup/ordinary-tile/host-name-destroy",
+              "/common-layer-native-popup/ordinary-tile/rapid-escape-reopen",
+              "/common-layer-native-popup/ordinary-tile/closing-provenance-exact",
+              "/common-layer-native-popup/ordinary-tile/closing-provenance-mismatch",
+              "/common-layer-native-popup/ordinary-tile/staged-child-0",
+              "/common-layer-native-popup/ordinary-tile/staged-child-1",
+              "/common-layer-native-popup/ordinary-tile/staged-child-2",
+              "/common-layer-native-popup/ordinary-tile/staged-child-3",
+              "/common-layer-native-popup/clone-tile/actual-entry",
+              "/common-layer-native-popup/clone-tile/lower-controls",
+              "/common-layer-native-popup/clone-tile/opening-provenance-mismatch",
+              "/common-layer-native-popup/clone-tile/mode-growth",
+              "/common-layer-native-popup/clone-tile/owner-target-lifetimes",
+              "/common-layer-native-popup/clone-tile/staged-newer-request",
+              "/common-layer-native-popup/clone-tile/host-name-destroy",
+              "/common-layer-native-popup/clone-tile/rapid-escape-reopen",
+              "/common-layer-native-popup/clone-tile/closing-provenance-exact",
+              "/common-layer-native-popup/clone-tile/closing-provenance-mismatch",
+              "/common-layer-native-popup/clone-tile/staged-child-0",
+              "/common-layer-native-popup/clone-tile/staged-child-1",
+              "/common-layer-native-popup/clone-tile/staged-child-2",
+              "/common-layer-native-popup/clone-tile/staged-child-3",
+              "/common-layer-native-popup/ordinary-tree/actual-entry",
+              "/common-layer-native-popup/ordinary-tree/lower-controls",
+              "/common-layer-native-popup/ordinary-tree/opening-provenance-mismatch",
+              "/common-layer-native-popup/ordinary-tree/mode-growth",
+              "/common-layer-native-popup/ordinary-tree/owner-target-lifetimes",
+              "/common-layer-native-popup/ordinary-tree/staged-newer-request",
+              "/common-layer-native-popup/ordinary-tree/host-name-destroy",
+              "/common-layer-native-popup/ordinary-tree/rapid-escape-reopen",
+              "/common-layer-native-popup/ordinary-tree/closing-provenance-exact",
+              "/common-layer-native-popup/ordinary-tree/closing-provenance-mismatch",
+              "/common-layer-native-popup/ordinary-tree/staged-child-0",
+              "/common-layer-native-popup/ordinary-tree/staged-child-1",
+              "/common-layer-native-popup/ordinary-tree/staged-child-2",
+              "/common-layer-native-popup/ordinary-tree/staged-child-3",
+              "/common-layer-native-popup/clone-tree/actual-entry",
+              "/common-layer-native-popup/clone-tree/lower-controls",
+              "/common-layer-native-popup/clone-tree/opening-provenance-mismatch",
+              "/common-layer-native-popup/clone-tree/mode-growth",
+              "/common-layer-native-popup/clone-tree/owner-target-lifetimes",
+              "/common-layer-native-popup/clone-tree/staged-newer-request",
+              "/common-layer-native-popup/clone-tree/host-name-destroy",
+              "/common-layer-native-popup/clone-tree/rapid-escape-reopen",
+              "/common-layer-native-popup/clone-tree/closing-provenance-exact",
+              "/common-layer-native-popup/clone-tree/closing-provenance-mismatch",
+              "/common-layer-native-popup/clone-tree/staged-child-0",
+              "/common-layer-native-popup/clone-tree/staged-child-1",
+              "/common-layer-native-popup/clone-tree/staged-child-2",
+              "/common-layer-native-popup/clone-tree/staged-child-3"
+            ],
+            "result": "OK",
+            "returncode": 0,
+            "duration_seconds": 135.00917530059814
+          },
+          "scale2": {
+            "passed_case_count": 58,
+            "expected_case_count": 58,
+            "passed_case_ids": [
+              "/common-layer-native-popup/group-tile",
+              "/common-layer-native-popup/group-tree",
+              "/common-layer-native-popup/ordinary-tile/actual-entry",
+              "/common-layer-native-popup/ordinary-tile/lower-controls",
+              "/common-layer-native-popup/ordinary-tile/opening-provenance-mismatch",
+              "/common-layer-native-popup/ordinary-tile/mode-growth",
+              "/common-layer-native-popup/ordinary-tile/owner-target-lifetimes",
+              "/common-layer-native-popup/ordinary-tile/staged-newer-request",
+              "/common-layer-native-popup/ordinary-tile/host-name-destroy",
+              "/common-layer-native-popup/ordinary-tile/rapid-escape-reopen",
+              "/common-layer-native-popup/ordinary-tile/closing-provenance-exact",
+              "/common-layer-native-popup/ordinary-tile/closing-provenance-mismatch",
+              "/common-layer-native-popup/ordinary-tile/staged-child-0",
+              "/common-layer-native-popup/ordinary-tile/staged-child-1",
+              "/common-layer-native-popup/ordinary-tile/staged-child-2",
+              "/common-layer-native-popup/ordinary-tile/staged-child-3",
+              "/common-layer-native-popup/clone-tile/actual-entry",
+              "/common-layer-native-popup/clone-tile/lower-controls",
+              "/common-layer-native-popup/clone-tile/opening-provenance-mismatch",
+              "/common-layer-native-popup/clone-tile/mode-growth",
+              "/common-layer-native-popup/clone-tile/owner-target-lifetimes",
+              "/common-layer-native-popup/clone-tile/staged-newer-request",
+              "/common-layer-native-popup/clone-tile/host-name-destroy",
+              "/common-layer-native-popup/clone-tile/rapid-escape-reopen",
+              "/common-layer-native-popup/clone-tile/closing-provenance-exact",
+              "/common-layer-native-popup/clone-tile/closing-provenance-mismatch",
+              "/common-layer-native-popup/clone-tile/staged-child-0",
+              "/common-layer-native-popup/clone-tile/staged-child-1",
+              "/common-layer-native-popup/clone-tile/staged-child-2",
+              "/common-layer-native-popup/clone-tile/staged-child-3",
+              "/common-layer-native-popup/ordinary-tree/actual-entry",
+              "/common-layer-native-popup/ordinary-tree/lower-controls",
+              "/common-layer-native-popup/ordinary-tree/opening-provenance-mismatch",
+              "/common-layer-native-popup/ordinary-tree/mode-growth",
+              "/common-layer-native-popup/ordinary-tree/owner-target-lifetimes",
+              "/common-layer-native-popup/ordinary-tree/staged-newer-request",
+              "/common-layer-native-popup/ordinary-tree/host-name-destroy",
+              "/common-layer-native-popup/ordinary-tree/rapid-escape-reopen",
+              "/common-layer-native-popup/ordinary-tree/closing-provenance-exact",
+              "/common-layer-native-popup/ordinary-tree/closing-provenance-mismatch",
+              "/common-layer-native-popup/ordinary-tree/staged-child-0",
+              "/common-layer-native-popup/ordinary-tree/staged-child-1",
+              "/common-layer-native-popup/ordinary-tree/staged-child-2",
+              "/common-layer-native-popup/ordinary-tree/staged-child-3",
+              "/common-layer-native-popup/clone-tree/actual-entry",
+              "/common-layer-native-popup/clone-tree/lower-controls",
+              "/common-layer-native-popup/clone-tree/opening-provenance-mismatch",
+              "/common-layer-native-popup/clone-tree/mode-growth",
+              "/common-layer-native-popup/clone-tree/owner-target-lifetimes",
+              "/common-layer-native-popup/clone-tree/staged-newer-request",
+              "/common-layer-native-popup/clone-tree/host-name-destroy",
+              "/common-layer-native-popup/clone-tree/rapid-escape-reopen",
+              "/common-layer-native-popup/clone-tree/closing-provenance-exact",
+              "/common-layer-native-popup/clone-tree/closing-provenance-mismatch",
+              "/common-layer-native-popup/clone-tree/staged-child-0",
+              "/common-layer-native-popup/clone-tree/staged-child-1",
+              "/common-layer-native-popup/clone-tree/staged-child-2",
+              "/common-layer-native-popup/clone-tree/staged-child-3"
+            ],
+            "result": "OK",
+            "returncode": 0,
+            "duration_seconds": 133.66000533103943
+          }
+        },
+        "adjacent": [
+          {
+            "name": "painter-layer-ui",
+            "cases": 86,
+            "result": "OK",
+            "returncode": 0
+          },
+          {
+            "name": "painter-layer-tree",
+            "cases": 35,
+            "result": "OK",
+            "returncode": 0
+          },
+          {
+            "name": "painter-dock-layout-ui",
+            "cases": 3,
+            "result": "OK",
+            "returncode": 0
+          },
+          {
+            "name": "painter-dock-input-ui",
+            "cases": 6,
+            "result": "OK",
+            "returncode": 0
+          },
+          {
+            "name": "painter-dock-session-ui",
+            "cases": 7,
+            "result": "OK",
+            "returncode": 0
+          },
+          {
+            "name": "painter-right-docks-ui",
+            "cases": 9,
+            "result": "OK",
+            "returncode": 0
+          },
+          {
+            "name": "painter-canvas-ui",
+            "cases": 107,
+            "result": "OK",
+            "returncode": 0
+          },
+          {
+            "name": "painter-filter-layer-popup",
+            "cases": 17,
+            "result": "OK",
+            "returncode": 0
+          },
+          {
+            "name": "painter-widget-exceptions",
+            "cases": 6,
+            "result": "OK",
+            "returncode": 0
+          },
+          {
+            "name": "painter-popup-handles",
+            "cases": 34,
+            "result": "OK",
+            "returncode": 0
+          },
+          {
+            "name": "layer-tile-entry-contracts",
+            "cases": 32,
+            "result": "OK",
+            "returncode": 0
+          },
+          {
+            "name": "painter-layer-dispatch",
+            "cases": 4,
+            "result": "OK",
+            "returncode": 0
+          },
+          {
+            "name": "native-popover-entry",
+            "cases": 14,
+            "result": "OK",
+            "returncode": 0
+          }
+        ],
+        "adjacent_case_count": 360,
+        "adjacent_registration_count": 13,
+        "headers_passed": true,
+        "compiled_locale_catalogs": 361,
+        "locale_final_hash_verification": "PASS",
+        "source_after_status": "empty",
+        "dock_trace": "unset; active early-updates flag unset",
+        "route_diagnostic_reruns": 0,
+        "screenshots": 16,
+        "all_raw_pixels_reviewed": true,
+        "visual_receipt_sha256": "01883427975442d4d37c0d6255565fdd7abd9a37eab8f9a5437e02c6099e16ac"
+      },
+      "baseline": {
+        "strict_intended_carrier_reds": 4,
+        "assertion": "GTK_IS_WINDOW (popup) should be TRUE",
+        "scope": "Exact306 plus reviewed two header prerequisites and31ff common harness; gate TU/wiring/production absent; not passing baseline UI tests"
+      },
+      "diagnostic": {
+        "tested_commit": "3d6f62235c6bc9e2505d2c2b6ad1d42e15d081af",
+        "tested_tree": "a5a14a81a10857834301888a0cd2b3cf902bf17d",
+        "donor_commit": "1618cc5958148c7d534f9e3893681e14fcc94d80",
+        "donor_tree": "253fcbdeb7c39391ddf8bad89b7877e1e18911b8",
+        "donor_test_blob": "e3b3b28d1da397282dface38c04ed43d9fe1f0c7",
+        "original_test_sha256": "49eb5a701b4f0a082c1f88f6a2f3a34546c738dfec4de1d28bf7989b12d5d664",
+        "instrumented_test_sha256": "78079b8209f0bb4a06f9c44ef15a2ee393c3d917da7ecad213cee8b259c61152",
+        "only_overlay": "app/tests/test-common-layer-popup.cpp",
+        "acceptance_eligible": false,
+        "strict_controlled_gate": "reproduced",
+        "observed_signal": "SIGTRAP",
+        "frame_count": 239,
+        "completed_prefix_cases": 1,
+        "main_thread_attribution": "Frame89 controlled_dock_updates at exact frozen test callsite291; public GDK wrapper absent as expected from verified tail jump.",
+        "trace": {
+          "sha256": "ef495c89569842e252f444bcf8382133d4fb5043a2c7c927513a6ccc92357746",
+          "bytes": 301919,
+          "cap_reached": false,
+          "begin_count": 2,
+          "returned_count": 1,
+          "unreturned_dispatch": {
+            "line": 728,
+            "window": "0x563e384e8750",
+            "phase": "phase=46 fixture/controlled-offscreen-updates test=/common-layer-native-popup/clone-tree/lower-controls"
+          }
+        },
+        "source_integrity": "Job log verifies immutable3d6 and exact1618-donor/78079-only test overlay after compile13:16:43 and after execution13:17:04 UTC.",
+        "root_capture": "Channel-list/brush/color docks before common popup at controlled stop; actual pixels viewed. Not an acceptance image.",
+        "qualification": "Exact3d6 production plus only historical78079 test from exact1618 donor reproduced the controlled warning/SIGTRAP. New gate production and current31ff common test were not imported. This error reproduction is separate from the current candidate failure.",
+        "inspection_receipt_sha256": "4302deb5ba8a6cad2826b9f85d495718290e25a89c678efc9d06ecd97bba9de0"
+      },
+      "screenshots": {
+        "expected_raw_captures": 16,
+        "captured_raw_views": 16,
+        "all_raw_pixels_reviewed": true,
+        "visual_receipt_sha256": "01883427975442d4d37c0d6255565fdd7abd9a37eab8f9a5437e02c6099e16ac",
+        "captures": [
+          {
+            "artifact_path": "common-layer-scale1/clone-tile-bottom-scale1.png",
+            "sha256": "9bd9ae80e448837de8c50a4c84df194b9074a431d1446fc2eb9a18de5cd36c01",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale1/clone-tile-scale1.png",
+            "sha256": "272d16c87b318330a16115dee0fac2a94cfe6160fd596f2a9e9016957ecaaa33",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale1/clone-tree-bottom-scale1.png",
+            "sha256": "6ad5f6b4176af1ef86afb9362b8d48a2d4c4c2d6fd9b675dc142043d61bdf5a4",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale1/clone-tree-scale1.png",
+            "sha256": "e3c5639576bf7369e33770f99c3105824e57af44bff74db74385618e6195f78f",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale1/ordinary-tile-bottom-scale1.png",
+            "sha256": "1989b741ef520d6574d8926bec0c2101720c0330b8ce83fdb1e2449c30f0964a",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale1/ordinary-tile-scale1.png",
+            "sha256": "3083bfda10d97719fd6b4c411f63e01c66377b8f2d6f954498fd81d84ee3ee0e",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale1/ordinary-tree-bottom-scale1.png",
+            "sha256": "9906a4aea611be3acf995589100c844d007052c3c8c388376404ccb647d1802e",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale1/ordinary-tree-scale1.png",
+            "sha256": "a63f566ef4be386484860b1069c59518aa14c57ced6fe7a2e51deb2b5719be59",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale2/clone-tile-bottom-scale2.png",
+            "sha256": "3f77890937462588cb996981e80dd8d693406e439a688c97ccf601f99d45c567",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale2/clone-tile-scale2.png",
+            "sha256": "1c4dccaf6c9e19a0377dcaea8f4c78885666bc4b26fef8841fcdf3fa13f4b192",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale2/clone-tree-bottom-scale2.png",
+            "sha256": "577edb1d8edcf8bba01a9e95f56135949475f54b62fb99811048b1559bef8e79",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale2/clone-tree-scale2.png",
+            "sha256": "643dee2f120976141b98f7494aba4d3661551f18b59454a09b51c11172d0e33f",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale2/ordinary-tile-bottom-scale2.png",
+            "sha256": "98aede86a1e5a4c3569bbc41086f5b82600baf3298663face02baf7f7a306199",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale2/ordinary-tile-scale2.png",
+            "sha256": "11a29f65c74dd9457a68ca027d5a68db47225a1929d8a1759a33aa40346f295a",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale2/ordinary-tree-bottom-scale2.png",
+            "sha256": "04d920db582d57a8247c038f61e25ff3b2f0ddb53d0624dc5de2703ee0a8b4f6",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale2/ordinary-tree-scale2.png",
+            "sha256": "14aac1eb0f1d7bc5ad1753c8d59ffe34b9234c13247d2ef3333374ce143cbd89",
+            "width": 1080,
+            "height": 1920
+          }
+        ],
+        "qualification": "Common popup captures only, not new paint-gate evidence. Upper tile views require complementary scrolled bottom views; expanded scrollbar overlaps some right-edge values but not bottom action labels. Tree forms are complete/short. Minimal resource fixture, not normal installed startup."
+      },
+      "artifact_ids": {
+        "candidate": 12600542598,
+        "baseline": 12599932209,
+        "diagnostic": 12600771196
+      },
+      "artifact_sha256": {
+        "baseline-red-controls": "d08f651cd5bfcdd768e6cc8cdef2d1b41dc791e7e1b6e42c08d2ed1bc0d5c56b",
+        "diagnostic-only": "1c7b46dba931f7e51f67cc8fd06520df2c36c8c749497bcc727e8d25a436b7f2",
+        "candidate": "425176dc0c80349ece6ceeef167a10cdb614fe652375d6284618393fb7f0d0af"
+      },
+      "qualification": "Candidate fails: zero of six new paint-gate cases passed at either scale, both aborting native-insertion on an unclassified allocation/paint conjunction. Common58x2, all16 viewed raw captures,13 adjacent registrations/360 cases,headers and361catalog hashes pass separately. Four306carrier REDs and immutable3d6+78079 controlled error reproduction pass. Task307 remains DOING; no gate waiver or claim that the production gate is validated.",
+      "next_revision": "Reviewed gate-test-only observer/fresh-insertion repair and bounded component diagnostics under preparation. Existing runtime log cannot establish which conjunction component failed. Preserve all six-case/58/16/360 gates and immutable historical controlled RED; no rerun-until-green waiver."
+    },
+    {
+      "commit": "d6d3126cc7ca5b7cb71ff48212cc6639f50bc145",
+      "tree": "6f6dca7287d3cdb4e40138c40dc6108cbe34662b",
+      "run_id": 40198528473,
+      "url": "https://github.com/seagetch/gimp-painter/actions/runs/40198528473",
+      "result": "all selected candidate gates pass; four carrier RED controls and immutable historical controlled error reproduction pass separately",
+      "candidate_job": 121184522754,
+      "baseline_job": 121184522994,
+      "diagnostic_job": 121184522926,
+      "focused_test_sha256": "31ff252f755a9f152cb7f4ea7da400f62fa69d8a3b0ab8f83a9495809a4b05bf",
+      "gate_test_sha256": "4af7e5e61c7d0d33970db90dc73e03094ec42f0b61c529a03da4d4fa9bf2e9fd",
+      "validator_unit_tests": 169,
+      "source_integrity": "PASS: candidate pristine; narrow306 overlay excluding gate production/TU/wiring; immutable3d6 plus only78079 test from exact1618 donor verified after compile and execution.",
+      "headers_and_361_catalog_hashes": "PASS",
+      "candidate": {
+        "accepted": true,
+        "overlay_paint_gate": {
+          "scale1": {
+            "passed": true,
+            "passed_case_count": 6,
+            "expected_case_count": 6,
+            "passed_case_ids": [
+              "/overlay-paint-gate/native-insertion",
+              "/overlay-paint-gate/pending-teardown",
+              "/overlay-paint-gate/late-layout",
+              "/overlay-paint-gate/late-paint",
+              "/overlay-paint-gate/redraw-token-balance",
+              "/overlay-paint-gate/hide-remap"
+            ],
+            "result": "OK",
+            "returncode": 0,
+            "duration_seconds": 14.518617630004883,
+            "artifact_path": "overlay-paint-gate-scale1-results.json",
+            "result_sha256": "419128f5523258a51ba17b5014a4161f91609271c5dfea53e2badb9ef3fb30ec",
+            "bounded_state_reports": [
+              "# gate state phase=inserted-before-existing-updates draw-callbacks=0 native-draws=0 unallocated-native-draws=0 allocations=0 layouts=0 afters=0 tab-serial=0 first-native-tab=0 first-native-layout=0 first-native-after=0 native-window=0x55bd2ce692a0 first-draw-context-window=0x0 first-context-type=-1 current-page=6 same-tab=1",
+              "# gate state phase=wait-painted-start draw-callbacks=2 native-draws=2 unallocated-native-draws=0 allocations=6 layouts=8 afters=4 tab-serial=6 first-native-tab=6 first-native-layout=9 first-native-after=10 native-window=0x55bd2ce692a0 first-draw-context-window=0x55bd2ce692a0 first-context-type=5 current-page=6 same-tab=1",
+              "# gate state phase=inserted-before-existing-updates draw-callbacks=0 native-draws=0 unallocated-native-draws=0 allocations=0 layouts=0 afters=0 tab-serial=0 first-native-tab=0 first-native-layout=0 first-native-after=0 native-window=0x55bd2df879d0 first-draw-context-window=0x0 first-context-type=-1 current-page=6 same-tab=1",
+              "# gate state phase=wait-painted-start draw-callbacks=2 native-draws=2 unallocated-native-draws=0 allocations=6 layouts=8 afters=4 tab-serial=6 first-native-tab=6 first-native-layout=9 first-native-after=10 native-window=0x55bd2df879d0 first-draw-context-window=0x55bd2df879d0 first-context-type=5 current-page=6 same-tab=1",
+              "# gate state phase=inserted-before-existing-updates draw-callbacks=0 native-draws=0 unallocated-native-draws=0 allocations=0 layouts=0 afters=0 tab-serial=0 first-native-tab=0 first-native-layout=0 first-native-after=0 native-window=0x55bd2e18a720 first-draw-context-window=0x0 first-context-type=-1 current-page=6 same-tab=1",
+              "# gate state phase=wait-painted-start draw-callbacks=2 native-draws=2 unallocated-native-draws=0 allocations=6 layouts=8 afters=4 tab-serial=6 first-native-tab=6 first-native-layout=9 first-native-after=10 native-window=0x55bd2e18a720 first-draw-context-window=0x55bd2e18a720 first-context-type=5 current-page=6 same-tab=1",
+              "# gate state phase=inserted-before-existing-updates draw-callbacks=0 native-draws=0 unallocated-native-draws=0 allocations=0 layouts=0 afters=0 tab-serial=0 first-native-tab=0 first-native-layout=0 first-native-after=0 native-window=0x55bd2dffb400 first-draw-context-window=0x0 first-context-type=-1 current-page=6 same-tab=1",
+              "# gate state phase=wait-painted-start draw-callbacks=2 native-draws=2 unallocated-native-draws=0 allocations=6 layouts=8 afters=4 tab-serial=6 first-native-tab=6 first-native-layout=9 first-native-after=10 native-window=0x55bd2dffb400 first-draw-context-window=0x55bd2dffb400 first-context-type=5 current-page=6 same-tab=1",
+              "# gate state phase=inserted-before-existing-updates draw-callbacks=0 native-draws=0 unallocated-native-draws=0 allocations=0 layouts=0 afters=0 tab-serial=0 first-native-tab=0 first-native-layout=0 first-native-after=0 native-window=0x55bd2e0cd9b0 first-draw-context-window=0x0 first-context-type=-1 current-page=6 same-tab=1",
+              "# gate state phase=wait-painted-start draw-callbacks=3 native-draws=3 unallocated-native-draws=0 allocations=6 layouts=8 afters=4 tab-serial=6 first-native-tab=6 first-native-layout=9 first-native-after=10 native-window=0x55bd2e0cd9b0 first-draw-context-window=0x55bd2e0cd9b0 first-context-type=5 current-page=6 same-tab=1",
+              "# gate state phase=inserted-before-existing-updates draw-callbacks=0 native-draws=0 unallocated-native-draws=0 allocations=0 layouts=0 afters=0 tab-serial=0 first-native-tab=0 first-native-layout=0 first-native-after=0 native-window=0x55bd2d5f7630 first-draw-context-window=0x0 first-context-type=-1 current-page=6 same-tab=1",
+              "# gate state phase=wait-painted-start draw-callbacks=3 native-draws=3 unallocated-native-draws=0 allocations=6 layouts=8 afters=4 tab-serial=6 first-native-tab=6 first-native-layout=9 first-native-after=10 native-window=0x55bd2d5f7630 first-draw-context-window=0x55bd2d5f7630 first-context-type=5 current-page=6 same-tab=1"
+            ],
+            "qualification": "Six-case actual native allocation/paint and lifecycle regression oracle passed, including late layout/paint, external freeze token balance, teardown and remap. Prior run17 missing conjunction component remains unlocalized; this result does not retroactively identify it."
+          },
+          "scale2": {
+            "passed": true,
+            "passed_case_count": 6,
+            "expected_case_count": 6,
+            "passed_case_ids": [
+              "/overlay-paint-gate/native-insertion",
+              "/overlay-paint-gate/pending-teardown",
+              "/overlay-paint-gate/late-layout",
+              "/overlay-paint-gate/late-paint",
+              "/overlay-paint-gate/redraw-token-balance",
+              "/overlay-paint-gate/hide-remap"
+            ],
+            "result": "OK",
+            "returncode": 0,
+            "duration_seconds": 13.88974404335022,
+            "artifact_path": "overlay-paint-gate-scale2-results.json",
+            "result_sha256": "d233a5486396ef02f70bb8bda078a340180a270e113884e16a5bda1959799918",
+            "bounded_state_reports": [
+              "# gate state phase=inserted-before-existing-updates draw-callbacks=0 native-draws=0 unallocated-native-draws=0 allocations=0 layouts=0 afters=0 tab-serial=0 first-native-tab=0 first-native-layout=0 first-native-after=0 native-window=0x5637fcb79cd0 first-draw-context-window=0x0 first-context-type=-1 current-page=6 same-tab=1",
+              "# gate state phase=wait-painted-start draw-callbacks=3 native-draws=3 unallocated-native-draws=0 allocations=7 layouts=10 afters=5 tab-serial=6 first-native-tab=6 first-native-layout=9 first-native-after=10 native-window=0x5637fcb79cd0 first-draw-context-window=0x5637fcb79cd0 first-context-type=5 current-page=6 same-tab=1",
+              "# gate state phase=inserted-before-existing-updates draw-callbacks=0 native-draws=0 unallocated-native-draws=0 allocations=0 layouts=0 afters=0 tab-serial=0 first-native-tab=0 first-native-layout=0 first-native-after=0 native-window=0x5637fceada40 first-draw-context-window=0x0 first-context-type=-1 current-page=6 same-tab=1",
+              "# gate state phase=wait-painted-start draw-callbacks=4 native-draws=4 unallocated-native-draws=0 allocations=7 layouts=10 afters=5 tab-serial=6 first-native-tab=6 first-native-layout=9 first-native-after=10 native-window=0x5637fceada40 first-draw-context-window=0x5637fceada40 first-context-type=5 current-page=6 same-tab=1",
+              "# gate state phase=inserted-before-existing-updates draw-callbacks=0 native-draws=0 unallocated-native-draws=0 allocations=0 layouts=0 afters=0 tab-serial=0 first-native-tab=0 first-native-layout=0 first-native-after=0 native-window=0x5637fc6959b0 first-draw-context-window=0x0 first-context-type=-1 current-page=6 same-tab=1",
+              "# gate state phase=wait-painted-start draw-callbacks=3 native-draws=3 unallocated-native-draws=0 allocations=7 layouts=10 afters=5 tab-serial=6 first-native-tab=6 first-native-layout=9 first-native-after=10 native-window=0x5637fc6959b0 first-draw-context-window=0x5637fc6959b0 first-context-type=5 current-page=6 same-tab=1",
+              "# gate state phase=inserted-before-existing-updates draw-callbacks=0 native-draws=0 unallocated-native-draws=0 allocations=0 layouts=0 afters=0 tab-serial=0 first-native-tab=0 first-native-layout=0 first-native-after=0 native-window=0x5637fd5fb0b0 first-draw-context-window=0x0 first-context-type=-1 current-page=6 same-tab=1",
+              "# gate state phase=wait-painted-start draw-callbacks=3 native-draws=3 unallocated-native-draws=0 allocations=7 layouts=10 afters=5 tab-serial=6 first-native-tab=6 first-native-layout=13 first-native-after=14 native-window=0x5637fd5fb0b0 first-draw-context-window=0x5637fd5fb0b0 first-context-type=5 current-page=6 same-tab=1",
+              "# gate state phase=inserted-before-existing-updates draw-callbacks=0 native-draws=0 unallocated-native-draws=0 allocations=0 layouts=0 afters=0 tab-serial=0 first-native-tab=0 first-native-layout=0 first-native-after=0 native-window=0x5637fcaa0720 first-draw-context-window=0x0 first-context-type=-1 current-page=6 same-tab=1",
+              "# gate state phase=wait-painted-start draw-callbacks=3 native-draws=3 unallocated-native-draws=0 allocations=7 layouts=10 afters=5 tab-serial=6 first-native-tab=6 first-native-layout=13 first-native-after=14 native-window=0x5637fcaa0720 first-draw-context-window=0x5637fcaa0720 first-context-type=5 current-page=6 same-tab=1",
+              "# gate state phase=inserted-before-existing-updates draw-callbacks=0 native-draws=0 unallocated-native-draws=0 allocations=0 layouts=0 afters=0 tab-serial=0 first-native-tab=0 first-native-layout=0 first-native-after=0 native-window=0x5637fcab4af0 first-draw-context-window=0x0 first-context-type=-1 current-page=6 same-tab=1",
+              "# gate state phase=wait-painted-start draw-callbacks=3 native-draws=3 unallocated-native-draws=0 allocations=7 layouts=10 afters=5 tab-serial=6 first-native-tab=6 first-native-layout=9 first-native-after=10 native-window=0x5637fcab4af0 first-draw-context-window=0x5637fcab4af0 first-context-type=5 current-page=6 same-tab=1"
+            ],
+            "qualification": "Six-case actual native allocation/paint and lifecycle regression oracle passed, including late layout/paint, external freeze token balance, teardown and remap. Prior run17 missing conjunction component remains unlocalized; this result does not retroactively identify it."
+          }
+        },
+        "common": {
+          "scale1": {
+            "passed": true,
+            "passed_case_count": 58,
+            "expected_case_count": 58,
+            "passed_case_ids": [
+              "/common-layer-native-popup/group-tile",
+              "/common-layer-native-popup/group-tree",
+              "/common-layer-native-popup/ordinary-tile/actual-entry",
+              "/common-layer-native-popup/ordinary-tile/lower-controls",
+              "/common-layer-native-popup/ordinary-tile/opening-provenance-mismatch",
+              "/common-layer-native-popup/ordinary-tile/mode-growth",
+              "/common-layer-native-popup/ordinary-tile/owner-target-lifetimes",
+              "/common-layer-native-popup/ordinary-tile/staged-newer-request",
+              "/common-layer-native-popup/ordinary-tile/host-name-destroy",
+              "/common-layer-native-popup/ordinary-tile/rapid-escape-reopen",
+              "/common-layer-native-popup/ordinary-tile/closing-provenance-exact",
+              "/common-layer-native-popup/ordinary-tile/closing-provenance-mismatch",
+              "/common-layer-native-popup/ordinary-tile/staged-child-0",
+              "/common-layer-native-popup/ordinary-tile/staged-child-1",
+              "/common-layer-native-popup/ordinary-tile/staged-child-2",
+              "/common-layer-native-popup/ordinary-tile/staged-child-3",
+              "/common-layer-native-popup/clone-tile/actual-entry",
+              "/common-layer-native-popup/clone-tile/lower-controls",
+              "/common-layer-native-popup/clone-tile/opening-provenance-mismatch",
+              "/common-layer-native-popup/clone-tile/mode-growth",
+              "/common-layer-native-popup/clone-tile/owner-target-lifetimes",
+              "/common-layer-native-popup/clone-tile/staged-newer-request",
+              "/common-layer-native-popup/clone-tile/host-name-destroy",
+              "/common-layer-native-popup/clone-tile/rapid-escape-reopen",
+              "/common-layer-native-popup/clone-tile/closing-provenance-exact",
+              "/common-layer-native-popup/clone-tile/closing-provenance-mismatch",
+              "/common-layer-native-popup/clone-tile/staged-child-0",
+              "/common-layer-native-popup/clone-tile/staged-child-1",
+              "/common-layer-native-popup/clone-tile/staged-child-2",
+              "/common-layer-native-popup/clone-tile/staged-child-3",
+              "/common-layer-native-popup/ordinary-tree/actual-entry",
+              "/common-layer-native-popup/ordinary-tree/lower-controls",
+              "/common-layer-native-popup/ordinary-tree/opening-provenance-mismatch",
+              "/common-layer-native-popup/ordinary-tree/mode-growth",
+              "/common-layer-native-popup/ordinary-tree/owner-target-lifetimes",
+              "/common-layer-native-popup/ordinary-tree/staged-newer-request",
+              "/common-layer-native-popup/ordinary-tree/host-name-destroy",
+              "/common-layer-native-popup/ordinary-tree/rapid-escape-reopen",
+              "/common-layer-native-popup/ordinary-tree/closing-provenance-exact",
+              "/common-layer-native-popup/ordinary-tree/closing-provenance-mismatch",
+              "/common-layer-native-popup/ordinary-tree/staged-child-0",
+              "/common-layer-native-popup/ordinary-tree/staged-child-1",
+              "/common-layer-native-popup/ordinary-tree/staged-child-2",
+              "/common-layer-native-popup/ordinary-tree/staged-child-3",
+              "/common-layer-native-popup/clone-tree/actual-entry",
+              "/common-layer-native-popup/clone-tree/lower-controls",
+              "/common-layer-native-popup/clone-tree/opening-provenance-mismatch",
+              "/common-layer-native-popup/clone-tree/mode-growth",
+              "/common-layer-native-popup/clone-tree/owner-target-lifetimes",
+              "/common-layer-native-popup/clone-tree/staged-newer-request",
+              "/common-layer-native-popup/clone-tree/host-name-destroy",
+              "/common-layer-native-popup/clone-tree/rapid-escape-reopen",
+              "/common-layer-native-popup/clone-tree/closing-provenance-exact",
+              "/common-layer-native-popup/clone-tree/closing-provenance-mismatch",
+              "/common-layer-native-popup/clone-tree/staged-child-0",
+              "/common-layer-native-popup/clone-tree/staged-child-1",
+              "/common-layer-native-popup/clone-tree/staged-child-2",
+              "/common-layer-native-popup/clone-tree/staged-child-3"
+            ],
+            "result": "OK",
+            "returncode": 0,
+            "duration_seconds": 153.4262719154358,
+            "artifact_path": "common-layer-scale1-results.json",
+            "result_sha256": "9363c184451264fb8d5d829d7c5a421d3bfba9cdfd0d55fe0a5c010003f90b46"
+          },
+          "scale2": {
+            "passed": true,
+            "passed_case_count": 58,
+            "expected_case_count": 58,
+            "passed_case_ids": [
+              "/common-layer-native-popup/group-tile",
+              "/common-layer-native-popup/group-tree",
+              "/common-layer-native-popup/ordinary-tile/actual-entry",
+              "/common-layer-native-popup/ordinary-tile/lower-controls",
+              "/common-layer-native-popup/ordinary-tile/opening-provenance-mismatch",
+              "/common-layer-native-popup/ordinary-tile/mode-growth",
+              "/common-layer-native-popup/ordinary-tile/owner-target-lifetimes",
+              "/common-layer-native-popup/ordinary-tile/staged-newer-request",
+              "/common-layer-native-popup/ordinary-tile/host-name-destroy",
+              "/common-layer-native-popup/ordinary-tile/rapid-escape-reopen",
+              "/common-layer-native-popup/ordinary-tile/closing-provenance-exact",
+              "/common-layer-native-popup/ordinary-tile/closing-provenance-mismatch",
+              "/common-layer-native-popup/ordinary-tile/staged-child-0",
+              "/common-layer-native-popup/ordinary-tile/staged-child-1",
+              "/common-layer-native-popup/ordinary-tile/staged-child-2",
+              "/common-layer-native-popup/ordinary-tile/staged-child-3",
+              "/common-layer-native-popup/clone-tile/actual-entry",
+              "/common-layer-native-popup/clone-tile/lower-controls",
+              "/common-layer-native-popup/clone-tile/opening-provenance-mismatch",
+              "/common-layer-native-popup/clone-tile/mode-growth",
+              "/common-layer-native-popup/clone-tile/owner-target-lifetimes",
+              "/common-layer-native-popup/clone-tile/staged-newer-request",
+              "/common-layer-native-popup/clone-tile/host-name-destroy",
+              "/common-layer-native-popup/clone-tile/rapid-escape-reopen",
+              "/common-layer-native-popup/clone-tile/closing-provenance-exact",
+              "/common-layer-native-popup/clone-tile/closing-provenance-mismatch",
+              "/common-layer-native-popup/clone-tile/staged-child-0",
+              "/common-layer-native-popup/clone-tile/staged-child-1",
+              "/common-layer-native-popup/clone-tile/staged-child-2",
+              "/common-layer-native-popup/clone-tile/staged-child-3",
+              "/common-layer-native-popup/ordinary-tree/actual-entry",
+              "/common-layer-native-popup/ordinary-tree/lower-controls",
+              "/common-layer-native-popup/ordinary-tree/opening-provenance-mismatch",
+              "/common-layer-native-popup/ordinary-tree/mode-growth",
+              "/common-layer-native-popup/ordinary-tree/owner-target-lifetimes",
+              "/common-layer-native-popup/ordinary-tree/staged-newer-request",
+              "/common-layer-native-popup/ordinary-tree/host-name-destroy",
+              "/common-layer-native-popup/ordinary-tree/rapid-escape-reopen",
+              "/common-layer-native-popup/ordinary-tree/closing-provenance-exact",
+              "/common-layer-native-popup/ordinary-tree/closing-provenance-mismatch",
+              "/common-layer-native-popup/ordinary-tree/staged-child-0",
+              "/common-layer-native-popup/ordinary-tree/staged-child-1",
+              "/common-layer-native-popup/ordinary-tree/staged-child-2",
+              "/common-layer-native-popup/ordinary-tree/staged-child-3",
+              "/common-layer-native-popup/clone-tree/actual-entry",
+              "/common-layer-native-popup/clone-tree/lower-controls",
+              "/common-layer-native-popup/clone-tree/opening-provenance-mismatch",
+              "/common-layer-native-popup/clone-tree/mode-growth",
+              "/common-layer-native-popup/clone-tree/owner-target-lifetimes",
+              "/common-layer-native-popup/clone-tree/staged-newer-request",
+              "/common-layer-native-popup/clone-tree/host-name-destroy",
+              "/common-layer-native-popup/clone-tree/rapid-escape-reopen",
+              "/common-layer-native-popup/clone-tree/closing-provenance-exact",
+              "/common-layer-native-popup/clone-tree/closing-provenance-mismatch",
+              "/common-layer-native-popup/clone-tree/staged-child-0",
+              "/common-layer-native-popup/clone-tree/staged-child-1",
+              "/common-layer-native-popup/clone-tree/staged-child-2",
+              "/common-layer-native-popup/clone-tree/staged-child-3"
+            ],
+            "result": "OK",
+            "returncode": 0,
+            "duration_seconds": 146.77252006530762,
+            "artifact_path": "common-layer-scale2-results.json",
+            "result_sha256": "9dbbf5cabf4d4de96622d152a69a6083f89264c805c585003010fc4c037a2c16"
+          }
+        },
+        "adjacent": [
+          {
+            "name": "painter-layer-ui",
+            "cases": 86,
+            "result": "OK",
+            "returncode": 0
+          },
+          {
+            "name": "painter-layer-tree",
+            "cases": 35,
+            "result": "OK",
+            "returncode": 0
+          },
+          {
+            "name": "painter-dock-layout-ui",
+            "cases": 3,
+            "result": "OK",
+            "returncode": 0
+          },
+          {
+            "name": "painter-dock-input-ui",
+            "cases": 6,
+            "result": "OK",
+            "returncode": 0
+          },
+          {
+            "name": "painter-dock-session-ui",
+            "cases": 7,
+            "result": "OK",
+            "returncode": 0
+          },
+          {
+            "name": "painter-right-docks-ui",
+            "cases": 9,
+            "result": "OK",
+            "returncode": 0
+          },
+          {
+            "name": "painter-canvas-ui",
+            "cases": 107,
+            "result": "OK",
+            "returncode": 0
+          },
+          {
+            "name": "painter-filter-layer-popup",
+            "cases": 17,
+            "result": "OK",
+            "returncode": 0
+          },
+          {
+            "name": "painter-widget-exceptions",
+            "cases": 6,
+            "result": "OK",
+            "returncode": 0
+          },
+          {
+            "name": "painter-popup-handles",
+            "cases": 34,
+            "result": "OK",
+            "returncode": 0
+          },
+          {
+            "name": "layer-tile-entry-contracts",
+            "cases": 32,
+            "result": "OK",
+            "returncode": 0
+          },
+          {
+            "name": "painter-layer-dispatch",
+            "cases": 4,
+            "result": "OK",
+            "returncode": 0
+          },
+          {
+            "name": "native-popover-entry",
+            "cases": 14,
+            "result": "OK",
+            "returncode": 0
+          }
+        ],
+        "adjacent_case_count": 360,
+        "adjacent_registration_count": 13,
+        "headers_passed": true,
+        "compiled_locale_catalogs": 361,
+        "locale_final_hash_verification": "PASS",
+        "source_after_status": "empty",
+        "dock_trace": "unset; active early-updates flag unset",
+        "route_diagnostic_reruns": 0,
+        "screenshots": 16,
+        "all_raw_pixels_reviewed": true,
+        "visual_receipt_sha256": "57eeaddf0c8319d9eeabe3553918272d054d6455c83d71f38479189b2d16f10c",
+        "acceptance_scope": "Specified focused candidate gates only; root owns task completion decision."
+      },
+      "baseline": {
+        "strict_intended_carrier_reds": 4,
+        "assertion": "GTK_IS_WINDOW (popup) should be TRUE",
+        "scope": "Exact306 plus reviewed two header prerequisites and31ff common harness; gate TU/wiring/production absent; not passing baseline UI tests"
+      },
+      "diagnostic": {
+        "tested_commit": "3d6f62235c6bc9e2505d2c2b6ad1d42e15d081af",
+        "tested_tree": "a5a14a81a10857834301888a0cd2b3cf902bf17d",
+        "donor_commit": "1618cc5958148c7d534f9e3893681e14fcc94d80",
+        "donor_tree": "253fcbdeb7c39391ddf8bad89b7877e1e18911b8",
+        "donor_test_blob": "e3b3b28d1da397282dface38c04ed43d9fe1f0c7",
+        "original_test_sha256": "49eb5a701b4f0a082c1f88f6a2f3a34546c738dfec4de1d28bf7989b12d5d664",
+        "instrumented_test_sha256": "78079b8209f0bb4a06f9c44ef15a2ee393c3d917da7ecad213cee8b259c61152",
+        "only_overlay": "app/tests/test-common-layer-popup.cpp",
+        "acceptance_eligible": false,
+        "strict_controlled_gate": "reproduced",
+        "observed_signal": "SIGTRAP",
+        "frame_count": 238,
+        "completed_prefix_cases": 1,
+        "main_thread_attribution": "Frame89 controlled_dock_updates at exact frozen test callsite291; public GDK wrapper absent as expected from verified tail jump.",
+        "trace": {
+          "sha256": "f0e109caf56dea088ff979503792b2394d2ff6b78447bfb93d2d5701018277a3",
+          "bytes": 298830,
+          "cap_reached": false,
+          "begin_count": 2,
+          "returned_count": 1,
+          "unreturned_dispatch": {
+            "line": 721,
+            "window": "0x5611f0e2a7c0",
+            "phase": "phase=46 fixture/controlled-offscreen-updates test=/common-layer-native-popup/clone-tree/lower-controls"
+          }
+        },
+        "source_integrity": "Job log verifies immutable3d6 and exact1618-donor/78079-only test overlay after compile13:46:16 and after execution13:46:36 UTC.",
+        "root_capture": "Channel-list/brush/color docks before common popup at controlled stop; actual pixels viewed. Not an acceptance image.",
+        "qualification": "Exact3d6 production plus only historical78079 test from exact1618 donor reproduced controlled warning/SIGTRAP. Current gate production and31ff common test were not imported. This is independent historical error reproduction; candidate regression acceptance is established only by its own tests.",
+        "inspection_receipt_sha256": "d1d8bab6e5ad2e10349b52a82837e29cb7ed635c8b99f375fadfe923122aa4e5"
+      },
+      "screenshots": {
+        "expected_raw_captures": 16,
+        "captured_raw_views": 16,
+        "all_raw_pixels_reviewed": true,
+        "visual_receipt_sha256": "57eeaddf0c8319d9eeabe3553918272d054d6455c83d71f38479189b2d16f10c",
+        "captures": [
+          {
+            "artifact_path": "common-layer-scale1/clone-tile-bottom-scale1.png",
+            "sha256": "9bd9ae80e448837de8c50a4c84df194b9074a431d1446fc2eb9a18de5cd36c01",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale1/clone-tile-scale1.png",
+            "sha256": "272d16c87b318330a16115dee0fac2a94cfe6160fd596f2a9e9016957ecaaa33",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale1/clone-tree-bottom-scale1.png",
+            "sha256": "6ad5f6b4176af1ef86afb9362b8d48a2d4c4c2d6fd9b675dc142043d61bdf5a4",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale1/clone-tree-scale1.png",
+            "sha256": "e3c5639576bf7369e33770f99c3105824e57af44bff74db74385618e6195f78f",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale1/ordinary-tile-bottom-scale1.png",
+            "sha256": "1989b741ef520d6574d8926bec0c2101720c0330b8ce83fdb1e2449c30f0964a",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale1/ordinary-tile-scale1.png",
+            "sha256": "3083bfda10d97719fd6b4c411f63e01c66377b8f2d6f954498fd81d84ee3ee0e",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale1/ordinary-tree-bottom-scale1.png",
+            "sha256": "1bdd429b3d3e6b414fd543dfd08b94bfd6ffe1d1e4b9bc252caf7bbf692df868",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale1/ordinary-tree-scale1.png",
+            "sha256": "a63f566ef4be386484860b1069c59518aa14c57ced6fe7a2e51deb2b5719be59",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale2/clone-tile-bottom-scale2.png",
+            "sha256": "3f77890937462588cb996981e80dd8d693406e439a688c97ccf601f99d45c567",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale2/clone-tile-scale2.png",
+            "sha256": "1c4dccaf6c9e19a0377dcaea8f4c78885666bc4b26fef8841fcdf3fa13f4b192",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale2/clone-tree-bottom-scale2.png",
+            "sha256": "3548ce5203e6b0abb217759f022539ed907a9715ad5f23b036d6c8691b778a22",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale2/clone-tree-scale2.png",
+            "sha256": "643dee2f120976141b98f7494aba4d3661551f18b59454a09b51c11172d0e33f",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale2/ordinary-tile-bottom-scale2.png",
+            "sha256": "98aede86a1e5a4c3569bbc41086f5b82600baf3298663face02baf7f7a306199",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale2/ordinary-tile-scale2.png",
+            "sha256": "11a29f65c74dd9457a68ca027d5a68db47225a1929d8a1759a33aa40346f295a",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale2/ordinary-tree-bottom-scale2.png",
+            "sha256": "cc48f602c77210e9b8551627635334583cc908f8c1f2cae15e28620ec3fe1320",
+            "width": 1080,
+            "height": 1920
+          },
+          {
+            "artifact_path": "common-layer-scale2/ordinary-tree-scale2.png",
+            "sha256": "14aac1eb0f1d7bc5ad1753c8d59ffe34b9234c13247d2ef3333374ce143cbd89",
+            "width": 1080,
+            "height": 1920
+          }
+        ],
+        "qualification": "Common popup captures, not screenshots of gate tests. Upper tile views need complementary scrolled bottom views; scrollbar overlaps some right-edge values but not bottom action labels. Tree forms complete/short. Minimal resource fixture, not normal installed startup."
+      },
+      "artifact_ids": {
+        "candidate": 12600922964,
+        "baseline": 12601810387,
+        "diagnostic": 12600841498
+      },
+      "artifact_sha256": {
+        "baseline-red-controls": "369234f5b61e8a9a4f57b846f237fa467ea42d6c14d8326dd78be5823e751b06",
+        "diagnostic-only": "572dc513b1e9b136f4b258a83e602b3ac3e7b871acc6b0fd52dfc814027ad5f9",
+        "candidate": "58e261771bfe2474eee78c6b1e9e45ba5f9d758fe5cc407f3ad80eca589ecd07"
+      },
+      "qualification": "All selected candidate gates pass: six paint-gate cases at both scales,58 common cases at both scales,16 actually viewed raw captures,13 adjacent registrations/360 cases,headers and361catalog hashes. Four306carrier REDs and immutable3d6+78079 controlled error reproduction also pass independently. Focused native regression evidence now supports the current source repair; not full port/plug-in/aggregate/Brush acceptance or proof every historical intermittent failure had one cause.",
+      "next_revision": "Record the verified focused result without broadening coverage or rewriting failed history. No runtime/checker/source changes requested by this evidence."
+    }
+  ]
+}

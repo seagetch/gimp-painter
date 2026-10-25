@@ -241,7 +241,11 @@ void click_clone_and_undo (GimpLayerTileView *view, GimpImage *image,
   const gint before = gimp_image_get_n_layers (image);
   GtkWidget *popup = gimp_painter_layer_tiles_popup (
     GIMP_PAINTER_LAYER_TILES (view), preset);
-  g_assert_true (GTK_IS_POPOVER (popup));
+  if (preset) g_assert_true (GTK_IS_POPOVER (popup));
+  else {
+    g_assert_true (GTK_IS_WINDOW (popup));
+    g_assert_cmpint (gtk_window_get_window_type (GTK_WINDOW (popup)), ==, GTK_WINDOW_POPUP);
+  }
   GtkWidget *button = preset ? find_button_label (popup, Preset::name ()) :
                               find (popup, "layers-new-clone");
   g_assert_true (GTK_IS_BUTTON (button));
@@ -553,6 +557,14 @@ void close_shell (GimpDisplayShell *shell)
 
 void both_canvas_action_isolation ()
 {
+  /* This case deliberately acts on the canvas that is NOT globally active.
+   * A hidden notebook page is not an available native popup owner: use real
+   * multi-window shells here, preserving the opposite-global-context oracle.
+   * The common-popup matrix separately verifies the default single-window UI. */
+  gboolean single_window = FALSE;
+  g_object_get (application->config, "single-window-mode", &single_window, nullptr);
+  g_object_set (application->config, "single-window-mode", FALSE, nullptr);
+  drain ();
   Preset preset;
   GimpDisplayShell *a = new_shell (), *b = new_shell ();
   GimpImage *ia = gimp_display_get_image (a->display);
@@ -563,6 +575,14 @@ void both_canvas_action_isolation ()
   GtkWidget *tb = find (b->canvas, "painter-layer-tiles");
   g_assert_true (GIMP_IS_LAYER_TILE_VIEW (ta));
   g_assert_true (GIMP_IS_LAYER_TILE_VIEW (tb));
+  g_assert_true (gtk_widget_get_toplevel (ta) != gtk_widget_get_toplevel (tb));
+  auto mapped_canvases = [ta, tb] {
+    for (auto *tiles : {ta, tb}) {
+      g_assert_true (gtk_widget_get_mapped (tiles));
+      g_assert_true (gtk_widget_get_mapped (find (tiles, "painter-layer-canvas")));
+    }
+  };
+  mapped_canvases ();
   GimpContext *global = gimp_get_user_context (application);
   assert_properties (GIMP_LAYER_TILE_VIEW (ta), global, ia);
   assert_properties (GIMP_LAYER_TILE_VIEW (tb), global, ib);
@@ -581,6 +601,7 @@ void both_canvas_action_isolation ()
     gimp_context_set_image (global, ib);
     drain ();
     g_assert_true (gimp_context_get_image (global) == ib);
+    mapped_canvases ();
     click_clone_and_undo (GIMP_LAYER_TILE_VIEW (ta), ia, la, use_preset);
     g_assert_cmpint (gimp_image_get_n_layers (ib), ==, 1);
     assert_properties (GIMP_LAYER_TILE_VIEW (ta), global, ia);
@@ -591,6 +612,7 @@ void both_canvas_action_isolation ()
     gimp_context_set_image (global, ia);
     drain ();
     g_assert_true (gimp_context_get_image (global) == ia);
+    mapped_canvases ();
     click_clone_and_undo (GIMP_LAYER_TILE_VIEW (tb), ib, lb, use_preset);
     g_assert_cmpint (gimp_image_get_n_layers (ia), ==, 1);
     assert_properties (GIMP_LAYER_TILE_VIEW (ta), global, ia);
@@ -616,6 +638,11 @@ void both_canvas_action_isolation ()
   g_assert_cmpuint (finalized, ==, 1);
   click_clone_and_undo (GIMP_LAYER_TILE_VIEW (tb), ib, lb, true);
   close_shell (b);
+  g_object_set (application->config, "single-window-mode", single_window, nullptr);
+  drain ();
+  gboolean restored = !single_window;
+  g_object_get (application->config, "single-window-mode", &restored, nullptr);
+  g_assert_true (restored == single_window);
 }
 
 struct TestCase { void (*run) (); };

@@ -1,0 +1,22 @@
+{
+  "base_commit": "d4ce384f708090facbf6b08edc38b4ddcf84cff0",
+  "checks": [
+    {
+      "path": "app/widgets/gimppainterlayertiles.cpp",
+      "method": "GtkWidget *Tiles::show_popup (bool creation) {",
+      "qualification": "Only common-route dispatch removed for byte comparison",
+      "base_method_sha256": "613002089ceec45d4c8d6075917026eb4178d9669a91a1e5d10cb7bc386f44ce",
+      "candidate_excluded_body_sha256": "613002089ceec45d4c8d6075917026eb4178d9669a91a1e5d10cb7bc386f44ce",
+      "equal": true
+    },
+    {
+      "path": "app/widgets/gimpcellrendererpopup.cpp",
+      "method": "void Popup::open (",
+      "qualification": "Only common-route dispatch removed for byte comparison",
+      "base_method_sha256": "bea9848d56ce85afb2428c21496c3b4e38d7cf9af8876251989702b39085a77c",
+      "candidate_excluded_body_sha256": "bea9848d56ce85afb2428c21496c3b4e38d7cf9af8876251989702b39085a77c",
+      "equal": true
+    }
+  ],
+  "limit": "Method-body comparison and static review are not native regression execution"
+}

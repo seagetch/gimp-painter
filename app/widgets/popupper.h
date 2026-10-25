@@ -26,6 +26,11 @@ GType gimp_popover_get_type (void) G_GNUC_CONST;
  * NULL/non-widget/toplevel/already-parented/currently-destroying views reject.
  * Old Interface/decorator APIs and GTK2 class-layout ABI are not restored. */
 GtkWidget *gimp_popover_new (GtkWidget *view);
+/* Common layer properties use the old area-aware GimpPopover2 placement.
+ * anchor must be mapped. area is in anchor widget coordinates (or NULL for
+ * its full allocation). Placement is fixed at opening; only later size growth
+ * is constrained to the selected monitor, without tracking the anchor. */
+void gimp_popover_show_at (GtkWidget *popup, GtkWidget *anchor, const GdkRectangle *area);
 /* MyPaint toolbar uses the historical GimpPopup event contract: outside
  * cancellation is not consumed. Distinct from legacy GimpPopover2. */
 GType gimp_painter_popup_get_type (void) G_GNUC_CONST;

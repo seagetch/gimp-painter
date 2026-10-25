@@ -1,0 +1,728 @@
+{
+  "schema_version": 1,
+  "status": "PASS — specified focused native runtime and visual acceptance only",
+  "repository": "seagetch/gimp-painter",
+  "branch_at_test": "gimp-3-0-port",
+  "tested_commit": "d6d3126cc7ca5b7cb71ff48212cc6639f50bc145",
+  "tested_tree": "6f6dca7287d3cdb4e40138c40dc6108cbe34662b",
+  "base_commit": "d4ce384f708090facbf6b08edc38b4ddcf84cff0",
+  "run_id": 40198528473,
+  "run_url": "https://github.com/seagetch/gimp-painter/actions/runs/40198528473",
+  "jobs": {
+    "candidate": {
+      "id": 121184522754,
+      "conclusion": "success"
+    },
+    "baseline": {
+      "id": 121184522994,
+      "conclusion": "success"
+    },
+    "diagnostic": {
+      "id": 121184522926,
+      "conclusion": "success: immutable historical controlled error reproduction, NOT candidate UI pass"
+    }
+  },
+  "source_manifest": {
+    "path": "migration/tests/common-layer-native-popups/source-manifest.json",
+    "sha256": "04b3053c24509ad643b6782197bd80abcf5a74582c3e474500a01323e2c87e9f",
+    "source_file_count": 17,
+    "files_sha256": {
+      "app/widgets/popupper.h": "0745c35cb4fe2cd705ae1f85e98444bfaf8299a24aa7a067737998444b3d459d",
+      "app/widgets/popupper.cpp": "2a32434f9eca1db8435eed057ed9e1d3233d5120be5f974c9568529bad2d0044",
+      "app/widgets/gimpcellrendererpopup.cpp": "342e0da5c83dc80fe20256bf32f4042c204dfb76dcb4cb6923bec3057383c207",
+      "app/widgets/gimppainterlayertiles.cpp": "8c6addf0e246a1cb9800e3eb515f4af9797dabdd6b51e72a83c4ca2bc8d7ea6d",
+      "app/tests/meson.build": "c65567c7fa8f3e75dbcf24ab5986e8c697dc3fe1d52bf88384ca58817423849e",
+      "app/tests/test-common-layer-popup.cpp": "31ff252f755a9f152cb7f4ea7da400f62fa69d8a3b0ab8f83a9495809a4b05bf",
+      "app/tests/test-layer-tile-entry-contracts.c": "c8e125ce835c27449afdbc2e4b7fd44648b909d401cd6da6c67a7aabac43e326",
+      "app/tests/test-layer-tile-entry-contracts.cpp": "e4b4e481497aa4d3de5aa1620df3b5efd52d800d3adead9e118ee721cc2fe4c0",
+      "app/tests/test-painter-canvas-ui.c": "6724e3e0a2cbe3a0ab73fb31a0b88c87a9727bce09d2779e3af9c8b2cff523dc",
+      "app/tests/test-painter-layer-tree.c": "78245a714da02e03aa20aa3aeb9a6d763176df9d15269b8e165828c8c8a63de4",
+      "app/tests/test-painter-layer-ui.c": "0663b3dcedf94eab17ef5ae24ccf3a6678599627aa5c36ec2210a48efe9172be",
+      "app/tests/test-painter-widget-exceptions.c": "30930cb38982d5b4e6d51d5ac5244583c492b1f86c4985e1ee967867a6e6d868",
+      "migration/inventory/additional-c-header-routes.json": "80c52295e173481073be17d988e8238b473d197e266c1e7c6644bd61789917e1",
+      "app/display/gimppaintercanvasui.cpp": "b6e6c6c069bb513a8872aa988c133f0fff8ffcaabc2527ef4640cad3baaf14df",
+      "app/widgets/gimpoverlaychild.c": "8f558769cc18f5d2d70e75c09913ecc91cbbe74518cad196666a88cb38556349",
+      "app/widgets/gimpoverlaychild.h": "c5d3631889c89b57dbfc26fa7a471c814b6bee775bf4e2d241eee45ca1071b18",
+      "app/tests/test-overlay-paint-gate.cpp": "4af7e5e61c7d0d33970db90dc73e03094ec42f0b61c529a03da4d4fa9bf2e9fd"
+    }
+  },
+  "ci_files_sha256": {
+    ".github/workflows/painter-native-ui.yml": "8daf1b0665d33a7d79be0ec861e968e7e29944c0e25bb92d24d789e45e846f0a",
+    "tools/run-painter-ui-ci.sh": "94f26939bc1e0f55bd6bb68a1aedf2716a9e6be971f6193248deecdaf02f0c72",
+    "tools/check_painter_ui_ci.py": "8e8ca92b5bc32df8c77831506af6c210ca20d18219271c7de618934df1388eec",
+    "tools/painter-common-layer-popup-cases.json": "f200df6ef91be4d3e443d724bc8ba09164d1c2dd94d1c825d941159f9b120d6a",
+    "tools/painter-overlay-paint-gate-cases.json": "5ba736317b71325c4cd9e956bada4c5011dcd927ac3d1bdc56ba43a1a6e90718",
+    "tools/prepare-painter-popup-baseline.py": "c3a502c96df9bbebf59ed8aa65d92745b255b7f80f9fb480daad934335e00d63",
+    "tools/prepare-painter-dockbook-diagnostic.py": "495d5b39bb6928cea14f0e04d8f0e94876fa59d6aaee6451ec5f0595fb16780d",
+    "tools/check_painter_dockbook_diagnostic.py": "0ca9e74d8b5901bf24980b6d6f1177458689923f5053355a18a121762156b5ed",
+    "tools/check_painter_controlled_order_diagnostic.py": "d65ee8416c9da44442bcc3873a4aa8ff325209c20ff559bc69cf86f1618ef791"
+  },
+  "candidate_acceptance": {
+    "all_selected_gates_passed": true,
+    "overlay_paint_gate": {
+      "scale1": {
+        "passed": true,
+        "passed_case_count": 6,
+        "expected_case_count": 6,
+        "passed_case_ids": [
+          "/overlay-paint-gate/native-insertion",
+          "/overlay-paint-gate/pending-teardown",
+          "/overlay-paint-gate/late-layout",
+          "/overlay-paint-gate/late-paint",
+          "/overlay-paint-gate/redraw-token-balance",
+          "/overlay-paint-gate/hide-remap"
+        ],
+        "result": "OK",
+        "returncode": 0,
+        "artifact_path": "overlay-paint-gate-scale1-results.json",
+        "result_sha256": "419128f5523258a51ba17b5014a4161f91609271c5dfea53e2badb9ef3fb30ec"
+      },
+      "scale2": {
+        "passed": true,
+        "passed_case_count": 6,
+        "expected_case_count": 6,
+        "passed_case_ids": [
+          "/overlay-paint-gate/native-insertion",
+          "/overlay-paint-gate/pending-teardown",
+          "/overlay-paint-gate/late-layout",
+          "/overlay-paint-gate/late-paint",
+          "/overlay-paint-gate/redraw-token-balance",
+          "/overlay-paint-gate/hide-remap"
+        ],
+        "result": "OK",
+        "returncode": 0,
+        "artifact_path": "overlay-paint-gate-scale2-results.json",
+        "result_sha256": "d233a5486396ef02f70bb8bda078a340180a270e113884e16a5bda1959799918"
+      }
+    },
+    "common_layer_popups": {
+      "scale1": {
+        "passed": true,
+        "passed_case_count": 58,
+        "expected_case_count": 58,
+        "passed_case_ids": [
+          "/common-layer-native-popup/group-tile",
+          "/common-layer-native-popup/group-tree",
+          "/common-layer-native-popup/ordinary-tile/actual-entry",
+          "/common-layer-native-popup/ordinary-tile/lower-controls",
+          "/common-layer-native-popup/ordinary-tile/opening-provenance-mismatch",
+          "/common-layer-native-popup/ordinary-tile/mode-growth",
+          "/common-layer-native-popup/ordinary-tile/owner-target-lifetimes",
+          "/common-layer-native-popup/ordinary-tile/staged-newer-request",
+          "/common-layer-native-popup/ordinary-tile/host-name-destroy",
+          "/common-layer-native-popup/ordinary-tile/rapid-escape-reopen",
+          "/common-layer-native-popup/ordinary-tile/closing-provenance-exact",
+          "/common-layer-native-popup/ordinary-tile/closing-provenance-mismatch",
+          "/common-layer-native-popup/ordinary-tile/staged-child-0",
+          "/common-layer-native-popup/ordinary-tile/staged-child-1",
+          "/common-layer-native-popup/ordinary-tile/staged-child-2",
+          "/common-layer-native-popup/ordinary-tile/staged-child-3",
+          "/common-layer-native-popup/clone-tile/actual-entry",
+          "/common-layer-native-popup/clone-tile/lower-controls",
+          "/common-layer-native-popup/clone-tile/opening-provenance-mismatch",
+          "/common-layer-native-popup/clone-tile/mode-growth",
+          "/common-layer-native-popup/clone-tile/owner-target-lifetimes",
+          "/common-layer-native-popup/clone-tile/staged-newer-request",
+          "/common-layer-native-popup/clone-tile/host-name-destroy",
+          "/common-layer-native-popup/clone-tile/rapid-escape-reopen",
+          "/common-layer-native-popup/clone-tile/closing-provenance-exact",
+          "/common-layer-native-popup/clone-tile/closing-provenance-mismatch",
+          "/common-layer-native-popup/clone-tile/staged-child-0",
+          "/common-layer-native-popup/clone-tile/staged-child-1",
+          "/common-layer-native-popup/clone-tile/staged-child-2",
+          "/common-layer-native-popup/clone-tile/staged-child-3",
+          "/common-layer-native-popup/ordinary-tree/actual-entry",
+          "/common-layer-native-popup/ordinary-tree/lower-controls",
+          "/common-layer-native-popup/ordinary-tree/opening-provenance-mismatch",
+          "/common-layer-native-popup/ordinary-tree/mode-growth",
+          "/common-layer-native-popup/ordinary-tree/owner-target-lifetimes",
+          "/common-layer-native-popup/ordinary-tree/staged-newer-request",
+          "/common-layer-native-popup/ordinary-tree/host-name-destroy",
+          "/common-layer-native-popup/ordinary-tree/rapid-escape-reopen",
+          "/common-layer-native-popup/ordinary-tree/closing-provenance-exact",
+          "/common-layer-native-popup/ordinary-tree/closing-provenance-mismatch",
+          "/common-layer-native-popup/ordinary-tree/staged-child-0",
+          "/common-layer-native-popup/ordinary-tree/staged-child-1",
+          "/common-layer-native-popup/ordinary-tree/staged-child-2",
+          "/common-layer-native-popup/ordinary-tree/staged-child-3",
+          "/common-layer-native-popup/clone-tree/actual-entry",
+          "/common-layer-native-popup/clone-tree/lower-controls",
+          "/common-layer-native-popup/clone-tree/opening-provenance-mismatch",
+          "/common-layer-native-popup/clone-tree/mode-growth",
+          "/common-layer-native-popup/clone-tree/owner-target-lifetimes",
+          "/common-layer-native-popup/clone-tree/staged-newer-request",
+          "/common-layer-native-popup/clone-tree/host-name-destroy",
+          "/common-layer-native-popup/clone-tree/rapid-escape-reopen",
+          "/common-layer-native-popup/clone-tree/closing-provenance-exact",
+          "/common-layer-native-popup/clone-tree/closing-provenance-mismatch",
+          "/common-layer-native-popup/clone-tree/staged-child-0",
+          "/common-layer-native-popup/clone-tree/staged-child-1",
+          "/common-layer-native-popup/clone-tree/staged-child-2",
+          "/common-layer-native-popup/clone-tree/staged-child-3"
+        ],
+        "result": "OK",
+        "returncode": 0,
+        "artifact_path": "common-layer-scale1-results.json",
+        "result_sha256": "9363c184451264fb8d5d829d7c5a421d3bfba9cdfd0d55fe0a5c010003f90b46"
+      },
+      "scale2": {
+        "passed": true,
+        "passed_case_count": 58,
+        "expected_case_count": 58,
+        "passed_case_ids": [
+          "/common-layer-native-popup/group-tile",
+          "/common-layer-native-popup/group-tree",
+          "/common-layer-native-popup/ordinary-tile/actual-entry",
+          "/common-layer-native-popup/ordinary-tile/lower-controls",
+          "/common-layer-native-popup/ordinary-tile/opening-provenance-mismatch",
+          "/common-layer-native-popup/ordinary-tile/mode-growth",
+          "/common-layer-native-popup/ordinary-tile/owner-target-lifetimes",
+          "/common-layer-native-popup/ordinary-tile/staged-newer-request",
+          "/common-layer-native-popup/ordinary-tile/host-name-destroy",
+          "/common-layer-native-popup/ordinary-tile/rapid-escape-reopen",
+          "/common-layer-native-popup/ordinary-tile/closing-provenance-exact",
+          "/common-layer-native-popup/ordinary-tile/closing-provenance-mismatch",
+          "/common-layer-native-popup/ordinary-tile/staged-child-0",
+          "/common-layer-native-popup/ordinary-tile/staged-child-1",
+          "/common-layer-native-popup/ordinary-tile/staged-child-2",
+          "/common-layer-native-popup/ordinary-tile/staged-child-3",
+          "/common-layer-native-popup/clone-tile/actual-entry",
+          "/common-layer-native-popup/clone-tile/lower-controls",
+          "/common-layer-native-popup/clone-tile/opening-provenance-mismatch",
+          "/common-layer-native-popup/clone-tile/mode-growth",
+          "/common-layer-native-popup/clone-tile/owner-target-lifetimes",
+          "/common-layer-native-popup/clone-tile/staged-newer-request",
+          "/common-layer-native-popup/clone-tile/host-name-destroy",
+          "/common-layer-native-popup/clone-tile/rapid-escape-reopen",
+          "/common-layer-native-popup/clone-tile/closing-provenance-exact",
+          "/common-layer-native-popup/clone-tile/closing-provenance-mismatch",
+          "/common-layer-native-popup/clone-tile/staged-child-0",
+          "/common-layer-native-popup/clone-tile/staged-child-1",
+          "/common-layer-native-popup/clone-tile/staged-child-2",
+          "/common-layer-native-popup/clone-tile/staged-child-3",
+          "/common-layer-native-popup/ordinary-tree/actual-entry",
+          "/common-layer-native-popup/ordinary-tree/lower-controls",
+          "/common-layer-native-popup/ordinary-tree/opening-provenance-mismatch",
+          "/common-layer-native-popup/ordinary-tree/mode-growth",
+          "/common-layer-native-popup/ordinary-tree/owner-target-lifetimes",
+          "/common-layer-native-popup/ordinary-tree/staged-newer-request",
+          "/common-layer-native-popup/ordinary-tree/host-name-destroy",
+          "/common-layer-native-popup/ordinary-tree/rapid-escape-reopen",
+          "/common-layer-native-popup/ordinary-tree/closing-provenance-exact",
+          "/common-layer-native-popup/ordinary-tree/closing-provenance-mismatch",
+          "/common-layer-native-popup/ordinary-tree/staged-child-0",
+          "/common-layer-native-popup/ordinary-tree/staged-child-1",
+          "/common-layer-native-popup/ordinary-tree/staged-child-2",
+          "/common-layer-native-popup/ordinary-tree/staged-child-3",
+          "/common-layer-native-popup/clone-tree/actual-entry",
+          "/common-layer-native-popup/clone-tree/lower-controls",
+          "/common-layer-native-popup/clone-tree/opening-provenance-mismatch",
+          "/common-layer-native-popup/clone-tree/mode-growth",
+          "/common-layer-native-popup/clone-tree/owner-target-lifetimes",
+          "/common-layer-native-popup/clone-tree/staged-newer-request",
+          "/common-layer-native-popup/clone-tree/host-name-destroy",
+          "/common-layer-native-popup/clone-tree/rapid-escape-reopen",
+          "/common-layer-native-popup/clone-tree/closing-provenance-exact",
+          "/common-layer-native-popup/clone-tree/closing-provenance-mismatch",
+          "/common-layer-native-popup/clone-tree/staged-child-0",
+          "/common-layer-native-popup/clone-tree/staged-child-1",
+          "/common-layer-native-popup/clone-tree/staged-child-2",
+          "/common-layer-native-popup/clone-tree/staged-child-3"
+        ],
+        "result": "OK",
+        "returncode": 0,
+        "artifact_path": "common-layer-scale2-results.json",
+        "result_sha256": "9dbbf5cabf4d4de96622d152a69a6083f89264c805c585003010fc4c037a2c16"
+      }
+    },
+    "adjacent_regressions": {
+      "registration_count": 13,
+      "case_count": 360,
+      "registrations": [
+        {
+          "name": "painter-layer-ui",
+          "cases": 86,
+          "result": "OK",
+          "returncode": 0
+        },
+        {
+          "name": "painter-layer-tree",
+          "cases": 35,
+          "result": "OK",
+          "returncode": 0
+        },
+        {
+          "name": "painter-dock-layout-ui",
+          "cases": 3,
+          "result": "OK",
+          "returncode": 0
+        },
+        {
+          "name": "painter-dock-input-ui",
+          "cases": 6,
+          "result": "OK",
+          "returncode": 0
+        },
+        {
+          "name": "painter-dock-session-ui",
+          "cases": 7,
+          "result": "OK",
+          "returncode": 0
+        },
+        {
+          "name": "painter-right-docks-ui",
+          "cases": 9,
+          "result": "OK",
+          "returncode": 0
+        },
+        {
+          "name": "painter-canvas-ui",
+          "cases": 107,
+          "result": "OK",
+          "returncode": 0
+        },
+        {
+          "name": "painter-filter-layer-popup",
+          "cases": 17,
+          "result": "OK",
+          "returncode": 0
+        },
+        {
+          "name": "painter-widget-exceptions",
+          "cases": 6,
+          "result": "OK",
+          "returncode": 0
+        },
+        {
+          "name": "painter-popup-handles",
+          "cases": 34,
+          "result": "OK",
+          "returncode": 0
+        },
+        {
+          "name": "layer-tile-entry-contracts",
+          "cases": 32,
+          "result": "OK",
+          "returncode": 0
+        },
+        {
+          "name": "painter-layer-dispatch",
+          "cases": 4,
+          "result": "OK",
+          "returncode": 0
+        },
+        {
+          "name": "native-popover-entry",
+          "cases": 14,
+          "result": "OK",
+          "returncode": 0
+        }
+      ],
+      "artifact_path": "adjacent-regressions-results.json",
+      "result_sha256": "cddb37896cac200c108cc814d28b33d3b086ddd391e49fdb5f42ec6d5211abdf"
+    },
+    "header_checks": {
+      "passed": true,
+      "registration_ids": [
+        "painter-public-header-compilation",
+        "painter-additional-header-routes"
+      ],
+      "compiled_c_probes": 217,
+      "compiled_cpp_probes": 236,
+      "artifact_path": "header-verification-results.json",
+      "result_sha256": "9a878cee2d77a132df11f0b956542846e5aaf8cc5ab949a872eed8eb9a56a5e9"
+    },
+    "ci_validator_unit_tests": 169,
+    "locale_catalogs": {
+      "compiled_catalog_count": 361,
+      "final_hash_verification": "PASS",
+      "artifact_path": "locales.json",
+      "manifest_sha256": "15b81a0fabe1a26e853951affe5309508db9d90429f80577be4a098112b01f57"
+    },
+    "source_integrity": {
+      "tracked_source_status": "clean after execution",
+      "artifact_path": "source-after.status",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "selector_isolation": "Fresh profiles and native X11 display per invocation; historical tracing and early-update flags unset in acceptance groups. Common, Filter and paint-gate selectors isolated.",
+    "supplementary_route_diagnostic_invocations": 0,
+    "native_paint_observations": "Each of six fixtures at each scale reports zero unallocated native draws. First native draw context matches the retained OFFSCREEN window (type5). Tests retain exact allocation/layout/after-paint, late-mutation, teardown, freeze-token and remap assertions."
+  },
+  "visual_acceptance": {
+    "all_raw_images_individually_reviewed": true,
+    "image_count": 16,
+    "physical_screen": [
+      1080,
+      1920
+    ],
+    "gdk_scales": [
+      1,
+      2
+    ],
+    "reviewed_at_utc": "2026-10-25T14:00:05Z",
+    "focused_popup_visual_blocker_found": false,
+    "images": [
+      {
+        "artifact_path": "common-layer-scale1/clone-tile-bottom-scale1.png",
+        "sha256": "9bd9ae80e448837de8c50a4c84df194b9074a431d1446fc2eb9a18de5cd36c01",
+        "width": 1080,
+        "height": 1920,
+        "scale": 1,
+        "route": "clone-tile",
+        "variant": "lower-controls",
+        "observations": "Scrolled lower tile form: Delete Layer and All Layer Actions are fully visible; Clone Source is also visible. Upper creation controls are deliberately clipped by the scrolled viewport.",
+        "qualifications": [
+          "Minimal source test resource/profile fixture with keeper tab; not proof of normal installed startup or a populated brush catalog.",
+          "Image is unedited raw root capture; visual pixels alone do not prove input causality.",
+          "Fresh lower-controls fixture uses opacity100; distinct from actual-entry48/49 fixture, not a continuous before/after sequence.",
+          "Hovered overlay scrollbar is expanded along the right edge; action labels remain readable. It can overlap right-edge value/slider pixels, not the bottom action labels."
+        ]
+      },
+      {
+        "artifact_path": "common-layer-scale1/clone-tile-scale1.png",
+        "sha256": "272d16c87b318330a16115dee0fac2a94cfe6160fd596f2a9e9016957ecaaa33",
+        "width": 1080,
+        "height": 1920,
+        "scale": 1,
+        "route": "clone-tile",
+        "variant": "actual-entry",
+        "observations": "Upper tile form: creation buttons, opacity 49, mode and locks readable; Clone Source visible; lower controls intentionally extend beyond the scroll viewport; complementary bottom capture supplies lower view.",
+        "qualifications": [
+          "Minimal source test resource/profile fixture with keeper tab; not proof of normal installed startup or a populated brush catalog.",
+          "Image is unedited raw root capture; visual pixels alone do not prove input causality."
+        ]
+      },
+      {
+        "artifact_path": "common-layer-scale1/clone-tree-bottom-scale1.png",
+        "sha256": "6ad5f6b4176af1ef86afb9362b8d48a2d4c4c2d6fd9b675dc142043d61bdf5a4",
+        "width": 1080,
+        "height": 1920,
+        "scale": 1,
+        "route": "clone-tree",
+        "variant": "lower-controls",
+        "observations": "Complete short tree form: opacity 100, mode and alpha lock readable; final Clone Source button fully visible.",
+        "qualifications": [
+          "Minimal source test resource/profile fixture with keeper tab; not proof of normal installed startup or a populated brush catalog.",
+          "Image is unedited raw root capture; visual pixels alone do not prove input causality.",
+          "Fresh lower-controls fixture uses opacity100; distinct from actual-entry48/49 fixture, not a continuous before/after sequence.",
+          "Tree form is genuinely shorter and has no tile-style Delete/All Actions scroller; no invented scroll claim."
+        ]
+      },
+      {
+        "artifact_path": "common-layer-scale1/clone-tree-scale1.png",
+        "sha256": "e3c5639576bf7369e33770f99c3105824e57af44bff74db74385618e6195f78f",
+        "width": 1080,
+        "height": 1920,
+        "scale": 1,
+        "route": "clone-tree",
+        "variant": "actual-entry",
+        "observations": "Complete short tree form: opacity 49, mode and alpha lock readable; final Clone Source button fully visible.",
+        "qualifications": [
+          "Minimal source test resource/profile fixture with keeper tab; not proof of normal installed startup or a populated brush catalog.",
+          "Image is unedited raw root capture; visual pixels alone do not prove input causality.",
+          "Tree form is genuinely shorter and has no tile-style Delete/All Actions scroller; no invented scroll claim."
+        ]
+      },
+      {
+        "artifact_path": "common-layer-scale1/ordinary-tile-bottom-scale1.png",
+        "sha256": "1989b741ef520d6574d8926bec0c2101720c0330b8ce83fdb1e2449c30f0964a",
+        "width": 1080,
+        "height": 1920,
+        "scale": 1,
+        "route": "ordinary-tile",
+        "variant": "lower-controls",
+        "observations": "Scrolled lower tile form: Delete Layer and All Layer Actions are fully visible; Upper creation controls are deliberately clipped by the scrolled viewport.",
+        "qualifications": [
+          "Minimal source test resource/profile fixture with keeper tab; not proof of normal installed startup or a populated brush catalog.",
+          "Image is unedited raw root capture; visual pixels alone do not prove input causality.",
+          "Fresh lower-controls fixture uses opacity100; distinct from actual-entry48/49 fixture, not a continuous before/after sequence.",
+          "Hovered overlay scrollbar is expanded along the right edge; action labels remain readable. It can overlap right-edge value/slider pixels, not the bottom action labels."
+        ]
+      },
+      {
+        "artifact_path": "common-layer-scale1/ordinary-tile-scale1.png",
+        "sha256": "3083bfda10d97719fd6b4c411f63e01c66377b8f2d6f954498fd81d84ee3ee0e",
+        "width": 1080,
+        "height": 1920,
+        "scale": 1,
+        "route": "ordinary-tile",
+        "variant": "actual-entry",
+        "observations": "Upper tile form: creation buttons, opacity 48, mode and locks readable; lower controls intentionally extend beyond the scroll viewport; complementary bottom capture supplies lower view.",
+        "qualifications": [
+          "Minimal source test resource/profile fixture with keeper tab; not proof of normal installed startup or a populated brush catalog.",
+          "Image is unedited raw root capture; visual pixels alone do not prove input causality."
+        ]
+      },
+      {
+        "artifact_path": "common-layer-scale1/ordinary-tree-bottom-scale1.png",
+        "sha256": "1bdd429b3d3e6b414fd543dfd08b94bfd6ffe1d1e4b9bc252caf7bbf692df868",
+        "width": 1080,
+        "height": 1920,
+        "scale": 1,
+        "route": "ordinary-tree",
+        "variant": "lower-controls",
+        "observations": "Complete short tree form: opacity 100, mode and alpha lock readable; final alpha lock visibly checked after physical toggle.",
+        "qualifications": [
+          "Minimal source test resource/profile fixture with keeper tab; not proof of normal installed startup or a populated brush catalog.",
+          "Image is unedited raw root capture; visual pixels alone do not prove input causality.",
+          "Fresh lower-controls fixture uses opacity100; distinct from actual-entry48/49 fixture, not a continuous before/after sequence.",
+          "Tree form is genuinely shorter and has no tile-style Delete/All Actions scroller; no invented scroll claim."
+        ]
+      },
+      {
+        "artifact_path": "common-layer-scale1/ordinary-tree-scale1.png",
+        "sha256": "a63f566ef4be386484860b1069c59518aa14c57ced6fe7a2e51deb2b5719be59",
+        "width": 1080,
+        "height": 1920,
+        "scale": 1,
+        "route": "ordinary-tree",
+        "variant": "actual-entry",
+        "observations": "Complete short tree form: opacity 48, mode and alpha lock readable; final alpha lock unchecked.",
+        "qualifications": [
+          "Minimal source test resource/profile fixture with keeper tab; not proof of normal installed startup or a populated brush catalog.",
+          "Image is unedited raw root capture; visual pixels alone do not prove input causality.",
+          "Tree form is genuinely shorter and has no tile-style Delete/All Actions scroller; no invented scroll claim."
+        ]
+      },
+      {
+        "artifact_path": "common-layer-scale2/clone-tile-bottom-scale2.png",
+        "sha256": "3f77890937462588cb996981e80dd8d693406e439a688c97ccf601f99d45c567",
+        "width": 1080,
+        "height": 1920,
+        "scale": 2,
+        "route": "clone-tile",
+        "variant": "lower-controls",
+        "observations": "Scrolled lower tile form: Delete Layer and All Layer Actions are fully visible; Clone Source is also visible. Upper creation controls are deliberately clipped by the scrolled viewport.",
+        "qualifications": [
+          "Minimal source test resource/profile fixture with keeper tab; not proof of normal installed startup or a populated brush catalog.",
+          "Image is unedited raw root capture; visual pixels alone do not prove input causality.",
+          "Fresh lower-controls fixture uses opacity100; distinct from actual-entry48/49 fixture, not a continuous before/after sequence.",
+          "Popup is top-clamped and scrollable. Surrounding application/status text can be clipped by 2x portrait layout; soft-proof tooltip appears below popup without hiding bottom actions.",
+          "Hovered overlay scrollbar is expanded along the right edge; action labels remain readable. It can overlap right-edge value/slider pixels, not the bottom action labels."
+        ]
+      },
+      {
+        "artifact_path": "common-layer-scale2/clone-tile-scale2.png",
+        "sha256": "1c4dccaf6c9e19a0377dcaea8f4c78885666bc4b26fef8841fcdf3fa13f4b192",
+        "width": 1080,
+        "height": 1920,
+        "scale": 2,
+        "route": "clone-tile",
+        "variant": "actual-entry",
+        "observations": "Upper tile form: creation buttons, opacity 49, mode and locks readable; Clone Source visible; lower controls intentionally extend beyond the scroll viewport; complementary bottom capture supplies lower view.",
+        "qualifications": [
+          "Minimal source test resource/profile fixture with keeper tab; not proof of normal installed startup or a populated brush catalog.",
+          "Image is unedited raw root capture; visual pixels alone do not prove input causality.",
+          "Popup is top-clamped and scrollable. Surrounding application/status text can be clipped by 2x portrait layout; soft-proof tooltip appears below popup without hiding bottom actions."
+        ]
+      },
+      {
+        "artifact_path": "common-layer-scale2/clone-tree-bottom-scale2.png",
+        "sha256": "3548ce5203e6b0abb217759f022539ed907a9715ad5f23b036d6c8691b778a22",
+        "width": 1080,
+        "height": 1920,
+        "scale": 2,
+        "route": "clone-tree",
+        "variant": "lower-controls",
+        "observations": "Complete short tree form: opacity 100, mode and alpha lock readable; final Clone Source button fully visible.",
+        "qualifications": [
+          "Minimal source test resource/profile fixture with keeper tab; not proof of normal installed startup or a populated brush catalog.",
+          "Image is unedited raw root capture; visual pixels alone do not prove input causality.",
+          "Fresh lower-controls fixture uses opacity100; distinct from actual-entry48/49 fixture, not a continuous before/after sequence.",
+          "Tree form is genuinely shorter and has no tile-style Delete/All Actions scroller; no invented scroll claim."
+        ]
+      },
+      {
+        "artifact_path": "common-layer-scale2/clone-tree-scale2.png",
+        "sha256": "643dee2f120976141b98f7494aba4d3661551f18b59454a09b51c11172d0e33f",
+        "width": 1080,
+        "height": 1920,
+        "scale": 2,
+        "route": "clone-tree",
+        "variant": "actual-entry",
+        "observations": "Complete short tree form: opacity 49, mode and alpha lock readable; final Clone Source button fully visible.",
+        "qualifications": [
+          "Minimal source test resource/profile fixture with keeper tab; not proof of normal installed startup or a populated brush catalog.",
+          "Image is unedited raw root capture; visual pixels alone do not prove input causality.",
+          "Tree form is genuinely shorter and has no tile-style Delete/All Actions scroller; no invented scroll claim."
+        ]
+      },
+      {
+        "artifact_path": "common-layer-scale2/ordinary-tile-bottom-scale2.png",
+        "sha256": "98aede86a1e5a4c3569bbc41086f5b82600baf3298663face02baf7f7a306199",
+        "width": 1080,
+        "height": 1920,
+        "scale": 2,
+        "route": "ordinary-tile",
+        "variant": "lower-controls",
+        "observations": "Scrolled lower tile form: Delete Layer and All Layer Actions are fully visible; Upper creation controls are deliberately clipped by the scrolled viewport.",
+        "qualifications": [
+          "Minimal source test resource/profile fixture with keeper tab; not proof of normal installed startup or a populated brush catalog.",
+          "Image is unedited raw root capture; visual pixels alone do not prove input causality.",
+          "Fresh lower-controls fixture uses opacity100; distinct from actual-entry48/49 fixture, not a continuous before/after sequence.",
+          "Popup is top-clamped and scrollable. Surrounding application/status text can be clipped by 2x portrait layout; soft-proof tooltip appears below popup without hiding bottom actions.",
+          "Hovered overlay scrollbar is expanded along the right edge; action labels remain readable. It can overlap right-edge value/slider pixels, not the bottom action labels."
+        ]
+      },
+      {
+        "artifact_path": "common-layer-scale2/ordinary-tile-scale2.png",
+        "sha256": "11a29f65c74dd9457a68ca027d5a68db47225a1929d8a1759a33aa40346f295a",
+        "width": 1080,
+        "height": 1920,
+        "scale": 2,
+        "route": "ordinary-tile",
+        "variant": "actual-entry",
+        "observations": "Upper tile form: creation buttons, opacity 48, mode and locks readable; lower controls intentionally extend beyond the scroll viewport; complementary bottom capture supplies lower view.",
+        "qualifications": [
+          "Minimal source test resource/profile fixture with keeper tab; not proof of normal installed startup or a populated brush catalog.",
+          "Image is unedited raw root capture; visual pixels alone do not prove input causality.",
+          "Popup is top-clamped and scrollable. Surrounding application/status text can be clipped by 2x portrait layout; soft-proof tooltip appears below popup without hiding bottom actions."
+        ]
+      },
+      {
+        "artifact_path": "common-layer-scale2/ordinary-tree-bottom-scale2.png",
+        "sha256": "cc48f602c77210e9b8551627635334583cc908f8c1f2cae15e28620ec3fe1320",
+        "width": 1080,
+        "height": 1920,
+        "scale": 2,
+        "route": "ordinary-tree",
+        "variant": "lower-controls",
+        "observations": "Complete short tree form: opacity 100, mode and alpha lock readable; final alpha lock visibly checked after physical toggle.",
+        "qualifications": [
+          "Minimal source test resource/profile fixture with keeper tab; not proof of normal installed startup or a populated brush catalog.",
+          "Image is unedited raw root capture; visual pixels alone do not prove input causality.",
+          "Fresh lower-controls fixture uses opacity100; distinct from actual-entry48/49 fixture, not a continuous before/after sequence.",
+          "Tree form is genuinely shorter and has no tile-style Delete/All Actions scroller; no invented scroll claim."
+        ]
+      },
+      {
+        "artifact_path": "common-layer-scale2/ordinary-tree-scale2.png",
+        "sha256": "14aac1eb0f1d7bc5ad1753c8d59ffe34b9234c13247d2ef3333374ce143cbd89",
+        "width": 1080,
+        "height": 1920,
+        "scale": 2,
+        "route": "ordinary-tree",
+        "variant": "actual-entry",
+        "observations": "Complete short tree form: opacity 48, mode and alpha lock readable; final alpha lock unchecked.",
+        "qualifications": [
+          "Minimal source test resource/profile fixture with keeper tab; not proof of normal installed startup or a populated brush catalog.",
+          "Image is unedited raw root capture; visual pixels alone do not prove input causality.",
+          "Tree form is genuinely shorter and has no tile-style Delete/All Actions scroller; no invented scroll claim."
+        ]
+      }
+    ]
+  },
+  "baseline_carrier_red_controls": {
+    "passed": true,
+    "count": 4,
+    "production_commit": "d4ce384f708090facbf6b08edc38b4ddcf84cff0",
+    "scope": "Exact306 production plus two reviewed header-inventory prerequisites and the current common harness only. No paint-gate production, gate test TU, or gate registration is imported.",
+    "controls": [
+      {
+        "case_id": "/common-layer-native-popup/ordinary-tile/actual-entry",
+        "expected_result": "Intended assertion failure: GTK_IS_WINDOW (popup) should be TRUE",
+        "observed_result": "FAIL",
+        "returncode": -6,
+        "strict_control_passed": true,
+        "artifact_path": "baseline-ordinary-tile-results.json",
+        "result_sha256": "666c97b16389560e6f75b8e3ce2ac51904e761e386d94245529cc7f577a04f62"
+      },
+      {
+        "case_id": "/common-layer-native-popup/clone-tile/actual-entry",
+        "expected_result": "Intended assertion failure: GTK_IS_WINDOW (popup) should be TRUE",
+        "observed_result": "FAIL",
+        "returncode": -6,
+        "strict_control_passed": true,
+        "artifact_path": "baseline-clone-tile-results.json",
+        "result_sha256": "097513c851511759733e92629a6cb8335b76d7acba7d02c2a41a41088e4037c6"
+      },
+      {
+        "case_id": "/common-layer-native-popup/ordinary-tree/actual-entry",
+        "expected_result": "Intended assertion failure: GTK_IS_WINDOW (popup) should be TRUE",
+        "observed_result": "FAIL",
+        "returncode": -6,
+        "strict_control_passed": true,
+        "artifact_path": "baseline-ordinary-tree-results.json",
+        "result_sha256": "acbafae985b6319f3ab789f1d9a0d7c30dbd1521020eedb320e28330a9304a5b"
+      },
+      {
+        "case_id": "/common-layer-native-popup/clone-tree/actual-entry",
+        "expected_result": "Intended assertion failure: GTK_IS_WINDOW (popup) should be TRUE",
+        "observed_result": "FAIL",
+        "returncode": -6,
+        "strict_control_passed": true,
+        "artifact_path": "baseline-clone-tree-results.json",
+        "result_sha256": "9f741401f3d563ee06770d406efb41870536242803c0ea4ab1a454838b27c615"
+      }
+    ],
+    "qualification": "Successful negative controls are intended native-carrier assertion failures, not passing baseline UI tests."
+  },
+  "historical_controlled_order_diagnostic": {
+    "diagnostic_only": true,
+    "acceptance_eligible": false,
+    "strict_controlled_reproduction": true,
+    "tested_commit": "3d6f62235c6bc9e2505d2c2b6ad1d42e15d081af",
+    "tested_tree": "a5a14a81a10857834301888a0cd2b3cf902bf17d",
+    "donor_commit": "1618cc5958148c7d534f9e3893681e14fcc94d80",
+    "donor_tree": "253fcbdeb7c39391ddf8bad89b7877e1e18911b8",
+    "donor_test_blob": "e3b3b28d1da397282dface38c04ed43d9fe1f0c7",
+    "only_overlay": "app/tests/test-common-layer-popup.cpp",
+    "original_test_sha256": "49eb5a701b4f0a082c1f88f6a2f3a34546c738dfec4de1d28bf7989b12d5d664",
+    "instrumented_test_sha256": "78079b8209f0bb4a06f9c44ef15a2ee393c3d917da7ecad213cee8b259c61152",
+    "prefix": "/common-layer-native-popup/clone-tree",
+    "scale": 1,
+    "observed_signal": "SIGTRAP",
+    "observed_warning": "Drawing a gadget with negative dimensions. Did you forget to allocate a size? (node tab owner GimpDockbook)",
+    "main_thread_attribution": "controlled_dock_updates at exact frozen test source line291, inside the final unreturned controlled OFFSCREEN dispatch",
+    "trace": {
+      "sha256": "f0e109caf56dea088ff979503792b2394d2ff6b78447bfb93d2d5701018277a3",
+      "bytes": 298830,
+      "cap_reached": false,
+      "begin_count": 2,
+      "returned_count": 1,
+      "unreturned_dispatch": {
+        "line": 721,
+        "window": "0x5611f0e2a7c0",
+        "phase": "phase=46 fixture/controlled-offscreen-updates test=/common-layer-native-popup/clone-tree/lower-controls"
+      }
+    },
+    "completed_prefix_cases": 1,
+    "artifact_path": "dockbook-controlled-order-clone-tree-scale1-results.json",
+    "result_sha256": "218cdb9911d9c01856c7b1ba5423db5e384d77049408009ac38835c7c1bf349d",
+    "qualification": "This job intentionally reproduces an error on immutable pre-fix production. Its success is not counted toward candidate acceptance. Controlled-order reproduction does not establish that every naturally occurring historical warning had the identical causal ordering."
+  },
+  "original_github_artifacts": [
+    {
+      "kind": "baseline-red-controls",
+      "artifact_id": 12601810387,
+      "sha256": "369234f5b61e8a9a4f57b846f237fa467ea42d6c14d8326dd78be5823e751b06",
+      "size_bytes": 589345
+    },
+    {
+      "kind": "diagnostic-only",
+      "artifact_id": 12600841498,
+      "sha256": "572dc513b1e9b136f4b258a83e602b3ac3e7b871acc6b0fd52dfc814027ad5f9",
+      "size_bytes": 201171
+    },
+    {
+      "kind": "candidate",
+      "artifact_id": 12600922964,
+      "sha256": "58e261771bfe2474eee78c6b1e9e45ba5f9d758fe5cc407f3ad80eca589ecd07",
+      "size_bytes": 2197963
+    }
+  ],
+  "fixed_evidence_receipt_sha256": {
+    "run18-summary.json": "dc8ac49cb79ee66229476b54ac85a1cd8e53f30276e314ff8e6d35798391c6c7",
+    "visual-review.json": "57eeaddf0c8319d9eeabe3553918272d054d6455c83d71f38479189b2d16f10c",
+    "original-artifact-receipts.json": "b7e79d823f8ccb4bdf7b06cd1ccc8d714b740453720187e1fa01962492eac6b3",
+    "controlled-order-diagnostic-inspection.json": "d1d8bab6e5ad2e10349b52a82837e29cb7ed635c8b99f375fadfe923122aa4e5"
+  },
+  "qualifications": [
+    "Coverage is the selected native targets and registrations, not the entire GIMP port, all plug-ins, aggregate acceptance, Brush work, or normal installed-app startup.",
+    "The58 common cases combine real XTest input with direct state/lifecycle injections; they are not all wholly real-input tests.",
+    "Run17 aborted the first paint-gate case at both scales without component counters. Its missing conjunction component remains unlocalized; run18 does not retroactively prove the old runtime cause. The focused observer/fresh-page repair was justified by source and historical label-replacement evidence.",
+    "The current production repair is supported by six targeted native regression cases at both scales and the unchanged common/adjacent gates, not merely by rerunning the original intermittent suite until green.",
+    "Upper tile captures are viewport-limited and must be read with complementary physically scrolled lower captures. Tree forms are genuinely short. Fresh upper and lower fixtures are not a continuous before/after sequence.",
+    "The immutable tested commit above remains the runtime identity even if a later documentation-only commit records this receipt. No different commit is represented as having run these tests."
+  ]
+}

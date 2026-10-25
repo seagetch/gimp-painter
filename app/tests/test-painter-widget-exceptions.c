@@ -86,9 +86,11 @@ canvas_set_visible (gconstpointer data)
   PainterWidgetException exception = GPOINTER_TO_INT (data);
   GimpDisplayShell   *shell = new_shell ();
 
+  /* Settle queued preference reconciliation before establishing the state
+   * whose preservation is checked across this synchronous fault boundary. */
+  drain ();
   gimp_painter_canvas_ui_set_visible (shell, FALSE);
   g_assert_false (gimp_painter_canvas_ui_get_visible (shell));
-  drain ();
 
   expect_exception ("Painter canvas UI", exception);
   painter_widget_exception_fault_arm (G_OBJECT (shell), exception);
@@ -185,8 +187,10 @@ layer_tiles_popup (gconstpointer data)
 
   popup = gimp_painter_layer_tiles_popup (GIMP_PAINTER_LAYER_TILES (tiles), FALSE);
   g_assert_nonnull (popup);
-  g_assert_true (GTK_IS_POPOVER (popup));
-  g_assert_true (gtk_popover_get_relative_to (GTK_POPOVER (popup)) == tiles);
+  g_assert_true (GTK_IS_WINDOW (popup));
+  g_assert_cmpint (gtk_window_get_window_type (GTK_WINDOW (popup)), ==, GTK_WINDOW_POPUP);
+  g_assert_cmpstr (gtk_widget_get_name (popup), ==, "painter-layer-properties-popup");
+  g_assert_true (gtk_widget_get_mapped (tiles));
   g_object_ref (popup);
   weak_popup = popup;
   g_object_add_weak_pointer (G_OBJECT (popup), &weak_popup);

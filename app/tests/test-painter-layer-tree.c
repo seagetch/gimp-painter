@@ -178,15 +178,49 @@ static void direct_filter_button (void) {
   gtk_dialog_response (GTK_DIALOG (dialog), GTK_RESPONSE_CANCEL);
   fixture_clear (&f);
 }
+/* Native window counterpart of the old full-row GtkPopover anchor oracle.
+ * Compute expected root placement from the row, not from popup coordinates. */
+static void assert_native_area_popup (GtkWidget *popup, GtkWidget *widget,
+                                      const GdkRectangle *area) {
+  g_assert_true (GTK_IS_WINDOW (popup));
+  g_assert_cmpint (gtk_window_get_window_type (GTK_WINDOW (popup)), ==, GTK_WINDOW_POPUP);
+  g_assert_cmpstr (G_OBJECT_TYPE_NAME (popup), ==, "GimpPopover2");
+  GtkAllocation allocation; gtk_widget_get_allocation (widget, &allocation);
+  gint left, top; gdk_window_get_origin (gtk_widget_get_window (widget), &left, &top);
+  if (!gtk_widget_get_has_window (widget)) { left += allocation.x; top += allocation.y; }
+  left += area->x; top += area->y;
+  GtkRequisition natural; gtk_widget_get_preferred_size (popup, NULL, &natural);
+  GdkMonitor *monitor = gdk_display_get_monitor_at_point (gtk_widget_get_display (widget), left, top);
+  GdkRectangle rect; gdk_monitor_get_geometry (monitor, &rect);
+  const gint right = left + area->width, bottom = top + area->height;
+  gint x = left, y = bottom;
+  if (x + natural.width > rect.x + rect.width) x = right - natural.width;
+  if (y + natural.height > rect.y + rect.height) y = top - natural.height;
+  if (x < rect.x) x = rect.x;
+  /* The old source's missing brace makes this above-first branch unconditional. */
+  if (top - natural.height >= rect.y) y = top - natural.height;
+  else if (bottom + natural.height < rect.y + rect.height) y = bottom;
+  if (y < rect.y) {
+    y = rect.y;
+    if (right + natural.width < rect.x + rect.width) x = right;
+    else if (left - natural.width >= rect.x) x = left - natural.width;
+  }
+  if (natural.width <= rect.width) x = CLAMP (x, rect.x, rect.x + rect.width - natural.width);
+  if (natural.height <= rect.height) y = CLAMP (y, rect.y, rect.y + rect.height - natural.height);
+  gint actual_x, actual_y; gtk_window_get_position (GTK_WINDOW (popup), &actual_x, &actual_y);
+  g_assert_cmpint (actual_x, ==, x); g_assert_cmpint (actual_y, ==, y);
+}
 static void target_controls (void) {
   for (guint direction = 0; direction < 2; ++direction) {
     Fixture f; fixture_init_direction (&f, direction ? GTK_TEXT_DIR_RTL : GTK_TEXT_DIR_LTR);
     GtkCellRenderer *cell = popup_cell (&f);
     g_assert_true (click_row (&f, f.a, 0));
     GtkWidget *popup = current_popup (cell); g_assert_nonnull (popup);
-    GdkRectangle anchor; g_assert_true (gtk_popover_get_pointing_to (GTK_POPOVER (popup), &anchor));
-    g_assert_cmpint (anchor.width, ==, gtk_widget_get_allocated_width (GTK_WIDGET (f.view->view)));
-    g_assert_cmpint (anchor.x, ==, 0);
+    GdkRectangle anchor; GtkTreePath *target_path = path_for (&f, f.a);
+    gtk_tree_view_get_cell_area (f.view->view, target_path, gtk_tree_view_get_column (f.view->view, 0), &anchor);
+    gtk_tree_view_convert_bin_window_to_widget_coords (f.view->view, 0, anchor.y, NULL, &anchor.y);
+    anchor.x = 0; anchor.width = gtk_widget_get_allocated_width (GTK_WIDGET (f.view->view));
+    assert_native_area_popup (popup, GTK_WIDGET (f.view->view), &anchor); gtk_tree_path_free (target_path);
     GtkWidget *opacity = find (popup, "painter-tree-layer-opacity");
     GtkWidget *mode = find (popup, "painter-tree-layer-mode");
     GtkWidget *alpha = find (popup, "painter-tree-layer-lock-alpha");
@@ -370,7 +404,7 @@ static void repeat_popdown_disconnects_old_controls (void) {
   for (guint i = 0; i < 3; ++i) {
     open_signal (&f, f.a); GtkWidget *popup = current_popup (cell); g_assert_nonnull (popup);
     GtkWidget *opacity = retain_live_opacity (popup);
-    gtk_popover_popdown (GTK_POPOVER (popup)); drain ();
+    g_signal_emit_by_name (popup, "cancel"); drain ();
     g_assert_null (current_popup (cell)); g_assert_false (gtk_widget_has_grab (popup));
     gtk_range_set_value (GTK_RANGE (opacity), 31 + i);
     g_assert_cmpfloat (gimp_layer_get_opacity (f.a), ==, 1);
@@ -446,10 +480,8 @@ static void scrolled_full_row_geometry (void) {
     GdkRectangle anchor, cell_area; GtkTreePath *path = path_for (&f, f.a); gint expected_y;
     gtk_tree_view_get_cell_area (f.view->view, path, gtk_tree_view_get_column (f.view->view, 0), &cell_area);
     gtk_tree_view_convert_bin_window_to_widget_coords (f.view->view, 0, cell_area.y, NULL, &expected_y);
-    g_assert_true (gtk_popover_get_pointing_to (GTK_POPOVER (popup), &anchor));
-    g_assert_cmpint (anchor.x, ==, 0); g_assert_cmpint (anchor.y, ==, expected_y);
-    g_assert_cmpint (anchor.height, ==, cell_area.height);
-    g_assert_cmpint (anchor.width, ==, gtk_widget_get_allocated_width (view));
+    anchor = (GdkRectangle) {0, expected_y, gtk_widget_get_allocated_width (view), cell_area.height};
+    assert_native_area_popup (popup, view, &anchor);
     gtk_tree_path_free (path); g_object_unref (popup); fixture_clear (&f);
   }
 }

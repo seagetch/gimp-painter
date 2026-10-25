@@ -911,6 +911,8 @@ void gimp_test_filter_allocation_register (Gimp *application);
 #endif
 
 void gimp_test_filter_layer_popup_register (Gimp *application);
+void gimp_test_common_layer_popup_register (Gimp *application);
+void gimp_test_overlay_paint_gate_register (Gimp *application);
 
 int main (int argc, char **argv)
 {
@@ -920,11 +922,15 @@ int main (int argc, char **argv)
   gimp_test_utils_set_gimp3_directory ("GIMP_TESTING_ABS_TOP_SRCDIR", "app/tests/gimpdir");
   const gboolean colorify_oncanvas=g_getenv("GIMP_TEST_COLORIFY_ONCANVAS")!=NULL;
   const gboolean filter_popup=g_getenv("GIMP_TEST_FILTER_LAYER_POPUP")!=NULL;
-  if(filter_popup){gimp_test_utils_setup_menus_path();gimp=gimp_init_for_gui_testing(TRUE);}
+  const gboolean common_popup=g_getenv("GIMP_TEST_COMMON_LAYER_POPUP")!=NULL;
+  gboolean overlay_gate=g_getenv("GIMP_TEST_OVERLAY_PAINT_GATE")!=NULL;
+  if(filter_popup || common_popup || overlay_gate){gimp_test_utils_setup_menus_path();gimp=gimp_init_for_gui_testing(TRUE);}
   else if(colorify_oncanvas){gimp_test_utils_setup_menus_path();gimp=gimp_init_for_gui_testing(TRUE);g_object_set(gimp->config,"painter-canvas-ui",TRUE,NULL);}
   else gimp = gimp_init_for_testing ();
   parent = gtk_window_new (GTK_WINDOW_TOPLEVEL); g_object_ref_sink (parent);
-  if(filter_popup) gimp_test_filter_layer_popup_register(gimp);
+  if(overlay_gate) gimp_test_overlay_paint_gate_register(gimp);
+  else if(common_popup) gimp_test_common_layer_popup_register(gimp);
+  else if(filter_popup) gimp_test_filter_layer_popup_register(gimp);
   else {
 #define ADD(name) g_test_add_func ("/painter-layer-ui/" #name, name)
   ADD (colorify_editor_draft_reentry);
@@ -1002,11 +1008,11 @@ int main (int argc, char **argv)
   gimp_test_filter_allocation_register (gimp);
 #endif
   }
-  if(colorify_oncanvas || filter_popup){g_application_run(gimp->app,0,NULL);result=gimp_core_app_get_exit_status(GIMP_CORE_APP(gimp->app));}
+  if(colorify_oncanvas || filter_popup || common_popup || overlay_gate){g_application_run(gimp->app,0,NULL);result=gimp_core_app_get_exit_status(GIMP_CORE_APP(gimp->app));}
   else result = g_test_run ();
   gtk_widget_destroy (parent); g_object_unref (parent);
   gimp_test_utils_set_gimp3_directory ("GIMP_TESTING_ABS_TOP_BUILDDIR", "app/tests/gimpdir-output");
-  if(colorify_oncanvas || filter_popup){g_application_quit(G_APPLICATION(gimp->app));g_clear_object(&gimp->app);}
+  if(colorify_oncanvas || filter_popup || common_popup || overlay_gate){g_application_quit(G_APPLICATION(gimp->app));g_clear_object(&gimp->app);}
   else gimp_exit (gimp, TRUE);
   return result;
 }

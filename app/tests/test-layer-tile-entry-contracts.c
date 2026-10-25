@@ -1131,7 +1131,10 @@ c_parent_image_reentry_keeps_newer_popup (void)
   assert_action_context (view, context, a);
   g_assert_cmpuint (reentry.popup_destroyed, ==, 0);
   g_assert_true (gtk_widget_get_visible (reentry.popup));
-  g_assert_true (gtk_popover_get_relative_to (GTK_POPOVER (reentry.popup)) == GTK_WIDGET (view));
+  g_assert_true (GTK_IS_WINDOW (reentry.popup));
+  g_assert_cmpint (gtk_window_get_window_type (GTK_WINDOW (reentry.popup)), ==, GTK_WINDOW_POPUP);
+  g_assert_cmpstr (gtk_widget_get_name (reentry.popup), ==, "painter-layer-properties-popup");
+  g_assert_true (gtk_widget_get_mapped (GTK_WIDGET (view)));
   clear_mounted (&mounted);
   g_assert_cmpuint (reentry.popup_destroyed, ==, 1);
   g_object_unref (reentry.popup);

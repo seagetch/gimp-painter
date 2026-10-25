@@ -357,8 +357,10 @@ void Canvas::show (bool value) {
   std::vector<ObjectRef<GObject>> snapshot;
   for(auto&panel:panels)snapshot.push_back(panel.frame);
   for(auto&panel:snapshot){if(closed || presentation_revision!=presentation)return;auto*w=GTK_WIDGET(panel.get());if(value&&image())gtk_widget_show_all(w);else gtk_widget_hide(w);}
-  /* show_all would otherwise reveal GimpEditor's deliberately hidden name. */
-  if(layers)gimp_editor_set_show_name(GIMP_EDITOR(layers),FALSE);
+  /* show_all would otherwise reveal GimpEditor's deliberately hidden name.
+   * roots can retain the editor after destroy removed it from its frame;
+   * that lease does not preserve the editor's private child widgets. */
+  if(layers && gtk_widget_get_parent(layers))gimp_editor_set_show_name(GIMP_EDITOR(layers),FALSE);
   if(bar && panels.size()>3)gtk_widget_set_visible(GTK_WIDGET(panels[3].frame.get()),value && image() && options_presentation && bool(toolbar_gui));
   if(!value) {
     refresh_layout.close();refresh_options.close();

@@ -146,7 +146,7 @@ foreach test_name : app_tests
     test_name == 'gimp-clone-layer' ? ['test-gimp-clone-layout.cpp'] : [],
     test_name == 'gimp-painter-mybrush' ? ['test-painter-mybrush-duplicate-handle.cpp'] : [],
     test_name == 'painter-xcf-roundtrip' ? ['test-painter-xcf-argument-resources.cpp'] : [],
-    test_name == 'painter-layer-ui' ? ['test-filter-editor-metadata.cpp', 'test-filter-argument-patch.cpp', 'test-filter-layer-popup.cpp'] : [],
+    test_name == 'painter-layer-ui' ? ['test-filter-editor-metadata.cpp', 'test-filter-argument-patch.cpp', 'test-filter-layer-popup.cpp', 'test-common-layer-popup.cpp', 'test-overlay-paint-gate.cpp'] : [],
     test_name == 'gimp-filter-layer' ? ['test-gimp-filter-layout.cpp', 'test-filter-owner-context.cpp', 'test-filter-parameters.cpp'] : [],
     c_args: test_name == 'gimp-painter-mybrush' ? mybrush_copy_fault_args : [],
     cpp_args: (test_name == 'gimp-painter-mybrush' ? mybrush_copy_fault_args : []) +
@@ -225,6 +225,24 @@ foreach test_name : app_tests
   )
 
   if test_name == 'painter-layer-ui'
+    test('painter-overlay-paint-gate', test_exe,
+      env: ['GIMP_TEST_OVERLAY_PAINT_GATE=1',
+            'GIMP_TESTING_SESSIONRC_NAME=sessionrc-native-oncanvas',
+            'GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+            'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+            'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
+            'UI_TEST=yes'],
+      suite: 'app', depends: gimp_test_icon_dependencies,
+      timeout: 180, is_parallel: false)
+    test('painter-common-layer-popup', test_exe,
+      env: ['GIMP_TEST_COMMON_LAYER_POPUP=1',
+            'GIMP_TESTING_SESSIONRC_NAME=sessionrc-native-oncanvas',
+            'GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+            'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+            'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root() / 'plug-ins/common',
+            'UI_TEST=yes'],
+      suite: 'app', depends: gimp_test_icon_dependencies,
+      timeout: 180, is_parallel: false)
     test('painter-filter-layer-popup', test_exe,
       env: ['GIMP_TEST_FILTER_LAYER_POPUP=1',
             'GIMP_TESTING_SESSIONRC_NAME=sessionrc-native-oncanvas',
