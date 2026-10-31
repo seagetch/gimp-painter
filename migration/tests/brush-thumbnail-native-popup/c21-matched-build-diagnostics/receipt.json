@@ -1,0 +1,14 @@
+{
+  "status": "C21_REVIEW_ONLY_MATCHED_BUILD_DIAGNOSTICS",
+  "base_commit": "b820fa40666aad07a47f3e1c741590973b40f5d8",
+  "base_tree": "53bee46258097af07c31bb5275bfbae696de0c6b",
+  "observed": "Run39 both normal build identities and after-build overlays passed; next baseline-sanitizer cell failed before identity receipt. Private tool logs unavailable, exact failing stage/cause UNKNOWN. No14 measurements.",
+  "scope": "Preparation-only per-cell finite stage checkpoint and original subshell exit preservation; bounded fixed diagnostic labels and tail-line hashes, never arbitrary log prose/paths/args/environment/source snippets.",
+  "limitations": "Running checkpoint after uncatchable termination is not a completed tool exit. Diagnostic labels are observations, not exact cause attribution. Missing/unsafe/truncated/unclassified log state explicit. Exit scope is checkpointed build-cell shell status, not necessarily underlying tool: target-selection process-substitution status is not propagated, and checkpoint helper can fail before stage tool starts. No retroactive recovery of run39 private logs.",
+  "unchanged": "Native sources, Meson/compiler arguments, source overlays, dependency policy, timing, sanitizer options,14 invocation order, original acceptance gates and workflow unchanged.",
+  "validation": "Synthetic shell and collector tests only; prospective and final full-tree seal CLI proof required externally. Native build diagnostics not yet observed hosted.",
+  "files": {
+    "run39-prepare-status.json": "e312f972be7ae07eccdbd7a1d67f7bd0ce3e2dc36ba2225918312dc496a716b2",
+    "run39-diagnosis.json": "7d881df8357439f393a97aed6fd321d66d5615ecbbc272535c5445a6f9a32e0b"
+  }
+}

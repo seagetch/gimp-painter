@@ -1,0 +1,27 @@
+{
+  "format": 1,
+  "run_id": 40458943813,
+  "published_commit": "b820fa40666aad07a47f3e1c741590973b40f5d8",
+  "finding": "Both normal configure/compile/catalog staging/identity/after-build-overlay stages completed; next baseline-sanitizer cell failed before its identity receipt. Exact failing command and cause unavailable because private build logs were not exported.",
+  "possible_boundary": [
+    "environment",
+    "configure",
+    "target-selection",
+    "compile",
+    "catalog-stage",
+    "build-identity-before-receipt"
+  ],
+  "native_regression_inferred": false,
+  "measurements_executed": 0,
+  "observed_exit": 1,
+  "observed_stage": "four-builds",
+  "evidence_sha256": {
+    "matched-preclick-nonacceptance-job.log": "0d9a5c3876f1e6fbd01fc3d88f5afe8b849882d27d85f695f869c4caf980e40e",
+    "matched-results/prepare-status.json": "e312f972be7ae07eccdbd7a1d67f7bd0ce3e2dc36ba2225918312dc496a716b2",
+    "matched-results/identities/baseline-normal.json": "3b16192537fd25f739ab2f040c5df59819b2e3ea5a1d73e7e527080d591d6b86",
+    "matched-results/identities/baseline-normal-overlay-after-build.json": "aafdba05ddc9f0cf79e4a9427333af2cb4e0ddc8296fd53c7f4c28f13b35da40",
+    "matched-results/identities/current-normal.json": "d3caf4ad60af35ff753dcfc19beb76f52d4bb43e311dd22338ba7e1e8252f772",
+    "matched-results/identities/current-normal-overlay-after-build.json": "a3f36ac46128185e7045b0a4b12a695034dc9d35c5a0a63d5c3b75527afcb4e9"
+  },
+  "proposed_scope": "Per-cell finite stage/tool exit plus bounded classified diagnostic tail only. Preserve native commands, inputs, failure semantics, all acceptance gates and original workflow."
+}

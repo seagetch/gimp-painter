@@ -204,6 +204,13 @@ else
   ]
 endif
 
+# Hosted Linux old-frame control proves the real unchanged utility provider.
+# Map/cross-reference output only; non-Linux linker options remain unchanged.
+frame_helper_map_args = []
+if host_machine.system() == 'linux'
+  frame_helper_map_args = ['-Wl,--cref,-Map,' + meson.current_build_dir() / 'frame-helper-provider.map']
+endif
+
 libgimpwidgets = library('gimpwidgets-'+ gimp_api_version,
   libgimpwidgets_sources,
   include_directories: rootInclude,
@@ -216,6 +223,7 @@ libgimpwidgets = library('gimpwidgets-'+ gimp_api_version,
     libgimpcolor,
     libgimpconfig,
   ],
+  link_args: frame_helper_map_args,
   vs_module_defs: 'gimpwidgets.def',
   install: true,
   version: so_version,
@@ -269,3 +277,43 @@ test('gimp-ruler', test_ruler,
   suite: 'libgimpwidgets',
   timeout: 30,
 )
+# Focused real GtkLabel invalidation regression; no application startup needed.
+frame_candidate_map_args = []
+if host_machine.system() == 'linux'
+  frame_candidate_map_args = ['-Wl,--cref,-Map,' + meson.current_build_dir() / 'frame-candidate-provider.map']
+endif
+test_frame_style = executable('test-frame-style-idempotence',
+  'test-frame-style-idempotence.c',
+  include_directories: rootInclude,
+  dependencies: [ gtk3, ],
+  c_args: [ '-DG_LOG_DOMAIN="LibGimpWidgets"', '-DGIMP_WIDGETS_COMPILATION', ],
+  link_with: [ libgimpwidgets, libgimpbase, ],
+  link_args: frame_candidate_map_args,
+  override_options: ['c_std=c11'],
+  install: false,
+)
+test('gimp-frame-style-idempotence', test_frame_style,
+  suite: 'libgimpwidgets',
+  timeout: 30,
+)
+
+# Exact old implementation, consistently namespaced in BOTH direct sources.
+# Unique APIs avoid interposition with the production shared-library provider.
+# Hosted map/ELF/loaded-library verification is mandatory before strict RED.
+if host_machine.system() == 'linux'
+  frame_style_old_provider = executable('frame-style-old-provider',
+    ['test-frame-style-idempotence.c', 'fixtures/gimpframe-c14.c'],
+    include_directories: [rootInclude, include_directories('.')],
+    dependencies: [ gtk3, gegl, ],
+    c_args: [ '-DG_LOG_DOMAIN="LibGimpWidgets"', '-DGIMP_WIDGETS_COMPILATION',
+              '-Dgimp_frame_new=gimp_frame_c14_new',
+              '-Dgimp_frame_get_type=gimp_frame_c14_get_type', ],
+    link_with: [ libgimpwidgets, libgimpbase, ],
+    link_args: ['-Wl,--cref,-Map,' + meson.current_build_dir() / 'frame-style-old-provider.map'],
+    override_options: ['c_std=c11'],
+    install: false,
+  )
+  test('frame-style-old-provider', frame_style_old_provider,
+    suite: 'painter-negative-control', is_parallel: false, timeout: 30,
+    should_fail: true)
+endif

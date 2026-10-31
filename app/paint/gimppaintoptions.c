@@ -166,6 +166,9 @@ static void         gimp_paint_options_brush_notify      (GimpBrush        *brus
                                                           const GParamSpec *pspec,
                                                           GimpPaintOptions *options);
 
+static void         gimp_paint_options_brush_dirty       (GimpBrush        *brush,
+                                                          GimpPaintOptions *options);
+
 static GimpConfig * gimp_paint_options_duplicate         (GimpConfig       *config);
 static gboolean     gimp_paint_options_copy              (GimpConfig       *src,
                                                           GimpConfig       *dest,
@@ -176,6 +179,8 @@ static void         gimp_paint_options_reset             (GimpConfig       *conf
 typedef struct
 {
   gboolean legacy_brush_geometry;
+  gdouble  brush_radius;
+  gboolean brush_size_pending_thaw;
 } GimpPaintOptionsPrivate;
 
 G_DEFINE_TYPE_WITH_CODE (GimpPaintOptions, gimp_paint_options,
@@ -530,7 +535,8 @@ gimp_paint_options_init (GimpPaintOptions *options)
 static void
 gimp_paint_options_dispose (GObject *object)
 {
-  GimpPaintOptions *options = GIMP_PAINT_OPTIONS (object);
+  GimpPaintOptions        *options = GIMP_PAINT_OPTIONS (object);
+  GimpPaintOptionsPrivate *priv = gimp_paint_options_get_instance_private (options);
 
   g_clear_object (&options->paint_info);
 
@@ -539,8 +545,14 @@ gimp_paint_options_dispose (GObject *object)
       g_signal_handlers_disconnect_by_func (options->brush,
                                             gimp_paint_options_brush_notify,
                                             options);
+      g_signal_handlers_disconnect_by_func (options->brush,
+                                            gimp_paint_options_brush_dirty,
+                                            options);
       g_clear_weak_pointer (&options->brush);
     }
+
+  priv->brush_radius = 0.0;
+  priv->brush_size_pending_thaw = FALSE;
 
   G_OBJECT_CLASS (parent_class)->dispose (object);
 }
@@ -896,7 +908,8 @@ static void
 gimp_paint_options_brush_changed (GimpContext *context,
                                   GimpBrush   *brush)
 {
-  GimpPaintOptions *options = GIMP_PAINT_OPTIONS (context);
+  GimpPaintOptions        *options = GIMP_PAINT_OPTIONS (context);
+  GimpPaintOptionsPrivate *priv = gimp_paint_options_get_instance_private (options);
 
   if (options->paint_info &&
       g_type_is_a (options->paint_info->paint_type,
@@ -907,8 +920,13 @@ gimp_paint_options_brush_changed (GimpContext *context,
           g_signal_handlers_disconnect_by_func (options->brush,
                                                 gimp_paint_options_brush_notify,
                                                 options);
+          g_signal_handlers_disconnect_by_func (options->brush,
+                                                gimp_paint_options_brush_dirty,
+                                                options);
         }
 
+      priv->brush_radius = 0.0;
+      priv->brush_size_pending_thaw = FALSE;
       g_set_weak_pointer (&options->brush, brush);
 
       if (options->brush)
@@ -916,6 +934,17 @@ gimp_paint_options_brush_changed (GimpContext *context,
           g_signal_connect_object (options->brush, "notify",
                                    G_CALLBACK (gimp_paint_options_brush_notify),
                                    options, 0);
+
+          if (GIMP_IS_BRUSH_GENERATED (options->brush))
+            {
+              priv->brush_radius = gimp_brush_generated_get_radius (GIMP_BRUSH_GENERATED (options->brush));
+              /* A selected frozen brush can already have a new radius but an
+               * old mask. Its eventual thaw must complete this selection. */
+              priv->brush_size_pending_thaw = gimp_data_is_frozen (GIMP_DATA (options->brush));
+              g_signal_connect_object (options->brush, "dirty",
+                                       G_CALLBACK (gimp_paint_options_brush_dirty),
+                                       options, G_CONNECT_AFTER);
+            }
 
           gimp_paint_options_brush_notify (options->brush, NULL, options);
         }
@@ -931,7 +960,11 @@ gimp_paint_options_brush_notify (GimpBrush        *brush,
     {
 #define IS_PSPEC(p,n) (p == NULL || ! strcmp (n, p->name))
 
-      if (options->brush_link_size && IS_PSPEC (pspec, "radius"))
+      /* Generated radius notify can precede mask regeneration, or be queued
+       * until after dirty by g_object_set(). Synchronize it at dirty instead;
+       * retain the immediate reset for a fully selected brush (pspec == NULL). */
+      if (options->brush_link_size && IS_PSPEC (pspec, "radius") &&
+          (! pspec || ! GIMP_IS_BRUSH_GENERATED (brush)))
         gimp_paint_options_set_default_brush_size (options, brush);
 
       if (options->brush_link_aspect_ratio && IS_PSPEC (pspec, "aspect-ratio"))
@@ -948,6 +981,40 @@ gimp_paint_options_brush_notify (GimpBrush        *brush,
 
 #undef IS_SPEC
     }
+}
+
+static void
+gimp_paint_options_brush_dirty (GimpBrush        *brush,
+                                GimpPaintOptions *options)
+{
+  GimpPaintOptionsPrivate *priv = gimp_paint_options_get_instance_private (options);
+  gdouble                 radius;
+  gboolean                changed;
+
+  if (options->brush != brush ||
+      gimp_context_get_brush (GIMP_CONTEXT (options)) != brush)
+    return;
+
+  /* An earlier dirty/name observer can start another frozen radius edit.
+   * Keep the old completed cache until that edit actually regenerates. */
+  if (gimp_data_is_frozen (GIMP_DATA (brush)))
+    return;
+
+  /* GimpData::dirty is RUN_FIRST: the generated class has rebuilt its mask
+   * before this after-handler. Cache the completed radius, not notify order,
+   * so direct setters, queued GObject notify and frozen batches agree. */
+  radius = gimp_brush_generated_get_radius (GIMP_BRUSH_GENERATED (brush));
+  changed = priv->brush_radius != radius || priv->brush_size_pending_thaw;
+  priv->brush_radius = radius;
+  priv->brush_size_pending_thaw = FALSE;
+
+  /* Updating state before the setter is essential: a size observer can change
+   * the radius again, select another brush, or dispose these options. Nothing
+   * after this call may overwrite that nested state. Non-radius dirtiness must
+   * not reset a manually chosen size, even when the size link is enabled. */
+  if (changed && options->brush_link_size &&
+      gimp_tool_options_get_gui_mode (GIMP_TOOL_OPTIONS (options)))
+    gimp_paint_options_set_default_brush_size (options, brush);
 }
 
 static GimpConfig *

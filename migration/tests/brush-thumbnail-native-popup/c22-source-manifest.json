@@ -1,0 +1,223 @@
+{
+  "format": 1,
+  "status": "C22_REVIEW_ONLY_BASELINE_BUILD_COMPATIBILITY",
+  "base_commit": "83137d6d37177147b9e8bc76ed7f98c3ffd0c1af",
+  "files": [
+    {
+      "path": "app/config/gimpdisplayoptions.c",
+      "sha256": "c6e66770145978673365ddd0c2cc653f2dbdce729820baf42b4c4eac03eb4c0b",
+      "bytes": 26103
+    },
+    {
+      "path": "app/display/gimpcanvas.c",
+      "sha256": "09373ff900dc14d3a853f8fc06e0f9100f276975cbaea0d636179b07aa88fc16",
+      "bytes": 9201
+    },
+    {
+      "path": "app/paint/gimppaintoptions.c",
+      "sha256": "64f1316e0a021c4d3c66658c39d79473f9f257534f5937bf2cb148eeba70472b",
+      "bytes": 53342
+    },
+    {
+      "path": "app/tests/color-ownership/fixtures/gimpcanvas-c9.c",
+      "sha256": "c4a10375777bae95a9f8a9dd8014935045cd8f5c91791ddd8fac77cbd10bb33e",
+      "bytes": 8737
+    },
+    {
+      "path": "app/tests/color-ownership/meson.build",
+      "sha256": "05c4b3450269e84b3a0b1f399e037085255fe009821391c2856eb795ea291220",
+      "bytes": 1526
+    },
+    {
+      "path": "app/tests/color-ownership/test-canvas.c",
+      "sha256": "2621671a93a054a1f4e1f3f7b5f922d1c4f79226f6ca8d7d2ea09e21f9455c7f",
+      "bytes": 3974
+    },
+    {
+      "path": "app/tests/color-ownership/test-display-renderer.c",
+      "sha256": "fba0adb2e2cc8a1ec16a15b91e0ec0ac5dfcc5015244282169baa98aaacfdf1d",
+      "bytes": 3639
+    },
+    {
+      "path": "app/tests/test-painter-brush-geometry.cpp",
+      "sha256": "83db89f31f90cd6aff12acc9a34ba9a3b71523a5024977bb954453d3fa8404e3",
+      "bytes": 21559
+    },
+    {
+      "path": "app/tests/test-painter-brush-thumbnail-popup.inc",
+      "sha256": "6f828b0b239e4714ed29475bef38a7c2021cd6fa6d1c0a76af75d493cb639a10",
+      "bytes": 101293
+    },
+    {
+      "path": "app/tests/test-painter-compact-options.c",
+      "sha256": "6b81f7273161c794c10e7b4e69f32db1af40586f4e224162b7711813a4c5ed18",
+      "bytes": 50000
+    },
+    {
+      "path": "app/tests/test-painter-transform-popup.inc",
+      "sha256": "39497319586c30f92cd6d501d84352ca54b7d5a8b49e75a00694f391a9901c16",
+      "bytes": 45202
+    },
+    {
+      "path": "app/tools/gimppainterbrushpopup.cpp",
+      "sha256": "3384adcb3f7d597e7878ed68775ed0e2e3762f80c1ca4db9470fcd497c7e5d2e",
+      "bytes": 19800
+    },
+    {
+      "path": "app/tools/gimppainterbrushpopup.h",
+      "sha256": "6042feebf9f5dd5c0997ed78b60c1c9be374ac0a468371f4f6ffa6a15bb9b595",
+      "bytes": 435
+    },
+    {
+      "path": "app/tools/gimppainterpainttoolbar.c",
+      "sha256": "651bb1a43d435bb81bb964be1463a7d404bd60751b2ced7f6ce05ef944bcb40b",
+      "bytes": 29787
+    },
+    {
+      "path": "app/tools/gimppaintertogglepopup.cpp",
+      "sha256": "fca50248646ccef9f03204eb1524f029112e7172dfe0d697da6fcab8ac1c0d34",
+      "bytes": 19366
+    },
+    {
+      "path": "app/tools/gimppaintertogglepopup.h",
+      "sha256": "53ed421fcab6c9399c478890c41acad6a6a379372976fcbc231f008a52c096c3",
+      "bytes": 1483
+    },
+    {
+      "path": "app/tools/meson.build",
+      "sha256": "904a3bbd24d1fbde9869b2aedf257318ab99f3144d81adcf037d295211108436",
+      "bytes": 4091
+    },
+    {
+      "path": "app/widgets/gimpviewrenderer.c",
+      "sha256": "fa4cd7346aa9a348b6129b4dd9375e07d4628001824ebb73faa53786e9e031ff",
+      "bytes": 47949
+    },
+    {
+      "path": "libgimpbase/gimpprotocol.c",
+      "sha256": "661866318160e443cfe0d283c7ea2b2d4f6a13c840d3752cc262d845ece90137",
+      "bytes": 86387
+    },
+    {
+      "path": "libgimpbase/gimpwire.c",
+      "sha256": "7a03ac6b5823a91599ea1fec64b77711bb404e853a4cdff10748af39b77b9cfe",
+      "bytes": 18347
+    },
+    {
+      "path": "libgimpbase/test-choice-lifecycle.c",
+      "sha256": "46807f0fe5b7c64572da7be56855b2a41e23eb089c8fb990793b27bdd28ac8d3",
+      "bytes": 10847
+    },
+    {
+      "path": "libgimpconfig/gimpcolorconfig.c",
+      "sha256": "2e257176bbaa1daf18b411a15b430bbdd34631d3abcabd54d33542d35900b216",
+      "bytes": 33823
+    },
+    {
+      "path": "libgimpconfig/meson.build",
+      "sha256": "6607908b9cdd55d1f7191e3a7dc90ef7bc208f798d93038c9a385165a139b8a7",
+      "bytes": 2465
+    },
+    {
+      "path": "libgimpconfig/test-color-config-ownership.c",
+      "sha256": "7f118d3525d154956211b8fb8063aee7188ad6939c71f432e037e4dab831fad7",
+      "bytes": 2454
+    },
+    {
+      "path": "meson.build",
+      "sha256": "74358058b211605bcd3fcb0e08df60722728196b93102799bc27ec0500329ea5",
+      "bytes": 79223
+    },
+    {
+      "path": "migration/inventory/additional-c-header-routes.json",
+      "sha256": "8a1242d1d64a73cc9393ea4c192190741545f7514ac07b1192bf3d6839edfa41",
+      "bytes": 23483
+    },
+    {
+      "path": "migration/progress.tsv",
+      "sha256": "eaaf737c1f3a3fb8055609abdd3c03c2b2ba1277c35dd75d2708f6d59f3a573b",
+      "bytes": 505113
+    },
+    {
+      "path": "migration/tests/brush-thumbnail-native-popup/README.md",
+      "sha256": "8d9016191f9490229dd16625168e679e36c66af81901fcfaaab2b50ecd105b7c",
+      "bytes": 68981
+    },
+    {
+      "path": "migration/tests/brush-thumbnail-native-popup/cases.json",
+      "sha256": "6bce9ff5a694bece1189feb2d2c2dc2af7c999617ef42f65e739b490ef378d52",
+      "bytes": 1292
+    },
+    {
+      "path": "migration/tests/brush-thumbnail-native-popup/historical-header-registration.json",
+      "sha256": "3192c11848de60bf088bf87fbc45eefdf165dce2ada1fc5cb13e3203e3801be4",
+      "bytes": 281
+    },
+    {
+      "path": "migration/tests/brush-thumbnail-native-popup/implementation-contract.md",
+      "sha256": "db6c7c566bd5671a87506560316963869b0b8118fa9f0eba27b99e6110ed947e",
+      "bytes": 58987
+    },
+    {
+      "path": "migration/tests/brush-thumbnail-native-popup/lower-controls-staging.json",
+      "sha256": "7901531a610d4a0516fc1bb8d7470f48c42c53f29569c870179a4e73ffb26072",
+      "bytes": 33622
+    },
+    {
+      "path": "migration/tests/brush-thumbnail-native-popup/native-build.json",
+      "sha256": "57b91db2c572ca85f87b101cba9defde156df0b3d6bb1b61c28758802d026831",
+      "bytes": 4490
+    },
+    {
+      "path": "migration/tests/brush-thumbnail-native-popup/retained-controller-comparison.json",
+      "sha256": "5bf18b1f7e2d35fe1f89c90c39a3d60ccec9a4a99bb0b5893922d388c2192acc",
+      "bytes": 348
+    },
+    {
+      "path": "tasks.md",
+      "sha256": "d927b914bffdc8d8e131d1f8886bb11c969c18a1706a78c458e40cf136760ddc",
+      "bytes": 283209
+    },
+    {
+      "path": "libgimpwidgets/gimpframe.c",
+      "sha256": "6207252ed416e8e295e6a60fd5f3986f8fc28f38cd18e3b8810efefe973c9386",
+      "bytes": 8974
+    },
+    {
+      "path": "libgimpwidgets/gimpframe.h",
+      "sha256": "1fffcfb5f5ec45eeffd39a6c426abca390473f25fd9f944c48bfb32cce4de122",
+      "bytes": 1808
+    },
+    {
+      "path": "libgimpwidgets/gimpwidgetstypes.h",
+      "sha256": "5063f38f0c8def2c5e433a975fb32dbae44393fbd19d7a707623cbf53fe654fc",
+      "bytes": 5388
+    },
+    {
+      "path": "libgimpwidgets/gimpwidgetsutils.c",
+      "sha256": "aa84583b0b60d1e53136cfb87d8d2e55b8f3cf0901991f38727db676f76c2a51",
+      "bytes": 44469
+    },
+    {
+      "path": "libgimpwidgets/gimpwidgetsutils.h",
+      "sha256": "7336640ff0771f98d344e92c9eb2a5e0a1f0c5ba82b9080e99138c8d8bc7808a",
+      "bytes": 4410
+    },
+    {
+      "path": "libgimpwidgets/meson.build",
+      "sha256": "a09ba374a3a2c9ed4e2dec3af7a80dab709fadbcfe048cc915fdd2185978906f",
+      "bytes": 8515
+    },
+    {
+      "path": "libgimpwidgets/test-frame-style-idempotence.c",
+      "sha256": "77399aea24654a7cb127d5231a8672ea56084aefd13fb6801cc7cc8aeccd5f08",
+      "bytes": 7286
+    },
+    {
+      "path": "libgimpwidgets/fixtures/gimpframe-c14.c",
+      "sha256": "d158f0367d7c83540c49d4b997e1f3a99466766f5d7c0fb913d1989b10d47997",
+      "bytes": 8257
+    }
+  ],
+  "qualification": "Exact diagnostic-owned baseline build metadata compatibility, both baseline modes; no published native production/build file or workflow change."
+}

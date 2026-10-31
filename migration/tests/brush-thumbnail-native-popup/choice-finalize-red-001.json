@@ -1,0 +1,60 @@
+{
+  "format": 1,
+  "status": "RED_CONFIRMED_BOTH_EXPECTED_QDATA_DESTRUCTION_ASSERTIONS",
+  "source": {
+    "status": "TEST_REGISTRATION_ONLY_RED_SOURCE_FROZEN",
+    "approved_patch_sha256": "a93133eb00a78ef904acf095f3fa7831f383ac6d068cf4e5473a1651e90cb751",
+    "files": {
+      "libgimpbase/gimpchoice.c": "4100495c012c59ced6e0ee8cfefd4523fe87e78c0e910c647e7328f968dcfb01",
+      "libgimpbase/meson.build": "77271d9df8a60438edf7d4d96918a75f4cd747dee27fe8c743c625b0bcac072a",
+      "libgimpbase/test-choice-lifecycle.c": "e778bcc8c940c9aa452cc1b28f5d7c8b1bc60f01fc8b31bc704f5842729f9b06"
+    },
+    "old_production_unchanged": true,
+    "accepted_main_libgimpbase_other_tracked_blobs_verified": 52,
+    "current_main_root_meson_sha256": "83d371852ebeeede92caee7e0280f35dfc28a2a05cc8af6d00a84b67177d5b0f",
+    "main_head": "f643820a556119fcb5d2fdd224c6bd3d75aa3600",
+    "unchanged_after_red": true
+  },
+  "artifacts": {
+    "libgimpbase/libgimpbase-3.0.so.0.8.1": {
+      "sha256": "e5f0ac5bbf6a252ddd9d83b66041b40efce0b6ecd6fdc297d4ddf3f830878e50",
+      "bytes": 721880
+    },
+    "libgimpbase/test-choice-lifecycle": {
+      "sha256": "e13e5bd18ec82a257b1815a95b8f7c160f146c454103211fa59beda9fd80681f",
+      "bytes": 38936
+    }
+  },
+  "cases": {
+    "direct-owned-qdata": {
+      "status": "EXPECTED_RED_EXACT_FINAL_UNREF_QDATA_ASSERTION",
+      "meson_exitcode": 1,
+      "process_returncode": -6,
+      "signal": "SIGABRT",
+      "source_line": 63,
+      "function": "direct_owned_qdata",
+      "assertion": "destroyed == 1; actual0",
+      "setup_or_permission_failure": false,
+      "meson_proof_sha256": "38b5f4b5558b5eb25b62e2286810d029804aefa4acf7163d23fe13e15613346e"
+    },
+    "param-spec-ownership-and-values": {
+      "status": "EXPECTED_RED_EXACT_FINAL_UNREF_QDATA_ASSERTION",
+      "meson_exitcode": 1,
+      "process_returncode": -6,
+      "signal": "SIGABRT",
+      "source_line": 123,
+      "function": "param_spec_ownership_and_values",
+      "assertion": "destroyed == 1; actual0",
+      "setup_or_permission_failure": false,
+      "meson_proof_sha256": "b6c598080ca09aaad3a30cdcf873e0f509fd48abacd0fe280e56fe6f6a4609a7"
+    }
+  },
+  "normal_compile_exitcode": 0,
+  "normal_reconfigure_exitcode": 0,
+  "only_test_and_registration_source_changed": true,
+  "production_old_gimpchoice_unchanged": true,
+  "first_target_discovery_attempt": "Preserved pre-reconfigure-target-lookup failure; new Meson target was absent from prior metadata. Ordinary setup --reconfigure resolved it; no compile/test ran before reconfiguration.",
+  "scope": "Unsanitized library-only finalization tests; no GUI or sanitizer-clean claim",
+  "fatal_warning_policy": "G_DEBUG=fatal-warnings",
+  "raw_environment_exported": false
+}

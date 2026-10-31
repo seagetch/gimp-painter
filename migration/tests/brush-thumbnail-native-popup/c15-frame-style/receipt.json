@@ -1,0 +1,27 @@
+{
+  "format": 1,
+  "status": "REVIEW_ONLY_FRAME_STYLE_IDEMPOTENCE_NATIVE_PROOF_PENDING",
+  "base_commit": "6a98286b36fa48f78b67591daf051a327919072a",
+  "base_tree": "6ff1d09ee549564f9614c307b6a73f989d8d8cfa",
+  "run33_id": 40378395576,
+  "run33_status": "TERMINAL_FAILURE_NOT_ACCEPTED",
+  "diagnostic_observation": "Existing hosted C14 diagnostic proved owned-child cleanup completed. First sampled stack includes gimp_frame_apply_margins/style lookup in first Brush geometry wait; later capped stacks do not prove same wait invocation or identify the widget/window. No production root cause inferred.",
+  "production_sha256": "6207252ed416e8e295e6a60fd5f3986f8fc28f38cd18e3b8810efefe973c9386",
+  "test_sha256": "77399aea24654a7cb127d5231a8672ea56084aefd13fb6801cc7cc8aeccd5f08",
+  "old_source_sha256": "d158f0367d7c83540c49d4b997e1f3a99466766f5d7c0fb913d1989b10d47997",
+  "change_scope": "Only frame label attribute assignment becomes idempotent for equal full-range singleton bold lists. Different lists still fully replaced. Cache invalidation, style/margins and label-bold behavior unchanged. Seven exact native regressions plus namespaced old-source normal control. Linux widgets DSO link adds cross-reference map for real helper-provider provenance, no optimization/symbol semantic changes.",
+  "meson_environment_provenance": {
+    "version_examined": "1.7.0",
+    "runtime_source": "https://raw.githubusercontent.com/mesonbuild/meson/1.7.0/mesonbuild/mtest.py",
+    "runtime_sections": "JsonLogfileBuilder.log env=result.env; TestRun stores test_env; SingleTestRunner passes runobj.env to subprocess; get_test_runner copies ambient then applies test.env",
+    "intro_source": "https://raw.githubusercontent.com/mesonbuild/meson/1.7.0/mesonbuild/mintro.py",
+    "intro_limitation": "get_test_list calls get_env({}); not authoritative full executed environment. Missing raw full env fails closed."
+  },
+  "native_proof": "PENDING: no local GTK compilation/execution, oldRED/new7GREEN or strict sanitizer result. Hosted exact source/object/map/ELF/loaded-library controls required.",
+  "qualification": "Targeted redundant invalidation fix is not proof of full case14 latency cause or cure. Existing21 Brush cases, deadlines, sanitizer options and common/protected controls unchanged.",
+  "denial_boundary": "Denied localptrace reproduction not retried/rerouted/transplanted. Existing controller unchanged from C14; blocked babl generation untouched.",
+  "files": {
+    "run33-terminal-observation-summary.json": "dcf324d3dd811476c5913d0bdf6cf3987ad276c2a59ca2a34cdec980f7cb033c",
+    "source-review.md": "de0ab09d9b07867fc66ce505b0ee121e666388ccf9532d88fdca8dc4e27a3641"
+  }
+}

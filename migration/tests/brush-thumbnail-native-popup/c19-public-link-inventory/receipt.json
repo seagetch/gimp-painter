@@ -1,0 +1,21 @@
+{
+  "status": "C19_REVIEW_ONLY_EXACT_PUBLIC_DEPENDENCY_LINK_INVENTORY",
+  "base_commit": "970b30c58e7d9be4f378dfea6dcbe7d2718f2029",
+  "base_tree": "b4ddcefbc3bcab8b570e48a4d8ba428ec3a775e5",
+  "observed": "Run37 real hosted seal passed; matched baseline-normal build-identity returned escaping-inventory-link. Later cells/measurement not established; measurement stage skipped.",
+  "exact_failing_path": "UNKNOWN: original receipt omitted link path; package evidence identifies legitimate possible triggers, not uniquely observed first offender.",
+  "code_attribution": "The exact error is emitted only by tree_hash(deps/root), before compiled-object/provider verification; it is not evidence of a source/build root escape.",
+  "repair_scope": "Three exact public file symlinks backed by lock-matching Debian archive metadata, canonical regular targets and parent checks, package counterpart equality where present, all-four-cell content equality. No general /etc permission or private/certs directory traversal. Unknown outside links remain failures with bounded dependency-relative diagnostic.",
+  "archive_execution": "Metadata inspection only; no package install, extraction or code execution.",
+  "native_comparison": "UNRUN; existing native gates and C17 diagnostic behavior unchanged; no timing/root-cause or acceptance proof.",
+  "run37_original_jobs": "Pending at preparation; no terminal native outcome invented.",
+  "helper_sha256": "67810ec9bbdef6c8845053aa297b87ff08cff9a9dfff9b849d500e806c183ef2",
+  "tests_sha256": "be464051708f93fcc0e1a66d2af69014b1ba91ce5630ab008d151bbdf282ca1a",
+  "files": {
+    "run37-baseline-normal-identity.json": "f0843e68ebb91e63242ffee3d7f31b82eccb4838646f384565d579b2b1961348",
+    "synthetic-old-new-result.json": "f730d7c96c26f0a362e6b3da65da7d3d3bd6ac452f7eed14950a19471e1cb9aa",
+    "python-package-links.json": "8860cc8cf96f9d6808c42217cee6a0a139eb3eb3f2ba41807c5e4c7e2c06607a",
+    "verified-etc-link-metadata.json": "79672101d92863bee4b6fdfd1f8095b29b5417ff32db74dc132e697afc337709",
+    "openssl-package-links.json": "86d137b845fd09a57928015aff76b41a56ad6f6074351bcba549de1342a39320"
+  }
+}

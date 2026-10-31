@@ -561,9 +561,7 @@ gimp_main (GType  plug_in_type,
 
       _gimp_plug_in_query (PLUG_IN);
 
-      gimp_close ();
-
-      return EXIT_SUCCESS;
+      goto cleanup;
     }
 
   if (strcmp (argv[ARG_MODE], "-init") == 0)
@@ -573,9 +571,7 @@ gimp_main (GType  plug_in_type,
 
       _gimp_plug_in_init (PLUG_IN);
 
-      gimp_close ();
-
-      return EXIT_SUCCESS;
+      goto cleanup;
     }
 
   if (_gimp_get_debug_flags () & GIMP_DEBUG_RUN)
@@ -585,6 +581,10 @@ gimp_main (GType  plug_in_type,
 
   _gimp_plug_in_run (PLUG_IN);
 
+cleanup:
+  /* The plug-in borrows these channels through gimp_close(), including
+   * the quit callback and the final protocol flush, in every call mode.
+   */
   gimp_close ();
   g_io_channel_unref (read_channel);
   g_io_channel_unref (write_channel);

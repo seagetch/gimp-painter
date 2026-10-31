@@ -1,0 +1,3300 @@
+{
+  "format": 1,
+  "acceptance_eligible": false,
+  "scope": "first selected-case wait-entry thread stack diagnostic only",
+  "binary_sha256": "5230e120023fed12f3ef62be59526dc87eabf677baf50dbdb980f47eb5cce8d6",
+  "case": "/brush-thumbnail-native-popup/private-target-release",
+  "samples": [
+    {
+      "sample": 1,
+      "sample_wall_interval_ms": 523,
+      "stop_reason": "signal-received",
+      "frames": [
+        {
+          "thread_id": "1",
+          "function": "_Unwind_Find_FDE"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "_Unwind_Backtrace"
+        },
+        {
+          "thread_id": "1",
+          "function": "__sanitizer::BufferedStackTrace::UnwindSlow",
+          "file": "sanitizer_unwind_linux_libcdep.cpp",
+          "line": 130
+        },
+        {
+          "thread_id": "1",
+          "function": "__sanitizer::BufferedStackTrace::Unwind",
+          "file": "sanitizer_stacktrace_libcdep.cpp",
+          "line": 158
+        },
+        {
+          "thread_id": "1",
+          "function": "__sanitizer::BufferedStackTrace::UnwindImpl",
+          "file": "asan_stack.cpp",
+          "line": 77
+        },
+        {
+          "thread_id": "1",
+          "function": "__sanitizer::BufferedStackTrace::Unwind",
+          "file": "sanitizer_stacktrace.h",
+          "line": 130
+        },
+        {
+          "thread_id": "1",
+          "function": "___interceptor_free",
+          "file": "asan_malloc_linux.cpp",
+          "line": 52
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_widget_style_get_valist"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_widget_style_get"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "g_signal_emit_valist"
+        },
+        {
+          "thread_id": "1",
+          "function": "g_signal_emit"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "g_signal_emit_valist"
+        },
+        {
+          "thread_id": "1",
+          "function": "g_signal_emit"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "g_closure_invoke"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "g_signal_emit_valist"
+        },
+        {
+          "thread_id": "1",
+          "function": "g_signal_emit"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "g_main_context_iteration"
+        },
+        {
+          "thread_id": "1",
+          "function": "transform_popup_wait_stable_geometry_observed",
+          "file": "test-painter-transform-popup.inc",
+          "line": 518
+        },
+        {
+          "thread_id": "1",
+          "function": "brush_popup_open",
+          "file": "test-painter-brush-thumbnail-popup.inc",
+          "line": 425
+        },
+        {
+          "thread_id": "1",
+          "function": "brush_popup_private_target_release",
+          "file": "test-painter-brush-thumbnail-popup.inc",
+          "line": 1730
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "g_test_run_suite"
+        },
+        {
+          "thread_id": "1",
+          "function": "g_test_run"
+        },
+        {
+          "thread_id": "1",
+          "function": "gimp_test_app_activate_callback",
+          "file": "tests.c",
+          "line": 498
+        },
+        {
+          "thread_id": "1",
+          "function": "gimp_test_app_activate_callback",
+          "file": "tests.c",
+          "line": 477
+        },
+        {
+          "thread_id": "1",
+          "function": "g_closure_invoke"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "g_signal_emit_valist"
+        },
+        {
+          "thread_id": "1",
+          "function": "g_signal_emit"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "g_application_run"
+        },
+        {
+          "thread_id": "1",
+          "function": "main",
+          "file": "test-painter-compact-options.c",
+          "line": 750
+        }
+      ],
+      "frame_limit": 96,
+      "truncation_possible": false,
+      "geometry_wait_frame_present": true,
+      "brush_open_frame_present": true,
+      "selected_case_frame_present": true,
+      "same_wait_invocation_as_entry_proven": false
+    },
+    {
+      "sample": 2,
+      "sample_wall_interval_ms": 556,
+      "stop_reason": "signal-received",
+      "frames": [
+        {
+          "thread_id": "1",
+          "function": "__sanitizer::BufferedStackTrace::LocatePcInTrace",
+          "file": "sanitizer_stacktrace.cpp",
+          "line": 171
+        },
+        {
+          "thread_id": "1",
+          "function": "__sanitizer::BufferedStackTrace::UnwindSlow",
+          "file": "sanitizer_unwind_linux_libcdep.cpp",
+          "line": 132
+        },
+        {
+          "thread_id": "1",
+          "function": "__sanitizer::BufferedStackTrace::Unwind",
+          "file": "sanitizer_stacktrace_libcdep.cpp",
+          "line": 158
+        },
+        {
+          "thread_id": "1",
+          "function": "__sanitizer::BufferedStackTrace::UnwindImpl",
+          "file": "asan_stack.cpp",
+          "line": 77
+        },
+        {
+          "thread_id": "1",
+          "function": "__sanitizer::BufferedStackTrace::Unwind",
+          "file": "sanitizer_stacktrace.h",
+          "line": 130
+        },
+        {
+          "thread_id": "1",
+          "function": "___interceptor_free",
+          "file": "asan_malloc_linux.cpp",
+          "line": 52
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "xmlParseElement"
+        },
+        {
+          "thread_id": "1",
+          "function": "xmlParseDocument"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "rsvg_handle_new_from_stream_sync"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gdk_pixbuf_loader_close"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gdk_pixbuf_new_from_stream"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_widget_get_preferred_width"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_widget_get_preferred_width"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_widget_get_preferred_width"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_widget_get_preferred_width"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_widget_get_preferred_width"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_widget_get_preferred_width"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_widget_get_preferred_width"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_widget_get_preferred_width"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_widget_get_preferred_width"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        }
+      ],
+      "frame_limit": 96,
+      "truncation_possible": true,
+      "geometry_wait_frame_present": false,
+      "brush_open_frame_present": false,
+      "selected_case_frame_present": false,
+      "same_wait_invocation_as_entry_proven": false
+    },
+    {
+      "sample": 3,
+      "sample_wall_interval_ms": 513,
+      "stop_reason": "signal-received",
+      "frames": [
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "_Unwind_Backtrace"
+        },
+        {
+          "thread_id": "1",
+          "function": "__sanitizer::BufferedStackTrace::UnwindSlow",
+          "file": "sanitizer_unwind_linux_libcdep.cpp",
+          "line": 130
+        },
+        {
+          "thread_id": "1",
+          "function": "__sanitizer::BufferedStackTrace::Unwind",
+          "file": "sanitizer_stacktrace_libcdep.cpp",
+          "line": 158
+        },
+        {
+          "thread_id": "1",
+          "function": "__sanitizer::BufferedStackTrace::UnwindImpl",
+          "file": "asan_stack.cpp",
+          "line": 77
+        },
+        {
+          "thread_id": "1",
+          "function": "__sanitizer::BufferedStackTrace::Unwind",
+          "file": "sanitizer_stacktrace.h",
+          "line": 130
+        },
+        {
+          "thread_id": "1",
+          "function": "___interceptor_free",
+          "file": "asan_malloc_linux.cpp",
+          "line": 52
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "xmlParseElement"
+        },
+        {
+          "thread_id": "1",
+          "function": "xmlParseDocument"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "rsvg_handle_new_from_stream_sync"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gdk_pixbuf_loader_close"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gdk_pixbuf_new_from_stream_at_scale"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_widget_get_preferred_width"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_widget_get_preferred_width"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_widget_get_preferred_width"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_widget_get_preferred_width"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_widget_get_preferred_width"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_widget_get_preferred_width"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_widget_get_preferred_width"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_widget_get_preferred_width"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_widget_get_preferred_width"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_widget_get_preferred_width"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        }
+      ],
+      "frame_limit": 96,
+      "truncation_possible": true,
+      "geometry_wait_frame_present": false,
+      "brush_open_frame_present": false,
+      "selected_case_frame_present": false,
+      "same_wait_invocation_as_entry_proven": false
+    },
+    {
+      "sample": 4,
+      "sample_wall_interval_ms": 513,
+      "stop_reason": "signal-received",
+      "frames": [
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "_Unwind_Backtrace"
+        },
+        {
+          "thread_id": "1",
+          "function": "__sanitizer::BufferedStackTrace::UnwindSlow",
+          "file": "sanitizer_unwind_linux_libcdep.cpp",
+          "line": 130
+        },
+        {
+          "thread_id": "1",
+          "function": "__sanitizer::BufferedStackTrace::Unwind",
+          "file": "sanitizer_stacktrace_libcdep.cpp",
+          "line": 158
+        },
+        {
+          "thread_id": "1",
+          "function": "__sanitizer::BufferedStackTrace::UnwindImpl",
+          "file": "asan_stack.cpp",
+          "line": 77
+        },
+        {
+          "thread_id": "1",
+          "function": "__sanitizer::BufferedStackTrace::Unwind",
+          "file": "sanitizer_stacktrace.h",
+          "line": 130
+        },
+        {
+          "thread_id": "1",
+          "function": "___interceptor_free",
+          "file": "asan_malloc_linux.cpp",
+          "line": 52
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "xmlParseElement"
+        },
+        {
+          "thread_id": "1",
+          "function": "xmlParseDocument"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "xmlParseElement"
+        },
+        {
+          "thread_id": "1",
+          "function": "xmlParseDocument"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "rsvg_handle_new_from_stream_sync"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gdk_pixbuf_loader_close"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gdk_pixbuf_new_from_stream_at_scale"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_widget_get_preferred_width"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_widget_get_preferred_width"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_widget_get_preferred_width"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_widget_get_preferred_width"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_widget_get_preferred_width"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_widget_get_preferred_width"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_widget_get_preferred_width"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_widget_get_preferred_width"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        }
+      ],
+      "frame_limit": 96,
+      "truncation_possible": true,
+      "geometry_wait_frame_present": false,
+      "brush_open_frame_present": false,
+      "selected_case_frame_present": false,
+      "same_wait_invocation_as_entry_proven": false
+    },
+    {
+      "sample": 5,
+      "sample_wall_interval_ms": 512,
+      "stop_reason": "signal-received",
+      "frames": [
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "_Unwind_Backtrace"
+        },
+        {
+          "thread_id": "1",
+          "function": "__sanitizer::BufferedStackTrace::UnwindSlow",
+          "file": "sanitizer_unwind_linux_libcdep.cpp",
+          "line": 130
+        },
+        {
+          "thread_id": "1",
+          "function": "__sanitizer::BufferedStackTrace::Unwind",
+          "file": "sanitizer_stacktrace_libcdep.cpp",
+          "line": 158
+        },
+        {
+          "thread_id": "1",
+          "function": "__sanitizer::BufferedStackTrace::UnwindImpl",
+          "file": "asan_stack.cpp",
+          "line": 77
+        },
+        {
+          "thread_id": "1",
+          "function": "__sanitizer::BufferedStackTrace::Unwind",
+          "file": "sanitizer_stacktrace.h",
+          "line": 130
+        },
+        {
+          "thread_id": "1",
+          "function": "___interceptor_free",
+          "file": "asan_malloc_linux.cpp",
+          "line": 52
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "pango_attr_list_unref"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_cell_renderer_get_preferred_width"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_cell_area_request_renderer"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_widget_get_preferred_width"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_widget_get_preferred_width"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_widget_get_preferred_width"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_widget_get_preferred_width"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_widget_get_preferred_width"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_widget_get_preferred_width"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_widget_get_preferred_width"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_widget_get_preferred_width"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_widget_get_preferred_width"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_widget_get_preferred_width"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_widget_get_preferred_width"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_widget_get_preferred_width"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        }
+      ],
+      "frame_limit": 96,
+      "truncation_possible": true,
+      "geometry_wait_frame_present": false,
+      "brush_open_frame_present": false,
+      "selected_case_frame_present": false,
+      "same_wait_invocation_as_entry_proven": false
+    },
+    {
+      "sample": 6,
+      "sample_wall_interval_ms": 512,
+      "stop_reason": "signal-received",
+      "frames": [
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "_Unwind_Backtrace"
+        },
+        {
+          "thread_id": "1",
+          "function": "__sanitizer::BufferedStackTrace::UnwindSlow",
+          "file": "sanitizer_unwind_linux_libcdep.cpp",
+          "line": 130
+        },
+        {
+          "thread_id": "1",
+          "function": "__sanitizer::BufferedStackTrace::Unwind",
+          "file": "sanitizer_stacktrace_libcdep.cpp",
+          "line": 158
+        },
+        {
+          "thread_id": "1",
+          "function": "__sanitizer::BufferedStackTrace::UnwindImpl",
+          "file": "asan_stack.cpp",
+          "line": 77
+        },
+        {
+          "thread_id": "1",
+          "function": "__sanitizer::BufferedStackTrace::Unwind",
+          "file": "sanitizer_stacktrace.h",
+          "line": 130
+        },
+        {
+          "thread_id": "1",
+          "function": "___interceptor_free",
+          "file": "asan_malloc_linux.cpp",
+          "line": 52
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "xmlParseElement"
+        },
+        {
+          "thread_id": "1",
+          "function": "xmlParseDocument"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "rsvg_handle_new_from_stream_sync"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gdk_pixbuf_loader_close"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gdk_pixbuf_new_from_stream"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_widget_get_preferred_width"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_widget_get_preferred_width"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_widget_get_preferred_width"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_widget_get_preferred_width"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_widget_get_preferred_width"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_widget_get_preferred_width"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_widget_get_preferred_width"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_widget_get_preferred_width"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_widget_get_preferred_width"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_widget_get_preferred_width"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        }
+      ],
+      "frame_limit": 96,
+      "truncation_possible": true,
+      "geometry_wait_frame_present": false,
+      "brush_open_frame_present": false,
+      "selected_case_frame_present": false,
+      "same_wait_invocation_as_entry_proven": false
+    },
+    {
+      "sample": 7,
+      "sample_wall_interval_ms": 513,
+      "stop_reason": "signal-received",
+      "frames": [
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "_Unwind_Backtrace"
+        },
+        {
+          "thread_id": "1",
+          "function": "__sanitizer::BufferedStackTrace::UnwindSlow",
+          "file": "sanitizer_unwind_linux_libcdep.cpp",
+          "line": 130
+        },
+        {
+          "thread_id": "1",
+          "function": "__sanitizer::BufferedStackTrace::Unwind",
+          "file": "sanitizer_stacktrace_libcdep.cpp",
+          "line": 158
+        },
+        {
+          "thread_id": "1",
+          "function": "__sanitizer::BufferedStackTrace::UnwindImpl",
+          "file": "asan_stack.cpp",
+          "line": 77
+        },
+        {
+          "thread_id": "1",
+          "function": "__sanitizer::BufferedStackTrace::Unwind",
+          "file": "sanitizer_stacktrace.h",
+          "line": 130
+        },
+        {
+          "thread_id": "1",
+          "function": "___interceptor_free",
+          "file": "asan_malloc_linux.cpp",
+          "line": 52
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "xmlParseElement"
+        },
+        {
+          "thread_id": "1",
+          "function": "xmlParseDocument"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "xmlParseElement"
+        },
+        {
+          "thread_id": "1",
+          "function": "xmlParseDocument"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "rsvg_handle_new_from_stream_sync"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gdk_pixbuf_loader_close"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gdk_pixbuf_new_from_stream_at_scale"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_widget_get_preferred_width"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_widget_get_preferred_width"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_widget_get_preferred_width"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_widget_get_preferred_width"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_widget_get_preferred_width"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_widget_get_preferred_width"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_widget_get_preferred_width"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_widget_get_preferred_width"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        }
+      ],
+      "frame_limit": 96,
+      "truncation_possible": true,
+      "geometry_wait_frame_present": false,
+      "brush_open_frame_present": false,
+      "selected_case_frame_present": false,
+      "same_wait_invocation_as_entry_proven": false
+    },
+    {
+      "sample": 8,
+      "sample_wall_interval_ms": 513,
+      "stop_reason": "signal-received",
+      "frames": [
+        {
+          "thread_id": "1",
+          "function": "_Unwind_Backtrace"
+        },
+        {
+          "thread_id": "1",
+          "function": "__sanitizer::BufferedStackTrace::UnwindSlow",
+          "file": "sanitizer_unwind_linux_libcdep.cpp",
+          "line": 130
+        },
+        {
+          "thread_id": "1",
+          "function": "__sanitizer::BufferedStackTrace::Unwind",
+          "file": "sanitizer_stacktrace_libcdep.cpp",
+          "line": 158
+        },
+        {
+          "thread_id": "1",
+          "function": "__sanitizer::BufferedStackTrace::UnwindImpl",
+          "file": "asan_stack.cpp",
+          "line": 77
+        },
+        {
+          "thread_id": "1",
+          "function": "__sanitizer::BufferedStackTrace::Unwind",
+          "file": "sanitizer_stacktrace.h",
+          "line": 130
+        },
+        {
+          "thread_id": "1",
+          "function": "___interceptor_malloc",
+          "file": "asan_malloc_linux.cpp",
+          "line": 69
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "xmlParseElement"
+        },
+        {
+          "thread_id": "1",
+          "function": "xmlParseDocument"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "xmlParseElement"
+        },
+        {
+          "thread_id": "1",
+          "function": "xmlParseDocument"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "rsvg_handle_new_from_stream_sync"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gdk_pixbuf_loader_close"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gdk_pixbuf_new_from_stream_at_scale"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_widget_get_preferred_width"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_widget_get_preferred_width"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_widget_get_preferred_width"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_widget_get_preferred_width"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_widget_get_preferred_width"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_widget_get_preferred_width"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_widget_get_preferred_width"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_widget_get_preferred_width"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gtk_widget_get_preferred_width"
+        }
+      ],
+      "frame_limit": 96,
+      "truncation_possible": true,
+      "geometry_wait_frame_present": false,
+      "brush_open_frame_present": false,
+      "selected_case_frame_present": false,
+      "same_wait_invocation_as_entry_proven": false
+    }
+  ],
+  "status": "inconclusive",
+  "leak_verdict": "not evaluated under ptrace",
+  "sanitizer_settings_changed": false,
+  "raw_debugger_output_exported": false,
+  "entry_stack": {
+    "frames": [
+      {
+        "thread_id": "1",
+        "function": "transform_popup_wait_stable_geometry_observed",
+        "file": "test-painter-transform-popup.inc",
+        "line": 481
+      },
+      {
+        "thread_id": "1",
+        "function": "brush_popup_open",
+        "file": "test-painter-brush-thumbnail-popup.inc",
+        "line": 425
+      },
+      {
+        "thread_id": "1",
+        "function": "brush_popup_private_target_release",
+        "file": "test-painter-brush-thumbnail-popup.inc",
+        "line": 1730
+      },
+      {
+        "thread_id": "1",
+        "function": "??"
+      },
+      {
+        "thread_id": "1",
+        "function": "??"
+      },
+      {
+        "thread_id": "1",
+        "function": "g_test_run_suite"
+      },
+      {
+        "thread_id": "1",
+        "function": "g_test_run"
+      },
+      {
+        "thread_id": "1",
+        "function": "gimp_test_app_activate_callback",
+        "file": "tests.c",
+        "line": 498
+      },
+      {
+        "thread_id": "1",
+        "function": "gimp_test_app_activate_callback",
+        "file": "tests.c",
+        "line": 477
+      },
+      {
+        "thread_id": "1",
+        "function": "g_closure_invoke"
+      },
+      {
+        "thread_id": "1",
+        "function": "??"
+      },
+      {
+        "thread_id": "1",
+        "function": "??"
+      },
+      {
+        "thread_id": "1",
+        "function": "g_signal_emit_valist"
+      },
+      {
+        "thread_id": "1",
+        "function": "g_signal_emit"
+      },
+      {
+        "thread_id": "1",
+        "function": "??"
+      },
+      {
+        "thread_id": "1",
+        "function": "g_application_run"
+      },
+      {
+        "thread_id": "1",
+        "function": "main",
+        "file": "test-painter-compact-options.c",
+        "line": 750
+      }
+    ],
+    "frame_limit": 96,
+    "truncation_possible": false,
+    "geometry_wait_frame_present": true,
+    "brush_open_frame_present": true,
+    "selected_case_frame_present": true,
+    "same_wait_invocation_as_entry_proven": false
+  },
+  "owned_child_cleanup_completed": false,
+  "cleanup_evidence": {
+    "stage": "complete",
+    "run_requested": true,
+    "owned_pidfd_present": true,
+    "unknown_inferior": false,
+    "pidfd_signal": "sent",
+    "pidfd_wait": "timeout",
+    "pidfd_close": "closed",
+    "debugger_poll": "running",
+    "debugger_exit": "requested",
+    "debugger_grace_wait": "observed",
+    "debugger_kill": "not-attempted",
+    "debugger_final_wait": "observed",
+    "stream_close": "closed",
+    "child_termination_observed": false,
+    "debugger_termination_observed": true
+  },
+  "failure_category": "Cleanup incomplete"
+}

@@ -1,0 +1,20 @@
+{
+  "scope": "Actual read-only Git rev-parse FETCH_HEAD output replay through old/fixed generator role; remaining role graph/filesystem fixtures synthetic. Same stdout serialization as HEAD, no HEAD/ref mutation. Not full historical CI replay or native proof.",
+  "git_object": "a31e5dea4f572fb5f33b06f5c4b86db5f30643dc",
+  "actual_command": [
+    "git",
+    "-C",
+    "verified-gimp-data-provider",
+    "rev-parse",
+    "FETCH_HEAD"
+  ],
+  "stdout_bytes": 41,
+  "stdout_sha256": "fea3007d93d7d8818a6cc2dd3b375f57af8331f9e4d5a3d9cdc6fcff5dd9cdea",
+  "stdout_is_exact_hash_plus_one_lf": true,
+  "old_error": "generator-submodule-mismatch",
+  "fixed_role_fixture_passed": true,
+  "old_source_sha256": "357adf2fc00119af16f5e13ce1a2c8112efec76c647caeda8e550c8c506ef484",
+  "fixed_source_sha256": "9f15964127165b2709adf469b83c5694d128fa254554165f7ccc6814401d496e",
+  "native_executed": false,
+  "remote_mutated": false
+}

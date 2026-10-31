@@ -1,0 +1,44 @@
+{
+  "scope": "real Meson1.7.0 minimal C fixture plus unchanged wrapper, NOT GIMP or hosted14 measurement",
+  "meson_version": "1.7.0",
+  "rows": [
+    {
+      "order": 1,
+      "actual_basename": "matched-01-python3.json",
+      "old_path_absent": true,
+      "raw_sha256": "0a1e10aab6c82d04988da485912d2132ce8de74823e07d58d19ac144143dd2d0",
+      "result": "OK",
+      "returncode": 0,
+      "exact_options_verified": true
+    },
+    {
+      "order": 2,
+      "actual_basename": "matched-02-python3.json",
+      "old_path_absent": true,
+      "raw_sha256": "bb0e97688dcef73810379daabc2b8fe6dab929265c28982e832dcdcf09346119",
+      "result": "FAIL",
+      "returncode": 7,
+      "exact_options_verified": true
+    },
+    {
+      "order": 3,
+      "actual_basename": "matched-03-python3.json",
+      "old_path_absent": true,
+      "raw_sha256": "d6298c1b1371e0ee449a4378842f5bfdce55c62018724a8cbb705eac8504a27e",
+      "result": "FAIL",
+      "returncode": -6,
+      "exact_options_verified": true
+    },
+    {
+      "order": 4,
+      "actual_basename": "matched-04-python3.json",
+      "old_path_absent": true,
+      "raw_sha256": "d461267ec9a03f1f81ec92741a3d931e746ce41a9f2e6652dfa77215acdb56dc",
+      "result": "OK",
+      "returncode": 0,
+      "exact_options_verified": true
+    }
+  ],
+  "original_native_failures_preserved": true,
+  "raw_environment_exported": false
+}

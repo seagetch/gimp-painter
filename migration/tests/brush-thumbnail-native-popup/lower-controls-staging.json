@@ -1,0 +1,603 @@
+{
+  "schema_version": 1,
+  "status": "C26_REVIEW_ONLY_GIT_DELIMITER_AND_THIN_ARCHIVE_PROVIDER",
+  "staged_utc": "2026-10-25T09:05:01.471031+00:00",
+  "worktree": "review-only-C26-candidate",
+  "base_commit": "e25a94e21efca6e6604ddac6f15570c049f421e7",
+  "accepted_task307_baseline_commit": "e25a94e21efca6e6604ddac6f15570c049f421e7",
+  "candidate_final_commit": null,
+  "rebased_on_accepted_task307": true,
+  "published": false,
+  "accepted": false,
+  "runtime_tests_run": false,
+  "approved_extension_patch_sha256": "895bc7710e0315a26cdfffa70e7cf9939ade4f3c216eff2ff4b3bec16cb786ee",
+  "original_16_file_manifest_sha256": "7849a222babe5f39ce9cf18de86496bb8b63c4b89de4670da33dd068576bc8bb",
+  "original_16_file_hashes_verified_before_apply": true,
+  "original_20_case_ids_and_body_open_actual_entry_oracles_preserved": true,
+  "prior_positive_cases": 132,
+  "focused_cases": 21,
+  "combined_unique_cases": 153,
+  "compact_cases": 127,
+  "toolbar_window_cases": 26,
+  "required_capture_count": 4,
+  "required_capture_dimensions": [
+    1080,
+    1920
+  ],
+  "required_captures": [
+    {
+      "path": "brush-thumbnail-actual-entry-scale1.png",
+      "case": "/brush-thumbnail-native-popup/actual-entry",
+      "scale": 1,
+      "status": "UNRUN"
+    },
+    {
+      "path": "brush-thumbnail-actual-entry-scale2.png",
+      "case": "/brush-thumbnail-native-popup/actual-entry",
+      "scale": 2,
+      "status": "UNRUN"
+    },
+    {
+      "path": "brush-thumbnail-lower-controls-scale1.png",
+      "case": "/brush-thumbnail-native-popup/lower-controls-actual-input",
+      "scale": 1,
+      "status": "UNRUN"
+    },
+    {
+      "path": "brush-thumbnail-lower-controls-scale2.png",
+      "case": "/brush-thumbnail-native-popup/lower-controls-actual-input",
+      "scale": 2,
+      "status": "UNRUN"
+    }
+  ],
+  "separate_task307_required_captures": 16,
+  "task307_acceptance_status": "ACCEPTED_SCOPED_E25_RUNTIME_D6_RUN18",
+  "current_native_test_compile_and_link": "PASS_C8_BOUNDED_MESON_COMPACT_LINK_NEW4_HEADLESS_NOT_FULL_REBUILD",
+  "current_gui_baseline_negative_sanitizer_and_visual": "UNRUN",
+  "historical_native_build_receipt": {
+    "path": "migration/tests/brush-thumbnail-native-popup/native-build.json",
+    "sha256": "57b91db2c572ca85f87b101cba9defde156df0b3d6bb1b61c28758802d026831",
+    "focused_case_count": 20,
+    "unchanged": true,
+    "applies_to_current_21_case_test_object": false
+  },
+  "prior_positive_manifest_sha256": "e4249c21abd11a09650fe046729c913a39c52a2cc4fa0de86736c1c57c4ee764",
+  "positive_groups_manifest_sha256": "72269a7f24cb2a639f6392fddd0945dbfd23cf31e87c1d21fde473b4f813f681",
+  "preserved_prior_test_inputs": [
+    {
+      "path": "app/tests/test-painter-align-toolbar.inc",
+      "sha256": "14d1e0ea7319a1d9ba7d39eb88a16d43f7f13ec08ab3332ce3b0923a4f25d5f0",
+      "unchanged_from": "e25a94e21efca6e6604ddac6f15570c049f421e7"
+    },
+    {
+      "path": "app/tests/test-painter-bucket-popup.inc",
+      "sha256": "21e989f3d4263c7cb4e8486f7ddc876cc0d445cac9c4ab034220c0f8df784831",
+      "unchanged_from": "e25a94e21efca6e6604ddac6f15570c049f421e7"
+    },
+    {
+      "path": "app/tests/test-painter-clone-popup.inc",
+      "sha256": "b471554a0d7c5b6d0f70dea31b6bc803ff19ac9fa15a67b72efb003e9c40493a",
+      "unchanged_from": "e25a94e21efca6e6604ddac6f15570c049f421e7"
+    },
+    {
+      "path": "app/tests/test-painter-compact-options.c",
+      "sha256": "6b81f7273161c794c10e7b4e69f32db1af40586f4e224162b7711813a4c5ed18",
+      "unchanged_from": "original16_checkpoint"
+    },
+    {
+      "path": "app/tests/test-painter-foreground-toolbar.inc",
+      "sha256": "17f939cf9f5fdb25395a980e2b7f6c66f9867eb76693ea84892acf916874651c",
+      "unchanged_from": "e25a94e21efca6e6604ddac6f15570c049f421e7"
+    },
+    {
+      "path": "app/tests/test-painter-histogram-toolbar.inc",
+      "sha256": "91627bd4ecf4209592234a132688acca67c1b61ee20ded4f63c8b85f2108816f",
+      "unchanged_from": "e25a94e21efca6e6604ddac6f15570c049f421e7"
+    },
+    {
+      "path": "app/tests/test-painter-independent-toolbar.inc",
+      "sha256": "a2ea04d564cb9482c5dbd1388f80e95bea0a82d03ba56ba0396ebf936f27286c",
+      "unchanged_from": "e25a94e21efca6e6604ddac6f15570c049f421e7"
+    },
+    {
+      "path": "app/tests/test-painter-ink-popup.inc",
+      "sha256": "95696619094b7d3e42ee5dae6e62db94c47899ca517eeec7defb99b53de5d073",
+      "unchanged_from": "e25a94e21efca6e6604ddac6f15570c049f421e7"
+    },
+    {
+      "path": "app/tests/test-painter-rectangle-toolbar.inc",
+      "sha256": "8560b17710fec7d244c654756142f48ae972dd6bcc439aa4dd0fb25f0c555c65",
+      "unchanged_from": "e25a94e21efca6e6604ddac6f15570c049f421e7"
+    },
+    {
+      "path": "app/tests/test-painter-rectangle-unit-popup.inc",
+      "sha256": "39a391d399b6e2249ce89df5651d6d74a7e88daf50d803df5b9425375e020867",
+      "unchanged_from": "e25a94e21efca6e6604ddac6f15570c049f421e7"
+    },
+    {
+      "path": "app/tests/test-painter-standard-toggle-popup.inc",
+      "sha256": "8c2f71f3c7a766485cfc9a53a9d453d972e1a2b59d8164ed1a1ba8087f288a42",
+      "unchanged_from": "e25a94e21efca6e6604ddac6f15570c049f421e7"
+    },
+    {
+      "path": "app/tests/test-painter-text-toolbar.inc",
+      "sha256": "48b9b8b5f13d397daa7efb2d296a543c6e186391fc022de876dca737deb3e7c7",
+      "unchanged_from": "e25a94e21efca6e6604ddac6f15570c049f421e7"
+    },
+    {
+      "path": "app/tests/test-painter-toolbar-lifetime.inc",
+      "sha256": "6581f1e571f9009b8dda235a9d47a9979e3fa88cf67dc4f75d62fef5abc080c5",
+      "unchanged_from": "e25a94e21efca6e6604ddac6f15570c049f421e7"
+    },
+    {
+      "path": "app/tests/test-painter-toolbar-transfer.inc",
+      "sha256": "cac9e0aadf29806119e81aba6b35c5e94d7084755257945f6d5114fe58c55377",
+      "unchanged_from": "e25a94e21efca6e6604ddac6f15570c049f421e7"
+    },
+    {
+      "path": "app/tests/test-painter-toolbar-window.c",
+      "sha256": "3c42fa51db5224e2cb04006911e658142e2b4a1d6198124ec166bf3a6c63aeed",
+      "unchanged_from": "e25a94e21efca6e6604ddac6f15570c049f421e7"
+    },
+    {
+      "path": "app/tests/test-painter-vector-toolbar.inc",
+      "sha256": "96456b4cf0f66251b9a0a7cc24da8a987070e05c7b5c68025a80e5be46c02468",
+      "unchanged_from": "e25a94e21efca6e6604ddac6f15570c049f421e7"
+    }
+  ],
+  "changes_in_this_staging": [
+    "app/tests/test-painter-brush-thumbnail-popup.inc",
+    "migration/tests/brush-thumbnail-native-popup/README.md",
+    "migration/tests/brush-thumbnail-native-popup/implementation-contract.md",
+    "migration/tests/brush-thumbnail-native-popup/lower-controls-staging.json"
+  ],
+  "files": [
+    {
+      "path": "app/tests/test-painter-brush-thumbnail-popup.inc",
+      "status": "new",
+      "mode": "0644",
+      "bytes": 101293,
+      "sha256": "6f828b0b239e4714ed29475bef38a7c2021cd6fa6d1c0a76af75d493cb639a10",
+      "changed_from_original_checkpoint": true
+    },
+    {
+      "path": "app/tests/test-painter-compact-options.c",
+      "status": "modified",
+      "mode": "0644",
+      "bytes": 50000,
+      "sha256": "6b81f7273161c794c10e7b4e69f32db1af40586f4e224162b7711813a4c5ed18",
+      "changed_from_original_checkpoint": false
+    },
+    {
+      "path": "app/tools/gimppainterbrushpopup.cpp",
+      "status": "new",
+      "mode": "0644",
+      "bytes": 19800,
+      "sha256": "3384adcb3f7d597e7878ed68775ed0e2e3762f80c1ca4db9470fcd497c7e5d2e",
+      "changed_from_original_checkpoint": true
+    },
+    {
+      "path": "app/tools/gimppainterbrushpopup.h",
+      "status": "new",
+      "mode": "0644",
+      "bytes": 435,
+      "sha256": "6042feebf9f5dd5c0997ed78b60c1c9be374ac0a468371f4f6ffa6a15bb9b595",
+      "changed_from_original_checkpoint": false
+    },
+    {
+      "path": "app/tools/gimppainterpainttoolbar.c",
+      "status": "modified",
+      "mode": "0644",
+      "bytes": 29787,
+      "sha256": "651bb1a43d435bb81bb964be1463a7d404bd60751b2ced7f6ce05ef944bcb40b",
+      "changed_from_original_checkpoint": false
+    },
+    {
+      "path": "app/tools/gimppaintertogglepopup.cpp",
+      "status": "modified",
+      "mode": "0644",
+      "bytes": 19366,
+      "sha256": "fca50248646ccef9f03204eb1524f029112e7172dfe0d697da6fcab8ac1c0d34",
+      "changed_from_original_checkpoint": true
+    },
+    {
+      "path": "app/tools/gimppaintertogglepopup.h",
+      "status": "modified",
+      "mode": "0644",
+      "bytes": 1483,
+      "sha256": "53ed421fcab6c9399c478890c41acad6a6a379372976fcbc231f008a52c096c3",
+      "changed_from_original_checkpoint": false
+    },
+    {
+      "path": "app/tools/meson.build",
+      "status": "modified",
+      "mode": "0644",
+      "bytes": 4091,
+      "sha256": "904a3bbd24d1fbde9869b2aedf257318ab99f3144d81adcf037d295211108436",
+      "changed_from_original_checkpoint": false
+    },
+    {
+      "path": "migration/inventory/additional-c-header-routes.json",
+      "status": "modified",
+      "mode": "0644",
+      "bytes": 23483,
+      "sha256": "8a1242d1d64a73cc9393ea4c192190741545f7514ac07b1192bf3d6839edfa41",
+      "changed_from_original_checkpoint": false
+    },
+    {
+      "path": "migration/tests/brush-thumbnail-native-popup/README.md",
+      "status": "new",
+      "mode": "0644",
+      "bytes": 77263,
+      "sha256": "19048568e0f4fc34f4b16274252127ec3f083f4da5bd0ac1555af8c3ecb69a3a",
+      "changed_from_original_checkpoint": true
+    },
+    {
+      "path": "migration/tests/brush-thumbnail-native-popup/cases.json",
+      "status": "new",
+      "mode": "0644",
+      "bytes": 1292,
+      "sha256": "6bce9ff5a694bece1189feb2d2c2dc2af7c999617ef42f65e739b490ef378d52",
+      "changed_from_original_checkpoint": true
+    },
+    {
+      "path": "migration/tests/brush-thumbnail-native-popup/historical-header-registration.json",
+      "status": "new",
+      "mode": "0644",
+      "bytes": 281,
+      "sha256": "3192c11848de60bf088bf87fbc45eefdf165dce2ada1fc5cb13e3203e3801be4",
+      "changed_from_original_checkpoint": false
+    },
+    {
+      "path": "migration/tests/brush-thumbnail-native-popup/implementation-contract.md",
+      "status": "new",
+      "mode": "0644",
+      "bytes": 67269,
+      "sha256": "99779f0048b16b464211844c07a08e1d4e4286156559ea99c730599849e20f9f",
+      "changed_from_original_checkpoint": true
+    },
+    {
+      "path": "migration/tests/brush-thumbnail-native-popup/native-build.json",
+      "status": "new",
+      "mode": "0644",
+      "bytes": 4490,
+      "sha256": "57b91db2c572ca85f87b101cba9defde156df0b3d6bb1b61c28758802d026831",
+      "changed_from_original_checkpoint": false
+    },
+    {
+      "path": "migration/tests/brush-thumbnail-native-popup/retained-controller-comparison.json",
+      "status": "new",
+      "mode": "0644",
+      "bytes": 348,
+      "sha256": "5bf18b1f7e2d35fe1f89c90c39a3d60ccec9a4a99bb0b5893922d388c2192acc",
+      "changed_from_original_checkpoint": false
+    },
+    {
+      "path": "tasks.md",
+      "status": "modified",
+      "mode": "0644",
+      "bytes": 283531,
+      "sha256": "9f9d162b41b672db9d10b6c8d13e23f9ee8a30159d58a732ccad4a6acd6a1b9a",
+      "changed_from_original_checkpoint": false
+    },
+    {
+      "path": "migration/progress.tsv",
+      "status": "modified",
+      "mode": "0644",
+      "bytes": 505614,
+      "sha256": "310385ef5597477cde2278cc74192f90c4debd1e2e1dc858bb46b8099cee1d70",
+      "changed_from_original_checkpoint": true
+    },
+    {
+      "path": "meson.build",
+      "status": "modified",
+      "changed_from_original_checkpoint": true,
+      "bytes": 79223,
+      "sha256": "74358058b211605bcd3fcb0e08df60722728196b93102799bc27ec0500329ea5",
+      "mode": "0644"
+    },
+    {
+      "path": "app/tests/test-painter-transform-popup.inc",
+      "status": "modified",
+      "changed_from_original_checkpoint": true,
+      "bytes": 45202,
+      "sha256": "39497319586c30f92cd6d501d84352ca54b7d5a8b49e75a00694f391a9901c16",
+      "mode": "0644"
+    },
+    {
+      "path": "app/paint/gimppaintoptions.c",
+      "status": "modified",
+      "mode": "0644",
+      "changed_from_original_checkpoint": true,
+      "bytes": 53342,
+      "sha256": "64f1316e0a021c4d3c66658c39d79473f9f257534f5937bf2cb148eeba70472b"
+    },
+    {
+      "path": "app/tests/test-painter-brush-geometry.cpp",
+      "status": "modified",
+      "mode": "0644",
+      "changed_from_original_checkpoint": true,
+      "bytes": 21559,
+      "sha256": "83db89f31f90cd6aff12acc9a34ba9a3b71523a5024977bb954453d3fa8404e3"
+    }
+  ],
+  "manifest_self_excluded": "migration/tests/brush-thumbnail-native-popup/lower-controls-staging.json",
+  "execution_restriction": "No local GUI/Xvfb/socket bypass; ordinary authorized CI required. Root is sole publisher.",
+  "updated_utc": "2026-10-26T01:14:36.447635+00:00",
+  "revision": "run24_genuine_stock_tool_options_dock_precondition",
+  "previous_17_file_manifest_sha256": "7eded283556ed285c732cf3afe8364eff7b4c9141f5fc33c6ac8d80f84816dd4",
+  "changes_since_prior17_checkpoint": [
+    "app/tests/test-painter-brush-thumbnail-popup.inc",
+    "migration/tests/brush-thumbnail-native-popup/README.md",
+    "migration/tests/brush-thumbnail-native-popup/lower-controls-staging.json"
+  ],
+  "scrollbar_hover_readiness_patch_sha256": "7e339dd5705efb2ccdf515ba760eca2f8c22e6f2865918970bc01944b5b1be52",
+  "current_test_include_sha256": "e3c7118795b77ce7d2f2e7fbfac1afa140dcd7c2f16ac784bd4290ff55236c61",
+  "scrollbar_semantic_readiness": {
+    "scope": "Only lower-control outer scrollbar preparation; actual hit and overlay-indicator hovering class before unchanged stable/strict aim",
+    "basis": "Source-backed analogous risk after common-popup run11, not an observed Brush failure",
+    "gtk_version": "3.24.49",
+    "gtk_source": "https://raw.githubusercontent.com/GNOME/gtk/3.24.49/gtk/gtkscrolledwindow.c",
+    "gtk_functions": [
+      "indicator_set_over",
+      "check_update_scrollbar_proximity"
+    ],
+    "common_reference_commit": "be0fc600678a3a3bdddbd51f08e081d62faa24c8",
+    "preparation_bound_seconds": 3,
+    "added_sleep_or_button_or_setter": false,
+    "prior_gesture_thresholds_and_numeric_path_unchanged": true
+  },
+  "historical_native_21_build_receipt": {
+    "name": "native-build-21-normal.json",
+    "sha256": "a94c3f1b42e0430d6021452ace0f6c2bdfdb75cc14eb20a9385e4f9da08645db",
+    "frozen_manifest_sha256": "7eded283556ed285c732cf3afe8364eff7b4c9141f5fc33c6ac8d80f84816dd4",
+    "test_include_sha256": "1a094ca8607b0b4c386b0fecbd85c2eed821d25c64115f8699965513c4c7e770",
+    "status": "FRESH_NORMAL_FOCUSED_MESON_BUILD_AND_455_HEADER_PROBES_PASS_RUNTIME_UNVERIFIED",
+    "unchanged": true,
+    "applies_to_current_hover_readiness_test_object": false
+  },
+  "original_implementation_base_commit": "ef6640451c1c7ac50a7a354e8b57ecfe1ebc8bbb",
+  "accepted_task307_baseline_tree": "8634eeef49c81aaa5c25192cb76d749ff680683f",
+  "rebase_method": "Reviewed bounded 17-file patch applied to accepted307 working tree; no Git rebase/ref/index mutation by integration worker.",
+  "original_frozen17_manifest_sha256": "7c0352d399d73c43746827a0b1455b1a8b41dd42b880e5422a512e0cdcf93388",
+  "original_frozen17_staging_sha256": "b2f5c5b97030992a68010eb1029433dbe1e582aa37f1773af541a3882d9a0de3",
+  "task307_on_brush_candidate_regression_status": "UNRUN",
+  "common_source_manifest_sha256": "04b3053c24509ad643b6782197bd80abcf5a74582c3e474500a01323e2c87e9f",
+  "common_regressions_required": {
+    "overlay_paint_gate_cases_per_scale": 6,
+    "common_cases_per_scale": 58,
+    "scales": [
+      1,
+      2
+    ],
+    "png_count": 16,
+    "adjacent_registration_count": 13,
+    "accepted_run_adjacent_case_count": 360
+  },
+  "historical_pre_rebase_static_validation": {
+    "syntax_only": "PASS; same normal Meson compiler command, no objects/link/runtime",
+    "syntax_report_sha256": "ffda1265eea6d7c171b58a5fbdbb3fd2d6007a2ec5bb650c5bc97e0ac0773ca3",
+    "source_contract_checks": 8,
+    "source_contract_log_sha256": "aa528809898ae1ab569bdc79e98293247a2e049135cb2276bb9232dd95c83257",
+    "reviewer": "/root/review_layer_popup_lifetimes",
+    "reviewed_test_include_sha256": "3530073d40848eb371918c8c2be979fcf2404ef47c8708baa9d709498ae9f77e",
+    "result": "No remaining static blocker found",
+    "runtime_claim": false
+  },
+  "historical_native_21_hover_build_receipt": {
+    "name": "native-build-21-hover.json",
+    "sha256": "0310350b5f31c24c53944f4207d99511c19bb4afa00a8123a7d5b8ac436b04f8",
+    "frozen_manifest_sha256": "7c0352d399d73c43746827a0b1455b1a8b41dd42b880e5422a512e0cdcf93388",
+    "test_include_sha256": "3530073d40848eb371918c8c2be979fcf2404ef47c8708baa9d709498ae9f77e",
+    "base_commit": "ef6640451c1c7ac50a7a354e8b57ecfe1ebc8bbb",
+    "status": "NORMAL_INCREMENTAL_FOCUSED_MESON_BUILD_AND_455_HEADER_PROBES_PASS_PRE_REBASE_RUNTIME_UNVERIFIED",
+    "unchanged": true,
+    "applies_to_accepted307_rebase_build": false
+  },
+  "changes_in_this_integration": [
+    "Reviewed17 delta integrated onto accepted e25",
+    "tasks.md sole pending leaf row; accepted307 bytes otherwise preserved",
+    "README/implementation-contract/current source manifest provenance refreshed",
+    "At the original e25 integration stage only, production/test sources and historical native receipts were unchanged from the donor checkpoint; subsequent run20 repairs changed source inputs as listed below, without relabeling historical receipts.",
+    "Corresponding migration/progress.tsv DOING row appended; all existing bytes preserved and check_tasks.py PASS",
+    "At the run20 repair stage, all21 registrations and original Brush/Transform assertions were retained; later run22 test-only correction explicitly replaces three invalid raw tool-notify count assumptions.",
+    "The run22 differential test-only correction changes only the Brush test include among compiler inputs; all Brush production, common and prior132 test inputs remain unchanged from C3 for this correction. All21 IDs and allother original assertions are retained; companion sanitizer-fixture work is separately scoped.",
+    "Run23 retains current-mask final invariant and all C4 assertions; native PaintOptions defers generated radius linkage until completed dirty regeneration, with7-ID headless regression expansion. Brush fixture adds exact GTK tooltip identity exclusion and bounded pre-assert diagnostics; actual extra-window identity in run23 remains unproven.",
+    "Run24 test-only stock policy fixture opens genuine native Tool Options dock before snapshots and requires native editor/model ancestry plus mapped/viewable/sensitive button; all399 C5 assertions and21 IDs retained, production unchanged from C5."
+  ],
+  "prior_rebased17_manifest_sha256": "2065b276b4a61ef3741683e6d6ce028d6d45113802ca06951c5bb64489b62527",
+  "source_delta_file_count": 22,
+  "prior_rebased18_manifest_sha256": "7d9dc182a3b148cd40e886ba7c438b41199a266928fff7c7b1c6ce87915167a8",
+  "source_delta_scope": "Bounded22 Brush popup/native linked-radius source/evidence payload; excludes separately sealed CI bundle, subsequent native/CI receipts and separately reviewed companion channel/choice lifecycle changes.",
+  "compiler_inputs_manifest_sha256": "e8315e6442397b872786a89e57d1225d17d73b24e883e46cd661cc3a9504d483",
+  "previous_rebased_static_validation": {
+    "scope": "Integrated source syntax/equality/registration only; no object/link/GUI/sanitizer acceptance. Prior normal Meson commands retarget source includes to current tree while retaining generated configuration.",
+    "syntax_translation_units_passed": 4,
+    "production_warning_records": 0,
+    "compact_test_warning_records": 542,
+    "syntax_report_sha256": "34d2a4aec9329659882bd7412ee792c2c83466b7988e590f2dbf59dead7eb838",
+    "source_contract_checks": 15,
+    "source_contract_report_sha256": "b9cfbd89e5b2989e8dad090c039083cc5e0904e5fb713c243f3c25e872b52cff",
+    "independent_source_reviewer": "/root/review_brush_popup_integration",
+    "source_review_result": "Root reported source/static ACK; no production or test changes after reviewed freeze.",
+    "runtime_claim": false,
+    "wbs_dependency_state_evidence": "PASS",
+    "wbs_log_sha256": "1c4b2c049610693d4cae3f93580ac8f43d77dff8406ae9af6a536728ca7b4ad0"
+  },
+  "current_static_validation": {
+    "syntax_translation_units_passed": 4,
+    "production_warning_records": 0,
+    "compact_test_warning_records": 556,
+    "syntax_report_sha256": "6e09bbd571d9b0378feb2f6d72b3028ea502e85d582e45f8d8e3d5dd53d7893b",
+    "accepted_base_test_overlay_with_original_transform_syntax": "PASS",
+    "baseline_syntax_report_sha256": "c0014700b14ab69ad99658a27212008900e31052c4b8bc57dc6dcf9bacb82e81",
+    "source_contract_report_sha256": "d402c4e4437d5198376b7981d88f3e7d26011fc0b922e5bf22dbfe45c3d39363",
+    "independent_source_reviewer": "/root/review_brush_popup_integration",
+    "source_review_result": "Substantive stock-only fixture exact999e9ea8 ACK; final e3c71187 changes only header clarification, final freeze ACK requested.",
+    "all_c5_assertions_retained": 399,
+    "current_assertions": 414,
+    "brush_case_ids_unchanged": 21,
+    "runtime_claim": false
+  },
+  "published_candidate_history": [
+    {
+      "commit": "b6eee4ea1f944010e8f009e040cdb4d7561b3e1e",
+      "workflow_run": 40202648847,
+      "workflow_number": 20,
+      "first_brush_attempt": true,
+      "result": "FAILED_NOT_ACCEPTED",
+      "current_repairs_present": false,
+      "evidence": "migration/tests/brush-thumbnail-native-popup/ci-attempts.json"
+    },
+    {
+      "commit": "0deda7a442c3f70dc66c746633c6a2011d09e983",
+      "workflow_run": 40207946997,
+      "workflow_number": 22,
+      "result": "FAILED_NOT_ACCEPTED",
+      "current_repairs_present": false,
+      "evidence": "migration/tests/brush-thumbnail-native-popup/ci-attempts.json",
+      "focused_result": "Both scales and sanitizer stopped at geometry-retarget-links after9 passes: raw size notify12 versus assumed1.",
+      "separate_positive_results": "Actual-entry and lower-controls bothscales PASS, all4 captures; allprior132 PASS. These results do not cover the current test oracle."
+    },
+    {
+      "commit": "f643820a556119fcb5d2fdd224c6bd3d75aa3600",
+      "workflow_run": 40211701797,
+      "workflow_number": 23,
+      "result": "FAILED_NOT_ACCEPTED",
+      "current_repairs_present": false,
+      "evidence": "migration/tests/brush-thumbnail-native-popup/ci-attempts.json",
+      "normal_focused_result": "Bothscales9 passes, native and popup raw size traces match12 values63, then final current-mask27 assertion fails.",
+      "sanitizer_focused_result": "actual-entry passes; no-save-escape reopen fails multiple-new-visible-window assertion, types absent from original logs. Companion child leaks tracked separately.",
+      "separate_positive_results": "Prior132, separate4 capture invocations and normal protocol12 passed on C4, not current model/fixture revision."
+    },
+    {
+      "commit": "da070df3717723e75f0757113c2da2768949d676",
+      "workflow_run": 40215992854,
+      "workflow_number": 24,
+      "result": "FAILED_NOT_ACCEPTED",
+      "current_repairs_present": false,
+      "evidence": "migration/tests/brush-thumbnail-native-popup/ci-attempts.json",
+      "normal_focused_result": "Both scales12 cases PASS, including geometry current-mask invariant, then stock-dock mapped precondition fails before stock popup open.",
+      "sanitizer_focused_result": "Nine cases PASS then aggregate540s timeout; explicit GtkTooltipWindow+TOOLTIP diagnostics observed and excluded, no Brush sanitizer error before termination; not a pass.",
+      "qualification": "This test-only revision has not run; companion host leaks/timeout investigation separately owned."
+    }
+  ],
+  "run20_repair_basis": {
+    "thumbnail_lookup": "Confirmed find(NULL,type) is not wildcard; property-bound thumbnail uses brush.",
+    "scale2_entry": "Observed origin -420 plus allocation321 gives negative logical anchor; fit real window before setup and verify actual pointer hit.",
+    "selector_title": "Observed (None) with selected A; raw IconView lacks ContainerEditor description sync. Scoped notify/name-changed title sync and title-triggered reentry assertions added.",
+    "fresh_placement": "Source-proven fitting477-wide form can flip left of540-wide monitor. Fresh Brush only clamps after old preferred/flip before map; retained/shared placement unchanged.",
+    "prior_perspective": "Source-supported floating GTK_WIN_POS_MOUSE occlusion hypothesis, not runtime-proven cause. Fit before tool/snapshot, physical pointer park before selection, strict hit and operation-dialog diagnostics.",
+    "sanitizer_config": "Root Meson now uses native executable independently of GIR; actual configure-only proof remains separately source-bound.",
+    "runtime_status": "Final repairs unrun; prior run20 results not relabeled."
+  },
+  "modified_prior_test_inputs": [
+    {
+      "path": "app/tests/test-painter-transform-popup.inc",
+      "prior_sha256": "947804310847f70ec0123c875971a936c1053db9df44d36f96dd3e64814fd649",
+      "sha256": "7dd3e38a17d5c552ab99b3811bddc3eb632da382696979863fc88ec6a14d4c37",
+      "reason": "Fixture-only monitor fitting before selection, neutral physical pointer, first-layout and strict actual-hit readiness/diagnostics.",
+      "original_case_registrations_and_assertions_preserved": true
+    }
+  ],
+  "prior_run20_source20_manifest_sha256": "a7488ccf0b1c2635ef14df52c3a60ff2192511c690a217e1ab472fdac91f9a44",
+  "previous_compiler_inputs_manifest_sha256": "e72494421d21976e91591d3a868bc1545756c567e1ff5266ed999a8920d61f83",
+  "previous_run20_static_validation": {
+    "syntax_translation_units_passed": 4,
+    "production_warning_records": 0,
+    "compact_test_warning_records": 554,
+    "syntax_report_sha256": "47930a6614a9a125d8e3e5e2057f3894614e45cf97e96bb0f4e3c9e57788ca20",
+    "accepted_base_test_overlay_with_original_transform_syntax": "PASS",
+    "baseline_syntax_report_sha256": "85eaf6fda6625ca3ecccbbfc36e597b55f1ce32a2c2d57432aa5458aa7a3b435",
+    "source_contract_checks": 9,
+    "source_contract_report_sha256": "9ba7bb1b863c356ff0c3597ecf53faf523d4c5618b52fe0806990dc783329352",
+    "independent_source_reviewer": "/root/review_brush_popup_integration",
+    "source_review_result": "Exact five compiler/build inputs ACK; lifetime, title reentry, fresh pre-map clamp, original assertions/IDs and accepted-baseline compatibility reviewed.",
+    "runtime_claim": false
+  },
+  "run22_repair_basis": {
+    "observed_failure": "Raw notify::brush-size12 versus assumed1 at geometry-retarget-links, bothscales and sanitizer.",
+    "source_explanation": "Native global brush-sharing fans linked resets through unconditional property assignments that can emit same-value notifications; source-supported, runtime differential control still pending.",
+    "scope": "Test-only geometry-retarget-links and other-link-flags; production unchanged.",
+    "native_control": "Exact native resource setters without popup, identical resource/tool/link/selection state restored before existing clicked-helper popup reopening; raw ordered values and cardinality compared, retarget measured separately.",
+    "strict_assertions": "Default global sharing enabled; exactly1 effective value transition and1 resource notify per edit, final canonical reset/geometry values, allother assertions/21IDs retained.",
+    "physical_input_qualification": "Existing physical-input and capture cases unchanged; differential fixtures do not add XTest coverage.",
+    "native_build": "Native003 required for final include; native002 remains prior-source evidence.",
+    "runtime_status": "Current include unrun; run22 original artifacts and source identities preserved; sanitizer leaks tracked separately."
+  },
+  "prior_run22_source20_manifest_sha256": "0d9c7aef978f5ec0b8e662c5d1a44939c2d1f104015310264d620ee507f52526",
+  "prior_run22_compiler_inputs_manifest_sha256": "3923a37e549cf6fc0ff073d318f7054be06fa1f484d23b13ddfd7d81cbf1bade",
+  "previous_run22_static_validation": {
+    "syntax_translation_units_passed": 4,
+    "production_warning_records": 0,
+    "compact_test_warning_records": 554,
+    "syntax_report_sha256": "254d824c89c6abbd7805dc3e84175b56a2f8387f60d039578d8784b3ad81e6a0",
+    "accepted_base_test_overlay_with_original_transform_syntax": "PASS",
+    "baseline_syntax_report_sha256": "a0d1857b68ddb0f896aaf0b943fec13171991976080f13ca04648b0373c7d384",
+    "source_contract_checks": 9,
+    "source_contract_report_sha256": "498992c13e34be55f52a2ecb60deadd5cb477851664abb0dad9d265cf13270c6",
+    "independent_source_reviewer": "/root/review_brush_popup_integration",
+    "source_review_result": "Exact final compiler1 manifest3923a37e and includea448caf7 independently ACKed; differential state restoration, raw trace/cardinality equality, effective transition/resource counts and lifetimes reviewed.",
+    "replaced_raw_tool_notify_assertions": [
+      "size_notify == 1",
+      "size_notify == 2",
+      "notifications == 1 in other-link-flags"
+    ],
+    "all_other_original_assertions_retained": true,
+    "runtime_claim": false
+  },
+  "run23_repair_basis": {
+    "model_bug": "Generated radius notify occurs before dirty replaces mask; identity transform-size reads old mask. Exact native-control equality does not waive final current-mask invariant.",
+    "model_fix": "Native PaintOptions caches completed radius and pending selected-frozen thaw; AFTERdirty current-brush/frozen guards precede cache update, then GUI/link-gated size setter. Immediate selection reset and other link callbacks retained; no popup forced write.",
+    "headless_regression": "Existing7-ID painter-brush-geometry defaults case expanded for native/legacy direct/g_object_set/frozen batching/linkoff/nonradius/stale brush/retarget/nested edits/reentrant freeze/disposal. No GTK/GDK initialization.",
+    "old_model_red_receipt_sha256": "24e7d30779cdcd03641ace6f56b8776992aa2d321a07979d093d854cf3489d34",
+    "red_scope": "Exact final83db test against olda434 model fails intended size63 versus regenerated27 before reviewed64f model adoption.",
+    "green_status": "PENDING_NATIVE005",
+    "tooltip_fixture": "Only exact GtkTooltipWindow type plus TOOLTIP hint ignored; two-pass bounded diagnostics precede unchanged fatal non-tooltip uniqueness. No timeout/input/tooltip visibility changes.",
+    "tooltip_cause": "UNPROVEN: original run23 logs have no candidate types/hints.",
+    "source_diagnosis_sha256": "b0e68bebc061bb9d7321431bf32544e9e0fbeae000df7aee43032ce1f9919fa3",
+    "runtime_status": "Current model/fixture revision unrun; old source-bound failed run and successful sub-results not relabeled."
+  },
+  "modified_adjacent_test_inputs": [
+    {
+      "path": "app/tests/test-painter-brush-geometry.cpp",
+      "prior_sha256": "b04eeb2a43629ff1ff675f8c153b2489976670bd86dd9fe9bcbd549bca5b12ce",
+      "sha256": "83db89f31f90cd6aff12acc9a34ba9a3b71523a5024977bb954453d3fa8404e3",
+      "reason": "Expand existing defaults assertions for completed native/legacy linked-radius geometry; all7 IDs and original assertions retained.",
+      "registered_case_count_unchanged": 7
+    }
+  ],
+  "prior_run23_source22_manifest_sha256": "baa019e54755a4f63b5f1f94de82bf2f781bbb5df2aeece298c319932ef7d3f7",
+  "prior_run23_compiler_inputs_manifest_sha256": "e73c4a11961028aae18b8c61df3e99f90c9369b5112e273db0a2d99ee0f64fbd",
+  "previous_run23_static_validation": {
+    "syntax_translation_units_passed": 6,
+    "production_warning_records": 0,
+    "compact_test_warning_records": 554,
+    "syntax_report_sha256": "46cff9f2bcbbd8ec4b418d4cff9e39b3a495377532fffdf87735eadd71c9c4f8",
+    "model_syntax_log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "model_test_syntax_log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "accepted_base_test_overlay_with_original_transform_syntax": "PASS",
+    "baseline_syntax_report_sha256": "a931edb421a0ff10e9eda8ce7da2f05c52c70df74ff8513086b35eb3e9ec02b3",
+    "source_contract_checks": 9,
+    "source_contract_report_sha256": "607ab52b8687b89e42e871df0dff513a8b433f3c20c6f4eafe7646f7a0bf43ed",
+    "independent_source_reviewer": "/root/review_brush_popup_integration",
+    "source_review_result": "Exact Brush9cb/model64f/test83db independently ACKed; intended old-model RED independently verified before adoption.",
+    "all_c4_original_assertions_retained": true,
+    "brush_case_ids_unchanged": 21,
+    "headless_geometry_case_ids_unchanged": 7,
+    "local_gui_claim": false,
+    "green_and_final_runtime_claim": false
+  },
+  "run24_repair_basis": {
+    "source_diagnosis_sha256": "7c7b0dd7a1908ffab9ba7c836933d05de8c359f828a624d93c704af78e11a74b",
+    "observed_failure": "Stock dock button unmapped at unchanged precondition after12 normal passes; hidden ancestor identity not logged.",
+    "source_basis": "Native Tool Options manager intentionally creates GUI without opening dockable; strategy/factory Open is the missing test precondition.",
+    "scope": "Only stock-dock-staging-policy opens native dock before resource/options/parent snapshots; no production change, no artificial parenting/show/page selection, no assertion/policy/timeout waiver.",
+    "assertions": "All399 C5 assertions and21 IDs retained; stock policy body unchanged except fixture invocation;15 extra ancestry/mapping/model assertions.",
+    "prior_native005_receipt_sha256": "1081ac9c99044859af1f13add6d3eddd72cd333bc6aad96bcc47c2343d20235d",
+    "current_native006": "PASS_NORMAL_CLOSURE_HEADERS_AND_CORE_LIBRARY_CONTRACTS_NO_GUI_OR_SANITIZER_ACCEPTANCE",
+    "current_runtime": "UNRUN",
+    "current_native006_receipt_sha256": "b85d1e29ef1e22d52d978d162ab5ab49c9eacab0044684980ebb40bf8aebf0f3"
+  },
+  "compiler_inputs_manifest_scope": "C8 compact exact includes; ordinary compile/link with reused app archives. Color new-target recipes/proofs separately preserved."
+}

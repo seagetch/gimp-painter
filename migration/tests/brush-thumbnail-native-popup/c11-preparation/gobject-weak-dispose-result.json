@@ -1,0 +1,11 @@
+{
+  "scope": "system GObject semantics only; no GTK canvas execution",
+  "after_explicit_dispose_with_owning_reference": [
+    "weak-notify"
+  ],
+  "after_final_unref": [
+    "weak-notify",
+    "owned-data-release"
+  ],
+  "passed": true
+}

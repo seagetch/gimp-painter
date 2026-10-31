@@ -1,0 +1,45 @@
+{
+  "scope": "Actual Meson1.7.0 tiny C fixture sanitizer defaults; GIMP-required environment added synthetically only. Not GIMP native acceptance or run45 root cause. Actual readelf failure diagnostic exercised.",
+  "meson_version": "1.7.0",
+  "helper_sha256": "d1754e9c0f2fdd2fc8b95fa88cdd0dcbcd616d0f5f11d759681b177e57b96d14",
+  "raw_fixture_log_sha256": "8e428136eeba827306320ac1d5ecd4b94770131c5455deda4b917c1610431e5d",
+  "raw_fixture_environment_exported": false,
+  "cases": [
+    {
+      "name": "strict",
+      "result": "OK",
+      "returncode": 0,
+      "sanitizer_fields": {
+        "ASAN_OPTIONS": "halt_on_error=1:detect_leaks=1:fast_unwind_on_malloc=0:malloc_context_size=40:log_exe_name=1",
+        "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1",
+        "MSAN_OPTIONS": "halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1"
+      },
+      "helper_runtime_settings_passed": true
+    },
+    {
+      "name": "normal",
+      "result": "OK",
+      "returncode": 0,
+      "sanitizer_fields": {
+        "ASAN_OPTIONS": "halt_on_error=1:abort_on_error=1:print_summary=1",
+        "UBSAN_OPTIONS": "halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1",
+        "MSAN_OPTIONS": "halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1"
+      },
+      "helper_runtime_settings_passed": true
+    }
+  ],
+  "actual_readelf_failure": {
+    "schema": "canvas-mask-inspection-diagnostic-v1",
+    "observational_only": true,
+    "acceptance_eligible": false,
+    "stage": "object-symbols",
+    "returncode": 1,
+    "stdout_bytes": 0,
+    "stderr_bytes": 83,
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_sha256": "70a2e4ffb17be5fc4dbd5ffbeea5298545327db0e36e8c2a1d0b1966cc68abff",
+    "categories": [
+      "readelf-error"
+    ]
+  }
+}

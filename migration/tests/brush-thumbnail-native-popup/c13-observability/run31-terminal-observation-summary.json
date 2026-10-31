@@ -1,0 +1,1824 @@
+{
+  "run_id": 40361317689,
+  "commit": "97ed2cca019bc8542a453ebcccd433977c6834e2",
+  "run_conclusion": "failure",
+  "terminal_updated_at": "2026-10-26T17:11:07Z",
+  "jobs": [
+    {
+      "id": 121707217470,
+      "name": "brush-positive",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 121707217702,
+      "name": "candidate",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 121707217792,
+      "name": "baseline-carrier-red",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 121707217804,
+      "name": "brush-sanitizer",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 121707217816,
+      "name": "dockbook-controlled-order-3d6f",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 121707217837,
+      "name": "babl-owned-doc-proof",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 121707217861,
+      "name": "brush-baseline-red",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "verified_artifacts": [
+    {
+      "id": 12670870920,
+      "name": "painter-brush-ui-sanitizer-97ed2cca019bc8542a453ebcccd433977c6834e2-1",
+      "file": "12670870920.zip",
+      "sha256": "1f531a2446feaa37a39696b11808a4c3f27e8cb1875f4bb830120c5d27576e50",
+      "size": 10430836
+    },
+    {
+      "id": 12669786728,
+      "name": "painter-native-ui-candidate-97ed2cca019bc8542a453ebcccd433977c6834e2-1",
+      "file": "12669786728.zip",
+      "sha256": "0e842acd45aa5edc2efa744d9b55d61bb8065cc0ede05ab3615f4b1a45a58cd5",
+      "size": 2207599
+    },
+    {
+      "id": 12669310568,
+      "name": "painter-brush-ui-baseline-red-97ed2cca019bc8542a453ebcccd433977c6834e2-1",
+      "file": "12669310568.zip",
+      "sha256": "93dc265d188a8bc64821d5114831b0ecd7dffa92070233569353fabd9ed64207",
+      "size": 61528
+    },
+    {
+      "id": 12669076220,
+      "name": "painter-native-ui-baseline-carrier-red-97ed2cca019bc8542a453ebcccd433977c6834e2-1",
+      "file": "12669076220.zip",
+      "sha256": "098c2265a625f8c73dd9693afcb396b71f81c6bde249a2906920932fc71379c8",
+      "size": 606959
+    },
+    {
+      "id": 12668721015,
+      "name": "babl-owned-doc-proof-97ed2cca019bc8542a453ebcccd433977c6834e2",
+      "file": "12668721015.zip",
+      "sha256": "565717542d45ca12caac537e9c32d1a67415831da023b8e3fa3defacaab3002b",
+      "size": 25013585
+    },
+    {
+      "id": 12668213290,
+      "name": "painter-brush-ui-positive-97ed2cca019bc8542a453ebcccd433977c6834e2-1",
+      "file": "12668213290.zip",
+      "sha256": "c0e2b7b62591a682e8d1f03126086780c8c116eb63c1c4340b572466c3e73ec5",
+      "size": 688504
+    },
+    {
+      "id": 12668113063,
+      "name": "painter-native-ui-dockbook-controlled-order-3d6f-97ed2cca019bc8542a453ebcccd433977c6834e2-1",
+      "file": "12668113063.zip",
+      "sha256": "e41387c2906fbc5d8dc0ace776b6805ef2c5bd840d07c33b5dd32da654e90b11",
+      "size": 211090
+    }
+  ],
+  "normal_brush": {
+    "scale1": 21,
+    "scale2": 21,
+    "passed": true
+  },
+  "common": {
+    "per_scale": 58,
+    "paint_gates_per_scale": 6,
+    "adjacent": 360,
+    "passed": true
+  },
+  "sanitizer_cases": [
+    {
+      "file": "brush-sanitizer-case01-results.json",
+      "returncode": 1,
+      "duration": 51.515196323394775,
+      "assertion_passes": 1,
+      "leak_summary": [
+        "SUMMARY: AddressSanitizer: 200018 byte(s) leaked in 3559 allocation(s)."
+      ],
+      "geometry_observations": [
+        "# Geometry wait=1 caller=brush_popup_open:425 elapsed-us=78398 iterations=39 callbacks=4 stable=3 changes=0 longest-dispatch-us=15032 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=2 caller=transform_popup_reveal_button:339 elapsed-us=57336 iterations=53 callbacks=4 stable=3 changes=0 longest-dispatch-us=184 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=3 caller=transform_popup_reveal_button:351 elapsed-us=267219 iterations=28 callbacks=4 stable=3 changes=0 longest-dispatch-us=187261 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=4 caller=brush_popup_open:438 elapsed-us=73806 iterations=55 callbacks=4 stable=3 changes=0 longest-dispatch-us=10708 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=5 caller=transform_popup_click_center:161 elapsed-us=82273 iterations=16 callbacks=4 stable=3 changes=0 longest-dispatch-us=19601 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=6 caller=transform_popup_click_center:161 elapsed-us=149059 iterations=13 callbacks=4 stable=3 changes=0 longest-dispatch-us=55483 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=7 caller=brush_popup_open:425 elapsed-us=62967 iterations=55 callbacks=4 stable=3 changes=0 longest-dispatch-us=3643 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=8 caller=transform_popup_reveal_button:339 elapsed-us=66807 iterations=62 callbacks=4 stable=3 changes=0 longest-dispatch-us=153 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=9 caller=transform_popup_reveal_button:351 elapsed-us=63360 iterations=49 callbacks=4 stable=3 changes=0 longest-dispatch-us=10617 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1"
+      ]
+    },
+    {
+      "file": "brush-sanitizer-case02-results.json",
+      "returncode": 1,
+      "duration": 48.82933521270752,
+      "assertion_passes": 1,
+      "leak_summary": [
+        "SUMMARY: AddressSanitizer: 199630 byte(s) leaked in 3553 allocation(s)."
+      ],
+      "geometry_observations": [
+        "# Geometry wait=1 caller=brush_popup_open:425 elapsed-us=78093 iterations=40 callbacks=4 stable=3 changes=0 longest-dispatch-us=14685 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=2 caller=transform_popup_reveal_button:339 elapsed-us=58363 iterations=54 callbacks=4 stable=3 changes=0 longest-dispatch-us=174 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=3 caller=transform_popup_reveal_button:351 elapsed-us=266619 iterations=32 callbacks=4 stable=3 changes=0 longest-dispatch-us=181901 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=4 caller=brush_popup_open:425 elapsed-us=61021 iterations=46 callbacks=4 stable=3 changes=0 longest-dispatch-us=11251 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=5 caller=transform_popup_reveal_button:339 elapsed-us=66103 iterations=61 callbacks=4 stable=3 changes=0 longest-dispatch-us=295 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=6 caller=transform_popup_reveal_button:351 elapsed-us=60969 iterations=47 callbacks=4 stable=3 changes=0 longest-dispatch-us=10110 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1"
+      ]
+    },
+    {
+      "file": "brush-sanitizer-case03-results.json",
+      "returncode": 1,
+      "duration": 49.340771436691284,
+      "assertion_passes": 1,
+      "leak_summary": [
+        "SUMMARY: AddressSanitizer: 199598 byte(s) leaked in 3552 allocation(s)."
+      ],
+      "geometry_observations": [
+        "# Geometry wait=1 caller=brush_popup_open:425 elapsed-us=86254 iterations=38 callbacks=4 stable=3 changes=0 longest-dispatch-us=17831 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=2 caller=transform_popup_reveal_button:339 elapsed-us=52568 iterations=48 callbacks=4 stable=3 changes=0 longest-dispatch-us=373 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=3 caller=transform_popup_reveal_button:351 elapsed-us=282714 iterations=31 callbacks=4 stable=3 changes=0 longest-dispatch-us=196249 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=4 caller=brush_popup_open:425 elapsed-us=276685 iterations=28 callbacks=4 stable=3 changes=0 longest-dispatch-us=195402 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=5 caller=transform_popup_reveal_button:339 elapsed-us=66116 iterations=61 callbacks=4 stable=3 changes=0 longest-dispatch-us=313 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=6 caller=transform_popup_reveal_button:351 elapsed-us=59865 iterations=47 callbacks=4 stable=3 changes=0 longest-dispatch-us=8934 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1"
+      ]
+    },
+    {
+      "file": "brush-sanitizer-case04-results.json",
+      "returncode": 1,
+      "duration": 49.30404829978943,
+      "assertion_passes": 1,
+      "leak_summary": [
+        "SUMMARY: AddressSanitizer: 199598 byte(s) leaked in 3552 allocation(s)."
+      ],
+      "geometry_observations": [
+        "# Geometry wait=1 caller=brush_popup_open:425 elapsed-us=79092 iterations=39 callbacks=4 stable=3 changes=0 longest-dispatch-us=15466 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=2 caller=transform_popup_reveal_button:339 elapsed-us=56419 iterations=52 callbacks=4 stable=3 changes=0 longest-dispatch-us=225 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=3 caller=transform_popup_reveal_button:351 elapsed-us=281924 iterations=31 callbacks=4 stable=3 changes=0 longest-dispatch-us=195016 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=4 caller=brush_popup_open:425 elapsed-us=295334 iterations=31 callbacks=4 stable=3 changes=0 longest-dispatch-us=208661 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=5 caller=transform_popup_reveal_button:339 elapsed-us=65318 iterations=60 callbacks=4 stable=3 changes=0 longest-dispatch-us=325 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=6 caller=transform_popup_reveal_button:351 elapsed-us=60077 iterations=47 callbacks=4 stable=3 changes=0 longest-dispatch-us=8949 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1"
+      ]
+    },
+    {
+      "file": "brush-sanitizer-case05-results.json",
+      "returncode": 1,
+      "duration": 48.624661684036255,
+      "assertion_passes": 1,
+      "leak_summary": [
+        "SUMMARY: AddressSanitizer: 199518 byte(s) leaked in 3551 allocation(s)."
+      ],
+      "geometry_observations": [
+        "# Geometry wait=1 caller=brush_popup_open:425 elapsed-us=78748 iterations=40 callbacks=4 stable=3 changes=0 longest-dispatch-us=14916 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=2 caller=transform_popup_reveal_button:339 elapsed-us=57267 iterations=53 callbacks=4 stable=3 changes=0 longest-dispatch-us=178 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=3 caller=transform_popup_reveal_button:351 elapsed-us=265758 iterations=33 callbacks=4 stable=3 changes=0 longest-dispatch-us=181091 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=4 caller=brush_popup_open:425 elapsed-us=269174 iterations=27 callbacks=4 stable=3 changes=0 longest-dispatch-us=190367 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=5 caller=transform_popup_reveal_button:339 elapsed-us=52112 iterations=48 callbacks=4 stable=3 changes=0 longest-dispatch-us=197 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=6 caller=transform_popup_reveal_button:351 elapsed-us=59427 iterations=47 callbacks=4 stable=3 changes=0 longest-dispatch-us=8667 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1"
+      ]
+    },
+    {
+      "file": "brush-sanitizer-case06-results.json",
+      "returncode": 1,
+      "duration": 47.7008216381073,
+      "assertion_passes": 1,
+      "leak_summary": [
+        "SUMMARY: AddressSanitizer: 199518 byte(s) leaked in 3551 allocation(s)."
+      ],
+      "geometry_observations": [
+        "# Geometry wait=1 caller=brush_popup_open:425 elapsed-us=78731 iterations=38 callbacks=4 stable=3 changes=0 longest-dispatch-us=15704 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=2 caller=transform_popup_reveal_button:339 elapsed-us=56393 iterations=52 callbacks=4 stable=3 changes=0 longest-dispatch-us=231 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=3 caller=transform_popup_reveal_button:351 elapsed-us=267083 iterations=27 callbacks=4 stable=3 changes=0 longest-dispatch-us=186192 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=4 caller=brush_popup_open:425 elapsed-us=279424 iterations=35 callbacks=4 stable=3 changes=0 longest-dispatch-us=192782 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=5 caller=transform_popup_reveal_button:339 elapsed-us=56262 iterations=52 callbacks=4 stable=3 changes=0 longest-dispatch-us=190 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=6 caller=transform_popup_reveal_button:351 elapsed-us=59969 iterations=47 callbacks=4 stable=3 changes=0 longest-dispatch-us=9003 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1"
+      ]
+    },
+    {
+      "file": "brush-sanitizer-case07-results.json",
+      "returncode": 1,
+      "duration": 46.282883167266846,
+      "assertion_passes": 1,
+      "leak_summary": [
+        "SUMMARY: AddressSanitizer: 199518 byte(s) leaked in 3551 allocation(s)."
+      ],
+      "geometry_observations": [
+        "# Geometry wait=1 caller=brush_popup_open:425 elapsed-us=61029 iterations=27 callbacks=4 stable=3 changes=0 longest-dispatch-us=13200 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=2 caller=transform_popup_reveal_button:339 elapsed-us=58269 iterations=54 callbacks=4 stable=3 changes=0 longest-dispatch-us=162 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=3 caller=transform_popup_reveal_button:351 elapsed-us=249717 iterations=26 callbacks=4 stable=3 changes=0 longest-dispatch-us=175613 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=4 caller=brush_popup_open:425 elapsed-us=250489 iterations=27 callbacks=4 stable=3 changes=0 longest-dispatch-us=177100 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=5 caller=transform_popup_reveal_button:339 elapsed-us=51905 iterations=48 callbacks=4 stable=3 changes=0 longest-dispatch-us=183 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=6 caller=transform_popup_reveal_button:351 elapsed-us=61066 iterations=49 callbacks=4 stable=3 changes=0 longest-dispatch-us=8164 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1"
+      ]
+    },
+    {
+      "file": "brush-sanitizer-case08-results.json",
+      "returncode": 1,
+      "duration": 46.30362057685852,
+      "assertion_passes": 1,
+      "leak_summary": [
+        "SUMMARY: AddressSanitizer: 199598 byte(s) leaked in 3552 allocation(s)."
+      ],
+      "geometry_observations": [
+        "# Geometry wait=1 caller=brush_popup_open:425 elapsed-us=78256 iterations=39 callbacks=4 stable=3 changes=0 longest-dispatch-us=15349 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=2 caller=transform_popup_reveal_button:339 elapsed-us=57330 iterations=53 callbacks=4 stable=3 changes=0 longest-dispatch-us=196 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=3 caller=transform_popup_reveal_button:351 elapsed-us=283390 iterations=26 callbacks=4 stable=3 changes=0 longest-dispatch-us=204484 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=4 caller=brush_popup_open:425 elapsed-us=282361 iterations=26 callbacks=4 stable=3 changes=0 longest-dispatch-us=203794 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=5 caller=transform_popup_reveal_button:339 elapsed-us=66897 iterations=62 callbacks=4 stable=3 changes=0 longest-dispatch-us=210 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=6 caller=transform_popup_reveal_button:351 elapsed-us=58449 iterations=45 callbacks=4 stable=3 changes=0 longest-dispatch-us=9322 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1"
+      ]
+    },
+    {
+      "file": "brush-sanitizer-case09-results.json",
+      "returncode": 1,
+      "duration": 53.921815395355225,
+      "assertion_passes": 1,
+      "leak_summary": [
+        "SUMMARY: AddressSanitizer: 199510 byte(s) leaked in 3553 allocation(s)."
+      ],
+      "geometry_observations": [
+        "# Geometry wait=1 caller=brush_popup_open:425 elapsed-us=62595 iterations=15 callbacks=4 stable=3 changes=0 longest-dispatch-us=14338 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=2 caller=transform_popup_reveal_button:339 elapsed-us=57166 iterations=53 callbacks=4 stable=3 changes=0 longest-dispatch-us=166 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=3 caller=transform_popup_reveal_button:351 elapsed-us=265332 iterations=34 callbacks=4 stable=3 changes=0 longest-dispatch-us=179300 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1"
+      ]
+    },
+    {
+      "file": "brush-sanitizer-case10-results.json",
+      "returncode": 1,
+      "duration": 52.01874899864197,
+      "assertion_passes": 1,
+      "leak_summary": [
+        "SUMMARY: AddressSanitizer: 200302 byte(s) leaked in 3563 allocation(s)."
+      ],
+      "geometry_observations": [
+        "# Geometry wait=1 caller=brush_popup_open:425 elapsed-us=78895 iterations=28 callbacks=4 stable=3 changes=0 longest-dispatch-us=15581 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=2 caller=transform_popup_reveal_button:339 elapsed-us=56288 iterations=52 callbacks=4 stable=3 changes=0 longest-dispatch-us=182 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=3 caller=transform_popup_reveal_button:351 elapsed-us=267387 iterations=26 callbacks=4 stable=3 changes=0 longest-dispatch-us=188080 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=4 caller=brush_popup_open:425 elapsed-us=272789 iterations=17 callbacks=4 stable=3 changes=0 longest-dispatch-us=205010 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=5 caller=transform_popup_reveal_button:339 elapsed-us=66881 iterations=62 callbacks=4 stable=3 changes=0 longest-dispatch-us=164 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=6 caller=transform_popup_reveal_button:351 elapsed-us=61687 iterations=49 callbacks=4 stable=3 changes=0 longest-dispatch-us=8721 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1"
+      ]
+    },
+    {
+      "file": "brush-sanitizer-case11-results.json",
+      "returncode": 1,
+      "duration": 56.33843684196472,
+      "assertion_passes": 1,
+      "leak_summary": [
+        "SUMMARY: AddressSanitizer: 198926 byte(s) leaked in 3541 allocation(s)."
+      ],
+      "geometry_observations": [
+        "# Geometry wait=1 caller=brush_popup_open:425 elapsed-us=78751 iterations=40 callbacks=4 stable=3 changes=0 longest-dispatch-us=14565 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=2 caller=transform_popup_reveal_button:339 elapsed-us=56405 iterations=52 callbacks=4 stable=3 changes=0 longest-dispatch-us=210 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=3 caller=transform_popup_reveal_button:351 elapsed-us=266389 iterations=35 callbacks=4 stable=3 changes=0 longest-dispatch-us=179469 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=4 caller=brush_popup_open:425 elapsed-us=255304 iterations=19 callbacks=4 stable=3 changes=0 longest-dispatch-us=186454 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=5 caller=transform_popup_reveal_button:339 elapsed-us=67059 iterations=62 callbacks=4 stable=3 changes=0 longest-dispatch-us=246 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=6 caller=transform_popup_reveal_button:351 elapsed-us=59185 iterations=46 callbacks=4 stable=3 changes=0 longest-dispatch-us=9202 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=7 caller=brush_popup_open:425 elapsed-us=262758 iterations=22 callbacks=4 stable=3 changes=0 longest-dispatch-us=189677 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=8 caller=transform_popup_reveal_button:339 elapsed-us=67238 iterations=62 callbacks=4 stable=3 changes=0 longest-dispatch-us=252 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=9 caller=transform_popup_reveal_button:351 elapsed-us=59678 iterations=46 callbacks=4 stable=3 changes=0 longest-dispatch-us=9868 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=10 caller=brush_popup_open:425 elapsed-us=258342 iterations=15 callbacks=4 stable=3 changes=0 longest-dispatch-us=192576 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=11 caller=transform_popup_reveal_button:339 elapsed-us=64899 iterations=60 callbacks=4 stable=3 changes=0 longest-dispatch-us=203 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=12 caller=transform_popup_reveal_button:351 elapsed-us=60318 iterations=47 callbacks=4 stable=3 changes=0 longest-dispatch-us=9364 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=13 caller=brush_popup_open:425 elapsed-us=262549 iterations=29 callbacks=4 stable=3 changes=0 longest-dispatch-us=183032 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=14 caller=transform_popup_reveal_button:339 elapsed-us=66946 iterations=62 callbacks=4 stable=3 changes=0 longest-dispatch-us=209 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=15 caller=transform_popup_reveal_button:351 elapsed-us=60237 iterations=47 callbacks=4 stable=3 changes=0 longest-dispatch-us=9268 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1"
+      ]
+    },
+    {
+      "file": "brush-sanitizer-case12-results.json",
+      "returncode": 1,
+      "duration": 48.379268646240234,
+      "assertion_passes": 1,
+      "leak_summary": [
+        "SUMMARY: AddressSanitizer: 198926 byte(s) leaked in 3541 allocation(s)."
+      ],
+      "geometry_observations": [
+        "# Geometry wait=1 caller=brush_popup_open:425 elapsed-us=79053 iterations=20 callbacks=4 stable=3 changes=0 longest-dispatch-us=19357 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=2 caller=transform_popup_reveal_button:339 elapsed-us=56592 iterations=50 callbacks=4 stable=3 changes=0 longest-dispatch-us=449 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=3 caller=transform_popup_reveal_button:351 elapsed-us=349213 iterations=24 callbacks=4 stable=3 changes=0 longest-dispatch-us=246714 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1"
+      ]
+    },
+    {
+      "file": "brush-sanitizer-case13-results.json",
+      "returncode": 1,
+      "duration": 51.75561237335205,
+      "assertion_passes": 1,
+      "leak_summary": [
+        "SUMMARY: AddressSanitizer: 199814 byte(s) leaked in 3556 allocation(s)."
+      ],
+      "geometry_observations": [
+        "# Geometry wait=1 caller=brush_popup_open:425 elapsed-us=90779 iterations=31 callbacks=4 stable=3 changes=0 longest-dispatch-us=28403 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=2 caller=transform_popup_reveal_button:339 elapsed-us=67095 iterations=62 callbacks=4 stable=3 changes=0 longest-dispatch-us=273 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=3 caller=transform_popup_reveal_button:351 elapsed-us=249343 iterations=34 callbacks=4 stable=3 changes=0 longest-dispatch-us=164682 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1"
+      ]
+    },
+    {
+      "file": "brush-sanitizer-case14-results.json",
+      "returncode": -6,
+      "duration": 30.166706323623657,
+      "assertion_passes": 0,
+      "leak_summary": [],
+      "geometry_observations": [
+        "# Geometry wait=1 caller=brush_popup_open:425 elapsed-us=6825691 iterations=3 callbacks=1 stable=0 changes=0 longest-dispatch-us=6822095 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=1 frame=1 elapsed-us=6824542 stable=0 origin=0/0 allocation=321/0 44x34",
+        "# Geometry timing wait=1 probe=toplevel-draw hooked=1 entries=1 exits=1 unmatched=0 orphan-exits=0 total-us=2071 longest-us=2071",
+        "# Geometry timing wait=1 probe=target-view-draw hooked=1 entries=1 exits=1 unmatched=0 orphan-exits=0 total-us=117 longest-us=117",
+        "# Geometry timing wait=1 probe=frame-update hooked=1 entries=1 exits=1 unmatched=0 orphan-exits=0 total-us=1 longest-us=1",
+        "# Geometry timing wait=1 probe=frame-layout hooked=1 entries=0 exits=0 unmatched=0 orphan-exits=0 total-us=0 longest-us=0",
+        "# Geometry timing wait=1 probe=frame-paint hooked=1 entries=1 exits=1 unmatched=0 orphan-exits=0 total-us=2431 longest-us=2431",
+        "# Geometry timing wait=1 probe=frame-update event=enter elapsed-us=6821890",
+        "# Geometry timing wait=1 probe=frame-update event=exit elapsed-us=6821891",
+        "# Geometry timing wait=1 probe=frame-paint event=enter elapsed-us=6821892",
+        "# Geometry timing wait=1 probe=toplevel-draw event=enter elapsed-us=6822045",
+        "# Geometry timing wait=1 probe=target-view-draw event=enter elapsed-us=6822290",
+        "# Geometry timing wait=1 probe=target-view-draw event=exit elapsed-us=6822407",
+        "# Geometry timing wait=1 probe=toplevel-draw event=exit elapsed-us=6824116",
+        "# Geometry timing wait=1 probe=frame-paint event=exit elapsed-us=6824323"
+      ]
+    },
+    {
+      "file": "brush-sanitizer-case15-results.json",
+      "returncode": 1,
+      "duration": 50.85300350189209,
+      "assertion_passes": 1,
+      "leak_summary": [
+        "SUMMARY: AddressSanitizer: 200598 byte(s) leaked in 3568 allocation(s)."
+      ],
+      "geometry_observations": [
+        "# Geometry wait=1 caller=brush_popup_open:425 elapsed-us=78970 iterations=38 callbacks=4 stable=3 changes=0 longest-dispatch-us=16031 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=2 caller=transform_popup_reveal_button:339 elapsed-us=56362 iterations=52 callbacks=4 stable=3 changes=0 longest-dispatch-us=196 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=3 caller=transform_popup_reveal_button:351 elapsed-us=283063 iterations=36 callbacks=4 stable=3 changes=0 longest-dispatch-us=191674 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1"
+      ]
+    },
+    {
+      "file": "brush-sanitizer-case16-results.json",
+      "returncode": 1,
+      "duration": 71.67139482498169,
+      "assertion_passes": 1,
+      "leak_summary": [
+        "SUMMARY: AddressSanitizer: 201550 byte(s) leaked in 3589 allocation(s)."
+      ],
+      "geometry_observations": [
+        "# Geometry wait=1 caller=brush_popup_open:425 elapsed-us=78351 iterations=39 callbacks=4 stable=3 changes=0 longest-dispatch-us=15046 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=2 caller=transform_popup_reveal_button:339 elapsed-us=57467 iterations=53 callbacks=4 stable=3 changes=0 longest-dispatch-us=208 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=3 caller=transform_popup_reveal_button:351 elapsed-us=266949 iterations=30 callbacks=4 stable=3 changes=0 longest-dispatch-us=184319 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=4 caller=brush_popup_open:425 elapsed-us=73969 iterations=24 callbacks=4 stable=3 changes=0 longest-dispatch-us=12633 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=5 caller=transform_popup_reveal_button:339 elapsed-us=92517 iterations=30 callbacks=4 stable=3 changes=0 longest-dispatch-us=14418 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=6 caller=transform_popup_reveal_button:351 elapsed-us=58940 iterations=20 callbacks=4 stable=3 changes=0 longest-dispatch-us=9835 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=7 caller=brush_popup_open:425 elapsed-us=301335 iterations=27 callbacks=4 stable=3 changes=0 longest-dispatch-us=220466 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=8 caller=transform_popup_reveal_button:339 elapsed-us=51907 iterations=47 callbacks=4 stable=3 changes=0 longest-dispatch-us=634 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=9 caller=transform_popup_reveal_button:351 elapsed-us=59741 iterations=47 callbacks=4 stable=3 changes=0 longest-dispatch-us=8987 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=10 caller=brush_popup_open:425 elapsed-us=52021 iterations=48 callbacks=4 stable=3 changes=0 longest-dispatch-us=201 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=11 caller=transform_popup_reveal_button:339 elapsed-us=66052 iterations=61 callbacks=4 stable=3 changes=0 longest-dispatch-us=246 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=12 caller=transform_popup_reveal_button:351 elapsed-us=64600 iterations=51 callbacks=4 stable=3 changes=0 longest-dispatch-us=9554 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=13 caller=brush_popup_open:425 elapsed-us=52050 iterations=48 callbacks=4 stable=3 changes=0 longest-dispatch-us=202 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=14 caller=transform_popup_reveal_button:339 elapsed-us=66908 iterations=62 callbacks=4 stable=3 changes=0 longest-dispatch-us=198 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=15 caller=transform_popup_reveal_button:351 elapsed-us=64680 iterations=51 callbacks=4 stable=3 changes=0 longest-dispatch-us=9706 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=16 caller=brush_popup_open:425 elapsed-us=65969 iterations=61 callbacks=4 stable=3 changes=0 longest-dispatch-us=228 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=17 caller=transform_popup_reveal_button:339 elapsed-us=67037 iterations=62 callbacks=4 stable=3 changes=0 longest-dispatch-us=239 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=18 caller=transform_popup_reveal_button:351 elapsed-us=63544 iterations=50 callbacks=4 stable=3 changes=0 longest-dispatch-us=9560 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=19 caller=brush_popup_open:425 elapsed-us=51966 iterations=48 callbacks=4 stable=3 changes=0 longest-dispatch-us=187 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=20 caller=transform_popup_reveal_button:339 elapsed-us=67954 iterations=63 callbacks=4 stable=3 changes=0 longest-dispatch-us=176 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=21 caller=transform_popup_reveal_button:351 elapsed-us=63334 iterations=50 callbacks=4 stable=3 changes=0 longest-dispatch-us=9440 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=22 caller=brush_popup_open:425 elapsed-us=51326 iterations=47 callbacks=4 stable=3 changes=0 longest-dispatch-us=268 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=23 caller=transform_popup_reveal_button:339 elapsed-us=68049 iterations=63 callbacks=4 stable=3 changes=0 longest-dispatch-us=166 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=24 caller=transform_popup_reveal_button:351 elapsed-us=62805 iterations=50 callbacks=4 stable=3 changes=0 longest-dispatch-us=8941 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=25 caller=brush_popup_open:425 elapsed-us=51953 iterations=48 callbacks=4 stable=3 changes=0 longest-dispatch-us=176 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=26 caller=transform_popup_reveal_button:339 elapsed-us=67894 iterations=63 callbacks=4 stable=3 changes=0 longest-dispatch-us=161 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=27 caller=transform_popup_reveal_button:351 elapsed-us=63191 iterations=50 callbacks=4 stable=3 changes=0 longest-dispatch-us=9397 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=28 caller=brush_popup_open:425 elapsed-us=51831 iterations=47 callbacks=4 stable=3 changes=0 longest-dispatch-us=322 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=29 caller=transform_popup_reveal_button:339 elapsed-us=66596 iterations=59 callbacks=4 stable=3 changes=0 longest-dispatch-us=507 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=30 caller=transform_popup_reveal_button:351 elapsed-us=62094 iterations=49 callbacks=4 stable=3 changes=0 longest-dispatch-us=8948 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=31 caller=brush_popup_open:425 elapsed-us=52005 iterations=48 callbacks=4 stable=3 changes=0 longest-dispatch-us=185 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=32 caller=transform_popup_reveal_button:339 elapsed-us=67177 iterations=62 callbacks=4 stable=3 changes=0 longest-dispatch-us=290 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=33 caller=transform_popup_reveal_button:351 elapsed-us=62404 iterations=49 callbacks=4 stable=3 changes=0 longest-dispatch-us=9471 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=34 caller=brush_popup_open:425 elapsed-us=56120 iterations=52 callbacks=4 stable=3 changes=0 longest-dispatch-us=173 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=35 caller=transform_popup_reveal_button:339 elapsed-us=66783 iterations=62 callbacks=4 stable=3 changes=0 longest-dispatch-us=180 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=36 caller=transform_popup_reveal_button:351 elapsed-us=63999 iterations=51 callbacks=4 stable=3 changes=0 longest-dispatch-us=9128 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=37 caller=brush_popup_open:425 elapsed-us=52252 iterations=46 callbacks=4 stable=3 changes=0 longest-dispatch-us=818 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=38 caller=transform_popup_reveal_button:339 elapsed-us=66939 iterations=62 callbacks=4 stable=3 changes=0 longest-dispatch-us=230 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=39 caller=transform_popup_reveal_button:351 elapsed-us=64223 iterations=51 callbacks=4 stable=3 changes=0 longest-dispatch-us=8931 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=40 caller=brush_popup_open:425 elapsed-us=53031 iterations=49 callbacks=4 stable=3 changes=0 longest-dispatch-us=177 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=41 caller=transform_popup_reveal_button:339 elapsed-us=67957 iterations=63 callbacks=4 stable=3 changes=0 longest-dispatch-us=185 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=42 caller=transform_popup_reveal_button:351 elapsed-us=64067 iterations=51 callbacks=4 stable=3 changes=0 longest-dispatch-us=9109 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=43 caller=brush_popup_open:425 elapsed-us=52195 iterations=48 callbacks=4 stable=3 changes=0 longest-dispatch-us=270 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=44 caller=transform_popup_reveal_button:339 elapsed-us=66287 iterations=61 callbacks=4 stable=3 changes=0 longest-dispatch-us=295 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=45 caller=transform_popup_reveal_button:351 elapsed-us=64939 iterations=52 callbacks=4 stable=3 changes=0 longest-dispatch-us=8888 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=46 caller=brush_popup_open:425 elapsed-us=52925 iterations=49 callbacks=4 stable=3 changes=0 longest-dispatch-us=170 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=47 caller=transform_popup_reveal_button:339 elapsed-us=68869 iterations=64 callbacks=4 stable=3 changes=0 longest-dispatch-us=156 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=48 caller=transform_popup_reveal_button:351 elapsed-us=61926 iterations=49 callbacks=4 stable=3 changes=0 longest-dispatch-us=9082 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=49 caller=brush_popup_open:425 elapsed-us=52145 iterations=48 callbacks=4 stable=3 changes=0 longest-dispatch-us=261 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=50 caller=transform_popup_reveal_button:339 elapsed-us=67153 iterations=62 callbacks=4 stable=3 changes=0 longest-dispatch-us=252 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=51 caller=transform_popup_reveal_button:351 elapsed-us=62841 iterations=49 callbacks=4 stable=3 changes=0 longest-dispatch-us=10065 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=52 caller=brush_popup_open:425 elapsed-us=51902 iterations=48 callbacks=4 stable=3 changes=0 longest-dispatch-us=194 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=53 caller=transform_popup_reveal_button:339 elapsed-us=68945 iterations=64 callbacks=4 stable=3 changes=0 longest-dispatch-us=177 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=54 caller=transform_popup_reveal_button:351 elapsed-us=62259 iterations=49 callbacks=4 stable=3 changes=0 longest-dispatch-us=9448 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1"
+      ]
+    },
+    {
+      "file": "brush-sanitizer-case17-results.json",
+      "returncode": 1,
+      "duration": 46.44952440261841,
+      "assertion_passes": 1,
+      "leak_summary": [
+        "SUMMARY: AddressSanitizer: 198918 byte(s) leaked in 3543 allocation(s)."
+      ],
+      "geometry_observations": []
+    },
+    {
+      "file": "brush-sanitizer-case18-results.json",
+      "returncode": 1,
+      "duration": 47.64639854431152,
+      "assertion_passes": 1,
+      "leak_summary": [
+        "SUMMARY: AddressSanitizer: 198926 byte(s) leaked in 3541 allocation(s)."
+      ],
+      "geometry_observations": [
+        "# Geometry wait=1 caller=brush_popup_open:425 elapsed-us=78334 iterations=39 callbacks=4 stable=3 changes=0 longest-dispatch-us=15092 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=2 caller=transform_popup_reveal_button:339 elapsed-us=57433 iterations=53 callbacks=4 stable=3 changes=0 longest-dispatch-us=215 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=3 caller=transform_popup_reveal_button:351 elapsed-us=266607 iterations=25 callbacks=4 stable=3 changes=0 longest-dispatch-us=188897 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1"
+      ]
+    },
+    {
+      "file": "brush-sanitizer-case19-results.json",
+      "returncode": 1,
+      "duration": 73.51154565811157,
+      "assertion_passes": 1,
+      "leak_summary": [
+        "SUMMARY: AddressSanitizer: 200702 byte(s) leaked in 3577 allocation(s)."
+      ],
+      "geometry_observations": [
+        "# Geometry wait=1 caller=brush_popup_open:425 elapsed-us=79118 iterations=29 callbacks=4 stable=3 changes=0 longest-dispatch-us=15180 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=2 caller=transform_popup_reveal_button:339 elapsed-us=56322 iterations=52 callbacks=4 stable=3 changes=0 longest-dispatch-us=193 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=3 caller=transform_popup_reveal_button:351 elapsed-us=266480 iterations=30 callbacks=4 stable=3 changes=0 longest-dispatch-us=184071 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=4 caller=brush_popup_open:425 elapsed-us=77523 iterations=42 callbacks=4 stable=3 changes=0 longest-dispatch-us=18730 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=5 caller=transform_popup_reveal_button:339 elapsed-us=68024 iterations=63 callbacks=4 stable=3 changes=0 longest-dispatch-us=205 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=6 caller=transform_popup_reveal_button:351 elapsed-us=233544 iterations=35 callbacks=4 stable=3 changes=0 longest-dispatch-us=157225 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1"
+      ]
+    },
+    {
+      "file": "brush-sanitizer-case20-results.json",
+      "returncode": 1,
+      "duration": 73.41733598709106,
+      "assertion_passes": 1,
+      "leak_summary": [
+        "SUMMARY: AddressSanitizer: 199958 byte(s) leaked in 3568 allocation(s)."
+      ],
+      "geometry_observations": [
+        "# Geometry wait=1 caller=brush_popup_open:425 elapsed-us=78813 iterations=39 callbacks=4 stable=3 changes=0 longest-dispatch-us=15442 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=2 caller=transform_popup_reveal_button:339 elapsed-us=57483 iterations=53 callbacks=4 stable=3 changes=0 longest-dispatch-us=241 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=3 caller=transform_popup_reveal_button:351 elapsed-us=265791 iterations=28 callbacks=4 stable=3 changes=0 longest-dispatch-us=184539 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=4 caller=brush_popup_open:425 elapsed-us=79086 iterations=43 callbacks=4 stable=3 changes=0 longest-dispatch-us=18928 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=5 caller=transform_popup_reveal_button:339 elapsed-us=67032 iterations=62 callbacks=4 stable=3 changes=0 longest-dispatch-us=239 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=6 caller=transform_popup_reveal_button:351 elapsed-us=217017 iterations=42 callbacks=4 stable=3 changes=0 longest-dispatch-us=134141 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1"
+      ]
+    },
+    {
+      "file": "brush-sanitizer-case21-results.json",
+      "returncode": 1,
+      "duration": 53.259418964385986,
+      "assertion_passes": 1,
+      "leak_summary": [
+        "SUMMARY: AddressSanitizer: 198910 byte(s) leaked in 3542 allocation(s)."
+      ],
+      "geometry_observations": [
+        "# Geometry wait=1 caller=brush_popup_open:425 elapsed-us=79110 iterations=40 callbacks=4 stable=3 changes=0 longest-dispatch-us=14924 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=2 caller=transform_popup_reveal_button:339 elapsed-us=56385 iterations=52 callbacks=4 stable=3 changes=0 longest-dispatch-us=230 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=3 caller=transform_popup_reveal_button:351 elapsed-us=267264 iterations=30 callbacks=4 stable=3 changes=0 longest-dispatch-us=183452 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1",
+        "# Geometry wait=4 caller=brush_popup_open:438 elapsed-us=64548 iterations=44 callbacks=4 stable=3 changes=0 longest-dispatch-us=11359 initial-mapped/realized/viewable=1/1/1 final-mapped/realized/viewable=1/1/1 same-clock=1"
+      ]
+    }
+  ],
+  "acceptance": false,
+  "limitations": [
+    "All21 sanitizer invocations executed,20 assert-pass but leak exit1,case14SIGABRT not timeout.",
+    "C12 normal canvas2GREEN / exact old-provider2RED proven with matching provider identity; canvas sanitizer2 assertions pass but108124B/481 allocations leaked.",
+    "babl proof failed dependency pkg-config setup before lifecycle comparison.",
+    "Brush4 images viewed; common16 images retained in original ZIP but not reviewed in this task.",
+    "No repository or workflow mutations by monitor.",
+    "Isolated debugger diagnostic INCONCLUSIVE: Cleanup incomplete, owned_child_cleanup_completed=false; eight interrupted samples are not exact failing-callback identification or leak verdict."
+  ],
+  "post_acceptance_diagnostic": {
+    "identity-verified.json": {
+      "format": 1,
+      "acceptance_eligible": false,
+      "status": "identity-verified"
+    },
+    "post-install-identity.json": {
+      "format": 1,
+      "acceptance_eligible": false,
+      "status": "identity-verified"
+    },
+    "status.json": {
+      "format": 1,
+      "acceptance_eligible": false,
+      "diagnostic_only": true,
+      "stage": "isolated-debugger-observation",
+      "diagnostic_step_exit": 1,
+      "original_driver_exit_unchanged": true,
+      "dependency_closure": "GDB installed after original acceptance; diagnostic system dependencies may differ.",
+      "qualification": "Debugger stops perturb timing; no leak verdict under ptrace. First matching wait thread is not necessarily failing phase."
+    },
+    "debugger-tool.json": {
+      "acceptance_eligible": false,
+      "gdb_sha256": "b4ba8c0e9c47096e7dd407006a310549e274392d37ec6fe04f7dbc7606f0ac90",
+      "version": "GNU gdb (Debian 16.3-1) 16.3",
+      "official_debian_package_version": "16.3-1",
+      "installed_only_after_original_acceptance": true,
+      "dependency_closure_may_differ_from_acceptance": true
+    },
+    "sample.json": {
+      "format": 1,
+      "acceptance_eligible": false,
+      "scope": "first selected-case wait-entry thread stack diagnostic only",
+      "binary_sha256": "e78f821d9bb3c3b610aafc111344b28df17399b93d4c1045642cfd3649069e13",
+      "case": "/brush-thumbnail-native-popup/private-target-release",
+      "samples": [
+        {
+          "sample": 1,
+          "sample_wall_interval_ms": 571,
+          "stop_reason": "signal-received",
+          "frames": [
+            {
+              "thread_id": "1",
+              "function": "__sanitizer::(anonymous namespace)::Unwind_Trace",
+              "file": "sanitizer_unwind_linux_libcdep.cpp",
+              "line": 80
+            },
+            {
+              "thread_id": "1",
+              "function": "_Unwind_Backtrace"
+            },
+            {
+              "thread_id": "1",
+              "function": "__sanitizer::BufferedStackTrace::UnwindSlow",
+              "file": "sanitizer_unwind_linux_libcdep.cpp",
+              "line": 130
+            },
+            {
+              "thread_id": "1",
+              "function": "__sanitizer::BufferedStackTrace::Unwind",
+              "file": "sanitizer_stacktrace_libcdep.cpp",
+              "line": 158
+            },
+            {
+              "thread_id": "1",
+              "function": "__sanitizer::BufferedStackTrace::UnwindImpl",
+              "file": "asan_stack.cpp",
+              "line": 77
+            },
+            {
+              "thread_id": "1",
+              "function": "__sanitizer::BufferedStackTrace::Unwind",
+              "file": "sanitizer_stacktrace.h",
+              "line": 130
+            },
+            {
+              "thread_id": "1",
+              "function": "___interceptor_free",
+              "file": "asan_malloc_linux.cpp",
+              "line": 52
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "xmlParseElement"
+            },
+            {
+              "thread_id": "1",
+              "function": "xmlParseDocument"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "rsvg_handle_new_from_stream_sync"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "gdk_pixbuf_loader_close"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "gdk_pixbuf_new_from_stream_at_scale"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            }
+          ]
+        },
+        {
+          "sample": 2,
+          "sample_wall_interval_ms": 506,
+          "stop_reason": "signal-received",
+          "frames": [
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "_Unwind_Backtrace"
+            },
+            {
+              "thread_id": "1",
+              "function": "__sanitizer::BufferedStackTrace::UnwindSlow",
+              "file": "sanitizer_unwind_linux_libcdep.cpp",
+              "line": 130
+            },
+            {
+              "thread_id": "1",
+              "function": "__sanitizer::BufferedStackTrace::Unwind",
+              "file": "sanitizer_stacktrace_libcdep.cpp",
+              "line": 158
+            },
+            {
+              "thread_id": "1",
+              "function": "__sanitizer::BufferedStackTrace::UnwindImpl",
+              "file": "asan_stack.cpp",
+              "line": 77
+            },
+            {
+              "thread_id": "1",
+              "function": "__sanitizer::BufferedStackTrace::Unwind",
+              "file": "sanitizer_stacktrace.h",
+              "line": 130
+            },
+            {
+              "thread_id": "1",
+              "function": "___interceptor_free",
+              "file": "asan_malloc_linux.cpp",
+              "line": 52
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "xmlParseElement"
+            },
+            {
+              "thread_id": "1",
+              "function": "xmlParseDocument"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "xmlParseElement"
+            },
+            {
+              "thread_id": "1",
+              "function": "xmlParseDocument"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            }
+          ]
+        },
+        {
+          "sample": 3,
+          "sample_wall_interval_ms": 505,
+          "stop_reason": "signal-received",
+          "frames": [
+            {
+              "thread_id": "1",
+              "function": "_Unwind_Find_FDE"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "_Unwind_Backtrace"
+            },
+            {
+              "thread_id": "1",
+              "function": "__sanitizer::BufferedStackTrace::UnwindSlow",
+              "file": "sanitizer_unwind_linux_libcdep.cpp",
+              "line": 130
+            },
+            {
+              "thread_id": "1",
+              "function": "__sanitizer::BufferedStackTrace::Unwind",
+              "file": "sanitizer_stacktrace_libcdep.cpp",
+              "line": 158
+            },
+            {
+              "thread_id": "1",
+              "function": "__sanitizer::BufferedStackTrace::UnwindImpl",
+              "file": "asan_stack.cpp",
+              "line": 77
+            },
+            {
+              "thread_id": "1",
+              "function": "__sanitizer::BufferedStackTrace::Unwind",
+              "file": "sanitizer_stacktrace.h",
+              "line": 130
+            },
+            {
+              "thread_id": "1",
+              "function": "___interceptor_malloc",
+              "file": "asan_malloc_linux.cpp",
+              "line": 69
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "rsvg_handle_new_from_stream_sync"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "gdk_pixbuf_loader_close"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "gdk_pixbuf_new_from_stream"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            }
+          ]
+        },
+        {
+          "sample": 4,
+          "sample_wall_interval_ms": 506,
+          "stop_reason": "signal-received",
+          "frames": [
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            }
+          ]
+        },
+        {
+          "sample": 5,
+          "sample_wall_interval_ms": 505,
+          "stop_reason": "signal-received",
+          "frames": [
+            {
+              "thread_id": "1",
+              "function": "_Unwind_Find_FDE"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "_Unwind_Backtrace"
+            },
+            {
+              "thread_id": "1",
+              "function": "__sanitizer::BufferedStackTrace::UnwindSlow",
+              "file": "sanitizer_unwind_linux_libcdep.cpp",
+              "line": 130
+            },
+            {
+              "thread_id": "1",
+              "function": "__sanitizer::BufferedStackTrace::Unwind",
+              "file": "sanitizer_stacktrace_libcdep.cpp",
+              "line": 158
+            },
+            {
+              "thread_id": "1",
+              "function": "__sanitizer::BufferedStackTrace::UnwindImpl",
+              "file": "asan_stack.cpp",
+              "line": 77
+            },
+            {
+              "thread_id": "1",
+              "function": "__sanitizer::BufferedStackTrace::Unwind",
+              "file": "sanitizer_stacktrace.h",
+              "line": 130
+            },
+            {
+              "thread_id": "1",
+              "function": "___interceptor_free",
+              "file": "asan_malloc_linux.cpp",
+              "line": 52
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "rsvg_handle_new_from_stream_sync"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "gdk_pixbuf_loader_close"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "gdk_pixbuf_new_from_stream_at_scale"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            }
+          ]
+        },
+        {
+          "sample": 6,
+          "sample_wall_interval_ms": 506,
+          "stop_reason": "signal-received",
+          "frames": [
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "_Unwind_Backtrace"
+            },
+            {
+              "thread_id": "1",
+              "function": "__sanitizer::BufferedStackTrace::UnwindSlow",
+              "file": "sanitizer_unwind_linux_libcdep.cpp",
+              "line": 130
+            },
+            {
+              "thread_id": "1",
+              "function": "__sanitizer::BufferedStackTrace::Unwind",
+              "file": "sanitizer_stacktrace_libcdep.cpp",
+              "line": 158
+            },
+            {
+              "thread_id": "1",
+              "function": "__sanitizer::BufferedStackTrace::UnwindImpl",
+              "file": "asan_stack.cpp",
+              "line": 77
+            },
+            {
+              "thread_id": "1",
+              "function": "__sanitizer::BufferedStackTrace::Unwind",
+              "file": "sanitizer_stacktrace.h",
+              "line": 130
+            },
+            {
+              "thread_id": "1",
+              "function": "___interceptor_free",
+              "file": "asan_malloc_linux.cpp",
+              "line": 52
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "xmlParseElement"
+            },
+            {
+              "thread_id": "1",
+              "function": "xmlParseDocument"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "rsvg_handle_new_from_stream_sync"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "gdk_pixbuf_loader_close"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "gdk_pixbuf_new_from_stream_at_scale"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            }
+          ]
+        },
+        {
+          "sample": 7,
+          "sample_wall_interval_ms": 505,
+          "stop_reason": "signal-received",
+          "frames": [
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "_Unwind_Backtrace"
+            },
+            {
+              "thread_id": "1",
+              "function": "__sanitizer::BufferedStackTrace::UnwindSlow",
+              "file": "sanitizer_unwind_linux_libcdep.cpp",
+              "line": 130
+            },
+            {
+              "thread_id": "1",
+              "function": "__sanitizer::BufferedStackTrace::Unwind",
+              "file": "sanitizer_stacktrace_libcdep.cpp",
+              "line": 158
+            },
+            {
+              "thread_id": "1",
+              "function": "__sanitizer::BufferedStackTrace::UnwindImpl",
+              "file": "asan_stack.cpp",
+              "line": 77
+            },
+            {
+              "thread_id": "1",
+              "function": "__sanitizer::BufferedStackTrace::Unwind",
+              "file": "sanitizer_stacktrace.h",
+              "line": 130
+            },
+            {
+              "thread_id": "1",
+              "function": "___interceptor_malloc",
+              "file": "asan_malloc_linux.cpp",
+              "line": 69
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "xmlParseElement"
+            },
+            {
+              "thread_id": "1",
+              "function": "xmlParseDocument"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "xmlParseElement"
+            },
+            {
+              "thread_id": "1",
+              "function": "xmlParseDocument"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            }
+          ]
+        },
+        {
+          "sample": 8,
+          "sample_wall_interval_ms": 505,
+          "stop_reason": "signal-received",
+          "frames": [
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "_Unwind_Find_FDE"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "_Unwind_Backtrace"
+            },
+            {
+              "thread_id": "1",
+              "function": "__sanitizer::BufferedStackTrace::UnwindSlow",
+              "file": "sanitizer_unwind_linux_libcdep.cpp",
+              "line": 130
+            },
+            {
+              "thread_id": "1",
+              "function": "__sanitizer::BufferedStackTrace::Unwind",
+              "file": "sanitizer_stacktrace_libcdep.cpp",
+              "line": 158
+            },
+            {
+              "thread_id": "1",
+              "function": "__sanitizer::BufferedStackTrace::UnwindImpl",
+              "file": "asan_stack.cpp",
+              "line": 77
+            },
+            {
+              "thread_id": "1",
+              "function": "__sanitizer::BufferedStackTrace::Unwind",
+              "file": "sanitizer_stacktrace.h",
+              "line": 130
+            },
+            {
+              "thread_id": "1",
+              "function": "___interceptor_free",
+              "file": "asan_malloc_linux.cpp",
+              "line": 52
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "xmlParseElement"
+            },
+            {
+              "thread_id": "1",
+              "function": "xmlParseDocument"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "xmlParseElement"
+            },
+            {
+              "thread_id": "1",
+              "function": "xmlParseDocument"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            },
+            {
+              "thread_id": "1",
+              "function": "??"
+            }
+          ]
+        }
+      ],
+      "status": "inconclusive",
+      "leak_verdict": "not evaluated under ptrace",
+      "sanitizer_settings_changed": false,
+      "raw_debugger_output_exported": false,
+      "owned_child_cleanup_completed": false,
+      "failure_category": "Cleanup incomplete"
+    }
+  },
+  "diagnostic_build_identity": {
+    "format": 1,
+    "acceptance_eligible": false,
+    "status": "identity-captured",
+    "source_tree": "9fd6c00530bf541e3c58fa6b4c886b27a53bf483",
+    "github_sha": "97ed2cca019bc8542a453ebcccd433977c6834e2",
+    "original_exit": 1,
+    "run": "/__w/_temp/painter-brush-ci.JukrHWdI",
+    "source": "/__w/_temp/painter-brush-ci.JukrHWdI/source",
+    "build": "/__w/_temp/painter-brush-ci.JukrHWdI/build",
+    "binary": "/__w/_temp/painter-brush-ci.JukrHWdI/build/app/tests/painter-compact-options",
+    "sanitizer_options": {
+      "ASAN_OPTIONS": "halt_on_error=1:detect_leaks=1:fast_unwind_on_malloc=0:malloc_context_size=40:log_exe_name=1",
+      "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1",
+      "LSAN_OPTIONS_unset": true
+    },
+    "hashes": {
+      "/__w/_temp/painter-brush-ci.JukrHWdI/build/app/tests/painter-compact-options": "e78f821d9bb3c3b610aafc111344b28df17399b93d4c1045642cfd3649069e13",
+      "/__w/_temp/painter-brush-ci.JukrHWdI/build/compile_commands.json": "8eede34972992dd7fe8704ac93b780460db76129b8d899dbe05e04bb911cc05c",
+      "/__w/_temp/painter-brush-ci.JukrHWdI/build/build.ninja": "c0dc5b2b8610625fbd6a0b0ffb0120e17aa5bb22555c7d38794e3b98718574c5",
+      "/__w/_temp/painter-brush-ci.JukrHWdI/build/meson-info/intro-buildoptions.json": "f86980781921fb53c1549f11d2adce01691bbdb5fd4d41df8b8e97dab1ee3d94",
+      "/__w/_temp/painter-brush-ci.JukrHWdI/build/meson-info/intro-targets.json": "f2caf39ce712d46487c3250fdcb16eeaf4f1470465ffd388ee0b2ddebca27751",
+      "/__w/_temp/painter-brush-ci.JukrHWdI/deps/env.sh": "a9287fc8f8cd0171e7fa1978bb5aef1b677d3e75b818cda0a8ca4f9eb1260b1e",
+      "/__w/_temp/painter-brush-ci.JukrHWdI/source/tools/linux-debian13-env.sh": "503c6ddb42e43b58ec617b0e91c433f7b84657b38b88cca12d570a05067bcc76",
+      "/__w/_temp/painter-brush-ci.JukrHWdI/source/tools/brush-ci/preframe_identity.py": "5777464a5cc38b8bbf37dd3e8f224fe969b8a260bb92d9344b2d35b5a5413bf0",
+      "/__w/_temp/painter-brush-ci.JukrHWdI/source/tools/brush-ci/sample_case14.py": "f4cdbe01c466cf4629245956f6baf4461c3c9f0f6ab90f6fcd84ace266f13503"
+    }
+  },
+  "canvas_old_provider_aggregate": {
+    "format": 1,
+    "kind": "canvas-old-provider-aggregate",
+    "control_passed": true,
+    "negative_control": true,
+    "acceptance_eligible": false,
+    "errors": [],
+    "raw_environment_exported": false,
+    "inputs": {
+      "/__w/gimp-painter/gimp-painter/ci-results/canvas-old-provider-red/unrealized-padding.json": "2c2fc382ef40970ef4b282f61b8091498560bb4066d2f1285ba12f0aded57ebb",
+      "/__w/gimp-painter/gimp-painter/ci-results/canvas-old-provider-red/realized-padding.json": "bb672fedf494ddffcf1bd787cfb99c8bb860404539bceefbb4267b82cdba06c2",
+      "/__w/gimp-painter/gimp-painter/ci-results/canvas-old-provider-red/provider.json": "bc95bc2ef6f2c6d4edbec07cd0ca943937c64bdbcda42d566b0ad77e199f4f5f"
+    },
+    "binary_sha256": "fd237b8554ed04ecc3c41e0659f7231cdfba970e81404855c162c98b8295c4c4",
+    "selected_cases": [
+      "/ownership/canvas/unrealized-padding",
+      "/ownership/canvas/realized-padding"
+    ]
+  },
+  "canvas_provider": {
+    "format": 1,
+    "kind": "canvas-old-provider-provenance",
+    "control_passed": true,
+    "negative_control": true,
+    "acceptance_eligible": false,
+    "errors": [],
+    "raw_environment_exported": false,
+    "compile_input_diagnostics": [
+      {
+        "key": "old",
+        "expected_source": "/__w/_temp/painter-brush-ci.LFCAQa5d/source/app/tests/color-ownership/fixtures/gimpcanvas-c9.c",
+        "observed_source": "/__w/_temp/painter-brush-ci.LFCAQa5d/source/app/tests/color-ownership/fixtures/gimpcanvas-c9.c",
+        "output_object": "/__w/_temp/painter-brush-ci.LFCAQa5d/build/app/tests/color-ownership/canvas-ownership-old-provider.p/fixtures_gimpcanvas-c9.c.o",
+        "source_identity_matches": true
+      },
+      {
+        "key": "old_test",
+        "expected_source": "/__w/_temp/painter-brush-ci.LFCAQa5d/source/app/tests/color-ownership/test-canvas.c",
+        "observed_source": "/__w/_temp/painter-brush-ci.LFCAQa5d/source/app/tests/color-ownership/test-canvas.c",
+        "output_object": "/__w/_temp/painter-brush-ci.LFCAQa5d/build/app/tests/color-ownership/canvas-ownership-old-provider.p/test-canvas.c.o",
+        "source_identity_matches": true
+      },
+      {
+        "key": "candidate_test",
+        "expected_source": "/__w/_temp/painter-brush-ci.LFCAQa5d/source/app/tests/color-ownership/test-canvas.c",
+        "observed_source": "/__w/_temp/painter-brush-ci.LFCAQa5d/source/app/tests/color-ownership/test-canvas.c",
+        "output_object": "/__w/_temp/painter-brush-ci.LFCAQa5d/build/app/tests/color-ownership/canvas-ownership.p/test-canvas.c.o",
+        "source_identity_matches": true
+      }
+    ],
+    "compile_input_diagnostics_truncated": false,
+    "inputs": {
+      "source/app/tests/color-ownership/fixtures/gimpcanvas-c9.c": "c4a10375777bae95a9f8a9dd8014935045cd8f5c91791ddd8fac77cbd10bb33e",
+      "source/app/tests/color-ownership/test-canvas.c": "2621671a93a054a1f4e1f3f7b5f922d1c4f79226f6ca8d7d2ea09e21f9455c7f",
+      "build/compile_commands.json": "a30469dd538dfde48b52fadbae37b8a37129f34bd0501befc5b65d0ef8902cfa",
+      "build/meson-info/intro-buildoptions.json": "bb438eb1a3a21bd7485c67b5bfd5d4f87b7746718bf690cbf757ff13f98cb7cf",
+      "build/app/tests/color-ownership/canvas-ownership-old-provider.map": "0e17fe880ad856667b71676e4828f1778b4c3ac7d1e72e6a3ba9c0959a01b482",
+      "build/app/tests/color-ownership/canvas-ownership-old-provider": "fd237b8554ed04ecc3c41e0659f7231cdfba970e81404855c162c98b8295c4c4",
+      "build/app/tests/color-ownership/canvas-ownership-old-provider.p/fixtures_gimpcanvas-c9.c.o": "8be7a8afa0d731a991bf3d84983464e8f89c4b5455485c88d4bf57050b2d1b01",
+      "build/app/tests/color-ownership/canvas-ownership-old-provider.p/test-canvas.c.o": "76aaf5ae8d721d01cd6e7c668f2d1101bc7a03ab7f81efc32fdf2b37df46376b",
+      "build/app/tests/color-ownership/canvas-ownership.p/test-canvas.c.o": "76aaf5ae8d721d01cd6e7c668f2d1101bc7a03ab7f81efc32fdf2b37df46376b"
+    },
+    "objects": {
+      "old": "app/tests/color-ownership/canvas-ownership-old-provider.p/fixtures_gimpcanvas-c9.c.o",
+      "old_test": "app/tests/color-ownership/canvas-ownership-old-provider.p/test-canvas.c.o",
+      "candidate_test": "app/tests/color-ownership/canvas-ownership.p/test-canvas.c.o"
+    },
+    "api_definitions": [
+      "gimp_canvas_get_type",
+      "gimp_canvas_new",
+      "gimp_canvas_get_layout",
+      "gimp_canvas_set_padding"
+    ],
+    "binary_path": "/__w/_temp/painter-brush-ci.LFCAQa5d/build/app/tests/color-ownership/canvas-ownership-old-provider",
+    "binary_sha256": "fd237b8554ed04ecc3c41e0659f7231cdfba970e81404855c162c98b8295c4c4"
+  }
+}

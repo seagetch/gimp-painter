@@ -1,0 +1,7 @@
+{
+  "path": "app/tools/gimppainterbrushpopup.h",
+  "kind": "new",
+  "context": "standalone",
+  "prerequisites": [],
+  "review": "29.010/brush-thumbnail-native-popup: independent horizontal Brush thumbnail C factory using canonical GimpPaintOptions; header owns GTK/paint/core prerequisites, include guard and C linkage. First/double C11 and C++14 compilation without an outer linkage wrapper; compile coverage only, not runtime no-save/ownership proof. No GimpDataEditor or ordinary dock policy change."
+}

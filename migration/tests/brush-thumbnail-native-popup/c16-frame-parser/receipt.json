@@ -1,0 +1,20 @@
+{
+  "format": 1,
+  "status": "REVIEW_ONLY_LITERAL_LOG_DOMAIN_PARSER_REPAIR",
+  "base_commit": "b671825309326bdb55571652e43ab78cc83fd92d",
+  "base_tree": "4469df41e161e3f855918125932e377757a1c937",
+  "run34_id": 40437327810,
+  "run34_status_at_preparation": "SANITIZER_PENDING_POSITIVE_GATE_FAILED_PARSER_REJECTION",
+  "observed_native": "Candidate frame exact7 passed normal; historical source reached intended count==0 (3==0) assert_unchanged_update SIGABRT. Provider precheck passed; old case parser rejected LibGimpWidgets:ERROR prefix, aggregate failed. Formal old-control acceptance not established.",
+  "repair": "Only two regexes admit optional literal LibGimpWidgets: before ERROR, in exact assertion and selected TAP leaf. Filename/function/count3/leaf/SIGABRT and unrelated-error/provider checks unchanged.",
+  "helper_sha256": "fda1bfc9df9ce30476aa238b7ecffb4e56642529d09c621b7b5701c28222ecd3",
+  "test_sha256": "87ac8463d990bdaf490ac6fd2f37cc7962fa805bd02ef2a01c1ff5b15062ec70",
+  "replay_qualification": "Exact retained real stdout/stderr replay oldREJECT/newACCEPT. Artifact omits original command/environment; command reconstructed from provider binary and selected leaf, env synthetic empty. NOT full raw Meson/provenance/runtime replay or historical control acceptance.",
+  "pending": "Fresh hosted full oldRED/new7GREEN and strict sanitizer acceptance remain required. Root ref update must wait run34 terminal observation.",
+  "files": {
+    "captured-replay.json": "1b3dab018e1d575c09881191fd7f90561c8589ef1c6a75a0d11d12047c76f040",
+    "run34-frame-seven-results.json": "a393a1437c054fa3b67f2a2840b369a7ffd9c4004380de0deacc3d983022a2cb",
+    "run34-old-unchanged.json": "ae47aa0cb997500c4f6e8bd6be6f222827c3795872d0de496865f178b101e0ef",
+    "run34-provider.json": "306308077ca324b21b28d1fbbaa0b209d95f6c0a975b23e53b46a12605141c44"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "test": "plug-in-protocol",
+  "case_ids": [
+    "/plug-in-protocol/query",
+    "/plug-in-protocol/init",
+    "/plug-in-protocol/host-quit",
+    "/plug-in-protocol/explicit-quit",
+    "/plug-in-protocol/success-open",
+    "/plug-in-protocol/success-close",
+    "/plug-in-protocol/error-open",
+    "/plug-in-protocol/error-close",
+    "/plug-in-protocol/failed-main-write",
+    "/plug-in-protocol/failed-main-write-recoverable",
+    "/plug-in-protocol/temporary-quit",
+    "/plug-in-protocol/temporary-main"
+  ],
+  "scope": "Supplementary pipe-only native/sanitizer lifecycle gate; separate from Brush21 and prior132, not part of153"
+}

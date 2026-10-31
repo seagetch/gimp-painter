@@ -59,7 +59,7 @@ jobs:
           source=$(mktemp -d "$RUNNER_TEMP/painter-ci-checkout.XXXXXXXX")
           git -C "$source" init
           git -C "$source" remote add origin https://github.com/seagetch/gimp-painter.git
-          git -C "$source" fetch --no-tags --depth=1 origin "$GITHUB_SHA"
+          git -C "$source" fetch --no-tags --depth=2 origin "$GITHUB_SHA"
           git -C "$source" checkout --detach FETCH_HEAD
           test "$(git -C "$source" rev-parse HEAD)" = "$GITHUB_SHA"
           test "$(stat -c %u "$source")" = "$(id -u)"
@@ -79,15 +79,249 @@ jobs:
           python3 -B tools/tests/test_painter_dockbook_stack.py 2>&1 | tee "$GITHUB_WORKSPACE/ci-results/dockbook-stack-unit-tests.log"
           python3 -B tools/tests/test_painter_controlled_order_stack.py 2>&1 | tee "$GITHUB_WORKSPACE/ci-results/controlled-order-stack-unit-tests.log"
           python3 -B tools/tests/test_painter_overlay_gate_ci.py 2>&1 | tee "$GITHUB_WORKSPACE/ci-results/overlay-gate-ci-unit-tests.log"
+          python3 -B tools/brush-ci/test_capture_apt_failure.py 2>&1 | tee "$GITHUB_WORKSPACE/ci-results/apt-diagnostic-unit-tests.log"
+          python3 -B tools/brush-ci/test_capture_protocol_stderr.py 2>&1 | tee "$GITHUB_WORKSPACE/ci-results/protocol-diagnostic-unit-tests.log"
+      - name: Seal exact Brush runtime pins from committed policy
+        id: runtime_seal
+        run: |
+          set -euo pipefail
+          if [[ ! -f "$PAINTER_CI_SOURCE/tools/brush-ci/runtime-seal-config.json" ]]; then exit 0; fi
+          seal=$(mktemp -d "$RUNNER_TEMP/painter-brush-seal.XXXXXXXX")
+          python3 -B "$PAINTER_CI_SOURCE/tools/brush-ci/seal_runtime_pins.py" \
+            --source "$PAINTER_CI_SOURCE" \
+            --config "$PAINTER_CI_SOURCE/tools/brush-ci/runtime-seal-config.json" \
+            --output "$seal/runtime-pins.json" --receipt "$seal/runtime-seal-receipt.json"
+          cp "$seal/runtime-pins.json" "$seal/runtime-seal-receipt.json" "$GITHUB_WORKSPACE/ci-results/"
+          printf 'BRUSH_CI_RUNTIME_PINS=%s\n' "$seal/runtime-pins.json" >> "$GITHUB_ENV"
       - name: Build and test native portrait UI
+        id: native_driver
         run: |
           cd "$PAINTER_CI_SOURCE"
-          bash tools/run-painter-ui-ci.sh "$GITHUB_WORKSPACE/ci-results" '${{ matrix.target }}'
+          if [[ '${{ matrix.target }}' == baseline-carrier-red && -f tools/brush-ci/runtime-seal-config.json ]]; then
+            bash tools/brush-ci/run_common_306_control.sh "$PAINTER_CI_SOURCE" \
+              "${BRUSH_CI_RUNTIME_PINS:?automatic seal missing}" "$GITHUB_WORKSPACE/ci-results"
+          else
+            bash tools/run-painter-ui-ci.sh "$GITHUB_WORKSPACE/ci-results" '${{ matrix.target }}'
+          fi
+      - name: Preserve bounded APT acquisition diagnostics
+        if: ${{ failure() && steps.runtime_seal.outcome == 'success' && steps.native_driver.outcome == 'failure' }}
+        run: |
+          if [[ -n "${PAINTER_CI_SOURCE:-}" && -f "$PAINTER_CI_SOURCE/tools/brush-ci/capture_apt_failure.py" ]]; then
+            python3 -B "$PAINTER_CI_SOURCE/tools/brush-ci/capture_apt_failure.py"
+          fi
       - name: Preserve focused verification evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: painter-native-ui-${{ matrix.target }}-${{ github.sha }}-${{ github.run_attempt }}
           path: ci-results/
+          if-no-files-found: warn
+          retention-days: 7
+
+  brush-native-popup:
+    name: brush-${{ matrix.target }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [positive, baseline-red, sanitizer]
+    # Official multi-platform Debian 13 image, verified 2026-10-25 at:
+    # https://github.com/docker-library/repo-info/blob/master/repos/debian/remote/13-slim.md
+    container: debian:13-slim@sha256:62bd423aeee912639ca8ee681c2b762cb3e25137e0a92b20be455898a9f034ad
+    defaults:
+      run:
+        shell: bash
+    env:
+      DEBIAN_FRONTEND: noninteractive
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - name: Bootstrap native build tools
+        run: |
+          set -euo pipefail
+          # Keep the image's normal signed sources and expiry checks. The
+          # driver records bootstrap versions; project build dependencies use
+          # the separately checked-in signed snapshot/SHA-256 lock.
+          apt-get update
+          apt-get install --no-install-recommends -y \
+            ca-certificates git python3 build-essential pkg-config \
+            debian-archive-keyring util-linux x11-utils \
+            xvfb xauth dbus-x11 libxtst6 librsvg2-common fontconfig fonts-cantarell glib-networking at-spi2-core libblas3 liblapack3 libgtk-3-common
+          # Bounded historical investigations; neither is an acceptance job.
+          if [[ '${{ matrix.target }}' == pre-fix-stack-978 || '${{ matrix.target }}' == dockbook-stack-3d6f || '${{ matrix.target }}' == dockbook-controlled-order-3d6f ]]; then
+            apt-get install --no-install-recommends -y gdb
+          fi
+      - name: Fetch exact public source into container-owned directory
+        run: |
+          set -euo pipefail
+          [[ "$GITHUB_SHA" =~ ^[0-9a-f]{40}$ ]]
+          source=$(mktemp -d "$RUNNER_TEMP/painter-ci-checkout.XXXXXXXX")
+          git -C "$source" init
+          git -C "$source" remote add origin https://github.com/seagetch/gimp-painter.git
+          git -C "$source" fetch --no-tags --depth=2 origin "$GITHUB_SHA"
+          git -C "$source" checkout --detach FETCH_HEAD
+          test "$(git -C "$source" rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$(stat -c %u "$source")" = "$(id -u)"
+          printf 'PAINTER_CI_SOURCE=%s\n' "$source" >> "$GITHUB_ENV"
+          mkdir -p "$GITHUB_WORKSPACE/ci-results"
+          {
+            printf 'commit=%s\n' "$(git -C "$source" rev-parse HEAD)"
+            printf 'container_uid=%s container_gid=%s\n' "$(id -u)" "$(id -g)"
+            stat -c 'checkout_owner=%u:%g path=%n' "$source" "$source/.git"
+          } > "$GITHUB_WORKSPACE/ci-results/checkout-identity.txt"
+      - name: Unit-check Brush evidence, immutable donor and runtime sealing
+        run: |
+          cd "$PAINTER_CI_SOURCE"
+          python3 -B tools/brush-ci/test_brush_ci_draft.py 2>&1 | tee "$GITHUB_WORKSPACE/ci-results/brush-validator-unit-tests.log"
+          python3 -B tools/brush-ci/test_common_donor.py 2>&1 | tee "$GITHUB_WORKSPACE/ci-results/brush-common-donor-unit-tests.log"
+          python3 -B tools/brush-ci/test_runtime_pins.py 2>&1 | tee "$GITHUB_WORKSPACE/ci-results/brush-runtime-seal-unit-tests.log"
+          python3 -B tools/brush-ci/test_brush_orchestration.py 2>&1 | tee "$GITHUB_WORKSPACE/ci-results/brush-orchestration-unit-tests.log"
+          python3 -B tools/brush-ci/test_capture_apt_failure.py 2>&1 | tee "$GITHUB_WORKSPACE/ci-results/apt-diagnostic-unit-tests.log"
+          python3 -B tools/brush-ci/test_capture_protocol_stderr.py 2>&1 | tee "$GITHUB_WORKSPACE/ci-results/protocol-diagnostic-unit-tests.log"
+      - name: Seal exact Brush runtime pins from committed policy
+        id: runtime_seal
+        run: |
+          set -euo pipefail
+          seal=$(mktemp -d "$RUNNER_TEMP/painter-brush-seal.XXXXXXXX")
+          python3 -B "$PAINTER_CI_SOURCE/tools/brush-ci/seal_runtime_pins.py" \
+            --source "$PAINTER_CI_SOURCE" \
+            --config "$PAINTER_CI_SOURCE/tools/brush-ci/runtime-seal-config.json" \
+            --output "$seal/runtime-pins.json" --receipt "$seal/runtime-seal-receipt.json"
+          cp "$seal/runtime-pins.json" "$seal/runtime-seal-receipt.json" "$GITHUB_WORKSPACE/ci-results/"
+          printf 'BRUSH_CI_RUNTIME_PINS=%s\n' "$seal/runtime-pins.json" >> "$GITHUB_ENV"
+      - name: Build and test additive Brush native portrait UI
+        id: native_driver
+        run: |
+          cd "$PAINTER_CI_SOURCE"
+          bash tools/brush-ci/run_brush_ci.sh "$GITHUB_WORKSPACE/ci-results" '${{ matrix.target }}'
+      - name: Isolated post-acceptance case14 stack diagnostic (nonacceptance)
+        timeout-minutes: 10
+        if: ${{ always() && matrix.target == 'sanitizer' && steps.runtime_seal.outcome == 'success' && (steps.native_driver.outcome == 'success' || steps.native_driver.outcome == 'failure') }}
+        run: |
+          # Original native_driver status remains unchanged; diagnostic absence
+          # or failure is recorded as inconclusive, never an acceptance pass.
+          bash "$PAINTER_CI_SOURCE/tools/brush-ci/run_preframe_diagnostic.sh" "$GITHUB_WORKSPACE/ci-results"
+      - name: Preserve bounded APT acquisition diagnostics
+        if: ${{ failure() && steps.runtime_seal.outcome == 'success' && steps.native_driver.outcome == 'failure' }}
+        run: |
+          if [[ -n "${PAINTER_CI_SOURCE:-}" && -f "$PAINTER_CI_SOURCE/tools/brush-ci/capture_apt_failure.py" ]]; then
+            python3 -B "$PAINTER_CI_SOURCE/tools/brush-ci/capture_apt_failure.py"
+          fi
+      - name: Preserve focused verification evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: painter-brush-ui-${{ matrix.target }}-${{ github.sha }}-${{ github.run_attempt }}
+          path: ci-results/
+          if-no-files-found: warn
+          retention-days: 7
+
+  # PROPOSAL ONLY. Insert under jobs only after source staging + review approval.
+  # Preconditions: reviewed files below must be present in the checked-out commit.
+  # No implicit download, patched binary cache, dependency helper or lock adoption.
+  babl-owned-doc-proof:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Install proof tools (hosted CI only)
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y gcc meson ninja-build pkg-config liblcms2-dev binutils patch python3
+      - name: Validator unit tests
+        working-directory: ci/babl-owned-doc-proof
+        run: python3 -m unittest -v test_validate.py
+      - name: Matched original and patched source proof
+        run: |
+          python3 ci/babl-owned-doc-proof/prove.py \
+            --archive ci/babl-proof-inputs/babl_0.1.114.orig.tar.xz \
+            --patch ci/babl-proof-inputs/fe7fcc23326680428e4ae9dbb3c41bed033efa9f.patch \
+            --output proof-output
+      - name: Preserve all evidence, including failed attempts
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: babl-owned-doc-proof-${{ github.sha }}
+          path: proof-output/
+          if-no-files-found: error
+          retention-days: 14
+
+  matched-preclick-diagnostic:
+    name: matched-preclick-nonacceptance
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    container: debian:13-slim@sha256:62bd423aeee912639ca8ee681c2b762cb3e25137e0a92b20be455898a9f034ad
+    defaults:
+      run:
+        shell: bash
+    env:
+      DEBIAN_FRONTEND: noninteractive
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - name: Bootstrap unchanged official Debian tools
+        timeout-minutes: 10
+        run: |
+          set -euo pipefail
+          timeout --kill-after=10s 120s apt-get update
+          timeout --kill-after=10s 420s apt-get install --no-install-recommends -y \
+            ca-certificates git python3 build-essential pkg-config \
+            debian-archive-keyring util-linux x11-utils \
+            xvfb xauth dbus-x11 libxtst6 librsvg2-common fontconfig fonts-cantarell \
+            glib-networking at-spi2-core libblas3 liblapack3 libgtk-3-common
+      - name: Fetch and seal exact diagnostic policy
+        id: matched_seal
+        timeout-minutes: 5
+        run: |
+          set -euo pipefail
+          [[ "$GITHUB_SHA" =~ ^[0-9a-f]{40}$ ]]
+          source=$(mktemp -d "$RUNNER_TEMP/painter-matched-checkout.XXXXXXXX")
+          git -C "$source" init --quiet
+          git -C "$source" remote add origin https://github.com/seagetch/gimp-painter.git
+          timeout --kill-after=10s 180s git -C "$source" fetch --no-tags --depth=2 origin "$GITHUB_SHA"
+          git -C "$source" checkout --quiet --detach FETCH_HEAD
+          test "$(git -C "$source" rev-parse HEAD)" = "$GITHUB_SHA"
+          seal=$(mktemp -d "$RUNNER_TEMP/painter-matched-seal.XXXXXXXX")
+          python3 -B "$source/tools/brush-ci/seal_runtime_pins.py" --source "$source" \
+            --config "$source/tools/brush-ci/runtime-seal-config.json" \
+            --output "$seal/runtime-pins.json" --receipt "$seal/receipt.json" > "$seal/console.log" 2>&1
+          printf 'PAINTER_CI_SOURCE=%s\nBRUSH_CI_RUNTIME_PINS=%s\n' "$source" "$seal/runtime-pins.json" >> "$GITHUB_ENV"
+          mkdir -p "$GITHUB_WORKSPACE/matched-results"
+      - name: Configure four independent matched builds
+        id: matched_build
+        timeout-minutes: 120
+        run: |
+          cd "$PAINTER_CI_SOURCE"
+          bash tools/brush-ci/run_matched_preclick.sh prepare "$GITHUB_WORKSPACE/matched-results"
+      - name: Collect twelve primary and two fidelity processes
+        id: matched_measure
+        timeout-minutes: 50
+        run: |
+          cd "$PAINTER_CI_SOURCE"
+          bash tools/brush-ci/run_matched_preclick.sh measure "$MATCHED_PRECLICK_RUN" "$GITHUB_WORKSPACE/matched-results"
+      - name: Preserve finite nonacceptance job status
+        if: always()
+        timeout-minutes: 2
+        env:
+          MATCHED_SEAL_OUTCOME: ${{ steps.matched_seal.outcome }}
+          MATCHED_BUILD_OUTCOME: ${{ steps.matched_build.outcome }}
+          MATCHED_MEASURE_OUTCOME: ${{ steps.matched_measure.outcome }}
+        run: |
+          python3 -B - <<'PY'
+          import json,os,pathlib
+          out=pathlib.Path(os.environ['GITHUB_WORKSPACE'])/'matched-results';out.mkdir(exist_ok=True)
+          allowed={'success','failure','cancelled','skipped',''}
+          values={k:os.environ.get('MATCHED_'+k.upper()+'_OUTCOME','') for k in ('seal','build','measure')}
+          if any(v not in allowed for v in values.values()):raise SystemExit('Invalid finite job status')
+          (out/'job-status.json').write_text(json.dumps({'acceptance_eligible':False,'outcomes':values,'original_acceptance_jobs_unchanged':True,'native_failures_not_waived':True},indent=2)+'\n')
+          PY
+      - name: Upload bounded matched diagnostic receipts only
+        if: always()
+        timeout-minutes: 3
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: painter-matched-preclick-${{ github.sha }}-${{ github.run_attempt }}
+          path: matched-results/
           if-no-files-found: warn
           retention-days: 7

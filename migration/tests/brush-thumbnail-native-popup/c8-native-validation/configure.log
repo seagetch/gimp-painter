@@ -1,0 +1,386 @@
+The Meson build system
+Version: 1.7.0
+Source dir: /tmp/c8-native-validation/source
+Build dir: /tmp/c8-native-validation/build
+Build type: native build
+Project name: gimp
+Project version: 3.0.9
+C compiler for the host machine: cc (gcc 14.2.0 "cc (Debian 14.2.0-19) 14.2.0")
+C linker for the host machine: cc ld.bfd 2.44
+C++ compiler for the host machine: c++ (gcc 14.2.0 "c++ (Debian 14.2.0-19) 14.2.0")
+C++ linker for the host machine: c++ ld.bfd 2.44
+Host machine cpu family: x86_64
+Host machine cpu: x86_64
+Program python3 found: YES (/usr/bin/python3)
+../../../tmp/c8-native-validation/source/meson.build:134: WARNING: Module SIMD has no backwards or forwards compatibility and might not exist in future releases.
+Message: Host machine cpu family: x86_64
+Message: Host os: linux
+Compiler for C supports arguments -mmmx: YES 
+Compiler for C supports arguments -msse: YES 
+Compiler for C supports arguments -msse2: YES 
+Compiler for C supports arguments -msse4.1: YES 
+Compiler for C supports arguments -fdiagnostics-show-option: YES 
+Compiler for C supports arguments -fno-common: YES 
+Compiler for C supports arguments -Wformat: YES 
+Compiler for C supports arguments -Wformat-security: YES 
+Compiler for C supports arguments -Winit-self: YES 
+Compiler for C supports arguments -Wlogical-op: YES 
+Compiler for C supports arguments -Wmissing-declarations: YES 
+Compiler for C supports arguments -Wmissing-format-attribute: YES 
+Compiler for C supports arguments -Wpointer-arith: YES 
+Compiler for C supports arguments -Wreturn-type: YES 
+Compiler for C supports arguments -Wtype-limits: YES 
+Compiler for C supports arguments -Wabsolute-value: YES 
+Compiler for C supports arguments -Wdeclaration-after-statement: YES 
+Compiler for C supports arguments -Wenum-conversion: YES 
+Compiler for C supports arguments -Wliteral-conversion: NO 
+Compiler for C supports arguments -Wno-strict-prototypes: YES 
+Compiler for C supports arguments -Wold-style-definition: YES 
+Compiler for C supports arguments -Wparentheses-equality: NO 
+Compiler for C supports arguments -W#pragma-messages: NO 
+Compiler for C supports arguments -Wsometimes-uninitialized: NO 
+Compiler for C supports arguments -Wtautological-unsigned-enum-zero-compare: NO 
+Compiler for C supports arguments -Wunneeded-internal-declaration: NO 
+Compiler for C supports arguments -Wunused-function: YES 
+Compiler for C supports arguments -Wunused-value: YES 
+Compiler for C supports arguments -Werror=implicit-function-declaration: YES 
+Library m found: YES
+Library dl found: YES
+Found pkg-config: YES (/workspace/shared/gimp-common-layer-env/bin/pkg-config) 1.8.1
+Run-time dependency atk found: YES 2.56.2
+Run-time dependency babl-0.1 found: YES 0.1.114
+Run-time dependency cairo found: YES 1.18.4
+Run-time dependency fontconfig found: YES 2.15.0
+Run-time dependency freetype2 found: YES 26.2.20
+Run-time dependency gdk-pixbuf-2.0 found: YES 2.42.12
+Run-time dependency gegl-0.4 found: YES 0.4.62
+Run-time dependency exiv2 found: YES 0.28.5
+Run-time dependency gexiv2 found: YES 0.14.3
+Run-time dependency gio-2.0 found: YES 2.84.4
+Run-time dependency gio-unix-2.0 found: YES 2.84.4
+Dependency gio-2.0 found: YES 2.84.4 (cached)
+Program /workspace/shared/gimp-common-layer-env/sysroot/usr/bin/glib-compile-resources found: YES (/workspace/shared/gimp-common-layer-env/sysroot/usr/bin/glib-compile-resources)
+Configuring gimp-compile-resources.py using configuration
+Program gimp-compile-resources.py found: YES (/usr/bin/python3 /tmp/c8-native-validation/build/gimp-compile-resources.py)
+Run-time dependency glib-2.0 found: YES 2.84.4
+Run-time dependency gobject-introspection-1.0 found: YES 1.84.0
+Run-time dependency gobject-2.0 found: YES 2.84.4
+Run-time dependency gmodule-no-export-2.0 found: YES 2.84.4
+Run-time dependency gtk+-3.0 found: YES 3.24.49
+Run-time dependency gdk-3.0 found: YES 3.24.49
+Run-time dependency harfbuzz found: YES 10.2.0
+Run-time dependency json-glib-1.0 found: YES 1.10.6
+Dependency libsoup-3.0 skipped: feature painter-http disabled
+Run-time dependency lcms2 found: YES 2.16
+Run-time dependency libmypaint found: YES 1.6.0
+Run-time dependency mypaint-brushes-1.0 found: YES 1.3.1
+Run-time dependency pango found: YES 1.56.3
+Run-time dependency pangocairo found: YES 1.56.3
+Run-time dependency pangoft2 found: YES 1.56.3
+Checking if "pango is built with libthai support" with dependency pango runs: YES
+Run-time dependency librsvg-2.0 found: YES 2.60.0
+Run-time dependency appstream found: YES 1.0.5
+Run-time dependency libarchive found: YES 3.7.4
+Has header "execinfo.h" : YES 
+Library execinfo found: NO
+Has header "execinfo.h" : YES (cached)
+Run-time dependency x11 found: YES 1.8.12
+Run-time dependency xmu found: YES 1.1.3
+Run-time dependency xext found: YES 1.3.4
+Run-time dependency xfixes found: YES 6.0.0
+Has header "X11/Xmu/WinUtil.h" with dependencies xext, xmu: YES 
+Has header "X11/extensions/shape.h" with dependencies xext, xmu: YES 
+Checking for function "XmuClientWindow" with dependencies xext, xmu: YES 
+Checking for function "XShapeGetRectangles" with dependencies xext, xmu: YES 
+Has header "X11/extensions/shape.h" : YES 
+Has header "X11/Xmu/WinUtil.h" : YES 
+Run-time dependency libtiff-4 found: YES 4.7.0
+Run-time dependency libjpeg found: YES 2.1.5
+Run-time dependency zlib found: YES 1.3.1
+Library bz2 found: YES
+Run-time dependency liblzma found: YES 5.8.1
+Library gs skipped: feature ghostscript disabled
+Run-time dependency libpng found: YES 1.6.48
+Dependency libmng skipped: feature mng disabled
+Library mng skipped: feature mng disabled
+Library aa skipped: feature aa disabled
+Dependency xpm skipped: feature xpm disabled
+Has header "qoi.h" : NO 
+Dependency libiff skipped: feature ilbm disabled
+Dependency libilbm skipped: feature ilbm disabled
+Has header "libilbm/ilbm.h" skipped: feature ilbm disabled
+Dependency OpenEXR skipped: feature openexr disabled
+Dependency libwebp skipped: feature webp disabled
+Dependency libwebpmux skipped: feature webp disabled
+Dependency libwebpdemux skipped: feature webp disabled
+Dependency libheif skipped: feature heif disabled
+Compiler for language vala skipped: feature vala disabled
+Run-time dependency poppler-glib found: YES 25.03.0
+Run-time dependency poppler-data found: YES 0.4.12
+Dependency cairo-pdf skipped: feature cairo-pdf disabled
+Dependency libwmf skipped: feature wmf disabled
+Dependency libopenjp2 skipped: feature jpeg2000 disabled
+Dependency libjxl skipped: feature jpeg-xl disabled
+Dependency libjxl_threads skipped: feature jpeg-xl disabled
+Dependency xcursor skipped: feature xcursor disabled
+Dependency alsa skipped: feature alsa disabled
+Dependency cfitsio skipped: feature fits disabled
+Program xdg-email found: YES (/usr/bin/xdg-email)
+Did not find CMake 'cmake'
+Found CMake: NO
+Run-time dependency iso-codes found: NO (tried pkgconfig and cmake)
+Program perl found: YES (/workspace/shared/gimp-common-layer-env/sysroot/usr/bin/perl)
+Message: Found Python 3.13
+Message: Found PyGObject: true
+Program gjs found: NO
+Program xmllint found: NO
+Program xsltproc found: YES (/workspace/shared/gimp-common-layer-env/sysroot/usr/bin/xsltproc)
+Program desktop-file-validate found: YES (/usr/bin/desktop-file-validate)
+Program appstreamcli skipped: feature appdata-test disabled
+Program g-ir-compiler found: YES (/workspace/shared/gimp-common-layer-env/sysroot/usr/bin/g-ir-compiler)
+Program gi-docgen skipped: feature gi-docgen disabled
+Run-time dependency shared-mime-info found: YES 2.4
+Program xvfb-run skipped: feature headless-tests disabled
+Program dbus-run-session skipped: feature headless-tests disabled
+Program tools/extract-vector-icon.sh found: YES (/tmp/c8-native-validation/source/tools/extract-vector-icon.sh)
+Program tools/generate-news found: YES (/tmp/c8-native-validation/source/tools/generate-news)
+Program tools/gimppath2svg.py found: YES (/tmp/c8-native-validation/source/tools/gimppath2svg.py)
+Program tools/module-dependencies.py found: YES (/tmp/c8-native-validation/source/tools/module-dependencies.py)
+Program tools/meson_install_subdir.py found: YES (/tmp/c8-native-validation/source/tools/meson_install_subdir.py)
+Program tools/gimp-mkenums found: YES (/tmp/c8-native-validation/source/tools/gimp-mkenums)
+Program /tmp/c8-native-validation/source/tools/meson-mkenums.py found: YES (/usr/bin/python3 /tmp/c8-native-validation/source/tools/meson-mkenums.py)
+Dependency openmp skipped: feature openmp disabled
+Checking for function "alloca" : YES 
+Checking for function "dcgettext" : YES 
+Checking for function "difftime" : YES 
+Checking for function "fsync" : YES 
+Checking for function "getaddrinfo" : YES 
+Checking for function "getnameinfo" : YES 
+Checking for function "gettext" : YES 
+Checking for function "mmap" : YES 
+Checking for function "rint" : YES 
+Checking for function "thr_self" : NO 
+Checking for function "vfork" : YES 
+Header "libintl.h" has symbol "bind_textdomain_codeset" : YES 
+Header "libintl.h" has symbol "vprintf" : NO 
+Has header "alloca.h" : YES 
+Has header "dlfcn.h" : YES 
+Has header "fcntl.h" : YES 
+Has header "ieeefp.h" : NO 
+Has header "inttypes.h" : YES 
+Has header "locale.h" : YES 
+Has header "math.h" : YES 
+Has header "memory.h" : YES 
+Has header "stdint.h" : YES 
+Has header "stdlib.h" : YES 
+Has header "string.h" : YES 
+Has header "strings.h" : YES 
+Has header "sys/param.h" : YES 
+Has header "sys/prctl.h" : YES 
+Has header "sys/select.h" : YES 
+Has header "sys/stat.h" : YES 
+Has header "sys/thr.h" : NO 
+Has header "sys/time.h" : YES 
+Has header "sys/times.h" : YES 
+Has header "sys/types.h" : YES 
+Has header "sys/wait.h" : YES 
+Has header "unistd.h" : YES 
+Has header "sys/mman.h" : YES 
+Has header "sys/ipc.h" : YES 
+Has header "sys/shm.h" : YES 
+Checking if "shmctl IPC_RMID allows subsequent attaches" runs: YES
+Program git found: YES (/usr/local/bin/git)
+../../../tmp/c8-native-validation/source/meson.build:1779: WARNING: 
+
+        UNSUPPORTED BUILD!
+
+        This is not a distribution tarball (git-version.h missing) and
+        we could not establish the corresponding commit (either this is
+        not a git repository or git command is missing). Therefore
+        we have no reference for debugging.
+        Please either use release tarballs or build from the repository.
+  
+Configuring config.h using configuration
+Configuring gimpversion.h using configuration
+Program meson-enumgen.py found: YES (/usr/bin/python3 /tmp/c8-native-validation/source/pdb/meson-enumgen.py)
+Program meson-pdbgen.py found: YES (/usr/bin/python3 /tmp/c8-native-validation/source/pdb/meson-pdbgen.py)
+Program meson-enumcode.py found: YES (/usr/bin/python3 /tmp/c8-native-validation/source/pdb/meson-enumcode.py)
+Program msgfmt found: YES (/workspace/shared/gimp-common-layer-env/sysroot/usr/bin/msgfmt)
+Program msginit found: YES (/workspace/shared/gimp-common-layer-env/sysroot/usr/bin/msginit)
+Program msgmerge found: YES (/workspace/shared/gimp-common-layer-env/sysroot/usr/bin/msgmerge)
+Program xgettext found: YES (/workspace/shared/gimp-common-layer-env/sysroot/usr/bin/xgettext)
+Configuring gimp-release using configuration
+Configuring gimprc using configuration
+Program bash skipped: feature bash-completion disabled
+Dependency bash-completion skipped: feature bash-completion disabled
+Configuring dockable-dialogs-menuitems.ui using configuration
+Configuring dockable-menu.ui.in using configuration
+Configuring app-dialogs-menuitems.ui using configuration
+Configuring image-menu.ui.in using configuration
+Dependency glib-2.0 found: YES 2.84.4 (cached)
+Dependency librsvg-2.0 found: YES 2.60.0 (cached)
+Configuring gimp-tool-cursors.gresource.xml using configuration
+Configuring gimp-color-picker-cursors.gresource.xml using configuration
+Configuring gimp-core-pixbufs.gresource.xml with command
+Configuring gimp-icon-pixbufs.gresource.xml with command
+Configuring gimp-core-pixbufs.gresource.xml with command
+Configuring gimp-icon-pixbufs.gresource.xml with command
+Dependency glib-2.0 found: YES 2.84.4 (cached)
+Program /workspace/shared/gimp-common-layer-env/sysroot/usr/bin/glib-genmarshal found: YES (/workspace/shared/gimp-common-layer-env/sysroot/usr/bin/glib-genmarshal)
+Dependency glib-2.0 found: YES 2.84.4 (cached)
+Program /workspace/shared/gimp-common-layer-env/sysroot/usr/bin/glib-genmarshal found: YES (/workspace/shared/gimp-common-layer-env/sysroot/usr/bin/glib-genmarshal)
+Dependency gobject-introspection-1.0 found: YES 1.84.0 (cached)
+Dependency gobject-introspection-1.0 found: YES 1.84.0 (cached)
+Program /workspace/shared/gimp-common-layer-env/sysroot/usr/bin/x86_64-linux-gnu-g-ir-scanner found: YES (/workspace/shared/gimp-common-layer-env/sysroot/usr/bin/x86_64-linux-gnu-g-ir-scanner)
+Dependency gobject-introspection-1.0 found: YES 1.84.0 (cached)
+Program /workspace/shared/gimp-common-layer-env/sysroot/usr/bin/x86_64-linux-gnu-g-ir-compiler found: YES (/workspace/shared/gimp-common-layer-env/sysroot/usr/bin/x86_64-linux-gnu-g-ir-compiler)
+Configuring org.gimp.extension.goat-exercises.metainfo.xml.in using configuration
+Program flex found: NO
+Program bison found: NO
+Configuring pagecurl-icons.gresource.xml with command
+Configuring screenshot-icons.gresource.xml with command
+WARNING: You should add the boolean check kwarg to the run_command call.
+         It currently defaults to false,
+         but it will default to true in meson 2.0.
+         See also: https://github.com/mesonbuild/meson/issues/9300
+Run-time dependency threads found: YES
+Compiler for C++ supports arguments -fexceptions: YES 
+Checking if "Painter C++ exception support" compiles: YES 
+Compiler for C++ supports arguments -fvisibility-inlines-hidden: YES 
+Compiler for C++ supports arguments -fno-rtti: YES 
+Program python3 found: YES (/usr/bin/python3)
+Dependency glib-2.0 found: YES 2.84.4 (cached)
+Program /workspace/shared/gimp-common-layer-env/sysroot/usr/bin/glib-genmarshal found: YES (/workspace/shared/gimp-common-layer-env/sysroot/usr/bin/glib-genmarshal)
+Compiler supports sse2: YES
+Dependency gio-2.0 found: YES 2.84.4 (cached)
+Program /workspace/shared/gimp-common-layer-env/sysroot/usr/bin/gdbus-codegen found: YES (/workspace/shared/gimp-common-layer-env/sysroot/usr/bin/gdbus-codegen)
+Compiler supports sse2: YES
+Compiler supports sse2: YES
+Compiler supports sse41: YES
+Compiler for C++ supports link arguments -Wl,--wrap=gegl_buffer_new -Wl,--wrap=gegl_buffer_dup: YES 
+Compiler for C supports arguments -Wno-error=ignored-qualifiers: YES 
+Compiler for C++ supports arguments -Wno-error=ignored-qualifiers: YES 
+Configuring gimp.desktop.in using configuration
+Configuring org.gimp.GIMP.appdata.xml.in using configuration
+Program tools/in-build-gimp.py found: YES (/usr/bin/python3 /tmp/c8-native-validation/source/tools/in-build-gimp.py)
+Configuring gimp-test-icon-theme-plan.tsv with command
+Compiler for C++ supports link arguments -Wl,--wrap=gdk_pixbuf_copy: YES 
+Compiler for C++ supports link arguments -Wl,--wrap=gdk_pixbuf_save_to_buffer: YES 
+Compiler for C++ supports link arguments -Wl,--wrap=gimp_clone_layer_set_source: YES 
+Compiler for C++ supports link arguments -Wl,--wrap=gimp_clone_layer_set_source_by_name: YES 
+Compiler for C++ supports link arguments -Wl,--wrap=gimp_mypaint_brush_button_with_popup: YES 
+Program /tmp/c8-native-validation/source/libgimp/tests/libgimp-run-python-test.py found: YES (/usr/bin/python3 /tmp/c8-native-validation/source/libgimp/tests/libgimp-run-python-test.py)
+Compiler for C++ supports link arguments -Wl,--wrap=_ZNK11GimpPainter12BindingStore12check_threadEv: YES 
+Compiler for C++ supports link arguments -Wl,--wrap=gimp_filter_layer_new -Wl,--wrap=gimp_filter_layer_get_procedure -Wl,--wrap=gimp_filter_layer_get_procedure_args -Wl,--wrap=gimp_filter_layer_mark_as_loaded -Wl,--wrap=gimp_filter_layer_set_legacy_procedure: YES 
+Compiler for C++ supports link arguments -Wl,--wrap=gimp_layer_tile_view_new -Wl,--wrap=gimp_layer_tile_view_get_type: YES 
+Compiler for C++ supports link arguments -Wl,--wrap=_ZN11GimpPainter12BindingStore6ensureEP8_GObject -Wl,--wrap=_ZN11GimpPainter12BindingStore8activateEv: YES 
+Compiler for C++ supports link arguments -Wl,--wrap=g_weak_ref_get: YES 
+Compiler for C++ supports link arguments -Wl,--wrap=_ZN11GimpPainter12BindingStore6ensureEP8_GObject -Wl,--wrap=_ZN11GimpPainter12BindingStore8activateEv -Wl,--wrap=g_signal_parse_name -Wl,--wrap=g_signal_connect_data: YES 
+Compiler for C++ supports link arguments -Wl,--wrap=gtk_icon_theme_load_icon -Wl,--wrap=gimp_cairo_surface_create_from_pixbuf -Wl,--wrap=gimp_viewable_get_icon_name: YES 
+../../../tmp/c8-native-validation/source/libgimp/tests/meson.build:24: WARNING: Project targets '>=0.61.0' but uses feature introduced in '1.4.0': environment.unset.
+Program ./libgimp-run-python-test.py found: YES (/usr/bin/python3 /tmp/c8-native-validation/source/libgimp/tests/./libgimp-run-python-test.py)
+Program ./libgimp-run-c-test.py found: YES (/usr/bin/python3 /tmp/c8-native-validation/source/libgimp/tests/./libgimp-run-c-test.py)
+Configuring gimptool-3.0.1 using configuration
+Configuring gimprc-3.0.5 using configuration
+Configuring gimp-3.0.1 using configuration
+Message: Extra Binaries:
+  gimp-console:        false
+
+Optional Features:
+  Check updates at startup:      false
+  Language selection:            false
+  Vector icons:                  true
+  Dr. Mingw (Win32):             false
+  Relocatable Bundle:            false
+  Default ICC directory (Linux): /usr/share/color/icc
+  32-bit DLL folder (Win32):     32/bin
+  Dashboard backtraces:          rough (missing: libbacktrace and libunwind)
+  Debug symbols format:          native
+  Binary symlinks:               false
+  OpenMP:                        false
+  Bash Completion:               disabled
+
+Optional Plug-Ins:
+  Ascii Art:           false
+  Ghostscript:         false
+  JPEG 2000:           false
+  JPEG XL:             false
+  MNG:                 false
+  OpenEXR:             false
+  WebP:                false
+  HEIC:                import: false - export: false
+  AVIF:                import: false - export: false
+  PDF (export):        false
+  Print:               false
+  Javascript plug-ins: false
+  Vala plug-ins:       false
+  TWAIN (Win32):       false
+  WMF:                 false
+  X11 Mouse Cursor:    false
+  XPM:                 false
+  Quite-OK Image:      false
+  Amiga IFF/ILBM:      false
+  Email:               true (/usr/bin/xdg-email)
+  FITS:                false
+
+Experimental Plug-Ins (discouraged except for developers):
+  Lua plug-ins:        false
+
+Unmaintained Plug-Ins (discouraged except for developers):
+  Help Browser:        false
+  Webpage:             false
+
+Optional Modules:
+  ALSA (MIDI Input):   false
+  Linux Input:         false (GUdev support: false)
+  DirectInput (Win32): false
+
+Tests:
+  Use xvfb-run         false
+  Test appdata         false
+
+Documentation:
+  libgimp API Reference: false
+
+Bug report URL: https://gitlab.gnome.org/GNOME/gimp/issues/new
+Message: 
+    NOTE: if you plan on packaging GIMP for distribution, it is recommended
+    to override the bug report URL with option:
+      -Dbug-report-url=https://example.com/
+    so that you can filter packaging bugs from core bugs before reporting upstream.
+  
+../../../tmp/c8-native-validation/source/meson.build:2299: WARNING: Warnings occurred during configuration
+../../../tmp/c8-native-validation/source/meson.build:2301: WARNING: 
+
+        UNSUPPORTED BUILD!
+
+        This is not a distribution tarball (git-version.h missing) and
+        we could not establish the corresponding commit (either this is
+        not a git repository or git command is missing). Therefore
+        we have no reference for debugging.
+        Please either use release tarballs or build from the repository.
+  
+Build targets in project: 1094
+WARNING: Project specifies a minimum meson_version '>=0.61.0' but uses features which were added in newer versions:
+ * 1.4.0: {'environment.unset'}
+
+gimp 3.0.9
+
+  User defined options
+    appdata-test      : disabled
+    auto_features     : disabled
+    buildtype         : debugoptimized
+    check-update      : no
+    enable-console-bin: false
+    gi-docgen         : disabled
+    headless-tests    : disabled
+    javascript        : disabled
+    libbacktrace      : false
+    libunwind         : false
+    painter-http      : disabled
+    prefix            : /tmp/c8-native-validation/prefix
+    print             : false
+    vala              : disabled
+    wrap_mode         : nofallback
+
+Found ninja-1.12.1 at /workspace/shared/gimp-common-layer-env/sysroot/usr/bin/ninja

@@ -1,0 +1,20 @@
+{
+  "format": 1,
+  "status": "REVIEW_ONLY_EXISTING_DIAGNOSTIC_CLEANUP",
+  "base_commit": "f90d5743ec8934956e15f67fddf4541366d3ad1f",
+  "base_tree": "ec4155e2c3ef51ba6bb7b918b8bad4037934af19",
+  "run32_id": 40369538250,
+  "run32_status": "TERMINAL_FAILURE_NOT_ACCEPTED",
+  "diagnostic_observation": "Verified owned pidfd received SIGKILL; initial readiness timed out, descriptor closed before debugger exit/reap. Child termination unverified; debugger termination verified. This does not prove child survival after debugger exit or the kernel mechanism. Hosted runner ended; no outstanding termination action.",
+  "controller_sha256": "abee6fd22c605cc63e8e8b9b3d594241671929f9ce2c39d754129e1884387a48",
+  "test_sha256": "c20710ff74d21b313cf75fedd7589c235c7c3c57e31fbe15e6c8e573de57d38e",
+  "change_scope": "Retain same verified pidfd through existing debugger shutdown, then final bounded2second readiness check and close. Actual readiness required; GDBexit alone never success. Initial2s/debugger2+3s retained; sum cleanup waits at most9s. No new PID signaling/attach/authority.",
+  "denial_boundary": "Separate localPTRACE_TRACEME reproduction denied2026-10-26T17:17UTC; not retried,routed elsewhere,or transplanted toCI. Existing authorized hosted debugger cleanup only; no security/access changes.",
+  "proof_scope": "38 static/syntheticMI and ordinary-owned-child controller tests. No localptrace/GDB/native run. Fake debugger delayed-child test is not ptrace reproduction. Real hosted cleanup success and task acceptance unproven.",
+  "files": {
+    "run32-debugger-tool.json": "60957bf23590b6a87e21ffbbf0ae50ac765965f7e67bff54fd448e3e532857e1",
+    "run32-sample.json": "86f41b06d7e451ee3054533db176644365e51afff58248b4e6448668a05253bf",
+    "run32-status.json": "bdacae3ac811ea192503e1569b7b4810f5f68a729023e6a78df358ba40d1901f",
+    "run32-terminal-observation-summary.json": "afbf2a34787f2ee0731eaa27e36474f3e652c1bf8e8cb87505435cf991b56d8a"
+  }
+}

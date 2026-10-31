@@ -1,0 +1,39 @@
+{
+  "status": "C22_REVIEW_ONLY_BASELINE_BUILD_COMPATIBILITY",
+  "base_commit": "83137d6d37177147b9e8bc76ed7f98c3ffd0c1af",
+  "base_tree": "0fa647182ac11bbadb7b5634092c0975ee9ccffd",
+  "observed": "Run40 normal2 identities passed; baseline-sanitizer configure failed. Historical fixed public Program gimp-console-3.0 gimp-3.0 found: NO line matches retained43-byte SHA exactly. Final238-byte Meson error text not recovered, known relative format variants do not match; private randomroot prefix unavailable.",
+  "source_diagnosis": "Exact e25 libgimp Meson disables GIR for sanitizer; root runnable condition wrongly also requires GIR and falls into missing native-GIMP lookup/error. Existing current root already decouples runnable binaries and GIR. Not a proven compiler/linker failure: old ld: pattern matched meson.build:, generic error: mislabeled Meson ERROR.",
+  "scope": "Diagnostic-owned baseline source worktrees only: exact pinned two-hunk root Meson compatibility overlay BOTH baseline normal and sanitizer; current root untouched; all C/C++ and accepted307 repository bytes unchanged. Root Meson in published candidate is unchanged.",
+  "comparability": "Baseline production revision with explicitly modified build metadata, NOT pristine baseline build parity. Same current runnable/GIR semantics; no color-test subdir transplant. Per-arm exact descriptor validated and retained in final public summary. Build options/normalization remain checked, not falsely raw recipe equality.",
+  "policy_sha256": "97a542bfdf237f7680b6e865ca728e4263eb244b729a8b2b0751f1f4d028c765",
+  "configuration_overlay": {
+    "format": 1,
+    "scope": "Diagnostic-only baseline root Meson runnable-binary/GIR compatibility; both baseline modes, no production source change; accepted baseline immutable.",
+    "baseline_commit": "e25a94e21efca6e6604ddac6f15570c049f421e7",
+    "current_commit": "b671825309326bdb55571652e43ab78cc83fd92d",
+    "path": "meson.build",
+    "baseline_before_sha256": "6cbbc986cae81fcbcd3234e70eac91d96ffa2a254ad8c1b0e56f64f19325959f",
+    "baseline_after_sha256": "83d371852ebeeede92caee7e0280f35dfc28a2a05cc8af6d00a84b67177d5b0f",
+    "current_unchanged_sha256": "74358058b211605bcd3fcb0e08df60722728196b93102799bc27ec0500329ea5",
+    "edits": [
+      {
+        "before": "if meson.can_run_host_binaries() and have_gobject_introspection\n  if enable_console_bin\n    gimp_real_exe = gimpconsole_exe\n  else\n    gimp_real_exe = gimpmain_exe\n  endif\n  gimp_exe_depends = [gimp_real_exe, libgimp_gir, libgimpui_gir] + plugin_custom_targets\n",
+        "after": "# Runnable in-build binaries do not require GIR generation, which is disabled\n# for sanitizer builds and some cross-builds with an executable wrapper.\nif meson.can_run_host_binaries()\n  if enable_console_bin\n    gimp_real_exe = gimpconsole_exe\n  else\n    gimp_real_exe = gimpmain_exe\n  endif\n  gimp_exe_depends = [gimp_real_exe] + plugin_custom_targets\n  if have_gobject_introspection\n    gimp_exe_depends += [libgimp_gir, libgimpui_gir]\n  endif\n"
+      },
+      {
+        "before": "    gimp_exe_depends += [patched_libgimp_gir, patched_libgimpui_gir]\n\n    gimp_run_env.set('GIMP_GI_DIR', gi.get_variable('libdir'))\n",
+        "after": "    if have_gobject_introspection\n      gimp_exe_depends += [patched_libgimp_gir, patched_libgimpui_gir]\n\n      gimp_run_env.set('GIMP_GI_DIR', gi.get_variable('libdir'))\n    endif\n"
+      }
+    ],
+    "qualification": "Baseline production source revision retained, but root build metadata deliberately overlaid. No claim of unmodified baseline build metadata; current already contains identical compatibility semantics."
+  },
+  "diagnostic_scope": "Fix false compiler/linker classifications with anchored tool headers; exact public native-GIMP missing/error templates export fixed enums only. No free-form identifiers, paths, prose or environment exported.",
+  "validation": "Exact real Git source bytes transformed in memory by two independently reviewed substitutions;15 source/filesystem synthetic tests, broader contract suite. Native Meson executable/module unavailable locally: NO actual Meson configure/compiler/GUI proof. Hosted behavior pending.",
+  "unchanged": "Sanitizer settings,14 runs/deadlines, dependency policy, acceptance jobs/gates, observer sources, workflow, production sources and blocked babl unchanged. Separate run40 common canvas mask failure not integrated here.",
+  "files": {
+    "run40-source-diagnosis.json": "1229d040e7226e28135472d272039a73eefc7034b230634381d9af1a19309dea",
+    "run40-baseline-sanitizer-diagnostic.json": "df49bd35e220c4342624522a0c95edd5ceb9cf0a08600012c454defdd4bb1f2a",
+    "baseline-meson-compatibility.patch": "304b42c538bb2671f48a2dc349ba60c716c35357cd8d1100e3a1d493ae6baec1"
+  }
+}

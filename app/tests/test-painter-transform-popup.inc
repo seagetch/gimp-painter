@@ -49,7 +49,26 @@ transform_popup_action_clear (TransformPopupAction *state)
 {
   g_clear_object (&state->widget); g_clear_object (&state->gui); g_clear_object (&state->tool);
 }
-static void transform_popup_wait_stable_geometry (GtkWidget *widget);
+static void transform_popup_wait_stable_geometry_observed (GtkWidget *widget,
+                                                           const gchar *caller,
+                                                           guint line);
+#define transform_popup_wait_stable_geometry(widget) \
+  transform_popup_wait_stable_geometry_observed ((widget), __func__, __LINE__)
+
+static void
+transform_popup_fit_shell (GimpDisplayShell *shell)
+{
+  GtkWidget *top = gtk_widget_get_toplevel (GTK_WIDGET (shell));
+  GdkMonitor *monitor = gdk_display_get_monitor_at_window (gtk_widget_get_display (top),
+                                                         gtk_widget_get_window (top));
+  GdkRectangle bounds;
+  g_assert_nonnull (monitor); gdk_monitor_get_geometry (monitor, &bounds);
+  /* Maximize needs a WM. Fit the real window on the actual logical monitor
+   * before tool selection can create/snapshot an auto-overlay operation UI. */
+  gtk_window_resize (GTK_WINDOW (top), MAX (1, bounds.width - 40), MAX (1, bounds.height - 80));
+  gtk_window_move (GTK_WINDOW (top), bounds.x, bounds.y);
+  rectangle_popup_settle ();
+}
 
 static gboolean
 transform_popup_require_x11_input (void)
@@ -62,6 +81,8 @@ transform_popup_require_x11_input (void)
 }
 
 #ifdef GDK_WINDOWING_X11
+static RectanglePopupInput transform_popup_input (void);
+
 static void
 transform_popup_physical_center (GtkWidget *widget, gint *x, gint *y)
 {
@@ -74,6 +95,55 @@ transform_popup_physical_center (GtkWidget *widget, gint *x, gint *y)
   /* GTK/GDK positions are logical pixels; XTest consumes physical pixels. */
   gint scale = gdk_window_get_scale_factor (gtk_widget_get_window (top));
   *x = (root_x + local_x) * scale; *y = (root_y + local_y) * scale;
+}
+
+static void
+transform_popup_assert_pointer_target (GtkWidget *widget)
+{
+  GdkDisplay *display = gtk_widget_get_display (widget);
+  GdkDevice *pointer = gdk_seat_get_pointer (gdk_display_get_default_seat (display));
+  GdkWindow *root = gdk_screen_get_root_window (gtk_widget_get_screen (widget));
+  GdkWindow *hit;
+  gpointer owner = NULL;
+  gint x, y, px, py, wx, wy;
+  gint scale = gtk_widget_get_scale_factor (widget);
+  transform_popup_physical_center (widget, &x, &y);
+  x /= scale; y /= scale;
+  gdk_device_get_position (pointer, NULL, &px, &py);
+  hit = gdk_device_get_window_at_position (pointer, &wx, &wy);
+  if (hit) gdk_window_get_user_data (hit, &owner);
+  g_test_message ("Native pointer target=%s:%s expected=%d/%d actual=%d/%d hit=%s:%s grab=%s",
+                  G_OBJECT_TYPE_NAME (widget), gtk_widget_get_name (widget), x, y, px, py,
+                  GTK_IS_WIDGET (owner) ? G_OBJECT_TYPE_NAME (owner) : "none",
+                  GTK_IS_WIDGET (owner) ? gtk_widget_get_name (owner) : "none",
+                  gtk_grab_get_current () ? G_OBJECT_TYPE_NAME (gtk_grab_get_current ()) : "none");
+  g_assert_true (gtk_widget_get_mapped (widget)); g_assert_true (gtk_widget_is_sensitive (widget));
+  g_assert_cmpint (x, >=, 0); g_assert_cmpint (y, >=, 0);
+  g_assert_cmpint (x, <, gdk_window_get_width (root));
+  g_assert_cmpint (y, <, gdk_window_get_height (root));
+  g_assert_nonnull (hit); g_assert_true (gdk_window_is_viewable (hit));
+  g_assert_true (GTK_IS_WIDGET (owner));
+  g_assert_true (owner == widget || gtk_widget_is_ancestor (GTK_WIDGET (owner), widget));
+  g_assert_cmpint (px, ==, x); g_assert_cmpint (py, ==, y);
+}
+
+static void
+transform_popup_park_pointer (GimpDisplayShell *shell)
+{
+  GtkWidget *top = gtk_widget_get_toplevel (GTK_WIDGET (shell));
+  GdkDisplay *display = gtk_widget_get_display (top);
+  GdkMonitor *monitor = gdk_display_get_monitor_at_window (display, gtk_widget_get_window (top));
+  GdkRectangle bounds;
+  RectanglePopupInput input = transform_popup_input ();
+  gdk_monitor_get_geometry (monitor, &bounds);
+  gint scale = gtk_widget_get_scale_factor (top);
+  /* A first floating operation dialog may legitimately use WIN_POS_MOUSE.
+   * Do not inherit the preceding test's pointer over the Details entry. */
+  g_assert_true (input.motion (gdk_x11_display_get_xdisplay (display), -1,
+                              (bounds.x + bounds.width - 8) * scale,
+                              (bounds.y + bounds.height - 8) * scale, 0));
+  gdk_display_flush (display); rectangle_popup_settle ();
+  g_module_close (input.module);
 }
 
 static void
@@ -98,6 +168,7 @@ transform_popup_click_center (RectanglePopupInput *input, GtkWidget *widget)
     transform_popup_physical_center (widget, &updated_x, &updated_y);
     g_assert_cmpint (updated_x, ==, x); g_assert_cmpint (updated_y, ==, y);
   }
+  transform_popup_assert_pointer_target (widget);
   input->button (native, 1, TRUE, 0);
   gdk_display_flush (display); rectangle_popup_settle ();
   input->button (native, 1, FALSE, 0);
@@ -218,10 +289,20 @@ transform_popup_canvas_button (GimpDisplayShell *shell, GimpToolOptions *options
 }
 
 typedef struct {
+  gint64 elapsed;
+  GtkAllocation allocation;
+  gint left, top;
+  guint frame, stable;
+} TransformPopupLayoutObservation;
+
+typedef struct {
   GtkWidget *button;
   GtkAllocation allocation;
   gint left, top;
-  guint frames, stable;
+  guint frames, stable, changes;
+  gint64 started;
+  /* Bounded last-eight ring; no logging inside the frame callback. */
+  TransformPopupLayoutObservation observations[8];
 } TransformPopupLayout;
 
 static void
@@ -234,8 +315,17 @@ transform_popup_after_paint (GdkFrameClock *clock, gpointer data)
       allocation.x == layout->allocation.x && allocation.y == layout->allocation.y &&
       allocation.width == layout->allocation.width && allocation.height == layout->allocation.height)
     ++layout->stable;
-  else layout->stable = 0;
+  else {
+    if (layout->frames) ++layout->changes;
+    layout->stable = 0;
+  }
   layout->allocation = allocation; layout->left = left; layout->top = top; ++layout->frames;
+  TransformPopupLayoutObservation *observation =
+    &layout->observations[(layout->frames - 1) % G_N_ELEMENTS (layout->observations)];
+  observation->elapsed = g_get_monotonic_time () - layout->started;
+  observation->allocation = allocation;
+  observation->left = left; observation->top = top;
+  observation->frame = layout->frames; observation->stable = layout->stable;
   if (layout->stable < 3) {
     gtk_widget_queue_draw (layout->button);
     gdk_frame_clock_request_phase (clock, GDK_FRAME_CLOCK_PHASE_AFTER_PAINT);
@@ -245,6 +335,8 @@ transform_popup_after_paint (GdkFrameClock *clock, gpointer data)
 static void
 transform_popup_reveal_button (GtkWidget *button)
 {
+  /* Read viewport/adjustment coordinates only after the initial real layout. */
+  transform_popup_wait_stable_geometry (button);
   GtkWidget *scroll = gtk_widget_get_ancestor (button, GTK_TYPE_SCROLLED_WINDOW);
   if (scroll) {
     GtkWidget *viewport = gtk_bin_get_child (GTK_BIN (scroll));
@@ -259,23 +351,201 @@ transform_popup_reveal_button (GtkWidget *button)
   transform_popup_wait_stable_geometry (button);
 }
 
+/* Passive, bounded timing probes. Weak pointers avoid retaining any widget.
+ * Draw's TRUE accumulator can suppress an after handler: unmatched entries
+ * are reported, never interpreted as a measured draw duration. */
+typedef struct {
+  guint probe;
+  gboolean entering;
+  gint64 elapsed;
+} TransformPopupTimingEvent;
+
+typedef struct _TransformPopupTiming TransformPopupTiming;
+typedef struct {
+  TransformPopupTiming *timing;
+  GObject *object;
+  const gchar *label;
+  gulong before, after;
+  guint signal;
+  guint index, entries, exits, depth, orphan_exits;
+  gint64 started, total, longest;
+} TransformPopupTimingProbe;
+
+struct _TransformPopupTiming {
+  gint64 started;
+  guint events;
+  TransformPopupTimingEvent ring[32];
+  TransformPopupTimingProbe probes[5];
+};
+
 static void
-transform_popup_wait_stable_geometry (GtkWidget *button)
+transform_popup_timing_record (TransformPopupTimingProbe *probe,
+                               gboolean entering)
+{
+  TransformPopupTiming *timing = probe->timing;
+  gint64 now = g_get_monotonic_time ();
+  TransformPopupTimingEvent *event = &timing->ring[timing->events++ % G_N_ELEMENTS (timing->ring)];
+  event->probe = probe->index; event->entering = entering;
+  event->elapsed = now - timing->started;
+  if (entering) {
+    ++probe->entries;
+    if (!probe->depth++) probe->started = now;
+  } else {
+    ++probe->exits;
+    if (!probe->depth) ++probe->orphan_exits;
+    else if (!--probe->depth) {
+      gint64 duration = now - probe->started;
+      probe->total += duration; probe->longest = MAX (probe->longest, duration);
+    }
+  }
+}
+
+/* An emission hook precedes already-connected normal handlers; an ordinary
+ * connect() here could miss GTK's earlier paint handler entirely. */
+static gboolean
+transform_popup_timing_enter (GSignalInvocationHint *hint, guint count,
+                              const GValue *values, gpointer data)
+{
+  TransformPopupTimingProbe *probe = data;
+  (void) hint;
+  if (count && probe->object == g_value_get_object (&values[0]))
+    transform_popup_timing_record (probe, TRUE);
+  return TRUE;
+}
+
+static gboolean
+transform_popup_timing_draw_after (GtkWidget *widget, cairo_t *cr, gpointer data)
+{
+  (void) widget; (void) cr;
+  transform_popup_timing_record (data, FALSE); return FALSE;
+}
+
+static void
+transform_popup_timing_phase_after (GdkFrameClock *clock, gpointer data)
+{
+  (void) clock; transform_popup_timing_record (data, FALSE);
+}
+
+static void
+transform_popup_timing_connect (TransformPopupTiming *timing, guint index,
+                                GObject *object, const gchar *label,
+                                const gchar *signal, gboolean draw)
+{
+  TransformPopupTimingProbe *probe = &timing->probes[index];
+  probe->timing = timing; probe->index = index; probe->label = label;
+  probe->object = object;
+  if (!object) return;
+  g_object_add_weak_pointer (object, (gpointer *) &probe->object);
+  probe->signal = g_signal_lookup (signal, G_OBJECT_TYPE (object));
+  GSignalQuery query = {0};
+  g_signal_query (probe->signal, &query);
+  if (!query.signal_id || (query.signal_flags & G_SIGNAL_NO_HOOKS)) return;
+  probe->before = g_signal_add_emission_hook (probe->signal, 0,
+                                             transform_popup_timing_enter, probe, NULL);
+  if (!probe->before) return;
+  probe->after = g_signal_connect_after (object, signal,
+    draw ? G_CALLBACK (transform_popup_timing_draw_after) : G_CALLBACK (transform_popup_timing_phase_after), probe);
+}
+
+static void
+transform_popup_timing_finish (TransformPopupTiming *timing, guint ordinal,
+                               gboolean failed)
+{
+  for (guint i = 0; i < G_N_ELEMENTS (timing->probes); ++i) {
+    TransformPopupTimingProbe *probe = &timing->probes[i];
+    if (probe->before) g_signal_remove_emission_hook (probe->signal, probe->before);
+    if (probe->object) {
+      if (probe->after) g_signal_handler_disconnect (probe->object, probe->after);
+      g_object_remove_weak_pointer (probe->object, (gpointer *) &probe->object);
+    }
+    if (failed)
+      g_test_message ("Geometry timing wait=%u probe=%s hooked=%d entries=%u exits=%u unmatched=%u orphan-exits=%u total-us=%" G_GINT64_FORMAT " longest-us=%" G_GINT64_FORMAT,
+                      ordinal, probe->label, probe->before != 0, probe->entries, probe->exits, probe->depth,
+                      probe->orphan_exits, probe->total, probe->longest);
+  }
+  if (failed) {
+    guint count = MIN (timing->events, G_N_ELEMENTS (timing->ring));
+    for (guint i = timing->events - count; i < timing->events; ++i) {
+      TransformPopupTimingEvent *event = &timing->ring[i % G_N_ELEMENTS (timing->ring)];
+      g_test_message ("Geometry timing wait=%u probe=%s event=%s elapsed-us=%" G_GINT64_FORMAT,
+                      ordinal, timing->probes[event->probe].label,
+                      event->entering ? "enter" : "exit", event->elapsed);
+    }
+  }
+}
+
+static void
+transform_popup_wait_stable_geometry_observed (GtkWidget *button,
+                                               const gchar *caller,
+                                               guint line)
 {
   /* A drained idle queue is not a completed GTK layout/paint frame. Require
    * three successive post-paint observations with unchanged real geometry
    * before a user-equivalent click; never compensate with pixel tolerance. */
+  static guint wait_ordinal = 0;
+  guint ordinal = ++wait_ordinal, iterations = 0;
+  gint64 longest_iteration = 0;
+  gboolean initial_mapped = gtk_widget_get_mapped (button);
+  gboolean initial_realized = gtk_widget_get_realized (button);
+  GdkWindow *initial_window = gtk_widget_get_window (button);
+  gboolean initial_viewable = initial_window && gdk_window_is_viewable (initial_window);
   TransformPopupLayout layout = {0}; layout.button = button;
+  layout.started = g_get_monotonic_time ();
   GdkFrameClock *clock = gtk_widget_get_frame_clock (button); g_assert_nonnull (clock);
+  TransformPopupTiming timing = {0}; timing.started = layout.started;
+  /* Observe only the target's first view, not every unrelated application view.
+   * Signal handlers only timestamp; no drawing, allocation or logging in them. */
+  GtkWidget *view = NULL;
+  GPtrArray *targets = g_ptr_array_new ();
+  gather (button, targets);
+  for (guint i = 0; i < targets->len && !view; ++i)
+    if (GIMP_IS_VIEW (g_ptr_array_index (targets, i))) view = g_ptr_array_index (targets, i);
+  g_ptr_array_unref (targets);
+  transform_popup_timing_connect (&timing, 0, G_OBJECT (gtk_widget_get_toplevel (button)),
+                                  "toplevel-draw", "draw", TRUE);
+  transform_popup_timing_connect (&timing, 1, view ? G_OBJECT (view) : NULL,
+                                  "target-view-draw", "draw", TRUE);
+  transform_popup_timing_connect (&timing, 2, G_OBJECT (clock), "frame-update", "update", FALSE);
+  transform_popup_timing_connect (&timing, 3, G_OBJECT (clock), "frame-layout", "layout", FALSE);
+  transform_popup_timing_connect (&timing, 4, G_OBJECT (clock), "frame-paint", "paint", FALSE);
   gulong handler = g_signal_connect (clock, "after-paint", G_CALLBACK (transform_popup_after_paint), &layout);
   gdk_frame_clock_begin_updating (clock);
   gtk_widget_queue_draw (button);
   gdk_frame_clock_request_phase (clock, GDK_FRAME_CLOCK_PHASE_AFTER_PAINT);
   gint64 deadline = g_get_monotonic_time () + 3 * G_TIME_SPAN_SECOND;
   while (layout.stable < 3 && g_get_monotonic_time () < deadline) {
-    g_main_context_iteration (NULL, FALSE); g_usleep (1000);
+    gint64 iteration_started = g_get_monotonic_time ();
+    g_main_context_iteration (NULL, FALSE);
+    longest_iteration = MAX (longest_iteration, g_get_monotonic_time () - iteration_started);
+    ++iterations;
+    g_usleep (1000);
   }
+  gint64 elapsed = g_get_monotonic_time () - layout.started;
   gdk_frame_clock_end_updating (clock); g_signal_handler_disconnect (clock, handler);
+  GdkWindow *final_window = gtk_widget_get_window (button);
+  g_test_message ("Geometry wait=%u caller=%s:%u elapsed-us=%" G_GINT64_FORMAT
+                  " iterations=%u callbacks=%u stable=%u changes=%u longest-dispatch-us=%" G_GINT64_FORMAT
+                  " initial-mapped/realized/viewable=%d/%d/%d final-mapped/realized/viewable=%d/%d/%d same-clock=%d",
+                  ordinal, caller, line, elapsed, iterations, layout.frames, layout.stable,
+                  layout.changes, longest_iteration,
+                  initial_mapped, initial_realized, initial_viewable,
+                  gtk_widget_get_mapped (button), gtk_widget_get_realized (button),
+                  final_window && gdk_window_is_viewable (final_window),
+                  gtk_widget_get_frame_clock (button) == clock);
+  if (layout.stable < 3) {
+    guint count = MIN (layout.frames, G_N_ELEMENTS (layout.observations));
+    for (guint i = layout.frames - count; i < layout.frames; ++i) {
+      const TransformPopupLayoutObservation *observation =
+        &layout.observations[i % G_N_ELEMENTS (layout.observations)];
+      g_test_message ("Geometry wait=%u frame=%u elapsed-us=%" G_GINT64_FORMAT
+                      " stable=%u origin=%d/%d allocation=%d/%d %dx%d",
+                      ordinal, observation->frame, observation->elapsed, observation->stable,
+                      observation->left, observation->top,
+                      observation->allocation.x, observation->allocation.y,
+                      observation->allocation.width, observation->allocation.height);
+    }
+  }
+  transform_popup_timing_finish (&timing, ordinal, layout.stable < 3);
   g_assert_cmpuint (layout.stable, >=, 3);
   g_test_message ("Stable target frames=%u origin=%d/%d allocation=%d/%d %dx%d",
     layout.frames, layout.left, layout.top, layout.allocation.x, layout.allocation.y,
@@ -362,6 +632,10 @@ transform_popup_actual_entry_baseline (gconstpointer data)
   g_object_get (gimp->config, "single-window-mode", &single, NULL);
   g_assert_true (single);
   GimpDisplayShell *shell = new_shell ();
+  transform_popup_fit_shell (shell);
+#ifdef GDK_WINDOWING_X11
+  transform_popup_park_pointer (shell);
+#endif
   GimpToolInfo *tool = info (tool_name);
   GimpToolOptions *options = tool->tool_options;
   GtkWidget *dock = gimp_tools_get_tool_options_gui (options);
@@ -385,10 +659,14 @@ transform_popup_actual_entry_baseline (gconstpointer data)
   dock_parent = gtk_widget_get_parent (dock);
   GtkWidget *button = transform_popup_canvas_button (shell, options);
   const gchar *capture = g_getenv ("GIMP_TRANSFORM_POPUP_CAPTURE");
-  if (capture) {
-    gtk_window_maximize (GTK_WINDOW (gtk_widget_get_toplevel (button)));
-    gint64 until = g_get_monotonic_time () + G_TIME_SPAN_SECOND;
-    while (g_get_monotonic_time () < until) { g_main_context_iteration (NULL, FALSE); g_usleep (1000); }
+  if (action.gui) {
+    GtkWidget *dialog = gimp_tool_gui_get_dialog (action.gui);
+    GtkAllocation allocation; gtk_widget_get_allocation (dialog, &allocation);
+    gint x = 0, y = 0;
+    if (gtk_widget_get_realized (dialog)) gdk_window_get_origin (gtk_widget_get_window (dialog), &x, &y);
+    g_test_message ("Transform operation overlay=%d visible=%d dialog=%s origin=%d/%d size=%dx%d",
+                    gimp_tool_gui_get_overlay (action.gui), action.dialog_visible,
+                    G_OBJECT_TYPE_NAME (dialog), x, y, allocation.width, allocation.height);
   }
   g_object_set (options, "composited-preview", FALSE, "show-preview", TRUE, NULL); drain ();
   GtkWidget *actual = transform_popup_open_button (button); g_object_ref (actual);
@@ -484,6 +762,8 @@ transform_popup_native_enum_menu (gconstpointer data)
   g_assert_true (g_module_symbol (input.module, "XTestFakeButtonEvent", (gpointer *) &input.button));
   g_assert_true (g_module_symbol (input.module, "XTestFakeKeyEvent", (gpointer *) &input.key));
   GimpDisplayShell *shell = new_shell ();
+  transform_popup_fit_shell (shell);
+  transform_popup_park_pointer (shell);
   GimpToolInfo *tool = info ("gimp-rotate-tool");
   GimpToolOptions *options = tool->tool_options;
   gint original; g_object_get (options, property, &original, NULL);

@@ -1,0 +1,55 @@
+{
+  "kind": "CAPTURED_REAL_ASSERTION_STREAM_REPLAY_NOT_FULL_NATIVE_CONTROL_ACCEPTANCE",
+  "actual_stdout_stderr_unmodified": true,
+  "source_evidence_sha256": {
+    "unchanged.json": "ae47aa0cb997500c4f6e8bd6be6f222827c3795872d0de496865f178b101e0ef",
+    "provider.json": "306308077ca324b21b28d1fbbaa0b209d95f6c0a975b23e53b46a12605141c44"
+  },
+  "old_helper_sha256": "13db1f93c6c40a7f8cff9aaf20937e1a4a943ca0bf5ee0abdae81d683351270c",
+  "fixed_helper_sha256": "fda1bfc9df9ce30476aa238b7ecffb4e56642529d09c621b7b5701c28222ecd3",
+  "old_checker": {
+    "format": 1,
+    "kind": "frame-old-provider-case",
+    "control_passed": false,
+    "negative_control": true,
+    "acceptance_eligible": false,
+    "errors": [
+      "Wrong/missing exact lifetime assertion",
+      "Wrong/missing exact lifetime assertion",
+      "Wrong or multiple failing TAP leaf",
+      "Unrelated ERROR diagnostic",
+      "Unrelated ERROR diagnostic"
+    ],
+    "raw_environment_exported": false,
+    "selected_case": "/gimp-frame-style/unchanged",
+    "test": {
+      "name": "gimp:painter-negative-control / frame-style-old-provider",
+      "result": "EXPECTEDFAIL",
+      "returncode": -6,
+      "duration": 0.2586824893951416,
+      "stdout": "TAP version 14\n# random seed: R02S7657dfcf57c3bb5958f80be414e5f13d\n# Start of gimp-frame-style tests\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for \u2018gio-vfs\u2019\nnot ok /gimp-frame-style/unchanged - LibGimpWidgets:ERROR:../source/libgimpwidgets/test-frame-style-idempotence.c:69:assert_unchanged_update: assertion failed (count == 0): (3 == 0)\nBail out!\n",
+      "stderr": "**\nLibGimpWidgets:ERROR:../source/libgimpwidgets/test-frame-style-idempotence.c:69:assert_unchanged_update: assertion failed (count == 0): (3 == 0)\n"
+    }
+  },
+  "fixed_checker": {
+    "format": 1,
+    "kind": "frame-old-provider-case",
+    "control_passed": true,
+    "negative_control": true,
+    "acceptance_eligible": false,
+    "errors": [],
+    "raw_environment_exported": false,
+    "selected_case": "/gimp-frame-style/unchanged",
+    "test": {
+      "name": "gimp:painter-negative-control / frame-style-old-provider",
+      "result": "EXPECTEDFAIL",
+      "returncode": -6,
+      "duration": 0.2586824893951416,
+      "stdout": "TAP version 14\n# random seed: R02S7657dfcf57c3bb5958f80be414e5f13d\n# Start of gimp-frame-style tests\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for \u2018gio-vfs\u2019\nnot ok /gimp-frame-style/unchanged - LibGimpWidgets:ERROR:../source/libgimpwidgets/test-frame-style-idempotence.c:69:assert_unchanged_update: assertion failed (count == 0): (3 == 0)\nBail out!\n",
+      "stderr": "**\nLibGimpWidgets:ERROR:../source/libgimpwidgets/test-frame-style-idempotence.c:69:assert_unchanged_update: assertion failed (count == 0): (3 == 0)\n"
+    }
+  },
+  "qualification": "Artifact preserves exact real Meson result/signal/stdout/stderr but omits raw command/env. Command reconstructed from proven provider binary and selected leaf; env empty synthetic for this parser-only replay. Raw original JSONL is referenced by hash in artifact but not uploaded. This is not complete raw-log/provenance/runtime-env replay and does not formally accept historical old control. Native new7 passing evidence remains separate.",
+  "observed_prefix": "LibGimpWidgets:ERROR:",
+  "native_source_or_gate_changes": "NONE; only literal optional log-domain prefix in intended assertion and TAP prefix extraction."
+}

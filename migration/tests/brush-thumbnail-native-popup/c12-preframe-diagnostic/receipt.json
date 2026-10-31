@@ -1,0 +1,21 @@
+{
+  "format": 1,
+  "status": "REVIEW_ONLY_POST_ACCEPTANCE_STACK_DIAGNOSTIC",
+  "base_commit": "31d6739e5f68cb2ae01b5ac1238c3c62d213e901",
+  "base_tree": "f7126aa5a2af8b639f411ab58908d2d72033ffca",
+  "run30_id": 40352564794,
+  "run30_status": "Normal candidateCanvas2 GREEN and exact historicalprovider2 RED established. Normal Brush21 bothscales/common passed. Sanitizer terminal pending at preparation; no final task acceptance.",
+  "native_test_sources": "Unchanged from C11. Canvas finalization, corrected observer, oldprovider and all acceptance checks unchanged.",
+  "controller_sha256": "f4cdbe01c466cf4629245956f6baf4461c3c9f0f6ab90f6fcd84ace266f13503",
+  "controller_review_manifest_sha256": "0270921425928ec2f056cedb422e0028865e5b003fd79b8a243f307b5d0aa64e",
+  "diagnostic_scope": "Separate sanitizer-matrix step after original runtime and integrity outcome. Strict same-build identity receipt, official Debian gdb install only afterward, new portrait profile, exact original binary/registration/environment settings, nonacceptance structured stack sampling only.",
+  "bounds": "Step10minutes; aptupdate60s/install180s plus10s kill grace; toolversion10s; controller180s,firstbreak90s,command10s,cleanup7s,8samples32frames. No retry/security workaround.",
+  "qualifications": "No local GDB/ptrace/native diagnostic execution. Static/synthetic controller and normal-child cleanup tests only. Firstmatchingwait thread is not necessarily failingphase; global/debugger pauses perturb timing. No leak verdict under ptrace; post-install dependency closure may differ.",
+  "files": {
+    "run30-canvas-positive-results.json": "0213b71c66d35288a3c65cecc26389a49cfb0406cae3bbd90e29529c1e0e78c2",
+    "run30-old-aggregate.json": "3c180bdd204e7a1f7c91c21d6a1ee2dde5045a4350f018bf4d3d1433a903ccc2",
+    "run30-old-provider.json": "2bfc79c1ef94e9f6354ed215fab901c5753b235c51833b18692302d559690e27",
+    "run30-old-realized-padding.json": "042e5f7359de40b7b9133148e756948313b7c3ba9b4e30d05d64cbe4dc349959",
+    "run30-old-unrealized-padding.json": "bb1dfa5285737c1e4ef86a1cbb0bb3ed08eca551a4d4138edb6c2822bab76451"
+  }
+}

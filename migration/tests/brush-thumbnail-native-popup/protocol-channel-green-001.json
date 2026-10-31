@@ -1,0 +1,208 @@
+{
+  "format": 1,
+  "status": "PASS_ALL12_NORMAL_PIPE_PROTOCOL_CASES",
+  "source": {
+    "status": "APPROVED_COMMON_CLEANUP_GREEN_INPUTS_FROZEN",
+    "previous_old_provider_sha256": "952244785f88a9bc4b755e8ea0771e17088601f8e8c822fe9b04fde9cd56a00d",
+    "approved_patch_sha256": "469c0ca647f10fd7c1b796e8ffa0c5d48981adca14b0bc9938b1db5737fdd61d",
+    "files": {
+      "libgimp/gimp.c": "ed8f3eebbe8359a4bfb63fea4e4609b44bec85ef1ec69f36e1527acf73d5f945",
+      "libgimp/tests/plug-in-protocol-fixture.c": "cac4ac1be51bbcdb94a626eea4993e394039077fb0ad81d1e598c26397819763",
+      "libgimp/tests/test-plug-in-protocol.c": "6062798d7125d9853cd146f672eda2f233a662c48f20ad9128d2274b144a404e"
+    },
+    "only_gimp_c_changed_from_red": true,
+    "source_hashes_unchanged_after_green": true
+  },
+  "normal_compile_exitcode": 0,
+  "normal_build_actions": "Recompiled libgimp/gimp.c and relinked actual shared provider; normal Meson symbol-file restat kept fixture/host binaries unchanged because ABI unchanged. No substitutions.",
+  "artifacts": {
+    "libgimp/libgimp-3.0.so.0.8.1": {
+      "sha256": "fc28e3e1e1c9c5ddc3b051efc2fe348233f483f60c86c248e510336c33103a24",
+      "bytes": 2215512
+    },
+    "libgimp/tests/plug-in-protocol-fixture": {
+      "sha256": "7a0010bad43def776fb1456f25aa82210d2494f27802c4c18c680d021bc6a06a",
+      "bytes": 42376
+    },
+    "libgimp/tests/test-plug-in-protocol": {
+      "sha256": "e0bce62086d68e7b30ba132cf2f780d36a8562f50c416d2d04220abdd4bfd60d",
+      "bytes": 100304
+    }
+  },
+  "red_artifact_sha256": {
+    "libgimp/libgimp-3.0.so.0.8.1": "95293175d91cc4a7e4617cae89ee400516df04038b7c1556c2736dcf8a1d49ec",
+    "libgimp/tests/plug-in-protocol-fixture": "7a0010bad43def776fb1456f25aa82210d2494f27802c4c18c680d021bc6a06a",
+    "libgimp/tests/test-plug-in-protocol": "e0bce62086d68e7b30ba132cf2f780d36a8562f50c416d2d04220abdd4bfd60d"
+  },
+  "meson_registrations_passed": 1,
+  "case_count": 12,
+  "case_ids": [
+    "/plug-in-protocol/query",
+    "/plug-in-protocol/init",
+    "/plug-in-protocol/host-quit",
+    "/plug-in-protocol/explicit-quit",
+    "/plug-in-protocol/success-open",
+    "/plug-in-protocol/success-close",
+    "/plug-in-protocol/error-open",
+    "/plug-in-protocol/error-close",
+    "/plug-in-protocol/failed-main-write",
+    "/plug-in-protocol/failed-main-write-recoverable",
+    "/plug-in-protocol/temporary-quit",
+    "/plug-in-protocol/temporary-main"
+  ],
+  "case_results": {
+    "query": {
+      "status": "PASS",
+      "expected_diagnostic_lines": 0,
+      "complete_child_diagnostics_match_existing_strict_contract": true,
+      "log_sha256": {
+        "query.events": "8e35c2cd3bf6641bdb0e2050b76932cbb2e6034a0ddacc1d9bea82a6ba57f7cf",
+        "query.observations": "733f9d8c2cf7152745fd8f73d053f79d98dc7356f04f0f77c42c2bc59c3e1d03",
+        "query.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "query.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "query.tail-wire": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+      }
+    },
+    "init": {
+      "status": "PASS",
+      "expected_diagnostic_lines": 0,
+      "complete_child_diagnostics_match_existing_strict_contract": true,
+      "log_sha256": {
+        "init.events": "8e35c2cd3bf6641bdb0e2050b76932cbb2e6034a0ddacc1d9bea82a6ba57f7cf",
+        "init.observations": "19b52dd4e35040380e03d0236f24d4c889029d1947458a3ca42edd86fa86f63f",
+        "init.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "init.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "init.tail-wire": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+      }
+    },
+    "host-quit": {
+      "status": "PASS",
+      "expected_diagnostic_lines": 0,
+      "complete_child_diagnostics_match_existing_strict_contract": true,
+      "log_sha256": {
+        "host-quit.events": "8e35c2cd3bf6641bdb0e2050b76932cbb2e6034a0ddacc1d9bea82a6ba57f7cf",
+        "host-quit.observations": "3cd36e6427b41ee336588029f3042d8594ff6510a5cd472ef40a4d32f3f52b5f",
+        "host-quit.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "host-quit.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "host-quit.tail-wire": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+      }
+    },
+    "explicit-quit": {
+      "status": "PASS",
+      "expected_diagnostic_lines": 0,
+      "complete_child_diagnostics_match_existing_strict_contract": true,
+      "log_sha256": {
+        "explicit-quit.events": "8e35c2cd3bf6641bdb0e2050b76932cbb2e6034a0ddacc1d9bea82a6ba57f7cf",
+        "explicit-quit.observations": "bea1aa2cd60913e4a1f4a45054a663106f1635c279de6547cd30ef3b1fff6eb9",
+        "explicit-quit.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "explicit-quit.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "explicit-quit.tail-wire": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+      }
+    },
+    "success-open": {
+      "status": "PASS",
+      "expected_diagnostic_lines": 0,
+      "complete_child_diagnostics_match_existing_strict_contract": true,
+      "log_sha256": {
+        "success-open.events": "8e35c2cd3bf6641bdb0e2050b76932cbb2e6034a0ddacc1d9bea82a6ba57f7cf",
+        "success-open.observations": "35cb5d36fc8f7936ba04d282da39cb6ba69e5e191489b50bf1d302c119fdc8ac",
+        "success-open.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "success-open.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "success-open.tail-wire": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "success-close": {
+      "status": "PASS",
+      "expected_diagnostic_lines": 0,
+      "complete_child_diagnostics_match_existing_strict_contract": true,
+      "log_sha256": {
+        "success-close.events": "8e35c2cd3bf6641bdb0e2050b76932cbb2e6034a0ddacc1d9bea82a6ba57f7cf",
+        "success-close.observations": "4f8b4b3acd22afd9ad083a98988ddbf9093ddbffba0f0919b1fa3dd0039c37c1",
+        "success-close.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "success-close.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "success-close.tail-wire": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "error-open": {
+      "status": "PASS",
+      "expected_diagnostic_lines": 0,
+      "complete_child_diagnostics_match_existing_strict_contract": true,
+      "log_sha256": {
+        "error-open.events": "8e35c2cd3bf6641bdb0e2050b76932cbb2e6034a0ddacc1d9bea82a6ba57f7cf",
+        "error-open.observations": "876255705bb82723c053bd18868bf51894d7a9e939f794b7ce48b6840d5ff154",
+        "error-open.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "error-open.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "error-open.tail-wire": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "error-close": {
+      "status": "PASS",
+      "expected_diagnostic_lines": 0,
+      "complete_child_diagnostics_match_existing_strict_contract": true,
+      "log_sha256": {
+        "error-close.events": "8e35c2cd3bf6641bdb0e2050b76932cbb2e6034a0ddacc1d9bea82a6ba57f7cf",
+        "error-close.observations": "ab73578871c39f061c1dc48ab87d97a79da2e1e2817a3b0adb766196705b8a8d",
+        "error-close.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "error-close.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "error-close.tail-wire": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "failed-main-write": {
+      "status": "PASS",
+      "expected_diagnostic_lines": 1,
+      "complete_child_diagnostics_match_existing_strict_contract": true,
+      "log_sha256": {
+        "failed-main-write.events": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "failed-main-write.observations": "16ec752913ea113fcf2541e2fdb86e69566752d895ba23748997ceada586a4f1",
+        "failed-main-write.stderr": "a92291bfe8ec472a1d7156ceeb930d70876bb812dbc4eef5c0e2248d58719b4c",
+        "failed-main-write.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "failed-main-write.tail-wire": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "failed-main-write-recoverable": {
+      "status": "PASS",
+      "expected_diagnostic_lines": 2,
+      "complete_child_diagnostics_match_existing_strict_contract": true,
+      "log_sha256": {
+        "failed-main-write-recoverable.events": "8e35c2cd3bf6641bdb0e2050b76932cbb2e6034a0ddacc1d9bea82a6ba57f7cf",
+        "failed-main-write-recoverable.observations": "68bebe46be7770cef89a81a6f11e608dda4dde6f60291394d9d40211a6b3e85e",
+        "failed-main-write-recoverable.stderr": "d0bbcb512f2e92bf969e9b0fce470f2e543263587e90bf701052b4a8b37bbd46",
+        "failed-main-write-recoverable.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "failed-main-write-recoverable.tail-wire": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "temporary-quit": {
+      "status": "PASS",
+      "expected_diagnostic_lines": 0,
+      "complete_child_diagnostics_match_existing_strict_contract": true,
+      "log_sha256": {
+        "temporary-quit.events": "8e35c2cd3bf6641bdb0e2050b76932cbb2e6034a0ddacc1d9bea82a6ba57f7cf",
+        "temporary-quit.observations": "af1b20f8ade02c37fc1355aaf97409df2c61de2d68a665dfc9ec5b526a5685eb",
+        "temporary-quit.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "temporary-quit.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "temporary-quit.tail-wire": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+      }
+    },
+    "temporary-main": {
+      "status": "PASS",
+      "expected_diagnostic_lines": 0,
+      "complete_child_diagnostics_match_existing_strict_contract": true,
+      "log_sha256": {
+        "temporary-main.events": "8e35c2cd3bf6641bdb0e2050b76932cbb2e6034a0ddacc1d9bea82a6ba57f7cf",
+        "temporary-main.observations": "7cee6b3828b8f20567b494f129c319f096bc4441065851bef8bf86141c9010b4",
+        "temporary-main.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "temporary-main.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "temporary-main.tail-wire": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  },
+  "failures": 0,
+  "skips": 0,
+  "timeouts": 0,
+  "query_init_postreturn_descriptor_checks": "Both fd3 and fd4 F_GETFD fail with EBADF after gimp_main returns, as asserted by final fixture; quit handshakes and clean exits retained.",
+  "transport": "POSIX pipes; no sockets or GUI",
+  "sanitizer_instrumentation": "none",
+  "scope": "Unsanitized deterministic lifecycle/FD closure and full existing pipe-protocol suite; not proof of LSan cleanliness, Brush GUI behavior or whole-project acceptance",
+  "raw_environment_exported": false,
+  "raw_environment_qualification": "Automatic raw Meson logs remain local. Portable proof files whitelist test result fields and complete stdout/stderr without environment maps."
+}

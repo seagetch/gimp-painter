@@ -1,0 +1,23 @@
+{
+  "status": "PASS_ORDINARY_FOUR_CASES",
+  "sources": {
+    "gimpprotocol.c": "661866318160e443cfe0d283c7ea2b2d4f6a13c840d3752cc262d845ece90137",
+    "gimpwire.c": "7a03ac6b5823a91599ea1fec64b77711bb404e853a4cdff10748af39b77b9cfe",
+    "test-choice-lifecycle.c": "46807f0fe5b7c64572da7be56855b2a41e23eb089c8fb990793b27bdd28ac8d3"
+  },
+  "library": {
+    "path": "/workspace/scratch/0015fc5d1a03/brush-choice-normal-build-20261026/libgimpbase-3.0.so.0.8.1",
+    "sha256": "5a0c4c75d0076ce63648832e1f98a68fbdc71e7d66dc22fb9ce79c107edb12f0"
+  },
+  "test": {
+    "path": "/workspace/scratch/0015fc5d1a03/brush-choice-normal-build-20261026/test-choice-lifecycle",
+    "sha256": "6facafae66fe2a89212645dacb891b8356f7ebeeb08976aed0696e19d5483262"
+  },
+  "loader": {
+    "path": "/lib64/ld-linux-x86-64.so.2",
+    "resolved": "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+    "sha256": "c8438e4fde1934e61c88311633f00949ff645d5c04cdb8671fa3d78164d2f307"
+  },
+  "scope": "Isolated normal build, two production objects replaced, twenty unchanged native objects reused. Four-case functional/finalization/truncation test only; not sanitizer leak proof, GUI, full build or publication.",
+  "prior_red": "/workspace/shared/gimp-common-layer-candidate-307-001/brush-integration-007/wire-choice-test-only/wire-truncated-choice/stdout.tap"
+}

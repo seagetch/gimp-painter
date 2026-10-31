@@ -1,0 +1,26 @@
+{
+  "format": 1,
+  "kind": "frame-old-provider-case",
+  "control_passed": false,
+  "negative_control": true,
+  "acceptance_eligible": false,
+  "errors": [
+    "Wrong/missing exact lifetime assertion",
+    "Wrong/missing exact lifetime assertion",
+    "Wrong or multiple failing TAP leaf",
+    "Unrelated ERROR diagnostic",
+    "Unrelated ERROR diagnostic"
+  ],
+  "raw_environment_exported": false,
+  "selected_case": "/gimp-frame-style/unchanged",
+  "test": {
+    "name": "gimp:painter-negative-control / frame-style-old-provider",
+    "result": "EXPECTEDFAIL",
+    "returncode": -6,
+    "duration": 0.2586824893951416,
+    "stdout": "TAP version 14\n# random seed: R02S7657dfcf57c3bb5958f80be414e5f13d\n# Start of gimp-frame-style tests\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for \u2018gio-vfs\u2019\nnot ok /gimp-frame-style/unchanged - LibGimpWidgets:ERROR:../source/libgimpwidgets/test-frame-style-idempotence.c:69:assert_unchanged_update: assertion failed (count == 0): (3 == 0)\nBail out!\n",
+    "stderr": "**\nLibGimpWidgets:ERROR:../source/libgimpwidgets/test-frame-style-idempotence.c:69:assert_unchanged_update: assertion failed (count == 0): (3 == 0)\n"
+  },
+  "log_path": "/__w/_temp/painter-brush-ci.lQxPI9Df/build/meson-logs/frame-old-unchanged.json",
+  "log_sha256": "2ec01cb95d6843ff983ff18166eb6488ec99ee692ef351a8a83a9d9b86c71d2d"
+}

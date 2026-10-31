@@ -1,0 +1,27 @@
+{
+  "status": "C18_REVIEW_ONLY_SEAL_MAP_PARTITION_REPAIR",
+  "cause": "C17 refresh duplicated six diagnostic input paths in both source and complete gate-bundle maps; unchanged seal guard correctly rejected overlap before builds. Hash checks alone did not establish partition validity.",
+  "repair": "Remove only redundant six source-map entries; all six exact hashes remain in complete bundle map. Guard and REQUIRED_SOURCE unchanged.",
+  "removed_source_duplicates": [
+    "tools/brush-ci/matched-preclick/PLAN.md",
+    "tools/brush-ci/matched-preclick/manifest.json",
+    "tools/brush-ci/matched-preclick/matched-preclick-phases.inc",
+    "tools/brush-ci/matched-preclick/meson.append",
+    "tools/brush-ci/matched-preclick/policy.json",
+    "tools/brush-ci/matched-preclick/test-matched-preclick.c"
+  ],
+  "retained_bundle_sha256": {
+    "tools/brush-ci/matched-preclick/PLAN.md": "6d05a4d4d08f2b4b17cddc93e3d64c1ba7f108cb1698c436ed0a66e45ea6791d",
+    "tools/brush-ci/matched-preclick/manifest.json": "88b8380a9debac84de29c4d92e99fb6276d35aa0c6be8e506bddc2a307baeb25",
+    "tools/brush-ci/matched-preclick/matched-preclick-phases.inc": "f2fcebbacdca5da6111c1e17599f6dbb2ee3e3e2e2f84cda14b45dc0aedf2665",
+    "tools/brush-ci/matched-preclick/meson.append": "668d95cb2700e567b1b9bdc39f4fb730242254af90a3e0b7abfc6cd47b1e9d65",
+    "tools/brush-ci/matched-preclick/policy.json": "8460cc0d0b10b896a98b4645b09cb8ef0c565a005ce81760af34eda71ca300c5",
+    "tools/brush-ci/matched-preclick/test-matched-preclick.c": "b363b43f8eb9d1eae6e37741c9690e8065eb40409e72b2c1eed84b0916ffdbd6"
+  },
+  "regression": "Actual checked-in map partition/full bundle plus six pins; synthetic exact overlap and self-reference rejection. Full-tree real seal CLI closure required, not just unit fixtures.",
+  "run36_errors_sha256": "c57f9506d2fec643a3afa140191c7186bd5460e9b179bb97d65e4f28039fc69c",
+  "old_full_tree_replay": "Unmocked exact C17 tree under private local commit and real accepted parent reproduces exit2 exact overlap with no outputs; local simulated hosted metadata, not hosted/native proof.",
+  "old_replay_result_sha256": "a13ad49002f8079599ddb66092b6727a9997ffc6bab429c6e71946c1f15bcfc6",
+  "corrected_full_tree_seal": "Required external prepublication proof of prospective and final activated tree; outputs cannot be embedded in the same self-referential tree.",
+  "acceptance": false
+}

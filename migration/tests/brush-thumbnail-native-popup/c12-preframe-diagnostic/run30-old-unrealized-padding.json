@@ -1,0 +1,20 @@
+{
+  "format": 1,
+  "kind": "canvas-old-provider-case",
+  "control_passed": true,
+  "negative_control": true,
+  "acceptance_eligible": false,
+  "errors": [],
+  "raw_environment_exported": false,
+  "selected_case": "/ownership/canvas/unrealized-padding",
+  "test": {
+    "name": "gimp:painter-negative-control / canvas-ownership-old-provider",
+    "result": "EXPECTEDFAIL",
+    "returncode": -6,
+    "duration": 0.5970973968505859,
+    "stdout": "TAP version 14\n# random seed: R02S9f3120d8c9223033c607d6d89adacba1\n# Start of ownership tests\n# Start of canvas tests\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for \u2018gio-vfs\u2019\nnot ok /ownership/canvas/unrealized-padding - ERROR:../source/app/tests/color-ownership/test-canvas.c:87:padding_lifetime: assertion failed (last_gone == 1): (0 == 1)\nBail out!\n",
+    "stderr": "**\nERROR:../source/app/tests/color-ownership/test-canvas.c:87:padding_lifetime: assertion failed (last_gone == 1): (0 == 1)\n"
+  },
+  "log_path": "/__w/_temp/painter-brush-ci.btVcK5Il/build/meson-logs/canvas-old-unrealized-padding.json",
+  "log_sha256": "10eb2255dc3ba11f0cb52f1a53b0b385d23f6101d8a0b91bf4e8e507bcd6a8cf"
+}

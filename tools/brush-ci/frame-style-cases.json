@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "test": "gimp-frame-style-idempotence",
+  "case_ids": [
+    "/gimp-frame-style/unchanged",
+    "/gimp-frame-style/different-weight",
+    "/gimp-frame-style/same-weight-extra-attribute",
+    "/gimp-frame-style/partial-range-bold",
+    "/gimp-frame-style/equal-list-different-instance",
+    "/gimp-frame-style/replacement-label",
+    "/gimp-frame-style/style-change"
+  ],
+  "scope": "Seven real GTK frame label-style regressions; exact whole binary, display required; no full Brush latency claim."
+}

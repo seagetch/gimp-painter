@@ -1,0 +1,48 @@
+{
+  "scope": "Actual system GLib no-op selector behavior with exact two source registrations; Meson-shaped wrappers for unchanged strict checker only. Not GIMP test execution or sanitizer evidence.",
+  "glib_version": "2.84.4",
+  "case_ids": [
+    "/ownership/display/parity",
+    "/ownership/renderer/public-smoke"
+  ],
+  "old_selector_exitcode": 0,
+  "old_executed_cases": 0,
+  "new_selector_exitcode": 0,
+  "new_executed_cases": 2,
+  "strict_old_rejected": true,
+  "strict_new_accepted": true,
+  "commands": [
+    {
+      "argv": [
+        "python3",
+        "-B",
+        "/workspace/scratch/0015fc5d1a03/brush-run27-selector-fix/candidate/tools/brush-ci/check_brush_ci.py",
+        "--log",
+        "/workspace/scratch/0015fc5d1a03/brush-run27-selector-fix/evidence/old-probe-meson-shaped.json",
+        "--case-manifest",
+        "/workspace/scratch/0015fc5d1a03/brush-run27-selector-fix/candidate/tools/brush-ci/display-renderer-cases.json",
+        "--common-checker",
+        "/workspace/scratch/0015fc5d1a03/brush-run27-selector-fix/candidate/tools/check_painter_ui_ci.py",
+        "--output",
+        "/workspace/scratch/0015fc5d1a03/brush-run27-selector-fix/evidence/old-probe-strict-result.json"
+      ],
+      "returncode": 1
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        "/workspace/scratch/0015fc5d1a03/brush-run27-selector-fix/candidate/tools/brush-ci/check_brush_ci.py",
+        "--log",
+        "/workspace/scratch/0015fc5d1a03/brush-run27-selector-fix/evidence/new-probe-meson-shaped.json",
+        "--case-manifest",
+        "/workspace/scratch/0015fc5d1a03/brush-run27-selector-fix/candidate/tools/brush-ci/display-renderer-cases.json",
+        "--common-checker",
+        "/workspace/scratch/0015fc5d1a03/brush-run27-selector-fix/candidate/tools/check_painter_ui_ci.py",
+        "--output",
+        "/workspace/scratch/0015fc5d1a03/brush-run27-selector-fix/evidence/new-probe-strict-result.json"
+      ],
+      "returncode": 0
+    }
+  ]
+}

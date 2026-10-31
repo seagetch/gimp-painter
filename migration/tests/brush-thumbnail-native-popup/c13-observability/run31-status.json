@@ -1,0 +1,10 @@
+{
+  "format": 1,
+  "acceptance_eligible": false,
+  "diagnostic_only": true,
+  "stage": "isolated-debugger-observation",
+  "diagnostic_step_exit": 1,
+  "original_driver_exit_unchanged": true,
+  "dependency_closure": "GDB installed after original acceptance; diagnostic system dependencies may differ.",
+  "qualification": "Debugger stops perturb timing; no leak verdict under ptrace. First matching wait thread is not necessarily failing phase."
+}

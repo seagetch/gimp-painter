@@ -1,0 +1,24 @@
+{
+  "format": 1,
+  "run_id": 40463029752,
+  "diagnostic_sha256": "df49bd35e220c4342624522a0c95edd5ceb9cf0a08600012c454defdd4bb1f2a",
+  "confirmed_fixed_program_lookup": {
+    "text": "Program gimp-console-3.0 gimp-3.0 found: NO",
+    "bytes": 43,
+    "sha256": "3640f68755d1df460dbdc853bbaf906562a57fe43f8db29379d29d714a084c64",
+    "matches_historical_tail": true
+  },
+  "source_branch": {
+    "baseline_commit": "e25a94e21efca6e6604ddac6f15570c049f421e7",
+    "gir_disabled": "libgimp/meson.build:501-502 for b_sanitize != none",
+    "incorrect_runnable_guard": "meson.build:1997 also requires GIR",
+    "missing_native_gimp_error": "meson.build:2075"
+  },
+  "final_error_hash": "cf66a227f282ae3ab802811567754964b106a7abddc18fc7a707fcbd6553f66c",
+  "final_error_bytes": 238,
+  "final_error_exact_match": false,
+  "known_relative_format_variants_checked": 60,
+  "qualification": "Fixed public program lookup line confirmed byte-for-byte by hash. Final error text not recovered; actual private random source-root prefix unavailable. No private path guessing or secret reconstruction. Source branch predicts the missing-native-GIMP error; not a verified compiler/linker failure.",
+  "classification_defect": "Old ld: regex matches meson.build:, generic case-insensitive error: also labels Meson ERROR as compiler. Counts not causal attribution.",
+  "native_tests": "NOT_RUN; local Meson executable/module unavailable."
+}

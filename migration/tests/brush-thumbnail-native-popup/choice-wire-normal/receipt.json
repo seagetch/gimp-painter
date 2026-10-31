@@ -1,0 +1,39 @@
+{
+  "format": 1,
+  "status": "ORDINARY_OLD_PROVIDER_RED_AND_FIXED_FOUR_CASE_GREEN",
+  "source_sha256": {
+    "libgimpbase/gimpprotocol.c": "661866318160e443cfe0d283c7ea2b2d4f6a13c840d3752cc262d845ece90137",
+    "libgimpbase/gimpwire.c": "7a03ac6b5823a91599ea1fec64b77711bb404e853a4cdff10748af39b77b9cfe",
+    "libgimpbase/test-choice-lifecycle.c": "46807f0fe5b7c64572da7be56855b2a41e23eb089c8fb990793b27bdd28ac8d3"
+  },
+  "old_provider_sha256": {
+    "libgimpbase/gimpchoice.c": "b40d9929d0b4758cd56667ffc1d33507172cdd2a3e156fb14be6f148d4172441",
+    "libgimpbase/gimpprotocol.c": "42b00612efd048ec5e0c1ae278ad1c6244d16bf018308c8685852017a93e07bc",
+    "libgimpbase/gimpwire.c": "3ddd68f2d5d8c4315a32026e0d13954b45cc1d97a1193d7cfd568af1e926a366",
+    "libgimpbase/meson.build": "77271d9df8a60438edf7d4d96918a75f4cd747dee27fe8c743c625b0bcac072a",
+    "libgimpbase/test-choice-lifecycle.c": "46807f0fe5b7c64572da7be56855b2a41e23eb089c8fb990793b27bdd28ac8d3"
+  },
+  "red": "Exact old provider short-read fails with SIGTRAP/-5 and fatal NULL-unref at byte137; ordinary roundtrip passes, which is not leak freedom.",
+  "green": "Four exact lifecycle cases pass, including every107 truncation offset137..243. Two production objects rebuilt; twenty native objects reused; ordinary normal library/test relink only.",
+  "limitations": "No full project rebuild, GUI or sanitizer proof. Strict original-provider LSan RED and repaired Choice4 sanitizer GREEN remain CI requirements. External babl leak unresolved; dependency lock unchanged.",
+  "files": {
+    "green/choice-four-cases.exitcode": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "green/choice-four-cases.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "green/choice-four-cases.stdout": "c08945abb1b35058342457ec6bdc1d5b110c7100ae1d5ba44459894027ea3251",
+    "green/commands.json": "8140383cb9968a737114d5a61c2480cb01a57c2caf6fcb8371f986dae136ace5",
+    "green/inputs.json": "963340ea1242a714e684e34966ebd43293a0727ddb78c7f26ff2671d1022304c",
+    "green/result.json": "24f85464cd1c54e00b79b725bff33d900f2d32d33f14cf24664e1cc17ebfee38",
+    "red/build-actions.json": "c90c766f3bdd2a4ecaadeedf631584f507a8c8df9393e7db19bc651e1fd4dbc3",
+    "red/normal-target-metadata.json": "2ac1443b8ce4d3706389a308a52b9b4bf0aff5810c04e2625bc5765aecebb27c",
+    "red/reviewed-native-compile-commands.json": "c85ee0bf6990f65b8a60a59a2740d8fa08fb9bb6d8a61aef68feb7c1487fc0ef",
+    "red/wire-choice-test-only-result.json": "890672f5d3bd6164163e314fbd8fff51f7df95cb75c817b456a63afce3bf56d2",
+    "red/wire-roundtrip/meson-proof.json": "9869844b90dc3a0c3f7eaff5b45e8f4c94c1487e5ca09f95586e15f484eb188d",
+    "red/wire-roundtrip/stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "red/wire-roundtrip/stdout.tap": "41c2b13d6293b766d6993d4b1fb4d3e32c2420473da1813ae5b4fca37b95144d",
+    "red/wire-roundtrip/test.exitcode": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "red/wire-truncated-choice/meson-proof.json": "c0301bb2a36cb09590d062b31bfae5995adcba7d84dcf95cc6b2af7837fece9b",
+    "red/wire-truncated-choice/stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "red/wire-truncated-choice/stdout.tap": "3439a13976be55ed947306f9dae582636c7dae3a82f99fddf219281223a43071",
+    "red/wire-truncated-choice/test.exitcode": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+  }
+}

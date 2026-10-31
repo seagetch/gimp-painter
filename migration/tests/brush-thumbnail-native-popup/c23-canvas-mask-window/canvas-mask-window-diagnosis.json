@@ -1,0 +1,54 @@
+{
+  "scope": "Read-only run40 diagnosis and isolated proposed patch; no native execution, no publication",
+  "runs": {
+    "38-40453721267": {
+      "commit": "da0c316b53a89637172513bbccffc82dd8bcbd99",
+      "tree": "205a00976e2edc1ef04c919b6fd0c72d9f6921a4",
+      "result": "OK",
+      "returncode": 0,
+      "tap_ok_count": 107,
+      "artifact_sha256": "36968158d9379037149d1084affb459dd395e7d19fcff1788023a4a89be3589b",
+      "generated_patch_bytes": 0,
+      "source_status_bytes": 0
+    },
+    "39-40458943813": {
+      "commit": "b820fa40666aad07a47f3e1c741590973b40f5d8",
+      "tree": "53bee46258097af07c31bb5275bfbae696de0c6b",
+      "result": "OK",
+      "returncode": 0,
+      "tap_ok_count": 107,
+      "artifact_sha256": "3cc6c28fa9afa9206a5c790697c0ebada71ea60b57cc754fffbbbeb7fc03ef79",
+      "generated_patch_bytes": 0,
+      "source_status_bytes": 0
+    },
+    "40-40463029752": {
+      "commit": "83137d6d37177147b9e8bc76ed7f98c3ffd0c1af",
+      "tree": "0fa647182ac11bbadb7b5634092c0975ee9ccffd",
+      "result": "FAIL",
+      "returncode": -5,
+      "tap_ok_count": 40,
+      "artifact_sha256": "1182a2b7173dfb3493f633f0dcb0f49239f3b48f693253489a8afe31c3df9800",
+      "generated_patch_bytes": 0,
+      "source_status_bytes": 0
+    }
+  },
+  "sha256_identical_c19_c20_c21": {
+    "app/tests/test-painter-canvas-ui.c": "6724e3e0a2cbe3a0ab73fb31a0b88c87a9727bce09d2779e3af9c8b2cff523dc",
+    "app/widgets/gimppainterlayertiles.cpp": "8c6addf0e246a1cb9800e3eb515f4af9797dabdd6b51e72a83c4ca2bc8d7ea6d",
+    "app/core/gimplayer.c": "318ab25e71247a368454dcf9093144cf2598db9d43b90ea6e5ef89ed8b88d1ef"
+  },
+  "source_comparison": {
+    "shared_native_files_compared_per_pair": 4412,
+    "c19_to_c20_changed": 0,
+    "c20_to_c21_changed": 0
+  },
+  "hypothesis": "Cached row.mask remains retained until G_PRIORITY_LOW refresh after mask-changed; model layer->mask is already NULL. A draw before refresh calls get_edit_mask based on stale row.mask. No observed failure backtrace is present.",
+  "patch": {
+    "path": "canvas-mask-window-fix.patch",
+    "sha256": "fd94c8b2532dd3b91846ca32a935110525a9c2afbff7ba4b38b8f42cda00dcb7",
+    "apply_check": "PASS against unmodified brush-c21-candidate",
+    "native_test": "NOT RUN: meson absent, pkg-config gtk+-3.0/gegl-0.4 failed"
+  },
+  "next_proof": "Hosted old-source immediate-snapshot RED and patched-source GREEN, then full107 canvas suite/adjacent guards without suppression.",
+  "accepted_baseline_source_identity": "e25a94e21efca6e6604ddac6f15570c049f421e7 and C21 identical Git blobs for test-painter-canvas-ui.c b10e1dceb0f33cdbea1889d9ef3470e76d6b1b71, gimppainterlayertiles.cpp 1f608135ccaa96f4404ab18e9090d9cbf20a47e4, gimplayer.c 42954f3f51495f22c1186ea1a0073c50612ae817"
+}

@@ -1,0 +1,15 @@
+{
+  "passed": true,
+  "errors": [],
+  "tests": [
+    {
+      "name": "gimp:libgimpwidgets / gimp-frame-style-idempotence",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 0.11789917945861816,
+      "stdout": "TAP version 14\n# random seed: R02S718f4279de394168a278b85d1590342e\n1..7\n# Start of gimp-frame-style tests\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for \u2018gio-vfs\u2019\nok 1 /gimp-frame-style/unchanged\nok 2 /gimp-frame-style/different-weight\nok 3 /gimp-frame-style/same-weight-extra-attribute\nok 4 /gimp-frame-style/partial-range-bold\nok 5 /gimp-frame-style/equal-list-different-instance\nok 6 /gimp-frame-style/replacement-label\nok 7 /gimp-frame-style/style-change\n# End of gimp-frame-style tests\n",
+      "stderr": null
+    }
+  ],
+  "raw_environment_exported": false
+}

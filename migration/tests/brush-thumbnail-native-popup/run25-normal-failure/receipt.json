@@ -1,0 +1,122 @@
+{
+  "candidate_commit": "b7760d05893b7bc7403b09f4400bf1b58ab6d189",
+  "run_id": 40253842742,
+  "normal_status": "FAILED_BOTH_SCALES_AFTER14_CASES",
+  "sanitizer_status": "PENDING_AT_THIS_OBSERVATION_NOT_ACCEPTED",
+  "results": {
+    "brush-scale1": {
+      "passed": false,
+      "returncode": -5,
+      "passed_case_count": 14,
+      "fatal": [
+        "not ok /brush-thumbnail-native-popup/noneditable-null - Gimp-Core-FATAL-CRITICAL: gimp_data_get_identifier: assertion 'private->internal || private->file != NULL || private->image != NULL' failed"
+      ],
+      "screenshot": null,
+      "receipt_sha256": "fdc1477b9ff287d8a327ece1e59db45a9ed25db57d71db4fb25f6eaf0dc9942e"
+    },
+    "brush-scale2": {
+      "passed": false,
+      "returncode": -5,
+      "passed_case_count": 14,
+      "fatal": [
+        "not ok /brush-thumbnail-native-popup/noneditable-null - Gimp-Core-FATAL-CRITICAL: gimp_data_get_identifier: assertion 'private->internal || private->file != NULL || private->image != NULL' failed"
+      ],
+      "screenshot": null,
+      "receipt_sha256": "8e1f17771fac76333ccf307a2564c13f56725832f60460064cd4d3a1e69f4d0c"
+    },
+    "brush-actual-entry-scale1": {
+      "passed": true,
+      "returncode": 0,
+      "passed_case_count": 1,
+      "fatal": [],
+      "screenshot": {
+        "passed": true,
+        "errors": [],
+        "image": {
+          "file": "brush-thumbnail-actual-entry-scale1.png",
+          "scale": 1,
+          "width": 1080,
+          "height": 1920,
+          "size_bytes": 128249,
+          "sha256": "f88eae5cb8459390226d75bd5daa574e41c464a702bc8fa1a2c7a685d3092e39"
+        },
+        "visual_inspection": "PENDING: decode/view real pixels; inspect controls, preview, grid and lower scroller"
+      },
+      "receipt_sha256": "3c9369e4373b7eaf20e0144198859e51321dbbea2ed9b30d6fa7aec9567f2fde"
+    },
+    "brush-actual-entry-scale2": {
+      "passed": true,
+      "returncode": 0,
+      "passed_case_count": 1,
+      "fatal": [],
+      "screenshot": {
+        "passed": true,
+        "errors": [],
+        "image": {
+          "file": "brush-thumbnail-actual-entry-scale2.png",
+          "scale": 2,
+          "width": 1080,
+          "height": 1920,
+          "size_bytes": 122082,
+          "sha256": "00b7a99a321a9ac9b217d8267d99b976b0d7fc2bbd265ea21894a61f2a0fae67"
+        },
+        "visual_inspection": "PENDING: decode/view real pixels; inspect controls, preview, grid and lower scroller"
+      },
+      "receipt_sha256": "0a93ee3385b8b2fdcf65c399817244a3d1eb0b2996e84ef90017ce5f1dc90f64"
+    },
+    "brush-lower-controls-scale1": {
+      "passed": true,
+      "returncode": 0,
+      "passed_case_count": 1,
+      "fatal": [],
+      "screenshot": {
+        "passed": true,
+        "errors": [],
+        "image": {
+          "file": "brush-thumbnail-lower-controls-scale1.png",
+          "scale": 1,
+          "width": 1080,
+          "height": 1920,
+          "size_bytes": 128399,
+          "sha256": "3e1b386c8d3a6ede1504780d50231b11c84b55550b97b5981fe409c9cacb0238",
+          "capture_case": "/brush-thumbnail-native-popup/lower-controls-actual-input",
+          "physical_outer_scroll_events": 0
+        },
+        "visual_inspection": "PENDING: decode/view real pixels; inspect controls, preview, grid and lower scroller"
+      },
+      "receipt_sha256": "b815fe9bce25fc525c966f245d652c659dabcc9021ddc82423dcbac53d2ed29f"
+    },
+    "brush-lower-controls-scale2": {
+      "passed": true,
+      "returncode": 0,
+      "passed_case_count": 1,
+      "fatal": [],
+      "screenshot": {
+        "passed": true,
+        "errors": [],
+        "image": {
+          "file": "brush-thumbnail-lower-controls-scale2.png",
+          "scale": 2,
+          "width": 1080,
+          "height": 1920,
+          "size_bytes": 121327,
+          "sha256": "9487dcd729c4bc661ab4fa2c660d6be27be2b3084d4cce051c51bcf32b784769",
+          "capture_case": "/brush-thumbnail-native-popup/lower-controls-actual-input",
+          "physical_outer_scroll_events": 0
+        },
+        "visual_inspection": "PENDING: decode/view real pixels; inspect controls, preview, grid and lower scroller"
+      },
+      "receipt_sha256": "2994cdeeac671a80e6a8ffc8b3449caca603ef896485bca85ed34e7c8808d2ea"
+    }
+  },
+  "mechanism": "Source-supported: registered synthetic raster lacks internal/file/image identity required by tag-cache gimp_data_get_identifier; mark only synthetic raster internal before registration. No backtrace was available; not proof of stock-dock lifetime corruption.",
+  "capture_status": "Four separate portrait captures and their focused cases passed metadata checks; pixel inspection not performed by this candidate worker. They are C6 evidence, not full21 or C7 acceptance.",
+  "files": {
+    "brush-scale2-results.json": "8e1f17771fac76333ccf307a2564c13f56725832f60460064cd4d3a1e69f4d0c",
+    "brush-actual-entry-scale1-results.json": "3c9369e4373b7eaf20e0144198859e51321dbbea2ed9b30d6fa7aec9567f2fde",
+    "brush-lower-controls-scale1-results.json": "b815fe9bce25fc525c966f245d652c659dabcc9021ddc82423dcbac53d2ed29f",
+    "brush-actual-entry-scale2-results.json": "0a93ee3385b8b2fdcf65c399817244a3d1eb0b2996e84ef90017ce5f1dc90f64",
+    "brush-lower-controls-scale2-results.json": "2994cdeeac671a80e6a8ffc8b3449caca603ef896485bca85ed34e7c8808d2ea",
+    "brush-scale1-results.json": "fdc1477b9ff287d8a327ece1e59db45a9ed25db57d71db4fb25f6eaf0dc9942e"
+  }
+}

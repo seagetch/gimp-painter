@@ -1,0 +1,45 @@
+{
+  "scope": "Hash-verified locked archives; metadata-only, no extraction/install/execute; NOT actual run37 offending-path proof",
+  "links": [
+    {
+      "archive": "libpython3.13-minimal_3.13.5-2+deb13u5_amd64.deb",
+      "archive_sha256": "a4aa6a9a8c77f87bfe545e1d14ec42c001d189ace90e3aa75deec882b39dee49",
+      "relative_link": "usr/lib/python3.13/sitecustomize.py",
+      "literal_target": "/etc/python3.13/sitecustomize.py",
+      "counterpart_kind": "regular",
+      "counterpart_sha256": "43d81125d92376b1a69d53a71126a041cc9a18d8080e92dea0a2ae23be138b1e"
+    },
+    {
+      "archive": "openssl_3.5.7-1~deb13u2_amd64.deb",
+      "archive_sha256": "4ff006f431d8c2e69fa736885a3b6e779f2448535f69dbde821d9f0ff87ad8ea",
+      "relative_link": "usr/lib/ssl/cert.pem",
+      "literal_target": "/etc/ssl/certs/ca-certificates.crt",
+      "counterpart_kind": "absent",
+      "counterpart_sha256": null
+    },
+    {
+      "archive": "openssl_3.5.7-1~deb13u2_amd64.deb",
+      "archive_sha256": "4ff006f431d8c2e69fa736885a3b6e779f2448535f69dbde821d9f0ff87ad8ea",
+      "relative_link": "usr/lib/ssl/certs",
+      "literal_target": "/etc/ssl/certs",
+      "counterpart_kind": "directory",
+      "counterpart_sha256": null
+    },
+    {
+      "archive": "openssl_3.5.7-1~deb13u2_amd64.deb",
+      "archive_sha256": "4ff006f431d8c2e69fa736885a3b6e779f2448535f69dbde821d9f0ff87ad8ea",
+      "relative_link": "usr/lib/ssl/openssl.cnf",
+      "literal_target": "/etc/ssl/openssl.cnf",
+      "counterpart_kind": "regular",
+      "counterpart_sha256": "a65a2cb9f4ee8ffdc7ef4f0ac600c0bdafb95b7b1ab457188ac610a62f5ad6b3"
+    },
+    {
+      "archive": "openssl_3.5.7-1~deb13u2_amd64.deb",
+      "archive_sha256": "4ff006f431d8c2e69fa736885a3b6e779f2448535f69dbde821d9f0ff87ad8ea",
+      "relative_link": "usr/lib/ssl/private",
+      "literal_target": "/etc/ssl/private",
+      "counterpart_kind": "directory",
+      "counterpart_sha256": null
+    }
+  ]
+}

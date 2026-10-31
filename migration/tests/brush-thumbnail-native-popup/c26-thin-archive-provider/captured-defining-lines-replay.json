@@ -1,0 +1,35 @@
+{
+  "acceptance_eligible": false,
+  "archive_or_elf_replayed": false,
+  "captured_archive_kind": "thin",
+  "captured_archive_member_name_sha256": "8a436f69deec354e4966f56c6c63bc0502e07b57d63df9d6132f743ef52861ff",
+  "captured_compiled_object_sha256": "5f065574278010b1a4d2bcd4f7c3d1efb6e6eb30128412d81fa1a717190804d2",
+  "full_raw_map_available": false,
+  "hash_scope_note": "ar_selected_member_sha256 is the UTF-8 member-name hash, not object bytes; C24 emitted witness only after unique member and ar-p bytes equality guards passed",
+  "input_sha256": {
+    "captured-provider.json": "1a445608e46d7044ee5e71ccadfb2b5787c9e7b981164788ce294b35753a4853",
+    "new-helper.py": "ed1315aa42af8b4f079ac6d81e2c3e32b69763ec0426d8803859a4f3e80ed0b2",
+    "old-helper.py": "79006a5d08962548a69999e8083a9c22885b4183f6ada7fc7015fcce1256f064",
+    "replay-script.py": "51b63cfe10c7dce8e306a539868ca2bbe7c41832eab59bda5e27264f03555aa4"
+  },
+  "native_executed": false,
+  "representation_replay_passed": true,
+  "results": {
+    "canvas-mask-fixed-provider": {
+      "captured_map_sha256": "49fa825e7754bb450cda58ec24f915fae95fe61a353cc682f8e41806ba3d1471",
+      "defining_lines_hash_exact": 10,
+      "new_parser": "accepted",
+      "old_parser": "rejected-wrong-archive-api-provider",
+      "regular_archive_direct_form": "rejected"
+    },
+    "canvas-mask-old-provider": {
+      "captured_map_sha256": "7fd9178b007c91e187f8e69522114206fb9e9e55f112949f9b87ce9e478465b8",
+      "defining_lines_hash_exact": 10,
+      "new_parser": "accepted",
+      "old_parser": "accepted-direct-fixture",
+      "regular_archive_direct_form": "not-applicable"
+    }
+  },
+  "schema": "canvas-mask-captured-defining-lines-replay-v1",
+  "scope": "20 defining lines reconstructed exactly against captured token and line hashes; synthetic OUTPUT/LOAD envelope only, not full map/native provider proof"
+}

@@ -1,0 +1,709 @@
+{
+  "archive": "openssl_3.5.7-1~deb13u2_amd64.deb",
+  "archive_installed_or_executed": false,
+  "archive_sha256": "4ff006f431d8c2e69fa736885a3b6e779f2448535f69dbde821d9f0ff87ad8ea",
+  "data_member": "data.tar.xz",
+  "links": [
+    {
+      "kind": "symlink",
+      "literal_target": "/etc/ssl/certs/ca-certificates.crt",
+      "name": "./usr/lib/ssl/cert.pem"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "/etc/ssl/certs",
+      "name": "./usr/lib/ssl/certs"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "tsget.pl",
+      "name": "./usr/lib/ssl/misc/tsget"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "/etc/ssl/openssl.cnf",
+      "name": "./usr/lib/ssl/openssl.cnf"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "/etc/ssl/private",
+      "name": "./usr/lib/ssl/private"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "openssl-cmds.1ssl.gz",
+      "name": "./usr/share/man/man1/asn1parse.1ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "openssl-rehash.1ssl.gz",
+      "name": "./usr/share/man/man1/c_rehash.1ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "openssl-cmds.1ssl.gz",
+      "name": "./usr/share/man/man1/ca.1ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "openssl-cmds.1ssl.gz",
+      "name": "./usr/share/man/man1/ciphers.1ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "openssl-cmds.1ssl.gz",
+      "name": "./usr/share/man/man1/cmp.1ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "openssl-cmds.1ssl.gz",
+      "name": "./usr/share/man/man1/cms.1ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "openssl-cmds.1ssl.gz",
+      "name": "./usr/share/man/man1/crl.1ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "openssl-cmds.1ssl.gz",
+      "name": "./usr/share/man/man1/crl2pkcs7.1ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "openssl-cmds.1ssl.gz",
+      "name": "./usr/share/man/man1/dgst.1ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "openssl-cmds.1ssl.gz",
+      "name": "./usr/share/man/man1/dhparam.1ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "openssl-cmds.1ssl.gz",
+      "name": "./usr/share/man/man1/dsa.1ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "openssl-cmds.1ssl.gz",
+      "name": "./usr/share/man/man1/dsaparam.1ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "openssl-cmds.1ssl.gz",
+      "name": "./usr/share/man/man1/ec.1ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "openssl-cmds.1ssl.gz",
+      "name": "./usr/share/man/man1/ecparam.1ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "openssl-cmds.1ssl.gz",
+      "name": "./usr/share/man/man1/enc.1ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "openssl-cmds.1ssl.gz",
+      "name": "./usr/share/man/man1/engine.1ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "openssl-cmds.1ssl.gz",
+      "name": "./usr/share/man/man1/errstr.1ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "openssl-cmds.1ssl.gz",
+      "name": "./usr/share/man/man1/gendsa.1ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "openssl-cmds.1ssl.gz",
+      "name": "./usr/share/man/man1/genpkey.1ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "openssl-cmds.1ssl.gz",
+      "name": "./usr/share/man/man1/genrsa.1ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "openssl-cmds.1ssl.gz",
+      "name": "./usr/share/man/man1/info.1ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "openssl-cmds.1ssl.gz",
+      "name": "./usr/share/man/man1/kdf.1ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "openssl-cmds.1ssl.gz",
+      "name": "./usr/share/man/man1/mac.1ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "openssl-cmds.1ssl.gz",
+      "name": "./usr/share/man/man1/nseq.1ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "openssl-cmds.1ssl.gz",
+      "name": "./usr/share/man/man1/ocsp.1ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "openssl-cmds.1ssl.gz",
+      "name": "./usr/share/man/man1/passwd.1ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "openssl-cmds.1ssl.gz",
+      "name": "./usr/share/man/man1/pkcs12.1ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "openssl-cmds.1ssl.gz",
+      "name": "./usr/share/man/man1/pkcs7.1ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "openssl-cmds.1ssl.gz",
+      "name": "./usr/share/man/man1/pkcs8.1ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "openssl-cmds.1ssl.gz",
+      "name": "./usr/share/man/man1/pkey.1ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "openssl-cmds.1ssl.gz",
+      "name": "./usr/share/man/man1/pkeyparam.1ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "openssl-cmds.1ssl.gz",
+      "name": "./usr/share/man/man1/pkeyutl.1ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "openssl-cmds.1ssl.gz",
+      "name": "./usr/share/man/man1/prime.1ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "openssl-cmds.1ssl.gz",
+      "name": "./usr/share/man/man1/rand.1ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "openssl-cmds.1ssl.gz",
+      "name": "./usr/share/man/man1/rehash.1ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "openssl-cmds.1ssl.gz",
+      "name": "./usr/share/man/man1/req.1ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "openssl-cmds.1ssl.gz",
+      "name": "./usr/share/man/man1/rsa.1ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "openssl-cmds.1ssl.gz",
+      "name": "./usr/share/man/man1/rsautl.1ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "openssl-cmds.1ssl.gz",
+      "name": "./usr/share/man/man1/s_client.1ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "openssl-cmds.1ssl.gz",
+      "name": "./usr/share/man/man1/s_server.1ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "openssl-cmds.1ssl.gz",
+      "name": "./usr/share/man/man1/s_time.1ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "openssl-cmds.1ssl.gz",
+      "name": "./usr/share/man/man1/sess_id.1ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "openssl-cmds.1ssl.gz",
+      "name": "./usr/share/man/man1/smime.1ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "openssl-cmds.1ssl.gz",
+      "name": "./usr/share/man/man1/speed.1ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "openssl-cmds.1ssl.gz",
+      "name": "./usr/share/man/man1/spkac.1ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "openssl-cmds.1ssl.gz",
+      "name": "./usr/share/man/man1/srp.1ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "openssl-cmds.1ssl.gz",
+      "name": "./usr/share/man/man1/storeutl.1ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "openssl-cmds.1ssl.gz",
+      "name": "./usr/share/man/man1/ts.1ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "openssl-cmds.1ssl.gz",
+      "name": "./usr/share/man/man1/verify.1ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "openssl-cmds.1ssl.gz",
+      "name": "./usr/share/man/man1/version.1ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "openssl-cmds.1ssl.gz",
+      "name": "./usr/share/man/man1/x509.1ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_KEM-ML-KEM.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_KEM-ML-KEM-1024.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_KEM-ML-KEM.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_KEM-ML-KEM-512.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_KEM-ML-KEM.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_KEM-ML-KEM-768.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_KEM-X25519.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_KEM-X448.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_KEYEXCH-X25519.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_KEYEXCH-X448.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_PKEY-HMAC.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_KEYMGMT-CMAC.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_PKEY-DH.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_KEYMGMT-DH.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_PKEY-DH.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_KEYMGMT-DHX.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_PKEY-DSA.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_KEYMGMT-DSA.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_PKEY-EC.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_KEYMGMT-EC.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_PKEY-X25519.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_KEYMGMT-ED25519.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_PKEY-X25519.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_KEYMGMT-ED448.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_PKEY-HMAC.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_KEYMGMT-HMAC.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_PKEY-ML-DSA.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_KEYMGMT-ML-DSA.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_PKEY-ML-KEM.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_KEYMGMT-ML-KEM-1024.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_PKEY-ML-KEM.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_KEYMGMT-ML-KEM-512.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_PKEY-ML-KEM.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_KEYMGMT-ML-KEM-768.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_PKEY-ML-KEM.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_KEYMGMT-ML-KEM.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_PKEY-HMAC.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_KEYMGMT-Poly1305.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_PKEY-RSA.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_KEYMGMT-RSA.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_PKEY-SLH-DSA.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_KEYMGMT-SLH-DSA.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_PKEY-SM2.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_KEYMGMT-SM2.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_PKEY-HMAC.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_KEYMGMT-Siphash.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_PKEY-X25519.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_KEYMGMT-X25519.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_PKEY-X25519.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_KEYMGMT-X448.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_MAC-BLAKE2.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_MAC-BLAKE2BMAC.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_MAC-BLAKE2.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_MAC-BLAKE2SMAC.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_MAC-KMAC.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_MAC-KMAC128.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_MAC-KMAC.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_MAC-KMAC256.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_MD-SHAKE.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_MD-KECCAK-KMAC.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_PKEY-HMAC.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_PKEY-CMAC.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_PKEY-DH.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_PKEY-DHX.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_PKEY-X25519.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_PKEY-ED25519.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_PKEY-X25519.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_PKEY-ED448.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_PKEY-ML-DSA.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_PKEY-ML-DSA-44.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_PKEY-ML-DSA.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_PKEY-ML-DSA-65.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_PKEY-ML-DSA.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_PKEY-ML-DSA-87.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_PKEY-ML-KEM.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_PKEY-ML-KEM-1024.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_PKEY-ML-KEM.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_PKEY-ML-KEM-512.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_PKEY-ML-KEM.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_PKEY-ML-KEM-768.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_PKEY-HMAC.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_PKEY-Poly1305.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_PKEY-SLH-DSA.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_PKEY-SLH-DSA-SHA2-128f.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_PKEY-SLH-DSA.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_PKEY-SLH-DSA-SHA2-128s.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_PKEY-SLH-DSA.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_PKEY-SLH-DSA-SHA2-192f.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_PKEY-SLH-DSA.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_PKEY-SLH-DSA-SHA2-192s.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_PKEY-SLH-DSA.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_PKEY-SLH-DSA-SHA2-256f.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_PKEY-SLH-DSA.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_PKEY-SLH-DSA-SHA2-256s.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_PKEY-SLH-DSA.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_PKEY-SLH-DSA-SHAKE-128f.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_PKEY-SLH-DSA.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_PKEY-SLH-DSA-SHAKE-128s.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_PKEY-SLH-DSA.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_PKEY-SLH-DSA-SHAKE-192f.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_PKEY-SLH-DSA.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_PKEY-SLH-DSA-SHAKE-192s.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_PKEY-SLH-DSA.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_PKEY-SLH-DSA-SHAKE-256f.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_PKEY-SLH-DSA.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_PKEY-SLH-DSA-SHAKE-256s.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_PKEY-HMAC.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_PKEY-Siphash.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_PKEY-X25519.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_PKEY-X448.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_SIGNATURE-HMAC.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_SIGNATURE-CMAC.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_SIGNATURE-ED25519.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_SIGNATURE-ED448.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_SIGNATURE-ML-DSA.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_SIGNATURE-ML-DSA-44.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_SIGNATURE-ML-DSA.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_SIGNATURE-ML-DSA-65.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_SIGNATURE-ML-DSA.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_SIGNATURE-ML-DSA-87.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_SIGNATURE-HMAC.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_SIGNATURE-Poly1305.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_SIGNATURE-SLH-DSA.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_SIGNATURE-SLH-DSA-SHA2-128f.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_SIGNATURE-SLH-DSA.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_SIGNATURE-SLH-DSA-SHA2-128s.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_SIGNATURE-SLH-DSA.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_SIGNATURE-SLH-DSA-SHA2-192f.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_SIGNATURE-SLH-DSA.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_SIGNATURE-SLH-DSA-SHA2-192s.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_SIGNATURE-SLH-DSA.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_SIGNATURE-SLH-DSA-SHA2-256f.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_SIGNATURE-SLH-DSA.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_SIGNATURE-SLH-DSA-SHA2-256s.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_SIGNATURE-SLH-DSA.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_SIGNATURE-SLH-DSA-SHAKE-128f.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_SIGNATURE-SLH-DSA.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_SIGNATURE-SLH-DSA-SHAKE-128s.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_SIGNATURE-SLH-DSA.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_SIGNATURE-SLH-DSA-SHAKE-192f.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_SIGNATURE-SLH-DSA.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_SIGNATURE-SLH-DSA-SHAKE-192s.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_SIGNATURE-SLH-DSA.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_SIGNATURE-SLH-DSA-SHAKE-256f.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_SIGNATURE-SLH-DSA.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_SIGNATURE-SLH-DSA-SHAKE-256s.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_SIGNATURE-HMAC.7ssl.gz",
+      "name": "./usr/share/man/man7/EVP_SIGNATURE-Siphash.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_SIGNATURE-ED25519.7ssl.gz",
+      "name": "./usr/share/man/man7/Ed25519.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_SIGNATURE-ED25519.7ssl.gz",
+      "name": "./usr/share/man/man7/Ed448.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "openssl_user_macros.7ssl.gz",
+      "name": "./usr/share/man/man7/OPENSSL_API_COMPAT.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "openssl_user_macros.7ssl.gz",
+      "name": "./usr/share/man/man7/OPENSSL_NO_DEPRECATED.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_PKEY-RSA.7ssl.gz",
+      "name": "./usr/share/man/man7/RSA.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "EVP_PKEY-SM2.7ssl.gz",
+      "name": "./usr/share/man/man7/SM2.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "X25519.7ssl.gz",
+      "name": "./usr/share/man/man7/X448.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "ossl-guide-libcrypto-introduction.7ssl.gz",
+      "name": "./usr/share/man/man7/crypto.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "ossl-guide-migration.7ssl.gz",
+      "name": "./usr/share/man/man7/migration_guide.7ssl.gz"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "ossl-guide-libssl-introduction.7ssl.gz",
+      "name": "./usr/share/man/man7/ssl.7ssl.gz"
+    }
+  ],
+  "scope": "archive metadata only, no extraction"
+}

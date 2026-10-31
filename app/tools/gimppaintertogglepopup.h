@@ -13,5 +13,12 @@ GtkWidget *gimp_painter_bucket_details_button_new (GtkWidget *body);
 GtkWidget *gimp_painter_ink_popup_button_new (GtkWidget *body, gboolean blob);
 /* Clone and Perspective Clone Options use the frame self-anchor policy. */
 GtkWidget *gimp_painter_clone_options_button_new (GtkWidget *body);
+/* Opt-in legacy resource thumbnail: fresh view per press. Existing retained
+ * body factories above are intentionally unaffected. The factory must not
+ * create nested stock selectors; its root binding is retired before teardown. */
+typedef GtkWidget * (* GimpPainterPopupCreateView) (GObject *model);
+GtkWidget *gimp_painter_resource_popup_button_new (GObject                    *model,
+                                                   GimpPainterPopupCreateView create_view,
+                                                   const gchar                *host_name);
 G_END_DECLS
 #endif

@@ -51,6 +51,7 @@
 #include "gimpinktool.h"
 #include "gimpmybrushtool.h"
 #include "gimppainterpainttoolbar.h"
+#include "gimppainterbrushpopup.h"
 #include "gimppaintertogglepopup.h"
 #include "gimppaintersmudgetool.h"
 #include "gimppenciltool.h"
@@ -201,6 +202,11 @@ paint_toolbar_resource (GimpToolOptions *options,
   const gchar *view_size = dynamics ? "dynamics-view-size" : "brush-view-size";
   GimpViewType type;
   gint         size;
+
+  /* The old horizontal Brush thumbnail opens the extended live editor.
+   * Dynamics and ordinary dock selectors retain their stock staged policy. */
+  if (! dynamics)
+    return gimp_painter_brush_popup_button_new (GIMP_PAINT_OPTIONS (options));
 
   g_object_get (options, view_type, &type, view_size, &size, NULL);
   button = gimp_viewable_button_new (

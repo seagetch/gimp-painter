@@ -523,6 +523,7 @@ gimp_view_renderer_set_border_type (GimpViewRenderer   *renderer,
     }
 
   g_set_object (&renderer->priv->border_color, border_color);
+  g_clear_object (&border_color);
 
   gimp_view_renderer_update_idle (renderer);
 }

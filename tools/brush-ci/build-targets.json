@@ -1,0 +1,127 @@
+{
+  "scope": "Future ordinary fresh Meson candidate build; not executed",
+  "donor_commit": "e25a94e21efca6e6604ddac6f15570c049f421e7",
+  "current_common_candidate_targets": [
+    "painter-layer-ui",
+    "painter-public-headers-c",
+    "painter-public-headers-cpp",
+    "menus/image-menu.ui:custom",
+    "menus/dockable-menu.ui:custom",
+    "app/gimp-3.0:executable",
+    "app/gimp-painter-filter-worker:executable",
+    "plug-ins/common/blinds:executable",
+    "plug-ins/common/tile-small:executable",
+    "plug-ins/common/contrast-retinex:executable",
+    "plug-ins/common/convolution-matrix:executable",
+    "painter-layer-tree",
+    "layer-tile-entry-contracts",
+    "native-popover-entry",
+    "painter-popup-handles",
+    "painter-canvas-ui",
+    "painter-widget-exceptions",
+    "painter-layer-dispatch",
+    "gimp30-gmo:alias",
+    "gimp30-libgimp-gmo:alias",
+    "gimp30-std-plug-ins-gmo:alias",
+    "gimp30-python-gmo:alias",
+    "gimp30-script-fu-gmo:alias",
+    "org.gimp.extension.goat-exercises-gmo:alias"
+  ],
+  "brush_additional_targets": [
+    "painter-compact-options",
+    "painter-toolbar-window"
+  ],
+  "candidate_union": [
+    "painter-layer-ui",
+    "painter-public-headers-c",
+    "painter-public-headers-cpp",
+    "menus/image-menu.ui:custom",
+    "menus/dockable-menu.ui:custom",
+    "app/gimp-3.0:executable",
+    "app/gimp-painter-filter-worker:executable",
+    "plug-ins/common/blinds:executable",
+    "plug-ins/common/tile-small:executable",
+    "plug-ins/common/contrast-retinex:executable",
+    "plug-ins/common/convolution-matrix:executable",
+    "painter-layer-tree",
+    "layer-tile-entry-contracts",
+    "native-popover-entry",
+    "painter-popup-handles",
+    "painter-canvas-ui",
+    "painter-widget-exceptions",
+    "painter-layer-dispatch",
+    "gimp30-gmo:alias",
+    "gimp30-libgimp-gmo:alias",
+    "gimp30-std-plug-ins-gmo:alias",
+    "gimp30-python-gmo:alias",
+    "gimp30-script-fu-gmo:alias",
+    "org.gimp.extension.goat-exercises-gmo:alias",
+    "painter-compact-options",
+    "painter-toolbar-window",
+    "libgimp/tests/plug-in-protocol-fixture:executable",
+    "libgimp/tests/test-plug-in-protocol:executable",
+    "libgimpbase/test-choice-lifecycle:executable",
+    "app/tests/painter-brush-geometry:executable",
+    "libgimpconfig/color-config-ownership:executable",
+    "app/tests/color-ownership/display-renderer-ownership:executable",
+    "app/tests/color-ownership/canvas-ownership:executable",
+    "libgimpwidgets/test-frame-style-idempotence:executable",
+    "app/tests/color-ownership/canvas-mask-fixed-provider:executable"
+  ],
+  "candidate_union_count": 35,
+  "brush_baseline_targets": [
+    "painter-compact-options",
+    "menus/image-menu.ui:custom",
+    "menus/dockable-menu.ui:custom"
+  ],
+  "common306_baseline_targets": [
+    "painter-layer-ui",
+    "painter-public-headers-c",
+    "painter-public-headers-cpp",
+    "menus/image-menu.ui:custom",
+    "menus/dockable-menu.ui:custom"
+  ],
+  "overlay_gate_registration": "painter-overlay-paint-gate",
+  "overlay_gate_executable_already_in_targets": "painter-layer-ui",
+  "supplementary_protocol_targets": [
+    "libgimp/tests/plug-in-protocol-fixture:executable",
+    "libgimp/tests/test-plug-in-protocol:executable"
+  ],
+  "supplementary_protocol_case_count": 12,
+  "supplementary_choice_targets": [
+    "libgimpbase/test-choice-lifecycle:executable"
+  ],
+  "supplementary_choice_case_count": 4,
+  "supplementary_geometry_targets": [
+    "app/tests/painter-brush-geometry:executable"
+  ],
+  "supplementary_geometry_case_count": 7,
+  "supplementary_geometry_runtime_assets": [
+    "migration/fixtures/legacy-paper-transform/pixels.tsv.gz",
+    "migration/fixtures/legacy-brush-geometry/default-dynamics.tsv.gz"
+  ],
+  "supplementary_color_ownership_targets": [
+    "libgimpconfig/color-config-ownership:executable",
+    "app/tests/color-ownership/display-renderer-ownership:executable"
+  ],
+  "supplementary_color_ownership_case_count": 4,
+  "supplementary_canvas_targets": [
+    "app/tests/color-ownership/canvas-ownership:executable"
+  ],
+  "supplementary_canvas_case_count": 2,
+  "normal_negative_control_targets": [
+    "app/tests/color-ownership/canvas-ownership-old-provider:executable",
+    "libgimpwidgets/frame-style-old-provider:executable",
+    "app/tests/color-ownership/canvas-mask-old-provider:executable"
+  ],
+  "supplementary_frame_style_targets": [
+    "libgimpwidgets/test-frame-style-idempotence:executable"
+  ],
+  "supplementary_frame_style_case_count": 7,
+  "supplementary_canvas_mask_targets": [
+    "app/tests/color-ownership/canvas-mask-fixed-provider:executable"
+  ],
+  "supplementary_canvas_mask_case_count": 1,
+  "supplementary_canvas_mask_full_normal_case_count": 107,
+  "supplementary_canvas_mask_scope": "Same patched complete test TU; focused fixed normal+sanitizer, focused historical provider normal RED, additional fixed full107 normal. All prior gates retained."
+}

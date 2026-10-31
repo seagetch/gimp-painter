@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "status": "NATIVE_CONFIGURE_ONLY_PASS_RUNTIME_NOT_RUN",
+  "verified_utc": "2026-10-25T14:40:47.660937+00:00",
+  "baseline_commit": "b6eee4ea1f944010e8f009e040cdb4d7561b3e1e",
+  "root_meson_sha256": "83d371852ebeeede92caee7e0280f35dfc28a2a05cc8af6d00a84b67177d5b0f",
+  "source_patch_sha256": "e370d2b0d361338248e1593b482b8d919e61f6bc4c427e4c6aa603c251cda50c",
+  "files_changed": [
+    "meson.build"
+  ],
+  "configurations": [
+    {
+      "name": "native-sanitizer-no-gi",
+      "configure_exit_code": 0,
+      "build_kind": "native",
+      "b_sanitize": "address,undefined",
+      "enable_console_bin": false,
+      "own_binary_selected": true,
+      "selected_binary_compiled_or_run": false,
+      "gir_target_names": [],
+      "registered_tests_not_executed": 234,
+      "console_log_sha256": "4739538ee675a6a1bb5b6b7c2f436cfa552f6a537f1f79ca147687287ee2a2bc",
+      "options_sha256": "8169a29d4160f8ccae47c2aace0aab5651aebb99e565ec9ed17681236b92b70b",
+      "targets_sha256": "2d254961029b0b78a37d473db4a917680b8690cb5b678ab795d10830c8257fe4",
+      "tests_sha256": "a0d415695fb1028f86b9161c3be25347c2a978d630aad2f8da69319bd0d14a89",
+      "gimp_self_in_build_relative_to_build_root": "app/gimp-3.0"
+    },
+    {
+      "name": "native-normal-gi-console",
+      "configure_exit_code": 0,
+      "build_kind": "native",
+      "b_sanitize": "none",
+      "enable_console_bin": true,
+      "own_binary_selected": true,
+      "selected_binary_compiled_or_run": false,
+      "gir_target_names": [
+        "Gimp-3.0.gir",
+        "Gimp-3.0.typelib",
+        "GimpUi-3.0.gir",
+        "GimpUi-3.0.typelib"
+      ],
+      "registered_tests_not_executed": 234,
+      "console_log_sha256": "ba0534327391bf07e20efd3f97be9040c32d577dc02352a8c58a090604516c3d",
+      "options_sha256": "201f69096dc209a6c3bec69fcb2ee386da86bf7e3855c753c1f0879e1fd67378",
+      "targets_sha256": "af8307e2b41a521e2f8435e338a4f569039e61e717b0b1c114073f51e09be506",
+      "tests_sha256": "dd0b47faa85cd164409204ee1829559b2ca25765f0d7eb198e6912d87b1e772c",
+      "gimp_self_in_build_relative_to_build_root": "app/gimp-console-3.0"
+    }
+  ],
+  "source_export_verification_sha256": "9574be14cf7f47bb23a52d14ee2d52a438a8be9b13c58114f01d7015e8dfa2f4",
+  "source_export_verified_blobs": 20425,
+  "source_export_only_override": "meson.build",
+  "gimp_data_exact_gitlink": "a31e5dea4f572fb5f33b06f5c4b86db5f30643dc",
+  "gimp_data_verified_blobs": 1714,
+  "gimp_data_source": "Existing exact public submodule Git objects; gitlink and blob counts independently verified",
+  "genuine_cross_fallback_byte_identical": true,
+  "platform_branch_audit": {
+    "native_executable_selection": "gimpmain_exe always defined; gimpconsole_exe referenced only when enable_console_bin also defines it",
+    "plugin_custom_targets": "initialized by plug-ins/common before root runnable branch",
+    "gir_targets": "ordinary GIR variables only appended when have_gobject_introspection",
+    "osx": "patched GIR targets and gi libdir lookup guarded; existing non-GI library rpath setup retained",
+    "devel_docs": "existing gi_docgen.found() and have_gobject_introspection guard retained",
+    "windows": "existing PATH setup retained; no GIR-specific variable unguarded",
+    "qualification": "Linux native configure executed; macOS/Windows/genuine cross branches source-audited, not platform builds"
+  },
+  "preserved_initial_preflight_failure": {
+    "console_log_sha256": "2fc898d53f76e62f3deda6f0c509286b298a2277b26f6edf7d0bae538f27bfd1",
+    "exit_code": 1,
+    "cause": "Sparse main checkout lacks tracked migration/tests/painter-headers/prologue.h; failed before changed runnable block",
+    "resolution": "One exact complete Git archive in new owned area, with exact gimp-data gitlink and only reviewed meson.build source override"
+  },
+  "not_run": [
+    "project application/test compilation",
+    "native GUI/runtime tests",
+    "sanitizer runtime cases",
+    "screenshots",
+    "genuine cross build",
+    "macOS/Windows configure"
+  ],
+  "publication": "No index/ref/commit/push actions by worker",
+  "reviewer_static_ack": "/root/review_brush_popup_integration on meson SHA83d371852ebeeede92caee7e0280f35dfc28a2a05cc8af6d00a84b67177d5b0f",
+  "qualification": "Configuration regenerates ordinary Meson backend in two fresh owned dirs, including normal compiler capability probes. No backend edits, installed-native binary substitution, GUI or restriction workaround.",
+  "original_configure_proof_sha256": "ef6201cfca3c8d55ee8f8092c4bafe8f96d0a3f5d644a70613ede3ef392ee2cc",
+  "portable_evidence": true,
+  "portable_transformation": "Removed private source/build locations; represented selected binary relative to build root. Original digest retained; no compile/runtime claim added."
+}

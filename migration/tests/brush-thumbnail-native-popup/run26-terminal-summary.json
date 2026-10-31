@@ -1,0 +1,958 @@
+{
+  "commit": "8571efb42ea44b657651d454c3a03bea0aa702e7",
+  "run_id": 40256921831,
+  "run_number": 26,
+  "status": "completed",
+  "status_observed_at_utc": "2026-10-26T02:36:14Z",
+  "status_observer": "monitor connector check",
+  "task308_accepted": false,
+  "jobs": {
+    "brush-positive": "success",
+    "candidate": "success",
+    "brush-baseline-red": "success",
+    "baseline-carrier-red": "success",
+    "dockbook-controlled-order-3d6f": "success",
+    "babl-owned-doc-proof": "failure before lifecycle proof: pkg-config could not resolve lcms2",
+    "brush-sanitizer": "failure"
+  },
+  "results": {
+    "brush-positive/brush-actual-entry-scale1-results.json": {
+      "sha256": "c8d41002336e86d6601a59f73e079573687c0aa4560aa5ad8b26229f8cb88281",
+      "passed": true,
+      "case_count": 1
+    },
+    "brush-positive/brush-actual-entry-scale 2-results.json": {
+      "sha256": "b7e1f82672c867fe4a6a2afa7b5826336fd7d86836dacfe0ecb6657ed829cef4",
+      "passed": true,
+      "case_count": 1
+    },
+    "brush-positive/brush-lower-controls-scale1-results.json": {
+      "sha256": "1bbfde201d40183886af2fd058448f84c3f2d8485718afc7640be3bf273a3345",
+      "passed": true,
+      "case_count": 1
+    },
+    "brush-positive/brush-lower-controls-scale 2-results.json": {
+      "sha256": "9ce5e81273339408ecab8295d4184c436589df7cfe11d7e40bb359adc726f95b",
+      "passed": true,
+      "case_count": 1
+    },
+    "brush-positive/brush-scale1-results.json": {
+      "sha256": "d33a3460522df87f52ae06621faddddbae038d25e92e6521cbcdbfd4cba312e9",
+      "passed": true,
+      "case_count": 21
+    },
+    "brush-positive/brush-scale 2-results.json": {
+      "sha256": "9cd90414242863aaecfc491a6dc522d3c391edc2696c5846112d6dd88f531978",
+      "passed": true,
+      "case_count": 21
+    },
+    "brush-positive/choice-positive-results.json": {
+      "sha256": "070f9ff45a4c8cf17635da849dec940f6951365f6b49fa2278fd2ae226a2834a",
+      "passed": true,
+      "case_count": 4
+    },
+    "brush-positive/geometry-positive-results.json": {
+      "sha256": "266de8f776069a03d9091eaf36e275e636a12b2d93a78a2346729e7beab9fe9e",
+      "passed": true,
+      "case_count": 7
+    },
+    "brush-positive/header-verification-results.json": {
+      "sha256": "b9db04a780a3bf54cc91b2be533fe104add41cd8e5ca4cd7b5ff9ef8061e61b6",
+      "passed": true,
+      "case_count": 0
+    },
+    "brush-positive/previous-bucket-native-popup-results.json": {
+      "sha256": "cc2a29c7af5b647a226b382f4974ecc67bc0c2c746f80a56e2a9fba2c1e45e6c",
+      "passed": true,
+      "case_count": 6
+    },
+    "brush-positive/previous-clone-native-popup-results.json": {
+      "sha256": "d3636ceffc0736c0b3f81b6bd7b69f88e2e844f55f389ed506216c0a9c4f1e97",
+      "passed": true,
+      "case_count": 7
+    },
+    "brush-positive/previous-ink-native-popup-results.json": {
+      "sha256": "bb57eb05917e0ce10fd296dabf4561e653b78c9170ac86bae103c956b96f08bd",
+      "passed": true,
+      "case_count": 6
+    },
+    "brush-positive/previous-painter-compact-options-results.json": {
+      "sha256": "ca341420c5da1e3e2a0d0a8e69fb826f1f1e4f422e43b36ad07161c02f7d4ba8",
+      "passed": true,
+      "case_count": 62
+    },
+    "brush-positive/previous-painter-toolbar-window-results.json": {
+      "sha256": "219ebcf75cb3d43a543078cba4f9e395f163aad9ecf5773ba7074bd31441faee",
+      "passed": true,
+      "case_count": 26
+    },
+    "brush-positive/previous-standard-toggle-popup-results.json": {
+      "sha256": "46fcec13f486b792cf66866ab94fff1ea2b63b51e4572b2ffe4c8642609bc961",
+      "passed": true,
+      "case_count": 17
+    },
+    "brush-positive/previous-transform-native-popup-results.json": {
+      "sha256": "103b1f867c1333940ea369c95cba6ccd1621e6861b2eb20641dd3344785b558f",
+      "passed": true,
+      "case_count": 8
+    },
+    "brush-positive/protocol-positive-results.json": {
+      "sha256": "c8a503501d890cf421f062636b17c91e2900dc05b7b0084a6e7c013bc2918789",
+      "passed": true,
+      "case_count": 12
+    },
+    "candidate/adjacent-regressions-results.json": {
+      "sha256": "352711f2e1aaabb42c56a378451b12da28bfd5d87fd690479049807d1706c527",
+      "passed": true,
+      "case_count": 360
+    },
+    "candidate/common-layer-scale1-results.json": {
+      "sha256": "e9414a0e45474d744f0a5e81603853cd76104cec0fefe6cc240c096fddb49bcb",
+      "passed": true,
+      "case_count": 58
+    },
+    "candidate/common-layer-scale 2-results.json": {
+      "sha256": "c00145ce7487c0443fb31e5b1f584148ff2e7c05ad49f77205a58572b3f96aa5",
+      "passed": true,
+      "case_count": 58
+    },
+    "candidate/header-verification-results.json": {
+      "sha256": "8600cd8f36c0565d1027cc18df4feb53faea8584b5a9cbeb3d186b570acb0f42",
+      "passed": true,
+      "case_count": 0
+    },
+    "candidate/overlay-paint-gate-scale1-results.json": {
+      "sha256": "198483d72364d048573d5c196cf9527f5dd4fff99fcbdaff6301b3b35269bcdf",
+      "passed": true,
+      "case_count": 6
+    },
+    "candidate/overlay-paint-gate-scale 2-results.json": {
+      "sha256": "99a41915e30fa5aa013f1020d599b01c5f917106c9ac4b0b6caed3ec39bcbdf1",
+      "passed": true,
+      "case_count": 6
+    },
+    "brush-sanitizer/brush-sanitizer-case01-results.json": {
+      "sha256": "1f7eb4a5b348b24e46bd2b1fd04072b69c33c1e8ed464307155dc320e28dae31",
+      "passed": false,
+      "control_passed": null,
+      "case_count": 1,
+      "registration_results": [
+        {
+          "name": "gimp:app / painter-compact-options",
+          "result": "FAIL",
+          "returncode": 1,
+          "duration": 67.42282581329346
+        }
+      ],
+      "failures": [
+        "SUMMARY: AddressSanitizer: 200594 byte(s) leaked in 3565 allocation(s)."
+      ]
+    },
+    "brush-sanitizer/brush-sanitizer-case02-results.json": {
+      "sha256": "2d9e220ed519ab10c77085ce6bc3e63d9dac559d2cf5ff4e6cab0e502dca7fe6",
+      "passed": false,
+      "control_passed": null,
+      "case_count": 1,
+      "registration_results": [
+        {
+          "name": "gimp:app / painter-compact-options",
+          "result": "FAIL",
+          "returncode": 1,
+          "duration": 64.96819138526917
+        }
+      ],
+      "failures": [
+        "SUMMARY: AddressSanitizer: 200206 byte(s) leaked in 3559 allocation(s)."
+      ]
+    },
+    "brush-sanitizer/brush-sanitizer-case03-results.json": {
+      "sha256": "d0f5dd82206d524353b96f07a63115e1a8690e249ea6693b1d5f453cb8668563",
+      "passed": false,
+      "control_passed": null,
+      "case_count": 1,
+      "registration_results": [
+        {
+          "name": "gimp:app / painter-compact-options",
+          "result": "FAIL",
+          "returncode": 1,
+          "duration": 64.55779218673706
+        }
+      ],
+      "failures": [
+        "SUMMARY: AddressSanitizer: 200174 byte(s) leaked in 3558 allocation(s)."
+      ]
+    },
+    "brush-sanitizer/brush-sanitizer-case04-results.json": {
+      "sha256": "e7171a4503a3c1a80de0208a7e02f0dcc4049a9ba8ce4c2fa8725fb4a8e4521d",
+      "passed": false,
+      "control_passed": null,
+      "case_count": 1,
+      "registration_results": [
+        {
+          "name": "gimp:app / painter-compact-options",
+          "result": "FAIL",
+          "returncode": 1,
+          "duration": 64.15341854095459
+        }
+      ],
+      "failures": [
+        "SUMMARY: AddressSanitizer: 200174 byte(s) leaked in 3558 allocation(s)."
+      ]
+    },
+    "brush-sanitizer/brush-sanitizer-case05-results.json": {
+      "sha256": "ac1c195aa105804bf65ef314df2d89daa4749e38445b304ac469a5c762785bf7",
+      "passed": false,
+      "control_passed": null,
+      "case_count": 1,
+      "registration_results": [
+        {
+          "name": "gimp:app / painter-compact-options",
+          "result": "FAIL",
+          "returncode": 1,
+          "duration": 64.64781999588013
+        }
+      ],
+      "failures": [
+        "SUMMARY: AddressSanitizer: 200174 byte(s) leaked in 3558 allocation(s)."
+      ]
+    },
+    "brush-sanitizer/brush-sanitizer-case06-results.json": {
+      "sha256": "fc4f690c1c359609f4f20b48e6a09621df84d59e3c8dd50e1e3d0a7382f70a76",
+      "passed": false,
+      "control_passed": null,
+      "case_count": 1,
+      "registration_results": [
+        {
+          "name": "gimp:app / painter-compact-options",
+          "result": "FAIL",
+          "returncode": 1,
+          "duration": 65.08010458946228
+        }
+      ],
+      "failures": [
+        "SUMMARY: AddressSanitizer: 200174 byte(s) leaked in 3558 allocation(s)."
+      ]
+    },
+    "brush-sanitizer/brush-sanitizer-case07-results.json": {
+      "sha256": "37f72ae542c016e4e9073539f0567b69d7adbf47789e2f4b054407e536056e58",
+      "passed": false,
+      "control_passed": null,
+      "case_count": 1,
+      "registration_results": [
+        {
+          "name": "gimp:app / painter-compact-options",
+          "result": "FAIL",
+          "returncode": 1,
+          "duration": 64.84517574310303
+        }
+      ],
+      "failures": [
+        "SUMMARY: AddressSanitizer: 200174 byte(s) leaked in 3558 allocation(s)."
+      ]
+    },
+    "brush-sanitizer/brush-sanitizer-case08-results.json": {
+      "sha256": "2e42b7b04d3a44bd7ae4f6869a53bc04e17d9566b23c6c40f8dfa6b0c4c53d44",
+      "passed": false,
+      "control_passed": null,
+      "case_count": 1,
+      "registration_results": [
+        {
+          "name": "gimp:app / painter-compact-options",
+          "result": "FAIL",
+          "returncode": 1,
+          "duration": 64.06720995903015
+        }
+      ],
+      "failures": [
+        "SUMMARY: AddressSanitizer: 200174 byte(s) leaked in 3558 allocation(s)."
+      ]
+    },
+    "brush-sanitizer/brush-sanitizer-case09-results.json": {
+      "sha256": "992a31cefdd8e0d93d2ee1266c26c4f0f82057a5c5cf577e9ee1a3cbec4c1c44",
+      "passed": false,
+      "control_passed": null,
+      "case_count": 1,
+      "registration_results": [
+        {
+          "name": "gimp:app / painter-compact-options",
+          "result": "FAIL",
+          "returncode": 1,
+          "duration": 74.11704277992249
+        }
+      ],
+      "failures": [
+        "SUMMARY: AddressSanitizer: 200086 byte(s) leaked in 3559 allocation(s)."
+      ]
+    },
+    "brush-sanitizer/brush-sanitizer-case10-results.json": {
+      "sha256": "cf8e9b9a44f05fb46c328f9f5e58931b25d658bd6dcf43fffaeed1620485e5ac",
+      "passed": false,
+      "control_passed": null,
+      "case_count": 1,
+      "registration_results": [
+        {
+          "name": "gimp:app / painter-compact-options",
+          "result": "FAIL",
+          "returncode": 1,
+          "duration": 67.71176743507385
+        }
+      ],
+      "failures": [
+        "SUMMARY: AddressSanitizer: 200878 byte(s) leaked in 3569 allocation(s)."
+      ]
+    },
+    "brush-sanitizer/brush-sanitizer-case11-results.json": {
+      "sha256": "88569c666cc27ad443d62928485fb9767b8520ae258abaa2104daebacf6c464f",
+      "passed": false,
+      "control_passed": null,
+      "case_count": 1,
+      "registration_results": [
+        {
+          "name": "gimp:app / painter-compact-options",
+          "result": "FAIL",
+          "returncode": 1,
+          "duration": 74.20639133453369
+        }
+      ],
+      "failures": [
+        "SUMMARY: AddressSanitizer: 199502 byte(s) leaked in 3547 allocation(s)."
+      ]
+    },
+    "brush-sanitizer/brush-sanitizer-case12-results.json": {
+      "sha256": "2c7f9ee9a26703dd8c6d7f903bc24ac135db4932d7371af7c15befc7d8289d98",
+      "passed": false,
+      "control_passed": null,
+      "case_count": 1,
+      "registration_results": [
+        {
+          "name": "gimp:app / painter-compact-options",
+          "result": "FAIL",
+          "returncode": 1,
+          "duration": 62.70958709716797
+        }
+      ],
+      "failures": [
+        "SUMMARY: AddressSanitizer: 199502 byte(s) leaked in 3547 allocation(s)."
+      ]
+    },
+    "brush-sanitizer/brush-sanitizer-case13-results.json": {
+      "sha256": "6fb14d2635169f4bc0e5a174bc87120175d79e78e3ab0ec86aa3fba60f961f9d",
+      "passed": false,
+      "control_passed": null,
+      "case_count": 1,
+      "registration_results": [
+        {
+          "name": "gimp:app / painter-compact-options",
+          "result": "FAIL",
+          "returncode": 1,
+          "duration": 67.75398778915405
+        }
+      ],
+      "failures": [
+        "SUMMARY: AddressSanitizer: 200390 byte(s) leaked in 3562 allocation(s)."
+      ]
+    },
+    "brush-sanitizer/brush-sanitizer-case14-results.json": {
+      "sha256": "85c39c4b55bd19e5027953fc0fd2348443332ed9e58aa404da2cb97ee127ef17",
+      "passed": false,
+      "control_passed": null,
+      "case_count": 0,
+      "registration_results": [
+        {
+          "name": "gimp:app / painter-compact-options",
+          "result": "FAIL",
+          "returncode": -6,
+          "duration": 38.53822112083435
+        }
+      ],
+      "failures": [
+        "not ok /brush-thumbnail-native-popup/private-target-release - ERROR:../source/app/tests/test-painter-transform-popup.inc:348:transform_popup_wait_stable_geometry: assertion failed (layout.stable >= 3): (0 >= 3)"
+      ]
+    },
+    "brush-sanitizer/brush-sanitizer-case15-results.json": {
+      "sha256": "59f18f4facf99c6b4a805f84e5a4dbfa034762d4974ab234ea7748dc57120433",
+      "passed": false,
+      "control_passed": null,
+      "case_count": 1,
+      "registration_results": [
+        {
+          "name": "gimp:app / painter-compact-options",
+          "result": "FAIL",
+          "returncode": 1,
+          "duration": 65.63439869880676
+        }
+      ],
+      "failures": [
+        "SUMMARY: AddressSanitizer: 201174 byte(s) leaked in 3574 allocation(s)."
+      ]
+    },
+    "brush-sanitizer/brush-sanitizer-case16-results.json": {
+      "sha256": "868633c4ac720a78df37e960d8971e9a8d9194518efab28ca0e83506fa0a0bd3",
+      "passed": false,
+      "control_passed": null,
+      "case_count": 1,
+      "registration_results": [
+        {
+          "name": "gimp:app / painter-compact-options",
+          "result": "FAIL",
+          "returncode": 1,
+          "duration": 91.5157060623169
+        }
+      ],
+      "failures": [
+        "SUMMARY: AddressSanitizer: 202126 byte(s) leaked in 3595 allocation(s)."
+      ]
+    },
+    "brush-sanitizer/brush-sanitizer-case17-results.json": {
+      "sha256": "a8f84d9e81fa278bacc1a854dc245e24baabfc03469ccd7b3799f50f635c6512",
+      "passed": false,
+      "control_passed": null,
+      "case_count": 1,
+      "registration_results": [
+        {
+          "name": "gimp:app / painter-compact-options",
+          "result": "FAIL",
+          "returncode": 1,
+          "duration": 60.8002450466156
+        }
+      ],
+      "failures": [
+        "SUMMARY: AddressSanitizer: 199494 byte(s) leaked in 3549 allocation(s)."
+      ]
+    },
+    "brush-sanitizer/brush-sanitizer-case18-results.json": {
+      "sha256": "8afe64d1f01868057545e0b7b1fd750a6d4a802a1e1e61380e0b6b4e8e8bebf5",
+      "passed": false,
+      "control_passed": null,
+      "case_count": 1,
+      "registration_results": [
+        {
+          "name": "gimp:app / painter-compact-options",
+          "result": "FAIL",
+          "returncode": 1,
+          "duration": 61.99835133552551
+        }
+      ],
+      "failures": [
+        "SUMMARY: AddressSanitizer: 199502 byte(s) leaked in 3547 allocation(s)."
+      ]
+    },
+    "brush-sanitizer/brush-sanitizer-case19-results.json": {
+      "sha256": "cbaca56990ff72296ee1de0fc13c006e35e15578ea5dc017a8f91b6e0b4cf5c8",
+      "passed": false,
+      "control_passed": null,
+      "case_count": 1,
+      "registration_results": [
+        {
+          "name": "gimp:app / painter-compact-options",
+          "result": "FAIL",
+          "returncode": 1,
+          "duration": 98.05443358421326
+        }
+      ],
+      "failures": [
+        "SUMMARY: AddressSanitizer: 201662 byte(s) leaked in 3587 allocation(s)."
+      ]
+    },
+    "brush-sanitizer/brush-sanitizer-case20-results.json": {
+      "sha256": "e8a6bd4a2341625f83fb081870095acab8c835342f639fecccd16ee53c23cd47",
+      "passed": false,
+      "control_passed": null,
+      "case_count": 1,
+      "registration_results": [
+        {
+          "name": "gimp:app / painter-compact-options",
+          "result": "FAIL",
+          "returncode": 1,
+          "duration": 96.80094075202942
+        }
+      ],
+      "failures": [
+        "SUMMARY: AddressSanitizer: 200918 byte(s) leaked in 3578 allocation(s)."
+      ]
+    },
+    "brush-sanitizer/brush-sanitizer-case21-results.json": {
+      "sha256": "c6a2a87213c475d5df6bd4823c7dc3207d3ee8d2b9d39f1abc55f54d4b4770c8",
+      "passed": false,
+      "control_passed": null,
+      "case_count": 1,
+      "registration_results": [
+        {
+          "name": "gimp:app / painter-compact-options",
+          "result": "FAIL",
+          "returncode": 1,
+          "duration": 70.42412209510803
+        }
+      ],
+      "failures": [
+        "SUMMARY: AddressSanitizer: 199486 byte(s) leaked in 3548 allocation(s)."
+      ]
+    },
+    "brush-sanitizer/brush-sanitizer-results.json": {
+      "sha256": "80a5ba497baea38b43e5795fc06105890c403cb05f931c10bc3485ccf3c5fb0c",
+      "passed": false,
+      "control_passed": null,
+      "case_count": 20,
+      "registration_results": [
+        {
+          "name": "gimp:app / painter-compact-options",
+          "result": "FAIL",
+          "returncode": 1,
+          "duration": 67.42282581329346
+        },
+        {
+          "name": "gimp:app / painter-compact-options",
+          "result": "FAIL",
+          "returncode": 1,
+          "duration": 64.96819138526917
+        },
+        {
+          "name": "gimp:app / painter-compact-options",
+          "result": "FAIL",
+          "returncode": 1,
+          "duration": 64.55779218673706
+        },
+        {
+          "name": "gimp:app / painter-compact-options",
+          "result": "FAIL",
+          "returncode": 1,
+          "duration": 64.15341854095459
+        },
+        {
+          "name": "gimp:app / painter-compact-options",
+          "result": "FAIL",
+          "returncode": 1,
+          "duration": 64.64781999588013
+        },
+        {
+          "name": "gimp:app / painter-compact-options",
+          "result": "FAIL",
+          "returncode": 1,
+          "duration": 65.08010458946228
+        },
+        {
+          "name": "gimp:app / painter-compact-options",
+          "result": "FAIL",
+          "returncode": 1,
+          "duration": 64.84517574310303
+        },
+        {
+          "name": "gimp:app / painter-compact-options",
+          "result": "FAIL",
+          "returncode": 1,
+          "duration": 64.06720995903015
+        },
+        {
+          "name": "gimp:app / painter-compact-options",
+          "result": "FAIL",
+          "returncode": 1,
+          "duration": 74.11704277992249
+        },
+        {
+          "name": "gimp:app / painter-compact-options",
+          "result": "FAIL",
+          "returncode": 1,
+          "duration": 67.71176743507385
+        },
+        {
+          "name": "gimp:app / painter-compact-options",
+          "result": "FAIL",
+          "returncode": 1,
+          "duration": 74.20639133453369
+        },
+        {
+          "name": "gimp:app / painter-compact-options",
+          "result": "FAIL",
+          "returncode": 1,
+          "duration": 62.70958709716797
+        },
+        {
+          "name": "gimp:app / painter-compact-options",
+          "result": "FAIL",
+          "returncode": 1,
+          "duration": 67.75398778915405
+        },
+        {
+          "name": "gimp:app / painter-compact-options",
+          "result": "FAIL",
+          "returncode": -6,
+          "duration": 38.53822112083435
+        },
+        {
+          "name": "gimp:app / painter-compact-options",
+          "result": "FAIL",
+          "returncode": 1,
+          "duration": 65.63439869880676
+        },
+        {
+          "name": "gimp:app / painter-compact-options",
+          "result": "FAIL",
+          "returncode": 1,
+          "duration": 91.5157060623169
+        },
+        {
+          "name": "gimp:app / painter-compact-options",
+          "result": "FAIL",
+          "returncode": 1,
+          "duration": 60.8002450466156
+        },
+        {
+          "name": "gimp:app / painter-compact-options",
+          "result": "FAIL",
+          "returncode": 1,
+          "duration": 61.99835133552551
+        },
+        {
+          "name": "gimp:app / painter-compact-options",
+          "result": "FAIL",
+          "returncode": 1,
+          "duration": 98.05443358421326
+        },
+        {
+          "name": "gimp:app / painter-compact-options",
+          "result": "FAIL",
+          "returncode": 1,
+          "duration": 96.80094075202942
+        },
+        {
+          "name": "gimp:app / painter-compact-options",
+          "result": "FAIL",
+          "returncode": 1,
+          "duration": 70.42412209510803
+        }
+      ],
+      "failures": [
+        "SUMMARY: AddressSanitizer: 200594 byte(s) leaked in 3565 allocation(s).",
+        "SUMMARY: AddressSanitizer: 200206 byte(s) leaked in 3559 allocation(s).",
+        "SUMMARY: AddressSanitizer: 200174 byte(s) leaked in 3558 allocation(s).",
+        "SUMMARY: AddressSanitizer: 200174 byte(s) leaked in 3558 allocation(s).",
+        "SUMMARY: AddressSanitizer: 200174 byte(s) leaked in 3558 allocation(s).",
+        "SUMMARY: AddressSanitizer: 200174 byte(s) leaked in 3558 allocation(s).",
+        "SUMMARY: AddressSanitizer: 200174 byte(s) leaked in 3558 allocation(s).",
+        "SUMMARY: AddressSanitizer: 200174 byte(s) leaked in 3558 allocation(s).",
+        "SUMMARY: AddressSanitizer: 200086 byte(s) leaked in 3559 allocation(s).",
+        "SUMMARY: AddressSanitizer: 200878 byte(s) leaked in 3569 allocation(s).",
+        "SUMMARY: AddressSanitizer: 199502 byte(s) leaked in 3547 allocation(s).",
+        "SUMMARY: AddressSanitizer: 199502 byte(s) leaked in 3547 allocation(s).",
+        "SUMMARY: AddressSanitizer: 200390 byte(s) leaked in 3562 allocation(s).",
+        "not ok /brush-thumbnail-native-popup/private-target-release - ERROR:../source/app/tests/test-painter-transform-popup.inc:348:transform_popup_wait_stable_geometry: assertion failed (layout.stable >= 3): (0 >= 3)",
+        "SUMMARY: AddressSanitizer: 201174 byte(s) leaked in 3574 allocation(s).",
+        "SUMMARY: AddressSanitizer: 202126 byte(s) leaked in 3595 allocation(s).",
+        "SUMMARY: AddressSanitizer: 199494 byte(s) leaked in 3549 allocation(s).",
+        "SUMMARY: AddressSanitizer: 199502 byte(s) leaked in 3547 allocation(s).",
+        "SUMMARY: AddressSanitizer: 201662 byte(s) leaked in 3587 allocation(s).",
+        "SUMMARY: AddressSanitizer: 200918 byte(s) leaked in 3578 allocation(s).",
+        "SUMMARY: AddressSanitizer: 199486 byte(s) leaked in 3548 allocation(s)."
+      ]
+    },
+    "brush-sanitizer/choice-sanitizer-results.json": {
+      "sha256": "b1ffa4ebf9b0d75145ef4dc68eb4a8a236cda737a4081a75b3b13eea935b7742",
+      "passed": true,
+      "control_passed": null,
+      "case_count": 4,
+      "registration_results": [
+        {
+          "name": "gimp:libgimpbase / choice-lifecycle",
+          "result": "OK",
+          "returncode": 0,
+          "duration": 0.14381742477416992
+        }
+      ],
+      "failures": []
+    },
+    "brush-sanitizer/geometry-sanitizer-results.json": {
+      "sha256": "82d0455fd46441c958d5e6cf5d5552a2ed2b8b877f5fc7721dcf2ebf68c3b5f1",
+      "passed": true,
+      "control_passed": null,
+      "case_count": 7,
+      "registration_results": [
+        {
+          "name": "gimp:painter / painter-brush-geometry",
+          "result": "OK",
+          "returncode": 0,
+          "duration": 2.582902193069458
+        }
+      ],
+      "failures": []
+    },
+    "brush-sanitizer/header-verification-results.json": {
+      "sha256": "2354438c5149c90a258d6f3d8d580f9eec2d658bb4e2de9fbd103b646b441a7a",
+      "passed": true,
+      "control_passed": null,
+      "case_count": 0,
+      "registration_results": [
+        {
+          "name": "gimp:painter / painter-public-header-compilation",
+          "result": "OK",
+          "returncode": 0,
+          "duration": 0.12077784538269043
+        },
+        {
+          "name": "gimp:painter / painter-additional-header-routes",
+          "result": "OK",
+          "returncode": 0,
+          "duration": 3.70733380317688
+        }
+      ],
+      "failures": []
+    },
+    "brush-sanitizer/protocol-sanitizer-results.json": {
+      "sha256": "f14f13aea232b918adeb9feb773fbd5a8d96eaf14312ddb8972389480439b30d",
+      "passed": false,
+      "control_passed": null,
+      "case_count": 12,
+      "registration_results": [
+        {
+          "name": "gimp:libgimp+C / plug-in-protocol",
+          "result": "FAIL",
+          "returncode": 1,
+          "duration": 0.9276859760284424
+        }
+      ],
+      "failures": [
+        "SUMMARY: AddressSanitizer: 765 byte(s) leaked in 6 allocation(s)."
+      ]
+    },
+    "brush-sanitizer/wire-lsan-red/results.json": {
+      "sha256": "66f7582dbe52d786279b51761d632e92e51185bb34ac0b2c6b656d4dce4b7f42",
+      "passed": null,
+      "control_passed": true,
+      "case_count": 1,
+      "registration_results": [
+        {
+          "name": "gimp:libgimpbase / choice-lifecycle",
+          "result": "FAIL",
+          "returncode": 1,
+          "duration": 0.046515464782714844
+        }
+      ],
+      "failures": [
+        "SUMMARY: AddressSanitizer: 67 byte(s) leaked in 6 allocation(s)."
+      ]
+    }
+  },
+  "original_zips": [
+    {
+      "path": "original-zips/run26-babl-owned-doc-proof.zip",
+      "bytes": 25013646,
+      "sha256": "e2574ff0b32ec770d8e36afa6677826f0d9468f35ca19a48bdde7af4c12ddc8c",
+      "github_digest_match": true
+    },
+    {
+      "path": "original-zips/run26-baseline-carrier-red.zip",
+      "bytes": 605938,
+      "sha256": "7f46861dfc1e7c56d2e6ab4c7172c8bd2ce15f2a8cdb441f27094517f695cb9f",
+      "github_digest_match": true
+    },
+    {
+      "path": "original-zips/run26-brush-baseline-red.zip",
+      "bytes": 60235,
+      "sha256": "46884ebea21a4067b1e00c0f4a7f246024c274f3aaed390ceda31b90ed0851d2",
+      "github_digest_match": true
+    },
+    {
+      "path": "original-zips/run26-brush-positive.zip",
+      "bytes": 663759,
+      "sha256": "c22c94be801aca78423c9ab2f90e5760a8f70d3052cf5a2421475f667c8682e0",
+      "github_digest_match": true
+    },
+    {
+      "path": "original-zips/run26-brush-sanitizer.zip",
+      "bytes": 10048470,
+      "sha256": "f8dea7ec1063cce7fa4bad738ee757321cd9a20b4d6b016771019cb6547bfe71",
+      "github_digest_match": true
+    },
+    {
+      "path": "original-zips/run26-candidate.zip",
+      "bytes": 2207569,
+      "sha256": "d5ac42cf8d8ee6fd831e2b90b206a9fe7720d82524a352b8e6b5d3068ca3a26f",
+      "github_digest_match": true
+    },
+    {
+      "path": "original-zips/run26-dockbook-controlled-order-3d6f.zip",
+      "bytes": 161207,
+      "sha256": "600b55ac71d4cb46f7c5b0bf9de149824c3695754cb5d9407c128a4051aaa216",
+      "github_digest_match": true
+    }
+  ],
+  "images": [
+    {
+      "path": "brush-positive/brush-thumbnail-actual-entry-scale1.png",
+      "sha256": "f88eae5cb8459390226d75bd5daa574e41c464a702bc8fa1a2c7a685d3092e39",
+      "dimensions": [
+        1080,
+        1920
+      ]
+    },
+    {
+      "path": "brush-positive/brush-thumbnail-actual-entry-scale 2.png",
+      "sha256": "00b7a99a321a9ac9b217d8267d99b976b0d7fc2bbd265ea21894a61f2a0fae67",
+      "dimensions": [
+        1080,
+        1920
+      ]
+    },
+    {
+      "path": "brush-positive/brush-thumbnail-lower-controls-scale1.png",
+      "sha256": "8e68b9bc6ae5c52cd9ff983a9ca34663c2a546e08dd4382af1e1de46bcce4be5",
+      "dimensions": [
+        1080,
+        1920
+      ]
+    },
+    {
+      "path": "brush-positive/brush-thumbnail-lower-controls-scale 2.png",
+      "sha256": "1576d2f416e05b972362c36da3b7df46fced7ea0ea282de1ea7539d31749a86d",
+      "dimensions": [
+        1080,
+        1920
+      ]
+    },
+    {
+      "path": "candidate/common-layer-scale1/clone-tile-bottom-scale1.png",
+      "sha256": "cc100e93ba243f8b33017c8a7b07af821d92c045d1582f01f3a529eb87ea5daa",
+      "dimensions": [
+        1080,
+        1920
+      ]
+    },
+    {
+      "path": "candidate/common-layer-scale1/clone-tile-scale1.png",
+      "sha256": "9238deda5f810c9f47a56628959b0edafa6e83785feb1c6d898ed5d2c18205ce",
+      "dimensions": [
+        1080,
+        1920
+      ]
+    },
+    {
+      "path": "candidate/common-layer-scale1/clone-tree-bottom-scale1.png",
+      "sha256": "188f3b32012d6b3d2f8effa0c12b282e8a79f6c1c9f9021c9e9602442be9b23e",
+      "dimensions": [
+        1080,
+        1920
+      ]
+    },
+    {
+      "path": "candidate/common-layer-scale1/clone-tree-scale1.png",
+      "sha256": "14bd36d9b946932946270faa2a7bed5440b0c1eb8f18ca56c081e56aa47449e7",
+      "dimensions": [
+        1080,
+        1920
+      ]
+    },
+    {
+      "path": "candidate/common-layer-scale1/ordinary-tile-bottom-scale1.png",
+      "sha256": "71c2a9e428899d2cf143d13de40dce60cada8bb9a96ff0cc7e19d6dfb78174d6",
+      "dimensions": [
+        1080,
+        1920
+      ]
+    },
+    {
+      "path": "candidate/common-layer-scale1/ordinary-tile-scale1.png",
+      "sha256": "28cbde243b6a73ada157eff5853b6999de11da4ec1ea44f187d43805ad83d7bc",
+      "dimensions": [
+        1080,
+        1920
+      ]
+    },
+    {
+      "path": "candidate/common-layer-scale1/ordinary-tree-bottom-scale1.png",
+      "sha256": "4cdc11e74317cc5cb29d65158a2729f89c8537d2207e6f9e808b6096bcad6713",
+      "dimensions": [
+        1080,
+        1920
+      ]
+    },
+    {
+      "path": "candidate/common-layer-scale1/ordinary-tree-scale1.png",
+      "sha256": "a5e769d34898809a1ea9ab49622bdacbdfb1a03cb765b23179af3194f0e2a11a",
+      "dimensions": [
+        1080,
+        1920
+      ]
+    },
+    {
+      "path": "candidate/common-layer-scale 2/clone-tile-bottom-scale 2.png",
+      "sha256": "534961ce03e3d0c6b0002aad220f9b621267b7130f8d16c8de6d46c39ad8cda9",
+      "dimensions": [
+        1080,
+        1920
+      ]
+    },
+    {
+      "path": "candidate/common-layer-scale 2/clone-tile-scale 2.png",
+      "sha256": "19cd187325244fcdaae57a518a3ba89bb21a8f6dc750b623223e045604fca17f",
+      "dimensions": [
+        1080,
+        1920
+      ]
+    },
+    {
+      "path": "candidate/common-layer-scale 2/clone-tree-bottom-scale 2.png",
+      "sha256": "d96a92995f8e911448945958f2e9d1761b71e3cce7f7f2e090c73209fc221cc3",
+      "dimensions": [
+        1080,
+        1920
+      ]
+    },
+    {
+      "path": "candidate/common-layer-scale 2/clone-tree-scale 2.png",
+      "sha256": "31d9eec70d5592d07fd61638e15db28a17effa41f5f30f2ddf5ddfb6eabc57b1",
+      "dimensions": [
+        1080,
+        1920
+      ]
+    },
+    {
+      "path": "candidate/common-layer-scale 2/ordinary-tile-bottom-scale 2.png",
+      "sha256": "f9cf6b6021598f9bc249620df18ca964a5ac8c1f811dc4441bd2199efc7f8c97",
+      "dimensions": [
+        1080,
+        1920
+      ]
+    },
+    {
+      "path": "candidate/common-layer-scale 2/ordinary-tile-scale 2.png",
+      "sha256": "9526f615a245a2460dd10a220ddc352d62cb38ef4ce8d5e263dc2c6e6c4919c9",
+      "dimensions": [
+        1080,
+        1920
+      ]
+    },
+    {
+      "path": "candidate/common-layer-scale 2/ordinary-tree-bottom-scale 2.png",
+      "sha256": "b9a4be7de93a2ada3dbfcdf7189221eec109822cdaed8d149334fce6f10986ae",
+      "dimensions": [
+        1080,
+        1920
+      ]
+    },
+    {
+      "path": "candidate/common-layer-scale 2/ordinary-tree-scale 2.png",
+      "sha256": "93b26f4c9cc9b2aaf30bc2e5bbaac25b9be1d322af712d482b0add99851e1797",
+      "dimensions": [
+        1080,
+        1920
+      ]
+    }
+  ],
+  "visual_review": {
+    "brush": "All four original PNGs inspected. Popup, selector, Tool Options, Brush Options and preview visibly fit both scales. Lower images show edited values. Normal full 21 passes separately; sanitizer subsequently failed.",
+    "common": "All 16 original PNGs independently inspected by review_c6_common_images. No obvious clipping/corruption/layout regression. Partial rows at scrolling edges expected; scale 2 tile popups touch top edge but remain horizontally contained.",
+    "scope": "Image-only review is not full Brush acceptance. No additional repository validator executed."
+  },
+  "conclusion": "failure",
+  "sanitizer_summary": {
+    "individual_case_invocations": 21,
+    "case_assertions_passed": 20,
+    "clean_invocations": 0,
+    "timeouts": 0,
+    "case14": "private-target-release aborts at transform_popup_wait_stable_geometry layout.stable >= 3 (observed 0)",
+    "other20": "Case assertions pass but each exits 1 with 199486\u2013202126 bytes LSan leaks; source attribution not established",
+    "choice": "four cases, exit 0, clean PASS",
+    "geometry": "seven cases, exit 0, clean PASS",
+    "protocol": "12 case assertions pass; exit 1 with 765 bytes / 6 allocations",
+    "old_provider_control": "expected exact 67 bytes / 6 allocations; control_passed true, acceptance_eligible false; not candidate PASS"
+  }
+}

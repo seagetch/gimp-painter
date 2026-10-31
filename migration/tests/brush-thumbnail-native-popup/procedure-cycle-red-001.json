@@ -1,0 +1,56 @@
+{
+  "format": 1,
+  "status": "FINAL_d5b8_FIXTURE_RED_CONFIRMED_ON_OLD_b581_PROVIDER",
+  "source": {
+    "status": "FINAL_STRENGTHENED_FIXTURE_ONLY_RED_FROZEN",
+    "reviewed_guarded_patch_sha256": "120dcf01282cb7a6f8eeb223114ed6301560757ccc5af83215faaca4f27fcf6a",
+    "files": {
+      "libgimp/gimp.c": "ed8f3eebbe8359a4bfb63fea4e4609b44bec85ef1ec69f36e1527acf73d5f945",
+      "libgimp/gimpplugin.c": "b581adbe25f831fae89a86106c373160ba85c36bd14d86836e275f8baa9e1e46",
+      "libgimp/tests/plug-in-protocol-fixture.c": "d5b8ee0a1b2ad4867c62a5d8b5a4be6078f8b5078ee7eb58b3a66df0a71da067",
+      "libgimp/tests/test-plug-in-protocol.c": "6062798d7125d9853cd146f672eda2f233a662c48f20ad9128d2274b144a404e"
+    },
+    "production_old_plugin_unchanged": true,
+    "production_guarded_patch_not_staged": true,
+    "unchanged_after_red": true
+  },
+  "cases": {
+    "success-open": {
+      "status": "EXPECTED_FINAL_FIXTURE_RED",
+      "expected_finalization_assertion": "0 == 1",
+      "line": 248,
+      "main_return_and_quit_handshake_verified": true,
+      "unexpected_tail_wire_bytes": 0,
+      "fixture_exitcode": 1,
+      "secondary_host_failure": "Strict unexpected-child-diagnostic rejection",
+      "meson_proof_sha256": "75e4870d3ad0bfaca1ba4f97066abdf769997135f6caf011447d71eb0c3837b9"
+    },
+    "temporary-main": {
+      "status": "EXPECTED_FINAL_FIXTURE_RED",
+      "expected_finalization_assertion": "1 == 2",
+      "line": 248,
+      "main_return_and_quit_handshake_verified": true,
+      "unexpected_tail_wire_bytes": 0,
+      "fixture_exitcode": 1,
+      "secondary_host_failure": "Strict unexpected-child-diagnostic rejection",
+      "meson_proof_sha256": "aa91bc127f88ccabe82af39e1a1f7aaf758dba4608d73f53d1748892fd3030f5"
+    }
+  },
+  "artifacts": {
+    "libgimp/libgimp-3.0.so.0.8.1": {
+      "sha256": "fc28e3e1e1c9c5ddc3b051efc2fe348233f483f60c86c248e510336c33103a24",
+      "bytes": 2215512
+    },
+    "libgimp/tests/plug-in-protocol-fixture": {
+      "sha256": "1ffcbe49119097a51891f29db1b952d05f14e7ff0d17c4fbfaa48a089ee33dd0",
+      "bytes": 46976
+    },
+    "libgimp/tests/test-plug-in-protocol": {
+      "sha256": "e0bce62086d68e7b30ba132cf2f780d36a8562f50c416d2d04220abdd4bfd60d",
+      "bytes": 100304
+    }
+  },
+  "normal_compile_exitcode": 0,
+  "scope": "Two exact unsanitized pipe-only finalization negatives using final strengthened fixture; old pluginproduction retained. Not GUI or LSan-clean proof.",
+  "preflight_qualification": "Initial generatedscript outputpath typo stopped before any compiler/test invocation; preserved error script+note. Corrected path, then normal finalfixture compile/tests executed."
+}

@@ -1,0 +1,18 @@
+{
+  "passed": false,
+  "errors": [
+    "Non-passing registration: canvas-ownership",
+    "Executed case IDs differ from committed case manifest: canvas-ownership"
+  ],
+  "tests": [
+    {
+      "name": "gimp:painter / canvas-ownership",
+      "result": "FAIL",
+      "returncode": -6,
+      "duration": 0.5121281147003174,
+      "stdout": "TAP version 14\n# random seed: R02S6c0aed208ea53c23797ac8388dfe83f5\n1..2\n# Start of ownership tests\n# Start of canvas tests\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for \u2018gio-vfs\u2019\nnot ok /ownership/canvas/unrealized-padding - ERROR:../source/app/tests/color-ownership/test-canvas.c:81:padding_lifetime: assertion failed (canvas_gone == 0): (1 == 0)\nBail out!\n",
+      "stderr": "**\nERROR:../source/app/tests/color-ownership/test-canvas.c:81:padding_lifetime: assertion failed (canvas_gone == 0): (1 == 0)\n"
+    }
+  ],
+  "raw_environment_exported": false
+}

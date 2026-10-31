@@ -1,0 +1,143 @@
+{
+  "format": 1,
+  "acceptance_eligible": false,
+  "baseline_commit": "e25a94e21efca6e6604ddac6f15570c049f421e7",
+  "baseline_tree": "8634eeef49c81aaa5c25192cb76d749ff680683f",
+  "current_commit": "b671825309326bdb55571652e43ab78cc83fd92d",
+  "current_tree": "4469df41e161e3f855918125932e377757a1c937",
+  "gimp_data": "a31e5dea4f572fb5f33b06f5c4b86db5f30643dc",
+  "cells": [
+    "baseline-normal",
+    "current-normal",
+    "baseline-sanitizer",
+    "current-sanitizer"
+  ],
+  "primary_repetitions": 3,
+  "fidelity_count": 2,
+  "minimum_free_kib": 41943040,
+  "build_parallelism": 2,
+  "common_targets": [
+    "app/tests/matched-preclick:executable",
+    "menus/image-menu.ui:custom",
+    "menus/dockable-menu.ui:custom",
+    "plug-ins/common/blinds:executable",
+    "plug-ins/common/tile-small:executable",
+    "plug-ins/common/contrast-retinex:executable",
+    "plug-ins/common/convolution-matrix:executable",
+    "gimp30-gmo:alias",
+    "gimp30-libgimp-gmo:alias",
+    "gimp30-std-plug-ins-gmo:alias",
+    "gimp30-python-gmo:alias",
+    "gimp30-script-fu-gmo:alias",
+    "org.gimp.extension.goat-exercises-gmo:alias"
+  ],
+  "current_fidelity_target": "painter-compact-options",
+  "ASAN_OPTIONS": "halt_on_error=1:detect_leaks=1:fast_unwind_on_malloc=0:malloc_context_size=40:log_exe_name=1",
+  "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1",
+  "LSAN_OPTIONS_unset": true,
+  "screen": "1080x1920x24",
+  "display_transport": "Unix Xvfb; TCP disabled",
+  "primary_deadline_us": 3000000,
+  "job_timeout_minutes": 180,
+  "prepare_timeout_minutes": 120,
+  "measure_timeout_minutes": 50,
+  "observer_source_sha256": "b363b43f8eb9d1eae6e37741c9690e8065eb40409e72b2c1eed84b0916ffdbd6",
+  "phase_source_sha256": "f2fcebbacdca5da6111c1e17599f6dbb2ee3e3e2e2f84cda14b45dc0aedf2665",
+  "meson_append_sha256": "668d95cb2700e567b1b9bdc39f4fb730242254af90a3e0b7abfc6cd47b1e9d65",
+  "order": [
+    {
+      "order": 1,
+      "cell": "baseline-normal",
+      "repetition": 1,
+      "kind": "primary"
+    },
+    {
+      "order": 2,
+      "cell": "current-normal",
+      "repetition": 1,
+      "kind": "primary"
+    },
+    {
+      "order": 3,
+      "cell": "baseline-sanitizer",
+      "repetition": 1,
+      "kind": "primary"
+    },
+    {
+      "order": 4,
+      "cell": "current-sanitizer",
+      "repetition": 1,
+      "kind": "primary"
+    },
+    {
+      "order": 5,
+      "cell": "current-sanitizer",
+      "repetition": 2,
+      "kind": "primary"
+    },
+    {
+      "order": 6,
+      "cell": "baseline-sanitizer",
+      "repetition": 2,
+      "kind": "primary"
+    },
+    {
+      "order": 7,
+      "cell": "current-normal",
+      "repetition": 2,
+      "kind": "primary"
+    },
+    {
+      "order": 8,
+      "cell": "baseline-normal",
+      "repetition": 2,
+      "kind": "primary"
+    },
+    {
+      "order": 9,
+      "cell": "baseline-normal",
+      "repetition": 3,
+      "kind": "primary"
+    },
+    {
+      "order": 10,
+      "cell": "current-normal",
+      "repetition": 3,
+      "kind": "primary"
+    },
+    {
+      "order": 11,
+      "cell": "baseline-sanitizer",
+      "repetition": 3,
+      "kind": "primary"
+    },
+    {
+      "order": 12,
+      "cell": "current-sanitizer",
+      "repetition": 3,
+      "kind": "primary"
+    },
+    {
+      "order": 13,
+      "cell": "current-normal",
+      "repetition": 1,
+      "kind": "fidelity"
+    },
+    {
+      "order": 14,
+      "cell": "current-sanitizer",
+      "repetition": 1,
+      "kind": "fidelity"
+    }
+  ],
+  "baseline_build_compatibility": {
+    "policy_sha256": "97a542bfdf237f7680b6e865ca728e4263eb244b729a8b2b0751f1f4d028c765",
+    "baseline_build_metadata_modified": true,
+    "pristine_baseline_build_comparison": false,
+    "applies_to": [
+      "baseline-normal",
+      "baseline-sanitizer"
+    ],
+    "current_root_unchanged": true
+  }
+}

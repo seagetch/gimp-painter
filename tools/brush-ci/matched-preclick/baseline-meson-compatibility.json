@@ -1,0 +1,21 @@
+{
+  "format": 1,
+  "scope": "Diagnostic-only baseline root Meson runnable-binary/GIR compatibility; both baseline modes, no production source change; accepted baseline immutable.",
+  "baseline_commit": "e25a94e21efca6e6604ddac6f15570c049f421e7",
+  "current_commit": "b671825309326bdb55571652e43ab78cc83fd92d",
+  "path": "meson.build",
+  "baseline_before_sha256": "6cbbc986cae81fcbcd3234e70eac91d96ffa2a254ad8c1b0e56f64f19325959f",
+  "baseline_after_sha256": "83d371852ebeeede92caee7e0280f35dfc28a2a05cc8af6d00a84b67177d5b0f",
+  "current_unchanged_sha256": "74358058b211605bcd3fcb0e08df60722728196b93102799bc27ec0500329ea5",
+  "edits": [
+    {
+      "before": "if meson.can_run_host_binaries() and have_gobject_introspection\n  if enable_console_bin\n    gimp_real_exe = gimpconsole_exe\n  else\n    gimp_real_exe = gimpmain_exe\n  endif\n  gimp_exe_depends = [gimp_real_exe, libgimp_gir, libgimpui_gir] + plugin_custom_targets\n",
+      "after": "# Runnable in-build binaries do not require GIR generation, which is disabled\n# for sanitizer builds and some cross-builds with an executable wrapper.\nif meson.can_run_host_binaries()\n  if enable_console_bin\n    gimp_real_exe = gimpconsole_exe\n  else\n    gimp_real_exe = gimpmain_exe\n  endif\n  gimp_exe_depends = [gimp_real_exe] + plugin_custom_targets\n  if have_gobject_introspection\n    gimp_exe_depends += [libgimp_gir, libgimpui_gir]\n  endif\n"
+    },
+    {
+      "before": "    gimp_exe_depends += [patched_libgimp_gir, patched_libgimpui_gir]\n\n    gimp_run_env.set('GIMP_GI_DIR', gi.get_variable('libdir'))\n",
+      "after": "    if have_gobject_introspection\n      gimp_exe_depends += [patched_libgimp_gir, patched_libgimpui_gir]\n\n      gimp_run_env.set('GIMP_GI_DIR', gi.get_variable('libdir'))\n    endif\n"
+    }
+  ],
+  "qualification": "Baseline production source revision retained, but root build metadata deliberately overlaid. No claim of unmodified baseline build metadata; current already contains identical compatibility semantics."
+}

@@ -9,6 +9,7 @@
 #include "config.h"
 
 #include <errno.h>
+#include <fcntl.h>
 #include <stdlib.h>
 #include <unistd.h>
 
@@ -38,6 +39,48 @@ struct _ProtocolFixtureClass
 GType protocol_fixture_get_type (void) G_GNUC_CONST;
 
 G_DEFINE_TYPE (ProtocolFixture, protocol_fixture, GIMP_TYPE_PLUG_IN)
+
+static guint plug_ins_finalized;
+static guint procedures_created;
+static guint procedures_finalized;
+static guint reentrant_disposes_returned;
+
+static void
+count_finalized (gpointer data)
+{
+  guint *count = data;
+
+  (*count)++;
+}
+
+static void
+count_procedure_finalized (gpointer data)
+{
+  count_finalized (data);
+
+  if (procedures_finalized == procedures_created)
+    {
+      GimpPlugIn *plug_in = gimp_get_plug_in ();
+
+      /* The last retained procedure is finalized during plug-in disposal.
+       * Reenter that disposal synchronously, without another IPC scenario.
+       */
+      g_assert_nonnull (plug_in);
+      g_object_run_dispose (G_OBJECT (plug_in));
+      reentrant_disposes_returned++;
+    }
+}
+
+static GimpProcedure *
+track_procedure (GimpProcedure *procedure)
+{
+  g_assert_nonnull (procedure);
+  procedures_created++;
+  g_object_set_data_full (G_OBJECT (procedure), "protocol-finalized-counter",
+                          &procedures_finalized, count_procedure_finalized);
+
+  return procedure;
+}
 
 static void
 send_event (gchar event)
@@ -118,9 +161,10 @@ fixture_run (GimpProcedure       *procedure,
       GimpPlugIn    *plug_in = gimp_procedure_get_plug_in (procedure);
       GimpProcedure *temporary;
 
-      temporary = gimp_procedure_new (plug_in, TEMP_NAME,
-                                      GIMP_PDB_PROC_TYPE_TEMPORARY,
-                                      temporary_run, NULL, NULL);
+      temporary = track_procedure
+        (gimp_procedure_new (plug_in, TEMP_NAME,
+                             GIMP_PDB_PROC_TYPE_TEMPORARY,
+                             temporary_run, NULL, NULL));
       gimp_plug_in_add_temp_procedure (plug_in, temporary);
       g_object_unref (temporary);
       gimp_procedure_persistent_ready (procedure);
@@ -156,7 +200,8 @@ fixture_create_procedure (GimpPlugIn  *plug_in,
   if (g_str_has_prefix (scenario, "temporary-"))
     type = GIMP_PDB_PROC_TYPE_PERSISTENT;
 
-  return gimp_procedure_new (plug_in, name, type, fixture_run, NULL, NULL);
+  return track_procedure
+    (gimp_procedure_new (plug_in, name, type, fixture_run, NULL, NULL));
 }
 
 static void
@@ -174,6 +219,8 @@ protocol_fixture_class_init (ProtocolFixtureClass *klass)
 static void
 protocol_fixture_init (ProtocolFixture *fixture)
 {
+  g_object_set_data_full (G_OBJECT (fixture), "protocol-finalized-counter",
+                          &plug_ins_finalized, count_finalized);
 }
 
 int
@@ -183,6 +230,40 @@ main (int    argc,
   /* Fixture failures cannot strand the suite indefinitely. This watchdog is
    * a failure deadline, never the ordering mechanism of the race test.
    */
+  const gchar *scenario = g_getenv ("GIMP_TEST_PROTOCOL_SCENARIO");
+  gint         result;
+
   alarm (20);
-  return gimp_main (protocol_fixture_get_type (), argc, argv);
+  result = gimp_main (protocol_fixture_get_type (), argc, argv);
+
+  /* Only natural gimp_main() returns reach this check. Explicit gimp_quit()
+   * exits with an active call stack and is covered by the existing protocol
+   * assertions instead. Qdata destruction proves finalization, unlike weak
+   * notifications which g_object_run_dispose() can emit before final unref.
+   */
+  g_assert_cmpuint (procedures_created, ==,
+                    g_str_equal (scenario, "temporary-main") ? 2 :
+                    (g_str_has_prefix (scenario, "success-") ||
+                     g_str_has_prefix (scenario, "error-")) ? 1 : 0);
+  g_assert_cmpuint (procedures_finalized, ==, procedures_created);
+  g_assert_cmpuint (plug_ins_finalized, ==, 1);
+  g_assert_cmpuint (reentrant_disposes_returned, ==,
+                    procedures_created > 0 ? 1 : 0);
+
+  if (g_strcmp0 (scenario, "query") == 0 ||
+      g_strcmp0 (scenario, "init") == 0)
+    {
+      /* Query/init install no channel watches. Their only two owning channel
+       * references must be gone before gimp_main() returns, not at process
+       * exit; the host has already observed the normal quit handshake.
+       */
+      errno = 0;
+      g_assert_cmpint (fcntl (3, F_GETFD), ==, -1);
+      g_assert_cmpint (errno, ==, EBADF);
+      errno = 0;
+      g_assert_cmpint (fcntl (4, F_GETFD), ==, -1);
+      g_assert_cmpint (errno, ==, EBADF);
+    }
+
+  return result;
 }

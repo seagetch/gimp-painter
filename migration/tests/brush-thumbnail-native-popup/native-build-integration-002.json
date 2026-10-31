@@ -1,0 +1,609 @@
+{
+  "format": 1,
+  "status": "PASS: exact reviewed run20-repair source normal native compile/link, header checks and freshness; runtime requalification pending",
+  "revision": "brush-integration-002",
+  "source": {
+    "accepted_pre_brush_baseline_commit": "e25a94e21efca6e6604ddac6f15570c049f421e7",
+    "development_commit_before_run20_repairs": "b6eee4ea1f944010e8f009e040cdb4d7561b3e1e",
+    "disposable_checkout_base_commit": "d4ce384f708090facbf6b08edc38b4ddcf84cff0",
+    "prior_native001_receipt_sha256": "ca0b1d4ff68ed7c523c80ac04136f83e3aa5cf808cd21970138273eada8506b1",
+    "current_reviewed_compiler5_manifest_sha256": "e72494421d21976e91591d3a868bc1545756c567e1ff5266ed999a8920d61f83",
+    "independent_review": "Exact5 immutable snapshot and main hashes independently ACKed by /root/review_brush_popup_integration at2026-10-25 15:04:17 UTC; prior0a3b03ce Brush include superseded before staging.",
+    "compiler5_source_sha256": {
+      "meson.build": "83d371852ebeeede92caee7e0280f35dfc28a2a05cc8af6d00a84b67177d5b0f",
+      "app/tests/test-painter-brush-thumbnail-popup.inc": "dffc17480b90e2abedff7f36a9426c0faee195569e9d3d62bf89a396a9ec80d0",
+      "app/tests/test-painter-transform-popup.inc": "7dd3e38a17d5c552ab99b3811bddc3eb632da382696979863fc88ec6a14d4c37",
+      "app/tools/gimppainterbrushpopup.cpp": "3384adcb3f7d597e7878ed68775ed0e2e3762f80c1ca4db9470fcd497c7e5d2e",
+      "app/tools/gimppaintertogglepopup.cpp": "fca50248646ccef9f03204eb1524f029112e7172dfe0d697da6fcab8ac1c0d34"
+    },
+    "combined_reviewed_file_count": 27,
+    "combined_reviewed_file_sha256": {
+      "app/widgets/popupper.h": "0745c35cb4fe2cd705ae1f85e98444bfaf8299a24aa7a067737998444b3d459d",
+      "app/widgets/popupper.cpp": "2a32434f9eca1db8435eed057ed9e1d3233d5120be5f974c9568529bad2d0044",
+      "app/widgets/gimpcellrendererpopup.cpp": "342e0da5c83dc80fe20256bf32f4042c204dfb76dcb4cb6923bec3057383c207",
+      "app/widgets/gimppainterlayertiles.cpp": "8c6addf0e246a1cb9800e3eb515f4af9797dabdd6b51e72a83c4ca2bc8d7ea6d",
+      "app/tests/meson.build": "c65567c7fa8f3e75dbcf24ab5986e8c697dc3fe1d52bf88384ca58817423849e",
+      "app/tests/test-common-layer-popup.cpp": "31ff252f755a9f152cb7f4ea7da400f62fa69d8a3b0ab8f83a9495809a4b05bf",
+      "app/tests/test-layer-tile-entry-contracts.c": "c8e125ce835c27449afdbc2e4b7fd44648b909d401cd6da6c67a7aabac43e326",
+      "app/tests/test-layer-tile-entry-contracts.cpp": "e4b4e481497aa4d3de5aa1620df3b5efd52d800d3adead9e118ee721cc2fe4c0",
+      "app/tests/test-painter-canvas-ui.c": "6724e3e0a2cbe3a0ab73fb31a0b88c87a9727bce09d2779e3af9c8b2cff523dc",
+      "app/tests/test-painter-layer-tree.c": "78245a714da02e03aa20aa3aeb9a6d763176df9d15269b8e165828c8c8a63de4",
+      "app/tests/test-painter-layer-ui.c": "0663b3dcedf94eab17ef5ae24ccf3a6678599627aa5c36ec2210a48efe9172be",
+      "app/tests/test-painter-widget-exceptions.c": "30930cb38982d5b4e6d51d5ac5244583c492b1f86c4985e1ee967867a6e6d868",
+      "migration/inventory/additional-c-header-routes.json": "8a1242d1d64a73cc9393ea4c192190741545f7514ac07b1192bf3d6839edfa41",
+      "app/display/gimppaintercanvasui.cpp": "b6e6c6c069bb513a8872aa988c133f0fff8ffcaabc2527ef4640cad3baaf14df",
+      "app/widgets/gimpoverlaychild.c": "8f558769cc18f5d2d70e75c09913ecc91cbbe74518cad196666a88cb38556349",
+      "app/widgets/gimpoverlaychild.h": "c5d3631889c89b57dbfc26fa7a471c814b6bee775bf4e2d241eee45ca1071b18",
+      "app/tests/test-overlay-paint-gate.cpp": "4af7e5e61c7d0d33970db90dc73e03094ec42f0b61c529a03da4d4fa9bf2e9fd",
+      "app/tests/test-painter-brush-thumbnail-popup.inc": "dffc17480b90e2abedff7f36a9426c0faee195569e9d3d62bf89a396a9ec80d0",
+      "app/tests/test-painter-compact-options.c": "6b81f7273161c794c10e7b4e69f32db1af40586f4e224162b7711813a4c5ed18",
+      "app/tools/gimppainterbrushpopup.cpp": "3384adcb3f7d597e7878ed68775ed0e2e3762f80c1ca4db9470fcd497c7e5d2e",
+      "app/tools/gimppainterbrushpopup.h": "6042feebf9f5dd5c0997ed78b60c1c9be374ac0a468371f4f6ffa6a15bb9b595",
+      "app/tools/gimppainterpainttoolbar.c": "651bb1a43d435bb81bb964be1463a7d404bd60751b2ced7f6ce05ef944bcb40b",
+      "app/tools/gimppaintertogglepopup.cpp": "fca50248646ccef9f03204eb1524f029112e7172dfe0d697da6fcab8ac1c0d34",
+      "app/tools/gimppaintertogglepopup.h": "53ed421fcab6c9399c478890c41acad6a6a379372976fcbc231f008a52c096c3",
+      "app/tools/meson.build": "904a3bbd24d1fbde9869b2aedf257318ab99f3144d81adcf037d295211108436",
+      "meson.build": "83d371852ebeeede92caee7e0280f35dfc28a2a05cc8af6d00a84b67177d5b0f",
+      "app/tests/test-painter-transform-popup.inc": "7dd3e38a17d5c552ab99b3811bddc3eb632da382696979863fc88ec6a14d4c37"
+    },
+    "source_reconstruction": "Normal coherent native001 build reused. Verified25 prior reviewed source hashes and all13 artifact hashes before update, then copied only5 compiler/build inputs from the immutable reviewed snapshot after fail-fast hash validation. Remaining compiler inputs unchanged from001. No Git refs/index/commits modified.",
+    "change_scope": "Root native/noGI runnable-binary Meson selection; Brush thumbnail identity/native hit/monitor-fit and title-label reentry tests; fresh-only popup monitor clamp; Brush selector title synchronization; Transform actual-input fixture correction.",
+    "metadata_scope": "This receipt binds final compiler5 independently of documentation/ledger/CI metadata reconciliation. It does not relabel previous17/18 deliverable freezes as current final documentation.",
+    "tracked_patch_sha256": "56bb6d3059ffa58f816bf59772a260e074223cf13847f5624b7fd1a0b5673d3a",
+    "tracked_patch_unchanged_during_build": true,
+    "all_tracked_input_hashes_checked": 10562,
+    "all_tracked_input_hashes_unchanged": true,
+    "untracked_source_qualification": "Existing new Brush/common files remain untracked in disposable baseline checkout and are explicitly covered by27-file hash map; tracked patch alone is not the complete source manifest.",
+    "gimp_data_submodule_commit": "a31e5dea4f572fb5f33b06f5c4b86db5f30643dc",
+    "version_identity_note": "Disposable Git identity remains baseline306 with verified source overlays; binary version identity is not relabeled as the development or future published candidate commit."
+  },
+  "tool_versions": {
+    "meson": "1.7.0",
+    "ninja": "1.12.1",
+    "gcc": "14.2.0",
+    "g++": "14.2.0",
+    "gnu_ld": "2.44",
+    "python": "3.13.5"
+  },
+  "dependency_versions": {
+    "glib": "2.84.4",
+    "gtk": "3.24.49",
+    "gegl": "0.4.62",
+    "babl": "0.1.114",
+    "gexiv2": "0.14.3",
+    "libmypaint": "1.6.0"
+  },
+  "configuration": {
+    "buildtype": "debugoptimized",
+    "painter_http": "disabled",
+    "headless_tests": "disabled",
+    "sanitizers": "none",
+    "jobs": 2,
+    "method": "Existing ordinary Meson native configuration automatically regenerated against reviewed root meson.build83d37185; normal Ninja graph reused. No backend/object/archive substitutions or option bypasses.",
+    "cpp_standard": "C++14",
+    "compact_test_standard": "C11",
+    "other_C_targets": "Retain normal selected compiler flags",
+    "native_noGI_qualification": "The changed root Meson file participated in this normal regeneration and build. Separate fresh native sanitizer/noGI configuration proof belongs to native-no-gi-config-001.json; this receipt does not claim a sanitizer/noGI runtime test or a fresh full build."
+  },
+  "build": {
+    "started_utc": "2026-10-25T15:04:27Z",
+    "finished_utc": "2026-10-25T15:04:54Z",
+    "compile_exitcode": 0,
+    "method": "Ordinary meson compile -C build -j2 through generated Ninja graph. Only approved source delta staged; no manual compile/link replacements, backend edits, object copying, or archive substitutions.",
+    "targets": [
+      {
+        "path": "app/gimp-3.0",
+        "kind": "executable",
+        "sha256": "1db739a30713037c3ed369ede494af8c25f6493c5cef1a9e073f7f5c694f9714",
+        "bytes": 82880256,
+        "normal_meson_target_id": "a172ced@@gimp-3.0@exe",
+        "action": "normally relinked",
+        "changed_from001": true
+      },
+      {
+        "path": "app/tests/painter-compact-options",
+        "kind": "executable",
+        "sha256": "0fe502881c91750c07c179d6d6ad6c71ae9593847d165c36d8eb622dde14afa0",
+        "bytes": 84186368,
+        "normal_meson_target_id": "b2e8cd9@@painter-compact-options@exe",
+        "action": "normally relinked",
+        "changed_from001": true
+      },
+      {
+        "path": "app/tests/painter-toolbar-window",
+        "kind": "executable",
+        "sha256": "233ea66bbf6fd969dc529dc1a86b94638eef747f6c5dbc4c66d48725a39103fb",
+        "bytes": 81568624,
+        "normal_meson_target_id": "b2e8cd9@@painter-toolbar-window@exe",
+        "action": "normally relinked",
+        "changed_from001": true
+      },
+      {
+        "path": "app/tests/painter-layer-ui",
+        "kind": "executable",
+        "sha256": "0f6dd994014bf301888f6ba50f8d3cd9925a64035c2f11ddfd0f152d70c1c2fc",
+        "bytes": 83806688,
+        "normal_meson_target_id": "b2e8cd9@@painter-layer-ui@exe",
+        "action": "normally relinked",
+        "changed_from001": true
+      },
+      {
+        "path": "app/tests/painter-layer-tree",
+        "kind": "executable",
+        "sha256": "02d31a61e44db5a06852d86372ca81f8ed32d8a15a4044e376c6c95626e03d66",
+        "bytes": 81448040,
+        "normal_meson_target_id": "b2e8cd9@@painter-layer-tree@exe",
+        "action": "normally relinked",
+        "changed_from001": true
+      },
+      {
+        "path": "app/tests/painter-canvas-ui",
+        "kind": "executable",
+        "sha256": "ba72a012085ffade8792f7fb11ca319a30e75c1848a0be2a5a33285340c124c8",
+        "bytes": 82310848,
+        "normal_meson_target_id": "b2e8cd9@@painter-canvas-ui@exe",
+        "action": "normally relinked",
+        "changed_from001": true
+      },
+      {
+        "path": "app/tests/painter-popup-handles",
+        "kind": "executable",
+        "sha256": "2209dafcf5ed0ec8ebf4cd48bae75fbbdd80992a42ca402aa0ca1dcb16ce6fb1",
+        "bytes": 81669368,
+        "normal_meson_target_id": "b2e8cd9@@painter-popup-handles@exe",
+        "action": "normally relinked",
+        "changed_from001": true
+      },
+      {
+        "path": "app/tests/layer-tile-entry-contracts",
+        "kind": "executable",
+        "sha256": "d5a8a38a356a5875c166c5932eded318bdeb59a4cebfce357709668e3f88fcd5",
+        "bytes": 81592088,
+        "normal_meson_target_id": "b2e8cd9@@layer-tile-entry-contracts@exe",
+        "action": "normally relinked",
+        "changed_from001": true
+      },
+      {
+        "path": "app/tests/native-popover-entry",
+        "kind": "executable",
+        "sha256": "415fd883d1b02262485182f7a1e96f3c6553e5d97fbb8b96b308070467e130a3",
+        "bytes": 81367856,
+        "normal_meson_target_id": "b2e8cd9@@native-popover-entry@exe",
+        "action": "normally relinked",
+        "changed_from001": true
+      },
+      {
+        "path": "app/tests/painter-widget-exceptions",
+        "kind": "executable",
+        "sha256": "b4369ef264d67cd97c4b855d362c60a8418604de94da88f3def81d571b5b3668",
+        "bytes": 81289176,
+        "normal_meson_target_id": "b2e8cd9@@painter-widget-exceptions@exe",
+        "action": "normally relinked",
+        "changed_from001": true
+      },
+      {
+        "path": "app/tests/painter-layer-dispatch",
+        "kind": "executable",
+        "sha256": "631b6a97a680e34b63febfe234d60527e700a83bbc5d676a2433d9e46d725042",
+        "bytes": 81276424,
+        "normal_meson_target_id": "b2e8cd9@@painter-layer-dispatch@exe",
+        "action": "normally relinked",
+        "changed_from001": true
+      },
+      {
+        "path": "app/painter/tests/headers/libpainter-public-headers-c.a",
+        "kind": "static library",
+        "sha256": "8e08b5eadaf09be8269141f013fe0408753c1be1b923ea8ca31214cce9db43a9",
+        "bytes": 27634,
+        "normal_meson_target_id": "26ea40d@@painter-public-headers-c@sta",
+        "action": "unchanged normal archive reverified",
+        "changed_from001": false
+      },
+      {
+        "path": "app/painter/tests/headers/libpainter-public-headers-cpp.a",
+        "kind": "static library",
+        "sha256": "51eeefffb6fa0f618bd3334ea83da7955b24f66f70ba0323bab464742b361378",
+        "bytes": 30996,
+        "normal_meson_target_id": "26ea40d@@painter-public-headers-cpp@sta",
+        "action": "unchanged normal archive reverified",
+        "changed_from001": false
+      }
+    ],
+    "target_count": 13,
+    "executable_count": 11,
+    "archive_count": 2,
+    "normally_relinked_executables": 11,
+    "compiled_translation_units": [
+      "app/tools/gimppainterbrushpopup.cpp",
+      "app/tools/gimppaintertogglepopup.cpp",
+      "app/tests/test-painter-compact-options.c"
+    ],
+    "compiled_nonheader_object_actions": [
+      "[5/478] Compiling C++ object app/tools/libapptools.a.p/gimppainterbrushpopup.cpp.o",
+      "[7/21] Compiling C++ object app/tools/libapptools.a.p/gimppaintertogglepopup.cpp.o",
+      "[15/21] Compiling C object app/tests/painter-compact-options.p/test-painter-compact-options.c.o"
+    ],
+    "header_probe_objects_recompiled_this_increment": 0,
+    "header_probe_reuse_note": "All455 generated probe source identities and both normally built archives are unchanged from001 and were reverified by current header tests. Zero header objects needed rebuilding in this increment; not455 fresh recompilations.",
+    "brush_factory_symbol_inspection": "Brush/resource entry symbols present in current app, compact-options and toolbar-window executables; static binary inspection only.",
+    "common_ui_scope": "Eight common UI executables cover all13 accepted adjacent registrations; plus compact-options, toolbar-window and main application. All11 executables relinked with current normal tools archive.",
+    "full_project_aggregate_built": false,
+    "runtime_tests_executed": false
+  },
+  "freshness": {
+    "normal_second_compile_exitcode": 0,
+    "normal_second_compile_translation_units": 0,
+    "normal_second_compile_link_actions": 0,
+    "normal_second_compile_actions": "Only3 Git-version generators plus1 icon-theme fixture verifier executed; restat prevented recompilation/relink.",
+    "dryrun_qualification": "Ninja dry-run pessimistically schedules21 actions through forced generators; actual second normal compile confirms restat freshness.",
+    "generated_source_diff_scope": [
+      "app/pdb",
+      "libgimp"
+    ],
+    "generated_source_diff_bytes": 0,
+    "generated_source_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "all_tracked_inputs_unchanged": true,
+    "historical_evidence_files_unchanged": 335,
+    "native001_external_evidence_bundle_sha256_unchanged": "487b3b21d91699c8436305c3dc57cdb2fcfd7fd5e36cb75541fd0e4eb0ccfb69"
+  },
+  "header_checks": {
+    "painter-public-header-compilation": "PASS",
+    "painter-additional-header-routes": "PASS",
+    "compiled_probes": 455,
+    "c_probes": 218,
+    "cpp_probes": 237,
+    "brush_header_probes": [
+      {
+        "name": "probe-413.c",
+        "label": "additional-reviewed-header",
+        "header": "app/tools/gimppainterbrushpopup.h",
+        "language": "c",
+        "source_sha256": "22a4d5f11e70dc92148fbb3749854cdad44ff33e6e7924e33f9658f5a537f702"
+      },
+      {
+        "name": "probe-414.cpp",
+        "label": "additional-reviewed-header",
+        "header": "app/tools/gimppainterbrushpopup.h",
+        "language": "cpp",
+        "source_sha256": "44b040e28d7be35bd99d577ba408ddf6aa9b56526002217771cb7b9e7beef461"
+      }
+    ],
+    "all455_prior001_probe_source_identities_preserved": true,
+    "passed": 2,
+    "failed": 0,
+    "skipped": 0,
+    "timeouts": 0,
+    "scope": "Genuine C11/C++14 header source/archive compilation verification and reviewed routes; no runtime or cross-language link ABI claim."
+  },
+  "warnings": {
+    "compiler_warning_count": 554,
+    "compiler_warning_categories": {
+      "-Wmissing-declarations": 1,
+      "-Wmisleading-indentation": 2,
+      "-Wdeclaration-after-statement": 551
+    },
+    "compiler_warning_paths": {
+      "../source/app/tests/test-painter-compact-options.c": 85,
+      "../source/app/tests/test-widget-store-native-controls.inc": 19,
+      "../source/app/tests/test-widget-store-orientation.inc": 11,
+      "../source/app/tests/test-widget-store-orientation-callers.inc": 7,
+      "../source/app/tests/test-painter-independent-toolbar.inc": 3,
+      "../source/app/tests/test-painter-histogram-toolbar.inc": 2,
+      "../source/app/tests/test-painter-foreground-toolbar.inc": 3,
+      "../source/app/tests/test-painter-text-toolbar.inc": 1,
+      "../source/app/tests/test-painter-standard-toggle-popup.inc": 59,
+      "../source/app/tests/test-painter-transform-popup.inc": 61,
+      "../source/app/tests/test-painter-bucket-popup.inc": 83,
+      "../source/app/tests/test-painter-ink-popup.inc": 60,
+      "../source/app/tests/test-painter-clone-popup.inc": 66,
+      "../source/app/tests/test-painter-brush-thumbnail-popup.inc": 94
+    },
+    "brush_test_include_warning_count": 94,
+    "brush_test_warning_kind": "ISO C90 mixed-declaration style warnings under existing flags; compact test is C11. Warnings retained, not suppressed.",
+    "configuration_warning_count": 4,
+    "configuration_warnings": [
+      "../source/meson.build:134: WARNING: Module SIMD has no backwards or forwards compatibility and might not exist in future releases.",
+      "WARNING: You should add the boolean check kwarg to the run_command call.",
+      "../source/libgimp/tests/meson.build:24: WARNING: Project targets '>=0.61.0' but uses feature introduced in '1.4.0': environment.unset.",
+      "WARNING: Project specifies a minimum meson_version '>=0.61.0' but uses features which were added in newer versions:"
+    ],
+    "qualification": "All554 current incremental compiler warnings retained verbatim. Prior header and full-source warnings remain in unchanged historical receipts; current zero header recompilation does not erase those warnings."
+  },
+  "intermediate_attempt_disclosure": {
+    "path": "intermediate-old001-pre-freeze/qualification.json",
+    "status": "NOT_CURRENT002_EVIDENCE",
+    "reason": "Initial staging hash guard rejected changing Brush include before copying any source. A non-fail-fast wrapper then ran only old001 restat generators and header checks. Preserved separately; source/artifact hashes remained unchanged. Final staging executed separately and succeeded before current normal build.",
+    "source_files_copied_in_intermediate": 0,
+    "compiled_objects_in_intermediate": 0,
+    "linked_targets_in_intermediate": 0
+  },
+  "runtime_qualification": {
+    "gui_tests_executed": false,
+    "gui_acceptance_passed": false,
+    "sanitizer_runtime_executed": false,
+    "baseline_negative_executed": false,
+    "screenshots_produced": false,
+    "full_project_aggregate_executed": false,
+    "local_blocker": "AF_UNIX socket creation previously denied with EPERM. No retry, alternate transport, Xvfb launch or security-setting workaround attempted.",
+    "expected_registered_cases_not_executed": {
+      "brush_focused": 21,
+      "previous_compact_and_toolbar": 132,
+      "combined_unique": 153
+    },
+    "pending": "Ordinary authorized CI must establish exact final-candidate runtime repair behavior, final-test accepted-baseline negative, sanitizer scope, common regressions and visual captures. Compile/header success is not UI acceptance."
+  },
+  "evidence": {
+    "all-tracked-input-hashes-after.json": {
+      "sha256": "e7137430113e26ef64bbcaf204cbb91463181c5c3b35dee4c1e0adb0194689fa",
+      "bytes": 1248331
+    },
+    "all-tracked-input-hashes-before.json": {
+      "sha256": "e7137430113e26ef64bbcaf204cbb91463181c5c3b35dee4c1e0adb0194689fa",
+      "bytes": 1248331
+    },
+    "baseline-verification.json": {
+      "sha256": "f4efdab8244c31716956387d7ff85b477bd9803204435afaab27917d8d94f2ad",
+      "bytes": 234
+    },
+    "build-actions.json": {
+      "sha256": "83a943f83fb893e1de1f363e70aceaa32571f899b15b73f96a6a131aa7436f8d",
+      "bytes": 1373
+    },
+    "build-integrated.sh": {
+      "sha256": "db3d860c5cb4f2520fb2b3f37e4204765a0af16794f8df6b20a3a8594c1e1c8d",
+      "bytes": 2144
+    },
+    "build-options-after.json": {
+      "sha256": "ab8bff2ef1e24b30b18bf5c787828312d879271e58fa0fba43a127d877a659fa",
+      "bytes": 30306
+    },
+    "build-options-before.json": {
+      "sha256": "ab8bff2ef1e24b30b18bf5c787828312d879271e58fa0fba43a127d877a659fa",
+      "bytes": 30306
+    },
+    "common-registration-executable-map.json": {
+      "sha256": "ccd1289677edd6dc1b29e8274a323640b67409808b705833730e33353a923fe0",
+      "bytes": 994
+    },
+    "compile-finished.txt": {
+      "sha256": "d2c243da9d349b3248bba52206abae1c3eea89510bea2309e1ceccc386fcb20d",
+      "bytes": 21
+    },
+    "compile-started.txt": {
+      "sha256": "96de7247a9d4472a4317f77ecf4c0c0385e3b6b2a87225c5a0aa30433203589c",
+      "bytes": 21
+    },
+    "compile-warning-details.json": {
+      "sha256": "3247574cfd7a2bb27ca7e837d8ffd51b824ebb78ba2d2da5c42f01121e01ec75",
+      "bytes": 86008
+    },
+    "compile.exitcode": {
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    "compile.log": {
+      "sha256": "44c4c29641d6ee6d01176323c60f9795e2bd689efe52d0310b364b2d2fc48f1b",
+      "bytes": 178413
+    },
+    "focused-dryrun-after.exitcode": {
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    "focused-dryrun-after.log": {
+      "sha256": "093564941ded29cb4bc366127fc537b3544b68ac554df2b42816656537831170",
+      "bytes": 1973
+    },
+    "focused-dryrun-before.exitcode": {
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    "focused-dryrun-before.log": {
+      "sha256": "fc591c2b6ca554c56d3637c3cb02f760c3eb163468a55d72d8fdad1e8b978cfc",
+      "bytes": 773
+    },
+    "freshness-rebuild.exitcode": {
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    "freshness-rebuild.log": {
+      "sha256": "0f2b4a437cdf0b7e2eccab8f0a6a18099a438ab4d255219a2ea96b6be2bf374c",
+      "bytes": 1400
+    },
+    "frozen-compiler-inputs/app/tests/test-painter-brush-thumbnail-popup.inc": {
+      "sha256": "dffc17480b90e2abedff7f36a9426c0faee195569e9d3d62bf89a396a9ec80d0",
+      "bytes": 87525
+    },
+    "frozen-compiler-inputs/app/tests/test-painter-transform-popup.inc": {
+      "sha256": "7dd3e38a17d5c552ab99b3811bddc3eb632da382696979863fc88ec6a14d4c37",
+      "bytes": 35818
+    },
+    "frozen-compiler-inputs/app/tools/gimppainterbrushpopup.cpp": {
+      "sha256": "3384adcb3f7d597e7878ed68775ed0e2e3762f80c1ca4db9470fcd497c7e5d2e",
+      "bytes": 19800
+    },
+    "frozen-compiler-inputs/app/tools/gimppaintertogglepopup.cpp": {
+      "sha256": "fca50248646ccef9f03204eb1524f029112e7172dfe0d697da6fcab8ac1c0d34",
+      "bytes": 19366
+    },
+    "frozen-compiler-inputs/meson.build": {
+      "sha256": "83d371852ebeeede92caee7e0280f35dfc28a2a05cc8af6d00a84b67177d5b0f",
+      "bytes": 79187
+    },
+    "header-probe-delta.json": {
+      "sha256": "f6dc469eb91dafd7be6c8a48accdf5f1d6ff9c5aceb2c47e28de26664334fe02",
+      "bytes": 132
+    },
+    "header-test-evidence/header-compile-result.json": {
+      "sha256": "fcf0ed42b93014d48e7f6585dd31a58702b90fb4356d07b8097b03c72f0a2cb7",
+      "bytes": 173751
+    },
+    "header-test-evidence/testlog.json": {
+      "sha256": "4fb568951457e02d1ecafd278e99ba33429aaffdb58cf7a0a9c1f88e6bc28a5f",
+      "bytes": 22882
+    },
+    "header-test-evidence/testlog.junit.xml": {
+      "sha256": "57aa2958e489cc23d1f70aa983ce9d6973f0dc75c50bbb3bb163cbe2376c273c",
+      "bytes": 2853
+    },
+    "header-test-evidence/testlog.txt": {
+      "sha256": "181c3b0543f7bf4a3e44d063e6212b1655fee4cb1d58e0a9ee7667f190d848fb",
+      "bytes": 13279
+    },
+    "header-tests.exitcode": {
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    "header-tests.log": {
+      "sha256": "0ffafab68ee6a9a172b25016b4f62a3797b3db82a53112d8400afa35a2888db6",
+      "bytes": 405
+    },
+    "historical-evidence-before.json": {
+      "sha256": "41b8984fe4b0aadde02d6f7bbcf70f7b686a01d3a8c6d7e9841094cbb4163810",
+      "bytes": 40977
+    },
+    "historical-evidence-verification.json": {
+      "sha256": "7082e9a69ef0e87ffab98c36667b90ef9b1341ec504cd71a9175d54c0c355f5e",
+      "bytes": 175
+    },
+    "intermediate-old001-pre-freeze/compile-finished.txt": {
+      "sha256": "d6a12bb03eb41ef6f74d9d7312fa1b26e8ce36d775a359da5394973f76ff79ea",
+      "bytes": 21
+    },
+    "intermediate-old001-pre-freeze/compile-started.txt": {
+      "sha256": "99da3aa7ba6b72548ee9762058e2c3483de158bb20ab72bfb277c5aba9238823",
+      "bytes": 21
+    },
+    "intermediate-old001-pre-freeze/compile.exitcode": {
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    "intermediate-old001-pre-freeze/compile.log": {
+      "sha256": "0f2b4a437cdf0b7e2eccab8f0a6a18099a438ab4d255219a2ea96b6be2bf374c",
+      "bytes": 1400
+    },
+    "intermediate-old001-pre-freeze/focused-dryrun-after.exitcode": {
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    "intermediate-old001-pre-freeze/focused-dryrun-after.log": {
+      "sha256": "093564941ded29cb4bc366127fc537b3544b68ac554df2b42816656537831170",
+      "bytes": 1973
+    },
+    "intermediate-old001-pre-freeze/focused-dryrun-before.exitcode": {
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    "intermediate-old001-pre-freeze/focused-dryrun-before.log": {
+      "sha256": "093564941ded29cb4bc366127fc537b3544b68ac554df2b42816656537831170",
+      "bytes": 1973
+    },
+    "intermediate-old001-pre-freeze/header-test-evidence/header-compile-result.json": {
+      "sha256": "fcf0ed42b93014d48e7f6585dd31a58702b90fb4356d07b8097b03c72f0a2cb7",
+      "bytes": 173751
+    },
+    "intermediate-old001-pre-freeze/header-test-evidence/testlog.json": {
+      "sha256": "282b78cce48e9ab6d488a5f1a9bf69c907fed93b97d936e1b1dd7e514a3112ca",
+      "bytes": 22879
+    },
+    "intermediate-old001-pre-freeze/header-test-evidence/testlog.junit.xml": {
+      "sha256": "1552c1ee8425ba0f6b902b27fa39dd12be80aeb74bbada4513112b7d2a18ad88",
+      "bytes": 2851
+    },
+    "intermediate-old001-pre-freeze/header-test-evidence/testlog.txt": {
+      "sha256": "752db3c66cc8cd62d1cec127105930859cf2dd49801013ed25518e145b1b604e",
+      "bytes": 13278
+    },
+    "intermediate-old001-pre-freeze/header-tests.exitcode": {
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    "intermediate-old001-pre-freeze/header-tests.log": {
+      "sha256": "8a9c440c95c5a07a48db33d98c444de08cca9552631533b369cf1eaa67efe49d",
+      "bytes": 405
+    },
+    "intermediate-old001-pre-freeze/qualification.json": {
+      "sha256": "3603abdd4a5a09c676d3c5dea0651ac403a1d1f04ebd01d94b9b2cb5d06f3dd0",
+      "bytes": 487
+    },
+    "intermediate-old001-pre-freeze/target-names.txt": {
+      "sha256": "908bf0c2f7a0296e6e1358bfca5fdcea35f4289e0e1c87b79b38496bb9277cdf",
+      "bytes": 296
+    },
+    "linked-brush-entry-symbols.json": {
+      "sha256": "82386254bac7ba5115b2dde0aa9a1d5efb6488acd4ef6f1ea2abc2c37f09ccf0",
+      "bytes": 626
+    },
+    "normal-target-metadata-after.json": {
+      "sha256": "3bcd619fd23dbeecd9150a7dabee9a199929b367728f47a6a82d036f2b9148f2",
+      "bytes": 224255
+    },
+    "prior-source-manifest.json": {
+      "sha256": "388ac69514b55e83a9886bcd0ed50073ed3748938aec6d7c285833461b1945a6",
+      "bytes": 5265
+    },
+    "reviewed-compiler-inputs.json": {
+      "sha256": "e72494421d21976e91591d3a868bc1545756c567e1ff5266ed999a8920d61f83",
+      "bytes": 1215
+    },
+    "reviewed-native-compile-commands.json": {
+      "sha256": "576bf61bba82a62536d5399ddacfe036a4a842cdf19b2240fdc519479edf40d2",
+      "bytes": 17138
+    },
+    "selected-test-registration-environments.json": {
+      "sha256": "342045a68d4f63f5d35a77875362368e56ac777d93aa61181c883c21800e7810",
+      "bytes": 3578
+    },
+    "source-delta.json": {
+      "sha256": "63e405696d5afc774b1f6f74cc0a17a870fa6c295375e115f7a74eba8a9ba969",
+      "bytes": 1050
+    },
+    "source-generated-after.patch": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "source-generated-before.patch": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "source-manifest-after.json": {
+      "sha256": "187524f5f80cb6c903903c0c254290f1c575a9b9dd1c46004a8fa002cf2644a4",
+      "bytes": 4377
+    },
+    "source-manifest-before.json": {
+      "sha256": "da50dc4e04577a00e0c8bcc27efdbfb4e709ce40cb5804c05876870b87439b64",
+      "bytes": 4292
+    },
+    "stage-reviewed-inputs.py": {
+      "sha256": "f96c14b0a08bca9ed9ca5e61824811dc5cc230110e52dbe4e0c40099792f87b7",
+      "bytes": 2901
+    },
+    "target-artifacts.json": {
+      "sha256": "8eb35d13ceef1061070d6d9811cfbd465efaf21a1436dc48657efd2a75bb2eb8",
+      "bytes": 3333
+    },
+    "target-names.txt": {
+      "sha256": "908bf0c2f7a0296e6e1358bfca5fdcea35f4289e0e1c87b79b38496bb9277cdf",
+      "bytes": 296
+    },
+    "tested-source-after.patch": {
+      "sha256": "56bb6d3059ffa58f816bf59772a260e074223cf13847f5624b7fd1a0b5673d3a",
+      "bytes": 104380
+    },
+    "tested-source-after.status": {
+      "sha256": "0d14ea3d5f426fb9eecce1ac2ca204c5420568927359266527cf26f10af3f767",
+      "bytes": 1036
+    },
+    "tested-source-before.patch": {
+      "sha256": "56bb6d3059ffa58f816bf59772a260e074223cf13847f5624b7fd1a0b5673d3a",
+      "bytes": 104380
+    },
+    "tested-source-before.status": {
+      "sha256": "0d14ea3d5f426fb9eecce1ac2ca204c5420568927359266527cf26f10af3f767",
+      "bytes": 1036
+    },
+    "tool-dependency-versions.log": {
+      "sha256": "d942ac2c6c6d92510fc068ed3afa942955e6bfa9230b29fe606df9e11be13851",
+      "bytes": 234
+    }
+  }
+}

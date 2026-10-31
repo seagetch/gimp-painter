@@ -1,0 +1,57 @@
+{
+  "format": 1,
+  "kind": "canvas-old-provider-provenance",
+  "control_passed": true,
+  "negative_control": true,
+  "acceptance_eligible": false,
+  "errors": [],
+  "raw_environment_exported": false,
+  "compile_input_diagnostics": [
+    {
+      "key": "old",
+      "expected_source": "/__w/_temp/painter-brush-ci.btVcK5Il/source/app/tests/color-ownership/fixtures/gimpcanvas-c9.c",
+      "observed_source": "/__w/_temp/painter-brush-ci.btVcK5Il/source/app/tests/color-ownership/fixtures/gimpcanvas-c9.c",
+      "output_object": "/__w/_temp/painter-brush-ci.btVcK5Il/build/app/tests/color-ownership/canvas-ownership-old-provider.p/fixtures_gimpcanvas-c9.c.o",
+      "source_identity_matches": true
+    },
+    {
+      "key": "old_test",
+      "expected_source": "/__w/_temp/painter-brush-ci.btVcK5Il/source/app/tests/color-ownership/test-canvas.c",
+      "observed_source": "/__w/_temp/painter-brush-ci.btVcK5Il/source/app/tests/color-ownership/test-canvas.c",
+      "output_object": "/__w/_temp/painter-brush-ci.btVcK5Il/build/app/tests/color-ownership/canvas-ownership-old-provider.p/test-canvas.c.o",
+      "source_identity_matches": true
+    },
+    {
+      "key": "candidate_test",
+      "expected_source": "/__w/_temp/painter-brush-ci.btVcK5Il/source/app/tests/color-ownership/test-canvas.c",
+      "observed_source": "/__w/_temp/painter-brush-ci.btVcK5Il/source/app/tests/color-ownership/test-canvas.c",
+      "output_object": "/__w/_temp/painter-brush-ci.btVcK5Il/build/app/tests/color-ownership/canvas-ownership.p/test-canvas.c.o",
+      "source_identity_matches": true
+    }
+  ],
+  "compile_input_diagnostics_truncated": false,
+  "inputs": {
+    "source/app/tests/color-ownership/fixtures/gimpcanvas-c9.c": "c4a10375777bae95a9f8a9dd8014935045cd8f5c91791ddd8fac77cbd10bb33e",
+    "source/app/tests/color-ownership/test-canvas.c": "2621671a93a054a1f4e1f3f7b5f922d1c4f79226f6ca8d7d2ea09e21f9455c7f",
+    "build/compile_commands.json": "697467e06d56c94117bd26167d624a1d68215cb1a05449f89621abb403f42516",
+    "build/meson-info/intro-buildoptions.json": "4cfc725343865c48307b68740ab7ae5ed8eea9dfd74e8158d717ee41f6f3f025",
+    "build/app/tests/color-ownership/canvas-ownership-old-provider.map": "87957afe7ab55da8b393c0e091aa2351506bdcd655075eb463ba438c1dae75a8",
+    "build/app/tests/color-ownership/canvas-ownership-old-provider": "b477b021ddebe3f1ec807e1316933886c1b528787baf079e333b86a450e82186",
+    "build/app/tests/color-ownership/canvas-ownership-old-provider.p/fixtures_gimpcanvas-c9.c.o": "44d0e202d930dbb4d90cd5d4d24da3128a910cee5ac869064ea6a5533a66e8e4",
+    "build/app/tests/color-ownership/canvas-ownership-old-provider.p/test-canvas.c.o": "ef1954b2e4a7221d32eb3738f409f10481066dbe89654c3c54f305ec27e08d4e",
+    "build/app/tests/color-ownership/canvas-ownership.p/test-canvas.c.o": "ef1954b2e4a7221d32eb3738f409f10481066dbe89654c3c54f305ec27e08d4e"
+  },
+  "objects": {
+    "old": "app/tests/color-ownership/canvas-ownership-old-provider.p/fixtures_gimpcanvas-c9.c.o",
+    "old_test": "app/tests/color-ownership/canvas-ownership-old-provider.p/test-canvas.c.o",
+    "candidate_test": "app/tests/color-ownership/canvas-ownership.p/test-canvas.c.o"
+  },
+  "api_definitions": [
+    "gimp_canvas_get_type",
+    "gimp_canvas_new",
+    "gimp_canvas_get_layout",
+    "gimp_canvas_set_padding"
+  ],
+  "binary_path": "/__w/_temp/painter-brush-ci.btVcK5Il/build/app/tests/color-ownership/canvas-ownership-old-provider",
+  "binary_sha256": "b477b021ddebe3f1ec807e1316933886c1b528787baf079e333b86a450e82186"
+}

@@ -1,0 +1,14 @@
+{
+  "status": "C25_REVIEW_ONLY_GENERATOR_GIT_DELIMITER",
+  "base_commit": "f514edfbb40623bfa6cd06a0d7fbe36468fba380",
+  "base_tree": "f94b60b3c1b776eefeafe2017baf2012a318d23b",
+  "diagnosis": "New generator-role guard compared raw LF-terminated git() output to bare commit. Existing source_identity and shell source check already normalized the same submodule pin. Unit mock incorrectly omitted LF. Run43 failed generator-submodule-mismatch before measurements.",
+  "fix": "Remove exactly one terminal LF, not arbitrary whitespace. Wrong SHA, extra lines, double LF, CRLF and surrounding whitespace remain rejected. Mismatch receipt retains expected SHA, observed only strict40hex SHA, output hash/capped length/finite shape; never raw arbitrary output.",
+  "qualification": "Exact one terminal LF normalization of Git rev-parse output; same pinned40hex commit and all other generator/content/target/graph rules unchanged. Actual local FETCH_HEAD stdout replay, remaining role fixture synthetic, not historical CI HEAD/native proof.",
+  "unchanged": "All source/content pins, other generator target/object/link/resource checks, mask provider rules, native/build/compiler settings, matched production inputs/order, workflow,26protected and blocked babl.",
+  "files": {
+    "actual-git-stdout.txt": "fea3007d93d7d8818a6cc2dd3b375f57af8331f9e4d5a3d9cdc6fcff5dd9cdea",
+    "run43-generator-failure.json": "e4fd634556fabb0b459921aef5ed548007a6ec17696f7e19279e3365d7639b38",
+    "replay-receipt.json": "89895a489e0ce61729d8427abb56abc1922b98546bc4267576a288ea0193bfdb"
+  }
+}

@@ -1,0 +1,20 @@
+test_canvas_provider_source_is_exact_meson_worktree_not_original_checkout (regression.CanvasRedOrchestration.test_canvas_provider_source_is_exact_meson_worktree_not_original_checkout) ... FAIL
+
+======================================================================
+FAIL: test_canvas_provider_source_is_exact_meson_worktree_not_original_checkout (regression.CanvasRedOrchestration.test_canvas_provider_source_is_exact_meson_worktree_not_original_checkout)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/0015fc5d1a03/brush-c11-provider-source-fix/tools/brush-ci/test_brush_orchestration.py", line 415, in test_canvas_provider_source_is_exact_meson_worktree_not_original_checkout
+    self.assertEqual(result.stdout.strip(),'ci/run_canvas_ownership_red.sh /private/source /private/build /private /artifacts')
+AssertionError: 'ci/r[18 chars]p_red.sh /original-checkout /private/build /private /artifacts' != 'ci/r[18 chars]p_red.sh /private/source /private/build /private /artifacts'
+- ci/run_canvas_ownership_red.sh /original-checkout /private/build /private /artifacts
+?                                 ^  ^^^ ^^^^ ^^  ^
++ ci/run_canvas_ownership_red.sh /private/source /private/build /private /artifacts
+?                                 ^  ^ ^ ^^  ^^^
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.003s
+
+FAILED (failures=1)
+Expected exact original-checkout/worktree mismatch regression observed; synthetic orchestration, not native proof.

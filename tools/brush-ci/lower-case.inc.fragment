@@ -1,0 +1,491 @@
+#ifdef GDK_WINDOWING_X11
+typedef struct {
+  GtkWidget *host, *body, *viewport, *bar, *preview;
+  GtkWidget *spins[5];
+  GtkAdjustment *adjustment;
+  GdkDisplay *display;
+  GdkDevice *pointer;
+  RectanglePopupInput input;
+} BrushLowerInput;
+
+/* Each field above is independently retained for the complete input scope.
+ * A host reference alone does not retain children after GTK teardown. */
+static void
+brush_popup_lower_live (BrushLowerInput *s, GtkWidget *target, gboolean viewable)
+{
+  GdkWindow *window;
+  g_assert_false (gdk_display_is_closed (s->display));
+  g_assert_false (gtk_widget_in_destruction (s->host));
+  g_assert_true (gtk_widget_get_realized (s->host));
+  g_assert_true (gtk_widget_get_mapped (s->host));
+  window = gtk_widget_get_window (s->host);
+  g_assert_nonnull (window); g_assert_true (gdk_window_is_viewable (window));
+  /* Host first, then body/viewport topology, before any dependent getter. */
+  g_assert_false (gtk_widget_in_destruction (s->body));
+  g_assert_true (gtk_widget_get_realized (s->body));
+  g_assert_true (gtk_widget_get_mapped (s->body));
+  g_assert_true (gtk_widget_is_ancestor (s->body, s->host));
+  g_assert_true (gtk_bin_get_child (GTK_BIN (s->body)) == s->viewport);
+  g_assert_false (gtk_widget_in_destruction (s->viewport));
+  g_assert_true (gtk_widget_get_realized (s->viewport));
+  g_assert_true (gtk_widget_get_mapped (s->viewport));
+  g_assert_true (gtk_widget_is_ancestor (s->viewport, s->body));
+  g_assert_false (gtk_widget_in_destruction (s->bar));
+  g_assert_true (gtk_scrolled_window_get_vscrollbar (GTK_SCROLLED_WINDOW (s->body)) == s->bar);
+  g_assert_true (gtk_widget_is_ancestor (s->bar, s->body));
+  g_assert_true (gtk_scrolled_window_get_vadjustment (GTK_SCROLLED_WINDOW (s->body)) == s->adjustment);
+  if (target) {
+    g_assert_false (gtk_widget_in_destruction (target));
+    g_assert_true (gtk_widget_get_realized (target));
+    g_assert_true (gtk_widget_get_mapped (target));
+    g_assert_true (gtk_widget_is_ancestor (target, s->body));
+    if (target == s->bar)
+      g_assert_true (gtk_range_get_adjustment (GTK_RANGE (target)) == s->adjustment);
+    if (viewable) {
+      window = gtk_widget_get_window (target);
+      g_assert_nonnull (window); g_assert_true (gdk_window_is_viewable (window));
+    }
+  }
+}
+
+/* Geometry/adjustment reads are oracles only, never reveal setters. */
+static gint
+brush_popup_lower_clip (BrushLowerInput *s, GtkWidget *widget)
+{
+  GdkWindow *view;
+  gint vx, vy, hx, hy, x, y, width, height;
+  brush_popup_lower_live (s, widget, TRUE);
+  view = gtk_viewport_get_view_window (GTK_VIEWPORT (s->viewport));
+  g_assert_nonnull (view); g_assert_true (gdk_window_is_viewable (view));
+  gdk_window_get_origin (view, &vx, &vy);
+  gdk_window_get_origin (gtk_widget_get_window (s->host), &hx, &hy);
+  g_assert_true (gtk_widget_translate_coordinates (widget, s->host, 0, 0, &x, &y));
+  x += hx - vx; y += hy - vy;
+  width = gtk_widget_get_allocated_width (widget);
+  height = gtk_widget_get_allocated_height (widget);
+  g_assert_cmpint (width, >, 0); g_assert_cmpint (height, >, 0);
+  g_assert_cmpint (x, >=, 0); /* Horizontal scrolling is NEVER. */
+  g_assert_cmpint (x + width, <=, gdk_window_get_width (view));
+  g_assert_cmpint (height, <=, gdk_window_get_height (view));
+  if (y < 0) return -1;
+  if (y + height > gdk_window_get_height (view)) return 1;
+  return 0;
+}
+
+typedef struct { gint x, y, local_x, local_y, width, height, scale; } BrushLowerPoint;
+
+static BrushLowerPoint
+brush_popup_lower_point (BrushLowerInput *s, GtkWidget *widget, gboolean number)
+{
+  BrushLowerPoint p = {0};
+  gint hx, hy;
+  brush_popup_lower_live (s, widget, TRUE);
+  if (widget != s->bar) g_assert_cmpint (brush_popup_lower_clip (s, widget), ==, 0);
+  p.width = gtk_widget_get_allocated_width (widget);
+  p.height = gtk_widget_get_allocated_height (widget);
+  p.local_x = p.width / 2; p.local_y = p.height / 2;
+  if (number) {
+    GdkRectangle text;
+    PangoRectangle logical;
+    g_assert_true (GTK_IS_SPIN_BUTTON (widget));
+    /* Preserve GimpSpinScale TARGET_NUMBER, not the scale-changing label. */
+    gtk_entry_get_text_area (GTK_ENTRY (widget), &text);
+    gtk_entry_get_layout_offsets (GTK_ENTRY (widget), &p.local_x, &p.local_y);
+    pango_layout_get_pixel_extents (gtk_entry_get_layout (GTK_ENTRY (widget)), NULL, &logical);
+    g_assert_cmpint (logical.width, >, 0); g_assert_cmpint (logical.height, >, 0);
+    p.local_x += logical.width / 2;
+    p.local_y = text.y + (p.local_y - text.y + logical.height) / 2;
+  }
+  g_assert_cmpint (p.local_x, >=, 0); g_assert_cmpint (p.local_x, <, p.width);
+  g_assert_cmpint (p.local_y, >=, 0); g_assert_cmpint (p.local_y, <, p.height);
+  g_assert_true (gtk_widget_translate_coordinates (widget, s->host, p.local_x, p.local_y, &p.x, &p.y));
+  gdk_window_get_origin (gtk_widget_get_window (s->host), &hx, &hy);
+  p.x += hx; p.y += hy;
+  p.scale = gdk_window_get_scale_factor (gtk_widget_get_window (s->host));
+  return p;
+}
+
+static gboolean
+brush_popup_lower_same_point (BrushLowerPoint a, BrushLowerPoint b)
+{
+  return a.x == b.x && a.y == b.y && a.local_x == b.local_x && a.local_y == b.local_y &&
+         a.width == b.width && a.height == b.height && a.scale == b.scale;
+}
+
+typedef struct {
+  BrushLowerInput *scope;
+  GtkWidget *target; /* Retained by aim for this complete callback/wait scope. */
+  gboolean number;
+  guint frames, stable;
+  BrushLowerPoint point;
+} BrushLowerFrames;
+
+static void
+brush_popup_lower_after_paint (GdkFrameClock *clock, gpointer data)
+{
+  BrushLowerFrames *f = data;
+  /* point() checks host and retained child liveness before all geometry reads. */
+  BrushLowerPoint current = brush_popup_lower_point (f->scope, f->target, f->number);
+  f->stable = f->frames && brush_popup_lower_same_point (current, f->point) ? f->stable + 1 : 0;
+  f->point = current; ++f->frames;
+  if (f->stable < 3) {
+    gtk_widget_queue_draw (f->target);
+    gdk_frame_clock_request_phase (clock, GDK_FRAME_CLOCK_PHASE_AFTER_PAINT);
+  }
+}
+
+static BrushLowerPoint
+brush_popup_lower_wait_point (BrushLowerInput *s, GtkWidget *target, gboolean number)
+{
+  BrushLowerFrames f = {0};
+  GdkFrameClock *clock;
+  gulong handler;
+  gint64 deadline;
+  brush_popup_lower_live (s, target, TRUE);
+  f.scope = s; f.target = target; f.number = number;
+  clock = gtk_widget_get_frame_clock (target); g_assert_nonnull (clock); g_object_ref (clock);
+  handler = g_signal_connect (clock, "after-paint", G_CALLBACK (brush_popup_lower_after_paint), &f);
+  gdk_frame_clock_begin_updating (clock); gtk_widget_queue_draw (target);
+  gdk_frame_clock_request_phase (clock, GDK_FRAME_CLOCK_PHASE_AFTER_PAINT);
+  deadline = g_get_monotonic_time () + 3 * G_TIME_SPAN_SECOND;
+  while (f.stable < 3 && g_get_monotonic_time () < deadline) {
+    g_main_context_iteration (NULL, FALSE);
+    brush_popup_lower_live (s, target, TRUE);
+    g_usleep (1000);
+  }
+  gdk_frame_clock_end_updating (clock); g_signal_handler_disconnect (clock, handler); g_object_unref (clock);
+  brush_popup_lower_live (s, target, TRUE);
+  g_assert_cmpuint (f.stable, >=, 3);
+  return f.point;
+}
+
+/* Strict point-based aim shared by hover, wheel and numeric-entry presses. */
+static void
+brush_popup_lower_aim (BrushLowerInput *s, GtkWidget *target, gboolean number)
+{
+  BrushLowerPoint point, after;
+  GdkWindow *hit, *root;
+  gpointer owner = NULL;
+  gint px, py, wx, wy;
+  g_object_ref (target);
+  point = brush_popup_lower_wait_point (s, target, number);
+  g_assert_true (s->input.motion (gdk_x11_display_get_xdisplay (s->display), -1,
+                                 point.x * point.scale, point.y * point.scale, 0));
+  gdk_display_flush (s->display); rectangle_popup_settle ();
+  brush_popup_lower_live (s, target, TRUE);
+  after = brush_popup_lower_wait_point (s, target, number);
+  /* Recompute the actual numeric point after hover, not merely widget center. */
+  if (!brush_popup_lower_same_point (point, after)) {
+    point = after;
+    g_assert_true (s->input.motion (gdk_x11_display_get_xdisplay (s->display), -1,
+                                   point.x * point.scale, point.y * point.scale, 0));
+    gdk_display_flush (s->display); rectangle_popup_settle ();
+    brush_popup_lower_live (s, target, TRUE);
+    after = brush_popup_lower_wait_point (s, target, number);
+    g_assert_true (brush_popup_lower_same_point (point, after));
+  }
+  brush_popup_lower_live (s, target, TRUE);
+  after = brush_popup_lower_point (s, target, number);
+  g_assert_true (brush_popup_lower_same_point (point, after));
+  root = gdk_screen_get_root_window (gtk_widget_get_screen (s->host));
+  g_assert_cmpint (point.x, >=, 0); g_assert_cmpint (point.y, >=, 0);
+  g_assert_cmpint (point.x, <, gdk_window_get_width (root));
+  g_assert_cmpint (point.y, <, gdk_window_get_height (root));
+  gdk_device_get_position (s->pointer, NULL, &px, &py);
+  hit = gdk_device_get_window_at_position (s->pointer, &wx, &wy);
+  if (hit) gdk_window_get_user_data (hit, &owner);
+  g_assert_nonnull (hit); g_assert_true (gdk_window_is_viewable (hit));
+  g_assert_true (GTK_IS_WIDGET (owner));
+  g_assert_true (owner == target || gtk_widget_is_ancestor (GTK_WIDGET (owner), target));
+  g_assert_cmpint (px, ==, point.x); g_assert_cmpint (py, ==, point.y);
+  g_object_unref (target);
+}
+
+static void
+brush_popup_lower_reveal_bar (BrushLowerInput *s)
+{
+  GdkWindow *window;
+  gboolean overlay;
+  brush_popup_lower_live (s, s->bar, FALSE);
+  overlay = gtk_scrolled_window_get_overlay_scrolling (GTK_SCROLLED_WINDOW (s->body));
+  window = gtk_widget_get_window (s->bar);
+  /* A mapped GTK overlay bar can have a hidden indicator parent. Reveal it
+   * only by actual captured motion on an already-visible content descendant. */
+  if (!window || !gdk_window_is_viewable (window)) {
+    const gchar *names[] = { "brush-size", "brush-aspect-ratio", "brush-angle",
+      "painter-brush-resource-spacing", "painter-brush-resource-radius",
+      "painter-brush-resource-spikes", "painter-brush-resource-hardness",
+      "painter-brush-resource-aspect-ratio", "painter-brush-resource-angle",
+      "painter-brush-popup-preview" };
+    GtkWidget *hover = NULL;
+    gint64 deadline;
+    for (guint i = 0; i < G_N_ELEMENTS (names); ++i) {
+      GtkWidget *candidate = find (s->body, names[i], 0);
+      g_assert_nonnull (candidate);
+      if (brush_popup_lower_clip (s, candidate) == 0) { hover = candidate; break; }
+    }
+    g_assert_nonnull (hover);
+    brush_popup_lower_aim (s, hover, FALSE);
+    deadline = g_get_monotonic_time () + 2 * G_TIME_SPAN_SECOND;
+    for (;;) {
+      brush_popup_lower_live (s, s->bar, FALSE);
+      window = gtk_widget_get_window (s->bar);
+      if ((window && gdk_window_is_viewable (window)) || g_get_monotonic_time () >= deadline) break;
+      g_main_context_iteration (NULL, FALSE); g_usleep (1000);
+    }
+  }
+  brush_popup_lower_live (s, s->bar, TRUE);
+  g_test_message ("Brush lower scrollbar after physical-hover readiness mapped=1 viewable=1 overlay=%d", overlay);
+  g_assert_cmpint (gtk_scrolled_window_get_overlay_scrolling (GTK_SCROLLED_WINDOW (s->body)), ==, overlay);
+}
+
+static gdouble
+brush_popup_lower_value (BrushLowerInput *s)
+{
+  brush_popup_lower_live (s, NULL, FALSE);
+  return gtk_adjustment_get_value (s->adjustment);
+}
+
+/* Stable frames alone can precede GTK's overlay hover/resize transition.
+ * Enter the actual scrollbar first, without sending a button or setting CSS. */
+static gboolean
+brush_popup_lower_enter_bar (BrushLowerInput *s)
+{
+  gboolean indicator, intended = FALSE, hovering = FALSE;
+  gint64 deadline = g_get_monotonic_time () + 3 * G_TIME_SPAN_SECOND;
+  brush_popup_lower_live (s, s->bar, TRUE);
+  indicator = gtk_style_context_has_class (gtk_widget_get_style_context (s->bar), "overlay-indicator");
+  do {
+    BrushLowerPoint point = brush_popup_lower_point (s, s->bar, FALSE);
+    GdkWindow *root = gdk_screen_get_root_window (gtk_widget_get_screen (s->host));
+    GdkWindow *hit;
+    gpointer owner = NULL;
+    gint px, py, wx, wy;
+    gboolean moved, current_indicator, hover_class;
+    g_test_message ("Brush lower scrollbar enter requested-root=%d/%d size=%d/%d scale=%d",
+                    point.x, point.y, point.width, point.height, point.scale);
+    g_assert_cmpint (point.x, >=, 0); g_assert_cmpint (point.y, >=, 0);
+    g_assert_cmpint (point.x, <, gdk_window_get_width (root));
+    g_assert_cmpint (point.y, <, gdk_window_get_height (root));
+    moved = s->input.motion (gdk_x11_display_get_xdisplay (s->display), -1,
+                             point.x * point.scale, point.y * point.scale, 0);
+    g_test_message ("Brush lower scrollbar enter motion=%d", moved);
+    g_assert_true (moved);
+    gdk_display_sync (s->display);
+    /* Dispatch pending real input/style events, not an elapsed-time sleep. */
+    while (g_main_context_pending (NULL) && g_get_monotonic_time () < deadline) {
+      g_main_context_iteration (NULL, FALSE);
+      brush_popup_lower_live (s, s->bar, TRUE);
+    }
+    brush_popup_lower_live (s, s->bar, TRUE);
+    gdk_device_get_position (s->pointer, NULL, &px, &py);
+    hit = gdk_device_get_window_at_position (s->pointer, &wx, &wy);
+    if (hit) gdk_window_get_user_data (hit, &owner);
+    intended = hit && gdk_window_is_viewable (hit) && GTK_IS_WIDGET (owner) &&
+      (owner == s->bar || gtk_widget_is_ancestor (GTK_WIDGET (owner), s->bar));
+    current_indicator = gtk_style_context_has_class (gtk_widget_get_style_context (s->bar), "overlay-indicator");
+    hover_class = gtk_style_context_has_class (gtk_widget_get_style_context (s->bar), "hovering");
+    hovering = !indicator || hover_class;
+    g_test_message ("Brush lower scrollbar enter actual-root=%d/%d hit=%s intended=%d overlay-indicator=%d hovering-class=%d",
+                    px, py, GTK_IS_WIDGET (owner) ? G_OBJECT_TYPE_NAME (owner) : "none",
+                    intended, current_indicator, hover_class);
+    g_assert_cmpint (px, ==, point.x); g_assert_cmpint (py, ==, point.y);
+    g_assert_cmpint (current_indicator, ==, indicator);
+    /* A revealed indicator can need another real motion to receive hover.
+     * Both native hit and semantic entry must precede the unchanged aim. */
+  } while ((!intended || !hovering) && g_get_monotonic_time () < deadline);
+  g_assert_true (intended); g_assert_true (hovering);
+  return indicator;
+}
+
+static void
+brush_popup_lower_wheel (BrushLowerInput *s, gboolean down)
+{
+  gdouble before;
+  gint64 deadline;
+  gboolean indicator;
+  brush_popup_lower_live (s, s->bar, FALSE);
+  g_assert_true (gtk_widget_is_sensitive (s->bar));
+  brush_popup_lower_reveal_bar (s);
+  indicator = brush_popup_lower_enter_bar (s);
+  brush_popup_lower_aim (s, s->bar, FALSE);
+  brush_popup_lower_live (s, s->bar, TRUE);
+  g_assert_cmpint (gtk_style_context_has_class (gtk_widget_get_style_context (s->bar), "overlay-indicator"), ==, indicator);
+  g_assert_true (!indicator || gtk_style_context_has_class (gtk_widget_get_style_context (s->bar), "hovering"));
+  before = brush_popup_lower_value (s);
+  g_assert_true (s->input.button (gdk_x11_display_get_xdisplay (s->display), down ? 5 : 4, TRUE, 0));
+  g_assert_true (s->input.button (gdk_x11_display_get_xdisplay (s->display), down ? 5 : 4, FALSE, 0));
+  gdk_display_flush (s->display);
+  deadline = g_get_monotonic_time () + G_TIME_SPAN_SECOND;
+  while (brush_popup_lower_value (s) == before && g_get_monotonic_time () < deadline) {
+    g_main_context_iteration (NULL, FALSE); g_usleep (1000);
+  }
+  brush_popup_lower_live (s, s->bar, TRUE);
+  if (down) g_assert_cmpfloat (brush_popup_lower_value (s), >, before);
+  else      g_assert_cmpfloat (brush_popup_lower_value (s), <, before);
+  rectangle_popup_settle (); drain ();
+  brush_popup_lower_live (s, s->bar, TRUE);
+  g_assert_true (gtk_grab_get_current () == s->host);
+}
+
+static guint
+brush_popup_lower_bottom (BrushLowerInput *s)
+{
+  gdouble lower, maximum;
+  guint ticks = 0;
+  gint64 deadline = g_get_monotonic_time () + 10 * G_TIME_SPAN_SECOND;
+  brush_popup_lower_live (s, NULL, FALSE);
+  lower = gtk_adjustment_get_lower (s->adjustment);
+  maximum = MAX (lower, gtk_adjustment_get_upper (s->adjustment) - gtk_adjustment_get_page_size (s->adjustment));
+  if (maximum > lower && brush_popup_lower_value (s) >= maximum - 0.5) {
+    brush_popup_lower_wheel (s, FALSE); ++ticks;
+  }
+  while (brush_popup_lower_value (s) < maximum - 0.5 && g_get_monotonic_time () < deadline) {
+    brush_popup_lower_wheel (s, TRUE); ++ticks;
+  }
+  g_assert_cmpfloat_with_epsilon (brush_popup_lower_value (s), maximum, 0.5);
+  g_test_message ("Brush lower scroll overflow=%d wheel-events=%u bottom=%g/%g",
+                  maximum > lower, ticks, brush_popup_lower_value (s), maximum);
+  return ticks;
+}
+
+static void
+brush_popup_lower_click_number (BrushLowerInput *s, GtkWidget *spin)
+{
+  gint direction;
+  gint64 deadline = g_get_monotonic_time () + 10 * G_TIME_SPAN_SECOND;
+  gdouble before;
+  g_object_ref (spin);
+  direction = brush_popup_lower_clip (s, spin);
+  while (direction && g_get_monotonic_time () < deadline) {
+    brush_popup_lower_wheel (s, direction > 0);
+    direction = brush_popup_lower_clip (s, spin);
+  }
+  g_assert_cmpint (direction, ==, 0);
+  brush_popup_lower_live (s, spin, TRUE);
+  before = gtk_spin_button_get_value (GTK_SPIN_BUTTON (spin));
+  brush_popup_lower_aim (s, spin, TRUE);
+  /* No event-loop wait between strict numeric-point hit proof and press. */
+  g_assert_true (s->input.button (gdk_x11_display_get_xdisplay (s->display), 1, TRUE, 0));
+  g_assert_true (s->input.button (gdk_x11_display_get_xdisplay (s->display), 1, FALSE, 0));
+  gdk_display_flush (s->display); rectangle_popup_settle (); drain ();
+  brush_popup_lower_live (s, spin, TRUE);
+  g_assert_true (gtk_window_get_focus (GTK_WINDOW (s->host)) == spin);
+  g_assert_cmpfloat (gtk_spin_button_get_value (GTK_SPIN_BUTTON (spin)), ==, before);
+  g_assert_cmpint (brush_popup_lower_clip (s, spin), ==, 0);
+  g_object_unref (spin);
+}
+#endif
+
+static void
+brush_popup_lower_controls_actual_input (void)
+{
+  if (!transform_popup_require_x11_input ()) return;
+#ifdef GDK_WINDOWING_X11
+  {
+    BrushPopupFixture f = brush_popup_fixture ();
+    GtkWidget *host = brush_popup_open (&f, TRUE);
+    GtkWidget *body, *preview;
+    BrushLowerInput input = {0};
+    GimpDisplay *held_display = g_object_ref (f.shell->display);
+    GimpDisplayShell *held_shell = g_object_ref (f.shell);
+    GimpImage *held_image = g_object_ref (f.image);
+    GimpToolOptions *held_options = g_object_ref (f.options);
+    GtkWidget *held_dock = g_object_ref (f.dock);
+    gint image_dirty = gimp_image_is_dirty (f.image);
+    gint resource_spacing = gimp_brush_get_spacing (f.a.brush);
+    gdouble tool_before[3], tool_after[3];
+    guint ticks;
+    const gchar *fields[] = { "radius", "spikes", "hardness", "aspect-ratio", "angle" };
+    GimpBrushGenerated *brush = GIMP_BRUSH_GENERATED (f.a.brush);
+    input.host = g_object_ref (host);
+    input.body = g_object_ref (brush_popup_assert_body (host, f.options)); body = input.body;
+    input.viewport = g_object_ref (gtk_bin_get_child (GTK_BIN (body)));
+    g_assert_true (GTK_IS_VIEWPORT (input.viewport));
+    input.bar = g_object_ref (gtk_scrolled_window_get_vscrollbar (GTK_SCROLLED_WINDOW (body)));
+    input.adjustment = g_object_ref (gtk_scrolled_window_get_vadjustment (GTK_SCROLLED_WINDOW (body)));
+    input.preview = g_object_ref (find (host, "painter-brush-popup-preview", GIMP_TYPE_VIEW)); preview = input.preview;
+    input.display = g_object_ref (gtk_widget_get_display (host));
+    input.pointer = g_object_ref (gdk_seat_get_pointer (gdk_display_get_default_seat (input.display)));
+    input.input = transform_popup_input ();
+    for (guint i = 0; i < G_N_ELEMENTS (fields); ++i)
+      input.spins[i] = g_object_ref (GTK_WIDGET (brush_popup_spin (host, fields[i])));
+    g_object_get (f.options, "brush-size", &tool_before[0],
+                  "brush-aspect-ratio", &tool_before[1], "brush-angle", &tool_before[2], NULL);
+    ticks = brush_popup_lower_bottom (&input);
+    g_assert_cmpint (brush_popup_lower_clip (&input, preview), ==, 0);
+    for (guint i = 0; i < G_N_ELEMENTS (fields); ++i) {
+      GtkWidget *spin = input.spins[i];
+      brush_popup_lower_live (&input, spin, TRUE);
+      g_assert_true (gtk_widget_is_sensitive (spin));
+      brush_popup_lower_click_number (&input, spin);
+      if (i + 1 == G_N_ELEMENTS (fields)) {
+        GdkDisplay *display = gtk_widget_get_display (host);
+        gpointer native = gdk_x11_display_get_xdisplay (display);
+        GdkKeymapKey *keys = NULL; gint count = 0;
+        g_assert_true (gdk_keymap_get_entries_for_keyval (gdk_keymap_get_for_display (display),
+                                                        GDK_KEY_Control_L, &keys, &count));
+        g_assert_cmpint (count, >, 0);
+        g_assert_true (input.input.key (native, keys[0].keycode, TRUE, 0));
+        rectangle_popup_key (&input.input, host, GDK_KEY_a);
+        brush_popup_lower_live (&input, spin, TRUE);
+        g_assert_true (input.input.key (native, keys[0].keycode, FALSE, 0)); g_free (keys);
+        rectangle_popup_key (&input.input, host, GDK_KEY_4);
+        brush_popup_lower_live (&input, spin, TRUE);
+        rectangle_popup_key (&input.input, host, GDK_KEY_1);
+        brush_popup_lower_live (&input, spin, TRUE);
+      } else {
+        rectangle_popup_key (&input.input, host, GDK_KEY_Up);
+        brush_popup_lower_live (&input, spin, TRUE);
+      }
+      rectangle_popup_key (&input.input, host, GDK_KEY_Return); drain ();
+      brush_popup_lower_live (&input, spin, TRUE);
+      g_assert_true (gimp_display_get_image (held_display) == held_image);
+      g_assert_true (gimp_display_get_shell (held_display) == held_shell);
+      g_assert_true (gtk_widget_get_mapped (host));
+      g_assert_true (gtk_grab_get_current () == host);
+      g_assert_true (gimp_context_get_brush (GIMP_CONTEXT (f.options)) == f.a.brush);
+      brush_popup_bytes_unchanged (&f.a); brush_popup_bytes_unchanged (&f.b);
+      brush_popup_no_action (&f);
+      g_assert_cmpint (gimp_image_is_dirty (f.image), ==, image_dirty);
+      g_test_message ("Brush lower physical control %s focused/edited value=%g",
+                      fields[i], gtk_spin_button_get_value (GTK_SPIN_BUTTON (spin)));
+    }
+    g_assert_cmpfloat_with_epsilon (gimp_brush_generated_get_radius (brush), 12, 1e-6);
+    g_assert_cmpint (gimp_brush_generated_get_spikes (brush), ==, 3);
+    g_assert_cmpfloat_with_epsilon (gimp_brush_generated_get_hardness (brush), 0.51, 1e-6);
+    g_assert_cmpfloat_with_epsilon (gimp_brush_generated_get_aspect_ratio (brush), 1.1, 1e-6);
+    g_assert_cmpfloat_with_epsilon (gimp_brush_generated_get_angle (brush), 41, 1e-6);
+    g_assert_cmpint (gimp_brush_get_spacing (f.a.brush), ==, resource_spacing);
+    g_object_get (f.options, "brush-size", &tool_after[0],
+                  "brush-aspect-ratio", &tool_after[1], "brush-angle", &tool_after[2], NULL);
+    for (guint i = 0; i < G_N_ELEMENTS (tool_before); ++i)
+      g_assert_cmpfloat_with_epsilon (tool_after[i], tool_before[i], 1e-6);
+    g_assert_true (gimp_data_is_dirty (GIMP_DATA (f.a.brush)));
+    g_assert_false (gimp_data_is_dirty (GIMP_DATA (f.b.brush)));
+    ticks += brush_popup_lower_bottom (&input);
+    g_assert_cmpint (brush_popup_lower_clip (&input, preview), ==, 0);
+    g_assert_true (GIMP_VIEW (preview)->renderer->viewable == GIMP_VIEWABLE (f.a.brush));
+    g_test_message ("Brush lower controls reachable=5 numeric-entry=41 preview-visible=1 wheel-events=%u scale=%d",
+                    ticks, gtk_widget_get_scale_factor (host));
+    brush_popup_capture_to (host, g_getenv ("GIMP_BRUSH_POPUP_BOTTOM_CAPTURE"));
+    rectangle_popup_key (&input.input, host, GDK_KEY_Escape); drain ();
+    g_assert_false (gtk_widget_get_realized (host));
+    g_assert_true (gimp_display_get_image (held_display) == held_image);
+    g_assert_true (gimp_display_get_shell (held_display) == held_shell);
+    g_assert_cmpfloat_with_epsilon (gimp_brush_generated_get_angle (brush), 41, 1e-6);
+    g_assert_true (gimp_data_is_dirty (GIMP_DATA (f.a.brush)));
+    brush_popup_bytes_unchanged (&f.a); brush_popup_bytes_unchanged (&f.b);
+    brush_popup_bytes_unchanged (&f.readonly);
+    brush_popup_no_action (&f); g_assert_cmpint (gimp_image_is_dirty (f.image), ==, image_dirty);
+    for (guint i = 0; i < G_N_ELEMENTS (input.spins); ++i) g_object_unref (input.spins[i]);
+    g_object_unref (input.preview); g_object_unref (input.bar); g_object_unref (input.adjustment);
+    g_object_unref (input.viewport); g_object_unref (input.body); g_object_unref (input.host);
+    g_object_unref (input.pointer); g_object_unref (input.display); g_module_close (input.input.module);
+    brush_popup_finish (&f);
+    g_object_unref (held_dock); g_object_unref (held_options); g_object_unref (held_image);
+    g_object_unref (held_shell); g_object_unref (held_display);
+  }
+#endif
+}
+

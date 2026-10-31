@@ -1,0 +1,100 @@
+{
+  "status": "FROZEN_20_CASE_REVISION_FOCUSED_NATIVE_BUILD_PASS_RUNTIME_UNVERIFIED",
+  "base_commit": "ef6640451c1c7ac50a7a354e8b57ecfe1ebc8bbb",
+  "verified_utc": "2026-10-25T05:30:35.748971+00:00",
+  "source_hashes": {
+    "app/tools/gimppainterbrushpopup.h": "6042feebf9f5dd5c0997ed78b60c1c9be374ac0a468371f4f6ffa6a15bb9b595",
+    "app/tools/gimppaintertogglepopup.h": "53ed421fcab6c9399c478890c41acad6a6a379372976fcbc231f008a52c096c3",
+    "app/tools/gimppainterbrushpopup.cpp": "fcf1d6e3fc38394a6e2cb1e82950e42bec1ace290410bdbf7268ba81bae9540b",
+    "app/tools/gimppaintertogglepopup.cpp": "c380da3dd3e9ac2075bd12892db0bde10abad140483867b179dfe6038df259fb",
+    "app/tools/gimppainterpainttoolbar.c": "651bb1a43d435bb81bb964be1463a7d404bd60751b2ced7f6ce05ef944bcb40b",
+    "app/tests/test-painter-compact-options.c": "6b81f7273161c794c10e7b4e69f32db1af40586f4e224162b7711813a4c5ed18",
+    "app/tests/test-painter-brush-thumbnail-popup.inc": "de61714c16a839dd82f8cdf4b947117b3262a900a71cc8f0c184f10cb7fd8a74"
+  },
+  "results": {
+    "production_translation_units": {
+      "passed": 3,
+      "diagnostics": 0,
+      "source_and_header_hashes_match_existing_radio_icon_objects": true
+    },
+    "test_translation_units": {
+      "passed": 1,
+      "focused_cases_registered": 20,
+      "new_warning_count": 87,
+      "new_warning_category": "-Wdeclaration-after-statement under existing C11 command"
+    },
+    "focused_executable_link": {
+      "passed": true,
+      "scope": "replacement objects plus unchanged read-only prebuilt support archives; not clean full build",
+      "link_diagnostics": 0,
+      "binary_sha256": "76f9de299126b367be48344c7e5f3dcfb0376619119a44f95857d9dcb7145660"
+    },
+    "genuine_header_inventory": {
+      "c11_passed": 218,
+      "cpp14_passed": 237,
+      "total": 455,
+      "verify_build": "PASS, rechecked after frozen 20-case revision",
+      "inherited_ignored_qualifier_warnings": 297,
+      "new_brush_and_host_header_diagnostics": 0
+    }
+  },
+  "not_run": [
+    "UI/runtime tests",
+    "Xvfb/XTest",
+    "sanitizers",
+    "portrait screenshots",
+    "final-test negative on old source",
+    "clean full Meson native aggregate"
+  ],
+  "execution_restriction": "Local AF_UNIX restriction respected; no bypass attempted. Ordinary authorized CI required for UI evidence.",
+  "publication": "No commit or push by build worker.",
+  "scope": "Native object/header compilation and focused relink using unchanged read-only prebuilt support archives. Not a clean build, GUI test execution, or acceptance.",
+  "evidence": {
+    "native_production_objects": {
+      "report_name": "result.json",
+      "bytes": 23661,
+      "sha256": "e119f3b83cf8b3b507d5d6b02862f1800ca5701ddcb52f7d771e09e4d60e0b4e"
+    },
+    "native_final_test_object": {
+      "report_name": "result.json",
+      "bytes": 7080,
+      "sha256": "ec75399070e768d59108b8488bf08c5d3fd91e0b23250b1e9ab3a555d7d2d110"
+    },
+    "focused_final_link": {
+      "report_name": "result.json",
+      "bytes": 3058,
+      "sha256": "d8a39fc51b9257504efb5b49174ebce0284c44bcb60a898f03f450837faa4da5"
+    },
+    "header_inventory": {
+      "report_name": "header-compile-result.json",
+      "bytes": 173706,
+      "sha256": "1b202ca079f739079af17bac8f56c0578c7e0b6c8289b1e636030f1cdb970724"
+    },
+    "current_header_validation": {
+      "report_name": "header-final20-verify.log",
+      "bytes": 46,
+      "sha256": "6e857c13620ab4b30b12fca92847a910bf9c197f0d9faf7c9b137fc99a5f4c41"
+    },
+    "current_source_stability": {
+      "report_name": "final20-source-stability.json",
+      "bytes": 2000,
+      "sha256": "3b02fc864e43911e712a0b45702cfe35cbf806dc6866031a9f45cad21f282d92"
+    },
+    "support_source_comparison": {
+      "report_name": "focused-relink-source-comparison.json",
+      "bytes": 573,
+      "sha256": "07f1ba1ea478133da2e6feda1aef8d5281e8c779683c57511a9bd90e093fe94d"
+    },
+    "tracked_sparse_materialization": {
+      "report_name": "tracked-materialization.json",
+      "bytes": 7962,
+      "sha256": "35f68a2ada6278a7c5590cb37ab2dd05f9d0205d925b2a7d1e2c6679f5a9fc83"
+    }
+  },
+  "source_manifest_stable_at_copy": true,
+  "summary_sha256": "8d804977851573ed52eb0ff3106dd37140e17cf7cb8f8f6a13e260f25a55cc3b",
+  "build_registration_inputs": {
+    "app/tools/meson.build": "904a3bbd24d1fbde9869b2aedf257318ab99f3144d81adcf037d295211108436",
+    "migration/inventory/additional-c-header-routes.json": "8a1242d1d64a73cc9393ea4c192190741545f7514ac07b1192bf3d6839edfa41"
+  }
+}

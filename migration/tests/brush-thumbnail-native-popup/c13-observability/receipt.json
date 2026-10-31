@@ -1,0 +1,21 @@
+{
+  "format": 1,
+  "status": "REVIEW_ONLY_EXISTING_DIAGNOSTIC_OBSERVABILITY",
+  "base_commit": "97ed2cca019bc8542a453ebcccd433977c6834e2",
+  "base_tree": "9fd6c00530bf541e3c58fa6b4c886b27a53bf483",
+  "run31_id": 40361317689,
+  "run31_status": "TERMINAL_FAILURE_NOT_ACCEPTED",
+  "native_gate_summary": "NormalBrush21bothscales/common and exact canvas normal2GREEN/old2RED passed. All21sanitizer invocations executed:20assert-pass/leakexit1,case14SIGABRT. Original failed acceptance retained.",
+  "diagnostic_observation": "C12 isolated hosted debugger emitted8stacks capped32frames each; report inconclusive Cleanup incomplete, exact cleanup substage not recoverable. Sampled frames do not prove exact failing callback or same wait invocation.",
+  "controller_sha256": "52e2058ade5c2931d56ec5f77537e4daecc0ca42f1d921b4815a116fac0ef44c",
+  "test_sha256": "08a77d445f1da33c1a71881685767e56766ce706f3d72d48ee58f1f2994941c4",
+  "change_scope": "Fixed-enum cleanup-stage fields, sanitized entry stack plus8samples each96frames,max864rows,20digitthreadIDs,1MiBreport cap. Cleanup behavior/order and2+2+3second budgets,controller180seconds,originalASAN/UBSAN unchanged.",
+  "denial_boundary": "Separate localPTRACE_TRACEME reproduction denied2026-10-26T17:17UTC; not retried,routed elsewhere,or transplanted toCI. Only existing authorized hosted debugger observability is changed; no security/access changes.",
+  "proof_scope": "Static/syntheticMI and ordinary-owned-child tests only. No localptrace/GDB/native run. C13 diagnostic and task acceptance unproven.",
+  "files": {
+    "run31-debugger-tool.json": "60957bf23590b6a87e21ffbbf0ae50ac765965f7e67bff54fd448e3e532857e1",
+    "run31-sample.json": "fb189fcd1e988ba0579a921f0a0a4b191e7d0cac9f4839d3f122ada0db6e5678",
+    "run31-status.json": "bdacae3ac811ea192503e1569b7b4810f5f68a729023e6a78df358ba40d1901f",
+    "run31-terminal-observation-summary.json": "ecf9d874fa4f826bb0a73c4ab85ca90bd0dc0d1a176d660cc4c6df23a7e67a22"
+  }
+}

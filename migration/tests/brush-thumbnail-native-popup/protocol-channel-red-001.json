@@ -1,0 +1,75 @@
+{
+  "format": 1,
+  "status": "RED_CONFIRMED_FOR_BOTH_EXPECTED_POSTRETURN_FD_CLOSURE_ASSERTIONS",
+  "source": {
+    "status": "TEST_ONLY_RED_INPUTS_FROZEN",
+    "approved_patch_sha256": "469c0ca647f10fd7c1b796e8ffa0c5d48981adca14b0bc9938b1db5737fdd61d",
+    "prior_source_preserved_except_fixture": true,
+    "files": {
+      "libgimp/gimp.c": "952244785f88a9bc4b755e8ea0771e17088601f8e8c822fe9b04fde9cd56a00d",
+      "libgimp/tests/plug-in-protocol-fixture.c": "cac4ac1be51bbcdb94a626eea4993e394039077fb0ad81d1e598c26397819763",
+      "libgimp/tests/test-plug-in-protocol.c": "6062798d7125d9853cd146f672eda2f233a662c48f20ad9128d2274b144a404e"
+    },
+    "source_hashes_unchanged_after_red": true
+  },
+  "cases": {
+    "query": {
+      "status": "EXPECTED_RED_EXACT_FD_OPEN_ASSERTION",
+      "meson_exitcode": 1,
+      "fixture_assertion": "fcntl (3, F_GETFD) == -1; actual0",
+      "fixture_assertion_line": 201,
+      "fixture_own_abort_handler_exit": 1,
+      "host_result": "SIGTRAP after strict unexpected-child-diagnostic rejection; secondary to saved exact fixture assertion",
+      "quit_hook_entry_and_release_observed": true,
+      "quit_hook_completed_event": "q",
+      "trailing_quit_wire_hex": "00000000",
+      "setup_or_permission_failure": false,
+      "child_logs_sha256": {
+        "query.events": "8e35c2cd3bf6641bdb0e2050b76932cbb2e6034a0ddacc1d9bea82a6ba57f7cf",
+        "query.observations": "3c2b9dfdd6e8673776db7edf4bc07458799735cfcb07c456895f808070a7b328",
+        "query.stderr": "8c60665e1f36b98f7ac79967409e3119fb34ba5434fed955f820c5a479919c87",
+        "query.stdout": "e57dea5e7d67606abb85ddd96c9adf22bcff6b774f4facb572b10fef7bb09722",
+        "query.tail-wire": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+      }
+    },
+    "init": {
+      "status": "EXPECTED_RED_EXACT_FD_OPEN_ASSERTION",
+      "meson_exitcode": 1,
+      "fixture_assertion": "fcntl (3, F_GETFD) == -1; actual0",
+      "fixture_assertion_line": 201,
+      "fixture_own_abort_handler_exit": 1,
+      "host_result": "SIGTRAP after strict unexpected-child-diagnostic rejection; secondary to saved exact fixture assertion",
+      "quit_hook_entry_and_release_observed": true,
+      "quit_hook_completed_event": "q",
+      "trailing_quit_wire_hex": "00000000",
+      "setup_or_permission_failure": false,
+      "child_logs_sha256": {
+        "init.events": "8e35c2cd3bf6641bdb0e2050b76932cbb2e6034a0ddacc1d9bea82a6ba57f7cf",
+        "init.observations": "d93cefd9cc0ccff565edffef8d93145d3b1e244ab56bc7cef7114c42690c1452",
+        "init.stderr": "8c60665e1f36b98f7ac79967409e3119fb34ba5434fed955f820c5a479919c87",
+        "init.stdout": "e57dea5e7d67606abb85ddd96c9adf22bcff6b774f4facb572b10fef7bb09722",
+        "init.tail-wire": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+      }
+    }
+  },
+  "artifacts": {
+    "libgimp/libgimp-3.0.so.0.8.1": {
+      "sha256": "95293175d91cc4a7e4617cae89ee400516df04038b7c1556c2736dcf8a1d49ec",
+      "bytes": 2215520
+    },
+    "libgimp/tests/plug-in-protocol-fixture": {
+      "sha256": "7a0010bad43def776fb1456f25aa82210d2494f27802c4c18c680d021bc6a06a",
+      "bytes": 42376
+    },
+    "libgimp/tests/test-plug-in-protocol": {
+      "sha256": "e0bce62086d68e7b30ba132cf2f780d36a8562f50c416d2d04220abdd4bfd60d",
+      "bytes": 100304
+    }
+  },
+  "normal_compile_exitcode": 0,
+  "normal_provider_compiled_from_old_source": true,
+  "only_fixture_source_changed": true,
+  "transport": "POSIX pipes; no socket transport or GUI",
+  "sanitizers": "none; Meson prints default sanitizer environment variables but no instrumentation is enabled",
+  "runtime_scope": "Only query/init pipe-protocol negative tests; not Brush GUI or LSan proof"
+}

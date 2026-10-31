@@ -1,0 +1,23 @@
+{
+  "cell": "baseline-sanitizer",
+  "verified": false,
+  "errors": [
+    "object-sanitizer-mismatch"
+  ],
+  "object_sanitizer_failure": {
+    "cell": "baseline-sanitizer",
+    "compile_row_count": 2668,
+    "compile_row_index": 27,
+    "object": "gimp-data/tools/colorsvg2png.p/colorsvg2png.c.o",
+    "recipe_sha256": "d11a29bff05e0ff2d04194e4d50462ad5c5471aca6687ae72f8b78eea8242227",
+    "sanitizer_arguments": {
+      "labels": [],
+      "truncated": false
+    },
+    "schema": "matched-object-sanitizer-mismatch-v1",
+    "scope": "recipe-observation-not-instrumentation-proof",
+    "source": "source/gimp-data/tools/colorsvg2png.c",
+    "target_metadata": "not-bound-to-object"
+  },
+  "scope": "Bounded recorded recipe failure, not actual target binding or instrumentation proof."
+}

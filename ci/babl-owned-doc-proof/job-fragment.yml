@@ -1,0 +1,31 @@
+# PROPOSAL ONLY. Insert under jobs only after source staging + review approval.
+# Preconditions: reviewed files below must be present in the checked-out commit.
+# No implicit download, patched binary cache, dependency helper or lock adoption.
+babl-owned-doc-proof:
+  runs-on: ubuntu-24.04
+  timeout-minutes: 30
+  permissions:
+    contents: read
+  steps:
+    - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+    - name: Install proof tools (hosted CI only)
+      run: |
+        sudo apt-get update
+        sudo apt-get install --no-install-recommends -y gcc meson ninja-build pkg-config liblcms2-dev binutils patch python3
+    - name: Validator unit tests
+      working-directory: ci/babl-owned-doc-proof
+      run: python3 -m unittest -v test_validate.py
+    - name: Matched original and patched source proof
+      run: |
+        python3 ci/babl-owned-doc-proof/prove.py \
+          --archive ci/babl-proof-inputs/babl_0.1.114.orig.tar.xz \
+          --patch ci/babl-proof-inputs/fe7fcc23326680428e4ae9dbb3c41bed033efa9f.patch \
+          --output proof-output
+    - name: Preserve all evidence, including failed attempts
+      if: always()
+      uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+      with:
+        name: babl-owned-doc-proof-${{ github.sha }}
+        path: proof-output/
+        if-no-files-found: error
+        retention-days: 14
