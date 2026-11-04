@@ -1,0 +1,21 @@
+# Append after apptests_links has libapptestutils; separate diagnostic target.
+matched_preclick = executable('matched-preclick',
+  'test-matched-preclick.c', 'tests.c',
+  dependencies: [libapp_dep, appstream],
+  link_with: apptests_links,
+  override_options: ['c_std=c11'],
+  install: false,
+)
+test('matched-preclick', matched_preclick,
+  env: [
+    'GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+    'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+    'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root()/'plug-ins'/'common',
+    'GIMP_TESTING_SESSIONRC_NAME=sessionrc-native-oncanvas',
+    'UI_TEST=yes',
+  ],
+  suite: 'diagnostic-only',
+  depends: gimp_test_icon_dependencies,
+  timeout: 180,
+  is_parallel: false,
+)

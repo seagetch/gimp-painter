@@ -153,15 +153,31 @@ gimp_frame_label_widget_notify (GimpFrame *frame)
 
       if (label)
         {
-          gboolean bold;
+          gboolean        bold;
+          PangoAttrList  *attrs;
+          PangoAttrList  *current;
+          PangoAttribute *weight;
 
           gtk_widget_style_get (GTK_WIDGET (frame),
                                 "label-bold", &bold,
                                 NULL);
 
-          gimp_label_set_attributes (label,
-                                     PANGO_ATTR_WEIGHT, PANGO_WEIGHT_BOLD,
-                                     -1);
+          /* GtkLabel clears its layout and queues resize even when an equal
+           * attribute list is assigned. Style updates need not invalidate the
+           * label again when our complete, full-range bold list is unchanged.
+           * Preserve the existing replacement semantics for differing lists. */
+          attrs   = pango_attr_list_new ();
+          current = gtk_label_get_attributes (label);
+          weight  = pango_attr_weight_new (PANGO_WEIGHT_BOLD);
+
+          weight->start_index = 0;
+          weight->end_index = G_MAXUINT;
+          pango_attr_list_insert (attrs, weight);
+
+          if (! current || ! pango_attr_list_equal (current, attrs))
+            gtk_label_set_attributes (label, attrs);
+
+          pango_attr_list_unref (attrs);
         }
     }
 }

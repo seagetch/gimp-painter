@@ -139,6 +139,7 @@ typedef struct _GimpPlugInPrivate
   gulong      write_buffer_index;
 
   gboolean    main_proc_returned;
+  gboolean    in_dispose;
 
   guint       persistent_source_id;
 
@@ -340,8 +341,17 @@ gimp_plug_in_dispose (GObject *object)
 {
   GimpPlugIn        *plug_in = GIMP_PLUG_IN (object);
   GimpPlugInPrivate *priv;
+  GList             *temp_procedures;
+  GList             *ran_procedures;
+  GList             *list;
 
   priv = gimp_plug_in_get_instance_private (plug_in);
+
+  /* Proxy and procedure finalizers may call back into dispose. */
+  if (priv->in_dispose)
+    return;
+
+  priv->in_dispose = TRUE;
 
   if (priv->persistent_source_id)
     {
@@ -349,13 +359,34 @@ gimp_plug_in_dispose (GObject *object)
       priv->persistent_source_id = 0;
     }
 
-  if (priv->temp_procedures)
-    {
-      g_list_free_full (priv->temp_procedures, g_object_unref);
-      priv->temp_procedures = NULL;
-    }
+  /* Proxy accounting needs the argument defaults of the retained procedures.
+   * Destroy the proxies before releasing those procedures.
+   */
+  gimp_plug_in_destroy_proxies (plug_in, priv->displays,  "display",  TRUE);
+  gimp_plug_in_destroy_proxies (plug_in, priv->images,    "image",    TRUE);
+  gimp_plug_in_destroy_proxies (plug_in, priv->items,     "item",     TRUE);
+  gimp_plug_in_destroy_proxies (plug_in, priv->filters,   "filters",  TRUE);
+  gimp_plug_in_destroy_proxies (plug_in, priv->resources, "resource", TRUE);
+
+  gimp_plug_in_destroy_hashes (plug_in);
+
+  /* Procedures reference their plug-in, so release them in dispose rather
+   * than waiting for finalize. A temporary procedure which has run shares
+   * its owning reference with ran_procedure_stack; release that reference
+   * only once. Detach both lists before invoking any procedure finalizer.
+   */
+  temp_procedures = g_steal_pointer (&priv->temp_procedures);
+  ran_procedures  = g_steal_pointer (&priv->ran_procedure_stack);
+
+  for (list = ran_procedures; list; list = g_list_next (list))
+    temp_procedures = g_list_remove (temp_procedures, list->data);
+
+  g_list_free_full (temp_procedures, g_object_unref);
+  g_list_free_full (ran_procedures, g_object_unref);
 
   G_OBJECT_CLASS (parent_class)->dispose (object);
+
+  priv->in_dispose = FALSE;
 }
 
 static void
@@ -384,15 +415,6 @@ gimp_plug_in_finalize (GObject *object)
     }
 
   g_clear_pointer (&priv->menu_branches, g_list_free);
-
-  gimp_plug_in_destroy_proxies (plug_in, priv->displays,  "display",  TRUE);
-  gimp_plug_in_destroy_proxies (plug_in, priv->images,    "image",    TRUE);
-  gimp_plug_in_destroy_proxies (plug_in, priv->items,     "item",     TRUE);
-  gimp_plug_in_destroy_proxies (plug_in, priv->filters,   "filters",  TRUE);
-  gimp_plug_in_destroy_proxies (plug_in, priv->resources, "resource", TRUE);
-
-  gimp_plug_in_destroy_hashes (plug_in);
-  g_clear_list (&priv->ran_procedure_stack, g_object_unref);
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }

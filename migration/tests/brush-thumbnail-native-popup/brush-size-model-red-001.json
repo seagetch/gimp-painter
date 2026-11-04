@@ -1,0 +1,42 @@
+{
+  "format": 1,
+  "status": "EXACT_FINAL_MODEL_TEST_RED_CONFIRMED_ON_OLD_a434",
+  "source": {
+    "status": "FINAL_REVIEWED_GEOMETRY_TEST_ONLY_RED_ON_OLD_MODEL",
+    "test_manifest_sha256": "e9d3cd03e3cc82c02034ba8f1d6ab2b2587532b82514e39c37119474437989b8",
+    "files": {
+      "app/tests/test-painter-brush-geometry.cpp": "83db89f31f90cd6aff12acc9a34ba9a3b71523a5024977bb954453d3fa8404e3",
+      "app/paint/gimppaintoptions.c": "a434f30fcdcde309405aab0b121e19019b541b847203cdeeb1921ffd7edf98a8",
+      "app/tests/tests.c": "56303878e316e41fcb7c439b199cde5bd9fc4ac84b46b48efcbfbc79737747e7",
+      "app/tests/meson.build": "c65567c7fa8f3e75dbcf24ab5986e8c697dc3fe1d52bf88384ca58817423849e"
+    },
+    "production_model_old_unchanged": true,
+    "case_count": 7,
+    "focused_case": "/painter/geometry/defaults",
+    "expected_red": "Direct linked radius observes size63 versus regenerated-mask27",
+    "runtime_path": "Existing gimp_init_for_testing (core initialization, no GTK/GDK display initialization); no target or setup changes",
+    "unchanged_after_red": true
+  },
+  "artifacts": {
+    "app/paint/libapppaint.a": {
+      "sha256": "7e1ffa3b554d1df4402bf40b2579694a52b81b8fd173150aabba6e5dda74dae7",
+      "bytes": 19274
+    },
+    "app/tests/painter-brush-geometry": {
+      "sha256": "45534a7c42647113e649b4b90a9241d119b1be4a5c06334fadbacd22bc71f344",
+      "bytes": 82706016
+    }
+  },
+  "normal_compile_exitcode": 0,
+  "case": "/painter/geometry/defaults",
+  "process_returncode": -6,
+  "signal": "SIGABRT",
+  "expected_assertion": "options->brush_size == linked_expected_size(options,a); actual63 vs27",
+  "assertion_line": 188,
+  "trace": "linked radius direct legacy=0 size=63 rebuilt-mask=27x27",
+  "setup_or_permission_failure": false,
+  "additional_stderr": "Failed to parse tag cache: No such file or directory; preserved, did not prevent reaching intended assertion",
+  "no_GTK_GDK_display_initialization": true,
+  "scope": "Unsanitized core model regression via existing headless gimp_init_for_testing; no GUI/socketworkaround or sanitizer claim",
+  "meson_proof_sha256": "28b5caa602620ff550f7efbe8d99d4972c681e2163dc9a8f48bb25eabbd0db7b"
+}

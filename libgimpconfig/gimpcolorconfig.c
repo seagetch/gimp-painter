@@ -365,6 +365,7 @@ gimp_color_config_finalize (GObject *object)
   g_clear_pointer (&config->cmyk_profile,    g_free);
   g_clear_pointer (&config->display_profile, g_free);
   g_clear_pointer (&config->printer_profile, g_free);
+  g_clear_object  (&config->out_of_gamut_color);
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }

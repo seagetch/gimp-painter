@@ -1,0 +1,12 @@
+{
+  "portable_transformation": "Complete stdout/stderr and result fields retained; automatic ambient environment/command maps omitted.",
+  "raw_log_sha256": "9fc841292a705079970aad4147255f6a741d11e2bc34cd78be1637225cee4142",
+  "test": {
+    "duration": 0.01221919059753418,
+    "name": "gimp:libgimpbase / choice-lifecycle",
+    "result": "FAIL",
+    "returncode": -5,
+    "starttime": 1792952479.5639212,
+    "stdout": "TAP version 14\n# random seed: R02Saf1ad7e1d9c28efe6430c1dc6366a7dd\n# Start of choice-lifecycle tests\n# choice wire truncated at byte 137\nnot ok /choice-lifecycle/wire-truncated-choice - GLib-GObject-FATAL-CRITICAL: g_object_unref: assertion 'G_IS_OBJECT (object)' failed\nBail out!\n"
+  }
+}

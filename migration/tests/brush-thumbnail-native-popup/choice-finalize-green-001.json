@@ -1,0 +1,54 @@
+{
+  "format": 1,
+  "status": "PASS_CHOICE2_AND_EXISTING_BASE_ENUM_PLUS_CPU_SMOKE",
+  "source": {
+    "status": "APPROVED_PARENT_FINALIZE_GREEN_INPUTS_FROZEN",
+    "approved_patch_sha256": "a93133eb00a78ef904acf095f3fa7831f383ac6d068cf4e5473a1651e90cb751",
+    "old_choice_sha256": "4100495c012c59ced6e0ee8cfefd4523fe87e78c0e910c647e7328f968dcfb01",
+    "files": {
+      "libgimpbase/gimpchoice.c": "b40d9929d0b4758cd56667ffc1d33507172cdd2a3e156fb14be6f148d4172441",
+      "libgimpbase/meson.build": "77271d9df8a60438edf7d4d96918a75f4cd747dee27fe8c743c625b0bcac072a",
+      "libgimpbase/test-choice-lifecycle.c": "e778bcc8c940c9aa452cc1b28f5d7c8b1bc60f01fc8b31bc704f5842729f9b06"
+    },
+    "only_production_parent_finalize_call_changed_from_red": true,
+    "source_hashes_unchanged_after_green": true
+  },
+  "artifacts": {
+    "libgimpbase/libgimpbase-3.0.so.0.8.1": {
+      "sha256": "dbc3bb3f335a7b243d3da6dfb27f1ee0b9c3a1801b103f924eba819778dd4bdc",
+      "bytes": 722000
+    },
+    "libgimpbase/test-choice-lifecycle": {
+      "sha256": "e13e5bd18ec82a257b1815a95b8f7c160f146c454103211fa59beda9fd80681f",
+      "bytes": 38936
+    },
+    "libgimpbase/mypaint-enum-library-only": {
+      "sha256": "1ab53af65b76b40eeb719891405cb3c4e39d98e1b9bce6dfb0678d3c30d4aef7",
+      "bytes": 26576
+    },
+    "libgimpbase/test-cpu-accel": {
+      "sha256": "b1269327b3618d896f9aa8cd7e7bac12ae647ce436e2a4db868cdbd1dc3324e6",
+      "bytes": 19024
+    }
+  },
+  "normal_build": "Only approved gimpchoice.c recompiled into real libgimpbase shared provider; normal ABI symbol restat keeps lifecycle test binary unchanged. Existing enum and CPU targets normally compiled/linked.",
+  "meson_registrations_passed": 2,
+  "choice_cases_passed": 2,
+  "choice_case_ids": [
+    "/choice-lifecycle/direct-owned-qdata",
+    "/choice-lifecycle/param-spec-ownership-and-values"
+  ],
+  "existing_enum_library_registration": "PASS",
+  "cpu_feature_smoke": {
+    "exitcode": 0,
+    "qualification": "Existing CPU feature-reporting smoke executable, not an assertion suite",
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_sha256": "32660c0c2be3342bf0c76c65782fac9f34abb8c3ef8e37140a17b712af3e85c6"
+  },
+  "failures": 0,
+  "skips": 0,
+  "timeouts": 0,
+  "fatal_warning_policy": "G_DEBUG=fatal-warnings",
+  "scope": "Unsanitized library-only qdata finalization, GParamSpec ownership and existing choice behavior; no GUI, sanitizer-clean or C4 runtime claim",
+  "meson_proof_sha256": "90cca20080c935a347f098913806918e364bb53f73a8a1eba9cc7be3025efbf0"
+}

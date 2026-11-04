@@ -1,0 +1,16 @@
+{
+  "base_commit": "8843432e9f06d0dace7b6807f72daa5b8c18b5b6",
+  "base_tree": "9f1652a63ea9495ecff6ea72823460261c32d108",
+  "files": {
+    "delta-base-byte-reconciliation.json": "a675b7d075aeee4d63fb00ea19eb2d5331bf915b41094da9337ebb1d58930d5a",
+    "real-meson-log-replay.json": "acd8d62e0102977b187aa55705c0665120ae57bb9af534af5c0e782d8d4d89cd",
+    "real-meson-metadata-replay.json": "71e59d50eb125a9605d459b5ee4b5c870f650b0eed0f84727acc3c5e4e9a770e"
+  },
+  "matched_fix": "Use exact wrapper-suffixed log filename; stable last phase order across read-loop EOF; fail-closed regular-file nonblocking bounded SHA/size/verdict receipt without environment/stdout export. Recognize only exact Meson1.7 injected normal ASAN/UBSAN/MSAN defaults; strict sanitizer options and no LSAN override remain enforced.",
+  "observation": "Normal Brush and common gates pass. Mask provider thin-map identity passes but registration wrongly required non-exported should_fail. Matched four builds succeed but all14 reports are invalid: requested unsuffixed Meson log while wrapper python3 makes -python3.json; no valid comparison. Sanitizer terminal result is not claimed by this preparation receipt.",
+  "qualification": "Real Meson1.7 minimal-project metadata/log replay, not native GIMP oldRED/newGREEN or hosted matched measurement. Local synthetic tests do not establish acceptance.",
+  "registration_fix": "Pin complete unchanged registration source and actual Meson1.7 metadata schema/version/root/index. Preflight explicitly source-declared/runtime-unverified. Exact native EXPECTEDFAIL/SIGTRAP/single mask precondition versus fixed OK/0 and all focused/full-suite conditions remain required. No pickle.",
+  "run44": "https://github.com/seagetch/gimp-painter/actions/runs/40555989432",
+  "status": "C27_REVIEW_ONLY_MESON_METADATA_AND_MATCHED_LOG_CONTRACT",
+  "unchanged": "Native production files, deadlines, assertions, case counts, leak policy, exact old/fixed outcomes, matched inputs/order/build identities, workflow, accepted parent and all26 protected files; denied babl and ptrace actions untouched."
+}

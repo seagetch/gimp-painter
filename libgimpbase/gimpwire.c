@@ -463,7 +463,7 @@ _gimp_wire_read_string (GIOChannel  *channel,
           if (! _gimp_wire_read_int8 (channel,
                                       (guint8 *) data[i], tmp, user_data))
             {
-              g_free (data[i]);
+              g_clear_pointer (&data[i], g_free);
               return FALSE;
             }
 

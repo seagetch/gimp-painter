@@ -1,0 +1,1167 @@
+{
+  "format": 1,
+  "acceptance_eligible": false,
+  "scope": "first selected-case wait-entry thread stack diagnostic only",
+  "binary_sha256": "e78f821d9bb3c3b610aafc111344b28df17399b93d4c1045642cfd3649069e13",
+  "case": "/brush-thumbnail-native-popup/private-target-release",
+  "samples": [
+    {
+      "sample": 1,
+      "sample_wall_interval_ms": 571,
+      "stop_reason": "signal-received",
+      "frames": [
+        {
+          "thread_id": "1",
+          "function": "__sanitizer::(anonymous namespace)::Unwind_Trace",
+          "file": "sanitizer_unwind_linux_libcdep.cpp",
+          "line": 80
+        },
+        {
+          "thread_id": "1",
+          "function": "_Unwind_Backtrace"
+        },
+        {
+          "thread_id": "1",
+          "function": "__sanitizer::BufferedStackTrace::UnwindSlow",
+          "file": "sanitizer_unwind_linux_libcdep.cpp",
+          "line": 130
+        },
+        {
+          "thread_id": "1",
+          "function": "__sanitizer::BufferedStackTrace::Unwind",
+          "file": "sanitizer_stacktrace_libcdep.cpp",
+          "line": 158
+        },
+        {
+          "thread_id": "1",
+          "function": "__sanitizer::BufferedStackTrace::UnwindImpl",
+          "file": "asan_stack.cpp",
+          "line": 77
+        },
+        {
+          "thread_id": "1",
+          "function": "__sanitizer::BufferedStackTrace::Unwind",
+          "file": "sanitizer_stacktrace.h",
+          "line": 130
+        },
+        {
+          "thread_id": "1",
+          "function": "___interceptor_free",
+          "file": "asan_malloc_linux.cpp",
+          "line": 52
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "xmlParseElement"
+        },
+        {
+          "thread_id": "1",
+          "function": "xmlParseDocument"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "rsvg_handle_new_from_stream_sync"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gdk_pixbuf_loader_close"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gdk_pixbuf_new_from_stream_at_scale"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        }
+      ]
+    },
+    {
+      "sample": 2,
+      "sample_wall_interval_ms": 506,
+      "stop_reason": "signal-received",
+      "frames": [
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "_Unwind_Backtrace"
+        },
+        {
+          "thread_id": "1",
+          "function": "__sanitizer::BufferedStackTrace::UnwindSlow",
+          "file": "sanitizer_unwind_linux_libcdep.cpp",
+          "line": 130
+        },
+        {
+          "thread_id": "1",
+          "function": "__sanitizer::BufferedStackTrace::Unwind",
+          "file": "sanitizer_stacktrace_libcdep.cpp",
+          "line": 158
+        },
+        {
+          "thread_id": "1",
+          "function": "__sanitizer::BufferedStackTrace::UnwindImpl",
+          "file": "asan_stack.cpp",
+          "line": 77
+        },
+        {
+          "thread_id": "1",
+          "function": "__sanitizer::BufferedStackTrace::Unwind",
+          "file": "sanitizer_stacktrace.h",
+          "line": 130
+        },
+        {
+          "thread_id": "1",
+          "function": "___interceptor_free",
+          "file": "asan_malloc_linux.cpp",
+          "line": 52
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "xmlParseElement"
+        },
+        {
+          "thread_id": "1",
+          "function": "xmlParseDocument"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "xmlParseElement"
+        },
+        {
+          "thread_id": "1",
+          "function": "xmlParseDocument"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        }
+      ]
+    },
+    {
+      "sample": 3,
+      "sample_wall_interval_ms": 505,
+      "stop_reason": "signal-received",
+      "frames": [
+        {
+          "thread_id": "1",
+          "function": "_Unwind_Find_FDE"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "_Unwind_Backtrace"
+        },
+        {
+          "thread_id": "1",
+          "function": "__sanitizer::BufferedStackTrace::UnwindSlow",
+          "file": "sanitizer_unwind_linux_libcdep.cpp",
+          "line": 130
+        },
+        {
+          "thread_id": "1",
+          "function": "__sanitizer::BufferedStackTrace::Unwind",
+          "file": "sanitizer_stacktrace_libcdep.cpp",
+          "line": 158
+        },
+        {
+          "thread_id": "1",
+          "function": "__sanitizer::BufferedStackTrace::UnwindImpl",
+          "file": "asan_stack.cpp",
+          "line": 77
+        },
+        {
+          "thread_id": "1",
+          "function": "__sanitizer::BufferedStackTrace::Unwind",
+          "file": "sanitizer_stacktrace.h",
+          "line": 130
+        },
+        {
+          "thread_id": "1",
+          "function": "___interceptor_malloc",
+          "file": "asan_malloc_linux.cpp",
+          "line": 69
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "rsvg_handle_new_from_stream_sync"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gdk_pixbuf_loader_close"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gdk_pixbuf_new_from_stream"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        }
+      ]
+    },
+    {
+      "sample": 4,
+      "sample_wall_interval_ms": 506,
+      "stop_reason": "signal-received",
+      "frames": [
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        }
+      ]
+    },
+    {
+      "sample": 5,
+      "sample_wall_interval_ms": 505,
+      "stop_reason": "signal-received",
+      "frames": [
+        {
+          "thread_id": "1",
+          "function": "_Unwind_Find_FDE"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "_Unwind_Backtrace"
+        },
+        {
+          "thread_id": "1",
+          "function": "__sanitizer::BufferedStackTrace::UnwindSlow",
+          "file": "sanitizer_unwind_linux_libcdep.cpp",
+          "line": 130
+        },
+        {
+          "thread_id": "1",
+          "function": "__sanitizer::BufferedStackTrace::Unwind",
+          "file": "sanitizer_stacktrace_libcdep.cpp",
+          "line": 158
+        },
+        {
+          "thread_id": "1",
+          "function": "__sanitizer::BufferedStackTrace::UnwindImpl",
+          "file": "asan_stack.cpp",
+          "line": 77
+        },
+        {
+          "thread_id": "1",
+          "function": "__sanitizer::BufferedStackTrace::Unwind",
+          "file": "sanitizer_stacktrace.h",
+          "line": 130
+        },
+        {
+          "thread_id": "1",
+          "function": "___interceptor_free",
+          "file": "asan_malloc_linux.cpp",
+          "line": 52
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "rsvg_handle_new_from_stream_sync"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gdk_pixbuf_loader_close"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gdk_pixbuf_new_from_stream_at_scale"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        }
+      ]
+    },
+    {
+      "sample": 6,
+      "sample_wall_interval_ms": 506,
+      "stop_reason": "signal-received",
+      "frames": [
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "_Unwind_Backtrace"
+        },
+        {
+          "thread_id": "1",
+          "function": "__sanitizer::BufferedStackTrace::UnwindSlow",
+          "file": "sanitizer_unwind_linux_libcdep.cpp",
+          "line": 130
+        },
+        {
+          "thread_id": "1",
+          "function": "__sanitizer::BufferedStackTrace::Unwind",
+          "file": "sanitizer_stacktrace_libcdep.cpp",
+          "line": 158
+        },
+        {
+          "thread_id": "1",
+          "function": "__sanitizer::BufferedStackTrace::UnwindImpl",
+          "file": "asan_stack.cpp",
+          "line": 77
+        },
+        {
+          "thread_id": "1",
+          "function": "__sanitizer::BufferedStackTrace::Unwind",
+          "file": "sanitizer_stacktrace.h",
+          "line": 130
+        },
+        {
+          "thread_id": "1",
+          "function": "___interceptor_free",
+          "file": "asan_malloc_linux.cpp",
+          "line": 52
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "xmlParseElement"
+        },
+        {
+          "thread_id": "1",
+          "function": "xmlParseDocument"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "rsvg_handle_new_from_stream_sync"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gdk_pixbuf_loader_close"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "gdk_pixbuf_new_from_stream_at_scale"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        }
+      ]
+    },
+    {
+      "sample": 7,
+      "sample_wall_interval_ms": 505,
+      "stop_reason": "signal-received",
+      "frames": [
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "_Unwind_Backtrace"
+        },
+        {
+          "thread_id": "1",
+          "function": "__sanitizer::BufferedStackTrace::UnwindSlow",
+          "file": "sanitizer_unwind_linux_libcdep.cpp",
+          "line": 130
+        },
+        {
+          "thread_id": "1",
+          "function": "__sanitizer::BufferedStackTrace::Unwind",
+          "file": "sanitizer_stacktrace_libcdep.cpp",
+          "line": 158
+        },
+        {
+          "thread_id": "1",
+          "function": "__sanitizer::BufferedStackTrace::UnwindImpl",
+          "file": "asan_stack.cpp",
+          "line": 77
+        },
+        {
+          "thread_id": "1",
+          "function": "__sanitizer::BufferedStackTrace::Unwind",
+          "file": "sanitizer_stacktrace.h",
+          "line": 130
+        },
+        {
+          "thread_id": "1",
+          "function": "___interceptor_malloc",
+          "file": "asan_malloc_linux.cpp",
+          "line": 69
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "xmlParseElement"
+        },
+        {
+          "thread_id": "1",
+          "function": "xmlParseDocument"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "xmlParseElement"
+        },
+        {
+          "thread_id": "1",
+          "function": "xmlParseDocument"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        }
+      ]
+    },
+    {
+      "sample": 8,
+      "sample_wall_interval_ms": 505,
+      "stop_reason": "signal-received",
+      "frames": [
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "_Unwind_Find_FDE"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "_Unwind_Backtrace"
+        },
+        {
+          "thread_id": "1",
+          "function": "__sanitizer::BufferedStackTrace::UnwindSlow",
+          "file": "sanitizer_unwind_linux_libcdep.cpp",
+          "line": 130
+        },
+        {
+          "thread_id": "1",
+          "function": "__sanitizer::BufferedStackTrace::Unwind",
+          "file": "sanitizer_stacktrace_libcdep.cpp",
+          "line": 158
+        },
+        {
+          "thread_id": "1",
+          "function": "__sanitizer::BufferedStackTrace::UnwindImpl",
+          "file": "asan_stack.cpp",
+          "line": 77
+        },
+        {
+          "thread_id": "1",
+          "function": "__sanitizer::BufferedStackTrace::Unwind",
+          "file": "sanitizer_stacktrace.h",
+          "line": 130
+        },
+        {
+          "thread_id": "1",
+          "function": "___interceptor_free",
+          "file": "asan_malloc_linux.cpp",
+          "line": 52
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "xmlParseElement"
+        },
+        {
+          "thread_id": "1",
+          "function": "xmlParseDocument"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "xmlParseElement"
+        },
+        {
+          "thread_id": "1",
+          "function": "xmlParseDocument"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        },
+        {
+          "thread_id": "1",
+          "function": "??"
+        }
+      ]
+    }
+  ],
+  "status": "inconclusive",
+  "leak_verdict": "not evaluated under ptrace",
+  "sanitizer_settings_changed": false,
+  "raw_debugger_output_exported": false,
+  "owned_child_cleanup_completed": false,
+  "failure_category": "Cleanup incomplete"
+}

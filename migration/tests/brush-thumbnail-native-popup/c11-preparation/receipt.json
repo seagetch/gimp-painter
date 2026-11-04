@@ -1,0 +1,23 @@
+{
+  "format": 1,
+  "status": "REVIEW_ONLY_TWO_PRECISE_TEST_CI_REPAIRS_NATIVE_PENDING",
+  "base_commit": "148d18c1950d18eea9d5d5d43a48800eac28924e",
+  "base_tree": "cd1445494aec4c1a57fd1b52a71ccdf7f4ab9b5e",
+  "run29_id": 40345203331,
+  "run29_status": "Positive failures in new canvas observer assertion and provider source attribution; normal Brush21 passed both scales, common gates passed. Sanitizer terminal pending at drafting; no final acceptance.",
+  "provider_diagnosis": "Meson builds private $src; control was passed original $repo. All3 exact compile-source lookups correctly rejected different paths. Caller now passes $src. Strict equality unchanged; bounded necessary compile-input paths are exported, never compiler flags or environment.",
+  "observer_diagnosis": "GObject weak callbacks report disposal, not necessarily finalization; GTK destroy disposes with strong reference remaining. Rename canvas_disposed and assert1 after destroy; decisive last_gone0 before final unref and1 after unchanged. Production canvas finalize fix is unchanged.",
+  "corrected_test_sha256": "2621671a93a054a1f4e1f3f7b5f922d1c4f79226f6ca8d7d2ea09e21f9455c7f",
+  "proof": "Driver synthetic regression oldRED/fixedGREEN; same-byte wrongcheckout synthetic provider rejected and exact worktree accepted. Local system-GObject ctypes probe observes disposal weak notification before final owned-data release. None is native corrected Canvas2 oldRED/newGREEN proof.",
+  "native": "Normal compile_commands database not uploaded in run29; no actual DB replay. Corrected GTK Canvas2 and old-provider2 hosted execution pending.",
+  "files": {
+    "gobject-weak-dispose-check.py": "aa98af55e7efaa6a3fe83121f90053144bfd6a4c1d3bab8ac266f1d494a6c49b",
+    "gobject-weak-dispose-result.json": "c5db76f20b5ee31cc773ea9567b34f4e8deae47a4c6eb0f8f24b2bc976380a28",
+    "gobject-weak-dispose.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "orchestration-green.log": "569a43ed277c7164ae2bfd58a71db5cb76c0d7f244007625549936e9b6f07d40",
+    "orchestration-old-red.log": "198b6843d63ec7e3fa9bc82c8a4cbef9301edd1c4be1588b9992f0273fc09306",
+    "run29-canvas-compile-excerpt.txt": "4ed37b0f784db250484c8f47c3b74f747f15bef1e2b141b4524ab602dd940779",
+    "run29-canvas-positive-results.json": "35ca9d272eaf5a9d73b90e6753390b2d7bcf8f12ad69b7cee844a796793d421c",
+    "run29-provider.json": "9ea1ef987d9905b32a7ba29d1378c15aa0608be30148b23b9128ad5cf425dd13"
+  }
+}

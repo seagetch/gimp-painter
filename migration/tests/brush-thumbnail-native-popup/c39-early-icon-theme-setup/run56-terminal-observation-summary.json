@@ -1,0 +1,436 @@
+{
+  "format": 1,
+  "observed_utc": "2026-11-03T03:45:33.811436+00:00",
+  "run_id": 41570069455,
+  "run_url": "https://github.com/seagetch/gimp-painter/actions/runs/41570069455",
+  "head": "c525f5e5a03f8ebe125a5ae1f2efe54d6c9553c2",
+  "tree": "ac53e7e06610b4680cc2b2ff923db918a0fa0e51",
+  "sole_parent": "e25a94e21efca6e6604ddac6f15570c049f421e7",
+  "status": "completed",
+  "conclusion": "failure",
+  "acceptance_eligible": false,
+  "task_308_accepted": false,
+  "success": 5,
+  "failure": 3,
+  "jobs": [
+    {
+      "id": 125700632849,
+      "name": "baseline-carrier-red",
+      "conclusion": "success",
+      "completed_at": "2026-11-03T03:14:28Z"
+    },
+    {
+      "id": 125700632972,
+      "name": "brush-sanitizer",
+      "conclusion": "failure",
+      "completed_at": "2026-11-03T03:41:44Z"
+    },
+    {
+      "id": 125700633090,
+      "name": "matched-preclick-nonacceptance",
+      "conclusion": "failure",
+      "completed_at": "2026-11-03T03:40:30Z"
+    },
+    {
+      "id": 125700633112,
+      "name": "babl-owned-doc-proof",
+      "conclusion": "failure",
+      "completed_at": "2026-11-03T03:06:37Z"
+    },
+    {
+      "id": 125700633113,
+      "name": "dockbook-controlled-order-3d6f",
+      "conclusion": "success",
+      "completed_at": "2026-11-03T03:14:45Z"
+    },
+    {
+      "id": 125700633144,
+      "name": "brush-positive",
+      "conclusion": "success",
+      "completed_at": "2026-11-03T03:23:46Z"
+    },
+    {
+      "id": 125700633181,
+      "name": "candidate",
+      "conclusion": "success",
+      "completed_at": "2026-11-03T03:25:19Z"
+    },
+    {
+      "id": 125700633187,
+      "name": "brush-baseline-red",
+      "conclusion": "success",
+      "completed_at": "2026-11-03T03:12:46Z"
+    }
+  ],
+  "artifacts": [
+    {
+      "id": 13202378132,
+      "name": "painter-brush-ui-sanitizer-c525f5e5a03f8ebe125a5ae1f2efe54d6c9553c2-1",
+      "path": "painter-brush-ui-sanitizer-c525f5e5a03f8ebe125a5ae1f2efe54d6c9553c2-1.zip",
+      "size": 10281291,
+      "sha256": "3c503ca3c7b6bc81977864dbc7b31b97d1c42200c71e379321ec38bdb51f68c0",
+      "api_digest_and_size_match": true,
+      "zip_crc_valid": true,
+      "members": 132
+    },
+    {
+      "id": 13202121164,
+      "name": "painter-native-ui-candidate-c525f5e5a03f8ebe125a5ae1f2efe54d6c9553c2-1",
+      "path": "painter-native-ui-candidate-c525f5e5a03f8ebe125a5ae1f2efe54d6c9553c2-1.zip",
+      "size": 2209023,
+      "sha256": "54c4a558320d2a89ecce125f1cd02ac2586d608bb8b42191c529fd5fc9555909",
+      "api_digest_and_size_match": true,
+      "zip_crc_valid": true,
+      "members": 56
+    },
+    {
+      "id": 13202083807,
+      "name": "painter-matched-preclick-c525f5e5a03f8ebe125a5ae1f2efe54d6c9553c2-1",
+      "path": "painter-matched-preclick-c525f5e5a03f8ebe125a5ae1f2efe54d6c9553c2-1.zip",
+      "size": 9081780,
+      "sha256": "8ab1e06a9012a63d7ca523b8edc437ad127e5dc3be9c2405f94dacf6eabfcd42",
+      "api_digest_and_size_match": true,
+      "zip_crc_valid": true,
+      "members": 82
+    },
+    {
+      "id": 13201761650,
+      "name": "painter-brush-ui-positive-c525f5e5a03f8ebe125a5ae1f2efe54d6c9553c2-1",
+      "path": "painter-brush-ui-positive-c525f5e5a03f8ebe125a5ae1f2efe54d6c9553c2-1.zip",
+      "size": 839083,
+      "sha256": "0b49254d7d4a86d3e8ca24447ff80f006974dd76d4fe7a314597c84a6d938e02",
+      "api_digest_and_size_match": true,
+      "zip_crc_valid": true,
+      "members": 106
+    },
+    {
+      "id": 13201710099,
+      "name": "painter-native-ui-dockbook-controlled-order-3d6f-c525f5e5a03f8ebe125a5ae1f2efe54d6c9553c2-1",
+      "path": "painter-native-ui-dockbook-controlled-order-3d6f-c525f5e5a03f8ebe125a5ae1f2efe54d6c9553c2-1.zip",
+      "size": 212606,
+      "sha256": "de922644f9cd61fdc0c569bb8bc824819e004318a8becdf0202b10b25b6bd013",
+      "api_digest_and_size_match": true,
+      "zip_crc_valid": true,
+      "members": 33
+    },
+    {
+      "id": 13201441969,
+      "name": "painter-brush-ui-baseline-red-c525f5e5a03f8ebe125a5ae1f2efe54d6c9553c2-1",
+      "path": "painter-brush-ui-baseline-red-c525f5e5a03f8ebe125a5ae1f2efe54d6c9553c2-1.zip",
+      "size": 64051,
+      "sha256": "36f463991e6749089b66278d1d76524ebe5597e82aba619c16f4c3f53d9054ba",
+      "api_digest_and_size_match": true,
+      "zip_crc_valid": true,
+      "members": 28
+    },
+    {
+      "id": 13200832564,
+      "name": "babl-owned-doc-proof-c525f5e5a03f8ebe125a5ae1f2efe54d6c9553c2",
+      "path": "babl-owned-doc-proof-c525f5e5a03f8ebe125a5ae1f2efe54d6c9553c2.zip",
+      "size": 25013604,
+      "sha256": "66978958544d37f86f5612b74ed8c8b059d94d316a856acb6d02c60a1ecb6645",
+      "api_digest_and_size_match": true,
+      "zip_crc_valid": true,
+      "members": 616
+    },
+    {
+      "id": 13200414884,
+      "name": "painter-native-ui-baseline-carrier-red-c525f5e5a03f8ebe125a5ae1f2efe54d6c9553c2-1",
+      "path": "painter-native-ui-baseline-carrier-red-c525f5e5a03f8ebe125a5ae1f2efe54d6c9553c2-1.zip",
+      "size": 608848,
+      "sha256": "262d1d17d870913c0c375f95f5dc2a38e8aaa4130c235689944fb11183602cc8",
+      "api_digest_and_size_match": true,
+      "zip_crc_valid": true,
+      "members": 44
+    }
+  ],
+  "logs": [
+    {
+      "job_id": 125700632849,
+      "path": "baseline-carrier-red.log",
+      "bytes": 600872,
+      "sha256": "5f81e402dfa5713e414debee839f86d6bce295f0138855cbf8cc18393182f157"
+    },
+    {
+      "job_id": 125700632972,
+      "path": "brush-sanitizer.log",
+      "bytes": 1153987,
+      "sha256": "6c49ffead51ae62733508d24968447b12dfc638bf11d692e7e1dd02522eccef3"
+    },
+    {
+      "job_id": 125700633090,
+      "path": "matched-preclick-nonacceptance.log",
+      "bytes": 137292,
+      "sha256": "6c63cb6b47b2d580e27e0d4b30a75fe1054f46aba6d2dcce99f7cac41ca60d85"
+    },
+    {
+      "job_id": 125700633112,
+      "path": "babl-owned-doc-proof.log",
+      "bytes": 26221,
+      "sha256": "ffd9e1ab5e05885a9ddbd5ffbe39dbbc5b551475e26e1134f4260469e2cd9d65"
+    },
+    {
+      "job_id": 125700633113,
+      "path": "dockbook-controlled-order-3d6f.log",
+      "bytes": 609882,
+      "sha256": "112a66ba636b072482bc3ebfbdd38a06cd9e289d1cf077e511c1e44065fedebe"
+    },
+    {
+      "job_id": 125700633144,
+      "path": "brush-positive.log",
+      "bytes": 1180662,
+      "sha256": "f1118137773747fc295ceef7271d79b193de07d04bf573f3d39b21c113adeef1"
+    },
+    {
+      "job_id": 125700633181,
+      "path": "candidate.log",
+      "bytes": 796123,
+      "sha256": "eef5d79c071694c493d27c335a6af0c139579d8650be2342d15f351a924013fc"
+    },
+    {
+      "job_id": 125700633187,
+      "path": "brush-baseline-red.log",
+      "bytes": 588678,
+      "sha256": "12c2638bda6f2330cdcb934dd0e418d95eb91d8e3d7d1df9eb79293c68218153"
+    }
+  ],
+  "normal": {
+    "brush_scale1": "21/21 including case14",
+    "brush_scale2": "21/21 including case14",
+    "isolated_case14_firstwait_us": 206178,
+    "isolated_case14_stable": 3,
+    "mask_fixed_full107": "107/107 observational only",
+    "pixel_inspection_not_performed_by_this_monitor": true
+  },
+  "sanitizer": {
+    "case14_firstwait_us": 6591283,
+    "longest_dispatch_us": 6587732,
+    "stable": 0,
+    "original_deadline_seconds": 3,
+    "other_leaf_assertions_passed": 20,
+    "other_processes_leak_bytes_min": 198738,
+    "other_processes_leak_bytes_max": 201378
+  },
+  "owner": {
+    "status": "captured",
+    "snapshot_clipped": true,
+    "window_count": 16,
+    "event_count": 14,
+    "gimp_image_window_check_resize_total_us": 5634414,
+    "gimp_image_window_frame_layout_total_us": 5995405,
+    "target_window_layout_total_us": 193,
+    "original_deadline_seconds": 3,
+    "sanitizer_settings_changed": false,
+    "leak_verdict": "not evaluated under ptrace",
+    "sample_count": 8,
+    "all_samples_capped_at_96_frames": true,
+    "owned_child_cleanup_completed": true,
+    "qualification": "Separate debugger-instrumented build; clipped generic-owner coverage. Resize and layout overlap; do not add. Not native timing or exclusive causality proof."
+  },
+  "phase": {
+    "status": "captured",
+    "parser_independently_revalidated": true,
+    "owners": 1,
+    "events": 20,
+    "clipped": false,
+    "missing_hooks": 0,
+    "owner_alive": true,
+    "clock_changed": false,
+    "initial_active": false,
+    "final_active": true,
+    "initial_flags": 128,
+    "final_flags": 128,
+    "phase_intervals_us": {
+      "context_copy": 457,
+      "toolbar_factory": 465122,
+      "show_all": 1094733,
+      "drain": 2108249,
+      "first_wait_envelope": 6303755
+    },
+    "timeline": [
+      {
+        "event": "observation-start",
+        "owner": 16,
+        "value": 0,
+        "phase_elapsed_us": 508
+      },
+      {
+        "event": "context-copy-before",
+        "owner": 16,
+        "value": 0,
+        "phase_elapsed_us": 1701
+      },
+      {
+        "event": "context-copy-after",
+        "owner": 16,
+        "value": 0,
+        "phase_elapsed_us": 2158
+      },
+      {
+        "event": "factory-before",
+        "owner": 16,
+        "value": 0,
+        "phase_elapsed_us": 2329
+      },
+      {
+        "event": "factory-after",
+        "owner": 16,
+        "value": 0,
+        "phase_elapsed_us": 467451
+      },
+      {
+        "event": "show-all-before",
+        "owner": 16,
+        "value": 0,
+        "phase_elapsed_us": 484564
+      },
+      {
+        "event": "show-all-after",
+        "owner": 16,
+        "value": 0,
+        "phase_elapsed_us": 1579297
+      },
+      {
+        "event": "drain-before",
+        "owner": 16,
+        "value": 0,
+        "phase_elapsed_us": 1579297
+      },
+      {
+        "event": "activation-notification",
+        "owner": 0,
+        "value": 1,
+        "phase_elapsed_us": 1750401
+      },
+      {
+        "event": "icon-theme-changed",
+        "owner": 16,
+        "value": 0,
+        "phase_elapsed_us": 1751053
+      },
+      {
+        "event": "frame-layout",
+        "owner": 0,
+        "value": 0,
+        "phase_elapsed_us": 1759886
+      },
+      {
+        "event": "style-updated",
+        "owner": 0,
+        "value": 0,
+        "phase_elapsed_us": 1779976
+      },
+      {
+        "event": "check-resize",
+        "owner": 0,
+        "value": 0,
+        "phase_elapsed_us": 1794692
+      },
+      {
+        "event": "drain-after",
+        "owner": 16,
+        "value": 0,
+        "phase_elapsed_us": 3687546
+      },
+      {
+        "event": "first-wait-before",
+        "owner": 16,
+        "value": 0,
+        "phase_elapsed_us": 3697881
+      },
+      {
+        "event": "frame-layout",
+        "owner": 0,
+        "value": 0,
+        "phase_elapsed_us": 3706094
+      },
+      {
+        "event": "check-resize",
+        "owner": 0,
+        "value": 0,
+        "phase_elapsed_us": 4067045
+      },
+      {
+        "event": "frame-layout",
+        "owner": 0,
+        "value": 0,
+        "phase_elapsed_us": 9701490
+      },
+      {
+        "event": "first-wait-after",
+        "owner": 16,
+        "value": 0,
+        "phase_elapsed_us": 10001636
+      },
+      {
+        "event": "observation-finish",
+        "owner": 16,
+        "value": 0,
+        "phase_elapsed_us": 10001637
+      }
+    ],
+    "finding": "Observed activation notification, icon-theme changed, layout, style-updated and check-resize inside drain after show-all and before first wait. No observed state-flags event. Original owner became active, not inactive.",
+    "qualification": "Notification delivery ordering only. RUN_FIRST hooks observe after class closures; no descendant coverage, mutation-time ordering, or causal chain is proven. Phase and owner timestamps have different origins; do not subtract across them. Instrumented intervals are not production performance."
+  },
+  "matched": {
+    "status": "inconclusive",
+    "identity_comparable": true,
+    "comparison_eligible": false,
+    "acceptance_eligible": false,
+    "statistics": {
+      "baseline-normal": {
+        "metrics_population": "all-available-including-inconclusive",
+        "comparison_eligible_repetitions": 3,
+        "available_repetitions": 3,
+        "primary_passes": 3,
+        "median_elapsed_us": 154740,
+        "min_elapsed_us": 154627,
+        "max_elapsed_us": 173372
+      },
+      "current-normal": {
+        "metrics_population": "all-available-including-inconclusive",
+        "comparison_eligible_repetitions": 3,
+        "available_repetitions": 3,
+        "primary_passes": 3,
+        "median_elapsed_us": 172598,
+        "min_elapsed_us": 154589,
+        "max_elapsed_us": 173014
+      },
+      "baseline-sanitizer": {
+        "metrics_population": "all-available-including-inconclusive",
+        "comparison_eligible_repetitions": 0,
+        "available_repetitions": 3,
+        "primary_passes": 0,
+        "median_elapsed_us": 8971349,
+        "min_elapsed_us": 8758145,
+        "max_elapsed_us": 9024108
+      },
+      "current-sanitizer": {
+        "metrics_population": "all-available-including-inconclusive",
+        "comparison_eligible_repetitions": 3,
+        "available_repetitions": 3,
+        "primary_passes": 0,
+        "median_elapsed_us": 8878556,
+        "min_elapsed_us": 8868112,
+        "max_elapsed_us": 8896001
+      }
+    },
+    "interpretation": "Baseline root Meson metadata has an exact diagnostic compatibility overlay in both modes; this is not a pristine-baseline build comparison. Three repetitions are descriptive, not significance or causality proof. Fidelity needs human review; no acceptance promotion."
+  },
+  "babl": {
+    "failure": "lcms2.pc missing from isolated pkg-config search path",
+    "same_boundary_as_run55": true
+  },
+  "run55_comparison": {
+    "run_id": 41561860476,
+    "old_success": 5,
+    "old_failure": 3,
+    "old_sanitizer_firstwait_us": 6763268,
+    "latency_fix_proven": false,
+    "leaks_fixed": false,
+    "phase_capture_new": true,
+    "matched_still_inconclusive": true,
+    "babl_still_failed": true
+  },
+  "public_writes_performed": false
+}

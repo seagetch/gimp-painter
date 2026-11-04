@@ -1,0 +1,1251 @@
+{
+  "format": 1,
+  "observed_utc": "2026-11-01T14:52:24Z",
+  "run_id": 41314130306,
+  "head": "ef5f08e68c1f0692b40b938c9ea4c08763db1483",
+  "tree": "7ddedb127e9f31b3d960f07147f48ff5ef1674d0",
+  "accepted_parent": "e25a94e21efca6e6604ddac6f15570c049f421e7",
+  "acceptance_eligible": false,
+  "task_308_accepted": false,
+  "success": 5,
+  "failure": 3,
+  "jobs": [
+    {
+      "id": 124870482359,
+      "name": "babl-owned-doc-proof",
+      "conclusion": "failure",
+      "completed_at": "2026-11-01T14:03:12Z"
+    },
+    {
+      "id": 124870482591,
+      "name": "brush-sanitizer",
+      "conclusion": "failure",
+      "completed_at": "2026-11-01T14:49:57Z"
+    },
+    {
+      "id": 124870482593,
+      "name": "matched-preclick-nonacceptance",
+      "conclusion": "failure",
+      "completed_at": "2026-11-01T14:29:58Z"
+    },
+    {
+      "id": 124870482645,
+      "name": "brush-positive",
+      "conclusion": "success",
+      "completed_at": "2026-11-01T14:17:48Z"
+    },
+    {
+      "id": 124870482662,
+      "name": "candidate",
+      "conclusion": "success",
+      "completed_at": "2026-11-01T14:15:46Z"
+    },
+    {
+      "id": 124870482695,
+      "name": "dockbook-controlled-order-3d6f",
+      "conclusion": "success",
+      "completed_at": "2026-11-01T14:08:00Z"
+    },
+    {
+      "id": 124870482696,
+      "name": "brush-baseline-red",
+      "conclusion": "success",
+      "completed_at": "2026-11-01T14:09:18Z"
+    },
+    {
+      "id": 124870482814,
+      "name": "baseline-carrier-red",
+      "conclusion": "success",
+      "completed_at": "2026-11-01T14:10:03Z"
+    }
+  ],
+  "original_artifacts": [
+    {
+      "id": 13087898659,
+      "name": "painter-brush-ui-sanitizer-ef5f08e68c1f0692b40b938c9ea4c08763db1483-1",
+      "path": "artifacts/run53-13087898659.zip",
+      "sha256": "dde77d17f4146bfd62071843ce98e7e9d2bf4047c79059c3769a21a030cf9e36",
+      "bytes": 10292485,
+      "api_digest_and_size_verified": true
+    },
+    {
+      "id": 13087516647,
+      "name": "painter-matched-preclick-ef5f08e68c1f0692b40b938c9ea4c08763db1483-1",
+      "path": "artifacts/run53-13087516647.zip",
+      "sha256": "051050e2a7bd8eb21348804cb7ad32272b0adcc3e1c6970d948cf8c18005495f",
+      "bytes": 9081902,
+      "api_digest_and_size_verified": true
+    },
+    {
+      "id": 13087125476,
+      "name": "painter-brush-ui-baseline-red-ef5f08e68c1f0692b40b938c9ea4c08763db1483-1",
+      "path": "artifacts/run53-13087125476.zip",
+      "sha256": "82ed6b584917456addcc2940b05bc8beb0b1e3d8e46a9f277837dc8128175a6f",
+      "bytes": 63841,
+      "api_digest_and_size_verified": true
+    },
+    {
+      "id": 13086907014,
+      "name": "painter-native-ui-candidate-ef5f08e68c1f0692b40b938c9ea4c08763db1483-1",
+      "path": "artifacts/run53-13086907014.zip",
+      "sha256": "184114cea41ef3c1cc6697737b46befc95612462190d6624f9e65d68ee358590",
+      "bytes": 2210272,
+      "api_digest_and_size_verified": true
+    },
+    {
+      "id": 13086698735,
+      "name": "painter-brush-ui-positive-ef5f08e68c1f0692b40b938c9ea4c08763db1483-1",
+      "path": "artifacts/run53-13086698735.zip",
+      "sha256": "9dd7f5be6c29102290bfd060aa4d6d9fe735ef2c0f62916d6ee0f24c2539245f",
+      "bytes": 839042,
+      "api_digest_and_size_verified": true
+    },
+    {
+      "id": 13086603910,
+      "name": "painter-native-ui-baseline-carrier-red-ef5f08e68c1f0692b40b938c9ea4c08763db1483-1",
+      "path": "artifacts/run53-13086603910.zip",
+      "sha256": "9c7f5fb1da1a4ac790bf649b41782ce7e970ff9726f3877557f4fcbc715ffe67",
+      "bytes": 608856,
+      "api_digest_and_size_verified": true
+    },
+    {
+      "id": 13086588950,
+      "name": "painter-native-ui-dockbook-controlled-order-3d6f-ef5f08e68c1f0692b40b938c9ea4c08763db1483-1",
+      "path": "artifacts/run53-13086588950.zip",
+      "sha256": "4573d8a38dc58327114c258f85acf98d7cb3c49e05ab5c2e90a0ac33d19af6fc",
+      "bytes": 163955,
+      "api_digest_and_size_verified": true
+    },
+    {
+      "id": 13086364261,
+      "name": "babl-owned-doc-proof-ef5f08e68c1f0692b40b938c9ea4c08763db1483",
+      "path": "artifacts/run53-13086364261.zip",
+      "sha256": "854a26d6dc992eaf5e05a81bab6f7778d503e7c3362ff310565ec74a204a0852",
+      "bytes": 25013609,
+      "api_digest_and_size_verified": true
+    }
+  ],
+  "all_eight_full_job_logs_saved": true,
+  "normal_mask": {
+    "proof_passed": true,
+    "fixed_full107_passed": true,
+    "expected_failure_semantics_verified": true,
+    "acceptance_eligible": false,
+    "errors": []
+  },
+  "matched": {
+    "schema_preparation": {
+      "schema": "matched-schema-preparation-v1",
+      "acceptance_eligible": false,
+      "stage": "complete",
+      "compiler_exit": 0,
+      "compiler_sha256": "613c5b6ed8c95bb9d3b4055299a9e2a77422841b5e974711dd91562b6fb0d32e",
+      "cache_sha256": "1e621796723a48f5e78a16ccf078f3effb347df58eaf13d0686be121964fcb0f",
+      "loader_error_observed": false,
+      "raw_output_exported": false,
+      "loader_policy": "dependency-libdir-only",
+      "diagnostic_truncated": false,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "prepare": {
+      "format": 1,
+      "phase": "prepare",
+      "stage": "ready",
+      "exit_code": 0,
+      "acceptance_eligible": false,
+      "native_failures_not_waived": true
+    },
+    "measure": {
+      "format": 1,
+      "phase": "measure",
+      "stage": "complete",
+      "exit_code": 1,
+      "acceptance_eligible": false,
+      "native_failures_not_waived": true
+    },
+    "identity_verified": true,
+    "summary_status": "inconclusive",
+    "comparison_eligible": false,
+    "statistics": {
+      "baseline-normal": {
+        "metrics_population": "all-available-including-inconclusive",
+        "comparison_eligible_repetitions": 3,
+        "available_repetitions": 3,
+        "primary_passes": 3,
+        "median_elapsed_us": 138739,
+        "min_elapsed_us": 138245,
+        "max_elapsed_us": 139093
+      },
+      "current-normal": {
+        "metrics_population": "all-available-including-inconclusive",
+        "comparison_eligible_repetitions": 3,
+        "available_repetitions": 3,
+        "primary_passes": 3,
+        "median_elapsed_us": 142227,
+        "min_elapsed_us": 139132,
+        "max_elapsed_us": 142628
+      },
+      "baseline-sanitizer": {
+        "metrics_population": "all-available-including-inconclusive",
+        "comparison_eligible_repetitions": 0,
+        "available_repetitions": 3,
+        "primary_passes": 0,
+        "median_elapsed_us": 6427213,
+        "min_elapsed_us": 6373341,
+        "max_elapsed_us": 6772908
+      },
+      "current-sanitizer": {
+        "metrics_population": "all-available-including-inconclusive",
+        "comparison_eligible_repetitions": 3,
+        "available_repetitions": 3,
+        "primary_passes": 0,
+        "median_elapsed_us": 6417714,
+        "min_elapsed_us": 6222962,
+        "max_elapsed_us": 6489210
+      }
+    },
+    "baseline_configuration_overlay_not_pristine": true
+  },
+  "sanitizer": {
+    "cases": [
+      {
+        "file": "brush-sanitizer-case01-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          199846
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case02-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          199458
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case03-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          199426
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case04-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          199426
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case05-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          199426
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case06-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          199426
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case07-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          199426
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case08-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          199426
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case09-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          199338
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case10-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          200130
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case11-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          198754
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case12-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          198754
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case13-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          199642
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case14-results.json",
+        "returncode": -6,
+        "tap_passes": 0,
+        "leak_bytes": []
+      },
+      {
+        "file": "brush-sanitizer-case15-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          200426
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case16-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          201378
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case17-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          198746
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case18-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          198754
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case19-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          200514
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case20-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          199770
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case21-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          198738
+        ]
+      }
+    ],
+    "case14": {
+      "returncode": -6,
+      "stable": 0,
+      "elapsed_us": 8672506,
+      "whole_main_context_iteration_us": 8668845
+    },
+    "native_failure_not_waived": true
+  },
+  "readiness_owner": {
+    "status": {
+      "format": 1,
+      "acceptance_eligible": false,
+      "diagnostic_only": true,
+      "stage": "diagnostic-finished-not-acceptance",
+      "diagnostic_step_exit": 0,
+      "state": "finished",
+      "original_driver_exit_unchanged": true,
+      "dependency_closure": "GDB installed after original acceptance; diagnostic system dependencies may differ.",
+      "qualification": "Separate instrumented build only; debugger changes timing; no acceptance or leak verdict. Primary gate exit unchanged."
+    },
+    "build_identity": {
+      "format": 1,
+      "acceptance_eligible": false,
+      "diagnostic_only": true,
+      "github_sha": "ef5f08e68c1f0692b40b938c9ea4c08763db1483",
+      "source_tree": "7ddedb127e9f31b3d960f07147f48ff5ef1674d0",
+      "primary_identity_unchanged": true,
+      "separate_build": true,
+      "dependency_root_sha256": "742d714f9b09317541c105fcb51dc8ecdd39071eb5302aacb5d7b4639e1c483c",
+      "locale_sha256": "da55de0a447a773acd1917204ba6e29cd326010f9e28199649007f5b725b6a49",
+      "host_scope": "selected public dependency links only; not full host closure",
+      "overlay": {
+        "base_tree": "7ddedb127e9f31b3d960f07147f48ff5ef1674d0",
+        "modified_path": "app/tests/meson.build",
+        "overlay_sha256": "f0074cf7677c83aef037158180bc284ae935a857e8da2e05c30298d7f1ec7124",
+        "append_sha256": "968d41096f6e31c06c3247a6b28493d18ca13acee6217885012da9c772d06355",
+        "gimp_data": "a31e5dea4f572fb5f33b06f5c4b86db5f30643dc"
+      },
+      "status": "diagnostic-identity-verified",
+      "binary_sha256": "1ad4921166afba4350b0d3f5887910dff85ded379a85654502d08a6578ce88f3",
+      "identity_sha256": "0e29c53c6bd1363595a4b954403883b97bcc5cb076b627b0ffab19c7047f5942",
+      "hashed_file_count": 1592
+    },
+    "primary_final": {
+      "format": 1,
+      "acceptance_eligible": false,
+      "status": "identity-verified"
+    },
+    "sample_status": "captured",
+    "owner_observation": {
+      "status": "captured",
+      "records": [
+        {
+          "kind": "summary",
+          "values": [
+            16,
+            32,
+            12,
+            1
+          ]
+        },
+        {
+          "kind": "window",
+          "values": [
+            0,
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "kind": "window",
+          "values": [
+            1,
+            2,
+            0,
+            0,
+            3
+          ]
+        },
+        {
+          "kind": "window",
+          "values": [
+            2,
+            3,
+            1,
+            1,
+            5
+          ]
+        },
+        {
+          "kind": "window",
+          "values": [
+            3,
+            4,
+            0,
+            0,
+            7
+          ]
+        },
+        {
+          "kind": "window",
+          "values": [
+            4,
+            4,
+            0,
+            0,
+            9
+          ]
+        },
+        {
+          "kind": "window",
+          "values": [
+            5,
+            4,
+            0,
+            0,
+            11
+          ]
+        },
+        {
+          "kind": "window",
+          "values": [
+            6,
+            4,
+            0,
+            0,
+            13
+          ]
+        },
+        {
+          "kind": "window",
+          "values": [
+            7,
+            4,
+            0,
+            0,
+            15
+          ]
+        },
+        {
+          "kind": "window",
+          "values": [
+            8,
+            4,
+            0,
+            0,
+            17
+          ]
+        },
+        {
+          "kind": "window",
+          "values": [
+            9,
+            4,
+            0,
+            0,
+            19
+          ]
+        },
+        {
+          "kind": "window",
+          "values": [
+            10,
+            4,
+            0,
+            0,
+            21
+          ]
+        },
+        {
+          "kind": "window",
+          "values": [
+            11,
+            4,
+            0,
+            0,
+            23
+          ]
+        },
+        {
+          "kind": "window",
+          "values": [
+            12,
+            4,
+            0,
+            0,
+            25
+          ]
+        },
+        {
+          "kind": "window",
+          "values": [
+            13,
+            4,
+            0,
+            0,
+            27
+          ]
+        },
+        {
+          "kind": "window",
+          "values": [
+            14,
+            4,
+            0,
+            0,
+            29
+          ]
+        },
+        {
+          "kind": "window",
+          "values": [
+            15,
+            4,
+            0,
+            0,
+            31
+          ]
+        },
+        {
+          "kind": "probe",
+          "values": [
+            0,
+            0,
+            1,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "probe",
+          "values": [
+            1,
+            0,
+            2,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "probe",
+          "values": [
+            2,
+            1,
+            1,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "probe",
+          "values": [
+            3,
+            1,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "probe",
+          "values": [
+            4,
+            2,
+            1,
+            1,
+            1,
+            1,
+            1,
+            0,
+            0,
+            7917112,
+            7917112
+          ]
+        },
+        {
+          "kind": "probe",
+          "values": [
+            5,
+            2,
+            2,
+            1,
+            1,
+            2,
+            2,
+            0,
+            0,
+            8466915,
+            8466898
+          ]
+        },
+        {
+          "kind": "probe",
+          "values": [
+            6,
+            3,
+            1,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "probe",
+          "values": [
+            7,
+            3,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "probe",
+          "values": [
+            8,
+            4,
+            1,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "probe",
+          "values": [
+            9,
+            4,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "probe",
+          "values": [
+            10,
+            5,
+            1,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "probe",
+          "values": [
+            11,
+            5,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "probe",
+          "values": [
+            12,
+            6,
+            1,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "probe",
+          "values": [
+            13,
+            6,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "probe",
+          "values": [
+            14,
+            7,
+            1,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "probe",
+          "values": [
+            15,
+            7,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "probe",
+          "values": [
+            16,
+            8,
+            1,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "probe",
+          "values": [
+            17,
+            8,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "probe",
+          "values": [
+            18,
+            9,
+            1,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "probe",
+          "values": [
+            19,
+            9,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "probe",
+          "values": [
+            20,
+            10,
+            1,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "probe",
+          "values": [
+            21,
+            10,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "probe",
+          "values": [
+            22,
+            11,
+            1,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "probe",
+          "values": [
+            23,
+            11,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "probe",
+          "values": [
+            24,
+            12,
+            1,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "probe",
+          "values": [
+            25,
+            12,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "probe",
+          "values": [
+            26,
+            13,
+            1,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "probe",
+          "values": [
+            27,
+            13,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "probe",
+          "values": [
+            28,
+            14,
+            1,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "probe",
+          "values": [
+            29,
+            14,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "probe",
+          "values": [
+            30,
+            15,
+            1,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "probe",
+          "values": [
+            31,
+            15,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "event",
+          "values": [
+            32,
+            1,
+            1611
+          ]
+        },
+        {
+          "kind": "event",
+          "values": [
+            32,
+            0,
+            1647
+          ]
+        },
+        {
+          "kind": "event",
+          "values": [
+            32,
+            1,
+            2709
+          ]
+        },
+        {
+          "kind": "event",
+          "values": [
+            32,
+            0,
+            2876
+          ]
+        },
+        {
+          "kind": "event",
+          "values": [
+            32,
+            1,
+            3937
+          ]
+        },
+        {
+          "kind": "event",
+          "values": [
+            5,
+            1,
+            4117
+          ]
+        },
+        {
+          "kind": "event",
+          "values": [
+            4,
+            1,
+            553865
+          ]
+        },
+        {
+          "kind": "event",
+          "values": [
+            4,
+            0,
+            8470977
+          ]
+        },
+        {
+          "kind": "event",
+          "values": [
+            5,
+            0,
+            8471015
+          ]
+        },
+        {
+          "kind": "event",
+          "values": [
+            5,
+            1,
+            8471017
+          ]
+        },
+        {
+          "kind": "event",
+          "values": [
+            5,
+            0,
+            8471034
+          ]
+        },
+        {
+          "kind": "event",
+          "values": [
+            32,
+            0,
+            8896456
+          ]
+        },
+        {
+          "kind": "complete",
+          "values": []
+        }
+      ]
+    },
+    "sample_frames": [
+      76,
+      96,
+      96,
+      96,
+      96,
+      96,
+      96,
+      96
+    ],
+    "owned_child_cleanup_completed": true,
+    "cleanup_evidence": {
+      "stage": "complete",
+      "run_requested": true,
+      "owned_pidfd_present": true,
+      "unknown_inferior": false,
+      "pidfd_signal": "sent",
+      "pidfd_wait": "timeout",
+      "pidfd_final_wait": "observed",
+      "pidfd_close": "closed",
+      "debugger_poll": "running",
+      "debugger_exit": "requested",
+      "debugger_grace_wait": "observed",
+      "debugger_kill": "not-attempted",
+      "debugger_final_wait": "observed",
+      "stream_close": "closed",
+      "child_termination_observed": true,
+      "debugger_termination_observed": true
+    },
+    "original_first_wait_deadline_seconds": 3,
+    "build_budget_timeout_observed": false,
+    "raw_MI_not_exported": true,
+    "last_observation_stop": {
+      "reason": "breakpoint-hit",
+      "finish_breakpoint_matched": true
+    },
+    "leak_verdict": "not evaluated under ptrace"
+  }
+}

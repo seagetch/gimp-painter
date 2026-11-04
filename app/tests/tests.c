@@ -428,6 +428,66 @@ gimp_init_for_testing (void)
 
 #ifndef GIMP_CONSOLE_COMPILATION
 
+/* Test-only setup settlement. It runs before image-window construction,
+ * never extends an individual test's readiness budget, and fails on expiry.
+ */
+typedef struct
+{
+  GMainLoop *loop;
+  gboolean   ready;
+  gboolean   expired;
+} GimpTestIconThemeSetup;
+
+static gboolean
+gimp_test_icon_theme_setup_ready (gpointer data)
+{
+  GimpTestIconThemeSetup *setup = data;
+
+  setup->ready = TRUE;
+  g_main_loop_quit (setup->loop);
+  return G_SOURCE_REMOVE;
+}
+
+static gboolean
+gimp_test_icon_theme_setup_expired (gpointer data)
+{
+  GimpTestIconThemeSetup *setup = data;
+
+  setup->expired = TRUE;
+  g_main_loop_quit (setup->loop);
+  return G_SOURCE_REMOVE;
+}
+
+static void
+gimp_test_finish_icon_theme_setup (void)
+{
+  GimpTestIconThemeSetup setup = { 0, };
+  gint64                started;
+  gint64                elapsed;
+  guint                 idle_id;
+  guint                 timeout_id;
+
+  setup.loop = g_main_loop_new (NULL, FALSE);
+  started = g_get_monotonic_time ();
+  idle_id = g_idle_add (gimp_test_icon_theme_setup_ready, &setup);
+  timeout_id = g_timeout_add_full (G_PRIORITY_HIGH, 3000,
+                                  gimp_test_icon_theme_setup_expired,
+                                  &setup, NULL);
+  g_main_loop_run (setup.loop);
+  elapsed = g_get_monotonic_time () - started;
+
+  if (! setup.ready)
+    g_source_remove (idle_id);
+  if (! setup.expired)
+    g_source_remove (timeout_id);
+  g_main_loop_unref (setup.loop);
+
+  /* A nonpreemptive callback may overrun before the timeout is dispatched. */
+  g_assert_true (setup.ready);
+  g_assert_false (setup.expired);
+  g_assert_cmpint (elapsed, <, 3 * G_TIME_SPAN_SECOND);
+}
+
 static void
 gimp_init_icon_theme_for_testing (void)
 {
@@ -487,6 +547,11 @@ gimp_test_app_activate_callback (GimpCoreApp *app,
 
   gui_init (gimp, TRUE, NULL, g_getenv ("GIMP_TESTING_ABS_TOP_SRCDIR"), "System Language");
   gimp_init_icon_theme_for_testing ();
+  /* The test search path invalidates the theme loaded by gui_init(). Deliver
+   * its queued style reset before restore constructs image-window widgets,
+   * not during the first test's private-window readiness measurement.
+   */
+  gimp_test_finish_icon_theme_setup ();
   g_signal_connect_after (gimp, "exit",
                           G_CALLBACK (gimp_test_gui_exit_completed), NULL);
   gimp_initialize (gimp, gimp_status_func_dummy);

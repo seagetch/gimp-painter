@@ -489,6 +489,8 @@ gimp_scale_combo_box_set_scale (GimpScaleComboBox *combo_box,
     label_length = (g_utf8_strlen (label, -1) > 5) ?
                     g_utf8_strlen (label, -1) : 5;
 
+  g_free (label);
+
   /* Update entry size appropriately. */
   entry = gtk_bin_get_child (GTK_BIN (combo_box));
   n_digits = (gint) floor (log10 (scale) + 1);

@@ -1,0 +1,23 @@
+{
+  "status": "SOURCE_CHECKS_ONLY_NOT_NATIVE_TESTS",
+  "production_baseline": "e25a94e21efca6e6604ddac6f15570c049f421e7",
+  "production_current": "b671825309326bdb55571652e43ab78cc83fd92d",
+  "common_inputs_identical": {
+    "app/tests/tests.c": "56303878e316e41fcb7c439b199cde5bd9fc4ac84b46b48efcbfbc79737747e7",
+    "app/tests/tests.h": "5541a82208a639234d6d91b0f70d8dacefe6ebd59a3082f84487409db55de1fe",
+    "app/tests/gimp-app-test-utils.c": "2d58f6f426f782cc2fca7207924d7d18f903b8b9519f1ef7b0c69b16c815929c",
+    "app/tests/gimp-test-session-utils.c": "e6ac7958e5c33195f499b7a8e4a8709a3c6ec51827d0dabb9467333594af4863",
+    "app/tests/gimpdir/sessionrc-native-oncanvas": "75f60bbb224293a5399f4d7bc043461ec1004bc8abbc3968f315bf40650b8e56",
+    "migration/baseline/debian13-package-lock.json": "553f4051b91626bc2f5470373fd3e8d67c8d61ec62103b2addcab7a16492129f"
+  },
+  "phase_probe_verbatim": true,
+  "native_compiled": false,
+  "native_executed": false,
+  "matrix_executed": false,
+  "files": {
+    "test-matched-preclick.c": "b363b43f8eb9d1eae6e37741c9690e8065eb40409e72b2c1eed84b0916ffdbd6",
+    "matched-preclick-phases.inc": "f2fcebbacdca5da6111c1e17599f6dbb2ee3e3e2e2f84cda14b45dc0aedf2665",
+    "meson.append": "668d95cb2700e567b1b9bdc39f4fb730242254af90a3e0b7abfc6cd47b1e9d65",
+    "PLAN.md": "6d05a4d4d08f2b4b17cddc93e3d64c1ba7f108cb1698c436ed0a66e45ea6791d"
+  }
+}

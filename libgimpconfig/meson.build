@@ -88,3 +88,12 @@ install_headers(
   libgimpconfig_headers,
   subdir: gimp_api_name / 'libgimpconfig',
 )
+
+# Actual property references/weak notifications verify owned-color release.
+color_config_ownership = executable('color-config-ownership',
+  'test-color-config-ownership.c',
+  include_directories: rootInclude,
+  dependencies: [gegl, gio],
+  link_with: [libgimpconfig, libgimpbase, libgimpcolor, libgimpmath])
+test('color-config-ownership', color_config_ownership,
+  suite: 'libgimpconfig', is_parallel: false, timeout: 60)

@@ -1007,6 +1007,8 @@ gimp_container_tree_view_get_selected (GimpContainerView  *view,
           g_object_unref (renderer);
         }
 
+      g_list_free_full (paths, (GDestroyNotify) gtk_tree_path_free);
+
       *items = g_list_reverse (*items);
     }
 

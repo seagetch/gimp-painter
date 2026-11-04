@@ -1,0 +1,496 @@
+{
+  "format": 1,
+  "observed_utc": "2026-11-03T09:41:20.829245+00:00",
+  "run_id": 41604222306,
+  "run_url": "https://github.com/seagetch/gimp-painter/actions/runs/41604222306",
+  "head": "180446d7a1dfe92739b8bd1881922d5d384dfb26",
+  "tree": "a4166d0e0bc3e4983fc9cf93b914eb84d15c2e50",
+  "sole_parent": "e25a94e21efca6e6604ddac6f15570c049f421e7",
+  "status": "completed",
+  "conclusion": "failure",
+  "acceptance_eligible": false,
+  "task_308_accepted": false,
+  "success": 5,
+  "failure": 3,
+  "jobs": [
+    {
+      "id": 125809960314,
+      "name": "babl-owned-doc-proof",
+      "conclusion": "failure"
+    },
+    {
+      "id": 125809960430,
+      "name": "candidate",
+      "conclusion": "success"
+    },
+    {
+      "id": 125809960487,
+      "name": "brush-sanitizer",
+      "conclusion": "failure"
+    },
+    {
+      "id": 125809960554,
+      "name": "brush-baseline-red",
+      "conclusion": "success"
+    },
+    {
+      "id": 125809960558,
+      "name": "matched-preclick-nonacceptance",
+      "conclusion": "failure"
+    },
+    {
+      "id": 125809960577,
+      "name": "dockbook-controlled-order-3d6f",
+      "conclusion": "success"
+    },
+    {
+      "id": 125809960585,
+      "name": "baseline-carrier-red",
+      "conclusion": "success"
+    },
+    {
+      "id": 125809960641,
+      "name": "brush-positive",
+      "conclusion": "success"
+    }
+  ],
+  "artifacts": [
+    {
+      "id": 13219223433,
+      "name": "painter-brush-ui-sanitizer-180446d7a1dfe92739b8bd1881922d5d384dfb26-1",
+      "path": "painter-brush-ui-sanitizer-180446d7a1dfe92739b8bd1881922d5d384dfb26-1.zip",
+      "bytes": 10308024,
+      "sha256": "9c35bca40fecaf55d24a0fa78837c6342a76af875efa389fefeed74abd56d976",
+      "api_digest_and_size_match": true,
+      "zip_crc_valid": true,
+      "members": 134
+    },
+    {
+      "id": 13217835438,
+      "name": "painter-matched-preclick-180446d7a1dfe92739b8bd1881922d5d384dfb26-1",
+      "path": "painter-matched-preclick-180446d7a1dfe92739b8bd1881922d5d384dfb26-1.zip",
+      "bytes": 9081835,
+      "sha256": "7d2cd34339e4c9f8fdb30286d51ff090619511ebbbdfcc3a1b561b87f8f9968c",
+      "api_digest_and_size_match": true,
+      "zip_crc_valid": true,
+      "members": 82
+    },
+    {
+      "id": 13217330332,
+      "name": "painter-native-ui-candidate-180446d7a1dfe92739b8bd1881922d5d384dfb26-1",
+      "path": "painter-native-ui-candidate-180446d7a1dfe92739b8bd1881922d5d384dfb26-1.zip",
+      "bytes": 2209397,
+      "sha256": "2cd83e5047526c73ac6d33aae6aa10f8a76c976da8e000245c0b1373b56ba608",
+      "api_digest_and_size_match": true,
+      "zip_crc_valid": true,
+      "members": 56
+    },
+    {
+      "id": 13216337308,
+      "name": "painter-brush-ui-positive-180446d7a1dfe92739b8bd1881922d5d384dfb26-1",
+      "path": "painter-brush-ui-positive-180446d7a1dfe92739b8bd1881922d5d384dfb26-1.zip",
+      "bytes": 839325,
+      "sha256": "7851d5ef2f2adb2c3fdf556a7c6f2e8f5cd3efe75e1df9f53e6a92c78e716a6d",
+      "api_digest_and_size_match": true,
+      "zip_crc_valid": true,
+      "members": 108
+    },
+    {
+      "id": 13216286555,
+      "name": "painter-native-ui-baseline-carrier-red-180446d7a1dfe92739b8bd1881922d5d384dfb26-1",
+      "path": "painter-native-ui-baseline-carrier-red-180446d7a1dfe92739b8bd1881922d5d384dfb26-1.zip",
+      "bytes": 608865,
+      "sha256": "75cf2cd4d74c586314abba23d7da5d0a4759ace5dfe56fb1aca83cc45e243a19",
+      "api_digest_and_size_match": true,
+      "zip_crc_valid": true,
+      "members": 44
+    },
+    {
+      "id": 13216280676,
+      "name": "painter-native-ui-dockbook-controlled-order-3d6f-180446d7a1dfe92739b8bd1881922d5d384dfb26-1",
+      "path": "painter-native-ui-dockbook-controlled-order-3d6f-180446d7a1dfe92739b8bd1881922d5d384dfb26-1.zip",
+      "bytes": 164270,
+      "sha256": "37a176ac6092daaaa5e21371c8d20a75cdc32b44a52a95f888c99e745ad76357",
+      "api_digest_and_size_match": true,
+      "zip_crc_valid": true,
+      "members": 33
+    },
+    {
+      "id": 13215613571,
+      "name": "babl-owned-doc-proof-180446d7a1dfe92739b8bd1881922d5d384dfb26",
+      "path": "babl-owned-doc-proof-180446d7a1dfe92739b8bd1881922d5d384dfb26.zip",
+      "bytes": 25013581,
+      "sha256": "5f42d75482abbd1c521e50ec2912de79401fa97c1c5635a6742db424e5eea3d1",
+      "api_digest_and_size_match": true,
+      "zip_crc_valid": true,
+      "members": 616
+    },
+    {
+      "id": 13214899974,
+      "name": "painter-brush-ui-baseline-red-180446d7a1dfe92739b8bd1881922d5d384dfb26-1",
+      "path": "painter-brush-ui-baseline-red-180446d7a1dfe92739b8bd1881922d5d384dfb26-1.zip",
+      "bytes": 64446,
+      "sha256": "d1ad0513eaa75e6a3a4e0fa6f9370c17a5b2de575b2a00cc4953ef3245121274",
+      "api_digest_and_size_match": true,
+      "zip_crc_valid": true,
+      "members": 30
+    }
+  ],
+  "logs": [
+    {
+      "job_id": 125809960314,
+      "path": "babl-owned-doc-proof.log",
+      "bytes": 26223,
+      "sha256": "d6c9a5d34e5d390be1026cef8164a0ae3bf3be8a6dc0e45aba816b747f75de70"
+    },
+    {
+      "job_id": 125809960430,
+      "path": "candidate.log",
+      "bytes": 795294,
+      "sha256": "d4dcc0f6ce99d4f484111b483673fb1f1f3734ab6b10554a982a84a39c70054e"
+    },
+    {
+      "job_id": 125809960487,
+      "path": "brush-sanitizer.log",
+      "bytes": 1156764,
+      "sha256": "3ee686a6e43f981a12e880f657163c4a83f3c8adb636e287f12dbd20407763e3"
+    },
+    {
+      "job_id": 125809960554,
+      "path": "brush-baseline-red.log",
+      "bytes": 589596,
+      "sha256": "bca5f90cce8bc0a83f9b1b9d5ee71672054682c44ed95f1336bfe2b7260e95f7"
+    },
+    {
+      "job_id": 125809960558,
+      "path": "matched-preclick-nonacceptance.log",
+      "bytes": 137293,
+      "sha256": "66fec18dcf6d4f58ac46c934729c61d3636716d63dcd427b2704969ec5190da2"
+    },
+    {
+      "job_id": 125809960577,
+      "path": "dockbook-controlled-order-3d6f.log",
+      "bytes": 608928,
+      "sha256": "27693f11c1c2fdf575c9effcb91aa5968baf874b55d02a3403830c7e783f5701"
+    },
+    {
+      "job_id": 125809960585,
+      "path": "baseline-carrier-red.log",
+      "bytes": 601007,
+      "sha256": "a70591d702f41726e47c38de1c93f77021a52bee8eb2a6c6f7a1e67f7f754db6"
+    },
+    {
+      "job_id": 125809960641,
+      "path": "brush-positive.log",
+      "bytes": 1181523,
+      "sha256": "b9860125ec63cbc9828e21136335b09e8a5cbe988f012fe9494dceb448426f18"
+    }
+  ],
+  "normal": {
+    "job_passed": true,
+    "brush_scale1": "21/21 including case14",
+    "brush_scale2": "21/21 including case14",
+    "mask_proof_passed": true,
+    "fixed_full107_passed": true,
+    "mask_reports": {
+      "fixed-focused": {
+        "binary_sha256": "23c4d7eada669ecfb301efd17d985f91d555295d8a09f584e76c9cac01b89da7",
+        "case_count": 1,
+        "raw_log_sha256": "7586a54447f9e3d2d2249c3275301a26ed1440ec861e342e50839a040b2a6d17",
+        "result": "OK",
+        "returncode": 0
+      },
+      "fixed-full107": {
+        "binary_sha256": "23c4d7eada669ecfb301efd17d985f91d555295d8a09f584e76c9cac01b89da7",
+        "case_count": 107,
+        "raw_log_sha256": "90af64899bd22524f83f8d31a431e3299780a86b3cdb340572f87eec131e4227",
+        "result": "OK",
+        "returncode": 0
+      },
+      "old-focused": {
+        "binary_sha256": "932c38ff55c7cd93ad37c2e9a2ff249e249b2856264696aafc335a4d3d54d3ad",
+        "case_count": 1,
+        "raw_log_sha256": "58d08399b1b87166ecd824332fc4f07a1bd00212ddebbe59447ac51919f6e488",
+        "result": "EXPECTEDFAIL",
+        "returncode": -5
+      }
+    },
+    "pixel_review_not_performed_by_monitor": true
+  },
+  "sanitizer": {
+    "case14_firstwait_us": 12345052,
+    "longest_dispatch_us": 12341193,
+    "stable": 0,
+    "original_deadline_seconds": 3,
+    "native_returncode": -6,
+    "other_leaf_assertions_passed": 20,
+    "other_processes_leak_bytes_min": 199751,
+    "other_processes_leak_bytes_max": 202391,
+    "mask_aggregate": {
+      "acceptance_eligible": false,
+      "errors": [
+        "wrong-native-result"
+      ],
+      "proof_passed": false,
+      "raw_environment_exported": false,
+      "schema": "canvas-mask-error-v1",
+      "scope": "bounded-provider-substitution-not-full-historical-build-parity"
+    }
+  },
+  "image": {
+    "status": "captured",
+    "identity_coverage_complete": false,
+    "summary": [
+      1,
+      1,
+      0,
+      1,
+      1110,
+      228,
+      89,
+      89,
+      0
+    ],
+    "snapshot_hosts": 1,
+    "snapshot_nodes": 1110,
+    "snapshot_images": 228,
+    "observed_width_calls": 89,
+    "observed_snapshot_identities": 78,
+    "first_observed_calls": 78,
+    "first_observed_inclusive_total_us": 5848963,
+    "repeat_calls": 0,
+    "repeat_total_us": 0,
+    "untracked_calls": 11,
+    "untracked_inclusive_total_us": 2050610,
+    "untracked_longest_us": 273158,
+    "first_observed_ancestor_groups": [
+      {
+        "code": 2,
+        "nearest_category": "GimpItemTreeView",
+        "calls": 33,
+        "inclusive_total_us": 3392421,
+        "longest_us": 535662
+      },
+      {
+        "code": 3,
+        "nearest_category": "GimpEditor",
+        "calls": 43,
+        "inclusive_total_us": 2456540,
+        "longest_us": 377235
+      },
+      {
+        "code": 4,
+        "nearest_category": "GimpDockbook",
+        "calls": 2,
+        "inclusive_total_us": 2,
+        "longest_us": 1
+      }
+    ],
+    "destroyed_snapshot_ordinals": [
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35
+    ],
+    "weak_cleared_snapshot_ordinals": [
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35
+    ],
+    "metadata_change_count": 0,
+    "untracked_first_entry_meta": [
+      0,
+      1,
+      1,
+      5,
+      4,
+      -1,
+      1,
+      0,
+      1,
+      0,
+      128,
+      1,
+      4,
+      1
+    ],
+    "untracked_last_entry_meta": [
+      0,
+      2,
+      1,
+      5,
+      4,
+      -1,
+      1,
+      0,
+      1,
+      0,
+      128,
+      1,
+      4,
+      1
+    ],
+    "interpretation": "78 different tracked GtkImages were called once each, with no observed repeats. Eleven untracked calls cannot be classified as distinct or new images. First observed is not cold. Snapshot ordinal destruction cannot be matched to untracked replacements.",
+    "qualification": "Existing weak GtkImage snapshot only; first observed is not cold; untracked calls are not unique/new images; inclusive durations may overlap"
+  },
+  "leaf": {
+    "status": "captured",
+    "coverage_complete": true,
+    "restoration_complete": true,
+    "nonzero_metrics": [
+      {
+        "kind": "metric",
+        "values": [
+          1,
+          3,
+          89,
+          89,
+          0,
+          0,
+          89,
+          7900087,
+          535671
+        ]
+      },
+      {
+        "kind": "metric",
+        "values": [
+          2,
+          3,
+          714,
+          714,
+          0,
+          0,
+          714,
+          583097,
+          4052
+        ]
+      },
+      {
+        "kind": "metric",
+        "values": [
+          3,
+          3,
+          596,
+          596,
+          0,
+          0,
+          596,
+          256993,
+          17009
+        ]
+      }
+    ],
+    "union": [
+      1399,
+      1399,
+      0,
+      0,
+      1399,
+      8740177,
+      535671
+    ],
+    "coverage_scope": "Pointer-equal static leaf width/get_size slots only; excludes height, pre-vfunc style/resize and direct static render calls"
+  },
+  "diagnostic": {
+    "finish_breakpoint_matched": true,
+    "owned_child_cleanup_completed": true,
+    "cleanup_evidence": {
+      "stage": "complete",
+      "run_requested": true,
+      "owned_pidfd_present": true,
+      "unknown_inferior": false,
+      "pidfd_signal": "sent",
+      "pidfd_wait": "timeout",
+      "pidfd_final_wait": "observed",
+      "pidfd_close": "closed",
+      "debugger_poll": "running",
+      "debugger_exit": "requested",
+      "debugger_grace_wait": "observed",
+      "debugger_kill": "not-attempted",
+      "debugger_final_wait": "observed",
+      "stream_close": "closed",
+      "child_termination_observed": true,
+      "debugger_termination_observed": true
+    },
+    "sanitizer_settings_changed": false,
+    "leak_verdict": "not evaluated under ptrace",
+    "original_first_wait_deadline_seconds": 3,
+    "owner_snapshot_clipped": true,
+    "samples": 8,
+    "qualification": "Separate debugger-instrumented wall durations. No primary-performance causality, SVG decode counts, leak verdict, or acceptance claim. Declared leaf coverage and image identity coverage differ."
+  },
+  "matched": {
+    "status": "inconclusive",
+    "identity_comparable": true,
+    "comparison_eligible": false,
+    "acceptance_eligible": false,
+    "statistics": {
+      "baseline-normal": {
+        "metrics_population": "all-available-including-inconclusive",
+        "comparison_eligible_repetitions": 3,
+        "available_repetitions": 3,
+        "primary_passes": 3,
+        "median_elapsed_us": 138808,
+        "min_elapsed_us": 138259,
+        "max_elapsed_us": 140166
+      },
+      "current-normal": {
+        "metrics_population": "all-available-including-inconclusive",
+        "comparison_eligible_repetitions": 3,
+        "available_repetitions": 3,
+        "primary_passes": 3,
+        "median_elapsed_us": 140913,
+        "min_elapsed_us": 138242,
+        "max_elapsed_us": 142030
+      },
+      "baseline-sanitizer": {
+        "metrics_population": "all-available-including-inconclusive",
+        "comparison_eligible_repetitions": 0,
+        "available_repetitions": 3,
+        "primary_passes": 0,
+        "median_elapsed_us": 6427505,
+        "min_elapsed_us": 6401472,
+        "max_elapsed_us": 6453790
+      },
+      "current-sanitizer": {
+        "metrics_population": "all-available-including-inconclusive",
+        "comparison_eligible_repetitions": 3,
+        "available_repetitions": 3,
+        "primary_passes": 0,
+        "median_elapsed_us": 6465868,
+        "min_elapsed_us": 6371096,
+        "max_elapsed_us": 6558550
+      }
+    },
+    "interpretation": "Baseline root Meson metadata has an exact diagnostic compatibility overlay in both modes; this is not a pristine-baseline build comparison. Three repetitions are descriptive, not significance or causality proof. Fidelity needs human review; no acceptance promotion.",
+    "source_commits": {
+      "baseline-normal": "e25a94e21efca6e6604ddac6f15570c049f421e7",
+      "baseline-sanitizer": "e25a94e21efca6e6604ddac6f15570c049f421e7",
+      "current-normal": "b671825309326bdb55571652e43ab78cc83fd92d",
+      "current-sanitizer": "b671825309326bdb55571652e43ab78cc83fd92d"
+    },
+    "head_commit_not_tested_by_matched_cells": true,
+    "source_qualification": "The matched current arm is pinned to b671825309326bdb55571652e43ab78cc83fd92d, not the Run59 head. Its timing is not a C42 source comparison."
+  },
+  "babl": {
+    "failure": "lcms2.pc missing from isolated pkg-config search path",
+    "validator_tests_passed": 11
+  },
+  "conclusion_text": "C42 narrows the tracked width work to distinct preexisting GtkImage identities, not repeated calls to the same tracked images. Eleven calls remain untracked. Normal gates pass; sanitizer readiness/leaks, matched acceptance and babl proof remain unresolved. No code repair or policy relaxation follows from this observation."
+}

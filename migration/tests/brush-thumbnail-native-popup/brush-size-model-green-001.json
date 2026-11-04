@@ -1,0 +1,52 @@
+{
+  "format": 1,
+  "status": "PASS_FINAL_MODEL7_EXISTING_HEADLESS_GEOMETRY_CASES",
+  "source": {
+    "status": "FINAL_MODEL_GREEN_FROZEN",
+    "reviewed_compiler3_manifest_sha256": "e73c4a11961028aae18b8c61df3e99f90c9369b5112e273db0a2d99ee0f64fbd",
+    "reviewed_model_patch_sha256": "f016d38eb93230965f34cb5a6f922101dd88daf4b45fbb94458818c23f5d6f9a",
+    "files": {
+      "app/tests/test-painter-brush-geometry.cpp": "83db89f31f90cd6aff12acc9a34ba9a3b71523a5024977bb954453d3fa8404e3",
+      "app/paint/gimppaintoptions.c": "64f1316e0a021c4d3c66658c39d79473f9f257534f5937bf2cb148eeba70472b",
+      "app/tests/tests.c": "56303878e316e41fcb7c439b199cde5bd9fc4ac84b46b48efcbfbc79737747e7",
+      "app/tests/meson.build": "c65567c7fa8f3e75dbcf24ab5986e8c697dc3fe1d52bf88384ca58817423849e"
+    },
+    "same_final_test_as_red": true,
+    "only_model_changed_from_red": true,
+    "case_count": 7,
+    "runtime": "Existing headless core test; noGTK/GDKdisplay initialization",
+    "unchanged_after_green": true
+  },
+  "artifacts": {
+    "app/paint/libapppaint.a": {
+      "sha256": "863a56bff652a8652186c666dfe8e5b5c16402ff152c15bdf57da7a3d167ae5d",
+      "bytes": 19274
+    },
+    "app/tests/painter-brush-geometry": {
+      "sha256": "fde97d9961c3a5c00b074594b0755ed793747b38cbe1503f2b08b95910083714",
+      "bytes": 82708360
+    }
+  },
+  "normal_compile_exitcode": 0,
+  "case_count": 7,
+  "case_ids": [
+    "/painter/geometry/old-masks",
+    "/painter/geometry/options",
+    "/painter/geometry/defaults",
+    "/painter/geometry/provenance",
+    "/painter/geometry/cache",
+    "/painter/geometry/invalid",
+    "/painter/geometry/default-dynamics"
+  ],
+  "failures": 0,
+  "skips": 0,
+  "timeouts": 0,
+  "native_linked_radius_traces": [
+    "legacy=0 size27 mask27x27",
+    "legacy=1 size27 mask27x27"
+  ],
+  "normal_build": "Recompiled actual gimppaintoptions.c, relinked ordinary apppaint archive and geometry executable; identical finaltest83db asRED.",
+  "extra_stderr": "Failed to parse tag cache: No such file or directory; unchanged from RED and fully preserved",
+  "scope": "Unsanitized existing headless core initialization and7geometry cases; noGTK/GDKdisplay init, GUI/socketworkaround, or sanitizer-clean claim",
+  "meson_proof_sha256": "466684008da2ce9d92744ec071bdf326ae313b10bfa3f67713180d803fa9f5e4"
+}

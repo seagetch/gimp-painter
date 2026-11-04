@@ -1,0 +1,19 @@
+{
+  "archive": "x11-common.deb",
+  "archive_installed_or_executed": false,
+  "archive_sha256": "57a981938506b26dc552f19cafeaa8c04e9b59dc7508509151f8507a9d4e5f24",
+  "data_member": "data.tar.xz",
+  "links": [
+    {
+      "kind": "symlink",
+      "literal_target": ".",
+      "name": "./usr/bin/X11"
+    },
+    {
+      "kind": "symlink",
+      "literal_target": "/etc/X11/rgb.txt",
+      "name": "./usr/share/X11/rgb.txt"
+    }
+  ],
+  "scope": "archive metadata only, no extraction"
+}

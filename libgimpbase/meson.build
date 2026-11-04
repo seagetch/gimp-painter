@@ -164,3 +164,13 @@ mypaint_enum_library = executable('mypaint-enum-library-only',
   link_with: libgimpbase, override_options: ['c_std=c11'], install: false)
 test('mypaint-enum-library-only', mypaint_enum_library,
   suite: 'libgimpbase', is_parallel: false, timeout: 30)
+
+# Library-only choice ownership and finalization; no display or GIMP process.
+choice_lifecycle_test = executable('test-choice-lifecycle',
+  'test-choice-lifecycle.c',
+  include_directories: rootInclude,
+  dependencies: [glib, gobject, gio, gegl, gexiv2],
+  link_with: libgimpbase,
+  install: false)
+test('choice-lifecycle', choice_lifecycle_test,
+  suite: 'libgimpbase', timeout: 30)

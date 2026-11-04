@@ -17,6 +17,7 @@ extern "C" {
 #include "core/gimpcontainer.h"
 #include "core/gimpdatafactory.h"
 #include "core/gimpcontext.h"
+#include "core/gimptooloptions.h"
 #include "core/gimppattern.h"
 #include "core/gimppatternclipboard.h"
 #include "core/gimptempbuf.h"
@@ -122,6 +123,153 @@ static void provenance_parser () {
     converted=gimp_painter_profile_transform("(use-texture yes)",kind,TRUE,&error);g_assert_no_error(error);g_assert_null(strstr(converted,"painter-legacy-brush-geometry"));g_free(converted);
   }
 }
+static void linked_size_notify (GObject *, GParamSpec *, gpointer data) {
+  ++*static_cast<guint *>(data);
+}
+static void linked_options_finalized (gpointer data, GObject *) {
+  ++*static_cast<guint *>(data);
+}
+struct LinkedRadiusReentry {
+  GimpPaintOptions *options;
+  GimpBrush *selection;
+  GimpBrushGenerated *brush;
+  guint calls;
+};
+static void linked_radius_retarget (GimpObject *, gpointer data) {
+  auto *request = static_cast<LinkedRadiusReentry *>(data);
+  if (request->calls++ == 0)
+    gimp_context_set_brush (GIMP_CONTEXT (request->options), request->selection);
+}
+static void linked_radius_nested (GObject *, GParamSpec *, gpointer data) {
+  auto *request = static_cast<LinkedRadiusReentry *>(data);
+  if (request->calls++ == 0) gimp_brush_generated_set_radius (request->brush, 19);
+}
+static void linked_radius_freeze (GimpObject *, gpointer data) {
+  auto *request = static_cast<LinkedRadiusReentry *>(data);
+  if (request->calls++ == 0) {
+    gimp_data_freeze (GIMP_DATA (request->brush));
+    gimp_brush_generated_set_radius (request->brush, 23);
+  }
+}
+static void linked_radius_dispose (GimpObject *, gpointer data) {
+  auto **options = static_cast<GimpPaintOptions **>(data);
+  g_clear_object (options);
+}
+static gdouble linked_expected_size (GimpPaintOptions *options, GimpBrush *brush) {
+  gint width = gimp_brush_get_width (brush), height = gimp_brush_get_height (brush);
+  if (gimp_painter_brush_geometry_options (options)) {
+    GError *error = nullptr;
+    g_assert_true (gimp_painter_brush_geometry_size (brush, &width, &height, &error));
+    g_assert_no_error (error);
+  }
+  return MAX (width, height);
+}
+static void native_linked_radius () {
+  /* Model-only regression: no GtkWidget, GDK display, UI action or explicit
+   * size-reset workaround. Retain the existing seven test registrations. */
+  auto *paint_info = gimp_container_get_child_by_name (gimp->paint_info_list, "gimp-paintbrush");
+  g_assert_nonnull (paint_info);
+  for (bool legacy : {false, true}) {
+    auto *options = GIMP_PAINT_OPTIONS (g_object_new (GIMP_TYPE_PAINT_OPTIONS,
+      "gimp", gimp, "paint-info", paint_info, "painter-legacy-brush-geometry", legacy,
+      "brush-link-size", TRUE, "brush-link-aspect-ratio", FALSE,
+      "brush-link-angle", FALSE, "brush-link-spacing", FALSE, "brush-link-hardness", FALSE, nullptr));
+    gimp_tool_options_set_gui_mode (GIMP_TOOL_OPTIONS (options), TRUE);
+    auto *a = GIMP_BRUSH (gimp_brush_generated_new ("linked radius A", GIMP_BRUSH_GENERATED_CIRCLE, 31, 2, .5, 1, 0));
+    auto *b = GIMP_BRUSH (gimp_brush_generated_new ("linked radius B", GIMP_BRUSH_GENERATED_CIRCLE, 19, 2, .5, 1, 0));
+    auto *generated = GIMP_BRUSH_GENERATED (a);
+    gimp_context_set_brush (GIMP_CONTEXT (options), a);
+    g_object_set (options, "brush-size", 61.0, nullptr);
+    guint notifications = 0;
+    g_signal_connect (options, "notify::brush-size", G_CALLBACK (linked_size_notify), &notifications);
+    gimp_brush_generated_set_radius (generated, 13);
+    g_test_message ("linked radius direct legacy=%d size=%g rebuilt-mask=%dx%d",
+                    legacy, options->brush_size, gimp_brush_get_width (a), gimp_brush_get_height (a));
+    g_assert_cmpfloat (options->brush_size, ==, linked_expected_size (options, a));
+    g_assert_cmpuint (notifications, ==, 1);
+
+    /* g_object_set queues notify until after the setter's dirty emission. */
+    notifications = 0; g_object_set (a, "radius", 31.0, nullptr);
+    g_assert_cmpfloat (options->brush_size, ==, linked_expected_size (options, a));
+    g_assert_cmpuint (notifications, ==, 1);
+    g_object_set (options, "brush-size", 61.0, nullptr); notifications = 0;
+    gimp_data_freeze (GIMP_DATA (a));
+    gimp_brush_generated_set_radius (generated, 17);
+    g_object_set (a, "radius", 23.0, nullptr);
+    g_assert_cmpfloat (options->brush_size, ==, 61);
+    g_assert_cmpuint (notifications, ==, 0);
+    gimp_data_thaw (GIMP_DATA (a));
+    g_assert_cmpfloat (options->brush_size, ==, linked_expected_size (options, a));
+    g_assert_cmpuint (notifications, ==, 1);
+
+    g_object_set (options, "brush-link-size", FALSE, "brush-size", 61.0, nullptr); notifications = 0;
+    gimp_brush_generated_set_radius (generated, 11);
+    g_assert_cmpfloat (options->brush_size, ==, 61); g_assert_cmpuint (notifications, ==, 0);
+    g_object_set (options, "brush-link-size", TRUE, nullptr);
+    gimp_brush_generated_set_hardness (generated, .7);
+    g_assert_cmpfloat (options->brush_size, ==, 61); g_assert_cmpuint (notifications, ==, 0);
+    gimp_brush_generated_set_radius (generated, 13);
+    g_assert_cmpfloat (options->brush_size, ==, linked_expected_size (options, a));
+    g_assert_cmpuint (notifications, ==, 1);
+
+    gimp_context_set_brush (GIMP_CONTEXT (options), b);
+    g_object_set (options, "brush-size", 61.0, nullptr); notifications = 0;
+    gimp_brush_generated_set_radius (generated, 17);
+    g_assert_cmpfloat (options->brush_size, ==, 61); g_assert_cmpuint (notifications, ==, 0);
+    gimp_brush_generated_set_radius (GIMP_BRUSH_GENERATED (b), 7);
+    g_assert_cmpfloat (options->brush_size, ==, linked_expected_size (options, b));
+    g_assert_cmpuint (notifications, ==, 1);
+
+    /* Reselect A after its radius changed while frozen: its first selection
+     * reset sees the old mask, but thaw must repair that deferred geometry. */
+    gimp_context_set_brush (GIMP_CONTEXT (options), a); gimp_data_freeze (GIMP_DATA (a));
+    gimp_brush_generated_set_radius (generated, 21);
+    gimp_context_set_brush (GIMP_CONTEXT (options), b);
+    gimp_context_set_brush (GIMP_CONTEXT (options), a);
+    g_object_set (options, "brush-size", 61.0, nullptr); notifications = 0;
+    gimp_data_thaw (GIMP_DATA (a));
+    g_assert_cmpfloat (options->brush_size, ==, linked_expected_size (options, a));
+    g_assert_cmpuint (notifications, ==, 1);
+
+    LinkedRadiusReentry request {options, b, generated, 0};
+    gulong handler = g_signal_connect (a, "name-changed", G_CALLBACK (linked_radius_retarget), &request);
+    gimp_brush_generated_set_radius (generated, 13);
+    g_signal_handler_disconnect (a, handler);
+    g_assert_cmpuint (request.calls, ==, 1);
+    g_assert_true (gimp_context_get_brush (GIMP_CONTEXT (options)) == b);
+    g_assert_cmpfloat (options->brush_size, ==, linked_expected_size (options, b));
+    gimp_context_set_brush (GIMP_CONTEXT (options), a); request.calls = 0;
+    handler = g_signal_connect (options, "notify::brush-size", G_CALLBACK (linked_radius_nested), &request);
+    gimp_brush_generated_set_radius (generated, 17);
+    g_signal_handler_disconnect (options, handler);
+    g_assert_cmpuint (request.calls, ==, 2);
+    g_assert_cmpfloat (gimp_brush_generated_get_radius (generated), ==, 19);
+    g_assert_cmpfloat (options->brush_size, ==, linked_expected_size (options, a));
+
+    /* An earlier dirty/name observer may start a new frozen edit before the
+     * after-handler runs. That live radius must not become a completed cache. */
+    g_object_set (options, "brush-size", 61.0, nullptr); notifications = 0; request.calls = 0;
+    handler = g_signal_connect (a, "name-changed", G_CALLBACK (linked_radius_freeze), &request);
+    gimp_brush_generated_set_radius (generated, 17);
+    g_signal_handler_disconnect (a, handler);
+    g_assert_cmpuint (request.calls, ==, 1); g_assert_true (gimp_data_is_frozen (GIMP_DATA (a)));
+    g_assert_cmpfloat (gimp_brush_generated_get_radius (generated), ==, 23);
+    g_assert_cmpfloat (options->brush_size, ==, 61); g_assert_cmpuint (notifications, ==, 0);
+    gimp_data_thaw (GIMP_DATA (a));
+    g_assert_cmpfloat (options->brush_size, ==, linked_expected_size (options, a));
+    g_assert_cmpuint (notifications, ==, 1);
+
+    guint finalized = 0;
+    g_object_weak_ref (G_OBJECT (options), linked_options_finalized, &finalized);
+    handler = g_signal_connect (a, "name-changed", G_CALLBACK (linked_radius_dispose), &options);
+    gimp_brush_generated_set_radius (generated, 25);
+    g_signal_handler_disconnect (a, handler);
+    g_assert_null (options); g_assert_cmpuint (finalized, ==, 1);
+    gimp_brush_generated_set_radius (generated, 27);
+    gimp_brush_generated_set_radius (GIMP_BRUSH_GENERATED (b), 9);
+    g_object_unref (b); g_object_unref (a);
+  }
+}
 static void native_defaults () {
   auto*options=GIMP_PAINT_OPTIONS(g_object_new(GIMP_TYPE_PAINT_OPTIONS,"gimp",gimp,nullptr));auto*b=brush(3);
   gimp_context_set_brush(GIMP_CONTEXT(options),b);
@@ -133,6 +281,7 @@ static void native_defaults () {
   g_object_set(options,"painter-legacy-brush-geometry",FALSE,"painter-legacy-native-hardness",TRUE,nullptr);
   g_assert_cmpfloat(options->brush_hardness,==,GIMP_BRUSH_GENERATED(b)->hardness);
   g_object_unref(options);g_object_unref(b);
+  native_linked_radius ();
 }
 static std::vector<guchar> mask_bytes (GimpBrushCore*core) {
   GimpCoords coords=GIMP_COORDS_DEFAULT_VALUES;coords.x=20.25;coords.y=20.25;

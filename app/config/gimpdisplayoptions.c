@@ -512,6 +512,7 @@ gimp_display_options_init (GimpDisplayOptions *options)
     color = gegl_color_new ("white");
 
   gimp_color_set_alpha (color, GIMP_OPACITY_OPAQUE);
+  g_clear_object (&options->padding_color);
   options->padding_color    = color;
   options->padding_mode_set = FALSE;
 }

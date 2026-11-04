@@ -1,0 +1,37 @@
+{
+  "schema": "matched-colorsvg2png-role-source-evidence-v1",
+  "acceptance_eligible": false,
+  "upstream": "https://gitlab.gnome.org/GNOME/gimp-data.git",
+  "commit": "a31e5dea4f572fb5f33b06f5c4b86db5f30643dc",
+  "tree": "bb5e6998464c0598accb8ce2b589e61f7ab53de2",
+  "source_hashes": {
+    "tools/meson.build": "077055d4bc9b6399b180a1f9e888bfa9d73879bf79341fae20a928ad9caa9109",
+    "tools/colorsvg2png.c": "216cf0dd5c5636b9d8c598f78d629fa9c446d5022406951c8290218dd524fcd7",
+    "icons/Default/meson.build": "21dae429240099e1efb3c064b88c3e06e16aa3fd27bbbaff6bd8b5041cb239fa",
+    "icons/Default/64/meson.build": "3f807553e0d60bc9152467312e1f16da9e7ff86dad0faa077006841079336ec4"
+  },
+  "declaration": {
+    "target": "colorsvg2png",
+    "native": true,
+    "b_sanitize": "none",
+    "install": false
+  },
+  "observed_recipe_sha256": "d11a29bff05e0ff2d04194e4d50462ad5c5471aca6687ae72f8b78eea8242227",
+  "observed_recipe_cells": [
+    "run42-baseline-normal",
+    "run42-current-normal",
+    "run42-baseline-sanitizer-failure"
+  ],
+  "actual_run42_target_metadata_retained": false,
+  "hosted_target_binding_required": true,
+  "native_execution_performed": false,
+  "scope": "Exact upstream native PNG generator, not a generic native-target exception; compiled host resource C objects remain mode-checked.",
+  "observed_normal_resource_c_sha256": {
+    "gimp-core-pixbufs.c": "e8dfa8bd1fa87bc02e6d6a91be5b27538ad58d6a8f8f4bc1adbca62b29bff5cf",
+    "gimp-icon-pixbufs.c": "fbd8eb1bb4e5ee5ea54b1bd71b851cb7db5a8f4cf934261d973599b5815757a0"
+  },
+  "normal_resource_hash_cells": [
+    "run42-baseline-normal",
+    "run42-current-normal"
+  ]
+}

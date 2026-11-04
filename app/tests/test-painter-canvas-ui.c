@@ -1821,7 +1821,14 @@ renderer_mask_cache_and_release (void)
   guint mask_finalized=0;
   g_object_set_data_full(G_OBJECT(mask),"native-edge-mask-finalization",&mask_finalized,native_edge_count_finalized);
   gimp_viewable_invalidate_preview(GIMP_VIEWABLE(mask));
-  gimp_layer_apply_mask(target,GIMP_MASK_DISCARD,FALSE);drain();
+  gimp_layer_apply_mask(target,GIMP_MASK_DISCARD,FALSE);
+  g_assert_null(gimp_layer_get_mask(target));g_assert_cmpuint(mask_finalized,==,0);
+  /* Draw before the queued structural refresh: the cached mask is retained,
+   * but no longer belongs to the layer.  Rendering must use the layer preview. */
+  surface=canvas_snapshot(layer_canvas(w));guint32 red=canvas_pixel(surface,28,32);
+  g_assert_cmpuint((red>>16)&255,>,240);g_assert_cmpuint(red&255,<,15);
+  cairo_surface_destroy(surface);
+  drain();
   g_assert_null(gimp_layer_get_mask(target));g_assert_cmpuint(mask_finalized,==,1);
   surface=native_layer_preview_render(w,target,TRUE);cairo_surface_destroy(surface);
   close_tiles(w);g_object_unref(image);

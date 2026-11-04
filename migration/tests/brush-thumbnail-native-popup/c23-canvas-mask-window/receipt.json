@@ -1,0 +1,16 @@
+{
+  "status": "C23_REVIEW_ONLY_CANVAS_MASK_WINDOW_FIX",
+  "base_commit": "13dd6b9f0c238dc3100b2b31c55cabbae84bb215",
+  "base_tree": "8aaac00067d6fe21956e0a033425c2317aff577b",
+  "source_diagnosis": "Model mask is removed before low-priority cached row refresh. A retained cached mask alone cannot justify gimp_layer_get_edit_mask; require current model mask and exact cached identity. No historical backtrace was captured.",
+  "test": "Preserve every original assertion and all107 registrations; add immediate before-drain NULL model, cached strong reference not finalized, synchronous red pixels, then original drain/finalized1.",
+  "proof_plan": "Linux supplementary paired executables compile identical patched test and tests.c. Old normal direct exact e25 tiles TU, all10 APIs and no candidate archive extraction; fixed candidate archive provider. Normal fixed exact1 and full107, old exact1 EXPECTEDFAIL/SIGTRAP-5/intended assertion only. Sanitizer fixed exact1 with unchanged strict sanitizer/leak policy. Exact maps/objects/ELF/headers/raw env/cwd and pre/post hashes, loader-resolution replay not live module observation.",
+  "qualification": "Bounded old direct tiles provider substitution, not a complete historical build. Hosted native proof pending; synthetic/static checks are not native acceptance.",
+  "unchanged": "All26 protected files, accepted307 history, existing107 gate, all existing Brush gates/deadlines/sanitizer settings, workflow, matched four-build/14-run experiment and blocked babl. Two newly pinned production/test files were not in protected26.",
+  "observability": "Focused proof exports bounded per-run native/shell status, raw-log hash and finite failure categories without raw prose/environment. Matched object-sanitizer mismatch retains exact original predicate, verified:false and exit1 while exposing bounded relative source/object, recipe hash, row position and finite sanitizer flag labels; not instrumentation proof. No compiler settings or experiment input/order changes.",
+  "runtime": "Run40 original common mask case failed; run41 passed without native changes, consistent with intermittent window, not a disproof or deterministic proof. No local native compile/GUI/sanitizer execution.",
+  "files": {
+    "canvas-mask-window-diagnosis.json": "ce3c492c1b088bde61d573f7edc2cada4c20c846e8379e1658c77a462dd3b135",
+    "canvas-mask-window-fix.patch": "fd94c8b2532dd3b91846ca32a935110525a9c2afbff7ba4b38b8f42cda00dcb7"
+  }
+}

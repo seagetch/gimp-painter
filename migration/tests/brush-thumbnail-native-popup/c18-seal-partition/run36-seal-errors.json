@@ -1,0 +1,39 @@
+{
+  "run_id": 40448188206,
+  "commit": "da0b218d02868deaa2cc8d2ceacf4173929f2118",
+  "six_original_jobs": [
+    {
+      "job": "candidate",
+      "log_sha256": "45a626bfe1ba0b75574ea3820e283cfda2e1ea71d74b97a3e841feae120d2597",
+      "exact_error_line": "2026-10-27T04:10:31.9252001Z BLOCKED: runtime seal failed: Source/bundle maps overlap or self-reference config"
+    },
+    {
+      "job": "baseline-carrier-red",
+      "log_sha256": "86862c00c50ca9acff3b2c1610e4f0eaf9981cc50e442b963339207f761a67c7",
+      "exact_error_line": "2026-10-27T04:10:29.1055292Z BLOCKED: runtime seal failed: Source/bundle maps overlap or self-reference config"
+    },
+    {
+      "job": "dockbook-controlled-order-3d6f",
+      "log_sha256": "91d0f9e8317f6dcc85b43527d50eaf88dc3a77f9ed12416949aeb00dacef77f4",
+      "exact_error_line": "2026-10-27T04:10:32.6789140Z BLOCKED: runtime seal failed: Source/bundle maps overlap or self-reference config"
+    },
+    {
+      "job": "brush-positive",
+      "log_sha256": "eef8544ed6a5e2d38500c1127e68aeb015603d31f89bfc8400d969a2c961c64a",
+      "exact_error_line": "2026-10-27T04:10:52.4894241Z BLOCKED: runtime seal failed: Source/bundle maps overlap or self-reference config"
+    },
+    {
+      "job": "brush-baseline-red",
+      "log_sha256": "d18438dc72533d4ba01a1707b4a85bfa7c1969b6ffa9573baf57622322866620",
+      "exact_error_line": "2026-10-27T04:10:36.7725523Z BLOCKED: runtime seal failed: Source/bundle maps overlap or self-reference config"
+    },
+    {
+      "job": "brush-sanitizer",
+      "log_sha256": "2359a0446cdc2daf89b76acd8300ec781e7eef10f53f2e1679747dbc09b7920a",
+      "exact_error_line": "2026-10-27T04:10:45.0605743Z BLOCKED: runtime seal failed: Source/bundle maps overlap or self-reference config"
+    }
+  ],
+  "matched_job": "Seal stage failed exit2; redirected private console unavailable, build and measurement skipped. Same sealed config; no separately observed error text claimed.",
+  "native_acceptance_execution": "NOT_REACHED",
+  "independent_babl": "Separate job also failed; not part of this seal diagnosis or repair."
+}

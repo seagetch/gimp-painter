@@ -1,0 +1,29 @@
+{
+  "scope": "actual Meson1.7.0 minimal-project metadata, not GIMP native/provider proof",
+  "metadata_schema_pass": true,
+  "targets": {
+    "canvas-mask-fixed-provider": {
+      "declared_should_fail": false,
+      "declaration_source": "app/tests/color-ownership/meson.build",
+      "declaration_sha256": "73ebf8fa05fdb6d469b05ff70a57327ba9c9024b72a6d618012c4f3a48c77fb3",
+      "introspection_exports_should_fail": false,
+      "native_result_verified": false,
+      "scope": "pinned-source-declaration-only; actual semantics require exact native Meson result"
+    },
+    "canvas-mask-old-provider": {
+      "declared_should_fail": true,
+      "declaration_source": "app/tests/color-ownership/meson.build",
+      "declaration_sha256": "73ebf8fa05fdb6d469b05ff70a57327ba9c9024b72a6d618012c4f3a48c77fb3",
+      "introspection_exports_should_fail": false,
+      "native_result_verified": false,
+      "scope": "pinned-source-declaration-only; actual semantics require exact native Meson result"
+    }
+  },
+  "sha256": {
+    "candidate/tools/brush-ci/canvas_mask_provider.py": "b0c76132e6433eef13816612dd0a9f69273bf9288d54395fe5716a9f22b66f15",
+    "real-meson-project/source/meson.build": "e52e193118e87fcc5de9c25a0fda1e076eea3fb87a6556bfbd8691683d6aa75c",
+    "real-meson-project/source/main.c": "2ad75d95660563887d8d3f1d0ae1dcf18c2379cbd83a5c72f5ab276351ee6949",
+    "real-meson-project/build-ok/meson-info/meson-info.json": "6d6bb9210103bb1c0140b0e0ce47d1c4f2bea4880498336dc02f77c8c0936c1a",
+    "real-meson-project/build-ok/meson-info/intro-tests.json": "06c26e518949647cbbc8b024e7e8471243b6ffddf7d93f813fd7fc61d1cd36c4"
+  }
+}

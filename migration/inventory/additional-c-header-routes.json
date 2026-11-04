@@ -362,6 +362,13 @@
       "context": "core",
       "prerequisites": [],
       "review": "29.010/native-tool-popup-gesture-dismissal: presentation-owned gimp_blob_editor_cancel_interaction declaration extends the identified historical blob-editor header. Double inclusion after normal GTK/core/paint/widget prerequisites in C11 and C++14 without an outer linkage wrapper; preserve baseline identity. Compile coverage only, not runtime ownership or C/C++ link ABI proof."
+    },
+    {
+      "path": "app/tools/gimppainterbrushpopup.h",
+      "kind": "new",
+      "context": "standalone",
+      "prerequisites": [],
+      "review": "29.010/brush-thumbnail-native-popup: independent horizontal Brush thumbnail C factory using canonical GimpPaintOptions; header owns GTK/paint/core prerequisites, include guard and C linkage. First/double C11 and C++14 compilation without an outer linkage wrapper; compile coverage only, not runtime no-save/ownership proof. No GimpDataEditor or ordinary dock policy change."
     }
   ]
 }

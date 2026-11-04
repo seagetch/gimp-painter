@@ -1,0 +1,100 @@
+#include <assert.h>
+#include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <math.h>
+typedef int gint; typedef int gboolean; typedef double gdouble; typedef char gchar; typedef void (*GDestroyNotify)(void*);
+typedef struct GList {void *data; struct GList *next,*prev;} GList;
+typedef struct {int stamp; void *user_data,*user_data2,*user_data3;} GtkTreeIter;
+typedef void GtkTreeModel; typedef void GtkListStore; typedef void GtkWidget; typedef void GtkTreeSelection;
+typedef struct {void *viewable;} GimpViewRenderer;
+typedef struct {void *view,*model;} GimpContainerTreeView;
+typedef GimpContainerTreeView GimpContainerView;
+typedef struct {void *model; int width; int mru;} GimpScaleComboBox;
+#define GTK_TREE_VIEW(x) (x)
+#define GTK_TREE_MODEL(x) (x)
+#define GIMP_CONTAINER_TREE_VIEW(x) (x)
+#define GIMP_CONTAINER_TREE_STORE(x) (x)
+#define GTK_COMBO_BOX(x) (x)
+#define GTK_LIST_STORE(x) (x)
+#define GTK_BIN(x) (x)
+#define GIMP_IS_SCALE_COMBO_BOX(x) ((x)!=NULL)
+#define g_return_if_fail(x) do {if(!(x)) return;}while(0)
+#define MAX(a,b) ((a)>(b)?(a):(b))
+#define FALSE 0
+#define MAX_ITEMS 10
+#define COLUMN_SCALE 0
+#define COLUMN_PERSISTENT 1
+#define COLUMN_LABEL 2
+extern GList *g_list_prepend(GList*,void*); extern GList *g_list_reverse(GList*);
+extern void g_list_free_full(GList*,GDestroyNotify); extern void g_list_free(GList*);
+extern void g_free(void*); extern long g_utf8_strlen(const char*,long);
+extern void *gtk_tree_path_new_from_indices(int,...); extern void gtk_tree_path_free(void*);
+extern int *gtk_tree_path_get_indices(void*);
+extern void *gtk_list_store_new(int,...); extern void gtk_list_store_append(void*,GtkTreeIter*);
+extern void gtk_list_store_set(void*,GtkTreeIter*,...); extern void gtk_tree_model_get(void*,GtkTreeIter*,...);
+extern int gtk_tree_model_get_iter(void*,GtkTreeIter*,void*);
+extern int gtk_tree_model_get_iter_first(void*,GtkTreeIter*);
+extern int gtk_tree_model_iter_next(void*,GtkTreeIter*);
+extern void gtk_list_store_insert_before(void*,GtkTreeIter*,GtkTreeIter*);
+extern int gtk_tree_model_iter_n_children(void*,GtkTreeIter*);
+extern void g_object_unref(void*);
+#define g_list_next(x) ((x)->next)
+static int selected_count,path_allocs,path_frees,list_frees,label_allocs,label_frees;
+static GimpViewRenderer renderers[3]; static int values[3];
+static void *gtk_tree_view_get_selection(void *x) {return x;}
+static int gtk_tree_selection_count_selected_rows(void *x) {(void)x;return selected_count;}
+static GList *gtk_tree_selection_get_selected_rows(void *x,void *m) {
+ (void)x;(void)m; GList *l=NULL;
+ for(int i=0;i<selected_count;i++){l=g_list_prepend(l,gtk_tree_path_new_from_indices(i,-1));path_allocs++;}
+ return g_list_reverse(l);
+}
+void counted_path_free(void *p){path_frees++;gtk_tree_path_free(p);}
+void counted_list_free_full(GList *l,GDestroyNotify f){list_frees++;g_list_free_full(l,f);}
+static GimpViewRenderer *gimp_container_tree_store_get_renderer(void *m,GtkTreeIter *i){int idx;gtk_tree_model_get(m,i,0,&idx,-1);return &renderers[idx];}
+static void renderer_unref(void *p){assert(p>= (void*)renderers && p<(void*)(renderers+3));}
+static void *gtk_combo_box_get_model(GimpScaleComboBox *c){return c->model;}
+static void gtk_combo_box_set_active_iter(GimpScaleComboBox *c,GtkTreeIter *i){(void)c;(void)i;}
+static void *gtk_bin_get_child(GimpScaleComboBox *c){return c;}
+static void g_object_set(void *c,const char *key,int width,void *end){assert(!strcmp(key,"width-chars"));assert(!end);((GimpScaleComboBox*)c)->width=width;}
+static void gimp_scale_combo_box_scale_iter_set(void *s,GtkTreeIter *i,double scale,int persistent){gtk_list_store_set(s,i,0,scale,1,persistent,2,"1234.56%",-1);}
+static void gimp_scale_combo_box_mru_add(GimpScaleComboBox *c,GtkTreeIter *i){(void)i;c->mru++;}
+static void gimp_scale_combo_box_mru_remove_last(GimpScaleComboBox *c){(void)c;}
+void counted_get(void *m,GtkTreeIter *i,...){
+ va_list a;va_start(a,i);int col;
+ while((col=va_arg(a,int))!=-1){void *out=va_arg(a,void*);gtk_tree_model_get(m,i,col,out,-1);if(col==COLUMN_LABEL && *(void**)out)label_allocs++;}
+ va_end(a);
+}
+void counted_free(void *p){if(p)label_frees++;g_free(p);}
+#define gtk_tree_path_free counted_path_free
+#define g_list_free_full counted_list_free_full
+#define g_object_unref renderer_unref
+@TREE@
+#undef gtk_tree_path_free
+#undef g_list_free_full
+#undef g_object_unref
+#define gtk_tree_model_get counted_get
+#define g_free counted_free
+@SCALE@
+#undef gtk_tree_model_get
+#undef g_free
+int main(void){
+ /* G_TYPE_INT=24, DOUBLE=60, BOOLEAN=20, STRING=64: stable GLib fundamental ABI. */
+ void *m=gtk_list_store_new(1,(unsigned long)24); GtkTreeIter it;
+ for(int i=0;i<3;i++){gtk_list_store_append(m,&it);gtk_list_store_set(m,&it,0,i,-1);renderers[i].viewable=&values[i];}
+ GimpContainerView v={&v,m};
+ for(int repeat=0;repeat<100;repeat++) for(int n=0;n<=3;n++){
+ selected_count=n;int before=path_allocs;assert(gimp_container_tree_view_get_selected(&v,NULL)==n);assert(path_allocs==before);
+ GList *items=NULL;assert(gimp_container_tree_view_get_selected(&v,&items)==n);
+ GList *p=items;for(int i=0;i<n;i++,p=p->next)assert(p && p->data==&values[i]);assert(!p);g_list_free(items);
+ assert(path_allocs==path_frees);
+ }
+ renderers[1].viewable=NULL; selected_count=3;GList *items=NULL;assert(gimp_container_tree_view_get_selected(&v,&items)==2);assert(items->data==&values[0] && items->next->data==&values[2] && !items->next->next);g_list_free(items);assert(path_allocs==path_frees);g_object_unref(m);
+ m=gtk_list_store_new(3,(unsigned long)60,(unsigned long)20,(unsigned long)64);gtk_list_store_append(m,&it);gtk_list_store_set(m,&it,0,1.0,1,1,2,"100%",-1);
+ GimpScaleComboBox c={m,0,0};for(int i=0;i<100;i++){gimp_scale_combo_box_set_scale(&c,1.0);assert(c.width==5);assert(label_allocs==label_frees);}
+ gimp_scale_combo_box_set_scale(&c,1.23456);assert(c.width==8 && c.mru==1);assert(label_allocs==label_frees);
+ gimp_scale_combo_box_set_scale(&c,1.23456);assert(c.width==8 && c.mru==2);assert(label_allocs==label_frees);
+ gtk_tree_model_get_iter_first(m,&it);gtk_list_store_set(m,&it,2,NULL,-1);gimp_scale_combo_box_set_scale(&c,1.23456);assert(c.width==5);assert(label_allocs==label_frees);g_object_unref(m);
+ printf("PASS: exact source bodies; paths %d/%d; path lists freed %d; labels %d/%d; item order/filter/count, null items, empty selection, repeated scale, insert, null-label width\n",path_frees,path_allocs,list_frees,label_frees,label_allocs);return 0;
+}

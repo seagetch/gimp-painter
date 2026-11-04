@@ -1,0 +1,200 @@
+{
+  "run_id": 41220165146,
+  "head": "7b4f411300da4be3df8012ef831f6300e5b81b28",
+  "observed_utc": "2026-10-31T17:29:00Z",
+  "all_jobs_terminal": true,
+  "success": 5,
+  "failure": 3,
+  "acceptance_eligible": false,
+  "jobs": [
+    {
+      "id": 124592874234,
+      "name": "babl-owned-doc-proof",
+      "conclusion": "failure",
+      "completed_at": "2026-10-31T16:33:33Z"
+    },
+    {
+      "id": 124592874335,
+      "name": "brush-positive",
+      "conclusion": "success",
+      "completed_at": "2026-10-31T16:51:39Z"
+    },
+    {
+      "id": 124592874342,
+      "name": "dockbook-controlled-order-3d6f",
+      "conclusion": "success",
+      "completed_at": "2026-10-31T16:41:21Z"
+    },
+    {
+      "id": 124592874413,
+      "name": "matched-preclick-nonacceptance",
+      "conclusion": "failure",
+      "completed_at": "2026-10-31T17:13:00Z"
+    },
+    {
+      "id": 124592874438,
+      "name": "brush-baseline-red",
+      "conclusion": "success",
+      "completed_at": "2026-10-31T16:37:27Z"
+    },
+    {
+      "id": 124592874475,
+      "name": "baseline-carrier-red",
+      "conclusion": "success",
+      "completed_at": "2026-10-31T16:40:39Z"
+    },
+    {
+      "id": 124592874477,
+      "name": "brush-sanitizer",
+      "conclusion": "failure",
+      "completed_at": "2026-10-31T17:26:21Z"
+    },
+    {
+      "id": 124592874516,
+      "name": "candidate",
+      "conclusion": "success",
+      "completed_at": "2026-10-31T16:47:53Z"
+    }
+  ],
+  "original_artifacts": [
+    {
+      "id": 13049981361,
+      "name": "painter-brush-ui-baseline-red-7b4f411300da4be3df8012ef831f6300e5b81b28-1",
+      "bytes": 63649,
+      "sha256": "db195fc2a7cd794d7a475d418cbd5a5e7d272756029e02f65a04097acb241d1d",
+      "api_digest_and_size_match": true,
+      "file": "artifacts/run49-13049981361.zip"
+    },
+    {
+      "id": 13049519750,
+      "name": "painter-native-ui-candidate-7b4f411300da4be3df8012ef831f6300e5b81b28-1",
+      "bytes": 2208952,
+      "sha256": "a4a26a28580e101bc7e7ef23fd5dcc2706eb4eec50413f0673f8f860ca54cd3e",
+      "api_digest_and_size_match": true,
+      "file": "artifacts/run49-13049519750.zip"
+    },
+    {
+      "id": 13051336887,
+      "name": "painter-brush-ui-sanitizer-7b4f411300da4be3df8012ef831f6300e5b81b28-1",
+      "bytes": 10531412,
+      "sha256": "d33c94ad5447effe2e560ae00302402480410bdbd4cd7446b34c1d50f07875c2",
+      "api_digest_and_size_match": true,
+      "file": "artifacts/run49-sanitizer.zip"
+    },
+    {
+      "id": 13050354705,
+      "name": "painter-matched-preclick-7b4f411300da4be3df8012ef831f6300e5b81b28-1",
+      "bytes": 972986,
+      "sha256": "6d1bf2c237f43a0458ce51f383d5a85360fb07e7aa44e24908f3f220783628c4",
+      "api_digest_and_size_match": true,
+      "file": "artifacts/run49-matched.zip"
+    },
+    {
+      "id": 13050365211,
+      "name": "painter-native-ui-dockbook-controlled-order-3d6f-7b4f411300da4be3df8012ef831f6300e5b81b28-1",
+      "bytes": 212569,
+      "sha256": "3b7df2cd440aba1a655d50b4f0b33143ae856180556f7a543c6ff8debbb3ce3f",
+      "api_digest_and_size_match": true,
+      "file": "artifacts/run49-13050365211.zip"
+    },
+    {
+      "id": 13050431331,
+      "name": "painter-brush-ui-positive-7b4f411300da4be3df8012ef831f6300e5b81b28-1",
+      "bytes": 838550,
+      "sha256": "0cc0fff3fd118c3f84b54b48974db89a3fe553fc705c9eed75029d9927dbfd41",
+      "api_digest_and_size_match": true,
+      "file": "artifacts/run49-positive.zip"
+    },
+    {
+      "id": 13049762027,
+      "name": "painter-native-ui-baseline-carrier-red-7b4f411300da4be3df8012ef831f6300e5b81b28-1",
+      "bytes": 603918,
+      "sha256": "436b10b9718d57efc8d41a66493e103875fcf65deff99744c9e6ebb097b193d0",
+      "api_digest_and_size_match": true,
+      "file": "artifacts/run49-13049762027.zip"
+    },
+    {
+      "id": 13050025850,
+      "name": "babl-owned-doc-proof-7b4f411300da4be3df8012ef831f6300e5b81b28",
+      "bytes": 25013593,
+      "sha256": "ed73bbe7ae8bfa425ee2cac0cdb34efc2751cb93573cb2275d56dd724b6283f5",
+      "api_digest_and_size_match": true,
+      "file": "artifacts/run49-13050025850.zip"
+    }
+  ],
+  "mask_normal": {
+    "fixed_focused": {
+      "meson_result": "OK",
+      "returncode": 0
+    },
+    "old_focused": {
+      "meson_result": "EXPECTEDFAIL",
+      "returncode": -5
+    },
+    "fixed_full107": {
+      "meson_result": "OK",
+      "returncode": 0,
+      "passed_leaves": 107
+    },
+    "proof_passed": true,
+    "expected_failure_semantics_verified": true,
+    "runtime_binding_complete": true,
+    "acceptance_eligible": false,
+    "scope": "bounded-provider-substitution-not-full-historical-build-parity",
+    "raw_logs_archived": false
+  },
+  "mask_sanitizer": {
+    "fixed_focused": {
+      "meson_result": "FAIL",
+      "returncode": 1,
+      "assertions_pass": 1,
+      "categories": [
+        "address-sanitizer",
+        "leak-sanitizer",
+        "error",
+        "nonzero-native-exit"
+      ]
+    },
+    "old_and_full107_not_observed": true,
+    "aggregate": "wrong-native-result"
+  },
+  "matched": {
+    "runtime_failure_all14": {
+      "stage": "resource-inventory",
+      "category": "value-error",
+      "resource_code": "schema-compiled-missing"
+    },
+    "collected": 13,
+    "total": 14,
+    "primary_metrics": 12,
+    "fidelity_sanitizer_returncode": -6,
+    "identity_verified": false,
+    "comparisons_promoted": false,
+    "raw_native_logs_archived": false,
+    "bounded_log_evidence_records": 14,
+    "exact_missing_schema_directory_not_observed": true
+  },
+  "sanitizer": {
+    "brush_assertions_pass": 20,
+    "brush_total": 21,
+    "passing_assertions_process_exit": 1,
+    "leak_range_bytes": [
+      199965,
+      202605
+    ],
+    "case14": {
+      "returncode": -6,
+      "stable": 0,
+      "elapsed_us": 12334053,
+      "whole_main_context_iteration_us": 12330172
+    },
+    "gdb_samples": 8,
+    "first_sample_frames": 68,
+    "remaining_samples_frame_cap": 96,
+    "same_wait_invocation_proven": false,
+    "owned_child_and_debugger_cleanup_verified": true
+  },
+  "visual_review": "visual-review.txt",
+  "native_counts": "native-results-counts.json",
+  "external_writes": false
+}

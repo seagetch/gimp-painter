@@ -1,0 +1,24 @@
+{
+  "format": 1,
+  "status": "REVIEW_ONLY_NATIVE_PENDING",
+  "base_commit": "8cb5cd9cc345b222ae2bfed018cc34c760822186",
+  "base_tree": "af422fb74bd635b66fcd07ec3af29b9daab6c616",
+  "reviewed_canvas_patch_sha256": "156af01078dd1ae6286bb589464adc136040694a2a6075b89771248256d5b762",
+  "reviewed_phase_patch_sha256": "32b2386ac4876f0ec3a2f4b72e25c7d09f64e92eb55e2122d73424d9ffd03f37",
+  "source_sha256": {
+    "app/display/gimpcanvas.c": "09373ff900dc14d3a853f8fc06e0f9100f276975cbaea0d636179b07aa88fc16",
+    "app/tests/color-ownership/test-canvas.c": "2aa4d64beb02fb13f9c51b3653c36aa89a673984c49e0562d7fd56a22607183e",
+    "app/tests/color-ownership/fixtures/gimpcanvas-c9.c": "c4a10375777bae95a9f8a9dd8014935045cd8f5c91791ddd8fac77cbd10bb33e",
+    "app/tests/test-painter-transform-popup.inc": "39497319586c30f92cd6d501d84352ca54b7d5a8b49e75a00694f391a9901c16"
+  },
+  "native_build": "NOT_RUN_GTK3_GEGL_DEVELOPMENT_PACKAGES_UNAVAILABLE",
+  "native_old_red_new_green": "PENDING_HOSTED_CI_NOT_PROVEN",
+  "phase_proof": "Source readiness/loop invariant comparison and C11 stub tests pass; stub is not real GTK compilation or GUI behavior. Global signal hooks may perturb timing.",
+  "candidate_cases": 2,
+  "old_normal_control_cases": 2,
+  "candidate_effective_timeout_seconds": 360,
+  "old_control_timeout_seconds": 120,
+  "old_control_scope": "Same current app dependencies, exact historical canvas object plus identical regression. Not historical whole-GIMP parity. Meson expectedfail alone insufficient; raw exact child SIGABRT assertion, both leaves and linked provider required.",
+  "protected_scope": "All26 accepted common source hashes and workflow/ci artifacts unchanged. No blocked babl generation or dependency repair.",
+  "runtime": "Run28 terminal evidence pending at drafting. C10 not invoked/published; task308 DOING."
+}

@@ -1,0 +1,15 @@
+{
+  "passed": true,
+  "errors": [],
+  "tests": [
+    {
+      "name": "gimp:painter / canvas-ownership",
+      "result": "OK",
+      "returncode": 0,
+      "duration": 0.1972367763519287,
+      "stdout": "TAP version 14\n# random seed: R02Sa6630da1a0df48df36fa780d43a3efc6\n1..2\n# Start of ownership tests\n# Start of canvas tests\n# GLib-GIO-DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for \u2018gio-vfs\u2019\nok 1 /ownership/canvas/unrealized-padding\nok 2 /ownership/canvas/realized-padding\n# End of canvas tests\n# End of ownership tests\n",
+      "stderr": null
+    }
+  ],
+  "raw_environment_exported": false
+}

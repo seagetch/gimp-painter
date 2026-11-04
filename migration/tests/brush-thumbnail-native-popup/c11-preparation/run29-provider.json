@@ -1,0 +1,30 @@
+{
+  "format": 1,
+  "kind": "canvas-old-provider-provenance",
+  "control_passed": false,
+  "negative_control": true,
+  "acceptance_eligible": false,
+  "errors": [
+    "Expected one exact compile entry: old",
+    "Expected one exact compile entry: old_test",
+    "Expected one exact compile entry: candidate_test"
+  ],
+  "raw_environment_exported": false,
+  "inputs": {
+    "source/app/tests/color-ownership/fixtures/gimpcanvas-c9.c": "c4a10375777bae95a9f8a9dd8014935045cd8f5c91791ddd8fac77cbd10bb33e",
+    "source/app/tests/color-ownership/test-canvas.c": "2aa4d64beb02fb13f9c51b3653c36aa89a673984c49e0562d7fd56a22607183e",
+    "build/compile_commands.json": "937c378421e6f9db6bc64e830fa1a382207667caf2112605526d56469b105b70",
+    "build/meson-info/intro-buildoptions.json": "fb2b15d371aa64800c593a821d7c6c3035882f9f75e35ff419a4191af290c42a",
+    "build/app/tests/color-ownership/canvas-ownership-old-provider.map": "679217a6177b488e7b8ce5bc00633af033f32d431f9c3a118f940c75e0a5d148",
+    "build/app/tests/color-ownership/canvas-ownership-old-provider": "5dcfa39e2e2d0d4b98f1cf80884d46c2375f964b37d845c707a49f820bbf56ba"
+  },
+  "objects": {},
+  "api_definitions": [
+    "gimp_canvas_get_type",
+    "gimp_canvas_new",
+    "gimp_canvas_get_layout",
+    "gimp_canvas_set_padding"
+  ],
+  "binary_path": "/__w/_temp/painter-brush-ci.osxsOouK/build/app/tests/color-ownership/canvas-ownership-old-provider",
+  "binary_sha256": "5dcfa39e2e2d0d4b98f1cf80884d46c2375f964b37d845c707a49f820bbf56ba"
+}

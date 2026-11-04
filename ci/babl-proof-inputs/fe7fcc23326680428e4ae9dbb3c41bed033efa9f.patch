@@ -1,0 +1,21 @@
+--- a/babl/babl-format.c
++++ b/babl/babl-format.c
+@@ -36,6 +36,7 @@ static int
+ babl_format_destruct (void *babl)
+ {
+   BablFormat *format = babl;
++  BablInstance *instance = babl;
+   if (format->image_template != NULL)
+     {
+       babl_set_destructor (format->image_template, NULL);
+@@ -45,6 +46,11 @@ babl_format_destruct (void *babl)
+     }
+   if (format->from_list)
+     babl_free (format->from_list);
++  if (instance->doc)
++  {
++    babl_free ((char*)instance->doc);
++    instance->doc = NULL;
++  }
+   return 0;
+ }

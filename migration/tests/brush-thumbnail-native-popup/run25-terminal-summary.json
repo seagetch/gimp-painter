@@ -1,0 +1,705 @@
+{
+  "commit": "b7760d05893b7bc7403b09f4400bf1b58ab6d189",
+  "run_id": 40253842742,
+  "run_number": 25,
+  "status": "completed",
+  "conclusion": "failure",
+  "task308_accepted": false,
+  "results": {
+    "brush-positive/brush-actual-entry-scale1-results.json": {
+      "sha256": "3c9369e4373b7eaf20e0144198859e51321dbbea2ed9b30d6fa7aec9567f2fde",
+      "passed": true,
+      "case_count": 1,
+      "registration_results": [
+        {
+          "name": "gimp:app / painter-compact-options",
+          "result": "OK",
+          "returncode": 0,
+          "duration": 4.652531862258911
+        }
+      ],
+      "failures": []
+    },
+    "brush-positive/brush-actual-entry-scale2-results.json": {
+      "sha256": "0a93ee3385b8b2fdcf65c399817244a3d1eb0b2996e84ef90017ce5f1dc90f64",
+      "passed": true,
+      "case_count": 1,
+      "registration_results": [
+        {
+          "name": "gimp:app / painter-compact-options",
+          "result": "OK",
+          "returncode": 0,
+          "duration": 4.4060046672821045
+        }
+      ],
+      "failures": []
+    },
+    "brush-positive/brush-lower-controls-scale1-results.json": {
+      "sha256": "b815fe9bce25fc525c966f245d652c659dabcc9021ddc82423dcbac53d2ed29f",
+      "passed": true,
+      "case_count": 1,
+      "registration_results": [
+        {
+          "name": "gimp:app / painter-compact-options",
+          "result": "OK",
+          "returncode": 0,
+          "duration": 5.677393198013306
+        }
+      ],
+      "failures": []
+    },
+    "brush-positive/brush-lower-controls-scale2-results.json": {
+      "sha256": "2994cdeeac671a80e6a8ffc8b3449caca603ef896485bca85ed34e7c8808d2ea",
+      "passed": true,
+      "case_count": 1,
+      "registration_results": [
+        {
+          "name": "gimp:app / painter-compact-options",
+          "result": "OK",
+          "returncode": 0,
+          "duration": 5.685887336730957
+        }
+      ],
+      "failures": []
+    },
+    "brush-positive/brush-scale1-results.json": {
+      "sha256": "fdc1477b9ff287d8a327ece1e59db45a9ed25db57d71db4fb25f6eaf0dc9942e",
+      "passed": false,
+      "case_count": 14,
+      "registration_results": [
+        {
+          "name": "gimp:app / painter-compact-options",
+          "result": "FAIL",
+          "returncode": -5,
+          "duration": 20.917664527893066
+        }
+      ],
+      "failures": [
+        "not ok /brush-thumbnail-native-popup/noneditable-null - Gimp-Core-FATAL-CRITICAL: gimp_data_get_identifier: assertion 'private->internal || private->file != NULL || private->image != NULL' failed"
+      ]
+    },
+    "brush-positive/brush-scale2-results.json": {
+      "sha256": "8e1f17771fac76333ccf307a2564c13f56725832f60460064cd4d3a1e69f4d0c",
+      "passed": false,
+      "case_count": 14,
+      "registration_results": [
+        {
+          "name": "gimp:app / painter-compact-options",
+          "result": "FAIL",
+          "returncode": -5,
+          "duration": 19.66563391685486
+        }
+      ],
+      "failures": [
+        "not ok /brush-thumbnail-native-popup/noneditable-null - Gimp-Core-FATAL-CRITICAL: gimp_data_get_identifier: assertion 'private->internal || private->file != NULL || private->image != NULL' failed"
+      ]
+    },
+    "brush-positive/choice-positive-results.json": {
+      "sha256": "d50b5eb3132fc3952c068d7409acf1371b67e249370dce471c54d76f0091627f",
+      "passed": true,
+      "case_count": 2,
+      "registration_results": [
+        {
+          "name": "gimp:libgimpbase / choice-lifecycle",
+          "result": "OK",
+          "returncode": 0,
+          "duration": 0.007107973098754883
+        }
+      ],
+      "failures": []
+    },
+    "brush-positive/geometry-positive-results.json": {
+      "sha256": "d785c82b6b302817baa470da17780da742bf861afc91ac0a74b45e87b2fde8a5",
+      "passed": true,
+      "case_count": 7,
+      "registration_results": [
+        {
+          "name": "gimp:painter / painter-brush-geometry",
+          "result": "OK",
+          "returncode": 0,
+          "duration": 1.022590160369873
+        }
+      ],
+      "failures": []
+    },
+    "brush-positive/header-verification-results.json": {
+      "sha256": "c75548806e7b3be97609063dab17155b141e248fdaa396495ca3e33352d770a8",
+      "passed": true,
+      "case_count": 0,
+      "registration_results": [
+        {
+          "name": "gimp:painter / painter-public-header-compilation",
+          "result": "OK",
+          "returncode": 0,
+          "duration": 0.10768938064575195
+        },
+        {
+          "name": "gimp:painter / painter-additional-header-routes",
+          "result": "OK",
+          "returncode": 0,
+          "duration": 2.30509614944458
+        }
+      ],
+      "failures": []
+    },
+    "brush-positive/previous-bucket-native-popup-results.json": {
+      "sha256": "dd0d1991b4a85050e3f389cd4140eb27ba550c56cfb2a370ecfffdc493b83011",
+      "passed": true,
+      "case_count": 6,
+      "registration_results": [
+        {
+          "name": "gimp:app / painter-compact-options",
+          "result": "OK",
+          "returncode": 0,
+          "duration": 17.461106061935425
+        }
+      ],
+      "failures": []
+    },
+    "brush-positive/previous-clone-native-popup-results.json": {
+      "sha256": "3fdfe4d8e11354766e52bc2abf4f4ddd506c761c43d8b244b2abe8c6dbc280f1",
+      "passed": true,
+      "case_count": 7,
+      "registration_results": [
+        {
+          "name": "gimp:app / painter-compact-options",
+          "result": "OK",
+          "returncode": 0,
+          "duration": 24.19629955291748
+        }
+      ],
+      "failures": []
+    },
+    "brush-positive/previous-ink-native-popup-results.json": {
+      "sha256": "0e51c5b8d4e8458bec388ecc9369b75d1b65e06f69a2e7f7bc7244568a1f4d92",
+      "passed": true,
+      "case_count": 6,
+      "registration_results": [
+        {
+          "name": "gimp:app / painter-compact-options",
+          "result": "OK",
+          "returncode": 0,
+          "duration": 15.750595092773438
+        }
+      ],
+      "failures": []
+    },
+    "brush-positive/previous-painter-compact-options-results.json": {
+      "sha256": "2c73ba04e2e1b4fec8c1c11430a5ab1d0df759b0e39742c4dbf804197ce381b5",
+      "passed": true,
+      "case_count": 62,
+      "registration_results": [
+        {
+          "name": "gimp:app / painter-compact-options",
+          "result": "OK",
+          "returncode": 0,
+          "duration": 133.1618983745575
+        }
+      ],
+      "failures": []
+    },
+    "brush-positive/previous-painter-toolbar-window-results.json": {
+      "sha256": "2e9c393e4a5da2e18b7b2408ee6f63c17b6d38735ea24c58bf79c34f883c89ae",
+      "passed": true,
+      "case_count": 26,
+      "registration_results": [
+        {
+          "name": "gimp:app / painter-toolbar-window",
+          "result": "OK",
+          "returncode": 0,
+          "duration": 81.52319407463074
+        }
+      ],
+      "failures": []
+    },
+    "brush-positive/previous-standard-toggle-popup-results.json": {
+      "sha256": "b94612ac418dfa2679adf314f29b8aaf396b83eaffe166fcc8c4038307b24b5b",
+      "passed": true,
+      "case_count": 17,
+      "registration_results": [
+        {
+          "name": "gimp:app / painter-compact-options",
+          "result": "OK",
+          "returncode": 0,
+          "duration": 3.997037172317505
+        }
+      ],
+      "failures": []
+    },
+    "brush-positive/previous-transform-native-popup-results.json": {
+      "sha256": "556ec926f6181c80c89f4ebcdedde77ea695abd544193b0cc5af8a0e852f37fd",
+      "passed": true,
+      "case_count": 8,
+      "registration_results": [
+        {
+          "name": "gimp:app / painter-compact-options",
+          "result": "OK",
+          "returncode": 0,
+          "duration": 28.84093999862671
+        }
+      ],
+      "failures": []
+    },
+    "brush-positive/protocol-positive-results.json": {
+      "sha256": "c7fa2f4353ebde2aef929fd33baec0e7d075f857139ef9897a26b4fad04f93c7",
+      "passed": true,
+      "case_count": 12,
+      "registration_results": [
+        {
+          "name": "gimp:libgimp+C / plug-in-protocol",
+          "result": "OK",
+          "returncode": 0,
+          "duration": 0.1462538242340088
+        }
+      ],
+      "failures": []
+    },
+    "brush-sanitizer/brush-sanitizer-results.json": {
+      "sha256": "e29bf2c624e89309ce2a23552837db524b026197c9b1250f99f75edb627f2757",
+      "passed": false,
+      "case_count": 14,
+      "registration_results": [
+        {
+          "name": "gimp:app / painter-compact-options",
+          "result": "TIMEOUT",
+          "returncode": -15,
+          "duration": 540.07204246521
+        }
+      ],
+      "failures": []
+    },
+    "brush-sanitizer/choice-sanitizer-results.json": {
+      "sha256": "2594e844a81da7a6a7d53ddb5aea72fcb59fd6ce7a74f9e728669b1123fac16e",
+      "passed": true,
+      "case_count": 2,
+      "registration_results": [
+        {
+          "name": "gimp:libgimpbase / choice-lifecycle",
+          "result": "OK",
+          "returncode": 0,
+          "duration": 0.032562255859375
+        }
+      ],
+      "failures": []
+    },
+    "brush-sanitizer/geometry-sanitizer-results.json": {
+      "sha256": "de577a3845fd6c0dbbdfbae3cb3ea66a65542133154ce952372217d2b622ef68",
+      "passed": false,
+      "case_count": 7,
+      "registration_results": [
+        {
+          "name": "gimp:painter / painter-brush-geometry",
+          "result": "FAIL",
+          "returncode": 1,
+          "duration": 2.7211530208587646
+        }
+      ],
+      "failures": [
+        "SUMMARY: AddressSanitizer: 135 byte(s) leaked in 19 allocation(s)."
+      ]
+    },
+    "brush-sanitizer/header-verification-results.json": {
+      "sha256": "35cfdcd57a2c9ed252033060d9adcbc91ee426117cd17fd2f9e28691cb635703",
+      "passed": true,
+      "case_count": 0,
+      "registration_results": [
+        {
+          "name": "gimp:painter / painter-public-header-compilation",
+          "result": "OK",
+          "returncode": 0,
+          "duration": 0.12186479568481445
+        },
+        {
+          "name": "gimp:painter / painter-additional-header-routes",
+          "result": "OK",
+          "returncode": 0,
+          "duration": 5.369144678115845
+        }
+      ],
+      "failures": []
+    },
+    "brush-sanitizer/protocol-sanitizer-results.json": {
+      "sha256": "0f0e448fed27473a3c3356700e15debac39c51c04067133630344fe52c995fa7",
+      "passed": false,
+      "case_count": 12,
+      "registration_results": [
+        {
+          "name": "gimp:libgimp+C / plug-in-protocol",
+          "result": "FAIL",
+          "returncode": 1,
+          "duration": 0.9610140323638916
+        }
+      ],
+      "failures": [
+        "SUMMARY: AddressSanitizer: 765 byte(s) leaked in 6 allocation(s)."
+      ]
+    },
+    "candidate/adjacent-regressions-results.json": {
+      "sha256": "607a2f4c02510baed0e317bc80a94834accb26b532747d30a01efb75212a9678",
+      "passed": true,
+      "case_count": 360,
+      "registration_results": [
+        {
+          "name": "gimp:app / painter-layer-ui",
+          "result": "OK",
+          "returncode": 0,
+          "duration": 66.38442468643188
+        },
+        {
+          "name": "gimp:app / painter-layer-tree",
+          "result": "OK",
+          "returncode": 0,
+          "duration": 3.4113869667053223
+        },
+        {
+          "name": "gimp:app / painter-dock-layout-ui",
+          "result": "OK",
+          "returncode": 0,
+          "duration": 31.637194871902466
+        },
+        {
+          "name": "gimp:app / painter-dock-input-ui",
+          "result": "OK",
+          "returncode": 0,
+          "duration": 9.288512945175171
+        },
+        {
+          "name": "gimp:app / painter-dock-session-ui",
+          "result": "OK",
+          "returncode": 0,
+          "duration": 13.613993406295776
+        },
+        {
+          "name": "gimp:app / painter-right-docks-ui",
+          "result": "OK",
+          "returncode": 0,
+          "duration": 12.691843032836914
+        },
+        {
+          "name": "gimp:app / painter-canvas-ui",
+          "result": "OK",
+          "returncode": 0,
+          "duration": 25.55032253265381
+        },
+        {
+          "name": "gimp:app / painter-filter-layer-popup",
+          "result": "OK",
+          "returncode": 0,
+          "duration": 11.698081016540527
+        },
+        {
+          "name": "gimp:app / painter-widget-exceptions",
+          "result": "OK",
+          "returncode": 0,
+          "duration": 2.914418935775757
+        },
+        {
+          "name": "gimp:app / painter-popup-handles",
+          "result": "OK",
+          "returncode": 0,
+          "duration": 1.7518961429595947
+        },
+        {
+          "name": "gimp:app / layer-tile-entry-contracts",
+          "result": "OK",
+          "returncode": 0,
+          "duration": 4.283611059188843
+        },
+        {
+          "name": "gimp:app / painter-layer-dispatch",
+          "result": "OK",
+          "returncode": 0,
+          "duration": 1.5012283325195312
+        },
+        {
+          "name": "gimp:app / native-popover-entry",
+          "result": "OK",
+          "returncode": 0,
+          "duration": 2.1330089569091797
+        }
+      ],
+      "failures": []
+    },
+    "candidate/common-layer-scale1-results.json": {
+      "sha256": "e435b7e47a4f8caee6c95b9904acb532134c94704afe0675753980ee646ca510",
+      "passed": true,
+      "case_count": 58,
+      "registration_results": [
+        {
+          "name": "gimp:app / painter-common-layer-popup",
+          "result": "OK",
+          "returncode": 0,
+          "duration": 127.29552912712097
+        }
+      ],
+      "failures": []
+    },
+    "candidate/common-layer-scale2-results.json": {
+      "sha256": "5757b8997bed37a8871db8b7251d86dd6cfbcd881c1e44f1116601416db28b2c",
+      "passed": true,
+      "case_count": 58,
+      "registration_results": [
+        {
+          "name": "gimp:app / painter-common-layer-popup",
+          "result": "OK",
+          "returncode": 0,
+          "duration": 128.76819109916687
+        }
+      ],
+      "failures": []
+    },
+    "candidate/header-verification-results.json": {
+      "sha256": "30d15e2ac96af510f010f421a7ca3cf62391eb4b521285bb9c1d00aae7fc500b",
+      "passed": true,
+      "case_count": 0,
+      "registration_results": [
+        {
+          "name": "gimp:painter / painter-public-header-compilation",
+          "result": "OK",
+          "returncode": 0,
+          "duration": 0.0985710620880127
+        },
+        {
+          "name": "gimp:painter / painter-additional-header-routes",
+          "result": "OK",
+          "returncode": 0,
+          "duration": 3.175673007965088
+        }
+      ],
+      "failures": []
+    },
+    "candidate/overlay-paint-gate-scale1-results.json": {
+      "sha256": "bca039031f2cc69e40908b3b390d7eabb8cf09271f70d68cb3c7df88b98ba602",
+      "passed": true,
+      "case_count": 6,
+      "registration_results": [
+        {
+          "name": "gimp:app / painter-overlay-paint-gate",
+          "result": "OK",
+          "returncode": 0,
+          "duration": 11.140578269958496
+        }
+      ],
+      "failures": []
+    },
+    "candidate/overlay-paint-gate-scale2-results.json": {
+      "sha256": "25e711e0798de22a48b3c145bd84abfdfa025ebfe10e4d5bffac2947d73142a1",
+      "passed": true,
+      "case_count": 6,
+      "registration_results": [
+        {
+          "name": "gimp:app / painter-overlay-paint-gate",
+          "result": "OK",
+          "returncode": 0,
+          "duration": 11.10594391822815
+        }
+      ],
+      "failures": []
+    }
+  },
+  "original_zips": [
+    {
+      "path": "original-zips/run25-baseline-carrier-red.zip",
+      "bytes": 605452,
+      "sha256": "c99841223aae5e90c2cf07e0c6e0a9a9a7bf8546078be167a9c8c251327dc9c4",
+      "github_digest_match": true
+    },
+    {
+      "path": "original-zips/run25-brush-baseline-red.zip",
+      "bytes": 58605,
+      "sha256": "95135d3b5cd789119aa1810ff96ebf9da642a5b6a9d22f510c81867d5e340a42",
+      "github_digest_match": true
+    },
+    {
+      "path": "original-zips/run25-brush-positive.zip",
+      "bytes": 659932,
+      "sha256": "78152382dc3fc0771d386c4dd9a9793e2c2167814bd28d8e0ddf4857e170b367",
+      "github_digest_match": true
+    },
+    {
+      "path": "original-zips/run25-brush-sanitizer.zip",
+      "bytes": 448544,
+      "sha256": "1fe0c6485313d65a59863a5cb972d4a9bab79ccad223fc656f6a33a2531a29a7",
+      "github_digest_match": true
+    },
+    {
+      "path": "original-zips/run25-candidate.zip",
+      "bytes": 2205597,
+      "sha256": "9c3af9142bf78928fb9f0599f8465fa6f66037a0530e4a58cb9ad2b52fbda452",
+      "github_digest_match": true
+    },
+    {
+      "path": "original-zips/run25-dockbook-controlled-order.zip",
+      "bytes": 160745,
+      "sha256": "42cedab639d45d7195390b42185c98c127ee530a3eb227afce2ac5df41745432",
+      "github_digest_match": true
+    }
+  ],
+  "images": [
+    {
+      "path": "brush-positive/brush-thumbnail-actual-entry-scale1.png",
+      "sha256": "f88eae5cb8459390226d75bd5daa574e41c464a702bc8fa1a2c7a685d3092e39",
+      "dimensions": [
+        1080,
+        1920
+      ]
+    },
+    {
+      "path": "brush-positive/brush-thumbnail-actual-entry-scale2.png",
+      "sha256": "00b7a99a321a9ac9b217d8267d99b976b0d7fc2bbd265ea21894a61f2a0fae67",
+      "dimensions": [
+        1080,
+        1920
+      ]
+    },
+    {
+      "path": "brush-positive/brush-thumbnail-lower-controls-scale1.png",
+      "sha256": "3e1b386c8d3a6ede1504780d50231b11c84b55550b97b5981fe409c9cacb0238",
+      "dimensions": [
+        1080,
+        1920
+      ]
+    },
+    {
+      "path": "brush-positive/brush-thumbnail-lower-controls-scale2.png",
+      "sha256": "9487dcd729c4bc661ab4fa2c660d6be27be2b3084d4cce051c51bcf32b784769",
+      "dimensions": [
+        1080,
+        1920
+      ]
+    },
+    {
+      "path": "candidate/common-layer-scale1/clone-tile-bottom-scale1.png",
+      "sha256": "cc100e93ba243f8b33017c8a7b07af821d92c045d1582f01f3a529eb87ea5daa",
+      "dimensions": [
+        1080,
+        1920
+      ]
+    },
+    {
+      "path": "candidate/common-layer-scale1/clone-tile-scale1.png",
+      "sha256": "9238deda5f810c9f47a56628959b0edafa6e83785feb1c6d898ed5d2c18205ce",
+      "dimensions": [
+        1080,
+        1920
+      ]
+    },
+    {
+      "path": "candidate/common-layer-scale1/clone-tree-bottom-scale1.png",
+      "sha256": "188f3b32012d6b3d2f8effa0c12b282e8a79f6c1c9f9021c9e9602442be9b23e",
+      "dimensions": [
+        1080,
+        1920
+      ]
+    },
+    {
+      "path": "candidate/common-layer-scale1/clone-tree-scale1.png",
+      "sha256": "88aaf56b4df4c8836dcf370336c09114107440b0c54c372f8d99b77a50232a35",
+      "dimensions": [
+        1080,
+        1920
+      ]
+    },
+    {
+      "path": "candidate/common-layer-scale1/ordinary-tile-bottom-scale1.png",
+      "sha256": "71c2a9e428899d2cf143d13de40dce60cada8bb9a96ff0cc7e19d6dfb78174d6",
+      "dimensions": [
+        1080,
+        1920
+      ]
+    },
+    {
+      "path": "candidate/common-layer-scale1/ordinary-tile-scale1.png",
+      "sha256": "28cbde243b6a73ada157eff5853b6999de11da4ec1ea44f187d43805ad83d7bc",
+      "dimensions": [
+        1080,
+        1920
+      ]
+    },
+    {
+      "path": "candidate/common-layer-scale1/ordinary-tree-bottom-scale1.png",
+      "sha256": "63eaf6b4f10340427c4b8ce41f5ee8a63c8b79f227df18291ff1c5ff610c3f71",
+      "dimensions": [
+        1080,
+        1920
+      ]
+    },
+    {
+      "path": "candidate/common-layer-scale1/ordinary-tree-scale1.png",
+      "sha256": "a5e769d34898809a1ea9ab49622bdacbdfb1a03cb765b23179af3194f0e2a11a",
+      "dimensions": [
+        1080,
+        1920
+      ]
+    },
+    {
+      "path": "candidate/common-layer-scale2/clone-tile-bottom-scale2.png",
+      "sha256": "534961ce03e3d0c6b0002aad220f9b621267b7130f8d16c8de6d46c39ad8cda9",
+      "dimensions": [
+        1080,
+        1920
+      ]
+    },
+    {
+      "path": "candidate/common-layer-scale2/clone-tile-scale2.png",
+      "sha256": "19cd187325244fcdaae57a518a3ba89bb21a8f6dc750b623223e045604fca17f",
+      "dimensions": [
+        1080,
+        1920
+      ]
+    },
+    {
+      "path": "candidate/common-layer-scale2/clone-tree-bottom-scale2.png",
+      "sha256": "d96a92995f8e911448945958f2e9d1761b71e3cce7f7f2e090c73209fc221cc3",
+      "dimensions": [
+        1080,
+        1920
+      ]
+    },
+    {
+      "path": "candidate/common-layer-scale2/clone-tree-scale2.png",
+      "sha256": "31d9eec70d5592d07fd61638e15db28a17effa41f5f30f2ddf5ddfb6eabc57b1",
+      "dimensions": [
+        1080,
+        1920
+      ]
+    },
+    {
+      "path": "candidate/common-layer-scale2/ordinary-tile-bottom-scale2.png",
+      "sha256": "f9cf6b6021598f9bc249620df18ca964a5ac8c1f811dc4441bd2199efc7f8c97",
+      "dimensions": [
+        1080,
+        1920
+      ]
+    },
+    {
+      "path": "candidate/common-layer-scale2/ordinary-tile-scale2.png",
+      "sha256": "9526f615a245a2460dd10a220ddc352d62cb38ef4ce8d5e263dc2c6e6c4919c9",
+      "dimensions": [
+        1080,
+        1920
+      ]
+    },
+    {
+      "path": "candidate/common-layer-scale2/ordinary-tree-bottom-scale2.png",
+      "sha256": "6c8e64c5f03d6f66d36615252836fdc5241a63dfb181cf8afd4c601817f18851",
+      "dimensions": [
+        1080,
+        1920
+      ]
+    },
+    {
+      "path": "candidate/common-layer-scale2/ordinary-tree-scale2.png",
+      "sha256": "93b26f4c9cc9b2aaf30bc2e5bbaac25b9be1d322af712d482b0add99851e1797",
+      "dimensions": [
+        1080,
+        1920
+      ]
+    }
+  ],
+  "visual_review": {
+    "brush": "All four original PNGs inspected. Popup, selector, tool options, editable Brush options and preview visibly fit at scales 1 and 2. Lower-control images show edited values. Scope is image-only; independent captures do not replace failed full runs.",
+    "common": "All 16 original PNGs independently inspected by review_c6_common_images. No blank/corrupt captures or obvious popup-layout regression. Scroll-edge partial rows are expected, scale-2 tile popup touches top edge but remains horizontally contained.",
+    "pixel_gate": "No additional repository validator executed during read-only monitoring."
+  }
+}

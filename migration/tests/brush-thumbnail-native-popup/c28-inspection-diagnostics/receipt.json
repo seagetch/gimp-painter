@@ -1,0 +1,16 @@
+{
+  "status": "C28_REVIEW_ONLY_BOUNDED_INSPECTION_DIAGNOSTICS",
+  "base_commit": "44fac3bce3f0a326e0b74178d2c999b4ca3f1762",
+  "base_tree": "d6f1c120e9fd240e0b80ee394f99c498774d5b48",
+  "run45": "https://github.com/seagetch/gimp-painter/actions/runs/40708599624",
+  "observation": "Normal Brush/common gates pass. Mask proof stops inspection-failed before any paired native test. Exact underlying inspection failure was not retained and remains unknown. Matched12 primary reports contain metrics but all14 runtime inspections remain inspection-unavailable, so no validated baseline/current comparison or acceptance.",
+  "mask_diagnostic": "Preserve inspection rejection. Failure only emits fixed stage, native code, output sizes/hashes, six finite categories from bounded stderr; no raw output, environment, command arguments or addresses.",
+  "mask_options_fix": "Separate proven downstream issue: admit only exact pinned Meson1.7 injected normal ASAN/UBSAN/MSAN defaults; retain exact existing strict SAN options and no LSAN override. Verified with real tiny Meson fixture plus synthetic GIMP-required fields, not native GIMP proof.",
+  "matched_diagnostic": "Keep existing conditions, evaluation order, outcomes and EvidenceError rejection codes. On caught failure only emit finite runtime stage/error category and finite reviewed ResourceError code; unknown codes omitted, no arbitrary exception text or environment/path/output exported.",
+  "qualification": "Actual cause of run45 mask and runtime inspection failures remains unknown. Diagnostic additions do not fix that cause or relax admission. Synthetic tests and tiny Meson fixture are not GIMP native or hosted comparison evidence.",
+  "unchanged": "Native production/build files, all26protected files, deadlines, assertions, leak policy, old/fixed native expected outcomes, matched sources/order, workflow and accepted parent. Denied babl/ptrace actions untouched. Task308 DOING.",
+  "files": {
+    "real-meson-defaults-replay.json": "b4ef620aee2537e6f62ffa4984931938e1f47dea247beeab072b71b8183e52cb",
+    "delta-base-byte-reconciliation.json": "cb1ae2902f85bafa3553de70f94d9d164daed5e5b5db6faaeeba462ab5acdaa6"
+  }
+}

@@ -1,0 +1,470 @@
+{
+  "format": 1,
+  "observed_utc": "2026-11-01T13:49:36Z",
+  "run_id": 41308469141,
+  "head": "fd7280ec8a9c63deef08fe3e3cda2dccfd166ed8",
+  "tree": "4fbd3fbcca0d87df0686a7ba7146f0b2e4ec414c",
+  "accepted_parent": "e25a94e21efca6e6604ddac6f15570c049f421e7",
+  "acceptance_eligible": false,
+  "task_308_accepted": false,
+  "success": 5,
+  "failure": 3,
+  "jobs": [
+    {
+      "id": 124853676211,
+      "name": "candidate",
+      "conclusion": "success",
+      "completed_at": "2026-11-01T13:10:23Z"
+    },
+    {
+      "id": 124853676396,
+      "name": "brush-baseline-red",
+      "conclusion": "success",
+      "completed_at": "2026-11-01T12:58:35Z"
+    },
+    {
+      "id": 124853676408,
+      "name": "baseline-carrier-red",
+      "conclusion": "success",
+      "completed_at": "2026-11-01T13:00:37Z"
+    },
+    {
+      "id": 124853676413,
+      "name": "dockbook-controlled-order-3d6f",
+      "conclusion": "success",
+      "completed_at": "2026-11-01T13:00:04Z"
+    },
+    {
+      "id": 124853676429,
+      "name": "brush-sanitizer",
+      "conclusion": "failure",
+      "completed_at": "2026-11-01T13:39:41Z"
+    },
+    {
+      "id": 124853676471,
+      "name": "brush-positive",
+      "conclusion": "success",
+      "completed_at": "2026-11-01T13:10:13Z"
+    },
+    {
+      "id": 124853676585,
+      "name": "babl-owned-doc-proof",
+      "conclusion": "failure",
+      "completed_at": "2026-11-01T12:52:47Z"
+    },
+    {
+      "id": 124853676632,
+      "name": "matched-preclick-nonacceptance",
+      "conclusion": "failure",
+      "completed_at": "2026-11-01T13:29:16Z"
+    }
+  ],
+  "original_artifacts": [
+    {
+      "id": 13086251265,
+      "name": "painter-brush-ui-sanitizer-fd7280ec8a9c63deef08fe3e3cda2dccfd166ed8-1",
+      "path": "artifacts/run52-13086251265.zip",
+      "sha256": "cc28800251f2de0b6cc488cf9b8521478f81cc4391f625557731a1c674111f7c",
+      "bytes": 10259215,
+      "api_digest_and_size_verified": true
+    },
+    {
+      "id": 13085855369,
+      "name": "painter-matched-preclick-fd7280ec8a9c63deef08fe3e3cda2dccfd166ed8-1",
+      "path": "artifacts/run52-13085855369.zip",
+      "sha256": "d85e64619efc25f9595bf4bb462867afde8b231769d35805777472fbf467a4e8",
+      "bytes": 9081709,
+      "api_digest_and_size_verified": true
+    },
+    {
+      "id": 13085390072,
+      "name": "painter-native-ui-candidate-fd7280ec8a9c63deef08fe3e3cda2dccfd166ed8-1",
+      "path": "artifacts/run52-13085390072.zip",
+      "sha256": "f82476d87212cc982f7bdca8d84b4e39cf826a31bb696dcf57b58093ebfca418",
+      "bytes": 2209456,
+      "api_digest_and_size_verified": true
+    },
+    {
+      "id": 13084870865,
+      "name": "painter-native-ui-dockbook-controlled-order-3d6f-fd7280ec8a9c63deef08fe3e3cda2dccfd166ed8-1",
+      "path": "artifacts/run52-13084870865.zip",
+      "sha256": "9d87b3a988bf6c7ae8a21335767d21308cb1e3281d77dd2c80909cbde9572374",
+      "bytes": 212984,
+      "api_digest_and_size_verified": true
+    },
+    {
+      "id": 13084847438,
+      "name": "painter-brush-ui-positive-fd7280ec8a9c63deef08fe3e3cda2dccfd166ed8-1",
+      "path": "artifacts/run52-13084847438.zip",
+      "sha256": "7db243e91361c92ccfbb4deac94075a9f25f496b53f33542827d34b90d8a4a87",
+      "bytes": 838657,
+      "api_digest_and_size_verified": true
+    },
+    {
+      "id": 13084681141,
+      "name": "painter-brush-ui-baseline-red-fd7280ec8a9c63deef08fe3e3cda2dccfd166ed8-1",
+      "path": "artifacts/run52-13084681141.zip",
+      "sha256": "9bd9cb5d4f529f3124e4b90408b11155aa17806aa0ed90ab0ebdb7c61c621101",
+      "bytes": 63846,
+      "api_digest_and_size_verified": true
+    },
+    {
+      "id": 13084307467,
+      "name": "painter-native-ui-baseline-carrier-red-fd7280ec8a9c63deef08fe3e3cda2dccfd166ed8-1",
+      "path": "artifacts/run52-13084307467.zip",
+      "sha256": "eafa948a70bc50b6c0543855ce0e1284743c99723e6f2915612693cf0cf14934",
+      "bytes": 608858,
+      "api_digest_and_size_verified": true
+    },
+    {
+      "id": 13084166999,
+      "name": "babl-owned-doc-proof-fd7280ec8a9c63deef08fe3e3cda2dccfd166ed8",
+      "path": "artifacts/run52-13084166999.zip",
+      "sha256": "328a1c3f1ea8ff71e6a15543ee67d88b3bc406cf962401230605376ad8c176bd",
+      "bytes": 25013552,
+      "api_digest_and_size_verified": true
+    }
+  ],
+  "all_eight_full_job_logs_saved": true,
+  "normal_mask": {
+    "proof_passed": true,
+    "fixed_full107_passed": true,
+    "expected_failure_semantics_verified": true,
+    "acceptance_eligible": false,
+    "errors": []
+  },
+  "matched": {
+    "schema_preparation": {
+      "schema": "matched-schema-preparation-v1",
+      "acceptance_eligible": false,
+      "stage": "complete",
+      "compiler_exit": 0,
+      "compiler_sha256": "613c5b6ed8c95bb9d3b4055299a9e2a77422841b5e974711dd91562b6fb0d32e",
+      "cache_sha256": "1e621796723a48f5e78a16ccf078f3effb347df58eaf13d0686be121964fcb0f",
+      "loader_error_observed": false,
+      "raw_output_exported": false,
+      "loader_policy": "dependency-libdir-only",
+      "diagnostic_truncated": false,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "prepare": {
+      "format": 1,
+      "phase": "prepare",
+      "stage": "ready",
+      "exit_code": 0,
+      "acceptance_eligible": false,
+      "native_failures_not_waived": true
+    },
+    "measure": {
+      "format": 1,
+      "phase": "measure",
+      "stage": "complete",
+      "exit_code": 1,
+      "acceptance_eligible": false,
+      "native_failures_not_waived": true
+    },
+    "identity_verified": true,
+    "summary_status": "inconclusive",
+    "comparison_eligible": false,
+    "statistics": {
+      "baseline-normal": {
+        "metrics_population": "all-available-including-inconclusive",
+        "comparison_eligible_repetitions": 3,
+        "available_repetitions": 3,
+        "primary_passes": 3,
+        "median_elapsed_us": 191474,
+        "min_elapsed_us": 190632,
+        "max_elapsed_us": 191773
+      },
+      "current-normal": {
+        "metrics_population": "all-available-including-inconclusive",
+        "comparison_eligible_repetitions": 3,
+        "available_repetitions": 3,
+        "primary_passes": 3,
+        "median_elapsed_us": 189202,
+        "min_elapsed_us": 187997,
+        "max_elapsed_us": 190437
+      },
+      "baseline-sanitizer": {
+        "metrics_population": "all-available-including-inconclusive",
+        "comparison_eligible_repetitions": 0,
+        "available_repetitions": 3,
+        "primary_passes": 0,
+        "median_elapsed_us": 10188484,
+        "min_elapsed_us": 10155709,
+        "max_elapsed_us": 10196931
+      },
+      "current-sanitizer": {
+        "metrics_population": "all-available-including-inconclusive",
+        "comparison_eligible_repetitions": 3,
+        "available_repetitions": 3,
+        "primary_passes": 0,
+        "median_elapsed_us": 10166527,
+        "min_elapsed_us": 10127213,
+        "max_elapsed_us": 10923510
+      }
+    },
+    "baseline_configuration_overlay_not_pristine": true
+  },
+  "sanitizer": {
+    "cases": [
+      {
+        "file": "brush-sanitizer-case01-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          199846
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case02-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          199458
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case03-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          199426
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case04-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          199426
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case05-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          199426
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case06-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          199426
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case07-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          199426
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case08-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          199426
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case09-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          199338
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case10-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          200130
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case11-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          198754
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case12-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          198754
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case13-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          199642
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case14-results.json",
+        "returncode": -6,
+        "tap_passes": 0,
+        "leak_bytes": []
+      },
+      {
+        "file": "brush-sanitizer-case15-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          200426
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case16-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          201378
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case17-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          198746
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case18-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          198754
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case19-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          200514
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case20-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          199770
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case21-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          198738
+        ]
+      }
+    ],
+    "case14": {
+      "returncode": -6,
+      "stable": 0,
+      "elapsed_us": 8843447,
+      "whole_main_context_iteration_us": 8839766
+    },
+    "native_failure_not_waived": true
+  },
+  "readiness_owner": {
+    "status": {
+      "format": 1,
+      "acceptance_eligible": false,
+      "diagnostic_only": true,
+      "stage": "isolated-debugger-observation",
+      "diagnostic_step_exit": 1,
+      "state": "finished",
+      "original_driver_exit_unchanged": true,
+      "dependency_closure": "GDB installed after original acceptance; diagnostic system dependencies may differ.",
+      "qualification": "Separate instrumented build only; debugger changes timing; no acceptance or leak verdict. Primary gate exit unchanged."
+    },
+    "build_identity": {
+      "format": 1,
+      "acceptance_eligible": false,
+      "diagnostic_only": true,
+      "github_sha": "fd7280ec8a9c63deef08fe3e3cda2dccfd166ed8",
+      "source_tree": "4fbd3fbcca0d87df0686a7ba7146f0b2e4ec414c",
+      "primary_identity_unchanged": true,
+      "separate_build": true,
+      "dependency_root_sha256": "63874a6b24b3afb4ae3de4a694bb5f0bb0d6374e139c1e5ac57c75e1590dac89",
+      "locale_sha256": "da55de0a447a773acd1917204ba6e29cd326010f9e28199649007f5b725b6a49",
+      "host_scope": "selected public dependency links only; not full host closure",
+      "overlay": {
+        "base_tree": "4fbd3fbcca0d87df0686a7ba7146f0b2e4ec414c",
+        "modified_path": "app/tests/meson.build",
+        "overlay_sha256": "f0074cf7677c83aef037158180bc284ae935a857e8da2e05c30298d7f1ec7124",
+        "append_sha256": "968d41096f6e31c06c3247a6b28493d18ca13acee6217885012da9c772d06355",
+        "gimp_data": "a31e5dea4f572fb5f33b06f5c4b86db5f30643dc"
+      },
+      "status": "diagnostic-identity-verified",
+      "binary_sha256": "2ea1cd75c133c57235bf096c636067f050b5e9e52524d4b5a7ae0f72b7ec0962",
+      "identity_sha256": "9599b165ebb662787f23d1592d95d477183804e410fbcad66a720a853f735d3c",
+      "hashed_file_count": 1592
+    },
+    "primary_final": {
+      "format": 1,
+      "acceptance_eligible": false,
+      "status": "identity-verified"
+    },
+    "sample_status": "inconclusive",
+    "owner_observation": {
+      "status": "inconclusive",
+      "failure_category": "Incomplete or invalid bounded owner records",
+      "records": []
+    },
+    "sample_frames": [
+      79,
+      96,
+      96,
+      96,
+      96,
+      96,
+      96,
+      96
+    ],
+    "owned_child_cleanup_completed": true,
+    "cleanup_evidence": {
+      "stage": "complete",
+      "run_requested": true,
+      "owned_pidfd_present": true,
+      "unknown_inferior": false,
+      "pidfd_signal": "sent",
+      "pidfd_wait": "timeout",
+      "pidfd_final_wait": "observed",
+      "pidfd_close": "closed",
+      "debugger_poll": "running",
+      "debugger_exit": "requested",
+      "debugger_grace_wait": "observed",
+      "debugger_kill": "not-attempted",
+      "debugger_final_wait": "observed",
+      "stream_close": "closed",
+      "child_termination_observed": true,
+      "debugger_termination_observed": true
+    },
+    "original_first_wait_deadline_seconds": 3,
+    "log_step_start": "2026-11-01T13:30:40.4613604Z",
+    "following_step_start": "2026-11-01T13:39:35.4205905Z",
+    "step_elapsed_approximately_seconds": 535,
+    "build_budget_timeout_observed": false,
+    "raw_MI_not_exported": true,
+    "records_absence_cause_unresolved": true,
+    "leak_verdict": "not evaluated under ptrace"
+  }
+}

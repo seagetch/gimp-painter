@@ -12,6 +12,8 @@ extern "C" {
 }
 #include "painter/binding-store.hpp"
 #include "painter/connection.hpp"
+#include "painter/gimp-painter-binding.h"
+#include <string>
 #include <vector>
 #include <memory>
 using namespace GimpPainter;
@@ -236,4 +238,199 @@ gimp_painter_ink_popup_button_new (GtkWidget *body, gboolean blob) {
 extern "C" GtkWidget *
 gimp_painter_clone_options_button_new (GtkWidget *body) {
   return popup_button_new (nullptr, body, "painter-clone-options-popup", true);
+}
+
+
+/* Fresh resource views have a separate controller: none of the retained-body
+ * ownership or nested stock-selector handling above changes. Brush uses a
+ * directly embedded live grid, never a staged GimpContainerPopup child. */
+namespace {
+struct FreshPopup;
+struct FreshSlot : SlotSpec<GtkWidget, FreshPopup> {};
+struct FreshPopup {
+  GtkWidget *owner;
+  WeakRef<GObject> model;
+  GimpPainterPopupCreateView create_view;
+  std::string host_name;
+  Ref body, popup;
+  std::vector<Connection> connections, host_connections;
+  bool closed = false, opening = false, retiring = false;
+  FreshPopup (GtkWidget *button, GObject *value,
+              GimpPainterPopupCreateView factory, const char *name)
+    : owner (button), model (Ref::retain (value)), create_view (factory), host_name (name) {}
+  void retire (GtkWidget *host);
+  void popdown ();
+  void open ();
+  void close () noexcept;
+};
+template<class F> void fresh_dispatch (gpointer data, F&& fn) noexcept {
+  try {
+    auto owner = static_cast<Hook*> (data)->owner.lock ();
+    if (!owner) return;
+    auto *store = BindingStore::find (owner.get ());
+    if (store && store->state () == BindingStore::State::active)
+      store->with<FreshSlot> ([&] (FreshPopup& p) { if (!p.closed) fn (p); });
+  } catch (const std::exception& e) { g_warning ("Painter resource popup: %s", e.what ()); }
+}
+void fresh_clicked (GtkButton*, gpointer data) {
+  fresh_dispatch (data, [] (FreshPopup& p) {
+    // Keyboard/programmatic activation remains available; never reopen on a
+    // clicked companion after the legacy pointer-press opening.
+    if (!p.popup) p.open ();
+  });
+}
+void fresh_unmapped (GtkWidget*, gpointer data) {
+  fresh_dispatch (data, [] (FreshPopup& p) { p.popdown (); });
+}
+void fresh_dismissed (GtkWidget *host, gpointer data) {
+  auto lease = Ref::retain (G_OBJECT (host));
+  fresh_dispatch (data, [host] (FreshPopup& p) { p.retire (host); });
+}
+void fresh_host_unmapped (GtkWidget *host, gpointer data) {
+  auto lease = Ref::retain (G_OBJECT (host));
+  fresh_dispatch (data, [host] (FreshPopup& p) {
+    if (p.popup.get () == G_OBJECT (host)) p.popdown ();
+  });
+}
+void fresh_body_destroyed (GtkWidget *body, gpointer data) {
+  auto lease = Ref::retain (G_OBJECT (body));
+  fresh_dispatch (data, [body] (FreshPopup& p) {
+    if (p.body.get () == G_OBJECT (body)) p.popdown ();
+  });
+}
+void FreshPopup::retire (GtkWidget *host) {
+  if (popup.get () != G_OBJECT (host) || retiring) return;
+  retiring = true;
+  struct Guard { bool& flag; ~Guard () { flag = false; } } guard {retiring};
+  auto content = std::move (body);
+  popup.reset ();
+  host_connections.clear ();
+  // Close observations before any child destroy signals can reenter them.
+  if (content) {
+    gimp_painter_binding_close (content.get (), nullptr);
+    gtk_widget_destroy (GTK_WIDGET (content.get ()));
+  }
+}
+void FreshPopup::popdown () {
+  if (retiring) return;
+  auto host = popup;
+  if (!host) return;
+  retire (GTK_WIDGET (host.get ()));
+  gtk_widget_destroy (GTK_WIDGET (host.get ()));
+}
+void FreshPopup::open () {
+  if (closed || opening || retiring || !gtk_widget_get_mapped (owner) ||
+      !gtk_widget_is_sensitive (owner)) return;
+  opening = true;
+  struct Guard { bool& flag; ~Guard () { flag = false; } } guard {opening};
+  popdown ();
+  auto config = model.lock ();
+  if (closed || !config || gtk_widget_in_destruction (owner)) return;
+  auto *created = create_view (config.get ());
+  if (!created) return;
+  auto content = Ref::sink (G_OBJECT (created));
+  auto discard = [&] {
+    gimp_painter_binding_close (content.get (), nullptr);
+    gtk_widget_destroy (created);
+  };
+  if (closed || !gtk_widget_get_mapped (owner) || gtk_widget_in_destruction (created)) {
+    discard (); return;
+  }
+  auto carrier = Ref::sink (G_OBJECT (gtk_box_new (GTK_ORIENTATION_VERTICAL, 0)));
+  auto *host = gimp_painter_popup_new (GTK_WIDGET (carrier.get ()));
+  if (!host) { discard (); return; }
+  auto lease = Ref::retain (G_OBJECT (host));
+  if (closed) { discard (); gtk_widget_destroy (host); return; }
+  popup = lease;
+  body = content;
+  host_connections.push_back (connect (host, "cancel", G_CALLBACK (fresh_dismissed), owner));
+  host_connections.push_back (connect (host, "confirm", G_CALLBACK (fresh_dismissed), owner));
+  host_connections.push_back (connect (host, "destroy", G_CALLBACK (fresh_dismissed), owner));
+  host_connections.push_back (connect (host, "unmap", G_CALLBACK (fresh_host_unmapped), owner));
+  host_connections.push_back (connect (created, "destroy", G_CALLBACK (fresh_body_destroyed), owner));
+  auto current = [&] {
+    auto *host_store = BindingStore::find (G_OBJECT (host));
+    return host_store && host_store->state () == BindingStore::State::active &&
+           !closed && popup.get () == G_OBJECT (host) &&
+           !gtk_widget_in_destruction (host) && !gtk_widget_in_destruction (created) &&
+           gtk_widget_get_mapped (owner) && gtk_widget_is_sensitive (owner);
+  };
+  gtk_widget_set_name (host, host_name.c_str ());
+  if (!current ()) { popdown (); return; }
+  gtk_box_pack_start (GTK_BOX (carrier.get ()), created, TRUE, TRUE, 0);
+  if (!current ()) { popdown (); return; }
+  gtk_widget_show_all (created);
+  if (!current ()) { popdown (); return; }
+  // Only the new fresh Brush host constrains an otherwise fitting form. The
+  // retained native callers above keep their exact old edge-flipping policy.
+  GtkRequisition natural;
+  gtk_widget_get_preferred_size (host, nullptr, &natural);
+  if (!current ()) { popdown (); return; }
+  GtkAllocation allocation; gtk_widget_get_allocation (owner, &allocation);
+  gint left, top; gdk_window_get_origin (gtk_widget_get_window (owner), &left, &top);
+  if (!gtk_widget_get_has_window (owner)) { left += allocation.x; top += allocation.y; }
+  auto *monitor = gdk_display_get_monitor_at_point (gtk_widget_get_display (owner), left, top);
+  if (!monitor) { popdown (); return; }
+  GdkRectangle bounds; gdk_monitor_get_geometry (monitor, &bounds);
+  gint x = left, y = top + allocation.height;
+  if (x + natural.width > bounds.x + bounds.width) x = left + allocation.width - natural.width;
+  if (y + natural.height > bounds.y + bounds.height) y = top - natural.height;
+  x = CLAMP (x, bounds.x, MAX (bounds.x, bounds.x + bounds.width - natural.width));
+  y = CLAMP (y, bounds.y, MAX (bounds.y, bounds.y + bounds.height - natural.height));
+  if (!current ()) { popdown (); return; }
+  gtk_window_move (GTK_WINDOW (host), x, y);
+  if (!current ()) { popdown (); return; }
+  gtk_widget_show (host);
+}
+void FreshPopup::close () noexcept {
+  closed = true;
+  connections.clear ();
+  popdown ();
+  host_connections.clear ();
+  model.reset ();
+}
+}
+
+/* Override only this private subclass's press phase. Connecting a FALSE
+ * button-press handler to ordinary GtkButton would still run its default
+ * press handler and steal the newly opened popup's grab. The old 2.8 class
+ * replaced that vfunc and returned FALSE without chaining, as done here. */
+struct GimpPainterResourceButton { GtkButton parent_instance; };
+struct GimpPainterResourceButtonClass { GtkButtonClass parent_class; };
+static GType gimp_painter_resource_button_get_type (void);
+G_DEFINE_TYPE (GimpPainterResourceButton, gimp_painter_resource_button, GTK_TYPE_BUTTON)
+static gboolean resource_button_press (GtkWidget *widget, GdkEventButton*) {
+  return boundary<gboolean> (nullptr, FALSE, [&] {
+    Hook hook (widget);
+    fresh_dispatch (&hook, [] (FreshPopup& p) { p.open (); });
+    return FALSE;
+  });
+}
+static gboolean resource_button_scroll (GtkWidget*, GdkEventScroll*) { return TRUE; }
+static void gimp_painter_resource_button_class_init (GimpPainterResourceButtonClass *klass) {
+  GTK_WIDGET_CLASS (klass)->button_press_event = resource_button_press;
+  GTK_WIDGET_CLASS (klass)->scroll_event = resource_button_scroll;
+}
+static void gimp_painter_resource_button_init (GimpPainterResourceButton *button) {
+  gtk_widget_add_events (GTK_WIDGET (button), GDK_SCROLL_MASK);
+}
+extern "C" GtkWidget *
+gimp_painter_resource_popup_button_new (GObject *model,
+                                         GimpPainterPopupCreateView create_view,
+                                         const gchar *host_name) {
+  return boundary<GtkWidget*> (nullptr, nullptr, [&] {
+    if (!G_IS_OBJECT (model) || !create_view || !host_name) return static_cast<GtkWidget*> (nullptr);
+    auto *button = GTK_WIDGET (g_object_new (gimp_painter_resource_button_get_type (), nullptr));
+    auto lease = Ref::sink (G_OBJECT (button));
+    auto& store = BindingStore::ensure (G_OBJECT (button));
+    store.emplace<FreshSlot> (button, model, create_view, host_name);
+    store.activate ();
+    store.with<FreshSlot> ([&] (FreshPopup& p) {
+      p.connections.push_back (connect (button, "clicked", G_CALLBACK (fresh_clicked), button));
+      p.connections.push_back (connect (button, "unmap", G_CALLBACK (fresh_unmapped), button));
+      p.connections.push_back (Connection::connect (lease, "destroy", G_CALLBACK (owner_destroyed), nullptr, nullptr));
+    });
+    g_object_force_floating (lease.release ());
+    return button;
+  });
 }

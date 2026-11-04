@@ -1,0 +1,21 @@
+{
+  "status": "C20_REVIEW_ONLY_EXACT_PUBLIC_X11_COLOR_DATABASE",
+  "base_commit": "da0c316b53a89637172513bbccffc82dd8bcbd99",
+  "base_tree": "205a00976e2edc1ef04c919b6fd0c72d9f6921a4",
+  "observed": "Run38 bounded dependency inventory failure explicitly identifies usr/share/X11/rgb.txt; matched measurements skipped.",
+  "archive_proof": "Existing locked x11-common archive SHA57a981938506b26dc552f19cafeaa8c04e9b59dc7508509151f8507a9d4e5f24 proves literal /etc/X11/rgb.txt link and regular17394-byte counterpart SHA2c8ab5acc9eb072f4cc88696834188100d05e50af5d1425501d993700aaa3164.",
+  "repair_scope": "Only exact fourth public color database entry and its archive constant. Existing nofollow/canonical/regular/16MiB/stability/package-counterpart/four-cell comparison guards unchanged. Unknown siblings/outside links still fail; private directory metadata-only handling unchanged.",
+  "archive_scan": "Separate complete-lock symlink metadata research; exact verified counts/unresolved and additional classes are in archive-symlink-summary.json. Metadata observations are NOT policy adoption or host-target content proof. No other file-class exception is introduced here.",
+  "localtime_disposition": "NO new exception and NO host-target inspection. Archive usr/share/zoneinfo/localtime -> /etc/localtime is recorded; existing canonical /usr,/lib allowance may handle standard resolution, otherwise bounded fail-closed remains. Runtime resolution unproven.",
+  "archive_execution": "No package install, extraction or code execution; host target not read for metadata proof.",
+  "native_comparison": "UNRUN; no timing or native acceptance promotion.",
+  "run38_other_jobs": "Positive job failed on pinned snapshot TLS unexpected EOF before compilation, unrelated to this inventory fix. Other original jobs pending at preparation.",
+  "helper_sha256": "5d8f61621fbb8e85a0bf55636196939645bcebd560164e5831d88fd6f0b6ca5d",
+  "tests_sha256": "2f57027cfd4edb7d7fde9824eda1af2030453eef01716f757003476471302477",
+  "files": {
+    "run38-baseline-normal-identity.json": "7bb278cea344a7de42ac4040d39f72f3854a049308655ea0dfd295a9d95528b0",
+    "verified-rgb-link-metadata.json": "fd2b9825ebd08276b9d7ff1ea29d6f43344d07c28c0755c618ceb8f00dd93eaa",
+    "x11-common.links.json": "e924b6d0e43a71650506ea0b01e0baaf4f633485bf50fa060794a00c40ceb34b",
+    "archive-symlink-summary.json": "31e8cf9dfc593c16f292ffdb7e3a6551e8326a90cce111f779957b28079ed169"
+  }
+}

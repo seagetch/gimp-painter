@@ -1,0 +1,276 @@
+{
+  "format": 1,
+  "observed_utc": "2026-11-03T02:31:45.812866+00:00",
+  "run_id": 41561860476,
+  "run_url": "https://github.com/seagetch/gimp-painter/actions/runs/41561860476",
+  "head": "9c875df0d153d7733cc5187b54f80993a5762e07",
+  "tree": "87ce34b44edb782e399850af006cf65887646d8b",
+  "accepted_parent": "e25a94e21efca6e6604ddac6f15570c049f421e7",
+  "status": "completed",
+  "conclusion": "failure",
+  "acceptance_eligible": false,
+  "task_308_accepted": false,
+  "success": 5,
+  "failure": 3,
+  "jobs": [
+    {
+      "id": 125674086289,
+      "name": "babl-owned-doc-proof",
+      "conclusion": "failure",
+      "completed_at": "2026-11-03T01:47:07Z"
+    },
+    {
+      "id": 125674086535,
+      "name": "candidate",
+      "conclusion": "success",
+      "completed_at": "2026-11-03T02:02:23Z"
+    },
+    {
+      "id": 125674086594,
+      "name": "brush-positive",
+      "conclusion": "success",
+      "completed_at": "2026-11-03T02:04:35Z"
+    },
+    {
+      "id": 125674086602,
+      "name": "brush-baseline-red",
+      "conclusion": "success",
+      "completed_at": "2026-11-03T01:53:11Z"
+    },
+    {
+      "id": 125674086608,
+      "name": "dockbook-controlled-order-3d6f",
+      "conclusion": "success",
+      "completed_at": "2026-11-03T01:53:50Z"
+    },
+    {
+      "id": 125674086668,
+      "name": "matched-preclick-nonacceptance",
+      "conclusion": "failure",
+      "completed_at": "2026-11-03T02:27:21Z"
+    },
+    {
+      "id": 125674086673,
+      "name": "brush-sanitizer",
+      "conclusion": "failure",
+      "completed_at": "2026-11-03T02:25:14Z"
+    },
+    {
+      "id": 125674086743,
+      "name": "baseline-carrier-red",
+      "conclusion": "success",
+      "completed_at": "2026-11-03T01:55:08Z"
+    }
+  ],
+  "artifacts": [
+    {
+      "id": 13199720641,
+      "name": "painter-brush-ui-sanitizer-9c875df0d153d7733cc5187b54f80993a5762e07-1",
+      "path": "/workspace/scratch/0015fc5d1a03/brush-c37-run55/painter-brush-ui-sanitizer-9c875df0d153d7733cc5187b54f80993a5762e07-1.zip",
+      "size": 10314493,
+      "sha256": "c9ec4cad14f3dc6e1f874d265b48b553c5a9ff3868d558936ca928bee6d50db4",
+      "api_digest_and_size_match": true,
+      "members": 132
+    },
+    {
+      "id": 13199091974,
+      "name": "painter-matched-preclick-9c875df0d153d7733cc5187b54f80993a5762e07-1",
+      "path": "/workspace/scratch/0015fc5d1a03/brush-c37-run55/painter-matched-preclick-9c875df0d153d7733cc5187b54f80993a5762e07-1.zip",
+      "size": 9081637,
+      "sha256": "bf6d546dc873dbf38c54911d5c783475d44b9a2f9985cfe786c87abab585eeda",
+      "api_digest_and_size_match": true,
+      "members": 82
+    },
+    {
+      "id": 13198560334,
+      "name": "painter-native-ui-dockbook-controlled-order-3d6f-9c875df0d153d7733cc5187b54f80993a5762e07-1",
+      "path": "/workspace/scratch/0015fc5d1a03/brush-c37-run55/painter-native-ui-dockbook-controlled-order-3d6f-9c875df0d153d7733cc5187b54f80993a5762e07-1.zip",
+      "size": 219422,
+      "sha256": "43e8ecc74a085533052d2f0e32ce1b818117ecab4a3040c63daccf048dfee37e",
+      "api_digest_and_size_match": true,
+      "members": 33
+    },
+    {
+      "id": 13198180122,
+      "name": "babl-owned-doc-proof-9c875df0d153d7733cc5187b54f80993a5762e07",
+      "path": "/workspace/scratch/0015fc5d1a03/brush-c37-run55/babl-owned-doc-proof.zip",
+      "size": 25013672,
+      "sha256": "9f6ade0c73e5fad363ea6593051d0acd64bc3e4753fa3b61b7e424eac56d939b",
+      "api_digest_and_size_match": true,
+      "members": 616
+    },
+    {
+      "id": 13197947964,
+      "name": "painter-brush-ui-positive-9c875df0d153d7733cc5187b54f80993a5762e07-1",
+      "path": "/workspace/scratch/0015fc5d1a03/brush-c37-run55/painter-brush-ui-positive-9c875df0d153d7733cc5187b54f80993a5762e07-1.zip",
+      "size": 838861,
+      "sha256": "427d321ae4c1f47d262acb345f30b2d3977fe310671547c57b2dd6d1c6725418",
+      "api_digest_and_size_match": true,
+      "members": 106
+    },
+    {
+      "id": 13197786541,
+      "name": "painter-brush-ui-baseline-red-9c875df0d153d7733cc5187b54f80993a5762e07-1",
+      "path": "/workspace/scratch/0015fc5d1a03/brush-c37-run55/painter-brush-ui-baseline-red-9c875df0d153d7733cc5187b54f80993a5762e07-1.zip",
+      "size": 64058,
+      "sha256": "abaf1cc5f31b87cdca6dc868f9e5e4fd1fe56120497f2d4a76b25c44f5c12c65",
+      "api_digest_and_size_match": true,
+      "members": 28
+    },
+    {
+      "id": 13197507060,
+      "name": "painter-native-ui-baseline-carrier-red-9c875df0d153d7733cc5187b54f80993a5762e07-1",
+      "path": "/workspace/scratch/0015fc5d1a03/brush-c37-run55/painter-native-ui-baseline-carrier-red-9c875df0d153d7733cc5187b54f80993a5762e07-1.zip",
+      "size": 608819,
+      "sha256": "95f0472ab45cd59886c4e47a2ae52b86e1ce1821fe02d99715e0538a4715d515",
+      "api_digest_and_size_match": true,
+      "members": 44
+    },
+    {
+      "id": 13197467711,
+      "name": "painter-native-ui-candidate-9c875df0d153d7733cc5187b54f80993a5762e07-1",
+      "path": "/workspace/scratch/0015fc5d1a03/brush-c37-run55/painter-native-ui-candidate-9c875df0d153d7733cc5187b54f80993a5762e07-1.zip",
+      "size": 2208898,
+      "sha256": "42a35e63d1197a842df57706bf47e59aa5daeef0fa1788a98014d58962002282",
+      "api_digest_and_size_match": true,
+      "members": 56
+    }
+  ],
+  "logs": [
+    {
+      "job_id": 125674086289,
+      "path": "/workspace/scratch/0015fc5d1a03/brush-c37-run55/babl-owned-doc-proof.log",
+      "bytes": 25780,
+      "sha256": "735b68e8f3b492965a06bbadaa30b7d9bd3d6614e97c6e45b88178d10a356573"
+    },
+    {
+      "job_id": 125674086535,
+      "path": "/workspace/scratch/0015fc5d1a03/brush-c37-run55/candidate.log",
+      "bytes": 795674,
+      "sha256": "03b62f813a4c3dbf24dfc9a2dc7c6cf6a171f9771c244ad821d8afb1bc6b0e8a"
+    },
+    {
+      "job_id": 125674086594,
+      "path": "/workspace/scratch/0015fc5d1a03/brush-c37-run55/brush-positive.log",
+      "bytes": 1180605,
+      "sha256": "5d953eb693581ef3057fde08e9af8f7935c688dd0dea6047bed452cd7425e443"
+    },
+    {
+      "job_id": 125674086602,
+      "path": "/workspace/scratch/0015fc5d1a03/brush-c37-run55/brush-baseline-red.log",
+      "bytes": 588608,
+      "sha256": "15892225a3224deafc29915ea16c87894e341dd0362c784e85c79db4b25ef237"
+    },
+    {
+      "job_id": 125674086608,
+      "path": "/workspace/scratch/0015fc5d1a03/brush-c37-run55/dockbook-controlled-order-3d6f.log",
+      "bytes": 609434,
+      "sha256": "f7ad070e9657f2a997fc13726318655048749443ff2cf6f1a8cd839909a6be62"
+    },
+    {
+      "job_id": 125674086668,
+      "path": "/workspace/scratch/0015fc5d1a03/brush-c37-run55/matched-preclick-nonacceptance.log",
+      "bytes": 137291,
+      "sha256": "8dc3fb150ed09765a0bb6495666169bc61df99148f1f58c474ce9ca4380034aa"
+    },
+    {
+      "job_id": 125674086673,
+      "path": "/workspace/scratch/0015fc5d1a03/brush-c37-run55/brush-sanitizer.log",
+      "bytes": 1154376,
+      "sha256": "a8253edb9ad8f04f0571990fc9155895e15d64edc67a80d9e820b17f34c5988b"
+    },
+    {
+      "job_id": 125674086743,
+      "path": "/workspace/scratch/0015fc5d1a03/brush-c37-run55/baseline-carrier-red.log",
+      "bytes": 600872,
+      "sha256": "2ef34c6fd3a54b8a6c0ff6e0f3d2398e5efe0c393f2a9bbb893f6b9fc5c2f60e"
+    }
+  ],
+  "normal": {
+    "brush_scale1": "21/21 including case14",
+    "brush_scale2": "21/21 including case14",
+    "isolated_case14_firstwait_us": 206366,
+    "isolated_case14_stable": 3,
+    "mask_fixed_full107": "107/107 observational only"
+  },
+  "sanitizer": {
+    "case14_firstwait_us": 6763268,
+    "longest_dispatch_us": 6759694,
+    "stable": 0,
+    "original_deadline_seconds": 3,
+    "other_leaf_assertions_passed": 20,
+    "other_processes_leak_bytes_min": 172234,
+    "other_processes_leak_bytes_max": 201378
+  },
+  "owner": {
+    "status": "captured",
+    "original_deadline_seconds": 3,
+    "sanitizer_settings_changed": false,
+    "leak_verdict": "not evaluated under ptrace",
+    "gimp_image_window_check_resize_total_us": 6130191,
+    "gimp_image_window_frame_layout_total_us": 6528865,
+    "qualification": "Separate debugger-instrumented build; bounded16 owner snapshot,12 events,clipped=true; cannot infer production latency or exclusive cause; original primary failure unchanged."
+  },
+  "matched": {
+    "status": "inconclusive",
+    "identity_comparable": true,
+    "comparison_eligible": false,
+    "acceptance_eligible": false,
+    "statistics": {
+      "baseline-normal": {
+        "metrics_population": "all-available-including-inconclusive",
+        "comparison_eligible_repetitions": 3,
+        "available_repetitions": 3,
+        "primary_passes": 3,
+        "median_elapsed_us": 208633,
+        "min_elapsed_us": 204662,
+        "max_elapsed_us": 208669
+      },
+      "current-normal": {
+        "metrics_population": "all-available-including-inconclusive",
+        "comparison_eligible_repetitions": 3,
+        "available_repetitions": 3,
+        "primary_passes": 3,
+        "median_elapsed_us": 207203,
+        "min_elapsed_us": 205191,
+        "max_elapsed_us": 207382
+      },
+      "baseline-sanitizer": {
+        "metrics_population": "all-available-including-inconclusive",
+        "comparison_eligible_repetitions": 0,
+        "available_repetitions": 3,
+        "primary_passes": 0,
+        "median_elapsed_us": 12391060,
+        "min_elapsed_us": 12162778,
+        "max_elapsed_us": 12759432
+      },
+      "current-sanitizer": {
+        "metrics_population": "all-available-including-inconclusive",
+        "comparison_eligible_repetitions": 3,
+        "available_repetitions": 3,
+        "primary_passes": 0,
+        "median_elapsed_us": 12235968,
+        "min_elapsed_us": 12181562,
+        "max_elapsed_us": 12424710
+      }
+    },
+    "interpretation": "Baseline root Meson metadata has an exact diagnostic compatibility overlay in both modes; this is not a pristine-baseline build comparison. Three repetitions are descriptive, not significance or causality proof. Fidelity needs human review; no acceptance promotion."
+  },
+  "babl": {
+    "failure": "lcms2.pc missing from isolated pkg-config search path",
+    "same_boundary_as_run54": true
+  },
+  "run54_comparison": {
+    "run_id": 41320949207,
+    "terminal_receipt_sha256": "ca5766150c5306bcd8ec969385100f96f049c5df625dda73ff1cf1afa5785f69",
+    "old_success": 4,
+    "old_failure": 4,
+    "normal_case14_regression_removed": true,
+    "old_sanitizer_firstwait_us": 12171110,
+    "latency_fix_proven": false,
+    "leaks_fixed": false,
+    "matched_still_inconclusive": true,
+    "babl_still_failed": true
+  },
+  "public_writes_performed": false
+}

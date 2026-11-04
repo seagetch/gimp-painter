@@ -855,7 +855,12 @@ void Tiles::draw (cairo_t *cr) {
       cairo_set_source_rgb (cr, shade, shade, shade);
       cairo_rectangle (cr, x + cx, y + cy, 4, 4); cairo_fill (cr);
     }
-    auto preview = row.mask && gimp_layer_get_edit_mask (layer) ? row.mask : row.preview;
+    /* The model can lose or replace its mask before the queued row rebuild.
+     * A retained preview is not evidence that the layer still owns that mask. */
+    auto *mask = gimp_layer_get_mask (layer);
+    const bool current_mask = mask && row.mask &&
+      row.mask->viewable.get () == G_OBJECT (mask);
+    auto preview = current_mask && gimp_layer_get_edit_mask (layer) ? row.mask : row.preview;
     if (preview->surface) {
       int width = cairo_image_surface_get_width (preview->surface.get ());
       int height = cairo_image_surface_get_height (preview->surface.get ());
@@ -868,7 +873,7 @@ void Tiles::draw (cairo_t *cr) {
       gdk_cairo_set_source_rgba (cr, &foreground); cairo_set_line_width (cr, 1.5);
       cairo_move_to (cr, x + icon_size, y); cairo_line_to (cr, x, y + icon_size); cairo_stroke (cr);
     }
-    if (row.mask) draw_icon (cr, "gimp-layer-mask", x + preview_size - icon_size, y);
+    if (current_mask) draw_icon (cr, "gimp-layer-mask", x + preview_size - icon_size, y);
     if (gimp_item_get_lock_content (GIMP_ITEM (layer))) draw_icon (cr, "gimp-lock", x, y + icon_size);
     const char *icon = gimp_viewable_get_icon_name (GIMP_VIEWABLE (layer));
     if (icon && strcmp (icon, "gimp-layer")) draw_icon (cr, icon, x, y + preview_size - icon_size);

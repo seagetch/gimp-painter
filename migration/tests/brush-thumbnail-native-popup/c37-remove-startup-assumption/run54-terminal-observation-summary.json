@@ -1,0 +1,1357 @@
+{
+  "format": 1,
+  "observed_utc": "2026-11-01T16:31:28Z",
+  "run_id": 41320949207,
+  "head": "e7a943ebc88869bd250a714fb5467d9da68817e8",
+  "tree": "9a84e136aa0d2b1f2f27eab2dbd97b6e4981f433",
+  "accepted_parent": "e25a94e21efca6e6604ddac6f15570c049f421e7",
+  "acceptance_eligible": false,
+  "task_308_accepted": false,
+  "success": 4,
+  "failure": 4,
+  "jobs": [
+    {
+      "id": 124890836896,
+      "name": "matched-preclick-nonacceptance",
+      "conclusion": "failure",
+      "completed_at": "2026-11-01T16:04:39Z"
+    },
+    {
+      "id": 124890837099,
+      "name": "brush-sanitizer",
+      "conclusion": "failure",
+      "completed_at": "2026-11-01T16:27:09Z"
+    },
+    {
+      "id": 124890837150,
+      "name": "brush-baseline-red",
+      "conclusion": "success",
+      "completed_at": "2026-11-01T15:29:57Z"
+    },
+    {
+      "id": 124890837153,
+      "name": "brush-positive",
+      "conclusion": "failure",
+      "completed_at": "2026-11-01T15:41:07Z"
+    },
+    {
+      "id": 124890837180,
+      "name": "dockbook-controlled-order-3d6f",
+      "conclusion": "success",
+      "completed_at": "2026-11-01T15:30:23Z"
+    },
+    {
+      "id": 124890837183,
+      "name": "babl-owned-doc-proof",
+      "conclusion": "failure",
+      "completed_at": "2026-11-01T15:24:14Z"
+    },
+    {
+      "id": 124890837198,
+      "name": "candidate",
+      "conclusion": "success",
+      "completed_at": "2026-11-01T15:41:55Z"
+    },
+    {
+      "id": 124890837211,
+      "name": "baseline-carrier-red",
+      "conclusion": "success",
+      "completed_at": "2026-11-01T15:30:59Z"
+    }
+  ],
+  "original_artifacts": [
+    {
+      "id": 13091372101,
+      "name": "painter-brush-ui-sanitizer-e7a943ebc88869bd250a714fb5467d9da68817e8-1",
+      "path": "artifacts/run54-13091372101.zip",
+      "sha256": "05878554467bbdb3e4c3ff5e079bc1fdeb11f1a5e6cec629c649695d049dda72",
+      "bytes": 10300513,
+      "api_digest_and_size_verified": true
+    },
+    {
+      "id": 13090777537,
+      "name": "painter-matched-preclick-e7a943ebc88869bd250a714fb5467d9da68817e8-1",
+      "path": "artifacts/run54-13090777537.zip",
+      "sha256": "b0265e76ef64d40dadf293ec2df6fbe79fc36218c0d54a8d7353ed0e63c2ee39",
+      "bytes": 9081743,
+      "api_digest_and_size_verified": true
+    },
+    {
+      "id": 13090270123,
+      "name": "painter-brush-ui-positive-e7a943ebc88869bd250a714fb5467d9da68817e8-1",
+      "path": "artifacts/run54-13090270123.zip",
+      "sha256": "90fdce3397a571b22f17b3e93f0795fa550b0644ef78e7ff60506ab784b01a8d",
+      "bytes": 835891,
+      "api_digest_and_size_verified": true
+    },
+    {
+      "id": 13089728538,
+      "name": "painter-native-ui-candidate-e7a943ebc88869bd250a714fb5467d9da68817e8-1",
+      "path": "artifacts/run54-13089728538.zip",
+      "sha256": "6781e916fb7292b5c45f27f0ae31dd8d38dc2e5d42f1057773ae6e80db13b182",
+      "bytes": 2210075,
+      "api_digest_and_size_verified": true
+    },
+    {
+      "id": 13089635677,
+      "name": "babl-owned-doc-proof-e7a943ebc88869bd250a714fb5467d9da68817e8",
+      "path": "artifacts/run54-13089635677.zip",
+      "sha256": "a684f502db054780b56a674f8ecb6f1b6af52bd170cbca425de6f6b13f63b22f",
+      "bytes": 25013578,
+      "api_digest_and_size_verified": true
+    },
+    {
+      "id": 13089383326,
+      "name": "painter-brush-ui-baseline-red-e7a943ebc88869bd250a714fb5467d9da68817e8-1",
+      "path": "artifacts/run54-13089383326.zip",
+      "sha256": "1007608351f737af699c7b495cd76efb1b3029e67fe133019b25191975ab517a",
+      "bytes": 64210,
+      "api_digest_and_size_verified": true
+    },
+    {
+      "id": 13089283596,
+      "name": "painter-native-ui-dockbook-controlled-order-3d6f-e7a943ebc88869bd250a714fb5467d9da68817e8-1",
+      "path": "artifacts/run54-13089283596.zip",
+      "sha256": "ba961d931c2132aa505878004f086ff72cdfd4cb56619fde88fbe7e97dcc10e6",
+      "bytes": 219470,
+      "api_digest_and_size_verified": true
+    },
+    {
+      "id": 13088614259,
+      "name": "painter-native-ui-baseline-carrier-red-e7a943ebc88869bd250a714fb5467d9da68817e8-1",
+      "path": "artifacts/run54-13088614259.zip",
+      "sha256": "001fc5c43bf1fa307d2135ebd803041ac18cf02a67d94c2a8044c624b4881fa0",
+      "bytes": 603830,
+      "api_digest_and_size_verified": true
+    }
+  ],
+  "all_eight_full_job_logs_saved": true,
+  "normal_mask": {
+    "proof_passed": true,
+    "fixed_full107_passed": true,
+    "expected_failure_semantics_verified": true,
+    "acceptance_eligible": false,
+    "errors": []
+  },
+  "matched": {
+    "schema_preparation": {
+      "schema": "matched-schema-preparation-v1",
+      "acceptance_eligible": false,
+      "stage": "complete",
+      "compiler_exit": 0,
+      "compiler_sha256": "613c5b6ed8c95bb9d3b4055299a9e2a77422841b5e974711dd91562b6fb0d32e",
+      "cache_sha256": "1e621796723a48f5e78a16ccf078f3effb347df58eaf13d0686be121964fcb0f",
+      "loader_error_observed": false,
+      "raw_output_exported": false,
+      "loader_policy": "dependency-libdir-only",
+      "diagnostic_truncated": false,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "prepare": {
+      "format": 1,
+      "phase": "prepare",
+      "stage": "ready",
+      "exit_code": 0,
+      "acceptance_eligible": false,
+      "native_failures_not_waived": true
+    },
+    "measure": {
+      "format": 1,
+      "phase": "measure",
+      "stage": "complete",
+      "exit_code": 1,
+      "acceptance_eligible": false,
+      "native_failures_not_waived": true
+    },
+    "identity_verified": true,
+    "summary_status": "inconclusive",
+    "comparison_eligible": false,
+    "statistics": {
+      "baseline-normal": {
+        "metrics_population": "all-available-including-inconclusive",
+        "comparison_eligible_repetitions": 3,
+        "available_repetitions": 3,
+        "primary_passes": 3,
+        "median_elapsed_us": 205507,
+        "min_elapsed_us": 204790,
+        "max_elapsed_us": 206009
+      },
+      "current-normal": {
+        "metrics_population": "all-available-including-inconclusive",
+        "comparison_eligible_repetitions": 3,
+        "available_repetitions": 3,
+        "primary_passes": 3,
+        "median_elapsed_us": 204924,
+        "min_elapsed_us": 204695,
+        "max_elapsed_us": 207546
+      },
+      "baseline-sanitizer": {
+        "metrics_population": "all-available-including-inconclusive",
+        "comparison_eligible_repetitions": 0,
+        "available_repetitions": 3,
+        "primary_passes": 0,
+        "median_elapsed_us": 12288930,
+        "min_elapsed_us": 12244702,
+        "max_elapsed_us": 12302652
+      },
+      "current-sanitizer": {
+        "metrics_population": "all-available-including-inconclusive",
+        "comparison_eligible_repetitions": 3,
+        "available_repetitions": 3,
+        "primary_passes": 0,
+        "median_elapsed_us": 12361963,
+        "min_elapsed_us": 12340395,
+        "max_elapsed_us": 12698136
+      }
+    },
+    "baseline_configuration_overlay_not_pristine": true
+  },
+  "sanitizer": {
+    "cases": [
+      {
+        "file": "brush-sanitizer-case01-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          200901
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case02-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          200433
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case03-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          200401
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case04-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          200401
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case05-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          200401
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case06-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          200401
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case07-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          200401
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case08-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          200401
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case09-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          200393
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case10-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          201185
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case11-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          199809
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case12-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          199809
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case13-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          200697
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case14-results.json",
+        "returncode": -6,
+        "tap_passes": 0,
+        "leak_bytes": []
+      },
+      {
+        "file": "brush-sanitizer-case15-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          201481
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case16-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          202433
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case17-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          199801
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case18-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          199809
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case19-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          201649
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case20-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          200825
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case21-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          199793
+        ]
+      }
+    ],
+    "case14": {
+      "returncode": -6,
+      "stable": 0,
+      "elapsed_us": 12171110,
+      "whole_main_context_iteration_us": 12165616
+    },
+    "native_failure_not_waived": true
+  },
+  "readiness_owner": {
+    "status": {
+      "format": 1,
+      "acceptance_eligible": false,
+      "diagnostic_only": true,
+      "stage": "diagnostic-finished-not-acceptance",
+      "diagnostic_step_exit": 0,
+      "state": "finished",
+      "original_driver_exit_unchanged": true,
+      "dependency_closure": "GDB installed after original acceptance; diagnostic system dependencies may differ.",
+      "qualification": "Separate instrumented build only; debugger changes timing; no acceptance or leak verdict. Primary gate exit unchanged."
+    },
+    "build_identity": {
+      "format": 1,
+      "acceptance_eligible": false,
+      "diagnostic_only": true,
+      "github_sha": "e7a943ebc88869bd250a714fb5467d9da68817e8",
+      "source_tree": "9a84e136aa0d2b1f2f27eab2dbd97b6e4981f433",
+      "primary_identity_unchanged": true,
+      "separate_build": true,
+      "dependency_root_sha256": "deb58a8c60c84adff593abc2ce46292a1e76c67e26917ff3ede72360ea198264",
+      "locale_sha256": "da55de0a447a773acd1917204ba6e29cd326010f9e28199649007f5b725b6a49",
+      "host_scope": "selected public dependency links only; not full host closure",
+      "overlay": {
+        "base_tree": "9a84e136aa0d2b1f2f27eab2dbd97b6e4981f433",
+        "modified_path": "app/tests/meson.build",
+        "overlay_sha256": "f0074cf7677c83aef037158180bc284ae935a857e8da2e05c30298d7f1ec7124",
+        "append_sha256": "968d41096f6e31c06c3247a6b28493d18ca13acee6217885012da9c772d06355",
+        "gimp_data": "a31e5dea4f572fb5f33b06f5c4b86db5f30643dc"
+      },
+      "status": "diagnostic-identity-verified",
+      "binary_sha256": "27a89ccd0c56426f4b384fcd4214e7eff3bc7e29e078a18cbef7275e01a69dd7",
+      "identity_sha256": "9f9df61ed9ce2f42e024a42d025e6c09fceab4c06f8f96377e59e964b11ba64c",
+      "hashed_file_count": 1592
+    },
+    "primary_final": {
+      "format": 1,
+      "acceptance_eligible": false,
+      "status": "identity-verified"
+    },
+    "sample_status": "captured",
+    "owner_observation": {
+      "status": "captured",
+      "records": [
+        {
+          "kind": "summary",
+          "values": [
+            16,
+            32,
+            24,
+            1
+          ]
+        },
+        {
+          "kind": "window",
+          "values": [
+            0,
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "kind": "window",
+          "values": [
+            1,
+            2,
+            0,
+            0,
+            3
+          ]
+        },
+        {
+          "kind": "window",
+          "values": [
+            2,
+            3,
+            1,
+            1,
+            5
+          ]
+        },
+        {
+          "kind": "window",
+          "values": [
+            3,
+            4,
+            0,
+            0,
+            7
+          ]
+        },
+        {
+          "kind": "window",
+          "values": [
+            4,
+            4,
+            0,
+            0,
+            9
+          ]
+        },
+        {
+          "kind": "window",
+          "values": [
+            5,
+            4,
+            0,
+            0,
+            11
+          ]
+        },
+        {
+          "kind": "window",
+          "values": [
+            6,
+            4,
+            0,
+            0,
+            13
+          ]
+        },
+        {
+          "kind": "window",
+          "values": [
+            7,
+            4,
+            0,
+            0,
+            15
+          ]
+        },
+        {
+          "kind": "window",
+          "values": [
+            8,
+            4,
+            0,
+            0,
+            17
+          ]
+        },
+        {
+          "kind": "window",
+          "values": [
+            9,
+            4,
+            0,
+            0,
+            19
+          ]
+        },
+        {
+          "kind": "window",
+          "values": [
+            10,
+            4,
+            0,
+            0,
+            21
+          ]
+        },
+        {
+          "kind": "window",
+          "values": [
+            11,
+            4,
+            0,
+            0,
+            23
+          ]
+        },
+        {
+          "kind": "window",
+          "values": [
+            12,
+            4,
+            0,
+            0,
+            25
+          ]
+        },
+        {
+          "kind": "window",
+          "values": [
+            13,
+            4,
+            0,
+            0,
+            27
+          ]
+        },
+        {
+          "kind": "window",
+          "values": [
+            14,
+            4,
+            0,
+            0,
+            29
+          ]
+        },
+        {
+          "kind": "window",
+          "values": [
+            15,
+            4,
+            0,
+            0,
+            31
+          ]
+        },
+        {
+          "kind": "probe",
+          "values": [
+            0,
+            0,
+            1,
+            1,
+            1,
+            1,
+            1,
+            0,
+            0,
+            9480,
+            9480
+          ]
+        },
+        {
+          "kind": "probe",
+          "values": [
+            1,
+            0,
+            2,
+            1,
+            1,
+            1,
+            1,
+            0,
+            0,
+            9564,
+            9564
+          ]
+        },
+        {
+          "kind": "probe",
+          "values": [
+            2,
+            1,
+            1,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "probe",
+          "values": [
+            3,
+            1,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "probe",
+          "values": [
+            4,
+            2,
+            1,
+            1,
+            1,
+            1,
+            1,
+            0,
+            0,
+            10809729,
+            10809729
+          ]
+        },
+        {
+          "kind": "probe",
+          "values": [
+            5,
+            2,
+            2,
+            1,
+            1,
+            2,
+            2,
+            0,
+            0,
+            11563074,
+            11563051
+          ]
+        },
+        {
+          "kind": "probe",
+          "values": [
+            6,
+            3,
+            1,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "probe",
+          "values": [
+            7,
+            3,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "probe",
+          "values": [
+            8,
+            4,
+            1,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "probe",
+          "values": [
+            9,
+            4,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "probe",
+          "values": [
+            10,
+            5,
+            1,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "probe",
+          "values": [
+            11,
+            5,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "probe",
+          "values": [
+            12,
+            6,
+            1,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "probe",
+          "values": [
+            13,
+            6,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "probe",
+          "values": [
+            14,
+            7,
+            1,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "probe",
+          "values": [
+            15,
+            7,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "probe",
+          "values": [
+            16,
+            8,
+            1,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "probe",
+          "values": [
+            17,
+            8,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "probe",
+          "values": [
+            18,
+            9,
+            1,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "probe",
+          "values": [
+            19,
+            9,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "probe",
+          "values": [
+            20,
+            10,
+            1,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "probe",
+          "values": [
+            21,
+            10,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "probe",
+          "values": [
+            22,
+            11,
+            1,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "probe",
+          "values": [
+            23,
+            11,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "probe",
+          "values": [
+            24,
+            12,
+            1,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "probe",
+          "values": [
+            25,
+            12,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "probe",
+          "values": [
+            26,
+            13,
+            1,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "probe",
+          "values": [
+            27,
+            13,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "probe",
+          "values": [
+            28,
+            14,
+            1,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "probe",
+          "values": [
+            29,
+            14,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "probe",
+          "values": [
+            30,
+            15,
+            1,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "probe",
+          "values": [
+            31,
+            15,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "event",
+          "values": [
+            32,
+            1,
+            2165
+          ]
+        },
+        {
+          "kind": "event",
+          "values": [
+            32,
+            0,
+            2218
+          ]
+        },
+        {
+          "kind": "event",
+          "values": [
+            32,
+            1,
+            3295
+          ]
+        },
+        {
+          "kind": "event",
+          "values": [
+            32,
+            0,
+            4189
+          ]
+        },
+        {
+          "kind": "event",
+          "values": [
+            32,
+            1,
+            5264
+          ]
+        },
+        {
+          "kind": "event",
+          "values": [
+            32,
+            0,
+            5535
+          ]
+        },
+        {
+          "kind": "event",
+          "values": [
+            32,
+            1,
+            6608
+          ]
+        },
+        {
+          "kind": "event",
+          "values": [
+            32,
+            0,
+            6708
+          ]
+        },
+        {
+          "kind": "event",
+          "values": [
+            32,
+            1,
+            7779
+          ]
+        },
+        {
+          "kind": "event",
+          "values": [
+            32,
+            0,
+            7819
+          ]
+        },
+        {
+          "kind": "event",
+          "values": [
+            32,
+            1,
+            8890
+          ]
+        },
+        {
+          "kind": "event",
+          "values": [
+            32,
+            0,
+            9227
+          ]
+        },
+        {
+          "kind": "event",
+          "values": [
+            32,
+            1,
+            10297
+          ]
+        },
+        {
+          "kind": "event",
+          "values": [
+            5,
+            1,
+            10504
+          ]
+        },
+        {
+          "kind": "event",
+          "values": [
+            4,
+            1,
+            763774
+          ]
+        },
+        {
+          "kind": "event",
+          "values": [
+            4,
+            0,
+            11573503
+          ]
+        },
+        {
+          "kind": "event",
+          "values": [
+            5,
+            0,
+            11573555
+          ]
+        },
+        {
+          "kind": "event",
+          "values": [
+            5,
+            1,
+            11573557
+          ]
+        },
+        {
+          "kind": "event",
+          "values": [
+            5,
+            0,
+            11573580
+          ]
+        },
+        {
+          "kind": "event",
+          "values": [
+            1,
+            1,
+            12176469
+          ]
+        },
+        {
+          "kind": "event",
+          "values": [
+            0,
+            1,
+            12176529
+          ]
+        },
+        {
+          "kind": "event",
+          "values": [
+            0,
+            0,
+            12186009
+          ]
+        },
+        {
+          "kind": "event",
+          "values": [
+            1,
+            0,
+            12186033
+          ]
+        },
+        {
+          "kind": "event",
+          "values": [
+            32,
+            0,
+            12539519
+          ]
+        },
+        {
+          "kind": "complete",
+          "values": []
+        }
+      ]
+    },
+    "sample_frames": [
+      62,
+      96,
+      96,
+      96,
+      96,
+      96,
+      96,
+      96
+    ],
+    "owned_child_cleanup_completed": true,
+    "cleanup_evidence": {
+      "stage": "complete",
+      "run_requested": true,
+      "owned_pidfd_present": true,
+      "unknown_inferior": false,
+      "pidfd_signal": "sent",
+      "pidfd_wait": "timeout",
+      "pidfd_final_wait": "observed",
+      "pidfd_close": "closed",
+      "debugger_poll": "running",
+      "debugger_exit": "requested",
+      "debugger_grace_wait": "observed",
+      "debugger_kill": "not-attempted",
+      "debugger_final_wait": "observed",
+      "stream_close": "closed",
+      "child_termination_observed": true,
+      "debugger_termination_observed": true
+    },
+    "original_first_wait_deadline_seconds": 3,
+    "build_budget_timeout_observed": false,
+    "raw_MI_not_exported": true,
+    "last_observation_stop": {
+      "reason": "breakpoint-hit",
+      "finish_breakpoint_matched": true
+    },
+    "leak_verdict": "not evaluated under ptrace"
+  },
+  "c36_setup_boundary": {
+    "isolated_sanitizer_case14_setup_ready": true,
+    "setup_elapsed_us": 535560,
+    "setup_budget_us": 10000000,
+    "setup_frames": 4,
+    "setup_stable": 3,
+    "later_original_three_second_wait_still_failed": true,
+    "normal_aggregate_scale1_scale2_regression": "Case14 abort after13passes: readiness helper expected exactly1imagewindow but found0",
+    "authorization_not_inferred_from_run": true
+  }
+}

@@ -1,0 +1,25 @@
+# Diagnostic-only target: append once after apptests_links has libapptestutils.
+owner_diag_sources = custom_target('readiness-owner-sources',
+  input: [files('test-painter-compact-options.c'), files('test-painter-brush-thumbnail-popup.inc'), files('test-painter-transform-popup.inc'),
+    files('../../tools/brush-ci/readiness-owner/probe.inc'), files('../../tools/brush-ci/readiness-owner/phase.inc'), files('../../tools/brush-ci/readiness-owner/leaf.inc'), files('../../tools/brush-ci/readiness-owner/image.inc'), files('../../tools/brush-ci/readiness-owner/icon.inc'), files('../../tools/brush-ci/readiness-owner/generate.py')],
+  output: ['readiness-owner-main.c', 'readiness-owner-transform.inc', 'readiness-owner-probe.inc', 'readiness-owner-brush.inc', 'readiness-owner-phase.inc', 'readiness-owner-leaf.inc', 'readiness-owner-image.inc', 'readiness-owner-icon.inc'],
+  command: [python, files('../../tools/brush-ci/readiness-owner/generate.py'),
+    meson.project_source_root(), meson.current_build_dir()],
+  build_by_default: false,
+)
+owner_diag = executable('readiness-owner', owner_diag_sources[0], 'tests.c',
+  'test-widget-orientation-api.c', 'test-widget-orientation-api.cpp',
+  dependencies: [libapp_dep, appstream], link_with: apptests_links,
+  include_directories: include_directories('.'),
+  override_options: ['c_std=c11', 'cpp_std=c++14'],
+  build_by_default: false, install: false,
+)
+test('readiness-owner', owner_diag,
+  env: [
+    'GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.project_source_root(),
+    'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.project_build_root(),
+    'GIMP_TESTING_PLUGINDIRS=' + meson.project_build_root()/'plug-ins'/'common',
+    'GIMP_TESTING_SESSIONRC_NAME=sessionrc-native-oncanvas', 'UI_TEST=yes',
+  ], suite: 'diagnostic-only', depends: gimp_test_icon_dependencies,
+  timeout: 180, is_parallel: false,
+)

@@ -1,0 +1,227 @@
+{
+  "run_id": 41195267974,
+  "head": "eb8dd01adf35d65b8103382f7541d3e80ab0d6a4",
+  "observed_utc": "2026-10-31T16:27:42.734223+00:00",
+  "observation_kind": "recovery re-observation of original immutable run48 artifacts after workspace reset; not a new CI execution",
+  "all_jobs_terminal": true,
+  "success": 4,
+  "failure": 4,
+  "acceptance_eligible": false,
+  "jobs": [
+    {
+      "id": 124520055302,
+      "name": "matched-preclick-nonacceptance",
+      "conclusion": "failure",
+      "completed_at": "2026-10-31T11:45:01Z"
+    },
+    {
+      "id": 124520055367,
+      "name": "brush-baseline-red",
+      "conclusion": "success",
+      "completed_at": "2026-10-31T11:11:19Z"
+    },
+    {
+      "id": 124520055372,
+      "name": "brush-positive",
+      "conclusion": "failure",
+      "completed_at": "2026-10-31T11:22:27Z"
+    },
+    {
+      "id": 124520055378,
+      "name": "candidate",
+      "conclusion": "success",
+      "completed_at": "2026-10-31T11:21:34Z"
+    },
+    {
+      "id": 124520055382,
+      "name": "babl-owned-doc-proof",
+      "conclusion": "failure",
+      "completed_at": "2026-10-31T11:04:38Z"
+    },
+    {
+      "id": 124520055394,
+      "name": "baseline-carrier-red",
+      "conclusion": "success",
+      "completed_at": "2026-10-31T11:12:01Z"
+    },
+    {
+      "id": 124520055411,
+      "name": "brush-sanitizer",
+      "conclusion": "failure",
+      "completed_at": "2026-10-31T11:56:59Z"
+    },
+    {
+      "id": 124520055442,
+      "name": "dockbook-controlled-order-3d6f",
+      "conclusion": "success",
+      "completed_at": "2026-10-31T11:12:30Z"
+    }
+  ],
+  "original_artifacts": [
+    {
+      "id": 13040604082,
+      "name": "painter-matched-preclick-eb8dd01adf35d65b8103382f7541d3e80ab0d6a4-1",
+      "bytes": 973121,
+      "sha256": "e90fe83cfc155c3db8e774db5ecadd5bfe809e95e271aa6a0f06324ed3b4f777",
+      "api_digest_and_size_match": true,
+      "file": "artifacts/run48-matched.zip"
+    },
+    {
+      "id": 13040467306,
+      "name": "painter-native-ui-candidate-eb8dd01adf35d65b8103382f7541d3e80ab0d6a4-1",
+      "bytes": 2210150,
+      "sha256": "6d9bfa2b00bb4650a6b366bada4b8d4598aa7e77b2c3d9f9afed0ba7e0335646",
+      "api_digest_and_size_match": true,
+      "file": "artifacts/run48-13040467306.zip"
+    },
+    {
+      "id": 13040726874,
+      "name": "painter-brush-ui-baseline-red-eb8dd01adf35d65b8103382f7541d3e80ab0d6a4-1",
+      "bytes": 63630,
+      "sha256": "92682941deaab24e425d054386688a68f908174930e4ff55569b3475bbbbc5fc",
+      "api_digest_and_size_match": true,
+      "file": "artifacts/run48-brush-baseline-red.zip"
+    },
+    {
+      "id": 13040556259,
+      "name": "babl-owned-doc-proof-eb8dd01adf35d65b8103382f7541d3e80ab0d6a4",
+      "bytes": 25013718,
+      "sha256": "e620e3379e7f28a01368dfc8c156e5b985d4f965f3c60c8a1b5f17a05511301c",
+      "api_digest_and_size_match": true,
+      "file": "artifacts/run48-babl-owned-doc-proof.zip"
+    },
+    {
+      "id": 13041812161,
+      "name": "painter-brush-ui-sanitizer-eb8dd01adf35d65b8103382f7541d3e80ab0d6a4-1",
+      "bytes": 10571594,
+      "sha256": "e9fc279f5985b2f06ff1368bd0d00a38f164787904ee79beb955414a67d1fb66",
+      "api_digest_and_size_match": true,
+      "file": "artifacts/run48-sanitizer.zip"
+    },
+    {
+      "id": 13041026580,
+      "name": "painter-brush-ui-positive-eb8dd01adf35d65b8103382f7541d3e80ab0d6a4-1",
+      "bytes": 832242,
+      "sha256": "980f9e5bb907b52d979d1474442f73d59fce2d1d7edf9846f00f6f7b53d72300",
+      "api_digest_and_size_match": true,
+      "file": "artifacts/run48-13041026580.zip"
+    },
+    {
+      "id": 13041011583,
+      "name": "painter-native-ui-dockbook-controlled-order-3d6f-eb8dd01adf35d65b8103382f7541d3e80ab0d6a4-1",
+      "bytes": 212959,
+      "sha256": "11033ab96d7db4a48ebd4160e19c33f1e4d5dae7e774bf8ebb7c5a6b04fa15fc",
+      "api_digest_and_size_match": true,
+      "file": "artifacts/run48-13041011583.zip"
+    },
+    {
+      "id": 13040756884,
+      "name": "painter-native-ui-baseline-carrier-red-eb8dd01adf35d65b8103382f7541d3e80ab0d6a4-1",
+      "bytes": 603846,
+      "sha256": "97a6cd1896da165df5e34ffa2a31a250fd02ca80db1e84883f6d792fe4e8497c",
+      "api_digest_and_size_match": true,
+      "file": "artifacts/run48-13040756884.zip"
+    }
+  ],
+  "mask_normal": {
+    "fixed_focused": {
+      "meson_result": "OK",
+      "returncode": 0
+    },
+    "old_focused": {
+      "meson_result": "EXPECTEDFAIL",
+      "returncode": -5
+    },
+    "fixed_full107": {
+      "meson_result": "FAIL",
+      "returncode": -6,
+      "native_detail": {
+        "allowlist_sha256": "0e5a4ee3d06364ba6fb597cb71c8c0fd8e8af44315082925aa460e374f4312c8",
+        "bailout_seen": true,
+        "diagnostic_only": true,
+        "failed_cases": [
+          "/painter-canvas-ui/native_tool_icon_preview_lifetime"
+        ],
+        "last_passed_case": "/painter-canvas-ui/renderer_drag_gesture_payload_and_cancel",
+        "passed_leaf_count": 42,
+        "raw_output_exported": false,
+        "schema": "canvas-mask-native-detail-v1",
+        "source_assertions": [
+          {
+            "assertion_kind": "g_assert_true",
+            "line": 1928,
+            "source": "app/tests/test-painter-canvas-ui.c"
+          }
+        ],
+        "stderr_sha256": "7115e6a8ef1713cde7d3e06f704c61a10410e70374377603055e16d197ad1a1d",
+        "stdout_sha256": "e6f4b0e40f0bd88028138ae0dd8366a4764cf59eb48f29f40ae9cc401e382395",
+        "subprocess_failure_seen": false,
+        "unknown_leaf_count": 0,
+        "unmatched_assertion_locations": 0
+      }
+    },
+    "aggregate": "wrong-native-result",
+    "proof_passed": false,
+    "raw_logs_archived": false
+  },
+  "mask_sanitizer": {
+    "fixed_focused": {
+      "meson_result": "FAIL",
+      "returncode": 1,
+      "assertions_pass": 1,
+      "categories": [
+        "address-sanitizer",
+        "leak-sanitizer",
+        "error",
+        "nonzero-native-exit"
+      ]
+    },
+    "old_and_full107_not_observed": true,
+    "aggregate": "wrong-native-result"
+  },
+  "matched": {
+    "runtime_failure_all14": {
+      "stage": "resource-inventory",
+      "category": "value-error",
+      "resource_code": "resource-relative-name-invalid"
+    },
+    "collected": 13,
+    "total": 14,
+    "primary_metrics": 12,
+    "fidelity_sanitizer_returncode": -6,
+    "identity_verified": false,
+    "comparisons_promoted": false,
+    "raw_native_logs_archived": false,
+    "bounded_log_evidence_records": 14,
+    "exact_failing_resource_substage_not_observed": true
+  },
+  "sanitizer": {
+    "brush_assertions_pass": 20,
+    "brush_total": 21,
+    "passing_assertions_process_exit": 1,
+    "leak_range_bytes": [
+      199965,
+      202605
+    ],
+    "case14": {
+      "returncode": -6,
+      "stable": 0,
+      "elapsed_us": 12474651,
+      "whole_main_context_iteration_us": 12470797
+    },
+    "gdb_samples": 8,
+    "first_sample_frames": 88,
+    "remaining_samples_frame_cap": 96,
+    "same_wait_invocation_proven": false,
+    "owned_child_and_debugger_cleanup_verified": true
+  },
+  "babl": {
+    "stage": "original/pkg-config",
+    "returncode": 1,
+    "error": "lcms2.pc not found in pkg-config search path",
+    "local_babl_retry": false
+  },
+  "visual_review": "visual-review.txt",
+  "native_counts": "native-results-counts.json",
+  "external_writes": false
+}

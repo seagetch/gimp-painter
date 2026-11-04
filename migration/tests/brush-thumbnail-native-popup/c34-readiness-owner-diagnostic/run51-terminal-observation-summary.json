@@ -1,0 +1,402 @@
+{
+  "format": 1,
+  "observed_utc": "2026-11-01T07:07:51Z",
+  "run_id": 41280641413,
+  "head": "79a40fd5b00e03401590cf9d815927e109f88952",
+  "accepted_parent": "e25a94e21efca6e6604ddac6f15570c049f421e7",
+  "acceptance_eligible": false,
+  "task_308_accepted": false,
+  "success": 5,
+  "failure": 3,
+  "jobs": [
+    {
+      "id": 124771682859,
+      "name": "babl-owned-doc-proof",
+      "conclusion": "failure",
+      "completed_at": "2026-11-01T06:24:42Z"
+    },
+    {
+      "id": 124771682913,
+      "name": "matched-preclick-nonacceptance",
+      "conclusion": "failure",
+      "completed_at": "2026-11-01T07:05:43Z"
+    },
+    {
+      "id": 124771682941,
+      "name": "baseline-carrier-red",
+      "conclusion": "success",
+      "completed_at": "2026-11-01T06:32:42Z"
+    },
+    {
+      "id": 124771682966,
+      "name": "brush-sanitizer",
+      "conclusion": "failure",
+      "completed_at": "2026-11-01T06:52:30Z"
+    },
+    {
+      "id": 124771682998,
+      "name": "dockbook-controlled-order-3d6f",
+      "conclusion": "success",
+      "completed_at": "2026-11-01T06:31:47Z"
+    },
+    {
+      "id": 124771683001,
+      "name": "brush-baseline-red",
+      "conclusion": "success",
+      "completed_at": "2026-11-01T06:28:51Z"
+    },
+    {
+      "id": 124771683010,
+      "name": "brush-positive",
+      "conclusion": "success",
+      "completed_at": "2026-11-01T06:42:32Z"
+    },
+    {
+      "id": 124771683011,
+      "name": "candidate",
+      "conclusion": "success",
+      "completed_at": "2026-11-01T06:37:58Z"
+    }
+  ],
+  "original_artifacts": [
+    {
+      "id": 13074251009,
+      "name": "painter-brush-ui-sanitizer-79a40fd5b00e03401590cf9d815927e109f88952-1",
+      "path": "artifacts/run51-13074251009.zip",
+      "sha256": "108792069e6a746209d32e5a93754172419e3ed0a71c8446b4b4a343558cb1b8",
+      "bytes": 10275335,
+      "api_digest_and_size_verified": true
+    },
+    {
+      "id": 13074165121,
+      "name": "painter-brush-ui-positive-79a40fd5b00e03401590cf9d815927e109f88952-1",
+      "path": "artifacts/run51-13074165121.zip",
+      "sha256": "a529a8bf2b9e19525ab078a1d6abecd22338b7536b614bef6429f27c20956ea9",
+      "bytes": 838683,
+      "api_digest_and_size_verified": true
+    },
+    {
+      "id": 13073700840,
+      "name": "painter-native-ui-candidate-79a40fd5b00e03401590cf9d815927e109f88952-1",
+      "path": "artifacts/run51-13073700840.zip",
+      "sha256": "17120b0b5f68ceb54e37bf634586fe6eb6f325d28a63655d510a65829b0d478a",
+      "bytes": 2211867,
+      "api_digest_and_size_verified": true
+    },
+    {
+      "id": 13073573239,
+      "name": "painter-matched-preclick-79a40fd5b00e03401590cf9d815927e109f88952-1",
+      "path": "artifacts/run51-13073573239.zip",
+      "sha256": "5161322e47a09118ab24be517a06cd5076080632c347d710358686e7aa020508",
+      "bytes": 9081858,
+      "api_digest_and_size_verified": true
+    },
+    {
+      "id": 13073376802,
+      "name": "painter-brush-ui-baseline-red-79a40fd5b00e03401590cf9d815927e109f88952-1",
+      "path": "artifacts/run51-13073376802.zip",
+      "sha256": "6623a28f6fedb93a20fb7ba4e56b5cd6a3bd6f82eca7ceeb67cdc7bc6b580700",
+      "bytes": 63668,
+      "api_digest_and_size_verified": true
+    },
+    {
+      "id": 13073142495,
+      "name": "babl-owned-doc-proof-79a40fd5b00e03401590cf9d815927e109f88952",
+      "path": "artifacts/run51-13073142495.zip",
+      "sha256": "faeafa495b770f6b51741765ec3a888ba4798082187c0c474542df101fbe581b",
+      "bytes": 25013602,
+      "api_digest_and_size_verified": true
+    },
+    {
+      "id": 13072933956,
+      "name": "painter-native-ui-dockbook-controlled-order-3d6f-79a40fd5b00e03401590cf9d815927e109f88952-1",
+      "path": "artifacts/run51-13072933956.zip",
+      "sha256": "7e0f9e03271160bcca8d3cb9cfb0db47b479c3c1b3c56cb2fa35a83ad77a8d62",
+      "bytes": 212655,
+      "api_digest_and_size_verified": true
+    },
+    {
+      "id": 13072924175,
+      "name": "painter-native-ui-baseline-carrier-red-79a40fd5b00e03401590cf9d815927e109f88952-1",
+      "path": "artifacts/run51-13072924175.zip",
+      "sha256": "5b25ab8ca541bf179830865f99d2b28a765e184a59b1d6c9eac6717103ca4ef8",
+      "bytes": 608834,
+      "api_digest_and_size_verified": true
+    }
+  ],
+  "all_eight_full_job_logs_saved": true,
+  "normal_mask": {
+    "proof_passed": true,
+    "fixed_full107_passed": true,
+    "expected_failure_semantics_verified": true,
+    "acceptance_eligible": false,
+    "errors": []
+  },
+  "matched": {
+    "schema_preparation": {
+      "schema": "matched-schema-preparation-v1",
+      "acceptance_eligible": false,
+      "stage": "complete",
+      "compiler_exit": 0,
+      "compiler_sha256": "613c5b6ed8c95bb9d3b4055299a9e2a77422841b5e974711dd91562b6fb0d32e",
+      "cache_sha256": "1e621796723a48f5e78a16ccf078f3effb347df58eaf13d0686be121964fcb0f",
+      "loader_error_observed": false,
+      "raw_output_exported": false,
+      "loader_policy": "dependency-libdir-only",
+      "diagnostic_truncated": false,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "prepare": {
+      "format": 1,
+      "phase": "prepare",
+      "stage": "ready",
+      "exit_code": 0,
+      "acceptance_eligible": false,
+      "native_failures_not_waived": true
+    },
+    "measure": {
+      "format": 1,
+      "phase": "measure",
+      "stage": "complete",
+      "exit_code": 1,
+      "acceptance_eligible": false,
+      "native_failures_not_waived": true
+    },
+    "identity_verified": true,
+    "summary_status": "inconclusive",
+    "comparison_eligible": false,
+    "statistics": {
+      "baseline-normal": {
+        "metrics_population": "all-available-including-inconclusive",
+        "comparison_eligible_repetitions": 3,
+        "available_repetitions": 3,
+        "primary_passes": 3,
+        "median_elapsed_us": 205561,
+        "min_elapsed_us": 205174,
+        "max_elapsed_us": 205597
+      },
+      "current-normal": {
+        "metrics_population": "all-available-including-inconclusive",
+        "comparison_eligible_repetitions": 3,
+        "available_repetitions": 3,
+        "primary_passes": 3,
+        "median_elapsed_us": 205144,
+        "min_elapsed_us": 204709,
+        "max_elapsed_us": 208275
+      },
+      "baseline-sanitizer": {
+        "metrics_population": "all-available-including-inconclusive",
+        "comparison_eligible_repetitions": 0,
+        "available_repetitions": 3,
+        "primary_passes": 0,
+        "median_elapsed_us": 12289205,
+        "min_elapsed_us": 12233523,
+        "max_elapsed_us": 12412088
+      },
+      "current-sanitizer": {
+        "metrics_population": "all-available-including-inconclusive",
+        "comparison_eligible_repetitions": 3,
+        "available_repetitions": 3,
+        "primary_passes": 0,
+        "median_elapsed_us": 12408492,
+        "min_elapsed_us": 12406096,
+        "max_elapsed_us": 12542654
+      }
+    },
+    "raw_native_logs_not_exported": true,
+    "baseline_sanitizer_unknown_diagnostic_cause_unresolved": true,
+    "baseline_configuration_overlay_not_pristine": true
+  },
+  "sanitizer": {
+    "cases": [
+      {
+        "file": "brush-sanitizer-case01-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          199846
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case02-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          199378
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case03-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          199346
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case04-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          199346
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case05-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          199346
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case06-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          199346
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case07-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          199346
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case08-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          199346
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case09-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          199338
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case10-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          200130
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case11-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          198754
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case12-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          198754
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case13-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          199642
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case14-results.json",
+        "returncode": -6,
+        "tap_passes": 0,
+        "leak_bytes": []
+      },
+      {
+        "file": "brush-sanitizer-case15-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          200426
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case16-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          201378
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case17-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          198746
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case18-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          198754
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case19-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          200514
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case20-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          199850
+        ]
+      },
+      {
+        "file": "brush-sanitizer-case21-results.json",
+        "returncode": 1,
+        "tap_passes": 1,
+        "leak_bytes": [
+          198738
+        ]
+      }
+    ],
+    "case14": {
+      "returncode": -6,
+      "stable": 0,
+      "elapsed_us": 6031946,
+      "whole_main_context_iteration_us": 6028452
+    },
+    "native_failure_not_waived": true
+  },
+  "production_leak_fix_evidence": {
+    "comparison": "selected-leak-comparison.json",
+    "prior_tree_paths_bytes": 132,
+    "prior_scale_labels_bytes": 40,
+    "both_stacks_absent_in_run51_cases": [
+      "01",
+      "05",
+      "21",
+      "fixture-no-popup"
+    ],
+    "aggregate_drop_selected_cases_bytes": 1227,
+    "harness_only_drop_bytes": 1055,
+    "only_172_bytes_attributed_to_selected_repairs": true,
+    "all_leaks_not_resolved": true
+  }
+}

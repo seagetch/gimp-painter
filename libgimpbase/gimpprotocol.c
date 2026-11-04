@@ -1132,14 +1132,13 @@ _gp_param_def_read (GIOChannel *channel,
 
     case GP_PARAM_DEF_TYPE_CHOICE:
         {
-          GimpChoice *choice;
-          guint32     size;
-          gchar      *nick;
+          g_autoptr (GimpChoice) choice = NULL;
+          guint32               size;
 
-          if (! _gimp_wire_read_string (channel, &nick, (int) 1, user_data))
+          if (! _gimp_wire_read_string (channel,
+                                        &param_def->meta.m_choice.default_val,
+                                        1, user_data))
             return FALSE;
-
-          param_def->meta.m_choice.default_val = g_strdup (nick);
 
           if (! _gimp_wire_read_int32 (channel, &size, 1, user_data))
             return FALSE;
@@ -1148,9 +1147,10 @@ _gp_param_def_read (GIOChannel *channel,
 
           for (gint i = 0; i < size; i++)
             {
-              gchar *label;
-              gchar *help;
-              gint   id;
+              g_autofree gchar *nick  = NULL;
+              g_autofree gchar *label = NULL;
+              g_autofree gchar *help  = NULL;
+              gint             id;
 
               if (! _gimp_wire_read_string (channel, &nick,
                                            (int) 1, user_data)  ||
@@ -1160,14 +1160,11 @@ _gp_param_def_read (GIOChannel *channel,
                                             (int) 1, user_data) ||
                   ! _gimp_wire_read_string (channel, &help,
                                             (int) 1, user_data))
-                {
-                  g_object_unref (choice);
-                  return FALSE;
-                }
+                return FALSE;
 
               gimp_choice_add (choice, nick, id, label, help);
             }
-          param_def->meta.m_choice.choice = choice;
+          param_def->meta.m_choice.choice = g_steal_pointer (&choice);
         }
       break;
 
@@ -1337,7 +1334,7 @@ _gp_param_def_destroy (GPParamDef *param_def)
 
     case GP_PARAM_DEF_TYPE_CHOICE:
       g_free (param_def->meta.m_choice.default_val);
-      g_object_unref (param_def->meta.m_choice.choice);
+      g_clear_object (&param_def->meta.m_choice.choice);
       break;
 
     case GP_PARAM_DEF_TYPE_STRING:

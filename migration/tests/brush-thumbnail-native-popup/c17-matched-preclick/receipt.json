@@ -1,0 +1,14 @@
+{
+  "format": 1,
+  "status": "C17_REVIEW_ONLY_MATCHED_PRECLICK_NONACCEPTANCE_DIAGNOSTIC",
+  "base_commit": "52aa97f55789caf04e531ecd553170a6dcbec2bc",
+  "base_tree": "bd3f6d75e64ee83c3035b2ef2560156801029536",
+  "production_changes": false,
+  "acceptance_changes": false,
+  "native_execution": "NOT_RUN; source/static/synthetic review only. Four fresh hosted builds and real runtime closure remain unproven.",
+  "diagnostic": "Independent four-build baseline/current x normal/sanitizer;12 primary fresh-process samples plus2 current original-case fidelity probes. Not acceptance; original fixed3s predicate retained, no extended promotion.",
+  "comparison_limits": "n=3 descriptive only; unknown faults, missing cache/resources, truncated output or failed fidelity remain inconclusive. Qualified late-emitted LSan metrics never turn native failure into success, and do not prove leak allocation time or clean measurement.",
+  "policy_sha256": "8460cc0d0b10b896a98b4645b09cb8ef0c565a005ce81760af34eda71ca300c5",
+  "observer_sha256": "b363b43f8eb9d1eae6e37741c9690e8065eb40409e72b2c1eed84b0916ffdbd6",
+  "run35_summary_sha256": "bf9b5a2253a72d5fc8b6ca4d37b4d5024a4e8f19d9bc54dec8c171fd1899bf0d"
+}

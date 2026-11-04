@@ -1,0 +1,26 @@
+{
+  "status": "SOURCE_SELECTOR_REPAIR_OLD_RED_NEW_SYNTHETIC_GREEN_HOSTED_REVALIDATION_PENDING",
+  "published_commit": "dd1c3642c6d0f96830025c0a55ac9f60e92eb465",
+  "published_tree": "f7c9d8105380267914ff8946090440ee0ca8f638",
+  "workflow_run_id": 40333384225,
+  "observed_positive_gate": "Display-renderer exits0 and TAP1..0; exact-case gate rejects zero cases. Other normal Brush21 at each scale and previous suites reported pass; full task acceptance not claimed.",
+  "diagnosis": "GLib -p /ownership does not recursively select the two nested leaf registrations. Dedicated display-renderer binary has exactlytwo cases; invoke it without a selector and retain strict two-case checker.",
+  "proof": "Actual system GLib2.84.4 no-op probe with exact registered paths reproduces old0 and new2; unchanged strict checker rejects0 and accepts2. Added orchestration regression rejects exact old dispatch and passes fixed normal+sanitizer command dispatch. This is not GIMP native/sanitizer runtime proof.",
+  "sanitizer_status": "Pending terminal run27 observation at drafting time; no acceptance claim.",
+  "changed_native_sources": false,
+  "blocked_babl_repair": "Untouched; no attempt, no dependency or gate change.",
+  "files": {
+    "glib-filter-probe.py": "070bc29596d3d047f6ea0809be38afece9d7b7109fd5d0d2c03c9f678a686741",
+    "new-probe-strict-result.json": "9f61d2f985535588ff3f904503e64e4144cb3a6854b4005d6cceb86cfd241202",
+    "no-selector.tap": "e6b3c68e905ba8345c825f2ff4e72da1412db2c72d4f14928fb0cfe093307d9e",
+    "old-probe-strict-result.json": "01c91b74ec22cd2d3e558f0b9f6cc911019da9dc3a6a6d115d1a94ef485ad1f5",
+    "old-regression.log": "95f137de0067f58430bb59f909eac87a45de3f0559b0e253b8662513a1e783a9",
+    "old-selector.tap": "652bf366a7da80dc3f5919b870ff44e478edced05aa98d49a7073320f3020852",
+    "orchestration-green.log": "22b3916a1884486a727b5af9d6d575156a0ce3fee9e9bb742fb7b2d6308334c9",
+    "probe-validation.json": "c4486a820d65ee4c0c8d54dea585741f81c12e06dba71ad65d9f008ce7a4eb94",
+    "published-display-renderer-failure.json": "8ca5431adf9e8b5154fa06b7230a3a172b165212d2c88c1a3ec351c10bd0fd8b",
+    "published-runtime-seal-receipt.json": "60381a39df23285fc37bd43fcc085ab50d5d6c619a6968d66a9a058664e38248",
+    "test_brush_ci_draft.log": "5841087f0f5de5b7faa3d959bd00d5967b1a8abc5ecdb19fa08dc453c07a23b0",
+    "test_runtime_pins.log": "6bd4516a9a3b55e4d43528be398a9a2231d5269b73de835f8b5de4e89e34f72c"
+  }
+}

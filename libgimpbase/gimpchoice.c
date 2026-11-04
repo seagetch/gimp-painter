@@ -95,6 +95,8 @@ gimp_choice_finalize (GObject *object)
 
   g_hash_table_unref (choice->choices);
   g_list_free_full (choice->keys, (GDestroyNotify) g_free);
+
+  G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 /* Public API */

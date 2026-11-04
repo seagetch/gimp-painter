@@ -1,0 +1,23 @@
+{
+  "format": 1,
+  "purpose": "Isolated matched lifecycle CI proof inputs only; not production dependency adoption.",
+  "inputs": [
+    {
+      "file": "babl_0.1.114.orig.tar.xz",
+      "sha256": "bcbb7786c1e447703db3bc7fa34d62d0d2d117b22f04d8834c7b2d5ded456487",
+      "bytes": 321456
+    },
+    {
+      "file": "fe7fcc23326680428e4ae9dbb3c41bed033efa9f.patch",
+      "sha256": "6691ca4835d382f354232905995d50e37680cf2d6098246eccf70431adfe139c",
+      "bytes": 522
+    }
+  ],
+  "public_references": {
+    "archive": "https://deb.debian.org/debian/pool/main/b/babl/babl_0.1.114.orig.tar.xz",
+    "source_project": "https://gegl.org/babl/",
+    "upstream_change": "https://gitlab.gnome.org/GNOME/babl/-/commit/fe7fcc23326680428e4ae9dbb3c41bed033efa9f"
+  },
+  "verification": "Exact committed bytes match previously reviewed source inputs. Historical Debian InRelease/Source index verification recorded; no new signature validation here. Upstream patch unsigned. No dsc signature verification claim (prior tool unavailable). Raw patch bytes may differ from mail-formatted patch download.",
+  "runtime_status": "UNRUN; separate hosted CI validation required."
+}

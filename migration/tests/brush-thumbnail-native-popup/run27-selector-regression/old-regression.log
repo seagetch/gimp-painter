@@ -1,0 +1,14 @@
+test_display_renderer_runs_whole_binary_not_shallow_parent_filter (regression.Orchestration.test_display_renderer_runs_whole_binary_not_shallow_parent_filter) ... FAIL
+
+======================================================================
+FAIL: test_display_renderer_runs_whole_binary_not_shallow_parent_filter (regression.Orchestration.test_display_renderer_runs_whole_binary_not_shallow_parent_filter)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/0015fc5d1a03/brush-run27-selector-fix/candidate/tools/brush-ci/test_brush_orchestration.py", line 188, in test_display_renderer_runs_whole_binary_not_shallow_parent_filter
+    self.assertNotIn('--test-args',command)
+AssertionError: '--test-args' unexpectedly found in 'test -C /tmp/tmpxadh8kik/build --no-rebuild --num-processes 1 --print-errorlogs --logbase display-renderer-positive --test-args -p /ownership display-renderer-ownership'
+
+----------------------------------------------------------------------
+Ran 1 test in 0.030s
+
+FAILED (failures=1)

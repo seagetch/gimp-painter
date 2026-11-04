@@ -1,0 +1,67 @@
+{
+  "status": "PASS_BOUNDED_NORMAL_NATIVE_VALIDATION",
+  "source_snapshot": "/tmp/c8-native-validation/source",
+  "candidate": "/tmp/gimp-brush-c8-candidate",
+  "candidate_manifest_sha256": "9208ffed38255f1accbef7dd5804b8b41e5b850790cf72e5a7ba3d91bc58bdf0",
+  "frozen_native_files_verified": 10,
+  "gimp_data_commit": "a31e5dea4f572fb5f33b06f5c4b86db5f30643dc",
+  "gimp_data_cache": "/workspace/shared/gimp-common-layer-candidate-307-001/source/gimp-data",
+  "gimp_data_files_verified": 1714,
+  "configuration": {
+    "exitcode": 0,
+    "meson": "1.7.0",
+    "targets": 1094,
+    "new_targets": [
+      "color-config-ownership",
+      "display-renderer-ownership"
+    ],
+    "warning": "Snapshot has no .git/git-version.h (unsupported-build diagnostic); existing SIMD, run_command check and minimum 0.61 versus environment.unset 1.4 diagnostics."
+  },
+  "compact": {
+    "status": "PASS_OBJECT_AND_LINK_NO_RUNTIME",
+    "fixture_sha256": "6f828b0b239e4714ed29475bef38a7c2021cd6fa6d1c0a76af75d493cb639a10",
+    "main_sha256": "6b81f7273161c794c10e7b4e69f32db1af40586f4e224162b7711813a4c5ed18",
+    "object_sha256": "ffa4c4f74dd240c37a32fc5f411ff6b48fb029f6f32ff7054050c3726276ead4",
+    "binary_sha256": "87ae14cc7919baae5e566223f7d15c4c954ae8fad0f38db8c32fd3746f20cde9",
+    "choice_provider": "/workspace/scratch/0015fc5d1a03/brush-choice-normal-build-20261026/libgimpbase-3.0.so.0.8.1",
+    "choice_provider_sha256": "5a0c4c75d0076ce63648832e1f98a68fbdc71e7d66dc22fb9ce79c107edb12f0",
+    "scope": "Exact C8 compact-options translation unit compiled; remaining support objects and application libraries reused read-only from existing normal native build. Link plus loader --list only, no executable entrypoint, constructors, tests or GUI run. Not full C8 rebuild or runtime/UI proof.",
+    "dependency_file": "/tmp/c8-native-validation/compact/test-painter-compact-options.c.o.d"
+  },
+  "color": {
+    "new_native_target_recipe_results": {
+      "color-config-ownership-compile": 0,
+      "color-config-ownership-link": 0,
+      "color-config-ownership-headers": 0,
+      "color-config-ownership-loader-list": 0,
+      "color-config-ownership-all-tests": 0,
+      "display-renderer-ownership-compile": 0,
+      "display-renderer-ownership-link": 0,
+      "display-renderer-ownership-headers": 0,
+      "display-renderer-ownership-loader-list": 0,
+      "display-renderer-ownership-all-tests": 0
+    },
+    "configuration_initial_and_replacement_pass": true,
+    "display_properties_match_recorded_old_baseline": 57,
+    "old_property_baseline": "/workspace/scratch/0015fc5d1a03/brush-run26-five-color-fixes-draft/normal-proof/old-display-parity.stdout",
+    "old_property_baseline_sha256": "707af58c0139c002e5568839aa108d8b116ac4b7e5db364311adc878a6be99f9",
+    "renderer_public_state_smoke_pass": true
+  },
+  "reuse": "Normal native application archives, support objects, and library dependencies read-only from /workspace/shared/gimp-common-layer-candidate-307-001/build; Choice provider from brush-choice-normal-build-20261026. Color objects and config SO freshly compiled from exact C8. New tests use fresh Meson target compile/link recipes, substituting historical dependency paths and changed objects; missing generated headers fallback old build. Compact uses previous normal target recipe; not full rebuild.",
+  "unrun": [
+    "Full C8 native rebuild",
+    "GUI or DISPLAY execution",
+    "ASan/LSan/UBSan/TSan",
+    "Renderer private-color lifetime/leak test"
+  ],
+  "warning_counts": {
+    "compact/compile.stderr": 560
+  },
+  "identity_files": [
+    "frozen-native-sources.json",
+    "gimp-data-manifest.json",
+    "loader-identities.json",
+    "compile-dependency-identities.json",
+    "output-identities.json"
+  ]
+}

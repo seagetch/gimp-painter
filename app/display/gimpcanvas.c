@@ -47,6 +47,7 @@ enum
 
 /*  local function prototypes  */
 
+static void       gimp_canvas_finalize        (GObject         *object);
 static void       gimp_canvas_set_property    (GObject         *object,
                                                guint            property_id,
                                                const GValue    *value,
@@ -77,6 +78,7 @@ gimp_canvas_class_init (GimpCanvasClass *klass)
   GObjectClass   *object_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
+  object_class->finalize        = gimp_canvas_finalize;
   object_class->set_property    = gimp_canvas_set_property;
   object_class->get_property    = gimp_canvas_get_property;
 
@@ -100,6 +102,18 @@ gimp_canvas_init (GimpCanvas *canvas)
 
   gtk_widget_set_can_focus (widget, TRUE);
   gtk_widget_add_events (widget, GIMP_CANVAS_EVENT_MASK);
+}
+
+static void
+gimp_canvas_finalize (GObject *object)
+{
+  GimpCanvas *canvas = GIMP_CANVAS (object);
+
+  /* Keep padding available through destroy/unrealize and release the final
+   * owned copy only when the canvas itself is finalized. */
+  g_clear_object (&canvas->padding_color);
+
+  G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static void

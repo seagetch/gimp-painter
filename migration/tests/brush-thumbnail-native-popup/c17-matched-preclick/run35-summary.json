@@ -1,0 +1,11 @@
+{
+  "run_id": 40442491194,
+  "commit": "52aa97f55789caf04e531ecd553170a6dcbec2bc",
+  "conclusion": "failure",
+  "acceptance": false,
+  "evidence_summary_sha256": "e5e908876c7c7eca5d0ed5f55dbc40636f841b833fbd2e144bcd37a08a8f02ff",
+  "normal": "Brush21 at both scales and common passed; candidate frame7 and formal intended old frameRED passed.",
+  "sanitizer": "All21 Brush invoked:20 assertions passed but leak exits failed; case14 SIGABRT. Frame7 assertions passed,159869 bytes/2238 allocations leaked. Canvas2 assertions passed,108124 bytes/481 allocations leaked.",
+  "diagnostic": "Cleanup observed; capped stacks do not prove same wait invocation or improvement.",
+  "babl": "Dependency setup failed before lifecycle comparison; blocked repair unchanged."
+}
