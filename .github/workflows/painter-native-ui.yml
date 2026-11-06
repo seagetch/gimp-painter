@@ -1,18 +1,8 @@
-name: Painter native UI
+name: Painter native UI (manual diagnostics)
 
+# UI, sanitizer, historical controls and timing investigations are separate
+# manual diagnostics, never prerequisites for the ordinary build CI.
 on:
-  push:
-    branches: [gimp-3-0-port]
-    paths:
-      - 'app/**'
-      - 'libgimp*/**'
-      - 'tools/**'
-      - 'migration/baseline/debian13-package-lock.json'
-      - 'migration/inventory/**'
-      - 'meson.build'
-      - 'meson_options.txt'
-      - 'gimp-data'
-      - '.github/workflows/painter-native-ui.yml'
   workflow_dispatch:
 
 permissions:

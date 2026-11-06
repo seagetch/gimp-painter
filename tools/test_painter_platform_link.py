@@ -190,11 +190,19 @@ def run(args, report):
         return path
 
     executable = link('painter-foundation', [obj for name, obj in objects.items() if name not in foundation.CPP_SOURCES])
-    output = execute([executable])
-    report['foundation_tests'] = foundation_results(output)
     c_obj = compile_source('tests/platform-abi.c', extra=['-fvisibility=default'])
     cpp_obj = compile_source('tests/platform-abi.cpp', extra=['-fvisibility=default'])
     abi = link('painter-platform-abi', [c_obj, cpp_obj], export=True)
+    if args.build_only:
+        # Compile and link both C/C++ consumers, but do not execute a test or
+        # run runtime/export assertions in the automatic build workflow.
+        report['archive_sha256'] = digest(archive)
+        report['scope'] = 'Native common bridge compile/link only; no runtime or full-GIMP claim'
+        report['status'] = 'PASS'
+        return
+
+    output = execute([executable])
+    report['foundation_tests'] = foundation_results(output)
     output = execute([abi])
     require('PLATFORM_ABI_PASS pointer=8 ' in output, 'Missing native layout/callback result')
     report['abi_result'] = output.strip()
@@ -260,6 +268,8 @@ def main():
     parser.add_argument('--arch', required=True, choices=['x86_64', 'arm64'])
     parser.add_argument('--build-dir', required=True, type=Path)
     parser.add_argument('--report', required=True, type=Path)
+    parser.add_argument('--build-only', action='store_true',
+                        help='Compile and link native targets without running tests')
     args = parser.parse_args()
     report = {'task': '07.014', 'status': 'FAIL', 'scope': 'Native common bridge only; no full-GIMP/platform release claim',
               'commands': [], 'binaries': {}}

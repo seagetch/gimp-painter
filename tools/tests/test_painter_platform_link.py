@@ -1,17 +1,72 @@
 #!/usr/bin/env python3
 """Failure controls for the original 07.014 acceptance recorder."""
 from pathlib import Path
+from types import SimpleNamespace
 import sys
 import tempfile
 import unittest
+from unittest import mock
 
 sys.dont_write_bytecode = True
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from test_painter_platform_link import (foundation_results, run_command,
                                        archive_objects, pe_exports, macho_exports)
+import test_painter_platform_link as platform_link
 
 
 class PlatformRecorder(unittest.TestCase):
+    def test_build_only_links_consumers_without_executing_them(self):
+        commands = []
+
+        def compiler(report, argv, input_text=None):
+            argv = list(map(str, argv))
+            commands.append(argv)
+            if '-o' in argv:
+                Path(argv[argv.index('-o') + 1]).write_bytes(b'compiled')
+            if len(argv) > 1 and argv[1] == 'rcs':
+                Path(argv[2]).write_bytes(b'archive')
+            if len(argv) > 1 and argv[1] == 't':
+                return '\n'.join(Path(name).name + '.o'
+                                 for name in platform_link.foundation.CPP_SOURCES)
+            if '--version' in argv:
+                return 'gcc mock\n'
+            return ''
+
+        with tempfile.TemporaryDirectory() as directory:
+            args = SimpleNamespace(system='linux', arch='x86_64',
+                                   build_dir=Path(directory), build_only=True)
+            report = {'commands': [], 'binaries': {}}
+            with mock.patch.object(platform_link.platform, 'system', return_value='Linux'), \
+                 mock.patch.object(platform_link.platform, 'machine', return_value='x86_64'), \
+                 mock.patch.object(platform_link, 'run_command', side_effect=compiler), \
+                 mock.patch.object(platform_link, 'binary_identity', return_value=('ELF', 'x86_64')):
+                platform_link.run(args, report)
+            self.assertEqual(report['status'], 'PASS')
+            self.assertEqual(set(report['binaries']),
+                             {'painter-foundation', 'painter-platform-abi'})
+            self.assertNotIn('foundation_tests', report)
+            self.assertNotIn('abi_result', report)
+            self.assertNotIn('exports', report)
+            self.assertTrue(all(not Path(command[0]).is_relative_to(directory)
+                                for command in commands))
+
+    def test_build_only_does_not_waive_compilation_failure(self):
+        def compiler(report, argv, input_text=None):
+            if '-c' in argv:
+                raise RuntimeError('compile failed')
+            return 'gcc mock\n' if '--version' in argv else ''
+
+        with tempfile.TemporaryDirectory() as directory:
+            args = SimpleNamespace(system='linux', arch='x86_64',
+                                   build_dir=Path(directory), build_only=True)
+            report = {'commands': [], 'binaries': {}}
+            with mock.patch.object(platform_link.platform, 'system', return_value='Linux'), \
+                 mock.patch.object(platform_link.platform, 'machine', return_value='x86_64'), \
+                 mock.patch.object(platform_link, 'run_command', side_effect=compiler):
+                with self.assertRaisesRegex(RuntimeError, 'compile failed'):
+                    platform_link.run(args, report)
+            self.assertNotEqual(report.get('status'), 'PASS')
+
     def test_apple_archive_index(self):
         objects = ['error.cpp.o', 'binding.cpp.o', 'store.cpp.o']
         for index in ['__.SYMDEF', '__.SYMDEF SORTED', '__.SYMDEF_64', '__.SYMDEF_64 SORTED']:
