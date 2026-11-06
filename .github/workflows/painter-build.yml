@@ -27,7 +27,7 @@ jobs:
           apt-get update
           apt-get install --no-install-recommends -y \
             ca-certificates git python3 build-essential pkg-config \
-            debian-archive-keyring glib-networking libblas3 liblapack3
+            debian-archive-keyring glib-networking librsvg2-common libblas3 liblapack3
       - name: Fetch exact source and pinned data
         run: |
           set -euo pipefail
