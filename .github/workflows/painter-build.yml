@@ -60,10 +60,11 @@ jobs:
           meson setup "$build" . --prefix="$GIMP_BUILD_PREFIX" \
             --buildtype=debugoptimized -Dauto_features=disabled -Dlibunwind=false \
             -Dheadless-tests=disabled -Dpainter-http=disabled \
-            -Denable-console-bin=false -Dgi-docgen=disabled -Dappdata-test=disabled \
+            -Denable-console-bin=true -Dgi-docgen=disabled -Dappdata-test=disabled \
             -Djavascript=disabled -Dvala=disabled -Dprint=false -Dcheck-update=no \
             -Dlibbacktrace=false 2>&1 | tee "$out/configure.log"
           # Normal Meson build, including the application and enabled plug-ins.
+          # The console binary generates splash assets without a display.
           # Do not run meson test, UI drivers, sanitizer proofs or runtime seals.
           meson compile -C "$build" -j 2 2>&1 | tee "$out/compile.log"
       - name: Preserve build logs
