@@ -33,6 +33,9 @@ static GimpPresetDescriptor defaults = { -1, {
   N_("Layer presets"), NULL, N_("Open layer presets dialog"), "gimp-layer-preset-dialog"
 }, 0 };
 static GimpPresetDescriptor *catalog = &defaults;
+/* Default metadata is also a construction template. It does not imply that a
+ * configuration has been registered in the current catalog epoch. */
+static gboolean catalog_present;
 static guint owners, frozen_owners, gui_reservations;
 static guint64 catalog_generation;
 /* Only immutable metadata actually exposed by the borrowed legacy getter.
@@ -116,10 +119,10 @@ gimp_preset_descriptor_new (const GimpPresetDescriptorValues *v, GError **error)
   memcpy (&d->values, copies, sizeof copies);
   return d;
 }
-static void select_catalog (GimpPresetDescriptor *d)
+static void select_catalog (GimpPresetDescriptor *d, gboolean present)
 {
   GimpPresetDescriptor *old = catalog;
-  catalog = gimp_preset_descriptor_ref (d); catalog_generation++;
+  catalog = gimp_preset_descriptor_ref (d); catalog_present = present; catalog_generation++;
   gimp_preset_descriptor_unref (old);
 }
 static gboolean valid_path (GObjectClass *klass, const gchar *name, gboolean nullable)
@@ -177,7 +180,7 @@ gboolean gimp_preset_catalog_register (Gimp *gimp, GimpPresetDescriptor *d, GErr
   if (!gimp)
     {
       if (owners) return fail (error, "Preentry registration requires no application owners");
-      select_catalog (d); return TRUE;
+      select_catalog (d, TRUE); return TRUE;
     }
   o = gimp_preset_owner (gimp);
   if (o->publishing || !replaceable (gimp, o)) return fail (error, "Preset owner is closed, initialized, loading or nonempty");
@@ -196,7 +199,7 @@ gboolean gimp_preset_catalog_register (Gimp *gimp, GimpPresetDescriptor *d, GErr
   old = o->descriptor; old_factory = gimp->layer_preset_factory;
   o->descriptor = gimp_preset_descriptor_ref (d); o->generation++;
   gimp->layer_preset_factory = candidate;
-  select_catalog (d);
+  select_catalog (d, TRUE);
   g_object_unref (old_factory);
   gimp_preset_descriptor_unref (old);
   result = TRUE;
@@ -219,7 +222,11 @@ void gimp_preset_owner_open (Gimp *gimp)
   candidate = new_factory (gimp, &defaults);
   if (!candidate || o->retired || generation != o->generation)
     { g_clear_object (&candidate); o->publishing = FALSE; return; }
-  if (!frozen_owners && !gui_reservations) select_catalog (&defaults);
+  if (!frozen_owners && !gui_reservations) select_catalog (&defaults, TRUE);
+  else if (!catalog_present)
+    /* A retired owner's outstanding lease may still reserve the catalog. A
+     * successful new owner nevertheless makes the current metadata present. */
+    select_catalog (catalog, TRUE);
   o->descriptor = gimp_preset_descriptor_ref (&defaults);
   gimp->layer_preset_factory = candidate;
   o->active = TRUE; o->generation++; owners++;
@@ -239,7 +246,7 @@ void gimp_preset_owner_close (Gimp *gimp)
   o->active = FALSE;
   if (o->frozen) { o->frozen = FALSE; g_assert (frozen_owners); frozen_owners--; }
   g_assert (owners); owners--;
-  if (!owners) { select_catalog (&defaults); legacy_epoch_clear (); }
+  if (!owners) { select_catalog (&defaults, FALSE); legacy_epoch_clear (); }
 }
 void gimp_preset_owner_finalize (Gimp *gimp)
 {
@@ -295,6 +302,7 @@ struct _GimpPresetPreferencesSnapshot
   gint refs;
   GimpPresetDescriptor *descriptor;
   PrefsDialogEntry entry;
+  gboolean present;
 };
 static PrefsDialogEntry prefs_entry (GimpPresetDescriptor *d)
 {
@@ -314,7 +322,9 @@ gimp_preset_preferences_snapshot_new (Gimp *gimp, GError **error)
   snapshot = g_try_new0 (GimpPresetPreferencesSnapshot, 1);
   if (!snapshot)
     { gimp_preset_descriptor_unref (d); fail (error, "Cannot allocate preset preferences snapshot"); return NULL; }
-  snapshot->refs = 1; snapshot->descriptor = d; snapshot->entry = prefs_entry (d);
+  snapshot->refs = 1; snapshot->descriptor = d;
+  snapshot->present = gimp != NULL || catalog_present;
+  if (snapshot->present) snapshot->entry = prefs_entry (d);
   return snapshot;
 }
 GimpPresetPreferencesSnapshot *
@@ -329,17 +339,21 @@ const PrefsDialogEntry *
 gimp_preset_preferences_snapshot_get_entries (GimpPresetPreferencesSnapshot *snapshot,
                                               guint *length)
 {
-  if (length) *length = snapshot ? 1 : 0;
-  return snapshot ? &snapshot->entry : NULL;
+  gboolean present = snapshot && snapshot->present;
+  if (length) *length = present ? 1 : 0;
+  return present ? &snapshot->entry : NULL;
 }
 /* Legacy shallow entries retain backing only through the explicit catalog epoch. */
 GArray *preset_factory_gui_prefs_entry_point (void)
 {
-  GimpPresetDescriptor *d = gimp_preset_catalog_snapshot (NULL);
-  PrefsDialogEntry entry = prefs_entry (d);
-  GArray *array = g_array_new (FALSE, TRUE, sizeof entry);
-  legacy_expose (d);
-  g_array_append_val (array, entry);
-  gimp_preset_descriptor_unref (d);
+  GArray *array = g_array_new (FALSE, TRUE, sizeof (PrefsDialogEntry));
+  if (catalog_present)
+    {
+      GimpPresetDescriptor *d = gimp_preset_catalog_snapshot (NULL);
+      PrefsDialogEntry entry = prefs_entry (d);
+      legacy_expose (d);
+      g_array_append_val (array, entry);
+      gimp_preset_descriptor_unref (d);
+    }
   return array;
 }

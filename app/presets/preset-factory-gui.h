@@ -20,11 +20,15 @@ typedef struct
   const gchar *path_property_name;
   const gchar *writable_property_name;
 } PrefsDialogEntry;
+/* Empty before the first successful registration/owner entry, and after the
+ * last owner closes. Each call still returns its own caller-owned array. */
 GArray *preset_factory_gui_prefs_entry_point (void);
 typedef struct _Gimp Gimp;
 typedef struct _GimpPresetPreferencesSnapshot GimpPresetPreferencesSnapshot;
 /* NULL selects the process catalog; otherwise the named native owner snapshot.
- * Transfer full. The read-only view/strings live until the last snapshot unref. */
+ * Transfer full. The read-only view/strings live until the last snapshot unref.
+ * An unregistered process catalog produces a valid empty snapshot; its entry
+ * getter returns NULL and length zero, even after a later registration. */
 GimpPresetPreferencesSnapshot *gimp_preset_preferences_snapshot_new (Gimp *gimp, GError **error);
 GimpPresetPreferencesSnapshot *gimp_preset_preferences_snapshot_ref (GimpPresetPreferencesSnapshot *snapshot);
 void gimp_preset_preferences_snapshot_unref (GimpPresetPreferencesSnapshot *snapshot);

@@ -1,0 +1,73 @@
+Xvfb verified: 127.0.0.1:91, 1080x1920x24, authenticated accepted, empty authority rejected
+1/7 gimp:painter / painter-public-header-compilation OK               0.26s
+2/7 gimp:painter / painter-additional-header-routes  OK               3.25s
+3/7 gimp:app / gimp-layer-presets                    OK               5.42s
+4/7 gimp:app / layer-presets-ui                      OK              20.03s
+5/7 gimp:app / preset-gui-entries                    OK               1.74s
+6/7 gimp:app / preset-catalog                        FAIL             6.53s   killed by signal 6 SIGABRT
+>>> LD_LIBRARY_PATH=/workspace/scratch/0015fc5d1a03/gimp-preset-build-nov10/libgimpthumb:/workspace/scratch/0015fc5d1a03/gimp-preset-build-nov10/libgimpconfig:/workspace/scratch/0015fc5d1a03/gimp-preset-build-nov10/libgimpwidgets:/workspace/scratch/0015fc5d1a03/gimp-preset-build-nov10/libgimpbase:/workspace/scratch/0015fc5d1a03/gimp-preset-build-nov10/libgimpmath:/workspace/scratch/0015fc5d1a03/gimp-preset-build-nov10/libgimpmodule:/workspace/scratch/0015fc5d1a03/gimp-preset-build-nov10/libgimpcolor:/workspace/scratch/0015fc5d1a03/gimp-preset-prefix-nov10/lib/x86_64-linux-gnu:/workspace/scratch/0015fc5d1a03/gimp-build-deps-debian13/root/usr/lib/x86_64-linux-gnu UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 GIMP_TESTING_ABS_TOP_BUILDDIR=/workspace/scratch/0015fc5d1a03/gimp-preset-build-nov10 ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1 MESON_TEST_ITERATION=1 MSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 UI_TEST=yes GIMP_TESTING_PLUGINDIRS=/workspace/scratch/0015fc5d1a03/gimp-preset-build-nov10/plug-ins/common GIMP_TESTING_ABS_TOP_SRCDIR=/workspace/scratch/0015fc5d1a03/gimp-candidates-nov10 MALLOC_PERTURB_=28 /workspace/scratch/0015fc5d1a03/gimp-preset-build-nov10/app/tests/preset-catalog
+――――――――――――――――――――――――――――――――――――― ✀  ―――――――――――――――――――――――――――――――――――――
+stdout:
+TAP version 14
+# random seed: R02S794fba6093b9db8fbdf5790dbae4ec39
+# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created
+1..31
+# Start of preset-catalog tests
+ok 1 /preset-catalog/preentry-overwrite-array
+ok 2 /preset-catalog/replace-retained-snapshots
+# verified unit-service-only wrapper trace; catalog/factory lifecycle unwrapped
+ok 3 /preset-catalog/two-owners-first-close
+# verified unit-service-only wrapper trace; catalog/factory lifecycle unwrapped
+ok 4 /preset-catalog/two-owners-second-close
+ok 5 /preset-catalog/invalid-allocation-rollback
+ok 6 /preset-catalog/nonempty-active-load
+ok 7 /preset-catalog/coherent-release-reentry
+ok 8 /preset-catalog/prepare-owner-close
+# verified unit-service-only wrapper trace; catalog/factory lifecycle unwrapped
+ok 9 /preset-catalog/prepare-other-owner-generation
+ok 10 /preset-catalog/acquisition-close
+ok 11 /preset-catalog/gui-cancel-publish
+ok 12 /preset-catalog/actual-action-empty-publish
+# verified unit-service-only wrapper trace; catalog/factory lifecycle unwrapped
+ok 13 /preset-catalog/gui-close-release
+# verified unit-service-only wrapper trace; catalog/factory lifecycle unwrapped
+ok 14 /preset-catalog/private-size-double-close
+ok 15 /preset-catalog/factory-preparation-null
+ok 16 /preset-catalog/startup-absent-pair
+ok 17 /preset-catalog/selected-real-load-save-reopen
+ok 18 /preset-catalog/actual-initialize-freeze
+ok 19 /preset-catalog/release-then-owner-close
+ok 20 /preset-catalog/array-ref-free-steal
+ok 21 /preset-catalog/unrelated-actions-on-lease-failure
+ok 22 /preset-catalog/failed-gui-allocation-no-freeze
+ok 23 /preset-catalog/required-dialog-startup-failure
+ok 24 /preset-catalog/legacy-epoch-dedup-release32
+ok 25 /preset-catalog/owning-snapshot-survives-close
+ok 26 /preset-catalog/owning-snapshot-allocation-failure
+ok 27 /preset-catalog/empty-preentry-getters
+ok 28 /preset-catalog/failed-preentry-remains-empty
+ok 29 /preset-catalog/empty-snapshot-survives-entry
+# child process (/preset-catalog/last-close-new-preentry [484]) exit status: 1 (error)
+# child process (/preset-catalog/last-close-new-preentry [484]) stdout: ""
+# child process (/preset-catalog/last-close-new-preentry [484]) stderr: "\n(/workspace/scratch/0015fc5d1a03/gimp-preset-build-nov10/app/tests/preset-catalog:484): Gimp-Core-CRITICAL **: 21:44:32.050: gimp_units_init: assertion 'the_unit_gimp == NULL' failed\n"
+not ok /preset-catalog/last-close-new-preentry - ERROR:../gimp-candidates-nov10/app/tests/test-preset-catalog.c:227:run: child process (/preset-catalog/last-close-new-preentry [484]) failed unexpectedly
+Bail out!
+stderr:
+**
+ERROR:../gimp-candidates-nov10/app/tests/test-preset-catalog.c:227:run: child process (/preset-catalog/last-close-new-preentry [484]) failed unexpectedly
+――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+
+7/7 gimp:app / preset-catalog-ui                     OK              14.31s
+
+Summary of Failures:
+
+6/7 gimp:app / preset-catalog                        FAIL             6.53s   killed by signal 6 SIGABRT
+
+Ok:                 6
+Expected Fail:      0
+Fail:               1
+Unexpected Pass:    0
+Skipped:            0
+Timeout:            0
+
+Full log written to /workspace/scratch/0015fc5d1a03/gimp-preset-build-nov10/meson-logs/preset-presence-native.txt

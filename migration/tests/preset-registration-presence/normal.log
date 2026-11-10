@@ -1,0 +1,17 @@
+Xvfb verified: 127.0.0.1:91, 1080x1920x24, authenticated accepted, empty authority rejected
+1/7 gimp:painter / painter-public-header-compilation OK               0.14s
+2/7 gimp:painter / painter-additional-header-routes  OK               6.09s
+3/7 gimp:app / gimp-layer-presets                    OK               2.24s
+4/7 gimp:app / layer-presets-ui                      OK              18.35s
+5/7 gimp:app / preset-gui-entries                    OK               1.64s
+6/7 gimp:app / preset-catalog                        OK               6.83s
+7/7 gimp:app / preset-catalog-ui                     OK              13.55s
+
+Ok:                 7
+Expected Fail:      0
+Fail:               0
+Unexpected Pass:    0
+Skipped:            0
+Timeout:            0
+
+Full log written to /workspace/scratch/0015fc5d1a03/gimp-preset-build-nov10/meson-logs/preset-presence-native.txt

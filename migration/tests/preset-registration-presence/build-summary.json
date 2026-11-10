@@ -1,0 +1,34 @@
+{
+  "base_commit": "aec6d7296506f51c1991ab3f27a84fc61e3de4df",
+  "gimp_data_commit": "a31e5dea4f572fb5f33b06f5c4b86db5f30643dc",
+  "dependency_lock_sha256": "553f4051b91626bc2f5470373fd3e8d67c8d61ec62103b2addcab7a16492129f",
+  "full_build_returncode": 0,
+  "full_build_steps": 3715,
+  "after_test_fixture_correction_rebuild_returncode": 0,
+  "regular_ci_changed": false,
+  "normal_cases": 72,
+  "normal_header_groups": 2,
+  "catalog_cases": 31,
+  "sanitizer_cases": 42,
+  "sanitizer_instrumented_units": 11,
+  "causal_rejections": 2,
+  "source_sha256": {
+    "app/presets/gimppresetdescriptor.c": "04c65aa40a37e21aa0bd0ace7ec074659eb18d8916b1f47c742edc4320337a68",
+    "app/presets/gimppresetdescriptor.h": "2f7e2e62d646d11138e8f3710ed14d6a686d0e26f1b79d60f866467086fec6f5",
+    "app/presets/preset-factory-gui.h": "fe34b07c19b1a17997fdc489676af594db9c25649193774c35a139ad83fb47dc",
+    "app/tests/test-preset-catalog.c": "77973488c1fbe54e53aff2f252d38e6fff7216eff5ec480d9357b80ca53bed59"
+  },
+  "screen": {
+    "width": 1080,
+    "height": 1920,
+    "depth": 24,
+    "oncanvas_asserted_by_native_test": true
+  },
+  "limits": [
+    "Not all migration tasks are complete.",
+    "Feature-lifecycle regression is not enabled in the painter-http=disabled build.",
+    "Sanitizers cover only the 11 listed units; dependencies, vptr and leaks are not covered.",
+    "The first new sequential-owner test hit the documented process-global unit service; its assertion log is retained and only the unit-service fixture was corrected.",
+    "An optional session bus could not be started in this container. Final tests use authenticated Xvfb without a session bus."
+  ]
+}

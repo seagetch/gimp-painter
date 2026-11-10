@@ -187,6 +187,34 @@ static void selected_persistence (Gimp *a, GimpPresetDescriptor *d)
   g_assert_cmpstr(json_object_get_string_member(json_node_get_object(root),"catalog-proof"),==,"selected-alternate-path");json_node_unref(root);
   g_assert_cmpint(g_remove(file),==,0);g_assert_cmpint(g_rmdir(dir),==,0);g_free(file);g_free(source);g_free(dir);
 }
+static void assert_process_entries (guint expected)
+{
+  GArray *array = preset_factory_gui_prefs_entry_point ();
+  GimpPresetPreferencesSnapshot *snapshot;
+  const PrefsDialogEntry *entries;
+  GError *error = NULL;
+  guint length = G_MAXUINT;
+  guint count;
+  gsize bytes;
+
+  g_assert_nonnull (array);
+  g_assert_cmpuint (array->len, ==, expected);
+  g_assert_cmpuint (g_array_get_element_size (array), ==, sizeof (PrefsDialogEntry));
+  g_array_unref (array);
+  snapshot = gimp_preset_preferences_snapshot_new (NULL, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (snapshot);
+  entries = gimp_preset_preferences_snapshot_get_entries (snapshot, &length);
+  g_assert_cmpuint (length, ==, expected);
+  g_assert_true ((entries != NULL) == (expected != 0));
+  gimp_preset_preferences_snapshot_unref (snapshot);
+  if (expected == 0)
+    {
+      gimp_preset_catalog_legacy_usage (&count, &bytes);
+      g_assert_cmpuint (count, ==, 0);
+      g_assert_cmpuint (bytes, ==, 0);
+    }
+}
 static void run (gconstpointer value)
 {
   guint id = GPOINTER_TO_UINT (value);
@@ -197,14 +225,70 @@ static void run (gconstpointer value)
     { g_test_trap_subprocess (NULL, 60 * G_TIME_SPAN_SECOND, 0);
       if (id == 22) { g_test_trap_assert_failed (); g_test_trap_assert_stderr ("*Cannot initialize required preset dialog descriptor*"); }
       else g_test_trap_assert_passed ();
-      if (id == 2 || id == 3 || id == 8 || id == 12 || id == 13)
+      if (id == 2 || id == 3 || id == 8 || id == 12 || id == 13 || id == 29 || id == 30)
         {
           g_test_trap_assert_stdout ("*unit boundary: target init bypass only*unit boundary: target list cleanup only*unit boundary: guardian real teardown last*targets*");
           g_test_message ("verified unit-service-only wrapper trace; catalog/factory lifecycle unwrapped");
         }
       return; }
   g_setenv ("GIMP_PAINTER_HTTP_ENABLE", "0", TRUE);
+  assert_process_entries (0);
   d = descriptor ("replacement", TRUE); e = descriptor ("second", FALSE);
+  if (id == 26)
+    {
+      GArray *first = preset_factory_gui_prefs_entry_point ();
+      GArray *second = preset_factory_gui_prefs_entry_point ();
+      GimpPresetPreferencesSnapshot *empty = gimp_preset_preferences_snapshot_new (NULL, NULL);
+      GimpPresetPreferencesSnapshot *copy = gimp_preset_preferences_snapshot_ref (empty);
+      guint length = G_MAXUINT;
+      g_assert_true (first != second);
+      g_assert_cmpuint (first->len, ==, 0);
+      g_assert_cmpuint (second->len, ==, 0);
+      g_array_unref (first); g_array_unref (second);
+      gimp_preset_preferences_snapshot_unref (empty);
+      g_assert_null (gimp_preset_preferences_snapshot_get_entries (copy, &length));
+      g_assert_cmpuint (length, ==, 0);
+      gimp_preset_preferences_snapshot_unref (copy);
+      goto done;
+    }
+  if (id == 27)
+    {
+      GimpPresetDescriptorValues values = *gimp_preset_descriptor_values (d);
+      GimpPresetDescriptor *invalid;
+      GimpPresetPreferencesSnapshot *failed;
+      GError *error = NULL;
+      values.path_property_name = "missing-preentry-path";
+      invalid = gimp_preset_descriptor_new (&values, &error);
+      g_assert_no_error (error); g_assert_nonnull (invalid);
+      rejects (NULL, invalid); gimp_preset_descriptor_unref (invalid);
+      rejects (NULL, NULL);
+      fail_alloc = TRUE;
+      failed = gimp_preset_preferences_snapshot_new (NULL, &error);
+      g_assert_null (failed); g_assert_nonnull (error); g_clear_error (&error);
+      assert_process_entries (0);
+      goto done;
+    }
+  if (id == 28)
+    {
+      GimpPresetPreferencesSnapshot *empty = gimp_preset_preferences_snapshot_new (NULL, NULL);
+      GimpPresetPreferencesSnapshot *selected;
+      guint length = G_MAXUINT;
+      install (NULL, d); assert_process_entries (1);
+      selected = gimp_preset_preferences_snapshot_new (NULL, NULL);
+      a = cold (); assert_process_entries (1);
+      g_assert_null (gimp_preset_preferences_snapshot_get_entries (empty, &length));
+      g_assert_cmpuint (length, ==, 0);
+      g_assert_cmpstr (gimp_preset_preferences_snapshot_get_entries (selected, &length)->label, ==, "replacement");
+      g_assert_cmpuint (length, ==, 1);
+      destroy (a); assert_process_entries (0);
+      g_assert_null (gimp_preset_preferences_snapshot_get_entries (empty, &length));
+      g_assert_cmpuint (length, ==, 0);
+      g_assert_cmpstr (gimp_preset_preferences_snapshot_get_entries (selected, &length)->label, ==, "replacement");
+      g_assert_cmpuint (length, ==, 1);
+      gimp_preset_preferences_snapshot_unref (empty);
+      gimp_preset_preferences_snapshot_unref (selected);
+      goto done;
+    }
   if (id == 0)
     {
       GArray *before, *after;
@@ -219,7 +303,7 @@ static void run (gconstpointer value)
       gimp_preset_preferences_snapshot_unref(retained);
       g_array_unref (before); goto done;
     }
-  if (id == 2 || id == 3 || id == 8 || id == 12 || id == 13)
+  if (id == 2 || id == 3 || id == 8 || id == 12 || id == 13 || id == 29 || id == 30)
     {
       unit_guardian = cold ();
       gimp_features_close (unit_guardian); /* No catalog owner remains. */
@@ -318,6 +402,26 @@ static void run (gconstpointer value)
       gimp_features_close(a); g_assert_false(gimp_preset_gui_end(lease,TRUE));
       b=cold(); install(b,d); destroy(b); b=NULL;
     }
+  else if (id == 29)
+    {
+      assert_process_entries (1);
+      destroy (a); assert_process_entries (0);
+      install (NULL, d); assert_process_entries (1);
+      a = cold (); assert_process_entries (1);
+      assert_pair (a, "Layer presets Folders", "layer-presets-path");
+    }
+  else if (id == 30)
+    {
+      GimpPresetGuiLease *lease = gimp_preset_gui_begin (a);
+      g_assert_nonnull (lease);
+      gimp_features_close (a); assert_process_entries (0);
+      b = cold (); assert_process_entries (1);
+      assert_pair (b, "Layer presets Folders", "layer-presets-path");
+      g_assert_false (gimp_preset_gui_end (lease, TRUE));
+      assert_process_entries (1);
+      destroy (b); b = NULL;
+      assert_process_entries (0);
+    }
   else if (id == 13)
     {
       GTypeQuery q; g_type_query(GIMP_TYPE_GIMP,&q);
@@ -407,6 +511,7 @@ static void run (gconstpointer value)
   if(b)destroy(b);
   if(a)destroy(a);
 done:
+  assert_process_entries (0);
   if (unit_guardian)
     {
       g_assert_cmpuint (unit_targets_opened, ==, unit_targets_closed);
@@ -419,7 +524,7 @@ done:
 }
 int main(int argc,char **argv)
 {
-  const gchar *names[]={"preentry-overwrite-array","replace-retained-snapshots","two-owners-first-close","two-owners-second-close","invalid-allocation-rollback","nonempty-active-load","coherent-release-reentry","prepare-owner-close","prepare-other-owner-generation","acquisition-close","gui-cancel-publish","actual-action-empty-publish","gui-close-release","private-size-double-close","factory-preparation-null","startup-absent-pair","selected-real-load-save-reopen","actual-initialize-freeze","release-then-owner-close","array-ref-free-steal","unrelated-actions-on-lease-failure","failed-gui-allocation-no-freeze","required-dialog-startup-failure","legacy-epoch-dedup-release32","owning-snapshot-survives-close","owning-snapshot-allocation-failure"};
+  const gchar *names[]={"preentry-overwrite-array","replace-retained-snapshots","two-owners-first-close","two-owners-second-close","invalid-allocation-rollback","nonempty-active-load","coherent-release-reentry","prepare-owner-close","prepare-other-owner-generation","acquisition-close","gui-cancel-publish","actual-action-empty-publish","gui-close-release","private-size-double-close","factory-preparation-null","startup-absent-pair","selected-real-load-save-reopen","actual-initialize-freeze","release-then-owner-close","array-ref-free-steal","unrelated-actions-on-lease-failure","failed-gui-allocation-no-freeze","required-dialog-startup-failure","legacy-epoch-dedup-release32","owning-snapshot-survives-close","owning-snapshot-allocation-failure","empty-preentry-getters","failed-preentry-remains-empty","empty-snapshot-survives-entry","last-close-new-preentry","new-owner-before-stale-lease-release"};
   g_test_init(&argc,&argv,NULL);if(!gtk_init_check(&argc,&argv))return GIMP_EXIT_TEST_SKIPPED;
   gimp_log_init();gegl_init(NULL,NULL);
   gimp_test_utils_set_gimp3_directory("GIMP_TESTING_ABS_TOP_SRCDIR","app/tests/gimpdir");

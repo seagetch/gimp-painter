@@ -1,0 +1,20 @@
+[
+  {
+    "name": "original-provider",
+    "case": "empty-preentry-getters",
+    "returncode": -6,
+    "stdout": "TAP version 14\n# random seed: R02S507f7be601b448bb081fd8028b2b7fc3\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# Start of preset-catalog tests\n# child process (/preset-catalog/empty-preentry-getters [53]) exit status: 1 (error)\n# child process (/preset-catalog/empty-preentry-getters [53]) stdout: \"\"\n# child process (/preset-catalog/empty-preentry-getters [53]) stderr: \"**\\nERROR:../gimp-candidates-nov10/app/tests/test-preset-catalog.c:201:assert_process_entries: assertion failed (array->len == expected): (1 == 0)\\n\"\nnot ok /preset-catalog/empty-preentry-getters - ERROR:../gimp-candidates-nov10/app/tests/test-preset-catalog.c:227:run: child process (/preset-catalog/empty-preentry-getters [53]) failed unexpectedly\nBail out!\n",
+    "stderr": "**\nERROR:../gimp-candidates-nov10/app/tests/test-preset-catalog.c:227:run: child process (/preset-catalog/empty-preentry-getters [53]) failed unexpectedly\n",
+    "expected_assertion": "(1 == 0)",
+    "source_sha256": "621a953b358d2864089913a07e09fad85303dcfc90d20c006fb25c022d417981"
+  },
+  {
+    "name": "missing-stale-lease-presence",
+    "case": "new-owner-before-stale-lease-release",
+    "returncode": -6,
+    "stdout": "TAP version 14\n# random seed: R02Se0dad26ed4c1e1798248d1adba9ec804\n# GLib-DEBUG: setenv()/putenv() are not thread-safe and should not be used after threads are created\n# Start of preset-catalog tests\n# child process (/preset-catalog/new-owner-before-stale-lease-release [78]) exit status: 1 (error)\n# child process (/preset-catalog/new-owner-before-stale-lease-release [78]) stdout: \"unit boundary: target init bypass only\\nunit boundary: target init bypass only\\n\"\n# child process (/preset-catalog/new-owner-before-stale-lease-release [78]) stderr: \"**\\nERROR:../gimp-candidates-nov10/app/tests/test-preset-catalog.c:201:assert_process_entries: assertion failed (array->len == expected): (0 == 1)\\n\"\nnot ok /preset-catalog/new-owner-before-stale-lease-release - ERROR:../gimp-candidates-nov10/app/tests/test-preset-catalog.c:227:run: child process (/preset-catalog/new-owner-before-stale-lease-release [78]) failed unexpectedly\nBail out!\n",
+    "stderr": "**\nERROR:../gimp-candidates-nov10/app/tests/test-preset-catalog.c:227:run: child process (/preset-catalog/new-owner-before-stale-lease-release [78]) failed unexpectedly\n",
+    "expected_assertion": "(0 == 1)",
+    "source_sha256": "67411bae2817098212c23e8cf6f80bfc83be2f9ee6ffa0652ebf5e253419d2e8"
+  }
+]

@@ -33,7 +33,22 @@ Initialized owners or active GUI construction reservations prevent replacement;
 failed/empty GUI consumption releases reservations without freezing.
 
 Other preinit owners retain their independent snapshots. When all owners close,
-process selection resets to built-in defaults. The legacy C getter still returns
+process selection resets to the built-in construction template, with no registered
+preferences entry. Before the first registration, the legacy registry enumerated
+zero entries; merely having default metadata available must not synthesize one.
+Successful preentry registration or native owner entry establishes presence.
+An outstanding lease from a retired owner cannot suppress the presence established
+by a newly constructed owner, nor may that entry overwrite reserved metadata.
+
+The metadata-only `gimp_preset_catalog_snapshot(NULL)` remains available even
+when no entry is registered, so callers can construct descriptors from defaults.
+The preferences APIs, rather than that template API, report registration presence.
+A newly allocated empty owning preferences snapshot returns a NULL entry view and
+length zero; it stays empty across later registrations. Existing populated owning
+snapshots retain their entry across last-owner close. These are separate immutable
+views, not live subscriptions to the process catalog.
+
+The legacy C getter still returns
 an ordinary shallow mutable GArray, without a clear callback: callers may replace
 pointer fields with literals and free/steal the array without freeing metadata.
 Only dynamic descriptors actually exposed by this borrowed getter are retained

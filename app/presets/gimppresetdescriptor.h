@@ -20,7 +20,9 @@ GimpPresetDescriptor *gimp_preset_descriptor_ref (GimpPresetDescriptor *descript
 void gimp_preset_descriptor_unref (GimpPresetDescriptor *descriptor);
 const GimpPresetDescriptorValues *gimp_preset_descriptor_values (const GimpPresetDescriptor *descriptor);
 /* Transfer full immutable snapshot. NULL selects the process catalog, not an
- * arbitrary application. Plain snapshots do not freeze registration. */
+ * arbitrary application. Plain snapshots do not freeze registration. The process
+ * snapshot returns built-in metadata as a construction template even when no
+ * configuration is registered; use the preferences API to enumerate entries. */
 GimpPresetDescriptor *gimp_preset_catalog_snapshot (Gimp *gimp);
 /* NULL target is a preentry catalog selection, overwritten by normal entry.
  * Existing owners retain their own snapshots. Main-thread lifecycle API. */
